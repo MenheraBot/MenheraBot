@@ -1,0 +1,23 @@
+{
+  "name": "menherabot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ascii-table": "0.0.9",
+    "common-tags": "^1.8.0",
+    "dblapi.js": "^2.4.0",
+    "discord.js": "^12.2.0",
+    "express": "^4.17.1",
+    "fs-extra": "^9.0.1",
+    "jimp": "^0.13.0",
+    "mongoose": "^5.9.21",
+    "path": "^0.12.7"
+  }
+}
