@@ -5,11 +5,11 @@ module.exports = {
   cooldown: 3,
   category: "diversão",
   description: "SUCUMBA MUCALOL",
-  usage: "m!sucumba <@menção>",
+  usage: "m!sucumba <@menção || texto>",
   run: async (client, message, args) => {
-  const user = message.mentions.users.first();
+  const user = message.mentions.users.first() || args.join(" ");
   if(!user) return message.reply("n/a");
   if(user.id == message.author.id) return message.reply("n/a");
 
-  message.channel.send(`SUCUMBA ${user} VERME\n LIXO\n HORROROSO\n RUIM\n HORRÍVEL\n ESCÓRIA\n BOSTA\n LIXOSO\n PERITO EM ENTREGAR GAME\n COCOZENTO`);
+  message.channel.send(`SUCUMBA **${user}**\nVERME\nLIXO\nHORROROSO\nRUIM\nHORRÍVEL\nESCÓRIA\nBOSTA\nLIXOSO\nPERITO EM ENTREGAR GAME\n"COCOZENTO`);
 }};
