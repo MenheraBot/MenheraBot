@@ -78,10 +78,11 @@ client.on("guildCreate", server => {
 client.on("ready", () => {
 
   let activities = [
-      "Eu preciso de permissões para mandar mensagens no canal que você executa meu comando",
-      "Oizinho, sou a Menhera, meu prefixo é m!",
-      "Para obter ajuda, use m!ajdua",
-      "Vote em mim para me ajudar a crescer 'm!votar'"
+    "Meu prefixko é m!",
+    "Use m!votar para me ajudar a crescer",
+    "m!ajuda [comando]",
+    "Eu te amo moon",
+    "A moon é tudo para a minha dona"
     ],
     i = 0;
 
