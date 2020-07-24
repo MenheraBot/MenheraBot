@@ -8,7 +8,5 @@ module.exports = {
     description: "Arquivo destinado para testes",
     usage: "m!test [comando]",
     run: async (client, message, args) => {
-
-
-
+       
 }}
