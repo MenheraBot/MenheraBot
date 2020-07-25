@@ -99,5 +99,6 @@ process.on('warning', e => console.warn(e.stack));
 
 
 //mudar para config.token para logar na menhrea
-//testToken = moon bot
+//testToken = DevBot
+
 client.login(config.testToken);
