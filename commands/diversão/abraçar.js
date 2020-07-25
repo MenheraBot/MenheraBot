@@ -6,7 +6,7 @@ module.exports = {
   cooldown: 2,
   category: "diversão",
   description: "Abraça alguem",
-  usage: "m!act <@menção>",
+  usage: "m!abraçar <@menção>",
   run: async (client, message, args) => {
 
   var list = [

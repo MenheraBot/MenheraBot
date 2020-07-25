@@ -98,5 +98,6 @@ process.on('unhandledRejection', error =>	console.error('Unhandled promise rejec
 process.on('warning', e => console.warn(e.stack));
 
 
-
-client.login(config.token);
+//mudar para config.token para logar na menhrea
+//testToken = moon bot
+client.login(config.testToken);
