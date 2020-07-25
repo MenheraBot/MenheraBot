@@ -20,7 +20,6 @@ module.exports = {
   ];
 
   var rand = list[Math.floor(Math.random() * list.length)];
-  const avatar = message.author.displayAvatarURL();
   
     const embed = new Discord.MessageEmbed()
     .setTitle("Humpf")
