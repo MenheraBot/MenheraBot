@@ -4,7 +4,7 @@ const user = require("../../models/user.js");
 
 module.exports = {
     name: "top",
-    aliases: ["lb", "leaders", "leaderboard"],
+    aliases: ["lb", "leaders", "leaderboard", "rank"],
     cooldown: 20,
     category: "info",
     description: "Veja a tabela de líderes de mamadas",
@@ -19,7 +19,7 @@ module.exports = {
 
             if (res.length === 0) {
                 embed1.setColor('#ff0000')
-                embed1.addField("NO DATA FOUND", "Eu não sei o que aconteceu, mas nenhum perfil foi encontrado")
+                embed1.addField("Nenhuma data encontrada", "Eu não sei o que aconteceu, mas nenhum perfil foi encontrado")
             } else if (res.length < 10) {
                 embed1.setColor('#a788ff')
                 for (i = 0; i < res.length; i++) {
