@@ -36,6 +36,7 @@ module.exports = {
 
         coletor.on("collect", (react, user) => {
 
+          msg.delete().catch();
           sarrada(message, user);
 
         });
