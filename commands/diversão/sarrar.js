@@ -9,7 +9,7 @@ module.exports = {
   usage: "m!sarrar [@menção]",
   run: async (client, message, args) => {
 
-    return message.reply("Perdão, este comando foi desabilitado por problemas de performance");
+	return message.reply("Desculpe, este comando foi desabilitado por erros de perfmormance");
 
     var listaSozinho = [
       "https://media1.tenor.com/images/e0b093e5174a74518ffcbc0967d265eb/tenor.gif?itemid=17767202",
