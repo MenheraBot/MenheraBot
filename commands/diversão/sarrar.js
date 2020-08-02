@@ -51,7 +51,8 @@ function sarrada(message, reactUser) {
 
 
   var lista = [
-    "https://media1.tenor.com/images/209f3b2875d4834f82fec9531a60412e/tenor.gif?itemid=17770012"
+    "https://i.imgur.com/m2JUJWB.gif",
+    "https://i.imgur.com/ezdhV96.gif"
   ];
 
   var rand = lista[Math.floor(Math.random() * lista.length)];
