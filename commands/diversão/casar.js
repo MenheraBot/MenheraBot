@@ -39,7 +39,7 @@ function casado(user, message, mencionado) {
 }
 function casar(user, message, men, mencionado) {
 
-  message.channel.send(`${mencionado} Aceitas se casar com ${message.author}? Você tem 15 segundo para aceitar`).then(msg => {
+  message.channel.send(`${mencionado} Aceitas se casar com ${message.author}? Você tem 15 segundos para aceitar`).then(msg => {
 
     msg.react("✅").catch(err => message.channel.send("Ocorreu um erro ao adicionar uma reação, serasi eu tenho permissão para tal?"));
     msg.react("❌").catch(err => message.channel.send("Ocorreu um erro ao adicionar uma reação, serasi eu tenho permissão para tal?"));
