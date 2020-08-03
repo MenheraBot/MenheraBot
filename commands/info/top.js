@@ -25,9 +25,9 @@ module.exports = {
                 for (i = 0; i < res.length; i++) {
                     let member = client.users.cache.get(res[i].id);
                     if (!member) {
-                        embed1.addField(`${i + 1}° ${res[i].nome}`, `Mamado: ${res[i].mamadas}`, false)
+                        embed1.addField(`**${i + 1} -** ${res[i].nome}`, `Mamado: ${res[i].mamadas}`, false)
                     } else {
-                        embed1.addField(`${i + 1}° ${member.username}`, `Mamado: ${res[i].mamadas}`, false)
+                        embed1.addField(`**${i + 1} -** ${member.username}`, `Mamado: ${res[i].mamadas}`, false)
                     }
                 }
             } else {
@@ -35,9 +35,9 @@ module.exports = {
                 for (i = 0; i < 10; i++) {
                     let member = client.users.cache.get(res[i].id);
                     if (!member) {
-                        embed1.addField(`${i + 1}° ${res[i].nome}`, `Mamado: ${res[i].mamadas}`, false)
+                        embed1.addField(`**${i + 1} -** ${res[i].nome}`, `Mamado: ${res[i].mamadas}`, false)
                     } else {
-                        embed1.addField(`${i + 1}° ${member.username}`, `Mamado: ${res[i].mamadas}`, false)
+                        embed1.addField(`**${i + 1} -** ${member.username}`, `Mamado: ${res[i].mamadas}`, false)
                     }
                 }
 
@@ -54,9 +54,9 @@ module.exports = {
                     for (i = 0; i < ress.length; i++) {
                         let memberr = client.users.cache.get(ress[i].id);
                         if (!memberr) {
-                            embed.addField(`${i + 1}° ${ress[i].nome}`, `Mamou: ${ress[i].mamou}`, false)
+                            embed.addField(`**${i + 1} -** ${ress[i].nome}`, `Mamou: ${ress[i].mamou}`, false)
                         } else {
-                            embed.addField(`${i + 1}° ${memberr.username}`, `Mamou: ${ress[i].mamou}`, false)
+                            embed.addField(`**${i + 1} -** ${memberr.username}`, `Mamou: ${ress[i].mamou}`, false)
                         }
                     }
                   
@@ -64,9 +64,9 @@ module.exports = {
                     for (i = 0; i < 10; i++) {
                         let memberr = client.users.cache.get(ress[i].id);
                         if (!memberr) {
-                            embed.addField(`${i + 1}° ${ress[i].nome}`, `Mamou: ${ress[i].mamou}`, false)
+                            embed.addField(`**${i + 1} -** ${ress[i].nome}`, `Mamou: ${ress[i].mamou}`, false)
                         } else {
-                            embed.addField(`${i + 1}° ${memberr.username}`, `Mamou: ${ress[i].mamou}`, false)
+                            embed.addField(`**${i + 1} -** ${memberr.username}`, `Mamou: ${ress[i].mamou}`, false)
                         }
                     }
     
