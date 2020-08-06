@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 module.exports = {
   name: "socar",
-  aliases: ["tapa", "soca", "tapear", "slap"],
+  aliases: ["tapa", "soca", "tapear", "punch"],
   cooldown: 2,
   category: "diversão",
   description: "Da aquele tapa de qualidade do VEM PRO FUT em alguem",
