@@ -16,7 +16,8 @@ module.exports = {
     "https://i.imgur.com/XjsEMiK.gif",
     "https://i.imgur.com/sLwoifL.gif",
     "https://i.imgur.com/TPqMPka.gif",
-    "https://i.imgur.com/9CvzZTE.gif"
+    "https://i.imgur.com/9CvzZTE.gif",
+    "https://i.imgur.com/RsPHpae.gif"
   ];
 
   var rand = list[Math.floor(Math.random() * list.length)];
