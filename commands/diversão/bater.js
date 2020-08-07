@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 module.exports = {
   name: "bater",
-  aliases: ["bate", "slap"],
+  aliases: ["bate", "slap", "tapa", "tapear"],
   cooldown: 2,
   category: "diversão",
   description: "Bate em alguém",
