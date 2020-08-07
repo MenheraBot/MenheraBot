@@ -16,6 +16,7 @@ module.exports = {
 
     if (!mencionado) return message.reply("Mencione o usuário com que desejas casar");
     if (mencionado.bot) return message.reply("voce não pode se casar com bots");
+    if(mencionado.id === message.author.id) return message.reply("Você não pode se casar consigo mesmo :(")
 
     db.findOne({ id: message.author.id }, (err, user) => {
       if (err) console.log(err);
