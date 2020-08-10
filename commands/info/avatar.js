@@ -18,10 +18,17 @@ module.exports = {
     size: 1024
   });
 
-  const embed = new Discord.MessageEmbed()
+  let embed = new Discord.MessageEmbed()
     .setTitle(`Avatar de ${user.username}`)
     .setImage(img)
     .setFooter("Que imagem linda omodeuso");
 
-  message.reply(embed);
+    if(user.id === client.user.id){
+
+    embed.setTitle(`Meu avatar (${user.username})`)
+    embed.setColor('#f276f3')
+    embed.setFooter("Eu sou muito linda né vei tem como não")
+   
+  }
+    message.reply(embed);
 }};
