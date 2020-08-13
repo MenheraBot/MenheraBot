@@ -59,6 +59,7 @@ client.on("message", async message => {
        console.log(err);
        message.reply("Ocorreu um erro na execução desse comando... Bugs e mais bugs...")
      });
+     console.log(`Comando: '${command}'. Autor: '${message.author.tag}' id: '${message.author.id}' | Servidor: ${message.guild.name} ServerId: ${message.guild.id}`);
   }
   
 });
