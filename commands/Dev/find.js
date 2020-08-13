@@ -1,13 +1,12 @@
 const Discord = require("discord.js");
 
 module.exports = {
-    name: "test",
-    aliases: ["teste"],
+    name: "find",
+    aliases: ["achar"],
     cooldown: 2,
     category: "Dev",
     description: "Arquivo destinado para testes",
     usage: "m!test [comando]",
     run: async (client, message, args) => {
-    // let member = await client.users.fetch(args[0].replace(/[<@!>]/g, ""))
-    //return message.channel.send(`O membro é ${member}\nCujo id é ${member.id}`);
+        if(message.author.id !== '435228312214962204') return message.channel.send("Este comando é único de minha dona!")
     }}

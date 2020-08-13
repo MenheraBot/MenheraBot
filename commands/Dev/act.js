@@ -3,7 +3,7 @@ module.exports = {
   name: "act",
   aliases: ["atividade", "activity"],
   cooldown: 2,
-  category: "BotConfig",
+  category: "Dev",
   description: "Altera a atividade do bot",
   usage: "m!act [atividade]",
 
