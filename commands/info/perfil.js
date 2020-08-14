@@ -11,7 +11,7 @@ module.exports = {
   usage: "m!perfil [@menção]",
   run: async (client, message, args) => {
 
-  let pessoa = message.mentions.users.first();
+  let pessoa = message.mentions.users.first() || client.users.cache.get(args[0]);
   if (!pessoa) pessoa = message.author;
     
   if (pessoa.bot) return message.channel.send("Que? KKK fodase os bots, robôs não tem perfil");
