@@ -20,11 +20,12 @@ function getAll(client, message) {
     const embed = new Discord.MessageEmbed()
         .setColor("#c0abf2")
         .setTitle("Comandos Disponíveis")
+        .setFooter("Você pode ver ajuda sobre um comando em específico usando m!ajuda comando")
 
     const commands = (category) => {
         return client.commands
             .filter(cmd => cmd.category === category)
-            .map(cmd => `- \`${cmd.name}\``)
+            .map(cmd => `- ${cmd.name}`)
             .join("\n");
     }
 
