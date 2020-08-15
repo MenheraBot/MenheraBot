@@ -8,4 +8,4 @@ const warnSchema = mongoose.Schema({
     data: String
 });
 
-module.exports = mongoose.model("warn", userSchema);
+module.exports = mongoose.model("warn", warnSchema);
