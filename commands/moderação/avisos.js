@@ -51,7 +51,7 @@ module.exports = {
         }
 
         for(i = 0; i < db.length; i++){
-            embed.addField(`Aviso #${i + 1}`, `**Avisado por:** ${client.users.cache.get(db[i].warnerId)}\n**Razão:** ${db[i].reason}\n**Data:** ${db[i].data}`);
+            embed.addField(`Aviso #${i + 1}`, `**Avisado por:** ${client.users.cache.get(db[i].warnerId)}\n**Razão:** ${db[i].reason}\n**Data:** ${db[i].data}\n**WarnID:** \`${db[i]._id}\``);
         }
         embed.setImage(rand);
         message.channel.send(embed);
