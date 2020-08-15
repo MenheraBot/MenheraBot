@@ -8,7 +8,7 @@ module.exports = {
   usage: "m!avatar [@menção]",
   run: async (client, message, args) => {
   
-  let user = message.mentions.users.first();
+  let user = message.mentions.users.first() || client.users.cache.get(args[0]);
 
   if (!user) user = message.author;
   
