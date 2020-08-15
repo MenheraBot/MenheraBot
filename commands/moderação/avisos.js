@@ -44,7 +44,7 @@ module.exports = {
         if(err) console.log(err);
 
         if(!db || db.length < 1){
-            embed.setDescription(`${user} não possui avisos`);
+            embed.setDescription(`${user} não possui avisos neste servidor`);
              rand = noWarn[Math.floor(Math.random() * noWarn.length)];
         } else {
             rand = warned[Math.floor(Math.random() * warned.length)];
