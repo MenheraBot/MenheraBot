@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 
 const database = require("../../models/user.js");
-const user = require("../../models/user.js");
+const Warns = require("../../models/warn.js");
 
 module.exports = {
   name: "database",
@@ -32,8 +32,12 @@ module.exports = {
             if(!userId || !valor) return message.reply("Erro de Sintaxe") 
             set(client, userId, valor, message, embed);
             break;
+      case 'delwarn':
+            if(!userId) return message.reply("Erro de Sintaxe")
+            delwarn(client, userId, message, embed);
+            break;
       default:
-          message.channel.send("Utilize m!database <add|remove|set> <user id> <valor>")
+          message.channel.send("Utilize m!database <add|remove|set|delwarn> <user id> <valor>")
   }
 
 }};
@@ -83,5 +87,16 @@ function set(client, userId, valor, message, embed){
        
        res.save().then(message.channel.send(embed)).catch(erro => message.channel.send(`Ocorreu um erro ao salvar à database\n\`\`\`js\n${erro}\`\`\``));
 
+    })
+}
+
+function delwarn(client, warnId, message, embed){
+
+    Warns.findByIdAndDelete({_id: warnId}, (err,res) => {
+        if(!res) return message.reply("warn não encontrado");
+        embed.setColor('#e2f01b')
+        embed.setDescription(`Aviso \`${res._id}\` removido do usuário ${client.users.cache.get(res.userId)} com sucesso`);
+        embed.addField("Warn removido:", `**Autor:** ${client.users.cache.get(res.warnerId)} | \`${res.warnerId}\`\n**Motivo:** ${res.reason}\n**Servidor:** ${client.guilds.cache.get(res.guildId).name} | \`${res.guildId}\`\n**Data:** ${res.data}`)
+        message.channel.send(embed);
     })
 }
