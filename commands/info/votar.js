@@ -1,7 +1,7 @@
 const { MessageEmbed } = require("discord.js");
 module.exports = {
   name: "votar",
-  aliases: ["vote", "vota"],
+  aliases: ["vote", "vota", "upvote"],
   cooldown: 2,
   category: "info",
   description: "Vote no bot (pfv vote, isso ajuda muito X3 >.< )",
