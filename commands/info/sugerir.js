@@ -17,6 +17,7 @@ module.exports = {
     .setDescription(`**${argumentos}**`)
     .setColor(cor)
     .setThumbnail(message.author.displayAvatarURL())
+    .setFooter(`ID do usuário: ${message.author.id}`)
     .setTimestamp()
     .setAuthor(`Sugestão de ${message.author.tag}`, message.author.displayAvatarURL());
   
