@@ -58,7 +58,7 @@ module.exports = {
         } else {
             embed.setColor('#7bf06c')
             embed.setTitle(serverFound.name)
-            embed.setDescription(`**Id:** \`${id}\`\n\n**Região:** ${serverFound.region}\n\n**Dono:** ${serverFound.owner} | \`${serverFound.ownerID}\`\n\n**Membros:** ${serverFound.memberCount}`)
+            embed.setDescription(`**ServerID:** \`${id}\`\n\n**Região:** ${serverFound.region}\n\n**Dono:** ${client.users.cache.get(serverFound.ownerID).tag} | \`${serverFound.ownerID}\`\n\n**Membros:** ${serverFound.memberCount}`)
             embed.setFooter(`Servidor criado em ${serverFound.createdAt}`)
             embed.setThumbnail(serverFound.iconURL())
             return message.channel.send(embed);
