@@ -13,7 +13,6 @@ module.exports = {
   if (!user) user = message.author;
   
   const img = user.displayAvatarURL({
-    format: "png",
     dynamic: true,
     size: 1024
   });
