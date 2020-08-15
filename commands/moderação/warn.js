@@ -7,7 +7,7 @@ module.exports = {
   cooldown: 2,
   category: "moderação",
   description: "Avise um usuário",
-  usage: "m!warm <usuário> <razão>",
+  usage: "m!warn <usuário> <razão>",
   run: async (client, message, args) => {
       if(!message.member.hasPermission("KICK_MEMBERS")) return message.reply("Você precisa da permissão `KICK_MEMBERS` para usar esse comando")
 
