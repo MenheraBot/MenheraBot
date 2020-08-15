@@ -24,5 +24,5 @@ module.exports = {
   client.guilds.cache.get('717061688460967988').channels.cache.get('723765136648830996').send(embed);
 
   if(message.deletable) message.delete()
-  message.reply("Sugestão enviada com sucesso. O mal uso deste recurso acarretará em punições");
+  message.reply("Mutissimo obrigada por me enviar uma sugestão <3");
 }};
