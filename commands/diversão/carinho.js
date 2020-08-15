@@ -41,7 +41,6 @@ module.exports = {
     .setDescription(`${message.author} fez carinho em ${user}`)
     .setImage(rand)
     .setThumbnail(avatar)
-    .setFooter("Pat pat pat pat pat pat")
     .setAuthor(message.author.tag, avatar);
 
    message.channel.send(embed);

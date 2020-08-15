@@ -37,7 +37,6 @@ module.exports = {
     .setDescription(`${message.author} socou ${user}`)
     .setImage(rand)
     .setThumbnail(avatar)
-    .setFooter("AND HIS NAME IS JHON CENA. BOOM. PAPARAPAAAAAA")
     .setAuthor(message.author.tag, avatar);
 
    message.channel.send(embed);

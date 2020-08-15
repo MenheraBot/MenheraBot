@@ -35,7 +35,6 @@ module.exports = {
     .setDescription(`${message.author} cutucou ${user}`)
     .setImage(rand)
     .setThumbnail(avatar)
-    .setFooter("Poke poke? Pokemon (desculpa eu sei q essa foi bem ruim)")
     .setAuthor(message.author.tag, avatar);
 
    message.channel.send(embed);

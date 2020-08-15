@@ -37,7 +37,6 @@ module.exports = {
     .setDescription(`${message.author} está chorando`)
     .setThumbnail(avatar)
     .setImage(rand)
-    .setFooter("Oq será que aconteceu?")
     .setAuthor(message.author.tag, avatar);
 
    message.channel.send(embed);
@@ -51,7 +50,6 @@ module.exports = {
     .setDescription(`${message.author} está chorando`)
     .setThumbnail(avatar)
     .setImage(rand)
-    .setFooter("Oq será que aconteceu?")
     .setAuthor(message.author.tag, avatar);
 
    message.channel.send(embed);
@@ -66,7 +64,6 @@ module.exports = {
     .setDescription(`${user} fez ${message.author} chorar`)
     .setImage(rand)
     .setThumbnail(avatar)
-    .setFooter(`Poxa ${user.username}, pra que isso?`)
     .setAuthor(message.author.tag, avatar);
 
   await message.channel.send(embed);

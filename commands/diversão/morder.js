@@ -39,7 +39,6 @@ module.exports = {
     .setDescription(`${message.author} moideu ${user} :3`)
     .setImage(rand)
     .setThumbnail(avatar)
-    .setFooter("Rawr Uwu")
     .setAuthor(message.author.tag, avatar);
 
    message.channel.send(embed);

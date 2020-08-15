@@ -39,7 +39,6 @@ module.exports = {
     .setDescription(`${message.author} meteu o tapão em ${user}`)
     .setImage(rand)
     .setThumbnail(avatar)
-    .setFooter("SLAP IN THE FACE")
     .setAuthor(message.author.tag, avatar);
 
    message.channel.send(embed);

@@ -66,7 +66,6 @@ function sarrada(message, reactUser) {
     .setDescription(`${message.author} sarrou com ${reactUser}`)
     .setImage(rand)
     .setThumbnail(avatar)
-    .setFooter("Nós somos os sarradores profissionais")
     .setAuthor(message.author.tag, avatar);
 
   message.channel.send(Embed);

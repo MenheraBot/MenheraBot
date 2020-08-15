@@ -30,7 +30,6 @@ module.exports = {
     .setDescription(`${message.author} está com medo`)
     .setThumbnail(avatar)
     .setImage(rand)
-    .setFooter("É melhor correr")
     .setAuthor(message.author.tag, avatar);
                 
     return message.channel.send(embed);
@@ -44,7 +43,6 @@ module.exports = {
     .setDescription(`${user} esta com medo de ${message.author}`)
     .setImage(rand)
     .setThumbnail(avatar)
-    .setFooter(`AH ${username} ISSO AI É CRIME`)
     .setAuthor(message.author.tag, avatar);
 
   await message.channel.send(embed);

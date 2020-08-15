@@ -51,7 +51,6 @@ module.exports = {
     .setDescription(`${message.author} acabou de beijar ${user}`)
     .setImage(rand)
     .setThumbnail(avatar)
-    .setFooter("Todo dia tem um beijo, na televisão!")
     .setAuthor(message.author.tag, avatar);
 
    message.channel.send(embed);

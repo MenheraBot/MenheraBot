@@ -44,12 +44,9 @@ module.exports = {
     const Rembed = new Discord.MessageEmbed()
       .setTitle("Desligar")
       .setColor("#000000")
-      .setDescription(
-        `*Robôs não podem ser mortos, mas podem ser desligados...* \n ${message.author} Desligou o bot ${user}`
-      )
+      .setDescription(`*Robôs não podem ser mortos, mas podem ser desligados...* \n ${message.author} Desligou o bot ${user}`)
       .setImage(Rrand)
       .setThumbnail(avatar)
-      .setFooter("/shutdown")
       .setAuthor(message.author.tag, avatar);
 
     return message.channel.send(Rembed);
@@ -61,7 +58,6 @@ module.exports = {
     .setDescription(`${message.author} M A T O U ${user}`)
     .setImage(rand)
     .setThumbnail(avatar)
-    .setFooter("ALGUÉM LIGA PRO 190")
     .setAuthor(message.author.tag, avatar);
 
    message.channel.send(embed);
