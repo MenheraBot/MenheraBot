@@ -65,15 +65,11 @@ client.on("message", async message => {
 });
 
 client.on("guildDelete", server => {
-  console.log(`Bot removido do servidor "${server}"`)
-  client.users.cache.get('435228312214962204').send(`Bot removido do servidor **${server}**`);
-  client.guilds.cache.get('717061688460967988').channels.cache.get('717061688729534628').send(`Bot removido do servidor **${server}**`);
+  client.guilds.cache.get('717061688460967988').channels.cache.get('717061688729534628').send(`<:menhera_cry:744041825140211732> | Fui removida do servidor **${server}**`);
 });
 
 client.on("guildCreate", server => {
-  console.log(`Bot adicionado ao servidor ${server}`)
-  client.users.cache.get('435228312214962204').send(`Bot adicionado ao servidor ${server}`);
-  client.guilds.cache.get('717061688460967988').channels.cache.get('717061688729534628').send(`Bot adicionado ao servidor **${server}**`);
+  client.guilds.cache.get('717061688460967988').channels.cache.get('717061688729534628').send(`<:apaixonada:727975782034440252> | Fui adicionada ao servidor **${server}**`);
 });
 
 client.on("ready", () => {
