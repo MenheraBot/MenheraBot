@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
-const { stripIndents } = require("common-tags");
 
-const userSchema = mongoose.Schema({
+const warnSchema = mongoose.Schema({
     userId: String,
     warnerId: String,
     guildId: String,
@@ -9,4 +8,4 @@ const userSchema = mongoose.Schema({
     data: String
 });
 
-module.exports = mongoose.model("usersdb", userSchema);
+module.exports = mongoose.model("warn", userSchema);
