@@ -15,6 +15,7 @@ module.exports = {
     const user = message.mentions.users.first() || client.users.cache.get(args[0]);
     if(!user) return message.reply("Nenhum usuário encontrado");
     if(user.bot) return message.reply("Bots são muito legais para receberem avisos");
+    if(!message.guild.members.cache.get(user.id)) return message.reply("Este membro não está neste servidor!!!")
 
     //listas
 
