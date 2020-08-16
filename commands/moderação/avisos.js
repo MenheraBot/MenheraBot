@@ -32,7 +32,8 @@ module.exports = {
         "https://i.imgur.com/ziNWVxo.jpg",
         "https://i.imgur.com/ZVQh20v.jpg",
         "https://i.imgur.com/oPTIn2Z.jpg",
-        "https://i.imgur.com/2kxswoS.png"
+        "https://i.imgur.com/2kxswoS.png",
+        "https://i.imgur.com/FEEjyY3.png"
     ];
 
     let rand;
