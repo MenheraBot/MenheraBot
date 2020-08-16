@@ -29,7 +29,8 @@ module.exports = {
     "https://i.imgur.com/HVpET4Q.png",
     "https://i.imgur.com/X4nSh6Q.png",
     "https://i.imgur.com/JONYnry.png",
-    "https://i.imgur.com/meA60TN.png"
+    "https://i.imgur.com/meA60TN.png",
+    "https://i.imgur.com/AIn4jRx.png"
   ];
 
   var frases = [
