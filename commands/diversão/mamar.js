@@ -17,9 +17,6 @@ module.exports = {
   if (!pessoa) return message.channel.send("KKK ala o autista mamando o nada");
 
   if (pessoa.bot) {
-    if (message.guild.id === "676956879607562260") {
-      message.member.roles.add("711038598564151368");
-    }
     message.channel.send( `${message.author} acabou de sujar a boca de óleo mamano o bot ${pessoa}`);
     return;
   }
