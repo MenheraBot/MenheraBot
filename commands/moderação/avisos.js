@@ -55,6 +55,8 @@ module.exports = {
             embed.addField(`Aviso #${i + 1}`, `**Avisado por:** ${client.users.cache.get(db[i].warnerId)}\n**Razão:** ${db[i].reason}\n**Data:** ${db[i].data}\n**WarnID:** \`${db[i]._id}\``);
         }
         embed.setImage(rand);
+        //const errorMessage = err.stack.length > 1800 ? `${err.stack.slice(0, 1800)}...` : err.stack;
+        //if(embed.length > 6000) embed.fields.slice(0, embed.length === 6000);
         message.channel.send(embed);
     })
   }};
