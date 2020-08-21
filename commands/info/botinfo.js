@@ -4,7 +4,7 @@ const userModel = require("../../models/user.js");
 
 module.exports = {
   name: "botinfo",
-  aliases: ["infobot", "informações", "menherainfo", "infomenhera", "menhera"],
+  aliases: ["infobot", "informações", "menherainfo", "infomenhera", "menhera","bi","ib"],
   cooldown: 10,
   category: "info",
   description: "Mostra as informações atuais do bot",
