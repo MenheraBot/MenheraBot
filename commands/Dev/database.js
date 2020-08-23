@@ -36,8 +36,12 @@ module.exports = {
             if(!userId) return message.reply("Erro de Sintaxe")
             delwarn(client, userId, message, embed);
             break;
+     case 'find':
+            if(!userId) return message.reply("Erro de Sintaxe")
+            find(userId, message, embed);
+            break;
       default:
-          message.channel.send("Utilize m!database <add|remove|set|delwarn> <user id> <valor>")
+          message.channel.send("Utilize m!database <add|remove|set|delwarn|find> <user id> [valor]")
   }
 
 }};
@@ -99,4 +103,68 @@ function delwarn(client, warnId, message, embed){
         embed.addField("Warn removido:", `**Autor:** ${client.users.cache.get(res.warnerId)} | \`${res.warnerId}\`\n**Motivo:** ${res.reason}\n**Servidor:** ${client.guilds.cache.get(res.guildId).name} | \`${res.guildId}\`\n**Data:** ${res.data}`)
         message.channel.send(embed);
     })
+}
+
+function find(userId, message, embed){
+
+    database.findOne({id: userId}, (err, res) => {
+        if(err) message.channel.send(`Ocorreu um erro inesperado:\n\`\`\`js\n${err}\`\`\``);
+        if(!res) return message.reply("Nenhum usuário encontrado na database com o id " + userId);
+
+        const resId = res.id;
+        const resNome = res.nome;
+        const resMamadas = res.mamadas || 0;
+        const resMamou = res.mamou || 0;
+        const resCasado = res.casado || "`Nenhum casamento`";
+        const resNota = res.nota || "`Sem Nota`";
+        const resData = res.data || "`Sem Data`";
+        const resStatus = res.status || "`Sem Status`";
+
+        embed.setColor("#f2baf8")
+        embed.addFields([{
+            name: "User Id",
+            value: `\`${resId}\``,
+            inline: true
+        },
+        {
+            name: "User Name",
+            value: resNome,
+            inline: true
+        }],
+        [{
+            name: "Mamado",
+            value: resMamadas,
+            inline: true
+        },
+        {
+          name: "Mamou",
+          value: resMamou,
+          inline: true
+        }], [{
+          name: "Status",
+          value: resStatus,
+          inline: true
+        },
+        {
+            name: "Nota",
+            value: resNota,
+            inline: true
+        }],[{
+            name: "Casado",
+            value: `\`${resCasado}\``,
+            inline: true
+        },
+        {
+            name: "Data",
+            value: resData,
+            inline: true
+        }
+    ]);
+
+    Warns.countDocuments({userId: userId}, (err, res) => {
+        if(err) console.log(err)
+        embed.addField("Total Warns", res, true)
+        message.channel.send(embed)
+        })
+    });
 }

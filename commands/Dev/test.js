@@ -1,5 +1,8 @@
 const Discord = require("discord.js");
 
+
+const Warns = require("../../models/warn.js")
+
 module.exports = {
     name: "test",
     aliases: ["teste"],
