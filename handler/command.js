@@ -1,8 +1,5 @@
 const { readdirSync } = require("fs-extra");
-const ascii = require("ascii-table");
 const Discord = require("discord.js")
-
-const table = new ascii().setHeading("Comando", "Load Status");
 
 module.exports = (client) => {
 readdirSync("./commands/").forEach(dir => {
@@ -12,11 +9,7 @@ readdirSync("./commands/").forEach(dir => {
         let pull = require(`../commands/${dir}/${file}`);
 
         if(pull.name) {
-            client.commands.set(pull.name, pull);  
-            table.addRow(file, '✅'); 
-        } else {
-            table.addRow(file, '❌');
-            continue;
+            client.commands.set(pull.name, pull);
         }
         if (pull.aliases && Array.isArray(pull.aliases)) pull.aliases.forEach(alias => client.aliases.set(alias, pull.name)); 
        /*  if(pull.cooldown){
@@ -24,7 +17,5 @@ readdirSync("./commands/").forEach(dir => {
         }   */ 
     }
 })
-
-console.log(table.toString());
 
 };
