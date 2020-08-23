@@ -1,6 +1,7 @@
 const Discord = require("discord.js");
 
 const user = require("../../models/user.js");
+const { stat } = require("fs-extra");
 
 module.exports = {
   name: "perfil",
@@ -28,6 +29,21 @@ module.exports = {
 
     let mamadas = info.mamadas | 0;
     let mamou = info.mamou | 0;
+    let status = info.status;
+
+    if(!status) {
+      status = 1;
+      info.status = 1;
+    }
+
+    switch(status){
+      case '0':
+        status = "Vivo"
+        break;
+      case '1':
+        status = "Morto"
+        break;
+    }
 
     embed.addFields([{
       name: "👅 | Mamou",
@@ -51,9 +67,18 @@ module.exports = {
           name: "💍 | Casados em",
           value: data,
           inline:false
-      }]);
+      },
+      {
+        name: "🩸 | Status",
+        value: status,
+        inline: false
+      }
+    ]);
     }
     if(info.nota != undefined) embed.setFooter(`Nota: ${info.nota}`)
     message.reply(embed);
+
+    info.save().catch(err => console.log(err));
   })
+
 }};
