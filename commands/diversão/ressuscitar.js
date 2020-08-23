@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 module.exports = {
   name: "ressuscitar",
-  aliases: ["ressuscite", "respawn", "resurrect", "unkill"],
+  aliases: ["ressuscite", "respawn", "resurrect", "unkill", "reviver", "ressurgir"],
   cooldown: 2,
   category: "diversão",
   description: "Ressuscite alguém morto com m!matar",
