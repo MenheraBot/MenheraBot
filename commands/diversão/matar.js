@@ -24,9 +24,7 @@ module.exports = {
   let avatar = message.author.displayAvatarURL({ format: "png" });
 
   if (!user) {
-    return message.reply(
-      "Se tu não matar ninguém, tu não comete crimes. STONKS"
-    );
+    return message.reply("Se tu não matar ninguém, tu não comete crimes. STONKS");
   }
 
   if (user === message.author) {
@@ -72,11 +70,11 @@ module.exports = {
          nome: user.username,
          mamadas: 0,
          mamou: 0,
-         status: 0
+         status: "Morto"
        })
        newUser.save().catch(err => console.log(err));
      } else {
-       res.status = 0;
+       res.status = "Morto";
        res.save().catch(err => console.log(err))
      }
    })

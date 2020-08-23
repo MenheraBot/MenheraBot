@@ -2,7 +2,6 @@ const Discord = require("discord.js");
 
 const db = require("../../models/user.js");
 
-
 module.exports = {
   name: "ressuscitar",
   aliases: ["ressuscite", "respawn", "resurrect", "unkill", "reviver", "ressurgir"],
@@ -50,11 +49,11 @@ module.exports = {
         nome: user.username,
         mamadas: 0,
         mamou: 0,
-        status: 1
+        status: "Vivo"
       })
       newUser.save().catch(err => console.log(err));
     } else {
-      res.status = 1;
+      res.status = "Vivo";
       res.save().catch(err => console.log(err))
     }
   })

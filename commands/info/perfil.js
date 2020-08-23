@@ -1,7 +1,6 @@
 const Discord = require("discord.js");
 
 const user = require("../../models/user.js");
-const { stat } = require("fs-extra");
 
 module.exports = {
   name: "perfil",
@@ -22,28 +21,13 @@ module.exports = {
   .setColor('#a788ff')
   .setThumbnail(pessoa.displayAvatarURL())
 
-  
   user.findOne({id: pessoa.id}, (err, info) => {
     if(err) console.log(err);
-    if(!info) return message.reply("Este usuário não possui perfil")
+    if(!info) return message.reply(`Este usuário não possui perfil!\nUtilize 'm!mamar ${pessoa}' para adicioná-lo à minha database`)
 
-    let mamadas = info.mamadas | 0;
-    let mamou = info.mamou | 0;
-    let status = info.status;
-
-    if(!status) {
-      status = 1;
-      info.status = 1;
-    }
-
-    switch(status){
-      case '0':
-        status = "Vivo"
-        break;
-      case '1':
-        status = "Morto"
-        break;
-    }
+    let mamadas = info.mamadas || 0;
+    let mamou = info.mamou || 0;
+    let life = info.status || "Vivo";
 
     embed.addFields([{
       name: "👅 | Mamou",
@@ -54,7 +38,14 @@ module.exports = {
       name: "❤️ | Mamado",
       value: mamadas,
       inline: true
-  }]);
+  },
+  {
+      name: "🩸 | Status",
+      value: life,
+      inline: false
+  }
+  ]);
+
     if(info.casado && info.casado != "false"){
       let persona = client.users.cache.get(info.casado) || "`Sem informações do usuário`";
       let data = info.data || "Sem data registrada";
@@ -67,18 +58,12 @@ module.exports = {
           name: "💍 | Casados em",
           value: data,
           inline:false
-      },
-      {
-        name: "🩸 | Status",
-        value: status,
-        inline: false
       }
     ]);
     }
     if(info.nota != undefined) embed.setFooter(`Nota: ${info.nota}`)
-    message.reply(embed);
 
-    info.save().catch(err => console.log(err));
+    message.reply(embed);
   })
 
 }};
