@@ -7,7 +7,7 @@ module.exports = {
   description: "Ressuscite alguém morto com m!matar",
   usage: "m!ressuscitar <@menção>",
   run: async (client, message, args) => {
-  //links de assassinatos
+
   var list = [
    "https://i.imgur.com/krVf6J7.gif",
    "https://i.imgur.com/igSM6nd.gif",
