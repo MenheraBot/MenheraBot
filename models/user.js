@@ -7,7 +7,8 @@ const userSchema = mongoose.Schema({
     mamou: Number,
     casado: String,
     nota: String,
-    data: String
+    data: String,
+    status: {type: Number, default: 1}
 });
 
 module.exports = mongoose.model("usersdb", userSchema);
