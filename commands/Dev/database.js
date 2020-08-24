@@ -2,6 +2,7 @@ const Discord = require("discord.js");
 
 const database = require("../../models/user.js");
 const Warns = require("../../models/warn.js");
+const { db } = require("../../models/user.js");
 
 module.exports = {
   name: "database",
@@ -40,6 +41,10 @@ module.exports = {
             if(!userId) return message.reply("Erro de Sintaxe")
             find(userId, message, embed);
             break;
+    case 'nota':
+            if(!userId)  return message.reply("Erro de Sintaxe")
+            nota(userId, message, args);
+            break;  
       default:
           message.channel.send("Utilize m!database <add|remove|set|delwarn|find> <user id> [valor]")
   }
@@ -167,4 +172,19 @@ function find(userId, message, embed){
         message.channel.send(embed)
         })
     });
+}
+
+function nota(userId, message, args){
+    const nota = args.slice(2).join(" ");
+    database.findOne({id: userId}, (err, res) => {
+        if(err) console.log(err)
+        if(!res) return message.reply("Usuário não encontrado");
+        if(!nota){
+            res.nota = undefined;
+        }else{
+            res.nota = nota;
+        }
+        res.save().then(sucess => message.channel.send(`Nota atualizada com sucesso\`\`\`js\n${sucess}\`\`\``)).catch(err => message.channel.send(`Ocorreu um erro!\`\`\`js\n${err}\`\`\``))
+    })
+
 }
