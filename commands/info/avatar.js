@@ -29,5 +29,8 @@ module.exports = {
     embed.setFooter("Eu sou muito linda né vei tem como não")
    
   }
+
+  if(user.id === "549288328772583424") embed.setFooter("A moon é muito linda né nhaaaaw")
+
     message.reply(embed);
 }};
