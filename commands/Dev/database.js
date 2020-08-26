@@ -43,9 +43,13 @@ module.exports = {
     case 'nota':
             if(!userId)  return message.reply("Erro de Sintaxe")
             nota(userId, message, args);
-            break;  
+            break;
+    case 'update':
+            if(!userId)  return message.reply("Erro de Sintaxe");
+            update(client, userId, message, embed);
+            break;
       default:
-          message.channel.send("Utilize m!database <add|remove|set|delwarn|find> <user id> [valor]")
+          message.channel.send("Utilize m!database <add|remove|set|delwarn|find|nota|update> <user id> [valor]")
   }
 
 }};
@@ -184,6 +188,20 @@ function nota(userId, message, args){
             res.nota = nota;
         }
         res.save().then(sucess => message.channel.send(`Nota atualizada com sucesso\`\`\`js\n${sucess}\`\`\``)).catch(err => message.channel.send(`Ocorreu um erro!\`\`\`js\n${err}\`\`\``))
+    })
+
+}
+
+function update(client, userId, message, embed){
+
+    database.findOne({id: userId}, (err, res) => {
+        if(err) message.channel.send(err);
+        if(!res) return message.channel.send('usuário não encontrado')
+        const nomeAntigo = res.nome;
+        res.nome = client.users.cache.get(userId).username
+        res.save().then(sucess => {
+            message.channel.send(embed.setDescription(`Usuário atualizade de **${nomeAntigo}** para **${res.nome}**`))
+        }).catch(err => message.channel.send(err))
     })
 
 }
