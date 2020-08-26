@@ -43,7 +43,7 @@ module.exports = {
                         }
                     }
                 message.channel.send(embed)
-                message.channel.send(embed1);
+                message.channel.send(embed1).then(err => message.channel.stopTyping());
             });   
         });
     }
