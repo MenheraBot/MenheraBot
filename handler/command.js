@@ -12,9 +12,6 @@ readdirSync("./commands/").forEach(dir => {
             client.commands.set(pull.name, pull);
         }
         if (pull.aliases && Array.isArray(pull.aliases)) pull.aliases.forEach(alias => client.aliases.set(alias, pull.name)); 
-       /*  if(pull.cooldown){
-            client.cooldowns.set(pull.name, new Discord.Collection())
-        }   */ 
     }
 })
 

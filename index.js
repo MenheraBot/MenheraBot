@@ -2,13 +2,10 @@ const Discord = require("discord.js");
 const client = new Discord.Client({fetchAllMembers: true, disableEveryone: true});
 const config = require("./config.json");
 const fs = require("fs-extra");
-
 const DBL = require("dblapi.js");
 const dbl = new DBL(config.dbt, client);
-
 const mongoose = require("mongoose");
 mongoose.connect(config.uri, {useNewUrlParser: true, useUnifiedTopology: true }).catch(error => console.error(error));
-
 
 client.commands = new Discord.Collection();
 client.aliases = new Discord.Collection();
@@ -20,6 +17,30 @@ const cooldown = new Set();
   require(`./handler/${handler}`)(client);
 })
 
+//pequenos eventos
+client.on("guildDelete", server => client.guilds.cache.get('717061688460967988').channels.cache.get('717061688729534628').send(`<:menhera_cry:744041825140211732> | Fui removida do servidor **${server}**`));
+client.on("guildCreate", server => client.guilds.cache.get('717061688460967988').channels.cache.get('717061688729534628').send(`<:apaixonada:727975782034440252> | Fui adicionada ao servidor **${server}**`));
+process.on('unhandledRejection', error =>	console.error('Unhandled promise rejection:', error));
+process.on('warning', e => console.warn(e.stack));
+
+//ready event
+client.on("ready", () => {
+
+  let status = [
+    {name: "a moon ser perfeita", type: "WATCHING"},
+    {name: "o meu servidor de suporte m!suporte", type: "LISTENING", url: "https://discord.gg/fZMdQbA"},
+    {name: "sabia que a moon é a salvação da minha dona? sem moon, menhera = inexistente m!moon", type: " PLAYING"},
+    {name: "a vida é dificil, mas estamos aqui pra facilitá-la", type: "PLAYING"}
+    ];
+
+  setInterval(() => {
+    let randomStatus = status[Math.floor(Math.random() * status.length)]
+    client.user.setPresence({ activity: randomStatus })
+  }, 1000 * 60);
+
+});
+
+//message event
 client.on("message", async message => {
 
   if (message.author.bot) return;
@@ -54,37 +75,7 @@ client.on("message", async message => {
     cooldown.delete(message.author.id)
   }, 2000)
 
-});
-
-client.on("guildDelete", server => {
-  client.guilds.cache.get('717061688460967988').channels.cache.get('717061688729534628').send(`<:menhera_cry:744041825140211732> | Fui removida do servidor **${server}**`);
-});
-
-client.on("guildCreate", server => {
-  client.guilds.cache.get('717061688460967988').channels.cache.get('717061688729534628').send(`<:apaixonada:727975782034440252> | Fui adicionada ao servidor **${server}**`);
-});
-
-client.on("ready", () => {
-
-  let activities = [
-    "Meu prefixko é m!",
-    "Use m!votar para me ajudar a crescer",
-    "m!ajuda [comando]",
-    "Eu te amo moon",
-    "A moon é tudo para a minha dona"
-    ],
-    i = 0;
-
-  setInterval(() => {
-    client.user.setActivity(`${activities[i++ % activities.length]}`, {
-      type: "WATCHING"
-    });
-  }, 1000 * 60);
-
-});
-
-process.on('unhandledRejection', error =>	console.error('Unhandled promise rejection:', error));
-process.on('warning', e => console.warn(e.stack));
+});   //fim do message
 
 //mudar para config.token para logar na menhrea
 //testToken = DevBot
