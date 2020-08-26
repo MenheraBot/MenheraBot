@@ -14,6 +14,8 @@ client.commands = new Discord.Collection();
 client.aliases = new Discord.Collection();
 client.categories = fs.readdirSync("./commands/");
 
+const cooldown = new Set();
+
 ["command"].forEach(handler => {
   require(`./handler/${handler}`)(client);
 })
@@ -35,6 +37,12 @@ client.on("message", async message => {
   if(!command) command = client.commands.get(client.aliases.get(cmd));
 
   if(command){
+    if (cooldown.has(message.author.id)) {
+      message.delete().catch()
+      return message.reply("você está utilizando comandos rápido demais! Fica frio").then(msg => msg.delete({timeout: 3500})).catch();
+    }
+    
+     cooldown.add(message.author.id);
      command.run(client, message, args).catch(err => {
        console.log(err);
        message.reply("Ocorreu um erro na execução desse comando... Bugs e mais bugs...")
@@ -42,6 +50,10 @@ client.on("message", async message => {
      console.log(`Comando: '${command.name}'. Autor: '${message.author.tag}' id: '${message.author.id}' | Servidor: '${message.guild.name}' ServerId: '${message.guild.id}'`);
   }
   
+  setTimeout(() => {
+    cooldown.delete(message.author.id)
+  }, 2000)
+
 });
 
 client.on("guildDelete", server => {
