@@ -4,6 +4,7 @@ const config = require("./config.json");
 const fs = require("fs-extra");
 const DBL = require("dblapi.js");
 const dbl = new DBL(config.dbt, client);
+const database = require("./models/user");
 const mongoose = require("mongoose");
 mongoose.connect(config.uri, {useNewUrlParser: true, useUnifiedTopology: true }).catch(error => console.error(error));
 
@@ -45,6 +46,35 @@ client.on("message", async message => {
 
   if (message.author.bot) return;
   if (message.channel.type === "dm") return;
+
+  let user = await database.findOne({id: message.author.id})
+  if (!user) {
+    new database({
+      id: message.author.id,
+      nome: message.author.username,
+      shipValue: Math.floor(Math.random() * 55)
+    }).save()
+  }
+
+	if (message.mentions.users.size >= 0) {
+    message.mentions.users.forEach(async (member) => {
+      if (!member) return
+      const usuario = await database.findOne({id: member.id})
+      if (usuario) {
+        if (usuario.afk === true) {
+          message.reply(`\`${member.tag}\` está AFK: ${usuario.afkReason}`)
+        }
+      }
+    })
+  }
+if(user){
+    if (user.afk == true) {
+      user.afk = false
+      user.afkReason = null
+      user.save()
+      message.channel.send(`Bem vindo de volta ${message.author} >.<`).then(msg => msg.delete({timeout: 5000})).catch()
+    }
+  }
   if (message.content.startsWith(`<@!${client.user.id}>`) || message.content.startsWith(`<@${client.user.id}>`)) return message.channel.send(`Oizinho, meu prefixo é '${config.prefix}'`);
   if (!message.content.startsWith(config.prefix)) return;
   if (!message.member) message.member = await message.guild.fetch(message);

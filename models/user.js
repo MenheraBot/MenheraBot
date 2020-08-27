@@ -1,17 +1,19 @@
 const mongoose = require("mongoose");
 
 const userSchema = mongoose.Schema({
-    id: String,
-    nome: String,
-    mamadas: Number,
-    mamou: Number,
-    casado: String,
-    nota: String,
-    data: String,
-    status: String,
-    shipValue: String,
-    ban: Boolean,
-    banReason: String
+    id: {type: String},
+    nome: {type:String, default: null},
+    mamadas: {type:Number, default: 0},
+    mamou: {type:Number, default: 0},
+    casado: {type:String, default: "false"},
+    nota: {type: String, default: undefined},
+    data: {type: String, default: undefined},
+    status: {type: String, default: "Vivo"},
+    shipValue: {type: String, default: null},
+    ban: {type: Boolean, default: false},
+    banReason: {type: String, default: null},
+    afk: {type: Boolean, default: false},
+    afkReason: {type: String, default: null}
 });
 
 module.exports = mongoose.model("usersdb", userSchema);
