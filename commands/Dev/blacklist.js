@@ -31,12 +31,12 @@ module.exports = {
 
 				message.reply("usuário desbanido com sucesso.")
 				break
-			case "view":
+			case "find":
 				if (!user || user === null) return message.reply("usuário não encontrado, tente informar o ID da próxima vez.")
 				let msg = `== USER BANNED INFO ==\n\n• User :: ${user2.tag} - (${user2.id})\n• Banned :: ${user.ban}\n• Reason :: ${user.banReason}`
 				message.channel.send(msg, { code: "asciidoc" })
 				break
 			default:
-				message.reply("porra lux, n sabe nem usar o próprio bot? Opções: `add`, `remove`, `view`")
+				message.reply("porra lux, n sabe nem usar o próprio bot? Opções: `add`, `remove`, `find`")
 		}
     }}
