@@ -12,7 +12,7 @@ module.exports = {
   usage: "m!database <comando> <alteração>",
 
   run: async (client, message, args) => {
-  if(message.author.id !== '435228312214962204') return message.reply("Acesso negado")
+  if(message.author.id !== '435228312214962204') return message.reply("Este comando é exclusivo da minha Dona")
 
   const action = args[0];
   const userId = args[1];

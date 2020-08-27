@@ -13,7 +13,7 @@ module.exports = {
 
   run: async (client, message, args) => {
     
-    if(message.author.id !== '435228312214962204') return message.reply("Acesso negado");
+    if(message.author.id !== '435228312214962204') return message.reply("Este comando é exclusivo da minha Dona");
 
     try {
         const code = args.join(" ");
