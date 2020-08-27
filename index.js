@@ -78,6 +78,37 @@ if(user){
 
   let command = client.commands.get(cmd);
   if(!command) command = client.commands.get(client.aliases.get(cmd));
+  if(!command) return;
+
+  if (user.ban) {
+    let avatar
+    if (!message.author.avatar.startsWith("a_")) {
+      if (!message.author.avatar) {
+        avatar = message.author.displayAvatarURL()
+      } else {
+        avatar = `https://cdn.discordapp.com/avatars/${message.author.id}/${message.author.avatar}.png?size=2048`
+      }
+    } else {
+      if (!message.author.avatar) {
+        avatar = message.author.displayAvatarURL()
+      } else {
+        avatar = `https://cdn.discordapp.com/avatars/${message.author.id}/${message.author.avatar}.gif?size=2048`
+      }
+    }
+    let owner = await client.users.fetch("435228312214962204")
+
+    const embed = new Discord.MessageEmbed()
+      .setColor('#c1001d')
+      .setAuthor("Você foi banido", avatar)
+      .setDescription(`Olá ${message.author}, você foi banido de usar a Menhera`)
+      .addField("Motivo", user.banReason)
+      .addField("Banido injustamente?", `Se você acha que foi banido injustamente, então entre em contato com a ${owner.tag} ou entre no meu servidor de suporte.`)
+
+    message.channel.send(embed).catch(() => {
+      message.author.send(embed)
+    })
+    return
+  }
 
   if(command){  
     if (!user) {
