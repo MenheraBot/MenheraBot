@@ -46,7 +46,7 @@ module.exports = {
             break;
     case 'update':
             if(!userId)  return message.reply("Erro de Sintaxe");
-            update(client, userId, message, embed);
+            update(client, userId, valor, message, embed);
             break;
       default:
           message.channel.send("Utilize m!database <add|remove|set|delwarn|find|nota|update> <user id> [valor]")
@@ -127,6 +127,9 @@ function find(userId, message, embed){
         const resNota = res.nota || "`Sem Nota`";
         const resData = res.data || "`Sem Data`";
         const resStatus = res.status || "`Sem Status`";
+        const resShip = res.shipValue || "`0`";
+        const resAfk = res.afk || false;
+        const resAfkReason = res.afkReason || "`null`"; 
 
         embed.setColor("#f2baf8")
         embed.addFields([{
@@ -166,7 +169,21 @@ function find(userId, message, embed){
             name: "Data",
             value: resData,
             inline: true
-        }
+        },
+        {
+            name: "Valor de Ship",
+            value: resShip,
+            inline: true
+        },{
+            name: "Afk",
+            value: resAfk,
+            inline:true
+        },
+        {
+            name: "AfkReason",
+            value: resAfkReason,
+            inline: true
+        }   
         
     ]);
 
@@ -193,15 +210,17 @@ function nota(userId, message, args){
 
 }
 
-function update(client, userId, message, embed){
+function update(client, userId, valor, message, embed){
 
     database.findOne({id: userId}, (err, res) => {
         if(err) message.channel.send(err);
         if(!res) return message.channel.send('usuário não encontrado')
-        const nomeAntigo = res.nome;
+        const valueAntigo = res.shipValue;
         res.nome = client.users.cache.get(userId).username
+        if(Number(valor) > 55) valor = "55"
+        res.shipValue = valor;
         res.save().then(sucess => {
-            message.channel.send(embed.setDescription(`Usuário atualizade de **${nomeAntigo}** para **${res.nome}**`))
+            message.channel.send(embed.setDescription(`Ship do usuário atualizado de **${valueAntigo}** para **${res.shipValue}**`))
         }).catch(err => message.channel.send(err))
     })
 

@@ -58,6 +58,7 @@ client.on("message", async message => {
       }
     })
   }
+  let user = await database.findOne({id: message.author.id})
 if(user){
     if (user.afk == true) {
       user.afk = false
@@ -78,16 +79,14 @@ if(user){
   let command = client.commands.get(cmd);
   if(!command) command = client.commands.get(client.aliases.get(cmd));
 
-  if(command){
-    
-  let user = await database.findOne({id: message.author.id})
-  if (!user) {
-    new database({
-      id: message.author.id,
-      nome: message.author.username,
-      shipValue: Math.floor(Math.random() * 55)
-    }).save()
-  }
+  if(command){  
+    if (!user) {
+      new database({
+        id: message.author.id,
+        nome: message.author.username,
+        shipValue: Math.floor(Math.random() * 55)
+      }).save()
+    }
     if (cooldown.has(message.author.id)) {
       message.delete().catch()
       return message.reply("você está utilizando comandos rápido demais! Fica frio").then(msg => msg.delete({timeout: 3500})).catch();
