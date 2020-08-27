@@ -167,6 +167,7 @@ function find(userId, message, embed){
             value: resData,
             inline: true
         }
+        
     ]);
 
     Warns.countDocuments({userId: userId}, (err, res) => {
