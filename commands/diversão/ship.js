@@ -33,7 +33,7 @@ module.exports = {
     if (Number(value) >= 100) {
         value = 100
     }
-    
+
     let username1 = user1.username
     let username2 = user2.username
     let mix = `${username1.substring(0, username1.length / 2) + username2.substring(username2.length / 2, username2.length)}`.replace(" ", "")
@@ -48,8 +48,6 @@ module.exports = {
     if(Number(value) >= 75 ) embed.setColor('#f34a4a').setThumbnail('https://i.imgur.com/XkMVoiE.png').setDescription(`\nValor do ship: **` + value.toString() + "%**\n\nEsses dois já não estão namorando? Pois deveriam")
     if(Number(value) >= 99 ) embed.setColor('#ec2c2c').setThumbnail('https://i.imgur.com/JBVskmZ.png').setDescription(`\nValor do ship: **` + value.toString() + "%**\n\nQue casal magnífico véi, perfeitos apenas")
     if(Number(value) == 100 ) embed.setColor('#ff00df').setThumbnail('https://i.imgur.com/6dC8HVg.png').setDescription(`\nValor do ship: **` + value.toString() + "%**\n\nMEEEU AMIGO, OS CARA SÃO FEITOS UM PRO OUTRO")
-
-
        
     message.channel.send(`${message.author}\n**Será que os dois pombinhos dariam um bom casal?**`,embed)
 
