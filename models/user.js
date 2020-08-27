@@ -8,7 +8,10 @@ const userSchema = mongoose.Schema({
     casado: String,
     nota: String,
     data: String,
-    status: String
+    status: String,
+    shipValue: String,
+    ban: Boolean,
+    banReason: String
 });
 
 module.exports = mongoose.model("usersdb", userSchema);
