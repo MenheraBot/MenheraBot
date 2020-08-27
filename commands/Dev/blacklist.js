@@ -16,9 +16,11 @@ module.exports = {
 		let user2 = await client.users.fetch(args[1])
 		switch (args[0]) {
 			case "add":
-				if (!user || user === null) return message.reply("usuário não encontrado, tente informar o ID da próxima vez.")
+                if (!user || user === null) return message.reply("usuário não encontrado, tente informar o ID da próxima vez.")
+                let reason = args.slice(2).join(" ")
+                if(!reason) reason = "Sem razão informada"
 				user.ban = true
-				user.banReason = args.slice(2).join(" ")
+                user.banReason = reason;
 				user.save()
 
 				message.reply("usuário banido com sucesso.")
