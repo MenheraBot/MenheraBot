@@ -48,8 +48,12 @@ module.exports = {
             if(!userId)  return message.reply("Erro de Sintaxe");
             update(client, userId, valor, message, embed);
             break;
+    case 'verify':
+            if(!userId)  return message.reply("Erro de Sintaxe");
+            verify( userId, message, embed);
+            break;
       default:
-          message.channel.send("Utilize m!database <add|remove|set|delwarn|find|nota|update> <user id> [valor]")
+          message.channel.send("Utilize m!database <add|remove|set|delwarn|find|nota|update|verify> <user id> [valor]")
   }
 
 }};
@@ -221,6 +225,18 @@ function update(client, userId, valor, message, embed){
         res.shipValue = valor;
         res.save().then(sucess => {
             message.channel.send(embed.setDescription(`Ship do usuário atualizado de **${valueAntigo}** para **${res.shipValue}**`))
+        }).catch(err => message.channel.send(err))
+    })
+}
+
+function verify( userId, message, embed){
+
+    database.findOne({id: userId}, (err, res) => {
+        if(err) message.channel.send(err);
+        if(!res) return message.channel.send('Usuário não encontrado')
+        res.verified = true;
+        res.save().then(sucess => {
+            message.channel.send(embed.setDescription(`Usuário verificado com Sucesso`))
         }).catch(err => message.channel.send(err))
     })
 

@@ -13,7 +13,8 @@ const userSchema = mongoose.Schema({
     ban: {type: Boolean, default: false},
     banReason: {type: String, default: null},
     afk: {type: Boolean, default: false},
-    afkReason: {type: String, default: null}
+    afkReason: {type: String, default: null},
+    verified: {type: Boolean, default: false}
 });
 
 module.exports = mongoose.model("usersdb", userSchema);
