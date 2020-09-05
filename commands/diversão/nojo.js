@@ -54,7 +54,7 @@ module.exports = {
   const embed = new Discord.MessageEmbed()
     .setTitle("Nojo")
     .setColor("#000000")
-    .setDescription(`${user} está com nojo de ${message.author}`)
+    .setDescription(`${message.author} está com nojo de ${user}`)
     .setImage(rand)
     .setThumbnail(avatar)
     .setAuthor(message.author.tag, avatar);
