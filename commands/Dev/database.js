@@ -242,7 +242,7 @@ function verify( userId, message, embed){
         if(!res) return message.channel.send('Usuário não encontrado')
         res.verified = true;
         res.save().then(sucess => {
-            message.channel.send(embed.setDescription(`Usuário verificado com Sucesso`))
+            message.channel.send(embed.setColor('#0a8634').setDescription(`Usuário verificado com Sucesso`))
         }).catch(err => message.channel.send(err))
     })
 
