@@ -134,6 +134,7 @@ function find(userId, message, embed){
         const resShip = res.shipValue || "`0`";
         const resAfk = res.afk || false;
         const resAfkReason = res.afkReason || "`null`"; 
+        const resVerified = res.verified || "false";
 
         embed.setColor("#f2baf8")
         embed.addFields([{
@@ -186,6 +187,11 @@ function find(userId, message, embed){
         {
             name: "AfkReason",
             value: resAfkReason,
+            inline: true
+        },
+        {
+            name: "Verified",
+            value: resVerified,
             inline: true
         }   
         
