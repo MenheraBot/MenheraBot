@@ -40,7 +40,7 @@ module.exports = {
   const embed = new Discord.MessageEmbed()
     .setTitle("MEDO")
     .setColor("#000000")
-    .setDescription(`${user} esta com medo de ${message.author}`)
+    .setDescription(`${message.author} esta com medo de ${user}`)
     .setImage(rand)
     .setThumbnail(avatar)
     .setAuthor(message.author.tag, avatar);
