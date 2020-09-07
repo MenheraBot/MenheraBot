@@ -12,10 +12,9 @@ module.exports = {
   category: "Dev",
   description: "Executa algo",
   usage: "m!eval <comando>",
+  devsOnly: true,
 
   run: async (client, message, args) => {
-  if(message.author.id !== '435228312214962204') return message.reply("Este comando é exclusivo da minha Dona");
-
   try {
     const util = require("util")
     let evaled = await eval(args.join(" "))

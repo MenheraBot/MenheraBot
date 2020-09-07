@@ -7,8 +7,9 @@ module.exports = {
     category: "Dev",
     description: "Retorna um servidor ou um usuario",
     usage: "m!find <user|server> <id>",
+    devsOnly: true,
+    
     run: async (client, message, args) => {
-        if(message.author.id !== '435228312214962204') return message.channel.send("Este comando é exclusivo da minha Dona")
 
         const action = args[0];
         const id = args[1];

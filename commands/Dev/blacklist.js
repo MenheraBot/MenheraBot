@@ -8,9 +8,9 @@ module.exports = {
     cooldown: 2,
     category: "Dev",
     description: "Bane um usuário de usar a menhera",
-    usage: "m!blacklist <add|remove|viwe><user>",
+	usage: "m!blacklist <add|remove|viwe><user>",
+	devsOnly: true,
     run: async (client, message, args) => {
-        if(message.author.id !== '435228312214962204') return message.channel.send("Este comando é exclusivo da minha Dona");
 
         let user = await database.findOne({id: args[1]})
 		let user2 = await client.users.fetch(args[1])

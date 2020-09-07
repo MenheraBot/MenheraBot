@@ -118,6 +118,9 @@ if(user){
         shipValue: Math.floor(Math.random() * 55)
       }).save()
     }
+
+    if(command.devsOnly && message.author.id !== '435228312214962204') return message.channel.send(`Perdão ${message.author}, este comando só está disponível para minha dona :(`)
+
     if (cooldown.has(message.author.id)) {
       message.delete().catch()
       return message.reply("você está utilizando comandos rápido demais! Fica frio").then(msg => msg.delete({timeout: 3500})).catch();
