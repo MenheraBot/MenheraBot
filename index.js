@@ -123,7 +123,7 @@ if(user){
       return message.reply("você está utilizando comandos rápido demais! Fica frio").then(msg => msg.delete({timeout: 3500})).catch();
     }
     
-     cooldown.add(message.author.id);
+    if(message.author.id != '435228312214962204') cooldown.add(message.author.id);
      command.run(client, message, args).catch(err => {
        console.log(err);
        message.reply("Ocorreu um erro na execução desse comando... Bugs e mais bugs...")
@@ -132,7 +132,7 @@ if(user){
   }
   
   setTimeout(() => {
-    cooldown.delete(message.author.id)
+    if(message.author.id != '435228312214962204') cooldown.delete(message.author.id)
   }, 2000)
 
 });   //fim do message
