@@ -26,7 +26,7 @@ function getAll(client, message) {
     embed.addField(`Diversão (${getCommmandSize("diversão", client)})`, getCategory("diversão", client))
     embed.addField(`Info (${getCommmandSize("info", client)})`, getCategory("info", client))
     embed.addField(`Moderação (${getCommmandSize("moderação", client)})`, getCategory("moderação", client))
-    embed.addField(`Util (${getCommmandSize("util", client)})`, getCategory("util", client))
+    embed.addField(`Útil (${getCommmandSize("util", client)})`, getCategory("util", client))
     
     
 
