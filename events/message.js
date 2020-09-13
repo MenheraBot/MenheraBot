@@ -52,6 +52,7 @@ module.exports = async (client, message) => {
         }).save()
       }
       
+     if(user){ 
     if (user.ban) {
       console.log(`USUÁRIO BANIDO TENTANDO USAR COMANDO '${command.name}'. Autor: '${message.author.tag}' id: '${message.author.id}' | Servidor: '${message.guild.name}' ServerId: '${message.guild.id}'`);
     
@@ -83,6 +84,7 @@ module.exports = async (client, message) => {
       })
       return
     }
+  }
   
       if(command.devsOnly && message.author.id !== '435228312214962204') return message.channel.send(`Perdão ${message.author}, este comando só está disponível para minha dona :(`)
   
