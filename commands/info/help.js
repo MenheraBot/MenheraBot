@@ -17,23 +17,31 @@ module.exports = {
 }
 
 function getAll(client, message) {
+
     const embed = new Discord.MessageEmbed()
-        .setColor("#c0abf2")
-        .setTitle("Comandos Disponíveis")
-        .setFooter("Você pode ver ajuda sobre um comando em específico usando m!ajuda comando")
+    embed.setColor('#b880e6')
+    embed.setThumbnail(client.user.displayAvatarURL())
+    embed.addField(`Diversão (${getCommmandSize("diversão", client)})`, getCategory("diversão", client))
+    embed.addField(`Info (${getCommmandSize("info", client)})`, getCategory("info", client))
+    embed.addField(`Moderação (${getCommmandSize("moderação", client)})`, getCategory("moderação", client))
+    
 
-    const commands = (category) => {
-        return client.commands
-            .filter(cmd => cmd.category === category)
-            .map(cmd => `- ${cmd.name}`)
-            .join("\n");
-    }
+    embed.addField("Links Adicionais", "[Adicione-me](https://discord.com/oauth2/authorize?client_id=708014856711962654&permissions=231074887&scope=bot)|[Vote em mim](https://top.gg/bot/708014856711962654/vote)|[Meu servidor de Suporte](https://discord.gg/fZMdQbA)")
 
-    const info = client.categories
-        .map(cat => stripIndents`**${cat[0].toUpperCase() + cat.slice(1)}** \n${commands(cat)}`)
-        .reduce((string, category) => string + "\n" + category);
+    message.author.send(embed).then(() => {
+        message.reply("enviei meus comandos para sua dm, olha lá >.<")
+    }).catch(() => {
+        message.reply("aparentemente suas dms estão fechadas, não posso te enviar minha página de ajuda")
+    })
 
-    return message.channel.send(embed.setDescription(info));
+}
+
+function getCategory(category, client) {
+    return client.commands.filter(c => c.category === category).map(c => `\`m!${c.name}\``).join(", ")
+}
+
+function getCommmandSize(category, client) {
+    return client.commands.filter(c => c.category === category).size
 }
 
 function getCMD(client, message, input) {
