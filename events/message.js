@@ -43,7 +43,18 @@ module.exports = async (client, message) => {
     if(!command) command = client.commands.get(client.aliases.get(cmd));
     if(!command) return;
   
+    if(command){  
+      if (!user) {
+        await new database({
+          id: message.author.id,
+          nome: message.author.username,
+          shipValue: Math.floor(Math.random() * 55)
+        }).save()
+      }
+      
     if (user.ban) {
+      console.log(`USUÁRIO BANIDO TENTANDO USAR COMANDO '${command.name}'. Autor: '${message.author.tag}' id: '${message.author.id}' | Servidor: '${message.guild.name}' ServerId: '${message.guild.id}'`);
+    
       let avatar
       if (!message.author.avatar.startsWith("a_")) {
         if (!message.author.avatar) {
@@ -72,15 +83,6 @@ module.exports = async (client, message) => {
       })
       return
     }
-  
-    if(command){  
-      if (!user) {
-        new database({
-          id: message.author.id,
-          nome: message.author.username,
-          shipValue: Math.floor(Math.random() * 55)
-        }).save()
-      }
   
       if(command.devsOnly && message.author.id !== '435228312214962204') return message.channel.send(`Perdão ${message.author}, este comando só está disponível para minha dona :(`)
   
