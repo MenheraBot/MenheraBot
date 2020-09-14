@@ -30,7 +30,7 @@ function getAll(client, message) {
     
     
 
-    embed.addField("Links Adicionais", "[Adicione-me](https://discord.com/oauth2/authorize?client_id=708014856711962654&permissions=231074887&scope=bot)|[Vote em mim](https://top.gg/bot/708014856711962654/vote)|[Meu servidor de Suporte](https://discord.gg/fZMdQbA)")
+    embed.addField("Links Adicionais", "[Adicione-me](https://discord.com/api/oauth2/authorize?client_id=708014856711962654&permissions=1007025271&scope=bot)|[Vote em mim](https://top.gg/bot/708014856711962654/vote)|[Meu servidor de Suporte](https://discord.gg/fZMdQbA)")
 
     message.author.send(embed).then(() => {
         message.reply("enviei meus comandos para sua dm, olha lá >.<")

@@ -15,4 +15,4 @@ module.exports = {
     run: async (client, message, args) => {
     // let member = await client.users.fetch(args[0].replace(/[<@!>]/g, ""))
     //return message.channel.send(`O membro é ${member}\nCujo id é ${member.id}`);
-    }}
+}}
