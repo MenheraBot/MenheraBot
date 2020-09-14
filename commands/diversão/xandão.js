@@ -56,10 +56,10 @@ module.exports = {
         let webhook = webhooks.first();
         if(!webhook){
             
-           await channel.createWebhook(fraseEscolhida, {
+           await channel.createWebhook('Super Xandão', {
                 avatar: 'https://i.imgur.com/8KNCucR.png',
             }).then(web => {
-             web.send('Sem pressão, aqui é xandão', {
+             web.send(fraseEscolhida, {
                     username: 'Super Xandão',
                     avatarURL: 'https://i.imgur.com/8KNCucR.png'
                 });
