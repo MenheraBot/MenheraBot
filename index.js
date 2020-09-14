@@ -1,5 +1,5 @@
 const Discord = require("discord.js");
-const client = new Discord.Client({fetchAllMembers: true, disableEveryone: true});
+const client = new Discord.Client({fetchAllMembers: true, disableMentions: "everyone"});
 const config = require("./config.json");
 const fs = require("fs-extra");
 const DBL = require("dblapi.js");
