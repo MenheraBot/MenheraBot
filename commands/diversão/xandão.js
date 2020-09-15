@@ -1,4 +1,5 @@
 const Discord = require("discord.js");
+const { text } = require("express");
 
 module.exports = {
   name: "xandão",
@@ -6,10 +7,12 @@ module.exports = {
   cooldown: 2,
   category: "diversão",
   description: "SEM PRESSÃO",
-  usage: "m!xandão",
+  usage: "m!xandão [texto]",
   run: async (client, message, args) => {
 
     const channel = client.channels.cache.get(message.channel.id);
+
+    const texto = args.join(" ");
 
     let frases = [
         "SEM PRESSÃO, AQUI É XANDÃO",
@@ -50,6 +53,11 @@ module.exports = {
     ];
 
     var fraseEscolhida = frases[Math.floor(Math.random() * frases.length)];
+    
+    let fala;
+    if(!texto){
+         fala = fraseEscolhida;
+    } else fala = texto; 
 
     try{
 		const webhooks = await channel.fetchWebhooks();
@@ -59,7 +67,7 @@ module.exports = {
            await channel.createWebhook('Super Xandão', {
                 avatar: 'https://i.imgur.com/8KNCucR.png',
             }).then(web => {
-             web.send(fraseEscolhida, {
+             web.send(fala, {
                     username: 'Super Xandão',
                     avatarURL: 'https://i.imgur.com/8KNCucR.png'
                 });
@@ -67,7 +75,7 @@ module.exports = {
            
         } else {
 
-		await webhook.send(fraseEscolhida, {
+		await webhook.send(fala, {
 			username: 'Super Xandão',
 			avatarURL: 'https://i.imgur.com/8KNCucR.png'
 		});
