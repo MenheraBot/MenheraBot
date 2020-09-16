@@ -6,7 +6,7 @@ const moment = require("moment")
 
 module.exports = {
   name: "caçar",
-  aliases: ["cacar", "caça", "caca"],
+  aliases: ["cacar", "caça", "caca","hunt"],
   cooldown: 3,
   category: "diversão",
   description: "Caçe demônios como XANDÂO",
