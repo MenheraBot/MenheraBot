@@ -14,7 +14,9 @@ const userSchema = mongoose.Schema({
     banReason: {type: String, default: null},
     afk: {type: Boolean, default: false},
     afkReason: {type: String, default: null},
-    verified: {type: Boolean, default: false}
+    verified: {type: Boolean, default: false},
+    caçados: {type: Number, default: 0},
+    caçarTime: {type: String, default: "000000000000"}
 });
 
 module.exports = mongoose.model("usersdb", userSchema);

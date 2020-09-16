@@ -28,6 +28,7 @@ module.exports = {
     let mamadas = info.mamadas || 0;
     let mamou = info.mamou || 0;
     let life = info.status || "Vivo";
+    let demons = info.caçados || 0;
 
     embed.addFields([{
       name: "👅 | Mamou",
@@ -38,12 +39,18 @@ module.exports = {
       name: "❤️ | Mamado",
       value: mamadas,
       inline: true
-  },
-  {
-      name: "🩸 | Status",
-      value: life,
-      inline: false
   }
+  ], 
+    [{
+    name: "🩸 | Status",
+    value: life,
+    inline: true
+    },
+    {
+      name: "😈 | Demônios Caçados",
+      value: demons,
+      inline:true
+    }
   ]);
 
     if(info.casado && info.casado != "false"){
@@ -52,12 +59,12 @@ module.exports = {
       embed.addFields([{
           name: "💗 | Casado com",
           value: persona,
-          inline: false
+          inline: true
       }, 
       {
           name: "💍 | Casados em",
           value: data,
-          inline:false
+          inline:true
       }
     ]);
     }
