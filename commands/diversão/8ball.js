@@ -6,7 +6,7 @@ module.exports = {
   cooldown: 3,
   category: "diversão",
   description: "Pergunte algo para a Menhera",
-  usage: "m!caçar",
+  usage: "m!8ball <pergunta>",
   run: async (client, message, args) => {
 
     if(args.length < 1) return message.reply("Faça uma pergunta para mim")
