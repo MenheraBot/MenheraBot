@@ -68,7 +68,7 @@ module.exports = {
       }
     ]);
     }
-    if(info.nota != undefined) embed.setFooter(`Nota: ${info.nota}`)
+    if(info.nota != undefined) embed.addField(`<:apaixonada:727975782034440252> | Sobre Mim`, info.nota, false)
     if(info.verified){
       embed.setColor('#10e0e5')
       embed.setTitle(`<:verified:751627308527255662> | ${pessoa.username}`)

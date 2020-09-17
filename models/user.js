@@ -6,7 +6,7 @@ const userSchema = mongoose.Schema({
     mamadas: {type:Number, default: 0},
     mamou: {type:Number, default: 0},
     casado: {type:String, default: "false"},
-    nota: {type: String, default: undefined},
+    nota: {type: String, default: "Eu amo a Menhera >.<\nVocê pode alterar esta mensagem com m!sobremim"},
     data: {type: String, default: undefined},
     status: {type: String, default: "Vivo"},
     shipValue: {type: String, default: null},
