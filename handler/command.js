@@ -14,5 +14,4 @@ readdirSync("./commands/").forEach(dir => {
         if (pull.aliases && Array.isArray(pull.aliases)) pull.aliases.forEach(alias => client.aliases.set(alias, pull.name)); 
     }
 })
-
 };
