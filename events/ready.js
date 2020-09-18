@@ -11,7 +11,7 @@ module.exports = (client) => {
     {name: "a vida é dificil, mas estamos aqui pra facilitá-la", type: "PLAYING"},
     {name: "skilly é meu sonho de vida", type: "PLAYING"},
     {name: "já votou em mim hoje? m!votar", type: "PLAYING"},
-    {name: "Minha dona está apaixnadinha uwuwuwu", type: "PLAYING"},
+    {name: "Minha dona está apaixonadinha uwuwuwu", type: "PLAYING"},
     {name: "Caçe demônios com XANDÃO. m!caçar", type: "PLAYING"},
     {name: "Tem ideia de um comando interessante? Use m!sugerir", type: "PLAYING"},
     {name: "Pergunte para mim. m!8ball", type: "PLAYING"},

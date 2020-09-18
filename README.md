@@ -11,6 +11,6 @@
 Você pode entrar em meu [servidor de suporte](https://discord.gg/fZMdQbA) para mais ajudar. E não se esqueça de me ajudar votando em mim
  ![MenheraWidget](https://top.gg/api/widget/708014856711962654.svg?usernamecolor=FFFFFF&topcolor=000000)
 
-# Espero que divirta-se comigo >.<
+## Espero que divirta-se comigo >.<
 
 ![Menhera](https://i.imgur.com/jjgBki0.png)
