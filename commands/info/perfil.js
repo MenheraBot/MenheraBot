@@ -74,7 +74,7 @@ module.exports = {
       embed.setTitle(`<:verified:751627308527255662> | ${pessoa.username}`)
     }
 
-    message.reply(embed);
+    message.channel.send(message.author, embed);
   })
 
 }};

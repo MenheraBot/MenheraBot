@@ -32,5 +32,5 @@ module.exports = {
 
   if(user.id === "549288328772583424") embed.setFooter("Nhawww a moonzinha é tudo be bom né").setColor('#4b93d5').setTitle("Avatar da Moon A.K.A. Afrodite")
 
-    message.reply(embed);
+  message.channel.send(message.author, embed);
 }};

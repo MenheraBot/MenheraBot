@@ -38,7 +38,7 @@ module.exports = {
     .setThumbnail(avatar)
     .setDescription((demonios > 1) ? `Você saiu para caçar demônios com o Super Xandão, e caçou \`${demonios}\` demônios` : `Você saiu para caçar demônios com o Super Xandão, e caçou \`${demonios}\` demônio`)
     
-    message.reply(embed)
+    message.channel.send(message.author, embed)
 
 		} else {
 				 message.channel.send(`Descanse campeão ${message.author}, você já saiu na sua caçada à demônios. Tente novamente em ${moment.utc(parseInt(user.caçarTime - Date.now())).format("mm:ss")} minutos`)

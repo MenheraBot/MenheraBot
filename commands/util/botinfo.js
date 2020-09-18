@@ -60,6 +60,6 @@ userModel.countDocuments({}, function(err, count) {
     }
   ]
   )
-    message.reply(embed);
+  message.channel.send(message.author, embed);
 })
 }};

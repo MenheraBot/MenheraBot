@@ -15,6 +15,6 @@ module.exports = {
  .setImage("https://i.imgur.com/ZsKuh8W.png")
  .setFooter(`Comando executado por ${message.author.tag}`, message.author.displayAvatarURL())
  .setTimestamp()
-message.reply(embed);
+ message.channel.send(message.author, embed);
     }
 };
