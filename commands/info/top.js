@@ -11,8 +11,6 @@ module.exports = {
     usage: "m!top [demônios]",
     run: async (client, message, args) => {
 
-        message.channel.startTyping();
-
         const argumento = args[0];
         let argumentosValidos = [
             "caçadores",
@@ -29,6 +27,8 @@ module.exports = {
     }}
 
     function topMamadores(client, message){
+        
+        message.channel.startTyping();
 
         user.find().sort([['mamadas', 'descending']]).exec((err, res) => {
         if (err) console.log(err);
@@ -65,6 +65,9 @@ module.exports = {
     }
     
     function topDemonios(client, message){
+
+        
+        message.channel.startTyping();
 
         let embed = new Dscord.MessageEmbed()
         .setTitle("😈 | Placar de Caçadores")
