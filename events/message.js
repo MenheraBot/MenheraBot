@@ -54,8 +54,7 @@ module.exports = async (client, message) => {
       
   if(user){
     if (user.ban) {
-      console.log(`USUÁRIO BANIDO TENTANDO USAR COMANDO '${command.name}'. Autor: '${message.author.tag}' id: '${message.author.id}' | Servidor: '${message.guild.name}' ServerId: '${message.guild.id}'`);
-    
+
       let avatar
       if (!message.author.avatar.startsWith("a_")) {
         if (!message.author.avatar) {
@@ -98,8 +97,7 @@ module.exports = async (client, message) => {
          console.log(err);
          message.reply("Ocorreu um erro na execução desse comando... Bugs e mais bugs...")
        });
-       console.log(`Comando: '${command.name}'. Autor: '${message.author.tag}' id: '${message.author.id}' | Servidor: '${message.guild.name}' ServerId: '${message.guild.id}'`);
-    }
+       }
     
     setTimeout(() => {
       if(message.author.id != '435228312214962204') cooldown.delete(message.author.id)
