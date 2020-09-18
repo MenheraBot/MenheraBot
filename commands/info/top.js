@@ -11,6 +11,8 @@ module.exports = {
     usage: "m!top [demônios]",
     run: async (client, message, args) => {
 
+        return message.reply("Comando desabilitado devido à erros")
+
         const argumento = args[0];
         let argumentosValidos = [
             "caçadores",
@@ -22,7 +24,7 @@ module.exports = {
             "hunters"
         ];
 
-        (argumentosValidos.includes(argumento)) ? topDemonios(client, message) : message.reply("Este comando foi desativado temporariamente por problemas de alocação de memória")  //topMamadores(client, message);
+        (argumentosValidos.includes(argumento)) ? topDemonios(client, message) : topMamadores(client, message);
 
     }}
 
