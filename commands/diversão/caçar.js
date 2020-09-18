@@ -24,7 +24,7 @@ module.exports = {
 
     if (parseInt(user.caçarTime) < Date.now()) {
     
-    const probabilidades = [0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,4];
+    const probabilidades = [0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,4];
     let demonios = probabilidades[Math.floor(Math.random() * probabilidades.length)];
 
     user.caçados = user.caçados + demonios;
@@ -41,7 +41,7 @@ module.exports = {
     message.reply(embed)
 
 		} else {
-				 message.channel.send(`Descanse campeão ${message.author}, você já saiu na sua caçada à demônios. Tente novamente em ${moment.utc(parseInt(user.caçarTime - Date.now())).format("mm:ss")}`)
+				 message.channel.send(`Descanse campeão ${message.author}, você já saiu na sua caçada à demônios. Tente novamente em ${moment.utc(parseInt(user.caçarTime - Date.now())).format("mm:ss")} minutos`)
 		}
 
 }};
