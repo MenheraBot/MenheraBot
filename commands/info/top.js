@@ -24,7 +24,7 @@ module.exports = {
             "hunters"
         ];
 
-        (argumentosValidos.includes(argumento)) ? topDemonios(client, message) : topMamadores(client, message);
+        (argumentosValidos.includes(argumento)) ? topDemonios(client, message) : message.reply("Este comando foi desativado temporariamente por problemas de alocação de memória")  //topMamadores(client, message);
 
     }}
 
