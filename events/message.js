@@ -2,6 +2,7 @@ const Discord = require("discord.js");
 
 const database = require("../models/user");
 const config = require("../config.json");
+const cmdDb = require("../models/cmds.js")
 
 const cooldown = new Set();
 
@@ -85,14 +86,23 @@ module.exports = async (client, message) => {
     }
   }
   
-      if(command.devsOnly && message.author.id !== '435228312214962204') return message.channel.send(`Perdão ${message.author}, este comando só está disponível para minha dona :(`)
-  
+      if(command.devsOnly){
+        if(!config.owner.includes(message.author.id))  return message.channel.send(`Perdão ${message.author}, este comando só está disponível para minha dona :(`)
+      }
+
+      let c = await cmdDb.findById(command.name)
+		if (c.maintenance) {
+			if (!config.owner.includes(message.author.id)) {
+				return message.reply(`Este comando está em manutenção por tempo indeterminado!\n\n**Motivo:** ${c.maintenanceReason}`)
+			}
+		}
+
       if (cooldown.has(message.author.id)) {
         message.delete().catch()
         return message.reply("você está utilizando comandos rápido demais! Fica frio").then(msg => msg.delete({timeout: 3500})).catch();
       }
       
-      if(message.author.id != '435228312214962204') cooldown.add(message.author.id);
+      if(!config.owner.includes(message.author.id)) cooldown.add(message.author.id);
        command.run(client, message, args).catch(err => {
          console.log(err);
          message.reply("Ocorreu um erro na execução desse comando... Bugs e mais bugs...")
@@ -100,7 +110,7 @@ module.exports = async (client, message) => {
        }
     
     setTimeout(() => {
-      if(message.author.id != '435228312214962204') cooldown.delete(message.author.id)
+      if(!config.owner.includes(message.author.id)) cooldown.delete(message.author.id)
     }, 2000)
   
 }

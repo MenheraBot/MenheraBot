@@ -11,8 +11,6 @@ module.exports = {
     usage: "m!top [demônios]",
     run: async (client, message, args) => {
 
-        return message.reply("Comando desabilitado devido à erros")
-
         const argumento = args[0];
         let argumentosValidos = [
             "caçadores",
