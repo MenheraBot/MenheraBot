@@ -93,7 +93,7 @@ module.exports = async (client, message) => {
       let c = await cmdDb.findById(command.name)
 		if (c.maintenance) {
 			if (!config.owner.includes(message.author.id)) {
-				return message.reply(`Este comando está em manutenção por tempo indeterminado!\n\n**Motivo:** ${c.maintenanceReason}`)
+				return message.channel.send(`❌ | **MANUTENÇÃO**\n Este comando está em manutenção por tempo indeterminado!\n\n**Motivo:** ${c.maintenanceReason}`)
 			}
 		}
 
@@ -107,6 +107,8 @@ module.exports = async (client, message) => {
          console.log(err);
          message.reply("Ocorreu um erro na execução desse comando... Bugs e mais bugs...")
        });
+       console.log(`Comando: '${command.name}'. Autor: '${message.author.tag}' id: '${message.author.id}' | Servidor: '${message.guild.name}' ServerId: '${message.guild.id}'`);
+  
        }
     
     setTimeout(() => {
