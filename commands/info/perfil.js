@@ -24,7 +24,7 @@ module.exports = {
   user.findOne({id: pessoa.id}, (err, info) => {
     if(err) console.log(err);
     if(!info) return message.reply(`Este usuário não possui perfil!\nUtilize 'm!mamar ${pessoa}' para adicioná-lo à minha database`)
-
+    if(info.ban) return message.reply(`Este usuário está **banido** de usar a Menhera\n**Motivo:** \`${info.banReason}\``)
     let mamadas = info.mamadas || 0;
     let mamou = info.mamou || 0;
     let life = info.status || "Vivo";
