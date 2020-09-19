@@ -1,5 +1,4 @@
 const Discord = require("discord.js");
-const { link } = require("fs-extra");
 module.exports = {
     name: "suporte",
     aliases: ["servidor"],

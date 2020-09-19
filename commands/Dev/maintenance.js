@@ -1,5 +1,3 @@
-const Discord = require("discord.js");
-
 const cmdDb = require("../../models/cmds.js");
 
 module.exports = {

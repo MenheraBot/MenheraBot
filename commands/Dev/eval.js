@@ -3,8 +3,6 @@ const Discord = require("discord.js");
 const database = require("../../models/user.js");
 const Warns = require("../../models/warn.js");
 
-const { inspect } = require('util')
-
 module.exports = {
   name: "eval",
   aliases: ["run", "execute"],

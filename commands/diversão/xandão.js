@@ -1,5 +1,3 @@
-const Discord = require("discord.js");
-const { text } = require("express");
 
 module.exports = {
   name: "xandão",

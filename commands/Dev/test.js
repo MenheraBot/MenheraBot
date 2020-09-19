@@ -1,5 +1,3 @@
-const Discord = require("discord.js");
-
 
 const Warns = require("../../models/warn.js")
 

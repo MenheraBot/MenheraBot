@@ -1,4 +1,3 @@
-const Discord = require("discord.js");
 const database = require("../../models/user.js");
 
 module.exports = {

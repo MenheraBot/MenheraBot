@@ -1,4 +1,3 @@
-const Discord = require("discord.js");
 const Warn = require("../../models/warn.js");
 
 module.exports = {

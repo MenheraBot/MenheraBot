@@ -1,7 +1,6 @@
 const { readdirSync } = require("fs-extra");
 
 const cmdDb = require("../models/cmds.js")
-const Discord = require("discord.js")
 
 module.exports = (client) => {
 readdirSync("./commands/").forEach(async dir => {

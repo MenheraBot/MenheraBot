@@ -1,5 +1,3 @@
-const Discord = require("discord.js");
-
 module.exports = {
   name: "8ball",
   aliases: ["perguntar", "futuro", "8"],

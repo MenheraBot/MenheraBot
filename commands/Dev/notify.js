@@ -1,5 +1,3 @@
-const Discord = require("discord.js");
-
 module.exports = {
     name: "notify",
     aliases: ["notificar", "updates", "notificações"],
