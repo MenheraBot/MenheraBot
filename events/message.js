@@ -32,7 +32,13 @@ module.exports = async (client, message) => {
       }
     }
     if (message.content.startsWith(`<@!${client.user.id}>`) || message.content.startsWith(`<@${client.user.id}>`)) return message.channel.send(`Oizinho, meu prefixo é '${config.prefix}'`);
-    if (!message.content.startsWith(config.prefix)) return;
+
+  let prefix = false;
+  for (const thisPrefix of config.prefix) {
+    if (message.content.startsWith(thisPrefix)) prefix = thisPrefix;
+  }
+  if (!prefix) return;
+
     if (!message.member) message.member = await message.guild.fetch(message);
   
     const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
