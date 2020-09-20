@@ -29,6 +29,7 @@ module.exports = {
 			.setColor("#f2baf8")
 			.setAuthor("Estamos quase lá", message.author.displayAvatarURL({ format: "png", dynamic: true }))
 			.setThumbnail("https://i.imgur.com/o9WQEja.png")
+			.setFooter("O site tem um pouco de delay, aguarde um minutinho para executar o comando novamente depois de votar")
 			.addField("O que é um DR?", "Um DR (Daily Roll) é uma ficha que você pode utilizar para resetar o seu tempo de caçar! Use com sabedoria")
 			.setDescription("Para receber o seu DailyRoll, você deve primeiro votar em mim [NESTE SITE](https://top.gg/bot/708014856711962654/vote), feito isso, use este comando novamente para receber seu DR")
 			
