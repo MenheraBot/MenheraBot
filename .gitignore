@@ -1,5 +1,5 @@
 config.json
 node_modules/
 package-lock.json
-commands/diversão/moon.js
+commands/info/moon.js
 start.bat
