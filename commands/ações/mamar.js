@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const {MessageEmbed} = require("discord.js");
 
 const user = require("../../models/user.js");
 
@@ -45,7 +45,7 @@ module.exports = {
   var rand = list[Math.floor(Math.random() * list.length)];
   let userA = message.mentions.users.first();
   let avatar = message.author.displayAvatarURL({ format: "png" });
-  const embed = new Discord.MessageEmbed()
+  const embed = new MessageEmbed()
     .setTitle("Mamar")
     .setColor("#000000")
     .setDescription(`${message.author} Mamou ${userA}`)

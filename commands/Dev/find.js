@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const {MessageEmbed} = require("discord.js");
 
 module.exports = {
     name: "find",
@@ -13,7 +13,7 @@ module.exports = {
 
         const action = args[0];
         const id = args[1];
-        let embed = new Discord.MessageEmbed();
+        let embed = new MessageEmbed();
 
         switch(action){
             case 'user':

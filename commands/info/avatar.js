@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const {MessageEmbed} = require("discord.js");
 module.exports = {
   name: "avatar",
   aliases: ["pfp"],
@@ -17,7 +17,7 @@ module.exports = {
     size: 1024
   });
 
-  let embed = new Discord.MessageEmbed()
+  let embed = new MessageEmbed()
     .setTitle(`Avatar de ${user.username}`)
     .setImage(img)
     .setFooter("Que imagem linda omodeuso");

@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const {MessageEmbed} = require("discord.js");
 
 const user = require("../../models/user.js");
 
@@ -16,7 +16,7 @@ module.exports = {
     
   if (pessoa.bot) return message.channel.send("Que? KKK fodase os bots, robôs não tem perfil");
 
-  let embed = new Discord.MessageEmbed()
+  let embed = new MessageEmbed()
   .setTitle(`${pessoa.username}`)
   .setColor('#a788ff')
   .setThumbnail(pessoa.displayAvatarURL())

@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const {MessageEmbed} = require("discord.js");
 module.exports = {
   name: "resmungar",
   aliases: ["grumble", "grumbling", "resmungo", "humpf"],
@@ -21,7 +21,7 @@ module.exports = {
 
   var rand = list[Math.floor(Math.random() * list.length)];
   
-    const embed = new Discord.MessageEmbed()
+    const embed = new MessageEmbed()
     .setTitle("Humpf")
     .setColor("#000000")
     .setDescription(`${message.author} está resmungando`)

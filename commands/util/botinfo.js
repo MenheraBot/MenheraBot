@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const {MessageEmbed} = require("discord.js");
 
 const userModel = require("../../models/user.js");
 
@@ -20,7 +20,7 @@ module.exports = {
   if(days == 0 && hours != 0) uptime = `${hours}h, ${minutes}m e ${seconds}s`;
   if(hours == 0) uptime = `${minutes}m e ${seconds}s`;
 
-let embed = new Discord.MessageEmbed()
+let embed = new MessageEmbed()
 .setTitle(`📈 | Menhera Status`, client.user.displayAvatarURL())
 .setFooter(message.author.tag, avatar)
 .setTimestamp()

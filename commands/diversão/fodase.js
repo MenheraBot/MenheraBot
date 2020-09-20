@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const {MessageEmbed} = require("discord.js");
 module.exports = {
   name: "fodase",
   aliases: ["foda-se", "fodase?", "foda-se?", "fds"],
@@ -43,7 +43,7 @@ module.exports = {
   var frasesUsada = frases[Math.floor(Math.random() * frases.length)];
   var rand = list[Math.floor(Math.random() * list.length)];
 
-  const embed = new Discord.MessageEmbed()
+  const embed = new MessageEmbed()
     .setImage(rand)
     .setFooter(`Autor: ${message.author.username}`)
     .setTitle(frasesUsada);

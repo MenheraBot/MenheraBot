@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 const database = require("../../models/user.js");
 
 module.exports = {
@@ -38,7 +38,7 @@ module.exports = {
     let username2 = user2.username
     let mix = `${username1.substring(0, username1.length / 2) + username2.substring(username2.length / 2, username2.length)}`.replace(" ", "")
 
-    let embed = new Discord.MessageEmbed()
+    let embed = new MessageEmbed()
     .setTitle(`${username1} + ${username2} = ${mix}`)
     .setThumbnail('https://i.imgur.com/VGSDWLO.png')
     .setDescription(`\nValor do ship: **` + value.toString() + "%**\n\nTalvez o bot que seja quebrado, ou vocês não darão certo mesmo :(")

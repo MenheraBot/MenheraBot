@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const {MessageEmbed} = require("discord.js");
 module.exports = {
   name: "socar",
   aliases: ["tapa", "soca", "tapear", "punch"],
@@ -31,7 +31,7 @@ module.exports = {
 
   let avatar = message.author.displayAvatarURL({ format: "png" });
 
-  const embed = new Discord.MessageEmbed()
+  const embed = new MessageEmbed()
     .setTitle("Toma soco leve 🤜")
     .setColor("#000000")
     .setDescription(`${message.author} socou ${user}`)

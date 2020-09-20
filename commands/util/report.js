@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const {MessageEmbed} = require("discord.js");
 module.exports = {
   name: "report",
   aliases: ["reportar", "bug", "bugreport", "glitch"],
@@ -13,7 +13,7 @@ module.exports = {
   
   if(!argumentos) return message.reply("Encontrou um erro/bug? o que aconteceu? Dê-me detalhes");
   
-    const embed = new Discord.MessageEmbed()
+    const embed = new MessageEmbed()
     .setDescription(`${argumentos}`)
     .setColor(cor)
     .setThumbnail(message.author.displayAvatarURL())

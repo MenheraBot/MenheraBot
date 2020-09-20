@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const {MessageEmbed} = require("discord.js");
 
 const database = require("../../models/user.js");
 const Warns = require("../../models/warn.js");
@@ -17,7 +17,7 @@ module.exports = {
   const action = args[0];
   const userId = args[1];
   const valor = args[2];
-  let embed = new Discord.MessageEmbed();
+  let embed = new MessageEmbed();
 
   switch(action) {
       case 'add':

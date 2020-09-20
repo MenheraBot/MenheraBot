@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const {MessageEmbed} = require("discord.js");
 module.exports = {
   name: "humor",
   aliases: ["piada", "piadas"],
@@ -22,7 +22,7 @@ module.exports = {
 
   var rand = list[Math.floor(Math.random() * list.length)];
 
-  const embed = new Discord.MessageEmbed()
+  const embed = new MessageEmbed()
     .setImage(rand)
     .setTitle(`${message.author.username} achou você engraçadão ein`);
 

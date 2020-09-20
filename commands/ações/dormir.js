@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const {MessageEmbed} = require("discord.js");
 
 module.exports = {
   name: "sono",
@@ -24,7 +24,7 @@ module.exports = {
   let avatar = message.author.displayAvatarURL({ format: "png" });
 
 
-    const embed = new Discord.MessageEmbed()
+    const embed = new MessageEmbed()
     .setTitle("Sono")
     .setColor("#000000")
     .setDescription(`${message.author} está com sonin UwU`)

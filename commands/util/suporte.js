@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const {MessageEmbed} = require("discord.js");
 module.exports = {
     name: "suporte",
     aliases: ["servidor"],
@@ -7,7 +7,7 @@ module.exports = {
     description: "Link de convite para o servidor de suporte do Bot",
     usage: "m!suporte",
     run: async (client, message, args) => {
- const embed = new Discord.MessageEmbed()
+ const embed = new MessageEmbed()
  .setTitle("Clique aqui para entrar no servidor de suporte da Menhera")
  .setURL('https://discord.gg/fZMdQbA')
  .setColor('#970045')

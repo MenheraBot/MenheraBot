@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const {MessageEmbed} = require("discord.js");
 module.exports = {
   name: "medo",
   aliases: ["afraid", "assustado", "aterrorizado"],
@@ -24,7 +24,7 @@ module.exports = {
   let user = message.mentions.users.first();
 
   if (!user) {
-    const embed = new Discord.MessageEmbed()
+    const embed = new MessageEmbed()
     .setTitle("MEDO")
     .setColor("#000000")
     .setDescription(`${message.author} está com medo`)
@@ -37,7 +37,7 @@ module.exports = {
 
   let username = user.username.toUpperCase()
 
-  const embed = new Discord.MessageEmbed()
+  const embed = new MessageEmbed()
     .setTitle("MEDO")
     .setColor("#000000")
     .setDescription(`${message.author} esta com medo de ${user}`)

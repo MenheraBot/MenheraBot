@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const {MessageEmbed} = require("discord.js");
 
 const db = require("../../models/user.js");
 
@@ -31,7 +31,7 @@ module.exports = {
 
   if(user.bot) return message.channel.send(`um robô foi religado UwU >.<`)
 
-  const embed = new Discord.MessageEmbed()
+  const embed = new MessageEmbed()
     .setTitle("Ressuscitar")
     .setColor("#000000")
     .setDescription(`${message.author} Ressuscitou ${user}`)

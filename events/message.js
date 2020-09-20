@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const {MessageEmbed} = require("discord.js");
 
 const database = require("../models/user");
 const config = require("../config.json");
@@ -78,7 +78,7 @@ module.exports = async (client, message) => {
       }
       let owner = await client.users.fetch("435228312214962204")
   
-      const embed = new Discord.MessageEmbed()
+      const embed = new MessageEmbed()
         .setColor('#c1001d')
         .setAuthor("Você foi banido", avatar)
         .setDescription(`Olá ${message.author}, você foi banido de usar a Menhera`)

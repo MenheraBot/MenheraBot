@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const {MessageEmbed} = require("discord.js");
 module.exports = {
   name: "chorar",
   aliases: ["chora", "cry"],
@@ -31,7 +31,7 @@ module.exports = {
   if(user && user.bot)  return message.channel.send(`Nem vem que nenhum bot faz alguem chorar, eles são amigáveis e divertidos. Assim como eu`)
 
   if (!user) {
-    const embed = new Discord.MessageEmbed()
+    const embed = new MessageEmbed()
     .setTitle("Sad :(")
     .setColor("#000000")
     .setDescription(`${message.author} está chorando`)
@@ -44,7 +44,7 @@ module.exports = {
   }
 
   if (user === message.author) {
-    const embed = new Discord.MessageEmbed()
+    const embed = new MessageEmbed()
     .setTitle("Sad :( ")
     .setColor("#000000")
     .setDescription(`${message.author} está chorando`)
@@ -58,7 +58,7 @@ module.exports = {
 
   
 
-  const embed = new Discord.MessageEmbed()
+  const embed = new MessageEmbed()
     .setTitle("Sad :(")
     .setColor("#000000")
     .setDescription(`${user} fez ${message.author} chorar`)

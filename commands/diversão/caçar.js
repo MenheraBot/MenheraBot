@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const {MessageEmbed} = require("discord.js");
 
 const database = require("../../models/user.js");
 
@@ -32,7 +32,7 @@ module.exports = {
     user.save();
     
     let avatar = message.author.displayAvatarURL({format: "png", dynamic: true});
-    const embed = new Discord.MessageEmbed()
+    const embed = new MessageEmbed()
     .setTitle("Caçada aos demônios")
     .setColor("#faa40f")
     .setThumbnail(avatar)

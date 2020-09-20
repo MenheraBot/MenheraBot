@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const {MessageEmbed} = require("discord.js");
 
 module.exports = {
   name: "pensar",
@@ -30,7 +30,7 @@ module.exports = {
   if(user && user.bot)  return message.channel.send(`Awnnn que coisa mais linda, ${message.author} está pensando num bot >.<`)
 
   if (!user) {
-    const embed = new Discord.MessageEmbed()
+    const embed = new MessageEmbed()
     .setTitle("Pensar")
     .setColor("#000000")
     .setDescription(`${message.author} está PENSANDO`)
@@ -43,7 +43,7 @@ module.exports = {
   }
 
   if (user === message.author) {
-    const embed = new Discord.MessageEmbed()
+    const embed = new MessageEmbed()
     .setTitle("Pensar")
     .setColor("#000000")
     .setDescription(`${message.author} está em ANÁLISE`)
@@ -56,7 +56,7 @@ module.exports = {
   }
 
   
-  const embed = new Discord.MessageEmbed()
+  const embed = new MessageEmbed()
     .setTitle("pensar")
     .setColor("#000000")
     .setDescription(`${message.author} está pensando em ${user} hehehehe`)

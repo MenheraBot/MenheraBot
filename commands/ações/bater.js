@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const {MessageEmbed} = require("discord.js");
 module.exports = {
   name: "bater",
   aliases: ["bate", "slap", "tapa", "tapear"],
@@ -33,7 +33,7 @@ module.exports = {
 
   let avatar = message.author.displayAvatarURL({ format: "png" });
 
-  const embed = new Discord.MessageEmbed()
+  const embed = new MessageEmbed()
     .setTitle("TAPÃO")
     .setColor("#000000")
     .setDescription(`${message.author} meteu o tapão em ${user}`)

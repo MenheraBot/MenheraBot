@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const {MessageEmbed} = require("discord.js");
 const Warn = require("../../models/warn.js");
 
 module.exports = {
@@ -52,7 +52,7 @@ module.exports = {
     
       var rand = list[Math.floor(Math.random() * list.length)];
 
-      const embed = new Discord.MessageEmbed()
+      const embed = new MessageEmbed()
       .setTitle("AVISADO")
       .setDescription(`${message.author} avisou ${user}`)
       .setImage(rand)

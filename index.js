@@ -1,12 +1,12 @@
-const Discord = require("discord.js");
-const client = new Discord.Client({fetchAllMembers: true, disableMentions: "everyone"});
+const {Client, Collection} = require("discord.js");
+const client = new Client({fetchAllMembers: true, disableMentions: "everyone"});
 const config = require("./config.json");
 const fs = require("fs-extra");
 const mongoose = require("mongoose");
 mongoose.connect(config.uri, {useNewUrlParser: true, useUnifiedTopology: true }).catch(error => console.error(error));
 
-client.commands = new Discord.Collection();
-client.aliases = new Discord.Collection();
+client.commands = new Collection();
+client.aliases = new Collection();
 client.categories = fs.readdirSync("./commands/");
 
 
@@ -15,4 +15,4 @@ client.categories = fs.readdirSync("./commands/");
 })
 
 
-client.login(config.token);
+client.login(config.testToken);

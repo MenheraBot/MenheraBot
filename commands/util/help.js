@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const {MessageEmbed} = require("discord.js");
 module.exports = {
     name: "help",
     aliases: ["ajuda", "comandos", "socorro","h"],
@@ -17,7 +17,7 @@ module.exports = {
 
 function getAll(client, message) {
 
-    const embed = new Discord.MessageEmbed()
+    const embed = new MessageEmbed()
     embed.setColor('#b880e6')
     embed.setThumbnail(client.user.displayAvatarURL())
     
@@ -46,7 +46,7 @@ function getCommmandSize(category, client) {
 }
 
 function getCMD(client, message, input) {
-    const embed = new Discord.MessageEmbed()
+    const embed = new MessageEmbed()
 
     const cmd = client.commands.get(input.toLowerCase()) || client.commands.get(client.aliases.get(input.toLowerCase()));
     

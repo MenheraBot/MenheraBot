@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const {MessageEmbed} = require("discord.js");
 
 const Warn = require("../../models/warn.js")
 
@@ -38,7 +38,7 @@ module.exports = {
 
     let rand;
 
-    let embed = new Discord.MessageEmbed()
+    let embed = new MessageEmbed()
     .setTitle(`Avisos de ${user.tag}`)
 
     Warn.find({userId: user.id, guildId: message.guild.id}).sort([['data', 'ascending']]).exec((err, db) => {

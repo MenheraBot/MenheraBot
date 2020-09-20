@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const {MessageEmbed} = require("discord.js");
 
 module.exports = {
     name: "ping",
@@ -13,7 +13,7 @@ module.exports = {
         
         let avatar = message.author.displayAvatarURL({ format: "png" });
         
-        const embed = new Discord.MessageEmbed()
+        const embed = new MessageEmbed()
         .setTitle("🏓 | Pong!")
         .addField('📡 | Latência:', `**${m.createdTimestamp - message.createdTimestamp}ms**`)
         .addField('📡 | Latência da API:',`**${Math.round(client.ws.ping)}ms**`)

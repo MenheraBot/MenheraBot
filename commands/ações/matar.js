@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const {MessageEmbed} = require("discord.js");
 const db = require("../../models/user.js");
 
 module.exports = {
@@ -41,7 +41,7 @@ module.exports = {
 
     var Rrand = ro[Math.floor(Math.random() * ro.length)];
 
-    const Rembed = new Discord.MessageEmbed()
+    const Rembed = new MessageEmbed()
       .setTitle("Desligar")
       .setColor("#000000")
       .setDescription(`*Robôs não podem ser mortos, mas podem ser desligados...* \n ${message.author} Desligou o bot ${user}`)
@@ -52,7 +52,7 @@ module.exports = {
     return message.channel.send(Rembed);
   }
 
-  const embed = new Discord.MessageEmbed()
+  const embed = new MessageEmbed()
     .setTitle("Matar")
     .setColor("#000000")
     .setDescription(`${message.author} M A T O U ${user}`)

@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 module.exports = {
   name: "rir",
   aliases: ["ri", "sirrir", "lol", "laugh"],
@@ -23,7 +23,7 @@ module.exports = {
   let user = message.mentions.users.first();
 
   if (!user) {
-    const embed = new Discord.MessageEmbed()
+    const embed = new MessageEmbed()
     .setTitle("KKKK RINDO")
     .setColor("#000000")
     .setDescription(`${message.author} está se mijando de rir`)
@@ -36,7 +36,7 @@ module.exports = {
 
   let username = user.username.toUpperCase()
 
-  const embed = new Discord.MessageEmbed()
+  const embed = new MessageEmbed()
     .setTitle("RINDO")
     .setColor("#000000")
     .setDescription(`${user} fez ${message.author} cair no chão de tanto rir`)
