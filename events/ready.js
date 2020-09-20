@@ -1,5 +1,11 @@
 
+const DBL = require("dblapi.js");
 module.exports = (client) => {
+  const config = require("../config.json");
+  
+const dbl = new DBL(config.dbt, client);
+dbl.postStats(client.guilds.cache.size)
+dbl.on("error", console.error)
 
   client.user.setActivity("Fui reiniciada com sucesso uwu")
     

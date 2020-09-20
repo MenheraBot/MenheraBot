@@ -41,7 +41,7 @@ module.exports = {
     message.channel.send(message.author, embed)
 
 		} else {
-				 message.channel.send(`Descanse campeão ${message.author}, você já saiu na sua caçada à demônios. Tente novamente em ${moment.utc(parseInt(user.caçarTime - Date.now())).format("mm:ss")} minutos`)
+				 message.channel.send(`Descanse campeão ${message.author}, você já saiu na sua caçada à demônios. Tente novamente em **${moment.utc(parseInt(user.caçarTime - Date.now())).format("mm:ss")}** minutos`)
 		}
 
 }};
