@@ -35,7 +35,7 @@ module.exports = {
         .setTitle("👑 | Placar de Mamados")
         .setColor('#eab3fa')
 
-        user.find({}, ['mamadas', 'nome'], {
+        user.find({}, ['mamadas', 'nome', 'id'], {
             skip:0, 
             limit:10, 
             sort:{ mamadas: -1}
@@ -62,7 +62,7 @@ module.exports = {
         .setTitle("👑 | Placar de Mamadores")
         .setColor('#eab3fa')
 
-        user.find({}, ['mamou', 'nome'], {
+        user.find({}, ['mamou', 'nome', 'id'], {
             skip:0, 
             limit:10, 
             sort:{ mamou: -1}
@@ -89,16 +89,16 @@ module.exports = {
         .setTitle("😈 | Placar de Caçadores")
         .setColor('#e68f31')
 
-        user.find({}, ['caçados', 'nome'], {
+        user.find({}, ['caçados', 'nome', 'id'], {
             skip:0, 
             limit:10, 
             sort:{ caçados: -1}
         },
-        function(err, res){
+         function(err, res){
             if(err) console.log(err)
 
             for (i = 0; i < res.length; i++) {
-                let member = client.users.cache.get(res[i].id);
+                let member =  client.users.cache.get(res[i].id)
                 if (!member) {
                     embed.addField(`**${i + 1} -** ${res[i].nome}`, `Demônios caçados: **${res[i].caçados}**`, false)
                 } else {

@@ -29,6 +29,8 @@ module.exports = {
     let mamou = info.mamou || 0;
     let life = info.status || "Vivo";
     let demons = info.caçados || 0;
+    let rolls = info.rolls || 0;
+    let nota = info.nota || `Sem Nota`;
 
     embed.addFields([{
       name: "👅 | Mamou",
@@ -68,7 +70,9 @@ module.exports = {
       }
     ]);
     }
-    if(info.nota != undefined) embed.addField(`<:apaixonada:727975782034440252> | Sobre Mim`, info.nota, false)
+    embed.addField(`🔑 | Rolls`, rolls, true);
+    embed.addField(`<:apaixonada:727975782034440252> | Sobre Mim`, nota, true)
+   
     if(info.verified){
       embed.setColor('#10e0e5')
       embed.setTitle(`<:verified:751627308527255662> | ${pessoa.username}`)
