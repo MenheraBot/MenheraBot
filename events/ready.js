@@ -10,7 +10,7 @@ module.exports = (client) => {
     dbl.on("error", console.error)
   }
 
-  client.user.setActivity("Fui reiniciada com sucesso uwu")
+ // client.user.setActivity("Fui reiniciada com sucesso uwu")
     
   let status = [
     {name: "a moon ser perfeita", type: "WATCHING"},
@@ -28,8 +28,8 @@ module.exports = (client) => {
     {name: "Duvidas? Entre em meu servidor de suporte m!suporte", type: "PLAYING"}
     ];
 
-  setInterval(() => {
-    let randomStatus = status[Math.floor(Math.random() * status.length)]
-    client.user.setPresence({ activity: randomStatus })
-  }, 1000 * 60);
+  //setInterval(() => {
+  //  let randomStatus = status[Math.floor(Math.random() * status.length)]
+  //  client.user.setPresence({ activity: randomStatus })
+  //}, 1000 * 60);
 }
