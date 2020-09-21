@@ -42,7 +42,7 @@ module.exports = {
 
 
 		} else {                                                     
-			message.reply(`você já resgatou seu DailyRoll! Tente novamente em **${(parseInt(usuario.rollTime) > 3600000) ? moment.utc(parseInt(usuario.rollTime - Date.now())).format("hh:mm:ss") : moment.utc(parseInt(usuario.rollTime - Date.now())).format("mm:ss")}**`)
+			message.reply(`você já resgatou seu DailyRoll! Tente novamente em **${(parseInt(usuario.rollTime - Date.now()) > 3600000) ? moment.utc(parseInt(usuario.rollTime - Date.now())).format("hh:mm:ss") : moment.utc(parseInt(usuario.rollTime - Date.now())).format("mm:ss")}**`)
 		}
  }}
 
