@@ -35,10 +35,13 @@ module.exports = {
 			
 			if (!checkVote) return message.channel.send(embed)
 
+			let random = Math.floor(Math.random() * (1400 - 340 + 1)) + 340
+
 			usuario.rolls = usuario.rolls + 1
+			usuario.estrelinhas = usuario.estrelinhas + random;
 			usuario.rollTime = 43200000 + Date.now()
 			usuario.save()
-			message.reply("você ganhou um roll por votar em mim >.<\nObrigada por isso! Você agora tem **" + usuario.rolls + "** DailyRolls")
+			message.reply(`obrigada por votar em mim bebezinho >.<\nComo forma de agradecimento, você recebeu um roll e ${random} estrelinhas!\nSua carteira atualizada está assim:\n🔑 | **${usuario.rolls}** rolls\n⭐ | **${usuario.estrelinhas}** estrelinhas`);
 
 
 		} else {                                                     

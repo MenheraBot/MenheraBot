@@ -19,7 +19,7 @@ const userSchema = mongoose.Schema({
     caçarTime: {type: String, default: "000000000000"},
     rolls: {type: Number, default: 0},
     rollTime: {type: String, default: "000000000000"},
-    estrelinhas: {type: String, default: "0"}
+    estrelinhas: {type: Number, default: 0}
 });
 
 module.exports = mongoose.model("usersdb", userSchema);
