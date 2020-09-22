@@ -48,16 +48,12 @@ module.exports = {
             if(!userId)  return message.reply("Erro de Sintaxe");
             update(client, userId, valor, message, embed);
             break;
-    case 'verify':
-            if(!userId)  return message.reply("Erro de Sintaxe");
-            verify( userId, message, embed);
-            break;
     case 'giveroll':
             if(!userId || !valor) return message.reply("Erro de Sintaxe") 
             giveroll(client, userId, valor, message, embed)
             break
       default:
-          message.channel.send("Utilize m!database <add|remove|set|delwarn|find|nota|update|verify|giveroll> <user id> [valor]")
+          message.channel.send("Utilize m!database <add|remove|set|delwarn|find|nota|update|giveroll> <user id> [valor]")
   }
 
 }};
@@ -138,7 +134,6 @@ function find(userId, message, embed){
         const resShip = res.shipValue || "`0`";
         const resAfk = res.afk || false;
         const resAfkReason = res.afkReason || "`null`"; 
-        const resVerified = res.verified || "false";
 
         embed.setColor("#f2baf8")
         embed.addFields([{
@@ -192,13 +187,7 @@ function find(userId, message, embed){
             name: "AfkReason",
             value: resAfkReason,
             inline: true
-        },
-        {
-            name: "Verified",
-            value: resVerified,
-            inline: true
-        }   
-        
+        }  
     ]);
 
     Warns.countDocuments({userId: userId}, (err, res) => {
@@ -237,19 +226,6 @@ function update(client, userId, valor, message, embed){
             message.channel.send(embed.setDescription(`Ship do usuário atualizado de **${valueAntigo}** para **${res.shipValue}**`))
         }).catch(err => message.channel.send(err))
     })
-}
-
-function verify( userId, message, embed){
-
-    database.findOne({id: userId}, (err, res) => {
-        if(err) message.channel.send(err);
-        if(!res) return message.channel.send('Usuário não encontrado')
-        res.verified = true;
-        res.save().then(sucess => {
-            message.channel.send(embed.setColor('#0a8634').setDescription(`Usuário verificado com Sucesso`))
-        }).catch(err => message.channel.send(err))
-    })
-
 }
 
 function giveroll(client, userId, valor, message, embed){

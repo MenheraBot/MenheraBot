@@ -18,7 +18,6 @@ module.exports = {
 
   let embed = new MessageEmbed()
   .setTitle(`${pessoa.username}`)
-  .setColor('#a788ff')
   .setThumbnail(pessoa.displayAvatarURL({dynamic: true}))
 
   user.findOne({id: pessoa.id}, (err, info) => {
@@ -32,6 +31,9 @@ module.exports = {
     let rolls = info.rolls || 0;
     let nota = info.nota || `Sem Nota`;
     let estrelinhas = parseInt(info.estrelinhas) || 0;
+    let cor = info.cor || '#a788ff';
+
+    embed.setColor(cor)
 
     embed.addFields([{
       name: "👅 | Mamou",
@@ -74,11 +76,6 @@ module.exports = {
     embed.addField(`🔑 | Rolls`, rolls, true);
     embed.addField("⭐ | Estrelinhas", estrelinhas, true)
     embed.addField(`<:apaixonada:727975782034440252> | Sobre Mim`, nota, true);
-   
-    if(info.verified){
-      embed.setColor('#10e0e5')
-      embed.setTitle(`<:verified:751627308527255662> | ${pessoa.username}`)
-    }
 
     message.channel.send(message.author, embed);
   })
