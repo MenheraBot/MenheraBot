@@ -52,8 +52,12 @@ module.exports = {
             if(!userId)  return message.reply("Erro de Sintaxe");
             verify( userId, message, embed);
             break;
+    case 'giveroll':
+            if(!userId || !valor) return message.reply("Erro de Sintaxe") 
+            giveroll(client, userId, valor, message, embed)
+            break
       default:
-          message.channel.send("Utilize m!database <add|remove|set|delwarn|find|nota|update|verify> <user id> [valor]")
+          message.channel.send("Utilize m!database <add|remove|set|delwarn|find|nota|update|verify|giveroll> <user id> [valor]")
   }
 
 }};
@@ -244,6 +248,23 @@ function verify( userId, message, embed){
         res.save().then(sucess => {
             message.channel.send(embed.setColor('#0a8634').setDescription(`Usuário verificado com Sucesso`))
         }).catch(err => message.channel.send(err))
+    })
+
+}
+
+function giveroll(client, userId, valor, message, embed){
+
+    const value = parseInt(valor)
+    database.findOne({id: userId}, (err, res) =>{
+       if(err) console.log(error)
+       if(!res) return message.reply("Usuário não encontrado");
+       res.rolls = res.rolls + value;
+       
+      embed.setColor("#1df05f")
+      embed.setDescription(`**Rolls de ${client.users.cache.get(userId)} alterada para \`${res.rolls}\`**`)
+      
+      res.save().then(message.channel.send(embed)).catch(erro => message.channel.send(`Ocorreu um erro ao salvar à database\n\`\`\`js\n${erro}\`\`\``));
+
     })
 
 }
