@@ -6,7 +6,7 @@ module.exports = {
   cooldown: 2,
   category: "moderação",
   description: "Troque meu prefixo neste servidor",
-  usage: "m!avisos <usuario>",
+  usage: "m!prefix <prefixo>",
   run: async (client, message, args) => {
     if (!message.member.hasPermission("MANAGE_GUILD")) return message.reply("Você precisa da permissão de Gerenciar Servidor para utilizar este comando");
     
