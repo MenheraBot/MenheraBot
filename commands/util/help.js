@@ -23,6 +23,7 @@ function getAll(client, message) {
     
     embed.addField(`Ações (${getCommmandSize("ações", client)})`, getCategory("ações", client))
     embed.addField(`Diversão (${getCommmandSize("diversão", client)})`, getCategory("diversão", client))
+    embed.addField(`Economia (${getCommmandSize("economia", client)})`, getCategory("economia", client))
     embed.addField(`Info (${getCommmandSize("info", client)})`, getCategory("info", client))
     embed.addField(`Moderação (${getCommmandSize("moderação", client)})`, getCategory("moderação", client))
     embed.addField(`Útil (${getCommmandSize("util", client)})`, getCategory("util", client))
