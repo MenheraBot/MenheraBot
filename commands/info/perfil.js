@@ -19,7 +19,7 @@ module.exports = {
   let embed = new MessageEmbed()
   .setTitle(`${pessoa.username}`)
   .setColor('#a788ff')
-  .setThumbnail(pessoa.displayAvatarURL())
+  .setThumbnail(pessoa.displayAvatarURL({dynamic: true}))
 
   user.findOne({id: pessoa.id}, (err, info) => {
     if(err) console.log(err);

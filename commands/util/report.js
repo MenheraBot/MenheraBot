@@ -21,7 +21,7 @@ module.exports = {
     .setTimestamp()
     .setAuthor(`Novo Bug Reportado por ${message.author.tag}`, message.author.displayAvatarURL());
   
-  client.guilds.cache.get('717061688460967988').channels.cache.get('754786823259160657').send(embed);
+  client.guilds.cache.get('717061688460967988').channels.cache.get('730906866896470097').send(embed);
 
   if(message.deletable) message.delete()
   message.reply("Mutissimo obrigada por reportar este bug para minha dona");
