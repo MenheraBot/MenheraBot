@@ -129,6 +129,6 @@ module.exports = async (client, message) => {
 
   setTimeout(() => {
     if (!config.owner.includes(message.author.id)) cooldown.delete(message.author.id)
-  }, 2000)
+  }, 5000)
 
 }
