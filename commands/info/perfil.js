@@ -31,6 +31,7 @@ module.exports = {
     let demons = info.caçados || 0;
     let rolls = info.rolls || 0;
     let nota = info.nota || `Sem Nota`;
+    let estrelinhas = parseInt(info.estrelinhas) || 0;
 
     embed.addFields([{
       name: "👅 | Mamou",
@@ -71,7 +72,8 @@ module.exports = {
     ]);
     }
     embed.addField(`🔑 | Rolls`, rolls, true);
-    embed.addField(`<:apaixonada:727975782034440252> | Sobre Mim`, nota, true)
+    embed.addField("⭐ | Estrelinhas", estrelinhas, true)
+    embed.addField(`<:apaixonada:727975782034440252> | Sobre Mim`, nota, true);
    
     if(info.verified){
       embed.setColor('#10e0e5')
