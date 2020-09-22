@@ -9,7 +9,7 @@ module.exports = {
     name: "daily",
     aliases: ["diário", "diario", "dailyroll", "dr"],
     cooldown: 2,
-    category: "info",
+    category: "economia",
     description: "Pegue seu DailyRolls de caçados",
     usage: "m!daily",
     run: async (client, message, args) => {
