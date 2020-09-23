@@ -77,7 +77,7 @@ function lojaComprar(message, embedMessage, user, saldoAtual) {
             //abre loja de cores
 
             const coresDisponíveis = [
-                { cor: '#a67bd1', preço: 30000, nome: "1 - Roxo Escuro" }, { cor: '#df0509', preço: 50000, nome: "2 - Vermelho" }, { cor: '#55e0f7', preço: 85000, nome: "3 - Ciano" },
+                { cor: '#6308c0', preço: 30000, nome: "1 - Roxo Escuro" }, { cor: '#df0509', preço: 50000, nome: "2 - Vermelho" }, { cor: '#55e0f7', preço: 85000, nome: "3 - Ciano" },
                 { cor: '#03fd1c', preço: 100000, nome: "4 - Verde Neon" }, { cor: '#fd03c9', preço: 250000, nome: "5 - Rosa Choque" }, { cor: '#e2ff08', preço: 500000, nome: "6 - Amarelo" }, { cor: 'SUA ESCOLHA', preço: 1000000, nome: "7 - Sua Escolha" }
             ];
 
@@ -164,7 +164,6 @@ function lojaComprar(message, embedMessage, user, saldoAtual) {
                         const hexFiltro = m => m.author.id === message.author.id;
                         const hexColletor = message.channel.createMessageCollector(hexFiltro, { max: 1, time: 30000, errors: ["time"] });
 
-                        
                         message.channel.send("Envie um código de hexcolor **SEM A HASHTAG** (Exemplo: AABBCC) de sua escolha para adicionar em seu perfil")
 
                         hexColletor.on('collect', m => {
