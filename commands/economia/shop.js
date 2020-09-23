@@ -81,16 +81,13 @@ function lojaComprar(message, embedMessage, user, saldoAtual) {
                 { cor: '#03fd1c', preço: 100000, nome: "4 - Verde Neon" }, { cor: '#fd03c9', preço: 250000, nome: "5 - Rosa Choque" }, { cor: '#e2ff08', preço: 500000, nome: "6 - Amarelo" }, { cor: 'SUA ESCOLHA', preço: 1000000, nome: "7 - Sua Escolha" }
             ];
 
-            let nomeCor = coresDisponíveis.some(cor => cor.cor === user.cor)
-            if (!nomeCor) nomeCor = { nome: "Padrão" }
-
             const dataCores = {
                 title: "Compre Cores para seu Perfil",
                 color: '#6cbe50',
                 thumbnail: {
                     url: 'https://i.imgur.com/t94XkgG.png'
                 },
-                description: `Seu saldo atual é de **${saldoAtual}**⭐ estrelinhas, e sua cor atual é **${nomeCor.nome}**`,
+                description: `Seu saldo atual é de **${saldoAtual}**⭐ estrelinhas`,
                 footer: {
                     text: "Digite no chat a opção que queres comprar"
                 },
