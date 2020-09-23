@@ -1,5 +1,4 @@
 const {MessageEmbed} = require("discord.js");
-const db = require("../../models/user.js");
 
 module.exports = {
   name: "matar",
@@ -61,22 +60,5 @@ module.exports = {
     .setAuthor(message.author.tag, avatar);
 
    message.channel.send(embed);
-
-   db.findOne({id: user.id}, (err, res) => {
-     if(err) console.log(err);
-     if(!res){
-       const newUser = new db({
-         id: user.id,
-         nome: user.username,
-         mamadas: 0,
-         mamou: 0,
-         status: "Morto"
-       })
-       newUser.save().catch(err => console.log(err));
-     } else {
-       res.status = "Morto";
-       res.save().catch(err => console.log(err))
-     }
-   })
 
 }};

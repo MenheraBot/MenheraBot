@@ -8,7 +8,6 @@ const userSchema = mongoose.Schema({
     casado: {type:String, default: "false"},
     nota: {type: String, default: "Eu amo a Menhera >.<\nVocê pode alterar esta mensagem com m!sobremim"},
     data: {type: String, default: undefined},
-    status: {type: String, default: "Vivo"},
     shipValue: {type: String, default: null},
     ban: {type: Boolean, default: false},
     banReason: {type: String, default: null},
