@@ -26,7 +26,6 @@ module.exports = {
     if(info.ban) return message.reply(`Este usuário está **banido** de usar a Menhera\n**Motivo:** \`${info.banReason}\``)
     let mamadas = info.mamadas || 0;
     let mamou = info.mamou || 0;
-    let demons = info.caçados || 0;
     let nota = info.nota || `Sem Nota`;
     let cor = info.cor || '#a788ff';
 
@@ -42,13 +41,6 @@ module.exports = {
       value: mamadas,
       inline: true
   }
-  ], 
-    [
-    {
-      name: "😈 | Demônios Caçados",
-      value: demons,
-      inline:true
-    }
   ]);
 
     if(info.casado && info.casado != "false"){
