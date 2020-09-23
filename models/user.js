@@ -15,7 +15,7 @@ const userSchema = mongoose.Schema({
     afk: {type: Boolean, default: false},
     afkReason: {type: String, default: null},
     cor: {type: String, default: '#a788ff'},
-    cores: {type: Array, default: []},
+    cores: {type: Array, default: [{nome: "Padrão", cor: "#a788ff", preço: 0}]},
     caçados: {type: Number, default: 0},
     caçarTime: {type: String, default: "000000000000"},
     rolls: {type: Number, default: 0},

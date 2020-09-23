@@ -37,7 +37,6 @@ module.exports = {
         const collector = message.channel.createMessageCollector(filter, { max: 1, time: 30000, errors: ["time"] });
 
         collector.on('collect', m => {
-            m.delete().catch()
 
             if (m.content === "1" || m.content.toLowerCase() === "comprar") {
                 lojaComprar(message, embedMessage, user, saldoAtual);
@@ -73,11 +72,99 @@ function lojaComprar(message, embedMessage, user, saldoAtual) {
     const collector = message.channel.createMessageCollector(filter, { max: 1, time: 30000, errors: ["time"] });
 
     collector.on('collect', m => {
-        m.delete().catch()
 
         if (m.content === "1" || m.content.toLowerCase() === "cores") {
             //abre loja de cores
-            embedMessage.edit({ embed: { title: 'Esta seção está em desenvolvimento' } })
+
+            const coresDisponíveis = [
+                { cor: '#a67bd1', preço: 30000, nome: "1 - Roxo Escuro" }, { cor: '#df0509', preço: 50000, nome: "2 - Vermelho" }, { cor: '#55e0f7', preço: 85000, nome: "3 - Ciano" },
+                { cor: '#03fd1c', preço: 100000, nome: "4 - Verde Neon" }, { cor: '#fd03c9', preço: 250000, nome: "5 - Rosa Choque" }, { cor: '#e2ff08', preço: 500000, nome: "6 - Amarelo" }, { cor: 'SUA ESCOLHA', preço: 1000000, nome: "7 - Sua Escolha" }
+            ];
+
+            let nomeCor = coresDisponíveis.some(cor => cor.cor === user.cor)
+            if (!nomeCor) nomeCor = { nome: "Padrão" }
+
+            const dataCores = {
+                title: "Compre Cores para seu Perfil",
+                color: '#6cbe50',
+                thumbnail: {
+                    url: 'https://i.imgur.com/t94XkgG.png'
+                },
+                description: `Seu saldo atual é de **${saldoAtual}**⭐ estrelinhas, e sua cor atual é **${nomeCor.nome}**`,
+                footer: {
+                    text: "Digite no chat a opção que queres comprar"
+                },
+                fields: [{
+                    name: 'Tabela de Preços',
+                    value: coresDisponíveis.map(c => `${c.nome} | Código da cor: \`${c.cor}\` | Preço: **${c.preço}**⭐`).join("\n"),
+                    inline: false
+                }]
+            }
+            embedMessage.edit({ embed: dataCores })
+
+
+            const validCorArgs = ["1", "2", "3", "4", "5", "6", "7"];
+
+            const filtroCor = m => m.author.id === message.author.id && validCorArgs.some(answer => answer.toLowerCase() === m.content.toLowerCase());
+            const CorColetor = message.channel.createMessageCollector(filtroCor, { max: 1, time: 30000, errors: ["time"] });
+
+            CorColetor.on('collect', m => {
+                switch (m.content) {
+                    case '1':
+                        if(user.cores.some(res => res.cor === coresDisponíveis[0].cor)) return message.channel.send(`🟡 | ${message.author} eu agradeço sua empolgação para comprar em meu brechó, mas você já possui esta cor!`).then(() => embedMessage.delete().catch)
+                        if (user.estrelinhas < coresDisponíveis[0].preço) return message.channel.send(`❌ | ${message.author} você não tem estrelinhas o suficiente para comprar esta cor!`).then(() => embedMessage.delete().catch)
+                        user.estrelinhas = user.estrelinhas - coresDisponíveis[0].preço
+                        user.cores.push(coresDisponíveis[0])
+                        user.save()
+                        message.channel.send(`✅ | Certo! Você comrpou a cor **${coresDisponíveis[0].nome}** por **${coresDisponíveis[0].preço}** ⭐! Você ficou com **${user.estrelinhas}** ⭐ estrelinhas`).then(() => embedMessage.delete().catch)
+                        break;
+                    case '2':
+                        if(user.cores.some(res => res.cor === coresDisponíveis[1].cor)) return message.channel.send(`🟡 | ${message.author} eu agradeço sua empolgação para comprar em meu brechó, mas você já possui esta cor!`).then(() => embedMessage.delete().catch)
+                        if (user.estrelinhas < coresDisponíveis[1].preço) return message.channel.send(`❌ | ${message.author} você não tem estrelinhas o suficiente para comprar esta cor!`).then(() => embedMessage.delete().catch)
+                        user.estrelinhas = user.estrelinhas - coresDisponíveis[1].preço
+                        user.cores.push(coresDisponíveis[1])
+                        user.save()
+                        message.channel.send(`✅ | Certo! Você comrpou a cor **${coresDisponíveis[1].nome}** por **${coresDisponíveis[1].preço}** ⭐! Você ficou com **${user.estrelinhas}** ⭐ estrelinhas`).then(() => embedMessage.delete().catch)
+                        break;
+                    case '3':
+                        if(user.cores.some(res => res.cor === coresDisponíveis[2].cor)) return message.channel.send(`🟡 | ${message.author} eu agradeço sua empolgação para comprar em meu brechó, mas você já possui esta cor!`).then(() => embedMessage.delete().catch)
+                        if (user.estrelinhas < coresDisponíveis[2].preço) return message.channel.send(`❌ | ${message.author} você não tem estrelinhas o suficiente para comprar esta cor!`).then(() => embedMessage.delete().catch)
+                        user.estrelinhas = user.estrelinhas - coresDisponíveis[2].preço
+                        user.cores.push(coresDisponíveis[2])
+                        user.save()
+                        message.channel.send(`✅ | Certo! Você comrpou a cor **${coresDisponíveis[2].nome}** por **${coresDisponíveis[2].preço}** ⭐! Você ficou com **${user.estrelinhas}** ⭐ estrelinhas`).then(() => embedMessage.delete().catch)
+                        break;
+                    case '4':
+                        if(user.cores.some(res => res.cor === coresDisponíveis[3].cor)) return message.channel.send(`🟡 | ${message.author} eu agradeço sua empolgação para comprar em meu brechó, mas você já possui esta cor!`).then(() => embedMessage.delete().catch)
+                        if (user.estrelinhas < coresDisponíveis[3].preço) return message.channel.send(`❌ | ${message.author} você não tem estrelinhas o suficiente para comprar esta cor!`).then(() => embedMessage.delete().catch)
+                        user.estrelinhas = user.estrelinhas - coresDisponíveis[3].preço
+                        user.cores.push(coresDisponíveis[3])
+                        user.save()
+                        message.channel.send(`✅ | Certo! Você comrpou a cor **${coresDisponíveis[3].nome}** por **${coresDisponíveis[3].preço}** ⭐! Você ficou com **${user.estrelinhas}** ⭐ estrelinhas`).then(() => embedMessage.delete().catch)
+                        break;
+                    case '5':
+                        if(user.cores.some(res => res.cor === coresDisponíveis[4].cor)) return message.channel.send(`🟡 | ${message.author} eu agradeço sua empolgação para comprar em meu brechó, mas você já possui esta cor!`).then(() => embedMessage.delete().catch)
+                        if (user.estrelinhas < coresDisponíveis[4].preço) return message.channel.send(`❌ | ${message.author} você não tem estrelinhas o suficiente para comprar esta cor!`).then(() => embedMessage.delete().catch)
+                        user.estrelinhas = user.estrelinhas - coresDisponíveis[4].preço
+                        user.cores.push(coresDisponíveis[4])
+                        user.save()
+                        message.channel.send(`✅ | Certo! Você comrpou a cor **${coresDisponíveis[4].nome}** por **${coresDisponíveis[4].preço}** ⭐! Você ficou com **${user.estrelinhas}** ⭐ estrelinhas`).then(() => embedMessage.delete().catch)
+                        break;
+                    case '6':
+                        if(user.cores.some(res => res.cor === coresDisponíveis[5].cor)) return message.channel.send(`🟡 | ${message.author} eu agradeço sua empolgação para comprar em meu brechó, mas você já possui esta cor!`).then(() => embedMessage.delete().catch)
+                        if (user.estrelinhas < coresDisponíveis[5].preço) return message.channel.send(`❌ | ${message.author} você não tem estrelinhas o suficiente para comprar esta cor!`).then(() => embedMessage.delete().catch)
+                        user.estrelinhas = user.estrelinhas - coresDisponíveis[5].preço
+                        user.cores.push(coresDisponíveis[5]) 
+                        user.save()
+                        message.channel.send(`✅ | Certo! Você comrpou a cor **${coresDisponíveis[5].nome}** por **${coresDisponíveis[5].preço}** ⭐! Você ficou com **${user.estrelinhas}** ⭐ estrelinhas`).then(() => embedMessage.delete().catch)
+                        break;
+                    case '7':
+                        if(user.cores.some(res => res.cor === coresDisponíveis[6].cor)) return message.channel.send(`🟡 | ${message.author} eu agradeço sua empolgação para comprar em meu brechó, mas você já possui esta cor!`).then(() => embedMessage.delete().catch)
+                        if (user.estrelinhas < coresDisponíveis[6].preço) return message.channel.send(`❌ | ${message.author} você não tem estrelinhas o suficiente para comprar esta cor!`).then(() => embedMessage.delete().catch)
+                  
+                }
+            })
+
         } else {
             //abre loja de rolls
 
@@ -101,28 +188,28 @@ function lojaComprar(message, embedMessage, user, saldoAtual) {
                 }]
             }
 
-            embedMessage.edit(message.author, {embed: dataRolls})
+            embedMessage.edit(message.author, { embed: dataRolls })
 
             const filterColetor = m => m.author.id === message.author.id;
             const quantidadeCollector = message.channel.createMessageCollector(filterColetor, { max: 1, time: 30000, errors: ["time"] });
 
-        quantidadeCollector.on('collect', m => {
+            quantidadeCollector.on('collect', m => {
 
-            const valor = parseInt(m.content);
-            if(isNaN(valor) || valor < 1){
-                embedMessage.delete().catch()
-                message.channel.send(`❌ | ${message.author}, este valor não é um número válido!`)
-            } else {
+                const valor = parseInt(m.content);
+                if (isNaN(valor) || valor < 1) {
+                    embedMessage.delete().catch()
+                    message.channel.send(`❌ | ${message.author}, este valor não é um número válido!`)
+                } else {
 
-                if((valor * valorRoll) > user.estrelinhas) return message.channel.send(`❌ | ${message.author}, você não possui estrelas suficientes para comprar esta quantidade de rolls!`)
+                    if ((valor * valorRoll) > user.estrelinhas) return message.channel.send(`❌ | ${message.author}, você não possui estrelas suficientes para comprar esta quantidade de rolls!`)
 
-                user.estrelinhas = user.estrelinhas - (valor * valorRoll);
-                user.rolls = user.rolls + valor;
-                user.save()
+                    user.estrelinhas = user.estrelinhas - (valor * valorRoll);
+                    user.rolls = user.rolls + valor;
+                    user.save()
 
-                message.channel.send(`✅ | ${message.author}, você comprou **${valor}** 🔑 rolls por ${valor * valorRoll} ⭐ estrelinhas! \nAgora você tem **${user.rolls}** 🔑 e **${user.estrelinhas}**⭐`)
-            }
-        });
+                    message.channel.send(`✅ | ${message.author}, você comprou **${valor}** 🔑 rolls por ${valor * valorRoll} ⭐ estrelinhas! \nAgora você tem **${user.rolls}** 🔑 e **${user.estrelinhas}**⭐`)
+                }
+            });
 
         }
     });
@@ -156,7 +243,6 @@ function lojaVender(message, embedMessage, user, saldoAtual) {
     const collector = message.channel.createMessageCollector(filter, { max: 1, time: 30000, errors: ["time"] });
 
     collector.on('collect', m => {
-        m.delete().catch()
 
         if (m.content === "1" || m.content.toLowerCase() === "mamadas") {
             //abre loja de mamads
@@ -182,29 +268,30 @@ function lojaVender(message, embedMessage, user, saldoAtual) {
                 }]
             }
 
-            embedMessage.edit(message.author, {embed: dataCaça})
+            embedMessage.edit(message.author, { embed: dataCaça })
 
-            
-        const filterColetor = m => m.author.id === message.author.id;
-        const quantidadeCollector = message.channel.createMessageCollector(filterColetor, { max: 1, time: 30000, errors: ["time"] });
 
-        quantidadeCollector.on('collect', m => {
+            const filterColetor = m => m.author.id === message.author.id;
+            const quantidadeCollector = message.channel.createMessageCollector(filterColetor, { max: 1, time: 30000, errors: ["time"] });
 
-            const valor = parseInt(m.content);
-            if(isNaN(valor) || valor < 1){
-                embedMessage.delete().catch()
-                message.channel.send(`❌ | ${message.author}, este valor não é um número válido!`)
-            } else {
+            quantidadeCollector.on('collect', m => {
 
-                if(valor > user.caçados) return message.channel.send(`❌ | ${message.author}, você não possui todos estes demônios!`)
+                const valor = parseInt(m.content);
+                if (isNaN(valor) || valor < 1) {
+                    embedMessage.delete().catch()
+                    message.channel.send(`❌ | ${message.author}, este valor não é um número válido!`)
+                } else {
 
-                user.caçados = user.caçados - valor;
-                user.estrelinhas = user.estrelinhas + (valor * valorDemonio);
-                user.save()
+                    if (valor > user.caçados) return message.channel.send(`❌ | ${message.author}, você não possui todos estes demônios!`)
 
-                message.channel.send(`✅ | ${message.author}, você vendeu **${valor}** 😈 demônios e recebeu **${valor * valorDemonio}** ⭐ estrelinhas!\nAgora você tem **${user.caçados}** 😈 e **${user.estrelinhas}**⭐`)
-            }
-        });
-  }});
+                    user.caçados = user.caçados - valor;
+                    user.estrelinhas = user.estrelinhas + (valor * valorDemonio);
+                    user.save()
+
+                    message.channel.send(`✅ | ${message.author}, você vendeu **${valor}** 😈 demônios e recebeu **${valor * valorDemonio}** ⭐ estrelinhas!\nAgora você tem **${user.caçados}** 😈 e **${user.estrelinhas}**⭐`)
+                }
+            });
+        }
+    });
 }
 
