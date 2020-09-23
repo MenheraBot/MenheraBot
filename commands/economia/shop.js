@@ -231,79 +231,97 @@ function lojaComprar(message, embedMessage, user, saldoAtual) {
 
 function lojaVender(message, embedMessage, user, saldoAtual) {
 
+    const demons = user.caçados || 0;
+    const anjos = user.anjos || 0;
+    const sd = user.semideuses || 0;
+    const deuses = user.deuses || 0;
+
     const dataVender = {
         title: "Brechó da Menhera",
         color: '#e77fa1',
         thumbnail: {
             url: 'https://i.imgur.com/t94XkgG.png'
         },
-        description: `Seu saldo atual é de **${saldoAtual}**⭐ estrelinhas`,
+        description: `Seu saldo atual é de **${saldoAtual}**⭐ estrelinhas e suas caças são:\n\n😈: **${demons}** demônios\n👼: **${anjos}** anjos\n🙌: **${sd}** semideuses\n<:God:758474639570894899>: **${deuses}** deuses`,
         footer: {
-            text: "Digite no chat a opção de sua escolha"
+            text: "Digite no chat a opção de sua escolha e o valor"
         },
         fields: [{
             name: 'Opções de Vendas',
-            value: '1 - Vender Mamadas \n2 - Vender Demônios',
+            value: '1 - Vender Demônios (200⭐) \n2 - Vender Anjos (1500⭐)\n3 - Vender Semi-Deuses (10000⭐)\n4 - Vender Deuses (50000⭐)\n\nDigite sua escolha e a quantidade. Exemplo: (`1 50`)',
             inline: false
         }]
     }
 
     embedMessage.edit(message.author, { embed: dataVender }).catch()
 
-    const validBuyArgs = ["1", "mamadas", "2", "demônios", "demonios", "demonio", "caça", "caca"];
-
-    const filter = m => m.author.id === message.author.id && validBuyArgs.some(answer => answer.toLowerCase() === m.content.toLowerCase());
+    const filter = m => m.author.id === message.author.id;
     const collector = message.channel.createMessageCollector(filter, { max: 1, time: 30000, errors: ["time"] });
 
     collector.on('collect', m => {
 
-        if (m.content === "1" || m.content.toLowerCase() === "mamadas") {
-            //abre loja de mamads
-            embedMessage.edit({ embed: { title: 'Esta seção está em desenvolvimento' } })
-        } else {
+        const cArgs = m.content.split(/ +/g);
+        const valor = parseInt(cArgs[1]);
 
-            const demoniosAtual = user.caçados;
-            const valorDemonio = 200;
-            const dataCaça = {
-                title: "Venda Demônios",
-                color: '#e77fa1',
-                thumbnail: {
-                    url: 'https://i.imgur.com/t94XkgG.png'
-                },
-                description: `Você possui **${demoniosAtual}** 😈 demônios caçados`,
-                footer: {
-                    text: "Digite no chat quantos demônios desejas vender"
-                },
-                fields: [{
-                    name: 'Tabela de preços',
-                    value: `**1** Demônio = **${valorDemonio}** ⭐`,
-                    inline: false
-                }]
+        const valorDemonio = 200;
+        const valorAnjo = 1500;
+        const valorSD = 10000;
+        const valorDeus = 50000;
+
+        if (cArgs[0] === "1") {
+            
+            if (isNaN(valor) || valor < 1) {
+                embedMessage.delete().catch()
+                message.channel.send(`❌ | ${message.author}, este valor não é um número válido!`)
+            } else {
+                if (valor > user.caçados) return message.channel.send(`❌ | ${message.author}, você não possui todos estes demônios!`)
+                user.caçados = user.caçados - valor;
+                user.estrelinhas = user.estrelinhas + (valor * valorDemonio);
+                user.save()
+                message.channel.send(`✅ | ${message.author}, você vendeu **${valor}** 😈 demônios e recebeu **${valor * valorDemonio}** ⭐ estrelinhas!\nAgora você tem **${user.caçados}** 😈 e **${user.estrelinhas}**⭐`)
+            }
+           
+        } else if (cArgs[0] === "2"){
+
+            if (isNaN(valor) || valor < 1) {
+                embedMessage.delete().catch()
+                message.channel.send(`❌ | ${message.author}, este valor não é um número válido!`)
+            } else {
+                if (valor > user.anjos) return message.channel.send(`❌ | ${message.author}, você não possui todos estes anjos!`)
+                user.anjos = user.anjos - valor;
+                user.estrelinhas = user.estrelinhas + (valor * valorAnjo);
+                user.save()
+                message.channel.send(`✅ | ${message.author}, você vendeu **${valor}** 👼 anjos e recebeu **${valor * valorAnjo}** ⭐ estrelinhas!\nAgora você tem **${user.anjos}** 👼 e **${user.estrelinhas}**⭐`)
             }
 
-            embedMessage.edit(message.author, { embed: dataCaça })
+        } else if(cArgs[0] === "3"){
 
+            if (isNaN(valor) || valor < 1) {
+                embedMessage.delete().catch()
+                message.channel.send(`❌ | ${message.author}, este valor não é um número válido!`)
+            } else {
+                if (valor > user.semideuses) return message.channel.send(`❌ | ${message.author}, você não possui todos estes semideuses!`)
+                user.semideuses = user.semideuses - valor;
+                user.estrelinhas = user.estrelinhas + (valor * valorSD);
+                user.save()
+                message.channel.send(`✅ | ${message.author}, você vendeu **${valor}** 🙌 semideuses e recebeu **${valor * valorSD}** ⭐ estrelinhas!\nAgora você tem **${user.semideuses}** 🙌 e **${user.estrelinhas}**⭐`)
+            }
 
-            const filterColetor = m => m.author.id === message.author.id;
-            const quantidadeCollector = message.channel.createMessageCollector(filterColetor, { max: 1, time: 30000, errors: ["time"] });
+        } else if(cArgs[0] === "4"){
 
-            quantidadeCollector.on('collect', m => {
-
-                const valor = parseInt(m.content);
-                if (isNaN(valor) || valor < 1) {
-                    embedMessage.delete().catch()
-                    message.channel.send(`❌ | ${message.author}, este valor não é um número válido!`)
-                } else {
-
-                    if (valor > user.caçados) return message.channel.send(`❌ | ${message.author}, você não possui todos estes demônios!`)
-
-                    user.caçados = user.caçados - valor;
-                    user.estrelinhas = user.estrelinhas + (valor * valorDemonio);
-                    user.save()
-
-                    message.channel.send(`✅ | ${message.author}, você vendeu **${valor}** 😈 demônios e recebeu **${valor * valorDemonio}** ⭐ estrelinhas!\nAgora você tem **${user.caçados}** 😈 e **${user.estrelinhas}**⭐`)
-                }
-            });
+            if (isNaN(valor) || valor < 1) {
+                embedMessage.delete().catch()
+                message.channel.send(`❌ | ${message.author}, este valor não é um número válido!`)
+            } else {
+                if (valor > user.deuses) return message.channel.send(`❌ | ${message.author}, você não possui todos estes deuses!`)
+                user.deuses = user.deuses - valor;
+                user.estrelinhas = user.estrelinhas + (valor * valorDeus);
+                user.save()
+                message.channel.send(`✅ | ${message.author}, você vendeu **${valor}** <:God:758474639570894899> deuses e recebeu **${valor * valorDeus}** ⭐ estrelinhas!\nAgora você tem **${user.deuses}** <:God:758474639570894899> e **${user.estrelinhas}**⭐`)
+            }
+        } else {
+            embedMessage.delete().catch()
+            message.channel.send(`❌ | ${message.author}, esta opção não é válida!`)
         }
     });
 }
