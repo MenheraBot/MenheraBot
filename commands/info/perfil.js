@@ -27,9 +27,7 @@ module.exports = {
     let mamadas = info.mamadas || 0;
     let mamou = info.mamou || 0;
     let demons = info.caçados || 0;
-    let rolls = info.rolls || 0;
     let nota = info.nota || `Sem Nota`;
-    let estrelinhas = parseInt(info.estrelinhas) || 0;
     let cor = info.cor || '#a788ff';
 
     embed.setColor(cor)
@@ -68,8 +66,6 @@ module.exports = {
       }
     ]);
     }
-    embed.addField(`🔑 | Rolls`, rolls, true);
-    embed.addField("⭐ | Estrelinhas", estrelinhas, true)
     embed.addField(`<:apaixonada:727975782034440252> | Sobre Mim`, nota, true);
 
     message.channel.send(message.author, embed);
