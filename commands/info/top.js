@@ -103,7 +103,7 @@ module.exports = {
     
         let embed = new MessageEmbed()
         
-        .setTitle("😈 | Placar de Demônios")
+        .setTitle("<:DEMON:758765044443381780> | Placar de Demônios")
         .setColor('#ec8227')
 
         user.find({}, ['caçados', 'nome', 'id'], {
@@ -130,7 +130,7 @@ module.exports = {
     
         let embed = new MessageEmbed()
         
-        .setTitle("👼 | Placar de Anjos")
+        .setTitle("<:ANGEL:758765044204437535> | Placar de Anjos")
         .setColor('#bdecee')
 
         user.find({}, ['anjos', 'nome', 'id'], {
@@ -157,7 +157,7 @@ module.exports = {
     
         let embed = new MessageEmbed()
         
-        .setTitle("🙌 | Placar de Semi-Deuses")
+        .setTitle("<:SEMIGOD:758766732235374674> | Placar de Semi-Deuses")
         .setColor('#eab3fa')
 
         user.find({}, ['semideuses', 'nome', 'id'], {

@@ -15,6 +15,6 @@ module.exports = {
         let user = await usuario.findOne({id: pessoa.id});
         if(!user) return message.channel.send("❌ | Este usuário não está em minha database")
 
-        message.channel.send(`**${pessoa.tag}** possui **${user.estrelinhas}**⭐ e **${user.rolls}** 🔑\nSuas caças são:\n\n😈 **${user.caçados}** demônios\n👼 **${user.anjos}** anjos\n🙌 **${user.semideuses}** semideuses\n<:God:758474639570894899> **${user.deuses}** deuses.`)
+        message.channel.send(`**${pessoa.tag}** possui **${user.estrelinhas}**⭐ e **${user.rolls}** 🔑\nSuas caças são:\n\n<:DEMON:758765044443381780> **${user.caçados}** demônios\n<:ANGEL:758765044204437535> **${user.anjos}** anjos\n<:SEMIGOD:758766732235374674> **${user.semideuses}** semideuses\n<:God:758474639570894899> **${user.deuses}** deuses.`)
  }}
 

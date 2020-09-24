@@ -242,7 +242,7 @@ function lojaVender(message, embedMessage, user, saldoAtual) {
         thumbnail: {
             url: 'https://i.imgur.com/t94XkgG.png'
         },
-        description: `Seu saldo atual é de **${saldoAtual}**⭐ estrelinhas e suas caças são:\n\n😈: **${demons}** demônios\n👼: **${anjos}** anjos\n🙌: **${sd}** semideuses\n<:God:758474639570894899>: **${deuses}** deuses`,
+        description: `Seu saldo atual é de **${saldoAtual}**⭐ estrelinhas e suas caças são:\n\n<:DEMON:758765044443381780>: **${demons}** demônios\n<:ANGEL:758765044204437535>: **${anjos}** anjos\n<:SEMIGOD:758766732235374674>: **${sd}** semideuses\n<:God:758474639570894899>: **${deuses}** deuses`,
         footer: {
             text: "Digite no chat a opção de sua escolha e o valor"
         },
@@ -278,7 +278,7 @@ function lojaVender(message, embedMessage, user, saldoAtual) {
                 user.caçados = user.caçados - valor;
                 user.estrelinhas = user.estrelinhas + (valor * valorDemonio);
                 user.save()
-                message.channel.send(`✅ | ${message.author}, você vendeu **${valor}** 😈 demônios e recebeu **${valor * valorDemonio}** ⭐ estrelinhas!\nAgora você tem **${user.caçados}** 😈 e **${user.estrelinhas}**⭐`)
+                message.channel.send(`✅ | ${message.author}, você vendeu **${valor}** <:DEMON:758765044443381780> demônios e recebeu **${valor * valorDemonio}** ⭐ estrelinhas!\nAgora você tem **${user.caçados}** <:DEMON:758765044443381780> e **${user.estrelinhas}**⭐`)
             }
            
         } else if (cArgs[0] === "2"){
@@ -291,7 +291,7 @@ function lojaVender(message, embedMessage, user, saldoAtual) {
                 user.anjos = user.anjos - valor;
                 user.estrelinhas = user.estrelinhas + (valor * valorAnjo);
                 user.save()
-                message.channel.send(`✅ | ${message.author}, você vendeu **${valor}** 👼 anjos e recebeu **${valor * valorAnjo}** ⭐ estrelinhas!\nAgora você tem **${user.anjos}** 👼 e **${user.estrelinhas}**⭐`)
+                message.channel.send(`✅ | ${message.author}, você vendeu **${valor}** <:ANGEL:758765044204437535> anjos e recebeu **${valor * valorAnjo}** ⭐ estrelinhas!\nAgora você tem **${user.anjos}** <:ANGEL:758765044204437535> e **${user.estrelinhas}**⭐`)
             }
 
         } else if(cArgs[0] === "3"){
@@ -304,7 +304,7 @@ function lojaVender(message, embedMessage, user, saldoAtual) {
                 user.semideuses = user.semideuses - valor;
                 user.estrelinhas = user.estrelinhas + (valor * valorSD);
                 user.save()
-                message.channel.send(`✅ | ${message.author}, você vendeu **${valor}** 🙌 semideuses e recebeu **${valor * valorSD}** ⭐ estrelinhas!\nAgora você tem **${user.semideuses}** 🙌 e **${user.estrelinhas}**⭐`)
+                message.channel.send(`✅ | ${message.author}, você vendeu **${valor}** <:SEMIGOD:758766732235374674> semideuses e recebeu **${valor * valorSD}** ⭐ estrelinhas!\nAgora você tem **${user.semideuses}** <:SEMIGOD:758766732235374674> e **${user.estrelinhas}**⭐`)
             }
 
         } else if(cArgs[0] === "4"){
