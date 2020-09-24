@@ -77,8 +77,8 @@ function lojaComprar(message, embedMessage, user, saldoAtual) {
             //abre loja de cores
 
             const coresDisponíveis = [
-                { cor: '#6308c0', preço: 30000, nome: "1 - Roxo Escuro" }, { cor: '#df0509', preço: 50000, nome: "2 - Vermelho" }, { cor: '#55e0f7', preço: 85000, nome: "3 - Ciano" },
-                { cor: '#03fd1c', preço: 100000, nome: "4 - Verde Neon" }, { cor: '#fd03c9', preço: 250000, nome: "5 - Rosa Choque" }, { cor: '#e2ff08', preço: 500000, nome: "6 - Amarelo" }, { cor: 'SUA ESCOLHA', preço: 1000000, nome: "7 - Sua Escolha" }
+                { cor: '#6308c0', preço: 50000, nome: "1 - Roxo Escuro" }, { cor: '#df0509', preço: 50000, nome: "2 - Vermelho" }, { cor: '#55e0f7', preço: 50000, nome: "3 - Ciano" },
+                { cor: '#03fd1c', preço: 50000, nome: "4 - Verde Neon" }, { cor: '#fd03c9', preço: 50000, nome: "5 - Rosa Choque" }, { cor: '#e2ff08', preço: 50000, nome: "6 - Amarelo" }, { cor: 'SUA ESCOLHA', preço: 100000, nome: "7 - Sua Escolha" }
             ];
 
             const dataCores = {
@@ -248,7 +248,7 @@ function lojaVender(message, embedMessage, user, saldoAtual) {
         },
         fields: [{
             name: 'Opções de Vendas',
-            value: '1 - Vender Demônios (200⭐) \n2 - Vender Anjos (1500⭐)\n3 - Vender Semi-Deuses (10000⭐)\n4 - Vender Deuses (50000⭐)\n\nDigite sua escolha e a quantidade. Exemplo: (`1 50`)',
+            value: '1 - Vender Demônios (200⭐) \n2 - Vender Anjos (3500)\n3 - Vender Semi-Deuses (10000⭐)\n4 - Vender Deuses (50000⭐)\n\nDigite sua escolha e a quantidade. Exemplo: (`1 50`)',
             inline: false
         }]
     }
