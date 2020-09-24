@@ -272,7 +272,7 @@ function lojaVender(message, embedMessage, user, saldoAtual) {
             
             if (isNaN(valor) || valor < 1) {
                 embedMessage.delete().catch()
-                message.channel.send(`❌ | ${message.author}, este valor não é um número válido!`)
+                return message.channel.send(`❌ | ${message.author}, este valor não é um número válido!`)
             } else {
                 if (valor > user.caçados) return message.channel.send(`❌ | ${message.author}, você não possui todos estes demônios!`)
                 user.caçados = user.caçados - valor;
