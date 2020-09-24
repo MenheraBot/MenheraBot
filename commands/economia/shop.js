@@ -264,7 +264,7 @@ function lojaVender(message, embedMessage, user, saldoAtual) {
         const valor = parseInt(cArgs[1]);
 
         const valorDemonio = 200;
-        const valorAnjo = 1500;
+        const valorAnjo = 3500;
         const valorSD = 10000;
         const valorDeus = 50000;
 
