@@ -9,6 +9,9 @@ const cooldown = new Set();
 
 module.exports = async (client, message) => {
 
+  //ping system
+  if(message.author.id === "757295289630720031" && message.content === "PINGING...") return message.channel.send("Pong! That's my response to your call, master");
+
   if (message.author.bot) return;
   if (message.channel.type === "dm") return;
 
