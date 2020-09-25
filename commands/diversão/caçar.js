@@ -22,7 +22,7 @@ module.exports = {
     if (!opção) return message.channel.send(`❌ | ${message.author}, você deve escolher entre caçar \`${validOptions.join("`, `")}\``)
 
     if (args[0] === "ajuda") return message.channel.send("**COMO FUNCIONA O CAÇAR?**\nVocê pode caçar a cada uma hora, e você pode escolher entre 4 caças: `demonios`, `anjos`, `semideuses` e `deuses`\nQuanto mais pra direita, mais valioso, mas também, mais dificil de se caçar, e menor a chance de sucesso\n**Boas Caçadas**")
-    if (args[0] === "probabilidades") return message.channel.send("**PROBABILIDADES:**\nÉ selecionado um número aleatório dentro dos próximos. Cada número é a quantidade de caças\n\nDemônios = `[0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 4]`\nAnjos = `[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2]`\nSemiDeuses = `[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]`\nDeuses = `[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]`")
+    if (args[0] === "probabilidades") return message.channel.send("**PROBABILIDADES:**\nÉ selecionado um número aleatório dentro dos próximos. Cada número é a quantidade de caças\n\nDemônios = `[0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 4]`\nAnjos = `[0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2]`\nSemiDeuses = `[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];`\nDeuses = `[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]`")
 
     if (parseInt(user.caçarTime) < Date.now()) {
       let avatar = message.author.displayAvatarURL({ format: "png", dynamic: true });
@@ -42,7 +42,7 @@ module.exports = {
           message.channel.send(embed)
           break;
         case 'anjos':
-          const probabilidadeAnjo = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2];
+          const probabilidadeAnjo = [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2];
           const da = probabilidadeAnjo[Math.floor(Math.random() * probabilidadeAnjo.length)];
           user.anjos = user.anjos + da;
           user.caçarTime = 3600000 + Date.now();
@@ -51,7 +51,7 @@ module.exports = {
           message.channel.send(embed)
           break;
         case 'semideuses':
-          const probabilidadeSD = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+          const probabilidadeSD = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
           const ds = probabilidadeSD[Math.floor(Math.random() * probabilidadeSD.length)];
           user.semideuses = user.semideuses + ds;
           user.caçarTime = 3600000 + Date.now();
@@ -60,7 +60,7 @@ module.exports = {
           message.channel.send(embed)
           break;
         case 'deuses':
-          const probabilidadeDeuses = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]; //    1/32
+          const probabilidadeDeuses = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]; 
           const dd = probabilidadeDeuses[Math.floor(Math.random() * probabilidadeDeuses.length)];
           user.deuses = user.deuses + dd;
           user.caçarTime = 3600000 + Date.now();
