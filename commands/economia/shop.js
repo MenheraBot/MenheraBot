@@ -248,7 +248,7 @@ function lojaVender(message, embedMessage, user, saldoAtual) {
         },
         fields: [{
             name: 'Opções de Vendas',
-            value: '1 - Vender Demônios (200⭐) \n2 - Vender Anjos (3500)\n3 - Vender Semi-Deuses (10000⭐)\n4 - Vender Deuses (50000⭐)\n\nDigite sua escolha e a quantidade. Exemplo: (`1 50`)',
+            value: '1 - Vender Demônios (700⭐) \n2 - Vender Anjos (3500)\n3 - Vender Semi-Deuses (10000⭐)\n4 - Vender Deuses (50000⭐)\n\nDigite sua escolha e a quantidade. Exemplo: (`1 50`)',
             inline: false
         }]
     }
@@ -263,7 +263,7 @@ function lojaVender(message, embedMessage, user, saldoAtual) {
         const cArgs = m.content.split(/ +/g);
         const valor = parseInt(cArgs[1]);
 
-        const valorDemonio = 200;
+        const valorDemonio = 700;
         const valorAnjo = 3500;
         const valorSD = 10000;
         const valorDeus = 50000;
