@@ -32,6 +32,7 @@ module.exports = {
             }
         ];
 
+        if(!args[0]) return message.channel.send("❌ | Você deve escolher se deseja dar estrelas, demonios, anjos, demideuses ou deuses!\nUse `m!help give` para mais informações")
         const selectedOption = validArgs.some(so => so.arguments.includes(args[0].toLowerCase()))
         if (!selectedOption) return message.channel.send("❌ | Você deve escolher se deseja dar estrelas, demonios, anjos, demideuses ou deuses!\nUse `m!help give` para mais informações")
         const filtredOption = validArgs.filter(f => f.arguments.includes(args[0].toLowerCase()))
