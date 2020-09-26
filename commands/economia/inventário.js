@@ -5,8 +5,8 @@ module.exports = {
     aliases: ["inventario", "carteira", "inventory"],
     cooldown: 2,
     category: "economia",
-    description: "Veja a carteira de alguém",
-    usage: "m!carteira [@usuário]",
+    description: "Veja o inventário de alguém",
+    usage: "m!inventário [@usuário]",
     run: async (client, message, args) => {
 
         let pessoa = message.mentions.users.first() || client.users.cache.get(args[0]);
