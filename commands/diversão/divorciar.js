@@ -32,12 +32,12 @@ function divorciar(user, message, client) {
     let coletor = msg.createReactionCollector(filter, { max: 1, time: 14500 });
 
     ncoletor.on("collect", co => {
-      msg.reactions.removeAll().catch(error => console.error("Failed to clear reactions: ", error));
+      msg.reactions.removeAll().catch();
       message.channel.send(`Ebaaa, vocês ainda estão casados`);
     });
 
     coletor.on("collect", cp => {
-      msg.reactions.removeAll().catch(error => console.error("Failed to clear reactions: ", error));
+      msg.reactions.removeAll().catch();
       message.channel.send(`${message.author} acaba de se divorciar de ${client.users.cache.get(user.casado)}`);
 
       db.findOne({ id: user.casado }, (err, men) => {

@@ -50,12 +50,12 @@ function casar(user, message, men, mencionado) {
     let coletor = msg.createReactionCollector(filter, { max: 1, time: 14500 });
 
     ncoletor.on("collect", co => {
-      msg.reactions.removeAll().catch(error => console.error("ERRO AO EXCLUIR AS REAÇÕES", error));
+      msg.reactions.removeAll().catch();
       message.channel.send(`${mencionado} negou se casar com ${message.author}`);
     });
 
     coletor.on("collect", cp => {
-      msg.reactions.removeAll().catch(error => console.error("ERRO AO EXCLUIR AS REAÇÕES", error));
+      msg.reactions.removeAll().catch();
       message.channel.send(`${message.author} acaba de se casar com ${mencionado}`);
 
 
