@@ -1,5 +1,5 @@
 const { MessageEmbed } = require("discord.js");
-
+const Sentry = require("@sentry/node");
 const config = require("../config.json");
 const database = require("../models/user");
 const cmdDb = require("../models/cmds.js")
@@ -126,6 +126,7 @@ module.exports = async (client, message) => {
     if (!config.owner.includes(message.author.id)) cooldown.add(message.author.id);
     command.run(client, message, args).catch(err => {
       console.log(err);
+      Sentry.captureException(err);
       message.reply("Ocorreu um erro na execução desse comando... Bugs e mais bugs...")
     });
     console.log(`Comando: '${command.name}'. Autor: '${message.author.tag}' id: '${message.author.id}' | Servidor: '${message.guild.name}' ServerId: '${message.guild.id}'`);
