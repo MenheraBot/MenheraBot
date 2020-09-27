@@ -35,8 +35,6 @@ module.exports = {
     return message.channel.send(embed);
   }
 
-  let username = user.username.toUpperCase()
-
   const embed = new MessageEmbed()
     .setTitle("MEDO")
     .setColor("#000000")

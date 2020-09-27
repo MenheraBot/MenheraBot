@@ -35,13 +35,11 @@ module.exports = {
   if(user && user.bot)  return message.channel.send(`${message.author} foi abraçar um robô, mas acabou tocando onde não devia, e tomou uma descarga elétrica de 220V e 10mA, sorte que a corrente usada no bot é baixa...`)
 
   if (!user) {
-    return message.reply("Tu tem que mencionar quem tu quer abraçar neah");
+    return message.channel.send("❌ | você deve mencionar quem quer abraçar");
   }
 
   if (user === message.author) {
-    return message.reply(
-      "Tu não é a mulher elástico pra se abraçar, por favor, mencione quem você quer abraçar"
-    );
+    return message.channel.send(`❌| ${message.author}, tu não é a mulher elástico pra se abraçar, por favor, mencione quem você quer abraçar`);
   }
 
   let avatar = message.author.displayAvatarURL({ format: "png" });

@@ -7,38 +7,37 @@ module.exports = {
   usage: "m!8ball <pergunta>",
   run: async (client, message, args) => {
 
-    if(args.length < 1) return message.reply("Faça uma pergunta para mim")
+    if(args.length < 1) return message.channel.send("❌ | Você deve enviar uma pergunta para eu responder")
 
     let respostas = [
-        "Acho que sim",
-        "Provavelmente não",
-        "Com toda certeza do universo",
-        "Meus circuitos me fazem crer que isso é impossível",
-        "Se pá que sim",
-        "Nada é impossivel né maninho 😉",
-        "Sim <:ok:727975974125436959>",
-        "Não ;(",
-        "Talvez ",
-        "Rola um D20 pra ver isso aí",
-        "Sim sim sim sim SIM SIM SIIIIM!!!!",
-        "Kkk tu ainda pergunta?",
-        "Ah cara, eu não queria te falar, mas não",
-        "Também queria saber",
-        "Isso vai ser melhor pra ti saber no futuro",
-        "Certeza absoluta",
-        "Minha resposta é não",
-        "Minha resposta é sim",
-        "Não queria te dar esperançar, mas talvez sim",
-        "Claro que não né",
-        "Claro que sim uai",
-        "O minha flor, eu sei que tu não queria que fosse, mas sim",
-        "$%&*&%#¨%¨@&%¨&#@%$#%@#¨%#¨@%@$#% &¨%&$ #%¨#%¨%#¨¨&¨% ¨%&%¨& &¨%$&*¨&",
-        "Caramba, tu conseguiu tirar meu easter egg do 8Ball. Parabéns seu sortudo!!! Já caçou demônios hoje? Pois deveria!",
-        "Absolutamente"
+        "✅ | Acho que sim",
+        "❌ | Provavelmente não",
+        "✅ | Com toda certeza do universo",
+        "❌ | Meus circuitos me fazem crer que isso é impossível",
+        "✅ | Se pá que sim",
+        "✅ | Nada é impossivel né maninho 😉",
+        "✅ | Sim <:ok:727975974125436959>",
+        "❌ | Não ;(",
+        "✅ | Talvez ",
+        "✅ | Rola um D20 pra ver isso aí",
+        "✅ | Sim sim sim sim SIM SIM SIIIIM!!!!",
+        "✅ | Kkk tu ainda pergunta?",
+        "❌ | Ah cara, eu não queria te falar, mas não",
+        "✅ | Também queria saber",
+        "✅ | Isso vai ser melhor pra ti saber no futuro",
+        "✅ | Certeza absoluta",
+        "❌ | Minha resposta é não",
+        "✅ | Minha resposta é sim",
+        "✅ | Não queria te dar esperançar, mas talvez sim",
+        "❌ | Claro que não né",
+        "✅ | Claro que sim uai",
+        "✅ | O minha flor, eu sei que tu não queria que fosse, mas sim",
+        "❌ | $%&*&%#¨%¨@&%¨&#@%$#%@#¨%#¨@%@$#% &¨%&$ #%¨#%¨%#¨¨&¨% ¨%&%¨& &¨%$&*¨&",
+        "✅ | Absolutamente"
     ];
 
     const respostaRandom = respostas[Math.floor(Math.random() * respostas.length)];
 
-    message.channel.send(`${message.author} ${respostaRandom}`)
+    message.channel.send(`${respostaRandom}, ${message.author}`)
 
 }};

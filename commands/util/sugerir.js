@@ -11,7 +11,7 @@ module.exports = {
   const argumentos = args.join(" ");
    var cor = '#' + ("000000" + Math.random().toString(16).slice(2, 8).toUpperCase()).slice(-6);
   
-  if(!argumentos) return message.reply("Digite o que quer sugerir para a Lux sobre o bot");
+  if(!argumentos) return message.channel.send("⚠️ | Digite o que quer sugerir para a Lux sobre o bot");
   
     const embed = new MessageEmbed()
     .setDescription(`**${argumentos}**`)
@@ -24,5 +24,5 @@ module.exports = {
   client.guilds.cache.get('717061688460967988').channels.cache.get('723765136648830996').send(embed);
 
   if(message.deletable) message.delete()
-  message.reply("Mutissimo obrigada por me enviar uma sugestão <3");
+  message.channel.send("❤️ | Mutissimo obrigada por me enviar uma sugestão <3");
 }};

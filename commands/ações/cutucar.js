@@ -18,13 +18,11 @@ module.exports = {
   let user = message.mentions.users.first();
 
   if (!user) {
-    return message.reply("Tu tem que mencionar quem tu quer cutucar neah");
+    return message.channel.send("❌ | Tu tem que mencionar quem tu quer cutucar neah");
   }
 
   if (user === message.author) {
-    return message.reply(
-      "Cutucar a si mesmo não tem graça! Mencione quem tu quer cutucar"
-    );
+    return message.channel.send("❌ | Cutucar a si mesmo não tem graça! Mencione quem tu quer cutucar");
   }
 
   let avatar = message.author.displayAvatarURL({ format: "png" });

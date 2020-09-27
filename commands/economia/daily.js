@@ -29,7 +29,7 @@ module.exports = {
 			.setColor("#f2baf8")
 			.setAuthor("Estamos quase lá", message.author.displayAvatarURL({ format: "png", dynamic: true }))
 			.setThumbnail("https://i.imgur.com/o9WQEja.png")
-			.setFooter("O site tem um pouco de delay, aguarde um minutinho para executar o comando novamente depois de votar")
+			.setFooter("O site tem um pouco de delay, aguarde uns 3 minutos para executar o comando novamente depois de votar")
 			.addField("O que é um DR?", "Um DR (Daily Roll) é uma ficha que você pode utilizar para resetar o seu tempo de caçar! Use com sabedoria")
 			.setDescription("Para receber o seu DailyRoll, você deve primeiro votar em mim [NESTE SITE](https://top.gg/bot/708014856711962654/vote), feito isso, use este comando novamente para receber seu DR")
 			
@@ -41,11 +41,11 @@ module.exports = {
 			usuario.estrelinhas = usuario.estrelinhas + random;
 			usuario.rollTime = 43200000 + Date.now()
 			usuario.save()
-			message.reply(`obrigada por votar em mim bebezinho >.<\nComo forma de agradecimento, você recebeu um roll e ${random} estrelinhas!\nSua carteira atualizada está assim:\n🔑 | **${usuario.rolls}** rolls\n⭐ | **${usuario.estrelinhas}** estrelinhas`);
+			message.channel.send(`✅ | obrigada por votar em mim bebezinho >.<\nComo forma de agradecimento, você recebeu um roll e ${random} estrelinhas!\nSua carteira atualizada está assim:\n🔑 | **${usuario.rolls}** rolls\n⭐ | **${usuario.estrelinhas}** estrelinhas`);
 
 
 		} else {                                                     
-			message.reply(`você já resgatou seu DailyRoll! Tente novamente em **${(parseInt(usuario.rollTime - Date.now()) > 3600000) ? moment.utc(parseInt(usuario.rollTime - Date.now())).format("hh:mm:ss") : moment.utc(parseInt(usuario.rollTime - Date.now())).format("mm:ss")}**`)
+			message.channel.send(`❌ | você já resgatou seu DailyRoll! Tente novamente em **${(parseInt(usuario.rollTime - Date.now()) > 3600000) ? moment.utc(parseInt(usuario.rollTime - Date.now())).format("hh:mm:ss") : moment.utc(parseInt(usuario.rollTime - Date.now())).format("mm:ss")}**`)
 		}
  }}
 

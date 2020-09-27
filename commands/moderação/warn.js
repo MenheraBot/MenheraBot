@@ -9,14 +9,14 @@ module.exports = {
   description: "Avise um usuário",
   usage: "m!warn <usuário> <razão>",
   run: async (client, message, args) => {
-      if(!message.member.hasPermission("KICK_MEMBERS")) return message.reply("Você precisa da permissão `KICK_MEMBERS` para usar esse comando")
+      if(!message.member.hasPermission("KICK_MEMBERS")) return message.channel.send("❌ | Você precisa da permissão `KICK_MEMBERS` para usar esse comando")
 
       const user = message.mentions.users.first() || client.users.cache.get(args[0]);
-      if(!user) return message.reply("Nenhum usuário foi mencionado");
-      if(user.bot) return message.reply("Não mencione bots");
-      if(user.id === message.author.id) return message.reply("O cara quer ser avisado KKK")
+      if(!user) return message.channel.send("❌ | Nenhum usuário foi mencionado");
+      if(user.bot) return message.channel.send("❌ | Não mencione bots");
+      if(user.id === message.author.id) return message.channel.send("❌ | O cara quer ser avisado KKK")
 
-      if(!message.guild.members.cache.get(user.id)) return message.reply("Este membro não está neste servidor!!!")
+      if(!message.guild.members.cache.get(user.id)) return message.channel.send("❌ | Este membro não está neste servidor!!!")
 
       let reason = args.slice(1).join(" ");
       if(!reason) reason = "Sem motivo informado";

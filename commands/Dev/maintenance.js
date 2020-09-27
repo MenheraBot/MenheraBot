@@ -11,21 +11,21 @@ module.exports = {
 
   run: async (client, message, args) => {
 
-    if (!args[0]) return message.reply("você não informou o comando desejado")
+    if (!args[0]) return message.channel.send("❌ | você não informou o comando desejado")
     let cmd = client.commands.get(args[0])
-    if (!cmd) return message.reply("este comando não existe.")
+    if (!cmd) return message.channel.send("❌ | este comando não existe.")
     let command = await cmdDb.findById(cmd.name)
     if (command.maintenance) {
         command.maintenance = false
         command.maintenanceReason = ""
         command.save().then(() => {
-            message.reply("comando **removido** da manutenção.")
+            message.channel.send("✅ | comando ❌**removido**❌ da manutenção.")
         })
     } else {
         command.maintenance = true
         command.maintenanceReason = args.slice(1).join(" ")
         command.save().then(() => {
-            message.reply("comando **adicionado** a manutenção.")
+            message.channel.send("✅ | comando ✅**adicionado**✅ a manutenção.")
         })
     }
 }};

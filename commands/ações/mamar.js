@@ -14,7 +14,7 @@ module.exports = {
   const pessoa = message.mentions.users.first();
   const autor = message.author;
   
-  if (!pessoa) return message.channel.send("KKK ala o autista mamando o nada");
+  if (!pessoa) return message.channel.send("❌ | KKK ala o autista mamando o nada");
 
   if (pessoa.bot) {
     message.channel.send( `${message.author} acabou de sujar a boca de óleo mamano o bot ${pessoa}`);
@@ -22,7 +22,7 @@ module.exports = {
   }
 
   if (pessoa == message.author)
-    return message.reply("Não tenta me enganar, eu sei que tu não consegue mamar a si mesmo! Marque outra pessoa para mamar");
+    return message.channel.send("❌ | Não tenta me enganar, eu sei que tu não consegue mamar a si mesmo! Marque outra pessoa para mamar");
 
   var list = [
     "https://i.imgur.com/PlAtqkk.gif",

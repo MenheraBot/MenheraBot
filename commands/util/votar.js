@@ -17,5 +17,4 @@ module.exports = {
   .setTimestamp()
 
   message.channel.send(embed);
-  message.react(':apaixonada:727975782034440252')
 }};

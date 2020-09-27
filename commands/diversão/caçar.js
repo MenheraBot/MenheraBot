@@ -71,7 +71,7 @@ module.exports = {
           break;
       }
     } else {
-      message.channel.send(`Descanse campeão ${message.author}, você já saiu na sua caçada. Tente novamente em **${moment.utc(parseInt(user.caçarTime - Date.now())).format("mm:ss")}** minutos`)
+      message.channel.send(`❌ | Descanse campeão ${message.author}, você já saiu na sua caçada. Tente novamente em **${moment.utc(parseInt(user.caçarTime - Date.now())).format("mm:ss")}** minutos`)
     }
 
   }

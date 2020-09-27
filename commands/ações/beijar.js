@@ -34,13 +34,11 @@ module.exports = {
   if(user && user.bot)  return message.channel.send(`${message.author} beijou um robô, e acabou tocando em um fio descascado. Sorte que ele estava com chinelo nos pés. A ligação com a Terra foi cortado, nenhum circuito se fechou. Dessa vez foi safe.`);
 
   if (!user) {
-    return message.reply("Tu tem que mencionar quem tu quer beijar neah");
+    return message.channel.send("❌ | Tu tem que mencionar quem tu quer beijar neah");
   }
 
   if (user === message.author) {
-    return message.reply(
-      "Eu sei que amor próprio é tudo, mas por favor, beije alguém que não seja si mesmo"
-    );
+    return message.channel.send("❌ | Eu sei que amor próprio é tudo, mas por favor, beije alguém que não seja si mesmo");
   }
 
   let avatar = message.author.displayAvatarURL({ format: "png" });

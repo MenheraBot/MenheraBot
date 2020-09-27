@@ -19,13 +19,11 @@ module.exports = {
   let user = message.mentions.users.first();
 
   if (!user) {
-    return message.reply("Tu tem que mencionar em quem tu quer atirar");
+    return message.channel.send("❌ | Tu tem que mencionar em quem tu quer atirar");
   }
 
   if (user === message.author) {
-    return message.reply(
-      "Ja disse que suicídio não!!!"
-    );
+    return message.channel.send("❌ | suicídio não!!!");
   }
 
   let avatar = message.author.displayAvatarURL({ format: "png" });

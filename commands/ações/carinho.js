@@ -24,13 +24,11 @@ module.exports = {
   let user = message.mentions.users.first();
 
   if (!user) {
-    return message.reply("Tu tem que mencionar em quem tu quer fazer carinho");
+    return message.channel.send("❌ | Tu tem que mencionar em quem tu quer fazer carinho");
   }
 
   if (user === message.author) {
-    return message.reply(
-      "Se tu quiser tu pode fazer carinho em si mesmo agora. Utilize meu comando somente para fazer carinho em outras pessoas"
-    );
+    return message.reply("❌ | Se tu quiser tu pode fazer carinho em si mesmo agora. Utilize meu comando somente para fazer carinho em outras pessoas");
   }
 
   let avatar = message.author.displayAvatarURL({ format: "png" });

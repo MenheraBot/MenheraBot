@@ -25,7 +25,7 @@ module.exports = {
     user.rolls = user.rolls - 1;
     user.caçarTime = "000000000000"
     user.save()
-    message.channel.send(`<:ok:727975974125436959> | Prontinho, você resetou seu tempo de caçadas, pode caçar!`)
+    message.channel.send(`✅ | Prontinho, você resetou seu tempo de caçadas, pode caçar!`)
     
     }}
 

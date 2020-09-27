@@ -22,13 +22,11 @@ module.exports = {
   if(user && user.bot)  return message.channel.send(`${message.author} mordeu um robô... -5 dentes na boca`);
 
   if (!user) {
-    return message.reply("Tu tem que mencionar quem tu quer morder neah");
+    return message.channel.send("❌ | Tu tem que mencionar quem tu quer morder neah");
   }
 
   if (user === message.author) {
-    return message.reply(
-      "Ala o masoquista, faça isso agora mesmo, não precisa de comando"
-    );
+    return message.channel.send("❌ | Ala o masoquista, faça isso agora mesmo, não precisa de comando");
   }
 
   let avatar = message.author.displayAvatarURL({ format: "png" });

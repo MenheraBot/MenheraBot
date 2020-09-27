@@ -17,16 +17,14 @@ module.exports = {
   var rand = list[Math.floor(Math.random() * list.length)];
   let user = message.mentions.users.first();
   
-  if(user && user.bot)  return message.channel.send(`DIGA NÃO À AGRESSÃO À ROBÔS`)
+  if(user && user.bot) return message.channel.send(`DIGA NÃO À AGRESSÃO À ROBÔS`)
 
   if (!user) {
-    return message.reply("Tu tem que mencionar em quem tu quer lançar aquele socão nas fuça");
+    return message.channel.send("❌ | Tu tem que mencionar em quem tu quer lançar aquele socão nas fuça");
   }
 
   if (user === message.author) {
-    return message.reply(
-      "Eu não vou fazer tu se bater, mencione outra pessoa"
-    );
+    return message.channel.send("❌ | Eu não vou fazer tu se bater, mencione outra pessoa");
   }
 
   let avatar = message.author.displayAvatarURL({ format: "png" });
