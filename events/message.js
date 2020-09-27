@@ -35,7 +35,7 @@ module.exports = async (client, message) => {
       const usuario = await database.findOne({ id: member.id })
       if (usuario) {
         if (usuario.afk === true) {
-          message.reply(`\`${member.tag}\` está AFK: ${usuario.afkReason}`)
+          message.channel.send(`<:notify:759607330597502976> | ${message.author}, \`${member.tag}\` está AFK: ${usuario.afkReason}`)
         }
       }
     })
