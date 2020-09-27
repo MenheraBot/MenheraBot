@@ -92,7 +92,7 @@ module.exports = {
         .setTitle("Caçada")
         .setColor("#faa40f")
         .setThumbnail(avatar)
-        .setFooter('Sabia que eu meu servidor de suporte, suas chances de sucesso são maiores?')
+        .setFooter('Sabia que em meu servidor de suporte, suas chances de sucesso são maiores?')
 
       switch (option) {
         case 'demônio':
