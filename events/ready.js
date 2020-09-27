@@ -11,6 +11,7 @@ module.exports = (client) => {
   }
 
  client.user.setActivity("Fui reiniciada com sucesso uwu")
+ console.log("Menhera se conectou com o Discord!")
     
   let status = [
     {name: "a moon ser perfeita", type: "WATCHING"},
