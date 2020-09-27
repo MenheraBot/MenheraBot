@@ -1,12 +1,12 @@
 const usuario = require("../../models/user.js");
 
 module.exports = {
-    name: "inventário",
-    aliases: ["inventario", "carteira", "inventory"],
+    name: "carteira",
+    aliases: ["carteira", "bank"],
     cooldown: 2,
     category: "economia",
-    description: "Veja o inventário de alguém",
-    usage: "m!inventário [@usuário]",
+    description: "Veja a carteira de alguém",
+    usage: "m!carteira [@usuário]",
     run: async (client, message, args) => {
 
         let pessoa = message.mentions.users.first() || client.users.cache.get(args[0]);
