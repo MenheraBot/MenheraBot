@@ -1,7 +1,7 @@
 module.exports = {
     name: "notify",
     aliases: ["notificar", "updates", "notificações"],
-    cooldown: 2,
+    cooldown: 5,
     category: "Dev",
     description: "Receba minhas notificações de atualização",
     usage: "m!notify",

@@ -1,7 +1,7 @@
 module.exports = {
   name: "8ball",
   aliases: ["perguntar", "futuro", "8"],
-  cooldown: 3,
+  cooldown: 2,
   category: "diversão",
   description: "Pergunte algo para a Menhera",
   usage: "m!8ball <pergunta>",

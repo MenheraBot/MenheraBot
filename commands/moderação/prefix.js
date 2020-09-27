@@ -3,7 +3,7 @@ const serverDb = require("../../models/guild.js")
 module.exports = {
   name: "prefix",
   aliases: ["changeprefix"],
-  cooldown: 2,
+  cooldown: 10,
   category: "moderação",
   description: "Troque meu prefixo neste servidor",
   usage: "m!prefix <prefixo>",

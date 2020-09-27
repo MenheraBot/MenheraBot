@@ -3,7 +3,7 @@ const usuario = require("../../models/user.js");
 module.exports = {
     name: "shop",
     aliases: ["loja", "vender", "comprar", "compra", "vende", "sell", "buy"],
-    cooldown: 2,
+    cooldown: 5,
     category: "economia",
     description: "Abra a loja da Menhera",
     usage: "m!daily",

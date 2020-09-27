@@ -1,11 +1,11 @@
-const { MessageEmbed } = require("discord.js");
+const { MessageEmbed, Collection } = require("discord.js");
 const Sentry = require("@sentry/node");
 const config = require("../config.json");
 const database = require("../models/user");
 const cmdDb = require("../models/cmds.js")
 const serverDb = require("../models/guild.js")
 
-const cooldown = new Set();
+const cooldowns = new Collection();
 
 module.exports = async (client, message) => {
 
@@ -66,6 +66,7 @@ module.exports = async (client, message) => {
   if (!command) return;
 
   if (command) {
+
     if (!user) {
       await new database({
         id: message.author.id,
@@ -118,12 +119,31 @@ module.exports = async (client, message) => {
       }
     }
 
-    if (cooldown.has(message.author.id)) {
-      message.delete().catch()
-      return message.channel.send("<:atencao:759603958418767922> | você está utilizando comandos rápido demais! Fica frio").then(msg => msg.delete({ timeout: 3500 })).catch();
+  
+    if (!cooldowns.has(command.name)) {
+      cooldowns.set(command.name, new Collection());
     }
 
-    if (!config.owner.includes(message.author.id)) cooldown.add(message.author.id);
+    if(!config.owner.includes(message.author.id)){
+    
+    const now = Date.now();
+    const timestamps = cooldowns.get(command.name);
+    const cooldownAmount = (command.cooldown || 3) * 1000;
+    
+    if (timestamps.has(message.author.id)) {
+      const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
+
+  	if (now < expirationTime) {
+		const timeLeft = (expirationTime - now) / 1000;
+    return message.channel.send(`<:atencao:759603958418767922> | Espere ${timeLeft.toFixed(1)} segundos antes de usar o comando \`${command.name}\` em específico`);
+	}
+}
+
+timestamps.set(message.author.id, now);
+setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
+
+    }
+
     command.run(client, message, args).catch(err => {
       console.log(err);
       Sentry.captureException(err);
@@ -133,8 +153,5 @@ module.exports = async (client, message) => {
 
   }
 
-  setTimeout(() => {
-    if (!config.owner.includes(message.author.id)) cooldown.delete(message.author.id)
-  }, 5000)
 
 }

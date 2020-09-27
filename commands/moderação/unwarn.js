@@ -3,7 +3,7 @@ const Warn = require("../../models/warn.js");
 module.exports = {
   name: "unwarn",
   aliases: ["desavisar", "delwarn"],
-  cooldown: 2,
+  cooldown: 5,
   category: "moderação",
   description: "Retire um aviso de um usuário",
   usage: "m!unwarn <usuário>",

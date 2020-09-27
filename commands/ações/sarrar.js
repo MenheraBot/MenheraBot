@@ -3,7 +3,7 @@ const Discord = require("discord.js");
 module.exports = {
   name: "sarrar",
   aliases: ["sarre", "brunoberti", "sarranti"],
-  cooldown: 2,
+  cooldown: 5,
   category: "ações",
   description: "Sarra comigo?",
   usage: "m!sarrar [@menção]",

@@ -8,7 +8,7 @@ const DBL = require("dblapi.js")
 module.exports = {
     name: "daily",
     aliases: ["diário", "diario", "dailyroll", "dr"],
-    cooldown: 2,
+    cooldown: 60,
     category: "economia",
     description: "Pegue seu DailyRolls de caçados",
     usage: "m!daily",

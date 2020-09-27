@@ -5,7 +5,7 @@ const Warn = require("../../models/warn.js")
 module.exports = {
   name: "avisos",
   aliases: ["warns", "warnslist", "punishmentlist"],
-  cooldown: 2,
+  cooldown: 10,
   category: "moderação",
   description: "Veja quantos warns uma pessoa tem",
   usage: "m!avisos <usuario>",

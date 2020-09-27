@@ -5,7 +5,7 @@ const user = require("../../models/user.js");
 module.exports = {
   name: "mamar",
   aliases: ["mame", "sugada", "chupar", "chupa", "glubglub", "suck"],
-  cooldown: 2,
+  cooldown: 3,
   category: "ações",
   description: "Da aquela mamada de qualidade monstra",
   usage: "m!mamar <@menção>",

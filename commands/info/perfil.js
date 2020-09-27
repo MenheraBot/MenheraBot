@@ -5,7 +5,7 @@ const user = require("../../models/user.js");
 module.exports = {
   name: "perfil",
   aliases: ["profile"],
-  cooldown: 10,
+  cooldown: 5,
   category: "info",
   description: "Veja o seu perfil, ou o de alguem",
   usage: "m!perfil [@menção]",
