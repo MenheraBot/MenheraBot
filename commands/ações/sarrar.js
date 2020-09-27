@@ -29,8 +29,8 @@ module.exports = {
 
       return message.channel.send(embed).then(msg => {
 
-        msg.react("✅").catch(err => message.channel.send("Ocorreu um erro ao adicionar uma reação, serasi eu tenho permissão para tal?"));
-        let filter = (reaction, usuario) => reaction.emoji.name === "✅" && usuario.id !== message.author.id && !usuario.bot;
+        msg.react("<:positivo:759603958485614652>").catch(err => message.channel.send("Ocorreu um erro ao adicionar uma reação, serasi eu tenho permissão para tal?"));
+        let filter = (reaction, usuario) => reaction.emoji.name === "<:positivo:759603958485614652>" && usuario.id !== message.author.id && !usuario.bot;
 
         let coletor = msg.createReactionCollector(filter, { max: 1, time: 30000 });
 

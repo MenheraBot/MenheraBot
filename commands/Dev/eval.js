@@ -25,7 +25,7 @@ module.exports = {
     const errorMessage = err.stack.length > 1800 ? `${err.stack.slice(0, 1800)}...` : err.stack
     const embed = new Discord.MessageEmbed()
     embed.setColor('#ff0000')
-    embed.setTitle(`❌ | Erro`)
+    embed.setTitle(`<:negacao:759603958317711371> | Erro`)
     embed.setDescription(`\`\`\`js\n${errorMessage}\`\`\``)
 
     message.channel.send(embed)

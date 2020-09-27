@@ -11,7 +11,7 @@ module.exports = {
   const argumentos = args.join(" ");
    var cor = '#' + ("000000" + Math.random().toString(16).slice(2, 8).toUpperCase()).slice(-6);
   
-  if(!argumentos) return message.channel.send("⚠️ | Encontrou um erro/bug? o que aconteceu? Dê-me detalhes");
+  if(!argumentos) return message.channel.send("<:atencao:759603958418767922> | Encontrou um erro/bug? o que aconteceu? Dê-me detalhes");
   
     const embed = new MessageEmbed()
     .setDescription(`${argumentos}`)
@@ -24,5 +24,5 @@ module.exports = {
   client.guilds.cache.get('717061688460967988').channels.cache.get('730906866896470097').send(embed);
 
   if(message.deletable) message.delete()
-  message.channel.send("✅ | Mutissimo obrigada por reportar este bug para minha dona");
+  message.channel.send("<:positivo:759603958485614652> | Mutissimo obrigada por reportar este bug para minha dona");
 }};

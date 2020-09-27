@@ -10,12 +10,12 @@ module.exports = {
   description: "Veja quantos warns uma pessoa tem",
   usage: "m!avisos <usuario>",
   run: async (client, message, args) => {
-    if (!message.member.hasPermission("MANAGE_MESSAGES")) return message.channel.send("❌ | Você precisa da permissão `MANAGE_MESSAGES` para utilizar este comando");
+    if (!message.member.hasPermission("MANAGE_MESSAGES")) return message.channel.send("<:negacao:759603958317711371> | Você precisa da permissão `MANAGE_MESSAGES` para utilizar este comando");
 
     const user = message.mentions.users.first() || client.users.cache.get(args[0]);
-    if(!user) return message.channel.send("❌ | Nenhum usuário encontrado");
-    if(user.bot) return message.channel.send("❌ | Bots são muito legais para receberem avisos");
-    if(!message.guild.members.cache.get(user.id)) return message.message.channel.send("❌ | Este membro não está neste servidor!!!")
+    if(!user) return message.channel.send("<:negacao:759603958317711371> | Nenhum usuário encontrado");
+    if(user.bot) return message.channel.send("<:negacao:759603958317711371> | Bots são muito legais para receberem avisos");
+    if(!message.guild.members.cache.get(user.id)) return message.message.channel.send("<:negacao:759603958317711371> | Este membro não está neste servidor!!!")
 
     //listas
 

@@ -17,5 +17,5 @@ module.exports = {
 		user.afkReason = reason
 		user.save()
 
-		message.channel.send("✅ | o modo AFK foi ativado! Para facilitar sua vida, vou desativá-lo caso mande uma mensagem!!!")
+		message.channel.send("<:positivo:759603958485614652> | o modo AFK foi ativado! Para facilitar sua vida, vou desativá-lo caso mande uma mensagem!!!")
 }};

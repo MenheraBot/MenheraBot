@@ -16,10 +16,10 @@ module.exports = {
     let user = await database.findOne({ id: message.author.id });
 
     const validOptions = ["demonios", "anjos", "semideuses", "deuses", "ajuda", "probabilidades"];
-    if (!args[0]) return message.channel.send(`❌ | ${message.author}, você deve escolher entre caçar \`${validOptions.join("`, `")}\``)
+    if (!args[0]) return message.channel.send(`<:negacao:759603958317711371> | ${message.author}, você deve escolher entre caçar \`${validOptions.join("`, `")}\``)
     const opção = validOptions.includes(args[0].normalize('NFD').replace(/[\u0300-\u036f]/g, ''));
 
-    if (!opção) return message.channel.send(`❌ | ${message.author}, você deve escolher entre caçar \`${validOptions.join("`, `")}\``)
+    if (!opção) return message.channel.send(`<:negacao:759603958317711371> | ${message.author}, você deve escolher entre caçar \`${validOptions.join("`, `")}\``)
 
     if (args[0] === "ajuda") return message.channel.send("**COMO FUNCIONA O CAÇAR?**\nVocê pode caçar a cada uma hora, e você pode escolher entre 4 caças: `demonios`, `anjos`, `semideuses` e `deuses`\nQuanto mais pra direita, mais valioso, mas também, mais dificil de se caçar, e menor a chance de sucesso\n**Boas Caçadas**")
     if (args[0] === "probabilidades") return message.channel.send("**PROBABILIDADES:**\nÉ selecionado um número aleatório dentro dos próximos. Cada número é a quantidade de caças\n\nDemônios = `[0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 4]`\nAnjos = `[0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2]`\nSemiDeuses = `[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];`\nDeuses = `[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]`")
@@ -71,7 +71,7 @@ module.exports = {
           break;
       }
     } else {
-      message.channel.send(`❌ | Descanse campeão ${message.author}, você já saiu na sua caçada. Tente novamente em **${moment.utc(parseInt(user.caçarTime - Date.now())).format("mm:ss")}** minutos`)
+      message.channel.send(`<:negacao:759603958317711371> | Descanse campeão ${message.author}, você já saiu na sua caçada. Tente novamente em **${moment.utc(parseInt(user.caçarTime - Date.now())).format("mm:ss")}** minutos`)
     }
 
   }

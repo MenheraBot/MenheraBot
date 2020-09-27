@@ -23,11 +23,11 @@ module.exports = {
   let avatar = message.author.displayAvatarURL({ format: "png" });
 
   if (!user) {
-    return message.channel.send("❌ | Se tu não matar ninguém, tu não comete crimes. STONKS");
+    return message.channel.send("<:negacao:759603958317711371> | Se tu não matar ninguém, tu não comete crimes. STONKS");
   }
 
   if (user === message.author) {
-    return message.channel.send("❌ | Ai, eu não gosto de suicídio...");
+    return message.channel.send("<:negacao:759603958317711371> | Ai, eu não gosto de suicídio...");
   }
 
   if (user.bot) {

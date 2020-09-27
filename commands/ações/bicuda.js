@@ -23,11 +23,11 @@ module.exports = {
   if(user && user.bot)  return message.channel.send(`${message.author} chutou um robô, se pa que quebrou a perna. Só se pa... assim...`);
 
   if (!user) {
-    return message.channel.send("❌ | Eae avatar, vai parar de chutar o ar? Menciona quem quer chutar.");
+    return message.channel.send("<:negacao:759603958317711371> | Eae avatar, vai parar de chutar o ar? Menciona quem quer chutar.");
   }
 
   if (user === message.author) {
-      return message.channel.send("❌ | ???? isso nem é possível cara, n tem como se autochutar. Mencione outro usuário por favor");
+      return message.channel.send("<:negacao:759603958317711371> | ???? isso nem é possível cara, n tem como se autochutar. Mencione outro usuário por favor");
   }
 
   let avatar = message.author.displayAvatarURL({ format: "png" });

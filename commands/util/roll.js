@@ -18,14 +18,14 @@ module.exports = {
           }).save()
     }
 
-    if (parseInt(user.caçarTime) < Date.now()) return message.channel.send(`❌ | Ei ${message.author}, você já pode caçar! Caçe antes de usar um Roll!`);
+    if (parseInt(user.caçarTime) < Date.now()) return message.channel.send(`<:negacao:759603958317711371> | Ei ${message.author}, você já pode caçar! Caçe antes de usar um Roll!`);
 
-    if(user.rolls < 1) return message.channel.send(`❌ | Você não possui DailyRolls! Use m!daily para resgatar um DR`);
+    if(user.rolls < 1) return message.channel.send(`<:negacao:759603958317711371> | Você não possui DailyRolls! Use m!daily para resgatar um DR`);
 
     user.rolls = user.rolls - 1;
     user.caçarTime = "000000000000"
     user.save()
-    message.channel.send(`✅ | Prontinho, você resetou seu tempo de caçadas, pode caçar!`)
+    message.channel.send(`<:positivo:759603958485614652> | Prontinho, você resetou seu tempo de caçadas, pode caçar!`)
     
     }}
 

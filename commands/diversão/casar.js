@@ -40,11 +40,11 @@ function casar(user, message, men, mencionado) {
 
   message.channel.send(`${mencionado} Aceitas se casar com ${message.author}? Você tem 15 segundos para aceitar`).then(msg => {
 
-    msg.react("✅").catch(err => message.channel.send("Ocorreu um erro ao adicionar uma reação, serasi eu tenho permissão para tal?"));
-    msg.react("❌").catch(err => message.channel.send("Ocorreu um erro ao adicionar uma reação, serasi eu tenho permissão para tal?"));
+    msg.react("<:positivo:759603958485614652>").catch(err => message.channel.send("Ocorreu um erro ao adicionar uma reação, serasi eu tenho permissão para tal?"));
+    msg.react("<:negacao:759603958317711371>").catch(err => message.channel.send("Ocorreu um erro ao adicionar uma reação, serasi eu tenho permissão para tal?"));
 
-    let filter = (reaction, usuario) => reaction.emoji.name === "✅" && usuario.id === mencionado.id;
-    let filter1 = (reação, user) => reação.emoji.name === "❌" && user.id === mencionado.id;
+    let filter = (reaction, usuario) => reaction.emoji.name === "<:positivo:759603958485614652>" && usuario.id === mencionado.id;
+    let filter1 = (reação, user) => reação.emoji.name === "<:negacao:759603958317711371>" && user.id === mencionado.id;
 
     let ncoletor = msg.createReactionCollector(filter1, { max: 1, time: 14500 });
     let coletor = msg.createReactionCollector(filter, { max: 1, time: 14500 });

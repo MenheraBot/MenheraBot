@@ -22,11 +22,11 @@ function divorciar(user, message, client) {
 
   message.channel.send(`Você realmente quer se divorciar de ${client.users.cache.get(user.casado)}`).then(msg => {
 
-    msg.react("✅");
-    msg.react("❌");
+    msg.react("<:positivo:759603958485614652>");
+    msg.react("<:negacao:759603958317711371>");
 
-    let filter = (reaction, usuario) => reaction.emoji.name === "✅" && usuario.id === message.author.id;
-    let filter1 = (reação, user) => reação.emoji.name === "❌" && user.id === message.author.id;
+    let filter = (reaction, usuario) => reaction.emoji.name === "<:positivo:759603958485614652>" && usuario.id === message.author.id;
+    let filter1 = (reação, user) => reação.emoji.name === "<:negacao:759603958317711371>" && user.id === message.author.id;
 
     let ncoletor = msg.createReactionCollector(filter1, { max: 1, time: 14500 });
     let coletor = msg.createReactionCollector(filter, { max: 1, time: 14500 });

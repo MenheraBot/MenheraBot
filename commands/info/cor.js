@@ -47,6 +47,6 @@ module.exports = {
     user.cor = findColor[0].cor
     user.save()
     
-    } else message.channel.send(`❌ | ${message.author} você não possui esta cor! Use m!cor para ver as cores disponíveis`)
+    } else message.channel.send(`<:negacao:759603958317711371> | ${message.author} você não possui esta cor! Use m!cor para ver as cores disponíveis`)
 
 }};

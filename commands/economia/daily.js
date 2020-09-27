@@ -41,11 +41,11 @@ module.exports = {
 			usuario.estrelinhas = usuario.estrelinhas + random;
 			usuario.rollTime = 43200000 + Date.now()
 			usuario.save()
-			message.channel.send(`✅ | obrigada por votar em mim bebezinho >.<\nComo forma de agradecimento, você recebeu um roll e ${random} estrelinhas!\nSua carteira atualizada está assim:\n🔑 | **${usuario.rolls}** rolls\n⭐ | **${usuario.estrelinhas}** estrelinhas`);
+			message.channel.send(`<:positivo:759603958485614652> | obrigada por votar em mim bebezinho >.<\nComo forma de agradecimento, você recebeu um roll e ${random} estrelinhas!\nSua carteira atualizada está assim:\n🔑 | **${usuario.rolls}** rolls\n⭐ | **${usuario.estrelinhas}** estrelinhas`);
 
 
 		} else {                                                     
-			message.channel.send(`❌ | você já resgatou seu DailyRoll! Tente novamente em **${(parseInt(usuario.rollTime - Date.now()) > 3600000) ? moment.utc(parseInt(usuario.rollTime - Date.now())).format("hh:mm:ss") : moment.utc(parseInt(usuario.rollTime - Date.now())).format("mm:ss")}**`)
+			message.channel.send(`<:negacao:759603958317711371> | você já resgatou seu DailyRoll! Tente novamente em **${(parseInt(usuario.rollTime - Date.now()) > 3600000) ? moment.utc(parseInt(usuario.rollTime - Date.now())).format("hh:mm:ss") : moment.utc(parseInt(usuario.rollTime - Date.now())).format("mm:ss")}**`)
 		}
  }}
 

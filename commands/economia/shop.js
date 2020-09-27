@@ -108,55 +108,55 @@ function lojaComprar(message, embedMessage, user, saldoAtual) {
                 switch (m.content) {
                     case '1':
                         if(user.cores.some(res => res.cor === coresDisponíveis[0].cor)) return message.channel.send(`🟡 | ${message.author} eu agradeço sua empolgação para comprar em meu brechó, mas você já possui esta cor!`).then(() => embedMessage.delete().catch)
-                        if (user.estrelinhas < coresDisponíveis[0].preço) return message.channel.send(`❌ | ${message.author} você não tem estrelinhas o suficiente para comprar esta cor!`).then(() => embedMessage.delete().catch)
+                        if (user.estrelinhas < coresDisponíveis[0].preço) return message.channel.send(`<:negacao:759603958317711371> | ${message.author} você não tem estrelinhas o suficiente para comprar esta cor!`).then(() => embedMessage.delete().catch)
                         user.estrelinhas = user.estrelinhas - coresDisponíveis[0].preço
                         user.cores.push(coresDisponíveis[0])
                         user.save()
-                        message.channel.send(`✅ | Certo! Você comprou a cor **${coresDisponíveis[0].nome}** por **${coresDisponíveis[0].preço}** ⭐! Você ficou com **${user.estrelinhas}** ⭐ estrelinhas`).then(() => embedMessage.delete().catch)
+                        message.channel.send(`<:positivo:759603958485614652> | Certo! Você comprou a cor **${coresDisponíveis[0].nome}** por **${coresDisponíveis[0].preço}** ⭐! Você ficou com **${user.estrelinhas}** ⭐ estrelinhas`).then(() => embedMessage.delete().catch)
                         break;
                     case '2':
                         if(user.cores.some(res => res.cor === coresDisponíveis[1].cor)) return message.channel.send(`🟡 | ${message.author} eu agradeço sua empolgação para comprar em meu brechó, mas você já possui esta cor!`).then(() => embedMessage.delete().catch)
-                        if (user.estrelinhas < coresDisponíveis[1].preço) return message.channel.send(`❌ | ${message.author} você não tem estrelinhas o suficiente para comprar esta cor!`).then(() => embedMessage.delete().catch)
+                        if (user.estrelinhas < coresDisponíveis[1].preço) return message.channel.send(`<:negacao:759603958317711371> | ${message.author} você não tem estrelinhas o suficiente para comprar esta cor!`).then(() => embedMessage.delete().catch)
                         user.estrelinhas = user.estrelinhas - coresDisponíveis[1].preço
                         user.cores.push(coresDisponíveis[1])
                         user.save()
-                        message.channel.send(`✅ | Certo! Você comprou a cor **${coresDisponíveis[1].nome}** por **${coresDisponíveis[1].preço}** ⭐! Você ficou com **${user.estrelinhas}** ⭐ estrelinhas`).then(() => embedMessage.delete().catch)
+                        message.channel.send(`<:positivo:759603958485614652> | Certo! Você comprou a cor **${coresDisponíveis[1].nome}** por **${coresDisponíveis[1].preço}** ⭐! Você ficou com **${user.estrelinhas}** ⭐ estrelinhas`).then(() => embedMessage.delete().catch)
                         break;
                     case '3':
                         if(user.cores.some(res => res.cor === coresDisponíveis[2].cor)) return message.channel.send(`🟡 | ${message.author} eu agradeço sua empolgação para comprar em meu brechó, mas você já possui esta cor!`).then(() => embedMessage.delete().catch)
-                        if (user.estrelinhas < coresDisponíveis[2].preço) return message.channel.send(`❌ | ${message.author} você não tem estrelinhas o suficiente para comprar esta cor!`).then(() => embedMessage.delete().catch)
+                        if (user.estrelinhas < coresDisponíveis[2].preço) return message.channel.send(`<:negacao:759603958317711371> | ${message.author} você não tem estrelinhas o suficiente para comprar esta cor!`).then(() => embedMessage.delete().catch)
                         user.estrelinhas = user.estrelinhas - coresDisponíveis[2].preço
                         user.cores.push(coresDisponíveis[2])
                         user.save()
-                        message.channel.send(`✅ | Certo! Você comprou a cor **${coresDisponíveis[2].nome}** por **${coresDisponíveis[2].preço}** ⭐! Você ficou com **${user.estrelinhas}** ⭐ estrelinhas`).then(() => embedMessage.delete().catch)
+                        message.channel.send(`<:positivo:759603958485614652> | Certo! Você comprou a cor **${coresDisponíveis[2].nome}** por **${coresDisponíveis[2].preço}** ⭐! Você ficou com **${user.estrelinhas}** ⭐ estrelinhas`).then(() => embedMessage.delete().catch)
                         break;
                     case '4':
                         if(user.cores.some(res => res.cor === coresDisponíveis[3].cor)) return message.channel.send(`🟡 | ${message.author} eu agradeço sua empolgação para comprar em meu brechó, mas você já possui esta cor!`).then(() => embedMessage.delete().catch)
-                        if (user.estrelinhas < coresDisponíveis[3].preço) return message.channel.send(`❌ | ${message.author} você não tem estrelinhas o suficiente para comprar esta cor!`).then(() => embedMessage.delete().catch)
+                        if (user.estrelinhas < coresDisponíveis[3].preço) return message.channel.send(`<:negacao:759603958317711371> | ${message.author} você não tem estrelinhas o suficiente para comprar esta cor!`).then(() => embedMessage.delete().catch)
                         user.estrelinhas = user.estrelinhas - coresDisponíveis[3].preço
                         user.cores.push(coresDisponíveis[3])
                         user.save()
-                        message.channel.send(`✅ | Certo! Você comprou a cor **${coresDisponíveis[3].nome}** por **${coresDisponíveis[3].preço}** ⭐! Você ficou com **${user.estrelinhas}** ⭐ estrelinhas`).then(() => embedMessage.delete().catch)
+                        message.channel.send(`<:positivo:759603958485614652> | Certo! Você comprou a cor **${coresDisponíveis[3].nome}** por **${coresDisponíveis[3].preço}** ⭐! Você ficou com **${user.estrelinhas}** ⭐ estrelinhas`).then(() => embedMessage.delete().catch)
                         break;
                     case '5':
                         if(user.cores.some(res => res.cor === coresDisponíveis[4].cor)) return message.channel.send(`🟡 | ${message.author} eu agradeço sua empolgação para comprar em meu brechó, mas você já possui esta cor!`).then(() => embedMessage.delete().catch)
-                        if (user.estrelinhas < coresDisponíveis[4].preço) return message.channel.send(`❌ | ${message.author} você não tem estrelinhas o suficiente para comprar esta cor!`).then(() => embedMessage.delete().catch)
+                        if (user.estrelinhas < coresDisponíveis[4].preço) return message.channel.send(`<:negacao:759603958317711371> | ${message.author} você não tem estrelinhas o suficiente para comprar esta cor!`).then(() => embedMessage.delete().catch)
                         user.estrelinhas = user.estrelinhas - coresDisponíveis[4].preço
                         user.cores.push(coresDisponíveis[4])
                         user.save()
-                        message.channel.send(`✅ | Certo! Você comprou a cor **${coresDisponíveis[4].nome}** por **${coresDisponíveis[4].preço}** ⭐! Você ficou com **${user.estrelinhas}** ⭐ estrelinhas`).then(() => embedMessage.delete().catch)
+                        message.channel.send(`<:positivo:759603958485614652> | Certo! Você comprou a cor **${coresDisponíveis[4].nome}** por **${coresDisponíveis[4].preço}** ⭐! Você ficou com **${user.estrelinhas}** ⭐ estrelinhas`).then(() => embedMessage.delete().catch)
                         break;
                     case '6':
                         if(user.cores.some(res => res.cor === coresDisponíveis[5].cor)) return message.channel.send(`🟡 | ${message.author} eu agradeço sua empolgação para comprar em meu brechó, mas você já possui esta cor!`).then(() => embedMessage.delete().catch)
-                        if (user.estrelinhas < coresDisponíveis[5].preço) return message.channel.send(`❌ | ${message.author} você não tem estrelinhas o suficiente para comprar esta cor!`).then(() => embedMessage.delete().catch)
+                        if (user.estrelinhas < coresDisponíveis[5].preço) return message.channel.send(`<:negacao:759603958317711371> | ${message.author} você não tem estrelinhas o suficiente para comprar esta cor!`).then(() => embedMessage.delete().catch)
                         user.estrelinhas = user.estrelinhas - coresDisponíveis[5].preço
                         user.cores.push(coresDisponíveis[5]) 
                         user.save()
-                        message.channel.send(`✅ | Certo! Você comprou a cor **${coresDisponíveis[5].nome}** por **${coresDisponíveis[5].preço}** ⭐! Você ficou com **${user.estrelinhas}** ⭐ estrelinhas`).then(() => embedMessage.delete().catch)
+                        message.channel.send(`<:positivo:759603958485614652> | Certo! Você comprou a cor **${coresDisponíveis[5].nome}** por **${coresDisponíveis[5].preço}** ⭐! Você ficou com **${user.estrelinhas}** ⭐ estrelinhas`).then(() => embedMessage.delete().catch)
                         break;
                     case '7':
                         if(user.cores.some(res => res.nome === coresDisponíveis[6].nome)) return message.channel.send(`🟡 | ${message.author} eu agradeço sua empolgação para comprar em meu brechó, mas você já possui esta cor!`).then(() => embedMessage.delete().catch)
-                        if (user.estrelinhas < coresDisponíveis[6].preço) return message.channel.send(`❌ | ${message.author} você não tem estrelinhas o suficiente para comprar esta cor!`).then(() => embedMessage.delete().catch)
+                        if (user.estrelinhas < coresDisponíveis[6].preço) return message.channel.send(`<:negacao:759603958317711371> | ${message.author} você não tem estrelinhas o suficiente para comprar esta cor!`).then(() => embedMessage.delete().catch)
                         
                         const hexFiltro = m => m.author.id === message.author.id;
                         const hexColletor = message.channel.createMessageCollector(hexFiltro, { max: 1, time: 30000, errors: ["time"] });
@@ -169,9 +169,9 @@ function lojaComprar(message, embedMessage, user, saldoAtual) {
                                 user.estrelinhas = user.estrelinhas - coresDisponíveis[6].preço
                                 user.cores.push({nome: '7 - Sua Escolha', cor: `#${m.content}`, preço: 1000000})
                                 user.save()
-                                message.channel.send(`✅ | UUUAUUUU!!! VOCÊ ACABOU DE COMPRAR UMA COR DE SUA ESCOLHA!!!\nSua escolha atual é **#${m.content}**\nVocê gastou **${coresDisponíveis[6].preço}** ⭐ e ficou com **${user.estrelinhas}** ⭐ estrelinhas`).then(() => embedMessage.delete().catch)
+                                message.channel.send(`<:positivo:759603958485614652> | UUUAUUUU!!! VOCÊ ACABOU DE COMPRAR UMA COR DE SUA ESCOLHA!!!\nSua escolha atual é **#${m.content}**\nVocê gastou **${coresDisponíveis[6].preço}** ⭐ e ficou com **${user.estrelinhas}** ⭐ estrelinhas`).then(() => embedMessage.delete().catch)
                             } else {
-                                return message.channel.send(`❌ | ${message.author} esta cor não é uma cor válida!`).then(() => embedMessage.delete().catch)
+                                return message.channel.send(`<:negacao:759603958317711371> | ${message.author} esta cor não é uma cor válida!`).then(() => embedMessage.delete().catch)
                             }
 
                         })
@@ -211,16 +211,16 @@ function lojaComprar(message, embedMessage, user, saldoAtual) {
                 const valor = parseInt(m.content);
                 if (isNaN(valor) || valor < 1) {
                     embedMessage.delete().catch()
-                    message.channel.send(`❌ | ${message.author}, este valor não é um número válido!`)
+                    message.channel.send(`<:negacao:759603958317711371> | ${message.author}, este valor não é um número válido!`)
                 } else {
 
-                    if ((valor * valorRoll) > user.estrelinhas) return message.channel.send(`❌ | ${message.author}, você não possui estrelas suficientes para comprar esta quantidade de rolls!`)
+                    if ((valor * valorRoll) > user.estrelinhas) return message.channel.send(`<:negacao:759603958317711371> | ${message.author}, você não possui estrelas suficientes para comprar esta quantidade de rolls!`)
 
                     user.estrelinhas = user.estrelinhas - (valor * valorRoll);
                     user.rolls = user.rolls + valor;
                     user.save()
 
-                    message.channel.send(`✅ | ${message.author}, você comprou **${valor}** 🔑 rolls por ${valor * valorRoll} ⭐ estrelinhas! \nAgora você tem **${user.rolls}** 🔑 e **${user.estrelinhas}**⭐`)
+                    message.channel.send(`<:positivo:759603958485614652> | ${message.author}, você comprou **${valor}** 🔑 rolls por ${valor * valorRoll} ⭐ estrelinhas! \nAgora você tem **${user.rolls}** 🔑 e **${user.estrelinhas}**⭐`)
                 }
             });
 
@@ -272,56 +272,56 @@ function lojaVender(message, embedMessage, user, saldoAtual) {
             
             if (isNaN(valor) || valor < 1) {
                 embedMessage.delete().catch()
-                return message.channel.send(`❌ | ${message.author}, este valor não é um número válido!`)
+                return message.channel.send(`<:negacao:759603958317711371> | ${message.author}, este valor não é um número válido!`)
             } else {
-                if (valor > user.caçados) return message.channel.send(`❌ | ${message.author}, você não possui todos estes demônios!`)
+                if (valor > user.caçados) return message.channel.send(`<:negacao:759603958317711371> | ${message.author}, você não possui todos estes demônios!`)
                 user.caçados = user.caçados - valor;
                 user.estrelinhas = user.estrelinhas + (valor * valorDemonio);
                 user.save()
-                message.channel.send(`✅ | ${message.author}, você vendeu **${valor}** <:DEMON:758765044443381780> demônios e recebeu **${valor * valorDemonio}** ⭐ estrelinhas!\nAgora você tem **${user.caçados}** <:DEMON:758765044443381780> e **${user.estrelinhas}**⭐`)
+                message.channel.send(`<:positivo:759603958485614652> | ${message.author}, você vendeu **${valor}** <:DEMON:758765044443381780> demônios e recebeu **${valor * valorDemonio}** ⭐ estrelinhas!\nAgora você tem **${user.caçados}** <:DEMON:758765044443381780> e **${user.estrelinhas}**⭐`)
             }
            
         } else if (cArgs[0] === "2"){
 
             if (isNaN(valor) || valor < 1) {
                 embedMessage.delete().catch()
-                message.channel.send(`❌ | ${message.author}, este valor não é um número válido!`)
+                message.channel.send(`<:negacao:759603958317711371> | ${message.author}, este valor não é um número válido!`)
             } else {
-                if (valor > user.anjos) return message.channel.send(`❌ | ${message.author}, você não possui todos estes anjos!`)
+                if (valor > user.anjos) return message.channel.send(`<:negacao:759603958317711371> | ${message.author}, você não possui todos estes anjos!`)
                 user.anjos = user.anjos - valor;
                 user.estrelinhas = user.estrelinhas + (valor * valorAnjo);
                 user.save()
-                message.channel.send(`✅ | ${message.author}, você vendeu **${valor}** <:ANGEL:758765044204437535> anjos e recebeu **${valor * valorAnjo}** ⭐ estrelinhas!\nAgora você tem **${user.anjos}** <:ANGEL:758765044204437535> e **${user.estrelinhas}**⭐`)
+                message.channel.send(`<:positivo:759603958485614652> | ${message.author}, você vendeu **${valor}** <:ANGEL:758765044204437535> anjos e recebeu **${valor * valorAnjo}** ⭐ estrelinhas!\nAgora você tem **${user.anjos}** <:ANGEL:758765044204437535> e **${user.estrelinhas}**⭐`)
             }
 
         } else if(cArgs[0] === "3"){
 
             if (isNaN(valor) || valor < 1) {
                 embedMessage.delete().catch()
-                message.channel.send(`❌ | ${message.author}, este valor não é um número válido!`)
+                message.channel.send(`<:negacao:759603958317711371> | ${message.author}, este valor não é um número válido!`)
             } else {
-                if (valor > user.semideuses) return message.channel.send(`❌ | ${message.author}, você não possui todos estes semideuses!`)
+                if (valor > user.semideuses) return message.channel.send(`<:negacao:759603958317711371> | ${message.author}, você não possui todos estes semideuses!`)
                 user.semideuses = user.semideuses - valor;
                 user.estrelinhas = user.estrelinhas + (valor * valorSD);
                 user.save()
-                message.channel.send(`✅ | ${message.author}, você vendeu **${valor}** <:SEMIGOD:758766732235374674> semideuses e recebeu **${valor * valorSD}** ⭐ estrelinhas!\nAgora você tem **${user.semideuses}** <:SEMIGOD:758766732235374674> e **${user.estrelinhas}**⭐`)
+                message.channel.send(`<:positivo:759603958485614652> | ${message.author}, você vendeu **${valor}** <:SEMIGOD:758766732235374674> semideuses e recebeu **${valor * valorSD}** ⭐ estrelinhas!\nAgora você tem **${user.semideuses}** <:SEMIGOD:758766732235374674> e **${user.estrelinhas}**⭐`)
             }
 
         } else if(cArgs[0] === "4"){
 
             if (isNaN(valor) || valor < 1) {
                 embedMessage.delete().catch()
-                message.channel.send(`❌ | ${message.author}, este valor não é um número válido!`)
+                message.channel.send(`<:negacao:759603958317711371> | ${message.author}, este valor não é um número válido!`)
             } else {
-                if (valor > user.deuses) return message.channel.send(`❌ | ${message.author}, você não possui todos estes deuses!`)
+                if (valor > user.deuses) return message.channel.send(`<:negacao:759603958317711371> | ${message.author}, você não possui todos estes deuses!`)
                 user.deuses = user.deuses - valor;
                 user.estrelinhas = user.estrelinhas + (valor * valorDeus);
                 user.save()
-                message.channel.send(`✅ | ${message.author}, você vendeu **${valor}** <:God:758474639570894899> deuses e recebeu **${valor * valorDeus}** ⭐ estrelinhas!\nAgora você tem **${user.deuses}** <:God:758474639570894899> e **${user.estrelinhas}**⭐`)
+                message.channel.send(`<:positivo:759603958485614652> | ${message.author}, você vendeu **${valor}** <:God:758474639570894899> deuses e recebeu **${valor * valorDeus}** ⭐ estrelinhas!\nAgora você tem **${user.deuses}** <:God:758474639570894899> e **${user.estrelinhas}**⭐`)
             }
         } else {
             embedMessage.delete().catch()
-            message.channel.send(`❌ | ${message.author}, esta opção não é válida!`)
+            message.channel.send(`<:negacao:759603958317711371> | ${message.author}, esta opção não é válida!`)
         }
     });
 }

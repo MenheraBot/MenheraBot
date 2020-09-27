@@ -11,7 +11,7 @@ module.exports = {
   const argumentos = args.join(" ");
    var cor = '#' + ("000000" + Math.random().toString(16).slice(2, 8).toUpperCase()).slice(-6);
   
-  if(!argumentos) return message.channel.send("⚠️ | Digite o que quer sugerir para a Lux sobre o bot");
+  if(!argumentos) return message.channel.send("<:atencao:759603958418767922> | Digite o que quer sugerir para a Lux sobre o bot");
   
     const embed = new MessageEmbed()
     .setDescription(`**${argumentos}**`)

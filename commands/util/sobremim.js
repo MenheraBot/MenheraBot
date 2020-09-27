@@ -12,7 +12,7 @@ module.exports = {
 
 
     const nota = args.join(" ");
-    if(!nota) return message.channel.send("❌ | digite o que queres colocar em seu 'Sobre Mim'");
+    if(!nota) return message.channel.send("<:negacao:759603958317711371> | digite o que queres colocar em seu 'Sobre Mim'");
 
     database.findOne({id: message.author.id}, (err,res) =>{
         if(err) console.log(err)
@@ -20,7 +20,7 @@ module.exports = {
         res.save()
     })
 
-    message.channel.send("✅ | Seu 'Sobre Mim' foi alterado com sucesso! Use m!perfil >.<")
+    message.channel.send("<:positivo:759603958485614652> | Seu 'Sobre Mim' foi alterado com sucesso! Use m!perfil >.<")
 
 
 }};

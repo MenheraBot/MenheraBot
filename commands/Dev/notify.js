@@ -8,15 +8,15 @@ module.exports = {
     
     run: async (client, message, args) => {
 
-        if(message.guild.id != "717061688460967988") return message.channel.send("❌ | Este comando só pode ser usado em meu servidor de suporte\n`m!suporte`");
+        if(message.guild.id != "717061688460967988") return message.channel.send("<:negacao:759603958317711371> | Este comando só pode ser usado em meu servidor de suporte\n`m!suporte`");
 
         const cargo = client.guilds.cache.get('717061688460967988').roles.cache.get('755593580285788280');
 
         if(message.member.roles.cache.has("755593580285788280")) {
         message.member.roles.remove(cargo);
-        message.channel.send("✅ | você não receberá mais notificações de atualizações minhas :(")
+        message.channel.send("<:positivo:759603958485614652> | você não receberá mais notificações de atualizações minhas :(")
         } else {
         message.member.roles.add(cargo)
-        message.channel.send("✅ | você receberá notificações de atualizações minhas >.<")
+        message.channel.send("<:positivo:759603958485614652> | você receberá notificações de atualizações minhas >.<")
         }
 }}

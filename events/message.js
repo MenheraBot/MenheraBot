@@ -114,20 +114,20 @@ module.exports = async (client, message) => {
     let c = await cmdDb.findById(command.name)
     if (c.maintenance) {
       if (!config.owner.includes(message.author.id)) {
-        return message.channel.send(`❌ | **MANUTENÇÃO**\n Este comando está em manutenção por tempo indeterminado!\n\n**Motivo:** ${c.maintenanceReason}`)
+        return message.channel.send(`<:negacao:759603958317711371> | **MANUTENÇÃO**\n Este comando está em manutenção por tempo indeterminado!\n\n**Motivo:** ${c.maintenanceReason}`)
       }
     }
 
     if (cooldown.has(message.author.id)) {
       message.delete().catch()
-      return message.reply("você está utilizando comandos rápido demais! Fica frio").then(msg => msg.delete({ timeout: 3500 })).catch();
+      return message.channel.send("<:atencao:759603958418767922> | você está utilizando comandos rápido demais! Fica frio").then(msg => msg.delete({ timeout: 3500 })).catch();
     }
 
     if (!config.owner.includes(message.author.id)) cooldown.add(message.author.id);
     command.run(client, message, args).catch(err => {
       console.log(err);
       Sentry.captureException(err);
-      message.reply("Ocorreu um erro na execução desse comando... Bugs e mais bugs...")
+      message.channel.send("<:atencao:759603958418767922> | Ocorreu um erro na execução desse comando... Bugs e mais bugs...")
     });
     console.log(`Comando: '${command.name}'. Autor: '${message.author.tag}' id: '${message.author.id}' | Servidor: '${message.guild.name}' ServerId: '${message.guild.id}'`);
 
