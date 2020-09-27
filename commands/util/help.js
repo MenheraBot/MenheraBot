@@ -60,6 +60,7 @@ function getCMD(client, message, input) {
     if (cmd.name) info = `**Comando**: ${cmd.name}`;
     if (cmd.aliases) info += `\n**Pode ser chamado por**: ${cmd.aliases.map(a => `\`${a}\``).join(", ")}`;
     if (cmd.description) info += `\n**Descrição**: ${cmd.description}`;
+    if(cmd.cooldown) info += `\n**Cooldown**: ${cmd.cooldown} segundos`
     if (cmd.usage) {
         info += `\n**Como usar**: ${cmd.usage}`;
         embed.setFooter(`Sintaxe: <> = necessita, [] = opcional`);
