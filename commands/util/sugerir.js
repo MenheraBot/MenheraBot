@@ -16,10 +16,10 @@ module.exports = {
     const embed = new MessageEmbed()
     .setDescription(`**${argumentos}**`)
     .setColor(cor)
-    .setThumbnail(message.author.displayAvatarURL())
+    .setThumbnail(message.author.displayAvatarURL({dynamic: true}))
     .setFooter(`ID do usuário: ${message.author.id}`)
     .setTimestamp()
-    .setAuthor(`Sugestão de ${message.author.tag}`, message.author.displayAvatarURL());
+    .setAuthor(`Sugestão de ${message.author.tag}`, message.author.displayAvatarURL({dynamic: true}));
   
   client.guilds.cache.get('717061688460967988').channels.cache.get('723765136648830996').send(embed);
 

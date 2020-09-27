@@ -5,6 +5,7 @@ module.exports = {
     category: "Dev",
     description: "Atualiza um comando sem reiniciar o bot",
     usage: "m!reload <comando>",
+    devsOnly: true,
     
     run: async (client, message, args) => {
 

@@ -12,15 +12,14 @@ module.exports = {
 
     const mencionado = message.mentions.users.first();
 
-    if (!mencionado) return message.reply("Mencione o usuário com que desejas casar");
-    if (mencionado.bot) return message.reply("voce não pode se casar com bots");
-    if(mencionado.id === message.author.id) return message.reply("Você não pode se casar consigo mesmo :(")
+    if (!mencionado) return message.channel.send("<:negacao:759603958317711371> | Mencione o usuário com que desejas casar");
+    if (mencionado.bot) return message.channel.send("<:negacao:759603958317711371> | voce não pode se casar com bots");
+    if(mencionado.id === message.author.id) return message.channel.send("<:negacao:759603958317711371> | Você não pode se casar consigo mesmo :(")
 
     db.findOne({ id: message.author.id }, (err, user) => {
       if (err) console.log(err);
-      if (!user) return message.reply("Mame alguém para que eu adicione-o à minha database")
       if (user.casado && user.casado != "false") {
-        return message.reply("Você já está casado!!")
+        return message.channel.send("<:atencao:759603958418767922> | Você já está casado!!")
       } else return casado(user, message, mencionado);
     }
     );
@@ -32,7 +31,7 @@ function casado(user, message, mencionado) {
     if (err) console.log(err);
     if (!men) return message.reply("Mame este usuário para adicioná-lo à minha database")
     if (men.casado && men.casado != "false") {
-      return message.reply("Este usuário já esta casado");
+      return message.channel.send("<:atencao:759603958418767922> | Este usuário já esta casado");
     } else return casar(user, message, men, mencionado);
   })
 }
@@ -40,11 +39,11 @@ function casar(user, message, men, mencionado) {
 
   message.channel.send(`${mencionado} Aceitas se casar com ${message.author}? Você tem 15 segundos para aceitar`).then(msg => {
 
-    msg.react("<:positivo:759603958485614652>").catch(err => message.channel.send("Ocorreu um erro ao adicionar uma reação, serasi eu tenho permissão para tal?"));
-    msg.react("<:negacao:759603958317711371>").catch(err => message.channel.send("Ocorreu um erro ao adicionar uma reação, serasi eu tenho permissão para tal?"));
+    msg.react("✅").catch(err => message.channel.send("Ocorreu um erro ao adicionar uma reação, serasi eu tenho permissão para tal?"));
+    msg.react("❌").catch(err => message.channel.send("Ocorreu um erro ao adicionar uma reação, serasi eu tenho permissão para tal?"));
 
-    let filter = (reaction, usuario) => reaction.emoji.name === "<:positivo:759603958485614652>" && usuario.id === mencionado.id;
-    let filter1 = (reação, user) => reação.emoji.name === "<:negacao:759603958317711371>" && user.id === mencionado.id;
+    let filter = (reaction, usuario) => reaction.emoji.name === "✅" && usuario.id === mencionado.id;
+    let filter1 = (reação, user) => reação.emoji.name === "❌" && user.id === mencionado.id;
 
     let ncoletor = msg.createReactionCollector(filter1, { max: 1, time: 14500 });
     let coletor = msg.createReactionCollector(filter, { max: 1, time: 14500 });
@@ -56,7 +55,7 @@ function casar(user, message, men, mencionado) {
 
     coletor.on("collect", cp => {
       msg.reactions.removeAll().catch();
-      message.channel.send(`${message.author} acaba de se casar com ${mencionado}`);
+      message.channel.send(`💍${message.author} acaba de se casar com ${mencionado}💍`);
 
 
       var data1 = new Date();
