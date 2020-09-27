@@ -16,13 +16,46 @@ module.exports = {
     let user = await database.findOne({ id: message.author.id });
 
     const validOptions = ["demonios", "anjos", "semideuses", "deuses", "ajuda", "probabilidades"];
+
+    const validArgs = [
+      {
+          opção: "demônio",
+          arguments: ["demonios", "demônios", "demons", "demonio", "demônio"]
+      },
+      {
+          opção: "anjos",
+          arguments: ["anjos", "anjo", "angels"]
+      },
+      {
+          opção: "semideuses",
+          arguments: ["semideuses", "semideus", "semi-deuses", "sd", "semi-deus"]
+      },
+      {
+          opção: "deus",
+          arguments: ["deus", "deuses", "gods", "god"]
+      },
+      {
+          opção: "ajuda",
+          arguments: ["ajudas", "help", "h", "ajuda"]
+      },
+      {
+        opção: "probabilidades",
+        arguments: ["probabilidades", "probabilidade", "probability", "probabilities"]
+      }
+  ];
+
+
     if (!args[0]) return message.channel.send(`<:negacao:759603958317711371> | ${message.author}, você deve escolher entre caçar \`${validOptions.join("`, `")}\``)
-    const opção = validOptions.includes(args[0].normalize('NFD').replace(/[\u0300-\u036f]/g, ''));
+    const selectedOption = validArgs.some(so => so.arguments.includes(args[0].toLowerCase()))
+      if (!selectedOption) return message.channel.send(`<:negacao:759603958317711371> | ${message.author}, você deve escolher entre caçar \`${validOptions.join("`, `")}\``)
+        const filtredOption = validArgs.filter(f => f.arguments.includes(args[0].toLowerCase()))
 
-    if (!opção) return message.channel.send(`<:negacao:759603958317711371> | ${message.author}, você deve escolher entre caçar \`${validOptions.join("`, `")}\``)
+        const option = filtredOption[0].opção
 
-    if (args[0] === "ajuda") return message.channel.send("**COMO FUNCIONA O CAÇAR?**\nVocê pode caçar a cada uma hora, e você pode escolher entre 4 caças: `demonios`, `anjos`, `semideuses` e `deuses`\nQuanto mais pra direita, mais valioso, mas também, mais dificil de se caçar, e menor a chance de sucesso\n**Boas Caçadas**")
-    if (args[0] === "probabilidades") return message.channel.send("**PROBABILIDADES:**\nÉ selecionado um número aleatório dentro dos próximos. Cada número é a quantidade de caças\n\nDemônios = `[0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 4]`\nAnjos = `[0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2]`\nSemiDeuses = `[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];`\nDeuses = `[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]`")
+    if (!option) return message.channel.send(`<:negacao:759603958317711371> | ${message.author}, você deve escolher entre caçar \`${validOptions.join("`, `")}\``)
+
+    if (option === "ajuda") return message.channel.send("**COMO FUNCIONA O CAÇAR?**\nVocê pode caçar a cada uma hora, e você pode escolher entre 4 caças: `demonios`, `anjos`, `semideuses` e `deuses`\nQuanto mais pra direita, mais valioso, mas também, mais dificil de se caçar, e menor a chance de sucesso\n**Boas Caçadas**")
+    if (option === "probabilidades") return message.channel.send("**PROBABILIDADES:**\nÉ selecionado um número aleatório dentro dos próximos. Cada número é a quantidade de caças\n\nDemônios = `[0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 4]`\nAnjos = `[0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2]`\nSemiDeuses = `[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];`\nDeuses = `[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]`")
 
     if (parseInt(user.caçarTime) < Date.now()) {
       let avatar = message.author.displayAvatarURL({ format: "png", dynamic: true });
@@ -31,8 +64,8 @@ module.exports = {
         .setColor("#faa40f")
         .setThumbnail(avatar)
 
-      switch (args[0].normalize('NFD').replace(/[\u0300-\u036f]/g, '')) {
-        case 'demonios':
+      switch (option) {
+        case 'demônio':
           const probabilidadeDemonio = [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 4];
           const dc = probabilidadeDemonio[Math.floor(Math.random() * probabilidadeDemonio.length)];
           user.caçados = user.caçados + dc;
@@ -59,7 +92,7 @@ module.exports = {
           embed.setDescription(`Você saiu para caçar semideuses com o Super Xandão, e caçou \`${ds}\` semideuses`)
           message.channel.send(embed)
           break;
-        case 'deuses':
+        case 'deus':
           const probabilidadeDeuses = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]; 
           const dd = probabilidadeDeuses[Math.floor(Math.random() * probabilidadeDeuses.length)];
           user.deuses = user.deuses + dd;
@@ -74,5 +107,4 @@ module.exports = {
       message.channel.send(`<:negacao:759603958317711371> | Descanse campeão ${message.author}, você já saiu na sua caçada. Tente novamente em **${moment.utc(parseInt(user.caçarTime - Date.now())).format("mm:ss")}** minutos`)
     }
 
-  }
-};
+  }};
