@@ -7,6 +7,8 @@ const rpgSchema = mongoose.Schema({
   armor: {type: Number, default: 0},
   damage: {type: Number, default: 0},
   mana: {type: Number, default: 0},
+  maxLife: {type: Number, default: 100},
+  maxMana: {type: Number, default: 20},
   abilityPower: {type: Number, default: 0},
   level: {type: Number, default: 0},
   xp: {type: Number, default: 0},

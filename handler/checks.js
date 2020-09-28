@@ -14,6 +14,7 @@ module.exports.confirmRegister = async (userId, message) => {
             user.armor = 5;
             user.damage = 25;
             user.mana = 20;
+            user.maxMana = 20;
             user.abilityPower = 1;
             user.abilities.push({
                 name: "Furtividade",
@@ -34,6 +35,7 @@ module.exports.confirmRegister = async (userId, message) => {
             user.armor = 20;
             user.damage = 15
             user.mana = 20
+            user.maxMana = 20;
             user.abilityPower = 1;
             user.abilities.push({
                 name: "Fúria",
@@ -54,6 +56,7 @@ module.exports.confirmRegister = async (userId, message) => {
             user.armor = 10;
             user.damage = 7;
             user.mana = 50;
+            user.maxMana = 50;
             user.abilityPower = 3;
             user.abilities.push({
                 name: "Maçã Dourada",
@@ -73,7 +76,8 @@ module.exports.confirmRegister = async (userId, message) => {
             const choiceEspadachim = unicPowersEspadachim[Math.floor(Math.random() * unicPowersEspadachim.length)];
             user.armor = 17;
             user.damage = 18,
-                user.mana = 20;
+            user.mana = 20;
+            user.maxMana = 20;
             user.abilityPower = 1;
             user.abilities.push({
                 name: "Golpe Duplo",
@@ -94,6 +98,7 @@ module.exports.confirmRegister = async (userId, message) => {
             user.armor = 7
             user.damage = 5
             user.mana = 60
+            user.maxMana = 60;
             user.abilityPower = 4
             user.abilities.push({
                 name: "EXPLOOOSION",
@@ -114,6 +119,7 @@ module.exports.confirmRegister = async (userId, message) => {
             user.armor = 10
             user.damage = 4
             user.mana = 60
+            user.maxMana = 60;
             user.abilityPower = 4
             user.abilities.push({
                 name: "Cura",
@@ -134,6 +140,7 @@ module.exports.confirmRegister = async (userId, message) => {
             user.armor = 18
             user.damage = 14
             user.mana = 20
+            user.maxMana = 20;
             user.abilityPower = 2
             user.abilities.push({
                 name: "Punhos de Aço",
@@ -153,6 +160,7 @@ module.exports.confirmRegister = async (userId, message) => {
             user.armor = 7
             user.damage = 5
             user.mana = 60
+            user.maxMana = 60;
             user.abilityPower = 4
             user.abilities.push({
                 name: "SUCUMBA MANO",
