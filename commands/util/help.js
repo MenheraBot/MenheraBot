@@ -26,6 +26,7 @@ function getAll(client, message) {
     embed.addField(`Economia (${getCommmandSize("economia", client)})`, getCategory("economia", client))
     embed.addField(`Info (${getCommmandSize("info", client)})`, getCategory("info", client))
     embed.addField(`Moderação (${getCommmandSize("moderação", client)})`, getCategory("moderação", client))
+    embed.addField(`RPG (${getCommmandSize("rpg", client)})`, getCategory("rpg", client))
     embed.addField(`Útil (${getCommmandSize("util", client)})`, getCategory("util", client))
 
     embed.addField("Links Adicionais", "[Adicione-me](https://discord.com/api/oauth2/authorize?client_id=708014856711962654&permissions=1007025271&scope=bot)|[Vote em mim](https://top.gg/bot/708014856711962654/vote)|[Meu servidor de Suporte](https://discord.gg/fZMdQbA)")
