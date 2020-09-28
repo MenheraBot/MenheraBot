@@ -92,7 +92,7 @@ module.exports.confirmRegister = async (userId, message) => {
             const unicPowersFeiticeiro = [{ name: "Linhagem: Mística", description: "**LINHAGEM:** as habilidades deste feiticeiro mudam com o tipo da linhagem\n**ATIVO:** Conjura esporos que dão dano no inimigo e tem chance de incapacitá-lo por 1 turno", cooldown: 7200000, damage: 8, heal: 0, cost: 20, type: "ativo" }, { name: "Linhagem: Dracônica", desctiption: "**LINHAGEM:** as habilidades deste feiticeiro mudam com o tipo da linhagem\n**ATIVO:** Conjura o poder do dragão, dando dano em seu alvo", cooldown: 3600000, damage: 6, heal: 0, cost: 20, type: "ativo" }, { name: "Linhagem: Demoníaca", description: "**LINHAGEM:** as habilidades deste feiticeiro mudam com o tipo da linhagem\n**ATIVO:** Rouba energia vital do inimigo", cooldown: 3600000, damage: 5, heal: 20, cost: 20, type: "ativo" }]
             const choiceFeiticeiro = unicPowersFeiticeiro[Math.floor(Math.random() * unicPowersFeiticeiro.length)];
             user.armor = 7
-            user.damage = 2
+            user.damage = 5
             user.mana = 60
             user.abilityPower = 4
             user.abilities.push({
@@ -103,7 +103,7 @@ module.exports.confirmRegister = async (userId, message) => {
                 heal: 0,
                 cost: 40
             })
-            user.inventory.push({ name: "Cajado", damage: 2, type: "Item" })
+            user.inventory.push({ name: "Cajado", damage: 5, type: "Item" })
             user.uniquePower = choiceFeiticeiro
             user.save()
             message.channel.send("<:positivo:759603958485614652> | Você foi registrado com sucesso! Use `m!status` para ver seus status")
@@ -123,7 +123,7 @@ module.exports.confirmRegister = async (userId, message) => {
                 heal: 40,
                 cost: 40
             })
-            user.inventory.push({ name: "Tomo Sagrado", damage: 1, type: "Item" })
+            user.inventory.push({ name: "Tomo Sagrado", damage: 5, type: "Arma" })
             user.uniquePower = choiceClerigo
             user.save()
             message.channel.send("<:positivo:759603958485614652> | Você foi registrado com sucesso! Use `m!status` para ver seus status")
@@ -148,10 +148,10 @@ module.exports.confirmRegister = async (userId, message) => {
             message.channel.send("<:positivo:759603958485614652> | Você foi registrado com sucesso! Use `m!status` para ver seus status")
             break;
         case 'Necromante':
-            const unicPowerNecromante = [{name: "Forró da meia idade", description: "Invoca um esqueleto que dá dano e evita o proximo ataque contra si", cooldown: 7200000, damage: 5, heal: 0, cost: 20, type: "ativo"}, {name: "Ômega 3", description: "~~Com o ômega 3, melhora a memória. Esse ômega 3, os médicos estão recomendando, ajuda a diminuir o risco de doênças~~\nCausa dano aos inimigos e cura a si mesmo", cooldown: 7200000, damage: 35, heal: 20, cost: 20, type: "ativo"}]
+            const unicPowerNecromante = [{name: "Forró da meia idade", description: "Invoca um esqueleto que dá dano e evita o proximo ataque contra si", cooldown: 7200000, damage: 5, heal: 0, cost: 20, type: "ativo"}, {name: "Transformação de Corpos", description: "Possessa o inimigo, fazendo com que ele se automutile", cooldown: 7200000, damage: 35, heal: 20, cost: 20, type: "ativo"}, {name: "Festa dos Mortos", description: "Invoca monstros que ja morreram naquele local, fazendo com que lutem contra o inimigo em seu lugar", cooldown: 7200000, damage: 30, heal: 0, cost: 30, type: "ativo"}]
             const choiceNecromante = unicPowerNecromante[Math.floor(Math.random() * unicPowerNecromante.length)];
             user.armor = 7
-            user.damage = 3
+            user.damage = 5
             user.mana = 60
             user.abilityPower = 4
             user.abilities.push({
