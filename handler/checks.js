@@ -104,7 +104,7 @@ module.exports.confirmRegister = async (userId, message) => {
                 name: "EXPLOOOSION",
                 description: "Cria uma explosão causando dano em área",
                 cooldown: 0,
-                damge: 13,
+                damage: 13,
                 heal: 0,
                 cost: 40
             })
