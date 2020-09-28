@@ -27,7 +27,7 @@ module.exports = async (client, message) => {
   let prefix;
   if(!server){
     prefix = config.prefix;
-  } else prefix = server.prefix;
+  } else prefix = server.prefix.toLowerCase();
 
   if (message.mentions.users.size >= 0) {
     message.mentions.users.forEach(async (member) => {
@@ -52,7 +52,7 @@ module.exports = async (client, message) => {
 
   if (message.content.startsWith(`<@!${client.user.id}>`) || message.content.startsWith(`<@${client.user.id}>`)) return message.channel.send(`Oizinho ${message.author}, meu prefixo neste servidor é '${prefix}'`);
 
-  if (!message.content.startsWith(prefix)) return;
+  if (!message.content.toLowerCase().startsWith(prefix)) return;
 
   if (!message.member) message.member = await message.guild.fetch(message);
 
