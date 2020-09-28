@@ -61,7 +61,7 @@ module.exports = {
     const habilidades = [
         {
            classe: "assassino",
-           habilidades:  [{ name: "Morte Instantânea", description: "Mata um alvo não-épico instantâneamente, sem chance de revidar", cooldown: 86400000, damage: 999999, heal: 0, cost: 50, type: "ativo" }, { name: "Lâmina Envenenada", description: "Envenena sua lâmina causando dano e lentidão ao seu inimigo", cooldown: 86400000, damage: 50, heal: 0, cost: 50, type: "ativo" }, { name: "Última Chance", desctiption: "Caso sua vida chegue a zero, você entra em modo furtivo, fugindo da morte e da batalha", cooldown: 86400000, damage: 0, heal: 0, cost:0, type: "passivo" }]
+           habilidades:  [{ name: "Morte Instantânea", description: "Mata um alvo não-épico instantâneamente, sem chance de revidar", cooldown: 86400000, damage: 999999, heal: 0, cost: 50, type: "ativo" }, { name: "Lâmina Envenenada", description: "Envenena sua lâmina causando dano e lentidão ao seu inimigo", cooldown: 86400000, damage: 50, heal: 0, cost: 50, type: "ativo" }, { name: "Última Chance", description: "Caso sua vida chegue a zero, você entra em modo furtivo, fugindo da morte e da batalha", cooldown: 86400000, damage: 0, heal: 0, cost:0, type: "passivo" }]
         },
         {
             classe: "barbaro",
@@ -77,11 +77,11 @@ module.exports = {
         },
         {
             classe: "espadachim",
-            habilidades: [{ name: "Tempestade de Golpes", desctiption: "Seus ataques tem chance de 12% desferir um ataque adicional", cooldown: 0, damage: 17, heal: 0, cost: 0, type: "passivo" }, { name: "Na Mão ou no Pé?", description: "Questiona seu inimigo dando a chance dele escolher qual membro desejas perder, a mão, ou o pé? Desferindo um golpe extremamente forte", cooldown: 86400000, damage: 50, heal: 0, cost: 35, type: "ativo" }, { name: "Sangramento", description: "Cada golpe desferido, há 50% de chance de aplicar sangramento no inimigo", cooldown: 0, damage: 2, heal: 0, cost: 0, type: "passivo" }]
+            habilidades: [{ name: "Tempestade de Golpes", description: "Seus ataques tem chance de 12% desferir um ataque adicional", cooldown: 0, damage: 17, heal: 0, cost: 0, type: "passivo" }, { name: "Na Mão ou no Pé?", description: "Questiona seu inimigo dando a chance dele escolher qual membro desejas perder, a mão, ou o pé? Desferindo um golpe extremamente forte", cooldown: 86400000, damage: 50, heal: 0, cost: 35, type: "ativo" }, { name: "Sangramento", description: "Cada golpe desferido, há 50% de chance de aplicar sangramento no inimigo", cooldown: 0, damage: 2, heal: 0, cost: 0, type: "passivo" }]
         },
         {
             classe: "feiticeiro",
-            habilidades:  [{ name: "Linhagem: Mística", description: "**LINHAGEM:** as habilidades deste feiticeiro mudam com o tipo da linhagem\n**ATIVO:** Conjura esporos que dão dano no inimigo e tem chance de incapacitá-lo por 1 turno", cooldown: 7200000, damage: 8, heal: 0, cost: 20, type: "ativo" }, { name: "Linhagem: Dracônica", desctiption: "**LINHAGEM:** as habilidades deste feiticeiro mudam com o tipo da linhagem\n**ATIVO:** Conjura o poder do dragão, dando dano em seu alvo", cooldown: 3600000, damage: 6, heal: 0, cost: 20, type: "ativo" }, { name: "Linhagem: Demoníaca", description: "**LINHAGEM:** as habilidades deste feiticeiro mudam com o tipo da linhagem\n**ATIVO:** Rouba energia vital do inimigo", cooldown: 3600000, damage: 5, heal: 20, cost: 20, type: "ativo" }]
+            habilidades:  [{ name: "Linhagem: Mística", description: "**LINHAGEM:** as habilidades deste feiticeiro mudam com o tipo da linhagem\n**ATIVO:** Conjura esporos que dão dano no inimigo e tem chance de incapacitá-lo por 1 turno", cooldown: 7200000, damage: 8, heal: 0, cost: 20, type: "ativo" }, { name: "Linhagem: Dracônica", description: "**LINHAGEM:** as habilidades deste feiticeiro mudam com o tipo da linhagem\n**ATIVO:** Conjura o poder do dragão, dando dano em seu alvo", cooldown: 3600000, damage: 6, heal: 0, cost: 20, type: "ativo" }, { name: "Linhagem: Demoníaca", description: "**LINHAGEM:** as habilidades deste feiticeiro mudam com o tipo da linhagem\n**ATIVO:** Rouba energia vital do inimigo", cooldown: 3600000, damage: 5, heal: 20, cost: 20, type: "ativo" }]
         },
         {
             classe: "monge",

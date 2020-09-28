@@ -9,7 +9,7 @@ module.exports.confirmRegister = async (userId, message) => {
 
     switch (user.class) {
         case 'Assassino':
-            const unicPowersAssassin = [{ name: "Morte Instantânea", description: "Mata um alvo não-épico instantâneamente, sem chance de revidar", cooldown: 86400000, damage: 999999, heal: 0, cost: 50, type: "ativo" }, { name: "Lâmina Envenenada", description: "Envenena sua lâmina causando dano e lentidão ao seu inimigo", cooldown: 86400000, damage: 50, heal: 0, cost: 50, type: "ativo" }, { name: "Última Chance", desctiption: "Caso sua vida chegue a zero, você entra em modo furtivo, fugindo da morte e da batalha", cooldown: 86400000, damage: 0, heal: 0,cost:0, type: "passivo" }];
+            const unicPowersAssassin = [{ name: "Morte Instantânea", description: "Mata um alvo não-épico instantâneamente, sem chance de revidar", cooldown: 86400000, damage: 999999, heal: 0, cost: 50, type: "ativo" }, { name: "Lâmina Envenenada", description: "Envenena sua lâmina causando dano e lentidão ao seu inimigo", cooldown: 86400000, damage: 50, heal: 0, cost: 50, type: "ativo" }, { name: "Última Chance", description: "Caso sua vida chegue a zero, você entra em modo furtivo, fugindo da morte e da batalha", cooldown: 86400000, damage: 0, heal: 0,cost:0, type: "passivo" }];
             const choiceAssassin = unicPowersAssassin[Math.floor(Math.random() * unicPowersAssassin.length)];
             user.armor = 5;
             user.damage = 25;
@@ -72,7 +72,7 @@ module.exports.confirmRegister = async (userId, message) => {
             message.channel.send("<:positivo:759603958485614652> | Você foi registrado com sucesso! Use `m!status` para ver seus status")
             break;
         case 'Espadachim':
-            const unicPowersEspadachim = [{ name: "Tempestade de Golpes", desctiption: "Seus ataques tem chance de 12% desferir um ataque adicional", cooldown: 0, damage: 17, heal: 0, cost: 0, type: "passivo" }, { name: "Na Mão ou no Pé?", description: "Questiona seu inimigo dando a chance dele escolher qual membro desejas perder, a mão, ou o pé? Desferindo um golpe extremamente forte", cooldown: 86400000, damage: 50, heal: 0, cost: 35, type: "ativo" }, { name: "Sangramento", description: "Cada golpe desferido, há 50% de chance de aplicar sangramento no inimigo", cooldown: 0, damage: 2, heal: 0, cost: 0, type: "passivo" }]
+            const unicPowersEspadachim = [{ name: "Tempestade de Golpes", description: "Seus ataques tem chance de 12% desferir um ataque adicional", cooldown: 0, damage: 17, heal: 0, cost: 0, type: "passivo" }, { name: "Na Mão ou no Pé?", description: "Questiona seu inimigo dando a chance dele escolher qual membro desejas perder, a mão, ou o pé? Desferindo um golpe extremamente forte", cooldown: 86400000, damage: 50, heal: 0, cost: 35, type: "ativo" }, { name: "Sangramento", description: "Cada golpe desferido, há 50% de chance de aplicar sangramento no inimigo", cooldown: 0, damage: 2, heal: 0, cost: 0, type: "passivo" }]
             const choiceEspadachim = unicPowersEspadachim[Math.floor(Math.random() * unicPowersEspadachim.length)];
             user.armor = 17;
             user.damage = 18,
