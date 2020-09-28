@@ -23,7 +23,7 @@ module.exports = {
     .addFields([
       {
         name: `🩸 | Vida`,
-        value: user.life,
+        value: user.life + '/' + user.maxLife,
         inline:true
       },
       {
@@ -43,7 +43,7 @@ module.exports = {
     }
     ,{
       name: `💧 | Mana`,
-      value: user.mana,
+      value: user.mana + '/' + user.maxMana,
       inline:true
     },
     {
