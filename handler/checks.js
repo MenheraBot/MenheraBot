@@ -1,15 +1,68 @@
 const databaseRPG = require("../models/rpg.js")
+const mobs = require("../models/mobs.js")
+const moment = require("moment")
 
-module.exports = (user, message) => {
+module.exports.getEnemy = async (message) => {
 
+    const user = await databaseRPG.findById(message.author.id)
+
+    let initialEnemy = [];
+    let mediumEnemy = [];
+    let hardEnemy = [];
+
+    await mobs.find({},
+        function (err, res) {
+            res.forEach(mob => {
+                if (mob.type === 'inicial') initialEnemy.push(mob)
+                if (mob.type === 'medio') mediumEnemy.push(mob)
+                if (mob.tyoe === 'hard') hardEnemy.push(mob)
+            })
+        })
+
+        let monstro;
+
+    if (user.level < 5) {
+        monstro = initialEnemy[Math.floor(Math.random() * initialEnemy.length)];
+    } else if (user.level > 4 && user.level < 10) {
+        monstro = mediumEnemy[Math.floor(Math.random() * mediumEnemy.length)];
+    } else if (user.level > 9) {
+        monstro = hardEnemy[Math.floor(Math.random() * hardEnemy.length)];
+    }
+    return monstro;
 }
+
+
+module.exports.initialChecks = async (user, message) => {
+
+    let pass = true
+    let motivo = [];
+
+    if (user.life < 1) {
+        pass = false
+        motivo.push({ name: "Sem Vida", value: `Você está sem vida, e precisa descansar por mais **${(parseInt(user.death - Date.now()) > 3600000) ? moment.utc(parseInt(user.death - Date.now())).format("hh:mm:ss") : moment.utc(parseInt(user.death - Date.now())).format("mm:ss")}** horas` })
+    }
+    if (user.dungeonCooldown > Date.now()) {
+        pass = false
+        motivo.push({ name: "Cansaço", value: `Você já visitou a dungeon e precisa descansar por mais **${moment.utc(parseInt(user.dungeonCooldown - Date.now())).format("mm:ss")}** minutos` })
+    }
+
+    if (!pass) {
+        let texto = `<:negacao:759603958317711371> | Você não pode visitar a dungeon pelos seguintes motivos:`;
+        motivo.forEach(m => {
+            texto += `\n**${m.name}:** ${m.value}`
+        })
+        message.channel.send(texto)
+    }
+    return pass;
+}
+
 module.exports.confirmRegister = async (userId, message) => {
 
     const user = await databaseRPG.findById(userId);
 
     switch (user.class) {
         case 'Assassino':
-            const unicPowersAssassin = [{ name: "Morte Instantânea", description: "Mata um alvo não-épico instantâneamente, sem chance de revidar", cooldown: 86400000, damage: 999999, heal: 0, cost: 50, type: "ativo" }, { name: "Lâmina Envenenada", description: "Envenena sua lâmina causando dano e lentidão ao seu inimigo", cooldown: 86400000, damage: 50, heal: 0, cost: 50, type: "ativo" }, { name: "Última Chance", description: "Caso sua vida chegue a zero, você entra em modo furtivo, fugindo da morte e da batalha", cooldown: 86400000, damage: 0, heal: 0,cost:0, type: "passivo" }];
+            const unicPowersAssassin = [{ name: "Morte Instantânea", description: "Mata um alvo não-épico instantâneamente, sem chance de revidar", cooldown: 86400000, damage: 999999, heal: 0, cost: 50, type: "ativo" }, { name: "Lâmina Envenenada", description: "Envenena sua lâmina causando dano e lentidão ao seu inimigo", cooldown: 86400000, damage: 50, heal: 0, cost: 50, type: "ativo" }, { name: "Última Chance", description: "Caso sua vida chegue a zero, você entra em modo furtivo, fugindo da morte e da batalha", cooldown: 86400000, damage: 0, heal: 0, cost: 0, type: "passivo" }];
             const choiceAssassin = unicPowersAssassin[Math.floor(Math.random() * unicPowersAssassin.length)];
             user.armor = 5;
             user.damage = 25;
@@ -18,7 +71,7 @@ module.exports.confirmRegister = async (userId, message) => {
             user.abilityPower = 1;
             user.abilities.push({
                 name: "Furtividade",
-                desctiption: "Entra em modo furtivo, podendo fugir de situações perigosas, ou mesmo atacar pelo flanco",
+                description: "Entra em modo furtivo, podendo fugir de situações perigosas, ou mesmo atacar pelo flanco",
                 cooldown: 7200000,
                 damage: 0,
                 heal: 0,
@@ -76,7 +129,7 @@ module.exports.confirmRegister = async (userId, message) => {
             const choiceEspadachim = unicPowersEspadachim[Math.floor(Math.random() * unicPowersEspadachim.length)];
             user.armor = 17;
             user.damage = 18,
-            user.mana = 20;
+                user.mana = 20;
             user.maxMana = 20;
             user.abilityPower = 1;
             user.abilities.push({
@@ -93,7 +146,7 @@ module.exports.confirmRegister = async (userId, message) => {
             message.channel.send("<:positivo:759603958485614652> | Você foi registrado com sucesso! Use `m!status` para ver seus status")
             break;
         case 'Feiticeiro':
-            const unicPowersFeiticeiro = [{ name: "Linhagem: Mística", description: "**LINHAGEM:** as habilidades deste feiticeiro mudam com o tipo da linhagem\n**ATIVO:** Conjura esporos que dão dano no inimigo e tem chance de incapacitá-lo por 1 turno", cooldown: 7200000, damage: 8, heal: 0, cost: 20, type: "ativo" }, { name: "Linhagem: Dracônica", desctiption: "**LINHAGEM:** as habilidades deste feiticeiro mudam com o tipo da linhagem\n**ATIVO:** Conjura o poder do dragão, dando dano em seu alvo", cooldown: 3600000, damage: 6, heal: 0, cost: 20, type: "ativo" }, { name: "Linhagem: Demoníaca", description: "**LINHAGEM:** as habilidades deste feiticeiro mudam com o tipo da linhagem\n**ATIVO:** Rouba energia vital do inimigo", cooldown: 3600000, damage: 5, heal: 20, cost: 20, type: "ativo" }]
+            const unicPowersFeiticeiro = [{ name: "Linhagem: Mística", description: "**LINHAGEM:** as habilidades deste feiticeiro mudam com o tipo da linhagem\n**ATIVO:** Conjura esporos que dão dano no inimigo e tem chance de incapacitá-lo por 1 turno", cooldown: 7200000, damage: 8, heal: 0, cost: 20, type: "ativo" }, { name: "Linhagem: Dracônica", description: "**LINHAGEM:** as habilidades deste feiticeiro mudam com o tipo da linhagem\n**ATIVO:** Conjura o poder do dragão, dando dano em seu alvo", cooldown: 3600000, damage: 6, heal: 0, cost: 20, type: "ativo" }, { name: "Linhagem: Demoníaca", description: "**LINHAGEM:** as habilidades deste feiticeiro mudam com o tipo da linhagem\n**ATIVO:** Rouba energia vital do inimigo", cooldown: 3600000, damage: 5, heal: 20, cost: 20, type: "ativo" }]
             const choiceFeiticeiro = unicPowersFeiticeiro[Math.floor(Math.random() * unicPowersFeiticeiro.length)];
             user.armor = 7
             user.damage = 5
@@ -114,7 +167,7 @@ module.exports.confirmRegister = async (userId, message) => {
             message.channel.send("<:positivo:759603958485614652> | Você foi registrado com sucesso! Use `m!status` para ver seus status")
             break;
         case 'Clérigo':
-            const unicPowersClerigo = [{ name: "Chama Divina", description: "Roga pelo fogo sagrado queimando seus inimigos", cooldown: 0, damage: 7, heal: 0, cost: 20, type: "ativo" }, { name: "Benção Elemental", description: "Abençoa o alvo aumentando seu dano base e sua armadura", damage: 0, cooldown:7200000, heal: 0, cost: 35, type: "ativo" }, { name: "Castigo Divino", description: "Reduz a armadura do inimigo", cooldown:7200000, damage: 0, heal: 0, cost: 20, type: "ativo" }]
+            const unicPowersClerigo = [{ name: "Chama Divina", description: "Roga pelo fogo sagrado queimando seus inimigos", cooldown: 0, damage: 7, heal: 0, cost: 20, type: "ativo" }, { name: "Benção Elemental", description: "Abençoa o alvo aumentando seu dano base e sua armadura", damage: 0, cooldown: 7200000, heal: 0, cost: 35, type: "ativo" }, { name: "Castigo Divino", description: "Reduz a armadura do inimigo", cooldown: 7200000, damage: 0, heal: 0, cost: 20, type: "ativo" }]
             const choiceClerigo = unicPowersClerigo[Math.floor(Math.random() * unicPowersClerigo.length)];
             user.armor = 10
             user.damage = 4
@@ -135,7 +188,7 @@ module.exports.confirmRegister = async (userId, message) => {
             message.channel.send("<:positivo:759603958485614652> | Você foi registrado com sucesso! Use `m!status` para ver seus status")
             break;
         case 'Monge':
-            const unicPowersMonge = [{name: "Mente Tranquila", description: "Concentra-se no pensamento, aumentando sua armadura", cooldown: 3600000, damage: 0, heal: 0, cost: 20, type: "ativo"}, {name: "Peteleco Espiritual", description: "Da um peteleco nozovido do inimigo, causando dano BRUTAL", cooldown: 7200000, damage: 30, heal: 0, cost: 35, type: "ativo"}]
+            const unicPowersMonge = [{ name: "Mente Tranquila", description: "Concentra-se no pensamento, aumentando sua armadura", cooldown: 3600000, damage: 0, heal: 0, cost: 20, type: "ativo" }, { name: "Peteleco Espiritual", description: "Da um peteleco nozovido do inimigo, causando dano BRUTAL", cooldown: 7200000, damage: 30, heal: 0, cost: 35, type: "ativo" }]
             const choiceMonge = unicPowersMonge[Math.floor(Math.random() * unicPowersMonge.length)];
             user.armor = 18
             user.damage = 14
@@ -155,7 +208,7 @@ module.exports.confirmRegister = async (userId, message) => {
             message.channel.send("<:positivo:759603958485614652> | Você foi registrado com sucesso! Use `m!status` para ver seus status")
             break;
         case 'Necromante':
-            const unicPowerNecromante = [{name: "Forró da meia idade", description: "Invoca um esqueleto que dá dano e evita o proximo ataque contra si", cooldown: 7200000, damage: 5, heal: 0, cost: 20, type: "ativo"}, {name: "Transformação de Corpos", description: "Possessa o inimigo, fazendo com que ele se automutile", cooldown: 7200000, damage: 35, heal: 20, cost: 20, type: "ativo"}, {name: "Festa dos Mortos", description: "Invoca monstros que ja morreram naquele local, fazendo com que lutem contra o inimigo em seu lugar", cooldown: 7200000, damage: 30, heal: 0, cost: 30, type: "ativo"}]
+            const unicPowerNecromante = [{ name: "Forró da meia idade", description: "Invoca um esqueleto que dá dano e evita o proximo ataque contra si", cooldown: 7200000, damage: 5, heal: 0, cost: 20, type: "ativo" }, { name: "Transformação de Corpos", description: "Possessa o inimigo, fazendo com que ele se automutile", cooldown: 7200000, damage: 35, heal: 20, cost: 20, type: "ativo" }, { name: "Festa dos Mortos", description: "Invoca monstros que ja morreram naquele local, fazendo com que lutem contra o inimigo em seu lugar", cooldown: 7200000, damage: 30, heal: 0, cost: 30, type: "ativo" }]
             const choiceNecromante = unicPowerNecromante[Math.floor(Math.random() * unicPowerNecromante.length)];
             user.armor = 7
             user.damage = 5
@@ -168,9 +221,9 @@ module.exports.confirmRegister = async (userId, message) => {
                 cooldown: 3600000,
                 damage: 12,
                 heal: 0,
-                cost:20
+                cost: 20
             })
-            user.inventory.push({name: "Foice", damage: 5, type: "Arma"})
+            user.inventory.push({ name: "Foice", damage: 5, type: "Arma" })
             user.uniquePower = choiceNecromante
             user.save()
             message.channel.send("<:positivo:759603958485614652> | Você foi registrado com sucesso! Use `m!status` para ver seus status")
