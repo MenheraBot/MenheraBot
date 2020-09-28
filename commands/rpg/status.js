@@ -62,12 +62,12 @@ module.exports = {
       inline: true
     },
     {
-      name: `🪙 | Coins`,
+      name: `💎 | Pedras Magicas`,
       value: user.money,
       inline: true
     },
     {
-      name: `🪄 | Habilidade Única`,
+      name: `⚗️ | Habilidade Única`,
       value: user.uniquePower.name,
       inline: true
     }
