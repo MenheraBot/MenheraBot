@@ -102,7 +102,7 @@ module.exports = {
     const option = filtredOption[0]
     
     option.habilidades.forEach(hab => {
-        embed.addField(hab.name, `📜 | **Descrição:** ${hab.description}\nn⚔️ | **Dano:** ${hab.damage}\n💉 | **Cura:** ${hab.heal}\n💧 | **Custo:** ${hab.cost}\n🧿 | **Tipo:** ${hab.type}`)
+        embed.addField(hab.name, `📜 | **Descrição:** ${hab.description}\n⚔️ | **Dano:** ${hab.damage}\n💉 | **Cura:** ${hab.heal}\n💧 | **Custo:** ${hab.cost}\n🧿 | **Tipo:** ${hab.type}`)
     })
 
     message.channel.send(message.author, embed)
