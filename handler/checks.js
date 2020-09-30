@@ -240,7 +240,7 @@ module.exports.confirmRegister = async (userId, message) => {
                 name: "Furtividade",
                 description: "Entra em modo furtivo, podendo fugir de situações perigosas, ou mesmo atacar pelo flanco",
                 cooldown: 7200000,
-                damage: 0,
+                damage: 15,
                 heal: 0,
                 cost: 10
             })
