@@ -84,7 +84,7 @@ module.exports = {
         },
         {
             classe: "monge",
-            habilidades:[{ name: "Mente Tranquila", description: "Concentra-se no pensamento, aumentando sua armadura", cooldown: 3600000, damage: 0, heal: 0, cost: 20, type: "ativo" }, { name: "Peteleco Espiritual", description: "Da um peteleco nozovido do inimigo, causando dano BRUTAL", cooldown: 7200000, damage: 30, heal: 0, cost: 35, type: "ativo" }]
+            habilidades:[ { name: "Peteleco Espiritual", description: "Da um peteleco nozovido do inimigo, causando dano BRUTAL", cooldown: 7200000, damage: 30, heal: 0, cost: 35, type: "ativo" }]
         },
         {
             classe: "necromante",

@@ -361,7 +361,7 @@ module.exports.confirmRegister = async (userId, message) => {
             message.channel.send("<:positivo:759603958485614652> | Você foi registrado com sucesso! Use `m!status` para ver seus status")
             break;
         case 'Monge':
-            const unicPowersMonge = [{ name: "Mente Tranquila", description: "Concentra-se no pensamento, aumentando sua armadura", cooldown: 3600000, damage: 0, heal: 0, cost: 20, type: "ativo" }, { name: "Peteleco Espiritual", description: "Da um peteleco nozovido do inimigo, causando dano BRUTAL", cooldown: 7200000, damage: 30, heal: 0, cost: 35, type: "ativo" }]
+            const unicPowersMonge = [{ name: "Peteleco Espiritual", description: "Da um peteleco nozovido do inimigo, causando dano BRUTAL", cooldown: 7200000, damage: 30, heal: 0, cost: 35, type: "ativo" }]
             const choiceMonge = unicPowersMonge[Math.floor(Math.random() * unicPowersMonge.length)];
             user.armor = 18
             user.damage = 14
@@ -372,7 +372,7 @@ module.exports.confirmRegister = async (userId, message) => {
                 name: "Punhos de Aço",
                 description: "Fortalece seus punhos, aumentando seu dano físico",
                 cooldown: 3600000,
-                damage: 5,
+                damage: 7,
                 heal: 0,
                 cost: 20
             })
