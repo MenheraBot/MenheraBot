@@ -1,3 +1,4 @@
+const { MessageEmbed } = require("discord.js");
 const usuario = require("../../models/user.js");
 
 module.exports = {
@@ -15,7 +16,49 @@ module.exports = {
         let user = await usuario.findOne({ id: pessoa.id });
         if (!user) return message.channel.send("<:negacao:759603958317711371> | Este usuário não está em minha database")
 
-        message.channel.send(`**Carteira de ${pessoa.tag}**\n\n⭐ **${user.estrelinhas}** estrelinhas\n🔑 **${user.rolls}** rolls\n<:DEMON:758765044443381780> **${user.caçados}** demônios\n<:ANGEL:758765044204437535> **${user.anjos}** anjos\n<:SEMIGOD:758766732235374674> **${user.semideuses}** semideuses\n<:God:758474639570894899> **${user.deuses}** deuses.`)
+        let cor;
+
+        if (user.cor) {
+            cor = user.cor
+        } else cor = "#a788ff";
+
+        const embed = new MessageEmbed()
+            .setTitle(`Carteira de ${pessoa.tag}`)
+            .setColor(cor)
+            .addFields([
+                {
+                    name: "⭐ | Estrelinhas",
+                    value: `**${user.estrelinhas}**`,
+                    inline: true
+                },
+                {
+                    name: "🔑 | Rolls",
+                    value: `**${user.rolls}**`,
+                    inline: true
+                },
+                {
+                    name: "<:DEMON:758765044443381780> | Demônios ",
+                    value: `**${user.caçados}**`,
+                    inline: true
+                },
+                {
+                    name: "<:ANGEL:758765044204437535> | Anjos",
+                    value: `**${user.anjos}**`,
+                    inline: true
+                },
+                {
+                    name: "<:SemiGod:758766732235374674> | Semideuses",
+                    value: `**${user.semideuses}**`,
+                    inline: true
+                },
+                {
+                    name: "<:God:758474639570894899> | Deuses",
+                    value: `**${user.deuses}**`,
+                    inline: true
+                }
+            ])
+
+        message.channel.send(message.author, embed)
     }
 }
 

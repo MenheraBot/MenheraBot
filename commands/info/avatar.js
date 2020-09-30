@@ -1,4 +1,5 @@
 const {MessageEmbed} = require("discord.js");
+const database = require("../../models/user.js")
 module.exports = {
   name: "avatar",
   aliases: ["pfp"],
@@ -11,6 +12,14 @@ module.exports = {
   let user = message.mentions.users.first() || client.users.cache.get(args[0]);
 
   if (!user) user = message.author;
+
+  let cor;
+
+  const db = await database.findOne({id: user.id})
+
+  if(db && db.cor){
+     cor = db.cor
+    } else cor = "#a788ff";
   
   const img = user.displayAvatarURL({
     dynamic: true,
@@ -20,6 +29,7 @@ module.exports = {
   let embed = new MessageEmbed()
     .setTitle(`Avatar de ${user.username}`)
     .setImage(img)
+    .setColor(cor)
     .setFooter("Que imagem linda omodeuso");
 
     if(user.id === client.user.id){
@@ -29,8 +39,6 @@ module.exports = {
     embed.setFooter("Eu sou muito linda né vei tem como não")
    
   }
-
-  if(user.id === "549288328772583424") embed.setFooter("Nhawww a moonzinha é tudo be bom né").setColor('#4b93d5').setTitle("Avatar da Moon A.K.A. Afrodite")
 
   message.channel.send(message.author, embed);
 }};
