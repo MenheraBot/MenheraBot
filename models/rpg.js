@@ -16,12 +16,12 @@ const rpgSchema = mongoose.Schema({
   abilities: {type: Array, default: []},
   abilitiesCooldown: {type: Array, default: []},
   uniquePower: {type: Object},
-  uniquePowerCooldown: {type: String, default: "00000000"},
   loots: {type: Array, default: []},
   inventory: {type: Array, default:[]},
   money: {type: Number, default: 0},
   dungeonCooldown: {type: String, default: "00000000"},
-  death: {type: String, default: "00000000"}
+  death: {type: String, default: "00000000"},
+  weapon: {type: Object}
 });
 
 module.exports = mongoose.model("rpg", rpgSchema);

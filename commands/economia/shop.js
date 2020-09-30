@@ -181,7 +181,7 @@ function lojaComprar(message, embedMessage, user, saldoAtual) {
         } else {
             //abre loja de rolls
 
-            const valorRoll = 5000;
+            const valorRoll = 8500;
             const rollsATual = user.rolls;
 
             const dataRolls = {

@@ -17,9 +17,34 @@ module.exports = {
 
 function getAll(client, message) {
 
+    
+    const categorias = ["Ações", "Diversão", "Economia", "Info", "Moderação", "RPG", "Util"];
+    
+    let txt = `**COMANDOS DISPONÍVEIS**\n\n`
+
+    categorias.forEach(cat=> {
+        txt += `**${cat}** (${getCommmandSize(cat.toLowerCase(), client)})\n${getCategory(cat.toLowerCase(), client)}\n`
+    })
+
+    
+    message.author.send(txt).then(() => {
+        message.reply("enviei meus comandos para sua dm, olha lá >.<")
+    }).catch(() => {
+        message.reply("aparentemente suas dms estão fechadas, não posso te enviar minha página de ajuda")
+    })
+
+
+
+    
+    /*
+
+
+    PROBLEMAS COM OS EMBEDS EM CELULAR
+
     const embed = new MessageEmbed()
     embed.setColor('#b880e6')
     embed.setThumbnail(client.user.displayAvatarURL())
+
     
     embed.addField(`Ações (${getCommmandSize("ações", client)})`, getCategory("ações", client))
     embed.addField(`Diversão (${getCommmandSize("diversão", client)})`, getCategory("diversão", client))
@@ -36,6 +61,8 @@ function getAll(client, message) {
     }).catch(() => {
         message.reply("aparentemente suas dms estão fechadas, não posso te enviar minha página de ajuda")
     })
+*/
+
 
 }
 
