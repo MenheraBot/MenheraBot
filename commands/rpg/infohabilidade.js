@@ -120,8 +120,9 @@ module.exports = {
 
     let embed = new MessageEmbed()
     .setTitle("🔮 | Suas Habilidades")
-    .setDescription(`**HABILIDADE ÚNICA:** ${user.uniquePower.name}`)
     .setColor('#a9ec67')
+
+    embed.addField("Habilidade Única: " + user.uniquePower.name, `📜 | **Descrição:** ${user.uniquePower.description}\n⚔️ | **Dano:** ${user.uniquePower.damage}\n💉 | **Cura:** ${user.uniquePower.heal}\n💧 | **Custo:** ${user.uniquePower.cost}`)
 
     user.abilities.forEach(hab => {
         embed.addField('🔮 | Habilidade: '+ hab.name,`📜 | **Descrição:** ${hab.description}\n⚔️ | **Dano:** ${hab.damage}\n💉 | **Cura:** ${hab.heal}\n💧 | **Custo:** ${hab.cost}`)
