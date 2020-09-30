@@ -61,15 +61,14 @@ module.exports = {
     const habilidades = [
         {
            classe: "assassino",
-           habilidades:  [{ name: "Morte Instantânea", description: "Mata um alvo não-épico instantâneamente, sem chance de revidar", cooldown: 86400000, damage: 999999, heal: 0, cost: 50, type: "ativo" }, { name: "Lâmina Envenenada", description: "Envenena sua lâmina causando dano e lentidão ao seu inimigo", cooldown: 86400000, damage: 50, heal: 0, cost: 50, type: "ativo" }, { name: "Última Chance", description: "Caso sua vida chegue a zero, você entra em modo furtivo, fugindo da morte e da batalha", cooldown: 86400000, damage: 0, heal: 0, cost:0, type: "passivo" }]
-        },
+           habilidades:  [{ name: "Morte Instantânea", description: "Mata um alvo não-épico instantâneamente, sem chance de revidar", cooldown: 86400000, damage: 999999, heal: 0, cost: 50, type: "ativo" }, { name: "Lâmina Envenenada", description: "Envenena sua lâmina causando dano e lentidão ao seu inimigo", cooldown: 86400000, damage: 50, heal: 0, cost: 50, type: "ativo" }]},
         {
             classe: "barbaro",
-            habilidades: [{ name: "Duro de Matar", description: "Ao receber dano fatal, há 30% de chances de ignorar este dano", cooldown: 86400000, damage: 0, heal: 0, cost: 0, type: "passivo" }, { name: "Golpe Desleal", description: "Intimida o inimigo, diminuindo em 25% a armadura no inimigo", cooldown: 86400000, damage: 0, heal: 0, cost: 25, type: "ativo" }, { name: "Ataque Giratório", description: "Gira sua arma causando apenas 70% do dano em TODOS os inimigos em seu alcançe", cooldown: 86400000, damage: 0, heal: 0, cost: 25, type: "ativo" }]
+            habilidades:[ { name: "Golpe Desleal", description: "Intimida o inimigo, diminuindo em 25% a armadura no inimigo", cooldown: 86400000, damage: 0, heal: 0, cost: 25, type: "ativo" }, { name: "Ataque Giratório", description: "Gira sua arma causando apenas 70% do dano em TODOS os inimigos em seu alcançe", cooldown: 86400000, damage: 0, heal: 0, cost: 25, type: "ativo" }]
         },
         {
             classe: "clerigo",
-            habilidades: [{ name: "Chama Divina", description: "Roga pelo fogo sagrado queimando seus inimigos", cooldown: 0, damage: 7, heal: 0, cost: 20, type: "ativo" }, { name: "Benção Elemental", description: "Abençoa o alvo aumentando seu dano base e sua armadura", damage: 0, cooldown:7200000, heal: 0, cost: 35, type: "ativo" }, { name: "Castigo Divino", description: "Reduz a armadura do inimigo", cooldown:7200000, damage: 0, heal: 0, cost: 20, type: "ativo" }]
+            habilidades: [{ name: "Chama Divina", description: "Roga pelo fogo sagrado queimando seus inimigos", cooldown: 0, damage: 7, heal: 0, cost: 20, type: "ativo" }, { name: "Benção Elemental", description: "Abençoa o alvo aumentando seu dano base e sua armadura", damage: 0, cooldown: 7200000, heal: 0, cost: 35, type: "ativo" }, { name: "Castigo Divino", description: "Reduz a armadura do inimigo", cooldown: 7200000, damage: 0, heal: 0, cost: 20, type: "ativo" }]
         },
         {
             classe: "druida",
@@ -77,7 +76,7 @@ module.exports = {
         },
         {
             classe: "espadachim",
-            habilidades: [{ name: "Tempestade de Golpes", description: "Seus ataques tem chance de 12% desferir um ataque adicional", cooldown: 0, damage: 17, heal: 0, cost: 0, type: "passivo" }, { name: "Na Mão ou no Pé?", description: "Questiona seu inimigo dando a chance dele escolher qual membro desejas perder, a mão, ou o pé? Desferindo um golpe extremamente forte", cooldown: 86400000, damage: 50, heal: 0, cost: 35, type: "ativo" }, { name: "Sangramento", description: "Cada golpe desferido, há 50% de chance de aplicar sangramento no inimigo", cooldown: 0, damage: 2, heal: 0, cost: 0, type: "passivo" }]
+            habilidades: [ { name: "Na Mão ou no Pé?", description: "Questiona seu inimigo dando a chance dele escolher qual membro desejas perder, a mão, ou o pé? Desferindo um golpe extremamente forte", cooldown: 86400000, damage: 50, heal: 0, cost: 35, type: "ativo" }, { name: "Soryegethon", description: "Invoca o poder dos ventos, desferindo um tornado que dá dano aos inimigos", cooldown: 86400000, damage: 30, heal: 0, cost: 20, type: "ativo" }]
         },
         {
             classe: "feiticeiro",
@@ -85,11 +84,11 @@ module.exports = {
         },
         {
             classe: "monge",
-            habilidades: [{name: "Mente Tranquila", description: "Concentra-se no pensamento, aumentando sua armadura", cooldown: 3600000, damage: 0, heal: 0, cost: 20, type: "ativo"}, {name: "Peteleco Espiritual", description: "Da um peteleco nozovido do inimigo, causando dano BRUTAL", cooldown: 7200000, damage: 30, heal: 0, cost: 35, type: "ativo"}],
+            habilidades:[{ name: "Mente Tranquila", description: "Concentra-se no pensamento, aumentando sua armadura", cooldown: 3600000, damage: 0, heal: 0, cost: 20, type: "ativo" }, { name: "Peteleco Espiritual", description: "Da um peteleco nozovido do inimigo, causando dano BRUTAL", cooldown: 7200000, damage: 30, heal: 0, cost: 35, type: "ativo" }]
         },
         {
             classe: "necromante",
-            habilidades: [{name: "Forró da meia idade", description: "Invoca um esqueleto que dá dano e evita o proximo ataque contra si", cooldown: 7200000, damage: 5, heal: 0, cost: 20, type: "ativo"}, {name: "Transformação de Corpos", description: "Possessa o inimigo, fazendo com que ele se automutile", cooldown: 7200000, damage: 35, heal: 20, cost: 20, type: "ativo"}, {name: "Festa dos Mortos", description: "Invoca monstros que ja morreram naquele local, fazendo com que lutem contra o inimigo em seu lugar", cooldown: 7200000, damage: 30, heal: 0, cost: 30, type: "ativo"}]
+            habilidades: [{ name: "Forró da meia idade", description: "Invoca um esqueleto que dá dano e evita o proximo ataque contra si", cooldown: 7200000, damage: 5, heal: 0, cost: 20, type: "ativo" }, { name: "Transformação de Corpos", description: "Possessa o inimigo, fazendo com que ele se automutile", cooldown: 7200000, damage: 35, heal: 20, cost: 20, type: "ativo" }, { name: "Festa dos Mortos", description: "Invoca monstros que ja morreram naquele local, fazendo com que lutem contra o inimigo em seu lugar", cooldown: 7200000, damage: 30, heal: 0, cost: 30, type: "ativo" }]
         }
     ];
 
