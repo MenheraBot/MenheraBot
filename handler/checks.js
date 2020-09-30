@@ -68,7 +68,6 @@ module.exports.battle = async (message, escolha, user, inimigo) => {
 
     let danoUser;
     if (escolha.name == "Ataque Básico") {
-        
         danoUser = escolha.damage
     } else {
         if (user.mana < escolha.cost) return this.enemyShot(message, `⚔️ | Você tenta usar **${escolha.name}**, mas não tem mana o suficiente para isso! O inimigo revida!`, user, inimigo)
@@ -78,16 +77,21 @@ module.exports.battle = async (message, escolha, user, inimigo) => {
         } 
         danoUser = escolha.damage * user.abilityPower;
         user.mana = user.mana - escolha.cost
-        user.save()
     }
 
     setTimeout(() => {
-        let danoDado = danoUser - inimigo.armor;
+        let enemyArmor = inimigo.armor
+        if(escolha.name == "Castigo Divino"){
+            enemyArmor = inimigo.armor - 20
+            if(enemyArmor < 0) enemyArmor = 0 
+        }
+        let danoDado = danoUser - enemyArmor;
+        if(danoDado < 0) danoDado = 0;
         let vidaInimigo = inimigo.life - danoDado;
 
         message.channel.send(`⚔️ | Você ataca **${inimigo.name}** com **${escolha.name}**, e causa **${danoDado}** de dano`)
 
-        if (vidaInimigo < 1) return this.resultBattle(message, user, inimigo)
+        if (vidaInimigo < 1) return user.save().then(() => this.resultBattle(message, user, inimigo))
 
         const enemy = {
             name: inimigo.name,
@@ -98,7 +102,7 @@ module.exports.battle = async (message, escolha, user, inimigo) => {
             xp: inimigo.xp
         }
 
-        this.enemyShot(message, "", user, enemy)
+        user.save().then(() => this.enemyShot(message, "", user, enemy))
     }, 150)
 }
 

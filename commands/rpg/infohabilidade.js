@@ -124,7 +124,7 @@ module.exports = {
     .setColor('#a9ec67')
 
     user.abilities.forEach(hab => {
-        embed.addField('🔮 | Habilidade: '+ hab.name,`📜 | **Descrição:** ${hab.description}\n⌛ | **Tempo de Recarga:** ${hab.cooldown}ms\n⚔️ | **Dano:** ${hab.damage}\n💉 | **Cura:** ${hab.heal}\n💧 | **Custo:** ${hab.cost}`)
+        embed.addField('🔮 | Habilidade: '+ hab.name,`📜 | **Descrição:** ${hab.description}\n⚔️ | **Dano:** ${hab.damage}\n💉 | **Cura:** ${hab.heal}\n💧 | **Custo:** ${hab.cost}`)
     })
     message.channel.send(message.author, embed)
 
