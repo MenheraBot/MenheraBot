@@ -4,7 +4,7 @@ const checks = require("../../handler/checks.js")
 
 module.exports = {
   name: "status",
-  aliases: [],
+  aliases: ["stats"],
   cooldown: 10,
   category: "rpg",
   description: "Veja o status de alguém",
