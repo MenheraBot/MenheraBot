@@ -119,9 +119,9 @@ module.exports.enemyShot = async (message, text, user, inimigo) => {
 
     if (text.length > 0) message.channel.send(text)
 
-    const danoRecebido = inimigo.damage - user.armor
+    let danoRecebido = inimigo.damage - user.armor
     if(danoRecebido < 0) danoRecebido = 0;
-    const vidaUser = user.life - danoRecebido;
+    let vidaUser = user.life - danoRecebido;
 
     if (vidaUser < 1) {
         return this.morte(message, user)
@@ -299,14 +299,14 @@ module.exports.confirmRegister = async (userId, message) => {
             const choiceEspadachim = unicPowersEspadachim[Math.floor(Math.random() * unicPowersEspadachim.length)];
             user.armor = 17;
             user.damage = 18,
-                user.mana = 20;
+            user.mana = 20;
             user.maxMana = 20;
             user.abilityPower = 1;
             user.abilities.push({
                 name: "Golpe Duplo",
                 description: "Executa dois golpes, com o segundo dando dano reduzido",
                 cooldown: 7200000,
-                damage: 0,
+                damage: 20,
                 heal: 0,
                 cost: 20
             })
