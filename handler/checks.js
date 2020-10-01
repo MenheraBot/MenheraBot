@@ -135,6 +135,7 @@ module.exports.finalChecks = async (message, user) => {
 
     let texto = "";
 
+    if(user.level < 5){
     if (user.xp >= user.nextLevelXp) {
         user.xp = user.xp - user.nextLevelXp;
         user.nextLevelXp = user.nextLevelXp * 2;
@@ -146,9 +147,26 @@ module.exports.finalChecks = async (message, user) => {
         user.save()
         texto += `**<a:LevelUp:760954035779272755> LEVEL UP <a:LevelUp:760954035779272755>**`
     }
+} else if(user.level > 4 && user.level < 10){
+    user.nextLevelXp = user.nextLevelXp * 2;
+    user.level = user.level + 1
+    user.maxLife = user.maxLife + 20
+    user.maxMana = user.maxMana + 15
+    user.damage = user.damage + 5
+    user.armor = user.armor + 3
+    user.save()
+    texto += `**<a:LevelUp:760954035779272755> LEVEL UP <a:LevelUp:760954035779272755>**`
+} else if(user.level > 9){
+    user.nextLevelXp = user.nextLevelXp * 2;
+    user.level = user.level + 1
+    user.maxLife = user.maxLife + 50
+    user.maxMana = user.maxMana + 20
+    user.damage = user.damage + 7
+    user.armor = user.armor + 5
+    user.save()
+    texto += `**<a:LevelUp:760954035779272755> LEVEL UP <a:LevelUp:760954035779272755>**`
+}
     if (texto.length > 0) message.channel.send(texto)
-
-
 }
 
 module.exports.resultBattle = async (message, user, inimigo) => {
