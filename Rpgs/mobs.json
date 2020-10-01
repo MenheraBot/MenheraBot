@@ -45,7 +45,7 @@
             }],
             "type": "inicial",
             "name": "Lobo infernal",
-            "life": 130,
+            "life": 60,
             "damage": 10,
             "armor": 0,
             "xp": 20
@@ -71,7 +71,7 @@
             "name": "Zumbi",
             "life": 60,
             "damage": 7,
-            "armor": 12,
+            "armor": 0,
             "xp": 14
         },
         {
@@ -87,7 +87,7 @@
             }],
             "type": "inicial",
             "name": "Mini Dragão",
-            "life": 80,
+            "life": 30,
             "damage": 20,
             "armor": 10,
             "xp": 50
