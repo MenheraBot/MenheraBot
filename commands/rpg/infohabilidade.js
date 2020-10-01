@@ -1,6 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 const database = require("../../models/rpg.js");
-const checks = require("../../handler/checks.js")
+
 
 module.exports = {
   name: "infohabilidade",

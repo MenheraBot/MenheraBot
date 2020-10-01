@@ -1,6 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 const database = require("../../models/rpg.js");
-const checks = require("../../handler/checks.js")
+const checks = require("../../Rpgs/checks.js")
 
 module.exports = {
   name: "register",
