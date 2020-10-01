@@ -1,7 +1,7 @@
 const mob = require("../../models/mobs.js")
 module.exports = {
   name: "mobs",
-  aliases: [],
+  aliases: ["mob"],
   cooldown: 2,
   category: "Dev",
   description: "Adiciona um bot à database",
@@ -9,16 +9,16 @@ module.exports = {
   devsOnly: true,
 
   run: async (client, message, args) => {
-  /* 
-    new mob({
-            type: "inicial",
-            name: "Lobo infernal",
-            life: 10,
-            damage: 3,
-            armor: 0,
-            xp: 10,
-            loots: [{name: "Pele de Lobo", value: 3}]
-    }).save()
+  
+    /* new mob({
+      type: "medio",
+            name: "Bruxa enverrugada",
+            life: 30,
+            damage: 38,
+            armor: 15,
+            xp: 22,
+            loots: [{name: "Verruga fedida", value: 11}, {name: "Cajado velho", value: 18}, {name: "Chapéu da bruxa", value: 15}, {name: "Frasco de Poção vazio", value: 5}]
+    }).save().then(console.log("novo mob"))
 
-    message.reply("Mob adiciobnado") */
+    message.reply("Mob adiciobnado")   */
 }};
