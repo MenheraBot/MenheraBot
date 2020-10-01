@@ -24,7 +24,7 @@ module.exports = {
         },
         {
             opção: "minhas",
-            arguments: ["minhas", "minha", "meu"]
+            arguments: ["minhas", "minha", "meu", "meus"]
         }
     ]
 
