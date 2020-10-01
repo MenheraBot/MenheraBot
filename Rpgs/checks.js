@@ -1,9 +1,9 @@
 const databaseRPG = require("../models/rpg.js")
-const mobs = require("../models/mobs.js")
 const moment = require("moment");
 const dungeon = require("../commands/rpg/dungeon.js")
 const { MessageEmbed } = require("discord.js");
 const abilitiesFile = require("../Rpgs/abilities.json");
+const mobsFile = require("../Rpgs/mobs.json");
 
 module.exports.getEnemy = async (user) => {
 
@@ -11,22 +11,17 @@ module.exports.getEnemy = async (user) => {
     let mediumEnemy = [];
     let hardEnemy = [];
 
-    await mobs.find({},
-        async function (err, res) {
-            await res.forEach(mob => {
-                switch (mob.type) {
-                    case 'inicial':
-                        initialEnemy.push(mob)
-                        break;
-                    case 'medio':
-                        mediumEnemy.push(mob)
-                        break;
-                    case 'hard':
-                        hardEnemy.push(mob)
-                        break
-                }
-            })
-        })
+    mobsFile.inicial.forEach(initialMob => {
+        initialEnemy.push(initialMob)
+    })
+
+    mobsFile.medio.forEach(mediumMob => {
+        mediumEnemy.push(mediumMob)
+    })
+
+    mobsFile.hard.forEach(hardMob => {
+        hardEnemy.push(hardMob)
+    })
 
     let monstro;
 

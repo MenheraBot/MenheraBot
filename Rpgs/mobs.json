@@ -1,0 +1,307 @@
+{
+    "inicial": [
+        {
+            "loots": [
+                {
+                    "name": "Olho de Aranha",
+                    "value": 3
+            }
+        ],
+            "type": "inicial",
+            "name": "Aranha Venenosa",
+            "life": 10,
+            "damage": 20,
+            "armor": 0,
+            "xp": 10
+        },
+        {
+            "loots": [{
+                "name": "Pele de Goblin",
+                "value": 3
+            }],
+            "type": "inicial",
+            "name": "Goblin",
+            "life": 15,
+            "damage": 13,
+            "armor": 2,
+            "xp": 15
+        },
+        {
+            "loots": [{
+                "name": "Perna de Formiga",
+                "value": 3
+            }],
+            "type": "inicial",
+            "name": "Formiga Gigante",
+            "life": 20,
+            "damage": 10,
+            "armor": 5,
+            "xp": 20
+        },
+        {
+            "loots": [{
+                "name": "Pele de Lobo",
+                "value": 3
+            }],
+            "type": "inicial",
+            "name": "Lobo infernal",
+            "life": 130,
+            "damage": 10,
+            "armor": 0,
+            "xp": 20
+        },
+        {
+            "loots": [{
+                "name": "Gosma",
+                "value": 4
+            }],
+            "type": "inicial",
+            "name": "Slime",
+            "life": 50,
+            "damage": 5,
+            "armor": 10,
+            "xp": 15
+        },
+        {
+            "loots": [{
+                "name": "Carne de zumbi",
+                "value": 3
+            }],
+            "type": "inicial",
+            "name": "Zumbi",
+            "life": 60,
+            "damage": 7,
+            "armor": 12,
+            "xp": 14
+        },
+        {
+            "loots": [{
+                "name": "Escamas Frágeis",
+                "value": 17
+            }, {
+                "name": "Dentes",
+                "value": 18
+            }, {
+                "name": "Asa Pequena",
+                "value": 12
+            }],
+            "type": "inicial",
+            "name": "Mini Dragão",
+            "life": 80,
+            "damage": 20,
+            "armor": 10,
+            "xp": 50
+        }
+    ],
+    "medio": [
+        {
+            "loots": [{
+                "name": "Pele grudenta",
+                "value": 5
+            }, {
+                "name": "Meleca lamazenta",
+                "value": 4
+            }, {
+                "name": "Olhos humanos",
+                "value": 5
+            }],
+            "type": "medio",
+            "name": "Aberração",
+            "life": 100,
+            "damage": 28,
+            "armor": 30,
+            "xp": 20
+        },
+        {
+            "loots": [{
+                "name": "Verruga fedida",
+                "value": 11
+            }, {
+                "name": "Cajado velho",
+                "value": 18
+            }, {
+                "name": "Chapéu da bruxa",
+                "value": 15
+            }, {
+                "name": "Frasco de Poção vazio",
+                "value": 5
+            }],
+            "type": "medio",
+            "name": "Bruxa enverrugada",
+            "life": 100,
+            "damage": 38,
+            "armor": 35,
+            "xp": 22
+        },
+        {
+            "loots": [{
+                "name": "Crânio desconhecido",
+                "value": 15
+            }],
+            "type": "médio",
+            "name": "Crânio assombrado",
+            "life": 100,
+            "damage": 25,
+            "armor": 30,
+            "xp": 40
+        },
+        {
+            "loots": [{
+                "name": "Dente de Vampiro",
+                "value": 23
+            }, {
+                "name": "Capa de Vampiro",
+                "value": 18
+            }],
+            "type": "medio",
+            "name": "Drácula",
+            "life": 200,
+            "damage": 27,
+            "armor": 20,
+            "xp": 32
+        },
+        {
+            "loots": [{
+                "name": "Cabeça do Goblin Xamã",
+                "value": 29
+            }, {
+                "name": "Cajado Ancestral",
+                "value": 18
+            }, {
+                "name": "Verrugas Nojentas",
+                "value": 10
+            }],
+            "type": "medio",
+            "name": "Goblin Xamã",
+            "life": 150,
+            "damage": 55,
+            "armor": 45,
+            "xp": 36
+        },
+        {
+            "loots": [{
+                "name": "Varinha desconhecida",
+                "value": 25
+            }, {
+                "name": "Restos de pele",
+                "value": 18
+            }, {
+                "name": "Pó estranho",
+                "value": 20
+            }],
+            "type": "medio",
+            "name": "Feiticeiro",
+            "life": 200,
+            "damage": 100,
+            "armor": 32,
+            "xp": 329
+        },
+        {
+            "loots": [{
+                "name": "Metal Enferrujado",
+                "value": 15
+            }, {
+                "name": "Cabeça de Golem",
+                "value": 20
+            }],
+            "type": "médio",
+            "name": "Golem enferrujado",
+            "life": 350,
+            "damage": 35,
+            "armor": 40,
+            "xp": 440
+        }
+    ],
+    "hard": [
+            {
+                "loots": [{
+                    "name": "escama ",
+                    "value": 29
+                }, {
+                    "name": "bolsa de veneno",
+                    "value": 50
+                }, {
+                    "name": "presas",
+                    "value": 65
+                }],
+                "type": "hard",
+                "name": "Piton Gigante",
+                "life": 340,
+                "damage": 50,
+                "armor": 50,
+                "xp": 3500
+            },
+            {
+                "loots": [{
+                    "name": "garras ",
+                    "value": 30
+                }, {
+                    "name": "dentes ",
+                    "value": 60
+                }],
+                "type": "hard ",
+                "name": "Lobisomem",
+                "life": 400,
+                "damage": 50,
+                "armor": 35,
+                "xp": 3400
+            },
+            {
+                "loots": [{
+                    "name": "Cabeça de Minotauro",
+                    "value": 70
+                }, {
+                    "name": "Chifre de Minotauro",
+                    "value": 45
+                }],
+                "type": "hard",
+                "name": "Minotauro",
+                "life": 600,
+                "damage": 70,
+                "armor": 45,
+                "xp": 8400
+            },
+            {
+                "loots": [{
+                    "name": "Cabeça da Medusa",
+                    "value": 39
+                }, {
+                    "name": "Pele de cobra",
+                    "value": 20
+                }, {
+                    "name": "Vestes da Medusa",
+                    "value": 35
+                }, {
+                    "name": "Presas de cobra",
+                    "value": 39
+                }],
+                "type": "hard",
+                "name": "Medusa",
+                "life": 260,
+                "damage": 170,
+                "armor": 187,
+                "xp": 5809
+            },
+            {
+                "loots": [{
+                    "name": "Cabeça do Goblin Campeão",
+                    "value": 50
+                }, {
+                    "name": "Armadura do Goblin Campeão",
+                    "value": 20
+                }, {
+                    "name": "Perna do Goblin Campeão",
+                    "value": 15
+                }, {
+                    "name": "Perna do Goblin Campeão",
+                    "value": 16
+                }],
+                "type": "hard",
+                "name": "Goblin Campeão",
+                "life": 470,
+                "damage": 97,
+                "armor": 200,
+                "xp": 6070
+            }
+    ]
+}
