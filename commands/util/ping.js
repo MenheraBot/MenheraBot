@@ -14,7 +14,7 @@ module.exports = {
         const embed = new MessageEmbed()
         .setTitle("🏓 | Pong!")
         .addField('📡 | Latência:', `**${Math.round(client.ws.ping)}ms**`)
-        .addField('📡 | Latência da API:',`**${message.createdTimestamp- Date.now()}ms**`)
+        .addField('📡 | Latência da API:',`**${Date.now() - message.createdTimestamp}ms**`)
         .setFooter(message.author.tag, avatar)
         .setTimestamp()
         .setColor('#eab3fa')
