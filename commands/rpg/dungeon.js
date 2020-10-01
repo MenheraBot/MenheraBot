@@ -111,7 +111,11 @@ exports.continueBattle = async (message, inimigo, habilidades, user) => {
         options.push(hab)
     })
 
-    let texto = `${inimigo.name} te ataca, e causa ${inimigo.damage - user.armor}, atualização dos status:\n\n**SEUS STATUS**\n❤️ | Vida: **${user.life}**\n⚔️ | Dano: **${user.damage}**\n🛡️ | Defesa: **${user.armor}**\n\n**STATUS DO INIMIGO**\n❤️ | Vida: **${inimigo.life}**\n⚔️ | Dano: **${inimigo.damage}**\n🛡️ | Defesa: **${inimigo.armor}**\n\nO que você faz?\n\n**OPÇÕES:**\n`
+    let damageReceived = inimigo.damage - user.armor;
+    if(damageReceived < 0) damageReceived = 0
+    
+
+    let texto = `**${inimigo.name}** te ataca, e causa **${damageReceived}**, atualização dos status:\n\n**SEUS STATUS**\n❤️ | Vida: **${user.life}**\n⚔️ | Dano: **${user.damage}**\n🛡️ | Defesa: **${user.armor}**\n\n**STATUS DO INIMIGO**\n❤️ | Vida: **${inimigo.life}**\n⚔️ | Dano: **${inimigo.damage}**\n🛡️ | Defesa: **${inimigo.armor}**\n\nO que você faz?\n\n**OPÇÕES:**\n`
     
     let escolhas = []
 
