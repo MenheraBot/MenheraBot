@@ -506,6 +506,7 @@ module.exports.confirmRegister = async (userId, message) => {
             user.abilities.push(abilitiesFile.monge.normalAbilities[0])
             user.uniquePower = choiceMonge
             user.weapon = { name: "Punhos", damage: 1, type: "Arma" }
+            user.inventory.push({ name: "Punhos", damage: 1, type: "Arma" })
             user.save()
             message.channel.send("<:positivo:759603958485614652> | Você foi registrado com sucesso! Use `m!status` para ver seus status")
             break;

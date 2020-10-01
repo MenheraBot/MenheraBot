@@ -46,7 +46,7 @@ module.exports = {
       itemText += `**${count.name}** (${count.amount})\n`
     })
 
-    embed.addField(`⚔️ | Batalha`, armaText)
+    if(armaText.length > 0) embed.addField(`⚔️ | Batalha`, armaText)
     if(items.length > 0) embed.addField(`💊 | Itens`, itemText)
 
     message.channel.send(message.author, embed)
