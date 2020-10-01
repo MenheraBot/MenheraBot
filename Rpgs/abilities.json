@@ -28,6 +28,22 @@
                 "damage": 15,
                 "heal": 0,
                 "cost": 10
+            },
+            {
+                "name": "Assassino em Série",
+                "description": "Atinge o inimigo com uma série de golpes",
+                "cooldown": 7200000,
+                "damage": 50,
+                "heal": 0,
+                "cost": 35
+            },
+            {
+                "name": "Jack",
+                "description": "Corta a barriga de sua vítima, espondo suas entranhas",
+                "cooldown": 7200000,
+                "damage": 150,
+                "heal": 0,
+                "cost": 50
             }
         ]
     }, 
@@ -55,11 +71,27 @@
         "normalAbilities": [
             {
                 "name": "Fúria",
-                "description": "Diminui sua armadura pela metade, aumentando em 1.5x seu dano base por um turno",
+                "description": "Enfurece a si mesmo, atacando com muita força",
                 "cooldown": 7200000,
-                "damage": 0,
+                "damage": 30,
                 "heal": 0,
                 "cost": 20
+            },
+            {
+                "name": "Grito de Guerra",
+                "description": "Desfere um grito de guerra, causando confusões mentais no inimigo",
+                "cooldown": 7200000,
+                "damage": 60,
+                "heal": 0,
+                "cost": 35
+            },
+            {
+                "name": "Guilhotina Humana",
+                "description": "Pula na cabeça do inimigo, dando um dano de cima a baixo",
+                "cooldown": 7200000,
+                "damage": 130,
+                "heal": 0,
+                "cost": 50
             }
         ]
     },
@@ -101,6 +133,22 @@
                 "damage": 0,
                 "heal": 40,
                 "cost": 40
+            },
+            {
+                "name": "Raio de Luz Solar",
+                "description": "Transmuta a luz do sol em um raio, causando queimaduras no inimigo",
+                "cooldown": 7200000,
+                "damage": 20,
+                "heal": 0,
+                "cost": 40
+            },
+            {
+                "name": "Rosário!",
+                "description": "Abençoa a área com o poder divino, causando dano à todas as criaturas malignas e curando si mesmo",
+                "cooldown": 7200000,
+                "damage": 40,
+                "heal": 50,
+                "cost": 70
             }
         ]
     },
@@ -142,6 +190,22 @@
                 "damage": 0,
                 "heal": 30,
                 "cost": 20
+            },
+            {
+                "name": "Raízes de Yggdrasil",
+                "description": "Invoca as raízes de Yggdrasil, causando dano à todos inimigos a sua frente",
+                "cooldown": 7200000,
+                "damage": 30,
+                "heal": 0,
+                "cost": 40
+            },
+            {
+                "name": "Maçã do Eden",
+                "description": "Envia a maçã proibida para seu inimigo, que ao ingerí-la, recebe punição divina",
+                "cooldown": 7200000,
+                "damage": 40,
+                "heal": 0,
+                "cost": 50
             }
         ]
     },
@@ -174,6 +238,22 @@
                 "damage": 20,
                 "heal": 0,
                 "cost": 20
+            },
+            {
+                "name": "Combate Tático",
+                "description": "Usa suas táticas de combate avançadas, desferindo golpes para todos os lados",
+                "cooldown": 7200000,
+                "damage": 30,
+                "heal": 0,
+                "cost": 40
+            },
+            {
+                "name": "Excalibur",
+                "description": "Invoca o poder da Excalibur, exterminando os inimigos à sua frente",
+                "cooldown": 7200000,
+                "damage": 50,
+                "heal": 0,
+                "cost": 60
             }
         ]
     },
@@ -215,6 +295,54 @@
                 "damage": 13,
                 "heal": 0,
                 "cost": 40
+            },
+            {
+                "name": "Névoa Venenosa",
+                "description": "Polui o ar da dungeon com uma névoa que causa dano aos inimigos",
+                "cooldown": 0,
+                "damage": 24,
+                "heal": 0,
+                "cost": 55
+            },
+            {
+                "name": "Lava de Dragão",
+                "description": "Invoca o Dragão Elemental para cuspir lava em seus inimigos",
+                "cooldown": 0,
+                "damage": 24,
+                "heal": 0,
+                "cost": 55
+            },
+            {
+                "name": "Castigo Eterno",
+                "description": "Envia o inimígo para o inferno, causando fortes dores mentais e físicas",
+                "cooldown": 0,
+                "damage": 25,
+                "heal": 0,
+                "cost": 57
+            },
+            {
+                "name": "Buraco Negro",
+                "description": "Cria um burago negro, sugando a energia vital do inimigo",
+                "cooldown": 0,
+                "damage": 43,
+                "heal": 0,
+                "cost": 80
+            },
+            {
+                "name": "Escamas Elementais",
+                "description": "Joga as escamas do Dragão Elemental nos inimigos",
+                "cooldown": 0,
+                "damage": 43,
+                "heal": 0,
+                "cost": 80
+            },
+            {
+                "name": "Dama de Ferro",
+                "description": "Tortura o inimigo com a Dama de Ferro, perfurando-o em partes não vitais, fazendo-o o sangrar sem parar",
+                "cooldown": 0,
+                "damage": 45,
+                "heal": 0,
+                "cost": 90
             }
         ]
     },
@@ -235,9 +363,25 @@
                 "name": "Punhos de Aço",
                 "description": "Fortalece seus punhos, aumentando seu dano físico",
                 "cooldown": 3600000,
-                "damage": 7,
+                "damage": 20,
                 "heal": 0,
                 "cost": 20
+            },
+            {
+                "name": "Hyakuuun!",
+                "description": "Chuta seu alvo na barriga, enviando-o para longe",
+                "cooldown": 3600000,
+                "damage": 40,
+                "heal": 0,
+                "cost": 40
+            },
+            {
+                "name": "Tecnica Shaolin",
+                "description": "Usa a técnica sagrada monge, causando dano BRUTAL aos inimigos",
+                "cooldown": 3600000,
+                "damage": 60,
+                "heal": 0,
+                "cost": 50
             }
         ]
     },
@@ -279,6 +423,22 @@
                 "damage": 12,
                 "heal": 0,
                 "cost": 20
+            },
+            {
+                "name": "Cadáver da Bruxa",
+                "description": "Invoca a Bruxa Cujo nome não se deve ser citado, enviando-a para a batalha",
+                "cooldown": 3600000,
+                "damage": 24,
+                "heal": 0,
+                "cost": 50
+            },
+            {
+                "name": "Possessão Total",
+                "description": "Evoca Satã em seu corpo, forçando-o a te possuir, usando seus poderes para batalhar",
+                "cooldown": 3600000,
+                "damage": 32,
+                "heal": 0,
+                "cost": 100
             }
         ]
     }
