@@ -35,31 +35,7 @@ module.exports.getEnemy = async (user) => {
     return monstro;
 }
 
-/* module.exports.checkPassive = async (user) => {
-
-    switch(user.class){
-        case 'Assassino':
-            
-             break
-        case 'Bárbaro':
-
-             break
-        case 'Espadachim':
-
-             break
-        default: return false;
-    }
-
-} */
-
-
 module.exports.battle = async (message, escolha, user, inimigo) => {
-/* 
-    let açãoPassiva;
-    const passiva = await this.checkPassive(user)
-    if(passiva) {
-
-    } */
 
     let danoUser;
     if (escolha.name == "Ataque Básico") {
@@ -373,6 +349,7 @@ module.exports.initialChecks = async (user, message) => {
     if (user.life < 1) {
         if (Date.now() > parseInt(user.death)) {
             user.life = user.maxLife
+            user.mana = user.maxMana
         }
     }
     if (user.life < 1) {
