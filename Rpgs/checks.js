@@ -121,6 +121,7 @@ module.exports.finalChecks = async (message, user) => {
         user.armor = user.armor + 2
         user.save().then(() => {
             texto += `**<a:LevelUp:760954035779272755> LEVEL UP <a:LevelUp:760954035779272755>**`
+            message.channel.send(texto)
             if(user.level === 5) this.newAbilities(message,user)
         })
     }
@@ -133,6 +134,7 @@ module.exports.finalChecks = async (message, user) => {
     user.damage = user.damage + 5
     user.armor = user.armor + 3
     texto += `**<a:LevelUp:760954035779272755> LEVEL UP <a:LevelUp:760954035779272755>**`
+    message.channel.send(texto)
     user.save().then(() => this.newAbilities(message, user))
     }
 } else if(user.level > 9){
@@ -144,11 +146,10 @@ module.exports.finalChecks = async (message, user) => {
     user.damage = user.damage + 7
     user.armor = user.armor + 5
     texto += `**<a:LevelUp:760954035779272755> LEVEL UP <a:LevelUp:760954035779272755>**`
+    message.channel.send(texto)
     user.save().then(() => this.newAbilities(message, user))
     }
-}
-    if (texto.length > 0) message.channel.send(texto)
-}
+}}
 
 module.exports.newAbilities = async (message, user) => {
 

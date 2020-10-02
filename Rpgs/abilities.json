@@ -409,7 +409,7 @@
                 "name": "Festa dos Mortos", 
                 "description": "Invoca monstros que ja morreram naquele local, fazendo com que lutem contra o inimigo em seu lugar", 
                 "cooldown": 7200000, 
-                "damage": 30,
+                "damage": 12,
                 "heal": 0, 
                 "cost": 30, 
                 "type": "ativo" 
@@ -438,7 +438,7 @@
                 "cooldown": 3600000,
                 "damage": 32,
                 "heal": 0,
-                "cost": 100
+                "cost": 80
             }
         ]
     }
