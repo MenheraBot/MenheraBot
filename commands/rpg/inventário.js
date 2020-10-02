@@ -1,5 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 const database = require("../../models/rpg.js");
+const userDb = require("../../models/user.js")
 
 module.exports = {
   name: "inventário",
@@ -12,10 +13,14 @@ module.exports = {
 
     const user = await database.findById(message.author.id)
     if(!user) return message.channel.send("<:negacao:759603958317711371> | Você não é um aventureiro!")
+
+    const usuarioInDb = await userDb.findOne({id: message.author.id})
+
+    let cor = usuarioInDb.cor || "#8f877f"
   
     let embed = new MessageEmbed()
     .setTitle("<:Chest:760957557538947133> | Seu inventário")
-    .setColor("#8f877f")
+    .setColor(cor)
 
     let loots = [];
     let items = [];
