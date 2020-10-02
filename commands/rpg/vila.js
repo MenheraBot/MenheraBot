@@ -135,7 +135,7 @@ function hotel(message, user, msg) {
 
 async function guilda(message, user, msg) {
 
-    return message.channel.send('<:negacao:759603958317711371> | Boleham está sendo invadida!!! A guilda está fechada para evitar que metamorfos entrem disfarçados!')
+    //return message.channel.send('<:negacao:759603958317711371> | Boleham está sendo invadida!!! A guilda está fechada para evitar que metamorfos entrem disfarçados!')
 
     let allLoots = [];
     let nameLoots = []
@@ -191,15 +191,16 @@ async function guilda(message, user, msg) {
 
         user.money = user.money + valor
         for (j = 0; j < quantidade; j++) {
-            
-            user.updateOne( 
-                { _id: message.author.id },
-                { $pull: "loots"  },
-                { safe: true });
+            user.updateOne({_id: message.author.id}, {
+                $pull: {
+                    loots: contado[parseInt(args[0]) - 1].name
+                }
+            })
         }
+    })
         user.save()
         message.channel.send(`<:positivo:759603958485614652> | Você vendeu **${quantidade}** de **${contado[parseInt(args[0]) - 1].name}** e recebeu **${valor}** 💎`)
-    })
+    
 
 }
 
