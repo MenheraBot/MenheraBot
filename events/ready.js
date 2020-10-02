@@ -24,7 +24,11 @@ module.exports = (client) => {
     {name: "Pergunte para mim. m!8ball", type: "PLAYING"},
     {name: "Dificuldade com um comando? Use m!help comando", type: "PLAYING"},
     {name: "Encontrou um bug? Reporte com m!bug", type: "PLAYING"},
-    {name: "Duvidas? Entre em meu servidor de suporte m!suporte", type: "PLAYING"}
+    {name: "Duvidas? Entre em meu servidor de suporte m!suporte", type: "PLAYING"},
+    {name: "Fique por dentro das minhas novidades em meu servidor de suporte", type: "PLAYING"},
+    {name: "Sabia que eu tenho um rpg? m!help", type: "PLAYING"},
+    {name: "Registre-se um aventureiro com m!register, e vá para aventuras na dungeon com m!dungeon", type: "PLAYING"},
+    {name: "#NERFAOSMOBSMEDIOS😢😢😢", type: "PLAYING"}
     ];
 
   setInterval(() => {
