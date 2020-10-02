@@ -109,7 +109,7 @@
             "name": "Aberração",
             "life": 100,
             "damage": 28,
-            "armor": 30,
+            "armor": 12,
             "xp": 20
         },
         {
@@ -130,7 +130,7 @@
             "name": "Bruxa enverrugada",
             "life": 100,
             "damage": 38,
-            "armor": 35,
+            "armor": 12,
             "xp": 22
         },
         {
@@ -142,7 +142,7 @@
             "name": "Crânio assombrado",
             "life": 100,
             "damage": 25,
-            "armor": 30,
+            "armor": 12,
             "xp": 40
         },
         {
@@ -157,8 +157,8 @@
             "name": "Drácula",
             "life": 200,
             "damage": 27,
-            "armor": 20,
-            "xp": 32
+            "armor": 3,
+            "xp": 130
         },
         {
             "loots": [{
@@ -175,8 +175,8 @@
             "name": "Goblin Xamã",
             "life": 150,
             "damage": 55,
-            "armor": 45,
-            "xp": 36
+            "armor": 0,
+            "xp": 130
         },
         {
             "loots": [{
@@ -193,7 +193,7 @@
             "name": "Feiticeiro",
             "life": 200,
             "damage": 100,
-            "armor": 32,
+            "armor": 0,
             "xp": 329
         },
         {
@@ -208,7 +208,7 @@
             "name": "Golem enferrujado",
             "life": 350,
             "damage": 35,
-            "armor": 40,
+            "armor": 0,
             "xp": 440
         }
     ],
