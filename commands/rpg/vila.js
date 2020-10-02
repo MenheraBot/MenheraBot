@@ -130,8 +130,63 @@ function ferreiro(message, user, msg) {
 
 function hotel(message, user, msg) {
 
-    message.channel.send('<:negacao:759603958317711371> | O hotel está em reforma! Volte outro dia')
+    let embed = new MessageEmbed()
+    .setTitle("🏨 | Hotel de Boleham")
+    .setDescription("Bem vindo ao hotel de Boleham! Desejas passar um tempo aqui para descansar? Escolha uma das opções abaixo de sua escolha, e descanse gratuitamente para regenerar sua vida e sua mana!")
+    .addFields([
+        {
+            name: "1 - Soninho do Almoço",
+            value: "⌛ | **Tempo**: 3 horas\n🩸 | **Vida**: 40\n💧 | **Mana**: 30"
+        },
+        {
+            name: "2 - Sono Pesado",
+            value: "⌛ | **Tempo**: 5 horas\n🩸 | **Vida**: 60\n💧 | **Mana**: 45"
+        },
+        {
+            name: "3 - Hibernação",
+            value: "⌛ | **Tempo**: 7 horas\n🩸 | **Vida**: MÁXIMA\n💧 | **Mana**: MÁXIMA"
+        }
+    ])
+    .setFooter("Envie no chat sua escolha")
+    .setColor('#e7a8ec')
 
+    msg.edit(message.author, embed)
+
+    const filter = m => m.author.id === message.author.id;
+    const collector = message.channel.createMessageCollector(filter, { max: 1, time: 30000, errors: ["time"] });
+
+    let validOptions = ["1","2","3"];
+
+    collector.on('collect', m => {
+    
+        if(!validOptions.includes(m.content)) return message.channel.send(`<:negacao:759603958317711371> | Esta opção não é valida!`)
+
+        if(user.hotelTime > Date.now()) return message.channel.send(`<:negacao:759603958317711371> | Você já está descansando no hotel!`)
+
+        if(user.life < 1 && user.death > Date.now()) return message.channel.send(`<:negacao:759603958317711371> | Você morreu em uma aventura na dungeon, e por isso, já está descansando para recuperar suas energias!`)
+
+        if(m.content == "1"){
+            user.hotelTime = 10800000 + Date.now()
+            user.life = user.life + 40
+            user.mana = user.mana + 30
+        } else if(m.content == "2"){
+            user.hotelTime = 18000000 + Date.now()
+            user.life = user.life + 60
+            user.mana = user.mana + 45
+        } else if(m.content == "3"){
+            user.hotelTime = 25200000 + Date.now()
+            user.life = user.maxLife
+            user.mana = user.maxMana
+        }
+
+        if(user.life > user.maxLife) user.life = user.maxLife
+        if(user.mana > user.maxMana) user.mana = user.maxMana
+
+        user.save()
+
+        message.channel.send("<:positivo:759603958485614652> | Você foi para o hotel, e ficará descansando até o fim de seu horário")
+    
+    })
 }
 
 async function guilda(message, user, msg) {
@@ -165,7 +220,7 @@ async function guilda(message, user, msg) {
     msg.edit(message.author, embed)
 
     const filter = m => m.author.id === message.author.id;
-    const collector = message.channel.createMessageCollector(filter, { max: 1, time: 15000, errors: ["time"] });
+    const collector = message.channel.createMessageCollector(filter, { max: 1, time: 30000, errors: ["time"] });
 
     let option = [];
 

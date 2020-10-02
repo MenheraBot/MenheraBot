@@ -21,7 +21,8 @@ const rpgSchema = mongoose.Schema({
   money: {type: Number, default: 0},
   dungeonCooldown: {type: String, default: "00000000"},
   death: {type: String, default: "00000000"},
-  weapon: {type: Object}
+  weapon: {type: Object},
+  hotelTime: {type: String, default: "00000000"}
 });
 
 module.exports = mongoose.model("rpg", rpgSchema);

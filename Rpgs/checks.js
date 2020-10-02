@@ -361,6 +361,11 @@ module.exports.initialChecks = async (user, message) => {
         motivo.push({ name: "💤 | Cansaço", value: `Você já visitou a dungeon e precisa descansar por mais **${moment.utc(parseInt(user.dungeonCooldown - Date.now())).format("mm:ss")}** minutos` })
     }
 
+    if(parseInt(user.hotelTime) > Date.now()){
+       pass = false
+       motivo.push({ name: "🏨 | Hotel", value: `Você está descansando no hotel da vila, e não pode ir para a dungeon até que sua estadia acabe, em **${(parseInt(user.hotelTime - Date.now()) > 3600000) ? moment.utc(parseInt(user.hotelTime - Date.now())).format("HH:mm:ss") : moment.utc(parseInt(user.hotelTime - Date.now())).format("mm:ss")}** horas`})
+    }
+
     if (!pass) {
         let texto = `<:negacao:759603958317711371> | Você não pode visitar a dungeon pelos seguintes motivos:`;
         motivo.forEach(m => {
