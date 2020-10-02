@@ -1,5 +1,4 @@
 const { MessageEmbed, Collection } = require("discord.js");
-const Sentry = require("@sentry/node");
 const config = require("../config.json");
 const database = require("../models/user");
 const cmdDb = require("../models/cmds.js")
@@ -10,14 +9,14 @@ const cooldowns = new Collection();
 module.exports = async (client, message) => {
 
   //ping system
-  if(message.author.id === "757295289630720031" && message.content === "PINGING..."){
-    setTimeout(() =>  message.channel.send("Pong! That's my response to your call, master"), 200) 
+  if (message.author.id === "757295289630720031" && message.content === "PINGING...") {
+    setTimeout(() => message.channel.send("Pong! That's my response to your call, master"), 200)
     return
   }
   if (message.author.bot) return;
   if (message.channel.type === "dm") return;
 
-  const server = await serverDb.findOne({id: message.guild.id})
+  const server = await serverDb.findOne({ id: message.guild.id })
   if (!server) {
     serverDb({
       id: message.guild.id
@@ -25,7 +24,7 @@ module.exports = async (client, message) => {
   }
 
   let prefix;
-  if(!server){
+  if (!server) {
     prefix = config.prefix;
   } else prefix = server.prefix.toLowerCase();
 
@@ -119,39 +118,73 @@ module.exports = async (client, message) => {
       }
     }
 
-  
+
     if (!cooldowns.has(command.name)) {
       cooldowns.set(command.name, new Collection());
     }
 
-    if(!config.owner.includes(message.author.id)){
-    
-    const now = Date.now();
-    const timestamps = cooldowns.get(command.name);
-    const cooldownAmount = (command.cooldown || 3) * 1000;
-    
-    if (timestamps.has(message.author.id)) {
-      const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
+    if (!config.owner.includes(message.author.id)) {
 
-  	if (now < expirationTime) {
-		const timeLeft = (expirationTime - now) / 1000;
-    return message.channel.send(`<:atencao:759603958418767922> | Espere ${timeLeft.toFixed(1)} segundos antes de usar o comando \`${command.name}\` em específico`);
-	}
-}
+      const now = Date.now();
+      const timestamps = cooldowns.get(command.name);
+      const cooldownAmount = (command.cooldown || 3) * 1000;
 
-timestamps.set(message.author.id, now);
-setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
+      if (timestamps.has(message.author.id)) {
+        const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
+
+        if (now < expirationTime) {
+          const timeLeft = (expirationTime - now) / 1000;
+          return message.channel.send(`<:atencao:759603958418767922> | Espere ${timeLeft.toFixed(1)} segundos antes de usar o comando \`${command.name}\` em específico`);
+        }
+      }
+
+      timestamps.set(message.author.id, now);
+      setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
 
     }
+    try {
 
-    command.run(client, message, args).catch(err => {
-      console.log(err);
-      Sentry.captureException(err);
-      message.channel.send("<:atencao:759603958418767922> | Ocorreu um erro na execução desse comando... Bugs e mais bugs...")
-    });
-    console.log(`Comando: '${command.name}'. Autor: '${message.author.tag}' id: '${message.author.id}' | Servidor: '${message.guild.name}' ServerId: '${message.guild.id}'`);
+			new Promise((res, rej) => {
 
+				message.channel.startTyping()
+				res(command.run(client, message, args))
+			}).then(() => message.channel.stopTyping()).catch(err => {
+
+        let canal = client.channels.cache.get('730906866896470097')
+
+				message.channel.stopTyping()
+				const errorMessage = err.stack.length > 1800 ? `${err.stack.slice(0, 1800)}...` : err.stack
+				const embed = new MessageEmbed()
+				embed.setColor('#fd0000')
+				embed.setTitle(`<:menhera_cry:744041825140211732> | Ocorreu um erro ao executar o comando ${command.name}`)
+        embed.setDescription(`\`\`\`js\n${errorMessage}\`\`\``)
+        embed.addField(`<:atencao:759603958418767922> | Usage`, `UserId: \`${message.author.id}\` \nServerId: \`${message.guild.id}\``)
+        embed.setTimestamp()
+				embed.addField(`<:ok:727975974125436959> | Reporte esse problema`, "Entre em meu servidor de suporte para reportar esse problema à minha dona")
+
+        message.channel.send(embed)
+        canal.send(embed)
+			})
+		} catch (err) {
+
+      let canal = client.channels.cache.get('730906866896470097')
+
+      message.channel.stopTyping()
+      
+      message.channel.stopTyping()
+				const errorMessage = err.stack.length > 1800 ? `${err.stack.slice(0, 1800)}...` : err.stack
+				const embed = new MessageEmbed()
+				embed.setColor('#fd0000')
+				embed.setTitle(`<:menhera_cry:744041825140211732> | Ocorreu um erro ao executar o comando ${command.name}`)
+        embed.setDescription(`\`\`\`js\n${errorMessage}\`\`\``)
+        embed.addField(`<:atencao:759603958418767922> | Usage`, `UserId: \`${message.author.id}\` \nServerId: \`${message.guild.id}\``)
+        embed.setTimestamp()
+				embed.addField(`<:ok:727975974125436959> | Reporte esse problema`, "Entre em meu servidor de suporte para reportar esse problema à minha dona")
+
+        message.channel.send(embed)
+        canal.send(embed)
+			console.error(err.stack)
+		}
+	
   }
-
-
 }
