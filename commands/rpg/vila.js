@@ -193,15 +193,14 @@ async function guilda(message, user, msg) {
         for (j = 0; j < quantidade; j++) {
             user.updateOne({_id: message.author.id}, {
                 $pull: {
-                    loots: contado[parseInt(args[0]) - 1].name
+                    loots: {name: contado[parseInt(args[0]) - 1].name}
                 }
             })
         }
-    })
+    
         user.save()
         message.channel.send(`<:positivo:759603958485614652> | Você vendeu **${quantidade}** de **${contado[parseInt(args[0]) - 1].name}** e recebeu **${valor}** 💎`)
-    
-
+    })
 }
 
 function countItems(arr) {

@@ -51,18 +51,18 @@
         "uniquePowers": [
             { 
                 "name": "Golpe Desleal", 
-                "description": "Intimida o inimigo, diminuindo em 25% a armadura no inimigo", 
+                "description": "Intimida o inimigo, dando dano mental", 
                 "cooldown": 86400000, 
-                "damage": 0, 
+                "damage": 30, 
                 "heal": 0,
                 "cost": 25, 
                 "type": "ativo" 
             },     
             {
                 "name": "Ataque Giratório", 
-                "description": "Gira sua arma causando apenas 70% do dano em TODOS os inimigos em seu alcançe", 
+                "description": "Gira sua arma causando dano em TODOS os inimigos em seu alcançe", 
                 "cooldown": 86400000, 
-                "damage": 0, 
+                "damage": 30, 
                 "heal": 0, 
                 "cost": 25, 
                 "type": "ativo" 
