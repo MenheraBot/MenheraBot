@@ -115,6 +115,7 @@ function bruxa(message, user, msg) {
         for (j = 0; j < quantidade; j++) {
             user.inventory.push(itens[parseInt(args[0] - 1)])
         }
+        user.money = user.money - valor
         user.save()
 
     })
