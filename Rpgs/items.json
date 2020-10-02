@@ -22,7 +22,7 @@
             "name": "🩸 | Poção de vida Mediana",
             "description": "Restaura 60 de vida instantaneamente",
             "type": "Item",
-            "value": 40,
+            "value": 30,
             "damage": 60,
             "maxLevel": 8,
             "minLevel": 5
@@ -31,7 +31,7 @@
             "name": "💧 | Poção de mana Mediana",
             "description": "Restaura 60 de mana instantaneamente",
             "type": "Item",
-            "value": 50,
+            "value": 38,
             "damage": 60,
             "maxLevel": 8,
             "minLevel": 5
