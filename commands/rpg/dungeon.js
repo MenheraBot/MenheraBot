@@ -4,7 +4,7 @@ const checks = require("../../Rpgs/checks.js")
 
 module.exports = {
   name: "dungeon",
-  aliases: ["aventura"],
+  aliases: ["aventura", "dungeons"],
   cooldown: 3,
   category: "rpg",
   description: "Vá para uma aventura na dungeon",
