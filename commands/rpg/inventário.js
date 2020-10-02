@@ -29,7 +29,7 @@ module.exports = {
       })
   
       countItems(loots).forEach(count => {
-        lootText += `**${count.name}** (${count.amount})\n`
+        lootText += `**${count.name}** ( ${count.amount} )\n`
       })
       
     embed.addField(`<:Chest:760957557538947133> | Espólios de Batalha`, lootText)

@@ -1,0 +1,40 @@
+{
+    "bruxa": [
+        {
+            "name": "🩸 | Poção de vida Pequena",
+            "description": "Restaura 30 de vida instantaneamente",
+            "type": "Item",
+            "damage": 30,
+            "value": 20,
+            "maxLevel": 5,
+            "minLevel": 0
+        },
+        {
+            "name": "💧 | Poção de mana Pequena",
+            "description": "Restaura 30 de mana instantaneamente",
+            "type": "Item",
+            "value": 25,
+            "damage": 30,
+            "maxLevel": 5,
+            "minLevel": 0
+        },
+        {
+            "name": "🩸 | Poção de vida Mediana",
+            "description": "Restaura 60 de vida instantaneamente",
+            "type": "Item",
+            "value": 40,
+            "damage": 60,
+            "maxLevel": 8,
+            "minLevel": 5
+        },
+        {
+            "name": "💧 | Poção de mana Mediana",
+            "description": "Restaura 60 de mana instantaneamente",
+            "type": "Item",
+            "value": 50,
+            "damage": 60,
+            "maxLevel": 8,
+            "minLevel": 5
+        }
+    ]
+}
