@@ -8,7 +8,9 @@ module.exports = {
   cooldown: 3,
   category: "rpg",
   description: "Veja seu inventário",
-  usage: "m!dungeon",
+  userPermission: null,
+  clientPermission: ["EMBED_LINKS"],
+  usage: "m!inventário",
   run: async (client, message, args) => {
 
     const user = await database.findById(message.author.id)

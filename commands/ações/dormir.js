@@ -6,6 +6,8 @@ module.exports = {
   cooldown: 2,
   category: "ações",
   description: "Mostre para os outros que você vai de base",
+  userPermission: null,
+  clientPermission: ["EMBED_LINKS"],
   usage: "m!sono",
   run: async (client, message, args) => {
 

@@ -5,6 +5,8 @@ module.exports = {
   cooldown: 2,
   category: "ações",
   description: "MEDO?????",
+  userPermission: null,
+  clientPermission: ["EMBED_LINKS"],
   usage: "m!medo [@menção]",
   run: async (client, message, args) => {
   

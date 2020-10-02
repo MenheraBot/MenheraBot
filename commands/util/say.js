@@ -5,6 +5,8 @@ module.exports = {
   cooldown: 2,
   category: "util",
   description: "Faça-me dizer algo",
+  userPermission: ["MANAGE_MESSAGES"],
+  clientPermission: ["MANAGE_MESSAGES"],
   usage: "m!say <texto>",
   run: async (client, message, args) => {
   const sayMessage = args.join(" ");

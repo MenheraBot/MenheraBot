@@ -6,6 +6,8 @@ module.exports = {
   cooldown: 5,
   category: "util",
   description: "Se coloque em AFK",
+  userPermission: null,
+  clientPermission: null,
   usage: "m!afk [motivo]",
   run: async (client, message, args) => {
 

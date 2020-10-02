@@ -5,6 +5,8 @@ module.exports = {
   cooldown: 2,
   category: "util",
   description: "Adicione o bot em algum servidor",
+  userPermission: null,
+  clientPermission: ["EMBED_LINKS"],
   usage: "m!invite",
   run: async (client, message, args) => {
   const embed = new MessageEmbed()

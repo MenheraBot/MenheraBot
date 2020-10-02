@@ -5,6 +5,8 @@ module.exports = {
   cooldown: 2,
   category: "ações",
   description: "Mostre a todos que estás rindo ",
+  userPermission: null,
+  clientPermission: ["EMBED_LINKS"],
   usage: "m!rir [@menção]",
   run: async (client, message, args) => {
   

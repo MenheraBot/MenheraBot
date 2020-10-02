@@ -6,6 +6,8 @@ module.exports = {
   cooldown: 2,
   category: "ações",
   description: "Mate aquele que você não suporta mais",
+  userPermission: null,
+  clientPermission: ["EMBED_LINKS"],
   usage: "m!matar <@menção>",
   run: async (client, message, args) => {
   //links de assassinatos

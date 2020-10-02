@@ -9,6 +9,8 @@ module.exports = {
   cooldown: 2,
   category: "Dev",
   description: "Acesso direto à database da Menhera",
+  userPermission: null,
+  clientPermission: ["EMBED_LINKS"],
   usage: "m!database <comando> <alteração>",
   devsOnly: true,
   

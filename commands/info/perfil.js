@@ -8,6 +8,8 @@ module.exports = {
   cooldown: 5,
   category: "info",
   description: "Veja o seu perfil, ou o de alguem",
+  userPermission: null,
+  clientPermission: ["EMBED_LINKS"],
   usage: "m!perfil [@menção]",
   run: async (client, message, args) => {
 

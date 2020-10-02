@@ -9,6 +9,8 @@ module.exports = {
     cooldown: 7,
     category: "info",
     description: "Veja o top de meus usuários",
+    userPermission: null,
+    clientPermission: ["EMBED_LINKS"],
     usage: "m!top [mamadores | mamados | estrelinhas]",
     run: async (client, message, args) => {
 

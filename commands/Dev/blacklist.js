@@ -5,7 +5,9 @@ module.exports = {
     aliases: ["ban", "menheraban", "banmenhera", "mb"],
     cooldown: 1,
     category: "Dev",
-    description: "Bane um usuário de usar a menhera",
+	description: "Bane um usuário de usar a menhera",
+	userPermission: null,
+  	clientPermission: ["EMBED_LINKS"],
 	usage: "m!blacklist <add|remove|viwe><user>",
 	devsOnly: true,
     run: async (client, message, args) => {

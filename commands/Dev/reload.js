@@ -4,6 +4,8 @@ module.exports = {
     cooldown: 1,
     category: "Dev",
     description: "Atualiza um comando sem reiniciar o bot",
+    userPermission: null,
+    clientPermission: ["EMBED_LINKS"],
     usage: "m!reload <comando>",
     devsOnly: true,
     

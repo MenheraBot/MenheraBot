@@ -8,6 +8,8 @@ module.exports = {
   cooldown: 10,
   category: "util",
   description: "Mostra as informações atuais do bot",
+  userPermission: null,
+  clientPermission: ["EMBED_LINKS"],
   usage: "m!botinfo",
   run: async (client, message, args) => {
 

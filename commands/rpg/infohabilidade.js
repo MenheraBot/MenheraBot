@@ -8,7 +8,9 @@ module.exports = {
   cooldown: 10,
   category: "rpg",
   description: "Veja as informações de suas habilidades, ou de uma em comum",
-  usage: "m!status [habilidade]",
+  userPermission: null,
+  clientPermission: ["EMBED_LINKS"],
+  usage: "m!infohabilidade [habilidade]",
   run: async (client, message, args) => {
 
     if(!args[0]) return message.channel.send(`<:atencao:759603958418767922> | Como usar o comando InfoHabilidade?\nVocê pode usar das seguintes formas:\n\nm!ih classe <classe> - retorna todas as habilidades únicas da classe citada\n\nm!ih habilidade <habilidade> - retorna as informações de uma habilidade\n\nm!ih minhas - retorna todas as suas habilidades`);

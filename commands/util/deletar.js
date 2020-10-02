@@ -6,6 +6,8 @@ module.exports = {
   cooldown: 30,
   category: "util",
   description: "Exclua seu perfil do banco de dados",
+  userPermission: null,
+  clientPermission: ["EMBED_LINKS", "ADD_REACTIONS"],
   usage: "m!deletar",
   run: async (client, message, args) => {
   

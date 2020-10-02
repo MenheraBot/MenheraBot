@@ -5,6 +5,8 @@ module.exports = {
   cooldown: 2,
   category: "ações",
   description: "Cutuque alguem",
+  userPermission: null,
+  clientPermission: ["EMBED_LINKS"],
   usage: "m!cutucar <@menção>",
   run: async (client, message, args) => {
   var list = [

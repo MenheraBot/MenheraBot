@@ -6,6 +6,8 @@ module.exports = {
     cooldown: 5,
     category: "economia",
     description: "Abra a loja da Menhera",
+    userPermission: null,
+    clientPermission: ["EMBED_LINKS"],
     usage: "m!daily",
     run: async (client, message, args) => {
 

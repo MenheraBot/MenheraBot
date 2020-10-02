@@ -6,6 +6,8 @@ module.exports = {
   cooldown: 2,
   category: "ações",
   description: "Gabriel o pensador apenas",
+  userPermission: null,
+  clientPermission: ["EMBED_LINKS"],
   usage: "m!pensar <@menção>",
   run: async (client, message, args) => {
 

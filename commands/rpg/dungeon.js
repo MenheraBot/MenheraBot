@@ -8,6 +8,8 @@ module.exports = {
   cooldown: 3,
   category: "rpg",
   description: "Vá para uma aventura na dungeon",
+  userPermission: null,
+  clientPermission: ["EMBED_LINKS"],
   usage: "m!dungeon",
   run: async (client, message, args) => {
 

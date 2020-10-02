@@ -7,6 +7,8 @@ module.exports = {
   cooldown: 2,
   category: "util",
   description: "Mude seu Sobre Mim",
+  userPermission: null,
+  clientPermission: null,
   usage: "m!sobremim <texto>",
   run: async (client, message, args) => {
 

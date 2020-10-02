@@ -6,6 +6,8 @@ module.exports = {
   cooldown: 5,
   category: "info",
   description: "Mostra o avatar de alguem",
+  userPermission: null,
+  clientPermission: ["EMBED_LINKS"],
   usage: "m!avatar [@menção]",
   run: async (client, message, args) => {
   

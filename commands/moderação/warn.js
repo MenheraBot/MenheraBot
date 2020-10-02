@@ -7,6 +7,8 @@ module.exports = {
   cooldown: 5,
   category: "moderação",
   description: "Avise um usuário",
+  userPermission: ["KICK_MEMBERS"],
+  clientPermission: ["EMBED_LINKS"],
   usage: "m!warn <usuário> <razão>",
   run: async (client, message, args) => {
       if(!message.member.hasPermission("KICK_MEMBERS")) return message.channel.send("<:negacao:759603958317711371> | Você precisa da permissão `KICK_MEMBERS` para usar esse comando")

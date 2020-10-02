@@ -4,7 +4,9 @@ module.exports = {
   aliases: ["vote", "vota", "upvote"],
   cooldown: 2,
   category: "util",
-  description: "Vote no bot (pfv vote, isso ajuda muito X3 >.< )",
+  description: "Vote no bot (pfv vote, isso ajuda muito X3 >.< ",
+  userPermission: null,
+  clientPermission: ["EMBED_LINKS"],
   usage: "m!votar",
   run: async (client, message, args) => {
   const embed = new MessageEmbed()

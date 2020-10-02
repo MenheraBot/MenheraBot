@@ -6,6 +6,8 @@ module.exports = {
     cooldown: 2,
     category: "economia",
     description: "Transfira algo de seu inventário para alguém",
+    userPermission: null,
+    clientPermission: null,
     usage: "m!give <opção> <menção> <valor>",
     run: async (client, message, args) => {
 

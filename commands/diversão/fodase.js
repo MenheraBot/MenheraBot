@@ -5,6 +5,8 @@ module.exports = {
   cooldown: 2,
   category: "diversão",
   description: "Alguem mandou algo que ninguem perguntou? Taque o fodase",
+  userPermission: null,
+  clientPermission: ["EMBED_LINKS"],
   usage: "m!fodase",
   run: async (client, message, args) => {
   if (message.deletable) message.delete();

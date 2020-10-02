@@ -5,6 +5,8 @@ module.exports = {
   cooldown: 2,
   category: "diversão",
   description: "Mande quando alguem fizer aquela piadoca do joca",
+  userPermission: null,
+  clientPermission: ["EMBED_LINKS"],
   usage: "m!humor",
   run: async (client, message, args) => {
   if (message.deletable) message.delete();

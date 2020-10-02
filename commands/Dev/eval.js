@@ -9,6 +9,8 @@ module.exports = {
   cooldown: 2,
   category: "Dev",
   description: "Executa algo",
+  userPermission: null,
+  clientPermission: ["EMBED_LINKS"],
   usage: "m!eval <comando>",
   devsOnly: true,
 

@@ -5,6 +5,8 @@ module.exports = {
   cooldown: 5,
   category: "util",
   description: "Reporte um Bug para minha Dona",
+  userPermission: null,
+  clientPermission: null,
   usage: "m!report <bug>",
   run: async (client, message, args) => {
   

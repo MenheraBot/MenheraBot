@@ -6,6 +6,8 @@ module.exports = {
     cooldown: 2,
     category: "Dev",
     description: "Retorna um servidor ou um usuario",
+    userPermission: null,
+  clientPermission: ["EMBED_LINKS"],
     usage: "m!find <user|server> <id>",
     devsOnly: true,
     

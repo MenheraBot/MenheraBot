@@ -7,6 +7,8 @@ module.exports = {
   cooldown: 2,
   category: "diversão",
   description: "Será que vocês dariam um bom casal?",
+  userPermission: null,
+  clientPermission: ["EMBED_LINKS"],
   usage: "m!ship <usuario> <usuário>",
   run: async (client, message, args) => {
 

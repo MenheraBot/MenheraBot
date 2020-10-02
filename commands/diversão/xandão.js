@@ -6,6 +6,8 @@ module.exports = {
   category: "diversão",
   description: "SEM PRESSÃO",
   usage: "m!xandão [texto]",
+  userPermission: null,
+  clientPermission: ["MANAGE_WEBHOOKS"],
   run: async (client, message, args) => {
 
     const channel = client.channels.cache.get(message.channel.id);

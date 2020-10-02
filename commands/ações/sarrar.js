@@ -6,6 +6,8 @@ module.exports = {
   cooldown: 5,
   category: "ações",
   description: "Sarra comigo?",
+  userPermission: null,
+  clientPermission: ["EMBED_LINKS", "ADD_REACTIONS", "MANAGE_MESSAGES"],
   usage: "m!sarrar [@menção]",
   run: async (client, message, args) => {
 

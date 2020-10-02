@@ -6,6 +6,8 @@ module.exports = {
     cooldown: 5,
     category: "util",
     description: "Use um DR para resetar seu tempo de caçadas",
+    userPermission: null,
+    clientPermission: null,
     usage: "m!roll",
     run: async (client, message, args) => {
 

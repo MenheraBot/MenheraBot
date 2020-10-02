@@ -5,6 +5,8 @@ module.exports = {
   cooldown: 2,
   category: "ações",
   description: "Da aquele tapa de qualidade do VEM PRO FUT em alguem",
+  userPermission: null,
+  clientPermission: ["EMBED_LINKS"],
   usage: "m!socar <@menção>",
   run: async (client, message, args) => {
   var list = [

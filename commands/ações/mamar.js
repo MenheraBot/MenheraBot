@@ -8,6 +8,8 @@ module.exports = {
   cooldown: 3,
   category: "ações",
   description: "Da aquela mamada de qualidade monstra",
+  userPermission: null,
+  clientPermission: ["EMBED_LINKS"],
   usage: "m!mamar <@menção>",
   run: async (client, message, args) => {
 

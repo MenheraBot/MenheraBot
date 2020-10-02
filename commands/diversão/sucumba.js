@@ -5,6 +5,8 @@ module.exports = {
   cooldown: 3,
   category: "diversão",
   description: "SUCUMBA MUCALOL",
+  userPermission: null,
+  clientPermission: ["EMBED_LINKS"],
   usage: "m!sucumba <@menção || texto>",
   run: async (client, message, args) => {
   const user = message.mentions.users.first() || args.join(" ");

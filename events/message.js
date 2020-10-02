@@ -142,6 +142,22 @@ module.exports = async (client, message) => {
       setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
 
     }
+
+     let userPermission = command.userPermission
+		let clientPermission = command.clientPermission
+		if (userPermission !== null) {
+			if (!message.member.hasPermission(userPermission)) {
+				let perm = userPermission.map(value => value).join(", ")
+				return message.channel.send("<:atencao:759603958418767922> | Você não tem permissão o suficiente para executar esse comando!\nPermissões necessárias: " + perm )
+			}
+		}
+		if (clientPermission !== null) {
+			if (!message.guild.me.hasPermission(clientPermission) || !message.channel.permissionsFor(client.user.id).has(clientPermission)) {
+				let perm = clientPermission.map(value => `\`${value}\``).join(", ")
+				return message.channel.send(`<:atencao:759603958418767922> | Eu não tenho permissão para executar esse comando! Permissões necessárias: ${perm}`)
+			}
+		}
+ 
     try {
 
 			new Promise((res, rej) => {
@@ -149,6 +165,8 @@ module.exports = async (client, message) => {
 				message.channel.startTyping()
 				res(command.run(client, message, args))
 			}).then(() => message.channel.stopTyping()).catch(err => {
+
+        message.channel.stopTyping()
 
         let canal = client.channels.cache.get('730906866896470097')
 
@@ -171,7 +189,6 @@ module.exports = async (client, message) => {
 
       message.channel.stopTyping()
       
-      message.channel.stopTyping()
 				const errorMessage = err.stack.length > 1800 ? `${err.stack.slice(0, 1800)}...` : err.stack
 				const embed = new MessageEmbed()
 				embed.setColor('#fd0000')

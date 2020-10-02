@@ -5,6 +5,8 @@ module.exports = {
     cooldown: 5,
     category: "util",
     description: "Link de convite para o servidor de suporte do Bot",
+    userPermission: null,
+  clientPermission: ["EMBED_LINKS"],
     usage: "m!suporte",
     run: async (client, message, args) => {
  const embed = new MessageEmbed()

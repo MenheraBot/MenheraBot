@@ -6,6 +6,8 @@ module.exports = {
   cooldown: 30,
   category: "diversão",
   description: "Casa com alguem",
+  userPermission: null,
+  clientPermission: ["EMBED_LINKS", "ADD_REACTIONS"],
   usage: "m!casar <@menção>",
 
   run: async (client, message, args) => {

@@ -5,6 +5,8 @@ module.exports = {
     cooldown: 5,
     category: "util",
     description: "Mostra a pagina de ajuda do bot",
+    userPermission: null,
+    clientPermission: ["EMBED_LINKS"],
     usage: "m!help [comando]",
     run: async (client, message, args) => {
         if (args[0]) {

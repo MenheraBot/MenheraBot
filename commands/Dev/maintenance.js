@@ -6,6 +6,8 @@ module.exports = {
   cooldown: 2,
   category: "Dev",
   description: "Coloca ou tira um comando de manutenção",
+  userPermission: null,
+  clientPermission: ["EMBED_LINKS"],
   usage: "m!maintenance <comando>",
   devsOnly: true,
 

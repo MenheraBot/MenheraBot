@@ -6,6 +6,8 @@ module.exports = {
     cooldown: 2,
     category: "util",
     description: "Mostra o ping do bot e de sua API",
+    userPermission: null,
+  clientPermission: ["EMBED_LINKS"],
     usage: "m!ping",
     run: async (client, message, args) => {
         

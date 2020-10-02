@@ -4,6 +4,8 @@ module.exports = {
     cooldown: 5,
     category: "Dev",
     description: "Receba minhas notificações de atualização",
+    userPermission: null,
+    clientPermission: ["EMBED_LINKS"],
     usage: "m!notify",
     
     run: async (client, message, args) => {

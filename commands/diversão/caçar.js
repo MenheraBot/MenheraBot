@@ -10,6 +10,8 @@ module.exports = {
   cooldown: 5,
   category: "diversão",
   description: "Caçe demônios como XANDÂO",
+  userPermission: null,
+  clientPermission: ["EMBED_LINKS"],
   usage: "m!caçar",
   run: async (client, message, args) => {
 

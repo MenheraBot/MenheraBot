@@ -6,6 +6,8 @@ module.exports = {
   cooldown: 2,
   category: "ações",
   description: "Ressuscite alguém morto com m!matar",
+  userPermission: null,
+  clientPermission: ["EMBED_LINKS"],
   usage: "m!ressuscitar <@menção>",
   run: async (client, message, args) => {
 

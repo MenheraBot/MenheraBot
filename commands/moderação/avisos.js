@@ -8,6 +8,8 @@ module.exports = {
   cooldown: 10,
   category: "moderação",
   description: "Veja quantos warns uma pessoa tem",
+  userPermission: ["MANAGE_MESSAGES"],
+  clientPermission: ["EMBED_LINKS"],
   usage: "m!avisos <usuario>",
   run: async (client, message, args) => {
     if (!message.member.hasPermission("MANAGE_MESSAGES")) return message.channel.send("<:negacao:759603958317711371> | Você precisa da permissão `MANAGE_MESSAGES` para utilizar este comando");

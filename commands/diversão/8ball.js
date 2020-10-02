@@ -4,6 +4,8 @@ module.exports = {
   cooldown: 2,
   category: "diversão",
   description: "Pergunte algo para a Menhera",
+  userPermission: null,
+  clientPermission: null,
   usage: "m!8ball <pergunta>",
   run: async (client, message, args) => {
 

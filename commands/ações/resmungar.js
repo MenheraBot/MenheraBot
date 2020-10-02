@@ -5,6 +5,8 @@ module.exports = {
   cooldown: 2,
   category: "ações",
   description: "Resmungue humpf",
+  userPermission: null,
+  clientPermission: ["EMBED_LINKS"],
   usage: "m!resmungar",
   run: async (client, message, args) => {
   

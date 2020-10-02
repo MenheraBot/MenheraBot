@@ -5,6 +5,8 @@ module.exports = {
   cooldown: 5,
   category: "util",
   description: "Sugira algo para a dona do bot ou envie um bug para ela",
+  userPermission: null,
+  clientPermission: null,
   usage: "m!sugerir <sugestão>",
   run: async (client, message, args) => {
   

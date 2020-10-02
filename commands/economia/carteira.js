@@ -7,6 +7,8 @@ module.exports = {
     cooldown: 2,
     category: "economia",
     description: "Veja a carteira de alguém",
+    userPermission: null,
+    clientPermission: ["EMBED_LINKS"],
     usage: "m!carteira [@usuário]",
     run: async (client, message, args) => {
 

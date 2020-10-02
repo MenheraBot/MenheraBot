@@ -8,6 +8,8 @@ module.exports = {
   cooldown: 10,
   category: "rpg",
   description: "Registre-se um aventureiro",
+  userPermission: null,
+  clientPermission: ["EMBED_LINKS"],
   usage: "m!register",
   run: async (client, message, args) => {
 

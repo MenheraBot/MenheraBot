@@ -7,8 +7,10 @@ module.exports = {
     aliases: ["village", "boleham"],
     cooldown: 10,
     category: "rpg",
-    description: "Registre-se um aventureiro",
-    usage: "m!register",
+    description: "Vá para a vila de boleham",
+    userPermission: null,
+    clientPermission: ["EMBED_LINKS"],
+    usage: "m!vila",
     run: async (client, message, args) => {
 
         const user = await database.findById(message.author.id);

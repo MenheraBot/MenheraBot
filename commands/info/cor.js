@@ -6,6 +6,8 @@ module.exports = {
   cooldown: 5,
   category: "info",
   description: "Mude a cor de seu perfil",
+  userPermission: null,
+  clientPermission: ["EMBED_LINKS"],
   usage: "m!cor [cor]",
   run: async (client, message, args) => {
   

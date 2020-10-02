@@ -6,6 +6,8 @@ module.exports = {
   cooldown: 30,
   category: "diversão",
   description: "Não quer mais ficar casado com aquele corno? Divorcie com este comando",
+  userPermission: null,
+  clientPermission: ["EMBED_LINKS", "ADD_REACTIONS"],
   usage: "m!divorciar",
   run: async (client, message, args) => {
 

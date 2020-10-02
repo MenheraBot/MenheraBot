@@ -5,6 +5,8 @@ module.exports = {
   cooldown: 2,
   category: "ações",
   description: "Morde alguem X3 Moidi :3",
+  userPermission: null,
+  clientPermission: ["EMBED_LINKS"],
   usage: "m!morder <@menção>",
   run: async (client, message, args) => {
   var list = [

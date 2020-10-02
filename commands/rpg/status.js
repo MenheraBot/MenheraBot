@@ -7,6 +7,8 @@ module.exports = {
   cooldown: 10,
   category: "rpg",
   description: "Veja o status de alguém",
+  userPermission: null,
+  clientPermission: ["EMBED_LINKS"],
   usage: "m!status [@membro]",
   run: async (client, message, args) => {
 
