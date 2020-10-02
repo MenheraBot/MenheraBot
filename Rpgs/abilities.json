@@ -400,9 +400,9 @@
                 "name": "Transformação de Corpos", 
                 "description": "Possessa o inimigo, fazendo com que ele se automutile",
                 "cooldown": 7200000, 
-                "damage": 35, 
+                "damage": 9, 
                 "heal": 20, 
-                "cost": 20, 
+                "cost": 40, 
                 "type": "ativo" 
             }, 
             { 
