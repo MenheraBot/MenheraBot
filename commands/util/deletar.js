@@ -7,14 +7,14 @@ module.exports = {
   category: "util",
   description: "Exclua seu perfil do banco de dados",
   userPermission: null,
-  clientPermission: ["EMBED_LINKS", "ADD_REACTIONS"],
+  clientPermission: ["EMBED_LINKS", "ADD_REACTIONS", "MANAGE_MESSAGES"],
   usage: "m!deletar",
   run: async (client, message, args) => {
   
-    message.channel.send(`<:atencao:759603958418767922> |Você tem certeza que deseja excluir sua conta da database do servidor?\nVocê tem 5 segundos para decidir`).then(msg => {
+    message.channel.send(`<:atencao:759603958418767922> |Você tem certeza que deseja excluir sua conta da database do servidor?\nVocê tem 5 segundos para decidir`).then(async msg => {
       
-        msg.react("✅").catch(err => message.channel.send("<:negacao:759603958317711371> | Ocorreu um erro ao adicionar uma reação, serasi eu tenho permissão para tal?"));
-        msg.react("❌").catch(err => message.channel.send("<:negacao:759603958317711371> | Ocorreu um erro ao adicionar uma reação, serasi eu tenho permissão para tal?"));
+        msg.react("✅").catch();
+        msg.react("❌").catch();
 
         let filter = (reaction, usuario) => reaction.emoji.name === "✅" && usuario.id === message.author.id;
         let filter1 = (reação, user) => reação.emoji.name === "❌" && user.id === message.author.id;

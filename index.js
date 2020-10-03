@@ -23,4 +23,4 @@ process.on('unhandledRejection', (reason, promise) => {
 })
 
 
-client.login(config.token);
+client.login(config.testToken);
