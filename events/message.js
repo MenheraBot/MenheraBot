@@ -181,7 +181,7 @@ module.exports = async (client, message) => {
         embed.setTimestamp()
 				embed.addField(`<:ok:727975974125436959> | Reporte esse problema`, "Entre em meu servidor de suporte para reportar esse problema à minha dona")
 
-        message.channel.send(embed)
+        message.channel.send(embed).catch(() => message.channel.send("Aparentemente ocorreu um erro ao executar este comando! Reporte isso à minha dona em meu servidor de suporte!"))
         canal.send(embed)
 			})
 		} catch (err) {
@@ -199,9 +199,9 @@ module.exports = async (client, message) => {
         embed.setTimestamp()
 				embed.addField(`<:ok:727975974125436959> | Reporte esse problema`, "Entre em meu servidor de suporte para reportar esse problema à minha dona")
 
-        message.channel.send(embed)
+        message.channel.send(embed).catch(() => message.channel.send("Aparentemente ocorreu um erro ao executar este comando! Reporte isso à minha dona em meu servidor de suporte!"))
         canal.send(embed)
-			console.error(err.stack)
+			  console.error(err.stack)
 		}
 	
   }
