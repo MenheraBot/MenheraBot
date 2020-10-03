@@ -163,7 +163,8 @@ module.exports = async (client, message) => {
 			new Promise((res, rej) => {
 
 				message.channel.startTyping()
-				res(command.run(client, message, args))
+        res(command.run(client, message, args))
+        console.log(`[COMANDO] Comando ${command.name} executado por ${message.author.id}`)
 			}).then(() => message.channel.stopTyping()).catch(err => {
 
         message.channel.stopTyping()
