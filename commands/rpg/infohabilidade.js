@@ -1,6 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 const database = require("../../models/rpg.js");
-
+const abilitiesFile = require("../../Rpgs/abilities.json")
 
 module.exports = {
   name: "infohabilidade",
@@ -18,15 +18,15 @@ module.exports = {
     const validArgs = [
         {
             opção: "classe",
-            arguments: ["classe", "class"]
+            arguments: ["classe", "class", "c"]
         },
         {
             opção: "habilidade",
-            arguments: ["habilidade", "ability", "habilidades", "abilities"]
+            arguments: ["habilidade", "ability", "habilidades", "abilities", "h"]
         },
         {
             opção: "minhas",
-            arguments: ["minhas", "minha", "meu", "meus"]
+            arguments: ["minhas", "minha", "meu", "meus", "m"]
         }
     ]
 
@@ -44,7 +44,11 @@ module.exports = {
             break;
         case 'habilidade':
             if(!args[1]) return message.channel.send("<:negacao:759603958317711371> | Você não citou o nome da habilidade")
-            getHab(message, args[1])
+            let choice = "";
+            for(i = 1; i < args.length; i++){
+                choice += args[i] + " "
+            }
+            getHab(message, choice)
             break;
         case 'minhas':
             getAll(message)
@@ -60,50 +64,42 @@ module.exports = {
 
     if(!classes.includes(normalized)) return message.channel.send("<:negacao:759603958317711371> | Esta classe não existe!")
 
-    const habilidades = [
-        {
-           classe: "assassino",
-           habilidades:  [{ name: "Morte Instantânea", description: "Mata um alvo não-épico instantâneamente, sem chance de revidar", cooldown: 86400000, damage: 999999, heal: 0, cost: 80, type: "ativo" }, { name: "Lâmina Envenenada", description: "Envenena sua lâmina causando dano e lentidão ao seu inimigo", cooldown: 86400000, damage: 50, heal: 0, cost: 25, type: "ativo" }]},
-        {
-            classe: "barbaro",
-            habilidades:[ { name: "Golpe Desleal", description: "Intimida o inimigo, diminuindo em 25% a armadura no inimigo", cooldown: 86400000, damage: 0, heal: 0, cost: 25, type: "ativo" }, { name: "Ataque Giratório", description: "Gira sua arma causando apenas 70% do dano em TODOS os inimigos em seu alcançe", cooldown: 86400000, damage: 0, heal: 0, cost: 25, type: "ativo" }]
-        },
-        {
-            classe: "clerigo",
-            habilidades: [{ name: "Chama Divina", description: "Roga pelo fogo sagrado queimando seus inimigos", cooldown: 0, damage: 7, heal: 0, cost: 20, type: "ativo" }, { name: "Benção Elemental", description: "Abençoa o alvo aumentando seu dano base e sua armadura", damage: 0, cooldown: 7200000, heal: 0, cost: 35, type: "ativo" }, { name: "Castigo Divino", description: "Reduz a armadura do inimigo", cooldown: 7200000, damage: 0, heal: 0, cost: 20, type: "ativo" }]
-        },
-        {
-            classe: "druida",
-            habilidades: [{ name: "Transformação | Tigre", description: "Transforma-se em um Tigre, usando seus dotes de batalha", cooldown: 0, damage: 20, heal: 0, cost: 0, type: "ativo" }, { name: "Transformação | Urso", description: "Transforma-se em um Urso, usando seus dotes de batalha", cooldown: 0, damage: 17, heal: 0, cost: 0, type: "ativo" }, { name: "Transformação | Cobra", description: "Transforma-se em uma Cobra, usando seus dotes de batalha", cooldown: 0, damage: 15, heal: 0, cost: 0, type: "ativo" }]
-        },
-        {
-            classe: "espadachim",
-            habilidades: [ { name: "Na Mão ou no Pé?", description: "Questiona seu inimigo dando a chance dele escolher qual membro desejas perder, a mão, ou o pé? Desferindo um golpe extremamente forte", cooldown: 86400000, damage: 50, heal: 0, cost: 35, type: "ativo" }, { name: "Soryegethon", description: "Invoca o poder dos ventos, desferindo um tornado que dá dano aos inimigos", cooldown: 86400000, damage: 30, heal: 0, cost: 20, type: "ativo" }]
-        },
-        {
-            classe: "feiticeiro",
-            habilidades:  [{ name: "Linhagem: Mística", description: "**LINHAGEM:** as habilidades deste feiticeiro mudam com o tipo da linhagem\n**ATIVO:** Conjura esporos que dão dano no inimigo e tem chance de incapacitá-lo por 1 turno", cooldown: 7200000, damage: 8, heal: 0, cost: 20, type: "ativo" }, { name: "Linhagem: Dracônica", description: "**LINHAGEM:** as habilidades deste feiticeiro mudam com o tipo da linhagem\n**ATIVO:** Conjura o poder do dragão, dando dano em seu alvo", cooldown: 3600000, damage: 6, heal: 0, cost: 20, type: "ativo" }, { name: "Linhagem: Demoníaca", description: "**LINHAGEM:** as habilidades deste feiticeiro mudam com o tipo da linhagem\n**ATIVO:** Rouba energia vital do inimigo", cooldown: 3600000, damage: 5, heal: 20, cost: 20, type: "ativo" }]
-        },
-        {
-            classe: "monge",
-            habilidades:[ { name: "Peteleco Espiritual", description: "Da um peteleco nozovido do inimigo, causando dano BRUTAL", cooldown: 7200000, damage: 30, heal: 0, cost: 35, type: "ativo" }]
-        },
-        {
-            classe: "necromante",
-            habilidades: [{ name: "Forró da meia idade", description: "Invoca um esqueleto que dá dano e evita o proximo ataque contra si", cooldown: 7200000, damage: 5, heal: 0, cost: 20, type: "ativo" }, { name: "Transformação de Corpos", description: "Possessa o inimigo, fazendo com que ele se automutile", cooldown: 7200000, damage: 35, heal: 20, cost: 20, type: "ativo" }, { name: "Festa dos Mortos", description: "Invoca monstros que ja morreram naquele local, fazendo com que lutem contra o inimigo em seu lugar", cooldown: 7200000, damage: 30, heal: 0, cost: 30, type: "ativo" }]
-        }
-    ];
+    let filtrado;
 
-    const filtredOption = habilidades.filter(f => f.classe == normalized)
+    switch(normalized){
+        case 'assassino':
+            filtrado = abilitiesFile.assassin
+            break;
+        case 'barbaro':
+            filtrado = abilitiesFile.barbarian
+            break;
+        case 'clerigo':
+            filtrado = abilitiesFile.clerigo
+            break;
+        case 'druida':
+            filtrado = abilitiesFile.druida
+            break;
+        case 'espadachim':
+            filtrado = abilitiesFile.espadachim
+            break;
+        case 'feiticeiro': 
+        filtrado = abilitiesFile.feiticeiro
+            break;
+        case 'monge':
+            filtrado = abilitiesFile.monge
+            break;
+        case 'necromante':
+            filtrado = abilitiesFile.necromante
+            break;
+    }
 
-    
+    const filtredOption = filtrado.uniquePowers
+
     let embed = new MessageEmbed()
     .setTitle(`🔮 | Habilidades do ${classe}`)
     .setColor('#9cfcde')
-
-    const option = filtredOption[0]
     
-    option.habilidades.forEach(hab => {
+    filtredOption.forEach(hab => {
         embed.addField(hab.name, `📜 | **Descrição:** ${hab.description}\n⚔️ | **Dano:** ${hab.damage}\n💉 | **Cura:** ${hab.heal}\n💧 | **Custo:** ${hab.cost}\n🧿 | **Tipo:** ${hab.type}`)
     })
 
@@ -112,7 +108,38 @@ module.exports = {
   }
 
   function getHab(message, habilidade){
-    return message.channel.send("<:negacao:759603958317711371> | Esta categoria está em desenvolvimento")
+
+    console.log(habilidade)
+
+    let embed = new MessageEmbed()
+    .setTitle(`🔮 | Resultados da pesquisa ${habilidade}`)
+    .setColor('#9cfcde')
+
+    var exists = false;
+    let description;
+
+    const classes = [abilitiesFile.assassin, , abilitiesFile.barbarian, abilitiesFile.druida, abilitiesFile.espadachim, abilitiesFile.feiticeiro, abilitiesFile.monge, abilitiesFile.necromante];
+
+   classes.forEach(classe => {
+          if (classe.normalAbilities.some(s => s.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '') == habilidade.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''))) {
+              exists = true;
+              let filtro = classe.normalAbilities.filter(s => s.name == habilidade);
+              description = `📜 | **Descrição:** ${filtro[0].description}\n⚔️ | **Dano:** ${filtro[0].damage}\n💉 | **Cura:** ${filtro[0].heal}\n💧 | **Custo:** ${filtro[0].cost}`;
+          } else if (classe.uniquePowers.some(s => s.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '') == habilidade.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''))) {
+              exists = true;
+              let filtro = classe.uniquePowers.filter(s => s.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '') == habilidade.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''));
+              description = `**HABILIDADE ÚNICA**\n📜 | **Descrição:** ${filtro[0].description}\n⚔️ | **Dano:** ${filtro[0].damage}\n💉 | **Cura:** ${filtro[0].heal}\n💧 | **Custo:** ${filtro[0].cost}`;
+          }
+      })
+
+    if(!exists){
+        embed.setColor('#fd0e2f')
+        embed.setDescription("**Nenhuma habilidade existente**")
+        message.channel.send(embed)
+    } else {
+        embed.setDescription(description)
+        message.channel.send(embed)
+    }
   }
 
   async function getAll(message){
@@ -120,13 +147,50 @@ module.exports = {
     const user = await database.findById(message.author.id)
     if(!user) return message.channel.send("<:negacao:759603958317711371> | Você não é um aventureiro")
 
+    let filtrado;
+
+    switch(user.class){
+        case 'Assassino':
+            filtrado = abilitiesFile.assassin
+            break;
+        case 'Bárbaro':
+            filtrado = abilitiesFile.barbarian
+            break;
+        case 'Clérigo':
+            filtrado = abilitiesFile.clerigo
+            break;
+        case 'Druida':
+            filtrado = abilitiesFile.druida
+            break;
+        case 'Espadachim':
+            filtrado = abilitiesFile.espadachim
+            break;
+        case 'Feiticeiro': 
+        filtrado = abilitiesFile.feiticeiro
+            break;
+        case 'Monge':
+            filtrado = abilitiesFile.monge
+            break;
+        case 'Necromante':
+            filtrado = abilitiesFile.necromante
+            break;
+    }
+
+    let uniquePowerFiltred = filtrado.uniquePowers.filter(f => f.name == user.uniquePower.name)
+    let abilitiesFiltred = [];
+
+    user.abilities.forEach(hab => {
+        let a = filtrado.normalAbilities.filter(f => f.name == hab.name)
+        abilitiesFiltred.push(a[0])
+    })
+
     let embed = new MessageEmbed()
     .setTitle("🔮 | Suas Habilidades")
     .setColor('#a9ec67')
 
-    embed.addField("Habilidade Única: " + user.uniquePower.name, `📜 | **Descrição:** ${user.uniquePower.description}\n⚔️ | **Dano:** ${user.uniquePower.damage}\n💉 | **Cura:** ${user.uniquePower.heal}\n💧 | **Custo:** ${user.uniquePower.cost}`)
+    embed.addField("Habilidade Única: " + uniquePowerFiltred[0].name, `📜 | **Descrição:** ${uniquePowerFiltred[0].description}\n⚔️ | **Dano:** ${uniquePowerFiltred[0].damage}\n💉 | **Cura:** ${uniquePowerFiltred[0].heal}\n💧 | **Custo:** ${uniquePowerFiltred[0].cost}`)
 
-    user.abilities.forEach(hab => {
+    abilitiesFiltred.forEach(hab => {
         embed.addField('🔮 | Habilidade: '+ hab.name,`📜 | **Descrição:** ${hab.description}\n⚔️ | **Dano:** ${hab.damage}\n💉 | **Cura:** ${hab.heal}\n💧 | **Custo:** ${hab.cost}`)
     })
     message.channel.send(message.author, embed)

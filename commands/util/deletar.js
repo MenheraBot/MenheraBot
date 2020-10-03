@@ -13,11 +13,11 @@ module.exports = {
   
     message.channel.send(`<:atencao:759603958418767922> |Você tem certeza que deseja excluir sua conta da database do servidor?\nVocê tem 5 segundos para decidir`).then(msg => {
       
-        msg.react("<:positivo:759603958485614652>").catch(err => message.channel.send("<:negacao:759603958317711371> | Ocorreu um erro ao adicionar uma reação, serasi eu tenho permissão para tal?"));
-        msg.react("<:negacao:759603958317711371>").catch(err => message.channel.send("<:negacao:759603958317711371> | Ocorreu um erro ao adicionar uma reação, serasi eu tenho permissão para tal?"));
+        msg.react("✅").catch(err => message.channel.send("<:negacao:759603958317711371> | Ocorreu um erro ao adicionar uma reação, serasi eu tenho permissão para tal?"));
+        msg.react("❌").catch(err => message.channel.send("<:negacao:759603958317711371> | Ocorreu um erro ao adicionar uma reação, serasi eu tenho permissão para tal?"));
 
-        let filter = (reaction, usuario) => reaction.emoji.name === "<:positivo:759603958485614652>" && usuario.id === message.author.id;
-        let filter1 = (reação, user) => reação.emoji.name === "<:negacao:759603958317711371>" && user.id === message.author.id;
+        let filter = (reaction, usuario) => reaction.emoji.name === "✅" && usuario.id === message.author.id;
+        let filter1 = (reação, user) => reação.emoji.name === "❌" && user.id === message.author.id;
 
         let ncoletor = msg.createReactionCollector(filter1, { max: 1,time: 5000 });
         let coletor = msg.createReactionCollector(filter, { max: 1, time: 5000 });
