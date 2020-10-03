@@ -35,6 +35,24 @@
             "damage": 60,
             "maxLevel": 8,
             "minLevel": 5
+        },
+        {
+            "name": "🩸 | Poção de vida Grande",
+            "description": "Restaura 100 de vida instantaneamente",
+            "type": "Item",
+            "value": 50,
+            "damage": 100,
+            "maxLevel": 12,
+            "minLevel": 8
+        },
+        {
+            "name": "💧 | Poção de mana Grande",
+            "description": "Restaura 100 de mana instantaneamente",
+            "type": "Item",
+            "value": 55,
+            "damage": 100,
+            "maxLevel": 12,
+            "minLevel": 8
         }
     ]
 }
