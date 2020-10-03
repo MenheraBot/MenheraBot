@@ -80,7 +80,7 @@ function bruxa(message, user, msg) {
         .setTitle("🏠 | Casa da Velha Feiticeira")
         .setColor('#c5b5a0')
         .setFooter("Mande no chat a sua escolha e a quantidade, exemplo: 1 3")
-        .setDescription(`Suas pedras mágicas: **${user.money}** 💎`)
+        .setDescription(`Você pode usar suas poções com m!usar\n\nSuas pedras mágicas: **${user.money}** 💎`)
     let number = 0;
     itens.forEach(i => {
         number++;
