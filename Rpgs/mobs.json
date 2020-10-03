@@ -117,9 +117,9 @@
             "type": "medio",
             "name": "Aberração",
             "life": 100,
-            "damage": 19,
+            "damage": 23,
             "armor": 12,
-            "xp": 20
+            "xp": 130
         },
         {
             "loots": [{
@@ -216,7 +216,7 @@
             "type": "médio",
             "name": "Golem enferrujado",
             "life": 350,
-            "damage": 14,
+            "damage": 34,
             "armor": 0,
             "xp": 440
         }
