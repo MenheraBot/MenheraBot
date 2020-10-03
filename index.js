@@ -18,7 +18,7 @@ client.categories = fs.readdirSync("./commands/");
 Sentry.init({ dsn: config.sentry_dns});
 
 process.on('unhandledRejection', (reason, promise) => {
-  console.log('Unhandled Rejection at:', reason.stack || reason)
+  console.log('[UNHANDLED] ', reason.stack || reason)
   Sentry.captureException(reason);
 })
 
