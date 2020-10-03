@@ -184,7 +184,7 @@ module.exports.newAbilities = async (message, user) => {
                 break;
             case 'Espadachim':
                 user.abilities.push(abilitiesFile.espadachim.normalAbilities[1])
-                user.abilityPower = user.abilityPower + 1
+                user.abilityPower = user.abilityPower + 2
                 user.save()
                 message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.espadachim.normalAbilities[1].name}**`)
                 break;
