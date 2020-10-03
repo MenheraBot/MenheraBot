@@ -13,16 +13,12 @@ module.exports = {
   usage: "m!infohabilidade [habilidade]",
   run: async (client, message, args) => {
 
-    if(!args[0]) return message.channel.send(`<:atencao:759603958418767922> | Como usar o comando InfoHabilidade?\nVocê pode usar das seguintes formas:\n\nm!ih classe <classe> - retorna todas as habilidades únicas da classe citada\n\nm!ih habilidade <habilidade> - retorna as informações de uma habilidade\n\nm!ih minhas - retorna todas as suas habilidades`);
+    if(!args[0]) return message.channel.send(`<:atencao:759603958418767922> | Como usar o comando InfoHabilidade?\nVocê pode usar das seguintes formas:\n\nm!ih classe <classe> - retorna todas as habilidades únicas da classe citada\n\nm!ih minhas - retorna todas as suas habilidades`);
 
     const validArgs = [
         {
             opção: "classe",
             arguments: ["classe", "class", "c"]
-        },
-        {
-            opção: "habilidade",
-            arguments: ["habilidade", "ability", "habilidades", "abilities", "h"]
         },
         {
             opção: "minhas",
@@ -41,14 +37,6 @@ module.exports = {
         case 'classe':
             if(!args[1]) return message.channel.send("<:negacao:759603958317711371> | Você não citou a classe")
             getClass(message, args[1])
-            break;
-        case 'habilidade':
-            if(!args[1]) return message.channel.send("<:negacao:759603958317711371> | Você não citou o nome da habilidade")
-            let choice = "";
-            for(i = 1; i < args.length; i++){
-                choice += args[i] + " "
-            }
-            getHab(message, choice)
             break;
         case 'minhas':
             getAll(message)
@@ -105,41 +93,6 @@ module.exports = {
 
     message.channel.send(message.author, embed)
 
-  }
-
-  function getHab(message, habilidade){
-
-    console.log(habilidade)
-
-    let embed = new MessageEmbed()
-    .setTitle(`🔮 | Resultados da pesquisa ${habilidade}`)
-    .setColor('#9cfcde')
-
-    var exists = false;
-    let description;
-
-    const classes = [abilitiesFile.assassin, , abilitiesFile.barbarian, abilitiesFile.druida, abilitiesFile.espadachim, abilitiesFile.feiticeiro, abilitiesFile.monge, abilitiesFile.necromante];
-
-   classes.forEach(classe => {
-          if (classe.normalAbilities.some(s => s.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '') == habilidade.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''))) {
-              exists = true;
-              let filtro = classe.normalAbilities.filter(s => s.name == habilidade);
-              description = `📜 | **Descrição:** ${filtro[0].description}\n⚔️ | **Dano:** ${filtro[0].damage}\n💉 | **Cura:** ${filtro[0].heal}\n💧 | **Custo:** ${filtro[0].cost}`;
-          } else if (classe.uniquePowers.some(s => s.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '') == habilidade.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''))) {
-              exists = true;
-              let filtro = classe.uniquePowers.filter(s => s.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '') == habilidade.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''));
-              description = `**HABILIDADE ÚNICA**\n📜 | **Descrição:** ${filtro[0].description}\n⚔️ | **Dano:** ${filtro[0].damage}\n💉 | **Cura:** ${filtro[0].heal}\n💧 | **Custo:** ${filtro[0].cost}`;
-          }
-      })
-
-    if(!exists){
-        embed.setColor('#fd0e2f')
-        embed.setDescription("**Nenhuma habilidade existente**")
-        message.channel.send(embed)
-    } else {
-        embed.setDescription(description)
-        message.channel.send(embed)
-    }
   }
 
   async function getAll(message){
