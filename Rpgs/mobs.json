@@ -79,7 +79,7 @@
                 "name": "Escamas Frágeis",
                 "value": 7
             }, {
-                "name": "Dentes",
+                "name": "Dentes de MiniDragão",
                 "value": 7
             }, {
                 "name": "Asa Pequena",
@@ -242,10 +242,10 @@
             },
             {
                 "loots": [{
-                    "name": "garras ",
+                    "name": "Pele de Piton ",
                     "value": 30
                 }, {
-                    "name": "dentes ",
+                    "name": "Presas de Piton ",
                     "value": 60
                 }],
                 "type": "hard ",

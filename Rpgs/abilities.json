@@ -235,9 +235,9 @@
                 "name": "Golpe Duplo",
                 "description": "Executa dois golpes, com o segundo dando dano reduzido",
                 "cooldown": 7200000,
-                "damage": 15,
+                "damage": 20,
                 "heal": 0,
-                "cost": 20
+                "cost": 15
             },
             {
                 "name": "Combate Tático",

@@ -329,14 +329,50 @@ module.exports.resultBattle = async (message, user, inimigo) => {
 
 module.exports.getAbilities = async (user) => {
 
-
     let abilities = [];
 
-    if (user.uniquePower.type === "ativo") abilities.push(user.uniquePower)
+    let filtrado;
+
+    switch(user.class){
+        case 'Assassino':
+            filtrado = abilitiesFile.assassin
+            break;
+        case 'Bárbaro':
+            filtrado = abilitiesFile.barbarian
+            break;
+        case 'Clérigo':
+            filtrado = abilitiesFile.clerigo
+            break;
+        case 'Druida':
+            filtrado = abilitiesFile.druida
+            break;
+        case 'Espadachim':
+            filtrado = abilitiesFile.espadachim
+            break;
+        case 'Feiticeiro': 
+        filtrado = abilitiesFile.feiticeiro
+            break;
+        case 'Monge':
+            filtrado = abilitiesFile.monge
+            break;
+        case 'Necromante':
+            filtrado = abilitiesFile.necromante
+            break;
+    }
+
+    let uniquePowerFiltred = filtrado.uniquePowers.filter(f => f.name == user.uniquePower.name)
+    let abilitiesFiltred = []
 
     user.abilities.forEach(hab => {
-        abilities.push(hab)
+        let a = filtrado.normalAbilities.filter(f => f.name == hab.name)
+        abilitiesFiltred.push(a[0])
     })
+
+     abilities.push(uniquePowerFiltred[0])
+
+     abilitiesFiltred.forEach(hab => {
+        abilities.push(hab)
+     })
 
     return abilities;
 }
