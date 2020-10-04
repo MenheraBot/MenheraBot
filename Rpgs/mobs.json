@@ -106,18 +106,18 @@
         {
             "loots": [{
                 "name": "Pele grudenta",
-                "value": 5
+                "value": 18
             }, {
                 "name": "Meleca lamazenta",
-                "value": 4
+                "value": 17
             }, {
                 "name": "Olhos humanos",
-                "value": 5
+                "value": 16
             }],
             "type": "medio",
             "name": "Aberração",
             "life": 100,
-            "damage": 23,
+            "damage": 31,
             "armor": 12,
             "xp": 130
         },
@@ -138,9 +138,9 @@
             "type": "medio",
             "name": "Bruxa Enverrugada",
             "life": 100,
-            "damage": 24,
+            "damage": 37,
             "armor": 12,
-            "xp": 80
+            "xp": 112
         },
         {
             "loots": [{
@@ -150,7 +150,7 @@
             "type": "médio",
             "name": "Crânio assombrado",
             "life": 100,
-            "damage": 25,
+            "damage": 34,
             "armor": 12,
             "xp": 70
         },
@@ -165,8 +165,8 @@
             "type": "medio",
             "name": "Drácula",
             "life": 120,
-            "damage": 27,
-            "armor": 3,
+            "damage": 37,
+            "armor": 15,
             "xp": 130
         },
         {
@@ -201,8 +201,8 @@
             "type": "medio",
             "name": "Feiticeiro",
             "life": 200,
-            "damage": 31,
-            "armor": 0,
+            "damage": 57,
+            "armor": 2,
             "xp": 300
         },
         {
@@ -217,35 +217,35 @@
             "name": "Golem enferrujado",
             "life": 350,
             "damage": 34,
-            "armor": 0,
-            "xp": 220
+            "armor": 1,
+            "xp": 280
         }
     ],
     "hard": [
             {
                 "loots": [{
-                    "name": "escama ",
-                    "value": 29
+                    "name": "Escama",
+                    "value": 57
                 }, {
-                    "name": "bolsa de veneno",
+                    "name": "Bolsa de Veneno",
                     "value": 50
                 }, {
-                    "name": "presas",
+                    "name": "Presas",
                     "value": 65
                 }],
                 "type": "hard",
                 "name": "Piton Gigante",
                 "life": 340,
-                "damage": 31,
+                "damage": 53,
                 "armor": 31,
                 "xp": 3500
             },
             {
                 "loots": [{
-                    "name": "Pele de Piton ",
-                    "value": 30
+                    "name": "Pele de Lobisomem",
+                    "value": 68
                 }, {
-                    "name": "Presas de Piton ",
+                    "name": "Presas de Lobisomem",
                     "value": 60
                 }],
                 "type": "hard ",
@@ -261,33 +261,33 @@
                     "value": 70
                 }, {
                     "name": "Chifre de Minotauro",
-                    "value": 45
+                    "value": 57
                 }],
                 "type": "hard",
                 "name": "Minotauro",
                 "life": 600,
-                "damage": 34,
+                "damage": 67,
                 "armor": 59,
                 "xp": 8400
             },
             {
                 "loots": [{
                     "name": "Cabeça da Medusa",
-                    "value": 39
+                    "value": 64
                 }, {
                     "name": "Pele de cobra",
-                    "value": 20
+                    "value": 69
                 }, {
                     "name": "Vestes da Medusa",
-                    "value": 35
+                    "value": 60
                 }, {
                     "name": "Presas de cobra",
-                    "value": 39
+                    "value": 57
                 }],
                 "type": "hard",
                 "name": "Medusa",
-                "life": 260,
-                "damage": 43,
+                "life": 100,
+                "damage": 68,
                 "armor": 130,
                 "xp": 5809
             },
@@ -297,13 +297,13 @@
                     "value": 50
                 }, {
                     "name": "Armadura do Goblin Campeão",
-                    "value": 20
+                    "value": 70
                 }, {
                     "name": "Perna do Goblin Campeão",
-                    "value": 15
+                    "value": 51
                 }, {
                     "name": "Perna do Goblin Campeão",
-                    "value": 16
+                    "value": 90
                 }],
                 "type": "hard",
                 "name": "Goblin Campeão",
