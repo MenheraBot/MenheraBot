@@ -22,5 +22,4 @@ process.on('unhandledRejection', (reason, promise) => {
   Sentry.captureException(reason);
 })
 
-
 client.login(config.token);

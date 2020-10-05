@@ -3,6 +3,9 @@ const config = require("../config.json");
 const database = require("../models/user");
 const cmdDb = require("../models/cmds.js")
 const serverDb = require("../models/guild.js")
+const moment = require("moment");
+
+moment.locale("pt-br");
 
 const cooldowns = new Collection();
 
@@ -164,7 +167,7 @@ module.exports = async (client, message) => {
 
 				message.channel.startTyping()
         res(command.run(client, message, args))
-        console.log(`[COMANDO] Comando ${command.name} executado por ${message.author.id}`)
+        console.log(`[COMANDO] Comando ${command.name} executado por ${message.author.id} (${moment(Date.now()).format("l LTS")})`)
 			}).then(() => message.channel.stopTyping()).catch(err => {
 
         message.channel.stopTyping()

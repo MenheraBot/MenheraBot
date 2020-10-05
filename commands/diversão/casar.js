@@ -1,4 +1,7 @@
 const db = require("../../models/user.js");
+const moment = require("moment");
+
+moment.locale("pt-br")
 
 module.exports = {
   name: "casar",
@@ -60,17 +63,7 @@ function casar(user, message, men, mencionado) {
       message.channel.send(`💍${message.author} acaba de se casar com ${mencionado}💍`);
 
 
-      var data1 = new Date();
-
-      var dia = data1.getDate();
-      var mes = data1.getMonth();
-      var ano4 = data1.getFullYear();
-      var hora = data1.getHours();
-      var min = data1.getMinutes();
-      var seg = data1.getSeconds();
-      var str_data = dia + '/' + (mes + 1) + '/' + ano4;
-      var str_hora = hora + ':' + min + ':' + seg;
-      var resultado = str_data + ' às ' + str_hora;
+      var resultado = moment(Date.now()).format("l LTS")
 
 
       user.casado = mencionado.id;
