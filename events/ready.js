@@ -2,6 +2,7 @@ const moment = require("moment");
 const DBL = require("dblapi.js")
 const config = require("../config.json")
 const database = require("../models/user.js")
+const { MessageEmbed } = require("discord.js")
 
 moment.locale("pt-br");
 
@@ -18,7 +19,12 @@ dbl.webhook.on('vote', async vote => {
       user.votos = user.votos + 1;
       user.save()
       const usuarioDm = await client.users.cache.get(vote.user)
-      if(usuarioDm) usuarioDm.send(`<:positivo:759603958485614652> | obrigada por votar em mim bebezinho >.<\nVocÊ ja votou **${user.votos}** vezes em mim\nComo forma de agradecimento, você recebeu um roll e **${random}** estrelinhas!\nSua carteira atualizada está assim:\n🔑 | **${user.rolls}** rolls\n⭐ | **${user.estrelinhas}** estrelinhas`).catch()
+      const embed = new MessageEmbed()
+      .setTitle("<:God:758474639570894899> | Obrigada por votar em mim")
+      .setColor("#fa73e5")
+      .setThumbnail('https://i.imgur.com/b5y0nd4.png')
+      .setDescription(`Obrigada por votar em mim bebezinho, cada voto me ajuda e inspira minha dona a continuar me cuidando! ❤️\n\nComo forma de agradecimento, você recebeu **1**🔑 e **${random}**⭐!\n\nSabia que você ja votou **${user.votos}** vezes em mim? **OBRIGADA**\n\nVote em mim novamente em 12 horas <a:LevelUp:760954035779272755>`)
+      if(usuarioDm) usuarioDm.send(embed).catch()
   }
 })
 
