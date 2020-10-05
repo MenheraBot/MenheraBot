@@ -277,10 +277,10 @@ module.exports = {
         .setTitle("<:Chest:760957557538947133> | Placar da Dungeon")
         .setColor('#a1f5ee')
 
-        dungeonDb.find({}, ['level', '_id'], {
+        dungeonDb.find({}, ['level', '_id', 'xp'], {
             skip:0, 
             limit:10, 
-            sort:{ level: -1}
+            sort:{ level: -1, xp: -1}
         },
          function(err, res){
             if(err) console.log(err)
@@ -288,9 +288,9 @@ module.exports = {
             for (i = 0; i < res.length; i++) {
                 let member =  client.users.cache.get(res[i]._id)
                 if (!member) {
-                    embed.addField(`**${i + 1} -** \`USER NOT FOUND\``, `Level: **${res[i].level}**`, false)
+                    embed.addField(`**${i + 1} -** \`USER NOT FOUND\``, `Level: **${res[i].level}**\nXp: **${res[i].xp}**`, false)
                 } else {
-                    embed.addField(`**${i + 1} -** ${member.username}`, `Level: **${res[i].level}**`, false)
+                    embed.addField(`**${i + 1} -** ${member.username}`, `Level: **${res[i].level}**\nXp: **${res[i].xp}**`, false)
                 }
             }
             message.channel.send(message.author, embed)
