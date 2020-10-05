@@ -1,8 +1,25 @@
 const moment = require("moment");
+const DBL = require("dblapi.js")
+const config = require("../config.json")
+const database = require("../models/user.js")
 
 moment.locale("pt-br");
 
 module.exports = (client) => {
+
+const dbl = new DBL(config.dbt, { webhookPort: 8000, webhookAuth: config.webhookAuth });
+
+dbl.webhook.on('vote', async vote => {
+  const user = await database.findOne({id: vote.user});
+  if(user){
+    let random = Math.floor(Math.random() * (1400 - 340 + 1)) + 340
+			user.rolls = user.rolls + 1
+      user.estrelinhas = user.estrelinhas + random;
+      user.save()
+      const usuarioDm = await client.users.cache.get(vote.user)
+      if(usuarioDm) usuarioDm.send(`<:positivo:759603958485614652> | obrigada por votar em mim bebezinho >.<\nComo forma de agradecimento, você recebeu um roll e **${random}** estrelinhas!\nSua carteira atualizada está assim:\n🔑 | **${user.rolls}** rolls\n⭐ | **${user.estrelinhas}** estrelinhas`).catch()
+  }
+})
 
  client.user.setActivity("Fui reiniciada com sucesso uwu")
  console.log("=================================================================")

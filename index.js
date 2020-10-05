@@ -15,14 +15,12 @@ client.categories = fs.readdirSync("./commands/");
   require(`./handler/${handler}`)(client);
 })
 
-//require("./server")(client)
-
 Sentry.init({ dsn: config.sentry_dns});
 
   /*   
     process.__defineGetter__('stdout', function() { return fs.createWriteStream('../logs/logs.log', {flags:'a'})})
     process.__defineGetter__('stderr', function() { return fs.createWriteStream('../logs/error.log', {flags:'a'}) })
-     */
+  */
 
 process.on('unhandledRejection', (reason, promise) => {
   console.log('[UNHANDLED] ', reason.stack || reason)
