@@ -43,6 +43,7 @@ module.exports = {
         const mencionado = message.mentions.users.first()
         const valor = parseInt(args[2]);
         if (!mencionado) return message.channel.send("<:negacao:759603958317711371> | Você deve usar give `opção` @usuario `valor`")
+        if(mencionado.id == message.author.id) return message.channel.send("<:negacao:759603958317711371> | Você não pode dar estrelinhas para si mesmo!")
 
         let user = await usuario.findOne({ id: message.author.id })
         let user2 = await usuario.findOne({ id: mencionado.id })
