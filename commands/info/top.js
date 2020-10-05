@@ -1,6 +1,7 @@
 const { MessageEmbed } = require("discord.js");
 
 const user = require("../../models/user.js");
+const dungeonDb = require("../../models/rpg.js")
 const server = require("../../models/guild.js");
 
 module.exports = {
@@ -16,7 +17,7 @@ module.exports = {
 
         const prefix = await server.findOne({id: message.guild.id})
 
-        const txt = `Você deve escolher entre \`${prefix.prefix}top mamadores\`, \`${prefix.prefix}top mamados\`, \`${prefix.prefix}top demonios\`, \`${prefix.prefix}top anjos\`, \`${prefix.prefix}top semideuses\`, \`${prefix.prefix}top deuses\`, \`${prefix.prefix}top estrelinhas\` ou \`${prefix.prefix}top votos\``
+        const txt = `Você deve escolher entre \`${prefix.prefix}top mamadores\`, \`${prefix.prefix}top mamados\`, \`${prefix.prefix}top demonios\`, \`${prefix.prefix}top anjos\`, \`${prefix.prefix}top semideuses\`, \`${prefix.prefix}top deuses\`, \`${prefix.prefix}top estrelinhas\`, \`${prefix.prefix}top votos\` ou \`${prefix.prefix}top dungeon\``
         
         const argumento = args[0]; 
         if(!argumento) return message.reply(txt)
@@ -28,7 +29,8 @@ module.exports = {
         let argsMamou = ["mamou", "mamadores"];
         let argsMamados = ["mamados", "chupados"];
         let argsEstrelinhas = ["estrelinhas", "estrelinha", "stars", "star", "money", "dinheiro"];
-        let argsVotos = ["votadores", "voto", "votes", "votos", "upvotes", "upvote"]
+        let argsVotos = ["votadores", "voto", "votes", "votos", "upvotes", "upvote", "vote"];
+        let argsDungeon = ["dungeon", "xp", "level", "vila", "rpg", "boleham"]
 
         if(argsMamou.includes(argumento)){
             topMamadores(client, message)
@@ -46,6 +48,8 @@ module.exports = {
             topDeuses(client, message)
         }else if(argsVotos.includes(argumento)){
             topVotos(client, message)
+        }else if(argsDungeon.includes(argumento)){
+            topDungeon(client, message)
         } else message.reply(txt)
 
  }}
@@ -260,6 +264,33 @@ module.exports = {
                     embed.addField(`**${i + 1} -** ${res[i].nome}`, `Upvotes: **${res[i].votos}**`, false)
                 } else {
                     embed.addField(`**${i + 1} -** ${member.username}`, `Upvotes: **${res[i].votos}**`, false)
+                }
+            }
+            message.channel.send(message.author, embed)
+
+        })
+    }
+
+    function topDungeon(client, message){
+        let embed = new MessageEmbed()
+        
+        .setTitle("<:Chest:760957557538947133> | Placar da Dungeon")
+        .setColor('#a1f5ee')
+
+        dungeonDb.find({}, ['level', '_id'], {
+            skip:0, 
+            limit:10, 
+            sort:{ level: -1}
+        },
+         function(err, res){
+            if(err) console.log(err)
+
+            for (i = 0; i < res.length; i++) {
+                let member =  client.users.cache.get(res[i]._id)
+                if (!member) {
+                    embed.addField(`**${i + 1} -** \`USER NOT FOUND\``, `Level: **${res[i].level}**`, false)
+                } else {
+                    embed.addField(`**${i + 1} -** ${member.username}`, `Level: **${res[i].level}**`, false)
                 }
             }
             message.channel.send(message.author, embed)
