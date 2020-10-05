@@ -15,9 +15,10 @@ dbl.webhook.on('vote', async vote => {
     let random = Math.floor(Math.random() * (1400 - 340 + 1)) + 340
 			user.rolls = user.rolls + 1
       user.estrelinhas = user.estrelinhas + random;
+      user.votos = user.votos + 1;
       user.save()
       const usuarioDm = await client.users.cache.get(vote.user)
-      if(usuarioDm) usuarioDm.send(`<:positivo:759603958485614652> | obrigada por votar em mim bebezinho >.<\nComo forma de agradecimento, você recebeu um roll e **${random}** estrelinhas!\nSua carteira atualizada está assim:\n🔑 | **${user.rolls}** rolls\n⭐ | **${user.estrelinhas}** estrelinhas`).catch()
+      if(usuarioDm) usuarioDm.send(`<:positivo:759603958485614652> | obrigada por votar em mim bebezinho >.<\nVocÊ ja votou **${user.votos}** vezes em mim\nComo forma de agradecimento, você recebeu um roll e **${random}** estrelinhas!\nSua carteira atualizada está assim:\n🔑 | **${user.rolls}** rolls\n⭐ | **${user.estrelinhas}** estrelinhas`).catch()
   }
 })
 

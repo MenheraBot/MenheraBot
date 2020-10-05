@@ -30,6 +30,7 @@ module.exports = {
     let mamou = info.mamou || 0;
     let nota = info.nota || `Sem Nota`;
     let cor = info.cor || '#a788ff';
+    let votos = info.votos || 0;
 
     embed.setColor(cor)
 
@@ -42,6 +43,11 @@ module.exports = {
       name: "❤️ | Mamado",
       value: mamadas,
       inline: true
+  },
+  {
+    name: "<:God:758474639570894899> | Upvotes",
+    value:  votos,
+    inline:true
   }
   ]);
 
