@@ -91,8 +91,8 @@ module.exports.enemyShot = async (message, text, user, inimigo) => {
     if (text.length > 0) message.channel.send(text)
 
     let danoRecebido 
-    if((inimigo.damage - user.armor ) < 0){
-        danoRecebido = 0;
+    if((inimigo.damage - user.armor ) < 5){
+        danoRecebido = 5;
     } else {
         danoRecebido = inimigo.damage - user.armor
     }
@@ -201,14 +201,14 @@ module.exports.newAbilities = async (message, user) => {
                     user.maxMana = user.maxMana + 20
                     user.abilityPower = user.abilityPower + 1
                     user.save()
-                    message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.feiticeiro.normalAbilities[1].name}**`)
+                    message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.feiticeiro.normalAbilities[2].name}**`)
                 } 
                 if(user.uniquePower.name == "Linhagem: Demoníaca"){
                      user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[3])
                      user.maxMana = user.maxMana + 20
                      user.abilityPower = user.abilityPower + 1
                      user.save()
-                     message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.feiticeiro.normalAbilities[1].name}**`)
+                     message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.feiticeiro.normalAbilities[3].name}**`)
                 }
                 break;
             case 'Monge':
