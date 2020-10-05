@@ -16,7 +16,7 @@ module.exports = {
 
         const prefix = await server.findOne({id: message.guild.id})
 
-        const txt = `Você deve escolher entre \`${prefix.prefix}top mamadores\`, \`${prefix.prefix}top mamados\`, \`${prefix.prefix}top demonios\`, \`${prefix.prefix}top anjos\`, \`${prefix.prefix}top semideuses\`, \`${prefix.prefix}top deuses\` ou \`${prefix.prefix}top estrelinhas\``
+        const txt = `Você deve escolher entre \`${prefix.prefix}top mamadores\`, \`${prefix.prefix}top mamados\`, \`${prefix.prefix}top demonios\`, \`${prefix.prefix}top anjos\`, \`${prefix.prefix}top semideuses\`, \`${prefix.prefix}top deuses\`, \`${prefix.prefix}top estrelinhas\` ou \`${prefix.prefix}top votos\``
         
         const argumento = args[0]; 
         if(!argumento) return message.reply(txt)
@@ -28,6 +28,7 @@ module.exports = {
         let argsMamou = ["mamou", "mamadores"];
         let argsMamados = ["mamados", "chupados"];
         let argsEstrelinhas = ["estrelinhas", "estrelinha", "stars", "star", "money", "dinheiro"];
+        let argsVotos = ["votadores", "voto", "votes", "votos", "upvotes", "upvote"]
 
         if(argsMamou.includes(argumento)){
             topMamadores(client, message)
@@ -43,6 +44,8 @@ module.exports = {
             topSD(client, message)
         }else if(argsDeuses.includes(argumento)){
             topDeuses(client, message)
+        }else if(argsVotos.includes(argumento)){
+            topVotos(client, message)
         } else message.reply(txt)
 
  }}
@@ -230,6 +233,33 @@ module.exports = {
                     embed.addField(`**${i + 1} -** ${res[i].nome}`, `Estrelinhas: **${res[i].estrelinhas}**`, false)
                 } else {
                     embed.addField(`**${i + 1} -** ${member.username}`, `Estrelinhas: **${res[i].estrelinhas}**`, false)
+                }
+            }
+            message.channel.send(message.author, embed)
+
+        })
+    }
+
+    function topVotos(client, message){
+        let embed = new MessageEmbed()
+        
+        .setTitle("<:ok:727975974125436959> | Placar de Upvotes")
+        .setColor('#ff29ae')
+
+        user.find({}, ['votos', 'nome', 'id'], {
+            skip:0, 
+            limit:10, 
+            sort:{ votos: -1}
+        },
+         function(err, res){
+            if(err) console.log(err)
+
+            for (i = 0; i < res.length; i++) {
+                let member =  client.users.cache.get(res[i].id)
+                if (!member) {
+                    embed.addField(`**${i + 1} -** ${res[i].nome}`, `Upvotes: **${res[i].votos}**`, false)
+                } else {
+                    embed.addField(`**${i + 1} -** ${member.username}`, `Upvotes: **${res[i].votos}**`, false)
                 }
             }
             message.channel.send(message.author, embed)
