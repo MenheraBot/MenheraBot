@@ -65,7 +65,7 @@ async function battle(message, inimigo, habilidades, user) {
     let escolhas = []
 
     for(i = 0; i < options.length; i++){
-        texto += `\n**${i + 1}** - ${options[i].name}`
+        texto += `\n**${i + 1}** - ${options[i].name} | **${options[i].cost || 0}**💧`
         escolhas.push(i + 1);
     }
     
@@ -122,7 +122,7 @@ exports.continueBattle = async (message, inimigo, habilidades, user) => {
     let escolhas = []
 
     for(i = 0; i < options.length; i++){
-        texto += `\n**${i + 1}** - ${options[i].name}`
+        texto += `\n**${i + 1}** - ${options[i].name} | **${options[i].cost || 0}**💧`
         escolhas.push(i + 1);
     }
     
