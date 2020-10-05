@@ -1,23 +1,25 @@
 const moment = require("moment");
 const DBL = require("dblapi.js");
+const fs = require("fs-extra");
 
 moment.locale("pt-br");
-console.log("=================================================================")
 
 module.exports = (client) => {
   const config = require("../config.json");
   
   if (client.user.id == "708014856711962654") {
-    
-  process.__defineGetter__('stdout', function() { return fs.createWriteStream('./logs/logs.log', {flags:'a'})})
-  process.__defineGetter__('stderr', function() { return fs.createWriteStream('./logs/error.log', {flags:'a'}) })
-  
+  /*   
+  process.__defineGetter__('stdout', function() { return fs.createWriteStream('../logs/logs.log', {flags:'a'})})
+  process.__defineGetter__('stderr', function() { return fs.createWriteStream('../logs/error.log', {flags:'a'}) })
+   */
     const dbl = new DBL(config.dbt, client);
     dbl.postStats(client.guilds.cache.size)
     dbl.on("error", console.error)
   }
 
  client.user.setActivity("Fui reiniciada com sucesso uwu")
+ console.log("=================================================================")
+
  console.log(`[READY] Menhera se conectou com o Discord! (${moment(Date.now()).format("l LTS")})`)
     
   let status = [
