@@ -252,7 +252,7 @@
                 "name": "Lobisomem",
                 "life": 400,
                 "damage": 50,
-                "armor": 130,
+                "armor": 51,
                 "xp": 3400
             },
             {
@@ -288,7 +288,7 @@
                 "name": "Medusa",
                 "life": 100,
                 "damage": 68,
-                "armor": 130,
+                "armor": 64,
                 "xp": 5809
             },
             {
@@ -309,7 +309,7 @@
                 "name": "Goblin Campeão",
                 "life": 470,
                 "damage": 56,
-                "armor": 120,
+                "armor": 79,
                 "xp": 6070
             }
     ]
