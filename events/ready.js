@@ -8,7 +8,7 @@ moment.locale("pt-br");
 
 module.exports = (client) => {
 
-const dbl = new DBL(config.dbt, { webhookPort: 8000, webhookAuth: config.webhookAuth });
+const dbl = new DBL(config.dbt, { webhookPort: 8000, webhookAuth: config.webhookAuth }, client);
 
 dbl.webhook.on('vote', async vote => {
   const user = await database.findOne({id: vote.user});
