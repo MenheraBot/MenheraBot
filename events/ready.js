@@ -29,7 +29,6 @@ dbl.webhook.on('vote', async vote => {
 })
 
  client.user.setActivity("Fui reiniciada com sucesso uwu")
- console.log("=================================================================")
 
  console.log(`[READY] Menhera se conectou com o Discord! (${moment(Date.now()).format("l LTS")})`)
     
