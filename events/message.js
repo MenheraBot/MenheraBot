@@ -10,12 +10,7 @@ moment.locale("pt-br");
 const cooldowns = new Collection();
 
 module.exports = async (client, message) => {
-
-  //ping system
-  if (message.author.id === "757295289630720031" && message.content === "PINGING...") {
-    setTimeout(() => message.channel.send("Pong! That's my response to your call, master"), 200)
-    return
-  }
+  
   if (message.author.bot) return;
   if (message.channel.type === "dm") return;
 
