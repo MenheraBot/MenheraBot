@@ -401,7 +401,7 @@ module.exports.initialChecks = async (user, message) => {
 
     if(parseInt(user.hotelTime) > Date.now()){
        pass = false
-       motivo.push({ name: "🏨 | Hotel", value: `Você está descansando no hotel da vila, e não pode ir para a dungeon até que sua estadia acabe, em **${(parseInt(user.hotelTime - Date.now()) > 3600000) ? moment.utc(parseInt(user.hotelTime - Date.now())).format("HH:mm:ss") : moment.utc(parseInt(user.hotelTime - Date.now())).format("mm:ss")}** horas`})
+       motivo.push({ name: "🏨 | Hotel", value: `Você está descansando no hotel da vila, e não pode ir para a dungeon até que sua estadia acabe, em **${(parseInt(user.hotelTime - Date.now()) > 3600000) ? moment.utc(parseInt(user.hotelTime - Date.now())).format("HH:mm:ss") : moment.utc(parseInt(user.hotelTime - Date.now())).format("mm:ss")}**`})
     }
 
     if (!pass) {
