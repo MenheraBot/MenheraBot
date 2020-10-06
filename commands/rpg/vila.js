@@ -126,7 +126,7 @@ function bruxa(message, user, msg) {
 
 function ferreiro(message, user, msg) {
 
-    if (user.level < 1) return message.channel.send("<:negacao:759603958317711371> | O ferreiro é um ambiente de gigantes, e só é liberado a partir do nível **9**!")
+    if (user.level < 9) return message.channel.send("<:negacao:759603958317711371> | O ferreiro é um ambiente de gigantes, e só é liberado a partir do nível **9**!")
 
     let embed = new MessageEmbed()
         .setColor('#b99c81')
