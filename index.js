@@ -26,9 +26,4 @@ Sentry.init({ dsn: config.sentry_dns});
     process.__defineGetter__('stderr', function() { return fs.createWriteStream('../logs/error.log', {flags:'a'}) })
   */
 
-process.on('unhandledRejection', (reason, promise) => {
-  console.log('[UNHANDLED] ', reason.stack || reason)
-  Sentry.captureException(reason);
-})
-
 client.login(config.token);
