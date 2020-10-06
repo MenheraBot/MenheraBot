@@ -34,12 +34,12 @@ module.exports = {
     },
     {
       name: `🛡️ | Armadura`,
-      value: user.armor,
+      value: `${user.armor} + ${user.protection.armor}`,
       inline:true
     },
     {
       name: `🗡️ | Dano Físico`,
-      value: user.damage,
+      value: `${user.damage} + ${user.weapon.damage}`,
       inline:true
     }
     ,{

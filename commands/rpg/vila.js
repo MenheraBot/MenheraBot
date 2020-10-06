@@ -126,68 +126,171 @@ function bruxa(message, user, msg) {
 
 function ferreiro(message, user, msg) {
 
-    message.channel.send('<:negacao:759603958317711371> | A casa do ferreiro está em reforma, e ele só voltará quando ela estiver pronta')
+    if (user.level < 1) return message.channel.send("<:negacao:759603958317711371> | O ferreiro é um ambiente de gigantes, e só é liberado a partir do nível **9**!")
 
+    let embed = new MessageEmbed()
+        .setColor('#b99c81')
+        .setTitle("⚒️ | Ferreiro")
+        .setDescription("Escolha o que desejas fabricar")
+        .addField("Opções", "1 - **Armas**\n2 - **Armaduras**")
+        .setFooter("Digite no chat sua escolha")
+
+    msg.edit(message.author, embed)
+
+    const filter = m => m.author.id === message.author.id;
+    const collector = message.channel.createMessageCollector(filter, { max: 1 });
+
+    collector.on('collect', m => {
+
+        if (m.content === "1") {
+            ferreiroArma(message, user, msg)
+        } else if (m.content === "2") {
+            ferreiroArmadura(message, user, msg)
+        } else return message.channel.send("<:negacao:759603958317711371> | Está não é uma opção válida")
+
+    })
+
+}
+
+function ferreiroArma(message, user, msg) {
+    let embed = new MessageEmbed()
+    .setColor('#b99c81')
+        .setTitle("⚒️ | Ferreiro")
+        .setDescription("<:atencao:759603958418767922> | Sua arma sera substituída pela sua escolha, então cuidado!\n\nEscolha o que desejas fabricar")
+        .addFields([{
+            name: "1 - Lança de Presas de Lobisomem",
+            value: "🗡️ | Dano: **17**\n💎 | Custo: **500**\n<:Chest:760957557538947133> | Itens Necessários: **2 Presas de Lobisomem**"
+        },
+        {
+            name: "2 - Espada de Chifre de Minotauro",
+            value: "🗡️ | Dano: **27**\n💎 | Custo: **1500**\n<:Chest:760957557538947133> | Itens Necessários: **2 Chifres de Minotauro**"
+        }
+    ])
+        .setFooter("Digite no chat sua escolha")
+
+        msg.edit(message.author, embed)
+
+        const filter = m => m.author.id === message.author.id;
+        const collector = message.channel.createMessageCollector(filter, { max: 1 });
+
+        let nameLoots = []
+
+     user.loots.forEach(loot => {
+        nameLoots.push(loot.name)
+    })
+
+    let contado = countItems(nameLoots)
+
+    let filtrado = contado.filter(f => f.name === "Presas de Lobisomem")
+    let filtrado1 = contado.filter(f => f.name === "Chifre de Minotauro")
+
+    collector.on('collect', m => {
+
+        if (m.content === "1") {
+            if(user.money < 500) return message.channel.send("<:negacao:759603958317711371> | Você não possui pedras preciosas suficientes!")
+            if(!filtrado[0]) return message.channel.send("<:negacao:759603958317711371> | Você não possui 2 Presas de Lobisomem")
+            if(filtrado[0].amount < 2) return message.channel.send("<:negacao:759603958317711371> | Você não possui 2 Presas de Lobisomem")
+
+            user.weapon = {
+                name: "Lança de Presas de Lobisomem",
+                damage: 17
+            }
+            user.money = user.money - 500
+            for (j = 0; j < 2; j++) {
+                user.loots.splice(user.loots.findIndex(function (i) {
+                    return i.name === filtrado[0].name;
+                }), 1);
+            }
+
+            user.save()
+            message.channel.send("<:positivo:759603958485614652> | Você trocou sua arma para `Lança de Presas de Lobisomem`")
+
+        } else if (m.content === "2") {
+            if(user.money < 1500) return message.channel.send("<:negacao:759603958317711371> | Você não possui pedras preciosas suficientes!")
+            if(!filtrado1[0]) return message.channel.send("<:negacao:759603958317711371> | Você não possui 2 Chifres de Minotauro")
+            if(filtrado1[0].amount < 2) return message.channel.send("<:negacao:759603958317711371> | Você não possui 2 Chifres de Minotauro")
+
+            user.weapon = {
+                name: "Espada de Chifre de Minotauro",
+                damage: 27
+            }
+            user.money = user.money - 1500
+            for (j = 0; j < 2; j++) {
+                user.loots.splice(user.loots.findIndex(function (i) {
+                    return i.name === filtrado1[0].name;
+                }), 1);
+            }
+
+            user.save()
+            message.channel.send("<:positivo:759603958485614652> | Você trocou sua arma para `Espada de Chifre de Minotauro`")
+
+        } else return message.channel.send("<:negacao:759603958317711371> | Está não é uma opção válida")
+
+    })
+}
+
+function ferreiroArmadura(message, user, msg) {
+return message.channel.send("<:negacao:759603958317711371> | O ferreiro ainda não consegue fazer armaduras!")
 }
 
 function hotel(message, user, msg) {
 
     let embed = new MessageEmbed()
-    .setTitle("🏨 | Hotel de Boleham")
-    .setDescription("Bem vindo ao hotel de Boleham! Desejas passar um tempo aqui para descansar? Escolha uma das opções abaixo de sua escolha, e descanse gratuitamente para regenerar sua vida e sua mana!")
-    .addFields([
-        {
-            name: "1 - Soninho do Almoço",
-            value: "⌛ | **Tempo**: 3 horas\n🩸 | **Vida**: 40\n💧 | **Mana**: 30"
-        },
-        {
-            name: "2 - Sono Pesado",
-            value: "⌛ | **Tempo**: 5 horas\n🩸 | **Vida**: 60\n💧 | **Mana**: 45"
-        },
-        {
-            name: "3 - Hibernação",
-            value: "⌛ | **Tempo**: 7 horas\n🩸 | **Vida**: MÁXIMA\n💧 | **Mana**: MÁXIMA"
-        }
-    ])
-    .setFooter("Envie no chat sua escolha")
-    .setColor('#e7a8ec')
+        .setTitle("🏨 | Hotel de Boleham")
+        .setDescription("Bem vindo ao hotel de Boleham! Desejas passar um tempo aqui para descansar? Escolha uma das opções abaixo de sua escolha, e descanse gratuitamente para regenerar sua vida e sua mana!")
+        .addFields([
+            {
+                name: "1 - Soninho do Almoço",
+                value: "⌛ | **Tempo**: 3 horas\n🩸 | **Vida**: 40\n💧 | **Mana**: 30"
+            },
+            {
+                name: "2 - Sono Pesado",
+                value: "⌛ | **Tempo**: 5 horas\n🩸 | **Vida**: 60\n💧 | **Mana**: 45"
+            },
+            {
+                name: "3 - Hibernação",
+                value: "⌛ | **Tempo**: 7 horas\n🩸 | **Vida**: MÁXIMA\n💧 | **Mana**: MÁXIMA"
+            }
+        ])
+        .setFooter("Envie no chat sua escolha")
+        .setColor('#e7a8ec')
 
     msg.edit(message.author, embed)
 
     const filter = m => m.author.id === message.author.id;
     const collector = message.channel.createMessageCollector(filter, { max: 1, time: 30000, errors: ["time"] });
 
-    let validOptions = ["1","2","3"];
+    let validOptions = ["1", "2", "3"];
 
     collector.on('collect', m => {
-    
-        if(!validOptions.includes(m.content)) return message.channel.send(`<:negacao:759603958317711371> | Esta opção não é valida!`)
 
-        if(user.hotelTime > Date.now()) return message.channel.send(`<:negacao:759603958317711371> | Você já está descansando no hotel!`)
+        if (!validOptions.includes(m.content)) return message.channel.send(`<:negacao:759603958317711371> | Esta opção não é valida!`)
 
-        if(user.life < 1 && user.death > Date.now()) return message.channel.send(`<:negacao:759603958317711371> | Você morreu em uma aventura na dungeon, e por isso, já está descansando para recuperar suas energias!`)
+        if (user.hotelTime > Date.now()) return message.channel.send(`<:negacao:759603958317711371> | Você já está descansando no hotel!`)
 
-        if(m.content == "1"){
+        if (user.life < 1 && user.death > Date.now()) return message.channel.send(`<:negacao:759603958317711371> | Você morreu em uma aventura na dungeon, e por isso, já está descansando para recuperar suas energias!`)
+
+        if (m.content == "1") {
             user.hotelTime = 10800000 + Date.now()
             user.life = user.life + 40
             user.mana = user.mana + 30
-        } else if(m.content == "2"){
+        } else if (m.content == "2") {
             user.hotelTime = 18000000 + Date.now()
             user.life = user.life + 60
             user.mana = user.mana + 45
-        } else if(m.content == "3"){
+        } else if (m.content == "3") {
             user.hotelTime = 25200000 + Date.now()
             user.life = user.maxLife
             user.mana = user.maxMana
         }
 
-        if(user.life > user.maxLife) user.life = user.maxLife
-        if(user.mana > user.maxMana) user.mana = user.maxMana
+        if (user.life > user.maxLife) user.life = user.maxLife
+        if (user.mana > user.maxMana) user.mana = user.maxMana
 
         user.save()
 
         message.channel.send("<:positivo:759603958485614652> | Você foi para o hotel, e ficará descansando até o fim de seu horário")
-    
+
     })
 }
 
@@ -247,11 +350,11 @@ async function guilda(message, user, msg) {
 
         user.money = user.money + valor
         for (j = 0; j < quantidade; j++) {
-            user.loots.splice(user.loots.findIndex(function(i){
+            user.loots.splice(user.loots.findIndex(function (i) {
                 return i.name === contado[parseInt(args[0]) - 1].name;
             }), 1);
         }
-    
+
         user.save()
         message.channel.send(`<:positivo:759603958485614652> | Você vendeu **${quantidade}** de **${contado[parseInt(args[0]) - 1].name}** e recebeu **${valor}** 💎`)
     })

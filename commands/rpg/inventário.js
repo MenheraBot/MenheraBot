@@ -43,11 +43,13 @@ module.exports = {
     }
 
     user.inventory.forEach(inv => {
-      if(inv.type == "Arma") armaText += `🗡️ | Arma: **${inv.name}**\n🩸 | Dano: **${inv.damage}**\n`
       if(inv.type == "Item") {
           items.push(inv.name)
       }  
     })
+
+    armaText += `🗡️ | Arma: **${user.weapon.name}**\n🩸 | Dano: **${user.weapon.damage}**\n\n`
+    armaText += `🧥 | Armadura: **${user.protection.name}**\n🛡️ | Proteção: **${user.protection.armor}**\n`
 
     countItems(items).forEach(count => {
       itemText += `**${count.name}** (${count.amount})\n`

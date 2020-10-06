@@ -429,7 +429,6 @@ module.exports.confirmRegister = async (userId, message) => {
             user.maxMana = 20;
             user.abilityPower = 1;
             user.abilities.push(abilitiesFile.assassin.normalAbilities[0])
-            user.inventory.push({ name: "Adaga", damage: 5, type: "Arma" })
             user.weapon = { name: "Adaga", damage: 5, type: "Arma" }
             user.uniquePower = choiceAssassin
             user.save()
@@ -444,7 +443,6 @@ module.exports.confirmRegister = async (userId, message) => {
             user.maxMana = 20;
             user.abilityPower = 1;
             user.abilities.push(abilitiesFile.barbarian.normalAbilities[0])
-            user.inventory.push({ name: "Machado de dois Gumes", damage: 10, type: "Arma" })
             user.weapon = { name: "Machado de dois Gumes", damage: 10, type: "Arma" }
             user.uniquePower = choiceBarbaro;
             user.save()
@@ -459,7 +457,6 @@ module.exports.confirmRegister = async (userId, message) => {
             user.maxMana = 50;
             user.abilityPower = 3;
             user.abilities.push(abilitiesFile.druida.normalAbilities[0])
-            user.inventory.push({ name: "Anel da Transformação", damage: 0, type: "Arma" })
             user.weapon = { name: "Anel da Transformação", damage: 0, type: "Arma" }
             user.uniquePower = choiceDruida;
             user.save()
@@ -474,7 +471,6 @@ module.exports.confirmRegister = async (userId, message) => {
             user.maxMana = 20;
             user.abilityPower = 1;
             user.abilities.push(abilitiesFile.espadachim.normalAbilities[0])
-            user.inventory.push({ name: "Sabre", damage: 7, type: "Arma" })
             user.weapon = { name: "Sabre", damage: 7, type: "Arma" }
             user.uniquePower = choiceEspadachim
             user.save()
@@ -489,7 +485,6 @@ module.exports.confirmRegister = async (userId, message) => {
             user.maxMana = 60;
             user.abilityPower = 4
             user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[0])
-            user.inventory.push({ name: "Cajado", damage: 5, type: "Arma" })
             user.weapon = { name: "Cajado", damage: 5, type: "Arma" }
             user.uniquePower = choiceFeiticeiro
             user.save()
@@ -504,7 +499,6 @@ module.exports.confirmRegister = async (userId, message) => {
             user.maxMana = 60;
             user.abilityPower = 4
             user.abilities.push(abilitiesFile.clerigo.normalAbilities[0])
-            user.inventory.push({ name: "Tomo Sagrado", damage: 5, type: "Arma" })
             user.weapon = { name: "Tomo Sagrado", damage: 5, type: "Arma" }
             user.uniquePower = choiceClerigo
             user.save()
@@ -521,7 +515,6 @@ module.exports.confirmRegister = async (userId, message) => {
             user.abilities.push(abilitiesFile.monge.normalAbilities[0])
             user.uniquePower = choiceMonge
             user.weapon = { name: "Punhos", damage: 1, type: "Arma" }
-            user.inventory.push({ name: "Punhos", damage: 1, type: "Arma" })
             user.save()
             message.channel.send("<:positivo:759603958485614652> | Você foi registrado com sucesso! Use `m!status` para ver seus status")
             break;
@@ -534,7 +527,6 @@ module.exports.confirmRegister = async (userId, message) => {
             user.maxMana = 60;
             user.abilityPower = 4
             user.abilities.push(abilitiesFile.necromante.normalAbilities[0])
-            user.inventory.push({ name: "Foice", damage: 5, type: "Arma" })
             user.weapon = { name: "Foice", damage: 5, type: "Arma" }
             user.uniquePower = choiceNecromante
             user.save()
