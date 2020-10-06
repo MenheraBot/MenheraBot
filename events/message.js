@@ -146,66 +146,162 @@ module.exports = async (client, message) => {
 
     }
 
-     let userPermission = command.userPermission
-		let clientPermission = command.clientPermission
-		if (userPermission !== null) {
-			if (!message.member.hasPermission(userPermission)) {
-				let perm = userPermission.map(value => value).join(", ")
-				return message.channel.send("<:atencao:759603958418767922> | Você não tem permissão o suficiente para executar esse comando!\nPermissões necessárias: " + perm )
-			}
-		}
-		if (clientPermission !== null) {
-			if (!message.guild.me.hasPermission(clientPermission) || !message.channel.permissionsFor(client.user.id).has(clientPermission)) {
-				let perm = clientPermission.map(value => `\`${value}\``).join(", ")
-				return message.channel.send(`<:atencao:759603958418767922> | Eu não tenho permissão para executar esse comando! Permissões necessárias: ${perm}`)
-			}
-		}
- 
+    let userPermission = command.userPermission
+    let clientPermission = command.clientPermission
+    if (userPermission !== null) {
+      if (!message.member.hasPermission(userPermission)) {
+        let traslated = perm(clientPermission).map(a => a).join(", ")
+        return message.channel.send(`<:atencao:759603958418767922> | Você não tem permissão de \`${traslated}\` para executar esse comando!`)
+      }
+    }
+    if (clientPermission !== null) {
+      if (!message.guild.me.hasPermission(clientPermission) || !message.channel.permissionsFor(client.user.id).has(clientPermission)) {
+        let traslated = perm(clientPermission).map(a => a).join(", ")
+        return message.channel.send(`<:atencao:759603958418767922> | Eu preciso de permissão de \`${traslated}\` para executar esse comando!`)
+      }
+    }
+
     try {
 
-			new Promise((res, rej) => {
+      new Promise((res, rej) => {
 
-				message.channel.startTyping()
+        message.channel.startTyping()
         res(command.run(client, message, args))
         console.log(`[COMANDO] Comando ${command.name} executado por ${message.author.id} (${moment(Date.now()).format("l LTS")})`)
-			}).then(() => message.channel.stopTyping()).catch(err => {
+      }).then(() => message.channel.stopTyping()).catch(err => {
 
         message.channel.stopTyping()
 
         let canal = client.channels.cache.get('730906866896470097')
 
-				message.channel.stopTyping()
-				const errorMessage = err.stack.length > 1800 ? `${err.stack.slice(0, 1800)}...` : err.stack
-				const embed = new MessageEmbed()
-				embed.setColor('#fd0000')
-				embed.setTitle(`<:menhera_cry:744041825140211732> | Ocorreu um erro ao executar o comando ${command.name}`)
+        message.channel.stopTyping()
+        const errorMessage = err.stack.length > 1800 ? `${err.stack.slice(0, 1800)}...` : err.stack
+        const embed = new MessageEmbed()
+        embed.setColor('#fd0000')
+        embed.setTitle(`<:menhera_cry:744041825140211732> | Ocorreu um erro ao executar o comando ${command.name}`)
         embed.setDescription(`\`\`\`js\n${errorMessage}\`\`\``)
         embed.addField(`<:atencao:759603958418767922> | Usage`, `UserId: \`${message.author.id}\` \nServerId: \`${message.guild.id}\``)
         embed.setTimestamp()
-				embed.addField(`<:ok:727975974125436959> | Reporte esse problema`, "Entre em meu servidor de suporte para reportar esse problema à minha dona")
+        embed.addField(`<:ok:727975974125436959> | Reporte esse problema`, "Entre em meu servidor de suporte para reportar esse problema à minha dona")
 
         message.channel.send(embed).catch(() => message.channel.send("Aparentemente ocorreu um erro ao executar este comando! Reporte isso à minha dona em meu servidor de suporte!"))
         canal.send(embed)
-			})
-		} catch (err) {
+      })
+    } catch (err) {
 
       let canal = client.channels.cache.get('730906866896470097')
 
       message.channel.stopTyping()
-      
-				const errorMessage = err.stack.length > 1800 ? `${err.stack.slice(0, 1800)}...` : err.stack
-				const embed = new MessageEmbed()
-				embed.setColor('#fd0000')
-				embed.setTitle(`<:menhera_cry:744041825140211732> | Ocorreu um erro ao executar o comando ${command.name}`)
-        embed.setDescription(`\`\`\`js\n${errorMessage}\`\`\``)
-        embed.addField(`<:atencao:759603958418767922> | Usage`, `UserId: \`${message.author.id}\` \nServerId: \`${message.guild.id}\``)
-        embed.setTimestamp()
-				embed.addField(`<:ok:727975974125436959> | Reporte esse problema`, "Entre em meu servidor de suporte para reportar esse problema à minha dona")
 
-        message.channel.send(embed).catch(() => message.channel.send("Aparentemente ocorreu um erro ao executar este comando! Reporte isso à minha dona em meu servidor de suporte!"))
-        canal.send(embed)
-			  console.error(err.stack)
-		}
-	
+      const errorMessage = err.stack.length > 1800 ? `${err.stack.slice(0, 1800)}...` : err.stack
+      const embed = new MessageEmbed()
+      embed.setColor('#fd0000')
+      embed.setTitle(`<:menhera_cry:744041825140211732> | Ocorreu um erro ao executar o comando ${command.name}`)
+      embed.setDescription(`\`\`\`js\n${errorMessage}\`\`\``)
+      embed.addField(`<:atencao:759603958418767922> | Usage`, `UserId: \`${message.author.id}\` \nServerId: \`${message.guild.id}\``)
+      embed.setTimestamp()
+      embed.addField(`<:ok:727975974125436959> | Reporte esse problema`, "Entre em meu servidor de suporte para reportar esse problema à minha dona")
+
+      message.channel.send(embed).catch(() => message.channel.send("Aparentemente ocorreu um erro ao executar este comando! Reporte isso à minha dona em meu servidor de suporte!"))
+      canal.send(embed)
+      console.error(err.stack)
+    }
+
   }
+}
+
+function perm(perm) {
+  let permissions = []
+
+  perm.forEach(permissao => {
+    switch (permissao) {
+      case 'ADMINISTRATOR':
+        permissions.push("Administrador")
+        break;
+      case 'CREATE_INSTANT_INVITE':
+        permissions.push("Criar convite")
+        break;
+      case 'KICK_MEMBERS':
+        permissions.push("Expulsar Membros")
+        break;
+      case 'BAN_MEMBERS':
+        permissions.push("Banir Membros")
+        break;
+      case 'MANAGE_CHANNELS':
+        permissions.push("Gerenciar Canais")
+        break;
+      case 'MANAGE_GUILD':
+        permissions.push("Gerenciar Servidor")
+        break;
+      case 'ADD_REACTIONS':
+        permissions.push("Adicionar Reações")
+        break;
+      case 'VIEW_AUDIT_LOG':
+        permissions.push("Ver Registro de Auditoria")
+        break;
+      case 'VIEW_CHANNEL':
+        permissions.push("Ler Mensagens")
+        break;
+      case 'SEND_MESSAGES':
+        permissions.push("Enviar Mensagens")
+        break;
+      case 'SEND_TTS_MESSAGES':
+        permissions.push("Enviar Mensagens em TTS")
+        break;
+      case 'MANAGE_MESSAGES':
+        permissions.push("Gerenciar Mensagens")
+        break;
+      case 'EMBED_LINKS':
+        permissions.push("Inserir Links")
+        break;
+      case 'ATTACH_FILES':
+        permissions.push("Anexar Arquivos")
+        break;
+      case 'READ_MESSAGE_HISTORY':
+        permissions.push("Ler histórico de Mensagens")
+        break;
+      case 'MENTION_EVERYONE':
+        permissions.push("Mencionar Everyone")
+        break;
+      case 'USE_EXTERNAL_EMOJIS':
+        permissions.push("Usar Emojis Externos")
+        break;
+      case 'CONNECT':
+        permissions.push("Conectar")
+        break;
+      case 'SPEAK':
+        permissions.push("Falar")
+        break;
+      case 'MUTE_MEMBERS':
+        permissions.push("Silenciar Membros")
+        break;
+      case 'DEAFEN_MEMBERS':
+        permissions.push("Desativar Áudio de Membros")
+        break;
+      case 'MOVE_MEMBERS':
+        permissions.push("Mover Membros")
+        break;
+      case 'USE_VAD':
+        permissions.push("Usar Atividade de Voz")
+        break;
+      case 'CHANGE_NICKNAME':
+        permissions.push("Mudar Apelido")
+        break;
+      case 'MANAGE_NICKNAMES':
+        permissions.push("Gerenciar Apelidos")
+        break;
+      case 'MANAGE_ROLES':
+        permissions.push("Gerenciar Cargos")
+        break;
+      case 'MANAGE_WEBHOOK':
+        permissions.push("Gerenciar WebHooks")
+        break;
+      case 'MANAGE_EMOJIS':
+        permissions.push("Gerenciar Emojis")
+        break;
+    }
+
+  })
+  
+  return permissions;
 }
