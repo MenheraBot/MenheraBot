@@ -91,10 +91,11 @@ module.exports.enemyShot = async (message, text, user, inimigo) => {
     if (text.length > 0) message.channel.send(text)
 
     let danoRecebido 
-    if((inimigo.damage - user.armor ) < 5){
+    let armadura = user.armor + user.protection.armor
+    if((inimigo.damage - armadura ) < 5){
         danoRecebido = 5;
     } else {
-        danoRecebido = inimigo.damage - user.armor
+        danoRecebido = inimigo.damage - armadura
     }
     let vidaUser = user.life - danoRecebido;
 

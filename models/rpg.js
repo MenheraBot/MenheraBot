@@ -22,6 +22,7 @@ const rpgSchema = mongoose.Schema({
   dungeonCooldown: {type: String, default: "00000000"},
   death: {type: String, default: "00000000"},
   weapon: {type: Object},
+  protection: {type: Object, default: {name: "Armadura Padrão", armor: 1}},
   hotelTime: {type: String, default: "00000000"}
 });
 

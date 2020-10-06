@@ -31,7 +31,7 @@ module.exports = {
     .setDescription(`Envie um **SIM** para adentrar na dungeon`)
     .setColor('#e3beff')
     .setFooter("Estas habilidades estão disponíveis para o uso")
-    .addField(`Seus status atuais são`, `🩸 | **Vida:** ${user.life}/${user.maxLife}\n💧 | **Mana:** ${user.mana}/${user.maxMana}\n🗡️ | **Dano Físico:** ${user.damage}\n🛡️ | **Armadura:** ${user.armor}\n🔮 | **Poder Mágico:** ${user.abilityPower}\n\n------HABILIDADES DISPONÍVEIS------`)
+    .addField(`Seus status atuais são`, `🩸 | **Vida:** ${user.life}/${user.maxLife}\n💧 | **Mana:** ${user.mana}/${user.maxMana}\n🗡️ | **Dano Físico:** ${user.damage + user.weapon.damage}\n🛡️ | **Armadura:** ${user.armor + user.protection.armor}\n🔮 | **Poder Mágico:** ${user.abilityPower}\n\n------HABILIDADES DISPONÍVEIS------`)
     habilidades.forEach(hab =>{
         embed.addField(hab.name, `🔮 | **Dano:** ${hab.damage}\n💧 | **Custo** ${hab.cost}`)
     })
@@ -113,11 +113,11 @@ exports.continueBattle = async (message, inimigo, habilidades, user) => {
         options.push(hab)
     })
 
-    let damageReceived = inimigo.damage - user.armor;
-    if(damageReceived < 0) damageReceived = 0
+    let damageReceived = inimigo.damage - (user.armor + user.protection.armor);
+    if(damageReceived < 5) damageReceived = 5
     
 
-    let texto = `**${inimigo.name}** te ataca, e causa **${damageReceived}**, atualização dos status:\n\n**SEUS STATUS**\n❤️ | Vida: **${user.life}**\n💧 | Mana: **${user.mana}**\n⚔️ | Dano: **${user.damage}**\n🛡️ | Defesa: **${user.armor}**\n\n**STATUS DO INIMIGO**\n❤️ | Vida: **${inimigo.life}**\n⚔️ | Dano: **${inimigo.damage}**\n🛡️ | Defesa: **${inimigo.armor}**\n\nO que você faz?\n\n**OPÇÕES:**\n`
+    let texto = `**${inimigo.name}** te ataca, e causa **${damageReceived}**, atualização dos status:\n\n**SEUS STATUS**\n❤️ | Vida: **${user.life}**\n💧 | Mana: **${user.mana}**\n⚔️ | Dano: **${user.damage + user.weapon.damage}**\n🛡️ | Defesa: **${user.armor + user.protection.armor}**\n\n**STATUS DO INIMIGO**\n❤️ | Vida: **${inimigo.life}**\n⚔️ | Dano: **${inimigo.damage}**\n🛡️ | Defesa: **${inimigo.armor}**\n\nO que você faz?\n\n**OPÇÕES:**\n`
     
     let escolhas = []
 
