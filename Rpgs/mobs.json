@@ -266,8 +266,8 @@
                 "type": "hard",
                 "name": "Minotauro",
                 "life": 600,
-                "damage": 67,
-                "armor": 59,
+                "damage": 60,
+                "armor": 45,
                 "xp": 8400
             },
             {
