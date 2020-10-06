@@ -1,7 +1,7 @@
 const {MessageEmbed} = require("discord.js");
 module.exports = {
   name: "report",
-  aliases: ["reportar", "bug", "bugreport", "glitch"],
+  aliases: ["reportar", "bug"],
   cooldown: 5,
   category: "util",
   description: "Reporte um Bug para minha Dona",

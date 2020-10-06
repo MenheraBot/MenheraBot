@@ -1,7 +1,7 @@
 
 module.exports = {
   name: "say",
-  aliases: ["dizer", "falar"],
+  aliases: [],
   cooldown: 2,
   category: "util",
   description: "Faça-me dizer algo",

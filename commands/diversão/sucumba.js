@@ -1,7 +1,7 @@
 
 module.exports = {
   name: "sucumba",
-  aliases: ["sucumbe", "sucumbir", "fuzer"],
+  aliases: ["sucumbe", "fuzer"],
   cooldown: 3,
   category: "diversão",
   description: "SUCUMBA MUCALOL",

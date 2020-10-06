@@ -2,7 +2,7 @@ const usuario = require("../../models/user.js");
 
 module.exports = {
     name: "give",
-    aliases: ["dar", "pay", "pagar"],
+    aliases: ["pay"],
     cooldown: 2,
     category: "economia",
     description: "Transfira algo de seu inventário para alguém",

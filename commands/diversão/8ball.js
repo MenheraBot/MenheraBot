@@ -1,6 +1,6 @@
 module.exports = {
   name: "8ball",
-  aliases: ["perguntar", "futuro", "8"],
+  aliases: ["8"],
   cooldown: 2,
   category: "diversão",
   description: "Pergunte algo para a Menhera",

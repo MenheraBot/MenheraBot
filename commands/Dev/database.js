@@ -5,7 +5,7 @@ const Warns = require("../../models/warn.js");
 
 module.exports = {
   name: "database",
-  aliases: ["db", "mongo"],
+  aliases: [],
   cooldown: 2,
   category: "Dev",
   description: "Acesso direto à database da Menhera",

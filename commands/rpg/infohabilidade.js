@@ -4,7 +4,7 @@ const abilitiesFile = require("../../Rpgs/abilities.json")
 
 module.exports = {
   name: "infohabilidade",
-  aliases: ["habilidades", "infohab", "abilitiesinfo", "abilities", "ih", "hi"],
+  aliases: ["ih"],
   cooldown: 10,
   category: "rpg",
   description: "Veja as informações de suas habilidades, ou de uma em comum",

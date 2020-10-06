@@ -2,7 +2,7 @@ const cmdDb = require("../../models/cmds.js");
 
 module.exports = {
   name: "maintenance",
-  aliases: ["disable", "cmd"],
+  aliases: ["cmd"],
   cooldown: 2,
   category: "Dev",
   description: "Coloca ou tira um comando de manutenção",

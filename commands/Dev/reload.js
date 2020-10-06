@@ -1,6 +1,6 @@
 module.exports = {
     name: "reload",
-    aliases: ["recarregar"],
+    aliases: [],
     cooldown: 1,
     category: "Dev",
     description: "Atualiza um comando sem reiniciar o bot",

@@ -2,7 +2,7 @@ const database = require("../../models/user.js")
 
 module.exports = {
     name: "roll",
-    aliases: ["rolls", "useroll", "hr", "cr"],
+    aliases: ["rolls"],
     cooldown: 5,
     category: "util",
     description: "Use um DR para resetar seu tempo de caçadas",

@@ -1,7 +1,7 @@
 const {MessageEmbed} = require("discord.js");
 module.exports = {
   name: "sugerir",
-  aliases: ["suggest", "sugira", "dica","sugestão"],
+  aliases: ["suggest", "sugestão"],
   cooldown: 5,
   category: "util",
   description: "Sugira algo para a dona do bot ou envie um bug para ela",

@@ -2,7 +2,7 @@ const usuario = require("../../models/user.js")
 const { MessageEmbed} = require("discord.js");
 module.exports = {
   name: "cor",
-  aliases: ["setcolor", "sc", "cores"],
+  aliases: [],
   cooldown: 5,
   category: "info",
   description: "Mude a cor de seu perfil",

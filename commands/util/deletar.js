@@ -2,7 +2,7 @@ const user = require("../../models/user.js");
 
 module.exports = {
   name: "deletar",
-  aliases: ["delete", "excluir"],
+  aliases: ["delete"],
   cooldown: 30,
   category: "util",
   description: "Exclua seu perfil do banco de dados",

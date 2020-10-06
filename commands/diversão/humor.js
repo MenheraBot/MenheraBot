@@ -1,7 +1,7 @@
 const {MessageEmbed} = require("discord.js");
 module.exports = {
   name: "humor",
-  aliases: ["piada", "piadas"],
+  aliases: ["piada", "piadas", "tumor"],
   cooldown: 2,
   category: "diversão",
   description: "Mande quando alguem fizer aquela piadoca do joca",

@@ -2,7 +2,7 @@ const database = require("../../models/user.js");
 
 module.exports = {
     name: "blacklist",
-    aliases: ["ban", "menheraban", "banmenhera", "mb"],
+    aliases: [],
     cooldown: 1,
     category: "Dev",
 	description: "Bane um usuário de usar a menhera",

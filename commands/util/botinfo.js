@@ -7,7 +7,7 @@ moment.locale('pt-br')
 
 module.exports = {
   name: "botinfo",
-  aliases: ["infobot", "informações", "menherainfo", "infomenhera", "menhera","bi","ib"],
+  aliases: ["menhera"],
   cooldown: 10,
   category: "util",
   description: "Mostra as informações atuais do bot",

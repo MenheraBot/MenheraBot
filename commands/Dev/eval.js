@@ -5,7 +5,7 @@ const Warns = require("../../models/warn.js");
 
 module.exports = {
   name: "eval",
-  aliases: ["run", "execute"],
+  aliases: [],
   cooldown: 2,
   category: "Dev",
   description: "Executa algo",

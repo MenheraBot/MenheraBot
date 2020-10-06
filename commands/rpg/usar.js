@@ -3,7 +3,7 @@ const database = require("../../models/rpg.js");
 
 module.exports = {
   name: "usar",
-  aliases: ["use", "usaritem", "useitem", "usa"],
+  aliases: ["use", "usa"],
   cooldown: 10,
   category: "rpg",
   description: "Use um item de seu inventário",

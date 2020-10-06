@@ -5,7 +5,7 @@ moment.locale("pt-br")
 
 module.exports = {
   name: "casar",
-  aliases: ["casamento", "marry"],
+  aliases: ["marry"],
   cooldown: 30,
   category: "diversão",
   description: "Casa com alguem",

@@ -3,7 +3,7 @@ const database = require("../../models/user.js")
 
 module.exports = {
   name: "sobremim",
-  aliases: ["aboutme", "am", "sm"],
+  aliases: ["aboutme"],
   cooldown: 2,
   category: "util",
   description: "Mude seu Sobre Mim",

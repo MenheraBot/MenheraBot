@@ -1,7 +1,7 @@
 const {MessageEmbed} = require("discord.js");
 module.exports = {
     name: "help",
-    aliases: ["ajuda", "comandos", "socorro","h"],
+    aliases: ["ajuda", "comandos","h"],
     cooldown: 5,
     category: "util",
     description: "Mostra a pagina de ajuda do bot",

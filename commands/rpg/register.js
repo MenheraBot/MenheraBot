@@ -4,7 +4,7 @@ const checks = require("../../Rpgs/checks.js")
 
 module.exports = {
   name: "register",
-  aliases: ["registrar", "guilda"],
+  aliases: ["registrar", "registro"],
   cooldown: 10,
   category: "rpg",
   description: "Registre-se um aventureiro",

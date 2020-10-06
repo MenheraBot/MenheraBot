@@ -3,7 +3,7 @@ const usuario = require("../../models/user.js");
 
 module.exports = {
     name: "carteira",
-    aliases: ["carteira", "bank"],
+    aliases: [],
     cooldown: 2,
     category: "economia",
     description: "Veja a carteira de alguém",

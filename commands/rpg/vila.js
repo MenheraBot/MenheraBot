@@ -4,7 +4,7 @@ const itemsFile = require("../../Rpgs/items.json")
 
 module.exports = {
     name: "vila",
-    aliases: ["village", "boleham"],
+    aliases: ["boleham"],
     cooldown: 10,
     category: "rpg",
     description: "Vá para a vila de boleham",

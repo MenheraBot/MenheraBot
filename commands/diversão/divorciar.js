@@ -2,7 +2,7 @@ const db = require("../../models/user.js");
 
 module.exports = {
   name: "divorciar",
-  aliases: ["separar", "divorcio", "divórcio", "terminar"],
+  aliases: [],
   cooldown: 30,
   category: "diversão",
   description: "Não quer mais ficar casado com aquele corno? Divorcie com este comando",

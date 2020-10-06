@@ -2,7 +2,7 @@ const {MessageEmbed} = require("discord.js");
 
 module.exports = {
     name: "find",
-    aliases: ["achar"],
+    aliases: [],
     cooldown: 2,
     category: "Dev",
     description: "Retorna um servidor ou um usuario",

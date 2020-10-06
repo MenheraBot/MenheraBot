@@ -2,7 +2,7 @@ const database = require("../../models/user.js");
 
 module.exports = {
   name: "afk",
-  aliases: ["awayfromthekeyboard"],
+  aliases: [],
   cooldown: 5,
   category: "util",
   description: "Se coloque em AFK",

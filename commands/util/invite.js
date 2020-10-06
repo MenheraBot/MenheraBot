@@ -1,7 +1,7 @@
 const { MessageEmbed } = require("discord.js");
 module.exports = {
   name: "invite",
-  aliases: ["invitar", "adicionar", "convidar"],
+  aliases: ["adicionar"],
   cooldown: 2,
   category: "util",
   description: "Adicione o bot em algum servidor",

@@ -2,7 +2,7 @@ const {MessageEmbed} = require("discord.js");
 const database = require("../../models/user.js")
 module.exports = {
   name: "avatar",
-  aliases: ["pfp"],
+  aliases: [],
   cooldown: 5,
   category: "info",
   description: "Mostra o avatar de alguem",

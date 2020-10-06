@@ -1,7 +1,7 @@
 
 module.exports = {
   name: "xandão",
-  aliases: ["xandao", "superxandao"],
+  aliases: ["xandao"],
   cooldown: 2,
   category: "diversão",
   description: "SEM PRESSÃO",
