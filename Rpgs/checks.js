@@ -42,22 +42,22 @@ module.exports.battle = async (message, escolha, user, inimigo) => {
         danoUser = escolha.damage
     } else {
         if (user.mana < escolha.cost) return this.enemyShot(message, `⚔️ | Você tenta usar **${escolha.name}**, mas não tem mana o suficiente para isso! O inimigo revida!`, user, inimigo)
-        if(escolha.heal > 0){
+        if (escolha.heal > 0) {
             user.life = user.life + escolha.heal
-            if(user.life > user.maxLife) user.life = user.maxLife
-        } 
+            if (user.life > user.maxLife) user.life = user.maxLife
+        }
         danoUser = escolha.damage * user.abilityPower;
         user.mana = user.mana - escolha.cost
     }
 
     setTimeout(() => {
         let enemyArmor = inimigo.armor
-        if(escolha.name == "Castigo Divino"){
+        if (escolha.name == "Castigo Divino") {
             enemyArmor = inimigo.armor - 20
-            if(enemyArmor < 0) enemyArmor = 0 
+            if (enemyArmor < 0) enemyArmor = 0
         }
         let danoDado = danoUser - enemyArmor;
-        if(danoDado < 0) danoDado = 0;
+        if (danoDado < 0) danoDado = 0;
         let vidaInimigo = inimigo.life - danoDado;
 
         message.channel.send(`⚔️ | Você ataca **${inimigo.name}** com **${escolha.name}**, e causa **${danoDado}** de dano`)
@@ -91,9 +91,9 @@ module.exports.enemyShot = async (message, text, user, inimigo) => {
 
     if (text.length > 0) message.channel.send(text)
 
-    let danoRecebido 
+    let danoRecebido
     let armadura = user.armor + user.protection.armor
-    if((inimigo.damage - armadura ) < 5){
+    if ((inimigo.damage - armadura) < 5) {
         danoRecebido = 5;
     } else {
         danoRecebido = inimigo.damage - armadura
@@ -112,51 +112,52 @@ module.exports.finalChecks = async (message, user) => {
 
     let texto = "";
 
-    if(user.level < 5){
-    if (user.xp >= user.nextLevelXp) {
-        user.xp = 0;
-        user.nextLevelXp = user.nextLevelXp * 2;
-        user.level = user.level + 1
-        user.maxLife = user.maxLife + 10
-        user.maxMana = user.maxMana + 10
-        user.damage = user.damage + 3
-        user.armor = user.armor + 2
-        user.save().then(() => {
+    if (user.level < 5) {
+        if (user.xp >= user.nextLevelXp) {
+            user.xp = 0;
+            user.nextLevelXp = user.nextLevelXp * 2;
+            user.level = user.level + 1
+            user.maxLife = user.maxLife + 10
+            user.maxMana = user.maxMana + 10
+            user.damage = user.damage + 3
+            user.armor = user.armor + 2
+            user.save().then(() => {
+                texto += `**<a:LevelUp:760954035779272755> LEVEL UP <a:LevelUp:760954035779272755>**`
+                message.channel.send(texto)
+                if (user.level === 5) this.newAbilities(message, user)
+            })
+        }
+    } else if (user.level > 4 && user.level < 10) {
+        if (user.xp >= user.nextLevelXp) {
+            user.nextLevelXp = user.nextLevelXp * 2;
+            user.level = user.level + 1
+            user.maxLife = user.maxLife + 20
+            user.maxMana = user.maxMana + 15
+            user.damage = user.damage + 5
+            user.armor = user.armor + 3
             texto += `**<a:LevelUp:760954035779272755> LEVEL UP <a:LevelUp:760954035779272755>**`
             message.channel.send(texto)
-            if(user.level === 5) this.newAbilities(message,user)
-        })
+            user.save().then(() => this.newAbilities(message, user))
+        }
+    } else if (user.level > 9) {
+        if (user.xp >= user.nextLevelXp) {
+            user.nextLevelXp = user.nextLevelXp * 2;
+            user.level = user.level + 1
+            user.maxLife = user.maxLife + 50
+            user.maxMana = user.maxMana + 20
+            user.damage = user.damage + 7
+            user.armor = user.armor + 5
+            texto += `**<a:LevelUp:760954035779272755> LEVEL UP <a:LevelUp:760954035779272755>**`
+            message.channel.send(texto)
+            user.save().then(() => this.newAbilities(message, user))
+        }
     }
-} else if(user.level > 4 && user.level < 10){
-    if (user.xp >= user.nextLevelXp) {
-    user.nextLevelXp = user.nextLevelXp * 2;
-    user.level = user.level + 1
-    user.maxLife = user.maxLife + 20
-    user.maxMana = user.maxMana + 15
-    user.damage = user.damage + 5
-    user.armor = user.armor + 3
-    texto += `**<a:LevelUp:760954035779272755> LEVEL UP <a:LevelUp:760954035779272755>**`
-    message.channel.send(texto)
-    user.save().then(() => this.newAbilities(message, user))
-    }
-} else if(user.level > 9){
-    if (user.xp >= user.nextLevelXp) {
-    user.nextLevelXp = user.nextLevelXp * 2;
-    user.level = user.level + 1
-    user.maxLife = user.maxLife + 50
-    user.maxMana = user.maxMana + 20
-    user.damage = user.damage + 7
-    user.armor = user.armor + 5
-    texto += `**<a:LevelUp:760954035779272755> LEVEL UP <a:LevelUp:760954035779272755>**`
-    message.channel.send(texto)
-    user.save().then(() => this.newAbilities(message, user))
-    }
-}}
+}
 
 module.exports.newAbilities = async (message, user) => {
 
-    if(user.level == 5){
-        switch(user.class){
+    if (user.level == 5) {
+        switch (user.class) {
             case 'Assassino':
                 user.abilities.push(abilitiesFile.assassin.normalAbilities[1])
                 user.maxMana = user.maxMana + 20
@@ -172,7 +173,7 @@ module.exports.newAbilities = async (message, user) => {
                 message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.barbarian.normalAbilities[1].name}**`)
                 break;
             case 'Clérigo':
-                user.abilities.push(abilitiesFile.clerigo.normalAbilities[1]) 
+                user.abilities.push(abilitiesFile.clerigo.normalAbilities[1])
                 user.abilityPower = user.abilityPower + 1
                 user.maxMana = user.maxMana + 20
                 user.save()
@@ -191,26 +192,26 @@ module.exports.newAbilities = async (message, user) => {
                 message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.espadachim.normalAbilities[1].name}**`)
                 break;
             case 'Feiticeiro':
-                if(user.uniquePower.name == "Linhagem: Mística"){
+                if (user.uniquePower.name == "Linhagem: Mística") {
                     user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[1])
                     user.maxMana = user.maxMana + 20
                     user.abilityPower = user.abilityPower + 1
                     user.save()
                     message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.feiticeiro.normalAbilities[1].name}**`)
-                } 
-                if(user.uniquePower.name == "Linhagem: Dracônica"){
+                }
+                if (user.uniquePower.name == "Linhagem: Dracônica") {
                     user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[2])
                     user.maxMana = user.maxMana + 20
                     user.abilityPower = user.abilityPower + 1
                     user.save()
                     message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.feiticeiro.normalAbilities[2].name}**`)
-                } 
-                if(user.uniquePower.name == "Linhagem: Demoníaca"){
-                     user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[3])
-                     user.maxMana = user.maxMana + 20
-                     user.abilityPower = user.abilityPower + 1
-                     user.save()
-                     message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.feiticeiro.normalAbilities[3].name}**`)
+                }
+                if (user.uniquePower.name == "Linhagem: Demoníaca") {
+                    user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[3])
+                    user.maxMana = user.maxMana + 20
+                    user.abilityPower = user.abilityPower + 1
+                    user.save()
+                    message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.feiticeiro.normalAbilities[3].name}**`)
                 }
                 break;
             case 'Monge':
@@ -228,8 +229,8 @@ module.exports.newAbilities = async (message, user) => {
                 break;
         }
 
-    } else if(user.level == 10){
-        switch(user.class){
+    } else if (user.level == 10) {
+        switch (user.class) {
             case 'Assassino':
                 user.abilities.push(abilitiesFile.assassin.normalAbilities[2])
                 user.abilityPower = user.abilityPower + 1
@@ -244,7 +245,7 @@ module.exports.newAbilities = async (message, user) => {
                 message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.barbarian.normalAbilities[2].name}**`)
                 break;
             case 'Clérigo':
-                user.abilities.push(abilitiesFile.clerigo.normalAbilities[2]) 
+                user.abilities.push(abilitiesFile.clerigo.normalAbilities[2])
                 user.abilityPower = user.abilityPower + 1
                 user.maxMana = user.maxMana + 20
                 user.save()
@@ -263,26 +264,26 @@ module.exports.newAbilities = async (message, user) => {
                 message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.espadachim.normalAbilities[2].name}**`)
                 break;
             case 'Feiticeiro':
-                if(user.uniquePower.name == "Linhagem: Mística"){
+                if (user.uniquePower.name == "Linhagem: Mística") {
                     user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[4])
                     user.maxMana = user.maxMana + 25
                     user.abilityPower = user.abilityPower + 1
                     user.save()
                     message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.feiticeiro.normalAbilities[4].name}**`)
-                } 
-                if(user.uniquePower.name == "Linhagem: Dracônica"){
+                }
+                if (user.uniquePower.name == "Linhagem: Dracônica") {
                     user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[5])
                     user.maxMana = user.maxMana + 25
                     user.abilityPower = user.abilityPower + 1
                     user.save()
                     message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.feiticeiro.normalAbilities[5].name}**`)
-                } 
-                if(user.uniquePower.name == "Linhagem: Demoníaca"){
-                     user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[6])
-                     user.maxMana = user.maxMana + 25
-                     user.abilityPower = user.abilityPower + 1
-                     user.save()
-                     message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.feiticeiro.normalAbilities[6].name}**`)
+                }
+                if (user.uniquePower.name == "Linhagem: Demoníaca") {
+                    user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[6])
+                    user.maxMana = user.maxMana + 25
+                    user.abilityPower = user.abilityPower + 1
+                    user.save()
+                    message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.feiticeiro.normalAbilities[6].name}**`)
                 }
                 break;
             case 'Monge':
@@ -299,8 +300,82 @@ module.exports.newAbilities = async (message, user) => {
                 message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.necromante.normalAbilities[2].name}**`)
                 break;
         }
+    } else if (user.level == 15) {
+        switch (user.class) {
+            case 'Assassino':
+                user.abilities.push(abilitiesFile.assassin.normalAbilities[3])
+                user.abilityPower = user.abilityPower + 1
+                user.damage = user.damage + 10
+                user.save()
+                message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.assassin.normalAbilities[3].name}**`)
+                break;
+            case 'Bárbaro':
+                user.abilities.push(abilitiesFile.barbarian.normalAbilities[3])
+                user.maxLife = user.maxLife + 50
+                user.abilityPower = user.abilityPower + 1
+                user.save()
+                message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.barbarian.normalAbilities[3].name}**`)
+                break;
+            case 'Clérigo':
+                user.abilities.push(abilitiesFile.clerigo.normalAbilities[3])
+                user.abilityPower = user.abilityPower + 1
+                user.maxMana = user.maxMana + 40
+                user.save()
+                message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.clerigo.normalAbilities[3].name}**`)
+                break;
+            case 'Druida':
+                user.abilities.push(abilitiesFile.druida.normalAbilities[3])
+                user.abilityPower = user.abilityPower + 1
+                user.maxMana = user.maxMana + 30
+                user.save()
+                message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.druida.normalAbilities[3].name}**`)
+                break;
+            case 'Espadachim':
+                user.abilities.push(abilitiesFile.espadachim.normalAbilities[3])
+                user.abilityPower = user.abilityPower + 1
+                user.damage = user.damage + 10
+                user.save()
+                message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.espadachim.normalAbilities[3].name}**`)
+                break;
+            case 'Feiticeiro':
+                if (user.uniquePower.name == "Linhagem: Mística") {
+                    user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[7])
+                    user.maxMana = user.maxMana + 40
+                    user.abilityPower = user.abilityPower + 1
+                    user.save()
+                    message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.feiticeiro.normalAbilities[7].name}**`)
+                }
+                if (user.uniquePower.name == "Linhagem: Dracônica") {
+                    user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[8])
+                    user.maxMana = user.maxMana + 40
+                    user.abilityPower = user.abilityPower + 1
+                    user.save()
+                    message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.feiticeiro.normalAbilities[8].name}**`)
+                }
+                if (user.uniquePower.name == "Linhagem: Demoníaca") {
+                    user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[9])
+                    user.maxMana = user.maxMana + 40
+                    user.abilityPower = user.abilityPower + 1
+                    user.save()
+                    message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.feiticeiro.normalAbilities[9].name}**`)
+                }
+                break;
+            case 'Monge':
+                user.abilities.push(abilitiesFile.monge.normalAbilities[3])
+                user.abilityPower = user.abilityPower + 2
+                user.save()
+                message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.monge.normalAbilities[3].name}**`)
+                break;
+            case 'Necromante':
+                user.abilities.push(abilitiesFile.necromante.normalAbilities[3])
+                user.maxMana = user.maxMana + 40
+                user.abilityPower = user.abilityPower + 1
+                user.save()
+                message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.necromante.normalAbilities[3].name}**`)
+                break;
+        }
     }
-} 
+}
 
 module.exports.resultBattle = async (message, user, inimigo) => {
 
@@ -318,7 +393,7 @@ module.exports.resultBattle = async (message, user, inimigo) => {
         {
             name: "<:Chest:760957557538947133> | Espólios de Batalha",
             value: randomLoot.name,
-            inline:true
+            inline: true
         }
         ])
 
@@ -336,7 +411,7 @@ module.exports.getAbilities = async (user) => {
 
     let filtrado;
 
-    switch(user.class){
+    switch (user.class) {
         case 'Assassino':
             filtrado = abilitiesFile.assassin
             break;
@@ -352,8 +427,8 @@ module.exports.getAbilities = async (user) => {
         case 'Espadachim':
             filtrado = abilitiesFile.espadachim
             break;
-        case 'Feiticeiro': 
-        filtrado = abilitiesFile.feiticeiro
+        case 'Feiticeiro':
+            filtrado = abilitiesFile.feiticeiro
             break;
         case 'Monge':
             filtrado = abilitiesFile.monge
@@ -371,11 +446,11 @@ module.exports.getAbilities = async (user) => {
         abilitiesFiltred.push(a[0])
     })
 
-     abilities.push(uniquePowerFiltred[0])
+    abilities.push(uniquePowerFiltred[0])
 
-     abilitiesFiltred.forEach(hab => {
+    abilitiesFiltred.forEach(hab => {
         abilities.push(hab)
-     })
+    })
 
     return abilities;
 }
@@ -401,9 +476,9 @@ module.exports.initialChecks = async (user, message) => {
         motivo.push({ name: "💤 | Cansaço", value: `Você já visitou a dungeon e precisa descansar por mais **${moment.utc(parseInt(user.dungeonCooldown - Date.now())).format("mm:ss")}** minutos` })
     }
 
-    if(parseInt(user.hotelTime) > Date.now()){
-       pass = false
-       motivo.push({ name: "🏨 | Hotel", value: `Você está descansando no hotel da vila, e não pode ir para a dungeon até que sua estadia acabe, em **${(parseInt(user.hotelTime - Date.now()) > 3600000) ? moment.utc(parseInt(user.hotelTime - Date.now())).format("HH:mm:ss") : moment.utc(parseInt(user.hotelTime - Date.now())).format("mm:ss")}**`})
+    if (parseInt(user.hotelTime) > Date.now()) {
+        pass = false
+        motivo.push({ name: "🏨 | Hotel", value: `Você está descansando no hotel da vila, e não pode ir para a dungeon até que sua estadia acabe, em **${(parseInt(user.hotelTime - Date.now()) > 3600000) ? moment.utc(parseInt(user.hotelTime - Date.now())).format("HH:mm:ss") : moment.utc(parseInt(user.hotelTime - Date.now())).format("mm:ss")}**` })
     }
 
     if (!pass) {
@@ -420,7 +495,7 @@ module.exports.initialChecks = async (user, message) => {
 module.exports.confirmRegister = async (userId, message) => {
 
     const user = await databaseRPG.findById(userId);
-  
+
     switch (user.class) {
         case 'Assassino':
             const unicPowersAssassin = abilitiesFile.assassin.uniquePowers
@@ -469,7 +544,7 @@ module.exports.confirmRegister = async (userId, message) => {
             const choiceEspadachim = unicPowersEspadachim[Math.floor(Math.random() * unicPowersEspadachim.length)];
             user.armor = 17;
             user.damage = 18,
-            user.mana = 20;
+                user.mana = 20;
             user.maxMana = 20;
             user.abilityPower = 1;
             user.abilities.push(abilitiesFile.espadachim.normalAbilities[0])
@@ -478,7 +553,7 @@ module.exports.confirmRegister = async (userId, message) => {
             user.save()
             message.channel.send("<:positivo:759603958485614652> | Você foi registrado com sucesso! Use `m!status` para ver seus status")
             break;
-        case 'Feiticeiro': 
+        case 'Feiticeiro':
             const unicPowersFeiticeiro = abilitiesFile.feiticeiro.uniquePowers
             const choiceFeiticeiro = unicPowersFeiticeiro[Math.floor(Math.random() * unicPowersFeiticeiro.length)];
             user.armor = 7

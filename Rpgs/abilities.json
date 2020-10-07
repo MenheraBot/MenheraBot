@@ -44,6 +44,14 @@
                 "damage": 150,
                 "heal": 0,
                 "cost": 50
+            },
+            {
+                "name": "Atrás de Você!",
+                "description": "Pula nas costas de seu inimigo, cortando-o ao meio",
+                "cooldown": 7200000,
+                "damage": 170,
+                "heal": 0,
+                "cost": 68
             }
         ]
     }, 
@@ -92,6 +100,14 @@
                 "damage": 130,
                 "heal": 0,
                 "cost": 50
+            },
+            {
+                "name": "Último Golpe",
+                "description": "Desfere um golpe de força brutal",
+                "cooldown": 7200000,
+                "damage": 150,
+                "heal": 0,
+                "cost": 65
             }
         ]
     },
@@ -149,6 +165,14 @@
                 "damage": 40,
                 "heal": 50,
                 "cost": 70
+            },
+            {
+                "name": "Ascensão Espiritual",
+                "description": "Recebe a benção do espírito, curando-se e dando dano a todos inimigos",
+                "cooldown": 7200000,
+                "damage": 46,
+                "heal": 80,
+                "cost": 80
             }
         ]
     },
@@ -206,6 +230,14 @@
                 "damage": 40,
                 "heal": 0,
                 "cost": 50
+            },
+            {
+                "name": "Envenenamento Eólico",
+                "description": "Produz plantas venenosas, que envenenam o ar, dando dano em seus inimigos",
+                "cooldown": 7200000,
+                "damage": 60,
+                "heal": 0,
+                "cost": 60
             }
         ]
     },
@@ -237,7 +269,7 @@
                 "cooldown": 7200000,
                 "damage": 20,
                 "heal": 0,
-                "cost": 15
+                "cost": 10
             },
             {
                 "name": "Combate Tático",
@@ -254,6 +286,14 @@
                 "damage": 50,
                 "heal": 0,
                 "cost": 60
+            },
+            {
+                "name": "Kenjutsu",
+                "description": "Faz um kenjutsu nos inimigos",
+                "cooldown": 7200000,
+                "damage": 60,
+                "heal": 0,
+                "cost": 65
             }
         ]
     },
@@ -343,6 +383,30 @@
                 "damage": 45,
                 "heal": 0,
                 "cost": 90
+            },
+            {
+                "name": "Mutilação de Dimensões",
+                "description": "Transporta partes do inimigo para diferentes universos, mutilando-o em diversas dimensões",
+                "cooldown": 0,
+                "damage": 65,
+                "heal": 0,
+                "cost": 110
+            },
+            {
+                "name": "Invocar Bahamut!",
+                "description": "Invoca o Deus Dragão Bahamut para atacar os inimigos",
+                "cooldown": 0,
+                "damage": 68,
+                "heal": 0,
+                "cost": 111
+            },
+            {
+                "name": "Venha, Belzebu",
+                "description": "Invoca Belzebu para atacar seus inimigos",
+                "cooldown": 0,
+                "damage": 70,
+                "heal": 0,
+                "cost": 115
             }
         ]
     },
@@ -382,6 +446,14 @@
                 "damage": 60,
                 "heal": 0,
                 "cost": 50
+            },
+            {
+                "name": "Silnêncio Mortal",
+                "description": "Entra no modo silencioso, focando no combate, podendo dar dano extremo em seus inimigos",
+                "cooldown": 3600000,
+                "damage": 70,
+                "heal": 0,
+                "cost": 55
             }
         ]
     },
@@ -439,6 +511,14 @@
                 "damage": 32,
                 "heal": 0,
                 "cost": 80
+            },
+            {
+                "name": "Beijo da Morte",
+                "description": "Mortos ascendem e beijam seu inimigo, passando as características da morte à ele",
+                "cooldown": 3600000,
+                "damage": 64,
+                "heal": 0,
+                "cost": 100
             }
         ]
     }
