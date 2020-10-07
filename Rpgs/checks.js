@@ -307,7 +307,7 @@ module.exports.newAbilities = async (message, user) => {
                 message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.necromante.normalAbilities[2].name}**`)
                 break;
         }
-    } else if (user.level == 15) {
+    } else if (user.level == 14) {
         switch (user.class) {
             case 'Assassino':
                 user.abilities.push(abilitiesFile.assassin.normalAbilities[3])
