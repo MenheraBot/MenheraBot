@@ -41,7 +41,7 @@
                 "name": "Jack",
                 "description": "Corta a barriga de sua vítima, espondo suas entranhas",
                 "cooldown": 7200000,
-                "damage": 150,
+                "damage": 90,
                 "heal": 0,
                 "cost": 50
             },
@@ -49,7 +49,7 @@
                 "name": "Atrás de Você!",
                 "description": "Pula nas costas de seu inimigo, cortando-o ao meio",
                 "cooldown": 7200000,
-                "damage": 170,
+                "damage": 120,
                 "heal": 0,
                 "cost": 68
             }
@@ -72,7 +72,7 @@
                 "cooldown": 86400000, 
                 "damage": 30, 
                 "heal": 0, 
-                "cost": 25, 
+                "cost": 35, 
                 "type": "ativo" 
             }
         ],
@@ -285,7 +285,7 @@
                 "cooldown": 7200000,
                 "damage": 50,
                 "heal": 0,
-                "cost": 60
+                "cost": 55
             },
             {
                 "name": "Kenjutsu",
