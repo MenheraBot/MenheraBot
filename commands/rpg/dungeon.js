@@ -50,6 +50,7 @@ module.exports = {
 async function battle(message, inimigo, habilidades, user) {
 
      user.dungeonCooldown = 3600000 + Date.now();
+     user.inBattle = true;
      user.save() 
 
     let options = [];

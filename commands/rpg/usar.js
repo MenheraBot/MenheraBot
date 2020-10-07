@@ -15,6 +15,8 @@ module.exports = {
     const user = await database.findById(message.author.id)
     if(!user) return message.channel.send("<:negacao:759603958317711371> | Você não é um aventureiro")
 
+    if(user.inBattle) return message.channel.send("<:negacao:759603958317711371> | Você não pode usar poções no meio de uma batalha!")
+
     let embed = new MessageEmbed()
     .setTitle("💊 | Poções")
     .setColor('#ae98d8')

@@ -34,12 +34,6 @@ module.exports = {
       user.loots.forEach(lot => {
         loots.push(lot.name)
       })
-  
-      countItems(loots).forEach(count => {
-        lootText += `**${count.name}** ( ${count.amount} )\n`
-      })
-      
-    embed.addField(`<:Chest:760957557538947133> | Espólios de Batalha`, lootText)
     }
 
     user.inventory.forEach(inv => {
@@ -55,8 +49,15 @@ module.exports = {
       itemText += `**${count.name}** (${count.amount})\n`
     })
 
+    
+    countItems(loots).forEach(count => {
+      lootText += `**${count.name}** ( ${count.amount} )\n`
+    })
+    
+
     if(armaText.length > 0) embed.addField(`⚔️ | Batalha`, armaText)
     if(items.length > 0) embed.addField(`💊 | Itens`, itemText)
+    if(lootText.length > 0) embed.addField(`<:Chest:760957557538947133> | Espólios de Batalha`, lootText)
 
     message.channel.send(message.author, embed)
 

@@ -81,6 +81,7 @@ module.exports.morte = async (message, user) => {
     message.channel.send("<:negacao:759603958317711371> | Essa não!! Você morreu! Para se recuperar dos danos, você retornou para a guilda, e ficará de repouso por 24 horas!")
     user.death = Date.now() + 86400000;
     user.life = 0
+    user.inBattle = false
     user.save()
 }
 
@@ -324,6 +325,7 @@ module.exports.resultBattle = async (message, user, inimigo) => {
     message.channel.send(message.author, embed)
     user.xp = user.xp + inimigo.xp;
     user.loots.push(randomLoot)
+    user.inBattle = false;
     user.save().then(() => this.finalChecks(message, user))
 
 }
