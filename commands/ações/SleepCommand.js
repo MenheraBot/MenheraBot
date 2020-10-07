@@ -5,6 +5,7 @@ module.exports = {
   aliases: ["dormir"],
   cooldown: 2,
   category: "ações",
+  dir: 'SleepCommand',
   description: "Mostre para os outros que você vai de base",
   userPermission: null,
   clientPermission: ["EMBED_LINKS"],

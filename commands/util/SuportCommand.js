@@ -4,6 +4,7 @@ module.exports = {
     aliases: ["servidor"],
     cooldown: 5,
     category: "util",
+    dir: 'SuportCommand',
     description: "Link de convite para o servidor de suporte do Bot",
     userPermission: null,
   clientPermission: ["EMBED_LINKS"],

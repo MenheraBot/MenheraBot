@@ -4,6 +4,7 @@ module.exports = {
   aliases: ["morde", "bite", "moider", "moidi"],
   cooldown: 2,
   category: "ações",
+  dir: 'BiteCommand',
   description: "Morde alguem X3 Moidi :3",
   userPermission: null,
   clientPermission: ["EMBED_LINKS"],

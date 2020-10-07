@@ -4,6 +4,7 @@ module.exports = {
   aliases: ["ri", "sirrir", "lol", "laugh"],
   cooldown: 2,
   category: "ações",
+  dir: 'LaughtCommand',
   description: "Mostre a todos que estás rindo ",
   userPermission: null,
   clientPermission: ["EMBED_LINKS"],

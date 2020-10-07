@@ -4,6 +4,7 @@ module.exports = {
   aliases: ["suggest", "sugestão"],
   cooldown: 5,
   category: "util",
+  dir: 'SuggestCommand',
   description: "Sugira algo para a dona do bot ou envie um bug para ela",
   userPermission: null,
   clientPermission: null,

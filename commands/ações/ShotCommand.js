@@ -5,6 +5,7 @@ module.exports = {
   aliases: ["tiro", "shot"],
   cooldown: 2,
   category: "ações",
+  dir: 'ShotCommand',
   description: "Atira em alguem",
   userPermission: null,
   clientPermission: ["EMBED_LINKS"],

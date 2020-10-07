@@ -3,6 +3,7 @@ module.exports = {
   name: "votar",
   aliases: ["vote", "vota", "upvote"],
   cooldown: 2,
+  dir: 'VoteCommand',
   category: "util",
   description: "Vote no bot (pfv vote, isso ajuda muito X3 >.< ",
   userPermission: null,

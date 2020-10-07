@@ -5,6 +5,7 @@ module.exports = {
   aliases: [],
   cooldown: 5,
   category: "info",
+  dir: 'AvatarCommand',
   description: "Mostra o avatar de alguem",
   userPermission: null,
   clientPermission: ["EMBED_LINKS"],

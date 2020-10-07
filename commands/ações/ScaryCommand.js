@@ -4,6 +4,7 @@ module.exports = {
   aliases: ["afraid", "assustado", "aterrorizado"],
   cooldown: 2,
   category: "ações",
+  dir: 'ScaryCommand',
   description: "MEDO?????",
   userPermission: null,
   clientPermission: ["EMBED_LINKS"],

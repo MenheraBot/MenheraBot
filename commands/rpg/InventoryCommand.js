@@ -7,6 +7,7 @@ module.exports = {
   aliases: ["inventario", "inventory", "inv"],
   cooldown: 3,
   category: "rpg",
+  dir: 'InventoryCommand',
   description: "Veja seu inventário",
   userPermission: null,
   clientPermission: ["EMBED_LINKS"],

@@ -7,6 +7,7 @@ const server = require("../../models/guild.js");
 module.exports = {
     name: "top",
     aliases: ["rank"],
+    dir: 'TopCommand',
     cooldown: 7,
     category: "info",
     description: "Veja o top de meus usuários",

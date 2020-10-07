@@ -5,6 +5,7 @@ module.exports = {
   aliases: ["sarre", "brunoberti", "sarranti"],
   cooldown: 5,
   category: "ações",
+  dir: 'SarrarCommand',
   description: "Sarra comigo?",
   userPermission: null,
   clientPermission: ["EMBED_LINKS", "ADD_REACTIONS", "MANAGE_MESSAGES"],

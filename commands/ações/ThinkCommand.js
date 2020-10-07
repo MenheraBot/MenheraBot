@@ -5,6 +5,7 @@ module.exports = {
   aliases: ["pensando", "think", "thinking"],
   cooldown: 2,
   category: "ações",
+  dir: 'ThinkCommand',
   description: "Gabriel o pensador apenas",
   userPermission: null,
   clientPermission: ["EMBED_LINKS"],

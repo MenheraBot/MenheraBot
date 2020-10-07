@@ -5,6 +5,7 @@ module.exports = {
   aliases: ["abracar", "abraço", "abraco", "hug"],
   cooldown: 2,
   category: "ações",
+  dir: 'HugCommand',
   description: "Abraça alguem",
   userPermission: null,
   clientPermission: ["EMBED_LINKS"],

@@ -4,6 +4,7 @@ module.exports = {
   name: "bicuda",
   aliases: ["chutar", "bicudar"],
   cooldown: 2,
+  dir: 'BicudaCommand',
   category: "ações",
   description: "da uma bicuda em alguem",
   userPermission: null,

@@ -6,6 +6,7 @@ module.exports = {
     aliases: [],
     cooldown: 2,
     category: "economia",
+    dir: 'WalletCommand',
     description: "Veja a carteira de alguém",
     userPermission: null,
     clientPermission: ["EMBED_LINKS"],

@@ -5,6 +5,7 @@ module.exports = {
   aliases: [],
   cooldown: 5,
   category: "util",
+  dir: 'AfkCommand',
   description: "Se coloque em AFK",
   userPermission: null,
   clientPermission: null,

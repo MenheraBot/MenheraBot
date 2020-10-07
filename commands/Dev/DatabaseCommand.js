@@ -7,6 +7,7 @@ module.exports = {
   name: "database",
   aliases: [],
   cooldown: 2,
+  dir: 'DatabaseCommand',
   category: "Dev",
   description: "Acesso direto à database da Menhera",
   userPermission: null,

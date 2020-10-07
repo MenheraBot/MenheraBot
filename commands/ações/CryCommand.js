@@ -4,6 +4,7 @@ module.exports = {
   aliases: ["chora", "cry"],
   cooldown: 2,
   category: "ações",
+  dir: 'CryCommand',
   description: "Mostre a todos que você está chorando, vai que assim tu ganha atenção",
   userPermission: null,
   clientPermission: ["EMBED_LINKS"],

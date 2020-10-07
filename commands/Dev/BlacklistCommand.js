@@ -5,6 +5,7 @@ module.exports = {
     aliases: [],
     cooldown: 1,
     category: "Dev",
+	dir: 'BlacklistCommand',
 	description: "Bane um usuário de usar a menhera",
 	userPermission: null,
   	clientPermission: ["EMBED_LINKS"],

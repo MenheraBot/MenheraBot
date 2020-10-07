@@ -3,6 +3,7 @@ module.exports = {
     aliases: [],
     cooldown: 1,
     category: "Dev",
+    dir: 'ReloadCommand',
     description: "Atualiza um comando sem reiniciar o bot",
     userPermission: null,
     clientPermission: ["EMBED_LINKS"],
@@ -17,10 +18,10 @@ module.exports = {
 
          if (!command) return message.channel.send(`<:negacao:759603958317711371> | Nenhum comando existente com o nome \`${commandName}\`, ${message.author}!`);
 
-         delete require.cache[require.resolve(`../${command.category}/${command.name}.js`)];
+         delete require.cache[require.resolve(`../${command.category}/${command.dir}.js`)];
 
          try {
-            const newCommand = require(`../${command.category}/${command.name}.js`);
+            const newCommand = require(`../${command.category}/${command.dir}.js`);
             client.commands.set(newCommand.name, newCommand);
             message.channel.send(`<:positivo:759603958485614652> | O comando \`${command.name}\` foi recarregado com sucesso`)
         } catch (error) {

@@ -6,6 +6,7 @@ module.exports = {
   aliases: ["aboutme"],
   cooldown: 2,
   category: "util",
+  dir: 'AboutMeCommand',
   description: "Mude seu Sobre Mim",
   userPermission: null,
   clientPermission: null,

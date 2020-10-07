@@ -3,6 +3,7 @@ module.exports = {
   name: "resmungar",
   aliases: ["grumble", "grumbling", "resmungo", "humpf"],
   cooldown: 2,
+  dir: 'GrumbleCommand',
   category: "ações",
   description: "Resmungue humpf",
   userPermission: null,

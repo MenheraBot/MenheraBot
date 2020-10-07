@@ -7,6 +7,7 @@ module.exports = {
   aliases: ["mame", "sugada", "chupar", "chupa", "glubglub", "suck"],
   cooldown: 3,
   category: "ações",
+  dir: 'MamarCommand',
   description: "Da aquela mamada de qualidade monstra",
   userPermission: null,
   clientPermission: ["EMBED_LINKS"],

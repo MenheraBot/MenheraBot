@@ -4,6 +4,7 @@ module.exports = {
   aliases: [],
   cooldown: 2,
   category: "diversão",
+  dir: 'LoliCommand',
   description: "Certeza que quer fazer isso?",
   userPermission: null,
   clientPermission: null,

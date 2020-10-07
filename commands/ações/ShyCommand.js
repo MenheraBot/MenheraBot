@@ -4,6 +4,7 @@ module.exports = {
   aliases: ["shy", "flushed"],
   cooldown: 2,
   category: "ações",
+  dir: 'ShyCommand',
   description: "hihihi, oto com vergonha",
   userPermission: null,
   clientPermission: ["EMBED_LINKS"],

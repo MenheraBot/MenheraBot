@@ -6,6 +6,7 @@ module.exports = {
   aliases: [],
   cooldown: 2,
   category: "diversão",
+  dir: 'ShipCommand',
   description: "Será que vocês dariam um bom casal?",
   userPermission: null,
   clientPermission: ["EMBED_LINKS"],

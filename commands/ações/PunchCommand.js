@@ -4,6 +4,7 @@ module.exports = {
   aliases: ["tapa", "soca", "tapear", "punch"],
   cooldown: 2,
   category: "ações",
+  dir: 'PunchCommand',
   description: "Da aquele tapa de qualidade do VEM PRO FUT em alguem",
   userPermission: null,
   clientPermission: ["EMBED_LINKS"],

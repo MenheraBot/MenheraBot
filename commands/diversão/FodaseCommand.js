@@ -4,6 +4,7 @@ module.exports = {
   aliases: ["foda-se", "fodase?", "foda-se?", "fds"],
   cooldown: 2,
   category: "diversão",
+  dir: 'FodaseCommand',
   description: "Alguem mandou algo que ninguem perguntou? Taque o fodase",
   userPermission: null,
   clientPermission: ["EMBED_LINKS"],

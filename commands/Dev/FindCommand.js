@@ -4,6 +4,7 @@ module.exports = {
     name: "find",
     aliases: [],
     cooldown: 2,
+    dir: 'FindCommand',
     category: "Dev",
     description: "Retorna um servidor ou um usuario",
     userPermission: null,

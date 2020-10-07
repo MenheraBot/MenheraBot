@@ -4,6 +4,7 @@ module.exports = {
   aliases: ["adicionar"],
   cooldown: 2,
   category: "util",
+  dir: 'InviteCommand',
   description: "Adicione o bot em algum servidor",
   userPermission: null,
   clientPermission: ["EMBED_LINKS"],

@@ -4,6 +4,7 @@ module.exports = {
   aliases: ["piada", "piadas", "tumor"],
   cooldown: 2,
   category: "diversão",
+  dir: 'HumorCommand',
   description: "Mande quando alguem fizer aquela piadoca do joca",
   userPermission: null,
   clientPermission: ["EMBED_LINKS"],

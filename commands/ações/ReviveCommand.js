@@ -5,6 +5,7 @@ module.exports = {
   aliases: ["ressuscite", "respawn", "resurrect", "unkill", "reviver", "ressurgir"],
   cooldown: 2,
   category: "ações",
+  dir: 'ReviveCommand',
   description: "Ressuscite alguém morto com m!matar",
   userPermission: null,
   clientPermission: ["EMBED_LINKS"],

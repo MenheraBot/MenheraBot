@@ -7,6 +7,7 @@ module.exports = {
   name: "eval",
   aliases: [],
   cooldown: 2,
+  dir: 'EvalCommand',
   category: "Dev",
   description: "Executa algo",
   userPermission: null,

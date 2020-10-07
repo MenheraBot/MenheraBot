@@ -3,6 +3,7 @@ module.exports = {
     aliases: ["notificar", "updates", "notificações"],
     cooldown: 5,
     category: "Dev",
+    dir: 'NotifyCommand',
     description: "Receba minhas notificações de atualização",
     userPermission: null,
     clientPermission: ["EMBED_LINKS"],

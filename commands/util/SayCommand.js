@@ -3,6 +3,7 @@ module.exports = {
   name: "say",
   aliases: [],
   cooldown: 2,
+  dir: 'SayCommand',
   category: "util",
   description: "Faça-me dizer algo",
   userPermission: ["MANAGE_MESSAGES"],

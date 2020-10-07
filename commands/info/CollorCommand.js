@@ -5,6 +5,7 @@ module.exports = {
   aliases: [],
   cooldown: 5,
   category: "info",
+  dir: 'CollorCommand',
   description: "Mude a cor de seu perfil",
   userPermission: null,
   clientPermission: ["EMBED_LINKS"],

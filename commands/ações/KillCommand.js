@@ -4,6 +4,7 @@ module.exports = {
   name: "matar",
   aliases: ["mate", "mata", "kill"],
   cooldown: 2,
+  dir: 'KillCommand',
   category: "ações",
   description: "Mate aquele que você não suporta mais",
   userPermission: null,

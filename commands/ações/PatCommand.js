@@ -4,6 +4,7 @@ module.exports = {
   aliases: ["pat"],
   cooldown: 2,
   category: "ações",
+  dir: 'PatCommand',
   description: "faz carinho em alguem",
   userPermission: null,
   clientPermission: ["EMBED_LINKS"],

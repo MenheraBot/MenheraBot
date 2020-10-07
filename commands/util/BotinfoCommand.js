@@ -9,6 +9,7 @@ module.exports = {
   name: "botinfo",
   aliases: ["menhera"],
   cooldown: 10,
+  dir: 'BotinfoCommand',
   category: "util",
   description: "Mostra as informações atuais do bot",
   userPermission: null,

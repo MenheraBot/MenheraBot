@@ -4,6 +4,7 @@ module.exports = {
     name: "roll",
     aliases: ["rolls"],
     cooldown: 5,
+    dir: 'RollCommand',
     category: "util",
     description: "Use um DR para resetar seu tempo de caçadas",
     userPermission: null,

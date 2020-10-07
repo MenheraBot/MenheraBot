@@ -6,6 +6,7 @@ module.exports = {
   name: "register",
   aliases: ["registrar", "registro"],
   cooldown: 10,
+  dir: 'RegisterCommand',
   category: "rpg",
   description: "Registre-se um aventureiro",
   userPermission: null,

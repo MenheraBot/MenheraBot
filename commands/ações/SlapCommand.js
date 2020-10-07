@@ -4,6 +4,7 @@ module.exports = {
   aliases: ["bate", "slap", "tapa", "tapear"],
   cooldown: 2,
   category: "ações",
+  dir: 'SlapCommand',
   description: "Bate em alguém",
   userPermission: null,
   clientPermission: ["EMBED_LINKS"],

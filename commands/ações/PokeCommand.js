@@ -4,6 +4,7 @@ module.exports = {
   aliases: ["cutuque", "cutuca", "catuca", "poke"],
   cooldown: 2,
   category: "ações",
+  dir: 'PokeCommand',
   description: "Cutuque alguem",
   userPermission: null,
   clientPermission: ["EMBED_LINKS"],

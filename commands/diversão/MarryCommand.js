@@ -7,10 +7,11 @@ module.exports = {
   name: "casar",
   aliases: ["marry"],
   cooldown: 30,
+  dir: 'MarryCommand',
   category: "diversão",
   description: "Casa com alguem",
   userPermission: null,
-  clientPermission: ["EMBED_LINKS", "ADD_REACTIONS"],
+  clientPermission: ["EMBED_LINKS", "ADD_REACTIONS", "MANAGE_MESSAGES"],
   usage: "m!casar <@menção>",
 
   run: async (client, message, args) => {

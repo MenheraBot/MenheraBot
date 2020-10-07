@@ -5,6 +5,7 @@ module.exports = {
   name: "warn",
   aliases: ["avisar"],
   cooldown: 5,
+  dir: 'WarnCommand',
   category: "moderação",
   description: "Avise um usuário",
   userPermission: ["KICK_MEMBERS"],

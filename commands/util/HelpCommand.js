@@ -4,6 +4,7 @@ module.exports = {
     aliases: ["ajuda", "comandos","h"],
     cooldown: 5,
     category: "util",
+    dir: 'HelpCommand',
     description: "Mostra a pagina de ajuda do bot",
     userPermission: null,
     clientPermission: ["EMBED_LINKS"],

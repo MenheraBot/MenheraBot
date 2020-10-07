@@ -5,6 +5,7 @@ module.exports = {
   aliases: ["disgusted"],
   cooldown: 2,
   category: "ações",
+  dir: 'DisgustedCommand',
   description: "eca que nojo",
   userPermission: null,
   clientPermission: ["EMBED_LINKS"],

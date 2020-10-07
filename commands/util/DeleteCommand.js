@@ -4,6 +4,7 @@ module.exports = {
   name: "deletar",
   aliases: ["delete"],
   cooldown: 30,
+  dir: 'DeleteCommand',
   category: "util",
   description: "Exclua seu perfil do banco de dados",
   userPermission: null,

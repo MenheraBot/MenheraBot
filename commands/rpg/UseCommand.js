@@ -6,6 +6,7 @@ module.exports = {
   aliases: ["use", "usa"],
   cooldown: 10,
   category: "rpg",
+  dir: 'UseCommand',
   description: "Use um item de seu inventário",
   userPermission: null,
   clientPermission: ["EMBED_LINKS"],

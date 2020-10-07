@@ -5,6 +5,7 @@ module.exports = {
     aliases: ["loja", "vender", "comprar"],
     cooldown: 5,
     category: "economia",
+    dir: 'ShopCommand',
     description: "Abra a loja da Menhera",
     userPermission: null,
     clientPermission: ["EMBED_LINKS"],

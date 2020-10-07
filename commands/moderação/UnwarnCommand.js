@@ -5,6 +5,7 @@ module.exports = {
   aliases: ["desavisar", "delwarn"],
   cooldown: 5,
   category: "moderação",
+  dir: 'UnwarnCommand',
   description: "Retire um aviso de um usuário",
   userPermission: ["KICK_MEMBERS"],
   clientPermission: ["EMBED_LINKS"],

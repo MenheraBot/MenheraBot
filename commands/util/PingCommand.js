@@ -4,6 +4,7 @@ module.exports = {
     name: "ping",
     aliases: ["pong"],
     cooldown: 2,
+    dir: 'PingCommand',
     category: "util",
     description: "Mostra o ping do bot e de sua API",
     userPermission: null,

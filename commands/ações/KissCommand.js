@@ -4,6 +4,7 @@ module.exports = {
   aliases: ["beijo", "kiss"],
   cooldown: 2,
   category: "ações",
+  dir: 'KissCommand',
   description: "Beija alguem",
   userPermission: null,
   clientPermission: ["EMBED_LINKS"],

@@ -5,6 +5,7 @@ module.exports = {
   aliases: ["setprefix"],
   cooldown: 10,
   category: "moderação",
+  dir: 'PrefixCommand',
   description: "Troque meu prefixo neste servidor",
   userPermission: ["MANAGE_GUILD"],
   clientPermission: null,

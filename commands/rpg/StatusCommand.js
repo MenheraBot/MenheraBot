@@ -6,6 +6,7 @@ module.exports = {
   aliases: ["stats"],
   cooldown: 10,
   category: "rpg",
+  dir: 'StatusCommand',
   description: "Veja o status de alguém",
   userPermission: null,
   clientPermission: ["EMBED_LINKS"],

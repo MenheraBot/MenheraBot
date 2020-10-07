@@ -7,6 +7,7 @@ module.exports = {
   aliases: ["ih"],
   cooldown: 10,
   category: "rpg",
+  dir: 'AbilityInfoCommand',
   description: "Veja as informações de suas habilidades, ou de uma em comum",
   userPermission: null,
   clientPermission: ["EMBED_LINKS"],

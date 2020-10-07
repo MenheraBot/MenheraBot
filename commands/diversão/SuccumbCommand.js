@@ -3,6 +3,7 @@ module.exports = {
   name: "sucumba",
   aliases: ["sucumbe", "fuzer"],
   cooldown: 3,
+  dir: 'SuccumbCommand',
   category: "diversão",
   description: "SUCUMBA MUCALOL",
   userPermission: null,

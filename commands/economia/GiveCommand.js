@@ -5,6 +5,7 @@ module.exports = {
     aliases: ["pay"],
     cooldown: 2,
     category: "economia",
+    dir: 'GiveCommand',
     description: "Transfira algo de seu inventário para alguém",
     userPermission: null,
     clientPermission: null,

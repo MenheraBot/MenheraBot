@@ -7,6 +7,7 @@ module.exports = {
   aliases: ["dungeons"],
   cooldown: 3,
   category: "rpg",
+  dir: 'DungeonCommand',
   description: "Vá para uma aventura na dungeon",
   userPermission: null,
   clientPermission: ["EMBED_LINKS"],

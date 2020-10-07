@@ -7,6 +7,7 @@ module.exports = {
   aliases: ["profile"],
   cooldown: 5,
   category: "info",
+  dir: 'ProfileCommand',
   description: "Veja o seu perfil, ou o de alguem",
   userPermission: null,
   clientPermission: ["EMBED_LINKS"],

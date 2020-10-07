@@ -5,6 +5,7 @@ module.exports = {
   aliases: ["cmd"],
   cooldown: 2,
   category: "Dev",
+  dir: 'MaintenanceCommand',
   description: "Coloca ou tira um comando de manutenção",
   userPermission: null,
   clientPermission: ["EMBED_LINKS"],

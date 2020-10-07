@@ -6,6 +6,7 @@ module.exports = {
     name: "vila",
     aliases: ["boleham"],
     cooldown: 10,
+    dir: 'VillageCommand',
     category: "rpg",
     description: "Vá para a vila de boleham",
     userPermission: null,

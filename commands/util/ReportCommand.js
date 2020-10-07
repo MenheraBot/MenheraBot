@@ -4,6 +4,7 @@ module.exports = {
   aliases: ["reportar", "bug"],
   cooldown: 5,
   category: "util",
+  dir: 'ReportCommand',
   description: "Reporte um Bug para minha Dona",
   userPermission: null,
   clientPermission: null,

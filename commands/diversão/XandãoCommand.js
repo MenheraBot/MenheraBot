@@ -4,6 +4,7 @@ module.exports = {
   aliases: ["xandao"],
   cooldown: 2,
   category: "diversão",
+  dir: 'XandãoCommand',
   description: "SEM PRESSÃO",
   usage: "m!xandão [texto]",
   userPermission: null,

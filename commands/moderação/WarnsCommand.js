@@ -7,6 +7,7 @@ module.exports = {
   aliases: ["warns", "warnslist", "punishmentlist"],
   cooldown: 10,
   category: "moderação",
+  dir: 'WarnsCommand',
   description: "Veja quantos warns uma pessoa tem",
   userPermission: ["MANAGE_MESSAGES"],
   clientPermission: ["EMBED_LINKS"],

@@ -1,7 +1,5 @@
 const { MessageEmbed } = require("discord.js");
-
 const database = require("../../models/user.js");
-
 const moment = require("moment")
 
 module.exports = {
@@ -9,6 +7,7 @@ module.exports = {
   aliases: ["cacar", "caça", "caca", "hunt"],
   cooldown: 5,
   category: "diversão",
+  dir: 'HuntCommand',
   description: "Caçe demônios como XANDÂO",
   userPermission: null,
   clientPermission: ["EMBED_LINKS"],
