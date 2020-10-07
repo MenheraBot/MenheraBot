@@ -308,8 +308,8 @@
                 "type": "hard",
                 "name": "Goblin Campeão",
                 "life": 470,
-                "damage": 56,
-                "armor": 79,
+                "damage": 69,
+                "armor": 61,
                 "xp": 6070
             }
     ],
