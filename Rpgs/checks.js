@@ -1,6 +1,6 @@
 const databaseRPG = require("../models/rpg.js")
 const moment = require("moment");
-const dungeon = require("../commands/rpg/dungeon.js")
+const dungeon = require("../commands/rpg/DungeonCommand.js")
 const { MessageEmbed } = require("discord.js");
 const abilitiesFile = require("../Rpgs/abilities.json");
 const mobsFile = require("../Rpgs/mobs.json");
