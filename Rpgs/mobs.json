@@ -355,6 +355,18 @@
             "damage": 112,
             "armor": 80,
             "xp": 33333
+        },
+        {
+            "loots": [{
+                "name": "Escama",
+                "value": 150
+            }],
+            "type": "hard",
+            "name": "Kraken",
+            "life": 640,
+            "damage": 87,
+            "armor": 31,
+            "xp": 15600
         }
     ]
 }

@@ -154,7 +154,7 @@ function ferreiro(message, user, msg) {
 
 function ferreiroArma(message, user, msg) {
     let embed = new MessageEmbed()
-    .setColor('#b99c81')
+        .setColor('#b99c81')
         .setTitle("⚒️ | Ferreiro")
         .setDescription("<:atencao:759603958418767922> | Sua arma sera substituída pela sua escolha, então cuidado!\n\nEscolha o que desejas fabricar")
         .addFields([{
@@ -165,17 +165,17 @@ function ferreiroArma(message, user, msg) {
             name: "2 - Espada de Chifre de Minotauro",
             value: "🗡️ | Dano: **27**\n💎 | Custo: **1500**\n<:Chest:760957557538947133> | Itens Necessários: **2 Chifres de Minotauro**"
         }
-    ])
+        ])
         .setFooter("Digite no chat sua escolha")
 
-        msg.edit(message.author, embed)
+    msg.edit(message.author, embed)
 
-        const filter = m => m.author.id === message.author.id;
-        const collector = message.channel.createMessageCollector(filter, { max: 1 });
+    const filter = m => m.author.id === message.author.id;
+    const collector = message.channel.createMessageCollector(filter, { max: 1 });
 
-        let nameLoots = []
+    let nameLoots = []
 
-     user.loots.forEach(loot => {
+    user.loots.forEach(loot => {
         nameLoots.push(loot.name)
     })
 
@@ -187,9 +187,9 @@ function ferreiroArma(message, user, msg) {
     collector.on('collect', m => {
 
         if (m.content === "1") {
-            if(user.money < 500) return message.channel.send("<:negacao:759603958317711371> | Você não possui pedras preciosas suficientes!")
-            if(!filtrado[0]) return message.channel.send("<:negacao:759603958317711371> | Você não possui 2 Presas de Lobisomem")
-            if(filtrado[0].amount < 2) return message.channel.send("<:negacao:759603958317711371> | Você não possui 2 Presas de Lobisomem")
+            if (user.money < 500) return message.channel.send("<:negacao:759603958317711371> | Você não possui pedras preciosas suficientes!")
+            if (!filtrado[0]) return message.channel.send("<:negacao:759603958317711371> | Você não possui 2 Presas de Lobisomem")
+            if (filtrado[0].amount < 2) return message.channel.send("<:negacao:759603958317711371> | Você não possui 2 Presas de Lobisomem")
 
             user.weapon = {
                 name: "Lança de Presas de Lobisomem",
@@ -206,9 +206,9 @@ function ferreiroArma(message, user, msg) {
             message.channel.send("<:positivo:759603958485614652> | Você trocou sua arma para `Lança de Presas de Lobisomem`")
 
         } else if (m.content === "2") {
-            if(user.money < 1500) return message.channel.send("<:negacao:759603958317711371> | Você não possui pedras preciosas suficientes!")
-            if(!filtrado1[0]) return message.channel.send("<:negacao:759603958317711371> | Você não possui 2 Chifres de Minotauro")
-            if(filtrado1[0].amount < 2) return message.channel.send("<:negacao:759603958317711371> | Você não possui 2 Chifres de Minotauro")
+            if (user.money < 1500) return message.channel.send("<:negacao:759603958317711371> | Você não possui pedras preciosas suficientes!")
+            if (!filtrado1[0]) return message.channel.send("<:negacao:759603958317711371> | Você não possui 2 Chifres de Minotauro")
+            if (filtrado1[0].amount < 2) return message.channel.send("<:negacao:759603958317711371> | Você não possui 2 Chifres de Minotauro")
 
             user.weapon = {
                 name: "Espada de Chifre de Minotauro",
@@ -230,7 +230,79 @@ function ferreiroArma(message, user, msg) {
 }
 
 function ferreiroArmadura(message, user, msg) {
-return message.channel.send("<:negacao:759603958317711371> | O ferreiro ainda não consegue fazer armaduras!")
+
+    let embed = new MessageEmbed()
+        .setColor('#b99c81')
+        .setTitle("⚒️ | Ferreiro")
+        .setDescription("<:atencao:759603958418767922> | Sua armadura sera substituída pela sua escolha, então cuidado!\n\nEscolha o que desejas fabricar")
+        .addFields([{
+            name: "1 - Peitoral Reforçado",
+            value: "🛡️ | Proteção: **10**\n💎 | Custo: **400**\n<:Chest:760957557538947133> | Itens Necessários: **1 Pele de Lobisomem**"
+        },
+        {
+            name: "2 - Peitoral Perfeito",
+            value: "🛡️ | Proteção: **30**\n💎 | Custo: **1500**\n<:Chest:760957557538947133> | Itens Necessários: **3 Pele de Lobisomem**"
+        }
+        ])
+        .setFooter("Digite no chat sua escolha")
+
+    msg.edit(message.author, embed)
+
+    const filter = m => m.author.id === message.author.id;
+    const collector = message.channel.createMessageCollector(filter, { max: 1 });
+
+    let nameLoots = []
+
+    user.loots.forEach(loot => {
+        nameLoots.push(loot.name)
+    })
+
+    let contado = countItems(nameLoots)
+
+    let filtrado = contado.filter(f => f.name === "Pele de Lobisomem")
+
+    collector.on('collect', m => {
+
+        if (m.content === "1") {
+            if (user.money < 400) return message.channel.send("<:negacao:759603958317711371> | Você não possui pedras preciosas suficientes!")
+            if (!filtrado[0]) return message.channel.send("<:negacao:759603958317711371> | Você não possui 1 Pele de Lobisomem")
+            if (filtrado[0].amount < 1) return message.channel.send("<:negacao:759603958317711371> | Você não possui 1 Pele de Lobisomem")
+
+            user.protection = {
+                name: "Peitoral Reforçado",
+                armor: 10
+            }
+            user.money = user.money - 400
+            for (j = 0; j < 1; j++) {
+                user.loots.splice(user.loots.findIndex(function (i) {
+                    return i.name === filtrado[0].name;
+                }), 1);
+            }
+
+            user.save()
+            message.channel.send("<:positivo:759603958485614652> | Você trocou sua armadura para `Peitoral Reforçado`")
+
+        } else if (m.content === "2") {
+            if (user.money < 1500) return message.channel.send("<:negacao:759603958317711371> | Você não possui pedras preciosas suficientes!")
+            if (!filtrado[0]) return message.channel.send("<:negacao:759603958317711371> | Você não possui 3 Peles de Lobisomem")
+            if (filtrado[0].amount < 3) return message.channel.send("<:negacao:759603958317711371> | Você não possui 3 Peles de Lobisomem")
+
+            user.protection = {
+                name: "Peitoral Perfeito",
+                armor: 30
+            }
+            user.money = user.money - 1500
+            for (j = 0; j < 3; j++) {
+                user.loots.splice(user.loots.findIndex(function (i) {
+                    return i.name === filtrado[0].name;
+                }), 1);
+            }
+
+            user.save()
+            message.channel.send("<:positivo:759603958485614652> | Você trocou sua armadura para `Peitoral Perfeito`")
+
+        } else return message.channel.send("<:negacao:759603958317711371> | Está não é uma opção válida")
+    })
 }
 
 function hotel(message, user, msg) {
