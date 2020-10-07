@@ -36,7 +36,7 @@ module.exports.getEnemy = async (user) => {
         monstro = await mediumEnemy[Math.floor(Math.random() * mediumEnemy.length)];
     } else if (user.level > 9 && user.level < 13) {
         monstro = await hardEnemy[Math.floor(Math.random() * hardEnemy.length)];
-    } else if (user.level > 12){
+    } else if (user.level > 12) {
         monstro = await impossibleEnemy[Math.floor(Math.random() * impossibleEnemy.length)];
     }
     return monstro;
@@ -47,7 +47,12 @@ module.exports.battle = async (message, escolha, user, inimigo) => {
     let danoUser;
     if (escolha.name == "Ataque Básico") {
         danoUser = escolha.damage
+    } else if (escolha.name == "Morte Instantânea") {
+        if(user.mana < user.maxMana) return this.enemyShot(message, `⚔️ | Você tenta usar **${escolha.name}**, mas não tem mana o suficiente para isso! O inimigo revida!`, user, inimigo)
+        danoUser = escolha.damage * user.abilityPower;
+        user.mana = 0;
     } else {
+
         if (user.mana < escolha.cost) return this.enemyShot(message, `⚔️ | Você tenta usar **${escolha.name}**, mas não tem mana o suficiente para isso! O inimigo revida!`, user, inimigo)
         if (escolha.heal > 0) {
             user.life = user.life + escolha.heal

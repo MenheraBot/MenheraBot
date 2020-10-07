@@ -7,7 +7,7 @@
                 "cooldown": 86400000, 
                 "damage": 999999, 
                 "heal": 0, 
-                "cost": 80,
+                "cost": "`100% da Mana Máxima`",
                 "type": "ativo" 
             },
             {
@@ -23,11 +23,11 @@
         "normalAbilities": [
             {
                 "name": "Furtividade",
-                "description": "Entra em modo furtivo, podendo fugir de situações perigosas, ou mesmo atacar pelo flanco",
+                "description": "Entra em modo furtivo, atacando seu inimigo pelo flanco",
                 "cooldown": 7200000,
-                "damage": 15,
+                "damage": 30,
                 "heal": 0,
-                "cost": 10
+                "cost": 18
             },
             {
                 "name": "Assassino em Série",
