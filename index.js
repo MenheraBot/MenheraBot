@@ -26,4 +26,4 @@ Sentry.init({ dsn: config.sentry_dns});
     process.__defineGetter__('stderr', function() { return fs.createWriteStream('../logs/error.log', {flags:'a'}) })
   */
 
-client.login(config.testToken);
+client.login(config.token);
