@@ -312,5 +312,49 @@
                 "armor": 79,
                 "xp": 6070
             }
+    ],
+    "impossible": [
+        {
+            "loots": [{
+                "name": "Cabeça de Minotauro",
+                "value": 100
+            }, {
+                "name": "Chifre de Minotauro",
+                "value": 86
+            }],
+            "type": "impossible",
+            "name": "Deus dos Minotauros",
+            "life": 750,
+            "damage": 80,
+            "armor": 45,
+            "xp": 24500
+        },
+        {
+            "loots": [{
+                "name": "Pele de Lobisomem",
+                "value": 98
+            }, {
+                "name": "Presas de Lobisomem",
+                "value": 78
+            }],
+            "type": "impossible",
+            "name": "Lobisomem do Inferno",
+            "life": 600,
+            "damage": 94,
+            "armor": 47,
+            "xp": 27666
+        },
+        {
+            "loots": [{
+                "name": "Portal para o Inferno",
+                "value": 350
+            }],
+            "type": "impossible",
+            "name": "Malthael",
+            "life": 800,
+            "damage": 112,
+            "armor": 80,
+            "xp": 33333
+        }
     ]
 }

@@ -10,6 +10,7 @@ module.exports.getEnemy = async (user) => {
     let initialEnemy = [];
     let mediumEnemy = [];
     let hardEnemy = [];
+    let impossibleEnemy = []
 
     mobsFile.inicial.forEach(initialMob => {
         initialEnemy.push(initialMob)
@@ -23,14 +24,20 @@ module.exports.getEnemy = async (user) => {
         hardEnemy.push(hardMob)
     })
 
+    mobsFile.impossible.forEach(impMob => {
+        impossibleEnemy.push(impMob)
+    })
+
     let monstro;
 
     if (user.level < 5) {
         monstro = await initialEnemy[Math.floor(Math.random() * initialEnemy.length)];
     } else if (user.level > 4 && user.level < 10) {
         monstro = await mediumEnemy[Math.floor(Math.random() * mediumEnemy.length)];
-    } else if (user.level > 9) {
+    } else if (user.level > 9 && user.level < 13) {
         monstro = await hardEnemy[Math.floor(Math.random() * hardEnemy.length)];
+    } else if (user.level > 12){
+        monstro = await impossibleEnemy[Math.floor(Math.random() * impossibleEnemy.length)];
     }
     return monstro;
 }
