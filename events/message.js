@@ -53,8 +53,6 @@ module.exports = async (client, message) => {
 
   if (!message.member) message.member = await message.guild.fetch(message);
 
-  if(server.blockedChannels.includes(message.channel.id) && !message.member.hasPermission("MANAGE_CHANNELS")) return message.channel.send(`<:negacao:759603958317711371> | Meus comandos estão bloqueados neste canal, ${message.author}`)
-
   const args = message.content.slice(prefix.length).trim().split(/ +/g);
   const cmd = args.shift().toLowerCase();
 
@@ -63,8 +61,6 @@ module.exports = async (client, message) => {
   let command = client.commands.get(cmd);
   if (!command) command = client.commands.get(client.aliases.get(cmd));
   if (!command) return;
-
-  if (command) {
 
     if (!user) {
       await new database({
@@ -75,6 +71,8 @@ module.exports = async (client, message) => {
     }
 
     if(!message.guild.me.hasPermission("SEND_MESSAGES")) return;
+
+    if(server.blockedChannels.includes(message.channel.id) && !message.member.hasPermission("MANAGE_CHANNELS")) return message.channel.send(`<:negacao:759603958317711371> | Meus comandos estão bloqueados neste canal, ${message.author}`)
 
     if (user) {
       if (user.ban) {
@@ -205,8 +203,6 @@ module.exports = async (client, message) => {
       canal.send(embed)
       console.error(err.stack)
     }
-
-  }
 }
 
 function perm(perm) {
