@@ -32,7 +32,7 @@ module.exports = async (client, message) => {
       const usuario = await database.findOne({ id: member.id })
       if (usuario) {
         if (usuario.afk === true) {
-          message.channel.send(`<:notify:759607330597502976> | ${message.author}, \`${member.tag}\` está AFK: ${usuario.afkReason}`)
+          message.channel.send(`<:notify:759607330597502976> | ${message.author}, \`${member.tag}\` está AFK: ${usuario.afkReason}`).catch()
         }
       }
     })
@@ -47,7 +47,7 @@ module.exports = async (client, message) => {
     }
   }
 
-  if (message.content.startsWith(`<@!${client.user.id}>`) || message.content.startsWith(`<@${client.user.id}>`)) return message.channel.send(`Oizinho ${message.author}, meu prefixo neste servidor é '${prefix}'`);
+  if (message.content.startsWith(`<@!${client.user.id}>`) || message.content.startsWith(`<@${client.user.id}>`)) return message.channel.send(`Oizinho ${message.author}, meu prefixo neste servidor é '${prefix}'`).catch()
 
   if (!message.content.toLowerCase().startsWith(prefix)) return;
 
@@ -99,7 +99,7 @@ module.exports = async (client, message) => {
           .addField("Banido injustamente?", `Se você acha que foi banido injustamente, então entre em contato com a ${owner.tag} ou entre no meu servidor de suporte.`)
 
         message.channel.send(embed).catch(() => {
-          message.author.send(embed)
+          message.author.send(embed).catch()
         })
         return
       }
