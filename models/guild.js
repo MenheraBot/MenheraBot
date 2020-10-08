@@ -3,7 +3,8 @@ const config = require("../config.json")
 
 const guildSchema = mongoose.Schema({
   id: {type: String},
-  prefix: {type: String, default: config.prefix}
+  prefix: {type: String, default: config.prefix},
+  blockedChannels: {type: Array, default: []}
 });
 
 module.exports = mongoose.model("guild", guildSchema);

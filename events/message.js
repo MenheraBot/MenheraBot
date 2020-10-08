@@ -53,6 +53,8 @@ module.exports = async (client, message) => {
 
   if (!message.member) message.member = await message.guild.fetch(message);
 
+  if(server.blockedChannels.includes(message.channel.id) && !message.member.hasPermission("MANAGE_CHANNELS")) return message.channel.send(`<:negacao:759603958317711371> | Meus comandos estão bloqueados neste canal, ${message.author}`)
+
   const args = message.content.slice(prefix.length).trim().split(/ +/g);
   const cmd = args.shift().toLowerCase();
 
