@@ -74,6 +74,8 @@ module.exports = async (client, message) => {
       }).save()
     }
 
+    if(!message.guild.me.hasPermission("SEND_MESSAGES")) return;
+
     if (user) {
       if (user.ban) {
 
