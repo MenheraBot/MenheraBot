@@ -1,7 +1,7 @@
 const databaseRPG = require("../models/rpg.js")
 const moment = require("moment");
 const dungeon = require("../commands/rpg/DungeonCommand.js")
-const { MessageEmbed } = require("discord.js");
+const { MessageEmbed, UserFlags } = require("discord.js");
 const abilitiesFile = require("../Rpgs/abilities.json");
 const mobsFile = require("../Rpgs/mobs.json");
 
@@ -386,6 +386,10 @@ module.exports.newAbilities = async (message, user) => {
                 message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.necromante.normalAbilities[3].name}**`)
                 break;
         }
+    } else if(user.level == 16){
+        user.xp = 0
+        user.nextLevelXp = 100000
+        user.save()
     }
 }
 
