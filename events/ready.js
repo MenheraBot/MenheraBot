@@ -18,13 +18,19 @@ module.exports = (client) => {
         user.rolls = user.rolls + 1
         user.estrelinhas = user.estrelinhas + random;
         user.votos = user.votos + 1;
-        user.save()
         const usuarioDm = await client.users.cache.get(vote.user)
-        const embed = new MessageEmbed()
+        let embed = new MessageEmbed()
           .setTitle("<:God:758474639570894899> | Obrigada por votar em mim")
           .setColor("#fa73e5")
           .setThumbnail('https://i.imgur.com/b5y0nd4.png')
-          .setDescription(`Obrigada por votar em mim bebezinho, cada voto me ajuda e inspira minha dona a continuar me cuidando! ❤️\n\nComo forma de agradecimento, você recebeu **1**🔑 e **${random}**⭐!\n\nSabia que você ja votou **${user.votos}** vezes em mim? **OBRIGADA**\n\nVote em mim novamente em 12 horas <a:LevelUp:760954035779272755>`)
+          .setDescription(`Obrigada por votar em mim bebezinho, cada voto me ajuda e inspira minha dona a continuar me cuidando! ❤️\n\nComo forma de agradecimento, você recebeu **1**🔑 e **${random}**⭐!\n\nSabia que a cada 20 votos você ganha um prêmio especial? E que você ja votou **${user.votos}** vezes em mim? **OBRIGADA**\n\nVote em mim novamente em 12 horas <a:LevelUp:760954035779272755>`)
+          if(user.votos % 20 === 0){
+            embed.setTitle("<:Angel:758765044204437535> | OWO VOCÊ RECEBEU UM PRÊMIO ESPECIAL!!!")
+            embed.setDescription(`Obrigada por votar em mim bebezinho, cada voto me ajuda e inspira minha dona a continuar me cuidando! ❤️\n\nVocê votou ${user.votos} vezes em mim, e por isso, ganhou o **TRIPLO** de prêmios! Toma-te ${random * 3}⭐ e **3**🔑 \n\nVote em mim novamente em 12 horas <a:LevelUp:760954035779272755>`)
+            user.rolls = user.rolls + 3
+            user.estrelinhas = user.estrelinhas + (random * 3);
+          }
+          user.save()
         if (usuarioDm) usuarioDm.send(embed).catch()
       }
     })
