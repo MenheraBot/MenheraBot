@@ -43,7 +43,7 @@
                 "cooldown": 7200000,
                 "damage": 90,
                 "heal": 0,
-                "cost": 50
+                "cost": 60
             },
             {
                 "name": "Atrás de Você!",
@@ -51,7 +51,7 @@
                 "cooldown": 7200000,
                 "damage": 120,
                 "heal": 0,
-                "cost": 68
+                "cost": 120
             }
         ]
     }, 
