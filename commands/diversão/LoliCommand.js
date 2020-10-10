@@ -1,4 +1,3 @@
-
 module.exports = {
   name: "loli",
   aliases: [],
@@ -10,6 +9,6 @@ module.exports = {
   clientPermission: null,
   usage: "m!loli",
   run: async (client, message, args) => {
-  message.channel.send("if (comando == loli) {\n    mensagem.autor.preso == true;\n    tempoPreso == 8 anos;\n  }");
-}}
-
+    message.channel.send("if (comando == loli) {\n    mensagem.autor.preso == true;\n    tempoPreso == 8 anos;\n  }");
+  }
+}

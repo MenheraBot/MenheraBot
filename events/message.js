@@ -1,4 +1,7 @@
-const { MessageEmbed, Collection } = require("discord.js");
+const {
+  MessageEmbed,
+  Collection
+} = require("discord.js");
 const config = require("../config.json");
 const database = require("../models/user");
 const cmdDb = require("../models/cmds.js")
@@ -10,11 +13,13 @@ moment.locale("pt-br");
 const cooldowns = new Collection();
 
 module.exports = async (client, message) => {
-  
+
   if (message.author.bot) return;
   if (message.channel.type === "dm") return;
 
-  const server = await serverDb.findOne({ id: message.guild.id })
+  const server = await serverDb.findOne({
+    id: message.guild.id
+  })
   if (!server) {
     serverDb({
       id: message.guild.id
@@ -29,7 +34,9 @@ module.exports = async (client, message) => {
   if (message.mentions.users.size >= 0) {
     message.mentions.users.forEach(async (member) => {
       if (!member) return
-      const usuario = await database.findOne({ id: member.id })
+      const usuario = await database.findOne({
+        id: member.id
+      })
       if (usuario) {
         if (usuario.afk === true) {
           message.channel.send(`<:notify:759607330597502976> | ${message.author}, \`${member.tag}\` está AFK: ${usuario.afkReason}`).catch()
@@ -37,13 +44,17 @@ module.exports = async (client, message) => {
       }
     })
   }
-  let user = await database.findOne({ id: message.author.id })
+  let user = await database.findOne({
+    id: message.author.id
+  })
   if (user) {
     if (user.afk == true) {
       user.afk = false
       user.afkReason = null
       user.save()
-      message.channel.send(`Bem vindo de volta ${message.author} >.<`).then(msg => msg.delete({ timeout: 5000 })).catch()
+      message.channel.send(`Bem vindo de volta ${message.author} >.<`).then(msg => msg.delete({
+        timeout: 5000
+      })).catch()
     }
   }
 
@@ -62,134 +73,116 @@ module.exports = async (client, message) => {
   if (!command) command = client.commands.get(client.aliases.get(cmd));
   if (!command) return;
 
-    if (!user) {
-      await new database({
-        id: message.author.id,
-        nome: message.author.username,
-        shipValue: Math.floor(Math.random() * 55)
-      }).save()
-    }
+  if (!user) {
+    await new database({
+      id: message.author.id,
+      nome: message.author.username,
+      shipValue: Math.floor(Math.random() * 55)
+    }).save()
+  }
 
-    if(!message.guild.me.hasPermission("SEND_MESSAGES")) return;
+  if (!message.guild.me.hasPermission("SEND_MESSAGES")) return;
 
-    if(server.blockedChannels.includes(message.channel.id) && !message.member.hasPermission("MANAGE_CHANNELS")) return message.channel.send(`<:negacao:759603958317711371> | Meus comandos estão bloqueados neste canal, ${message.author}`)
+  if (server.blockedChannels.includes(message.channel.id) && !message.member.hasPermission("MANAGE_CHANNELS")) return message.channel.send(`<:negacao:759603958317711371> | Meus comandos estão bloqueados neste canal, ${message.author}`)
 
-    if (user) {
-      if (user.ban) {
+  if (user) {
+    if (user.ban) {
 
-        let avatar
-        if (!message.author.avatar.startsWith("a_")) {
-          if (!message.author.avatar) {
-            avatar = message.author.displayAvatarURL()
-          } else {
-            avatar = `https://cdn.discordapp.com/avatars/${message.author.id}/${message.author.avatar}.png?size=2048`
-          }
+      let avatar
+      if (!message.author.avatar.startsWith("a_")) {
+        if (!message.author.avatar) {
+          avatar = message.author.displayAvatarURL()
         } else {
-          if (!message.author.avatar) {
-            avatar = message.author.displayAvatarURL()
-          } else {
-            avatar = `https://cdn.discordapp.com/avatars/${message.author.id}/${message.author.avatar}.gif?size=2048`
-          }
+          avatar = `https://cdn.discordapp.com/avatars/${message.author.id}/${message.author.avatar}.png?size=2048`
         }
-        let owner = await client.users.fetch("435228312214962204")
-
-        const embed = new MessageEmbed()
-          .setColor('#c1001d')
-          .setAuthor("Você foi banido", avatar)
-          .setDescription(`Olá ${message.author}, você foi banido de usar a Menhera`)
-          .addField("Motivo", user.banReason)
-          .addField("Banido injustamente?", `Se você acha que foi banido injustamente, então entre em contato com a ${owner.tag} ou entre no meu servidor de suporte.`)
-
-        message.channel.send(embed).catch(() => {
-          message.author.send(embed).catch()
-        })
-        return
-      }
-    }
-
-    if (command.devsOnly) {
-      if (!config.owner.includes(message.author.id)) return message.channel.send(`Perdão ${message.author}, este comando só está disponível para minha dona :(`)
-    }
-
-    let c = await cmdDb.findById(command.name)
-    if (c.maintenance) {
-      if (!config.owner.includes(message.author.id)) {
-        return message.channel.send(`<:negacao:759603958317711371> | **MANUTENÇÃO**\n Este comando está em manutenção por tempo indeterminado!\n\n**Motivo:** ${c.maintenanceReason}`)
-      }
-    }
-
-
-    if (!cooldowns.has(command.name)) {
-      cooldowns.set(command.name, new Collection());
-    }
-
-    if (!config.owner.includes(message.author.id)) {
-
-      const now = Date.now();
-      const timestamps = cooldowns.get(command.name);
-      const cooldownAmount = (command.cooldown || 3) * 1000;
-
-      if (timestamps.has(message.author.id)) {
-        const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
-
-        if (now < expirationTime) {
-          const timeLeft = (expirationTime - now) / 1000;
-          return message.channel.send(`<:atencao:759603958418767922> | Espere ${timeLeft.toFixed(1)} segundos antes de usar o comando \`${command.name}\` em específico`);
+      } else {
+        if (!message.author.avatar) {
+          avatar = message.author.displayAvatarURL()
+        } else {
+          avatar = `https://cdn.discordapp.com/avatars/${message.author.id}/${message.author.avatar}.gif?size=2048`
         }
       }
+      let owner = await client.users.fetch("435228312214962204")
 
-      timestamps.set(message.author.id, now);
-      setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
+      const embed = new MessageEmbed()
+        .setColor('#c1001d')
+        .setAuthor("Você foi banido", avatar)
+        .setDescription(`Olá ${message.author}, você foi banido de usar a Menhera`)
+        .addField("Motivo", user.banReason)
+        .addField("Banido injustamente?", `Se você acha que foi banido injustamente, então entre em contato com a ${owner.tag} ou entre no meu servidor de suporte.`)
 
-    }
-
-    let userPermission = command.userPermission
-    let clientPermission = command.clientPermission
-    if (userPermission !== null) {
-      if (!message.member.hasPermission(userPermission)) {
-        let traslated = perm(clientPermission).map(a => a).join(", ")
-        return message.channel.send(`<:atencao:759603958418767922> | Você não tem permissão de \`${traslated}\` para executar esse comando!`)
-      }
-    }
-    if (clientPermission !== null) {
-      if (!message.guild.me.hasPermission(clientPermission) || !message.channel.permissionsFor(client.user.id).has(clientPermission)) {
-        let traslated = perm(clientPermission).map(a => a).join(", ")
-        return message.channel.send(`<:atencao:759603958418767922> | Eu preciso de permissão de \`${traslated}\` para executar esse comando!`)
-      }
-    }
-
-    try {
-
-      new Promise((res, rej) => {
-
-        message.channel.startTyping()
-        res(command.run(client, message, args))
-        console.log(`[COMANDO] Comando ${command.name} executado por ${message.author.id} (${moment(Date.now()).format("l LTS")})`)
-      }).then(() => message.channel.stopTyping()).catch(err => {
-
-        message.channel.stopTyping()
-
-        let canal = client.channels.cache.get('730906866896470097')
-
-        message.channel.stopTyping()
-        const errorMessage = err.stack.length > 1800 ? `${err.stack.slice(0, 1800)}...` : err.stack
-        const embed = new MessageEmbed()
-        embed.setColor('#fd0000')
-        embed.setTitle(`<:menhera_cry:744041825140211732> | Ocorreu um erro ao executar o comando ${command.name}`)
-        embed.setDescription(`\`\`\`js\n${errorMessage}\`\`\``)
-        embed.addField(`<:atencao:759603958418767922> | Usage`, `UserId: \`${message.author.id}\` \nServerId: \`${message.guild.id}\``)
-        embed.setTimestamp()
-        embed.addField(`<:ok:727975974125436959> | Reporte esse problema`, "Entre em meu servidor de suporte para reportar esse problema à minha dona")
-
-        message.channel.send(embed).catch(() => message.channel.send("Aparentemente ocorreu um erro ao executar este comando! Reporte isso à minha dona em meu servidor de suporte!"))
-        canal.send(embed)
+      message.channel.send(embed).catch(() => {
+        message.author.send(embed).catch()
       })
-    } catch (err) {
+      return
+    }
+  }
+
+  if (command.devsOnly) {
+    if (!config.owner.includes(message.author.id)) return message.channel.send(`Perdão ${message.author}, este comando só está disponível para minha dona :(`)
+  }
+
+  let c = await cmdDb.findById(command.name)
+  if (c.maintenance) {
+    if (!config.owner.includes(message.author.id)) {
+      return message.channel.send(`<:negacao:759603958317711371> | **MANUTENÇÃO**\n Este comando está em manutenção por tempo indeterminado!\n\n**Motivo:** ${c.maintenanceReason}`)
+    }
+  }
+
+
+  if (!cooldowns.has(command.name)) {
+    cooldowns.set(command.name, new Collection());
+  }
+
+  if (!config.owner.includes(message.author.id)) {
+
+    const now = Date.now();
+    const timestamps = cooldowns.get(command.name);
+    const cooldownAmount = (command.cooldown || 3) * 1000;
+
+    if (timestamps.has(message.author.id)) {
+      const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
+
+      if (now < expirationTime) {
+        const timeLeft = (expirationTime - now) / 1000;
+        return message.channel.send(`<:atencao:759603958418767922> | Espere ${timeLeft.toFixed(1)} segundos antes de usar o comando \`${command.name}\` em específico`);
+      }
+    }
+
+    timestamps.set(message.author.id, now);
+    setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
+
+  }
+
+  let userPermission = command.userPermission
+  let clientPermission = command.clientPermission
+  if (userPermission !== null) {
+    if (!message.member.hasPermission(userPermission)) {
+      let traslated = perm(clientPermission).map(a => a).join(", ")
+      return message.channel.send(`<:atencao:759603958418767922> | Você não tem permissão de \`${traslated}\` para executar esse comando!`)
+    }
+  }
+  if (clientPermission !== null) {
+    if (!message.guild.me.hasPermission(clientPermission) || !message.channel.permissionsFor(client.user.id).has(clientPermission)) {
+      let traslated = perm(clientPermission).map(a => a).join(", ")
+      return message.channel.send(`<:atencao:759603958418767922> | Eu preciso de permissão de \`${traslated}\` para executar esse comando!`)
+    }
+  }
+
+  try {
+
+    new Promise((res, rej) => {
+
+      message.channel.startTyping()
+      res(command.run(client, message, args))
+      console.log(`[COMANDO] Comando ${command.name} executado por ${message.author.id} (${moment(Date.now()).format("l LTS")})`)
+    }).then(() => message.channel.stopTyping()).catch(err => {
+
+      message.channel.stopTyping()
 
       let canal = client.channels.cache.get('730906866896470097')
 
       message.channel.stopTyping()
-
       const errorMessage = err.stack.length > 1800 ? `${err.stack.slice(0, 1800)}...` : err.stack
       const embed = new MessageEmbed()
       embed.setColor('#fd0000')
@@ -201,8 +194,26 @@ module.exports = async (client, message) => {
 
       message.channel.send(embed).catch(() => message.channel.send("Aparentemente ocorreu um erro ao executar este comando! Reporte isso à minha dona em meu servidor de suporte!"))
       canal.send(embed)
-      console.error(err.stack)
-    }
+    })
+  } catch (err) {
+
+    let canal = client.channels.cache.get('730906866896470097')
+
+    message.channel.stopTyping()
+
+    const errorMessage = err.stack.length > 1800 ? `${err.stack.slice(0, 1800)}...` : err.stack
+    const embed = new MessageEmbed()
+    embed.setColor('#fd0000')
+    embed.setTitle(`<:menhera_cry:744041825140211732> | Ocorreu um erro ao executar o comando ${command.name}`)
+    embed.setDescription(`\`\`\`js\n${errorMessage}\`\`\``)
+    embed.addField(`<:atencao:759603958418767922> | Usage`, `UserId: \`${message.author.id}\` \nServerId: \`${message.guild.id}\``)
+    embed.setTimestamp()
+    embed.addField(`<:ok:727975974125436959> | Reporte esse problema`, "Entre em meu servidor de suporte para reportar esse problema à minha dona")
+
+    message.channel.send(embed).catch(() => message.channel.send("Aparentemente ocorreu um erro ao executar este comando! Reporte isso à minha dona em meu servidor de suporte!"))
+    canal.send(embed)
+    console.error(err.stack)
+  }
 }
 
 function perm(perm) {
@@ -297,6 +308,6 @@ function perm(perm) {
     }
 
   })
-  
+
   return permissions;
 }

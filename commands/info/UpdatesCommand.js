@@ -1,4 +1,6 @@
-const { MessageEmbed } = require("discord.js");
+const {
+    MessageEmbed
+} = require("discord.js");
 
 const config = require('../../config.json')
 
@@ -19,7 +21,10 @@ module.exports = {
         const embed = new MessageEmbed()
             .setTitle(`Notas de atualização da versão ${require("../../package.json").version}`)
             .setColor('#a7e74f')
-            .setFooter(`${client.user.username} foi atualizada por ${owner.tag}`, owner.displayAvatarURL({ format: "png", dynamic: true }))
+            .setFooter(`${client.user.username} foi atualizada por ${owner.tag}`, owner.displayAvatarURL({
+                format: "png",
+                dynamic: true
+            }))
             .setDescription(`**RPG Updates**
 
   • Assassinos Nerfados:

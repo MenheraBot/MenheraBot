@@ -35,7 +35,10 @@ module.exports = {
         msg.react("<:positivo:759603958485614652>").catch(err => message.channel.send("Ocorreu um erro ao adicionar uma reação, serasi eu tenho permissão para tal?"));
         let filter = (reaction, usuario) => reaction.emoji.name === "<:positivo:759603958485614652>" && usuario.id !== message.author.id && !usuario.bot;
 
-        let coletor = msg.createReactionCollector(filter, { max: 1, time: 30000 });
+        let coletor = msg.createReactionCollector(filter, {
+          max: 1,
+          time: 30000
+        });
 
         coletor.on("collect", (react, user) => {
 
@@ -60,7 +63,9 @@ function sarrada(message, reactUser) {
 
   var rand = lista[Math.floor(Math.random() * lista.length)];
 
-  let avatar = message.author.displayAvatarURL({ format: "png" });
+  let avatar = message.author.displayAvatarURL({
+    format: "png"
+  });
 
   const Embed = new Discord.MessageEmbed()
 

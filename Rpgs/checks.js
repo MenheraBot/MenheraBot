@@ -1,7 +1,9 @@
 const databaseRPG = require("../models/rpg.js")
 const moment = require("moment");
 const dungeon = require("../commands/rpg/DungeonCommand.js")
-const { MessageEmbed, UserFlags } = require("discord.js");
+const {
+    MessageEmbed
+} = require("discord.js");
 const abilitiesFile = require("../Rpgs/abilities.json");
 const mobsFile = require("../Rpgs/mobs.json");
 
@@ -48,7 +50,7 @@ module.exports.battle = async (message, escolha, user, inimigo) => {
     if (escolha.name == "Ataque Básico") {
         danoUser = escolha.damage
     } else if (escolha.name == "Morte Instantânea") {
-        if(user.mana < user.maxMana) return this.enemyShot(message, `⚔️ | Você tenta usar **${escolha.name}**, mas não tem mana o suficiente para isso! O inimigo revida!`, user, inimigo)
+        if (user.mana < user.maxMana) return this.enemyShot(message, `⚔️ | Você tenta usar **${escolha.name}**, mas não tem mana o suficiente para isso! O inimigo revida!`, user, inimigo)
         danoUser = escolha.damage * user.abilityPower;
         user.mana = 0;
     } else {
@@ -386,7 +388,7 @@ module.exports.newAbilities = async (message, user) => {
                 message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.necromante.normalAbilities[3].name}**`)
                 break;
         }
-    } else if(user.level == 16){
+    } else if (user.level == 16) {
         user.xp = 0
         user.nextLevelXp = 100000
         user.save()
@@ -402,15 +404,15 @@ module.exports.resultBattle = async (message, user, inimigo) => {
         .setDescription(`**Esse dano é o suficiente para matar ${inimigo.name}!**\n\n**Loots:**`)
         .setColor("#4cf74b")
         .addFields([{
-            name: "🔰 | XP",
-            value: inimigo.xp,
-            inline: true
-        },
-        {
-            name: "<:Chest:760957557538947133> | Espólios de Batalha",
-            value: randomLoot.name,
-            inline: true
-        }
+                name: "🔰 | XP",
+                value: inimigo.xp,
+                inline: true
+            },
+            {
+                name: "<:Chest:760957557538947133> | Espólios de Batalha",
+                value: randomLoot.name,
+                inline: true
+            }
         ])
 
     message.channel.send(message.author, embed)
@@ -485,16 +487,25 @@ module.exports.initialChecks = async (user, message) => {
     }
     if (user.life < 1) {
         pass = false
-        motivo.push({ name: "💔 | Sem Vida", value: `Você está sem vida, e precisa descansar por mais **${(parseInt(user.death - Date.now()) > 3600000) ? moment.utc(parseInt(user.death - Date.now())).format("HH:mm:ss") : moment.utc(parseInt(user.death - Date.now())).format("mm:ss")}** horas` })
+        motivo.push({
+            name: "💔 | Sem Vida",
+            value: `Você está sem vida, e precisa descansar por mais **${(parseInt(user.death - Date.now()) > 3600000) ? moment.utc(parseInt(user.death - Date.now())).format("HH:mm:ss") : moment.utc(parseInt(user.death - Date.now())).format("mm:ss")}** horas`
+        })
     }
     if (user.dungeonCooldown > Date.now()) {
         pass = false
-        motivo.push({ name: "💤 | Cansaço", value: `Você já visitou a dungeon e precisa descansar por mais **${moment.utc(parseInt(user.dungeonCooldown - Date.now())).format("mm:ss")}** minutos` })
+        motivo.push({
+            name: "💤 | Cansaço",
+            value: `Você já visitou a dungeon e precisa descansar por mais **${moment.utc(parseInt(user.dungeonCooldown - Date.now())).format("mm:ss")}** minutos`
+        })
     }
 
     if (parseInt(user.hotelTime) > Date.now()) {
         pass = false
-        motivo.push({ name: "🏨 | Hotel", value: `Você está descansando no hotel da vila, e não pode ir para a dungeon até que sua estadia acabe, em **${(parseInt(user.hotelTime - Date.now()) > 3600000) ? moment.utc(parseInt(user.hotelTime - Date.now())).format("HH:mm:ss") : moment.utc(parseInt(user.hotelTime - Date.now())).format("mm:ss")}**` })
+        motivo.push({
+            name: "🏨 | Hotel",
+            value: `Você está descansando no hotel da vila, e não pode ir para a dungeon até que sua estadia acabe, em **${(parseInt(user.hotelTime - Date.now()) > 3600000) ? moment.utc(parseInt(user.hotelTime - Date.now())).format("HH:mm:ss") : moment.utc(parseInt(user.hotelTime - Date.now())).format("mm:ss")}**`
+        })
     }
 
     if (!pass) {
@@ -522,7 +533,11 @@ module.exports.confirmRegister = async (userId, message) => {
             user.maxMana = 20;
             user.abilityPower = 1;
             user.abilities.push(abilitiesFile.assassin.normalAbilities[0])
-            user.weapon = { name: "Adaga", damage: 5, type: "Arma" }
+            user.weapon = {
+                name: "Adaga",
+                damage: 5,
+                type: "Arma"
+            }
             user.uniquePower = choiceAssassin
             user.save()
             message.channel.send("<:positivo:759603958485614652> | Você foi registrado com sucesso! Use `m!status` para ver seus status")
@@ -536,7 +551,11 @@ module.exports.confirmRegister = async (userId, message) => {
             user.maxMana = 20;
             user.abilityPower = 1;
             user.abilities.push(abilitiesFile.barbarian.normalAbilities[0])
-            user.weapon = { name: "Machado de dois Gumes", damage: 10, type: "Arma" }
+            user.weapon = {
+                name: "Machado de dois Gumes",
+                damage: 10,
+                type: "Arma"
+            }
             user.uniquePower = choiceBarbaro;
             user.save()
             message.channel.send("<:positivo:759603958485614652> | Você foi registrado com sucesso! Use `m!status` para ver seus status")
@@ -550,7 +569,11 @@ module.exports.confirmRegister = async (userId, message) => {
             user.maxMana = 50;
             user.abilityPower = 3;
             user.abilities.push(abilitiesFile.druida.normalAbilities[0])
-            user.weapon = { name: "Anel da Transformação", damage: 0, type: "Arma" }
+            user.weapon = {
+                name: "Anel da Transformação",
+                damage: 0,
+                type: "Arma"
+            }
             user.uniquePower = choiceDruida;
             user.save()
             message.channel.send("<:positivo:759603958485614652> | Você foi registrado com sucesso! Use `m!status` para ver seus status")
@@ -564,7 +587,11 @@ module.exports.confirmRegister = async (userId, message) => {
             user.maxMana = 20;
             user.abilityPower = 1;
             user.abilities.push(abilitiesFile.espadachim.normalAbilities[0])
-            user.weapon = { name: "Sabre", damage: 7, type: "Arma" }
+            user.weapon = {
+                name: "Sabre",
+                damage: 7,
+                type: "Arma"
+            }
             user.uniquePower = choiceEspadachim
             user.save()
             message.channel.send("<:positivo:759603958485614652> | Você foi registrado com sucesso! Use `m!status` para ver seus status")
@@ -578,7 +605,11 @@ module.exports.confirmRegister = async (userId, message) => {
             user.maxMana = 60;
             user.abilityPower = 4
             user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[0])
-            user.weapon = { name: "Cajado", damage: 5, type: "Arma" }
+            user.weapon = {
+                name: "Cajado",
+                damage: 5,
+                type: "Arma"
+            }
             user.uniquePower = choiceFeiticeiro
             user.save()
             message.channel.send("<:positivo:759603958485614652> | Você foi registrado com sucesso! Use `m!status` para ver seus status")
@@ -592,7 +623,11 @@ module.exports.confirmRegister = async (userId, message) => {
             user.maxMana = 60;
             user.abilityPower = 4
             user.abilities.push(abilitiesFile.clerigo.normalAbilities[0])
-            user.weapon = { name: "Tomo Sagrado", damage: 5, type: "Arma" }
+            user.weapon = {
+                name: "Tomo Sagrado",
+                damage: 5,
+                type: "Arma"
+            }
             user.uniquePower = choiceClerigo
             user.save()
             message.channel.send("<:positivo:759603958485614652> | Você foi registrado com sucesso! Use `m!status` para ver seus status")
@@ -607,7 +642,11 @@ module.exports.confirmRegister = async (userId, message) => {
             user.abilityPower = 2
             user.abilities.push(abilitiesFile.monge.normalAbilities[0])
             user.uniquePower = choiceMonge
-            user.weapon = { name: "Punhos", damage: 1, type: "Arma" }
+            user.weapon = {
+                name: "Punhos",
+                damage: 1,
+                type: "Arma"
+            }
             user.save()
             message.channel.send("<:positivo:759603958485614652> | Você foi registrado com sucesso! Use `m!status` para ver seus status")
             break;
@@ -620,7 +659,11 @@ module.exports.confirmRegister = async (userId, message) => {
             user.maxMana = 60;
             user.abilityPower = 4
             user.abilities.push(abilitiesFile.necromante.normalAbilities[0])
-            user.weapon = { name: "Foice", damage: 5, type: "Arma" }
+            user.weapon = {
+                name: "Foice",
+                damage: 5,
+                type: "Arma"
+            }
             user.uniquePower = choiceNecromante
             user.save()
             message.channel.send("<:positivo:759603958485614652> | Você foi registrado com sucesso! Use `m!status` para ver seus status")

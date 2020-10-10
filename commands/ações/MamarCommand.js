@@ -1,4 +1,6 @@
-const {MessageEmbed} = require("discord.js");
+const {
+  MessageEmbed
+} = require("discord.js");
 
 const user = require("../../models/user.js");
 
@@ -14,55 +16,59 @@ module.exports = {
   usage: "m!mamar <@menção>",
   run: async (client, message, args) => {
 
-  const pessoa = message.mentions.users.first();
-  const autor = message.author;
-  
-  if (!pessoa) return message.channel.send("<:negacao:759603958317711371> | KKK ala o autista mamando o nada");
+    const pessoa = message.mentions.users.first();
+    const autor = message.author;
 
-  if (pessoa.bot) {
-    message.channel.send( `${message.author} acabou de sujar a boca de óleo mamano o bot ${pessoa}`);
-    return;
-  }
+    if (!pessoa) return message.channel.send("<:negacao:759603958317711371> | KKK ala o autista mamando o nada");
 
-  if (pessoa == message.author)
-    return message.channel.send("<:negacao:759603958317711371> | Não tenta me enganar, eu sei que tu não consegue mamar a si mesmo! Marque outra pessoa para mamar");
+    if (pessoa.bot) {
+      message.channel.send(`${message.author} acabou de sujar a boca de óleo mamano o bot ${pessoa}`);
+      return;
+    }
 
-  var list = [
-    "https://i.imgur.com/PlAtqkk.gif",
-    "https://i.imgur.com/LjuLhYq.gif",
-    "https://i.imgur.com/zvZ2AiM.gif",
-    "https://i.imgur.com/xRBDmXD.gif",
-    "https://i.imgur.com/JF5FaNC.gif",
-    "https://i.imgur.com/ZAx2dOC.gif",
-    "https://i.imgur.com/t1aaEMY.gif",
-    "https://i.imgur.com/GEB31Fi.gif",
-    "https://i.imgur.com/OMzXpXR.gif",
-    "https://i.imgur.com/9DYjWtP.gif",
-    "https://i.imgur.com/5Tjpori.gif",
-    "https://i.imgur.com/vejOIZc.gif",
-    "https://i.imgur.com/qyjOnix.gif",
-    "https://i.imgur.com/J3K2d9A.gif",
-    "https://i.imgur.com/JgXWxWf.gif"
-  ];
+    if (pessoa == message.author)
+      return message.channel.send("<:negacao:759603958317711371> | Não tenta me enganar, eu sei que tu não consegue mamar a si mesmo! Marque outra pessoa para mamar");
 
-  var rand = list[Math.floor(Math.random() * list.length)];
-  let userA = message.mentions.users.first();
-  let avatar = message.author.displayAvatarURL({ format: "png" });
-  const embed = new MessageEmbed()
-    .setTitle("Mamar")
-    .setColor("#000000")
-    .setDescription(`${message.author} Mamou ${userA}`)
-    .setImage(rand)
-    .setThumbnail(avatar)
-    .setAuthor(message.author.tag, avatar);
+    var list = [
+      "https://i.imgur.com/PlAtqkk.gif",
+      "https://i.imgur.com/LjuLhYq.gif",
+      "https://i.imgur.com/zvZ2AiM.gif",
+      "https://i.imgur.com/xRBDmXD.gif",
+      "https://i.imgur.com/JF5FaNC.gif",
+      "https://i.imgur.com/ZAx2dOC.gif",
+      "https://i.imgur.com/t1aaEMY.gif",
+      "https://i.imgur.com/GEB31Fi.gif",
+      "https://i.imgur.com/OMzXpXR.gif",
+      "https://i.imgur.com/9DYjWtP.gif",
+      "https://i.imgur.com/5Tjpori.gif",
+      "https://i.imgur.com/vejOIZc.gif",
+      "https://i.imgur.com/qyjOnix.gif",
+      "https://i.imgur.com/J3K2d9A.gif",
+      "https://i.imgur.com/JgXWxWf.gif"
+    ];
 
-   message.channel.send(embed);
+    var rand = list[Math.floor(Math.random() * list.length)];
+    let userA = message.mentions.users.first();
+    let avatar = message.author.displayAvatarURL({
+      format: "png"
+    });
+    const embed = new MessageEmbed()
+      .setTitle("Mamar")
+      .setColor("#000000")
+      .setDescription(`${message.author} Mamou ${userA}`)
+      .setImage(rand)
+      .setThumbnail(avatar)
+      .setAuthor(message.author.tag, avatar);
+
+    message.channel.send(embed);
 
 
-   //mongodb 
-    user.findOne({id: pessoa.id}, (err, mamadas) => {
-      if(err) console.log(err);
-      if(!mamadas){
+    //mongodb 
+    user.findOne({
+      id: pessoa.id
+    }, (err, mamadas) => {
+      if (err) console.log(err);
+      if (!mamadas) {
         const novoUser = new user({
           id: pessoa.id,
           nome: pessoa.username,
@@ -76,9 +82,11 @@ module.exports = {
       }
     });
 
-    user.findOne({id: autor.id}, (err, mamou) => {
-      if(err) console.log(err);
-      if(!mamou){
+    user.findOne({
+      id: autor.id
+    }, (err, mamou) => {
+      if (err) console.log(err);
+      if (!mamou) {
         const novoUser = new user({
           id: autor.id,
           nome: autor.username,
@@ -92,4 +100,5 @@ module.exports = {
       }
     });
 
-}};
+  }
+};

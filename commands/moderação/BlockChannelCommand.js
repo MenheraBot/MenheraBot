@@ -12,7 +12,9 @@ module.exports = {
     usage: "m!bloquear",
     run: async (client, message, args) => {
 
-        const server = await database.findOne({ id: message.guild.id })
+        const server = await database.findOne({
+            id: message.guild.id
+        })
 
         if (server.blockedChannels.includes(message.channel.id)) {
             const index = server.blockedChannels.indexOf(message.channel.id);

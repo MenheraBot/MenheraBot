@@ -1,4 +1,6 @@
-const { MessageEmbed } = require("discord.js");
+const {
+    MessageEmbed
+} = require("discord.js");
 const usuario = require("../../models/user.js");
 
 module.exports = {
@@ -16,7 +18,9 @@ module.exports = {
         let pessoa = message.mentions.users.first() || client.users.cache.get(args[0]);
         if (!pessoa) pessoa = message.author;
 
-        let user = await usuario.findOne({ id: pessoa.id });
+        let user = await usuario.findOne({
+            id: pessoa.id
+        });
         if (!user) return message.channel.send("<:negacao:759603958317711371> | Este usuário não está em minha database")
 
         let cor;
@@ -28,8 +32,7 @@ module.exports = {
         const embed = new MessageEmbed()
             .setTitle(`Carteira de ${pessoa.tag}`)
             .setColor(cor)
-            .addFields([
-                {
+            .addFields([{
                     name: "⭐ | Estrelinhas",
                     value: `**${user.estrelinhas}**`,
                     inline: true
@@ -64,4 +67,3 @@ module.exports = {
         message.channel.send(message.author, embed)
     }
 }
-

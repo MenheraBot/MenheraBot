@@ -1,4 +1,6 @@
-const { MessageEmbed } = require("discord.js");
+const {
+    MessageEmbed
+} = require("discord.js");
 const database = require("../../models/rpg.js");
 const itemsFile = require("../../Rpgs/items.json")
 
@@ -29,7 +31,11 @@ module.exports = {
         let msg = await message.channel.send(message.author, embed)
 
         const filter = m => m.author.id === message.author.id;
-        const collector = message.channel.createMessageCollector(filter, { max: 1, time: 30000, errors: ["time"] });
+        const collector = message.channel.createMessageCollector(filter, {
+            max: 1,
+            time: 30000,
+            errors: ["time"]
+        });
 
         collector.on('collect', m => {
             if (!validOptions.includes(m.content)) return message.channel.send("<:negacao:759603958317711371> | Esta opção não é válida!");
@@ -91,7 +97,11 @@ function bruxa(message, user, msg) {
     msg.edit(message.author, embed)
 
     const filter = m => m.author.id === message.author.id;
-    const collector = message.channel.createMessageCollector(filter, { max: 1, time: 15000, errors: ["time"] });
+    const collector = message.channel.createMessageCollector(filter, {
+        max: 1,
+        time: 15000,
+        errors: ["time"]
+    });
 
     let option = [];
 
@@ -139,7 +149,9 @@ function ferreiro(message, user, msg) {
     msg.edit(message.author, embed)
 
     const filter = m => m.author.id === message.author.id;
-    const collector = message.channel.createMessageCollector(filter, { max: 1 });
+    const collector = message.channel.createMessageCollector(filter, {
+        max: 1
+    });
 
     collector.on('collect', m => {
 
@@ -159,20 +171,22 @@ function ferreiroArma(message, user, msg) {
         .setTitle("⚒️ | Ferreiro")
         .setDescription("<:atencao:759603958418767922> | Sua arma sera substituída pela sua escolha, então cuidado!\n\nEscolha o que desejas fabricar")
         .addFields([{
-            name: "1 - Lança de Presas de Lobisomem",
-            value: "🗡️ | Dano: **17**\n💎 | Custo: **500**\n<:Chest:760957557538947133> | Itens Necessários: **2 Presas de Lobisomem**"
-        },
-        {
-            name: "2 - Espada de Chifre de Minotauro",
-            value: "🗡️ | Dano: **27**\n💎 | Custo: **950**\n<:Chest:760957557538947133> | Itens Necessários: **2 Chifres de Minotauro**"
-        }
+                name: "1 - Lança de Presas de Lobisomem",
+                value: "🗡️ | Dano: **17**\n💎 | Custo: **500**\n<:Chest:760957557538947133> | Itens Necessários: **2 Presas de Lobisomem**"
+            },
+            {
+                name: "2 - Espada de Chifre de Minotauro",
+                value: "🗡️ | Dano: **27**\n💎 | Custo: **950**\n<:Chest:760957557538947133> | Itens Necessários: **2 Chifres de Minotauro**"
+            }
         ])
         .setFooter("Digite no chat sua escolha")
 
     msg.edit(message.author, embed)
 
     const filter = m => m.author.id === message.author.id;
-    const collector = message.channel.createMessageCollector(filter, { max: 1 });
+    const collector = message.channel.createMessageCollector(filter, {
+        max: 1
+    });
 
     let nameLoots = []
 
@@ -237,20 +251,22 @@ function ferreiroArmadura(message, user, msg) {
         .setTitle("⚒️ | Ferreiro")
         .setDescription("<:atencao:759603958418767922> | Sua armadura sera substituída pela sua escolha, então cuidado!\n\nEscolha o que desejas fabricar")
         .addFields([{
-            name: "1 - Peitoral Reforçado",
-            value: "🛡️ | Proteção: **10**\n💎 | Custo: **400**\n<:Chest:760957557538947133> | Itens Necessários: **1 Pele de Lobisomem**"
-        },
-        {
-            name: "2 - Peitoral Perfeito",
-            value: "🛡️ | Proteção: **30**\n💎 | Custo: **1000**\n<:Chest:760957557538947133> | Itens Necessários: **3 Pele de Lobisomem**"
-        }
+                name: "1 - Peitoral Reforçado",
+                value: "🛡️ | Proteção: **10**\n💎 | Custo: **400**\n<:Chest:760957557538947133> | Itens Necessários: **1 Pele de Lobisomem**"
+            },
+            {
+                name: "2 - Peitoral Perfeito",
+                value: "🛡️ | Proteção: **30**\n💎 | Custo: **1000**\n<:Chest:760957557538947133> | Itens Necessários: **3 Pele de Lobisomem**"
+            }
         ])
         .setFooter("Digite no chat sua escolha")
 
     msg.edit(message.author, embed)
 
     const filter = m => m.author.id === message.author.id;
-    const collector = message.channel.createMessageCollector(filter, { max: 1 });
+    const collector = message.channel.createMessageCollector(filter, {
+        max: 1
+    });
 
     let nameLoots = []
 
@@ -311,8 +327,7 @@ function hotel(message, user, msg) {
     let embed = new MessageEmbed()
         .setTitle("🏨 | Hotel de Boleham")
         .setDescription("Bem vindo ao hotel de Boleham! Desejas passar um tempo aqui para descansar? Escolha uma das opções abaixo de sua escolha, e descanse gratuitamente para regenerar sua vida e sua mana!")
-        .addFields([
-            {
+        .addFields([{
                 name: "1 - Soninho do Almoço",
                 value: "⌛ | **Tempo**: 3 horas\n🩸 | **Vida**: 40\n💧 | **Mana**: 30"
             },
@@ -331,7 +346,11 @@ function hotel(message, user, msg) {
     msg.edit(message.author, embed)
 
     const filter = m => m.author.id === message.author.id;
-    const collector = message.channel.createMessageCollector(filter, { max: 1, time: 30000, errors: ["time"] });
+    const collector = message.channel.createMessageCollector(filter, {
+        max: 1,
+        time: 30000,
+        errors: ["time"]
+    });
 
     let validOptions = ["1", "2", "3"];
 
@@ -398,7 +417,11 @@ async function guilda(message, user, msg) {
     msg.edit(message.author, embed)
 
     const filter = m => m.author.id === message.author.id;
-    const collector = message.channel.createMessageCollector(filter, { max: 1, time: 30000, errors: ["time"] });
+    const collector = message.channel.createMessageCollector(filter, {
+        max: 1,
+        time: 30000,
+        errors: ["time"]
+    });
 
     let option = [];
 

@@ -1,12 +1,9 @@
 {
-    "inicial": [
-        {
-            "loots": [
-                {
-                    "name": "Olho de Aranha",
-                    "value": 3
-                }
-            ],
+    "inicial": [{
+            "loots": [{
+                "name": "Olho de Aranha",
+                "value": 3
+            }],
             "type": "inicial",
             "name": "Aranha Venenosa",
             "life": 30,
@@ -15,12 +12,10 @@
             "xp": 10
         },
         {
-            "loots": [
-                {
-                    "name": "Pele de Goblin",
-                    "value": 3
-                }
-            ],
+            "loots": [{
+                "name": "Pele de Goblin",
+                "value": 3
+            }],
             "type": "inicial",
             "name": "Goblin",
             "life": 35,
@@ -29,12 +24,10 @@
             "xp": 15
         },
         {
-            "loots": [
-                {
-                    "name": "Perna de Formiga",
-                    "value": 3
-                }
-            ],
+            "loots": [{
+                "name": "Perna de Formiga",
+                "value": 3
+            }],
             "type": "inicial",
             "name": "Formiga Gigante",
             "life": 50,
@@ -43,12 +36,10 @@
             "xp": 20
         },
         {
-            "loots": [
-                {
-                    "name": "Pele de Lobo",
-                    "value": 3
-                }
-            ],
+            "loots": [{
+                "name": "Pele de Lobo",
+                "value": 3
+            }],
             "type": "inicial",
             "name": "Lobo infernal",
             "life": 60,
@@ -57,12 +48,10 @@
             "xp": 20
         },
         {
-            "loots": [
-                {
-                    "name": "Gosma",
-                    "value": 4
-                }
-            ],
+            "loots": [{
+                "name": "Gosma",
+                "value": 4
+            }],
             "type": "inicial",
             "name": "Slime",
             "life": 50,
@@ -71,12 +60,10 @@
             "xp": 15
         },
         {
-            "loots": [
-                {
-                    "name": "Carne de zumbi",
-                    "value": 3
-                }
-            ],
+            "loots": [{
+                "name": "Carne de zumbi",
+                "value": 3
+            }],
             "type": "inicial",
             "name": "Zumbi",
             "life": 60,
@@ -85,8 +72,7 @@
             "xp": 14
         },
         {
-            "loots": [
-                {
+            "loots": [{
                     "name": "Escamas Frágeis",
                     "value": 7
                 },
@@ -113,8 +99,7 @@
             "damage": 15,
             "armor": 12,
             "xp": 39,
-            "loots": [
-                {
+            "loots": [{
                     "name": "Ferrão",
                     "value": 3
                 },
@@ -125,10 +110,8 @@
             ]
         }
     ],
-    "medio": [
-        {
-            "loots": [
-                {
+    "medio": [{
+            "loots": [{
                     "name": "Pele grudenta",
                     "value": 18
                 },
@@ -149,8 +132,7 @@
             "xp": 130
         },
         {
-            "loots": [
-                {
+            "loots": [{
                     "name": "Verruga fedida",
                     "value": 11
                 },
@@ -175,12 +157,10 @@
             "xp": 112
         },
         {
-            "loots": [
-                {
-                    "name": "Crânio desconhecido",
-                    "value": 15
-                }
-            ],
+            "loots": [{
+                "name": "Crânio desconhecido",
+                "value": 15
+            }],
             "type": "médio",
             "name": "Crânio assombrado",
             "life": 100,
@@ -189,8 +169,7 @@
             "xp": 70
         },
         {
-            "loots": [
-                {
+            "loots": [{
                     "name": "Dente de Vampiro",
                     "value": 23
                 },
@@ -207,8 +186,7 @@
             "xp": 130
         },
         {
-            "loots": [
-                {
+            "loots": [{
                     "name": "Cabeça do Goblin Xamã",
                     "value": 29
                 },
@@ -229,8 +207,7 @@
             "xp": 258
         },
         {
-            "loots": [
-                {
+            "loots": [{
                     "name": "Varinha desconhecida",
                     "value": 25
                 },
@@ -251,8 +228,7 @@
             "xp": 300
         },
         {
-            "loots": [
-                {
+            "loots": [{
                     "name": "Metal Enferrujado",
                     "value": 15
                 },
@@ -269,10 +245,8 @@
             "xp": 280
         }
     ],
-    "hard": [
-        {
-            "loots": [
-                {
+    "hard": [{
+            "loots": [{
                     "name": "Escama",
                     "value": 57
                 },
@@ -293,8 +267,7 @@
             "xp": 3500
         },
         {
-            "loots": [
-                {
+            "loots": [{
                     "name": "Pele de Lobisomem",
                     "value": 68
                 },
@@ -311,8 +284,7 @@
             "xp": 3400
         },
         {
-            "loots": [
-                {
+            "loots": [{
                     "name": "Cabeça de Minotauro",
                     "value": 70
                 },
@@ -329,8 +301,7 @@
             "xp": 8400
         },
         {
-            "loots": [
-                {
+            "loots": [{
                     "name": "Cabeça da Medusa",
                     "value": 64
                 },
@@ -355,8 +326,7 @@
             "xp": 5809
         },
         {
-            "loots": [
-                {
+            "loots": [{
                     "name": "Cabeça do Goblin Campeão",
                     "value": 50
                 },
@@ -381,10 +351,8 @@
             "xp": 6070
         }
     ],
-    "impossible": [
-        {
-            "loots": [
-                {
+    "impossible": [{
+            "loots": [{
                     "name": "Cabeça de Minotauro",
                     "value": 100
                 },
@@ -401,8 +369,7 @@
             "xp": 24500
         },
         {
-            "loots": [
-                {
+            "loots": [{
                     "name": "Pele de Lobisomem",
                     "value": 98
                 },
@@ -419,12 +386,10 @@
             "xp": 20111
         },
         {
-            "loots": [
-                {
-                    "name": "Portal para o Inferno",
-                    "value": 350
-                }
-            ],
+            "loots": [{
+                "name": "Portal para o Inferno",
+                "value": 350
+            }],
             "type": "impossible",
             "name": "Malthael",
             "life": 800,
@@ -433,12 +398,10 @@
             "xp": 38666
         },
         {
-            "loots": [
-                {
-                    "name": "Escama",
-                    "value": 150
-                }
-            ],
+            "loots": [{
+                "name": "Escama",
+                "value": 150
+            }],
             "type": "impossible",
             "name": "Kraken",
             "life": 640,
@@ -447,8 +410,7 @@
             "xp": 27500
         },
         {
-            "loots": [
-                {
+            "loots": [{
                     "name": "Asas de Vouivre",
                     "value": 98
                 },

@@ -12,7 +12,9 @@ module.exports = {
   usage: "m!divorciar",
   run: async (client, message, args) => {
 
-    db.findOne({ id: message.author.id }, (err, user) => {
+    db.findOne({
+      id: message.author.id
+    }, (err, user) => {
       if (err) console.log(err);
       if (!user) return message.reply("Mame alguém para que eu adicione-o à minha database")
       if (user.casado && user.casado != "false") {
@@ -21,6 +23,7 @@ module.exports = {
     })
   }
 };
+
 function divorciar(user, message, client) {
 
   message.channel.send(`Você realmente quer se divorciar de ${client.users.cache.get(user.casado)}`).then(msg => {
@@ -31,8 +34,14 @@ function divorciar(user, message, client) {
     let filter = (reaction, usuario) => reaction.emoji.name === "✅" && usuario.id === message.author.id;
     let filter1 = (reação, user) => reação.emoji.name === "❌" && user.id === message.author.id;
 
-    let ncoletor = msg.createReactionCollector(filter1, { max: 1, time: 14500 });
-    let coletor = msg.createReactionCollector(filter, { max: 1, time: 14500 });
+    let ncoletor = msg.createReactionCollector(filter1, {
+      max: 1,
+      time: 14500
+    });
+    let coletor = msg.createReactionCollector(filter, {
+      max: 1,
+      time: 14500
+    });
 
     ncoletor.on("collect", co => {
       msg.reactions.removeAll().catch();
@@ -43,7 +52,9 @@ function divorciar(user, message, client) {
       msg.reactions.removeAll().catch();
       message.channel.send(`${message.author} acaba de se divorciar de ${client.users.cache.get(user.casado)}`);
 
-      db.findOne({ id: user.casado }, (err, men) => {
+      db.findOne({
+        id: user.casado
+      }, (err, men) => {
         if (err) console.log(err);
 
         men.casado = "false";
@@ -59,4 +70,4 @@ function divorciar(user, message, client) {
     });
   });
 
-} 
+}

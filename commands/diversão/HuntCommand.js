@@ -1,4 +1,6 @@
-const { MessageEmbed } = require("discord.js");
+const {
+  MessageEmbed
+} = require("discord.js");
 const database = require("../../models/user.js");
 const moment = require("moment")
 
@@ -14,12 +16,13 @@ module.exports = {
   usage: "m!caçar",
   run: async (client, message, args) => {
 
-    let user = await database.findOne({ id: message.author.id });
+    let user = await database.findOne({
+      id: message.author.id
+    });
 
     const validOptions = ["demonios", "anjos", "semideuses", "deuses", "ajuda", "probabilidades"];
 
-    const validArgs = [
-      {
+    const validArgs = [{
         opção: "demônio",
         arguments: ["demonios", "demônios", "demons", "demonio", "demônio"]
       },
@@ -88,7 +91,10 @@ module.exports = {
     if (option === "probabilidades") return message.channel.send(`**PROBABILIDADES:**\nÉ selecionado um número aleatório dentro dos próximos. Cada número é a quantidade de caças\nDica: Em meu servidor de suporte, as chances de caça são maiores!\n\nDemônio: \`${probabilidadeDemonio}\`\nAnjo: \`${probabilidadeAnjo}\`\nSemideuses: \`${probabilidadeSD}\`\nDeuses: \`${probabilidadeDeuses}\``)
 
     if (parseInt(user.caçarTime) < Date.now()) {
-      let avatar = message.author.displayAvatarURL({ format: "png", dynamic: true });
+      let avatar = message.author.displayAvatarURL({
+        format: "png",
+        dynamic: true
+      });
       let embed = new MessageEmbed()
         .setTitle("Caçada")
         .setColor("#faa40f")

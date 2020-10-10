@@ -20,20 +20,23 @@ module.exports = {
 
     if (!mencionado) return message.channel.send("<:negacao:759603958317711371> | Mencione o usuário com que desejas casar");
     if (mencionado.bot) return message.channel.send("<:negacao:759603958317711371> | voce não pode se casar com bots");
-    if(mencionado.id === message.author.id) return message.channel.send("<:negacao:759603958317711371> | Você não pode se casar consigo mesmo :(")
+    if (mencionado.id === message.author.id) return message.channel.send("<:negacao:759603958317711371> | Você não pode se casar consigo mesmo :(")
 
-    db.findOne({ id: message.author.id }, (err, user) => {
+    db.findOne({
+      id: message.author.id
+    }, (err, user) => {
       if (err) console.log(err);
       if (user.casado && user.casado != "false") {
         return message.channel.send("<:atencao:759603958418767922> | Você já está casado!!")
       } else return casado(user, message, mencionado);
-    }
-    );
+    });
   }
 };
 
 function casado(user, message, mencionado) {
-  db.findOne({ id: mencionado.id }, (err, men) => {
+  db.findOne({
+    id: mencionado.id
+  }, (err, men) => {
     if (err) console.log(err);
     if (!men) return message.reply("Mame este usuário para adicioná-lo à minha database")
     if (men.casado && men.casado != "false") {
@@ -41,6 +44,7 @@ function casado(user, message, mencionado) {
     } else return casar(user, message, men, mencionado);
   })
 }
+
 function casar(user, message, men, mencionado) {
 
   message.channel.send(`${mencionado} Aceitas se casar com ${message.author}? Você tem 15 segundos para aceitar`).then(msg => {
@@ -51,8 +55,14 @@ function casar(user, message, men, mencionado) {
     let filter = (reaction, usuario) => reaction.emoji.name === "✅" && usuario.id === mencionado.id;
     let filter1 = (reação, user) => reação.emoji.name === "❌" && user.id === mencionado.id;
 
-    let ncoletor = msg.createReactionCollector(filter1, { max: 1, time: 14500 });
-    let coletor = msg.createReactionCollector(filter, { max: 1, time: 14500 });
+    let ncoletor = msg.createReactionCollector(filter1, {
+      max: 1,
+      time: 14500
+    });
+    let coletor = msg.createReactionCollector(filter, {
+      max: 1,
+      time: 14500
+    });
 
     ncoletor.on("collect", co => {
       msg.reactions.removeAll().catch();
@@ -79,8 +89,3 @@ function casar(user, message, men, mencionado) {
     })
   })
 }
-
-
-
-
-

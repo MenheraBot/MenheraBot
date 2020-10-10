@@ -1,7 +1,9 @@
-const {MessageEmbed} = require("discord.js");
+const {
+    MessageEmbed
+} = require("discord.js");
 module.exports = {
     name: "help",
-    aliases: ["ajuda", "comandos","h"],
+    aliases: ["ajuda", "comandos", "h"],
     cooldown: 5,
     category: "util",
     dir: 'HelpCommand',
@@ -23,7 +25,7 @@ function getAll(client, message) {
     const embed = new MessageEmbed()
     embed.setColor('#b880e6')
     embed.setThumbnail(client.user.displayAvatarURL())
-    
+
     embed.addField(`Ações (${getCommmandSize("ações", client)})`, getCategory("ações", client))
     embed.addField(`Diversão (${getCommmandSize("diversão", client)})`, getCategory("diversão", client))
     embed.addField(`Economia (${getCommmandSize("economia", client)})`, getCategory("economia", client))
@@ -56,7 +58,7 @@ function getCMD(client, message, input) {
     const embed = new MessageEmbed()
 
     const cmd = client.commands.get(input.toLowerCase()) || client.commands.get(client.aliases.get(input.toLowerCase()));
-    
+
     let info = `Sem informações para o comando **${input.toLowerCase()}**`;
 
     if (!cmd) {
@@ -66,7 +68,7 @@ function getCMD(client, message, input) {
     if (cmd.name) info = `**Comando**: ${cmd.name}`;
     if (cmd.aliases) info += `\n**Pode ser chamado por**: ${cmd.aliases.map(a => `\`${a}\``).join(", ")}`;
     if (cmd.description) info += `\n**Descrição**: ${cmd.description}`;
-    if(cmd.cooldown) info += `\n**Cooldown**: ${cmd.cooldown} segundos`
+    if (cmd.cooldown) info += `\n**Cooldown**: ${cmd.cooldown} segundos`
     if (cmd.usage) {
         info += `\n**Como usar**: ${cmd.usage}`;
         embed.setFooter(`Sintaxe: <> = necessita, [] = opcional`);

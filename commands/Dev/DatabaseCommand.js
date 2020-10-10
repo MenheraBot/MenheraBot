@@ -1,118 +1,129 @@
-const {MessageEmbed} = require("discord.js");
+const {
+    MessageEmbed
+} = require("discord.js");
 
 const database = require("../../models/user.js");
 const Warns = require("../../models/warn.js");
 
 module.exports = {
-  name: "database",
-  aliases: [],
-  cooldown: 2,
-  dir: 'DatabaseCommand',
-  category: "Dev",
-  description: "Acesso direto à database da Menhera",
-  userPermission: null,
-  clientPermission: ["EMBED_LINKS"],
-  usage: "m!database <comando> <alteração>",
-  devsOnly: true,
-  
-  run: async (client, message, args) => {
+    name: "database",
+    aliases: [],
+    cooldown: 2,
+    dir: 'DatabaseCommand',
+    category: "Dev",
+    description: "Acesso direto à database da Menhera",
+    userPermission: null,
+    clientPermission: ["EMBED_LINKS"],
+    usage: "m!database <comando> <alteração>",
+    devsOnly: true,
 
-  const action = args[0];
-  const userId = args[1];
-  const valor = args[2];
-  let embed = new MessageEmbed();
+    run: async (client, message, args) => {
 
-  switch(action) {
-      case 'add':
-            if(!userId || !valor) return message.reply("Erro de Sintaxe") 
-            add(client, userId, valor, message, embed);
-            break;
-      case 'remove':
-            if(!userId || !valor) return message.reply("Erro de Sintaxe") 
-            remove(client, userId, valor, message, embed);
-            break;
-      case 'set':
-            if(!userId || !valor) return message.reply("Erro de Sintaxe") 
-            set(client, userId, valor, message, embed);
-            break;
-      case 'delwarn':
-            if(!userId) return message.reply("Erro de Sintaxe")
-            delwarn(client, userId, message, embed);
-            break;
-     case 'find':
-            if(!userId) return message.reply("Erro de Sintaxe")
-            find(userId, message, embed);
-            break;
-    case 'nota':
-            if(!userId)  return message.reply("Erro de Sintaxe")
-            nota(userId, message, args);
-            break;
-    case 'update':
-            if(!userId)  return message.reply("Erro de Sintaxe");
-            update(client, userId, valor, message, embed);
-            break;
-    case 'giveroll':
-            if(!userId || !valor) return message.reply("Erro de Sintaxe") 
-            giveroll(client, userId, valor, message, embed)
-            break
-      default:
-          message.channel.send("Utilize m!database <add|remove|set|delwarn|find|nota|update|giveroll> <user id> [valor]")
-  }
+        const action = args[0];
+        const userId = args[1];
+        const valor = args[2];
+        let embed = new MessageEmbed();
 
-}};
+        switch (action) {
+            case 'add':
+                if (!userId || !valor) return message.reply("Erro de Sintaxe")
+                add(client, userId, valor, message, embed);
+                break;
+            case 'remove':
+                if (!userId || !valor) return message.reply("Erro de Sintaxe")
+                remove(client, userId, valor, message, embed);
+                break;
+            case 'set':
+                if (!userId || !valor) return message.reply("Erro de Sintaxe")
+                set(client, userId, valor, message, embed);
+                break;
+            case 'delwarn':
+                if (!userId) return message.reply("Erro de Sintaxe")
+                delwarn(client, userId, message, embed);
+                break;
+            case 'find':
+                if (!userId) return message.reply("Erro de Sintaxe")
+                find(userId, message, embed);
+                break;
+            case 'nota':
+                if (!userId) return message.reply("Erro de Sintaxe")
+                nota(userId, message, args);
+                break;
+            case 'update':
+                if (!userId) return message.reply("Erro de Sintaxe");
+                update(client, userId, valor, message, embed);
+                break;
+            case 'giveroll':
+                if (!userId || !valor) return message.reply("Erro de Sintaxe")
+                giveroll(client, userId, valor, message, embed)
+                break
+            default:
+                message.channel.send("Utilize m!database <add|remove|set|delwarn|find|nota|update|giveroll> <user id> [valor]")
+        }
 
-function add(client, userId, valor, message, embed){
+    }
+};
+
+function add(client, userId, valor, message, embed) {
     const value = parseInt(valor)
-     database.findOne({id: userId}, (err, res) =>{
-        if(err) console.log(error)
-        if(!res) return message.reply("Usuário não encontrado");
+    database.findOne({
+        id: userId
+    }, (err, res) => {
+        if (err) console.log(error)
+        if (!res) return message.reply("Usuário não encontrado");
         const valorAntes = res.mamou;
         res.mamou = res.mamou + value;
-        
-       embed.setColor("#1df05f")
-       embed.setDescription(`**Mamadas de ${client.users.cache.get(userId)} alterada de \`${valorAntes}\` para \`${res.mamou}\`**`)
-       
-       res.save().then(message.channel.send(embed)).catch(erro => message.channel.send(`Ocorreu um erro ao salvar à database\n\`\`\`js\n${erro}\`\`\``));
 
-     })
-}
+        embed.setColor("#1df05f")
+        embed.setDescription(`**Mamadas de ${client.users.cache.get(userId)} alterada de \`${valorAntes}\` para \`${res.mamou}\`**`)
 
-function remove(client, userId, valor, message, embed){
-    const value = parseInt(valor)
-    database.findOne({id: userId}, (err, res) =>{
-       if(err) console.log(error)
-       if(!res) return message.reply("Usuário não encontrado");
-       const valorAntes = res.mamou;
-       res.mamou = res.mamou - value;
-       
-       embed.setColor("#fc3232")
-       embed.setDescription(`**Mamadas de ${client.users.cache.get(userId)} alterada de \`${valorAntes}\` para \`${res.mamou}\`**`)
-       
-       res.save().then(message.channel.send(embed)).catch(erro => message.channel.send(`Ocorreu um erro ao salvar à database\n\`\`\`js\n${erro}\`\`\``));
+        res.save().then(message.channel.send(embed)).catch(erro => message.channel.send(`Ocorreu um erro ao salvar à database\n\`\`\`js\n${erro}\`\`\``));
 
     })
 }
 
-function set(client, userId, valor, message, embed){
+function remove(client, userId, valor, message, embed) {
     const value = parseInt(valor)
-    database.findOne({id: userId}, (err, res) =>{
-       if(err) console.log(error)
-       if(!res) return message.reply("Usuário não encontrado");
-       const valorAntes = res.mamou;
-       res.mamou = value;
-       
-       embed.setColor("#5cd7e6")
-       embed.setDescription(`**Mamadas de ${client.users.cache.get(userId)} setadas de \`${valorAntes}\` para \`${res.mamou}\`**`)
-       
-       res.save().then(message.channel.send(embed)).catch(erro => message.channel.send(`Ocorreu um erro ao salvar à database\n\`\`\`js\n${erro}\`\`\``));
+    database.findOne({
+        id: userId
+    }, (err, res) => {
+        if (err) console.log(error)
+        if (!res) return message.reply("Usuário não encontrado");
+        const valorAntes = res.mamou;
+        res.mamou = res.mamou - value;
+
+        embed.setColor("#fc3232")
+        embed.setDescription(`**Mamadas de ${client.users.cache.get(userId)} alterada de \`${valorAntes}\` para \`${res.mamou}\`**`)
+
+        res.save().then(message.channel.send(embed)).catch(erro => message.channel.send(`Ocorreu um erro ao salvar à database\n\`\`\`js\n${erro}\`\`\``));
 
     })
 }
 
-function delwarn(client, warnId, message, embed){
+function set(client, userId, valor, message, embed) {
+    const value = parseInt(valor)
+    database.findOne({
+        id: userId
+    }, (err, res) => {
+        if (err) console.log(error)
+        if (!res) return message.reply("Usuário não encontrado");
+        const valorAntes = res.mamou;
+        res.mamou = value;
 
-    Warns.findByIdAndDelete({_id: warnId}, (err,res) => {
-        if(!res) return message.reply("warn não encontrado");
+        embed.setColor("#5cd7e6")
+        embed.setDescription(`**Mamadas de ${client.users.cache.get(userId)} setadas de \`${valorAntes}\` para \`${res.mamou}\`**`)
+
+        res.save().then(message.channel.send(embed)).catch(erro => message.channel.send(`Ocorreu um erro ao salvar à database\n\`\`\`js\n${erro}\`\`\``));
+
+    })
+}
+
+function delwarn(client, warnId, message, embed) {
+
+    Warns.findByIdAndDelete({
+        _id: warnId
+    }, (err, res) => {
+        if (!res) return message.reply("warn não encontrado");
         embed.setColor('#e2f01b')
         embed.setDescription(`Aviso \`${res._id}\` removido do usuário ${client.users.cache.get(res.userId)} com sucesso`);
         embed.addField("Warn removido:", `**Autor:** ${client.users.cache.get(res.warnerId)} | \`${res.warnerId}\`\n**Motivo:** ${res.reason}\n**Servidor:** ${client.guilds.cache.get(res.guildId).name} | \`${res.guildId}\`\n**Data:** ${res.data}`)
@@ -120,11 +131,13 @@ function delwarn(client, warnId, message, embed){
     })
 }
 
-function find(userId, message, embed){
+function find(userId, message, embed) {
 
-    database.findOne({id: userId}, (err, res) => {
-        if(err) message.channel.send(`Ocorreu um erro inesperado:\n\`\`\`js\n${err}\`\`\``);
-        if(!res) return message.reply("Nenhum usuário encontrado na database com o id " + userId);
+    database.findOne({
+        id: userId
+    }, (err, res) => {
+        if (err) message.channel.send(`Ocorreu um erro inesperado:\n\`\`\`js\n${err}\`\`\``);
+        if (!res) return message.reply("Nenhum usuário encontrado na database com o id " + userId);
 
         const resId = res.id;
         const resNome = res.nome;
@@ -136,79 +149,86 @@ function find(userId, message, embed){
         const resStatus = res.status || "`Sem Status`";
         const resShip = res.shipValue || "`0`";
         const resAfk = res.afk || false;
-        const resAfkReason = res.afkReason || "`null`"; 
+        const resAfkReason = res.afkReason || "`null`";
 
         embed.setColor("#f2baf8")
         embed.addFields([{
-            name: "User Id",
-            value: `\`${resId}\``,
-            inline: true
-        },
-        {
-            name: "User Name",
-            value: resNome,
-            inline: true
-        }],
-        [{
-            name: "Mamado",
-            value: resMamadas,
-            inline: true
-        },
-        {
-          name: "Mamou",
-          value: resMamou,
-          inline: true
-        }], [{
-          name: "Status",
-          value: resStatus,
-          inline: true
-        },
-        {
-            name: "Nota",
-            value: resNota,
-            inline: true
-        }],[{
-            name: "Casado",
-            value: `\`${resCasado}\``,
-            inline: true
-        },
-        {
-            name: "Data",
-            value: resData,
-            inline: true
-        },
-        {
-            name: "Valor de Ship",
-            value: resShip,
-            inline: true
-        },{
-            name: "Afk",
-            value: resAfk,
-            inline:true
-        },
-        {
-            name: "AfkReason",
-            value: resAfkReason,
-            inline: true
-        }  
-    ]);
+                    name: "User Id",
+                    value: `\`${resId}\``,
+                    inline: true
+                },
+                {
+                    name: "User Name",
+                    value: resNome,
+                    inline: true
+                }
+            ],
+            [{
+                    name: "Mamado",
+                    value: resMamadas,
+                    inline: true
+                },
+                {
+                    name: "Mamou",
+                    value: resMamou,
+                    inline: true
+                }
+            ], [{
+                    name: "Status",
+                    value: resStatus,
+                    inline: true
+                },
+                {
+                    name: "Nota",
+                    value: resNota,
+                    inline: true
+                }
+            ], [{
+                    name: "Casado",
+                    value: `\`${resCasado}\``,
+                    inline: true
+                },
+                {
+                    name: "Data",
+                    value: resData,
+                    inline: true
+                },
+                {
+                    name: "Valor de Ship",
+                    value: resShip,
+                    inline: true
+                }, {
+                    name: "Afk",
+                    value: resAfk,
+                    inline: true
+                },
+                {
+                    name: "AfkReason",
+                    value: resAfkReason,
+                    inline: true
+                }
+            ]);
 
-    Warns.countDocuments({userId: userId}, (err, res) => {
-        if(err) console.log(err)
-        embed.addField("Total Warns", res, true)
-        message.channel.send(embed)
+        Warns.countDocuments({
+            userId: userId
+        }, (err, res) => {
+            if (err) console.log(err)
+            embed.addField("Total Warns", res, true)
+            message.channel.send(embed)
         })
     });
 }
 
-function nota(userId, message, args){
+function nota(userId, message, args) {
     const nota = args.slice(2).join(" ");
-    database.findOne({id: userId}, (err, res) => {
-        if(err) console.log(err)
-        if(!res) return message.reply("Usuário não encontrado");
-        if(!nota){
+    database.findOne({
+        id: userId
+    }, (err, res) => {
+        if (err) console.log(err)
+        if (!res) return message.reply("Usuário não encontrado");
+        if (!nota) {
             res.nota = undefined;
-        }else{
+        } else {
             res.nota = nota;
         }
         res.save().then(sucess => message.channel.send(`Nota atualizada com sucesso\`\`\`js\n${sucess}\`\`\``)).catch(err => message.channel.send(`Ocorreu um erro!\`\`\`js\n${err}\`\`\``))
@@ -216,14 +236,16 @@ function nota(userId, message, args){
 
 }
 
-function update(client, userId, valor, message, embed){
+function update(client, userId, valor, message, embed) {
 
-    database.findOne({id: userId}, (err, res) => {
-        if(err) message.channel.send(err);
-        if(!res) return message.channel.send('usuário não encontrado')
+    database.findOne({
+        id: userId
+    }, (err, res) => {
+        if (err) message.channel.send(err);
+        if (!res) return message.channel.send('usuário não encontrado')
         const valueAntigo = res.shipValue;
         res.nome = client.users.cache.get(userId).username
-        if(Number(valor) > 55) valor = "55"
+        if (Number(valor) > 55) valor = "55"
         res.shipValue = valor;
         res.save().then(sucess => {
             message.channel.send(embed.setDescription(`Ship do usuário atualizado de **${valueAntigo}** para **${res.shipValue}**`))
@@ -231,18 +253,20 @@ function update(client, userId, valor, message, embed){
     })
 }
 
-function giveroll(client, userId, valor, message, embed){
+function giveroll(client, userId, valor, message, embed) {
 
     const value = parseInt(valor)
-    database.findOne({id: userId}, (err, res) =>{
-       if(err) console.log(error)
-       if(!res) return message.reply("Usuário não encontrado");
-       res.rolls = res.rolls + value;
-       
-      embed.setColor("#1df05f")
-      embed.setDescription(`**Rolls de ${client.users.cache.get(userId)} alterada para \`${res.rolls}\`**`)
-      
-      res.save().then(message.channel.send(embed)).catch(erro => message.channel.send(`Ocorreu um erro ao salvar à database\n\`\`\`js\n${erro}\`\`\``));
+    database.findOne({
+        id: userId
+    }, (err, res) => {
+        if (err) console.log(error)
+        if (!res) return message.reply("Usuário não encontrado");
+        res.rolls = res.rolls + value;
+
+        embed.setColor("#1df05f")
+        embed.setDescription(`**Rolls de ${client.users.cache.get(userId)} alterada para \`${res.rolls}\`**`)
+
+        res.save().then(message.channel.send(embed)).catch(erro => message.channel.send(`Ocorreu um erro ao salvar à database\n\`\`\`js\n${erro}\`\`\``));
 
     })
 

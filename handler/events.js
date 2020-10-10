@@ -2,12 +2,12 @@ const fs = require("fs-extra");
 
 module.exports = (client) => {
 
-fs.readdir("./events/", (err, files) =>{
-        if(err) console.log(err);
+    fs.readdir("./events/", (err, files) => {
+        if (err) console.log(err);
 
-        files.forEach(file =>{
+        files.forEach(file => {
 
-            if(!file.endsWith(".js")) return;
+            if (!file.endsWith(".js")) return;
 
             const event = require(`../events/${file}`);
             let eventName = file.split(".")[0];

@@ -1,4 +1,6 @@
-const { MessageEmbed } = require("discord.js");
+const {
+  MessageEmbed
+} = require("discord.js");
 
 module.exports = {
   name: "nojo",
@@ -23,7 +25,9 @@ module.exports = {
 
     var rand = list[Math.floor(Math.random() * list.length)];
     let user = message.mentions.users.first();
-    let avatar = message.author.displayAvatarURL({ format: "png" });
+    let avatar = message.author.displayAvatarURL({
+      format: "png"
+    });
 
     if (user && user.bot) return message.channel.send(`iiii ala ${message.author} tem nojinho de bot ui ui ui`)
 
