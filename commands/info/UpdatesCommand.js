@@ -25,23 +25,12 @@ module.exports = {
                 format: "png",
                 dynamic: true
             }))
-            .setDescription(`**RPG Updates**
+            .setDescription(`**Impossible Mobs Updates**
 
-  • Assassinos Nerfados:
-        Custo da Habilidade Jack de \`50\` para \`60\`
-        Custo da Habilidade Atrás de Você! de \`68\` para \`80\`
-  
-  • Mobs Impossíveis: 
-       XP do Lobisomem do Inferno de \`27666\` para \`20111\`
-       Malthael: Armadura de \`80\` para \`70\` e XP de \`33333\` para \`38666\`
-      Xp do Kraken de \`15600\` para \`27500\`
-      
-  • NOVO MOB IMPOSSÍVEL: 
-  
-  Vouivre
-  680:drop_of_blood: 
-  100:crossed_swords:
-  50:shield:
+            • O dano dos mobs 'Impossíveis' foi aumentado:
+                   Deus dos Minotauros de \`80\` para \`85\`
+                   Malthael de \`112\` para \`120\`
+                   Kraken de \`87\` para \`99\`  
   `)
 
         message.channel.send(message.author, embed)
