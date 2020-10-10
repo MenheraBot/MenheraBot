@@ -364,7 +364,7 @@
             "type": "impossible",
             "name": "Deus dos Minotauros",
             "life": 750,
-            "damage": 80,
+            "damage": 85,
             "armor": 45,
             "xp": 24500
         },
@@ -393,7 +393,7 @@
             "type": "impossible",
             "name": "Malthael",
             "life": 800,
-            "damage": 112,
+            "damage": 120,
             "armor": 70,
             "xp": 38666
         },
@@ -405,7 +405,7 @@
             "type": "impossible",
             "name": "Kraken",
             "life": 640,
-            "damage": 87,
+            "damage": 99,
             "armor": 31,
             "xp": 27500
         },
