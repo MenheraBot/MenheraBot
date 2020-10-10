@@ -1,6 +1,6 @@
 module.exports = {
     name: "notify",
-    aliases: ["notificar", "updates", "notificações"],
+    aliases: ["notificar", "notificações"],
     cooldown: 5,
     category: "Dev",
     dir: 'NotifyCommand',
