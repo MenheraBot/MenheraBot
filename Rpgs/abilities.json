@@ -267,7 +267,7 @@
                 "name": "Golpe Duplo",
                 "description": "Executa dois golpes, com o segundo dando dano reduzido",
                 "cooldown": 7200000,
-                "damage": 20,
+                "damage": 14,
                 "heal": 0,
                 "cost": 10
             },
@@ -275,7 +275,7 @@
                 "name": "Combate Tático",
                 "description": "Usa suas táticas de combate avançadas, desferindo golpes para todos os lados",
                 "cooldown": 7200000,
-                "damage": 30,
+                "damage": 50,
                 "heal": 0,
                 "cost": 40
             },
@@ -283,7 +283,7 @@
                 "name": "Excalibur",
                 "description": "Invoca o poder da Excalibur, exterminando os inimigos à sua frente",
                 "cooldown": 7200000,
-                "damage": 50,
+                "damage": 60,
                 "heal": 0,
                 "cost": 55
             },
@@ -291,7 +291,7 @@
                 "name": "Kenjutsu",
                 "description": "Faz um kenjutsu nos inimigos",
                 "cooldown": 7200000,
-                "damage": 60,
+                "damage": 70,
                 "heal": 0,
                 "cost": 65
             }
