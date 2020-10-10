@@ -51,7 +51,7 @@
                 "cooldown": 7200000,
                 "damage": 120,
                 "heal": 0,
-                "cost": 120
+                "cost": 80
             }
         ]
     }, 
