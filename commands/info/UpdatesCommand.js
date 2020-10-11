@@ -25,9 +25,24 @@ module.exports = {
                 format: "png",
                 dynamic: true
             }))
-            .setDescription(`**Agora é possível trocar sua classe!**
+            .setDescription(`**FAMÍLIAS UPDATES**
 
-            • Ao atingir Lvl 7, você pode resetar sua conta do RPG com m!reset
+            Adicionado o sistema de famílias!
+            
+            • Cada família possui habilidades e boosts, que podem ser reforçados com ajuda de todos os membros da família
+            
+            • Para escolher sua família, use \`m!família\`
+            
+            • Após escolher uma família, você pode ver seus novos status com \`m!status\`
+            
+            • Os boosts da família somam automaticamente com seus status base, então visualmente, não verás nenhuma mudança
+            
+            • Com o tempo, vou adicionar funções como:
+                  Guerra de famílias
+                  Trocas com membros de mesma família
+                  Adicionar dinheiro ao banco da família para melhorar os boosts e as habilidades
+                  Adicionar ao \`m!top\` as famílias mais fortes!
+                  Criar um comando para ver as informações das famílias
              
   `)
 
