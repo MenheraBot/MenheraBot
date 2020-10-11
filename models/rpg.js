@@ -24,7 +24,9 @@ const rpgSchema = mongoose.Schema({
   weapon: {type: Object},
   protection: {type: Object, default: {name: "Armadura Padrão", armor: 1}},
   hotelTime: {type: String, default: "00000000"},
-  inBattle: {type: Boolean, default: false}
+  inBattle: {type: Boolean, default: false},
+  hasFamily: {type: Boolean, default: false},
+  familyName: {type: String, default: null}
 });
 
 module.exports = mongoose.model("rpg", rpgSchema);

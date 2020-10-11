@@ -2,6 +2,7 @@ const {
   MessageEmbed
 } = require("discord.js");
 const database = require("../../models/rpg.js");
+const familyDb = require("../../models/familia")
 
 module.exports = {
   name: "status",
@@ -20,6 +21,15 @@ module.exports = {
 
     const user = await database.findById(mentioned.id)
     if (!user) return message.channel.send("<:negacao:759603958317711371> | Este usuário não está registrado como um aventureiro")
+
+    let dmg = `${user.damage} + ${user.weapon.damage}`
+
+    let familia
+
+    if(user.hasFamily){
+      familia = await familyDb.findById(user.familyName)
+      if(user.familyName === "Loki ") dmg = `${user.damage} + ${user.weapon.damage} + \`${familia.boost.value}\``
+    }
 
     let embed = new MessageEmbed()
       .setTitle(`📜 | Status de ${mentioned.username}`)
@@ -41,7 +51,7 @@ module.exports = {
         },
         {
           name: `🗡️ | Dano Físico`,
-          value: `${user.damage} + ${user.weapon.damage}`,
+          value: dmg,
           inline: true
         }, {
           name: `💧 | Mana`,
@@ -74,6 +84,7 @@ module.exports = {
           inline: true
         }
       ])
+      if(user.hasFamily) embed.addField(`🔱 | Família`, user.familyName, true)
     message.channel.send(message.author, embed)
   }
 };

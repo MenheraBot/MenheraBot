@@ -1,4 +1,5 @@
 const databaseRPG = require("../models/rpg.js")
+const familyDb = require("../models/familia");
 const moment = require("moment");
 const dungeon = require("../commands/rpg/DungeonCommand.js")
 const {
@@ -106,7 +107,13 @@ module.exports.enemyShot = async (message, text, user, inimigo) => {
     if (text.length > 0) message.channel.send(text)
 
     let danoRecebido
-    let armadura = user.armor + user.protection.armor
+    let armadura
+
+    if(user.hasFamily && user.familyName === "Ares"){
+        const familia = await familyDb.findById("Ares")
+         armadura = user.armor + user.protection.armor + familia.boost.value
+    } else armadura = user.armor + user.protection.armor 
+    
     if ((inimigo.damage - armadura) < 5) {
         danoRecebido = 5;
     } else {
@@ -469,6 +476,13 @@ module.exports.getAbilities = async (user) => {
     abilitiesFiltred.forEach(hab => {
         abilities.push(hab)
     })
+
+    if(user.hasFamily){
+        const familia = await familyDb.findById(user.familyName)
+        familia.abilities.forEach(habF => {
+            abilities.push(habF)
+        })
+    }
 
     return abilities;
 }

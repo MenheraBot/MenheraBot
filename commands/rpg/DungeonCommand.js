@@ -2,6 +2,7 @@ const {
     MessageEmbed
 } = require("discord.js");
 const database = require("../../models/rpg.js");
+const familyDb = require("../../models/familia");
 const checks = require("../../Rpgs/checks.js")
 
 module.exports = {
@@ -63,11 +64,20 @@ async function battle(message, inimigo, habilidades, user) {
 
     let options = [];
 
-    options.push({
-        name: "Ataque Básico",
-        damage: user.damage + user.weapon.damage
-    })
-
+    if(user.hasFamily && user.familyName === "Loki"){
+        const familia = await familyDb.findById(user.familyName)
+        
+        options.push({
+            name: "Ataque Básico",
+            damage: user.damage + user.weapon.damage + familia.boost.value
+        })
+    } else {
+        options.push({
+            name: "Ataque Básico",
+            damage: user.damage + user.weapon.damage
+        })
+    }
+    
     habilidades.forEach(hab => {
         options.push(hab)
     })
@@ -123,10 +133,19 @@ exports.continueBattle = async (message, inimigo, habilidades, user) => {
 
     let options = [];
 
-    options.push({
-        name: "Ataque Básico",
-        damage: user.damage + user.weapon.damage
-    })
+    if(user.hasFamily && user.familyName === "Loki"){
+        const familia = await familyDb.findById(user.familyName)
+        
+        options.push({
+            name: "Ataque Básico",
+            damage: user.damage + user.weapon.damage + familia.boost.value
+        })
+    } else {
+        options.push({
+            name: "Ataque Básico",
+            damage: user.damage + user.weapon.damage
+        })
+    }
 
     habilidades.forEach(hab => {
         options.push(hab)

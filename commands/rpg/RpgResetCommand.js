@@ -1,4 +1,5 @@
 const database = require("../../models/rpg.js");
+const familyDb = require("../../models/familia")
 
 module.exports = {
     name: "reset",
@@ -25,9 +26,14 @@ module.exports = {
             errors: ["time"]
         });
 
-        collector.on('collect', m => {
+        collector.on('collect', async m => {
             
             if(m.content.toLowerCase() == "sim"){
+                if(user.hasFamily){
+                    const familia = await familyDb.findById(user.familyName)
+                    familia.members.splice(familia.members.indexOf(message.author.id.toString()), 1);
+                    familia.save()
+                }
                 database.findByIdAndDelete(message.author.id).then(message.channel.send("<:positivo:759603958485614652> | Você resetou com sucesso sua conta do RPG! Para jogar novamente, use m!registrar"))
             } else message.channel.send("<:negacao:759603958317711371> | Sua conta **não** foi resetada!")
         
