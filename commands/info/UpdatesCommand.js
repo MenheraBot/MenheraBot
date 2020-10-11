@@ -25,12 +25,10 @@ module.exports = {
                 format: "png",
                 dynamic: true
             }))
-            .setDescription(`**Impossible Mobs Updates**
+            .setDescription(`**Agora é possível trocar sua classe!**
 
-            • O dano dos mobs 'Impossíveis' foi aumentado:
-                   Deus dos Minotauros de \`80\` para \`85\`
-                   Malthael de \`112\` para \`120\`
-                   Kraken de \`87\` para \`99\`  
+            • Ao atingir Lvl 7, você pode resetar sua conta do RPG com m!reset
+             
   `)
 
         message.channel.send(message.author, embed)
