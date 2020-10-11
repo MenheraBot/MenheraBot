@@ -7,7 +7,7 @@ module.exports = {
     aliases: ["familia"],
     cooldown: 3,
     category: "rpg",
-    dir: 'FamilyCommand',
+    dir: 'JoinFamilyCommand',
     description: "Registra-se em uma família",
     userPermission: null,
     clientPermission: ["EMBED_LINKS"],
