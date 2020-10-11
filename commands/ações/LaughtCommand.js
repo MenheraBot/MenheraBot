@@ -13,7 +13,7 @@ module.exports = {
   usage: "m!rir [@menção]",
   run: async (client, message, args) => {
 
-    let avatar = message.authFor.displayAvatarURL({
+    let avatar = message.author.displayAvatarURL({
       format: "png"
     });
 
