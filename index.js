@@ -37,4 +37,4 @@ Sentry.init({
   process.__defineGetter__('stderr', function() { return fs.createWriteStream('../logs/error.log', {flags:'a'}) })
 */
 
-client.login(config.token);
+client.login(config.testToken);

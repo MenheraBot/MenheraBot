@@ -414,6 +414,9 @@ async function guilda(message, user, msg) {
     })
 
     embed.setDescription(txt)
+
+    if(contado.length == 0) return msg.edit(message.author, embed.setDescription("**VOCÊ NÃO POSSUI LOOTS EM SEU INVENTÁRIO**").setFooter("No Looots!").setColor("#f01010"))
+
     msg.edit(message.author, embed)
 
     const filter = m => m.author.id === message.author.id;
