@@ -442,7 +442,7 @@ async function guilda(message, user, msg) {
         if (quantidade > contado[parseInt(args[0]) - 1].amount) return message.channel.send(`<:negacao:759603958317711371> | Você não tem ${quantidade} ${contado[parseInt(args[0]) - 1].name}`);
 
         let filter = allLoots.filter(f => f.name === contado[parseInt(args[0]) - 1].name)
-        let valor = quantidade * filter[0].value
+        let valor = parseInt(quantidade) * filter[0].value
 
         user.money = user.money + valor
         for (j = 0; j < quantidade; j++) {
