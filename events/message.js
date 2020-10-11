@@ -58,7 +58,7 @@ module.exports = async (client, message) => {
     }
   }
 
-  if (message.content.startsWith(`<@!${client.user.id}>`) || message.content.startsWith(`<@${client.user.id}>`)) return message.channel.send(`Oizinho ${message.author}, meu prefixo neste servidor é '${prefix}'`).catch()
+  if (message.content.startsWith(`<@!${client.user.id}>`) || message.content.startsWith(`<@${client.user.id}>`)) return message.channel.send(`<:guilda:759892389724028948> **|** Oizinho ${message.author}, meu nome é Menhera, meu prefixo neste servidor é \`${prefix}\`. Use \`${prefix}help\` para ver todos os meus comandos!`).catch()
 
   if (!message.content.toLowerCase().startsWith(prefix)) return;
 
