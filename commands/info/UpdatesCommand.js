@@ -25,24 +25,14 @@ module.exports = {
                 format: "png",
                 dynamic: true
             }))
-            .setDescription(`**FAMÍLIAS UPDATES**
+            .setDescription(`**Banco da Família**
 
-            Adicionado o sistema de famílias!
+            Para melhorar as famílias, seus membros devem depositar pedras preciosas ao banco da familia
             
-            • Cada família possui habilidades e boosts, que podem ser reforçados com ajuda de todos os membros da família
+            • Use m!depositar valor para depositar seu dinheiro no banco da família
             
-            • Para escolher sua família, use \`m!família\`
+            • Quando a família Upar, será notificado no <#730903350169698314> em meu servidor de suporte
             
-            • Após escolher uma família, você pode ver seus novos status com \`m!status\`
-            
-            • Os boosts da família somam automaticamente com seus status base, então visualmente, não verás nenhuma mudança
-            
-            • Com o tempo, vou adicionar funções como:
-                  Guerra de famílias
-                  Trocas com membros de mesma família
-                  Adicionar dinheiro ao banco da família para melhorar os boosts e as habilidades
-                  Adicionar ao \`m!top\` as famílias mais fortes!
-                  Criar um comando para ver as informações das famílias
              
   `)
 

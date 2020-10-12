@@ -2,6 +2,7 @@ const {
     MessageEmbed
 } = require("discord.js");
 const database = require("../../models/rpg.js");
+const familyDb = require("../../models/familia")
 const abilitiesFile = require("../../Rpgs/abilities.json")
 
 module.exports = {
@@ -149,6 +150,13 @@ async function getAll(message) {
     abilitiesFiltred.forEach(hab => {
         embed.addField('🔮 | Habilidade: ' + hab.name, `📜 | **Descrição:** ${hab.description}\n⚔️ | **Dano:** ${hab.damage}\n💉 | **Cura:** ${hab.heal}\n💧 | **Custo:** ${hab.cost}`)
     })
+
+    if(user.hasFamily){
+        const familia = await familyDb.findById(user.familyName)
+    familia.abilities.forEach(hab => {
+        embed.addField('🔮 | Habilidade da Família: ' + hab.name, `📜 | **Descrição:** ${hab.description}\n⚔️ | **Dano:** ${hab.damage}\n💉 | **Cura:** ${hab.heal}\n💧 | **Custo:** ${hab.cost}`)
+    })
+    }
     message.channel.send(message.author, embed)
 
 }

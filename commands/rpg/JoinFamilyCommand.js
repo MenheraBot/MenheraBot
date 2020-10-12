@@ -13,7 +13,7 @@ module.exports = {
     description: "Registra-se em uma família",
     userPermission: null,
     clientPermission: ["EMBED_LINKS"],
-    usage: "m!clan [opção]",
+    usage: "m!família",
     run: async (client, message, args) => {
 
         const user = await database.findById(message.author.id)

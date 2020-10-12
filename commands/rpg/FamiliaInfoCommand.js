@@ -32,6 +32,7 @@ module.exports = {
         let embed = new MessageEmbed()
             .setTitle(`Informações da família ${familia._id}`)
             .setColor('#01fa13')
+            .setDescription(`**Nível da Família: ${familia.levelFamilia}**\nGemas necessárias para o próximo nível: **${familia.nextLevel}** :gem:`)
             .addFields([{
                     name: '📤 | Boost',
                     value: `Nome: **${familia.boost.name}**\nValor: **${familia.boost.value}**`,
