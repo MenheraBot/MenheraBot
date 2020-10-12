@@ -5,6 +5,7 @@ const {
 const user = require("../../models/user.js");
 const dungeonDb = require("../../models/rpg.js")
 const server = require("../../models/guild.js");
+const familyDb = require("../../models/familia.js")
 
 module.exports = {
     name: "top",
@@ -22,7 +23,8 @@ module.exports = {
             id: message.guild.id
         })
 
-        const txt = `Você deve escolher entre \`${prefix.prefix}top mamadores\`, \`${prefix.prefix}top mamados\`, \`${prefix.prefix}top demonios\`, \`${prefix.prefix}top anjos\`, \`${prefix.prefix}top semideuses\`, \`${prefix.prefix}top deuses\`, \`${prefix.prefix}top estrelinhas\`, \`${prefix.prefix}top votos\` ou \`${prefix.prefix}top dungeon\``
+        const txt = `Você deve escolher entre \`${prefix.prefix}top mamadores\`, \`${prefix.prefix}top mamados\`, \`${prefix.prefix}top demonios\`, \`${prefix.prefix}top anjos\`, \`${prefix.prefix}top semideuses\`, \`${prefix.prefix}top deuses\`, \`${prefix.prefix}top estrelinhas\`, \`${prefix.prefix}top votos\`, \`${prefix.prefix}top dungeon\` ou \`${prefix.prefix}top famílias\``
+        
 
         const argumento = args[0];
         if (!argumento) return message.reply(txt)
@@ -36,6 +38,7 @@ module.exports = {
         let argsEstrelinhas = ["estrelinhas", "estrelinha", "stars", "star", "money", "dinheiro"];
         let argsVotos = ["votadores", "voto", "votes", "votos", "upvotes", "upvote", "vote"];
         let argsDungeon = ["dungeon", "xp", "level", "vila", "rpg", "boleham"]
+        let argsFamilias = ["famílias", "familias", "familia", "família"]
 
         if (argsMamou.includes(argumento)) {
             topMamadores(client, message)
@@ -55,6 +58,8 @@ module.exports = {
             topVotos(client, message)
         } else if (argsDungeon.includes(argumento)) {
             topDungeon(client, message)
+        } else if (argsFamilias.includes(argumento)) {
+            topFamilia(client, message)
         } else message.reply(txt)
 
     }
@@ -321,4 +326,30 @@ function topDungeon(client, message) {
             message.channel.send(message.author, embed)
 
         })
+}
+
+function topFamilia(client, message) {
+    let embed = new MessageEmbed()
+
+        .setTitle("🔱 | Placar das Famílias")
+        .setColor('#c780f3')
+
+    familyDb.find({}, ['_id', 'members', 'levelFamilia', 'bank'], {
+            skip: 0,
+            limit: 5,
+            sort: {
+                levelFamilia: -1,
+                bank: -1
+            }
+        },
+        function (err, res) {
+            if (err) console.log(err)
+
+            for (i = 0; i < res.length; i++) {
+                embed.addField(`${i + 1} - ${res[i]._id}`, `:fleur_de_lis: | **Nível da Família:** ${res[i].levelFamilia}\n💎 | **Dinheiro da Família:** ${res[i].bank}\n<:God:758474639570894899> | **Membros:** ${res[i].members.length}`)
+            }
+        message.channel.send(message.author, embed)
+        })
+
+
 }

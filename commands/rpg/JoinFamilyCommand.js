@@ -1,4 +1,6 @@
-const { MessageEmbed } = require("discord.js");
+const {
+    MessageEmbed
+} = require("discord.js");
 const database = require("../../models/rpg.js");
 const familyDb = require("../../models/familia.js")
 
@@ -17,41 +19,39 @@ module.exports = {
         const user = await database.findById(message.author.id)
         if (!user) return message.channel.send("<:negacao:759603958317711371> | Você não é um aventureiro!")
 
-        if(user.hasFamily) return message.channel.send(`<:negacao:759603958317711371> | Você já está na família ${user.familyName}!`)
+        if (user.hasFamily) return message.channel.send(`<:negacao:759603958317711371> | Você já está na família ${user.familyName}!`)
 
         let embed = new MessageEmbed()
-        .setTitle("Escolha sua Família!")
-        .setColor("#1ff1f5")
-        .setFooter("Digite no chat a opção de sua escolha")
-        .setDescription("Vantagens da Família:\n• Cada família tem habilidades únicas que são desbloqueadas com investimentos na família\n• Um tipo de boost, que aumenta de acordo com os investimentos dos membros nela!\n\n**Famílias:**")
-        .addFields([
-            {
-                name: "------------**[ 1 ]**------------",
-                value: "🔱 | **Família:** Loki\n📤 | **Boost:** Dano"
-            },
-            {
-                name: "------------**[ 2 ]**------------",
-                value: "🔱 | **Família:** Ares\n📤 | **Boost:** Defesa"  
-            },
-            {
-                name: "------------**[ 3 ]**------------",
-                value: "🔱 | **Família:** Freya\n📤 | **Boost:** Mana Máxima"
-            },
-            {
-                name: "------------**[ 4 ]**------------",
-                value: "🔱 | **Família:** Soma\n📤 | **Boost:** Vida Máxima"
-            },
-            {
-                name: "------------**[ 5 ]**------------",
-                value: "🔱 | **Família:** Apolo\n📤 | **Boost:** Poder de Habilidade"
-            }
-        ])
+            .setTitle("Escolha sua Família!")
+            .setColor("#1ff1f5")
+            .setFooter("Digite no chat a opção de sua escolha")
+            .setDescription("Vantagens da Família:\n• Cada família tem habilidades únicas que são desbloqueadas com investimentos na família\n• Um tipo de boost, que aumenta de acordo com os investimentos dos membros nela!\n\n**Famílias:**")
+            .addFields([{
+                    name: "------------**[ 1 ]**------------",
+                    value: "🔱 | **Família:** Loki\n📤 | **Boost:** Dano"
+                },
+                {
+                    name: "------------**[ 2 ]**------------",
+                    value: "🔱 | **Família:** Ares\n📤 | **Boost:** Defesa"
+                },
+                {
+                    name: "------------**[ 3 ]**------------",
+                    value: "🔱 | **Família:** Freya\n📤 | **Boost:** Mana Máxima"
+                },
+                {
+                    name: "------------**[ 4 ]**------------",
+                    value: "🔱 | **Família:** Soma\n📤 | **Boost:** Vida Máxima"
+                },
+                {
+                    name: "------------**[ 5 ]**------------",
+                    value: "🔱 | **Família:** Apolo\n📤 | **Boost:** Poder de Habilidade"
+                }
+            ])
 
         message.channel.send(embed)
 
-        
-        const validOptions = [
-            {
+
+        const validOptions = [{
                 opção: "1",
                 família: "Loki"
             },
@@ -82,19 +82,19 @@ module.exports = {
 
         collector.on('collect', async m => {
 
-        const selectedOption = validOptions.some(so => so.opção == m.content)
-        if (!selectedOption) return message.channel.send("<:negacao:759603958317711371> | Esta opção não é válida!")
-        const filtredOption = validOptions.filter(f => f.opção == m.content)
+            const selectedOption = validOptions.some(so => so.opção == m.content)
+            if (!selectedOption) return message.channel.send("<:negacao:759603958317711371> | Esta opção não é válida!")
+            const filtredOption = validOptions.filter(f => f.opção == m.content)
 
-        const option = filtredOption[0]
+            const option = filtredOption[0]
 
             message.channel.send(`<:positivo:759603958485614652> | Bem-Vindo à família **${option.família}**, ${message.author}! Veja seus novos Status!`)
 
             const familia = await familyDb.findById(option.família)
 
-            switch(option.família){
+            switch (option.família) {
                 case 'Freya':
-                    user.maxMana = user.maxMana + familia.boost.value 
+                    user.maxMana = user.maxMana + familia.boost.value
                     break;
                 case 'Soma':
                     user.maxLife = user.maxLife + familia.boost.value
