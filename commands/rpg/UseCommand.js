@@ -78,10 +78,11 @@ module.exports = {
       if (user.life > user.maxLife) user.life = user.maxLife
     } else return message.channel.send("<:negacao:759603958317711371> | nheee, ocorreu um erro ao usar a poção! Chame minha dona em meu servidor de suporte para ver isso")
 
+    for(i = 0; i < quantidade; i++){
     user.inventory.splice(user.inventory.findIndex(function (i) {
       return i.name === juntos[args[0] - 1].name
     }), 1);
-
+  }
     user.save()
 
     message.channel.send(`<:positivo:759603958485614652> | Prontinho ${message.author}! Você usou \`${quantidade}\` **${choice[0].name}**`)
