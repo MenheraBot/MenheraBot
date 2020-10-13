@@ -503,15 +503,15 @@
             },
             {
                 "name": "Escudo de Ares",
-                "value": 1320
+                "value": 1700
             }
         ],
         "type": "Boss",
         "name": "Ares",
-        "life": 1300,
-        "damage": 177,
+        "life": 1800,
+        "damage": 150,
         "armor": 130,
-        "xp": 30000
+        "xp": 60000
         }
     ]
 }
