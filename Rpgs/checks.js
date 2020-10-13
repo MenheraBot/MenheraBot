@@ -8,12 +8,24 @@ const {
 const abilitiesFile = require("../Rpgs/abilities.json");
 const mobsFile = require("../Rpgs/mobs.json");
 
-module.exports.getEnemy = async (user) => {
+module.exports.getEnemy = async (user, type) => {
 
     let initialEnemy = [];
     let mediumEnemy = [];
     let hardEnemy = [];
-    let impossibleEnemy = []
+    let impossibleEnemy = [];
+
+    let monstro;
+    
+    if(type == "boss"){
+        let bosses = []
+        mobsFile.boss.forEach(b => {
+            bosses.push(b)
+        })
+        monstro = await bosses[Math.floor(Math.random() * bosses.length)];
+
+        return monstro;
+    }
 
     mobsFile.inicial.forEach(initialMob => {
         initialEnemy.push(initialMob)
@@ -30,8 +42,6 @@ module.exports.getEnemy = async (user) => {
     mobsFile.impossible.forEach(impMob => {
         impossibleEnemy.push(impMob)
     })
-
-    let monstro;
 
     if (user.level < 5) {
         monstro = await initialEnemy[Math.floor(Math.random() * initialEnemy.length)];
@@ -399,6 +409,11 @@ module.exports.newAbilities = async (message, user) => {
         user.xp = 0
         user.nextLevelXp = 100000
         user.save()
+    } else if (user.level == 20){
+        user.xp = 0
+        user.nextLevelXp = 1000000
+        user.save()
+        message.channel.send("⚠️ | Você atinge o nível 20, e se torna um MESTRE da dungeon!\nA partir de agora, você pode usar o m!boss, para batalhar contra bosses quando quiser")
     }
 }
 

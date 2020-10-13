@@ -426,5 +426,92 @@
             "armor": 50,
             "xp": 26420
         }
+    ],
+    "boss": [
+        {
+            "loots": [{
+                    "name": "Harpa de Apolo",
+                    "value": 780
+                },
+                {
+                    "name": "Carruagem de Apolo",
+                    "value": 1320
+                }
+            ],
+            "type": "Boss",
+            "name": "Apolo",
+            "life": 1000,
+            "damage": 160,
+            "armor": 150,
+            "xp": 35000
+        },
+        {
+            "loots": [{
+                "name": "Lâmina de Loki",
+                "value": 1250
+            },
+            {
+                "name": "Capa de Loki",
+                "value": 380
+            }
+        ],
+        "type": "Boss",
+        "name": "Loki",
+        "life": 700,
+        "damage": 186,
+        "armor": 180,
+        "xp": 35000
+        },
+        {
+            "loots": [{
+                "name": "Vinho de Soma",
+                "value": 1000
+            },
+            {
+                "name": "Taco de Soma",
+                "value": 1400
+            }
+        ],
+        "type": "Boss",
+        "name": "Soma",
+        "life": 500,
+        "damage": 200,
+        "armor": 200,
+        "xp": 50000
+        },
+        {
+            "loots": [{
+                "name": "Espada de Freya",
+                "value": 1450
+            },
+            {
+                "name": "Anel de Freya",
+                "value": 1320
+            }
+        ],
+        "type": "Boss",
+        "name": "Freya",
+        "life": 840,
+        "damage": 178,
+        "armor": 190,
+        "xp": 45000
+        },
+        {
+            "loots": [{
+                "name": "Correntes de Ares",
+                "value": 988
+            },
+            {
+                "name": "Escudo de Ares",
+                "value": 1320
+            }
+        ],
+        "type": "Boss",
+        "name": "Ares",
+        "life": 1300,
+        "damage": 177,
+        "armor": 130,
+        "xp": 30000
+        }
     ]
 }

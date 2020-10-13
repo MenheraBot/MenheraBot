@@ -1,26 +1,23 @@
-const {
-    MessageEmbed
-} = require("discord.js");
-const database = require("../../models/rpg.js");
-const familyDb = require("../../models/familia");
-const checks = require("../../Rpgs/checks.js")
+const database = require("../../models/rpg")
+const familyDb = require("../../models/familia")
 
 module.exports = {
-    name: "dungeon",
-    aliases: ["dungeons"],
+    name: "boss",
+    aliases: [],
     cooldown: 3,
     category: "rpg",
-    dir: 'DungeonCommand',
-    description: "Vá para uma aventura na dungeon",
+    dir: 'BattleBossCommand',
+    description: "Luta contra um BOSS",
     userPermission: null,
     clientPermission: ["EMBED_LINKS"],
-    usage: "m!dungeon",
+    usage: "m!boss",
     run: async (client, message, args) => {
-
         const user = await database.findById(message.author.id)
         if (!user) return message.channel.send("<:negacao:759603958317711371> | Você não é um aventureiro!")
 
-        const inimigo = await checks.getEnemy(user, "dungeon")
+        if (user.level < 20) return message.channel.send("<:negacao:759603958317711371> | Você precisa estar nível **20** para lutar contra bosses")
+
+        const inimigo = await checks.getEnemy(user, "boss")
 
         const canGo = await checks.initialChecks(user, message)
 
@@ -32,7 +29,7 @@ module.exports = {
 
         let embed = new MessageEmbed()
             .setTitle(`⌛ | Preparação pra batalha`)
-            .setDescription(`Envie um **SIM** para adentrar na dungeon`)
+            .setDescription(`Envie um **SIM** para batalhar contra um boss`)
             .setColor('#e3beff')
             .setFooter("Estas habilidades estão disponíveis para o uso")
             .addField(`Seus status atuais são`, `🩸 | **Vida:** ${user.life}/${user.maxLife}\n💧 | **Mana:** ${user.mana}/${user.maxMana}\n🗡️ | **Dano Físico:** ${user.damage + user.weapon.damage}\n🛡️ | **Armadura:** ${user.armor + user.protection.armor}\n🔮 | **Poder Mágico:** ${user.abilityPower}\n\n------HABILIDADES DISPONÍVEIS------`)
@@ -49,7 +46,7 @@ module.exports = {
         });
 
         collector.on('collect', m => {
-            if (m.content.toLowerCase() != "sim") return message.channel.send(`<:negacao:759603958317711371> | Você pensou melhor, e acabou desistindo de entrar na dungeon`)
+            if (m.content.toLowerCase() != "sim") return message.channel.send(`<:negacao:759603958317711371> | Você pensou melhor, e acabou desistindo de batalhar contra bosses`)
 
             battle(message, inimigo, habilidades, user);
         })
@@ -64,9 +61,9 @@ async function battle(message, inimigo, habilidades, user) {
 
     let options = [];
 
-    if(user.hasFamily && user.familyName === "Loki"){
+    if (user.hasFamily && user.familyName === "Loki") {
         const familia = await familyDb.findById(user.familyName)
-        
+
         options.push({
             name: "Ataque Básico",
             damage: user.damage + user.weapon.damage + familia.boost.value
@@ -77,12 +74,12 @@ async function battle(message, inimigo, habilidades, user) {
             damage: user.damage + user.weapon.damage
         })
     }
-    
+
     habilidades.forEach(hab => {
         options.push(hab)
     })
 
-    let texto = `Você entra na Dungeon, e se depara com um monstro ${inimigo.type}: ${inimigo.name}, Seus status são:\n\n❤️ | Vida: **${inimigo.life}**\n⚔️ | Dano: **${inimigo.damage}**\n🛡️ | Defesa: **${inimigo.armor}**\n\nO que você faz?\n\n**OPÇÕES:**\n`
+    let texto = `Você entra na batalha contra Boss, e seu inimigo é: **${inimigo.name}**, Seus status são:\n\n❤️ | Vida: **${inimigo.life}**\n⚔️ | Dano: **${inimigo.damage}**\n🛡️ | Defesa: **${inimigo.armor}**\n\nO que você faz?\n\n**OPÇÕES:**\n`
 
     let escolhas = []
 
@@ -94,7 +91,7 @@ async function battle(message, inimigo, habilidades, user) {
 
     let embed = new MessageEmbed()
         .setFooter("Digite no chat a opção de sua escolha")
-        .setTitle("Inimigo Encontrado: " + inimigo.name)
+        .setTitle("BossBattle: " + inimigo.name)
         .setColor('#f04682')
         .setDescription(texto)
     message.channel.send(message.author, embed)
@@ -133,9 +130,9 @@ exports.continueBattle = async (message, inimigo, habilidades, user) => {
 
     let options = [];
 
-    if(user.hasFamily && user.familyName === "Loki"){
+    if (user.hasFamily && user.familyName === "Loki") {
         const familia = await familyDb.findById(user.familyName)
-        
+
         options.push({
             name: "Ataque Básico",
             damage: user.damage + user.weapon.damage + familia.boost.value
