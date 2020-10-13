@@ -6,13 +6,13 @@ const database = require("../../models/rpg.js");
 module.exports = {
   name: "usar",
   aliases: ["use", "usa"],
-  cooldown: 10,
+  cooldown: 3,
   category: "rpg",
   dir: 'UseCommand',
   description: "Use um item de seu inventário",
   userPermission: null,
   clientPermission: ["EMBED_LINKS"],
-  usage: "m!usar [item]",
+  usage: "m!usar [item] [quantidade] ",
   run: async (client, message, args) => {
 
     const user = await database.findById(message.author.id)
@@ -60,13 +60,21 @@ module.exports = {
       return i.name === juntos[args[0] - 1].name
     })].name)
 
+    let quantidade = parseInt(args[1])
+
+    if(!quantidade) quantidade = 1;
+
+    if(quantidade < 1) return message.channel.send("<:negacao:759603958317711371> | Essa quantidade é inválida")
+
+    if(quantidade > juntos[args[0] - 1].amount) return message.channel.send("<:negacao:759603958317711371> | Esta quantidade é maior da que você tem!")
+
     if (choice[0].description.indexOf("mana") > -1) {
       if (user.mana == user.maxMana) return message.channel.send("<:negacao:759603958317711371> | Sua mana já está cheia!")
-      user.mana = user.mana + choice[0].damage
+      user.mana = user.mana + ( choice[0].damage * quantidade)
       if (user.mana > user.maxMana) user.mana = user.maxMana
     } else if (choice[0].description.indexOf("vida") > -1) {
       if (user.life == user.maxLife) return message.channel.send("<:negacao:759603958317711371> | Sua vida já está cheia!")
-      user.life = user.life + choice[0].damage
+      user.life = user.life + ( choice[0].damage * quantidade)
       if (user.life > user.maxLife) user.life = user.maxLife
     } else return message.channel.send("<:negacao:759603958317711371> | nheee, ocorreu um erro ao usar a poção! Chame minha dona em meu servidor de suporte para ver isso")
 
@@ -76,7 +84,7 @@ module.exports = {
 
     user.save()
 
-    message.channel.send(`<:positivo:759603958485614652> | Prontinho ${message.author}! Você usou **${choice[0].name}**`)
+    message.channel.send(`<:positivo:759603958485614652> | Prontinho ${message.author}! Você usou \`${quantidade}\` **${choice[0].name}**`)
 
   }
 };
