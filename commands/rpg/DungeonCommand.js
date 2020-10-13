@@ -51,12 +51,12 @@ module.exports = {
         collector.on('collect', m => {
             if (m.content.toLowerCase() != "sim") return message.channel.send(`<:negacao:759603958317711371> | Você pensou melhor, e acabou desistindo de entrar na dungeon`)
 
-            battle(message, inimigo, habilidades, user);
+            battle(message, inimigo, habilidades, user, "dungeon");
         })
     }
 };
 
-async function battle(message, inimigo, habilidades, user) {
+async function battle(message, inimigo, habilidades, user, type) {
 
     user.dungeonCooldown = 3600000 + Date.now();
     user.inBattle = true;
@@ -113,23 +113,23 @@ async function battle(message, inimigo, habilidades, user) {
         time = true;
         const choice = Number(m.content);
         if (escolhas.includes(choice)) {
-            checks.battle(message, options[choice - 1], user, inimigo)
+            checks.battle(message, options[choice - 1], user, inimigo, type)
         } else {
-            checks.enemyShot(message, `⚔️ |  Você tentou uma técnica nova, mas não obteve sucesso! O inimigo ataca`, user, inimigo)
+            checks.enemyShot(message, `⚔️ |  Você tentou uma técnica nova, mas não obteve sucesso! O inimigo ataca`, user, inimigo, type)
         }
     })
 
 
     setTimeout(() => {
         if (!time) {
-            checks.enemyShot(message, `⚔️ |  Você demorou para tomar uma atitude, e foi atacado!`, user, inimigo)
+            checks.enemyShot(message, `⚔️ |  Você demorou para tomar uma atitude, e foi atacado!`, user, inimigo, type)
         }
     }, 15000)
 
 }
 
 
-exports.continueBattle = async (message, inimigo, habilidades, user) => {
+exports.continueBattle = async (message, inimigo, habilidades, user, type) => {
 
     let options = [];
 
@@ -185,16 +185,16 @@ exports.continueBattle = async (message, inimigo, habilidades, user) => {
         time = true;
         const choice = Number(m.content);
         if (escolhas.includes(choice)) {
-            checks.battle(message, options[choice - 1], user, inimigo) //Mandar os dados de ataque, e defesa do inimigo, para fazer o calculo lá
+            checks.battle(message, options[choice - 1], user, inimigo, type) //Mandar os dados de ataque, e defesa do inimigo, para fazer o calculo lá
         } else {
-            checks.enemyShot(message, `⚔️ |  Você tentou uma técnica nova, mas não obteve sucesso! O inimigo ataca`, user, inimigo)
+            checks.enemyShot(message, `⚔️ |  Você tentou uma técnica nova, mas não obteve sucesso! O inimigo ataca`, user, inimigo, type)
         }
     })
 
 
     setTimeout(() => {
         if (!time) {
-            checks.enemyShot(message, `⚔️ |  Você demorou para tomar uma atitude, e foi atacado!`, user, inimigo)
+            checks.enemyShot(message, `⚔️ |  Você demorou para tomar uma atitude, e foi atacado!`, user, inimigo, type)
         }
     }, 15000)
 

@@ -1,7 +1,8 @@
 const databaseRPG = require("../models/rpg.js")
 const familyDb = require("../models/familia");
 const moment = require("moment");
-const dungeon = require("../commands/rpg/DungeonCommand.js")
+const dungeon = require("../commands/rpg/DungeonCommand")
+const boss = require("../commands/rpg/BattleBossCommand")
 const {
     MessageEmbed
 } = require("discord.js");
@@ -55,18 +56,18 @@ module.exports.getEnemy = async (user, type) => {
     return monstro;
 }
 
-module.exports.battle = async (message, escolha, user, inimigo) => {
+module.exports.battle = async (message, escolha, user, inimigo, type) => {
 
     let danoUser;
     if (escolha.name == "Ataque Básico") {
         danoUser = escolha.damage
     } else if (escolha.name == "Morte Instantânea") {
-        if (user.mana < user.maxMana) return this.enemyShot(message, `⚔️ | Você tenta usar **${escolha.name}**, mas não tem mana o suficiente para isso! O inimigo revida!`, user, inimigo)
+        if (user.mana < user.maxMana) return this.enemyShot(message, `⚔️ | Você tenta usar **${escolha.name}**, mas não tem mana o suficiente para isso! O inimigo revida!`, user, inimigo, type)
         danoUser = escolha.damage * user.abilityPower;
         user.mana = 0;
     } else {
 
-        if (user.mana < escolha.cost) return this.enemyShot(message, `⚔️ | Você tenta usar **${escolha.name}**, mas não tem mana o suficiente para isso! O inimigo revida!`, user, inimigo)
+        if (user.mana < escolha.cost) return this.enemyShot(message, `⚔️ | Você tenta usar **${escolha.name}**, mas não tem mana o suficiente para isso! O inimigo revida!`, user, inimigo, type)
         if (escolha.heal > 0) {
             user.life = user.life + escolha.heal
             if (user.life > user.maxLife) user.life = user.maxLife
@@ -98,7 +99,7 @@ module.exports.battle = async (message, escolha, user, inimigo) => {
             xp: inimigo.xp
         }
 
-        user.save().then(() => this.enemyShot(message, "", user, enemy))
+        user.save().then(() => this.enemyShot(message, "", user, enemy, type))
     }, 150)
 }
 
@@ -110,7 +111,7 @@ module.exports.morte = async (message, user) => {
     user.save()
 }
 
-module.exports.enemyShot = async (message, text, user, inimigo) => {
+module.exports.enemyShot = async (message, text, user, inimigo, type) => {
 
     const habilidades = await this.getAbilities(user)
 
@@ -135,7 +136,12 @@ module.exports.enemyShot = async (message, text, user, inimigo) => {
         return this.morte(message, user)
     } else {
         user.life = vidaUser
-        user.save().then(() => dungeon.continueBattle(message, inimigo, habilidades, user))
+        if(type == "boss") {
+            user.save().then(() => boss.continueBattle(message, inimigo, habilidades, user, type))
+        } else {
+            user.save().then(() => dungeon.continueBattle(message, inimigo, habilidades, user, type))
+        }
+        
     }
 }
 
