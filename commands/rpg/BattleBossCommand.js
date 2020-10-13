@@ -25,6 +25,12 @@ module.exports = {
 
         const habilidades = await checks.getAbilities(user)
 
+        if(user.uniquePower.name == "Morte Instantânea") {
+            habilidades.splice(habilidades.findIndex(function (i) {
+                return i.name === "Morte Instantânea"
+            }), 1);
+        }
+
         if (!inimigo) return message.channel.send("<:negacao:759603958317711371> | Essa não! Ocorreu um erro quando fui detectar qual inimigo você encontrará, desculpe por isso... Tente novamente")
 
         let embed = new MessageEmbed()
