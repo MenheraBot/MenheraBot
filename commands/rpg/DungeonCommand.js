@@ -129,7 +129,7 @@ async function battle(message, inimigo, habilidades, user, type) {
 }
 
 
-exports.continueBattle = async (message, inimigo, habilidades, user, type) => {
+module.exports.continueBattle = async (message, inimigo, habilidades, user, type) => {
 
     let options = [];
 
