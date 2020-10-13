@@ -23,7 +23,7 @@ module.exports = {
     let embed = new MessageEmbed()
       .setTitle("💊 | Poções")
       .setColor('#ae98d8')
-      .setDescription(`Use m!usar [opção] para usar uma poção\n\nSeus Status:\n🩸 | Vida: **${user.life}/${user.maxLife}**\n💧 | Mana: **${user.mana}/${user.maxMana}**`)
+      .setDescription(`Use m!usar [opção] [quantidade] para usar uma poção\n\nSeus Status:\n🩸 | Vida: **${user.life}/${user.maxLife}**\n💧 | Mana: **${user.mana}/${user.maxMana}**`)
 
     let itemText = "";
     let items = [];
