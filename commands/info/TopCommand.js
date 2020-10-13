@@ -345,6 +345,8 @@ function topFamilia(client, message) {
         function (err, res) {
             if (err) console.log(err)
 
+             res.sort((a, b) => parseInt(b.bank) - parseInt(a.bank));
+
             for (i = 0; i < res.length; i++) {
                 embed.addField(`${i + 1} - ${res[i]._id}`, `:fleur_de_lis: | **Nível da Família:** ${res[i].levelFamilia}\n💎 | **Dinheiro da Família:** ${res[i].bank}\n<:God:758474639570894899> | **Membros:** ${res[i].members.length}`)
             }
