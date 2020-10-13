@@ -83,6 +83,7 @@ module.exports.battle = async (message, escolha, user, inimigo, type) => {
             if (enemyArmor < 0) enemyArmor = 0
         }
         let danoDado = danoUser - enemyArmor;
+        if(escolha.name == "Ataque Básico") danoDado = danoUser
         if (danoDado < 0) danoDado = 0;
         let vidaInimigo = inimigo.life - danoDado;
 
