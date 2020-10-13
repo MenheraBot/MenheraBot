@@ -40,7 +40,7 @@ module.exports = {
         });
 
 
-        const filter = m => m.author.id === message.author.id && validArgs.some(answer => answer.toLowerCase() === m.content.toLowerCase());
+        const filter = m => m.author.id === message.author.id;
         const collector = message.channel.createMessageCollector(filter, {
             max: 1,
             time: 30000,
@@ -48,6 +48,8 @@ module.exports = {
         });
 
         collector.on('collect', m => {
+
+            if(!validArgs.some(answer => answer.toLowerCase() === m.content.toLowerCase())) return message.channel.send(`<:negacao:759603958317711371> | Essa escolha é inválida`)
 
             if (m.content === "1" || m.content.toLowerCase() === "comprar") {
                 lojaComprar(message, embedMessage, user, saldoAtual);
@@ -81,7 +83,7 @@ function lojaComprar(message, embedMessage, user, saldoAtual) {
 
     const validBuyArgs = ["1", "cores", "2", "rolls"];
 
-    const filter = m => m.author.id === message.author.id && validBuyArgs.some(answer => answer.toLowerCase() === m.content.toLowerCase());
+    const filter = m => m.author.id === message.author.id
     const collector = message.channel.createMessageCollector(filter, {
         max: 1,
         time: 30000,
@@ -89,6 +91,8 @@ function lojaComprar(message, embedMessage, user, saldoAtual) {
     });
 
     collector.on('collect', m => {
+
+        if(!validBuyArgs.some(answer => answer.toLowerCase() === m.content.toLowerCase())) return message.channel.send(`<:negacao:759603958317711371> | Essa escolha é inválida`)
 
         if (m.content === "1" || m.content.toLowerCase() === "cores") {
             //abre loja de cores
@@ -147,7 +151,7 @@ function lojaComprar(message, embedMessage, user, saldoAtual) {
 
             const validCorArgs = ["1", "2", "3", "4", "5", "6", "7"];
 
-            const filtroCor = m => m.author.id === message.author.id && validCorArgs.some(answer => answer.toLowerCase() === m.content.toLowerCase());
+            const filtroCor = m => m.author.id === message.author.id
             const CorColetor = message.channel.createMessageCollector(filtroCor, {
                 max: 1,
                 time: 30000,
@@ -155,6 +159,8 @@ function lojaComprar(message, embedMessage, user, saldoAtual) {
             });
 
             CorColetor.on('collect', m => {
+
+                if(!validCorArgs.some(answer => answer.toLowerCase() === m.content.toLowerCase())) return message.channel.send(`<:negacao:759603958317711371> | Essa escolha é inválida`)
                 switch (m.content) {
                     case '1':
                         if (user.cores.some(res => res.cor === coresDisponíveis[0].cor)) return message.channel.send(`🟡 | ${message.author} eu agradeço sua empolgação para comprar em meu brechó, mas você já possui esta cor!`).then(() => embedMessage.delete().catch)

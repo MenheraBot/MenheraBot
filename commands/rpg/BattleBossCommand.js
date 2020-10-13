@@ -1,5 +1,6 @@
 const database = require("../../models/rpg")
 const familyDb = require("../../models/familia")
+const checks = require("../../Rpgs/checks")
 
 module.exports = {
     name: "boss",
