@@ -1,6 +1,7 @@
 const database = require("../../models/rpg")
 const familyDb = require("../../models/familia")
 const checks = require("../../Rpgs/checks")
+const {MessageEmbed} = require("discord.js")
 
 module.exports = {
     name: "boss",

@@ -459,7 +459,7 @@
         "name": "Loki",
         "life": 700,
         "damage": 186,
-        "armor": 180,
+        "armor": 260,
         "xp": 35000
         },
         {
@@ -476,7 +476,7 @@
         "name": "Soma",
         "life": 500,
         "damage": 200,
-        "armor": 200,
+        "armor": 324,
         "xp": 50000
         },
         {
@@ -493,7 +493,7 @@
         "name": "Freya",
         "life": 840,
         "damage": 178,
-        "armor": 190,
+        "armor": 340,
         "xp": 45000
         },
         {
@@ -510,7 +510,7 @@
         "name": "Ares",
         "life": 1800,
         "damage": 150,
-        "armor": 130,
+        "armor": 210,
         "xp": 60000
         }
     ]
