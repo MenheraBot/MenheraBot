@@ -30,12 +30,41 @@ module.exports = {
 
         message.channel.send(`<:positivo:759603958485614652> | Você transferiu com sucesso ${valor} :gem: para o banco da família!`)
         setTimeout(() => {
+            const server = client.guilds.cache.get('717061688460967988');
+            const roles = [server.roles.cache.get('765069003440914443'), server.roles.cache.get('765069063146962995'), server.roles.cache.get('765069110018703371'), server.roles.cache.get('765069167363096616'), server.roles.cache.get('765069139885948928')]
+
+            /*
+            roles[0] = Freya
+            roles[1] = Apolo
+            roles[2] = Loki
+            roles[3] = Soma
+            roles[4] = Ares
+            */
+           let role;
+            switch (familia._id) {
+                case 'Freya':
+                    role = roles[0]
+                    break;
+                case 'Apolo':
+                    role = roles[1]
+                    break
+                case 'Loki':
+                    role = roles[2]
+                    break;
+                case 'Soma':
+                    role = roles[3]
+                    break;
+                case 'Ares':
+                    role = roles[4]
+                    break
+            }
+
             if (parseInt(familia.bank) >= parseInt(familia.nextLevel)) {
-                client.channels.cache.get("730903350169698314").send(`A família **${user.familyName}** acabou de passar de nível com o depósito de **${client.users.cache.get(user._id)}**\nAgora, a família \`${user.familyName}\` está nível **${familia.levelFamilia + 1}**\n\n@here`)
+                client.channels.cache.get("765427597101760573").send(`A família **${user.familyName}** acabou de passar de nível com o depósito de **${client.users.cache.get(user._id)}**\nAgora, a família \`${user.familyName}\` está nível **${familia.levelFamilia + 1}**\n\n${role}`)
                 CheckLevel(message, familia)
             }
         }, 500)
-       
+
     }
 }
 
