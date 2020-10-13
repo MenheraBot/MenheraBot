@@ -447,7 +447,7 @@
                 "name": "Forró da meia idade",
                 "description": "Invoca um esqueleto que dá dano e evita o proximo ataque contra si",
                 "cooldown": 7200000,
-                "damage": 5,
+                "damage": 7,
                 "heal": 0,
                 "cost": 20,
                 "type": "ativo"
@@ -483,7 +483,7 @@
                 "name": "Cadáver da Bruxa",
                 "description": "Invoca a Bruxa Cujo nome não se deve ser citado, enviando-a para a batalha",
                 "cooldown": 3600000,
-                "damage": 24,
+                "damage": 32,
                 "heal": 0,
                 "cost": 50
             },
@@ -491,7 +491,7 @@
                 "name": "Possessão Total",
                 "description": "Evoca Satã em seu corpo, forçando-o a te possuir, usando seus poderes para batalhar",
                 "cooldown": 3600000,
-                "damage": 32,
+                "damage": 45,
                 "heal": 0,
                 "cost": 80
             },
@@ -499,7 +499,7 @@
                 "name": "Beijo da Morte",
                 "description": "Mortos ascendem e beijam seu inimigo, passando as características da morte à ele",
                 "cooldown": 3600000,
-                "damage": 64,
+                "damage": 60,
                 "heal": 0,
                 "cost": 100
             }
