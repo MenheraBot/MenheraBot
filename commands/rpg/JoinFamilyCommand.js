@@ -19,6 +19,8 @@ module.exports = {
         const user = await database.findById(message.author.id)
         if (!user) return message.channel.send("<:negacao:759603958317711371> | Você não é um aventureiro!")
 
+        if(user.level < 10) return message.channel.send("<:negacao:759603958317711371> | As famílias são liberadas no nível **10**")
+
         if (user.hasFamily) return message.channel.send(`<:negacao:759603958317711371> | Você já está na família ${user.familyName}!`)
 
         let embed = new MessageEmbed()
