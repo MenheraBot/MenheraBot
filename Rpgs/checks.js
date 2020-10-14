@@ -268,6 +268,7 @@ module.exports.newAbilities = async (message, user) => {
         }
 
     } else if (user.level == 10) {
+        message.channel.send(`Você desbloqueou as famílias! Use \`m!família\` para entrar em uma família`)
         switch (user.class) {
             case 'Assassino':
                 user.abilities.push(abilitiesFile.assassin.normalAbilities[2])
