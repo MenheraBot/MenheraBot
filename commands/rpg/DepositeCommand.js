@@ -40,7 +40,7 @@ module.exports = {
             roles[3] = Soma
             roles[4] = Ares
             */
-           let role;
+            let role;
             switch (familia._id) {
                 case 'Freya':
                     role = roles[0]
@@ -75,23 +75,26 @@ async function CheckLevel(message, familia) {
     switch (familia._id) {
         case 'Loki': //Aumento do dano de ataque
             familia.levelFamilia = familia.levelFamilia + 1
-            familia.boost.value = familia.boost.value + 10
+            familia.boost.value = familia.boost.value + 30
             familia.nextLevel = parseInt(familia.nextLevel) + 30000
+            lokiUp(familia.levelFamilia)
             break
         case 'Freya': //Aumento da Mana máxima
             familia.levelFamilia = familia.levelFamilia + 1
-            familia.boost.value = familia.boost.value + 50
+            familia.boost.value = familia.boost.value + 100
             familia.nextLevel = parseInt(familia.nextLevel) + 30000
             familia.members.forEach(async membro => {
                 const user = await database.findById(membro)
                 user.maxMana = user.maxMana + 50
                 user.save()
             });
+            freyaUp(familia.levelFamilia)
             break
         case 'Ares': //Aumento da defesa
             familia.levelFamilia = familia.levelFamilia + 1
             familia.boost.value = familia.boost.value + 50
             familia.nextLevel = parseInt(familia.nextLevel) + 30000
+            aresUp(familia.levelFamilia)
             break
         case 'Soma': //Aumento de vida máxima
             familia.levelFamilia = familia.levelFamilia + 1
@@ -102,10 +105,12 @@ async function CheckLevel(message, familia) {
                 user.maxLife = user.maxLife + 100
                 user.save()
             });
+            somaUp(familia.levelFamilia)
             break
         case 'Apolo': //Aumento de Poder de Habilidade
             familia.levelFamilia = familia.levelFamilia + 1
             familia.nextLevel = parseInt(familia.nextLevel) + 30000
+            apoloUp(familia.levelFamilia)
             break
     }
 
@@ -113,4 +118,27 @@ async function CheckLevel(message, familia) {
     setTimeout(() => {
         familia.save()
     }, 500)
+}
+
+//Criar switches para cada lvl especial
+
+
+async function lokiUp(level) {
+   return
+}
+
+async function freyaUp(level) {
+    return
+}
+
+async function aresUp(level) {
+    return
+}
+
+async function somaUp(level) {
+    return
+}
+
+async function apoloUp(level) {
+    return
 }
