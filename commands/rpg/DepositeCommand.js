@@ -77,24 +77,24 @@ async function CheckLevel(message, familia) {
             familia.levelFamilia = familia.levelFamilia + 1
             familia.boost.value = familia.boost.value + 30
             familia.nextLevel = parseInt(familia.nextLevel) + 30000
-            lokiUp(familia.levelFamilia)
+         //   lokiUp(familia.levelFamilia)
             break
         case 'Freya': //Aumento da Mana máxima
             familia.levelFamilia = familia.levelFamilia + 1
-            familia.boost.value = familia.boost.value + 100
+            familia.boost.value = familia.boost.value + 50
             familia.nextLevel = parseInt(familia.nextLevel) + 30000
             familia.members.forEach(async membro => {
                 const user = await database.findById(membro)
                 user.maxMana = user.maxMana + 50
                 user.save()
             });
-            freyaUp(familia.levelFamilia)
+          //  freyaUp(familia.levelFamilia)
             break
         case 'Ares': //Aumento da defesa
             familia.levelFamilia = familia.levelFamilia + 1
-            familia.boost.value = familia.boost.value + 50
+            familia.boost.value = familia.boost.value + 20
             familia.nextLevel = parseInt(familia.nextLevel) + 30000
-            aresUp(familia.levelFamilia)
+           // aresUp(familia.levelFamilia)
             break
         case 'Soma': //Aumento de vida máxima
             familia.levelFamilia = familia.levelFamilia + 1
@@ -105,12 +105,12 @@ async function CheckLevel(message, familia) {
                 user.maxLife = user.maxLife + 100
                 user.save()
             });
-            somaUp(familia.levelFamilia)
+           // somaUp(familia.levelFamilia)
             break
         case 'Apolo': //Aumento de Poder de Habilidade
             familia.levelFamilia = familia.levelFamilia + 1
             familia.nextLevel = parseInt(familia.nextLevel) + 30000
-            apoloUp(familia.levelFamilia)
+            //apoloUp(familia.levelFamilia)
             break
     }
 
