@@ -78,10 +78,6 @@ module.exports.battle = async (message, escolha, user, inimigo, type) => {
 
     setTimeout(() => {
         let enemyArmor = inimigo.armor
-        if (escolha.name == "Castigo Divino") {
-            enemyArmor = inimigo.armor - 20
-            if (enemyArmor < 0) enemyArmor = 0
-        }
         let danoDado = danoUser - enemyArmor;
         if(escolha.name == "Ataque Básico") danoDado = danoUser
         if (danoDado < 0) danoDado = 0;
