@@ -128,8 +128,7 @@ async function battle(message, inimigo, habilidades, user, type) {
 
 }
 
-
-module.exports.continueBattle = async (message, inimigo, habilidades, user, type) => {
+module.exports.continueBattle = async (message, inimigo, habilidades, user, type, ataque) => {
 
     let options = [];
 
@@ -151,11 +150,11 @@ module.exports.continueBattle = async (message, inimigo, habilidades, user, type
         options.push(hab)
     })
 
-    let damageReceived = inimigo.damage - (user.armor + user.protection.armor);
+    let damageReceived = ataque.damage - (user.armor + user.protection.armor);
     if (damageReceived < 5) damageReceived = 5
 
 
-    let texto = `**${inimigo.name}** te ataca, e causa **${damageReceived}**, atualização dos status:\n\n**SEUS STATUS**\n❤️ | Vida: **${user.life}**\n💧 | Mana: **${user.mana}**\n⚔️ | Dano: **${user.damage + user.weapon.damage}**\n🛡️ | Defesa: **${user.armor + user.protection.armor}**\n\n**STATUS DO INIMIGO**\n❤️ | Vida: **${inimigo.life}**\n⚔️ | Dano: **${inimigo.damage}**\n🛡️ | Defesa: **${inimigo.armor}**\n\nO que você faz?\n\n**OPÇÕES:**\n`
+    let texto = `**${inimigo.name}** te ataca com **${ataque.name}**, e causa **${damageReceived}**, atualização dos status:\n\n**SEUS STATUS**\n❤️ | Vida: **${user.life}**\n💧 | Mana: **${user.mana}**\n⚔️ | Dano: **${user.damage + user.weapon.damage}**\n🛡️ | Defesa: **${user.armor + user.protection.armor}**\n\n**STATUS DO INIMIGO**\n❤️ | Vida: **${inimigo.life}**\n⚔️ | Dano: **${inimigo.damage}**\n🛡️ | Defesa: **${inimigo.armor}**\n\nO que você faz?\n\n**OPÇÕES:**\n`
 
     let escolhas = []
 

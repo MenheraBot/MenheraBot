@@ -93,7 +93,8 @@ module.exports.battle = async (message, escolha, user, inimigo, type) => {
             life: vidaInimigo,
             armor: inimigo.armor,
             loots: inimigo.loots,
-            xp: inimigo.xp
+            xp: inimigo.xp,
+            ataques: inimigo.ataques
         }
 
         user.save().then(() => this.enemyShot(message, "", user, enemy, type))
@@ -121,11 +122,13 @@ module.exports.enemyShot = async (message, text, user, inimigo, type) => {
         const familia = await familyDb.findById("Ares")
          armadura = user.armor + user.protection.armor + familia.boost.value
     } else armadura = user.armor + user.protection.armor 
-    
-    if ((inimigo.damage - armadura) < 5) {
+
+    let ataque = await inimigo.ataques[Math.floor(Math.random() * inimigo.ataques.length)];
+
+    if ((ataque.damage - armadura) < 5) {
         danoRecebido = 5;
     } else {
-        danoRecebido = inimigo.damage - armadura
+        danoRecebido = ataque.damage - armadura
     }
     let vidaUser = user.life - danoRecebido;
 
@@ -134,9 +137,9 @@ module.exports.enemyShot = async (message, text, user, inimigo, type) => {
     } else {
         user.life = vidaUser
         if(type == "boss") {
-            user.save().then(() => boss.continueBattle(message, inimigo, habilidades, user, type))
+            user.save().then(() => boss.continueBattle(message, inimigo, habilidades, user, type, ataque))
         } else {
-            user.save().then(() => dungeon.continueBattle(message, inimigo, habilidades, user, type))
+            user.save().then(() => dungeon.continueBattle(message, inimigo, habilidades, user, type, ataque))
         }
         
     }
