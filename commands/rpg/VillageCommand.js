@@ -329,7 +329,7 @@ function hotel(message, user, msg) {
         .setDescription("Bem vindo ao hotel de Boleham! Desejas passar um tempo aqui para descansar? Escolha uma das opções abaixo de sua escolha, e descanse gratuitamente para regenerar sua vida e sua mana!")
         .addFields([{
                 name: "1 - Soninho do Almoço",
-                value: "⌛ | **Tempo**: 1 hora\n🩸 | **Vida**: 40\n💧 | **Mana**: 30"
+                value: "⌛ | **Tempo**: 2 horas\n🩸 | **Vida**: 40\n💧 | **Mana**: 30"
             },
             {
                 name: "2 - Sono da Vida",
@@ -367,7 +367,7 @@ function hotel(message, user, msg) {
         if (user.life < 1 && user.death > Date.now()) return message.channel.send(`<:negacao:759603958317711371> | Você morreu em uma aventura na dungeon, e por isso, já está descansando para recuperar suas energias!`)
 
         if (m.content == "1") {
-            user.hotelTime = 3600000 + Date.now()
+            user.hotelTime = 7200000 + Date.now()
             user.life = user.life + 40
             user.mana = user.mana + 30
         } else if (m.content == "2") {

@@ -267,7 +267,7 @@
                 "cooldown": 7200000,
                 "damage": 35,
                 "heal": 0,
-                "cost": 40
+                "cost": 30
             },
             {
                 "name": "Excalibur",
@@ -275,7 +275,7 @@
                 "cooldown": 7200000,
                 "damage": 55,
                 "heal": 0,
-                "cost": 55
+                "cost": 45
             },
             {
                 "name": "Kenjutsu",
