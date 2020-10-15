@@ -43,7 +43,7 @@ module.exports = {
             Habilidade 'Kenjutsu' dano de \`70\` para \`90\`
             
             • Mudanças do Monge
-            Habilidade 'Silêncio Mortal' dano de \`70\` para \`70\`
+            Habilidade 'Silêncio Mortal' dano de \`70\` para \`80\`
             
             **HOTEL**
             • Removida a opção 'Sono Pesado'
