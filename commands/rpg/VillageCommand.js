@@ -329,14 +329,18 @@ function hotel(message, user, msg) {
         .setDescription("Bem vindo ao hotel de Boleham! Desejas passar um tempo aqui para descansar? Escolha uma das opções abaixo de sua escolha, e descanse gratuitamente para regenerar sua vida e sua mana!")
         .addFields([{
                 name: "1 - Soninho do Almoço",
-                value: "⌛ | **Tempo**: 3 horas\n🩸 | **Vida**: 40\n💧 | **Mana**: 30"
+                value: "⌛ | **Tempo**: 1 hora\n🩸 | **Vida**: 40\n💧 | **Mana**: 30"
             },
             {
-                name: "2 - Sono Pesado",
-                value: "⌛ | **Tempo**: 5 horas\n🩸 | **Vida**: 60\n💧 | **Mana**: 45"
+                name: "2 - Sono da Vida",
+                value: "⌛ | **Tempo**: 3,5 horas\n🩸 | **Vida**: MÁXIMA\n💧 | **Mana**: 0"
             },
             {
-                name: "3 - Hibernação",
+                name: "3 - Sono da Mana",
+                value: "⌛ | **Tempo**: 3,5 horas\n🩸 | **Vida**: 0\n💧 | **Mana**: MÁXIMA"
+            },
+            {
+                name: "4 - Hibernação",
                 value: "⌛ | **Tempo**: 7 horas\n🩸 | **Vida**: MÁXIMA\n💧 | **Mana**: MÁXIMA"
             }
         ])
@@ -352,7 +356,7 @@ function hotel(message, user, msg) {
         errors: ["time"]
     });
 
-    let validOptions = ["1", "2", "3"];
+    let validOptions = ["1", "2", "3", "4"];
 
     collector.on('collect', m => {
 
@@ -363,14 +367,16 @@ function hotel(message, user, msg) {
         if (user.life < 1 && user.death > Date.now()) return message.channel.send(`<:negacao:759603958317711371> | Você morreu em uma aventura na dungeon, e por isso, já está descansando para recuperar suas energias!`)
 
         if (m.content == "1") {
-            user.hotelTime = 10800000 + Date.now()
+            user.hotelTime = 3600000 + Date.now()
             user.life = user.life + 40
             user.mana = user.mana + 30
         } else if (m.content == "2") {
-            user.hotelTime = 18000000 + Date.now()
-            user.life = user.life + 60
-            user.mana = user.mana + 45
+            user.hotelTime = 12600000 + Date.now()
+            user.life = user.maxLife
         } else if (m.content == "3") {
+            user.hotelTime = 12600000 + Date.now()
+            user.mana = user.maxMana
+        } else if(m.content == "4") {
             user.hotelTime = 25200000 + Date.now()
             user.life = user.maxLife
             user.mana = user.maxMana
