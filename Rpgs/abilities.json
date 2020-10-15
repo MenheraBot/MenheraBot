@@ -85,15 +85,15 @@
                 "name": "Grito de Guerra",
                 "description": "Desfere um grito de guerra, causando confusões mentais no inimigo",
                 "cooldown": 7200000,
-                "damage": 60,
+                "damage": 40,
                 "heal": 0,
-                "cost": 35
+                "cost": 30
             },
             {
                 "name": "Guilhotina Humana",
                 "description": "Pula na cabeça do inimigo, dando um dano de cima a baixo",
                 "cooldown": 7200000,
-                "damage": 130,
+                "damage": 60,
                 "heal": 0,
                 "cost": 50
             },
@@ -101,9 +101,9 @@
                 "name": "Último Golpe",
                 "description": "Desfere um golpe de força brutal",
                 "cooldown": 7200000,
-                "damage": 150,
+                "damage": 100,
                 "heal": 0,
-                "cost": 65
+                "cost": 70
             }
         ]
     },
@@ -119,18 +119,18 @@
             },
             {
                 "name": "Benção Elemental",
-                "description": "Abençoa o alvo aumentando seu dano base e sua armadura",
+                "description": "Abençoa sua pessoa com o fogo da luz divina, curanso-se",
                 "damage": 0,
                 "cooldown": 7200000,
-                "heal": 0,
+                "heal": 50,
                 "cost": 35,
                 "type": "ativo"
             },
             {
                 "name": "Castigo Divino",
-                "description": "Reduz a armadura do inimigo",
+                "description": "Coloca o inimigo de castigo, ao lado do santo pai",
                 "cooldown": 7200000,
-                "damage": 0,
+                "damage": 9,
                 "heal": 0,
                 "cost": 20,
                 "type": "ativo"
@@ -166,7 +166,7 @@
                 "cooldown": 7200000,
                 "damage": 46,
                 "heal": 80,
-                "cost": 80
+                "cost": 90
             }
         ]
     },
@@ -265,7 +265,7 @@
                 "name": "Combate Tático",
                 "description": "Usa suas táticas de combate avançadas, desferindo golpes para todos os lados",
                 "cooldown": 7200000,
-                "damage": 50,
+                "damage": 35,
                 "heal": 0,
                 "cost": 40
             },
@@ -273,7 +273,7 @@
                 "name": "Excalibur",
                 "description": "Invoca o poder da Excalibur, exterminando os inimigos à sua frente",
                 "cooldown": 7200000,
-                "damage": 60,
+                "damage": 55,
                 "heal": 0,
                 "cost": 55
             },
@@ -281,7 +281,7 @@
                 "name": "Kenjutsu",
                 "description": "Faz um kenjutsu nos inimigos",
                 "cooldown": 7200000,
-                "damage": 70,
+                "damage": 90,
                 "heal": 0,
                 "cost": 65
             }
@@ -436,7 +436,7 @@
                 "name": "Silnêncio Mortal",
                 "description": "Entra no modo silencioso, focando no combate, podendo dar dano extremo em seus inimigos",
                 "cooldown": 3600000,
-                "damage": 70,
+                "damage": 80,
                 "heal": 0,
                 "cost": 55
             }
