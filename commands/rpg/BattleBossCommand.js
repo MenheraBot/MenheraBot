@@ -47,7 +47,7 @@ module.exports = {
 
         let embed = new MessageEmbed()
             .setTitle(`⌛ | Preparação pra batalha`)
-            .setDescription(`Envie um **SIM** para adentrar na dungeon`)
+            .setDescription(`Envie um **SIM** para batalhar contra um boss`)
             .setColor('#e3beff')
             .setFooter("Estas habilidades estão disponíveis para o uso")
             .addField(`Seus status atuais são`, `🩸 | **Vida:** ${user.life}/${user.maxLife}\n💧 | **Mana:** ${user.mana}/${user.maxMana}\n🗡️ | **Dano Físico:** ${dmgView}\n🛡️ | **Armadura:** ${ptcView}\n🔮 | **Poder Mágico:** ${user.abilityPower}\n\n------HABILIDADES DISPONÍVEIS------`)
