@@ -72,60 +72,60 @@ async function CheckLevel(message, familia) {
 
     //Freya, Soma e Apolo mudar na DB, o resto é automáico
 
-        switch (familia._id) {
-            case 'Loki': //Aumento do dano de ataque
-                familia.levelFamilia = familia.levelFamilia + 1
-                familia.boost.value = familia.boost.value + 30
-                familia.nextLevel = parseInt(familia.nextLevel) + 30000
-                familia.save()
-             //   lokiUp(familia.levelFamilia)
-                break
-            case 'Freya': //Aumento da Mana máxima
-                familia.levelFamilia = familia.levelFamilia + 1
-                familia.boost.value = familia.boost.value + 50
-                familia.nextLevel = parseInt(familia.nextLevel) + 30000
-                familia.members.forEach(async membro => {
-                    const user = await database.findById(membro)
-                    user.maxMana = user.maxMana + 50
-                    user.save()
-                });
-                familia.save()
-              //  freyaUp(familia.levelFamilia)
-                break
-            case 'Ares': //Aumento da defesa
-                familia.levelFamilia = familia.levelFamilia + 1
-                familia.boost.value = familia.boost.value + 20
-                familia.nextLevel = parseInt(familia.nextLevel) + 30000
-               familia.save()
-               // aresUp(familia.levelFamilia)
-                break
-            case 'Soma': //Aumento de vida máxima
-                familia.levelFamilia = familia.levelFamilia + 1
-                familia.boost.value = familia.boost.value + 100
-                familia.nextLevel = parseInt(familia.nextLevel) + 30000
-                familia.members.forEach(async membro => {
-                    const user = await database.findById(membro)
-                    user.maxLife = user.maxLife + 100
-                    user.save()
-                });
-                familia.save()
-               // somaUp(familia.levelFamilia)
-                break
-            case 'Apolo': //Aumento de Poder de Habilidade
-                familia.levelFamilia = familia.levelFamilia + 1
-                familia.nextLevel = parseInt(familia.nextLevel) + 30000
-                familia.save()
-                //apoloUp(familia.levelFamilia)
-                break
-        }
-    
+    switch (familia._id) {
+        case 'Loki': //Aumento do dano de ataque
+            familia.levelFamilia = familia.levelFamilia + 1
+            familia.boost.value = familia.boost.value + 30
+            familia.nextLevel = parseInt(familia.nextLevel) + 30000
+            familia.save()
+            //   lokiUp(familia.levelFamilia)
+            break
+        case 'Freya': //Aumento da Mana máxima
+            familia.levelFamilia = familia.levelFamilia + 1
+            familia.boost.value = familia.boost.value + 50
+            familia.nextLevel = parseInt(familia.nextLevel) + 30000
+            familia.members.forEach(async membro => {
+                const user = await database.findById(membro)
+                user.maxMana = user.maxMana + 50
+                user.save()
+            });
+            familia.save()
+            //  freyaUp(familia.levelFamilia)
+            break
+        case 'Ares': //Aumento da defesa
+            familia.levelFamilia = familia.levelFamilia + 1
+            familia.boost.value = familia.boost.value + 20
+            familia.nextLevel = parseInt(familia.nextLevel) + 30000
+            familia.save()
+            // aresUp(familia.levelFamilia)
+            break
+        case 'Soma': //Aumento de vida máxima
+            familia.levelFamilia = familia.levelFamilia + 1
+            familia.boost.value = familia.boost.value + 100
+            familia.nextLevel = parseInt(familia.nextLevel) + 30000
+            familia.members.forEach(async membro => {
+                const user = await database.findById(membro)
+                user.maxLife = user.maxLife + 100
+                user.save()
+            });
+            familia.save()
+            // somaUp(familia.levelFamilia)
+            break
+        case 'Apolo': //Aumento de Poder de Habilidade
+            familia.levelFamilia = familia.levelFamilia + 1
+            familia.nextLevel = parseInt(familia.nextLevel) + 30000
+            familia.save()
+            //apoloUp(familia.levelFamilia)
+            break
+    }
+
 }
 
 //Criar switches para cada lvl especial
 
 
 async function lokiUp(level) {
-   return
+    return
 }
 
 async function freyaUp(level) {
