@@ -17,8 +17,8 @@ module.exports.getEnemy = async (user, type) => {
     let impossibleEnemy = [];
 
     let monstro;
-    
-    if(type == "boss"){
+
+    if (type == "boss") {
         let bosses = []
         mobsFile.boss.forEach(b => {
             bosses.push(b)
@@ -79,7 +79,7 @@ module.exports.battle = async (message, escolha, user, inimigo, type) => {
     setTimeout(() => {
         let enemyArmor = inimigo.armor
         let danoDado = danoUser - enemyArmor;
-        if(escolha.name == "Ataque Básico") danoDado = danoUser
+        if (escolha.name == "Ataque Básico") danoDado = danoUser
         if (danoDado < 0) danoDado = 0;
         let vidaInimigo = inimigo.life - danoDado;
 
@@ -116,12 +116,14 @@ module.exports.enemyShot = async (message, text, user, inimigo, type) => {
     if (text.length > 0) message.channel.send(text)
 
     let danoRecebido
-    let armadura
+    let armadura = user.armor + user.protection.armor
 
-    if(user.hasFamily && user.familyName === "Ares"){
-        const familia = await familyDb.findById("Ares")
-         armadura = user.armor + user.protection.armor + familia.boost.value
-    } else armadura = user.armor + user.protection.armor 
+    if (user.hasFamily) {
+        if (user.familyName === "Ares") {
+            const familia = await familyDb.findById("Ares")
+            armadura = user.armor + user.protection.armor + familia.boost.value
+        }
+    }
 
     let ataque = await inimigo.ataques[Math.floor(Math.random() * inimigo.ataques.length)];
 
@@ -136,12 +138,12 @@ module.exports.enemyShot = async (message, text, user, inimigo, type) => {
         return this.morte(message, user)
     } else {
         user.life = vidaUser
-        if(type == "boss") {
+        if (type == "boss") {
             user.save().then(() => boss.continueBattle(message, inimigo, habilidades, user, type, ataque))
         } else {
             user.save().then(() => dungeon.continueBattle(message, inimigo, habilidades, user, type, ataque))
         }
-        
+
     }
 }
 
@@ -416,7 +418,7 @@ module.exports.newAbilities = async (message, user) => {
         user.xp = 0
         user.nextLevelXp = 100000
         user.save()
-    } else if (user.level == 20){
+    } else if (user.level == 20) {
         user.xp = 0
         user.nextLevelXp = 1000000
         user.save()
@@ -499,7 +501,7 @@ module.exports.getAbilities = async (user) => {
         abilities.push(hab)
     })
 
-    if(user.hasFamily){
+    if (user.hasFamily) {
         const familia = await familyDb.findById(user.familyName)
         familia.abilities.forEach(habF => {
             abilities.push(habF)

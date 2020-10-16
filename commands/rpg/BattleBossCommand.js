@@ -40,7 +40,7 @@ module.exports = {
         let ptcView = user.armor + user.protection.armor
 
         if (user.hasFamily) {
-            familia = await familyDb.findById(user.familyName)
+            const familia = await familyDb.findById(user.familyName)
             if (user.familyName === "Loki") dmgView = user.damage + user.weapon.damage + familia.boost.value
             if (user.familyName === "Ares") ptcView = user.armor + user.protection.armor + familia.boost.value
         }
@@ -172,9 +172,9 @@ exports.continueBattle = async (message, inimigo, habilidades, user, type, ataqu
     let ptcView = user.armor + user.protection.armor
 
     if (user.hasFamily) {
-        familia = await familyDb.findById(user.familyName)
-        if (user.familyName === "Loki") dmgView = user.damage + user.weapon.damage + familia.boost.value
-        if (user.familyName === "Ares") ptcView = user.armor + user.protection.armor + familia.boost.value
+        const family = await familyDb.findById(user.familyName)
+        if (user.familyName === "Loki") dmgView = user.damage + user.weapon.damage + family.boost.value
+        if (user.familyName === "Ares") ptcView = user.armor + user.protection.armor + family.boost.value
     }
 
 

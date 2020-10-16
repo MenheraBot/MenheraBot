@@ -34,7 +34,7 @@ module.exports = {
         let ptcView = user.armor + user.protection.armor
 
         if (user.hasFamily) {
-            familia = await familyDb.findById(user.familyName)
+            const familia = await familyDb.findById(user.familyName)
             if (user.familyName === "Loki") dmgView = user.damage + user.weapon.damage + familia.boost.value
             if (user.familyName === "Ares") ptcView = user.armor + user.protection.armor + familia.boost.value
         }
@@ -166,9 +166,9 @@ module.exports.continueBattle = async (message, inimigo, habilidades, user, type
     let ptcView = user.armor + user.protection.armor
 
     if (user.hasFamily) {
-        familia = await familyDb.findById(user.familyName)
-        if (user.familyName === "Loki") dmgView = user.damage + user.weapon.damage + familia.boost.value
-        if (user.familyName === "Ares") ptcView = user.armor + user.protection.armor + familia.boost.value
+        const family = await familyDb.findById(user.familyName)
+        if (user.familyName === "Loki") dmgView = user.damage + user.weapon.damage + family.boost.value
+        if (user.familyName === "Ares") ptcView = user.armor + user.protection.armor + family.boost.value
     }
 
     let texto = `**${inimigo.name}** te ataca com **${ataque.name}**, e causa **${damageReceived}**, atualização dos status:\n\n**SEUS STATUS**\n❤️ | Vida: **${user.life}**\n💧 | Mana: **${user.mana}**\n⚔️ | Dano: **${dmgView}**\n🛡️ | Defesa: **${ptcView}**\n\n**STATUS DO INIMIGO**\n❤️ | Vida: **${inimigo.life}**\n⚔️ | Dano: **${inimigo.damage}**\n🛡️ | Defesa: **${inimigo.armor}**\n\nO que você faz?\n\n**OPÇÕES:**\n`
