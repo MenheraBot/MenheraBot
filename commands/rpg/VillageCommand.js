@@ -71,19 +71,19 @@ function bruxa(message, user, msg) {
         })
     } else if (user.level > 4 && user.level < 10) {
         itemsFile.bruxa.forEach(item => {
-            if (user.level >= item.minLevel) {
+            if (user.level >= item.minLevel && user.level < item.maxLevel) {
                 itens.push(item)
             }
         })
     } else if (user.level > 9) {
         itemsFile.bruxa.forEach(item => {
-            if (user.level >= item.minLevel) {
+            if (user.level >= item.minLevel && user.level < item.maxLevel) {
                 itens.push(item)
             }
         })
     } else if (user.level > 19){
         itemsFile.bruxa.forEach(item => {
-            if(user.level >= item.minLevel){
+            if(user.level >= item.minLevel && user.level < item.maxLevel){
                 itens.push(item)
             }
         })

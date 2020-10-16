@@ -5,7 +5,7 @@
             "type": "Item",
             "damage": 30,
             "value": 20,
-            "maxLevel": 5,
+            "maxLevel": 15,
             "minLevel": 0
         },
         {
@@ -14,7 +14,7 @@
             "type": "Item",
             "value": 25,
             "damage": 30,
-            "maxLevel": 5,
+            "maxLevel": 15,
             "minLevel": 0
         },
         {
@@ -23,7 +23,7 @@
             "type": "Item",
             "value": 30,
             "damage": 60,
-            "maxLevel": 8,
+            "maxLevel": 15,
             "minLevel": 5
         },
         {
@@ -32,7 +32,7 @@
             "type": "Item",
             "value": 38,
             "damage": 60,
-            "maxLevel": 8,
+            "maxLevel": 15,
             "minLevel": 5
         },
         {
@@ -41,7 +41,7 @@
             "type": "Item",
             "value": 50,
             "damage": 100,
-            "maxLevel": 12,
+            "maxLevel": 40,
             "minLevel": 8
         },
         {
@@ -50,7 +50,7 @@
             "type": "Item",
             "value": 55,
             "damage": 100,
-            "maxLevel": 12,
+            "maxLevel": 40,
             "minLevel": 8
         },
         {
@@ -59,7 +59,7 @@
             "type": "Item",
             "value": 150,
             "damage": 350,
-            "maxLevel": 30,
+            "maxLevel": 40,
             "minLevel": 20
         },
         {
@@ -68,7 +68,7 @@
             "type": "Item",
             "value": 200,
             "damage": 300,
-            "maxLevel": 30,
+            "maxLevel": 40,
             "minLevel": 20
         }
     ]
