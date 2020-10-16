@@ -23,12 +23,14 @@ module.exports = {
     if (!user) return message.channel.send("<:negacao:759603958317711371> | Este usuário não está registrado como um aventureiro")
 
     let dmg = `${user.damage} + ${user.weapon.damage}`
+    let ptr = `${user.armor} + ${user.protection.armor}`
 
     let familia
 
     if(user.hasFamily){
       familia = await familyDb.findById(user.familyName)
       if(user.familyName === "Loki ") dmg = `${user.damage} + ${user.weapon.damage} + \`${familia.boost.value}\``
+      if(user.familyName === "Ares") ptr = `${user.armor} + ${user.protection.armor} + ${familia.boost.value}`
     }
 
     let embed = new MessageEmbed()
@@ -46,7 +48,7 @@ module.exports = {
         },
         {
           name: `🛡️ | Armadura`,
-          value: `${user.armor} + ${user.protection.armor}`,
+          value: ptr,
           inline: true
         },
         {

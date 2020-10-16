@@ -30,12 +30,21 @@ module.exports = {
 
         if (!inimigo) return message.channel.send("<:negacao:759603958317711371> | Essa não! Ocorreu um erro quando fui detectar qual inimigo você encontrará, desculpe por isso... Tente novamente")
 
+        let dmgView = user.damage + user.weapon.damage
+        let ptcView = user.armor + user.protection.armor
+
+        if (user.hasFamily) {
+            familia = await familyDb.findById(user.familyName)
+            if (user.familyName === "Loki ") dmgView = user.damage +user.weapon.damage + familia.boost.value
+            if (user.familyName === "Ares") ptcView = user.armor + user.protection.armor + familia.boost.value
+        }
+
         let embed = new MessageEmbed()
             .setTitle(`⌛ | Preparação pra batalha`)
             .setDescription(`Envie um **SIM** para adentrar na dungeon`)
             .setColor('#e3beff')
             .setFooter("Estas habilidades estão disponíveis para o uso")
-            .addField(`Seus status atuais são`, `🩸 | **Vida:** ${user.life}/${user.maxLife}\n💧 | **Mana:** ${user.mana}/${user.maxMana}\n🗡️ | **Dano Físico:** ${user.damage + user.weapon.damage}\n🛡️ | **Armadura:** ${user.armor + user.protection.armor}\n🔮 | **Poder Mágico:** ${user.abilityPower}\n\n------HABILIDADES DISPONÍVEIS------`)
+            .addField(`Seus status atuais são`, `🩸 | **Vida:** ${user.life}/${user.maxLife}\n💧 | **Mana:** ${user.mana}/${user.maxMana}\n🗡️ | **Dano Físico:** ${dmgView}\n🛡️ | **Armadura:** ${ptcView}\n🔮 | **Poder Mágico:** ${user.abilityPower}\n\n------HABILIDADES DISPONÍVEIS------`)
         habilidades.forEach(hab => {
             embed.addField(hab.name, `🔮 | **Dano:** ${hab.damage}\n💧 | **Custo** ${hab.cost}`)
         })
@@ -64,9 +73,9 @@ async function battle(message, inimigo, habilidades, user, type) {
 
     let options = [];
 
-    if(user.hasFamily && user.familyName === "Loki"){
+    if (user.hasFamily && user.familyName === "Loki") {
         const familia = await familyDb.findById(user.familyName)
-        
+
         options.push({
             name: "Ataque Básico",
             damage: user.damage + user.weapon.damage + familia.boost.value
@@ -77,7 +86,7 @@ async function battle(message, inimigo, habilidades, user, type) {
             damage: user.damage + user.weapon.damage
         })
     }
-    
+
     habilidades.forEach(hab => {
         options.push(hab)
     })
@@ -132,9 +141,9 @@ module.exports.continueBattle = async (message, inimigo, habilidades, user, type
 
     let options = [];
 
-    if(user.hasFamily && user.familyName === "Loki"){
+    if (user.hasFamily && user.familyName === "Loki") {
         const familia = await familyDb.findById(user.familyName)
-        
+
         options.push({
             name: "Ataque Básico",
             damage: user.damage + user.weapon.damage + familia.boost.value
@@ -153,8 +162,18 @@ module.exports.continueBattle = async (message, inimigo, habilidades, user, type
     let damageReceived = ataque.damage - (user.armor + user.protection.armor);
     if (damageReceived < 5) damageReceived = 5
 
+    
+    let dmgView = user.damage + user.weapon.damage
+    let ptcView = user.armor + user.protection.armor
 
-    let texto = `**${inimigo.name}** te ataca com **${ataque.name}**, e causa **${damageReceived}**, atualização dos status:\n\n**SEUS STATUS**\n❤️ | Vida: **${user.life}**\n💧 | Mana: **${user.mana}**\n⚔️ | Dano: **${user.damage + user.weapon.damage}**\n🛡️ | Defesa: **${user.armor + user.protection.armor}**\n\n**STATUS DO INIMIGO**\n❤️ | Vida: **${inimigo.life}**\n⚔️ | Dano: **${inimigo.damage}**\n🛡️ | Defesa: **${inimigo.armor}**\n\nO que você faz?\n\n**OPÇÕES:**\n`
+    if (user.hasFamily) {
+        familia = await familyDb.findById(user.familyName)
+        if (user.familyName === "Loki ") dmgView = user.damage+ user.weapon.damage+ familia.boost.value
+        if (user.familyName === "Ares") ptcView =  user.armor+ user.protection.armor + familia.boost.value
+    }
+
+
+    let texto = `**${inimigo.name}** te ataca com **${ataque.name}**, e causa **${damageReceived}**, atualização dos status:\n\n**SEUS STATUS**\n❤️ | Vida: **${user.life}**\n💧 | Mana: **${user.mana}**\n⚔️ | Dano: **${dmgView}**\n🛡️ | Defesa: **${ptcView}**\n\n**STATUS DO INIMIGO**\n❤️ | Vida: **${inimigo.life}**\n⚔️ | Dano: **${inimigo.damage}**\n🛡️ | Defesa: **${inimigo.armor}**\n\nO que você faz?\n\n**OPÇÕES:**\n`
 
     let escolhas = []
 
