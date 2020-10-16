@@ -62,33 +62,13 @@ module.exports = {
 function bruxa(message, user, msg) {
 
     let itens = [];
-
-    if (user.level < 5) {
+    
         itemsFile.bruxa.forEach(item => {
             if (user.level >= item.minLevel && user.level < item.maxLevel) {
                 itens.push(item)
             }
         })
-    } else if (user.level > 4 && user.level < 10) {
-        itemsFile.bruxa.forEach(item => {
-            if (user.level >= item.minLevel && user.level < item.maxLevel) {
-                itens.push(item)
-            }
-        })
-    } else if (user.level > 9) {
-        itemsFile.bruxa.forEach(item => {
-            if (user.level >= item.minLevel && user.level < item.maxLevel) {
-                itens.push(item)
-            }
-        })
-    } else if (user.level > 19){
-        itemsFile.bruxa.forEach(item => {
-            if(user.level >= item.minLevel && user.level < item.maxLevel){
-                itens.push(item)
-            }
-        })
-    }
-
+    
     let embed = new MessageEmbed()
         .setTitle("🏠 | Casa da Velha Feiticeira")
         .setColor('#c5b5a0')
