@@ -61,28 +61,30 @@ module.exports = {
 
             if (parseInt(familia.bank) >= parseInt(familia.nextLevel)) {
                 client.channels.cache.get("765427597101760573").send(`A família **${user.familyName}** acabou de passar de nível com o depósito de **${client.users.cache.get(user._id)}**\nAgora, a família \`${user.familyName}\` está nível **${familia.levelFamilia + 1}**\n\n${role}`)
-                CheckLevel(message, familia)
+                CheckLevel(message, familia._id)
             }
         }, 500)
 
     }
 }
 
-async function CheckLevel(message, familia) {
+async function CheckLevel(message, id) {
+
+    const familia = await familyDb.findById(id)
 
     //Freya, Soma e Apolo mudar na DB, o resto é automáico
 
     switch (familia._id) {
         case 'Loki': //Aumento do dano de ataque
             familia.levelFamilia = familia.levelFamilia + 1
-            familia.boost.value = familia.boost.value + 30
+            familia.boost = {name: familia.boost.name, value: familia.boost.value + 30} 
             familia.nextLevel = parseInt(familia.nextLevel) + 30000
             familia.save()
             //   lokiUp(familia.levelFamilia)
             break
         case 'Freya': //Aumento da Mana máxima
             familia.levelFamilia = familia.levelFamilia + 1
-            familia.boost.value = familia.boost.value + 50
+            familia.boost = {name: familia.boost.name, value: familia.boost.value + 50} 
             familia.nextLevel = parseInt(familia.nextLevel) + 30000
             familia.members.forEach(async membro => {
                 const user = await database.findById(membro)
@@ -94,14 +96,14 @@ async function CheckLevel(message, familia) {
             break
         case 'Ares': //Aumento da defesa
             familia.levelFamilia = familia.levelFamilia + 1
-            familia.boost.value = familia.boost.value + 20
+            familia.boost = {name: familia.boost.name, value: familia.boost.value + 20} 
             familia.nextLevel = parseInt(familia.nextLevel) + 30000
             familia.save()
             // aresUp(familia.levelFamilia)
             break
         case 'Soma': //Aumento de vida máxima
             familia.levelFamilia = familia.levelFamilia + 1
-            familia.boost.value = familia.boost.value + 100
+            familia.boost = {name: familia.boost.name, value: familia.boost.value + 100} 
             familia.nextLevel = parseInt(familia.nextLevel) + 30000
             familia.members.forEach(async membro => {
                 const user = await database.findById(membro)
