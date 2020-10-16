@@ -81,6 +81,12 @@ function bruxa(message, user, msg) {
                 itens.push(item)
             }
         })
+    } else if (user.level > 19){
+        itemsFile.bruxa.forEach(item => {
+            if(user.level >= item.minLevel){
+                itens.push(item)
+            }
+        })
     }
 
     let embed = new MessageEmbed()
