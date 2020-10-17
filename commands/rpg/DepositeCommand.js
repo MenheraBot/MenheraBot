@@ -61,14 +61,14 @@ module.exports = {
 
             if (parseInt(familia.bank) >= parseInt(familia.nextLevel)) {
                 client.channels.cache.get("765427597101760573").send(`A família **${user.familyName}** acabou de passar de nível com o depósito de **${client.users.cache.get(user._id)}**\nAgora, a família \`${user.familyName}\` está nível **${familia.levelFamilia + 1}**\n\n${role}`)
-                CheckLevel(message, familia._id)
+                CheckLevel(familia._id)
             }
         }, 500)
 
     }
 }
 
-async function CheckLevel(message, id) {
+async function CheckLevel(id) {
 
     const familia = await familyDb.findById(id)
 
@@ -77,14 +77,20 @@ async function CheckLevel(message, id) {
     switch (familia._id) {
         case 'Loki': //Aumento do dano de ataque
             familia.levelFamilia = familia.levelFamilia + 1
-            familia.boost = {name: familia.boost.name, value: familia.boost.value + 30} 
+            familia.boost = {
+                name: familia.boost.name,
+                value: familia.boost.value + 30
+            }
             familia.nextLevel = parseInt(familia.nextLevel) + 30000
             familia.save()
-            //   lokiUp(familia.levelFamilia)
+            lokiUp(familia._id)
             break
         case 'Freya': //Aumento da Mana máxima
             familia.levelFamilia = familia.levelFamilia + 1
-            familia.boost = {name: familia.boost.name, value: familia.boost.value + 50} 
+            familia.boost = {
+                name: familia.boost.name,
+                value: familia.boost.value + 50
+            }
             familia.nextLevel = parseInt(familia.nextLevel) + 30000
             familia.members.forEach(async membro => {
                 const user = await database.findById(membro)
@@ -92,18 +98,24 @@ async function CheckLevel(message, id) {
                 user.save()
             });
             familia.save()
-            //  freyaUp(familia.levelFamilia)
+            freyaUp(familia._id)
             break
         case 'Ares': //Aumento da defesa
             familia.levelFamilia = familia.levelFamilia + 1
-            familia.boost = {name: familia.boost.name, value: familia.boost.value + 20} 
+            familia.boost = {
+                name: familia.boost.name,
+                value: familia.boost.value + 20
+            }
             familia.nextLevel = parseInt(familia.nextLevel) + 30000
             familia.save()
-            // aresUp(familia.levelFamilia)
+            aresUp(familia._id)
             break
         case 'Soma': //Aumento de vida máxima
             familia.levelFamilia = familia.levelFamilia + 1
-            familia.boost = {name: familia.boost.name, value: familia.boost.value + 100} 
+            familia.boost = {
+                name: familia.boost.name,
+                value: familia.boost.value + 100
+            }
             familia.nextLevel = parseInt(familia.nextLevel) + 30000
             familia.members.forEach(async membro => {
                 const user = await database.findById(membro)
@@ -111,37 +123,214 @@ async function CheckLevel(message, id) {
                 user.save()
             });
             familia.save()
-            // somaUp(familia.levelFamilia)
+            somaUp(familia._id)
             break
         case 'Apolo': //Aumento de Poder de Habilidade
             familia.levelFamilia = familia.levelFamilia + 1
             familia.nextLevel = parseInt(familia.nextLevel) + 30000
             familia.save()
-            //apoloUp(familia.levelFamilia)
+            apoloUp(familia._id)
             break
     }
 
 }
 
-//Criar switches para cada lvl especial
+async function lokiUp(familyId) {
 
+    const family = await familyDb.findById(familyId)
+    let level = family.levelFamilia
 
-async function lokiUp(level) {
-    return
+    setTimeout(() => {
+        switch (level) {
+            case 2:
+                //Fazer o bereguejhonson aqui
+                break;
+            case 3:
+                //Fazer o bereguejhonson aqui
+                break;
+            case 4:
+                //Fazer o bereguejhonson aqui
+                break;
+            case 5:
+                //Fazer o bereguejhonson aqui
+                break;
+            case 6:
+                //Fazer o bereguejhonson aqui
+                break;
+            case 7:
+                //Fazer o bereguejhonson aqui
+                break
+            case 8:
+                //Fazer o bereguejhonson aqui
+                break;
+            case 9:
+                //Fazer o bereguejhonson aqui
+                break;
+            case 10:
+                //Fazer o bereguejhonson aqui
+                break;
+        }
+
+        family.save()
+    }, 500)
 }
 
-async function freyaUp(level) {
-    return
+async function freyaUp(familyId) {
+
+    const family = await familyDb.findById(familyId)
+    let level = family.levelFamilia
+
+    setTimeout(() => {
+        switch (level) {
+            case 2:
+                //Fazer o bereguejhonson aqui
+                break;
+            case 3:
+                //Fazer o bereguejhonson aqui
+                break;
+            case 4:
+                //Fazer o bereguejhonson aqui
+                break;
+            case 5:
+                //Fazer o bereguejhonson aqui
+                break;
+            case 6:
+                //Fazer o bereguejhonson aqui
+                break;
+            case 7:
+                //Fazer o bereguejhonson aqui
+                break
+            case 8:
+                //Fazer o bereguejhonson aqui
+                break;
+            case 9:
+                //Fazer o bereguejhonson aqui
+                break;
+            case 10:
+                //Fazer o bereguejhonson aqui
+                break;
+        }
+
+        family.save()
+    }, 500)
 }
 
-async function aresUp(level) {
-    return
+async function aresUp(familyId) {
+
+    const family = await familyDb.findById(familyId)
+    let level = family.levelFamilia
+
+    setTimeout(() => {
+        switch (level) {
+            case 2:
+                //Fazer o bereguejhonson aqui
+                break;
+            case 3:
+                //Fazer o bereguejhonson aqui
+                break;
+            case 4:
+                //Fazer o bereguejhonson aqui
+                break;
+            case 5:
+                //Fazer o bereguejhonson aqui
+                break;
+            case 6:
+                //Fazer o bereguejhonson aqui
+                break;
+            case 7:
+                //Fazer o bereguejhonson aqui
+                break
+            case 8:
+                //Fazer o bereguejhonson aqui
+                break;
+            case 9:
+                //Fazer o bereguejhonson aqui
+                break;
+            case 10:
+                //Fazer o bereguejhonson aqui
+                break;
+        }
+
+        family.save()
+    }, 500)
 }
 
-async function somaUp(level) {
-    return
+async function somaUp(familyId) {
+
+    const family = await familyDb.findById(familyId)
+    let level = family.levelFamilia
+
+    setTimeout(() => {
+        switch (level) {
+            case 2:
+                //Fazer o bereguejhonson aqui
+                break;
+            case 3:
+                //Fazer o bereguejhonson aqui
+                break;
+            case 4:
+                //Fazer o bereguejhonson aqui
+                break;
+            case 5:
+                //Fazer o bereguejhonson aqui
+                break;
+            case 6:
+                //Fazer o bereguejhonson aqui
+                break;
+            case 7:
+                //Fazer o bereguejhonson aqui
+                break
+            case 8:
+                //Fazer o bereguejhonson aqui
+                break;
+            case 9:
+                //Fazer o bereguejhonson aqui
+                break;
+            case 10:
+                //Fazer o bereguejhonson aqui
+                break;
+        }
+
+        family.save()
+    }, 500)
 }
 
-async function apoloUp(level) {
-    return
+async function apoloUp(familyId) {
+
+    const family = await familyDb.findById(familyId)
+    let level = family.levelFamilia
+
+    setTimeout(() => {
+        switch (level) {
+            case 2:
+                //Fazer o bereguejhonson aqui
+                break;
+            case 3:
+                //Fazer o bereguejhonson aqui
+                break;
+            case 4:
+                //Fazer o bereguejhonson aqui
+                break;
+            case 5:
+                //Fazer o bereguejhonson aqui
+                break;
+            case 6:
+                //Fazer o bereguejhonson aqui
+                break;
+            case 7:
+                //Fazer o bereguejhonson aqui
+                break
+            case 8:
+                //Fazer o bereguejhonson aqui
+                break;
+            case 9:
+                //Fazer o bereguejhonson aqui
+                break;
+            case 10:
+                //Fazer o bereguejhonson aqui
+                break;
+        }
+
+        family.save()
+    }, 500)
 }

@@ -16,7 +16,7 @@ module.exports = {
       .setTitle("Clique para votar em mim")
       .setColor('#f763f8')
       .setURL("https://top.gg/bot/708014856711962654/vote")
-      .setImage("https://i.imgur.com/ZsKuh8W.png")
+      .setImage("https://i.imgur.com/27GxqX1.jpg")
       .setDescription("Votos ajudam na divulgação do bot, e isso é extremamente importante")
       .setFooter(`Comando executado por ${message.author.tag}`, message.author.displayAvatarURL())
       .setTimestamp()
