@@ -166,8 +166,6 @@ exports.continueBattle = async (message, inimigo, habilidades, user, type, ataqu
         options.push(hab)
     })
 
-    let damageReceived = ataque.damage - (user.armor + user.protection.armor);
-    if (damageReceived < 5) damageReceived = 5
     let dmgView = user.damage + user.weapon.damage
     let ptcView = user.armor + user.protection.armor
 
@@ -177,6 +175,8 @@ exports.continueBattle = async (message, inimigo, habilidades, user, type, ataqu
         if (user.familyName === "Ares") ptcView = user.armor + user.protection.armor + family.boost.value
     }
 
+    let damageReceived = ataque.damage - ptcView;
+    if (damageReceived < 5) damageReceived = 5
 
     let texto = `**${inimigo.name}** te ataca com **${ataque.name}**, e causa **${damageReceived}**, atualização dos status:\n\n**SEUS STATUS**\n❤️ | Vida: **${user.life}**\n💧 | Mana: **${user.mana}**\n⚔️ | Dano: **${dmgView}**\n🛡️ | Defesa: **${ptcView}**\n\n**STATUS DO INIMIGO**\n❤️ | Vida: **${inimigo.life}**\n⚔️ | Dano: **${inimigo.damage}**\n🛡️ | Defesa: **${inimigo.armor}**\n\nO que você faz?\n\n**OPÇÕES:**\n`
 
