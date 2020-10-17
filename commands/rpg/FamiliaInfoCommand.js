@@ -18,7 +18,8 @@ module.exports = {
 
         if (!args[0] || !validArgs.includes(args[0].toLowerCase())) return message.channel.send("<:negacao:759603958317711371> | Esta família não existe!\nFamílias disponíveis: `" + validArgs.join(", ") + "`")
 
-        const familyID = args[0].charAt(0).toUpperCase() + args[0].slice(1);
+        const minusculo = args[0].toLowerCase()
+        const familyID = minusculo.charAt(0).toUpperCase() + minusculo.slice(1);
 
         const familia = await familyDb.findById(familyID)
 
