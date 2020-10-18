@@ -15,6 +15,7 @@ module.exports = {
 
     const nota = args.join(" ");
     if (!nota) return message.channel.send("<:negacao:759603958317711371> | digite o que queres colocar em seu 'Sobre Mim'");
+    if(nota.lenght > 200) return message.channel.send("<:negacao:759603958317711371> | Seu sobremim não pode ser maior que 200 caracteres")
 
     database.findOne({
       id: message.author.id
