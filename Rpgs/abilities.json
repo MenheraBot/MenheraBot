@@ -95,13 +95,13 @@
                 "cooldown": 7200000,
                 "damage": 60,
                 "heal": 0,
-                "cost": 50
+                "cost": 55
             },
             {
                 "name": "Último Golpe",
                 "description": "Desfere um golpe de força brutal",
                 "cooldown": 7200000,
-                "damage": 100,
+                "damage": 112,
                 "heal": 0,
                 "cost": 70
             }
