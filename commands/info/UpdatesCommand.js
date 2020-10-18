@@ -25,30 +25,18 @@ module.exports = {
                 format: "png",
                 dynamic: true
             }))
-            .setDescription(`**Mudanças no RPG**
+            .setDescription(`**Pequenas mudanças no RPG**
 
-            • Mudanças do Bárbaro:
-            Habilidade 'Grito de Guerra' dano de \`60\` para \`40\`, custo de \`35\` para \`30\`
-            Habilidade 'Guilhotina Humana' dano de \`130\` para \`60\`
-            Habilidade 'Último Golpe' dano de \`150\` para \`100\`, custo de \`65\` para \`70\`
+            • Bárbaro
+            Custo da habilidade 'Guilhotina Humana' de \`50\` para \`55\`
+            Dano da habilidade 'Último Golpe' de \`100\` para \`112\`
             
-            • Mudanças do Clérigo:
-            Habilidade 'Bênção Elemental' cura de \`0\` para \`50\`
-            Habilidade 'Castigo Divino' dano de \`0\` para \`9\`
-            Habilidade 'Ascensão Espiritual' custo de \`80\` para \`90\`
+            • Morte
+            O tempo de morte foi reduzido pela metade! Antes, ao morrer, você ficava descansando por 24 horas, agora, caso morra, você descansa por **12 horas**
             
-            • Mudanças no Espadachim 
-            Habilidade 'Combate Tático' dano de \`50\` para \`35\` custo de \`40\` para \`30\`
-            Habilidade 'Excalibur' dano de \`60\` para \`55\`
-            Habilidade 'Kenjutsu' dano de \`70\` para \`90\`
-            
-            • Mudanças do Monge
-            Habilidade 'Silêncio Mortal' dano de \`70\` para \`80\`
-            
-            **HOTEL**
-            • Removida a opção 'Sono Pesado'
-             • Soninho do almoço passa para 2 horas
-            • Adicionada 2 novas opções para restaurar vida e mana
+            • Ajuste dos Bosses
+            Xp da Soma de \`50000\` para \`35000\`
+            Xp do Apolo de \`35000\` para \`50000\`
             
             
   `)
