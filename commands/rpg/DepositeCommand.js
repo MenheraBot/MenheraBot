@@ -81,7 +81,6 @@ async function CheckLevel(id) {
                 name: familia.boost.name,
                 value: familia.boost.value + 30
             }
-            familia.nextLevel = parseInt(familia.nextLevel) + 30000
             familia.save()
             lokiUp(familia._id)
             break
@@ -89,12 +88,11 @@ async function CheckLevel(id) {
             familia.levelFamilia = familia.levelFamilia + 1
             familia.boost = {
                 name: familia.boost.name,
-                value: familia.boost.value + 50
+                value: familia.boost.value + 100
             }
-            familia.nextLevel = parseInt(familia.nextLevel) + 30000
             familia.members.forEach(async membro => {
                 const user = await database.findById(membro)
-                user.maxMana = user.maxMana + 50
+                user.maxMana = user.maxMana + 100
                 user.save()
             });
             familia.save()
@@ -106,7 +104,6 @@ async function CheckLevel(id) {
                 name: familia.boost.name,
                 value: familia.boost.value + 20
             }
-            familia.nextLevel = parseInt(familia.nextLevel) + 30000
             familia.save()
             aresUp(familia._id)
             break
@@ -116,7 +113,6 @@ async function CheckLevel(id) {
                 name: familia.boost.name,
                 value: familia.boost.value + 100
             }
-            familia.nextLevel = parseInt(familia.nextLevel) + 30000
             familia.members.forEach(async membro => {
                 const user = await database.findById(membro)
                 user.maxLife = user.maxLife + 100
@@ -127,7 +123,10 @@ async function CheckLevel(id) {
             break
         case 'Apolo': //Aumento de Poder de Habilidade
             familia.levelFamilia = familia.levelFamilia + 1
-            familia.nextLevel = parseInt(familia.nextLevel) + 30000
+            familia.boost = {
+                name: familia.boost.name,
+                value: familia.boost.value + 1
+            }
             familia.save()
             apoloUp(familia._id)
             break
@@ -143,31 +142,31 @@ async function lokiUp(familyId) {
     setTimeout(() => {
         switch (level) {
             case 2:
-                //Fazer o bereguejhonson aqui
+                family.nextLevel = "100000"
                 break;
             case 3:
-                //Fazer o bereguejhonson aqui
+                family.nextLevel = "500000"
                 break;
             case 4:
-                //Fazer o bereguejhonson aqui
+                family.nextLevel = "1000000"
                 break;
             case 5:
-                //Fazer o bereguejhonson aqui
+                family.nextLevel = "1500000"
                 break;
             case 6:
-                //Fazer o bereguejhonson aqui
+                family.nextLevel = "2000000"
                 break;
             case 7:
-                //Fazer o bereguejhonson aqui
-                break
+                family.nextLevel = "5000000"
+                break;
             case 8:
-                //Fazer o bereguejhonson aqui
+                family.nextLevel = "10000000"
                 break;
             case 9:
-                //Fazer o bereguejhonson aqui
+                family.nextLevel = "50000000"
                 break;
             case 10:
-                //Fazer o bereguejhonson aqui
+                family.nextLevel = "100000000"
                 break;
         }
 
@@ -183,31 +182,31 @@ async function freyaUp(familyId) {
     setTimeout(() => {
         switch (level) {
             case 2:
-                //Fazer o bereguejhonson aqui
+                family.nextLevel = "100000"
                 break;
             case 3:
-                //Fazer o bereguejhonson aqui
+                family.nextLevel = "500000"
                 break;
             case 4:
-                //Fazer o bereguejhonson aqui
+                family.nextLevel = "1000000"
                 break;
             case 5:
-                //Fazer o bereguejhonson aqui
+                family.nextLevel = "1500000"
                 break;
             case 6:
-                //Fazer o bereguejhonson aqui
+                family.nextLevel = "2000000"
                 break;
             case 7:
-                //Fazer o bereguejhonson aqui
-                break
+                family.nextLevel = "5000000"
+                break;
             case 8:
-                //Fazer o bereguejhonson aqui
+                family.nextLevel = "10000000"
                 break;
             case 9:
-                //Fazer o bereguejhonson aqui
+                family.nextLevel = "50000000"
                 break;
-            case 10:
-                //Fazer o bereguejhonson aqui
+            case 10: 
+                family.nextLevel = "100000000"
                 break;
         }
 
@@ -223,31 +222,31 @@ async function aresUp(familyId) {
     setTimeout(() => {
         switch (level) {
             case 2:
-                //Fazer o bereguejhonson aqui
+                family.nextLevel = "100000"
                 break;
             case 3:
-                //Fazer o bereguejhonson aqui
+                family.nextLevel = "500000"
                 break;
             case 4:
-                //Fazer o bereguejhonson aqui
+                family.nextLevel = "1000000"
                 break;
             case 5:
-                //Fazer o bereguejhonson aqui
+                family.nextLevel = "1500000"
                 break;
-            case 6:
-                //Fazer o bereguejhonson aqui
+            case 6: 
+                family.nextLevel = "2000000"
                 break;
             case 7:
-                //Fazer o bereguejhonson aqui
-                break
+                family.nextLevel = "5000000"
+                break;
             case 8:
-                //Fazer o bereguejhonson aqui
+                family.nextLevel = "10000000"
                 break;
             case 9:
-                //Fazer o bereguejhonson aqui
+                family.nextLevel = "50000000"
                 break;
             case 10:
-                //Fazer o bereguejhonson aqui
+                family.nextLevel = "100000000"
                 break;
         }
 
@@ -262,32 +261,32 @@ async function somaUp(familyId) {
 
     setTimeout(() => {
         switch (level) {
-            case 2:
-                //Fazer o bereguejhonson aqui
+            case 2: 
+                family.nextLevel = "100000"
                 break;
             case 3:
-                //Fazer o bereguejhonson aqui
+                family.nextLevel = "500000"
                 break;
             case 4:
-                //Fazer o bereguejhonson aqui
+                family.nextLevel = "1000000"
                 break;
-            case 5:
-                //Fazer o bereguejhonson aqui
+            case 5: 
+                family.nextLevel = "1500000"
                 break;
-            case 6:
-                //Fazer o bereguejhonson aqui
+            case 6: 
+                family.nextLevel = "2000000"
                 break;
-            case 7:
-                //Fazer o bereguejhonson aqui
-                break
-            case 8:
-                //Fazer o bereguejhonson aqui
+            case 7: 
+                family.nextLevel = "5000000"
+                break;
+            case 8: 
+                family.nextLevel = "10000000"
                 break;
             case 9:
-                //Fazer o bereguejhonson aqui
+                family.nextLevel = "50000000"
                 break;
             case 10:
-                //Fazer o bereguejhonson aqui
+                family.nextLevel = "100000000"
                 break;
         }
 
@@ -303,31 +302,31 @@ async function apoloUp(familyId) {
     setTimeout(() => {
         switch (level) {
             case 2:
-                //Fazer o bereguejhonson aqui
+                family.nextLevel = "100000"
                 break;
             case 3:
-                //Fazer o bereguejhonson aqui
+                family.nextLevel = "500000"
                 break;
             case 4:
-                //Fazer o bereguejhonson aqui
+                family.nextLevel = "1000000"
                 break;
             case 5:
-                //Fazer o bereguejhonson aqui
+                family.nextLevel = "1500000"
                 break;
             case 6:
-                //Fazer o bereguejhonson aqui
+                family.nextLevel = "2000000"
                 break;
             case 7:
-                //Fazer o bereguejhonson aqui
-                break
+                family.nextLevel = "5000000"
+                break;
             case 8:
-                //Fazer o bereguejhonson aqui
+                family.nextLevel = "10000000"
                 break;
             case 9:
-                //Fazer o bereguejhonson aqui
+                family.nextLevel = "50000000"
                 break;
             case 10:
-                //Fazer o bereguejhonson aqui
+                family.nextLevel = "100000000"
                 break;
         }
 
