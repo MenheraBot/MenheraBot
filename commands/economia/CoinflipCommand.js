@@ -5,7 +5,7 @@ module.exports = {
     aliases: ["cf"],
     cooldown: 5,
     category: "economia",
-    dir: 'ConinflipCommand',
+    dir: 'CoinflipCommand',
     description: "Aposte estrelinhas num cara ou coroa com alguem",
     userPermission: null,
     clientPermission: ["ADD_REACTIONS"],
