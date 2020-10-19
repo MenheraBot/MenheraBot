@@ -3,7 +3,7 @@ const database = require("../../models/user.js");
 module.exports = {
     name: "coinflip",
     aliases: ["cf"],
-    cooldown: 2,
+    cooldown: 5,
     category: "economia",
     dir: 'ConinflipCommand',
     description: "Aposte estrelinhas num cara ou coroa com alguem",
@@ -31,12 +31,12 @@ module.exports = {
         if(valor > db1.estrelinhas) return message.channel.send("<:negacao:759603958317711371> | Você não possui todas essas estrelinhas para apostar!")
         if(valor > db2.estrelinhas) return message.channel.send(`<:negacao:759603958317711371> | ${user2} não possui todas essas estrelinhas para apostar!`)
 
-        message.channel.send(`${user2}, ${user1} te desafiou para uma aposta de Cara ou Coroa valendo **${valor}** :star:. Caso caia Cara, ${user1} vence, caso caia coroa, ${user2} vence!\n${user2} deve aceitar reagindo com ✅! Tu tens 15 segundos!`).then(msg => {
+        message.channel.send(`${user2}, ${user1} te desafiou para uma aposta de Cara ou Coroa valendo **${valor}** :star:. Caso caia Cara, ${user1} vence, caso caia coroa, ${user2} vence!\n${user2} deve aceitar reagindo com ✅! Tu tens 5 segundos!`).then(msg => {
 
             msg.react('✅');
             let filter = (reaction, usuario) => reaction.emoji.name === "✅" && usuario.id === user2.id;
 
-            let coletor = msg.createReactionCollector(filter, { max: 1, time: 15000})
+            let coletor = msg.createReactionCollector(filter, { max: 1, time: 5000})
 
             coletor.on("collect", r => {
                 const shirleyTeresinha = ["Cara", "Coroa"]
