@@ -162,6 +162,12 @@ exports.continueBattle = async (message, inimigo, habilidades, user, type, ataqu
         })
     }
 
+    if (user.uniquePower.name == "Morte Instantânea") {
+        habilidades.splice(habilidades.findIndex(function (i) {
+            return i.name === "Morte Instantânea"
+        }), 1);
+    }
+
     habilidades.forEach(hab => {
         options.push(hab)
     })
