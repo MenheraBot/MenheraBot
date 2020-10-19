@@ -25,20 +25,12 @@ module.exports = {
                 format: "png",
                 dynamic: true
             }))
-            .setDescription(`**Pequenas mudanças no RPG**
+            .setDescription(`**Apostas**
 
-            • Bárbaro
-            Custo da habilidade 'Guilhotina Humana' de \`50\` para \`55\`
-            Dano da habilidade 'Último Golpe' de \`100\` para \`112\`
+            • Agora é possível apostar estrelinhas com m!coinflip!
             
-            • Morte
-            O tempo de morte foi reduzido pela metade! Antes, ao morrer, você ficava descansando por 24 horas, agora, caso morra, você descansa por **12 horas**
-            
-            • Ajuste dos Bosses
-            Xp da Soma de \`50000\` para \`35000\`
-            Xp do Apolo de \`35000\` para \`50000\`
-            
-            
+            Use m!help coinflip para mais informações
+          
   `)
 
         message.channel.send(message.author, embed)

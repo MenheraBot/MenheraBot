@@ -1,6 +1,6 @@
 {
   "name": "menherabot",
-  "version": "2020.10.11.11-stable",
+  "version": "2020.10.11.13-stable",
   "description": "",
   "main": "index.js",
   "scripts": {

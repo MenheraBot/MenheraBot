@@ -73,9 +73,7 @@ function casar(user, message, men, mencionado) {
       msg.reactions.removeAll().catch();
       message.channel.send(`💍${message.author} acaba de se casar com ${mencionado}💍`);
 
-
       var resultado = moment(Date.now()).format("l LTS")
-
 
       user.casado = mencionado.id;
       user.data = resultado;
