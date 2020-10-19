@@ -41,7 +41,8 @@ module.exports = {
 
         const option = filtredOption[0].opção
         const mencionado = message.mentions.users.first()
-        const valor = parseInt(args[2]);
+        const input = parseInt(args[2]);
+        const valor = input.replace(/\D+/g, '');
         if (!mencionado) return message.channel.send("<:negacao:759603958317711371> | Você deve usar give `opção` @usuario `valor`")
         if (mencionado.id == message.author.id) return message.channel.send("<:negacao:759603958317711371> | Você não pode mencionar a si mesmo!")
 

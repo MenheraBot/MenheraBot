@@ -15,6 +15,7 @@ module.exports = {
         const user1 = message.author
         const user2 = message.mentions.users.first()
         const input = args[1]
+        if(!input) return message.channel.send("<:negacao:759603958317711371> | Este valor não é válido")
         const valor = input.replace(/\D+/g, '');
         
         if(!user2) return message.channel.send("<:negacao:759603958317711371> | Você não mencionou seu adversário")
