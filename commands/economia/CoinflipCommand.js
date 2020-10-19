@@ -14,7 +14,8 @@ module.exports = {
 
         const user1 = message.author
         const user2 = message.mentions.users.first()
-        const valor = args[1]
+        const input = args[1]
+        const valor = input.replace(/\D+/g, '');
         
         if(!user2) return message.channel.send("<:negacao:759603958317711371> | Você não mencionou seu adversário")
         if(user2.bot) return message.channel.send("<:negacao:759603958317711371> | Bots não podem apostar e.e")
