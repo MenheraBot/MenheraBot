@@ -106,7 +106,7 @@ function bruxa(message, user, msg) {
 
         if(!input){
             quantidade = 1
-        } else quantidade = input.replace(/\D+/g, '');
+        } else quantidade = parseInt(input.replace(/\D+/g, ''));
 
         if (quantidade < 1) return message.channel.send("<:negacao:759603958317711371> | Esta quantidade não é válida!");
 
@@ -438,7 +438,7 @@ async function guilda(message, user, msg) {
 
         if(!input){
             quantidade = 1
-        } else quantidade = input.replace(/\D+/g, '');
+        } else quantidade = parseInt(input.replace(/\D+/g, ''));
 
         if (quantidade < 1) return message.channel.send("<:negacao:759603958317711371> | Esta quantidade não é válida!");
         if (quantidade > contado[parseInt(args[0]) - 1].amount) return message.channel.send(`<:negacao:759603958317711371> | Você não tem ${quantidade} ${contado[parseInt(args[0]) - 1].name}`);

@@ -65,7 +65,7 @@ module.exports = {
 
     if(!input){
        quantidade = 1
-    } else quantidade = input.replace(/\D+/g, '');
+    } else quantidade = parseInt(input.replace(/\D+/g, ''));
 
 
     if(quantidade < 1) return message.channel.send("<:negacao:759603958317711371> | Essa quantidade é inválida")
