@@ -408,9 +408,7 @@ async function guilda(message, user, msg) {
         txt += `---------------**[ ${number} ]**---------------\n<:Chest:760957557538947133> | **${i.name}** ( ${i.amount} )\n💎 | **Valor:** ${filter[0].value}\n`
     })
 
-    let texto = txt.length > 1800 ? `${txt.slice(0, 1800)}...` : txt;
-
-    if(txt.length > 2000)
+    let texto = (txt.length > 1800) ? `${txt.slice(0, 1800)}...` : txt;
 
     embed.setDescription(texto)
 
