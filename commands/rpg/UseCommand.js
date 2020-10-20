@@ -60,9 +60,13 @@ module.exports = {
       return i.name === juntos[args[0] - 1].name
     })].name)
 
-    let quantidade = parseInt(args[1])
+    let input = args[1]
+    let quantidade;
 
-    if(!quantidade) quantidade = 1;
+    if(!input){
+       quantidade = 1
+    } else quantidade = input.replace(/\D+/g, '');
+
 
     if(quantidade < 1) return message.channel.send("<:negacao:759603958317711371> | Essa quantidade é inválida")
 

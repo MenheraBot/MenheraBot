@@ -101,13 +101,16 @@ function bruxa(message, user, msg) {
 
         if (!option.includes(args[0])) return message.channel.send("<:negacao:759603958317711371> | Esta opção não é válida!");
 
-        let quantidade = args[1];
-        if (!quantidade) quantidade = 1;
+        let input = args[1]
+        let quantidade;
+
+        if(!input){
+            quantidade = 1
+        } else quantidade = input.replace(/\D+/g, '');
 
         if (quantidade < 1) return message.channel.send("<:negacao:759603958317711371> | Esta quantidade não é válida!");
 
-        let valor;
-        valor = itens[parseInt(args[0] - 1)].value * quantidade;
+        let valor = itens[parseInt(args[0] - 1)].value * quantidade;
         if (!valor) return message.channel.send("<:negacao:759603958317711371> | Este valor não é valido");
         if (user.money < valor) return message.channel.send("<:negacao:759603958317711371> | Você não possui pedras mágicas suficientes");
         message.channel.send(`<:positivo:759603958485614652> | Você comprou **${quantidade} ${itens[parseInt(args[0] - 1)].name.slice(4)}** por **${valor}** 💎`)
@@ -430,8 +433,12 @@ async function guilda(message, user, msg) {
 
         if (!option.includes(args[0])) return message.channel.send("<:negacao:759603958317711371> | Esta opção não é válida!");
 
-        let quantidade = args[1];
-        if (!quantidade) quantidade = 1;
+        let input = args[1]
+        let quantidade;
+
+        if(!input){
+            quantidade = 1
+        } else quantidade = input.replace(/\D+/g, '');
 
         if (quantidade < 1) return message.channel.send("<:negacao:759603958317711371> | Esta quantidade não é válida!");
         if (quantidade > contado[parseInt(args[0]) - 1].amount) return message.channel.send(`<:negacao:759603958317711371> | Você não tem ${quantidade} ${contado[parseInt(args[0]) - 1].name}`);
