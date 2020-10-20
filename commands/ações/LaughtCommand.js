@@ -7,7 +7,7 @@ module.exports = {
   cooldown: 2,
   category: "ações",
   dir: 'LaughtCommand',
-  description: "Mostre a todos que estás rindo ",
+  description: "Mostre a todos que estás rindo",
   userPermission: null,
   clientPermission: ["EMBED_LINKS"],
   usage: "m!rir [@menção]",
@@ -40,8 +40,6 @@ module.exports = {
 
       return message.channel.send(embed);
     }
-
-    let username = user.username.toUpperCase()
 
     const embed = new MessageEmbed()
       .setTitle("RINDO")

@@ -22,7 +22,7 @@ module.exports = {
       } else return message.channel.send("<:atencao:759603958418767922> | Você não está casado com ninguém")
     })
   }
-};
+}
 
 function divorciar(user, message, client) {
 
