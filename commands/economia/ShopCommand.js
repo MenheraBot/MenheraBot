@@ -279,6 +279,7 @@ function lojaComprar(message, embedMessage, user, saldoAtual) {
             quantidadeCollector.on('collect', m => {
 
                 const input = m.content
+                if(!input) return message.channel.send("`<:negacao:759603958317711371> | ${message.author}, este valor não é um número válido!`")
                 const valor = parseInt(input.replace(/\D+/g, ''));
                 if (isNaN(valor) || valor < 1) {
                     embedMessage.delete().catch()
@@ -339,6 +340,7 @@ function lojaVender(message, embedMessage, user, saldoAtual) {
 
         const cArgs = m.content.split(/ +/g);
         const input = cArgs[1];
+        if(!input) return message.channel.send(`<:negacao:759603958317711371> | ${message.author}, este valor não é um número válido!`)
         const valor = parseInt(input.replace(/\D+/g, ''));
 
         const valorDemonio = 700;

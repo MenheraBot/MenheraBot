@@ -19,6 +19,7 @@ module.exports = {
         const familia = await familyDb.findById(user.familyName)
 
         const input = args[0]
+        if(!input) return message.channel.send("<:negacao:759603958317711371> | Este valor não é válido")
         const valor = parseInt(input.replace(/\D+/g, ''))
         if (!valor || valor < 1) return message.channel.send("<:negacao:759603958317711371> | Este valor não é válido")
 
