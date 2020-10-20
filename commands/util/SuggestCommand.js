@@ -24,7 +24,7 @@ module.exports = {
       .setThumbnail(message.author.displayAvatarURL({
         dynamic: true
       }))
-      .setFooter(`ID do usuário: ${message.author.id}`)
+      .setFooter(`ID do usuário: ${message.author.id} | ${message.id}`)
       .setTimestamp()
       .setAuthor(`Sugestão de ${message.author.tag}`, message.author.displayAvatarURL({
         dynamic: true
