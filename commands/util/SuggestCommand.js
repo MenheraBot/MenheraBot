@@ -30,8 +30,11 @@ module.exports = {
         dynamic: true
       }));
 
-    client.guilds.cache.get('717061688460967988').channels.cache.get('723765136648830996').send(embed);
-
+    client.guilds.cache.get('717061688460967988').channels.cache.get('723765136648830996').send(embed).then(m =>{
+       m.react('✅')
+       m.react('❌')
+    })
+    
     if (message.deletable) message.delete()
     message.channel.send("❤️ | Mutissimo obrigada por me enviar uma sugestão <3");
   }
