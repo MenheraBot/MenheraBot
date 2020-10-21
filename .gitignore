@@ -1,5 +1,5 @@
 config.json
 node_modules/
 package-lock.json
-commands/dev/TestCommand.js
-commands/dev/MoonCommand.js
+src/commands/Dev/TestCommand.js
+src/commands/Dev/MoonCommand.js

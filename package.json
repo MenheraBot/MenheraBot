@@ -1,25 +1,26 @@
 {
-  "name": "menherabot",
-  "version": "2020.10.11.14-stable",
-  "description": "",
+  "name": "menhera-bot",
+  "version": "2.0.0-instable",
+  "description": "Uma bot brasileira de RPG para o Discord",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node ."
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Luxanna Crownguard (ySnoopyDogy)",
   "dependencies": {
     "@sentry/node": "^5.24.2",
-    "common-tags": "^1.8.0",
     "dblapi.js": "^2.4.0",
     "discord.js": "^12.2.0",
-    "express": "^4.17.1",
     "fs-extra": "^9.0.1",
-    "jimp": "^0.13.0",
     "moment": "^2.28.0",
     "moment-duration-format": "^2.3.2",
-    "mongoose": "^5.9.21",
-    "path": "^0.12.7"
-  }
+    "mongoose": "^5.9.21"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ySnoopyDogy/MenheraBot"
+  },
+  "license": "AGPL-3.0",
+  "readme": "https://github.com/ySnoopyDogy/MenheraBot#readme"
 }
