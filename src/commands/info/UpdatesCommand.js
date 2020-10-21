@@ -19,11 +19,11 @@ module.exports = class UpdatesCommand extends Command {
             .setTitle(`Notas de atualização da versão ${require("../../../package.json").version}`)
             .setColor('#a7e74f')
             .setFooter(`${this.client.user.username} foi atualizada por ${owner.tag}`, owner.displayAvatarURL({ format: "png", dynamic: true }))
-            .setDescription(`**Apostas**
+            .setDescription(`**ATUALIZAÇÃO DO CÓDIGO**
 
-            • Agora é possível apostar estrelinhas com m!coinflip!
-            
-            Use m!help coinflip para mais informações
+            A Menhera foi reescrita para diminuir sua memória e processamento!
+
+            Ela ainda está em fase de testes, erros podem ser frequentes
           
   `)
 
