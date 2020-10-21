@@ -17,6 +17,7 @@ module.exports = class UseCommand extends Command {
         if (!user) return message.channel.send("<:negacao:759603958317711371> | Você não é um aventureiro")
     
         if (user.inBattle) return message.channel.send("<:negacao:759603958317711371> | Você não pode usar poções no meio de uma batalha!")
+        if (parseInt(user.death) > Date.now()) return message.channel.send("<:negacao:759603958317711371> | Você não pode usar poções enquanto estiver morto!")
     
         let embed = new MessageEmbed()
           .setTitle("💊 | Poções")
