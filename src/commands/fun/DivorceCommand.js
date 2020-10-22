@@ -12,65 +12,46 @@ module.exports = class DivorceCommand extends Command {
   }
   async run(message, args) {
 
-    /* 
-    *
-    *  PELO AMOR DE DEUS LUXANNA REFAZ ESSE COMANDO HORRENDO MEUS OLHOS SANGRAM
-    *
-    */
-
-    this.client.database.Users.findOne({
-      id: message.author.id
-    }, (err, user) => {
-      if (err) console.log(err);
-      if (!user) return message.reply("Mame alguém para que eu adicione-o à minha database")
-      if (user.casado && user.casado != "false") {
-        return this.divorciar(user, message)
-      } else return message.channel.send("<:atencao:759603958418767922> | Você não está casado com ninguém")
-    })
+    const user = await this.client.database.Users.findOne({ id: message.author.id })
+    if (user.casado && user.casado != "false") {
+      return this.divorciar(user, message)
+    } else message.channel.send("<:atencao:759603958418767922> | Você não está casado com ninguém")
   }
 
-  divorciar(user, message) {
+  async divorciar(user, message) {
 
-    message.channel.send(`Você realmente quer se divorciar de ${this.client.users.cache.get(user.casado)}`).then(msg => {
+    const user2 = await this.client.database.Users.findOne({ id: user.casado })
+
+    const user2Mention = this.client.users.cache.get(user.casado) || user2.nome
+
+    message.channel.send(`Você realmente quer se divorciar de ${user2Mention}`).then(msg => {
 
       msg.react("✅");
       msg.react("❌");
 
-      let filter = (reaction, usuario) => reaction.emoji.name === "✅" && usuario.id === message.author.id;
-      let filter1 = (reação, user) => reação.emoji.name === "❌" && user.id === message.author.id;
+      let filterYes = (reaction, usuario) => reaction.emoji.name === "✅" && usuario.id === message.author.id;
+      let filterNo = (reação, user) => reação.emoji.name === "❌" && user.id === message.author.id;
 
-      let ncoletor = msg.createReactionCollector(filter1, {
-        max: 1,
-        time: 14500
-      });
-      let coletor = msg.createReactionCollector(filter, {
-        max: 1,
-        time: 14500
-      });
+      let yesColetor = msg.createReactionCollector(filterYes, { max: 1, time: 14500 });
+      let noColetor = msg.createReactionCollector(filterNo, { max: 1, time: 14500 });
 
-      ncoletor.on("collect", co => {
+      noColetor.on("collect", co => {
         msg.reactions.removeAll().catch();
-        message.channel.send(`<:positivo:759603958485614652> | Ebaaa, vocês ainda estão casados`);
+        message.channel.send(`<:positivo:759603958485614652> | Eu acho bom que ainda estejam casados, mas se tu pensou em terminar uma vez, talvez pense mais vezes... Se o relacionamento não te faz bem, não tem por que continuar...`);
       });
 
-      coletor.on("collect", cp => {
+      yesColetor.on("collect", cp => {
+
         msg.reactions.removeAll().catch();
-        message.channel.send(`${message.author} acaba de se divorciar de ${this.client.users.cache.get(user.casado)}`);
+        message.channel.send(`${message.author} acaba de se divorciar de ${user2Mention}. Eu sinto muito por ter acabado tudo... Mas ta tudo bem, todos relacionamentos são apenas experiências, tu ainda tem muita vida pela frente, e ainda vai encontrar pessoas que te fazem tão bem quanto tu merece`);
 
-        this.client.database.Users.findOne({
-          id: user.casado
-        }, (err, men) => {
-          if (err) console.log(err);
+        user.casado = "false"
+        user.data = "null"
+        user2.casado = false
+        user2.data = "null"
 
-          men.casado = "false";
-          men.data = "null";
-          user.casado = "false";
-          user.data = "null";
-
-          user.save().catch(err => console.log(err))
-          men.save().catch(err => console.log(err))
-
-        })
+        user.save()
+        user2.save()
 
       });
     });

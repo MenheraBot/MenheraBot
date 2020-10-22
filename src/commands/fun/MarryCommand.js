@@ -15,78 +15,55 @@ module.exports = class MarryCommand extends Command {
     }
     async run(message, args) {
 
-        /* 
-        *
-        *  PELO AMOR DE DEUS LUXANNA REFAZ ESSE COMANDO HORRENDO MEUS OLHOS SANGRAM
-        *
-        */
-
         const mencionado = message.mentions.users.first();
 
         if (!mencionado) return message.channel.send("<:negacao:759603958317711371> | Mencione o usuário com que desejas casar");
         if (mencionado.bot) return message.channel.send("<:negacao:759603958317711371> | voce não pode se casar com bots");
         if (mencionado.id === message.author.id) return message.channel.send("<:negacao:759603958317711371> | Você não pode se casar consigo mesmo :(")
 
-        this.client.database.Users.findOne({
-            id: message.author.id
-        }, (err, user) => {
-            if (err) console.log(err);
-            if (user.casado && user.casado != "false") {
-                return message.channel.send("<:atencao:759603958418767922> | Você já está casado!!")
-            } else return this.casado(user, message, mencionado);
-        });
-    }
-    casado(user, message, mencionado) {
-        this.client.database.Users.findOne({
-            id: mencionado.id
-        }, (err, men) => {
-            if (err) console.log(err);
-            if (!men) return message.reply("Mame este usuário para adicioná-lo à minha database")
-            if (men.casado && men.casado != "false") {
-                return message.channel.send("<:atencao:759603958418767922> | Este usuário já esta casado");
-            } else return this.casar(user, message, men, mencionado);
-        })
-    }
-    casar(user, message, men, mencionado){
+        const user1 = await this.client.database.Users.findOne({ id: message.author.id })
 
-        message.channel.send(`${mencionado} Aceitas se casar com ${message.author}? Você tem 15 segundos para aceitar`).then(msg => {
+        if (user.casado && user.casado != "false") return message.channel.send("<:atencao:759603958418767922> | Você já está casado!!")
 
-            msg.react("✅").catch(err => message.channel.send("Ocorreu um erro ao adicionar uma reação, serasi eu tenho permissão para tal?"));
-            msg.react("❌").catch(err => message.channel.send("Ocorreu um erro ao adicionar uma reação, serasi eu tenho permissão para tal?"));
-    
-            let filter = (reaction, usuario) => reaction.emoji.name === "✅" && usuario.id === mencionado.id;
-            let filter1 = (reação, user) => reação.emoji.name === "❌" && user.id === mencionado.id;
-    
-            let ncoletor = msg.createReactionCollector(filter1, {
-                max: 1,
-                time: 14500
-            });
-            let coletor = msg.createReactionCollector(filter, {
-                max: 1,
-                time: 14500
-            });
-    
-            ncoletor.on("collect", co => {
+        const user2 = await this.client.database.Users.findOne({ id: user1.casado })
+
+        if (!user2) return message.channel.send("<:atencao:759603958418767922> | Mame este usuário para adicioná-lo ao meu banco de dados")
+
+        if (user2.casado && user2.casado != "false") return message.channel.send("<:atencao:759603958418767922> | Este usuário já está casado");
+
+        message.channel.send(`${mencionado} aceitas se casar com ${message.author}? Você tem 15 segundos para aceitar`).then(msg => {
+
+            msg.react("✅")
+            msg.react("❌")
+
+            let filterYes = (reaction, usuario) => reaction.emoji.name === "✅" && usuario.id === mencionado.id;
+            let filterNo = (reação, user) => reação.emoji.name === "❌" && user.id === mencionado.id;
+
+            let yesColetor = msg.createReactionCollector(filterYes, { max: 1, time: 14500 });
+            let noColetor = msg.createReactionCollector(filterNo, { max: 1, time: 14500 });
+
+            noColetor.on("collect", co => {
                 msg.reactions.removeAll().catch();
-                message.channel.send(`${mencionado} negou se casar com ${message.author}`);
+                return message.channel.send(`${mencionado} negou se casar com ${message.author}`);
             });
-    
-            coletor.on("collect", cp => {
+
+            yesColetor.on("collect", cp => {
                 msg.reactions.removeAll().catch();
                 message.channel.send(`💍${message.author} acaba de se casar com ${mencionado}💍`);
-    
-                var resultado = moment(Date.now()).format("l LTS")
-    
-                user.casado = mencionado.id;
-                user.data = resultado;
-    
-                men.casado = message.author.id;
-                men.data = resultado;
-    
-                user.save().catch(err => console.log(err))
-                men.save().catch(err => console.log(err))
-    
+
+                var dataFormated = moment(Date.now()).format("l LTS")
+
+                user1.casado = mencionado.id;
+                user1.data = dataFormated;
+
+                user2.casado = message.author.id;
+                user2.data = dataFormated;
+
+                user1.save()
+                user2.save()
+                return
             })
         })
+        
     }
 };
