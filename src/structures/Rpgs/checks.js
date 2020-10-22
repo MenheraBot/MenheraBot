@@ -93,7 +93,7 @@ module.exports.battle = async (message, escolha, user, inimigo, type, familia) =
         }
 
         user.save().then(() => this.enemyShot(message, "", user, enemy, type, familia))
-    }, 150)
+    }, 500)
 }
 
 module.exports.morte = async (message, user) => {
