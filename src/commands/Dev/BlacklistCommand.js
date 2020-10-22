@@ -14,7 +14,7 @@ module.exports = class BlackilistCommand extends Command {
 
         let user = await this.client.database.Users.findOne({ id: args[1] })
 
-        let user2 = await this.client.users.get(args[1])
+        let user2 = await this.client.users.cache.get(args[1])
 
         switch (args[0]) {
             case "add":
