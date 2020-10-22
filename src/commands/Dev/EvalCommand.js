@@ -11,8 +11,6 @@ module.exports = class EvalCommand extends Command {
     }
     async run(message, args) {
 
-        return message.reply("yay")
-
         try {
             const util = require("util")
             let evaled = await eval(args.join(" "))
