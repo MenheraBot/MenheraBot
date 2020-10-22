@@ -53,9 +53,7 @@ module.exports = class ReadyEvent {
 
     console.log(`[READY] Menhera se conectou com o Discord! (${moment(Date.now()).format("l LTS")})`)
 
-
-    let status = [{ name: "VERSÃO INSTÁVEL DA MENHERA EM FASE DE TESTES", type: "PLAYING" }]
-    /* let status = [{ name: "a moon ser perfeita", type: "WATCHING" },
+    let status = [{ name: "a moon ser perfeita", type: "WATCHING" },
     { name: "o meu servidor de suporte m!suporte", type: "LISTENING" },
     { name: "sabia que a moon é a salvação da minha dona? sem moon, menhera = inexistente m!moon", type: "PLAYING" },
     { name: "a vida é dificil, mas estamos aqui pra facilitá-la", type: "PLAYING" },
@@ -70,7 +68,7 @@ module.exports = class ReadyEvent {
     { name: "Sabia que eu tenho um rpg? m!help", type: "PLAYING" },
     { name: "Registre-se um aventureiro com m!register, e vá para aventuras na dungeon com m!dungeon", type: "PLAYING" },
     { name: "#NERFAOSMOBSMEDIOS😢😢😢", type: "PLAYING" }
-    ]; */
+    ];
 
     setInterval(() => {
       let randomStatus = status[Math.floor(Math.random() * status.length)]
