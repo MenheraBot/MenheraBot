@@ -63,7 +63,7 @@ module.exports = class DepositeCommand extends Command {
             }
 
             if (parseInt(familia.bank) >= parseInt(familia.nextLevel)) {
-                this.client.channels.cache.get("765427597101760573").send(`A família **${user.familyName}** acabou de passar de nível com o depósito de **${client.users.cache.get(user._id)}**\nAgora, a família \`${user.familyName}\` está nível **${familia.levelFamilia + 1}**\n\n${role}`)
+                this.client.channels.cache.get("765427597101760573").send(`A família **${user.familyName}** acabou de passar de nível com o depósito de **${this.client.users.cache.get(user._id)}**\nAgora, a família \`${user.familyName}\` está nível **${familia.levelFamilia + 1}**\n\n${role}`)
                 this.CheckLevel(familia)
             }
         }, 500)
