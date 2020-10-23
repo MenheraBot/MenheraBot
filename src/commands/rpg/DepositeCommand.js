@@ -80,8 +80,6 @@ module.exports = class DepositeCommand extends Command {
                     name: familia.boost.name,
                     value: familia.boost.value + 30
                 }
-                familia.save()
-                this.lokiUp(familia)
                 break
             case 'Freya': //Aumento da Mana máxima
                 familia.levelFamilia = familia.levelFamilia + 1
@@ -90,12 +88,10 @@ module.exports = class DepositeCommand extends Command {
                     value: familia.boost.value + 100
                 }
                 familia.members.forEach(async membro => {
-                    const user = await this.client.database.Rpg.findById(membro)
+                    let user = await this.client.database.Rpg.findById(membro)
                     user.maxMana = user.maxMana + 100
                     user.save()
                 });
-                familia.save()
-                this.freyaUp(familia)
                 break
             case 'Ares': //Aumento da defesa
                 familia.levelFamilia = familia.levelFamilia + 1
@@ -103,8 +99,6 @@ module.exports = class DepositeCommand extends Command {
                     name: familia.boost.name,
                     value: familia.boost.value + 20
                 }
-                familia.save()
-                this.aresUp(familia)
                 break
             case 'Soma': //Aumento de vida máxima
                 familia.levelFamilia = familia.levelFamilia + 1
@@ -113,12 +107,10 @@ module.exports = class DepositeCommand extends Command {
                     value: familia.boost.value + 100
                 }
                 familia.members.forEach(async membro => {
-                    const user = await this.client.database.Rpg.findById(membro)
+                    let user = await this.client.database.Rpg.findById(membro)
                     user.maxLife = user.maxLife + 100
                     user.save()
                 });
-                familia.save()
-                this.somaUp(familia)
                 break
             case 'Apolo': //Aumento de Poder de Habilidade
                 familia.levelFamilia = familia.levelFamilia + 1
@@ -127,174 +119,18 @@ module.exports = class DepositeCommand extends Command {
                     value: familia.boost.value + 1
                 }
                 familia.members.forEach(async membro => {
-                    const user = await this.client.database.Rpg.findById(membro)
+                    let user = await this.client.database.Rpg.findById(membro)
                     user.abilityPower = user.abilityPower + 1
                     user.save()
                 });
-                familia.save()
-                this.apoloUp(familia)
                 break
         }
+        this.ShyrleiTeresinha(familia)
     }
 
-    async lokiUp(family){
-
+    async ShyrleiTeresinha(family){
         let level = family.levelFamilia
-    
-        setTimeout(() => {
-            switch (level) {
-                case 2:
-                    family.nextLevel = "100000"
-                    break;
-                case 3:
-                    family.nextLevel = "500000"
-                    break;
-                case 4:
-                    family.nextLevel = "1000000"
-                    break;
-                case 5:
-                    family.nextLevel = "1500000"
-                    break;
-                case 6:
-                    family.nextLevel = "2000000"
-                    break;
-                case 7:
-                    family.nextLevel = "5000000"
-                    break;
-                case 8:
-                    family.nextLevel = "10000000"
-                    break;
-                case 9:
-                    family.nextLevel = "50000000"
-                    break;
-                case 10:
-                    family.nextLevel = "100000000"
-                    break;
-            }
-    
-            family.save()
-        }, 500)
-    }
 
-    async freyaUp(family) {
-
-        let level = family.levelFamilia
-    
-        setTimeout(() => {
-            switch (level) {
-                case 2:
-                    family.nextLevel = "100000"
-                    break;
-                case 3:
-                    family.nextLevel = "500000"
-                    break;
-                case 4:
-                    family.nextLevel = "1000000"
-                    break;
-                case 5:
-                    family.nextLevel = "1500000"
-                    break;
-                case 6:
-                    family.nextLevel = "2000000"
-                    break;
-                case 7:
-                    family.nextLevel = "5000000"
-                    break;
-                case 8:
-                    family.nextLevel = "10000000"
-                    break;
-                case 9:
-                    family.nextLevel = "50000000"
-                    break;
-                case 10: 
-                    family.nextLevel = "100000000"
-                    break;
-            }
-            family.save()
-        }, 500)
-    }
-
-    async aresUp(family){
-
-        let level = family.levelFamilia
-    
-        setTimeout(() => {
-            switch (level) {
-                case 2:
-                    family.nextLevel = "100000"
-                    break;
-                case 3:
-                    family.nextLevel = "500000"
-                    break;
-                case 4:
-                    family.nextLevel = "1000000"
-                    break;
-                case 5:
-                    family.nextLevel = "1500000"
-                    break;
-                case 6: 
-                    family.nextLevel = "2000000"
-                    break;
-                case 7:
-                    family.nextLevel = "5000000"
-                    break;
-                case 8:
-                    family.nextLevel = "10000000"
-                    break;
-                case 9:
-                    family.nextLevel = "50000000"
-                    break;
-                case 10:
-                    family.nextLevel = "100000000"
-                    break;
-            }
-            family.save()
-        }, 500)
-    }
-
-    async somaUp(family){
-
-        let level = family.levelFamilia
-    
-        setTimeout(() => {
-            switch (level) {
-                case 2: 
-                    family.nextLevel = "100000"
-                    break;
-                case 3:
-                    family.nextLevel = "500000"
-                    break;
-                case 4:
-                    family.nextLevel = "1000000"
-                    break;
-                case 5: 
-                    family.nextLevel = "1500000"
-                    break;
-                case 6: 
-                    family.nextLevel = "2000000"
-                    break;
-                case 7: 
-                    family.nextLevel = "5000000"
-                    break;
-                case 8: 
-                    family.nextLevel = "10000000"
-                    break;
-                case 9:
-                    family.nextLevel = "50000000"
-                    break;
-                case 10:
-                    family.nextLevel = "100000000"
-                    break;
-            }
-    
-            family.save()
-        }, 500)
-    }
-    
-    async apoloUp(family){
-
-        let level = family.levelFamilia
-    
         setTimeout(() => {
             switch (level) {
                 case 2:
