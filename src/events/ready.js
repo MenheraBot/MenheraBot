@@ -1,8 +1,5 @@
-const moment = require("moment");
 const DBL = require("dblapi.js")
 const { MessageEmbed } = require("discord.js")
-
-moment.locale("pt-br");
 
 module.exports = class ReadyEvent {
   constructor(client) {
@@ -36,7 +33,13 @@ module.exports = class ReadyEvent {
             user.estrelinhas = user.estrelinhas + (random * 3);
           }
           user.save()
-          if (usuarioDm) usuarioDm.send(embed).catch()
+          if (usuarioDm) {
+            try{
+              usuarioDm.send(embed)
+            } catch {
+              // So ignora fodase
+            }
+          }
         }
       })
 
@@ -51,7 +54,7 @@ module.exports = class ReadyEvent {
     }
     this.client.user.setActivity("Fui reiniciada com sucesso uwu")
 
-    console.log(`[READY] Menhera se conectou com o Discord! (${moment(Date.now()).format("l LTS")})`)
+    console.log(`[READY] Menhera se conectou com o Discord!`)
 
     let status = [{ name: "a moon ser perfeita", type: "WATCHING" },
     { name: "o meu servidor de suporte m!suporte", type: "LISTENING" },

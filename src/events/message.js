@@ -1,6 +1,4 @@
 const { MessageEmbed, Collection } = require("discord.js");
-const moment = require("moment");
-moment.locale("pt-br");
 const cooldowns = new Collection();
 
 module.exports = class MessageReceive {
@@ -12,10 +10,12 @@ module.exports = class MessageReceive {
 
     if (message.author.bot) return;
     if (message.channel.type === "dm") return;
+    if (!message.guild.me.hasPermission("SEND_MESSAGES")) return;
 
     let server = await this.client.database.Guilds.findOne({ id: message.guild.id })
     if (!server) {
-      this.client.database.Guilds({ id: message.guild.id }).save()
+      server = this.client.database.Guilds({ id: message.guild.id })
+      server.save()
     }
 
     let prefix;
@@ -40,7 +40,7 @@ module.exports = class MessageReceive {
         user.afk = false
         user.afkReason = null
         user.save()
-        message.channel.send(`Bem vindo de volta ${message.author} >.<`).then(msg => msg.delete({
+        message.channel.send(`<:MenheraWink:767210250637279252> | Bem vindo de volta ${message.author} >.<`).then(msg => msg.delete({
           timeout: 5000
         })).catch()
       }
@@ -49,8 +49,6 @@ module.exports = class MessageReceive {
     if (message.content.startsWith(`<@!${this.client.user.id}>`) || message.content.startsWith(`<@${this.client.user.id}>`)) return message.channel.send(`<:guilda:759892389724028948> **|** Oizinho ${message.author}, meu nome é Menhera, meu prefixo neste servidor é \`${prefix}\`. Use \`${prefix}help\` para ver todos os meus comandos!`).catch()
 
     if (!message.content.toLowerCase().startsWith(prefix)) return;
-
-    if (!message.member) message.member = await message.guild.fetch(message);
 
     const args = message.content.slice(prefix.length).trim().split(/ +/g);
     const cmd = args.shift().toLowerCase();
@@ -69,13 +67,10 @@ module.exports = class MessageReceive {
       }).save()
     }
 
-    if (!message.guild.me.hasPermission("SEND_MESSAGES")) return;
-
     if (server && server.blockedChannels.includes(message.channel.id) && !message.member.hasPermission("MANAGE_CHANNELS")) return message.channel.send(`<:negacao:759603958317711371> | Meus comandos estão bloqueados neste canal, ${message.author}`)
 
     if (user) {
       if (user.ban) {
-
         let avatar
         if (!message.author.avatar.startsWith("a_")) {
           if (!message.author.avatar) {
@@ -90,14 +85,13 @@ module.exports = class MessageReceive {
             avatar = `https://cdn.discordapp.com/avatars/${message.author.id}/${message.author.avatar}.gif?size=2048`
           }
         }
-        let owner = await this.client.users.fetch("435228312214962204")
 
         const embed = new MessageEmbed()
           .setColor('#c1001d')
           .setAuthor("Você foi banido", avatar)
           .setDescription(`Olá ${message.author}, você foi banido de usar a Menhera`)
           .addField("Motivo", user.banReason)
-          .addField("Banido injustamente?", `Se você acha que foi banido injustamente, então entre em contato com a ${owner.tag} ou entre no meu servidor de suporte.`)
+          .addField("Banido injustamente?", `Se você acha que foi banido injustamente, então entre em meu servidor de suporte.`)
 
         message.channel.send(embed).catch(() => { message.author.send(embed).catch() })
         return
@@ -105,7 +99,7 @@ module.exports = class MessageReceive {
     }
 
     if (command.config.devsOnly) {
-      if (!this.client.config.owner.includes(message.author.id)) return message.channel.send(`Perdão ${message.author}, este comando só está disponível para minha dona :(`)
+      if (!this.client.config.owner.includes(message.author.id)) return message.channel.send(`<:negacao:759603958317711371> | Perdão ${message.author}, este comando só está disponível para minha dona :(`)
     }
 
     let c = await this.client.database.Cmds.findById(command.config.name)
@@ -136,7 +130,6 @@ module.exports = class MessageReceive {
 
       timestamps.set(message.author.id, now);
       setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
-
     }
 
     let userPermission = command.config.userPermissions
@@ -160,7 +153,7 @@ module.exports = class MessageReceive {
 
         message.channel.startTyping()
         res(command.run(message, args))
-        console.log(`[COMANDO] Comando ${command.config.name} executado por ${message.author.id} (${moment(Date.now()).format("l LTS")})`)
+        console.log(`[COMANDO] ${command.config.name.toUpperCase()} | USER: ${message.author.tag} / ${message.author.id} | GUILD: ${message.guild.name} / ${message.guild.id}`)
       }).then(() => message.channel.stopTyping()).catch(err => {
 
         message.channel.stopTyping()
@@ -177,7 +170,7 @@ module.exports = class MessageReceive {
         embed.setTimestamp()
         embed.addField(`<:ok:727975974125436959> | Reporte esse problema`, "Entre em meu servidor de suporte para reportar esse problema à minha dona")
 
-        message.channel.send(embed).catch(() => message.channel.send("Aparentemente ocorreu um erro ao executar este comando! Reporte isso à minha dona em meu servidor de suporte!"))
+        message.channel.send(embed).catch(() => message.channel.send("<:negacao:759603958317711371> | Aparentemente ocorreu um erro ao executar este comando! Reporte isso à minha dona em meu servidor de suporte!"))
         canal.send(embed).catch()
       })
     } catch (err) {
@@ -195,7 +188,7 @@ module.exports = class MessageReceive {
       embed.setTimestamp()
       embed.addField(`<:ok:727975974125436959> | Reporte esse problema`, "Entre em meu servidor de suporte para reportar esse problema à minha dona")
 
-      message.channel.send(embed).catch(() => message.channel.send("Aparentemente ocorreu um erro ao executar este comando! Reporte isso à minha dona em meu servidor de suporte!"))
+      message.channel.send(embed).catch(() => message.channel.send("<:negacao:759603958317711371> | Aparentemente ocorreu um erro ao executar este comando! Reporte isso à minha dona em meu servidor de suporte!"))
       canal.send(embed).catch()
       console.error(err.stack)
     }
