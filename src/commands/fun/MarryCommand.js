@@ -25,7 +25,7 @@ module.exports = class MarryCommand extends Command {
 
         if (user1.casado && user1.casado != "false") return message.channel.send("<:atencao:759603958418767922> | Você já está casado!!")
 
-        const user2 = await this.client.database.Users.findOne({ id: user1.casado })
+        const user2 = await this.client.database.Users.findOne({ id: mencionado.id })
 
         if (!user2) return message.channel.send("<:atencao:759603958418767922> | Mame este usuário para adicioná-lo ao meu banco de dados")
 
