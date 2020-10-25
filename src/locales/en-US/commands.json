@@ -493,7 +493,7 @@
     },
     "botinfo": {
         "description": "Shows current bot information",
-        "embed_description": "Hi my name is **{{name}}**, and I'm a Brazilian Bot for Discord with a focus on fun and RPG!\n\nI am made in JavaScript with discord.js! I was created in ** {{createdAt}} ** and joined this server in** {{joinedAt}} **",
+        "embed_description": "Hi my name is **{{name}}**, and I'm a Brazilian Bot for Discord with a focus on fun and RPG!\n\nI was made in JavaScript with discord.js! I was created in ** {{createdAt}} ** and joined this server in** {{joinedAt}} **",
         "embed_footer": "was created by",
         "channels": "Channels",
         "users": "Users",
