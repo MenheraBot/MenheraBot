@@ -15,7 +15,7 @@ Feel free to add a star ⭐ to the repository to promote the project!
 
 ### Multi-language
 
-Menhera can be used in brazilian portuguese and english
+Menhera can be used in brazilian portuguese or english
 
 ### Bot de RPG
 
