@@ -20,15 +20,15 @@ module.exports = class TopCommand extends Command {
         if (!argumento) return message.reply(txt)
 
         let argsDemonios = ["demonios", "demônios", "demons"];
-        let argsAnjos = ["anjos"]
-        let argsSemideuses = ["semideuses", "semi-deuses", "sd"];
+        let argsAnjos = ["anjos", "angels"]
+        let argsSemideuses = ["semideuses", "semi-deuses", "sd", "demigods", "dg"];
         let argsDeuses = ["deuses", "gods"]
-        let argsMamou = ["mamou", "mamadores"];
-        let argsMamados = ["mamados", "chupados"];
-        let argsEstrelinhas = ["estrelinhas", "estrelinha", "stars", "star", "money", "dinheiro"];
+        let argsMamou = ["mamou", "mamadores","suckers"];
+        let argsMamados = ["mamados", "chupados","suckled"];
+        let argsEstrelinhas = ["estrelinhas", "estrelinha", "stars", "star"];
         let argsVotos = ["votadores", "voto", "votes", "votos", "upvotes", "upvote", "vote"];
-        let argsDungeon = ["dungeon", "xp", "level", "vila", "rpg", "boleham"]
-        let argsFamilias = ["famílias", "familias", "familia", "família"]
+        let argsDungeon = ["dungeon", "rpg"]
+        let argsFamilias = ["famílias", "familias", "familia", "família", "family", "families"]
 
         if (argsMamou.includes(argumento)) {
             this.topMamadores(this.client, message, t)

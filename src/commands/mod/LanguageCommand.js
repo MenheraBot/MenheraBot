@@ -12,8 +12,6 @@ module.exports = class LanguageCommand extends Command {
     }
     async run({ message, args, server }, t) {
 
-        return message.menheraReply("error", "A menhera está disponível apenas em português")
-
         message.menheraReply("question", t("commands:language.question")).then(msg => {
             msg.react("🇧🇷")
             setTimeout(function () {
