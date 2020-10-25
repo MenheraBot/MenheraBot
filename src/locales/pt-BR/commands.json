@@ -810,6 +810,7 @@
         "guilda": {
             "title": "Guilda",
             "footer": "Mande no chat a sua escolha e a quantidade, exemplo: 1 3",
+            "money": "Suas pedras mágicas **{{money}}** 💎\n\n",
             "value": "Valor",
             "no-loots": "**VOCÊ NÃO POSSUI LOOTS EM SEU INVENTÁRIO**",
             "poor": "você não tem",

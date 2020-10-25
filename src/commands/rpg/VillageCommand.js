@@ -357,7 +357,7 @@ module.exports = class VillageCommand extends Command {
             nameLoots.push(loot.name)
         })
 
-        let txt = `Suas pedras mágicas: **${user.money}** 💎\n\n`;
+        let txt = t("commands:village.guilda.money", {money: user.money});
 
         let embed = new MessageEmbed()
             .setTitle(`🏠 | ${t("commands:village.guilda.title")}`)
