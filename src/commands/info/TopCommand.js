@@ -31,30 +31,30 @@ module.exports = class TopCommand extends Command {
         let argsFamilias = ["famílias", "familias", "familia", "família"]
 
         if (argsMamou.includes(argumento)) {
-            this.topMamadores(this.client, message)
+            this.topMamadores(this.client, message, t)
         } else if (argsMamados.includes(argumento)) {
-            this.topMamados(this.client, message)
+            this.topMamados(this.client, message, t)
         } else if (argsEstrelinhas.includes(argumento)) {
-            this.topEstrelinhas(this.client, message)
+            this.topEstrelinhas(this.client, message, t)
         } else if (argsDemonios.includes(argumento)) {
-            this.topDemonios(this.client, message)
+            this.topDemonios(this.client, message, t)
         } else if (argsAnjos.includes(argumento)) {
-            this.topAnjos(this.client, message)
+            this.topAnjos(this.client, message, t)
         } else if (argsSemideuses.includes(argumento)) {
-            this.topSD(this.client, message)
+            this.topSD(this.client, message, t)
         } else if (argsDeuses.includes(argumento)) {
-            this.topDeuses(this.client, message)
+            this.topDeuses(this.client, message, t)
         } else if (argsVotos.includes(argumento)) {
-            this.topVotos(this.client, message)
+            this.topVotos(this.client, message, t)
         } else if (argsDungeon.includes(argumento)) {
-            this.topDungeon(this.client, message)
+            this.topDungeon(this.client, message, t)
         } else if (argsFamilias.includes(argumento)) {
-            this.topFamilia(this.client, message)
+            this.topFamilia(this.client, message, t)
         } else message.menheraReply("warn", t("commands:top.txt"))
 
     }
 
-    topMamados(client, message) {
+    topMamados(client, message, t) {
 
         let embed = new MessageEmbed()
 
@@ -82,7 +82,7 @@ module.exports = class TopCommand extends Command {
             })
     }
 
-    topMamadores(client, message) {
+    topMamadores(client, message, t) {
 
         let embed = new MessageEmbed()
 
@@ -111,7 +111,7 @@ module.exports = class TopCommand extends Command {
             })
     }
 
-    topDemonios(client, message) {
+    topDemonios(client, message, t) {
 
         let embed = new MessageEmbed()
 
@@ -140,7 +140,7 @@ module.exports = class TopCommand extends Command {
             })
     }
 
-    topAnjos(client, message) {
+    topAnjos(client, message, t) {
 
         let embed = new MessageEmbed()
 
@@ -169,7 +169,7 @@ module.exports = class TopCommand extends Command {
             })
     }
 
-    topSD(client, message) {
+    topSD(client, message, t) {
 
         let embed = new MessageEmbed()
 
@@ -198,7 +198,7 @@ module.exports = class TopCommand extends Command {
             })
     }
 
-    topDeuses(client, message) {
+    topDeuses(client, message, t) {
 
         let embed = new MessageEmbed()
 
@@ -227,7 +227,7 @@ module.exports = class TopCommand extends Command {
             })
     }
 
-    topEstrelinhas(client, message) {
+    topEstrelinhas(client, message, t) {
 
         let embed = new MessageEmbed()
 
@@ -257,7 +257,7 @@ module.exports = class TopCommand extends Command {
             })
     }
 
-    topVotos(client, message) {
+    topVotos(client, message, t) {
         let embed = new MessageEmbed()
 
             .setTitle(`<:ok:727975974125436959> |  ${t("commands:top.voteTitle")}`)
@@ -286,7 +286,7 @@ module.exports = class TopCommand extends Command {
             })
     }
 
-    topDungeon(client, message) {
+    topDungeon(client, message, t) {
         let embed = new MessageEmbed()
 
             .setTitle(`<:Chest:760957557538947133> | ${t("commands:top.rpgTitle")}`)
@@ -316,7 +316,7 @@ module.exports = class TopCommand extends Command {
             })
     }
 
-    topFamilia(client, message) {
+    topFamilia(client, message, t) {
         let embed = new MessageEmbed()
 
             .setTitle(`🔱 | ${t("commands:top.familyTitle")}`)
@@ -340,6 +340,5 @@ module.exports = class TopCommand extends Command {
                 }
                 message.channel.send(message.author, embed)
             })
-
     }
 }
