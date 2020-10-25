@@ -34,14 +34,14 @@ module.exports = class AbilityInfoCommand extends Command {
         switch (option) {
             case 'classe':
                 if (!args[1]) return message.menheraReply("error", t("commands:ih.no-class"))
-                this.getClass(message, args[1])
+                this.getClass(message, args[1], t)
                 break;
             case 'minhas':
-                this.getAll(message)
+                this.getAll(message, t)
                 break
         }
     }
-    getClass(message, classe) {
+    getClass(message, classe, t) {
 
         const classes = ["assassino", "barbaro", "clerigo", "druida", "espadachim", "feiticeiro", "monge", "necromante"]
 
@@ -91,7 +91,7 @@ module.exports = class AbilityInfoCommand extends Command {
         message.channel.send(message.author, embed)
 
     }
-    async getAll(message) {
+    async getAll(message, t) {
 
         const user = await this.client.database.Rpg.findById(message.author.id)
         if (!user) return message.menheraReply("error", t("commands:ih.non-aventure"))
