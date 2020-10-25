@@ -280,7 +280,7 @@
         },
         "dataVender": {
             "main": {
-                "description": "Your current balance is **{{balance}}** ⭐ stars and your hunts are: \n\n <:DEMON:758765044443381780>: **{{demons}}** demons \n <:ANGEL:758765044204437535> : **{{angels}}** angels \n <:SEMIGOD:758766732235374674>: **{{sd}} * demigods \n <: God:758474639570894899>: **{{gods}}** gods",
+                "description": "Your current balance is **{{balance}}** ⭐ stars and your hunts are: \n\n <:DEMON:758765044443381780>: **{{demons}}** demons \n <:ANGEL:758765044204437535> : **{{angels}}** angels \n <:SEMIGOD:758766732235374674>: **{{sd}}** demigods \n <:God:758474639570894899>: **{{gods}}** gods",
                 "footer": "Type in the chat the option of your choice and the value",
                 "fields": {
                     "name": "Sales Options",
@@ -416,7 +416,7 @@
     "top": {
         "description": "See the top of my users",
         "usage": "<option>",
-        "txt": "You must choose between `{{prefix}}top suckers`,` {{prefix}}top suckled`, `{{prefix}}top demons`,` {{prefix}} top angels`, `{{prefix}} top demigods`, `{{prefix}} top gods`,` {{prefix}} top little stars`, `{{prefix}} top votes`,` {{prefix}} top dungeon` or `{{prefix}} top families`",
+        "txt": "You must choose between `{{prefix}}top suckers`,` {{prefix}}top suckled`, `{{prefix}}top demons`,` {{prefix}}top angels`, `{{prefix}}top demigods`, `{{prefix}}top gods`,` {{prefix}}top stars`, `{{prefix}}top votes`,` {{prefix}}top dungeon` or `{{prefix}}top families`",
         "mamadoresTitle": "Suckers Leaderboard",
         "mamouTitle": "Suckled Leaderboard",
         "demonTitle": "Demons Leaderboard",
