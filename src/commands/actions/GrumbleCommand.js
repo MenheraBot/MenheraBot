@@ -5,14 +5,13 @@ module.exports = class GrumbleCommand extends Command {
         super(client, {
             name: "resmungar",
             aliases: ["grumble", "humpf"],
-            description: "Resmungue humpf",
             clientPermissions: ["EMBED_LINKS"],
             category: "ações"
         })
     }
-    async run(message, args) {
+    async run({ message, args, server }, t) {
 
-        let avatar = message.author.displayAvatarURL({format: "png"});
+        let avatar = message.author.displayAvatarURL({ format: "png" });
 
         var list = [
             "https://i.imgur.com/l1jwHGy.gif",
@@ -26,9 +25,9 @@ module.exports = class GrumbleCommand extends Command {
         var rand = list[Math.floor(Math.random() * list.length)];
 
         const embed = new MessageEmbed()
-            .setTitle("Humpf")
+            .setTitle(t("commands:grumble.embed_title"))
             .setColor("#000000")
-            .setDescription(`${message.author} está resmungando`)
+            .setDescription(`${message.author} ${t("commands:grumble.embed_description")}`)
             .setThumbnail(avatar)
             .setImage(rand)
             .setAuthor(message.author.tag, avatar);

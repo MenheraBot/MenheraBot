@@ -5,13 +5,11 @@ module.exports = class KillCommand extends Command {
         super(client, {
             name: "matar",
             aliases: ["kill"],
-            description: "Mate aquele que você não suporta mais",
             clientPermissions: ["EMBED_LINKS"],
-            category: "ações",
-            usage: "<@menção>"
+            category: "ações"
         })
     }
-    async run(message, args) {
+    async run({ message, args, server }, t) {
 
         var list = [
             "https://i.imgur.com/teca6na.gif",
@@ -27,11 +25,11 @@ module.exports = class KillCommand extends Command {
         let avatar = message.author.displayAvatarURL({ format: "png" });
 
         if (!user) {
-            return message.channel.send("<:negacao:759603958317711371> | Se tu não matar ninguém, tu não comete crimes. STONKS");
+            return message.menheraReply("error", t("commands:kill.no-mention"))
         }
 
         if (user === message.author) {
-            return message.channel.send("<:negacao:759603958317711371> | Ai, eu não gosto de suicídio...");
+            return message.menheraReply("error", t("commands:kill.self-mention"))
         }
 
         if (user.bot) {
@@ -45,9 +43,9 @@ module.exports = class KillCommand extends Command {
             var Rrand = ro[Math.floor(Math.random() * ro.length)];
 
             const Rembed = new MessageEmbed()
-                .setTitle("Desligar")
+                .setTitle(t("commands:kill.bot.embed_title"))
                 .setColor("#000000")
-                .setDescription(`*Robôs não podem ser mortos, mas podem ser desligados...* \n ${message.author} Desligou o bot ${user}`)
+                .setDescription(`${t("commands:kill.bot.embed_description_start")} \n${message.author} ${t("commands:kill.bot.embed_description_end")} ${user}`)
                 .setImage(Rrand)
                 .setThumbnail(avatar)
                 .setAuthor(message.author.tag, avatar);
@@ -56,9 +54,9 @@ module.exports = class KillCommand extends Command {
         }
 
         const embed = new MessageEmbed()
-            .setTitle("Matar")
+            .setTitle(t("commands:kill.embed_title"))
             .setColor("#000000")
-            .setDescription(`${message.author} M A T O U ${user}`)
+            .setDescription(`${message.author} ${t("commands:kill.embed_description")} ${user}`)
             .setImage(rand)
             .setThumbnail(avatar)
             .setAuthor(message.author.tag, avatar);

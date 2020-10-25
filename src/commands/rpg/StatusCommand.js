@@ -6,19 +6,17 @@ module.exports = class StatusCommand extends Command {
             name: "status",
             aliases: ["stats"],
             cooldown: 5,
-            description: "Veja os status de alguém",
             category: "rpg",
-            clientPermissions: ["EMBED_LINKS"],
-            usage: "[usuário]"
+            clientPermissions: ["EMBED_LINKS"]
         })
     }
-    async run(message, args) {
+    async run({ message, args, server }, t) {
 
         let mentioned = message.mentions.users.first() || this.client.users.cache.get(args[0]);
         if (!mentioned) mentioned = message.author;
 
         const user = await this.client.database.Rpg.findById(mentioned.id)
-        if (!user) return message.channel.send("<:negacao:759603958317711371> | Este usuário não está registrado como um aventureiro")
+        if (!user) return message.menheraReply("error". t("commands:status.not-found"))
 
         let dmg = `${user.damage} + ${user.weapon.damage}`
         let ptr = `${user.armor} + ${user.protection.armor}`
@@ -32,34 +30,34 @@ module.exports = class StatusCommand extends Command {
         }
 
         let embed = new MessageEmbed()
-            .setTitle(`📜 | Status de ${mentioned.username}`)
+            .setTitle(`📜 | ${t("commands:status.title", {name: mentioned.username})}`)
             .setColor('#f04682')
             .addFields([{
-                name: `🩸 | Vida`,
+                name: `🩸 | ${t("commands:status.life")}`,
                 value: user.life + '/' + user.maxLife,
                 inline: true
             },
             {
-                name: `⚔️ | Classe`,
+                name: `⚔️ | ${t("commands:status.class")}`,
                 value: user.class,
                 inline: true
             },
             {
-                name: `🛡️ | Armadura`,
+                name: `🛡️ | ${t("commands:status.armor")}`,
                 value: ptr,
                 inline: true
             },
             {
-                name: `🗡️ | Dano Físico`,
+                name: `🗡️ | ${t("commands:status.dmg")}`,
                 value: dmg,
                 inline: true
             }, {
-                name: `💧 | Mana`,
+                name: `💧 | ${t("commands:status.mana")}`,
                 value: user.mana + '/' + user.maxMana,
                 inline: true
             },
             {
-                name: `🔮 | Poder Mágico`,
+                name: `🔮 | ${t("commands:status.ap")}`,
                 value: user.abilityPower,
                 inline: true
             },
@@ -74,17 +72,17 @@ module.exports = class StatusCommand extends Command {
                 inline: true
             },
             {
-                name: `💎 | Pedras Magicas`,
+                name: `💎 | ${t("commands:status.money")}`,
                 value: user.money,
                 inline: true
             },
             {
-                name: `⚗️ | Habilidade Única`,
+                name: `⚗️ | ${t("commands:status.ability")}`,
                 value: user.uniquePower.name,
                 inline: true
             }
             ])
-        if (user.hasFamily) embed.addField(`🔱 | Família`, user.familyName, true)
+        if (user.hasFamily) embed.addField(`🔱 | ${t("commands:status.family")}`, user.familyName, true)
         message.channel.send(message.author, embed)
     }
 };

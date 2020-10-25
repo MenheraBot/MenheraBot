@@ -4,12 +4,11 @@ module.exports = class HumorCommand extends Command {
     constructor(client) {
         super(client, {
             name: "humor",
-            description: "Mande quando alguem fizer aquela piadoca do joca",
             category: "diversão",
             clientPermissions: ["MANAGE_MESSAGES", "EMBED_LINKS"]
         })
     }
-    async run(message, args) {
+    async run({ message, args, server }, t) {
 
         if (message.deletable) message.delete();
 
@@ -28,7 +27,7 @@ module.exports = class HumorCommand extends Command {
 
         const embed = new MessageEmbed()
             .setImage(rand)
-            .setTitle(`${message.author.username} achou você engraçadão ein`);
+            .setTitle(`${message.author.username} ${t("commands:humor.phrase")}`);
 
         message.channel.send(embed);
     }

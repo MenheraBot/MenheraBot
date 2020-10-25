@@ -8,7 +8,19 @@ module.exports = class TestCommand extends Command {
             category: "Dev"
         })
     }
-    async run(message, args) {
-        //Aquivo extra para testes
+    async run({ message, args, server }, t) {
+
+        this
+
+        /* 
+ =====================================DELETAR GUILDAS INATIVAS==========================================================
+        const files = await this.client.database.Guilds.find()
+        files.forEach(doc => {
+            if(doc.prefix == "m!"){
+                if(doc.blockedChannels == null || doc.blockedChannels.length == 0){
+                    this.client.database.Guilds.findOneAndDelete({id: doc.id}).then(console.log("Arquivo deletado"))
+                }
+            }
+        }); */
     }
 }

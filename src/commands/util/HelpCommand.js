@@ -8,13 +8,11 @@ module.exports = class HelpCommand extends Command {
             name: "help",
             aliases: ["ajuda", "h"],
             cooldown: 5,
-            description: "Mostra a pagina de ajuda do bot",
             category: "util",
-            usage: "[comando]",
             clientPermissions: ["EMBED_LINKS"],
         })
     }
-    async run(message, args) {
+    async run({ message, args, server }, t) {
 
         if (args[0]) {
             return getCMD(this.client, message, args[0]);
@@ -30,24 +28,21 @@ function getAll(client, message) {
     embed.setColor('#b880e6')
     embed.setThumbnail(client.user.displayAvatarURL())
 
-    embed.addField(`Ações (${getCommmandSize("ações", client)})`, getCategory("ações", client))
-    embed.addField(`Diversão (${getCommmandSize("diversão", client)})`, getCategory("diversão", client))
-    embed.addField(`Economia (${getCommmandSize("economia", client)})`, getCategory("economia", client))
-    embed.addField(`Info (${getCommmandSize("info", client)})`, getCategory("info", client))
-    embed.addField(`Moderação (${getCommmandSize("moderação", client)})`, getCategory("moderação", client))
-    embed.addField(`RPG (${getCommmandSize("rpg", client)})`, getCategory("rpg", client))
-    embed.addField(`Útil (${getCommmandSize("util", client)})`, getCategory("util", client))
+    embed.addField(`${t("commands:help.actions")} (${getCommmandSize("ações", client)})`, getCategory("ações", client))
+    embed.addField(`${t("commands:help.fun")} (${getCommmandSize("diversão", client)})`, getCategory("diversão", client))
+    embed.addField(`${t("commands:help.economy")} (${getCommmandSize("economia", client)})`, getCategory("economia", client))
+    embed.addField(`${t("commands:help.info")} (${getCommmandSize("info", client)})`, getCategory("info", client))
+    embed.addField(`${t("commands:help.mod")} (${getCommmandSize("moderação", client)})`, getCategory("moderação", client))
+    embed.addField(`${t("commands:help.rpg")} (${getCommmandSize("rpg", client)})`, getCategory("rpg", client))
+    embed.addField(`${t("commands:help.util")} (${getCommmandSize("util", client)})`, getCategory("util", client))
 
-    embed.addField("Links Adicionais", "[Adicione-me](https://discord.com/api/oauth2/authorize?client_id=708014856711962654&permissions=1007025271&scope=bot)|[Vote em mim](https://top.gg/bot/708014856711962654/vote)|[Meu servidor de Suporte](https://discord.gg/fZMdQbA)")
+    embed.addField(t("commands:help.link_name"), t("commands:help.link_value"))
 
     message.author.send(embed).then(() => {
-        message.reply("enviei meus comandos para sua dm, olha lá >.<")
+        message.menheraReply("success", t("commands:help.dm_sent"))
     }).catch(() => {
-        message.reply("aparentemente suas dms estão fechadas, não posso te enviar minha página de ajuda")
+        message.menheraReply("error", t("commands:help.dm_error"))
     })
-
-
-
 }
 
 function getCategory(category, client) {
@@ -63,15 +58,15 @@ function getCMD(client, message, input) {
 
     const cmd = client.commands.get(input.toLowerCase()) || client.commands.get(client.aliases.get(input.toLowerCase()));
 
-    let info = `Sem informações para o comando **${input.toLowerCase()}**`;
+    let info = t("commands:help.without-info", {cmd: input.toLowerCase()});
 
     if (!cmd) {
         return message.channel.send(embed.setColor("#ff0000").setDescription(info));
     }
 
-    if (cmd.config.name) info = `**Comando**: ${cmd.config.name}`;
-    if (cmd.config.aliases) info += `\n**Pode ser chamado por**: ${cmd.config.aliases.map(a => `\`${a}\``).join(", ")}`;
-    if (cmd.config.description) info += `\n**Descrição**: ${cmd.config.description}`;
+    if (cmd.config.name) info = `**${t("commands:help.cmd")}**: ${cmd.config.name}`;
+    if (cmd.config.aliases.length > 0) info += `\n**${t("commands:help.aliases")}**: ${cmd.config.aliases.map(a => `\`${a}\``).join(", ")}`;
+    if (cmd.config.description) info += `\n**${t("commands:help.desc")}**: ${t(`commands:${cmd.config.name}.description`)}`;
     if (cmd.config.cooldown) info += `\n**Cooldown**: ${cmd.config.cooldown} segundos`
     if (cmd.config.usage) {
         info += `\n**Como usar**: ${cmd.config.usage}`;

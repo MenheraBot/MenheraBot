@@ -5,19 +5,17 @@ module.exports = class WalletCommand extends Command {
         super(client, {
             name: "carteira",
             aliases: ["wallet"],
-            description: "Veja a carteira de alguém",
-            usage: "[usuário]",
             category: "economia",
             clientPermissions: ["EMBED_LINKS"]
         })
     }
-    async run(message, args) {
+    async run({ message, args, server }, t) {
 
         let pessoa = message.mentions.users.first() || this.client.users.cache.get(args[0]);
         if (!pessoa) pessoa = message.author;
 
         let user = await this.client.database.Users.findOne({ id: pessoa.id });
-        if (!user) return message.channel.send("<:negacao:759603958317711371> | Este usuário não está em minha database")
+        if (!user) return message.menheraReply("error", t("commands:wallet.no-dbuser"))
 
         let cor;
 
@@ -26,35 +24,35 @@ module.exports = class WalletCommand extends Command {
         } else cor = "#a788ff";
 
         const embed = new MessageEmbed()
-            .setTitle(`Carteira de ${pessoa.tag}`)
+            .setTitle(t("commands:wallet.title", { user: pessoa.tag }))
             .setColor(cor)
             .addFields([{
-                name: "⭐ | Estrelinhas",
+                name: `⭐ | ${t("commands:wallet.stars")}`,
                 value: `**${user.estrelinhas}**`,
                 inline: true
             },
             {
-                name: "🔑 | Rolls",
+                name: `🔑 | ${t("commands:wallet.rolls")}`,
                 value: `**${user.rolls}**`,
                 inline: true
             },
             {
-                name: "<:DEMON:758765044443381780> | Demônios ",
+                name: `<:DEMON:758765044443381780> | ${t("commands:wallet.demons")} `,
                 value: `**${user.caçados}**`,
                 inline: true
             },
             {
-                name: "<:ANGEL:758765044204437535> | Anjos",
+                name: `<:ANGEL:758765044204437535> | ${t("commands:wallet.angels")}`,
                 value: `**${user.anjos}**`,
                 inline: true
             },
             {
-                name: "<:SemiGod:758766732235374674> | Semideuses",
+                name: `<:SemiGod:758766732235374674> | ${t("commands:wallet.sd")}`,
                 value: `**${user.semideuses}**`,
                 inline: true
             },
             {
-                name: "<:God:758474639570894899> | Deuses",
+                name: `<:God:758474639570894899> | ${t("commands:wallet.god")}`,
                 value: `**${user.deuses}**`,
                 inline: true
             }

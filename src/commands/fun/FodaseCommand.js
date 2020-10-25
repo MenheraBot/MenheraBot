@@ -4,13 +4,12 @@ module.exports = class FodaseCommand extends Command {
   constructor(client) {
     super(client, {
       name: "fodase",
-      aliases: ["fds"],
-      description: "Alguem mandou algo que ninguem perguntou? Taque o fodase",
+      aliases: ["fds", "fuck"],
       category: "diversão",
       clientPermissions: ["MANAGE_MESSAGES", "EMBED_LINKS"]
     })
   }
-  async run(message, args) {
+  async run({ message, args, server }, t) {
 
     if (message.deletable) message.delete();
 

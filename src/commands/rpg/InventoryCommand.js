@@ -6,22 +6,21 @@ module.exports = class InventoryCommand extends Command {
             name: "inventário",
             aliases: ["inventario", "inv", "inventory"],
             cooldown: 5,
-            description: "Veja seu inventário",
             clientPermissions: ["EMBED_LINKS"],
             category: "rpg"
         })
     }
-    async run(message, args) {
+    async run({ message, args, server }, t) {
 
         const user = await this.client.database.Rpg.findById(message.author.id)
-        if (!user) return message.channel.send("<:negacao:759603958317711371> | Você não é um aventureiro!")
+        if (!user) return message.menheraReply("error", t("commands:inventory.non-aventure"))
 
         const usuarioInDb = await this.client.database.Users.findOne({ id: message.author.id })
 
         let cor = usuarioInDb.cor || "#8f877f"
 
         let embed = new MessageEmbed()
-            .setTitle("<:Chest:760957557538947133> | Seu inventário")
+            .setTitle(`<:Chest:760957557538947133> | ${t("commands:inventory.title")}`)
             .setColor(cor)
 
         let loots = [];
@@ -42,8 +41,8 @@ module.exports = class InventoryCommand extends Command {
             }
         })
 
-        armaText += `🗡️ | Arma: **${user.weapon.name}**\n🩸 | Dano: **${user.weapon.damage}**\n\n`
-        armaText += `🧥 | Armadura: **${user.protection.name}**\n🛡️ | Proteção: **${user.protection.armor}**\n`
+        armaText += `🗡️ | ${t("commands:inventory.weapon")}: **${user.weapon.name}**\n🩸 | ${t("commands:inventory.dmg")}: **${user.weapon.damage}**\n\n`
+        armaText += `🧥 | ${t("commands:inventory.armor")}: **${user.protection.name}**\n🛡️ | ${t("commands:inventory.prt")}: **${user.protection.armor}**\n`
 
         countItems(items).forEach(count => {
             itemText += `**${count.name}** (${count.amount})\n`
@@ -55,12 +54,11 @@ module.exports = class InventoryCommand extends Command {
         })
 
 
-        if (armaText.length > 0) embed.addField(`⚔️ | Batalha`, armaText)
-        if (items.length > 0) embed.addField(`💊 | Itens`, itemText)
-        if (lootText.length > 0) embed.addField(`<:Chest:760957557538947133> | Espólios de Batalha`, lootText)
+        if (armaText.length > 0) embed.addField(`⚔️ | ${t("commands:inventory.battle")}`, armaText)
+        if (items.length > 0) embed.addField(`💊 | ${t("commands:inventory.items")}`, itemText)
+        if (lootText.length > 0) embed.addField(`<:Chest:760957557538947133> | ${t("commands:inventory.loots")}`, lootText)
 
         message.channel.send(message.author, embed)
-
     }
 }
 

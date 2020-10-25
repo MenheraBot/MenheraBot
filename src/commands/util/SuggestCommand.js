@@ -8,18 +8,17 @@ module.exports = class SuggestCommand extends Command {
             name: "sugerir",
             aliases: ["suggest", "sugestão"],
             cooldown: 5,
-            description: "Sugira algo para a dona do bot",
             category: "util",
             usage: "<sugestão>"
         })
     }
-    async run(message, args) {
+    async run({ message, args, server }, t) {
 
 
         const argumentos = args.join(" ");
         var cor = '#' + ("000000" + Math.random().toString(16).slice(2, 8).toUpperCase()).slice(-6);
 
-        if (!argumentos) return message.channel.send("<:atencao:759603958418767922> | Você não digitou o que quer sugerir para a Lux sobre o bot");
+        if (!argumentos) return message.menheraReply("error", t("commands:suggest.no-args"))
 
         const embed = new MessageEmbed()
             .setDescription(`**${argumentos}**`)
@@ -35,7 +34,7 @@ module.exports = class SuggestCommand extends Command {
         })
 
         if (message.deletable) message.delete()
-        message.channel.send("❤️ | Mutissimo obrigada por me enviar uma sugestão <3");
+        message.menheraReply("heart", t("commands:suggest.thanks"))
 
     }
 }

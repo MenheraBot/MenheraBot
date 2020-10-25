@@ -4,31 +4,30 @@ module.exports = class RpgResetCommand extends Command {
         super(client, {
             name: "reset",
             cooldown: 5,
-            description: "Reseta seu perfil do RPG",
             category: "rpg"
         })
     }
-    async run(message, args) {
+    async run({ message, args, server }, t) {
 
         const user = await this.client.database.Rpg.findById(message.author.id)
-        if (!user) return message.channel.send("<:negacao:759603958317711371> | Você não é um aventureiro!")
-        if (user.level < 7) return message.channel.send("<:negacao:759603958317711371> | Você precisa estar no nível **7** para poder resetar")
+        if (!user) return message.menheraReply("error", t("commands:reset.non-aventure"))
+        if (user.level < 7) return message.menheraReply("error", t("commands:reset.low-level"))
 
-        message.channel.send("<:atencao:759603958418767922> | Você realmente deseja resetar seu perfil do RPG? Esta ação é **IRREVERSÍVEL**\nDigite `sim` para confirmar")
+        message.menheraReply("warn", t("commands:reset.confirm"))
 
         const filter = m => m.author.id === message.author.id;
         const collector = message.channel.createMessageCollector(filter, { max: 1, time: 30000, errors: ["time"] });
 
         collector.on('collect', async m => {
 
-            if (m.content.toLowerCase() == "sim") {
+            if (m.content.toLowerCase() == "sim" || m.content.toLowerCase() == "yes") {
                 if (user.hasFamily) {
                     const familia = await this.client.database.Familias.findById(user.familyName)
                     familia.members.splice(familia.members.indexOf(message.author.id.toString()), 1);
                     familia.save()
                 }
-                this.client.database.Rpg.findByIdAndDelete(message.author.id).then(message.channel.send("<:positivo:759603958485614652> | Você resetou com sucesso sua conta do RPG! Para jogar novamente, use m!registrar"))
-            } else message.channel.send("<:negacao:759603958317711371> | Sua conta **não** foi resetada!")
+                this.client.database.Rpg.findByIdAndDelete(message.author.id).then(message.menheraReply("success", t("commands:reset.success", { prefix: server.prefix })))
+            } else message.menheraReply("error", t("commands:reset.cancel"))
         })
     }
 };

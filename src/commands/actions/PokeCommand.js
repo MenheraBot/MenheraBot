@@ -5,13 +5,11 @@ module.exports = class PokeCommand extends Command {
         super(client, {
             name: "cutucar",
             aliases: ["poke"],
-            description: "Cutuque alguem",
             clientPermissions: ["EMBED_LINKS"],
-            category: "ações",
-            usage: "<@menção>"
+            category: "ações"
         })
     }
-    async run(message, args) {
+    async run({ message, args, server }, t) {
 
         var list = [
             "https://i.imgur.com/ZWfpRM4.gif",
@@ -23,20 +21,16 @@ module.exports = class PokeCommand extends Command {
         var rand = list[Math.floor(Math.random() * list.length)];
         let user = message.mentions.users.first();
 
-        if (!user) {
-            return message.channel.send("<:negacao:759603958317711371> | Tu tem que mencionar quem tu quer cutucar neah");
-        }
+        if (!user) return message.menheraReply("error", t("commands:poke.no-mention"));
 
-        if (user === message.author) {
-            return message.channel.send("<:negacao:759603958317711371> | Cutucar a si mesmo não tem graça! Mencione quem tu quer cutucar");
-        }
+        if (user === message.author) return message.menheraReply("error", t("commands:poke.self-mention"))
 
         let avatar = message.author.displayAvatarURL({ format: "png" });
 
         const embed = new MessageEmbed()
-            .setTitle("Cutucar")
+            .setTitle(t("commands:poke.embed_title"))
             .setColor("#000000")
-            .setDescription(`${message.author} cutucou ${user}`)
+            .setDescription(`${message.author} ${t("commands:poke.embed_description")} ${user}`)
             .setImage(rand)
             .setThumbnail(avatar)
             .setAuthor(message.author.tag, avatar);

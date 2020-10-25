@@ -7,26 +7,24 @@ module.exports = class RegisterCommand extends Command {
             name: "register",
             aliases: ["registrar"],
             cooldown: 5,
-            description: "Registre-se um aventureiro",
             clientPermissions: ["EMBED_LINKS"],
             category: "rpg"
         })
-
     }
-    async run(message, args) {
+    async run({ message, args, server }, t) {
 
         const user = await this.client.database.Rpg.findById(message.author.id);
 
-        if (user) return message.channel.send(`<:negacao:759603958317711371> | Você já é um aventureiro, ${message.author.username}-sama`)
+        if (user) return message.menheraReply("error", t("commands:register", {name: message.author.username}))
 
         const classes = ["Assassino", "Bárbaro", "Clérigo", "Druida", "Espadachim", "Feiticeiro", "Monge", "Necromante"];
 
-        let description = `Bem-vindo, ${message.author.username}!\nVocê deseja ser um aventureiro?\nQual classe você deseja ser?\nDúvidas com qual classe escolher? Entre no [SITE DA MENHERA](https://sites.google.com/view/menherabot/classes) para ver cada classe\n`;
+        let description = t("commands:register.text");
 
         let embed = new MessageEmbed()
-            .setTitle("<:guilda:759892389724028948> | Guilda de Aventureiros")
+            .setTitle(`<:guilda:759892389724028948> | ${t("commands:register.title")}`)
             .setColor('#ffec02')
-            .setFooter("Digite no chat a opção de sua escolha")
+            .setFooter(t("commands:register.footer"))
 
         for (var i = 0; i < classes.length; i++) {
             description += `\n${i + 1} - **${classes[i]}**`
@@ -41,51 +39,51 @@ module.exports = class RegisterCommand extends Command {
 
             switch (m.content) {
                 case '1':
-                    this.confirmação(message, 'Assassino')
+                    this.confirmação(message, 'Assassino', t)
                     break;
                 case '2':
-                    this.confirmação(message, 'Bárbaro')
+                    this.confirmação(message, 'Bárbaro', t)
                     break;
                 case '3':
-                    this.confirmação(message, 'Clérigo')
+                    this.confirmação(message, 'Clérigo', t)
                     break;
                 case '4':
-                    this.confirmação(message, 'Druida')
+                    this.confirmação(message, 'Druida', t)
                     break;
                 case '5':
-                    this.confirmação(message, 'Espadachim')
+                    this.confirmação(message, 'Espadachim', t)
                     break;
                 case '6':
-                    this.confirmação(message, 'Feiticeiro')
+                    this.confirmação(message, 'Feiticeiro', t)
                     break;
                 case '7':
-                    this.confirmação(message, 'Monge')
+                    this.confirmação(message, 'Monge', t)
                     break;
                 case '8':
-                    this.confirmação(message, 'Necromante')
+                    this.confirmação(message, 'Necromante', t)
                     break;
                 default:
-                    return message.channel.send("<:negacao:759603958317711371> | Esta opção não é uma classe válida!")
+                    return message.menheraReply("error", t("commands:register.invalid-input"))
             }
         })
     }
-    confirmação(message, option) {
+    confirmação(message, option, t) {
 
-        message.channel.send(`<:atencao:759603958418767922> | Você realmente deseja ser um \`${option}\`? Você nunca mais poderá trocar isso!\n\nEnvie 'sim' no chat para confirmar sua escolha`);
+        message.menheraReply("warn", t("commands:register.confirm", {option}))
 
         const filtro = m => m.author.id === message.author.id;
         const confirmCollector = message.channel.createMessageCollector(filtro, { max: 1, time: 15000, errors: ["time"] });
 
         confirmCollector.on('collect', async m => {
 
-            if (m.content.toLowerCase() === "sim") {
-                message.channel.send(`<:positivo:759603958485614652> | Bem-vindo ao mundo de **Boleham**, ${message.author}! Sua classe é **${option}**, agora você já pode usar meus comandos de RPG`);
+            if (m.content.toLowerCase() == "sim" || m.content.toLowerCase() == "yes") {
+                message.menheraReply("success", t("commands:register.confirmed", {option}))
                 let user = await new this.client.database.Rpg({
                     _id: message.author.id,
                     class: option
                 }).save()
-                checks.confirmRegister(user, message)
-            } else message.channel.send("<:negacao:759603958317711371> | Você cancelou a confirmação")
+                checks.confirmRegister(user, message, t)
+            } else message.menheraReply("error", t("commands:register.canceled"))
         })
     }
 };

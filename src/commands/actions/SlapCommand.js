@@ -5,13 +5,11 @@ module.exports = class SlapCommand extends Command {
         super(client, {
             name: "tapa",
             aliases: ["slap"],
-            description: "Tapeia alguem",
             clientPermissions: ["EMBED_LINKS"],
-            category: "ações",
-            usage: "<@menção>"
+            category: "ações"
         })
     }
-    async run(message, args) {
+    async run({ message, args, server }, t) {
 
         var list = [
             "https://i.imgur.com/XqtlhuZ.gif",
@@ -25,22 +23,18 @@ module.exports = class SlapCommand extends Command {
         var rand = list[Math.floor(Math.random() * list.length)];
         let user = message.mentions.users.first();
 
-        if (user && user.bot) return message.channel.send("<:negacao:759603958317711371> | DIGA NÃO À AGRESSÃO À ROBÔS");
+        if (user && user.bot) return message.menheraReply("error", t("commands:slap.bot"))
 
-        if (!user) {
-            return message.channel.send("<:negacao:759603958317711371> | Tu tem que mencionar em quem tu quer bater");
-        }
+        if (!user) return message.menheraReply("error", t("commands:slap.no-mention"))
 
-        if (user === message.author) {
-            return message.channel.send("<:negacao:759603958317711371> | Eu não vou fazer tu se bater, mencione outra pessoa");
-        }
+        if (user === message.author) return message.menheraReply("error", t("commands.slap.self-mention"))
 
         let avatar = message.author.displayAvatarURL({ format: "png" });
 
         const embed = new MessageEmbed()
-            .setTitle("TAPÃO")
+            .setTitle(t("commands:slap.embed_title"))
             .setColor("#000000")
-            .setDescription(`${message.author} meteu o tapão em ${user}`)
+            .setDescription(`${message.author} ${t("commands:slap.embed_description")} ${user}`)
             .setImage(rand)
             .setThumbnail(avatar)
             .setAuthor(message.author.tag, avatar);

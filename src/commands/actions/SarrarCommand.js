@@ -4,13 +4,11 @@ module.exports = class SarrarCommand extends Command {
   constructor(client) {
     super(client, {
       name: "sarrar",
-      description: "Sarra comigo?",
       clientPermissions: ["EMBED_LINKS", "ADD_REACTIONS", "MANAGE_MESSAGES"],
-      category: "ações",
-      usage: "[@menção]"
+      category: "ações"
     })
   }
-  async run(message, args) {
+  async run({ message, args, server }, t) {
 
     var listaSozinho = [
       "https://media1.tenor.com/images/e0b093e5174a74518ffcbc0967d265eb/tenor.gif?itemid=17767202",
@@ -22,39 +20,32 @@ module.exports = class SarrarCommand extends Command {
 
     if (!user) {
       const embed = new MessageEmbed()
-        .setTitle("Sarra comigo?")
+        .setTitle(t("commands:sarrar.no-mention.embed_title"))
         .setColor("#000000")
-        .setDescription(`Alguém quer sarrar com ${message.author}?\nReaja para sarrar`)
+        .setDescription(`${t("commands:sarrar.no-mention.embed_description_start")} ${message.author}?\n${t("commands:sarrar.no-mention.embed_description_end")}`)
         .setImage(randSozinho)
         .setThumbnail(message.author.displayAvatarURL())
-        .setFooter("Quer sarrar comigo? 30 segundos para aceitar a sarrada")
+        .setFooter(t("commands:sarrar.no-mention.embed_footer"))
         .setAuthor(message.author.tag, message.author.displayAvatarURL());
 
       return message.channel.send(embed).then(msg => {
 
-        msg.react("✅").catch(err => message.channel.send("Ocorreu um erro ao adicionar uma reação, serasi eu tenho permissão para tal?"));
+        msg.react("✅").catch()
         let filter = (reaction, usuario) => reaction.emoji.name === "✅" && usuario.id !== message.author.id && !usuario.bot;
 
-        let coletor = msg.createReactionCollector(filter, {
-          max: 1,
-          time: 30000
-        });
+        let coletor = msg.createReactionCollector(filter, { max: 1, time: 30000 });
 
         coletor.on("collect", (react, user) => {
 
           msg.delete().catch();
           sarrada(message, user);
-
         });
-
       });
     } else return sarrada(message, message.mentions.users.first());
-
   }
 }
 
 function sarrada(message, reactUser) {
-
 
   var lista = [
     "https://i.imgur.com/m2JUJWB.gif",
@@ -63,15 +54,13 @@ function sarrada(message, reactUser) {
 
   var rand = lista[Math.floor(Math.random() * lista.length)];
 
-  let avatar = message.author.displayAvatarURL({
-    format: "png"
-  });
+  let avatar = message.author.displayAvatarURL({ format: "png" });
 
   const Embed = new MessageEmbed()
 
-    .setTitle("Sarrar")
+    .setTitle(t("commands:sarrar.embed_title"))
     .setColor("#000000")
-    .setDescription(`${message.author} sarrou com ${reactUser}`)
+    .setDescription(`${message.author} ${t("commands:sarrar.embed_description")} ${reactUser}`)
     .setImage(rand)
     .setThumbnail(avatar)
     .setAuthor(message.author.tag, avatar);

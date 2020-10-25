@@ -5,13 +5,11 @@ module.exports = class PunchCommand extends Command {
         super(client, {
             name: "socar",
             aliases: ["punch"],
-            description: "Soca alguem na porrada",
             clientPermissions: ["EMBED_LINKS"],
-            category: "ações",
-            usage: "<@menção>"
+            category: "ações"
         })
     }
-    async run(message, args) {
+    async run({ message, args, server }, t) {
 
         var list = [
             "https://i.imgur.com/f2kkp3L.gif",
@@ -23,22 +21,18 @@ module.exports = class PunchCommand extends Command {
         var rand = list[Math.floor(Math.random() * list.length)];
         let user = message.mentions.users.first();
 
-        if (user && user.bot) return message.channel.send(`DIGA NÃO À AGRESSÃO À ROBÔS`)
+        if (user && user.bot) return message.menheraReply("error", t("commands:punch.bot"))
 
-        if (!user) {
-            return message.channel.send("<:negacao:759603958317711371> | Tu tem que mencionar em quem tu quer lançar aquele socão nas fuça");
-        }
+        if (!user) return message.menheraReply("error", t("commands:punch.no-mention"))
 
-        if (user === message.author) {
-            return message.channel.send("<:negacao:759603958317711371> | Eu não vou fazer tu se bater, mencione outra pessoa");
-        }
+        if (user === message.author) return message.menheraReply("error", t("commands:punch.self-mention"))
 
         let avatar = message.author.displayAvatarURL({ format: "png" });
 
         const embed = new MessageEmbed()
-            .setTitle("Toma soco leve 🤜")
+            .setTitle(t("commands:punch.embed_title"))
             .setColor("#000000")
-            .setDescription(`${message.author} socou ${user}`)
+            .setDescription(`${message.author} ${t("commands:punch.embed_description")} ${user}`)
             .setImage(rand)
             .setThumbnail(avatar)
             .setAuthor(message.author.tag, avatar);

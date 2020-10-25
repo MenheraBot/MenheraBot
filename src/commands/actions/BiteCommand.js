@@ -5,13 +5,11 @@ module.exports = class BiteCommand extends Command {
         super(client, {
             name: "morder",
             aliases: ["bite"],
-            description: "Morde alguem X3 Moidi :3",
             clientPermissions: ["EMBED_LINKS"],
-            category: "ações",
-            usage: "<@menção>"
+            category: "ações"
         })
     }
-    async run(message, args) {
+    async run({ message, args, server }, t) {
 
         var list = [
             "https://i.imgur.com/mimLPx3.gif",
@@ -25,22 +23,22 @@ module.exports = class BiteCommand extends Command {
           var rand = list[Math.floor(Math.random() * list.length)];
           let user = message.mentions.users.first();
       
-          if (user && user.bot) return message.channel.send(`${message.author} mordeu um robô... -5 dentes na boca`);
+          if (user && user.bot) return message.menheraReply("warn", t("commands:bite.bot"));
       
           if (!user) {
-            return message.channel.send("<:negacao:759603958317711371> | Tu tem que mencionar quem tu quer morder neah");
+            return message.menheraReply("error", t("commands:bite.no-mention"));
           }
       
           if (user === message.author) {
-            return message.channel.send("<:negacao:759603958317711371> | Ala o masoquista, faça isso agora mesmo, não precisa de comando");
+            return message.menheraReply("error", t("commands:bite.self-mention"));
           }
       
           let avatar = message.author.displayAvatarURL({format: "png"});
       
           const embed = new MessageEmbed()
-            .setTitle("Morder")
+            .setTitle(t("commands:bite.embed_title"))
             .setColor("#000000")
-            .setDescription(`${message.author} moideu ${user} :3`)
+            .setDescription(`${message.author} ${t("commands:bite.embed_description")} ${user} :3`)
             .setImage(rand)
             .setThumbnail(avatar)
             .setAuthor(message.author.tag, avatar);

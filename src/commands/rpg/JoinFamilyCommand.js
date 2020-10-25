@@ -5,23 +5,22 @@ module.exports = class JoinFamilyCommand extends Command {
             name: "família",
             aliases: ["familia", "family"],
             cooldown: 5,
-            description: "Registra-se em uma família",
             category: "rpg"
         })
     }
-    async run(message, args) {
+    async run({ message, args, server }, t) {
 
         const user = await this.client.database.Rpg.findById(message.author.id)
-        if (!user) return message.channel.send("<:negacao:759603958317711371> | Você não é um aventureiro!")
+        if (!user) return message.menheraReply("error", t("commands:joinfamily.non-aventure"))
 
-        if (user.level < 10) return message.channel.send("<:negacao:759603958317711371> | As famílias são liberadas no nível **10**")
+        if (user.level < 10) return message.menheraReply("error", t("commands:joinfamily.low-level"))
 
-        if (user.hasFamily) return message.channel.send(`<:negacao:759603958317711371> | Você já está na família ${user.familyName}!`)
+        if (user.hasFamily) return message.menheraReply("error", t("commands:joinfamily.has-family", {name: user.familyName}))
 
         const familiasDisponiveis = ["Loki", "Ares", "Freya", "Soma", "Apolo"]
         const sortedFamily = familiasDisponiveis[Math.floor(Math.random() * familiasDisponiveis.length)];
 
-        message.channel.send(`<:positivo:759603958485614652> | Bem-Vindo à família **${sortedFamily}**, ${message.author}! Veja seus novos Status!`)
+        message.menheraReply("success", t("commands:joinfamily.welcome", {family: sortedFamily}))
 
         const familia = await this.client.database.Familias.findById(sortedFamily)
 

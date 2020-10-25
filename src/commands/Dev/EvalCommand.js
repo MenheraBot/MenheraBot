@@ -9,7 +9,7 @@ module.exports = class EvalCommand extends Command {
             category: "Dev"
         })
     }
-    async run(message, args) {
+    async run({ message, args, server }, t) {
 
         try {
             const util = require("util")

@@ -1,8 +1,10 @@
+require('./src/structures/ProtoTypes').start()
 const Client = require('./src/MenheraClient')
 const config = require('./config.json')
 const client = new Client({ disableMentions: "everyone", fetchAllMembers: true })
 
 client.sentryInit()
+client.loadLocales()
 client.loadCommands("./src/commands")
 client.loadEvents("./src/events")
 

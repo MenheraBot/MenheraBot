@@ -5,35 +5,33 @@ module.exports = class CoinflipCommand extends Command {
             name: "coinflip",
             aliases: ["cf"],
             cooldown: 5,
-            description: "Aposte estrelinhas num cara ou coroa com alguem",
-            usage: "<@menção> <valor>",
             category: "economia"
         })
     }
-    async run(message, args) {
+    async run({ message, args, server }, t) {
 
         const user1 = message.author
         const user2 = message.mentions.users.first()
         const input = args[1]
-        if (!input) return message.channel.send("<:negacao:759603958317711371> | Este valor não é válido")
+        if (!input) return message.menheraReply("error", t("commands:coinflip.invalid-value"))
         const valor = input.replace(/\D+/g, '');
 
-        if (!user2) return message.channel.send("<:negacao:759603958317711371> | Você não mencionou seu adversário")
-        if (user2.bot) return message.channel.send("<:negacao:759603958317711371> | Bots não podem apostar e.e")
-        if (user2.id === user1.id) return message.channel.send("<:negacao:759603958317711371> | Você não pode apostar contra si mesmo")
+        if (!user2) return message.menheraReply("error", t("commands:coinflip.no-mention"))
+        if (user2.bot) return message.menheraReply("error", t("commands:coinflip.bot"))
+        if (user2.id === user1.id) return message.menheraReply("error", t("commands:coinflip.self-mention"))
 
-        if (isNaN(parseInt(valor))) return message.channel.send("<:negacao:759603958317711371> | Este valor não é válido")
-        if (parseInt(valor) < 1) return message.channel.send("<:negacao:759603958317711371> | Este valor não é válido")
+        if (isNaN(parseInt(valor))) return message.menheraReply("error", t("commands:coinflip.invalid-value"))
+        if (parseInt(valor) < 1) return message.menheraReply("error", t("commands:coinflip.invalid-value"))
 
         const db1 = await this.client.database.Users.findOne({ id: user1.id })
         const db2 = await this.client.database.Users.findOne({ id: user2.id })
 
-        if (!db1 || !db2) return message.channel.send("<:negacao:759603958317711371> | Este usuário não possui uma conta no Menhera's Bank!")
+        if (!db1 || !db2) return message.menheraReply("error", t("commands:coinflip.no-dbuser"))
 
-        if (valor > db1.estrelinhas) return message.channel.send("<:negacao:759603958317711371> | Você não possui todas essas estrelinhas para apostar!")
-        if (valor > db2.estrelinhas) return message.channel.send(`<:negacao:759603958317711371> | ${user2} não possui todas essas estrelinhas para apostar!`)
+        if (valor > db1.estrelinhas) return message.menheraReply("error", t("commands:coinflip.poor"))
+        if (valor > db2.estrelinhas) return message.channel.send(`<:negacao:759603958317711371> **|** ${user2} ${t("commands:coinflip.poor")}`)
 
-        message.channel.send(`${user2}, ${user1} te desafiou para uma aposta de Cara ou Coroa valendo **${valor}** :star:. Caso caia Cara, ${user1} vence, caso caia coroa, ${user2} vence!\n${user2} deve aceitar reagindo com ✅! Tu tens 5 segundos!`).then(msg => {
+        message.channel.send(`${user2}, ${user1} ${t("commands:coinflip.confirm", {value: valor, user1: user1.username, user2: user2.username})}`).then(msg => {
 
             msg.react('✅');
             let filter = (reaction, usuario) => reaction.emoji.name === "✅" && usuario.id === user2.id;
@@ -46,14 +44,14 @@ module.exports = class CoinflipCommand extends Command {
 
                 switch (choice) {
                     case 'Cara':
-                        message.channel.send(`:coin: | **CARA**\n${user1} ganhou ${valor} :star: apostando com ${user2}! Sinto muito ${user2}, nem sempre saimos vitoriosos`)
+                        message.channel.send(t("commands:coinflip.cara", {value: valor, user1: user1.username, user2: user2.username}))
                         db1.estrelinhas = db1.estrelinhas + parseInt(valor)
                         db2.estrelinhas = db2.estrelinhas - parseInt(valor)
                         db1.save()
                         db2.save()
                         break
                     case 'Coroa':
-                        message.channel.send(`:coin: | **COROA**\n${user2} ganhou **${valor}** :star: apostando com ${user1}! Sinto muito ${user1}, nem sempre saimos vitoriosos`)
+                        message.channel.send(t("commands:coinflip.coroa", {value: valor, user1: user1.username, user2: user2.username}))
                         db1.estrelinhas = db1.estrelinhas - parseInt(valor)
                         db2.estrelinhas = db2.estrelinhas + parseInt(valor)
                         db1.save()

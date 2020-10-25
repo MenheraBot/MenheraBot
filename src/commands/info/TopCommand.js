@@ -6,17 +6,15 @@ module.exports = class TopCommand extends Command {
             name: "top",
             aliases: ["rank"],
             cooldown: 7,
-            description: "Veja o top de meus usuários",
-            usage: "<opção>",
             clientPermissions: ["EMBED_LINKS"],
             category: "info"
         })
     }
-    async run(message, args) {
+    async run({ message, args, server }, t) {
 
-        const prefix = await this.client.database.Guilds.findOne({ id: message.guild.id })
+        const prefix = server.prefix
 
-        const txt = `Você deve escolher entre \`${prefix.prefix}top mamadores\`, \`${prefix.prefix}top mamados\`, \`${prefix.prefix}top demonios\`, \`${prefix.prefix}top anjos\`, \`${prefix.prefix}top semideuses\`, \`${prefix.prefix}top deuses\`, \`${prefix.prefix}top estrelinhas\`, \`${prefix.prefix}top votos\`, \`${prefix.prefix}top dungeon\` ou \`${prefix.prefix}top famílias\``
+        const txt = t("commands:top.txt", {prefix})
 
         const argumento = args[0];
         if (!argumento) return message.reply(txt)
@@ -52,7 +50,7 @@ module.exports = class TopCommand extends Command {
             this.topDungeon(this.client, message)
         } else if (argsFamilias.includes(argumento)) {
             this.topFamilia(this.client, message)
-        } else message.reply(txt)
+        } else message.menheraReply("warn", t("commands:top.txt"))
 
     }
 
@@ -60,7 +58,7 @@ module.exports = class TopCommand extends Command {
 
         let embed = new MessageEmbed()
 
-            .setTitle("👑 | Placar de Mamados")
+            .setTitle(`👑 | ${t("commands:top.mamouTitle")}`)
             .setColor('#eab3fa')
         this.client.database.Users.find({}, ['mamadas', 'nome', 'id'], {
             skip: 0,
@@ -88,7 +86,7 @@ module.exports = class TopCommand extends Command {
 
         let embed = new MessageEmbed()
 
-            .setTitle("👑 | Placar de Mamadores")
+            .setTitle(`👑 |  ${t("commands:top.mamadoresTitle")}`)
             .setColor('#eab3fa')
 
         this.client.database.Users.find({}, ['mamou', 'nome', 'id'], {
@@ -117,7 +115,7 @@ module.exports = class TopCommand extends Command {
 
         let embed = new MessageEmbed()
 
-            .setTitle("<:DEMON:758765044443381780> | Placar de Demônios")
+            .setTitle(`<:DEMON:758765044443381780> |  ${t("commands:top.demonTitle")}`)
             .setColor('#ec8227')
 
         this.client.database.Users.find({}, ['caçados', 'nome', 'id'], {
@@ -146,7 +144,7 @@ module.exports = class TopCommand extends Command {
 
         let embed = new MessageEmbed()
 
-            .setTitle("<:ANGEL:758765044204437535> | Placar de Anjos")
+            .setTitle(`<:ANGEL:758765044204437535> |  ${t("commands:top.angelTitle")}`)
             .setColor('#bdecee')
 
         this.client.database.Users.find({}, ['anjos', 'nome', 'id'], {
@@ -175,7 +173,7 @@ module.exports = class TopCommand extends Command {
 
         let embed = new MessageEmbed()
 
-            .setTitle("<:SEMIGOD:758766732235374674> | Placar de Semi-Deuses")
+            .setTitle(`<:SEMIGOD:758766732235374674> | ${t("commands:top.sdTitle")}`)
             .setColor('#eab3fa')
 
         this.client.database.Users.find({}, ['semideuses', 'nome', 'id'], {
@@ -204,7 +202,7 @@ module.exports = class TopCommand extends Command {
 
         let embed = new MessageEmbed()
 
-            .setTitle("<:God:758474639570894899> | Placar de Deuses")
+            .setTitle(`<:God:758474639570894899> | ${t("commands:top.godsTitle")}`)
             .setColor('#a67cec')
 
         this.client.database.Users.find({}, ['deuses', 'nome', 'id'], {
@@ -233,7 +231,7 @@ module.exports = class TopCommand extends Command {
 
         let embed = new MessageEmbed()
 
-            .setTitle("⭐ | Placar de Estrelinhas")
+            .setTitle(`⭐ | ${t("commands:top.startsTitle")}`)
             .setColor('#74bd63')
 
         this.client.database.Users.find({}, ['estrelinhas', 'nome', 'id'], {
@@ -262,7 +260,7 @@ module.exports = class TopCommand extends Command {
     topVotos(client, message) {
         let embed = new MessageEmbed()
 
-            .setTitle("<:ok:727975974125436959> | Placar de Upvotes")
+            .setTitle(`<:ok:727975974125436959> |  ${t("commands:top.voteTitle")}`)
             .setColor('#ff29ae')
 
         this.client.database.Users.find({}, ['votos', 'nome', 'id'], {
@@ -291,7 +289,7 @@ module.exports = class TopCommand extends Command {
     topDungeon(client, message) {
         let embed = new MessageEmbed()
 
-            .setTitle("<:Chest:760957557538947133> | Placar da Dungeon")
+            .setTitle(`<:Chest:760957557538947133> | ${t("commands:top.rpgTitle")}`)
             .setColor('#a1f5ee')
 
         this.client.database.Rpg.find({}, ['level', '_id', 'xp'], {
@@ -321,7 +319,7 @@ module.exports = class TopCommand extends Command {
     topFamilia(client, message) {
         let embed = new MessageEmbed()
 
-            .setTitle("🔱 | Placar das Famílias")
+            .setTitle(`🔱 | ${t("commands:top.familyTitle")}`)
             .setColor('#c780f3')
 
         this.client.database.Familias.find({}, ['_id', 'members', 'levelFamilia', 'bank'], {

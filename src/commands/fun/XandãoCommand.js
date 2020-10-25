@@ -4,13 +4,11 @@ module.exports = class XandãoCommand extends Command {
         super(client, {
             name: "xandão",
             aliases: ["xandao"],
-            description: "SEM PRESSÃO",
             category: "diversão",
-            clientPermissions: ["MANAGE_WEBHOOKS"],
-            usage: "[texto]"
+            clientPermissions: ["MANAGE_WEBHOOKS"]
         })
     }
-    async run(message, args) {
+    async run({ message, args, server }, t) {
 
         const texto = args.join(" ");
 
@@ -81,7 +79,7 @@ module.exports = class XandãoCommand extends Command {
                 });
             }
         } catch (err) {
-            message.reply("Para que eu possa executar este comando, peça para que os administradores me concedam a permissão `Gerenciar Webhooks`")
+            message.menheraReply("error", t("commands:xandão.err_message"))
         }
 
     }

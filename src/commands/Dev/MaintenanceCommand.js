@@ -9,7 +9,7 @@ module.exports = class MaintenanceCommand extends Command {
             category: "Dev"
         })
     }
-    async run(message, args) {
+    async run({ message, args, server }, t) {
 
         if (!args[0]) return message.channel.send("<:negacao:759603958317711371> | você não informou o comando desejado")
         let cmd = this.client.commands.get(args[0])

@@ -7,19 +7,18 @@ module.exports = class DungeonCommand extends Command {
         super(client, {
             name: "dungeon",
             cooldown: 10,
-            description: "Vá para uma aventura na dungeon",
             clientPermissions: ["EMBED_LINKS"],
             category: "rpg"
         })
     }
-    async run(message, args) {
+    async run({ message, args, server }, t) {
 
         const user = await this.client.database.Rpg.findById(message.author.id)
-        if (!user) return message.channel.send("<:negacao:759603958317711371> | Você não é um aventureiro!")
+        if (!user) return message.menheraReply("error", t("commands:dungeon.non-aventure"))
 
         const inimigo = await checks.getEnemy(user, "dungeon")
 
-        const canGo = await checks.initialChecks(user, message)
+        const canGo = await checks.initialChecks(user, message, t)
 
         if (!canGo) return;
 
@@ -35,16 +34,16 @@ module.exports = class DungeonCommand extends Command {
 
         const habilidades = await checks.getAbilities(user, familia)
 
-        if (!inimigo) return message.channel.send("<:negacao:759603958317711371> | Essa não! Ocorreu um erro quando fui detectar qual inimigo você encontrará, desculpe por isso... Tente novamente")
+        if (!inimigo) return message.menheraReply("error", t("commands:dungeon.no-enemy"))
 
         let embed = new MessageEmbed()
-            .setTitle(`⌛ | Preparação pra batalha`)
-            .setDescription(`Envie um **SIM** para adentrar na dungeon`)
+            .setTitle(`⌛ | ${t("commands:dungeon.preparation.title")}`)
+            .setDescription(t("commands:dungeon.preparation.description"))
             .setColor('#e3beff')
-            .setFooter("Estas habilidades estão disponíveis para o uso")
-            .addField(`Seus status atuais são`, `🩸 | **Vida:** ${user.life}/${user.maxLife}\n💧 | **Mana:** ${user.mana}/${user.maxMana}\n🗡️ | **Dano Físico:** ${dmgView}\n🛡️ | **Armadura:** ${ptcView}\n🔮 | **Poder Mágico:** ${user.abilityPower}\n\n------HABILIDADES DISPONÍVEIS------`)
+            .setFooter(t("commands:dungeon.preparation.footer"))
+            .addField(t("commands:dungeon.preparation.stats"), `🩸 | **${t("commands:dungeon.life")}:** ${user.life}/${user.maxLife}\n💧 | **${t("commands:dungeon.mana")}:** ${user.mana}/${user.maxMana}\n🗡️ | **${t("commands:dungeon.dmg")}:** ${dmgView}\n🛡️ | **${t("commands:dungeon.armor")}:** ${ptcView}\n🔮 | **${t("commands:dungeon.ap")}:** ${user.abilityPower}\n\n${t("commands:dungeon.preparation.description_end")}`)
         habilidades.forEach(hab => {
-            embed.addField(hab.name, `🔮 | **Dano:** ${hab.damage}\n💧 | **Custo** ${hab.cost}`)
+            embed.addField(hab.name, `🔮 | **${t("commands:dungeon.damage")}:** ${hab.damage}\n💧 | **${t("commands:dungeon.cost")}** ${hab.cost}`)
         })
         message.channel.send(embed)
 
@@ -52,12 +51,12 @@ module.exports = class DungeonCommand extends Command {
         const collector = message.channel.createMessageCollector(filter, { max: 1, time: 30000, errors: ["time"] });
 
         collector.on('collect', m => {
-            if (m.content.toLowerCase() != "sim") return message.channel.send(`<:negacao:759603958317711371> | Você pensou melhor, e acabou desistindo de entrar na dungeon`)
+            if (m.content.toLowerCase() != "sim") return message.menheraReply("error", t("commands:dungeon.arregou"))
 
-            this.battle(message, inimigo, habilidades, user, "dungeon", familia);
+            this.battle(message, inimigo, habilidades, user, "dungeon", familia, t);
         })
     }
-    async battle(message, inimigo, habilidades, user, type, familia) {
+    async battle(message, inimigo, habilidades, user, type, familia, t) {
 
         user.dungeonCooldown = 3600000 + Date.now();
         user.inBattle = true;
@@ -67,12 +66,12 @@ module.exports = class DungeonCommand extends Command {
 
         if (user.hasFamily && user.familyName === "Loki") {
             options.push({
-                name: "Ataque Básico",
+                name: t("commands:dungeon.battle.basic"),
                 damage: user.damage + user.weapon.damage + familia.boost.value
             })
         } else {
             options.push({
-                name: "Ataque Básico",
+                name: t("commands:dungeon.battle.basic"),
                 damage: user.damage + user.weapon.damage
             })
         }
@@ -81,7 +80,7 @@ module.exports = class DungeonCommand extends Command {
             options.push(hab)
         })
 
-        let texto = `Você entra na Dungeon, e se depara com um monstro ${inimigo.type}: ${inimigo.name}, Seus status são:\n\n❤️ | Vida: **${inimigo.life}**\n⚔️ | Dano: **${inimigo.damage}**\n🛡️ | Defesa: **${inimigo.armor}**\n\nO que você faz?\n\n**OPÇÕES:**\n`
+        let texto = `${t("commands:dungeon.battle.enter", {type: inimigo.type, name: inimigo.name})}\n\n❤️ | ${t("commands:dungeon.life")}: **${inimigo.life}**\n⚔️ | ${t("commands:dungeon.damage")}: **${inimigo.damage}**\n🛡️ | ${t("commands:dungeon.armor")}: **${inimigo.armor}**\n\n${t("commands:dungeon.battle.end")}`
 
         let escolhas = []
 
@@ -91,8 +90,8 @@ module.exports = class DungeonCommand extends Command {
         }
 
         let embed = new MessageEmbed()
-            .setFooter("Digite no chat a opção de sua escolha")
-            .setTitle("Inimigo Encontrado: " + inimigo.name)
+            .setFooter(t("commands:dungeon.battle.footer"))
+            .setTitle(`${t("commands:dungeon.battle.title")}` + inimigo.name)
             .setColor('#f04682')
             .setDescription(texto)
         message.channel.send(message.author, embed)
@@ -107,16 +106,16 @@ module.exports = class DungeonCommand extends Command {
             time = true;
             const choice = Number(m.content);
             if (escolhas.includes(choice)) {
-                checks.battle(message, options[choice - 1], user, inimigo, type, familia)
+                checks.battle(message, options[choice - 1], user, inimigo, type, familia, t)
             } else {
-                checks.enemyShot(message, `⚔️ |  Você tentou uma técnica nova, mas não obteve sucesso! O inimigo ataca`, user, inimigo, type, familia)
+                checks.enemyShot(message, `⚔️ |  ${t("commands:dungeon.battle.newTecnique")}`, user, inimigo, type, familia, t)
             }
         })
 
 
         setTimeout(() => {
             if (!time) {
-                checks.enemyShot(message, `⚔️ |  Você demorou para tomar uma atitude, e foi atacado!`, user, inimigo, type, familia)
+                checks.enemyShot(message, `⚔️ |  ${t("commands:dungeon.battle.timeout")}`, user, inimigo, type, familia, t)
             }
         }, 15000)
     }

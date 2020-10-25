@@ -6,12 +6,11 @@ module.exports = class HuntCommand extends Command {
         super(client, {
             name: "caçar",
             aliases: ["cacar", "caça", "caca", "hunt"],
-            description: "Caçe demônios como XANDÃO",
             category: "diversão",
             clientPermissions: ["EMBED_LINKS"]
         })
     }
-    async run(message, args) {
+    async run({ message, args, server }, t) {
 
         let user = await this.client.database.Users.findOne({ id: message.author.id });
 
@@ -44,14 +43,14 @@ module.exports = class HuntCommand extends Command {
         ];
 
 
-        if (!args[0]) return message.channel.send(`<:negacao:759603958317711371> | ${message.author}, você deve escolher entre caçar \`${validOptions.join("`, `")}\``)
+        if (!args[0]) return message.menheraReply("error", `${t("commands:hunt.no-args")} \`${validOptions.join("`, `")}\``)
         const selectedOption = validArgs.some(so => so.arguments.includes(args[0].toLowerCase()))
-        if (!selectedOption) return message.channel.send(`<:negacao:759603958317711371> | ${message.author}, você deve escolher entre caçar \`${validOptions.join("`, `")}\``)
+        if (!selectedOption) return message.menheraReply("error", `${t("commands:hunt.no-args")} \`${validOptions.join("`, `")}\``)
         const filtredOption = validArgs.filter(f => f.arguments.includes(args[0].toLowerCase()))
 
         const option = filtredOption[0].opção
 
-        if (!option) return message.channel.send(`<:negacao:759603958317711371> | ${message.author}, você deve escolher entre caçar \`${validOptions.join("`, `")}\``)
+        if (!option) return message.menheraReply("error", `${t("commands:hunt.no-args")} \`${validOptions.join("`, `")}\``)
 
         //probabilidades normais
         const probabilidadeDemonioBasica = [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 4];
@@ -82,16 +81,16 @@ module.exports = class HuntCommand extends Command {
         }
 
 
-        if (option === "ajuda") return message.channel.send("**COMO FUNCIONA O CAÇAR?**\nVocê pode caçar a cada uma hora, e você pode escolher entre 4 caças: `demonios`, `anjos`, `semideuses` e `deuses`\nQuanto mais pra direita, mais valioso, mas também, mais dificil de se caçar, e menor a chance de sucesso\nEm meu servidor de suporte, as chances de caça são maiores!\n**Boas Caçadas**")
-        if (option === "probabilidades") return message.channel.send(`**PROBABILIDADES:**\nÉ selecionado um número aleatório dentro dos próximos. Cada número é a quantidade de caças\nDica: Em meu servidor de suporte, as chances de caça são maiores!\n\nDemônio: \`${probabilidadeDemonio}\`\nAnjo: \`${probabilidadeAnjo}\`\nSemideuses: \`${probabilidadeSD}\`\nDeuses: \`${probabilidadeDeuses}\``)
+        if (option === "ajuda") return message.menheraReply("question", t("commands:hunt.help"))
+        if (option === "probabilidades") return message.channel.send(t("commands:hunt.probabilities", {probabilidadeDemonio, probabilidadeAnjo, probabilidadeSD, probabilidadeDeuses}))
 
         if (parseInt(user.caçarTime) < Date.now()) {
             let avatar = message.author.displayAvatarURL({ format: "png", dynamic: true });
             let embed = new MessageEmbed()
-                .setTitle("Caçada")
+                .setTitle(t("commands:hunt.title"))
                 .setColor("#faa40f")
                 .setThumbnail(avatar)
-                .setFooter('Sabia que em meu servidor de suporte, suas chances de sucesso são maiores?')
+                .setFooter(t("commands:hunt.footer"))
 
             switch (option) {
                 case 'demônio':
@@ -99,7 +98,7 @@ module.exports = class HuntCommand extends Command {
                     user.caçados = user.caçados + dc;
                     user.caçarTime = 3600000 + Date.now();
                     user.save()
-                    embed.setDescription(`Você saiu para caçar demônios com o Super Xandão, e caçou \`${dc}\` demônios`)
+                    embed.setDescription(`${t("commands:hunt.description_start", {value: dc})} ${t("commands:hunt.demons")}`)
                     message.channel.send(embed)
                     break;
                 case 'anjos':
@@ -107,7 +106,7 @@ module.exports = class HuntCommand extends Command {
                     user.anjos = user.anjos + da;
                     user.caçarTime = 3600000 + Date.now();
                     user.save()
-                    embed.setDescription(`Você saiu para caçar anjos com o Super Xandão, e caçou \`${da}\` anjos`)
+                    embed.setDescription(`${t("commands:hunt.description_start", {value: da})} ${t("commands:hunt.angels")}`)
                     message.channel.send(embed)
                     break;
                 case 'semideuses':
@@ -115,7 +114,7 @@ module.exports = class HuntCommand extends Command {
                     user.semideuses = user.semideuses + ds;
                     user.caçarTime = 3600000 + Date.now();
                     user.save()
-                    embed.setDescription(`Você saiu para caçar semideuses com o Super Xandão, e caçou \`${ds}\` semideuses`)
+                    embed.setDescription(`${t("commands:hunt.description_start", {value: ds})} ${t("commands:hunt.sd")}`)
                     message.channel.send(embed)
                     break;
                 case 'deus':
@@ -124,12 +123,12 @@ module.exports = class HuntCommand extends Command {
                     user.caçarTime = 3600000 + Date.now();
                     user.save()
                     if (dd > 0) embed.setColor('#e800ff')
-                    embed.setDescription((dd > 0) ? `CARACA!!! VOCÊ SE MOSTROU UM HERÓI FRUTO DE UMA VONTADE DIVINA, ASSIM COMO XANDÃO, E CONSEGUIU CAÇAR \`${dd}\` DEUS!!!!!!` : `Caçar Deuses é uma missão extremamente difícil, e você acabou não conseguindo, levando um total de \`${dd}\` deuses pra casa`)
+                    embed.setDescription((dd > 0) ? t("commands:hunt.god_hunted_success", {value: dd}) : t("commands:hunt.god_hunted_fail", {value: dd}))
                     message.channel.send(embed)
                     break;
             }
         } else {
-            message.channel.send(`<:negacao:759603958317711371> | Descanse campeão ${message.author}, você já saiu na sua caçada. Tente novamente em **${moment.utc(parseInt(user.caçarTime - Date.now())).format("mm:ss")}** minutos\n<:atencao:759603958418767922> | **DICA:** Sabia que em meu servidor de suporte, as chances de caça são maiores? m!suporte`)
+            message.menheraReply("error", t("commands:hunt.cooldown", {time: moment.utc(parseInt(user.caçarTime - Date.now())).format("mm:ss")}))
         }
     }
 }

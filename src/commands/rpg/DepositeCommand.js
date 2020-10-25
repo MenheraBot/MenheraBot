@@ -5,33 +5,31 @@ module.exports = class DepositeCommand extends Command {
             name: "depositar",
             aliases: ["deposite"],
             cooldown: 5,
-            description: "Deposita uma certa quantia no banco da Família",
             clientPermissions: ["EMBED_LINKS"],
-            category: "rpg",
-            usage: "<valor>"
+            category: "rpg"
         })
     }
-    async run(message, args) {
+    async run({ message, args, server }, t) {
 
         const user = await this.client.database.Rpg.findById(message.author.id)
-        if (!user) return message.channel.send("<:negacao:759603958317711371> | Você não é um aventureiro")
-        if (!user.hasFamily) return message.channel.send("<:negacao:759603958317711371> | Você não está em nenhuma família")
+        if (!user) return message.menheraReply("error", t("commands:deposite.non-aventure"))
+        if (!user.hasFamily) return message.menheraReply("error", t("commands:deposite.no-family"))
 
         const familia = await this.client.database.Familias.findById(user.familyName)
 
         const input = args[0]
-        if(!input) return message.channel.send("<:negacao:759603958317711371> | Este valor não é válido")
+        if(!input) return message.menheraReply("error", t("commands:deposite.invalid-value"))
         const valor = parseInt(input.replace(/\D+/g, ''))
-        if (!valor || valor < 1) return message.channel.send("<:negacao:759603958317711371> | Este valor não é válido")
+        if (!valor || valor < 1) return message.menheraReply("error", t("commands:deposite.invalid-value"))
 
-        if (valor > user.money) return message.channel.send("<:negacao:759603958317711371> | Você não tem todas essas pedras mágicas")
+        if (valor > user.money) return message.menheraReply("error", t("commands:deposite.poor"))
 
         user.money = user.money - valor
         familia.bank = parseInt(familia.bank) + valor
         user.save()
         familia.save()
 
-        message.channel.send(`<:positivo:759603958485614652> | Você transferiu com sucesso ${valor} :gem: para o banco da família!`)
+        message.menheraReply("success", t("commands:deposite.transfered", {value: valor}))
         setTimeout(() => {
             const server = this.client.guilds.cache.get('717061688460967988');
             const roles = [server.roles.cache.get('765069003440914443'), server.roles.cache.get('765069063146962995'), server.roles.cache.get('765069110018703371'), server.roles.cache.get('765069167363096616'), server.roles.cache.get('765069139885948928')]

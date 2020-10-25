@@ -5,13 +5,11 @@ module.exports = class LaughtCommand extends Command {
         super(client, {
             name: "rir",
             aliases: ["laugh"],
-            description: "Mostre a todos que estás rindo",
             clientPermissions: ["EMBED_LINKS"],
-            category: "ações",
-            usage: "[@menção]"
+            category: "ações"
         })
     }
-    async run(message, args) {
+    async run({ message, args, server }, t) {
 
         let avatar = message.author.displayAvatarURL({ format: "png" })
 
@@ -29,9 +27,9 @@ module.exports = class LaughtCommand extends Command {
 
         if (!user) {
             const embed = new MessageEmbed()
-                .setTitle("KKKK RINDO")
+                .setTitle(t("commands:laugh.no-mention.embed_title"))
                 .setColor("#000000")
-                .setDescription(`${message.author} está se mijando de rir`)
+                .setDescription(`${message.author} ${t("commands:laugh.no-mention.embed_description")}`)
                 .setThumbnail(avatar)
                 .setImage(rand)
                 .setAuthor(message.author.tag, avatar);
@@ -40,9 +38,9 @@ module.exports = class LaughtCommand extends Command {
         }
 
         const embed = new MessageEmbed()
-            .setTitle("RINDO")
+            .setTitle(t("commands:laugh.embed_title"))
             .setColor("#000000")
-            .setDescription(`${user} fez ${message.author} cair no chão de tanto rir`)
+            .setDescription(`${user} ${t("commands:laugh.embed_description_start")} ${message.author} ${t("commands:laugh.embed_description_end")}`)
             .setImage(rand)
             .setThumbnail(avatar)
             .setAuthor(message.author.tag, avatar);

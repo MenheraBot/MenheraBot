@@ -5,14 +5,11 @@ module.exports = class ThinksCOmmand extends Command {
         super(client, {
             name: "pensar",
             aliases: ["think"],
-            description: "Gabriel o pensador apenas",
             clientPermissions: ["EMBED_LINKS"],
-            category: "ações",
-            usage: "[@menção]"
+            category: "ações"
         })
     }
-    async run(message, args) {
-
+    async run({ message, args, server }, t) {
 
         var list = [
             "https://i.imgur.com/ZIxBpIz.gif",
@@ -32,43 +29,28 @@ module.exports = class ThinksCOmmand extends Command {
         let user = message.mentions.users.first();
         let avatar = message.author.displayAvatarURL({ format: "png" });
 
-        if (user && user.bot) return message.channel.send(`Awnnn que coisa mais linda, ${message.author} está pensando num bot >.<`)
+        if (user && user.bot) return message.menheraReply("success", t("commands:think.bot"))
 
-        if (!user) {
+        if (!user || user == message.author) {
             const embed = new MessageEmbed()
-                .setTitle("Pensar")
+                .setTitle(t("commands:think.no-mention.embed_title"))
                 .setColor("#000000")
-                .setDescription(`${message.author} está PENSANDO`)
+                .setDescription(`${message.author} ${t("commands:think.no-mention.embed_description")}`)
                 .setThumbnail(avatar)
                 .setImage(rand)
                 .setAuthor(message.author.tag, avatar);
 
-            message.channel.send(embed);
-            return;
+          return message.channel.send(embed);
         }
-
-        if (user === message.author) {
-            const embed = new MessageEmbed()
-                .setTitle("Pensar")
-                .setColor("#000000")
-                .setDescription(`${message.author} está em ANÁLISE`)
-                .setThumbnail(avatar)
-                .setImage(rand)
-                .setAuthor(message.author.tag, avatar);
-
-            message.channel.send(embed);
-            return;
-        }
-
 
         const embed = new MessageEmbed()
-            .setTitle("pensar")
+            .setTitle(t("commands:think.embed_title"))
             .setColor("#000000")
-            .setDescription(`${message.author} está pensando em ${user} hehehehe`)
+            .setDescription(`${message.author} ${t("commands:think.embed_description")} ${user} hehehehe`)
             .setImage(rand)
             .setThumbnail(avatar)
             .setAuthor(message.author.tag, avatar);
 
-        await message.channel.send(embed);
+        message.channel.send(embed);
     }
 }

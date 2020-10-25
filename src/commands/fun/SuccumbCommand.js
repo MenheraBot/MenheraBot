@@ -3,15 +3,13 @@ module.exports = class SuccumbCommand extends Command {
     constructor(client) {
         super(client, {
             name: "sucumba",
-            description: "SUCUMBA MUCALOL",
-            category: "diversão",
-            usage: "<menção || texto>"
+            category: "diversão"
         })
     }
-    async run(message, args) {
+    async run({ message, args, server }, t) {
         const user = message.mentions.users.first() || args.join(" ");
-        if (!user) return message.reply("n/a");
-        if (user.id == message.author.id) return message.reply("n/a");
-        message.channel.send(`SUCUMBA **${user}**\nVERME\nLIXO\nHORROROSO\nRUIM\nHORRÍVEL\nESCÓRIA\nBOSTA\nLIXOSO\nPERITO EM ENTREGAR GAME\nCOCOZENTO`);
+        if (!user) return message.menheraReply("error", "n/a")
+        if (user.id == message.author.id) return message.menheraReply("error", "n/a")
+        message.channel.send(`${t("commands:succumb.start")} **${user}** ${t("commands:succumb.end")}`);
     }
 }

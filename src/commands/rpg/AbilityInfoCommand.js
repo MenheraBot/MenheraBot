@@ -7,15 +7,13 @@ module.exports = class AbilityInfoCommand extends Command {
             name: "infohabilidade",
             aliases: ["ih"],
             cooldown: 10,
-            description: "Bloqueie ou Desbloqueie o canal atual de usar meus comandos",
             clientPermissions: ["EMBED_LINKS"],
-            category: "rpg",
-            usage: "[opção] [habilidade]"
+            category: "rpg"
         })
     }
-    async run(message, args) {
+    async run({ message, args, server }, t) {
 
-        if (!args[0]) return message.channel.send(`<:atencao:759603958418767922> | Como usar o comando InfoHabilidade?\nVocê pode usar das seguintes formas:\n\nm!ih classe <classe> - retorna todas as habilidades únicas da classe citada\n\nm!ih minhas - retorna todas as suas habilidades`);
+        if (!args[0]) return message.menheraReply("question", t("commands:ih.no-args"))
 
         const validArgs = [{
             opção: "classe",
@@ -23,19 +21,19 @@ module.exports = class AbilityInfoCommand extends Command {
         },
         {
             opção: "minhas",
-            arguments: ["minhas", "minha", "meu", "meus", "m"]
+            arguments: ["minhas", "minha", "meu", "meus", "mine", "my"]
         }
         ]
 
         const selectedOption = validArgs.some(so => so.arguments.includes(args[0].toLowerCase()))
-        if (!selectedOption) return message.channel.send("<:negacao:759603958317711371> | Esta opção não é válida")
+        if (!selectedOption) return message.menheraReply("error", t("commands:ih.invalid-option"))
         const filtredOption = validArgs.filter(f => f.arguments.includes(args[0].toLowerCase()))
 
         const option = filtredOption[0].opção
 
         switch (option) {
             case 'classe':
-                if (!args[1]) return message.channel.send("<:negacao:759603958317711371> | Você não citou a classe")
+                if (!args[1]) return message.menheraReply("error", t("commands:ih.no-class"))
                 this.getClass(message, args[1])
                 break;
             case 'minhas':
@@ -48,11 +46,11 @@ module.exports = class AbilityInfoCommand extends Command {
         const classes = ["assassino", "barbaro", "clerigo", "druida", "espadachim", "feiticeiro", "monge", "necromante"]
 
         const normalized = classe.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-    
-        if (!classes.includes(normalized)) return message.channel.send("<:negacao:759603958317711371> | Esta classe não existe!")
-    
+
+        if (!classes.includes(normalized)) return message.menheraReply("error", t("commands:ih.invalid-class"))
+
         let filtrado;
-    
+
         switch (normalized) {
             case 'assassino':
                 filtrado = abilitiesFile.assassin
@@ -79,27 +77,27 @@ module.exports = class AbilityInfoCommand extends Command {
                 filtrado = abilitiesFile.necromante
                 break;
         }
-    
+
         const filtredOption = filtrado.uniquePowers
-    
+
         let embed = new MessageEmbed()
-            .setTitle(`🔮 | Habilidades do ${classe}`)
+            .setTitle(`🔮 | ${t("commands:ih.abilities", { class: classe })}`)
             .setColor('#9cfcde')
-    
+
         filtredOption.forEach(hab => {
-            embed.addField(hab.name, `📜 | **Descrição:** ${hab.description}\n⚔️ | **Dano:** ${hab.damage}\n💉 | **Cura:** ${hab.heal}\n💧 | **Custo:** ${hab.cost}\n🧿 | **Tipo:** ${hab.type}`)
+            embed.addField(hab.name, `📜 | **${t("commands:ih.desc")}:** ${hab.description}\n⚔️ | **${t("commands:ih.dmg")}:** ${hab.damage}\n💉 | **${t("commands:ih.heal")}:** ${hab.heal}\n💧 | **${t("commands:ih.cost")}:** ${hab.cost}\n🧿 | **${t("commands:ih.type")}:** ${hab.type}`)
         })
-    
+
         message.channel.send(message.author, embed)
-    
+
     }
-    async getAll(message){
+    async getAll(message) {
 
         const user = await this.client.database.Rpg.findById(message.author.id)
-        if (!user) return message.channel.send("<:negacao:759603958317711371> | Você não é um aventureiro")
-    
+        if (!user) return message.menheraReply("error", t("commands:ih.non-aventure"))
+
         let filtrado;
-    
+
         switch (user.class) {
             case 'Assassino':
                 filtrado = abilitiesFile.assassin
@@ -126,32 +124,31 @@ module.exports = class AbilityInfoCommand extends Command {
                 filtrado = abilitiesFile.necromante
                 break;
         }
-    
+
         let uniquePowerFiltred = filtrado.uniquePowers.filter(f => f.name == user.uniquePower.name)
         let abilitiesFiltred = [];
-    
+
         user.abilities.forEach(hab => {
             let a = filtrado.normalAbilities.filter(f => f.name == hab.name)
             abilitiesFiltred.push(a[0])
         })
-    
+
         let embed = new MessageEmbed()
-            .setTitle("🔮 | Suas Habilidades")
+            .setTitle(`🔮 | ${t("commands:ih.your-abilities")}`)
             .setColor('#a9ec67')
-    
-        embed.addField("Habilidade Única: " + uniquePowerFiltred[0].name, `📜 | **Descrição:** ${uniquePowerFiltred[0].description}\n⚔️ | **Dano:** ${uniquePowerFiltred[0].damage}\n💉 | **Cura:** ${uniquePowerFiltred[0].heal}\n💧 | **Custo:** ${uniquePowerFiltred[0].cost}`)
-    
+
+        embed.addField(` ${t("commands:ih.uniquePower")}: ` + uniquePowerFiltred[0].name, `📜 | **${t("commands:ih.desc")}:** ${uniquePowerFiltred[0].description}\n⚔️ | **${t("commands:ih.dmg")}:** ${uniquePowerFiltred[0].damage}\n💉 | **${t("commands:ih.heal")}:** ${uniquePowerFiltred[0].heal}\n💧 | **${t("commands:ih.cost")}:** ${uniquePowerFiltred[0].cost}`)
+
         abilitiesFiltred.forEach(hab => {
-            embed.addField('🔮 | Habilidade: ' + hab.name, `📜 | **Descrição:** ${hab.description}\n⚔️ | **Dano:** ${hab.damage}\n💉 | **Cura:** ${hab.heal}\n💧 | **Custo:** ${hab.cost}`)
+            embed.addField(`🔮 | ${t("commands:ih.ability")}: ` + hab.name, `📜 | **${t("commands:ih.desc")}:** ${hab.description}\n⚔️ | **${t("commands:ih.dmg")}:** ${hab.damage}\n💉 | **${t("commands:ih.heal")}:** ${hab.heal}\n💧 | **${t("commands:ih.cost")}:** ${hab.cost}`)
         })
-    
+
         if (user.hasFamily) {
             const familia = await this.client.database.Familias.findById(user.familyName)
             familia.abilities.forEach(hab => {
-                embed.addField('🔮 | Habilidade da Família: ' + hab.name, `📜 | **Descrição:** ${hab.description}\n⚔️ | **Dano:** ${hab.damage}\n💉 | **Cura:** ${hab.heal}\n💧 | **Custo:** ${hab.cost}`)
+                embed.addField(`🔮 | ${t("commands:ih.familyAbility")}: ` + hab.name, `📜 | **${t("commands:ih.desc")}:** ${hab.description}\n⚔️ | **${t("commands:ih.dmg")}:** ${hab.damage}\n💉 | **${t("commands:ih.heal")}:** ${hab.heal}\n💧 | **${t("commands:ih.cost")}:** ${hab.cost}`)
             })
         }
         message.channel.send(message.author, embed)
-    
     }
 };

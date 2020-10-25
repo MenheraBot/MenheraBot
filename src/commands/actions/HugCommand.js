@@ -5,13 +5,11 @@ module.exports = class HugCommand extends Command {
         super(client, {
             name: "abraçar",
             aliases: ["abracar", "hug"],
-            description: "Abraça alguem",
             clientPermissions: ["EMBED_LINKS"],
-            category: "ações",
-            usage: "<@menção>"
+            category: "ações"
         })
     }
-    async run(message, args) {
+    async run({ message, args, server }, t) {
 
         var list = [
             "https://i.imgur.com/r9aU2xv.gif",
@@ -36,22 +34,22 @@ module.exports = class HugCommand extends Command {
         var rand = list[Math.floor(Math.random() * list.length)];
         let user = message.mentions.users.first();
 
-        if (user && user.bot) return message.channel.send(`${message.author} foi abraçar um robô, mas acabou tocando onde não devia, e tomou uma descarga elétrica de 220V e 10mA, sorte que a corrente usada no bot é baixa...`)
+        if (user && user.bot) return message.menheraReply("error", t("commands:hug.bot"))
 
         if (!user) {
-            return message.channel.send("<:negacao:759603958317711371> | você deve mencionar quem quer abraçar");
+            return message.menheraReply("error", t("commands:hug.no-mention"))
         }
 
         if (user === message.author) {
-            return message.channel.send(`<:negacao:759603958317711371>| ${message.author}, tu não é a mulher elástico pra se abraçar, por favor, mencione quem você quer abraçar`);
+            return message.menheraReply("error", t("commands:hug.self-mention"))
         }
 
         let avatar = message.author.displayAvatarURL({format: "png"});
 
         const embed = new MessageEmbed()
-            .setTitle("Abraçar")
+            .setTitle(t("commands:hug.embed_title"))
             .setColor("#000000")
-            .setDescription(`${message.author} acaba de abraçar ${user}`)
+            .setDescription(`${message.author} ${t("commands:hug.embed_description")} ${user}`)
             .setImage(rand)
             .setThumbnail(avatar)
             .setAuthor(message.author.tag, avatar);

@@ -5,20 +5,18 @@ module.exports = class WarnListCommand extends Command {
         super(client, {
             name: "warnlist",
             alisases: ["warns", "punishmentlist"],
-            description: "Veja quantos warns uma pessoa tem",
             cooldown: 5,
             userPermissions: ["MANAGE_MESSAGES"],
             clientPermissions: ["EMBED_LINKS"],
-            category: "moderação",
-            usage: "<usuário>"
+            category: "moderação"
         })
     }
-    async run(message, args) {
+    async run({ message, args, server }, t) {
 
         const user = message.mentions.users.first() || this.client.users.cache.get(args[0]);
-        if (!user) return message.channel.send("<:negacao:759603958317711371> | Nenhum usuário encontrado");
-        if (user.bot) return message.channel.send("<:negacao:759603958317711371> | Bots são muito legais para receberem avisos");
-        if (!message.guild.members.cache.get(user.id)) return message.message.channel.send("<:negacao:759603958317711371> | Este membro não está neste servidor!!!")
+        if (!user) return message.menheraReply("error", t("commands:warnlist.no-mention"))
+        if (user.bot) return message.menheraReply("error", t("commands:warnlist.bot"))
+        if (!message.guild.members.cache.get(user.id)) returnmessage.menheraReply("error", t("commands:warnlist.invalid-member"))
 
         //listas
 
@@ -42,7 +40,7 @@ module.exports = class WarnListCommand extends Command {
         let rand;
 
         let embed = new MessageEmbed()
-            .setTitle(`Avisos de ${user.tag}`)
+            .setTitle(t("commands:warnlist.embed_title", {user: user.tag}))
 
         this.client.database.Warns.find({
             userId: user.id,
@@ -53,7 +51,7 @@ module.exports = class WarnListCommand extends Command {
             if (err) console.log(err);
 
             if (!db || db.length < 1) {
-                embed.setDescription(`${user} não possui avisos neste servidor`);
+                embed.setDescription(`${user} ${t("commands:warnlist.no__warns")}`);
                 rand = noWarn[Math.floor(Math.random() * noWarn.length)];
             } else {
                 rand = warned[Math.floor(Math.random() * warned.length)];
@@ -61,7 +59,7 @@ module.exports = class WarnListCommand extends Command {
 
             for (var i = 0; i < db.length; i++) {
                 if(embed.fields.length == 24) continue;
-                embed.addField(`Aviso #${i + 1}`, `**Avisado por:** ${client.users.cache.get(db[i].warnerId)}\n**Razão:** ${db[i].reason}\n**Data:** ${db[i].data}\n**WarnID:** \`${db[i]._id}\``);
+                embed.addField(`${t("commands:warnlist.warn")} #${i + 1}`, `**${t("commands:warnlist.Warned_by")}** ${client.users.cache.get(db[i].warnerId)}\n**${t("commands:warnlist.Reason")}** ${db[i].reason}\n**${t("commands:warnlist.Data")}** ${db[i].data}\n**${t("commands:warnlist.WarnID")}** \`${db[i]._id}\``);
             }
             embed.setImage(rand);
             //const errorMessage = err.stack.length > 1800 ? `${err.stack.slice(0, 1800)}...` : err.stack;

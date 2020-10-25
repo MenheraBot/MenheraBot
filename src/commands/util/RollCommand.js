@@ -1,17 +1,14 @@
 const Command = require("../../structures/command")
 
-const { MessageEmbed } = require("discord.js")
-
 module.exports = class RollCommand extends Command {
     constructor(client) {
         super(client, {
             name: "roll",
             cooldown: 5,
-            description: "Use um DR para resetar seu tempo de caçadas",
             category: "util"
         })
     }
-    async run(message, args) {
+    async run({ message, args, server }, t) {
 
         let user = await this.client.database.Users.findOne({id: message.author.id});
 
@@ -22,14 +19,13 @@ module.exports = class RollCommand extends Command {
             }).save()
         }
 
-        if (parseInt(user.caçarTime) < Date.now()) return message.channel.send(`<:negacao:759603958317711371> | Ei ${message.author}, você já pode caçar! Caçe antes de usar um Roll!`);
+        if (parseInt(user.caçarTime) < Date.now()) return message.menheraReply("error", t("commands:roll.can-hunt"))
 
-        if (user.rolls < 1) return message.channel.send(`<:negacao:759603958317711371> | Você não possui DailyRolls! Vote em mim para resgatar um DR`);
+        if (user.rolls < 1) return message.menheraReply("error", t("commands:roll.poor"))
 
         user.rolls = user.rolls - 1;
         user.caçarTime = "000000000000"
         user.save()
-        message.channel.send(`<:positivo:759603958485614652> | Prontinho, você resetou seu tempo de caçadas, pode caçar!`)
-
+        message.menheraReply("success", t("commands:roll.success"))
     }
 }

@@ -8,7 +8,7 @@ module.exports = class BlackilistCommand extends Command {
             category: "Dev"
         })
     }
-    async run(message, args) {
+    async run({ message, args, server }, t) {
 
         if(!args[1]) return message.channel.send("Diga-me o id do usuario")
 

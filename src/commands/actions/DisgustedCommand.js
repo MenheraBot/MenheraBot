@@ -5,13 +5,11 @@ module.exports = class DisgustedCommand extends Command {
         super(client, {
             name: "nojo",
             aliases: ["disgusted"],
-            description: "Eca que nojo",
             clientPermissions: ["EMBED_LINKS"],
-            category: "ações",
-            usage: "<@menção>"
+            category: "ações"
         })
     }
-    async run(message, args) {
+    async run({ message, args, server }, t) {
 
         var list = [
             "https://i.imgur.com/6sAJms7.gif",
@@ -26,13 +24,13 @@ module.exports = class DisgustedCommand extends Command {
         let user = message.mentions.users.first();
         let avatar = message.author.displayAvatarURL({ format: "png" });
 
-        if (user && user.bot) return message.channel.send(`Iiii ala ${message.author} tem nojinho de bot ui ui ui`)
+        if (user && user.bot) return message.menheraReply("error", t("commands:disgusted.bot"))
 
-        if (!user) {
+        if (!user || user == message.author) {
             const embed = new MessageEmbed()
-                .setTitle("Nojo")
+                .setTitle(t("commands:disgusted.no-mention.embed_title"))
                 .setColor("#000000")
-                .setDescription(`${message.author} está com nojinho ble`)
+                .setDescription(`${message.author} ${t("commands:disgusted.no-mention.embed_title")}`)
                 .setThumbnail(avatar)
                 .setImage(rand)
                 .setAuthor(message.author.tag, avatar);
@@ -40,25 +38,11 @@ module.exports = class DisgustedCommand extends Command {
             message.channel.send(embed);
             return;
         }
-
-        if (user === message.author) {
-            const embed = new MessageEmbed()
-                .setTitle("Nojo")
-                .setColor("#000000")
-                .setDescription(`${message.author} está com nojinho ble`)
-                .setThumbnail(avatar)
-                .setImage(rand)
-                .setAuthor(message.author.tag, avatar);
-
-            message.channel.send(embed);
-            return;
-        }
-
 
         const embed = new MessageEmbed()
             .setTitle("Nojo")
             .setColor("#000000")
-            .setDescription(`${message.author} está com nojo de ${user}`)
+            .setDescription(`${message.author} ${t("commands.disgusted.embed_description")} ${user}`)
             .setImage(rand)
             .setThumbnail(avatar)
             .setAuthor(message.author.tag, avatar);

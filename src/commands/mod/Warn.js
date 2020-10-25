@@ -4,25 +4,23 @@ module.exports = class WarnCommand extends Command {
     constructor(client) {
         super(client, {
             name: "warn",
-            description: "Avise um usuário",
             cooldown: 5,
             userPermissions: ["KICK_MEMBERS"],
             clientPermissions: ["EMBED_LINKS"],
-            category: "moderação",
-            usage: "<usuário> [razão]"
+            category: "moderação"
         })
     }
-    async run(message, args) {
+    async run({ message, args, server }, t) {
 
         const user = message.mentions.users.first() || this.client.users.cache.get(args[0]);
-        if (!user) return message.channel.send("<:negacao:759603958317711371> | Nenhum usuário foi mencionado");
-        if (user.bot) return message.channel.send("<:negacao:759603958317711371> | Não mencione bots");
-        if (user.id === message.author.id) return message.channel.send("<:negacao:759603958317711371> | O cara quer ser avisado KKK")
+        if (!user) return message.menheraReply("error", t("commands:warn.no-mention"))
+        if (user.bot) return message.menheraReply("error", t("commands:warn.bot"))
+        if (user.id === message.author.id) return message.menheraReply("error", t("commands:warn.self-mention"))
 
-        if (!message.guild.members.cache.get(user.id)) return message.channel.send("<:negacao:759603958317711371> | Este membro não está neste servidor!!!")
+        if (!message.guild.members.cache.get(user.id)) returnmessage.menheraReply("error", t("commands:warn.invalid-member"))
 
         let reason = args.slice(1).join(" ");
-        if (!reason) reason = "Sem motivo informado";
+        if (!reason) reason = t("commands:warn.default_reason");
 
         var data1 = new Date();
 
@@ -56,8 +54,8 @@ module.exports = class WarnCommand extends Command {
         var rand = list[Math.floor(Math.random() * list.length)];
 
         const embed = new MessageEmbed()
-            .setTitle("AVISADO")
-            .setDescription(`${message.author} avisou ${user}`)
+            .setTitle(t("commands:warn.embed_title"))
+            .setDescription(`${message.author} ${t("commands:embed-description")} ${user}`)
             .setImage(rand)
 
         this.client.database.Warns.findOne({

@@ -5,24 +5,19 @@ module.exports = class MamarCommand extends Command {
         super(client, {
             name: "mamar",
             aliases: ["suck", "sugada"],
-            description: "Da aquela mamada de qualidade monstra",
             clientPermissions: ["EMBED_LINKS"],
-            category: "ações",
-            usage: "<@menção>"
+            category: "ações"
         })
     }
-    async run(message, args) {
+    async run({ message, args, server }, t) {
 
         const mention = message.mentions.users.first();
 
-        if (!mention) return message.channel.send("<:negacao:759603958317711371> | KKK ala o autista mamando o nada");
+        if (!mention) return message.menheraReply("error", t("commands:mamar.no-mention"))
 
-        if (mention.bot) {
-            message.channel.send(`${message.author} acabou de sujar a boca de óleo mamano o bot ${mention}`);
-            return;
-        }
+        if (mention.bot) return message.menheraReply("warn", `${t("commands:mamar.bot")} ${mention}`);
 
-        if (mention == message.author) return message.channel.send("<:negacao:759603958317711371> | Não tenta me enganar, eu sei que tu não consegue mamar a si mesmo! Marque outra pessoa para mamar");
+        if (mention == message.author) return message.menheraReply("error", t("commands:mamar.self-mention"))
 
         let user1 = await this.client.database.Users.findOne({ id: mention.id })
         let user2 = await this.client.database.Users.findOne({ id: message.author.id })
@@ -56,9 +51,9 @@ module.exports = class MamarCommand extends Command {
         var rand = list[Math.floor(Math.random() * list.length)];
         let avatar = message.author.displayAvatarURL({ format: "png" });
         const embed = new MessageEmbed()
-            .setTitle("Mamar")
+            .setTitle(t("commands:mamar.embed_title"))
             .setColor("#000000")
-            .setDescription(`${message.author} Mamou ${mention}`)
+            .setDescription(`${message.author} ${t("commands:mamar.embed_description")} ${mention}`)
             .setImage(rand)
             .setThumbnail(avatar)
             .setAuthor(message.author.tag, avatar);
@@ -67,6 +62,5 @@ module.exports = class MamarCommand extends Command {
 
         user1.save()
         user2.save()
-
     }
 }

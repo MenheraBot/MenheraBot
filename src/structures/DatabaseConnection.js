@@ -24,7 +24,8 @@ const familiaSchema = new mongoose.Schema({
 const guildSchema = mongoose.Schema({
     id: { type: String },
     prefix: { type: String, default: config.prefix },
-    blockedChannels: { type: Array, default: [] }
+    blockedChannels: { type: Array, default: [] },
+    lang: { type: String, default: "pt-BR" }
 });
 
 const rpgSchema = mongoose.Schema({

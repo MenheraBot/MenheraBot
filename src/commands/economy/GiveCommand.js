@@ -5,14 +5,12 @@ module.exports = class GiveCommand extends Command {
             name: "give",
             aliases: ["pay"],
             cooldown: 5,
-            description: "Transfira algo de seu inventário para alguém",
-            usage: "<opção> <@menção> <valor>",
             category: "economia"
         })
     }
-    async run(message, args) {
+    async run({ message, args, server }, t) {
 
-        if (!args[0]) return message.channel.send("<:negacao:759603958317711371> | Você deve escolher se deseja dar estrelas, demonios, anjos, semideuses ou deuses!\nUse `m!help give` para mais informações")
+        if (!args[0]) return message.menheraReply("error", t("commands:give.no-args", {prefix: server.prefix}))
 
         const validArgs = [{
             opção: "estrelinhas",
@@ -37,24 +35,24 @@ module.exports = class GiveCommand extends Command {
         ];
 
         const selectedOption = validArgs.some(so => so.arguments.includes(args[0].toLowerCase()))
-        if (!selectedOption) return message.channel.send("<:negacao:759603958317711371> | Você deve escolher se deseja dar estrelas, demonios, anjos, demideuses ou deuses!\nUse `m!help give` para mais informações")
+        if (!selectedOption) return message.menheraReply("error", t("commands:give.no-args", {prefix: server.prefix}))
         const filtredOption = validArgs.filter(f => f.arguments.includes(args[0].toLowerCase()))
 
         const option = filtredOption[0].opção
         const mencionado = message.mentions.users.first()
         const input = args[2]
-        if(!input) return message.channel.send("<:negacao:759603958317711371> | Você deve usar give `opção` @usuario `valor`")
+        if(!input) return message.menheraReply("error", t("commands:give.bad-usage"))
         const valor = parseInt(input.replace(/\D+/g, ''));
-        if (!mencionado) return message.channel.send("<:negacao:759603958317711371> | Você deve usar give `opção` @usuario `valor`")
-        if (mencionado.id == message.author.id) return message.channel.send("<:negacao:759603958317711371> | Você não pode mencionar a si mesmo!")
+        if (!mencionado) return message.menheraReply("error", t("commands:give.bad-usage"))
+        if (mencionado.id == message.author.id) return message.menheraReply("error", t("commands:give.self-mention"))
 
         let user = await this.client.database.Users.findOne({ id: message.author.id })
         let user2 = await this.client.database.Users.findOne({ id: mencionado.id })
 
-        if (!user2) return message.channel.send("<:negacao:759603958317711371> | Este usuário não está em minha database")
-        if (!valor) return message.channel.send("<:negacao:759603958317711371> | Você não me disse o valor")
+        if (!user2) return message.menheraReply("error", t("commands:give.no-dbuser"))
+        if (!valor) return message.menheraReply("error", t("commands:give.invalid-value"))
 
-        if (valor < 1) return message.channel.send("<:negacao:759603958317711371> | O valor a ser dado deve ser maior que 0")
+        if (valor < 1) return message.menheraReply("error", t("commands:give.invalid-value"))
 
         switch (option) {
             case 'estrelinhas':
@@ -78,65 +76,61 @@ module.exports = class GiveCommand extends Command {
 
 function giveStar(user, user2, valor, message, mencionado) {
 
-    if (valor > user.estrelinhas) return message.channel.send(`<:negacao:759603958317711371> | ${message.author} você não tem este tanto de estrelinhas`)
+    if (valor > user.estrelinhas) return message.menheraReply("error", `${t("commands:give.poor")} ${t("commands:give.stars")}`)
 
     user.estrelinhas = user.estrelinhas - valor;
     user2.estrelinhas = user2.estrelinhas + valor
     user.save()
     user2.save()
 
-    message.channel.send(`<:positivo:759603958485614652> | ${message.author} transferiu **${valor}** ⭐ para ${mencionado}`)
-
+    message.menheraReply("success", `${t("commands:give.transfered", {value: valor, emoji: "⭐"})} ${mencionado}`)
 }
 
 function giveDemon(user, user2, valor, message, mencionado) {
 
-    if (valor > user.caçados) return message.channel.send(`<:negacao:759603958317711371> | ${message.author} você não tem este tanto de demônios`)
+    if (valor > user.caçados) return message.menheraReply("error", `${t("commands:give.poor")} ${t("commands:give.demons")}`)
 
     user.caçados = user.caçados - valor;
     user2.caçados = user2.caçados + valor
     user.save()
     user2.save()
 
-    message.channel.send(`<:positivo:759603958485614652> | ${message.author} transferiu **${valor}** <:Demon:758765044443381780> para ${mencionado}`)
-
+    message.menheraReply("success", `${t("commands:give.transfered", {value: valor, emoji: "<:Demon:758765044443381780>"})} ${mencionado}`)
 }
 
 function giveAngel(user, user2, valor, message, mencionado) {
 
-    if (valor > user.anjos) return message.channel.send(`<:negacao:759603958317711371> | ${message.author} você não tem este tanto de anjos`)
+    if (valor > user.anjos) return message.menheraReply("error", `${t("commands:give.poor")} ${t("commands:give.angels")}`)
 
     user.anjos = user.anjos - valor;
     user2.anjos = user2.anjos + valor
     user.save()
     user2.save()
 
-    message.channel.send(`<:positivo:759603958485614652> | ${message.author} transferiu **${valor}** <:Angel:758765044204437535> para ${mencionado}`)
-
+    message.menheraReply("success", `${t("commands:give.transfered", {value: valor, emoji: "<:Angel:758765044204437535>"})} ${mencionado}`)
 }
 
 function giveSD(user, user2, valor, message, mencionado) {
 
-    if (valor > user.semideuses) return message.channel.send(`<:negacao:759603958317711371> | ${message.author} você não tem este tanto de semideuses`)
+    if (valor > user.semideuses) return message.menheraReply("error", `${t("commands:give.poor")} ${t("commands:give.semigods")}`)
 
     user.semideuses = user.semideuses - valor;
     user2.semideuses = user2.semideuses + valor
     user.save()
     user2.save()
 
-    message.channel.send(`<:positivo:759603958485614652> | ${message.author} transferiu **${valor}** <:SemiGod:758766732235374674> para ${mencionado}`)
-
+    message.menheraReply("success", `${t("commands:give.transfered", {value: valor, emoji: "<:SemiGod:758766732235374674>"})} ${mencionado}`)
 }
 
 function giveGod(user, user2, valor, message, mencionado) {
 
-    if (valor > user.deuses) return message.channel.send(`<:negacao:759603958317711371> | ${message.author} você não tem este tanto de deuses`)
+    if (valor > user.deuses) return message.menheraReply("error", `${t("commands:give.poor")} ${t("commands:give.gods")}`)
 
     user.deuses = user.deuses - valor;
     user2.deuses = user2.deuses + valor
     user.save()
     user2.save()
 
-    message.channel.send(`<:positivo:759603958485614652> | ${message.author} transferiu **${valor}** <:God:758474639570894899> para ${mencionado}`)
-
+    
+    message.menheraReply("success", `${t("commands:give.transfered", {value: valor, emoji: "<:God:758474639570894899>"})} ${mencionado}`)
 }

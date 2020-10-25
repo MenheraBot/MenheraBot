@@ -1,20 +1,18 @@
 const Command = require("../../structures/command")
 const { MessageEmbed } = require("discord.js")
 module.exports = class CryCommand extends Command {
-    constructor(client) {
-        super(client, {
-            name: "chorar",
-            aliases: ["cry"],
-            description: "Mostre a todos que você está chorando, vai que assim tu ganha atenção",
-            clientPermissions: ["EMBED_LINKS"],
-            category: "ações",
-            usage: "[@menção]"
-        })
-    }
-    async run(message, args) {
+  constructor(client) {
+    super(client, {
+      name: "chorar",
+      aliases: ["cry"],
+      clientPermissions: ["EMBED_LINKS"],
+      category: "ações"
+    })
+  }
+  async run({ message, args, server }, t) {
 
-        
-    let avatar = message.author.displayAvatarURL({format: "png"});
+
+    let avatar = message.author.displayAvatarURL({ format: "png" });
 
     var list = [
       "https://i.imgur.com/5YWrh6Z.gif",
@@ -34,13 +32,13 @@ module.exports = class CryCommand extends Command {
     var rand = list[Math.floor(Math.random() * list.length)];
     let user = message.mentions.users.first();
 
-    if (user && user.bot) return message.channel.send(`Nem vem que nenhum bot faz alguem chorar, eles são amigáveis e divertidos. Assim como eu`)
+    if (user && user.bot) return message.menheraReply(t("commands:cry.bot"))
 
-    if (!user) {
+    if (!user || user == message.author) {
       const embed = new MessageEmbed()
-        .setTitle("Sad :(")
+        .setTitle(t("commands:cry.no-mention.embed_title"))
         .setColor("#000000")
-        .setDescription(`${message.author} está chorando`)
+        .setDescription(`${message.author} ${t("commands:cry.no-mention.embed_description")}`)
         .setThumbnail(avatar)
         .setImage(rand)
         .setAuthor(message.author.tag, avatar);
@@ -48,30 +46,15 @@ module.exports = class CryCommand extends Command {
       message.channel.send(embed);
       return;
     }
-
-    if (user === message.author) {
-      const embed = new MessageEmbed()
-        .setTitle("Sad :( ")
-        .setColor("#000000")
-        .setDescription(`${message.author} está chorando`)
-        .setThumbnail(avatar)
-        .setImage(rand)
-        .setAuthor(message.author.tag, avatar);
-
-      message.channel.send(embed);
-      return;
-    }
-
-
 
     const embed = new MessageEmbed()
-      .setTitle("Sad :(")
+      .setTitle(t("commands:cry.embed_title"))
       .setColor("#000000")
-      .setDescription(`${user} fez ${message.author} chorar`)
+      .setDescription(`${user} ${t("commands:cry.embed_description_start")} ${message.author} ${t("commands:cry.embed_description_end")}`)
       .setImage(rand)
       .setThumbnail(avatar)
       .setAuthor(message.author.tag, avatar);
 
     await message.channel.send(embed);
-    }
+  }
 }

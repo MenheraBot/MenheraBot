@@ -5,13 +5,11 @@ module.exports = class ResurrectCommand extends Command {
         super(client, {
             name: "ressuscitar",
             aliases: ["reviver", "resurrect"],
-            description: "Ressuscite alguém morto",
             clientPermissions: ["EMBED_LINKS"],
-            category: "ações",
-            usage: "<@menção>",
+            category: "ações"
         })
     }
-    async run(message, args) {
+    async run({ message, args, server }, t) {
 
         var list = [
             "https://i.imgur.com/krVf6J7.gif",
@@ -23,20 +21,16 @@ module.exports = class ResurrectCommand extends Command {
         let user = message.mentions.users.first();
         let avatar = message.author.displayAvatarURL({ format: "png" });
 
-        if (!user) {
-            return message.channel.send("❓ | Como ressuscitar o nada, que nunca morreu");
-        }
+        if (!user) return message.menheraReply("question", t("commands:ressurect.no-mention"))
 
-        if (user === message.author) {
-            return message.channel.send("❓ | uai, se tu ta morto, como tu ta digitando?");
-        }
+        if (user === message.author) return message.menheraReply("question", t("commands:ressurect.no-mention"))
 
-        if (user.bot) return message.channel.send(`um robô foi religado UwU >.<`)
+        if (user.bot) return message.menheraReply("success", t("commands:ressurect.bot"))
 
         const embed = new MessageEmbed()
-            .setTitle("Ressuscitar")
+            .setTitle(t("commands:ressurect.embed_title"))
             .setColor("#000000")
-            .setDescription(`${message.author} Ressuscitou ${user}`)
+            .setDescription(`${message.author} ${t("commands:embed_description")} ${user}`)
             .setImage(rand)
             .setThumbnail(avatar)
             .setAuthor(message.author.tag, avatar);

@@ -7,31 +7,29 @@ module.exports = class MarryCommand extends Command {
         super(client, {
             name: "casar",
             aliases: ["marry"],
-            description: "Casa com alguem",
             category: "diversão",
-            usage: "<@menção>",
             clientPermission: ["EMBED_LINKS", "ADD_REACTIONS", "MANAGE_MESSAGES"],
         })
     }
-    async run(message, args) {
+    async run({ message, args, server }, t) {
 
         const mencionado = message.mentions.users.first();
 
-        if (!mencionado) return message.channel.send("<:negacao:759603958317711371> | Mencione o usuário com que desejas casar");
-        if (mencionado.bot) return message.channel.send("<:negacao:759603958317711371> | voce não pode se casar com bots");
-        if (mencionado.id === message.author.id) return message.channel.send("<:negacao:759603958317711371> | Você não pode se casar consigo mesmo :(")
+        if (!mencionado) return message.menheraReply("error", t("commands:marry.no-mention"))
+        if (mencionado.bot) return message.menheraReply("error", t("commands:marry.bot"))
+        if (mencionado.id === message.author.id) return message.menheraReply("error", t("commands:marry.self-mention"))
 
         const user1 = await this.client.database.Users.findOne({ id: message.author.id })
 
-        if (user1.casado && user1.casado != "false") return message.channel.send("<:atencao:759603958418767922> | Você já está casado!!")
+        if (user1.casado && user1.casado != "false") return message.menheraReply("error", t("commands:marry.married"))
 
         const user2 = await this.client.database.Users.findOne({ id: mencionado.id })
 
-        if (!user2) return message.channel.send("<:atencao:759603958418767922> | Mame este usuário para adicioná-lo ao meu banco de dados")
+        if (!user2) return message.menheraReply("warm", t("commands:marry.no-dbuser"))
 
-        if (user2.casado && user2.casado != "false") return message.channel.send("<:atencao:759603958418767922> | Este usuário já está casado");
+        if (user2.casado && user2.casado != "false") return message.menheraReply("error", t("commands:marry.mention-married"))
 
-        message.channel.send(`${mencionado} aceitas se casar com ${message.author}? Você tem 15 segundos para aceitar`).then(msg => {
+        message.channel.send(`${mencionado} ${t("commands:marry.confirmation_start")} ${message.author}? ${t("commands:marry.confirmation_end")}`).then(msg => {
 
             msg.react("✅")
             msg.react("❌")
@@ -44,12 +42,12 @@ module.exports = class MarryCommand extends Command {
 
             noColetor.on("collect", co => {
                 msg.reactions.removeAll().catch();
-                return message.channel.send(`${mencionado} negou se casar com ${message.author}`);
+                return message.channel.send(`${mencionado} ${t("commands:marry.negated")} ${message.author}`);
             });
 
             yesColetor.on("collect", cp => {
                 msg.reactions.removeAll().catch();
-                message.channel.send(`💍${message.author} acaba de se casar com ${mencionado}💍`);
+                message.channel.send(`💍${message.author} ${t("commands:marry.acepted")} ${mencionado}💍`);
 
                 var dataFormated = moment(Date.now()).format("l LTS")
 

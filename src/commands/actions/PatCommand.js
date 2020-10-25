@@ -5,13 +5,11 @@ module.exports = class PatCommand extends Command {
         super(client, {
             name: "carinho",
             aliases: ["pat"],
-            description: "Faça carinho em alguem",
             clientPermissions: ["EMBED_LINKS"],
-            category: "ações",
-            usage: "<@menção>"
+            category: "ações"
         })
     }
-    async run(message, args) {
+    async run({ message, args, server }, t) {
 
         var list = [
             "https://i.imgur.com/UWbKpx8.gif",
@@ -29,20 +27,16 @@ module.exports = class PatCommand extends Command {
         var rand = list[Math.floor(Math.random() * list.length)];
         let user = message.mentions.users.first();
 
-        if (!user) {
-            return message.channel.send("<:negacao:759603958317711371> | Tu tem que mencionar em quem tu quer fazer carinho");
-        }
+        if (!user) return message.menheraReply("error", t("commands:pat.no-mention"))
 
-        if (user === message.author) {
-            return message.reply("<:negacao:759603958317711371> | Se tu quiser tu pode fazer carinho em si mesmo agora. Utilize meu comando somente para fazer carinho em outras pessoas");
-        }
+        if (user === message.author) return message.menheraReply("error", t("commands:pat.self-mention"));
 
         let avatar = message.author.displayAvatarURL({ format: "png" });
 
         const embed = new MessageEmbed()
-            .setTitle("Carinho")
+            .setTitle(t("commands:pat.embed_title"))
             .setColor("#000000")
-            .setDescription(`${message.author} fez carinho em ${user}`)
+            .setDescription(`${message.author} ${t("commands:pat.embed_description")} ${user}`)
             .setImage(rand)
             .setThumbnail(avatar)
             .setAuthor(message.author.tag, avatar);

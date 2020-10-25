@@ -51,18 +51,18 @@ module.exports.getEnemy = async (user, type) => {
     return monstro;
 }
 
-module.exports.battle = async (message, escolha, user, inimigo, type, familia) => {
+module.exports.battle = async (message, escolha, user, inimigo, type, familia, t) => {
 
     let danoUser;
-    if (escolha.name == "Ataque Básico") {
+    if (escolha.name == "Ataque Básico" || escolha.name == "Basic Attack") {
         danoUser = escolha.damage
     } else if (escolha.name == "Morte Instantânea") {
-        if (user.mana < user.maxMana) return this.enemyShot(message, `⚔️ | Você tenta usar **${escolha.name}**, mas não tem mana o suficiente para isso! O inimigo revida!`, user, inimigo, type, familia)
+        if (user.mana < user.maxMana) return this.enemyShot(message, `⚔️ | ${t("roleplay:battle.no-mana", { name: escolha.name })}`, user, inimigo, type, familia, t)
         danoUser = escolha.damage * user.abilityPower;
         user.mana = 0;
     } else {
 
-        if (user.mana < escolha.cost) return this.enemyShot(message, `⚔️ | Você tenta usar **${escolha.name}**, mas não tem mana o suficiente para isso! O inimigo revida!`, user, inimigo, type, familia)
+        if (user.mana < escolha.cost) return this.enemyShot(message, `⚔️ | ${t("roleplay:battle.no-mana", { name: escolha.name })}`, user, inimigo, type, familia, t)
         if (escolha.heal > 0) {
             user.life = user.life + escolha.heal
             if (user.life > user.maxLife) user.life = user.maxLife
@@ -74,13 +74,13 @@ module.exports.battle = async (message, escolha, user, inimigo, type, familia) =
     setTimeout(() => {
         let enemyArmor = inimigo.armor
         let danoDado = danoUser - enemyArmor;
-        if (escolha.name == "Ataque Básico") danoDado = danoUser
+        if (escolha.name == "Ataque Básico" || escolha.name == "Basic Attack") danoDado = danoUser
         if (danoDado < 0) danoDado = 0;
         let vidaInimigo = inimigo.life - danoDado;
 
-        message.channel.send(`⚔️ | Você ataca **${inimigo.name}** com **${escolha.name}**, e causa **${danoDado}** de dano`)
+        message.menheraReply("sword", t("roleplay:battle.attack", { enemy: inimigo.name, choice: escolha.name, damage: danoDado }))
 
-        if (vidaInimigo < 1) return user.save().then(() => this.resultBattle(message, user, inimigo))
+        if (vidaInimigo < 1) return user.save().then(() => this.resultBattle(message, user, inimigo, t))
 
         const enemy = {
             name: inimigo.name,
@@ -92,20 +92,20 @@ module.exports.battle = async (message, escolha, user, inimigo, type, familia) =
             ataques: inimigo.ataques
         }
 
-        user.save().then(() => this.enemyShot(message, "", user, enemy, type, familia))
+        user.save().then(() => this.enemyShot(message, "", user, enemy, type, familia, t))
     }, 500)
 }
 
-module.exports.morte = async (message, user) => {
+module.exports.morte = async (message, user, t) => {
 
-    message.channel.send("<:negacao:759603958317711371> | Essa não!! Você morreu! Para se recuperar dos danos, você retornou para a guilda, e ficará de repouso por 12 horas!")
+    message.menheraReply("error", t("roleplay:death"))
     user.death = Date.now() + 43200000;
     user.life = 0
     user.inBattle = false
     user.save()
 }
 
-module.exports.enemyShot = async (message, text, user, inimigo, type, familia) => {
+module.exports.enemyShot = async (message, text, user, inimigo, type, familia, t) => {
 
     const habilidades = await this.getAbilities(user, familia)
 
@@ -130,26 +130,26 @@ module.exports.enemyShot = async (message, text, user, inimigo, type, familia) =
     let vidaUser = user.life - danoRecebido;
 
     if (vidaUser < 1) {
-        return this.morte(message, user)
+        return this.morte(message, user, t)
     } else {
         user.life = vidaUser
-        user.save().then(() => this.continueBattle(message, inimigo, habilidades, user, type, ataque, familia))
+        user.save().then(() => this.continueBattle(message, inimigo, habilidades, user, type, ataque, familia, t))
     }
 }
 
-module.exports.continueBattle = async (message, inimigo, habilidades, user, type, ataque, familia) => {
+module.exports.continueBattle = async (message, inimigo, habilidades, user, type, ataque, familia, t) => {
 
     let options = [];
 
     if (user.hasFamily && user.familyName === "Loki") {
 
         options.push({
-            name: "Ataque Básico",
+            name: t("roleplay:basic-attack"),
             damage: user.damage + user.weapon.damage + familia.boost.value
         })
     } else {
         options.push({
-            name: "Ataque Básico",
+            name: t("roleplay:basic-attack"),
             damage: user.damage + user.weapon.damage
         })
     }
@@ -176,7 +176,7 @@ module.exports.continueBattle = async (message, inimigo, habilidades, user, type
     let damageReceived = ataque.damage - ptcView;
     if (damageReceived < 5) damageReceived = 5
 
-    let texto = `**${inimigo.name}** te ataca com **${ataque.name}**, e causa **${damageReceived}**, atualização dos status:\n\n**SEUS STATUS**\n❤️ | Vida: **${user.life}**\n💧 | Mana: **${user.mana}**\n⚔️ | Dano: **${dmgView}**\n🛡️ | Defesa: **${ptcView}**\n\n**STATUS DO INIMIGO**\n❤️ | Vida: **${inimigo.life}**\n⚔️ | Dano: **${inimigo.damage}**\n🛡️ | Defesa: **${inimigo.armor}**\n\nO que você faz?\n\n**OPÇÕES:**\n`
+    let texto = t("roleplay:battle.text", { enemy: inimigo.name, attack: ataque.name, dmg: damageReceived, life: user.life, mana: user.mana, damage: dmgView, armor: ptcView, elife: inimigo.life, edmg: inimigo.damage, earmor: inimigo.armor })
 
     let escolhas = []
 
@@ -186,7 +186,7 @@ module.exports.continueBattle = async (message, inimigo, habilidades, user, type
     }
 
     let embed = new MessageEmbed()
-        .setFooter("Digite no chat a opção de sua escolha")
+        .setFooter(t("roleplay:battle.footer"))
         .setColor('#f04682')
         .setDescription(texto)
     message.channel.send(message.author, embed)
@@ -200,20 +200,20 @@ module.exports.continueBattle = async (message, inimigo, habilidades, user, type
         time = true;
         const choice = Number(m.content);
         if (escolhas.includes(choice)) {
-            this.battle(message, options[choice - 1], user, inimigo, type, familia) //Mandar os dados de ataque, e defesa do inimigo, para fazer o calculo lá
+            this.battle(message, options[choice - 1], user, inimigo, type, familia, t) //Mandar os dados de ataque, e defesa do inimigo, para fazer o calculo lá
         } else {
-            this.enemyShot(message, `⚔️ |  Você tentou uma técnica nova, mas não obteve sucesso! O inimigo ataca`, user, inimigo, type, familia)
+            this.enemyShot(message, `⚔️ |  ${t("roleplay:battle.new-tatic")}`, user, inimigo, type, familia, t)
         }
     })
 
     setTimeout(() => {
         if (!time) {
-            this.enemyShot(message, `⚔️ |  Você demorou para tomar uma atitude, e foi atacado!`, user, inimigo, type, familia)
+            this.enemyShot(message, `⚔️ | ${t("roleplay:battle.timeout")}`, user, inimigo, type, familia, t)
         }
     }, 15000)
 }
 
-module.exports.finalChecks = async (message, user) => {
+module.exports.finalChecks = async (message, user, t) => {
 
     let texto = "";
 
@@ -229,7 +229,7 @@ module.exports.finalChecks = async (message, user) => {
             user.save().then(() => {
                 texto += `**<a:LevelUp:760954035779272755> LEVEL UP <a:LevelUp:760954035779272755>**`
                 message.channel.send(texto)
-                if (user.level === 5) this.newAbilities(message, user)
+                if (user.level === 5) this.newAbilities(message, user, t)
             })
         }
     } else if (user.level > 4 && user.level < 10) {
@@ -242,7 +242,7 @@ module.exports.finalChecks = async (message, user) => {
             user.armor = user.armor + 3
             texto += `**<a:LevelUp:760954035779272755> LEVEL UP <a:LevelUp:760954035779272755>**`
             message.channel.send(texto)
-            user.save().then(() => this.newAbilities(message, user))
+            user.save().then(() => this.newAbilities(message, user, t))
         }
     } else if (user.level > 9) {
         if (user.xp >= user.nextLevelXp) {
@@ -254,12 +254,12 @@ module.exports.finalChecks = async (message, user) => {
             user.armor = user.armor + 5
             texto += `**<a:LevelUp:760954035779272755> LEVEL UP <a:LevelUp:760954035779272755>**`
             message.channel.send(texto)
-            user.save().then(() => this.newAbilities(message, user))
+            user.save().then(() => this.newAbilities(message, user, t))
         }
     }
 }
 
-module.exports.newAbilities = async (message, user) => {
+module.exports.newAbilities = async (message, user, t) => {
 
     if (user.level == 5) {
         switch (user.class) {
@@ -268,33 +268,33 @@ module.exports.newAbilities = async (message, user) => {
                 user.maxMana = user.maxMana + 20
                 user.abilityPower = user.abilityPower + 1
                 user.save()
-                message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.assassin.normalAbilities[1].name}**`)
+                message.menheraReply("level", t("roleplay:new-ability", { level: user.level, ability: abilitiesFile.assassin.normalAbilities[1].name }))
                 break;
             case 'Bárbaro':
                 user.abilities.push(abilitiesFile.barbarian.normalAbilities[1])
                 user.maxLife = user.maxLife + 20
                 user.abilityPower = user.abilityPower + 1
                 user.save()
-                message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.barbarian.normalAbilities[1].name}**`)
+                message.menheraReply("level", t("roleplay:new-ability", { level: user.level, ability: abilitiesFile.barbarian.normalAbilities[1].name }))
                 break;
             case 'Clérigo':
                 user.abilities.push(abilitiesFile.clerigo.normalAbilities[1])
                 user.abilityPower = user.abilityPower + 1
                 user.maxMana = user.maxMana + 20
                 user.save()
-                message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.clerigo.normalAbilities[1].name}**`)
+                message.menheraReply("level", t("roleplay:new-ability", { level: user.level, ability: abilitiesFile.clerigo.normalAbilities[1].name }))
                 break;
             case 'Druida':
                 user.abilities.push(abilitiesFile.druida.normalAbilities[1])
                 user.abilityPower = user.abilityPower + 1
                 user.save()
-                message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.druida.normalAbilities[1].name}**`)
+                message.menheraReply("level", t("roleplay:new-ability", { level: user.level, ability: abilitiesFile.druida.normalAbilities[1].name }))
                 break;
             case 'Espadachim':
                 user.abilities.push(abilitiesFile.espadachim.normalAbilities[1])
                 user.abilityPower = user.abilityPower + 2
                 user.save()
-                message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.espadachim.normalAbilities[1].name}**`)
+                message.menheraReply("level", t("roleplay:new-ability", { level: user.level, ability: abilitiesFile.espadachim.normalAbilities[1].name }))
                 break;
             case 'Feiticeiro':
                 if (user.uniquePower.name == "Linhagem: Mística") {
@@ -302,72 +302,72 @@ module.exports.newAbilities = async (message, user) => {
                     user.maxMana = user.maxMana + 20
                     user.abilityPower = user.abilityPower + 1
                     user.save()
-                    message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.feiticeiro.normalAbilities[1].name}**`)
+                    message.menheraReply("level", t("roleplay:new-ability", { level: user.level, ability: abilitiesFile.feiticeiro.normalAbilities[1].name }))
                 }
                 if (user.uniquePower.name == "Linhagem: Dracônica") {
                     user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[2])
                     user.maxMana = user.maxMana + 20
                     user.abilityPower = user.abilityPower + 1
                     user.save()
-                    message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.feiticeiro.normalAbilities[2].name}**`)
+                    message.menheraReply("level", t("roleplay:new-ability", { level: user.level, ability: abilitiesFile.feiticeiro.normalAbilities[2].name }))
                 }
                 if (user.uniquePower.name == "Linhagem: Demoníaca") {
                     user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[3])
                     user.maxMana = user.maxMana + 20
                     user.abilityPower = user.abilityPower + 1
                     user.save()
-                    message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.feiticeiro.normalAbilities[3].name}**`)
+                    message.menheraReply("level", t("roleplay:new-ability", { level: user.level, ability: abilitiesFile.feiticeiro.normalAbilities[3].name }))
                 }
                 break;
             case 'Monge':
                 user.abilities.push(abilitiesFile.monge.normalAbilities[1])
                 user.abilityPower = user.abilityPower + 1
                 user.save()
-                message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.monge.normalAbilities[1].name}**`)
+                message.menheraReply("level", t("roleplay:new-ability", { level: user.level, ability: abilitiesFile.monge.normalAbilities[1].name }))
                 break;
             case 'Necromante':
                 user.abilities.push(abilitiesFile.necromante.normalAbilities[1])
                 user.maxMana = user.maxMana + 20
                 user.abilityPower = user.abilityPower + 1
                 user.save()
-                message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.necromante.normalAbilities[1].name}**`)
+                message.menheraReply("level", t("roleplay:new-ability", { level: user.level, ability: abilitiesFile.necromante.normalAbilities[1].name }))
                 break;
         }
 
     } else if (user.level == 10) {
-        message.channel.send(`Você desbloqueou as famílias! Use \`m!família\` para entrar em uma família`)
+        message.menheraReply("success", t("roleplay:family"))
         switch (user.class) {
             case 'Assassino':
                 user.abilities.push(abilitiesFile.assassin.normalAbilities[2])
                 user.abilityPower = user.abilityPower + 1
                 user.save()
-                message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.assassin.normalAbilities[2].name}**`)
+                message.menheraReply("level", t("roleplay:new-ability", { level: user.level, ability: abilitiesFile.assassin.normalAbilities[2].name }))
                 break;
             case 'Bárbaro':
                 user.abilities.push(abilitiesFile.barbarian.normalAbilities[2])
                 user.maxLife = user.maxLife + 50
                 user.abilityPower = user.abilityPower + 1
                 user.save()
-                message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.barbarian.normalAbilities[2].name}**`)
+                message.menheraReply("level", t("roleplay:new-ability", { level: user.level, ability: abilitiesFile.barbarian.normalAbilities[2].name }))
                 break;
             case 'Clérigo':
                 user.abilities.push(abilitiesFile.clerigo.normalAbilities[2])
                 user.abilityPower = user.abilityPower + 1
                 user.maxMana = user.maxMana + 20
                 user.save()
-                message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.clerigo.normalAbilities[2].name}**`)
+                message.menheraReply("level", t("roleplay:new-ability", { level: user.level, ability: abilitiesFile.clerigo.normalAbilities[2].name }))
                 break;
             case 'Druida':
                 user.abilities.push(abilitiesFile.druida.normalAbilities[2])
                 user.abilityPower = user.abilityPower + 1
                 user.save()
-                message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.druida.normalAbilities[2].name}**`)
+                message.menheraReply("level", t("roleplay:new-ability", { level: user.level, ability: abilitiesFile.druida.normalAbilities[2].name }))
                 break;
             case 'Espadachim':
                 user.abilities.push(abilitiesFile.espadachim.normalAbilities[2])
                 user.abilityPower = user.abilityPower + 1
                 user.save()
-                message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.espadachim.normalAbilities[2].name}**`)
+                message.menheraReply("level", t("roleplay:new-ability", { level: user.level, ability: abilitiesFile.espadachim.normalAbilities[2].name }))
                 break;
             case 'Feiticeiro':
                 if (user.uniquePower.name == "Linhagem: Mística") {
@@ -375,35 +375,35 @@ module.exports.newAbilities = async (message, user) => {
                     user.maxMana = user.maxMana + 25
                     user.abilityPower = user.abilityPower + 1
                     user.save()
-                    message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.feiticeiro.normalAbilities[4].name}**`)
+                    message.menheraReply("level", t("roleplay:new-ability", { level: user.level, ability: abilitiesFile.feiticeiro.normalAbilities[4].name }))
                 }
                 if (user.uniquePower.name == "Linhagem: Dracônica") {
                     user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[5])
                     user.maxMana = user.maxMana + 25
                     user.abilityPower = user.abilityPower + 1
                     user.save()
-                    message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.feiticeiro.normalAbilities[5].name}**`)
+                    message.menheraReply("level", t("roleplay:new-ability", { level: user.level, ability: abilitiesFile.feiticeiro.normalAbilities[5].name }))
                 }
                 if (user.uniquePower.name == "Linhagem: Demoníaca") {
                     user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[6])
                     user.maxMana = user.maxMana + 25
                     user.abilityPower = user.abilityPower + 1
                     user.save()
-                    message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.feiticeiro.normalAbilities[6].name}**`)
+                    message.menheraReply("level", t("roleplay:new-ability", { level: user.level, ability: abilitiesFile.feiticeiro.normalAbilities[6].name }))
                 }
                 break;
             case 'Monge':
                 user.abilities.push(abilitiesFile.monge.normalAbilities[2])
                 user.abilityPower = user.abilityPower + 1
                 user.save()
-                message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.monge.normalAbilities[2].name}**`)
+                message.menheraReply("level", t("roleplay:new-ability", { level: user.level, ability: abilitiesFile.monge.normalAbilities[2].name }))
                 break;
             case 'Necromante':
                 user.abilities.push(abilitiesFile.necromante.normalAbilities[2])
                 user.maxMana = user.maxMana + 25
                 user.abilityPower = user.abilityPower + 1
                 user.save()
-                message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.necromante.normalAbilities[2].name}**`)
+                message.menheraReply("level", t("roleplay:new-ability", { level: user.level, ability: abilitiesFile.necromante.normalAbilities[2].name }))
                 break;
         }
     } else if (user.level == 14) {
@@ -413,35 +413,35 @@ module.exports.newAbilities = async (message, user) => {
                 user.abilityPower = user.abilityPower + 1
                 user.damage = user.damage + 10
                 user.save()
-                message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.assassin.normalAbilities[3].name}**`)
+                message.menheraReply("level", t("roleplay:new-ability", { level: user.level, ability: abilitiesFile.assassin.normalAbilities[3].name }))
                 break;
             case 'Bárbaro':
                 user.abilities.push(abilitiesFile.barbarian.normalAbilities[3])
                 user.maxLife = user.maxLife + 50
                 user.abilityPower = user.abilityPower + 1
                 user.save()
-                message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.barbarian.normalAbilities[3].name}**`)
+                message.menheraReply("level", t("roleplay:new-ability", { level: user.level, ability: abilitiesFile.barbarian.normalAbilities[3].name }))
                 break;
             case 'Clérigo':
                 user.abilities.push(abilitiesFile.clerigo.normalAbilities[3])
                 user.abilityPower = user.abilityPower + 1
                 user.maxMana = user.maxMana + 40
                 user.save()
-                message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.clerigo.normalAbilities[3].name}**`)
+                message.menheraReply("level", t("roleplay:new-ability", { level: user.level, ability: abilitiesFile.clerigo.normalAbilities[3].name }))
                 break;
             case 'Druida':
                 user.abilities.push(abilitiesFile.druida.normalAbilities[3])
                 user.abilityPower = user.abilityPower + 1
                 user.maxMana = user.maxMana + 30
                 user.save()
-                message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.druida.normalAbilities[3].name}**`)
+                message.menheraReply("level", t("roleplay:new-ability", { level: user.level, ability: abilitiesFile.druida.normalAbilities[3].name }))
                 break;
             case 'Espadachim':
                 user.abilities.push(abilitiesFile.espadachim.normalAbilities[3])
                 user.abilityPower = user.abilityPower + 1
                 user.damage = user.damage + 10
                 user.save()
-                message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.espadachim.normalAbilities[3].name}**`)
+                message.menheraReply("level", t("roleplay:new-ability", { level: user.level, ability: abilitiesFile.espadachim.normalAbilities[3].name }))
                 break;
             case 'Feiticeiro':
                 if (user.uniquePower.name == "Linhagem: Mística") {
@@ -449,35 +449,35 @@ module.exports.newAbilities = async (message, user) => {
                     user.maxMana = user.maxMana + 40
                     user.abilityPower = user.abilityPower + 1
                     user.save()
-                    message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.feiticeiro.normalAbilities[7].name}**`)
+                    message.menheraReply("level", t("roleplay:new-ability", { level: user.level, ability: abilitiesFile.feiticeiro.normalAbilities[7].name }))
                 }
                 if (user.uniquePower.name == "Linhagem: Dracônica") {
                     user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[8])
                     user.maxMana = user.maxMana + 40
                     user.abilityPower = user.abilityPower + 1
                     user.save()
-                    message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.feiticeiro.normalAbilities[8].name}**`)
+                    message.menheraReply("level", t("roleplay:new-ability", { level: user.level, ability: abilitiesFile.feiticeiro.normalAbilities[8].name }))
                 }
                 if (user.uniquePower.name == "Linhagem: Demoníaca") {
                     user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[9])
                     user.maxMana = user.maxMana + 40
                     user.abilityPower = user.abilityPower + 1
                     user.save()
-                    message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.feiticeiro.normalAbilities[9].name}**`)
+                    message.menheraReply("level", t("roleplay:new-ability", { level: user.level, ability: abilitiesFile.feiticeiro.normalAbilities[9].name }))
                 }
                 break;
             case 'Monge':
                 user.abilities.push(abilitiesFile.monge.normalAbilities[3])
                 user.abilityPower = user.abilityPower + 2
                 user.save()
-                message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.monge.normalAbilities[3].name}**`)
+                message.menheraReply("level", t("roleplay:new-ability", { level: user.level, ability: abilitiesFile.monge.normalAbilities[3].name }))
                 break;
             case 'Necromante':
                 user.abilities.push(abilitiesFile.necromante.normalAbilities[3])
                 user.maxMana = user.maxMana + 40
                 user.abilityPower = user.abilityPower + 1
                 user.save()
-                message.channel.send(`<a:LevelUp:760954035779272755> | Você atingiu o nível **${user.level}** e liberou uma nova habilidade! **${abilitiesFile.necromante.normalAbilities[3].name}**`)
+                message.menheraReply("level", t("roleplay:new-ability", { level: user.level, ability: abilitiesFile.necromante.normalAbilities[3].name }))
                 break;
         }
     } else if (user.level == 16) {
@@ -488,17 +488,17 @@ module.exports.newAbilities = async (message, user) => {
         user.xp = 0
         user.nextLevelXp = 1000000
         user.save()
-        message.channel.send("⚠️ | Você atinge o nível 20, e se torna um MESTRE da dungeon!\nA partir de agora, você pode usar o m!boss, para batalhar contra bosses quando quiser")
+        message.menheraReply("warn", t("roleplay:boss"))
     }
 }
 
-module.exports.resultBattle = async (message, user, inimigo) => {
+module.exports.resultBattle = async (message, user, inimigo, t) => {
 
     const randomLoot = inimigo.loots[Math.floor(Math.random() * inimigo.loots.length)];
 
     const embed = new MessageEmbed()
-        .setTitle("⚔️ | Resultados da Batalha")
-        .setDescription(`**Esse dano é o suficiente para matar ${inimigo.name}!**\n\n**Loots:**`)
+        .setTitle(`⚔️ | ${t("roleplay:result.title")}`)
+        .setDescription(t("roleplay:result.description", { enemy: inimigo.name }))
         .setColor("#4cf74b")
         .addFields([{
             name: "🔰 | XP",
@@ -506,7 +506,7 @@ module.exports.resultBattle = async (message, user, inimigo) => {
             inline: true
         },
         {
-            name: "<:Chest:760957557538947133> | Espólios de Batalha",
+            name: `<:Chest:760957557538947133> | ${t("roleplay:result.loots")}`,
             value: randomLoot.name,
             inline: true
         }
@@ -516,7 +516,7 @@ module.exports.resultBattle = async (message, user, inimigo) => {
     user.xp = user.xp + inimigo.xp;
     user.loots.push(randomLoot)
     user.inBattle = false;
-    user.save().then(() => this.finalChecks(message, user))
+    user.save().then(() => this.finalChecks(message, user, t))
 }
 
 module.exports.getAbilities = async (user, familia) => {
@@ -575,7 +575,7 @@ module.exports.getAbilities = async (user, familia) => {
     return abilities;
 }
 
-module.exports.initialChecks = async (user, message) => {
+module.exports.initialChecks = async (user, message, t) => {
 
     let pass = true
     let motivo = [];
@@ -589,15 +589,15 @@ module.exports.initialChecks = async (user, message) => {
     if (user.life < 1) {
         pass = false
         motivo.push({
-            name: "💔 | Sem Vida",
-            value: `Você está sem vida, e precisa descansar por mais **${(parseInt(user.death - Date.now()) > 3600000) ? moment.utc(parseInt(user.death - Date.now())).format("HH:mm:ss") : moment.utc(parseInt(user.death - Date.now())).format("mm:ss")}** horas`
+            name: `💔 | ${t("roleplay:initial.no-life")}`,
+            value: t("roleplay:initial.no-life-text", { time: (parseInt(user.death - Date.now()) > 3600000) ? moment.utc(parseInt(user.death - Date.now())).format("HH:mm:ss") : moment.utc(parseInt(user.death - Date.now())).format("mm:ss") })
         })
     }
     if (user.dungeonCooldown > Date.now()) {
         pass = false
         motivo.push({
-            name: "💤 | Cansaço",
-            value: `Você já visitou a dungeon e precisa descansar por mais **${moment.utc(parseInt(user.dungeonCooldown - Date.now())).format("mm:ss")}** minutos`
+            name: `💤 | ${t("roleplay:initial.tired")}`,
+            value: t("roleplay:initial.tired-text", { time: moment.utc(parseInt(user.dungeonCooldown - Date.now())).format("mm:ss") })
         })
     }
 
@@ -605,12 +605,12 @@ module.exports.initialChecks = async (user, message) => {
         pass = false
         motivo.push({
             name: "🏨 | Hotel",
-            value: `Você está descansando no hotel da vila, e não pode ir para a dungeon até que sua estadia acabe, em **${(parseInt(user.hotelTime - Date.now()) > 3600000) ? moment.utc(parseInt(user.hotelTime - Date.now())).format("HH:mm:ss") : moment.utc(parseInt(user.hotelTime - Date.now())).format("mm:ss")}**`
+            value: t("roleplay:initial.hotel-text", { time: (parseInt(user.hotelTime - Date.now()) > 3600000) ? moment.utc(parseInt(user.hotelTime - Date.now())).format("HH:mm:ss") : moment.utc(parseInt(user.hotelTime - Date.now())).format("mm:ss") })
         })
     }
 
     if (!pass) {
-        let texto = `<:negacao:759603958317711371> | Você não pode visitar a dungeon pelos seguintes motivos:`;
+        let texto = `<:negacao:759603958317711371> | ${t("roleplay:initial.cant-go")}`;
         motivo.forEach(m => {
             texto += `\n**${m.name}:** ${m.value}`
         })
@@ -619,7 +619,7 @@ module.exports.initialChecks = async (user, message) => {
     return user.save().then(() => pass)
 }
 
-module.exports.confirmRegister = async (user, message) => {
+module.exports.confirmRegister = async (user, message, t) => {
 
     setTimeout(() => {
         switch (user.class) {
@@ -639,7 +639,7 @@ module.exports.confirmRegister = async (user, message) => {
                 }
                 user.uniquePower = choiceAssassin
                 user.save()
-                message.channel.send("<:positivo:759603958485614652> | Você foi registrado com sucesso! Use `m!status` para ver seus status")
+                message.menheraReply("success", t("roleplay:registred"))
                 break;
             case 'Bárbaro':
                 const unicPowersBarbaro = abilitiesFile.barbarian.uniquePowers
@@ -657,7 +657,7 @@ module.exports.confirmRegister = async (user, message) => {
                 }
                 user.uniquePower = choiceBarbaro;
                 user.save()
-                message.channel.send("<:positivo:759603958485614652> | Você foi registrado com sucesso! Use `m!status` para ver seus status")
+                message.menheraReply("success", t("roleplay:registred"))
                 break;
             case 'Druida':
                 const unicPowersDruida = abilitiesFile.druida.uniquePowers
@@ -675,7 +675,7 @@ module.exports.confirmRegister = async (user, message) => {
                 }
                 user.uniquePower = choiceDruida;
                 user.save()
-                message.channel.send("<:positivo:759603958485614652> | Você foi registrado com sucesso! Use `m!status` para ver seus status")
+                message.menheraReply("success", t("roleplay:registred"))
                 break;
             case 'Espadachim':
                 const unicPowersEspadachim = abilitiesFile.espadachim.uniquePowers
@@ -693,7 +693,7 @@ module.exports.confirmRegister = async (user, message) => {
                 }
                 user.uniquePower = choiceEspadachim
                 user.save()
-                message.channel.send("<:positivo:759603958485614652> | Você foi registrado com sucesso! Use `m!status` para ver seus status")
+                message.menheraReply("success", t("roleplay:registred"))
                 break;
             case 'Feiticeiro':
                 const unicPowersFeiticeiro = abilitiesFile.feiticeiro.uniquePowers
@@ -711,7 +711,7 @@ module.exports.confirmRegister = async (user, message) => {
                 }
                 user.uniquePower = choiceFeiticeiro
                 user.save()
-                message.channel.send("<:positivo:759603958485614652> | Você foi registrado com sucesso! Use `m!status` para ver seus status")
+                message.menheraReply("success", t("roleplay:registred"))
                 break;
             case 'Clérigo':
                 const unicPowersClerigo = abilitiesFile.clerigo.uniquePowers
@@ -729,7 +729,7 @@ module.exports.confirmRegister = async (user, message) => {
                 }
                 user.uniquePower = choiceClerigo
                 user.save()
-                message.channel.send("<:positivo:759603958485614652> | Você foi registrado com sucesso! Use `m!status` para ver seus status")
+                message.menheraReply("success", t("roleplay:registred"))
                 break;
             case 'Monge':
                 const unicPowersMonge = abilitiesFile.monge.uniquePowers
@@ -747,7 +747,7 @@ module.exports.confirmRegister = async (user, message) => {
                     type: "Arma"
                 }
                 user.save()
-                message.channel.send("<:positivo:759603958485614652> | Você foi registrado com sucesso! Use `m!status` para ver seus status")
+                message.menheraReply("success", t("roleplay:registred"))
                 break;
             case 'Necromante':
                 const unicPowerNecromante = abilitiesFile.necromante.uniquePowers
@@ -765,7 +765,7 @@ module.exports.confirmRegister = async (user, message) => {
                 }
                 user.uniquePower = choiceNecromante
                 user.save()
-                message.channel.send("<:positivo:759603958485614652> | Você foi registrado com sucesso! Use `m!status` para ver seus status")
+                message.menheraReply("success", t("roleplay:registred"))
                 break;
         }
     }, 1000)

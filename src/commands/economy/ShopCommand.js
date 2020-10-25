@@ -5,31 +5,30 @@ module.exports = class ShopCommand extends Command {
             name: "shop",
             aliases: ["loja"],
             cooldown: 5,
-            description: "Abra o brechó da Menhera",
             clientPermissions: ["EMBED_LINKS"],
             category: "economia"
         })
     }
-    async run(message, args) {
+    async run({ message, args, server }, t) {
 
         let user = await this.client.database.Users.findOne({ id: message.author.id });
         const saldoAtual = user.estrelinhas;
 
-        const validArgs = ["1", "comprar", "2", "vender"];
+        const validArgs = ["1", "2"];
 
         const dataLoja = {
-            title: "Brechó da Menhera",
+            title: t("commands:shop.embed_title"),
             color: '#559bf7',
             thumbnail: {
                 url: 'https://i.imgur.com/t94XkgG.png'
             },
-            description: `Seu saldo atual é de **${saldoAtual}**⭐ estrelinhas`,
+            description: t("commands:shop.embed_description_saldo", { value: saldoAtual }),
             footer: {
-                text: "Digite no chat a opção de sua escolha"
+                text: t("commands:shop.embed_footer")
             },
             fields: [{
-                name: 'Escolha entre uma das opções para acessar meu Brechó',
-                value: '1 - Comprar\n2 - Vender',
+                name: t("commands:shop.dataLoja_fields.name"),
+                value: t("commands:shop.dataLoja_fields.value"),
                 inline: false
             }]
         }
@@ -41,93 +40,92 @@ module.exports = class ShopCommand extends Command {
 
         collector.on('collect', m => {
 
-            if (!validArgs.some(answer => answer.toLowerCase() === m.content.toLowerCase())) return message.channel.send(`<:negacao:759603958317711371> | Essa escolha é inválida`)
+            if (!validArgs.some(answer => answer.toLowerCase() === m.content.toLowerCase())) return message.menheraReply("error", t("commands:shop.invalid-option"))
 
-            if (m.content === "1" || m.content.toLowerCase() === "comprar") {
-                lojaComprar(message, embedMessage, user, saldoAtual);
-            } else lojaVender(message, embedMessage, user, saldoAtual);
+            if (m.content === "1") {
+                lojaComprar(message, embedMessage, user, saldoAtual, t);
+            } else lojaVender(message, embedMessage, user, saldoAtual, t);
         });
     }
 }
 
-function lojaComprar(message, embedMessage, user, saldoAtual) {
+function lojaComprar(message, embedMessage, user, saldoAtual, t) {
 
     const dataComprar = {
-        title: "Brechó da Menhera",
+        title: t("commands:shop.embed_title"),
         color: '#6cbe50',
         thumbnail: {
             url: 'https://i.imgur.com/t94XkgG.png'
         },
-        description: `Seu saldo atual é de **${saldoAtual}**⭐ estrelinhas`,
+        description: t("commands:shop.embed_description_saldo", { value: saldoAtual }),
         footer: {
-            text: "Digite no chat a opção de sua escolha"
+            text: t("commands:shop.embed_footer")
         },
         fields: [{
-            name: 'Opções de Compras',
-            value: '1 - Comprar Cores \n2 - Comprar Rolls',
+            name: t("commands:shop.dataComprar_fields.name"),
+            value: t("commands:shop.dataComprar_fields.value"),
             inline: false
         }]
     }
-
     embedMessage.edit(message.author, { embed: dataComprar }).catch()
 
-    const validBuyArgs = ["1", "cores", "2", "rolls"];
+    const validBuyArgs = ["1", "2"];
 
     const filter = m => m.author.id === message.author.id
     const collector = message.channel.createMessageCollector(filter, { max: 1, time: 30000, errors: ["time"] });
 
     collector.on('collect', m => {
 
-        if (!validBuyArgs.some(answer => answer.toLowerCase() === m.content.toLowerCase())) return message.channel.send(`<:negacao:759603958317711371> | Essa escolha é inválida`)
+        if (!validBuyArgs.some(answer => answer.toLowerCase() === m.content.toLowerCase())) return message.menheraReply("error", t("commands:shop.invalid-option"))
 
-        if (m.content === "1" || m.content.toLowerCase() === "cores") {
+        if (m.content === "1") {
             //abre loja de cores
 
             const coresDisponíveis = [{
                 cor: '#6308c0',
                 preço: 50000,
-                nome: "1 - Roxo Escuro"
+                nome: `**${t("commands:shop.colors.purple")}**`
             }, {
                 cor: '#df0509',
                 preço: 50000,
-                nome: "2 - Vermelho"
+                nome: `**${t("commands:shop.colors.red")}**`
             }, {
                 cor: '#55e0f7',
                 preço: 50000,
-                nome: "3 - Ciano"
+                nome: `**${t("commands:shop.colors.cian")}**`
             },
             {
                 cor: '#03fd1c',
                 preço: 50000,
-                nome: "4 - Verde Neon"
+                nome: `**${t("commands:shop.colors.green")}**`
             }, {
                 cor: '#fd03c9',
                 preço: 50000,
-                nome: "5 - Rosa Choque"
+                nome: `**${t("commands:shop.colors.pink")}**`
             }, {
                 cor: '#e2ff08',
                 preço: 50000,
-                nome: "6 - Amarelo"
+                nome: `**${t("commands:shop.colors.yellow")}**` 
             }, {
                 cor: 'SUA ESCOLHA',
                 preço: 100000,
-                nome: "7 - Sua Escolha"
+                nome: `**${t("commands:shop.colors.your_choice")}**`
             }
             ];
 
             const dataCores = {
-                title: "Compre Cores para seu Perfil",
+                title: t("commands:shop.dataCores_fields.title"),
                 color: '#6cbe50',
                 thumbnail: {
                     url: 'https://i.imgur.com/t94XkgG.png'
                 },
-                description: `Seu saldo atual é de **${saldoAtual}**⭐ estrelinhas`,
+                description: t("commands:shop.embed_description_saldo", { value: saldoAtual }),
                 footer: {
-                    text: "Digite no chat a opção que queres comprar"
+                    text: t("commands:shop.embed_footer")
                 },
                 fields: [{
-                    name: 'Tabela de Preços',
-                    value: coresDisponíveis.map(c => `${c.nome} | Código da cor: \`${c.cor}\` | Preço: **${c.preço}**⭐`).join("\n"),
+                    name: t("commands:shop.dataCores_fields.field_name"),
+                    value: coresDisponíveis.map(c => `${c.nome} | ${t("commands:shop.dataCores_fields.color_code")} \`${c.cor}\` | ${t("commands:shop.dataCores_fields.price")} **${c.preço}**⭐`).join("\n"),
                     inline: false
                 }]
             }
@@ -140,64 +138,64 @@ function lojaComprar(message, embedMessage, user, saldoAtual) {
 
             CorColetor.on('collect', m => {
 
-                if (!validCorArgs.some(answer => answer.toLowerCase() === m.content.toLowerCase())) return message.channel.send(`<:negacao:759603958317711371> | Essa escolha é inválida`)
+                if (!validCorArgs.some(answer => answer.toLowerCase() === m.content.toLowerCase())) return message.menheraReply("error", t("commands:shop.invalid-option"))
                 switch (m.content) {
                     case '1':
-                        if (user.cores.some(res => res.cor === coresDisponíveis[0].cor)) return message.channel.send(`🟡 | ${message.author} eu agradeço sua empolgação para comprar em meu brechó, mas você já possui esta cor!`).then(() => embedMessage.delete().catch)
-                        if (user.estrelinhas < coresDisponíveis[0].preço) return message.channel.send(`<:negacao:759603958317711371> | ${message.author} você não tem estrelinhas o suficiente para comprar esta cor!`).then(() => embedMessage.delete().catch)
+                        if (user.cores.some(res => res.cor === coresDisponíveis[0].cor)) return message.menheraReply("yellow_circle", t("commands:shop.buy_colors.has-color")).then(() => embedMessage.delete({ timeout: 500 }).catch())
+                        if (user.estrelinhas < coresDisponíveis[0].preço) return message.menheraReply("error", t("commands:shop.buy_colors.poor")).then(() => embedMessage.delete({ timeout: 500 }).catch())
                         user.estrelinhas = user.estrelinhas - coresDisponíveis[0].preço
                         user.cores.push(coresDisponíveis[0])
                         user.save()
-                        message.channel.send(`<:positivo:759603958485614652> | Certo! Você comprou a cor **${coresDisponíveis[0].nome}** por **${coresDisponíveis[0].preço}** ⭐! Você ficou com **${user.estrelinhas}** ⭐ estrelinhas`).then(() => embedMessage.delete().catch)
+                        message.menheraReply("success", t("commands:shop.buy_colors.buy-success", { name: coresDisponíveis[0].nome, price: coresDisponíveis[0].preço, stars: user.estrelinhas })).then(() => embedMessage.delete({ timeout: 500 }).catch())
                         break;
                     case '2':
-                        if (user.cores.some(res => res.cor === coresDisponíveis[1].cor)) return message.channel.send(`🟡 | ${message.author} eu agradeço sua empolgação para comprar em meu brechó, mas você já possui esta cor!`).then(() => embedMessage.delete().catch)
-                        if (user.estrelinhas < coresDisponíveis[1].preço) return message.channel.send(`<:negacao:759603958317711371> | ${message.author} você não tem estrelinhas o suficiente para comprar esta cor!`).then(() => embedMessage.delete().catch)
+                        if (user.cores.some(res => res.cor === coresDisponíveis[1].cor)) return message.menheraReply("yellow_circle", t("commands:shop.buy_colors.has-color")).then(() => embedMessage.delete().catch())
+                        if (user.estrelinhas < coresDisponíveis[1].preço) return message.menheraReply("error", t("commands:shop.buy_colors.poor")).then(() => embedMessage.delete({ timeout: 500 }).catch())
                         user.estrelinhas = user.estrelinhas - coresDisponíveis[1].preço
                         user.cores.push(coresDisponíveis[1])
                         user.save()
-                        message.channel.send(`<:positivo:759603958485614652> | Certo! Você comprou a cor **${coresDisponíveis[1].nome}** por **${coresDisponíveis[1].preço}** ⭐! Você ficou com **${user.estrelinhas}** ⭐ estrelinhas`).then(() => embedMessage.delete().catch)
+                        message.menheraReply("success", t("commands:shop.buy_colors.buy-success", { name: coresDisponíveis[1].nome, price: coresDisponíveis[1].preço, stars: user.estrelinhas })).then(() => embedMessage.delete({ timeout: 500 }).catch())
                         break;
                     case '3':
-                        if (user.cores.some(res => res.cor === coresDisponíveis[2].cor)) return message.channel.send(`🟡 | ${message.author} eu agradeço sua empolgação para comprar em meu brechó, mas você já possui esta cor!`).then(() => embedMessage.delete().catch)
-                        if (user.estrelinhas < coresDisponíveis[2].preço) return message.channel.send(`<:negacao:759603958317711371> | ${message.author} você não tem estrelinhas o suficiente para comprar esta cor!`).then(() => embedMessage.delete().catch)
+                        if (user.cores.some(res => res.cor === coresDisponíveis[2].cor)) return message.menheraReply("yellow_circle", t("commands:shop.buy_colors.has-color")).then(() => embedMessage.delete({ timeout: 500 }).catch())
+                        if (user.estrelinhas < coresDisponíveis[2].preço) return message.menheraReply("error", t("commands:shop.buy_colors.poor")).then(() => embedMessage.delete({ timeout: 500 }).catch())
                         user.estrelinhas = user.estrelinhas - coresDisponíveis[2].preço
                         user.cores.push(coresDisponíveis[2])
                         user.save()
-                        message.channel.send(`<:positivo:759603958485614652> | Certo! Você comprou a cor **${coresDisponíveis[2].nome}** por **${coresDisponíveis[2].preço}** ⭐! Você ficou com **${user.estrelinhas}** ⭐ estrelinhas`).then(() => embedMessage.delete().catch)
+                        message.menheraReply("success", t("commands:shop.buy_colors.buy-success", { name: coresDisponíveis[2].nome, price: coresDisponíveis[2].preço, stars: user.estrelinhas })).then(() => embedMessage.delete({ timeout: 500 }).catch())
                         break;
                     case '4':
-                        if (user.cores.some(res => res.cor === coresDisponíveis[3].cor)) return message.channel.send(`🟡 | ${message.author} eu agradeço sua empolgação para comprar em meu brechó, mas você já possui esta cor!`).then(() => embedMessage.delete().catch)
-                        if (user.estrelinhas < coresDisponíveis[3].preço) return message.channel.send(`<:negacao:759603958317711371> | ${message.author} você não tem estrelinhas o suficiente para comprar esta cor!`).then(() => embedMessage.delete().catch)
+                        if (user.cores.some(res => res.cor === coresDisponíveis[3].cor)) return message.menheraReply("yellow_circle", t("commands:shop.buy_colors.has-color")).then(() => embedMessage.delete({ timeout: 500 }).catch())
+                        if (user.estrelinhas < coresDisponíveis[3].preço) return message.menheraReply("error", t("commands:shop.buy_colors.poor")).then(() => embedMessage.delete({ timeout: 500 }).catch())
                         user.estrelinhas = user.estrelinhas - coresDisponíveis[3].preço
                         user.cores.push(coresDisponíveis[3])
                         user.save()
-                        message.channel.send(`<:positivo:759603958485614652> | Certo! Você comprou a cor **${coresDisponíveis[3].nome}** por **${coresDisponíveis[3].preço}** ⭐! Você ficou com **${user.estrelinhas}** ⭐ estrelinhas`).then(() => embedMessage.delete().catch)
+                        message.menheraReply("success", t("commands:shop.buy_colors.buy-success", { name: coresDisponíveis[3].nome, price: coresDisponíveis[3].preço, stars: user.estrelinhas })).then(() => embedMessage.delete({ timeout: 500 }).catch())
                         break;
                     case '5':
-                        if (user.cores.some(res => res.cor === coresDisponíveis[4].cor)) return message.channel.send(`🟡 | ${message.author} eu agradeço sua empolgação para comprar em meu brechó, mas você já possui esta cor!`).then(() => embedMessage.delete().catch)
-                        if (user.estrelinhas < coresDisponíveis[4].preço) return message.channel.send(`<:negacao:759603958317711371> | ${message.author} você não tem estrelinhas o suficiente para comprar esta cor!`).then(() => embedMessage.delete().catch)
+                        if (user.cores.some(res => res.cor === coresDisponíveis[4].cor)) return message.menheraReply("yellow_circle", t("commands:shop.buy_colors.has-color")).then(() => embedMessage.delete({ timeout: 500 }).catch())
+                        if (user.estrelinhas < coresDisponíveis[4].preço) return message.menheraReply("error", t("commands:shop.buy_colors.poor")).then(() => embedMessage.delete({ timeout: 500 }).catch())
                         user.estrelinhas = user.estrelinhas - coresDisponíveis[4].preço
                         user.cores.push(coresDisponíveis[4])
                         user.save()
-                        message.channel.send(`<:positivo:759603958485614652> | Certo! Você comprou a cor **${coresDisponíveis[4].nome}** por **${coresDisponíveis[4].preço}** ⭐! Você ficou com **${user.estrelinhas}** ⭐ estrelinhas`).then(() => embedMessage.delete().catch)
+                        message.menheraReply("success", t("commands:shop.buy_colors.buy-success", { name: coresDisponíveis[4].nome, price: coresDisponíveis[4].preço, stars: user.estrelinhas })).then(() => embedMessage.delete({ timeout: 500 }).catch())
                         break;
                     case '6':
-                        if (user.cores.some(res => res.cor === coresDisponíveis[5].cor)) return message.channel.send(`🟡 | ${message.author} eu agradeço sua empolgação para comprar em meu brechó, mas você já possui esta cor!`).then(() => embedMessage.delete().catch)
-                        if (user.estrelinhas < coresDisponíveis[5].preço) return message.channel.send(`<:negacao:759603958317711371> | ${message.author} você não tem estrelinhas o suficiente para comprar esta cor!`).then(() => embedMessage.delete().catch)
+                        if (user.cores.some(res => res.cor === coresDisponíveis[5].cor)) return message.menheraReply("yellow_circle", t("commands:shop.buy_colors.has-color")).then(() => embedMessage.delete({ timeout: 500 }).catch())
+                        if (user.estrelinhas < coresDisponíveis[5].preço) return message.menheraReply("error", t("commands:shop.buy_colors.poor")).then(() => embedMessage.delete({ timeout: 500 }).catch())
                         user.estrelinhas = user.estrelinhas - coresDisponíveis[5].preço
                         user.cores.push(coresDisponíveis[5])
                         user.save()
-                        message.channel.send(`<:positivo:759603958485614652> | Certo! Você comprou a cor **${coresDisponíveis[5].nome}** por **${coresDisponíveis[5].preço}** ⭐! Você ficou com **${user.estrelinhas}** ⭐ estrelinhas`).then(() => embedMessage.delete().catch)
+                        message.menheraReply("success", t("commands:shop.buy_colors.buy-success", { name: coresDisponíveis[5].nome, price: coresDisponíveis[5].preço, stars: user.estrelinhas })).then(() => embedMessage.delete({ timeout: 500 }).catch())
                         break;
                     case '7':
-                        if (user.cores.some(res => res.nome === coresDisponíveis[6].nome)) return message.channel.send(`🟡 | ${message.author} eu agradeço sua empolgação para comprar em meu brechó, mas você já possui esta cor!`).then(() => embedMessage.delete().catch)
-                        if (user.estrelinhas < coresDisponíveis[6].preço) return message.channel.send(`<:negacao:759603958317711371> | ${message.author} você não tem estrelinhas o suficiente para comprar esta cor!`).then(() => embedMessage.delete().catch)
+                        if (user.cores.some(res => res.nome === coresDisponíveis[6].nome)) return message.menheraReply("yellow_circle", t("commands:shop.buy_colors.has-color")).then(() => embedMessage.delete({ timeout: 500 }).catch())
+                        if (user.estrelinhas < coresDisponíveis[6].preço) message.menheraReply("error", t("commands:shop.buy_colors.poor")).then(() => embedMessage.delete({ timeout: 500 }).catch())
 
                         const hexFiltro = m => m.author.id === message.author.id;
                         const hexColletor = message.channel.createMessageCollector(hexFiltro, { max: 1, time: 30000, errors: ["time"] });
 
-                        message.channel.send("Envie um código de hexcolor **SEM A HASHTAG** (Exemplo: AABBCC) de sua escolha para adicionar em seu perfil")
+                        message.channel.send(t("commands:shop.buy_colors.yc-message"))
 
                         hexColletor.on('collect', m => {
                             isHexColor = hex => typeof hex === 'string' && hex.length === 6 && !isNaN(Number('0x' + hex))
@@ -209,11 +207,10 @@ function lojaComprar(message, embedMessage, user, saldoAtual) {
                                     preço: 1000000
                                 })
                                 user.save()
-                                message.channel.send(`<:positivo:759603958485614652> | UUUAUUUU!!! VOCÊ ACABOU DE COMPRAR UMA COR DE SUA ESCOLHA!!!\nSua escolha atual é **#${m.content}**\nVocê gastou **${coresDisponíveis[6].preço}** ⭐ e ficou com **${user.estrelinhas}** ⭐ estrelinhas`).then(() => embedMessage.delete().catch)
+                                message.menheraReply("sucess", t("commands:shop.buy_colors.yc-confirm", { color: m.content, price: coresDisponíveis[6].preço, stars: user.estrelinhas })).then(() => embedMessage.delete().catch)
                             } else {
-                                return message.channel.send(`<:negacao:759603958317711371> | ${message.author} esta cor não é uma cor válida!`).then(() => embedMessage.delete().catch)
+                                return message.menheraReply("error", t("commands:shop.buy_colors.invalid-color")).then(() => embedMessage.delete().catch())
                             }
-
                         })
                 }
             })
@@ -222,21 +219,21 @@ function lojaComprar(message, embedMessage, user, saldoAtual) {
             //abre loja de rolls
 
             const valorRoll = 8500;
-            const rollsATual = user.rolls;
+            const rollsAtual = user.rolls;
 
             const dataRolls = {
-                title: "Compre Rolls",
+                title: t("commands:shop.dataRolls_fields.title"),
                 color: '#b66642',
                 thumbnail: {
                     url: 'https://i.imgur.com/t94XkgG.png'
                 },
-                description: `Seu saldo atual é de **${saldoAtual}**⭐ estrelinhas, e você tem **${rollsATual}** 🔑 rolls`,
+                description: t("commands:shop.dataRolls_fields.description", { saldo: saldoAtual, rolls: rollsAtual }),
                 footer: {
-                    text: "Digite no chat quantos rolls quer comprar"
+                    text: t("commands:shop.dataRolls_fields.footer")
                 },
                 fields: [{
-                    name: 'Tabela de Preços',
-                    value: `1 Roll = **${valorRoll}** ⭐`,
+                    name: t("commands:shop.dataRolls_fields.fields.name"),
+                    value: t("commands:shop.dataRolls_fields.fields.value", { price: valorRoll }),
                     inline: false
                 }]
             }
@@ -249,29 +246,27 @@ function lojaComprar(message, embedMessage, user, saldoAtual) {
             quantidadeCollector.on('collect', m => {
 
                 const input = m.content
-                if (!input) return message.channel.send("`<:negacao:759603958317711371> | ${message.author}, este valor não é um número válido!`")
+                if (!input) return message.menheraReply("error", t("commands:shop.dataRolls_fields.buy_rolls.invalid-number"))
                 const valor = parseInt(input.replace(/\D+/g, ''));
                 if (isNaN(valor) || valor < 1) {
-                    embedMessage.delete().catch()
-                    message.channel.send(`<:negacao:759603958317711371> | ${message.author}, este valor não é um número válido!`)
+                    embedMessage.delete({ timeout: 500 }).catch()
+                    message.menheraReply("error", t("commands:shop.dataRolls_fields.buy_rolls.invalid-number"))
                 } else {
 
-                    if ((valor * valorRoll) > user.estrelinhas) return message.channel.send(`<:negacao:759603958317711371> | ${message.author}, você não possui estrelas suficientes para comprar esta quantidade de rolls!`)
+                    if ((valor * valorRoll) > user.estrelinhas) return message.menheraReply("error", t("commands:shop.dataRolls_fields.buy_rolls.poor"))
 
                     user.estrelinhas = user.estrelinhas - (valor * valorRoll);
                     user.rolls = user.rolls + valor;
                     user.save()
 
-                    message.channel.send(`<:positivo:759603958485614652> | ${message.author}, você comprou **${valor}** 🔑 rolls por ${valor * valorRoll} ⭐ estrelinhas! \nAgora você tem **${user.rolls}** 🔑 e **${user.estrelinhas}**⭐`)
+                    message.menheraReply("success", t("commands:shop.dataRolls_fields.buy_rolls", { quantity: valor, value: valor * valorRoll, rolls: user.rolls, stars: user.estrelinhas }))
                 }
             });
-
         }
     });
-
 }
 
-function lojaVender(message, embedMessage, user, saldoAtual) {
+function lojaVender(message, embedMessage, user, saldoAtual, t) {
 
     const demons = user.caçados || 0;
     const anjos = user.anjos || 0;
@@ -279,18 +274,18 @@ function lojaVender(message, embedMessage, user, saldoAtual) {
     const deuses = user.deuses || 0;
 
     const dataVender = {
-        title: "Brechó da Menhera",
+        title: t("commands:shop.embed_title"),
         color: '#e77fa1',
         thumbnail: {
             url: 'https://i.imgur.com/t94XkgG.png'
         },
-        description: `Seu saldo atual é de **${saldoAtual}**⭐ estrelinhas e suas caças são:\n\n<:DEMON:758765044443381780>: **${demons}** demônios\n<:ANGEL:758765044204437535>: **${anjos}** anjos\n<:SEMIGOD:758766732235374674>: **${sd}** semideuses\n<:God:758474639570894899>: **${deuses}** deuses`,
+        description: t("commands:shop.dataVender.main.description", {saldo: saldoAtual, demons: demons, anjos: anjos, sd: sd, deuses: deuses}),
         footer: {
-            text: "Digite no chat a opção de sua escolha e o valor"
+            text: t("commands:shop.dataVender.main.footer")
         },
         fields: [{
-            name: 'Opções de Vendas',
-            value: '1 - Vender Demônios (700⭐) \n2 - Vender Anjos (3500)\n3 - Vender Semi-Deuses (10000⭐)\n4 - Vender Deuses (50000⭐)\n\nDigite sua escolha e a quantidade. Exemplo: (`1 50`)',
+            name: t("commands:shop.dataVender.main.fields.name"),
+            value: t("commands:shop.dataVender.main.fields.value"),
             inline: false
         }]
     }
@@ -304,7 +299,7 @@ function lojaVender(message, embedMessage, user, saldoAtual) {
 
         const cArgs = m.content.split(/ +/g);
         const input = cArgs[1];
-        if (!input) return message.channel.send(`<:negacao:759603958317711371> | ${message.author}, este valor não é um número válido!`)
+        if (!input) return message.menheraReply("error", t("commands:shop.dataVender.invalid-args"))
         const valor = parseInt(input.replace(/\D+/g, ''));
 
         const valorDemonio = 700;
@@ -316,56 +311,56 @@ function lojaVender(message, embedMessage, user, saldoAtual) {
 
             if (isNaN(valor) || valor < 1) {
                 embedMessage.delete().catch()
-                return message.channel.send(`<:negacao:759603958317711371> | ${message.author}, este valor não é um número válido!`)
+                return message.menheraReply("error", t("commands:shop.dataVender.invalid-args"))
             } else {
-                if (valor > user.caçados) return message.channel.send(`<:negacao:759603958317711371> | ${message.author}, você não possui todos estes demônios!`)
+                if (valor > user.caçados) return message.menheraReply("error", t("commands:shop.dataVender.poor", {var: "demônios"}))
                 user.caçados = user.caçados - valor;
                 user.estrelinhas = user.estrelinhas + (valor * valorDemonio);
                 user.save()
-                message.channel.send(`<:positivo:759603958485614652> | ${message.author}, você vendeu **${valor}** <:DEMON:758765044443381780> demônios e recebeu **${valor * valorDemonio}** ⭐ estrelinhas!\nAgora você tem **${user.caçados}** <:DEMON:758765044443381780> e **${user.estrelinhas}**⭐`)
+                message.menheraReply("success", t("commands:shop.dataVender.success-demon", {value: valor, cost: valor * valorDemonio, quantity: user.caçados, star: user.estrelinhas}))
             }
 
         } else if (cArgs[0] === "2") {
 
             if (isNaN(valor) || valor < 1) {
                 embedMessage.delete().catch()
-                message.channel.send(`<:negacao:759603958317711371> | ${message.author}, este valor não é um número válido!`)
+                message.menheraReply("error", t("commands:shop.dataVender.invalid-args"))
             } else {
-                if (valor > user.anjos) return message.channel.send(`<:negacao:759603958317711371> | ${message.author}, você não possui todos estes anjos!`)
+                if (valor > user.anjos) return message.menheraReply("error", t("commands:shop.dataVender.poor", {var: "anjos"}))
                 user.anjos = user.anjos - valor;
                 user.estrelinhas = user.estrelinhas + (valor * valorAnjo);
                 user.save()
-                message.channel.send(`<:positivo:759603958485614652> | ${message.author}, você vendeu **${valor}** <:ANGEL:758765044204437535> anjos e recebeu **${valor * valorAnjo}** ⭐ estrelinhas!\nAgora você tem **${user.anjos}** <:ANGEL:758765044204437535> e **${user.estrelinhas}**⭐`)
+                message.menheraReply("success", t("commands:shop.dataVender.success-angel", {value: valor, cost: valor * valorAnjo, quantity: user.anjos, star: user.estrelinhas}))
             }
 
         } else if (cArgs[0] === "3") {
 
             if (isNaN(valor) || valor < 1) {
                 embedMessage.delete().catch()
-                message.channel.send(`<:negacao:759603958317711371> | ${message.author}, este valor não é um número válido!`)
+                message.menheraReply("error", t("commands:shop.dataVender.invalid-args"))
             } else {
-                if (valor > user.semideuses) return message.channel.send(`<:negacao:759603958317711371> | ${message.author}, você não possui todos estes semideuses!`)
+                if (valor > user.anjos) return message.menheraReply("error", t("commands:shop.dataVender.poor", {var: "semideuses"}))
                 user.semideuses = user.semideuses - valor;
                 user.estrelinhas = user.estrelinhas + (valor * valorSD);
                 user.save()
-                message.channel.send(`<:positivo:759603958485614652> | ${message.author}, você vendeu **${valor}** <:SEMIGOD:758766732235374674> semideuses e recebeu **${valor * valorSD}** ⭐ estrelinhas!\nAgora você tem **${user.semideuses}** <:SEMIGOD:758766732235374674> e **${user.estrelinhas}**⭐`)
+                message.menheraReply("success", t("commands:shop.dataVender.success-sd", {value: valor, cost: valor * valorSD, quantity: user.semideuses, star: user.estrelinhas}))
             }
 
         } else if (cArgs[0] === "4") {
 
             if (isNaN(valor) || valor < 1) {
                 embedMessage.delete().catch()
-                message.channel.send(`<:negacao:759603958317711371> | ${message.author}, este valor não é um número válido!`)
+                message.menheraReply("error", t("commands:shop.dataVender.invalid-args"))
             } else {
-                if (valor > user.deuses) return message.channel.send(`<:negacao:759603958317711371> | ${message.author}, você não possui todos estes deuses!`)
+                if (valor > user.anjos) return message.menheraReply("error", t("commands:shop.dataVender.poor", {var: "deuses"}))
                 user.deuses = user.deuses - valor;
                 user.estrelinhas = user.estrelinhas + (valor * valorDeus);
                 user.save()
-                message.channel.send(`<:positivo:759603958485614652> | ${message.author}, você vendeu **${valor}** <:God:758474639570894899> deuses e recebeu **${valor * valorDeus}** ⭐ estrelinhas!\nAgora você tem **${user.deuses}** <:God:758474639570894899> e **${user.estrelinhas}**⭐`)
+                message.menheraReply("success", t("commands:shop.dataVender.success-god", {value: valor, cost: valor * valorDeus, quantity: user.deuses, star: user.estrelinhas}))
             }
         } else {
             embedMessage.delete().catch()
-            message.channel.send(`<:negacao:759603958317711371> | ${message.author}, esta opção não é válida!`)
+            message.menheraReply("error", t("commands:shop.dataVender.invalid-args"))
         }
     });
 }

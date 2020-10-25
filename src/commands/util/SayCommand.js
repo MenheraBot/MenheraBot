@@ -5,19 +5,17 @@ module.exports = class SayCommand extends Command {
         super(client, {
             name: "say",
             cooldown: 5,
-            description: "Faça-me dizer algo",
             userPermissions: ["MANAGE_MESSAGES"],
             clientPermissions: ["MANAGE_MESSAGES"],
             category: "util",
             usage: "<texto>"
         })
     }
-    async run(message, args) {
+    async run({ message, args, server }, t) {
 
         const sayMessage = args.join(" ");
-        if (!sayMessage) return message.channel.send(`<:negacao:759603958317711371> | ${message.author}, você deve digitar o texto que quer que eu fale`)
-        message.delete().catch()
+        if (!sayMessage) return message.menherareply("error", t("commands:say.no-args"))
+        message.delete({timeout: 10}).catch()
          message.channel.send(sayMessage);
-        
     }
 }

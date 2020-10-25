@@ -5,13 +5,11 @@ module.exports = class FearCommand extends Command {
         super(client, {
             name: "medo",
             aliases: ["fear"],
-            description: "MEDO?????",
             clientPermissions: ["EMBED_LINKS"],
-            category: "ações",
-            usage: "[@menção]"
+            category: "ações"
         })
     }
-    async run(message, args) {
+    async run({ message, args, server }, t) {
 
         let avatar = message.author.displayAvatarURL({ format: "png" });
 
@@ -30,9 +28,9 @@ module.exports = class FearCommand extends Command {
 
         if (!user) {
             const embed = new MessageEmbed()
-                .setTitle("MEDO")
+                .setTitle(t("commands:fear.no-mention.embed_title"))
                 .setColor("#000000")
-                .setDescription(`${message.author} está com medo`)
+                .setDescription(`${message.author} ${t("commands:fear.no-mention.embed_description")}`)
                 .setThumbnail(avatar)
                 .setImage(rand)
                 .setAuthor(message.author.tag, avatar);
@@ -41,9 +39,9 @@ module.exports = class FearCommand extends Command {
         }
 
         const embed = new MessageEmbed()
-            .setTitle("MEDO")
+            .setTitle(t("commands:fear.embed_title"))
             .setColor("#000000")
-            .setDescription(`${message.author} esta com medo de ${user}`)
+            .setDescription(`${message.author} ${t("commands:fear.embed_description")} ${user}`)
             .setImage(rand)
             .setThumbnail(avatar)
             .setAuthor(message.author.tag, avatar);

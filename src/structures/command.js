@@ -14,10 +14,19 @@ module.exports = class Command {
             usage: `m!${options.name} ${options.usage}` || `m!${options.name}`
         }
     }
+
+    setT(t) {
+        this.config.t = t
+    }
+
+    getT() {
+        return this.config.t
+    }
+
     getOption(message, yes = ["adicionar", "adc", "add", "insert"], no = ["remover", "remove", "delete", "deletar"]) {
-		const cleanMessage = message.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase()
-		if (yes.filter(a => a === cleanMessage)[0]) return "yes"
-		if (no.filter(a => a === cleanMessage)[0]) return "no"
-		return null
-	}
+        const cleanMessage = message.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase()
+        if (yes.filter(a => a === cleanMessage)[0]) return "yes"
+        if (no.filter(a => a === cleanMessage)[0]) return "no"
+        return null
+    }
 }

@@ -1,0 +1,5 @@
+{
+    "afk": {
+        "reason": "`{{tag}}` is AFK: {{reason}}"
+    }
+}

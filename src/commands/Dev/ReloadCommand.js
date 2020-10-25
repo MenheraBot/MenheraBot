@@ -8,7 +8,7 @@ module.exports = class UpdateCommand extends Command {
             category: "Dev"
         })
     }
-    async run(message, args) {
+    async run({ message, args, server }, t) {
 
         const option = this.getOption(args[0], ["command", "comando"], ["evento", "event"])
 		if (!option) return message.channel.send("me dê uma opção válida. Opções disponíveis: `evento`, `comando`")

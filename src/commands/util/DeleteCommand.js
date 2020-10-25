@@ -6,14 +6,13 @@ module.exports = class DeleteCommand extends Command {
             name: "deletar",
             aliases: ["delete"],
             cooldown: 30,
-            description: "Exclua seu perfil do banco de dados",
             category: "util",
             clientPermissions: ["ADD_REACTIONS", "MANAGE_MESSAGES"]
         })
     }
-    async run(message, args) {
+    async run({ message, args, server }, t) {
 
-        message.channel.send(`<:atencao:759603958418767922> |Você tem certeza que deseja excluir sua conta da database do servidor?\nVocê tem 5 segundos para decidir`).then(async msg => {
+        message.menheraReply("warn", t("commands:delete.confirm")).then(async msg => {
 
             msg.react("✅").catch();
             msg.react("❌").catch();
@@ -26,7 +25,7 @@ module.exports = class DeleteCommand extends Command {
 
             ncoletor.on("collect", co => {
                 msg.reactions.removeAll().catch();
-                message.channel.send(`<:positivo:759603958485614652> | Perfeito!! Seu perfil **não** foi excluído`);
+                message.menheraReply("success", t("commands:delete.negated"))
             });
 
             coletor.on("collect", cp => {
@@ -36,7 +35,7 @@ module.exports = class DeleteCommand extends Command {
                     id: message.author.id
                 }, (err, res) => {
                     if (err) console.log(err);
-                    message.channel.send(`<:positivo:759603958485614652> | Seu perfil foi deletado da minha database :(`);
+                    message.menheraReply("success", t("commands:delete.acepted"))
                 })
             })
             setTimeout(() => {

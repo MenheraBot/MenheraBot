@@ -5,13 +5,11 @@ module.exports = class KissCommand extends Command {
         super(client, {
             name: "beijar",
             aliases: ["kiss"],
-            description: "Beija aquela pessoa amada",
             clientPermissions: ["EMBED_LINKS"],
-            category: "ações",
-            usage: "<@menção>"
+            category: "ações"
         })
     }
-    async run(message, args) {
+    async run({ message, args, server }, t) {
 
         var list = [
             "https://i.imgur.com/sGVgr74.gif",
@@ -37,22 +35,22 @@ module.exports = class KissCommand extends Command {
         var rand = list[Math.floor(Math.random() * list.length)];
         let user = message.mentions.users.first();
 
-        if (user && user.bot) return message.channel.send(`${message.author} beijou um robô, e acabou tocando em um fio descascado. Sorte que ele estava com chinelo nos pés. A ligação com a Terra foi cortado, nenhum circuito se fechou. Dessa vez foi safe.`);
+        if (user && user.bot) return message.menheraReply("error", t("commands:kiss.bot"))
 
         if (!user) {
-            return message.channel.send("<:negacao:759603958317711371> | Tu tem que mencionar quem tu quer beijar neah");
+            return message.menheraReply("error", t("commands:kiss.no-mention"))
         }
 
         if (user === message.author) {
-            return message.channel.send("<:negacao:759603958317711371> | Eu sei que amor próprio é tudo, mas por favor, beije alguém que não seja si mesmo");
+            return message.menheraReply("error", t("commands:kiss.self-mention"))
         }
 
         let avatar = message.author.displayAvatarURL({ format: "png" })
 
         const embed = new MessageEmbed()
-            .setTitle("Beijar")
+            .setTitle(t("commands:kiss.embed_title"))
             .setColor("#000000")
-            .setDescription(`${message.author} acabou de beijar ${user}`)
+            .setDescription(`${message.author} ${t("commands:kiss.embed_description")} ${user}`)
             .setImage(rand)
             .setThumbnail(avatar)
             .setAuthor(message.author.tag, avatar);

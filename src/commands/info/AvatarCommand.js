@@ -5,13 +5,11 @@ module.exports = class AvatarCommand extends Command {
         super(client, {
             name: "avatar",
             cooldown: 5,
-            description: "Mostra o avatar de alguem",
-            usage: "[usuário]",
             clientPermissions: ["EMBED_LINKS"],
             category: "info"
         })
     }
-    async run(message, args) {
+    async run({ message, args, server }, t) {
 
 
         let user = message.mentions.users.first() || this.client.users.cache.get(args[0]);
@@ -29,20 +27,17 @@ module.exports = class AvatarCommand extends Command {
         const img = user.displayAvatarURL({ dynamic: true, size: 1024 });
 
         let embed = new MessageEmbed()
-            .setTitle(`Avatar de ${user.username}`)
+            .setTitle(t("commands:avatar.title", { user: user.username }))
             .setImage(img)
             .setColor(cor)
-            .setFooter("Que imagem linda omodeuso");
+            .setFooter(t("commands:avatar.footer"));
 
         if (user.id === this.client.user.id) {
 
-            embed.setTitle(`Meu avatar (${user.username})`)
+            embed.setTitle(t("commands:avatar.client_title", { user: user.username }))
             embed.setColor('#f276f3')
-            embed.setFooter("Eu sou muito linda né vei tem como não")
-
+            embed.setFooter(t("commands:avatar.client_footer", { user: user.username }))
         }
-
         message.channel.send(message.author, embed);
-
     }
 }
