@@ -339,7 +339,7 @@ function lojaVender(message, embedMessage, user, saldoAtual, t) {
                 embedMessage.delete().catch()
                 message.menheraReply("error", t("commands:shop.dataVender.invalid-args"))
             } else {
-                if (valor > user.anjos) return message.menheraReply("error", t("commands:shop.dataVender.poor", {var: "semideuses"}))
+                if (valor > user.semideuses) return message.menheraReply("error", t("commands:shop.dataVender.poor", {var: "semideuses"}))
                 user.semideuses = user.semideuses - valor;
                 user.estrelinhas = user.estrelinhas + (valor * valorSD);
                 user.save()
@@ -352,7 +352,7 @@ function lojaVender(message, embedMessage, user, saldoAtual, t) {
                 embedMessage.delete().catch()
                 message.menheraReply("error", t("commands:shop.dataVender.invalid-args"))
             } else {
-                if (valor > user.anjos) return message.menheraReply("error", t("commands:shop.dataVender.poor", {var: "deuses"}))
+                if (valor > user.deuses) return message.menheraReply("error", t("commands:shop.dataVender.poor", {var: "deuses"}))
                 user.deuses = user.deuses - valor;
                 user.estrelinhas = user.estrelinhas + (valor * valorDeus);
                 user.save()
