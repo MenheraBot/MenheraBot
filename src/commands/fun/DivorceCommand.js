@@ -13,11 +13,11 @@ module.exports = class DivorceCommand extends Command {
 
     const user = await this.client.database.Users.findOne({ id: message.author.id })
     if (user.casado && user.casado != "false") {
-      return this.divorciar(user, message)
+      return this.divorciar(user, message, t)
     } else message.menheraReply("warn", t("commands:divorce.author-single"))
   }
 
-  async divorciar(user, message) {
+  async divorciar(user, message, t) {
 
     const user2 = await this.client.database.Users.findOne({ id: user.casado })
 

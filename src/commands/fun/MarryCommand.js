@@ -62,6 +62,5 @@ module.exports = class MarryCommand extends Command {
                 return
             })
         })
-        
     }
 };
