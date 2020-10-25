@@ -96,5 +96,11 @@ module.exports = class WatchClient extends Client {
 		const Locales = require("./structures/LocaleStructure")
 		const locales = new Locales(this)
 		locales.load()
-	}
+    }
+
+    async reloadLocales(){
+        const Locales = require("./structures/LocaleStructure")
+		const locales = new Locales(this)
+		locales.reload()
+    }
 }
