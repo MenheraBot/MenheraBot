@@ -10,8 +10,6 @@ module.exports = class TestCommand extends Command {
     }
     async run({ message, args, server }, t) {
 
-        this
-
         /* 
  =====================================DELETAR GUILDAS INATIVAS==========================================================
         const files = await this.client.database.Guilds.find()
