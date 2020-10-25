@@ -5,7 +5,7 @@
         "footer": "Type in the chat option of your choice",
         "new-tatic": "You tried a new technique, but were unsuccessful! The enemy attacks",
         "timeout": "You took too long to take action, and you were attacked!",
-        "text": "**{{enemy}}** attacks you with **{{attack}}**, and deals you **{{cmg}}**, updating your status:\n\n**YOUR STATUS**\n❤️ | Life: **{{life}}**\n💧 | Mana: **{{mana}}**\n⚔️ | Damage: **{{damage}}**\n🛡️ | Armor: **{{armor}}**\n\n**ENEMY'S STATUS**\n❤️ | Life: **{{elife}}**\n⚔️ | Damage: **{{edmg}}**\n🛡️ | Armor: **{{earmor}}**\n\nWhat do you do?\n\n**OPTIONS:**\n"
+        "text": "**{{enemy}}** attacks you with **{{attack}}**, and deals you **{{dmg}}**, updating your status:\n\n**YOUR STATUS**\n❤️ | Life: **{{life}}**\n💧 | Mana: **{{mana}}**\n⚔️ | Damage: **{{damage}}**\n🛡️ | Armor: **{{armor}}**\n\n**ENEMY'S STATUS**\n❤️ | Life: **{{elife}}**\n⚔️ | Damage: **{{edmg}}**\n🛡️ | Armor: **{{earmor}}**\n\nWhat do you do?\n\n**OPTIONS:**\n"
     },
     "death": "oww nooo, you died! To recover from the damage, you have returned to the guild, and will rest for 12 hours!",
     "basic-attack": "Basic Attack",

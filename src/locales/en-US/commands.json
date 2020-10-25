@@ -814,7 +814,7 @@
             "no-loots": "**YOU DO NOT HAVE LOOTS IN YOUR INVENTORY**",
             "poor": "you do not have",
             "unespected-error": "an unexpected error occurred! The sale value is` NaN`",
-            "sold": "you sold **{{quantidade}}** **{{name}}** and received **{{value}}** 💎"
+            "sold": "you sold **{{quantity}}** **{{name}}** and received **{{value}}** 💎"
         }
     }
 }

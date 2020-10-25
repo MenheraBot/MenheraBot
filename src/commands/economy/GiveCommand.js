@@ -56,25 +56,25 @@ module.exports = class GiveCommand extends Command {
 
         switch (option) {
             case 'estrelinhas':
-                giveStar(user, user2, valor, message, mencionado)
+                giveStar(user, user2, valor, message, mencionado, t)
                 break;
             case 'demônio':
-                giveDemon(user, user2, valor, message, mencionado)
+                giveDemon(user, user2, valor, message, mencionado, t)
                 break;
             case 'anjos':
-                giveAngel(user, user2, valor, message, mencionado)
+                giveAngel(user, user2, valor, message, mencionado, t)
                 break;
             case 'semideuses':
-                giveSD(user, user2, valor, message, mencionado)
+                giveSD(user, user2, valor, message, mencionado, t)
                 break;
             case 'deus':
-                giveGod(user, user2, valor, message, mencionado)
+                giveGod(user, user2, valor, message, mencionado, t)
                 break;
         }
     }
 }
 
-function giveStar(user, user2, valor, message, mencionado) {
+function giveStar(user, user2, valor, message, mencionado, t) {
 
     if (valor > user.estrelinhas) return message.menheraReply("error", `${t("commands:give.poor")} ${t("commands:give.stars")}`)
 
@@ -86,7 +86,7 @@ function giveStar(user, user2, valor, message, mencionado) {
     message.menheraReply("success", `${t("commands:give.transfered", {value: valor, emoji: "⭐"})} ${mencionado}`)
 }
 
-function giveDemon(user, user2, valor, message, mencionado) {
+function giveDemon(user, user2, valor, message, mencionado, t) {
 
     if (valor > user.caçados) return message.menheraReply("error", `${t("commands:give.poor")} ${t("commands:give.demons")}`)
 
@@ -98,7 +98,7 @@ function giveDemon(user, user2, valor, message, mencionado) {
     message.menheraReply("success", `${t("commands:give.transfered", {value: valor, emoji: "<:Demon:758765044443381780>"})} ${mencionado}`)
 }
 
-function giveAngel(user, user2, valor, message, mencionado) {
+function giveAngel(user, user2, valor, message, mencionado, t) {
 
     if (valor > user.anjos) return message.menheraReply("error", `${t("commands:give.poor")} ${t("commands:give.angels")}`)
 
@@ -110,7 +110,7 @@ function giveAngel(user, user2, valor, message, mencionado) {
     message.menheraReply("success", `${t("commands:give.transfered", {value: valor, emoji: "<:Angel:758765044204437535>"})} ${mencionado}`)
 }
 
-function giveSD(user, user2, valor, message, mencionado) {
+function giveSD(user, user2, valor, message, mencionado, t) {
 
     if (valor > user.semideuses) return message.menheraReply("error", `${t("commands:give.poor")} ${t("commands:give.semigods")}`)
 
@@ -122,7 +122,7 @@ function giveSD(user, user2, valor, message, mencionado) {
     message.menheraReply("success", `${t("commands:give.transfered", {value: valor, emoji: "<:SemiGod:758766732235374674>"})} ${mencionado}`)
 }
 
-function giveGod(user, user2, valor, message, mencionado) {
+function giveGod(user, user2, valor, message, mencionado, t) {
 
     if (valor > user.deuses) return message.menheraReply("error", `${t("commands:give.poor")} ${t("commands:give.gods")}`)
 
