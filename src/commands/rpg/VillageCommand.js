@@ -357,7 +357,7 @@ module.exports = class VillageCommand extends Command {
             nameLoots.push(loot.name)
         })
 
-        let txt = t("commands:village.guilda.money", {money: user.money});
+        let txt = t("commands:village.guilda.money", { money: user.money }) + t("commands:village.guilda.sell-all");
 
         let embed = new MessageEmbed()
             .setTitle(`🏠 | ${t("commands:village.guilda.title")}`)
@@ -388,7 +388,7 @@ module.exports = class VillageCommand extends Command {
         let option = [];
 
         for (let f = 0; f < number; f++) {
-            option.push((f + 1).toString())
+            option.push((f).toString())
         }
 
         collector.on('collect', m => {
@@ -397,29 +397,48 @@ module.exports = class VillageCommand extends Command {
 
             if (!option.includes(args[0])) return message.menheraReply("error", t("commands:village.invalid-option"))
 
-            let input = args[1]
-            let quantidade;
+            if (args[0] == "0") {
 
-            if (!input) {
-                quantidade = 1
-            } else quantidade = parseInt(input.replace(/\D+/g, ''));
+                let totalValue = 0;
+                let totalItems = 0;
 
-            if (quantidade < 1) return message.menheraReply("error", t("commands:village.invalid-quantity"))
-            if (quantidade > contado[parseInt(args[0]) - 1].amount) return message.menheraReply("error", `${t("commands:village.guilda.poor")} ${quantidade} ${contado[parseInt(args[0]) - 1].name}`);
+                allLoots.forEach(l => {
+                    totalValue = totalValue + l.value
+                    totalItems++;
+                })
 
-            let filter = allLoots.filter(f => f.name === contado[parseInt(args[0]) - 1].name)
-            let valor = parseInt(quantidade) * parseInt(filter[0].value)
-            if (isNaN(valor)) return message.menheraReply("error", t("commands:village.guilda.unespected-error"))
+                message.menheraReply("success", t("commands:village.guilda.sold-all", {amount: totalItems, value: totalValue}))
 
-            user.money = user.money + parseInt(valor)
-            for (let j = 0; j < quantidade; j++) {
-                user.loots.splice(user.loots.findIndex(function (i) {
-                    return i.name === contado[parseInt(args[0]) - 1].name;
-                }), 1);
+                user.loots = [];
+                user.money = user.money + totalValue
+                user.save()
+
+            } else {
+
+                let input = args[1]
+                let quantidade;
+
+                if (!input) {
+                    quantidade = 1
+                } else quantidade = parseInt(input.replace(/\D+/g, ''));
+
+                if (quantidade < 1) return message.menheraReply("error", t("commands:village.invalid-quantity"))
+                if (quantidade > contado[parseInt(args[0]) - 1].amount) return message.menheraReply("error", `${t("commands:village.guilda.poor")} ${quantidade} ${contado[parseInt(args[0]) - 1].name}`);
+
+                let filter = allLoots.filter(f => f.name === contado[parseInt(args[0]) - 1].name)
+                let valor = parseInt(quantidade) * parseInt(filter[0].value)
+                if (isNaN(valor)) return message.menheraReply("error", t("commands:village.guilda.unespected-error"))
+
+                user.money = user.money + parseInt(valor)
+                for (let j = 0; j < quantidade; j++) {
+                    user.loots.splice(user.loots.findIndex(function (i) {
+                        return i.name === contado[parseInt(args[0]) - 1].name;
+                    }), 1);
+                }
+
+                user.save()
+                message.menheraReply("success", t("commands:village.guilda.sold", { quantity: quantidade, name: contado[parseInt(args[0]) - 1].name, value: valor }))
             }
-
-            user.save()
-            message.menheraReply("success", t("commands:village.guilda.sold", {quantity: quantidade, name: contado[parseInt(args[0]) - 1].name ,value: valor}))
         })
     }
 }

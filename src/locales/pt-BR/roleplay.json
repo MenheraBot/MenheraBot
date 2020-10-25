@@ -5,7 +5,7 @@
         "footer": "Digite no chat a opção de sua escolha",
         "new-tatic": "Você tentou uma técnica nova, mas não obteve sucesso! O inimigo ataca",
         "timeout": "Você demorou para tomar uma atitude, e foi atacado!",
-        "text": "**{{enemy}}** te ataca com **{{attack}}**, e causa **{{cmg}}**, atualização dos status:\n\n**SEUS STATUS**\n❤️ | Vida: **{{life}}**\n💧 | Mana: **{{mana}}**\n⚔️ | Dano: **{{damage}}**\n🛡️ | Defesa: **{{armor}}**\n\n**STATUS DO INIMIGO**\n❤️ | Vida: **{{elife}}**\n⚔️ | Dano: **{{edmg}}**\n🛡️ | Defesa: **{{earmor}}**\n\nO que você faz?\n\n**OPÇÕES:**\n"
+        "text": "**{{enemy}}** te ataca com **{{attack}}**, e causa **{{dmg}}**, atualização dos status:\n\n**SEUS STATUS**\n❤️ | Vida: **{{life}}**\n💧 | Mana: **{{mana}}**\n⚔️ | Dano: **{{damage}}**\n🛡️ | Defesa: **{{armor}}**\n\n**STATUS DO INIMIGO**\n❤️ | Vida: **{{elife}}**\n⚔️ | Dano: **{{edmg}}**\n🛡️ | Defesa: **{{earmor}}**\n\nO que você faz?\n\n**OPÇÕES:**\n"
     },
     "death": "essa não, você morreu! Para se recuperar dos danos, você retornou para a guilda, e ficará de repouso por 12 horas!",
     "basic-attack": "Ataque Básico",

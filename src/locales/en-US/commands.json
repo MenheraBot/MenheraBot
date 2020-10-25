@@ -811,6 +811,8 @@
             "title": "Guild",
             "footer": "Chat your choice and quantity, example: 1 3",
             "money": "Your magic stones: **{{money}}** 💎\n\n",
+            "sell-all": "---------------**[ 0 ]**---------------\n<:Chest:760957557538947133> | **SELL ALL**\n",
+            "sold-all": "You sold **{{amount}}** loots for **{{value}}** 💎",
             "value": "Value",
             "no-loots": "**YOU DO NOT HAVE LOOTS IN YOUR INVENTORY**",
             "poor": "you do not have",
