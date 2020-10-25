@@ -4,7 +4,7 @@ module.exports = class PatCommand extends Command {
     constructor(client) {
         super(client, {
             name: "carinho",
-            aliases: ["pat"],
+            aliases: ["pat", "cuddle"],
             clientPermissions: ["EMBED_LINKS"],
             category: "ações"
         })

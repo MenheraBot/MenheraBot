@@ -51,9 +51,10 @@ module.exports = class DungeonCommand extends Command {
         const collector = message.channel.createMessageCollector(filter, { max: 1, time: 30000, errors: ["time"] });
 
         collector.on('collect', m => {
-            if (m.content.toLowerCase() != "sim") return message.menheraReply("error", t("commands:dungeon.arregou"))
+            if (m.content.toLowerCase() == "sim" || m.content.toLowerCase() == "yes") {
+                this.battle(message, inimigo, habilidades, user, "dungeon", familia, t);
+            } else return message.menheraReply("error", t("commands:dungeon.arregou"))
 
-            this.battle(message, inimigo, habilidades, user, "dungeon", familia, t);
         })
     }
     async battle(message, inimigo, habilidades, user, type, familia, t) {
@@ -80,7 +81,7 @@ module.exports = class DungeonCommand extends Command {
             options.push(hab)
         })
 
-        let texto = `${t("commands:dungeon.battle.enter", {type: inimigo.type, name: inimigo.name})}\n\n❤️ | ${t("commands:dungeon.life")}: **${inimigo.life}**\n⚔️ | ${t("commands:dungeon.damage")}: **${inimigo.damage}**\n🛡️ | ${t("commands:dungeon.armor")}: **${inimigo.armor}**\n\n${t("commands:dungeon.battle.end")}`
+        let texto = `${t("commands:dungeon.battle.enter", { type: inimigo.type, name: inimigo.name })}\n\n❤️ | ${t("commands:dungeon.life")}: **${inimigo.life}**\n⚔️ | ${t("commands:dungeon.damage")}: **${inimigo.damage}**\n🛡️ | ${t("commands:dungeon.armor")}: **${inimigo.armor}**\n\n${t("commands:dungeon.battle.end")}`
 
         let escolhas = []
 
@@ -111,7 +112,6 @@ module.exports = class DungeonCommand extends Command {
                 checks.enemyShot(message, `⚔️ |  ${t("commands:dungeon.battle.newTecnique")}`, user, inimigo, type, familia, t)
             }
         })
-
 
         setTimeout(() => {
             if (!time) {

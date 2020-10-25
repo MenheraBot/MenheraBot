@@ -1,29 +1,29 @@
 {
     "battle": {
-        "no-mana": "Você tenta usar **{{name}}**, mas não tem mana o suficiente para isso! O inimigo revida!",
-        "attack": "Você ataca **{{enemy}}** com **{{choice}}**, e causa **{{damage}}** de dano",
-        "footer": "Digite no chat a opção de sua escolha",
-        "new-tatic": "Você tentou uma técnica nova, mas não obteve sucesso! O inimigo ataca",
-        "timeout": "Você demorou para tomar uma atitude, e foi atacado!",
-        "text": "**{{enemy}}** te ataca com **{{attack}}**, e causa **{{cmg}}**, atualização dos status:\n\n**SEUS STATUS**\n❤️ | Vida: **{{life}}**\n💧 | Mana: **{{mana}}**\n⚔️ | Dano: **{{damage}}**\n🛡️ | Defesa: **{{armor}}**\n\n**STATUS DO INIMIGO**\n❤️ | Vida: **{{elife}}**\n⚔️ | Dano: **{{edmg}}**\n🛡️ | Defesa: **{{earmor}}**\n\nO que você faz?\n\n**OPÇÕES:**\n"
+        "no-mana": "You try to use **{{name}}**, but dont have mana! The enemy retaliate!",
+        "attack": "You attack **{{enemy}}** with **{{choice}}**, and deal **{{damage}}** damage",
+        "footer": "Type in the chat option of your choice",
+        "new-tatic": "You tried a new technique, but were unsuccessful! The enemy attacks",
+        "timeout": "You took too long to take action, and you were attacked!",
+        "text": "**{{enemy}}** attacks you with **{{attack}}**, and deals you **{{cmg}}**, updating your status:\n\n**YOUR STATUS**\n❤️ | Life: **{{life}}**\n💧 | Mana: **{{mana}}**\n⚔️ | Damage: **{{damage}}**\n🛡️ | Armor: **{{armor}}**\n\n**ENEMY'S STATUS**\n❤️ | Life: **{{elife}}**\n⚔️ | Damage: **{{edmg}}**\n🛡️ | Armor: **{{earmor}}**\n\nWhat do you do?\n\n**OPTIONS:**\n"
     },
-    "death": "essa não, você morreu! Para se recuperar dos danos, você retornou para a guilda, e ficará de repouso por 12 horas!",
-    "basic-attack": "Ataque Básico",
-    "new-ability": "Você atingiu o nível **{{level}}** e liberou uma nova habilidade! **{{ability}}**",
-    "family": "Você desbloqueou as famílias! Use `m!família` para entrar em uma família",
-    "boss": "você atinge o nível 20, e se torna um MESTRE da dungeon!\nA partir de agora, você pode usar o m!boss, para batalhar contra bosses quando quiser",
+    "death": "oww nooo, you died! To recover from the damage, you have returned to the guild, and will rest for 12 hours!",
+    "basic-attack": "Basic Attack",
+    "new-ability": "You have reached the level **{{level}}** and unlocked a new skill! **{{ability}}**",
+    "family": "You have unlocked families! Use `m! Family` to join a family",
+    "boss": "you reach level 20, and become a dungeon MASTER! \nFrom now on, you can use the m!boss command to battle bosses whenever you want",
     "result": {
-        "title": "Resultados da Batalha",
-        "description": "**Esse dano é o suficiente para matar {{enemy}}!**\n\n**Loots:**",
-        "loots": "Espólios de Batalha"
+        "title": "Battle Results",
+        "description": "**This damage is enough to kill {{enemy}}!**\n\n**Loots:**",
+        "loots": "Battle Loots"
     },
     "initial": {
-        "no-life": "Sem Vida",
-        "no-life-text": "Você está sem vida, e precisa descansar por mais **{{time}}** horas",
-        "tired": "Cansaço",
-        "tired-text": "Você já visitou a dungeon e precisa descansar por mais **{{time}}** minutos",
-        "hotel-text": "Você está descansando no hotel da vila, e não pode ir para a dungeon até que sua estadia acabe, em **{{time}}**",
-        "cant-go": "Você não pode visitar a dungeon pelos seguintes motivos:"
+        "no-life": "Without Life",
+        "no-life-text": "You are lifeless, and need to rest for more **{{time}}** hours",
+        "tired": "Tiredness",
+        "tired-text": "You have already visited the dungeon and need to rest for more **{{time}}** minutes",
+        "hotel-text": "You are resting at the village hotel, and you cannot go to the dungeon until your stay is over, in **{{time}}**",
+        "cant-go": "You cannot visit the dungeon for the following reasons:"
     },
-    "registred": "você foi registrado com sucesso! Use `m!status` para ver seus status"
+    "registred": "you have been successfully registered! Use `m!status` to see your status"
 }

@@ -56,9 +56,10 @@ module.exports = class BattleBoss extends Command {
         const collector = message.channel.createMessageCollector(filter, { max: 1, time: 30000, errors: ["time"] });
 
         collector.on('collect', m => {
-            if (m.content.toLowerCase() != "sim", "yes") return message.menheraReply("error", t("commands:boss.amarelou"))
+            if (m.content.toLowerCase() == "sim" || m.content.toLowerCase() == "yes"){
+                this.battle(message, inimigo, habilidades, user, "boss", familia, t);
+            } else return message.menheraReply("error", t("commands:boss.amarelou"))
 
-            this.battle(message, inimigo, habilidades, user, "boss", familia, t);
         })
     }
 

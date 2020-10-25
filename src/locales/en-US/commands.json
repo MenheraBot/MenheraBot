@@ -1,214 +1,214 @@
 {
     "afk": {
-        "description": "Se coloque em AFK",
-        "usage": "[motivo]",
-        "reason": "`{{tag}}` está AFK: {{reason}}",
-        "back": "bem vindo de volta >...<",
-        "success": "o modo AFK foi ativado! Para facilitar sua vida, vou desativá-lo caso mande uma mensagem!!!"
+        "description": "Stays AFK",
+        "usage": "[reason]",
+        "reason": "`{{tag}}` is AFK: {{reason}}",
+        "back": "welcome back >...<",
+        "success": "AFK mode has been activated! To make your life easier, I will disable it when you send a message !!!"
     },
     "bicuda": {
-        "description": "Da uma bicuda em alguem",
-        "usage": "<@menção>",
-        "bot": "você chutou um robô, se pa que quebrou a perna. Só se pa... assim...",
-        "no-mention": "eae avatar, vai parar de chutar o ar? Menciona quem quer chutar.",
-        "self-mention": "???? isso nem é possível cara, n tem como se autochutar. Mencione outro usuário por favor",
-        "embed_title": "Bicuda",
-        "embed_description": "meteu o bicudão em"
+        "description": "Kick someones butt",
+        "usage": "<@mention>",
+        "bot": "you kicked a robot, you probably broke your leg... I guess",
+        "no-mention": "supp avatar, are you going to stop kicking the air? Mention someone else to kick",
+        "self-mention": "???? this isn't even possible dude, mention someone else",
+        "embed_title": "What a Kick",
+        "embed_description": "kicked"
     },
     "bite": {
-        "description": "Morde alguem X3 Moidi :3",
-        "usage": "<@menção>",
-        "bot": "você mordeu um robô... -5 dentes na boca",
-        "no-mention": "Tu tem que mencionar quem tu quer morder neah",
-        "self-mention": "Ala o masoquista, faça isso agora mesmo, não precisa de comando",
-        "embed_title": "Morder",
-        "embed_description": "moideu"
+        "description": "bite someone :3",
+        "usage": "<@mention>",
+        "bot": "you bit a robot ... -5 teeth in the mouth",
+        "no-mention": "You have to mention who you want to bite duuh",
+        "self-mention": "look at the the masochist, do it right now, no command needed",
+        "embed_title": "Bites",
+        "embed_description": "bit"
     },
     "cry": {
-        "description": "Mostre a todos que você está chorando, vai que assim tu ganha atenção",
-        "usage": "[@menção]",
-        "bot": "nem vem que nenhum bot faz alguem chorar, eles são amigáveis e divertidos. Assim como eu",
+        "description": "Show everyone that you're crying, so that you get attention",
+        "usage": "[@mention]",
+        "bot": "nor does it come that any bot makes someone cry, they are friendly and fun. Like me",
         "no-mention": {
-            "embed_title": "Chorando :(",
-            "embed_description": "está chorando"
+            "embed_title": "Crying :(",
+            "embed_description": "is crying"
         },
-        "embed_title": "Chorando :(",
-        "embed_description_start": "fez",
-        "embed_description_end": "chorar"
+        "embed_title": "Crying :(",
+        "embed_description_start": "made",
+        "embed_description_end": "cry"
     },
     "disgusted": {
-        "description": "Eca que nojo",
-        "usage": "<@menção>",
-        "bot": "Iiii ala tu tem nojinho de bot ui ui ui",
+        "description": "eeeewwww disgusting",
+        "usage": "<@mention>",
+        "bot": "HMMMM LOOK AT THAT GUY, HE DISGUST ROBOTS",
         "no-mention": {
-            "embed_title": "Nojo",
-            "embed_description": "está com nojinho blé"
+            "embed_title": "Yuck",
+            "embed_description": "is disgusted nheeem"
         },
-        "embed_title": "Nojo",
-        "embed_description": "está com nojo de"
+        "embed_title": "Yuck",
+        "embed_description": "is disgusted from"
     },
     "fear": {
-        "description": "ESTÁS COM MEDO?????",
-        "usage": "[@menção]",
+        "description": "ARE YOU AFRAID?",
+        "usage": "[@mention]",
         "no-mention": {
-            "embed_title": "MEDO",
-            "embed_description": "está com medo"
+            "embed_title": "AFRAID",
+            "embed_description": "is afraid"
         },
-        "embed_title": "MEDO",
-        "embed_description": "esta com medo de"
+        "embed_title": "AFRAID",
+        "embed_description": "is afraid of"
     },
     "grumbe": {
-        "description": "Resmungue humpf",
+        "description": "Grumble humpf",
         "embed_title": "Humpf",
-        "embed_description": "está resmungando"
+        "embed_description": "is grumbling"
     },
     "hug": {
-        "description": "Abraça alguém",
-        "usage": "<@menção>",
-        "bot": "você foi abraçar um robô, mas acabou tocando onde não devia, e tomou uma descarga elétrica de 220V e 10mA, sorte que a corrente usada no bot é baixa...",
-        "no-mention": "você deve mencionar quem quer abraçar",
-        "self-mention": "tu não é a mulher elástico pra se abraçar, por favor, mencione quem você quer abraçar",
-        "embed_title": "Abraçar",
-        "embed_description": "acaba de abraçar"
+        "description": "Hug someone",
+        "usage": "<@mention>",
+        "bot": "you went to hug a robot, but ended up touching where you shouldn't, and took an electric discharge of 220V and 10mA, luckily the current used in the bot is low ...",
+        "no-mention": "you must mention who wants to hug",
+        "self-mention": "you are not the elastic woman to hug yourself, please mention who you want to hug",
+        "embed_title": "Hug",
+        "embed_description": "just hugged"
     },
     "kill": {
-        "description": "Mate aquele que você não suporta mais",
-        "usage": "<@menção>",
-        "no-mention": "se tu não matar ninguém, tu não comete crimes. STONKS",
-        "self-mention": "eu não gosto de suicídio...",
+        "description": "Kill the one you can't stand anymore",
+        "usage": "<@mention>",
+        "no-mention": "if you don't kill anyone, you don't commit crimes. STONKS",
+        "self-mention": "I don't like suicide ...",
         "bot": {
-            "embed_title": "Desligar",
-            "embed_description_start": "*Robôs não podem ser mortos, mas podem ser desligados...*",
-            "embed_description_end": "desligou o bot"
+            "embed_title": "Disconnect",
+            "embed_description_start": "*Robots cannot be killed, but they can be turned off ...*",
+            "embed_description_end": "turned off the bot"
         },
-        "embed_title": "Matar",
-        "embed_description": "M A T O U"
+        "embed_title": "Kill",
+        "embed_description": "K I L L E D"
     },
     "kiss": {
-        "description": "Beija aquela pessoa amada",
-        "usage": "<@menção>",
-        "bot": "você beijou um robô, e acabou tocando em um fio descascado. Sorte que ele estava com chinelo nos pés. A ligação com a Terra foi cortado, nenhum circuito se fechou. Dessa vez foi safe.",
-        "no-mention": "tu tem que mencionar quem tu quer beijar neah",
-        "self-mention": "eu sei que amor próprio é tudo, mas por favor, beije alguém que não seja si mesmo",
-        "embed_title": "Beijar",
-        "embed_description": "acabou de beijar"
+        "description": "Kiss that loved one",
+        "usage": "<@mention>",
+        "bot": "you kissed a robot, and ended up touching a peeled wire. Lucky he had slippers on his feet. The connection with the Earth was cut, no circuit was closed. This time it was safe.",
+        "no-mention": "you have to mention who you want to kiss you dumb",
+        "self-mention": "I know self-love is important, but please kiss someone other than yourself",
+        "embed_title": "Kiss",
+        "embed_description": "kissed"
     },
     "laugh": {
-        "description": "Mostre a todos que estás rindo",
-        "usage": "[@menção]",
+        "description": "Show everyone that you're laughing",
+        "usage": "[@mention]",
         "no-mention": {
-            "embed_title": "KKKK RINDO",
-            "embed_description": "está se mijando de rir"
+            "embed_title": "ASDKSAKDSAK LAUGHING",
+            "embed_description": "is pissing with laughter"
         },
-        "embed_title": "RINDO",
-        "embed_description_start": "fez",
-        "embed_description_end": "cair no chão de tanto rir"
+        "embed_title": "LOL",
+        "embed_description_start": "made",
+        "embed_description_end": "fall to the ground laughing"
     },
     "mamar": {
-        "description": "Da aquela mamada de qualidade monstra",
-        "usage": "<@menção>",
-        "no-mention": "KKK ala o autista mamando o nada",
-        "bot": "acabou de sujar a boca de óleo mamano o bot",
-        "self-mention": "não tenta me enganar, eu sei que tu não consegue mamar a si mesmo! Marque outra pessoa para mamar",
-        "embed_title": "Mamar",
-        "embed_description": "mamou"
+        "description": "Give that monster quality suck",
+        "usage": "<@mention>",
+        "no-mention": "LOL look at the autistic suckling nowhere",
+        "bot": "just got his mouth wet with oil sucking the bot",
+        "self-mention": "don't try to deceive me, I know you can't suckle yourself! Appoint another person to suck",
+        "embed_title": "Suck",
+        "embed_description": "Suckled"
     },
     "pat": {
-        "description": "Faça carinho em alguem",
-        "usage": "<@menção>",
-        "no-mention": "tu tem que mencionar em quem tu quer fazer carinho",
-        "self-mention": "se tu quiser tu pode fazer carinho em si mesmo agora. Utilize meu comando somente para fazer carinho em outras pessoas",
-        "embed_title": "Carinho",
-        "embed_description": "fez carinho em"
+        "description": "Pat someone's head",
+        "usage": "<@mention>",
+        "no-mention": "you have to mention who you want to cuddle",
+        "self-mention": "if you want you can cuddle yourself now. Use my command only to cuddle others",
+        "embed_title": "Cuddle",
+        "embed_description": "just cuddle"
     },
     "poke": {
-        "description": "Cutuque alguem",
-        "usage": "<@menção>",
-        "no-mention": "tu tem que mencionar quem tu quer cutucar neah",
-        "self-mention": "cutucar a si mesmo não tem graça! Mencione quem tu quer cutucar",
-        "embed_title": "Cutucar",
-        "embed_description": "cutucou"
+        "description": "Poke Someone",
+        "usage": "<@mention>",
+        "no-mention": "you have to mention who you want to poke duuuh",
+        "self-mention": "poking yourself is no fun! Mention who you want to poke",
+        "embed_title": "Poke",
+        "embed_description": "poked"
     },
     "punch": {
-        "description": "Soca alguem na porrada",
-        "usage": "<@menção>",
-        "bot": "DIGA NÃO A AGRESSÃO A ROBÔS",
-        "no-mention": "tu tem que mencionar em quem tu quer lançar aquele socão nas fuça",
-        "self-mention": "eu não vou fazer tu se bater, mencione outra pessoa",
-        "embed_title": "Toma soco leve 🤜",
-        "embed_description": "socou"
+        "description": "Punch someone in the ass",
+        "usage": "<@mention>",
+        "bot": "SAY NO TO THE BOTS AGRESSION",
+        "no-mention": "you have to mention who you want to punch",
+        "self-mention": "I will not make you punch yourself, mention someone else",
+        "embed_title": "PUNCH IN THE FACE",
+        "embed_description": "punched"
     },
     "ressurect": {
-        "description": "Ressuscite alguém morto",
-        "usage": "<@menção>",
-        "no-mention": "Como ressuscitar o nada, que nunca morreu",
-        "self-mention": "uai, se tu ta morto, como tu ta digitando?",
-        "bot": "um robô foi religado UwU >.<",
-        "embed_title": "Ressuscitar",
-        "embed_description": "ressuscitou"
+        "description": "Resurrect someone dead",
+        "usage": "<@mention>",
+        "no-mention": "How to resurrect the nothing, which never died?",
+        "self-mention": "wait wut?? If you're dead, how are you typing?",
+        "bot": "a robot has been restarted UwU >. <",
+        "embed_title": "Resurrect",
+        "embed_description": "resurrected"
     },
     "sarrar": {
-        "description": "Sarra comigo?",
-        "usage": "[@menção]",
+        "description": "Dance with me?",
+        "usage": "[@mention]",
         "no-mention": {
-            "embed_title": "Sarra Comigo?",
-            "embed_description_start": "Alguém quer sarrar com",
-            "embed_description_end": "Reaja para sarrar",
-            "embed_footer": "Quer sarrar comigo? 30 segundos para aceitar a sarrada"
+            "embed_title": "Dance with me?",
+            "embed_description_start": "Someone wants to dance with",
+            "embed_description_end": "React to dance",
+            "embed_footer": "Do you want to dance with me? 30 seconds to accept the dance"
         },
-        "embed_title": "Sarrar",
-        "embed_description": "sarrou com"
+        "embed_title": "Dance",
+        "embed_description": "danced with"
     },
     "shot": {
-        "description": "Atire em alguém",
-        "usage": "<@menção>",
-        "no-mention": "tu tem que mencionar em quem tu quer atirar",
-        "self-mention": "suicídio não!!!",
-        "embed_title": "Atirar",
-        "embed_description": "meteu bala em"
+        "description": "Shoot someone",
+        "usage": "<@mention>",
+        "no-mention": "you have to mention who you want to shoot",
+        "self-mention": "say no to suicide",
+        "embed_title": "Shoot",
+        "embed_description": "bullet"
     },
     "shy": {
-        "description": "oto com vergonha",
-        "usage": "[@menção]",
+        "description": "imin shame",
+        "usage": "[@mention]",
         "no-mention": {
-            "embed_title": "Vergonhinha 👉👈",
-            "embed_description": "está com vergonha >.<"
+            "embed_title": "Shame 👉👈",
+            "embed_description": "ashamed >.<"
         },
-        "embed_title": "Vergonhinha 👉👈",
-        "embed_description_start": "deixou",
-        "embed_description_end": "com vergonha >.<"
+        "embed_title": "Shame 👉👈",
+        "embed_description_start": "made",
+        "embed_description_end": "shamed >.<"
     },
     "slap": {
-        "description": "Tapeia alguem",
-        "usage": "<@menção>",
-        "bot": "DIGA NÃO A AGRESSÃO A ROBÔS",
-        "no-mention": "tu tem que mencionar em quem tu quer bater",
-        "self-mention": "eu não vou fazer tu se bater, mencione outra pessoa",
-        "embed_title": "TAPÃO",
-        "embed_description": "meteu o tapão em"
+        "description": "Slap someone",
+        "usage": "<@mention>",
+        "bot": "Do not slap robots maaaan",
+        "no-mention": "you have to mention who you want to hit",
+        "self-mention": "I will not make you hit yourself, mention someone else",
+        "embed_title": "Slap",
+        "embed_description": "slapped"
     },
     "think": {
-        "description": "Gabriel o pensador apenas",
-        "usage": "[@menção]",
-        "bot": "Awnnn que coisa mais linda, você está pensando num bot >.<",
+        "description": "Thinking",
+        "usage": "[@mention]",
+        "bot": "Awnnn what a beautiful thing, you are thinking in a bot >.<",
         "no-mention": {
-            "embed_title": "Pensar",
-            "embed_description": "está pensando"
+            "embed_title": "Think",
+            "embed_description": "is thinking"
         },
-        "embed_title": "Pensar",
-        "embed_description": "está pensando em"
+        "embed_title": "Think",
+        "embed_description": "is thinking in"
     },
     "coinflip": {
-        "description": "Aposte estrelinhas num cara ou coroa com alguem",
-        "usage": "<@menção> <valor>",
-        "invalid-value": "este valor não é válido",
-        "no-mention": "você não mencionou seu adversário",
-        "bot": "bots não podem apostar e.e",
-        "self-mention": "você não pode apostar contra si mesmo",
-        "no-dbuser": "este usuário não possui uma conta no Menhera's Bank!",
-        "poor": "você não possui todas essas estrelinhas para apostar!",
-        "confirm": "te desafiou para uma aposta de Cara ou Coroa valendo **{{value}}** :star:. Caso caia Cara, {{user1}} vence, caso caia coroa, {{user2}} vence!\n{{user2}} deve aceitar reagindo com ✅! Ele tem 5 segundos!",
-        "cara": "**CARA**\n{{user1}} ganhou {{value}} :star: apostando com {{user2}}! Sinto muito {{user2}}, nem sempre saimos vitoriosos",
+        "description": "Bet stars on a coin toss with someone",
+        "usage": "<@mention> <value>",
+        "invalid-value": "this value is not valid",
+        "no-mention": "you didn't mention your opponent",
+        "bot": "bots cannot bet e.e",
+        "self-mention": "you cannot bet against yourself",
+        "no-dbuser": "this user does not have a Menhera's Bank account!",
+        "poor": "you don't have all these stars to bet on!",
+        "confirm": "challenged you to a flip coin worth **{{value}}** :star:. Heads, {{user1}} wins, tails, {{user2}} wins!\n{{user2}} must accept by reacting with ✅! He has 5 seconds!",
+        "cara": "**HEADS**\n{{user1}} won {{value}} :star: betting with {{user2}}! I'm sorry {{user2}}, we are not always victorious",
         "coroa": "**COROA**\n{{user2}} ganhou a aposta valendo {{value}} :star: contra {{user1}}!"
     },
     "give": {
