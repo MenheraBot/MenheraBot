@@ -16,7 +16,7 @@ module.exports = class StatusCommand extends Command {
         if (!mentioned) mentioned = message.author;
 
         const user = await this.client.database.Rpg.findById(mentioned.id)
-        if (!user) return message.menheraReply("error". t("commands:status.not-found"))
+        if (!user) return message.menheraReply("error", t("commands:status.not-found"))
 
         let dmg = `${user.damage} + ${user.weapon.damage}`
         let ptr = `${user.armor} + ${user.protection.armor}`
