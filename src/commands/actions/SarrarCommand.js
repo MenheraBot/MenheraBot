@@ -38,14 +38,14 @@ module.exports = class SarrarCommand extends Command {
         coletor.on("collect", (react, user) => {
 
           msg.delete().catch();
-          sarrada(message, user);
+          sarrada(message, user, t);
         });
       });
     } else return sarrada(message, message.mentions.users.first());
   }
 }
 
-function sarrada(message, reactUser) {
+function sarrada(message, reactUser, t) {
 
   var lista = [
     "https://i.imgur.com/m2JUJWB.gif",
