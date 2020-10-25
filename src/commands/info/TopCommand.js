@@ -202,7 +202,7 @@ module.exports = class TopCommand extends Command {
 
         let embed = new MessageEmbed()
 
-            .setTitle(`<:God:758474639570894899> | ${t("commands:top.godsTitle")}`)
+            .setTitle(`<:God:758474639570894899> | ${t("commands:top.godTitle")}`)
             .setColor('#a67cec')
 
         this.client.database.Users.find({}, ['deuses', 'nome', 'id'], {
@@ -231,7 +231,7 @@ module.exports = class TopCommand extends Command {
 
         let embed = new MessageEmbed()
 
-            .setTitle(`⭐ | ${t("commands:top.startsTitle")}`)
+            .setTitle(`⭐ | ${t("commands:top.starsTitle")}`)
             .setColor('#74bd63')
 
         this.client.database.Users.find({}, ['estrelinhas', 'nome', 'id'], {
