@@ -14,7 +14,7 @@ module.exports = class SayCommand extends Command {
     async run({ message, args, server }, t) {
 
         const sayMessage = args.join(" ");
-        if (!sayMessage) return message.menherareply("error", t("commands:say.no-args"))
+        if (!sayMessage) return message.menheraReply("error", t("commands:say.no-args"))
         message.delete({timeout: 10}).catch()
          message.channel.send(sayMessage);
     }
