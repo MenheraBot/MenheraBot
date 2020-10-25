@@ -133,7 +133,7 @@ module.exports = class MessageReceive {
 
         if (now < expirationTime) {
           const timeLeft = (expirationTime - now) / 1000;
-          return message.menheraReply("warn", t("events:cooldown", { time: timeLeft, cmd: command.config.name }));
+          return message.menheraReply("warn", t("events:cooldown", { time: timeLeft.toFixed(1), cmd: command.config.name }));
         }
       }
 

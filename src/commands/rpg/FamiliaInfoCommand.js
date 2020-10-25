@@ -35,7 +35,7 @@ module.exports = class FamiliaInfoCommand extends Command {
             .setDescription(t("commands:if.embed.description", { level: familia.levelFamilia, next: familia.nextLevel }))
             .addFields([{
                 name: '📤 | Boost',
-                value: `${t("commands:if.name")}: **${familia.boost.name}**\${t("commands:if.value")}: **${familia.boost.value}**`,
+                value: `${t("commands:if.name")}: **${familia.boost.name}**\n${t("commands:if.value")}: **${familia.boost.value}**`,
                 inline: true
             },
             {
