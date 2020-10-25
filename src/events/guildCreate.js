@@ -21,7 +21,7 @@ module.exports = class GuildCreate {
     let server = await this.client.database.Guilds.findOne({id: guild.id})
         if (!server) {
             server = new this.client.database.Guilds({
-                _id: guild.id,
+                id: guild.id,
                 lang: this.region[guild.region]
             })
             server.lang = this.region[guild.region]
