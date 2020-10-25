@@ -15,14 +15,14 @@ module.exports = class HelpCommand extends Command {
     async run({ message, args, server }, t) {
 
         if (args[0]) {
-            return getCMD(this.client, message, args[0]);
+            return getCMD(this.client, message, args[0], t);
         } else {
-            return getAll(this.client, message);
+            return getAll(this.client, message, t);
         }
     }
 }
 
-function getAll(client, message) {
+function getAll(client, message, t) {
 
     const embed = new MessageEmbed()
     embed.setColor('#b880e6')
@@ -53,7 +53,7 @@ function getCommmandSize(category, client) {
     return client.commands.filter(c => c.config.category === category).size
 }
 
-function getCMD(client, message, input) {
+function getCMD(client, message, input, t) {
     const embed = new MessageEmbed()
 
     const cmd = client.commands.get(input.toLowerCase()) || client.commands.get(client.aliases.get(input.toLowerCase()));
