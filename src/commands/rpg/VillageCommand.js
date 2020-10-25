@@ -423,21 +423,21 @@ module.exports = class VillageCommand extends Command {
                 } else quantidade = parseInt(input.replace(/\D+/g, ''));
 
                 if (quantidade < 1) return message.menheraReply("error", t("commands:village.invalid-quantity"))
-                if (quantidade > contado[parseInt(args[0]) - 1].amount) return message.menheraReply("error", `${t("commands:village.guilda.poor")} ${quantidade} ${contado[parseInt(args[0]) - 1].name}`);
+                if (quantidade > contado[parseInt(args[0])].amount) return message.menheraReply("error", `${t("commands:village.guilda.poor")} ${quantidade} ${contado[parseInt(args[0])].name}`);
 
-                let filter = allLoots.filter(f => f.name === contado[parseInt(args[0]) - 1].name)
+                let filter = allLoots.filter(f => f.name === contado[parseInt(args[0])].name)
                 let valor = parseInt(quantidade) * parseInt(filter[0].value)
                 if (isNaN(valor)) return message.menheraReply("error", t("commands:village.guilda.unespected-error"))
 
                 user.money = user.money + parseInt(valor)
                 for (let j = 0; j < quantidade; j++) {
                     user.loots.splice(user.loots.findIndex(function (i) {
-                        return i.name === contado[parseInt(args[0]) - 1].name;
+                        return i.name === contado[parseInt(args[0])].name;
                     }), 1);
                 }
 
                 user.save()
-                message.menheraReply("success", t("commands:village.guilda.sold", { quantity: quantidade, name: contado[parseInt(args[0]) - 1].name, value: valor }))
+                message.menheraReply("success", t("commands:village.guilda.sold", { quantity: quantidade, name: contado[parseInt(args[0])].name, value: valor }))
             }
         })
     }
