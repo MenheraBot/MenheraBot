@@ -364,14 +364,14 @@ module.exports = class VillageCommand extends Command {
             .setColor('#98b849')
             .setFooter(t("commands:village.guilda.footer"))
 
-        let number = 0;
+        let number = 1;
 
         let contado = countItems(nameLoots)
 
         contado.forEach(i => {
             let filter = allLoots.filter(f => f.name === i.name)
-            number++;
             txt += `---------------**[ ${number} ]**---------------\n<:Chest:760957557538947133> | **${i.name}** ( ${i.amount} )\n💎 | **${t("commands:village.guilda.value")}:** ${filter[0].value}\n`
+            number++;
         })
 
         let texto = (txt.length > 1800) ? `${txt.slice(0, 1800)}...` : txt;
