@@ -27,7 +27,7 @@ Menhera has an RPG in the medieval style, which offers:
 
 ### Lot of Commands
 
-She has many features, with ** 7 categories of commands **:
+She has many features, with **7 categories of commands**:
 
 *   👩‍💼 **Actions**: `Slap`, `Kiss`, `Suck`, `Kill`, `Sleep` and **much** more! 
 *   👻 **Fun**: `8ball`, `marry`, `hunt`, `xandão`, and **much** more!
