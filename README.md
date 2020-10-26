@@ -6,7 +6,7 @@
 [![](https://top.gg/api/widget/servers/708014856711962654.svg)](https://discord.gg/fZMdQbA)
 [![](https://top.gg/api/widget/upvotes/708014856711962654.svg)](https://top.gg/bot/708014856711962654/vote)
 
-> Menhera está animando mais de 600 servidores com suas funcionalidades
+> Menhera is animating more than 800 servers with her functionalities
 
 MenheraBot is an open source Discord bot made in JavaScript with [Discord.js](https://discord.js.org) [Luxanna](https://github.com/ySnoopyDogy) 
 Feel free to add a star ⭐ to the repository to promote the project!
@@ -17,54 +17,54 @@ Feel free to add a star ⭐ to the repository to promote the project!
 
 Menhera can be used in brazilian portuguese or english
 
-### Bot de RPG
+### RPG Bot
 
-A Menhera possui um RPG no estilo medieval, que disponibiliza:
-* 💰 Economia Global
-* 🧟 Aventuras contra monstros em Dungeons
-* ✨ Mais de 8 classes diferentes com 5 habilidades cada
-* 🏆 Rank Global de Jogadores 
+Menhera has an RPG in the medieval style, which offers:
+* 💰 Global Economy
+* 🧟 Adventures against monsters in Dungeons
+* ✨ More than 8 different classes with 5 skills
+* 🏆 Global Player Rank
 
-### Muitos Comandos
+### Lot of Commands
 
-Ela possui muitas features, com  **7 categorías de comandos**:
+She has many features, with ** 7 categories of commands **:
 
-*   👩‍💼 **Ações**: `bater`, `beijar`, `mamar`, `matar`, `dormir` e **muito** mais! 
-*   👻 **Diversão**: `8ball`, `casar`, `caçar`, `xandão`, e **muito** mais!
-*   💰 **Economia**: `give`, `loja` e `carteira`
-*   🎉 **Informativo**: `avatar`, `cor`, `perfil`, `top` e `atualizações`
-*   🚓 **Moderação**: `bloquear`, `prefixo`, `avisar`, `avisos` e **muito** mais! 
-*   👑 **RPG**: `infohabilidades`, `dungeon`, `inventário`, `registrar`, `status`, `usar`, `vila`
-*   🖨️ **Útil**: `AFK`, `ajuda`, `say`, `ping`, `sobremim`, `botinfo`, `bug` e **muito** mais!
+*   👩‍💼 **Actions**: `Slap`, `Kiss`, `Suck`, `Kill`, `Sleep` and **much** more! 
+*   👻 **Fun**: `8ball`, `marry`, `hunt`, `xandão`, and **much** more!
+*   💰 **Economy**: `Give`, `Shop`, `Wallet` and `Coinflip`
+*   🎉 **Info**: `Avatar`, `Color`, `Profile`, `Top` and `Updates`
+*   🚓 **Moderation**: `Blockchannel`, `Prefix`, `Warn`, `Language` and **much** more! 
+*   👑 **RPG**: `Abilitiinfo`, `Dungeon`, `Inventory`, `Boss` and **much** more!
+*   🖨️ **Util**: `AFK`, `Help`, `Say`, `Ping`, `Aboutme`, `Botinfo`, `Bug` and **much** more!
 
-## Você pode ajudar em meu desenvolvimento
+## You can help in my development
 
- Sou criada em JavaScript com a API do [discord.js](https://discord.js.org), pull requests são sempre bem-vindas
+ I am created in JavaScript with the [discord.js](https://discord.js.org) API, pull requests are always welcome
 
-## Suporte
+## Support
 
-Você pode entrar em meu [servidor de suporte](https://discord.gg/fZMdQbA) para mais ajudar. E não se esqueça de me ajudar votando em mim
+You can enter my [support server](https://discord.gg/fZMdQbA) to help further. And don't forget to help me by voting for me
  ![MenheraWidget](https://top.gg/api/widget/708014856711962654.svg?usernamecolor=FFFFFF&topcolor=000000)
 
  ## Self-host
- Você pode baixar os arquivos da Menhera para hospedá-la em seu próprio bot! Mas para isso precisamos ter alguns cuidados!
- A Menhera utiliza [node.js](https://nodejs.org), você deve tê-lo em sua máquina antes de tudo!
- Ela também possui um arquivo de configuração, que deve estar junto do arquivo **index.js**, e deve se chamar **config.json**
- O modelo da config.json é o seguinte:
+ You can download the files from Menhera to host it in your own bot! But for that we need to be careful!
+ Menhera uses [node.js](https://nodejs.org), you must have it on your machine first of all!
+ It also has a configuration file, which must be attached to the file **index.js**, and should be called **config.json**
+ The model of config.json is as follows:
  ```json
- "prefix": "coloque o prefixo aqui",
- "token": "coloque o token do seu bot",
- "owner": ["ids dos donos"],
- "uri": "url da database",
- "dbt": "token da top.gg"
+ "prefix": "m!", //Put your bot prefix here
+ "token": "super_secret_token_owo", //Put your Discord Bot token here
+ "owner": ["15465165651052"], //Put every owner of the bot here, separated with commas
+ "uri": "https://akjsdnsandsanjdnsadj", //MongoDB conection url
+ "dbt": "Top.ggToken_uwu" //Top.gg API token
  ``` 
 
-* O token de seu bot você consegue no [site da discord](https://discord.com/developers)    
-* O url de acesso da DataBase você consegue no [site do MongoDB](https://cloud.mongodb.com/)
-* Para seu token da top.gg, primeiro seu bot necessita estar na [top.gg](https://top.gg/)
+* Your bot's token you can get on [Discords's Site](https://discord.com/developers)    
+* You can access the DataBase url on [MongoDB's Site](https://cloud.mongodb.com/)
+* For your top.gg token, first your bot needs to be in [top.gg](https://top.gg/)
 
-É isto, com esse arquivo de configuração, você já deve estar apto para hospedar seu bot com o código da menhera
-> Incrível, não é?
+That's it! With this configuration file, you should already be able to host your bot with the Menhera's code
+> Amazing, isn't it?
 
 ## Links
 
@@ -74,7 +74,5 @@ Você pode entrar em meu [servidor de suporte](https://discord.gg/fZMdQbA) para 
 
 ## Source
 
-Menhera utiliza a licensa AGPL-3.0. Veja o arquivo `LICENSE` para mais informações!
-Made by [Luxanna](https://github.com/ySnoopyDogy)
-
-
+Menhera uses the AGPL-3.0 license. See the `LICENSE` file for more information!
+Made with ❤️ by [Luxanna](https://github.com/ySnoopyDogy)
