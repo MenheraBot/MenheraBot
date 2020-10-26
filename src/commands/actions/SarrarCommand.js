@@ -41,7 +41,7 @@ module.exports = class SarrarCommand extends Command {
           sarrada(message, user, t);
         });
       });
-    } else return sarrada(message, message.mentions.users.first());
+    } else return sarrada(message, message.mentions.users.first(), t);
   }
 }
 
