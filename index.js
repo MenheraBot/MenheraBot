@@ -12,4 +12,4 @@ client.loadLocales()
 client.loadCommands("./src/commands")
 client.loadEvents("./src/events")
 
-client.login(config.testToken).catch((e) => console.log(`[FATALERROR] Failure connecting to Discord! ${e.message}!`))
+client.login(config.token).catch((e) => console.log(`[FATALERROR] Failure connecting to Discord! ${e.message}!`))
