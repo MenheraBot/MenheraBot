@@ -26,7 +26,7 @@ module.exports = class GiveCommand extends Command {
         },
         {
             opção: "semideuses",
-            arguments: ["semideuses", "semideus", "semi-deuses", "sd", "semi-deus", "demigods", "dg"]
+            arguments: ["semideuses", "semideus", "semi-deuses", "sd", "semi-deus", "demigods", "dg", "demigod"]
         },
         {
             opção: "deus",

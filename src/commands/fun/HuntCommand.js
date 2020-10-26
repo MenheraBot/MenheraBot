@@ -26,7 +26,7 @@ module.exports = class HuntCommand extends Command {
         },
         {
             opção: "semideuses",
-            arguments: ["semideuses", "semideus", "semi-deuses", "sd", "semi-deus"]
+            arguments: ["semideuses", "semideus", "semi-deuses", "sd", "semi-deus", "demigods", "dg", "demigod"]
         },
         {
             opção: "deus",
