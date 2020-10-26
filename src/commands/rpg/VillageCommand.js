@@ -293,7 +293,7 @@ module.exports = class VillageCommand extends Command {
                 value: `⌛ | ${t("commands:village.hotel.fields.value", { time: 2, life: 40, mana: 30 })}`
             },
             {
-                name: `2 - ${t("commands:village.hotel.fields.two")}`,
+                name: `2 - ${t("commands:village.hotel.fields.name_two")}`,
                 value: `⌛ | ${t("commands:village.hotel.fields.value", { time: "3,5", life: "MAX", mana: 0 })}`
             },
             {
