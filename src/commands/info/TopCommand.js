@@ -14,7 +14,7 @@ module.exports = class TopCommand extends Command {
 
         const prefix = server.prefix
 
-        const txt = t("commands:top.txt", {prefix})
+        const txt = t("commands:top.txt", { prefix })
 
         const argumento = args[0];
         if (!argumento) return message.reply(txt)
@@ -23,8 +23,8 @@ module.exports = class TopCommand extends Command {
         let argsAnjos = ["anjos", "angels"]
         let argsSemideuses = ["semideuses", "semi-deuses", "sd", "demigods", "dg"];
         let argsDeuses = ["deuses", "gods"]
-        let argsMamou = ["mamou", "mamadores","suckers"];
-        let argsMamados = ["mamados", "chupados","suckled"];
+        let argsMamou = ["mamou", "mamadores", "suckers"];
+        let argsMamados = ["mamados", "chupados", "suckled"];
         let argsEstrelinhas = ["estrelinhas", "estrelinha", "stars", "star"];
         let argsVotos = ["votadores", "voto", "votes", "votos", "upvotes", "upvote", "vote"];
         let argsDungeon = ["dungeon", "rpg"]
@@ -49,12 +49,12 @@ module.exports = class TopCommand extends Command {
         } else if (argsDungeon.includes(argumento)) {
             this.topDungeon(this.client, message, t)
         } else if (argsFamilias.includes(argumento)) {
-            this.topFamilia(this.client, message, t)
+            this.topFamilia(message, t)
         } else message.menheraReply("warn", t("commands:top.txt"))
 
     }
 
-    topMamados(client, message, t) {
+    async topMamados(client, message, t) {
 
         let embed = new MessageEmbed()
 
@@ -67,11 +67,11 @@ module.exports = class TopCommand extends Command {
                 mamadas: -1
             }
         },
-            function (err, res) {
+            async function (err, res) {
                 if (err) console.log(err)
 
                 for (var i = 0; i < res.length; i++) {
-                    let member = client.users.cache.get(res[i].id);
+                    let member = await client.shardManager.getUsers(res[i].id);
                     if (!member) {
                         embed.addField(`**${i + 1} -** ${res[i].nome}`, `Mamado: **${res[i].mamadas}**`, false)
                     } else {
@@ -82,7 +82,7 @@ module.exports = class TopCommand extends Command {
             })
     }
 
-    topMamadores(client, message, t) {
+    async topMamadores(client, message, t) {
 
         let embed = new MessageEmbed()
 
@@ -96,11 +96,11 @@ module.exports = class TopCommand extends Command {
                 mamou: -1
             }
         },
-            function (err, res) {
+            async function (err, res) {
                 if (err) console.log(err)
 
                 for (var i = 0; i < res.length; i++) {
-                    let member = client.users.cache.get(res[i].id);
+                    let member = await client.shardManager.getUsers(res[i].id);
                     if (!member) {
                         embed.addField(`**${i + 1} -** ${res[i].nome}`, `Mamou: **${res[i].mamou}**`, false)
                     } else {
@@ -111,7 +111,7 @@ module.exports = class TopCommand extends Command {
             })
     }
 
-    topDemonios(client, message, t) {
+    async topDemonios(client, message, t) {
 
         let embed = new MessageEmbed()
 
@@ -125,11 +125,11 @@ module.exports = class TopCommand extends Command {
                 caçados: -1
             }
         },
-            function (err, res) {
+            async function (err, res) {
                 if (err) console.log(err)
 
                 for (var i = 0; i < res.length; i++) {
-                    let member = client.users.cache.get(res[i].id);
+                    let member = await client.shardManager.getUsers(res[i].id);
                     if (!member) {
                         embed.addField(`**${i + 1} -** ${res[i].nome}`, `Demônios: **${res[i].caçados}**`, false)
                     } else {
@@ -140,7 +140,7 @@ module.exports = class TopCommand extends Command {
             })
     }
 
-    topAnjos(client, message, t) {
+    async topAnjos(client, message, t) {
 
         let embed = new MessageEmbed()
 
@@ -154,11 +154,11 @@ module.exports = class TopCommand extends Command {
                 anjos: -1
             }
         },
-            function (err, res) {
+            async function (err, res) {
                 if (err) console.log(err)
 
                 for (var i = 0; i < res.length; i++) {
-                    let member = client.users.cache.get(res[i].id);
+                    let member = await client.shardManager.getUsers(res[i].id);
                     if (!member) {
                         embed.addField(`**${i + 1} -** ${res[i].nome}`, `Anjos: **${res[i].anjos}**`, false)
                     } else {
@@ -169,7 +169,7 @@ module.exports = class TopCommand extends Command {
             })
     }
 
-    topSD(client, message, t) {
+    async topSD(client, message, t) {
 
         let embed = new MessageEmbed()
 
@@ -183,11 +183,11 @@ module.exports = class TopCommand extends Command {
                 semideuses: -1
             }
         },
-            function (err, res) {
+            async function (err, res) {
                 if (err) console.log(err)
 
                 for (var i = 0; i < res.length; i++) {
-                    let member = client.users.cache.get(res[i].id);
+                    let member = await client.shardManager.getUsers(res[i].id);
                     if (!member) {
                         embed.addField(`**${i + 1} -** ${res[i].nome}`, `Semideuses: **${res[i].semideuses}**`, false)
                     } else {
@@ -198,7 +198,7 @@ module.exports = class TopCommand extends Command {
             })
     }
 
-    topDeuses(client, message, t) {
+    async topDeuses(client, message, t) {
 
         let embed = new MessageEmbed()
 
@@ -212,11 +212,11 @@ module.exports = class TopCommand extends Command {
                 deuses: -1
             }
         },
-            function (err, res) {
+            async function (err, res) {
                 if (err) console.log(err)
 
                 for (var i = 0; i < res.length; i++) {
-                    let member = client.users.cache.get(res[i].id);
+                    let member = await client.shardManager.getUsers(res[i].id);
                     if (!member) {
                         embed.addField(`**${i + 1} -** ${res[i].nome}`, `Deuses: **${res[i].deuses}**`, false)
                     } else {
@@ -227,7 +227,7 @@ module.exports = class TopCommand extends Command {
             })
     }
 
-    topEstrelinhas(client, message, t) {
+    async topEstrelinhas(client, message, t) {
 
         let embed = new MessageEmbed()
 
@@ -241,11 +241,11 @@ module.exports = class TopCommand extends Command {
                 estrelinhas: -1
             }
         },
-            function (err, res) {
+            async function (err, res) {
                 if (err) console.log(err)
 
                 for (var i = 0; i < res.length; i++) {
-                    let member = client.users.cache.get(res[i].id)
+                    let member = await client.shardManager.getUsers(res[i].id);
                     if (!member) {
                         embed.addField(`**${i + 1} -** ${res[i].nome}`, `Estrelinhas: **${res[i].estrelinhas}**`, false)
                     } else {
@@ -257,7 +257,7 @@ module.exports = class TopCommand extends Command {
             })
     }
 
-    topVotos(client, message, t) {
+    async topVotos(client, message, t) {
         let embed = new MessageEmbed()
 
             .setTitle(`<:ok:727975974125436959> |  ${t("commands:top.voteTitle")}`)
@@ -270,11 +270,11 @@ module.exports = class TopCommand extends Command {
                 votos: -1
             }
         },
-            function (err, res) {
+            async function (err, res) {
                 if (err) console.log(err)
 
                 for (var i = 0; i < res.length; i++) {
-                    let member = client.users.cache.get(res[i].id)
+                    let member = await client.shardManager.getUsers(res[i].id);
                     if (!member) {
                         embed.addField(`**${i + 1} -** ${res[i].nome}`, `Upvotes: **${res[i].votos}**`, false)
                     } else {
@@ -286,7 +286,7 @@ module.exports = class TopCommand extends Command {
             })
     }
 
-    topDungeon(client, message, t) {
+    async topDungeon(client, message, t) {
         let embed = new MessageEmbed()
 
             .setTitle(`<:Chest:760957557538947133> | ${t("commands:top.rpgTitle")}`)
@@ -300,11 +300,11 @@ module.exports = class TopCommand extends Command {
                 xp: -1
             }
         },
-            function (err, res) {
+            async function (err, res) {
                 if (err) console.log(err)
 
                 for (var i = 0; i < res.length; i++) {
-                    let member = client.users.cache.get(res[i]._id)
+                    let member = await client.shardManager.getUsers(res[i].id);
                     if (!member) {
                         embed.addField(`**${i + 1} -** \`USER NOT FOUND\``, `Level: **${res[i].level}**\nXp: **${res[i].xp}**`, false)
                     } else {
@@ -316,7 +316,7 @@ module.exports = class TopCommand extends Command {
             })
     }
 
-    topFamilia(client, message, t) {
+    async topFamilia(message, t) {
         let embed = new MessageEmbed()
 
             .setTitle(`🔱 | ${t("commands:top.familyTitle")}`)
@@ -330,7 +330,7 @@ module.exports = class TopCommand extends Command {
                 bank: -1
             }
         },
-            function (err, res) {
+            async function (err, res) {
                 if (err) console.log(err)
 
                 res.sort((a, b) => parseInt(b.bank) - parseInt(a.bank));
