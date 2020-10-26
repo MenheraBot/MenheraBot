@@ -1,15 +1,17 @@
 require('./src/structures/ProtoTypes').start()
 const Client = require('./src/MenheraClient')
-const ShardManager = require('./src/structures/ShardManager')
+/* const ShardManager = require('./src/structures/ShardManager') */
 const config = require('./config.json')
-const client = new Client({ disableMentions: "everyone", fetchAllMembers: false })
+const client = new Client({ disableMentions: "everyone", fetchAllMembers: true })
 
 
-if (client.shard) client.shardManager = new ShardManager(client)
+/* if (client.shard) client.shardManager = new ShardManager(client) */
 
 client.sentryInit()
 client.loadLocales()
 client.loadCommands("./src/commands")
 client.loadEvents("./src/events")
 
-client.login(config.token).catch((e) => console.log(`[FATALERROR] Failure connecting to Discord! ${e.message}!`))
+client.login(config.token).then(() => {
+    console.log("[INDEX] Logged in")
+}).catch((e) => console.log(`[FATALERROR] Failure connecting to Discord! ${e.message}!`))

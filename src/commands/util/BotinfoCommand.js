@@ -29,17 +29,17 @@ module.exports = class BotinfoCommand extends Command {
             }))
             .addFields([{
                 name: "🌐 | Servers",
-                value: await this.client.shardManager.getAllSizeObject("guilds"),
+                value: `${this.client.guilds.cache.size} `,
                 inline: true
             },
             {
                 name: `🗄️ | ${t("commands:botinfo.channels")}`,
-                value: await this.client.shardManager.getAllSizeObject("channels"),
+                value: this.client.channels.cache.size,
                 inline: true
             },
             {
                 name: `📊 | ${t("commands:botinfo.users")}`,
-                value: await this.client.shardManager.getAllSizeObject("users"),
+                value: this.client.users.cache.size,
                 inline: true
             },
             {

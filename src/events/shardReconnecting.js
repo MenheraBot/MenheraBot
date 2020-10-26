@@ -1,4 +1,4 @@
-module.exports = class ShardReconnectReceive {
+/* module.exports = class ShardReconnectReceive {
     constructor(client) {
         this.client = client
     }
@@ -6,4 +6,4 @@ module.exports = class ShardReconnectReceive {
     run(shard) {
         console.log(`[SHARDING MANAGER] Relaunching shard ${shard}...`)
     }
-}
+} */

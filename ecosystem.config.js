@@ -1,7 +1,7 @@
 module.exports = {
     apps: [{
         name: "Menhera",
-        script: "./shard.js",
+        script: "./index.js",
         watch: false,
         max_memory_restart: "768M",
         error_file: './logs/err.log',
