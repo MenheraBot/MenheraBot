@@ -57,7 +57,7 @@
         "embed_title": "MEDO",
         "embed_description": "esta com medo de"
     },
-    "grumbe": {
+    "grumble": {
         "description": "Resmungue humpf",
         "embed_title": "Humpf",
         "embed_description": "está resmungando"
@@ -410,7 +410,7 @@
         "mamou": "Mamou",
         "mamado": "Mamado",
         "married-with": "Casado com",
-        "married-in": "Casadps em",
+        "married-in": "Casados em",
         "about-me": "Sobre Mim"
     },
     "top": {

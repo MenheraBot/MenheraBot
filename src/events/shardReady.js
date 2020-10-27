@@ -5,6 +5,6 @@ module.exports = class ShardReadyReceive {
     }
 
     run(shard) {
-        console.log(`[SHARDING MANAGER] Shard ${shard} successfully launched and connected.`)
+        //console.log(`[SHARDING MANAGER] Shard ${shard} successfully launched and connected.`)
     }
 }
