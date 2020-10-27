@@ -23,7 +23,7 @@ module.exports = class BotinfoCommand extends Command {
             .setColor('#fa8dd7')
             .setThumbnail("https://i.imgur.com/b5y0nd4.png")
             .setDescription(t("commands:botinfo.embed_description", {name: this.client.user.username, createdAt: moment.utc(this.client.user.createdAt).format("LLLL"), joinedAt: moment.utc(message.guild.me.joinedAt).format("LLLL")}))
-            .setFooter(`${this.client.user.username} ${t("commands:botinfo.footer")} ${owner.tag}`, owner.displayAvatarURL({
+            .setFooter(`${this.client.user.username} ${t("commands:botinfo.embed_footer")} ${owner.tag}`, owner.displayAvatarURL({
                 format: "png",
                 dynamic: true
             }))
