@@ -67,11 +67,11 @@ module.exports = class TopCommand extends Command {
                 mamadas: -1
             }
         },
-            function (err, res) {
+            async function (err, res) {
                 if (err) console.log(err)
 
                 for (var i = 0; i < res.length; i++) {
-                    let member = client.users.cache.get(res[i].id);
+                    let member = await client.users.fetch(res[i].id).catch()
                     if (!member) {
                         embed.addField(`**${i + 1} -** ${res[i].nome}`, `Mamado: **${res[i].mamadas}**`, false)
                     } else {
@@ -96,11 +96,11 @@ module.exports = class TopCommand extends Command {
                 mamou: -1
             }
         },
-            function (err, res) {
+            async function (err, res) {
                 if (err) console.log(err)
 
                 for (var i = 0; i < res.length; i++) {
-                    let member = client.users.cache.get(res[i].id);
+                    let member = await client.users.fetch(res[i].id).catch()
                     if (!member) {
                         embed.addField(`**${i + 1} -** ${res[i].nome}`, `Mamou: **${res[i].mamou}**`, false)
                     } else {
@@ -125,11 +125,11 @@ module.exports = class TopCommand extends Command {
                 caçados: -1
             }
         },
-            function (err, res) {
+            async function (err, res) {
                 if (err) console.log(err)
 
                 for (var i = 0; i < res.length; i++) {
-                    let member = client.users.cache.get(res[i].id);
+                    let member = await client.users.fetch(res[i].id).catch()
                     if (!member) {
                         embed.addField(`**${i + 1} -** ${res[i].nome}`, `Demônios: **${res[i].caçados}**`, false)
                     } else {
@@ -154,11 +154,11 @@ module.exports = class TopCommand extends Command {
                 anjos: -1
             }
         },
-            function (err, res) {
+           async  function (err, res) {
                 if (err) console.log(err)
 
                 for (var i = 0; i < res.length; i++) {
-                    let member = client.users.cache.get(res[i].id);
+                    let member = await client.users.fetch(res[i].id).catch()
                     if (!member) {
                         embed.addField(`**${i + 1} -** ${res[i].nome}`, `Anjos: **${res[i].anjos}**`, false)
                     } else {
@@ -183,11 +183,11 @@ module.exports = class TopCommand extends Command {
                 semideuses: -1
             }
         },
-            function (err, res) {
+            async function (err, res) {
                 if (err) console.log(err)
 
                 for (var i = 0; i < res.length; i++) {
-                    let member = client.users.cache.get(res[i].id);
+                    let member = await client.users.fetch(res[i].id).catch()
                     if (!member) {
                         embed.addField(`**${i + 1} -** ${res[i].nome}`, `Semideuses: **${res[i].semideuses}**`, false)
                     } else {
@@ -212,11 +212,11 @@ module.exports = class TopCommand extends Command {
                 deuses: -1
             }
         },
-            function (err, res) {
+           async  function (err, res) {
                 if (err) console.log(err)
 
                 for (var i = 0; i < res.length; i++) {
-                    let member = client.users.cache.get(res[i].id);
+                    let member = await client.users.fetch(res[i].id).catch()
                     if (!member) {
                         embed.addField(`**${i + 1} -** ${res[i].nome}`, `Deuses: **${res[i].deuses}**`, false)
                     } else {
@@ -241,11 +241,11 @@ module.exports = class TopCommand extends Command {
                 estrelinhas: -1
             }
         },
-            function (err, res) {
+           async function (err, res) {
                 if (err) console.log(err)
 
                 for (var i = 0; i < res.length; i++) {
-                    let member = client.users.cache.get(res[i].id)
+                    let member = await client.users.fetch(res[i].id).catch()
                     if (!member) {
                         embed.addField(`**${i + 1} -** ${res[i].nome}`, `Estrelinhas: **${res[i].estrelinhas}**`, false)
                     } else {
@@ -270,11 +270,11 @@ module.exports = class TopCommand extends Command {
                 votos: -1
             }
         },
-            function (err, res) {
+            async function (err, res) {
                 if (err) console.log(err)
 
                 for (var i = 0; i < res.length; i++) {
-                    let member = client.users.cache.get(res[i].id)
+                    let member = await client.users.fetch(res[i].id).catch()
                     if (!member) {
                         embed.addField(`**${i + 1} -** ${res[i].nome}`, `Upvotes: **${res[i].votos}**`, false)
                     } else {
@@ -300,11 +300,11 @@ module.exports = class TopCommand extends Command {
                 xp: -1
             }
         },
-            function (err, res) {
+           async  function (err, res) {
                 if (err) console.log(err)
 
                 for (var i = 0; i < res.length; i++) {
-                    let member = client.users.cache.get(res[i]._id)
+                    let member = await client.users.fetch(res[i].id).catch()
                     if (!member) {
                         embed.addField(`**${i + 1} -** \`USER NOT FOUND\``, `Level: **${res[i].level}**\nXp: **${res[i].xp}**`, false)
                     } else {

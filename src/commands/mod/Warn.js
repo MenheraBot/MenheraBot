@@ -12,7 +12,15 @@ module.exports = class WarnCommand extends Command {
     }
     async run({ message, args, server }, t) {
 
-        const user = message.mentions.users.first() || this.client.users.cache.get(args[0]);
+        if (!args[0]) return message.menheraReply("error", t("commands:warn.no-mention"))
+
+        let user;
+        try {
+            user = await this.client.users.fetch(args[0].replace(/[<@!>]/g, ""))
+        } catch {
+            return message.menheraReply("error", t("commands:warn.no-mention"))
+        }
+
         if (!user) return message.menheraReply("error", t("commands:warn.no-mention"))
         if (user.bot) return message.menheraReply("error", t("commands:warn.bot"))
         if (user.id === message.author.id) return message.menheraReply("error", t("commands:warn.self-mention"))

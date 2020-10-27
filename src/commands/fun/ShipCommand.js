@@ -13,8 +13,15 @@ module.exports = class ShipCommand extends Command {
         if (!args[0]) return message.menheraReply("error", t("commands:ship.missing-args"))
         if (!args[1]) return message.menheraReply("error", t("commands:ship.missing-args"))
 
-        let user1 = await this.client.users.cache.get(args[0].replace(/[<@!>]/g, ""))
-        let user2 = await this.client.users.cache.get(args[1].replace(/[<@!>]/g, ""))
+        let user1;
+        let user2;
+
+        try {
+            user1 = await this.client.users.fetch(args[0].replace(/[<@!>]/g, ""))
+            user2 = await this.client.users.fetch(args[1].replace(/[<@!>]/g, ""))
+        } catch {
+            return message.menheraReply("error", t("commands:ship.unknow-user"))
+        }
 
         if (!user1) return message.menheraReply("error", t("commands:ship.no-dbuser"))
         if (!user2) return message.menheraReply("error", t("commands:ship.no-dbuser"))

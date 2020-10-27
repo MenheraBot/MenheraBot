@@ -12,8 +12,16 @@ module.exports = class ProfileCommand extends Command {
     }
     async run({ message, args, server }, t) {
 
-        let pessoa = message.mentions.users.first() || this.client.users.cache.get(args[0]);
-        if (!pessoa) pessoa = message.author;
+        let pessoa
+        if (args[0]) {
+            try{
+            pessoa = await this.client.users.fetch(args[0].replace(/[<@!>]/g, ""))
+            } catch {
+                return message.menheraReply("error", t("commands:profile.unknow-user"))
+            }
+		} else {
+			pessoa = message.author
+        }
 
         if (pessoa.bot) return message.menheraReply("error", t("commands:profile.bot"))
 

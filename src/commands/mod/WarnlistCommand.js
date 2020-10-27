@@ -13,7 +13,15 @@ module.exports = class WarnListCommand extends Command {
     }
     async run({ message, args, server }, t) {
 
-        const user = message.mentions.users.first() || this.client.users.cache.get(args[0]);
+        if (!args[0]) return message.menheraReply("error", t("commands:warnlist.no-mention"))
+
+        let user;
+        try {
+            user = await this.client.users.fetch(args[0].replace(/[<@!>]/g, ""))
+        } catch {
+            return message.menheraReply("error", t("commands:warnlist.no-mention"))
+        }
+
         if (!user) return message.menheraReply("error", t("commands:warnlist.no-mention"))
         if (user.bot) return message.menheraReply("error", t("commands:warnlist.bot"))
         if (!message.guild.members.cache.get(user.id)) returnmessage.menheraReply("error", t("commands:warnlist.invalid-member"))
@@ -59,7 +67,7 @@ module.exports = class WarnListCommand extends Command {
 
             for (var i = 0; i < db.length; i++) {
                 if(embed.fields.length == 24) continue;
-                embed.addField(`${t("commands:warnlist.warn")} #${i + 1}`, `**${t("commands:warnlist.Warned_by")}** ${client.users.cache.get(db[i].warnerId)}\n**${t("commands:warnlist.Reason")}** ${db[i].reason}\n**${t("commands:warnlist.Data")}** ${db[i].data}\n**${t("commands:warnlist.WarnID")}** \`${db[i]._id}\``);
+                embed.addField(`${t("commands:warnlist.warn")} #${i + 1}`, `**${t("commands:warnlist.Warned_by")}** ${client.users.fetch(db[i].warnerId) || `404`}\n**${t("commands:warnlist.Reason")}** ${db[i].reason}\n**${t("commands:warnlist.Data")}** ${db[i].data}\n**${t("commands:warnlist.WarnID")}** \`${db[i]._id}\``);
             }
             embed.setImage(rand);
             //const errorMessage = err.stack.length > 1800 ? `${err.stack.slice(0, 1800)}...` : err.stack;

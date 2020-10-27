@@ -38,11 +38,6 @@ module.exports = class BotinfoCommand extends Command {
                 inline: true
             },
             {
-                name: `📊 | ${t("commands:botinfo.users")} | 📊`,
-                value: `\`\`\`${this.client.users.cache.size}\`\`\``,
-                inline: true
-            },
-            {
                 name: "⏳ | Uptime | ⏳",
                 value: `\`\`\`${moment.duration(this.client.uptime).format("D[d], H[h], m[m], s[s]")}\`\`\``,
                 inline: true

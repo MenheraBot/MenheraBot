@@ -12,8 +12,15 @@ module.exports = class StatusCommand extends Command {
     }
     async run({ message, args, server }, t) {
 
-        let mentioned = message.mentions.users.first() || this.client.users.cache.get(args[0]);
-        if (!mentioned) mentioned = message.author;
+        let mentioned;
+        if (args[0]) {
+            try {
+                mentioned = await this.client.users.fetch(args[0].replace(/[<@!>]/g, ""))
+            } catch {
+                return message.menheraReply("error", t("commands:status.not-found"))
+            }
+        } else mentioned = message.author
+
 
         const user = await this.client.database.Rpg.findById(mentioned.id)
         if (!user) return message.menheraReply("error", t("commands:status.not-found"))
@@ -30,7 +37,7 @@ module.exports = class StatusCommand extends Command {
         }
 
         let embed = new MessageEmbed()
-            .setTitle(`📜 | ${t("commands:status.title", {name: mentioned.username})}`)
+            .setTitle(`📜 | ${t("commands:status.title", { name: mentioned.username })}`)
             .setColor('#f04682')
             .addFields([{
                 name: `🩸 | ${t("commands:status.life")}`,

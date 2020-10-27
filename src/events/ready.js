@@ -20,7 +20,7 @@ module.exports = class ReadyEvent {
           user.rolls = user.rolls + 1
           user.estrelinhas = user.estrelinhas + random;
           user.votos = user.votos + 1;
-          const usuarioDm = await this.client.users.cache.get(vote.user)
+          const usuarioDm = await this.client.users.fetch(vote.user).catch()
           let embed = new MessageEmbed()
             .setTitle("<:God:758474639570894899> | Obrigada por votar em mim")
             .setColor("#fa73e5")
@@ -34,7 +34,7 @@ module.exports = class ReadyEvent {
           }
           user.save()
           if (usuarioDm) {
-            try{
+            try {
               usuarioDm.send(embed)
             } catch {
               // So ignora fodase

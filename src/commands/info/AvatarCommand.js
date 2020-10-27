@@ -11,11 +11,17 @@ module.exports = class AvatarCommand extends Command {
     }
     async run({ message, args, server }, t) {
 
-
-        let user = message.mentions.users.first() || this.client.users.cache.get(args[0]);
-
-        if (!user) user = message.author;
-
+        let user
+		if (args[0]) {
+            try{
+            user = await this.client.users.fetch(args[0].replace(/[<@!>]/g, ""))
+            } catch {
+                return message.menheraReply("error", t("commands:avatar.unknow-user"))
+            }
+		} else {
+			user = message.author
+        }
+        
         let cor;
 
         const db = await this.client.database.Users.findOne({ id: user.id })
