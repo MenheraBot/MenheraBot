@@ -189,7 +189,7 @@ function lojaComprar(message, embedMessage, user, saldoAtual, t) {
                         message.menheraReply("success", t("commands:shop.buy_colors.buy-success", { name: coresDisponíveis[5].nome, price: coresDisponíveis[5].preço, stars: user.estrelinhas })).then(() => embedMessage.delete({ timeout: 500 }).catch())
                         break;
                     case '7':
-                        if (user.cores.some(res => res.nome === coresDisponíveis[6].nome)) return message.menheraReply("yellow_circle", t("commands:shop.buy_colors.has-color")).then(() => embedMessage.delete({ timeout: 500 }).catch())
+                        if (user.cores.some(res => res.nome.startsWith("7"))) return message.menheraReply("yellow_circle", t("commands:shop.buy_colors.has-color")).then(() => embedMessage.delete({ timeout: 500 }).catch())
                         if (user.estrelinhas < coresDisponíveis[6].preço) message.menheraReply("error", t("commands:shop.buy_colors.poor")).then(() => embedMessage.delete({ timeout: 500 }).catch())
 
                         const hexFiltro = m => m.author.id === message.author.id;
