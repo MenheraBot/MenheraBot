@@ -28,33 +28,33 @@ module.exports = class BotinfoCommand extends Command {
                 dynamic: true
             }))
             .addFields([{
-                name: "🌐 | Servers",
-                value: `${this.client.guilds.cache.size} `,
+                name: "🌐 | Servers | 🌐",
+                value: `\`\`\`${this.client.guilds.cache.size}\`\`\``,
                 inline: true
             },
             {
-                name: `🗄️ | ${t("commands:botinfo.channels")}`,
-                value: this.client.channels.cache.size,
+                name: `🗄️ | ${t("commands:botinfo.channels")} | 🗄️`,
+                value: `\`\`\`${this.client.channels.cache.size}\`\`\``,
                 inline: true
             },
             {
-                name: `📊 | ${t("commands:botinfo.users")}`,
-                value: this.client.users.cache.size,
+                name: `📊 | ${t("commands:botinfo.users")} | 📊`,
+                value: `\`\`\`${this.client.users.cache.size}\`\`\``,
                 inline: true
             },
             {
-                name: "⏳ | Uptime",
-                value: moment.duration(this.client.uptime).format("D[d], H[h], m[m], s[s]"),
+                name: "⏳ | Uptime | ⏳",
+                value: `\`\`\`${moment.duration(this.client.uptime).format("D[d], H[h], m[m], s[s]")}\`\`\``,
                 inline: true
             },
             {
-                name: `<:memoryram:762817135394553876> | ${t("commands:botinfo.memory")}`,
-                value: `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)}MB`,
+                name: `<:memoryram:762817135394553876> | ${t("commands:botinfo.memory")} | <:memoryram:762817135394553876>`,
+                value: `\`\`\`${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)}MB\`\`\``,
                 inline: true
             },
             {
-                name: `🇧🇷 | ${t("commands:botinfo.version")}`,
-                value: require("../../../package.json").version,
+                name: `🇧🇷 | ${t("commands:botinfo.version")} | 🇧🇷`,
+                value: `\`\`\`${require("../../../package.json").version}\`\`\``,
                 inline: true
             }
             ])
