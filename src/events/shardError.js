@@ -4,6 +4,6 @@ module.exports = class ShardErrorReceive {
     }
 
     run(err, shard) {
-        console.log(`[SHARDING MANAGER] Error in Shard ${shard}! Error: ${err}`)
+        //console.log(`[SHARDING MANAGER] Error in Shard ${shard}! Error: ${err}`)
     }
 }

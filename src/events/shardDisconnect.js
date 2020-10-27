@@ -4,6 +4,6 @@ module.exports = class ShardDisconnectReceive {
     }
 
     run(shard) {
-        console.log(`[SHARDING MANAGER] Shard ${shard} has disconnected.`)
+       // console.log(`[SHARDING MANAGER] Shard ${shard} has disconnected.`)
     }
 }
