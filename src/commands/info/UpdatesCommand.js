@@ -18,15 +18,17 @@ module.exports = class UpdatesCommand extends Command {
             .setTitle(`${t("commands:updates.title")} ${require("../../../package.json").version}`)
             .setColor('#a7e74f')
             .setFooter(`${this.client.user.username} ${t("commands:updates.footer")} ${owner.tag}`, owner.displayAvatarURL({ format: "png", dynamic: true }))
-            .setDescription(`:map:  **| TRADUÇÃO**
+            .setDescription(`**UPDATES**
 
-            • Terminei de adaptar o código da Menhera para receber a tradução para inglês!
+            • RPG: 
+                   O ferreiro aprendeu a fazer uma nova arma e uma nova armadura!
             
-            Vou lançar o código somente em português para ver todos os erros de digitação e tudo mais
+            • Código-fonte
+                   Devido as mudanças dos intents do Discord, a Menhera não pode mais adicionar ao cache todos os usuários!
+            Isso retira a contagem de usuários dela, mas foi até que bom, ja que com 170k usuários em cache a RAM da Menhera ficava certa de 500MB, e agora, com o cache com menos de 5k users, sempre fazendo uma nova requisição quando precisa acessar um usuário, ela gasta cerca de 100MB de Ram, o que vai melhorar MUITO o desemprenho dela
             
-            • Caso encontre algum erro na tradução, denuncie com #🚨╽bug-report 
-            
-            Um exemplo de problema de tradução é quando um texto aparece tipo assim: \`dataRolls_fields.title\`
+            • API
+                  Implementei um servidor HTTP na Menhera para me ajudar na administração dos processos, como os logs de status (que serão super úteis quando a Menhera necessitar shards...) 
           
   `)
 
