@@ -1,10 +1,14 @@
 {
-    "inicial": [{
-            "loots": [{
-                "name": "Olho de Aranha",
-                "value": 3
-            }],
-            "ataques": [{
+    "inicial": [
+        {
+            "loots": [
+                {
+                    "name": "Olho de Aranha",
+                    "value": 3
+                }
+            ],
+            "ataques": [
+                {
                     "name": "Lançar Teia",
                     "damage": 20
                 },
@@ -21,17 +25,22 @@
             "xp": 10
         },
         {
-            "loots": [{
-                "name": "Pele de Goblin",
-                "value": 3
-            }],
-            "ataques": [{
-                "name": "Facada",
-                "damage": 13
-            }, {
-                "name": "Investida Globlineana",
-                "damage": 17
-            }],
+            "loots": [
+                {
+                    "name": "Pele de Goblin",
+                    "value": 3
+                }
+            ],
+            "ataques": [
+                {
+                    "name": "Facada",
+                    "damage": 13
+                },
+                {
+                    "name": "Investida Globlineana",
+                    "damage": 17
+                }
+            ],
             "type": "inicial",
             "name": "Goblin",
             "life": 35,
@@ -40,11 +49,14 @@
             "xp": 15
         },
         {
-            "loots": [{
-                "name": "Perna de Formiga",
-                "value": 3
-            }],
-            "ataques": [{
+            "loots": [
+                {
+                    "name": "Perna de Formiga",
+                    "value": 3
+                }
+            ],
+            "ataques": [
+                {
                     "name": "Mordida",
                     "damage": 10
                 },
@@ -61,11 +73,14 @@
             "xp": 20
         },
         {
-            "loots": [{
-                "name": "Pele de Lobo",
-                "value": 3
-            }],
-            "ataques": [{
+            "loots": [
+                {
+                    "name": "Pele de Lobo",
+                    "value": 3
+                }
+            ],
+            "ataques": [
+                {
                     "name": "Mordida do Lobo",
                     "damage": 10
                 },
@@ -82,11 +97,14 @@
             "xp": 20
         },
         {
-            "loots": [{
-                "name": "Gosma",
-                "value": 4
-            }],
-            "ataques": [{
+            "loots": [
+                {
+                    "name": "Gosma",
+                    "value": 4
+                }
+            ],
+            "ataques": [
+                {
                     "name": "Mordida Melequenta",
                     "damage": 5
                 },
@@ -103,11 +121,14 @@
             "xp": 15
         },
         {
-            "loots": [{
-                "name": "Carne de zumbi",
-                "value": 3
-            }],
-            "ataques": [{
+            "loots": [
+                {
+                    "name": "Carne de zumbi",
+                    "value": 3
+                }
+            ],
+            "ataques": [
+                {
                     "name": "Mordida Do Zumbi",
                     "damage": 7
                 },
@@ -124,7 +145,8 @@
             "xp": 14
         },
         {
-            "loots": [{
+            "loots": [
+                {
                     "name": "Escamas Frágeis",
                     "value": 7
                 },
@@ -137,7 +159,8 @@
                     "value": 8
                 }
             ],
-            "ataques": [{
+            "ataques": [
+                {
                     "name": "Cuspida Fumegante",
                     "damage": 20
                 },
@@ -160,7 +183,8 @@
             "damage": "12 - 15",
             "armor": 12,
             "xp": 39,
-            "loots": [{
+            "loots": [
+                {
                     "name": "Ferrão",
                     "value": 3
                 },
@@ -169,7 +193,8 @@
                     "value": 2
                 }
             ],
-            "ataques": [{
+            "ataques": [
+                {
                     "name": "Ferroada Venenosa",
                     "damage": 12
                 },
@@ -180,8 +205,10 @@
             ]
         }
     ],
-    "medio": [{
-            "loots": [{
+    "medio": [
+        {
+            "loots": [
+                {
                     "name": "Pele grudenta",
                     "value": 18
                 },
@@ -194,7 +221,8 @@
                     "value": 16
                 }
             ],
-            "ataques": [{
+            "ataques": [
+                {
                     "name": "Mordida Amedrontadora",
                     "damage": 31
                 },
@@ -215,7 +243,8 @@
             "xp": 130
         },
         {
-            "loots": [{
+            "loots": [
+                {
                     "name": "Verruga fedida",
                     "value": 11
                 },
@@ -232,7 +261,8 @@
                     "value": 5
                 }
             ],
-            "ataques": [{
+            "ataques": [
+                {
                     "name": "Poção Venenosa",
                     "damage": 37
                 },
@@ -253,11 +283,14 @@
             "xp": 112
         },
         {
-            "loots": [{
-                "name": "Crânio desconhecido",
-                "value": 15
-            }],
-            "ataques": [{
+            "loots": [
+                {
+                    "name": "Crânio desconhecido",
+                    "value": 15
+                }
+            ],
+            "ataques": [
+                {
                     "name": "Batida de Cabeça",
                     "damage": 34
                 },
@@ -274,7 +307,8 @@
             "xp": 70
         },
         {
-            "loots": [{
+            "loots": [
+                {
                     "name": "Dente de Vampiro",
                     "value": 23
                 },
@@ -283,7 +317,8 @@
                     "value": 18
                 }
             ],
-            "ataques": [{
+            "ataques": [
+                {
                     "name": "Mordida Jugularística",
                     "damage": 37
                 },
@@ -300,7 +335,8 @@
             "xp": 130
         },
         {
-            "loots": [{
+            "loots": [
+                {
                     "name": "Cabeça do Goblin Xamã",
                     "value": 29
                 },
@@ -313,7 +349,8 @@
                     "value": 10
                 }
             ],
-            "ataques": [{
+            "ataques": [
+                {
                     "name": "Invocar Goblins",
                     "damage": 55
                 },
@@ -334,7 +371,8 @@
             "xp": 258
         },
         {
-            "loots": [{
+            "loots": [
+                {
                     "name": "Varinha desconhecida",
                     "value": 25
                 },
@@ -347,7 +385,8 @@
                     "value": 20
                 }
             ],
-            "ataques": [{
+            "ataques": [
+                {
                     "name": "Buraco Negro Elementar",
                     "damage": 57
                 },
@@ -368,7 +407,8 @@
             "xp": 300
         },
         {
-            "loots": [{
+            "loots": [
+                {
                     "name": "Metal Enferrujado",
                     "value": 15
                 },
@@ -377,7 +417,8 @@
                     "value": 20
                 }
             ],
-            "ataques": [{
+            "ataques": [
+                {
                     "name": "Soco",
                     "damage": 34
                 },
@@ -394,8 +435,10 @@
             "xp": 280
         }
     ],
-    "hard": [{
-            "loots": [{
+    "hard": [
+        {
+            "loots": [
+                {
                     "name": "Escama",
                     "value": 57
                 },
@@ -408,7 +451,8 @@
                     "value": 65
                 }
             ],
-            "ataques": [{
+            "ataques": [
+                {
                     "name": "Mordida Venenosa",
                     "damage": 53
                 },
@@ -425,7 +469,8 @@
             "xp": 3500
         },
         {
-            "loots": [{
+            "loots": [
+                {
                     "name": "Pele de Lobisomem",
                     "value": 68
                 },
@@ -434,10 +479,12 @@
                     "value": 60
                 }
             ],
-            "ataques": [{
+            "ataques": [
+                {
                     "name": "Ferocidade",
                     "damage": 50
-                }, {
+                },
+                {
                     "name": "Garradas!",
                     "damage": 53
                 },
@@ -454,7 +501,8 @@
             "xp": 3400
         },
         {
-            "loots": [{
+            "loots": [
+                {
                     "name": "Cabeça de Minotauro",
                     "value": 70
                 },
@@ -463,7 +511,8 @@
                     "value": 57
                 }
             ],
-            "ataques": [{
+            "ataques": [
+                {
                     "name": "Investida",
                     "damage": 60
                 },
@@ -484,7 +533,8 @@
             "xp": 8400
         },
         {
-            "loots": [{
+            "loots": [
+                {
                     "name": "Cabeça da Medusa",
                     "value": 64
                 },
@@ -501,10 +551,12 @@
                     "value": 57
                 }
             ],
-            "ataques": [{
+            "ataques": [
+                {
                     "name": "Petrificar",
                     "damage": 68
-                }, {
+                },
+                {
                     "name": "Miasma",
                     "damage": 70
                 },
@@ -521,7 +573,8 @@
             "xp": 5809
         },
         {
-            "loots": [{
+            "loots": [
+                {
                     "name": "Cabeça do Goblin Campeão",
                     "value": 50
                 },
@@ -538,7 +591,8 @@
                     "value": 90
                 }
             ],
-            "ataques": [{
+            "ataques": [
+                {
                     "name": "Show Time",
                     "damage": 69
                 },
@@ -555,8 +609,10 @@
             "xp": 6070
         }
     ],
-    "impossible": [{
-            "loots": [{
+    "impossible": [
+        {
+            "loots": [
+                {
                     "name": "Cabeça de Minotauro",
                     "value": 100
                 },
@@ -565,7 +621,8 @@
                     "value": 86
                 }
             ],
-            "ataques": [{
+            "ataques": [
+                {
                     "name": "Minotauro, avante!",
                     "damage": 85
                 },
@@ -586,7 +643,8 @@
             "xp": 24500
         },
         {
-            "loots": [{
+            "loots": [
+                {
                     "name": "Pele de Lobisomem",
                     "value": 98
                 },
@@ -595,7 +653,8 @@
                     "value": 78
                 }
             ],
-            "ataques": [{
+            "ataques": [
+                {
                     "name": "Uivo Feroz",
                     "damage": 94
                 },
@@ -616,14 +675,18 @@
             "xp": 20111
         },
         {
-            "loots": [{
-                "name": "Portal para o Inferno",
-                "value": 350
-            }],
-            "ataques": [{
+            "loots": [
+                {
+                    "name": "Portal para o Inferno",
+                    "value": 350
+                }
+            ],
+            "ataques": [
+                {
                     "name": "Ceifação",
                     "damage": 120
-                }, {
+                },
+                {
                     "name": "Foice Defeituosa Tortona Pra Esquerda",
                     "damage": 125
                 },
@@ -640,17 +703,22 @@
             "xp": 38666
         },
         {
-            "loots": [{
-                "name": "Escama",
-                "value": 150
-            }],
-            "ataques": [{
-                "name": "Nascer, KRAKEN",
-                "damage": 99
-            }, {
-                "name": "Ancestral de Poseidon",
-                "damage": 112
-            }],
+            "loots": [
+                {
+                    "name": "Escama",
+                    "value": 150
+                }
+            ],
+            "ataques": [
+                {
+                    "name": "Nascer, KRAKEN",
+                    "damage": 99
+                },
+                {
+                    "name": "Ancestral de Poseidon",
+                    "damage": 112
+                }
+            ],
             "type": "impossible",
             "name": "Kraken",
             "life": 640,
@@ -659,7 +727,8 @@
             "xp": 27500
         },
         {
-            "loots": [{
+            "loots": [
+                {
                     "name": "Asas de Vouivre",
                     "value": 98
                 },
@@ -668,7 +737,8 @@
                     "value": 120
                 }
             ],
-            "ataques": [{
+            "ataques": [
+                {
                     "name": "Garras",
                     "damage": 100
                 },
@@ -689,8 +759,10 @@
             "xp": 26420
         }
     ],
-    "boss": [{
-            "loots": [{
+    "boss": [
+        {
+            "loots": [
+                {
                     "name": "Harpa de Apolo",
                     "value": 780
                 },
@@ -699,7 +771,8 @@
                     "value": 1320
                 }
             ],
-            "ataques": [{
+            "ataques": [
+                {
                     "name": "Notas Mortais",
                     "damage": 160
                 },
@@ -720,7 +793,8 @@
             "xp": 50000
         },
         {
-            "loots": [{
+            "loots": [
+                {
                     "name": "Lâmina de Loki",
                     "value": 1250
                 },
@@ -729,10 +803,12 @@
                     "value": 380
                 }
             ],
-            "ataques": [{
+            "ataques": [
+                {
                     "name": "Ataque Traiçoeiro",
                     "damage": 186
-                }, {
+                },
+                {
                     "name": "Facada Crírtica",
                     "damage": 230
                 },
@@ -753,7 +829,8 @@
             "xp": 35000
         },
         {
-            "loots": [{
+            "loots": [
+                {
                     "name": "Vinho de Soma",
                     "value": 1000
                 },
@@ -762,13 +839,16 @@
                     "value": 1400
                 }
             ],
-            "ataques": [{
-                "name": "Embriaguez Total",
-                "damage": 200
-            }, {
-                "name": "Porrete",
-                "damage": 220
-            }],
+            "ataques": [
+                {
+                    "name": "Embriaguez Total",
+                    "damage": 200
+                },
+                {
+                    "name": "Porrete",
+                    "damage": 220
+                }
+            ],
             "type": "Boss",
             "name": "Soma",
             "life": 500,
@@ -777,7 +857,8 @@
             "xp": 35000
         },
         {
-            "loots": [{
+            "loots": [
+                {
                     "name": "Espada de Freya",
                     "value": 1450
                 },
@@ -786,10 +867,12 @@
                     "value": 1320
                 }
             ],
-            "ataques": [{
+            "ataques": [
+                {
                     "name": "Pulsos de Plasma",
                     "damage": 178
-                }, {
+                },
+                {
                     "name": "Encantamento",
                     "damage": 215
                 },
@@ -806,7 +889,8 @@
             "xp": 45000
         },
         {
-            "loots": [{
+            "loots": [
+                {
                     "name": "Correntes de Ares",
                     "value": 988
                 },
@@ -815,10 +899,12 @@
                     "value": 1700
                 }
             ],
-            "ataques": [{
+            "ataques": [
+                {
                     "name": "Correntes de Guerra",
                     "damage": 150
-                }, {
+                },
+                {
                     "name": "Escudo de Fogo",
                     "damage": 200
                 },
@@ -833,6 +919,68 @@
             "damage": "150 - 200",
             "armor": 210,
             "xp": 60000
+        }
+    ],
+    "gods": [
+        {
+            "loots": [
+                {
+                    "name": "Bastão desnecessariamente Grande",
+                    "value": 1250
+                },
+                {
+                    "name": "Capuz da Morte de Rabadon",
+                    "value": 3600
+                }
+            ],
+            "ataques": [
+                {
+                    "name": "Horizonte de Eventos",
+                    "damage": 430
+                },
+                {
+                    "name": "Matéria Escura",
+                    "damage": 500
+                },
+                {
+                    "name": "Explosão primordial",
+                    "damage": 720
+                }
+            ],
+            "type": "God",
+            "name": "Veigar of Boleham",
+            "life": 3200,
+            "damage": "430 - 720",
+            "armor": 210,
+            "xp": 100666
+        },
+        {
+            "loots": [
+                {
+                    "name": "Gravitum",
+                    "value": 1680
+                },
+                {
+                    "name": "Infernum",
+                    "value": 2900
+                }
+            ],
+            "ataques": [
+                {
+                    "name": "Vigía do Plenilúnio",
+                    "damage": 500
+                },
+                {
+                    "name": "Projeção de Alune",
+                    "damage": 666
+                }   
+            ],
+            "type": "God",
+            "name": "Aphelios dos Lunari",
+            "life": 2800,
+            "damage": "500 - 666",
+            "armor": 230,
+            "xp": 120000
         }
     ]
 }

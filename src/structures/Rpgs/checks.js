@@ -1,4 +1,3 @@
-
 const moment = require("moment")
 const mobsFile = require("../RpgHandler").mobs
 const abilitiesFile = require("../RpgHandler").abiltiies
@@ -15,9 +14,10 @@ module.exports.getEnemy = async (user, type) => {
 
     if (type == "boss") {
         let bosses = []
-        mobsFile.boss.forEach(b => {
-            bosses.push(b)
-        })
+
+        mobsFile.boss.forEach(b => bosses.push(b))
+        if (user.level > 24) mobsFile.gods.forEach(b => bosses.push(b))
+
         monstro = await bosses[Math.floor(Math.random() * bosses.length)];
 
         return monstro;
@@ -489,7 +489,7 @@ module.exports.newAbilities = async (message, user, t) => {
         user.nextLevelXp = 1000000
         user.save()
         message.menheraReply("warn", t("roleplay:boss"))
-    } else if (user.level == 25){
+    } else if (user.level == 25) {
         user.xp = 0
         user.save()
     }

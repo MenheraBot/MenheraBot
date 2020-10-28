@@ -22,6 +22,8 @@ module.exports = class UpdatesCommand extends Command {
 
             • RPG: 
                    O ferreiro aprendeu a fazer uma nova arma e uma nova armadura!
+
+                   Nova categoria de Mobs a partir do nível 25! 
             
             • Código-fonte
                    Devido as mudanças dos intents do Discord, a Menhera não pode mais adicionar ao cache todos os usuários!
