@@ -174,8 +174,8 @@ module.exports = class VillageCommand extends Command {
 
             if (m.content === "1") {
                 if (user.money < 500) return message.menheraReply("error", t("commands:village.poor"))
-                if (!filtrado[0]) return message.menheraReply("error", `${t("commands:village.ferreiro.poor", { value: 2 })} Presas de Lobisomem`)
-                if (filtrado[0].amount < 2) return message.menheraReply("error", `${t("commands:village.ferreiro.poor", { value: 2 })} Presas de Lobisomem`)
+                if (!filtrado[0]) return message.menheraReply("error", `${t("commands:village.ferreiro.arma.poor", { value: 2 })} Presas de Lobisomem`)
+                if (filtrado[0].amount < 2) return message.menheraReply("error", `${t("commands:village.ferreiro.arma.poor", { value: 2 })} Presas de Lobisomem`)
 
                 user.weapon = {
                     name: "Lança de Presas de Lobisomem",
