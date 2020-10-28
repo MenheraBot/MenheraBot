@@ -259,7 +259,9 @@ function lojaComprar(message, embedMessage, user, saldoAtual, t) {
                     user.rolls = user.rolls + valor;
                     user.save()
 
-                    message.menheraReply("success", t("commands:shop.dataRolls_fields.buy_rolls", { quantity: valor, value: valor * valorRoll, rolls: user.rolls, stars: user.estrelinhas }))
+                    const valval = valor * valorRoll //valor para a traduçãp
+
+                    message.menheraReply("success", t("commands:shop.dataRolls_fields.buy_rolls", { quantity: valor, value: valval, rolls: user.rolls, stars: user.estrelinhas }))
                 }
             });
         }
