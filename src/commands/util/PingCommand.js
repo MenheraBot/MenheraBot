@@ -17,8 +17,7 @@ module.exports = class PingCommand extends Command {
 
         const embed = new MessageEmbed()
             .setTitle("🏓 | Pong!")
-            .addField(`📡 | ${t("commands:ping.latency")}`, `**${Math.round(this.client.ws.ping)}ms**`)
-            .addField(`📡 | ${t("commands:ping.api")}`, `**${Date.now() - message.createdTimestamp}ms**`)
+            .setDescription(`📡 | ${t("commands:ping.api")} **${Date.now() - message.createdTimestamp}ms**\n📡 | ${t("commands:ping.latency")} **${Math.round(this.client.ws.ping)}ms**`)
             .setFooter(message.author.tag, avatar)
             .setTimestamp()
             .setColor('#eab3fa')
