@@ -784,6 +784,7 @@
                 "footer": "Digite no chat sua escolha",
                 "lança": "Lança de Presas de Lobisomem",
                 "espada": "Espada de Chifre de Minotauro",
+                "deuses": "Espada dos Deuses",
                 "poor": "você não possui {{value}}",
                 "change": "Você trocou sua arma para `{{arma}}`"
             },
@@ -792,6 +793,7 @@
                 "reforçado": "Peitoral Reforçado",
                 "poor": "você não possui {{value}}",
                 "perfeito": "Peitoral Perfeito",
+                "deuses": "Peitoral dos Deuses",
                 "change": "você trocou sua armadura para `{{armadura}}"
             }
         },

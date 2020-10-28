@@ -145,6 +145,10 @@ module.exports = class VillageCommand extends Command {
             {
                 name: `2 - ${t("commands:village.ferreiro.arma.espada")}`,
                 value: `🗡️ | ${t("commands:village.ferreiro.dmg")}: **27**\n💎 | ${t("commands:village.ferreiro.cost")}: **950**\n<:Chest:760957557538947133> | ${t("commands:village.ferreiro.itens-needed")}: **2 Chifres de Minotauro**`
+            },
+            {
+                name: `3 - ${t("commands:village.ferreiro.arma.deuses")}`,
+                value: `🗡️ | ${t("commands:village.ferreiro.dmg")}: **50**\n💎 | ${t("commands:village.ferreiro.cost")}: **50000**\n<:Chest:760957557538947133> | ${t("commands:village.ferreiro.itens-needed")}: **5 Espadas de Freya**`
             }
             ])
             .setFooter(t("commands:village.ferreiro.arma.footer"))
@@ -164,6 +168,7 @@ module.exports = class VillageCommand extends Command {
 
         let filtrado = contado.filter(f => f.name === "Presas de Lobisomem")
         let filtrado1 = contado.filter(f => f.name === "Chifre de Minotauro")
+        let filtrado2 = contado.filter(f => f.name === "Espada de Freya")
 
         collector.on('collect', m => {
 
@@ -205,6 +210,24 @@ module.exports = class VillageCommand extends Command {
                 user.save()
                 message.menheraReply("success", t("commands:village.ferreiro.arma.change", { arma: "Espada de Chifre de Minotauro" }))
 
+            } else if (m.content === "3") {
+                if (user.money < 50000) return message.menheraReply("error", t("commands:village.poor"))
+                if (!filtrado2[0]) return message.menheraReply("error", `${t("commands:village.ferreiro.arma.poor", { value: 5 })} Espadas de Freya`)
+                if (filtrado2[0].amount < 5) return message.menheraReply("error", `${t("commands:village.ferreiro.arma.poor", { value: 5 })} Espadas de Freya`)
+
+                user.weapon = {
+                    name: "Espada dos Deuses",
+                    damage: 50
+                }
+                user.money = user.money - 50000
+                for (let j = 0; j < 5; j++) {
+                    user.loots.splice(user.loots.findIndex(function (i) {
+                        return i.name === filtrado2[0].name;
+                    }), 1);
+                }
+
+                user.save()
+                message.menheraReply("success", t("commands:village.ferreiro.arma.change", { arma: "Espada dos Deuses" }))
             } else return message.menheraReply("error", t("commands:village.invalid-option"))
         })
     }
@@ -221,6 +244,10 @@ module.exports = class VillageCommand extends Command {
             {
                 name: `2 - ${t("commands:village.ferreiro.armadura.perfeito")}`,
                 value: `🛡️ | ${t("commands:village.ferreiro.prt")}: **30**\n💎 | ${t("commands:village.ferreiro.cost")}: **1000**\n<:Chest:760957557538947133> | ${t("commands:village.ferreiro.itens-needed")}: **3 Pele de Lobisomem**`
+            },
+            {
+                name: `3 - ${t("commands:village.ferreiro.armadura.deuses")}`,
+                value: `🛡️ | ${t("commands:village.ferreiro.prt")}: **50**\n💎 | ${t("commands:village.ferreiro.cost")}: **50000**\n<:Chest:760957557538947133> | ${t("commands:village.ferreiro.itens-needed")}: **5 Escudos de Ares**`
             }
             ])
             .setFooter(t("commands:village.ferreiro.footer"))
@@ -239,6 +266,7 @@ module.exports = class VillageCommand extends Command {
         let contado = countItems(nameLoots)
 
         let filtrado = contado.filter(f => f.name === "Pele de Lobisomem")
+        let filtradoEscudo = contado.filter(f => f.name === "Escudo de Ares")
 
         collector.on('collect', m => {
 
@@ -280,6 +308,24 @@ module.exports = class VillageCommand extends Command {
                 user.save()
                 message.menheraReply("success", t("commands:village.ferreiro.armadura.change", { armadura: "Peitoral Perfeito" }))
 
+            } else if (m.content === "3") {
+                if (user.money < 50000) return message.menheraReply("error", t("commands:village.poor"))
+                if (!filtradoEscudo[0]) return message.menheraReply("error", `${t("commands:village.ferreiro.armadura.poor", { value: 5 })} Escudo de Ares`)
+                if (filtradoEscudo[0].amount < 5) return message.menheraReply("error", `${t("commands:village.ferreiro.armadura.poor", { value: 5 })} Escudo de Ares`)
+
+                user.protection = {
+                    name: "Peitoral dos Deuses",
+                    armor: 50
+                }
+                user.money = user.money - 50000
+                for (let j = 0; j < 5; j++) {
+                    user.loots.splice(user.loots.findIndex(function (i) {
+                        return i.name === filtradoEscudo[0].name;
+                    }), 1);
+                }
+
+                user.save()
+                message.menheraReply("success", t("commands:village.ferreiro.armadura.change", { armadura: "Peitoral dos Deuses" }))
             } else return message.menheraReply("error", t("commands:village.invalid-option"))
         })
     }
@@ -407,7 +453,7 @@ module.exports = class VillageCommand extends Command {
                     totalItems++;
                 })
 
-                message.menheraReply("success", t("commands:village.guilda.sold-all", {amount: totalItems, value: totalValue}))
+                message.menheraReply("success", t("commands:village.guilda.sold-all", { amount: totalItems, value: totalValue }))
 
                 user.loots = [];
                 user.money = user.money + totalValue

@@ -784,6 +784,7 @@
                 "footer": "Type your choice in chat",
                 "lança": "Werewolf Fang Spear",
                 "espada": "Minotaur Horn Sword",
+                "deuses": "Sword of the Gods",
                 "poor": "you don't have {{value}}",
                 "change": "You switched your weapon to `{{arma}}`"
             },
@@ -792,6 +793,7 @@
                 "reforçado": "Reinforced Breastplate",
                 "poor": "you don't have {{value}}",
                 "perfeito": "Perfect Breastplate",
+                "deuses": "Breastplate of the Gods",
                 "change": "you changed your armor to`{{armadura}}"
             }
         },
