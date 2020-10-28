@@ -1,4 +1,5 @@
 const Command = require("../../structures/command")
+const request = require("request")
 module.exports = class TestCommand extends Command {
     constructor(client) {
         super(client, {
@@ -9,6 +10,7 @@ module.exports = class TestCommand extends Command {
         })
     }
     async run({ message, args, server }, t) {
+
 
         /* 
  =====================================DELETAR GUILDAS INATIVAS==========================================================

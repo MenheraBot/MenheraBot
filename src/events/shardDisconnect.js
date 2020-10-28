@@ -1,3 +1,4 @@
+const http = require("../utils/HTTPrequests")
 module.exports = class ShardDisconnectReceive {
     constructor(client) {
         this.client = client
@@ -5,5 +6,6 @@ module.exports = class ShardDisconnectReceive {
 
     run(shard) {
         console.log(`[SHARD] Shard ${shard} foi de base`)
+        http.shards("disconnect", shard)
     }
 }
