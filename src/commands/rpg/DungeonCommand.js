@@ -1,6 +1,5 @@
 const Command = require("../../structures/command")
 const { MessageEmbed } = require("discord.js")
-const checks = require("../../structures/RpgHandler").checks
 
 module.exports = class DungeonCommand extends Command {
     constructor(client) {
@@ -16,9 +15,9 @@ module.exports = class DungeonCommand extends Command {
         const user = await this.client.database.Rpg.findById(message.author.id)
         if (!user) return message.menheraReply("error", t("commands:dungeon.non-aventure"))
 
-        const inimigo = await checks.getEnemy(user, "dungeon")
+        const inimigo = await this.client.rpgChecks.getEnemy(user, "dungeon")
 
-        const canGo = await checks.initialChecks(user, message, t)
+        const canGo = await this.client.rpgChecks.initialChecks(user, message, t)
 
         if (!canGo) return;
 
@@ -32,7 +31,7 @@ module.exports = class DungeonCommand extends Command {
             if (user.familyName === "Ares") ptcView = user.armor + user.protection.armor + familia.boost.value
         }
 
-        const habilidades = await checks.getAbilities(user, familia)
+        const habilidades = await this.client.rpgChecks.getAbilities(user, familia)
 
         if (!inimigo) return message.menheraReply("error", t("commands:dungeon.no-enemy"))
 
@@ -107,15 +106,15 @@ module.exports = class DungeonCommand extends Command {
             time = true;
             const choice = Number(m.content);
             if (escolhas.includes(choice)) {
-                checks.battle(message, options[choice - 1], user, inimigo, type, familia, t)
+                this.client.rpgChecks.battle(message, options[choice - 1], user, inimigo, type, familia, t)
             } else {
-                checks.enemyShot(message, `⚔️ |  ${t("commands:dungeon.battle.newTecnique")}`, user, inimigo, type, familia, t)
+                this.client.rpgChecks.enemyShot(message, `⚔️ |  ${t("commands:dungeon.battle.newTecnique")}`, user, inimigo, type, familia, t)
             }
         })
 
         setTimeout(() => {
             if (!time) {
-                checks.enemyShot(message, `⚔️ |  ${t("commands:dungeon.battle.timeout")}`, user, inimigo, type, familia, t)
+                this.client.rpgChecks.enemyShot(message, `⚔️ |  ${t("commands:dungeon.battle.timeout")}`, user, inimigo, type, familia, t)
             }
         }, 15000)
     }

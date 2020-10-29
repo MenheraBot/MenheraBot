@@ -1,5 +1,4 @@
 const Command = require("../../structures/command")
-const checks = require("../../structures/RpgHandler").checks
 const { MessageEmbed } = require("discord.js")
 module.exports = class RegisterCommand extends Command {
     constructor(client) {
@@ -82,7 +81,7 @@ module.exports = class RegisterCommand extends Command {
                     _id: message.author.id,
                     class: option
                 }).save()
-                checks.confirmRegister(user, message, t)
+                this.client.rpgChecks.confirmRegister(user, message, t)
             } else message.menheraReply("error", t("commands:register.canceled"))
         })
     }

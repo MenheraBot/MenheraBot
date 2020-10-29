@@ -13,6 +13,7 @@ module.exports = class WatchClient extends Client {
         this.aliases = new Collection()
         this.events = new EventManager(this)
         this.config = require("../config.json")
+        this.rpgChecks = require("./structures/Rpgs/checks")
     }
     init(){
         Sentry.init({dsn: this.config.sentry_dns});

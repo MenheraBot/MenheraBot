@@ -7,7 +7,7 @@ const client = new Client({ disableMentions: "everyone" })
 
 if (client.shard) client.shardManager = new ShardManager(client)
 
-client.sentryInit()
+client.init()
 client.loadLocales()
 client.loadCommands("./src/commands")
 client.loadEvents("./src/events")

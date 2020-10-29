@@ -1,6 +1,5 @@
 const Command = require("../../structures/command")
 const { MessageEmbed } = require("discord.js")
-const checks = require("../../structures/RpgHandler").checks
 
 module.exports = class BattleBoss extends Command {
     constructor(client) {
@@ -18,8 +17,8 @@ module.exports = class BattleBoss extends Command {
 
         if (user.level < 20) return message.menheraReply("error", t("commands:boss.min-level"))
 
-        const inimigo = await checks.getEnemy(user, "boss")
-        const canGo = await checks.initialChecks(user, message, t)
+        const inimigo = await this.client.rpgChecks.getEnemy(user, "boss")
+        const canGo = await this.client.rpgChecks.initialChecks(user, message, t)
 
         if (!canGo) return;
 
@@ -33,7 +32,7 @@ module.exports = class BattleBoss extends Command {
             if (user.familyName === "Ares") ptcView = user.armor + user.protection.armor + familia.boost.value
         }
 
-        const habilidades = await checks.getAbilities(user, familia)
+        const habilidades = await this.client.rpgChecks.getAbilities(user, familia)
 
         if (user.uniquePower.name == "Morte Instantânea") {
             habilidades.splice(habilidades.findIndex(function (i) {
@@ -56,7 +55,7 @@ module.exports = class BattleBoss extends Command {
         const collector = message.channel.createMessageCollector(filter, { max: 1, time: 30000, errors: ["time"] });
 
         collector.on('collect', m => {
-            if (m.content.toLowerCase() == "sim" || m.content.toLowerCase() == "yes"){
+            if (m.content.toLowerCase() == "sim" || m.content.toLowerCase() == "yes") {
                 this.battle(message, inimigo, habilidades, user, "boss", familia, t);
             } else return message.menheraReply("error", t("commands:boss.amarelou"))
 
@@ -114,15 +113,15 @@ module.exports = class BattleBoss extends Command {
             time = true;
             const choice = Number(m.content);
             if (escolhas.includes(choice)) {
-                checks.battle(message, options[choice - 1], user, inimigo, type, familia, t)
+                this.client.rpgChecks.battle(message, options[choice - 1], user, inimigo, type, familia, t)
             } else {
-                checks.enemyShot(message, `⚔️ |  ${t("commands:boss.battle.newTecnique")}`, user, inimigo, type, familia, t)
+                this.client.rpgChecks.enemyShot(message, `⚔️ |  ${t("commands:boss.battle.newTecnique")}`, user, inimigo, type, familia, t)
             }
         })
 
         setTimeout(() => {
             if (!time) {
-                checks.enemyShot(message, `⚔️ |  ${t("commands:boss.battle.timeout")}`, user, inimigo, type, familia, t)
+                this.client.rpgChecks.enemyShot(message, `⚔️ |  ${t("commands:boss.battle.timeout")}`, user, inimigo, type, familia, t)
             }
         }, 15000)
     }
