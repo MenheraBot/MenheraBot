@@ -828,6 +828,7 @@
     "remember": {
         "description": "Cria um lembrete que avisará no momento dado",
         "usage": "<lembrete>",
+        "error": "você não pode passar uma letra longe de um número",
         "no-args": "você não me disse o que quer que eu avise-o...",
         "get-time": "daqui a quanto tempo você quer ser lembrado? Use `d` para dias, `m` para minutos e `h` para horas!\n\nExemplo: 3h 5m",
         "cancel": "ok, seu lembrete foi cancelado!",

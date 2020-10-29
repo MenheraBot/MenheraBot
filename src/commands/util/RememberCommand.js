@@ -53,6 +53,8 @@ module.exports = class RememberCommand extends Command {
             if (tempoTotal < (Date.now() + 1000 * 60 * 5)) return message.menheraReply("error", t("commands:remember.low-time")) // Checa se o tempo é menor que 5 minutos
             if (tempoTotal > (Date.now() + 1000 * 60 * 60 * 24 * 7)) return message.menheraReply("error", t("commands:remember.high-time")) // Checa se o tempo é maior que 7 dias
 
+            if(isNaN(tempoTotal) || tempoTotal === undefined) return message.menheraReply("error", t("commands:remember.error")) 
+
             // Enviando a mensagem e criando o coletor de emojis usando promises
             message.menheraReply("question", t("commands:remember.confirm-message", { days, hours, minutes: min })).then(async m => {
                 await m.react('📩').catch()

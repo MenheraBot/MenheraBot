@@ -828,6 +828,7 @@
     "remember": {
         "description": "Create a remember that will trigger in the give time",
         "usage": "<reminder>",
+        "error": "you can't pass a letter far of a number",
         "no-args": "you didn't say what do you want me to remember you",
         "get-time": "how long do you want to be remembered? Use `d` for days, `m` for minutes and `h` for hours! \n\nExample: 3h 5m",
         "cancel": "ok, remember canceled",
