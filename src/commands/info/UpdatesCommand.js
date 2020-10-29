@@ -18,20 +18,17 @@ module.exports = class UpdatesCommand extends Command {
             .setTitle(`${t("commands:updates.title")} ${require("../../../package.json").version}`)
             .setColor('#a7e74f')
             .setFooter(`${this.client.user.username} ${t("commands:updates.footer")} ${owner.tag}`, owner.displayAvatarURL({ format: "png", dynamic: true }))
-            .setDescription(`**UPDATES**
+            .setDescription(`**NOVO COMANDO**
 
-            • RPG: 
-                   O ferreiro aprendeu a fazer uma nova arma e uma nova armadura!
+            • Adicionado o comando lembrete!
 
-                   Nova categoria de Mobs a partir do nível 25! 
-            
-            • Código-fonte
-                   Devido as mudanças dos intents do Discord, a Menhera não pode mais adicionar ao cache todos os usuários!
-            Isso retira a contagem de usuários dela, mas foi até que bom, ja que com 170k usuários em cache a RAM da Menhera ficava certa de 500MB, e agora, com o cache com menos de 5k users, sempre fazendo uma nova requisição quando precisa acessar um usuário, ela gasta cerca de 100MB de Ram, o que vai melhorar MUITO o desemprenho dela
-            
-            • API
-                  Implementei um servidor HTTP na Menhera para me ajudar na administração dos processos, como os logs de status (que serão super úteis quando a Menhera necessitar shards...) 
-          
+            Use m!lembrete <texto para lembrar>, então, passe quando será avisado
+            ATENÇÃO: Você deve passar o número junto da letra correspondente ao tempo
+            Exemplo: 5d 2m (para ser lembrado daqui a cinco dias e dois minutos)
+
+            Então, escolha se quer ser lembrado na Dm ou no canal onde foi executado
+
+            O tempo mínimo do lembrete é 5 minutos, e no máximo 7 dias.
   `)
 
         message.channel.send(message.author, embed)

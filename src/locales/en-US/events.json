@@ -11,5 +11,10 @@
         "report_title": "<:ok:727975974125436959> | Report this problem",
         "report_value": "Emter inmy support server to report this problem to my owner",
         "error_msg": "There was an error trying to execute this command! Report that to my Owner!"
+    },
+    "reminder": {
+        "no-channel": "I tried to send on the channel you asked for, but I couldn't send messages there ...",
+        "no-dm": "I tried to send in your dm, but I couldn't ...",
+        "reminder": "lembrete"
     }
 }

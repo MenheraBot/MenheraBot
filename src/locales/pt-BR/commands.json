@@ -824,5 +824,17 @@
             "unespected-error": "ocorreu um erro inexperado! O valor de venda é `NaN`",
             "sold": "você vendeu **{{quantity}}** **{{name}}** e recebeu **{{value}}** 💎"
         }
+    },
+    "remember": {
+        "description": "Cria um lembrete que avisará no momento dado",
+        "usage": "<lembrete>",
+        "no-args": "você não me disse o que quer que eu avise-o...",
+        "get-time": "daqui a quanto tempo você quer ser lembrado? Use `d` para dias, `m` para minutos e `h` para horas!\n\nExemplo: 3h 5m",
+        "cancel": "ok, seu lembrete foi cancelado!",
+        "low-time": "você não pode ser lembrado em menos de **5** minutos",
+        "high-time": "você não pode ser lembrado em mais de **7** dias",
+        "confirm-message": "eu lembrarei você em **{{days}}** dias, **{{hours}}** horas e **{{minutes}}** minutos!\nUma última coisinha, você deseja ser lembrado neste canal, ou na Dm? Lembre-se de ativar suas DM's para receber a notificação!\n\n📩 - Reaja para **DM**\n⬇️ - Reaja para ser notificado **aqui**\n❌ - Reaja para **cancelar** este lembrete",
+        "channel": "perfeitamente, vou te lembrar na data que você me disse neste canal",
+        "dm": "como desejar, vou te lembrar na data que você me disse na sua dm! Lembre-se de ativar suas DM's para que eu possa te enviar o lembrete!"
     }
 }

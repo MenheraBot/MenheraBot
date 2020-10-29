@@ -824,5 +824,17 @@
             "unespected-error": "an unexpected error occurred! The sale value is` NaN`",
             "sold": "you sold **{{quantity}}** **{{name}}** and received **{{value}}** 💎"
         }
+    },
+    "remember": {
+        "description": "Create a remember that will trigger in the give time",
+        "usage": "<reminder>",
+        "no-args": "you didn't say what do you want me to remember you",
+        "get-time": "how long do you want to be remembered? Use `d` for days, `m` for minutes and `h` for hours! \n\nExample: 3h 5m",
+        "cancel": "ok, remember canceled",
+        "low-time": "you cannot be remembered in less than **5** minutes",
+        "high-time": "you cannot be remembered in more than **7** days",
+        "confirm-message": "I will remind you in **{{days}}** days, **{{hours}}** hours and **{{minutes}}** minutes! \nJust one more thing, do you want to be remembered on this channel, or on the DM? be sure to activate your DM's to receive the notification! \n\n📩 - React to **DM**\n⬇️ - React to be notified **here**\n❌ - React to **cancel** this reminder",
+        "channel": "perfectly, I will remember you in that date here on this channel!",
+        "dm": "as you wish, I will remind you in that date in your DM! Remember to activate your DM's so I can send you the reminder!"
     }
 }

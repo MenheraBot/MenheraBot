@@ -1,4 +1,4 @@
-/* module.exports = class ShardManager {
+module.exports = class ShardManager {
     constructor(client) {
         this.client = client
     }
@@ -36,4 +36,4 @@
     killShard(id) {
         return this.client.shard.broadcastEval(`if (this.shard.id === ${id}) { this.destroy() }`)
     }
-} */
+} 

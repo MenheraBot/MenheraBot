@@ -1,6 +1,7 @@
 const { Client, Collection } = require("discord.js")
 const { readdir } = require("fs-extra")
 const EventManager = require("./structures/EventManager")
+const Reminders = require("./utils/RemindersChecks")
 const Sentry = require("@sentry/node")
 
 module.exports = class WatchClient extends Client {
@@ -13,8 +14,10 @@ module.exports = class WatchClient extends Client {
         this.events = new EventManager(this)
         this.config = require("../config.json")
     }
-    sentryInit(){
+    init(){
         Sentry.init({dsn: this.config.sentry_dns});
+        const reminder = new Reminders(this)
+        reminder.loop()
     }
 
     reloadCommand(commandName) {
@@ -56,7 +59,7 @@ module.exports = class WatchClient extends Client {
         return super.login(token)
     }
 
-    loadCommands(path) {
+    loadCommands() {
         readdir(`${__dirname}/commands/`, (err, files) => {
             if (err) console.error(err)
             files.forEach(category => {

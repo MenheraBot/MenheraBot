@@ -28,6 +28,17 @@ const guildSchema = mongoose.Schema({
     lang: { type: String, default: "pt-BR" }
 });
 
+const rememberSchema = mongoose.Schema({
+    id: { type: String },
+    rememberAt: { type: String },
+    createdAt: { type: String },
+    channelId: { type: String },
+    serverId: { type: String },
+    serverLang: { type: String },
+    content: { type: String },
+    rememberInPv: { type: Boolean }
+})
+
 const rpgSchema = mongoose.Schema({
     _id: { type: String },
     class: { type: String },
@@ -94,6 +105,7 @@ const warnSchema = mongoose.Schema({
 let familia = mongoose.model("Familia", familiaSchema);
 let cmd = mongoose.model("Cmd", cmdSchema)
 let guild = mongoose.model("guild", guildSchema)
+let remember = mongoose.model("remember", rememberSchema)
 let rpg = mongoose.model("rpg", rpgSchema)
 let user = mongoose.model("usersdb", userSchema)
 let warn = mongoose.model("warn", warnSchema)
@@ -101,6 +113,7 @@ let warn = mongoose.model("warn", warnSchema)
 module.exports.Familias = familia
 module.exports.Cmds = cmd
 module.exports.Guilds = guild
+module.exports.Reminders = remember
 module.exports.Rpg = rpg
 module.exports.Users = user
 module.exports.Warns = warn
