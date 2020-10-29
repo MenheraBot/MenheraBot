@@ -1,11 +1,11 @@
 require('./src/structures/ProtoTypes').start()
 const Client = require('./src/MenheraClient')
-/* const ShardManager = require('./src/structures/ShardManager') */
+const ShardManager = require('./src/structures/ShardManager')
 const config = require('./config.json')
 const http = require("./src/utils/HTTPrequests")
-const client = new Client({ disableMentions: "everyone"}) 
+const client = new Client({ disableMentions: "everyone" })
 
-/* if (client.shard) client.shardManager = new ShardManager(client) */
+if (client.shard) client.shardManager = new ShardManager(client)
 
 client.sentryInit()
 client.loadLocales()
@@ -22,7 +22,7 @@ process.on('exit', shirley => {
     http.status("down")
 })
 
- process.on("SIGTERM", teresinha => {
+process.on("SIGTERM", teresinha => {
     http.status("down")
 })
 
