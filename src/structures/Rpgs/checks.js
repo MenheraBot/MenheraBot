@@ -491,6 +491,7 @@ module.exports.newAbilities = async (message, user, t) => {
         message.menheraReply("warn", t("roleplay:boss"))
     } else if (user.level == 25) {
         user.xp = 0
+        user.nextLevelXp = 3000000
         user.save()
     }
 }
