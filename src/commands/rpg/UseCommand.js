@@ -86,10 +86,10 @@ module.exports = class UseCommand extends Command {
 
       if (user.backpack) {
         const newValue = user.backpack.value - 1;
-        user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value = newValue }
+        user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: newValue }
       }
     }
-    if(user.backpack.value < 0) user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value = 0 }
+    if(user.backpack.value < 0) user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: 0 }
     user.save()
 
     message.menheraReply("success", t("commands:use.used", { quantidade, choice: choice[0].name }))

@@ -101,13 +101,16 @@ module.exports = class VillageCommand extends Command {
             if (user.money < valor) return message.menheraReply("error", t("commands:village.poor"))
             if ((user.backpack.value + quantidade) > user.backpack.quantity) return message.menheraReply("commands:village.backpack-full")
             message.menheraReply("success", t("commands:village.bruxa.bought", { quantidade, name: itens[parseInt(args[0] - 1)].name.slice(4), valor }))
+
             for (let j = 0; j < quantidade; j++) {
                 user.inventory.push(itens[parseInt(args[0] - 1)])
                 if (user.backpack) {
                     const newValue = user.backpack.value - 1;
-                    user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value = newValue }
+                    user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: newValue }
                 }
             }
+
+            if (user.backpack.value < 0) user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: 0 }
             user.money = user.money - valor
             user.save()
         })
@@ -191,8 +194,14 @@ module.exports = class VillageCommand extends Command {
                     user.loots.splice(user.loots.findIndex(function (i) {
                         return i.name === filtrado[0].name;
                     }), 1);
+                    if (user.backpack) {
+                        const newValue = user.backpack.value - 1;
+                        user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: newValue }
+                    }
                 }
 
+
+                if (user.backpack.value < 0) user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: 0 }
                 user.save()
                 message.menheraReply("success", t("commands:village.ferreiro.arma.change", { arma: "Lança de Presas de Lobisomem" }))
 
@@ -210,8 +219,13 @@ module.exports = class VillageCommand extends Command {
                     user.loots.splice(user.loots.findIndex(function (i) {
                         return i.name === filtrado1[0].name;
                     }), 1);
+                    if (user.backpack) {
+                        const newValue = user.backpack.value - 1;
+                        user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: newValue }
+                    }
                 }
 
+                if (user.backpack.value < 0) user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: 0 }
                 user.save()
                 message.menheraReply("success", t("commands:village.ferreiro.arma.change", { arma: "Espada de Chifre de Minotauro" }))
 
@@ -229,8 +243,14 @@ module.exports = class VillageCommand extends Command {
                     user.loots.splice(user.loots.findIndex(function (i) {
                         return i.name === filtrado2[0].name;
                     }), 1);
+                    if (user.backpack) {
+                        const newValue = user.backpack.value - 1;
+                        user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: newValue }
+                    }
                 }
 
+
+                if (user.backpack.value < 0) user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: 0 }
                 user.save()
                 message.menheraReply("success", t("commands:village.ferreiro.arma.change", { arma: "Espada dos Deuses" }))
             } else return message.menheraReply("error", t("commands:village.invalid-option"))
@@ -289,8 +309,14 @@ module.exports = class VillageCommand extends Command {
                     user.loots.splice(user.loots.findIndex(function (i) {
                         return i.name === filtrado[0].name;
                     }), 1);
+                    if (user.backpack) {
+                        const newValue = user.backpack.value - 1;
+                        user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: newValue }
+                    }
                 }
 
+
+                if (user.backpack.value < 0) user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: 0 }
                 user.save()
                 message.menheraReply("success", t("commands:village.ferreiro.armadura.change", { armadura: "Peitoral Reforçado" }))
 
@@ -308,8 +334,14 @@ module.exports = class VillageCommand extends Command {
                     user.loots.splice(user.loots.findIndex(function (i) {
                         return i.name === filtrado[0].name;
                     }), 1);
+                    if (user.backpack) {
+                        const newValue = user.backpack.value - 1;
+                        user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: newValue }
+                    }
                 }
 
+
+                if (user.backpack.value < 0) user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: 0 }
                 user.save()
                 message.menheraReply("success", t("commands:village.ferreiro.armadura.change", { armadura: "Peitoral Perfeito" }))
 
@@ -327,8 +359,13 @@ module.exports = class VillageCommand extends Command {
                     user.loots.splice(user.loots.findIndex(function (i) {
                         return i.name === filtradoEscudo[0].name;
                     }), 1);
+                    if (user.backpack) {
+                        const newValue = user.backpack.value - 1;
+                        user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: newValue }
+                    }
                 }
 
+                if (user.backpack.value < 0) user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: 0 }
                 user.save()
                 message.menheraReply("success", t("commands:village.ferreiro.armadura.change", { armadura: "Peitoral dos Deuses" }))
             } else return message.menheraReply("error", t("commands:village.invalid-option"))
@@ -458,7 +495,7 @@ module.exports = class VillageCommand extends Command {
                     totalItems++;
                     if (user.backpack) {
                         const newValue = user.backpack.value - 1;
-                        user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value = newValue }
+                        user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: newValue }
                     }
                 })
 
@@ -466,7 +503,7 @@ module.exports = class VillageCommand extends Command {
 
                 user.loots = [];
                 user.money = user.money + totalValue
-                if(user.backpack.value < 0) user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value = 0}
+                if (user.backpack.value < 0) user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: 0 }
                 user.save()
 
             } else {
@@ -492,11 +529,11 @@ module.exports = class VillageCommand extends Command {
                     }), 1);
                     if (user.backpack) {
                         const newValue = user.backpack.value - 1;
-                        user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value = newValue }
+                        user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: newValue }
                     }
                 }
 
-                if(user.backpack.value < 0) user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value = 0}
+                if (user.backpack.value < 0) user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: 0 }
                 user.save()
                 message.menheraReply("success", t("commands:village.guilda.sold", { quantity: quantidade, name: contado[parseInt(args[0]) - 1].name, value: valor }))
             }
