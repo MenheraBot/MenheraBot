@@ -523,7 +523,7 @@ module.exports.resultBattle = async (message, user, inimigo, t) => {
     user.xp = user.xp + inimigo.xp;
     if (canGetLoot) {
         user.loots.push(randomLoot)
-        user.backpack = { name: user.backpack.name, capacity: user.backpack.name, vaue: (user.backpack.value + 1) }
+        user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, vaue: (user.backpack.value + 1) }
     }
     user.inBattle = false;
     user.save().then(() => this.finalChecks(message, user, t))

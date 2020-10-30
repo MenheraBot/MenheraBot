@@ -11,11 +11,42 @@ module.exports = class TestCommand extends Command {
     }
     async run({ message, args, server }, t) {
 
-        const files = await this.client.database.Rpg.find()
+        /* const files = await this.client.database.Rpg.find()
+        let entries = 0
 
         files.forEach(file => {
-            const itens = countItems(file.loots)
+            let itens = []
+            let loots = []
+            file.inventory.forEach(inv => {
+                if (inv.type == "Item") {
+                    itens.push(inv)
+                }
+              })
+              file.loots.forEach(loot => {
+                loots.push(loot.name)
+            })
+
+            const countedLoots = countItems(loots)
+            const countedItems = countItems(itens)
+
+            let itensAmount = 0;
+            let lootsAmount = 0;
+            
+            countedItems.forEach(oi => {
+                itensAmount += oi.amount
+            })
+
+            countedLoots.forEach(tchau => {
+                lootsAmount += tchau.amount
+            })
+            
+            const espaçoTotal = itensAmount + lootsAmount
+
+            file.backpack = {name: file.backpack.name, }
+           
+            entries++;
         });
+        console.log("Documentos contados: " + entries) */
 
         /* 
  =====================================DELETAR GUILDAS INATIVAS==========================================================
