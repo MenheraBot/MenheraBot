@@ -16,6 +16,6 @@ module.exports = class SayCommand extends Command {
         const sayMessage = args.join(" ");
         if (!sayMessage) return message.menheraReply("error", t("commands:say.no-args"))
         message.delete({timeout: 10}).catch()
-         message.channel.send(sayMessage);
+         message.channel.send(sayMessage + `\n\n📢 | ${message.author}`);
     }
 }
