@@ -53,7 +53,7 @@ module.exports = class InventoryCommand extends Command {
             lootText += `**${count.name}** ( ${count.amount} )\n`
         })
 
-
+        if (user.backpack) embed.addField(`🧺 | ${t("commands:inventory.backpack")}`, t("commands:inventory.backpack-value", { name: user.backpack.name, max: user.backpack.capacity, value: user.backpack.value }))
         if (armaText.length > 0) embed.addField(`⚔️ | ${t("commands:inventory.battle")}`, armaText)
         if (items.length > 0) embed.addField(`💊 | ${t("commands:inventory.items")}`, itemText)
         if (lootText.length > 0) embed.addField(`<:Chest:760957557538947133> | ${t("commands:inventory.loots")}`, lootText)

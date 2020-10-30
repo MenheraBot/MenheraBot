@@ -682,6 +682,8 @@
         "title": "Seu inventário",
         "weapon": "Arma",
         "armor": "Armadura",
+        "backpack": "Mochila",
+        "backpack-value": "**{{name}}:** **{{value}}** / **{{max}}**",
         "dmg": "Dano",
         "prt": "Proteção",
         "battle": "Batalha",
@@ -749,6 +751,7 @@
     "village": {
         "description": "Vá para a vila de Boleham",
         "non-aventure": "você não é um aventureiro",
+        "backpack-full": "sua mochila não tem espaço para comprar esses produtos",
         "cost": "Custo",
         "desc": "Descrição",
         "invalid-option": "Esta opção não é válida!",

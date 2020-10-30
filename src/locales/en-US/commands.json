@@ -681,6 +681,8 @@
         "non-aventure": "you are not an adventurer",
         "title": "Your inventory",
         "weapon": "Weapon",
+        "backpack": "Backpack",
+        "backpack-value": "**{{name}}:** **{{value}}** / **{{max}}**",
         "armor": "Armor",
         "dmg": "Damage",
         "prt": "Protection",
@@ -749,6 +751,7 @@
     "village": {
         "description": "Go to the village of Boleham",
         "non-aventure": "you are not an adventurer",
+        "backpack-full": "your backpack has no space to buy these products",
         "cost": "Cost",
         "desc": "Description",
         "invalid-option": "This option is not valid!",

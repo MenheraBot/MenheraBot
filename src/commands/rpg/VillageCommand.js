@@ -99,9 +99,14 @@ module.exports = class VillageCommand extends Command {
             let valor = itens[parseInt(args[0] - 1)].value * quantidade;
             if (!valor) return message.menheraReply("error", t("commands:village.invalid-value"))
             if (user.money < valor) return message.menheraReply("error", t("commands:village.poor"))
+            if ((user.backpack.value + quantidade) > user.backpack.quantity) return message.menheraReply("commands:village.backpack-full")
             message.menheraReply("success", t("commands:village.bruxa.bought", { quantidade, name: itens[parseInt(args[0] - 1)].name.slice(4), valor }))
             for (let j = 0; j < quantidade; j++) {
                 user.inventory.push(itens[parseInt(args[0] - 1)])
+                if (user.backpack) {
+                    const newValue = user.backpack.value - 1;
+                    user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value = newValue }
+                }
             }
             user.money = user.money - valor
             user.save()
@@ -451,12 +456,17 @@ module.exports = class VillageCommand extends Command {
                 allLoots.forEach(l => {
                     totalValue = totalValue + l.value
                     totalItems++;
+                    if (user.backpack) {
+                        const newValue = user.backpack.value - 1;
+                        user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value = newValue }
+                    }
                 })
 
                 message.menheraReply("success", t("commands:village.guilda.sold-all", { amount: totalItems, value: totalValue }))
 
                 user.loots = [];
                 user.money = user.money + totalValue
+                if(user.backpack.value < 0) user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value = 0}
                 user.save()
 
             } else {
@@ -480,8 +490,13 @@ module.exports = class VillageCommand extends Command {
                     user.loots.splice(user.loots.findIndex(function (i) {
                         return i.name === contado[parseInt(args[0]) - 1].name;
                     }), 1);
+                    if (user.backpack) {
+                        const newValue = user.backpack.value - 1;
+                        user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value = newValue }
+                    }
                 }
 
+                if(user.backpack.value < 0) user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value = 0}
                 user.save()
                 message.menheraReply("success", t("commands:village.guilda.sold", { quantity: quantidade, name: contado[parseInt(args[0]) - 1].name, value: valor }))
             }

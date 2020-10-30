@@ -83,6 +83,11 @@ module.exports = class UseCommand extends Command {
       user.inventory.splice(user.inventory.findIndex(function (i) {
         return i.name === juntos[args[0] - 1].name
       }), 1);
+
+      if (user.backpack) {
+        const newValue = user.backpack.value - 1;
+        user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value = newValue }
+      }
     }
     user.save()
 

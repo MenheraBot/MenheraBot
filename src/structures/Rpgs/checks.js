@@ -499,6 +499,9 @@ module.exports.newAbilities = async (message, user, t) => {
 module.exports.resultBattle = async (message, user, inimigo, t) => {
 
     const randomLoot = inimigo.loots[Math.floor(Math.random() * inimigo.loots.length)];
+    let canGetLoot = true
+
+    if(user.backpack.value >= user.backpack.capacity) canGetLoot = false
 
     const embed = new MessageEmbed()
         .setTitle(`⚔️ | ${t("roleplay:result.title")}`)
@@ -511,14 +514,14 @@ module.exports.resultBattle = async (message, user, inimigo, t) => {
         },
         {
             name: `<:Chest:760957557538947133> | ${t("roleplay:result.loots")}`,
-            value: randomLoot.name,
+            value: (canGetLoot) ? randomLoot.name : t("roleplay:backpack-full"),
             inline: true
         }
         ])
 
     message.channel.send(message.author, embed)
     user.xp = user.xp + inimigo.xp;
-    user.loots.push(randomLoot)
+    if(canGetLoot) user.loots.push(randomLoot)
     user.inBattle = false;
     user.save().then(() => this.finalChecks(message, user, t))
 }

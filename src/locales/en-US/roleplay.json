@@ -25,5 +25,6 @@
         "hotel-text": "You are resting at the village hotel, and you cannot go to the dungeon until your stay is over, in **{{time}}**",
         "cant-go": "You cannot visit the dungeon for the following reasons:"
     },
-    "registred": "you have been successfully registered! Use `m!status` to see your status"
+    "registred": "you have been successfully registered! Use `m!status` to see your status",
+    "backpack-full": "you get a loot, but your backpack is full, and you need to let them down"
 }
