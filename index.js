@@ -15,17 +15,3 @@ client.loadEvents("./src/events")
 client.login(config.token).then(() => {
     console.log("[INDEX] Logged in")
 }).catch((e) => console.log(`[FATALERROR] Failure connecting to Discord! ${e.message}!`))
-
-//Process listeners
-
-process.on('exit', shirley => {
-    http.status("down")
-})
-
-process.on("SIGTERM", teresinha => {
-    http.status("down")
-})
-
-process.on('SIGINT', isback => {
-    http.status("down")
-}) 
