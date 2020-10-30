@@ -18,18 +18,12 @@ module.exports = class UpdatesCommand extends Command {
             .setTitle(`${t("commands:updates.title")} ${require("../../../package.json").version}`)
             .setColor('#a7e74f')
             .setFooter(`${this.client.user.username} ${t("commands:updates.footer")} ${owner.tag}`, owner.displayAvatarURL({ format: "png", dynamic: true }))
-            .setDescription(`**NOVO COMANDO**
+            .setDescription(`**MOCHILAS**
+O rpg agora tem mochilas! Você pode ver sua mochila no inventário!Você não pode ter mais itens do que sua mochila comporta (isso n acontece pra quem tem mais itens do que espaço atualmente)
 
-            • Adicionado o comando lembrete!
+        **ATENÇÃO:** Darei 7 dias para todos que possuem mais itens do que a mochila comporta em seu inventário gastarem seus itens, caso contrário, será removido todos os itens até a mochila ficar de acordo com o inventário!
+`)
 
-            Use m!lembrete <texto para lembrar>, então, passe quando será avisado
-            ATENÇÃO: Você deve passar o número junto da letra correspondente ao tempo
-            Exemplo: 5d 2m (para ser lembrado daqui a cinco dias e dois minutos)
-
-            Então, escolha se quer ser lembrado na Dm ou no canal onde foi executado
-
-            O tempo mínimo do lembrete é 5 minutos, e no máximo 7 dias.
-  `)
 
         message.channel.send(message.author, embed)
     }
