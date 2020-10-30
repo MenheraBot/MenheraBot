@@ -105,7 +105,7 @@ module.exports = class VillageCommand extends Command {
             for (let j = 0; j < quantidade; j++) {
                 user.inventory.push(itens[parseInt(args[0] - 1)])
                 if (user.backpack) {
-                    const newValue = user.backpack.value - 1;
+                    const newValue = user.backpack.value + 1;
                     user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: newValue }
                 }
             }

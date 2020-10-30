@@ -11,6 +11,11 @@ module.exports = class TestCommand extends Command {
     }
     async run({ message, args, server }, t) {
 
+        const files = await this.client.database.Rpg.find()
+
+        files.forEach(file => {
+            const itens = countItems(file.loots)
+        });
 
         /* 
  =====================================DELETAR GUILDAS INATIVAS==========================================================
@@ -23,4 +28,17 @@ module.exports = class TestCommand extends Command {
             }
         }); */
     }
+}
+
+function countItems(arr) {
+    const countMap = {};
+
+    for (const element of arr) {
+        countMap[element] = (countMap[element] || 0) + 1;
+    }
+    return Object.entries(countMap).map(([value, count]) => ({
+        name: value,
+        amount: count
+    })
+    );
 }
