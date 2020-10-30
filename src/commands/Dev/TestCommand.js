@@ -11,18 +11,18 @@ module.exports = class TestCommand extends Command {
     }
     async run({ message, args, server }, t) {
 
-        /* const files = await this.client.database.Rpg.find()
-        let entries = 0
+/*  -------------------AUMENTAR OS VALUES DAS BACKPACKS-----------------------------------
+        const files = await this.client.database.Rpg.find()
 
-        files.forEach(file => {
+        files.forEach(async file => {
             let itens = []
             let loots = []
             file.inventory.forEach(inv => {
                 if (inv.type == "Item") {
                     itens.push(inv)
                 }
-              })
-              file.loots.forEach(loot => {
+            })
+            file.loots.forEach(loot => {
                 loots.push(loot.name)
             })
 
@@ -31,7 +31,7 @@ module.exports = class TestCommand extends Command {
 
             let itensAmount = 0;
             let lootsAmount = 0;
-            
+
             countedItems.forEach(oi => {
                 itensAmount += oi.amount
             })
@@ -39,14 +39,16 @@ module.exports = class TestCommand extends Command {
             countedLoots.forEach(tchau => {
                 lootsAmount += tchau.amount
             })
-            
-            const espaçoTotal = itensAmount + lootsAmount
 
-            file.backpack = {name: file.backpack.name, }
-           
-            entries++;
-        });
-        console.log("Documentos contados: " + entries) */
+            const espaçoTotal = itensAmount + lootsAmount
+            const user = await this.client.database.Rpg.findById(file._id)
+
+            user.backpack = { name: user.backpack.name, capacity: 20, value: espaçoTotal }
+            user.save()
+
+        }); */
+
+
 
         /* 
  =====================================DELETAR GUILDAS INATIVAS==========================================================
