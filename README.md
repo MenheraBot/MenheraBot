@@ -8,7 +8,7 @@
 
 > Menhera is animating more than 800 servers with her functionalities
 
-MenheraBot is an open source Discord bot made in JavaScript with [Discord.js](https://discord.js.org) [Luxanna](https://github.com/ySnoopyDogy) 
+MenheraBot is an open source Discord bot made in JavaScript with [Discord.js](https://discord.js.org) by [Luxanna](https://github.com/ySnoopyDogy) 
 Feel free to add a star ⭐ to the repository to promote the project!
 
 ## Features
@@ -44,6 +44,7 @@ She has many features, with **7 categories of commands**:
 ## Support
 
 You can enter my [support server](https://discord.gg/fZMdQbA) to help further. And don't forget to help me by voting for me
+<br></br>
  ![MenheraWidget](https://top.gg/api/widget/708014856711962654.svg?usernamecolor=FFFFFF&topcolor=000000)
 
  ## Self-host
@@ -75,4 +76,5 @@ That's it! With this configuration file, you should already be able to host your
 ## Source
 
 Menhera uses the AGPL-3.0 license. See the `LICENSE` file for more information!
+<br></br>
 Made with ❤️ by [Luxanna](https://github.com/ySnoopyDogy)
