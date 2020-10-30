@@ -12,7 +12,7 @@ client.loadLocales()
 client.loadCommands("./src/commands")
 client.loadEvents("./src/events")
 
-client.login(config.testToken).then(() => {
+client.login(config.token).then(() => {
     console.log("[INDEX] Logged in")
 }).catch((e) => console.log(`[FATALERROR] Failure connecting to Discord! ${e.message}!`))
 
