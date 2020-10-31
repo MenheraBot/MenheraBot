@@ -99,7 +99,7 @@ module.exports = class VillageCommand extends Command {
             let valor = itens[parseInt(args[0] - 1)].value * quantidade;
             if (!valor) return message.menheraReply("error", t("commands:village.invalid-value"))
             if (user.money < valor) return message.menheraReply("error", t("commands:village.poor"))
-            if ((user.backpack.value + quantidade) > user.backpack.quantity) return message.menheraReply("commands:village.backpack-full")
+            if ((user.backpack.value + quantidade) > user.backpack.capacity) return message.menheraReply("commands:village.backpack-full")
             message.menheraReply("success", t("commands:village.bruxa.bought", { quantidade, name: itens[parseInt(args[0] - 1)].name.slice(4), valor }))
 
             for (let j = 0; j < quantidade; j++) {
