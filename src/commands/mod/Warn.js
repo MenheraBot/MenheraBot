@@ -63,7 +63,7 @@ module.exports = class WarnCommand extends Command {
 
         const embed = new MessageEmbed()
             .setTitle(t("commands:warn.embed_title"))
-            .setDescription(`${message.author} ${t("commands:embed_description")} ${user}`)
+            .setDescription(`${message.author} ${t("commands:warn.embed_description")} ${user}`)
             .setImage(rand)
 
         this.client.database.Warns.findOne({
