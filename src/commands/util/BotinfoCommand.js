@@ -2,6 +2,7 @@ const Command = require("../../structures/command")
 const { MessageEmbed } = require("discord.js")
 const moment = require("moment")
 require("moment-duration-format")
+const version = require("../../../package.json").version
 module.exports = class BotinfoCommand extends Command {
     constructor(client) {
         super(client, {
@@ -49,7 +50,7 @@ module.exports = class BotinfoCommand extends Command {
             },
             {
                 name: `🇧🇷 | ${t("commands:botinfo.version")} | 🇧🇷`,
-                value: `\`\`\`${require("../../../package.json").version}\`\`\``,
+                value: `\`\`\`${version}\`\`\``,
                 inline: true
             }
             ])

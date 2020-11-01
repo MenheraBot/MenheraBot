@@ -1,5 +1,6 @@
 const Command = require("../../structures/command")
 const { MessageEmbed } = require("discord.js")
+const itemsFile = require("../../structures/RpgHandler").items
 module.exports = class VillageCommand extends Command {
     constructor(client) {
         super(client, {
@@ -9,7 +10,7 @@ module.exports = class VillageCommand extends Command {
             category: "rpg",
             clientPermissions: ["EMBED_LINKS"]
         })
-        this.itemsFile = require("../../structures/RpgHandler").items
+        
     }
     async run({ message, args, server }, t) {
 
@@ -53,7 +54,7 @@ module.exports = class VillageCommand extends Command {
 
         let itens = [];
 
-        this.itemsFile.bruxa.forEach(item => {
+        itemsFile.bruxa.forEach(item => {
             if (user.level >= item.minLevel && user.level < item.maxLevel) {
                 itens.push(item)
             }

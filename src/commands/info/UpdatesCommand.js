@@ -1,5 +1,6 @@
 const Command = require("../../structures/command")
 const { MessageEmbed } = require("discord.js")
+const version = require("../../../package.json").version
 module.exports = class UpdatesCommand extends Command {
     constructor(client) {
         super(client, {
@@ -15,7 +16,7 @@ module.exports = class UpdatesCommand extends Command {
         const owner = await this.client.users.fetch(this.client.config.owner[0])
 
         const embed = new MessageEmbed()
-            .setTitle(`${t("commands:updates.title")} ${require("../../../package.json").version}`)
+            .setTitle(`${t("commands:updates.title")} ${version}`)
             .setColor('#a7e74f')
             .setFooter(`${this.client.user.username} ${t("commands:updates.footer")} ${owner.tag}`, owner.displayAvatarURL({ format: "png", dynamic: true }))
             .setDescription(`**MOCHILAS**
