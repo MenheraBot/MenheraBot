@@ -4,7 +4,7 @@ module.exports = class FamiliaInfoCommand extends Command {
     constructor(client) {
         super(client, {
             name: "infofamilia",
-            aliases: ["if"],
+            aliases: ["if", "fi"],
             cooldown: 5,
             clientPermissions: ["EMBED_LINKS"],
             category: "rpg"

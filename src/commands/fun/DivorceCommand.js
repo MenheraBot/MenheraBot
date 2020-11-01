@@ -2,8 +2,8 @@ const Command = require("../../structures/command")
 module.exports = class DivorceCommand extends Command {
   constructor(client) {
     super(client, {
-      name: "divorciar",
-      aliases: ["divorce"],
+      name: "divorce",
+      aliases: ["divorciar"],
       cooldown: 10,
       category: "diversão",
       clientPermissions: ["EMBED_LINKS", "ADD_REACTIONS", "MANAGE_MESSAGES"]

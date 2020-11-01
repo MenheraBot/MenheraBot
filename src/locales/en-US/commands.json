@@ -373,7 +373,7 @@
         "high": "What a magnificent couple, just perfect",
         "perfect": "MY FRIEND, THOSE GUYS ARE MADE TO ANOTHER PRO"
     },
-    "succumb": {
+    "sucumba": {
         "description": "SUCUMBA MUCALOL (portuguese command)",
         "usage": "<menção || texto>",
         "start": "(this is a portuguese only command)\n\nSUCUMBA",
@@ -515,6 +515,7 @@
         "actions": "Actions",
         "fun": "Fun",
         "economy": "Economy",
+        "seconds": "seconds",
         "info": "Info",
         "mod": "Moderation",
         "rpg": "RPG",
@@ -526,7 +527,9 @@
         "without-info": "No command information for {{cmd}}",
         "cmd": "Command",
         "aliases": "Can be called by",
-        "desc": "Description"
+        "desc": "Description",
+        "howTo": "Usage",
+        "footer": "Syntax: <> = required, [] = optional"
     },
     "invite": {
         "description": "Add the bot on some server",
@@ -573,7 +576,7 @@
         "embed_footer": "Command executed by",
         "embed_description": "Votes help in promoting the bot, and this is extremely important"
     },
-    "ih": {
+    "infohabilidade": {
         "description": "Shows the skills of a particular class",
         "usage": "[option] [ability]",
         "invalid-option": "this option is not valid",
@@ -658,7 +661,7 @@
             "timeout": "You took too long to take action, and you were attacked!"
         }
     },
-    "if": {
+    "infofamilia": {
         "description": "View family information",
         "usage": "<family>",
         "invalid-args": "This family does not exist! \nFamilies available:",
@@ -690,7 +693,7 @@
         "items": "Items",
         "loots": "Battle Lotts"
     },
-    "joinfamily": {
+    "família": {
         "description": "Join a family",
         "non-aventure": "you are not an adventurer",
         "low-level": "families are released at level ** 10 **",

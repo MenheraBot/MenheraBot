@@ -4,8 +4,8 @@ const version = require("../../../package.json").version
 module.exports = class UpdatesCommand extends Command {
     constructor(client) {
         super(client, {
-            name: "update",
-            aliases: ["updates"],
+            name: "updates",
+            aliases: ["update"],
             cooldown: 5,
             clientPermissions: ["EMBED_LINKS"],
             category: "info"

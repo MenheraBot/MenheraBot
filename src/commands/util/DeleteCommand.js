@@ -3,8 +3,8 @@ const Command = require("../../structures/command")
 module.exports = class DeleteCommand extends Command {
     constructor(client) {
         super(client, {
-            name: "deletar",
-            aliases: ["delete"],
+            name: "delete",
+            aliases: ["deletar"],
             cooldown: 30,
             category: "util",
             clientPermissions: ["ADD_REACTIONS", "MANAGE_MESSAGES"]

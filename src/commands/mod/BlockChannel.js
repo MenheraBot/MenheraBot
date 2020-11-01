@@ -2,8 +2,8 @@ const Command = require("../../structures/command")
 module.exports = class BlockChannelCommand extends Command {
     constructor(client) {
         super(client, {
-            name: "bloquear",
-            aliases: ["blockcmd", "block", "blockchannel"],
+            name: "blockchannel",
+            aliases: ["blockcmd", "block", "bloquear"],
             cooldown: 10,
             userPermissions: ["MANAGE_CHANNELS"],
             category: "moderação"

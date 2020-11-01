@@ -3,8 +3,8 @@ const { MessageEmbed } = require("discord.js")
 module.exports = class FearCommand extends Command {
     constructor(client) {
         super(client, {
-            name: "medo",
-            aliases: ["fear"],
+            name: "fear",
+            aliases: ["medo"],
             clientPermissions: ["EMBED_LINKS"],
             category: "ações"
         })

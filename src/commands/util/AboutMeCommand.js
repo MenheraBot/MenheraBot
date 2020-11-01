@@ -2,8 +2,8 @@ const Command = require("../../structures/command")
 module.exports = class AboutMeCommand extends Command {
     constructor(client) {
         super(client, {
-            name: "sobremim",
-            aliases: ["aboutme"],
+            name: "aboutme",
+            aliases: ["sobremim"],
             cooldown: 10,
             category: "util"
         })

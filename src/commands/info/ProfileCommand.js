@@ -3,8 +3,8 @@ const { MessageEmbed } = require("discord.js")
 module.exports = class ProfileCommand extends Command {
     constructor(client) {
         super(client, {
-            name: "perfil",
-            aliases: ["profile"],
+            name: "profile",
+            aliases: ["perfil"],
             cooldown: 5,
             clientPermissions: ["EMBED_LINKS"],
             category: "info"

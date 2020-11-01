@@ -3,8 +3,8 @@ const { MessageEmbed } = require("discord.js")
 module.exports = class HugCommand extends Command {
     constructor(client) {
         super(client, {
-            name: "abraçar",
-            aliases: ["abracar", "hug"],
+            name: "hug",
+            aliases: ["abracar", "abraçar"],
             clientPermissions: ["EMBED_LINKS"],
             category: "ações"
         })

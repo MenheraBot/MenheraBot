@@ -3,8 +3,8 @@ const { MessageEmbed } = require("discord.js")
 module.exports = class ColorCommand extends Command {
   constructor(client) {
     super(client, {
-      name: "cor",
-      aliases: ["color"],
+      name: "color",
+      aliases: ["cor"],
       cooldown: 5,
       clientPermissions: ["EMBED_LINKS"],
       category: "info"

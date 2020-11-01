@@ -4,8 +4,8 @@ const itemsFile = require("../../structures/RpgHandler").items
 module.exports = class VillageCommand extends Command {
     constructor(client) {
         super(client, {
-            name: "vila",
-            aliases: ["village"],
+            name: "village",
+            aliases: ["vila"],
             cooldown: 5,
             category: "rpg",
             clientPermissions: ["EMBED_LINKS"]

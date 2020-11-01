@@ -10,8 +10,7 @@ module.exports = class Command {
             cooldown: options.cooldown || 3,
             userPermissions: options.userPermissions || null,
             clientPermissions: options.clientPermissions || null,
-            devsOnly: options.devsOnly || false,
-            usage: `m!${options.name} ${options.usage}` || `m!${options.name}`
+            devsOnly: options.devsOnly || false
         }
     }
 

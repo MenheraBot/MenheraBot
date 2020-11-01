@@ -5,7 +5,7 @@ module.exports = class AbilityInfoCommand extends Command {
     constructor(client) {
         super(client, {
             name: "infohabilidade",
-            aliases: ["ih"],
+            aliases: ["ih", "abilityinfo"],
             cooldown: 10,
             clientPermissions: ["EMBED_LINKS"],
             category: "rpg"

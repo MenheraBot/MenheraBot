@@ -3,8 +3,8 @@ const { MessageEmbed } = require("discord.js")
 module.exports = class PokeCommand extends Command {
     constructor(client) {
         super(client, {
-            name: "cutucar",
-            aliases: ["poke"],
+            name: "poke",
+            aliases: ["cutucar"],
             clientPermissions: ["EMBED_LINKS"],
             category: "ações"
         })

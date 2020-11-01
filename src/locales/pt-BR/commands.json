@@ -59,6 +59,7 @@
     },
     "grumble": {
         "description": "Resmungue humpf",
+        "usage": "",
         "embed_title": "Humpf",
         "embed_description": "está resmungando"
     },
@@ -229,6 +230,7 @@
     },
     "shop": {
         "description": "Acesse o brechó da Menhera",
+        "usage": "",
         "embed_title": "Brechó da Menhera",
         "embed_description_saldo": "Seu saldo atual é de **{{value}}**⭐ estrelinhas",
         "embed_footer": "Digite no chat a opção de sua escolha",
@@ -315,6 +317,7 @@
     },
     "divorce": {
         "description": "Não quer mais ficar casado com aquele corno? Divorcie com este comando",
+        "usage": "",
         "author-single": "você não está casado com ninguém",
         "confirmation": "Você realmente quer se divorciar de",
         "canceled": "eu acho bom que ainda estejam casados, mas se tu pensou em terminar uma vez, talvez pense mais vezes... Se o relacionamento não te faz bem, não tem por que continuar...",
@@ -322,14 +325,17 @@
         "confirmed_end": "Eu sinto muito por ter acabado tudo... Mas ta tudo bem, todos relacionamentos são apenas experiências, tu ainda tem muita vida pela frente, e ainda vai encontrar pessoas que te fazem tão bem quanto tu merece"
     },
     "fodase": {
-        "description": "Alguem mandou algo que ninguem perguntou? Taque o fodase"
+        "description": "Alguem mandou algo que ninguem perguntou? Taque o fodase",
+        "usage": ""
     },
     "humor": {
         "description": "Mande quando alguem fizer aquela piadoca do joca",
+        "usage": "",
         "phrase": "achou você engraçadão ein"
     },
     "hunt": {
         "description": "Caçe demônios como XANDÃO",
+        "usage": "",
         "no-args": "você deve escolher entre caçar",
         "help": "**COMO FUNCIONA O CAÇAR?**\nVocê pode caçar a cada uma hora, e você pode escolher entre 4 caças: `demonios`, `anjos`, `semideuses` e `deuses`\nQuanto mais pra direita, mais valioso, mas também, mais dificil de se caçar, e menor a chance de sucesso\nEm meu servidor de suporte, as chances de caça são maiores!\n**Boas Caçadas**",
         "probabilities": "**PROBABILIDADES:**\nÉ selecionado um número aleatório dentro dos próximos. Cada número é a quantidade de caças\nDica: Em meu servidor de suporte, as chances de caça são maiores!\n\nDemônio: `{{probabilidadeDemonio}}`\nAnjo: `{{probabilidadeAnjo}}`\nSemideuses: `{{probabilidadeSD}}`\nDeuses: `{{probabilidadeDeuses}}`",
@@ -373,7 +379,7 @@
         "high": "Que casal magnífico véi, perfeitos apenas",
         "perfect": "MEEEU AMIGO, OS CARA SÃO FEITOS UM PRO OUTRO"
     },
-    "succumb": {
+    "sucumba": {
         "description": "SUCUMBA MUCALOL",
         "usage": "<menção || texto>",
         "start": "SUCUMBA",
@@ -434,16 +440,19 @@
     },
     "updates": {
         "description": "Veja as minhas últimas atualzações",
+        "usage": "",
         "title": "Notas de atualização da versão",
         "footer": "foi atualizada por"
     },
     "blockchannel": {
         "description": "Bloqueie ou Desbloqueie o canal atual de usar meus comandos",
+        "usage": "",
         "block": "meus comandos foram **Bloqueados** neste canal! Use {{prefix}}bloquear para desbloqueá-los",
         "unblock": "meus comandos foram **Liberados** neste canal!"
     },
     "language": {
         "description": "Troque a língua com que eu falo neste servidor",
+        "usage": "",
         "question": "Qual língua você quer que eu fale?"
     },
     "prefix": {
@@ -497,6 +506,7 @@
     },
     "botinfo": {
         "description": "Mostra as informações atuais do bot",
+        "usage": "",
         "embed_description": "Oi, meu nome é **{{name}}**, e eu sou uma Bot Brasileira para Discord com foco em diversão e RPG!\n\nEu sou feita em JavaScript com discord.js! Fui criada em **{{createdAt}}** e entrei nesse servidor **{{joinedAt}}**",
         "embed_footer": "foi criada por",
         "channels": "Canais",
@@ -505,6 +515,7 @@
     },
     "delete": {
         "description": "Exclua seu perfil do banco de dados",
+        "usage": "",
         "confirm": "Você tem certeza que deseja excluir sua conta da database do servidor?\nVocê tem 5 segundos para decidir",
         "negated": "Perfeito!! Seu perfil **não** foi excluído",
         "acepted": "Seu perfil foi deletado da minha database :("
@@ -515,6 +526,7 @@
         "actions": "Ações",
         "fun": "Diversão",
         "economy": "Economia",
+        "seconds": "segundos",
         "info": "Info",
         "mod": "Moderação",
         "rpg": "RPG",
@@ -526,16 +538,20 @@
         "without-info": "Sem informações para o comando {{cmd}}",
         "cmd": "Comando",
         "aliases": "Pode ser chamado por",
-        "desc": "Descrição"
+        "desc": "Descrição",
+        "footer": "Sintaxe: <> = necessita, [] = opcional",
+        "howTo": "Como usar"
     },
     "invite": {
         "description": "Adicione o bot em algum servidor",
+        "usage": "",
         "embed_title": "Clique para me adicionar em algum servidor",
         "embed_footer": "Comando executado por {{user}}",
         "embed_description": "Este link te levará direto para a página do discord para adicionar o bot em algum servidor que você administre"
     },
     "ping": {
         "description": "Mostra o ping do bot e de sua API",
+        "usage": "",
         "latency": "Latência:",
         "api": "Latência da API:"
     },
@@ -547,6 +563,7 @@
     },
     "roll": {
         "description": "Use um DR para resetar seu tempo de caçadas",
+        "usage": "",
         "can-hunt": "você já pode caçar! Caçe antes de usar um Roll!",
         "poor": "você não possui DailyRolls! Vote em mim para resgatar um DR",
         "success": "prontinho, você resetou seu tempo de caçadas, pode caçar!"
@@ -564,16 +581,18 @@
     },
     "support": {
         "description": "Link de convite para o servidor de suporte do Bot",
+        "usage": "",
         "embed_title": "Clique aqui para entrar no servidor de suporte da Menhera",
         "emebd_footer": "Comando executado por"
     },
     "vote": {
         "description": "Vote no bot (pfv vote, isso ajuda muito X3 >.<)",
+        "usage": "",
         "embed_title": "Clique para votar em mim",
         "embed_footer": "Comando executado por",
         "embed_description": "Votos ajudam na divulgação do bot, e isso é extremamente importante"
     },
-    "ih": {
+    "infohabilidade": {
         "description": "Mostra as habilidades de uma determinada classe",
         "usage": "[opção] [habilidade]",
         "invalid-option": "esta opção não é válida",
@@ -594,6 +613,7 @@
     },
     "boss": {
         "description": "Luta contra um BOSS",
+        "usage": "",
         "non-aventure": "você não é um aventureiro",
         "min-level": "Você precisa estar nível **20** para lutar contra bosses",
         "amarelou": "você pensou melhor, e acabou desistindo de batalhar contra bosses",
@@ -631,6 +651,7 @@
     },
     "dungeon": {
         "description": "Vá para uma aventura na dungeon",
+        "usage": "",
         "non-aventure": "você não é um aventureiro",
         "no-enemy": "Essa não! Ocorreu um erro quando fui detectar qual inimigo você encontrará, desculpe por isso... Tente novamente",
         "preparation": {
@@ -658,7 +679,7 @@
             "timeout": "Você demorou para tomar uma atitude, e foi atacado!"
         }
     },
-    "if": {
+    "infofamilia": {
         "description": "Veja as informações de uma família",
         "usage": "<familia>",
         "invalid-args": "Esta família não existe!\nFamílias disponíveis:",
@@ -678,6 +699,7 @@
     },
     "inventory": {
         "description": "Veja seu inventário",
+        "usage": "",
         "non-aventure": "você não é um aventureiro",
         "title": "Seu inventário",
         "weapon": "Arma",
@@ -690,8 +712,9 @@
         "items": "Itens",
         "loots": "Espólios de Batalha"
     },
-    "joinfamily": {
+    "família": {
         "description": "Registra-se em uma família",
+        "usage": "",
         "non-aventure": "você não é um aventureiro",
         "low-level": "as famílias são liberadas no nível **10**",
         "has-family": "você já está na família {{name}}!",
@@ -699,6 +722,7 @@
     },
     "register": {
         "description": "Registre-se um aventureiro",
+        "usage": "",
         "already": "você já é um aventureiro, {{name}}-sama",
         "text": "Bem-vindo!\nVocê deseja ser um aventureiro?\nQual classe você deseja ser?\nDúvidas com qual classe escolher? Entre no [SITE DA MENHERA](https://sites.google.com/view/menherabot/classes) para ver cada classe\n",
         "title": "Guilda de Aventureiros",
@@ -710,6 +734,7 @@
     },
     "reset": {
         "description": "Reseta seu perfil do RPG",
+        "usage": "",
         "non-aventure": "você não é um aventureiro",
         "low-level": "você precisa estar no nível **7** para poder resetar",
         "confirm": "você realmente deseja resetar seu perfil do RPG? Esta ação é **IRREVERSÍVEL**\nDigite `sim` para confirmar",
@@ -750,6 +775,7 @@
     },
     "village": {
         "description": "Vá para a vila de Boleham",
+        "usage": "",
         "non-aventure": "você não é um aventureiro",
         "backpack-full": "sua mochila não tem espaço para comprar esses produtos",
         "cost": "Custo",

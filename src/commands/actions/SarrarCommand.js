@@ -4,6 +4,7 @@ module.exports = class SarrarCommand extends Command {
   constructor(client) {
     super(client, {
       name: "sarrar",
+      aliases: ["dance"],
       clientPermissions: ["EMBED_LINKS", "ADD_REACTIONS", "MANAGE_MESSAGES"],
       category: "ações"
     })

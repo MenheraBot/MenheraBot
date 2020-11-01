@@ -5,8 +5,8 @@ moment.locale("pt-br")
 module.exports = class MarryCommand extends Command {
     constructor(client) {
         super(client, {
-            name: "casar",
-            aliases: ["marry"],
+            name: "marry",
+            aliases: ["casar"],
             category: "diversão",
             clientPermission: ["EMBED_LINKS", "ADD_REACTIONS", "MANAGE_MESSAGES"],
         })

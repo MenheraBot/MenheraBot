@@ -3,8 +3,8 @@ const { MessageEmbed } = require("discord.js")
 module.exports = class ResurrectCommand extends Command {
     constructor(client) {
         super(client, {
-            name: "ressuscitar",
-            aliases: ["reviver", "resurrect"],
+            name: "resurrect",
+            aliases: ["reviver", "ressuscitar"],
             clientPermissions: ["EMBED_LINKS"],
             category: "ações"
         })

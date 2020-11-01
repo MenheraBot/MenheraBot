@@ -3,8 +3,8 @@ const { MessageEmbed } = require("discord.js")
 module.exports = class WalletCommand extends Command {
     constructor(client) {
         super(client, {
-            name: "carteira",
-            aliases: ["wallet"],
+            name: "wallet",
+            aliases: ["carteira"],
             category: "economia",
             clientPermissions: ["EMBED_LINKS"]
         })

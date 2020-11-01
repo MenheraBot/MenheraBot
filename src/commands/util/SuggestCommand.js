@@ -5,8 +5,8 @@ const { MessageEmbed } = require("discord.js")
 module.exports = class SuggestCommand extends Command {
     constructor(client) {
         super(client, {
-            name: "sugerir",
-            aliases: ["suggest", "sugestão"],
+            name: "suggest",
+            aliases: ["sugerir", "sugestão"],
             cooldown: 5,
             category: "util",
             usage: "<sugestão>"

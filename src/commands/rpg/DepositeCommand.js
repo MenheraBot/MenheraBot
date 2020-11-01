@@ -2,8 +2,8 @@ const Command = require("../../structures/command")
 module.exports = class DepositeCommand extends Command {
     constructor(client) {
         super(client, {
-            name: "depositar",
-            aliases: ["deposite"],
+            name: "deposite",
+            aliases: ["depositar"],
             cooldown: 5,
             clientPermissions: ["EMBED_LINKS"],
             category: "rpg"

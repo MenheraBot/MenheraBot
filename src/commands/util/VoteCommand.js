@@ -5,8 +5,8 @@ const { MessageEmbed } = require("discord.js")
 module.exports = class VoteCommand extends Command {
     constructor(client) {
         super(client, {
-            name: "votar",
-            aliases: ["vote", "upvote"],
+            name: "vote",
+            aliases: ["votar", "upvote"],
             cooldown: 5,
             description: "Vote no bot (pfv vote, isso ajuda muito X3 >.< ",
             category: "util",

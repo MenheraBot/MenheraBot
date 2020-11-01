@@ -4,8 +4,8 @@ const moment = require("moment")
 module.exports = class HuntCommand extends Command {
     constructor(client) {
         super(client, {
-            name: "caçar",
-            aliases: ["cacar", "caça", "caca", "hunt"],
+            name: "hunt",
+            aliases: ["cacar", "caça", "caca", "caçar"],
             category: "diversão",
             clientPermissions: ["EMBED_LINKS"]
         })
