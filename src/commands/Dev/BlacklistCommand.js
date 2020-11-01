@@ -10,40 +10,38 @@ module.exports = class BlackilistCommand extends Command {
     }
     async run({ message, args, server }, t) {
 
-        if(!args[1]) return message.channel.send("Diga-me o id do usuario")
+        if(!args[1]) return message.menheraReply("error", "só faltou o id né minha flor")
 
         let user = await this.client.database.Users.findOne({ id: args[1] })
 
-        let user2 = await this.client.users.cache.get(args[1])
+        let user2 = await this.client.users.fetch(args[1]).catch()
 
         switch (args[0]) {
             case "add":
-                if (!user || user === null) return message.channel.send("<:negacao:759603958317711371> | usuário não encontrado, tente informar o ID da próxima vez.")
+                if (!user || user === null) return message.menheraReply("error", "user not found")
                 let reason = args.slice(2).join(" ")
                 if (!reason) reason = "Sem razão informada"
                 user.ban = true
                 user.banReason = reason;
                 user.save()
 
-                message.channel.send("<:positivo:759603958485614652> | usuário banido com sucesso.")
+                message.menheraReply("success", "usuário banido de usar a Menhera!")
                 break
             case "remove":
-                if (!user || user === null) return message.channel.send("<:negacao:759603958317711371> | usuário não encontrado, tente informar o ID da próxima vez.")
+                if (!user || user === null) return message.menheraReply("error", "user not found")
                 user.ban = false
                 user.banReason = null
                 user.save()
 
-                message.reply("<:positivo:759603958485614652> | usuário desbanido com sucesso.")
+                message.menheraReply("success", "usuário desbanido")
                 break
             case "find":
-                if (!user || user === null) return message.channel.send("<:negacao:759603958317711371> | usuário não encontrado, tente informar o ID da próxima vez.")
+                if (!user || user === null) return message.menheraReply("error", "user not found")
                 let msg = `== USER BANNED INFO ==\n\n• User :: ${user2.tag} - (${user2.id})\n• Banned :: ${user.ban}\n• Reason :: ${user.banReason}`
-                message.channel.send(msg, {
-                    code: "asciidoc"
-                })
+                message.channel.send(msg, {code: "asciidoc"})
                 break
             default:
-                message.channel.send("<:negacao:759603958317711371> | porra lux, n sabe nem usar o próprio bot? Opções: `add`, `remove`, `find`")
+                message.menheraReply("error", "porra lux, n sabe nem usar o próprio bot? Opções: `add`, `remove`, `find`")
         }
     }
 }
