@@ -23,7 +23,10 @@ module.exports = class UpdatesCommand extends Command {
 O rpg agora tem mochilas! Você pode ver sua mochila no inventário!Você não pode ter mais itens do que sua mochila comporta (isso n acontece pra quem tem mais itens do que espaço atualmente)
 
         **ATENÇÃO:** Darei 7 dias para todos que possuem mais itens do que a mochila comporta em seu inventário gastarem seus itens, caso contrário, será removido todos os itens até a mochila ficar de acordo com o inventário!
-`)
+
+        • NOVO: Agora é possivel comprar mochilas no ferreiro!
+
+        `)
 
 
         message.channel.send(message.author, embed)
