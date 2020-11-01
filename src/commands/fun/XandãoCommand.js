@@ -55,7 +55,7 @@ module.exports = class XandãoCommand extends Command {
         let fala;
         if (!texto) {
             fala = fraseEscolhida;
-        } else fala = texto;
+        } else fala = `${texto}\n\n📢 | ${message.author}`;
 
         try {
             const webhooks = await message.channel.fetchWebhooks();
