@@ -261,7 +261,7 @@ function lojaComprar(message, embedMessage, user, saldoAtual, t) {
 
                     const valval = valor * valorRoll //valor para a traduçãp
 
-                    message.menheraReply("success", t("commands:shop.dataRolls_fields.buy_rolls", { quantity: valor, value: valval, rolls: user.rolls, stars: user.estrelinhas }))
+                    message.menheraReply("success", t("commands:shop.dataRolls_fields.buy_rolls.success", { quantity: valor, value: valval, rolls: user.rolls, stars: user.estrelinhas }))
                 }
             });
         }
