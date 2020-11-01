@@ -6,7 +6,7 @@ module.exports = class VillageCommand extends Command {
         super(client, {
             name: "vila",
             aliases: ["village"],
-            cooldown: 10,
+            cooldown: 5,
             category: "rpg",
             clientPermissions: ["EMBED_LINKS"]
         })
