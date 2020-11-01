@@ -776,11 +776,12 @@
             "title": "Blacksmith",
             "description": "Choose what you want to manufacture",
             "field_name": "Options",
-            "field_value": "1 - **Weapons**\n2 - **Armor**",
+            "field_value": "1 - **Weapons**\n2 - **Armor**\n3 - **Backpacks**",
             "footer": "Type your choice in chat",
             "itens-needed": "Required Items",
             "dmg": "Damage",
             "prt": "Protection",
+            "cpt": "Capacity",
             "cost": "Cost",
             "arma": {
                 "description": "Your weapon will be replaced by your choice, so be careful! \n \nChoose what you want to manufacture",
@@ -798,6 +799,14 @@
                 "perfeito": "Perfect Breastplate",
                 "deuses": "Breastplate of the Gods",
                 "change": "you changed your armor to`{{armadura}}"
+            },
+            "mochila": {
+                "description": "Your backpack will be replaced by your choice, so be careful! \n \nChoose what you want to manufacture",
+                "cobra": "Snakeskin backpack",
+                "poor": "you don't have {{value}}",
+                "escama": "Kraken scale backpack",
+                "rabadon": "Rabadon's backpack",
+                "change": "you changed your backpack to`{{mochila}}"
             }
         },
         "hotel": {

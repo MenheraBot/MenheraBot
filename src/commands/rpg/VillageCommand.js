@@ -10,7 +10,7 @@ module.exports = class VillageCommand extends Command {
             category: "rpg",
             clientPermissions: ["EMBED_LINKS"]
         })
-        
+
     }
     async run({ message, args, server }, t) {
 
@@ -134,11 +134,19 @@ module.exports = class VillageCommand extends Command {
 
         collector.on('collect', m => {
 
-            if (m.content === "1") {
-                this.ferreiroArma(message, user, msg, t)
-            } else if (m.content === "2") {
-                this.ferreiroArmadura(message, user, msg, t)
-            } else return message.menheraReply("error", t("commands:village.invalid-option"))
+            switch (m.content) {
+                case "1":
+                    this.ferreiroArma(message, user, msg, t)
+                    break;
+                case "2":
+                    this.ferreiroArmadura(message, user, msg, t)
+                    break;
+                case "3":
+                    this.ferreiroMochila(message, user, msg, t)
+                    break;
+                default:
+                    return message.menheraReply("error", t("commands:village.invalid-option"))
+            }
 
         })
     }
@@ -369,6 +377,125 @@ module.exports = class VillageCommand extends Command {
                 if (user.backpack.value < 0) user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: 0 }
                 user.save()
                 message.menheraReply("success", t("commands:village.ferreiro.armadura.change", { armadura: "Peitoral dos Deuses" }))
+            } else return message.menheraReply("error", t("commands:village.invalid-option"))
+        })
+    }
+    ferreiroMochila(message, user, msg, t) {
+
+        let embed = new MessageEmbed()
+            .setColor('#ffffff')
+            .setTitle(`⚒️ | ${t("commands:village.ferreiro.title")}`)
+            .setDescription(`<:atencao:759603958418767922> | ${t("commands:village.ferreiro.mochila.description")}`)
+            .addFields([{
+                name: `1 - ${t("commands:village.ferreiro.mochila.cobra")}`,
+                value: `🧺 | ${t("commands:village.ferreiro.cpt")}: **35**\n💎 | ${t("commands:village.ferreiro.cost")}: **2000**\n<:Chest:760957557538947133> | ${t("commands:village.ferreiro.itens-needed")}: **5 Pele de Cobra**`
+            },
+            {
+                name: `2 - ${t("commands:village.ferreiro.mochila.escama")}`,
+                value: `🧺 | ${t("commands:village.ferreiro.cpt")}: **50**\n💎 | ${t("commands:village.ferreiro.cost")}: **50000**\n<:Chest:760957557538947133> | ${t("commands:village.ferreiro.itens-needed")}: **5 Escamas de Kraken**`
+            },
+            {
+                name: `3 - ${t("commands:village.ferreiro.mochila.rabadon")}`,
+                value: `🧺 | ${t("commands:village.ferreiro.cpt")}: **100**\n💎 | ${t("commands:village.ferreiro.cost")}: **250000**\n<:Chest:760957557538947133> | ${t("commands:village.ferreiro.itens-needed")}: **5 Capuz da Morte de Rabadon**`
+            }
+            ])
+            .setFooter(t("commands:village.ferreiro.footer"))
+
+        msg.edit(message.author, embed)
+
+        const filter = m => m.author.id === message.author.id;
+        const collector = message.channel.createMessageCollector(filter, { max: 1 });
+
+        let nameLoots = []
+
+        user.loots.forEach(loot => {
+            nameLoots.push(loot.name)
+        })
+
+        let contado = countItems(nameLoots)
+
+        let filtradoCobra = contado.filter(f => f.name === "Pele de cobra")
+        let filtradoEscama = contado.filter(f => f.name === "Escama de Kraken")
+        let filtradoRabadon = contado.filter(f => f.name === "Capuz da Morte de Rabadon")
+
+        collector.on('collect', m => {
+
+            if (m.content === "1") {
+                if (user.money < 2000) return message.menheraReply("error", t("commands:village.poor"))
+                if (!filtradoCobra[0]) return message.menheraReply("error", `${t("commands:village.ferreiro.mochila.poor", { value: 5 })} Pele de Cobra`)
+                if (filtrado[0].amount < 5) return message.menheraReply("error", `${t("commands:village.ferreiro.mochila.poor", { value: 5 })} Pele de Cobra`)
+
+                user.backpack = {
+                    name: "Mochila de Pele de Cobra",
+                    capacity: 35,
+                    value: user.backpack.value
+                }
+                user.money = user.money - 2000
+                for (let j = 0; j < 1; j++) {
+                    user.loots.splice(user.loots.findIndex(function (i) {
+                        return i.name === filtradoCobra[0].name;
+                    }), 1);
+                    if (user.backpack) {
+                        const newValue = user.backpack.value - 1;
+                        user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: newValue }
+                    }
+                }
+
+
+                if (user.backpack.value < 0) user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: 0 }
+                user.save()
+                message.menheraReply("success", t("commands:village.ferreiro.mochila.change", { mochila: "Mochila de Pele de Cobra" }))
+
+            } else if (m.content === "2") {
+                if (user.money < 50000) return message.menheraReply("error", t("commands:village.poor"))
+                if (!filtradoEscama[0]) return message.menheraReply("error", `${t("commands:village.ferreiro.mochila.poor", { value: 5 })} Escamas de Kraken`)
+                if (filtradoEscama[0].amount < 5) return message.menheraReply("error", `${t("commands:village.ferreiro.mochila.poor", { value: 5 })} Escamas de Kraken`)
+
+                user.backpack = {
+                    name: "Mochila de escamas de Kraken",
+                    capacity: 50,
+                    value: user.backpack.value
+                }
+                user.money = user.money - 50000
+                for (let j = 0; j < 3; j++) {
+                    user.loots.splice(user.loots.findIndex(function (i) {
+                        return i.name === filtradoEscama[0].name;
+                    }), 1);
+                    if (user.backpack) {
+                        const newValue = user.backpack.value - 1;
+                        user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: newValue }
+                    }
+                }
+
+
+                if (user.backpack.value < 0) user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: 0 }
+                user.save()
+                message.menheraReply("success", t("commands:village.ferreiro.mochila.change", { mochila: "Mochila de escamas de Kraken" }))
+
+            } else if (m.content === "3") {
+                if (user.money < 250000) return message.menheraReply("error", t("commands:village.poor"))
+                if (!filtradoRabadon[0]) return message.menheraReply("error", `${t("commands:village.ferreiro.mochila.poor", { value: 5 })} Capuz da Morte de Rabadon`)
+                if (filtradoRabadon[0].amount < 5) return message.menheraReply("error", `${t("commands:village.ferreiro.mochila.poor", { value: 5 })} Capuz da Morte de Rabadon`)
+
+                user.protection = {
+                    name: "Mochila de Rabadon",
+                    capacity: 100,
+                    value: user.backpack.value
+                }
+                user.money = user.money - 250000
+                for (let j = 0; j < 5; j++) {
+                    user.loots.splice(user.loots.findIndex(function (i) {
+                        return i.name === filtradoRabadon[0].name;
+                    }), 1);
+                    if (user.backpack) {
+                        const newValue = user.backpack.value - 1;
+                        user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: newValue }
+                    }
+                }
+
+                if (user.backpack.value < 0) user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: 0 }
+                user.save()
+                message.menheraReply("success", t("commands:village.ferreiro.mochila.change", { mochila: "Mochila de Rabadon" }))
             } else return message.menheraReply("error", t("commands:village.invalid-option"))
         })
     }

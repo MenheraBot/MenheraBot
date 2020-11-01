@@ -776,11 +776,12 @@
             "title": "Ferreiro",
             "description": "Escolha o que desejas fabricar",
             "field_name": "Opções",
-            "field_value": "1 - **Armas**\n2 - **Armaduras**",
+            "field_value": "1 - **Armas**\n2 - **Armaduras**\n3 - **Mochilas**",
             "footer": "Digite no chat sua escolha",
             "itens-needed": "Itens Necessários",
             "dmg": "Dano",
             "prt": "Proteção",
+            "cpt": "Capacidade",
             "cost": "Custo",
             "arma": {
                 "description": "Sua arma sera substituída pela sua escolha, então cuidado!\n\nEscolha o que desejas fabricar",
@@ -798,6 +799,14 @@
                 "perfeito": "Peitoral Perfeito",
                 "deuses": "Peitoral dos Deuses",
                 "change": "você trocou sua armadura para `{{armadura}}"
+            },
+            "mochila": {
+                "description": "Sua mochila sera substituída pela sua escolha, então cuidado!\n\nEscolha o que desejas fabricar",
+                "cobra": "Mochila de pele de Cobra",
+                "poor": "você não possui {{value}}",
+                "escama": "Mochila de escamas de Kraken",
+                "rabadon": "Mochila de Rabadon",
+                "change": "você trocou sua mochila para `{{mochila}}"
             }
         },
         "hotel": {

@@ -584,10 +584,6 @@
                 },
                 {
                     "name": "Perna do Goblin Campeão",
-                    "value": 51
-                },
-                {
-                    "name": "Perna do Goblin Campeão",
                     "value": 90
                 }
             ],
@@ -705,7 +701,7 @@
         {
             "loots": [
                 {
-                    "name": "Escama",
+                    "name": "Escama de Kraken",
                     "value": 150
                 }
             ],
