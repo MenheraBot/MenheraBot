@@ -383,7 +383,7 @@ module.exports = class VillageCommand extends Command {
     ferreiroMochila(message, user, msg, t) {
 
         let embed = new MessageEmbed()
-            .setColor('#ffffff')
+            .setColor('#fcf7f7')
             .setTitle(`⚒️ | ${t("commands:village.ferreiro.title")}`)
             .setDescription(`<:atencao:759603958418767922> | ${t("commands:village.ferreiro.mochila.description")}`)
             .addFields([{
