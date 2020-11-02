@@ -30,7 +30,7 @@ module.exports = class ResurrectCommand extends Command {
         const embed = new MessageEmbed()
             .setTitle(t("commands:ressurect.embed_title"))
             .setColor("#000000")
-            .setDescription(`${message.author} ${t("commands:embed_description")} ${user}`)
+            .setDescription(`${message.author} ${t("commands:ressurect.embed_description")} ${user}`)
             .setImage(rand)
             .setThumbnail(avatar)
             .setAuthor(message.author.tag, avatar);
