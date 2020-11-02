@@ -108,13 +108,13 @@ module.exports = class DungeonCommand extends Command {
             if (escolhas.includes(choice)) {
                 this.client.rpgChecks.battle(message, options[choice - 1], user, inimigo, type, familia, t)
             } else {
-                this.client.rpgChecks.enemyShot(message, `⚔️ |  ${t("commands:dungeon.battle.newTecnique")}`, user, inimigo, type, familia, t)
+                this.client.rpgChecks.enemyShot(message, user, inimigo, type, familia, t, `⚔️ |  ${t("commands:dungeon.battle.newTecnique")}`)
             }
         })
 
         setTimeout(() => {
             if (!time) {
-                this.client.rpgChecks.enemyShot(message, `⚔️ |  ${t("commands:dungeon.battle.timeout")}`, user, inimigo, type, familia, t)
+                this.client.rpgChecks.enemyShot(message, user, inimigo, type, familia, t, `⚔️ |  ${t("commands:dungeon.battle.timeout")}`)
             }
         }, 15000)
     }

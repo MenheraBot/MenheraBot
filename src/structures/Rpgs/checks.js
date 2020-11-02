@@ -57,12 +57,12 @@ module.exports.battle = async (message, escolha, user, inimigo, type, familia, t
     if (escolha.name == "Ataque Básico" || escolha.name == "Basic Attack") {
         danoUser = escolha.damage
     } else if (escolha.name == "Morte Instantânea") {
-        if (user.mana < user.maxMana) return this.enemyShot(message, `⚔️ | ${t("roleplay:battle.no-mana", { name: escolha.name })}`, user, inimigo, type, familia, t)
+        if (user.mana < user.maxMana) return this.enemyShot(message, user, inimigo, type, familia, t, `⚔️ | ${t("roleplay:battle.no-mana", { name: escolha.name })}`)
         danoUser = escolha.damage * user.abilityPower;
         user.mana = 0;
     } else {
 
-        if (user.mana < escolha.cost) return this.enemyShot(message, `⚔️ | ${t("roleplay:battle.no-mana", { name: escolha.name })}`, user, inimigo, type, familia, t)
+        if (user.mana < escolha.cost) return this.enemyShot(message, user, inimigo, type, familia, t, `⚔️ | ${t("roleplay:battle.no-mana", { name: escolha.name })}`)
         if (escolha.heal > 0) {
             user.life = user.life + escolha.heal
             if (user.life > user.maxLife) user.life = user.maxLife
@@ -78,9 +78,9 @@ module.exports.battle = async (message, escolha, user, inimigo, type, familia, t
         if (danoDado < 0) danoDado = 0;
         let vidaInimigo = inimigo.life - danoDado;
 
-        message.menheraReply("sword", t("roleplay:battle.attack", { enemy: inimigo.name, choice: escolha.name, damage: danoDado }))
+        const toSay = `⚔️ | ${t("roleplay:battle.attack", { enemy: inimigo.name, choice: escolha.name, damage: danoDado })}`
 
-        if (vidaInimigo < 1) return user.save().then(() => this.resultBattle(message, user, inimigo, t))
+        if (vidaInimigo < 1) return user.save().then(() => this.resultBattle(message, user, inimigo, t, toSay))
 
         const enemy = {
             name: inimigo.name,
@@ -92,24 +92,22 @@ module.exports.battle = async (message, escolha, user, inimigo, type, familia, t
             ataques: inimigo.ataques
         }
 
-        user.save().then(() => this.enemyShot(message, "", user, enemy, type, familia, t))
+        user.save().then(() => this.enemyShot(message, user, enemy, type, familia, t, toSay))
     }, 500)
 }
 
-module.exports.morte = async (message, user, t) => {
+module.exports.morte = async (message, user, t, toSay) => {
 
-    message.menheraReply("error", t("roleplay:death"))
+    message.menheraReply("error", `${toSay}\n\n${t("roleplay:death")}`)
     user.death = Date.now() + 43200000;
     user.life = 0
     user.inBattle = false
     user.save()
 }
 
-module.exports.enemyShot = async (message, text, user, inimigo, type, familia, t) => {
+module.exports.enemyShot = async (message, user, inimigo, type, familia, t, toSay) => {
 
     const habilidades = await this.getAbilities(user, familia)
-
-    if (text.length > 0) message.channel.send(text)
 
     let danoRecebido
     let armadura = user.armor + user.protection.armor
@@ -130,14 +128,14 @@ module.exports.enemyShot = async (message, text, user, inimigo, type, familia, t
     let vidaUser = user.life - danoRecebido;
 
     if (vidaUser < 1) {
-        return this.morte(message, user, t)
+        return this.morte(message, user, t, toSay)
     } else {
         user.life = vidaUser
-        user.save().then(() => this.continueBattle(message, inimigo, habilidades, user, type, ataque, familia, t))
+        user.save().then(() => this.continueBattle(message, inimigo, habilidades, user, type, ataque, familia, t, toSay))
     }
 }
 
-module.exports.continueBattle = async (message, inimigo, habilidades, user, type, ataque, familia, t) => {
+module.exports.continueBattle = async (message, inimigo, habilidades, user, type, ataque, familia, t, toSay) => {
 
     let options = [];
 
@@ -189,7 +187,7 @@ module.exports.continueBattle = async (message, inimigo, habilidades, user, type
         .setFooter(t("roleplay:battle.footer"))
         .setColor('#f04682')
         .setDescription(texto)
-    message.channel.send(message.author, embed)
+    message.channel.send(toSay, embed)
 
     const filter = m => m.author.id === message.author.id;
     const collector = message.channel.createMessageCollector(filter, { max: 1, time: 15000, errors: ["time"] });
@@ -202,13 +200,13 @@ module.exports.continueBattle = async (message, inimigo, habilidades, user, type
         if (escolhas.includes(choice)) {
             this.battle(message, options[choice - 1], user, inimigo, type, familia, t) //Mandar os dados de ataque, e defesa do inimigo, para fazer o calculo lá
         } else {
-            this.enemyShot(message, `⚔️ |  ${t("roleplay:battle.new-tatic")}`, user, inimigo, type, familia, t)
+            this.enemyShot(message, user, inimigo, type, familia, t, `⚔️ |  ${t("roleplay:battle.new-tatic")}`)
         }
     })
 
     setTimeout(() => {
         if (!time) {
-            this.enemyShot(message, `⚔️ | ${t("roleplay:battle.timeout")}`, user, inimigo, type, familia, t)
+            this.enemyShot(message, user, inimigo, type, familia, t, `⚔️ | ${t("roleplay:battle.timeout")}`)
         }
     }, 15000)
 }
@@ -496,7 +494,7 @@ module.exports.newAbilities = async (message, user, t) => {
     }
 }
 
-module.exports.resultBattle = async (message, user, inimigo, t) => {
+module.exports.resultBattle = async (message, user, inimigo, t, toSay) => {
 
     const randomLoot = inimigo.loots[Math.floor(Math.random() * inimigo.loots.length)];
     let canGetLoot = true
@@ -519,7 +517,7 @@ module.exports.resultBattle = async (message, user, inimigo, t) => {
         }
         ])
 
-    message.channel.send(message.author, embed)
+    message.channel.send(toSay, embed)
     user.xp = user.xp + inimigo.xp;
     if (canGetLoot) {
         const newValue = user.backpack.value + 1
