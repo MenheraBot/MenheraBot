@@ -12,7 +12,7 @@ module.exports = class MaintenanceCommand extends Command {
     async run({ message, args, server }, t) {
 
         if (!args[0]) return message.menheraReply("error", "você não informou o comando desejado")
-        let cmd = this.client.commands.get(args[0]) || this.client.commands.get(this.aliases.get(args[0]))
+        let cmd = this.client.commands.get(args[0]) || this.client.commands.get(this.client.aliases.get(args[0]))
         if (!cmd) return message.menheraReply("error", "este comando não existe")
         let command = await this.client.database.Cmds.findById(cmd.config.name)
         if (command.maintenance) {
