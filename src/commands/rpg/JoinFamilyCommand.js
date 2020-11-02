@@ -15,12 +15,12 @@ module.exports = class JoinFamilyCommand extends Command {
 
         if (user.level < 10) return message.menheraReply("error", t("commands:joinfamily.low-level"))
 
-        if (user.hasFamily) return message.menheraReply("error", t("commands:joinfamily.has-family", {name: user.familyName}))
+        if (user.hasFamily) return message.menheraReply("error", t("commands:joinfamily.has-family", { name: user.familyName }))
 
         const familiasDisponiveis = ["Loki", "Ares", "Freya", "Soma", "Apolo"]
         const sortedFamily = familiasDisponiveis[Math.floor(Math.random() * familiasDisponiveis.length)];
 
-        message.menheraReply("success", t("commands:joinfamily.welcome", {family: sortedFamily}))
+        message.menheraReply("success", t("commands:joinfamily.welcome", { family: sortedFamily }))
 
         const familia = await this.client.database.Familias.findById(sortedFamily)
 

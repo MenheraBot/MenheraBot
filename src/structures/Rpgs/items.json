@@ -1,5 +1,6 @@
 {
-    "bruxa": [{
+    "bruxa": [
+        {
             "name": "🩸 | Poção de vida Pequena",
             "description": "Restaura 30 de vida instantaneamente",
             "type": "Item",

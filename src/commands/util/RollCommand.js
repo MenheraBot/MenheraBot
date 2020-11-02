@@ -10,7 +10,7 @@ module.exports = class RollCommand extends Command {
     }
     async run({ message, args, server }, t) {
 
-        let user = await this.client.database.Users.findOne({id: message.author.id});
+        let user = await this.client.database.Users.findOne({ id: message.author.id });
 
         if (!user || user === null) {
             new this.client.database.Users({

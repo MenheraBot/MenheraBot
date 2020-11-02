@@ -44,7 +44,7 @@ module.exports = class HugCommand extends Command {
             return message.menheraReply("error", t("commands:hug.self-mention"))
         }
 
-        let avatar = message.author.displayAvatarURL({format: "png"});
+        let avatar = message.author.displayAvatarURL({ format: "png" });
 
         const embed = new MessageEmbed()
             .setTitle(t("commands:hug.embed_title"))

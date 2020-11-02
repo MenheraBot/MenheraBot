@@ -105,7 +105,7 @@ function lojaComprar(message, embedMessage, user, saldoAtual, t) {
             }, {
                 cor: '#e2ff08',
                 preço: 50000,
-                nome: `**${t("commands:shop.colors.yellow")}**` 
+                nome: `**${t("commands:shop.colors.yellow")}**`
             }, {
                 cor: 'SUA ESCOLHA',
                 preço: 100000,
@@ -281,7 +281,7 @@ function lojaVender(message, embedMessage, user, saldoAtual, t) {
         thumbnail: {
             url: 'https://i.imgur.com/t94XkgG.png'
         },
-        description: t("commands:shop.dataVender.main.description", {saldo: saldoAtual, demons: demons, anjos: anjos, sd: sd, deuses: deuses}),
+        description: t("commands:shop.dataVender.main.description", { saldo: saldoAtual, demons: demons, anjos: anjos, sd: sd, deuses: deuses }),
         footer: {
             text: t("commands:shop.dataVender.main.footer")
         },
@@ -315,11 +315,11 @@ function lojaVender(message, embedMessage, user, saldoAtual, t) {
                 embedMessage.delete().catch()
                 return message.menheraReply("error", t("commands:shop.dataVender.invalid-args"))
             } else {
-                if (valor > user.caçados) return message.menheraReply("error", t("commands:shop.dataVender.poor", {var: "demônios"}))
+                if (valor > user.caçados) return message.menheraReply("error", t("commands:shop.dataVender.poor", { var: "demônios" }))
                 user.caçados = user.caçados - valor;
                 user.estrelinhas = user.estrelinhas + (valor * valorDemonio);
                 user.save()
-                message.menheraReply("success", t("commands:shop.dataVender.success-demon", {value: valor, cost: valor * valorDemonio, quantity: user.caçados, star: user.estrelinhas}))
+                message.menheraReply("success", t("commands:shop.dataVender.success-demon", { value: valor, cost: valor * valorDemonio, quantity: user.caçados, star: user.estrelinhas }))
             }
 
         } else if (cArgs[0] === "2") {
@@ -328,11 +328,11 @@ function lojaVender(message, embedMessage, user, saldoAtual, t) {
                 embedMessage.delete().catch()
                 message.menheraReply("error", t("commands:shop.dataVender.invalid-args"))
             } else {
-                if (valor > user.anjos) return message.menheraReply("error", t("commands:shop.dataVender.poor", {var: "anjos"}))
+                if (valor > user.anjos) return message.menheraReply("error", t("commands:shop.dataVender.poor", { var: "anjos" }))
                 user.anjos = user.anjos - valor;
                 user.estrelinhas = user.estrelinhas + (valor * valorAnjo);
                 user.save()
-                message.menheraReply("success", t("commands:shop.dataVender.success-angel", {value: valor, cost: valor * valorAnjo, quantity: user.anjos, star: user.estrelinhas}))
+                message.menheraReply("success", t("commands:shop.dataVender.success-angel", { value: valor, cost: valor * valorAnjo, quantity: user.anjos, star: user.estrelinhas }))
             }
 
         } else if (cArgs[0] === "3") {
@@ -341,11 +341,11 @@ function lojaVender(message, embedMessage, user, saldoAtual, t) {
                 embedMessage.delete().catch()
                 message.menheraReply("error", t("commands:shop.dataVender.invalid-args"))
             } else {
-                if (valor > user.semideuses) return message.menheraReply("error", t("commands:shop.dataVender.poor", {var: "semideuses"}))
+                if (valor > user.semideuses) return message.menheraReply("error", t("commands:shop.dataVender.poor", { var: "semideuses" }))
                 user.semideuses = user.semideuses - valor;
                 user.estrelinhas = user.estrelinhas + (valor * valorSD);
                 user.save()
-                message.menheraReply("success", t("commands:shop.dataVender.success-sd", {value: valor, cost: valor * valorSD, quantity: user.semideuses, star: user.estrelinhas}))
+                message.menheraReply("success", t("commands:shop.dataVender.success-sd", { value: valor, cost: valor * valorSD, quantity: user.semideuses, star: user.estrelinhas }))
             }
 
         } else if (cArgs[0] === "4") {
@@ -354,11 +354,11 @@ function lojaVender(message, embedMessage, user, saldoAtual, t) {
                 embedMessage.delete().catch()
                 message.menheraReply("error", t("commands:shop.dataVender.invalid-args"))
             } else {
-                if (valor > user.deuses) return message.menheraReply("error", t("commands:shop.dataVender.poor", {var: "deuses"}))
+                if (valor > user.deuses) return message.menheraReply("error", t("commands:shop.dataVender.poor", { var: "deuses" }))
                 user.deuses = user.deuses - valor;
                 user.estrelinhas = user.estrelinhas + (valor * valorDeus);
                 user.save()
-                message.menheraReply("success", t("commands:shop.dataVender.success-god", {value: valor, cost: valor * valorDeus, quantity: user.deuses, star: user.estrelinhas}))
+                message.menheraReply("success", t("commands:shop.dataVender.success-god", { value: valor, cost: valor * valorDeus, quantity: user.deuses, star: user.estrelinhas }))
             }
         } else {
             embedMessage.delete().catch()

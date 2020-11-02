@@ -82,7 +82,7 @@ module.exports = class HuntCommand extends Command {
 
 
         if (option === "ajuda") return message.menheraReply("question", t("commands:hunt.help"))
-        if (option === "probabilidades") return message.channel.send(t("commands:hunt.probabilities", {probabilidadeDemonio, probabilidadeAnjo, probabilidadeSD, probabilidadeDeuses}))
+        if (option === "probabilidades") return message.channel.send(t("commands:hunt.probabilities", { probabilidadeDemonio, probabilidadeAnjo, probabilidadeSD, probabilidadeDeuses }))
 
         if (parseInt(user.caçarTime) < Date.now()) {
             let avatar = message.author.displayAvatarURL({ format: "png", dynamic: true });
@@ -98,7 +98,7 @@ module.exports = class HuntCommand extends Command {
                     user.caçados = user.caçados + dc;
                     user.caçarTime = 3600000 + Date.now();
                     user.save()
-                    embed.setDescription(`${t("commands:hunt.description_start", {value: dc})} ${t("commands:hunt.demons")}`)
+                    embed.setDescription(`${t("commands:hunt.description_start", { value: dc })} ${t("commands:hunt.demons")}`)
                     message.channel.send(embed)
                     break;
                 case 'anjos':
@@ -106,7 +106,7 @@ module.exports = class HuntCommand extends Command {
                     user.anjos = user.anjos + da;
                     user.caçarTime = 3600000 + Date.now();
                     user.save()
-                    embed.setDescription(`${t("commands:hunt.description_start", {value: da})} ${t("commands:hunt.angels")}`)
+                    embed.setDescription(`${t("commands:hunt.description_start", { value: da })} ${t("commands:hunt.angels")}`)
                     message.channel.send(embed)
                     break;
                 case 'semideuses':
@@ -114,7 +114,7 @@ module.exports = class HuntCommand extends Command {
                     user.semideuses = user.semideuses + ds;
                     user.caçarTime = 3600000 + Date.now();
                     user.save()
-                    embed.setDescription(`${t("commands:hunt.description_start", {value: ds})} ${t("commands:hunt.sd")}`)
+                    embed.setDescription(`${t("commands:hunt.description_start", { value: ds })} ${t("commands:hunt.sd")}`)
                     message.channel.send(embed)
                     break;
                 case 'deus':
@@ -123,12 +123,12 @@ module.exports = class HuntCommand extends Command {
                     user.caçarTime = 3600000 + Date.now();
                     user.save()
                     if (dd > 0) embed.setColor('#e800ff')
-                    embed.setDescription((dd > 0) ? t("commands:hunt.god_hunted_success", {value: dd}) : t("commands:hunt.god_hunted_fail", {value: dd}))
+                    embed.setDescription((dd > 0) ? t("commands:hunt.god_hunted_success", { value: dd }) : t("commands:hunt.god_hunted_fail", { value: dd }))
                     message.channel.send(embed)
                     break;
             }
         } else {
-            message.menheraReply("error", t("commands:hunt.cooldown", {time: moment.utc(parseInt(user.caçarTime - Date.now())).format("mm:ss")}))
+            message.menheraReply("error", t("commands:hunt.cooldown", { time: moment.utc(parseInt(user.caçarTime - Date.now())).format("mm:ss") }))
         }
     }
 }

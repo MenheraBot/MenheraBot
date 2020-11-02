@@ -14,13 +14,13 @@ module.exports = class ProfileCommand extends Command {
 
         let pessoa
         if (args[0]) {
-            try{
-            pessoa = await this.client.users.fetch(args[0].replace(/[<@!>]/g, ""))
+            try {
+                pessoa = await this.client.users.fetch(args[0].replace(/[<@!>]/g, ""))
             } catch {
                 return message.menheraReply("error", t("commands:profile.unknow-user"))
             }
-		} else {
-			pessoa = message.author
+        } else {
+            pessoa = message.author
         }
 
         if (pessoa.bot) return message.menheraReply("error", t("commands:profile.bot"))

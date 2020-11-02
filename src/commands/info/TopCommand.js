@@ -14,7 +14,7 @@ module.exports = class TopCommand extends Command {
 
         const prefix = server.prefix
 
-        const txt = t("commands:top.txt", {prefix})
+        const txt = t("commands:top.txt", { prefix })
 
         const argumento = args[0];
         if (!argumento) return message.reply(txt)
@@ -23,8 +23,8 @@ module.exports = class TopCommand extends Command {
         let argsAnjos = ["anjos", "angels"]
         let argsSemideuses = ["semideuses", "semi-deuses", "sd", "demigods", "dg"];
         let argsDeuses = ["deuses", "gods"]
-        let argsMamou = ["mamou", "mamadores","suckers"];
-        let argsMamados = ["mamados", "chupados","suckled"];
+        let argsMamou = ["mamou", "mamadores", "suckers"];
+        let argsMamados = ["mamados", "chupados", "suckled"];
         let argsEstrelinhas = ["estrelinhas", "estrelinha", "stars", "star"];
         let argsVotos = ["votadores", "voto", "votes", "votos", "upvotes", "upvote", "vote"];
         let argsDungeon = ["dungeon", "rpg"]
@@ -154,7 +154,7 @@ module.exports = class TopCommand extends Command {
                 anjos: -1
             }
         },
-           async  function (err, res) {
+            async function (err, res) {
                 if (err) console.log(err)
 
                 for (var i = 0; i < res.length; i++) {
@@ -212,7 +212,7 @@ module.exports = class TopCommand extends Command {
                 deuses: -1
             }
         },
-           async  function (err, res) {
+            async function (err, res) {
                 if (err) console.log(err)
 
                 for (var i = 0; i < res.length; i++) {
@@ -241,7 +241,7 @@ module.exports = class TopCommand extends Command {
                 estrelinhas: -1
             }
         },
-           async function (err, res) {
+            async function (err, res) {
                 if (err) console.log(err)
 
                 for (var i = 0; i < res.length; i++) {
@@ -300,7 +300,7 @@ module.exports = class TopCommand extends Command {
                 xp: -1
             }
         },
-           async  function (err, res) {
+            async function (err, res) {
                 if (err) console.log(err)
 
                 for (var i = 0; i < res.length; i++) {

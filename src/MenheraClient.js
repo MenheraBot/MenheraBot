@@ -15,45 +15,45 @@ module.exports = class WatchClient extends Client {
         this.config = require("../config.json")
         this.rpgChecks = require("./structures/Rpgs/checks")
     }
-    init(){
-        Sentry.init({dsn: this.config.sentry_dns});
+    init() {
+        Sentry.init({ dsn: this.config.sentry_dns });
         const reminder = new Reminders(this)
         reminder.loop()
     }
 
     reloadCommand(commandName) {
         const command = this.commands.get(commandName) || this.commands.get(this.aliases.get(commandName))
-		if (!command) return false
-		const dir = command.dir
-		this.commands.delete(command.config.name)
-		delete require.cache[require.resolve(dir)]
-		try {
-			const Command = require(dir)
-			const cmd = new Command(this)
-			cmd.dir = dir
-			this.commands.set(cmd.config.name, cmd)
-			return true
-		} catch (e) {
-			return e
-		}
+        if (!command) return false
+        const dir = command.dir
+        this.commands.delete(command.config.name)
+        delete require.cache[require.resolve(dir)]
+        try {
+            const Command = require(dir)
+            const cmd = new Command(this)
+            cmd.dir = dir
+            this.commands.set(cmd.config.name, cmd)
+            return true
+        } catch (e) {
+            return e
+        }
     }
 
     reloadEvent(eventName) {
         const event = this.events.events.some(s => s.name == eventName)
-		if (!event) return false
+        if (!event) return false
 
-		const dir = `./events/${eventName}.js`
-		const status = this.events.remove(eventName)
-		if (!status) return status
-		delete require.cache[require.resolve(dir)]
-		try {
-			const Event = require(dir)
-			const event = new Event(this)
-			this.events.add(eventName, event)
-			return true
-		} catch (e) {
-			return e
-		}
+        const dir = `./events/${eventName}.js`
+        const status = this.events.remove(eventName)
+        if (!status) return status
+        delete require.cache[require.resolve(dir)]
+        try {
+            const Event = require(dir)
+            const event = new Event(this)
+            this.events.add(eventName, event)
+            return true
+        } catch (e) {
+            return e
+        }
     }
 
     login(token) {
@@ -74,8 +74,8 @@ module.exports = class WatchClient extends Client {
                         if (!cmdInDb) {
                             cmdInDb = new this.database.Cmds({
                                 _id: command.config.name
-                        })
-                         cmdInDb.save()
+                            })
+                            cmdInDb.save()
                         }
                     })
                 })
@@ -83,7 +83,7 @@ module.exports = class WatchClient extends Client {
         })
         return this
     }
-    
+
     loadEvents(path) {
         readdir(path, (err, files) => {
             if (err) console.error(err)
@@ -95,16 +95,16 @@ module.exports = class WatchClient extends Client {
         })
         return this
     }
-    
+
     loadLocales() {
-		const Locales = require("./structures/LocaleStructure")
-		const locales = new Locales(this)
-		locales.load()
+        const Locales = require("./structures/LocaleStructure")
+        const locales = new Locales(this)
+        locales.load()
     }
 
-    async reloadLocales(){
+    async reloadLocales() {
         const Locales = require("./structures/LocaleStructure")
-		const locales = new Locales(this)
-		locales.reload()
+        const locales = new Locales(this)
+        locales.reload()
     }
 }

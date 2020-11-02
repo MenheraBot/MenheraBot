@@ -10,7 +10,7 @@ module.exports = class GiveCommand extends Command {
     }
     async run({ message, args, server }, t) {
 
-        if (!args[0]) return message.menheraReply("error", t("commands:give.no-args", {prefix: server.prefix}))
+        if (!args[0]) return message.menheraReply("error", t("commands:give.no-args", { prefix: server.prefix }))
 
         const validArgs = [{
             opção: "estrelinhas",
@@ -35,13 +35,13 @@ module.exports = class GiveCommand extends Command {
         ];
 
         const selectedOption = validArgs.some(so => so.arguments.includes(args[0].toLowerCase()))
-        if (!selectedOption) return message.menheraReply("error", t("commands:give.no-args", {prefix: server.prefix}))
+        if (!selectedOption) return message.menheraReply("error", t("commands:give.no-args", { prefix: server.prefix }))
         const filtredOption = validArgs.filter(f => f.arguments.includes(args[0].toLowerCase()))
 
         const option = filtredOption[0].opção
         const mencionado = message.mentions.users.first()
         const input = args[2]
-        if(!input) return message.menheraReply("error", t("commands:give.bad-usage"))
+        if (!input) return message.menheraReply("error", t("commands:give.bad-usage"))
         const valor = parseInt(input.replace(/\D+/g, ''));
         if (!mencionado) return message.menheraReply("error", t("commands:give.bad-usage"))
         if (mencionado.id == message.author.id) return message.menheraReply("error", t("commands:give.self-mention"))
@@ -83,7 +83,7 @@ function giveStar(user, user2, valor, message, mencionado, t) {
     user.save()
     user2.save()
 
-    message.menheraReply("success", `${t("commands:give.transfered", {value: valor, emoji: "⭐"})} ${mencionado}`)
+    message.menheraReply("success", `${t("commands:give.transfered", { value: valor, emoji: "⭐" })} ${mencionado}`)
 }
 
 function giveDemon(user, user2, valor, message, mencionado, t) {
@@ -95,7 +95,7 @@ function giveDemon(user, user2, valor, message, mencionado, t) {
     user.save()
     user2.save()
 
-    message.menheraReply("success", `${t("commands:give.transfered", {value: valor, emoji: "<:Demon:758765044443381780>"})} ${mencionado}`)
+    message.menheraReply("success", `${t("commands:give.transfered", { value: valor, emoji: "<:Demon:758765044443381780>" })} ${mencionado}`)
 }
 
 function giveAngel(user, user2, valor, message, mencionado, t) {
@@ -107,7 +107,7 @@ function giveAngel(user, user2, valor, message, mencionado, t) {
     user.save()
     user2.save()
 
-    message.menheraReply("success", `${t("commands:give.transfered", {value: valor, emoji: "<:Angel:758765044204437535>"})} ${mencionado}`)
+    message.menheraReply("success", `${t("commands:give.transfered", { value: valor, emoji: "<:Angel:758765044204437535>" })} ${mencionado}`)
 }
 
 function giveSD(user, user2, valor, message, mencionado, t) {
@@ -119,7 +119,7 @@ function giveSD(user, user2, valor, message, mencionado, t) {
     user.save()
     user2.save()
 
-    message.menheraReply("success", `${t("commands:give.transfered", {value: valor, emoji: "<:SemiGod:758766732235374674>"})} ${mencionado}`)
+    message.menheraReply("success", `${t("commands:give.transfered", { value: valor, emoji: "<:SemiGod:758766732235374674>" })} ${mencionado}`)
 }
 
 function giveGod(user, user2, valor, message, mencionado, t) {
@@ -131,6 +131,6 @@ function giveGod(user, user2, valor, message, mencionado, t) {
     user.save()
     user2.save()
 
-    
-    message.menheraReply("success", `${t("commands:give.transfered", {value: valor, emoji: "<:God:758474639570894899>"})} ${mencionado}`)
+
+    message.menheraReply("success", `${t("commands:give.transfered", { value: valor, emoji: "<:God:758474639570894899>" })} ${mencionado}`)
 }

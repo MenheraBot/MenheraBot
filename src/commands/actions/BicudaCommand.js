@@ -33,7 +33,7 @@ module.exports = class BicudaCommand extends Command {
             return message.menheraReply("error", t("commands:bicuda.self-mention"));
         }
 
-        let avatar = message.author.displayAvatarURL({format: "png"});
+        let avatar = message.author.displayAvatarURL({ format: "png" });
 
         const embed = new MessageEmbed()
             .setTitle(t("commands:bicuda.embed_title"))

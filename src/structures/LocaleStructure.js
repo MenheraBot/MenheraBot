@@ -37,10 +37,10 @@ class LocaleStructure {
             console.error(err)
         }
     }
-    async reload(){
-        try{
-        i18next.reloadResources(["pt-BR", "en-US"], ["commands", "events", "permissions", "roleplay"])
-        return true
+    async reload() {
+        try {
+            i18next.reloadResources(["pt-BR", "en-US"], ["commands", "events", "permissions", "roleplay"])
+            return true
         } catch {
             return false
         }

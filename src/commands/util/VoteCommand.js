@@ -16,14 +16,14 @@ module.exports = class VoteCommand extends Command {
     async run({ message, args, server }, t) {
 
         const embed = new MessageEmbed()
-        .setTitle(t("commands:vote.embed_title"))
-        .setColor('#f763f8')
-        .setURL("https://top.gg/bot/708014856711962654/vote")
-        .setImage("https://i.imgur.com/27GxqX1.jpg")
-        .setDescription(t("commands:vote.embed_description"))
-        .setFooter(`${t("commands:vote.embed_footer")} ${message.author.tag}`, message.author.displayAvatarURL())
-        .setTimestamp()
-  
-      message.channel.send(embed);
+            .setTitle(t("commands:vote.embed_title"))
+            .setColor('#f763f8')
+            .setURL("https://top.gg/bot/708014856711962654/vote")
+            .setImage("https://i.imgur.com/27GxqX1.jpg")
+            .setDescription(t("commands:vote.embed_description"))
+            .setFooter(`${t("commands:vote.embed_footer")} ${message.author.tag}`, message.author.displayAvatarURL())
+            .setTimestamp()
+
+        message.channel.send(embed);
     }
 }

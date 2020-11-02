@@ -18,7 +18,7 @@ module.exports = class DepositeCommand extends Command {
         const familia = await this.client.database.Familias.findById(user.familyName)
 
         const input = args[0]
-        if(!input) return message.menheraReply("error", t("commands:deposite.invalid-value"))
+        if (!input) return message.menheraReply("error", t("commands:deposite.invalid-value"))
         const valor = parseInt(input.replace(/\D+/g, ''))
         if (!valor || valor < 1) return message.menheraReply("error", t("commands:deposite.invalid-value"))
 
@@ -29,7 +29,7 @@ module.exports = class DepositeCommand extends Command {
         user.save()
         familia.save()
 
-        message.menheraReply("success", t("commands:deposite.transfered", {value: valor}))
+        message.menheraReply("success", t("commands:deposite.transfered", { value: valor }))
         setTimeout(() => {
             const server = this.client.guilds.cache.get('717061688460967988');
             const roles = [server.roles.cache.get('765069003440914443'), server.roles.cache.get('765069063146962995'), server.roles.cache.get('765069110018703371'), server.roles.cache.get('765069167363096616'), server.roles.cache.get('765069139885948928')]
@@ -66,11 +66,11 @@ module.exports = class DepositeCommand extends Command {
             }
         }, 500)
     }
-    
+
     async CheckLevel(familia) {
 
         //Freya, Soma e Apolo mudar na DB, o resto é automáico
-    
+
         switch (familia._id) {
             case 'Loki': //Aumento do dano de ataque
                 familia.levelFamilia = familia.levelFamilia + 1
@@ -126,7 +126,7 @@ module.exports = class DepositeCommand extends Command {
         this.ShyrleiTeresinha(familia)
     }
 
-    async ShyrleiTeresinha(family){
+    async ShyrleiTeresinha(family) {
         let level = family.levelFamilia
 
         setTimeout(() => {

@@ -68,7 +68,7 @@ module.exports = class EightBallCommand extends Command {
             "<:positivo:759603958485614652> | Absolutamente"
         ];
 
-        if(lingua == "pt-BR"){
+        if (lingua == "pt-BR") {
             respostas = respostasPT
         } else respostas = respostasUS
 

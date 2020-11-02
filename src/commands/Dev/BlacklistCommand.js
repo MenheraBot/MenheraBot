@@ -10,7 +10,7 @@ module.exports = class BlackilistCommand extends Command {
     }
     async run({ message, args, server }, t) {
 
-        if(!args[1]) return message.menheraReply("error", "só faltou o id né minha flor")
+        if (!args[1]) return message.menheraReply("error", "só faltou o id né minha flor")
 
         let user = await this.client.database.Users.findOne({ id: args[1] })
 
@@ -38,7 +38,7 @@ module.exports = class BlackilistCommand extends Command {
             case "find":
                 if (!user || user === null) return message.menheraReply("error", "user not found")
                 let msg = `== USER BANNED INFO ==\n\n• User :: ${user2.tag} - (${user2.id})\n• Banned :: ${user.ban}\n• Reason :: ${user.banReason}`
-                message.channel.send(msg, {code: "asciidoc"})
+                message.channel.send(msg, { code: "asciidoc" })
                 break
             default:
                 message.menheraReply("error", "porra lux, n sabe nem usar o próprio bot? Opções: `add`, `remove`, `find`")

@@ -15,17 +15,17 @@ module.exports = class GuildCreate {
       "us-east": "en-US",
       "us-south": "en-US",
       "us-west": "en-US",
-  }
+    }
   }
   async run(guild) {
-    let server = await this.client.database.Guilds.findOne({id: guild.id})
-        if (!server) {
-            server = new this.client.database.Guilds({
-                id: guild.id,
-                lang: this.region[guild.region]
-            })
-            server.lang = this.region[guild.region]
-            server.save()
+    let server = await this.client.database.Guilds.findOne({ id: guild.id })
+    if (!server) {
+      server = new this.client.database.Guilds({
+        id: guild.id,
+        lang: this.region[guild.region]
+      })
+      server.lang = this.region[guild.region]
+      server.save()
     }
     this.client.guilds.cache.get('717061688460967988').channels.cache.get('717061688729534628').send(`<:apaixonada:727975782034440252> | Fui adicionada ao servidor **${guild}**`);
   }

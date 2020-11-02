@@ -1,4 +1,4 @@
- const { token } = require("./config.json")
+const { token } = require("./config.json")
 const { ShardingManager } = require("discord.js")
 const shards = new ShardingManager("./index.js", {
 	respawn: true,

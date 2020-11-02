@@ -48,7 +48,7 @@ module.exports = class WarnListCommand extends Command {
         let rand;
 
         let embed = new MessageEmbed()
-            .setTitle(t("commands:warnlist.embed_title", {user: user.tag}))
+            .setTitle(t("commands:warnlist.embed_title", { user: user.tag }))
 
         this.client.database.Warns.find({
             userId: user.id,
@@ -66,7 +66,7 @@ module.exports = class WarnListCommand extends Command {
             }
 
             for (var i = 0; i < db.length; i++) {
-                if(embed.fields.length == 24) continue;
+                if (embed.fields.length == 24) continue;
                 embed.addField(`${t("commands:warnlist.warn")} #${i + 1}`, `**${t("commands:warnlist.Warned_by")}** ${client.users.fetch(db[i].warnerId) || `404`}\n**${t("commands:warnlist.Reason")}** ${db[i].reason}\n**${t("commands:warnlist.Data")}** ${db[i].data}\n**${t("commands:warnlist.WarnID")}** \`${db[i]._id}\``);
             }
             embed.setImage(rand);

@@ -11,42 +11,42 @@ module.exports = class TestCommand extends Command {
     }
     async run({ message, args, server }, t) {
 
-/*  -------------------AUMENTAR OS VALUES DAS BACKPACKS-----------------------------------
-        const files = await this.client.database.Rpg.find()
-
-        files.forEach(async file => {
-            let itens = []
-            let loots = []
-            file.inventory.forEach(inv => {
-                if (inv.type == "Item") {
-                    itens.push(inv)
-                }
-            })
-            file.loots.forEach(loot => {
-                loots.push(loot.name)
-            })
-
-            const countedLoots = countItems(loots)
-            const countedItems = countItems(itens)
-
-            let itensAmount = 0;
-            let lootsAmount = 0;
-
-            countedItems.forEach(oi => {
-                itensAmount += oi.amount
-            })
-
-            countedLoots.forEach(tchau => {
-                lootsAmount += tchau.amount
-            })
-
-            const espaçoTotal = itensAmount + lootsAmount
-            const user = await this.client.database.Rpg.findById(file._id)
-
-            user.backpack = { name: user.backpack.name, capacity: 20, value: espaçoTotal }
-            user.save()
-
-        }); */
+        /*  -------------------AUMENTAR OS VALUES DAS BACKPACKS-----------------------------------
+                const files = await this.client.database.Rpg.find()
+        
+                files.forEach(async file => {
+                    let itens = []
+                    let loots = []
+                    file.inventory.forEach(inv => {
+                        if (inv.type == "Item") {
+                            itens.push(inv)
+                        }
+                    })
+                    file.loots.forEach(loot => {
+                        loots.push(loot.name)
+                    })
+        
+                    const countedLoots = countItems(loots)
+                    const countedItems = countItems(itens)
+        
+                    let itensAmount = 0;
+                    let lootsAmount = 0;
+        
+                    countedItems.forEach(oi => {
+                        itensAmount += oi.amount
+                    })
+        
+                    countedLoots.forEach(tchau => {
+                        lootsAmount += tchau.amount
+                    })
+        
+                    const espaçoTotal = itensAmount + lootsAmount
+                    const user = await this.client.database.Rpg.findById(file._id)
+        
+                    user.backpack = { name: user.backpack.name, capacity: 20, value: espaçoTotal }
+                    user.save()
+        
+                }); */
 
 
 

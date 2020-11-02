@@ -31,7 +31,7 @@ module.exports = class CoinflipCommand extends Command {
         if (valor > db1.estrelinhas) return message.menheraReply("error", t("commands:coinflip.poor"))
         if (valor > db2.estrelinhas) return message.channel.send(`<:negacao:759603958317711371> **|** ${user2} ${t("commands:coinflip.poor")}`)
 
-        message.channel.send(`${user2}, ${user1} ${t("commands:coinflip.confirm", {value: valor, user1: user1.username, user2: user2.username})}`).then(msg => {
+        message.channel.send(`${user2}, ${user1} ${t("commands:coinflip.confirm", { value: valor, user1: user1.username, user2: user2.username })}`).then(msg => {
 
             msg.react('✅');
             let filter = (reaction, usuario) => reaction.emoji.name === "✅" && usuario.id === user2.id;
@@ -44,14 +44,14 @@ module.exports = class CoinflipCommand extends Command {
 
                 switch (choice) {
                     case 'Cara':
-                        message.channel.send(t("commands:coinflip.cara", {value: valor, user1: user1.username, user2: user2.username}))
+                        message.channel.send(t("commands:coinflip.cara", { value: valor, user1: user1.username, user2: user2.username }))
                         db1.estrelinhas = db1.estrelinhas + parseInt(valor)
                         db2.estrelinhas = db2.estrelinhas - parseInt(valor)
                         db1.save()
                         db2.save()
                         break
                     case 'Coroa':
-                        message.channel.send(t("commands:coinflip.coroa", {value: valor, user1: user1.username, user2: user2.username}))
+                        message.channel.send(t("commands:coinflip.coroa", { value: valor, user1: user1.username, user2: user2.username }))
                         db1.estrelinhas = db1.estrelinhas - parseInt(valor)
                         db2.estrelinhas = db2.estrelinhas + parseInt(valor)
                         db1.save()

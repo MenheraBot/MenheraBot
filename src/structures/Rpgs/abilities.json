@@ -1,6 +1,7 @@
 {
     "assassin": {
-        "uniquePowers": [{
+        "uniquePowers": [
+            {
                 "name": "Morte Instantânea",
                 "description": "Mata um alvo não-épico instantâneamente, sem chance de revidar",
                 "cooldown": 86400000,
@@ -19,7 +20,8 @@
                 "type": "ativo"
             }
         ],
-        "normalAbilities": [{
+        "normalAbilities": [
+            {
                 "name": "Furtividade",
                 "description": "Entra em modo furtivo, atacando seu inimigo pelo flanco",
                 "cooldown": 7200000,
@@ -54,7 +56,8 @@
         ]
     },
     "barbarian": {
-        "uniquePowers": [{
+        "uniquePowers": [
+            {
                 "name": "Golpe Desleal",
                 "description": "Intimida o inimigo, dando dano mental",
                 "cooldown": 86400000,
@@ -73,7 +76,8 @@
                 "type": "ativo"
             }
         ],
-        "normalAbilities": [{
+        "normalAbilities": [
+            {
                 "name": "Fúria",
                 "description": "Enfurece a si mesmo, atacando com muita força",
                 "cooldown": 7200000,
@@ -108,7 +112,8 @@
         ]
     },
     "clerigo": {
-        "uniquePowers": [{
+        "uniquePowers": [
+            {
                 "name": "Chama Divina",
                 "description": "Roga pelo fogo sagrado queimando seus inimigos",
                 "cooldown": 0,
@@ -136,7 +141,8 @@
                 "type": "ativo"
             }
         ],
-        "normalAbilities": [{
+        "normalAbilities": [
+            {
                 "name": "Cura",
                 "description": "Invoca a luz do caminho da verdade, curando seu alvo",
                 "cooldown": 7200000,
@@ -171,7 +177,8 @@
         ]
     },
     "druida": {
-        "uniquePowers": [{
+        "uniquePowers": [
+            {
                 "name": "Transformação | Tigre",
                 "description": "Transforma-se em um Tigre, usando seus dotes de batalha",
                 "cooldown": 0,
@@ -199,7 +206,8 @@
                 "type": "ativo"
             }
         ],
-        "normalAbilities": [{
+        "normalAbilities": [
+            {
                 "name": "Maçã Dourada",
                 "description": "Consome uma maçã encantada, restaurando sua vida em 30",
                 "cooldown": 7200000,
@@ -234,7 +242,8 @@
         ]
     },
     "espadachim": {
-        "uniquePowers": [{
+        "uniquePowers": [
+            {
                 "name": "Na Mão ou no Pé?",
                 "description": "Questiona seu inimigo dando a chance dele escolher qual membro desejas perder, a mão, ou o pé? Desferindo um golpe extremamente forte",
                 "cooldown": 86400000,
@@ -253,7 +262,8 @@
                 "type": "ativo"
             }
         ],
-        "normalAbilities": [{
+        "normalAbilities": [
+            {
                 "name": "Golpe Duplo",
                 "description": "Executa dois golpes, com o segundo dando dano reduzido",
                 "cooldown": 7200000,
@@ -288,7 +298,8 @@
         ]
     },
     "feiticeiro": {
-        "uniquePowers": [{
+        "uniquePowers": [
+            {
                 "name": "Linhagem: Mística",
                 "description": "**LINHAGEM:** as habilidades deste feiticeiro mudam com o tipo da linhagem\n**ATIVO:** Conjura esporos que dão dano no inimigo e tem chance de incapacitá-lo por 1 turno",
                 "cooldown": 7200000,
@@ -316,7 +327,8 @@
                 "type": "ativo"
             }
         ],
-        "normalAbilities": [{
+        "normalAbilities": [
+            {
                 "name": "EXPLOOOSION",
                 "description": "Cria uma explosão causando dano em área",
                 "cooldown": 0,
@@ -399,16 +411,19 @@
         ]
     },
     "monge": {
-        "uniquePowers": [{
-            "name": "Peteleco Espiritual",
-            "description": "Da um peteleco nozovido do inimigo, causando dano BRUTAL",
-            "cooldown": 7200000,
-            "damage": 30,
-            "heal": 0,
-            "cost": 35,
-            "type": "ativo"
-        }],
-        "normalAbilities": [{
+        "uniquePowers": [
+            {
+                "name": "Peteleco Espiritual",
+                "description": "Da um peteleco nozovido do inimigo, causando dano BRUTAL",
+                "cooldown": 7200000,
+                "damage": 30,
+                "heal": 0,
+                "cost": 35,
+                "type": "ativo"
+            }
+        ],
+        "normalAbilities": [
+            {
                 "name": "Punhos de Aço",
                 "description": "Fortalece seus punhos, aumentando seu dano físico",
                 "cooldown": 3600000,
@@ -443,7 +458,8 @@
         ]
     },
     "necromante": {
-        "uniquePowers": [{
+        "uniquePowers": [
+            {
                 "name": "Forró da meia idade",
                 "description": "Invoca um esqueleto que dá dano e evita o proximo ataque contra si",
                 "cooldown": 7200000,
@@ -471,7 +487,8 @@
                 "type": "ativo"
             }
         ],
-        "normalAbilities": [{
+        "normalAbilities": [
+            {
                 "name": "SUCUMBA MANO",
                 "description": "Manda o inimigo sucumbir, danificando seu estado mental, causando dano",
                 "cooldown": 3600000,

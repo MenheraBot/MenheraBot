@@ -8,7 +8,7 @@ module.exports.status = async (data) => {
     })
 }
 
-module.exports.shards =  (data, shard) => {
+module.exports.shards = (data, shard) => {
     request.post(`${config.api_IP}/api/comunicate/shard/${data}`, {
         json: {
             shard: shard
