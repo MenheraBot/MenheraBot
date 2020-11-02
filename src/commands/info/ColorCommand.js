@@ -12,7 +12,6 @@ module.exports = class ColorCommand extends Command {
   }
   async run({ message, args, server }, t) {
 
-
     const user = await this.client.database.Users.findOne({ id: message.author.id });
 
     const haspadrao = await user.cores.filter(pc => pc.cor === "#a788ff")
@@ -34,13 +33,13 @@ module.exports = class ColorCommand extends Command {
 
     for (var i = 0; i < user.cores.length; i++) {
       embed.addField(`${user.cores[i].nome}`, `${user.cores[i].cor}`)
-      validArgs.push(user.cores[i].nome.split(" ", 1).join(""))
+      validArgs.push(user.cores[i].nome.replace(/[^\d]+/g, ""))
     }
     if (!args[0]) return message.channel.send(message.author, embed)
 
     if (validArgs.includes(args[0])) {
 
-      const findColor = user.cores.filter(cor => cor.nome.startsWith(args[0]))
+      const findColor = user.cores.filter(cor => cor.nome.startsWith(args[0]) || cor.nome.startsWith(`**${args[0]}`))
 
       const dataChoose = {
         title: t("commands:color.dataChoose.title"),
