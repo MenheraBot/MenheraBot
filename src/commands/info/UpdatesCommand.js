@@ -19,13 +19,10 @@ module.exports = class UpdatesCommand extends Command {
             .setTitle(`${t("commands:updates.title")} ${version}`)
             .setColor('#a7e74f')
             .setFooter(`${this.client.user.username} ${t("commands:updates.footer")} ${owner.tag}`, owner.displayAvatarURL({ format: "png", dynamic: true }))
-            .setDescription(`**MOCHILAS**
-O rpg agora tem mochilas! Você pode ver sua mochila no inventário!Você não pode ter mais itens do que sua mochila comporta (isso n acontece pra quem tem mais itens do que espaço atualmente)
+            .setDescription(`**Comando Top**
 
-        **ATENÇÃO:** Darei 7 dias para todos que possuem mais itens do que a mochila comporta em seu inventário gastarem seus itens, caso contrário, será removido todos os itens até a mochila ficar de acordo com o inventário!
-
-        • NOVO: Agora é possivel comprar mochilas no ferreiro!
-
+            • Agora é possível escolher a posição do top que desejas ver
+            Exemplo: \`m!top estrelinhas 3\` - Vai mostrar a página 3 do top de estrelinhas
         `)
 
 
