@@ -44,14 +44,14 @@ module.exports = class CoinflipCommand extends Command {
 
                 switch (choice) {
                     case 'Cara':
-                        message.channel.send(t("commands:coinflip.cara", { value: valor, user1: user1.username, user2: user2.username }))
+                        message.channel.send(`${t("commands:coinflip.cara")}\n${user1} ${t("commands:coinflip.cara-texto", { value: valor, user: user2.username })}`)
                         db1.estrelinhas = db1.estrelinhas + parseInt(valor)
                         db2.estrelinhas = db2.estrelinhas - parseInt(valor)
                         db1.save()
                         db2.save()
                         break
                     case 'Coroa':
-                        message.channel.send(t("commands:coinflip.coroa", { value: valor, user1: user1.username, user2: user2.username }))
+                        message.channel.send(`${t("commands:coinflip.coroa")}\n${user2} ${t("commands:coinflip.coroa-texto", { value: valor, user: user1.username})}`)
                         db1.estrelinhas = db1.estrelinhas - parseInt(valor)
                         db2.estrelinhas = db2.estrelinhas + parseInt(valor)
                         db1.save()

@@ -209,8 +209,10 @@
         "no-dbuser": "este usuário não possui uma conta no Menhera's Bank!",
         "poor": "você não possui todas essas estrelinhas para apostar!",
         "confirm": "te desafiou para uma aposta de Cara ou Coroa valendo **{{value}}** :star:. Caso caia Cara, {{user1}} vence, caso caia coroa, {{user2}} vence!\n{{user2}} deve aceitar reagindo com ✅! Ele tem 5 segundos!",
-        "cara": "**CARA**\n{{user1}} ganhou {{value}} :star: apostando com {{user2}}! Sinto muito {{user2}}, nem sempre saimos vitoriosos",
-        "coroa": "**COROA**\n{{user2}} ganhou a aposta valendo {{value}} :star: contra {{user1}}!"
+        "cara": "**CARA**",
+        "coroa": "**COROA**",
+        "cara-texto": "ganhou {{value}} :star: apostando com {{user}}! Sinto muito {{user}}, nem sempre saimos vitoriosos",
+        "coroa-texto": "ganhou a aposta valendo {{value}} :star: contra {{user}}!"
     },
     "give": {
         "description": "Transfira algo de seu inventário para alguém",

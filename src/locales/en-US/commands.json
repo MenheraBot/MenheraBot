@@ -208,8 +208,10 @@
         "no-dbuser": "this user does not have a Menhera's Bank account!",
         "poor": "you don't have all these stars to bet on!",
         "confirm": "challenged you to a flip coin worth **{{value}}** :star:. Heads, {{user1}} wins, tails, {{user2}} wins!\n{{user2}} must accept by reacting with ✅! He has 5 seconds!",
-        "cara": "**HEADS**\n{{user1}} won {{value}} :star: betting with {{user2}}! I'm sorry {{user2}}, we are not always victorious",
-        "coroa": "**TAILS**\n{{user2}} won {{value}} :star: betting against {{user1}}!"
+        "cara": "**HEADS**",
+        "coroa": "**TAILS**",
+        "cara-texto": "won {{value}} :star: betting with {{user}}! I'm sorry {{user}}, we are not always victorious",
+        "coroa-texto": "won {{value}} :star: betting against {{user}}!"
     },
     "give": {
         "description": "Transfer something from your inventory to someone",
