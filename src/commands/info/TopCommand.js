@@ -169,7 +169,7 @@ module.exports = class TopCommand extends Command {
 
         let embed = new MessageEmbed()
 
-            .setTitle(`<: ANGEL: 758765044204437535 > | ${t("commands:top.angelTitle")} ${(pagina > 9) ? (pagina / 10) + 1 : 1}º`)
+            .setTitle(`<:ANGEL:758765044204437535> | ${t("commands:top.angelTitle")} ${(pagina > 9) ? (pagina / 10) + 1 : 1}º`)
             .setColor('#bdecee')
 
         let posição = (pagina > 9) ? pagina + 1 : 1
@@ -201,7 +201,7 @@ module.exports = class TopCommand extends Command {
 
         let embed = new MessageEmbed()
 
-            .setTitle(`<: SEMIGOD: 758766732235374674 > | ${t("commands:top.sdTitle")} ${(pagina > 9) ? (pagina / 10) + 1 : 1}º`)
+            .setTitle(`<:SEMIGOD:758766732235374674> | ${t("commands:top.sdTitle")} ${(pagina > 9) ? (pagina / 10) + 1 : 1}º`)
             .setColor('#eab3fa')
 
         let posição = (pagina > 9) ? pagina + 1 : 1
@@ -233,7 +233,7 @@ module.exports = class TopCommand extends Command {
 
         let embed = new MessageEmbed()
 
-            .setTitle(`<: God: 758474639570894899 > | ${t("commands:top.godTitle")} ${(pagina > 9) ? (pagina / 10) + 1 : 1}º`)
+            .setTitle(`<:God:758474639570894899> | ${t("commands:top.godTitle")} ${(pagina > 9) ? (pagina / 10) + 1 : 1}º`)
             .setColor('#a67cec')
 
         let posição = (pagina > 9) ? pagina + 1 : 1
@@ -297,7 +297,7 @@ module.exports = class TopCommand extends Command {
 
         let embed = new MessageEmbed()
 
-            .setTitle(`<: ok: 727975974125436959 > | ${t("commands:top.voteTitle")} ${(pagina > 9) ? (pagina / 10) + 1 : 1}º`)
+            .setTitle(`<:ok:727975974125436959> | ${t("commands:top.voteTitle")} ${(pagina > 9) ? (pagina / 10) + 1 : 1}º`)
             .setColor('#ff29ae')
 
         let posição = (pagina > 9) ? pagina + 1 : 1
@@ -329,7 +329,7 @@ module.exports = class TopCommand extends Command {
 
         let embed = new MessageEmbed()
 
-            .setTitle(`<: Chest: 760957557538947133 > | ${t("commands:top.rpgTitle")} ${(pagina > 9) ? (pagina / 10) + 1 : 1}º`)
+            .setTitle(`<:Chest:760957557538947133> | ${t("commands:top.rpgTitle")} ${(pagina > 9) ? (pagina / 10) + 1 : 1}º`)
             .setColor('#a1f5ee')
 
         let posição = (pagina > 9) ? pagina + 1 : 1
