@@ -15,7 +15,7 @@ module.exports = class FamiliaInfoCommand extends Command {
 
         const validArgs = ["loki", "ares", "freya", "soma", "apolo"]
 
-        if (!args[0] || !validArgs.includes(args[0].toLowerCase())) return message.channel.send(`${t("commands:if.invalid-args")}\`` + validArgs.join(", ") + "`")
+        if (!args[0] || !validArgs.includes(args[0].toLowerCase())) return message.channel.send(`${t("commands:infofamilia.invalid-args")}\`` + validArgs.join(", ") + "`")
 
         const minusculo = args[0].toLowerCase()
         const familyID = minusculo.charAt(0).toUpperCase() + minusculo.slice(1);
@@ -26,30 +26,30 @@ module.exports = class FamiliaInfoCommand extends Command {
         let txt = "";
 
         familyAbilities.forEach(hab => {
-            txt += `\n🧾 | **${t("commands:if.name")}:** ${hab.name}\n📜 | **${t("commands:if.desc")}:** ${hab.description}\n⚔️ | **${t("commands:if.damage")}:** ${hab.damage}\n💉 | **${t("commands:if.heal")}:** ${hab.heal}\n💧 | **${t("commands:if.cost")}:** ${hab.cost}\n`
+            txt += `\n🧾 | **${t("commands:infofamilia.name")}:** ${hab.name}\n📜 | **${t("commands:infofamilia.desc")}:** ${hab.description}\n⚔️ | **${t("commands:infofamilia.damage")}:** ${hab.damage}\n💉 | **${t("commands:infofamilia.heal")}:** ${hab.heal}\n💧 | **${t("commands:infofamilia.cost")}:** ${hab.cost}\n`
         })
 
         let embed = new MessageEmbed()
-            .setTitle(t("commands:if.embed.title", { family: familia._id }))
+            .setTitle(t("commands:infofamilia.embed.title", { family: familia._id }))
             .setColor('#01fa13')
-            .setDescription(t("commands:if.embed.description", { level: familia.levelFamilia, next: familia.nextLevel }))
+            .setDescription(t("commands:infofamilia.embed.description", { level: familia.levelFamilia, next: familia.nextLevel }))
             .addFields([{
                 name: '📤 | Boost',
-                value: `${t("commands:if.name")}: **${familia.boost.name}**\n${t("commands:if.value")}: **${familia.boost.value}**`,
+                value: `${t("commands:infofamilia.name")}: **${familia.boost.name}**\n${t("commands:infofamilia.value")}: **${familia.boost.value}**`,
                 inline: true
             },
             {
-                name: `<:God:758474639570894899> | ${t("commands:if.embed.members")}`,
+                name: `<:God:758474639570894899> | ${t("commands:infofamilia.embed.members")}`,
                 value: familia.members.length,
                 inline: true
             },
             {
-                name: `:gem: | ${t("commands:if.embed.bank")}`,
+                name: `:gem: | ${t("commands:infofamilia.embed.bank")}`,
                 value: familia.bank,
                 inline: true
             },
             {
-                name: `🔮 | ${t("commands:if.embed.abilities")}`,
+                name: `🔮 | ${t("commands:infofamilia.embed.abilities")}`,
                 value: txt,
                 inline: false
             }

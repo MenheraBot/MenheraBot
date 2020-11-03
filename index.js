@@ -2,7 +2,6 @@ require('./src/structures/ProtoTypes').start()
 const Client = require('./src/MenheraClient')
 const ShardManager = require('./src/structures/ShardManager')
 const config = require('./config.json')
-const http = require("./src/utils/HTTPrequests")
 const client = new Client({ disableMentions: "everyone" })
 
 if (client.shard) client.shardManager = new ShardManager(client)
