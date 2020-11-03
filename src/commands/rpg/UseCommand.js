@@ -64,7 +64,8 @@ module.exports = class UseCommand extends Command {
       quantidade = 1
     } else quantidade = parseInt(input.replace(/\D+/g, ''));
 
-
+    if(isNaN(quantidade)) quantidade = 1
+    
     if (quantidade < 1) return message.menheraReply("error", t("commands:use.invalid-option"))
 
     if (quantidade > juntos[args[0] - 1].amount) return message.menheraReply("error", t("commands:use.bigger"))
