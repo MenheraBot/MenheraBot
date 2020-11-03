@@ -25,7 +25,7 @@ module.exports = class WarnCommand extends Command {
         if (user.bot) return message.menheraReply("error", t("commands:warn.bot"))
         if (user.id === message.author.id) return message.menheraReply("error", t("commands:warn.self-mention"))
 
-        if (!message.guild.members.cache.get(user.id)) returnmessage.menheraReply("error", t("commands:warn.invalid-member"))
+        if (!message.guild.members.cache.get(user.id)) return message.menheraReply("error", t("commands:warn.invalid-member"))
 
         let reason = args.slice(1).join(" ");
         if (!reason) reason = t("commands:warn.default_reason");
