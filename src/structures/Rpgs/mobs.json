@@ -847,7 +847,7 @@
             ],
             "type": "Boss",
             "name": "Soma",
-            "life": 500,
+            "life": 1000,
             "damage": "200 - 220",
             "armor": 324,
             "xp": 35000
