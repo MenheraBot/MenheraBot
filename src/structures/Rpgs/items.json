@@ -6,7 +6,7 @@
             "type": "Item",
             "damage": 30,
             "value": 20,
-            "maxLevel": 15,
+            "maxLevel": 8,
             "minLevel": 0
         },
         {
@@ -15,7 +15,7 @@
             "type": "Item",
             "value": 25,
             "damage": 30,
-            "maxLevel": 15,
+            "maxLevel": 8,
             "minLevel": 0
         },
         {
@@ -24,7 +24,7 @@
             "type": "Item",
             "value": 30,
             "damage": 60,
-            "maxLevel": 15,
+            "maxLevel": 13,
             "minLevel": 5
         },
         {
@@ -33,7 +33,7 @@
             "type": "Item",
             "value": 38,
             "damage": 60,
-            "maxLevel": 15,
+            "maxLevel": 13,
             "minLevel": 5
         },
         {
@@ -42,8 +42,8 @@
             "type": "Item",
             "value": 50,
             "damage": 100,
-            "maxLevel": 40,
-            "minLevel": 8
+            "maxLevel": 20,
+            "minLevel": 10
         },
         {
             "name": "💧 | Poção de mana Grande",
@@ -51,26 +51,44 @@
             "type": "Item",
             "value": 55,
             "damage": 100,
-            "maxLevel": 40,
-            "minLevel": 8
+            "maxLevel": 20,
+            "minLevel": 10
         },
         {
             "name": "🩸 | Poção de vida Imensa",
             "description": "Restaura 350 de vida instantaneamente",
             "type": "Item",
-            "value": 150,
+            "value": 200,
             "damage": 350,
-            "maxLevel": 40,
+            "maxLevel": 25,
             "minLevel": 20
         },
         {
             "name": "💧 | Poção de mana Imensa",
             "description": "Restaura 300 de mana instantaneamente",
             "type": "Item",
-            "value": 200,
+            "value": 300,
             "damage": 300,
-            "maxLevel": 40,
+            "maxLevel": 25,
             "minLevel": 20
+        },
+        {
+            "name": "🩸 | Elixir da Salvação",
+            "description": "Restaura 500 de vida instantaneamente",
+            "type": "Item",
+            "value": 1000,
+            "damage": 500,
+            "maxLevel": 40,
+            "minLevel": 25
+        },
+        {
+            "name": "💧 | Santo Graal",
+            "description": "Restaura 500 de mana instantaneamente",
+            "type": "Item",
+            "value": 1500,
+            "damage": 500,
+            "maxLevel": 40,
+            "minLevel": 25
         }
     ]
 }
