@@ -19,6 +19,7 @@ module.exports = class WatchClient extends Client {
         Sentry.init({ dsn: this.config.sentry_dns });
         const reminder = new Reminders(this)
         reminder.loop()
+        return true
     }
 
     reloadCommand(commandName) {
@@ -100,11 +101,13 @@ module.exports = class WatchClient extends Client {
         const Locales = require("./structures/LocaleStructure")
         const locales = new Locales(this)
         locales.load()
+        return true
     }
 
     async reloadLocales() {
         const Locales = require("./structures/LocaleStructure")
         const locales = new Locales(this)
         locales.reload()
+        return true
     }
 }
