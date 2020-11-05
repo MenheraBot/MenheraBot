@@ -509,7 +509,7 @@
     "botinfo": {
         "description": "Mostra as informações atuais do bot",
         "usage": "",
-        "embed_description": "Oi, meu nome é **{{name}}**, e eu sou uma Bot Brasileira para Discord com foco em diversão e RPG! Fui criada em **{{createdAt}}** e entrei nesse servidor **{{joinedAt}}**\n\nUm pouco sobre mim: Meu nome é Menhera, tenho 16 anos e AMO, mas tipo AMO usar essas carinhas: (>...<). Para saber mais, entre em meu (twitter)[https://twitter.com/__MenheraBot] e em meu (servidor de suporte)[https://discord.gg/fZMdQbA]",
+        "embed_description": "Oi, meu nome é **{{name}}**, e eu sou uma Bot Brasileira para Discord com foco em diversão e RPG! Fui criada em **{{createdAt}}** e entrei nesse servidor **{{joinedAt}}**\n\nUm pouco sobre mim: Meu nome é Menhera, tenho 16 anos e AMO, mas tipo AMO usar essas carinhas: (>...<). Para saber mais, entre em meu [twitter](https://twitter.com/__MenheraBot) e em meu [servidor de suporte](https://discord.gg/fZMdQbA)",
         "embed_footer": "foi criada por",
         "channels": "Canais",
         "memory": "Memória",
