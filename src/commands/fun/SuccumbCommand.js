@@ -10,6 +10,6 @@ module.exports = class SuccumbCommand extends Command {
         const user = message.mentions.users.first() || args.join(" ");
         if (!user) return message.menheraReply("error", "n/a")
         if (user.id == message.author.id) return message.menheraReply("error", "n/a")
-        message.channel.send(`${t("commands:succumb.start")} **${user}** ${t("commands:succumb.end")}`);
+        message.channel.send(`${t("commands:sucumba.start")} **${user}** ${t("commands:sucumba.end")}`);
     }
 }
