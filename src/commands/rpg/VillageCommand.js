@@ -113,7 +113,7 @@ module.exports = class VillageCommand extends Command {
 
             if (user.backpack.value < 0) user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: 0 }
             user.money = user.money - valor
-            user.save()
+            return user.save()
         })
     }
     ferreiro(message, user, msg, t) {
@@ -261,7 +261,7 @@ module.exports = class VillageCommand extends Command {
 
                 if (user.backpack.value < 0) user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: 0 }
                 user.save()
-                message.menheraReply("success", t("commands:village.ferreiro.arma.change", { arma: "Espada dos Deuses" }))
+                return message.menheraReply("success", t("commands:village.ferreiro.arma.change", { arma: "Espada dos Deuses" }))
             } else return message.menheraReply("error", t("commands:village.invalid-option"))
         })
     }
@@ -327,7 +327,7 @@ module.exports = class VillageCommand extends Command {
 
                 if (user.backpack.value < 0) user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: 0 }
                 user.save()
-                message.menheraReply("success", t("commands:village.ferreiro.armadura.change", { armadura: "Peitoral Reforçado" }))
+                return message.menheraReply("success", t("commands:village.ferreiro.armadura.change", { armadura: "Peitoral Reforçado" }))
 
             } else if (m.content === "2") {
                 if (user.money < 1000) return message.menheraReply("error", t("commands:village.poor"))
@@ -352,7 +352,7 @@ module.exports = class VillageCommand extends Command {
 
                 if (user.backpack.value < 0) user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: 0 }
                 user.save()
-                message.menheraReply("success", t("commands:village.ferreiro.armadura.change", { armadura: "Peitoral Perfeito" }))
+                return message.menheraReply("success", t("commands:village.ferreiro.armadura.change", { armadura: "Peitoral Perfeito" }))
 
             } else if (m.content === "3") {
                 if (user.money < 50000) return message.menheraReply("error", t("commands:village.poor"))
@@ -376,7 +376,7 @@ module.exports = class VillageCommand extends Command {
 
                 if (user.backpack.value < 0) user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: 0 }
                 user.save()
-                message.menheraReply("success", t("commands:village.ferreiro.armadura.change", { armadura: "Peitoral dos Deuses" }))
+                return message.menheraReply("success", t("commands:village.ferreiro.armadura.change", { armadura: "Peitoral dos Deuses" }))
             } else return message.menheraReply("error", t("commands:village.invalid-option"))
         })
     }
@@ -444,7 +444,7 @@ module.exports = class VillageCommand extends Command {
 
                 if (user.backpack.value < 0) user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: 0 }
                 user.save()
-                message.menheraReply("success", t("commands:village.ferreiro.mochila.change", { mochila: "Mochila de Pele de Cobra" }))
+                return message.menheraReply("success", t("commands:village.ferreiro.mochila.change", { mochila: "Mochila de Pele de Cobra" }))
 
             } else if (m.content === "2") {
                 if (user.money < 50000) return message.menheraReply("error", t("commands:village.poor"))
@@ -470,7 +470,7 @@ module.exports = class VillageCommand extends Command {
 
                 if (user.backpack.value < 0) user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: 0 }
                 user.save()
-                message.menheraReply("success", t("commands:village.ferreiro.mochila.change", { mochila: "Mochila de escamas de Kraken" }))
+                return message.menheraReply("success", t("commands:village.ferreiro.mochila.change", { mochila: "Mochila de escamas de Kraken" }))
 
             } else if (m.content === "3") {
                 if (user.money < 250000) return message.menheraReply("error", t("commands:village.poor"))
@@ -495,7 +495,7 @@ module.exports = class VillageCommand extends Command {
 
                 if (user.backpack.value < 0) user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: 0 }
                 user.save()
-                message.menheraReply("success", t("commands:village.ferreiro.mochila.change", { mochila: "Mochila de Rabadon" }))
+                return message.menheraReply("success", t("commands:village.ferreiro.mochila.change", { mochila: "Mochila de Rabadon" }))
             } else return message.menheraReply("error", t("commands:village.invalid-option"))
         })
     }
@@ -560,7 +560,7 @@ module.exports = class VillageCommand extends Command {
 
             user.save()
 
-            message.menheraReply("success", t("commands:village.hotel.done"))
+            return message.menheraReply("success", t("commands:village.hotel.done"))
         })
     }
     guilda(message, user, msg, t) {
@@ -632,7 +632,7 @@ module.exports = class VillageCommand extends Command {
                 user.loots = [];
                 user.money = user.money + totalValue
                 if (user.backpack.value < 0) user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: 0 }
-                user.save()
+                return user.save()
 
             } else {
 
@@ -663,7 +663,7 @@ module.exports = class VillageCommand extends Command {
 
                 if (user.backpack.value < 0) user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: 0 }
                 user.save()
-                message.menheraReply("success", t("commands:village.guilda.sold", { quantity: quantidade, name: contado[parseInt(args[0]) - 1].name, value: valor }))
+                return message.menheraReply("success", t("commands:village.guilda.sold", { quantity: quantidade, name: contado[parseInt(args[0]) - 1].name, value: valor }))
             }
         })
     }

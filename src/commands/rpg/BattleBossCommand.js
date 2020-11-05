@@ -113,15 +113,15 @@ module.exports = class BattleBoss extends Command {
             time = true;
             const choice = Number(m.content);
             if (escolhas.includes(choice)) {
-                this.client.rpgChecks.battle(message, options[choice - 1], user, inimigo, type, familia, t)
+                return this.client.rpgChecks.battle(message, options[choice - 1], user, inimigo, type, familia, t)
             } else {
-                this.client.rpgChecks.enemyShot(message, user, inimigo, type, familia, t, `⚔️ |  ${t("commands:boss.battle.newTecnique")}`)
+                return this.client.rpgChecks.enemyShot(message, user, inimigo, type, familia, t, `⚔️ |  ${t("commands:boss.battle.newTecnique")}`)
             }
         })
 
         setTimeout(() => {
             if (!time) {
-                this.client.rpgChecks.enemyShot(message, user, inimigo, type, familia, t, `⚔️ |  ${t("commands:boss.battle.timeout")}`)
+                return this.client.rpgChecks.enemyShot(message, user, inimigo, type, familia, t, `⚔️ |  ${t("commands:boss.battle.timeout")}`)
             }
         }, 15000)
     }

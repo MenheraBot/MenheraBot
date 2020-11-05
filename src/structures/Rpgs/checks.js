@@ -92,7 +92,7 @@ module.exports.battle = async (message, escolha, user, inimigo, type, familia, t
             ataques: inimigo.ataques
         }
 
-        user.save().then(() => this.enemyShot(message, user, enemy, type, familia, t, toSay))
+        return user.save().then(() => this.enemyShot(message, user, enemy, type, familia, t, toSay))
     }, 500)
 }
 
@@ -102,7 +102,7 @@ module.exports.morte = async (message, user, t, toSay) => {
     user.death = Date.now() + 43200000;
     user.life = 0
     user.inBattle = false
-    user.save()
+    return user.save()
 }
 
 module.exports.enemyShot = async (message, user, inimigo, type, familia, t, toSay) => {
@@ -131,7 +131,7 @@ module.exports.enemyShot = async (message, user, inimigo, type, familia, t, toSa
         return this.morte(message, user, t, toSay)
     } else {
         user.life = vidaUser
-        user.save().then(() => this.continueBattle(message, inimigo, habilidades, user, type, ataque, familia, t, toSay))
+        return user.save().then(() => this.continueBattle(message, inimigo, habilidades, user, type, ataque, familia, t, toSay))
     }
 }
 
@@ -198,15 +198,15 @@ module.exports.continueBattle = async (message, inimigo, habilidades, user, type
         time = true;
         const choice = Number(m.content);
         if (escolhas.includes(choice)) {
-            this.battle(message, options[choice - 1], user, inimigo, type, familia, t) //Mandar os dados de ataque, e defesa do inimigo, para fazer o calculo lá
+            return this.battle(message, options[choice - 1], user, inimigo, type, familia, t) //Mandar os dados de ataque, e defesa do inimigo, para fazer o calculo lá
         } else {
-            this.enemyShot(message, user, inimigo, type, familia, t, `⚔️ |  ${t("roleplay:battle.new-tatic")}`)
+            return this.enemyShot(message, user, inimigo, type, familia, t, `⚔️ |  ${t("roleplay:battle.new-tatic")}`)
         }
     })
 
     setTimeout(() => {
         if (!time) {
-            this.enemyShot(message, user, inimigo, type, familia, t, `⚔️ | ${t("roleplay:battle.timeout")}`)
+            return this.enemyShot(message, user, inimigo, type, familia, t, `⚔️ | ${t("roleplay:battle.timeout")}`)
         }
     }, 15000)
 }
@@ -227,7 +227,7 @@ module.exports.finalChecks = async (message, user, t) => {
             user.save().then(() => {
                 texto += `**<a:LevelUp:760954035779272755> LEVEL UP <a:LevelUp:760954035779272755>**`
                 message.channel.send(texto)
-                if (user.level === 5) this.newAbilities(message, user, t)
+                if (user.level === 5) return this.newAbilities(message, user, t)
             })
         }
     } else if (user.level > 4 && user.level < 10) {
@@ -240,7 +240,7 @@ module.exports.finalChecks = async (message, user, t) => {
             user.armor = user.armor + 3
             texto += `**<a:LevelUp:760954035779272755> LEVEL UP <a:LevelUp:760954035779272755>**`
             message.channel.send(texto)
-            user.save().then(() => this.newAbilities(message, user, t))
+            return user.save().then(() => this.newAbilities(message, user, t))
         }
     } else if (user.level > 9) {
         if (user.xp >= user.nextLevelXp) {
@@ -252,7 +252,7 @@ module.exports.finalChecks = async (message, user, t) => {
             user.armor = user.armor + 5
             texto += `**<a:LevelUp:760954035779272755> LEVEL UP <a:LevelUp:760954035779272755>**`
             message.channel.send(texto)
-            user.save().then(() => this.newAbilities(message, user, t))
+            return user.save().then(() => this.newAbilities(message, user, t))
         }
     }
 }
@@ -525,7 +525,7 @@ module.exports.resultBattle = async (message, user, inimigo, t, toSay) => {
         user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: newValue }
     }
     user.inBattle = false;
-    user.save().then(() => this.finalChecks(message, user, t))
+    return user.save().then(() => this.finalChecks(message, user, t))
 }
 
 module.exports.getAbilities = async (user, familia) => {

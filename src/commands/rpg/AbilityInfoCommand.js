@@ -88,7 +88,7 @@ module.exports = class AbilityInfoCommand extends Command {
             embed.addField(hab.name, `📜 | **${t("commands:infohabilidade.desc")}:** ${hab.description}\n⚔️ | **${t("commands:infohabilidade.dmg")}:** ${hab.damage}\n💉 | **${t("commands:infohabilidade.heal")}:** ${hab.heal}\n💧 | **${t("commands:infohabilidade.cost")}:** ${hab.cost}\n🧿 | **${t("commands:infohabilidade.type")}:** ${hab.type}`)
         })
 
-        message.channel.send(message.author, embed)
+        return message.channel.send(message.author, embed)
 
     }
     async getAll(message, t) {
@@ -149,6 +149,6 @@ module.exports = class AbilityInfoCommand extends Command {
                 embed.addField(`🔮 | ${t("commands:infohabilidade.familyAbility")}: ` + hab.name, `📜 | **${t("commands:infohabilidade.desc")}:** ${hab.description}\n⚔️ | **${t("commands:infohabilidade.dmg")}:** ${hab.damage}\n💉 | **${t("commands:infohabilidade.heal")}:** ${hab.heal}\n💧 | **${t("commands:infohabilidade.cost")}:** ${hab.cost}`)
             })
         }
-        message.channel.send(message.author, embed)
+        return message.channel.send(message.author, embed)
     }
 };
