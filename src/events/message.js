@@ -163,7 +163,12 @@ module.exports = class MessageReceive {
         message.channel.startTyping()
         res(command.run({ message, args, server }, t))
         console.log(`[COMANDO] ${command.config.name.toUpperCase()} | USER: ${message.author.tag} - ${message.author.id} | GUILD: ${message.guild.name} - ${message.guild.id}`)
-      }).then(() => message.channel.stopTyping()).catch(err => {
+      }).then(() => {
+        //Fazer request para adicionar comandos usados na API
+        message.channel.stopTyping()
+
+      }).catch(err => {
+        //Fazer request para loggar o erro na API
 
         message.channel.stopTyping()
 
