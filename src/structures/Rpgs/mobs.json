@@ -940,13 +940,13 @@
                 },
                 {
                     "name": "Explosão primordial",
-                    "damage": 720
+                    "damage": 666
                 }
             ],
             "type": "God",
             "name": "Veigar of Boleham",
-            "life": 3200,
-            "damage": "430 - 720",
+            "life": 1600,
+            "damage": "430 - 666",
             "armor": 210,
             "xp": 100666
         },
@@ -964,17 +964,17 @@
             "ataques": [
                 {
                     "name": "Vigía do Plenilúnio",
-                    "damage": 500
+                    "damage": 430
                 },
                 {
                     "name": "Projeção de Alune",
-                    "damage": 666
+                    "damage": 460
                 }
             ],
             "type": "God",
             "name": "Aphelios dos Lunari",
             "life": 2800,
-            "damage": "500 - 666",
+            "damage": "430 - 460",
             "armor": 230,
             "xp": 120000
         }
