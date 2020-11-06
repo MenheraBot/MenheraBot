@@ -932,21 +932,21 @@
             "ataques": [
                 {
                     "name": "Horizonte de Eventos",
-                    "damage": 430
+                    "damage": 360
                 },
                 {
                     "name": "Matéria Escura",
-                    "damage": 500
+                    "damage": 400
                 },
                 {
                     "name": "Explosão primordial",
-                    "damage": 666
+                    "damage": 490
                 }
             ],
             "type": "God",
             "name": "Veigar of Boleham",
             "life": 1600,
-            "damage": "430 - 666",
+            "damage": "360 - 490",
             "armor": 210,
             "xp": 100666
         },
@@ -973,7 +973,7 @@
             ],
             "type": "God",
             "name": "Aphelios dos Lunari",
-            "life": 2800,
+            "life": 1300,
             "damage": "430 - 460",
             "armor": 230,
             "xp": 120000
