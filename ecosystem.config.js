@@ -7,7 +7,6 @@ module.exports = {
         error_file: './logs/err.log',
         out_file: './logs/out.log',
         log_file: './logs/combined.log',
-        interpreter_args: "--max-old-space-size=768",
-        args: '--trace'
+        interpreter_args: "--max-old-space-size=768"
     }]
 }
