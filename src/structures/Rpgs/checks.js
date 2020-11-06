@@ -131,7 +131,9 @@ module.exports.enemyShot = async (message, user, inimigo, type, familia, t, toSa
         return this.morte(message, user, t, toSay)
     } else {
         user.life = vidaUser
-        return user.save().then(() => this.continueBattle(message, inimigo, habilidades, user, type, ataque, familia, t, toSay))
+        setTimeout(() => {
+            return user.save().then(() => this.continueBattle(message, inimigo, habilidades, user, type, ataque, familia, t, toSay))
+        }, 300)
     }
 }
 
