@@ -3,6 +3,7 @@ const { readdir } = require("fs-extra")
 const EventManager = require("./structures/EventManager")
 const Reminders = require("./utils/RemindersChecks")
 const Sentry = require("@sentry/node")
+const io = require("@pm2/io")
 
 module.exports = class WatchClient extends Client {
     constructor(options = {}) {
@@ -17,6 +18,7 @@ module.exports = class WatchClient extends Client {
     }
     init() {
         Sentry.init({ dsn: this.config.sentry_dns });
+        io.init({ transactions: true, http: true })
         const reminder = new Reminders(this)
         reminder.loop()
         return true

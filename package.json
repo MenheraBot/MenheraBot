@@ -9,6 +9,7 @@
   "keywords": [],
   "author": "Luxanna Crownguard (ySnoopyDogy)",
   "dependencies": {
+    "@pm2/io": "^4.3.5",
     "@sentry/node": "^5.24.2",
     "dblapi.js": "^2.4.0",
     "discord.js": "^12.2.0",
