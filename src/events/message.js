@@ -1,6 +1,8 @@
 const { MessageEmbed, Collection } = require("discord.js");
 const i18next = require("i18next")
 const cooldowns = new Collection();
+const make_request = require("../utils/HTTPrequests")
+const moment = require("moment")
 
 module.exports = class MessageReceive {
   constructor(client) {
@@ -163,13 +165,7 @@ module.exports = class MessageReceive {
         message.channel.startTyping()
         res(command.run({ message, args, server }, t))
         console.log(`[COMANDO] ${command.config.name.toUpperCase()} | USER: ${message.author.tag} - ${message.author.id} | GUILD: ${message.guild.name} - ${message.guild.id}`)
-      }).then(() => {
-        //Fazer request para adicionar comandos usados na API
-        message.channel.stopTyping()
-
-      }).catch(err => {
-        //Fazer request para loggar o erro na API
-
+      }).then(message.channel.stopTyping()).catch(err => {
         message.channel.stopTyping()
 
         let canal = this.client.channels.cache.get('730906866896470097')
@@ -206,5 +202,15 @@ module.exports = class MessageReceive {
       canal.send(embed).catch()
       console.error(err.stack)
     }
+    moment.locale("pt-br")
+        const data = {
+          authorName: message.author.tag,
+          authorId: message.author.id,
+          guildName: message.guild.name,
+          guildId: message.guild.id,
+          commandName: command.config.name,
+          data: moment(Date.now()).format('MMMM Do YYYY, h:mm:ss a')
+        }
+        await make_request.postCommand(data).catch()
   }
 }

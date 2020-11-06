@@ -57,6 +57,7 @@ module.exports = class ReadyEvent {
 
     console.log(`[READY] Menhera se conectou com o Discord!`)
     http.status("ready")
+    http.clearCommands()
 
     let status = [{ name: "a moon ser perfeita", type: "WATCHING" },
     { name: "o meu servidor de suporte m!suporte", type: "LISTENING" },
