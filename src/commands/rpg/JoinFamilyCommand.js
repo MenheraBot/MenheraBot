@@ -11,16 +11,16 @@ module.exports = class JoinFamilyCommand extends Command {
     async run({ message, args, server }, t) {
 
         const user = await this.client.database.Rpg.findById(message.author.id)
-        if (!user) return message.menheraReply("error", t("commands:joinfamily.non-aventure"))
+        if (!user) return message.menheraReply("error", t("commands:família.non-aventure"))
 
-        if (user.level < 10) return message.menheraReply("error", t("commands:joinfamily.low-level"))
+        if (user.level < 10) return message.menheraReply("error", t("commands:família.low-level"))
 
-        if (user.hasFamily) return message.menheraReply("error", t("commands:joinfamily.has-family", { name: user.familyName }))
+        if (user.hasFamily) return message.menheraReply("error", t("commands:família.has-family", { name: user.familyName }))
 
         const familiasDisponiveis = ["Loki", "Ares", "Freya", "Soma", "Apolo"]
         const sortedFamily = familiasDisponiveis[Math.floor(Math.random() * familiasDisponiveis.length)];
 
-        message.menheraReply("success", t("commands:joinfamily.welcome", { family: sortedFamily }))
+        message.menheraReply("success", t("commands:família.welcome", { family: sortedFamily }))
 
         const familia = await this.client.database.Familias.findById(sortedFamily)
 
