@@ -2,9 +2,13 @@ const request = require("request-promise")
 const config = require("../../config.json")
 module.exports.status = async (data) => {
 
-    let options = {
+    const options = {
         method: 'POST',
         uri: `${config.api_IP}/api/comunicate/${data}`,
+        headers: {
+            'User-Agent': "MenheraClient",
+            'token': config.api_TOKEN
+        },
         body: {
             message: "Terminating"
         },
@@ -16,9 +20,13 @@ module.exports.status = async (data) => {
 
 module.exports.shards = async (data, shard) => {
 
-    let options = {
+    const options = {
         method: 'POST',
         uri: `${config.api_IP}/api/comunicate/shard/${data}`,
+        headers: {
+            'User-Agent': "MenheraClient",
+            'token': config.api_TOKEN
+        },
         body: {
             shard: shard
         },
@@ -30,9 +38,13 @@ module.exports.shards = async (data, shard) => {
 
 module.exports.postCommand = async (data) => {
 
-    let options = {
+    const options = {
         method: 'POST',
         uri: `${config.api_IP}/api/stats/commands`,
+        headers: {
+            'User-Agent': "MenheraClient",
+            'token': config.api_TOKEN
+        },
         body: {
             authorName: data.authorName,
             authorId: data.authorId,
@@ -50,8 +62,32 @@ module.exports.postCommand = async (data) => {
 module.exports.clearCommands = async () => {
     let options = {
         method: 'POST',
+        headers: {
+            'User-Agent': "MenheraClient",
+            'token': config.api_TOKEN
+        },
         uri: `${config.api_IP}/api/stats/commands/clear`,
     };
 
     request(options).catch((err) => console.log('[HTTP ERROR] ' + err.message));
+}
+
+module.exports.getCommands = async () => {
+    const options = {
+        method: 'GET',
+        uri: `${config.api_IP}/api/stats/commands/?cmds=true`,
+        headers: {
+            'User-Agent': "MenheraClient",
+            'token': config.api_TOKEN
+        }
+    }
+
+    let cmds
+
+    await request(options).then((data) => {
+        const obj = JSON.parse(data);
+        cmds = obj.lenght
+    }).catch((err) => console.log('[HTTP ERROR] ' +err.message))
+
+    return (cmds) ? cmds : "MUITOS"
 }

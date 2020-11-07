@@ -499,7 +499,7 @@
     },
     "botinfo": {
         "description": "Shows current bot information",
-        "embed_description": "Hi my name is **{{name}}**, and I'm a Brazilian Bot for Discord with a focus on fun and RPG! I was created in **{{createdAt}}** and joined this server in **{{joinedAt}}**\n\nA little bit about me: My name is Menhera, I am 16 years old and I LOVE, I mean, I LOOOOVE to use these faces: (>...<). To learn more, go to my [twitter](https://twitter.com/__MenheraBot) and my [support server](https://discord.gg/fZMdQbA)",
+        "embed_description": "Hi my name is **{{name}}**, and I'm a Brazilian Bot for Discord with a focus on fun and RPG! I was created in **{{createdAt}}** and joined this server in **{{joinedAt}}**. Since I woke up, I've already executed **{{cmds}}** commands\n\nA little bit about me: My name is Menhera, I am 16 years old and I LOVE, I mean, I LOOOOVE to use these faces: (>...<). To learn more, go to my [twitter](https://twitter.com/__MenheraBot) and my [support server](https://discord.gg/fZMdQbA)",
         "embed_footer": "was created by",
         "channels": "Channels",
         "memory": "Memory",
@@ -705,7 +705,7 @@
     "register": {
         "description": "Register an adventurer",
         "already": "you are already an adventurer, {{name}}-sama",
-        "text": "Welcome! \nDo you want to be an adventurer? \nWhich class do you want to be in? \nQuestions with which class to choose? Enter the [MENHERA SITE](https://sites.google.com/view/menherabot/classes) to see each class \n",
+        "text": "Welcome!\nDo you want to be an adventurer? \nWhich class do you want to be in? \nQuestions with which class to choose? Enter the [MENHERA SITE](https://sites.google.com/view/menherabot/classes) to see each class \n",
         "title": "Adventurers Guild",
         "footer": "Type in the chat option of your choice",
         "invalid-input": "this option is not a valid class!",
@@ -716,10 +716,10 @@
     "reset": {
         "description": "Reset your RPG profile",
         "non-aventure": "you are not an adventurer",
-        "low-level": "you need to be at level ** 7 ** to be able to reset",
+        "low-level": "you need to be at level **7** to be able to reset",
         "confirm": "do you really want to reset your RPG profile? This action is ** IRREVERSIBLE ** \nEnter `yes` to confirm",
         "success": "you have successfully reset your RPG account! To play again, use {{prefix}}register",
-        "cancel": "your account ** has not ** been reset! "
+        "cancel": "your account **has not** been reset! "
     },
     "status": {
         "description": "See someone's status",
