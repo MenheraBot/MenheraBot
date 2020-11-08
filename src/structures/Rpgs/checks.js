@@ -795,35 +795,35 @@ module.exports.evolve = async (user) => {
             user.damage = user.damage + 10
             user.class = "Senhor das Sombras"
             user.save()
-            message.menheraReply("warn", t("roleplay:evolve", {class: "Senhor das Sombras"}))
+            message.menheraReply("warn", t("roleplay:evolve", { class: "Senhor das Sombras" }))
             break;
         case 'Bárbaro':
             user.abilities.push(abilitiesFile.barbarian.normalAbilities[4])
             user.maxLife = user.maxLife + 50
             user.class = "Berserker"
             user.save()
-            message.menheraReply("warn", t("roleplay:evolve", {class: "Berserker"}))
+            message.menheraReply("warn", t("roleplay:evolve", { class: "Berserker" }))
             break;
         case 'Clérigo':
             user.abilities.push(abilitiesFile.clerigo.normalAbilities[4])
             user.maxMana = user.maxMana + 40
             user.class = "Arcanjo"
             user.save()
-            message.menheraReply("warn", t("roleplay:evolve", {class: "Arcanjo"}))
+            message.menheraReply("warn", t("roleplay:evolve", { class: "Arcanjo" }))
             break;
         case 'Druida':
             user.abilities.push(abilitiesFile.druida.normalAbilities[4])
             user.maxMana = user.maxMana + 30
-            user.class =  "Guardião da Natureza"
+            user.class = "Guardião da Natureza"
             user.save()
-            message.menheraReply("warn", t("roleplay:evolve", {class: "Guardião da Natureza"}))
+            message.menheraReply("warn", t("roleplay:evolve", { class: "Guardião da Natureza" }))
             break;
         case 'Espadachim':
             user.abilities.push(abilitiesFile.espadachim.normalAbilities[4])
             user.damage = user.damage + 10
             user.class = "Mestre das Armas"
             user.save()
-            message.menheraReply("warn", t("roleplay:evolve", {class: "Mestre das Armas"}))
+            message.menheraReply("warn", t("roleplay:evolve", { class: "Mestre das Armas" }))
             break;
         case 'Feiticeiro':
             if (user.uniquePower.name == "Linhagem: Mística") {
@@ -831,35 +831,35 @@ module.exports.evolve = async (user) => {
                 user.maxMana = user.maxMana + 40
                 user.class = "Senhor das Galáxias"
                 user.save()
-                message.menheraReply("warn", t("roleplay:evolve", {class: "Senhor das Galáxias"}))
+                message.menheraReply("warn", t("roleplay:evolve", { class: "Senhor das Galáxias" }))
             }
             if (user.uniquePower.name == "Linhagem: Dracônica") {
                 user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[11])
                 user.maxMana = user.maxMana + 40
                 user.class = "Mestre dos Elementos"
                 user.save()
-                message.menheraReply("warn", t("roleplay:evolve", {class: "Mestre dos Elementos"}))
+                message.menheraReply("warn", t("roleplay:evolve", { class: "Mestre dos Elementos" }))
             }
             if (user.uniquePower.name == "Linhagem: Demoníaca") {
                 user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[12])
                 user.maxMana = user.maxMana + 40
                 user.class = "Conjurador Demoníaco"
                 user.save()
-                message.menheraReply("warn", t("roleplay:evolve", {class: "Conjurador Demoníaco"}))
+                message.menheraReply("warn", t("roleplay:evolve", { class: "Conjurador Demoníaco" }))
             }
             break;
         case 'Monge':
             user.abilities.push(abilitiesFile.monge.normalAbilities[4]),
-            user.class = "Sacerdote"
+                user.class = "Sacerdote"
             user.save()
-            message.menheraReply("warn", t("roleplay:evolve", {class: "Sacerdote"}))
+            message.menheraReply("warn", t("roleplay:evolve", { class: "Sacerdote" }))
             break;
         case 'Necromante':
             user.abilities.push(abilitiesFile.necromante.normalAbilities[4])
             user.maxMana = user.maxMana + 40
             user.class = "Senhor das Trevas"
             user.save()
-            message.menheraReply("warn", t("roleplay:evolve", {class: "Senhor das Trevas"}))
+            message.menheraReply("warn", t("roleplay:evolve", { class: "Senhor das Trevas" }))
             break;
     }
 }

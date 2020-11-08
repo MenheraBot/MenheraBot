@@ -102,25 +102,55 @@ module.exports = class AbilityInfoCommand extends Command {
             case 'Assassino':
                 filtrado = abilitiesFile.assassin
                 break;
+            case 'Senhor das Sombras':
+                filtrado = abilitiesFile.assassin
+                break;
             case 'Bárbaro':
+                filtrado = abilitiesFile.barbarian
+                break;
+            case 'Berserker':
                 filtrado = abilitiesFile.barbarian
                 break;
             case 'Clérigo':
                 filtrado = abilitiesFile.clerigo
                 break;
+            case 'Arcanjo':
+                filtrado = abilitiesFile.clerigo
+                break;
             case 'Druida':
+                filtrado = abilitiesFile.druida
+                break;
+            case 'Guardião da Natureza':
                 filtrado = abilitiesFile.druida
                 break;
             case 'Espadachim':
                 filtrado = abilitiesFile.espadachim
                 break;
+            case 'Mestre das Armas':
+                filtrado = abilitiesFile.espadachim
+                break;
             case 'Feiticeiro':
+                filtrado = abilitiesFile.feiticeiro
+                break;
+            case 'Senhor das Galáxias':
+                filtrado = abilitiesFile.feiticeiro
+                break;
+            case 'Mestre dos Elementos':
+                filtrado = abilitiesFile.feiticeiro
+                break;
+            case 'Conjurador Demoníaco':
                 filtrado = abilitiesFile.feiticeiro
                 break;
             case 'Monge':
                 filtrado = abilitiesFile.monge
                 break;
+            case 'Sacerdote':
+                filtrado = abilitiesFile.monge
+                break;
             case 'Necromante':
+                filtrado = abilitiesFile.necromante
+                break;
+            case 'Senhor das Trevas':
                 filtrado = abilitiesFile.necromante
                 break;
         }
