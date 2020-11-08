@@ -26,5 +26,6 @@
         "cant-go": "Você não pode visitar a dungeon pelos seguintes motivos:"
     },
     "registred": "você foi registrado com sucesso! Use `m!status` para ver seus status",
-    "backpack-full": "você ganha um loot, mas sua mochila está cheia,e  você precisa deixá-lo para trás"
+    "backpack-full": "você ganha um loot, mas sua mochila está cheia,e  você precisa deixá-lo para trás",
+    "evolve": "você atinge seu nível de proficiência, e se torna um {{class}}"
 }

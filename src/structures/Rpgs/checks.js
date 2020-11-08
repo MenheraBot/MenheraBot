@@ -493,6 +493,11 @@ module.exports.newAbilities = async (message, user, t) => {
         user.xp = 0
         user.nextLevelXp = 3000000
         user.save()
+    } else if (user.level == 30) {
+        user.xp = 0
+        user.nextLevelXp = 5000000
+        user.abilityPower += 1
+        this.evolve(user)
     }
 }
 
@@ -780,4 +785,81 @@ module.exports.confirmRegister = async (user, message, t) => {
                 break;
         }
     }, 1000)
+}
+
+module.exports.evolve = async (user) => {
+
+    switch (user.class) {
+        case 'Assassino':
+            user.abilities.push(abilitiesFile.assassin.normalAbilities[4])
+            user.damage = user.damage + 10
+            user.class = "Senhor das Sombras"
+            user.save()
+            message.menheraReply("warn", t("roleplay:evolve", {class: "Senhor das Sombras"}))
+            break;
+        case 'Bárbaro':
+            user.abilities.push(abilitiesFile.barbarian.normalAbilities[4])
+            user.maxLife = user.maxLife + 50
+            user.class = "Berserker"
+            user.save()
+            message.menheraReply("warn", t("roleplay:evolve", {class: "Berserker"}))
+            break;
+        case 'Clérigo':
+            user.abilities.push(abilitiesFile.clerigo.normalAbilities[4])
+            user.maxMana = user.maxMana + 40
+            user.class = "Arcanjo"
+            user.save()
+            message.menheraReply("warn", t("roleplay:evolve", {class: "Arcanjo"}))
+            break;
+        case 'Druida':
+            user.abilities.push(abilitiesFile.druida.normalAbilities[4])
+            user.maxMana = user.maxMana + 30
+            user.class =  "Guardião da Natureza"
+            user.save()
+            message.menheraReply("warn", t("roleplay:evolve", {class: "Guardião da Natureza"}))
+            break;
+        case 'Espadachim':
+            user.abilities.push(abilitiesFile.espadachim.normalAbilities[4])
+            user.damage = user.damage + 10
+            user.class = "Mestre das Armas"
+            user.save()
+            message.menheraReply("warn", t("roleplay:evolve", {class: "Mestre das Armas"}))
+            break;
+        case 'Feiticeiro':
+            if (user.uniquePower.name == "Linhagem: Mística") {
+                user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[10])
+                user.maxMana = user.maxMana + 40
+                user.class = "Senhor das Galáxias"
+                user.save()
+                message.menheraReply("warn", t("roleplay:evolve", {class: "Senhor das Galáxias"}))
+            }
+            if (user.uniquePower.name == "Linhagem: Dracônica") {
+                user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[11])
+                user.maxMana = user.maxMana + 40
+                user.class = "Mestre dos Elementos"
+                user.save()
+                message.menheraReply("warn", t("roleplay:evolve", {class: "Mestre dos Elementos"}))
+            }
+            if (user.uniquePower.name == "Linhagem: Demoníaca") {
+                user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[12])
+                user.maxMana = user.maxMana + 40
+                user.class = "Conjurador Demoníaco"
+                user.save()
+                message.menheraReply("warn", t("roleplay:evolve", {class: "Conjurador Demoníaco"}))
+            }
+            break;
+        case 'Monge':
+            user.abilities.push(abilitiesFile.monge.normalAbilities[4]),
+            user.class = "Sacerdote"
+            user.save()
+            message.menheraReply("warn", t("roleplay:evolve", {class: "Sacerdote"}))
+            break;
+        case 'Necromante':
+            user.abilities.push(abilitiesFile.necromante.normalAbilities[4])
+            user.maxMana = user.maxMana + 40
+            user.class = "Senhor das Trevas"
+            user.save()
+            message.menheraReply("warn", t("roleplay:evolve", {class: "Senhor das Trevas"}))
+            break;
+    }
 }

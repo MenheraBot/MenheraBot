@@ -52,6 +52,14 @@
                 "damage": 120,
                 "heal": 0,
                 "cost": 80
+            },
+            {
+                "name": "Sombras a Caminho",
+                "description": "Envia as sombras para cegar seu inimigo",
+                "cooldown": 7200000,
+                "damage": 140,
+                "heal": 0,
+                "cost": 100
             }
         ]
     },
@@ -108,6 +116,14 @@
                 "damage": 112,
                 "heal": 0,
                 "cost": 70
+            },
+            {
+                "name": "Frenesi",
+                "description": "Entra em modo Frenesi, curando e causando dano a seus inimigos",
+                "cooldown": 7200000,
+                "damage": 125,
+                "heal": 250,
+                "cost": 130
             }
         ]
     },
@@ -173,6 +189,14 @@
                 "damage": 46,
                 "heal": 80,
                 "cost": 90
+            },
+            {
+                "name": "Manipulação Éterea",
+                "description": "Envia os mensageiros da Luz para aniquilar seus inimigos",
+                "cooldown": 7200000,
+                "damage": 62,
+                "heal": 0,
+                "cost": 130
             }
         ]
     },
@@ -238,6 +262,14 @@
                 "damage": 60,
                 "heal": 0,
                 "cost": 60
+            },
+            {
+                "name": "Chamado da Natuzera",
+                "description": "Chama os seus aliados naturais para acabar com o inimigo",
+                "cooldown": 7200000,
+                "damage": 90,
+                "heal": 0,
+                "cost": 100  
             }
         ]
     },
@@ -294,6 +326,14 @@
                 "damage": 90,
                 "heal": 0,
                 "cost": 65
+            },
+            {
+                "name": "Golpe das 7 Lâminas",
+                "description": "Invoca todas as armas de sua alma, desferindo inúmeros golpes simultâneos",
+                "cooldown": 7200000,
+                "damage": 130,
+                "heal": 0,
+                "cost": 80
             }
         ]
     },
@@ -407,6 +447,30 @@
                 "damage": 70,
                 "heal": 0,
                 "cost": 115
+            },
+            {
+                "name": "Super Nova",
+                "description": "Cria uma supernova de força inabalável, expurgando seus inimigos",
+                "cooldown": 0,
+                "damage": 91,
+                "heal": 0,
+                "cost": 130 
+            },
+            {
+                "name": "Força dos 5 Elementos",
+                "description": "Conjura as forças dos 5 dragões elementais",
+                "cooldown": 0,
+                "damage": 93,
+                "heal": 0,
+                "cost": 135 
+            },
+            {
+                "name": "Pentagrama Mundial",
+                "description": "Fecha o Pentagrama entre os 5 Dragões Elementais, trazendo as forças do fim do mundo",
+                "cooldown": 0,
+                "damage": 95,
+                "heal": 0,
+                "cost": 138 
             }
         ]
     },
@@ -454,6 +518,14 @@
                 "damage": 80,
                 "heal": 0,
                 "cost": 55
+            },
+            {
+                "name": "Guerra Espiritual",
+                "description": "Invade a mente de seu inimigo, colocando-o fazendo com que sua mente luta contra si mesmo",
+                "cooldown": 3600000,
+                "damage": 100,
+                "heal": 0,
+                "cost": 75
             }
         ]
     },
@@ -519,6 +591,14 @@
                 "damage": 60,
                 "heal": 0,
                 "cost": 100
+            },
+            {
+                "name": "Fim dos Tempos",
+                "description": "Todos os mortos do mundo aparecem para acabar com seu inimigo",
+                "cooldown": 3600000,
+                "damage": 72,
+                "heal": 0,
+                "cost": 120
             }
         ]
     }
