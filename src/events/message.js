@@ -162,15 +162,12 @@ module.exports = class MessageReceive {
 
       command.setT(t)
       new Promise((res, rej) => {
-        message.channel.startTyping()
         res(command.run({ message, args, server }, t))
         console.log(`[COMANDO] ${command.config.name.toUpperCase()} | USER: ${message.author.tag} - ${message.author.id} | GUILD: ${message.guild.name} - ${message.guild.id}`)
-      }).then(message.channel.stopTyping()).catch(err => {
-        message.channel.stopTyping()
+      }).catch(err => {
 
         let canal = this.client.channels.cache.get('730906866896470097')
 
-        message.channel.stopTyping()
         const errorMessage = err.stack.length > 1800 ? `${err.stack.slice(0, 1800)}...` : err.stack
         const embed = new MessageEmbed()
         embed.setColor('#fd0000')
@@ -186,8 +183,6 @@ module.exports = class MessageReceive {
     } catch (err) {
 
       let canal = this.client.channels.cache.get('730906866896470097')
-
-      message.channel.stopTyping()
 
       const errorMessage = err.stack.length > 1800 ? `${err.stack.slice(0, 1800)}...` : err.stack
       const embed = new MessageEmbed()
