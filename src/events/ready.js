@@ -53,13 +53,13 @@ module.exports = class ReadyEvent {
       }, 1800000);
 
     }
-    this.client.user.setActivity("JEAN MAGE APENAS")
+    this.client.user.setActivity("Fui reiniciada com sucesso uwu")
 
     console.log(`[READY] Menhera se conectou com o Discord!`)
     http.status("ready")
     http.clearCommands()
 
-    let status = [/* { name: "a moon ser perfeita", type: "WATCHING" },
+    let status = [{ name: "a moon ser perfeita", type: "WATCHING" },
     { name: "o meu servidor de suporte m!suporte", type: "LISTENING" },
     { name: "sabia que a moon é a salvação da minha dona? sem moon, menhera = inexistente m!moon", type: "PLAYING" },
     { name: "a vida é dificil, mas estamos aqui pra facilitá-la", type: "PLAYING" },
@@ -73,11 +73,7 @@ module.exports = class ReadyEvent {
     { name: "Fique por dentro das minhas novidades em meu servidor de suporte", type: "PLAYING" },
     { name: "Sabia que eu tenho um rpg? m!help", type: "PLAYING" },
     { name: "Registre-se um aventureiro com m!register, e vá para aventuras na dungeon com m!dungeon", type: "PLAYING" },
-    { name: "#NERFAOSMOBSMEDIOS😢😢😢", type: "PLAYING" } */
-      { name: "GO JEAN MAGO", type: "WATCHING" },
-      { name: "#JEAN150K", type: "WATCHING" },
-      { name: "JEAN TOP 1", type: "WATCHING" },
-      { name: "Rushando Top 1", type: "STREAMING", url: "https://www.twitch.tv/jean_mago" },
+    { name: "#NERFAOSMOBSMEDIOS😢😢😢", type: "PLAYING" }
     ];
 
     setInterval(() => {
