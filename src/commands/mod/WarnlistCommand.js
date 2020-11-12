@@ -59,7 +59,7 @@ module.exports = class WarnListCommand extends Command {
             if (err) console.log(err);
 
             if (!db || db.length < 1) {
-                embed.setDescription(`${user} ${t("commands:warnlist.no__warns")}`);
+                embed.setDescription(`${user} ${t("commands:warnlist.no_warns")}`);
                 rand = noWarn[Math.floor(Math.random() * noWarn.length)];
             } else {
                 rand = warned[Math.floor(Math.random() * warned.length)];
