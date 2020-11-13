@@ -67,7 +67,8 @@ module.exports = class WarnListCommand extends Command {
 
             for (var i = 0; i < db.length; i++) {
                 if (embed.fields.length == 24) continue;
-                embed.addField(`${t("commands:warnlist.warn")} #${i + 1}`, `**${t("commands:warnlist.Warned_by")}** ${this.client.users.fetch(db[i].warnerId) || `404`}\n**${t("commands:warnlist.Reason")}** ${db[i].reason}\n**${t("commands:warnlist.Data")}** ${db[i].data}\n**${t("commands:warnlist.WarnID")}** \`${db[i]._id}\``);
+                const warner = this.client.users.fetch(db[i].warnerId)
+                embed.addField(`${t("commands:warnlist.warn")} #${i + 1}`, `**${t("commands:warnlist.Warned_by")}** ${warner || `404`}\n**${t("commands:warnlist.Reason")}** ${db[i].reason}\n**${t("commands:warnlist.Data")}** ${db[i].data}\n**${t("commands:warnlist.WarnID")}** \`${db[i]._id}\``);
             }
             embed.setImage(rand);
             //const errorMessage = err.stack.length > 1800 ? `${err.stack.slice(0, 1800)}...` : err.stack;

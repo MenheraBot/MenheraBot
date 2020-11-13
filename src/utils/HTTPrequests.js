@@ -91,3 +91,21 @@ module.exports.getCommands = async () => {
 
     return (cmds) ? cmds : "MUITOS"
 }
+
+module.exports.postLogs = async (log) => {
+
+    const options = {
+        method: 'POST',
+        uri: `${config.api_IP}/api/logs`,
+        headers: {
+            'User-Agent': "MenheraClient",
+            'token': config.api_TOKEN
+        },
+        body: {
+            info: log
+        }
+    }
+
+    request(options).catch((err) => console.log('[HTTP ERROR]' + err.message));
+
+}
