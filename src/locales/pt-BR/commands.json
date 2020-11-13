@@ -726,7 +726,7 @@
         "description": "Registre-se um aventureiro",
         "usage": "",
         "already": "você já é um aventureiro, {{name}}-sama",
-        "text": "Bem-vindo!\nVocê deseja ser um aventureiro?\nQual classe você deseja ser?\nDúvidas com qual classe escolher? Entre no [SITE DA MENHERA](https://sites.google.com/view/menherabot/classes) para ver cada classe\n",
+        "text": "Bem-vindo!\nVocê deseja ser um aventureiro?\nQual classe você deseja ser?\nDúvidas com qual classe escolher? Entre no [SITE DA MENHERA](https://menhera-site.vercel.app/classes) para ver cada classe\n",
         "title": "Guilda de Aventureiros",
         "footer": "Digite no chat a opção de sua escolha",
         "invalid-input": "esta opção não é uma classe válida!",
