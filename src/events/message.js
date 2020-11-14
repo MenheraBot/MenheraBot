@@ -13,7 +13,7 @@ module.exports = class MessageReceive {
 
     if (message.author.bot) return;
     if (message.channel.type === "dm") return;
-    if (!message.guild.me.hasPermission("SEND_MESSAGES")) return;
+    if (!message.channel.permissionsFor(message.guild.me).has("SEND_MESSAGES")) return;
 
     let server = await this.client.database.Guilds.findOne({ id: message.guild.id })
     if (!server) {
