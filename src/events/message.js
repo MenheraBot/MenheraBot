@@ -200,14 +200,14 @@ module.exports = class MessageReceive {
       console.error(err.stack)
     }
     moment.locale("pt-br")
-        const data = {
-          authorName: message.author.tag,
-          authorId: message.author.id,
-          guildName: message.guild.name,
-          guildId: message.guild.id,
-          commandName: command.config.name,
-          data: moment(Date.now()).format('MMMM Do YYYY, h:mm:ss a')
-        }
-        await make_request.postCommand(data).catch()
+    const data = {
+      authorName: message.author.tag,
+      authorId: message.author.id,
+      guildName: message.guild.name,
+      guildId: message.guild.id,
+      commandName: command.config.name,
+      data: moment(Date.now()).format('MMMM Do YYYY, h:mm:ss a')
+    }
+    await make_request.postCommand(data).catch()
   }
 }
