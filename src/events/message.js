@@ -146,15 +146,17 @@ module.exports = class MessageReceive {
     let userPermission = command.config.userPermissions
     let clientPermission = command.config.clientPermissions
     if (userPermission !== null) {
-      if (!message.member.hasPermission(userPermission)) {
-        let perm = userPermission.map(value => t(`permissions:${value}`)).join(", ")
-        return message.menheraReply("error", `${t("permissions:USER_MISSING_PERMISSION", { perm: perm })}`)
+      const missing = message.channel.permissionsFor(message.author).missing(userPermission)
+      if (missing.length) {
+        let perm = missing.map(value => t(`permissions:${value}`)).join(", ")
+        return message.menheraReply("error", `${t("permissions:USER_MISSING_PERMISSION", { perm })}`)
       }
     }
     if (clientPermission !== null) {
-      if (!message.guild.me.hasPermission(clientPermission) || !message.channel.permissionsFor(this.client.user.id).has(clientPermission)) {
-        let perm = clientPermission.map(value => t(`permissions:${value}`)).join(", ")
-        return message.menheraReply("error", `${t("permissions:CLIENT_MISSING_PERMISSION", { perm: perm })}`)
+      const missing = message.channel.permissionsFor(this.client.user).missing(clientPermission)
+      if (missing.length) {
+        let perm = missing.map(value => t(`permissions:${value}`)).join(", ")
+        return message.menheraReply("error", `${t("permissions:CLIENT_MISSING_PERMISSION", { perm })}`)
       }
     }
 
