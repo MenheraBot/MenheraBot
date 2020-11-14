@@ -59,7 +59,7 @@ module.exports = class ProfileCommand extends Command {
         ]);
 
         if (user.casado && user.casado != "false") {
-            let persona = this.client.users.cache.get(user.casado) || "`Sem informações do usuário`";
+            let persona = await this.client.users.fetch(user.casado) || "`Sem informações do usuário`";
             let data = user.data || "Sem data registrada";
             embed.addFields([{
                 name: `💗 | ${t("commands:profile.married-with")}`,
