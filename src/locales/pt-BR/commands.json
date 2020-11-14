@@ -877,5 +877,12 @@
         "confirm-message": "eu lembrarei você em **{{days}}** dias, **{{hours}}** horas e **{{minutes}}** minutos!\nUma última coisinha, você deseja ser lembrado neste canal, ou na Dm? Lembre-se de ativar suas DM's para receber a notificação!\n\n📩 - Reaja para **DM**\n⬇️ - Reaja para ser notificado **aqui**\n❌ - Reaja para **cancelar** este lembrete",
         "channel": "perfeitamente, vou te lembrar na data que você me disse neste canal",
         "dm": "como desejar, vou te lembrar na data que você me disse na sua dm! Lembre-se de ativar suas DM's para que eu possa te enviar o lembrete!"
+    },
+    "tilt": {
+        "description": "Alguém ta tiltado? Manda isso pra ela",
+        "usage": "[@menção]",
+        "phrase": "**Se pá que alguém ta tiltado ein**",
+        "phrase-mention": "**TA TILTADO CABELO ROSA????**",
+        "footer": "Enviado por "
     }
 }

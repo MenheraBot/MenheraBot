@@ -854,5 +854,12 @@
         "confirm-message": "I will remind you in **{{days}}** days, **{{hours}}** hours and **{{minutes}}** minutes! \nJust one more thing, do you want to be remembered on this channel, or on the DM? be sure to activate your DM's to receive the notification! \n\n📩 - React to **DM**\n⬇️ - React to be notified **here**\n❌ - React to **cancel** this reminder",
         "channel": "perfectly, I will remember you in that date here on this channel!",
         "dm": "as you wish, I will remind you in that date in your DM! Remember to activate your DM's so I can send you the reminder!"
+    },
+    "tilt": {
+        "description": "Is someone tilted? Send this to them",
+        "usage": "[@mention]",
+        "phrase": "**I guess someone's tilted**",
+        "phrase-mention": "**ARE YOU TILTED?????**",
+        "footer": "Sent by "
     }
 }
