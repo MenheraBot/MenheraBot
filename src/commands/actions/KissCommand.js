@@ -11,7 +11,7 @@ module.exports = class KissCommand extends Command {
     });
   }
 
-  async run({ message, args, server }, t) {
+  async run({ message }, t) {
     const list = [
       'https://i.imgur.com/sGVgr74.gif',
       'https://i.imgur.com/lmY5soG.gif',

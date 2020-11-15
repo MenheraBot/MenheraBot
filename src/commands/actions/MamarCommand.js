@@ -11,14 +11,14 @@ module.exports = class MamarCommand extends Command {
     });
   }
 
-  async run({ message, args, server }, t) {
+  async run({ message }, t) {
     const mention = message.mentions.users.first();
 
     if (!mention) return message.menheraReply('error', t('commands:mamar.no-mention'));
 
     if (mention.bot) return message.menheraReply('warn', `${t('commands:mamar.bot')} ${mention}`);
 
-    if (mention == message.author) return message.menheraReply('error', t('commands:mamar.self-mention'));
+    if (mention === message.author) return message.menheraReply('error', t('commands:mamar.self-mention'));
 
     let user1 = await this.client.database.Users.findOne({ id: mention.id });
     const user2 = await this.client.database.Users.findOne({ id: message.author.id });

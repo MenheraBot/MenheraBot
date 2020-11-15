@@ -11,7 +11,7 @@ module.exports = class KillCommand extends Command {
     });
   }
 
-  async run({ message, args, server }, t) {
+  async run({ message }, t) {
     const list = [
       'https://i.imgur.com/teca6na.gif',
       'https://i.imgur.com/XaqZPBf.gif',

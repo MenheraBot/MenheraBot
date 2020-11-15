@@ -11,7 +11,7 @@ module.exports = class MaintenanceCommand extends Command {
     });
   }
 
-  async run({ message, args, server }, t) {
+  async run({ message, args }) {
     if (!args[0]) return message.menheraReply('error', 'você não informou o comando desejado');
     const cmd = this.client.commands.get(args[0]) || this.client.commands.get(this.client.aliases.get(args[0]));
     if (!cmd) return message.menheraReply('error', 'este comando não existe');

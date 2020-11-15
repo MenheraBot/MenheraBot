@@ -11,7 +11,7 @@ module.exports = class WalletCommand extends Command {
     });
   }
 
-  async run({ message, args, server }, t) {
+  async run({ message, args }, t) {
     let pessoa;
 
     if (args[0]) {

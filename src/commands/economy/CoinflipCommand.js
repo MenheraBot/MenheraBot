@@ -10,7 +10,7 @@ module.exports = class CoinflipCommand extends Command {
     });
   }
 
-  async run({ message, args, server }, t) {
+  async run({ message, args }, t) {
     const user1 = message.author;
     const user2 = message.mentions.users.first();
     const input = args[1];
@@ -21,7 +21,7 @@ module.exports = class CoinflipCommand extends Command {
     if (user2.bot) return message.menheraReply('error', t('commands:coinflip.bot'));
     if (user2.id === user1.id) return message.menheraReply('error', t('commands:coinflip.self-mention'));
 
-    if (isNaN(parseInt(valor))) return message.menheraReply('error', t('commands:coinflip.invalid-value'));
+    if (Number.isNaN(parseInt(valor))) return message.menheraReply('error', t('commands:coinflip.invalid-value'));
     if (parseInt(valor) < 1) return message.menheraReply('error', t('commands:coinflip.invalid-value'));
 
     const db1 = await this.client.database.Users.findOne({ id: user1.id });
@@ -38,7 +38,7 @@ module.exports = class CoinflipCommand extends Command {
 
       const coletor = msg.createReactionCollector(filter, { max: 1, time: 5000 });
 
-      coletor.on('collect', (r) => {
+      coletor.on('collect', () => {
         const shirleyTeresinha = ['Cara', 'Coroa'];
         const choice = shirleyTeresinha[Math.floor(Math.random() * shirleyTeresinha.length)];
 

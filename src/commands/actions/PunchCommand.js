@@ -11,7 +11,7 @@ module.exports = class PunchCommand extends Command {
     });
   }
 
-  async run({ message, args, server }, t) {
+  async run({ message }, t) {
     const list = [
       'https://i.imgur.com/f2kkp3L.gif',
       'https://i.imgur.com/C6lqbl8.gif',

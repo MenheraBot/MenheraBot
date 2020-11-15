@@ -11,7 +11,7 @@ module.exports = class ResurrectCommand extends Command {
     });
   }
 
-  async run({ message, args, server }, t) {
+  async run({ message }, t) {
     const list = [
       'https://i.imgur.com/krVf6J7.gif',
       'https://i.imgur.com/igSM6nd.gif',

@@ -11,7 +11,7 @@ module.exports = class BiteCommand extends Command {
     });
   }
 
-  async run({ message, args, server }, t) {
+  async run({ message }, t) {
     const list = [
       'https://i.imgur.com/mimLPx3.gif',
       'https://i.imgur.com/AZ2dUaq.gif',

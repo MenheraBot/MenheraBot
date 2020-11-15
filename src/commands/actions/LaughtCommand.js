@@ -11,7 +11,7 @@ module.exports = class LaughtCommand extends Command {
     });
   }
 
-  async run({ message, args, server }, t) {
+  async run({ message }, t) {
     const avatar = message.author.displayAvatarURL({ format: 'png' });
 
     const list = [

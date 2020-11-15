@@ -11,7 +11,7 @@ module.exports = class ThinksCOmmand extends Command {
     });
   }
 
-  async run({ message, args, server }, t) {
+  async run({ message }, t) {
     const list = [
       'https://i.imgur.com/ZIxBpIz.gif',
       'https://i.imgur.com/DcEnIqE.gif',
@@ -32,7 +32,7 @@ module.exports = class ThinksCOmmand extends Command {
 
     if (user && user.bot) return message.menheraReply('success', t('commands:think.bot'));
 
-    if (!user || user == message.author) {
+    if (!user || user === message.author) {
       const embed = new MessageEmbed()
         .setTitle(t('commands:think.no-mention.embed_title'))
         .setColor('#000000')

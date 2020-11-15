@@ -11,7 +11,7 @@ module.exports = class ShotCommand extends Command {
     });
   }
 
-  async run({ message, args, server }, t) {
+  async run({ message }, t) {
     const list = [
       'https://i.imgur.com/4d1oxl9.gif',
       'https://i.imgur.com/vJdv4PP.gif',

@@ -73,8 +73,6 @@ module.exports = class WarnListCommand extends Command {
       }
 
       embed.setImage(rand);
-      // const errorMessage = err.stack.length > 1800 ? `${err.stack.slice(0, 1800)}...` : err.stack;
-      // if(embed.length > 6000) embed.fields.slice(0, embed.length === 6000);
       message.channel.send(embed);
     });
   }

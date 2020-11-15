@@ -11,7 +11,7 @@ module.exports = class PatCommand extends Command {
     });
   }
 
-  async run({ message, args, server }, t) {
+  async run({ message }, t) {
     const list = [
       'https://i.imgur.com/UWbKpx8.gif',
       'https://i.imgur.com/4ssddEQ.gif',

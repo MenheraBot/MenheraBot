@@ -11,7 +11,7 @@ module.exports = class ShyCommand extends Command {
     });
   }
 
-  async run({ message, args, server }, t) {
+  async run({ message }, t) {
     const avatar = message.author.displayAvatarURL({ format: 'png' });
 
     const list = [
@@ -33,7 +33,7 @@ module.exports = class ShyCommand extends Command {
     const rand = list[Math.floor(Math.random() * list.length)];
     const user = message.mentions.users.first();
 
-    if (!user || user == message.author) {
+    if (!user || user === message.author) {
       const embed = new MessageEmbed()
         .setTitle(t('commands:shy.no-mention.embed_title'))
         .setColor('#000000')

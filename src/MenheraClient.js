@@ -1,19 +1,24 @@
+/* eslint-disable global-require */
+/* eslint-disable import/no-dynamic-require */
 const { Client, Collection } = require('discord.js');
 const { readdir } = require('fs-extra');
 const Sentry = require('@sentry/node');
 const EventManager = require('./structures/EventManager');
 const Reminders = require('./utils/RemindersChecks');
+const Database = require('./structures/DatabaseConnection');
+const Config = require('../config.json');
+const RpgChecks = require('./structures/Rpgs/checks');
 
 module.exports = class WatchClient extends Client {
   constructor(options = {}) {
     super(options);
 
-    this.database = require('./structures/DatabaseConnection');
+    this.database = Database;
     this.commands = new Collection();
     this.aliases = new Collection();
     this.events = new EventManager(this);
-    this.config = require('../config.json');
-    this.rpgChecks = require('./structures/Rpgs/checks');
+    this.config = Config;
+    this.rpgChecks = RpgChecks;
   }
 
   init() {
@@ -30,6 +35,7 @@ module.exports = class WatchClient extends Client {
     this.commands.delete(command.config.name);
     delete require.cache[require.resolve(dir)];
     try {
+      // eslint-disable-next-line global-require
       const Command = require(dir);
       const cmd = new Command(this);
       cmd.dir = dir;
@@ -41,7 +47,7 @@ module.exports = class WatchClient extends Client {
   }
 
   reloadEvent(eventName) {
-    const event = this.events.events.some((s) => s.name == eventName);
+    const event = this.events.events.some((s) => s.name === eventName);
     if (!event) return false;
 
     const dir = `./events/${eventName}.js`;
@@ -49,9 +55,10 @@ module.exports = class WatchClient extends Client {
     if (!status) return status;
     delete require.cache[require.resolve(dir)];
     try {
+      // eslint-disable-next-line global-require
       const Event = require(dir);
-      const event = new Event(this);
-      this.events.add(eventName, event);
+      const eventClasse = new Event(this);
+      this.events.add(eventName, eventClasse);
       return true;
     } catch (e) {
       return e;
@@ -66,8 +73,8 @@ module.exports = class WatchClient extends Client {
     readdir(`${__dirname}/commands/`, (err, files) => {
       if (err) console.error(err);
       files.forEach((category) => {
-        readdir(`${__dirname}/commands/${category}`, (err, cmd) => {
-          cmd.forEach(async (cmd) => {
+        readdir(`${__dirname}/commands/${category}`, (_, cmds) => {
+          cmds.forEach(async (cmd) => {
             const command = new (require(`${__dirname}/commands/${category}/${cmd}`))(this);
             command.dir = `${__dirname}/commands/${category}/${cmd}`;
             this.commands.set(command.config.name, command);

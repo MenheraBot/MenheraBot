@@ -1,4 +1,5 @@
 const { MessageEmbed } = require('discord.js');
+const util = require('util');
 const Command = require('../../structures/command');
 
 module.exports = class EvalCommand extends Command {
@@ -11,9 +12,10 @@ module.exports = class EvalCommand extends Command {
     });
   }
 
-  async run({ message, args, server }, t) {
+  // eslint-disable-next-line no-unused-vars
+  async run({ message, args }, t) {
     try {
-      const util = require('util');
+      // eslint-disable-next-line no-eval
       let evaled = await eval(args.join(' '));
       evaled = util.inspect(evaled, { depth: 1 });
       evaled = evaled.replace(new RegExp(`${this.client.token}`, 'g'), undefined);

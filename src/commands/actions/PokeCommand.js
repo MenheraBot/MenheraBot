@@ -11,7 +11,7 @@ module.exports = class PokeCommand extends Command {
     });
   }
 
-  async run({ message, args, server }, t) {
+  async run({ message }, t) {
     const list = [
       'https://i.imgur.com/ZWfpRM4.gif',
       'https://i.imgur.com/wLEViR5.gif',

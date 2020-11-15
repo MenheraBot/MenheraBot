@@ -11,7 +11,7 @@ module.exports = class ShopCommand extends Command {
     });
   }
 
-  async run({ message, args, server }, t) {
+  async run({ message }, t) {
     const user = await this.client.database.Users.findOne({ id: message.author.id });
     const saldoAtual = user.estrelinhas;
 
@@ -42,7 +42,9 @@ module.exports = class ShopCommand extends Command {
       if (!validArgs.some((answer) => answer.toLowerCase() === m.content.toLowerCase())) return message.menheraReply('error', t('commands:shop.invalid-option'));
 
       if (m.content === '1') {
+        // eslint-disable-next-line no-use-before-define
         lojaComprar(message, embedMessage, user, saldoAtual, t);
+      // eslint-disable-next-line no-use-before-define
       } else lojaVender(message, embedMessage, user, saldoAtual, t);
     });
   }
@@ -130,12 +132,12 @@ function lojaComprar(message, embedMessage, user, saldoAtual, t) {
 
       const validCorArgs = ['1', '2', '3', '4', '5', '6', '7'];
 
-      const filtroCor = (m) => m.author.id === message.author.id;
+      const filtroCor = (msg) => msg.author.id === message.author.id;
       const CorColetor = message.channel.createMessageCollector(filtroCor, { max: 1, time: 30000, errors: ['time'] });
 
-      CorColetor.on('collect', (m) => {
-        if (!validCorArgs.some((answer) => answer.toLowerCase() === m.content.toLowerCase())) return message.menheraReply('error', t('commands:shop.invalid-option'));
-        switch (m.content) {
+      CorColetor.on('collect', (msg) => {
+        if (!validCorArgs.some((answer) => answer.toLowerCase() === msg.content.toLowerCase())) return message.menheraReply('error', t('commands:shop.invalid-option'));
+        switch (msg.content) {
           case '1':
             if (user.cores.some((res) => res.cor === coresDisponíveis[0].cor)) return message.menheraReply('yellow_circle', t('commands:shop.buy_colors.has-color')).then(() => embedMessage.delete({ timeout: 500 }).catch());
             if (user.estrelinhas < coresDisponíveis[0].preço) return message.menheraReply('error', t('commands:shop.buy_colors.poor')).then(() => embedMessage.delete({ timeout: 500 }).catch());
@@ -176,6 +178,7 @@ function lojaComprar(message, embedMessage, user, saldoAtual, t) {
             user.save();
             message.menheraReply('success', t('commands:shop.buy_colors.buy-success', { name: coresDisponíveis[4].nome, price: coresDisponíveis[4].preço, stars: user.estrelinhas })).then(() => embedMessage.delete({ timeout: 500 }).catch());
             break;
+
           case '6':
             if (user.cores.some((res) => res.cor === coresDisponíveis[5].cor)) return message.menheraReply('yellow_circle', t('commands:shop.buy_colors.has-color')).then(() => embedMessage.delete({ timeout: 500 }).catch());
             if (user.estrelinhas < coresDisponíveis[5].preço) return message.menheraReply('error', t('commands:shop.buy_colors.poor')).then(() => embedMessage.delete({ timeout: 500 }).catch());
@@ -184,18 +187,19 @@ function lojaComprar(message, embedMessage, user, saldoAtual, t) {
             user.save();
             message.menheraReply('success', t('commands:shop.buy_colors.buy-success', { name: coresDisponíveis[5].nome, price: coresDisponíveis[5].preço, stars: user.estrelinhas })).then(() => embedMessage.delete({ timeout: 500 }).catch());
             break;
-          case '7':
+
+          case '7': {
             if (user.cores.some((res) => res.nome.startsWith('7'))) return message.menheraReply('yellow_circle', t('commands:shop.buy_colors.has-color')).then(() => embedMessage.delete({ timeout: 500 }).catch());
             if (user.estrelinhas < coresDisponíveis[6].preço) return message.menheraReply('error', t('commands:shop.buy_colors.poor')).then(() => embedMessage.delete({ timeout: 500 }).catch());
 
-            const hexFiltro = (m) => m.author.id === message.author.id;
+            const hexFiltro = (hexMsg) => hexMsg.author.id === message.author.id;
             const hexColletor = message.channel.createMessageCollector(hexFiltro, { max: 1, time: 30000, errors: ['time'] });
 
             message.channel.send(t('commands:shop.buy_colors.yc-message'));
 
-            hexColletor.on('collect', (m) => {
-              isHexColor = (hex) => typeof hex === 'string' && hex.length === 6 && !isNaN(Number(`0x${hex}`));
-              if (isHexColor(m.content)) {
+            hexColletor.on('collect', (hexMsg) => {
+              const isHexColor = (hex) => typeof hex === 'string' && hex.length === 6 && !Number.isNaN(Number(`0x${hex}`));
+              if (isHexColor(hexMsg.content)) {
                 user.estrelinhas -= coresDisponíveis[6].preço;
                 user.cores.push({
                   nome: '7 - Sua Escolha',
@@ -208,6 +212,7 @@ function lojaComprar(message, embedMessage, user, saldoAtual, t) {
                 return message.menheraReply('error', t('commands:shop.buy_colors.invalid-color')).then(() => embedMessage.delete().catch());
               }
             });
+          }
         }
       });
     } else {
@@ -235,14 +240,14 @@ function lojaComprar(message, embedMessage, user, saldoAtual, t) {
 
       embedMessage.edit(message.author, { embed: dataRolls });
 
-      const filterColetor = (m) => m.author.id === message.author.id;
+      const filterColetor = (msg) => msg.author.id === message.author.id;
       const quantidadeCollector = message.channel.createMessageCollector(filterColetor, { max: 1, time: 30000, errors: ['time'] });
 
-      quantidadeCollector.on('collect', (m) => {
-        const input = m.content;
+      quantidadeCollector.on('collect', (msg) => {
+        const input = msg.content;
         if (!input) return message.menheraReply('error', t('commands:shop.dataRolls_fields.buy_rolls.invalid-number'));
         const valor = parseInt(input.replace(/\D+/g, ''));
-        if (isNaN(valor) || valor < 1) {
+        if (Number.isNaN(valor) || valor < 1) {
           embedMessage.delete({ timeout: 500 }).catch();
           message.menheraReply('error', t('commands:shop.dataRolls_fields.buy_rolls.invalid-number'));
         } else {
@@ -305,7 +310,7 @@ function lojaVender(message, embedMessage, user, saldoAtual, t) {
     const valorDeus = 50000;
 
     if (cArgs[0] === '1') {
-      if (isNaN(valor) || valor < 1) {
+      if (Number.isNaN(valor) || valor < 1) {
         embedMessage.delete().catch();
         return message.menheraReply('error', t('commands:shop.dataVender.invalid-args'));
       }
@@ -317,7 +322,7 @@ function lojaVender(message, embedMessage, user, saldoAtual, t) {
         value: valor, cost: valor * valorDemonio, quantity: user.caçados, star: user.estrelinhas,
       }));
     } else if (cArgs[0] === '2') {
-      if (isNaN(valor) || valor < 1) {
+      if (Number.isNaN(valor) || valor < 1) {
         embedMessage.delete().catch();
         message.menheraReply('error', t('commands:shop.dataVender.invalid-args'));
       } else {
@@ -330,7 +335,7 @@ function lojaVender(message, embedMessage, user, saldoAtual, t) {
         }));
       }
     } else if (cArgs[0] === '3') {
-      if (isNaN(valor) || valor < 1) {
+      if (Number.isNaN(valor) || valor < 1) {
         embedMessage.delete().catch();
         message.menheraReply('error', t('commands:shop.dataVender.invalid-args'));
       } else {
@@ -343,7 +348,7 @@ function lojaVender(message, embedMessage, user, saldoAtual, t) {
         }));
       }
     } else if (cArgs[0] === '4') {
-      if (isNaN(valor) || valor < 1) {
+      if (Number.isNaN(valor) || valor < 1) {
         embedMessage.delete().catch();
         message.menheraReply('error', t('commands:shop.dataVender.invalid-args'));
       } else {

@@ -11,7 +11,7 @@ module.exports = class SarrarCommand extends Command {
     });
   }
 
-  async run({ message, args, server }, t) {
+  async run({ message }, t) {
     const listaSozinho = [
       'https://media1.tenor.com/images/e0b093e5174a74518ffcbc0967d265eb/tenor.gif?itemid=17767202',
       'https://i.imgur.com/XBcmgBR.png',
@@ -36,33 +36,33 @@ module.exports = class SarrarCommand extends Command {
 
         const coletor = msg.createReactionCollector(filter, { max: 1, time: 30000 });
 
-        coletor.on('collect', (react, user) => {
+        coletor.on('collect', (react, colectorUser) => {
           msg.delete().catch();
-          sarrada(message, user, t);
+          SarrarCommand.sarrada(message, colectorUser, t);
         });
       });
-    } return sarrada(message, message.mentions.users.first(), t);
+    } return SarrarCommand.sarrada(message, message.mentions.users.first(), t);
+  }
+
+  static sarrada(message, reactUser, t) {
+    const lista = [
+      'https://i.imgur.com/m2JUJWB.gif',
+      'https://i.imgur.com/ezdhV96.gif',
+    ];
+
+    const rand = lista[Math.floor(Math.random() * lista.length)];
+
+    const avatar = message.author.displayAvatarURL({ format: 'png' });
+
+    const Embed = new MessageEmbed()
+
+      .setTitle(t('commands:sarrar.embed_title'))
+      .setColor('#000000')
+      .setDescription(`${message.author} ${t('commands:sarrar.embed_description')} ${reactUser}`)
+      .setImage(rand)
+      .setThumbnail(avatar)
+      .setAuthor(message.author.tag, avatar);
+
+    message.channel.send(Embed);
   }
 };
-
-function sarrada(message, reactUser, t) {
-  const lista = [
-    'https://i.imgur.com/m2JUJWB.gif',
-    'https://i.imgur.com/ezdhV96.gif',
-  ];
-
-  const rand = lista[Math.floor(Math.random() * lista.length)];
-
-  const avatar = message.author.displayAvatarURL({ format: 'png' });
-
-  const Embed = new MessageEmbed()
-
-    .setTitle(t('commands:sarrar.embed_title'))
-    .setColor('#000000')
-    .setDescription(`${message.author} ${t('commands:sarrar.embed_description')} ${reactUser}`)
-    .setImage(rand)
-    .setThumbnail(avatar)
-    .setAuthor(message.author.tag, avatar);
-
-  message.channel.send(Embed);
-}
