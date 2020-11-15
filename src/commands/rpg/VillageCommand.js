@@ -26,26 +26,28 @@ module.exports = class VillageCommand extends Command {
       .addField(t('commands:village.index.field_name'), t('commands:village.index.field_value'))
       .setFooter(t('commands:village.index.footer'));
 
-    const msg = await message.channel.send(message.author, embed);
+    const sent = await message.channel.send(message.author, embed);
 
     const filter = (m) => m.author.id === message.author.id;
-    const collector = message.channel.createMessageCollector(filter, { max: 1, time: 30000, errors: ['time'] });
+    const collector = sent.channel.createMessageCollector(filter, { max: 1, time: 30000, errors: ['time'] });
 
     collector.on('collect', (m) => {
-      if (!validOptions.includes(m.content)) return message.menheraReply('error', t('commands:village.invalid-option'));
+      if (!validOptions.includes(m.content)) {
+        return message.menheraReply('error', t('commands:village.invalid-option'));
+      }
 
       switch (m.content) {
         case '1':
-          this.bruxa(message, user, msg, t);
+          VillageCommand.bruxa(message, user, sent, t);
           break;
         case '2':
-          this.ferreiro(message, user, msg, t);
+          VillageCommand.ferreiro(message, user, sent, t);
           break;
         case '3':
-          this.hotel(message, user, msg, t);
+          VillageCommand.hotel(message, user, sent, t);
           break;
         case '4':
-          this.guilda(message, user, msg, t);
+          VillageCommand.guilda(message, user, sent, t);
           break;
       }
     });
@@ -65,9 +67,9 @@ module.exports = class VillageCommand extends Command {
       .setColor('#c5b5a0')
       .setFooter(t('commands:village.bruxa.footer'))
       .setDescription(t('commands:village.bruxa.description', { money: user.money }));
-    const number = itens.length;
-    itens.forEach((i) => {
-      embed.addField(`---------------[ ${number} ]---------------\n${i.name}`, `📜 | **${t('commands:village.desc')}:** ${i.description}\n💎 |** ${t('commands:village.cost')}:** ${i.value}`);
+  
+    itens.forEach((item, i) => {
+      embed.addField(`---------------[ ${i + 1} ]---------------\n${item.name}`, `📜 | **${t('commands:village.desc')}:** ${item.description}\n💎 |** ${t('commands:village.cost')}:** ${item.value}`);
     });
 
     msg.edit(message.author, embed);
@@ -77,7 +79,7 @@ module.exports = class VillageCommand extends Command {
 
     const option = [];
 
-    for (let f = 0; f < number; f += 1) {
+    for (let f = 0; f < number; f++) {
       option.push((f + 1).toString());
     }
 
@@ -101,7 +103,7 @@ module.exports = class VillageCommand extends Command {
       if ((user.backpack.value + quantidade) > user.backpack.capacity) return message.menheraReply('error', 'commands:village.backpack-full');
       message.menheraReply('success', t('commands:village.bruxa.bought', { quantidade, name: itens[parseInt(args[0] - 1)].name.slice(4), valor }));
 
-      for (let j = 0; j < quantidade; j += 1) {
+      for (let j = 0; j < quantidade; j++) {
         user.inventory.push(itens[parseInt(args[0] - 1)]);
         if (user.backpack) {
           const newValue = user.backpack.value + 1;
@@ -144,13 +146,13 @@ module.exports = class VillageCommand extends Command {
     collector.on('collect', (m) => {
       switch (m.content) {
         case '1':
-          this.ferreiroArma(message, user, msg, t);
+          VillageCommand.ferreiroArma(message, user, msg, t);
           break;
         case '2':
-          this.ferreiroArmadura(message, user, msg, t);
+          VillageCommand.ferreiroArmadura(message, user, msg, t);
           break;
         case '3':
-          this.ferreiroMochila(message, user, msg, t);
+          VillageCommand.ferreiroMochila(message, user, msg, t);
           break;
         default:
           return message.menheraReply('error', t('commands:village.invalid-option'));
@@ -206,7 +208,7 @@ module.exports = class VillageCommand extends Command {
           damage: 17,
         };
         user.money -= 500;
-        for (let j = 0; j < 2; j += 1) {
+        for (let j = 0; j < 2; j++) {
           user.loots.splice(user.loots.findIndex((i) => i.name === filtrado[0].name), 1);
           if (user.backpack) {
             const newValue = user.backpack.value - 1;
@@ -233,7 +235,7 @@ module.exports = class VillageCommand extends Command {
           damage: 27,
         };
         user.money -= 950;
-        for (let j = 0; j < 2; j += 1) {
+        for (let j = 0; j < 2; j++) {
           user.loots.splice(user.loots.findIndex((i) => i.name === filtrado1[0].name), 1);
           if (user.backpack) {
             const newValue = user.backpack.value - 1;
@@ -265,7 +267,7 @@ module.exports = class VillageCommand extends Command {
           damage: 50,
         };
         user.money -= 50000;
-        for (let j = 0; j < 5; j += 1) {
+        for (let j = 0; j < 5; j++) {
           user.loots.splice(user.loots.findIndex((i) => i.name === filtrado2[0].name), 1);
           if (user.backpack) {
             const newValue = user.backpack.value - 1;
@@ -337,7 +339,7 @@ module.exports = class VillageCommand extends Command {
           armor: 10,
         };
         user.money -= 400;
-        for (let j = 0; j < 1; j += 1) {
+        for (let j = 0; j < 1; j++) {
           user.loots.splice(user.loots.findIndex((i) => i.name === filtrado[0].name), 1);
           if (user.backpack) {
             const newValue = user.backpack.value - 1;
@@ -368,7 +370,7 @@ module.exports = class VillageCommand extends Command {
           armor: 30,
         };
         user.money -= 1000;
-        for (let j = 0; j < 3; j += 1) {
+        for (let j = 0; j < 3; j++) {
           user.loots.splice(user.loots.findIndex((i) => i.name === filtrado[0].name), 1);
           if (user.backpack) {
             const newValue = user.backpack.value - 1;
@@ -399,7 +401,7 @@ module.exports = class VillageCommand extends Command {
           armor: 50,
         };
         user.money -= 50000;
-        for (let j = 0; j < 5; j += 1) {
+        for (let j = 0; j < 5; j++) {
           user.loots.splice(user.loots.findIndex((i) => i.name === filtradoEscudo[0].name), 1);
           if (user.backpack) {
             const newValue = user.backpack.value - 1;
@@ -474,7 +476,7 @@ module.exports = class VillageCommand extends Command {
           value: user.backpack.value,
         };
         user.money -= 2000;
-        for (let j = 0; j < 1; j += 1) {
+        for (let j = 0; j < 1; j++) {
           user.loots.splice(user.loots.findIndex((i) => i.name === filtradoCobra[0].name), 1);
           if (user.backpack) {
             const newValue = user.backpack.value - 1;
@@ -506,7 +508,7 @@ module.exports = class VillageCommand extends Command {
           value: user.backpack.value,
         };
         user.money -= 50000;
-        for (let j = 0; j < 3; j += 1) {
+        for (let j = 0; j < 3; j++) {
           user.loots.splice(user.loots.findIndex((i) => i.name === filtradoEscama[0].name), 1);
           if (user.backpack) {
             const newValue = user.backpack.value - 1;
@@ -538,7 +540,7 @@ module.exports = class VillageCommand extends Command {
           value: user.backpack.value,
         };
         user.money -= 250000;
-        for (let j = 0; j < 5; j += 1) {
+        for (let j = 0; j < 5; j++) {
           user.loots.splice(user.loots.findIndex((i) => i.name === filtradoRabadon[0].name), 1);
           if (user.backpack) {
             const newValue = user.backpack.value - 1;
@@ -665,7 +667,7 @@ module.exports = class VillageCommand extends Command {
 
     const option = [];
 
-    for (let f = 0; f < number; f += 1) {
+    for (let f = 0; f < number; f++) {
       option.push((f).toString());
     }
 
@@ -743,16 +745,5 @@ module.exports = class VillageCommand extends Command {
       user.save();
       return message.menheraReply('success', t('commands:village.guilda.sold', { quantity: quantidade, name: contado[parseInt(args[0]) - 1].name, value: valor }));
     });
-  }
-
-  static countItems(arr) {
-    return arr.reduce((p, v) => {
-      const exists = p.findIndex((x) => x.name === v);
-      if (exists !== -1) {
-        p[exists].amount += 1;
-        return p;
-      }
-      return [...p, { name: v, amount: 1 }];
-    }, []);
   }
 };

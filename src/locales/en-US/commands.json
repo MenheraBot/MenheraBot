@@ -820,7 +820,7 @@
             "footer": "Chat your choice",
             "already": "you're already resting at the hotel!",
             "dead": "you died on a dungeon adventure, so you are already resting to regain your energy!",
-            "done": "você foi para o hotel, e ficará descansando até o fim de seu horário",
+            "done": "you went to the hotel, and will rest until the end of your schedule",
             "fields": {
                 "name_one": "Lunch Sleep",
                 "name_two": "Sleep of Life",
