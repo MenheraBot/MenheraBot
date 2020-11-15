@@ -1,46 +1,45 @@
-const Command = require("../../structures/command")
+const Command = require('../../structures/command');
 
 module.exports = class DeleteCommand extends Command {
-    constructor(client) {
-        super(client, {
-            name: "delete",
-            aliases: ["deletar"],
-            cooldown: 30,
-            category: "util",
-            clientPermissions: ["ADD_REACTIONS", "MANAGE_MESSAGES"]
-        })
-    }
-    async run({ message, args, server }, t) {
+  constructor(client) {
+    super(client, {
+      name: 'delete',
+      aliases: ['deletar'],
+      cooldown: 30,
+      category: 'util',
+      clientPermissions: ['ADD_REACTIONS', 'MANAGE_MESSAGES'],
+    });
+  }
 
-        message.menheraReply("warn", t("commands:delete.confirm")).then(async msg => {
+  async run({ message }, t) {
+    message.menheraReply('warn', t('commands:delete.confirm')).then(async (msg) => {
+      msg.react('✅').catch();
+      msg.react('❌').catch();
 
-            msg.react("✅").catch();
-            msg.react("❌").catch();
+      const filter = (reaction, usuario) => reaction.emoji.name === '✅' && usuario.id === message.author.id;
+      const filter1 = (reação, user) => reação.emoji.name === '❌' && user.id === message.author.id;
 
-            let filter = (reaction, usuario) => reaction.emoji.name === "✅" && usuario.id === message.author.id;
-            let filter1 = (reação, user) => reação.emoji.name === "❌" && user.id === message.author.id;
+      const ncoletor = msg.createReactionCollector(filter1, { max: 1, time: 5000 });
+      const coletor = msg.createReactionCollector(filter, { max: 1, time: 5000 });
 
-            let ncoletor = msg.createReactionCollector(filter1, { max: 1, time: 5000 });
-            let coletor = msg.createReactionCollector(filter, { max: 1, time: 5000 });
+      ncoletor.on('collect', () => {
+        msg.reactions.removeAll().catch();
+        message.menheraReply('success', t('commands:delete.negated'));
+      });
 
-            ncoletor.on("collect", co => {
-                msg.reactions.removeAll().catch();
-                message.menheraReply("success", t("commands:delete.negated"))
-            });
+      coletor.on('collect', () => {
+        msg.reactions.removeAll().catch();
 
-            coletor.on("collect", cp => {
-                msg.reactions.removeAll().catch();
-
-                this.client.database.Users.findOneAndDelete({
-                    id: message.author.id
-                }, (err, res) => {
-                    if (err) console.log(err);
-                    message.menheraReply("success", t("commands:delete.acepted"))
-                })
-            })
-            setTimeout(() => {
-                msg.delete().catch();
-            }, 5050);
-        })
-    }
-}
+        this.client.database.Users.findOneAndDelete({
+          id: message.author.id,
+        }, (err) => {
+          if (err) console.log(err);
+          message.menheraReply('success', t('commands:delete.acepted'));
+        });
+      });
+      setTimeout(() => {
+        msg.delete().catch();
+      }, 5050);
+    });
+  }
+};

@@ -4,7 +4,8 @@
   "description": "Uma bot brasileira de RPG para o Discord",
   "main": "shard.js",
   "scripts": {
-    "start": "node shard.js"
+    "start": "node shard.js",
+    "lint:fix": "eslint --fix ."
   },
   "keywords": [],
   "author": "Luxanna Crownguard (ySnoopyDogy)",
@@ -26,5 +27,10 @@
     "url": "git+https://github.com/ySnoopyDogy/MenheraBot"
   },
   "license": "AGPL-3.0",
-  "readme": "https://github.com/ySnoopyDogy/MenheraBot#readme"
+  "readme": "https://github.com/ySnoopyDogy/MenheraBot#readme",
+  "devDependencies": {
+    "eslint": "^7.13.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1"
+  }
 }

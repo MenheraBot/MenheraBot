@@ -1,27 +1,28 @@
-const Command = require("../../structures/command")
+const Command = require('../../structures/command');
+
 module.exports = class BlockChannelCommand extends Command {
-    constructor(client) {
-        super(client, {
-            name: "blockchannel",
-            aliases: ["blockcmd", "block", "bloquear"],
-            cooldown: 10,
-            userPermissions: ["MANAGE_CHANNELS"],
-            category: "moderação"
-        })
-    }
-    async run({ message, args, server }, t) {
+  constructor(client) {
+    super(client, {
+      name: 'blockchannel',
+      aliases: ['blockcmd', 'block', 'bloquear'],
+      cooldown: 10,
+      userPermissions: ['MANAGE_CHANNELS'],
+      category: 'moderação',
+    });
+  }
 
-        if (server.blockedChannels.includes(message.channel.id)) {
-            const index = server.blockedChannels.indexOf(message.channel.id);
-            if (index > -1) {
-                server.blockedChannels.splice(index, 1);
-                message.menheraReply("success", t("commands:blockchannel.unblock"))
-            }
-        } else {
-            server.blockedChannels.push(message.channel.id)
-            message.menheraReply("success", t("commands:blockchannel.block", { prefix: server.prefix }))
-        }
-
-        server.save()
+  async run({ message, server }, t) {
+    if (server.blockedChannels.includes(message.channel.id)) {
+      const index = server.blockedChannels.indexOf(message.channel.id);
+      if (index > -1) {
+        server.blockedChannels.splice(index, 1);
+        message.menheraReply('success', t('commands:blockchannel.unblock'));
+      }
+    } else {
+      server.blockedChannels.push(message.channel.id);
+      message.menheraReply('success', t('commands:blockchannel.block', { prefix: server.prefix }));
     }
-}
+
+    server.save();
+  }
+};
