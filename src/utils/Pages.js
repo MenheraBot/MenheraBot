@@ -1,46 +1,95 @@
-const { MessageCollector } = require('discord.js')
+const { MessageCollector } = require('discord.js');
 
 /**
- * tai flor sPARA DE GEME VEIKSADSAKD
- * hmmmmmmmmmmmmmm uhawudhwahuawhduawhdwuadh
- * 
+ * returns the function when the first argument is not
+ * @param {any} fn
+ * @returns {Function}
  */
-
- // sabe oq seria legal? as coisas da m!vila n tem paginas,
- // so mostra as opções pra vender, mas ai tipo,
- // mas n precisa dar paginas,
- // aquilo é so pra pessoa 
- // saber tipo qual numero ela
- // digita pra vender tal item, quando /// siiim, eu tendi, n vai muda pro usuario, so o codigo
- // é pra deixa o codigo menor, pq vc ta criando dois collector pra msm coisa
- // podia ser so 1
- // ele fala [1] crne de cachorro, e tu escreve 1 no chat. 
- /// ele vende a carne de cachorro. isso isso,é so pra ele saber as 
- // opç~poeshmmm tendi tendi, pq ai da ´ra aumentar o limite pra 2 mensagens,
- // e usar o mesmo coletor
- // o cara pode volta pra pagina anterior
- // imagina que cada opção é uma pagina
-// PQ WIUDHAWUIDAWUDHAWUDAWHUDAWHDAWUHDAU
-
- // Deixa todos os comentarios que eu vou commitar com eles KSAKDSAKSEI
- // LA QUEM VER VAI RIR N SEI ASKDSAKD NÃO APAGUE :(((( aksdksadsakdask alzheimer vem forte 
- // eu excluo automatico, me segure
+const func = (fn) => (typeof fn === 'function' ? fn : () => fn);
 
 class PagesCollector extends MessageCollector {
-  // gostou do nome ? wadjawudwuiadhawiodjaw ta tri
-  constructor (channel, options, user, collectorOptions) {
-    super(channel, this._filter, collectorOptions)
-    // opções, exemplo no village seria: bruxa, ferreiro, hotel, guilda
-    // nas opções nos podia separar por 
+  constructor(channel, {
+    options, user, message, t, invalidOption, sent,
+  }, collectorOptions = { max: 5 }) {
+    super(channel, (m) => m.author.id === message.author.id, collectorOptions);
     this.options = options;
-    // usuario que executou o comando
     this.user = user;
-    // ativa vai ser as opções anteriores, tipo se a pessoa, ah esqueci
-    this.oldOptions = null;
+    this.t = t;
+    this.invalidOption = func(invalidOption);
+    this.message = message;
+    this.sent = sent || null;
+    this.on('collect', (msg) => this.onCollect(msg));
   }
 
-  _filter (message) {
-    if (message.author.id !== this.user.id) return
-    // aqui nos vai checa as opções :thumbsup:
+  /**
+   * Send a new page message or edit the current
+   * @param  {...any} args arguments of #TextChannel.send or #Message.edit
+   */
+  async send(...args) {
+    if (!this.sent || this.sent.deleted) {
+      this.sent = await this.channel.send(...args);
+    } else {
+      this.sent = await this.sent.edit(...args);
+    }
+
+    return this.sent;
+  }
+
+  delete(...args) {
+    if (this.sent && !this.sent.deleted) {
+      this.sent.delete(...args);
+      this.sent = null;
+    }
+  }
+
+  async menheraReply(...args) {
+    const sent = await this.message.menheraReply(...args);
+    this.delete();
+    this.sent = sent;
+    return this.sent;
+  }
+
+  /**
+   * Find option by title or displayed number
+   * @param {String} content message content
+   */
+  getOption(content) {
+    const str = content.toLowerCase();
+    return this.options.find((o, i) => o.title.toLowerCase() === str || (i + 1) === Number(str));
+  }
+
+  async onCollect(message) {
+    const option = this.getOption(message.content);
+
+    if (!option) {
+      return this.invalidOption(message, this);
+    }
+
+    const res = await func(option.exec)(message, option, this);
+
+    if (res?.failed) {
+      return;
+    }
+
+    if (Array.isArray(res)) {
+      await this.collected.clear();
+      // await this.resetTimer();
+      this.options = res;
+    } else {
+      this.finish();
+    }
+  }
+
+  /**
+   * Stop collector listener
+   */
+  finish() {
+    return this.stop('finish');
+  }
+
+  static fail() {
+    return { failed: true };
   }
 }
+
+module.exports = PagesCollector;

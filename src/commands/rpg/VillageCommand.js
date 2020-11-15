@@ -1,5 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const Command = require('../../structures/command');
+const PagesCollector = require('../../utils/Pages');
 const itemsFile = require('../../structures/RpgHandler').items;
 
 module.exports = class VillageCommand extends Command {
@@ -15,9 +16,9 @@ module.exports = class VillageCommand extends Command {
 
   async run({ message }, t) {
     const user = await this.client.database.Rpg.findById(message.author.id);
-    if (!user) return message.menheraReply('error', t('commands:village.non-aventure'));
-
-    const validOptions = ['1', '2', '3', '4'];
+    if (!user) {
+      return message.menheraReply('error', t('commands:village.non-aventure'));
+    }
 
     const embed = new MessageEmbed()
       .setColor('#bbfd7c')
@@ -28,83 +29,83 @@ module.exports = class VillageCommand extends Command {
 
     const sent = await message.channel.send(message.author, embed);
 
-    const filter = (m) => m.author.id === message.author.id;
-    const collector = sent.channel.createMessageCollector(filter, { max: 1, time: 30000, errors: ['time'] });
+    const options = [
+      {
+        title: 'bruxa',
+        exec: (_, _o, collector) => VillageCommand.bruxa(message, user, t, collector),
+      },
+      {
+        title: 'ferreiro',
+        exec: (_, _o, collector) => VillageCommand.ferreiro(message, user, t, collector),
+      },
+      {
+        title: 'hotel',
+        exec: (_, _o, collector) => VillageCommand.hotel(message, user, t, collector),
+      },
+      {
+        title: 'guilda',
+        exec: (_, _o, collector) => VillageCommand.guilda(message, user, t, collector),
+      },
+    ];
 
-    collector.on('collect', (m) => {
-      if (!validOptions.includes(m.content)) {
-        return message.menheraReply('error', t('commands:village.invalid-option'));
-      }
+    const invalidOption = (_, collector) => collector.menheraReply(t('commands:village.invalid-option'));
 
-      switch (m.content) {
-        case '1':
-          VillageCommand.bruxa(message, user, sent, t);
-          break;
-        case '2':
-          VillageCommand.ferreiro(message, user, sent, t);
-          break;
-        case '3':
-          VillageCommand.hotel(message, user, sent, t);
-          break;
-        case '4':
-          VillageCommand.guilda(message, user, sent, t);
-          break;
-      }
-    });
+    const collector = new PagesCollector(
+      message.channel,
+      {
+        sent, message, t, options, invalidOption,
+      },
+      { max: 1, time: 30000, errors: ['time'] },
+    );
+
+    collector.once('end', (v, r) => console.log('cabo', r));
   }
 
-  static bruxa(message, user, msg, t) {
-    const itens = [];
-
-    itemsFile.bruxa.forEach((item) => {
-      if (user.level >= item.minLevel && user.level < item.maxLevel) {
-        itens.push(item);
-      }
-    });
+  static bruxa(message, user, t, collector) {
+    const itens = itemsFile.bruxa.filter((item) => user.level >= item.minLevel && user.level < item.maxLevel);
 
     const embed = new MessageEmbed()
       .setTitle(`🏠 | ${t('commands:village.bruxa.title')}`)
       .setColor('#c5b5a0')
       .setFooter(t('commands:village.bruxa.footer'))
       .setDescription(t('commands:village.bruxa.description', { money: user.money }));
-  
+
     itens.forEach((item, i) => {
-      embed.addField(`---------------[ ${i + 1} ]---------------\n${item.name}`, `📜 | **${t('commands:village.desc')}:** ${item.description}\n💎 |** ${t('commands:village.cost')}:** ${item.value}`);
+      embed.addField(
+        `---------------[ ${i + 1} ]---------------\n${item.name}`,
+        `📜 | **${t('commands:village.desc')}:** ${item.description}\n💎 |** ${t('commands:village.cost')}:** ${item.value}`,
+      );
     });
 
-    msg.edit(message.author, embed);
+    collector.send(message.author, embed);
 
-    const filter = (m) => m.author.id === message.author.id;
-    const collector = message.channel.createMessageCollector(filter, { max: 1, time: 15000, errors: ['time'] });
+    const exec = (msg, { data: item }) => {
+      const quantity = parseInt(msg.content.trim().split(/ +/g)[1]) || 1;
 
-    const option = [];
+      if (Number.isNaN(quantity) || quantity < 1) {
+        collector.menheraReply('error', t('commands:village.invalid-quantity'), { embed: {} });
+        return PagesCollector.fail();
+      }
 
-    for (let f = 0; f < number; f++) {
-      option.push((f + 1).toString());
-    }
+      const value = item.value * quantity;
 
-    collector.on('collect', (m) => {
-      const args = m.content.trim().split(/ +/g);
+      if (!value) {
+        collector.menheraReply('error', t('commands:village.invalid-value'));
+        return PagesCollector.fail();
+      }
 
-      if (!option.includes(args[0])) return message.menheraReply('error', t('commands:village.invalid-option'));
+      if (user.money < value) {
+        return collector.menheraReply('error', t('commands:village.poor'));
+      }
 
-      const input = args[1];
-      let quantidade;
+      if ((user?.backpack.value + quantity) > user?.backpack.capacity) {
+        return collector.menheraReply('error', 'commands:village.backpack-full');
+      }
 
-      if (!input) {
-        quantidade = 1;
-      } else quantidade = parseInt(input.replace(/\D+/g, ''));
+      collector.menheraReply('success', t('commands:village.bruxa.bought', { quantidade: quantity, name: item.name, valor: value }));
 
-      if (quantidade < 1) return message.menheraReply('error', t('commands:village.invalid-quantity'));
-
-      const valor = itens[parseInt(args[0] - 1)].value * quantidade;
-      if (!valor) return message.menheraReply('error', t('commands:village.invalid-value'));
-      if (user.money < valor) return message.menheraReply('error', t('commands:village.poor'));
-      if ((user.backpack.value + quantidade) > user.backpack.capacity) return message.menheraReply('error', 'commands:village.backpack-full');
-      message.menheraReply('success', t('commands:village.bruxa.bought', { quantidade, name: itens[parseInt(args[0] - 1)].name.slice(4), valor }));
-
-      for (let j = 0; j < quantidade; j++) {
-        user.inventory.push(itens[parseInt(args[0] - 1)]);
+      for (let j = 0; j < quantity; j++) {
+        user.inventory.push(item);
         if (user.backpack) {
           const newValue = user.backpack.value + 1;
           user.backpack = {
@@ -123,12 +124,14 @@ module.exports = class VillageCommand extends Command {
         };
       }
 
-      user.money -= valor;
+      user.money -= value;
       return user.save();
-    });
+    };
+
+    return itens.map((c) => ({ data: c, title: c.name, exec }));
   }
 
-  ferreiro(message, user, msg, t) {
+  static ferreiro(message, user, t, collector) {
     if (user.level < 9) return message.menheraReply('error', t('commands:village.ferreiro.low-level'));
 
     const embed = new MessageEmbed()
@@ -141,7 +144,7 @@ module.exports = class VillageCommand extends Command {
     msg.edit(message.author, embed);
 
     const filter = (m) => m.author.id === message.author.id;
-    const collector = message.channel.createMessageCollector(filter, { max: 1 });
+    // const collector = message.channel.createMessageCollector(filter, { max: 1 });
 
     collector.on('collect', (m) => {
       switch (m.content) {
