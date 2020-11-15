@@ -4,7 +4,8 @@
   "description": "Uma bot brasileira de RPG para o Discord",
   "main": "shard.js",
   "scripts": {
-    "start": "node shard.js"
+    "start": "node shard.js",
+    "lint:fix": "eslint --fix ."
   },
   "keywords": [],
   "author": "Luxanna Crownguard (ySnoopyDogy)",
