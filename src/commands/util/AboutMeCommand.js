@@ -1,25 +1,26 @@
-const Command = require("../../structures/command")
+const Command = require('../../structures/command');
+
 module.exports = class AboutMeCommand extends Command {
-    constructor(client) {
-        super(client, {
-            name: "aboutme",
-            aliases: ["sobremim"],
-            cooldown: 10,
-            category: "util"
-        })
-    }
-    async run({ message, args, server }, t) {
+  constructor(client) {
+    super(client, {
+      name: 'aboutme',
+      aliases: ['sobremim'],
+      cooldown: 10,
+      category: 'util',
+    });
+  }
 
-        const nota = args.join(" ");
-        if (!nota) return message.menheraReply("error", t("commands:aboutme.no-args"))
-        if (nota.length > 200) return message.menheraReply("error", t("commands:aboutme.args-limit"))
+  async run({ message, args }, t) {
+    const nota = args.join(' ');
+    if (!nota) return message.menheraReply('error', t('commands:aboutme.no-args'));
+    if (nota.length > 200) return message.menheraReply('error', t('commands:aboutme.args-limit'));
 
-        this.client.database.Users.findOne({ id: message.author.id }, (err, res) => {
-            if (err) console.log(err)
-            res.nota = nota;
-            res.save()
-        })
+    this.client.database.Users.findOne({ id: message.author.id }, (err, res) => {
+      if (err) console.log(err);
+      res.nota = nota;
+      res.save();
+    });
 
-        message.menheraReply("success", t("commands:aboutme.success"))
-    }
-}
+    message.menheraReply('success', t('commands:aboutme.success'));
+  }
+};
