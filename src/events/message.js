@@ -140,7 +140,6 @@ module.exports = class MessageReceive {
     }
 
     try {
-      command.setT(t);
       new Promise((res) => {
         res(command.run({ message, args, server }, t));
         console.log(`[COMANDO] ${command.config.name.toUpperCase()} | USER: ${message.author.tag} - ${message.author.id} | GUILD: ${message.guild.name} - ${message.guild.id}`);
