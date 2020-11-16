@@ -28,6 +28,7 @@
   },
   {
     "id": "Peitoral Reforçado",
+    "category": "armor",
     "protection": 10,
     "price": 400,
     "required_items": {
@@ -36,6 +37,7 @@
   },
   {
     "id": "Peitoral Perfeito",
+    "category": "armor",
     "protection": 30,
     "price": 1000,
     "required_items": {
@@ -49,15 +51,6 @@
     "price": 50000,
     "required_items": {
       "Escudos de Ares": 5
-    }
-  },
-  {
-    "id": "Mochila de pele de Cobra",
-    "category": "backpack",
-    "protection": 35,
-    "price": 2000,
-    "required_items": {
-      "Pele de Cobra": 5
     }
   },
   {
