@@ -76,7 +76,7 @@ class PagesCollector extends MessageCollector {
 
     const res = await func(this.handler)(message, option, this);
 
-    if (res?.type === 'FINISH') {
+    if (res?.type === 'DONE') {
       this.finish();
     }
   }
@@ -90,10 +90,6 @@ class PagesCollector extends MessageCollector {
 
   static arrFindHandle(arr) {
     return (str) => arr.find((o, i) => o === str || (i + 1) === Number(str));
-  }
-
-  static fail() {
-    return { type: 'FINISH' };
   }
 
   static done() {

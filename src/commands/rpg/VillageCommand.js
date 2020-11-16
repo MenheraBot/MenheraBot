@@ -130,20 +130,7 @@ module.exports = class VillageCommand extends Command {
 
     collector.send(message.author, embed);
     collector.setFindOption(PagesCollector.arrFindHandle(categories));
-    // TODO: n devia ta passando essa msg nos parametros
-    collector.setHandle((_, option) => {
-      switch (option) {
-        case 'sword':
-          VillageCommand.ferreiroArma(message, user, collector, t);
-          break;
-        case 'backpack':
-          VillageCommand.ferreiroArmadura(message, user, collector, t);
-          break;
-        case 'armor':
-          VillageCommand.ferreiroMochila(message, user, collector, t);
-          break;
-      }
-    });
+    collector.setHandle((_, category) => VillageCommand.ferreiroEquipamentos(category, message, user, t, collector));
   }
 
   static ferreiroEquipamentos(category, message, user, t, collector) {
@@ -170,7 +157,7 @@ module.exports = class VillageCommand extends Command {
     const equips = itemsFile.ferreiro.filter((item) => item.category === category);
 
     const parseMissingItems = (equip) => Object.entries(equip.required_items)
-      .reduce((p, [name, qty]) => `${p}\n**${qty} ${name}**`, '');
+      .reduce((p, [name, qty]) => `${p} **${qty} ${name}**\n`, '');
 
     embed.addFields(equips.map((equip, i) => ({
       name: `${i + 1} ${equip.id}`,
@@ -438,7 +425,7 @@ module.exports = class VillageCommand extends Command {
     }
   }
 
-  static removeItemInLoots(user, item, amount = 1) {
+  static removeItemInLoots(user, itemName, amount = 1) {
     for (let i = 0; i < amount; i++) {
       // eslint-disable-next-line no-loop-func
       user.loots.splice(user.loots.findIndex((loot) => loot.name === itemName), 1);
