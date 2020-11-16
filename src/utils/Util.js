@@ -1,5 +1,5 @@
 class Util {
-  static countItems (items) {
+  static countItems(items) {
     return items.reduce((p, v) => {
       const exists = p.findIndex((x) => x.name === v.name);
       if (exists !== -1) {
@@ -9,5 +9,6 @@ class Util {
       return [...p, { name: v.name, amount: 1 }];
     }, []);
   }
-  }
 }
+
+module.exports = Util;

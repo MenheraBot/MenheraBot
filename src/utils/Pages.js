@@ -8,17 +8,35 @@ const { MessageCollector } = require('discord.js');
 const func = (fn) => (typeof fn === 'function' ? fn : () => fn);
 
 class PagesCollector extends MessageCollector {
-  constructor(channel, {
-    options, user, message, t, invalidOption, sent,
-  }, collectorOptions = { max: 5 }) {
+  constructor(channel, { message, t, sent }, collectorOptions = { max: 5 }) {
     super(channel, (m) => m.author.id === message.author.id, collectorOptions);
-    this.options = options;
-    this.user = user;
     this.t = t;
-    this.invalidOption = func(invalidOption);
     this.message = message;
-    this.sent = sent || null;
+    this.sent = sent;
+    this.invalidOption = null;
+    this.findOption = null;
+    this.handler = null;
+  }
+
+  start() {
     this.on('collect', (msg) => this.onCollect(msg));
+    return this;
+  }
+
+  setFindOption(fn) {
+    this.findOption = fn;
+    return this;
+  }
+
+  setInvalidOption(fn) {
+    this.invalidOption = fn;
+    return this;
+  }
+
+  setHandle(fn) {
+    this.collected.clear();
+    this.handler = fn;
+    return this;
   }
 
   /**
@@ -36,9 +54,9 @@ class PagesCollector extends MessageCollector {
   }
 
   delete(...args) {
-    if (this.sent && !this.sent.deleted) {
-      this.sent.delete(...args);
-      this.sent = null;
+    const original = this.sent;
+    if (original && !original.deleted) {
+      original.delete(...args);
     }
   }
 
@@ -49,33 +67,16 @@ class PagesCollector extends MessageCollector {
     return this.sent;
   }
 
-  /**
-   * Find option by title or displayed number
-   * @param {String} content message content
-   */
-  getOption(content) {
-    const str = content.toLowerCase();
-    return this.options.find((o, i) => o.title.toLowerCase() === str || (i + 1) === Number(str));
-  }
-
   async onCollect(message) {
-    const option = this.getOption(message.content);
+    const option = await func(this.findOption)(message.content);
 
     if (!option) {
-      return this.invalidOption(message, this);
+      return func(this.invalidOption)(message, this);
     }
 
-    const res = await func(option.exec)(message, option, this);
+    const res = await func(this.handler)(message, option, this);
 
-    if (res?.failed) {
-      return;
-    }
-
-    if (Array.isArray(res)) {
-      await this.collected.clear();
-      // await this.resetTimer();
-      this.options = res;
-    } else {
+    if (res?.type === 'FINISH') {
       this.finish();
     }
   }
@@ -87,8 +88,16 @@ class PagesCollector extends MessageCollector {
     return this.stop('finish');
   }
 
+  static arrFindHandle(arr) {
+    return (str) => arr.find((o, i) => o === str || (i + 1) === Number(str));
+  }
+
   static fail() {
-    return { failed: true };
+    return { type: 'FINISH' };
+  }
+
+  static done() {
+    return { type: 'DONE' };
   }
 }
 

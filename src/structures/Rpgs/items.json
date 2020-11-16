@@ -90,5 +90,88 @@
             "maxLevel": 40,
             "minLevel": 25
         }
+    ],
+    "ferreiro": [
+      {
+        "id": "Lança de Presas de Lobisomem",
+        "price": 500,
+        "damage": 17,
+        "category": "sword",
+        "required_items": {
+          "Presas de Lobisomem": 2
+        }
+      },
+      {
+        "id": "Espada de Chifre de Minotauro",
+        "price": 950,
+        "damage": 27,
+        "category": "sword",
+        "required_items": {
+          "Chifre de Minotauro": 2
+        }
+      },
+      {
+        "id": "Espada dos Deuses",
+        "price": 50000,
+        "damage": 50,
+        "category": "sword",
+        "required_items": {
+          "Espadas de Freya": 5
+        }
+      },
+      {
+        "id": "Peitoral Reforçado",
+        "category": "armor",
+        "protection": 10,
+        "price": 400,
+        "required_items": {
+          "Pele de Lobisomem": 1
+        }
+      },
+      {
+        "id": "Peitoral Perfeito",
+        "category": "armor",
+        "protection": 30,
+        "price": 1000,
+        "required_items": {
+          "Pele de Lobisomem": 3
+        }
+      },
+      {
+        "id": "Peitoral dos Deuses",
+        "category": "armor",
+        "protection": 50,
+        "price": 50000,
+        "required_items": {
+          "Escudos de Ares": 5
+        }
+      },
+      {
+        "id": "Mochila de pele de Cobra",
+        "category": "backpack",
+        "capacity": 35,
+        "price": 50000,
+        "required_items": {
+          "Escamas de Kraken": 5
+        }
+      },
+      {
+        "id": "Mochila de escamas de Kraken",
+        "category": "backpack",
+        "capacity": 50,
+        "price": 50000,
+        "required_items": {
+          "Escamas de Kraken": 5
+        }
+      },
+      {
+        "id": "Mochila de escamas de Kraken",
+        "category": "backpack",
+        "capacity": 100,
+        "price": 250000,
+        "required_items": {
+          "Capuz da Morte de Rabadon": 5
+        }
+      }
     ]
 }
