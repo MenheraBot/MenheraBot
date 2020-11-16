@@ -4,7 +4,7 @@ const Client = require('./src/MenheraClient');
 const ShardManager = require('./src/structures/ShardManager');
 const config = require('./config.json');
 
-const client = new Client({ disableMentions: 'everyone' });
+const client = new Client({ disableMentions: 'everyone', messageCacheMaxSize: 50 });
 
 if (client.shard) client.shardManager = new ShardManager(client);
 

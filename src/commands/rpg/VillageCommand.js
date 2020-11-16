@@ -1,6 +1,6 @@
-const { MessageEmbed } = require('discord.js');
-const Command = require('../../structures/command');
-const itemsFile = require('../../structures/RpgHandler').items;
+const { MessageEmbed } = require('discord.js')
+const Command = require('../../structures/command')
+const itemsFile = require('../../structures/RpgHandler').items
 
 module.exports = class VillageCommand extends Command {
   constructor(client) {
@@ -13,7 +13,7 @@ module.exports = class VillageCommand extends Command {
     });
   }
 
-  async run({ message }, t) {
+  async run({ message, args, server }, t) {
     const user = await this.client.database.Rpg.findById(message.author.id);
     if (!user) return message.menheraReply('error', t('commands:village.non-aventure'));
 
@@ -53,7 +53,7 @@ module.exports = class VillageCommand extends Command {
     });
   }
 
-  static bruxa(message, user, msg, t) {
+  bruxa(message, user, msg, t) {
     const itens = [];
 
     itemsFile.bruxa.forEach((item) => {
@@ -67,9 +67,16 @@ module.exports = class VillageCommand extends Command {
       .setColor('#c5b5a0')
       .setFooter(t('commands:village.bruxa.footer'))
       .setDescription(t('commands:village.bruxa.description', { money: user.money }));
+<<<<<<< HEAD
   
     itens.forEach((item, i) => {
       embed.addField(`---------------[ ${i + 1} ]---------------\n${item.name}`, `📜 | **${t('commands:village.desc')}:** ${item.description}\n💎 |** ${t('commands:village.cost')}:** ${item.value}`);
+=======
+    let number = 0;
+    itens.forEach((i) => {
+      number++;
+      embed.addField(`---------------[ ${number} ]---------------\n${i.name}`, `📜 | **${t('commands:village.desc')}:** ${i.description}\n💎 |** ${t('commands:village.cost')}:** ${i.value}`);
+>>>>>>> temp
     });
 
     msg.edit(message.author, embed);
@@ -107,22 +114,11 @@ module.exports = class VillageCommand extends Command {
         user.inventory.push(itens[parseInt(args[0] - 1)]);
         if (user.backpack) {
           const newValue = user.backpack.value + 1;
-          user.backpack = {
-            name: user.backpack.name,
-            capacity: user.backpack.capacity,
-            value: newValue,
-          };
+          user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: newValue };
         }
       }
 
-      if (user.backpack.value < 0) {
-        user.backpack = {
-          name: user.backpack.name,
-          capacity: user.backpack.capacity,
-          value: 0,
-        };
-      }
-
+      if (user.backpack.value < 0) user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: 0 };
       user.money -= valor;
       return user.save();
     });
@@ -160,7 +156,7 @@ module.exports = class VillageCommand extends Command {
     });
   }
 
-  static ferreiroArma(message, user, msg, t) {
+  ferreiroArma(message, user, msg, t) {
     const embed = new MessageEmbed()
       .setColor('#b99c81')
       .setTitle(`⚒️ | ${t('commands:village.ferreiro.title')}`)
@@ -191,7 +187,7 @@ module.exports = class VillageCommand extends Command {
       nameLoots.push(loot.name);
     });
 
-    const contado = VillageCommand.countItems(nameLoots);
+    const contado = countItems(nameLoots);
 
     const filtrado = contado.filter((f) => f.name === 'Presas de Lobisomem');
     const filtrado1 = contado.filter((f) => f.name === 'Chifre de Minotauro');
@@ -212,17 +208,11 @@ module.exports = class VillageCommand extends Command {
           user.loots.splice(user.loots.findIndex((i) => i.name === filtrado[0].name), 1);
           if (user.backpack) {
             const newValue = user.backpack.value - 1;
-            user.backpack = {
-              name: user.backpack.name,
-              capacity: user.backpack.capacity,
-              value: newValue,
-            };
+            user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: newValue };
           }
         }
 
-        if (user.backpack.value < 0) {
-          user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: 0 };
-        }
+        if (user.backpack.value < 0) user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: 0 };
         user.save();
         message.menheraReply('success', t('commands:village.ferreiro.arma.change', { arma: 'Lança de Presas de Lobisomem' }));
       } else if (m.content === '2') {
@@ -239,22 +229,11 @@ module.exports = class VillageCommand extends Command {
           user.loots.splice(user.loots.findIndex((i) => i.name === filtrado1[0].name), 1);
           if (user.backpack) {
             const newValue = user.backpack.value - 1;
-            user.backpack = {
-              name: user.backpack.name,
-              capacity: user.backpack.capacity,
-              value: newValue,
-            };
+            user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: newValue };
           }
         }
 
-        if (user.backpack.value < 0) {
-          user.backpack = {
-            name: user.backpack.name,
-            capacity: user.backpack.capacity,
-            value: 0,
-          };
-        }
-
+        if (user.backpack.value < 0) user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: 0 };
         user.save();
         message.menheraReply('success', t('commands:village.ferreiro.arma.change', { arma: 'Espada de Chifre de Minotauro' }));
       } else if (m.content === '3') {
@@ -271,28 +250,18 @@ module.exports = class VillageCommand extends Command {
           user.loots.splice(user.loots.findIndex((i) => i.name === filtrado2[0].name), 1);
           if (user.backpack) {
             const newValue = user.backpack.value - 1;
-            user.backpack = {
-              name: user.backpack.name,
-              capacity: user.backpack.capacity,
-              value: newValue,
-            };
+            user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: newValue };
           }
         }
 
-        if (user.backpack.value < 0) {
-          user.backpack = {
-            name: user.backpack.name,
-            capacity: user.backpack.capacity,
-            value: 0,
-          };
-        }
+        if (user.backpack.value < 0) user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: 0 };
         user.save();
         return message.menheraReply('success', t('commands:village.ferreiro.arma.change', { arma: 'Espada dos Deuses' }));
       } else return message.menheraReply('error', t('commands:village.invalid-option'));
     });
   }
 
-  static ferreiroArmadura(message, user, msg, t) {
+  ferreiroArmadura(message, user, msg, t) {
     const embed = new MessageEmbed()
       .setColor('#b99c81')
       .setTitle(`⚒️ | ${t('commands:village.ferreiro.title')}`)
@@ -323,7 +292,7 @@ module.exports = class VillageCommand extends Command {
       nameLoots.push(loot.name);
     });
 
-    const contado = VillageCommand.countItems(nameLoots);
+    const contado = countItems(nameLoots);
 
     const filtrado = contado.filter((f) => f.name === 'Pele de Lobisomem');
     const filtradoEscudo = contado.filter((f) => f.name === 'Escudo de Ares');
@@ -343,21 +312,11 @@ module.exports = class VillageCommand extends Command {
           user.loots.splice(user.loots.findIndex((i) => i.name === filtrado[0].name), 1);
           if (user.backpack) {
             const newValue = user.backpack.value - 1;
-            user.backpack = {
-              name: user.backpack.name,
-              capacity: user.backpack.capacity,
-              value: newValue,
-            };
+            user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: newValue };
           }
         }
 
-        if (user.backpack.value < 0) {
-          user.backpack = {
-            name: user.backpack.name,
-            capacity: user.backpack.capacity,
-            value: 0,
-          };
-        }
+        if (user.backpack.value < 0) user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: 0 };
         user.save();
         return message.menheraReply('success', t('commands:village.ferreiro.armadura.change', { armadura: 'Peitoral Reforçado' }));
       } if (m.content === '2') {
@@ -374,21 +333,11 @@ module.exports = class VillageCommand extends Command {
           user.loots.splice(user.loots.findIndex((i) => i.name === filtrado[0].name), 1);
           if (user.backpack) {
             const newValue = user.backpack.value - 1;
-            user.backpack = {
-              name: user.backpack.name,
-              capacity: user.backpack.capacity,
-              value: newValue,
-            };
+            user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: newValue };
           }
         }
 
-        if (user.backpack.value < 0) {
-          user.backpack = {
-            name: user.backpack.name,
-            capacity: user.backpack.capacity,
-            value: 0,
-          };
-        }
+        if (user.backpack.value < 0) user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: 0 };
         user.save();
         return message.menheraReply('success', t('commands:village.ferreiro.armadura.change', { armadura: 'Peitoral Perfeito' }));
       } if (m.content === '3') {
@@ -405,29 +354,18 @@ module.exports = class VillageCommand extends Command {
           user.loots.splice(user.loots.findIndex((i) => i.name === filtradoEscudo[0].name), 1);
           if (user.backpack) {
             const newValue = user.backpack.value - 1;
-            user.backpack = {
-              name: user.backpack.name,
-              capacity: user.backpack.capacity,
-              value: newValue,
-            };
+            user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: newValue };
           }
         }
 
-        if (user.backpack.value < 0) {
-          user.backpack = {
-            name: user.backpack.name,
-            capacity: user.backpack.capacity,
-            value: 0,
-          };
-        }
-
+        if (user.backpack.value < 0) user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: 0 };
         user.save();
         return message.menheraReply('success', t('commands:village.ferreiro.armadura.change', { armadura: 'Peitoral dos Deuses' }));
       } return message.menheraReply('error', t('commands:village.invalid-option'));
     });
   }
 
-  static ferreiroMochila(message, user, msg, t) {
+  ferreiroMochila(message, user, msg, t) {
     const embed = new MessageEmbed()
       .setColor('#fcf7f7')
       .setTitle(`⚒️ | ${t('commands:village.ferreiro.title')}`)
@@ -458,7 +396,7 @@ module.exports = class VillageCommand extends Command {
       nameLoots.push(loot.name);
     });
 
-    const contado = VillageCommand.countItems(nameLoots);
+    const contado = countItems(nameLoots);
 
     const filtradoCobra = contado.filter((f) => f.name === 'Pele de cobra');
     const filtradoEscama = contado.filter((f) => f.name === 'Escama de Kraken');
@@ -468,7 +406,7 @@ module.exports = class VillageCommand extends Command {
       if (m.content === '1') {
         if (user.money < 2000) return message.menheraReply('error', t('commands:village.poor'));
         if (!filtradoCobra[0]) return message.menheraReply('error', `${t('commands:village.ferreiro.mochila.poor', { value: 5 })} Pele de Cobra`);
-        if (filtradoEscama[0].amount < 5) return message.menheraReply('error', `${t('commands:village.ferreiro.mochila.poor', { value: 5 })} Pele de Cobra`);
+        if (filtrado[0].amount < 5) return message.menheraReply('error', `${t('commands:village.ferreiro.mochila.poor', { value: 5 })} Pele de Cobra`);
 
         user.backpack = {
           name: 'Mochila de Pele de Cobra',
@@ -480,21 +418,11 @@ module.exports = class VillageCommand extends Command {
           user.loots.splice(user.loots.findIndex((i) => i.name === filtradoCobra[0].name), 1);
           if (user.backpack) {
             const newValue = user.backpack.value - 1;
-            user.backpack = {
-              name: user.backpack.name,
-              capacity: user.backpack.capacity,
-              value: newValue,
-            };
+            user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: newValue };
           }
         }
 
-        if (user.backpack.value < 0) {
-          user.backpack = {
-            name: user.backpack.name,
-            capacity: user.backpack.capacity,
-            value: 0,
-          };
-        }
+        if (user.backpack.value < 0) user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: 0 };
         user.save();
         return message.menheraReply('success', t('commands:village.ferreiro.mochila.change', { mochila: 'Mochila de Pele de Cobra' }));
       } if (m.content === '2') {
@@ -512,21 +440,11 @@ module.exports = class VillageCommand extends Command {
           user.loots.splice(user.loots.findIndex((i) => i.name === filtradoEscama[0].name), 1);
           if (user.backpack) {
             const newValue = user.backpack.value - 1;
-            user.backpack = {
-              name: user.backpack.name,
-              capacity: user.backpack.capacity,
-              value: newValue,
-            };
+            user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: newValue };
           }
         }
 
-        if (user.backpack.value < 0) {
-          user.backpack = {
-            name: user.backpack.name,
-            capacity: user.backpack.capacity,
-            value: 0,
-          };
-        }
+        if (user.backpack.value < 0) user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: 0 };
         user.save();
         return message.menheraReply('success', t('commands:village.ferreiro.mochila.change', { mochila: 'Mochila de escamas de Kraken' }));
       } if (m.content === '3') {
@@ -544,28 +462,18 @@ module.exports = class VillageCommand extends Command {
           user.loots.splice(user.loots.findIndex((i) => i.name === filtradoRabadon[0].name), 1);
           if (user.backpack) {
             const newValue = user.backpack.value - 1;
-            user.backpack = {
-              name: user.backpack.name,
-              capacity: user.backpack.capacity,
-              value: newValue,
-            };
+            user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: newValue };
           }
         }
 
-        if (user.backpack.value < 0) {
-          user.backpack = {
-            name: user.backpack.name,
-            capacity: user.backpack.capacity,
-            value: 0,
-          };
-        }
+        if (user.backpack.value < 0) user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: 0 };
         user.save();
         return message.menheraReply('success', t('commands:village.ferreiro.mochila.change', { mochila: 'Mochila de Rabadon' }));
       } return message.menheraReply('error', t('commands:village.invalid-option'));
     });
   }
 
-  static hotel(message, user, msg, t) {
+  hotel(message, user, msg, t) {
     const embed = new MessageEmbed()
       .setTitle(`🏨 | ${t('commands:village.hotel.title')}`)
       .setDescription(t('commands:village:hotel.description'))
@@ -603,17 +511,17 @@ module.exports = class VillageCommand extends Command {
 
       if (user.life < 1 && user.death > Date.now()) return message.menheraReply('error', t('commands:village.hotel.dead'));
 
-      if (m.content === '1') {
+      if (m.content == '1') {
         user.hotelTime = 7200000 + Date.now();
         user.life += 40;
         user.mana += 30;
-      } else if (m.content === '2') {
+      } else if (m.content == '2') {
         user.hotelTime = 12600000 + Date.now();
         user.life = user.maxLife;
-      } else if (m.content === '3') {
+      } else if (m.content == '3') {
         user.hotelTime = 12600000 + Date.now();
         user.mana = user.maxMana;
-      } else if (m.content === '4') {
+      } else if (m.content == '4') {
         user.hotelTime = 25200000 + Date.now();
         user.life = user.maxLife;
         user.mana = user.maxMana;
@@ -628,7 +536,7 @@ module.exports = class VillageCommand extends Command {
     });
   }
 
-  static guilda(message, user, msg, t) {
+  guilda(message, user, msg, t) {
     const allLoots = [];
     const nameLoots = [];
 
@@ -644,21 +552,21 @@ module.exports = class VillageCommand extends Command {
       .setColor('#98b849')
       .setFooter(t('commands:village.guilda.footer'));
 
-    const contado = VillageCommand.countItems(nameLoots);
-    const number = contado.length;
+    let number = 1;
+
+    const contado = countItems(nameLoots);
 
     contado.forEach((i) => {
       const filter = allLoots.filter((f) => f.name === i.name);
       txt += `---------------**[ ${number} ]**---------------\n<:Chest:760957557538947133> | **${i.name}** ( ${i.amount} )\n💎 | **${t('commands:village.guilda.value')}:** ${filter[0].value}\n`;
+      number++;
     });
 
     const texto = (txt.length > 1800) ? `${txt.slice(0, 1800)}...` : txt;
 
     embed.setDescription(texto);
 
-    if (contado.length === 0) {
-      return msg.edit(message.author, embed.setDescription(t('commands:village.guilda.no-loots')).setFooter('No Looots!').setColor('#f01010'));
-    }
+    if (contado.length == 0) return msg.edit(message.author, embed.setDescription(t('commands:village.guilda.no-loots')).setFooter('No Looots!').setColor('#f01010'));
 
     msg.edit(message.author, embed);
 
@@ -676,19 +584,16 @@ module.exports = class VillageCommand extends Command {
 
       if (!option.includes(args[0])) return message.menheraReply('error', t('commands:village.invalid-option'));
 
-      if (args[0] === '0') {
+      if (args[0] == '0') {
         let totalValue = 0;
-        const totalItems = allLoots.length;
+        let totalItems = 0;
 
         allLoots.forEach((l) => {
           totalValue += l.value;
+          totalItems++;
           if (user.backpack) {
             const newValue = user.backpack.value - 1;
-            user.backpack = {
-              name: user.backpack.name,
-              capacity: user.backpack.capacity,
-              value: newValue,
-            };
+            user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: newValue };
           }
         });
 
@@ -696,16 +601,9 @@ module.exports = class VillageCommand extends Command {
 
         user.loots = [];
         user.money += totalValue;
-        if (user.backpack.value < 0) {
-          user.backpack = {
-            name: user.backpack.name,
-            capacity: user.backpack.capacity,
-            value: 0,
-          };
-        }
+        if (user.backpack.value < 0) user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: 0 };
         return user.save();
       }
-
       const input = args[1];
       let quantidade;
 
@@ -716,34 +614,37 @@ module.exports = class VillageCommand extends Command {
       if (quantidade < 1) return message.menheraReply('error', t('commands:village.invalid-quantity'));
       if (quantidade > contado[parseInt(args[0]) - 1].amount) return message.menheraReply('error', `${t('commands:village.guilda.poor')} ${quantidade} ${contado[parseInt(args[0]) - 1].name}`);
 
-      const loot = allLoots.filter((f) => f.name === contado[parseInt(args[0]) - 1].name)[0];
-      const valor = parseInt(quantidade) * parseInt(loot.value);
-      if (Number.isNaN(valor)) return message.menheraReply('error', t('commands:village.guilda.unespected-error'));
+      const filter = allLoots.filter((f) => f.name === contado[parseInt(args[0]) - 1].name);
+      const valor = parseInt(quantidade) * parseInt(filter[0].value);
+      if (isNaN(valor)) return message.menheraReply('error', t('commands:village.guilda.unespected-error'));
 
       user.money += parseInt(valor);
       for (let j = 0; j < quantidade; j++) {
-        user.loots.splice(
-          user.loots.findIndex((i) => i.name === contado[parseInt(args[0]) - 1].name), 1,
-        );
+        user.loots.splice(user.loots.findIndex((i) => i.name === contado[parseInt(args[0]) - 1].name), 1);
         if (user.backpack) {
           const newValue = user.backpack.value - 1;
-          user.backpack = {
-            name: user.backpack.name,
-            capacity: user.backpack.capacity,
-            value: newValue,
-          };
+          user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: newValue };
         }
       }
 
-      if (user.backpack.value < 0) {
-        user.backpack = {
-          name: user.backpack.name,
-          capacity: user.backpack.capacity,
-          value: 0,
-        };
-      }
+      if (user.backpack.value < 0) user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: 0 };
       user.save();
       return message.menheraReply('success', t('commands:village.guilda.sold', { quantity: quantidade, name: contado[parseInt(args[0]) - 1].name, value: valor }));
     });
   }
 };
+<<<<<<< HEAD
+=======
+
+function countItems(arr) {
+  const countMap = {};
+
+  for (const element of arr) {
+    countMap[element] = (countMap[element] || 0) + 1;
+  }
+  return Object.entries(countMap).map(([value, count]) => ({
+    name: value,
+    amount: count,
+  }));
+}
+>>>>>>> temp
