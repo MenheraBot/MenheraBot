@@ -825,7 +825,7 @@
                 "poor": "você não possui os items necessários: {{items}}",
                 "change": "você trocou sua armadura para `{{equip}}"
             },
-            "mochila": {
+            "backpack": {
                 "description": "Sua mochila sera substituída pela sua escolha, então cuidado!\n\nEscolha o que desejas fabricar",
                 "poor": "você não possui os items necessários: {{items}}",
                 "change": "você trocou sua mochila para `{{equip}}"
@@ -843,7 +843,7 @@
                 "name_two": "Sono da Vida",
                 "name_three": "Sono da Mana",
                 "name_four": "Hibernação",
-                "value": "**Tempo**: {{time}} horas\n🩸 | **Vida**: {{life}}\n💧 | **Mana**: {{mana}}"
+                "value": "**Tempo**: {{time}}\n🩸 | **Vida**: {{life}}\n💧 | **Mana**: {{mana}}"
             }
         },
         "guilda": {

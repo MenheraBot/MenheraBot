@@ -71,12 +71,12 @@ class PagesCollector extends MessageCollector {
     const option = await func(this.findOption)(message.content);
 
     if (!option) {
+      this.finish();
       return func(this.invalidOption)(message, this);
     }
 
     const res = await func(this.handler)(message, option, this);
-
-    if (res?.type === 'DONE') {
+    if (res !== 'CONTINUE') {
       this.finish();
     }
   }
@@ -102,8 +102,8 @@ class PagesCollector extends MessageCollector {
     return (str) => arr.find((_, i) => (i + 1) === Number(str));
   }
 
-  static done() {
-    return { type: 'DONE' };
+  static continue() {
+    return 'CONTINUE';
   }
 }
 

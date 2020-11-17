@@ -1,9 +1,11 @@
 /* eslint-disable guard-for-in */
 const { MessageEmbed } = require('discord.js');
+const moment = require('moment');
 const Command = require('../../structures/command');
 const PagesCollector = require('../../utils/Pages');
 const itemsFile = require('../../structures/RpgHandler').items;
 const RPGUtil = require('../../utils/RPGUtil');
+require('moment-duration-format');
 
 module.exports = class VillageCommand extends Command {
   constructor(client) {
@@ -89,11 +91,13 @@ module.exports = class VillageCommand extends Command {
 
       collector.finish();
     });
+
+    return PagesCollector.continue();
   }
 
   static ferreiro(message, user, t, collector) {
     if (user.level < 9) {
-      return message.menheraReply('error', t('commands:village.ferreiro.low-level'));
+      return collector.menheraReply('error', t('commands:village.ferreiro.low-level'));
     }
 
     const categories = ['sword', 'backpack', 'armor'];
@@ -109,7 +113,8 @@ module.exports = class VillageCommand extends Command {
 
     collector.send(message.author, embed);
     collector.setFindOption(PagesCollector.arrFindByElemOrIndex(categories));
-    collector.setHandle((_, category) => RPGUtil.ferreiroEquipamentos(category, message, user, t, collector));
+    collector.setHandle((_, category) => VillageCommand.ferreiroEquipamentos(category, message, user, t, collector));
+    return PagesCollector.continue();
   }
 
   static ferreiroEquipamentos(category, message, user, t, collector) {
@@ -209,6 +214,7 @@ module.exports = class VillageCommand extends Command {
       message.menheraReply('success', t(`commands:village.ferreiro.${category}.change`, { equip: equip.name }));
       collector.finish();
     });
+    return PagesCollector.continue();
   }
 
   static hotel(message, user, t, collector) {
@@ -222,8 +228,7 @@ module.exports = class VillageCommand extends Command {
       name, time, life, mana,
     }, i) => ({
       name: `${i + 1} - ${t(`commands:village.hotel.fields.${name}`)}`,
-      // TODO: mostra o tempo humanizado
-      value: `⌛ | ${t('commands:village.hotel.fields.value', { time, life, mana })}`,
+      value: `⌛ | ${t('commands:village.hotel.fields.value', { time: moment.duration(time).format('D[d], H[h], m[m], s[s]', { trim: 'both' }), life, mana })}`,
     })));
 
     collector.send(message.author, embed);
@@ -257,6 +262,7 @@ module.exports = class VillageCommand extends Command {
       collector.menheraReply('success', t('commands:village.hotel.done'));
       collector.finish();
     });
+    return PagesCollector.continue();
   }
 
   static guilda(message, user, t, collector) {
@@ -268,12 +274,11 @@ module.exports = class VillageCommand extends Command {
     const allItems = RPGUtil.countItems(user.loots);
 
     if (allItems.length === 0) {
-      collector.send(message.author,
+      return collector.send(message.author,
         embed
           .setDescription(t('commands:village.guilda.no-loots'))
           .setFooter('No Looots!')
           .setColor('#f01010'));
-      collector.finish();
     }
 
     let txt = t('commands:village.guilda.money', { money: user.money }) + t('commands:village.guilda.sell-all');
@@ -341,5 +346,6 @@ module.exports = class VillageCommand extends Command {
       user.save();
       return message.menheraReply('success', t('commands:village.guilda.sold', { quantity: qty, name: item.name, value: total }));
     });
+    return PagesCollector.continue();
   }
 };
