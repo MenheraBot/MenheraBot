@@ -3,7 +3,7 @@ const { MessageEmbed } = require('discord.js');
 const Command = require('../../structures/command');
 const PagesCollector = require('../../utils/Pages');
 const itemsFile = require('../../structures/RpgHandler').items;
-const Util = require('../../utils/Util');
+const RPGUtil = require('../../utils/RPGUtil');
 
 module.exports = class VillageCommand extends Command {
   constructor(client) {
@@ -35,7 +35,7 @@ module.exports = class VillageCommand extends Command {
     const options = ['bruxa', 'ferreiro', 'hotel', 'guilda'];
     const collector = new PagesCollector(message.channel, { sent, message, t }, { max: 2, time: 30000, errors: ['time'] })
       .setInvalidOption(() => collector.menheraReply('error', t('commands:village.invalid-option')))
-      .setFindOption(PagesCollector.arrFindHandle(options))
+      .setFindOption(PagesCollector.arrFindByElemOrIndex(options))
       .setHandle((_, option) => VillageCommand[option](message, user, t, collector))
       .start();
   }
@@ -83,11 +83,11 @@ module.exports = class VillageCommand extends Command {
 
       collector.menheraReply('success', t('commands:village.bruxa.bought', { quantidade: qty, name: item.name, valor: value }));
 
-      Util.addItemInLoots(user, item.name, qty);
+      RPGUtil.addItemInLoots(user, item.name, qty);
       user.money -= value;
       user.save();
 
-      return PagesCollector.done();
+      collector.finish();
     });
   }
 
@@ -108,8 +108,8 @@ module.exports = class VillageCommand extends Command {
       .setFooter(t('commands:village.ferreiro.footer'));
 
     collector.send(message.author, embed);
-    collector.setFindOption(PagesCollector.arrFindHandle(categories));
-    collector.setHandle((_, category) => Util.ferreiroEquipamentos(category, message, user, t, collector));
+    collector.setFindOption(PagesCollector.arrFindByElemOrIndex(categories));
+    collector.setHandle((_, category) => RPGUtil.ferreiroEquipamentos(category, message, user, t, collector));
   }
 
   static ferreiroEquipamentos(category, message, user, t, collector) {
@@ -147,10 +147,10 @@ module.exports = class VillageCommand extends Command {
       ].join('\n'),
     })));
 
-    const userItems = Util.countItems(user.loots);
+    const userItems = RPGUtil.countItems(user.loots);
 
     collector.send(message.author, embed);
-    collector.setFindOption(PagesCollector.arrFindHandle(equips));
+    collector.setFindOption(PagesCollector.arrFindByItemNameOrIndex(equips));
     collector.setHandle((_, equip) => {
       if (user.money < equip.price) {
         return message.menheraReply('error', t('commands:village.poor'));
@@ -177,7 +177,7 @@ module.exports = class VillageCommand extends Command {
         return message.menheraReply('error', `${t(`commands:village.ferreiro.${category}.poor`, { items })}`);
       }
 
-      requiredItems.forEach(([name, qty]) => Util.removeItemInLoots(user, name, qty));
+      requiredItems.forEach(([name, qty]) => RPGUtil.removeItemInLoots(user, name, qty));
 
       switch (category) {
         case 'sword':
@@ -207,7 +207,7 @@ module.exports = class VillageCommand extends Command {
 
       user.save();
       message.menheraReply('success', t(`commands:village.ferreiro.${category}.change`, { equip: equip.name }));
-      return PagesCollector.done();
+      collector.finish();
     });
   }
 
@@ -227,7 +227,7 @@ module.exports = class VillageCommand extends Command {
     })));
 
     collector.send(message.author, embed);
-    collector.setFindOption((content) => itemsFile.hotel.find((_, i) => (i + 1) === Number(content)));
+    collector.setFindOption(PagesCollector.arrFindByIndex(itemsFile.hotel));
     collector.setHandle((_, option) => {
       if (user.hotelTime > Date.now()) {
         return collector.menheraReply('error', t('commands:village.hotel.already'));
@@ -255,7 +255,7 @@ module.exports = class VillageCommand extends Command {
       user.save();
 
       collector.menheraReply('success', t('commands:village.hotel.done'));
-      return PagesCollector.done();
+      collector.finish();
     });
   }
 
@@ -265,7 +265,7 @@ module.exports = class VillageCommand extends Command {
       .setColor('#98b849')
       .setFooter(t('commands:village.guilda.footer'));
 
-    const allItems = Util.countItems(user.loots);
+    const allItems = RPGUtil.countItems(user.loots);
 
     if (allItems.length === 0) {
       collector.send(message.author,
@@ -273,7 +273,7 @@ module.exports = class VillageCommand extends Command {
           .setDescription(t('commands:village.guilda.no-loots'))
           .setFooter('No Looots!')
           .setColor('#f01010'));
-      return PagesCollector.done();
+      collector.finish();
     }
 
     let txt = t('commands:village.guilda.money', { money: user.money }) + t('commands:village.guilda.sell-all');
@@ -306,38 +306,38 @@ module.exports = class VillageCommand extends Command {
       }
     });
     collector.setHandle((_, result) => {
+      collector.finish();
+
       if (result === 'ALL') {
         const total = allItems.reduce((p, item) => p + item.value, 0);
-        Util.updateBackpack(user, (currentValue) => currentValue - allItems.length);
+        RPGUtil.updateBackpack(user, (currentValue) => currentValue - allItems.length);
         user.loots = [];
         user.money += total;
         user.save();
 
         collector.menheraReply('success', t('commands:village.guilda.sold-all', { amount: allItems.length, value: total }));
-      } else {
-        const [item, qty] = result;
-
-        if (qty < 1) {
-          return message.menheraReply('error', t('commands:village.invalid-quantity'));
-        }
-
-        if (qty > item.amount) {
-          return message.menheraReply('error', `${t('commands:village.guilda.poor')} ${qty} ${item.name}`);
-        }
-
-        const total = parseInt(qty) * parseInt(item.value);
-        if (Number.isNaN(total)) {
-          return message.menheraReply('error', t('commands:village.guilda.unespected-error'));
-        }
-
-        Util.removeItemInLoots(user, item.name, item.amount);
-        user.money += total;
-
-        user.save();
-        return message.menheraReply('success', t('commands:village.guilda.sold', { quantity: qty, name: item.name, value: total }));
       }
 
-      return PagesCollector.done();
+      const [item, qty] = result;
+
+      if (qty < 1) {
+        return message.menheraReply('error', t('commands:village.invalid-quantity'));
+      }
+
+      if (qty > item.amount) {
+        return message.menheraReply('error', `${t('commands:village.guilda.poor')} ${qty} ${item.name}`);
+      }
+
+      const total = parseInt(qty) * parseInt(item.value);
+      if (Number.isNaN(total)) {
+        return message.menheraReply('error', t('commands:village.guilda.unespected-error'));
+      }
+
+      RPGUtil.removeItemInLoots(user, item.name, item.amount);
+      user.money += total;
+
+      user.save();
+      return message.menheraReply('success', t('commands:village.guilda.sold', { quantity: qty, name: item.name, value: total }));
     });
   }
 };

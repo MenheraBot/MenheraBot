@@ -1,4 +1,4 @@
-class Util {
+class RPGUtil {
   static countItems(items) {
     return items.reduce((p, v) => {
       const exists = p.findIndex((x) => x.name === v.name);
@@ -25,7 +25,7 @@ class Util {
 
   static addItemInLoots(user, itemName, amount = 1) {
     user.inventory.push(...(new Array(amount).fill(itemName)));
-    Util.updateBackpack(user, (v) => v + amount);
+    RPGUtil.updateBackpack(user, (v) => v + amount);
   }
 
   static removeItemInLoots(user, itemName, amount = 1) {
@@ -33,8 +33,8 @@ class Util {
       user.loots.splice(user.loots.findIndex((loot) => loot.name === itemName), 1);
     }
 
-    Util.updateBackpack(user, (currentValue) => currentValue - amount);
+    RPGUtil.updateBackpack(user, (currentValue) => currentValue - amount);
   }
 }
 
-module.exports = Util;
+module.exports = RPGUtil;
