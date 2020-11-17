@@ -36,55 +36,33 @@ module.exports = class VillageCommand extends Command {
     const collector = new PagesCollector(message.channel, { sent, message, t }, { max: 2, time: 30000, errors: ['time'] })
       .setInvalidOption(() => collector.menheraReply('error', t('commands:village.invalid-option')))
       .setFindOption(PagesCollector.arrFindHandle(options))
-      .setHandle(async (_, option) => {
-        switch (option) {
-          case 'bruxa':
-            await VillageCommand.bruxa(message, user, t, collector);
-            break;
-          case 'ferreiro':
-            await VillageCommand.ferreiro(message, user, t, collector);
-            break;
-          case 'hotel':
-            await VillageCommand.hotel(message, user, t, collector);
-            break;
-          case 'guilda':
-            await VillageCommand.guilda(message, user, t, collector);
-            break;
-        }
-      })
+      .setHandle((_, option) => VillageCommand[option](message, user, t, collector))
       .start();
-
-    // TEMPORARIO
-    collector.once('end', (v, r) => console.log('debug', r));
   }
 
   static async bruxa(message, user, t, collector) {
-    const itens = itemsFile.bruxa.filter((item) => user.level >= item.minLevel && user.level <= item.maxLevel);
-
-    collector.setFindOption(
-      (str) => itens.find((i, n) => i.name === str.toLowerCase() || Number(str) === (n + 1)),
-    );
+    const items = itemsFile.bruxa.filter((item) => user.level >= item.minLevel && user.level <= item.maxLevel);
 
     const embed = new MessageEmbed()
       .setTitle(`🏠 | ${t('commands:village.bruxa.title')}`)
       .setColor('#c5b5a0')
       .setFooter(t('commands:village.bruxa.footer'))
-      .setDescription(t('commands:village.bruxa.description', { money: user.money }));
+      .setDescription(t('commands:village.bruxa.description', { money: user.money }))
+      .addFields(
+        items.map((item, i) => ({
+          name: `---------------[ ${i + 1} ]---------------\n${item.name}`,
+          value: `📜 | **${t('commands:village.desc')}:** ${item.description}\n💎 |** ${t('commands:village.cost')}:** ${item.value}`,
 
-    itens.forEach((item, i) => {
-      embed.addField(
-        `---------------[ ${i + 1} ]---------------\n${item.name}`,
-        `📜 | **${t('commands:village.desc')}:** ${item.description}\n💎 |** ${t('commands:village.cost')}:** ${item.value}`,
+        })),
       );
-    });
 
     collector.send(message.author, embed);
-
+    collector.setFindOption((str) => items.find((i, n) => i.name === str.toLowerCase() || Number(str) === (n + 1)));
     collector.setHandle((msg, item) => {
       const quantity = parseInt(msg.content.trim().split(/ +/g)[1]) || 1;
 
       if (Number.isNaN(quantity) || quantity < 1) {
-        return collector.menheraReply('error', t('commands:village.invalid-quantity'), { embed: {} });
+        return collector.menheraReply('error', t('commands:village.invalid-quantity'));
       }
 
       const value = item.value * quantity;
