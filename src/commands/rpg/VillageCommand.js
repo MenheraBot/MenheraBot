@@ -237,7 +237,7 @@ module.exports = class VillageCommand extends Command {
     embed.addFields(hotelOptions.map(({
       name, time, life, mana,
     }, i) => ({
-      name: `${i} - ${t(`commands:village.hotel.fields.${name}`)}`,
+      name: `${i + 1} - ${t(`commands:village.hotel.fields.${name}`)}`,
       value: `⌛ | ${t('commands:village.hotel.fields.value', { time, life, mana })}`,
     })));
 
