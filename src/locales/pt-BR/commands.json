@@ -777,7 +777,6 @@
     },
     "village": {
         "description": "Vá para a vila de Boleham",
-        "usage": "",
         "non-aventure": "você não é um aventureiro",
         "backpack-full": "sua mochila não tem espaço para comprar esses produtos",
         "cost": "Custo",
@@ -800,7 +799,7 @@
             "bought": "você comprou **{{quantidade}} {{name}}** por **{{valor}}** 💎"
         },
         "ferreiro": {
-            "low-level": "o ferreiro é um ambiente de gigantes, e só é liberado a partir do nível **9**!",
+            "low-level": "o ferreiro é um ambiente de gigantes, e só é liberado a partir do nível **{{level}}**!",
             "title": "Ferreiro",
             "description": "Escolha o que desejas fabricar",
             "field_name": "Opções",

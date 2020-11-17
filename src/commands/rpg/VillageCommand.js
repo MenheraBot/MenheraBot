@@ -97,7 +97,7 @@ module.exports = class VillageCommand extends Command {
 
   static ferreiro(message, user, t, collector) {
     if (user.level < 9) {
-      return collector.menheraReply('error', t('commands:village.ferreiro.low-level'));
+      return collector.menheraReply('error', t('commands:village.ferreiro.low-level', { level: 9 }));
     }
 
     const categories = ['sword', 'backpack', 'armor'];
