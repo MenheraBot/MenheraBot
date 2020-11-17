@@ -777,7 +777,6 @@
     },
     "village": {
         "description": "Vá para a vila de Boleham",
-        "usage": "",
         "non-aventure": "você não é um aventureiro",
         "backpack-full": "sua mochila não tem espaço para comprar esses produtos",
         "cost": "Custo",
@@ -800,41 +799,35 @@
             "bought": "você comprou **{{quantidade}} {{name}}** por **{{valor}}** 💎"
         },
         "ferreiro": {
-            "low-level": "o ferreiro é um ambiente de gigantes, e só é liberado a partir do nível **9**!",
+            "low-level": "o ferreiro é um ambiente de gigantes, e só é liberado a partir do nível **{{level}}**!",
             "title": "Ferreiro",
             "description": "Escolha o que desejas fabricar",
             "field_name": "Opções",
-            "field_value": "1 - **Armas**\n2 - **Armaduras**\n3 - **Mochilas**",
+            "categories": {
+              "sword": "Armas",
+              "armor": "Armaduras",
+              "backpack": "Mochilas"
+            },
             "footer": "Digite no chat sua escolha",
             "itens-needed": "Itens Necessários",
-            "dmg": "Dano",
-            "prt": "Proteção",
-            "cpt": "Capacidade",
+            "damage": "Dano",
+            "protection": "Proteção",
+            "capacity": "Capacidade",
             "cost": "Custo",
-            "arma": {
+            "sword": {
                 "description": "Sua arma sera substituída pela sua escolha, então cuidado!\n\nEscolha o que desejas fabricar",
-                "footer": "Digite no chat sua escolha",
-                "lança": "Lança de Presas de Lobisomem",
-                "espada": "Espada de Chifre de Minotauro",
-                "deuses": "Espada dos Deuses",
-                "poor": "você não possui {{value}}",
-                "change": "Você trocou sua arma para `{{arma}}`"
+                "poor": "você não possui os items necessários: {{items}}",
+                "change": "Você trocou sua arma para `{{equip}}`"
             },
-            "armadura": {
+            "armor": {
                 "description": "Sua armadura sera substituída pela sua escolha, então cuidado!\n\nEscolha o que desejas fabricar",
-                "reforçado": "Peitoral Reforçado",
-                "poor": "você não possui {{value}}",
-                "perfeito": "Peitoral Perfeito",
-                "deuses": "Peitoral dos Deuses",
-                "change": "você trocou sua armadura para `{{armadura}}"
+                "poor": "você não possui os items necessários: {{items}}",
+                "change": "você trocou sua armadura para `{{equip}}"
             },
-            "mochila": {
+            "backpack": {
                 "description": "Sua mochila sera substituída pela sua escolha, então cuidado!\n\nEscolha o que desejas fabricar",
-                "cobra": "Mochila de pele de Cobra",
-                "poor": "você não possui {{value}}",
-                "escama": "Mochila de escamas de Kraken",
-                "rabadon": "Mochila de Rabadon",
-                "change": "você trocou sua mochila para `{{mochila}}"
+                "poor": "você não possui os items necessários: {{items}}",
+                "change": "você trocou sua mochila para `{{equip}}"
             }
         },
         "hotel": {
@@ -849,7 +842,7 @@
                 "name_two": "Sono da Vida",
                 "name_three": "Sono da Mana",
                 "name_four": "Hibernação",
-                "value": "**Tempo**: {{time}} horas\n🩸 | **Vida**: {{life}}\n💧 | **Mana**: {{mana}}"
+                "value": "**Tempo**: {{time}}\n🩸 | **Vida**: {{life}}\n💧 | **Mana**: {{mana}}"
             }
         },
         "guilda": {
