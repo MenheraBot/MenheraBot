@@ -1,46 +1,110 @@
-const { MessageCollector } = require('discord.js')
+const { MessageCollector } = require('discord.js');
 
 /**
- * tai flor sPARA DE GEME VEIKSADSAKD
- * hmmmmmmmmmmmmmm uhawudhwahuawhduawhdwuadh
- * 
+ * returns the function when the first argument is not
+ * @param {any} fn
+ * @returns {Function}
  */
-
- // sabe oq seria legal? as coisas da m!vila n tem paginas,
- // so mostra as opções pra vender, mas ai tipo,
- // mas n precisa dar paginas,
- // aquilo é so pra pessoa 
- // saber tipo qual numero ela
- // digita pra vender tal item, quando /// siiim, eu tendi, n vai muda pro usuario, so o codigo
- // é pra deixa o codigo menor, pq vc ta criando dois collector pra msm coisa
- // podia ser so 1
- // ele fala [1] crne de cachorro, e tu escreve 1 no chat. 
- /// ele vende a carne de cachorro. isso isso,é so pra ele saber as 
- // opç~poeshmmm tendi tendi, pq ai da ´ra aumentar o limite pra 2 mensagens,
- // e usar o mesmo coletor
- // o cara pode volta pra pagina anterior
- // imagina que cada opção é uma pagina
-// PQ WIUDHAWUIDAWUDHAWUDAWHUDAWHDAWUHDAU
-
- // Deixa todos os comentarios que eu vou commitar com eles KSAKDSAKSEI
- // LA QUEM VER VAI RIR N SEI ASKDSAKD NÃO APAGUE :(((( aksdksadsakdask alzheimer vem forte 
- // eu excluo automatico, me segure
+const func = (fn) => (typeof fn === 'function' ? fn : () => fn);
 
 class PagesCollector extends MessageCollector {
-  // gostou do nome ? wadjawudwuiadhawiodjaw ta tri
-  constructor (channel, options, user, collectorOptions) {
-    super(channel, this._filter, collectorOptions)
-    // opções, exemplo no village seria: bruxa, ferreiro, hotel, guilda
-    // nas opções nos podia separar por 
-    this.options = options;
-    // usuario que executou o comando
-    this.user = user;
-    // ativa vai ser as opções anteriores, tipo se a pessoa, ah esqueci
-    this.oldOptions = null;
+  constructor(channel, { message, t, sent }, collectorOptions = { max: 5 }) {
+    super(channel, (m) => m.author.id === message.author.id, collectorOptions);
+    this.t = t;
+    this.message = message;
+    this.sent = sent;
+    this.invalidOption = null;
+    this.findOption = null;
+    this.handler = null;
   }
 
-  _filter (message) {
-    if (message.author.id !== this.user.id) return
-    // aqui nos vai checa as opções :thumbsup:
+  start() {
+    this.on('collect', (msg) => this.onCollect(msg));
+    return this;
+  }
+
+  setFindOption(fn) {
+    this.findOption = fn;
+    return this;
+  }
+
+  setInvalidOption(fn) {
+    this.invalidOption = fn;
+    return this;
+  }
+
+  setHandle(fn) {
+    this.collected.clear();
+    this.handler = fn;
+    return this;
+  }
+
+  /**
+   * Send a new page message or edit the current
+   * @param  {...any} args arguments of #TextChannel.send or #Message.edit
+   */
+  async send(...args) {
+    if (!this.sent || this.sent.deleted) {
+      this.sent = await this.channel.send(...args);
+    } else {
+      this.sent = await this.sent.edit(...args);
+    }
+
+    return this.sent;
+  }
+
+  delete(...args) {
+    const original = this.sent;
+    if (original && !original.deleted) {
+      original.delete(...args);
+    }
+  }
+
+  async menheraReply(...args) {
+    const sent = await this.message.menheraReply(...args);
+    this.delete();
+    this.sent = sent;
+    return this.sent;
+  }
+
+  async onCollect(message) {
+    const option = await func(this.findOption)(message.content);
+
+    if (!option) {
+      this.finish();
+      return func(this.invalidOption)(message, this);
+    }
+
+    const res = await func(this.handler)(message, option, this);
+    if (res !== 'CONTINUE') {
+      this.finish();
+    }
+  }
+
+  /**
+   * Stop collector listener
+   */
+  finish() {
+    return this.stop('finish');
+  }
+
+  static arrFindByElemOrIndex(arr) {
+    return (str) => arr.find((elem, i) => elem === str?.toLowerCase() || (i + 1) === Number(str));
+  }
+
+  static arrFindByItemNameOrIndex(items) {
+    return (str) => items.find(
+      (item, i) => (item?.name ?? item?.id).toLowerCase() === str?.toLowerCase() || (i + 1) === Number(str),
+    );
+  }
+
+  static arrFindByIndex(arr) {
+    return (str) => arr.find((_, i) => (i + 1) === Number(str));
+  }
+
+  static continue() {
+    return 'CONTINUE';
   }
 }
+
+module.exports = PagesCollector;
