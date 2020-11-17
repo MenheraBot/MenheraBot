@@ -282,8 +282,10 @@ module.exports = class VillageCommand extends Command {
     // eslint-disable-next-line no-restricted-syntax
     for (const i in allItems) {
       // eslint-disable-next-line no-loop-func
-      const filter = user.loots.filter((f) => f.name === allItems[i].name);
-      const item = `---------------**[ ${i + 1} ]**---------------\n<:Chest:760957557538947133> | **${i.name}** ( ${i.amount} )\n💎 | **${t('commands:village.guilda.value')}:** ${filter[0].value}\n`;
+      const separator = `---------------**[ ${i + 1} ]**---------------`;
+      const name = `<:Chest:760957557538947133> | **${allItems[i].name}** ( ${allItems[i].amount} )`;
+      const value = `💎 | **${t('commands:village.guilda.value')}:** ${allItems[i].value}\n`;
+      const item = `${separator} ${name} ${value}`;
       if ((txt.length + item.length) <= 1800) {
         txt += item;
       } else {
@@ -315,7 +317,7 @@ module.exports = class VillageCommand extends Command {
         user.money += total;
         user.save();
 
-        collector.menheraReply('success', t('commands:village.guilda.sold-all', { amount: allItems.length, value: total }));
+        return collector.menheraReply('success', t('commands:village.guilda.sold-all', { amount: allItems.length, value: total }));
       }
 
       const [item, qty] = result;
