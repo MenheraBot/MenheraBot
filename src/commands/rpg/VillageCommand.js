@@ -57,8 +57,8 @@ module.exports = class VillageCommand extends Command {
       );
 
     collector.send(message.author, embed);
-    collector.setFindOption((msg) => {
-      const [query, qty = 1] = msg.content.trim().split(/ +/g);
+    collector.setFindOption((content) => {
+      const [query, qty = 1] = content.trim().split(/ +/g);
       const item = items.find((i, n) => i.name === query.toLowerCase() || Number(query) === (n + 1));
       if (item) return { item, qty: Number(qty) };
     });
@@ -85,10 +85,10 @@ module.exports = class VillageCommand extends Command {
 
       Util.addItemInLoots(user, item.name, qty);
       user.money -= value;
-      return user.save();
-    });
+      user.save();
 
-    return PagesCollector.done();
+      return PagesCollector.done();
+    });
   }
 
   static ferreiro(message, user, t, collector) {
@@ -212,37 +212,22 @@ module.exports = class VillageCommand extends Command {
   }
 
   static hotel(message, user, t, collector) {
-    // TODO: mostra o tempo humanizado
-    const hotelOptions = [
-      {
-        name: 'name_one', time: 7200000, life: 40, mana: 40,
-      },
-      {
-        name: 'name_two', time: 12600000, life: 'MAX', mana: 0,
-      },
-      {
-        name: 'name_three', time: 12600000, life: 0, mana: 'MAX',
-      },
-      {
-        name: 'name_four', time: 25200000, life: 'MAX', mana: 'MAX',
-      },
-    ];
-
     const embed = new MessageEmbed()
       .setTitle(`🏨 | ${t('commands:village.hotel.title')}`)
       .setDescription(t('commands:village:hotel.description'))
       .setFooter(t('commands:village.hotel.footer'))
       .setColor('#e7a8ec');
 
-    embed.addFields(hotelOptions.map(({
+    embed.addFields(itemsFile.hotel.map(({
       name, time, life, mana,
     }, i) => ({
       name: `${i + 1} - ${t(`commands:village.hotel.fields.${name}`)}`,
+      // TODO: mostra o tempo humanizado
       value: `⌛ | ${t('commands:village.hotel.fields.value', { time, life, mana })}`,
     })));
 
     collector.send(message.author, embed);
-    collector.setFindOption((content) => hotelOptions.find((_, i) => (i + 1) === Number(content)));
+    collector.setFindOption((content) => itemsFile.hotel.find((_, i) => (i + 1) === Number(content)));
     collector.setHandle((_, option) => {
       if (user.hotelTime > Date.now()) {
         return collector.menheraReply('error', t('commands:village.hotel.already'));
@@ -269,7 +254,8 @@ module.exports = class VillageCommand extends Command {
 
       user.save();
 
-      return collector.menheraReply('success', t('commands:village.hotel.done'));
+      collector.menheraReply('success', t('commands:village.hotel.done'));
+      return PagesCollector.done();
     });
   }
 
@@ -322,7 +308,7 @@ module.exports = class VillageCommand extends Command {
     collector.setHandle((_, result) => {
       if (result === 'ALL') {
         const total = allItems.reduce((p, item) => p + item.value, 0);
-        VillageCommand.updateBackpack(user, (currentValue) => currentValue - allItems.length);
+        Util.updateBackpack(user, (currentValue) => currentValue - allItems.length);
         user.loots = [];
         user.money += total;
         user.save();
@@ -344,7 +330,7 @@ module.exports = class VillageCommand extends Command {
           return message.menheraReply('error', t('commands:village.guilda.unespected-error'));
         }
 
-        VillageCommand.removeItemInLoots(user, item.name, item.amount);
+        Util.removeItemInLoots(user, item.name, item.amount);
         user.money += total;
 
         user.save();

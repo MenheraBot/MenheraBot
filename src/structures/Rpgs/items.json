@@ -173,5 +173,19 @@
           "Capuz da Morte de Rabadon": 5
         }
       }
+    ],
+    "hotel": [
+      {
+        "name": "name_one", "time": 7200000, "life": 40, "mana": 40
+      },
+      {
+        "name": "name_two", "time": 12600000, "life": "MAX", "mana": 0
+      },
+      {
+        "name": "name_three", "time": 12600000, "life": 0, "mana": "MAX"
+      },
+      {
+        "name": "name_four", "time": 25200000, "life": "MAX", "mana": "MAX"
+      }
     ]
 }
