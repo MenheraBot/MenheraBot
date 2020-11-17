@@ -57,15 +57,17 @@ module.exports = class VillageCommand extends Command {
       );
 
     collector.send(message.author, embed);
-    collector.setFindOption((str) => items.find((i, n) => i.name === str.toLowerCase() || Number(str) === (n + 1)));
-    collector.setHandle((msg, item) => {
-      const quantity = parseInt(msg.content.trim().split(/ +/g)[1]) || 1;
-
-      if (Number.isNaN(quantity) || quantity < 1) {
+    collector.setFindOption((msg) => {
+      const [query, qty = 1] = msg.content.trim().split(/ +/g);
+      const item = items.find((i, n) => i.name === query.toLowerCase() || Number(query) === (n + 1));
+      if (item) return { item, qty: Number(qty) };
+    });
+    collector.setHandle((_, { item, qty }) => {
+      if (Number.isNaN(qty) || qty < 1) {
         return collector.menheraReply('error', t('commands:village.invalid-quantity'));
       }
 
-      const value = item.value * quantity;
+      const value = item.value * qty;
 
       if (!value) {
         return collector.menheraReply('error', t('commands:village.invalid-value'));
@@ -75,15 +77,13 @@ module.exports = class VillageCommand extends Command {
         return collector.menheraReply('error', t('commands:village.poor'));
       }
 
-      if ((user?.backpack.value + quantity) > user?.backpack.capacity) {
+      if ((user?.backpack.value + qty) > user?.backpack.capacity) {
         return collector.menheraReply('error', 'commands:village.backpack-full');
       }
 
-      collector.menheraReply('success', t('commands:village.bruxa.bought', { quantidade: quantity, name: item.name, valor: value }));
+      collector.menheraReply('success', t('commands:village.bruxa.bought', { quantidade: qty, name: item.name, valor: value }));
 
-      user.inventory.push(...(new Array(quantity).fill(item.name)));
-      VillageCommand.updateBackpack(user, (v) => v + 1);
-
+      Util.addItemInLoots(user, item.name, qty);
       user.money -= value;
       return user.save();
     });
@@ -109,7 +109,7 @@ module.exports = class VillageCommand extends Command {
 
     collector.send(message.author, embed);
     collector.setFindOption(PagesCollector.arrFindHandle(categories));
-    collector.setHandle((_, category) => VillageCommand.ferreiroEquipamentos(category, message, user, t, collector));
+    collector.setHandle((_, category) => Util.ferreiroEquipamentos(category, message, user, t, collector));
   }
 
   static ferreiroEquipamentos(category, message, user, t, collector) {
@@ -177,7 +177,7 @@ module.exports = class VillageCommand extends Command {
         return message.menheraReply('error', `${t(`commands:village.ferreiro.${category}.poor`, { items })}`);
       }
 
-      requiredItems.forEach(([name, qty]) => VillageCommand.removeItemInLoots(user, name, qty));
+      requiredItems.forEach(([name, qty]) => Util.removeItemInLoots(user, name, qty));
 
       switch (category) {
         case 'sword':
@@ -353,26 +353,5 @@ module.exports = class VillageCommand extends Command {
 
       return PagesCollector.done();
     });
-  }
-
-  static updateBackpack(user, newValueFn) {
-    user.backpack = {
-      name: user.backpack.name,
-      capacity: user.backpack.capacity,
-      value: newValueFn(user.backpack.value),
-    };
-
-    if (user.backpack?.value < 0) {
-      user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: 0 };
-    }
-  }
-
-  static removeItemInLoots(user, itemName, amount = 1) {
-    for (let i = 0; i < amount; i++) {
-      // eslint-disable-next-line no-loop-func
-      user.loots.splice(user.loots.findIndex((loot) => loot.name === itemName), 1);
-    }
-
-    VillageCommand.updateBackpack(user, (currentValue) => currentValue - amount);
   }
 };
