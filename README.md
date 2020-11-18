@@ -50,26 +50,7 @@ You can enter my [support server](https://discord.gg/fZMdQbA) to help further. A
 
 ## Self-host
 
-You can download the files from Menhera to host it in your own bot! But for that we need to be careful!
-Menhera uses [node.js](https://nodejs.org), you must have it on your machine first of all!
-It also has a configuration file, which must be attached to the file **index.js**, and should be called **config.json**
-The model of config.json is as follows:
-
-```json
-"prefix": "m!", //Put your bot prefix here
-"token": "super_secret_token_owo", //Put your Discord Bot token here
-"owner": ["15465165651052"], //Put every owner of the bot here, separated with commas
-"uri": "https://akjsdnsandsanjdnsadj", //MongoDB conection url
-"dbt": "Top.ggToken_uwu" //Top.gg API token
-```
-
-- Your bot's token you can get on [Discords's Site](https://discord.com/developers)
-- You can access the DataBase url on [MongoDB's Site](https://cloud.mongodb.com/)
-- For your top.gg token, first your bot needs to be in [top.gg](https://top.gg/)
-
-That's it! With this configuration file, you should already be able to host your bot with the Menhera's code
-
-> Amazing, isn't it?
+According to the license, you can self host the bot, but we **DO NOT** support the Menhera in Self Host.
 
 ## Links
 
