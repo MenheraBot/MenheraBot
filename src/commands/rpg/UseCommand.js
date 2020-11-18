@@ -43,7 +43,7 @@ module.exports = class UseCommand extends Command {
     const option = [];
 
     user.inventory.forEach((inv) => {
-      items.push(inv.name);
+      if (inv.type !== 'Arma') items.push(inv.name);
     });
 
     const juntos = countItems(items);
