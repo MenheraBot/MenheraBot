@@ -1,6 +1,22 @@
 const request = require('request-promise');
 const config = require('../../config.json');
 
+module.exports.getActivity = async () => {
+  const options = {
+    method: 'GET',
+    uri: `${config.api_IP}/api/activity`,
+    headers: {
+      'User-Agent': 'MenheraClient',
+      token: config.api_TOKEN,
+    },
+    json: true,
+  };
+
+  const result = await request(options).catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
+  if (!result) return { name: 'Menhera foi criada pela Lux', type: 'PLAYING' };
+  return result;
+};
+
 module.exports.status = async (data) => {
   const options = {
     method: 'POST',

@@ -193,5 +193,5 @@ module.exports = class MessageReceive {
     }
 
     return new this.client.database.Guilds({ id: guildId });
-  } 
+  }
 };
