@@ -102,7 +102,7 @@ module.exports = class VillageCommand extends Command {
 
     const categories = ['sword', 'backpack', 'armor'];
     const categoriesNames = categories.map(
-      (name, i) => `${i + 1} ${t(`commands:village.ferreiro.categories.${name}`)}`,
+      (name, i) => `**${i + 1}** - ${t(`commands:village.ferreiro.categories.${name}`)}`,
     );
     const embed = new MessageEmbed()
       .setColor('#b99c81')
@@ -144,7 +144,7 @@ module.exports = class VillageCommand extends Command {
       .reduce((p, [name, qty]) => `${p} **${qty} ${name}**\n`, '');
 
     embed.addFields(equips.map((equip, i) => ({
-      name: `${i + 1} ${equip.id}`,
+      name: `**${i + 1}** - ${equip.id}`,
       value: [
         `${emojis[category]} | ${t(`commands:village.ferreiro.${mainProp}`)} **${equip[mainProp]}**`,
         `💎 | ${t('commands:village.ferreiro.cost')}: **${equip.price}**`,
