@@ -47,9 +47,7 @@ module.exports = class InventoryCommand extends Command {
     }
 
     user.inventory.forEach((inv) => {
-      if (inv.type === 'Item') {
-        items.push(inv.name);
-      }
+      items.push(inv.name);
     });
 
     armaText += `🗡️ | ${t('commands:inventory.weapon')}: **${user.weapon.name}**\n🩸 | ${t('commands:inventory.dmg')}: **${user.weapon.damage}**\n\n`;

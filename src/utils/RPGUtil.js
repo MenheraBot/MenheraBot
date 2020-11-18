@@ -23,8 +23,8 @@ class RPGUtil {
     }
   }
 
-  static addItemInLoots(user, itemName, amount = 1) {
-    user.inventory.push(...(new Array(amount).fill(itemName)));
+  static addItemInLoots(user, item, amount = 1) {
+    user.inventory.push(...(new Array(amount).fill(item)));
     RPGUtil.updateBackpack(user, (v) => v + amount);
   }
 

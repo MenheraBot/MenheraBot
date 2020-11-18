@@ -43,9 +43,7 @@ module.exports = class UseCommand extends Command {
     const option = [];
 
     user.inventory.forEach((inv) => {
-      if (inv.type === 'Item') {
-        items.push(inv.name);
-      }
+      items.push(inv.name);
     });
 
     const juntos = countItems(items);
@@ -82,11 +80,11 @@ module.exports = class UseCommand extends Command {
 
     if (quantidade > juntos[args[0] - 1].amount) return message.menheraReply('error', t('commands:use.bigger'));
 
-    if (choice[0].description.indexOf('mana') > -1) {
+    if (choice[0].name.indexOf('💧') > -1) {
       if (user.mana === user.maxMana) return message.menheraReply('error', t('commands:use.full-mana'));
       user.mana += (choice[0].damage * quantidade);
       if (user.mana > user.maxMana) user.mana = user.maxMana;
-    } else if (choice[0].description.indexOf('vida') > -1) {
+    } else if (choice[0].name.indexOf('🩸') > -1) {
       if (user.life === user.maxLife) return message.menheraReply('error', t('commands:use.full-life'));
       user.life += (choice[0].damage * quantidade);
       if (user.life > user.maxLife) user.life = user.maxLife;

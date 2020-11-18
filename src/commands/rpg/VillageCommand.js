@@ -85,7 +85,7 @@ module.exports = class VillageCommand extends Command {
 
       collector.menheraReply('success', t('commands:village.bruxa.bought', { quantidade: qty, name: item.name, valor: value }));
 
-      RPGUtil.addItemInLoots(user, item.name, qty);
+      RPGUtil.addItemInLoots(user, { name: item.name, damage: item.damage }, qty);
       user.money -= value;
       user.save();
 
@@ -287,10 +287,10 @@ module.exports = class VillageCommand extends Command {
     // eslint-disable-next-line no-restricted-syntax
     for (const i in allItems) {
       // eslint-disable-next-line no-loop-func
-      const separator = `---------------**[ ${i + 1} ]**---------------`;
+      const separator = `---------------**[ ${parseInt(i) + 1} ]**---------------`;
       const name = `<:Chest:760957557538947133> | **${allItems[i].name}** ( ${allItems[i].amount} )`;
       const value = `💎 | **${t('commands:village.guilda.value')}:** ${allItems[i].value}\n`;
-      const item = `${separator} ${name} ${value}`;
+      const item = `${separator}\n ${name}\n ${value}`;
       if ((txt.length + item.length) <= 1800) {
         txt += item;
       } else {
