@@ -7,11 +7,12 @@ module.exports = class RemindersEventLoop {
 
   async loop() {
     setInterval(async () => {
-      const documentos = await this.client.database.Reminders.find();
-      documentos.forEach((reminder) => {
-        const rememberTime = parseInt(reminder.rememberAt);
-        if (rememberTime <= (Date.now() + 1000 * 30)) this.sendReminder(reminder); // Soma 30 segundos ao minuto, caso o reminder seja nos proximos 30 segundos
+      const remembers = await this.client.database.Reminders.find({
+        rememberAt: {
+          $lte: (Date.now() + 1000 * 30), // Soma 30 segundos ao minuto, caso o reminder seja nos proximos 30 segundos
+        },
       });
+      remembers.forEach((reminder) => this.sendReminder(reminder));
     }, 1000 * 60);
   }
 
