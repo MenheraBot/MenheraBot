@@ -19,27 +19,33 @@ module.exports = class MessageReceive {
     const prefix = (server?.prefix ?? this.client.config.prefix).toLowerCase();
     const language = server?.lang ?? 'pt-BR';
     const t = i18next.getFixedT(language);
+    let currentUser = null;
 
     if (message.mentions.users.size >= 0) {
-      message.mentions.users.forEach(async (member) => {
-        if (!member) return;
-        const usuario = await this.client.database.Users.findOne({ id: member.id });
-        if (usuario && usuario.afk) {
-          message.menheraReply('notify', `${t('commands:afk.reason', { tag: member.tag, reason: usuario.afkReason })}`).catch();
-        }
-      });
-    }
+      const ids = [
+        ...message.mentions.users.map((user) => user.id),
+        message.author.id,
+      ]
+        .filter((u, i, arr) => arr.indexOf(u) === i);
 
-    const user = await this.client.database.Users.findOne({ id: message.author.id });
-    if (user && user.afk) {
-      if (user.afk) {
-        user.afk = false;
-        user.afkReason = null;
-        user.save();
-        message.menheraReply('wink', `${t('commands:afk.back')}`)
-          .then((msg) => msg.delete({ timeout: 5000 }))
+      const users = await this.client.database.Users.find({ id: { $in: ids } });
+      users.forEach(async (user) => {
+        if (!user || !user.afk) return;
+
+        if (user.id === message.author.id) {
+          currentUser = user;
+          user.afk = false;
+          user.afkReason = null;
+          user.save();
+          return message.menheraReply('wink', `${t('commands:afk.back')}`)
+            .then((msg) => msg.delete({ timeout: 5000 }))
+            .catch();
+        }
+
+        const member = message.mentions.users.get(user.id);
+        message.menheraReply('notify', `${t('commands:afk.reason', { tag: member.tag, reason: user.afkReason })}`)
           .catch();
-      }
+      });
     }
 
     if (message.content.startsWith(`<@!${this.client.user.id}>`) || message.content.startsWith(`<@${this.client.user.id}>`)) {
@@ -58,12 +64,12 @@ module.exports = class MessageReceive {
     if (!command) command = this.client.commands.get(this.client.aliases.get(cmd));
     if (!command) return;
 
-    if (!user) {
-      await new this.client.database.Users({
+    if (!currentUser) {
+      currentUser = await this.client.database.Users.create({
         id: message.author.id,
         nome: message.author.username,
         shipValue: Math.floor(Math.random() * 55),
-      }).save();
+      });
     }
 
     if (server && server.blockedChannels.includes(message.channel.id) && !message.member.hasPermission('MANAGE_CHANNELS')) {
@@ -71,14 +77,14 @@ module.exports = class MessageReceive {
       return;
     }
 
-    if (user && user.ban) {
+    if (currentUser && currentUser.ban) {
       const avatar = message.author.displayAvatarURL({ size: 2048, dynamic: true });
 
       const embed = new MessageEmbed()
         .setColor('#c1001d')
         .setAuthor(t('permissions:BANNED_EMBED.author'), avatar)
         .setDescription(t('permissions:BANNED_EMBED.description', { user: message.author.username }))
-        .addField(t('permissions:BANNED_EMBED.reason'), user.banReason)
+        .addField(t('permissions:BANNED_EMBED.reason'), currentUser.banReason)
         .addField(t('permissions:BANNED_EMBED.field_start'), t('permissions:BANNED_EMBED.field_end'));
 
       message.channel.send(embed).catch(() => { message.author.send(embed).catch(); });
