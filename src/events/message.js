@@ -21,32 +21,31 @@ module.exports = class MessageReceive {
     const t = i18next.getFixedT(language);
     let currentUser = null;
 
-    if (message.mentions.users.size >= 0) {
-      const ids = [
-        ...message.mentions.users.map((user) => user.id),
-        message.author.id,
-      ]
-        .filter((u, i, arr) => arr.indexOf(u) === i);
+    // AFK MODULE
+    const ids = [
+      ...message.mentions.users.map((user) => user.id),
+      message.author.id,
+    ]
+      .filter((u, i, arr) => arr.indexOf(u) === i);
 
-      const users = await this.client.database.Users.find({ id: { $in: ids } });
-      users.forEach(async (user) => {
-        if (!user || !user.afk) return;
+    const users = await this.client.database.Users.find({ id: { $in: ids } });
+    users.forEach(async (user) => {
+      if (!user || !user.afk) return;
 
-        if (user.id === message.author.id) {
-          currentUser = user;
-          user.afk = false;
-          user.afkReason = null;
-          user.save();
-          return message.menheraReply('wink', `${t('commands:afk.back')}`)
-            .then((msg) => msg.delete({ timeout: 5000 }))
-            .catch();
-        }
-
-        const member = message.mentions.users.get(user.id);
-        message.menheraReply('notify', `${t('commands:afk.reason', { tag: member.tag, reason: user.afkReason })}`)
+      if (user.id === message.author.id) {
+        currentUser = user;
+        user.afk = false;
+        user.afkReason = null;
+        user.save();
+        return message.menheraReply('wink', `${t('commands:afk.back')}`)
+          .then((msg) => msg.delete({ timeout: 5000 }))
           .catch();
-      });
-    }
+      }
+
+      const member = message.mentions.users.get(user.id);
+      message.menheraReply('notify', `${t('commands:afk.reason', { tag: member.tag, reason: user.afkReason })}`)
+        .catch();
+    });
 
     if (message.content.startsWith(`<@!${this.client.user.id}>`) || message.content.startsWith(`<@${this.client.user.id}>`)) {
       message.channel.send(`<:MenheraWink:767210250637279252> | ${t('events:mention.start')} ${message.author}, ${t('events:mention.end', { prefix })}`).catch();
