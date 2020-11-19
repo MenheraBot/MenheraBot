@@ -17,7 +17,7 @@ module.exports = class BattleBoss extends Command {
 
     if (user.level < 20) return message.menheraReply('error', t('commands:boss.min-level'));
 
-    const inimigo = await this.client.rpgChecks.getEnemy(user, 'boss');
+    const inimigo = this.client.rpgChecks.getEnemyByUserLevel(user, 'boss');
     const canGo = await this.client.rpgChecks.initialChecks(user, message, t);
 
     if (!canGo) return;
