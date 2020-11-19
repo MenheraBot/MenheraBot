@@ -3,51 +3,29 @@ const { MessageEmbed } = require('discord.js');
 const mobsFile = require('../RpgHandler').mobs;
 const abilitiesFile = require('../RpgHandler').abiltiies;
 
-module.exports.getEnemy = async (user, type) => {
-  const initialEnemy = [];
-  const mediumEnemy = [];
-  const hardEnemy = [];
-  const impossibleEnemy = [];
+const random = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
-  let monstro;
-
+module.exports.getEnemyByUserLevel = (user, type) => {
   if (type === 'boss') {
-    const bosses = [];
-
-    mobsFile.boss.forEach((b) => bosses.push(b));
-    if (user.level > 24) mobsFile.gods.forEach((b) => bosses.push(b));
-
-    monstro = await bosses[Math.floor(Math.random() * bosses.length)];
-
-    return monstro;
+    if (user.level > 24) {
+      return random([...mobsFile.boss, ...mobsFile.gods]);
+    }
+    return random(mobsFile.boss);
   }
 
-  mobsFile.inicial.forEach((initialMob) => {
-    initialEnemy.push(initialMob);
-  });
-
-  mobsFile.medio.forEach((mediumMob) => {
-    mediumEnemy.push(mediumMob);
-  });
-
-  mobsFile.hard.forEach((hardMob) => {
-    hardEnemy.push(hardMob);
-  });
-
-  mobsFile.impossible.forEach((impMob) => {
-    impossibleEnemy.push(impMob);
-  });
-
-  if (user.level < 5) {
-    monstro = await initialEnemy[Math.floor(Math.random() * initialEnemy.length)];
-  } else if (user.level > 4 && user.level < 10) {
-    monstro = await mediumEnemy[Math.floor(Math.random() * mediumEnemy.length)];
-  } else if (user.level > 9 && user.level < 13) {
-    monstro = await hardEnemy[Math.floor(Math.random() * hardEnemy.length)];
-  } else if (user.level > 12) {
-    monstro = await impossibleEnemy[Math.floor(Math.random() * impossibleEnemy.length)];
+  if (user.level < 12) {
+    return random(mobsFile.impossible);
   }
-  return monstro;
+
+  if (user.level > 9 && user.level < 13) {
+    return random(mobsFile.hard);
+  }
+
+  if (user.level > 4 && user.level < 10) {
+    return random(mobsFile.medio);
+  }
+
+  return random(mobsFile.inicial);
 };
 
 module.exports.battle = async (message, escolha, user, inimigo, type, familia, t) => {

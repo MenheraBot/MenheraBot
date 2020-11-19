@@ -15,7 +15,7 @@ module.exports = class DungeonCommand extends Command {
     const user = await this.client.database.Rpg.findById(message.author.id);
     if (!user) return message.menheraReply('error', t('commands:dungeon.non-aventure'));
 
-    const inimigo = await this.client.rpgChecks.getEnemy(user, 'dungeon');
+    const inimigo = this.client.rpgChecks.getEnemyByUserLevel(user, 'dungeon');
 
     const canGo = await this.client.rpgChecks.initialChecks(user, message, t);
 
