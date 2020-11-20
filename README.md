@@ -1,5 +1,7 @@
 <img width="150" height="150" align="left" style="float: left; margin: 0 10px 0 0;" alt="MenheraBot" src="https://i.imgur.com/jjgBki0.png">
 
+[![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/U6U32QC5D)
+
 # Menhera Bot
 
 [![](https://top.gg/api/widget/owner/708014856711962654.svg)](https://top.gg/bot/708014856711962654)
