@@ -794,18 +794,18 @@
             "cost": "Cost",
             "arma": {
                 "description": "Your weapon will be replaced by your choice, so be careful! \n \nChoose what you want to manufacture",
-                "poor": "you don't have required items: {{items}}",
+                "poor": "you don't have required items: `{{items}}`",
                 "change": "You switched your weapon to `{{equip}}`"
             },
             "armadura": {
                 "description": "Your armor will be replaced by your choice, so be careful! \n \nChoose what you want to manufacture",
-                "poor": "you don't have required items: {{items}}",
-                "change": "you changed your armor to`{{equip}}"
+                "poor": "you don't have required items: `{{items}}`",
+                "change": "you changed your armor to `{{equip}}`"
             },
             "mochila": {
                 "description": "Your backpack will be replaced by your choice, so be careful! \n \nChoose what you want to manufacture",
-                "poor": "you don't have required items: {{items}}",
-                "change": "you changed your backpack to`{{equip}}"
+                "poor": "you don't have required items: `{{items}}`",
+                "change": "you changed your backpack to `{{equip}}`"
             }
         },
         "hotel": {

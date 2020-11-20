@@ -816,18 +816,18 @@
             "cost": "Custo",
             "sword": {
                 "description": "Sua arma sera substituída pela sua escolha, então cuidado!\n\nEscolha o que desejas fabricar",
-                "poor": "você não possui os items necessários: {{items}}",
+                "poor": "você não possui os items necessários: `{{items}}`",
                 "change": "Você trocou sua arma para `{{equip}}`"
             },
             "armor": {
                 "description": "Sua armadura sera substituída pela sua escolha, então cuidado!\n\nEscolha o que desejas fabricar",
-                "poor": "você não possui os items necessários: {{items}}",
-                "change": "você trocou sua armadura para `{{equip}}"
+                "poor": "você não possui os items necessários: `{{items}}`",
+                "change": "você trocou sua armadura para `{{equip}}`"
             },
             "backpack": {
                 "description": "Sua mochila sera substituída pela sua escolha, então cuidado!\n\nEscolha o que desejas fabricar",
-                "poor": "você não possui os items necessários: {{items}}",
-                "change": "você trocou sua mochila para `{{equip}}"
+                "poor": "você não possui os items necessários: `{{items}}`",
+                "change": "você trocou sua mochila para `{{equip}}`"
             }
         },
         "hotel": {

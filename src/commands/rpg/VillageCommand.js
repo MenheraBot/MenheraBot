@@ -187,22 +187,22 @@ module.exports = class VillageCommand extends Command {
       switch (category) {
         case 'sword':
           user.weapon = {
-            name: equip.name,
+            name: equip.id,
             damage: equip.damage,
           };
           break;
 
         case 'armor':
           user.protection = {
-            name: equip.name,
+            name: equip.id,
             armor: equip.protection,
           };
           break;
 
         case 'backpack':
           user.backpack = {
-            name: equip.name,
-            capacity: equip.name.capacity,
+            name: equip.id,
+            capacity: equip.capacity,
             value: user.backpack.value,
           };
           break;
@@ -211,7 +211,7 @@ module.exports = class VillageCommand extends Command {
       user.money -= equip.price;
 
       user.save();
-      message.menheraReply('success', t(`commands:village.ferreiro.${category}.change`, { equip: equip.name }));
+      message.menheraReply('success', t(`commands:village.ferreiro.${category}.change`, { equip: equip.id }));
       collector.finish();
     });
     return PagesCollector.continue();
@@ -340,7 +340,7 @@ module.exports = class VillageCommand extends Command {
         return message.menheraReply('error', t('commands:village.guilda.unespected-error'));
       }
 
-      RPGUtil.removeItemInLoots(user, item.name, item.amount);
+      RPGUtil.removeItemInLoots(user, item.name, qty);
       user.money += total;
 
       user.save();
