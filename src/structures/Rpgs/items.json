@@ -78,7 +78,6 @@
             "type": "Item",
             "value": 1000,
             "damage": 500,
-            "maxLevel": 40,
             "minLevel": 25
         },
         {
@@ -87,7 +86,6 @@
             "type": "Item",
             "value": 1500,
             "damage": 500,
-            "maxLevel": 40,
             "minLevel": 25
         }
     ],

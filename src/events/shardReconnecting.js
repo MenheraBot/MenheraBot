@@ -4,7 +4,7 @@ module.exports = class ShardReconnectReceive {
   }
 
   run(shard) {
-    console.log(`[SHARDI] Shard ${shard} ta voltando!`);
+    console.log(`[SHARD] Shard ${shard} ta voltando!`);
     // http.shards("reconnecting", shard) || Só ignora o request enquanto não shardeio tudo (fica spammando o chat de status)
   }
 };

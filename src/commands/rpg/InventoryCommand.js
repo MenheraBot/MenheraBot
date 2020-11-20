@@ -24,10 +24,12 @@ module.exports = class InventoryCommand extends Command {
       .setTitle(`<:Chest:760957557538947133> | ${t('commands:inventory.title')}`)
       .setColor(cor);
 
-    const loots = user.loots.map((loot) => loot.name);
-    const items = user.inventory.filter((item) => item.type !== 'Arma').map((item) => item.name);
-    const itemText = countItems(items).reduce((count) => `**${count.name}** (${count.amount})\n`, '');
-    const lootText = countItems(loots).reduce((count) => `**${count.name}** (${count.amount})\n`, '');
+    const items = user.inventory.filter((item) => item.type !== 'Arma');
+
+    const normalizeItems = (arr) => countItems(arr).reduce((p, count) => `${p}**${count.name}** (${count.amount})\n`, '');
+    const itemText = normalizeItems(items);
+    const lootText = normalizeItems(user.loots);
+
     let armaText = '';
     armaText += `🗡️ | ${t('commands:inventory.weapon')}: **${user.weapon.name}**\n`;
     armaText += `🩸 | ${t('commands:inventory.dmg')}: **${user.weapon.damage}**\n\n`;

@@ -43,7 +43,7 @@ module.exports = class VillageCommand extends Command {
   }
 
   static async bruxa(message, user, t, collector) {
-    const items = itemsFile.bruxa.filter((item) => user.level >= item.minLevel && user.level <= item.maxLevel);
+    const items = itemsFile.bruxa.filter((item) => user.level >= item.minLevel && (!item.maxLevel || user.level <= item.maxLevel));
 
     const embed = new MessageEmbed()
       .setTitle(`🏠 | ${t('commands:village.bruxa.title')}`)
