@@ -15,42 +15,49 @@ module.exports = class MessageReceive {
     if (message.channel.type === 'dm') return;
     if (!message.channel.permissionsFor(message.guild.me).has('SEND_MESSAGES')) return;
 
-    const server = await this.getServerFromDatabase(message.guild.id);
-    const prefix = (server?.prefix ?? this.client.config.prefix).toLowerCase();
-    const language = server?.lang ?? 'pt-BR';
-    const t = i18next.getFixedT(language);
-    let currentUser = null;
+    let server = await this.client.database.Guilds.findOne({ id: message.guild.id });
+    if (!server) {
+      server = this.client.database.Guilds({ id: message.guild.id });
+      server.save();
+    }
 
-    // AFK MODULE
-    const ids = [
-      ...message.mentions.users.map((user) => user.id),
-      message.author.id,
-    ]
-      .filter((u, i, arr) => arr.indexOf(u) === i);
+    let prefix;
+    if (!server) {
+      prefix = this.client.config.prefix;
+    } else prefix = server.prefix.toLowerCase();
 
-    const users = await this.client.database.Users.find({ id: { $in: ids } });
-    users.forEach(async (user) => {
-      if (!user || !user.afk) return;
+    let t;
+    const setFixedT = (translate) => {
+      t = translate;
+    };
 
-      if (user.id === message.author.id) {
-        currentUser = user;
+    const language = (server && server.lang) || 'pt-BR';
+    setFixedT(i18next.getFixedT(language));
+
+    if (message.mentions.users.size >= 0) {
+      message.mentions.users.forEach(async (member) => {
+        if (!member) return;
+        const usuario = await this.client.database.Users.findOne({ id: member.id });
+        if (usuario) {
+          if (usuario.afk === true) {
+            message.menheraReply('notify', `${t('commands:afk.reason', { tag: member.tag, reason: usuario.afkReason })}`).catch();
+          }
+        }
+      });
+    }
+    const user = await this.client.database.Users.findOne({ id: message.author.id });
+    if (user) {
+      if (user.afk === true) {
         user.afk = false;
         user.afkReason = null;
         user.save();
-        return message.menheraReply('wink', `${t('commands:afk.back')}`)
-          .then((msg) => msg.delete({ timeout: 5000 }))
-          .catch();
+        message.menheraReply('wink', `${t('commands:afk.back')}`).then((msg) => msg.delete({
+          timeout: 5000,
+        })).catch();
       }
-
-      const member = message.mentions.users.get(user.id);
-      message.menheraReply('notify', `${t('commands:afk.reason', { tag: member.tag, reason: user.afkReason })}`)
-        .catch();
-    });
-
-    if (message.content.startsWith(`<@!${this.client.user.id}>`) || message.content.startsWith(`<@${this.client.user.id}>`)) {
-      message.channel.send(`<:MenheraWink:767210250637279252> | ${t('events:mention.start')} ${message.author}, ${t('events:mention.end', { prefix })}`).catch();
-      return;
     }
+
+    if (message.content.startsWith(`<@!${this.client.user.id}>`) || message.content.startsWith(`<@${this.client.user.id}>`)) return message.channel.send(`<:MenheraWink:767210250637279252> | ${t('events:mention.start')} ${message.author}, ${t('events:mention.end', { prefix })}`).catch();
 
     if (!message.content.toLowerCase().startsWith(prefix)) return;
 
@@ -63,43 +70,52 @@ module.exports = class MessageReceive {
     if (!command) command = this.client.commands.get(this.client.aliases.get(cmd));
     if (!command) return;
 
-    if (!currentUser) {
-      currentUser = await this.client.database.Users.create({
+    if (!user) {
+      await new this.client.database.Users({
         id: message.author.id,
         nome: message.author.username,
         shipValue: Math.floor(Math.random() * 55),
-      });
+      }).save();
     }
 
-    if (server && server.blockedChannels.includes(message.channel.id) && !message.member.hasPermission('MANAGE_CHANNELS')) {
-      message.menheraReply('error', `${t('events:blocked-channel')}`);
-      return;
+    if (server && server.blockedChannels.includes(message.channel.id) && !message.member.hasPermission('MANAGE_CHANNELS')) return message.menheraReply('error', `${t('events:blocked-channel')}`);
+
+    if (user) {
+      if (user.ban) {
+        let avatar;
+        if (!message.author.avatar.startsWith('a_')) {
+          if (!message.author.avatar) {
+            avatar = message.author.displayAvatarURL();
+          } else {
+            avatar = `https://cdn.discordapp.com/avatars/${message.author.id}/${message.author.avatar}.png?size=2048`;
+          }
+        } else if (!message.author.avatar) {
+          avatar = message.author.displayAvatarURL();
+        } else {
+          avatar = `https://cdn.discordapp.com/avatars/${message.author.id}/${message.author.avatar}.gif?size=2048`;
+        }
+
+        const embed = new MessageEmbed()
+          .setColor('#c1001d')
+          .setAuthor(t('permissions:BANNED_EMBED.author'), avatar)
+          .setDescription(t('permissions:BANNED_EMBED.description', { user: message.author.username }))
+          .addField(t('permissions:BANNED_EMBED.reason'), user.banReason)
+          .addField(t('permissions:BANNED_EMBED.field_start'), t('permissions:BANNED_EMBED.field_end'));
+
+        message.channel.send(embed).catch(() => { message.author.send(embed).catch(); });
+        return;
+      }
     }
 
-    if (currentUser && currentUser.ban) {
-      const avatar = message.author.displayAvatarURL({ size: 2048, dynamic: true });
-
-      const embed = new MessageEmbed()
-        .setColor('#c1001d')
-        .setAuthor(t('permissions:BANNED_EMBED.author'), avatar)
-        .setDescription(t('permissions:BANNED_EMBED.description', { user: message.author.username }))
-        .addField(t('permissions:BANNED_EMBED.reason'), currentUser.banReason)
-        .addField(t('permissions:BANNED_EMBED.field_start'), t('permissions:BANNED_EMBED.field_end'));
-
-      message.channel.send(embed).catch(() => { message.author.send(embed).catch(); });
-      return;
-    }
-
-    if (command.config.devsOnly && !this.client.config.owner.includes(message.author.id)) {
-      message.channel.send(t('permissions:ONLY_DEVS'));
-
-      return;
+    if (command.config.devsOnly) {
+      if (!this.client.config.owner.includes(message.author.id)) return message.channel.send(t('permissions:ONLY_DEVS'));
     }
 
     const c = await this.client.database.Cmds.findById(command.config.name);
-    if (c.maintenance && !this.client.config.owner.includes(message.author.id)) {
-      message.channel.send(`<:negacao:759603958317711371> | ${t('events:maintenance', { reason: c.maintenanceReason })}`);
-      return;
+    if (c.maintenance) {
+      if (!this.client.config.owner.includes(message.author.id)) {
+        return message.channel.send(`<:negacao:759603958317711371> | ${t('events:maintenance', { reason: c.maintenanceReason })}`);
+      }
     }
 
     if (!cooldowns.has(command.config.name)) {
@@ -116,8 +132,7 @@ module.exports = class MessageReceive {
 
         if (now < expirationTime) {
           const timeLeft = (expirationTime - now) / 1000;
-          message.menheraReply('warn', t('events:cooldown', { time: timeLeft.toFixed(1), cmd: command.config.name }));
-          return;
+          return message.menheraReply('warn', t('events:cooldown', { time: timeLeft.toFixed(1), cmd: command.config.name }));
         }
       }
 
@@ -131,21 +146,19 @@ module.exports = class MessageReceive {
       const missing = message.channel.permissionsFor(message.author).missing(userPermission);
       if (missing.length) {
         const perm = missing.map((value) => t(`permissions:${value}`)).join(', ');
-        message.menheraReply('error', `${t('permissions:USER_MISSING_PERMISSION', { perm })}`);
-        return;
+        return message.menheraReply('error', `${t('permissions:USER_MISSING_PERMISSION', { perm })}`);
       }
     }
     if (clientPermission !== null) {
       const missing = message.channel.permissionsFor(this.client.user).missing(clientPermission);
       if (missing.length) {
         const perm = missing.map((value) => t(`permissions:${value}`)).join(', ');
-        message.menheraReply('error', `${t('permissions:CLIENT_MISSING_PERMISSION', { perm })}`);
-        return;
+        return message.menheraReply('error', `${t('permissions:CLIENT_MISSING_PERMISSION', { perm })}`);
       }
     }
 
     try {
-      new Promise((res) => {
+      new Promise((res, _) => { // eslint-disable-line
         res(command.run({ message, args, server }, t));
         console.log(`[COMANDO] ${command.config.name.toUpperCase()} | USER: ${message.author.tag} - ${message.author.id} | GUILD: ${message.guild.name} - ${message.guild.id}`);
       }).catch((err) => {
@@ -189,14 +202,5 @@ module.exports = class MessageReceive {
       data: moment(Date.now()).format('MMMM Do YYYY, h:mm:ss a'),
     };
     await makeRequest.postCommand(data).catch();
-  }
-
-  async getServerFromDatabase(guildId) {
-    const server = await this.client.database.Guilds.findOne({ id: guildId });
-    if (server) {
-      return server;
-    }
-
-    return new this.client.database.Guilds({ id: guildId });
   }
 };
