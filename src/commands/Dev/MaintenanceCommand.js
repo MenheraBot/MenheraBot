@@ -12,10 +12,17 @@ module.exports = class MaintenanceCommand extends Command {
   }
 
   async run({ message, args }) {
-    if (!args[0]) return message.menheraReply('error', 'você não informou o comando desejado');
+    if (!args[0]) {
+      return message.menheraReply('error', 'você não informou o comando desejado');
+    }
+
     const cmd = this.client.commands.get(args[0]) || this.client.commands.get(this.client.aliases.get(args[0]));
-    if (!cmd) return message.menheraReply('error', 'este comando não existe');
+    if (!cmd) {
+      return message.menheraReply('error', 'este comando não existe');
+    }
+
     const command = await this.client.database.Cmds.findById(cmd.config.name);
+
     if (command.maintenance) {
       command.maintenance = false;
       command.maintenanceReason = '';
@@ -29,5 +36,6 @@ module.exports = class MaintenanceCommand extends Command {
         message.menheraReply('success', 'comando **ADICIONADO** a manutenção.');
       });
     }
+    cmd.setMaintenance(command.maintenance, command.maintenanceReason);
   }
 };

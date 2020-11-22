@@ -111,10 +111,9 @@ module.exports = class MessageReceive {
       if (!this.client.config.owner.includes(message.author.id)) return message.channel.send(t('permissions:ONLY_DEVS'));
     }
 
-    const c = await this.client.database.Cmds.findById(command.config.name);
-    if (c.maintenance) {
+    if (command.maintenance) {
       if (!this.client.config.owner.includes(message.author.id)) {
-        return message.channel.send(`<:negacao:759603958317711371> | ${t('events:maintenance', { reason: c.maintenanceReason })}`);
+        return message.channel.send(`<:negacao:759603958317711371> | ${t('events:maintenance', { reason: command.maintenanceReason })}`);
       }
     }
 
