@@ -12,6 +12,13 @@ module.exports = class Command {
       clientPermissions: options.clientPermissions || null,
       devsOnly: options.devsOnly || false,
     };
+    this.maintenance = false;
+    this.maintenanceReason = '';
+  }
+
+  setMaintenance(status, reason = '') {
+    this.maintenance = status;
+    this.maintenanceReason = reason;
   }
 
   static getOption(message, yes = ['adicionar', 'adc', 'add', 'insert'], no = ['remover', 'remove', 'delete', 'deletar']) {

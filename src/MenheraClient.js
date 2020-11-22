@@ -79,12 +79,14 @@ module.exports = class WatchClient extends Client {
             command.dir = `${__dirname}/commands/${category}/${cmd}`;
             this.commands.set(command.config.name, command);
             command.config.aliases.forEach((a) => this.aliases.set(a, command.config.name));
-            let cmdInDb = await this.database.Cmds.findById(command.config.name);
-            if (!cmdInDb) {
-              cmdInDb = new this.database.Cmds({
+            const cmdInDb = await this.database.Cmds.findById(command.config.name);
+            if (cmdInDb) {
+              command.maintenance = cmdInDb.maintenance;
+              command.maintenanceReason = cmdInDb.maintenanceReason;
+            } else {
+              this.database.Cmds.create({
                 _id: command.config.name,
               });
-              cmdInDb.save();
             }
           });
         });
