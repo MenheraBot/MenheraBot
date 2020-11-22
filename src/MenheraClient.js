@@ -1,9 +1,7 @@
 /* eslint-disable global-require */
 /* eslint-disable import/no-dynamic-require */
 const { Client, Collection } = require('discord.js');
-const { readdir } = require('fs-extra');
 const Sentry = require('@sentry/node');
-const path = require('path');
 const EventManager = require('./structures/EventManager');
 const Reminders = require('./utils/RemindersChecks');
 const Database = require('./structures/DatabaseConnection');
