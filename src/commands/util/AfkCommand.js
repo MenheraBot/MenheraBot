@@ -9,14 +9,10 @@ module.exports = class AfkCommand extends Command {
     });
   }
 
-  async run({ message, args }, t) {
-    const user = await this.client.database.Users.findOne({ id: message.author.id });
-    if (!user) return;
-    let reason = args.join(' ');
-    if (!reason) reason = 'AFK';
-    user.afk = true;
-    user.afkReason = reason;
-    user.save();
+  async run({ message, args, authorData }, t) {
+    authorData.afk = true;
+    authorData.afkReason = args.length ? args.join(' ') : 'AFK';
+    authorData.save();
 
     message.menheraReply('success', t('commands:afk.success'));
   }

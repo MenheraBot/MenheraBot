@@ -1,5 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const Command = require('../../structures/command');
+const Util = require('../../utils/Util');
 
 module.exports = class AvatarCommand extends Command {
   constructor(client) {
@@ -11,25 +12,21 @@ module.exports = class AvatarCommand extends Command {
     });
   }
 
-  async run({ message, args }, t) {
-    let user;
-    if (args[0]) {
+  async run({ message, args, authorData }, t) {
+    let user = message.author;
+    let db = authorData;
+
+    const userId = Util.getIdByMention(args[0]);
+    if (userId && userId !== message.author) {
       try {
         user = await this.client.users.fetch(args[0].replace(/[<@!>]/g, ''));
+        db = await this.client.database.Users.findOne({ id: user.id });
       } catch {
         return message.menheraReply('error', t('commands:avatar.unknow-user'));
       }
-    } else {
-      user = message.author;
     }
 
-    let cor;
-
-    const db = await this.client.database.Users.findOne({ id: user.id });
-
-    if (db && db.cor) {
-      cor = db.cor;
-    } else cor = '#a788ff';
+    const cor = db?.cor ?? '#a788ff';
 
     const img = user.displayAvatarURL({ dynamic: true, size: 1024 });
 

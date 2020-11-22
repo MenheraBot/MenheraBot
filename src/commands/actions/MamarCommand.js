@@ -11,7 +11,7 @@ module.exports = class MamarCommand extends Command {
     });
   }
 
-  async run({ message }, t) {
+  async run({ message, authorData }, t) {
     const mention = message.mentions.users.first();
 
     if (!mention) return message.menheraReply('error', t('commands:mamar.no-mention'));
@@ -21,14 +21,13 @@ module.exports = class MamarCommand extends Command {
     if (mention === message.author) return message.menheraReply('error', t('commands:mamar.self-mention'));
 
     let user1 = await this.client.database.Users.findOne({ id: mention.id });
-    const user2 = await this.client.database.Users.findOne({ id: message.author.id });
 
     if (!user1) {
       user1 = new this.client.database.Users({ id: mention.id });
     }
 
     user1.mamadas += 1;
-    user2.mamou += 1;
+    authorData.mamou += 1;
 
     const list = [
       'https://i.imgur.com/PlAtqkk.gif',
@@ -61,6 +60,6 @@ module.exports = class MamarCommand extends Command {
     message.channel.send(embed);
 
     user1.save();
-    user2.save();
+    authorData.save();
   }
 };

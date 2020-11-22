@@ -9,23 +9,14 @@ module.exports = class RollCommand extends Command {
     });
   }
 
-  async run({ message }, t) {
-    const user = await this.client.database.Users.findOne({ id: message.author.id });
+  async run({ message, authorData }, t) {
+    if (parseInt(authorData.caçarTime) < Date.now()) return message.menheraReply('error', t('commands:roll.can-hunt'));
 
-    if (!user || user === null) {
-      new this.client.database.Users({
-        id: message.author.id,
-        nome: message.author.username,
-      }).save();
-    }
+    if (authorData.rolls < 1) return message.menheraReply('error', t('commands:roll.poor'));
 
-    if (parseInt(user.caçarTime) < Date.now()) return message.menheraReply('error', t('commands:roll.can-hunt'));
-
-    if (user.rolls < 1) return message.menheraReply('error', t('commands:roll.poor'));
-
-    user.rolls -= 1;
-    user.caçarTime = '000000000000';
-    user.save();
+    authorData.rolls -= 1;
+    authorData.caçarTime = '000000000000';
+    authorData.save();
     message.menheraReply('success', t('commands:roll.success'));
   }
 };

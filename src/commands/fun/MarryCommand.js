@@ -13,16 +13,14 @@ module.exports = class MarryCommand extends Command {
     });
   }
 
-  async run({ message }, t) {
+  async run({ message, authorData }, t) {
     const mencionado = message.mentions.users.first();
 
     if (!mencionado) return message.menheraReply('error', t('commands:marry.no-mention'));
     if (mencionado.bot) return message.menheraReply('error', t('commands:marry.bot'));
     if (mencionado.id === message.author.id) return message.menheraReply('error', t('commands:marry.self-mention'));
 
-    const user1 = await this.client.database.Users.findOne({ id: message.author.id });
-
-    if (user1.casado && user1.casado !== 'false') return message.menheraReply('error', t('commands:marry.married'));
+    if (authorData.casado && authorData.casado !== 'false') return message.menheraReply('error', t('commands:marry.married'));
 
     const user2 = await this.client.database.Users.findOne({ id: mencionado.id });
 
@@ -51,13 +49,13 @@ module.exports = class MarryCommand extends Command {
 
         const dataFormated = moment(Date.now()).format('l LTS');
 
-        user1.casado = mencionado.id;
-        user1.data = dataFormated;
+        authorData.casado = mencionado.id;
+        authorData.data = dataFormated;
 
         user2.casado = message.author.id;
         user2.data = dataFormated;
 
-        user1.save();
+        authorData.save();
         user2.save();
       });
     });

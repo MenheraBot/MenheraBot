@@ -1,5 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const Command = require('../../structures/command');
+const Util = require('../../utils/Util');
 
 module.exports = class ProfileCommand extends Command {
   constructor(client) {
@@ -12,25 +13,27 @@ module.exports = class ProfileCommand extends Command {
     });
   }
 
-  async run({ message, args }, t) {
-    let pessoa;
-    if (args[0]) {
+  async run({ message, args, authorData }, t) {
+    const userId = Util.getIdByMention(args[0]);
+
+    let user = authorData;
+    let pessoa = message.author;
+
+    if (userId && userId !== message.author) {
       try {
         pessoa = await this.client.users.fetch(args[0].replace(/[<@!>]/g, ''));
+        if (pessoa.bot) {
+          return message.menheraReply('error', t('commands:profile.bot'));
+        }
+        user = await this.client.database.Users.findOne({ id: user.id });
       } catch {
         return message.menheraReply('error', t('commands:profile.unknow-user'));
       }
-    } else {
-      pessoa = message.author;
     }
-
-    if (pessoa.bot) return message.menheraReply('error', t('commands:profile.bot'));
 
     const embed = new MessageEmbed()
       .setTitle(`${pessoa.username}`)
       .setThumbnail(pessoa.displayAvatarURL({ dynamic: true }));
-
-    const user = await this.client.database.Users.findOne({ id: pessoa.id });
 
     if (!user) return message.menheraReply('error', t('commands:profile.no-dbuser'));
     if (user.ban) return message.menheraReply('error', t('commands:profile.banned', { reason: user.banReason }));

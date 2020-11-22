@@ -12,18 +12,18 @@ module.exports = class ColorCommand extends Command {
     });
   }
 
-  async run({ message, args, server }, t) {
-    const user = await this.client.database.Users.findOne({ id: message.author.id });
-
-    const haspadrao = await user.cores.filter((pc) => pc.cor === '#a788ff');
+  async run({
+    message, args, server, authorData,
+  }, t) {
+    const haspadrao = await authorData.cores.filter((pc) => pc.cor === '#a788ff');
 
     if (haspadrao.length === 0) {
-      user.cores.push({
+      authorData.cores.push({
         nome: '0 - Padrão',
         cor: '#a788ff',
         preço: 0,
       });
-      user.save().then();
+      authorData.save().then();
     }
     const embed = new MessageEmbed()
       .setTitle(`🏳️‍🌈 | ${t('commands:color.embed_title')}`)
@@ -32,14 +32,14 @@ module.exports = class ColorCommand extends Command {
 
     const validArgs = [];
 
-    for (let i = 0; i < user.cores.length; i++) {
-      embed.addField(`${user.cores[i].nome}`, `${user.cores[i].cor}`);
-      validArgs.push(user.cores[i].nome.replace(/[^\d]+/g, ''));
+    for (let i = 0; i < authorData.cores.length; i++) {
+      embed.addField(`${authorData.cores[i].nome}`, `${authorData.cores[i].cor}`);
+      validArgs.push(authorData.cores[i].nome.replace(/[^\d]+/g, ''));
     }
     if (!args[0]) return message.channel.send(message.author, embed);
 
     if (validArgs.includes(args[0])) {
-      const findColor = user.cores.filter((cor) => cor.nome.startsWith(args[0]) || cor.nome.startsWith(`**${args[0]}`));
+      const findColor = authorData.cores.filter((cor) => cor.nome.startsWith(args[0]) || cor.nome.startsWith(`**${args[0]}`));
 
       const dataChoose = {
         title: t('commands:color.dataChoose.title'),
@@ -51,8 +51,8 @@ module.exports = class ColorCommand extends Command {
       };
 
       message.channel.send(message.author, { embed: dataChoose });
-      user.cor = findColor[0].cor;
-      user.save();
+      authorData.cor = findColor[0].cor;
+      authorData.save();
     } else message.menheraReply('error', t('commands:color.no-own', { prefix: server.prefix }));
   }
 };

@@ -11,17 +11,17 @@ module.exports = class DivorceCommand extends Command {
     });
   }
 
-  async run({ message }, t) {
-    const user = await this.client.database.Users.findOne({ id: message.author.id });
-    if (user.casado && user.casado !== 'false') {
-      return this.divorciar(user, message, t);
-    } message.menheraReply('warn', t('commands:divorce.author-single'));
+  async run({ message, authorData }, t) {
+    if (authorData.casado && authorData.casado !== 'false') {
+      return this.divorciar(authorData, message, t);
+    }
+    message.menheraReply('warn', t('commands:divorce.author-single'));
   }
 
-  async divorciar(user, message, t) {
-    const user2 = await this.client.database.Users.findOne({ id: user.casado });
+  async divorciar(authorData, message, t) {
+    const user2 = await this.client.database.Users.findOne({ id: authorData.casado });
 
-    const user2Mention = this.client.users.cache.get(user.casado) || user2.nome;
+    const user2Mention = this.client.users.cache.get(authorData.casado) || user2.nome;
 
     message.channel.send(`${t('commands:divorce.confirmation')} ${user2Mention}`).then((msg) => {
       msg.react('✅');
@@ -42,12 +42,12 @@ module.exports = class DivorceCommand extends Command {
         msg.reactions.removeAll().catch();
         message.channel.send(`${message.author} ${t('commands:divorce.confirmed_start')} ${user2Mention}. ${t('commands:divorce.confirmed_end')}`);
 
-        user.casado = 'false';
-        user.data = 'null';
+        authorData.casado = 'false';
+        authorData.data = 'null';
         user2.casado = false;
         user2.data = 'null';
 
-        user.save();
+        authorData.save();
         user2.save();
       });
     });

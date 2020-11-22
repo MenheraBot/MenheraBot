@@ -1,13 +1,23 @@
 const { MessageEmbed, Collection } = require('discord.js');
 const i18next = require('i18next');
+const moment = require('moment');
+const Util = require('../utils/Util');
+const makeRequest = require('../utils/HTTPrequests');
 
 const cooldowns = new Collection();
-const moment = require('moment');
-const makeRequest = require('../utils/HTTPrequests');
 
 module.exports = class MessageReceive {
   constructor(client) {
     this.client = client;
+  }
+
+  async notifyAfk(message, t, userIds) {
+    const users = await this.client.database.Users.find({ id: { $in: userIds }, afk: true });
+
+    users.forEach(async (data) => {
+      const user = await this.client.users.fetch(data.id);
+      message.menheraReply('notify', `${t('commands:afk.reason', { tag: user.tag, reason: data.afkReason })}`);
+    });
   }
 
   async run(message) {
@@ -15,96 +25,54 @@ module.exports = class MessageReceive {
     if (message.channel.type === 'dm') return;
     if (!message.channel.permissionsFor(message.guild.me).has('SEND_MESSAGES')) return;
 
-    let server = await this.client.database.Guilds.findOne({ id: message.guild.id });
-    if (!server) {
-      server = this.client.database.Guilds({ id: message.guild.id });
-      server.save();
-    }
+    const server = await Util.databaseGuildEnsure(this.client, message.guild);
+    const prefix = server.prefix?.toLowerCase() ?? this.client.config.prefix;
+    const language = server?.lang ?? 'pt-BR';
+    const t = i18next.getFixedT(language);
 
-    let prefix;
-    if (!server) {
-      prefix = this.client.config.prefix;
-    } else prefix = server.prefix.toLowerCase();
-
-    let t;
-    const setFixedT = (translate) => {
-      t = translate;
-    };
-
-    const language = (server && server.lang) || 'pt-BR';
-    setFixedT(i18next.getFixedT(language));
-
+    message.mentions.users.delete(message.author.id);
     if (message.mentions.users.size >= 0) {
-      message.mentions.users.forEach(async (member) => {
-        if (!member) return;
-        const usuario = await this.client.database.Users.findOne({ id: member.id });
-        if (usuario) {
-          if (usuario.afk === true) {
-            message.menheraReply('notify', `${t('commands:afk.reason', { tag: member.tag, reason: usuario.afkReason })}`).catch();
-          }
-        }
-      });
+      this.notifyAfk(message, t, message.mentions.users.map((u) => u.id));
     }
-    const user = await this.client.database.Users.findOne({ id: message.author.id });
-    if (user) {
-      if (user.afk === true) {
-        user.afk = false;
-        user.afkReason = null;
-        user.save();
-        message.menheraReply('wink', `${t('commands:afk.back')}`).then((msg) => msg.delete({
+
+    const authorData = await Util.databaseUserEnsure(this.client, message.author);
+    if (authorData.afk) {
+      authorData.afk = false;
+      authorData.afkReason = null;
+      authorData.save();
+      message.menheraReply('wink', t('commands:afk.back'))
+        .then((msg) => msg.delete({
           timeout: 5000,
         })).catch();
-      }
     }
 
-    if (message.content.startsWith(`<@!${this.client.user.id}>`) || message.content.startsWith(`<@${this.client.user.id}>`)) return message.channel.send(`<:MenheraWink:767210250637279252> | ${t('events:mention.start')} ${message.author}, ${t('events:mention.end', { prefix })}`).catch();
+    if (message.content.startsWith(`<@!${this.client.user.id}>`) || message.content.startsWith(`<@${this.client.user.id}>`)) {
+      return message.channel.send(`<:MenheraWink:767210250637279252> | ${t('events:mention.start')} ${message.author}, ${t('events:mention.end', { prefix })}`);
+    }
 
     if (!message.content.toLowerCase().startsWith(prefix)) return;
 
     const args = message.content.slice(prefix.length).trim().split(/ +/g);
     const cmd = args.shift().toLowerCase();
 
-    if (cmd.length === 0) return;
-
-    let command = this.client.commands.get(cmd);
+    let command = cmd && this.client.commands.get(cmd);
     if (!command) command = this.client.commands.get(this.client.aliases.get(cmd));
     if (!command) return;
 
-    if (!user) {
-      await new this.client.database.Users({
-        id: message.author.id,
-        nome: message.author.username,
-        shipValue: Math.floor(Math.random() * 55),
-      }).save();
+    if (server.blockedChannels?.includes(message.channel.id) && !message.member.hasPermission('MANAGE_CHANNELS')) {
+      return message.menheraReply('error', `${t('events:blocked-channel')}`);
     }
 
-    if (server && server.blockedChannels.includes(message.channel.id) && !message.member.hasPermission('MANAGE_CHANNELS')) return message.menheraReply('error', `${t('events:blocked-channel')}`);
+    if (authorData?.ban) {
+      const embed = new MessageEmbed()
+        .setColor('#c1001d')
+        .setAuthor(t('permissions:BANNED_EMBED.author'), message.author.displayAvatarURL())
+        .setDescription(t('permissions:BANNED_EMBED.description', { user: message.author.username }))
+        .addField(t('permissions:BANNED_EMBED.reason'), authorData?.banReason)
+        .addField(t('permissions:BANNED_EMBED.field_start'), t('permissions:BANNED_EMBED.field_end'));
 
-    if (user) {
-      if (user.ban) {
-        let avatar;
-        if (!message.author.avatar.startsWith('a_')) {
-          if (!message.author.avatar) {
-            avatar = message.author.displayAvatarURL();
-          } else {
-            avatar = `https://cdn.discordapp.com/avatars/${message.author.id}/${message.author.avatar}.png?size=2048`;
-          }
-        } else if (!message.author.avatar) {
-          avatar = message.author.displayAvatarURL();
-        } else {
-          avatar = `https://cdn.discordapp.com/avatars/${message.author.id}/${message.author.avatar}.gif?size=2048`;
-        }
-
-        const embed = new MessageEmbed()
-          .setColor('#c1001d')
-          .setAuthor(t('permissions:BANNED_EMBED.author'), avatar)
-          .setDescription(t('permissions:BANNED_EMBED.description', { user: message.author.username }))
-          .addField(t('permissions:BANNED_EMBED.reason'), user.banReason)
-          .addField(t('permissions:BANNED_EMBED.field_start'), t('permissions:BANNED_EMBED.field_end'));
-
-        message.channel.send(embed).catch(() => { message.author.send(embed).catch(); });
-        return;
-      }
+      message.channel.send(embed).catch(() => { message.author.send(embed).catch(); });
+      return;
     }
 
     if (command.config.devsOnly) {
@@ -139,17 +107,17 @@ module.exports = class MessageReceive {
       setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
     }
 
-    const userPermission = command.config.userPermissions;
-    const clientPermission = command.config.clientPermissions;
-    if (userPermission !== null) {
-      const missing = message.channel.permissionsFor(message.author).missing(userPermission);
+    if (command.config.userPermissions?.length) {
+      const missing = message.channel.permissionsFor(message.author)
+        .missing(command.config.userPermissions);
       if (missing.length) {
         const perm = missing.map((value) => t(`permissions:${value}`)).join(', ');
         return message.menheraReply('error', `${t('permissions:USER_MISSING_PERMISSION', { perm })}`);
       }
     }
-    if (clientPermission !== null) {
-      const missing = message.channel.permissionsFor(this.client.user).missing(clientPermission);
+    if (command.config.clientPermissions?.length) {
+      const missing = message.channel.permissionsFor(this.client.user)
+        .missing(command.config.clientPermissions);
       if (missing.length) {
         const perm = missing.map((value) => t(`permissions:${value}`)).join(', ');
         return message.menheraReply('error', `${t('permissions:CLIENT_MISSING_PERMISSION', { perm })}`);
@@ -158,7 +126,9 @@ module.exports = class MessageReceive {
 
     try {
       new Promise((res, _) => { // eslint-disable-line
-        res(command.run({ message, args, server }, t));
+        res(command.run({
+          message, args, server, authorData,
+        }, t));
         console.log(`[COMANDO] ${command.config.name.toUpperCase()} | USER: ${message.author.tag} - ${message.author.id} | GUILD: ${message.guild.name} - ${message.guild.id}`);
       }).catch((err) => {
         const canal = this.client.channels.cache.get('730906866896470097');
