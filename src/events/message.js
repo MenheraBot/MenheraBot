@@ -199,7 +199,7 @@ module.exports = class MessageReceive {
       guildName: message.guild.name,
       guildId: message.guild.id,
       commandName: command.config.name,
-      data: moment(Date.now()).format('MMMM Do YYYY, h:mm:ss a'),
+      data: Date.now(),
     };
     await makeRequest.postCommand(data).catch();
   }
