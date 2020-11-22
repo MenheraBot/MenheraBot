@@ -9,14 +9,14 @@ module.exports = class RollCommand extends Command {
     });
   }
 
-  async run({ message, user }, t) {
-    if (parseInt(user.caçarTime) < Date.now()) return message.menheraReply('error', t('commands:roll.can-hunt'));
+  async run({ message, authorData }, t) {
+    if (parseInt(authorData.caçarTime) < Date.now()) return message.menheraReply('error', t('commands:roll.can-hunt'));
 
-    if (user.rolls < 1) return message.menheraReply('error', t('commands:roll.poor'));
+    if (authorData.rolls < 1) return message.menheraReply('error', t('commands:roll.poor'));
 
-    user.rolls -= 1;
-    user.caçarTime = '000000000000';
-    user.save();
+    authorData.rolls -= 1;
+    authorData.caçarTime = '000000000000';
+    authorData.save();
     message.menheraReply('success', t('commands:roll.success'));
   }
 };

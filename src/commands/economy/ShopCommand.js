@@ -11,8 +11,8 @@ module.exports = class ShopCommand extends Command {
     });
   }
 
-  async run({ message, user }, t) {
-    const saldoAtual = user.estrelinhas;
+  async run({ message, authorData }, t) {
+    const saldoAtual = authorData.estrelinhas;
 
     const validArgs = ['1', '2'];
 
@@ -42,9 +42,9 @@ module.exports = class ShopCommand extends Command {
 
       if (m.content === '1') {
         // eslint-disable-next-line no-use-before-define
-        lojaComprar(message, embedMessage, user, saldoAtual, t);
+        lojaComprar(message, embedMessage, authorData, saldoAtual, t);
       // eslint-disable-next-line no-use-before-define
-      } else lojaVender(message, embedMessage, user, saldoAtual, t);
+      } else lojaVender(message, embedMessage, authorData, saldoAtual, t);
     });
   }
 };

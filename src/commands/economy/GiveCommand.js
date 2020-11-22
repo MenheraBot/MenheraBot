@@ -66,7 +66,7 @@ module.exports = class GiveCommand extends Command {
   }
 
   async run({
-    message, args, server, user,
+    message, args, server, authorData,
   }, t) {
     if (!args[0]) return message.menheraReply('error', t('commands:give.no-args', { prefix: server.prefix }));
 
@@ -113,19 +113,19 @@ module.exports = class GiveCommand extends Command {
 
     switch (option) {
       case 'estrelinhas':
-        giveStar(user, user2, valor, message, mencionado, t);
+        giveStar(authorData, user2, valor, message, mencionado, t);
         break;
       case 'demônio':
-        giveDemon(user, user2, valor, message, mencionado, t);
+        giveDemon(authorData, user2, valor, message, mencionado, t);
         break;
       case 'anjos':
-        giveAngel(user, user2, valor, message, mencionado, t);
+        giveAngel(authorData, user2, valor, message, mencionado, t);
         break;
       case 'semideuses':
-        giveSD(user, user2, valor, message, mencionado, t);
+        giveSD(authorData, user2, valor, message, mencionado, t);
         break;
       case 'deus':
-        giveGod(user, user2, valor, message, mencionado, t);
+        giveGod(authorData, user2, valor, message, mencionado, t);
         break;
     }
   }

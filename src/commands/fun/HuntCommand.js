@@ -12,7 +12,7 @@ module.exports = class HuntCommand extends Command {
     });
   }
 
-  async run({ message, user, args }, t) {
+  async run({ message, authorData, args }, t) {
     const validOptions = ['demonios', 'anjos', 'semideuses', 'deuses', 'ajuda', 'probabilidades'];
 
     const validArgs = [{
@@ -85,7 +85,7 @@ module.exports = class HuntCommand extends Command {
       }));
     }
 
-    if (parseInt(user.caçarTime) < Date.now()) {
+    if (parseInt(authorData.caçarTime) < Date.now()) {
       const avatar = message.author.displayAvatarURL({ format: 'png', dynamic: true });
       const embed = new MessageEmbed()
         .setTitle(t('commands:hunt.title'))
@@ -96,9 +96,9 @@ module.exports = class HuntCommand extends Command {
       switch (option) {
         case 'demônio': {
           const dc = probabilidadeDemonio[Math.floor(Math.random() * probabilidadeDemonio.length)];
-          user.caçados += dc;
-          user.caçarTime = 3600000 + Date.now();
-          user.save();
+          authorData.caçados += dc;
+          authorData.caçarTime = 3600000 + Date.now();
+          authorData.save();
           embed.setDescription(`${t('commands:hunt.description_start', { value: dc })} ${t('commands:hunt.demons')}`);
           message.channel.send(embed);
           break;
@@ -106,9 +106,9 @@ module.exports = class HuntCommand extends Command {
 
         case 'anjos': {
           const da = probabilidadeAnjo[Math.floor(Math.random() * probabilidadeAnjo.length)];
-          user.anjos += da;
-          user.caçarTime = 3600000 + Date.now();
-          user.save();
+          authorData.anjos += da;
+          authorData.caçarTime = 3600000 + Date.now();
+          authorData.save();
           embed.setDescription(`${t('commands:hunt.description_start', { value: da })} ${t('commands:hunt.angels')}`);
           message.channel.send(embed);
           break;
@@ -116,9 +116,9 @@ module.exports = class HuntCommand extends Command {
 
         case 'semideuses': {
           const ds = probabilidadeSD[Math.floor(Math.random() * probabilidadeSD.length)];
-          user.semideuses += ds;
-          user.caçarTime = 3600000 + Date.now();
-          user.save();
+          authorData.semideuses += ds;
+          authorData.caçarTime = 3600000 + Date.now();
+          authorData.save();
           embed.setDescription(`${t('commands:hunt.description_start', { value: ds })} ${t('commands:hunt.sd')}`);
           message.channel.send(embed);
           break;
@@ -126,9 +126,9 @@ module.exports = class HuntCommand extends Command {
 
         case 'deus': {
           const dd = probabilidadeDeuses[Math.floor(Math.random() * probabilidadeDeuses.length)];
-          user.deuses += dd;
-          user.caçarTime = 3600000 + Date.now();
-          user.save();
+          authorData.deuses += dd;
+          authorData.caçarTime = 3600000 + Date.now();
+          authorData.save();
           if (dd > 0) embed.setColor('#e800ff');
           embed.setDescription((dd > 0) ? t('commands:hunt.god_hunted_success', { value: dd }) : t('commands:hunt.god_hunted_fail', { value: dd }));
           message.channel.send(embed);
@@ -136,7 +136,7 @@ module.exports = class HuntCommand extends Command {
         }
       }
     } else {
-      message.menheraReply('error', t('commands:hunt.cooldown', { time: moment.utc(parseInt(user.caçarTime - Date.now())).format('mm:ss') }));
+      message.menheraReply('error', t('commands:hunt.cooldown', { time: moment.utc(parseInt(authorData.caçarTime - Date.now())).format('mm:ss') }));
     }
   }
 };

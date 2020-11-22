@@ -11,7 +11,7 @@ module.exports = class MamarCommand extends Command {
     });
   }
 
-  async run({ message, user: user2 }, t) {
+  async run({ message, authorData }, t) {
     const mention = message.mentions.users.first();
 
     if (!mention) return message.menheraReply('error', t('commands:mamar.no-mention'));
@@ -27,7 +27,7 @@ module.exports = class MamarCommand extends Command {
     }
 
     user1.mamadas += 1;
-    user2.mamou += 1;
+    authorData.mamou += 1;
 
     const list = [
       'https://i.imgur.com/PlAtqkk.gif',
@@ -60,6 +60,6 @@ module.exports = class MamarCommand extends Command {
     message.channel.send(embed);
 
     user1.save();
-    user2.save();
+    authorData.save();
   }
 };

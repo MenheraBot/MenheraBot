@@ -10,13 +10,13 @@ module.exports = class AboutMeCommand extends Command {
     });
   }
 
-  async run({ message, args, user }, t) {
+  async run({ message, args, authorData }, t) {
     const nota = args.join(' ');
     if (!nota) return message.menheraReply('error', t('commands:aboutme.no-args'));
     if (nota.length > 200) return message.menheraReply('error', t('commands:aboutme.args-limit'));
 
-    user.nota = nota;
-    user.save();
+    authorData.nota = nota;
+    authorData.save();
 
     message.menheraReply('success', t('commands:aboutme.success'));
   }

@@ -13,10 +13,10 @@ module.exports = class ProfileCommand extends Command {
     });
   }
 
-  async run({ message, args, user: userData }, t) {
+  async run({ message, args, authorData }, t) {
     const userId = Util.getIdByMention(args[0]);
 
-    let user = userData;
+    let user = authorData;
     let pessoa = message.author;
 
     if (userId && userId !== message.author) {

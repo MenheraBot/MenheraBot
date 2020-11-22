@@ -12,9 +12,9 @@ module.exports = class AvatarCommand extends Command {
     });
   }
 
-  async run({ message, args, user: userData }, t) {
+  async run({ message, args, authorData }, t) {
     let user = message.author;
-    let db = userData;
+    let db = authorData;
 
     const userId = Util.getIdByMention(args[0]);
     if (userId && userId !== message.author) {
