@@ -89,7 +89,6 @@ module.exports = class WatchClient extends Client {
 
   loadEvents(directory) {
     return FileUtil.readDirectory(directory, (Event, filepath) => {
-      console.log(FileUtil.filename(filepath));
       this.events.add(FileUtil.filename(filepath), new Event(this));
     });
   }
