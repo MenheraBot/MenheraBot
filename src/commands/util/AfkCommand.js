@@ -9,9 +9,7 @@ module.exports = class AfkCommand extends Command {
     });
   }
 
-  async run({ message, args }, t) {
-    const user = await this.client.database.Users.findOne({ id: message.author.id });
-    if (!user) return;
+  async run({ message, args, user }, t) {
     let reason = args.join(' ');
     if (!reason) reason = 'AFK';
     user.afk = true;

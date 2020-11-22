@@ -13,14 +13,12 @@ module.exports = class MarryCommand extends Command {
     });
   }
 
-  async run({ message }, t) {
+  async run({ message, user: user1 }, t) {
     const mencionado = message.mentions.users.first();
 
     if (!mencionado) return message.menheraReply('error', t('commands:marry.no-mention'));
     if (mencionado.bot) return message.menheraReply('error', t('commands:marry.bot'));
     if (mencionado.id === message.author.id) return message.menheraReply('error', t('commands:marry.self-mention'));
-
-    const user1 = await this.client.database.Users.findOne({ id: message.author.id });
 
     if (user1.casado && user1.casado !== 'false') return message.menheraReply('error', t('commands:marry.married'));
 

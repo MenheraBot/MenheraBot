@@ -158,7 +158,9 @@ module.exports = class MessageReceive {
 
     try {
       new Promise((res, _) => { // eslint-disable-line
-        res(command.run({ message, args, server }, t));
+        res(command.run({
+          message, args, server, user,
+        }, t));
         console.log(`[COMANDO] ${command.config.name.toUpperCase()} | USER: ${message.author.tag} - ${message.author.id} | GUILD: ${message.guild.name} - ${message.guild.id}`);
       }).catch((err) => {
         const canal = this.client.channels.cache.get('730906866896470097');

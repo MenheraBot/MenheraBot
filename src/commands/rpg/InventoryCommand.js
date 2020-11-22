@@ -13,11 +13,10 @@ module.exports = class InventoryCommand extends Command {
     });
   }
 
-  async run({ message }, t) {
+  async run({ message, user: usuarioInDb }, t) {
     const user = await this.client.database.Rpg.findById(message.author.id);
     if (!user) return message.menheraReply('error', t('commands:inventory.non-aventure'));
 
-    const usuarioInDb = await this.client.database.Users.findOne({ id: message.author.id });
     const cor = usuarioInDb.cor || '#8f877f';
 
     const embed = new MessageEmbed()

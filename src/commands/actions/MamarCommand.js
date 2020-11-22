@@ -11,7 +11,7 @@ module.exports = class MamarCommand extends Command {
     });
   }
 
-  async run({ message }, t) {
+  async run({ message, user: user2 }, t) {
     const mention = message.mentions.users.first();
 
     if (!mention) return message.menheraReply('error', t('commands:mamar.no-mention'));
@@ -21,7 +21,6 @@ module.exports = class MamarCommand extends Command {
     if (mention === message.author) return message.menheraReply('error', t('commands:mamar.self-mention'));
 
     let user1 = await this.client.database.Users.findOne({ id: mention.id });
-    const user2 = await this.client.database.Users.findOne({ id: message.author.id });
 
     if (!user1) {
       user1 = new this.client.database.Users({ id: mention.id });

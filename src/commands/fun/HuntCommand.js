@@ -12,9 +12,7 @@ module.exports = class HuntCommand extends Command {
     });
   }
 
-  async run({ message, args }, t) {
-    const user = await this.client.database.Users.findOne({ id: message.author.id });
-
+  async run({ message, user, args }, t) {
     const validOptions = ['demonios', 'anjos', 'semideuses', 'deuses', 'ajuda', 'probabilidades'];
 
     const validArgs = [{

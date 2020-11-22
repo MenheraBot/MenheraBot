@@ -65,7 +65,9 @@ module.exports = class GiveCommand extends Command {
     });
   }
 
-  async run({ message, args, server }, t) {
+  async run({
+    message, args, server, user,
+  }, t) {
     if (!args[0]) return message.menheraReply('error', t('commands:give.no-args', { prefix: server.prefix }));
 
     const validArgs = [{
@@ -102,7 +104,6 @@ module.exports = class GiveCommand extends Command {
     if (!mencionado) return message.menheraReply('error', t('commands:give.bad-usage'));
     if (mencionado.id === message.author.id) return message.menheraReply('error', t('commands:give.self-mention'));
 
-    const user = await this.client.database.Users.findOne({ id: message.author.id });
     const user2 = await this.client.database.Users.findOne({ id: mencionado.id });
 
     if (!user2) return message.menheraReply('error', t('commands:give.no-dbuser'));

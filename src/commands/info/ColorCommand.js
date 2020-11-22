@@ -12,9 +12,9 @@ module.exports = class ColorCommand extends Command {
     });
   }
 
-  async run({ message, args, server }, t) {
-    const user = await this.client.database.Users.findOne({ id: message.author.id });
-
+  async run({
+    message, args, server, user,
+  }, t) {
     const haspadrao = await user.cores.filter((pc) => pc.cor === '#a788ff');
 
     if (haspadrao.length === 0) {

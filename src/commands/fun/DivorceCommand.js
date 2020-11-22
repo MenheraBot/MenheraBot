@@ -11,8 +11,7 @@ module.exports = class DivorceCommand extends Command {
     });
   }
 
-  async run({ message }, t) {
-    const user = await this.client.database.Users.findOne({ id: message.author.id });
+  async run({ message, user }, t) {
     if (user.casado && user.casado !== 'false') {
       return this.divorciar(user, message, t);
     } message.menheraReply('warn', t('commands:divorce.author-single'));

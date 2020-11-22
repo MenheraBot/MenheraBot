@@ -9,16 +9,7 @@ module.exports = class RollCommand extends Command {
     });
   }
 
-  async run({ message }, t) {
-    const user = await this.client.database.Users.findOne({ id: message.author.id });
-
-    if (!user || user === null) {
-      new this.client.database.Users({
-        id: message.author.id,
-        nome: message.author.username,
-      }).save();
-    }
-
+  async run({ message, user }, t) {
     if (parseInt(user.caçarTime) < Date.now()) return message.menheraReply('error', t('commands:roll.can-hunt'));
 
     if (user.rolls < 1) return message.menheraReply('error', t('commands:roll.poor'));
