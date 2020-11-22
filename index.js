@@ -10,8 +10,8 @@ if (client.shard) client.shardManager = new ShardManager(client);
 
 client.init();
 client.loadLocales();
-client.loadCommands('./src/commands');
-client.loadEvents('./src/events');
+client.loadCommands('src/commands');
+client.loadEvents('src/events');
 
 client.login(config.token).then(() => {
   console.log('[INDEX] Logged in');

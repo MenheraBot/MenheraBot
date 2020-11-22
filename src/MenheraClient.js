@@ -1,13 +1,13 @@
 /* eslint-disable global-require */
 /* eslint-disable import/no-dynamic-require */
 const { Client, Collection } = require('discord.js');
-const { readdir } = require('fs-extra');
 const Sentry = require('@sentry/node');
 const EventManager = require('./structures/EventManager');
 const Reminders = require('./utils/RemindersChecks');
 const Database = require('./structures/DatabaseConnection');
 const Config = require('../config.json');
 const RpgChecks = require('./structures/Rpgs/checks');
+const FileUtil = require('./utils/FileUtil');
 
 module.exports = class WatchClient extends Client {
   constructor(options = {}) {
@@ -69,42 +69,28 @@ module.exports = class WatchClient extends Client {
     return super.login(token);
   }
 
-  loadCommands() {
-    readdir(`${__dirname}/commands/`, (err, files) => {
-      if (err) console.error(err);
-      files.forEach((category) => {
-        readdir(`${__dirname}/commands/${category}`, (_, cmds) => {
-          cmds.forEach(async (cmd) => {
-            const command = new (require(`${__dirname}/commands/${category}/${cmd}`))(this);
-            command.dir = `${__dirname}/commands/${category}/${cmd}`;
-            this.commands.set(command.config.name, command);
-            command.config.aliases.forEach((a) => this.aliases.set(a, command.config.name));
-            const cmdInDb = await this.database.Cmds.findById(command.config.name);
-            if (cmdInDb) {
-              command.maintenance = cmdInDb.maintenance;
-              command.maintenanceReason = cmdInDb.maintenanceReason;
-            } else {
-              this.database.Cmds.create({
-                _id: command.config.name,
-              });
-            }
-          });
+  loadCommands(directory) {
+    return FileUtil.readDirectory(directory, async (Command, filepath) => {
+      const command = new Command(this);
+      command.dir = filepath;
+      this.commands.set(command.config.name, command);
+      command.config.aliases.forEach((a) => this.aliases.set(a, command.config.name));
+      const cmdInDb = await this.database.Cmds.findById(command.config.name);
+      if (cmdInDb) {
+        command.maintenance = cmdInDb.maintenance;
+        command.maintenanceReason = cmdInDb.maintenanceReason;
+      } else {
+        this.database.Cmds.create({
+          _id: command.config.name,
         });
-      });
+      }
     });
-    return this;
   }
 
-  loadEvents(path) {
-    readdir(path, (err, files) => {
-      if (err) console.error(err);
-
-      files.forEach((em) => {
-        const event = new (require(`../${path}/${em}`))(this);
-        this.events.add(em.split('.')[0], event);
-      });
+  loadEvents(directory) {
+    return FileUtil.readDirectory(directory, (Event, filepath) => {
+      this.events.add(FileUtil.filename(filepath), new Event(this));
     });
-    return this;
   }
 
   loadLocales() {
