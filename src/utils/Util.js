@@ -24,6 +24,6 @@ module.exports = class Util {
 
   static async databaseGuildEnsure(client, guild) {
     const { id } = guild;
-    return Util.databaseEnsure(client.database.Users, { id }, { id });
+    return Util.databaseEnsure(client.database.Guilds, { id }, { id });
   }
 };
