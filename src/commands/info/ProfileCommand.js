@@ -25,7 +25,7 @@ module.exports = class ProfileCommand extends Command {
         if (pessoa.bot) {
           return message.menheraReply('error', t('commands:profile.bot'));
         }
-        user = await this.client.database.Users.findOne({ id: user.id });
+        user = await this.client.database.Users.findOne({ id: pessoa.id });
       } catch {
         return message.menheraReply('error', t('commands:profile.unknow-user'));
       }
