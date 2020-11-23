@@ -7,6 +7,6 @@ module.exports = class ShardReadyReceive {
 
   run(shard) {
     console.log(`[SHARD] Shard ${shard} ta voando alto!`);
-    http.shards('ready', shard);
+    if (this.client.user.id === '708014856711962654') http.shards('ready', shard);
   }
 };

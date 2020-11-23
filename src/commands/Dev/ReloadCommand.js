@@ -1,4 +1,5 @@
 const Command = require('../../structures/command');
+const LocaleStructure = require('../../structures/LocaleStructure');
 
 module.exports = class UpdateCommand extends Command {
   constructor(client) {
@@ -11,21 +12,17 @@ module.exports = class UpdateCommand extends Command {
   }
 
   async run({ message, args }) {
-    if (args[0] && args[0].toLowerCase() === 'locales') {
-      return this.client.reloadLocales()
-        .then(() => message.menheraReply('success', 'locales reiniciados!'))
-        .catch(() => message.menheraReply('error', 'erro ao reiniciar os locales'));
+    if (!args[0]) return message.menheraReply('error', 'nenhum comando foi informado!');
+
+    if (args[0].toLowerCase() === 'locales') {
+      const locale = new LocaleStructure();
+      return locale.reload()
+        .then(() => message.menheraReply('success', 'locales reiniciados! :sparkles:'))
+        .catch((e) => message.menheraReply('error', `erro ao reiniciar os locales: ${e.message}`));
     }
 
-    const option = Command.getOption(args[0], ['command', 'comando'], ['evento', 'event']);
-    if (!option) return message.menheraReply('error', 'me dê uma opção válida. Opções disponíveis: `evento`, `comando`');
-    if (!args[1]) return message.menheraReply('error', 'me dê um comando/evento para recarregar.');
-    const type = option === 'yes' ? 'comando' : 'evento';
+    await this.client.reloadCommand(args[0]).catch((e) => message.menheraReply('error', `Erro ao reiniciar o comando ${args[0]}! : ${e.message}`));
 
-    const rst = option === 'yes' ? this.client.reloadCommand(args[1]) : this.client.reloadEvent(args[1]);
-    if (rst instanceof Error) return message.menheraReply('error', `falha no recarregamento do ${type}.Stack:\n\`\`\`js${rst}\`\`\``);
-    if (rst === false) return message.channel.send(`${type} inexistente.`);
-
-    return message.menheraReply('success', `${type} recarregado com sucesso!`);
+    message.menheraReply('success', `${args[1]} recarregado com sucesso!`);
   }
 };

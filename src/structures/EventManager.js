@@ -1,21 +1,13 @@
 module.exports = class EventManager {
   constructor(client) {
     this.client = client;
-    this.events = [];
+    this.events = new Map();
   }
 
-  add(name, fun) {
-    this.client.on(name, (...args) => this.handleEvent(name, args));
-    this.events.push({ name, fun });
-  }
-
-  remove(name) {
-    if (!this.events.filter((a) => a.name === name)[0]) return false;
-    delete this.events[this.events.findIndex((a) => a.name === name)];
-    return true;
-  }
-
-  handleEvent(name, args) {
-    this.events.filter((a) => a.name === name).forEach((e) => e.fun.run(...args));
+  add(name, filepath, event) {
+    event.dir = filepath;
+    event.run = event.run.bind(event);
+    this.client.on(name, event.run);
+    this.events.set(name, event);
   }
 };

@@ -8,6 +8,12 @@ module.exports = class FileUtil {
     return path.parse(filepath).name;
   }
 
+  static reloadFile(filepath, reloadFunction = () => null) {
+    const dir = path.resolve(filepath);
+    delete require.cache[dir];
+    return reloadFunction(require(dir), dir);
+  }
+
   static async readDirectory(directory, loadFunction = () => null) {
     return Promise.all(
       FileUtil.readdirRecursive(directory)

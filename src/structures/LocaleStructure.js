@@ -1,51 +1,39 @@
 const { readdirSync } = require('fs-extra');
+const path = require('path');
 const i18next = require('i18next');
 const translationBackend = require('i18next-node-fs-backend');
 
 class LocaleStructure {
-  constructor(client) {
-    this.client = client;
-    this.languages = ['pt-BR', 'en-US'];
+  constructor() {
     this.ns = ['commands', 'events', 'permissions', 'roleplay'];
+    this.languages = ['pt-BR', 'en-US'];
   }
 
   load() {
     try {
-      this.startLocales();
-      console.log('[LOCALES] Locales loaded!');
-      return true;
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
-  async startLocales() {
-    try {
+      const filepath = path.resolve(__dirname, '..', 'locales');
       i18next.use(translationBackend).init({
         ns: this.ns,
-        preload: await readdirSync('./src/locales/'),
+        preload: readdirSync(filepath),
         fallbackLng: 'pt-BR',
         backend: {
-          loadPath: './src/locales/{{lng}}/{{ns}}.json',
+          loadPath: `${filepath}/{{lng}}/{{ns}}.json`,
         },
         interpolation: {
           escapeValue: false,
         },
         returnEmpyString: false,
       });
+      console.log('[LOCALES] Locales loaded!');
     } catch (err) {
-      console.error(err);
+      console.log(`[LOCALES] Falha no Load dos Locales: ${err.message}`);
     }
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  async reload() {
-    try {
-      i18next.reloadResources(['pt-BR', 'en-US'], ['commands', 'events', 'permissions', 'roleplay']);
-      return true;
-    } catch {
-      return false;
-    }
+  reload() {
+    return i18next.reloadResources(this.languages, this.ns)
+      .then(() => true)
+      .catch(() => false);
   }
 }
 

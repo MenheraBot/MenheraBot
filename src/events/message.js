@@ -47,7 +47,7 @@ module.exports = class MessageReceive {
     }
 
     if (message.content.startsWith(`<@!${this.client.user.id}>`) || message.content.startsWith(`<@${this.client.user.id}>`)) {
-      return message.channel.send(`<:MenheraWink:767210250637279252> | ${t('events:mention.start')} ${message.author}, ${t('events:mention.end', { prefix })}`);
+      return message.menheraReply('wink', `${t('events:mention.start')} ${message.author}, ${t('events:mention.end', { prefix })}`);
     }
 
     if (!message.content.toLowerCase().startsWith(prefix)) return;
