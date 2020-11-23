@@ -41,7 +41,7 @@ const rememberSchema = mongoose.Schema({
 });
 
 const rpgSchema = mongoose.Schema({
-  _id: { type: String, unique: true },
+  _id: { type: String },
   class: { type: String },
   life: { type: Number, default: 100 },
   armor: { type: Number, default: 0 },
