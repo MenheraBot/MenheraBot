@@ -41,7 +41,7 @@ const rememberSchema = mongoose.Schema({
 });
 
 const rpgSchema = mongoose.Schema({
-  _id: { type: String },
+  _id: { type: String, unique: true },
   class: { type: String },
   life: { type: Number, default: 100 },
   armor: { type: Number, default: 0 },
@@ -71,7 +71,7 @@ const rpgSchema = mongoose.Schema({
 });
 
 const userSchema = mongoose.Schema({
-  id: { type: String },
+  id: { type: String, unique: true },
   nome: { type: String, default: null },
   mamadas: { type: Number, default: 0 },
   mamou: { type: Number, default: 0 },
