@@ -343,7 +343,7 @@
         "probabilities": "**PROBABILIDADES:**\nÉ selecionado um número aleatório dentro dos próximos. Cada número é a quantidade de caças\nDica: Em meu servidor de suporte, as chances de caça são maiores!\n\nDemônio: `{{probabilidadeDemonio}}`\nAnjo: `{{probabilidadeAnjo}}`\nSemideuses: `{{probabilidadeSD}}`\nDeuses: `{{probabilidadeDeuses}}`",
         "footer": "Sabia que em meu servidor de suporte, suas chances de sucesso são maiores?",
         "title": "Caçada",
-        "description_start": "Você saiu para caçar demônios com o Super Xandão, e caçou `{{value}}`",
+        "description_start": "Você saiu para caçar com o Super Xandão, e caçou `{{value}}`",
         "god_hunted_success": "CARACA!!! VOCÊ SE MOSTROU UM HERÓI FRUTO DE UMA VONTADE DIVINA, ASSIM COMO XANDÃO, E CONSEGUIU CAÇAR `{{value}}` DEUS!!!!!!",
         "god_hunted_fail": "Caçar Deuses é uma missão extremamente difícil, e você acabou não conseguindo, levando um total de `{{value}}` deuses pra casa",
         "demons": "Demônios",

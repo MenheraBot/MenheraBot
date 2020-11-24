@@ -337,7 +337,7 @@
         "probabilities": "** PROBABILITIES: ** \nA random number is selected from the next. Each number is the number of fighters \nTip: On my support server, the chances of hunting are greater! \n \nDemon: `{{probabilityDemonio}}`\nAngel: `{{probabilityAngel}}` \\Demigods: `{{probabilitySD}} `\nGods:` {{probabilityGods}} `",
         "footer": "Did you know that on my support server, your chances of success are greater?",
         "title": "Hunt",
-        "description_start": "You went out to hunt demons with Super Xandão, and hunted `{{value}}`",
+        "description_start": "You went out to hunt with Super Xandão, and hunted `{{value}}`",
         "god_hunted_success": "HOLLY MOLLY!!! YOU BECOME A HERO FRUIT OF A DIVINE FORÇE, AS WELL AS XANDÃO, AND GOT ​​HUNTING `{{value}}` GOD !!!!!!",
         "god_hunted_fail": "Hunting Gods is an extremely difficult mission, and you ended up failing, taking a total of `{{value}}` gods home",
         "demons": "Demons",
