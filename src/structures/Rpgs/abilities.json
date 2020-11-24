@@ -162,7 +162,7 @@
                 "name": "Cura",
                 "description": "Invoca a luz do caminho da verdade, curando seu alvo",
                 "cooldown": 7200000,
-                "damage": 0,
+                "damage": 2,
                 "heal": 40,
                 "cost": 40
             },
@@ -170,7 +170,7 @@
                 "name": "Raio de Luz Solar",
                 "description": "Transmuta a luz do sol em um raio, causando queimaduras no inimigo",
                 "cooldown": 7200000,
-                "damage": 20,
+                "damage": 30,
                 "heal": 0,
                 "cost": 40
             },
@@ -178,7 +178,7 @@
                 "name": "Rosário!",
                 "description": "Abençoa a área com o poder divino, causando dano à todas as criaturas malignas e curando si mesmo",
                 "cooldown": 7200000,
-                "damage": 40,
+                "damage": 50,
                 "heal": 50,
                 "cost": 70
             },
@@ -186,7 +186,7 @@
                 "name": "Ascensão Espiritual",
                 "description": "Recebe a benção do espírito, curando-se e dando dano a todos inimigos",
                 "cooldown": 7200000,
-                "damage": 46,
+                "damage": 66,
                 "heal": 80,
                 "cost": 90
             },
@@ -194,7 +194,7 @@
                 "name": "Manipulação Éterea",
                 "description": "Envia os mensageiros da Luz para aniquilar seus inimigos",
                 "cooldown": 7200000,
-                "damage": 62,
+                "damage": 86,
                 "heal": 0,
                 "cost": 130
             }
