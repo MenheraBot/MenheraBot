@@ -35,7 +35,7 @@
                 "cooldown": 7200000,
                 "damage": 50,
                 "heal": 0,
-                "cost": 35
+                "cost": 25
             },
             {
                 "name": "Jack",
