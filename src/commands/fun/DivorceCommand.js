@@ -11,7 +11,9 @@ module.exports = class DivorceCommand extends Command {
     });
   }
 
-  async run({ message, authorData }, t) {
+  async run({ message, authorData: selfData }, t) {
+    const authorData = selfData ?? new this.client.database.Users({ id: message.author.id });
+
     if (authorData.casado && authorData.casado !== 'false') {
       return this.divorciar(authorData, message, t);
     }

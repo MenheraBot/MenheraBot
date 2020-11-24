@@ -12,7 +12,9 @@ module.exports = class HuntCommand extends Command {
     });
   }
 
-  async run({ message, authorData, args }, t) {
+  async run({ message, authorData: selfData, args }, t) {
+    const authorData = selfData ?? new this.client.database.Users({ id: message.author.id });
+
     const validOptions = ['demonios', 'anjos', 'semideuses', 'deuses', 'ajuda', 'probabilidades'];
 
     const validArgs = [{

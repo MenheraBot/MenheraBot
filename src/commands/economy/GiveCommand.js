@@ -66,9 +66,11 @@ module.exports = class GiveCommand extends Command {
   }
 
   async run({
-    message, args, server, authorData,
+    message, args, server, authorData: selfData,
   }, t) {
     if (!args[0]) return message.menheraReply('error', t('commands:give.no-args', { prefix: server.prefix }));
+
+    const authorData = selfData ?? new this.client.database.Users({ id: message.author.id });
 
     const validArgs = [{
       opção: 'estrelinhas',

@@ -13,7 +13,9 @@ module.exports = class MarryCommand extends Command {
     });
   }
 
-  async run({ message, authorData }, t) {
+  async run({ message, authorData: selfData }, t) {
+    const authorData = selfData ?? new this.client.database.Users({ id: message.author.id });
+
     const mencionado = message.mentions.users.first();
 
     if (!mencionado) return message.menheraReply('error', t('commands:marry.no-mention'));

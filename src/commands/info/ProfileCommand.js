@@ -13,7 +13,8 @@ module.exports = class ProfileCommand extends Command {
     });
   }
 
-  async run({ message, args, authorData }, t) {
+  async run({ message, args, authorData: selfData }, t) {
+    const authorData = selfData ?? new this.client.database.Users({ id: message.author.id });
     const userId = Util.getIdByMention(args[0]);
 
     let user = authorData;

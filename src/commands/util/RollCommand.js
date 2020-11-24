@@ -9,7 +9,8 @@ module.exports = class RollCommand extends Command {
     });
   }
 
-  async run({ message, authorData }, t) {
+  async run({ message, authorData: selfData }, t) {
+    const authorData = selfData ?? new this.client.database.Users({ id: message.author.id });
     if (parseInt(authorData.caçarTime) < Date.now()) return message.menheraReply('error', t('commands:roll.can-hunt'));
 
     if (authorData.rolls < 1) return message.menheraReply('error', t('commands:roll.poor'));

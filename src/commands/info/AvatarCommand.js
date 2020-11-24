@@ -12,7 +12,9 @@ module.exports = class AvatarCommand extends Command {
     });
   }
 
-  async run({ message, args, authorData }, t) {
+  async run({ message, args, authorData: selfData }, t) {
+    const authorData = selfData ?? new this.client.database.Users({ id: message.author.id });
+
     let user = message.author;
     let db = authorData;
 

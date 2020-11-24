@@ -13,8 +13,10 @@ module.exports = class ColorCommand extends Command {
   }
 
   async run({
-    message, args, server, authorData,
+    message, args, server, authorData: selfData,
   }, t) {
+    const authorData = selfData ?? new this.client.database.Users({ id: message.author.id });
+
     const haspadrao = await authorData.cores.filter((pc) => pc.cor === '#a788ff');
 
     if (haspadrao.length === 0) {

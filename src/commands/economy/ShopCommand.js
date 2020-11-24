@@ -11,7 +11,9 @@ module.exports = class ShopCommand extends Command {
     });
   }
 
-  async run({ message, authorData }, t) {
+  async run({ message, authorData: selfData }, t) {
+    const authorData = selfData ?? new this.client.database.Users({ id: message.author.id });
+
     const saldoAtual = authorData.estrelinhas;
 
     const validArgs = ['1', '2'];

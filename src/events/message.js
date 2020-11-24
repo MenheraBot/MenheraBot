@@ -35,8 +35,8 @@ module.exports = class MessageReceive {
       this.notifyAfk(message, t, message.mentions.users.map((u) => u.id));
     }
 
-    const authorData = await Util.databaseUserEnsure(this.client, message.author);
-    if (authorData.afk) {
+    const authorData = await this.client.database.Users.findOne({ id: message.author.id });
+    if (authorData?.afk) {
       authorData.afk = false;
       authorData.afkReason = null;
       authorData.save();
