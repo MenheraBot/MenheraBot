@@ -34,7 +34,7 @@ module.exports = class BiteCommand extends Command {
       return message.menheraReply('error', t('commands:bite.self-mention'));
     }
 
-    const avatar = message.author.displayAvatarURL({ format: 'png' });
+    const avatar = message.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     const embed = new MessageEmbed()
       .setTitle(t('commands:bite.embed_title'))

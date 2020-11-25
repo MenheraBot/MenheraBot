@@ -50,7 +50,7 @@ module.exports = class MamarCommand extends Command {
     ];
 
     const rand = list[Math.floor(Math.random() * list.length)];
-    const avatar = message.author.displayAvatarURL({ format: 'png' });
+    const avatar = message.author.displayAvatarURL({ format: 'png', dynamic: true });
     const embed = new MessageEmbed()
       .setTitle(t('commands:mamar.embed_title'))
       .setColor('#000000')

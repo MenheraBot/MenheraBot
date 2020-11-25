@@ -12,7 +12,7 @@ module.exports = class FearCommand extends Command {
   }
 
   async run({ message }, t) {
-    const avatar = message.author.displayAvatarURL({ format: 'png' });
+    const avatar = message.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     const list = [
       'https://i.imgur.com/NXZVVCt.gif',

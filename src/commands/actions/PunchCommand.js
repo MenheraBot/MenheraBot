@@ -28,7 +28,7 @@ module.exports = class PunchCommand extends Command {
 
     if (user === message.author) return message.menheraReply('error', t('commands:punch.self-mention'));
 
-    const avatar = message.author.displayAvatarURL({ format: 'png' });
+    const avatar = message.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     const embed = new MessageEmbed()
       .setTitle(t('commands:punch.embed_title'))

@@ -23,7 +23,7 @@ module.exports = class KillCommand extends Command {
 
     const rand = list[Math.floor(Math.random() * list.length)];
     const user = message.mentions.users.first();
-    const avatar = message.author.displayAvatarURL({ format: 'png' });
+    const avatar = message.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     if (!user) {
       return message.menheraReply('error', t('commands:kill.no-mention'));

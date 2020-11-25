@@ -46,7 +46,7 @@ module.exports = class KissCommand extends Command {
       return message.menheraReply('error', t('commands:kiss.self-mention'));
     }
 
-    const avatar = message.author.displayAvatarURL({ format: 'png' });
+    const avatar = message.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     const embed = new MessageEmbed()
       .setTitle(t('commands:kiss.embed_title'))

@@ -52,7 +52,7 @@ module.exports = class SarrarCommand extends Command {
 
     const rand = lista[Math.floor(Math.random() * lista.length)];
 
-    const avatar = message.author.displayAvatarURL({ format: 'png' });
+    const avatar = message.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     const Embed = new MessageEmbed()
 

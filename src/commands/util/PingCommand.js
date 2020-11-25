@@ -12,7 +12,7 @@ module.exports = class PingCommand extends Command {
   }
 
   async run({ message }, t) {
-    const avatar = message.author.displayAvatarURL({ format: 'png' });
+    const avatar = message.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     const embed = new MessageEmbed()
       .setTitle('🏓 | Pong!')
