@@ -34,19 +34,7 @@ module.exports = class WatchClient extends Client {
   reloadCommand(commandName) {
     const command = this.commands.get(commandName) || this.commands.get(this.aliases.get(commandName));
     if (!command) return false;
-    const { dir } = command;
-    this.commands.delete(command.config.name);
-    delete require.cache[require.resolve(dir)];
-    try {
-      // eslint-disable-next-line global-require
-      const Command = require(dir);
-      const cmd = new Command(this);
-      cmd.dir = dir;
-      this.commands.set(cmd.config.name, cmd);
-      return true;
-    } catch (e) {
-      return e;
-    }
+    return FileUtil.reloadFile(command.dir, (Command) => this.loadCommand(Command, command.dir));
   }
 
   login(token) {

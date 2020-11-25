@@ -23,6 +23,6 @@ module.exports = class UpdateCommand extends Command {
 
     await this.client.reloadCommand(args[0]).catch((e) => message.menheraReply('error', `Erro ao reiniciar o comando ${args[0]}! : ${e.message}`));
 
-    message.menheraReply('success', `${args[1]} recarregado com sucesso!`);
+    message.menheraReply('success', `${args[0]} recarregado com sucesso!`);
   }
 };
