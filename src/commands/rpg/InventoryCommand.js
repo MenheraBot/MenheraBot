@@ -17,7 +17,7 @@ module.exports = class InventoryCommand extends Command {
     const user = await this.client.database.Rpg.findById(message.author.id);
     if (!user) return message.menheraReply('error', t('commands:inventory.non-aventure'));
 
-    const cor = authorData.cor || '#8f877f';
+    const cor = authorData?.cor ?? '#8f877f';
 
     const embed = new MessageEmbed()
       .setTitle(`<:Chest:760957557538947133> | ${t('commands:inventory.title')}`)
