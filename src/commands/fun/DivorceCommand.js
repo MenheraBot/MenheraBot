@@ -23,7 +23,7 @@ module.exports = class DivorceCommand extends Command {
   async divorciar(authorData, message, t) {
     const user2 = await this.client.database.Users.findOne({ id: authorData.casado });
 
-    const user2Mention = this.client.users.cache.get(authorData.casado) || user2.nome;
+    const user2Mention = await this.client.users.fetch(authorData.casado);
 
     message.channel.send(`${t('commands:divorce.confirmation')} ${user2Mention}`).then((msg) => {
       msg.react('✅');

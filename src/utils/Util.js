@@ -16,7 +16,6 @@ module.exports = class Util {
     const user = userOrMember instanceof User ? userOrMember : userOrMember.user;
     const defaultValue = {
       id: user.id,
-      nome: user.username,
       shipValue: Math.floor(Math.random() * 55),
     };
     return Util.databaseEnsure(client.database.Users, { id: user.id }, defaultValue);

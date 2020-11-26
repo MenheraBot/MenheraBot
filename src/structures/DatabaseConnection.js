@@ -74,7 +74,6 @@ const rpgSchema = mongoose.Schema({
 
 const userSchema = mongoose.Schema({
   id: { type: String, unique: true },
-  nome: { type: String, default: null },
   mamadas: { type: Number, default: 0 },
   mamou: { type: Number, default: 0 },
   casado: { type: String, default: 'false' },

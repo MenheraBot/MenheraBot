@@ -81,11 +81,9 @@ module.exports = class TopCommand extends Command {
     for (let i = 0; i < res.length; i++) {
       // eslint-disable-next-line no-await-in-loop
       const member = await client.users.fetch(res[i].id).catch();
-      if (!member) {
-        embed.addField(`**${posição + i} -** ${res[i].nome}`, `Mamado: **${res[i].mamadas}**`, false);
-      } else {
-        embed.addField(`**${posição + i} -** ${member.username}`, `Mamado: **${res[i].mamadas}**`, false);
-      }
+      const memberName = member?.username ?? res[i].id;
+
+      embed.addField(`**${posição + i} -** ${memberName}`, `Mamado: **${res[i].mamadas}**`, false);
     }
     message.channel.send(message.author, embed);
   }
