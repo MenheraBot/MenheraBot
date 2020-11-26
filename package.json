@@ -5,7 +5,8 @@
   "main": "shard.js",
   "scripts": {
     "start": "node shard.js",
-    "lint:fix": "eslint --fix ."
+    "lint:fix": "eslint --fix .",
+    "test": "jest"
   },
   "keywords": [],
   "author": "Luxanna Crownguard (ySnoopyDogy)",
@@ -32,6 +33,7 @@
   "devDependencies": {
     "eslint": "^7.13.0",
     "eslint-config-airbnb-base": "^14.2.1",
-    "eslint-plugin-import": "^2.22.1"
+    "eslint-plugin-import": "^2.22.1",
+    "jest": "^26.6.3"
   }
 }
