@@ -1,0 +1,20 @@
+name: Linter
+
+on:
+  - push
+  - pull_request
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v1
+      - name: Setup Node.js V14
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+      - name: Install dependencies
+        run: npm install
+      - name: Run Linter
+        run: npm run lint:fix
