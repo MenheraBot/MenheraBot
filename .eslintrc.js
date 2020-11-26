@@ -12,7 +12,6 @@ module.exports = {
   },
   rules: {
     'no-console': 'off',
-    'linebreak-style': 0,
     'consistent-return': 'off',
     'class-methods-use-this': ['error', { exceptMethods: ['run'] }],
     'no-param-reassign': ['error', { props: false }],
