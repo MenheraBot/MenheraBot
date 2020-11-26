@@ -20,10 +20,10 @@ module.exports = {
     'default-case': 'off',
     'no-plusplus': 'off',
     'max-len': 'off',
+    'import/no-unresolved': [2, { ignore: ['config.json$'] }],
     'no-underscore-dangle': ['error', { allow: ['_id'] }],
   },
   settings: {
-    'import/ignore': ['config.json'],
     'import/resolver': {
       node: {
         extensions: [
