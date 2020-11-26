@@ -22,4 +22,14 @@ module.exports = {
     'max-len': 'off',
     'no-underscore-dangle': ['error', { allow: ['_id'] }],
   },
+  settings: {
+    'import/ignore': ['config.json'],
+    'import/resolver': {
+      node: {
+        extensions: [
+          '.js',
+        ],
+      },
+    },
+  },
 };
