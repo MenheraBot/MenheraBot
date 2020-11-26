@@ -53,6 +53,7 @@ You can enter my [support server](https://discord.gg/fZMdQbA) to help further. A
 ## Self-host
 
 According to the [LICENSE](https://github.com/ySnoopyDogy/MenheraBot/blob/master/LICENSE), you can self host the bot, but we **DO NOT** support the Menhera in Self Host.
+
 ## Links
 
 - [Discord](https://discord.gg/fZMdQbA)

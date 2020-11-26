@@ -1,31 +1,31 @@
 {
-    "battle": {
-        "no-mana": "Você tenta usar **{{name}}**, mas não tem mana o suficiente para isso! O inimigo revida!",
-        "attack": "Você ataca **{{enemy}}** com **{{choice}}**, e causa **{{damage}}** de dano",
-        "footer": "Digite no chat a opção de sua escolha",
-        "new-tatic": "Você tentou uma técnica nova, mas não obteve sucesso! O inimigo ataca",
-        "timeout": "Você demorou para tomar uma atitude, e foi atacado!",
-        "text": "**{{enemy}}** te ataca com **{{attack}}**, e causa **{{dmg}}**, atualização dos status:\n\n**SEUS STATUS**\n❤️ | Vida: **{{life}}**\n💧 | Mana: **{{mana}}**\n⚔️ | Dano: **{{damage}}**\n🛡️ | Defesa: **{{armor}}**\n\n**STATUS DO INIMIGO**\n❤️ | Vida: **{{elife}}**\n⚔️ | Dano: **{{edmg}}**\n🛡️ | Defesa: **{{earmor}}**\n\nO que você faz?\n\n**OPÇÕES:**\n"
-    },
-    "death": "Essa não, você morreu! Para se recuperar dos danos, você retornou para a guilda, e ficará de repouso por 12 horas!",
-    "basic-attack": "Ataque Básico",
-    "new-ability": "Você atingiu o nível **{{level}}** e liberou uma nova habilidade! **{{ability}}**",
-    "family": "Você desbloqueou as famílias! Use `m!família` para entrar em uma família",
-    "boss": "você atinge o nível 20, e se torna um MESTRE da dungeon!\nA partir de agora, você pode usar o m!boss, para batalhar contra bosses quando quiser",
-    "result": {
-        "title": "Resultados da Batalha",
-        "description": "**Esse dano é o suficiente para matar {{enemy}}!**\n\n**Loots:**",
-        "loots": "Espólios de Batalha"
-    },
-    "initial": {
-        "no-life": "Sem Vida",
-        "no-life-text": "Você está sem vida, e precisa descansar por mais **{{time}}** horas",
-        "tired": "Cansaço",
-        "tired-text": "Você já visitou a dungeon e precisa descansar por mais **{{time}}** minutos",
-        "hotel-text": "Você está descansando no hotel da vila, e não pode ir para a dungeon até que sua estadia acabe, em **{{time}}**",
-        "cant-go": "Você não pode visitar a dungeon pelos seguintes motivos:"
-    },
-    "registred": "você foi registrado com sucesso! Use `m!status` para ver seus status",
-    "backpack-full": "você ganha um loot, mas sua mochila está cheia,e  você precisa deixá-lo para trás",
-    "evolve": "você atinge seu nível de proficiência, e se torna um {{class}}"
+  "battle": {
+    "no-mana": "Você tenta usar **{{name}}**, mas não tem mana o suficiente para isso! O inimigo revida!",
+    "attack": "Você ataca **{{enemy}}** com **{{choice}}**, e causa **{{damage}}** de dano",
+    "footer": "Digite no chat a opção de sua escolha",
+    "new-tatic": "Você tentou uma técnica nova, mas não obteve sucesso! O inimigo ataca",
+    "timeout": "Você demorou para tomar uma atitude, e foi atacado!",
+    "text": "**{{enemy}}** te ataca com **{{attack}}**, e causa **{{dmg}}**, atualização dos status:\n\n**SEUS STATUS**\n❤️ | Vida: **{{life}}**\n💧 | Mana: **{{mana}}**\n⚔️ | Dano: **{{damage}}**\n🛡️ | Defesa: **{{armor}}**\n\n**STATUS DO INIMIGO**\n❤️ | Vida: **{{elife}}**\n⚔️ | Dano: **{{edmg}}**\n🛡️ | Defesa: **{{earmor}}**\n\nO que você faz?\n\n**OPÇÕES:**\n"
+  },
+  "death": "Essa não, você morreu! Para se recuperar dos danos, você retornou para a guilda, e ficará de repouso por 12 horas!",
+  "basic-attack": "Ataque Básico",
+  "new-ability": "Você atingiu o nível **{{level}}** e liberou uma nova habilidade! **{{ability}}**",
+  "family": "Você desbloqueou as famílias! Use `m!família` para entrar em uma família",
+  "boss": "você atinge o nível 20, e se torna um MESTRE da dungeon!\nA partir de agora, você pode usar o m!boss, para batalhar contra bosses quando quiser",
+  "result": {
+    "title": "Resultados da Batalha",
+    "description": "**Esse dano é o suficiente para matar {{enemy}}!**\n\n**Loots:**",
+    "loots": "Espólios de Batalha"
+  },
+  "initial": {
+    "no-life": "Sem Vida",
+    "no-life-text": "Você está sem vida, e precisa descansar por mais **{{time}}** horas",
+    "tired": "Cansaço",
+    "tired-text": "Você já visitou a dungeon e precisa descansar por mais **{{time}}** minutos",
+    "hotel-text": "Você está descansando no hotel da vila, e não pode ir para a dungeon até que sua estadia acabe, em **{{time}}**",
+    "cant-go": "Você não pode visitar a dungeon pelos seguintes motivos:"
+  },
+  "registred": "você foi registrado com sucesso! Use `m!status` para ver seus status",
+  "backpack-full": "você ganha um loot, mas sua mochila está cheia,e  você precisa deixá-lo para trás",
+  "evolve": "você atinge seu nível de proficiência, e se torna um {{class}}"
 }
