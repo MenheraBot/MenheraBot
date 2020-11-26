@@ -150,7 +150,7 @@
       "capacity": 35,
       "price": 50000,
       "required_items": {
-        "Escamas de Kraken": 5
+        "Escama de Kraken": 5
       }
     },
     {
@@ -159,7 +159,7 @@
       "capacity": 50,
       "price": 50000,
       "required_items": {
-        "Escamas de Kraken": 5
+        "Escama de Kraken": 5
       }
     },
     {
