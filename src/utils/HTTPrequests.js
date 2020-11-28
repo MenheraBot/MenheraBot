@@ -13,14 +13,14 @@ module.exports.getActivity = async () => {
   };
 
   const result = await request(options).catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
-  if (!result) return { name: 'Menhera foi criada pela Lux', type: 'PLAYING' };
+  if (!result) return { name: '❤️ | Menhera foi criada pela Lux', type: 'PLAYING' };
   return result;
 };
 
 module.exports.status = async (data) => {
   const options = {
     method: 'POST',
-    uri: `${config.api_IP}/api/comunicate/${data}`,
+    uri: `${config.api_IP}/api/${data}`,
     headers: {
       'User-Agent': 'MenheraClient',
       token: config.api_TOKEN,
@@ -37,7 +37,7 @@ module.exports.status = async (data) => {
 module.exports.shards = async (data, shard) => {
   const options = {
     method: 'POST',
-    uri: `${config.api_IP}/api/comunicate/shard/${data}`,
+    uri: `${config.api_IP}/api/shard/${data}`,
     headers: {
       'User-Agent': 'MenheraClient',
       token: config.api_TOKEN,
@@ -54,7 +54,7 @@ module.exports.shards = async (data, shard) => {
 module.exports.postCommand = async (data) => {
   const options = {
     method: 'POST',
-    uri: `${config.api_IP}/api/stats/commands`,
+    uri: `${config.api_IP}/api/commands`,
     headers: {
       'User-Agent': 'MenheraClient',
       token: config.api_TOKEN,
@@ -80,7 +80,7 @@ module.exports.clearCommands = async () => {
       'User-Agent': 'MenheraClient',
       token: config.api_TOKEN,
     },
-    uri: `${config.api_IP}/api/stats/commands/clear`,
+    uri: `${config.api_IP}/api/commands/clear`,
   };
 
   request(options).catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
@@ -89,7 +89,7 @@ module.exports.clearCommands = async () => {
 module.exports.getCommands = async () => {
   const options = {
     method: 'GET',
-    uri: `${config.api_IP}/api/stats/commands/?cmds=true`,
+    uri: `${config.api_IP}/api/commands/?cmds=true`,
     headers: {
       'User-Agent': 'MenheraClient',
       token: config.api_TOKEN,
@@ -100,24 +100,8 @@ module.exports.getCommands = async () => {
 
   await request(options).then((data) => {
     const obj = JSON.parse(data);
-    cmds = obj.lenght;
+    cmds = obj.length;
   }).catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
 
   return (cmds) || 'MUITOS';
-};
-
-module.exports.postLogs = async (log) => {
-  const options = {
-    method: 'POST',
-    uri: `${config.api_IP}/api/logs`,
-    headers: {
-      'User-Agent': 'MenheraClient',
-      token: config.api_TOKEN,
-    },
-    body: {
-      info: log,
-    },
-  };
-
-  request(options).catch((err) => console.log(`[HTTP ERROR]${err.message}`));
 };
