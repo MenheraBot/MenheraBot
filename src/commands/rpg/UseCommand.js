@@ -92,13 +92,8 @@ module.exports = class UseCommand extends Command {
 
     for (let i = 0; i < quantidade; i++) {
       user.inventory.splice(user.inventory.findIndex((item) => item.name === juntos[args[0] - 1].name), 1);
-
-      if (user.backpack) {
-        const newValue = user.backpack.value - 1;
-        user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: newValue };
-      }
     }
-    if (user.backpack.value < 0) user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: 0 };
+
     user.save();
 
     message.menheraReply('success', t('commands:use.used', { quantidade, choice: choice[0].name }));

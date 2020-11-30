@@ -1,3 +1,5 @@
+const { ferreiro } = require('../structures/Rpgs/items.json');
+
 class RPGUtil {
   static countItems(items) {
     return items.reduce((p, v) => {
@@ -10,29 +12,32 @@ class RPGUtil {
     }, []);
   }
 
-  static updateBackpack(user, newValueFn = user.backpack.value) {
-    user.backpack = {
-      name: user.backpack.name,
-      capacity: user.backpack.capacity,
-      value: newValueFn(user.backpack.value),
-    };
-
-    if (user.backpack?.value < 0) {
-      user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: 0 };
+  static getBackpack(userRpgData) {
+    const backpackId = userRpgData?.backpack.name;
+    if (!backpackId) {
+      throw new Error(`${userRpgData.id} not has a backpack.`);
     }
+
+    const backpack = ferreiro.find((item) => item.category === 'backpack' && item.id === backpackId);
+    if (!backpack) {
+      throw new Error(`${userRpgData.id} has a fake backpack. (${backpackId})`);
+    }
+
+    return {
+      name: backpack.id,
+      capacity: backpack.capacity,
+      value: userRpgData.loots.length + userRpgData.inventory.length,
+    };
   }
 
   static addItemInLoots(user, item, amount = 1) {
     user.inventory.push(...(new Array(amount).fill(item)));
-    RPGUtil.updateBackpack(user, (v) => v + amount);
   }
 
   static removeItemInLoots(user, itemName, amount = 1) {
     for (let i = 0; i < amount; i++) {
       user.loots.splice(user.loots.findIndex((loot) => loot.name === itemName), 1);
     }
-
-    RPGUtil.updateBackpack(user, (currentValue) => currentValue - amount);
   }
 }
 

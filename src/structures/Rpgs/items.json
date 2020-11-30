@@ -154,6 +154,12 @@
       }
     },
     {
+      "id": "Mochila de Pele de Lobo",
+      "category": "backpack",
+      "capacity": 20,
+      "isNotTrade": true
+    },
+    {
       "id": "Mochila de escamas de Kraken",
       "category": "backpack",
       "capacity": 50,
