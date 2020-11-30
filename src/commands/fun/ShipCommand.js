@@ -45,7 +45,7 @@ module.exports = class ShipCommand extends Command {
 
     if (value1?.casado === user2.id) value = 100;
 
-    const username1 = authorData.username;
+    const username1 = message.author.username;
     const username2 = user2.username;
     const mix = `${username1.substring(0, username1.length / 2) + username2.substring(username2.length / 2, username2.length)}`.replace(' ', '');
 
