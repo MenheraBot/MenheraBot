@@ -79,7 +79,8 @@ module.exports = class VillageCommand extends Command {
         return collector.menheraReply('error', t('commands:village.poor'));
       }
 
-      if ((user?.backpack.value + qty) > user?.backpack.capacity) {
+      const backpack = RPGUtil.getBackpack(user);
+      if ((backpack.value + qty) > backpack.capacity) {
         return collector.menheraReply('error', 'commands:village.backpack-full');
       }
 
@@ -138,7 +139,7 @@ module.exports = class VillageCommand extends Command {
       )
       .setFooter(t('commands:village.ferreiro.footer'));
 
-    const equips = itemsFile.ferreiro.filter((item) => item.category === category);
+    const equips = itemsFile.ferreiro.filter((item) => (item.category === category) && !item.isNotTrade);
 
     const parseMissingItems = (equip) => Object.entries(equip.required_items)
       .reduce((p, [name, qty]) => `${p} **${qty} ${name}**\n`, '');
@@ -202,8 +203,6 @@ module.exports = class VillageCommand extends Command {
         case 'backpack':
           user.backpack = {
             name: equip.id,
-            capacity: equip.capacity,
-            value: user.backpack.value,
           };
           break;
       }
@@ -317,7 +316,6 @@ module.exports = class VillageCommand extends Command {
 
       if (result === 'ALL') {
         const total = allItems.reduce((p, item) => p + item.value, 0);
-        RPGUtil.updateBackpack(user, (currentValue) => currentValue - allItems.length);
         user.loots = [];
         user.money += total;
         user.save();
