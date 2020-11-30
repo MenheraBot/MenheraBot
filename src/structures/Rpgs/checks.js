@@ -1,5 +1,6 @@
 const moment = require('moment');
 const { MessageEmbed } = require('discord.js');
+const RPGUtil = require('../../utils/RPGUtil');
 const mobsFile = require('../RpgHandler').mobs;
 const abilitiesFile = require('../RpgHandler').abiltiies;
 
@@ -495,7 +496,8 @@ module.exports.resultBattle = async (message, user, inimigo, t, toSay) => {
   const randomLoot = inimigo.loots[Math.floor(Math.random() * inimigo.loots.length)];
   let canGetLoot = true;
 
-  if (user.backpack.value >= user.backpack.capacity) canGetLoot = false;
+  const backpack = RPGUtil.getBackpack(user);
+  if (backpack.value >= backpack.capacity) canGetLoot = false;
 
   const embed = new MessageEmbed()
     .setTitle(`⚔️ | ${t('roleplay:result.title')}`)
@@ -516,9 +518,7 @@ module.exports.resultBattle = async (message, user, inimigo, t, toSay) => {
   message.channel.send(toSay, embed);
   user.xp += inimigo.xp;
   if (canGetLoot) {
-    const newValue = user.backpack.value + 1;
     user.loots.push(randomLoot);
-    user.backpack = { name: user.backpack.name, capacity: user.backpack.capacity, value: newValue };
   }
   user.inBattle = false;
   return user.save().then(() => this.finalChecks(message, user, t));

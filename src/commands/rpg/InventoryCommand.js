@@ -1,5 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const Command = require('../../structures/command');
+const RPGUtil = require('../../utils/RPGUtil');
 const { countItems } = require('../../utils/RPGUtil');
 
 module.exports = class InventoryCommand extends Command {
@@ -35,7 +36,8 @@ module.exports = class InventoryCommand extends Command {
     armaText += `🧥 | ${t('commands:inventory.armor')}: **${user.protection.name}**\n`;
     armaText += `🛡️ | ${t('commands:inventory.prt')}: **${user.protection.armor}**\n`;
 
-    if (user.backpack) embed.addField(`🧺 | ${t('commands:inventory.backpack')}`, t('commands:inventory.backpack-value', { name: user.backpack.name, max: user.backpack.capacity, value: user.backpack.value }));
+    const backpack = RPGUtil.getBackpack(user);
+    if (backpack) embed.addField(`🧺 | ${t('commands:inventory.backpack')}`, t('commands:inventory.backpack-value', { name: backpack.name, max: backpack.capacity, value: backpack.value }));
     if (armaText.length > 0) embed.addField(`⚔️ | ${t('commands:inventory.battle')}`, armaText);
     if (items.length > 0) embed.addField(`💊 | ${t('commands:inventory.items')}`, itemText);
     if (lootText.length > 0) embed.addField(`<:Chest:760957557538947133> | ${t('commands:inventory.loots')}`, lootText);
