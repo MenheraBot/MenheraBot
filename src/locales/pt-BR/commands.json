@@ -427,7 +427,7 @@
   "top": {
     "description": "Veja o top de meus usuários",
     "usage": "<opção> [página]",
-    "txt": "Você deve escolher entre `{{prefix}}top mamadores`, `{{prefix}}top mamados`, `{{prefix}}top demonios`, `{{prefix}}top anjos`, `{{prefix}}top semideuses`, `{{prefix}}top deuses`, `{{prefix}}top estrelinhas`, `{{prefix}}top votos`, `{{prefix}}top dungeon` ou `{{prefix}}top famílias`",
+    "txt": "Você deve escolher entre {{options}}",
     "mamadoresTitle": "Placar de Mamadores",
     "mamouTitle": "Placar de Mamados",
     "demonTitle": "Placar de Demônios",
@@ -437,7 +437,8 @@
     "starsTitle": "Placar de Estrelinhas",
     "voteTitle": "Placar de Upvotes",
     "rpgTitle": "Placar da Dungeon",
-    "familyTitle": "Placar das Famílias"
+    "familyTitle": "Placar das Famílias",
+    "classeTitle": "Placar dos {{classe}}"
   },
   "updates": {
     "description": "Veja as minhas últimas atualzações",
