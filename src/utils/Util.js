@@ -25,4 +25,8 @@ module.exports = class Util {
     const { id } = guild;
     return Util.databaseEnsure(client.database.Guilds, { id }, { id });
   }
+
+  static capitaze(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
 };
