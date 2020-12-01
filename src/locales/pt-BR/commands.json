@@ -340,7 +340,6 @@
     "usage": "",
     "no-args": "você deve escolher entre caçar",
     "help": "**COMO FUNCIONA O CAÇAR?**\nVocê pode caçar a cada uma hora, e você pode escolher entre 4 caças: `demonios`, `anjos`, `semideuses` e `deuses`\nQuanto mais pra direita, mais valioso, mas também, mais dificil de se caçar, e menor a chance de sucesso\nEm meu servidor de suporte, as chances de caça são maiores!\n**Boas Caçadas**",
-    "probabilities": "**PROBABILIDADES:**\nÉ selecionado um número aleatório dentro dos próximos. Cada número é a quantidade de caças\nDica: Em meu servidor de suporte, as chances de caça são maiores!\n\nDemônio: `{{probabilidadeDemonio}}`\nAnjo: `{{probabilidadeAnjo}}`\nSemideuses: `{{probabilidadeSD}}`\nDeuses: `{{probabilidadeDeuses}}`",
     "footer": "Sabia que em meu servidor de suporte, suas chances de sucesso são maiores?",
     "title": "Caçada",
     "description_start": "Você saiu para caçar com o Super Xandão, e caçou `{{value}}`",
