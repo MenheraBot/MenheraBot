@@ -11,7 +11,7 @@ it('should check if the items required by ferreiro exists', () => {
   }, []);
 
   const nonexistentItems = items.ferreiro.reduce((p, equip) => {
-    const itemsNotFound = Object.keys(equip.required_items)
+    const itemsNotFound = Object.keys(equip?.required_items ?? {})
       .filter((item) => !drops.includes(item));
     return p.concat(itemsNotFound);
   }, []);
