@@ -428,8 +428,8 @@
   },
   "top": {
     "description": "Veja o top de meus usuários",
-    "usage": "<opção> [página]",
-    "txt": "Você deve escolher entre `{{prefix}}top mamadores`, `{{prefix}}top mamados`, `{{prefix}}top demonios`, `{{prefix}}top anjos`, `{{prefix}}top semideuses`, `{{prefix}}top deuses`, `{{prefix}}top estrelinhas`, `{{prefix}}top votos`, `{{prefix}}top dungeon`, `{{prefix}}top famílias`, `{{prefix}}top comandos` ou `{{prefix}}top usuários`",
+    "usage": "<opção> [página | usuário]",
+    "txt": "Você deve escolher entre `{{prefix}}top mamadores`, `{{prefix}}top mamados`, `{{prefix}}top demonios`, `{{prefix}}top anjos`, `{{prefix}}top semideuses`, `{{prefix}}top deuses`, `{{prefix}}top estrelinhas`, `{{prefix}}top votos`, `{{prefix}}top dungeon`, `{{prefix}}top famílias`, `{{prefix}}top comandos`, `{{prefix}}top usuários` ou `{{prefix}}top usuário`",
     "mamadoresTitle": "Placar de Mamadores",
     "mamouTitle": "Placar de Mamados",
     "demonTitle": "Placar de Demônios",
@@ -452,9 +452,11 @@
     "members": "Membros",
     "used": "Usado",
     "use": "Usou",
+    "user": "Comandos mais usados de {{user}}",
     "times": "vezes",
     "family-level": "Nível da Família",
-    "family-money": "Dinheiro da Família"
+    "family-money": "Dinheiro da Família",
+    "not-user": "este usuário não usou nenhum comando meu"
   },
   "updates": {
     "description": "Veja as minhas últimas atualzações",

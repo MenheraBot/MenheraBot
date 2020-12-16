@@ -25,7 +25,8 @@ module.exports = class UpdatesCommand extends Command {
       Adicionado mais dois tops:
 
       • \`m!top comandos\`: Mostra os 10 comandos mais usados da Menhera
-      • \`m!top usuários\`: Mostra os 10 usuários que mais usaram comandos da Menhera`);
+      • \`m!top usuários\`: Mostra os 10 usuários que mais usaram comandos da Menhera
+      • \`m!top usuário <usuário>\`: Mostra os 10 comandos mais usados de um usuário em específico`);
 
     message.channel.send(message.author, embed);
   }

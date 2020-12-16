@@ -38,7 +38,8 @@ module.exports = class TopCommand extends Command {
     const argsDungeon = ['dungeon', 'rpg'];
     const argsFamilias = ['famílias', 'familias', 'familia', 'família', 'family', 'families'];
     const argsCommands = ['comandos', 'commands', 'cmds', 'cmd'];
-    const argsUsers = ['usuarios', 'usuários', 'users', 'user'];
+    const argsUsers = ['usuarios', 'usuários', 'users'];
+    const argsUser = ['usuario', 'user', 'usuário'];
 
     if (argsMamou.includes(argumento)) {
       this.topMamadores(message, t, pagina);
@@ -64,6 +65,8 @@ module.exports = class TopCommand extends Command {
       TopCommand.topCommands(message, t);
     } else if (argsUsers.includes(argumento)) {
       this.topUsers(message, t);
+    } else if (argsUser.includes(argumento)) {
+      this.topUser(message, t, args[1]);
     } else message.menheraReply('warn', t('commands:top.txt', { prefix }));
   }
 
@@ -378,6 +381,31 @@ module.exports = class TopCommand extends Command {
     for (let i = 0; i < res.length; i++) {
       const member = await this.client.users.fetch(res[i].id).catch();
       embed.addField(`**${i + 1} -** ${Util.captalize(member.username)} `, `${t('commands:top.use')} **${res[i].uses}** ${t('commands:top.times')}`, false);
+    }
+    message.channel.send(message.author, embed);
+  }
+
+  async topUser(message, t, id) {
+    const user = id ? id.replace(/[<@!>]/g, '') : message.author.id;
+
+    let fetchedUser;
+
+    try {
+      fetchedUser = await this.client.users.fetch(user).catch();
+    } catch {
+      return message.menheraReply('error', t('commands:top.not-user'));
+    }
+
+    const res = await http.getProfileCommands(fetchedUser.id);
+    const embed = new MessageEmbed()
+
+      .setTitle(`<:MenheraSmile2:767210250364780554> |  ${t('commands:top.user', { user: fetchedUser.username })}`)
+      .setColor('#f47fff');
+
+    if (!res || res.cmds.count === 0) return message.menheraReply('error', t('commands:top.not-user'));
+
+    for (let i = 0; i < 10; i++) {
+      embed.addField(`**${i + 1} -** ${Util.captalize(res.array[i].name)} `, `${t('commands:top.use')} **${res.array[i].count}** ${t('commands:top.times')}`, false);
     }
     message.channel.send(message.author, embed);
   }
