@@ -404,7 +404,8 @@ module.exports = class TopCommand extends Command {
 
     if (!res || res.cmds.count === 0) return message.menheraReply('error', t('commands:top.not-user'));
 
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < res.array.length; i++) {
+      if (i > 10) break;
       embed.addField(`**${i + 1} -** ${Util.captalize(res.array[i].name)} `, `${t('commands:top.use')} **${res.array[i].count}** ${t('commands:top.times')}`, false);
     }
     message.channel.send(message.author, embed);
