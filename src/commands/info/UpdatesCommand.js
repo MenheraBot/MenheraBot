@@ -20,9 +20,12 @@ module.exports = class UpdatesCommand extends Command {
       .setTitle(`${t('commands:updates.title')} ${version}`)
       .setColor('#a7e74f')
       .setFooter(`${this.client.user.username} ${t('commands:updates.footer')} ${owner.tag}`, owner.displayAvatarURL({ format: 'png', dynamic: true }))
-      .setDescription(`Perfil
+      .setDescription(`**Top**
 
-      O perfil agora mostra informações como quantos comandos você mais usou, e qual comando você mais usou >..<`);
+      Adicionado mais dois tops:
+
+      • \`m!top comandos\`: Mostra os 10 comandos mais usados da Menhera
+      • \`m!top usuários\`: Mostra os 10 usuários que mais usaram comandos da Menhera`);
 
     message.channel.send(message.author, embed);
   }

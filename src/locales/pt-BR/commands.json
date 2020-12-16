@@ -429,7 +429,7 @@
   "top": {
     "description": "Veja o top de meus usuários",
     "usage": "<opção> [página]",
-    "txt": "Você deve escolher entre `{{prefix}}top mamadores`, `{{prefix}}top mamados`, `{{prefix}}top demonios`, `{{prefix}}top anjos`, `{{prefix}}top semideuses`, `{{prefix}}top deuses`, `{{prefix}}top estrelinhas`, `{{prefix}}top votos`, `{{prefix}}top dungeon` ou `{{prefix}}top famílias`",
+    "txt": "Você deve escolher entre `{{prefix}}top mamadores`, `{{prefix}}top mamados`, `{{prefix}}top demonios`, `{{prefix}}top anjos`, `{{prefix}}top semideuses`, `{{prefix}}top deuses`, `{{prefix}}top estrelinhas`, `{{prefix}}top votos`, `{{prefix}}top dungeon`, `{{prefix}}top famílias`, `{{prefix}}top comandos` ou `{{prefix}}top usuários`",
     "mamadoresTitle": "Placar de Mamadores",
     "mamouTitle": "Placar de Mamados",
     "demonTitle": "Placar de Demônios",
@@ -440,7 +440,21 @@
     "voteTitle": "Placar de Upvotes",
     "rpgTitle": "Placar da Dungeon",
     "familyTitle": "Placar das Famílias",
-    "classeTitle": "Placar dos {{classe}}"
+    "commands": "Comandos Mais Usados",
+    "users": "Usuários Que Mais Usaram Comandos",
+    "suckled": "Mamado",
+    "suck": "Mamou",
+    "demons": "Demônios",
+    "angels": "Anjos",
+    "demigods": "Semideuses",
+    "gods": "Deuses",
+    "stars": "Estrelinhas",
+    "members": "Membros",
+    "used": "Usado",
+    "use": "Usou",
+    "times": "vezes",
+    "family-level": "Nível da Família",
+    "family-money": "Dinheiro da Família"
   },
   "updates": {
     "description": "Veja as minhas últimas atualzações",

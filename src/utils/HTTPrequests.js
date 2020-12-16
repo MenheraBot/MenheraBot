@@ -120,7 +120,51 @@ module.exports.getProfileCommands = async (id) => {
     json: true,
   };
 
-  const returnObject = await request(options).catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
+  let has = false;
 
-  return returnObject || false;
+  await request(options).then((data) => {
+    has = data;
+  }).catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
+
+  return has;
+};
+
+module.exports.getTopCommands = async () => {
+  const options = {
+    method: 'GET',
+    uri: `${config.api_IP}/api/usages/top/command`,
+    headers: {
+      'User-Agent': 'MenheraClient',
+      token: config.api_TOKEN,
+    },
+    json: true,
+  };
+
+  let has = false;
+
+  await request(options).then((data) => {
+    has = data;
+  }).catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
+
+  return has;
+};
+
+module.exports.getTopUsers = async () => {
+  const options = {
+    method: 'GET',
+    uri: `${config.api_IP}/api/usages/top/user`,
+    headers: {
+      'User-Agent': 'MenheraClient',
+      token: config.api_TOKEN,
+    },
+    json: true,
+  };
+
+  let has = false;
+
+  await request(options).then((data) => {
+    has = data;
+  }).catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
+
+  return has;
 };

@@ -423,7 +423,7 @@
   "top": {
     "description": "See the top of my users",
     "usage": "<option> [page]",
-    "txt": "You must choose between `{{prefix}}top suckers`,` {{prefix}}top suckled`, `{{prefix}}top demons`,` {{prefix}}top angels`, `{{prefix}}top demigods`, `{{prefix}}top gods`,` {{prefix}}top stars`, `{{prefix}}top votes`,` {{prefix}}top dungeon` or `{{prefix}}top families`",
+    "txt": "You must choose between `{{prefix}}top suckers`,` {{prefix}}top suckled`, `{{prefix}}top demons`,` {{prefix}}top angels`, `{{prefix}}top demigods`, `{{prefix}}top gods`,` {{prefix}}top stars`, `{{prefix}}top votes`,` {{prefix}}top dungeon`, `{{prefix}}top families`, `{{prefix}}top commands` or `{{prefix}}top users`",
     "mamadoresTitle": "Suckers Leaderboard",
     "mamouTitle": "Suckled Leaderboard",
     "demonTitle": "Demons Leaderboard",
@@ -434,7 +434,21 @@
     "voteTitle": "Upvotes Leaderboard",
     "rpgTitle": "Dungeon Leaderboard",
     "familyTitle": "Families Leaderboard",
-    "classeTitle": "{{classe}} Leaderboard"
+    "commands": "Most Used Commands",
+    "users": "Users Who Most Used Commands",
+    "suckled": "Suckled",
+    "suck": "Suck",
+    "demons": "Demons",
+    "angels": "Angels",
+    "demigods": "Demigods",
+    "gods": "Gods",
+    "stars": "Stars",
+    "members": "Members",
+    "used": "Used",
+    "use": "Used",
+    "times": "times",
+    "family-level": "Family Level",
+    "family-money": "Family's Money"
   },
   "updates": {
     "description": "See my latest updates",
