@@ -1,6 +1,5 @@
 const { MessageEmbed, Collection } = require('discord.js');
 const i18next = require('i18next');
-const moment = require('moment');
 const Util = require('../utils/Util');
 const makeRequest = require('../utils/HTTPrequests');
 
@@ -161,15 +160,16 @@ module.exports = class MessageReceive {
       canal.send(embed).catch();
       console.error(err.stack);
     }
-    moment.locale('pt-br');
-    const data = {
-      authorName: message.author.tag,
-      authorId: message.author.id,
-      guildName: message.guild.name,
-      guildId: message.guild.id,
-      commandName: command.config.name,
-      data: Date.now(),
-    };
-    await makeRequest.postCommand(data).catch();
+    if (this.client.user.id === '708014856711962654') {
+      const data = {
+        authorName: message.author.tag,
+        authorId: message.author.id,
+        guildName: message.guild.name,
+        guildId: message.guild.id,
+        commandName: command.config.name,
+        data: Date.now(),
+      };
+      await makeRequest.postCommand(data).catch();
+    }
   }
 };

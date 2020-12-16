@@ -105,3 +105,22 @@ module.exports.getCommands = async () => {
 
   return (cmds) || 'MUITOS';
 };
+
+module.exports.getProfileCommands = async (id) => {
+  const options = {
+    method: 'GET',
+    uri: `${config.api_IP}/api/usages/user`,
+    headers: {
+      'User-Agent': 'MenheraClient',
+      token: config.api_TOKEN,
+    },
+    body: {
+      userId: id,
+    },
+    json: true,
+  };
+
+  const returnObject = await request(options).catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
+
+  return returnObject || false;
+};

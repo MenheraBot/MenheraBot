@@ -422,7 +422,9 @@
     "mamado": "Mamado",
     "married-with": "Casado com",
     "married-in": "Casados em",
-    "about-me": "Sobre Mim"
+    "about-me": "Sobre Mim",
+    "commands": "Comandos",
+    "commands-usage": "{{user}} usou meus comandos **{{usedCount}}** vezes.\nSeu comando mais usado foi **{{mostUsedCommandName}}**, usou **{{mostUsedCommandCount}}** vezes"
   },
   "top": {
     "description": "Veja o top de meus usuários",

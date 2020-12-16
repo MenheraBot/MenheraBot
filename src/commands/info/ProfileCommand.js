@@ -1,6 +1,7 @@
 const { MessageEmbed } = require('discord.js');
 const Command = require('../../structures/command');
 const Util = require('../../utils/Util');
+const http = require('../../utils/HTTPrequests');
 
 module.exports = class ProfileCommand extends Command {
   constructor(client) {
@@ -38,6 +39,8 @@ module.exports = class ProfileCommand extends Command {
 
     if (!user) return message.menheraReply('error', t('commands:profile.no-dbuser'));
     if (user.ban) return message.menheraReply('error', t('commands:profile.banned', { reason: user.banReason }));
+    const usageCommands = await http.getProfileCommands(pessoa.id);
+
     const mamadas = user.mamadas || 0;
     const mamou = user.mamou || 0;
     const nota = user.nota || 'Sem Nota';
@@ -79,6 +82,17 @@ module.exports = class ProfileCommand extends Command {
       ]);
     }
     embed.addField(`<:apaixonada:727975782034440252> | ${t('commands:profile.about-me')}`, nota, true);
+    if (usageCommands) {
+      const usedCommands = usageCommands.cmds.count;
+      const mostUsedCommand = usageCommands.array[0];
+      embed.addFields([{
+        name: `🤖 | ${t('commands:profile.commands')}`,
+        value: t('commands:profile.commands-usage', {
+          user: pessoa.username, usedCount: usedCommands, mostUsedCommandName: Util.captalize(mostUsedCommand.name), mostUsedCommandCount: mostUsedCommand.count,
+        }),
+        inline: true,
+      }]);
+    }
 
     message.channel.send(message.author, embed);
   }

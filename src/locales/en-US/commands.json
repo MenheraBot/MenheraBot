@@ -1,859 +1,861 @@
 {
-    "afk": {
-        "description": "Stays AFK",
-        "usage": "[reason]",
-        "reason": "`{{tag}}` is AFK: {{reason}}",
-        "back": "welcome back >...<",
-        "success": "AFK mode has been activated! To make your life easier, I will disable it when you send a message !!!"
+  "afk": {
+    "description": "Stays AFK",
+    "usage": "[reason]",
+    "reason": "`{{tag}}` is AFK: {{reason}}",
+    "back": "welcome back >...<",
+    "success": "AFK mode has been activated! To make your life easier, I will disable it when you send a message !!!"
+  },
+  "bicuda": {
+    "description": "Kick someones butt",
+    "usage": "<@mention>",
+    "bot": "you kicked a robot, you probably broke your leg... I guess",
+    "no-mention": "supp avatar, are you going to stop kicking the air? Mention someone else to kick",
+    "self-mention": "???? this isn't even possible dude, mention someone else",
+    "embed_title": "What a Kick",
+    "embed_description": "kicked"
+  },
+  "bite": {
+    "description": "bite someone :3",
+    "usage": "<@mention>",
+    "bot": "you bit a robot ... -5 teeth in the mouth",
+    "no-mention": "You have to mention who you want to bite duuh",
+    "self-mention": "look at the the masochist, do it right now, no command needed",
+    "embed_title": "Bites",
+    "embed_description": "bit"
+  },
+  "cry": {
+    "description": "Show everyone that you're crying, so that you get attention",
+    "usage": "[@mention]",
+    "bot": "nor does it come that any bot makes someone cry, they are friendly and fun. Like me",
+    "no-mention": {
+      "embed_title": "Crying :(",
+      "embed_description": "is crying"
     },
-    "bicuda": {
-        "description": "Kick someones butt",
-        "usage": "<@mention>",
-        "bot": "you kicked a robot, you probably broke your leg... I guess",
-        "no-mention": "supp avatar, are you going to stop kicking the air? Mention someone else to kick",
-        "self-mention": "???? this isn't even possible dude, mention someone else",
-        "embed_title": "What a Kick",
-        "embed_description": "kicked"
+    "embed_title": "Crying :(",
+    "embed_description_start": "made",
+    "embed_description_end": "cry"
+  },
+  "disgusted": {
+    "description": "eeeewwww disgusting",
+    "usage": "<@mention>",
+    "bot": "HMMMM LOOK AT THAT GUY, HE DISGUST ROBOTS",
+    "no-mention": {
+      "embed_title": "Yuck",
+      "embed_description": "is disgusted nheeem"
     },
-    "bite": {
-        "description": "bite someone :3",
-        "usage": "<@mention>",
-        "bot": "you bit a robot ... -5 teeth in the mouth",
-        "no-mention": "You have to mention who you want to bite duuh",
-        "self-mention": "look at the the masochist, do it right now, no command needed",
-        "embed_title": "Bites",
-        "embed_description": "bit"
+    "embed_title": "Yuck",
+    "embed_description": "is disgusted from"
+  },
+  "fear": {
+    "description": "ARE YOU AFRAID?",
+    "usage": "[@mention]",
+    "no-mention": {
+      "embed_title": "AFRAID",
+      "embed_description": "is afraid"
     },
-    "cry": {
-        "description": "Show everyone that you're crying, so that you get attention",
-        "usage": "[@mention]",
-        "bot": "nor does it come that any bot makes someone cry, they are friendly and fun. Like me",
-        "no-mention": {
-            "embed_title": "Crying :(",
-            "embed_description": "is crying"
-        },
-        "embed_title": "Crying :(",
-        "embed_description_start": "made",
-        "embed_description_end": "cry"
+    "embed_title": "AFRAID",
+    "embed_description": "is afraid of"
+  },
+  "grumbe": {
+    "description": "Grumble humpf",
+    "embed_title": "Humpf",
+    "embed_description": "is grumbling"
+  },
+  "hug": {
+    "description": "Hug someone",
+    "usage": "<@mention>",
+    "bot": "you went to hug a robot, but ended up touching where you shouldn't, and took an electric discharge of 220V and 10mA, luckily the current used in the bot is low ...",
+    "no-mention": "you must mention who wants to hug",
+    "self-mention": "you are not the elastic woman to hug yourself, please mention who you want to hug",
+    "embed_title": "Hug",
+    "embed_description": "just hugged"
+  },
+  "kill": {
+    "description": "Kill the one you can't stand anymore",
+    "usage": "<@mention>",
+    "no-mention": "if you don't kill anyone, you don't commit crimes. STONKS",
+    "self-mention": "I don't like suicide ...",
+    "bot": {
+      "embed_title": "Disconnect",
+      "embed_description_start": "*Robots cannot be killed, but they can be turned off ...*",
+      "embed_description_end": "turned off the bot"
     },
-    "disgusted": {
-        "description": "eeeewwww disgusting",
-        "usage": "<@mention>",
-        "bot": "HMMMM LOOK AT THAT GUY, HE DISGUST ROBOTS",
-        "no-mention": {
-            "embed_title": "Yuck",
-            "embed_description": "is disgusted nheeem"
-        },
-        "embed_title": "Yuck",
-        "embed_description": "is disgusted from"
+    "embed_title": "Kill",
+    "embed_description": "K I L L E D"
+  },
+  "kiss": {
+    "description": "Kiss that loved one",
+    "usage": "<@mention>",
+    "bot": "you kissed a robot, and ended up touching a peeled wire. Lucky he had slippers on his feet. The connection with the Earth was cut, no circuit was closed. This time it was safe.",
+    "no-mention": "you have to mention who you want to kiss you dumb",
+    "self-mention": "I know self-love is important, but please kiss someone other than yourself",
+    "embed_title": "Kiss",
+    "embed_description": "kissed"
+  },
+  "laugh": {
+    "description": "Show everyone that you're laughing",
+    "usage": "[@mention]",
+    "no-mention": {
+      "embed_title": "ASDKSAKDSAK LAUGHING",
+      "embed_description": "is pissing with laughter"
     },
-    "fear": {
-        "description": "ARE YOU AFRAID?",
-        "usage": "[@mention]",
-        "no-mention": {
-            "embed_title": "AFRAID",
-            "embed_description": "is afraid"
-        },
-        "embed_title": "AFRAID",
-        "embed_description": "is afraid of"
+    "embed_title": "LOL",
+    "embed_description_start": "made",
+    "embed_description_end": "fall to the ground laughing"
+  },
+  "mamar": {
+    "description": "Give that monster quality suck",
+    "usage": "<@mention>",
+    "no-mention": "LOL look at the autistic suckling nowhere",
+    "bot": "just got his mouth wet with oil sucking the bot",
+    "self-mention": "don't try to deceive me, I know you can't suckle yourself! Appoint another person to suck",
+    "embed_title": "Suck",
+    "embed_description": "Suckled"
+  },
+  "pat": {
+    "description": "Pat someone's head",
+    "usage": "<@mention>",
+    "no-mention": "you have to mention who you want to cuddle",
+    "self-mention": "if you want you can cuddle yourself now. Use my command only to cuddle others",
+    "embed_title": "Cuddle",
+    "embed_description": "just cuddle"
+  },
+  "poke": {
+    "description": "Poke Someone",
+    "usage": "<@mention>",
+    "no-mention": "you have to mention who you want to poke duuuh",
+    "self-mention": "poking yourself is no fun! Mention who you want to poke",
+    "embed_title": "Poke",
+    "embed_description": "poked"
+  },
+  "punch": {
+    "description": "Punch someone in the ass",
+    "usage": "<@mention>",
+    "bot": "SAY NO TO THE BOTS AGRESSION",
+    "no-mention": "you have to mention who you want to punch",
+    "self-mention": "I will not make you punch yourself, mention someone else",
+    "embed_title": "PUNCH IN THE FACE",
+    "embed_description": "punched"
+  },
+  "ressurect": {
+    "description": "Resurrect someone dead",
+    "usage": "<@mention>",
+    "no-mention": "How to resurrect the nothing, which never died?",
+    "self-mention": "wait wut?? If you're dead, how are you typing?",
+    "bot": "a robot has been restarted UwU >. <",
+    "embed_title": "Resurrect",
+    "embed_description": "resurrected"
+  },
+  "sarrar": {
+    "description": "Dance with me?",
+    "usage": "[@mention]",
+    "no-mention": {
+      "embed_title": "Dance with me?",
+      "embed_description_start": "Someone wants to dance with",
+      "embed_description_end": "React to dance",
+      "embed_footer": "Do you want to dance with me? 30 seconds to accept the dance"
     },
-    "grumbe": {
-        "description": "Grumble humpf",
-        "embed_title": "Humpf",
-        "embed_description": "is grumbling"
+    "embed_title": "Dance",
+    "embed_description": "danced with"
+  },
+  "shot": {
+    "description": "Shoot someone",
+    "usage": "<@mention>",
+    "no-mention": "you have to mention who you want to shoot",
+    "self-mention": "say no to suicide",
+    "embed_title": "Shoot",
+    "embed_description": "bullet"
+  },
+  "shy": {
+    "description": "imin shame",
+    "usage": "[@mention]",
+    "no-mention": {
+      "embed_title": "Shame 👉👈",
+      "embed_description": "ashamed >.<"
     },
-    "hug": {
-        "description": "Hug someone",
-        "usage": "<@mention>",
-        "bot": "you went to hug a robot, but ended up touching where you shouldn't, and took an electric discharge of 220V and 10mA, luckily the current used in the bot is low ...",
-        "no-mention": "you must mention who wants to hug",
-        "self-mention": "you are not the elastic woman to hug yourself, please mention who you want to hug",
-        "embed_title": "Hug",
-        "embed_description": "just hugged"
+    "embed_title": "Shame 👉👈",
+    "embed_description_start": "made",
+    "embed_description_end": "shamed >.<"
+  },
+  "slap": {
+    "description": "Slap someone",
+    "usage": "<@mention>",
+    "bot": "Do not slap robots maaaan",
+    "no-mention": "you have to mention who you want to hit",
+    "self-mention": "I will not make you hit yourself, mention someone else",
+    "embed_title": "Slap",
+    "embed_description": "slapped"
+  },
+  "think": {
+    "description": "Thinking",
+    "usage": "[@mention]",
+    "bot": "Awnnn what a beautiful thing, you are thinking in a bot >.<",
+    "no-mention": {
+      "embed_title": "Think",
+      "embed_description": "is thinking"
     },
-    "kill": {
-        "description": "Kill the one you can't stand anymore",
-        "usage": "<@mention>",
-        "no-mention": "if you don't kill anyone, you don't commit crimes. STONKS",
-        "self-mention": "I don't like suicide ...",
-        "bot": {
-            "embed_title": "Disconnect",
-            "embed_description_start": "*Robots cannot be killed, but they can be turned off ...*",
-            "embed_description_end": "turned off the bot"
-        },
-        "embed_title": "Kill",
-        "embed_description": "K I L L E D"
+    "embed_title": "Think",
+    "embed_description": "is thinking in"
+  },
+  "coinflip": {
+    "description": "Bet stars on a coin toss with someone",
+    "usage": "<@mention> <value>",
+    "invalid-value": "this value is not valid",
+    "no-mention": "you didn't mention your opponent",
+    "bot": "bots cannot bet e.e",
+    "self-mention": "you cannot bet against yourself",
+    "no-dbuser": "this user does not have a Menhera's Bank account!",
+    "poor": "you don't have all these stars to bet on!",
+    "confirm": "challenged you to a flip coin worth **{{value}}** :star:. Heads, {{user1}} wins, tails, {{user2}} wins!\n{{user2}} must accept by reacting with ✅! He has 5 seconds!",
+    "cara": "**HEADS**",
+    "coroa": "**TAILS**",
+    "cara-texto": "won {{value}} :star: betting with {{user}}! I'm sorry {{user}}, we are not always victorious",
+    "coroa-texto": "won {{value}} :star: betting against {{user}}!"
+  },
+  "give": {
+    "description": "Transfer something from your inventory to someone",
+    "usage": "<option> <@mention> <value>",
+    "no-args": "you must choose whether to give stars, demons, angels, demigods or gods!\nUse `{{prefix}}help give` to more information",
+    "bad-usage": "you must use give `option` @user `value`",
+    "self-mention": "you cannot mention yourself!",
+    "no-dbuser": "this user does not have a Menhera's Bank account!",
+    "invalid-value": "The value to be given must be greater than 0",
+    "poor": "you don't have this much of",
+    "transfered": "you transferred **{{value}}** {{emoji}} to",
+    "stars": "stars",
+    "demons": "demons",
+    "angels": "angels",
+    "semigods": "demigods",
+    "gods": "gods"
+  },
+  "shop": {
+    "description": "Access the Menhera's thrift store",
+    "embed_title": "Menhera's Thrift store",
+    "embed_description_saldo": "Your current balance is **{{value}}**⭐ stars",
+    "embed_footer": "Type in the chat option of your choice",
+    "dataLoja_fields": {
+      "name": "Choose from one of the options to access my Thrift Store",
+      "value": "1 - Purchase\n2 - Sell"
     },
-    "kiss": {
-        "description": "Kiss that loved one",
-        "usage": "<@mention>",
-        "bot": "you kissed a robot, and ended up touching a peeled wire. Lucky he had slippers on his feet. The connection with the Earth was cut, no circuit was closed. This time it was safe.",
-        "no-mention": "you have to mention who you want to kiss you dumb",
-        "self-mention": "I know self-love is important, but please kiss someone other than yourself",
-        "embed_title": "Kiss",
-        "embed_description": "kissed"
+    "invalid-option": "This choice is invalid",
+    "dataComprar_fields": {
+      "name": "Purchasing Options",
+      "value": "1 - Buy Colors \n2 - Buy Rolls"
     },
-    "laugh": {
-        "description": "Show everyone that you're laughing",
-        "usage": "[@mention]",
-        "no-mention": {
-            "embed_title": "ASDKSAKDSAK LAUGHING",
-            "embed_description": "is pissing with laughter"
-        },
-        "embed_title": "LOL",
-        "embed_description_start": "made",
-        "embed_description_end": "fall to the ground laughing"
+    "colors": {
+      "purple": "1 - Dark purple",
+      "red": "2 - Red",
+      "cian": "3 - Cian",
+      "green": "4 - Neon Green",
+      "pink": "5 - Hot Pink",
+      "yellow": "6 - Yellow",
+      "your_choice": "7 - Your Choice"
     },
-    "mamar": {
-        "description": "Give that monster quality suck",
-        "usage": "<@mention>",
-        "no-mention": "LOL look at the autistic suckling nowhere",
-        "bot": "just got his mouth wet with oil sucking the bot",
-        "self-mention": "don't try to deceive me, I know you can't suckle yourself! Appoint another person to suck",
-        "embed_title": "Suck",
-        "embed_description": "Suckled"
+    "dataCores_fields": {
+      "title": "Buy Colors for Your Profile",
+      "field_name": "Price List",
+      "color_code": "Color code:",
+      "price": "Price:"
     },
-    "pat": {
-        "description": "Pat someone's head",
-        "usage": "<@mention>",
-        "no-mention": "you have to mention who you want to cuddle",
-        "self-mention": "if you want you can cuddle yourself now. Use my command only to cuddle others",
-        "embed_title": "Cuddle",
-        "embed_description": "just cuddle"
+    "buy_colors": {
+      "has-color": "I appreciate your excitement to buy at my thrift store, but you already have this color!",
+      "poor": "you don't have enough stars to buy this color!",
+      "buy-success": "all done! You bought the color **{{name}}** for **{{price}}** ⭐! You got **{{stars}} **⭐ stars",
+      "yc-message": "Submit a hexcolor code **WITHOUT A HASHTAG** (Example: AABBCC) of your choice to add to your profile",
+      "yc-confirm": "WOOOOW !!! YOU'VE JUST BUYED A COLOR OF YOUR CHOICE !!! \nYour current choice is **#{{color}}** \nYou spent **{{price}}** ⭐ and got **{{stars}}** ⭐ stars",
+      "invalid-color": "this color is not a valid color!"
     },
-    "poke": {
-        "description": "Poke Someone",
-        "usage": "<@mention>",
-        "no-mention": "you have to mention who you want to poke duuuh",
-        "self-mention": "poking yourself is no fun! Mention who you want to poke",
-        "embed_title": "Poke",
-        "embed_description": "poked"
+    "dataRolls_fields": {
+      "title": "Buy Rolls",
+      "description": "Your current balance is **{{balance}}** ⭐ stars, and you have **{{rolls}}** 🔑 rolls",
+      "footer": "Type in the chat how many rolls you want to buy",
+      "fields": {
+        "name": "Price List",
+        "value": "1 Roll = **{{price}}** ⭐"
+      },
+      "buy_rolls": {
+        "invalid-number": "this value is not a valid number!",
+        "poor": "you don't have enough stars to buy this amount of rolls!",
+        "success": "you bought **{{quantity}}** 🔑 rolls for **{{value}}** ⭐ stars! \nNow you have **{{rolls}}** 🔑 and **{{stars}}** ⭐"
+      }
     },
-    "punch": {
-        "description": "Punch someone in the ass",
-        "usage": "<@mention>",
-        "bot": "SAY NO TO THE BOTS AGRESSION",
-        "no-mention": "you have to mention who you want to punch",
-        "self-mention": "I will not make you punch yourself, mention someone else",
-        "embed_title": "PUNCH IN THE FACE",
-        "embed_description": "punched"
-    },
-    "ressurect": {
-        "description": "Resurrect someone dead",
-        "usage": "<@mention>",
-        "no-mention": "How to resurrect the nothing, which never died?",
-        "self-mention": "wait wut?? If you're dead, how are you typing?",
-        "bot": "a robot has been restarted UwU >. <",
-        "embed_title": "Resurrect",
-        "embed_description": "resurrected"
-    },
-    "sarrar": {
-        "description": "Dance with me?",
-        "usage": "[@mention]",
-        "no-mention": {
-            "embed_title": "Dance with me?",
-            "embed_description_start": "Someone wants to dance with",
-            "embed_description_end": "React to dance",
-            "embed_footer": "Do you want to dance with me? 30 seconds to accept the dance"
-        },
-        "embed_title": "Dance",
-        "embed_description": "danced with"
-    },
-    "shot": {
-        "description": "Shoot someone",
-        "usage": "<@mention>",
-        "no-mention": "you have to mention who you want to shoot",
-        "self-mention": "say no to suicide",
-        "embed_title": "Shoot",
-        "embed_description": "bullet"
-    },
-    "shy": {
-        "description": "imin shame",
-        "usage": "[@mention]",
-        "no-mention": {
-            "embed_title": "Shame 👉👈",
-            "embed_description": "ashamed >.<"
-        },
-        "embed_title": "Shame 👉👈",
-        "embed_description_start": "made",
-        "embed_description_end": "shamed >.<"
-    },
-    "slap": {
-        "description": "Slap someone",
-        "usage": "<@mention>",
-        "bot": "Do not slap robots maaaan",
-        "no-mention": "you have to mention who you want to hit",
-        "self-mention": "I will not make you hit yourself, mention someone else",
-        "embed_title": "Slap",
-        "embed_description": "slapped"
-    },
-    "think": {
-        "description": "Thinking",
-        "usage": "[@mention]",
-        "bot": "Awnnn what a beautiful thing, you are thinking in a bot >.<",
-        "no-mention": {
-            "embed_title": "Think",
-            "embed_description": "is thinking"
-        },
-        "embed_title": "Think",
-        "embed_description": "is thinking in"
-    },
-    "coinflip": {
-        "description": "Bet stars on a coin toss with someone",
-        "usage": "<@mention> <value>",
-        "invalid-value": "this value is not valid",
-        "no-mention": "you didn't mention your opponent",
-        "bot": "bots cannot bet e.e",
-        "self-mention": "you cannot bet against yourself",
-        "no-dbuser": "this user does not have a Menhera's Bank account!",
-        "poor": "you don't have all these stars to bet on!",
-        "confirm": "challenged you to a flip coin worth **{{value}}** :star:. Heads, {{user1}} wins, tails, {{user2}} wins!\n{{user2}} must accept by reacting with ✅! He has 5 seconds!",
-        "cara": "**HEADS**",
-        "coroa": "**TAILS**",
-        "cara-texto": "won {{value}} :star: betting with {{user}}! I'm sorry {{user}}, we are not always victorious",
-        "coroa-texto": "won {{value}} :star: betting against {{user}}!"
-    },
-    "give": {
-        "description": "Transfer something from your inventory to someone",
-        "usage": "<option> <@mention> <value>",
-        "no-args": "you must choose whether to give stars, demons, angels, demigods or gods!\nUse `{{prefix}}help give` to more information",
-        "bad-usage": "you must use give `option` @user `value`",
-        "self-mention": "you cannot mention yourself!",
-        "no-dbuser": "this user does not have a Menhera's Bank account!",
-        "invalid-value": "The value to be given must be greater than 0",
-        "poor": "you don't have this much of",
-        "transfered": "you transferred **{{value}}** {{emoji}} to",
-        "stars": "stars",
-        "demons": "demons",
-        "angels": "angels",
-        "semigods": "demigods",
-        "gods": "gods"
-    },
-    "shop": {
-        "description": "Access the Menhera's thrift store",
-        "embed_title": "Menhera's Thrift store",
-        "embed_description_saldo": "Your current balance is **{{value}}**⭐ stars",
-        "embed_footer": "Type in the chat option of your choice",
-        "dataLoja_fields": {
-            "name": "Choose from one of the options to access my Thrift Store",
-            "value": "1 - Purchase\n2 - Sell"
-        },
-        "invalid-option": "This choice is invalid",
-        "dataComprar_fields": {
-            "name": "Purchasing Options",
-            "value": "1 - Buy Colors \n2 - Buy Rolls"
-        },
-        "colors": {
-            "purple": "1 - Dark purple",
-            "red": "2 - Red",
-            "cian": "3 - Cian",
-            "green": "4 - Neon Green",
-            "pink": "5 - Hot Pink",
-            "yellow": "6 - Yellow",
-            "your_choice": "7 - Your Choice"
-        },
-        "dataCores_fields": {
-            "title": "Buy Colors for Your Profile",
-            "field_name": "Price List",
-            "color_code": "Color code:",
-            "price": "Price:"
-        },
-        "buy_colors": {
-            "has-color": "I appreciate your excitement to buy at my thrift store, but you already have this color!",
-            "poor": "you don't have enough stars to buy this color!",
-            "buy-success": "all done! You bought the color **{{name}}** for **{{price}}** ⭐! You got **{{stars}} **⭐ stars",
-            "yc-message": "Submit a hexcolor code **WITHOUT A HASHTAG** (Example: AABBCC) of your choice to add to your profile",
-            "yc-confirm": "WOOOOW !!! YOU'VE JUST BUYED A COLOR OF YOUR CHOICE !!! \nYour current choice is **#{{color}}** \nYou spent **{{price}}** ⭐ and got **{{stars}}** ⭐ stars",
-            "invalid-color": "this color is not a valid color!"
-        },
-        "dataRolls_fields": {
-            "title": "Buy Rolls",
-            "description": "Your current balance is **{{balance}}** ⭐ stars, and you have **{{rolls}}** 🔑 rolls",
-            "footer": "Type in the chat how many rolls you want to buy",
-            "fields": {
-                "name": "Price List",
-                "value": "1 Roll = **{{price}}** ⭐"
-            },
-            "buy_rolls": {
-                "invalid-number": "this value is not a valid number!",
-                "poor": "you don't have enough stars to buy this amount of rolls!",
-                "success": "you bought **{{quantity}}** 🔑 rolls for **{{value}}** ⭐ stars! \nNow you have **{{rolls}}** 🔑 and **{{stars}}** ⭐"
-            }
-        },
-        "dataVender": {
-            "main": {
-                "description": "Your current balance is **{{saldo}}** ⭐ stars and your hunts are: \n\n <:DEMON:758765044443381780>: **{{demons}}** demons \n <:ANGEL:758765044204437535> : **{{anjos}}** angels \n <:SEMIGOD:758766732235374674>: **{{sd}}** demigods \n <:God:758474639570894899>: **{{deuses}}** gods",
-                "footer": "Type in the chat the option of your choice and the value",
-                "fields": {
-                    "name": "Sales Options",
-                    "value": "1 - Sell Demons (700⭐) \n2 - Sell Angels (3500) \n3 - Sell Semi-Gods (10000⭐) \n4 - Sell Gods (50000⭐) \n\nEnter your choice and quantity. Example: (`1 50`)"
-                }
-            },
-            "invalid-args": "this value is not a valid number!",
-            "poor": "you don't have all these {{var}}!",
-            "success-demon": "you sold **{{value}}** <:DEMON:758765044443381780> demons and received ** {{cost}} ** ⭐ star! \nNow you have ** {{quantity}} ** <:DEMON:758765044443381780> and **{{star}}** ⭐ ",
-            "success-angel": "you sold ** {{value}} ** <:Angel:758765044204437535> angels and received ** {{cost}} ** ⭐ star! \nNow you have ** {{quantity}} ** <:Angel:758765044204437535> and ** {{star}} ** ⭐ ",
-            "success-sd": "you sold ** {{value}} ** <:SEMIGOD:758766732235374674> demigods and received ** {{cost}} ** ⭐ star! \nNow you have ** {{quantity}} ** <:SEMIGOD:758766732235374674> and ** {{star}} ** ⭐ ",
-            "success-god": "you sold ** {{value}} ** <:God:758474639570894899> gods and received ** {{cost}} ** ⭐ star! \nNow you have ** {{quantity}} ** <:God:758474639570894899> and ** {{star}} ** ⭐ "
+    "dataVender": {
+      "main": {
+        "description": "Your current balance is **{{saldo}}** ⭐ stars and your hunts are: \n\n <:DEMON:758765044443381780>: **{{demons}}** demons \n <:ANGEL:758765044204437535> : **{{anjos}}** angels \n <:SEMIGOD:758766732235374674>: **{{sd}}** demigods \n <:God:758474639570894899>: **{{deuses}}** gods",
+        "footer": "Type in the chat the option of your choice and the value",
+        "fields": {
+          "name": "Sales Options",
+          "value": "1 - Sell Demons (700⭐) \n2 - Sell Angels (3500) \n3 - Sell Semi-Gods (10000⭐) \n4 - Sell Gods (50000⭐) \n\nEnter your choice and quantity. Example: (`1 50`)"
         }
-    },
-    "wallet": {
-        "description": "See someone's wallet",
-        "usage": "[user]",
-        "no-dbuser": "this user is not in my database",
-        "title": "{{user}}'s Wallet",
-        "stars": "Stars",
-        "rolls": "Rolls",
-        "unknow-user": "user not found",
-        "demons": "Demons",
-        "angels": "Angels",
-        "sd": "Demigods",
-        "god": "Gods"
-    },
-    "8ball": {
-        "description": "Ask me something",
-        "usage": "<question>",
-        "no-args": "you must send a question for me to answer"
-    },
-    "divorce": {
-        "description": "Don't you want to be married to that horn anymore? Divorce with this command",
-        "author-single": "you are not married to anyone",
-        "confirmation": "Do you really want to divorce from",
-        "canceled": "I think it’s good that you're still married, but if you thought about breaking up once, maybe you’ll think more often ... If the relationship doesn’t make you feel good, there’s no point in continuing…",
-        "confirmed_start": "just got divorced from",
-        "confirmed_end": "I'm sorry for having finished everything ... But it's okay, all relationships are just experiences, you still have a lot of life ahead of you, and you will still find people who do you as well as you deserve"
-    },
-    "fodase": {
-        "description": "Did someone send something that nobody asked? Take the fuck"
-    },
-    "humor": {
-        "description": "Send it when someone makes that joke joke",
-        "phrase": "think you're funny omegalul\n kekw the master of humor"
-    },
-    "hunt": {
-        "description": "Hunt demons like XANDÃO",
-        "no-args": "you must choose between hunting",
-        "help": "** HOW DOES HUNTING WORK? ** \nYou can hunt every hour, and you can choose from 4 hunts: `demons`, `angels`,` demigods` and `gods` \nThe farther to the right, the more valuable, but also, more difficult to hunt, and less chance of success \nOn my support server, the chances of hunting are greater!",
-        "footer": "Did you know that on my support server, your chances of success are greater?",
-        "title": "Hunt",
-        "description_start": "You went out to hunt with Super Xandão, and hunted `{{value}}`",
-        "god_hunted_success": "HOLLY MOLLY!!! YOU BECOME A HERO FRUIT OF A DIVINE FORÇE, AS WELL AS XANDÃO, AND GOT ​​HUNTING `{{value}}` GOD !!!!!!",
-        "god_hunted_fail": "Hunting Gods is an extremely difficult mission, and you ended up failing, taking a total of `{{value}}` gods home",
-        "demons": "Demons",
-        "angels": "Angels",
-        "sd": "Demigods",
-        "gods": "Gods",
-        "cooldown": "rest champion, you've already gone on your hunt. Try again in ** {{time}} ** minutes \n <:attention:759603958418767922> | ** TIP: ** Did you know that on my support server, the chances of hunting are greater? m!support"
-    },
-    "marry": {
-        "description": "Marry with the love of your life",
-        "usage": "<@mention>",
-        "no-mention": "you must mention the user you want to marry",
-        "bot": "you can't marry bots",
-        "self-mention": "you can't marry yourself :(",
-        "married": "you are already married !!",
-        "no-dbuser": "suck this user to add him to my database",
-        "mention-married": "calm there married eater, this user is already married!",
-        "confirmation_start": "accepted to marry",
-        "confirmation_end": "You have 15 seconds to accept",
-        "acepted": "just married with",
-        "negated": "denied marry with"
-    },
-    "ship": {
-        "description": "Would you make a good couple?",
-        "usage": "<user1> <user2>",
-        "missing-args": "you didn't mention two users",
-        "no-dbuser": "user not found in database",
-        "unknow-user": "user not found",
-        "value": "Ship value:",
-        "message-start": "Would the two lovebirds make a good couple?",
-        "default": "Maybe the bot that is broken, or you will not work at all :(",
-        "low": "Yeah, nothing is impossible right kekw",
-        "ok": "WHAT A COUPLE couple, can already date",
-        "medium": "Aren't these two already dating? Because they should",
-        "high": "What a magnificent couple, just perfect",
-        "perfect": "MY FRIEND, THOSE GUYS ARE MADE TO ANOTHER PRO"
-    },
-    "sucumba": {
-        "description": "SUCUMBA MUCALOL (portuguese command)",
-        "usage": "<menção || texto>",
-        "start": "(this is a portuguese only command)\n\nSUCUMBA",
-        "end": "\nVERME\nLIXO\nHORROROSO\nRUIM\nHORRÍVEL\nESCÓRIA\nBOSTA\nLIXOSO\nPERITO EM ENTREGAR GAME\nCOCOZENTO"
-    },
-    "xandão": {
-        "description": "NO PRESSURE (this is a portuguese only command)",
-        "usage": "[text]",
-        "err_message": "In order for me to run this command, ask administrators to grant me `Manage Webhooks` permission"
-    },
-    "avatar": {
-        "description": "Shows someone's avatar",
-        "usage": "[user]",
-        "title": "{{user}}'s avatar",
-        "footer": "What a beautiful image uwuwu",
-        "unknow-user": "user not found",
-        "client_title": "my avayar ({{user}})",
-        "client_footer": "I'm very beautiful, right?"
-    },
-    "color": {
-        "description": "Change the color of your profile",
-        "usage": "[color]",
-        "embed_title": "Your Colors",
-        "embed_description": "Use {{prefix}}color [choice] to change the color of your profile",
-        "dataChoose": {
-            "title": "Your color has been successfully changed",
-            "description": "You can now see your profile with your new color!"
-        },
-        "no-own": "you don't have this color! Use {{prefix}}color to see available colors"
-    },
-    "profile": {
-        "description": "See your profile, or someone else's",
-        "usage": "[user]",
-        "bot": "What? OMEGALUL fuck the bots, robots don't have a profile",
-        "no-dbuser": "this user does not have a profile!",
-        "banned": "this user is ** banned ** from using Menhera \n **Reason: * `{{reason}}`",
-        "mamou": "suck",
-        "unknow-user": "user not found",
-        "mamado": "suckled",
-        "married-with": "Married with",
-        "married-in": "Married in",
-        "about-me": "About Me"
-    },
-    "top": {
-        "description": "See the top of my users",
-        "usage": "<option> [page]",
-        "txt": "You must choose between `{{prefix}}top suckers`,` {{prefix}}top suckled`, `{{prefix}}top demons`,` {{prefix}}top angels`, `{{prefix}}top demigods`, `{{prefix}}top gods`,` {{prefix}}top stars`, `{{prefix}}top votes`,` {{prefix}}top dungeon` or `{{prefix}}top families`",
-        "mamadoresTitle": "Suckers Leaderboard",
-        "mamouTitle": "Suckled Leaderboard",
-        "demonTitle": "Demons Leaderboard",
-        "angelTitle": "Angels Leaderboard",
-        "sdTitle": "Demigods Leaderboard",
-        "godTitle": "Gods Leaderboard",
-        "starsTitle": "Stars Leaderboard",
-        "voteTitle": "Upvotes Leaderboard",
-        "rpgTitle": "Dungeon Leaderboard",
-        "familyTitle": "Families Leaderboard",
-        "classeTitle": "{{classe}} Leaderboard"
-    },
-    "updates": {
-        "description": "See my latest updates",
-        "title": "Release update notes",
-        "footer": "was updated by"
-    },
-    "blockchannel": {
-        "description": "Lock or Unlock the current channel from using my commands",
-        "block": "my commands were ** Blocked ** on this channel! Use {{prefix}}lock to unlock them",
-        "unblock": "my commands were **Unblocked** on this channel!"
-    },
-    "language": {
-        "description": "Change the language I speak on this server",
-        "question": "What language do you want me to speak?"
-    },
-    "prefix": {
-        "description": "Change my prefix on this server",
-        "usage": "<prefix>",
-        "no-args": "you didn't say what the new server prefix will be",
-        "invalid-input": "this prefix is ​​too long! Choose a prefix with a maximum of 3 characters",
-        "done": "Okay, my prefix on this server is now {{prefix}}"
-    },
-    "unwarn": {
-        "description": "Remove a warning from a user",
-        "usage": "<user>",
-        "no-mention": "no users were mentioned",
-        "bot": "there is no way to take warnings of something that will never have warnings",
-        "self-mention": "You will not take your own warnings",
-        "invalid-member": "ethis member is not on this server !!!",
-        "no-warns": "has no warns to delete",
-        "success": "warn successfully removed"
-    },
-    "warn": {
-        "description": "Warn a user",
-        "usage": "<user> [reason]",
-        "no-mention": "no users were mentioned",
-        "bot": "Bots cannot be warned!",
-        "self-mention": "The guy wants to be warned LOL",
-        "invalid-member": "this member is not on this server !!!",
-        "default_reason": "No reason given",
-        "embed_title": "WARNED",
-        "embed_description": "warned"
-    },
-    "warnlist": {
-        "description": "See how many warns a person has",
-        "usage": "user",
-        "no-mention": "no users found",
-        "bot": "bots are really cool to receive warnings",
-        "invalid-member": "ethis member is not on this server !!!",
-        "embed_title": "{{user}}'s warns",
-        "no_warns": "nhas no warnings on this server",
-        "warn": "Warn",
-        "Warned_by": "Warned by:",
-        "Reason": "Reason:",
-        "Data": "Data:",
-        "WarnID": "WarnID:"
-    },
-    "aboutme": {
-        "description": "Change your About Me",
-        "usage": "<text>",
-        "no-args": "you didn't tell me what you want to put in your 'About Me'",
-        "args-limit": "your sobremim cannot be longer than 200 characters",
-        "success": "your 'About Me' has been successfully changed! Use m!Profile >.<"
-    },
-    "botinfo": {
-        "description": "Shows current bot information",
-        "embed_description": "Hi my name is **{{name}}**, and I'm a Brazilian Bot for Discord with a focus on fun and RPG! I was created in **{{createdAt}}** and joined this server in **{{joinedAt}}**. Since I woke up, I've already executed **{{cmds}}** commands\n\nA little bit about me: My name is Menhera, I am 16 years old and I LOVE, I mean, I LOOOOVE to use these faces: (>...<). To learn more, go to my [twitter](https://twitter.com/__MenheraBot) and my [support server](https://discord.gg/fZMdQbA)",
-        "embed_footer": "was created by",
-        "channels": "Channels",
-        "memory": "Memory",
-        "version": "Version"
-    },
-    "delete": {
-        "description": "Delete your profile from the database",
-        "confirm": "Are you sure you want to delete your account from the server database? \nYou have 5 seconds to decide",
-        "negated": "Perfect!! Your profile ** has not ** been deleted",
-        "acepted": "Your profile has been deleted from my database :("
-    },
-    "help": {
-        "description": "Displays the bot's help page",
-        "usage": "[command]",
-        "actions": "Actions",
-        "fun": "Fun",
-        "economy": "Economy",
-        "seconds": "seconds",
-        "info": "Info",
-        "mod": "Moderation",
-        "rpg": "RPG",
-        "util": "Useful",
-        "link_name": "Additional Links",
-        "link_value": "[Add me](https://discord.com/api/oauth2/authorize?client_id=708014856711962654&permissions=1007025271&scope=bot)|[Vote for me](https://top.gg/bot/708014856711962654/vote)|[My Support Server](https://discord.gg/fZMdQbA)",
-        "dm_sent": "I sent my commands to your dm, look there >.<",
-        "dm_error": "apparently your dms are closed, i can't send you my help page",
-        "without-info": "No command information for {{cmd}}",
-        "cmd": "Command",
-        "aliases": "Can be called by",
-        "desc": "Description",
-        "howTo": "Usage",
-        "footer": "Syntax: <> = required, [] = optional"
-    },
-    "invite": {
-        "description": "Add the bot on some server",
-        "embed_title": "Click to add me on any server",
-        "embed_footer": "Command executed by {{user}}",
-        "embed_description": "This link will take you directly to the discord page to add the bot to any server you manage"
-    },
-    "ping": {
-        "description": "Shows the ping of the bot and its API",
-        "latency": "Latency:",
-        "api": "API Latency:"
-    },
-    "report": {
-        "description": "Report a bug to my owner",
-        "usage": "<bug explanation>",
-        "no-args": "you didn't report the Bug!",
-        "thanks": "Thank you very much for reporting this bug to my owner"
-    },
-    "roll": {
-        "description": "Use a DR to reset your hunting time",
-        "can-hunt": "you can already hunt! Hunt before using a Roll!",
-        "poor": "you don't have DailyRolls! Vote for me to redeem a DR",
-        "success": "all done! You reset your hunting time, you can now hunt!"
-    },
-    "say": {
-        "description": "Make me say something",
-        "usage": "<text>",
-        "no-args": "you must type the text you want me to speak"
-    },
-    "suggest": {
-        "description": "Suggest something to the bot owner",
-        "usage": "<suggestion>",
-        "no-args": "you didn't type what you want to suggest to Lux about the bot",
-        "thanks": "thank you so much for sending me a suggestion <3"
-    },
-    "support": {
-        "description": "Invitation link to Bot support server",
-        "embed_title": "Click here to enter Menhera's support server",
-        "emebd_footer": "Command executed by"
-    },
-    "vote": {
-        "description": "Vote for the bot (pelase vote, it helps a lot X3 >.<)",
-        "embed_title": "Click to vote for me",
-        "embed_footer": "Command executed by",
-        "embed_description": "Votes help in promoting the bot, and this is extremely important"
-    },
-    "infohabilidade": {
-        "description": "Shows the skills of a particular class",
-        "usage": "[option] [ability]",
-        "invalid-option": "this option is not valid",
-        "no-args": "How to use this command?\nYou can use these ways\n\nm!ih class <class> - returns all the unique abilities of the aforementioned class\n\nm!ih mine - returns all your skills",
-        "no-class": "you didn't mention the class",
-        "invalid-class": "this class does not exist",
-        "abilities": "{{class}}'s abilities",
-        "desc": "Description",
-        "dmg": "Damage",
-        "heal": "Heal",
-        "cost": "Cost",
-        "type": "Type",
-        "non-aventure": "you are not an adventurer",
-        "your-abilities": "Your skills",
-        "uniquePower": "Unique Ability",
-        "ability": "Abiliity",
-        "familyAbility": "Family Skill"
-    },
-    "boss": {
-        "description": "Fighting a BOSS",
-        "non-aventure": "you are not an adventurer",
-        "min-level": "You need to be level ** 20 ** to fight bosses",
-        "amarelou": "you thought better of it, and ended up giving up fighting bosses",
-        "preparation": {
-            "title": "Battle preparation",
-            "description": "Send a ** YES ** to battle a boss",
-            "footer": "These skills are available for use",
-            "stats": "Your current status is",
-            "description_end": "------AVAILABLE SKILLS------"
-        },
-        "life": "Life",
-        "mana": "Mana",
-        "dmg": "Physical damage",
-        "damage": "Damage",
-        "armor": "Armor",
-        "cost": "Cost",
-        "ap": "Ability Power",
-        "battle": {
-            "basic": "Basic Attack",
-            "enter": "You enter the battle against Boss, and your enemy is: ** {{enemy}} **, it statuses are:",
-            "end": "What do you do? \n \n ** OPTIONS: ** \n ",
-            "footer": "Type in the chat the option of your choice",
-            "newTecnique": "You tried a new technique, but were unsuccessful! The enemy attacks",
-            "timeout": "You took too long to take action, and you were attacked!"
-        }
-    },
-    "deposite": {
-        "description": "Deposits a certain amount in the Family bank",
-        "usage": "<value>",
-        "non-aventure": "you are not an adventurer",
-        "no-family": "you are not in any family",
-        "invalid-value": "this value is not valid",
-        "poor": "you don't have all these magic stones",
-        "transfered": "you have successfully transferred **{{value}}** :gem: to the family bank!"
-    },
-    "dungeon": {
-        "description": "Go for a dungeon adventure",
-        "non-aventure": "you are not an adventurer",
-        "no-enemy": "Not this one! An error occurred when I went to detect which enemy you will find, sorry about that ... Try again ",
-        "preparation": {
-            "title": "Battle preparation",
-            "description": "Send a ** YES ** to enter the dungeon ",
-            "footer": "These skills are available for use",
-            "stats": "Their current status is",
-            "description_end": "------AVAILABLE SKILLS------"
-        },
-        "life": "Life",
-        "mana": "Mana",
-        "dmg": "Physical damage",
-        "damage": "Damage",
-        "armor": "Armor",
-        "cost": "Cost",
-        "ap": "Ability Power",
-        "arregou": "you thought better of it, and ended up giving up on dungeon",
-        "battle": {
-            "basic": "Basic Attack",
-            "enter": "You enter the Dungeon, and are faced with a monster {{type}}: {{name}}, Its statuses are:",
-            "end": "What do you do? \n \n ** OPTIONS: ** \n",
-            "footer": "Type in the chat the option of your choice",
-            "title": "Enemy Found:",
-            "newTecnique": "You tried a new technique, but were unsuccessful! The enemy attacks",
-            "timeout": "You took too long to take action, and you were attacked!"
-        }
-    },
-    "infofamilia": {
-        "description": "View family information",
-        "usage": "<family>",
-        "invalid-args": "This family does not exist! \nFamilies available:",
-        "name": "Name",
-        "value": "Value",
-        "desc": "Description",
-        "damage": "Damage",
-        "heal": "Heal",
-        "cost": "Cost",
-        "embed": {
-            "title": "Family Information for {{family}}",
-            "description": "**Family Level: {{level}}**\nGems needed for the next level: **{{next}}** :gem:",
-            "members": "Members",
-            "bank": "Family Bank",
-            "abilities": "Released Skills"
-        }
-    },
-    "inventory": {
-        "description": "View your inventory",
-        "non-aventure": "you are not an adventurer",
-        "title": "Your inventory",
-        "weapon": "Weapon",
-        "backpack": "Backpack",
-        "backpack-value": "**{{name}}:** **{{value}}** / **{{max}}**",
-        "armor": "Armor",
-        "dmg": "Damage",
-        "prt": "Protection",
-        "battle": "Battle",
-        "items": "Items",
-        "loots": "Battle Lotts"
-    },
-    "família": {
-        "description": "Join a family",
-        "non-aventure": "you are not an adventurer",
-        "low-level": "families are released at level ** 10 **",
-        "has-family": "you are already in the {{name}} family!",
-        "welcome": "welcome to the {{family}} family! See your new Status!"
-    },
-    "register": {
-        "description": "Register an adventurer",
-        "already": "you are already an adventurer, {{name}}-sama",
-        "text": "Welcome!\nDo you want to be an adventurer? \nWhich class do you want to be in? \nQuestions with which class to choose? Enter the [MENHERA SITE](https://menhera-site.vercel.app/classes) to see each class \n",
-        "title": "Adventurers Guild",
-        "footer": "Type in the chat option of your choice",
-        "invalid-input": "this option is not a valid class!",
-        "confirm": "do you really want to be a `{{option}}`? You can never change that again! \n\nSend 'yes' in the chat to confirm your choice",
-        "confirmed": "Welcome to the world of ** Boleham **! Your class is ** {{option}} **, you can now use my RPG commands ",
-        "canceled": "you canceled verification"
-    },
-    "reset": {
-        "description": "Reset your RPG profile",
-        "non-aventure": "you are not an adventurer",
-        "low-level": "you need to be at level **7** to be able to reset",
-        "confirm": "do you really want to reset your RPG profile? This action is ** IRREVERSIBLE ** \nEnter `yes` to confirm",
-        "success": "you have successfully reset your RPG account! To play again, use {{prefix}}register",
-        "cancel": "your account **has not** been reset! "
-    },
-    "status": {
-        "description": "See someone's status",
-        "usage": "[user]",
-        "not-found": "this user is not registered as an adventurer",
-        "title": "{{name}}'s Status",
-        "life": "Life",
-        "class": "Class",
-        "armor": "Armor",
-        "dmg": "Physical Damage",
-        "mana": "Mana",
-        "ap": "Ability Power",
-        "money": "Magic Stones",
-        "ability": "Unique Power",
-        "family": "Family"
-    },
-    "use": {
-        "description": "Use an item from your inventory",
-        "usage": " [item] [amount]",
-        "non-aventure": "you are not an adventurer",
-        "in-battle": "you cannot use potions in the middle of a battle!",
-        "dead": "you can't use potions while you're dead!",
-        "title": "Potions",
-        "embed_description": "Use {{prefix}}use [option] [quantity] to use a potion \n \nYour Status: \n🩸 | Life: ** {{life}} / {{maxLife}} ** \n💧 | Mana: ** {{mana}} / {{maxMana}} **",
-        "field_title": "Items",
-        "out": "**You don't have potions! Buy potions at Old witch House in Village**",
-        "invalid-option": "this option is not valid",
-        "bigger": "this amount is greater than you have!",
-        "full-mana": "your mana is already full!",
-        "full-life": "your life is already full!",
-        "error": "Hey, there was an error using the potion! Call my owner on my support server to see this",
-        "used": "There you go! You used `{{quantidade}}` **{{choice}}**"
-    },
-    "village": {
-        "description": "Go to the village of Boleham",
-        "non-aventure": "you are not an adventurer",
-        "backpack-full": "your backpack has no space to buy these products",
-        "cost": "Cost",
-        "desc": "Description",
-        "invalid-option": "This option is not valid!",
-        "invalid-quantity": "this quantity is not valid",
-        "invalid-value": "this value is not valid",
-        "poor": "you don't have enough magic stones",
-        "index": {
-            "title": "Welcome to the village of Boleham!",
-            "description": "Go to the old witch's house to buy potions \nGo to the blacksmith to buy weapons \nGo to the hotel to rest \nGo to the guild to sell loots and get quests",
-            "field_name": "Options",
-            "field_value": "1 - **Old Witch's House**\n2 - **Blacksmith**\n3 - **Hotel**\n4 - **Guild**",
-            "footer": "Type in the chat where you want to go"
-        },
-        "bruxa": {
-            "title": "Old Witch House",
-            "footer": "Chat your choice and quantity, example: 1 3",
-            "description": "You can use your potions with m! Use \n \nYour magic stones: **{{money}}** 💎",
-            "bought": "you bought **{{quantidade}} {{name}}** for **{{valor}}** 💎"
-        },
-        "ferreiro": {
-            "low-level": "the blacksmith is an environment of giants, and is only released from level **{{level}}**!",
-            "title": "Blacksmith",
-            "description": "Choose what you want to manufacture",
-            "field_name": "Options",
-            "categories": {
-              "sword": "Weapons",
-              "armor": "Armors",
-              "backpack": "Backpacks"
-            },
-            "footer": "Type your choice in chat",
-            "itens-needed": "Required Items",
-            "damage": "Damage",
-            "protection": "Protection",
-            "capacity": "Capacity",
-            "cost": "Cost",
-            "arma": {
-                "description": "Your weapon will be replaced by your choice, so be careful! \n \nChoose what you want to manufacture",
-                "poor": "you don't have required items: `{{items}}`",
-                "change": "You switched your weapon to `{{equip}}`"
-            },
-            "armadura": {
-                "description": "Your armor will be replaced by your choice, so be careful! \n \nChoose what you want to manufacture",
-                "poor": "you don't have required items: `{{items}}`",
-                "change": "you changed your armor to `{{equip}}`"
-            },
-            "mochila": {
-                "description": "Your backpack will be replaced by your choice, so be careful! \n \nChoose what you want to manufacture",
-                "poor": "you don't have required items: `{{items}}`",
-                "change": "you changed your backpack to `{{equip}}`"
-            }
-        },
-        "hotel": {
-            "title": "Boleham's Hotel",
-            "description": "Welcome to the Boleham hotel! Do you want to spend time here to rest? Choose one of the options below of your choice, and rest for free to regenerate your life and mana!",
-            "footer": "Chat your choice",
-            "already": "you're already resting at the hotel!",
-            "dead": "you died on a dungeon adventure, so you are already resting to regain your energy!",
-            "done": "you went to the hotel, and will rest until the end of your schedule",
-            "fields": {
-                "name_one": "Lunch Sleep",
-                "name_two": "Sleep of Life",
-                "name_three": "Sleep of Mana",
-                "name_four": "Hibernation",
-                "value": "**Time**: {{time}}\n🩸 | **Life**: {{life}}\n💧 | **Mana**: {{mana}}"
-            }
-        },
-        "guilda": {
-            "title": "Guild",
-            "footer": "Chat your choice and quantity, example: 1 3",
-            "money": "Your magic stones: **{{money}}** 💎\n\n",
-            "sell-all": "---------------**[ 0 ]**---------------\n<:Chest:760957557538947133> | **SELL ALL**\n",
-            "sold-all": "You sold **{{amount}}** loots for **{{value}}** 💎",
-            "value": "Value",
-            "no-loots": "**YOU DO NOT HAVE LOOTS IN YOUR INVENTORY**",
-            "poor": "you do not have",
-            "unespected-error": "an unexpected error occurred! The sale value is` NaN`",
-            "sold": "you sold **{{quantity}}** **{{name}}** and received **{{value}}** 💎"
-        }
-    },
-    "remember": {
-        "description": "Create a remember that will trigger in the give time",
-        "usage": "<reminder>",
-        "error": "you can't pass a letter far of a number",
-        "no-args": "you didn't say what do you want me to remember you",
-        "get-time": "how long do you want to be remembered? Use `d` for days, `m` for minutes and `h` for hours! \n\nExample: 3h 5m",
-        "cancel": "ok, remember canceled",
-        "low-time": "you cannot be remembered in less than **5** minutes",
-        "high-time": "you cannot be remembered in more than **7** days",
-        "confirm-message": "I will remind you in **{{days}}** days, **{{hours}}** hours and **{{minutes}}** minutes! \nJust one more thing, do you want to be remembered on this channel, or on the DM? be sure to activate your DM's to receive the notification! \n\n📩 - React to **DM**\n⬇️ - React to be notified **here**\n❌ - React to **cancel** this reminder",
-        "channel": "perfectly, I will remember you in that date here on this channel!",
-        "dm": "as you wish, I will remind you in that date in your DM! Remember to activate your DM's so I can send you the reminder!"
-    },
-    "tilt": {
-        "description": "Is someone tilted? Send this to them",
-        "usage": "[@mention]",
-        "phrase": "**I guess someone's tilted**",
-        "phrase-mention": "**ARE YOU TILTED?????**",
-        "footer": "Sent by "
+      },
+      "invalid-args": "this value is not a valid number!",
+      "poor": "you don't have all these {{var}}!",
+      "success-demon": "you sold **{{value}}** <:DEMON:758765044443381780> demons and received ** {{cost}} ** ⭐ star! \nNow you have ** {{quantity}} ** <:DEMON:758765044443381780> and **{{star}}** ⭐ ",
+      "success-angel": "you sold ** {{value}} ** <:Angel:758765044204437535> angels and received ** {{cost}} ** ⭐ star! \nNow you have ** {{quantity}} ** <:Angel:758765044204437535> and ** {{star}} ** ⭐ ",
+      "success-sd": "you sold ** {{value}} ** <:SEMIGOD:758766732235374674> demigods and received ** {{cost}} ** ⭐ star! \nNow you have ** {{quantity}} ** <:SEMIGOD:758766732235374674> and ** {{star}} ** ⭐ ",
+      "success-god": "you sold ** {{value}} ** <:God:758474639570894899> gods and received ** {{cost}} ** ⭐ star! \nNow you have ** {{quantity}} ** <:God:758474639570894899> and ** {{star}} ** ⭐ "
     }
+  },
+  "wallet": {
+    "description": "See someone's wallet",
+    "usage": "[user]",
+    "no-dbuser": "this user is not in my database",
+    "title": "{{user}}'s Wallet",
+    "stars": "Stars",
+    "rolls": "Rolls",
+    "unknow-user": "user not found",
+    "demons": "Demons",
+    "angels": "Angels",
+    "sd": "Demigods",
+    "god": "Gods"
+  },
+  "8ball": {
+    "description": "Ask me something",
+    "usage": "<question>",
+    "no-args": "you must send a question for me to answer"
+  },
+  "divorce": {
+    "description": "Don't you want to be married to that horn anymore? Divorce with this command",
+    "author-single": "you are not married to anyone",
+    "confirmation": "Do you really want to divorce from",
+    "canceled": "I think it’s good that you're still married, but if you thought about breaking up once, maybe you’ll think more often ... If the relationship doesn’t make you feel good, there’s no point in continuing…",
+    "confirmed_start": "just got divorced from",
+    "confirmed_end": "I'm sorry for having finished everything ... But it's okay, all relationships are just experiences, you still have a lot of life ahead of you, and you will still find people who do you as well as you deserve"
+  },
+  "fodase": {
+    "description": "Did someone send something that nobody asked? Take the fuck"
+  },
+  "humor": {
+    "description": "Send it when someone makes that joke joke",
+    "phrase": "think you're funny omegalul\n kekw the master of humor"
+  },
+  "hunt": {
+    "description": "Hunt demons like XANDÃO",
+    "no-args": "you must choose between hunting",
+    "help": "** HOW DOES HUNTING WORK? ** \nYou can hunt every hour, and you can choose from 4 hunts: `demons`, `angels`,` demigods` and `gods` \nThe farther to the right, the more valuable, but also, more difficult to hunt, and less chance of success \nOn my support server, the chances of hunting are greater!",
+    "footer": "Did you know that on my support server, your chances of success are greater?",
+    "title": "Hunt",
+    "description_start": "You went out to hunt with Super Xandão, and hunted `{{value}}`",
+    "god_hunted_success": "HOLLY MOLLY!!! YOU BECOME A HERO FRUIT OF A DIVINE FORÇE, AS WELL AS XANDÃO, AND GOT ​​HUNTING `{{value}}` GOD !!!!!!",
+    "god_hunted_fail": "Hunting Gods is an extremely difficult mission, and you ended up failing, taking a total of `{{value}}` gods home",
+    "demons": "Demons",
+    "angels": "Angels",
+    "sd": "Demigods",
+    "gods": "Gods",
+    "cooldown": "rest champion, you've already gone on your hunt. Try again in ** {{time}} ** minutes \n <:attention:759603958418767922> | ** TIP: ** Did you know that on my support server, the chances of hunting are greater? m!support"
+  },
+  "marry": {
+    "description": "Marry with the love of your life",
+    "usage": "<@mention>",
+    "no-mention": "you must mention the user you want to marry",
+    "bot": "you can't marry bots",
+    "self-mention": "you can't marry yourself :(",
+    "married": "you are already married !!",
+    "no-dbuser": "suck this user to add him to my database",
+    "mention-married": "calm there married eater, this user is already married!",
+    "confirmation_start": "accepted to marry",
+    "confirmation_end": "You have 15 seconds to accept",
+    "acepted": "just married with",
+    "negated": "denied marry with"
+  },
+  "ship": {
+    "description": "Would you make a good couple?",
+    "usage": "<user1> <user2>",
+    "missing-args": "you didn't mention two users",
+    "no-dbuser": "user not found in database",
+    "unknow-user": "user not found",
+    "value": "Ship value:",
+    "message-start": "Would the two lovebirds make a good couple?",
+    "default": "Maybe the bot that is broken, or you will not work at all :(",
+    "low": "Yeah, nothing is impossible right kekw",
+    "ok": "WHAT A COUPLE couple, can already date",
+    "medium": "Aren't these two already dating? Because they should",
+    "high": "What a magnificent couple, just perfect",
+    "perfect": "MY FRIEND, THOSE GUYS ARE MADE TO ANOTHER PRO"
+  },
+  "sucumba": {
+    "description": "SUCUMBA MUCALOL (portuguese command)",
+    "usage": "<menção || texto>",
+    "start": "(this is a portuguese only command)\n\nSUCUMBA",
+    "end": "\nVERME\nLIXO\nHORROROSO\nRUIM\nHORRÍVEL\nESCÓRIA\nBOSTA\nLIXOSO\nPERITO EM ENTREGAR GAME\nCOCOZENTO"
+  },
+  "xandão": {
+    "description": "NO PRESSURE (this is a portuguese only command)",
+    "usage": "[text]",
+    "err_message": "In order for me to run this command, ask administrators to grant me `Manage Webhooks` permission"
+  },
+  "avatar": {
+    "description": "Shows someone's avatar",
+    "usage": "[user]",
+    "title": "{{user}}'s avatar",
+    "footer": "What a beautiful image uwuwu",
+    "unknow-user": "user not found",
+    "client_title": "my avayar ({{user}})",
+    "client_footer": "I'm very beautiful, right?"
+  },
+  "color": {
+    "description": "Change the color of your profile",
+    "usage": "[color]",
+    "embed_title": "Your Colors",
+    "embed_description": "Use {{prefix}}color [choice] to change the color of your profile",
+    "dataChoose": {
+      "title": "Your color has been successfully changed",
+      "description": "You can now see your profile with your new color!"
+    },
+    "no-own": "you don't have this color! Use {{prefix}}color to see available colors"
+  },
+  "profile": {
+    "description": "See your profile, or someone else's",
+    "usage": "[user]",
+    "bot": "What? OMEGALUL fuck the bots, robots don't have a profile",
+    "no-dbuser": "this user does not have a profile!",
+    "banned": "this user is ** banned ** from using Menhera \n **Reason: * `{{reason}}`",
+    "mamou": "Suck",
+    "unknow-user": "user not found",
+    "mamado": "Suckled",
+    "married-with": "Married with",
+    "married-in": "Married in",
+    "about-me": "About Me",
+    "commands": "Commands",
+    "commands-usage": "{{user}} used my commands **{{usedCount}}** times.\nHis most used command was **{{mostUsedCommandName}}**, used **{{mostUsedCommandCount}}** times"
+  },
+  "top": {
+    "description": "See the top of my users",
+    "usage": "<option> [page]",
+    "txt": "You must choose between `{{prefix}}top suckers`,` {{prefix}}top suckled`, `{{prefix}}top demons`,` {{prefix}}top angels`, `{{prefix}}top demigods`, `{{prefix}}top gods`,` {{prefix}}top stars`, `{{prefix}}top votes`,` {{prefix}}top dungeon` or `{{prefix}}top families`",
+    "mamadoresTitle": "Suckers Leaderboard",
+    "mamouTitle": "Suckled Leaderboard",
+    "demonTitle": "Demons Leaderboard",
+    "angelTitle": "Angels Leaderboard",
+    "sdTitle": "Demigods Leaderboard",
+    "godTitle": "Gods Leaderboard",
+    "starsTitle": "Stars Leaderboard",
+    "voteTitle": "Upvotes Leaderboard",
+    "rpgTitle": "Dungeon Leaderboard",
+    "familyTitle": "Families Leaderboard",
+    "classeTitle": "{{classe}} Leaderboard"
+  },
+  "updates": {
+    "description": "See my latest updates",
+    "title": "Release update notes",
+    "footer": "was updated by"
+  },
+  "blockchannel": {
+    "description": "Lock or Unlock the current channel from using my commands",
+    "block": "my commands were ** Blocked ** on this channel! Use {{prefix}}lock to unlock them",
+    "unblock": "my commands were **Unblocked** on this channel!"
+  },
+  "language": {
+    "description": "Change the language I speak on this server",
+    "question": "What language do you want me to speak?"
+  },
+  "prefix": {
+    "description": "Change my prefix on this server",
+    "usage": "<prefix>",
+    "no-args": "you didn't say what the new server prefix will be",
+    "invalid-input": "this prefix is ​​too long! Choose a prefix with a maximum of 3 characters",
+    "done": "Okay, my prefix on this server is now {{prefix}}"
+  },
+  "unwarn": {
+    "description": "Remove a warning from a user",
+    "usage": "<user>",
+    "no-mention": "no users were mentioned",
+    "bot": "there is no way to take warnings of something that will never have warnings",
+    "self-mention": "You will not take your own warnings",
+    "invalid-member": "ethis member is not on this server !!!",
+    "no-warns": "has no warns to delete",
+    "success": "warn successfully removed"
+  },
+  "warn": {
+    "description": "Warn a user",
+    "usage": "<user> [reason]",
+    "no-mention": "no users were mentioned",
+    "bot": "Bots cannot be warned!",
+    "self-mention": "The guy wants to be warned LOL",
+    "invalid-member": "this member is not on this server !!!",
+    "default_reason": "No reason given",
+    "embed_title": "WARNED",
+    "embed_description": "warned"
+  },
+  "warnlist": {
+    "description": "See how many warns a person has",
+    "usage": "user",
+    "no-mention": "no users found",
+    "bot": "bots are really cool to receive warnings",
+    "invalid-member": "ethis member is not on this server !!!",
+    "embed_title": "{{user}}'s warns",
+    "no_warns": "nhas no warnings on this server",
+    "warn": "Warn",
+    "Warned_by": "Warned by:",
+    "Reason": "Reason:",
+    "Data": "Data:",
+    "WarnID": "WarnID:"
+  },
+  "aboutme": {
+    "description": "Change your About Me",
+    "usage": "<text>",
+    "no-args": "you didn't tell me what you want to put in your 'About Me'",
+    "args-limit": "your sobremim cannot be longer than 200 characters",
+    "success": "your 'About Me' has been successfully changed! Use m!Profile >.<"
+  },
+  "botinfo": {
+    "description": "Shows current bot information",
+    "embed_description": "Hi my name is **{{name}}**, and I'm a Brazilian Bot for Discord with a focus on fun and RPG! I was created in **{{createdAt}}** and joined this server in **{{joinedAt}}**. Since I woke up, I've already executed **{{cmds}}** commands\n\nA little bit about me: My name is Menhera, I am 16 years old and I LOVE, I mean, I LOOOOVE to use these faces: (>...<). To learn more, go to my [twitter](https://twitter.com/__MenheraBot) and my [support server](https://discord.gg/fZMdQbA)",
+    "embed_footer": "was created by",
+    "channels": "Channels",
+    "memory": "Memory",
+    "version": "Version"
+  },
+  "delete": {
+    "description": "Delete your profile from the database",
+    "confirm": "Are you sure you want to delete your account from the server database? \nYou have 5 seconds to decide",
+    "negated": "Perfect!! Your profile ** has not ** been deleted",
+    "acepted": "Your profile has been deleted from my database :("
+  },
+  "help": {
+    "description": "Displays the bot's help page",
+    "usage": "[command]",
+    "actions": "Actions",
+    "fun": "Fun",
+    "economy": "Economy",
+    "seconds": "seconds",
+    "info": "Info",
+    "mod": "Moderation",
+    "rpg": "RPG",
+    "util": "Useful",
+    "link_name": "Additional Links",
+    "link_value": "[Add me](https://discord.com/api/oauth2/authorize?client_id=708014856711962654&permissions=1007025271&scope=bot)|[Vote for me](https://top.gg/bot/708014856711962654/vote)|[My Support Server](https://discord.gg/fZMdQbA)",
+    "dm_sent": "I sent my commands to your dm, look there >.<",
+    "dm_error": "apparently your dms are closed, i can't send you my help page",
+    "without-info": "No command information for {{cmd}}",
+    "cmd": "Command",
+    "aliases": "Can be called by",
+    "desc": "Description",
+    "howTo": "Usage",
+    "footer": "Syntax: <> = required, [] = optional"
+  },
+  "invite": {
+    "description": "Add the bot on some server",
+    "embed_title": "Click to add me on any server",
+    "embed_footer": "Command executed by {{user}}",
+    "embed_description": "This link will take you directly to the discord page to add the bot to any server you manage"
+  },
+  "ping": {
+    "description": "Shows the ping of the bot and its API",
+    "latency": "Latency:",
+    "api": "API Latency:"
+  },
+  "report": {
+    "description": "Report a bug to my owner",
+    "usage": "<bug explanation>",
+    "no-args": "you didn't report the Bug!",
+    "thanks": "Thank you very much for reporting this bug to my owner"
+  },
+  "roll": {
+    "description": "Use a DR to reset your hunting time",
+    "can-hunt": "you can already hunt! Hunt before using a Roll!",
+    "poor": "you don't have DailyRolls! Vote for me to redeem a DR",
+    "success": "all done! You reset your hunting time, you can now hunt!"
+  },
+  "say": {
+    "description": "Make me say something",
+    "usage": "<text>",
+    "no-args": "you must type the text you want me to speak"
+  },
+  "suggest": {
+    "description": "Suggest something to the bot owner",
+    "usage": "<suggestion>",
+    "no-args": "you didn't type what you want to suggest to Lux about the bot",
+    "thanks": "thank you so much for sending me a suggestion <3"
+  },
+  "support": {
+    "description": "Invitation link to Bot support server",
+    "embed_title": "Click here to enter Menhera's support server",
+    "emebd_footer": "Command executed by"
+  },
+  "vote": {
+    "description": "Vote for the bot (pelase vote, it helps a lot X3 >.<)",
+    "embed_title": "Click to vote for me",
+    "embed_footer": "Command executed by",
+    "embed_description": "Votes help in promoting the bot, and this is extremely important"
+  },
+  "infohabilidade": {
+    "description": "Shows the skills of a particular class",
+    "usage": "[option] [ability]",
+    "invalid-option": "this option is not valid",
+    "no-args": "How to use this command?\nYou can use these ways\n\nm!ih class <class> - returns all the unique abilities of the aforementioned class\n\nm!ih mine - returns all your skills",
+    "no-class": "you didn't mention the class",
+    "invalid-class": "this class does not exist",
+    "abilities": "{{class}}'s abilities",
+    "desc": "Description",
+    "dmg": "Damage",
+    "heal": "Heal",
+    "cost": "Cost",
+    "type": "Type",
+    "non-aventure": "you are not an adventurer",
+    "your-abilities": "Your skills",
+    "uniquePower": "Unique Ability",
+    "ability": "Abiliity",
+    "familyAbility": "Family Skill"
+  },
+  "boss": {
+    "description": "Fighting a BOSS",
+    "non-aventure": "you are not an adventurer",
+    "min-level": "You need to be level ** 20 ** to fight bosses",
+    "amarelou": "you thought better of it, and ended up giving up fighting bosses",
+    "preparation": {
+      "title": "Battle preparation",
+      "description": "Send a ** YES ** to battle a boss",
+      "footer": "These skills are available for use",
+      "stats": "Your current status is",
+      "description_end": "------AVAILABLE SKILLS------"
+    },
+    "life": "Life",
+    "mana": "Mana",
+    "dmg": "Physical damage",
+    "damage": "Damage",
+    "armor": "Armor",
+    "cost": "Cost",
+    "ap": "Ability Power",
+    "battle": {
+      "basic": "Basic Attack",
+      "enter": "You enter the battle against Boss, and your enemy is: ** {{enemy}} **, it statuses are:",
+      "end": "What do you do? \n \n ** OPTIONS: ** \n ",
+      "footer": "Type in the chat the option of your choice",
+      "newTecnique": "You tried a new technique, but were unsuccessful! The enemy attacks",
+      "timeout": "You took too long to take action, and you were attacked!"
+    }
+  },
+  "deposite": {
+    "description": "Deposits a certain amount in the Family bank",
+    "usage": "<value>",
+    "non-aventure": "you are not an adventurer",
+    "no-family": "you are not in any family",
+    "invalid-value": "this value is not valid",
+    "poor": "you don't have all these magic stones",
+    "transfered": "you have successfully transferred **{{value}}** :gem: to the family bank!"
+  },
+  "dungeon": {
+    "description": "Go for a dungeon adventure",
+    "non-aventure": "you are not an adventurer",
+    "no-enemy": "Not this one! An error occurred when I went to detect which enemy you will find, sorry about that ... Try again ",
+    "preparation": {
+      "title": "Battle preparation",
+      "description": "Send a ** YES ** to enter the dungeon ",
+      "footer": "These skills are available for use",
+      "stats": "Their current status is",
+      "description_end": "------AVAILABLE SKILLS------"
+    },
+    "life": "Life",
+    "mana": "Mana",
+    "dmg": "Physical damage",
+    "damage": "Damage",
+    "armor": "Armor",
+    "cost": "Cost",
+    "ap": "Ability Power",
+    "arregou": "you thought better of it, and ended up giving up on dungeon",
+    "battle": {
+      "basic": "Basic Attack",
+      "enter": "You enter the Dungeon, and are faced with a monster {{type}}: {{name}}, Its statuses are:",
+      "end": "What do you do? \n \n ** OPTIONS: ** \n",
+      "footer": "Type in the chat the option of your choice",
+      "title": "Enemy Found:",
+      "newTecnique": "You tried a new technique, but were unsuccessful! The enemy attacks",
+      "timeout": "You took too long to take action, and you were attacked!"
+    }
+  },
+  "infofamilia": {
+    "description": "View family information",
+    "usage": "<family>",
+    "invalid-args": "This family does not exist! \nFamilies available:",
+    "name": "Name",
+    "value": "Value",
+    "desc": "Description",
+    "damage": "Damage",
+    "heal": "Heal",
+    "cost": "Cost",
+    "embed": {
+      "title": "Family Information for {{family}}",
+      "description": "**Family Level: {{level}}**\nGems needed for the next level: **{{next}}** :gem:",
+      "members": "Members",
+      "bank": "Family Bank",
+      "abilities": "Released Skills"
+    }
+  },
+  "inventory": {
+    "description": "View your inventory",
+    "non-aventure": "you are not an adventurer",
+    "title": "Your inventory",
+    "weapon": "Weapon",
+    "backpack": "Backpack",
+    "backpack-value": "**{{name}}:** **{{value}}** / **{{max}}**",
+    "armor": "Armor",
+    "dmg": "Damage",
+    "prt": "Protection",
+    "battle": "Battle",
+    "items": "Items",
+    "loots": "Battle Lotts"
+  },
+  "família": {
+    "description": "Join a family",
+    "non-aventure": "you are not an adventurer",
+    "low-level": "families are released at level ** 10 **",
+    "has-family": "you are already in the {{name}} family!",
+    "welcome": "welcome to the {{family}} family! See your new Status!"
+  },
+  "register": {
+    "description": "Register an adventurer",
+    "already": "you are already an adventurer, {{name}}-sama",
+    "text": "Welcome!\nDo you want to be an adventurer? \nWhich class do you want to be in? \nQuestions with which class to choose? Enter the [MENHERA SITE](https://menhera-site.vercel.app/classes) to see each class \n",
+    "title": "Adventurers Guild",
+    "footer": "Type in the chat option of your choice",
+    "invalid-input": "this option is not a valid class!",
+    "confirm": "do you really want to be a `{{option}}`? You can never change that again! \n\nSend 'yes' in the chat to confirm your choice",
+    "confirmed": "Welcome to the world of ** Boleham **! Your class is ** {{option}} **, you can now use my RPG commands ",
+    "canceled": "you canceled verification"
+  },
+  "reset": {
+    "description": "Reset your RPG profile",
+    "non-aventure": "you are not an adventurer",
+    "low-level": "you need to be at level **7** to be able to reset",
+    "confirm": "do you really want to reset your RPG profile? This action is ** IRREVERSIBLE ** \nEnter `yes` to confirm",
+    "success": "you have successfully reset your RPG account! To play again, use {{prefix}}register",
+    "cancel": "your account **has not** been reset! "
+  },
+  "status": {
+    "description": "See someone's status",
+    "usage": "[user]",
+    "not-found": "this user is not registered as an adventurer",
+    "title": "{{name}}'s Status",
+    "life": "Life",
+    "class": "Class",
+    "armor": "Armor",
+    "dmg": "Physical Damage",
+    "mana": "Mana",
+    "ap": "Ability Power",
+    "money": "Magic Stones",
+    "ability": "Unique Power",
+    "family": "Family"
+  },
+  "use": {
+    "description": "Use an item from your inventory",
+    "usage": " [item] [amount]",
+    "non-aventure": "you are not an adventurer",
+    "in-battle": "you cannot use potions in the middle of a battle!",
+    "dead": "you can't use potions while you're dead!",
+    "title": "Potions",
+    "embed_description": "Use {{prefix}}use [option] [quantity] to use a potion \n \nYour Status: \n🩸 | Life: ** {{life}} / {{maxLife}} ** \n💧 | Mana: ** {{mana}} / {{maxMana}} **",
+    "field_title": "Items",
+    "out": "**You don't have potions! Buy potions at Old witch House in Village**",
+    "invalid-option": "this option is not valid",
+    "bigger": "this amount is greater than you have!",
+    "full-mana": "your mana is already full!",
+    "full-life": "your life is already full!",
+    "error": "Hey, there was an error using the potion! Call my owner on my support server to see this",
+    "used": "There you go! You used `{{quantidade}}` **{{choice}}**"
+  },
+  "village": {
+    "description": "Go to the village of Boleham",
+    "non-aventure": "you are not an adventurer",
+    "backpack-full": "your backpack has no space to buy these products",
+    "cost": "Cost",
+    "desc": "Description",
+    "invalid-option": "This option is not valid!",
+    "invalid-quantity": "this quantity is not valid",
+    "invalid-value": "this value is not valid",
+    "poor": "you don't have enough magic stones",
+    "index": {
+      "title": "Welcome to the village of Boleham!",
+      "description": "Go to the old witch's house to buy potions \nGo to the blacksmith to buy weapons \nGo to the hotel to rest \nGo to the guild to sell loots and get quests",
+      "field_name": "Options",
+      "field_value": "1 - **Old Witch's House**\n2 - **Blacksmith**\n3 - **Hotel**\n4 - **Guild**",
+      "footer": "Type in the chat where you want to go"
+    },
+    "bruxa": {
+      "title": "Old Witch House",
+      "footer": "Chat your choice and quantity, example: 1 3",
+      "description": "You can use your potions with m! Use \n \nYour magic stones: **{{money}}** 💎",
+      "bought": "you bought **{{quantidade}} {{name}}** for **{{valor}}** 💎"
+    },
+    "ferreiro": {
+      "low-level": "the blacksmith is an environment of giants, and is only released from level **{{level}}**!",
+      "title": "Blacksmith",
+      "description": "Choose what you want to manufacture",
+      "field_name": "Options",
+      "categories": {
+        "sword": "Weapons",
+        "armor": "Armors",
+        "backpack": "Backpacks"
+      },
+      "footer": "Type your choice in chat",
+      "itens-needed": "Required Items",
+      "damage": "Damage",
+      "protection": "Protection",
+      "capacity": "Capacity",
+      "cost": "Cost",
+      "arma": {
+        "description": "Your weapon will be replaced by your choice, so be careful! \n \nChoose what you want to manufacture",
+        "poor": "you don't have required items: `{{items}}`",
+        "change": "You switched your weapon to `{{equip}}`"
+      },
+      "armadura": {
+        "description": "Your armor will be replaced by your choice, so be careful! \n \nChoose what you want to manufacture",
+        "poor": "you don't have required items: `{{items}}`",
+        "change": "you changed your armor to `{{equip}}`"
+      },
+      "mochila": {
+        "description": "Your backpack will be replaced by your choice, so be careful! \n \nChoose what you want to manufacture",
+        "poor": "you don't have required items: `{{items}}`",
+        "change": "you changed your backpack to `{{equip}}`"
+      }
+    },
+    "hotel": {
+      "title": "Boleham's Hotel",
+      "description": "Welcome to the Boleham hotel! Do you want to spend time here to rest? Choose one of the options below of your choice, and rest for free to regenerate your life and mana!",
+      "footer": "Chat your choice",
+      "already": "you're already resting at the hotel!",
+      "dead": "you died on a dungeon adventure, so you are already resting to regain your energy!",
+      "done": "you went to the hotel, and will rest until the end of your schedule",
+      "fields": {
+        "name_one": "Lunch Sleep",
+        "name_two": "Sleep of Life",
+        "name_three": "Sleep of Mana",
+        "name_four": "Hibernation",
+        "value": "**Time**: {{time}}\n🩸 | **Life**: {{life}}\n💧 | **Mana**: {{mana}}"
+      }
+    },
+    "guilda": {
+      "title": "Guild",
+      "footer": "Chat your choice and quantity, example: 1 3",
+      "money": "Your magic stones: **{{money}}** 💎\n\n",
+      "sell-all": "---------------**[ 0 ]**---------------\n<:Chest:760957557538947133> | **SELL ALL**\n",
+      "sold-all": "You sold **{{amount}}** loots for **{{value}}** 💎",
+      "value": "Value",
+      "no-loots": "**YOU DO NOT HAVE LOOTS IN YOUR INVENTORY**",
+      "poor": "you do not have",
+      "unespected-error": "an unexpected error occurred! The sale value is` NaN`",
+      "sold": "you sold **{{quantity}}** **{{name}}** and received **{{value}}** 💎"
+    }
+  },
+  "remember": {
+    "description": "Create a remember that will trigger in the give time",
+    "usage": "<reminder>",
+    "error": "you can't pass a letter far of a number",
+    "no-args": "you didn't say what do you want me to remember you",
+    "get-time": "how long do you want to be remembered? Use `d` for days, `m` for minutes and `h` for hours! \n\nExample: 3h 5m",
+    "cancel": "ok, remember canceled",
+    "low-time": "you cannot be remembered in less than **5** minutes",
+    "high-time": "you cannot be remembered in more than **7** days",
+    "confirm-message": "I will remind you in **{{days}}** days, **{{hours}}** hours and **{{minutes}}** minutes! \nJust one more thing, do you want to be remembered on this channel, or on the DM? be sure to activate your DM's to receive the notification! \n\n📩 - React to **DM**\n⬇️ - React to be notified **here**\n❌ - React to **cancel** this reminder",
+    "channel": "perfectly, I will remember you in that date here on this channel!",
+    "dm": "as you wish, I will remind you in that date in your DM! Remember to activate your DM's so I can send you the reminder!"
+  },
+  "tilt": {
+    "description": "Is someone tilted? Send this to them",
+    "usage": "[@mention]",
+    "phrase": "**I guess someone's tilted**",
+    "phrase-mention": "**ARE YOU TILTED?????**",
+    "footer": "Sent by "
+  }
 }
