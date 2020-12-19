@@ -895,5 +895,20 @@
     "phrase": "**Se pá que alguém ta tiltado ein**",
     "phrase-mention": "**TA TILTADO CABELO ROSA????**",
     "footer": "Enviado por "
+  },
+  "coinflipstats": {
+    "description": "Mostre seus dados de jogos de coinflip",
+    "usage": "",
+    "embed-title": "Status do coinflip de {{user}}",
+    "no-data": "você nunca jogou uma partida de coinflip!",
+    "embed-footer": "continue jogando coinflip e seja uma pessoa incrível!",
+    "played": "Partidas Jogadas",
+    "wins": "Vitórias",
+    "loses": "Derrotas",
+    "earnMoney": "Dinheiro Ganho",
+    "lostMoney": "Dinheiro Perdido",
+    "profit": "Lucro Total",
+    "loss": "Prejuízo Total",
+    "error": "ocorreu um erro ao checar suas estatísticas"
   }
 }

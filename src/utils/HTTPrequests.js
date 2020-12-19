@@ -31,7 +31,7 @@ module.exports.status = async (data) => {
     json: true,
   };
 
-  request(options).catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
+  await request(options).catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
 };
 
 module.exports.shards = async (data, shard) => {
@@ -48,7 +48,7 @@ module.exports.shards = async (data, shard) => {
     json: true,
   };
 
-  request(options).catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
+  await request(options).catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
 };
 
 module.exports.postCommand = async (data) => {
@@ -70,7 +70,7 @@ module.exports.postCommand = async (data) => {
     json: true,
   };
 
-  request(options).catch((err) => console.log(`[HTTP ERROR]${err.message}`));
+  await request(options).catch((err) => console.log(`[HTTP ERROR]${err.message}`));
 };
 
 module.exports.clearCommands = async () => {
@@ -83,7 +83,7 @@ module.exports.clearCommands = async () => {
     uri: `${config.api_IP}/api/commands/clear`,
   };
 
-  request(options).catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
+  await request(options).catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
 };
 
 module.exports.getCommands = async () => {
@@ -167,4 +167,43 @@ module.exports.getTopUsers = async () => {
   }).catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
 
   return has;
+};
+
+module.exports.getCoinflipUserStats = async (id) => {
+  const options = {
+    method: 'GET',
+    uri: `${config.api_IP}/api/coinflip`,
+    headers: {
+      'User-Agent': 'MenheraClient',
+      token: config.api_TOKEN,
+    },
+    body: {
+      userId: id,
+    },
+    json: true,
+  };
+
+  let has = false;
+
+  await request(options).then((data) => {
+    has = data;
+  }).catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
+  return has;
+};
+
+module.exports.postCoinflipGame = async (winnerId, loserId, betValue, date) => {
+  const options = {
+    method: 'POST',
+    uri: `${config.api_IP}/api/coinflip`,
+    headers: {
+      'User-Agent': 'MenheraClient',
+      token: config.api_TOKEN,
+    },
+    body: {
+      winnerId, loserId, betValue, date,
+    },
+    json: true,
+  };
+
+  await request(options).catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
 };

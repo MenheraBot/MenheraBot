@@ -873,5 +873,20 @@
     "phrase": "**I guess someone's tilted**",
     "phrase-mention": "**ARE YOU TILTED?????**",
     "footer": "Sent by "
+  },
+  "coinflipstats": {
+    "description": "Show your coinflip game data",
+    "usage": "",
+    "embed-title": "Coinflip stats for {{user}}",
+    "no-data": "you never played a coinflip game!",
+    "embed-footer": "keep playing coinflip and be an amazing person!",
+    "played": "Matches Played",
+    "wins": "Wins",
+    "loses": "Losses",
+    "earnMoney": "Earned Money",
+    "lostMoney": "Lost Money",
+    "profit": "Total Profit",
+    "loss": "Total Loss",
+    "error": "an error occurred while checking your statistics"
   }
 }

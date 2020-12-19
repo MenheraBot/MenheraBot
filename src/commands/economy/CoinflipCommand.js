@@ -1,4 +1,5 @@
 const Command = require('../../structures/command');
+const http = require('../../utils/HTTPrequests');
 
 module.exports = class CoinflipCommand extends Command {
   constructor(client) {
@@ -38,26 +39,34 @@ module.exports = class CoinflipCommand extends Command {
 
       const coletor = msg.createReactionCollector(filter, { max: 1, time: 5000 });
 
-      coletor.on('collect', () => {
+      coletor.on('collect', async () => {
         const shirleyTeresinha = ['Cara', 'Coroa'];
         const choice = shirleyTeresinha[Math.floor(Math.random() * shirleyTeresinha.length)];
+
+        let winner;
+        let loser;
 
         switch (choice) {
           case 'Cara':
             message.channel.send(`${t('commands:coinflip.cara')}\n${user1} ${t('commands:coinflip.cara-texto', { value: valor, user: user2.username })}`);
             db1.estrelinhas += parseInt(valor);
             db2.estrelinhas -= parseInt(valor);
-            db1.save();
-            db2.save();
+            winner = user1.id;
+            loser = user2.id;
+            await db1.save();
+            await db2.save();
             break;
           case 'Coroa':
             message.channel.send(`${t('commands:coinflip.coroa')}\n${user2} ${t('commands:coinflip.coroa-texto', { value: valor, user: user1.username })}`);
             db1.estrelinhas -= parseInt(valor);
             db2.estrelinhas += parseInt(valor);
-            db1.save();
-            db2.save();
+            winner = user2.id;
+            loser = user1.id;
+            await db1.save();
+            await db2.save();
             break;
         }
+        await http.postCoinflipGame(winner, loser, parseInt(valor), Date.now());
       });
     });
   }
