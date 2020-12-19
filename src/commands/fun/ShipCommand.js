@@ -10,22 +10,24 @@ module.exports = class ShipCommand extends Command {
     });
   }
 
-  async run({ message, args, authorData }, t) {
+  async run({ message, args }, t) {
     if (!args[0]) return message.menheraReply('error', t('commands:ship.missing-args'));
     if (!args[1]) return message.menheraReply('error', t('commands:ship.missing-args'));
 
     let user2;
+    let user1;
 
     try {
+      user1 = await this.client.users.fetch(args[0].replace(/[<@!>]/g, ''));
       user2 = await this.client.users.fetch(args[1].replace(/[<@!>]/g, ''));
     } catch {
       return message.menheraReply('error', t('commands:ship.unknow-user'));
     }
 
-    if (!authorData) return message.menheraReply('error', t('commands:ship.no-dbuser'));
+    if (!user1) return message.menheraReply('error', t('commands:ship.no-dbuser'));
     if (!user2) return message.menheraReply('error', t('commands:ship.no-dbuser'));
 
-    const value1 = await this.client.database.Users.findOne({ id: authorData.id });
+    const value1 = await this.client.database.Users.findOne({ id: user1.id });
     const value2 = await this.client.database.Users.findOne({ id: user2.id });
     if (!value1) return message.menheraReply('error', t('commands:ship.no-dbuser'));
     if (!value2) return message.menheraReply('error', t('commands:ship.no-dbuser'));
@@ -43,7 +45,7 @@ module.exports = class ShipCommand extends Command {
       value = 100;
     }
 
-    if (value1?.casado === user2.id) value = 100;
+    if (user1?.casado === user2.id) value = 100;
 
     const username1 = message.author.username;
     const username2 = user2.username;
