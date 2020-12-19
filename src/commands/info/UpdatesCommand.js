@@ -20,13 +20,17 @@ module.exports = class UpdatesCommand extends Command {
       .setTitle(`${t('commands:updates.title')} ${version}`)
       .setColor('#a7e74f')
       .setFooter(`${this.client.user.username} ${t('commands:updates.footer')} ${owner.tag}`, owner.displayAvatarURL({ format: 'png', dynamic: true }))
-      .setDescription(`**Top**
+      .setDescription(`**COINFLIP**
 
-      Adicionado mais dois tops:
+      O coinflip agora salva seus dados!!!
 
-      • \`m!top comandos\`: Mostra os 10 comandos mais usados da Menhera
-      • \`m!top usuários\`: Mostra os 10 usuários que mais usaram comandos da Menhera
-      • \`m!top usuário <usuário>\`: Mostra os 10 comandos mais usados de um usuário em específico`);
+      • O comando \`m!coinflip\` agora salva quantas partidas você ja ganhou, perdeu, quando dinheiro ganhou e perdeu também!
+      • No futuro vou criar mais um top para os maiores lucros e prejuízos do coinflip!
+      • O comando \`m!coinflipstatus\` mostra os seus status do coinflip!
+
+      Começe a apostar, é divertido !
+
+      `);
 
     message.channel.send(message.author, embed);
   }
