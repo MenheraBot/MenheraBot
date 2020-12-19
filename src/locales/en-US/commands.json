@@ -207,11 +207,16 @@
     "self-mention": "you cannot bet against yourself",
     "no-dbuser": "this user does not have a Menhera's Bank account!",
     "poor": "you don't have all these stars to bet on!",
-    "confirm": "challenged you to a flip coin worth **{{value}}** :star:. Heads, {{user1}} wins, tails, {{user2}} wins!\n{{user2}} must accept by reacting with ✅! He has 7 seconds!",
+    "confirm-start": "challenged you to a heads-up bet worth **{{value}}** ⭐. Heads,",
+    "confirm-middle": "wins, tails, ",
+    "win": "wins",
+    "confirm-end": "must accept by reacting with ✅! He has **7** seconds!",
     "cara": "**HEADS**",
     "coroa": "**TAILS**",
-    "cara-texto": "won {{value}} :star: betting with {{user}}! I'm sorry {{user}}, we are not always victorious",
-    "coroa-texto": "won {{value}} :star: betting against {{user}}!"
+    "cara-texto-start": "won {{value}} :star: betting with ",
+    "cara-text-middle": "I'm sorry",
+    "cara-text-end": ", we are not always victorious",
+    "coroa-texto": "won {{value}} :star: betting against"
   },
   "give": {
     "description": "Transfer something from your inventory to someone",

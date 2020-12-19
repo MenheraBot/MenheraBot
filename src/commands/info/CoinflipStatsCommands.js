@@ -42,12 +42,12 @@ module.exports = class CoinflipStatsCommand extends Command {
         },
         {
           name: `🏆 | ${t('commands:coinflipstats.wins')}`,
-          value: `**${data.winGames}** | (${data.winPorcentage})%`,
+          value: `**${data.winGames}** | (${data.winPorcentage}) **%**`,
           inline: true,
         },
         {
           name: `🦧 | ${t('commands:coinflipstats.loses')}`,
-          value: `**${data.lostGames}** | (${data.lostPorcentage})%`,
+          value: `**${data.lostGames}** | (${data.lostPorcentage}) **%**`,
           inline: true,
         },
         {

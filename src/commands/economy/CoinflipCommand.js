@@ -33,7 +33,7 @@ module.exports = class CoinflipCommand extends Command {
     if (valor > db1.estrelinhas) return message.menheraReply('error', t('commands:coinflip.poor'));
     if (valor > db2.estrelinhas) return message.channel.send(`<:negacao:759603958317711371> **|** ${user2} ${t('commands:coinflip.poor')}`);
 
-    message.channel.send(`${user2}, ${user1} ${t('commands:coinflip.confirm', { value: valor, user1: user1.username, user2: user2.username })}`).then((msg) => {
+    message.channel.send(`${user2}, ${user1} ${t('commands:coinflip.confirm-start', { value: valor })} ${user1} ${t('commands:coinflip.confirm-middle')} ${user2} ${t('commands:coinflip.win')}!\n${user2} ${t('commands:coinflip.confirm-end')}`).then((msg) => {
       msg.react('✅');
       const filter = (reaction, usuario) => reaction.emoji.name === '✅' && usuario.id === user2.id;
 
@@ -48,7 +48,7 @@ module.exports = class CoinflipCommand extends Command {
 
         switch (choice) {
           case 'Cara':
-            message.channel.send(`${t('commands:coinflip.cara')}\n${user1} ${t('commands:coinflip.cara-texto', { value: valor, user: user2.username })}`);
+            message.channel.send(`${t('commands:coinflip.cara')}\n${user1} ${t('commands:coinflip.cara-texto-start', { value: valor })} ${user2}! ${t('commands:coinflip.cara-text-middle')} ${user2} ${t('commands:coinflip.cara-text-end')}`);
             db1.estrelinhas += parseInt(valor);
             db2.estrelinhas -= parseInt(valor);
             winner = user1.id;
@@ -57,7 +57,7 @@ module.exports = class CoinflipCommand extends Command {
             await db2.save();
             break;
           case 'Coroa':
-            message.channel.send(`${t('commands:coinflip.coroa')}\n${user2} ${t('commands:coinflip.coroa-texto', { value: valor, user: user1.username })}`);
+            message.channel.send(`${t('commands:coinflip.coroa')}\n${user2} ${t('commands:coinflip.coroa-texto', { value: valor })} ${user1}`);
             db1.estrelinhas -= parseInt(valor);
             db2.estrelinhas += parseInt(valor);
             winner = user2.id;
