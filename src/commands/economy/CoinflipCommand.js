@@ -37,7 +37,7 @@ module.exports = class CoinflipCommand extends Command {
       msg.react('✅');
       const filter = (reaction, usuario) => reaction.emoji.name === '✅' && usuario.id === user2.id;
 
-      const coletor = msg.createReactionCollector(filter, { max: 1, time: 5000 });
+      const coletor = msg.createReactionCollector(filter, { max: 1, time: 7000 });
 
       coletor.on('collect', async () => {
         const shirleyTeresinha = ['Cara', 'Coroa'];
