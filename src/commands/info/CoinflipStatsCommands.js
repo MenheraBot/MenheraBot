@@ -52,16 +52,16 @@ module.exports = class CoinflipStatsCommand extends Command {
         },
         {
           name: `📥 | ${t('commands:coinflipstats.earnMoney')}`,
-          value: `**${data.winMoney}**`,
+          value: `**${data.winMoney}** :star:`,
           inline: true,
         },
         {
           name: `📤 | ${t('commands:coinflipstats.lostMoney')}`,
-          value: `**${data.lostMoney}**`,
+          value: `**${data.lostMoney}** :star:`,
           inline: true,
         },
       ]);
-    totalMoney > 0 ? embed.addField(`✅ | ${t('commands:coinflipstats.profit')}`, `**${totalMoney}**`, true) : embed.addField(`❌ | ${t('commands:coinflipstats.loss')}`, `**${totalMoney}**`, true);
+    totalMoney > 0 ? embed.addField(`✅ | ${t('commands:coinflipstats.profit')}`, `**${totalMoney}** :star:`, true) : embed.addField(`❌ | ${t('commands:coinflipstats.loss')}`, `**${totalMoney}** :star:`, true);
 
     message.channel.send(message.author, embed);
   }

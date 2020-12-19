@@ -208,7 +208,7 @@
     "self-mention": "você não pode apostar contra si mesmo",
     "no-dbuser": "este usuário não possui uma conta no Menhera's Bank!",
     "poor": "você não possui todas essas estrelinhas para apostar!",
-    "confirm": "te desafiou para uma aposta de Cara ou Coroa valendo **{{value}}** :star:. Caso caia Cara, {{user1}} vence, caso caia coroa, {{user2}} vence!\n{{user2}} deve aceitar reagindo com ✅! Ele tem 5 segundos!",
+    "confirm": "te desafiou para uma aposta de Cara ou Coroa valendo **{{value}}** :star:. Caso caia Cara, {{user1}} vence, caso caia coroa, {{user2}} vence!\n{{user2}} deve aceitar reagindo com ✅! Ele tem 7 segundos!",
     "cara": "**CARA**",
     "coroa": "**COROA**",
     "cara-texto": "ganhou {{value}} :star: apostando com {{user}}! Sinto muito {{user}}, nem sempre saimos vitoriosos",
