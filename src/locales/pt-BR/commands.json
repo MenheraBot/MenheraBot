@@ -915,5 +915,16 @@
     "profit": "Lucro Total",
     "loss": "Prejuízo Total",
     "error": "ocorreu um erro ao checar suas estatísticas"
+  },
+  "slotmachine": {
+    "description": "Aposte no Caça-Níquel da Menhera",
+    "usage": "<valor > 5000>",
+    "invalid-value": "você deve fazer uma aposta maior de **5000** :star:",
+    "poor": "você não tem estrelinhas o suficiente para apostar",
+    "title": "Caça-Níquel",
+    "lose-title": "Você perdeu <:menhera_cry:744041825140211732>",
+    "lose-text": "Você perdeu **{{valor}}** :star:",
+    "win-title": "Você venceu <:MenheraWink:767210250637279252>",
+    "win-text": "Você apostou **{{valor}}** :star: e acabou ganhando **{{multiplier}}** :star:"
   }
 }

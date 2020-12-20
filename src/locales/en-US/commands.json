@@ -893,5 +893,16 @@
     "profit": "Total Profit",
     "loss": "Total Loss",
     "error": "an error occurred while checking your statistics"
+  },
+  "slotmachine": {
+    "description": "Bet on Menhera's Slot Machine",
+    "usage": "<value > 5000>",
+    "invalid-value": "you must place a bet greater than **5000** :star:",
+    "poor": "you don't have enough stars to bet",
+    "title": "Slot Machine",
+    "lose-title": "You Lose <:menhera_cry:744041825140211732>",
+    "lose-text": "You lost **{{valor}}** :star:",
+    "win-title": "You Won <:MenheraWink:767210250637279252>",
+    "win-text": "You bet **{{value}}** :star: and ended up winning **{{multiplier}}** :star:"
   }
 }
