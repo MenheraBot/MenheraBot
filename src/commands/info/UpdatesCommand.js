@@ -20,17 +20,24 @@ module.exports = class UpdatesCommand extends Command {
       .setTitle(`${t('commands:updates.title')} ${version}`)
       .setColor('#a7e74f')
       .setFooter(`${this.client.user.username} ${t('commands:updates.footer')} ${owner.tag}`, owner.displayAvatarURL({ format: 'png', dynamic: true }))
-      .setDescription(`**COINFLIP**
+      .setDescription(`**Caça-Níqueis**
 
-      O coinflip agora salva seus dados!!!
+      Bem-Vindo ao Caça-Níqueis da Menhera!
 
-      • O comando \`m!coinflip\` agora salva quantas partidas você ja ganhou, perdeu, quando dinheiro ganhou e perdeu também!
-      • No futuro vou criar mais um top para os maiores lucros e prejuízos do coinflip!
-      • O comando \`m!coinflipstatus\` mostra os seus status do coinflip!
+      • Aposte no caça-níquel, e consiga até 100x mais do que apostado!
 
-      Começe a apostar, é divertido !
+      • Use \`m!slot <valor>\` para apostar no caça níquel da Menhera. Lembrando que a aposta deve ser maior de **5000** :star:
 
-      `);
+      • Os retornos para vitórias máximas são:
+
+      :banana: - 5x o apostado
+      :cherries: - 9x o apostado
+      :tangerine: - 17x o apostado
+      :grapes: - 24x o apostado
+      :moneybag: - 34x o apostado
+      :seven: - 100x o apostado
+
+      • Caso você aposte, e perca, você perde 1.5x do que apostou!`);
 
     message.channel.send(message.author, embed);
   }

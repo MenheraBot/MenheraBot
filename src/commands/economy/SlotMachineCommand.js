@@ -87,8 +87,9 @@ module.exports = class SlotMachineCommand extends Command {
       .setDescription(`${line1}\n**---------------** \n${line2}\n**---------------** \n${line3}`);
 
     if (result.multiplier === 0) {
+      user.estrelinhas -= (Math.floor(valor / 2));
       embed.setColor('#fc0505');
-      embed.addField(t('commands:slotmachine.lose-title'), t('commands:slotmachine.lose-text', { valor }));
+      embed.addField(t('commands:slotmachine.lose-title'), t('commands:slotmachine.lose-text', { valor: (valor + Math.floor(valor / 2)) }));
     } else {
       user.estrelinhas += (result.multiplier * valor);
       embed.addField(t('commands:slotmachine.win-title'), t('commands:slotmachine.win-text', { multiplier: (result.multiplier * valor), valor }));
