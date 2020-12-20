@@ -15,7 +15,7 @@ function getSlots(length, multipliers) {
     multiplier: 0,
   };
 
-  if (slot1 === slot2 && slot1 === slot2) {
+  if (slot1 === slot2 && slot1 === slot3) {
     result.multiplier = multipliers[slot1][3];
   } else if (slot1 === slot2 || slot1 === slot3) {
     result.multiplier = multipliers[slot1][2];
