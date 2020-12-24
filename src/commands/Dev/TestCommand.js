@@ -5,72 +5,23 @@ module.exports = class TestCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'test',
+      aliases: ['natal'],
       description: 'Arquivo destinado para testes',
       devsOnly: true,
       category: 'Dev',
     });
   }
 
-  async run(/* { message, args, server }, t */) {
+  async run({ message, args }) {
+    const user = await this.client.users.fetch(args[0]);
+    const canal = this.client.channels.cache.get('717061688729534632');
+    const db = await this.client.database.Users.findOne({ id: args[0] });
 
-    /*  -------------------AUMENTAR OS VALUES DAS BACKPACKS-----------------------------------
-                const files = await this.client.database.Rpg.find()
+    db.estrelinhas += 50000;
+    db.rolls += 20;
+    db.save();
 
-                files.forEach(async file => {
-                    let itens = []
-                    let loots = []
-                    file.inventory.forEach(inv => {
-                        if (inv.type == "Item") {
-                            itens.push(inv)
-                        }
-                    })
-                    file.loots.forEach(loot => {
-                        loots.push(loot.name)
-                    })
-
-                    const countedLoots = countItems(loots)
-                    const countedItems = countItems(itens)
-
-                    let itensAmount = 0;
-                    let lootsAmount = 0;
-
-                    countedItems.forEach(oi => {
-                        itensAmount += oi.amount
-                    })
-
-                    countedLoots.forEach(tchau => {
-                        lootsAmount += tchau.amount
-                    })
-
-                    const espaçoTotal = itensAmount + lootsAmount
-                    const user = await this.client.database.Rpg.findById(file._id)
-
-                    user.backpack = { name: user.backpack.name, capacity: 20, value: espaçoTotal }
-                    user.save()
-
-                }); */
-
-    /*
- =====================================DELETAR GUILDAS INATIVAS==========================================================
-        const files = await this.client.database.Guilds.find()
-        files.forEach(doc => {
-            if(doc.prefix == "m!"){
-                if(doc.blockedChannels == null || doc.blockedChannels.length == 0){
-                    this.client.database.Guilds.findOneAndDelete({id: doc.id}).then(console.log("Arquivo deletado"))
-                }
-            }
-        }); */
+    message.channel.send(`Presenteado ${user}`);
+    canal.send(`**Feliz natal ${user}**\nVocê recebeu **50000** estrelinhas e **20** rolls de presente!`);
   }
 };
-
-// function countItems(arr) {
-//   const countMap = {};
-
-//   for (const element of arr) {
-//     countMap[element] = (countMap[element] || 0) + 1;
-//   }
-//   return Object.entries(countMap).map(([value, count]) => ({
-//     name: value,
-//     amount: count,
-//   }));
-// }
