@@ -337,6 +337,7 @@
   },
   "hunt": {
     "description": "Hunt demons like XANDÃO",
+    "probabilities": "Hunt probabilitites\n\nDemons: `[{{demon}}]`\nAngels: `[{{angel}}]`\nDemigods: `[{{demi}}]`\nGods: `[{{god}}]`",
     "no-args": "you must choose between hunting",
     "help": "** HOW DOES HUNTING WORK? ** \nYou can hunt every hour, and you can choose from 4 hunts: `demons`, `angels`,` demigods` and `gods` \nThe farther to the right, the more valuable, but also, more difficult to hunt, and less chance of success \nOn my support server, the chances of hunting are greater!",
     "footer": "Did you know that on my support server, your chances of success are greater?",

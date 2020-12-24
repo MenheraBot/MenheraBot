@@ -83,7 +83,7 @@ module.exports = class HuntCommand extends Command {
     if (option === 'ajuda') return message.menheraReply('question', t('commands:hunt.help'));
     if (option === 'probabilidades') {
       return message.channel.send(t('commands:hunt.probabilities', {
-        probabilidadeDemonio, probabilidadeAnjo, probabilidadeSD, probabilidadeDeuses,
+        demon: probabilidadeDemonio, angel: probabilidadeAnjo, demi: probabilidadeSD, god: probabilidadeDeuses,
       }));
     }
 

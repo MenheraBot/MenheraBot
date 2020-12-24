@@ -343,6 +343,7 @@
   "hunt": {
     "description": "Caçe demônios como XANDÃO",
     "usage": "",
+    "probabilities": "Probabilidades de caça\n\nDemônios: `[{{demon}}]`\nAnjos: `[{{angel}}]`\nSemideuses: `[{{demi}}]`\nDeuses: `[{{god}}]`",
     "no-args": "você deve escolher entre caçar",
     "help": "**COMO FUNCIONA O CAÇAR?**\nVocê pode caçar a cada uma hora, e você pode escolher entre 4 caças: `demonios`, `anjos`, `semideuses` e `deuses`\nQuanto mais pra direita, mais valioso, mas também, mais dificil de se caçar, e menor a chance de sucesso\nEm meu servidor de suporte, as chances de caça são maiores!\n**Boas Caçadas**",
     "footer": "Sabia que em meu servidor de suporte, suas chances de sucesso são maiores?",
