@@ -904,6 +904,6 @@
     "lose-title": "You Lose <:menhera_cry:744041825140211732>",
     "lose-text": "You lost **{{valor}}** :star:",
     "win-title": "You Won <:MenheraWink:767210250637279252>",
-    "win-text": "You bet **{{value}}** :star: and ended up winning **{{multiplier}}** :star:"
+    "win-text": "You bet **{{valor}}** :star: and ended up winning **{{multiplier}}** :star:"
   }
 }

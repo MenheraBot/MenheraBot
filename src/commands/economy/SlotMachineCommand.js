@@ -50,15 +50,15 @@ module.exports = class SlotMachineCommand extends Command {
 
     const multipliers = [
       {
-        2: 1,
+        2: 1.2,
         3: 5,
       },
       {
-        2: 1,
+        2: 1.4,
         3: 7,
       },
       {
-        2: 1,
+        2: 1.7,
         3: 10,
       },
       {
@@ -66,11 +66,11 @@ module.exports = class SlotMachineCommand extends Command {
         3: 13,
       },
       {
-        2: 2,
+        2: 2.5,
         3: 17,
       },
       {
-        2: 2,
+        2: 3,
         3: 20,
       },
     ];
@@ -91,7 +91,7 @@ module.exports = class SlotMachineCommand extends Command {
       embed.setColor('#fc0505');
       embed.addField(t('commands:slotmachine.lose-title'), t('commands:slotmachine.lose-text', { valor: (valor + Math.floor(valor / 2)) }));
     } else {
-      user.estrelinhas += (result.multiplier * valor);
+      user.estrelinhas += Math.floor(result.multiplier * valor);
       embed.addField(t('commands:slotmachine.win-title'), t('commands:slotmachine.win-text', { multiplier: (result.multiplier * valor), valor }));
     }
 

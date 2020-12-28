@@ -20,24 +20,28 @@ module.exports = class UpdatesCommand extends Command {
       .setTitle(`${t('commands:updates.title')} ${version}`)
       .setColor('#a7e74f')
       .setFooter(`${this.client.user.username} ${t('commands:updates.footer')} ${owner.tag}`, owner.displayAvatarURL({ format: 'png', dynamic: true }))
-      .setDescription(`**Caça-Níqueis**
+      .setDescription(`**Novos Multiplicadores do Caça-Níquel**
 
-      Bem-Vindo ao Caça-Níqueis da Menhera!
+      Os números a esquerda são a quantidade, e a direita, o multiplicador do valor apostado
 
-      • Aposte no caça-níquel, e consiga até 100x mais do que apostado!
+       **2** :banana:  = 1.2x
+       **3** :banana: = 5x
 
-      • Use \`m!slot <valor>\` para apostar no caça níquel da Menhera. Lembrando que a aposta deve ser maior de **5000** :star:
+      **2** :cherries:  = 1.4x
+      **3** :cherries: = 7x
 
-      • Os retornos para vitórias máximas são:
+      **2** :tangerine: = 1.7x
+      **3** :tangerine: =  10x
 
-      :banana: - 5x o apostado
-      :cherries: - 9x o apostado
-      :tangerine: - 17x o apostado
-      :grapes: - 24x o apostado
-      :moneybag: - 34x o apostado
-      :seven: - 100x o apostado
+      **2** :grapes: = 2x
+      **3** :grapes: = 13x
 
-      • Caso você aposte, e perca, você perde 1.5x do que apostou!`);
+      **2** :moneybag: = 2.5x
+      **3** :moneybag: = 17x
+
+      **2** :seven: = 3x
+      **3** :seven: = 20x
+`);
 
     message.channel.send(message.author, embed);
   }
