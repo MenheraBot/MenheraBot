@@ -38,7 +38,7 @@ module.exports = class MessageReceive {
     if (authorData?.afk) {
       authorData.afk = false;
       authorData.afkReason = null;
-      authorData.save();
+      await authorData.save();
       message.menheraReply('wink', t('commands:afk.back'))
         .then((msg) => msg.delete({
           timeout: 5000,
