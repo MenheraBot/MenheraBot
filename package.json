@@ -12,6 +12,7 @@
   "author": "Luxanna Crownguard (ySnoopyDogy)",
   "dependencies": {
     "@sentry/node": "^5.24.2",
+    "canvas": "^2.6.1",
     "dblapi.js": "^2.4.0",
     "discord.js": "^12.5.0",
     "erlpack": "github:discord/erlpack",
