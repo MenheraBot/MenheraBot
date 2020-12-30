@@ -96,7 +96,18 @@ const userSchema = mongoose.Schema({
   rollTime: { type: String, default: '000000000000' },
   estrelinhas: { type: Number, default: 0 },
   votos: { type: Number, default: 0 },
+  badges: { type: Array, default: [] },
 });
+
+/*
+
+  Objeto do array das badges:
+  {
+    id: badgeId
+    obtainAt: Date.now()
+  }
+
+*/
 
 const warnSchema = mongoose.Schema({
   userId: String,

@@ -1,9 +1,13 @@
+/* eslint-disable no-await-in-loop */
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable guard-for-in */
 /* eslint-disable no-mixed-operators */
 /* eslint-disable no-bitwise */
 /* eslint-disable no-nested-ternary */
 const CanvasImport = require('canvas');
 const http = require('./HTTPrequests');
 const Util = require('./Util');
+const ProfileBadges = require('../structures/ProfileBadges');
 
 module.exports = class Canvas {
   static async ProfileImage({
@@ -104,6 +108,16 @@ module.exports = class Canvas {
       ctx.drawImage(ringEmoji, 10, 490, 55, 55);
     }
 
+    const badgesLink = await Canvas.getUserBadgesLink(user, member);
+
+    if (badgesLink) {
+      let number = 0;
+      badgesLink.forEach((img) => {
+        ctx.drawImage(img, 230 + (number * 64), 170, 64, 64);
+        number++;
+      });
+    }
+
     return canvas.toBuffer();
   }
 
@@ -127,5 +141,53 @@ module.exports = class Canvas {
 
     const Luminosity = (r * 299 + g * 587 + b * 114) / 1000;
     return Luminosity;
+  }
+
+  static async getUserBadgesLink(user, discordUser) {
+    if (!user.badges || user.badges.length === 0) return false;
+
+    const images = [];
+    const links = [];
+
+    const userBadges = user.badges;
+
+    const userFlags = discordUser.flags.toArray();
+
+    if (userFlags && userFlags.length > 0) {
+      userFlags.forEach((flag) => {
+        switch (flag) {
+          case 'HOUSE_BRAVERY':
+            links.push(ProfileBadges[4].link);
+            break;
+          case 'HOUSE_BRILLIANCE':
+            links.push(ProfileBadges[3].link);
+            break;
+          case 'HOUSE_BALANCE':
+            links.push(ProfileBadges[2].link);
+            break;
+          case 'EARLY_VERIFIED_DEVELOPER':
+            links.push(ProfileBadges[5].link);
+            break;
+        }
+      });
+    }
+
+    if (links.length > 0) {
+      for (let f = 0; f < links.length; f++) {
+        const imageLoaded = await CanvasImport.loadImage(links[f]);
+        images.push(imageLoaded);
+      }
+    }
+
+    if (user.badges.length > 0) {
+      for (let i = 0; i < userBadges.length; i++) {
+        const { id } = userBadges[i];
+        const { link } = ProfileBadges[id];
+        const img = await CanvasImport.loadImage(link);
+        images.push(img);
+      }
+    }
+
+    return images;
   }
 };
