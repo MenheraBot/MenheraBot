@@ -1,6 +1,7 @@
 const { MessageAttachment } = require('discord.js');
 const Command = require('../../structures/command');
 const Util = require('../../utils/Util');
+const { ProfileImage } = require('../../utils/Canvas');
 
 module.exports = class ProfileCommand extends Command {
   constructor(client) {
@@ -36,10 +37,6 @@ module.exports = class ProfileCommand extends Command {
 
     if (!user) return message.menheraReply('error', t('commands:profile.no-dbuser'));
     if (user.ban) return message.menheraReply('error', t('commands:profile.banned', { reason: user.banReason }));
-
-    delete require.cache[require.resolve('../../utils/Canvas')];
-    // eslint-disable-next-line global-require
-    const { ProfileImage } = require('../../utils/Canvas');
 
     const avatar = member.displayAvatarURL({ format: 'png' });
 
