@@ -92,7 +92,7 @@ module.exports = class SlotMachineCommand extends Command {
       embed.addField(t('commands:slotmachine.lose-title'), t('commands:slotmachine.lose-text', { valor: (valor + Math.floor(valor / 2)) }));
     } else {
       user.estrelinhas += Math.floor(result.multiplier * valor);
-      embed.addField(t('commands:slotmachine.win-title'), t('commands:slotmachine.win-text', { multiplier: (result.multiplier * valor), valor }));
+      embed.addField(t('commands:slotmachine.win-title'), t('commands:slotmachine.win-text', { multiplier: Math.floor(result.multiplier * valor), valor }));
     }
 
     message.channel.send(message.author, embed);
