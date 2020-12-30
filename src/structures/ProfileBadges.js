@@ -10,6 +10,7 @@
   4 = Disponível ajudando no Desenvolvimento da Menhera
   5 = Disponível por tempo limitado em eventos especiais
   6 =Disponível somente para amigos próximos da Lux
+  7 = Exclusivo e praticamente impossivel
 */
 
 const Badges = {
@@ -52,6 +53,14 @@ const Badges = {
     rarityLevel: 0,
     description: 'Badge disponível para desenvolvedores de bots verificados do discord',
     link: 'https://media.discordapp.net/attachments/793669360857907200/793906831449784330/developer.png',
+  },
+  6: {
+    name: 'Banido',
+    availabeStartAt: '------',
+    availabeStoptAt: '------',
+    rarityLevel: 7,
+    description: 'Badge exclusiva do Nav3ne por já ter sido banido mais de 5 vezes',
+    link: 'https://media.discordapp.net/attachments/793669360857907200/793940062391369808/banido.png',
   },
 };
 

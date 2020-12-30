@@ -49,22 +49,8 @@ module.exports = class Canvas {
     // Nick do usuário
     ctx.fillStyle = '#fff';
     ctx.font = 'bold 50px Sans';
-    ctx.fillText(member.tag, 255, 100);
-    ctx.strokeText(member.tag, 255, 100);
-
-    // Área de Informações
-    const usageCommands = await http.getProfileCommands(member.id);
-    if (usageCommands) {
-      const usedCommands = usageCommands.cmds.count;
-      const mostUsedCommand = usageCommands.array[0];
-      ctx.font = 'bold 40px Sans';
-      ctx.fillText(t('commands:profile.commands-usage', {
-        user: member.username, usedCount: usedCommands, mostUsedCommandName: Util.captalize(mostUsedCommand.name), mostUsedCommandCount: mostUsedCommand.count,
-      }), 20, 600);
-      ctx.strokeText(t('commands:profile.commands-usage', {
-        user: member.username, usedCount: usedCommands, mostUsedCommandName: Util.captalize(mostUsedCommand.name), mostUsedCommandCount: mostUsedCommand.count,
-      }), 20, 600);
-    }
+    ctx.fillText(ctx.getLines(member.tag, 650).join('\n'), 255, 90);
+    ctx.strokeText(ctx.getLines(member.tag, 650).join('\n'), 255, 90);
 
     // Upvotes
     ctx.font = 'bold 45px Sans';
@@ -84,17 +70,24 @@ module.exports = class Canvas {
     ctx.fillText(ctx.getLines(user.nota, 870).join('\n'), 20, 350);
     ctx.strokeText(ctx.getLines(user.nota, 870).join('\n'), 20, 350);
 
-    // Mamadas e Mamou
-    ctx.textAlign = 'center';
-    ctx.fillText(t('commands:profile.mamado'), 980, 290);
-    ctx.strokeText(t('commands:profile.mamado'), 980, 290);
-    ctx.fillText(t('commands:profile.mamou'), 980, 380);
-    ctx.strokeText(t('commands:profile.mamou'), 980, 380);
+    // Repaint do footer para evitar usuários engraçadinhos que fazem sobre mim com muita quebra de linhas
+    ctx.fillStyle = baseColor;
+    ctx.fillRect(0, 480, canvas.width, canvas.height);
 
-    ctx.fillText(user.mamadas, 980, 335);
-    ctx.strokeText(user.mamadas, 980, 335);
-    ctx.fillText(user.mamou, 980, 425);
-    ctx.strokeText(user.mamou, 980, 425);
+    // Área de Informações
+    const usageCommands = await http.getProfileCommands(member.id);
+    if (usageCommands) {
+      const usedCommands = usageCommands.cmds.count;
+      const mostUsedCommand = usageCommands.array[0];
+      ctx.font = 'bold 40px Sans';
+      ctx.fillStyle = 'white';
+      ctx.fillText(ctx.getLines(t('commands:profile.commands-usage', {
+        user: member.username, usedCount: usedCommands, mostUsedCommandName: Util.captalize(mostUsedCommand.name), mostUsedCommandCount: mostUsedCommand.count,
+      }), 1000).join('\n'), 20, 600);
+      ctx.strokeText(ctx.getLines(t('commands:profile.commands-usage', {
+        user: member.username, usedCount: usedCommands, mostUsedCommandName: Util.captalize(mostUsedCommand.name), mostUsedCommandCount: mostUsedCommand.count,
+      }), 1000).join('\n'), 20, 600);
+    }
 
     // Casado
     if (marry !== 'false') {
@@ -107,6 +100,18 @@ module.exports = class Canvas {
       ctx.strokeText(`${marry.tag} | ${user.data}`, 80, 535);
       ctx.drawImage(ringEmoji, 10, 490, 55, 55);
     }
+
+    // Mamadas e Mamou
+    ctx.textAlign = 'center';
+    ctx.fillText(t('commands:profile.mamado'), 980, 290);
+    ctx.strokeText(t('commands:profile.mamado'), 980, 290);
+    ctx.fillText(t('commands:profile.mamou'), 980, 380);
+    ctx.strokeText(t('commands:profile.mamou'), 980, 380);
+
+    ctx.fillText(user.mamadas, 980, 335);
+    ctx.strokeText(user.mamadas, 980, 335);
+    ctx.fillText(user.mamou, 980, 425);
+    ctx.strokeText(user.mamou, 980, 425);
 
     const badgesLink = await Canvas.getUserBadgesLink(user, member);
 

@@ -13,11 +13,14 @@ module.exports = class GiveBadgeCommand extends Command {
   // eslint-disable-next-line no-unused-vars
   async run({ message, args }, t) {
     const user = await this.client.database.Users.findOne({ id: args[0] });
+    const badgeId = parseInt(args[1]);
+
+    if (!badgeId) return message.menheraReply('error', 'Cade o id da badge?');
 
     if (user.badges) {
-      user.badges.push({ id: 1, obtainAt: Date.now() });
+      user.badges.push({ id: badgeId, obtainAt: Date.now() });
     } else {
-      user.badges = [{ id: 1, obtainAt: Date.now() }];
+      user.badges = [{ id: badgeId, obtainAt: Date.now() }];
     }
     user.save();
     message.channel.send('Concluido');
