@@ -204,11 +204,11 @@ function lojaComprar(message, embedMessage, user, saldoAtual, t) {
                 user.estrelinhas -= coresDisponíveis[6].preço;
                 user.cores.push({
                   nome: '7 - Sua Escolha',
-                  cor: `#${m.content}`,
+                  cor: `#${hexMsg.content}`,
                   preço: 1000000,
                 });
                 user.save();
-                message.menheraReply('sucess', t('commands:shop.buy_colors.yc-confirm', { color: m.content, price: coresDisponíveis[6].preço, stars: user.estrelinhas })).then(() => embedMessage.delete().catch);
+                message.menheraReply('sucess', t('commands:shop.buy_colors.yc-confirm', { color: hexMsg.content, price: coresDisponíveis[6].preço, stars: user.estrelinhas })).then(() => embedMessage.delete().catch);
               } else {
                 return message.menheraReply('error', t('commands:shop.buy_colors.invalid-color')).then(() => embedMessage.delete().catch());
               }
