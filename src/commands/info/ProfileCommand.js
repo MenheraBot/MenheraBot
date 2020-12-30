@@ -1,7 +1,6 @@
-const { MessageEmbed } = require('discord.js');
+const { MessageAttachment } = require('discord.js');
 const Command = require('../../structures/command');
 const Util = require('../../utils/Util');
-const http = require('../../utils/HTTPrequests');
 
 module.exports = class ProfileCommand extends Command {
   constructor(client) {
@@ -9,7 +8,7 @@ module.exports = class ProfileCommand extends Command {
       name: 'profile',
       aliases: ['perfil'],
       cooldown: 5,
-      clientPermissions: ['EMBED_LINKS'],
+      clientPermissions: ['ATTACH_FILES'],
       category: 'info',
     });
   }
@@ -19,81 +18,35 @@ module.exports = class ProfileCommand extends Command {
     const userId = Util.getIdByMention(args[0]);
 
     let user = authorData;
-    let pessoa = message.author;
+    let member = message.author;
+    let marry = 'false';
 
     if (userId && userId !== message.author) {
       try {
-        pessoa = await this.client.users.fetch(args[0].replace(/[<@!>]/g, ''));
-        if (pessoa.bot) {
+        member = await this.client.users.fetch(args[0].replace(/[<@!>]/g, ''));
+        if (member.bot) {
           return message.menheraReply('error', t('commands:profile.bot'));
         }
-        user = await this.client.database.Users.findOne({ id: pessoa.id });
+        user = await this.client.database.Users.findOne({ id: member.id });
       } catch {
         return message.menheraReply('error', t('commands:profile.unknow-user'));
       }
     }
-
-    const embed = new MessageEmbed()
-      .setTitle(`${pessoa.username}`)
-      .setThumbnail(pessoa.displayAvatarURL({ dynamic: true }));
+    if (user?.casado !== 'false' && user?.casado) marry = await this.client.users.fetch(user.casado);
 
     if (!user) return message.menheraReply('error', t('commands:profile.no-dbuser'));
     if (user.ban) return message.menheraReply('error', t('commands:profile.banned', { reason: user.banReason }));
-    const usageCommands = await http.getProfileCommands(pessoa.id);
 
-    const mamadas = user.mamadas || 0;
-    const mamou = user.mamou || 0;
-    const nota = user.nota || 'Sem Nota';
-    const cor = user.cor || '#a788ff';
-    const votos = user.votos || 0;
+    delete require.cache[require.resolve('../../utils/Canvas')];
+    // eslint-disable-next-line global-require
+    const { ProfileImage } = require('../../utils/Canvas');
 
-    embed.setColor(cor);
+    const avatar = member.displayAvatarURL({ format: 'png' });
 
-    embed.addFields([{
-      name: `👅 | ${t('commands:profile.mamou')}`,
-      value: mamou,
-      inline: true,
-    },
-    {
-      name: `❤️ | ${t('commands:profile.mamado')}`,
-      value: mamadas,
-      inline: true,
-    },
-    {
-      name: '<:God:758474639570894899> | Upvotes',
-      value: votos,
-      inline: true,
-    },
-    ]);
+    const image = await ProfileImage({
+      member, user, avatar, marry,
+    }, t);
 
-    if (user.casado && user.casado !== 'false') {
-      const persona = await this.client.users.fetch(user.casado) || '`Sem informações do usuário`';
-      const data = user.data || 'Sem data registrada';
-      embed.addFields([{
-        name: `💗 | ${t('commands:profile.married-with')}`,
-        value: persona,
-        inline: true,
-      },
-      {
-        name: `💍 | ${t('commands:profile.married-in')}`,
-        value: data,
-        inline: true,
-      },
-      ]);
-    }
-    embed.addField(`<:apaixonada:727975782034440252> | ${t('commands:profile.about-me')}`, nota, true);
-    if (usageCommands) {
-      const usedCommands = usageCommands.cmds.count;
-      const mostUsedCommand = usageCommands.array[0];
-      embed.addFields([{
-        name: `🤖 | ${t('commands:profile.commands')}`,
-        value: t('commands:profile.commands-usage', {
-          user: pessoa.username, usedCount: usedCommands, mostUsedCommandName: Util.captalize(mostUsedCommand.name), mostUsedCommandCount: mostUsedCommand.count,
-        }),
-        inline: true,
-      }]);
-    }
-
-    message.channel.send(message.author, embed);
+    message.channel.send(message.author, new MessageAttachment(image, 'profile.png'));
   }
 };

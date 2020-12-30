@@ -424,7 +424,7 @@
     "married-in": "Married in",
     "about-me": "About Me",
     "commands": "Commands",
-    "commands-usage": "{{user}} used my commands **{{usedCount}}** times.\nHis most used command was **{{mostUsedCommandName}}**, used **{{mostUsedCommandCount}}** times"
+    "commands-usage": "{{user}} used my commands {{usedCount}} times.\nHis most used command was {{mostUsedCommandName}}, used\n{{mostUsedCommandCount}} times"
   },
   "top": {
     "description": "See the top of my users",
