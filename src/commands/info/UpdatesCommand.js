@@ -20,28 +20,17 @@ module.exports = class UpdatesCommand extends Command {
       .setTitle(`${t('commands:updates.title')} ${version}`)
       .setColor('#a7e74f')
       .setFooter(`${this.client.user.username} ${t('commands:updates.footer')} ${owner.tag}`, owner.displayAvatarURL({ format: 'png', dynamic: true }))
-      .setDescription(`**Novos Multiplicadores do Caça-Níquel**
+      .setDescription(`**O futuro está aqui!**
 
-      Os números a esquerda são a quantidade, e a direita, o multiplicador do valor apostado
+      FINALMENTEEEE!! FINALMENTE ISSO CHEGOU!!!
 
-       **2** :banana:  = 1.2x
-       **3** :banana: = 5x
+      • O comando \`m!perfil\` é agora uma imagem!
+         O perfil ainda está incompleto, mas já está sendo lançado para testes!
+         No futuro haverá badges de perfil, disponíveis por eventos, compra, e até mesmo usar a Menhera!
 
-      **2** :cherries:  = 1.4x
-      **3** :cherries: = 7x
-
-      **2** :tangerine: = 1.7x
-      **3** :tangerine: =  10x
-
-      **2** :grapes: = 2x
-      **3** :grapes: = 13x
-
-      **2** :moneybag: = 2.5x
-      **3** :moneybag: = 17x
-
-      **2** :seven: = 3x
-      **3** :seven: = 20x
-`);
+      • Bug fix:
+         Comando \`m!ship\` corrigido!
+      `);
 
     message.channel.send(message.author, embed);
   }
