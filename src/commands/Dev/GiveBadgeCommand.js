@@ -11,7 +11,7 @@ module.exports = class GiveBadgeCommand extends Command {
   }
 
   // eslint-disable-next-line no-unused-vars
-  async run({ args }, t) {
+  async run({ message, args }, t) {
     const user = await this.client.database.Users.findOne({ id: args[0] });
 
     if (user.badges) {
@@ -19,5 +19,7 @@ module.exports = class GiveBadgeCommand extends Command {
     } else {
       user.badges = [{ id: 1, obtainAt: Date.now() }];
     }
+    user.save();
+    message.channel.send('Concluido');
   }
 };

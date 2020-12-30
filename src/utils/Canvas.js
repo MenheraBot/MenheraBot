@@ -144,8 +144,6 @@ module.exports = class Canvas {
   }
 
   static async getUserBadgesLink(user, discordUser) {
-    if (!user.badges || user.badges.length === 0) return false;
-
     const images = [];
     const links = [];
 
