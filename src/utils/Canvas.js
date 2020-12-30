@@ -64,8 +64,8 @@ module.exports = class Canvas {
 
     // Upvotes
     ctx.font = 'bold 45px Sans';
-    ctx.fillText('Upvotes', 880, 60);
-    ctx.strokeText('Upvotes', 880, 60);
+    ctx.fillText('Upvotes', 860, 60);
+    ctx.strokeText('Upvotes', 860, 60);
     ctx.textAlign = 'center';
     ctx.fillText(user.votos, 980, 120);
     ctx.strokeText(user.votos, 980, 120);
