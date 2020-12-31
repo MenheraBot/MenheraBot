@@ -1,5 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const Command = require('../../structures/command');
+const Util = require('../../utils/Util');
 
 module.exports = class HelpCommand extends Command {
   constructor(client) {
@@ -61,7 +62,7 @@ function getCMD(client, message, input, t, server) {
 
   if (!cmd) return message.channel.send(embed.setColor('#ff0000').setDescription(info));
 
-  info = `**${t('commands:help.cmd')}**: ${cmd.config.name}`;
+  info = `**${t('commands:help.cmd')}**: ${Util.captalize(cmd.config.name)}`;
   if (cmd.config.aliases.length > 0) info += `\n**${t('commands:help.aliases')}**: ${cmd.config.aliases.map((a) => `\`${a}\``).join(', ')}`;
   info += `\n**${t('commands:help.desc')}**: ${t(`commands:${cmd.config.name}.description`)}`;
   info += `\n**Cooldown**: ${cmd.config.cooldown} ${t('commands:help.seconds')}`;
