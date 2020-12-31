@@ -152,8 +152,6 @@ module.exports = class Canvas {
     const images = [];
     const links = [];
 
-    const userBadges = user.badges;
-
     const userFlags = discordUser.flags.toArray();
 
     if (userFlags && userFlags.length > 0) {
@@ -175,16 +173,21 @@ module.exports = class Canvas {
       });
     }
 
+    if (user?.casado !== 'false') {
+      const ringEmoji = await CanvasImport.loadImage('https://media.discordapp.net/attachments/784235115064721458/793642413964525618/emoji.png');
+      images.push(ringEmoji);
+    }
+
     if (links.length > 0) {
-      for (let f = 0; f < links.length; f++) {
+      for (const f in links) {
         const imageLoaded = await CanvasImport.loadImage(links[f]);
         images.push(imageLoaded);
       }
     }
 
     if (user.badges.length > 0) {
-      for (let i = 0; i < userBadges.length; i++) {
-        const { id } = userBadges[i];
+      for (const i in user.badges) {
+        const { id } = user.badges[i];
         const { link } = ProfileBadges[id];
         const img = await CanvasImport.loadImage(link);
         images.push(img);
