@@ -1,5 +1,6 @@
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed, MessageAttachment } = require('discord.js');
 const Command = require('../../structures/command');
+const Canvas = require('../../utils/Canvas');
 
 module.exports = class ShipCommand extends Command {
   constructor(client) {
@@ -47,20 +48,25 @@ module.exports = class ShipCommand extends Command {
 
     if (user1.casado && user1.casado === user2.id) value = 100;
 
+    const bufferedShipImage = await Canvas.ShipImage(value, user1, user2);
+
+    const attachment = new MessageAttachment(bufferedShipImage, 'ship.png');
+
     const username1 = user1.username;
     const username2 = user2.username;
     const mix = `${username1.substring(0, username1.length / 2) + username2.substring(username2.length / 2, username2.length)}`.replace(' ', '');
 
     const embed = new MessageEmbed()
+      .attachFiles(attachment)
+      .setImage('attachment://ship.png')
       .setTitle(`${username1} + ${username2} = ${mix}`)
-      .setThumbnail('https://i.imgur.com/VGSDWLO.png')
       .setDescription(`\n${t('commands:ship.value')} **${value.toString()}%**\n\n${t('commands:ship.default')}`);
 
-    if (Number(value) >= 25) embed.setColor('#cadf2a').setThumbnail('https://i.imgur.com/16kRzaC.png').setDescription(`\n${t('commands:ship.value')} **${value.toString()}%**\n\n${t('commands:ship.low')}`);
-    if (Number(value) >= 50) embed.setColor('#d8937b').setThumbnail('https://i.imgur.com/XkMVoiE.png').setDescription(`\n${t('commands:ship.value')} **${value.toString()}%**\n\n${t('commands:ship.ok')}`);
-    if (Number(value) >= 75) embed.setColor('#f34a4a').setThumbnail('https://i.imgur.com/XkMVoiE.png').setDescription(`\n${t('commands:ship.value')} **${value.toString()}%**\n\n${t('commands:ship.medium')}`);
-    if (Number(value) >= 99) embed.setColor('#ec2c2c').setThumbnail('https://i.imgur.com/JBVskmZ.png').setDescription(`\n${t('commands:ship.value')} **${value.toString()}%**\n\n${t('commands:ship.high')}`);
-    if (Number(value) === 100) embed.setColor('#ff00df').setThumbnail('https://i.imgur.com/6dC8HVg.png').setDescription(`\n${t('commands:ship.value')} **${value.toString()}%**\n\n${t('commands:ship.perfect')}`);
+    if (Number(value) >= 25) embed.setColor('#cadf2a').setDescription(`\n${t('commands:ship.value')} **${value.toString()}%**\n\n${t('commands:ship.low')}`);
+    if (Number(value) >= 50) embed.setColor('#d8937b').setDescription(`\n${t('commands:ship.value')} **${value.toString()}%**\n\n${t('commands:ship.ok')}`);
+    if (Number(value) >= 75) embed.setColor('#f34a4a').setDescription(`\n${t('commands:ship.value')} **${value.toString()}%**\n\n${t('commands:ship.medium')}`);
+    if (Number(value) >= 99) embed.setColor('#ec2c2c').setDescription(`\n${t('commands:ship.value')} **${value.toString()}%**\n\n${t('commands:ship.high')}`);
+    if (Number(value) === 100) embed.setColor('#ff00df').setDescription(`\n${t('commands:ship.value')} **${value.toString()}%**\n\n${t('commands:ship.perfect')}`);
 
     message.channel.send(`${message.author}\n**${t('commands:ship.message-start')}**`, embed);
   }

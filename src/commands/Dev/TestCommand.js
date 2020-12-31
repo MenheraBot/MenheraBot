@@ -1,4 +1,6 @@
+const { MessageEmbed, MessageAttachment } = require('discord.js');
 const Command = require('../../structures/command');
+const Canvas = require('../../utils/Canvas');
 
 module.exports = class TestCommand extends Command {
   constructor(client) {
@@ -12,10 +14,12 @@ module.exports = class TestCommand extends Command {
   }
 
   async run({ message }) {
-    const oi = await this.client.database.Users.findOne({ id: message.author.id });
+    const ship = await Canvas.ShipImage();
 
-    oi.cores.pop();
-    oi.save();
-    message.menheraReply('success', 'dakle');
+    const embed = new MessageEmbed()
+      .attachFiles(new MessageAttachment(ship, 'ship.png'))
+      .setImage('attachment://ship.png');
+
+    message.channel.send(message.author, embed);
   }
 };
