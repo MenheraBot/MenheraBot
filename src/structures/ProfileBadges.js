@@ -62,6 +62,14 @@ const Badges = {
     description: 'Badge exclusiva do Nav3ne por já ter sido banido mais de 5 vezes',
     link: 'https://media.discordapp.net/attachments/793669360857907200/793940062391369808/banido.png',
   },
+  7: {
+    name: 'Desenvolvedor da Menhera',
+    availabeStartAt: '------',
+    availabeStoptAt: '------',
+    rarityLevel: 4,
+    description: 'Badge exclusiva para usuários que ajudaram no desenvolvimento da Menhera',
+    link: 'https://cdn.discordapp.com/attachments/793669360857907200/794288854143991838/developer.png',
+  },
 };
 
 module.exports = Badges;
