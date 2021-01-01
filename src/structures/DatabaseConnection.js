@@ -69,8 +69,8 @@ const rpgSchema = mongoose.Schema({
   inBattle: { type: Boolean, default: false },
   hasFamily: { type: Boolean, default: false },
   familyName: { type: String, default: null },
-  // Recommend modify this prop to `backpackId: String`
   backpack: { type: Object, default: { name: 'Mochila de Pele de Lobo' } },
+  resetRoll: { type: Number, default: 0 },
 });
 
 const userSchema = mongoose.Schema({

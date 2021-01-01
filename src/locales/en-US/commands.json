@@ -575,10 +575,15 @@
     "thanks": "Thank you very much for reporting this bug to my owner"
   },
   "roll": {
-    "description": "Use a DR to reset your hunting time",
-    "can-hunt": "you can already hunt! Hunt before using a Roll!",
-    "poor": "you don't have DailyRolls! Vote for me to redeem a DR",
-    "success": "all done! You reset your hunting time, you can now hunt!"
+    "description": "Use a DR/RD to reset your hunting/dungeon time",
+    "usage": "[rpg]",
+    "can-hunt": "you can already hunt! Hunt before using a Roll!\nDid you know that if you use `m!roll rpg` you can reset your dungeon time?",
+    "poor": "you don't have DailyRolls! Vote for me to redeem a DR\nDid you know that if you use `m!roll rpg` you can reset your dungeon time?",
+    "success": "all done! You reset your hunting time, you can now hunt!\nDid you know that if you use `m!roll rpg` you can reset your dungeon time?",
+    "no-adventure": "you aren't an adventure to reset your dungeon time!",
+    "can-dungeon": "you already can go to the dungeon",
+    "dungeon-poor": "you don't have reset tickets for dungeons! Vote for me to redeem an RD",
+    "dungeon-success": "there you go! You reset your time to go to the dungeon! Go kill that God!"
   },
   "say": {
     "description": "Make me say something",

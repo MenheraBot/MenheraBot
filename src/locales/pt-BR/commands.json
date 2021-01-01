@@ -589,10 +589,14 @@
   },
   "roll": {
     "description": "Use um DR para resetar seu tempo de caçadas",
-    "usage": "",
-    "can-hunt": "você já pode caçar! Caçe antes de usar um Roll!",
-    "poor": "você não possui DailyRolls! Vote em mim para resgatar um DR",
-    "success": "prontinho, você resetou seu tempo de caçadas, pode caçar!"
+    "usage": "[rpg]",
+    "can-hunt": "você já pode caçar! Caçe antes de usar um Roll!\nVocê sabia que se usar `m!roll rpg` você pode zerar o tempo de ir para a Dungeon?",
+    "poor": "você não possui DailyRolls! Vote em mim para resgatar um DR\nVocê sabia que se usar `m!roll rpg` você pode zerar o tempo de ir para a Dungeon?",
+    "success": "prontinho, você resetou seu tempo de caçadas, pode caçar!\nVocê sabia que se usar `m!roll rpg` você pode zerar o tempo de ir para a Dungeon?",
+    "no-adventure": "você não é um aventureiro para resetar seu tempo de ia à dungeon!",
+    "can-dungeon": "você já pode visitar a dungeon!",
+    "dungeon-poor": "você não possui tickets de reset para dungeon! Vote em mim para resgatar um RD",
+    "dungeon-success": "feitoria! Você resetou seu tempo de ir para a Dungeon! Vá matar aquele Deus!"
   },
   "say": {
     "description": "Faça-me dizer algo",
