@@ -168,7 +168,7 @@ module.exports = class MessageReceive {
         guildId: message.guild.id,
         commandName: command.config.name,
         data: Date.now(),
-        args,
+        args: args.join(' '),
       };
       await makeRequest.postCommand(data).catch();
     }
