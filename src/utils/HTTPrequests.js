@@ -66,6 +66,7 @@ module.exports.postCommand = async (data) => {
       guildId: data.guildId,
       commandName: data.commandName,
       data: data.data,
+      args: data.args,
     },
     json: true,
   };
