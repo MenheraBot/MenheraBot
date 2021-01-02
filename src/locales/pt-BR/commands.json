@@ -613,7 +613,7 @@
     "description": "Link de convite para o servidor de suporte do Bot",
     "usage": "",
     "embed_title": "Clique aqui para entrar no servidor de suporte da Menhera",
-    "emebd_footer": "Comando executado por"
+    "embed_footer": "Comando executado por"
   },
   "vote": {
     "description": "Vote no bot (pfv vote, isso ajuda muito X3 >.<)",

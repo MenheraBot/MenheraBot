@@ -599,7 +599,7 @@
   "support": {
     "description": "Invitation link to Bot support server",
     "embed_title": "Click here to enter Menhera's support server",
-    "emebd_footer": "Command executed by"
+    "embed_footer": "Command executed by"
   },
   "vote": {
     "description": "Vote for the bot (pelase vote, it helps a lot X3 >.<)",
