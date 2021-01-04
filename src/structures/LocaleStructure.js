@@ -9,10 +9,10 @@ class LocaleStructure {
     this.languages = ['pt-BR', 'en-US'];
   }
 
-  load() {
+  async load() {
     try {
       const filepath = path.resolve(__dirname, '..', 'locales');
-      i18next.use(translationBackend).init({
+      await i18next.use(translationBackend).init({
         ns: this.ns,
         preload: readdirSync(filepath),
         fallbackLng: 'pt-BR',

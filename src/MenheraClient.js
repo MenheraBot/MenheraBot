@@ -2,15 +2,17 @@
 /* eslint-disable import/no-dynamic-require */
 const { Client, Collection } = require('discord.js');
 const Sentry = require('@sentry/node');
+const i18next = require('i18next');
 const EventManager = require('./structures/EventManager');
 const Reminders = require('./utils/RemindersChecks');
 const Database = require('./structures/DatabaseConnection');
 const Config = require('../config.json');
+const http = require('./utils/HTTPrequests');
 const RpgChecks = require('./structures/Rpgs/checks');
 const FileUtil = require('./utils/FileUtil');
 const LocaleStructure = require('./structures/LocaleStructure');
 
-module.exports = class WatchClient extends Client {
+module.exports = class MenheraClient extends Client {
   constructor(options = {}) {
     super(options);
 
@@ -22,12 +24,13 @@ module.exports = class WatchClient extends Client {
     this.rpgChecks = RpgChecks;
   }
 
-  init() {
+  async init() {
     Sentry.init({ dsn: this.config.sentry_dns });
     const locales = new LocaleStructure();
     const reminder = new Reminders(this);
     reminder.loop();
-    locales.load();
+    await http.clearExistingCommands();
+    await locales.load();
     return true;
   }
 
@@ -41,12 +44,23 @@ module.exports = class WatchClient extends Client {
     return super.login(token);
   }
 
+  static async postExistingCommand(command) {
+    const t = i18next.getFixedT('pt-BR');
+    const CommandData = {
+      name: command.config.name,
+      description: t(`commands:${command.config.name}.description`),
+      category: command.config.category,
+    };
+    if (command.category !== 'Dev') await http.postExistingCommands(CommandData);
+  }
+
   async loadCommand(Command, filepath) {
     const command = new Command(this);
     command.dir = filepath;
     this.commands.set(command.config.name, command);
     this.aliases.set(command.config.name, command.config.name);
     command.config.aliases.forEach((a) => this.aliases.set(a, command.config.name));
+    MenheraClient.postExistingCommand(command);
     const cmdInDb = await this.database.Cmds.findById(command.config.name);
     if (cmdInDb) {
       command.maintenance = cmdInDb.maintenance;
