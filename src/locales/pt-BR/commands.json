@@ -139,7 +139,7 @@
     "embed_title": "Toma soco leve 🤜",
     "embed_description": "socou"
   },
-  "ressurect": {
+  "resurrect": {
     "description": "Ressuscite alguém morto",
     "usage": "<@menção>",
     "no-mention": "Como ressuscitar o nada, que nunca morreu",
