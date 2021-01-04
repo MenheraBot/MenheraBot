@@ -138,7 +138,7 @@
     "embed_title": "PUNCH IN THE FACE",
     "embed_description": "punched"
   },
-  "ressurect": {
+  "resurrect": {
     "description": "Resurrect someone dead",
     "usage": "<@mention>",
     "no-mention": "How to resurrect the nothing, which never died?",
