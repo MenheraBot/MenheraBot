@@ -19,7 +19,7 @@ module.exports.getActivity = async () => {
 
 module.exports.clearExistingCommands = async () => {
   const options = {
-    method: 'POST',
+    method: 'DELETE',
     uri: `${config.api_IP}/api/site/commands/clear`,
     headers: {
       'User-Agent': 'MenheraClient',
