@@ -16,6 +16,8 @@ module.exports = class DiscordBots {
       const user = await this.client.database.Users.findOne({ id: vote.user });
       const rpgUser = await this.client.database.Rpg.findById(vote.user);
 
+      user.votos += 1;
+
       let rollQuantity = 1;
       let starQuantity = Math.floor(Math.random() * (5600 - 1200 + 1)) + 1200;
       let rpgRollQuantity = 1;
@@ -63,7 +65,6 @@ module.exports = class DiscordBots {
 
       user.rolls += rollQuantity;
       user.estrelinhas += starQuantity;
-      user.votos += 1;
       await user.save();
       try {
         if (usuarioDm) usuarioDm.send(embed);
