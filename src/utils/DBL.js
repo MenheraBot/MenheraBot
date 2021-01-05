@@ -1,5 +1,6 @@
 const DBL = require('dblapi.js');
 const { MessageEmbed } = require('discord.js');
+const { databaseUserEnsure } = require('./Util');
 
 module.exports = class DiscordBots {
   constructor(client) {
@@ -13,7 +14,8 @@ module.exports = class DiscordBots {
     }, this.client);
 
     dbl.webhook.on('vote', async (vote) => {
-      const user = await this.client.database.Users.findOne({ id: vote.user });
+      const member = await this.client.users.fetch(vote.id);
+      const user = await databaseUserEnsure(this.client, member);
       const rpgUser = await this.client.database.Rpg.findById(vote.user);
 
       user.votos += 1;
