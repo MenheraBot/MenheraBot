@@ -523,7 +523,7 @@
   },
   "botinfo": {
     "description": "Shows current bot information",
-    "embed_description": "Hi my name is **{{name}}**, and I'm a Brazilian Bot for Discord with a focus on fun and RPG! I was created in **{{createdAt}}** and joined this server in **{{joinedAt}}**. Since I woke up, I've already executed **{{cmds}}** commands\n\nA little bit about me: My name is Menhera, I am 16 years old and I LOVE, I mean, I LOOOOVE to use these faces: (>...<). To learn more, go to my [twitter](https://twitter.com/__MenheraBot) and my [support server](https://discord.gg/fZMdQbA)",
+    "embed_description": "Hi my name is **{{name}}**, and I'm a Brazilian Bot for Discord with a focus on fun and RPG! I was created in **{{createdAt}}** and joined this server in **{{joinedAt}}**. Since I woke up, I've already executed **{{cmds}}** commands\n\nA little bit about me: My name is Menhera, I am 16 years old and I LOVE, I mean, I LOOOOVE to use these faces: (>...<). To learn more, go to my [twitter](https://twitter.com/__MenheraBot), my [support server](https://discord.gg/fZMdQbA) and my [WEBSITE](https://menhera-site.vercel.app)",
     "embed_footer": "was created by",
     "channels": "Channels",
     "memory": "Memory",
