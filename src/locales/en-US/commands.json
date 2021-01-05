@@ -734,7 +734,7 @@
   "register": {
     "description": "Register an adventurer",
     "already": "you are already an adventurer, {{name}}-sama",
-    "text": "Welcome!\nDo you want to be an adventurer? \nWhich class do you want to be in? \nQuestions with which class to choose? Enter the [MENHERA SITE](https://menhera-site.vercel.app/classes) to see each class \n",
+    "text": "Welcome!\nDo you want to be an adventurer? \nWhich class do you want to be in?\n",
     "title": "Adventurers Guild",
     "footer": "Type in the chat option of your choice",
     "invalid-input": "this option is not a valid class!",
