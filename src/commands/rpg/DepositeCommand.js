@@ -139,10 +139,10 @@ module.exports = class DepositeCommand extends Command {
           family.nextLevel = '1000000';
           break;
         case 5:
-          family.nextLevel = '1500000';
+          family.nextLevel = '2000000';
           break;
         case 6:
-          family.nextLevel = '2000000';
+          family.nextLevel = '3000000';
           break;
         case 7:
           family.nextLevel = '5000000';
