@@ -12,7 +12,7 @@ module.exports = class RpgResetCommand extends Command {
   async run({ message, server }, t) {
     const user = await this.client.database.Rpg.findById(message.author.id);
     if (!user) return message.menheraReply('error', t('commands:reset.non-aventure'));
-    if (user.level < 7) return message.menheraReply('error', t('commands:reset.low-level'));
+    if (user.level < 4) return message.menheraReply('error', t('commands:reset.low-level'));
 
     message.menheraReply('warn', t('commands:reset.confirm'));
 

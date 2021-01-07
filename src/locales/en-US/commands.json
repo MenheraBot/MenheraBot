@@ -745,7 +745,7 @@
   "reset": {
     "description": "Reset your RPG profile",
     "non-aventure": "you are not an adventurer",
-    "low-level": "you need to be at level **7** to be able to reset",
+    "low-level": "you need to be at level **4** to be able to reset",
     "confirm": "do you really want to reset your RPG profile? This action is ** IRREVERSIBLE ** \nEnter `yes` to confirm",
     "success": "you have successfully reset your RPG account! To play again, use {{prefix}}register",
     "cancel": "your account **has not** been reset! "

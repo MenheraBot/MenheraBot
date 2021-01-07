@@ -766,7 +766,7 @@
     "description": "Reseta seu perfil do RPG",
     "usage": "",
     "non-aventure": "você não é um aventureiro",
-    "low-level": "você precisa estar no nível **7** para poder resetar",
+    "low-level": "você precisa estar no nível **4** para poder resetar",
     "confirm": "você realmente deseja resetar seu perfil do RPG? Esta ação é **IRREVERSÍVEL**\nDigite `sim` para confirmar",
     "success": "você resetou com sucesso sua conta do RPG! Para jogar novamente, use {{prefix}}registrar",
     "cancel": "sua conta **não** foi resetada!"
