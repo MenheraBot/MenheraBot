@@ -547,7 +547,7 @@
     "rpg": "RPG",
     "util": "Useful",
     "link_name": "Additional Links",
-    "link_value": "[Add me](https://discord.com/api/oauth2/authorize?client_id=708014856711962654&permissions=1007025271&scope=bot)|[Vote for me](https://top.gg/bot/708014856711962654/vote)|[My Support Server](https://discord.gg/fZMdQbA)",
+    "link_value": "[Add me](https://discord.com/api/oauth2/authorize?client_id=708014856711962654&permissions=1007025271&scope=bot) | [Vote for me](https://top.gg/bot/708014856711962654/vote) | [My Support Server](https://discord.gg/fZMdQbA) | [My WebSite](https://menhera-site.vercel.app/comandos)",
     "dm_sent": "I sent my commands to your dm, look there >.<",
     "dm_error": "apparently your dms are closed, i can't send you my help page",
     "without-info": "No command information for {{cmd}}",
