@@ -8,8 +8,11 @@ const random = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
 module.exports.getEnemyByUserLevel = (user, type) => {
   if (type === 'boss') {
-    if (user.level > 24) {
+    if (user.level > 24 && user.level < 30) {
       return random([...mobsFile.boss, ...mobsFile.gods]);
+    }
+    if (user.level >= 30) {
+      return random([...mobsFile.boss, ...mobsFile.gods, ...mobsFile.universal]);
     }
     return random(mobsFile.boss);
   }
@@ -231,7 +234,7 @@ module.exports.finalChecks = async (message, user, t) => {
       message.channel.send(texto);
       return user.save().then(() => this.newAbilities(message, user, t));
     }
-  } else if (user.level > 9) {
+  } else if (user.level > 9 && user.level < 29) {
     if (user.xp >= user.nextLevelXp) {
       user.nextLevelXp *= 2;
       user.level += 1;
@@ -239,6 +242,18 @@ module.exports.finalChecks = async (message, user, t) => {
       user.maxMana += 20;
       user.damage += 7;
       user.armor += 5;
+      texto += '**<a:LevelUp:760954035779272755> LEVEL UP <a:LevelUp:760954035779272755>**';
+      message.channel.send(texto);
+      return user.save().then(() => this.newAbilities(message, user, t));
+    }
+  } else if (user.level >= 29) {
+    if (user.xp >= user.nextLevelXp) {
+      user.nextLevelXp *= 2;
+      user.level += 1;
+      user.maxLife += 50;
+      user.maxMana += 50;
+      user.damage += 10;
+      user.armor += 2;
       texto += '**<a:LevelUp:760954035779272755> LEVEL UP <a:LevelUp:760954035779272755>**';
       message.channel.send(texto);
       return user.save().then(() => this.newAbilities(message, user, t));

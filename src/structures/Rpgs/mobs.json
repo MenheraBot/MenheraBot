@@ -978,5 +978,59 @@
       "armor": 230,
       "xp": 120000
     }
+  ],
+  "universal": [
+    {
+      "loots": [
+        {
+          "name": "Bastão de Luz",
+          "value": 3200
+        }
+      ],
+      "ataques": [
+        {
+          "name": "Centelha Final",
+          "damage": 560
+        },
+        {
+          "name": "Brilho Extremo",
+          "damage": 575
+        }
+      ],
+      "type": "Universal",
+      "name": "Luxanna Crownguard",
+      "life": 1700,
+      "damage": "560 - 575",
+      "armor": 240,
+      "xp": 120000
+    },
+    {
+      "loots": [
+        {
+          "name": "Cacetinho",
+          "value": 2702
+        },
+        {
+          "name": "Chimarrão",
+          "value": 3500
+        }
+      ],
+      "ataques": [
+        {
+          "name": "Tiro bem Bagual",
+          "damage": 670
+        },
+        {
+          "name": "m!kill @você",
+          "damage": 700
+        }
+      ],
+      "type": "Universal",
+      "name": "Menhera Bot",
+      "life": 2000,
+      "damage": "670 - 700",
+      "armor": 200,
+      "xp": 150000
+    }
   ]
 }
