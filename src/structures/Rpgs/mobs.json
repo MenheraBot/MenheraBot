@@ -979,6 +979,60 @@
       "xp": 120000
     }
   ],
+  "evolved": [
+    {
+      "loots": [
+        {
+          "name": "Carne Podre",
+          "value": 1000
+        },
+        {
+          "name": "Pepita de Ouro",
+          "value": 3000
+        }
+      ],
+      "ataques": [
+        {
+          "name": "Mordida Fatal",
+          "damage": 560
+        }
+      ],
+      "type": "Evolved",
+      "name": "Piglin Zumbi",
+      "life": 2000,
+      "damage": "560",
+      "armor": 300,
+      "xp": 170000
+    },
+    {
+      "loots": [
+        {
+          "name": "Esmeralda",
+          "value": 3500
+        },
+        {
+          "name": "Obsidian",
+          "value": 3000
+        }
+      ],
+      "ataques": [
+        {
+          "name": "Toma-te arco e flecha",
+          "damage": 560
+        },
+        {
+          "name": "Pimbada Violenta",
+          "damage": 670
+        }
+      ],
+      "type": "Evolved",
+      "name": "Fulano e Beltrano",
+      "life": 2000,
+      "damage": "560 - 670",
+      "armor": 320,
+      "xp": 150000
+    }
+  ],
   "universal": [
     {
       "loots": [
