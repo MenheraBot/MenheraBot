@@ -20,21 +20,12 @@ module.exports = class UpdatesCommand extends Command {
       .setTitle(`${t('commands:updates.title')} ${version}`)
       .setColor('#a7e74f')
       .setFooter(`${this.client.user.username} ${t('commands:updates.footer')} ${owner.tag}`, owner.displayAvatarURL({ format: 'png', dynamic: true }))
-      .setDescription(`**Novas Recompensas de Votos**
+      .setDescription(`**Mudanças no RPG**
 
-      As recompensas por votar na Menhera foram alteradas! Agora também é possível resetar o tempo de ida pra dungeon com \`m!roll rpg\` Estas são as novas recompensas:
-
-      **Rolls base** = **1**
-      **Dinheiro base** = Entre **1200** e **5600**
-      **Roll da Dungeon base** = **1**
-      **Pedras Preciosas base** =  Entre **500** e **2600**
-
-       ___MULTIPLICADORES___:
-
-      •  Caso seu voto seja múltiplo de 20, todos os prêmios acima são multiplicados por **4**
-      • Caso seja fim de semana, todos os prêmios acima são multiplicados por **2**
-
-      Você pode votar na Menhera a cada 12 horas! Use \`m!votar\` para receber o link da DiscordBotList!`);
+      • Novos bosses a partir do level 30!
+      • A partir do level 30, a dungeon vira um lugar perigoso, com monstros únicos, talvez até mais forte do que os bosses...
+      • O nivel mínimo para resetar agora é **4**
+      • Ajustado o bug das mochilas`);
 
     message.channel.send(message.author, embed);
   }
