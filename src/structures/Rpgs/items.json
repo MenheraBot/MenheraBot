@@ -148,9 +148,9 @@
       "id": "Mochila de pele de Cobra",
       "category": "backpack",
       "capacity": 35,
-      "price": 50000,
+      "price": 2000,
       "required_items": {
-        "Escama de Kraken": 5
+        "Pele de cobra": 1
       }
     },
     {
@@ -169,7 +169,7 @@
       }
     },
     {
-      "id": "Mochila de escamas de Kraken",
+      "id": "Mochila de Rabadon",
       "category": "backpack",
       "capacity": 100,
       "price": 250000,
