@@ -59,7 +59,7 @@ module.exports = class GiveCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'give',
-      aliases: ['pay'],
+      aliases: ['pay', 'pagar'],
       cooldown: 5,
       category: 'economia',
     });
