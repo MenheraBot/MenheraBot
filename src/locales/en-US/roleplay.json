@@ -27,5 +27,5 @@
   },
   "registred": "you have been successfully registered! Use `m!status` to see your status",
   "backpack-full": "you get a loot, but your backpack is full, and you need to let them down",
-  "evolve": "you reach your proficiency level, and become a {{class}}"
+  "evolve": "you reach your proficiency level, and become a **{{class}}**"
 }

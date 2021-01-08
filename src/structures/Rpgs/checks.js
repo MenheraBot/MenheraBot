@@ -12,7 +12,7 @@ module.exports.getEnemyByUserLevel = (user, type) => {
       return random([...mobsFile.boss, ...mobsFile.gods]);
     }
     if (user.level >= 30) {
-      return random([...mobsFile.boss, ...mobsFile.gods, ...mobsFile.universal]);
+      return random([...mobsFile.gods, ...mobsFile.universal]);
     }
     return random(mobsFile.boss);
   }
