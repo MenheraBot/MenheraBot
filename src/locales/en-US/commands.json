@@ -16,7 +16,7 @@
     "embed_description": "kicked"
   },
   "bite": {
-    "description": "bite someone :3",
+    "description": "Bite someone :3",
     "usage": "<@mention>",
     "bot": "you bit a robot ... -5 teeth in the mouth",
     "no-mention": "You have to mention who you want to bite duuh",

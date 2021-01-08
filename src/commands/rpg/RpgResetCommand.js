@@ -4,6 +4,7 @@ module.exports = class RpgResetCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'reset',
+      aliases: ['resetar'],
       cooldown: 5,
       category: 'rpg',
     });

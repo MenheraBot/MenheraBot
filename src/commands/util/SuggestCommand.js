@@ -8,7 +8,6 @@ module.exports = class SuggestCommand extends Command {
       aliases: ['sugerir', 'sugestão'],
       cooldown: 5,
       category: 'util',
-      usage: '<sugestão>',
     });
   }
 

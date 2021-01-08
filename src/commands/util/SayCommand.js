@@ -4,11 +4,11 @@ module.exports = class SayCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'say',
+      aliases: ['dizer'],
       cooldown: 5,
       userPermissions: ['MANAGE_MESSAGES'],
       clientPermissions: ['MANAGE_MESSAGES'],
       category: 'util',
-      usage: '<texto>',
     });
   }
 
