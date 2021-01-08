@@ -573,7 +573,35 @@ module.exports.getAbilities = async (user, familia) => {
     case 'Necromante':
       filtrado = abilitiesFile.necromante;
       break;
-    default:
+    case 'Senhor das Sombras':
+      filtrado = abilitiesFile.assassin;
+      break;
+    case 'Berserker':
+      filtrado = abilitiesFile.barbarian;
+      break;
+    case 'Arcanjo':
+      filtrado = abilitiesFile.clerigo;
+      break;
+    case 'Guardião da Natureza':
+      filtrado = abilitiesFile.druida;
+      break;
+    case 'Mestre das Armas':
+      filtrado = abilitiesFile.espadachim;
+      break;
+    case 'Senhor das Galáxias':
+      filtrado = abilitiesFile.feiticeiro;
+      break;
+    case 'Mestre dos Elementos':
+      filtrado = abilitiesFile.feiticeiro;
+      break;
+    case 'Conjurador Demoníaco':
+      filtrado = abilitiesFile.feiticeiro;
+      break;
+    case 'Sacerdote':
+      filtrado = abilitiesFile.monge;
+      break;
+    case 'Senhor das Trevas':
+      filtrado = abilitiesFile.necromante;
       break;
   }
 
