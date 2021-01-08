@@ -4,9 +4,9 @@ module.exports = class UnwarnCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'unwarn',
+      aliases: ['desavisar'],
       userPermissions: ['KICK_MEMBERS'],
       category: 'moderação',
-      usage: '<usuário>',
     });
   }
 

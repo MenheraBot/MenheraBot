@@ -5,6 +5,7 @@ module.exports = class WarnCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'warn',
+      aliases: ['avisar'],
       cooldown: 5,
       userPermissions: ['KICK_MEMBERS'],
       clientPermissions: ['EMBED_LINKS'],

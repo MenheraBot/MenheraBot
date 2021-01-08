@@ -4,11 +4,11 @@ module.exports = class PrefixCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'prefix',
+      aliases: ['prefixo'],
       cooldown: 10,
       description: 'Troque meu prefixo neste servidor',
       userPermissions: ['MANAGE_CHANNELS'],
       category: 'moderação',
-      usage: '<prefixo>',
     });
   }
 

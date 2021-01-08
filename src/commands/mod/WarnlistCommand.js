@@ -5,7 +5,7 @@ module.exports = class WarnListCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'warnlist',
-      alisases: ['warns', 'punishmentlist'],
+      alisases: ['warns', 'punishmentlist', 'avisos'],
       cooldown: 5,
       userPermissions: ['MANAGE_MESSAGES'],
       clientPermissions: ['EMBED_LINKS'],
