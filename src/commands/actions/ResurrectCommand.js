@@ -22,16 +22,16 @@ module.exports = class ResurrectCommand extends Command {
     const user = message.mentions.users.first();
     const avatar = message.author.displayAvatarURL({ format: 'png', dynamic: true });
 
-    if (!user) return message.menheraReply('question', t('commands:ressurect.no-mention'));
+    if (!user) return message.menheraReply('question', t('commands:resurrect.no-mention'));
 
-    if (user === message.author) return message.menheraReply('question', t('commands:ressurect.no-mention'));
+    if (user === message.author) return message.menheraReply('question', t('commands:resurrect.no-mention'));
 
-    if (user.bot) return message.menheraReply('success', t('commands:ressurect.bot'));
+    if (user.bot) return message.menheraReply('success', t('commands:resurrect.bot'));
 
     const embed = new MessageEmbed()
-      .setTitle(t('commands:ressurect.embed_title'))
+      .setTitle(t('commands:resurrect.embed_title'))
       .setColor('#000000')
-      .setDescription(`${message.author} ${t('commands:ressurect.embed_description')} ${user}`)
+      .setDescription(`${message.author} ${t('commands:resurrect.embed_description')} ${user}`)
       .setImage(rand)
       .setThumbnail(avatar)
       .setAuthor(message.author.tag, avatar);

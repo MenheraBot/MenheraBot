@@ -3,6 +3,7 @@ module.exports = class GuildCreate {
     this.client = client;
     this.region = {
       brazil: 'pt-BR',
+      europe: 'en-US',
       'eu-central': 'en-US',
       'eu-west': 'en-US',
       hongkong: 'en-US',
