@@ -40,7 +40,7 @@ module.exports = class BotinfoCommand extends Command {
       },
       {
         name: `🗄️ | ${t('commands:botinfo.channels')} | 🗄️`,
-        value: `\`\`\`${this.client.channels.cache.size}\`\`\``,
+        value: `\`\`\`${await this.client.shardManager.getAllSizeObject('channels')}\`\`\``,
         inline: true,
       },
       {
