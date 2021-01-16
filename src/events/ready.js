@@ -7,7 +7,7 @@ module.exports = class ReadyEvent {
   }
 
   async run() {
-    if (this.client.user.id === '708014856711962654' && this.client.shards.id === 0) {
+    if (this.client.user.id === '708014856711962654' && this.client.shard.id === 0) {
       const DiscordBotList = new Dbl(this.client);
       DiscordBotList.init();
       http.status('ready');
