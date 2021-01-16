@@ -35,7 +35,7 @@ module.exports = class BotinfoCommand extends Command {
       }))
       .addFields([{
         name: '🌐 | Servers | 🌐',
-        value: `\`\`\`${this.client.shardManager.getAllSizeObject('guilds')}\`\`\``,
+        value: `\`\`\`${await this.client.shardManager.getAllSizeObject('guilds')}\`\`\``,
         inline: true,
       },
       {
