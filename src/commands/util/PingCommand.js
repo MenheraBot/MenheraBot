@@ -20,7 +20,7 @@ module.exports = class PingCommand extends Command {
       this.client.shard.broadcastEval('this.ws.ping').then((shard) => {
         embed = new MessageEmbed()
           .setColor('#eab3fa')
-          .setFooter(`${t('commands:ping')} ${this.client.shard.count} shards`);
+          .setFooter(message.author.tag, avatar);
         shard.forEach((ping, index) => embed.addField(`Shard **${index}**`, `**${Math.round(ping)}**ms`, true));
         message.channel.send(embed);
       });
