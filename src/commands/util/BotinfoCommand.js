@@ -23,6 +23,9 @@ module.exports = class BotinfoCommand extends Command {
       moment.locale('pt-br');
     } else moment.locale('en-us');
 
+    const memoryUsedGross = await this.client.shard.broadcastEval('process.memoryUsage().heapUsed');
+    const memoryUsedPolish = memoryUsedGross.reduce((a, b) => a + b, 0);
+
     const embed = new MessageEmbed()
       .setColor('#fa8dd7')
       .setThumbnail('https://i.imgur.com/b5y0nd4.png')
@@ -50,7 +53,7 @@ module.exports = class BotinfoCommand extends Command {
       },
       {
         name: `<:memoryram:762817135394553876> | ${t('commands:botinfo.memory')} | <:memoryram:762817135394553876>`,
-        value: `\`\`\`${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)}MB\`\`\``,
+        value: `\`\`\`${(memoryUsedPolish / 1024 / 1024).toFixed(2)}MB\`\`\``,
         inline: true,
       },
       {

@@ -24,7 +24,8 @@
     "moment-duration-format": "^2.3.2",
     "mongoose": "^5.9.21",
     "request": "^2.88.2",
-    "request-promise": "^4.2.6"
+    "request-promise": "^4.2.6",
+    "string-table": "^0.1.5"
   },
   "repository": {
     "type": "git",
