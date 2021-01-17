@@ -67,15 +67,17 @@ module.exports = class DiscordBots {
       user.estrelinhas += starQuantity;
       await user.save();
 
-      await this.client.shard.broadcastEval(`
-      (async () => {
-        const user = await this.client.users.fetch(${vote.user}).catch()
-        if (user) {
-          await user.send(${embed}).catch()
-          return true
-        } else return false
-      })();
-      `).then(console.log('[DLB] Tentativa de enviar para um usuário'));
+      const functionToEval = async (id, embedToSend) => {
+        let hasSend = false;
+        const userInShard = await this.client.users.fetch(id).catch();
+
+        if (userInShard && !hasSend) {
+          hasSend = true;
+          await userInShard.send(embedToSend).catch();
+        }
+      };
+
+      await this.client.shard.broadcastEval(functionToEval(vote.user, embed)).then(console.log('[DLB] Tentativa de enviar para um usuário'));
     });
 
     dbl.on('posted', () => {
