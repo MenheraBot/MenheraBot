@@ -56,7 +56,7 @@ module.exports = class WarnListCommand extends Command {
       guildId: message.guild.id,
     }).sort([
       ['data', 'ascending'],
-    ]).exec((err, db) => {
+    ]).exec(async (err, db) => {
       if (err) console.log(err);
 
       if (!db || db.length < 1) {
@@ -68,7 +68,8 @@ module.exports = class WarnListCommand extends Command {
 
       for (let i = 0; i < db.length; i++) {
         if (embed.fields.length === 24) break;
-        const warner = this.client.users.fetch(db[i].warnerId);
+        // eslint-disable-next-line no-await-in-loop
+        const warner = await this.client.users.fetch(db[i].warnerId);
         embed.addField(`${t('commands:warnlist.warn')} #${i + 1}`, `**${t('commands:warnlist.Warned_by')}** ${warner || '404'}\n**${t('commands:warnlist.Reason')}** ${db[i].reason}\n**${t('commands:warnlist.Data')}** ${db[i].data}\n**${t('commands:warnlist.WarnID')}** \`${db[i]._id}\``);
       }
 
