@@ -57,8 +57,6 @@ module.exports = class DiscordBots {
         await rpgUser.save();
       }
 
-      const usuarioDm = await this.client.users.fetch(vote.user).catch();
-
       const embed = new MessageEmbed()
         .setTitle(embedTitle)
         .setColor('#fa73e5')
@@ -68,19 +66,27 @@ module.exports = class DiscordBots {
       user.rolls += rollQuantity;
       user.estrelinhas += starQuantity;
       await user.save();
-      try {
-        if (usuarioDm) usuarioDm.send(embed);
-      } catch {
-        // Big F
-      }
+
+      await this.client.shard.broadcastEval(`
+      (async () => {
+        const user = await this.client.users.fetch(${vote.user}).catch()
+        if (user) {
+          await user.send(${embed}).catch()
+          return true
+        } else return false
+      })();
+      `).then(console.log('[DLB] Tentativa de enviar para um usuário'));
     });
 
     dbl.on('posted', () => {
       console.log('[DBL] Stats do bot postados');
     });
 
-    this.client.setInterval(() => {
-      dbl.postStats(this.client.guilds.cache.size);
+    this.client.setInterval(async () => {
+      const guilds = await this.client.shardManager.getAllSizeObject('guilds');
+      const shardId = 0;
+      const shardsCount = this.client.shard.count;
+      dbl.postStats(guilds, shardId, shardsCount);
     }, 1800000);
   }
 };

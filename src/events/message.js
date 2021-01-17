@@ -129,8 +129,8 @@ module.exports = class MessageReceive {
           message, args, server, authorData,
         }, t));
         console.log(`[COMANDO] ${command.config.name.toUpperCase()} | USER: ${message.author.tag} - ${message.author.id} | GUILD: ${message.guild.name} - ${message.guild.id}`);
-      }).catch((err) => {
-        const canal = this.client.channels.cache.get('730906866896470097');
+      }).catch(async (err) => {
+        const errorWebHook = await this.client.fetchWebhook(this.client.config.bug_webhook_id, this.client.config.bug_webhook_token);
 
         const errorMessage = err.stack.length > 1800 ? `${err.stack.slice(0, 1800)}...` : err.stack;
         const embed = new MessageEmbed();
@@ -142,10 +142,10 @@ module.exports = class MessageReceive {
         embed.addField(t('events:error_embed.report_title'), t('events:error_embed.report_value'));
 
         message.channel.send(embed).catch(() => message.menheraReply('error', t('events:error_embed.error_msg')));
-        canal.send(embed).catch();
+        errorWebHook.send(embed).catch();
       });
     } catch (err) {
-      const canal = this.client.channels.cache.get('730906866896470097');
+      const errorWebHook = await this.client.fetchWebhook(this.client.config.bug_webhook_id, this.client.config.bug_webhook_token);
 
       const errorMessage = err.stack.length > 1800 ? `${err.stack.slice(0, 1800)}...` : err.stack;
       const embed = new MessageEmbed();
@@ -157,7 +157,7 @@ module.exports = class MessageReceive {
       embed.addField(t('events:error_embed.report_title'), t('events:error_embed.report_value'));
 
       message.channel.send(embed).catch(() => message.menheraReply('error', t('events:error_embed.error_msg')));
-      canal.send(embed).catch();
+      errorWebHook.send(embed).catch();
       console.error(err.stack);
     }
     if (this.client.user.id === '708014856711962654') {

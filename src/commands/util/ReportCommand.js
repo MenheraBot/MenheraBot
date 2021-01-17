@@ -26,7 +26,9 @@ module.exports = class ReportCommand extends Command {
       .setTimestamp()
       .setAuthor(`Novo Bug Reportado por ${message.author.tag}`, message.author.displayAvatarURL({ dynamic: true }));
 
-    this.client.guilds.cache.get('717061688460967988').channels.cache.get('730906866896470097').send(embed);
+    const reportWebhook = await this.client.fetchWebhook(this.client.config.bug_webhook_id, this.client.config.bug_webhook_token);
+
+    reportWebhook.send(embed);
 
     if (message.deletable) message.delete();
     message.menheraReply('success', t('commands:report.thanks'));

@@ -25,7 +25,9 @@ module.exports = class SuggestCommand extends Command {
       .setTimestamp()
       .setAuthor(`Sugestão de ${message.author.tag}`, message.author.displayAvatarURL({ dynamic: true }));
 
-    this.client.guilds.cache.get('717061688460967988').channels.cache.get('723765136648830996').send(embed).then((m) => {
+    const webhook = await this.client.fetchWebhook(this.client.config.suggest_webhook_id, this.client.config.suggest_webhook_token);
+
+    webhook.send(embed).then((m) => {
       m.react('✅');
       m.react('❌');
     });

@@ -27,7 +27,7 @@ module.exports = class PingCommand extends Command {
     } else {
       embed = new MessageEmbed()
         .setTitle('🏓 | Pong!')
-        .setDescription(`📡 | ${t('commands:ping.api')} **${Date.now() - message.createdTimestamp}ms**\n📡 | ${t('commands:ping.latency')} **${Math.round(this.client.ws.ping)}ms**\n🖲️ | ShardId: [**${this.client.shard.ids}**/${this.client.shard.count}]`)
+        .setDescription(`📡 | ${t('commands:ping.api')} **${Date.now() - message.createdTimestamp}ms**\n📡 | ${t('commands:ping.latency')} **${Math.round(this.client.ws.ping)}ms**\n🖲️ | ShardId: [**${this.client.shard.ids}**/${this.client.shard.count - 1}]`)
         .setFooter(message.author.tag, avatar)
         .setTimestamp()
         .setColor('#eab3fa');
