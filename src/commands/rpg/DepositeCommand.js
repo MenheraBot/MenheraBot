@@ -31,36 +31,11 @@ module.exports = class DepositeCommand extends Command {
     familia.save();
 
     message.menheraReply('success', t('commands:deposite.transfered', { value: valor }));
-    setTimeout(() => {
-      const server = this.client.guilds.cache.get('717061688460967988');
-
-      const FreyaRole = server.roles.cache.get('765069003440914443'); // Freya
-      const ApoloRole = server.roles.cache.get('765069063146962995'); // Apolo
-      const LokiRole = server.roles.cache.get('765069110018703371'); // Loki
-      const SomaRole = server.roles.cache.get('765069167363096616'); // Soma
-      const AresRole = server.roles.cache.get('765069139885948928'); // Ares
-
-      let role;
-      switch (familia._id) {
-        case 'Freya':
-          role = FreyaRole;
-          break;
-        case 'Apolo':
-          role = ApoloRole;
-          break;
-        case 'Loki':
-          role = LokiRole;
-          break;
-        case 'Soma':
-          role = SomaRole;
-          break;
-        case 'Ares':
-          role = AresRole;
-          break;
-      }
+    setTimeout(async () => {
+      const webhook = await this.client.fetchWebhook(this.client.config.family_webhook_id, this.client.config.family_webhook_token);
 
       if (parseInt(familia.bank) >= parseInt(familia.nextLevel)) {
-        this.client.channels.cache.get('765427597101760573').send(`A família **${user.familyName}** acabou de passar de nível com o depósito de **${this.client.users.cache.get(user._id)}**\nAgora, a família \`${user.familyName}\` está nível **${familia.levelFamilia + 1}**\n\n${role}`);
+        webhook.send(`A família **${user.familyName}** acabou de passar de nível com o depósito de \`${this.client.users.cache.get(user._id).tag}\`\nAgora, a família \`${user.familyName}\` está nível **${familia.levelFamilia + 1}**`);
         this.CheckLevel(familia);
       }
     }, 500);

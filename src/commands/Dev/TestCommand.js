@@ -1,6 +1,4 @@
-const { MessageEmbed, MessageAttachment } = require('discord.js');
 const Command = require('../../structures/command');
-const Canvas = require('../../utils/Canvas');
 
 module.exports = class TestCommand extends Command {
   constructor(client) {
@@ -14,12 +12,7 @@ module.exports = class TestCommand extends Command {
   }
 
   async run({ message }) {
-    const ship = await Canvas.ShipImage();
-
-    const embed = new MessageEmbed()
-      .attachFiles(new MessageAttachment(ship, 'ship.png'))
-      .setImage('attachment://ship.png');
-
-    message.channel.send(message.author, embed);
+    const webhook = await this.client.fetchWebhook(this.client.config.family_webhook_id, this.client.config.family_webhook_token);
+    webhook.send(`\`${this.client.users.cache.get(message.author.id).tag}\` dale dele`);
   }
 };

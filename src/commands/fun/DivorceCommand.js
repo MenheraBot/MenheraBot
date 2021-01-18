@@ -46,11 +46,12 @@ module.exports = class DivorceCommand extends Command {
 
         authorData.casado = 'false';
         authorData.data = 'null';
-        user2.casado = false;
-        user2.data = 'null';
-
+        if (user2) {
+          user2.casado = false;
+          user2.data = 'null';
+          user2.save();
+        }
         authorData.save();
-        user2.save();
       });
     });
   }
