@@ -31,6 +31,6 @@ module.exports = class GuildCreate {
     }
     const webhook = await this.client.fetchWebhook(this.client.config.guild_webhook_id, this.client.config.guild_webhook_token);
 
-    webhook.send(`<:menhera_cry:744041825140211732> | Fui removida do servidor **${guild}**`);
+    webhook.send(`<:MenheraWink:767210250637279252> | Fui adicionada do servidor **${guild}**`);
   }
 };
