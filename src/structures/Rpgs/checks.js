@@ -840,76 +840,94 @@ module.exports.confirmRegister = async (user, message, t) => {
 
 module.exports.evolve = async (user, message, t) => {
   switch (user.class) {
-    case 'Assassino':
+    case 'Assassino': {
       user.abilities.push(abilitiesFile.assassin.normalAbilities[4]);
       user.damage += 10;
       user.class = 'Senhor das Sombras';
       user.save();
-      message.menheraReply('warn', t('roleplay:evolve', { class: 'Senhor das Sombras' }));
+      const translatedEvolve = t(`roleplay:classes.${user.class}`);
+      message.menheraReply('warn', t('roleplay:evolve', { class: translatedEvolve }));
       break;
-    case 'Bárbaro':
+    }
+    case 'Bárbaro': {
       user.abilities.push(abilitiesFile.barbarian.normalAbilities[4]);
       user.maxLife += 50;
       user.class = 'Berserker';
       user.save();
-      message.menheraReply('warn', t('roleplay:evolve', { class: 'Berserker' }));
+      const translatedEvolve = t(`roleplay:classes.${user.class}`);
+      message.menheraReply('warn', t('roleplay:evolve', { class: translatedEvolve }));
       break;
-    case 'Clérigo':
+    }
+    case 'Clérigo': {
       user.abilities.push(abilitiesFile.clerigo.normalAbilities[4]);
       user.maxMana += 40;
       user.class = 'Arcanjo';
       user.save();
-      message.menheraReply('warn', t('roleplay:evolve', { class: 'Arcanjo' }));
+      const translatedEvolve = t(`roleplay:classes.${user.class}`);
+      message.menheraReply('warn', t('roleplay:evolve', { class: translatedEvolve }));
       break;
-    case 'Druida':
+    }
+    case 'Druida': {
       user.abilities.push(abilitiesFile.druida.normalAbilities[4]);
       user.maxMana += 30;
       user.class = 'Guardião da Natureza';
       user.save();
-      message.menheraReply('warn', t('roleplay:evolve', { class: 'Guardião da Natureza' }));
+      const translatedEvolve = t(`roleplay:classes.${user.class}`);
+      message.menheraReply('warn', t('roleplay:evolve', { class: translatedEvolve }));
       break;
-    case 'Espadachim':
+    }
+    case 'Espadachim': {
       user.abilities.push(abilitiesFile.espadachim.normalAbilities[4]);
       user.damage += 10;
       user.class = 'Mestre das Armas';
       user.save();
-      message.menheraReply('warn', t('roleplay:evolve', { class: 'Mestre das Armas' }));
+      const translatedEvolve = t(`roleplay:classes.${user.class}`);
+      message.menheraReply('warn', t('roleplay:evolve', { class: translatedEvolve }));
       break;
-    case 'Feiticeiro':
+    }
+    case 'Feiticeiro': {
       if (user.uniquePower.name === 'Linhagem: Mística') {
         user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[10]);
         user.maxMana += 40;
         user.class = 'Senhor das Galáxias';
         user.save();
-        message.menheraReply('warn', t('roleplay:evolve', { class: 'Senhor das Galáxias' }));
+        const translatedEvolve = t(`roleplay:classes.${user.class}`);
+        message.menheraReply('warn', t('roleplay:evolve', { class: translatedEvolve }));
       }
       if (user.uniquePower.name === 'Linhagem: Dracônica') {
         user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[11]);
         user.maxMana += 40;
         user.class = 'Mestre dos Elementos';
         user.save();
-        message.menheraReply('warn', t('roleplay:evolve', { class: 'Mestre dos Elementos' }));
+        const translatedEvolve = t(`roleplay:classes.${user.class}`);
+        message.menheraReply('warn', t('roleplay:evolve', { class: translatedEvolve }));
       }
       if (user.uniquePower.name === 'Linhagem: Demoníaca') {
         user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[12]);
         user.maxMana += 40;
         user.class = 'Conjurador Demoníaco';
         user.save();
-        message.menheraReply('warn', t('roleplay:evolve', { class: 'Conjurador Demoníaco' }));
+        const translatedEvolve = t(`roleplay:classes.${user.class}`);
+        message.menheraReply('warn', t('roleplay:evolve', { class: translatedEvolve }));
       }
       break;
-    case 'Monge':
+    }
+    case 'Monge': {
       user.abilities.push(abilitiesFile.monge.normalAbilities[4]);
       user.class = 'Sacerdote';
       user.save();
-      message.menheraReply('warn', t('roleplay:evolve', { class: 'Sacerdote' }));
+      const translatedEvolve = t(`roleplay:classes.${user.class}`);
+      message.menheraReply('warn', t('roleplay:evolve', { class: translatedEvolve }));
       break;
-    case 'Necromante':
+    }
+    case 'Necromante': {
       user.abilities.push(abilitiesFile.necromante.normalAbilities[4]);
       user.maxMana += 40;
       user.class = 'Senhor das Trevas';
       user.save();
-      message.menheraReply('warn', t('roleplay:evolve', { class: 'Senhor das Trevas' }));
+      const translatedEvolve = t(`roleplay:classes.${user.class}`);
+      message.menheraReply('warn', t('roleplay:evolve', { class: translatedEvolve }));
       break;
+    }
   }
 };

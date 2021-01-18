@@ -27,5 +27,25 @@
   },
   "registred": "you have been successfully registered! Use `m!status` to see your status",
   "backpack-full": "you get a loot, but your backpack is full, and you need to let them down",
-  "evolve": "you reach your proficiency level, and become a **{{class}}**"
+  "evolve": "you reach your proficiency level, and become a **{{class}}**",
+  "classes": {
+    "Assassino": "Assassin",
+    "Bárbaro": "Barbarian",
+    "Clérigo": "Cleric",
+    "Druida": "Druid",
+    "Espadachim": "Swordsman",
+    "Feiticeiro": "Sorcerer",
+    "Monge": "Monk",
+    "Necromante": "Necromancer",
+    "Senhor das Sombras": "Shadow Lord",
+    "Berserker": "Berserker",
+    "Arcanjo": "Archangel",
+    "Guardião da Natureza": "Guardian of Nature",
+    "Mestre das Armas": "Weapons Master",
+    "Senhor das Galáxias": "Lord of the Galaxy",
+    "Mestre dos Elementos": "Master of Elements",
+    "Conjurador Demoníaco": "Demonic Caster",
+    "Sacerdote": "Priest",
+    "Senhor das Trevas": "Lord of Darkness"
+  }
 }

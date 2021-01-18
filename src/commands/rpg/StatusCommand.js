@@ -46,7 +46,7 @@ module.exports = class StatusCommand extends Command {
       },
       {
         name: `⚔️ | ${t('commands:status.class')}`,
-        value: user.class,
+        value: t(`roleplay:classes.${user.class}`),
         inline: true,
       },
       {

@@ -456,7 +456,9 @@
     "times": "times",
     "family-level": "Family Level",
     "family-money": "Family's Money",
-    "not-user": "this user didn't use any commands"
+    "not-user": "this user didn't use any commands",
+    "family": "Family",
+    "null": "WITHOUT FAMILY"
   },
   "updates": {
     "description": "See my latest updates",
@@ -740,7 +742,15 @@
     "invalid-input": "this option is not a valid class!",
     "confirm": "do you really want to be a `{{option}}`? You can never change that again! \n\nSend 'yes' in the chat to confirm your choice",
     "confirmed": "Welcome to the world of ** Boleham **! Your class is ** {{option}} **, you can now use my RPG commands ",
-    "canceled": "you canceled verification"
+    "canceled": "you canceled verification",
+    "Assassino": "Assassin",
+    "Bárbaro": "Barbarian",
+    "Clérigo": "Cleric",
+    "Druida": "Druid",
+    "Espadachim": "Swordsman",
+    "Feiticeiro": "Sorcerer",
+    "Monge": "Monk",
+    "Necromante": "Necromancer"
   },
   "reset": {
     "description": "Reset your RPG profile",

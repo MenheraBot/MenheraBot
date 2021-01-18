@@ -20,12 +20,26 @@ module.exports = class UpdatesCommand extends Command {
       .setTitle(`${t('commands:updates.title')} ${version}`)
       .setColor('#a7e74f')
       .setFooter(`${this.client.user.username} ${t('commands:updates.footer')} ${owner.tag}`, owner.displayAvatarURL({ format: 'png', dynamic: true }))
-      .setDescription(`**Mudanças no RPG**
+      .setDescription(`**Tradução de Boleham**
 
-      • Novos bosses a partir do level 30!
-      • A partir do level 30, a dungeon vira um lugar perigoso, com monstros únicos, talvez até mais forte do que os bosses...
-      • O nivel mínimo para resetar agora é **4**
-      • Ajustado o bug das mochilas`);
+      Eu to trabalhando na tradução completa do RPG, mas isso é trabalhoso, mas algumas coisas ja foram traduzidas, e outras implementadas:
+
+      • Todas as classes são traduzidas, tanto no \`m!register\`, como no \`m!status\`. Tanto as classes quanto as evoluções estão traduzidas
+
+      • O \`m!top rpg\` agora mostra a família do jogador (Sugerido por @Tsugami#6868 )
+
+      • Sobre os gifs de ações: Eu sei que estão repetitivos, e eu ia adicionar mais, mas quando eu fui atualizar (tipo agora) o Imgur estava off, então não consegui, mas logo logo vou adicionar mais!
+
+      CORREÇÃO DE BUGS:
+
+• O sistema de votos foi arrumado
+
+• O comando m!warnlist está funcionando corretamente
+
+• Eu ainda estou pensando em como arrumar o problema da guilda, mas é complexo, pois o código foi feito pelo TsuTsu, e a programação dele é muito mais avançada do que a minha, mas fica sussa que vou encontrar um jeito pra arrumar aquilo! Mas por enquanto, evite vender itens com a opção 0 da guilda!
+
+      Por enquanto é isso! Use \`..notify\` para ficar por dentro de todas as novidades que são introduzidas (nnyaaan >...<) na Menhera!
+      ||SPOILER: O COMANDO \`M!ASTOLFO\` VOLTARÁ!||`);
 
     message.channel.send(message.author, embed);
   }

@@ -17,7 +17,7 @@ module.exports = class RegisterCommand extends Command {
 
     if (user) return message.menheraReply('error', t('commands:register.already', { name: message.author.username }));
 
-    const classes = ['Assassino', 'Bárbaro', 'Clérigo', 'Druida', 'Espadachim', 'Feiticeiro', 'Monge', 'Necromante'];
+    const classes = [t('commands:register.Assassino'), t('commands:register.Bárbaro'), t('commands:register.Clérigo'), t('commands:register.Druida'), t('commands:register.Espadachim'), t('commands:register.Feiticeiro'), t('commands:register.Monge'), t('commands:register.Necromante')];
 
     let description = t('commands:register.text');
 
@@ -68,14 +68,15 @@ module.exports = class RegisterCommand extends Command {
   }
 
   confirmação(message, option, t) {
-    message.menheraReply('warn', t('commands:register.confirm', { option }));
+    const selectedOption = t(`commands:register.${option}`);
+    message.menheraReply('warn', t('commands:register.confirm', { option: selectedOption }));
 
     const filtro = (m) => m.author.id === message.author.id;
     const confirmCollector = message.channel.createMessageCollector(filtro, { max: 1 });
 
     confirmCollector.on('collect', async (m) => {
       if (m.content.toLowerCase() === 'sim' || m.content.toLowerCase() === 'yes') {
-        message.menheraReply('success', t('commands:register.confirmed', { option }));
+        message.menheraReply('success', t('commands:register.confirmed', { option: selectedOption }));
         const user = await new this.client.database.Rpg({
           _id: message.author.id,
           class: option,

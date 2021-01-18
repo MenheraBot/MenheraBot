@@ -462,7 +462,9 @@
     "times": "vezes",
     "family-level": "Nível da Família",
     "family-money": "Dinheiro da Família",
-    "not-user": "este usuário não usou nenhum comando meu"
+    "not-user": "este usuário não usou nenhum comando meu",
+    "family": "Família",
+    "null": "SEM FAMÍLIA"
   },
   "updates": {
     "description": "Veja as minhas últimas atualzações",
@@ -760,7 +762,15 @@
     "invalid-input": "esta opção não é uma classe válida!",
     "confirm": "você realmente deseja ser um `{{option}}`? Você nunca mais poderá trocar isso!\n\nEnvie 'sim' no chat para confirmar sua escolha",
     "confirmed": "Bem-vindo ao mundo de **Boleham**! Sua classe é **{{option}}**, agora você já pode usar meus comandos de RPG",
-    "canceled": "você cancelou a confirmação"
+    "canceled": "você cancelou a confirmação",
+    "Assassino": "Assassino",
+    "Bárbaro": "Bárbaro",
+    "Clérigo": "Clérigo",
+    "Druida": "Druida",
+    "Espadachim": "Espadachim",
+    "Feiticeiro": "Feiticeiro",
+    "Monge": "Monge",
+    "Necromante": "Necromante"
   },
   "reset": {
     "description": "Reseta seu perfil do RPG",

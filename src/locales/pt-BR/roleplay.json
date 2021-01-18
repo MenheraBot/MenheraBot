@@ -27,5 +27,25 @@
   },
   "registred": "você foi registrado com sucesso! Use `m!status` para ver seus status",
   "backpack-full": "você ganha um loot, mas sua mochila está cheia, e você precisa deixá-lo para trás",
-  "evolve": "você atinge seu nível de proficiência, e se torna um **{{class}}**"
+  "evolve": "você atinge seu nível de proficiência, e se torna um **{{class}}**",
+  "classes": {
+    "Assassino": "Assassino",
+    "Bárbaro": "Bárbaro",
+    "Clérigo": "Clérigo",
+    "Druida": "Druida",
+    "Espadachim": "Espadachim",
+    "Feiticeiro": "Feiticeiro",
+    "Monge": "Monge",
+    "Necromante": "Necromante",
+    "Senhor das Sombras": "Senhor das Sombras",
+    "Berserker": "Berserker",
+    "Arcanjo": "Arcanjo",
+    "Guardião da Natureza": "Guardião da Natureza",
+    "Mestre das Armas": "Mestre das Armas",
+    "Senhor das Galáxias": "Senhor das Galáxias",
+    "Mestre dos Elementos": "Mestre dos Elementos",
+    "Conjurador Demoníaco": "Conjurador Demoníaco",
+    "Sacerdote": "Sacerdote",
+    "Senhor das Trevas": "Senhor das Trevas"
+  }
 }

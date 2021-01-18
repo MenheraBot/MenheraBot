@@ -316,7 +316,7 @@ module.exports = class TopCommand extends Command {
       skip = (pagina - 1) * 10;
     }
 
-    const res = await this.client.database.Rpg.find({}, ['level', '_id', 'xp'], {
+    const res = await this.client.database.Rpg.find({}, ['level', '_id', 'xp', 'hasFamily', 'familyName'], {
       skip,
       limit: 10,
       sort: { level: -1, xp: -1 },
@@ -330,9 +330,9 @@ module.exports = class TopCommand extends Command {
     for (let i = 0; i < res.length; i++) {
       const member = await this.client.users.fetch(res[i].id).catch();
       if (!member) {
-        embed.addField(`** ${skip + 1 + i} -** \`USER NOT FOUND\``, `Level: **${res[i].level}**\nXp: **${res[i].xp}**`, false);
+        embed.addField(`** ${skip + 1 + i} -** \`USER NOT FOUND\``, `Level: **${res[i].level}**\nXp: **${res[i].xp}**\n${t('commands:top.family')}: **${res[i].hasFamily ? res[i].familyName : t('commands:top.null')}**`, false);
       } else {
-        embed.addField(`**${skip + 1 + i} -** ${member.username}`, `Level: **${res[i].level}**\nXp: **${res[i].xp}**`, false);
+        embed.addField(`**${skip + 1 + i} -** ${member.username}`, `Level: **${res[i].level}**\nXp: **${res[i].xp}**\n${t('commands:top.family')}: **${res[i].hasFamily ? res[i].familyName : t('commands:top.null')}**`, false);
       }
     }
     message.channel.send(message.author, embed);
