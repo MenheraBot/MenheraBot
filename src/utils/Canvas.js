@@ -152,7 +152,7 @@ module.exports = class Canvas {
     const images = [];
     const links = [];
 
-    const userFlags = discordUser.flags.toArray();
+    const userFlags = discordUser.flags?.toArray();
 
     if (userFlags && userFlags.length > 0) {
       userFlags.forEach((flag) => {
