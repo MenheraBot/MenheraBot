@@ -1,7 +1,7 @@
 const request = require('request-promise');
 const config = require('../../config.json');
 
-module.exports.getActivity = async () => {
+module.exports.getActivity = async (shard) => {
   const options = {
     method: 'GET',
     uri: `${config.api_IP}/api/activity`,
@@ -9,11 +9,14 @@ module.exports.getActivity = async () => {
       'User-Agent': 'MenheraClient',
       token: config.api_TOKEN,
     },
+    body: {
+      shard,
+    },
     json: true,
   };
 
   const result = await request(options).catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
-  if (!result) return { name: '❤️ | Menhera foi criada pela Lux', type: 'PLAYING' };
+  if (!result) return { name: `❤️ | Menhera foi criada pela Lux | Shard ${shard}`, type: 'PLAYING' };
   return result;
 };
 

@@ -18,7 +18,7 @@ module.exports = class ReadyEvent {
     console.log('[READY] Menhera se conectou com o Discord!');
 
     setInterval(async () => {
-      const atividade = await http.getActivity();
+      const atividade = await http.getActivity(this.client.shard.ids[0]);
       this.client.user.setPresence({
         activity: atividade,
       });
