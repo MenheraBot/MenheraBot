@@ -315,12 +315,16 @@ module.exports = class VillageCommand extends Command {
       collector.finish();
 
       if (result === 'ALL') {
-        const total = allItems.reduce((p, item) => p + item.value, 0);
+        let sold = 0;
+        const total = allItems.reduce((p, item) => {
+          sold += item.amount;
+          return p + (item.value * item.amount);
+        }, 0);
         user.loots = [];
         user.money += total;
         user.save();
 
-        return collector.menheraReply('success', t('commands:village.guilda.sold-all', { amount: allItems.length, value: total }));
+        return collector.menheraReply('success', t('commands:village.guilda.sold-all', { amount: sold, value: total }));
       }
 
       const [item, qty] = result;
