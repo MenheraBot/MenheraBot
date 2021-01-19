@@ -19,6 +19,18 @@ module.exports = class DisgustedCommand extends Command {
       'https://i.imgur.com/LOSFoxm.gif',
       'https://i.imgur.com/xPIvx3i.gif',
       'https://i.imgur.com/JXNiWIL.gif',
+      'https://i.imgur.com/ZdjsxMc.gif',
+      'https://i.imgur.com/ji2hq9Q.gif',
+      'https://i.imgur.com/Rq7ZxC3.gif',
+      'https://i.imgur.com/EDE3ezg.gif',
+      'https://i.imgur.com/4G3t4ub.gif',
+      'https://i.imgur.com/7YwJzi4.gif',
+      'https://i.imgur.com/P70H6zP.gif',
+      'https://i.imgur.com/cHO3Xnx.gif',
+      'https://i.imgur.com/wb2sxGf.gif',
+      'https://i.imgur.com/EMmPIT9.gif',
+      'https://i.imgur.com/Xs3XNMU.gif',
+      'https://i.imgur.com/sIQ9wOw.gif',
     ];
 
     const rand = list[Math.floor(Math.random() * list.length)];

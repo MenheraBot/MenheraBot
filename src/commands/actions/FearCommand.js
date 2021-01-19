@@ -22,6 +22,18 @@ module.exports = class FearCommand extends Command {
       'https://i.imgur.com/t2cTiQv.gif',
       'https://i.imgur.com/QscQ25U.gif',
       'https://i.imgur.com/MtzUkqy.gif',
+      'https://i.imgur.com/MfJ0nlx.gif',
+      'https://i.imgur.com/qrkqFoj.gif',
+      'https://i.imgur.com/6cYX7fT.gif',
+      'https://i.imgur.com/LxsSrvV.gif',
+      'https://i.imgur.com/DMLErUU.gif',
+      'https://i.imgur.com/ok28eYY.gif',
+      'https://i.imgur.com/sUIcMMD.gif',
+      'https://i.imgur.com/XeSAx9k.gif',
+      'https://i.imgur.com/5gCwJl5.gif',
+      'https://i.imgur.com/GLmWdhb.gif',
+      'https://i.imgur.com/rSRdZdG.gif',
+      'https://i.imgur.com/8TyqHIS.gif',
     ];
 
     const rand = list[Math.floor(Math.random() * list.length)];

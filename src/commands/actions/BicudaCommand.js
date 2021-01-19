@@ -19,6 +19,14 @@ module.exports = class BicudaCommand extends Command {
       'https://i.imgur.com/UtWFnw1.gif',
       'https://i.imgur.com/17g1pkj.gif',
       'https://i.imgur.com/WjU3lxi.gif',
+      'https://media.giphy.com/media/M1xhexGTyqk0Xfa07I/giphy.gif',
+      'https://i.imgur.com/bZpnl52.gif',
+      'https://i.imgur.com/SVE32ou.gif',
+      'https://i.imgur.com/IinsyoH.gif',
+      'https://i.imgur.com/XPWcusL.gif',
+      'https://i.imgur.com/cnmw1FQ.gif',
+      'https://i.imgur.com/GgCn5fn.gif',
+      'https://i.imgur.com/TlNjwaw.gif',
     ];
 
     const rand = list[Math.floor(Math.random() * list.length)];

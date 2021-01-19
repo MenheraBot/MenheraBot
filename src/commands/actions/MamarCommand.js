@@ -47,6 +47,13 @@ module.exports = class MamarCommand extends Command {
       'https://i.imgur.com/qyjOnix.gif',
       'https://i.imgur.com/J3K2d9A.gif',
       'https://i.imgur.com/JgXWxWf.gif',
+      'https://i.imgur.com/Ii0cqd7.gif',
+      'https://i.imgur.com/aA4VBH3.gif',
+      'https://i.imgur.com/4FkqweC.gif',
+      'https://i.imgur.com/dqYebgR.gif',
+      'https://i.imgur.com/qi5dPl3.gif',
+      'https://i.imgur.com/wdcVVmq.gif',
+      'https://i.imgur.com/PvlQsQa.gif',
     ];
 
     const rand = list[Math.floor(Math.random() * list.length)];

@@ -15,6 +15,7 @@ module.exports = class SarrarCommand extends Command {
     const listaSozinho = [
       'https://media1.tenor.com/images/e0b093e5174a74518ffcbc0967d265eb/tenor.gif?itemid=17767202',
       'https://i.imgur.com/XBcmgBR.png',
+      'https://i.imgur.com/GZtx3i8.gif',
     ];
 
     const randSozinho = listaSozinho[Math.floor(Math.random() * listaSozinho.length)];
@@ -36,7 +37,7 @@ module.exports = class SarrarCommand extends Command {
 
         const coletor = msg.createReactionCollector(filter, { max: 1, time: 30000 });
 
-        coletor.on('collect', (react, colectorUser) => {
+        coletor.on('collect', (_, colectorUser) => {
           msg.delete().catch();
           SarrarCommand.sarrada(message, colectorUser, t);
         });
@@ -48,6 +49,7 @@ module.exports = class SarrarCommand extends Command {
     const lista = [
       'https://i.imgur.com/m2JUJWB.gif',
       'https://i.imgur.com/ezdhV96.gif',
+      'https://i.imgur.com/opU9zt9.gif',
     ];
 
     const rand = lista[Math.floor(Math.random() * lista.length)];

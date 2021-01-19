@@ -17,6 +17,13 @@ module.exports = class ShotCommand extends Command {
       'https://i.imgur.com/vJdv4PP.gif',
       'https://i.imgur.com/nKHZmiY.gif',
       'https://i.imgur.com/G5kWKws.gif',
+      'https://i.imgur.com/Xcipqq2.gif',
+      'https://i.imgur.com/MaD9gD6.gif',
+      'https://i.imgur.com/YIBdXeg.gif',
+      'https://i.imgur.com/jPiLZZY.gif',
+      'https://i.imgur.com/sFmjxAn.gif',
+      'https://i.imgur.com/1aU6ban.gif',
+      'https://i.imgur.com/0nEZ5ms.gif',
     ];
 
     const rand = list[Math.floor(Math.random() * list.length)];

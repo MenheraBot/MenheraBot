@@ -27,6 +27,17 @@ module.exports = class CryCommand extends Command {
       'https://i.imgur.com/mX1AWPv.gif',
       'https://i.imgur.com/MZQ8uYl.gif',
       'https://i.imgur.com/jjFtyVX.gif',
+      'https://i.imgur.com/yUUU4Ml.gif',
+      'https://i.imgur.com/IuPpRvr.gif',
+      'https://i.imgur.com/z9CPRWD.gif',
+      'https://i.imgur.com/q2XOosW.gif',
+      'https://i.imgur.com/CXaD9pV.gif',
+      'https://i.imgur.com/DOtiIVJ.gif',
+      'https://i.imgur.com/BMM1gPD.gif',
+      'https://i.imgur.com/MXLh6z3.gif',
+      'https://i.imgur.com/sVy6ald.gif',
+      'https://i.imgur.com/ceQ3Suy.gif',
+      'https://i.imgur.com/w98EsZq.gif',
     ];
 
     const rand = list[Math.floor(Math.random() * list.length)];

@@ -29,7 +29,12 @@ module.exports = class HugCommand extends Command {
       'https://i.imgur.com/RPYNm9o.gif',
       'https://i.imgur.com/kSWpxnG.gif',
       'https://i.imgur.com/itRyalr.gif',
-
+      'https://i.imgur.com/k5YNtCq.gif',
+      'https://i.imgur.com/lo6CHuQ.gif',
+      'https://i.imgur.com/eArxfCN.gif',
+      'https://i.imgur.com/jVMFrhQ.gif',
+      'https://i.imgur.com/qRwoxNX.gif',
+      'https://i.imgur.com/aXp20MT.gif',
     ];
 
     const rand = list[Math.floor(Math.random() * list.length)];

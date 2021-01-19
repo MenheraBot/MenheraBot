@@ -23,6 +23,20 @@ module.exports = class PatCommand extends Command {
       'https://i.imgur.com/TPqMPka.gif',
       'https://i.imgur.com/9CvzZTE.gif',
       'https://i.imgur.com/RsPHpae.gif',
+      'https://i.imgur.com/sGSjbDB.gif',
+      'https://i.imgur.com/aA3RU90.gif',
+      'https://i.imgur.com/MXLXuKy.gif',
+      'https://i.imgur.com/wBJi5vY.gif',
+      'https://i.imgur.com/V7CPWrl.gif',
+      'https://i.imgur.com/YoxZ37p.gif',
+      'https://i.imgur.com/vblvrbJ.gif',
+      'https://i.imgur.com/9NfIAim.gif',
+      'https://i.imgur.com/YyfHhi2.gif',
+      'https://i.imgur.com/9Sa8J6A.gif',
+      'https://i.imgur.com/obkMD3N.gif',
+      'https://i.imgur.com/pcBse3K.gif',
+      'https://i.imgur.com/MVCLgx6.gif',
+      'https://i.imgur.com/nXREyNu.gif',
     ];
 
     const rand = list[Math.floor(Math.random() * list.length)];

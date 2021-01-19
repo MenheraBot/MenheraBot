@@ -21,6 +21,22 @@ module.exports = class LaughtCommand extends Command {
       'https://i.imgur.com/5VvTimD.gif',
       'https://i.imgur.com/QNE6CFW.gif',
       'https://i.imgur.com/jdeN8mN.gif',
+      'https://i.imgur.com/QaO3Xkq.gif',
+      'https://i.imgur.com/IKWfYJF.gif',
+      'https://i.imgur.com/qy4aNDu.gif',
+      'https://i.imgur.com/QG8Cce9.gif',
+      'https://i.imgur.com/V4xyQbt.gif',
+      'https://i.imgur.com/QkTfHY7.gif',
+      'https://i.imgur.com/yqE9lK3.gif',
+      'https://i.imgur.com/BzDb8Z0.gif',
+      'https://i.imgur.com/adoGp22.gif',
+      'https://i.imgur.com/PVlEsXN.gif',
+      'https://i.imgur.com/0vCHjrW.gif',
+      'https://i.imgur.com/jjPDQnI.gif',
+      'https://i.imgur.com/Q5K7MJP.gif',
+      'https://i.imgur.com/lYKh08M.gif',
+      'https://i.imgur.com/CQNb4dT.gif',
+      'https://i.imgur.com/NhmmrKd.gif',
     ];
 
     const rand = list[Math.floor(Math.random() * list.length)];

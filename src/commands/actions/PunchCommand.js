@@ -17,6 +17,19 @@ module.exports = class PunchCommand extends Command {
       'https://i.imgur.com/C6lqbl8.gif',
       'https://i.imgur.com/pX1E9uU.gif',
       'https://i.imgur.com/GfyKm1x.gif',
+      'https://i.imgur.com/IqZP9lR.gif',
+      'https://i.imgur.com/pSVxJyb.gif',
+      'https://i.imgur.com/GM44olV.gif',
+      'https://i.imgur.com/JufQcP5.gif',
+      'https://i.imgur.com/h0umbI6.gif',
+      'https://i.imgur.com/cbqNrCS.gif',
+      'https://i.imgur.com/GlCibDj.gif',
+      'https://i.imgur.com/IZlPRYa.gif',
+      'https://i.imgur.com/EpAjbQc.gif',
+      'https://i.imgur.com/Jk5Wvd9.gif',
+      'https://i.imgur.com/qpYkBE5.gif',
+      'https://i.imgur.com/5N61jJN.gif',
+      'https://i.imgur.com/ZfqcByv.gif',
     ];
 
     const rand = list[Math.floor(Math.random() * list.length)];
