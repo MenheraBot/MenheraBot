@@ -12,7 +12,7 @@ module.exports = class PhiloCommand extends Command {
   }
 
   async run({ message, args }, t) {
-    if (!args[0]) return t('commands:philo.no-args');
+    if (!args[0]) return message.menheraReply('error', t('commands:philo.no-args'));
 
     const image = await FiloBuilder(args.join(' '));
 
