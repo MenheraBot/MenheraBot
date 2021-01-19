@@ -249,4 +249,18 @@ module.exports = class Canvas {
 
     return canvas.toBuffer();
   }
+
+  static async FiloBuilder(text) {
+    const canvas = CanvasImport.createCanvas(720, 720);
+    const ctx = canvas.getContext('2d');
+
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 58px Sans';
+    ctx.fillText(ctx.getLines(text, 720).join('\n'), 0, 100);
+
+    const aristotelesImage = await CanvasImport.loadImage('https://i.imgur.com/ZXfqntW.png');
+    ctx.drawImage(aristotelesImage, 0, 300, 412, 520);
+
+    return canvas.toBuffer();
+  }
 };

@@ -30,7 +30,7 @@ module.exports = class MessageReceive {
     const t = i18next.getFixedT(language);
 
     message.mentions.users.delete(message.author.id);
-    if (message.mentions.users.size >= 0) {
+    if (message.mentions.users.size > 0) {
       this.notifyAfk(message, t, message.mentions.users.map((u) => u.id));
     }
 

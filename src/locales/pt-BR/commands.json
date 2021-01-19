@@ -941,5 +941,10 @@
     "lose-text": "Você perdeu **{{valor}}** :star:",
     "win-title": "Você venceu <:MenheraWink:767210250637279252>",
     "win-text": "Você apostou **{{valor}}** :star: e acabou ganhando **{{multiplier}}** :star:"
+  },
+  "philo": {
+    "description": "Ser ou não ser, eis a questão",
+    "usage": "<texto>",
+    "no-args": "você não me disse nenhum argumento! E caso não saiba o que é um argumento, um argumento pode ser definido como uma afirmação acompanhada de justificativa (argumento retórico) ou como uma justaposição de duas afirmações opostas, argumento e contra-argumento "
   }
 }

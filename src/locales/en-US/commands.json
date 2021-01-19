@@ -920,5 +920,10 @@
     "lose-text": "You lost **{{valor}}** :star:",
     "win-title": "You Won <:MenheraWink:767210250637279252>",
     "win-text": "You bet **{{valor}}** :star: and ended up winning **{{multiplier}}** :star:"
+  },
+  "philo": {
+    "description": "To be or not to be, that's the question",
+    "usage": "<text>",
+    "no-args": "you didn't tell me any arguments! And if you don't know what an argument is, an argument can be defined as a statement accompanied by justification (rhetorical argument) or as a juxtaposition of two opposing statements, argument and counter-argument"
   }
 }
