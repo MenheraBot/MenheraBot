@@ -10,7 +10,7 @@ module.exports.getActivity = async (shard) => {
       token: config.api_TOKEN,
     },
     body: {
-      shard,
+      shard: shard || 0,
     },
     json: true,
   };
