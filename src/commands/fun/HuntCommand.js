@@ -43,9 +43,9 @@ module.exports = class HuntCommand extends Command {
     },
     ];
 
-    if (!args[0]) return message.menheraReply('error', `${t('commands:hunt.no-args')} \`${validOptions.join('`, `')}\``);
+    if (!args[0]) return message.menheraReply('error', `${t('commands:hunt.no-args')}`);
     const selectedOption = validArgs.some((so) => so.arguments.includes(args[0].toLowerCase()));
-    if (!selectedOption) return message.menheraReply('error', `${t('commands:hunt.no-args')} \`${validOptions.join('`, `')}\``);
+    if (!selectedOption) return message.menheraReply('error', `${t('commands:hunt.no-args')}`);
     const filtredOption = validArgs.filter((f) => f.arguments.includes(args[0].toLowerCase()));
 
     const option = filtredOption[0].opção;

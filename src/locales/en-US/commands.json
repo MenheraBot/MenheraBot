@@ -273,7 +273,7 @@
     },
     "dataRolls_fields": {
       "title": "Buy Rolls",
-      "description": "Your current balance is **{{balance}}** ⭐ stars, and you have **{{rolls}}** 🔑 rolls",
+      "description": "Your current balance is **{{saldo}}** ⭐ stars, and you have **{{rolls}}** 🔑 rolls",
       "footer": "Type in the chat how many rolls you want to buy",
       "fields": {
         "name": "Price List",
@@ -338,7 +338,7 @@
   "hunt": {
     "description": "Hunt demons like XANDÃO",
     "probabilities": "Hunt probabilitites\n\nDemons: `[{{demon}}]`\nAngels: `[{{angel}}]`\nDemigods: `[{{demi}}]`\nGods: `[{{god}}]`",
-    "no-args": "you must choose between hunting",
+    "no-args": "you must choose between hunting demons, angels, demigods and gods",
     "help": "** HOW DOES HUNTING WORK? ** \nYou can hunt every hour, and you can choose from 4 hunts: `demons`, `angels`,` demigods` and `gods` \nThe farther to the right, the more valuable, but also, more difficult to hunt, and less chance of success \nOn my support server, the chances of hunting are greater!",
     "footer": "Did you know that on my support server, your chances of success are greater?",
     "title": "Hunt",
@@ -925,5 +925,42 @@
     "description": "To be or not to be, that's the question",
     "usage": "<text>",
     "no-args": "you didn't tell me any arguments! And if you don't know what an argument is, an argument can be defined as a statement accompanied by justification (rhetorical argument) or as a juxtaposition of two opposing statements, argument and counter-argument"
+  },
+  "pvp": {
+    "description": "Fight with a friend in a friendly PvP battle or worth :gem:",
+    "usage": "<mention> [bet]",
+    "no-life": "to participate in competitive battles, both players must be alive",
+    "no-args": "you didn't mention your opponent",
+    "bot": "naaah, don't even try, that bot would kick your ass off, try a player",
+    "self-mention": "be a Champion! Dont try to hurt yourself",
+    "no-user": "this user is not an adventurer!",
+    "accept-battle": "⚔️ | `{{user}}` challenged you to a battle",
+    "your-status": "Your current status is:",
+    "negated": "`{{user}}` Chicken out in the battle against you",
+    "enemy-status": " `{{user}}`'s Status:",
+    "in-battle-one": "you are already in a battle",
+    "in-battle-two": "this user is already in battle",
+    "send-to-accept": "Send **Yes** to start the battle",
+    "not-competitive": "This is a friendly battle, no one will lose or gain anything in it",
+    "you-poor": "you don't have enough precious stones to bet",
+    "his-poor": "`{{user}}` don't have enough gems to bet",
+    "invalid-value": "errrr, this value is not a valid number",
+    "is-competitive": "This is a battle worth {{aposta}} gems",
+    "enough": "**This damage is enough to kill {{user}}**",
+    "aposta": "💎 | Bet",
+    "aposta-description": "This battle was worth {{aposta}} :gem:, congratulations to `{{winner}}` for winning this battle!",
+    "not-aposta": "This was a friendly battle, no users lost or gained status!",
+    "battle": {
+      "win": "👑 | `{{user}}` Win",
+      "title": "⚔️ | `{{user}}` attack time",
+      "newTecnique": "`{{user}}` tried a technique that has no domain! **-50** hit points",
+      "timeout": "`{{user}}` violated Boleham's rules by taking too long to take action. **-50** hit points!",
+      "enter": "`{{user1}}` enter the arena against `{{user2}}`. Your status is:",
+      "end": "What do you do?\n\n**OPTIONS:**\n",
+      "enemy": "These are the Enemy's status:\n",
+      "attack": "`{{user}}` attack `{{enemy}}` with **{{choice}}**, and deal **{{damage}}** damage. `{{enemy}}` strikes back",
+      "no-mana": "{{user}} try to use {{name}}, but not enough mana, {{user2}} strikes back",
+      "insta-kill": "{{user}} broke the sacred rules trying to deliver a blow prohibited by the laws of one against one in the world of Boleham, {{user2}} strikes back"
+    }
   }
 }
