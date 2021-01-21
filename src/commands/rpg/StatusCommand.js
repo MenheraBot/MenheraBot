@@ -90,6 +90,7 @@ module.exports = class StatusCommand extends Command {
       },
       ]);
     if (user.hasFamily) embed.addField(`🔱 | ${t('commands:status.family')}`, user.familyName, true);
+    if (user.resetRoll) embed.addField(`🔑 | ${t('commands:wallet.rolls')}`, user.resetRoll, true);
     message.channel.send(message.author, embed);
   }
 };
