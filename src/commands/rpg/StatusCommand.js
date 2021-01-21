@@ -1,14 +1,16 @@
-const { MessageEmbed } = require('discord.js');
+const { MessageAttachment } = require('discord.js');
 const Command = require('../../structures/command');
+
+const Canvas = require('../../utils/Canvas');
 
 module.exports = class StatusCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'status',
       aliases: ['stats'],
-      cooldown: 5,
+      cooldown: 7,
       category: 'rpg',
-      clientPermissions: ['EMBED_LINKS'],
+      clientPermissions: ['EMBED_LINKS', 'ATTACH_FILES'],
     });
   }
 
@@ -25,72 +27,9 @@ module.exports = class StatusCommand extends Command {
     const user = await this.client.database.Rpg.findById(mentioned.id);
     if (!user) return message.menheraReply('error', t('commands:status.not-found'));
 
-    let dmg = `${user.damage} + ${user.weapon.damage}`;
-    let ptr = `${user.armor} + ${user.protection.armor}`;
+    const familia = await this.client.database.Familias.findById(user.familyName);
+    const image = await Canvas.RpgStatusBuilder(user, mentioned, t, familia);
 
-    let familia;
-
-    if (user.hasFamily) {
-      familia = await this.client.database.Familias.findById(user.familyName);
-      if (user.familyName === 'Loki ') dmg = `${user.damage} + ${user.weapon.damage} + \`${familia.boost.value}\``;
-      if (user.familyName === 'Ares') ptr = `${user.armor} + ${user.protection.armor} + ${familia.boost.value}`;
-    }
-
-    const embed = new MessageEmbed()
-      .setTitle(`📜 | ${t('commands:status.title', { name: mentioned.username })}`)
-      .setColor('#f04682')
-      .addFields([{
-        name: `🩸 | ${t('commands:status.life')}`,
-        value: `${user.life}/${user.maxLife}`,
-        inline: true,
-      },
-      {
-        name: `⚔️ | ${t('commands:status.class')}`,
-        value: t(`roleplay:classes.${user.class}`),
-        inline: true,
-      },
-      {
-        name: `🛡️ | ${t('commands:status.armor')}`,
-        value: ptr,
-        inline: true,
-      },
-      {
-        name: `🗡️ | ${t('commands:status.dmg')}`,
-        value: dmg,
-        inline: true,
-      }, {
-        name: `💧 | ${t('commands:status.mana')}`,
-        value: `${user.mana}/${user.maxMana}`,
-        inline: true,
-      },
-      {
-        name: `🔮 | ${t('commands:status.ap')}`,
-        value: user.abilityPower,
-        inline: true,
-      },
-      {
-        name: '⚜️ | Level',
-        value: user.level,
-        inline: true,
-      },
-      {
-        name: '🔰 | XP',
-        value: `${user.xp} / ${user.nextLevelXp}`,
-        inline: true,
-      },
-      {
-        name: `💎 | ${t('commands:status.money')}`,
-        value: user.money,
-        inline: true,
-      },
-      {
-        name: `⚗️ | ${t('commands:status.ability')}`,
-        value: user.uniquePower.name,
-        inline: true,
-      },
-      ]);
-    if (user.hasFamily) embed.addField(`🔱 | ${t('commands:status.family')}`, user.familyName, true);
-    if (user.resetRoll) embed.addField(`🔑 | ${t('commands:wallet.rolls')}`, user.resetRoll, true);
-    message.channel.send(message.author, embed);
+    message.channel.send(message.author, new MessageAttachment(image, 'status.png'));
   }
 };

@@ -263,4 +263,173 @@ module.exports = class Canvas {
 
     return canvas.toBuffer();
   }
+
+  static async RpgStatusBuilder(user, member, t, familia) {
+    /* ---------------------- CREATE CANVAS -------------------------- */
+
+    const canvas = CanvasImport.createCanvas(582, 275);
+    const ctx = canvas.getContext('2d');
+
+    /* ---------------------- LOADING IMAGES -------------------------- */
+
+    const avatarImage = await CanvasImport.loadImage(member.displayAvatarURL({ format: 'png' }));
+    const profileImg = await CanvasImport.loadImage('https://i.imgur.com/Ac71nLr.png');
+    const heartIcon = await CanvasImport.loadImage('https://i.imgur.com/UihYcpx.png');
+    const manaIcon = await CanvasImport.loadImage('https://i.imgur.com/pp1BTk1.png');
+    const xpIcon = await CanvasImport.loadImage('https://i.imgur.com/qGN3zKT.png');
+    const levelIcon = await CanvasImport.loadImage('https://i.imgur.com/VKooZU6.png');
+    const dmgIcon = await CanvasImport.loadImage('https://i.imgur.com/trlnSIe.png');
+    const armorIcon = await CanvasImport.loadImage('https://i.imgur.com/V7hdWyS.png');
+    const magicIcon = await CanvasImport.loadImage('https://i.imgur.com/IxOlamv.png');
+    const gemIcon = await CanvasImport.loadImage('https://i.imgur.com/B44r4sA.png');
+    const classIcon = await CanvasImport.loadImage('https://i.imgur.com/6Z4B0dY.png');
+
+    const roundedImage = await ctx.roundImageCanvas(avatarImage, 180, 180);
+
+    /* ---------------------- CONSTANTS -------------------------- */
+
+    const lifeFillMultiplier = user.life / user.maxLife;
+    const manaFillMultiplier = user.mana / user.maxMana;
+    const xpFillMultiplier = user.xp / user.nextLevelXp;
+    let dmg = `${user.damage}+${user.weapon.damage}`;
+    let ptr = `${user.armor}+${user.protection.armor}`;
+
+    if (user.hasFamily) {
+      if (user.familyName === 'Loki ') dmg = `${user.damage}+${user.weapon.damage}+\`${familia.boost.value}\``;
+      if (user.familyName === 'Ares') ptr = `${user.armor}+${user.protection.armor}+${familia.boost.value}`;
+    }
+
+    /* ---------------------- CREATE BARS -------------------------- */
+
+    const lifeGradiant = ctx.createLinearGradient(315, 67, 555, 90);
+    lifeGradiant.addColorStop(1, 'red');
+    lifeGradiant.addColorStop(0, '#FF5151');
+
+    ctx.fillStyle = lifeGradiant;
+    ctx.fillRect(312, 67, 240 * lifeFillMultiplier, 24);
+
+    const manaGradiant = ctx.createLinearGradient(315, 95, 555, 115);
+    manaGradiant.addColorStop(1, 'blue');
+    manaGradiant.addColorStop(0, '#0080ff');
+
+    ctx.fillStyle = manaGradiant;
+    ctx.fillRect(312, 95, 240 * manaFillMultiplier, 20);
+
+    const xpGradiant = ctx.createLinearGradient(315, 130, 555, 150);
+    xpGradiant.addColorStop(1, '#ff8300');
+    xpGradiant.addColorStop(0, '#ffd323');
+
+    ctx.fillStyle = xpGradiant;
+    ctx.fillRect(315, 120, 240 * xpFillMultiplier, 20);
+
+    /* ---------------------- ADD ALL IMAGES -------------------------- */
+
+    ctx.drawImage(roundedImage, 35, 25, 120, 120);
+    ctx.drawImage(profileImg, 0, 0, 582, 275);
+    ctx.drawImage(heartIcon, 265, 57, 42, 42);
+    ctx.drawImage(manaIcon, 275, 85, 28, 28);
+    ctx.drawImage(xpIcon, 280, 115, 24, 24);
+    ctx.drawImage(levelIcon, 160, 80, 48, 48);
+
+    /* ---------------------- WRITE TEXT -------------------------- */
+
+    // BAR VALUES
+    ctx.fillStyle = '#fff';
+    ctx.strokeStyle = '#000';
+    ctx.font = 'bold 20px Sans';
+    ctx.lineWidth = 0;
+
+    ctx.fillText(`${user.life}/${user.maxLife}`, 400, 86);
+    ctx.strokeText(`${user.life}/${user.maxLife}`, 400, 86);
+
+    ctx.font = 'bold 18px Sans';
+    ctx.fillText(`${user.mana}/${user.maxMana}`, 400, 110);
+
+    // USERNAME
+
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 38px Sans';
+    ctx.lineWidth = 2;
+    ctx.fillText(member.tag, 160, 32);
+    ctx.strokeText(member.tag, 160, 32);
+
+    // LEVEL
+
+    ctx.fillStyle = '#aa8dd8';
+    ctx.font = 'bold 32px Sans';
+    ctx.textAlign = 'center';
+
+    ctx.fillText(user.level, 240, 115);
+    ctx.strokeText(user.level, 240, 115);
+
+    // DAMAGE
+
+    ctx.textAlign = 'left';
+    ctx.font = 'bold 18px Verdana';
+    ctx.lineWidth = 1;
+
+    ctx.fillStyle = 'red';
+    ctx.drawImage(dmgIcon, 60, 160, 28, 28);
+    ctx.fillText(`${t('commands:status.dmg')}: ${dmg}`, 90, 180);
+
+    // PROTECTION
+
+    ctx.fillStyle = '#295564';
+    ctx.drawImage(armorIcon, 60, 185, 28, 28);
+    ctx.fillText(`${t('commands:status.armor')}: ${ptr}`, 90, 205);
+
+    // MAGIC POWER
+
+    ctx.fillStyle = 'purple';
+    ctx.drawImage(magicIcon, 60, 212, 26, 26);
+    ctx.fillText(`${t('commands:status.ap')}: ${user.abilityPower}`, 90, 230);
+
+    // GEMAS
+
+    ctx.fillStyle = 'aqua';
+    ctx.drawImage(gemIcon, 60, 235, 26, 26);
+    ctx.fillText(`${t('commands:status.money')}: ${user.money}`, 90, 255);
+
+    // CLASSE
+
+    ctx.fillStyle = '#fff';
+    ctx.drawImage(classIcon, 290, 160, 28, 28);
+    ctx.fillText(t(`roleplay:classes.${user.class}`), 320, 180);
+
+    // FAMILIA
+
+    if (user.hasFamily) {
+      let familyColor;
+      switch (user.familyName) {
+        case 'Apolo':
+          familyColor = '#d613f0';
+          break;
+        case 'Loki':
+          familyColor = '#17ec39';
+          break;
+        case 'Freya':
+          familyColor = '#53c9f0';
+          break;
+        case 'Ares':
+          familyColor = '#fc0505';
+          break;
+        case 'Soma':
+          familyColor = '#fad51f';
+          break;
+        default: familyColor = '#000';
+      }
+      const familyIcon = await CanvasImport.loadImage('https://i.imgur.com/k7uMwn3.png');
+      ctx.fillStyle = familyColor;
+      ctx.drawImage(familyIcon, 290, 195, 28, 28);
+      ctx.fillText(user.familyName, 320, 215);
+    }
+
+    // EXPERIÊNCIA
+
+    ctx.fillStyle = xpGradiant;
+    ctx.drawImage(xpIcon, 340, 232, 28, 28);
+    ctx.fillText(`XP: ${user.xp}/${user.nextLevelXp}`, 370, 252);
+
+    return canvas.toBuffer();
+  }
 };

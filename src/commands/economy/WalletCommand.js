@@ -68,6 +68,9 @@ module.exports = class WalletCommand extends Command {
       },
       ]);
 
+    const rpguser = await this.client.database.Rpg.findById(user.id);
+    if (rpguser && rpguser.resetRoll) embed.addField(`🔑 | RPG ${t('commands:wallet.rolls')}`, `**${rpguser.resetRoll}**`, true);
+
     message.channel.send(message.author, embed);
   }
 };

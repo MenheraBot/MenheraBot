@@ -1,6 +1,5 @@
-const { MessageAttachment } = require('discord.js');
+/* const { MessageAttachment } = require('discord.js'); */
 const Command = require('../../structures/command');
-const { FiloBuilder } = require('../../utils/Canvas');
 
 module.exports = class TestCommand extends Command {
   constructor(client) {
@@ -12,9 +11,13 @@ module.exports = class TestCommand extends Command {
     });
   }
 
-  async run({ message, args }) {
-    const image = await FiloBuilder(args.join(' '));
+  async run(/* { message, args }, t */) {
+    /*  const user = await this.client.database.Rpg.findById(message.author.id);
+    delete require.cache[require.resolve('../../utils/Canvas')];
+    const Canvas = require('../../utils/Canvas');
+    const familia = await this.client.database.Familias.findById(user.familyName);
+    const image = await Canvas.RpgStatusBuilder(user, message.author, t, familia);
 
-    message.channel.send(message.author, new MessageAttachment(image, 'filosófico.png'));
+    message.channel.send(message.author, new MessageAttachment(image, 'filosófico.png')); */
   }
 };
