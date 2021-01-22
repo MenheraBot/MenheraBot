@@ -1,5 +1,4 @@
 /* const { MessageAttachment } = require('discord.js'); */
-/* const { MessageAttachment } = require('discord.js'); */
 const Command = require('../../structures/command');
 
 module.exports = class TestCommand extends Command {

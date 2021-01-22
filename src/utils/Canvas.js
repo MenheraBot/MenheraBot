@@ -275,7 +275,7 @@ module.exports = class Canvas {
     /* ---------------------- LOADING IMAGES -------------------------- */
 
     const avatarImage = await CanvasImport.loadImage(member.displayAvatarURL({ format: 'png' }));
-    const profileImg = await CanvasImport.loadImage('https://i.imgur.com/Ac71nLr.png');
+    const profileImg = await CanvasImport.loadImage('https://i.imgur.com/rrqGeeo.png');
     const heartIcon = await CanvasImport.loadImage('https://i.imgur.com/UihYcpx.png');
     const manaIcon = await CanvasImport.loadImage('https://i.imgur.com/pp1BTk1.png');
     const xpIcon = await CanvasImport.loadImage('https://i.imgur.com/qGN3zKT.png');
@@ -344,8 +344,11 @@ module.exports = class Canvas {
     ctx.fillText(`${user.life}/${user.maxLife}`, 400, 86);
     ctx.strokeText(`${user.life}/${user.maxLife}`, 400, 86);
 
-    ctx.font = 'bold 18px Sans';
-    ctx.fillText(`${user.mana}/${user.maxMana}`, 400, 110);
+    ctx.fillText(`${user.mana}/${user.maxMana}`, 400, 112);
+    ctx.strokeText(`${user.mana}/${user.maxMana}`, 400, 112);
+
+    ctx.fillText(`${millify(user.xp)}/${millify(user.nextLevelXp)}`, 400, 137);
+    ctx.strokeText(`${millify(user.xp)}/${millify(user.nextLevelXp)}`, 400, 137);
 
     // USERNAME
 
@@ -377,20 +380,20 @@ module.exports = class Canvas {
     // PROTECTION
 
     ctx.fillStyle = '#295564';
-    ctx.drawImage(armorIcon, 60, 185, 28, 28);
-    ctx.fillText(`${t('commands:status.armor')}: ${ptr}`, 90, 205);
+    ctx.drawImage(armorIcon, 60, 200, 28, 28);
+    ctx.fillText(`${t('commands:status.armor')}: ${ptr}`, 90, 220);
 
     // MAGIC POWER
 
     ctx.fillStyle = 'purple';
-    ctx.drawImage(magicIcon, 60, 212, 26, 26);
-    ctx.fillText(`${t('commands:status.ap')}: ${user.abilityPower}`, 90, 230);
+    ctx.drawImage(magicIcon, 60, 235, 26, 26);
+    ctx.fillText(`${t('commands:status.ap')}: ${user.abilityPower}`, 90, 255);
 
     // GEMAS
 
     ctx.fillStyle = 'aqua';
-    ctx.drawImage(gemIcon, 60, 235, 26, 26);
-    ctx.fillText(`${t('commands:status.money')}: ${user.money}`, 90, 255);
+    ctx.drawImage(gemIcon, 270, 235, 26, 26);
+    ctx.fillText(`${t('commands:status.money')}: ${user.money}`, 295, 255);
 
     // CLASSE
 
@@ -423,14 +426,8 @@ module.exports = class Canvas {
       const familyIcon = await CanvasImport.loadImage('https://i.imgur.com/k7uMwn3.png');
       ctx.fillStyle = familyColor;
       ctx.drawImage(familyIcon, 375, 195, 28, 28);
-      ctx.fillText(user.familyName, 400, 215);
+      ctx.fillText(user.familyName, 410, 215);
     }
-
-    // EXPERIÊNCIA
-
-    ctx.fillStyle = xpGradiant;
-    ctx.drawImage(xpIcon, 375, 232, 28, 28);
-    ctx.fillText(`XP: ${millify(user.xp)}/${millify(user.nextLevelXp)}`, 400, 252);
 
     return canvas.toBuffer();
   }
