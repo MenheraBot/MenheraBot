@@ -422,8 +422,8 @@ module.exports = class Canvas {
       }
       const familyIcon = await CanvasImport.loadImage('https://i.imgur.com/k7uMwn3.png');
       ctx.fillStyle = familyColor;
-      ctx.drawImage(familyIcon, 290, 195, 28, 28);
-      ctx.fillText(user.familyName, 320, 215);
+      ctx.drawImage(familyIcon, 375, 195, 28, 28);
+      ctx.fillText(user.familyName, 400, 215);
     }
 
     // EXPERIÊNCIA
