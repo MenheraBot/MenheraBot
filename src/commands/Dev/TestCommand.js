@@ -1,4 +1,5 @@
 /* const { MessageAttachment } = require('discord.js'); */
+/* const { MessageAttachment } = require('discord.js'); */
 const Command = require('../../structures/command');
 
 module.exports = class TestCommand extends Command {
@@ -12,7 +13,7 @@ module.exports = class TestCommand extends Command {
   }
 
   async run(/* { message, args }, t */) {
-    /*  const user = await this.client.database.Rpg.findById(message.author.id);
+    /* const user = await this.client.database.Rpg.findById(message.author.id);
     delete require.cache[require.resolve('../../utils/Canvas')];
     const Canvas = require('../../utils/Canvas');
     const familia = await this.client.database.Familias.findById(user.familyName);

@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-properties */
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable guard-for-in */
@@ -5,6 +6,7 @@
 /* eslint-disable no-bitwise */
 /* eslint-disable no-nested-ternary */
 const CanvasImport = require('canvas');
+const { millify } = require('millify');
 const http = require('./HTTPrequests');
 const Util = require('./Util');
 const ProfileBadges = require('../structures/ProfileBadges');
@@ -427,8 +429,8 @@ module.exports = class Canvas {
     // EXPERIÊNCIA
 
     ctx.fillStyle = xpGradiant;
-    ctx.drawImage(xpIcon, 340, 232, 28, 28);
-    ctx.fillText(`XP: ${user.xp}/${user.nextLevelXp}`, 370, 252);
+    ctx.drawImage(xpIcon, 375, 232, 28, 28);
+    ctx.fillText(`XP: ${millify(user.xp)}/${millify(user.nextLevelXp)}`, 400, 252);
 
     return canvas.toBuffer();
   }
