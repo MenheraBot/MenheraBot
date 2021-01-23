@@ -37,6 +37,7 @@ module.exports = class PatCommand extends Command {
       'https://i.imgur.com/pcBse3K.gif',
       'https://i.imgur.com/MVCLgx6.gif',
       'https://i.imgur.com/nXREyNu.gif',
+      'https://i.imgur.com/Jb3tVZv.gif',
     ];
 
     const rand = list[Math.floor(Math.random() * list.length)];
