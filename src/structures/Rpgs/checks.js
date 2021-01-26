@@ -6,7 +6,7 @@ const abilitiesFile = require('../RpgHandler').abiltiies;
 
 const random = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
-module.exports.getEnemyByUserLevel = (user, type) => {
+module.exports.getEnemyByUserLevel = (user, type, dungeonLevel, message, t) => {
   if (type === 'boss') {
     if (user.level > 24 && user.level < 30) {
       return random([...mobsFile.boss, ...mobsFile.gods]);
@@ -17,23 +17,36 @@ module.exports.getEnemyByUserLevel = (user, type) => {
     return random(mobsFile.boss);
   }
 
-  if (user.level >= 30) {
-    return random(mobsFile.evolved);
-  }
+  const validLevels = {
+    1: {
+      minUserLevel: 0,
+      mob: random(mobsFile.inicial),
+    },
+    2: {
+      minUserLevel: 4,
+      mob: random(mobsFile.medio),
+    },
+    3: {
+      minUserLevel: 9,
+      mob: random(mobsFile.hard),
+    },
+    4: {
+      minUserLevel: 13,
+      mob: random(mobsFile.impossible),
+    },
+    5: {
+      minUserLevel: 30,
+      mob: random(mobsFile.evolved),
+    },
+  };
 
-  if (user.level > 12) {
-    return random(mobsFile.impossible);
-  }
+  if (!dungeonLevel) return false;
 
-  if (user.level > 9 && user.level < 13) {
-    return random(mobsFile.hard);
-  }
+  if (!validLevels[dungeonLevel]) return false;
 
-  if (user.level > 4 && user.level < 10) {
-    return random(mobsFile.medio);
-  }
+  if (user.level < validLevels[dungeonLevel].minUserLevel) message.menheraReply('error', t('commands:dungeon.min-level-warn'));
 
-  return random(mobsFile.inicial);
+  return validLevels[dungeonLevel].mob;
 };
 
 module.exports.battle = async (message, escolha, user, inimigo, type, familia, t) => {

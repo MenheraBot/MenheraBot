@@ -11,11 +11,19 @@ module.exports = class DungeonCommand extends Command {
     });
   }
 
-  async run({ message }, t) {
+  async run({ message, args }, t) {
     const user = await this.client.database.Rpg.findById(message.author.id);
     if (!user) return message.menheraReply('error', t('commands:dungeon.non-aventure'));
 
-    const inimigo = this.client.rpgChecks.getEnemyByUserLevel(user, 'dungeon');
+    if (!args[0]) return message.menheraReply('error', t('commands:dungeon.no-args'));
+
+    const polishedInput = args[0].replace(/\D+/g, '');
+
+    if (!polishedInput) return message.menheraReply('error', t('commands:dungeon.no-args'));
+
+    const inimigo = await this.client.rpgChecks.getEnemyByUserLevel(user, 'dungeon', polishedInput, message, t);
+
+    if (!inimigo) return message.menheraReply('error', t('commands:dungeon.no-level'));
 
     const canGo = await this.client.rpgChecks.initialChecks(user, message, t);
 
@@ -32,8 +40,6 @@ module.exports = class DungeonCommand extends Command {
     }
 
     const habilidades = await this.client.rpgChecks.getAbilities(user, familia);
-
-    if (!inimigo) return message.menheraReply('error', t('commands:dungeon.no-enemy'));
 
     const embed = new MessageEmbed()
       .setTitle(`⌛ | ${t('commands:dungeon.preparation.title')}`)

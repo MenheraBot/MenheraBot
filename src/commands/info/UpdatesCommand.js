@@ -20,19 +20,19 @@ module.exports = class UpdatesCommand extends Command {
       .setTitle(`${t('commands:updates.title')} ${version}`)
       .setColor('#a7e74f')
       .setFooter(`${this.client.user.username} ${t('commands:updates.footer')} ${owner.tag}`, owner.displayAvatarURL({ format: 'png', dynamic: true }))
-      .setDescription(`**Sistema de Batalhas**
+      .setDescription(`**Níveis da Dungeon**
 
-      O sistema de PvP está aqui!
+      • Agora você deve escolher para qual nível da **DUNGEON** (não conta para boss) você quer ir
 
-      • Batalhe com um amigo em uma batalha amistosa usando m!pvp, ou em uma batalha valendo :gem:
+      Os níveis recomendados são:
 
-      • Batalhas amistosas não alteram seus status, e ambos os jogadores iniciam com vida e mana cheia
+      1 - A partir do lvl **0**
+      2 - A partir do lvl **4**
+      3 - A partir do lvl **9**
+      4 - A partir do lvl **13**
+      5 - A partir do lvl **30**
 
-      • Batalhas Competitivas são criadas com \`m!pvp <@user> [aposta]\`, e diferente da amigável, está você batalha com seus status atuais. Quem morrer nesta batalha, descansará no hotel por 2 horas!
-
-      **Bug Fixes**
-
-      • O comando 'caçar' mostra as opções traduzidas caso use a Menhera em inglês`);
+      Exemplo de como ir pra dungeon: \`m!dungeon 2\``);
 
     message.channel.send(message.author, embed);
   }

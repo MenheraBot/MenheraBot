@@ -667,7 +667,11 @@
   },
   "dungeon": {
     "description": "Go for a dungeon adventure",
+    "usage": "<level>",
     "non-aventure": "you are not an adventurer",
+    "no-args": "you need to say to what level do you want to go.",
+    "min-level-warn": "**you are too weak to this level! BE CAREFULL!!!!!**",
+    "no-level": "the Dungeon doesn't have this level! Available levels are: `1`,`2`,`3`, `4`, or `5`",
     "no-enemy": "Not this one! An error occurred when I went to detect which enemy you will find, sorry about that ... Try again ",
     "preparation": {
       "title": "Battle preparation",
