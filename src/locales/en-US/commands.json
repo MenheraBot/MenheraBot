@@ -901,10 +901,10 @@
   },
   "coinflipstats": {
     "description": "Show your coinflip game data",
-    "usage": "",
+    "usage": "[user]",
     "embed-title": "Coinflip stats for {{user}}",
     "no-data": "you never played a coinflip game!",
-    "embed-footer": "keep playing coinflip and be an amazing person!",
+    "embed-footer": "You are amazing",
     "played": "Matches Played",
     "wins": "Wins",
     "loses": "Losses",
@@ -912,7 +912,7 @@
     "lostMoney": "Lost Money",
     "profit": "Total Profit",
     "loss": "Total Loss",
-    "error": "an error occurred while checking your statistics"
+    "error": "an error occurred while checking this user's statistics"
   },
   "slotmachine": {
     "description": "Bet on Menhera's Slot Machine",

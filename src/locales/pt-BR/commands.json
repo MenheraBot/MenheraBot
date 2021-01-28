@@ -921,10 +921,10 @@
   },
   "coinflipstats": {
     "description": "Mostre seus dados de jogos de coinflip",
-    "usage": "",
+    "usage": "[usuário]",
     "embed-title": "Status do coinflip de {{user}}",
     "no-data": "você nunca jogou uma partida de coinflip!",
-    "embed-footer": "continue jogando coinflip e seja uma pessoa incrível!",
+    "embed-footer": "Tu é tri vei",
     "played": "Partidas Jogadas",
     "wins": "Vitórias",
     "loses": "Derrotas",
@@ -932,7 +932,7 @@
     "lostMoney": "Dinheiro Perdido",
     "profit": "Lucro Total",
     "loss": "Prejuízo Total",
-    "error": "ocorreu um erro ao checar suas estatísticas"
+    "error": "ocorreu um erro ao checar as estatísticas deste usuário"
   },
   "slotmachine": {
     "description": "Aposte no Caça-Níquel da Menhera",

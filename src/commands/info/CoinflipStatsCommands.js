@@ -23,15 +23,18 @@ module.exports = class CoinflipStatsCommand extends Command {
     });
   }
 
-  async run({ message }, t) {
-    const data = await http.getCoinflipUserStats(message.author.id);
+  async run({ message, args }, t) {
+    const userDb = args[0] ? await this.client.database.Users.findOne({ id: args[0].replace(/[<@!>]/g, '') }) : message.author;
+    const data = await http.getCoinflipUserStats(userDb ? userDb.id : message.author.id);
     if (data.error) return message.menheraReply('error', t('commands:coinflipstats.error'));
     if (!data || !data.playedGames || data.playedGames === undefined) return message.menheraReply('error', t('commands:coinflipstats.no-data'));
 
     const totalMoney = data.winMoney - data.lostMoney;
 
+    const userName = await this.client.users.fetch(userDb ? userDb.id : message.author.id);
+
     const embed = new MessageEmbed()
-      .setTitle(t('commands:coinflipstats.embed-title', { user: message.author.username }))
+      .setTitle(t('commands:coinflipstats.embed-title', { user: userName.tag }))
       .setColor('#48a6fe')
       .setFooter(t('commands:coinflipstats.embed-footer'))
       .addFields([
