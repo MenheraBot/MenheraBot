@@ -54,7 +54,7 @@ module.exports = class DisgustedCommand extends Command {
     const embed = new MessageEmbed()
       .setTitle('Nojo')
       .setColor('#000000')
-      .setDescription(`${message.author} ${t('commands.disgusted.embed_description')} ${user}`)
+      .setDescription(`${message.author} ${t('commands:disgusted.embed_description')} ${user}`)
       .setImage(rand)
       .setThumbnail(avatar)
       .setAuthor(message.author.tag, avatar);
