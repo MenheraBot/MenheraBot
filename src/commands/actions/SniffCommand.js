@@ -40,7 +40,7 @@ module.exports = class SniffCommand extends Command {
     const embed = new MessageEmbed()
       .setTitle('Sniff Sniff')
       .setColor('#000000')
-      .setDescription(`${message.author} ${t('commands.sniff.embed_description')} ${user}`)
+      .setDescription(`${message.author} ${t('commands:sniff.embed_description')} ${user}`)
       .setImage(rand)
       .setThumbnail(avatar)
       .setAuthor(message.author.tag, avatar);
