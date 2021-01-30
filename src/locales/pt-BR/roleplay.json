@@ -23,10 +23,11 @@
     "in-battle-text": "Você ja está no meio de uma batalha!",
     "no-life-text": "Você está sem vida, e precisa descansar por mais **{{time}}** horas",
     "tired": "Cansaço",
-    "tired-text": "Você já visitou a dungeon e precisa descansar por mais **{{time}}** minutos",
+    "tired-text": "Você já visitou a dungeon e precisa descansar por mais **{{time}}**",
     "hotel-text": "Você está descansando no hotel da vila, e não pode ir para a dungeon até que sua estadia acabe, em **{{time}}**",
     "cant-go": "Você não pode visitar a dungeon pelos seguintes motivos:"
   },
+  "scape": "você arregou da batalha, e conseguiu fuigir, mas terá que ficar descansando por 2 horas!",
   "registred": "você foi registrado com sucesso! Use `m!status` para ver seus status",
   "backpack-full": "você ganha um loot, mas sua mochila está cheia, e você precisa deixá-lo para trás",
   "evolve": "você atinge seu nível de proficiência, e se torna um **{{class}}**",

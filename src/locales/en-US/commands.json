@@ -668,6 +668,7 @@
   "dungeon": {
     "description": "Go for a dungeon adventure",
     "usage": "<level>",
+    "scape": "Runaway",
     "non-aventure": "you are not an adventurer",
     "no-args": "you need to say to what level do you want to go.",
     "min-level-warn": "**you are too weak to this level! BE CAREFULL!!!!!**",

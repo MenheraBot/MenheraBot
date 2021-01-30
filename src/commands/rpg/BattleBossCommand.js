@@ -62,9 +62,13 @@ module.exports = class BattleBoss extends Command {
   async battle(message, inimigo, habilidades, user, type, familia, t) {
     user.dungeonCooldown = 3600000 + Date.now();
     user.inBattle = true;
-    user.save();
+    await user.save();
 
-    const options = [];
+    const options = [{
+      name: t('commands:dungeon.scape'),
+      damage: '🐥',
+      scape: true,
+    }];
 
     if (user.hasFamily && user.familyName === 'Loki') {
       options.push({
@@ -87,8 +91,8 @@ module.exports = class BattleBoss extends Command {
     const escolhas = [];
 
     for (let i = 0; i < options.length; i++) {
-      texto += `\n**${i + 1}** - ${options[i].name} | **${options[i].cost || 0}**💧, **${options[i].damage}**🗡️`;
-      escolhas.push(i + 1);
+      texto += `\n**${i}** - ${options[i].name} | **${options[i].cost || 0}**💧, **${options[i].damage}**🗡️`;
+      escolhas.push(i);
     }
 
     const embed = new MessageEmbed()
@@ -107,7 +111,7 @@ module.exports = class BattleBoss extends Command {
       time = true;
       const choice = Number(m.content);
       if (escolhas.includes(choice)) {
-        return this.client.rpgChecks.battle(message, options[choice - 1], user, inimigo, type, familia, t);
+        return this.client.rpgChecks.battle(message, options[choice], user, inimigo, type, familia, t);
       }
       return this.client.rpgChecks.enemyShot(message, user, inimigo, type, familia, t, `⚔️ |  ${t('commands:boss.battle.newTecnique')}`);
     });

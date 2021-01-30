@@ -52,6 +52,13 @@ module.exports.getEnemyByUserLevel = (user, type, dungeonLevel, message, t) => {
 
 module.exports.battle = async (message, escolha, user, inimigo, type, familia, t) => {
   let danoUser;
+  if (escolha.scape) {
+    message.menheraReply('scape', t('roleplay:scape'));
+    user.inBattle = false;
+    user.dungeonCooldown = 7200000 + Date.now();
+    await user.save();
+    return;
+  }
   if (escolha.name === 'Ataque Básico' || escolha.name === 'Basic Attack') {
     danoUser = escolha.damage;
   } else if (escolha.name === 'Morte Instantânea') {
@@ -142,7 +149,11 @@ module.exports.enemyShot = async (message, user, inimigo, type, familia, t, toSa
 module.exports.continueBattle = async (
   message, inimigo, habilidades, user, type, ataque, familia, t, toSay,
 ) => {
-  const options = [];
+  const options = [{
+    name: t('commands:dungeon.scape'),
+    damage: '🐥',
+    scape: true,
+  }];
 
   if (user.hasFamily && user.familyName === 'Loki') {
     options.push({
@@ -192,8 +203,8 @@ module.exports.continueBattle = async (
   const escolhas = [];
 
   for (let i = 0; i < options.length; i += 1) {
-    texto += `\n**${i + 1}** - ${options[i].name} | **${options[i].cost || 0}**💧, **${options[i].damage}**🗡️`;
-    escolhas.push(i + 1);
+    texto += `\n**${i}** - ${options[i].name} | **${options[i].cost || 0}**💧, **${options[i].damage}**🗡️`;
+    escolhas.push(i);
   }
 
   const embed = new MessageEmbed()
@@ -212,7 +223,7 @@ module.exports.continueBattle = async (
     const choice = Number(m.content);
     if (escolhas.includes(choice)) {
       return this.battle(
-        message, options[choice - 1], user, inimigo, type, familia, t,
+        message, options[choice], user, inimigo, type, familia, t,
       ); // Mandar os dados de ataque, e defesa do inimigo, para fazer o calculo lá
     }
     return this.enemyShot(message, user, inimigo, type, familia, t, `⚔️ |  ${t('roleplay:battle.new-tatic')}`);
@@ -668,7 +679,7 @@ module.exports.initialChecks = async (user, message, t) => {
     pass = false;
     motivo.push({
       name: `💤 | ${t('roleplay:initial.tired')}`,
-      value: t('roleplay:initial.tired-text', { time: moment.utc(parseInt(user.dungeonCooldown - Date.now())).format('mm:ss') }),
+      value: t('roleplay:initial.tired-text', { time: (parseInt(user.dungeonCooldown - Date.now()) > 3600000) ? moment.utc(parseInt(user.dungeonCooldown - Date.now())).format('HH:mm:ss') : moment.utc(parseInt(user.dungeonCooldown - Date.now())).format('mm:ss') }),
     });
   }
 

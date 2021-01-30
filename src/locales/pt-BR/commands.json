@@ -684,6 +684,7 @@
   "dungeon": {
     "description": "Vá para uma aventura na dungeon",
     "usage": "<nível>",
+    "scape": "Fugir",
     "non-aventure": "você não é um aventureiro",
     "no-level": "a Dungeon não possui este nível! Os níveis são: `1`,`2`,`3`, `4`, ou `5`",
     "min-level-warn": "**você é muito fraco para este nível! Cuidado!!!!!**",

@@ -23,10 +23,11 @@
     "in-battle-text": "You are already in the middle of a battle!",
     "no-life-text": "You are lifeless, and need to rest for more **{{time}}** hours",
     "tired": "Tiredness",
-    "tired-text": "You have already visited the dungeon and need to rest for more **{{time}}** minutes",
+    "tired-text": "You have already visited the dungeon and need to rest for more **{{time}}**",
     "hotel-text": "You are resting at the village hotel, and you cannot go to the dungeon until your stay is over, in **{{time}}**",
     "cant-go": "You cannot visit the dungeon for the following reasons:"
   },
+  "scape": "you got out of the battle, and managed to escape, but you will have to rest for 2 hours!",
   "registred": "you have been successfully registered! Use `m!status` to see your status",
   "backpack-full": "you get a loot, but your backpack is full, and you need to let them down",
   "evolve": "you reach your proficiency level, and become a **{{class}}**",

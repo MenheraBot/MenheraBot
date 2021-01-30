@@ -10,6 +10,7 @@ const emojis = {
   yellow_circle: '🟡',
   heart: '❤️',
   sword: '⚔️',
+  scape: '🐥',
 };
 
 module.exports = emojis;
