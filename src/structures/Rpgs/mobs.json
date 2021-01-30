@@ -22,7 +22,8 @@
       "life": 30,
       "damage": "20 - 25",
       "armor": 12,
-      "xp": 10
+      "xp": 10,
+      "dgLevel": 1
     },
     {
       "loots": [
@@ -46,7 +47,8 @@
       "life": 35,
       "damage": "13 - 17",
       "armor": 7,
-      "xp": 15
+      "xp": 15,
+      "dgLevel": 1
     },
     {
       "loots": [
@@ -70,7 +72,8 @@
       "life": 50,
       "damage": "10 - 18",
       "armor": 5,
-      "xp": 20
+      "xp": 20,
+      "dgLevel": 1
     },
     {
       "loots": [
@@ -94,7 +97,8 @@
       "life": 60,
       "damage": "10 - 20",
       "armor": 2,
-      "xp": 20
+      "xp": 20,
+      "dgLevel": 1
     },
     {
       "loots": [
@@ -118,7 +122,8 @@
       "life": 50,
       "damage": "5 - 7",
       "armor": 10,
-      "xp": 15
+      "xp": 15,
+      "dgLevel": 1
     },
     {
       "loots": [
@@ -142,7 +147,8 @@
       "life": 60,
       "damage": "7 - 10",
       "armor": 0,
-      "xp": 14
+      "xp": 14,
+      "dgLevel": 1
     },
     {
       "loots": [
@@ -174,7 +180,8 @@
       "life": 30,
       "damage": "18 - 20",
       "armor": 10,
-      "xp": 30
+      "xp": 30,
+      "dgLevel": 1
     },
     {
       "type": "inicial",
@@ -183,6 +190,7 @@
       "damage": "12 - 15",
       "armor": 12,
       "xp": 39,
+      "dgLevel": 1,
       "loots": [
         {
           "name": "Ferrão",
@@ -240,7 +248,8 @@
       "life": 100,
       "damage": "31 - 37",
       "armor": 12,
-      "xp": 130
+      "xp": 130,
+      "dgLevel": 2
     },
     {
       "loots": [
@@ -280,7 +289,8 @@
       "life": 100,
       "damage": "35 - 40",
       "armor": 12,
-      "xp": 112
+      "xp": 112,
+      "dgLevel": 2
     },
     {
       "loots": [
@@ -304,7 +314,8 @@
       "life": 100,
       "damage": "34 - 37",
       "armor": 12,
-      "xp": 70
+      "xp": 70,
+      "dgLevel": 2
     },
     {
       "loots": [
@@ -332,7 +343,8 @@
       "life": 120,
       "damage": "37 - 40",
       "armor": 15,
-      "xp": 130
+      "xp": 130,
+      "dgLevel": 2
     },
     {
       "loots": [
@@ -368,7 +380,8 @@
       "life": 150,
       "damage": "50 - 57",
       "armor": 0,
-      "xp": 258
+      "xp": 258,
+      "dgLevel": 2
     },
     {
       "loots": [
@@ -404,7 +417,8 @@
       "life": 200,
       "damage": "57 - 62",
       "armor": 2,
-      "xp": 300
+      "xp": 300,
+      "dgLevel": 2
     },
     {
       "loots": [
@@ -432,7 +446,8 @@
       "life": 350,
       "damage": "34 - 37",
       "armor": 1,
-      "xp": 280
+      "xp": 280,
+      "dgLevel": 2
     }
   ],
   "hard": [
@@ -466,7 +481,8 @@
       "life": 340,
       "damage": "53 - 57",
       "armor": 31,
-      "xp": 3500
+      "xp": 3500,
+      "dgLevel": 3
     },
     {
       "loots": [
@@ -498,7 +514,8 @@
       "life": 400,
       "damage": "50 - 59",
       "armor": 51,
-      "xp": 3400
+      "xp": 3400,
+      "dgLevel": 3
     },
     {
       "loots": [
@@ -530,7 +547,8 @@
       "life": 600,
       "damage": "56 - 65",
       "armor": 45,
-      "xp": 8400
+      "xp": 8400,
+      "dgLevel": 3
     },
     {
       "loots": [
@@ -570,7 +588,8 @@
       "life": 100,
       "damage": "65 - 70",
       "armor": 64,
-      "xp": 5809
+      "xp": 5809,
+      "dgLevel": 3
     },
     {
       "loots": [
@@ -602,7 +621,8 @@
       "life": 470,
       "damage": "69 - 72",
       "armor": 61,
-      "xp": 6070
+      "xp": 6070,
+      "dgLevel": 3
     }
   ],
   "impossible": [
@@ -636,7 +656,8 @@
       "life": 750,
       "damage": "85 - 92",
       "armor": 45,
-      "xp": 24500
+      "xp": 24500,
+      "dgLevel": 4
     },
     {
       "loots": [
@@ -668,7 +689,8 @@
       "life": 600,
       "damage": "92 - 100",
       "armor": 47,
-      "xp": 20111
+      "xp": 20111,
+      "dgLevel": 4
     },
     {
       "loots": [
@@ -696,7 +718,8 @@
       "life": 800,
       "damage": "120 - 131",
       "armor": 70,
-      "xp": 38666
+      "xp": 38666,
+      "dgLevel": 4
     },
     {
       "loots": [
@@ -720,7 +743,8 @@
       "life": 640,
       "damage": "99 - 112",
       "armor": 31,
-      "xp": 27500
+      "xp": 27500,
+      "dgLevel": 4
     },
     {
       "loots": [
@@ -752,7 +776,8 @@
       "life": 680,
       "damage": "100 - 130",
       "armor": 50,
-      "xp": 26420
+      "xp": 26420,
+      "dgLevel": 4
     }
   ],
   "boss": [
@@ -1002,7 +1027,8 @@
       "life": 2000,
       "damage": "560",
       "armor": 300,
-      "xp": 170000
+      "xp": 170000,
+      "dgLevel": 5
     },
     {
       "loots": [
@@ -1030,7 +1056,8 @@
       "life": 2000,
       "damage": "560 - 670",
       "armor": 320,
-      "xp": 150000
+      "xp": 150000,
+      "dgLevel": 5
     }
   ],
   "universal": [

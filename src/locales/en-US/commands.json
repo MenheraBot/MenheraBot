@@ -966,5 +966,15 @@
       "no-mana": "{{user}} try to use {{name}}, but not enough mana, {{user2}} strikes back",
       "insta-kill": "{{user}} broke the sacred rules trying to deliver a blow prohibited by the laws of one against one in the world of Boleham, {{user2}} strikes back"
     }
+  },
+  "sniff": {
+    "description": "nhammm what a nice smell",
+    "usage": "[user]",
+    "bot": "well, i guess this bot smells metal",
+    "no-mention": {
+      "embed_title": "HMMMM SNIFF SNIFF",
+      "embed_description": "is sniffing*"
+    },
+    "embed_description": "sniffed"
   }
 }

@@ -1,6 +1,27 @@
 const request = require('request-promise');
 const config = require('../../config.json');
 
+module.exports.postRpg = async (userId, userClass, userLevel, dungeonLevel, death, date) => {
+  const options = {
+    method: 'POST',
+    uri: `${config.api_IP}/api/rpg`,
+    headers: {
+      'User-Agent': 'MenheraClient',
+      token: config.api_TOKEN,
+    },
+    body: {
+      userId,
+      userClass,
+      userLevel,
+      dungeonLevel,
+      death,
+      date,
+    },
+    json: true,
+  };
+  await request(options).catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
+};
+
 module.exports.getActivity = async (shard) => {
   const options = {
     method: 'GET',

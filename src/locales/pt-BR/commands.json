@@ -986,5 +986,15 @@
       "no-mana": "{{user}} tenta usar {{name}}, mas não tem mana o suficiente, {{user2}} contra-ataca",
       "insta-kill": "{{user}} quebrou as regras sagradas tentando desferir um golpe proibído pelas leis do um contra um do mundo de Boleham, {{user2}} contra-ataca"
     }
+  },
+  "sniff": {
+    "description": "hmmmmm cheirin bão",
+    "usage": "[usuário]",
+    "bot": "olha, algo me diz que esse bot só tem cheiro de metal",
+    "no-mention": {
+      "embed_title": "Hmmmm Cheirin",
+      "embed_description": "Está Cheirando"
+    },
+    "embed_description": "Cheirou"
   }
 }

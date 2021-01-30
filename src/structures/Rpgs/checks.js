@@ -3,6 +3,7 @@ const { MessageEmbed } = require('discord.js');
 const RPGUtil = require('../../utils/RPGUtil');
 const mobsFile = require('../RpgHandler').mobs;
 const abilitiesFile = require('../RpgHandler').abiltiies;
+const http = require('../../utils/HTTPrequests');
 
 const random = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
@@ -88,13 +89,16 @@ module.exports.battle = async (message, escolha, user, inimigo, type, familia, t
       loots: inimigo.loots,
       xp: inimigo.xp,
       ataques: inimigo.ataques,
+      dgLevel: inimigo.dgLevel,
     };
 
     return user.save().then(() => this.enemyShot(message, user, enemy, type, familia, t, toSay));
   }, 500);
 };
 
-module.exports.morte = async (message, user, t, toSay) => {
+module.exports.morte = async (message, user, t, toSay, inimigo) => {
+  http.postRpg(user.id, user.class, user.level, inimigo.dgLevel, true, Date.now());
+
   message.menheraReply('error', `${toSay}\n\n${t('roleplay:death')}`);
   user.death = Date.now() + 43200000;
   user.life = 0;
@@ -124,7 +128,7 @@ module.exports.enemyShot = async (message, user, inimigo, type, familia, t, toSa
   const vidaUser = user.life - danoRecebido;
 
   if (vidaUser < 1) {
-    return this.morte(message, user, t, toSay);
+    return this.morte(message, user, t, toSay, inimigo);
   }
   user.life = vidaUser;
   setTimeout(() => {
@@ -527,6 +531,8 @@ module.exports.newAbilities = async (message, user, t) => {
 module.exports.resultBattle = async (message, user, inimigo, t, toSay) => {
   const randomLoot = inimigo.loots[Math.floor(Math.random() * inimigo.loots.length)];
   let canGetLoot = true;
+
+  http.postRpg(user.id, user.class, user.level, inimigo.dgLevel, false, Date.now());
 
   const backpack = RPGUtil.getBackpack(user);
   if (backpack.value >= backpack.capacity) canGetLoot = false;
