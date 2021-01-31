@@ -142,7 +142,7 @@ module.exports = class MessageReceive {
         embed.addField(t('events:error_embed.report_title'), t('events:error_embed.report_value'));
 
         message.channel.send(embed).catch(() => message.menheraReply('error', t('events:error_embed.error_msg')));
-        errorWebHook.send(embed).catch();
+        if (this.client.user.id === '708014856711962654') errorWebHook.send(embed).catch();
       });
     } catch (err) {
       const errorWebHook = await this.client.fetchWebhook(this.client.config.bug_webhook_id, this.client.config.bug_webhook_token);
@@ -157,7 +157,7 @@ module.exports = class MessageReceive {
       embed.addField(t('events:error_embed.report_title'), t('events:error_embed.report_value'));
 
       message.channel.send(embed).catch(() => message.menheraReply('error', t('events:error_embed.error_msg')));
-      errorWebHook.send(embed).catch();
+      if (this.client.user.id === '708014856711962654') errorWebHook.send(embed).catch();
       console.error(err.stack);
     }
     if (this.client.user.id === '708014856711962654') {
