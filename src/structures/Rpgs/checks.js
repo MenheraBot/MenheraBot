@@ -75,32 +75,30 @@ module.exports.battle = async (message, escolha, user, inimigo, type, familia, t
     user.mana -= escolha.cost;
   }
 
-  setTimeout(() => {
-    const enemyArmor = inimigo.armor;
-    let danoDado = danoUser - enemyArmor;
-    if (escolha.name === 'Ataque Básico' || escolha.name === 'Basic Attack') danoDado = danoUser;
-    if (danoDado < 0) danoDado = 0;
-    const vidaInimigo = inimigo.life - danoDado;
+  const enemyArmor = inimigo.armor;
+  let danoDado = danoUser - enemyArmor;
+  if (escolha.name === 'Ataque Básico' || escolha.name === 'Basic Attack') danoDado = danoUser;
+  if (danoDado < 0) danoDado = 0;
+  const vidaInimigo = inimigo.life - danoDado;
 
-    const toSay = `⚔️ | ${t('roleplay:battle.attack', { enemy: inimigo.name, choice: escolha.name, damage: danoDado })}`;
+  const toSay = `⚔️ | ${t('roleplay:battle.attack', { enemy: inimigo.name, choice: escolha.name, damage: danoDado })}`;
 
-    if (vidaInimigo < 1) {
-      return user.save().then(() => this.resultBattle(message, user, inimigo, t, toSay));
-    }
+  if (vidaInimigo < 1) {
+    return user.save().then(() => this.resultBattle(message, user, inimigo, t, toSay));
+  }
 
-    const enemy = {
-      name: inimigo.name,
-      damage: inimigo.damage,
-      life: vidaInimigo,
-      armor: inimigo.armor,
-      loots: inimigo.loots,
-      xp: inimigo.xp,
-      ataques: inimigo.ataques,
-      dgLevel: inimigo.dgLevel,
-    };
+  const enemy = {
+    name: inimigo.name,
+    damage: inimigo.damage,
+    life: vidaInimigo,
+    armor: inimigo.armor,
+    loots: inimigo.loots,
+    xp: inimigo.xp,
+    ataques: inimigo.ataques,
+    dgLevel: inimigo.dgLevel,
+  };
 
-    return user.save().then(() => this.enemyShot(message, user, enemy, type, familia, t, toSay));
-  }, 500);
+  return user.save().then(() => this.enemyShot(message, user, enemy, type, familia, t, toSay));
 };
 
 module.exports.morte = async (message, user, t, toSay, inimigo) => {
