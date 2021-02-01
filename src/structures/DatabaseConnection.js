@@ -14,16 +14,6 @@ const cmdSchema = mongoose.Schema({
   maintenanceReason: { type: String, default: '' },
 });
 
-const familiaSchema = new mongoose.Schema({
-  _id: { type: String },
-  abilities: { type: Array },
-  boost: { type: Object },
-  members: { type: Array, default: [] },
-  levelFamilia: { type: Number, default: 1 },
-  bank: { type: String, default: '0' },
-  nextLevel: { type: String, default: '15000' },
-});
-
 const guildSchema = mongoose.Schema({
   id: { type: String, unique: true },
   prefix: { type: String, default: config.prefix },
@@ -67,8 +57,6 @@ const rpgSchema = mongoose.Schema({
   protection: { type: Object, default: { name: 'Armadura Padrão', armor: 1 } },
   hotelTime: { type: String, default: '00000000' },
   inBattle: { type: Boolean, default: false },
-  hasFamily: { type: Boolean, default: false },
-  familyName: { type: String, default: null },
   backpack: { type: Object, default: { name: 'Mochila de Pele de Lobo' } },
   resetRoll: { type: Number, default: 0 },
 });
@@ -117,7 +105,6 @@ const warnSchema = mongoose.Schema({
   data: String,
 });
 
-const familia = mongoose.model('Familia', familiaSchema);
 const cmd = mongoose.model('Cmd', cmdSchema);
 const guild = mongoose.model('guild', guildSchema);
 const remember = mongoose.model('remember', rememberSchema);
@@ -125,7 +112,6 @@ const rpg = mongoose.model('rpg', rpgSchema);
 const user = mongoose.model('usersdb', userSchema);
 const warn = mongoose.model('warn', warnSchema);
 
-module.exports.Familias = familia;
 module.exports.Cmds = cmd;
 module.exports.Guilds = guild;
 module.exports.Reminders = remember;

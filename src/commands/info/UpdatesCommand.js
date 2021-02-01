@@ -20,19 +20,14 @@ module.exports = class UpdatesCommand extends Command {
       .setTitle(`${t('commands:updates.title')} ${version}`)
       .setColor('#a7e74f')
       .setFooter(`${this.client.user.username} ${t('commands:updates.footer')} ${owner.tag}`, owner.displayAvatarURL({ format: 'png', dynamic: true }))
-      .setDescription(`**Níveis da Dungeon**
+      .setDescription(`**As famílias foram removidas**
 
-      • Agora você deve escolher para qual nível da **DUNGEON** (não conta para boss) você quer ir
+      • Certamente as famílias eram desbalanceadas, e elas não fluiram como eu pensei que seria! Então, removi elas!
+      Para as pessoas que gastaram dinheiro nos depósitos: kk dinheiro no lixo
 
-      Os níveis recomendados são:
-
-      1 - A partir do lvl **0**
-      2 - A partir do lvl **4**
-      3 - A partir do lvl **9**
-      4 - A partir do lvl **13**
-      5 - A partir do lvl **30**
-
-      Exemplo de como ir pra dungeon: \`m!dungeon 2\``);
+      • Novidades futuras:
+        Para substituir as famílias, o mundo de Boleham será ampliado para não ter somente Dungeons, mas também, ter trabalhos, famílias próprias, e casas!
+      (é o que eu pretendo fazer, se conseguir keke)`);
 
     message.channel.send(message.author, embed);
   }
