@@ -266,7 +266,7 @@ module.exports = class Canvas {
     return canvas.toBuffer();
   }
 
-  static async RpgStatusBuilder(user, member, t, familia) {
+  static async RpgStatusBuilder(user, member, t) {
     /* ---------------------- CREATE CANVAS -------------------------- */
 
     const canvas = CanvasImport.createCanvas(582, 275);
@@ -293,13 +293,8 @@ module.exports = class Canvas {
     const lifeFillMultiplier = user.life / user.maxLife;
     const manaFillMultiplier = user.mana / user.maxMana;
     const xpFillMultiplier = user.xp / user.nextLevelXp;
-    let dmg = `${user.damage}+${user.weapon.damage}`;
-    let ptr = `${user.armor}+${user.protection.armor}`;
-
-    if (user.hasFamily) {
-      if (user.familyName === 'Loki ') dmg = `${user.damage}+${user.weapon.damage}+\`${familia.boost.value}\``;
-      if (user.familyName === 'Ares') ptr = `${user.armor}+${user.protection.armor}+${familia.boost.value}`;
-    }
+    const dmg = `${user.damage}+${user.weapon.damage}`;
+    const ptr = `${user.armor}+${user.protection.armor}`;
 
     /* ---------------------- CREATE BARS -------------------------- */
 
@@ -400,34 +395,6 @@ module.exports = class Canvas {
     ctx.fillStyle = '#fff';
     ctx.drawImage(classIcon, 290, 160, 28, 28);
     ctx.fillText(t(`roleplay:classes.${user.class}`), 320, 180);
-
-    // FAMILIA
-
-    if (user.hasFamily) {
-      let familyColor;
-      switch (user.familyName) {
-        case 'Apolo':
-          familyColor = '#d613f0';
-          break;
-        case 'Loki':
-          familyColor = '#17ec39';
-          break;
-        case 'Freya':
-          familyColor = '#53c9f0';
-          break;
-        case 'Ares':
-          familyColor = '#fc0505';
-          break;
-        case 'Soma':
-          familyColor = '#fad51f';
-          break;
-        default: familyColor = '#000';
-      }
-      const familyIcon = await CanvasImport.loadImage('https://i.imgur.com/k7uMwn3.png');
-      ctx.fillStyle = familyColor;
-      ctx.drawImage(familyIcon, 375, 195, 28, 28);
-      ctx.fillText(user.familyName, 410, 215);
-    }
 
     return canvas.toBuffer();
   }

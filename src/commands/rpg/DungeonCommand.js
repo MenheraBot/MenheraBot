@@ -29,17 +29,10 @@ module.exports = class DungeonCommand extends Command {
 
     if (!canGo) return;
 
-    let familia;
-    let dmgView = user.damage + user.weapon.damage;
-    let ptcView = user.armor + user.protection.armor;
+    const dmgView = user.damage + user.weapon.damage;
+    const ptcView = user.armor + user.protection.armor;
 
-    if (user.hasFamily) {
-      familia = await this.client.database.Familias.findById(user.familyName);
-      if (user.familyName === 'Loki') dmgView = user.damage + user.weapon.damage + familia.boost.value;
-      if (user.familyName === 'Ares') ptcView = user.armor + user.protection.armor + familia.boost.value;
-    }
-
-    const habilidades = await this.client.rpgChecks.getAbilities(user, familia);
+    const habilidades = await this.client.rpgChecks.getAbilities(user);
 
     const embed = new MessageEmbed()
       .setTitle(`⌛ | ${t('commands:dungeon.preparation.title')}`)
@@ -57,12 +50,12 @@ module.exports = class DungeonCommand extends Command {
 
     collector.on('collect', (m) => {
       if (m.content.toLowerCase() === 'sim' || m.content.toLowerCase() === 'yes') {
-        this.battle(message, inimigo, habilidades, user, 'dungeon', familia, t);
+        this.battle(message, inimigo, habilidades, user, 'dungeon', t);
       } else return message.menheraReply('error', t('commands:dungeon.arregou'));
     });
   }
 
-  async battle(message, inimigo, habilidades, user, type, familia, t) {
+  async battle(message, inimigo, habilidades, user, type, t) {
     user.dungeonCooldown = 3600000 + Date.now();
     user.inBattle = true;
     await user.save();
@@ -73,17 +66,10 @@ module.exports = class DungeonCommand extends Command {
       scape: true,
     }];
 
-    if (user.hasFamily && user.familyName === 'Loki') {
-      options.push({
-        name: t('commands:dungeon.battle.basic'),
-        damage: user.damage + user.weapon.damage + familia.boost.value,
-      });
-    } else {
-      options.push({
-        name: t('commands:dungeon.battle.basic'),
-        damage: user.damage + user.weapon.damage,
-      });
-    }
+    options.push({
+      name: t('commands:dungeon.battle.basic'),
+      damage: user.damage + user.weapon.damage,
+    });
 
     habilidades.forEach((hab) => {
       options.push(hab);
@@ -114,15 +100,15 @@ module.exports = class DungeonCommand extends Command {
       time = true;
       const choice = Number(m.content);
       if (escolhas.includes(choice)) {
-        this.client.rpgChecks.battle(message, options[choice], user, inimigo, type, familia, t);
+        this.client.rpgChecks.battle(message, options[choice], user, inimigo, type, t);
       } else {
-        this.client.rpgChecks.enemyShot(message, user, inimigo, type, familia, t, `⚔️ |  ${t('commands:dungeon.battle.newTecnique')}`);
+        this.client.rpgChecks.enemyShot(message, user, inimigo, type, t, `⚔️ |  ${t('commands:dungeon.battle.newTecnique')}`);
       }
     });
 
     setTimeout(() => {
       if (!time) {
-        this.client.rpgChecks.enemyShot(message, user, inimigo, type, familia, t, `⚔️ |  ${t('commands:dungeon.battle.timeout')}`);
+        this.client.rpgChecks.enemyShot(message, user, inimigo, type, t, `⚔️ |  ${t('commands:dungeon.battle.timeout')}`);
       }
     }, 15000);
   }

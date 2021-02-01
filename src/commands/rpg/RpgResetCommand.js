@@ -22,11 +22,6 @@ module.exports = class RpgResetCommand extends Command {
 
     collector.on('collect', async (m) => {
       if (m.content.toLowerCase() === 'sim' || m.content.toLowerCase() === 'yes') {
-        if (user.hasFamily) {
-          const familia = await this.client.database.Familias.findById(user.familyName);
-          familia.members.splice(familia.members.indexOf(message.author.id.toString()), 1);
-          familia.save();
-        }
         this.client.database.Rpg.findByIdAndDelete(message.author.id).then(message.menheraReply('success', t('commands:reset.success', { prefix: server.prefix })));
       } else message.menheraReply('error', t('commands:reset.cancel'));
     });

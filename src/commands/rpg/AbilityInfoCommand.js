@@ -172,13 +172,6 @@ module.exports = class AbilityInfoCommand extends Command {
     abilitiesFiltred.forEach((hab) => {
       embed.addField(`🔮 | ${t('commands:infohabilidade.ability')}: ${hab.name}`, `📜 | **${t('commands:infohabilidade.desc')}:** ${hab.description}\n⚔️ | **${t('commands:infohabilidade.dmg')}:** ${hab.damage}\n💉 | **${t('commands:infohabilidade.heal')}:** ${hab.heal}\n💧 | **${t('commands:infohabilidade.cost')}:** ${hab.cost}`);
     });
-
-    if (user.hasFamily) {
-      const familia = await this.client.database.Familias.findById(user.familyName);
-      familia.abilities.forEach((hab) => {
-        embed.addField(`🔮 | ${t('commands:infohabilidade.familyAbility')}: ${hab.name}`, `📜 | **${t('commands:infohabilidade.desc')}:** ${hab.description}\n⚔️ | **${t('commands:infohabilidade.dmg')}:** ${hab.damage}\n💉 | **${t('commands:infohabilidade.heal')}:** ${hab.heal}\n💧 | **${t('commands:infohabilidade.cost')}:** ${hab.cost}`);
-      });
-    }
     return message.channel.send(message.author, embed);
   }
 };

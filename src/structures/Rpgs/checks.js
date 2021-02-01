@@ -50,7 +50,7 @@ module.exports.getEnemyByUserLevel = (user, type, dungeonLevel, message, t) => {
   return validLevels[dungeonLevel].mob;
 };
 
-module.exports.battle = async (message, escolha, user, inimigo, type, familia, t) => {
+module.exports.battle = async (message, escolha, user, inimigo, type, t) => {
   let danoUser;
   if (escolha.scape) {
     message.menheraReply('scape', t('roleplay:scape'));
@@ -62,11 +62,11 @@ module.exports.battle = async (message, escolha, user, inimigo, type, familia, t
   if (escolha.name === 'Ataque Básico' || escolha.name === 'Basic Attack') {
     danoUser = escolha.damage;
   } else if (escolha.name === 'Morte Instantânea') {
-    if (user.mana < user.maxMana) return this.enemyShot(message, user, inimigo, type, familia, t, `⚔️ | ${t('roleplay:battle.no-mana', { name: escolha.name })}`);
+    if (user.mana < user.maxMana) return this.enemyShot(message, user, inimigo, type, t, `⚔️ | ${t('roleplay:battle.no-mana', { name: escolha.name })}`);
     danoUser = escolha.damage * user.abilityPower;
     user.mana = 0;
   } else {
-    if (user.mana < escolha.cost) return this.enemyShot(message, user, inimigo, type, familia, t, `⚔️ | ${t('roleplay:battle.no-mana', { name: escolha.name })}`);
+    if (user.mana < escolha.cost) return this.enemyShot(message, user, inimigo, type, t, `⚔️ | ${t('roleplay:battle.no-mana', { name: escolha.name })}`);
     if (escolha.heal > 0) {
       user.life += escolha.heal;
       if (user.life > user.maxLife) user.life = user.maxLife;
@@ -98,7 +98,7 @@ module.exports.battle = async (message, escolha, user, inimigo, type, familia, t
     dgLevel: inimigo.dgLevel,
   };
 
-  return user.save().then(() => this.enemyShot(message, user, enemy, type, familia, t, toSay));
+  return user.save().then(() => this.enemyShot(message, user, enemy, type, t, toSay));
 };
 
 module.exports.morte = async (message, user, t, toSay, inimigo) => {
@@ -111,17 +111,11 @@ module.exports.morte = async (message, user, t, toSay, inimigo) => {
   return user.save();
 };
 
-module.exports.enemyShot = async (message, user, inimigo, type, familia, t, toSay) => {
-  const habilidades = await this.getAbilities(user, familia);
+module.exports.enemyShot = async (message, user, inimigo, type, t, toSay) => {
+  const habilidades = await this.getAbilities(user);
 
   let danoRecebido;
-  let armadura = user.armor + user.protection.armor;
-
-  if (user.hasFamily) {
-    if (user.familyName === 'Ares') {
-      armadura = user.armor + user.protection.armor + familia.boost.value;
-    }
-  }
+  const armadura = user.armor + user.protection.armor;
 
   const ataque = await inimigo.ataques[Math.floor(Math.random() * inimigo.ataques.length)];
 
@@ -139,13 +133,13 @@ module.exports.enemyShot = async (message, user, inimigo, type, familia, t, toSa
   setTimeout(() => {
     user.save()
       .then(() => this.continueBattle(
-        message, inimigo, habilidades, user, type, ataque, familia, t, toSay,
+        message, inimigo, habilidades, user, type, ataque, t, toSay,
       ));
   }, 300);
 };
 
 module.exports.continueBattle = async (
-  message, inimigo, habilidades, user, type, ataque, familia, t, toSay,
+  message, inimigo, habilidades, user, type, ataque, t, toSay,
 ) => {
   const options = [{
     name: t('commands:dungeon.scape'),
@@ -153,17 +147,10 @@ module.exports.continueBattle = async (
     scape: true,
   }];
 
-  if (user.hasFamily && user.familyName === 'Loki') {
-    options.push({
-      name: t('roleplay:basic-attack'),
-      damage: user.damage + user.weapon.damage + familia.boost.value,
-    });
-  } else {
-    options.push({
-      name: t('roleplay:basic-attack'),
-      damage: user.damage + user.weapon.damage,
-    });
-  }
+  options.push({
+    name: t('roleplay:basic-attack'),
+    damage: user.damage + user.weapon.damage,
+  });
 
   if (type === 'boss') {
     if (user.uniquePower.name === 'Morte Instantânea') {
@@ -174,13 +161,8 @@ module.exports.continueBattle = async (
     options.push(hab);
   });
 
-  let dmgView = user.damage + user.weapon.damage;
-  let ptcView = user.armor + user.protection.armor;
-
-  if (user.hasFamily) {
-    if (user.familyName === 'Loki') dmgView = user.damage + user.weapon.damage + familia.boost.value;
-    if (user.familyName === 'Ares') ptcView = user.armor + user.protection.armor + familia.boost.value;
-  }
+  const dmgView = user.damage + user.weapon.damage;
+  const ptcView = user.armor + user.protection.armor;
 
   let damageReceived = ataque.damage - ptcView;
   if (damageReceived < 5) damageReceived = 5;
@@ -221,15 +203,15 @@ module.exports.continueBattle = async (
     const choice = Number(m.content);
     if (escolhas.includes(choice)) {
       return this.battle(
-        message, options[choice], user, inimigo, type, familia, t,
+        message, options[choice], user, inimigo, type, t,
       ); // Mandar os dados de ataque, e defesa do inimigo, para fazer o calculo lá
     }
-    return this.enemyShot(message, user, inimigo, type, familia, t, `⚔️ |  ${t('roleplay:battle.new-tatic')}`);
+    return this.enemyShot(message, user, inimigo, type, t, `⚔️ |  ${t('roleplay:battle.new-tatic')}`);
   });
 
   setTimeout(() => {
     if (!time) {
-      return this.enemyShot(message, user, inimigo, type, familia, t, `⚔️ | ${t('roleplay:battle.timeout')}`);
+      return this.enemyShot(message, user, inimigo, type, t, `⚔️ | ${t('roleplay:battle.timeout')}`);
     }
   }, 15000);
 };
@@ -367,7 +349,6 @@ module.exports.newAbilities = async (message, user, t) => {
         break;
     }
   } else if (user.level === 10) {
-    message.menheraReply('success', t('roleplay:family'));
     switch (user.class) {
       case 'Assassino':
         user.abilities.push(abilitiesFile.assassin.normalAbilities[2]);
@@ -571,7 +552,7 @@ module.exports.resultBattle = async (message, user, inimigo, t, toSay) => {
   return user.save().then(() => this.finalChecks(message, user, t));
 };
 
-module.exports.getAbilities = async (user, familia) => {
+module.exports.getAbilities = async (user) => {
   const abilities = [];
 
   let filtrado;
@@ -646,12 +627,6 @@ module.exports.getAbilities = async (user, familia) => {
   abilitiesFiltred.forEach((hab) => {
     abilities.push(hab);
   });
-
-  if (user.hasFamily) {
-    familia.abilities.forEach((habF) => {
-      abilities.push(habF);
-    });
-  }
 
   return abilities;
 };

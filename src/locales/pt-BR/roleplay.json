@@ -50,5 +50,11 @@
     "Conjurador Demoníaco": "Conjurador Demoníaco",
     "Sacerdote": "Sacerdote",
     "Senhor das Trevas": "Senhor das Trevas"
+  },
+  "job": {
+    "1": {
+      "job_one": "Fazendeiro",
+      "item_one": "Trigo"
+    }
   }
 }

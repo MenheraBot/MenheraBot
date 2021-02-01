@@ -25,23 +25,10 @@ module.exports = class PvPCommands extends Command {
 
     if (!user1 || !user2) return message.menheraReply('error', t('commands:pvp.no-user'));
 
-    let familia;
-    let dmgView2 = user2.damage + user2.weapon.damage;
-    let ptcView2 = user2.armor + user2.protection.armor;
-    let dmgView1 = user1.damage + user1.weapon.damage;
-    let ptcView1 = user1.armor + user1.protection.armor;
-
-    if (user2.hasFamily) {
-      familia = await this.client.database.Familias.findById(user2.familyName);
-      if (user2.familyName === 'Loki') dmgView2 = user2.damage + user2.weapon.damage + familia.boost.value;
-      if (user2.familyName === 'Ares') ptcView2 = user2.armor + user2.protection.armor + familia.boost.value;
-    }
-
-    if (user1.hasFamily) {
-      familia = await this.client.database.Familias.findById(user1.familyName);
-      if (user1.familyName === 'Loki') dmgView1 = user1.damage + user1.weapon.damage + familia.boost.value;
-      if (user1.familyName === 'Ares') ptcView1 = user1.armor + user1.protection.armor + familia.boost.value;
-    }
+    const dmgView2 = user2.damage + user2.weapon.damage;
+    const ptcView2 = user2.armor + user2.protection.armor;
+    const dmgView1 = user1.damage + user1.weapon.damage;
+    const ptcView1 = user1.armor + user1.protection.armor;
 
     const embed = new MessageEmbed()
       .setTitle(t('commands:pvp.accept-battle', { user: message.author.tag }))
@@ -96,23 +83,13 @@ module.exports = class PvPCommands extends Command {
       user2.mana = user2.maxMana;
     }
 
-    const user1familia = await this.client.database.Familias.findById(user1.familyName);
-    const user2familia = await this.client.database.Familias.findById(user2.familyName);
+    options.push({
+      name: t('commands:dungeon.battle.basic'),
+      damage: user1.damage + user1.weapon.damage,
+    });
 
-    if (user1.hasFamily && user1.familyName === 'Loki') {
-      options.push({
-        name: t('commands:dungeon.battle.basic'),
-        damage: user1.damage + user1.weapon.damage + user1familia.boost.value,
-      });
-    } else {
-      options.push({
-        name: t('commands:dungeon.battle.basic'),
-        damage: user1.damage + user1.weapon.damage,
-      });
-    }
-
-    const user1abilities = await this.client.rpgChecks.getAbilities(user1, user1familia);
-    const user2abilities = await this.client.rpgChecks.getAbilities(user2, user2familia);
+    const user1abilities = await this.client.rpgChecks.getAbilities(user1);
+    const user2abilities = await this.client.rpgChecks.getAbilities(user2);
 
     options.push(...user1abilities);
 
@@ -141,20 +118,20 @@ module.exports = class PvPCommands extends Command {
       time = true;
       const choice = Number(m.content);
       if (escolhas.includes(choice)) {
-        this.continueBattle(message, options[choice - 1], user1, user2, member1, member2, user1familia, user2familia, user1abilities, user2abilities, aposta, t, null);
+        this.continueBattle(message, options[choice - 1], user1, user2, member1, member2, user1abilities, user2abilities, aposta, t, null);
       } else {
-        this.continueBattle(message, false, user1, user2, member1, member2, user1familia, user2familia, user1abilities, user2abilities, aposta, t, `⚔️ |  ${t('commands:pvp.battle.newTecnique', { user: member1.tag })}`);
+        this.continueBattle(message, false, user1, user2, member1, member2, user1abilities, user2abilities, aposta, t, `⚔️ |  ${t('commands:pvp.battle.newTecnique', { user: member1.tag })}`);
       }
     });
 
     setTimeout(() => {
       if (!time) {
-        this.continueBattle(message, false, user1, user2, member1, member2, user1familia, user2familia, user1abilities, user2abilities, aposta, t, `⚔️ |  ${t('commands:pvp.battle.timeout', { user: member1.tag })}`);
+        this.continueBattle(message, false, user1, user2, member1, member2, user1abilities, user2abilities, aposta, t, `⚔️ |  ${t('commands:pvp.battle.timeout', { user: member1.tag })}`);
       }
     }, 7000);
   }
 
-  async continueBattle(message, escolha, user1, user2, member1, member2, user1familia, user2familia, user1abilities, user2abilities, aposta, t, attackText) {
+  async continueBattle(message, escolha, user1, user2, member1, member2, user1abilities, user2abilities, aposta, t, attackText) {
     let toSay;
     if (!attackText) {
       let danoUser = 0;
@@ -163,9 +140,9 @@ module.exports = class PvPCommands extends Command {
           danoUser = escolha.damage;
         } else if (escolha.name === 'Morte Instantânea') {
           user1.life -= 50;
-          return this.continueBattle(message, false, user1, user2, member1, member2, user1familia, user2familia, user1abilities, user2abilities, aposta, t, `⚔️ | ${t('commands:pvp.battle.insta-kill', { user: member1.tag, user2: member2.tag })}`);
+          return this.continueBattle(message, false, user1, user2, member1, member2, user1abilities, user2abilities, aposta, t, `⚔️ | ${t('commands:pvp.battle.insta-kill', { user: member1.tag, user2: member2.tag })}`);
         } else {
-          if (user1.mana < escolha.cost) return this.continueBattle(message, false, user1, user2, member1, member2, user1familia, user2familia, user1abilities, user2abilities, aposta, t, `⚔️ | ${t('commands:pvp.battle.no-mana', { name: escolha.name, user: member1.tag, user2: member2.tag })}`);
+          if (user1.mana < escolha.cost) return this.continueBattle(message, false, user1, user2, member1, member2, user1abilities, user2abilities, aposta, t, `⚔️ | ${t('commands:pvp.battle.no-mana', { name: escolha.name, user: member1.tag, user2: member2.tag })}`);
           if (escolha.heal > 0) {
             user1.life += escolha.heal;
             if (user1.life > user1.maxLife) user1.life = user1.maxLife;
@@ -196,17 +173,10 @@ module.exports = class PvPCommands extends Command {
 
     const options = [];
 
-    if (user2.hasFamily && user2.familyName === 'Loki') {
-      options.push({
-        name: t('commands:dungeon.battle.basic'),
-        damage: user2.damage + user2.weapon.damage + user2familia.boost.value,
-      });
-    } else {
-      options.push({
-        name: t('commands:dungeon.battle.basic'),
-        damage: user2.damage + user2.weapon.damage,
-      });
-    }
+    options.push({
+      name: t('commands:dungeon.battle.basic'),
+      damage: user2.damage + user2.weapon.damage,
+    });
 
     options.push(...user2abilities);
 
@@ -236,17 +206,17 @@ module.exports = class PvPCommands extends Command {
       time = true;
       const choice = Number(m.content);
       if (escolhas.includes(choice)) {
-        this.continueBattle(message, options[choice - 1], user2, user1, member2, member1, user2familia, user1familia, user2abilities, user1abilities, aposta, t, null);
+        this.continueBattle(message, options[choice - 1], user2, user1, member2, member1, user2abilities, user1abilities, aposta, t, null);
       } else {
         user2.life -= 50;
-        this.continueBattle(message, false, user2, user1, member2, member1, user2familia, user1familia, user2abilities, user1abilities, aposta, t, `⚔️ |  ${t('commands:pvp.battle.newTecnique', { user: member2.tag })}`);
+        this.continueBattle(message, false, user2, user1, member2, member1, user2abilities, user1abilities, aposta, t, `⚔️ |  ${t('commands:pvp.battle.newTecnique', { user: member2.tag })}`);
       }
     });
 
     setTimeout(() => {
       if (!time) {
         user2.life -= 50;
-        this.continueBattle(message, false, user2, user1, member2, member1, user2familia, user1familia, user2abilities, user1abilities, aposta, t, `⚔️ |  ${t('commands:pvp.battle.timeout', { user: member2.tag })}`);
+        this.continueBattle(message, false, user2, user1, member2, member1, user2abilities, user1abilities, aposta, t, `⚔️ |  ${t('commands:pvp.battle.timeout', { user: member2.tag })}`);
       }
     }, 7000);
   }

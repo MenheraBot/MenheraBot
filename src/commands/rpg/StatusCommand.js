@@ -27,8 +27,7 @@ module.exports = class StatusCommand extends Command {
     const user = await this.client.database.Rpg.findById(mentioned.id);
     if (!user) return message.menheraReply('error', t('commands:status.not-found'));
 
-    const familia = await this.client.database.Familias.findById(user.familyName);
-    const image = await Canvas.RpgStatusBuilder(user, mentioned, t, familia);
+    const image = await Canvas.RpgStatusBuilder(user, mentioned, t);
 
     message.channel.send(message.author, new MessageAttachment(image, 'status.png'));
   }

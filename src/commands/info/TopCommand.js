@@ -36,7 +36,6 @@ module.exports = class TopCommand extends Command {
     const argsEstrelinhas = ['estrelinhas', 'estrelinha', 'stars', 'star'];
     const argsVotos = ['votadores', 'voto', 'votes', 'votos', 'upvotes', 'upvote', 'vote'];
     const argsDungeon = ['dungeon', 'rpg'];
-    const argsFamilias = ['famílias', 'familias', 'familia', 'família', 'family', 'families'];
     const argsCommands = ['comandos', 'commands', 'cmds', 'cmd'];
     const argsUsers = ['usuarios', 'usuários', 'users'];
     const argsUser = ['usuario', 'user', 'usuário'];
@@ -59,8 +58,6 @@ module.exports = class TopCommand extends Command {
       this.topVotos(message, t, pagina);
     } else if (argsDungeon.includes(argumento)) {
       this.topDungeon(message, t, pagina);
-    } else if (argsFamilias.includes(argumento)) {
-      this.topFamilia(message, t);
     } else if (argsCommands.includes(argumento)) {
       TopCommand.topCommands(message, t);
     } else if (argsUsers.includes(argumento)) {
@@ -316,7 +313,7 @@ module.exports = class TopCommand extends Command {
       skip = (pagina - 1) * 10;
     }
 
-    const res = await this.client.database.Rpg.find({}, ['level', '_id', 'xp', 'hasFamily', 'familyName'], {
+    const res = await this.client.database.Rpg.find({}, ['level', '_id', 'xp'], {
       skip,
       limit: 10,
       sort: { level: -1, xp: -1 },
@@ -330,30 +327,10 @@ module.exports = class TopCommand extends Command {
     for (let i = 0; i < res.length; i++) {
       const member = await this.client.users.fetch(res[i].id).catch();
       if (!member) {
-        embed.addField(`** ${skip + 1 + i} -** \`USER NOT FOUND\``, `Level: **${res[i].level}**\nXp: **${res[i].xp}**\n${t('commands:top.family')}: **${res[i].hasFamily ? res[i].familyName : t('commands:top.null')}**`, false);
+        embed.addField(`** ${skip + 1 + i} -** \`USER NOT FOUND\``, `Level: **${res[i].level}**\nXp: **${res[i].xp}**`, false);
       } else {
-        embed.addField(`**${skip + 1 + i} -** ${member.username}`, `Level: **${res[i].level}**\nXp: **${res[i].xp}**\n${t('commands:top.family')}: **${res[i].hasFamily ? res[i].familyName : t('commands:top.null')}**`, false);
+        embed.addField(`**${skip + 1 + i} -** ${member.username}`, `Level: **${res[i].level}**\nXp: **${res[i].xp}**`, false);
       }
-    }
-    message.channel.send(message.author, embed);
-  }
-
-  async topFamilia(message, t) {
-    const embed = new MessageEmbed()
-
-      .setTitle(`🔱 | ${t('commands:top.familyTitle')}`)
-      .setColor('#c780f3');
-
-    const res = await this.client.database.Familias.find({}, ['_id', 'members', 'levelFamilia', 'bank'], {
-      skip: 0,
-      limit: 5,
-      sort: { levelFamilia: -1, bank: -1 },
-    });
-
-    res.sort((a, b) => parseInt(b.bank) - parseInt(a.bank));
-
-    for (let i = 0; i < res.length; i++) {
-      embed.addField(`${i + 1} - ${res[i]._id}`, `:fleur_de_lis: | **${t('commands:top.family-level')}:** ${res[i].levelFamilia}\n💎 | **${t('commands:top.family-money')}:** ${res[i].bank}\n<:God:758474639570894899> | **${t('commands:top.members')}:** ${res[i].members.length}`);
     }
     message.channel.send(message.author, embed);
   }

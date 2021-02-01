@@ -22,17 +22,10 @@ module.exports = class BattleBoss extends Command {
 
     if (!canGo) return;
 
-    let familia;
-    let dmgView = user.damage + user.weapon.damage;
-    let ptcView = user.armor + user.protection.armor;
+    const dmgView = user.damage + user.weapon.damage;
+    const ptcView = user.armor + user.protection.armor;
 
-    if (user.hasFamily) {
-      familia = await this.client.database.Familias.findById(user.familyName);
-      if (user.familyName === 'Loki') dmgView = user.damage + user.weapon.damage + familia.boost.value;
-      if (user.familyName === 'Ares') ptcView = user.armor + user.protection.armor + familia.boost.value;
-    }
-
-    const habilidades = await this.client.rpgChecks.getAbilities(user, familia);
+    const habilidades = await this.client.rpgChecks.getAbilities(user);
 
     if (user.uniquePower.name === 'Morte Instantânea') {
       habilidades.splice(habilidades.findIndex((i) => i.name === 'Morte Instantânea'), 1);
@@ -54,12 +47,12 @@ module.exports = class BattleBoss extends Command {
 
     collector.on('collect', (m) => {
       if (m.content.toLowerCase() === 'sim' || m.content.toLowerCase() === 'yes') {
-        this.battle(message, inimigo, habilidades, user, 'boss', familia, t);
+        this.battle(message, inimigo, habilidades, user, 'boss', t);
       } else return message.menheraReply('error', t('commands:boss.amarelou'));
     });
   }
 
-  async battle(message, inimigo, habilidades, user, type, familia, t) {
+  async battle(message, inimigo, habilidades, user, type, t) {
     user.dungeonCooldown = 3600000 + Date.now();
     user.inBattle = true;
     await user.save();
@@ -70,17 +63,10 @@ module.exports = class BattleBoss extends Command {
       scape: true,
     }];
 
-    if (user.hasFamily && user.familyName === 'Loki') {
-      options.push({
-        name: t('commands:boss.battle.basic'),
-        damage: user.damage + user.weapon.damage + familia.boost.value,
-      });
-    } else {
-      options.push({
-        name: t('commands:boss.battle.basic'),
-        damage: user.damage + user.weapon.damage,
-      });
-    }
+    options.push({
+      name: t('commands:boss.battle.basic'),
+      damage: user.damage + user.weapon.damage,
+    });
 
     habilidades.forEach((hab) => {
       options.push(hab);
@@ -111,14 +97,14 @@ module.exports = class BattleBoss extends Command {
       time = true;
       const choice = Number(m.content);
       if (escolhas.includes(choice)) {
-        return this.client.rpgChecks.battle(message, options[choice], user, inimigo, type, familia, t);
+        return this.client.rpgChecks.battle(message, options[choice], user, inimigo, type, t);
       }
-      return this.client.rpgChecks.enemyShot(message, user, inimigo, type, familia, t, `⚔️ |  ${t('commands:boss.battle.newTecnique')}`);
+      return this.client.rpgChecks.enemyShot(message, user, inimigo, type, t, `⚔️ |  ${t('commands:boss.battle.newTecnique')}`);
     });
 
     setTimeout(() => {
       if (!time) {
-        return this.client.rpgChecks.enemyShot(message, user, inimigo, type, familia, t, `⚔️ |  ${t('commands:boss.battle.timeout')}`);
+        return this.client.rpgChecks.enemyShot(message, user, inimigo, type, t, `⚔️ |  ${t('commands:boss.battle.timeout')}`);
       }
     }, 15000);
   }

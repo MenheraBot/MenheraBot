@@ -203,5 +203,13 @@
       "life": "MAX",
       "mana": "MAX"
     }
-  ]
+  ],
+  "jobs": {
+    "1": [
+      {
+        "name": "item_one",
+        "value": 100
+      }
+    ]
+  }
 }
