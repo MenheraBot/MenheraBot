@@ -398,11 +398,11 @@ module.exports = class Canvas {
     ctx.fillText(t(`roleplay:classes.${user.class}`), 300, 180);
 
     // TRABALHO
-
-    ctx.fillStyle = 'yellow';
-    ctx.drawImage(jobIcon, 270, 200, 28, 28);
-    ctx.fillText(t(`roleplay:job.${user.jobId}.name`), 300, 220);
-
+    if (user?.jobId > 0) {
+      ctx.fillStyle = 'yellow';
+      ctx.drawImage(jobIcon, 270, 200, 28, 28);
+      ctx.fillText(t(`roleplay:job.${user.jobId}.name`), 300, 220);
+    }
     return canvas.toBuffer();
   }
 };
