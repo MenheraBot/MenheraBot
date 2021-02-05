@@ -1,0 +1,18 @@
+{
+  "1": {
+    "name": "name",
+    "min_level": 1,
+    "work_cooldown_in_hours": 1,
+    "xp": 50,
+    "min_money": 1,
+    "max_money": 50
+  },
+  "2": {
+    "name": "name",
+    "min_level": 7,
+    "work_cooldown_in_hours": 1,
+    "xp": 350,
+    "min_money": 200,
+    "max_money": 654
+  }
+}

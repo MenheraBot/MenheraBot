@@ -53,8 +53,13 @@
   },
   "job": {
     "1": {
-      "job_one": "Fazendeiro",
+      "name": "Fazendeiro",
       "item_one": "Trigo"
+    },
+    "2": {
+      "name": "Ferreiro",
+      "item_one": "Barra de Ferro",
+      "item_two": "Espada de Ferro"
     }
   }
 }

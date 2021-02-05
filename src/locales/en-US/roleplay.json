@@ -50,5 +50,16 @@
     "Conjurador Demoníaco": "Demonic Caster",
     "Sacerdote": "Priest",
     "Senhor das Trevas": "Lord of Darkness"
+  },
+  "job": {
+    "1": {
+      "name": "Farmer",
+      "item_one": "Wheat"
+    },
+    "2": {
+      "name": "Blacksmith",
+      "item_one": "Iron Bar",
+      "item_two": "Iron sword"
+    }
   }
 }

@@ -81,12 +81,12 @@ module.exports = class VillageCommand extends Command {
 
       const backpack = RPGUtil.getBackpack(user);
       if ((backpack.value + qty) > backpack.capacity) {
-        return collector.menheraReply('error', 'commands:village.backpack-full');
+        return collector.menheraReply('error', t('commands:village.backpack-full'));
       }
 
       collector.menheraReply('success', t('commands:village.bruxa.bought', { quantidade: qty, name: item.name, valor: value }));
 
-      RPGUtil.addItemInLoots(user, { name: item.name, damage: item.damage }, qty);
+      RPGUtil.addItemInInventory(user, { name: item.name, damage: item.damage }, qty);
       user.money -= value;
       user.save();
 
@@ -287,7 +287,7 @@ module.exports = class VillageCommand extends Command {
     for (const i in allItems) {
       // eslint-disable-next-line no-loop-func
       const separator = `---------------**[ ${parseInt(i) + 1} ]**---------------`;
-      const name = `<:Chest:760957557538947133> | **${allItems[i].name}** ( ${allItems[i].amount} )`;
+      const name = `<:Chest:760957557538947133> | **${allItems[i].job_id > 0 ? t(`roleplay:job.${allItems[i].job_id}.${allItems[i].name}`) : allItems[i].name}** ( ${allItems[i].amount} )`;
       const value = `💎 | **${t('commands:village.guilda.value')}:** ${allItems[i].value}\n`;
       const item = `${separator}\n ${name}\n ${value}`;
       if ((txt.length + item.length) <= 1800) {
@@ -334,7 +334,7 @@ module.exports = class VillageCommand extends Command {
       }
 
       if (qty > item.amount) {
-        return message.menheraReply('error', `${t('commands:village.guilda.poor')} ${qty} ${item.name}`);
+        return message.menheraReply('error', `${t('commands:village.guilda.poor')} ${qty} ${item.job_id > 0 ? t(`roleplay:job.${item.job_id}.${item.name}`) : item.name}`);
       }
 
       const total = parseInt(qty) * parseInt(item.value);
@@ -346,7 +346,8 @@ module.exports = class VillageCommand extends Command {
       user.money += total;
 
       user.save();
-      return message.menheraReply('success', t('commands:village.guilda.sold', { quantity: qty, name: item.name, value: total }));
+      const itemNameTranslate = item.job_id > 0 ? t(`roleplay:job.${item.job_id}.${item.name}`) : item.name;
+      return message.menheraReply('success', t('commands:village.guilda.sold', { quantity: qty, name: itemNameTranslate, value: total }));
     });
     return PagesCollector.continue();
   }

@@ -208,7 +208,20 @@
     "1": [
       {
         "name": "item_one",
-        "value": 100
+        "value": 35,
+        "job_id": 1
+      }
+    ],
+    "2": [
+      {
+        "name": "item_one",
+        "value": 130,
+        "job_id": 2
+      },
+      {
+        "name": "item_two",
+        "value": 150,
+        "job_id": 2
       }
     ]
   }

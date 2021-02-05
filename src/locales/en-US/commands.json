@@ -729,7 +729,7 @@
     "prt": "Protection",
     "battle": "Battle",
     "items": "Items",
-    "loots": "Battle Lotts"
+    "loots": "Chest"
   },
   "família": {
     "description": "Join a family",
@@ -977,5 +977,33 @@
       "embed_description": "is sniffing*"
     },
     "embed_description": "sniffed"
+  },
+  "work": {
+    "description": "Go to work to earn items, money and xp",
+    "usage": "",
+    "not-register": "you are not registered in the world of Boleham! Use `{{prefix}}register` to register",
+    "not-work": "you don't have a job yet! Use `{{prefix}}job` to choose a job!",
+    "cooldown-hour": "you already went to work! Wait **{{time}}** hours before working again",
+    "cooldown-minute": "you already went to work! Wait **{{time}}** minutes before working again",
+    "embed-title": "💸 | Work",
+    "embed-description": "You went to work as **{{job}}** and received **{{money}}** :gem: e **{{xp}}** 🔰",
+    "field-name": "📥 | Earnings",
+    "field-value-full": "Your backpack is full, and you cannot collect your earnings",
+    "field-value": "You achieved **1 {{item}}** with your effort!"
+  },
+  "job": {
+    "description": "Choose a job to start earning",
+    "usage": "[job]",
+    "not-registred": "you are not registered in the world of Boleham! Use `{{prefix}}register` to get started",
+    "embed-title": "💸 | Available Jobs",
+    "text": "To choose a job, use `{{prefix}}job [choose]`",
+    "min-level": "Required Level",
+    "money": "Reward",
+    "xp": "Experience",
+    "cooldown": "Cooldown",
+    "hour": "Hours",
+    "invalid": "This job does not exist! Be sure to choose the job by the number that accompanies your name",
+    "no-level": "your level is too low for this job! You must be at least **{{level}}** for this job!",
+    "finish": "you now work as **{{job}}**"
   }
 }

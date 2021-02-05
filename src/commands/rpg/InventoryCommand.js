@@ -26,7 +26,7 @@ module.exports = class InventoryCommand extends Command {
 
     const items = user.inventory.filter((item) => item.type !== 'Arma');
 
-    const normalizeItems = (arr) => countItems(arr).reduce((p, count) => `${p}**${count.name}** (${count.amount})\n`, '');
+    const normalizeItems = (arr) => countItems(arr).reduce((p, count) => `${p}**${count.job_id > 0 ? t(`roleplay:job.${count.job_id}.${count.name}`) : count.name}** (${count.amount})\n`, '');
     const itemText = normalizeItems(items);
     const lootText = normalizeItems(user.loots);
 

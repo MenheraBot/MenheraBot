@@ -8,7 +8,9 @@ class RPGUtil {
         p[exists].amount++;
         return p;
       }
-      return [...p, { name: v.name, amount: 1, value: v.value }];
+      return [...p, {
+        name: v.name, amount: 1, value: v.value, job_id: v.job_id || 0,
+      }];
     }, []);
   }
 
@@ -30,7 +32,7 @@ class RPGUtil {
     };
   }
 
-  static addItemInLoots(user, item, amount = 1) {
+  static addItemInInventory(user, item, amount = 1) {
     user.inventory.push(...(new Array(amount).fill(item)));
   }
 

@@ -746,7 +746,7 @@
     "prt": "Proteção",
     "battle": "Batalha",
     "items": "Itens",
-    "loots": "Espólios de Batalha"
+    "loots": "Baú"
   },
   "família": {
     "description": "Registra-se em uma família",
@@ -997,5 +997,33 @@
       "embed_description": "Está Cheirando"
     },
     "embed_description": "Cheirou"
+  },
+  "work": {
+    "description": "Trabalhe para ganhar itens, dinheiro e xp",
+    "usage": "",
+    "not-register": "você não está registrado no mundo de Boleham! Use `{{prefix}}register` para se registrar",
+    "not-work": "você ainda não tem um trabalho! Use `{{prefix}}job` para escolher um trabalho!",
+    "cooldown-hour": "você já foi trabalhar! Espere **{{time}}** horas antes de trabalhar novamente",
+    "cooldown-minute": "você já foi trabalhar! Espere **{{time}}** minutos antes de trabalhar novamente",
+    "embed-title": "💸 | Trabalhar",
+    "embed-description": "Você foi trabalhar como **{{job}}** e recebeu **{{money}}** :gem: e **{{xp}}** 🔰",
+    "field-name": "📥 | Ganhos",
+    "field-value-full": "Sua mochila está cheia, e você não pode recolher seus ganhos",
+    "field-value": "Você conseguiu **1 {{item}}** com seu esforço!"
+  },
+  "job": {
+    "description": "Escolha um trabalho para começar a ganhar",
+    "usage": "[trabalho]",
+    "not-registred": "você não está registrado no mundo de Boleham! Use `{{prefix}}register` para começar",
+    "embed-title": "💸 | Trabalhos Disponíveis",
+    "text": "Para escolher um trabalho, use `{{prefix}}job [escolha]`",
+    "min-level": "Nível Necessário",
+    "money": "Recompensa",
+    "xp": "Experiência",
+    "cooldown": "Cooldown",
+    "hour": "Horas",
+    "invalid": "Este trabalho não existe! Tenha certeza de escolher o trabalho pelo número que acompanha seu nome",
+    "no-level": "seu nível é baixo demais para este trabalho! Você deve estar no mínimo no nível **{{level}}** para este trabalho!",
+    "finish": "você agora trabalha como **{{job}}**"
   }
 }

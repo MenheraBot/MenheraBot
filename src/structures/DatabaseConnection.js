@@ -59,6 +59,8 @@ const rpgSchema = mongoose.Schema({
   inBattle: { type: Boolean, default: false },
   backpack: { type: Object, default: { name: 'Mochila de Pele de Lobo' } },
   resetRoll: { type: Number, default: 0 },
+  jobId: { type: Number, default: 0 },
+  jobCooldown: { type: String, default: '00000000' },
 });
 
 const userSchema = mongoose.Schema({

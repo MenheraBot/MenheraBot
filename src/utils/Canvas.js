@@ -285,6 +285,7 @@ module.exports = class Canvas {
     const magicIcon = await CanvasImport.loadImage('https://i.imgur.com/IxOlamv.png');
     const gemIcon = await CanvasImport.loadImage('https://i.imgur.com/B44r4sA.png');
     const classIcon = await CanvasImport.loadImage('https://i.imgur.com/6Z4B0dY.png');
+    const jobIcon = await CanvasImport.loadImage('https://i.imgur.com/k7uMwn3.png');
 
     const roundedImage = await ctx.roundImageCanvas(avatarImage, 180, 180);
 
@@ -393,8 +394,14 @@ module.exports = class Canvas {
     // CLASSE
 
     ctx.fillStyle = '#fff';
-    ctx.drawImage(classIcon, 290, 160, 28, 28);
-    ctx.fillText(t(`roleplay:classes.${user.class}`), 320, 180);
+    ctx.drawImage(classIcon, 270, 160, 28, 28);
+    ctx.fillText(t(`roleplay:classes.${user.class}`), 300, 180);
+
+    // TRABALHO
+
+    ctx.fillStyle = 'yellow';
+    ctx.drawImage(jobIcon, 270, 200, 28, 28);
+    ctx.fillText(t(`roleplay:job.${user.jobId}.name`), 300, 220);
 
     return canvas.toBuffer();
   }
