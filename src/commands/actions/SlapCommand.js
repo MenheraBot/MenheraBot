@@ -28,7 +28,7 @@ module.exports = class SlapCommand extends Command {
 
     if (!user) return message.menheraReply('error', t('commands:slap.no-mention'));
 
-    if (user === message.author) return message.menheraReply('error', t('commands.slap.self-mention'));
+    if (user === message.author) return message.menheraReply('error', t('commands:slap.self-mention'));
 
     const avatar = message.author.displayAvatarURL({ format: 'png', dynamic: true });
 
