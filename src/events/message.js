@@ -15,7 +15,7 @@ module.exports = class MessageReceive {
 
     users.forEach(async (data) => {
       const user = await this.client.users.fetch(data.id);
-      message.menheraReply('notify', `${t('commands:afk.reason', { tag: user.tag, reason: data.afkReason })}`);
+      if (user.id !== message.author.id) message.menheraReply('notify', `${t('commands:afk.reason', { tag: user.tag, reason: data.afkReason })}`);
     });
   }
 
@@ -29,7 +29,6 @@ module.exports = class MessageReceive {
     const language = server?.lang ?? 'pt-BR';
     const t = i18next.getFixedT(language);
 
-    message.mentions.users.delete(message.author.id);
     if (message.mentions.users.size > 0) {
       this.notifyAfk(message, t, message.mentions.users.map((u) => u.id));
     }

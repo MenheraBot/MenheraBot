@@ -2,7 +2,7 @@
   "afk": {
     "description": "Se coloque em AFK",
     "usage": "[motivo]",
-    "reason": "`{{tag}}` está AFK: {{reason}}",
+    "reason": "**{{tag}}** está AFK: `{{reason}}`",
     "back": "bem vindo de volta >...<",
     "success": "o modo AFK foi ativado! Para facilitar sua vida, vou desativá-lo caso mande uma mensagem!!!"
   },
