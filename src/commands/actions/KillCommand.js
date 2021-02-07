@@ -34,6 +34,7 @@ module.exports = class KillCommand extends Command {
       'https://i.imgur.com/wfPey7f.gif',
       'https://i.imgur.com/jrY7j2q.gif',
       'https://i.imgur.com/L35jwgH.gif',
+      'https://i.imgur.com/l9jq01c.gif',
     ];
 
     const rand = list[Math.floor(Math.random() * list.length)];
