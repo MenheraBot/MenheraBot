@@ -10,3 +10,4 @@ module.exports = {
     interpreter_args: '--max-old-space-size=768',
   }],
 };
+
