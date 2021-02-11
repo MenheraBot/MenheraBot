@@ -12,4 +12,3 @@ shards.on('shardCreate', (shard) => {
 });
 
 shards.spawn().then(console.log('[SHARDING MANAGER] Launching shards...'));
-
