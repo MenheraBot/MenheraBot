@@ -1,5 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const Command = require('../../structures/command');
+const { getImageUrl } = require('../../utils/HTTPrequests');
 
 module.exports = class KillCommand extends Command {
   constructor(client) {
@@ -12,32 +13,7 @@ module.exports = class KillCommand extends Command {
   }
 
   async run({ message }, t) {
-    const list = [
-      'https://i.imgur.com/teca6na.gif',
-      'https://i.imgur.com/XaqZPBf.gif',
-      'https://i.imgur.com/Kj331EJ.gif',
-      'https://i.imgur.com/kzW8Lpc.gif',
-      'https://i.imgur.com/b9byUSu.gif',
-      'https://i.imgur.com/gsFgkDh.gif',
-      'https://i.imgur.com/cndXyGW.gif',
-      'https://i.imgur.com/a3YG32H.gif',
-      'https://i.imgur.com/6I9QAJ7.gif',
-      'https://i.imgur.com/jOG5s44.gif',
-      'https://i.imgur.com/KEPoeOo.gif',
-      'https://i.imgur.com/FM5BZK6.gif',
-      'https://i.imgur.com/lCzdLJC.gif',
-      'https://i.imgur.com/5qnXMrF.gif',
-      'https://i.imgur.com/JK94J43.gif',
-      'https://i.imgur.com/1QL4IXU.gif',
-      'https://i.imgur.com/QRr6zD4.gif',
-      'https://i.imgur.com/b3DeNsk.gif',
-      'https://i.imgur.com/wfPey7f.gif',
-      'https://i.imgur.com/jrY7j2q.gif',
-      'https://i.imgur.com/L35jwgH.gif',
-      'https://i.imgur.com/l9jq01c.gif',
-    ];
-
-    const rand = list[Math.floor(Math.random() * list.length)];
+    const rand = getImageUrl('kill');
     const user = message.mentions.users.first();
     const avatar = message.author.displayAvatarURL({ format: 'png', dynamic: true });
 

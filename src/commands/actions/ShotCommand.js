@@ -1,5 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const Command = require('../../structures/command');
+const { getImageUrl } = require('../../utils/HTTPrequests');
 
 module.exports = class ShotCommand extends Command {
   constructor(client) {
@@ -12,21 +13,7 @@ module.exports = class ShotCommand extends Command {
   }
 
   async run({ message }, t) {
-    const list = [
-      'https://i.imgur.com/4d1oxl9.gif',
-      'https://i.imgur.com/vJdv4PP.gif',
-      'https://i.imgur.com/nKHZmiY.gif',
-      'https://i.imgur.com/G5kWKws.gif',
-      'https://i.imgur.com/Xcipqq2.gif',
-      'https://i.imgur.com/MaD9gD6.gif',
-      'https://i.imgur.com/YIBdXeg.gif',
-      'https://i.imgur.com/jPiLZZY.gif',
-      'https://i.imgur.com/sFmjxAn.gif',
-      'https://i.imgur.com/1aU6ban.gif',
-      'https://i.imgur.com/0nEZ5ms.gif',
-    ];
-
-    const rand = list[Math.floor(Math.random() * list.length)];
+    const rand = await getImageUrl('shot');
     const user = message.mentions.users.first();
 
     if (!user) return message.menheraReply('error', t('commands:shot.no-mention'));

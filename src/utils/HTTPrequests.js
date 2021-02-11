@@ -1,6 +1,22 @@
 const request = require('request-promise');
 const config = require('../../config.json');
 
+module.exports.getImageUrl = async (type) => {
+  const options = {
+    method: 'GET',
+    uri: `${config.api_IP}/api/assets/${type}`,
+    headers: {
+      'User-Agent': 'MenheraClient',
+      token: config.api_TOKEN,
+    },
+    json: true,
+  };
+
+  const response = await request(options).catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
+
+  return response?.url || 'https://i.imgur.com/DHVUlFf.png';
+};
+
 module.exports.postRpg = async (userId, userClass, userLevel, dungeonLevel, death, date) => {
   const options = {
     method: 'POST',

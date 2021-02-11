@@ -1,5 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const Command = require('../../structures/command');
+const { getImageUrl } = require('../../utils/HTTPrequests');
 
 module.exports = class HumorCommand extends Command {
   constructor(client) {
@@ -13,18 +14,7 @@ module.exports = class HumorCommand extends Command {
   async run({ message }, t) {
     if (message.deletable) message.delete();
 
-    const list = [
-      'https://i.imgur.com/2sI0NNt.jpg',
-      'https://i.imgur.com/tynr1at.jpg',
-      'https://i.imgur.com/9XDF9fp.jpg',
-      'https://i.imgur.com/WZFzbD6.jpg',
-      'https://i.imgur.com/kNfVk6P.png',
-      'https://i.imgur.com/lfF79Z3.png',
-      'https://i.imgur.com/K8c5P6Y.png',
-      'https://i.imgur.com/dddehsM.png',
-    ];
-
-    const rand = list[Math.floor(Math.random() * list.length)];
+    const rand = await getImageUrl('humor');
 
     const embed = new MessageEmbed()
       .setImage(rand)

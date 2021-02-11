@@ -1,5 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const Command = require('../../structures/command');
+const { getImageUrl } = require('../../utils/HTTPrequests');
 
 module.exports = class MamarCommand extends Command {
   constructor(client) {
@@ -31,32 +32,7 @@ module.exports = class MamarCommand extends Command {
     user1.mamadas += 1;
     authorData.mamou += 1;
 
-    const list = [
-      'https://i.imgur.com/PlAtqkk.gif',
-      'https://i.imgur.com/LjuLhYq.gif',
-      'https://i.imgur.com/zvZ2AiM.gif',
-      'https://i.imgur.com/xRBDmXD.gif',
-      'https://i.imgur.com/JF5FaNC.gif',
-      'https://i.imgur.com/ZAx2dOC.gif',
-      'https://i.imgur.com/t1aaEMY.gif',
-      'https://i.imgur.com/GEB31Fi.gif',
-      'https://i.imgur.com/OMzXpXR.gif',
-      'https://i.imgur.com/9DYjWtP.gif',
-      'https://i.imgur.com/5Tjpori.gif',
-      'https://i.imgur.com/vejOIZc.gif',
-      'https://i.imgur.com/qyjOnix.gif',
-      'https://i.imgur.com/J3K2d9A.gif',
-      'https://i.imgur.com/JgXWxWf.gif',
-      'https://i.imgur.com/Ii0cqd7.gif',
-      'https://i.imgur.com/aA4VBH3.gif',
-      'https://i.imgur.com/4FkqweC.gif',
-      'https://i.imgur.com/dqYebgR.gif',
-      'https://i.imgur.com/qi5dPl3.gif',
-      'https://i.imgur.com/wdcVVmq.gif',
-      'https://i.imgur.com/PvlQsQa.gif',
-    ];
-
-    const rand = list[Math.floor(Math.random() * list.length)];
+    const rand = await getImageUrl('mamar');
     const avatar = message.author.displayAvatarURL({ format: 'png', dynamic: true });
     const embed = new MessageEmbed()
       .setTitle(t('commands:mamar.embed_title'))
@@ -68,7 +44,7 @@ module.exports = class MamarCommand extends Command {
 
     message.channel.send(embed);
 
-    user1.save();
-    authorData.save();
+    await user1.save();
+    await authorData.save();
   }
 };

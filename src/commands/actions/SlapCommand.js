@@ -1,5 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const Command = require('../../structures/command');
+const { getImageUrl } = require('../../utils/HTTPrequests');
 
 module.exports = class SlapCommand extends Command {
   constructor(client) {
@@ -12,16 +13,7 @@ module.exports = class SlapCommand extends Command {
   }
 
   async run({ message }, t) {
-    const list = [
-      'https://i.imgur.com/XqtlhuZ.gif',
-      'https://i.imgur.com/HcTCdJ1.gif',
-      'https://i.imgur.com/mdZR2D2.gif',
-      'https://i.imgur.com/Li9mx3A.gif',
-      'https://i.imgur.com/kVI9SHf.gif',
-      'https://i.imgur.com/fm49srQ.gif',
-    ];
-
-    const rand = list[Math.floor(Math.random() * list.length)];
+    const rand = await getImageUrl('slap');
     const user = message.mentions.users.first();
 
     if (user && user.bot) return message.menheraReply('error', t('commands:slap.bot'));

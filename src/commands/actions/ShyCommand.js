@@ -1,5 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const Command = require('../../structures/command');
+const { getImageUrl } = require('../../utils/HTTPrequests');
 
 module.exports = class ShyCommand extends Command {
   constructor(client) {
@@ -14,23 +15,7 @@ module.exports = class ShyCommand extends Command {
   async run({ message }, t) {
     const avatar = message.author.displayAvatarURL({ format: 'png', dynamic: true });
 
-    const list = [
-      'https://i.imgur.com/EQMScvF.gif',
-      'https://i.imgur.com/1OjGQsd.gif',
-      'https://i.imgur.com/xP2wWns.gif',
-      'https://i.imgur.com/zP30BiK.gif',
-      'https://i.imgur.com/0O3wG8G.gif',
-      'https://i.imgur.com/izDqss0.gif',
-      'https://i.imgur.com/nEfgLq6.gif',
-      'https://i.imgur.com/RuYtSVJ.gif',
-      'https://i.imgur.com/bJBOt20.gif',
-      'https://i.imgur.com/QHptcE6.gif',
-      'https://i.imgur.com/OdUhbx0.gif',
-      'https://i.imgur.com/JQYACo7.gif',
-      'https://i.imgur.com/RJZVYPh.gif',
-    ];
-
-    const rand = list[Math.floor(Math.random() * list.length)];
+    const rand = await getImageUrl('shy');
     const user = message.mentions.users.first();
 
     if (!user || user === message.author) {

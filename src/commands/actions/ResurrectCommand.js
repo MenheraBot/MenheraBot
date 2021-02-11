@@ -1,5 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const Command = require('../../structures/command');
+const { getImageUrl } = require('../../utils/HTTPrequests');
 
 module.exports = class ResurrectCommand extends Command {
   constructor(client) {
@@ -12,15 +13,7 @@ module.exports = class ResurrectCommand extends Command {
   }
 
   async run({ message }, t) {
-    const list = [
-      'https://i.imgur.com/krVf6J7.gif',
-      'https://i.imgur.com/igSM6nd.gif',
-      'https://i.imgur.com/h1a2nd8.gif',
-      'https://i.imgur.com/t954ULd.gif',
-      'https://i.imgur.com/Ut71RpY.gif',
-    ];
-
-    const rand = list[Math.floor(Math.random() * list.length)];
+    const rand = await getImageUrl('resurrect');
     const user = message.mentions.users.first();
     const avatar = message.author.displayAvatarURL({ format: 'png', dynamic: true });
 

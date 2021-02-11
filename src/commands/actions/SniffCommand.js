@@ -1,5 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const Command = require('../../structures/command');
+const { getImageUrl } = require('../../utils/HTTPrequests');
 
 module.exports = class SniffCommand extends Command {
   constructor(client) {
@@ -12,14 +13,7 @@ module.exports = class SniffCommand extends Command {
   }
 
   async run({ message }, t) {
-    const list = [
-      'https://i.imgur.com/5fuLsB3.gif',
-      'https://i.imgur.com/deHwr6f.gif',
-      'https://i.imgur.com/pLNF5xj.gif',
-      'https://i.imgur.com/6XQqJxM.gif',
-    ];
-
-    const rand = list[Math.floor(Math.random() * list.length)];
+    const rand = await getImageUrl('sniff');
     const user = message.mentions.users.first();
     const avatar = message.author.displayAvatarURL({ format: 'png', dynamic: true });
 

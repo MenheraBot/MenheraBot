@@ -1,5 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const Command = require('../../structures/command');
+const { getImageUrl } = require('../../utils/HTTPrequests');
 
 module.exports = class ThinksCOmmand extends Command {
   constructor(client) {
@@ -12,21 +13,7 @@ module.exports = class ThinksCOmmand extends Command {
   }
 
   async run({ message }, t) {
-    const list = [
-      'https://i.imgur.com/ZIxBpIz.gif',
-      'https://i.imgur.com/DcEnIqE.gif',
-      'https://i.imgur.com/VxaZYdc.gif',
-      'https://i.imgur.com/OTRhikB.gif',
-      'https://i.imgur.com/TP20k2N.gif',
-      'https://i.imgur.com/Rl4oqwb.gif',
-      'https://i.imgur.com/gCoDPJi.gif',
-      'https://i.imgur.com/bOKb4Hs.gif',
-      'https://i.imgur.com/WiaE3Xl.gif',
-      'https://i.imgur.com/obQ1JGB.gif',
-      'https://i.imgur.com/IYkQWNK.gif',
-    ];
-
-    const rand = list[Math.floor(Math.random() * list.length)];
+    const rand = await getImageUrl('think');
     const user = message.mentions.users.first();
     const avatar = message.author.displayAvatarURL({ format: 'png', dynamic: true });
 

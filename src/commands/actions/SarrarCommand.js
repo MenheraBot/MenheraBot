@@ -1,5 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const Command = require('../../structures/command');
+const { getImageUrl } = require('../../utils/HTTPrequests');
 
 module.exports = class SarrarCommand extends Command {
   constructor(client) {
@@ -12,13 +13,7 @@ module.exports = class SarrarCommand extends Command {
   }
 
   async run({ message }, t) {
-    const listaSozinho = [
-      'https://media1.tenor.com/images/e0b093e5174a74518ffcbc0967d265eb/tenor.gif?itemid=17767202',
-      'https://i.imgur.com/XBcmgBR.png',
-      'https://i.imgur.com/GZtx3i8.gif',
-    ];
-
-    const randSozinho = listaSozinho[Math.floor(Math.random() * listaSozinho.length)];
+    const randSozinho = await getImageUrl('sarrar_sozinho');
     const user = message.mentions.users.first();
 
     if (!user) {
@@ -45,14 +40,8 @@ module.exports = class SarrarCommand extends Command {
     } return SarrarCommand.sarrada(message, message.mentions.users.first(), t);
   }
 
-  static sarrada(message, reactUser, t) {
-    const lista = [
-      'https://i.imgur.com/m2JUJWB.gif',
-      'https://i.imgur.com/ezdhV96.gif',
-      'https://i.imgur.com/opU9zt9.gif',
-    ];
-
-    const rand = lista[Math.floor(Math.random() * lista.length)];
+  static async sarrada(message, reactUser, t) {
+    const rand = await getImageUrl('sarrar');
 
     const avatar = message.author.displayAvatarURL({ format: 'png', dynamic: true });
 
