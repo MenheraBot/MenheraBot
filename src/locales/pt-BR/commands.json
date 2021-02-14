@@ -1025,5 +1025,15 @@
     "invalid": "Este trabalho não existe! Tenha certeza de escolher o trabalho pelo número que acompanha seu nome",
     "no-level": "seu nível é baixo demais para este trabalho! Você deve estar no mínimo no nível **{{level}}** para este trabalho!",
     "finish": "você agora trabalha como **{{job}}**"
+  },
+  "blockcommand": {
+    "description": "Desabilite um comando neste servidor",
+    "usage": "<comando>",
+    "no-args": "você não citou nenhum comando!",
+    "no-cmd": "este comando não existe!",
+    "dev-cmd": "você não tem acesso à este comando!",
+    "unblock": "o comando `{{cmd}}` foi reabilitado neste servidor!",
+    "block": "o comando `{{cmd}}` foi desabilitado neste servidor!",
+    "foda": "tu é feliz? Se tu desabilita esse comando n vai poder mais usar ele o cabaço, te liga vei"
   }
 }

@@ -18,6 +18,7 @@ const guildSchema = mongoose.Schema({
   id: { type: String, unique: true },
   prefix: { type: String, default: config.prefix },
   blockedChannels: { type: Array, default: [] },
+  disabledCommands: { type: Array, default: [] },
   lang: { type: String, default: 'pt-BR' },
 });
 

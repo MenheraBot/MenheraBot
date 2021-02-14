@@ -11,6 +11,7 @@ const emojis = {
   heart: '❤️',
   sword: '⚔️',
   scape: '🐥',
+  lock: '🔒',
 };
 
 module.exports = emojis;

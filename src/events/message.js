@@ -58,7 +58,7 @@ module.exports = class MessageReceive {
     if (!command) return;
 
     if (server.blockedChannels?.includes(message.channel.id) && !message.member.hasPermission('MANAGE_CHANNELS')) {
-      return message.menheraReply('error', `${t('events:blocked-channel')}`);
+      return message.menheraReply('lock', `${t('events:blocked-channel')}`);
     }
 
     if (authorData?.ban) {
@@ -76,6 +76,8 @@ module.exports = class MessageReceive {
     if (command.config.devsOnly) {
       if (!this.client.config.owner.includes(message.author.id)) return message.channel.send(t('permissions:ONLY_DEVS'));
     }
+
+    if (server.disabledCommands?.includes(command.config.name)) return message.menheraReply('lock', t('permissions:DISABLED_COMMAND', { prefix: server.prefix, cmd: command.config.name }));
 
     if (command.maintenance) {
       if (!this.client.config.owner.includes(message.author.id)) {

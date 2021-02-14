@@ -4,7 +4,7 @@ module.exports = class BlockChannelCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'blockchannel',
-      aliases: ['blockcmd', 'block', 'bloquear'],
+      aliases: ['bloquearcanal'],
       cooldown: 10,
       userPermissions: ['MANAGE_CHANNELS'],
       category: 'moderação',

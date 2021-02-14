@@ -36,5 +36,6 @@
     "reason": "Motivo",
     "field_start": "Banido injustamente?",
     "field_end": "Se você acha que foi banido injustamente, então entre em meu servidor de suporte."
-  }
+  },
+  "DISABLED_COMMAND": "Este comando está desabilitado neste servidor! Use `{{prefix}}blockcommand {{cmd}}` para reabilitá-lo"
 }
