@@ -36,6 +36,11 @@ module.exports = class MaintenanceCommand extends Command {
         message.menheraReply('success', 'comando **ADICIONADO** a manutenção.');
       });
     }
-    cmd.setMaintenance(command.maintenance, command.maintenanceReason);
+
+    const functionToEval = (cmdName, maintenance, maintentanceReason) => {
+      const comandito = this.client.commands.get(cmdName) || this.client.commands.get(this.client.aliases.get(cmdName));
+      comandito.setMaintenance(maintenance, maintentanceReason);
+    };
+    await this.client.shard.broadcastEval(functionToEval());
   }
 };

@@ -34,10 +34,14 @@ module.exports = class MenheraClient extends Client {
     return true;
   }
 
-  reloadCommand(commandName) {
-    const command = this.commands.get(commandName) || this.commands.get(this.aliases.get(commandName));
-    if (!command) return false;
-    return FileUtil.reloadFile(command.dir, (Command) => this.loadCommand(Command, command.dir));
+  async reloadCommand(commandName) {
+    const functionToEval = (name, filezada) => {
+      const command = this.commands.get(name) || this.commands.get(this.aliases.get(name));
+      if (!command) return false;
+      return filezada.reloadFile(command.dir, (Command) => this.loadCommand(Command, command.dir));
+    };
+    await this.client.shard.broadcastEval(functionToEval(commandName, FileUtil));
+    return true;
   }
 
   login(token) {
