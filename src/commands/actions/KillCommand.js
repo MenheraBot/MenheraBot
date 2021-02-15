@@ -13,7 +13,7 @@ module.exports = class KillCommand extends Command {
   }
 
   async run({ message }, t) {
-    const rand = getImageUrl('kill');
+    const rand = await getImageUrl('kill');
     const user = message.mentions.users.first();
     const avatar = message.author.displayAvatarURL({ format: 'png', dynamic: true });
 

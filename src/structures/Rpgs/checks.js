@@ -84,7 +84,7 @@ module.exports.battle = async (message, escolha, user, inimigo, type, t) => {
   const toSay = `⚔️ | ${t('roleplay:battle.attack', { enemy: inimigo.name, choice: escolha.name, damage: danoDado })}`;
 
   if (vidaInimigo < 1) {
-    return user.save().then(() => this.resultBattle(message, user, inimigo, t, toSay));
+    return this.resultBattle(message, user, inimigo, t, toSay);
   }
 
   const enemy = {
@@ -98,7 +98,7 @@ module.exports.battle = async (message, escolha, user, inimigo, type, t) => {
     dgLevel: inimigo.dgLevel,
   };
 
-  return user.save().then(() => this.enemyShot(message, user, enemy, type, t, toSay));
+  return this.enemyShot(message, user, enemy, type, t, toSay);
 };
 
 module.exports.morte = async (message, user, t, toSay, inimigo) => {
@@ -130,12 +130,7 @@ module.exports.enemyShot = async (message, user, inimigo, type, t, toSay) => {
     return this.morte(message, user, t, toSay, inimigo);
   }
   user.life = vidaUser;
-  setTimeout(() => {
-    user.save()
-      .then(() => this.continueBattle(
-        message, inimigo, habilidades, user, type, ataque, t, toSay,
-      ));
-  }, 300);
+  this.continueBattle(message, inimigo, habilidades, user, type, ataque, t, toSay);
 };
 
 module.exports.continueBattle = async (
@@ -228,7 +223,7 @@ module.exports.finalChecks = async (message, user, t) => {
       user.maxMana += 10;
       user.damage += 3;
       user.armor += 2;
-      user.save().then(() => {
+      await user.save().then(() => {
         texto += '**<a:LevelUp:760954035779272755> LEVEL UP <a:LevelUp:760954035779272755>**';
         message.channel.send(texto);
         if (user.level === 5) return this.newAbilities(message, user, t);
@@ -549,7 +544,7 @@ module.exports.resultBattle = async (message, user, inimigo, t, toSay) => {
     user.loots.push(randomLoot);
   }
   user.inBattle = false;
-  return user.save().then(() => this.finalChecks(message, user, t));
+  return this.finalChecks(message, user, t);
 };
 
 module.exports.getAbilities = async (user) => {

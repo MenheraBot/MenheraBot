@@ -94,7 +94,7 @@ module.exports = class UseCommand extends Command {
       user.inventory.splice(user.inventory.findIndex((item) => item.name === juntos[args[0] - 1].name), 1);
     }
 
-    user.save();
+    await user.save();
 
     message.menheraReply('success', t('commands:use.used', { quantidade, choice: choice[0].name }));
   }
