@@ -544,6 +544,7 @@ module.exports.resultBattle = async (message, user, inimigo, t, toSay) => {
     user.loots.push(randomLoot);
   }
   user.inBattle = false;
+  await user.save();
   return this.finalChecks(message, user, t);
 };
 
