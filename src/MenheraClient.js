@@ -35,13 +35,9 @@ module.exports = class MenheraClient extends Client {
   }
 
   async reloadCommand(commandName) {
-    const functionToEval = (name, filezada) => {
-      const command = this.commands.get(name) || this.commands.get(this.aliases.get(name));
-      if (!command) return false;
-      return filezada.reloadFile(command.dir, (Command) => this.loadCommand(Command, command.dir));
-    };
-    await this.client.shard.broadcastEval(functionToEval(commandName, FileUtil));
-    return true;
+    const command = this.commands.get(commandName) || this.commands.get(this.aliases.get(commandName));
+    if (!command) return false;
+    return FileUtil.reloadFile(command.dir, (Command) => this.loadCommand(Command, command.dir));
   }
 
   login(token) {
@@ -66,10 +62,7 @@ module.exports = class MenheraClient extends Client {
     command.config.aliases.forEach((a) => this.aliases.set(a, command.config.name));
     MenheraClient.postExistingCommand(command);
     const cmdInDb = await this.database.Cmds.findById(command.config.name);
-    if (cmdInDb) {
-      command.maintenance = cmdInDb.maintenance;
-      command.maintenanceReason = cmdInDb.maintenanceReason;
-    } else {
+    if (!cmdInDb) {
       this.database.Cmds.create({
         _id: command.config.name,
       });

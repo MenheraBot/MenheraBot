@@ -12,12 +12,5 @@ module.exports = class Command {
       clientPermissions: options.clientPermissions || null,
       devsOnly: options.devsOnly || false,
     };
-    this.maintenance = false;
-    this.maintenanceReason = '';
-  }
-
-  setMaintenance(status, reason = '') {
-    this.maintenance = status;
-    this.maintenanceReason = reason;
   }
 };

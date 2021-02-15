@@ -26,21 +26,15 @@ module.exports = class MaintenanceCommand extends Command {
     if (command.maintenance) {
       command.maintenance = false;
       command.maintenanceReason = '';
-      command.save().then(() => {
+      await command.save().then(() => {
         message.menheraReply('success', 'comando **REMOVIDO** da manutenção.');
       });
     } else {
       command.maintenance = true;
       command.maintenanceReason = args.slice(1).join(' ');
-      command.save().then(() => {
+      await command.save().then(() => {
         message.menheraReply('success', 'comando **ADICIONADO** a manutenção.');
       });
     }
-
-    const functionToEval = (cmdName, maintenance, maintentanceReason) => {
-      const comandito = this.client.commands.get(cmdName) || this.client.commands.get(this.client.aliases.get(cmdName));
-      comandito.setMaintenance(maintenance, maintentanceReason);
-    };
-    await this.client.shard.broadcastEval(functionToEval());
   }
 };

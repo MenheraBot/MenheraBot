@@ -25,9 +25,8 @@ module.exports = class ProfileCommand extends Command {
     if (userId && userId !== message.author) {
       try {
         member = await this.client.users.fetch(args[0].replace(/[<@!>]/g, ''));
-        if (member.bot) {
-          return message.menheraReply('error', t('commands:profile.bot'));
-        }
+        if (member.bot) return message.menheraReply('error', t('commands:profile.bot'));
+
         user = await this.client.database.Users.findOne({ id: member.id });
       } catch {
         return message.menheraReply('error', t('commands:profile.unknow-user'));

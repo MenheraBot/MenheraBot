@@ -44,50 +44,29 @@ module.exports = class MessageReceive {
         })).catch();
     }
 
-    if (message.content.startsWith(`<@!${this.client.user.id}>`) || message.content.startsWith(`<@${this.client.user.id}>`)) {
-      return message.menheraReply('wink', `${t('events:mention.start')} ${message.author}, ${t('events:mention.end', { prefix })}`);
-    }
+    if (message.content.startsWith(`<@!${this.client.user.id}>`) || message.content.startsWith(`<@${this.client.user.id}>`)) return message.menheraReply('wink', `${t('events:mention.start')} ${message.author}, ${t('events:mention.end', { prefix })}`);
 
     if (!message.content.toLowerCase().startsWith(prefix)) return;
 
     const args = message.content.slice(prefix.length).trim().split(/ +/g);
     const cmd = args.shift().toLowerCase();
 
-    let command = cmd && this.client.commands.get(cmd);
-    if (!command) command = this.client.commands.get(this.client.aliases.get(cmd));
+    const command = this.client.commands.get(cmd) || this.client.commands.get(this.client.aliases.get(cmd));
     if (!command) return;
 
-    if (server.blockedChannels?.includes(message.channel.id) && !message.member.hasPermission('MANAGE_CHANNELS')) {
-      return message.menheraReply('lock', `${t('events:blocked-channel')}`);
-    }
+    const dbCommand = await this.client.database.Cmds.findById(command.config.name);
 
-    if (authorData?.ban) {
-      const embed = new MessageEmbed()
-        .setColor('#c1001d')
-        .setAuthor(t('permissions:BANNED_EMBED.author'), message.author.displayAvatarURL())
-        .setDescription(t('permissions:BANNED_EMBED.description', { user: message.author.username }))
-        .addField(t('permissions:BANNED_EMBED.reason'), authorData?.banReason)
-        .addField(t('permissions:BANNED_EMBED.field_start'), t('permissions:BANNED_EMBED.field_end'));
+    if (server.blockedChannels?.includes(message.channel.id) && !message.member.hasPermission('MANAGE_CHANNELS')) return message.menheraReply('lock', `${t('events:blocked-channel')}`);
 
-      message.channel.send(embed).catch(() => { message.author.send(embed).catch(); });
-      return;
-    }
+    if (authorData?.ban) return message.menheraReply('error', t('permissions:BANNED_INFO', { banReason: authorData?.banReason }));
 
-    if (command.config.devsOnly) {
-      if (!this.client.config.owner.includes(message.author.id)) return message.channel.send(t('permissions:ONLY_DEVS'));
-    }
+    if (command.config.devsOnly && !this.client.config.owner.includes(message.author.id)) return message.channel.send(t('permissions:ONLY_DEVS'));
 
     if (server.disabledCommands?.includes(command.config.name)) return message.menheraReply('lock', t('permissions:DISABLED_COMMAND', { prefix: server.prefix, cmd: command.config.name }));
 
-    if (command.maintenance) {
-      if (!this.client.config.owner.includes(message.author.id)) {
-        return message.channel.send(`<:negacao:759603958317711371> | ${t('events:maintenance', { reason: command.maintenanceReason })}`);
-      }
-    }
+    if (dbCommand?.maintenance && !this.client.config.owner.includes(message.author.id)) return message.channel.send(`<:negacao:759603958317711371> | ${t('events:maintenance', { reason: dbCommand.maintenanceReason })}`);
 
-    if (!cooldowns.has(command.config.name)) {
-      cooldowns.set(command.config.name, new Collection());
-    }
+    if (!cooldowns.has(command.config.name)) cooldowns.set(command.config.name, new Collection());
 
     if (!this.client.config.owner.includes(message.author.id)) {
       const now = Date.now();
@@ -108,16 +87,14 @@ module.exports = class MessageReceive {
     }
 
     if (command.config.userPermissions?.length) {
-      const missing = message.channel.permissionsFor(message.author)
-        .missing(command.config.userPermissions);
+      const missing = message.channel.permissionsFor(message.author).missing(command.config.userPermissions);
       if (missing.length) {
         const perm = missing.map((value) => t(`permissions:${value}`)).join(', ');
         return message.menheraReply('error', `${t('permissions:USER_MISSING_PERMISSION', { perm })}`);
       }
     }
     if (command.config.clientPermissions?.length) {
-      const missing = message.channel.permissionsFor(this.client.user)
-        .missing(command.config.clientPermissions);
+      const missing = message.channel.permissionsFor(this.client.user).missing(command.config.clientPermissions);
       if (missing.length) {
         const perm = missing.map((value) => t(`permissions:${value}`)).join(', ');
         return message.menheraReply('error', `${t('permissions:CLIENT_MISSING_PERMISSION', { perm })}`);

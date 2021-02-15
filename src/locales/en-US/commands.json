@@ -416,7 +416,7 @@
     "usage": "[user]",
     "bot": "What? OMEGALUL fuck the bots, robots don't have a profile",
     "no-dbuser": "this user does not have a profile!",
-    "banned": "this user is ** banned ** from using Menhera \n **Reason: * `{{reason}}`",
+    "banned": "this user is **banned** from using Menhera \n **Reason:** `{{reason}}`",
     "mamou": "Suck",
     "unknow-user": "user not found",
     "mamado": "Suckled",
