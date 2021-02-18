@@ -1037,6 +1037,8 @@
     "foda": "tu é feliz? Se tu desabilita esse comando n vai poder mais usar ele o cabaço, te liga vei"
   },
   "cooldowns": {
+    "description": "Mostra seus tempos de recarga",
+    "usage": "",
     "title": "⌛ | Seus tempos de Recarga",
     "no-cooldown": "Você já pode fazer isso!",
     "hunt": "Caçar",

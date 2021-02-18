@@ -1017,6 +1017,8 @@
     "foda": "are you happy? If you disable this command you will no longer be able to use it, stop"
   },
   "cooldowns": {
+    "description": "See your cooldowns",
+    "usage": "",
     "title": "⌛ | Your cooldown times",
     "no-cooldown": "You can already do that!",
     "hunt": "Hunt",
