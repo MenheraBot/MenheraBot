@@ -22,19 +22,24 @@ module.exports = class MaintenanceCommand extends Command {
     }
 
     const command = await this.client.database.Cmds.findById(cmd.config.name);
+    const mainStatus = await this.client.database.Status.findById('main');
 
     if (command.maintenance) {
       command.maintenance = false;
       command.maintenanceReason = '';
+      mainStatus.disabledCommands.splice(mainStatus.disabledCommands.findIndex((c) => c.name === cmd.name), 1);
       await command.save().then(() => {
         message.menheraReply('success', 'comando **REMOVIDO** da manutenção.');
       });
     } else {
+      const reason = args.slice(1).join(' ');
       command.maintenance = true;
-      command.maintenanceReason = args.slice(1).join(' ');
+      command.maintenanceReason = reason;
+      mainStatus.disabledCommands.push({ name: cmd.config.name, reason });
       await command.save().then(() => {
         message.menheraReply('success', 'comando **ADICIONADO** a manutenção.');
       });
     }
+    await mainStatus.save();
   }
 };

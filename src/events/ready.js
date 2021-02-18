@@ -18,10 +18,20 @@ module.exports = class ReadyEvent {
     console.log('[READY] Menhera se conectou com o Discord!');
 
     setInterval(async () => {
-      const atividade = await http.getActivity(this.client.shard.ids[0]);
+      const shardId = this.client.shard.ids[0];
+      const atividade = await http.getActivity(shardId);
       this.client.user.setPresence({
         activity: atividade,
       });
+      const ping = await this.client.database.Status.findById(shardId);
+      if (!ping) {
+        const newShard = new this.client.database.Status({ _id: shardId, ping: this.client.ws.ping, lastPingAt: Date.now() });
+        await newShard.save();
+      } else {
+        ping.ping = this.client.ws.ping;
+        ping.lastPingAt = Date.now();
+        await ping.save();
+      }
     }, 1000 * 60);
   }
 };

@@ -8,6 +8,13 @@ mongoose.connect(config.uri, {
   return console.log('[DATABASE] Conectado com sucesso à database');
 });
 
+const statusSchema = mongoose.Schema({
+  _id: { type: String },
+  ping: { type: Number, default: 0 },
+  disabledCommands: { type: Array },
+  lastPingAt: { type: String },
+});
+
 const cmdSchema = mongoose.Schema({
   _id: { type: String },
   maintenance: { type: Boolean, default: false },
@@ -110,6 +117,7 @@ const warnSchema = mongoose.Schema({
 });
 
 const cmd = mongoose.model('Cmd', cmdSchema);
+const status = mongoose.model('status', statusSchema);
 const guild = mongoose.model('guild', guildSchema);
 const remember = mongoose.model('remember', rememberSchema);
 const rpg = mongoose.model('rpg', rpgSchema);
@@ -118,6 +126,7 @@ const warn = mongoose.model('warn', warnSchema);
 
 module.exports.Cmds = cmd;
 module.exports.Guilds = guild;
+module.exports.Status = status;
 module.exports.Reminders = remember;
 module.exports.Rpg = rpg;
 module.exports.Users = user;
