@@ -1015,5 +1015,15 @@
     "unblock": "the command `{{cmd}}` has been re-enabled on this server!",
     "block": "the command `{{cmd}}` has been disabled on this server!",
     "foda": "are you happy? If you disable this command you will no longer be able to use it, stop"
+  },
+  "cooldowns": {
+    "title": "⌛ | Your cooldown times",
+    "no-cooldown": "You can already do that!",
+    "hunt": "Hunt",
+    "dungeon": "Dungeon/Boss",
+    "job": "Work",
+    "vote": "Vote for Me",
+    "minutes": "minutes",
+    "hours": "hours"
   }
 }

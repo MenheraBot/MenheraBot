@@ -65,6 +65,7 @@ module.exports = class DiscordBots {
 
       user.rolls += rollQuantity;
       user.estrelinhas += starQuantity;
+      user.voteCooldown = (Date.now() + 43200000);
       await user.save();
 
       const functionToEval = async (id, embedToSend) => {

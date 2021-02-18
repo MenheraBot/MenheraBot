@@ -1035,5 +1035,15 @@
     "unblock": "o comando `{{cmd}}` foi reabilitado neste servidor!",
     "block": "o comando `{{cmd}}` foi desabilitado neste servidor!",
     "foda": "tu é feliz? Se tu desabilita esse comando n vai poder mais usar ele o cabaço, te liga vei"
+  },
+  "cooldowns": {
+    "title": "⌛ | Seus tempos de Recarga",
+    "no-cooldown": "Você já pode fazer isso!",
+    "hunt": "Caçar",
+    "dungeon": "Dungeon/Boss",
+    "job": "Trabalhar",
+    "vote": "Votar em Mim",
+    "minutes": "minutos",
+    "hours": "horas"
   }
 }
