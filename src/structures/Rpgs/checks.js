@@ -214,303 +214,309 @@ module.exports.continueBattle = async (
 module.exports.finalChecks = async (message, user, t) => {
   let texto = '';
 
-  if (user.level < 5) {
-    if (user.xp >= user.nextLevelXp) {
-      user.xp = 0;
-      user.nextLevelXp *= 2;
-      user.level += 1;
-      user.maxLife += 10;
-      user.maxMana += 10;
-      user.damage += 3;
-      user.armor += 2;
-      await user.save().then(() => {
+  setTimeout(async () => {
+    if (user.level < 5) {
+      if (user.xp >= user.nextLevelXp) {
+        user.xp = 0;
+        user.nextLevelXp *= 2;
+        user.level += 1;
+        user.maxLife += 10;
+        user.maxMana += 10;
+        user.damage += 3;
+        user.armor += 2;
+        texto += '**<a:LevelUp:760954035779272755> LEVEL UP <a:LevelUp:760954035779272755>**';
+        await user.save();
+        message.channel.send(texto);
+        this.newAbilities(message, user, t);
+      }
+    } else if (user.level > 4 && user.level < 10) {
+      if (user.xp >= user.nextLevelXp) {
+        user.nextLevelXp *= 2;
+        user.level += 1;
+        user.maxLife += 20;
+        user.maxMana += 15;
+        user.damage += 5;
+        user.armor += 3;
         texto += '**<a:LevelUp:760954035779272755> LEVEL UP <a:LevelUp:760954035779272755>**';
         message.channel.send(texto);
-        if (user.level === 5) return this.newAbilities(message, user, t);
-      });
+        await user.save();
+        this.newAbilities(message, user, t);
+      }
+    } else if (user.level > 9 && user.level < 29) {
+      if (user.xp >= user.nextLevelXp) {
+        user.nextLevelXp *= 2;
+        user.level += 1;
+        user.maxLife += 50;
+        user.maxMana += 20;
+        user.damage += 7;
+        user.armor += 5;
+        texto += '**<a:LevelUp:760954035779272755> LEVEL UP <a:LevelUp:760954035779272755>**';
+        message.channel.send(texto);
+        await user.save();
+        this.newAbilities(message, user, t);
+      }
+    } else if (user.level >= 29) {
+      if (user.xp >= user.nextLevelXp) {
+        user.nextLevelXp *= 2;
+        user.level += 1;
+        user.maxLife += 50;
+        user.maxMana += 50;
+        user.damage += 10;
+        user.armor += 2;
+        texto += '**<a:LevelUp:760954035779272755> LEVEL UP <a:LevelUp:760954035779272755>**';
+        message.channel.send(texto);
+        await user.save();
+        this.newAbilities(message, user, t);
+      }
     }
-  } else if (user.level > 4 && user.level < 10) {
-    if (user.xp >= user.nextLevelXp) {
-      user.nextLevelXp *= 2;
-      user.level += 1;
-      user.maxLife += 20;
-      user.maxMana += 15;
-      user.damage += 5;
-      user.armor += 3;
-      texto += '**<a:LevelUp:760954035779272755> LEVEL UP <a:LevelUp:760954035779272755>**';
-      message.channel.send(texto);
-      return user.save().then(() => this.newAbilities(message, user, t));
-    }
-  } else if (user.level > 9 && user.level < 29) {
-    if (user.xp >= user.nextLevelXp) {
-      user.nextLevelXp *= 2;
-      user.level += 1;
-      user.maxLife += 50;
-      user.maxMana += 20;
-      user.damage += 7;
-      user.armor += 5;
-      texto += '**<a:LevelUp:760954035779272755> LEVEL UP <a:LevelUp:760954035779272755>**';
-      message.channel.send(texto);
-      return user.save().then(() => this.newAbilities(message, user, t));
-    }
-  } else if (user.level >= 29) {
-    if (user.xp >= user.nextLevelXp) {
-      user.nextLevelXp *= 2;
-      user.level += 1;
-      user.maxLife += 50;
-      user.maxMana += 50;
-      user.damage += 10;
-      user.armor += 2;
-      texto += '**<a:LevelUp:760954035779272755> LEVEL UP <a:LevelUp:760954035779272755>**';
-      message.channel.send(texto);
-      return user.save().then(() => this.newAbilities(message, user, t));
-    }
-  }
+  }, 500);
 };
 
 module.exports.newAbilities = async (message, user, t) => {
-  if (user.level === 5) {
-    switch (user.class) {
-      case 'Assassino':
-        user.abilities.push(abilitiesFile.assassin.normalAbilities[1]);
-        user.maxMana += 20;
-        user.abilityPower += 1;
-        await user.save();
-        message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.assassin.normalAbilities[1].name }));
-        break;
-      case 'Bárbaro':
-        user.abilities.push(abilitiesFile.barbarian.normalAbilities[1]);
-        user.maxLife += 20;
-        user.abilityPower += 1;
-        await user.save();
-        message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.barbarian.normalAbilities[1].name }));
-        break;
-      case 'Clérigo':
-        user.abilities.push(abilitiesFile.clerigo.normalAbilities[1]);
-        user.abilityPower += 1;
-        user.maxMana += 20;
-        await user.save();
-        message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.clerigo.normalAbilities[1].name }));
-        break;
-      case 'Druida':
-        user.abilities.push(abilitiesFile.druida.normalAbilities[1]);
-        user.abilityPower += 1;
-        await user.save();
-        message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.druida.normalAbilities[1].name }));
-        break;
-      case 'Espadachim':
-        user.abilities.push(abilitiesFile.espadachim.normalAbilities[1]);
-        user.abilityPower += 2;
-        await user.save();
-        message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.espadachim.normalAbilities[1].name }));
-        break;
-      case 'Feiticeiro':
-        if (user.uniquePower.name === 'Linhagem: Mística') {
-          user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[1]);
+  setTimeout(async () => {
+    if (user.level === 5) {
+      switch (user.class) {
+        case 'Assassino':
+          user.abilities.push(abilitiesFile.assassin.normalAbilities[1]);
           user.maxMana += 20;
           user.abilityPower += 1;
           await user.save();
-          message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.feiticeiro.normalAbilities[1].name }));
-        }
-        if (user.uniquePower.name === 'Linhagem: Dracônica') {
-          user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[2]);
+          message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.assassin.normalAbilities[1].name }));
+          break;
+        case 'Bárbaro':
+          user.abilities.push(abilitiesFile.barbarian.normalAbilities[1]);
+          user.maxLife += 20;
+          user.abilityPower += 1;
+          await user.save();
+          message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.barbarian.normalAbilities[1].name }));
+          break;
+        case 'Clérigo':
+          user.abilities.push(abilitiesFile.clerigo.normalAbilities[1]);
+          user.abilityPower += 1;
+          user.maxMana += 20;
+          await user.save();
+          message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.clerigo.normalAbilities[1].name }));
+          break;
+        case 'Druida':
+          user.abilities.push(abilitiesFile.druida.normalAbilities[1]);
+          user.abilityPower += 1;
+          await user.save();
+          message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.druida.normalAbilities[1].name }));
+          break;
+        case 'Espadachim':
+          user.abilities.push(abilitiesFile.espadachim.normalAbilities[1]);
+          user.abilityPower += 2;
+          await user.save();
+          message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.espadachim.normalAbilities[1].name }));
+          break;
+        case 'Feiticeiro':
+          if (user.uniquePower.name === 'Linhagem: Mística') {
+            user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[1]);
+            user.maxMana += 20;
+            user.abilityPower += 1;
+            await user.save();
+            message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.feiticeiro.normalAbilities[1].name }));
+          }
+          if (user.uniquePower.name === 'Linhagem: Dracônica') {
+            user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[2]);
+            user.maxMana += 20;
+            user.abilityPower += 1;
+            await user.save();
+            message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.feiticeiro.normalAbilities[2].name }));
+          }
+          if (user.uniquePower.name === 'Linhagem: Demoníaca') {
+            user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[3]);
+            user.maxMana += 20;
+            user.abilityPower += 1;
+            await user.save();
+            message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.feiticeiro.normalAbilities[3].name }));
+          }
+          break;
+        case 'Monge':
+          user.abilities.push(abilitiesFile.monge.normalAbilities[1]);
+          user.abilityPower += 1;
+          await user.save();
+          message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.monge.normalAbilities[1].name }));
+          break;
+        case 'Necromante':
+          user.abilities.push(abilitiesFile.necromante.normalAbilities[1]);
           user.maxMana += 20;
           user.abilityPower += 1;
           await user.save();
-          message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.feiticeiro.normalAbilities[2].name }));
-        }
-        if (user.uniquePower.name === 'Linhagem: Demoníaca') {
-          user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[3]);
+          message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.necromante.normalAbilities[1].name }));
+          break;
+        default:
+          break;
+      }
+    } else if (user.level === 10) {
+      switch (user.class) {
+        case 'Assassino':
+          user.abilities.push(abilitiesFile.assassin.normalAbilities[2]);
+          user.abilityPower += 1;
+          await user.save();
+          message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.assassin.normalAbilities[2].name }));
+          break;
+        case 'Bárbaro':
+          user.abilities.push(abilitiesFile.barbarian.normalAbilities[2]);
+          user.maxLife += 50;
+          user.abilityPower += 1;
+          await user.save();
+          message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.barbarian.normalAbilities[2].name }));
+          break;
+        case 'Clérigo':
+          user.abilities.push(abilitiesFile.clerigo.normalAbilities[2]);
+          user.abilityPower += 1;
           user.maxMana += 20;
+          await user.save();
+          message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.clerigo.normalAbilities[2].name }));
+          break;
+        case 'Druida':
+          user.abilities.push(abilitiesFile.druida.normalAbilities[2]);
           user.abilityPower += 1;
           await user.save();
-          message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.feiticeiro.normalAbilities[3].name }));
-        }
-        break;
-      case 'Monge':
-        user.abilities.push(abilitiesFile.monge.normalAbilities[1]);
-        user.abilityPower += 1;
-        await user.save();
-        message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.monge.normalAbilities[1].name }));
-        break;
-      case 'Necromante':
-        user.abilities.push(abilitiesFile.necromante.normalAbilities[1]);
-        user.maxMana += 20;
-        user.abilityPower += 1;
-        await user.save();
-        message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.necromante.normalAbilities[1].name }));
-        break;
-      default:
-        break;
-    }
-  } else if (user.level === 10) {
-    switch (user.class) {
-      case 'Assassino':
-        user.abilities.push(abilitiesFile.assassin.normalAbilities[2]);
-        user.abilityPower += 1;
-        await user.save();
-        message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.assassin.normalAbilities[2].name }));
-        break;
-      case 'Bárbaro':
-        user.abilities.push(abilitiesFile.barbarian.normalAbilities[2]);
-        user.maxLife += 50;
-        user.abilityPower += 1;
-        await user.save();
-        message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.barbarian.normalAbilities[2].name }));
-        break;
-      case 'Clérigo':
-        user.abilities.push(abilitiesFile.clerigo.normalAbilities[2]);
-        user.abilityPower += 1;
-        user.maxMana += 20;
-        await user.save();
-        message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.clerigo.normalAbilities[2].name }));
-        break;
-      case 'Druida':
-        user.abilities.push(abilitiesFile.druida.normalAbilities[2]);
-        user.abilityPower += 1;
-        await user.save();
-        message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.druida.normalAbilities[2].name }));
-        break;
-      case 'Espadachim':
-        user.abilities.push(abilitiesFile.espadachim.normalAbilities[2]);
-        user.abilityPower += 1;
-        await user.save();
-        message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.espadachim.normalAbilities[2].name }));
-        break;
-      case 'Feiticeiro':
-        if (user.uniquePower.name === 'Linhagem: Mística') {
-          user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[4]);
+          message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.druida.normalAbilities[2].name }));
+          break;
+        case 'Espadachim':
+          user.abilities.push(abilitiesFile.espadachim.normalAbilities[2]);
+          user.abilityPower += 1;
+          await user.save();
+          message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.espadachim.normalAbilities[2].name }));
+          break;
+        case 'Feiticeiro':
+          if (user.uniquePower.name === 'Linhagem: Mística') {
+            user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[4]);
+            user.maxMana += 25;
+            user.abilityPower += 1;
+            await user.save();
+            message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.feiticeiro.normalAbilities[4].name }));
+          }
+          if (user.uniquePower.name === 'Linhagem: Dracônica') {
+            user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[5]);
+            user.maxMana += 25;
+            user.abilityPower += 1;
+            await user.save();
+            message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.feiticeiro.normalAbilities[5].name }));
+          }
+          if (user.uniquePower.name === 'Linhagem: Demoníaca') {
+            user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[6]);
+            user.maxMana += 25;
+            user.abilityPower += 1;
+            await user.save();
+            message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.feiticeiro.normalAbilities[6].name }));
+          }
+          break;
+        case 'Monge':
+          user.abilities.push(abilitiesFile.monge.normalAbilities[2]);
+          user.abilityPower += 1;
+          await user.save();
+          message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.monge.normalAbilities[2].name }));
+          break;
+        case 'Necromante':
+          user.abilities.push(abilitiesFile.necromante.normalAbilities[2]);
           user.maxMana += 25;
           user.abilityPower += 1;
           await user.save();
-          message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.feiticeiro.normalAbilities[4].name }));
-        }
-        if (user.uniquePower.name === 'Linhagem: Dracônica') {
-          user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[5]);
-          user.maxMana += 25;
+          message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.necromante.normalAbilities[2].name }));
+          break;
+        default:
+          break;
+      }
+    } else if (user.level === 14) {
+      switch (user.class) {
+        case 'Assassino':
+          user.abilities.push(abilitiesFile.assassin.normalAbilities[3]);
+          user.abilityPower += 1;
+          user.damage += 10;
+          await user.save();
+          message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.assassin.normalAbilities[3].name }));
+          break;
+        case 'Bárbaro':
+          user.abilities.push(abilitiesFile.barbarian.normalAbilities[3]);
+          user.maxLife += 50;
           user.abilityPower += 1;
           await user.save();
-          message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.feiticeiro.normalAbilities[5].name }));
-        }
-        if (user.uniquePower.name === 'Linhagem: Demoníaca') {
-          user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[6]);
-          user.maxMana += 25;
+          message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.barbarian.normalAbilities[3].name }));
+          break;
+        case 'Clérigo':
+          user.abilities.push(abilitiesFile.clerigo.normalAbilities[3]);
+          user.abilityPower += 1;
+          user.maxMana += 40;
+          await user.save();
+          message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.clerigo.normalAbilities[3].name }));
+          break;
+        case 'Druida':
+          user.abilities.push(abilitiesFile.druida.normalAbilities[3]);
+          user.abilityPower += 1;
+          user.maxMana += 30;
+          await user.save();
+          message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.druida.normalAbilities[3].name }));
+          break;
+        case 'Espadachim':
+          user.abilities.push(abilitiesFile.espadachim.normalAbilities[3]);
+          user.abilityPower += 1;
+          user.damage += 10;
+          await user.save();
+          message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.espadachim.normalAbilities[3].name }));
+          break;
+        case 'Feiticeiro':
+          if (user.uniquePower.name === 'Linhagem: Mística') {
+            user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[7]);
+            user.maxMana += 40;
+            user.abilityPower += 1;
+            await user.save();
+            message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.feiticeiro.normalAbilities[7].name }));
+          }
+          if (user.uniquePower.name === 'Linhagem: Dracônica') {
+            user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[8]);
+            user.maxMana += 40;
+            user.abilityPower += 1;
+            await user.save();
+            message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.feiticeiro.normalAbilities[8].name }));
+          }
+          if (user.uniquePower.name === 'Linhagem: Demoníaca') {
+            user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[9]);
+            user.maxMana += 40;
+            user.abilityPower += 1;
+            await user.save();
+            message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.feiticeiro.normalAbilities[9].name }));
+          }
+          break;
+        case 'Monge':
+          user.abilities.push(abilitiesFile.monge.normalAbilities[3]);
+          user.abilityPower += 2;
+          await user.save();
+          message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.monge.normalAbilities[3].name }));
+          break;
+        case 'Necromante':
+          user.abilities.push(abilitiesFile.necromante.normalAbilities[3]);
+          user.maxMana += 40;
           user.abilityPower += 1;
           await user.save();
-          message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.feiticeiro.normalAbilities[6].name }));
-        }
-        break;
-      case 'Monge':
-        user.abilities.push(abilitiesFile.monge.normalAbilities[2]);
-        user.abilityPower += 1;
-        await user.save();
-        message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.monge.normalAbilities[2].name }));
-        break;
-      case 'Necromante':
-        user.abilities.push(abilitiesFile.necromante.normalAbilities[2]);
-        user.maxMana += 25;
-        user.abilityPower += 1;
-        await user.save();
-        message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.necromante.normalAbilities[2].name }));
-        break;
-      default:
-        break;
+          message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.necromante.normalAbilities[3].name }));
+          break;
+        default:
+          break;
+      }
+    } else if (user.level === 16) {
+      user.xp = 0;
+      user.nextLevelXp = 100000;
+      await user.save();
+    } else if (user.level === 20) {
+      user.xp = 0;
+      user.nextLevelXp = 1000000;
+      await user.save();
+      message.menheraReply('warn', t('roleplay:boss'));
+    } else if (user.level === 25) {
+      user.xp = 0;
+      user.nextLevelXp = 3000000;
+      await user.save();
+    } else if (user.level === 30) {
+      user.xp = 0;
+      user.nextLevelXp = 5000000;
+      user.abilityPower += 1;
+      this.evolve(user, message, t);
     }
-  } else if (user.level === 14) {
-    switch (user.class) {
-      case 'Assassino':
-        user.abilities.push(abilitiesFile.assassin.normalAbilities[3]);
-        user.abilityPower += 1;
-        user.damage += 10;
-        await user.save();
-        message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.assassin.normalAbilities[3].name }));
-        break;
-      case 'Bárbaro':
-        user.abilities.push(abilitiesFile.barbarian.normalAbilities[3]);
-        user.maxLife += 50;
-        user.abilityPower += 1;
-        await user.save();
-        message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.barbarian.normalAbilities[3].name }));
-        break;
-      case 'Clérigo':
-        user.abilities.push(abilitiesFile.clerigo.normalAbilities[3]);
-        user.abilityPower += 1;
-        user.maxMana += 40;
-        await user.save();
-        message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.clerigo.normalAbilities[3].name }));
-        break;
-      case 'Druida':
-        user.abilities.push(abilitiesFile.druida.normalAbilities[3]);
-        user.abilityPower += 1;
-        user.maxMana += 30;
-        await user.save();
-        message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.druida.normalAbilities[3].name }));
-        break;
-      case 'Espadachim':
-        user.abilities.push(abilitiesFile.espadachim.normalAbilities[3]);
-        user.abilityPower += 1;
-        user.damage += 10;
-        await user.save();
-        message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.espadachim.normalAbilities[3].name }));
-        break;
-      case 'Feiticeiro':
-        if (user.uniquePower.name === 'Linhagem: Mística') {
-          user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[7]);
-          user.maxMana += 40;
-          user.abilityPower += 1;
-          await user.save();
-          message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.feiticeiro.normalAbilities[7].name }));
-        }
-        if (user.uniquePower.name === 'Linhagem: Dracônica') {
-          user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[8]);
-          user.maxMana += 40;
-          user.abilityPower += 1;
-          await user.save();
-          message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.feiticeiro.normalAbilities[8].name }));
-        }
-        if (user.uniquePower.name === 'Linhagem: Demoníaca') {
-          user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[9]);
-          user.maxMana += 40;
-          user.abilityPower += 1;
-          await user.save();
-          message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.feiticeiro.normalAbilities[9].name }));
-        }
-        break;
-      case 'Monge':
-        user.abilities.push(abilitiesFile.monge.normalAbilities[3]);
-        user.abilityPower += 2;
-        await user.save();
-        message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.monge.normalAbilities[3].name }));
-        break;
-      case 'Necromante':
-        user.abilities.push(abilitiesFile.necromante.normalAbilities[3]);
-        user.maxMana += 40;
-        user.abilityPower += 1;
-        await user.save();
-        message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.necromante.normalAbilities[3].name }));
-        break;
-      default:
-        break;
-    }
-  } else if (user.level === 16) {
-    user.xp = 0;
-    user.nextLevelXp = 100000;
-    await user.save();
-  } else if (user.level === 20) {
-    user.xp = 0;
-    user.nextLevelXp = 1000000;
-    await user.save();
-    message.menheraReply('warn', t('roleplay:boss'));
-  } else if (user.level === 25) {
-    user.xp = 0;
-    user.nextLevelXp = 3000000;
-    await user.save();
-  } else if (user.level === 30) {
-    user.xp = 0;
-    user.nextLevelXp = 5000000;
-    user.abilityPower += 1;
-    this.evolve(user, message, t);
-  }
+  }, 500);
 };
 
 module.exports.resultBattle = async (message, user, inimigo, t, toSay) => {
