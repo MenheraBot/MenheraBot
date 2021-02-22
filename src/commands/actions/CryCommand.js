@@ -18,7 +18,7 @@ module.exports = class CryCommand extends Command {
     const rand = await getImageUrl('cry');
     const user = message.mentions.users.first();
 
-    if (user && user.bot) return message.menheraReply(t('commands:cry.bot'));
+    if (user && user.bot) return message.menheraReply('error', t('commands:cry.bot'));
 
     if (!user || user === message.author) {
       const embed = new MessageEmbed()

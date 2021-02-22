@@ -74,11 +74,11 @@ module.exports = class DiscordBots {
 
         if (userInShard && !hasSend) {
           hasSend = true;
-          await userInShard.send(embedToSend).catch();
+          await userInShard.send(embedToSend).catch(console.log('[DLB] Cannot send message to user'));
         }
       };
 
-      await this.client.shard.broadcastEval(functionToEval(vote.user, embed)).then(console.log('[DLB] Tentativa de enviar para um usuário'));
+      await this.client.shard.broadcastEval(functionToEval(vote.user, embed));
     });
 
     dbl.on('posted', () => {

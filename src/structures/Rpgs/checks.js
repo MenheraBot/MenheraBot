@@ -108,7 +108,7 @@ module.exports.morte = async (message, user, t, toSay, inimigo) => {
   user.death = Date.now() + 43200000;
   user.life = 0;
   user.inBattle = false;
-  return user.save();
+  await user.save();
 };
 
 module.exports.enemyShot = async (message, user, inimigo, type, t, toSay) => {
