@@ -1047,5 +1047,15 @@
     "vote": "Votar em Mim",
     "minutes": "minutos",
     "hours": "horas"
+  },
+  "familiar": {
+    "description": "Veja os status de seu familiar",
+    "usage": "",
+    "no-user": "você não é um aventureiro! Use `{{prefix}}register` para se registrar!",
+    "no-level": "o ritual de invocação é difícil, você só conseguirá ao atingir o nível 15",
+    "summon-title": "🧙 | Ritual de Invocação",
+    "summon-description": "Você começa o ritual de invocação. Você usa todas as suas forças para invocar seu familiar!",
+    "success": "Seu familiar foi Invocado!",
+    "success-description": "Você obteve sucesso em seu Ritual de Invocação! Tu invocou o familiar `{{name}}`!\nUse este comando novamente para ver os seus status"
   }
 }

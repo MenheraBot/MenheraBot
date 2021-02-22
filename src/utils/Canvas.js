@@ -400,8 +400,8 @@ module.exports = class Canvas {
     // TRABALHO
     if (user?.jobId > 0) {
       ctx.fillStyle = 'yellow';
-      ctx.drawImage(jobIcon, 270, 200, 28, 28);
-      ctx.fillText(t(`roleplay:job.${user.jobId}.name`), 300, 220);
+      ctx.drawImage(jobIcon, 290, 200, 28, 28);
+      ctx.fillText(t(`roleplay:job.${user.jobId}.name`), 320, 220);
     }
     return canvas.toBuffer();
   }

@@ -69,6 +69,7 @@ const rpgSchema = mongoose.Schema({
   resetRoll: { type: Number, default: 0 },
   jobId: { type: Number, default: 0 },
   jobCooldown: { type: String, default: '00000000' },
+  familiar: { type: Object, default: {} },
 });
 
 const userSchema = mongoose.Schema({
