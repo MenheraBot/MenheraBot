@@ -31,7 +31,7 @@ module.exports = class SlotMachineCommand extends Command {
     super(client, {
       name: 'slotmachine',
       aliases: ['slot', 'caçaniquel', 'cacaniquel'],
-      cooldown: 10,
+      cooldown: 40,
       category: 'economia',
       clientPermissions: ['EMBED_LINKS'],
     });
@@ -51,27 +51,27 @@ module.exports = class SlotMachineCommand extends Command {
     const multipliers = [
       {
         2: 1.2,
-        3: 2,
+        3: 1.5,
       },
       {
         2: 1.4,
-        3: 5,
+        3: 1.9,
       },
       {
         2: 1.6,
-        3: 6,
+        3: 2,
       },
       {
-        2: 2,
-        3: 7,
+        2: 2.2,
+        3: 2.3,
       },
       {
-        2: 2.3,
-        3: 9,
+        2: 2.4,
+        3: 2.8,
       },
       {
-        2: 2.8,
-        3: 12,
+        2: 2.9,
+        3: 3,
       },
     ];
 
@@ -87,9 +87,9 @@ module.exports = class SlotMachineCommand extends Command {
       .setDescription(`${line1}\n**---------------** \n${line2}\n**---------------** \n${line3}`);
 
     if (result.multiplier === 0) {
-      user.estrelinhas -= (Math.floor(valor));
+      user.estrelinhas -= (Math.floor(valor * 1.5));
       embed.setColor('#fc0505');
-      embed.addField(t('commands:slotmachine.lose-title'), t('commands:slotmachine.lose-text', { valor: (valor + Math.floor(valor)) }));
+      embed.addField(t('commands:slotmachine.lose-title'), t('commands:slotmachine.lose-text', { valor: (valor + Math.floor(valor * 1.5)) }));
     } else {
       user.estrelinhas += Math.floor(result.multiplier * valor);
       embed.addField(t('commands:slotmachine.win-title'), t('commands:slotmachine.win-text', { multiplier: Math.floor(result.multiplier * valor), valor }));
