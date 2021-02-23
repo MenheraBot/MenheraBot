@@ -1,5 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const Command = require('../../structures/command');
+const familiarsFile = require('../../structures/Rpgs/familiar.json');
 
 module.exports = class BattleBoss extends Command {
   constructor(client) {
@@ -22,8 +23,8 @@ module.exports = class BattleBoss extends Command {
 
     if (!canGo) return;
 
-    const dmgView = user.damage + user.weapon.damage;
-    const ptcView = user.armor + user.protection.armor;
+    const dmgView = user?.familiar?.id && user.familiar.type === 'damage' ? user.damage + user.weapon.damage + (familiarsFile[user.familiar.id].boost.value + ((user.familiar.level - 1) * familiarsFile[user.familiar.id].boost.value)) : user.damage + user.weapon.damage;
+    const ptcView = user?.familiar?.id && user.familiar.type === 'armor' ? user.armor + user.protection.armor + (familiarsFile[user.familiar.id].boost.value + ((user.familiar.level - 1) * familiarsFile[user.familiar.id].boost.value)) : user.armor + user.protection.armor;
 
     const habilidades = await this.client.rpgChecks.getAbilities(user);
 
@@ -36,7 +37,7 @@ module.exports = class BattleBoss extends Command {
       .setDescription(t('commands:boss.preparation.description'))
       .setColor('#e3beff')
       .setFooter(t('commands:boss.preparation.footer'))
-      .addField(t('commands:boss.preparation.stats'), `🩸 | **${t('commands:boss.life')}:** ${user.life}/${user.maxLife}\n💧 | **${t('commands:boss.mana')}:** ${user.mana}/${user.maxMana}\n🗡️ | **${t('commands:boss.dmg')}:** ${dmgView}\n🛡️ | **${t('commands:boss.armor')}:** ${ptcView}\n🔮 | **${t('commands:boss.ap')}:** ${user.abilityPower}\n\n${t('commands:boss.preparation.description_end')}`);
+      .addField(t('commands:boss.preparation.stats'), `🩸 | **${t('commands:boss.life')}:** ${user.life}/${user.maxLife}\n💧 | **${t('commands:boss.mana')}:** ${user.mana}/${user.maxMana}\n🗡️ | **${t('commands:boss.dmg')}:** ${dmgView}\n🛡️ | **${t('commands:boss.armor')}:** ${ptcView}\n🔮 | **${t('commands:boss.ap')}:** ${user?.familiar?.id && user.familiar.type === 'abilityPower' ? user.abilityPower + (familiarsFile[user.familiar.id].boost.value + (user.familiar.level - 1) * familiarsFile[user.familiar.id].boost.value) : user.abilityPower}\n\n${t('commands:boss.preparation.description_end')}`);
     habilidades.forEach((hab) => {
       embed.addField(hab.name, `🔮 | **${t('commands:boss.damage')}:** ${hab.damage}\n💧 | **${t('commands:boss.cost')}** ${hab.cost}`);
     });
@@ -65,7 +66,7 @@ module.exports = class BattleBoss extends Command {
 
     options.push({
       name: t('commands:boss.battle.basic'),
-      damage: user.damage + user.weapon.damage,
+      damage: user?.familiar?.id && user.familiar.type === 'damage' ? user.damage + user.weapon.damage + (familiarsFile[user.familiar.id].boost.value + ((user.familiar.level - 1) * familiarsFile[user.familiar.id].boost.value)) : user.damage + user.weapon.damage,
     });
 
     habilidades.forEach((hab) => {

@@ -1,0 +1,29 @@
+{
+  "1": {
+    "id": 1,
+    "boost": {
+      "name": "boost_armor",
+      "type": "armor",
+      "level_boost": 4,
+      "value": 10
+    }
+  },
+  "2": {
+    "id": 2,
+    "boost": {
+      "name": "boost_damage",
+      "type": "damage",
+      "level_boost": 7,
+      "value": 13
+    }
+  },
+  "3": {
+    "id": 3,
+    "boost": {
+      "name": "boost_ap",
+      "type": "abilityPower",
+      "level_boost": 0.2,
+      "value": 1
+    }
+  }
+}

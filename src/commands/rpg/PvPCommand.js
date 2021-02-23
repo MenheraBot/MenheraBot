@@ -1,5 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const Command = require('../../structures/command');
+const familiarsFile = require('../../structures/Rpgs/familiar.json');
 
 module.exports = class PvPCommands extends Command {
   constructor(client) {
@@ -25,10 +26,10 @@ module.exports = class PvPCommands extends Command {
 
     if (!user1 || !user2) return message.menheraReply('error', t('commands:pvp.no-user'));
 
-    const dmgView2 = user2.damage + user2.weapon.damage;
-    const ptcView2 = user2.armor + user2.protection.armor;
-    const dmgView1 = user1.damage + user1.weapon.damage;
-    const ptcView1 = user1.armor + user1.protection.armor;
+    const dmgView2 = user2?.familiar?.id && user2.familiar.type === 'damage' ? user2.damage + user2.weapon.damage + (familiarsFile[user2.familiar.id].boost.value + ((user2.familiar.level - 1) * familiarsFile[user2.familiar.id].boost.value)) : user2.damage + user2.weapon.damage;
+    const ptcView2 = user2?.familiar?.id && user2.familiar.type === 'armor' ? user2.armor + user2.protection.armor + (familiarsFile[user2.familiar.id].boost.value + ((user2.familiar.level - 1) * familiarsFile[user2.familiar.id].boost.value)) : user2.armor + user2.protection.armor;
+    const dmgView1 = user1?.familiar?.id && user1.familiar.type === 'damage' ? user1.damage + user1.weapon.damage + (familiarsFile[user1.familiar.id].boost.value + ((user1.familiar.level - 1) * familiarsFile[user1.familiar.id].boost.value)) : user1.damage + user1.weapon.damage;
+    const ptcView1 = user1?.familiar?.id && user1.familiar.type === 'armor' ? user1.armor + user1.protection.armor + (familiarsFile[user1.familiar.id].boost.value + ((user1.familiar.level - 1) * familiarsFile[user1.familiar.id].boost.value)) : user1.armor + user1.protection.armor;
 
     const embed = new MessageEmbed()
       .setTitle(t('commands:pvp.accept-battle', { user: message.author.tag }))
@@ -85,7 +86,7 @@ module.exports = class PvPCommands extends Command {
 
     options.push({
       name: t('commands:dungeon.battle.basic'),
-      damage: user1.damage + user1.weapon.damage,
+      damage: user1?.familiar?.id && user1.familiar.type === 'damage' ? user1.damage + user1.weapon.damage + (familiarsFile[user1.familiar.id].boost.value + ((user1.familiar.level - 1) * familiarsFile[user1.familiar.id].boost.value)) : user1.damage + user1.weapon.damage,
     });
 
     const user1abilities = await this.client.rpgChecks.getAbilities(user1);
@@ -147,12 +148,12 @@ module.exports = class PvPCommands extends Command {
             user1.life += escolha.heal;
             if (user1.life > user1.maxLife) user1.life = user1.maxLife;
           }
-          danoUser = escolha.damage * user1.abilityPower;
+          danoUser = user1?.familiar?.id && user1.familiar.type === 'abilityPower' ? escolha.damage * (user1.abilityPower + familiarsFile[user1.familiar.id].boost.value + ((user1.familiar.level - 1) * familiarsFile[user1.familiar.id].boost.value)) : user1.abilityPower * escolha.damage;
           user1.mana -= escolha.cost;
         }
       }
 
-      const enemyArmor = user2.armor;
+      const enemyArmor = user2?.familiar?.id && user2.familiar.type === 'armor' ? user2.armor + (familiarsFile[user2.familiar.id].boost.value + ((user2.familiar.level - 1) * familiarsFile[user1.familiar.id].boost.value)) : user2.armor;
       let danoDado = danoUser - enemyArmor;
       if (escolha.name === 'Ataque Básico' || escolha.name === 'Basic Attack') danoDado = danoUser;
       if (danoDado < 0) danoDado = 0;
@@ -175,7 +176,7 @@ module.exports = class PvPCommands extends Command {
 
     options.push({
       name: t('commands:dungeon.battle.basic'),
-      damage: user2.damage + user2.weapon.damage,
+      damage: user2?.familiar?.id && user2.familiar.type === 'damage' ? user2.damage + user2.weapon.damage + (familiarsFile[user2.familiar.id].boost.value + ((user2.familiar.level - 1) * familiarsFile[user2.familiar.id].boost.value)) : user2.damage + user2.weapon.damage,
     });
 
     options.push(...user2abilities);

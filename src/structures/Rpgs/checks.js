@@ -3,6 +3,7 @@ const { MessageEmbed } = require('discord.js');
 const RPGUtil = require('../../utils/RPGUtil');
 const mobsFile = require('../RpgHandler').mobs;
 const abilitiesFile = require('../RpgHandler').abiltiies;
+const familiarsFile = require('../RpgHandler').familiars;
 const http = require('../../utils/HTTPrequests');
 
 const random = (arr) => arr[Math.floor(Math.random() * arr.length)];
@@ -71,7 +72,7 @@ module.exports.battle = async (message, escolha, user, inimigo, type, t) => {
       user.life += escolha.heal;
       if (user.life > user.maxLife) user.life = user.maxLife;
     }
-    danoUser = escolha.damage * user.abilityPower;
+    danoUser = user?.familiar?.id && user.familiar.type === 'abilityPower' ? escolha.damage * (user.abilityPower + familiarsFile[user.familiar.id].boost.value + ((user.familiar.level - 1) * familiarsFile[user.familiar.id].boost.value)) : user.abilityPower * escolha.damage;
     user.mana -= escolha.cost;
   }
 
@@ -115,7 +116,7 @@ module.exports.enemyShot = async (message, user, inimigo, type, t, toSay) => {
   const habilidades = await this.getAbilities(user);
 
   let danoRecebido;
-  const armadura = user.armor + user.protection.armor;
+  const armadura = user?.familiar?.id && user.familiar.type === 'armor' ? user.armor + user.protection.armor + (familiarsFile[user.familiar.id].boost.value + ((user.familiar.level - 1) * familiarsFile[user.familiar.id].boost.value)) : user.armor + user.protection.armor;
 
   const ataque = await inimigo.ataques[Math.floor(Math.random() * inimigo.ataques.length)];
 
@@ -144,7 +145,7 @@ module.exports.continueBattle = async (
 
   options.push({
     name: t('roleplay:basic-attack'),
-    damage: user.damage + user.weapon.damage,
+    damage: user?.familiar?.id && user.familiar.type === 'damage' ? user.damage + user.weapon.damage + (familiarsFile[user.familiar.id].boost.value + ((user.familiar.level - 1) * familiarsFile[user.familiar.id].boost.value)) : user.damage + user.weapon.damage,
   });
 
   if (type === 'boss') {
@@ -156,8 +157,8 @@ module.exports.continueBattle = async (
     options.push(hab);
   });
 
-  const dmgView = user.damage + user.weapon.damage;
-  const ptcView = user.armor + user.protection.armor;
+  const dmgView = user?.familiar?.id && user.familiar.type === 'damage' ? user.damage + user.weapon.damage + (familiarsFile[user.familiar.id].boost.value + ((user.familiar.level - 1) * familiarsFile[user.familiar.id].boost.value)) : user.damage + user.weapon.damage;
+  const ptcView = user?.familiar?.id && user.familiar.type === 'armor' ? user.armor + user.protection.armor + (familiarsFile[user.familiar.id].boost.value + ((user.familiar.level - 1) * familiarsFile[user.familiar.id].boost.value)) : user.armor + user.protection.armor;
 
   let damageReceived = ataque.damage - ptcView;
   if (damageReceived < 5) damageReceived = 5;

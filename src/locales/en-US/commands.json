@@ -1027,5 +1027,18 @@
     "vote": "Vote for Me",
     "minutes": "minutes",
     "hours": "hours"
+  },
+  "familiar": {
+    "description": "View your family member's status",
+    "usage": "",
+    "no-user": "you are not an adventurer! Use `{{prefix}}register` to register!",
+    "no-level": "the summoning ritual is difficult, you will only get it when you reach level **15**",
+    "summon-title": "🧙 | Summoning Ritual",
+    "summon-description": "You begin the invocation ritual. You use all your strength to summon your familiar!",
+    "success": "You have **succeeded** in your Summoning Ritual! You invoked the familiar `{{name}}`!\nUse this command again to see your status",
+    "info-title": "🔰 | Your Familiar Statuses",
+    "name": "🏷️ | Name",
+    "level": "⚜️ | Level",
+    "xp": "🔰 | Experience"
   }
 }

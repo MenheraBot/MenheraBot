@@ -61,5 +61,13 @@
       "item_one": "Iron Bar",
       "item_two": "Iron sword"
     }
+  },
+  "familiar": {
+    "1": "Earth dragon",
+    "2": "Spirit of Shadows",
+    "3": "Fairy of the 4 Elements",
+    "boost_armor": "🛡️ | Armor Bonus",
+    "boost_damage": "🗡️ | Damage Bonus",
+    "boost_ap": "🔮 | Ability Power Bonus"
   }
 }
