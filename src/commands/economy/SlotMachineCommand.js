@@ -43,8 +43,9 @@ module.exports = class SlotMachineCommand extends Command {
     const input = args[0];
     if (!input) return message.menheraReply('error', t('commands:slotmachine.invalid-value'));
     const valor = parseInt(input.replace(/\D+/g, ''));
-    if (!valor || valor < 5000) return message.menheraReply('error', t('commands:slotmachine.invalid-value'));
+    if (!valor || valor < 1) return message.menheraReply('error', t('commands:slotmachine.invalid-value'));
     if (valor > user.estrelinhas) return message.menheraReply('error', t('commands:slotmachine.poor'));
+    if (valor > 10000) return message.menheraReply('error', t('commands:slotmachine.limit'));
 
     user.estrelinhas -= valor;
 

@@ -917,14 +917,15 @@
   },
   "slotmachine": {
     "description": "Bet on Menhera's Slot Machine",
-    "usage": "<value > 5000>",
-    "invalid-value": "you must place a bet greater than **5000** :star:",
+    "usage": "<value < 10000>",
+    "invalid-value": "you must place a bet greater than **0** :star:",
     "poor": "you don't have enough stars to bet",
     "title": "Slot Machine",
     "lose-title": "You Lose <:menhera_cry:744041825140211732>",
     "lose-text": "You lost **{{valor}}** :star:",
     "win-title": "You Won <:MenheraWink:767210250637279252>",
-    "win-text": "You bet **{{valor}}** :star: and ended up winning **{{multiplier}}** :star:"
+    "win-text": "You bet **{{valor}}** :star: and ended up winning **{{multiplier}}** :star:",
+    "limit": "the bet limit is **10k**"
   },
   "philo": {
     "description": "To be or not to be, that's the question",
