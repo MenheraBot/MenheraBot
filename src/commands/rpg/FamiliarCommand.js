@@ -53,6 +53,8 @@ module.exports = class FamiliarCommand extends Command {
       const embed = new MessageEmbed()
         .setTitle(t('commands:familiar.info-title'))
         .setColor('6a4ea5')
+        .setImage(familiarsFile[user.familiar.id].image)
+        .setFooter(t('commands:familiar.footer'))
         .addFields([{
           name: t('commands:familiar.name'),
           value: t(`roleplay:familiar.${user.familiar.id}`),

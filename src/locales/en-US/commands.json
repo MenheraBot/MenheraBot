@@ -1040,6 +1040,7 @@
     "info-title": "🔰 | Your Familiar Statuses",
     "name": "🏷️ | Name",
     "level": "⚜️ | Level",
-    "xp": "🔰 | Experience"
+    "xp": "🔰 | Experience",
+    "footer": "Image made by Fuzer"
   }
 }
