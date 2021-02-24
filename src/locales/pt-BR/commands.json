@@ -1062,5 +1062,10 @@
     "level": "⚜️ | Nível",
     "xp": "🔰 | Experiência",
     "footer": "Imagem feita por Fuzer"
+  },
+  "astolfo": {
+    "description": "É grande né? Disse o Astolfo",
+    "usage": "<texto>",
+    "no-args": "o que é grande? Me diga?"
   }
 }

@@ -1042,5 +1042,10 @@
     "level": "⚜️ | Level",
     "xp": "🔰 | Experience",
     "footer": "Image made by Fuzer"
+  },
+  "astolfo": {
+    "description": "It's big, isn't it? Astolfo said",
+    "usage": "<text>",
+    "no-args": "what is big? Tell me?"
   }
 }

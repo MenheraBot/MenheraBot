@@ -267,6 +267,21 @@ module.exports = class Canvas {
     return canvas.toBuffer();
   }
 
+  static async AstolfoCommandBuilder(text) {
+    const canvas = CanvasImport.createCanvas(253, 330);
+    const ctx = canvas.getContext('2d');
+
+    const astolfoImage = await CanvasImport.loadImage('https://i.imgur.com/D4b4E8M.png');
+
+    ctx.drawImage(astolfoImage, 0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = '#000';
+    ctx.font = 'bold 20px Sans';
+    ctx.fillText(ctx.getLines(text, 160).join('\n'), 72, 208);
+
+    return canvas.toBuffer();
+  }
+
   static async RpgStatusBuilder(user, member, t) {
     /* ---------------------- CREATE CANVAS -------------------------- */
 
