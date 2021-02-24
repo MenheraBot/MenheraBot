@@ -46,7 +46,10 @@ module.exports.getEnemyByUserLevel = (user, type, dungeonLevel, message, t) => {
 
   if (!validLevels[dungeonLevel]) return false;
 
-  if (user.level < validLevels[dungeonLevel].minUserLevel) message.menheraReply('error', t('commands:dungeon.min-level-warn'));
+  if (user.level < validLevels[dungeonLevel].minUserLevel) {
+    message.menheraReply('error', t('commands:dungeon.min-level-warn'));
+    return 'LOW-LEVEL';
+  }
 
   return validLevels[dungeonLevel].mob;
 };
@@ -64,7 +67,7 @@ module.exports.battle = async (message, escolha, user, inimigo, type, t) => {
     danoUser = escolha.damage;
   } else if (escolha.name === 'Morte Instantânea') {
     if (user.mana < user.maxMana) return this.enemyShot(message, user, inimigo, type, t, `⚔️ | ${t('roleplay:battle.no-mana', { name: escolha.name })}`);
-    danoUser = escolha.damage * user.abilityPower;
+    danoUser = inimigo.life / 2;
     user.mana = 0;
   } else {
     if (user.mana < escolha.cost) return this.enemyShot(message, user, inimigo, type, t, `⚔️ | ${t('roleplay:battle.no-mana', { name: escolha.name })}`);

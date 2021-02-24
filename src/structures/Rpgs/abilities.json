@@ -3,9 +3,9 @@
     "uniquePowers": [
       {
         "name": "Morte Instantânea",
-        "description": "Mata um alvo não-épico instantâneamente, sem chance de revidar",
+        "description": "Arranca metade da vida do inimigo com um tapa, apenas o básico",
         "cooldown": 86400000,
-        "damage": 999999,
+        "damage": "50% da Vida",
         "heal": 0,
         "cost": "`100% da Mana Máxima`",
         "type": "ativo"

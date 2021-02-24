@@ -27,6 +27,8 @@ module.exports = class DungeonCommand extends Command {
 
     if (!inimigo) return message.menheraReply('error', t('commands:dungeon.no-level'));
 
+    if (inimigo === 'LOW-LEVEL') return;
+
     const canGo = await this.client.rpgChecks.initialChecks(user, message, t);
 
     if (!canGo) return;
