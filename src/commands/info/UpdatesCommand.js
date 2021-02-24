@@ -20,15 +20,26 @@ module.exports = class UpdatesCommand extends Command {
       .setTitle(`${t('commands:updates.title')} ${version}`)
       .setColor('#a7e74f')
       .setFooter(`${this.client.user.username} ${t('commands:updates.footer')} ${owner.tag}`, owner.displayAvatarURL({ format: 'png', dynamic: true }))
-      .setDescription(`**Trabalhos**
+      .setDescription(`**Várias Mudanças Na Atualização 2.6.0!**
 
-      • O RPG agora possui trabalhos! Escolha um trabalho com \`m!job\` e vá trabalhar com \`m!work\`.
-      • Usar o \`m!job\` sem argumentos mostrará todos os trabalhos para escolher (Por enquanto só tem 2 por que quero ver se ta tudo 100%, vou lançar mais com o tempo).
-      • Use \`m!job [id do trabalho]\` para entrar nesse trabalho!
+      • SlotMachine
+       Corrigido o problema onde quebrava o balanco da Menhera! Novos valores:
+      :banana: 2: 1.2x,  3: 1.5x
+      :cherries: 2: 1.4x, 3: 1.9x
+      :tangerine: 2: 1.6, 3: 2x
+      :grapes: 2: 2.2x, 3: 2.3x
+      :moneybag: 2: 2.4x, 3: 2.8x
+      :seven: 2: 2.9x, 3: 3x
+      **Valor de derrota:** aposta + aposta * 1.5
+      **Novo cooldown:** 40 segundos
 
-      Cada trabalho tem um certo número de cooldown, pedras magicas, itens, e xp. Os trabalhos são 100% traduzidos, tanto os itens quanto os próprios trabalhos, quero fazer isso com todo o rpg ainda, mas vai dar trabalho ja que o rpg é todo torto e errado
+      • Novo Sistema de Familiares
+      Após a remoção das famílias, muitos usuários apresentaram problemas para batalhar contra os níveis mais altos! Para isso, foram adicionados os familiares! Utilize \`m!familiar\` para invocar um familiar, e após o Ritual de Invocação, utilize o comando novamente para ver os status de seu familiar!
+      No momento os familiares só darão um pequeno boost em seus status, mas brevemente, haverá uma forma de atualizá-los, deixando mais fortes!
 
-      É isso, essa vai ser uma forma a mais de ganhar coisas pra se fortalecer no Mundo de Bolham, que está pronto para crescer mais e mais`);
+      • BUG FIXES:
+      - Resolvido problema do comando \`m!cry\` ao mencionar um bot
+      - Resolvido a localização do trabalho do jogador no \`m!stats\`, que fazia com que o emoji ficasse em cima da armadura! `);
 
     message.channel.send(message.author, embed);
   }
