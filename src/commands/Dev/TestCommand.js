@@ -4,7 +4,7 @@ const Command = require('../../structures/command');
 module.exports = class TestCommand extends Command {
   constructor(client) {
     super(client, {
-      name: 'test',
+      name: 'test?',
       description: 'Arquivo destinado para testes',
       devsOnly: true,
       category: 'Dev',
@@ -12,12 +12,18 @@ module.exports = class TestCommand extends Command {
   }
 
   async run(/* { message, args }, t */) {
-    /* const user = await this.client.database.Rpg.findById(message.author.id);
-    delete require.cache[require.resolve('../../utils/Canvas')];
-    const Canvas = require('../../utils/Canvas');
-    const familia = await this.client.database.Familias.findById(user.familyName);
-    const image = await Canvas.RpgStatusBuilder(user, message.author, t, familia);
+    /* const all = await this.client.database.Rpg.find();
 
-    message.channel.send(message.author, new MessageAttachment(image, 'filosófico.png')); */
+    const vrau = all.reduce((p, c) => {
+      if (c.xp >= c.nextLevelXp) {
+        p.push(c);
+        console.log(c._id);
+      }
+
+      return p;
+    }, []);
+
+    message.channel.send(`No total, ${vrau.length} pessoas se aproveitaram do problema, mamãe! Devo matá-los imediatamente?`);
+    console.log(vrau); */
   }
 };

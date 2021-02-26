@@ -12,7 +12,7 @@ module.exports = class AfkCommand extends Command {
   async run({ message, args, authorData: selfData }, t) {
     const authorData = selfData ?? new this.client.database.Users({ id: message.author.id });
     authorData.afk = true;
-    authorData.afkReason = args.length ? args.join(' ') : 'AFK';
+    authorData.afkReason = args.length ? args.join(' ').replace('`', '') : 'AFK';
     authorData.save();
 
     message.menheraReply('success', t('commands:afk.success'));
