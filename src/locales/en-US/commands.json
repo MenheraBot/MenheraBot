@@ -799,6 +799,8 @@
   },
   "village": {
     "description": "Go to the village of Boleham",
+    "usage": "",
+    "number-error": "there was an unknow error! Report that in my support server!",
     "non-aventure": "you are not an adventurer",
     "backpack-full": "your backpack has no space to buy these products",
     "cost": "Cost",
@@ -1027,7 +1029,8 @@
     "job": "Work",
     "vote": "Vote for Me",
     "minutes": "minutes",
-    "hours": "hours"
+    "hours": "hours",
+    "error": "you don't have cooldowns yet! Create a profile first!"
   },
   "familiar": {
     "description": "View your family member's status",

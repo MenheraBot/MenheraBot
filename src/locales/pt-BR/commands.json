@@ -819,7 +819,9 @@
   },
   "village": {
     "description": "Vá para a vila de Boleham",
+    "usage": "",
     "non-aventure": "você não é um aventureiro",
+    "number-error": "houve um erro desconhecido! Informe isso no meu servidor de suporte!",
     "backpack-full": "sua mochila não tem espaço para comprar esses produtos",
     "cost": "Custo",
     "desc": "Descrição",
@@ -1047,7 +1049,8 @@
     "job": "Trabalhar",
     "vote": "Votar em Mim",
     "minutes": "minutos",
-    "hours": "horas"
+    "hours": "horas",
+    "error": "você não possui cooldowns ainda! Crie um perfil primeiro!"
   },
   "familiar": {
     "description": "Veja os status de seu familiar",

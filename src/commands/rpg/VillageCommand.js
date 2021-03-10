@@ -242,9 +242,18 @@ module.exports = class VillageCommand extends Command {
 
       user.hotelTime = option.time + Date.now();
 
+      if (!option) {
+        collector.finish();
+        return message.menheraReply('error', t('commands:village.number-error'));
+      }
+
       if (option.life === 'MAX') {
         user.life = user.maxLife;
       } else {
+        if (Number.isNan(option.life)) {
+          collector.finish();
+          return message.menheraReply('error', t('commands:village.number-error'));
+        }
         user.life += option.life;
         if (user.life > user.maxLife) user.life = user.maxLife;
       }
@@ -253,6 +262,10 @@ module.exports = class VillageCommand extends Command {
         user.mana = user.maxMana;
       } else {
         user.mana += option.mana;
+        if (Number.isNan(option.life)) {
+          collector.finish();
+          return message.menheraReply('error', t('commands:village.number-error'));
+        }
         if (user.mana > user.maxMana) user.mana = user.maxMana;
       }
 

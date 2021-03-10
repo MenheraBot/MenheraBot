@@ -7,6 +7,6 @@ module.exports = class ShardDisconnectReceive {
 
   run(shard) {
     console.log(`[SHARD] Shard ${shard} foi de base`);
-    if (this.client.user.id === '708014856711962654') http.shards('disconnect', shard);
+    http.shards('disconnect', shard);
   }
 };

@@ -153,7 +153,7 @@ module.exports = class PvPCommands extends Command {
         }
       }
 
-      const enemyArmor = user2?.familiar?.id && user2.familiar.type === 'armor' ? user2.armor + (familiarsFile[user2.familiar.id].boost.value + ((user2.familiar.level - 1) * familiarsFile[user1.familiar.id].boost.value)) : user2.armor;
+      const enemyArmor = user2?.familiar?.id && user2.familiar.type === 'armor' ? user2.armor + (familiarsFile[user2.familiar.id]?.boost.value + ((user2.familiar.level - 1) * familiarsFile[user1.familiar.id]?.boost.value)) : user2.armor;
       let danoDado = danoUser - enemyArmor;
       if (escolha.name === 'Ataque Básico' || escolha.name === 'Basic Attack') danoDado = danoUser;
       if (danoDado < 0) danoDado = 0;

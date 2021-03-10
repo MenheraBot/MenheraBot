@@ -15,11 +15,13 @@ module.exports = class CooldownsCommand extends Command {
 
   async run({ message, authorData }, t) {
     const userRpg = await this.client.database.Rpg.findById(message.author.id);
+    // eslint-disable-next-line no-param-reassign
+    if (!authorData) return message.menheraReply('error', t('commands:cooldowns.error'));
 
-    const huntCooldownInMilis = parseInt(authorData.caçarTime) - Date.now();
+    const huntCooldownInMilis = parseInt(authorData?.caçarTime) - Date.now();
     const dungeonCooldownInMilis = userRpg ? (parseInt(userRpg.dungeonCooldown) - Date.now()) : null;
     const jobCooldownInMilis = userRpg ? (parseInt(userRpg.jobCooldown) - Date.now()) : null;
-    const voteCooldownInMilis = parseInt(authorData.voteCooldown) - Date.now();
+    const voteCooldownInMilis = parseInt(authorData?.voteCooldown) - Date.now();
 
     let txt = '';
 
