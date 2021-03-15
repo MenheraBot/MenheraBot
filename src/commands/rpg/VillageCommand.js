@@ -250,7 +250,7 @@ module.exports = class VillageCommand extends Command {
       if (option.life === 'MAX') {
         user.life = user.maxLife;
       } else {
-        if (Number.isNan(option.life)) {
+        if (Number.isNaN(option.life)) {
           collector.finish();
           return message.menheraReply('error', t('commands:village.number-error'));
         }
@@ -262,7 +262,7 @@ module.exports = class VillageCommand extends Command {
         user.mana = user.maxMana;
       } else {
         user.mana += option.mana;
-        if (Number.isNan(option.life)) {
+        if (Number.isNaN(option.life)) {
           collector.finish();
           return message.menheraReply('error', t('commands:village.number-error'));
         }
