@@ -181,6 +181,11 @@ module.exports = class Canvas {
       images.push(ringEmoji);
     }
 
+    if (user.voteCooldown && parseInt(user?.voteCooldown) > Date.now()) {
+      const voteEmoji = await CanvasImport.loadImage('https://media.discordapp.net/attachments/793669360857907200/826091383303307274/MenheraSmile2.png');
+      images.push(voteEmoji);
+    }
+
     if (links.length > 0) {
       for (const f in links) {
         const imageLoaded = await CanvasImport.loadImage(links[f]);
