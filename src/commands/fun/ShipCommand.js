@@ -39,7 +39,7 @@ module.exports = class ShipCommand extends Command {
       value = 100;
     }
 
-    if (dbUserToTakeValue1?.casado && dbUserToTakeValue2?.casado === user2.id) value = 100;
+    if (dbUserToTakeValue1.casado && dbUserToTakeValue1.casado === user2.id) value = 100;
 
     const bufferedShipImage = await Canvas.ShipImage(value, user1, user2);
 
