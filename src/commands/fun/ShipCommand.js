@@ -25,28 +25,21 @@ module.exports = class ShipCommand extends Command {
       return message.menheraReply('error', t('commands:ship.unknow-user'));
     }
 
-    if (!user1) return message.menheraReply('error', t('commands:ship.no-dbuser'));
-    if (!user2) return message.menheraReply('error', t('commands:ship.no-dbuser'));
+    if (!user1) return message.menheraReply('error', t('commands:ship.unknow-user'));
+    if (!user2) return message.menheraReply('error', t('commands:ship.unknow-user'));
 
-    const value1 = await this.client.database.Users.findOne({ id: user1.id });
-    const value2 = await this.client.database.Users.findOne({ id: user2.id });
-    if (!value1) return message.menheraReply('error', t('commands:ship.no-dbuser'));
-    if (!value2) return message.menheraReply('error', t('commands:ship.no-dbuser'));
+    const dbUserToTakeValue1 = await this.client.database.Users.findOne({ id: user1.id });
+    const dbUserToTakeValue2 = await this.client.database.Users.findOne({ id: user2.id });
 
-    if (!value1.shipValue || value1.shipValue === 0) {
-      value1.shipValue = Math.floor(Math.random() * 55);
-      value1.save();
-    }
-    if (!value2.shipValue || value2.shipValue === 0) {
-      value2.shipValue = Math.floor(Math.random() * 55);
-      value2.save();
-    }
-    let value = Number(value1.shipValue) + Number(value2.shipValue);
+    const FinalValue1 = dbUserToTakeValue1?.shipValue ? dbUserToTakeValue1.shipValue : Math.floor(Math.random() * 55);
+    const FinalValue2 = dbUserToTakeValue2?.shipValue ? dbUserToTakeValue2.shipValue : Math.floor(Math.random() * 55);
+
+    let value = Number(FinalValue1) + Number(FinalValue2);
     if (Number(value) >= 100) {
       value = 100;
     }
 
-    if (value1.casado && value1.casado === user2.id) value = 100;
+    if (dbUserToTakeValue1?.casado && dbUserToTakeValue2?.casado === user2.id) value = 100;
 
     const bufferedShipImage = await Canvas.ShipImage(value, user1, user2);
 
