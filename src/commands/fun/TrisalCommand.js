@@ -13,7 +13,7 @@ module.exports = class TrisalCommand extends Command {
   }
 
   async run({ message, args, authorData }, t) {
-    if (!args[1] && authorData.trisal?.length === 0) return message.menheraReply('error', t('commands:trisal.no-args'));
+    if (authorData.trisal?.length === 0 && !args[1]) return message.menheraReply('error', t('commands:trisal.no-args'));
 
     if (authorData.trisal?.length > 0) {
       const marryTwo = await this.client.users.fetch(authorData.trisal[0]);
@@ -43,6 +43,7 @@ module.exports = class TrisalCommand extends Command {
     if (!mencionado1 || !mencionado2) return message.menheraReply('error', t('commands:trisal.no-mention'));
     if (mencionado1 === message.author || mencionado2 === message.author) return message.menheraReply('error', t('commands:trisal.self-mention'));
     if (mencionado1.bot || mencionado2.bot) return message.menheraReply('error', t('commands:trisal.bot-mention'));
+    if (mencionado1 === mencionado2) return message.menheraReply('error', t('commands:trisal:same-mention'));
 
     const user1 = authorData;
     const user2 = await this.client.database.Users.findOne({ id: mencionado1.id });

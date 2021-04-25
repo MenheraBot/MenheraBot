@@ -1080,8 +1080,9 @@
       "title": "Relacionamento a 3 >.<",
       "description": "Por mais que não seja algo sério, estes 3 estão juntinhos"
     },
-    "no-mention": "vocÊ deve mencionar dois usuários para formar um trisal contigo",
+    "no-mention": "você deve mencionar dois usuários para formar um trisal contigo",
     "self-mention": "você não pode fazer um casal consigo memso",
+    "same-mention": "você n pode mencionar o mesmo usuário 2 vezes",
     "bot-mention": "você não pode formar um trisal com um bot. Na verdade isso é até esquisito... Sinto pena de ti por ter tentado ficar com um bot.",
     "no-db": "um dos integrantes do trisal não foi encontrado no banco de dados! O melhor agora é desfazer este trisal e começar um outro",
   "comedor-de-casadas": "UOUOUOU calma lá comedor de casadas, um dos usuários que você mencionou ja está em um trisal",
