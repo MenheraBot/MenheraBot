@@ -55,7 +55,7 @@ module.exports = class TrisalCommand extends Command {
     const msg = await message.channel.send(`${t('commands:trisal.accept-message')} ${message.author}, ${mencionado1}, ${mencionado2}`);
     await msg.react('✅');
 
-    const acceptableIds = [message.author.id, mencionado1.id, mencionado2.id];
+    const acceptableIds = [message.author.id, mencionado1, mencionado2];
 
     const filter = (reaction, usuario) => reaction.emoji.name === '✅' && acceptableIds.includes(usuario.id);
 
@@ -67,9 +67,9 @@ module.exports = class TrisalCommand extends Command {
       if (!acceptedIds.includes(reaction.user.id)) acceptedIds.push(reaction.user.id);
 
       if (acceptedIds.length === 3) {
-        user1.trisal = [mencionado1.id, mencionado2.id];
-        user2.trisal = [message.author.id, mencionado2.id];
-        user3.trisal = [message.author.id, mencionado1.id];
+        user1.trisal = [mencionado1, mencionado2];
+        user2.trisal = [message.author.id, mencionado2];
+        user3.trisal = [message.author.id, mencionado1];
         await user1.save();
         await user2.save();
         await user3.save();
