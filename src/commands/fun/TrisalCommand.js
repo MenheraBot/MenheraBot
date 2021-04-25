@@ -52,7 +52,10 @@ module.exports = class TrisalCommand extends Command {
 
     if (user2.trisal?.length > 0 || user3.trisal?.length > 0) return message.menheraReply('error', t('commands:trisal.comedor-de-casadas'));
 
-    const msg = await message.channel.send(`${t('commands:trisal.accept-message')} ${message.author}, ${mencionado1}, ${mencionado2}`);
+    const messageMention1 = await this.client.users.fetch(mencionado1);
+    const messageMention2 = await this.client.users.fetch(mencionado2);
+
+    const msg = await message.channel.send(`${t('commands:trisal.accept-message')} ${message.author}, ${messageMention1}, ${messageMention2}`);
     await msg.react('✅');
 
     const acceptableIds = [message.author.id, mencionado1, mencionado2];
