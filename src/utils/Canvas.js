@@ -13,6 +13,21 @@ const ProfileBadges = require('../structures/ProfileBadges');
 const familiarsFile = require('../structures/RpgHandler').familiars;
 
 module.exports = class Canvas {
+  static async TrisalBuilder(linkOne, linkTwo, linkThree) {
+    const ImageOne = await CanvasImport.loadImage(linkOne);
+    const ImageTwo = await CanvasImport.loadImage(linkTwo);
+    const ImageThree = await CanvasImport.loadImage(linkThree);
+
+    const canvas = CanvasImport.createCanvas(728, 256);
+    const ctx = canvas.getContext('2d');
+
+    ctx.drawImage(ImageOne, 0, 0, 256, 256);
+    ctx.drawImage(ImageTwo, 257, 0, 512, 256);
+    ctx.drawImage(ImageThree, 513, 0, 728, 256);
+
+    return canvas.toBuffer();
+  }
+
   static async ProfileImage({
     member, user, avatar, marry,
   }, t) {

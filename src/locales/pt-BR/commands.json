@@ -1070,5 +1070,30 @@
     "description": "É grande né? Disse o Astolfo",
     "usage": "<texto>",
     "no-args": "o que é grande? Me diga?"
+  },
+  "trisal": {
+    "description": "Forme um trisal e veja suas metadinhas",
+    "usage": "[@menção1 & @menção2]",
+    "no-args": "você não mencionou os integrantes do trisal",
+    "marry-not-found": "um usuário de seu trisal não foi encontrado",
+    "embed": {
+      "title": "Relacionamento a 3 >.<",
+      "description": "Por mais que não seja algo sério, estes 3 estão juntinhos"
+    },
+    "no-mention": "vocÊ deve mencionar dois usuários para formar um trisal contigo",
+    "self-mention": "você não pode fazer um casal consigo memso",
+    "bot-mention": "você não pode formar um trisal com um bot. Na verdade isso é até esquisito... Sinto pena de ti por ter tentado ficar com um bot.",
+    "no-db": "um dos integrantes do trisal não foi encontrado no banco de dados! O melhor agora é desfazer este trisal e começar um outro",
+  "comedor-de-casadas": "UOUOUOU calma lá comedor de casadas, um dos usuários que você mencionou ja está em um trisal",
+  "accept-message": ":heart: | Vocês aceitam formar um trisal? Vocês 3 devem reagir a esta mensagem em 14 segundos!",
+  "done": "parabéns, vocês três formaram um trisal lindo! Utilize este comando novamente para ver suas fotinhas juntas",
+  "error": "os 3 não reagiram à mensagem a tempo! Tente novamente, talvez com alguem que queira, quem sabe"
+  },
+  "untrisal": {
+    "description": "Acabe com o trisal que você não quer mais participar",
+    "usage": "",
+    "error": "você não está em nenhum trisal!",
+    "sure": "você tem certeza que quer terminar o trisal? Tens 14 segundos para reagir",
+    "done": "O seu trisal acabou! Não tem mais jeito. Acabou...."
   }
 }

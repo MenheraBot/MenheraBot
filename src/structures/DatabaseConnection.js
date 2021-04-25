@@ -97,6 +97,7 @@ const userSchema = mongoose.Schema({
   votos: { type: Number, default: 0 },
   badges: { type: Array, default: [] },
   voteCooldown: { type: String, default: '000000000000' },
+  trisal: { type: Array, default: [] },
 });
 
 /*
