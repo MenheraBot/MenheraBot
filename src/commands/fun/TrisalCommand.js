@@ -21,9 +21,9 @@ module.exports = class TrisalCommand extends Command {
 
       if (!marryTwo || !marryThree) return message.menheraReply('error', t('commands:trisal.marry-not-found'));
 
-      const userOneAvatar = message.author.displayAvatarURL({ dynamic: false, size: 512 });
-      const userTwoAvatar = marryTwo.displayAvatarURL({ dynamic: false, size: 512 });
-      const userThreeAvatar = marryThree.displayAvatarURL({ dynamic: false, size: 512 });
+      const userOneAvatar = message.author.displayAvatarURL({ dynamic: false, size: 512, format: 'png' });
+      const userTwoAvatar = marryTwo.displayAvatarURL({ dynamic: false, size: 512, format: 'png' });
+      const userThreeAvatar = marryThree.displayAvatarURL({ dynamic: false, size: 512, format: 'png' });
 
       const image = await TrisalBuilder(userOneAvatar, userTwoAvatar, userThreeAvatar);
       const attachment = new MessageAttachment(image, 'trisal.png');
