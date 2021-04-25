@@ -40,13 +40,13 @@ module.exports = class TrisalCommand extends Command {
     const [mencionado1, mencionado2] = message.mentions.users.keyArray();
 
     if (!mencionado1 || !mencionado2) return message.menheraReply('error', t('commands:trisal.no-mention'));
-    if (mencionado1 === message.author || mencionado2 === message.author) return message.menheraReply('error', t('commands:trisal.self-mention'));
+    if (mencionado1 === message.author.id || mencionado2 === message.author.id) return message.menheraReply('error', t('commands:trisal.self-mention'));
     if (mencionado1.bot || mencionado2.bot) return message.menheraReply('error', t('commands:trisal.bot-mention'));
     if (mencionado1 === mencionado2) return message.menheraReply('error', t('commands:trisal:same-mention'));
 
     const user1 = authorData;
-    const user2 = await this.client.database.Users.findOne({ id: mencionado1.id });
-    const user3 = await this.client.database.Users.findOne({ id: mencionado2.id });
+    const user2 = await this.client.database.Users.findOne({ id: mencionado1 });
+    const user3 = await this.client.database.Users.findOne({ id: mencionado2 });
 
     if (!user1 || !user2 || !user3) return message.menheraReply('error', t('commands:trisal.no-db'));
 
