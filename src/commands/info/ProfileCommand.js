@@ -35,7 +35,7 @@ module.exports = class ProfileCommand extends Command {
     if (user?.casado !== 'false' && user?.casado) marry = await this.client.users.fetch(user.casado);
 
     if (!user) return message.menheraReply('error', t('commands:profile.no-dbuser'));
-    if (user.ban) return message.menheraReply('error', t('commands:profile.banned', { reason: user.banReason }));
+    if (user.ban && message.author.id !== this.client.config.owner[0]) return message.menheraReply('error', t('commands:profile.banned', { reason: user.banReason }));
 
     const avatar = member.displayAvatarURL({ format: 'png' });
 
