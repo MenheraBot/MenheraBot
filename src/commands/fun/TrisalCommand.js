@@ -63,8 +63,8 @@ module.exports = class TrisalCommand extends Command {
 
     const acceptedIds = [];
 
-    collector.on('collect', async (reaction) => {
-      if (!acceptedIds.includes(reaction.user.id)) acceptedIds.push(reaction.user.id);
+    collector.on('collect', async (reaction, user) => {
+      if (!acceptedIds.includes(user.id)) acceptedIds.push(user.id);
 
       if (acceptedIds.length === 3) {
         user1.trisal = [mencionado1, mencionado2];
