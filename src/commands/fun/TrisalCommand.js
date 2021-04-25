@@ -37,8 +37,7 @@ module.exports = class TrisalCommand extends Command {
       return message.channel.send(embed);
     }
 
-    const mencionado1 = message.mentions.users.first();
-    const mencionado2 = message.mentions.users[1];
+    const [mencionado1, mencionado2] = message.mentions.users.keyArray();
 
     if (!mencionado1 || !mencionado2) return message.menheraReply('error', t('commands:trisal.no-mention'));
     if (mencionado1 === message.author || mencionado2 === message.author) return message.menheraReply('error', t('commands:trisal.self-mention'));
