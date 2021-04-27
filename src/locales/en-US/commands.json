@@ -1056,6 +1056,7 @@
     "usage": "[@mention1 & @mention2]",
     "no-args": "you didn't mention the members of the trisal",
     "marry-not-found": "a user of your trisal was not found",
+    "no-owner": "you need to use the 'suck' command to create an account first >.<",
     "embed": {
       "title": "Relationship with 3 >.<",
       "description": "As much as it is not something serious, these 3 are together"

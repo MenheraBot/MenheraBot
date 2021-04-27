@@ -1076,6 +1076,7 @@
     "usage": "[@menção1 & @menção2]",
     "no-args": "você não mencionou os integrantes do trisal",
     "marry-not-found": "um usuário de seu trisal não foi encontrado",
+    "no-owner": "utilize o comando mamar para que eu crie uma conta pra você antes de tudo >.<",
     "embed": {
       "title": "Relacionamento a 3 >.<",
       "description": "Por mais que não seja algo sério, estes 3 estão juntinhos"

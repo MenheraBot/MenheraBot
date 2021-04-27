@@ -13,6 +13,9 @@ module.exports = class TrisalCommand extends Command {
   }
 
   async run({ message, args, authorData }, t) {
+    // eslint-disable-next-line no-param-reassign
+    if (!authorData) authorData = await this.client.database.Users.findOne({ id: message.author.id });
+    if (!authorData) return message.menheraReply('error', t('commands:trisal.no-owner'));
     if (authorData.trisal?.length === 0 && !args[1]) return message.menheraReply('error', t('commands:trisal.no-args'));
 
     if (authorData.trisal?.length > 0) {
