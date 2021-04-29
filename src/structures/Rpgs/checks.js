@@ -112,7 +112,13 @@ module.exports.morte = async (message, user, t, toSay, inimigo) => {
   user.death = Date.now() + 43200000;
   user.life = 0;
   user.inBattle = false;
-  await user.save();
+  try {
+    await user.save();
+  } catch (e) {
+    setTimeout(async () => {
+      await user.save();
+    }, 500);
+  }
 };
 
 module.exports.enemyShot = async (message, user, inimigo, type, t, toSay) => {

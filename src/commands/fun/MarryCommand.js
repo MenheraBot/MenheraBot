@@ -1,8 +1,6 @@
 const moment = require('moment');
 const Command = require('../../structures/command');
 
-moment.locale('pt-br');
-
 module.exports = class MarryCommand extends Command {
   constructor(client) {
     super(client, {
@@ -40,14 +38,16 @@ module.exports = class MarryCommand extends Command {
       const yesColetor = msg.createReactionCollector(filterYes, { max: 1, time: 14500 });
       const noColetor = msg.createReactionCollector(filterNo, { max: 1, time: 14500 });
 
-      noColetor.on('collect', () => {
-        msg.reactions.removeAll().catch();
+      noColetor.on('collect', async () => {
+        await msg.reactions.removeAll().catch();
         return message.channel.send(`${mencionado} ${t('commands:marry.negated')} ${message.author}`);
       });
 
-      yesColetor.on('collect', () => {
-        msg.reactions.removeAll().catch();
+      yesColetor.on('collect', async () => {
+        await msg.reactions.removeAll().catch();
         message.channel.send(`💍${message.author} ${t('commands:marry.acepted')} ${mencionado}💍`);
+
+        moment.locale('pt-br');
 
         const dataFormated = moment(Date.now()).format('l LTS');
 
@@ -57,8 +57,8 @@ module.exports = class MarryCommand extends Command {
         user2.casado = message.author.id;
         user2.data = dataFormated;
 
-        authorData.save();
-        user2.save();
+        await authorData.save();
+        await user2.save();
       });
     });
   }

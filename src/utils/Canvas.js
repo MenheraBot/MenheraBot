@@ -22,8 +22,8 @@ module.exports = class Canvas {
     const ctx = canvas.getContext('2d');
 
     ctx.drawImage(ImageOne, 0, 0, 256, 256);
-    ctx.drawImage(ImageTwo, 257, 0, 512, 256);
-    ctx.drawImage(ImageThree, 513, 0, 728, 256);
+    ctx.drawImage(ImageTwo, 256, 0, 256, 256);
+    ctx.drawImage(ImageThree, 512, 0, 256, 256);
 
     return canvas.toBuffer();
   }
