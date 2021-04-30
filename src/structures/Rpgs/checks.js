@@ -81,7 +81,7 @@ module.exports.battle = async (message, escolha, user, inimigo, type, t) => {
 
   const enemyArmor = inimigo.armor;
   let danoDado = danoUser - enemyArmor;
-  if (escolha.name === 'Ataque Básico' || escolha.name === 'Basic Attack') danoDado = danoUser - parseInt(enemyArmor / 2);
+  if (escolha.name === 'Ataque Básico' || escolha.name === 'Basic Attack') danoDado = danoUser;
   if (danoDado < 0) danoDado = 0;
   const vidaInimigo = inimigo.life - danoDado;
 
@@ -117,7 +117,7 @@ module.exports.morte = async (message, user, t, toSay, inimigo) => {
   } catch (e) {
     setTimeout(async () => {
       await user.save();
-    }, 500);
+    }, 1000);
   }
 };
 
