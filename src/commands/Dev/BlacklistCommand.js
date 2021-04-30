@@ -4,6 +4,7 @@ module.exports = class BlackilistCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'blacklist',
+      aliases: ['bl'],
       description: 'Bane um usuário de usar a Menehra OwO',
       devsOnly: true,
       category: 'Dev',

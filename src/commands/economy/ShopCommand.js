@@ -44,14 +44,14 @@ module.exports = class ShopCommand extends Command {
 
       if (m.content === '1') {
         // eslint-disable-next-line no-use-before-define
-        lojaComprar(message, embedMessage, authorData, saldoAtual, t);
-      // eslint-disable-next-line no-use-before-define
-      } else lojaVender(message, embedMessage, authorData, saldoAtual, t);
+        lojaComprar(message, embedMessage, authorData, saldoAtual, t, this.client.constants);
+        // eslint-disable-next-line no-use-before-define
+      } else lojaVender(message, embedMessage, authorData, saldoAtual, t, this.client.constants);
     });
   }
 };
 
-function lojaComprar(message, embedMessage, user, saldoAtual, t) {
+function lojaComprar(message, embedMessage, user, saldoAtual, t, constants) {
   const dataComprar = {
     title: t('commands:shop.embed_title'),
     color: '#6cbe50',
@@ -83,32 +83,32 @@ function lojaComprar(message, embedMessage, user, saldoAtual, t) {
 
       const coresDisponíveis = [{
         cor: '#6308c0',
-        preço: 50000,
+        preço: constants.shopEconomy.colors.purple,
         nome: `**${t('commands:shop.colors.purple')}**`,
       }, {
         cor: '#df0509',
-        preço: 50000,
+        preço: constants.shopEconomy.colors.red,
         nome: `**${t('commands:shop.colors.red')}**`,
       }, {
         cor: '#55e0f7',
-        preço: 50000,
+        preço: constants.shopEconomy.colors.cian,
         nome: `**${t('commands:shop.colors.cian')}**`,
       },
       {
         cor: '#03fd1c',
-        preço: 50000,
+        preço: constants.shopEconomy.colors.green,
         nome: `**${t('commands:shop.colors.green')}**`,
       }, {
         cor: '#fd03c9',
-        preço: 50000,
+        preço: constants.shopEconomy.colors.pink,
         nome: `**${t('commands:shop.colors.pink')}**`,
       }, {
         cor: '#e2ff08',
-        preço: 50000,
+        preço: constants.shopEconomy.colors.yellow,
         nome: `**${t('commands:shop.colors.yellow')}**`,
       }, {
         cor: 'SUA ESCOLHA',
-        preço: 100000,
+        preço: constants.shopEconomy.colors.your_choice,
         nome: `**${t('commands:shop.colors.your_choice')}**`,
       },
       ];
@@ -205,7 +205,7 @@ function lojaComprar(message, embedMessage, user, saldoAtual, t) {
                 user.cores.push({
                   nome: '7 - Sua Escolha',
                   cor: `#${hexMsg.content}`,
-                  preço: 1000000,
+                  preço: constants.shopEconomy.colors.your_choice,
                 });
                 user.save();
                 message.menheraReply('sucess', t('commands:shop.buy_colors.yc-confirm', { color: hexMsg.content, price: coresDisponíveis[6].preço, stars: user.estrelinhas })).then(() => embedMessage.delete().catch);
@@ -219,7 +219,7 @@ function lojaComprar(message, embedMessage, user, saldoAtual, t) {
     } else {
       // abre loja de rolls
 
-      const valorRoll = 8500;
+      const valorRoll = constants.shopEconomy.hunts.roll;
       const rollsAtual = user.rolls;
 
       const dataRolls = {
@@ -269,7 +269,7 @@ function lojaComprar(message, embedMessage, user, saldoAtual, t) {
   });
 }
 
-function lojaVender(message, embedMessage, user, saldoAtual, t) {
+function lojaVender(message, embedMessage, user, saldoAtual, t, constants) {
   const demons = user.caçados || 0;
   const anjos = user.anjos || 0;
   const sd = user.semideuses || 0;
@@ -305,10 +305,10 @@ function lojaVender(message, embedMessage, user, saldoAtual, t) {
     if (!input) return message.menheraReply('error', t('commands:shop.dataVender.invalid-args'));
     const valor = parseInt(input.replace(/\D+/g, ''));
 
-    const valorDemonio = 700;
-    const valorAnjo = 3500;
-    const valorSD = 10000;
-    const valorDeus = 50000;
+    const valorDemonio = constants.shopEconomy.hunts.demon;
+    const valorAnjo = constants.shopEconomy.hunts.angel;
+    const valorSD = constants.shopEconomy.hunts.demigod;
+    const valorDeus = constants.shopEconomy.hunts.god;
 
     if (cArgs[0] === '1') {
       if (Number.isNaN(valor) || valor < 1) {

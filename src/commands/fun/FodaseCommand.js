@@ -12,14 +12,16 @@ module.exports = class FodaseCommand extends Command {
     });
   }
 
-  async run({ message }) {
+  async run({ message, server }) {
     if (message.deletable) message.delete();
 
-    const frases = [
+    const frases = (server.lang === 'pt-BR') ? [
       `${message.author.username} disse que fodase`,
       'Inteligente, pena que fodase',
       'Ta, e o fodase?',
-    ];
+    ] : [`${message.author.username} said it dont care`,
+      'Nice, but fuck it',
+      'Cool, but i don\'t care'];
 
     const frasesUsada = frases[Math.floor(Math.random() * frases.length)];
     const rand = await getImageUrl('fodase');

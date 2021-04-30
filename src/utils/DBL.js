@@ -21,9 +21,9 @@ module.exports = class DiscordBots {
       user.votos += 1;
 
       let rollQuantity = 1;
-      let starQuantity = Math.floor(Math.random() * (5600 - 1200 + 1)) + 1200;
+      let starQuantity = Math.floor(Math.random() * (3600 - 1200 + 1)) + 1200;
       let rpgRollQuantity = 1;
-      let rpgMoneyQuantity = Math.floor(Math.random() * (2600 - 500 + 1)) + 500;
+      let rpgMoneyQuantity = Math.floor(Math.random() * (980 - 100 + 1)) + 100;
       let embedTitle = '<:God:758474639570894899> | Obrigada por votar em mim';
       let embedDescription = `Obrigada por votar em mim bebezinho, cada voto me ajuda e inspira minha dona a continuar me cuidando! ❤️\n\nComo forma de agradecimento, você recebeu **1**🔑 e **${starQuantity}**⭐!\n\nSabia que a cada 20 votos você ganha um prêmio especial? E que você ja votou **${user.votos}** vezes em mim? **OBRIGADA**\n\nVote em mim novamente em 12 horas <a:LevelUp:760954035779272755>`;
 

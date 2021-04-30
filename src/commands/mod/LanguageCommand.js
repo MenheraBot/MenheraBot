@@ -7,7 +7,7 @@ module.exports = class LanguageCommand extends Command {
       aliases: ['linguagem', 'lang'],
       cooldown: 15,
       userPermissions: ['MANAGE_GUILD'],
-      clientPermissions: ['EMBED_LINKS', 'ADD_REACTIONS'],
+      clientPermissions: ['EMBED_LINKS', 'ADD_REACTIONS', 'MANAGE_MESSAGES'],
       category: 'moderação',
     });
   }

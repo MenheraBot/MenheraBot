@@ -52,33 +52,10 @@ module.exports = class HuntCommand extends Command {
 
     if (!option) return message.menheraReply('error', `${t('commands:hunt.no-args')} \`${validOptions.join('`, `')}\``);
 
-    // probabilidades normais
-    const probabilidadeDemonioBasica = [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 4];
-    const probabilidadeAnjoBasica = [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2];
-    const probabilidadeSDBasica = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
-    const probabilidadeDeusesBasica = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1];
-    // probabilidades do servidor de suporte
-    const probabilidadeDemonioServer = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 4];
-    const probabilidadeAnjoServer = [0, 0, 0, 1, 1, 1, 1, 2];
-    const probabilidadeSDServer = [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
-    const probabilidadeDeusesServer = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1];
-
-    let probabilidadeDemonio;
-    let probabilidadeAnjo;
-    let probabilidadeSD;
-    let probabilidadeDeuses;
-
-    if (message.guild.id === '717061688460967988') {
-      probabilidadeDemonio = probabilidadeDemonioServer;
-      probabilidadeAnjo = probabilidadeAnjoServer;
-      probabilidadeSD = probabilidadeSDServer;
-      probabilidadeDeuses = probabilidadeDeusesServer;
-    } else {
-      probabilidadeDemonio = probabilidadeDemonioBasica;
-      probabilidadeAnjo = probabilidadeAnjoBasica;
-      probabilidadeSD = probabilidadeSDBasica;
-      probabilidadeDeuses = probabilidadeDeusesBasica;
-    }
+    const probabilidadeDemonio = message.guild.id === '717061688460967988' ? this.client.constants.probabilities.support.demon : this.client.constants.probabilities.normal.demon;
+    const probabilidadeAnjo = message.guild.id === '717061688460967988' ? this.client.constants.probabilities.support.angel : this.client.constants.probabilities.normal.angel;
+    const probabilidadeSD = message.guild.id === '717061688460967988' ? this.client.constants.probabilities.support.demigod : this.client.constants.probabilities.normal.demigod;
+    const probabilidadeDeuses = message.guild.id === '717061688460967988' ? this.client.constants.probabilities.support.god : this.client.constants.probabilities.normal.god;
 
     if (option === 'ajuda') return message.menheraReply('question', t('commands:hunt.help'));
     if (option === 'probabilidades') {
@@ -99,7 +76,7 @@ module.exports = class HuntCommand extends Command {
         case 'demônio': {
           const dc = probabilidadeDemonio[Math.floor(Math.random() * probabilidadeDemonio.length)];
           authorData.caçados += dc;
-          authorData.caçarTime = 3600000 + Date.now();
+          authorData.caçarTime = this.client.constants.probabilities.defaultTime + Date.now();
           authorData.save();
           embed.setDescription(`${t('commands:hunt.description_start', { value: dc })} ${t('commands:hunt.demons')}`);
           message.channel.send(embed);
@@ -109,7 +86,7 @@ module.exports = class HuntCommand extends Command {
         case 'anjos': {
           const da = probabilidadeAnjo[Math.floor(Math.random() * probabilidadeAnjo.length)];
           authorData.anjos += da;
-          authorData.caçarTime = 3600000 + Date.now();
+          authorData.caçarTime = this.client.constants.probabilities.defaultTime + Date.now();
           authorData.save();
           embed.setDescription(`${t('commands:hunt.description_start', { value: da })} ${t('commands:hunt.angels')}`);
           message.channel.send(embed);
@@ -119,7 +96,7 @@ module.exports = class HuntCommand extends Command {
         case 'semideuses': {
           const ds = probabilidadeSD[Math.floor(Math.random() * probabilidadeSD.length)];
           authorData.semideuses += ds;
-          authorData.caçarTime = 3600000 + Date.now();
+          authorData.caçarTime = this.client.constants.probabilities.defaultTime + Date.now();
           authorData.save();
           embed.setDescription(`${t('commands:hunt.description_start', { value: ds })} ${t('commands:hunt.sd')}`);
           message.channel.send(embed);
@@ -129,7 +106,7 @@ module.exports = class HuntCommand extends Command {
         case 'deus': {
           const dd = probabilidadeDeuses[Math.floor(Math.random() * probabilidadeDeuses.length)];
           authorData.deuses += dd;
-          authorData.caçarTime = 3600000 + Date.now();
+          authorData.caçarTime = this.client.constants.probabilities.defaultTime + Date.now();
           authorData.save();
           if (dd > 0) embed.setColor('#e800ff');
           embed.setDescription((dd > 0) ? t('commands:hunt.god_hunted_success', { value: dd }) : t('commands:hunt.god_hunted_fail', { value: dd }));

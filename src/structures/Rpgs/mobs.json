@@ -785,11 +785,11 @@
       "loots": [
         {
           "name": "Harpa de Apolo",
-          "value": 780
+          "value": 760
         },
         {
           "name": "Carruagem de Apolo",
-          "value": 1320
+          "value": 880
         }
       ],
       "ataques": [
@@ -817,11 +817,11 @@
       "loots": [
         {
           "name": "Lâmina de Loki",
-          "value": 1250
+          "value": 1000
         },
         {
           "name": "Capa de Loki",
-          "value": 380
+          "value": 680
         }
       ],
       "ataques": [
@@ -881,11 +881,11 @@
       "loots": [
         {
           "name": "Espada de Freya",
-          "value": 1450
+          "value": 1350
         },
         {
           "name": "Anel de Freya",
-          "value": 1320
+          "value": 1100
         }
       ],
       "ataques": [
@@ -917,7 +917,7 @@
         },
         {
           "name": "Escudo de Ares",
-          "value": 1700
+          "value": 1450
         }
       ],
       "ataques": [
@@ -951,7 +951,7 @@
         },
         {
           "name": "Capuz da Morte de Rabadon",
-          "value": 3600
+          "value": 2800
         }
       ],
       "ataques": [
@@ -983,7 +983,7 @@
         },
         {
           "name": "Infernum",
-          "value": 2900
+          "value": 2400
         }
       ],
       "ataques": [
@@ -1033,26 +1033,26 @@
     {
       "loots": [
         {
-          "name": "Esmeralda",
-          "value": 3500
+          "name": "Berga",
+          "value": 2180
         },
         {
-          "name": "Obsidian",
+          "name": "Aipim",
           "value": 3000
         }
       ],
       "ataques": [
         {
-          "name": "Toma-te arco e flecha",
+          "name": "Não é biscoito, é bolacha!",
           "damage": 560
         },
         {
-          "name": "Pimbada Violenta",
+          "name": "Te tirei os butiá dos bolso",
           "damage": 670
         }
       ],
       "type": "Evolved",
-      "name": "Fulano e Beltrano",
+      "name": "PãoTeonTchê",
       "life": 2000,
       "damage": "560 - 670",
       "armor": 320,
