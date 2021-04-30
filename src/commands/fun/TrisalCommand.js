@@ -33,7 +33,6 @@ module.exports = class TrisalCommand extends Command {
 
       const embed = new MessageEmbed()
         .attachFiles(attachment)
-        .setTitle(t('commands:trisal.embed.title'))
         .setDescription(`${t('commands:trisal.embed.description')} ${message.author}, ${marryTwo}, ${marryThree}`)
         .setColor('#ac76f9')
         .setImage('attachment://trisal.png');
