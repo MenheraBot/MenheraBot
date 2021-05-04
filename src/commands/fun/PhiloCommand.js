@@ -8,6 +8,7 @@ module.exports = class PhiloCommand extends Command {
       name: 'philo',
       aliases: ['filo'],
       category: 'diversão',
+      clientPermissions: ['ATTACH_FILES'],
     });
   }
 

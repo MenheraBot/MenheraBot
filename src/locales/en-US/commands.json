@@ -1065,10 +1065,10 @@
     "same-mention": "you can't mention the same user 2 times",
     "bot-mention": "you cannot form a trisal with a bot. In fact this is even weird ... I feel sorry for you for trying to get a bot.",
     "no-db": "one of the members of trisal was not found in the database! The best thing now is to undo this trisal and start another one",
-  "comedor-de-casadas": "UOUOUOU calm there married eater, one of the users you mentioned is already in a trisal",
-  "accept-message": ":heart: | Do you accept to form a trisal? You 3 must react to this message in 14 seconds!",
-  "done": "congratulations, you three formed a beautiful trisal! Use this command again to see your pictures together",
-  "error": "the 3 did not react to the message in time! Try again, maybe with someone who wants to, who knows"
+    "comedor-de-casadas": "UOUOUOU calm there married eater, one of the users you mentioned is already in a trisal",
+    "accept-message": ":heart: | Do you accept to form a trisal? You 3 must react to this message in 14 seconds!",
+    "done": "congratulations, you three formed a beautiful trisal! Use this command again to see your pictures together",
+    "error": "the 3 did not react to the message in time! Try again, maybe with someone who wants to, who knows"
   },
   "untrisal": {
     "description": "End the trisal you no longer want to participate in",
@@ -1076,5 +1076,12 @@
     "error": "you are not in any trisal!",
     "sure": "are you sure you want to finish the trisal? You have 14 seconds to react",
     "done": "Your trisal is over! There's no way. He finished...."
+  },
+  "audio": {
+    "description": "Play a sound to scare your friends",
+    "usage": "<song>",
+    "not-in-voice": "you need to be on a voice channel to execute this command",
+    "no-args": "you did not choose which sound you want to play. Choices: `wpp`, `rojao`, `gemidao`, `yamete` or `among`",
+    "unknow-args": "this sound does not exist you dumb, you need to see if you wrote it right. Choices: `wpp`, `rojao`, `gemidao`, `yamete` or `among`"
   }
 }
