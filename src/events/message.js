@@ -4,6 +4,7 @@ const Util = require('../utils/Util');
 const makeRequest = require('../utils/HTTPrequests');
 
 const cooldowns = new Collection();
+const warnedUserCooldowns = new Map();
 
 module.exports = class MessageReceive {
   constructor(client) {
@@ -29,9 +30,7 @@ module.exports = class MessageReceive {
     const language = server?.lang ?? 'pt-BR';
     const t = i18next.getFixedT(language);
 
-    if (message.mentions.users.size > 0) {
-      this.notifyAfk(message, t, message.mentions.users.map((u) => u.id));
-    }
+    if (message.mentions.users.size > 0) this.notifyAfk(message, t, message.mentions.users.map((u) => u.id));
 
     const authorData = await this.client.database.Users.findOne({ id: message.author.id });
     if (authorData?.afk) {
@@ -75,15 +74,22 @@ module.exports = class MessageReceive {
 
       if (timestamps.has(message.author.id)) {
         const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
+        const hasBeenWarned = warnedUserCooldowns.get(message.author.id);
 
         if (now < expirationTime) {
+          if (hasBeenWarned) return;
+          warnedUserCooldowns.set(message.author.id, true);
           const timeLeft = (expirationTime - now) / 1000;
           return message.menheraReply('warn', t('events:cooldown', { time: timeLeft.toFixed(1), cmd: command.config.name }));
         }
       }
 
       timestamps.set(message.author.id, now);
-      setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
+      warnedUserCooldowns.set(message.author.id, false);
+      setTimeout(() => {
+        timestamps.delete(message.author.id);
+        warnedUserCooldowns.delete(message.author.id);
+      }, cooldownAmount);
     }
 
     if (command.config.userPermissions?.length) {
