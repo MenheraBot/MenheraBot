@@ -27,10 +27,7 @@ module.exports = class SuggestCommand extends Command {
 
     const webhook = await this.client.fetchWebhook(this.client.config.suggest_webhook_id, this.client.config.suggest_webhook_token);
 
-    await webhook.send(embed).then(async (a) => {
-      await a.react('✅').catch();
-      await a.react('❌').catch();
-    });
+    await webhook.send(embed);
 
     if (message.deletable) message.delete();
     message.menheraReply('heart', t('commands:suggest.thanks'));
