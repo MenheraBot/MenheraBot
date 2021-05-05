@@ -8,7 +8,6 @@ module.exports = class AudioCommand extends Command {
       category: 'diversão',
       cooldown: 15,
       clientPermissions: ['VIEW_CHANNEL', 'CONNECT', 'SPEAK'],
-      userPermissions: ['MANAGE_MESSAGES'],
     });
   }
 
