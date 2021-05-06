@@ -60,7 +60,7 @@ module.exports = class DungeonCommand extends Command {
   }
 
   async battle(message, inimigo, habilidades, user, type, t) {
-    user.dungeonCooldown = 3600000 + Date.now();
+    user.dungeonCooldown = this.client.constants.rpg.dungeonCooldown + Date.now();
     user.inBattle = true;
     await user.save();
 

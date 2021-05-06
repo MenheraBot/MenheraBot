@@ -33,4 +33,9 @@ const probabilities = {
   defaultTime: 3600000,
 };
 
-module.exports = { shopEconomy, probabilities };
+const rpg = {
+  bossCooldown: 3600000,
+  dungeonCooldown: 3600000,
+};
+
+module.exports = { shopEconomy, probabilities, rpg };
