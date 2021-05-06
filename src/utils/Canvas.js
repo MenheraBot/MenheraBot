@@ -201,6 +201,11 @@ module.exports = class Canvas {
       images.push(voteEmoji);
     }
 
+    if (user.votos > 100) {
+      const hundredVoteEmoji = await CanvasImport.loadImage('https://media.discordapp.net/attachments/793669360857907200/839951784785346600/MenheraThumbsUp.png');
+      images.push(hundredVoteEmoji);
+    }
+
     if (links.length > 0) {
       for (const f in links) {
         const imageLoaded = await CanvasImport.loadImage(links[f]);

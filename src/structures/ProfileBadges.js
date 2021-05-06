@@ -70,6 +70,22 @@ const Badges = {
     description: 'Badge exclusiva para usuários que ajudaram no desenvolvimento da Menhera',
     link: 'https://cdn.discordapp.com/attachments/793669360857907200/794288854143991838/developer.png',
   },
+  8: {
+    name: '1 Evento de Aniversário',
+    availabeStartAt: '07/05/2021',
+    availabeStoptAt: '07/05/2021',
+    rarityLevel: 5,
+    description: 'Badge para os participantes do evento de aniversário de 1 ano da Menhera',
+    link: 'https://media.discordapp.net/attachments/793669360857907200/839946893903527948/birthday.png',
+  },
+  9: {
+    name: '100 Votos',
+    availabeStartAt: '------',
+    availabeStoptAt: '------',
+    rarityLevel: 2,
+    description: 'Disponível para usuários que votaram mais de 100 vezes na Menhera',
+    link: 'https://media.discordapp.net/attachments/793669360857907200/839951784785346600/MenheraThumbsUp.png',
+  },
 };
 
 module.exports = Badges;

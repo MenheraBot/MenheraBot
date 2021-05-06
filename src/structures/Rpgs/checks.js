@@ -5,6 +5,7 @@ const mobsFile = require('../RpgHandler').mobs;
 const abilitiesFile = require('../RpgHandler').abiltiies;
 const familiarsFile = require('../RpgHandler').familiars;
 const http = require('../../utils/HTTPrequests');
+const constants = require('../MenheraConstants');
 
 const random = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
@@ -59,7 +60,7 @@ module.exports.battle = async (message, escolha, user, inimigo, type, t) => {
   if (escolha.scape) {
     message.menheraReply('scape', t('roleplay:scape'));
     user.inBattle = false;
-    user.dungeonCooldown = 7200000 + Date.now();
+    user.dungeonCooldown = constants.rpg.scapeCooldown + Date.now();
     await user.save();
     return;
   }
@@ -109,7 +110,7 @@ module.exports.morte = async (message, user, t, toSay, inimigo) => {
   http.postRpg(user.id, user.class, user.level, inimigo.dgLevel, true, Date.now());
 
   message.menheraReply('error', `${toSay}\n\n${t('roleplay:death')}`);
-  user.death = Date.now() + 43200000;
+  user.death = Date.now() + constants.rpg.deathCooldown;
   user.life = 0;
   user.inBattle = false;
   try {

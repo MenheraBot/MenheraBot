@@ -36,6 +36,8 @@ const probabilities = {
 const rpg = {
   bossCooldown: 3600000,
   dungeonCooldown: 3600000,
+  scapeCooldown: 7200000,
+  deathCooldown: 43200000,
 };
 
 module.exports = { shopEconomy, probabilities, rpg };
