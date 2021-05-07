@@ -20,27 +20,28 @@ module.exports = class DiscordBots {
 
       user.votos += 1;
 
-      let rollQuantity = 1;
-      let starQuantity = Math.floor(Math.random() * (3600 - 1200 + 1)) + 1200;
-      let rpgRollQuantity = 1;
-      let rpgMoneyQuantity = Math.floor(Math.random() * (980 - 100 + 1)) + 100;
+      const constants = this.client.constants.votes;
+
+      let { rollQuantity, rpgRollQuantity } = constants;
+      let starQuantity = Math.floor(Math.random() * (constants.maxStarValue - constants.minStarValue + 1)) + constants.minStarValue;
+      let rpgMoneyQuantity = Math.floor(Math.random() * (constants.maxStoneValue - constants.minStoneValue + 1)) + constants.minStoneValue;
       let embedTitle = '<:God:758474639570894899> | Obrigada por votar em mim';
       let embedDescription = `Obrigada por votar em mim bebezinho, cada voto me ajuda e inspira minha dona a continuar me cuidando! ❤️\n\nComo forma de agradecimento, você recebeu **1**🔑 e **${starQuantity}**⭐!\n\nSabia que a cada 20 votos você ganha um prêmio especial? E que você ja votou **${user.votos}** vezes em mim? **OBRIGADA**\n\nVote em mim novamente em 12 horas <a:LevelUp:760954035779272755>`;
 
       if (vote.isWeekend) {
-        rollQuantity *= 2;
-        starQuantity *= 2;
-        rpgRollQuantity *= 2;
-        rpgMoneyQuantity *= 2;
+        rollQuantity *= constants.rollWeekendMultiplier;
+        starQuantity *= constants.starWeekendMultiplier;
+        rpgRollQuantity *= constants.stoneWeekendMultiplier;
+        rpgMoneyQuantity *= constants.rpgRollWeekendMultiplier;
         embedTitle = '<:Angel:758765044204437535> | OWO VOCÊ RECEBEU UM PRÊMIO ESPECIAL!!!';
         embedDescription = `Obrigada por votar em mim bebezinho, cada voto me ajuda e inspira minha dona a continuar me cuidando! ❤️\n\nComo forma de agradecimento, você recebeu **${rollQuantity}**🔑 e **${starQuantity}**⭐!\n\nPor hoje ser final de semana, você recebeu o DOBRO dos premios`;
       }
 
       if (user.votos % 20 === 0) {
-        rollQuantity *= 4;
-        starQuantity *= 4;
-        rpgRollQuantity *= 4;
-        rpgMoneyQuantity *= 4;
+        rollQuantity *= constants.roll20Multiplier;
+        starQuantity *= constants.star20Multiplier;
+        rpgRollQuantity *= constants.rpgMoney20Multiplier;
+        rpgMoneyQuantity *= constants.rpgRoll20Multiplier;
         embedTitle = '<:Angel:758765044204437535> | OWO VOCÊ RECEBEU UM PRÊMIO ESPECIAL!!!';
         embedDescription = `Obrigada por votar em mim bebezinho, cada voto me ajuda e inspira minha dona a continuar me cuidando! ❤️\n\nVocê votou ${user.votos} vezes em mim, e por isso, ganhou o **QUADRUPLO** de prêmios! Toma-te ${starQuantity}⭐ e **${rollQuantity}**🔑 \n\nVote em mim novamente em 12 horas <a:LevelUp:760954035779272755>`;
       }

@@ -40,4 +40,23 @@ const rpg = {
   deathCooldown: 43200000,
 };
 
-module.exports = { shopEconomy, probabilities, rpg };
+const votes = {
+  rollQuantity: 1,
+  maxStarValue: 3600,
+  minStarValue: 1200,
+  rpgRollQuantity: 1,
+  maxStoneValue: 980,
+  minStoneValue: 100,
+  rollWeekendMultiplier: 2,
+  starWeekendMultiplier: 2,
+  stoneWeekendMultiplier: 2,
+  rpgRollWeekendMultiplier: 2,
+  roll20Multiplier: 4,
+  star20Multiplier: 4,
+  rpgMoney20Multiplier: 4,
+  rpgRoll20Multiplier: 4,
+};
+
+module.exports = {
+  shopEconomy, probabilities, rpg, votes,
+};
