@@ -275,6 +275,11 @@ function lojaVender(message, embedMessage, user, saldoAtual, t, constants) {
   const sd = user.semideuses || 0;
   const deuses = user.deuses || 0;
 
+  const valorDemonio = constants.shopEconomy.hunts.demon;
+  const valorAnjo = constants.shopEconomy.hunts.angel;
+  const valorSD = constants.shopEconomy.hunts.demigod;
+  const valorDeus = constants.shopEconomy.hunts.god;
+
   const dataVender = {
     title: t('commands:shop.embed_title'),
     color: '#e77fa1',
@@ -289,7 +294,9 @@ function lojaVender(message, embedMessage, user, saldoAtual, t, constants) {
     },
     fields: [{
       name: t('commands:shop.dataVender.main.fields.name'),
-      value: t('commands:shop.dataVender.main.fields.value'),
+      value: t('commands:shop.dataVender.main.fields.value', {
+        demon: valorDemonio, angel: valorAnjo, demi: valorSD, god: valorDeus,
+      }),
       inline: false,
     }],
   };
@@ -304,11 +311,6 @@ function lojaVender(message, embedMessage, user, saldoAtual, t, constants) {
     const input = cArgs[1];
     if (!input) return message.menheraReply('error', t('commands:shop.dataVender.invalid-args'));
     const valor = parseInt(input.replace(/\D+/g, ''));
-
-    const valorDemonio = constants.shopEconomy.hunts.demon;
-    const valorAnjo = constants.shopEconomy.hunts.angel;
-    const valorSD = constants.shopEconomy.hunts.demigod;
-    const valorDeus = constants.shopEconomy.hunts.god;
 
     if (cArgs[0] === '1') {
       if (Number.isNaN(valor) || valor < 1) {

@@ -291,7 +291,7 @@
         "footer": "Type in the chat the option of your choice and the value",
         "fields": {
           "name": "Sales Options",
-          "value": "1 - Sell Demons (700⭐) \n2 - Sell Angels (3500) \n3 - Sell Semi-Gods (10000⭐) \n4 - Sell Gods (50000⭐) \n\nEnter your choice and quantity. Example: (`1 50`)"
+          "value": "1 - Sell Demons ({{demon}}⭐) \n2 - Sell Angels ({{angel}}⭐) \n3 - Sell Semi-Gods ({{demi}}⭐) \n4 - Sell Gods ({{god}}⭐) \n\nEnter your choice and quantity. Example: (`1 50`)"
         }
       },
       "invalid-args": "this value is not a valid number!",
