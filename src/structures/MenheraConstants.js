@@ -10,9 +10,9 @@ const shopEconomy = {
   },
   hunts: {
     roll: 7000,
-    demon: 700,
-    angel: 3200,
-    demigod: 7900,
+    demon: (700 + 800),
+    angel: (3200 + 800),
+    demigod: (7900 + 100),
     god: 25000,
   },
 };
@@ -30,21 +30,21 @@ const probabilities = {
     demigod: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     god: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
   },
-  defaultTime: 3600000,
+  defaultTime: (3600000 / 2),
 };
 
 const rpg = {
-  bossCooldown: 3600000,
-  dungeonCooldown: 3600000,
+  bossCooldown: (3600000 / 2),
+  dungeonCooldown: (3600000 / 2),
   scapeCooldown: 7200000,
   deathCooldown: 43200000,
 };
 
 const votes = {
-  rollQuantity: 1,
-  maxStarValue: 3600,
-  minStarValue: 1200,
-  rpgRollQuantity: 1,
+  rollQuantity: (1 * 2),
+  maxStarValue: (3600 * 2),
+  minStarValue: (1200 * 2),
+  rpgRollQuantity: (1 * 2),
   maxStoneValue: 980,
   minStoneValue: 100,
   rollWeekendMultiplier: 2,
