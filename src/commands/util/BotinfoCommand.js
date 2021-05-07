@@ -28,7 +28,7 @@ module.exports = class BotinfoCommand extends Command {
 
     const embed = new MessageEmbed()
       .setColor('#fa8dd7')
-      .setTitle(t('commands:botinfo.title'))
+      // .setTitle(t('commands:botinfo.title'))
       .setThumbnail('https://i.imgur.com/b5y0nd4.png')
       .setDescription(t('commands:botinfo.embed_description', {
         name: this.client.user.username, createdAt: moment.utc(this.client.user.createdAt).format('LLLL'), joinedAt: moment.utc(message.guild.me.joinedAt).format('LLLL'), cmds: commandsExecuted,
