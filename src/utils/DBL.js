@@ -75,7 +75,11 @@ module.exports = class DiscordBots {
 
         if (userInShard && !hasSend) {
           hasSend = true;
-          await userInShard.send(embedToSend).catch(console.log('[DLB] Cannot send message to user'));
+          try {
+            await userInShard.send(embedToSend);
+          } catch {
+            console.log('[DBL] Cannot send message to user');
+          }
         }
       };
 
@@ -83,7 +87,7 @@ module.exports = class DiscordBots {
     });
 
     dbl.on('posted', () => {
-      console.log('[DBL] Stats do bot postados');
+      console.log('[DBL] Bot Stats posted');
     });
 
     this.client.setInterval(async () => {

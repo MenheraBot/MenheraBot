@@ -112,7 +112,7 @@ module.exports = class MessageReceive {
         res(command.run({
           message, args, server, authorData,
         }, t));
-        console.log(`[COMANDO] ${command.config.name.toUpperCase()} | USER: ${message.author.tag} - ${message.author.id} | GUILD: ${message.guild.name} - ${message.guild.id}`);
+        console.log(`[CMD (${this.client.shard.ids[0]})] ${command.config.name.toUpperCase()} | USER: ${message.author.tag} - ${message.author.id} | GUILD: ${message.guild.name}`);
       }).catch(async (err) => {
         const errorWebHook = await this.client.fetchWebhook(this.client.config.bug_webhook_id, this.client.config.bug_webhook_token);
 

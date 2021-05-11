@@ -1081,6 +1081,7 @@
   "audio": {
     "description": "Play a sound to scare your friends",
     "usage": "<song>",
+    "no-perm": "i don't have permission to join that channel!",
     "not-in-voice": "you need to be on a voice channel to execute this command",
     "no-args": "you did not choose which sound you want to play. Choices: `wpp`, `rojao`, `gemidao`, `yamete` or `among`",
     "unknow-args": "this sound does not exist you dumb, you need to see if you wrote it right. Choices: `wpp`, `rojao`, `gemidao`, `yamete` or `among`"

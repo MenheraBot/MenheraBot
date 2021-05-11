@@ -36,12 +36,18 @@ module.exports = class AudioCommand extends Command {
       default: return message.menheraReply('error', t('commands:audio.unknow-args'));
     }
 
+    message.react('🍰');
+
     let dis;
 
-    await message.member.voice.channel.join().then((conn) => {
-      const audioLocal = resolve(`src/media/audio/${file}.mp3`);
-      dis = conn.play(audioLocal);
-    });
+    try {
+      await message.member.voice.channel.join().then((conn) => {
+        const audioLocal = resolve(`src/media/audio/${file}.mp3`);
+        dis = conn.play(audioLocal);
+      });
+    } catch {
+      message.menheraReply('error', t('commands:audio.no-perm'));
+    }
 
     dis.on('finish', () => {
       if (message.guild.me.voice.channelID) message.guild.me.voice.channel.leave();
