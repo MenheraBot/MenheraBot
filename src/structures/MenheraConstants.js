@@ -12,7 +12,7 @@ const shopEconomy = {
     roll: 7000,
     demon: 700,
     angel: 3200,
-    demigod: 100,
+    demigod: 8900,
     god: 25000,
   },
 };
