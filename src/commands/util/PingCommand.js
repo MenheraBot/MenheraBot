@@ -1,6 +1,8 @@
 const { MessageEmbed } = require('discord.js');
 const table = require('string-table');
+const moment = require('moment');
 const Command = require('../../structures/command');
+require('moment-duration-format');
 
 module.exports = class PingCommand extends Command {
   constructor(client) {
@@ -26,8 +28,9 @@ module.exports = class PingCommand extends Command {
       return message.channel.send(embed);
     }
     const allShardsInformation = await this.client.shard.broadcastEval('this.ws');
+    const allShardsUptime = await this.client.shard.broadcastEval('this.ws.client.uptime');
 
-    const tabled = allShardsInformation.reduce((p, c) => {
+    const tabled = allShardsInformation.reduce((p, c, n) => {
       const conninfo = {
         0: 'READY',
         1: 'CONNECTING',
@@ -43,6 +46,7 @@ module.exports = class PingCommand extends Command {
         Shard: c.shards[0].id,
         Ping: `${c.shards[0].ping}ms`,
         Status: conninfo[c.shards[0].status],
+        Uptime: moment.duration(allShardsUptime[n]).format('D[d], H[h], m[m], s[s]'),
       });
       return p;
     }, []);
