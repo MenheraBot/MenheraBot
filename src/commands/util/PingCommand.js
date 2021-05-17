@@ -29,6 +29,7 @@ module.exports = class PingCommand extends Command {
     }
     const allShardsInformation = await this.client.shard.broadcastEval('this.ws');
     const allShardsUptime = await this.client.shard.broadcastEval('this.ws.client.uptime');
+    const allShardsMemoryUsedByProcess = await this.client.shard.broadcastEval('process.memoryUsage().heapUsed');
 
     const tabled = allShardsInformation.reduce((p, c, n) => {
       const conninfo = {
@@ -47,6 +48,7 @@ module.exports = class PingCommand extends Command {
         Ping: `${c.shards[0].ping}ms`,
         Status: conninfo[c.shards[0].status],
         Uptime: moment.duration(allShardsUptime[n]).format('D[d], H[h], m[m], s[s]'),
+        Ram: `${(allShardsMemoryUsedByProcess[n] / 1024 / 1024).toFixed(2)} MB`,
       });
       return p;
     }, []);
