@@ -111,7 +111,7 @@ module.exports = class PvPCommands extends Command {
     message.channel.send(member1, embed);
 
     const filter = (m) => m.author.id === member1.id;
-    const collector = message.channel.createMessageCollector(filter, { max: 1, time: 7000, errors: ['time'] });
+    const collector = message.channel.createMessageCollector(filter, { max: 1, time: 6800, errors: ['time'] });
 
     let time = false;
 
@@ -129,7 +129,7 @@ module.exports = class PvPCommands extends Command {
       if (!time) {
         this.continueBattle(message, false, user1, user2, member1, member2, user1abilities, user2abilities, aposta, t, `⚔️ |  ${t('commands:pvp.battle.timeout', { user: member1.tag })}`);
       }
-    }, 7000);
+    }, 7100);
   }
 
   async continueBattle(message, escolha, user1, user2, member1, member2, user1abilities, user2abilities, aposta, t, attackText) {
@@ -199,7 +199,7 @@ module.exports = class PvPCommands extends Command {
     message.channel.send(member2, embed);
 
     const filter = (m) => m.author.id === member2.id;
-    const collector = message.channel.createMessageCollector(filter, { max: 1, time: 7000, errors: ['time'] });
+    const collector = message.channel.createMessageCollector(filter, { max: 1, time: 6800, errors: ['time'] });
 
     let time = false;
 
@@ -219,7 +219,7 @@ module.exports = class PvPCommands extends Command {
         user2.life -= 50;
         this.continueBattle(message, false, user2, user1, member2, member1, user2abilities, user1abilities, aposta, t, `⚔️ |  ${t('commands:pvp.battle.timeout', { user: member2.tag })}`);
       }
-    }, 7000);
+    }, 7100);
   }
 
   async endBattle(message, user1, user2, member1, member2, aposta, t, toSay) {
