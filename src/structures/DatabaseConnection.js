@@ -67,10 +67,6 @@ const rpgSchema = mongoose.Schema({
   inBattle: { type: Boolean, default: false },
   backpack: { type: Object, default: { name: 'Mochila de Pele de Lobo' } },
   resetRoll: { type: Number, default: 0 },
-  // Just to remove it
-  hasFamily: { type: Boolean },
-  familyName: { type: String },
-  // Stop
   jobId: { type: Number, default: 0 },
   jobCooldown: { type: String, default: '00000000' },
   familiar: { type: Object, default: {} },
@@ -78,10 +74,6 @@ const rpgSchema = mongoose.Schema({
 
 const userSchema = mongoose.Schema({
   id: { type: String, unique: true },
-  // Remove
-  nome: { type: String },
-
-  // Stop
   mamadas: { type: Number, default: 0 },
   mamou: { type: Number, default: 0 },
   casado: { type: String, default: 'false' },
