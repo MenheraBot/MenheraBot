@@ -38,27 +38,17 @@ module.exports = class MarryCommand extends Command {
       const yesColetor = msg.createReactionCollector(filterYes, { max: 1, time: 14500 });
       const noColetor = msg.createReactionCollector(filterNo, { max: 1, time: 14500 });
 
-      noColetor.on('collect', async () => {
-        await msg.reactions.removeAll().catch();
-        return message.channel.send(`${mencionado} ${t('commands:marry.negated')} ${message.author}`);
-      });
+      noColetor.on('collect', async () => message.channel.send(`${mencionado} ${t('commands:marry.negated')} ${message.author}`));
 
       yesColetor.on('collect', async () => {
-        await msg.reactions.removeAll().catch();
         message.channel.send(`💍${message.author} ${t('commands:marry.acepted')} ${mencionado}💍`);
 
         moment.locale('pt-br');
 
         const dataFormated = moment(Date.now()).format('l LTS');
 
-        authorData.casado = mencionado.id;
-        authorData.data = dataFormated;
-
-        user2.casado = message.author.id;
-        user2.data = dataFormated;
-
-        await authorData.save();
-        await user2.save();
+        this.client.database.Users.updateOne({ id: message.author.id }, { $set: { casado: mencionado.id, data: dataFormated } });
+        this.client.database.Users.updateOne({ id: user2.id }, { $set: { casado: message.author.id, data: dataFormated } });
       });
     });
   }

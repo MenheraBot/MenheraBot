@@ -16,14 +16,16 @@ module.exports = class CoinflipCommand extends Command {
     const user2 = message.mentions.users.first();
     const input = args[1];
     if (!input) return message.menheraReply('error', t('commands:coinflip.invalid-value'));
-    const valor = input.replace(/\D+/g, '');
+    const inputedValue = input.replace(/\D+/g, '');
 
     if (!user2) return message.menheraReply('error', t('commands:coinflip.no-mention'));
     if (user2.bot) return message.menheraReply('error', t('commands:coinflip.bot'));
     if (user2.id === user1.id) return message.menheraReply('error', t('commands:coinflip.self-mention'));
 
-    if (Number.isNaN(parseInt(valor))) return message.menheraReply('error', t('commands:coinflip.invalid-value'));
-    if (parseInt(valor) < 1) return message.menheraReply('error', t('commands:coinflip.invalid-value'));
+    if (Number.isNaN(parseInt(inputedValue))) return message.menheraReply('error', t('commands:coinflip.invalid-value'));
+    if (parseInt(inputedValue) < 1) return message.menheraReply('error', t('commands:coinflip.invalid-value'));
+
+    const valor = parseInt(inputedValue);
 
     const db1 = await this.client.database.Users.findOne({ id: user1.id });
     const db2 = await this.client.database.Users.findOne({ id: user2.id });
@@ -49,24 +51,19 @@ module.exports = class CoinflipCommand extends Command {
         switch (choice) {
           case 'Cara':
             message.channel.send(`${t('commands:coinflip.cara')}\n${user1} ${t('commands:coinflip.cara-texto-start', { value: valor })} ${user2}! ${t('commands:coinflip.cara-text-middle')} ${user2} ${t('commands:coinflip.cara-text-end')}`);
-            db1.estrelinhas += parseInt(valor);
-            db2.estrelinhas -= parseInt(valor);
             winner = user1.id;
             loser = user2.id;
-            await db1.save();
-            await db2.save();
             break;
           case 'Coroa':
             message.channel.send(`${t('commands:coinflip.coroa')}\n${user2} ${t('commands:coinflip.coroa-texto', { value: valor })} ${user1}`);
-            db1.estrelinhas -= parseInt(valor);
-            db2.estrelinhas += parseInt(valor);
             winner = user2.id;
             loser = user1.id;
-            await db1.save();
-            await db2.save();
             break;
         }
-        await http.postCoinflipGame(winner, loser, parseInt(valor), Date.now());
+        await this.client.database.Users.updateOne({ id: winner }, { $inc: { estrelinhas: valor } });
+        await this.client.database.Users.updateOne({ id: loser }, { $inc: { estrelinhas: -valor } });
+
+        await http.postCoinflipGame(winner, loser, valor, Date.now());
       });
     });
   }

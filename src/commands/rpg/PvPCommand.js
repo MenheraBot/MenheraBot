@@ -62,11 +62,8 @@ module.exports = class PvPCommands extends Command {
 
     acceptCollector.on('collect', async (m) => {
       if (m.content.toLowerCase() === 'sim' || m.content.toLowerCase() === 'yes') {
-        user1.inBattle = true;
-        user2.inBattle = true;
-        await user1.save();
-        await user2.save();
-
+        await this.client.database.Rpg.updateOne({ _id: message.author.id }, { $set: { inBattle: true } });
+        await this.client.database.Rpg.updateOne({ _id: mention.id }, { $set: { inBattle: true } });
         return this.makeBattle(user1, user2, message.author, mention, aposta, message, t);
       }
 
@@ -230,24 +227,15 @@ module.exports = class PvPCommands extends Command {
       .setTitle(t('commands:pvp.battle.win', { user: member1.tag }));
 
     if (aposta) {
-      user1.money += aposta;
-      user2.money -= aposta;
-      user1.inBattle = false;
-      user2.inBattle = false;
-      user2.death = Date.now() + 7200000;
-      user2.life = 0;
-      await user1.save();
-      await user2.save();
+      await this.client.database.Rpg.updateOne({ _id: member1.id }, { $set: { inBattle: false }, $inc: { money: aposta } });
+      await this.client.database.Rpg.updateOne({ _id: member2.id }, { $set: { inBattle: false, life: 0, death: (Date.now() + 7200000) }, $inc: { money: -aposta } });
       embed.addField(t('commands:pvp.aposta'), t('commands:pvp.aposta-description', { aposta, winner: member1.tag }));
       return message.channel.send(embed);
     }
 
-    const findFirstUserWithoutAposta = await this.client.database.Rpg.findById(member1.id);
-    const findSecondUserWithoutAposta = await this.client.database.Rpg.findById(member2.id);
-    findFirstUserWithoutAposta.inBattle = false;
-    findSecondUserWithoutAposta.inBattle = false;
-    findFirstUserWithoutAposta.save();
-    findSecondUserWithoutAposta.save();
+    await this.client.database.Rpg.updateOne({ _id: member1.id }, { $set: { inBattle: false } });
+    await this.client.database.Rpg.updateOne({ _id: member2.id }, { $set: { inBattle: false } });
+
     embed.addField(t('commands:pvp.aposta'), t('commands:pvp.not-aposta'));
     message.channel.send(embed);
   }

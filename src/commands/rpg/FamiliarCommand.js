@@ -39,14 +39,16 @@ module.exports = class FamiliarCommand extends Command {
         .setImage('https://i.imgur.com/nbbBZWo.gif');
       const sentMessage = await message.channel.send(message.author, embed);
       setTimeout(async () => {
-        user.familiar = {
+        const familiar = {
           id: userFamiliar[0],
           level: 1,
           xp: 0,
           nextLevelXp: 1500,
           type: userFamiliar[1].boost.type,
         };
-        await user.save();
+
+        await this.client.database.Rpg.updateOne({ _id: message.author.id }, { $set: familiar });
+
         sentMessage.edit({ content: `${message.author}, ${t('commands:familiar.success', { name: t(`roleplay:familiar.${userFamiliar[0]}`) })}`, embed: null });
       }, 3000);
     } else {

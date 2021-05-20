@@ -72,42 +72,33 @@ module.exports = class HuntCommand extends Command {
         .setThumbnail(avatar)
         .setFooter(t('commands:hunt.footer'));
 
+      const timeToCoodlwon = this.client.constants.probabilities.defaultTime + Date.now();
+
       switch (option) {
         case 'demônio': {
           const dc = probabilidadeDemonio[Math.floor(Math.random() * probabilidadeDemonio.length)];
-          authorData.caçados += dc;
-          authorData.caçarTime = this.client.constants.probabilities.defaultTime + Date.now();
-          authorData.save();
+          this.client.database.Users.updateOne({ id: message.author.id }, { $inc: { caçados: dc }, $set: { caçarTime: timeToCoodlwon } });
           embed.setDescription(`${t('commands:hunt.description_start', { value: dc })} ${t('commands:hunt.demons')}`);
           message.channel.send(embed);
           break;
         }
-
         case 'anjos': {
           const da = probabilidadeAnjo[Math.floor(Math.random() * probabilidadeAnjo.length)];
-          authorData.anjos += da;
-          authorData.caçarTime = this.client.constants.probabilities.defaultTime + Date.now();
-          authorData.save();
+          this.client.database.Users.updateOne({ id: message.author.id }, { $inc: { anjos: da }, $set: { caçarTime: timeToCoodlwon } });
           embed.setDescription(`${t('commands:hunt.description_start', { value: da })} ${t('commands:hunt.angels')}`);
           message.channel.send(embed);
           break;
         }
-
         case 'semideuses': {
           const ds = probabilidadeSD[Math.floor(Math.random() * probabilidadeSD.length)];
-          authorData.semideuses += ds;
-          authorData.caçarTime = this.client.constants.probabilities.defaultTime + Date.now();
-          authorData.save();
+          this.client.database.Users.updateOne({ id: message.author.id }, { $inc: { semideuses: ds }, $set: { caçarTime: timeToCoodlwon } });
           embed.setDescription(`${t('commands:hunt.description_start', { value: ds })} ${t('commands:hunt.sd')}`);
           message.channel.send(embed);
           break;
         }
-
         case 'deus': {
           const dd = probabilidadeDeuses[Math.floor(Math.random() * probabilidadeDeuses.length)];
-          authorData.deuses += dd;
-          authorData.caçarTime = this.client.constants.probabilities.defaultTime + Date.now();
-          authorData.save();
+          this.client.database.Users.updateOne({ id: message.author.id }, { $inc: { deuses: dd }, $set: { caçarTime: timeToCoodlwon } });
           if (dd > 0) embed.setColor('#e800ff');
           embed.setDescription((dd > 0) ? t('commands:hunt.god_hunted_success', { value: dd }) : t('commands:hunt.god_hunted_fail', { value: dd }));
           message.channel.send(embed);

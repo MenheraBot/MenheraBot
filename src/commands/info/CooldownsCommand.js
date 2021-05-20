@@ -19,8 +19,8 @@ module.exports = class CooldownsCommand extends Command {
     if (!authorData) return message.menheraReply('error', t('commands:cooldowns.error'));
 
     const huntCooldownInMilis = parseInt(authorData?.caçarTime) - Date.now();
-    const dungeonCooldownInMilis = userRpg ? (parseInt(userRpg.dungeonCooldown) - Date.now()) : null;
-    const jobCooldownInMilis = userRpg ? (parseInt(userRpg.jobCooldown) - Date.now()) : null;
+    const dungeonCooldownInMilis = userRpg ? (parseInt(userRpg.dungeonCooldown) - Date.now()) : '0';
+    const jobCooldownInMilis = userRpg ? (parseInt(userRpg.jobCooldown) - Date.now()) : '0';
     const voteCooldownInMilis = parseInt(authorData?.voteCooldown) - Date.now();
 
     let txt = '';

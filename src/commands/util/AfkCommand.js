@@ -9,12 +9,11 @@ module.exports = class AfkCommand extends Command {
     });
   }
 
-  async run({ message, args, authorData: selfData }, t) {
-    const authorData = selfData ?? new this.client.database.Users({ id: message.author.id });
+  async run({ message, args }, t) {
     const reason = args.join(' ');
-    authorData.afk = true;
-    authorData.afkReason = args.length ? reason.replace(/`/g, '') : 'AFK';
-    authorData.save();
+    const afkReason = args.length ? reason.replace(/`/g, '') : 'AFK';
+
+    this.client.database.Users.updateOne({ ìd: message.author.id }, { $set: { afk: true, afkReason } });
 
     message.menheraReply('success', t('commands:afk.success'));
   }

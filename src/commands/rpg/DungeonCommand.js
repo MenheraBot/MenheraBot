@@ -60,9 +60,7 @@ module.exports = class DungeonCommand extends Command {
   }
 
   async battle(message, inimigo, habilidades, user, type, t) {
-    user.dungeonCooldown = this.client.constants.rpg.dungeonCooldown + Date.now();
-    user.inBattle = true;
-    await user.save();
+    await this.client.database.Rpg.updateOne({ _id: message.author.id }, { $set: { dungeonCooldown: (this.client.constants.rpg.bossCooldown + Date.now()), inBattle: true } });
 
     const options = [{
       name: t('commands:dungeon.scape'),

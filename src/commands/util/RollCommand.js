@@ -19,9 +19,7 @@ module.exports = class RollCommand extends Command {
 
       if (rpgUser.resetRoll < 1) return message.menheraReply('error', t('commands:roll.dungeon-poor'));
 
-      rpgUser.resetRoll -= 1;
-      rpgUser.dungeonCooldown = '0';
-      await rpgUser.save();
+      this.client.database.Rpg.updateOne({ _id: message.author.id }, { $inc: { resetRoll: -1 }, $set: { dungeonCooldown: '0' } });
       message.menheraReply('success', t('commands:roll.dungeon-success'));
     } else {
       if (parseInt(authorData.caçarTime) < Date.now()) return message.menheraReply('error', t('commands:roll.can-hunt'));
