@@ -8,7 +8,6 @@ const Reminders = require('./utils/RemindersChecks');
 const Database = require('./structures/DatabaseConnection');
 const Config = require('../config.json');
 const Constants = require('./structures/MenheraConstants');
-const http = require('./utils/HTTPrequests');
 const RpgChecks = require('./structures/Rpgs/checks');
 const FileUtil = require('./utils/FileUtil');
 const LocaleStructure = require('./structures/LocaleStructure');
@@ -31,7 +30,6 @@ module.exports = class MenheraClient extends Client {
     const locales = new LocaleStructure();
     const reminder = new Reminders(this);
     reminder.loop();
-    await http.clearExistingCommands();
     await locales.load();
     return true;
   }
@@ -46,29 +44,47 @@ module.exports = class MenheraClient extends Client {
     return super.login(token);
   }
 
-  static async postExistingCommand(command) {
-    const t = i18next.getFixedT('pt-BR');
-    const CommandData = {
-      name: command.config.name,
-      description: t(`commands:${command.config.name}.description`),
-      category: command.config.category,
-    };
-    if (command.category !== 'Dev') await http.postExistingCommands(CommandData);
+  async postExistingCommand(command) {
+    const tPt = i18next.getFixedT('pt-BR');
+    const tUs = i18next.getFixedT('en-US');
+
+    const findInDb = await this.database.Commands.findOne({ name: command.name });
+
+    if (findInDb) {
+      findInDb.category = command.category;
+      findInDb.pt_description = tPt(`commands:${command.name}.description`);
+      findInDb.pt_usage = tPt(`commands:${command.name}.usage`);
+      findInDb.us_description = tUs(`commands:${command.name}.description`);
+      findInDb.us_usage = tUs(`commands:${command.name}.usage`);
+      findInDb.save();
+    } else {
+      this.database.Commands({
+        name: command.name,
+        category: command.category,
+        pt_description: tPt(`commands:${command.name}.description`),
+        pt_usage: tPt(`commands:${command.name}.usage`),
+        us_description: tUs(`commands:${command.name}.description`),
+        us_usage: tUs(`commands:${command.name}.usage`),
+      }).save();
+    }
   }
 
   async loadCommand(Command, filepath) {
     const command = new Command(this);
     command.dir = filepath;
+
     this.commands.set(command.config.name, command);
     this.aliases.set(command.config.name, command.config.name);
     command.config.aliases.forEach((a) => this.aliases.set(a, command.config.name));
-    MenheraClient.postExistingCommand(command);
+
     const cmdInDb = await this.database.Cmds.findById(command.config.name);
     if (!cmdInDb) {
       this.database.Cmds.create({
         _id: command.config.name,
       });
     }
+
+    if (command.category !== 'Dev') this.postExistingCommand(command.config);
   }
 
   loadCommands(directory) {
