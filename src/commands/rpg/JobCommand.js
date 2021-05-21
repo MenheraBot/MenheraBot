@@ -41,7 +41,8 @@ module.exports = class JobCommand extends Command {
     const minLevel = jobsFile[escolha].min_level;
     if (minLevel > user.level) return message.menheraReply('error', t('commands:job.no-level', { level: minLevel }));
 
-    await this.client.database.Rpg.updateOne({ _id: message.author.id }, { $set: { jobId: parseInt(escolha) } });
+    user.jobId = parseInt(escolha);
+    await user.save();
 
     message.menheraReply('success', t('commands:job.finish', { job: t(`roleplay:job.${escolha}.${jobsFile[escolha].name}`) }));
   }

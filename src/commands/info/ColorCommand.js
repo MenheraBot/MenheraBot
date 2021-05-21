@@ -53,7 +53,8 @@ module.exports = class ColorCommand extends Command {
       };
 
       message.channel.send(message.author, { embed: dataChoose });
-      this.client.database.Users.updateOne({ id: message.author.id }, { $set: { cor: findColor[0].cor } });
+      authorData.cor = findColor[0].cor;
+      authorData.save();
     } else message.menheraReply('error', t('commands:color.no-own', { prefix: server.prefix }));
   }
 };
