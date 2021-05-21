@@ -3,7 +3,7 @@ const { token } = require('./config.json');
 
 const shards = new ShardingManager('./index.js', {
   respawn: true,
-  totalShards: 'auto',
+  totalShards: 4,
   token,
 });
 
