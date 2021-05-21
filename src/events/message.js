@@ -32,15 +32,11 @@ module.exports = class MessageReceive {
 
     if (message.mentions.users.size > 0) this.notifyAfk(message, t, message.mentions.users.map((u) => u.id));
 
-    const findedInDatabase = await this.client.database.Users.findOne({ id: message.author.id });
-
-    const authorData = findedInDatabase || this.client.database.Users({
-      id: message.author.id,
-      shipValue: Math.floor(Math.random() * 55),
-    }).save();
-
+    const authorData = await this.client.database.Users.findOne({ id: message.author.id });
     if (authorData?.afk) {
-      await this.client.database.Users.updateOne({ id: message.author.id }, { $set: { afk: false, afkReason: null } });
+      authorData.afk = false;
+      authorData.afkReason = null;
+      await authorData.save();
       message.menheraReply('wink', t('commands:afk.back'))
         .then((msg) => msg.delete({
           timeout: 5000,

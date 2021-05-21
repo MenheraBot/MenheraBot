@@ -51,8 +51,11 @@ module.exports = class WorkCommand extends Command {
     embed.setDescription(t('commands:work.embed-description', { job: traslatedJobName, money: totalMoney, xp }))
       .addField(t('commands:work.field-name'), canGet ? t('commands:work.field-value', { item: translatedItemName }) : t('commands:work.field-value-full'));
 
-    // eslint-disable-next-line no-unused-expressions
-    canGet ? await this.client.database.Rpg.updateOne({ _id: message.author.id }, { $set: { jobCooldown: (Date.now() + totalCooldown) }, $inc: { money: totalMoney, xp }, $push: { loots: selectedItem } }) : await this.client.database.Rpg.updateOne({ _id: message.author.id }, { $set: { jobCooldown: (Date.now() + totalCooldown) }, $inc: { money: totalMoney, xp } });
+    if (canGet) user.loots.push(selectedItem);
+    user.jobCooldown = Date.now() + totalCooldown;
+    user.money += totalMoney;
+    user.xp += xp;
+    await user.save();
 
     await this.client.rpgChecks.finalChecks(message, user, t);
 
