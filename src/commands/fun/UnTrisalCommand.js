@@ -9,7 +9,8 @@ module.exports = class UnTrisalCommand extends Command {
     });
   }
 
-  async run({ message, authorData }, t) {
+  async run({ message }, t) {
+    const authorData = await this.client.database.Users.findOne({ id: message.author.id });
     if (authorData.trisal?.length === 0) return message.menheraReply('error', t('commands:untrisal.error'));
 
     const msg = await message.channel.send(t('commands:untrisal.sure'));
@@ -19,22 +20,13 @@ module.exports = class UnTrisalCommand extends Command {
 
     const collector = msg.createReactionCollector(filter, { max: 1, time: 14000 });
 
+    const id1 = authorData.trisal[0];
+    const id2 = authorData.trisal[1];
+
     collector.on('collect', async () => {
-      const user1 = await this.client.database.Users.findOne({ id: authorData.trisal[0] });
-      const user2 = await this.client.database.Users.findOne({ id: authorData.trisal[1] });
-
-      authorData.trisal = [];
-      await authorData.save();
-
-      if (user1) {
-        user1.trisal = [];
-        await user1.save();
-      }
-
-      if (user2) {
-        user2.trisal = [];
-        await user2.save();
-      }
+      this.client.database.Users.updateOne({ id: message.author.id }, { $set: { trisal: [] } });
+      this.client.database.Users.updateOne({ id: id1 }, { $set: { trisal: [] } });
+      this.client.database.Users.updateOne({ id: id2 }, { $set: { trisal: [] } });
       await message.menheraReply('success', t('commands:untrisal.done'));
     });
   }

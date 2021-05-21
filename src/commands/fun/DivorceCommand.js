@@ -21,8 +21,6 @@ module.exports = class DivorceCommand extends Command {
   }
 
   async divorciar(authorData, message, t) {
-    const user2 = await this.client.database.Users.findOne({ id: authorData.casado });
-
     const user2Mention = await this.client.users.fetch(authorData.casado);
 
     message.channel.send(`${t('commands:divorce.confirmation')} ${user2Mention}`).then((msg) => {
@@ -40,18 +38,12 @@ module.exports = class DivorceCommand extends Command {
         message.menheraReply('success', t('commands:divorce.canceled'));
       });
 
-      yesColetor.on('collect', () => {
+      yesColetor.on('collect', async () => {
         msg.reactions.removeAll().catch();
         message.channel.send(`${message.author} ${t('commands:divorce.confirmed_start')} ${user2Mention}. ${t('commands:divorce.confirmed_end')}`);
 
-        authorData.casado = 'false';
-        authorData.data = 'null';
-        if (user2) {
-          user2.casado = false;
-          user2.data = 'null';
-          user2.save();
-        }
-        authorData.save();
+        await this.client.database.Users.updateOne({ id: authorData.casado }, { $set: { casado: 'false', data: null } });
+        this.client.database.Users.updateOne({ id: message.author.id }, { $set: { casado: 'false', data: null } });
       });
     });
   }
