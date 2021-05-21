@@ -307,7 +307,7 @@
   "wallet": {
     "description": "Veja a carteira de alguém",
     "usage": "[usuário]",
-    "no-dbuser": "este usuário não está em minha database, tente mamá-lo para o adicionar",
+    "no-dbuser": "este usuário não está em minha database",
     "title": "Carteira de {{user}}",
     "stars": "Estrelinhas",
     "rolls": "Rolls",
@@ -375,7 +375,7 @@
     "description": "Será que vocês dariam um bom casal?",
     "usage": "<usuário1> <usuário2>",
     "missing-args": "você não mencionou dois usuários",
-    "no-dbuser": "usuário nao encontrado na database, tente mamá-lo para o adicionar",
+    "no-dbuser": "usuário nao encontrado na database",
     "value": "Valor do ship:",
     "unknow-user": "usuário não encontrado",
     "message-start": "Será que os dois pombinhos dariam um bom casal?",
