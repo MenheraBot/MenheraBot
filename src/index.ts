@@ -1,10 +1,11 @@
-require('./structures/ProtoTypes').start();
+import ProtoTypes from '@structures/ProtoTypes';
+import ShardManager from '@structures/ShardManager';
+import MenheraClient from './MenheraClient';
+import config from '../config.json';
 
-const Client = require('./MenheraClient');
-const ShardManager = require('./structures/ShardManager');
-const config = require('../config.json');
+ProtoTypes.start();
 
-const client = new Client({ disableMentions: 'everyone', messageCacheMaxSize: 50 });
+const client = new MenheraClient({ disableMentions: 'everyone', messageCacheMaxSize: 50 });
 
 if (client.shard) client.shardManager = new ShardManager(client);
 

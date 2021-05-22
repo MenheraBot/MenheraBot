@@ -25,4 +25,14 @@ module.exports = {
       ],
     },
   ],
+  plugins: [
+    ['module-resolver', {
+      alias: {
+        '@structures': './src/structures',
+      },
+    }],
+  ],
+  ignore: [
+    '**/*.spec.ts',
+  ],
 };

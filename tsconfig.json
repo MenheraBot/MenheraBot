@@ -1,15 +1,18 @@
 {
   "compilerOptions": {
-    "outDir": "./built",
+    "target": "ES2020",
+    "lib": ["es2020"],
     "allowJs": true,
-    "target": "es5",
-    "resolveJsonModule": true,
+    "outDir": "dist",
     "esModuleInterop": true,
+    "baseUrl": "src",
+    "paths": {
+      "@structures/*": ["structures/*"],
+    },
       // Ensure that .d.ts files are created by tsc, but not .js files
     "declaration": true,
     "emitDeclarationOnly": true,
     // Ensure that Babel can safely transpile files in the TypeScript project
     "isolatedModules": true
-  },
-  "include": ["./src/**/*"]
+  }
 }
