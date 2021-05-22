@@ -2,7 +2,7 @@
   "name": "menhera-bot",
   "version": "2.8.3-stable",
   "description": "Uma bot brasileira de RPG para o Discord",
-  "main": "src/shard.ts",
+  "main": "shard.js",
   "scripts": {
     "build": "rm -rf dist/* && babel src --extensions \".js,.ts\" --ignore *.spec.js --out-dir dist --copy-files --source-maps --verbose",
     "start": "cross-env NODE_ENV=production node shard.js",
