@@ -5,8 +5,7 @@ module.exports = class UserRepository {
     const result = await Users.findOne({ id: userID });
     if (result) return result;
 
-    const newUser = await Users.create({ id: userID });
-    return newUser;
+    return Users.create({ id: userID });
   }
 
   static async delete(userID) {
