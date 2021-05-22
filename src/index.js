@@ -1,8 +1,8 @@
-require('./src/structures/ProtoTypes').start();
+require('./structures/ProtoTypes').start();
 
-const Client = require('./src/MenheraClient');
-const ShardManager = require('./src/structures/ShardManager');
-const config = require('./config.json');
+const Client = require('./MenheraClient');
+const ShardManager = require('./structures/ShardManager');
+const config = require('../config.json');
 
 const client = new Client({ disableMentions: 'everyone', messageCacheMaxSize: 50 });
 

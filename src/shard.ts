@@ -1,7 +1,9 @@
 import { ShardingManager } from 'discord.js';
-import config from './config.json';
+import path from 'path';
+import config from '../config.json';
 
-const shards = new ShardingManager('./index.js', {
+const mainFilename = process.env.NODE_ENV === 'production' ? 'index.js' : 'index.js';
+const shards = new ShardingManager(path.resolve(__dirname, mainFilename), {
   respawn: true,
   totalShards: 'auto',
   token: config.token,
