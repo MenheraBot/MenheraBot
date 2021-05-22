@@ -11,12 +11,14 @@ const Constants = require('./structures/MenheraConstants');
 const RpgChecks = require('./structures/Rpgs/checks');
 const FileUtil = require('./utils/FileUtil');
 const LocaleStructure = require('./structures/LocaleStructure');
+const Repositories = require('./repositories/repositories');
 
 module.exports = class MenheraClient extends Client {
   constructor(options = {}) {
     super(options);
 
     this.database = Database;
+    this.repositories = Repositories;
     this.commands = new Collection();
     this.aliases = new Collection();
     this.events = new EventManager(this);
