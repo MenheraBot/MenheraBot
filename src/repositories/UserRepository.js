@@ -14,8 +14,8 @@ module.exports = class UserRepository {
     return result;
   }
 
-  static async findByIdsArray(idsArray, args = {}) {
-    const result = await Users.find({ id: { $in: idsArray }, args });
+  static async findAfkByIDs(ids) {
+    const result = await Users.find({ id: { $in: ids }, afk: true });
     return result;
   }
 };

@@ -12,7 +12,7 @@ module.exports = class MessageReceive {
   }
 
   async notifyAfk(message, t, userIds) {
-    const afkUsers = await this.client.repositories.userRepository.findByIdsArray(userIds, { afk: true });
+    const afkUsers = await this.client.repositories.userRepository.findAfkByIDs(userIds);
 
     afkUsers.forEach(async (data) => {
       const user = await this.client.users.fetch(data.id);
