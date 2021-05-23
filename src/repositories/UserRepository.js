@@ -12,8 +12,7 @@ module.exports = class UserRepository {
     return Users.deleteOne({ id: userID });
   }
 
-  static async findAfkByIDs(ids) {
-    const result = await Users.find({ id: { $in: ids }, afk: true });
-    return result;
+  static findAfkByIDs(ids) {
+    return Users.find({ id: { $in: ids }, afk: true });
   }
 };
