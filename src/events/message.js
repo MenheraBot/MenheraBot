@@ -32,7 +32,7 @@ module.exports = class MessageReceive {
 
     if (message.mentions.users.size > 0) this.notifyAfk(message, t, message.mentions.users.map((u) => u.id));
 
-    const authorData = await this.client.repositories.userRepository.findOrCreate(message.author.id);
+    let authorData = await this.client.repositories.userRepository.find(message.author.id);
 
     if (authorData?.afk) {
       authorData.afk = false;
@@ -107,6 +107,8 @@ module.exports = class MessageReceive {
         return message.menheraReply('error', `${t('permissions:CLIENT_MISSING_PERMISSION', { perm })}`);
       }
     }
+
+    if (!authorData) authorData = await this.client.repositories.userRepository.create(message.author.id);
 
     try {
       new Promise((res, _) => { // eslint-disable-line
