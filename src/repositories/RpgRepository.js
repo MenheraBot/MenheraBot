@@ -5,8 +5,7 @@ module.exports = class RpgRepository {
     const result = await Rpg.findById(userID);
     if (result) return result;
 
-    const newRpgUser = await Rpg.create({ _id: userID });
-    return newRpgUser;
+    return Rpg.create({ _id: userID });
   }
 
 };
