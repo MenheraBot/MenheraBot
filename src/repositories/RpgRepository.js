@@ -9,12 +9,4 @@ module.exports = class RpgRepository {
     return newRpgUser;
   }
 
-  /*  static async remove(userID, value) {
-    const invertedValue = value * -1;
-    await Users.updateOne({ id: userID }, { $inc: { estrelinahs: invertedValue } });
-  }
-
-  static async set(userID, value) {
-    await Users.updateOne({ id: userID }, { $set: { estrelinhas: value } });
-  } */
 };
