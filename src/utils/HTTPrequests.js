@@ -57,41 +57,6 @@ module.exports.getActivity = async (shard) => {
   return result;
 };
 
-module.exports.clearExistingCommands = async () => {
-  const options = {
-    method: 'DELETE',
-    uri: `${config.api_IP}/api/site/commands`,
-    headers: {
-      'User-Agent': 'MenheraClient',
-      token: config.api_TOKEN,
-    },
-    json: true,
-  };
-
-  await request(options).catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
-};
-
-module.exports.postExistingCommands = async (data) => {
-  const options = {
-    method: 'POST',
-    uri: `${config.api_IP}/api/site/commands`,
-    headers: {
-      'User-Agent': 'MenheraClient',
-      token: config.api_TOKEN,
-    },
-    body: {
-      command: {
-        name: data.name,
-        description: data.description,
-        category: data.category,
-      },
-    },
-    json: true,
-  };
-
-  await request(options).catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
-};
-
 module.exports.status = async (data) => {
   const options = {
     method: 'POST',

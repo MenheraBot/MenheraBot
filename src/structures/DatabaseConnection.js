@@ -118,7 +118,17 @@ const warnSchema = mongoose.Schema({
   data: String,
 });
 
+const commandsSchema = mongoose.Schema({
+  name: { type: String },
+  pt_description: { type: String },
+  pt_usage: { type: String },
+  us_description: { type: String },
+  us_usage: { type: String },
+  category: { type: String },
+});
+
 const cmd = mongoose.model('Cmd', cmdSchema);
+const commands = mongoose.model('commands', commandsSchema);
 const status = mongoose.model('status', statusSchema);
 const guild = mongoose.model('guild', guildSchema);
 const remember = mongoose.model('remember', rememberSchema);
@@ -127,6 +137,7 @@ const user = mongoose.model('usersdb', userSchema);
 const warn = mongoose.model('warn', warnSchema);
 
 module.exports.Cmds = cmd;
+module.exports.Commands = commands;
 module.exports.Guilds = guild;
 module.exports.Status = status;
 module.exports.Reminders = remember;

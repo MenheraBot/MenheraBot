@@ -11,7 +11,7 @@ module.exports = class BotinfoCommand extends Command {
       name: 'botinfo',
       aliases: ['menhera'],
       cooldown: 10,
-      category: 'util',
+      category: 'info',
       clientPermissions: ['EMBED_LINKS'],
     });
   }

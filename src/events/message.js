@@ -12,9 +12,9 @@ module.exports = class MessageReceive {
   }
 
   async notifyAfk(message, t, userIds) {
-    const users = await this.client.database.Users.find({ id: { $in: userIds }, afk: true });
+    const afkUsers = await this.client.repositories.userRepository.findAfkByIDs(userIds);
 
-    users.forEach(async (data) => {
+    afkUsers.forEach(async (data) => {
       const user = await this.client.users.fetch(data.id);
       if (user.id !== message.author.id) message.menheraReply('notify', `${t('commands:afk.reason', { tag: user.tag, reason: data.afkReason })}`);
     });
@@ -32,7 +32,8 @@ module.exports = class MessageReceive {
 
     if (message.mentions.users.size > 0) this.notifyAfk(message, t, message.mentions.users.map((u) => u.id));
 
-    const authorData = await this.client.database.Users.findOne({ id: message.author.id });
+    let authorData = await this.client.repositories.userRepository.find(message.author.id);
+
     if (authorData?.afk) {
       authorData.afk = false;
       authorData.afkReason = null;
@@ -106,6 +107,8 @@ module.exports = class MessageReceive {
         return message.menheraReply('error', `${t('permissions:CLIENT_MISSING_PERMISSION', { perm })}`);
       }
     }
+
+    if (!authorData) authorData = await this.client.repositories.userRepository.create(message.author.id);
 
     try {
       new Promise((res, _) => { // eslint-disable-line
