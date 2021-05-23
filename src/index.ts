@@ -16,7 +16,7 @@ const client = new MenheraClient(
 async function loadMenhera() {
   await client.init();
 
-  client.login(process.env.NODE_ENV === 'production' ? config.token : config.testToken)
+  client.login(process.env.NODE_ENV === 'development' ? config.testToken : config.token)
     .then(() => console.log('[INDEX] Logged in'))
     .catch((e) => console.log(`[FATALERROR] Failure connecting to Discord! ${e.message}!`));
 }
