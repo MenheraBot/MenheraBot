@@ -9,8 +9,7 @@ module.exports = class UserRepository {
   }
 
   static async delete(userID) {
-    const result = await Users.deleteOne({ id: userID });
-    return result;
+    return Users.deleteOne({ id: userID });
   }
 
   static async findAfkByIDs(ids) {
