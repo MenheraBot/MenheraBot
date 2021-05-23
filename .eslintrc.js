@@ -11,7 +11,6 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 12,
   },
-  plugins: ['import'],
   rules: {
     'no-console': 'off',
     'consistent-return': 'off',
@@ -23,16 +22,14 @@ module.exports = {
     'max-len': 'off',
     'import/no-unresolved': [2, { ignore: ['config.json$'] }],
     'no-underscore-dangle': ['error', { allow: ['_id'] }],
-    'import/extensions': [0, 'never', { ts: 'never' }],
-
   },
   settings: {
-    'import/parsers': {
-      '@typescript-eslint/parser': ['.ts', '.tsx'],
-    },
     'import/resolver': {
-      node: true,
-      'eslint-import-resolver-typescript': true,
+      node: {
+        extensions: [
+          '.js',
+        ],
+      },
     },
   },
 };
