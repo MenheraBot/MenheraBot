@@ -8,6 +8,7 @@
     "start": "cross-env NODE_ENV=production node shard.js",
     "dev": "cross-env NODE_ENV=development ts-node-dev -r tsconfig-paths/register --respawn --transpile-only --ignore-watch node_modules --no-notify src/index.ts",
     "lint:fix": "eslint --fix .",
+    "lint:test": "eslint .",
     "build:test": "tsc --noEmit",
     "test": "jest"
   },
