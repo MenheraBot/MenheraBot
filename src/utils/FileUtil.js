@@ -16,19 +16,23 @@ module.exports = class FileUtil {
 
   static async readDirectory(directory, loadFunction = () => null) {
     return Promise.all(
-      FileUtil.readdirRecursive(directory)
-        .map((filepath) => loadFunction(require(path.resolve(filepath)), filepath)),
+      FileUtil.readdirRecursive(directory).map((filepath) => loadFunction(require(path.resolve(filepath)), filepath)),
     );
   }
 
   static readdirRecursive(directory) {
-    return fs.readdirSync(directory)
-      .reduce((p, file) => {
-        const filepath = path.join(directory, file);
-        if (fs.statSync(filepath).isDirectory()) {
-          return [...p, ...FileUtil.readdirRecursive(filepath)];
-        }
-        return [...p, filepath];
-      }, []);
+    return fs.readdirSync(directory).reduce((p, file) => {
+      const filepath = path.join(directory, file);
+      const validExtensions = ['.ts', '.js'];
+
+      if (!validExtensions.includes(path.extname(filepath))) {
+        return p;
+      }
+
+      if (fs.statSync(filepath).isDirectory()) {
+        return [...p, ...FileUtil.readdirRecursive(filepath)];
+      }
+      return [...p, filepath];
+    }, []);
   }
 };
