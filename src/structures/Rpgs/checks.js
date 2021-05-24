@@ -9,7 +9,7 @@ const constants = require('../MenheraConstants');
 
 const random = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
-module.exports.getEnemyByUserLevel = (user, type, dungeonLevel, message, t) => {
+const getEnemyByUserLevel = (user, type, dungeonLevel, message, t) => {
   if (type === 'boss') {
     if (user.level > 24 && user.level < 30) {
       return random([...mobsFile.boss, ...mobsFile.gods]);
@@ -55,7 +55,7 @@ module.exports.getEnemyByUserLevel = (user, type, dungeonLevel, message, t) => {
   return validLevels[dungeonLevel].mob;
 };
 
-module.exports.battle = async (message, escolha, user, inimigo, type, t) => {
+const battle = async (message, escolha, user, inimigo, type, t) => {
   let danoUser;
   if (escolha.scape) {
     message.menheraReply('scape', t('roleplay:scape'));
@@ -67,11 +67,11 @@ module.exports.battle = async (message, escolha, user, inimigo, type, t) => {
   if (escolha.name === 'Ataque Básico' || escolha.name === 'Basic Attack') {
     danoUser = escolha.damage;
   } else if (escolha.name === 'Morte Instantânea') {
-    if (user.mana < user.maxMana) return this.enemyShot(message, user, inimigo, type, t, `⚔️ | ${t('roleplay:battle.no-mana', { name: escolha.name })}`);
+    if (user.mana < user.maxMana) return enemyShot(message, user, inimigo, type, t, `⚔️ | ${t('roleplay:battle.no-mana', { name: escolha.name })}`);
     danoUser = inimigo.life / 2;
     user.mana = 0;
   } else {
-    if (user.mana < escolha.cost) return this.enemyShot(message, user, inimigo, type, t, `⚔️ | ${t('roleplay:battle.no-mana', { name: escolha.name })}`);
+    if (user.mana < escolha.cost) return enemyShot(message, user, inimigo, type, t, `⚔️ | ${t('roleplay:battle.no-mana', { name: escolha.name })}`);
     if (escolha.heal > 0) {
       user.life += escolha.heal;
       if (user.life > user.maxLife) user.life = user.maxLife;
@@ -89,7 +89,7 @@ module.exports.battle = async (message, escolha, user, inimigo, type, t) => {
   const toSay = `⚔️ | ${t('roleplay:battle.attack', { enemy: inimigo.name, choice: escolha.name, damage: danoDado })}`;
 
   if (vidaInimigo < 1) {
-    return this.resultBattle(message, user, inimigo, t, toSay);
+    return resultBattle(message, user, inimigo, t, toSay);
   }
 
   const enemy = {
@@ -103,10 +103,10 @@ module.exports.battle = async (message, escolha, user, inimigo, type, t) => {
     dgLevel: inimigo.dgLevel,
   };
 
-  return this.enemyShot(message, user, enemy, type, t, toSay);
+  return enemyShot(message, user, enemy, type, t, toSay);
 };
 
-module.exports.morte = async (message, user, t, toSay, inimigo) => {
+const morte = async (message, user, t, toSay, inimigo) => {
   http.postRpg(user.id, user.class, user.level, inimigo.dgLevel, true, Date.now());
 
   message.menheraReply('error', `${toSay}\n\n${t('roleplay:death')}`);
@@ -122,8 +122,8 @@ module.exports.morte = async (message, user, t, toSay, inimigo) => {
   }
 };
 
-module.exports.enemyShot = async (message, user, inimigo, type, t, toSay) => {
-  const habilidades = await this.getAbilities(user);
+const enemyShot = async (message, user, inimigo, type, t, toSay) => {
+  const habilidades = await getAbilities(user);
 
   let danoRecebido;
   const armadura = user?.familiar?.id && user.familiar.type === 'armor' ? user.armor + user.protection.armor + (familiarsFile[user.familiar.id].boost.value + ((user.familiar.level - 1) * familiarsFile[user.familiar.id].boost.value)) : user.armor + user.protection.armor;
@@ -138,13 +138,13 @@ module.exports.enemyShot = async (message, user, inimigo, type, t, toSay) => {
   const vidaUser = user.life - danoRecebido;
 
   if (vidaUser < 1) {
-    return this.morte(message, user, t, toSay, inimigo);
+    return morte(message, user, t, toSay, inimigo);
   }
   user.life = vidaUser;
-  this.continueBattle(message, inimigo, habilidades, user, type, ataque, t, toSay);
+  continueBattle(message, inimigo, habilidades, user, type, ataque, t, toSay);
 };
 
-module.exports.continueBattle = async (
+const continueBattle = async (
   message, inimigo, habilidades, user, type, ataque, t, toSay,
 ) => {
   const options = [{
@@ -208,21 +208,21 @@ module.exports.continueBattle = async (
     time = true;
     const choice = Number(m.content);
     if (escolhas.includes(choice)) {
-      return this.battle(
+      return battle(
         message, options[choice], user, inimigo, type, t,
       ); // Mandar os dados de ataque, e defesa do inimigo, para fazer o calculo lá
     }
-    return this.enemyShot(message, user, inimigo, type, t, `⚔️ |  ${t('roleplay:battle.new-tatic')}`);
+    return enemyShot(message, user, inimigo, type, t, `⚔️ |  ${t('roleplay:battle.new-tatic')}`);
   });
 
   setTimeout(() => {
     if (!time) {
-      return this.enemyShot(message, user, inimigo, type, t, `⚔️ | ${t('roleplay:battle.timeout')}`);
+      return enemyShot(message, user, inimigo, type, t, `⚔️ | ${t('roleplay:battle.timeout')}`);
     }
   }, 15000);
 };
 
-module.exports.finalChecks = async (message, user, t) => {
+const finalChecks = async (message, user, t) => {
   let texto = '';
 
   setTimeout(async () => {
@@ -238,7 +238,7 @@ module.exports.finalChecks = async (message, user, t) => {
         texto += '**<a:LevelUp:760954035779272755> LEVEL UP <a:LevelUp:760954035779272755>**';
         await user.save();
         message.channel.send(texto);
-        this.newAbilities(message, user, t);
+        newAbilities(message, user, t);
       }
     } else if (user.level > 4 && user.level < 10) {
       if (user.xp >= user.nextLevelXp) {
@@ -251,7 +251,7 @@ module.exports.finalChecks = async (message, user, t) => {
         texto += '**<a:LevelUp:760954035779272755> LEVEL UP <a:LevelUp:760954035779272755>**';
         message.channel.send(texto);
         await user.save();
-        this.newAbilities(message, user, t);
+        newAbilities(message, user, t);
       }
     } else if (user.level > 9 && user.level < 29) {
       if (user.xp >= user.nextLevelXp) {
@@ -264,7 +264,7 @@ module.exports.finalChecks = async (message, user, t) => {
         texto += '**<a:LevelUp:760954035779272755> LEVEL UP <a:LevelUp:760954035779272755>**';
         message.channel.send(texto);
         await user.save();
-        this.newAbilities(message, user, t);
+        newAbilities(message, user, t);
       }
     } else if (user.level >= 29) {
       if (user.xp >= user.nextLevelXp) {
@@ -277,13 +277,13 @@ module.exports.finalChecks = async (message, user, t) => {
         texto += '**<a:LevelUp:760954035779272755> LEVEL UP <a:LevelUp:760954035779272755>**';
         message.channel.send(texto);
         await user.save();
-        this.newAbilities(message, user, t);
+        newAbilities(message, user, t);
       }
     }
   }, 500);
 };
 
-module.exports.newAbilities = async (message, user, t) => {
+const newAbilities = async (message, user, t) => {
   setTimeout(async () => {
     if (user.level === 5) {
       switch (user.class) {
@@ -525,12 +525,12 @@ module.exports.newAbilities = async (message, user, t) => {
       user.xp = 0;
       user.nextLevelXp = 5000000;
       user.abilityPower += 1;
-      this.evolve(user, message, t);
+      evolve(user, message, t);
     }
   }, 500);
 };
 
-module.exports.resultBattle = async (message, user, inimigo, t, toSay) => {
+const resultBattle = async (message, user, inimigo, t, toSay) => {
   const randomLoot = inimigo.loots[Math.floor(Math.random() * inimigo.loots.length)];
   let canGetLoot = true;
 
@@ -562,10 +562,10 @@ module.exports.resultBattle = async (message, user, inimigo, t, toSay) => {
   }
   user.inBattle = false;
   await user.save();
-  return this.finalChecks(message, user, t);
+  return finalChecks(message, user, t);
 };
 
-module.exports.getAbilities = async (user) => {
+const getAbilities = async (user) => {
   const abilities = [];
 
   let filtrado;
@@ -644,7 +644,7 @@ module.exports.getAbilities = async (user) => {
   return abilities;
 };
 
-module.exports.initialChecks = async (user, message, t) => {
+const initialChecks = async (user, message, t) => {
   let pass = true;
   const motivo = [];
 
@@ -695,7 +695,7 @@ module.exports.initialChecks = async (user, message, t) => {
   return user.save().then(() => pass);
 };
 
-module.exports.confirmRegister = async (user, message, t) => {
+const confirmRegister = async (user, message, t) => {
   setTimeout(async () => {
     switch (user.class) {
       case 'Assassino': {
@@ -862,7 +862,7 @@ module.exports.confirmRegister = async (user, message, t) => {
   }, 1000);
 };
 
-module.exports.evolve = async (user, message, t) => {
+const evolve = async (user, message, t) => {
   switch (user.class) {
     case 'Assassino': {
       user.abilities.push(abilitiesFile.assassin.normalAbilities[4]);
@@ -954,4 +954,14 @@ module.exports.evolve = async (user, message, t) => {
       break;
     }
   }
+};
+
+module.exports = {
+  getAbilities,
+  enemyShot,
+  getEnemyByUserLevel,
+  newAbilities,
+  continueBattle,
+  initialChecks,
+  confirmRegister,
 };
