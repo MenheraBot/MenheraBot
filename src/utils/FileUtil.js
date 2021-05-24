@@ -25,13 +25,14 @@ module.exports = class FileUtil {
       const filepath = path.join(directory, file);
       const validExtensions = ['.ts', '.js'];
 
+      if (fs.statSync(filepath).isDirectory()) {
+        return [...p, ...FileUtil.readdirRecursive(filepath)];
+      }
+
       if (!validExtensions.includes(path.extname(filepath))) {
         return p;
       }
 
-      if (fs.statSync(filepath).isDirectory()) {
-        return [...p, ...FileUtil.readdirRecursive(filepath)];
-      }
       return [...p, filepath];
     }, []);
   }
