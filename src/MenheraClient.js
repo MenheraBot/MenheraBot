@@ -11,7 +11,7 @@ const Constants = require('./structures/MenheraConstants');
 const RpgChecks = require('./structures/Rpgs/checks');
 const FileUtil = require('./utils/FileUtil');
 const LocaleStructure = require('./structures/LocaleStructure');
-const { ShardManager } = require('./structures/ShardManager');
+const ShardManager = require('./structures/ShardManager');
 const Repositories = require('./repositories/repositories');
 
 module.exports = class MenheraClient extends Client {
