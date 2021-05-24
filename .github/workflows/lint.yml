@@ -21,4 +21,4 @@ jobs:
       - name: Run Linter
         run: npm run lint:test
       - name: Run Build
-        run: npm run build:test
+        run: touch config.json && npm run build:test
