@@ -24,7 +24,7 @@ module.exports = {
     'import/no-unresolved': [2, { ignore: ['config.json$'] }],
     'no-underscore-dangle': ['error', { allow: ['_id'] }],
     'import/extensions': [0, 'never', { ts: 'never' }],
-
+    'linebreak-style': 'off',
   },
   settings: {
     'import/parsers': {
