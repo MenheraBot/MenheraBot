@@ -7,5 +7,4 @@ module.exports = class RpgRepository {
 
     return Rpg.create({ _id: userID });
   }
-  
 };
