@@ -957,11 +957,16 @@ const evolve = async (user, message, t) => {
 };
 
 module.exports = {
-  getAbilities,
-  enemyShot,
   getEnemyByUserLevel,
-  newAbilities,
+  battle,
+  morte,
+  enemyShot,
   continueBattle,
+  finalChecks,
+  newAbilities,
+  resultBattle,
+  getAbilities,
   initialChecks,
   confirmRegister,
+  evolve,
 };
