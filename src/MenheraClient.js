@@ -11,7 +11,7 @@ const Constants = require('./structures/MenheraConstants');
 const RpgChecks = require('./structures/Rpgs/checks');
 const FileUtil = require('./utils/FileUtil');
 const LocaleStructure = require('./structures/LocaleStructure');
-const { ShardManager } = require('./structures/ShardManager');
+const ShardManager = require('./structures/ShardManager');
 const Repositories = require('./repositories/repositories');
 
 module.exports = class MenheraClient extends Client {
@@ -27,13 +27,13 @@ module.exports = class MenheraClient extends Client {
     this.constants = Constants;
     this.rpgChecks = RpgChecks;
     this.botSettings = botSettings;
-
-    if (this.shard) {
-      this.shardManager = new ShardManager(this);
-    }
   }
 
   async init() {
+    if (this.shard) {
+      this.shardManager = new ShardManager(this);
+    }
+
     Sentry.init({ dsn: this.config.sentry_dns });
     const locales = new LocaleStructure();
     const reminder = new Reminders(this);
