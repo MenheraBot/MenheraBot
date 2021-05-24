@@ -1,0 +1,21 @@
+{
+  "prefix": "Prefixo do bot",
+  "token": "Token primário do bot",
+  "testToken": "Token para bot em modo desenvolvimento",
+  "owner": ["ids dos donos do bot, todos ids aqui poderão usar comandos da categoria 'Dev'"],
+  "uri": "Uri de conexão com o banco de dados mongoDb",
+  "dbt": "Token da top.gg",
+  "sentry_dns": "Link do sentry",
+  "webhookAuth": "senha do webhook da top.gg",
+  "webhookPort": "porta do webhook da top.gg (número)",
+  "api_IP": "ip da api",
+  "api_TOKEN": "token da api",
+  "bug_webhook_token": "webhook do servidor de suporte",
+  "bug_webhook_id": "webhook do servidor de suporte",
+  "suggest_webhook_token": "webhook do servidor de suporte",
+  "suggest_webhook_id": "webhook do servidor de suporte",
+  "guild_webhook_token": "webhook do servidor de suporte",
+  "guild_webhook_id": "webhook do servidor de suporte",
+  "family_webhook_token": "webhook do servidor de suporte",
+  "family_webhook_id": "webhook do servidor de suporte"
+}
