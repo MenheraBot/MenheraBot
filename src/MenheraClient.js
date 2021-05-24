@@ -27,13 +27,13 @@ module.exports = class MenheraClient extends Client {
     this.constants = Constants;
     this.rpgChecks = RpgChecks;
     this.botSettings = botSettings;
-
-    if (this.shard) {
-      this.shardManager = new ShardManager(this);
-    }
   }
 
   async init() {
+    if (this.shard) {
+      this.shardManager = new ShardManager(this);
+    }
+
     Sentry.init({ dsn: this.config.sentry_dns });
     const locales = new LocaleStructure();
     const reminder = new Reminders(this);
