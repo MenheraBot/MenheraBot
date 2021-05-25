@@ -39,4 +39,8 @@ export default class CommandContext {
   async send(whatToSend: any): Promise<Message> {
     return this.message.channel.send(whatToSend);
   }
+
+  async locale(text: string, translateVars = {}) {
+    return this.i18n(text, translateVars);
+  }
 }
