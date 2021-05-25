@@ -12,5 +12,7 @@ module.exports = class Command {
       clientPermissions: options.clientPermissions || null,
       devsOnly: options.devsOnly || false,
     };
+
+    this.dir = null;
   }
 };

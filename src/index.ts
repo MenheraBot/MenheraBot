@@ -10,6 +10,7 @@ const client = new MenheraClient(
   {
     commandsDirectory: resolve(__dirname, 'commands'),
     eventsDirectory: resolve(__dirname, 'events'),
+    ...config,
   },
 );
 
