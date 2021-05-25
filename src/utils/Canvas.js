@@ -335,8 +335,8 @@ module.exports = class Canvas {
     const lifeFillMultiplier = user.life / user.maxLife;
     const manaFillMultiplier = user.mana / user.maxMana;
     const xpFillMultiplier = user.xp / user.nextLevelXp;
-    const dmg = user?.familiar?.id && user.familiar.type === 'damage' ? user.damage + user.weapon.damage + (familiarsFile[user.familiar.id].boost.value + ((user.familiar.level - 1) * familiarsFile[user.familiar.id].boost.value)) : user.damage + user.weapon.damage;
-    const ptr = user?.familiar?.id && user.familiar.type === 'armor' ? user.armor + user.protection.armor + (familiarsFile[user.familiar.id].boost.value + ((user.familiar.level - 1) * familiarsFile[user.familiar.id].boost.value)) : user.armor + user.protection.armor;
+    const dmg = user?.familiar?.id && user.familiar.type === 'damage' ? user.damage + user?.weapon?.damage + (familiarsFile[user.familiar.id].boost.value + ((user.familiar.level - 1) * familiarsFile[user.familiar.id].boost.value)) : user.damage + user?.weapon?.damage;
+    const ptr = user?.familiar?.id && user.familiar.type === 'armor' ? user.armor + user?.protection?.armor + (familiarsFile[user.familiar.id].boost.value + ((user.familiar.level - 1) * familiarsFile[user.familiar.id].boost.value)) : user.armor + user?.protection?.armor;
 
     /* ---------------------- CREATE BARS -------------------------- */
 
