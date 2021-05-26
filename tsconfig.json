@@ -10,6 +10,8 @@
     "baseUrl": "src",
     "paths": {
       "@structures/*": ["structures/*"],
+      "@utils/*": ["utils/*"],
+      "@interfaces/*": ["interfaces/*"],
     },
       // Ensure that .d.ts files are created by tsc, but not .js files
     "declaration": true,
