@@ -13,6 +13,8 @@ const statusSchema = mongoose.Schema({
   _id: { type: String },
   ping: { type: Number, default: 0 },
   disabledCommands: { type: Array },
+  guilds: { type: Number, default: 0 },
+  uptime: { type: String, default: '0' },
   lastPingAt: { type: String },
 });
 
