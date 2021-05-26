@@ -33,7 +33,7 @@ module.exports = class ReadyEvent {
         ping.ping = this.client.ws.ping;
         ping.lastPingAt = Date.now();
         ping.guilds = this.client.guilds.cache.size;
-        ping.uptime = this.client.uptime;
+        ping.uptime = `${this.client.uptime}`;
         await ping.save();
       }
     }, 1000 * 60);
