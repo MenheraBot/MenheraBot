@@ -1,7 +1,5 @@
 config.json
 .vscode/
 node_modules/
-package-lock.json
-src/commands/Dev/MoonCommand.js
 logs/
 dist/
