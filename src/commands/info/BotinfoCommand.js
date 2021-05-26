@@ -17,7 +17,7 @@ module.exports = class BotinfoCommand extends Command {
   }
 
   async run({ message, server }, t) {
-    const owner = await this.client.users.fetch(this.client.config.owner[0]);
+    const owner = await this.client.users.fetch(process.env.OWNER);
     const commandsExecuted = await http.getCommands();
     if (server.lang === 'pt-BR') {
       moment.locale('pt-br');

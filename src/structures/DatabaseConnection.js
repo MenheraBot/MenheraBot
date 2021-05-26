@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
-const config = require('../../config.json');
 
-mongoose.connect(config.uri, {
+const connectionUri = process.env.NODE_ENV === 'development' ? process.env.DEV_DATABASE_URI : process.env.DATABASE_URI;
+
+mongoose.connect(connectionUri, {
   useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true,
 }, (err) => {
   if (err) return console.log(`(x) Error to connecting to database \n${err}`);
@@ -23,7 +24,7 @@ const cmdSchema = mongoose.Schema({
 
 const guildSchema = mongoose.Schema({
   id: { type: String, unique: true },
-  prefix: { type: String, default: config.prefix },
+  prefix: { type: String, default: process.env.BOT_PREFIX },
   blockedChannels: { type: Array, default: [] },
   disabledCommands: { type: Array, default: [] },
   lang: { type: String, default: 'pt-BR' },

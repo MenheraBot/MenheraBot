@@ -7,9 +7,9 @@ module.exports = class DiscordBots {
   }
 
   async init() {
-    const dbl = new DBL(this.client.config.dbt, {
-      webhookPort: 8000,
-      webhookAuth: this.client.config.webhookAuth,
+    const dbl = new DBL(process.env.DBL_TOKEN, {
+      webhookPort: process.env.DBLHOOK_PORT,
+      webhookAuth: process.env.DBL_AUTH,
     }, this.client);
 
     dbl.webhook.on('vote', async (vote) => {

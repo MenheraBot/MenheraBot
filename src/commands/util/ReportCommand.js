@@ -26,7 +26,7 @@ module.exports = class ReportCommand extends Command {
       .setTimestamp()
       .setAuthor(`Novo Bug Reportado por ${message.author.tag}`, message.author.displayAvatarURL({ dynamic: true }));
 
-    const reportWebhook = await this.client.fetchWebhook(this.client.config.bug_webhook_id, this.client.config.bug_webhook_token);
+    const reportWebhook = await this.client.fetchWebhook(process.env.BUG_HOOK_ID, process.env.BUG_HOOK_TOKEN);
 
     reportWebhook.send(embed);
 

@@ -6,7 +6,6 @@ const i18next = require('i18next');
 const EventManager = require('./structures/EventManager');
 const Reminders = require('./utils/RemindersChecks');
 const Database = require('./structures/DatabaseConnection');
-const Config = require('../config.json');
 const Constants = require('./structures/MenheraConstants');
 const RpgChecks = require('./structures/Rpgs/checks');
 const FileUtil = require('./utils/FileUtil');
@@ -23,7 +22,6 @@ module.exports = class MenheraClient extends Client {
     this.commands = new Collection();
     this.aliases = new Collection();
     this.events = new EventManager(this);
-    this.config = Config;
     this.constants = Constants;
     this.rpgChecks = RpgChecks;
     this.botSettings = botSettings;
@@ -34,7 +32,7 @@ module.exports = class MenheraClient extends Client {
       this.shardManager = new ShardManager(this);
     }
 
-    Sentry.init({ dsn: this.config.sentry_dns });
+    Sentry.init({ dsn: process.env.SENTRY_DNS });
     const locales = new LocaleStructure();
     const reminder = new Reminders(this);
     reminder.loop();
