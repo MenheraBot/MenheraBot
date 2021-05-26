@@ -83,26 +83,20 @@ export default class MenheraClient extends Client {
     const tPt = i18next.getFixedT('pt-BR');
     const tUs = i18next.getFixedT('en-US');
 
-    const findInDb = await this.database.Commands.findOne({
-      name: command.name,
-    });
+    const exists = await this.repositories.commandRepository.findByName(command.name);
 
-    if (findInDb) {
-      findInDb.category = command.category;
-      findInDb.pt_description = tPt(`commands:${command.name}.description`);
-      findInDb.pt_usage = tPt(`commands:${command.name}.usage`);
-      findInDb.us_description = tUs(`commands:${command.name}.description`);
-      findInDb.us_usage = tUs(`commands:${command.name}.usage`);
-      findInDb.save();
+    const data = {
+      category: command.category,
+      ptDescription: tPt(`commands:${command.name}.description`),
+      ptUsage: tPt(`commands:${command.name}.usage`),
+      usDescription: tUs(`commands:${command.name}.description`),
+      usUsage: tUs(`commands:${command.name}.usage`),
+    };
+
+    if (exists) {
+      this.repositories.commandRepository.create(command.name, data);
     } else {
-      this.database.Commands.create({
-        name: command.name,
-        category: command.category,
-        pt_description: tPt(`commands:${command.name}.description`),
-        pt_usage: tPt(`commands:${command.name}.usage`),
-        us_description: tUs(`commands:${command.name}.description`),
-        us_usage: tUs(`commands:${command.name}.usage`),
-      });
+      this.repositories.commandRepository.updateByName(command.name, data);
     }
   }
 
