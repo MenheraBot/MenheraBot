@@ -10,7 +10,7 @@ export interface MenheraConfig {
   testToken: string;
   dbt: string;
   webhookAuth: string;
-  webhookPort: string;
+  webhookPort: number;
   api_IP: string;
   api_TOKEN: string;
   bug_webhook_token: string;
