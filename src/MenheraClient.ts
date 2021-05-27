@@ -94,9 +94,9 @@ export default class MenheraClient extends Client {
     };
 
     if (exists) {
-      this.repositories.commandRepository.create(command.name, data);
-    } else {
       this.repositories.commandRepository.updateByName(command.name, data);
+    } else {
+      this.repositories.commandRepository.create(command.name, data);
     }
   }
 

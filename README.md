@@ -8,10 +8,14 @@
 [![](https://top.gg/api/widget/servers/708014856711962654.svg)](https://discord.gg/fZMdQbA)
 [![](https://top.gg/api/widget/upvotes/708014856711962654.svg)](https://top.gg/bot/708014856711962654/vote)
 
-> Menhera is animating more than 1800 servers with her functionalities
+> Menhera is animating more than 4000 servers with her functionalities
 
 MenheraBot is an open source Discord bot made in JavaScript with [Discord.js](https://discord.js.org) by [Luxanna](https://github.com/ySnoopyDogy)
 Feel free to add a star ⭐ to the repository to promote the project!
+
+## ⚠️ Disclaimer ⚠️
+Menhera is currently changing her language and lib. We are going from JavaScript with Discord.js to TypeSript with Eris
+You can help us making pr's. Thanks for understanding.
 
 ## Features
 
