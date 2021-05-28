@@ -1,12 +1,13 @@
 name: Linter in PR
 
 on:
-  - push
   - pull_request
+  push:
+    branches:
+     - master
 
 jobs:
   build:
-    if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
