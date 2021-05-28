@@ -1,4 +1,4 @@
-name: Linter in PR
+name: Linter
 
 on:
   - pull_request
