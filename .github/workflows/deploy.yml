@@ -1,23 +1,22 @@
 name: Deploy
 
-on:
-  push:
-    branches:
-      - master
+on: [push]
+
+
 jobs:
-  build:
+  deploy:
+    if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
       - name: Deploy Menhera to Server
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.SERVER_IP }}
-        username: ${{ secrets.SERVER_USERNAME }}
-        password: ${{ secrets.SERVER_PASSWORD }}
-        script: |
-        cd ${{ secrets.PROJECT_PATH }}
-        git pull origin master
-        npm install
-        npm run build
-        echo Everything went ok!
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          password: ${{ secrets.SERVER_PASSWORD }}
+          script: |
+            cd ${{ secrets.PROJECT_PATH }}
+            git pull origin master
+            npm install
+            npm run build
+            echo Everything went ok!
