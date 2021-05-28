@@ -1,7 +1,8 @@
 name: Linter
 
 on:
-  - pull_request
+  pull_request:
+    types: [opened]
   push:
     branches:
      - master
