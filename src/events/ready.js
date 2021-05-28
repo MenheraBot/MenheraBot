@@ -25,11 +25,15 @@ module.exports = class ReadyEvent {
       });
       const ping = await this.client.database.Status.findById(shardId);
       if (!ping) {
-        const newShard = new this.client.database.Status({ _id: shardId, ping: this.client.ws.ping, lastPingAt: Date.now() });
+        const newShard = new this.client.database.Status({
+          _id: shardId, ping: this.client.ws.ping, guilds: this.client.guilds.cache.size, uptime: this.client.uptime, lastPingAt: Date.now(),
+        });
         await newShard.save();
       } else {
         ping.ping = this.client.ws.ping;
         ping.lastPingAt = Date.now();
+        ping.guilds = this.client.guilds.cache.size;
+        ping.uptime = `${this.client.uptime}`;
         await ping.save();
       }
     }, 1000 * 60);

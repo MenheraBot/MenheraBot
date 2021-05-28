@@ -11,7 +11,9 @@
     "lint:fix": "eslint --fix .",
     "lint:test": "eslint .",
     "build:test": "tsc --noEmit",
-    "test": "jest"
+    "test": "jest",
+    "docker:build": "docker build -t menhera .",
+    "docker:run": "docker run -d --name MenheraBot menhera"
   },
   "keywords": [],
   "author": "Luxanna Crownguard (ySnoopyDogy)",
