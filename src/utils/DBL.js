@@ -78,16 +78,12 @@ module.exports = class DiscordBots {
           try {
             await userInShard.send(embedToSend);
           } catch {
-            console.log('[DBL] Cannot send message to user');
+            // console.log('[DBL] Cannot send message to user');
           }
         }
       };
 
       await this.client.shard.broadcastEval(functionToEval(vote.user, embed));
-    });
-
-    dbl.on('posted', () => {
-      console.log('[DBL] Bot Stats posted');
     });
 
     this.client.setInterval(async () => {
