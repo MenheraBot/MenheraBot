@@ -12,33 +12,10 @@ import Constants from '@structures/MenheraConstants';
 import RpgChecks from '@structures/Rpgs/checks';
 import LocaleStructure from '@structures/LocaleStructure';
 import ShardManager from '@structures/ShardManager';
-import FileUtil from './utils/FileUtil';
-import Reminders from './utils/RemindersChecks';
+import FileUtil from '@utils/FileUtil';
+import Reminders from '@utils/RemindersChecks';
+import { MenheraConfig } from '@interfaces/MenheraClient';
 import Repositories from './repositories/repositories';
-
-interface MenheraConfig {
-  commandsDirectory: string;
-  sentry_dns: string;
-  eventsDirectory: string;
-  token: string;
-  uri: string;
-  owner: string[];
-  prefix: string;
-  testToken: string;
-  dbt: string;
-  webhookAuth: string;
-  webhookPort: string;
-  api_IP: string;
-  api_TOKEN: string;
-  bug_webhook_token: string;
-  bug_webhook_id: string;
-  suggest_webhook_token: string;
-  suggest_webhook_id: string;
-  guild_webhook_token: string;
-  guild_webhook_id: string;
-  family_webhook_token: string;
-  family_webhook_id: string;
-}
 
 export default class MenheraClient extends Client {
   database: typeof Database;
@@ -51,9 +28,9 @@ export default class MenheraClient extends Client {
 
   rpgChecks: typeof RpgChecks;
 
-  commands: Collection<string, Command>
+  commands: Collection<string, Command>;
 
-  aliases: Collection<string, string>
+  aliases: Collection<string, string>;
 
   events: EventManager;
 
@@ -90,7 +67,8 @@ export default class MenheraClient extends Client {
   }
 
   async reloadCommand(commandName: string) {
-    const command = this.commands.get(commandName) || this.commands.get(this.aliases.get(commandName));
+    const command = this.commands.get(commandName)
+      || this.commands.get(this.aliases.get(commandName));
     if (!command) return false;
     // TODO: remover quando converter o Command para typescript
     // @ts-ignore
@@ -105,24 +83,20 @@ export default class MenheraClient extends Client {
     const tPt = i18next.getFixedT('pt-BR');
     const tUs = i18next.getFixedT('en-US');
 
-    const findInDb = await this.database.Commands.findOne({ name: command.name });
+    const exists = await this.repositories.commandRepository.findByName(command.name);
 
-    if (findInDb) {
-      findInDb.category = command.category;
-      findInDb.pt_description = tPt(`commands:${command.name}.description`);
-      findInDb.pt_usage = tPt(`commands:${command.name}.usage`);
-      findInDb.us_description = tUs(`commands:${command.name}.description`);
-      findInDb.us_usage = tUs(`commands:${command.name}.usage`);
-      findInDb.save();
+    const data = {
+      category: command.category,
+      ptDescription: tPt(`commands:${command.name}.description`),
+      ptUsage: tPt(`commands:${command.name}.usage`),
+      usDescription: tUs(`commands:${command.name}.description`),
+      usUsage: tUs(`commands:${command.name}.usage`),
+    };
+
+    if (exists) {
+      this.repositories.commandRepository.updateByName(command.name, data);
     } else {
-      this.database.Commands.create({
-        name: command.name,
-        category: command.category,
-        pt_description: tPt(`commands:${command.name}.description`),
-        pt_usage: tPt(`commands:${command.name}.usage`),
-        us_description: tUs(`commands:${command.name}.description`),
-        us_usage: tUs(`commands:${command.name}.usage`),
-      });
+      this.repositories.commandRepository.create(command.name, data);
     }
   }
 

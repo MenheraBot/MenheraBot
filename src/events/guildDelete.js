@@ -4,8 +4,9 @@ module.exports = class GuildDelete {
   }
 
   async run(guild) {
+    if (!guild || !guild.id) return;
     this.client.database.Guilds.findOneAndDelete({ id: guild.id }, () => {
-      console.log(`[EVENT] Deleted Guild: ${guild.id}`);
+      // console.log(`[EVENT] Deleted Guild: ${guild.id}`);
     });
 
     const webhook = await this.client.fetchWebhook(this.client.config.guild_webhook_id, this.client.config.guild_webhook_token);

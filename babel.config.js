@@ -29,6 +29,8 @@ module.exports = {
     ['module-resolver', {
       alias: {
         '@structures': './src/structures',
+        '@interfaces': './src/interfaces',
+        '@utils': './src/utils',
       },
     }],
   ],

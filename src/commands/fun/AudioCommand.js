@@ -41,16 +41,18 @@ module.exports = class AudioCommand extends Command {
     let dis;
 
     try {
-      await message.member.voice.channel.join().then((conn) => {
+      await message.member.voice.channel.join().then(async (conn) => {
         const audioLocal = resolve(`src/media/audio/${file}.mp3`);
-        dis = conn.play(audioLocal);
+        dis = await conn.play(audioLocal);
       });
     } catch {
       message.menheraReply('error', t('commands:audio.no-perm'));
     }
 
-    dis.on('finish', () => {
-      if (message.guild.me.voice.channelID) message.guild.me.voice.channel.leave();
-    });
+    if (dis) {
+      dis.on('finish', () => {
+        if (message.guild.me.voice.channelID) message.guild.me.voice.channel.leave();
+      });
+    }
   }
 };
