@@ -1,4 +1,4 @@
-const { Rpg } = require('../structures/DatabaseConnection');
+const { Rpg } = require('../structures/DatabaseCollections');
 
 module.exports = class RpgRepository {
   static async findByIdOrCreate(userID) {

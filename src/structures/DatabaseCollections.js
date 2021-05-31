@@ -1,13 +1,6 @@
 const mongoose = require('mongoose');
 const config = require('../../config.json');
 
-mongoose.connect(config.uri, {
-  useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true,
-}, (err) => {
-  if (err) return console.log(`(x) Error to connecting to database \n${err}`);
-  return console.log('[DATABASE] Conectado com sucesso à database');
-});
-
 const statusSchema = mongoose.Schema({
   _id: { type: String },
   ping: { type: Number, default: 0 },

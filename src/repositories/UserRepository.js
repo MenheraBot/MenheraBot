@@ -1,4 +1,4 @@
-const { Users } = require('../structures/DatabaseConnection');
+const { Users } = require('../structures/DatabaseCollections');
 
 module.exports = class UserRepository {
   static async findOrCreate(userID) {

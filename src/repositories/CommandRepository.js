@@ -1,4 +1,4 @@
-const { Commands } = require('../structures/DatabaseConnection');
+const { Commands } = require('../structures/DatabaseCollections');
 
 module.exports = class CommandRepository {
   static findByName(commandName) {

@@ -7,7 +7,7 @@ import i18next from 'i18next';
 import Command from '@structures/command';
 
 import EventManager from '@structures/EventManager';
-import Database from '@structures/DatabaseConnection';
+import Database from '@structures/DatabaseCollections';
 import Constants from '@structures/MenheraConstants';
 import RpgChecks from '@structures/Rpgs/checks';
 import LocaleStructure from '@structures/LocaleStructure';
