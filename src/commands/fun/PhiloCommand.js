@@ -1,6 +1,6 @@
 const { MessageAttachment } = require('discord.js');
 const Command = require('../../structures/command');
-const { FiloBuilder } = require('../../utils/Canvas');
+const NewHttp = require('../../utils/NewHttp');
 
 module.exports = class PhiloCommand extends Command {
   constructor(client) {
@@ -15,8 +15,12 @@ module.exports = class PhiloCommand extends Command {
   async run({ message, args }, t) {
     if (!args[0]) return message.menheraReply('error', t('commands:philo.no-args'));
 
-    const image = await FiloBuilder(args.join(' '));
+    const text = args.join(' ');
 
-    message.channel.send(message.author, new MessageAttachment(image, 'filosófico.png'));
+    const res = await NewHttp.philoRequest(text);
+
+    if (res.err) return message.menheraReply('error', t('commands:http-error'));
+
+    message.channel.send(message.author, new MessageAttachment(Buffer.from(res.data), 'filosófico.png'));
   }
 };

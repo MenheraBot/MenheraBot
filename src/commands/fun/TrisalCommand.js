@@ -1,6 +1,6 @@
+const NewHttp = require('@utils/NewHttp');
 const { MessageEmbed, MessageAttachment } = require('discord.js');
 const Command = require('../../structures/command');
-const { TrisalBuilder } = require('../../utils/Canvas');
 
 module.exports = class TrisalCommand extends Command {
   constructor(client) {
@@ -28,8 +28,10 @@ module.exports = class TrisalCommand extends Command {
       const userTwoAvatar = marryTwo.displayAvatarURL({ dynamic: false, size: 256, format: 'png' });
       const userThreeAvatar = marryThree.displayAvatarURL({ dynamic: false, size: 256, format: 'png' });
 
-      const image = await TrisalBuilder(userOneAvatar, userTwoAvatar, userThreeAvatar);
-      const attachment = new MessageAttachment(image, 'trisal.png');
+      const res = await NewHttp.trisalRequest(userOneAvatar, userTwoAvatar, userThreeAvatar);
+      if (res.err) return message.menheraReply('error', t('commands:http-error'));
+
+      const attachment = new MessageAttachment(Buffer.from(res.data), 'trisal.png');
 
       const embed = new MessageEmbed()
         .attachFiles(attachment)
@@ -69,7 +71,7 @@ module.exports = class TrisalCommand extends Command {
 
     const acceptedIds = [];
 
-    collector.on('collect', async (reaction, user) => {
+    collector.on('collect', async (_reaction, user) => {
       if (!acceptedIds.includes(user.id)) acceptedIds.push(user.id);
 
       if (acceptedIds.length === 3) {
