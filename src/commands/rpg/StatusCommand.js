@@ -1,7 +1,7 @@
+const NewHttp = require('@utils/NewHttp');
 const { MessageAttachment } = require('discord.js');
+const familiarsFile = require('../../structures/RpgHandler').familiars;
 const Command = require('../../structures/command');
-
-const Canvas = require('../../utils/Canvas');
 
 module.exports = class StatusCommand extends Command {
   constructor(client) {
@@ -27,8 +27,40 @@ module.exports = class StatusCommand extends Command {
     const user = await this.client.database.Rpg.findById(mentioned.id);
     if (!user) return message.menheraReply('error', t('commands:status.not-found'));
 
-    const image = await Canvas.RpgStatusBuilder(user, mentioned, t);
+    const userAvatarLink = mentioned.displayAvatarURL({ format: 'png' });
+    const dmg = user?.familiar?.id && user.familiar.type === 'damage' ? user.damage + user?.weapon?.damage + (familiarsFile[user.familiar.id].boost.value + ((user.familiar.level - 1) * familiarsFile[user.familiar.id].boost.value)) : user.damage + user?.weapon?.damage;
+    const ptr = user?.familiar?.id && user.familiar.type === 'armor' ? user.armor + user?.protection?.armor + (familiarsFile[user.familiar.id].boost.value + ((user.familiar.level - 1) * familiarsFile[user.familiar.id].boost.value)) : user.armor + user?.protection?.armor;
+    const ap = user?.familiar?.id && user.familiar.type === 'abilityPower' ? user.abilityPower + (familiarsFile[user.familiar.id].boost.value + (user.familiar.level - 1) * familiarsFile[user.familiar.id].boost.value) : user.abilityPower;
 
-    message.channel.send(message.author, new MessageAttachment(image, 'status.png'));
+    const UserDataToSend = {
+      life: user.life,
+      maxLife: user.maxLife,
+      mana: user.mana,
+      maxMana: user.maxMana,
+      xp: user.xp,
+      level: user.level,
+      nextLevelXp: user.nextLevelXp,
+      damage: dmg,
+      armor: ptr,
+      abilityPower: ap,
+      tag: mentioned.tag,
+      money: user.money,
+      jobId: user.jobId,
+    };
+
+    const i18nData = {
+      damage: t('commands:status.dmg'),
+      armor: t('commands:status.armor'),
+      ap: t('commands:status.ap'),
+      money: t('commands:status.money'),
+      userClass: t(`roleplay:classes.${user.class}`),
+      userJob: t(`roleplay:job.${user.jobId}.name`),
+    };
+
+    const res = await NewHttp.statusRequest(UserDataToSend, userAvatarLink, i18nData);
+
+    if (res.err) return message.menheraReply('error', t('commands:http-error'));
+
+    message.channel.send(message.author, new MessageAttachment(Buffer.from(res.data), 'status.png'));
   }
 };

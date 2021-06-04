@@ -430,6 +430,10 @@
     "married-in": "Casados em",
     "about-me": "Sobre Mim",
     "commands": "Comandos",
+    "zero": "usou meus comandos",
+    "um": "vezes. Seu comando mais usado foi",
+    "dois": "usou",
+    "tres": "vezes.",
     "commands-usage": "{{user}} usou meus comandos {{usedCount}} vezes. Seu comando mais usado foi {{mostUsedCommandName}}, usou {{mostUsedCommandCount}} vezes"
   },
   "top": {
@@ -1105,5 +1109,6 @@
     "not-in-voice": "você precisa estar em um canal para executar esse comando",
     "no-args": "você não escolheu qual som desejas tocar. Escolhas: `wpp`, `rojao`, `gemidao`, `yamete` ou `among`",
     "unknow-args": "esse som não existe aleki, tu precisa ver direitinho se escreveu certo. Escolhas: `wpp`, `rojao`, `gemidao`, `yamete` ou `among`"
-  }
+  },
+  "http-error": "hmmm... Algum erro aconteceu ao processar a imagem... Tente novamente"
 }

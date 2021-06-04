@@ -1,7 +1,8 @@
 const { MessageAttachment } = require('discord.js');
+const NewHttp = require('@utils/NewHttp');
 const Command = require('../../structures/command');
 const Util = require('../../utils/Util');
-const { ProfileImage } = require('../../utils/Canvas');
+const http = require('../../utils/HTTPrequests');
 
 module.exports = class ProfileCommand extends Command {
   constructor(client) {
@@ -38,11 +39,38 @@ module.exports = class ProfileCommand extends Command {
     if (user.ban && message.author.id !== this.client.config.owner[0]) return message.menheraReply('error', t('commands:profile.banned', { reason: user.banReason }));
 
     const avatar = member.displayAvatarURL({ format: 'png' });
+    const usageCommands = await http.getProfileCommands(member.id);
 
-    const image = await ProfileImage({
-      member, user, avatar, marry,
-    }, t);
+    const userSendData = {
+      cor: user.cor,
+      avatar,
+      votos: user.votos,
+      nota: user.nota,
+      tag: member.tag,
+      flagsArray: member.flags?.toArray(),
+      casado: user.casado,
+      voteCooldown: user.voteCooldown,
+      badges: user.badges,
+      username: member.username,
+      data: user.data,
+      mamadas: user.mamadas,
+      mamou: user.mamou,
+    };
 
-    message.channel.send(message.author, new MessageAttachment(image, 'profile.png'));
+    const i18nData = {
+      aboutme: t('commands:profile.about-me'),
+      mamado: t('commands:profile.mamado'),
+      mamou: t('commands:profile.mamou'),
+      zero: t('commands:profile.zero'),
+      um: t('commands:profile.um'),
+      dois: t('commands:profile.dois'),
+      tres: t('commands:profile.tres'),
+    };
+
+    const res = await NewHttp.profileRequest(userSendData, marry, usageCommands, i18nData);
+
+    if (res.err) return message.menheraReply('error', t('commands:http-error'));
+
+    message.channel.send(message.author, new MessageAttachment(Buffer.from(res.data), 'profile.png'));
   }
 };

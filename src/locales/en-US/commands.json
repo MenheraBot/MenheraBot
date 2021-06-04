@@ -424,6 +424,10 @@
     "married-in": "Married in",
     "about-me": "About Me",
     "commands": "Commands",
+    "zero": "used my commands",
+    "um": "times. It most used command was",
+    "dois": "used",
+    "tres": "times",
     "commands-usage": "{{user}} used my commands {{usedCount}} times. His most used command was {{mostUsedCommandName}}, used {{mostUsedCommandCount}} times"
   },
   "top": {
@@ -1085,5 +1089,6 @@
     "not-in-voice": "you need to be on a voice channel to execute this command",
     "no-args": "you did not choose which sound you want to play. Choices: `wpp`, `rojao`, `gemidao`, `yamete` or `among`",
     "unknow-args": "this sound does not exist you dumb, you need to see if you wrote it right. Choices: `wpp`, `rojao`, `gemidao`, `yamete` or `among`"
-  }
+  },
+  "http-error": "hmmm... Some error happened while receiving the image... Please try again"
 }
