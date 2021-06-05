@@ -12,21 +12,17 @@ class StatusPage {
     this.client = client;
   }
 
-  submit(count) {
+  submit() {
     const apiBase = 'https://api.statuspage.io/v1';
     const url = `${apiBase}/pages/${pageId}/metrics/${metricId}/data.json`;
     const authHeader = { Authorization: `OAuth ${apiKey}` };
     const options = { method: 'POST', headers: authHeader };
 
-    const totalPoints = (60 / 5) * 24;
     const epochInSeconds = Math.floor(new Date() / 1000);
 
     // eslint-disable-next-line no-param-reassign
-    count += 1;
 
-    if (count > totalPoints) return;
-
-    const currentTimestamp = epochInSeconds - (count - 1) * 5 * 60;
+    const currentTimestamp = epochInSeconds;
     const valueToSend = this.client.ws.ping < 0 ? 50 : this.client.ws.ping;
 
     const data = {
@@ -39,13 +35,10 @@ class StatusPage {
         const genericError = 'Error encountered. Please ensure that your page code and authorization key are correct.';
         return console.error(genericError);
       }
-      res.on('data', () => {
-        //  console.log(`Submitted point ${count} of ${totalPoints}`);
-      });
       res.on('end', () => {
         setTimeout(() => {
-          this.submit(count);
-        }, 20000);
+          this.submit();
+        }, 10000);
       });
       res.on('error', (error) => {
         console.error(`Error caught: ${error.message}`);

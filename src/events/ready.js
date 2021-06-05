@@ -13,9 +13,9 @@ module.exports = class ReadyEvent {
       DiscordBotList.init();
       http.status('ready');
       http.clearCommands();
+      const status = new StatusPage(this.client);
+      status.submit();
     }
-    const status = new StatusPage(this.client);
-    status.submit(0);
     this.client.user.setActivity('🥱 | Acabei de acoidar :3');
 
     console.log('[READY] Menhera se conectou com o Discord!');
