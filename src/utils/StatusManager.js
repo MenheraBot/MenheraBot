@@ -34,8 +34,6 @@ class StatusPage {
       value: valueToSend,
     };
 
-    console.log(data);
-
     const request = http.request(url, options, (res) => {
       if (res.statusMessage === 'Unauthorized') {
         const genericError = 'Error encountered. Please ensure that your page code and authorization key are correct.';
