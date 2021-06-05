@@ -38,7 +38,7 @@ class StatusPage {
       res.on('end', () => {
         setTimeout(() => {
           this.submit();
-        }, 10000);
+        }, 5000);
       });
       res.on('error', (error) => {
         console.error(`Error caught: ${error.message}`);
