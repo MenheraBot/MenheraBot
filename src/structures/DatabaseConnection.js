@@ -5,6 +5,8 @@ const statusSchema = mongoose.Schema({
   _id: { type: String },
   ping: { type: Number, default: 0 },
   disabledCommands: { type: Array },
+  guilds: { type: Number, default: 0 },
+  uptime: { type: String, default: '0' },
   lastPingAt: { type: String },
 });
 
@@ -127,11 +129,11 @@ const rpg = mongoose.model('rpg', rpgSchema);
 const user = mongoose.model('usersdb', userSchema);
 const warn = mongoose.model('warn', warnSchema);
 
-module.exports.CmdsModal = cmd;
-module.exports.CommandsModal = commands;
-module.exports.GuildsModal = guild;
-module.exports.StatusModal = status;
-module.exports.RemindersModal = remember;
-module.exports.RpgModal = rpg;
-module.exports.UsersModal = user;
-module.exports.WarnsModal = warn;
+module.exports.Cmds = cmd;
+module.exports.Commands = commands;
+module.exports.Guilds = guild;
+module.exports.Status = status;
+module.exports.Reminders = remember;
+module.exports.Rpg = rpg;
+module.exports.Users = user;
+module.exports.Warns = warn;
