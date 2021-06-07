@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { Users, Commands, Rpg } = require('../structures/DatabaseConnection');
+const { Users, Commands, Rpg } = require('../structures/DatabaseCollections');
 const CommandRepository = require('./repositories/CommandRepository');
 const RpgRepository = require('./repositories/RpgRepository');
 const StarRepository = require('./repositories/StarRepository');
