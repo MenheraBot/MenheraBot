@@ -1,24 +1,46 @@
 /* eslint-disable camelcase */
 /* eslint-disable global-require */
 /* eslint-disable import/no-dynamic-require */
-const { Client, Collection } = require('discord.js');
-const Sentry = require('@sentry/node');
-const i18next = require('i18next');
+import { Client, Collection } from 'discord.js';
+import * as Sentry from '@sentry/node';
+import i18next from 'i18next';
+import Command from '@structures/command';
 
-const EventManager = require('./structures/EventManager');
-const Database = require('./database/MongoDatabase');
-const Constants = require('./structures/MenheraConstants');
-const RpgChecks = require('./structures/Rpgs/checks');
-const LocaleStructure = require('./structures/LocaleStructure');
-const ShardManager = require('./structures/ShardManager');
-const FileUtil = require('./utils/FileUtil');
-const Reminders = require('./utils/RemindersChecks');
+import EventManager from '@structures/EventManager';
+import Database from '@structures/DatabaseCollections';
+import Constants from '@structures/MenheraConstants';
+import RpgChecks from '@structures/Rpgs/checks';
+import LocaleStructure from '@structures/LocaleStructure';
+import ShardManager from '@structures/ShardManager';
+import FileUtil from '@utils/FileUtil';
+import Reminders from '@utils/RemindersChecks';
+import { MenheraConfig } from '@interfaces/MenheraClient';
+import Repositories from './repositories/repositories';
 
-module.exports = class MenheraClient extends Client {
-  constructor(options = {}, config) {
+export default class MenheraClient extends Client {
+  database: typeof Database;
+
+  repositories: typeof Repositories;
+
+  config: MenheraConfig;
+
+  constants: typeof Constants;
+
+  rpgChecks: typeof RpgChecks;
+
+  commands: Collection<string, Command>;
+
+  aliases: Collection<string, string>;
+
+  events: EventManager;
+
+  shardManager: ShardManager;
+
+  constructor(options = {}, config: MenheraConfig) {
     super(options);
 
-    this.database = new Database(config.uri);
+    this.database = Database;
+    this.repositories = Repositories;
     this.commands = new Collection();
     this.aliases = new Collection();
     this.events = new EventManager(this);
@@ -26,10 +48,6 @@ module.exports = class MenheraClient extends Client {
     this.constants = Constants;
     this.rpgChecks = RpgChecks;
     this.shardManager = new ShardManager(this);
-  }
-
-  get repositories() {
-    return this.database.repositories;
   }
 
   async init() {
@@ -42,25 +60,26 @@ module.exports = class MenheraClient extends Client {
 
     reminder.loop();
     await locales.load();
-    await this.database.createConnection();
+
     await this.loadCommands(this.config.commandsDirectory);
     await this.loadEvents(this.config.eventsDirectory);
     return true;
   }
 
-  async reloadCommand(commandName) {
+  async reloadCommand(commandName: string) {
     const command = this.commands.get(commandName)
       || this.commands.get(this.aliases.get(commandName));
     if (!command) return false;
-
+    // TODO: remover quando converter o Command para typescript
+    // @ts-ignore
     return FileUtil.reloadFile(command.dir, (cmd) => this.loadCommand(cmd, command.dir));
   }
 
-  login(token) {
+  login(token?: string) {
     return super.login(token);
   }
 
-  async postExistingCommand(command) {
+  async postExistingCommand(command: Command['config']) {
     const tPt = i18next.getFixedT('pt-BR');
     const tUs = i18next.getFixedT('en-US');
 
@@ -81,7 +100,7 @@ module.exports = class MenheraClient extends Client {
     }
   }
 
-  async loadCommand(NewCommand, filepath) {
+  async loadCommand(NewCommand: typeof Command, filepath: string) {
     const command = new NewCommand(this);
 
     command.dir = filepath;
@@ -90,9 +109,9 @@ module.exports = class MenheraClient extends Client {
     this.aliases.set(command.config.name, command.config.name);
     command.config.aliases.forEach((a) => this.aliases.set(a, command.config.name));
 
-    const cmdInDb = await this.repositories.commandRepository.findByName(command.config.name);
+    const cmdInDb = await this.database.Cmds.findById(command.config.name);
     if (!cmdInDb) {
-      this.repositories.commandRepository.create({
+      this.database.Cmds.create({
         _id: command.config.name,
       });
     }
@@ -102,15 +121,15 @@ module.exports = class MenheraClient extends Client {
     }
   }
 
-  loadCommands(directory) {
+  loadCommands(directory: string) {
     // @ts-ignore
     return FileUtil.readDirectory(directory, (...args) => this.loadCommand(...args));
   }
 
-  loadEvents(directory) {
+  loadEvents(directory: string) {
     // @ts-ignore
     return FileUtil.readDirectory(directory, (Event, filepath) => {
       this.events.add(FileUtil.filename(filepath), filepath, new Event(this));
     });
   }
-};
+}

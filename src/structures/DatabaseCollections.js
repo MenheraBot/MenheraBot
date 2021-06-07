@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 const config = require('../../config.json');
 
+mongoose.connect(config.uri, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
+  .then(() => console.log('[DATABASE] Conectado com sucesso à database'))
+  .catch((err) => { console.log(`[DATABASE] Error to connecting to database \n${err}`); });
+
 const statusSchema = mongoose.Schema({
   _id: { type: String },
   ping: { type: Number, default: 0 },
@@ -96,11 +100,13 @@ const userSchema = mongoose.Schema({
 });
 
 /*
+
   Objeto do array das badges:
   {
     id: badgeId
     obtainAt: Date.now()
   }
+
 */
 
 const warnSchema = mongoose.Schema({
