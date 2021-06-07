@@ -14,31 +14,32 @@ class StatusPage {
 
   submit() {
     const apiBase = 'https://api.statuspage.io/v1';
-    const url = `${apiBase}/pages/${pageId}/metrics/${metricId}/data.json`;
+    const url = `${apiBase}/pages/${pageId}/metrics/data`;
     const authHeader = { Authorization: `OAuth ${apiKey}` };
     const options = { method: 'POST', headers: authHeader };
 
-    const epochInSeconds = Math.floor(new Date() / 1000);
+    const currentTimestamp = Math.floor(new Date() / 1000);
 
-    // eslint-disable-next-line no-param-reassign
-
-    const currentTimestamp = epochInSeconds;
     const valueToSend = this.client.ws.ping < 0 ? 50 : this.client.ws.ping;
 
-    const data = {
+    const data = {};
+    data[metricId] = [{
       timestamp: currentTimestamp,
       value: valueToSend,
-    };
+    }];
 
     const request = http.request(url, options, (res) => {
       if (res.statusMessage === 'Unauthorized') {
         const genericError = 'Error encountered. Please ensure that your page code and authorization key are correct.';
         return console.error(genericError);
       }
+      res.on('data', (s) => {
+        console.log('envou', data, s.toString('utf8'));
+      });
       res.on('end', () => {
         setTimeout(() => {
           this.submit();
-        }, 5000);
+        }, 30000);
       });
       res.on('error', (error) => {
         console.error(`Error caught: ${error.message}`);
