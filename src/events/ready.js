@@ -1,5 +1,6 @@
 const http = require('../utils/HTTPrequests');
 const Dbl = require('../utils/DBL');
+const { StatusPage } = require('../utils/StatusManager');
 
 module.exports = class ReadyEvent {
   constructor(client) {
@@ -12,6 +13,8 @@ module.exports = class ReadyEvent {
       DiscordBotList.init();
       http.status('ready');
       http.clearCommands();
+      const status = new StatusPage(this.client);
+      status.submit();
     }
     this.client.user.setActivity('🥱 | Acabei de acoidar :3');
 

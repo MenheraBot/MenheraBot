@@ -14,7 +14,7 @@ const ShardManager = require('./structures/ShardManager');
 const FileUtil = require('./utils/FileUtil');
 const Reminders = require('./utils/RemindersChecks');
 
-export default class MenheraClient extends Client {
+module.exports = class MenheraClient extends Client {
   constructor(options = {}, config) {
     super(options);
 
@@ -113,4 +113,4 @@ export default class MenheraClient extends Client {
       this.events.add(FileUtil.filename(filepath), filepath, new Event(this));
     });
   }
-}
+};
