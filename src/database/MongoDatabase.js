@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { Users, Commands, Rpg } = require('../structures/DatabaseCollections');
+const MongoModals = require('../structures/DatabaseCollections');
 const CommandRepository = require('./repositories/CommandRepository');
 const RpgRepository = require('./repositories/RpgRepository');
 const StarRepository = require('./repositories/StarRepository');
@@ -9,11 +9,22 @@ module.exports = class MongoDatabase {
   constructor(uri) {
     this.uri = uri;
 
+    // TODO: add modal to the name for readability
+    // para fazer isso tem que mudar todos os codigos que estão usando `database.(nome_sem_modal)` to repositories
+    this.Cmds = MongoModals.Cmds;
+    this.Commands = MongoModals.Commands;
+    this.Guilds = MongoModals.Guilds;
+    this.Status = MongoModals.Status;
+    this.Reminders = MongoModals.Reminders;
+    this.Rpg = MongoModals.Rpg;
+    this.Users = MongoModals.Users;
+    this.Warns = MongoModals.Warns;
+
     this.repositories = {
-      userRepository: new UserRepository(Users),
-      commandRepository: new CommandRepository(Commands),
-      starRepository: new StarRepository(Users),
-      rpgRepository: new RpgRepository(Rpg),
+      userRepository: new UserRepository(this.Users),
+      commandRepository: new CommandRepository(this.Commands),
+      starRepository: new StarRepository(this.Users),
+      rpgRepository: new RpgRepository(this.Rpg),
     };
   }
 
