@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { UsersModal, CommandsModal, RpgModal } = require('../structures/DatabaseConnection');
+const { Users, Commands, Rpg } = require('../structures/DatabaseConnection');
 const CommandRepository = require('./repositories/CommandRepository');
 const RpgRepository = require('./repositories/RpgRepository');
 const StarRepository = require('./repositories/StarRepository');
@@ -10,10 +10,10 @@ module.exports = class MongoDatabase {
     this.uri = uri;
 
     this.repositories = {
-      userRepository: new UserRepository(UsersModal),
-      commandRepository: new CommandRepository(CommandsModal),
-      starRepository: new StarRepository(UsersModal),
-      rpgRepository: new RpgRepository(RpgModal),
+      userRepository: new UserRepository(Users),
+      commandRepository: new CommandRepository(Commands),
+      starRepository: new StarRepository(Users),
+      rpgRepository: new RpgRepository(Rpg),
     };
   }
 

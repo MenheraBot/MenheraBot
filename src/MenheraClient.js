@@ -18,7 +18,7 @@ export default class MenheraClient extends Client {
   constructor(options = {}, config) {
     super(options);
 
-    this.database = new Database();
+    this.database = new Database(config.uri);
     this.commands = new Collection();
     this.aliases = new Collection();
     this.events = new EventManager(this);
@@ -42,7 +42,7 @@ export default class MenheraClient extends Client {
 
     reminder.loop();
     await locales.load();
-
+    await this.database.createConnection();
     await this.loadCommands(this.config.commandsDirectory);
     await this.loadEvents(this.config.eventsDirectory);
     return true;
@@ -52,8 +52,7 @@ export default class MenheraClient extends Client {
     const command = this.commands.get(commandName)
       || this.commands.get(this.aliases.get(commandName));
     if (!command) return false;
-    // TODO: remover quando converter o Command para typescript
-    // @ts-ignore
+
     return FileUtil.reloadFile(command.dir, (cmd) => this.loadCommand(cmd, command.dir));
   }
 
