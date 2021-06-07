@@ -1,4 +1,4 @@
-const http = require('https');
+const axios = require('axios');
 
 // The following 4 are the actual values that pertain to your account and this specific metric.
 const {
@@ -12,41 +12,27 @@ class StatusPage {
     this.client = client;
   }
 
-  submit() {
-    const apiBase = 'https://api.statuspage.io/v1';
-    const url = `${apiBase}/pages/${pageId}/metrics/data`;
-    const authHeader = { Authorization: `OAuth ${apiKey}` };
-    const options = { method: 'POST', headers: authHeader };
+  async submit() {
+    const apiBase = 'https://api.instatus.com/v1';
+    const url = `${apiBase}/${pageId}/metrics/${metricId}`;
+    const authHeader = { Authorization: `Bearer ${apiKey}` };
 
-    const currentTimestamp = Math.floor(new Date() / 1000);
+    const currentTimestamp = Date.now();
 
     const valueToSend = this.client.ws.ping < 0 ? 50 : this.client.ws.ping;
 
-    const data = {};
-    data[metricId] = [{
+    const data = {
       timestamp: currentTimestamp,
       value: valueToSend,
-    }];
+    };
 
-    const request = http.request(url, options, (res) => {
-      if (res.statusMessage === 'Unauthorized') {
-        const genericError = 'Error encountered. Please ensure that your page code and authorization key are correct.';
-        return console.error(genericError);
-      }
-      res.on('data', (s) => {
-        console.log('envou', data, s.toString('utf8'));
-      });
-      res.on('end', () => {
-        setTimeout(() => {
-          this.submit();
-        }, 30000);
-      });
-      res.on('error', (error) => {
-        console.error(`Error caught: ${error.message}`);
-      });
+    await axios({
+      method: 'post',
+      url,
+      headers: authHeader,
+      data,
     });
-
-    request.end(JSON.stringify({ data }));
+    setTimeout(() => this.submit(), 15000);
   }
 }
 
