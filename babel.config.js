@@ -31,7 +31,6 @@ module.exports = {
         '@structures': './src/structures',
         '@interfaces': './src/interfaces',
         '@utils': './src/utils',
-        '@database': './src/database',
       },
     }],
   ],
