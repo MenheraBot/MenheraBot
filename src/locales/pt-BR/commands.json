@@ -600,7 +600,7 @@
     "can-hunt": "você já pode caçar! Caçe antes de usar um Roll!\nVocê sabia que se usar `m!roll rpg` você pode zerar o tempo de ir para a Dungeon?",
     "poor": "você não possui DailyRolls! Vote em mim para resgatar um DR\nVocê sabia que se usar `m!roll rpg` você pode zerar o tempo de ir para a Dungeon?",
     "success": "prontinho, você resetou seu tempo de caçadas, pode caçar!\nVocê sabia que se usar `m!roll rpg` você pode zerar o tempo de ir para a Dungeon?",
-    "no-adventure": "você não é um aventureiro para resetar seu tempo de ia à dungeon!",
+    "no-adventure": "você não é um aventureiro para resetar seu tempo de ia à dungeon! Use m!register para começar",
     "can-dungeon": "você já pode visitar a dungeon!",
     "dungeon-poor": "você não possui tickets de reset para dungeon! Vote em mim para resgatar um RD",
     "dungeon-success": "feitoria! Você resetou seu tempo de ir para a Dungeon! Vá matar aquele Deus!"
@@ -642,7 +642,7 @@
     "heal": "Cura",
     "cost": "Custo",
     "type": "Tipo",
-    "non-aventure": "você não é um aventureiro",
+    "non-aventure": "você não é um aventureiro. Use m!register para começar",
     "your-abilities": "Suas Habilidades",
     "uniquePower": "Habilidade Única",
     "ability": "Habilidade",
@@ -651,7 +651,7 @@
   "boss": {
     "description": "Luta contra um BOSS",
     "usage": "",
-    "non-aventure": "você não é um aventureiro",
+    "non-aventure": "você não é um aventureiro. Use m!register para começar",
     "min-level": "Você precisa estar nível **20** para lutar contra bosses",
     "amarelou": "você pensou melhor, e acabou desistindo de batalhar contra bosses",
     "preparation": {
@@ -680,7 +680,7 @@
   "deposite": {
     "description": "Deposita uma certa quantia no banco da Família",
     "usage": "<valor>",
-    "non-aventure": "você não é um aventureiro",
+    "non-aventure": "você não é um aventureiro. Use m!register para começar",
     "no-family": "você não está em nenhuma família",
     "invalid-value": "este valor não é válido",
     "poor": "você não tem todas essas pedras mágicas",
@@ -690,7 +690,7 @@
     "description": "Vá para uma aventura na dungeon",
     "usage": "<nível>",
     "scape": "Fugir",
-    "non-aventure": "você não é um aventureiro",
+    "non-aventure": "você não é um aventureiro. Use m!register para começar",
     "no-level": "a Dungeon não possui este nível! Os níveis são: `1`,`2`,`3`, `4`, ou `5`",
     "min-level-warn": "**você é muito fraco para este nível! Tente ir para um nível mais baixo!**",
     "no-args": "você precisa dizer para qual nível deseja ir!",
@@ -741,7 +741,7 @@
   "inventory": {
     "description": "Veja seu inventário",
     "usage": "",
-    "non-aventure": "você não é um aventureiro",
+    "non-aventure": "você não é um aventureiro. Use m!register para começar",
     "title": "Seu inventário",
     "weapon": "Arma",
     "armor": "Armadura",
@@ -756,7 +756,7 @@
   "família": {
     "description": "Registra-se em uma família",
     "usage": "",
-    "non-aventure": "você não é um aventureiro",
+    "non-aventure": "você não é um aventureiro. Use m!register para começar",
     "low-level": "as famílias são liberadas no nível **10**",
     "has-family": "você já está na família {{name}}!",
     "welcome": "bem-Vindo à família {{family}}! Veja seus novos Status!"
@@ -784,7 +784,7 @@
   "reset": {
     "description": "Reseta seu perfil do RPG",
     "usage": "",
-    "non-aventure": "você não é um aventureiro",
+    "non-aventure": "você não é um aventureiro. Use m!register para começar",
     "low-level": "você precisa estar no nível **4** para poder resetar",
     "confirm": "você realmente deseja resetar seu perfil do RPG? Esta ação é **IRREVERSÍVEL**\nDigite `sim` para confirmar",
     "success": "você resetou com sucesso sua conta do RPG! Para jogar novamente, use {{prefix}}registrar",
@@ -808,7 +808,7 @@
   "use": {
     "description": "Use um item de seu inventário",
     "usage": " [item] [quantidade]",
-    "non-aventure": "você não é um aventureiro",
+    "non-aventure": "você não é um aventureiro. Use m!register para começar",
     "in-battle": "você não pode usar poções no meio de uma batalha!",
     "dead": "você não pode usar poções enquanto estiver morto!",
     "title": "Poções",
@@ -825,7 +825,7 @@
   "village": {
     "description": "Vá para a vila de Boleham",
     "usage": "",
-    "non-aventure": "você não é um aventureiro",
+    "non-aventure": "você não é um aventureiro. Use m!register para começar",
     "number-error": "houve um erro desconhecido! Informe isso no meu servidor de suporte!",
     "backpack-full": "sua mochila não tem espaço para comprar esses produtos",
     "cost": "Custo",

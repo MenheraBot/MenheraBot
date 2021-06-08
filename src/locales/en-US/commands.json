@@ -587,7 +587,7 @@
     "can-hunt": "you can already hunt! Hunt before using a Roll!\nDid you know that if you use `m!roll rpg` you can reset your dungeon time?",
     "poor": "you don't have DailyRolls! Vote for me to redeem a DR\nDid you know that if you use `m!roll rpg` you can reset your dungeon time?",
     "success": "all done! You reset your hunting time, you can now hunt!\nDid you know that if you use `m!roll rpg` you can reset your dungeon time?",
-    "no-adventure": "you aren't an adventure to reset your dungeon time!",
+    "no-adventure": "you aren't an adventure to reset your dungeon time!. Use m!register to start",
     "can-dungeon": "you already can go to the dungeon",
     "dungeon-poor": "you don't have reset tickets for dungeons! Vote for me to redeem an RD",
     "dungeon-success": "there you go! You reset your time to go to the dungeon! Go kill that God!"
@@ -627,7 +627,7 @@
     "heal": "Heal",
     "cost": "Cost",
     "type": "Type",
-    "non-aventure": "you are not an adventurer",
+    "non-aventure": "you are not an adventurer. Use m!register to start",
     "your-abilities": "Your skills",
     "uniquePower": "Unique Ability",
     "ability": "Abiliity",
@@ -635,7 +635,7 @@
   },
   "boss": {
     "description": "Fighting a BOSS",
-    "non-aventure": "you are not an adventurer",
+    "non-aventure": "you are not an adventurer. Use m!register to start",
     "min-level": "You need to be level ** 20 ** to fight bosses",
     "amarelou": "you thought better of it, and ended up giving up fighting bosses",
     "preparation": {
@@ -664,7 +664,7 @@
   "deposite": {
     "description": "Deposits a certain amount in the Family bank",
     "usage": "<value>",
-    "non-aventure": "you are not an adventurer",
+    "non-aventure": "you are not an adventurer. Use m!register to start",
     "no-family": "you are not in any family",
     "invalid-value": "this value is not valid",
     "poor": "you don't have all these magic stones",
@@ -674,7 +674,7 @@
     "description": "Go for a dungeon adventure",
     "usage": "<level>",
     "scape": "Runaway",
-    "non-aventure": "you are not an adventurer",
+    "non-aventure": "you are not an adventurer. Use m!register to start",
     "no-args": "you need to say to what level do you want to go.",
     "min-level-warn": "**you are too weak to this level! Try going to a lower level**",
     "no-level": "the Dungeon doesn't have this level! Available levels are: `1`,`2`,`3`, `4`, or `5`",
@@ -724,7 +724,7 @@
   },
   "inventory": {
     "description": "View your inventory",
-    "non-aventure": "you are not an adventurer",
+    "non-aventure": "you are not an adventurer. Use m!register to start",
     "title": "Your inventory",
     "weapon": "Weapon",
     "backpack": "Backpack",
@@ -738,7 +738,7 @@
   },
   "família": {
     "description": "Join a family",
-    "non-aventure": "you are not an adventurer",
+    "non-aventure": "you are not an adventurer. Use m!register to start",
     "low-level": "families are released at level ** 10 **",
     "has-family": "you are already in the {{name}} family!",
     "welcome": "welcome to the {{family}} family! See your new Status!"
@@ -764,7 +764,7 @@
   },
   "reset": {
     "description": "Reset your RPG profile",
-    "non-aventure": "you are not an adventurer",
+    "non-aventure": "you are not an adventurer. Use m!register to start",
     "low-level": "you need to be at level **4** to be able to reset",
     "confirm": "do you really want to reset your RPG profile? This action is ** IRREVERSIBLE ** \nEnter `yes` to confirm",
     "success": "you have successfully reset your RPG account! To play again, use {{prefix}}register",
@@ -788,7 +788,7 @@
   "use": {
     "description": "Use an item from your inventory",
     "usage": " [item] [amount]",
-    "non-aventure": "you are not an adventurer",
+    "non-aventure": "you are not an adventurer. Use m!register to start",
     "in-battle": "you cannot use potions in the middle of a battle!",
     "dead": "you can't use potions while you're dead!",
     "title": "Potions",
@@ -806,7 +806,7 @@
     "description": "Go to the village of Boleham",
     "usage": "",
     "number-error": "there was an unknow error! Report that in my support server!",
-    "non-aventure": "you are not an adventurer",
+    "non-aventure": "you are not an adventurer. Use m!register to start",
     "backpack-full": "your backpack has no space to buy these products",
     "cost": "Cost",
     "desc": "Description",
