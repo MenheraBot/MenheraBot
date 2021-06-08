@@ -820,7 +820,7 @@
     "full-mana": "sua mana já está cheia!",
     "full-life": "sua vida já está cheia!",
     "error": "nheee, ocorreu um erro ao usar a poção! Chame minha dona em meu servidor de suporte para ver isso",
-    "used": "prontinho! Você usou `{{quantidade}}` **{{choice}}**"
+    "used": "prontinho! Você usou `{{quantidade}}` **{{choice}}**\n🩸 | Vida: **{{life}} / {{maxLife}}**\n💧 | Mana: **{{mana}} / {{maxMana}}**"
   },
   "village": {
     "description": "Vá para a vila de Boleham",

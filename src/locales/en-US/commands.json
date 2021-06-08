@@ -800,7 +800,7 @@
     "full-mana": "your mana is already full!",
     "full-life": "your life is already full!",
     "error": "Hey, there was an error using the potion! Call my owner on my support server to see this",
-    "used": "There you go! You used `{{quantidade}}` **{{choice}}**"
+    "used": "There you go! You used `{{quantidade}}` **{{choice}}**\n🩸 | Life: **{{life}} / {{maxLife}}**\n💧 | Mana: **{{mana}} / {{maxMana}}**"
   },
   "village": {
     "description": "Go to the village of Boleham",

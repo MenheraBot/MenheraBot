@@ -96,6 +96,8 @@ module.exports = class UseCommand extends Command {
 
     await user.save();
 
-    message.menheraReply('success', t('commands:use.used', { quantidade, choice: choice[0].name }));
+    message.menheraReply('success', t('commands:use.used', {
+      quantidade, choice: choice[0].name, life: user.life, mana: user.mana, maxLife: user.maxLife, maxMana: user.maxMana,
+    }));
   }
 };
