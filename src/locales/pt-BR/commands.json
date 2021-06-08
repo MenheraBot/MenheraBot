@@ -1107,8 +1107,8 @@
     "usage": "<som>",
     "no-perm": "eu não tenho permissão para entrar neste canal!",
     "not-in-voice": "você precisa estar em um canal para executar esse comando",
-    "no-args": "você não escolheu qual som desejas tocar. Escolhas: `wpp`, `rojao`, `gemidao`, `yamete` ou `among`",
-    "unknow-args": "esse som não existe aleki, tu precisa ver direitinho se escreveu certo. Escolhas: `wpp`, `rojao`, `gemidao`, `yamete` ou `among`"
+    "no-args": "você não escolheu qual som desejas tocar. Escolhas: `{{audios}}`",
+    "unknow-args": "esse som não existe aleki, tu precisa ver direitinho se escreveu certo. Escolhas: `{{audios}}`"
   },
   "http-error": "hmmm... Algum erro aconteceu ao processar a imagem... Tente novamente"
 }
