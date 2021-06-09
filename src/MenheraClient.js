@@ -90,11 +90,9 @@ module.exports = class MenheraClient extends Client {
     this.aliases.set(command.config.name, command.config.name);
     command.config.aliases.forEach((a) => this.aliases.set(a, command.config.name));
 
-    const cmdInDb = await this.repositories.commandRepository.findByName(command.config.name);
+    const cmdInDb = await this.repositories.cmdRepository.findByName(command.config.name);
     if (!cmdInDb) {
-      this.repositories.commandRepository.create({
-        _id: command.config.name,
-      });
+      this.repositories.cmdRepository.create(command.config.name);
     }
 
     if (command.config.category !== 'Dev') {

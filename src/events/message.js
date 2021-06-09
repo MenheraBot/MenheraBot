@@ -54,7 +54,7 @@ module.exports = class MessageReceive {
     const command = this.client.commands.get(cmd) || this.client.commands.get(this.client.aliases.get(cmd));
     if (!command) return;
 
-    const dbCommand = await this.client.database.Cmds.findById(command.config.name);
+    const dbCommand = await this.client.repositories.cmdRepository.findByName(command.config.name);
 
     if (server.blockedChannels?.includes(message.channel.id) && !message.member.hasPermission('MANAGE_CHANNELS')) return message.menheraReply('lock', `${t('events:blocked-channel')}`);
 
