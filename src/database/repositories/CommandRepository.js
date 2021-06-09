@@ -1,20 +1,21 @@
-const { Commands } = require('../structures/DatabaseCollections');
-
 module.exports = class CommandRepository {
-  static findByName(commandName) {
-    return Commands.findOne({
+  constructor(commandModal) {
+    this.commandModal = commandModal;
+  }
+
+  findByName(commandName) {
+    return this.commandModal.findOne({
       name: commandName,
     });
   }
 
-  static create(commandName, {
-    category,
-    ptDescription,
-    ptUsage,
-    usDescription,
-    usUsage,
-  }) {
-    return Commands.create({
+  create(
+    commandName,
+    {
+      category, ptDescription, ptUsage, usDescription, usUsage,
+    },
+  ) {
+    return this.commandModal.create({
       name: commandName,
       category,
       pt_description: ptDescription,
@@ -24,13 +25,13 @@ module.exports = class CommandRepository {
     });
   }
 
-  static updateByName(
+  updateByName(
     commandName,
     {
       category, ptDescription, ptUsage, usDescription, usUsage,
     },
   ) {
-    return Commands.updateOne(
+    return this.commandModal.updateOne(
       {
         name: commandName,
       },
