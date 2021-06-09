@@ -12,32 +12,32 @@ module.exports = class SarrarCommand extends Command {
     });
   }
 
-  async run({ message }, t) {
+  async run(ctx) {
     const randSozinho = await getImageUrl('sarrar_sozinho');
-    const user = message.mentions.users.first();
+    const user = ctx.message.mentions.users.first();
 
     if (!user) {
       const embed = new MessageEmbed()
-        .setTitle(t('commands:sarrar.no-mention.embed_title'))
+        .setTitle(ctx.locale('commands:sarrar.no-mention.embed_title'))
         .setColor('#000000')
-        .setDescription(`${t('commands:sarrar.no-mention.embed_description_start')} ${message.author}?\n${t('commands:sarrar.no-mention.embed_description_end')}`)
+        .setDescription(`${ctx.locale('commands:sarrar.no-mention.embed_description_start')} ${ctx.message.author}?\n${ctx.locale('commands:sarrar.no-mention.embed_description_end')}`)
         .setImage(randSozinho)
-        .setThumbnail(message.author.displayAvatarURL())
-        .setFooter(t('commands:sarrar.no-mention.embed_footer'))
-        .setAuthor(message.author.tag, message.author.displayAvatarURL());
+        .setThumbnail(ctx.message.author.displayAvatarURL())
+        .setFooter(ctx.locale('commands:sarrar.no-mention.embed_footer'))
+        .setAuthor(ctx.message.author.tag, ctx.message.author.displayAvatarURL());
 
-      return message.channel.send(embed).then((msg) => {
+      return ctx.send(embed).then((msg) => {
         msg.react('✅').catch();
-        const filter = (reaction, usuario) => reaction.emoji.name === '✅' && usuario.id !== message.author.id && !usuario.bot;
+        const filter = (reaction, usuario) => reaction.emoji.name === '✅' && usuario.id !== ctx.message.author.id && !usuario.bot;
 
         const coletor = msg.createReactionCollector(filter, { max: 1, time: 30000 });
 
         coletor.on('collect', (_, colectorUser) => {
           msg.delete().catch();
-          SarrarCommand.sarrada(message, colectorUser, t);
+          SarrarCommand.sarrada(ctx.message, colectorUser, ctx.locale);
         });
       });
-    } return SarrarCommand.sarrada(message, message.mentions.users.first(), t);
+    } return SarrarCommand.sarrada(ctx.message, ctx.message.mentions.users.first(), ctx.locale);
   }
 
   static async sarrada(message, reactUser, t) {
