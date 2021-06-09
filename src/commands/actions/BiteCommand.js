@@ -12,30 +12,30 @@ module.exports = class BiteCommand extends Command {
     });
   }
 
-  async run({ message }, t) {
+  async run(ctx) {
     const rand = await getImageUrl('bite');
-    const user = message.mentions.users.first();
+    const user = ctx.message.mentions.users.first();
 
-    if (user && user.bot) return message.menheraReply('warn', t('commands:bite.bot'));
+    if (user && user.bot) return ctx.replyT('warn', 'commands:bite.bot');
 
     if (!user) {
-      return message.menheraReply('error', t('commands:bite.no-mention'));
+      return ctx.replyT('error', 'commands:bite.no-mention');
     }
 
-    if (user === message.author) {
-      return message.menheraReply('error', t('commands:bite.self-mention'));
+    if (user === ctx.message.author) {
+      return ctx.replyT('error', 'commands:bite.self-mention');
     }
 
-    const avatar = message.author.displayAvatarURL({ format: 'png', dynamic: true });
+    const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     const embed = new MessageEmbed()
-      .setTitle(t('commands:bite.embed_title'))
+      .setTitle(ctx.locale('commands:bite.embed_title'))
       .setColor('#000000')
-      .setDescription(`${message.author} ${t('commands:bite.embed_description')} ${user} :3`)
+      .setDescription(`${ctx.message.author} ${ctx.locale('commands:bite.embed_description')} ${user} :3`)
       .setImage(rand)
       .setThumbnail(avatar)
-      .setAuthor(message.author.tag, avatar);
+      .setAuthor(ctx.message.author.tag, avatar);
 
-    message.channel.send(embed);
+    ctx.send(embed);
   }
 };
