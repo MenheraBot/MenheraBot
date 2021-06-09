@@ -12,25 +12,25 @@ module.exports = class ResurrectCommand extends Command {
     });
   }
 
-  async run({ message }, t) {
+  async run(ctx) {
     const rand = await getImageUrl('resurrect');
-    const user = message.mentions.users.first();
-    const avatar = message.author.displayAvatarURL({ format: 'png', dynamic: true });
+    const user = ctx.message.mentions.users.first();
+    const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
 
-    if (!user) return message.menheraReply('question', t('commands:resurrect.no-mention'));
+    if (!user) return ctx.replyT('question', 'commands:resurrect.no-mention');
 
-    if (user === message.author) return message.menheraReply('question', t('commands:resurrect.no-mention'));
+    if (user === ctx.message.author) return ctx.replyT('question', 'commands:resurrect.no-mention');
 
-    if (user.bot) return message.menheraReply('success', t('commands:resurrect.bot'));
+    if (user.bot) return ctx.replyT('success', 'commands:resurrect.bot');
 
     const embed = new MessageEmbed()
-      .setTitle(t('commands:resurrect.embed_title'))
+      .setTitle(ctx.locale('commands:resurrect.embed_title'))
       .setColor('#000000')
-      .setDescription(`${message.author} ${t('commands:resurrect.embed_description')} ${user}`)
+      .setDescription(`${ctx.message.author} ${ctx.locale('commands:resurrect.embed_description')} ${user}`)
       .setImage(rand)
       .setThumbnail(avatar)
-      .setAuthor(message.author.tag, avatar);
+      .setAuthor(ctx.message.author.tag, avatar);
 
-    message.channel.send(embed);
+    ctx.send(embed);
   }
 };
