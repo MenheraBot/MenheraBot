@@ -26,7 +26,7 @@ module.exports = class MessageReceive {
     if (!message.channel.permissionsFor(message.guild.me).has('SEND_MESSAGES')) return;
 
     const server = await Util.databaseGuildEnsure(this.client, message.guild);
-    const prefix = server.prefix?.toLowerCase() ?? process.env.BOT_PREFIX;
+    let prefix = server.prefix?.toLowerCase() ?? process.env.BOT_PREFIX;
     const language = server?.lang ?? 'pt-BR';
     const t = i18next.getFixedT(language);
 
@@ -44,6 +44,8 @@ module.exports = class MessageReceive {
         })).catch();
     }
 
+    if (process.env.NODE_ENV === 'development') prefix = process.env.BOT_PREFIX;
+
     if (message.content.startsWith(`<@!${this.client.user.id}>`) || message.content.startsWith(`<@${this.client.user.id}>`)) return message.menheraReply('wink', `${t('events:mention.start')} ${message.author}, ${t('events:mention.end', { prefix })}`);
 
     if (!message.content.toLowerCase().startsWith(prefix)) return;
@@ -54,7 +56,7 @@ module.exports = class MessageReceive {
     const command = this.client.commands.get(cmd) || this.client.commands.get(this.client.aliases.get(cmd));
     if (!command) return;
 
-    const dbCommand = await this.client.database.Cmds.findById(command.config.name);
+    const dbCommand = await this.client.repositories.cmdRepository.findByName(command.config.name);
 
     if (server.blockedChannels?.includes(message.channel.id) && !message.member.hasPermission('MANAGE_CHANNELS')) return message.menheraReply('lock', `${t('events:blocked-channel')}`);
 
@@ -115,7 +117,7 @@ module.exports = class MessageReceive {
         res(command.run({
           message, args, server, authorData,
         }, t));
-        console.log(`[CMD (${this.client.shard.ids[0]})] ${command.config.name.toUpperCase()} | USER: ${message.author.tag} - ${message.author.id} | GUILD: ${message.guild.name}`);
+        // console.log(`[CMD (${this.client.shard.ids[0]})] ${command.config.name.toUpperCase()} | USER: ${message.author.tag} - ${message.author.id} | GUILD: ${message.guild.name}`);
       }).catch(async (err) => {
         const errorWebHook = await this.client.fetchWebhook(process.env.BUG_HOOK_ID, process.env.BUG_HOOK_TOKEN);
 

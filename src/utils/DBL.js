@@ -34,7 +34,7 @@ module.exports = class DiscordBots {
         rpgRollQuantity *= constants.stoneWeekendMultiplier;
         rpgMoneyQuantity *= constants.rpgRollWeekendMultiplier;
         embedTitle = '<:Angel:758765044204437535> | OWO VOCÊ RECEBEU UM PRÊMIO ESPECIAL!!!';
-        embedDescription = `Obrigada por votar em mim bebezinho, cada voto me ajuda e inspira minha dona a continuar me cuidando! ❤️\n\nComo forma de agradecimento, você recebeu **${rollQuantity}**🔑 e **${starQuantity}**⭐!\n\nPor hoje ser final de semana, você recebeu o DOBRO dos premios`;
+        embedDescription = `Obrigada por votar em mim bebezinho, cada voto me ajuda e inspira minha dona a continuar me cuidando! ❤️\n\nComo forma de agradecimento, você recebeu **${rollQuantity}**🔑 e **${starQuantity}**⭐! Você está com **${user.votos}** votos\n\nPor hoje ser final de semana, você recebeu o DOBRO dos premios`;
       }
 
       if (user.votos % 20 === 0) {
@@ -78,16 +78,12 @@ module.exports = class DiscordBots {
           try {
             await userInShard.send(embedToSend);
           } catch {
-            console.log('[DBL] Cannot send message to user');
+            // console.log('[DBL] Cannot send message to user');
           }
         }
       };
 
       await this.client.shard.broadcastEval(functionToEval(vote.user, embed));
-    });
-
-    dbl.on('posted', () => {
-      console.log('[DBL] Bot Stats posted');
     });
 
     this.client.setInterval(async () => {

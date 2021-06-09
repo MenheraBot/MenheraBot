@@ -1,14 +1,5 @@
 const mongoose = require('mongoose');
 
-const connectionUri = process.env.NODE_ENV === 'development' ? process.env.DEV_DATABASE_URI : process.env.DATABASE_URI;
-
-mongoose.connect(connectionUri, {
-  useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true,
-}, (err) => {
-  if (err) return console.log(`(x) Error to connecting to database \n${err}`);
-  return console.log('[DATABASE] Conectado com sucesso à database');
-});
-
 const statusSchema = mongoose.Schema({
   _id: { type: String },
   ping: { type: Number, default: 0 },
@@ -104,13 +95,11 @@ const userSchema = mongoose.Schema({
 });
 
 /*
-
   Objeto do array das badges:
   {
     id: badgeId
     obtainAt: Date.now()
   }
-
 */
 
 const warnSchema = mongoose.Schema({

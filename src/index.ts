@@ -5,11 +5,21 @@ import MenheraClient from './MenheraClient';
 ProtoTypes.start();
 
 const client = new MenheraClient(
-  { disableMentions: 'everyone', messageCacheMaxSize: 50, ws: { intents: ['GUILDS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS', 'GUILD_VOICE_STATES'] } },
+  {
+    disableMentions: 'everyone',
+    messageCacheMaxSize: 50,
+    ws: {
+      intents: [
+        'GUILDS',
+        'GUILD_MESSAGES',
+        'GUILD_MESSAGE_REACTIONS',
+        'GUILD_VOICE_STATES',
+      ],
+    },
+  },
   {
     commandsDirectory: resolve(__dirname, 'commands'),
     eventsDirectory: resolve(__dirname, 'events'),
-    ...config,
   },
 );
 

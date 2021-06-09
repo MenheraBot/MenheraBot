@@ -1,6 +1,6 @@
 const { MessageEmbed, MessageAttachment } = require('discord.js');
 const Command = require('../../structures/command');
-const Canvas = require('../../utils/Canvas');
+const NewHttp = require('../../utils/NewHttp.js');
 
 module.exports = class ShipCommand extends Command {
   constructor(client) {
@@ -28,8 +28,8 @@ module.exports = class ShipCommand extends Command {
     if (!user1) return message.menheraReply('error', t('commands:ship.unknow-user'));
     if (!user2) return message.menheraReply('error', t('commands:ship.unknow-user'));
 
-    const dbUserToTakeValue1 = await this.client.database.Users.findOne({ id: user1.id });
-    const dbUserToTakeValue2 = await this.client.database.Users.findOne({ id: user2.id });
+    const dbUserToTakeValue1 = await this.client.database.Users.findOne({ id: user1.id }, { shipValue: 1, _id: 0 });
+    const dbUserToTakeValue2 = await this.client.database.Users.findOne({ id: user2.id }, { shipValue: 1, _id: 0 });
 
     const FinalValue1 = dbUserToTakeValue1?.shipValue ? dbUserToTakeValue1.shipValue : Math.floor(Math.random() * 55);
     const FinalValue2 = dbUserToTakeValue2?.shipValue ? dbUserToTakeValue2.shipValue : Math.floor(Math.random() * 55);
@@ -41,19 +41,23 @@ module.exports = class ShipCommand extends Command {
 
     if (dbUserToTakeValue1?.casado && dbUserToTakeValue1?.casado === user2.id) value = 100;
 
-    const bufferedShipImage = await Canvas.ShipImage(value, user1, user2);
-
-    const attachment = new MessageAttachment(bufferedShipImage, 'ship.png');
+    const avatarLinkOne = user1.displayAvatarURL({ format: 'png', size: 256 });
+    const avatarLinkTwo = user2.displayAvatarURL({ format: 'png', size: 256 });
+    const bufferedShipImage = await NewHttp.shipRequest(avatarLinkOne, avatarLinkTwo, value);
 
     const username1 = user1.username;
     const username2 = user2.username;
     const mix = `${username1.substring(0, username1.length / 2) + username2.substring(username2.length / 2, username2.length)}`.replace(' ', '');
 
     const embed = new MessageEmbed()
-      .attachFiles(attachment)
-      .setImage('attachment://ship.png')
       .setTitle(`${username1} + ${username2} = ${mix}`)
       .setDescription(`\n${t('commands:ship.value')} **${value.toString()}%**\n\n${t('commands:ship.default')}`);
+
+    if (!bufferedShipImage.err) {
+      const attachment = new MessageAttachment(Buffer.from(bufferedShipImage.data), 'ship.png');
+      embed.attachFiles(attachment)
+        .setImage('attachment://ship.png');
+    } else embed.setFooter(t('commands:http-error'));
 
     if (Number(value) >= 25) embed.setColor('#cadf2a').setDescription(`\n${t('commands:ship.value')} **${value.toString()}%**\n\n${t('commands:ship.low')}`);
     if (Number(value) >= 50) embed.setColor('#d8937b').setDescription(`\n${t('commands:ship.value')} **${value.toString()}%**\n\n${t('commands:ship.ok')}`);
