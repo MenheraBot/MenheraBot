@@ -17,7 +17,7 @@ jobs:
           script: |
             cd ${{ secrets.PROJECT_PATH }}
             git pull origin master
-            npm install
+            npm ci
             npm run build
             echo Everything went ok!
   Deploy-Development:
@@ -33,6 +33,6 @@ jobs:
           script: |
             cd ${{ secrets.PROJECT_PATH_DEV }}
             git pull origin dev
-            npm install
+            npm ci
             npm run build
             echo Everything went ok!
