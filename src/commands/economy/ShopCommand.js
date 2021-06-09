@@ -11,42 +11,42 @@ module.exports = class ShopCommand extends Command {
     });
   }
 
-  async run({ message, authorData: selfData }, t) {
-    const authorData = selfData ?? new this.client.database.Users({ id: message.author.id });
+  async run(ctx) {
+    const authorData = ctx.data.user;
 
     const saldoAtual = authorData.estrelinhas;
 
     const validArgs = ['1', '2'];
 
     const dataLoja = {
-      title: t('commands:shop.embed_title'),
+      title: ctx.locale('commands:shop.embed_title'),
       color: '#559bf7',
       thumbnail: {
         url: 'https://i.imgur.com/t94XkgG.png',
       },
-      description: t('commands:shop.embed_description_saldo', { value: saldoAtual }),
+      description: ctx.locale('commands:shop.embed_description_saldo', { value: saldoAtual }),
       footer: {
-        text: t('commands:shop.embed_footer'),
+        text: ctx.locale('commands:shop.embed_footer'),
       },
       fields: [{
-        name: t('commands:shop.dataLoja_fields.name'),
-        value: t('commands:shop.dataLoja_fields.value'),
+        name: ctx.locale('commands:shop.dataLoja_fields.name'),
+        value: ctx.locale('commands:shop.dataLoja_fields.value'),
         inline: false,
       }],
     };
-    const embedMessage = await message.channel.send(message.author, { embed: dataLoja });
+    const embedMessage = await ctx.send(ctx.message.author, { embed: dataLoja });
 
-    const filter = (m) => m.author.id === message.author.id;
-    const collector = message.channel.createMessageCollector(filter, { max: 1, time: 30000, errors: ['time'] });
+    const filter = (m) => m.author.id === ctx.message.author.id;
+    const collector = ctx.message.channel.createMessageCollector(filter, { max: 1, time: 30000, errors: ['time'] });
 
     collector.on('collect', (m) => {
-      if (!validArgs.some((answer) => answer.toLowerCase() === m.content.toLowerCase())) return message.menheraReply('error', t('commands:shop.invalid-option'));
+      if (!validArgs.some((answer) => answer.toLowerCase() === m.content.toLowerCase())) return ctx.replyT('error', 'commands:shop.invalid-option');
 
       if (m.content === '1') {
         // eslint-disable-next-line no-use-before-define
-        lojaComprar(message, embedMessage, authorData, saldoAtual, t, this.client.constants);
+        lojaComprar(ctx.message, embedMessage, authorData, saldoAtual, ctx.locale, this.client.constants);
         // eslint-disable-next-line no-use-before-define
-      } else lojaVender(message, embedMessage, authorData, saldoAtual, t, this.client.constants);
+      } else lojaVender(ctx.message, embedMessage, authorData, saldoAtual, ctx.locale, this.client.constants);
     });
   }
 };
