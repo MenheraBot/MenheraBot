@@ -12,32 +12,32 @@ module.exports = class LaughtCommand extends Command {
     });
   }
 
-  async run({ message }, t) {
-    const avatar = message.author.displayAvatarURL({ format: 'png', dynamic: true });
+  async run(ctx) {
+    const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     const rand = await getImageUrl('laugh');
-    const user = message.mentions.users.first();
+    const user = ctx.message.mentions.users.first();
 
     if (!user) {
       const embed = new MessageEmbed()
-        .setTitle(t('commands:laugh.no-mention.embed_title'))
+        .setTitle(ctx.locale('commands:laugh.no-mention.embed_title'))
         .setColor('#000000')
-        .setDescription(`${message.author} ${t('commands:laugh.no-mention.embed_description')}`)
+        .setDescription(`${ctx.message.author} ${ctx.locale('commands:laugh.no-mention.embed_description')}`)
         .setThumbnail(avatar)
         .setImage(rand)
-        .setAuthor(message.author.tag, avatar);
+        .setAuthor(ctx.message.author.tag, avatar);
 
-      return message.channel.send(embed);
+      return ctx.send(embed);
     }
 
     const embed = new MessageEmbed()
-      .setTitle(t('commands:laugh.embed_title'))
+      .setTitle(ctx.locale('commands:laugh.embed_title'))
       .setColor('#000000')
-      .setDescription(`${user} ${t('commands:laugh.embed_description_start')} ${message.author} ${t('commands:laugh.embed_description_end')}`)
+      .setDescription(`${user} ${ctx.locale('commands:laugh.embed_description_start')} ${ctx.message.author} ${ctx.locale('commands:laugh.embed_description_end')}`)
       .setImage(rand)
       .setThumbnail(avatar)
-      .setAuthor(message.author.tag, avatar);
+      .setAuthor(ctx.message.author.tag, avatar);
 
-    await message.channel.send(embed);
+    await ctx.send(embed);
   }
 };
