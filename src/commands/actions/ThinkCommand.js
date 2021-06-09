@@ -12,33 +12,33 @@ module.exports = class ThinksCOmmand extends Command {
     });
   }
 
-  async run({ message }, t) {
+  async run(ctx) {
     const rand = await getImageUrl('think');
-    const user = message.mentions.users.first();
-    const avatar = message.author.displayAvatarURL({ format: 'png', dynamic: true });
+    const user = ctx.message.mentions.users.first();
+    const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
 
-    if (user && user.bot) return message.menheraReply('success', t('commands:think.bot'));
+    if (user && user.bot) return ctx.replyT('success', 'commands:think.bot');
 
-    if (!user || user === message.author) {
+    if (!user || user === ctx.message.author) {
       const embed = new MessageEmbed()
-        .setTitle(t('commands:think.no-mention.embed_title'))
+        .setTitle(ctx.locale('commands:think.no-mention.embed_title'))
         .setColor('#000000')
-        .setDescription(`${message.author} ${t('commands:think.no-mention.embed_description')}`)
+        .setDescription(`${ctx.message.author} ${ctx.locale('commands:think.no-mention.embed_description')}`)
         .setThumbnail(avatar)
         .setImage(rand)
-        .setAuthor(message.author.tag, avatar);
+        .setAuthor(ctx.message.author.tag, avatar);
 
-      return message.channel.send(embed);
+      return ctx.send(embed);
     }
 
     const embed = new MessageEmbed()
-      .setTitle(t('commands:think.embed_title'))
+      .setTitle(ctx.locale('commands:think.embed_title'))
       .setColor('#000000')
-      .setDescription(`${message.author} ${t('commands:think.embed_description')} ${user} hehehehe`)
+      .setDescription(`${ctx.message.author} ${ctx.locale('commands:think.embed_description')} ${user} hehehehe`)
       .setImage(rand)
       .setThumbnail(avatar)
-      .setAuthor(message.author.tag, avatar);
+      .setAuthor(ctx.message.author.tag, avatar);
 
-    message.channel.send(embed);
+    ctx.send(embed);
   }
 };
