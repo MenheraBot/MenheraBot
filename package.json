@@ -6,7 +6,7 @@
   "scripts": {
     "build": "rm -rf dist/* && babel src --extensions \".js,.ts\" --ignore *.spec.js --out-dir dist --copy-files --source-maps --verbose",
     "start": "cross-env NODE_ENV=production node shard.js",
-    "dev": "cross-env NODE_ENV=development ts-node-dev -r tsconfig-paths/register --respawn --transpile-only --ignore-watch node_modules --no-notify src/index.ts",
+    "dev": "cross-env NODE_ENV=development ts-node-dev -r tsconfig-paths/register --respawn --transpile-only --ignore-watch node_modules --no-notify shard.js",
     "dev:builded": "cross-env NODE_ENV=development node shard.js",
     "lint:fix": "eslint --fix .",
     "lint:test": "eslint .",
