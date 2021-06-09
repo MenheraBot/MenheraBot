@@ -1,11 +1,6 @@
 const axios = require('axios');
 
 // The following 4 are the actual values that pertain to your account and this specific metric.
-const {
-  apiKey,
-  pageId,
-  metricId,
-} = require('../../config.json');
 
 class StatusPage {
   constructor(client) {
@@ -14,8 +9,8 @@ class StatusPage {
 
   async submit() {
     const apiBase = 'https://api.instatus.com/v1';
-    const url = `${apiBase}/${pageId}/metrics/${metricId}`;
-    const authHeader = { Authorization: `Bearer ${apiKey}` };
+    const url = `${apiBase}/${process.env.PAGE_ID}/metrics/${process.env.METRIC_ID}`;
+    const authHeader = { Authorization: `Bearer ${process.env.API_KEY}` };
 
     const currentTimestamp = Date.now();
 
