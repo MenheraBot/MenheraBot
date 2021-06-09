@@ -11,24 +11,24 @@ module.exports = class MarryCommand extends Command {
     });
   }
 
-  async run({ message, authorData: selfData }, t) {
-    const authorData = selfData ?? new this.client.database.Users({ id: message.author.id });
+  async run(ctx) {
+    const authorData = ctx.data.user;
 
-    const mencionado = message.mentions.users.first();
+    const mencionado = ctx.message.mentions.users.first();
 
-    if (!mencionado) return message.menheraReply('error', t('commands:marry.no-mention'));
-    if (mencionado.bot) return message.menheraReply('error', t('commands:marry.bot'));
-    if (mencionado.id === message.author.id) return message.menheraReply('error', t('commands:marry.self-mention'));
+    if (!mencionado) return ctx.replyT('error', 'commands:marry.no-mention');
+    if (mencionado.bot) return ctx.replyT('error', 'commands:marry.bot');
+    if (mencionado.id === ctx.message.author.id) return ctx.replyT('error', 'commands:marry.self-mention');
 
-    if (authorData.casado && authorData.casado !== 'false') return message.menheraReply('error', t('commands:marry.married'));
+    if (authorData.casado && authorData.casado !== 'false') return ctx.replyT('error', 'commands:marry.married');
 
     const user2 = await this.client.database.Users.findOne({ id: mencionado.id });
 
-    if (!user2) return message.menheraReply('warm', t('commands:marry.no-dbuser'));
+    if (!user2) return ctx.replyT('warm', 'commands:marry.no-dbuser');
 
-    if (user2.casado && user2.casado !== 'false') return message.menheraReply('error', t('commands:marry.mention-married'));
+    if (user2.casado && user2.casado !== 'false') return ctx.replyT('error', 'commands:marry.mention-married');
 
-    message.channel.send(`${mencionado} ${t('commands:marry.confirmation_start')} ${message.author}? ${t('commands:marry.confirmation_end')}`).then((msg) => {
+    ctx.send(`${mencionado} ${ctx.locale('commands:marry.confirmation_start')} ${ctx.message.author}? ${ctx.locale('commands:marry.confirmation_end')}`).then((msg) => {
       msg.react('✅');
       msg.react('❌');
 
@@ -40,25 +40,19 @@ module.exports = class MarryCommand extends Command {
 
       noColetor.on('collect', async () => {
         await msg.reactions.removeAll().catch();
-        return message.channel.send(`${mencionado} ${t('commands:marry.negated')} ${message.author}`);
+        return ctx.send(`${mencionado} ${ctx.locale('commands:marry.negated')} ${ctx.message.author}`);
       });
 
       yesColetor.on('collect', async () => {
         await msg.reactions.removeAll().catch();
-        message.channel.send(`💍${message.author} ${t('commands:marry.acepted')} ${mencionado}💍`);
+        ctx.send(`💍${ctx.message.author} ${ctx.locale('commands:marry.acepted')} ${mencionado}💍`);
 
         moment.locale('pt-br');
 
         const dataFormated = moment(Date.now()).format('l LTS');
 
-        authorData.casado = mencionado.id;
-        authorData.data = dataFormated;
-
-        user2.casado = message.author.id;
-        user2.data = dataFormated;
-
-        await authorData.save();
-        await user2.save();
+        await this.client.database.Users.updateOne({ id: ctx.message.author.id }, { $set: { casado: mencionado.id, data: dataFormated } });
+        await this.client.database.Users.updateOne({ id: mencionado.id }, { $set: { casado: ctx.message.author.id, data: dataFormated } });
       });
     });
   }
