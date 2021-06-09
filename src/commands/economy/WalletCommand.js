@@ -11,21 +11,21 @@ module.exports = class WalletCommand extends Command {
     });
   }
 
-  async run({ message, args }, t) {
+  async run(ctx) {
     let pessoa;
 
-    if (args[0]) {
+    if (ctx.args[0]) {
       try {
-        pessoa = await this.client.users.fetch(args[0].replace(/[<@!>]/g, ''));
+        pessoa = await this.client.users.fetch(ctx.args[0].replace(/[<@!>]/g, ''));
       } catch {
-        return message.menheraReply('error', t('commands:wallet.unknow-user'));
+        return ctx.replyT('error', 'commands:wallet.unknow-user');
       }
     } else {
-      pessoa = message.author;
+      pessoa = ctx.message.author;
     }
 
-    const user = await this.client.database.Users.findOne({ id: pessoa.id });
-    if (!user) return message.menheraReply('error', t('commands:wallet.no-dbuser'));
+    const user = await this.client.database.repositories.userRepository.find(pessoa.id);
+    if (!user) return ctx.replyT('error', 'commands:wallet.no-dbuser');
 
     let cor;
 
@@ -34,43 +34,43 @@ module.exports = class WalletCommand extends Command {
     } else cor = '#a788ff';
 
     const embed = new MessageEmbed()
-      .setTitle(t('commands:wallet.title', { user: pessoa.tag }))
+      .setTitle(ctx.locale('commands:wallet.title', { user: pessoa.tag }))
       .setColor(cor)
       .addFields([{
-        name: `⭐ | ${t('commands:wallet.stars')}`,
+        name: `⭐ | ${ctx.locale('commands:wallet.stars')}`,
         value: `**${user.estrelinhas}**`,
         inline: true,
       },
       {
-        name: `🔑 | ${t('commands:wallet.rolls')}`,
+        name: `🔑 | ${ctx.locale('commands:wallet.rolls')}`,
         value: `**${user.rolls}**`,
         inline: true,
       },
       {
-        name: `<:DEMON:758765044443381780> | ${t('commands:wallet.demons')} `,
+        name: `<:DEMON:758765044443381780> | ${ctx.locale('commands:wallet.demons')} `,
         value: `**${user.caçados}**`,
         inline: true,
       },
       {
-        name: `<:ANGEL:758765044204437535> | ${t('commands:wallet.angels')}`,
+        name: `<:ANGEL:758765044204437535> | ${ctx.locale('commands:wallet.angels')}`,
         value: `**${user.anjos}**`,
         inline: true,
       },
       {
-        name: `<:SemiGod:758766732235374674> | ${t('commands:wallet.sd')}`,
+        name: `<:SemiGod:758766732235374674> | ${ctx.locale('commands:wallet.sd')}`,
         value: `**${user.semideuses}**`,
         inline: true,
       },
       {
-        name: `<:God:758474639570894899> | ${t('commands:wallet.god')}`,
+        name: `<:God:758474639570894899> | ${ctx.locale('commands:wallet.god')}`,
         value: `**${user.deuses}**`,
         inline: true,
       },
       ]);
 
     const rpguser = await this.client.database.Rpg.findById(user.id);
-    if (rpguser && rpguser.resetRoll) embed.addField(`🔑 | RPG ${t('commands:wallet.rolls')}`, `**${rpguser.resetRoll}**`, true);
+    if (rpguser && rpguser.resetRoll) embed.addField(`🔑 | RPG ${ctx.locale('commands:wallet.rolls')}`, `**${rpguser.resetRoll}**`, true);
 
-    message.channel.send(message.author, embed);
+    ctx.send(ctx.message.author, embed);
   }
 };
