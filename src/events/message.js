@@ -26,7 +26,7 @@ module.exports = class MessageReceive {
     if (!message.channel.permissionsFor(message.guild.me).has('SEND_MESSAGES')) return;
 
     const server = await Util.databaseGuildEnsure(this.client, message.guild);
-    const prefix = server.prefix?.toLowerCase() ?? this.client.config.prefix;
+    let prefix = server.prefix?.toLowerCase() ?? this.client.config.prefix;
     const language = server?.lang ?? 'pt-BR';
     const t = i18next.getFixedT(language);
 
@@ -43,6 +43,8 @@ module.exports = class MessageReceive {
           timeout: 5000,
         })).catch();
     }
+
+    if (process.env.NODE_ENV === 'development') prefix = this.client.config.prefix;
 
     if (message.content.startsWith(`<@!${this.client.user.id}>`) || message.content.startsWith(`<@${this.client.user.id}>`)) return message.menheraReply('wink', `${t('events:mention.start')} ${message.author}, ${t('events:mention.end', { prefix })}`);
 
