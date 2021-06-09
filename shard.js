@@ -1,5 +1,6 @@
 const { ShardingManager } = require('discord.js');
 const path = require('path');
+require('dotenv').config();
 
 async function startApp() {
   console.log('[APP] Iniciating application...');

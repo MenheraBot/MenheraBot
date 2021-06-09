@@ -18,7 +18,7 @@ module.exports = class MenheraClient extends Client {
   constructor(options = {}, config) {
     super(options);
 
-    this.database = new Database(config.uri);
+    this.database = new Database(process.env.DATABASE_URI);
     this.commands = new Collection();
     this.aliases = new Collection();
     this.events = new EventManager(this);

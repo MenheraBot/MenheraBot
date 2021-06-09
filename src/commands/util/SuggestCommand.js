@@ -25,7 +25,7 @@ module.exports = class SuggestCommand extends Command {
       .setTimestamp()
       .setAuthor(`Sugestão de ${message.author.tag}`, message.author.displayAvatarURL({ dynamic: true }));
 
-    const webhook = await this.client.fetchWebhook(this.client.config.suggest_webhook_id, this.client.config.suggest_webhook_token);
+    const webhook = await this.client.fetchWebhook(process.env.SUGGEST_HOOK_ID, process.env.SUGGEST_HOOK_ID);
 
     await webhook.send(embed);
 

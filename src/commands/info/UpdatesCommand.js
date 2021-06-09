@@ -14,7 +14,7 @@ module.exports = class UpdatesCommand extends Command {
   }
 
   async run({ message }, t) {
-    const owner = await this.client.users.fetch(this.client.config.owner[0]);
+    const owner = await this.client.users.fetch(process.env.OWNER);
 
     const embed = new MessageEmbed()
       .setTitle(`${t('commands:updates.title')} ${version}`)

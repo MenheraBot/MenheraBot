@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const config = require('../../config.json');
 
 const statusSchema = mongoose.Schema({
   _id: { type: String },
@@ -18,7 +17,7 @@ const cmdSchema = mongoose.Schema({
 
 const guildSchema = mongoose.Schema({
   id: { type: String, unique: true },
-  prefix: { type: String, default: config.prefix },
+  prefix: { type: String, default: process.env.BOT_PREFIX },
   blockedChannels: { type: Array, default: [] },
   disabledCommands: { type: Array, default: [] },
   lang: { type: String, default: 'pt-BR' },
