@@ -11,32 +11,32 @@ module.exports = class AudioCommand extends Command {
     });
   }
 
-  async run({ message, args }, t) {
-    const { voice } = message.member;
-    if (!voice.channelID) return message.menheraReply('error', t('commands:audio.not-in-voice'));
+  async run(ctx) {
+    const { voice } = ctx.message.member;
+    if (!voice.channelID) return ctx.replyT('error', 'commands:audio.not-in-voice');
 
     const availableFiles = ['gemidao', 'among', 'rojao', 'wpp', 'yamete', 'atumalaca'];
 
-    if (!args[0]) return message.menheraReply('error', t('commands:audio.no-args', { audios: availableFiles.join('`, `') }));
+    if (!ctx.args[0]) return ctx.replyT('error', 'commands:audio.no-args', { audios: availableFiles.join('`, `') });
 
-    if (!availableFiles.includes(args[0])) return message.menheraReply('error', t('commands:audio.unknow-args', { audios: availableFiles.join('`, `') }));
+    if (!availableFiles.includes(ctx.args[0])) return ctx.replyT('error', 'commands:audio.unknow-args', { audios: availableFiles.join('`, `') });
 
-    message.react('🍰');
+    ctx.message.react('🍰');
 
     let dis;
 
     try {
-      await message.member.voice.channel.join().then(async (conn) => {
-        const audioLocal = resolve(`src/media/audio/${args[0]}.mp3`);
+      await ctx.message.member.voice.channel.join().then(async (conn) => {
+        const audioLocal = resolve(`src/media/audio/${ctx.args[0]}.mp3`);
         dis = await conn.play(audioLocal);
       });
     } catch {
-      message.menheraReply('error', t('commands:audio.no-perm'));
+      ctx.replyT('error', 'commands:audio.no-perm');
     }
 
     if (dis) {
       dis.on('finish', () => {
-        if (message.guild.me.voice.channelID) message.guild.me.voice.channel.leave();
+        if (ctx.message.guild.me.voice.channelID) ctx.message.guild.me.voice.channel.leave();
       });
     }
   }
