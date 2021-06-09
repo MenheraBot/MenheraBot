@@ -12,32 +12,32 @@ module.exports = class ShyCommand extends Command {
     });
   }
 
-  async run({ message }, t) {
-    const avatar = message.author.displayAvatarURL({ format: 'png', dynamic: true });
+  async run(ctx) {
+    const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     const rand = await getImageUrl('shy');
-    const user = message.mentions.users.first();
+    const user = ctx.message.mentions.users.first();
 
-    if (!user || user === message.author) {
+    if (!user || user === ctx.message.author) {
       const embed = new MessageEmbed()
-        .setTitle(t('commands:shy.no-mention.embed_title'))
+        .setTitle(ctx.locale('commands:shy.no-mention.embed_title'))
         .setColor('#000000')
-        .setDescription(`${message.author} ${t('commands:shy.no-mention.embed_description')}`)
+        .setDescription(`${ctx.message.author} ${ctx.locale('commands:shy.no-mention.embed_description')}`)
         .setThumbnail(avatar)
         .setImage(rand)
-        .setAuthor(message.author.tag, avatar);
+        .setAuthor(ctx.message.author.tag, avatar);
 
-      return message.channel.send(embed);
+      return ctx.send(embed);
     }
 
     const embed = new MessageEmbed()
-      .setTitle(t('commands:shy.embed_title'))
+      .setTitle(ctx.locale('commands:shy.embed_title'))
       .setColor('#000000')
-      .setDescription(`${user} ${t('commands:shy.embed_description_start')} ${message.author} ${t('commands:shy.embed_description_end')}`)
+      .setDescription(`${user} ${ctx.locale('commands:shy.embed_description_start')} ${ctx.message.author} ${ctx.locale('commands:shy.embed_description_end')}`)
       .setImage(rand)
       .setThumbnail(avatar)
-      .setAuthor(message.author.tag, avatar);
+      .setAuthor(ctx.message.author.tag, avatar);
 
-    message.channel.send(embed);
+    ctx.send(embed);
   }
 };
