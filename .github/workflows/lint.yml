@@ -6,6 +6,7 @@ on:
   push:
     branches:
      - master
+     - dev
 
 jobs:
   build:
@@ -24,4 +25,4 @@ jobs:
       - name: Run Linter
         run: npm run lint:test
       - name: Run Build
-        run: cp config.json.example config.json && npm run build:test
+        run: cp .env.example .env && npm run build:test

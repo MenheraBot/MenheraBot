@@ -14,27 +14,12 @@ module.exports = class AudioCommand extends Command {
   async run({ message, args }, t) {
     const { voice } = message.member;
     if (!voice.channelID) return message.menheraReply('error', t('commands:audio.not-in-voice'));
-    if (!args[0]) return message.menheraReply('error', t('commands:audio.no-args'));
 
-    let file = 'gemidao';
-    switch (args[0]) {
-      case 'gemidao':
-        file = 'gemidao';
-        break;
-      case 'among':
-        file = 'among';
-        break;
-      case 'rojao':
-        file = 'rojao';
-        break;
-      case 'wpp':
-        file = 'wpp';
-        break;
-      case 'yamete':
-        file = 'yamete';
-        break;
-      default: return message.menheraReply('error', t('commands:audio.unknow-args'));
-    }
+    const availableFiles = ['gemidao', 'among', 'rojao', 'wpp', 'yamete', 'atumalaca'];
+
+    if (!args[0]) return message.menheraReply('error', t('commands:audio.no-args', { audios: availableFiles.join('`, `') }));
+
+    if (!availableFiles.includes(args[0])) return message.menheraReply('error', t('commands:audio.unknow-args', { audios: availableFiles.join('`, `') }));
 
     message.react('🍰');
 
@@ -42,7 +27,7 @@ module.exports = class AudioCommand extends Command {
 
     try {
       await message.member.voice.channel.join().then(async (conn) => {
-        const audioLocal = resolve(`src/media/audio/${file}.mp3`);
+        const audioLocal = resolve(`src/media/audio/${args[0]}.mp3`);
         dis = await conn.play(audioLocal);
       });
     } catch {

@@ -1,13 +1,20 @@
 const { ShardingManager } = require('discord.js');
 const path = require('path');
+require('dotenv').config();
 
-const shards = new ShardingManager(path.resolve(__dirname, 'dist', 'index.js'), {
-  respawn: true,
-  totalShards: 4,
-});
+async function startApp() {
+  console.log('[APP] Iniciating application...');
 
-shards.on('shardCreate', (shard) => {
-  console.warn(`[SHARDING MANAGER] Launching shard ${shard.id}`);
-});
+  const shards = new ShardingManager(path.resolve(__dirname, 'dist', 'index.js'), {
+    respawn: true,
+    totalShards: 4,
+  });
 
-shards.spawn().then(() => console.log('[SHARDING MANAGER] Launching shards...'));
+  shards.on('shardCreate', (shard) => {
+    console.warn(`[SHARDING MANAGER] Launching shard ${shard.id}`);
+  });
+
+  shards.spawn().then(() => console.log('[SHARDING MANAGER] All shards has been spawned'));
+}
+
+startApp();

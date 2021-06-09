@@ -26,7 +26,7 @@ module.exports = class MessageReceive {
     if (!message.channel.permissionsFor(message.guild.me).has('SEND_MESSAGES')) return;
 
     const server = await Util.databaseGuildEnsure(this.client, message.guild);
-    const prefix = server.prefix?.toLowerCase() ?? this.client.config.prefix;
+    let prefix = server.prefix?.toLowerCase() ?? process.env.BOT_PREFIX;
     const language = server?.lang ?? 'pt-BR';
     const t = i18next.getFixedT(language);
 
@@ -44,6 +44,8 @@ module.exports = class MessageReceive {
         })).catch();
     }
 
+    if (process.env.NODE_ENV === 'development') prefix = process.env.BOT_PREFIX;
+
     if (message.content.startsWith(`<@!${this.client.user.id}>`) || message.content.startsWith(`<@${this.client.user.id}>`)) return message.menheraReply('wink', `${t('events:mention.start')} ${message.author}, ${t('events:mention.end', { prefix })}`);
 
     if (!message.content.toLowerCase().startsWith(prefix)) return;
@@ -54,21 +56,21 @@ module.exports = class MessageReceive {
     const command = this.client.commands.get(cmd) || this.client.commands.get(this.client.aliases.get(cmd));
     if (!command) return;
 
-    const dbCommand = await this.client.database.Cmds.findById(command.config.name);
+    const dbCommand = await this.client.repositories.cmdRepository.findByName(command.config.name);
 
     if (server.blockedChannels?.includes(message.channel.id) && !message.member.hasPermission('MANAGE_CHANNELS')) return message.menheraReply('lock', `${t('events:blocked-channel')}`);
 
     if (authorData?.ban) return message.menheraReply('error', t('permissions:BANNED_INFO', { banReason: authorData?.banReason }));
 
-    if (command.config.devsOnly && !this.client.config.owner.includes(message.author.id)) return message.channel.send(t('permissions:ONLY_DEVS'));
+    if (command.config.devsOnly && process.env.OWNER !== message.author.id) return message.channel.send(t('permissions:ONLY_DEVS'));
 
     if (server.disabledCommands?.includes(command.config.name)) return message.menheraReply('lock', t('permissions:DISABLED_COMMAND', { prefix: server.prefix, cmd: command.config.name }));
 
-    if (dbCommand?.maintenance && !this.client.config.owner.includes(message.author.id)) return message.channel.send(`<:negacao:759603958317711371> | ${t('events:maintenance', { reason: dbCommand.maintenanceReason })}`);
+    if (dbCommand?.maintenance && process.env.OWNER !== message.author.id) return message.channel.send(`<:negacao:759603958317711371> | ${t('events:maintenance', { reason: dbCommand.maintenanceReason })}`);
 
     if (!cooldowns.has(command.config.name)) cooldowns.set(command.config.name, new Collection());
 
-    if (!this.client.config.owner.includes(message.author.id)) {
+    if (process.env.OWNER !== message.author.id) {
       const now = Date.now();
       const timestamps = cooldowns.get(command.config.name);
       const cooldownAmount = (command.config.cooldown || 3) * 1000;
@@ -115,9 +117,9 @@ module.exports = class MessageReceive {
         res(command.run({
           message, args, server, authorData,
         }, t));
-        console.log(`[CMD (${this.client.shard.ids[0]})] ${command.config.name.toUpperCase()} | USER: ${message.author.tag} - ${message.author.id} | GUILD: ${message.guild.name}`);
+        // console.log(`[CMD (${this.client.shard.ids[0]})] ${command.config.name.toUpperCase()} | USER: ${message.author.tag} - ${message.author.id} | GUILD: ${message.guild.name}`);
       }).catch(async (err) => {
-        const errorWebHook = await this.client.fetchWebhook(this.client.config.bug_webhook_id, this.client.config.bug_webhook_token);
+        const errorWebHook = await this.client.fetchWebhook(process.env.BUG_HOOK_ID, process.env.BUG_HOOK_TOKEN);
 
         const errorMessage = err.stack.length > 1800 ? `${err.stack.slice(0, 1800)}...` : err.stack;
         const embed = new MessageEmbed();
@@ -132,7 +134,7 @@ module.exports = class MessageReceive {
         if (this.client.user.id === '708014856711962654') errorWebHook.send(embed).catch();
       });
     } catch (err) {
-      const errorWebHook = await this.client.fetchWebhook(this.client.config.bug_webhook_id, this.client.config.bug_webhook_token);
+      const errorWebHook = await this.client.fetchWebhook(process.env.BUG_HOOK_ID, process.env.BUG_HOOK_TOKEN);
 
       const errorMessage = err.stack.length > 1800 ? `${err.stack.slice(0, 1800)}...` : err.stack;
       const embed = new MessageEmbed();
