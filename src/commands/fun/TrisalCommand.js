@@ -12,58 +12,58 @@ module.exports = class TrisalCommand extends Command {
     });
   }
 
-  async run({ message, args, authorData }, t) {
-    // eslint-disable-next-line no-param-reassign
-    if (!authorData) authorData = await this.client.database.Users.findOne({ id: message.author.id });
-    if (!authorData) return message.menheraReply('error', t('commands:trisal.no-owner'));
-    if (authorData.trisal?.length === 0 && !args[1]) return message.menheraReply('error', t('commands:trisal.no-args'));
+  async run(ctx) {
+    let authorData = ctx.data.user;
+    if (!authorData) authorData = await this.client.database.repositories.userRepository.find(ctx.message.author.id);
+    if (!authorData) return ctx.replyT('error', 'commands:trisal.no-owner');
+    if (authorData.trisal?.length === 0 && !ctx.args[1]) return ctx.replyT('error', 'commands:trisal.no-args');
 
     if (authorData.trisal?.length > 0) {
       const marryTwo = await this.client.users.fetch(authorData.trisal[0]);
       const marryThree = await this.client.users.fetch(authorData.trisal[1]);
 
-      if (!marryTwo || !marryThree) return message.menheraReply('error', t('commands:trisal.marry-not-found'));
+      if (!marryTwo || !marryThree) return ctx.replyT('error', 'commands:trisal.marry-not-found');
 
-      const userOneAvatar = message.author.displayAvatarURL({ dynamic: false, size: 256, format: 'png' });
+      const userOneAvatar = ctx.message.author.displayAvatarURL({ dynamic: false, size: 256, format: 'png' });
       const userTwoAvatar = marryTwo.displayAvatarURL({ dynamic: false, size: 256, format: 'png' });
       const userThreeAvatar = marryThree.displayAvatarURL({ dynamic: false, size: 256, format: 'png' });
 
       const res = await NewHttp.trisalRequest(userOneAvatar, userTwoAvatar, userThreeAvatar);
-      if (res.err) return message.menheraReply('error', t('commands:http-error'));
+      if (res.err) return ctx.replyT('error', 'commands:http-error');
 
       const attachment = new MessageAttachment(Buffer.from(res.data), 'trisal.png');
 
       const embed = new MessageEmbed()
         .attachFiles(attachment)
-        .setDescription(`${t('commands:trisal.embed.description')} ${message.author}, ${marryTwo}, ${marryThree}`)
+        .setDescription(`${ctx.locale('commands:trisal.embed.description')} ${ctx.message.author}, ${marryTwo}, ${marryThree}`)
         .setColor('#ac76f9')
         .setImage('attachment://trisal.png');
 
-      return message.channel.send(embed);
+      return ctx.send(embed);
     }
 
-    const [mencionado1, mencionado2] = message.mentions.users.keyArray();
+    const [mencionado1, mencionado2] = ctx.message.mentions.users.keyArray();
 
-    if (!mencionado1 || !mencionado2) return message.menheraReply('error', t('commands:trisal.no-mention'));
-    if (mencionado1 === message.author.id || mencionado2 === message.author.id) return message.menheraReply('error', t('commands:trisal.self-mention'));
-    if (mencionado1.bot || mencionado2.bot) return message.menheraReply('error', t('commands:trisal.bot-mention'));
-    if (mencionado1 === mencionado2) return message.menheraReply('error', t('commands:trisal:same-mention'));
+    if (!mencionado1 || !mencionado2) return ctx.replyT('error', 'commands:trisal.no-mention');
+    if (mencionado1 === ctx.message.author.id || mencionado2 === ctx.message.author.id) return ctx.replyT('error', 'commands:trisal.self-mention');
+    if (mencionado1.bot || mencionado2.bot) return ctx.replyT('error', 'commands:trisal.bot-mention');
+    if (mencionado1 === mencionado2) return ctx.retryT('error', 'commands:trisal:same-mention');
 
     const user1 = authorData;
-    const user2 = await this.client.database.Users.findOne({ id: mencionado1 });
-    const user3 = await this.client.database.Users.findOne({ id: mencionado2 });
+    const user2 = await this.client.database.repositories.userRepository.find(mencionado1);
+    const user3 = await this.client.database.repositories.userRepository.find(mencionado2);
 
-    if (!user1 || !user2 || !user3) return message.menheraReply('error', t('commands:trisal.no-db'));
+    if (!user1 || !user2 || !user3) return ctx.replyT('error', 'commands:trisal.no-db');
 
-    if (user2.trisal?.length > 0 || user3.trisal?.length > 0) return message.menheraReply('error', t('commands:trisal.comedor-de-casadas'));
+    if (user2.trisal?.length > 0 || user3.trisal?.length > 0) return ctx.replyT('error', 'commands:trisal.comedor-de-casadas');
 
     const messageMention1 = await this.client.users.fetch(mencionado1);
     const messageMention2 = await this.client.users.fetch(mencionado2);
 
-    const msg = await message.channel.send(`${t('commands:trisal.accept-message')} ${message.author}, ${messageMention1}, ${messageMention2}`);
+    const msg = await ctx.send(`${ctx.locale('commands:trisal.accept-message')} ${ctx.message.author}, ${messageMention1}, ${messageMention2}`);
     await msg.react('✅');
 
-    const acceptableIds = [message.author.id, mencionado1, mencionado2];
+    const acceptableIds = [ctx.message.author.id, mencionado1, mencionado2];
 
     const filter = (reaction, usuario) => reaction.emoji.name === '✅' && acceptableIds.includes(usuario.id);
 
@@ -76,18 +76,18 @@ module.exports = class TrisalCommand extends Command {
 
       if (acceptedIds.length === 3) {
         user1.trisal = [mencionado1, mencionado2];
-        user2.trisal = [message.author.id, mencionado2];
-        user3.trisal = [message.author.id, mencionado1];
+        user2.trisal = [ctx.message.author.id, mencionado2];
+        user3.trisal = [ctx.message.author.id, mencionado1];
         await user1.save();
         await user2.save();
         await user3.save();
 
-        message.menheraReply('success', t('commands:trisal.done'));
+        ctx.replyT('success', 'commands:trisal.done');
       }
     });
 
     setTimeout(() => {
-      if (acceptedIds.length !== 3) message.menheraReply('error', t('commands:trisal.error'));
+      if (acceptedIds.length !== 3) ctx.replyT('error', 'commands:trisal.error');
     }, 15000);
   }
 };
