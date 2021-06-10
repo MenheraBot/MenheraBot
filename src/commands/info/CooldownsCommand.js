@@ -13,28 +13,27 @@ module.exports = class CooldownsCommand extends Command {
     });
   }
 
-  async run({ message, authorData }, t) {
-    const userRpg = await this.client.database.Rpg.findById(message.author.id);
-    // eslint-disable-next-line no-param-reassign
-    if (!authorData) return message.menheraReply('error', t('commands:cooldowns.error'));
+  async run(ctx) {
+    const userRpg = await this.client.database.Rpg.findById(ctx.message.author.id);
+    if (!ctx.data.user) return ctx.replyT('error', 'commands:cooldowns.error');
 
-    const huntCooldownInMilis = parseInt(authorData?.caçarTime) - Date.now();
-    const dungeonCooldownInMilis = userRpg ? (parseInt(userRpg.dungeonCooldown) - Date.now()) : null;
-    const jobCooldownInMilis = userRpg ? (parseInt(userRpg.jobCooldown) - Date.now()) : null;
-    const voteCooldownInMilis = parseInt(authorData?.voteCooldown) - Date.now();
+    const huntCooldownInMilis = parseInt(ctx.data.user?.caçarTime) - Date.now();
+    const dungeonCooldownInMilis = userRpg ? (parseInt(userRpg.dungeonCooldown) - Date.now()) : false;
+    const jobCooldownInMilis = userRpg ? (parseInt(userRpg.jobCooldown) - Date.now()) : false;
+    const voteCooldownInMilis = parseInt(ctx.data.user?.voteCooldown) - Date.now();
 
     let txt = '';
 
-    huntCooldownInMilis < 0 ? txt += `\`${t('commands:cooldowns.hunt')}\` | ${t('commands:cooldowns.no-cooldown')}\n` : txt += `\`${t('commands:cooldowns.hunt')}\` | **${moment.utc(huntCooldownInMilis).format('mm:ss')}** ${t('commands:cooldowns.minutes')}\n`;
-    dungeonCooldownInMilis && dungeonCooldownInMilis < 0 ? txt += `\`${t('commands:cooldowns.dungeon')}\` | ${t('commands:cooldowns.no-cooldown')}\n` : txt += `\`${t('commands:cooldowns.dungeon')}\` | **${moment.utc(dungeonCooldownInMilis).format('mm:ss')}** ${t('commands:cooldowns.minutes')}\n`;
-    jobCooldownInMilis && jobCooldownInMilis < 0 ? txt += `\`${t('commands:cooldowns.job')}\` | ${t('commands:cooldowns.no-cooldown')}\n` : txt += `\`${t('commands:cooldowns.job')}\` | ${jobCooldownInMilis > 3600000 ? `**${moment.utc(jobCooldownInMilis).format('HH:mm:ss')}** ${t('commands:cooldowns.hours')}\n` : `**${moment.utc(jobCooldownInMilis).format('mm:ss')}** ${t('commands:cooldowns.minutes')}`}\n`;
-    voteCooldownInMilis && voteCooldownInMilis < 0 ? txt += `\`${t('commands:cooldowns.vote')}\` | ${t('commands:cooldowns.no-cooldown')}\n` : txt += `\`${t('commands:cooldowns.vote')}\` | ${voteCooldownInMilis > 3600000 ? `**${moment.utc(voteCooldownInMilis).format('HH:mm:ss')}** ${t('commands:cooldowns.hours')}\n` : `**${moment.utc(voteCooldownInMilis).format('mm:ss')}** ${t('commands:cooldowns.minutes')}`}\n`;
+    huntCooldownInMilis < 0 ? txt += `\`${ctx.locale('commands:cooldowns.hunt')}\` | ${ctx.locale('commands:cooldowns.no-cooldown')}\n` : txt += `\`${ctx.locale('commands:cooldowns.hunt')}\` | **${moment.utc(huntCooldownInMilis).format('mm:ss')}** ${ctx.locale('commands:cooldowns.minutes')}\n`;
+    dungeonCooldownInMilis && dungeonCooldownInMilis < 0 ? txt += `\`${ctx.locale('commands:cooldowns.dungeon')}\` | ${ctx.locale('commands:cooldowns.no-cooldown')}\n` : txt += `\`${ctx.locale('commands:cooldowns.dungeon')}\` | **${moment.utc(dungeonCooldownInMilis).format('mm:ss')}** ${ctx.locale('commands:cooldowns.minutes')}\n`;
+    jobCooldownInMilis && jobCooldownInMilis < 0 ? txt += `\`${ctx.locale('commands:cooldowns.job')}\` | ${ctx.locale('commands:cooldowns.no-cooldown')}\n` : txt += `\`${ctx.locale('commands:cooldowns.job')}\` | ${jobCooldownInMilis > 3600000 ? `**${moment.utc(jobCooldownInMilis).format('HH:mm:ss')}** ${ctx.locale('commands:cooldowns.hours')}\n` : `**${moment.utc(jobCooldownInMilis).format('mm:ss')}** ${ctx.locale('commands:cooldowns.minutes')}`}\n`;
+    voteCooldownInMilis && voteCooldownInMilis < 0 ? txt += `\`${ctx.locale('commands:cooldowns.vote')}\` | ${ctx.locale('commands:cooldowns.no-cooldown')}\n` : txt += `\`${ctx.locale('commands:cooldowns.vote')}\` | ${voteCooldownInMilis > 3600000 ? `**${moment.utc(voteCooldownInMilis).format('HH:mm:ss')}** ${ctx.locale('commands:cooldowns.hours')}\n` : `**${moment.utc(voteCooldownInMilis).format('mm:ss')}** ${ctx.locale('commands:cooldowns.minutes')}`}\n`;
 
     const embed = new MessageEmbed()
-      .setTitle(t('commands:cooldowns.title'))
+      .setTitle(ctx.locale('commands:cooldowns.title'))
       .setColor('#6597df')
       .setDescription(txt);
 
-    message.channel.send(message.author, embed);
+    ctx.sendC(ctx.message.author, embed);
   }
 };
