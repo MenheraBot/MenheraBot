@@ -23,49 +23,49 @@ module.exports = class CoinflipStatsCommand extends Command {
     });
   }
 
-  async run({ message, args }, t) {
-    const userDb = args[0] ? await this.client.database.Users.findOne({ id: args[0].replace(/[<@!>]/g, '') }) : message.author;
-    const data = await http.getCoinflipUserStats(userDb ? userDb.id : message.author.id);
-    if (data.error) return message.menheraReply('error', t('commands:coinflipstats.error'));
-    if (!data || !data.playedGames || data.playedGames === undefined) return message.menheraReply('error', t('commands:coinflipstats.no-data'));
+  async run(ctx) {
+    const userDb = ctx.args[0] ? await this.client.database.repositories.userRepository.find(ctx.args[0].replace(/[<@!>]/g, '')) : ctx.message.author;
+    const data = await http.getCoinflipUserStats(userDb ? userDb.id : ctx.message.author.id);
+    if (data.error) return ctx.replyT('error', 'commands:coinflipstats.error');
+    if (!data || !data.playedGames || data.playedGames === undefined) return ctx.replyT('error', 'commands:coinflipstats.no-data');
 
     const totalMoney = data.winMoney - data.lostMoney;
 
-    const userName = await this.client.users.fetch(userDb ? userDb.id : message.author.id);
+    const userName = await this.client.users.fetch(userDb ? userDb.id : ctx.message.author.id);
 
     const embed = new MessageEmbed()
-      .setTitle(t('commands:coinflipstats.embed-title', { user: userName.tag }))
+      .setTitle(ctx.locale('commands:coinflipstats.embed-title', { user: userName.tag }))
       .setColor('#48a6fe')
-      .setFooter(t('commands:coinflipstats.embed-footer'))
+      .setFooter(ctx.locale('commands:coinflipstats.embed-footer'))
       .addFields([
         {
-          name: `🎰 | ${t('commands:coinflipstats.played')}`,
+          name: `🎰 | ${ctx.locale('commands:coinflipstats.played')}`,
           value: `**${data.playedGames}**`,
           inline: true,
         },
         {
-          name: `🏆 | ${t('commands:coinflipstats.wins')}`,
+          name: `🏆 | ${ctx.locale('commands:coinflipstats.wins')}`,
           value: `**${data.winGames}** | (${data.winPorcentage}) **%**`,
           inline: true,
         },
         {
-          name: `🦧 | ${t('commands:coinflipstats.loses')}`,
+          name: `🦧 | ${ctx.locale('commands:coinflipstats.loses')}`,
           value: `**${data.lostGames}** | (${data.lostPorcentage}) **%**`,
           inline: true,
         },
         {
-          name: `📥 | ${t('commands:coinflipstats.earnMoney')}`,
+          name: `📥 | ${ctx.locale('commands:coinflipstats.earnMoney')}`,
           value: `**${data.winMoney}** :star:`,
           inline: true,
         },
         {
-          name: `📤 | ${t('commands:coinflipstats.lostMoney')}`,
+          name: `📤 | ${ctx.locale('commands:coinflipstats.lostMoney')}`,
           value: `**${data.lostMoney}** :star:`,
           inline: true,
         },
       ]);
-    totalMoney > 0 ? embed.addField(`✅ | ${t('commands:coinflipstats.profit')}`, `**${totalMoney}** :star:`, true) : embed.addField(`❌ | ${t('commands:coinflipstats.loss')}`, `**${totalMoney}** :star:`, true);
+    totalMoney > 0 ? embed.addField(`✅ | ${ctx.locale('commands:coinflipstats.profit')}`, `**${totalMoney}** :star:`, true) : embed.addField(`❌ | ${ctx.locale('commands:coinflipstats.loss')}`, `**${totalMoney}** :star:`, true);
 
-    message.channel.send(message.author, embed);
+    ctx.sendC(ctx.message.author, embed);
   }
 };
