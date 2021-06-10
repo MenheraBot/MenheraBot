@@ -57,7 +57,7 @@ module.exports = class WorkCommand extends Command {
     user.xp += xp;
     await user.save();
 
-    await this.client.rpgChecks.finalChecks(ctx.message, user, ctx.locale);
+    await this.client.rpgChecks.finalChecks(ctx, user);
 
     ctx.sendC(ctx.message.author, embed);
   }
