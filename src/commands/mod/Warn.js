@@ -13,24 +13,24 @@ module.exports = class WarnCommand extends Command {
     });
   }
 
-  async run({ message, args }, t) {
-    if (!args[0]) return message.menheraReply('error', t('commands:warn.no-mention'));
+  async run(ctx) {
+    if (!ctx.args[0]) return ctx.replyT('error', 'commands:warn.no-mention');
 
     let user;
     try {
-      user = await this.client.users.fetch(args[0].replace(/[<@!>]/g, ''));
+      user = await this.client.users.fetch(ctx.args[0].replace(/[<@!>]/g, ''));
     } catch {
-      return message.menheraReply('error', t('commands:warn.no-mention'));
+      return ctx.replyT('error', 'commands:warn.no-mention');
     }
 
-    if (!user) return message.menheraReply('error', t('commands:warn.no-mention'));
-    if (user.bot) return message.menheraReply('error', t('commands:warn.bot'));
-    if (user.id === message.author.id) return message.menheraReply('error', t('commands:warn.self-mention'));
+    if (!user) return ctx.replyT('error', 'commands:warn.no-mention');
+    if (user.bot) return ctx.replyT('error', 'commands:warn.bot');
+    if (user.id === ctx.message.author.id) return ctx.replyT('error', 'commands:warn.self-mention');
 
-    if (!message.guild.members.cache.get(user.id)) return message.menheraReply('error', t('commands:warn.invalid-member'));
+    if (!ctx.message.guild.members.cache.get(user.id)) return ctx.replyT('error', 'commands:warn.invalid-member');
 
-    let reason = args.slice(1).join(' ');
-    if (!reason) reason = t('commands:warn.default_reason');
+    let reason = ctx.args.slice(1).join(' ');
+    if (!reason) reason = ctx.locale('commands:warn.default_reason');
 
     const data1 = new Date();
 
@@ -64,24 +64,24 @@ module.exports = class WarnCommand extends Command {
     const rand = list[Math.floor(Math.random() * list.length)];
 
     const embed = new MessageEmbed()
-      .setTitle(t('commands:warn.embed_title'))
-      .setDescription(`${message.author} ${t('commands:warn.embed_description')} ${user}`)
+      .setTitle(ctx.locale('commands:warn.embed_title'))
+      .setDescription(`${ctx.message.author} ${ctx.locale('commands:warn.embed_description')} ${user}`)
       .setImage(rand);
 
     this.client.database.Warns.findOne({
       id: user.id,
-      guildId: message.guild.id,
+      guildId: ctx.message.guild.id,
     }, (err) => {
       if (err) console.log(err);
 
       const addUser = new this.client.database.Warns({
         userId: user.id,
-        warnerId: message.author.id,
-        guildId: message.guild.id,
+        warnerId: ctx.message.author.id,
+        guildId: ctx.message.guild.id,
         reason,
         data,
       });
-      addUser.save().then(message.channel.send(embed)).catch((error) => console.log(error));
+      addUser.save().then(ctx.send(embed)).catch((error) => console.log(error));
     });
   }
 };
