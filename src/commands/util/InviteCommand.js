@@ -12,16 +12,16 @@ module.exports = class InviteCommand extends Command {
     });
   }
 
-  async run({ message }, t) {
+  async run(ctx) {
     const embed = new MessageEmbed()
-      .setTitle(t('commands:invite.embed_title'))
+      .setTitle(ctx.locale('commands:invite.embed_title'))
       .setColor('#f763f8')
       .setURL('https://discord.com/api/oauth2/authorize?client_id=708014856711962654&permissions=1007025271&scope=bot')
       .setImage('https://i.imgur.com/ZsKuh8W.png')
-      .setDescription(t('commands:invite.embed_description'))
-      .setFooter(t('commands:invite.embed_footer', { user: message.author.tag }), message.author.displayAvatarURL())
+      .setDescription(ctx.locale('commands:invite.embed_description'))
+      .setFooter(ctx.locale('commands:invite.embed_footer', { user: ctx.message.author.tag }), ctx.message.author.displayAvatarURL())
       .setTimestamp();
 
-    message.channel.send(embed).catch((err) => console.log(err));
+    ctx.send(embed).catch((err) => console.log(err));
   }
 };
