@@ -11,11 +11,11 @@ module.exports = class GiveBadgeCommand extends Command {
   }
 
   // eslint-disable-next-line no-unused-vars
-  async run({ message, args }, t) {
-    const user = await this.client.database.Users.findOne({ id: args[0] });
-    const badgeId = parseInt(args[1]);
+  async run(ctx) {
+    const user = await this.client.database.Users.findOne({ id: ctx.args[0] });
+    const badgeId = parseInt(ctx.args[1]);
 
-    if (!badgeId) return message.menheraReply('error', 'Cade o id da badge?');
+    if (!badgeId) return ctx.reply('error', 'Cade o id da badge?');
 
     if (user.badges) {
       user.badges.push({ id: badgeId, obtainAt: Date.now() });
@@ -23,6 +23,6 @@ module.exports = class GiveBadgeCommand extends Command {
       user.badges = [{ id: badgeId, obtainAt: Date.now() }];
     }
     user.save();
-    message.channel.send('Concluido');
+    ctx.send('Concluido');
   }
 };

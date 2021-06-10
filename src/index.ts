@@ -1,8 +1,5 @@
-import ProtoTypes from '@structures/ProtoTypes';
 import { resolve } from 'path';
 import MenheraClient from './MenheraClient';
-
-ProtoTypes.start();
 
 const client = new MenheraClient(
   {

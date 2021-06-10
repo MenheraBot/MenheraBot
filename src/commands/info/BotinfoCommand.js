@@ -1,7 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const moment = require('moment');
 const Command = require('../../structures/command');
-const http = require('../../utils/HTTPrequests');
 require('moment-duration-format');
 const { version } = require('../../../package.json');
 
@@ -16,10 +15,9 @@ module.exports = class BotinfoCommand extends Command {
     });
   }
 
-  async run({ message, server }, t) {
+  async run(ctx) {
     const owner = await this.client.users.fetch(process.env.OWNER);
-    const commandsExecuted = await http.getCommands();
-    if (server.lang === 'pt-BR') {
+    if (ctx.data.server.lang === 'pt-BR') {
       moment.locale('pt-br');
     } else moment.locale('en-us');
 
@@ -30,10 +28,10 @@ module.exports = class BotinfoCommand extends Command {
       .setColor('#fa8dd7')
       // .setTitle(t('commands:botinfo.title'))
       .setThumbnail('https://i.imgur.com/b5y0nd4.png')
-      .setDescription(t('commands:botinfo.embed_description', {
-        name: this.client.user.username, createdAt: moment.utc(this.client.user.createdAt).format('LLLL'), joinedAt: moment.utc(message.guild.me.joinedAt).format('LLLL'), cmds: commandsExecuted,
+      .setDescription(ctx.locale('commands:botinfo.embed_description', {
+        name: this.client.user.username, createdAt: moment.utc(this.client.user.createdAt).format('LLLL'), joinedAt: moment.utc(ctx.message.guild.me.joinedAt).format('LLLL'),
       }))
-      .setFooter(`${this.client.user.username} ${t('commands:botinfo.embed_footer')} ${owner.tag}`, owner.displayAvatarURL({
+      .setFooter(`${this.client.user.username} ${ctx.locale('commands:botinfo.embed_footer')} ${owner.tag}`, owner.displayAvatarURL({
         format: 'png',
         dynamic: true,
       }))
@@ -43,7 +41,7 @@ module.exports = class BotinfoCommand extends Command {
         inline: true,
       },
       {
-        name: `🗄️ | ${t('commands:botinfo.channels')} | 🗄️`,
+        name: `🗄️ | ${ctx.locale('commands:botinfo.channels')} | 🗄️`,
         value: `\`\`\`${await this.client.shardManager.getAllSizeObject('channels')}\`\`\``,
         inline: true,
       },
@@ -53,16 +51,16 @@ module.exports = class BotinfoCommand extends Command {
         inline: true,
       },
       {
-        name: `<:memoryram:762817135394553876> | ${t('commands:botinfo.memory')} | <:memoryram:762817135394553876>`,
+        name: `<:memoryram:762817135394553876> | ${ctx.locale('commands:botinfo.memory')} | <:memoryram:762817135394553876>`,
         value: `\`\`\`${(memoryUsedPolish / 1024 / 1024).toFixed(2)}MB\`\`\``,
         inline: true,
       },
       {
-        name: `🇧🇷 | ${t('commands:botinfo.version')} | 🇧🇷`,
+        name: `🇧🇷 | ${ctx.locale('commands:botinfo.version')} | 🇧🇷`,
         value: `\`\`\`${version}\`\`\``,
         inline: true,
       },
       ]);
-    message.channel.send(embed);
+    ctx.send(embed);
   }
 };

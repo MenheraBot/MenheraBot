@@ -12,10 +12,8 @@ module.exports = class ColorCommand extends Command {
     });
   }
 
-  async run({
-    message, args, server, authorData: selfData,
-  }, t) {
-    const authorData = selfData ?? new this.client.database.Users({ id: message.author.id });
+  async run(ctx) {
+    const authorData = ctx.data.user;
 
     const haspadrao = await authorData.cores.filter((pc) => pc.cor === '#a788ff');
 
@@ -28,9 +26,9 @@ module.exports = class ColorCommand extends Command {
       authorData.save().then();
     }
     const embed = new MessageEmbed()
-      .setTitle(`🏳️‍🌈 | ${t('commands:color.embed_title')}`)
+      .setTitle(`🏳️‍🌈 | ${ctx.locale('commands:color.embed_title')}`)
       .setColor('#aee285')
-      .setDescription(t('commands:color.embed_description', { prefix: server.prefix }));
+      .setDescription(ctx.locale('commands:color.embed_description', { prefix: ctx.data.server.prefix }));
 
     const validArgs = [];
 
@@ -38,23 +36,23 @@ module.exports = class ColorCommand extends Command {
       embed.addField(`${authorData.cores[i].nome}`, `${authorData.cores[i].cor}`);
       validArgs.push(authorData.cores[i].nome.replace(/[^\d]+/g, ''));
     }
-    if (!args[0]) return message.channel.send(message.author, embed);
+    if (!ctx.args[0]) return ctx.sendC(ctx.message.author, embed);
 
-    if (validArgs.includes(args[0])) {
-      const findColor = authorData.cores.filter((cor) => cor.nome.startsWith(args[0]) || cor.nome.startsWith(`**${args[0]}`));
+    if (validArgs.includes(ctx.args[0])) {
+      const findColor = authorData.cores.filter((cor) => cor.nome.startsWith(ctx.args[0]) || cor.nome.startsWith(`**${ctx.args[0]}`));
 
       const dataChoose = {
-        title: t('commands:color.dataChoose.title'),
-        description: t('commands:color.dataChoose.title'),
+        title: ctx.locale('commands:color.dataChoose.title'),
+        description: ctx.locale('commands:color.dataChoose.title'),
         color: findColor[0].cor,
         thumbnail: {
           url: 'https://i.imgur.com/t94XkgG.png',
         },
       };
 
-      message.channel.send(message.author, { embed: dataChoose });
+      ctx.sendC(ctx.message.author, { embed: dataChoose });
       authorData.cor = findColor[0].cor;
       authorData.save();
-    } else message.menheraReply('error', t('commands:color.no-own', { prefix: server.prefix }));
+    } else ctx.replyT('error', 'commands:color.no-own', { prefix: ctx.data.server.prefix });
   }
 };

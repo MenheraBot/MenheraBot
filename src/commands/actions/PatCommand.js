@@ -12,24 +12,24 @@ module.exports = class PatCommand extends Command {
     });
   }
 
-  async run({ message }, t) {
+  async run(ctx) {
     const rand = await getImageUrl('pat');
-    const user = message.mentions.users.first();
+    const user = ctx.message.mentions.users.first();
 
-    if (!user) return message.menheraReply('error', t('commands:pat.no-mention'));
+    if (!user) return ctx.replyT('error', 'commands:pat.no-mention');
 
-    if (user === message.author) return message.menheraReply('error', t('commands:pat.self-mention'));
+    if (user === ctx.message.author) return ctx.replyT('error', 'commands:pat.self-mention');
 
-    const avatar = message.author.displayAvatarURL({ format: 'png', dynamic: true });
+    const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     const embed = new MessageEmbed()
-      .setTitle(t('commands:pat.embed_title'))
+      .setTitle(ctx.locale('commands:pat.embed_title'))
       .setColor('#000000')
-      .setDescription(`${message.author} ${t('commands:pat.embed_description')} ${user}`)
+      .setDescription(`${ctx.message.author} ${ctx.locale('commands:pat.embed_description')} ${user}`)
       .setImage(rand)
       .setThumbnail(avatar)
-      .setAuthor(message.author.tag, avatar);
+      .setAuthor(ctx.message.author.tag, avatar);
 
-    message.channel.send(embed);
+    ctx.send(embed);
   }
 };

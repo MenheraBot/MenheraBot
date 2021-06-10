@@ -56,40 +56,6 @@ module.exports.getActivity = async (shard) => {
   return result;
 };
 
-module.exports.status = async (data) => {
-  const options = {
-    method: 'POST',
-    uri: `${process.env.API_IP}/api/${data}`,
-    headers: {
-      'User-Agent': 'MenheraClient',
-      token: process.env.API_TOKEN,
-    },
-    body: {
-      message: 'Terminating',
-    },
-    json: true,
-  };
-
-  await request(options).catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
-};
-
-module.exports.shards = async (data, shard) => {
-  const options = {
-    method: 'POST',
-    uri: `${process.env.API_IP}/api/shard/${data}`,
-    headers: {
-      'User-Agent': 'MenheraClient',
-      token: process.env.API_TOKEN,
-    },
-    body: {
-      shard,
-    },
-    json: true,
-  };
-
-  await request(options).catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
-};
-
 module.exports.postCommand = async (data) => {
   const options = {
     method: 'POST',
@@ -111,39 +77,6 @@ module.exports.postCommand = async (data) => {
   };
 
   await request(options).catch((err) => console.log(`[HTTP ERROR]${err.message}`));
-};
-
-module.exports.clearCommands = async () => {
-  const options = {
-    method: 'POST',
-    headers: {
-      'User-Agent': 'MenheraClient',
-      token: process.env.API_TOKEN,
-    },
-    uri: `${process.env.API_IP}/api/commands/clear`,
-  };
-
-  await request(options).catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
-};
-
-module.exports.getCommands = async () => {
-  const options = {
-    method: 'GET',
-    uri: `${process.env.API_IP}/api/commands/?cmds=true`,
-    headers: {
-      'User-Agent': 'MenheraClient',
-      token: process.env.API_TOKEN,
-    },
-  };
-
-  let cmds;
-
-  await request(options).then((data) => {
-    const obj = JSON.parse(data);
-    cmds = obj.length;
-  }).catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
-
-  return (cmds) || 'MUITOS';
 };
 
 module.exports.getProfileCommands = async (id) => {

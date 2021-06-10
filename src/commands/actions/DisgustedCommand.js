@@ -12,33 +12,33 @@ module.exports = class DisgustedCommand extends Command {
     });
   }
 
-  async run({ message }, t) {
+  async run(ctx) {
     const rand = await getImageUrl('disgusted');
-    const user = message.mentions.users.first();
-    const avatar = message.author.displayAvatarURL({ format: 'png', dynamic: true });
+    const user = ctx.message.mentions.users.first();
+    const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
 
-    if (user && user.bot) return message.menheraReply('error', t('commands:disgusted.bot'));
+    if (user && user.bot) return ctx.replyT('error', 'commands:disgusted.bot');
 
-    if (!user || user.id === message.author.id) {
+    if (!user || user.id === ctx.message.author.id) {
       const embed = new MessageEmbed()
-        .setTitle(t('commands:disgusted.no-mention.embed_title'))
+        .setTitle(ctx.locale('commands:disgusted.no-mention.embed_title'))
         .setColor('#000000')
-        .setDescription(`${message.author} ${t('commands:disgusted.no-mention.embed_description')}`)
+        .setDescription(`${ctx.message.author} ${ctx.locale('commands:disgusted.no-mention.embed_description')}`)
         .setThumbnail(avatar)
         .setImage(rand)
-        .setAuthor(message.author.tag, avatar);
+        .setAuthor(ctx.message.author.tag, avatar);
 
-      return message.channel.send(embed);
+      return ctx.send(embed);
     }
 
     const embed = new MessageEmbed()
       .setTitle('Nojo')
       .setColor('#000000')
-      .setDescription(`${message.author} ${t('commands:disgusted.embed_description')} ${user}`)
+      .setDescription(`${ctx.message.author} ${ctx.locale('commands:disgusted.embed_description')} ${user}`)
       .setImage(rand)
       .setThumbnail(avatar)
-      .setAuthor(message.author.tag, avatar);
+      .setAuthor(ctx.message.author.tag, avatar);
 
-    return message.channel.send(embed);
+    return ctx.send(embed);
   }
 };

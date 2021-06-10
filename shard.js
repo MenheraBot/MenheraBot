@@ -5,9 +5,11 @@ require('dotenv').config();
 async function startApp() {
   console.log('[APP] Iniciating application...');
 
+  const shardCount = process.env.NODE_ENV === 'development' ? 1 : 4;
+
   const shards = new ShardingManager(path.resolve(__dirname, 'dist', 'index.js'), {
     respawn: true,
-    totalShards: 4,
+    totalShards: shardCount,
   });
 
   shards.on('shardCreate', (shard) => {

@@ -12,7 +12,6 @@ const RpgChecks = require('./structures/Rpgs/checks');
 const LocaleStructure = require('./structures/LocaleStructure');
 const ShardManager = require('./structures/ShardManager');
 const FileUtil = require('./utils/FileUtil');
-const Reminders = require('./utils/RemindersChecks');
 
 module.exports = class MenheraClient extends Client {
   constructor(options = {}, config) {
@@ -38,9 +37,7 @@ module.exports = class MenheraClient extends Client {
     }
 
     const locales = new LocaleStructure();
-    const reminder = new Reminders(this);
 
-    reminder.loop();
     await locales.load();
     await this.database.createConnection();
     await this.loadCommands(this.config.commandsDirectory);

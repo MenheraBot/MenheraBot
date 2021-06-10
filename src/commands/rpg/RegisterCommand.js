@@ -12,57 +12,57 @@ module.exports = class RegisterCommand extends Command {
     });
   }
 
-  async run({ message }, t) {
-    const user = await this.client.database.Rpg.findById(message.author.id);
+  async run(ctx) {
+    const user = await this.client.database.Rpg.findById(ctx.message.author.id);
 
-    if (user) return message.menheraReply('error', t('commands:register.already', { name: message.author.username }));
+    if (user) return ctx.replyT('error', 'commands:register.already', { name: ctx.message.author.username });
 
-    const classes = [t('commands:register.Assassino'), t('commands:register.Bárbaro'), t('commands:register.Clérigo'), t('commands:register.Druida'), t('commands:register.Espadachim'), t('commands:register.Feiticeiro'), t('commands:register.Monge'), t('commands:register.Necromante')];
+    const classes = [ctx.locale('commands:register.Assassino'), ctx.locale('commands:register.Bárbaro'), ctx.locale('commands:register.Clérigo'), ctx.locale('commands:register.Druida'), ctx.locale('commands:register.Espadachim'), ctx.locale('commands:register.Feiticeiro'), ctx.locale('commands:register.Monge'), ctx.locale('commands:register.Necromante')];
 
-    let description = t('commands:register.text');
+    let description = ctx.locale('commands:register.text');
 
     const embed = new MessageEmbed()
-      .setTitle(`<:guilda:759892389724028948> | ${t('commands:register.title')}`)
+      .setTitle(`<:guilda:759892389724028948> | ${ctx.locale('commands:register.title')}`)
       .setColor('#ffec02')
-      .setFooter(t('commands:register.footer'));
+      .setFooter(ctx.locale('commands:register.footer'));
 
     for (let i = 0; i < classes.length; i++) {
       description += `\n${i + 1} - **${classes[i]}**`;
     }
     embed.setDescription(description);
-    message.channel.send(embed);
+    ctx.send(embed);
 
-    const filter = (m) => m.author.id === message.author.id;
-    const collector = message.channel.createMessageCollector(filter, { max: 1 });
+    const filter = (m) => m.author.id === ctx.message.author.id;
+    const collector = ctx.message.channel.createMessageCollector(filter, { max: 1 });
 
     collector.on('collect', (m) => {
       switch (m.content) {
         case '1':
-          this.confirmação(message, 'Assassino', t);
+          this.confirmação(ctx.message, 'Assassino', ctx.locale);
           break;
         case '2':
-          this.confirmação(message, 'Bárbaro', t);
+          this.confirmação(ctx.message, 'Bárbaro', ctx.locale);
           break;
         case '3':
-          this.confirmação(message, 'Clérigo', t);
+          this.confirmação(ctx.message, 'Clérigo', ctx.locale);
           break;
         case '4':
-          this.confirmação(message, 'Druida', t);
+          this.confirmação(ctx.message, 'Druida', ctx.locale);
           break;
         case '5':
-          this.confirmação(message, 'Espadachim', t);
+          this.confirmação(ctx.message, 'Espadachim', ctx.locale);
           break;
         case '6':
-          this.confirmação(message, 'Feiticeiro', t);
+          this.confirmação(ctx.message, 'Feiticeiro', ctx.locale);
           break;
         case '7':
-          this.confirmação(message, 'Monge', t);
+          this.confirmação(ctx.message, 'Monge', ctx.locale);
           break;
         case '8':
-          this.confirmação(message, 'Necromante', t);
+          this.confirmação(ctx.message, 'Necromante', ctx.locale);
           break;
         default:
-          return message.menheraReply('error', t('commands:register.invalid-input'));
+          return ctx.replyT('error', 'commands:register.invalid-input');
       }
     });
   }

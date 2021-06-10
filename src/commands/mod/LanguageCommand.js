@@ -12,27 +12,27 @@ module.exports = class LanguageCommand extends Command {
     });
   }
 
-  async run({ message, server }, t) {
-    message.menheraReply('question', t('commands:language.question')).then((msg) => {
+  async run(ctx) {
+    ctx.replyT('question', 'commands:language.question').then((msg) => {
       msg.react('🇧🇷');
       setTimeout(() => {
         msg.react('🇺🇸');
       }, 500);
 
-      const collector = msg.createReactionCollector((r, u) => (r.emoji.name === '🇧🇷', '🇺🇸') && (u.id !== this.client.user.id && u.id === message.author.id));
+      const collector = msg.createReactionCollector((r, u) => (r.emoji.name === '🇧🇷', '🇺🇸') && (u.id !== this.client.user.id && u.id === ctx.message.author.id));
       collector.on('collect', (r) => {
         switch (r.emoji.name) {
           case '🇧🇷':
-            server.lang = 'pt-BR';
-            server.save();
+            ctx.data.server.lang = 'pt-BR';
+            ctx.data.server.save();
             msg.delete({ timeout: 100 });
-            message.channel.send(':map: | Agora eu irei falar em ~~brasileiro~~ português');
+            ctx.message.channel.send(':map: | Agora eu irei falar em ~~brasileiro~~ português');
             break;
           case '🇺🇸':
-            server.lang = 'en-US';
-            server.save();
+            ctx.data.server.lang = 'en-US';
+            ctx.data.server.save();
             msg.delete({ timeout: 100 });
-            message.channel.send(":map: | Now I'll talk in english");
+            ctx.message.channel.send(":map: | Now I'll talk in english");
             break;
         }
       });

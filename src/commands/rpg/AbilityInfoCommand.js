@@ -13,8 +13,8 @@ module.exports = class AbilityInfoCommand extends Command {
     });
   }
 
-  async run({ message, args }, t) {
-    if (!args[0]) return message.menheraReply('question', t('commands:infohabilidade.no-args'));
+  async run(ctx) {
+    if (!ctx.args[0]) return ctx.replyT('question', 'commands:infohabilidade.no-args');
 
     const validArgs = [{
       opção: 'classe',
@@ -26,29 +26,29 @@ module.exports = class AbilityInfoCommand extends Command {
     },
     ];
 
-    const selectedOption = validArgs.some((so) => so.arguments.includes(args[0].toLowerCase()));
-    if (!selectedOption) return message.menheraReply('error', t('commands:infohabilidade.invalid-option'));
-    const filtredOption = validArgs.filter((f) => f.arguments.includes(args[0].toLowerCase()));
+    const selectedOption = validArgs.some((so) => so.arguments.includes(ctx.args[0].toLowerCase()));
+    if (!selectedOption) return ctx.replyT('error', 'commands:infohabilidade.invalid-option');
+    const filtredOption = validArgs.filter((f) => f.arguments.includes(ctx.args[0].toLowerCase()));
 
     const option = filtredOption[0].opção;
 
     switch (option) {
       case 'classe':
-        if (!args[1]) return message.menheraReply('error', t('commands:infohabilidade.no-class'));
-        AbilityInfoCommand.getClass(message, args[1], t);
+        if (!ctx.args[1]) return ctx.replyT('error', 'commands:infohabilidade.no-class');
+        AbilityInfoCommand.getClass(ctx);
         break;
       case 'minhas':
-        this.getAll(message, t);
+        this.getAll(ctx);
         break;
     }
   }
 
-  static getClass(message, classe, t) {
+  static getClass(ctx) {
     const classes = ['assassino', 'barbaro', 'clerigo', 'druida', 'espadachim', 'feiticeiro', 'monge', 'necromante'];
 
-    const normalized = classe.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    const normalized = ctx.args[1].toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 
-    if (!classes.includes(normalized)) return message.menheraReply('error', t('commands:infohabilidade.invalid-class'));
+    if (!classes.includes(normalized)) return ctx.replyT('error', 'commands:infohabilidade.invalid-class');
 
     let filtrado;
 
@@ -82,19 +82,19 @@ module.exports = class AbilityInfoCommand extends Command {
     const filtredOption = filtrado.uniquePowers;
 
     const embed = new MessageEmbed()
-      .setTitle(`🔮 | ${t('commands:infohabilidade.abilities', { class: classe })}`)
+      .setTitle(`🔮 | ${ctx.locale('commands:infohabilidade.abilities', { class: ctx.args[1] })}`)
       .setColor('#9cfcde');
 
     filtredOption.forEach((hab) => {
-      embed.addField(hab.name, `📜 | **${t('commands:infohabilidade.desc')}:** ${hab.description}\n⚔️ | **${t('commands:infohabilidade.dmg')}:** ${hab.damage}\n💉 | **${t('commands:infohabilidade.heal')}:** ${hab.heal}\n💧 | **${t('commands:infohabilidade.cost')}:** ${hab.cost}\n🧿 | **${t('commands:infohabilidade.type')}:** ${hab.type}`);
+      embed.addField(hab.name, `📜 | **${ctx.locale('commands:infohabilidade.desc')}:** ${hab.description}\n⚔️ | **${ctx.locale('commands:infohabilidade.dmg')}:** ${hab.damage}\n💉 | **${ctx.locale('commands:infohabilidade.heal')}:** ${hab.heal}\n💧 | **${ctx.locale('commands:infohabilidade.cost')}:** ${hab.cost}\n🧿 | **${ctx.locale('commands:infohabilidade.type')}:** ${hab.type}`);
     });
 
-    return message.channel.send(message.author, embed);
+    return ctx.sendC(ctx.message.author, embed);
   }
 
-  async getAll(message, t) {
-    const user = await this.client.database.Rpg.findById(message.author.id);
-    if (!user) return message.menheraReply('error', t('commands:infohabilidade.non-aventure'));
+  async getAll(ctx) {
+    const user = await this.client.database.Rpg.findById(ctx.message.author.id);
+    if (!user) return ctx.replyT('error', 'commands:infohabilidade.non-aventure');
 
     let filtrado;
 
@@ -164,14 +164,14 @@ module.exports = class AbilityInfoCommand extends Command {
     });
 
     const embed = new MessageEmbed()
-      .setTitle(`🔮 | ${t('commands:infohabilidade.your-abilities')}`)
+      .setTitle(`🔮 | ${ctx.locale('commands:infohabilidade.your-abilities')}`)
       .setColor('#a9ec67');
 
-    embed.addField(` ${t('commands:infohabilidade.uniquePower')}: ${uniquePowerFiltred[0].name}`, `📜 | **${t('commands:infohabilidade.desc')}:** ${uniquePowerFiltred[0].description}\n⚔️ | **${t('commands:infohabilidade.dmg')}:** ${uniquePowerFiltred[0].damage}\n💉 | **${t('commands:infohabilidade.heal')}:** ${uniquePowerFiltred[0].heal}\n💧 | **${t('commands:infohabilidade.cost')}:** ${uniquePowerFiltred[0].cost}`);
+    embed.addField(` ${ctx.locale('commands:infohabilidade.uniquePower')}: ${uniquePowerFiltred[0].name}`, `📜 | **${ctx.locale('commands:infohabilidade.desc')}:** ${uniquePowerFiltred[0].description}\n⚔️ | **${ctx.locale('commands:infohabilidade.dmg')}:** ${uniquePowerFiltred[0].damage}\n💉 | **${ctx.locale('commands:infohabilidade.heal')}:** ${uniquePowerFiltred[0].heal}\n💧 | **${ctx.locale('commands:infohabilidade.cost')}:** ${uniquePowerFiltred[0].cost}`);
 
     abilitiesFiltred.forEach((hab) => {
-      embed.addField(`🔮 | ${t('commands:infohabilidade.ability')}: ${hab.name}`, `📜 | **${t('commands:infohabilidade.desc')}:** ${hab.description}\n⚔️ | **${t('commands:infohabilidade.dmg')}:** ${hab.damage}\n💉 | **${t('commands:infohabilidade.heal')}:** ${hab.heal}\n💧 | **${t('commands:infohabilidade.cost')}:** ${hab.cost}`);
+      embed.addField(`🔮 | ${ctx.locale('commands:infohabilidade.ability')}: ${hab.name}`, `📜 | **${ctx.locale('commands:infohabilidade.desc')}:** ${hab.description}\n⚔️ | **${ctx.locale('commands:infohabilidade.dmg')}:** ${hab.damage}\n💉 | **${ctx.locale('commands:infohabilidade.heal')}:** ${hab.heal}\n💧 | **${ctx.locale('commands:infohabilidade.cost')}:** ${hab.cost}`);
     });
-    return message.channel.send(message.author, embed);
+    return ctx.sendC(ctx.message.author, embed);
   }
 };

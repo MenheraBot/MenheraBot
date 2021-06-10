@@ -12,19 +12,19 @@ module.exports = class AvatarCommand extends Command {
     });
   }
 
-  async run({ message, args, authorData: selfData }, t) {
-    const authorData = selfData ?? new this.client.database.Users({ id: message.author.id });
+  async run(ctx) {
+    const authorData = ctx.data.user;
 
-    let user = message.author;
+    let user = ctx.message.author;
     let db = authorData;
 
-    const userId = Util.getIdByMention(args[0]);
-    if (userId && userId !== message.author) {
+    const userId = Util.getIdByMention(ctx.args[0]);
+    if (userId && userId !== ctx.message.author) {
       try {
-        user = await this.client.users.fetch(args[0].replace(/[<@!>]/g, ''));
-        db = await this.client.database.Users.findOne({ id: user.id });
+        user = await this.client.users.fetch(ctx.args[0].replace(/[<@!>]/g, ''));
+        db = await this.client.database.repositories.userRepository.find(user.id);
       } catch {
-        return message.menheraReply('error', t('commands:avatar.unknow-user'));
+        return ctx.replyT('error', 'commands:avatar.unknow-user');
       }
     }
 
@@ -33,16 +33,16 @@ module.exports = class AvatarCommand extends Command {
     const img = user.displayAvatarURL({ dynamic: true, size: 1024 });
 
     const embed = new MessageEmbed()
-      .setTitle(t('commands:avatar.title', { user: user.username }))
+      .setTitle(ctx.locale('commands:avatar.title', { user: user.username }))
       .setImage(img)
       .setColor(cor)
-      .setFooter(t('commands:avatar.footer'));
+      .setFooter(ctx.locale('commands:avatar.footer'));
 
     if (user.id === this.client.user.id) {
-      embed.setTitle(t('commands:avatar.client_title', { user: user.username }));
+      embed.setTitle(ctx.locale('commands:avatar.client_title', { user: user.username }));
       embed.setColor('#f276f3');
-      embed.setFooter(t('commands:avatar.client_footer', { user: user.username }));
+      embed.setFooter(ctx.locale('commands:avatar.client_footer', { user: user.username }));
     }
-    message.channel.send(message.author, embed);
+    ctx.sendC(ctx.message.author, embed);
   }
 };

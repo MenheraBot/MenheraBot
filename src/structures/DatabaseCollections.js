@@ -23,17 +23,6 @@ const guildSchema = mongoose.Schema({
   lang: { type: String, default: 'pt-BR' },
 });
 
-const rememberSchema = mongoose.Schema({
-  id: { type: String },
-  rememberAt: { type: String },
-  createdAt: { type: String },
-  channelId: { type: String },
-  serverId: { type: String },
-  serverLang: { type: String },
-  content: { type: String },
-  rememberInPv: { type: Boolean },
-});
-
 const rpgSchema = mongoose.Schema({
   _id: { type: String },
   class: { type: String },
@@ -123,7 +112,6 @@ const cmd = mongoose.model('Cmd', cmdSchema);
 const commands = mongoose.model('commands', commandsSchema);
 const status = mongoose.model('status', statusSchema);
 const guild = mongoose.model('guild', guildSchema);
-const remember = mongoose.model('remember', rememberSchema);
 const rpg = mongoose.model('rpg', rpgSchema);
 const user = mongoose.model('usersdb', userSchema);
 const warn = mongoose.model('warn', warnSchema);
@@ -132,7 +120,6 @@ module.exports.Cmds = cmd;
 module.exports.Commands = commands;
 module.exports.Guilds = guild;
 module.exports.Status = status;
-module.exports.Reminders = remember;
 module.exports.Rpg = rpg;
 module.exports.Users = user;
 module.exports.Warns = warn;

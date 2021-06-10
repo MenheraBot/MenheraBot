@@ -12,14 +12,14 @@ module.exports = class BattleBoss extends Command {
     });
   }
 
-  async run({ message }, t) {
-    const user = await this.client.database.Rpg.findById(message.author.id);
-    if (!user) return message.menheraReply('error', t('commands:boss.non-aventure'));
+  async run(ctx) {
+    const user = await this.client.database.Rpg.findById(ctx.message.author.id);
+    if (!user) return ctx.creplyT('error', 'commands:boss.non-aventure');
 
-    if (user.level < 20) return message.menheraReply('error', t('commands:boss.min-level'));
+    if (user.level < 20) return ctx.replyT('error', 'commands:boss.min-level');
 
     const inimigo = this.client.rpgChecks.getEnemyByUserLevel(user, 'boss');
-    const canGo = await this.client.rpgChecks.initialChecks(user, message, t);
+    const canGo = await this.client.rpgChecks.initialChecks(user, ctx.message, ctx.locale);
 
     if (!canGo) return;
 
@@ -33,23 +33,23 @@ module.exports = class BattleBoss extends Command {
     }
 
     const embed = new MessageEmbed()
-      .setTitle(`⌛ | ${t('commands:boss.preparation.title')}`)
-      .setDescription(t('commands:boss.preparation.description'))
+      .setTitle(`⌛ | ${ctx.locale('commands:boss.preparation.title')}`)
+      .setDescription(ctx.locale('commands:boss.preparation.description'))
       .setColor('#e3beff')
-      .setFooter(t('commands:boss.preparation.footer'))
-      .addField(t('commands:boss.preparation.stats'), `🩸 | **${t('commands:boss.life')}:** ${user.life}/${user.maxLife}\n💧 | **${t('commands:boss.mana')}:** ${user.mana}/${user.maxMana}\n🗡️ | **${t('commands:boss.dmg')}:** ${dmgView}\n🛡️ | **${t('commands:boss.armor')}:** ${ptcView}\n🔮 | **${t('commands:boss.ap')}:** ${user?.familiar?.id && user.familiar.type === 'abilityPower' ? user.abilityPower + (familiarsFile[user.familiar.id].boost.value + (user.familiar.level - 1) * familiarsFile[user.familiar.id].boost.value) : user.abilityPower}\n\n${t('commands:boss.preparation.description_end')}`);
+      .setFooter(ctx.locale('commands:boss.preparation.footer'))
+      .addField(ctx.locale('commands:boss.preparation.stats'), `🩸 | **${ctx.locale('commands:boss.life')}:** ${user.life}/${user.maxLife}\n💧 | **${ctx.locale('commands:boss.mana')}:** ${user.mana}/${user.maxMana}\n🗡️ | **${ctx.locale('commands:boss.dmg')}:** ${dmgView}\n🛡️ | **${ctx.locale('commands:boss.armor')}:** ${ptcView}\n🔮 | **${ctx.locale('commands:boss.ap')}:** ${user?.familiar?.id && user.familiar.type === 'abilityPower' ? user.abilityPower + (familiarsFile[user.familiar.id].boost.value + (user.familiar.level - 1) * familiarsFile[user.familiar.id].boost.value) : user.abilityPower}\n\n${ctx.locale('commands:boss.preparation.description_end')}`);
     habilidades.forEach((hab) => {
-      embed.addField(hab.name, `🔮 | **${t('commands:boss.damage')}:** ${hab.damage}\n💧 | **${t('commands:boss.cost')}** ${hab.cost}`);
+      embed.addField(hab.name, `🔮 | **${ctx.locale('commands:boss.damage')}:** ${hab.damage}\n💧 | **${ctx.locale('commands:boss.cost')}** ${hab.cost}`);
     });
-    message.channel.send(embed);
+    ctx.send(embed);
 
-    const filter = (m) => m.author.id === message.author.id;
-    const collector = message.channel.createMessageCollector(filter, { max: 1, time: 30000, errors: ['time'] });
+    const filter = (m) => m.author.id === ctx.message.author.id;
+    const collector = ctx.message.channel.createMessageCollector(filter, { max: 1, time: 30000, errors: ['time'] });
 
     collector.on('collect', (m) => {
       if (m.content.toLowerCase() === 'sim' || m.content.toLowerCase() === 'yes') {
-        this.battle(message, inimigo, habilidades, user, 'boss', t);
-      } else return message.menheraReply('error', t('commands:boss.amarelou'));
+        this.battle(ctx.message, inimigo, habilidades, user, 'boss', ctx.locale);
+      } else return ctx.replyT('error', 'commands:boss.amarelou');
     });
   }
 

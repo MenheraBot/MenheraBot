@@ -12,30 +12,30 @@ module.exports = class BicudaCommand extends Command {
     });
   }
 
-  async run({ message }, t) {
+  async run(ctx) {
     const rand = await getImageUrl('bicuda');
-    const user = message.mentions.users.first();
+    const user = ctx.message.mentions.users.first();
 
     if (!user) {
-      return message.menheraReply('error', t('commands:bicuda.no-mention'));
+      return ctx.replyT('error', 'commands:bicuda.no-mention');
     }
 
-    if (user && user.bot) return message.menheraReply('warn', t('commands:bicuda.bot'));
+    if (user && user.bot) return ctx.replyT('warn', 'commands:bicuda.bot');
 
-    if (user === message.author) {
-      return message.menheraReply('error', t('commands:bicuda.self-mention'));
+    if (user === ctx.message.author) {
+      return ctx.replyT('error', 'commands:bicuda.self-mention');
     }
 
-    const avatar = message.author.displayAvatarURL({ format: 'png', dynamic: true });
+    const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     const embed = new MessageEmbed()
-      .setTitle(t('commands:bicuda.embed_title'))
+      .setTitle(ctx.locale('commands:bicuda.embed_title'))
       .setColor('#000000')
-      .setDescription(`${message.author} ${t('commands:bicuda.embed_description')} ${user}`)
+      .setDescription(`${ctx.message.author} ${ctx.locale('commands:bicuda.embed_description')} ${user}`)
       .setImage(rand)
       .setThumbnail(avatar)
-      .setAuthor(message.author.tag, avatar);
+      .setAuthor(ctx.message.author.tag, avatar);
 
-    return message.channel.send(embed);
+    return ctx.send(embed);
   }
 };

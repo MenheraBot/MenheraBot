@@ -10,8 +10,8 @@ module.exports = class XandãoCommand extends Command {
     });
   }
 
-  async run({ message, args }, t) {
-    const texto = args.join(' ');
+  async run(ctx) {
+    const texto = ctx.args.join(' ');
 
     const frases = [
       'SEM PRESSÃO, AQUI É XANDÃO',
@@ -56,13 +56,13 @@ module.exports = class XandãoCommand extends Command {
     let fala;
     if (!texto) {
       fala = fraseEscolhida;
-    } else fala = `${texto}\n\n📢 | ${message.author}`;
+    } else fala = `${texto}\n\n📢 | ${ctx.message.author}`;
 
     try {
-      const webhooks = await message.channel.fetchWebhooks();
+      const webhooks = await ctx.message.channel.fetchWebhooks();
       const webhook = webhooks.first();
       if (!webhook) {
-        await message.channel.createWebhook('Super Xandão', {
+        await ctx.message.channel.createWebhook('Super Xandão', {
           avatar: 'https://i.imgur.com/8KNCucR.png',
         }).then((web) => {
           web.send(fala, {
@@ -77,7 +77,7 @@ module.exports = class XandãoCommand extends Command {
         });
       }
     } catch (err) {
-      message.menheraReply('error', t('commands:xandão.err_message'));
+      ctx.replyT('error', 'commands:xandão.err_message');
     }
   }
 };

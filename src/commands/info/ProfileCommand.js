@@ -15,28 +15,28 @@ module.exports = class ProfileCommand extends Command {
     });
   }
 
-  async run({ message, args, authorData: selfData }, t) {
-    const authorData = selfData ?? new this.client.database.Users({ id: message.author.id });
-    const userId = Util.getIdByMention(args[0]);
+  async run(ctx) {
+    const authorData = ctx.data.user;
+    const userId = Util.getIdByMention(ctx.args[0]);
 
     let user = authorData;
-    let member = message.author;
+    let member = ctx.message.author;
     let marry = 'false';
 
-    if (userId && userId !== message.author) {
+    if (userId && userId !== ctx.message.author) {
       try {
-        member = await this.client.users.fetch(args[0].replace(/[<@!>]/g, ''));
-        if (member.bot) return message.menheraReply('error', t('commands:profile.bot'));
+        member = await this.client.users.fetch(ctx.args[0].replace(/[<@!>]/g, ''));
+        if (member.bot) return ctx.replyT('error', 'commands:profile.bot');
 
-        user = await this.client.database.Users.findOne({ id: member.id });
+        user = await this.client.database.repositories.userRepository.find(member.id);
       } catch {
-        return message.menheraReply('error', t('commands:profile.unknow-user'));
+        return ctx.replyT('error', 'commands:profile.unknow-user');
       }
     }
     if (user?.casado !== 'false' && user?.casado) marry = await this.client.users.fetch(user.casado);
 
-    if (!user) return message.menheraReply('error', t('commands:profile.no-dbuser'));
-    if (user.ban && message.author.id !== process.env.OWNER) return message.menheraReply('error', t('commands:profile.banned', { reason: user.banReason }));
+    if (!user) return ctx.replyT('error', 'commands:profile.no-dbuser');
+    if (user.ban && ctx.message.author.id !== process.env.OWNER) return ctx.replyT('error', 'commands:profile.banned', { reason: user.banReason });
 
     const avatar = member.displayAvatarURL({ format: 'png' });
     const usageCommands = await http.getProfileCommands(member.id);
@@ -58,19 +58,19 @@ module.exports = class ProfileCommand extends Command {
     };
 
     const i18nData = {
-      aboutme: t('commands:profile.about-me'),
-      mamado: t('commands:profile.mamado'),
-      mamou: t('commands:profile.mamou'),
-      zero: t('commands:profile.zero'),
-      um: t('commands:profile.um'),
-      dois: t('commands:profile.dois'),
-      tres: t('commands:profile.tres'),
+      aboutme: ctx.translate('commands:profile.about-me'),
+      mamado: ctx.translate('commands:profile.mamado'),
+      mamou: ctx.translate('commands:profile.mamou'),
+      zero: ctx.translate('commands:profile.zero'),
+      um: ctx.translate('commands:profile.um'),
+      dois: ctx.translate('commands:profile.dois'),
+      tres: ctx.translate('commands:profile.tres'),
     };
 
     const res = await NewHttp.profileRequest(userSendData, marry, usageCommands, i18nData);
 
-    if (res.err) return message.menheraReply('error', t('commands:http-error'));
+    if (res.err) return ctx.replyT('error', 'commands:http-error');
 
-    message.channel.send(message.author, new MessageAttachment(Buffer.from(res.data), 'profile.png'));
+    ctx.sendC(ctx.message.author, new MessageAttachment(Buffer.from(res.data), 'profile.png'));
   }
 };

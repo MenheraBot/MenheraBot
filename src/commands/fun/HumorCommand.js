@@ -11,15 +11,15 @@ module.exports = class HumorCommand extends Command {
     });
   }
 
-  async run({ message }, t) {
-    if (message.deletable) message.delete();
+  async run(ctx) {
+    if (ctx.message.deletable) ctx.message.delete();
 
     const rand = await getImageUrl('humor');
 
     const embed = new MessageEmbed()
       .setImage(rand)
-      .setTitle(`${message.author.username} ${t('commands:humor.phrase')}`);
+      .setTitle(`${ctx.message.author.username} ${ctx.locale('commands:humor.phrase')}`);
 
-    message.channel.send(embed);
+    ctx.send(embed);
   }
 };

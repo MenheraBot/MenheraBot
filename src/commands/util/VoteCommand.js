@@ -13,16 +13,16 @@ module.exports = class VoteCommand extends Command {
     });
   }
 
-  async run({ message }, t) {
+  async run(ctx) {
     const embed = new MessageEmbed()
-      .setTitle(t('commands:vote.embed_title'))
+      .setTitle(ctx.locale('commands:vote.embed_title'))
       .setColor('#f763f8')
       .setURL('https://top.gg/bot/708014856711962654/vote')
       .setImage('https://i.imgur.com/27GxqX1.jpg')
-      .setDescription(t('commands:vote.embed_description'))
-      .setFooter(`${t('commands:vote.embed_footer')} ${message.author.tag}`, message.author.displayAvatarURL())
+      .setDescription(ctx.locale('commands:vote.embed_description'))
+      .setFooter(`${ctx.locale('commands:vote.embed_footer')} ${ctx.message.author.tag}`, ctx.message.author.displayAvatarURL())
       .setTimestamp();
 
-    message.channel.send(embed);
+    ctx.send(embed);
   }
 };

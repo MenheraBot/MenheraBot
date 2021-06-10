@@ -12,15 +12,15 @@ module.exports = class PhiloCommand extends Command {
     });
   }
 
-  async run({ message, args }, t) {
-    if (!args[0]) return message.menheraReply('error', t('commands:philo.no-args'));
+  async run(ctx) {
+    if (!ctx.args[0]) return ctx.replyT('error', 'commands:philo.no-args');
 
-    const text = args.join(' ');
+    const text = ctx.args.join(' ');
 
     const res = await NewHttp.philoRequest(text);
 
-    if (res.err) return message.menheraReply('error', t('commands:http-error'));
+    if (res.err) return ctx.replyT('error', 'commands:http-error');
 
-    message.channel.send(message.author, new MessageAttachment(Buffer.from(res.data), 'filosófico.png'));
+    ctx.send(ctx.message.author, new MessageAttachment(Buffer.from(res.data), 'filosófico.png'));
   }
 };

@@ -12,14 +12,14 @@ module.exports = class FodaseCommand extends Command {
     });
   }
 
-  async run({ message, server }) {
-    if (message.deletable) message.delete();
+  async run(ctx) {
+    if (ctx.message.deletable) ctx.message.delete();
 
-    const frases = (server.lang === 'pt-BR') ? [
-      `${message.author.username} disse que fodase`,
+    const frases = (ctx.data.server.lang === 'pt-BR') ? [
+      `${ctx.message.author.username} disse que fodase`,
       'Inteligente, pena que fodase',
       'Ta, e o fodase?',
-    ] : [`${message.author.username} said it dont care`,
+    ] : [`${ctx.message.author.username} said it dont care`,
       'Nice, but fuck it',
       'Cool, but i don\'t care'];
 
@@ -28,9 +28,9 @@ module.exports = class FodaseCommand extends Command {
 
     const embed = new MessageEmbed()
       .setImage(rand)
-      .setFooter(`Autor: ${message.author.username}`)
+      .setFooter(`Autor: ${ctx.message.author.username}`)
       .setTitle(frasesUsada);
 
-    message.channel.send(embed);
+    ctx.send(embed);
   }
 };

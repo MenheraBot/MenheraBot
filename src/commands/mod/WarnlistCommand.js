@@ -13,19 +13,19 @@ module.exports = class WarnListCommand extends Command {
     });
   }
 
-  async run({ message, args }, t) {
-    if (!args[0]) return message.menheraReply('error', t('commands:warnlist.no-mention'));
+  async run(ctx) {
+    if (!ctx.args[0]) return ctx.replyT('error', 'commands:warnlist.no-mention');
 
     let user;
     try {
-      user = await this.client.users.fetch(args[0].replace(/[<@!>]/g, ''));
+      user = await this.client.users.fetch(ctx.args[0].replace(/[<@!>]/g, ''));
     } catch {
-      return message.menheraReply('error', t('commands:warnlist.no-mention'));
+      return ctx.replyT('error', 'commands:warnlist.no-mention');
     }
 
-    if (!user) return message.menheraReply('error', t('commands:warnlist.no-mention'));
-    if (user.bot) return message.menheraReply('error', t('commands:warnlist.bot'));
-    if (!message.guild.members.cache.get(user.id)) return message.menheraReply('error', t('commands:warnlist.invalid-member'));
+    if (!user) return ctx.replyT('error', 'commands:warnlist.no-mention');
+    if (user.bot) return ctx.replyT('error', 'commands:warnlist.bot');
+    if (!ctx.message.guild.members.cache.get(user.id)) return ctx.replyT('error', 'commands:warnlist.invalid-member');
 
     // listas
 
@@ -49,18 +49,18 @@ module.exports = class WarnListCommand extends Command {
     let rand;
 
     const embed = new MessageEmbed()
-      .setTitle(t('commands:warnlist.embed_title', { user: user.tag }));
+      .setTitle(ctx.locale('commands:warnlist.embed_title', { user: user.tag }));
 
     this.client.database.Warns.find({
       userId: user.id,
-      guildId: message.guild.id,
+      guildId: ctx.message.guild.id,
     }).sort([
       ['data', 'ascending'],
     ]).exec(async (err, db) => {
       if (err) console.log(err);
 
       if (!db || db.length < 1) {
-        embed.setDescription(`${user} ${t('commands:warnlist.no_warns')}`);
+        embed.setDescription(`${user} ${ctx.locale('commands:warnlist.no_warns')}`);
         rand = noWarn[Math.floor(Math.random() * noWarn.length)];
       } else {
         rand = warned[Math.floor(Math.random() * warned.length)];
@@ -70,11 +70,11 @@ module.exports = class WarnListCommand extends Command {
         if (embed.fields.length === 24) break;
         // eslint-disable-next-line no-await-in-loop
         const warner = await this.client.users.fetch(db[i].warnerId);
-        embed.addField(`${t('commands:warnlist.warn')} #${i + 1}`, `**${t('commands:warnlist.Warned_by')}** ${warner || '404'}\n**${t('commands:warnlist.Reason')}** ${db[i].reason}\n**${t('commands:warnlist.Data')}** ${db[i].data}\n**${t('commands:warnlist.WarnID')}** \`${db[i]._id}\``);
+        embed.addField(`${ctx.locale('commands:warnlist.warn')} #${i + 1}`, `**${ctx.locale('commands:warnlist.Warned_by')}** ${warner || '404'}\n**${ctx.locale('commands:warnlist.Reason')}** ${db[i].reason}\n**${ctx.locale('commands:warnlist.Data')}** ${db[i].data}\n**${ctx.locale('commands:warnlist.WarnID')}** \`${db[i]._id}\``);
       }
 
       embed.setImage(rand);
-      message.channel.send(embed);
+      ctx.send(embed);
     });
   }
 };

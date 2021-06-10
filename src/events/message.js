@@ -2,6 +2,7 @@ const { MessageEmbed, Collection } = require('discord.js');
 const i18next = require('i18next');
 const Util = require('../utils/Util');
 const makeRequest = require('../utils/HTTPrequests');
+const CommandContext = require('../structures/CommandContext');
 
 const cooldowns = new Collection();
 const warnedUserCooldowns = new Map();
@@ -112,11 +113,11 @@ module.exports = class MessageReceive {
 
     if (!authorData) authorData = await this.client.repositories.userRepository.create(message.author.id);
 
+    const ctx = new CommandContext(this.client, message, args, { user: authorData, server }, t);
+
     try {
       new Promise((res, _) => { // eslint-disable-line
-        res(command.run({
-          message, args, server, authorData,
-        }, t));
+        res(command.run(ctx));
         // console.log(`[CMD (${this.client.shard.ids[0]})] ${command.config.name.toUpperCase()} | USER: ${message.author.tag} - ${message.author.id} | GUILD: ${message.guild.name}`);
       }).catch(async (err) => {
         const errorWebHook = await this.client.fetchWebhook(process.env.BUG_HOOK_ID, process.env.BUG_HOOK_TOKEN);
