@@ -17,7 +17,7 @@ module.exports = class MessageReceive {
 
     afkUsers.forEach(async (data) => {
       const user = await this.client.users.fetch(data.id);
-      if (user.id !== message.author.id) message.menheraReply('notify', `${t('commands:afk.reason', { tag: user.tag, reason: data.afkReason })}`);
+      if (user.id !== message.author.id) message.channel.send(`<:notify:759607330597502976> | ${t('commands:afk.reason', { tag: user.tag, reason: data.afkReason })}`);
     });
   }
 
@@ -39,7 +39,7 @@ module.exports = class MessageReceive {
       authorData.afk = false;
       authorData.afkReason = null;
       await authorData.save();
-      message.menheraReply('wink', t('commands:afk.back'))
+      message.channel.send(t('commands:afk.back'))
         .then((msg) => msg.delete({
           timeout: 5000,
         })).catch();
@@ -47,7 +47,7 @@ module.exports = class MessageReceive {
 
     if (process.env.NODE_ENV === 'development') prefix = process.env.BOT_PREFIX;
 
-    if (message.content.startsWith(`<@!${this.client.user.id}>`) || message.content.startsWith(`<@${this.client.user.id}>`)) return message.menheraReply('wink', `${t('events:mention.start')} ${message.author}, ${t('events:mention.end', { prefix })}`);
+    if (message.content.startsWith(`<@!${this.client.user.id}>`) || message.content.startsWith(`<@${this.client.user.id}>`)) return message.channel.send(`${t('events:mention.start')} ${message.author}, ${t('events:mention.end', { prefix })}`);
 
     if (!message.content.toLowerCase().startsWith(prefix)) return;
 
@@ -59,13 +59,13 @@ module.exports = class MessageReceive {
 
     const dbCommand = await this.client.repositories.cmdRepository.findByName(command.config.name);
 
-    if (server.blockedChannels?.includes(message.channel.id) && !message.member.hasPermission('MANAGE_CHANNELS')) return message.menheraReply('lock', `${t('events:blocked-channel')}`);
+    if (server.blockedChannels?.includes(message.channel.id) && !message.member.hasPermission('MANAGE_CHANNELS')) return message.channel.send(`🔒 | ${t('events:blocked-channel')}`);
 
-    if (authorData?.ban) return message.menheraReply('error', t('permissions:BANNED_INFO', { banReason: authorData?.banReason }));
+    if (authorData?.ban) return message.channel.send(`<:negacao:759603958317711371> | ${t('permissions:BANNED_INFO', { banReason: authorData?.banReason })}`);
 
     if (command.config.devsOnly && process.env.OWNER !== message.author.id) return message.channel.send(t('permissions:ONLY_DEVS'));
 
-    if (server.disabledCommands?.includes(command.config.name)) return message.menheraReply('lock', t('permissions:DISABLED_COMMAND', { prefix: server.prefix, cmd: command.config.name }));
+    if (server.disabledCommands?.includes(command.config.name)) return message.channel.send(`🔒 | ${t('permissions:DISABLED_COMMAND', { prefix: server.prefix, cmd: command.config.name })}`);
 
     if (dbCommand?.maintenance && process.env.OWNER !== message.author.id) return message.channel.send(`<:negacao:759603958317711371> | ${t('events:maintenance', { reason: dbCommand.maintenanceReason })}`);
 
@@ -84,7 +84,7 @@ module.exports = class MessageReceive {
           if (hasBeenWarned) return;
           warnedUserCooldowns.set(message.author.id, true);
           const timeLeft = (expirationTime - now) / 1000;
-          return message.menheraReply('warn', t('events:cooldown', { time: timeLeft.toFixed(1), cmd: command.config.name }));
+          return message.channel.send(`<:atencao:759603958418767922> | ${t('events:cooldown', { time: timeLeft.toFixed(2), cmd: command.config.name })}`);
         }
       }
 
@@ -100,14 +100,14 @@ module.exports = class MessageReceive {
       const missing = message.channel.permissionsFor(message.author).missing(command.config.userPermissions);
       if (missing.length) {
         const perm = missing.map((value) => t(`permissions:${value}`)).join(', ');
-        return message.menheraReply('error', `${t('permissions:USER_MISSING_PERMISSION', { perm })}`);
+        return message.channel.send(`<:negacao:759603958317711371> | ${t('permissions:USER_MISSING_PERMISSION', { perm })}`);
       }
     }
     if (command.config.clientPermissions?.length) {
       const missing = message.channel.permissionsFor(this.client.user).missing(command.config.clientPermissions);
       if (missing.length) {
         const perm = missing.map((value) => t(`permissions:${value}`)).join(', ');
-        return message.menheraReply('error', `${t('permissions:CLIENT_MISSING_PERMISSION', { perm })}`);
+        return message.channel.send(`<:negacao:759603958317711371> | ${t('permissions:CLIENT_MISSING_PERMISSION', { perm })}`);
       }
     }
 
