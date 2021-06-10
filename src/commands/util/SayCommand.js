@@ -12,10 +12,10 @@ module.exports = class SayCommand extends Command {
     });
   }
 
-  async run({ message, args }, t) {
-    const sayMessage = args.join(' ');
-    if (!sayMessage) return message.menheraReply('error', t('commands:say.no-args'));
-    message.delete({ timeout: 10 }).catch();
-    message.channel.send(`${sayMessage}\n\n📢 | ${message.author}`);
+  async run(ctx) {
+    const sayMessage = ctx.args.join(' ');
+    if (!sayMessage) return ctx.replyT('error', 'commands:say.no-args');
+    if (ctx.message.deletable) ctx.message.delete();
+    ctx.send(`${sayMessage}\n\n📢 | ${ctx.message.author}`);
   }
 };
