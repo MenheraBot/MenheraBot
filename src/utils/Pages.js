@@ -8,10 +8,10 @@ const { MessageCollector } = require('discord.js');
 const func = (fn) => (typeof fn === 'function' ? fn : () => fn);
 
 class PagesCollector extends MessageCollector {
-  constructor(channel, { message, t, sent }, collectorOptions = { max: 5 }) {
-    super(channel, (m) => m.author.id === message.author.id, collectorOptions);
-    this.t = t;
-    this.message = message;
+  constructor(channel, { ctx, sent }, collectorOptions = { max: 5 }) {
+    super(channel, (m) => m.author.id === ctx.message.author.id, collectorOptions);
+    this.ctx = ctx;
+    this.message = ctx.message;
     this.sent = sent;
     this.invalidOption = null;
     this.findOption = null;
@@ -60,8 +60,8 @@ class PagesCollector extends MessageCollector {
     }
   }
 
-  async menheraReply(...args) {
-    const sent = await this.message.menheraReply(...args);
+  async replyT(...args) {
+    const sent = await this.ctx.replyT(...args);
     this.delete();
     this.sent = sent;
     return this.sent;
