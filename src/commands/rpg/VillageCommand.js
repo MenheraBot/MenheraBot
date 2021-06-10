@@ -72,19 +72,19 @@ module.exports = class VillageCommand extends Command {
       const value = item.value * qty;
 
       if (!value) {
-        return collector.menheraReply('error', ctx.locale('commands:village.invalid-value'));
+        return collector.replyT('error', 'commands:village.invalid-value');
       }
 
       if (user.money < value) {
-        return collector.menheraReply('error', ctx.locale('commands:village.poor'));
+        return collector.replyT('error', 'commands:village.poor');
       }
 
       const backpack = RPGUtil.getBackpack(user);
       if ((backpack.value + qty) > backpack.capacity) {
-        return collector.menheraReply('error', ctx.locale('commands:village.backpack-full'));
+        return collector.replyT('error', 'commands:village.backpack-full');
       }
 
-      collector.menheraReply('success', ctx.locale('commands:village.bruxa.bought', { quantidade: qty, name: item.name, valor: value }));
+      collector.replyT('success', 'commands:village.bruxa.bought', { quantidade: qty, name: item.name, valor: value });
 
       RPGUtil.addItemInInventory(user, { name: item.name, damage: item.damage }, qty);
       user.money -= value;

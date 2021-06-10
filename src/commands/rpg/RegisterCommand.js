@@ -38,28 +38,28 @@ module.exports = class RegisterCommand extends Command {
     collector.on('collect', (m) => {
       switch (m.content) {
         case '1':
-          this.confirmação(ctx.message, 'Assassino', ctx.locale);
+          this.confirmação(ctx, 'Assassino');
           break;
         case '2':
-          this.confirmação(ctx.message, 'Bárbaro', ctx.locale);
+          this.confirmação(ctx, 'Bárbaro');
           break;
         case '3':
-          this.confirmação(ctx.message, 'Clérigo', ctx.locale);
+          this.confirmação(ctx, 'Clérigo');
           break;
         case '4':
-          this.confirmação(ctx.message, 'Druida', ctx.locale);
+          this.confirmação(ctx, 'Druida');
           break;
         case '5':
-          this.confirmação(ctx.message, 'Espadachim', ctx.locale);
+          this.confirmação(ctx, 'Espadachim');
           break;
         case '6':
-          this.confirmação(ctx.message, 'Feiticeiro', ctx.locale);
+          this.confirmação(ctx, 'Feiticeiro', ctx);
           break;
         case '7':
-          this.confirmação(ctx.message, 'Monge', ctx.locale);
+          this.confirmação(ctx, 'Monge', ctx);
           break;
         case '8':
-          this.confirmação(ctx.message, 'Necromante', ctx.locale);
+          this.confirmação(ctx, 'Necromante', ctx);
           break;
         default:
           return ctx.replyT('error', 'commands:register.invalid-input');
@@ -67,22 +67,22 @@ module.exports = class RegisterCommand extends Command {
     });
   }
 
-  confirmação(message, option, t) {
-    const selectedOption = t(`commands:register.${option}`);
-    message.menheraReply('warn', t('commands:register.confirm', { option: selectedOption }));
+  confirmação(ctx, option) {
+    const selectedOption = ctx.locale(`commands:register.${option}`);
+    ctx.replyT('warn', 'commands:register.confirm', { option: selectedOption });
 
-    const filtro = (m) => m.author.id === message.author.id;
-    const confirmCollector = message.channel.createMessageCollector(filtro, { max: 1 });
+    const filtro = (m) => m.author.id === ctx.message.author.id;
+    const confirmCollector = ctx.message.channel.createMessageCollector(filtro, { max: 1 });
 
     confirmCollector.on('collect', async (m) => {
       if (m.content.toLowerCase() === 'sim' || m.content.toLowerCase() === 'yes') {
-        message.menheraReply('success', t('commands:register.confirmed', { option: selectedOption }));
+        ctx.replyT('success', 'commands:register.confirmed', { option: selectedOption });
         const user = await new this.client.database.Rpg({
-          _id: message.author.id,
+          _id: ctx.message.author.id,
           class: option,
         }).save();
-        this.client.rpgChecks.confirmRegister(user, message, t);
-      } else message.menheraReply('error', t('commands:register.canceled'));
+        this.client.rpgChecks.confirmRegister(user, ctx);
+      } else ctx.replyT('error', 'commands:register.canceled');
     });
   }
 };
