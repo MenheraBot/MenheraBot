@@ -14,18 +14,18 @@ module.exports = class PingCommand extends Command {
     });
   }
 
-  async run({ message, args }, t) {
-    const avatar = message.author.displayAvatarURL({ format: 'png', dynamic: true });
+  async run(ctx) {
+    const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
 
-    if (!args[0]) {
+    if (!ctx.args[0]) {
       const embed = new MessageEmbed()
         .setTitle('🏓 | Pong!')
-        .setDescription(`📡 | ${t('commands:ping.api')} **${Date.now() - message.createdTimestamp}ms**\n📡 | ${t('commands:ping.latency')} **${Math.round(this.client.ws.ping)}ms**\n🖲️ | Shard: **${this.client.shard.ids}** / **${this.client.shard.count - 1}**`)
-        .setFooter(message.author.tag, avatar)
+        .setDescription(`📡 | ${ctx.locale('commands:ping.api')} **${Date.now() - ctx.message.createdTimestamp}ms**\n📡 | ${ctx.locale('commands:ping.latency')} **${Math.round(this.client.ws.ping)}ms**\n🖲️ | Shard: **${this.client.shard.ids}** / **${this.client.shard.count - 1}**`)
+        .setFooter(ctx.message.author.tag, avatar)
         .setTimestamp()
         .setColor('#eab3fa');
 
-      return message.channel.send(embed);
+      return ctx.send(embed);
     }
     const allShardsInformation = await this.client.shard.broadcastEval('this.ws');
     const allShardsUptime = await this.client.shard.broadcastEval('this.ws.client.uptime');
@@ -55,6 +55,6 @@ module.exports = class PingCommand extends Command {
       return p;
     }, []);
 
-    message.channel.send(`\`\`\`${table.create(tabled)}\`\`\``);
+    ctx.send(`\`\`\`${table.create(tabled)}\`\`\``);
   }
 };
