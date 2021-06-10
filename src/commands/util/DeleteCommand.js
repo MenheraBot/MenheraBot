@@ -11,30 +11,27 @@ module.exports = class DeleteCommand extends Command {
     });
   }
 
-  async run({ message }, t) {
-    message.menheraReply('warn', t('commands:delete.confirm')).then(async (msg) => {
+  async run(ctx) {
+    ctx.replyT('warn', 'commands:delete.confirm').then(async (msg) => {
       msg.react('✅').catch();
       msg.react('❌').catch();
 
-      const filter = (reaction, usuario) => reaction.emoji.name === '✅' && usuario.id === message.author.id;
-      const filter1 = (reação, user) => reação.emoji.name === '❌' && user.id === message.author.id;
+      const filter = (reaction, usuario) => reaction.emoji.name === '✅' && usuario.id === ctx.message.author.id;
+      const filter1 = (reação, user) => reação.emoji.name === '❌' && user.id === ctx.message.author.id;
 
       const ncoletor = msg.createReactionCollector(filter1, { max: 1, time: 5000 });
       const coletor = msg.createReactionCollector(filter, { max: 1, time: 5000 });
 
       ncoletor.on('collect', () => {
-        msg.reactions.removeAll().catch();
-        message.menheraReply('success', t('commands:delete.negated'));
+        ctx.replyT('success', 'commands:delete.negated');
       });
 
       coletor.on('collect', () => {
-        msg.reactions.removeAll().catch();
-
         this.client.database.Users.findOneAndDelete({
-          id: message.author.id,
+          id: ctx.message.author.id,
         }, (err) => {
           if (err) console.log(err);
-          message.menheraReply('success', t('commands:delete.acepted'));
+          ctx.replyT('success', 'commands:delete.acepted');
         });
       });
       setTimeout(() => {
