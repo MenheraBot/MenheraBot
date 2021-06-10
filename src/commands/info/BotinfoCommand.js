@@ -1,7 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const moment = require('moment');
 const Command = require('../../structures/command');
-const http = require('../../utils/HTTPrequests');
 require('moment-duration-format');
 const { version } = require('../../../package.json');
 
@@ -18,7 +17,6 @@ module.exports = class BotinfoCommand extends Command {
 
   async run(ctx) {
     const owner = await this.client.users.fetch(process.env.OWNER);
-    const commandsExecuted = await http.getCommands();
     if (ctx.data.server.lang === 'pt-BR') {
       moment.locale('pt-br');
     } else moment.locale('en-us');
@@ -31,7 +29,7 @@ module.exports = class BotinfoCommand extends Command {
       // .setTitle(t('commands:botinfo.title'))
       .setThumbnail('https://i.imgur.com/b5y0nd4.png')
       .setDescription(ctx.locale('commands:botinfo.embed_description', {
-        name: this.client.user.username, createdAt: moment.utc(this.client.user.createdAt).format('LLLL'), joinedAt: moment.utc(ctx.message.guild.me.joinedAt).format('LLLL'), cmds: commandsExecuted,
+        name: this.client.user.username, createdAt: moment.utc(this.client.user.createdAt).format('LLLL'), joinedAt: moment.utc(ctx.message.guild.me.joinedAt).format('LLLL'),
       }))
       .setFooter(`${this.client.user.username} ${ctx.locale('commands:botinfo.embed_footer')} ${owner.tag}`, owner.displayAvatarURL({
         format: 'png',
