@@ -11,10 +11,10 @@ module.exports = class HumorCommand extends Command {
     });
   }
 
-  async run({ message }, t) {
-    if (message.deletable) message.delete();
+  async run(ctx) {
+    if (ctx.message.deletable) ctx.message.delete();
 
-    const mention = message.mentions.users.first();
+    const mention = ctx.message.mentions.users.first();
 
     const list = [
       'https://i.imgur.com/HNZeSQt.png',
@@ -24,14 +24,14 @@ module.exports = class HumorCommand extends Command {
 
     const embed = new MessageEmbed()
       .setImage(rand)
-      .setFooter(`${t('commands:tilt.footer')} ${message.author.username}`);
+      .setFooter(`${ctx.locale('commands:tilt.footer')} ${ctx.message.author.username}`);
 
     if (!mention) {
-      embed.setDescription(t('commands:tilt.phrase'));
+      embed.setDescription(ctx.locale('commands:tilt.phrase'));
     } else {
-      embed.setDescription(`${t('commands:tilt.phrase-mention')} ${mention}`);
+      embed.setDescription(`${ctx.locale('commands:tilt.phrase-mention')} ${mention}`);
     }
 
-    message.channel.send(embed);
+    ctx.send(embed);
   }
 };
