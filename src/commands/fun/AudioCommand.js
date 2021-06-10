@@ -15,7 +15,7 @@ module.exports = class AudioCommand extends Command {
     const { voice } = ctx.message.member;
     if (!voice.channelID) return ctx.replyT('error', 'commands:audio.not-in-voice');
 
-    const availableFiles = ['gemidao', 'among', 'rojao', 'wpp', 'yamete', 'atumalaca'];
+    const availableFiles = ['gemidao', 'among', 'rojao', 'wpp', 'yamete', 'atumalaca', 'ratinho'];
 
     if (!ctx.args[0]) return ctx.replyT('error', 'commands:audio.no-args', { audios: availableFiles.join('`, `') });
 

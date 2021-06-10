@@ -37,7 +37,7 @@ module.exports = class DivorceCommand extends Command {
         ctx.replyT('success', ctx.locale('commands:divorce.canceled'));
       });
 
-      yesColetor.on('collect', () => {
+      yesColetor.on('collect', async () => {
         ctx.send(`${ctx.message.author} ${ctx.locale('commands:divorce.confirmed_start')} ${user2Mention}. ${ctx.locale('commands:divorce.confirmed_end')}`);
 
         await this.client.database.Users.updateOne({ id: ctx.data.user.casado }, { $set: { casado: 'false', data: null } });

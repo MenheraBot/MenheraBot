@@ -18,8 +18,12 @@ module.exports = class CommandContext {
     return this.message.channel.send(`${emotes[emoji] || '🐛'} **|** ${this.message.author}, ${text}`);
   }
 
-  async send(message, options = {}) {
-    return this.message.channel.send(message, options);
+  async send(message) {
+    return this.message.channel.send(message);
+  }
+
+  async sendC(content, config) {
+    return this.message.channel.send(content, config);
   }
 
   locale(text, translateVars = {}) {

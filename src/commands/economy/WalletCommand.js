@@ -71,6 +71,6 @@ module.exports = class WalletCommand extends Command {
     const rpguser = await this.client.database.Rpg.findById(user.id);
     if (rpguser && rpguser.resetRoll) embed.addField(`🔑 | RPG ${ctx.locale('commands:wallet.rolls')}`, `**${rpguser.resetRoll}**`, true);
 
-    ctx.send(ctx.message.author, embed);
+    ctx.sendC(ctx.message.author, embed);
   }
 };
