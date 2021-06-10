@@ -234,7 +234,7 @@ function lojaComprar(ctx, embedMessage, constants) {
           text: ctx.locale('commands:shop.dataRolls_fields.footer'),
         },
         fields: [{
-          name: ctx.localet('commands:shop.dataRolls_fields.fields.name'),
+          name: ctx.locale('commands:shop.dataRolls_fields.fields.name'),
           value: ctx.locale('commands:shop.dataRolls_fields.fields.value', { price: valorRoll }),
           inline: false,
         }],
@@ -296,7 +296,7 @@ function lojaVender(ctx, embedMessage, constants) {
       text: ctx.locale('commands:shop.dataVender.main.footer'),
     },
     fields: [{
-      name: ctx.localet('commands:shop.dataVender.main.fields.name'),
+      name: ctx.locale('commands:shop.dataVender.main.fields.name'),
       value: ctx.locale('commands:shop.dataVender.main.fields.value', {
         demon: valorDemonio, angel: valorAnjo, demi: valorSD, god: valorDeus,
       }),
