@@ -58,13 +58,13 @@ module.exports = class ProfileCommand extends Command {
     };
 
     const i18nData = {
-      aboutme: ctx.translate('commands:profile.about-me'),
-      mamado: ctx.translate('commands:profile.mamado'),
-      mamou: ctx.translate('commands:profile.mamou'),
-      zero: ctx.translate('commands:profile.zero'),
-      um: ctx.translate('commands:profile.um'),
-      dois: ctx.translate('commands:profile.dois'),
-      tres: ctx.translate('commands:profile.tres'),
+      aboutme: ctx.locale('commands:profile.about-me'),
+      mamado: ctx.locale('commands:profile.mamado'),
+      mamou: ctx.locale('commands:profile.mamou'),
+      zero: ctx.locale('commands:profile.zero'),
+      um: ctx.locale('commands:profile.um'),
+      dois: ctx.locale('commands:profile.dois'),
+      tres: ctx.locale('commands:profile.tres'),
     };
 
     const res = await NewHttp.profileRequest(userSendData, marry, usageCommands, i18nData);

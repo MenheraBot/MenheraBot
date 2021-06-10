@@ -34,26 +34,26 @@ module.exports = class SarrarCommand extends Command {
 
         coletor.on('collect', (_, colectorUser) => {
           msg.delete().catch();
-          SarrarCommand.sarrada(ctx.message, colectorUser, ctx.locale);
+          SarrarCommand.sarrada(ctx, colectorUser);
         });
       });
-    } return SarrarCommand.sarrada(ctx.message, ctx.message.mentions.users.first(), ctx.locale);
+    } return SarrarCommand.sarrada(ctx, ctx.message.mentions.users.first());
   }
 
-  static async sarrada(message, reactUser, t) {
+  static async sarrada(ctx, reactUser) {
     const rand = await getImageUrl('sarrar');
 
-    const avatar = message.author.displayAvatarURL({ format: 'png', dynamic: true });
+    const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     const Embed = new MessageEmbed()
 
-      .setTitle(t('commands:sarrar.embed_title'))
+      .setTitle(ctx.locale('commands:sarrar.embed_title'))
       .setColor('#000000')
-      .setDescription(`${message.author} ${t('commands:sarrar.embed_description')} ${reactUser}`)
+      .setDescription(`${ctx.message.author} ${ctx.locale('commands:sarrar.embed_description')} ${reactUser}`)
       .setImage(rand)
       .setThumbnail(avatar)
-      .setAuthor(message.author.tag, avatar);
+      .setAuthor(ctx.message.author.tag, avatar);
 
-    message.channel.send(Embed);
+    ctx.send(Embed);
   }
 };

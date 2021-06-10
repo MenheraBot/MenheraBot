@@ -23,13 +23,13 @@ module.exports = class DungeonCommand extends Command {
 
     if (!polishedInput) return ctx.replyT('error', 'commands:dungeon.no-args');
 
-    const inimigo = await this.client.rpgChecks.getEnemyByUserLevel(user, 'dungeon', polishedInput, ctx.message, ctx.locale);
+    const inimigo = await this.client.rpgChecks.getEnemyByUserLevel(user, 'dungeon', polishedInput, ctx);
 
     if (!inimigo) return ctx.replyT('error', 'commands:dungeon.no-level');
 
     if (inimigo === 'LOW-LEVEL') return;
 
-    const canGo = await this.client.rpgChecks.initialChecks(user, ctx.message, ctx.t);
+    const canGo = await this.client.rpgChecks.initialChecks(user, ctx);
 
     if (!canGo) return;
 
@@ -54,24 +54,24 @@ module.exports = class DungeonCommand extends Command {
 
     collector.on('collect', (m) => {
       if (m.content.toLowerCase() === 'sim' || m.content.toLowerCase() === 'yes') {
-        this.battle(ctx.message, inimigo, habilidades, user, 'dungeon', ctx.locale);
+        this.battle(ctx, inimigo, habilidades, user, 'dungeon');
       } else return ctx.replyT('error', 'commands:dungeon.arregou');
     });
   }
 
-  async battle(message, inimigo, habilidades, user, type, t) {
+  async battle(ctx, inimigo, habilidades, user, type) {
     user.dungeonCooldown = this.client.constants.rpg.dungeonCooldown + Date.now();
     user.inBattle = true;
     await user.save();
 
     const options = [{
-      name: t('commands:dungeon.scape'),
+      name: ctx.locale('commands:dungeon.scape'),
       damage: '🐥',
       scape: true,
     }];
 
     options.push({
-      name: t('commands:dungeon.battle.basic'),
+      name: ctx.locale('commands:dungeon.battle.basic'),
       damage: user?.familiar?.id && user.familiar.type === 'damage' ? user.damage + user.weapon.damage + (familiarsFile[user.familiar.id].boost.value + ((user.familiar.level - 1) * familiarsFile[user.familiar.id].boost.value)) : user.damage + user.weapon.damage,
     });
 
@@ -79,7 +79,7 @@ module.exports = class DungeonCommand extends Command {
       options.push(hab);
     });
 
-    let texto = `${t('commands:dungeon.battle.enter', { type: inimigo.type, name: inimigo.name })}\n\n❤️ | ${t('commands:dungeon.life')}: **${inimigo.life}**\n⚔️ | ${t('commands:dungeon.damage')}: **${inimigo.damage}**\n🛡️ | ${t('commands:dungeon.armor')}: **${inimigo.armor}**\n\n${t('commands:dungeon.battle.end')}`;
+    let texto = `${ctx.locale('commands:dungeon.battle.enter', { type: inimigo.type, name: inimigo.name })}\n\n❤️ | ${ctx.locale('commands:dungeon.life')}: **${inimigo.life}**\n⚔️ | ${ctx.locale('commands:dungeon.damage')}: **${inimigo.damage}**\n🛡️ | ${ctx.locale('commands:dungeon.armor')}: **${inimigo.armor}**\n\n${ctx.locale('commands:dungeon.battle.end')}`;
 
     const escolhas = [];
 
@@ -89,14 +89,14 @@ module.exports = class DungeonCommand extends Command {
     }
 
     const embed = new MessageEmbed()
-      .setFooter(t('commands:dungeon.battle.footer'))
-      .setTitle(`${t('commands:dungeon.battle.title')}${inimigo.name}`)
+      .setFooter(ctx.locale('commands:dungeon.battle.footer'))
+      .setTitle(`${ctx.locale('commands:dungeon.battle.title')}${inimigo.name}`)
       .setColor('#f04682')
       .setDescription(texto);
-    message.channel.send(message.author, embed);
+    ctx.sendC(ctx.message.author, embed);
 
-    const filter = (m) => m.author.id === message.author.id;
-    const collector = message.channel.createMessageCollector(filter, { max: 1, time: 15000, errors: ['time'] });
+    const filter = (m) => m.author.id === ctx.message.author.id;
+    const collector = ctx.message.channel.createMessageCollector(filter, { max: 1, time: 15000, errors: ['time'] });
 
     let time = false;
 
@@ -104,15 +104,15 @@ module.exports = class DungeonCommand extends Command {
       time = true;
       const choice = Number(m.content);
       if (escolhas.includes(choice)) {
-        this.client.rpgChecks.battle(message, options[choice], user, inimigo, type, t);
+        this.client.rpgChecks.battle(ctx, options[choice], user, inimigo, type);
       } else {
-        this.client.rpgChecks.enemyShot(message, user, inimigo, type, t, `⚔️ |  ${t('commands:dungeon.battle.newTecnique')}`);
+        this.client.rpgChecks.enemyShot(ctx, user, inimigo, type, `⚔️ |  ${ctx.locale('commands:dungeon.battle.newTecnique')}`);
       }
     });
 
     setTimeout(() => {
       if (!time) {
-        this.client.rpgChecks.enemyShot(message, user, inimigo, type, t, `⚔️ |  ${t('commands:dungeon.battle.timeout')}`);
+        this.client.rpgChecks.enemyShot(ctx, user, inimigo, type, `⚔️ |  ${ctx.locale('commands:dungeon.battle.timeout')}`);
       }
     }, 15000);
   }

@@ -67,14 +67,14 @@ module.exports = class PvPCommands extends Command {
         await user1.save();
         await user2.save();
 
-        return this.makeBattle(user1, user2, ctx.message.author, mention, aposta, ctx.message, ctx.locale);
+        return this.makeBattle(user1, user2, ctx.message.author, mention, aposta, ctx);
       }
 
       return ctx.replyT('error', 'commands:pvp.negated', { user: mention.tag });
     });
   }
 
-  async makeBattle(user1, user2, member1, member2, aposta, message, t) {
+  async makeBattle(user1, user2, member1, member2, aposta, ctx) {
     const options = [];
 
     if (!aposta) {
@@ -85,7 +85,7 @@ module.exports = class PvPCommands extends Command {
     }
 
     options.push({
-      name: t('commands:dungeon.battle.basic'),
+      name: ctx.locale('commands:dungeon.battle.basic'),
       damage: user1?.familiar?.id && user1.familiar.type === 'damage' ? user1.damage + user1.weapon.damage + (familiarsFile[user1.familiar.id].boost.value + ((user1.familiar.level - 1) * familiarsFile[user1.familiar.id].boost.value)) : user1.damage + user1.weapon.damage,
     });
 
@@ -94,7 +94,7 @@ module.exports = class PvPCommands extends Command {
 
     options.push(...user1abilities);
 
-    let texto = `${t('commands:pvp.battle.enter', { user1: member1.tag, user2: member2.tag })}\n\n❤️ | ${t('commands:dungeon.life')}: **${user2.life}**\n⚔️ | ${t('commands:dungeon.damage')}: **${user2.damage}**\n🛡️ | ${t('commands:dungeon.armor')}: **${user2.armor}**\n\n${t('commands:pvp.battle.end')}`;
+    let texto = `${ctx.locale('commands:pvp.battle.enter', { user1: member1.tag, user2: member2.tag })}\n\n❤️ | ${ctx.locale('commands:dungeon.life')}: **${user2.life}**\n⚔️ | ${ctx.locale('commands:dungeon.damage')}: **${user2.damage}**\n🛡️ | ${ctx.locale('commands:dungeon.armor')}: **${user2.armor}**\n\n${ctx.locale('commands:pvp.battle.end')}`;
 
     const escolhas = [];
 
@@ -104,14 +104,14 @@ module.exports = class PvPCommands extends Command {
     }
 
     const embed = new MessageEmbed()
-      .setFooter(t('commands:dungeon.battle.footer'))
-      .setTitle(`${t('commands:pvp.battle.title', { user: member1.tag })}`)
+      .setFooter(ctx.locale('commands:dungeon.battle.footer'))
+      .setTitle(`${ctx.locale('commands:pvp.battle.title', { user: member1.tag })}`)
       .setColor('#f04682')
       .setDescription(texto);
-    message.channel.send(member1, embed);
+    ctx.sendC(member1, embed);
 
     const filter = (m) => m.author.id === member1.id;
-    const collector = message.channel.createMessageCollector(filter, { max: 1, time: 6800, errors: ['time'] });
+    const collector = ctx.message.channel.createMessageCollector(filter, { max: 1, time: 6800, errors: ['time'] });
 
     let time = false;
 
@@ -119,20 +119,20 @@ module.exports = class PvPCommands extends Command {
       time = true;
       const choice = Number(m.content);
       if (escolhas.includes(choice)) {
-        this.continueBattle(message, options[choice - 1], user1, user2, member1, member2, user1abilities, user2abilities, aposta, t, null);
+        this.continueBattle(ctx, options[choice - 1], user1, user2, member1, member2, user1abilities, user2abilities, aposta, null);
       } else {
-        this.continueBattle(message, false, user1, user2, member1, member2, user1abilities, user2abilities, aposta, t, `⚔️ |  ${t('commands:pvp.battle.newTecnique', { user: member1.tag })}`);
+        this.continueBattle(ctx, false, user1, user2, member1, member2, user1abilities, user2abilities, aposta, `⚔️ |  ${ctx.locale('commands:pvp.battle.newTecnique', { user: member1.tag })}`);
       }
     });
 
     setTimeout(() => {
       if (!time) {
-        this.continueBattle(message, false, user1, user2, member1, member2, user1abilities, user2abilities, aposta, t, `⚔️ |  ${t('commands:pvp.battle.timeout', { user: member1.tag })}`);
+        this.continueBattle(ctx, false, user1, user2, member1, member2, user1abilities, user2abilities, aposta, `⚔️ |  ${ctx.locale('commands:pvp.battle.timeout', { user: member1.tag })}`);
       }
     }, 7100);
   }
 
-  async continueBattle(message, escolha, user1, user2, member1, member2, user1abilities, user2abilities, aposta, t, attackText) {
+  async continueBattle(ctx, escolha, user1, user2, member1, member2, user1abilities, user2abilities, aposta, attackText) {
     let toSay;
     if (!attackText) {
       let danoUser = 0;
@@ -141,9 +141,9 @@ module.exports = class PvPCommands extends Command {
           danoUser = escolha.damage;
         } else if (escolha.name === 'Morte Instantânea') {
           user1.life -= 50;
-          return this.continueBattle(message, false, user1, user2, member1, member2, user1abilities, user2abilities, aposta, t, `⚔️ | ${t('commands:pvp.battle.insta-kill', { user: member1.tag, user2: member2.tag })}`);
+          return this.continueBattle(ctx, false, user1, user2, member1, member2, user1abilities, user2abilities, aposta, `⚔️ | ${ctx.locale('commands:pvp.battle.insta-kill', { user: member1.tag, user2: member2.tag })}`);
         } else {
-          if (user1.mana < escolha.cost) return this.continueBattle(message, false, user1, user2, member1, member2, user1abilities, user2abilities, aposta, t, `⚔️ | ${t('commands:pvp.battle.no-mana', { name: escolha.name, user: member1.tag, user2: member2.tag })}`);
+          if (user1.mana < escolha.cost) return this.continueBattle(ctx, false, user1, user2, member1, member2, user1abilities, user2abilities, aposta, `⚔️ | ${ctx.locale('commands:pvp.battle.no-mana', { name: escolha.name, user: member1.tag, user2: member2.tag })}`);
           if (escolha.heal > 0) {
             user1.life += escolha.heal;
             if (user1.life > user1.maxLife) user1.life = user1.maxLife;
@@ -159,29 +159,29 @@ module.exports = class PvPCommands extends Command {
       if (danoDado < 0) danoDado = 0;
       user2.life -= danoDado;
 
-      toSay = `⚔️ | ${t('commands:pvp.battle.attack', {
+      toSay = `⚔️ | ${ctx.locale('commands:pvp.battle.attack', {
         enemy: member2.tag, choice: escolha.name, damage: danoDado, user: member1.tag,
       })}`;
     }
 
     if (user2.life < 1) {
-      return this.endBattle(message, user1, user2, member1, member2, aposta, t, (attackText || toSay));
+      return this.endBattle(ctx, user1, user2, member1, member2, aposta, (attackText || toSay));
     }
 
     if (user1.life < 1) {
-      return this.endBattle(message, user2, user1, member2, member1, aposta, t, (attackText || toSay));
+      return this.endBattle(ctx, user2, user1, member2, member1, aposta, (attackText || toSay));
     }
 
     const options = [];
 
     options.push({
-      name: t('commands:dungeon.battle.basic'),
+      name: ctx.locale('commands:dungeon.battle.basic'),
       damage: user2?.familiar?.id && user2.familiar.type === 'damage' ? user2.damage + user2.weapon.damage + (familiarsFile[user2.familiar.id].boost.value + ((user2.familiar.level - 1) * familiarsFile[user2.familiar.id].boost.value)) : user2.damage + user2.weapon.damage,
     });
 
     options.push(...user2abilities);
 
-    let texto = `${(toSay || attackText)}\n\n${t('commands:pvp.battle.enemy')}\n❤️ | ${t('commands:dungeon.life')}: **${user1.life}**\n⚔️ | ${t('commands:dungeon.damage')}: **${user1.damage}**\n🛡️ | ${t('commands:dungeon.armor')}: **${user1.armor}**\n\n${t('commands:pvp.battle.end')}`;
+    let texto = `${(toSay || attackText)}\n\n${ctx.locale('commands:pvp.battle.enemy')}\n❤️ | ${ctx.locale('commands:dungeon.life')}: **${user1.life}**\n⚔️ | ${ctx.locale('commands:dungeon.damage')}: **${user1.damage}**\n🛡️ | ${ctx.locale('commands:dungeon.armor')}: **${user1.armor}**\n\n${ctx.locale('commands:pvp.battle.end')}`;
 
     const escolhas = [];
 
@@ -193,13 +193,13 @@ module.exports = class PvPCommands extends Command {
     const embed = new MessageEmbed()
       .setDescription(texto)
       .setColor('#f04682')
-      .setTitle(`${t('commands:pvp.battle.title', { user: member2.tag })}`)
-      .setFooter(t('commands:dungeon.battle.footer'));
+      .setTitle(`${ctx.locale('commands:pvp.battle.title', { user: member2.tag })}`)
+      .setFooter(ctx.locale('commands:dungeon.battle.footer'));
 
-    message.channel.send(member2, embed);
+    ctx.sendC(member2, embed);
 
     const filter = (m) => m.author.id === member2.id;
-    const collector = message.channel.createMessageCollector(filter, { max: 1, time: 6800, errors: ['time'] });
+    const collector = ctx.message.channel.createMessageCollector(filter, { max: 1, time: 6800, errors: ['time'] });
 
     let time = false;
 
@@ -207,27 +207,27 @@ module.exports = class PvPCommands extends Command {
       time = true;
       const choice = Number(m.content);
       if (escolhas.includes(choice)) {
-        this.continueBattle(message, options[choice - 1], user2, user1, member2, member1, user2abilities, user1abilities, aposta, t, null);
+        this.continueBattle(ctx, options[choice - 1], user2, user1, member2, member1, user2abilities, user1abilities, aposta, null);
       } else {
         user2.life -= 50;
-        this.continueBattle(message, false, user2, user1, member2, member1, user2abilities, user1abilities, aposta, t, `⚔️ |  ${t('commands:pvp.battle.newTecnique', { user: member2.tag })}`);
+        this.continueBattle(ctx, false, user2, user1, member2, member1, user2abilities, user1abilities, aposta, `⚔️ |  ${ctx.locale('commands:pvp.battle.newTecnique', { user: member2.tag })}`);
       }
     });
 
     setTimeout(() => {
       if (!time) {
         user2.life -= 50;
-        this.continueBattle(message, false, user2, user1, member2, member1, user2abilities, user1abilities, aposta, t, `⚔️ |  ${t('commands:pvp.battle.timeout', { user: member2.tag })}`);
+        this.continueBattle(ctx, false, user2, user1, member2, member1, user2abilities, user1abilities, aposta, `⚔️ |  ${ctx.locale('commands:pvp.battle.timeout', { user: member2.tag })}`);
       }
     }, 7100);
   }
 
-  async endBattle(message, user1, user2, member1, member2, aposta, t, toSay) {
-    const text = `${toSay}\n${t('commands:pvp.enough', { user: member2.tag })}`;
+  async endBattle(ctx, user1, user2, member1, member2, aposta, toSay) {
+    const text = `${toSay}\n${ctx.locale('commands:pvp.enough', { user: member2.tag })}`;
     const embed = new MessageEmbed()
       .setColor('#e905ff')
       .setDescription(text)
-      .setTitle(t('commands:pvp.battle.win', { user: member1.tag }));
+      .setTitle(ctx.locale('commands:pvp.battle.win', { user: member1.tag }));
 
     if (aposta) {
       user1.money += aposta;
@@ -238,8 +238,8 @@ module.exports = class PvPCommands extends Command {
       user2.life = 0;
       await user1.save();
       await user2.save();
-      embed.addField(t('commands:pvp.aposta'), t('commands:pvp.aposta-description', { aposta, winner: member1.tag }));
-      return message.channel.send(embed);
+      embed.addField(ctx.locale('commands:pvp.aposta'), ctx.locale('commands:pvp.aposta-description', { aposta, winner: member1.tag }));
+      return ctx.send(embed);
     }
 
     const findFirstUserWithoutAposta = await this.client.database.Rpg.findById(member1.id);
@@ -248,7 +248,7 @@ module.exports = class PvPCommands extends Command {
     findSecondUserWithoutAposta.inBattle = false;
     findFirstUserWithoutAposta.save();
     findSecondUserWithoutAposta.save();
-    embed.addField(t('commands:pvp.aposta'), t('commands:pvp.not-aposta'));
-    message.channel.send(embed);
+    embed.addField(ctx.locale('commands:pvp.aposta'), ctx.locale('commands:pvp.not-aposta'));
+    ctx.send(embed);
   }
 };

@@ -35,7 +35,7 @@ module.exports = class VillageCommand extends Command {
     const sent = await ctx.sendC(ctx.message.author, embed);
 
     const options = ['bruxa', 'ferreiro', 'hotel', 'guilda'];
-    const collector = new PagesCollector(ctx.message.channel, { sent, message: ctx.message, t: ctx.locale }, { max: 2, time: 30000, errors: ['time'] })
+    const collector = new PagesCollector(ctx.message.channel, { sent, ctx }, { max: 2, time: 30000, errors: ['time'] })
       .setInvalidOption(() => collector.replyT('error', 'commands:village.invalid-option'))
       .setFindOption(PagesCollector.arrFindByElemOrIndex(options))
       .setHandle((_, option) => VillageCommand[option](ctx, user, collector))

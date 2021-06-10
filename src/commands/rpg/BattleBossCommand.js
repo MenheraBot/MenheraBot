@@ -14,12 +14,12 @@ module.exports = class BattleBoss extends Command {
 
   async run(ctx) {
     const user = await this.client.database.Rpg.findById(ctx.message.author.id);
-    if (!user) return ctx.creplyT('error', 'commands:boss.non-aventure');
+    if (!user) return ctx.replyT('error', 'commands:boss.non-aventure');
 
     if (user.level < 20) return ctx.replyT('error', 'commands:boss.min-level');
 
     const inimigo = this.client.rpgChecks.getEnemyByUserLevel(user, 'boss');
-    const canGo = await this.client.rpgChecks.initialChecks(user, ctx.message, ctx.locale);
+    const canGo = await this.client.rpgChecks.initialChecks(user, ctx);
 
     if (!canGo) return;
 
@@ -48,24 +48,24 @@ module.exports = class BattleBoss extends Command {
 
     collector.on('collect', (m) => {
       if (m.content.toLowerCase() === 'sim' || m.content.toLowerCase() === 'yes') {
-        this.battle(ctx.message, inimigo, habilidades, user, 'boss', ctx.locale);
+        this.battle(ctx, inimigo, habilidades, user, 'boss');
       } else return ctx.replyT('error', 'commands:boss.amarelou');
     });
   }
 
-  async battle(message, inimigo, habilidades, user, type, t) {
+  async battle(ctx, inimigo, habilidades, user, type) {
     user.dungeonCooldown = this.client.constants.rpg.bossCooldown + Date.now();
     user.inBattle = true;
     await user.save();
 
     const options = [{
-      name: t('commands:dungeon.scape'),
+      name: ctx.locale('commands:dungeon.scape'),
       damage: '🐥',
       scape: true,
     }];
 
     options.push({
-      name: t('commands:boss.battle.basic'),
+      name: ctx.locale('commands:boss.battle.basic'),
       damage: user?.familiar?.id && user.familiar.type === 'damage' ? user.damage + user.weapon.damage + (familiarsFile[user.familiar.id].boost.value + ((user.familiar.level - 1) * familiarsFile[user.familiar.id].boost.value)) : user.damage + user.weapon.damage,
     });
 
@@ -73,7 +73,7 @@ module.exports = class BattleBoss extends Command {
       options.push(hab);
     });
 
-    let texto = `${t('commands:boss.battle.enter', { enemy: inimigo.name })}\n\n❤️ | ${t('commands:boss.life')}: **${inimigo.life}**\n⚔️ | ${t('commands:boss.damage')}: **${inimigo.damage}**\n🛡️ | ${t('commands:boss.armor')}: **${inimigo.armor}**\n\n${t('commands:boss.battle.end')}`;
+    let texto = `${ctx.locale('commands:boss.battle.enter', { enemy: inimigo.name })}\n\n❤️ | ${ctx.locale('commands:boss.life')}: **${inimigo.life}**\n⚔️ | ${ctx.locale('commands:boss.damage')}: **${inimigo.damage}**\n🛡️ | ${ctx.locale('commands:boss.armor')}: **${inimigo.armor}**\n\n${ctx.locale('commands:boss.battle.end')}`;
 
     const escolhas = [];
 
@@ -83,14 +83,14 @@ module.exports = class BattleBoss extends Command {
     }
 
     const embed = new MessageEmbed()
-      .setFooter(t('commands:boss.battle.footer'))
+      .setFooter(ctx.locale('commands:boss.battle.footer'))
       .setTitle(`BossBattle: ${inimigo.name}`)
       .setColor('#f04682')
       .setDescription(texto);
-    message.channel.send(message.author, embed);
+    ctx.sendC(ctx.message.author, embed);
 
-    const filter = (m) => m.author.id === message.author.id;
-    const collector = message.channel.createMessageCollector(filter, { max: 1, time: 15000, errors: ['time'] });
+    const filter = (m) => m.author.id === ctx.message.author.id;
+    const collector = ctx.message.channel.createMessageCollector(filter, { max: 1, time: 15000, errors: ['time'] });
 
     let time = false;
 
@@ -98,14 +98,14 @@ module.exports = class BattleBoss extends Command {
       time = true;
       const choice = Number(m.content);
       if (escolhas.includes(choice)) {
-        return this.client.rpgChecks.battle(message, options[choice], user, inimigo, type, t);
+        return this.client.rpgChecks.battle(ctx, options[choice], user, inimigo, type);
       }
-      return this.client.rpgChecks.enemyShot(message, user, inimigo, type, t, `⚔️ |  ${t('commands:boss.battle.newTecnique')}`);
+      return this.client.rpgChecks.enemyShot(ctx, user, inimigo, type, `⚔️ |  ${ctx.locale('commands:boss.battle.newTecnique')}`);
     });
 
     setTimeout(() => {
       if (!time) {
-        return this.client.rpgChecks.enemyShot(message, user, inimigo, type, t, `⚔️ |  ${t('commands:boss.battle.timeout')}`);
+        return this.client.rpgChecks.enemyShot(ctx, user, inimigo, type, `⚔️ |  ${ctx.locale('commands:boss.battle.timeout')}`);
       }
     }, 15000);
   }
