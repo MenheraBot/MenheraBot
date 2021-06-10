@@ -12,19 +12,19 @@ module.exports = class PvPCommands extends Command {
     });
   }
 
-  async run({ message, args }, t) {
-    const mention = message.mentions.users.first();
-    const valor = args[1];
-    if (!mention) return message.menheraReply('error', t('commands:pvp.no-args'));
+  async run(ctx) {
+    const mention = ctx.message.mentions.users.first();
+    const valor = ctx.args[1];
+    if (!mention) return ctx.replyT('error', 'commands:pvp.no-args');
 
-    if (mention.bot) return message.menheraReply('error', t('commands:pvp.bot'));
+    if (mention.bot) return ctx.replyT('error', 'commands:pvp.bot');
 
-    if (mention === message.author) return message.menheraReply('error', t('comands:pvp.self-mention'));
+    if (mention === ctx.message.author) return ctx.replyT('error', 'comands:pvp.self-mention');
 
-    const user1 = await this.client.database.Rpg.findById(message.author.id);
+    const user1 = await this.client.database.Rpg.findById(ctx.message.author.id);
     const user2 = await this.client.database.Rpg.findById(mention.id);
 
-    if (!user1 || !user2) return message.menheraReply('error', t('commands:pvp.no-user'));
+    if (!user1 || !user2) return ctx.replyT('error', 'commands:pvp.no-user');
 
     const dmgView2 = user2?.familiar?.id && user2.familiar.type === 'damage' ? user2.damage + user2.weapon.damage + (familiarsFile[user2.familiar.id].boost.value + ((user2.familiar.level - 1) * familiarsFile[user2.familiar.id].boost.value)) : user2.damage + user2.weapon.damage;
     const ptcView2 = user2?.familiar?.id && user2.familiar.type === 'armor' ? user2.armor + user2.protection.armor + (familiarsFile[user2.familiar.id].boost.value + ((user2.familiar.level - 1) * familiarsFile[user2.familiar.id].boost.value)) : user2.armor + user2.protection.armor;
@@ -32,33 +32,33 @@ module.exports = class PvPCommands extends Command {
     const ptcView1 = user1?.familiar?.id && user1.familiar.type === 'armor' ? user1.armor + user1.protection.armor + (familiarsFile[user1.familiar.id].boost.value + ((user1.familiar.level - 1) * familiarsFile[user1.familiar.id].boost.value)) : user1.armor + user1.protection.armor;
 
     const embed = new MessageEmbed()
-      .setTitle(t('commands:pvp.accept-battle', { user: message.author.tag }))
+      .setTitle(ctx.locale('commands:pvp.accept-battle', { user: ctx.message.author.tag }))
       .setColor('#8bf1f0')
-      .setFooter(t('commands:pvp.not-competitive'))
-      .setDescription(`**${t('commands:pvp.your-status')}**\n\n🩸 | ** ${t('commands:dungeon.life')}:** ${user2.life} / ${user2.maxLife}\n💧 | ** ${t('commands:dungeon.mana')}:** ${user2.mana} / ${user2.maxMana}\n🗡️ | ** ${t('commands:dungeon.dmg')}:** ${dmgView2}\n🛡️ | ** ${t('commands:dungeon.armor')}:** ${ptcView2}\n🔮 | ** ${t('commands:dungeon.ap')}:** ${user2.abilityPower}\n\n**${t('commands:pvp.enemy-status', { user: message.author.tag })}**\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n🩸 | **${t('commands:dungeon.life')}:** ${user1.life} / ${user1.maxLife}\n💧 | ** ${t('commands:dungeon.mana')}:** ${user1.mana} / ${user1.maxMana}\n🗡️ | ** ${t('commands:dungeon.dmg')}:** ${dmgView1}\n🛡️ | ** ${t('commands:dungeon.armor')}:** ${ptcView1}\n🔮 | ** ${t('commands:dungeon.ap')}:** ${user1.abilityPower}\n-----------------------------\n ${t('commands:pvp.send-to-accept')}`);
+      .setFooter(ctx.locale('commands:pvp.not-competitive'))
+      .setDescription(`**${ctx.locale('commands:pvp.your-status')}**\n\n🩸 | ** ${ctx.locale('commands:dungeon.life')}:** ${user2.life} / ${user2.maxLife}\n💧 | ** ${ctx.locale('commands:dungeon.mana')}:** ${user2.mana} / ${user2.maxMana}\n🗡️ | ** ${ctx.locale('commands:dungeon.dmg')}:** ${dmgView2}\n🛡️ | ** ${ctx.locale('commands:dungeon.armor')}:** ${ptcView2}\n🔮 | ** ${ctx.locale('commands:dungeon.ap')}:** ${user2.abilityPower}\n\n**${ctx.locale('commands:pvp.enemy-status', { user: ctx.message.author.tag })}**\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n🩸 | **${ctx.locale('commands:dungeon.life')}:** ${user1.life} / ${user1.maxLife}\n💧 | ** ${ctx.locale('commands:dungeon.mana')}:** ${user1.mana} / ${user1.maxMana}\n🗡️ | ** ${ctx.locale('commands:dungeon.dmg')}:** ${dmgView1}\n🛡️ | ** ${ctx.locale('commands:dungeon.armor')}:** ${ptcView1}\n🔮 | ** ${ctx.locale('commands:dungeon.ap')}:** ${user1.abilityPower}\n-----------------------------\n ${ctx.locale('commands:pvp.send-to-accept')}`);
 
     let aposta = false;
 
     if (valor) {
-      if (user1.life <= 0 || user2.life <= 0) return message.menheraReply('error', t('commands:pvp.no-life'));
+      if (user1.life <= 0 || user2.life <= 0) return ctx.replyT('error', 'commands:pvp.no-life');
       aposta = parseInt(valor.replace(/\D+/g, ''));
-      if (Number.isNaN(aposta)) return message.menheraReply('error', t('commands:pvp.invalid-value'));
-      if (aposta <= 0) return message.menheraReply('error', t('commands:pvp.invalid-value'));
-      if (aposta > user1.money) return message.menheraReply('error', t('commands:pvp.you-poor'));
-      if (aposta > user2.money) return message.menheraReply('error', t('commands:pvp.his-poor', { user: mention.tag }));
+      if (Number.isNaN(aposta)) return ctx.replyT('error', 'commands:pvp.invalid-value');
+      if (aposta <= 0) return ctx.replyT('error', 'commands:pvp.invalid-value');
+      if (aposta > user1.money) return ctx.replyT('error', 'commands:pvp.you-poor');
+      if (aposta > user2.money) return ctx.replyT('error', 'commands:pvp.his-poor', { user: mention.tag });
       embed.setColor('RED');
-      embed.setFooter(t('commands:pvp.is-competitive', { aposta }));
+      embed.setFooter(ctx.locale('commands:pvp.is-competitive', { aposta }));
     }
 
-    if (user1.inBattle) return message.menheraReply('error', t('commands:pvp.in-battle-one'));
-    if (user2.inBattle) return message.menheraReply('error', t('commands:pvp.in-battle-two'));
+    if (user1.inBattle) return ctx.replyT('error', 'commands:pvp.in-battle-one');
+    if (user2.inBattle) return ctx.replyT('error', 'commands:pvp.in-battle-two');
 
-    if (!aposta) embed.setDescription(`**${t('commands:pvp.your-status')}**\n\n🩸 | ** ${t('commands:dungeon.life')}:** ${user2.maxLife}\n💧 | ** ${t('commands:dungeon.mana')}:** ${user2.maxMana}\n🗡️ | ** ${t('commands:dungeon.dmg')}:** ${dmgView2}\n🛡️ | ** ${t('commands:dungeon.armor')}:** ${ptcView2}\n🔮 | ** ${t('commands:dungeon.ap')}:** ${user2.abilityPower}\n\n**${t('commands:pvp.enemy-status', { user: message.author.tag })}**\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n🩸 | **${t('commands:dungeon.life')}:** ${user1.maxLife}\n💧 | ** ${t('commands:dungeon.mana')}:** ${user1.maxMana}\n🗡️ | ** ${t('commands:dungeon.dmg')}:** ${dmgView1}\n🛡️ | ** ${t('commands:dungeon.armor')}:** ${ptcView1}\n🔮 | ** ${t('commands:dungeon.ap')}:** ${user1.abilityPower}\n-----------------------------\n ${t('commands:pvp.send-to-accept')}`);
+    if (!aposta) embed.setDescription(`**${ctx.locale('commands:pvp.your-status')}**\n\n🩸 | ** ${ctx.locale('commands:dungeon.life')}:** ${user2.maxLife}\n💧 | ** ${ctx.locale('commands:dungeon.mana')}:** ${user2.maxMana}\n🗡️ | ** ${ctx.locale('commands:dungeon.dmg')}:** ${dmgView2}\n🛡️ | ** ${ctx.locale('commands:dungeon.armor')}:** ${ptcView2}\n🔮 | ** ${ctx.locale('commands:dungeon.ap')}:** ${user2.abilityPower}\n\n**${ctx.locale('commands:pvp.enemy-status', { user: ctx.message.author.tag })}**\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n🩸 | **${ctx.locale('commands:dungeon.life')}:** ${user1.maxLife}\n💧 | ** ${ctx.locale('commands:dungeon.mana')}:** ${user1.maxMana}\n🗡️ | ** ${ctx.locale('commands:dungeon.dmg')}:** ${dmgView1}\n🛡️ | ** ${ctx.locale('commands:dungeon.armor')}:** ${ptcView1}\n🔮 | ** ${ctx.locale('commands:dungeon.ap')}:** ${user1.abilityPower}\n-----------------------------\n ${ctx.locale('commands:pvp.send-to-accept')}`);
 
-    message.channel.send(mention, embed);
+    ctx.sendC(mention, embed);
 
     const acceptFilter = (m) => m.author.id === mention.id;
-    const acceptCollector = message.channel.createMessageCollector(acceptFilter, { max: 1, time: 10000, errors: ['time'] });
+    const acceptCollector = ctx.message.channel.createMessageCollector(acceptFilter, { max: 1, time: 10000, errors: ['time'] });
 
     acceptCollector.on('collect', async (m) => {
       if (m.content.toLowerCase() === 'sim' || m.content.toLowerCase() === 'yes') {
@@ -67,10 +67,10 @@ module.exports = class PvPCommands extends Command {
         await user1.save();
         await user2.save();
 
-        return this.makeBattle(user1, user2, message.author, mention, aposta, message, t);
+        return this.makeBattle(user1, user2, ctx.message.author, mention, aposta, ctx.message, ctx.locale);
       }
 
-      return message.menheraReply('error', t('commands:pvp.negated', { user: mention.tag }));
+      return ctx.replyT('error', 'commands:pvp.negated', { user: mention.tag });
     });
   }
 
