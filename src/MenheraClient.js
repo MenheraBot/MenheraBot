@@ -32,9 +32,11 @@ module.exports = class MenheraClient extends Client {
   }
 
   async init() {
-    if (this.config.sentry_dns) {
-      Sentry.init({ dsn: this.config.sentry_dns });
-    }
+    Sentry.init({
+      dsn: process.env.SENTRY_DNS,
+      environment: process.env.NODE_ENV,
+      serverName: 'MenheraVPS',
+    });
 
     const locales = new LocaleStructure();
 
