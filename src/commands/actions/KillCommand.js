@@ -12,17 +12,17 @@ module.exports = class KillCommand extends Command {
     });
   }
 
-  async run({ message }, t) {
+  async run(ctx) {
     const rand = await getImageUrl('kill');
-    const user = message.mentions.users.first();
-    const avatar = message.author.displayAvatarURL({ format: 'png', dynamic: true });
+    const user = ctx.message.mentions.users.first();
+    const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     if (!user) {
-      return message.menheraReply('error', t('commands:kill.no-mention'));
+      return ctx.replyT('error', 'commands:kill.no-mention');
     }
 
-    if (user === message.author) {
-      return message.menheraReply('error', t('commands:kill.self-mention'));
+    if (user === ctx.message.author) {
+      return ctx.replyT('error', 'commands:kill.self-mention');
     }
 
     if (user.bot) {
@@ -36,24 +36,24 @@ module.exports = class KillCommand extends Command {
       const Rrand = ro[Math.floor(Math.random() * ro.length)];
 
       const Rembed = new MessageEmbed()
-        .setTitle(t('commands:kill.bot.embed_title'))
+        .setTitle(ctx.locale('commands:kill.bot.embed_title'))
         .setColor('#000000')
-        .setDescription(`${t('commands:kill.bot.embed_description_start')} \n${message.author} ${t('commands:kill.bot.embed_description_end')} ${user}`)
+        .setDescription(`${ctx.locale('commands:kill.bot.embed_description_start')} \n${ctx.message.author} ${ctx.locale('commands:kill.bot.embed_description_end')} ${user}`)
         .setImage(Rrand)
         .setThumbnail(avatar)
-        .setAuthor(message.author.tag, avatar);
+        .setAuthor(ctx.message.author.tag, avatar);
 
-      return message.channel.send(Rembed);
+      return ctx.send(Rembed);
     }
 
     const embed = new MessageEmbed()
-      .setTitle(t('commands:kill.embed_title'))
+      .setTitle(ctx.locale('commands:kill.embed_title'))
       .setColor('#000000')
-      .setDescription(`${message.author} ${t('commands:kill.embed_description')} ${user}`)
+      .setDescription(`${ctx.message.author} ${ctx.locale('commands:kill.embed_description')} ${user}`)
       .setImage(rand)
       .setThumbnail(avatar)
-      .setAuthor(message.author.tag, avatar);
+      .setAuthor(ctx.message.author.tag, avatar);
 
-    message.channel.send(embed);
+    ctx.send(embed);
   }
 };

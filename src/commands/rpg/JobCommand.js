@@ -13,37 +13,37 @@ module.exports = class JobCommand extends Command {
     });
   }
 
-  async run({ message, args, server }, t) {
-    const user = await this.client.database.Rpg.findById(message.author.id);
-    if (!user) return message.menheraReply('error', t('commands:job.not-registred'));
+  async run(ctx) {
+    const user = await this.client.database.Rpg.findById(ctx.message.author.id);
+    if (!user) return ctx.replyT('error', 'commands:job.not-registred');
 
     const array = Object.entries(jobsFile);
 
-    if (!args[0]) {
+    if (!ctx.args[0]) {
       const embed = new MessageEmbed()
-        .setDescription(t('commands:job.text', { prefix: server.prefix }))
+        .setDescription(ctx.locale('commands:job.text', { prefix: ctx.data.server.prefix }))
         .setColor('#9f4dd2')
-        .setTitle(t('commands:job.embed-title'));
+        .setTitle(ctx.locale('commands:job.embed-title'));
 
       for (let i = 1; i <= array.length; i++) {
         const job = jobsFile[i];
-        embed.addField(`**[ ${i} ]** - ${t(`roleplay:job.${i}.${job.name}`)}`, `${t('commands:job.min-level')}: \`${job.min_level}\`\n${t('commands:job.money')}: \`${job.min_money} - ${job.max_money}\`\n${t('commands:job.xp')}: \`${job.xp}\`\n${t('commands:job.cooldown')}: \`${job.work_cooldown_in_hours}\` ${t('commands:job.hour')}`, true);
+        embed.addField(`**[ ${i} ]** - ${ctx.locale(`roleplay:job.${i}.${job.name}`)}`, `${ctx.locale('commands:job.min-level')}: \`${job.min_level}\`\n${ctx.locale('commands:job.money')}: \`${job.min_money} - ${job.max_money}\`\n${ctx.locale('commands:job.xp')}: \`${job.xp}\`\n${ctx.locale('commands:job.cooldown')}: \`${job.work_cooldown_in_hours}\` ${ctx.locale('commands:job.hour')}`, true);
       }
 
-      return message.channel.send(message.author, embed);
+      return ctx.sendC(ctx.message.author, embed);
     }
 
-    const escolha = args[0].replace(/\D+/g, '');
-    if (!escolha || escolha.length === 0) return message.menheraReply('error', t('commands:job.invalid'));
+    const escolha = ctx.args[0].replace(/\D+/g, '');
+    if (!escolha || escolha.length === 0) return ctx.replyT('error', 'commands:job.invalid');
 
-    if (parseInt(escolha) < 1 || parseInt(escolha) > array.length || !jobsFile[escolha]) return message.menheraReply('error', t('commands:job.invalid'));
+    if (parseInt(escolha) < 1 || parseInt(escolha) > array.length || !jobsFile[escolha]) return ctx.replyT('error', 'commands:job.invalid');
 
     const minLevel = jobsFile[escolha].min_level;
-    if (minLevel > user.level) return message.menheraReply('error', t('commands:job.no-level', { level: minLevel }));
+    if (minLevel > user.level) return ctx.replyT('error', 'commands:job.no-level', { level: minLevel });
 
     user.jobId = parseInt(escolha);
     await user.save();
 
-    message.menheraReply('success', t('commands:job.finish', { job: t(`roleplay:job.${escolha}.${jobsFile[escolha].name}`) }));
+    ctx.replyT('success', 'commands:job.finish', { job: ctx.locale(`roleplay:job.${escolha}.${jobsFile[escolha].name}`) });
   }
 };

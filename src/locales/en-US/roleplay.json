@@ -20,7 +20,7 @@
   "initial": {
     "no-life": "Without Life",
     "in-battle": "In battle",
-    "in-battle-text": "You are already in the middle of a battle!",
+    "in-battle-text": "You are already in the middle of a battle! Is that a bug? Go to my support server",
     "no-life-text": "You are lifeless, and need to rest for more **{{time}}** hours",
     "tired": "Tiredness",
     "tired-text": "You have already visited the dungeon and need to rest for more **{{time}}**",

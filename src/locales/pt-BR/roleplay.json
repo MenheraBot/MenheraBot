@@ -20,7 +20,7 @@
   "initial": {
     "no-life": "Sem Vida",
     "in-battle": "Em batalha",
-    "in-battle-text": "Você ja está no meio de uma batalha!",
+    "in-battle-text": "Você ja está no meio de uma batalha! Acha que é um bug? Vá para meu servidor de suporte",
     "no-life-text": "Você está sem vida, e precisa descansar por mais **{{time}}** horas",
     "tired": "Cansaço",
     "tired-text": "Você já visitou a dungeon e precisa descansar por mais **{{time}}**",

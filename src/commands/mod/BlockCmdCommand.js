@@ -11,28 +11,28 @@ module.exports = class BlockCmdCommand extends Command {
     });
   }
 
-  async run({ message, server, args }, t) {
-    if (!args[0]) return message.menheraReply('error', t('commands:blockcommand.no-args'));
+  async run(ctx) {
+    if (!ctx.args[0]) return ctx.replyT('error', 'commands:blockcommand.no-args');
 
-    const cmd = this.client.commands.get(args[0]) || this.client.commands.get(this.client.aliases.get(args[0]));
+    const cmd = this.client.commands.get(ctx.args[0]) || this.client.commands.get(this.client.aliases.get(ctx.args[0]));
 
-    if (!cmd) return message.menheraReply('error', t('commands:blockcommand.no-cmd'));
+    if (!cmd) return ctx.replyT('error', 'commands:blockcommand.no-cmd');
 
-    if (cmd.config.devsOnly) return message.menheraReply('error', t('commands:blockcommand.dev-cmd'));
+    if (cmd.config.devsOnly) return ctx.replyT('error', 'commands:blockcommand.dev-cmd');
 
-    if (cmd.config.name === this.config.name) return message.menheraReply('error', t('commands:blockcommand.foda'));
+    if (cmd.config.name === this.config.name) return ctx.replyT('error', 'commands:blockcommand.foda');
 
-    if (server.disabledCommands?.includes(cmd.config.name)) {
-      const index = server.disabledCommands.indexOf(cmd.config.name);
+    if (ctx.data.server.disabledCommands?.includes(cmd.config.name)) {
+      const index = ctx.data.server.disabledCommands.indexOf(cmd.config.name);
       if (index > -1) {
-        server.disabledCommands.splice(index, 1);
-        message.menheraReply('success', t('commands:blockcommand.unblock', { cmd: cmd.config.name }));
+        ctx.data.server.disabledCommands.splice(index, 1);
+        ctx.replyT('success', 'commands:blockcommand.unblock', { cmd: cmd.config.name });
       }
     } else {
-      server.disabledCommands.push(cmd.config.name);
-      message.menheraReply('success', t('commands:blockcommand.block', { cmd: cmd.config.name }));
+      ctx.data.server.disabledCommands.push(cmd.config.name);
+      ctx.replyT('success', 'commands:blockcommand.block', { cmd: cmd.config.name });
     }
 
-    await server.save();
+    await ctx.data.server.save();
   }
 };

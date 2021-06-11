@@ -11,18 +11,18 @@ module.exports = class BlockChannelCommand extends Command {
     });
   }
 
-  async run({ message, server }, t) {
-    if (server.blockedChannels.includes(message.channel.id)) {
-      const index = server.blockedChannels.indexOf(message.channel.id);
+  async run(ctx) {
+    if (ctx.data.server.blockedChannels.includes(ctx.message.channel.id)) {
+      const index = ctx.data.server.blockedChannels.indexOf(ctx.message.channel.id);
       if (index > -1) {
-        server.blockedChannels.splice(index, 1);
-        message.menheraReply('success', t('commands:blockchannel.unblock'));
+        ctx.data.server.blockedChannels.splice(index, 1);
+        ctx.replyT('success', 'commands:blockchannel.unblock');
       }
     } else {
-      server.blockedChannels.push(message.channel.id);
-      message.menheraReply('success', t('commands:blockchannel.block', { prefix: server.prefix }));
+      ctx.data.server.blockedChannels.push(ctx.message.channel.id);
+      ctx.replyT('success', 'commands:blockchannel.block', { prefix: ctx.data.server.prefix });
     }
 
-    server.save();
+    ctx.data.server.save();
   }
 };

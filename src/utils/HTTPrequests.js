@@ -1,13 +1,12 @@
 const request = require('request-promise');
-const config = require('../../config.json');
 
 module.exports.getImageUrl = async (type) => {
   const options = {
     method: 'GET',
-    uri: `${config.api_IP}/api/assets/${type}`,
+    uri: `${process.env.API_IP}/api/assets/${type}`,
     headers: {
       'User-Agent': 'MenheraClient',
-      token: config.api_TOKEN,
+      token: process.env.API_TOKEN,
     },
     json: true,
   };
@@ -20,10 +19,10 @@ module.exports.getImageUrl = async (type) => {
 module.exports.postRpg = async (userId, userClass, userLevel, dungeonLevel, death, date) => {
   const options = {
     method: 'POST',
-    uri: `${config.api_IP}/api/rpg`,
+    uri: `${process.env.API_IP}/api/rpg`,
     headers: {
       'User-Agent': 'MenheraClient',
-      token: config.api_TOKEN,
+      token: process.env.API_TOKEN,
     },
     body: {
       userId,
@@ -41,10 +40,10 @@ module.exports.postRpg = async (userId, userClass, userLevel, dungeonLevel, deat
 module.exports.getActivity = async (shard) => {
   const options = {
     method: 'GET',
-    uri: `${config.api_IP}/api/activity`,
+    uri: `${process.env.API_IP}/api/activity`,
     headers: {
       'User-Agent': 'MenheraClient',
-      token: config.api_TOKEN,
+      token: process.env.API_TOKEN,
     },
     body: {
       shard: shard || 0,
@@ -57,47 +56,13 @@ module.exports.getActivity = async (shard) => {
   return result;
 };
 
-module.exports.status = async (data) => {
-  const options = {
-    method: 'POST',
-    uri: `${config.api_IP}/api/${data}`,
-    headers: {
-      'User-Agent': 'MenheraClient',
-      token: config.api_TOKEN,
-    },
-    body: {
-      message: 'Terminating',
-    },
-    json: true,
-  };
-
-  await request(options).catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
-};
-
-module.exports.shards = async (data, shard) => {
-  const options = {
-    method: 'POST',
-    uri: `${config.api_IP}/api/shard/${data}`,
-    headers: {
-      'User-Agent': 'MenheraClient',
-      token: config.api_TOKEN,
-    },
-    body: {
-      shard,
-    },
-    json: true,
-  };
-
-  await request(options).catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
-};
-
 module.exports.postCommand = async (data) => {
   const options = {
     method: 'POST',
-    uri: `${config.api_IP}/api/commands`,
+    uri: `${process.env.API_IP}/api/commands`,
     headers: {
       'User-Agent': 'MenheraClient',
-      token: config.api_TOKEN,
+      token: process.env.API_TOKEN,
     },
     body: {
       authorName: data.authorName,
@@ -114,46 +79,13 @@ module.exports.postCommand = async (data) => {
   await request(options).catch((err) => console.log(`[HTTP ERROR]${err.message}`));
 };
 
-module.exports.clearCommands = async () => {
-  const options = {
-    method: 'POST',
-    headers: {
-      'User-Agent': 'MenheraClient',
-      token: config.api_TOKEN,
-    },
-    uri: `${config.api_IP}/api/commands/clear`,
-  };
-
-  await request(options).catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
-};
-
-module.exports.getCommands = async () => {
-  const options = {
-    method: 'GET',
-    uri: `${config.api_IP}/api/commands/?cmds=true`,
-    headers: {
-      'User-Agent': 'MenheraClient',
-      token: config.api_TOKEN,
-    },
-  };
-
-  let cmds;
-
-  await request(options).then((data) => {
-    const obj = JSON.parse(data);
-    cmds = obj.length;
-  }).catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
-
-  return (cmds) || 'MUITOS';
-};
-
 module.exports.getProfileCommands = async (id) => {
   const options = {
     method: 'GET',
-    uri: `${config.api_IP}/api/usages/user`,
+    uri: `${process.env.API_IP}/api/usages/user`,
     headers: {
       'User-Agent': 'MenheraClient',
-      token: config.api_TOKEN,
+      token: process.env.API_TOKEN,
     },
     body: {
       userId: id,
@@ -173,10 +105,10 @@ module.exports.getProfileCommands = async (id) => {
 module.exports.getTopCommands = async () => {
   const options = {
     method: 'GET',
-    uri: `${config.api_IP}/api/usages/top/command`,
+    uri: `${process.env.API_IP}/api/usages/top/command`,
     headers: {
       'User-Agent': 'MenheraClient',
-      token: config.api_TOKEN,
+      token: process.env.API_TOKEN,
     },
     json: true,
   };
@@ -193,10 +125,10 @@ module.exports.getTopCommands = async () => {
 module.exports.getTopUsers = async () => {
   const options = {
     method: 'GET',
-    uri: `${config.api_IP}/api/usages/top/user`,
+    uri: `${process.env.API_IP}/api/usages/top/user`,
     headers: {
       'User-Agent': 'MenheraClient',
-      token: config.api_TOKEN,
+      token: process.env.API_TOKEN,
     },
     json: true,
   };
@@ -213,10 +145,10 @@ module.exports.getTopUsers = async () => {
 module.exports.getCoinflipUserStats = async (id) => {
   const options = {
     method: 'GET',
-    uri: `${config.api_IP}/api/coinflip`,
+    uri: `${process.env.API_IP}/api/coinflip`,
     headers: {
       'User-Agent': 'MenheraClient',
-      token: config.api_TOKEN,
+      token: process.env.API_TOKEN,
     },
     body: {
       userId: id,
@@ -235,10 +167,10 @@ module.exports.getCoinflipUserStats = async (id) => {
 module.exports.postCoinflipGame = async (winnerId, loserId, betValue, date) => {
   const options = {
     method: 'POST',
-    uri: `${config.api_IP}/api/coinflip`,
+    uri: `${process.env.API_IP}/api/coinflip`,
     headers: {
       'User-Agent': 'MenheraClient',
-      token: config.api_TOKEN,
+      token: process.env.API_TOKEN,
     },
     body: {
       winnerId, loserId, betValue, date,

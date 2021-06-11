@@ -11,29 +11,29 @@ module.exports = class CoinflipCommand extends Command {
     });
   }
 
-  async run({ message, args }, t) {
-    const user1 = message.author;
-    const user2 = message.mentions.users.first();
-    const input = args[1];
-    if (!input) return message.menheraReply('error', t('commands:coinflip.invalid-value'));
+  async run(ctx) {
+    const user1 = ctx.message.author;
+    const user2 = ctx.message.mentions.users.first();
+    const input = ctx.args[1];
+    if (!input) return ctx.replyT('error', 'commands:coinflip.invalid-value');
     const valor = input.replace(/\D+/g, '');
 
-    if (!user2) return message.menheraReply('error', t('commands:coinflip.no-mention'));
-    if (user2.bot) return message.menheraReply('error', t('commands:coinflip.bot'));
-    if (user2.id === user1.id) return message.menheraReply('error', t('commands:coinflip.self-mention'));
+    if (!user2) return ctx.replyT('error', 'commands:coinflip.no-mention');
+    if (user2.bot) return ctx.replyT('error', 'commands:coinflip.bot');
+    if (user2.id === user1.id) return ctx.replyT('error', 'commands:coinflip.self-mention');
 
-    if (Number.isNaN(parseInt(valor))) return message.menheraReply('error', t('commands:coinflip.invalid-value'));
-    if (parseInt(valor) < 1) return message.menheraReply('error', t('commands:coinflip.invalid-value'));
+    if (Number.isNaN(parseInt(valor))) return ctx.replyT('error', 'commands:coinflip.invalid-value');
+    if (parseInt(valor) < 1) return ctx.replyT('error', 'commands:coinflip.invalid-value');
 
     const db1 = await this.client.database.Users.findOne({ id: user1.id });
     const db2 = await this.client.database.Users.findOne({ id: user2.id });
 
-    if (!db1 || !db2) return message.menheraReply('error', t('commands:coinflip.no-dbuser'));
+    if (!db1 || !db2) return ctx.replyT('error', 'commands:coinflip.no-dbuser');
 
-    if (valor > db1.estrelinhas) return message.menheraReply('error', t('commands:coinflip.poor'));
-    if (valor > db2.estrelinhas) return message.channel.send(`<:negacao:759603958317711371> **|** ${user2} ${t('commands:coinflip.poor')}`);
+    if (valor > db1.estrelinhas) return ctx.replyT('error', 'commands:coinflip.poor');
+    if (valor > db2.estrelinhas) return ctx.send(`<:negacao:759603958317711371> **|** ${user2} ${ctx.locale('commands:coinflip.poor')}`);
 
-    message.channel.send(`${user2}, ${user1} ${t('commands:coinflip.confirm-start', { value: valor })} ${user1} ${t('commands:coinflip.confirm-middle')} ${user2} ${t('commands:coinflip.win')}!\n${user2} ${t('commands:coinflip.confirm-end')}`).then((msg) => {
+    ctx.send(`${user2}, ${user1} ${ctx.locale('commands:coinflip.confirm-start', { value: valor })} ${user1} ${ctx.locale('commands:coinflip.confirm-middle')} ${user2} ${ctx.locale('commands:coinflip.win')}!\n${user2} ${ctx.locale('commands:coinflip.confirm-end')}`).then((msg) => {
       msg.react('✅');
       const filter = (reaction, usuario) => reaction.emoji.name === '✅' && usuario.id === user2.id;
 
@@ -43,29 +43,19 @@ module.exports = class CoinflipCommand extends Command {
         const shirleyTeresinha = ['Cara', 'Coroa'];
         const choice = shirleyTeresinha[Math.floor(Math.random() * shirleyTeresinha.length)];
 
-        let winner;
-        let loser;
+        let winner = user1.id;
+        let loser = user2.id;
 
-        switch (choice) {
-          case 'Cara':
-            message.channel.send(`${t('commands:coinflip.cara')}\n${user1} ${t('commands:coinflip.cara-texto-start', { value: valor })} ${user2}! ${t('commands:coinflip.cara-text-middle')} ${user2} ${t('commands:coinflip.cara-text-end')}`);
-            db1.estrelinhas += parseInt(valor);
-            db2.estrelinhas -= parseInt(valor);
-            winner = user1.id;
-            loser = user2.id;
-            await db1.save();
-            await db2.save();
-            break;
-          case 'Coroa':
-            message.channel.send(`${t('commands:coinflip.coroa')}\n${user2} ${t('commands:coinflip.coroa-texto', { value: valor })} ${user1}`);
-            db1.estrelinhas -= parseInt(valor);
-            db2.estrelinhas += parseInt(valor);
-            winner = user2.id;
-            loser = user1.id;
-            await db1.save();
-            await db2.save();
-            break;
+        if (choice === 'Cara') {
+          ctx.send(`${ctx.locale('commands:coinflip.cara')}\n${user1} ${ctx.locale('commands:coinflip.cara-texto-start', { value: valor })} ${user2}! ${ctx.locale('commands:coinflip.cara-text-middle')} ${user2} ${ctx.locale('commands:coinflip.cara-text-end')}`);
+        } else {
+          winner = user2.id;
+          loser = user1.id;
+          ctx.send(`${ctx.locale('commands:coinflip.coroa')}\n${user2} ${ctx.locale('commands:coinflip.coroa-texto', { value: valor })} ${user1}`);
         }
+
+        await this.client.database.repositories.starRepository.add(winner, valor);
+        await this.client.database.repositories.starRepository.remove(loser, valor);
         await http.postCoinflipGame(winner, loser, parseInt(valor), Date.now());
       });
     });

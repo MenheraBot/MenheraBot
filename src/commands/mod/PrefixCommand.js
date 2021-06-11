@@ -12,14 +12,14 @@ module.exports = class PrefixCommand extends Command {
     });
   }
 
-  async run({ message, args, server }, t) {
-    const [prefix] = args;
-    if (!prefix) return message.menheraReply('error', t('commands:prefix.no-args'));
-    if (prefix.length > 3) return message.menheraReply('error', t('commands:prefix.invalid-input'));
+  async run(ctx) {
+    const [prefix] = ctx.args;
+    if (!prefix) return ctx.replyT('error', 'commands:prefix.no-args');
+    if (prefix.length > 3) return ctx.replyT('error', 'commands:prefix.invalid-input');
 
-    server.prefix = prefix;
-    server.save();
+    ctx.data.server.prefix = prefix;
+    ctx.data.server.save();
 
-    message.menheraReply('success', t('commands:prefix.done', { prefix: server.prefix }));
+    ctx.replyT('success', 'commands:prefix.done', { prefix: ctx.data.server.prefix });
   }
 };

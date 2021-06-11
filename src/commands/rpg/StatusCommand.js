@@ -14,18 +14,18 @@ module.exports = class StatusCommand extends Command {
     });
   }
 
-  async run({ message, args }, t) {
+  async run(ctx) {
     let mentioned;
-    if (args[0]) {
+    if (ctx.args[0]) {
       try {
-        mentioned = await this.client.users.fetch(args[0].replace(/[<@!>]/g, ''));
+        mentioned = await this.client.users.fetch(ctx.args[0].replace(/[<@!>]/g, ''));
       } catch {
-        return message.menheraReply('error', t('commands:status.not-found'));
+        return ctx.replyT('error', 'commands:status.not-found');
       }
-    } else mentioned = message.author;
+    } else mentioned = ctx.message.author;
 
     const user = await this.client.database.Rpg.findById(mentioned.id);
-    if (!user) return message.menheraReply('error', t('commands:status.not-found'));
+    if (!user) return ctx.replyT('error', 'commands:status.not-found');
 
     const userAvatarLink = mentioned.displayAvatarURL({ format: 'png' });
     const dmg = user?.familiar?.id && user.familiar.type === 'damage' ? user.damage + user?.weapon?.damage + (familiarsFile[user.familiar.id].boost.value + ((user.familiar.level - 1) * familiarsFile[user.familiar.id].boost.value)) : user.damage + user?.weapon?.damage;
@@ -49,18 +49,18 @@ module.exports = class StatusCommand extends Command {
     };
 
     const i18nData = {
-      damage: t('commands:status.dmg'),
-      armor: t('commands:status.armor'),
-      ap: t('commands:status.ap'),
-      money: t('commands:status.money'),
-      userClass: t(`roleplay:classes.${user.class}`),
-      userJob: t(`roleplay:job.${user.jobId}.name`),
+      damage: ctx.locale('commands:status.dmg'),
+      armor: ctx.locale('commands:status.armor'),
+      ap: ctx.locale('commands:status.ap'),
+      money: ctx.locale('commands:status.money'),
+      userClass: ctx.locale(`roleplay:classes.${user.class}`),
+      userJob: ctx.locale(`roleplay:job.${user.jobId}.name`),
     };
 
     const res = await NewHttp.statusRequest(UserDataToSend, userAvatarLink, i18nData);
 
-    if (res.err) return message.menheraReply('error', t('commands:http-error'));
+    if (res.err) return ctx.replyT('error', 'commands:http-error');
 
-    message.channel.send(message.author, new MessageAttachment(Buffer.from(res.data), 'status.png'));
+    ctx.sendC(ctx.message.author, new MessageAttachment(Buffer.from(res.data), 'status.png'));
   }
 };

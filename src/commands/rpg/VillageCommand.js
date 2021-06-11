@@ -18,47 +18,47 @@ module.exports = class VillageCommand extends Command {
     });
   }
 
-  async run({ message }, t) {
-    const user = await this.client.database.Rpg.findById(message.author.id);
+  async run(ctx) {
+    const user = await this.client.database.Rpg.findById(ctx.message.author.id);
 
     if (!user) {
-      return message.menheraReply('error', t('commands:village.non-aventure'));
+      return ctx.replyT('error', 'commands:village.non-aventure');
     }
 
     const embed = new MessageEmbed()
       .setColor('#bbfd7c')
-      .setTitle(t('commands:village.index.title'))
-      .setDescription(t('commands:village.index.description'))
-      .addField(t('commands:village.index.field_name'), t('commands:village.index.field_value'))
-      .setFooter(t('commands:village.index.footer'));
+      .setTitle(ctx.locale('commands:village.index.title'))
+      .setDescription(ctx.locale('commands:village.index.description'))
+      .addField(ctx.locale('commands:village.index.field_name'), ctx.locale('commands:village.index.field_value'))
+      .setFooter(ctx.locale('commands:village.index.footer'));
 
-    const sent = await message.channel.send(message.author, embed);
+    const sent = await ctx.sendC(ctx.message.author, embed);
 
     const options = ['bruxa', 'ferreiro', 'hotel', 'guilda'];
-    const collector = new PagesCollector(message.channel, { sent, message, t }, { max: 2, time: 30000, errors: ['time'] })
-      .setInvalidOption(() => collector.menheraReply('error', t('commands:village.invalid-option')))
+    const collector = new PagesCollector(ctx.message.channel, { sent, ctx }, { max: 2, time: 30000, errors: ['time'] })
+      .setInvalidOption(() => collector.replyT('error', 'commands:village.invalid-option'))
       .setFindOption(PagesCollector.arrFindByElemOrIndex(options))
-      .setHandle((_, option) => VillageCommand[option](message, user, t, collector))
+      .setHandle((_, option) => VillageCommand[option](ctx, user, collector))
       .start();
   }
 
-  static async bruxa(message, user, t, collector) {
+  static async bruxa(ctx, user, collector) {
     const items = itemsFile.bruxa.filter((item) => user.level >= item.minLevel && (!item.maxLevel || user.level <= item.maxLevel));
 
     const embed = new MessageEmbed()
-      .setTitle(`🏠 | ${t('commands:village.bruxa.title')}`)
+      .setTitle(`🏠 | ${ctx.locale('commands:village.bruxa.title')}`)
       .setColor('#c5b5a0')
-      .setFooter(t('commands:village.bruxa.footer'))
-      .setDescription(t('commands:village.bruxa.description', { money: user.money }))
+      .setFooter(ctx.locale('commands:village.bruxa.footer'))
+      .setDescription(ctx.locale('commands:village.bruxa.description', { money: user.money }))
       .addFields(
         items.map((item, i) => ({
           name: `---------------[ ${i + 1} ]---------------\n${item.name}`,
-          value: `📜 | **${t('commands:village.desc')}:** ${item.description}\n💎 |** ${t('commands:village.cost')}:** ${item.value}`,
+          value: `📜 | **${ctx.locale('commands:village.desc')}:** ${item.description}\n💎 |** ${ctx.locale('commands:village.cost')}:** ${item.value}`,
 
         })),
       );
 
-    collector.send(message.author, embed);
+    collector.send(ctx.message.author, embed);
     collector.setFindOption((content) => {
       const [query, qty = 1] = content.trim().split(/ +/g);
       const item = items.find((i, n) => i.name === query.toLowerCase() || Number(query) === (n + 1));
@@ -66,25 +66,25 @@ module.exports = class VillageCommand extends Command {
     });
     collector.setHandle((_, { item, qty }) => {
       if (Number.isNaN(qty) || qty < 1) {
-        return collector.menheraReply('error', t('commands:village.invalid-quantity'));
+        return collector.replyT('error', 'commands:village.invalid-quantity');
       }
 
       const value = item.value * qty;
 
       if (!value) {
-        return collector.menheraReply('error', t('commands:village.invalid-value'));
+        return collector.replyT('error', 'commands:village.invalid-value');
       }
 
       if (user.money < value) {
-        return collector.menheraReply('error', t('commands:village.poor'));
+        return collector.replyT('error', 'commands:village.poor');
       }
 
       const backpack = RPGUtil.getBackpack(user);
       if ((backpack.value + qty) > backpack.capacity) {
-        return collector.menheraReply('error', t('commands:village.backpack-full'));
+        return collector.replyT('error', 'commands:village.backpack-full');
       }
 
-      collector.menheraReply('success', t('commands:village.bruxa.bought', { quantidade: qty, name: item.name, valor: value }));
+      collector.replyT('success', 'commands:village.bruxa.bought', { quantidade: qty, name: item.name, valor: value });
 
       RPGUtil.addItemInInventory(user, { name: item.name, damage: item.damage }, qty);
       user.money -= value;
@@ -96,29 +96,29 @@ module.exports = class VillageCommand extends Command {
     return PagesCollector.continue();
   }
 
-  static ferreiro(message, user, t, collector) {
+  static ferreiro(ctx, user, collector) {
     if (user.level < 9) {
-      return collector.menheraReply('error', t('commands:village.ferreiro.low-level', { level: 9 }));
+      return collector.replyT('error', 'commands:village.ferreiro.low-level', { level: 9 });
     }
 
     const categories = ['sword', 'backpack', 'armor'];
     const categoriesNames = categories.map(
-      (name, i) => `**${i + 1}** - ${t(`commands:village.ferreiro.categories.${name}`)}`,
+      (name, i) => `**${i + 1}** - ${ctx.locale(`commands:village.ferreiro.categories.${name}`)}`,
     );
     const embed = new MessageEmbed()
       .setColor('#b99c81')
-      .setTitle(`⚒️ | ${t('commands:village.ferreiro.title')}`)
-      .setDescription(t('commands:village.ferreiro.description'))
-      .addField(t('commands:village.ferreiro.field_name'), categoriesNames)
-      .setFooter(t('commands:village.ferreiro.footer'));
+      .setTitle(`⚒️ | ${ctx.locale('commands:village.ferreiro.title')}`)
+      .setDescription(ctx.locale('commands:village.ferreiro.description'))
+      .addField(ctx.locale('commands:village.ferreiro.field_name'), categoriesNames)
+      .setFooter(ctx.locale('commands:village.ferreiro.footer'));
 
-    collector.send(message.author, embed);
+    collector.send(ctx.message.author, embed);
     collector.setFindOption(PagesCollector.arrFindByElemOrIndex(categories));
-    collector.setHandle((_, category) => VillageCommand.ferreiroEquipamentos(category, message, user, t, collector));
+    collector.setHandle((_, category) => VillageCommand.ferreiroEquipamentos(category, ctx, user, collector));
     return PagesCollector.continue();
   }
 
-  static ferreiroEquipamentos(category, message, user, t, collector) {
+  static ferreiroEquipamentos(category, ctx, user, collector) {
     const emojis = {
       sword: '🗡️',
       armor: '🛡️',
@@ -133,11 +133,11 @@ module.exports = class VillageCommand extends Command {
 
     const embed = new MessageEmbed()
       .setColor('#b99c81')
-      .setTitle(`⚒️ | ${t('commands:village.ferreiro.title')}`)
+      .setTitle(`⚒️ | ${ctx.locale('commands:village.ferreiro.title')}`)
       .setDescription(
-        `<:atencao:759603958418767922> | ${t(`commands:village.ferreiro.${category}.description`)}`,
+        `<:atencao:759603958418767922> | ${ctx.locale(`commands:village.ferreiro.${category}.description`)}`,
       )
-      .setFooter(t('commands:village.ferreiro.footer'));
+      .setFooter(ctx.locale('commands:village.ferreiro.footer'));
 
     const equips = itemsFile.ferreiro.filter((item) => (item.category === category) && !item.isNotTrade);
 
@@ -147,19 +147,19 @@ module.exports = class VillageCommand extends Command {
     embed.addFields(equips.map((equip, i) => ({
       name: `**${i + 1}** - ${equip.id}`,
       value: [
-        `${emojis[category]} | ${t(`commands:village.ferreiro.${mainProp}`)} **${equip[mainProp]}**`,
-        `💎 | ${t('commands:village.ferreiro.cost')}: **${equip.price}**`,
-        `<:Chest:760957557538947133> | ${t('commands:village.ferreiro.itens-needed')}: ${parseMissingItems(equip)}`,
+        `${emojis[category]} | ${ctx.locale(`commands:village.ferreiro.${mainProp}`)} **${equip[mainProp]}**`,
+        `💎 | ${ctx.locale('commands:village.ferreiro.cost')}: **${equip.price}**`,
+        `<:Chest:760957557538947133> | ${ctx.locale('commands:village.ferreiro.itens-needed')}: ${parseMissingItems(equip)}`,
       ].join('\n'),
     })));
 
     const userItems = RPGUtil.countItems(user.loots);
 
-    collector.send(message.author, embed);
+    collector.send(ctx.message.author, embed);
     collector.setFindOption(PagesCollector.arrFindByItemNameOrIndex(equips));
     collector.setHandle((_, equip) => {
       if (user.money < equip.price) {
-        return message.menheraReply('error', t('commands:village.poor'));
+        return ctx.replyT('error', 'commands:village.poor');
       }
 
       const requiredItems = Object.entries(equip.required_items);
@@ -180,7 +180,7 @@ module.exports = class VillageCommand extends Command {
       if (missingItems.length > 0) {
         const items = missingItems.map((item) => `${item.qty} ${item.name}`).join(', ');
 
-        return message.menheraReply('error', `${t(`commands:village.ferreiro.${category}.poor`, { items })}`);
+        return ctx.reply('error', `${ctx.locale(`commands:village.ferreiro.${category}.poor`, { items })}`);
       }
 
       requiredItems.forEach(([name, qty]) => RPGUtil.removeItemInLoots(user, name, qty));
@@ -210,41 +210,41 @@ module.exports = class VillageCommand extends Command {
       user.money -= equip.price;
 
       user.save();
-      message.menheraReply('success', t(`commands:village.ferreiro.${category}.change`, { equip: equip.id }));
+      ctx.replyT('success', `commands:village.ferreiro.${category}.change`, { equip: equip.id });
       collector.finish();
     });
     return PagesCollector.continue();
   }
 
-  static hotel(message, user, t, collector) {
+  static hotel(ctx, user, collector) {
     const embed = new MessageEmbed()
-      .setTitle(`🏨 | ${t('commands:village.hotel.title')}`)
-      .setDescription(t('commands:village:hotel.description'))
-      .setFooter(t('commands:village.hotel.footer'))
+      .setTitle(`🏨 | ${ctx.locale('commands:village.hotel.title')}`)
+      .setDescription(ctx.locale('commands:village:hotel.description'))
+      .setFooter(ctx.locale('commands:village.hotel.footer'))
       .setColor('#e7a8ec');
 
     embed.addFields(itemsFile.hotel.map(({
       name, time, life, mana,
     }, i) => ({
-      name: `${i + 1} - ${t(`commands:village.hotel.fields.${name}`)}`,
-      value: `⌛ | ${t('commands:village.hotel.fields.value', { time: moment.duration(time).format('D[d], H[h], m[m], s[s]', { trim: 'both' }), life, mana })}`,
+      name: `${i + 1} - ${ctx.locale(`commands:village.hotel.fields.${name}`)}`,
+      value: `⌛ | ${ctx.locale('commands:village.hotel.fields.value', { time: moment.duration(time).format('D[d], H[h], m[m], s[s]', { trim: 'both' }), life, mana })}`,
     })));
 
-    collector.send(message.author, embed);
+    collector.send(ctx.message.author, embed);
     collector.setFindOption(PagesCollector.arrFindByIndex(itemsFile.hotel));
     collector.setHandle((_, option) => {
       if (user.hotelTime > Date.now()) {
-        return collector.menheraReply('error', t('commands:village.hotel.already'));
+        return collector.replyT('error', 'commands:village.hotel.already');
       }
       if (user.life < 1 && user.death > Date.now()) {
-        return collector.menheraReply('error', t('commands:village.hotel.dead'));
+        return collector.replyT('error', 'commands:village.hotel.dead');
       }
 
       user.hotelTime = option.time + Date.now();
 
       if (!option) {
         collector.finish();
-        return message.menheraReply('error', t('commands:village.number-error'));
+        return ctx.replyT('error', 'commands:village.number-error');
       }
 
       if (option.life === 'MAX') {
@@ -252,7 +252,7 @@ module.exports = class VillageCommand extends Command {
       } else {
         if (Number.isNaN(option.life)) {
           collector.finish();
-          return message.menheraReply('error', t('commands:village.number-error'));
+          return ctx.replyT('error', 'commands:village.number-error');
         }
         user.life += option.life;
         if (user.life > user.maxLife) user.life = user.maxLife;
@@ -264,44 +264,44 @@ module.exports = class VillageCommand extends Command {
         user.mana += option.mana;
         if (Number.isNaN(option.life)) {
           collector.finish();
-          return message.menheraReply('error', t('commands:village.number-error'));
+          return ctx.replyT('error', 'commands:village.number-error');
         }
         if (user.mana > user.maxMana) user.mana = user.maxMana;
       }
 
       user.save();
 
-      collector.menheraReply('success', t('commands:village.hotel.done'));
+      collector.replyT('success', 'commands:village.hotel.done');
       collector.finish();
     });
     return PagesCollector.continue();
   }
 
-  static guilda(message, user, t, collector) {
+  static guilda(ctx, user, collector) {
     const embed = new MessageEmbed()
-      .setTitle(`🏠 | ${t('commands:village.guilda.title')}`)
+      .setTitle(`🏠 | ${ctx.locale('commands:village.guilda.title')}`)
       .setColor('#98b849')
-      .setFooter(t('commands:village.guilda.footer'));
+      .setFooter(ctx.locale('commands:village.guilda.footer'));
 
     const allItems = RPGUtil.countItems(user.loots);
 
     if (allItems.length === 0) {
-      return collector.send(message.author,
+      return collector.send(ctx.message.author,
         embed
-          .setDescription(t('commands:village.guilda.no-loots'))
+          .setDescription(ctx.locale('commands:village.guilda.no-loots'))
           .setFooter('No Looots!')
           .setColor('#f01010'));
     }
 
-    let txt = t('commands:village.guilda.money', { money: user.money }) + t('commands:village.guilda.sell-all');
+    let txt = ctx.locale('commands:village.guilda.money', { money: user.money }) + ctx.locale('commands:village.guilda.sell-all');
 
     let displayedItems = allItems;
     // eslint-disable-next-line no-restricted-syntax
     for (const i in allItems) {
       // eslint-disable-next-line no-loop-func
       const separator = `---------------**[ ${parseInt(i) + 1} ]**---------------`;
-      const name = `<:Chest:760957557538947133> | **${allItems[i].job_id > 0 ? t(`roleplay:job.${allItems[i].job_id}.${allItems[i].name}`) : allItems[i].name}** ( ${allItems[i].amount} )`;
-      const value = `💎 | **${t('commands:village.guilda.value')}:** ${allItems[i].value}\n`;
+      const name = `<:Chest:760957557538947133> | **${allItems[i].job_id > 0 ? ctx.locale(`roleplay:job.${allItems[i].job_id}.${allItems[i].name}`) : allItems[i].name}** ( ${allItems[i].amount} )`;
+      const value = `💎 | **${ctx.locale('commands:village.guilda.value')}:** ${allItems[i].value}\n`;
       const item = `${separator}\n ${name}\n ${value}`;
       if ((txt.length + item.length) <= 1800) {
         txt += item;
@@ -313,7 +313,7 @@ module.exports = class VillageCommand extends Command {
 
     embed.setDescription(txt);
 
-    collector.send(message.author, embed);
+    collector.send(ctx.message.author, embed);
     collector.setFindOption((content) => {
       if (Number(content) === 0) {
         return 'ALL';
@@ -337,30 +337,30 @@ module.exports = class VillageCommand extends Command {
         user.money += total;
         user.save();
 
-        return collector.menheraReply('success', t('commands:village.guilda.sold-all', { amount: sold, value: total }));
+        return collector.replyT('success', 'commands:village.guilda.sold-all', { amount: sold, value: total });
       }
 
       const [item, qty] = result;
 
       if (qty < 1) {
-        return message.menheraReply('error', t('commands:village.invalid-quantity'));
+        return ctx.replyT('error', 'commands:village.invalid-quantity');
       }
 
       if (qty > item.amount) {
-        return message.menheraReply('error', `${t('commands:village.guilda.poor')} ${qty} ${item.job_id > 0 ? t(`roleplay:job.${item.job_id}.${item.name}`) : item.name}`);
+        return ctx.reply('error', `${ctx.locale('commands:village.guilda.poor')} ${qty} ${item.job_id > 0 ? ctx.locale(`roleplay:job.${item.job_id}.${item.name}`) : item.name}`);
       }
 
       const total = parseInt(qty) * parseInt(item.value);
       if (Number.isNaN(total)) {
-        return message.menheraReply('error', t('commands:village.guilda.unespected-error'));
+        return ctx.replyT('error', 'commands:village.guilda.unespected-error');
       }
 
       RPGUtil.removeItemInLoots(user, item.name, qty);
       user.money += total;
 
       user.save();
-      const itemNameTranslate = item.job_id > 0 ? t(`roleplay:job.${item.job_id}.${item.name}`) : item.name;
-      return message.menheraReply('success', t('commands:village.guilda.sold', { quantity: qty, name: itemNameTranslate, value: total }));
+      const itemNameTranslate = item.job_id > 0 ? ctx.locale(`roleplay:job.${item.job_id}.${item.name}`) : item.name;
+      return ctx.replyT('success', 'commands:village.guilda.sold', { quantity: qty, name: itemNameTranslate, value: total });
     });
     return PagesCollector.continue();
   }

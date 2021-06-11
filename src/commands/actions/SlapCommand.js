@@ -12,26 +12,26 @@ module.exports = class SlapCommand extends Command {
     });
   }
 
-  async run({ message }, t) {
+  async run(ctx) {
     const rand = await getImageUrl('slap');
-    const user = message.mentions.users.first();
+    const user = ctx.message.mentions.users.first();
 
-    if (user && user.bot) return message.menheraReply('error', t('commands:slap.bot'));
+    if (user && user.bot) return ctx.replyT('error', 'commands:slap.bot');
 
-    if (!user) return message.menheraReply('error', t('commands:slap.no-mention'));
+    if (!user) return ctx.replyT('error', 'commands:slap.no-mention');
 
-    if (user === message.author) return message.menheraReply('error', t('commands:slap.self-mention'));
+    if (user === ctx.message.author) return ctx.replyT('error', 'commands:slap.self-mention');
 
-    const avatar = message.author.displayAvatarURL({ format: 'png', dynamic: true });
+    const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     const embed = new MessageEmbed()
-      .setTitle(t('commands:slap.embed_title'))
+      .setTitle(ctx.locale('commands:slap.embed_title'))
       .setColor('#000000')
-      .setDescription(`${message.author} ${t('commands:slap.embed_description')} ${user}`)
+      .setDescription(`${ctx.message.author} ${ctx.locale('commands:slap.embed_description')} ${user}`)
       .setImage(rand)
       .setThumbnail(avatar)
-      .setAuthor(message.author.tag, avatar);
+      .setAuthor(ctx.message.author.tag, avatar);
 
-    message.channel.send(embed);
+    ctx.send(embed);
   }
 };

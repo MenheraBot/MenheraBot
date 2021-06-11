@@ -12,8 +12,8 @@ module.exports = class HuntCommand extends Command {
     });
   }
 
-  async run({ message, authorData: selfData, args }, t) {
-    const authorData = selfData ?? new this.client.database.Users({ id: message.author.id });
+  async run(ctx) {
+    const authorData = ctx.data.user;
 
     const validOptions = ['demonios', 'anjos', 'semideuses', 'deuses', 'ajuda', 'probabilidades'];
 
@@ -43,34 +43,34 @@ module.exports = class HuntCommand extends Command {
     },
     ];
 
-    if (!args[0]) return message.menheraReply('error', `${t('commands:hunt.no-args')}`);
-    const selectedOption = validArgs.some((so) => so.arguments.includes(args[0].toLowerCase()));
-    if (!selectedOption) return message.menheraReply('error', `${t('commands:hunt.no-args')}`);
-    const filtredOption = validArgs.filter((f) => f.arguments.includes(args[0].toLowerCase()));
+    if (!ctx.args[0]) return ctx.reply('error', `${ctx.locale('commands:hunt.no-args')}`);
+    const selectedOption = validArgs.some((so) => so.arguments.includes(ctx.args[0].toLowerCase()));
+    if (!selectedOption) return ctx.reply('error', `${ctx.locale('commands:hunt.no-args')}`);
+    const filtredOption = validArgs.filter((f) => f.arguments.includes(ctx.args[0].toLowerCase()));
 
     const option = filtredOption[0].opção;
 
-    if (!option) return message.menheraReply('error', `${t('commands:hunt.no-args')} \`${validOptions.join('`, `')}\``);
+    if (!option) return ctx.reply('error', `${ctx.locale('commands:hunt.no-args')} \`${validOptions.join('`, `')}\``);
 
-    const probabilidadeDemonio = message.guild.id === '717061688460967988' ? this.client.constants.probabilities.support.demon : this.client.constants.probabilities.normal.demon;
-    const probabilidadeAnjo = message.guild.id === '717061688460967988' ? this.client.constants.probabilities.support.angel : this.client.constants.probabilities.normal.angel;
-    const probabilidadeSD = message.guild.id === '717061688460967988' ? this.client.constants.probabilities.support.demigod : this.client.constants.probabilities.normal.demigod;
-    const probabilidadeDeuses = message.guild.id === '717061688460967988' ? this.client.constants.probabilities.support.god : this.client.constants.probabilities.normal.god;
+    const probabilidadeDemonio = ctx.message.guild.id === '717061688460967988' ? this.client.constants.probabilities.support.demon : this.client.constants.probabilities.normal.demon;
+    const probabilidadeAnjo = ctx.message.guild.id === '717061688460967988' ? this.client.constants.probabilities.support.angel : this.client.constants.probabilities.normal.angel;
+    const probabilidadeSD = ctx.message.guild.id === '717061688460967988' ? this.client.constants.probabilities.support.demigod : this.client.constants.probabilities.normal.demigod;
+    const probabilidadeDeuses = ctx.message.guild.id === '717061688460967988' ? this.client.constants.probabilities.support.god : this.client.constants.probabilities.normal.god;
 
-    if (option === 'ajuda') return message.menheraReply('question', t('commands:hunt.help'));
+    if (option === 'ajuda') return ctx.replyT('question', 'commands:hunt.help');
     if (option === 'probabilidades') {
-      return message.channel.send(t('commands:hunt.probabilities', {
+      return ctx.send(ctx.locale('commands:hunt.probabilities', {
         demon: probabilidadeDemonio, angel: probabilidadeAnjo, demi: probabilidadeSD, god: probabilidadeDeuses,
       }));
     }
 
     if (parseInt(authorData.caçarTime) < Date.now()) {
-      const avatar = message.author.displayAvatarURL({ format: 'png', dynamic: true });
+      const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
       const embed = new MessageEmbed()
-        .setTitle(t('commands:hunt.title'))
+        .setTitle(ctx.locale('commands:hunt.title'))
         .setColor('#faa40f')
         .setThumbnail(avatar)
-        .setFooter(t('commands:hunt.footer'));
+        .setFooter(ctx.locale('commands:hunt.footer'));
 
       switch (option) {
         case 'demônio': {
@@ -78,8 +78,8 @@ module.exports = class HuntCommand extends Command {
           authorData.caçados += dc;
           authorData.caçarTime = this.client.constants.probabilities.defaultTime + Date.now();
           authorData.save();
-          embed.setDescription(`${t('commands:hunt.description_start', { value: dc })} ${t('commands:hunt.demons')}`);
-          message.channel.send(embed);
+          embed.setDescription(`${ctx.locale('commands:hunt.description_start', { value: dc })} ${ctx.locale('commands:hunt.demons')}`);
+          ctx.send(embed);
           break;
         }
 
@@ -88,8 +88,8 @@ module.exports = class HuntCommand extends Command {
           authorData.anjos += da;
           authorData.caçarTime = this.client.constants.probabilities.defaultTime + Date.now();
           authorData.save();
-          embed.setDescription(`${t('commands:hunt.description_start', { value: da })} ${t('commands:hunt.angels')}`);
-          message.channel.send(embed);
+          embed.setDescription(`${ctx.locale('commands:hunt.description_start', { value: da })} ${ctx.locale('commands:hunt.angels')}`);
+          ctx.send(embed);
           break;
         }
 
@@ -98,8 +98,8 @@ module.exports = class HuntCommand extends Command {
           authorData.semideuses += ds;
           authorData.caçarTime = this.client.constants.probabilities.defaultTime + Date.now();
           authorData.save();
-          embed.setDescription(`${t('commands:hunt.description_start', { value: ds })} ${t('commands:hunt.sd')}`);
-          message.channel.send(embed);
+          embed.setDescription(`${ctx.locale('commands:hunt.description_start', { value: ds })} ${ctx.locale('commands:hunt.sd')}`);
+          ctx.send(embed);
           break;
         }
 
@@ -109,13 +109,13 @@ module.exports = class HuntCommand extends Command {
           authorData.caçarTime = this.client.constants.probabilities.defaultTime + Date.now();
           authorData.save();
           if (dd > 0) embed.setColor('#e800ff');
-          embed.setDescription((dd > 0) ? t('commands:hunt.god_hunted_success', { value: dd }) : t('commands:hunt.god_hunted_fail', { value: dd }));
-          message.channel.send(embed);
+          embed.setDescription((dd > 0) ? ctx.locale('commands:hunt.god_hunted_success', { value: dd }) : ctx.locale('commands:hunt.god_hunted_fail', { value: dd }));
+          ctx.send(embed);
           break;
         }
       }
     } else {
-      message.menheraReply('error', t('commands:hunt.cooldown', { time: moment.utc(parseInt(authorData.caçarTime - Date.now())).format('mm:ss') }));
+      ctx.replyT('error', 'commands:hunt.cooldown', { time: moment.utc(parseInt(authorData.caçarTime - Date.now())).format('mm:ss') });
     }
   }
 };

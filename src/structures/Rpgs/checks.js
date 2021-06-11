@@ -9,7 +9,7 @@ const constants = require('../MenheraConstants');
 
 const random = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
-const getEnemyByUserLevel = (user, type, dungeonLevel, message, t) => {
+const getEnemyByUserLevel = (user, type, dungeonLevel, ctx) => {
   if (type === 'boss') {
     if (user.level > 24 && user.level < 30) {
       return random([...mobsFile.boss, ...mobsFile.gods]);
@@ -48,17 +48,17 @@ const getEnemyByUserLevel = (user, type, dungeonLevel, message, t) => {
   if (!validLevels[dungeonLevel]) return false;
 
   if (user.level < validLevels[dungeonLevel].minUserLevel) {
-    message.menheraReply('error', t('commands:dungeon.min-level-warn'));
+    ctx.replyT('error', 'commands:dungeon.min-level-warn');
     return 'LOW-LEVEL';
   }
 
   return validLevels[dungeonLevel].mob;
 };
 
-const battle = async (message, escolha, user, inimigo, type, t) => {
+const battle = async (ctx, escolha, user, inimigo, type) => {
   let danoUser;
   if (escolha.scape) {
-    message.menheraReply('scape', t('roleplay:scape'));
+    ctx.replyT('scape', 'roleplay:scape');
     user.inBattle = false;
     user.dungeonCooldown = constants.rpg.scapeCooldown + Date.now();
     await user.save();
@@ -67,11 +67,11 @@ const battle = async (message, escolha, user, inimigo, type, t) => {
   if (escolha.name === 'Ataque Básico' || escolha.name === 'Basic Attack') {
     danoUser = escolha.damage;
   } else if (escolha.name === 'Morte Instantânea') {
-    if (user.mana < user.maxMana) return enemyShot(message, user, inimigo, type, t, `⚔️ | ${t('roleplay:battle.no-mana', { name: escolha.name })}`);
+    if (user.mana < user.maxMana) return enemyShot(ctx, user, inimigo, type, `⚔️ | ${ctx.locale('roleplay:battle.no-mana', { name: escolha.name })}`);
     danoUser = inimigo.life / 2;
     user.mana = 0;
   } else {
-    if (user.mana < escolha.cost) return enemyShot(message, user, inimigo, type, t, `⚔️ | ${t('roleplay:battle.no-mana', { name: escolha.name })}`);
+    if (user.mana < escolha.cost) return enemyShot(ctx, user, inimigo, type, `⚔️ | ${ctx.locale('roleplay:battle.no-mana', { name: escolha.name })}`);
     if (escolha.heal > 0) {
       user.life += escolha.heal;
       if (user.life > user.maxLife) user.life = user.maxLife;
@@ -86,10 +86,10 @@ const battle = async (message, escolha, user, inimigo, type, t) => {
   if (danoDado < 0) danoDado = 0;
   const vidaInimigo = inimigo.life - danoDado;
 
-  const toSay = `⚔️ | ${t('roleplay:battle.attack', { enemy: inimigo.name, choice: escolha.name, damage: danoDado })}`;
+  const toSay = `⚔️ | ${ctx.locale('roleplay:battle.attack', { enemy: inimigo.name, choice: escolha.name, damage: danoDado })}`;
 
   if (vidaInimigo < 1) {
-    return resultBattle(message, user, inimigo, t, toSay);
+    return resultBattle(ctx, user, inimigo, toSay);
   }
 
   const enemy = {
@@ -103,13 +103,13 @@ const battle = async (message, escolha, user, inimigo, type, t) => {
     dgLevel: inimigo.dgLevel,
   };
 
-  return enemyShot(message, user, enemy, type, t, toSay);
+  return enemyShot(ctx, user, enemy, type, toSay);
 };
 
-const morte = async (message, user, t, toSay, inimigo) => {
+const morte = async (ctx, user, toSay, inimigo) => {
   http.postRpg(user.id, user.class, user.level, inimigo.dgLevel, true, Date.now());
 
-  message.menheraReply('error', `${toSay}\n\n${t('roleplay:death')}`);
+  ctx.reply('error', `${toSay}\n\n${ctx.locale('roleplay:death')}`);
   user.death = Date.now() + constants.rpg.deathCooldown;
   user.life = 0;
   user.inBattle = false;
@@ -122,7 +122,7 @@ const morte = async (message, user, t, toSay, inimigo) => {
   }
 };
 
-const enemyShot = async (message, user, inimigo, type, t, toSay) => {
+const enemyShot = async (ctx, user, inimigo, type, toSay) => {
   const habilidades = await getAbilities(user);
 
   let danoRecebido;
@@ -138,23 +138,21 @@ const enemyShot = async (message, user, inimigo, type, t, toSay) => {
   const vidaUser = user.life - danoRecebido;
 
   if (vidaUser < 1) {
-    return morte(message, user, t, toSay, inimigo);
+    return morte(ctx, user, toSay, inimigo);
   }
   user.life = vidaUser;
-  continueBattle(message, inimigo, habilidades, user, type, ataque, t, toSay);
+  continueBattle(ctx, inimigo, habilidades, user, type, ataque, toSay);
 };
 
-const continueBattle = async (
-  message, inimigo, habilidades, user, type, ataque, t, toSay,
-) => {
+const continueBattle = async (ctx, inimigo, habilidades, user, type, ataque, toSay) => {
   const options = [{
-    name: t('commands:dungeon.scape'),
+    name: ctx.locale('commands:dungeon.scape'),
     damage: '🐥',
     scape: true,
   }];
 
   options.push({
-    name: t('roleplay:basic-attack'),
+    name: ctx.locale('roleplay:basic-attack'),
     damage: user?.familiar?.id && user.familiar.type === 'damage' ? user.damage + user.weapon.damage + (familiarsFile[user.familiar.id].boost.value + ((user.familiar.level - 1) * familiarsFile[user.familiar.id].boost.value)) : user.damage + user.weapon.damage,
   });
 
@@ -173,7 +171,7 @@ const continueBattle = async (
   let damageReceived = ataque.damage - ptcView;
   if (damageReceived < 5) damageReceived = 5;
 
-  let texto = t('roleplay:battle.text', {
+  let texto = ctx.locale('roleplay:battle.text', {
     enemy: inimigo.name,
     attack: ataque.name,
     dmg: damageReceived,
@@ -194,13 +192,13 @@ const continueBattle = async (
   }
 
   const embed = new MessageEmbed()
-    .setFooter(t('roleplay:battle.footer'))
+    .setFooter(ctx.locale('roleplay:battle.footer'))
     .setColor('#f04682')
     .setDescription(texto);
-  message.channel.send(toSay, embed);
+  ctx.sendC(toSay, embed);
 
-  const filter = (m) => m.author.id === message.author.id;
-  const collector = message.channel.createMessageCollector(filter, { max: 1, time: 15000, errors: ['time'] });
+  const filter = (m) => m.author.id === ctx.message.author.id;
+  const collector = ctx.message.channel.createMessageCollector(filter, { max: 1, time: 15000, errors: ['time'] });
 
   let time = false;
 
@@ -208,21 +206,19 @@ const continueBattle = async (
     time = true;
     const choice = Number(m.content);
     if (escolhas.includes(choice)) {
-      return battle(
-        message, options[choice], user, inimigo, type, t,
-      ); // Mandar os dados de ataque, e defesa do inimigo, para fazer o calculo lá
+      return battle(ctx, options[choice], user, inimigo, type); // Mandar os dados de ataque, e defesa do inimigo, para fazer o calculo lá
     }
-    return enemyShot(message, user, inimigo, type, t, `⚔️ |  ${t('roleplay:battle.new-tatic')}`);
+    return enemyShot(ctx, user, inimigo, type, `⚔️ |  ${ctx.locale('roleplay:battle.new-tatic')}`);
   });
 
   setTimeout(() => {
     if (!time) {
-      return enemyShot(message, user, inimigo, type, t, `⚔️ | ${t('roleplay:battle.timeout')}`);
+      return enemyShot(ctx, user, inimigo, type, `⚔️ | ${ctx.locale('roleplay:battle.timeout')}`);
     }
   }, 15000);
 };
 
-const finalChecks = async (message, user, t) => {
+const finalChecks = async (ctx, user) => {
   let texto = '';
 
   setTimeout(async () => {
@@ -237,8 +233,8 @@ const finalChecks = async (message, user, t) => {
         user.armor += 2;
         texto += '**<a:LevelUp:760954035779272755> LEVEL UP <a:LevelUp:760954035779272755>**';
         await user.save();
-        message.channel.send(texto);
-        newAbilities(message, user, t);
+        ctx.send(texto);
+        newAbilities(ctx, user);
       }
     } else if (user.level > 4 && user.level < 10) {
       if (user.xp >= user.nextLevelXp) {
@@ -249,9 +245,9 @@ const finalChecks = async (message, user, t) => {
         user.damage += 5;
         user.armor += 3;
         texto += '**<a:LevelUp:760954035779272755> LEVEL UP <a:LevelUp:760954035779272755>**';
-        message.channel.send(texto);
+        ctx.send(texto);
         await user.save();
-        newAbilities(message, user, t);
+        newAbilities(ctx, user);
       }
     } else if (user.level > 9 && user.level < 29) {
       if (user.xp >= user.nextLevelXp) {
@@ -262,9 +258,9 @@ const finalChecks = async (message, user, t) => {
         user.damage += 7;
         user.armor += 5;
         texto += '**<a:LevelUp:760954035779272755> LEVEL UP <a:LevelUp:760954035779272755>**';
-        message.channel.send(texto);
+        ctx.send(texto);
         await user.save();
-        newAbilities(message, user, t);
+        newAbilities(ctx, user);
       }
     } else if (user.level >= 29) {
       if (user.xp >= user.nextLevelXp) {
@@ -275,15 +271,15 @@ const finalChecks = async (message, user, t) => {
         user.damage += 10;
         user.armor += 2;
         texto += '**<a:LevelUp:760954035779272755> LEVEL UP <a:LevelUp:760954035779272755>**';
-        message.channel.send(texto);
+        ctx.send(texto);
         await user.save();
-        newAbilities(message, user, t);
+        newAbilities(ctx, user);
       }
     }
   }, 500);
 };
 
-const newAbilities = async (message, user, t) => {
+const newAbilities = async (ctx, user) => {
   setTimeout(async () => {
     if (user.level === 5) {
       switch (user.class) {
@@ -292,33 +288,33 @@ const newAbilities = async (message, user, t) => {
           user.maxMana += 20;
           user.abilityPower += 1;
           await user.save();
-          message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.assassin.normalAbilities[1].name }));
+          ctx.replyT('level', 'roleplay:new-ability', { level: user.level, ability: abilitiesFile.assassin.normalAbilities[1].name });
           break;
         case 'Bárbaro':
           user.abilities.push(abilitiesFile.barbarian.normalAbilities[1]);
           user.maxLife += 20;
           user.abilityPower += 1;
           await user.save();
-          message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.barbarian.normalAbilities[1].name }));
+          ctx.replyT('level', 'roleplay:new-ability', { level: user.level, ability: abilitiesFile.barbarian.normalAbilities[1].name });
           break;
         case 'Clérigo':
           user.abilities.push(abilitiesFile.clerigo.normalAbilities[1]);
           user.abilityPower += 1;
           user.maxMana += 20;
           await user.save();
-          message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.clerigo.normalAbilities[1].name }));
+          ctx.replyT('level', 'roleplay:new-ability', { level: user.level, ability: abilitiesFile.clerigo.normalAbilities[1].name });
           break;
         case 'Druida':
           user.abilities.push(abilitiesFile.druida.normalAbilities[1]);
           user.abilityPower += 1;
           await user.save();
-          message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.druida.normalAbilities[1].name }));
+          ctx.replyT('level', 'roleplay:new-ability', { level: user.level, ability: abilitiesFile.druida.normalAbilities[1].name });
           break;
         case 'Espadachim':
           user.abilities.push(abilitiesFile.espadachim.normalAbilities[1]);
           user.abilityPower += 2;
           await user.save();
-          message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.espadachim.normalAbilities[1].name }));
+          ctx.replyT('level', 'roleplay:new-ability', { level: user.level, ability: abilitiesFile.espadachim.normalAbilities[1].name });
           break;
         case 'Feiticeiro':
           if (user.uniquePower.name === 'Linhagem: Mística') {
@@ -326,35 +322,35 @@ const newAbilities = async (message, user, t) => {
             user.maxMana += 20;
             user.abilityPower += 1;
             await user.save();
-            message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.feiticeiro.normalAbilities[1].name }));
+            ctx.replyT('level', 'roleplay:new-ability', { level: user.level, ability: abilitiesFile.feiticeiro.normalAbilities[1].name });
           }
           if (user.uniquePower.name === 'Linhagem: Dracônica') {
             user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[2]);
             user.maxMana += 20;
             user.abilityPower += 1;
             await user.save();
-            message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.feiticeiro.normalAbilities[2].name }));
+            ctx.replyT('level', 'roleplay:new-ability', { level: user.level, ability: abilitiesFile.feiticeiro.normalAbilities[2].name });
           }
           if (user.uniquePower.name === 'Linhagem: Demoníaca') {
             user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[3]);
             user.maxMana += 20;
             user.abilityPower += 1;
             await user.save();
-            message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.feiticeiro.normalAbilities[3].name }));
+            ctx.replyT('level', 'roleplay:new-ability', { level: user.level, ability: abilitiesFile.feiticeiro.normalAbilities[3].name });
           }
           break;
         case 'Monge':
           user.abilities.push(abilitiesFile.monge.normalAbilities[1]);
           user.abilityPower += 1;
           await user.save();
-          message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.monge.normalAbilities[1].name }));
+          ctx.replyT('level', 'roleplay:new-ability', { level: user.level, ability: abilitiesFile.monge.normalAbilities[1].name });
           break;
         case 'Necromante':
           user.abilities.push(abilitiesFile.necromante.normalAbilities[1]);
           user.maxMana += 20;
           user.abilityPower += 1;
           await user.save();
-          message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.necromante.normalAbilities[1].name }));
+          ctx.replyT('level', 'roleplay:new-ability', { level: user.level, ability: abilitiesFile.necromante.normalAbilities[1].name });
           break;
         default:
           break;
@@ -365,33 +361,33 @@ const newAbilities = async (message, user, t) => {
           user.abilities.push(abilitiesFile.assassin.normalAbilities[2]);
           user.abilityPower += 1;
           await user.save();
-          message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.assassin.normalAbilities[2].name }));
+          ctx.replyT('level', 'roleplay:new-ability', { level: user.level, ability: abilitiesFile.assassin.normalAbilities[2].name });
           break;
         case 'Bárbaro':
           user.abilities.push(abilitiesFile.barbarian.normalAbilities[2]);
           user.maxLife += 50;
           user.abilityPower += 1;
           await user.save();
-          message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.barbarian.normalAbilities[2].name }));
+          ctx.replyT('level', 'roleplay:new-ability', { level: user.level, ability: abilitiesFile.barbarian.normalAbilities[2].name });
           break;
         case 'Clérigo':
           user.abilities.push(abilitiesFile.clerigo.normalAbilities[2]);
           user.abilityPower += 1;
           user.maxMana += 20;
           await user.save();
-          message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.clerigo.normalAbilities[2].name }));
+          ctx.replyT('level', 'roleplay:new-ability', { level: user.level, ability: abilitiesFile.clerigo.normalAbilities[2].name });
           break;
         case 'Druida':
           user.abilities.push(abilitiesFile.druida.normalAbilities[2]);
           user.abilityPower += 1;
           await user.save();
-          message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.druida.normalAbilities[2].name }));
+          ctx.replyT('level', 'roleplay:new-ability', { level: user.level, ability: abilitiesFile.druida.normalAbilities[2].name });
           break;
         case 'Espadachim':
           user.abilities.push(abilitiesFile.espadachim.normalAbilities[2]);
           user.abilityPower += 1;
           await user.save();
-          message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.espadachim.normalAbilities[2].name }));
+          ctx.replyT('level', 'roleplay:new-ability', { level: user.level, ability: abilitiesFile.espadachim.normalAbilities[2].name });
           break;
         case 'Feiticeiro':
           if (user.uniquePower.name === 'Linhagem: Mística') {
@@ -399,35 +395,35 @@ const newAbilities = async (message, user, t) => {
             user.maxMana += 25;
             user.abilityPower += 1;
             await user.save();
-            message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.feiticeiro.normalAbilities[4].name }));
+            ctx.replyT('level', 'roleplay:new-ability', { level: user.level, ability: abilitiesFile.feiticeiro.normalAbilities[4].name });
           }
           if (user.uniquePower.name === 'Linhagem: Dracônica') {
             user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[5]);
             user.maxMana += 25;
             user.abilityPower += 1;
             await user.save();
-            message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.feiticeiro.normalAbilities[5].name }));
+            ctx.replyT('level', 'roleplay:new-ability', { level: user.level, ability: abilitiesFile.feiticeiro.normalAbilities[5].name });
           }
           if (user.uniquePower.name === 'Linhagem: Demoníaca') {
             user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[6]);
             user.maxMana += 25;
             user.abilityPower += 1;
             await user.save();
-            message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.feiticeiro.normalAbilities[6].name }));
+            ctx.replyT('level', 'roleplay:new-ability', { level: user.level, ability: abilitiesFile.feiticeiro.normalAbilities[6].name });
           }
           break;
         case 'Monge':
           user.abilities.push(abilitiesFile.monge.normalAbilities[2]);
           user.abilityPower += 1;
           await user.save();
-          message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.monge.normalAbilities[2].name }));
+          ctx.replyT('level', 'roleplay:new-ability', { level: user.level, ability: abilitiesFile.monge.normalAbilities[2].name });
           break;
         case 'Necromante':
           user.abilities.push(abilitiesFile.necromante.normalAbilities[2]);
           user.maxMana += 25;
           user.abilityPower += 1;
           await user.save();
-          message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.necromante.normalAbilities[2].name }));
+          ctx.replyT('level', 'roleplay:new-ability', { level: user.level, ability: abilitiesFile.necromante.normalAbilities[2].name });
           break;
         default:
           break;
@@ -439,35 +435,35 @@ const newAbilities = async (message, user, t) => {
           user.abilityPower += 1;
           user.damage += 10;
           await user.save();
-          message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.assassin.normalAbilities[3].name }));
+          ctx.replyT('level', 'roleplay:new-ability', { level: user.level, ability: abilitiesFile.assassin.normalAbilities[3].name });
           break;
         case 'Bárbaro':
           user.abilities.push(abilitiesFile.barbarian.normalAbilities[3]);
           user.maxLife += 50;
           user.abilityPower += 1;
           await user.save();
-          message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.barbarian.normalAbilities[3].name }));
+          ctx.replyT('level', 'roleplay:new-ability', { level: user.level, ability: abilitiesFile.barbarian.normalAbilities[3].name });
           break;
         case 'Clérigo':
           user.abilities.push(abilitiesFile.clerigo.normalAbilities[3]);
           user.abilityPower += 1;
           user.maxMana += 40;
           await user.save();
-          message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.clerigo.normalAbilities[3].name }));
+          ctx.replyT('level', 'roleplay:new-ability', { level: user.level, ability: abilitiesFile.clerigo.normalAbilities[3].name });
           break;
         case 'Druida':
           user.abilities.push(abilitiesFile.druida.normalAbilities[3]);
           user.abilityPower += 1;
           user.maxMana += 30;
           await user.save();
-          message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.druida.normalAbilities[3].name }));
+          ctx.replyT('level', 'roleplay:new-ability', { level: user.level, ability: abilitiesFile.druida.normalAbilities[3].name });
           break;
         case 'Espadachim':
           user.abilities.push(abilitiesFile.espadachim.normalAbilities[3]);
           user.abilityPower += 1;
           user.damage += 10;
           await user.save();
-          message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.espadachim.normalAbilities[3].name }));
+          ctx.replyT('level', 'roleplay:new-ability', { level: user.level, ability: abilitiesFile.espadachim.normalAbilities[3].name });
           break;
         case 'Feiticeiro':
           if (user.uniquePower.name === 'Linhagem: Mística') {
@@ -475,35 +471,35 @@ const newAbilities = async (message, user, t) => {
             user.maxMana += 40;
             user.abilityPower += 1;
             await user.save();
-            message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.feiticeiro.normalAbilities[7].name }));
+            ctx.replyT('level', 'roleplay:new-ability', { level: user.level, ability: abilitiesFile.feiticeiro.normalAbilities[7].name });
           }
           if (user.uniquePower.name === 'Linhagem: Dracônica') {
             user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[8]);
             user.maxMana += 40;
             user.abilityPower += 1;
             await user.save();
-            message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.feiticeiro.normalAbilities[8].name }));
+            ctx.replyT('level', 'roleplay:new-ability', { level: user.level, ability: abilitiesFile.feiticeiro.normalAbilities[8].name });
           }
           if (user.uniquePower.name === 'Linhagem: Demoníaca') {
             user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[9]);
             user.maxMana += 40;
             user.abilityPower += 1;
             await user.save();
-            message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.feiticeiro.normalAbilities[9].name }));
+            ctx.replyT('level', 'roleplay:new-ability', { level: user.level, ability: abilitiesFile.feiticeiro.normalAbilities[9].name });
           }
           break;
         case 'Monge':
           user.abilities.push(abilitiesFile.monge.normalAbilities[3]);
           user.abilityPower += 2;
           await user.save();
-          message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.monge.normalAbilities[3].name }));
+          ctx.replyT('level', 'roleplay:new-ability', { level: user.level, ability: abilitiesFile.monge.normalAbilities[3].name });
           break;
         case 'Necromante':
           user.abilities.push(abilitiesFile.necromante.normalAbilities[3]);
           user.maxMana += 40;
           user.abilityPower += 1;
           await user.save();
-          message.menheraReply('level', t('roleplay:new-ability', { level: user.level, ability: abilitiesFile.necromante.normalAbilities[3].name }));
+          ctx.replyT('level', 'roleplay:new-ability', { level: user.level, ability: abilitiesFile.necromante.normalAbilities[3].name });
           break;
         default:
           break;
@@ -516,7 +512,7 @@ const newAbilities = async (message, user, t) => {
       user.xp = 0;
       user.nextLevelXp = 1000000;
       await user.save();
-      message.menheraReply('warn', t('roleplay:boss'));
+      ctx.replyT('warn', 'roleplay:boss');
     } else if (user.level === 25) {
       user.xp = 0;
       user.nextLevelXp = 3000000;
@@ -525,12 +521,12 @@ const newAbilities = async (message, user, t) => {
       user.xp = 0;
       user.nextLevelXp = 5000000;
       user.abilityPower += 1;
-      evolve(user, message, t);
+      evolve(user, ctx);
     }
   }, 500);
 };
 
-const resultBattle = async (message, user, inimigo, t, toSay) => {
+const resultBattle = async (ctx, user, inimigo, toSay) => {
   const randomLoot = inimigo.loots[Math.floor(Math.random() * inimigo.loots.length)];
   let canGetLoot = true;
 
@@ -540,8 +536,8 @@ const resultBattle = async (message, user, inimigo, t, toSay) => {
   if (backpack.value >= backpack.capacity) canGetLoot = false;
 
   const embed = new MessageEmbed()
-    .setTitle(`⚔️ | ${t('roleplay:result.title')}`)
-    .setDescription(t('roleplay:result.description', { enemy: inimigo.name }))
+    .setTitle(`⚔️ | ${ctx.locale('roleplay:result.title')}`)
+    .setDescription(ctx.locale('roleplay:result.description', { enemy: inimigo.name }))
     .setColor('#4cf74b')
     .addFields([{
       name: '🔰 | XP',
@@ -549,20 +545,20 @@ const resultBattle = async (message, user, inimigo, t, toSay) => {
       inline: true,
     },
     {
-      name: `<:Chest:760957557538947133> | ${t('roleplay:result.loots')}`,
-      value: (canGetLoot) ? randomLoot.name : t('roleplay:backpack-full'),
+      name: `<:Chest:760957557538947133> | ${ctx.locale('roleplay:result.loots')}`,
+      value: (canGetLoot) ? randomLoot.name : ctx.locale('roleplay:backpack-full'),
       inline: true,
     },
     ]);
 
-  message.channel.send(toSay, embed);
+  ctx.sendC(toSay, embed);
   user.xp += inimigo.xp;
   if (canGetLoot) {
     user.loots.push(randomLoot);
   }
   user.inBattle = false;
   await user.save();
-  return finalChecks(message, user, t);
+  return finalChecks(ctx, user);
 };
 
 const getAbilities = async (user) => {
@@ -644,7 +640,7 @@ const getAbilities = async (user) => {
   return abilities;
 };
 
-const initialChecks = async (user, message, t) => {
+const initialChecks = async (user, ctx) => {
   let pass = true;
   const motivo = [];
 
@@ -657,15 +653,15 @@ const initialChecks = async (user, message, t) => {
   if (user.life < 1) {
     pass = false;
     motivo.push({
-      name: `💔 | ${t('roleplay:initial.no-life')}`,
-      value: t('roleplay:initial.no-life-text', { time: (parseInt(user.death - Date.now()) > 3600000) ? moment.utc(parseInt(user.death - Date.now())).format('HH:mm:ss') : moment.utc(parseInt(user.death - Date.now())).format('mm:ss') }),
+      name: `💔 | ${ctx.locale('roleplay:initial.no-life')}`,
+      value: ctx.locale('roleplay:initial.no-life-text', { time: (parseInt(user.death - Date.now()) > 3600000) ? moment.utc(parseInt(user.death - Date.now())).format('HH:mm:ss') : moment.utc(parseInt(user.death - Date.now())).format('mm:ss') }),
     });
   }
   if (user.dungeonCooldown > Date.now()) {
     pass = false;
     motivo.push({
-      name: `💤 | ${t('roleplay:initial.tired')}`,
-      value: t('roleplay:initial.tired-text', { time: (parseInt(user.dungeonCooldown - Date.now()) > 3600000) ? moment.utc(parseInt(user.dungeonCooldown - Date.now())).format('HH:mm:ss') : moment.utc(parseInt(user.dungeonCooldown - Date.now())).format('mm:ss') }),
+      name: `💤 | ${ctx.locale('roleplay:initial.tired')}`,
+      value: ctx.locale('roleplay:initial.tired-text', { time: (parseInt(user.dungeonCooldown - Date.now()) > 3600000) ? moment.utc(parseInt(user.dungeonCooldown - Date.now())).format('HH:mm:ss') : moment.utc(parseInt(user.dungeonCooldown - Date.now())).format('mm:ss') }),
     });
   }
 
@@ -673,29 +669,29 @@ const initialChecks = async (user, message, t) => {
     pass = false;
     motivo.push({
       name: '🏨 | Hotel',
-      value: t('roleplay:initial.hotel-text', { time: (parseInt(user.hotelTime - Date.now()) > 3600000) ? moment.utc(parseInt(user.hotelTime - Date.now())).format('HH:mm:ss') : moment.utc(parseInt(user.hotelTime - Date.now())).format('mm:ss') }),
+      value: ctx.locale('roleplay:initial.hotel-text', { time: (parseInt(user.hotelTime - Date.now()) > 3600000) ? moment.utc(parseInt(user.hotelTime - Date.now())).format('HH:mm:ss') : moment.utc(parseInt(user.hotelTime - Date.now())).format('mm:ss') }),
     });
   }
 
   if (user.inBattle) {
     pass = false;
     motivo.push({
-      name: `⚔️ | ${t('roleplay:initial.in-battle')}`,
-      value: t('roleplay:initial.in-battle-text'),
+      name: `⚔️ | ${ctx.locale('roleplay:initial.in-battle')}`,
+      value: ctx.locale('roleplay:initial.in-battle-text'),
     });
   }
 
   if (!pass) {
-    let texto = `<:negacao:759603958317711371> | ${t('roleplay:initial.cant-go')}`;
+    let texto = `<:negacao:759603958317711371> | ${ctx.locale('roleplay:initial.cant-go')}`;
     motivo.forEach((m) => {
       texto += `\n**${m.name}:** ${m.value}`;
     });
-    message.channel.send(texto);
+    ctx.send(texto);
   }
   return user.save().then(() => pass);
 };
 
-const confirmRegister = async (user, message, t) => {
+const confirmRegister = async (user, ctx) => {
   setTimeout(async () => {
     switch (user.class) {
       case 'Assassino': {
@@ -715,7 +711,7 @@ const confirmRegister = async (user, message, t) => {
         };
         user.uniquePower = choiceAssassin;
         await user.save();
-        message.menheraReply('success', t('roleplay:registred'));
+        ctx.replyT('success', 'roleplay:registred');
         break;
       }
 
@@ -735,7 +731,7 @@ const confirmRegister = async (user, message, t) => {
         };
         user.uniquePower = choiceBarbaro;
         await user.save();
-        message.menheraReply('success', t('roleplay:registred'));
+        ctx.replyT('success', 'roleplay:registred');
         break;
       }
 
@@ -755,7 +751,7 @@ const confirmRegister = async (user, message, t) => {
         };
         user.uniquePower = choiceDruida;
         await user.save();
-        message.menheraReply('success', t('roleplay:registred'));
+        ctx.replyT('success', 'roleplay:registred');
         break;
       }
 
@@ -775,7 +771,7 @@ const confirmRegister = async (user, message, t) => {
         };
         user.uniquePower = choiceEspadachim;
         await user.save();
-        message.menheraReply('success', t('roleplay:registred'));
+        ctx.replyT('success', 'roleplay:registred');
         break;
       }
 
@@ -795,7 +791,7 @@ const confirmRegister = async (user, message, t) => {
         };
         user.uniquePower = choiceFeiticeiro;
         await user.save();
-        message.menheraReply('success', t('roleplay:registred'));
+        ctx.replyT('success', 'roleplay:registred');
         break;
       }
 
@@ -815,7 +811,7 @@ const confirmRegister = async (user, message, t) => {
         };
         user.uniquePower = choiceClerigo;
         await user.save();
-        message.menheraReply('success', t('roleplay:registred'));
+        ctx.replyT('success', 'roleplay:registred');
         break;
       }
 
@@ -835,7 +831,7 @@ const confirmRegister = async (user, message, t) => {
           type: 'Arma',
         };
         await user.save();
-        message.menheraReply('success', t('roleplay:registred'));
+        ctx.replyT('success', 'roleplay:registred');
         break;
       }
 
@@ -855,22 +851,22 @@ const confirmRegister = async (user, message, t) => {
         };
         user.uniquePower = choiceNecromante;
         await user.save();
-        message.menheraReply('success', t('roleplay:registred'));
+        ctx.replyT('success', 'roleplay:registred');
         break;
       }
     }
   }, 1000);
 };
 
-const evolve = async (user, message, t) => {
+const evolve = async (user, ctx) => {
   switch (user.class) {
     case 'Assassino': {
       user.abilities.push(abilitiesFile.assassin.normalAbilities[4]);
       user.damage += 10;
       user.class = 'Senhor das Sombras';
       await user.save();
-      const translatedEvolve = t(`roleplay:classes.${user.class}`);
-      message.menheraReply('warn', t('roleplay:evolve', { class: translatedEvolve }));
+      const translatedEvolve = ctx.locale(`roleplay:classes.${user.class}`);
+      ctx.replyT('warn', 'roleplay:evolve', { class: translatedEvolve });
       break;
     }
     case 'Bárbaro': {
@@ -878,8 +874,8 @@ const evolve = async (user, message, t) => {
       user.maxLife += 50;
       user.class = 'Berserker';
       await user.save();
-      const translatedEvolve = t(`roleplay:classes.${user.class}`);
-      message.menheraReply('warn', t('roleplay:evolve', { class: translatedEvolve }));
+      const translatedEvolve = ctx.locale(`roleplay:classes.${user.class}`);
+      ctx.replyT('warn', 'roleplay:evolve', { class: translatedEvolve });
       break;
     }
     case 'Clérigo': {
@@ -887,8 +883,8 @@ const evolve = async (user, message, t) => {
       user.maxMana += 40;
       user.class = 'Arcanjo';
       await user.save();
-      const translatedEvolve = t(`roleplay:classes.${user.class}`);
-      message.menheraReply('warn', t('roleplay:evolve', { class: translatedEvolve }));
+      const translatedEvolve = ctx.locale(`roleplay:classes.${user.class}`);
+      ctx.replyT('warn', 'roleplay:evolve', { class: translatedEvolve });
       break;
     }
     case 'Druida': {
@@ -896,8 +892,8 @@ const evolve = async (user, message, t) => {
       user.maxMana += 30;
       user.class = 'Guardião da Natureza';
       await user.save();
-      const translatedEvolve = t(`roleplay:classes.${user.class}`);
-      message.menheraReply('warn', t('roleplay:evolve', { class: translatedEvolve }));
+      const translatedEvolve = ctx.locale(`roleplay:classes.${user.class}`);
+      ctx.replyT('warn', 'roleplay:evolve', { class: translatedEvolve });
       break;
     }
     case 'Espadachim': {
@@ -905,8 +901,8 @@ const evolve = async (user, message, t) => {
       user.damage += 10;
       user.class = 'Mestre das Armas';
       await user.save();
-      const translatedEvolve = t(`roleplay:classes.${user.class}`);
-      message.menheraReply('warn', t('roleplay:evolve', { class: translatedEvolve }));
+      const translatedEvolve = ctx.locale(`roleplay:classes.${user.class}`);
+      ctx.replyT('warn', 'roleplay:evolve', { class: translatedEvolve });
       break;
     }
     case 'Feiticeiro': {
@@ -915,24 +911,24 @@ const evolve = async (user, message, t) => {
         user.maxMana += 40;
         user.class = 'Senhor das Galáxias';
         await user.save();
-        const translatedEvolve = t(`roleplay:classes.${user.class}`);
-        message.menheraReply('warn', t('roleplay:evolve', { class: translatedEvolve }));
+        const translatedEvolve = ctx.locale(`roleplay:classes.${user.class}`);
+        ctx.replyT('warn', 'roleplay:evolve', { class: translatedEvolve });
       }
       if (user.uniquePower.name === 'Linhagem: Dracônica') {
         user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[11]);
         user.maxMana += 40;
         user.class = 'Mestre dos Elementos';
         await user.save();
-        const translatedEvolve = t(`roleplay:classes.${user.class}`);
-        message.menheraReply('warn', t('roleplay:evolve', { class: translatedEvolve }));
+        const translatedEvolve = ctx.locale(`roleplay:classes.${user.class}`);
+        ctx.replyT('warn', 'roleplay:evolve', { class: translatedEvolve });
       }
       if (user.uniquePower.name === 'Linhagem: Demoníaca') {
         user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[12]);
         user.maxMana += 40;
         user.class = 'Conjurador Demoníaco';
         await user.save();
-        const translatedEvolve = t(`roleplay:classes.${user.class}`);
-        message.menheraReply('warn', t('roleplay:evolve', { class: translatedEvolve }));
+        const translatedEvolve = ctx.locale(`roleplay:classes.${user.class}`);
+        ctx.replyT('warn', 'roleplay:evolve', { class: translatedEvolve });
       }
       break;
     }
@@ -940,8 +936,8 @@ const evolve = async (user, message, t) => {
       user.abilities.push(abilitiesFile.monge.normalAbilities[4]);
       user.class = 'Sacerdote';
       await user.save();
-      const translatedEvolve = t(`roleplay:classes.${user.class}`);
-      message.menheraReply('warn', t('roleplay:evolve', { class: translatedEvolve }));
+      const translatedEvolve = ctx.locale(`roleplay:classes.${user.class}`);
+      ctx.replyT('warn', 'roleplay:evolve', { class: translatedEvolve });
       break;
     }
     case 'Necromante': {
@@ -949,8 +945,8 @@ const evolve = async (user, message, t) => {
       user.maxMana += 40;
       user.class = 'Senhor das Trevas';
       await user.save();
-      const translatedEvolve = t(`roleplay:classes.${user.class}`);
-      message.menheraReply('warn', t('roleplay:evolve', { class: translatedEvolve }));
+      const translatedEvolve = ctx.locale(`roleplay:classes.${user.class}`);
+      ctx.replyT('warn', 'roleplay:evolve', { class: translatedEvolve });
       break;
     }
   }

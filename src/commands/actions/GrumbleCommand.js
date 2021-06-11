@@ -12,19 +12,19 @@ module.exports = class GrumbleCommand extends Command {
     });
   }
 
-  async run({ message }, t) {
-    const avatar = message.author.displayAvatarURL({ format: 'png', dynamic: true });
+  async run(ctx) {
+    const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     const rand = await getImageUrl('grumble');
 
     const embed = new MessageEmbed()
-      .setTitle(t('commands:grumble.embed_title'))
+      .setTitle(ctx.locale('commands:grumble.embed_title'))
       .setColor('#000000')
-      .setDescription(`${message.author} ${t('commands:grumble.embed_description')}`)
+      .setDescription(`${ctx.message.author} ${ctx.locale('commands:grumble.embed_description')}`)
       .setThumbnail(avatar)
       .setImage(rand)
-      .setAuthor(message.author.tag, avatar);
+      .setAuthor(ctx.message.author.tag, avatar);
 
-    message.channel.send(embed);
+    ctx.send(embed);
   }
 };

@@ -373,8 +373,8 @@
   },
   "ship": {
     "description": "Será que vocês dariam um bom casal?",
-    "usage": "<usuário1> <usuário2>",
-    "missing-args": "você não mencionou dois usuários",
+    "usage": "<usuário1> [usuário2]",
+    "missing-args": "você não mencionou um usuário",
     "no-dbuser": "usuário nao encontrado na database",
     "value": "Valor do ship:",
     "unknow-user": "usuário não encontrado",
@@ -540,7 +540,7 @@
     "description": "Mostra as informações atuais do bot",
     "usage": "",
     "title": "🎉 HOJE É MEU ANIVERSÁRIO🎉",
-    "embed_description": "Oi, meu nome é **{{name}}**, e eu sou uma Bot Brasileira para Discord com foco em diversão e RPG! Fui criada em **{{createdAt}}** e entrei nesse servidor **{{joinedAt}}**. Desde que acordei, já executei **{{cmds}}** comandos\n\nUm pouco sobre mim: Meu nome é Menhera, tenho 16 anos e AMO, mas tipo AMO usar essas carinhas: (>...<). Para saber mais, entre em meu [twitter](https://twitter.com/__MenheraBot), em meu [servidor de suporte](https://discord.gg/fZMdQbA) e em meu [WEBSITE](https://menhera-site.vercel.app/)",
+    "embed_description": "Oi, meu nome é **{{name}}**, e eu sou uma Bot Brasileira para Discord com foco em diversão e RPG! Fui criada em **{{createdAt}}** e entrei nesse servidor **{{joinedAt}}**.\n\nUm pouco sobre mim: Meu nome é Menhera, tenho 16 anos e AMO, mas tipo AMO usar essas carinhas: (>...<). Para saber mais, entre em meu [twitter](https://twitter.com/__MenheraBot), em meu [servidor de suporte](https://discord.gg/fZMdQbA) e em meu [WEBSITE](https://menherabot.xyz/)",
     "embed_footer": "foi criada por",
     "channels": "Canais",
     "memory": "Memória",
@@ -1110,5 +1110,9 @@
     "no-args": "você não escolheu qual som desejas tocar. Escolhas: `{{audios}}`",
     "unknow-args": "esse som não existe aleki, tu precisa ver direitinho se escreveu certo. Escolhas: `{{audios}}`"
   },
-  "http-error": "hmmm... Algum erro aconteceu ao processar a imagem... Tente novamente"
+  "http-error": "hmmm... Algum erro aconteceu ao processar a imagem... Tente novamente",
+  "gado": {
+    "description": "Ala o Gado ó",
+    "usage": "[menção || imagem]"
+  }
 }

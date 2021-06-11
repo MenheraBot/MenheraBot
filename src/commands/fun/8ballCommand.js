@@ -8,10 +8,10 @@ module.exports = class EightBallCommand extends Command {
     });
   }
 
-  async run({ message, args, server }, t) {
-    if (args.length < 1) return message.menheraReply('error', t('commands:8ball.no-args'));
+  async run(ctx) {
+    if (ctx.args.length < 1) return ctx.replyT('error', 'commands:8ball.no-args');
 
-    const lingua = server.lang || 'pt-BR';
+    const lingua = ctx.data.server.lang || 'pt-BR';
 
     const respostasPT = [
       '<:positivo:759603958485614652> | Acho que sim',
@@ -71,6 +71,6 @@ module.exports = class EightBallCommand extends Command {
 
     const respostaRandom = respostas[Math.floor(Math.random() * respostas.length)];
 
-    message.channel.send(`${respostaRandom}, ${message.author}`);
+    ctx.send(`${respostaRandom}, ${ctx.message.author}`);
   }
 };
