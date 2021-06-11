@@ -57,4 +57,11 @@ module.exports = class NewHttp {
     const returnData = { err, data: data?.data };
     return returnData;
   }
+
+  static async gadoRequest(image) {
+    let err = false;
+    const data = await request.get('/gado', { data: { image } }).catch(() => { err = true; });
+    const returnData = { err, data: data?.data };
+    return returnData;
+  }
 };

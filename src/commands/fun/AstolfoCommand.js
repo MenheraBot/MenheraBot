@@ -6,6 +6,7 @@ module.exports = class AstolfoCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'astolfo',
+      cooldown: 10,
       category: 'diversão',
     });
   }
@@ -19,6 +20,6 @@ module.exports = class AstolfoCommand extends Command {
 
     if (res.err) return ctx.replyT('error', 'commands:http-error');
 
-    ctx.send(ctx.message.author, new MessageAttachment(Buffer.from(res.data), 'astolfo.png'));
+    ctx.sendC(ctx.message.author, new MessageAttachment(Buffer.from(res.data), 'astolfo.png'));
   }
 };

@@ -21,6 +21,6 @@ module.exports = class PhiloCommand extends Command {
 
     if (res.err) return ctx.replyT('error', 'commands:http-error');
 
-    ctx.send(ctx.message.author, new MessageAttachment(Buffer.from(res.data), 'filosófico.png'));
+    ctx.sendC(ctx.message.author, new MessageAttachment(Buffer.from(res.data), 'filosófico.png'));
   }
 };
