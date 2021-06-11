@@ -29,7 +29,7 @@ module.exports = class GuildCreate {
       server.lang = this.region[guild.region];
       server.save();
     }
-    const webhook = await this.client.fetchWebhook(process.env.GUILDS_HOOK_ID, process.env.GUILDS_HOOK_ID);
+    const webhook = await this.client.fetchWebhook(process.env.GUILDS_HOOK_ID, process.env.GUILDS_HOOK_TOKEN);
 
     webhook.send(`<:MenheraWink:767210250637279252> | Fui adicionada do servidor **${guild}**`);
   }
