@@ -60,8 +60,15 @@ module.exports = class XandãoCommand extends Command {
 
     try {
       const webhooks = await ctx.message.channel.fetchWebhooks();
-      const webhook = webhooks.first();
-      if (!webhook) {
+
+      const ownWebhooks = webhooks.filter((hook) => hook.owner.id === this.client.user.id);
+
+      if (ownWebhooks.first()) {
+        await ownWebhooks.first().send(fala, {
+          username: 'Super Xandão',
+          avatarURL: 'https://i.imgur.com/8KNCucR.png',
+        });
+      } else {
         await ctx.message.channel.createWebhook('Super Xandão', {
           avatar: 'https://i.imgur.com/8KNCucR.png',
         }).then((web) => {
@@ -69,11 +76,6 @@ module.exports = class XandãoCommand extends Command {
             username: 'Super Xandão',
             avatarURL: 'https://i.imgur.com/8KNCucR.png',
           });
-        });
-      } else {
-        await webhook.send(fala, {
-          username: 'Super Xandão',
-          avatarURL: 'https://i.imgur.com/8KNCucR.png',
         });
       }
     } catch (err) {
