@@ -30,7 +30,7 @@ module.exports = class CoinflipCommand extends Command {
 
     if (!db1 || !db2) return ctx.replyT('error', 'commands:coinflip.no-dbuser');
 
-    if (valor > db1.estrelinhas) return ctx.repylT('error', 'commands:coinflip.poor');
+    if (valor > db1.estrelinhas) return ctx.replyT('error', 'commands:coinflip.poor');
     if (valor > db2.estrelinhas) return ctx.send(`<:negacao:759603958317711371> **|** ${user2} ${ctx.locale('commands:coinflip.poor')}`);
 
     ctx.send(`${user2}, ${user1} ${ctx.locale('commands:coinflip.confirm-start', { value: valor })} ${user1} ${ctx.locale('commands:coinflip.confirm-middle')} ${user2} ${ctx.locale('commands:coinflip.win')}!\n${user2} ${ctx.locale('commands:coinflip.confirm-end')}`).then((msg) => {
