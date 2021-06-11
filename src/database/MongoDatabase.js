@@ -5,6 +5,7 @@ const CommandRepository = require('./repositories/CommandRepository');
 const RpgRepository = require('./repositories/RpgRepository');
 const StarRepository = require('./repositories/StarRepository');
 const UserRepository = require('./repositories/UserRepository');
+const MamarRepository = require('./repositories/MamarRepository');
 
 module.exports = class MongoDatabase {
   constructor(uri) {
@@ -21,12 +22,22 @@ module.exports = class MongoDatabase {
     this.Users = MongoModals.Users;
     this.Warns = MongoModals.Warns;
 
-    this.repositories = {
-      userRepository: new UserRepository(this.Users),
-      commandRepository: new CommandRepository(this.Commands),
-      cmdRepository: new CmdRepository(this.Cmds),
-      starRepository: new StarRepository(this.Users),
-      rpgRepository: new RpgRepository(this.Rpg),
+    this.userRepository = new UserRepository(this.Users);
+    this.commandRepository = new CommandRepository(this.Commands);
+    this.cmdRepository = new CmdRepository(this.Cmds);
+    this.starRepository = new StarRepository(this.Users);
+    this.rpgRepository = new RpgRepository(this.Rpg);
+    this.mamarRepository = new MamarRepository(this.userRepository);
+  }
+
+  get repositories() {
+    return {
+      userRepository: this.userRepository,
+      commandRepository: this.commandRepository,
+      cmdRepository: this.cmdRepository,
+      starRepository: this.starRepository,
+      rpgRepository: this.rpgRepository,
+      mamarRepository: this.mamarRepository,
     };
   }
 
