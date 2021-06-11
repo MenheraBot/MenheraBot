@@ -22,7 +22,7 @@ module.exports = class UnwarnCommand extends Command {
 
     if (!user) return ctx.replyT('error', 'commands:unwarn.no-mention');
     if (user.bot) return ctx.replyT('error', 'commands:unwarn.bot');
-    if (user.id === ctx.message.author.id) return ctx.replyt('error', 'commands:unwarn.self-mention');
+    if (user.id === ctx.message.author.id) return ctx.replyT('error', 'commands:unwarn.self-mention');
     if (!ctx.message.guild.members.cache.get(user.id)) return ctx.replyT('error', 'commands:unwarn.invalid-member');
 
     this.client.database.Warns.findOneAndDelete({ userId: user.id, guildId: ctx.message.guild.id }).sort([
