@@ -53,13 +53,13 @@ module.exports = class RegisterCommand extends Command {
           this.confirmação(ctx, 'Espadachim');
           break;
         case '6':
-          this.confirmação(ctx, 'Feiticeiro', ctx);
+          this.confirmação(ctx, 'Feiticeiro');
           break;
         case '7':
-          this.confirmação(ctx, 'Monge', ctx);
+          this.confirmação(ctx, 'Monge');
           break;
         case '8':
-          this.confirmação(ctx, 'Necromante', ctx);
+          this.confirmação(ctx, 'Necromante');
           break;
         default:
           return ctx.replyT('error', 'commands:register.invalid-input');
