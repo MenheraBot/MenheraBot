@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const MongoModals = require('../structures/DatabaseCollections');
 const CmdRepository = require('./repositories/CmdsRepository');
 const CommandRepository = require('./repositories/CommandRepository');
+const BolehamRepository = require('./repositories/BolehamRepository');
 const RpgRepository = require('./repositories/RpgRepository');
 const StarRepository = require('./repositories/StarRepository');
 const UserRepository = require('./repositories/UserRepository');
@@ -17,7 +18,7 @@ module.exports = class MongoDatabase {
     this.Commands = MongoModals.Commands;
     this.Guilds = MongoModals.Guilds;
     this.Status = MongoModals.Status;
-    this.Reminders = MongoModals.Reminders;
+    this.Boleham = MongoModals.Boleham;
     this.Rpg = MongoModals.Rpg;
     this.Users = MongoModals.Users;
     this.Warns = MongoModals.Warns;
@@ -27,6 +28,7 @@ module.exports = class MongoDatabase {
     this.cmdRepository = new CmdRepository(this.Cmds);
     this.starRepository = new StarRepository(this.Users);
     this.rpgRepository = new RpgRepository(this.Rpg);
+    this.bolehamRepository = new BolehamRepository(this.Boleham);
     this.mamarRepository = new MamarRepository(this.userRepository);
   }
 
@@ -34,6 +36,7 @@ module.exports = class MongoDatabase {
     return {
       userRepository: this.userRepository,
       commandRepository: this.commandRepository,
+      bolehamRepository: this.bolehamRepository,
       cmdRepository: this.cmdRepository,
       starRepository: this.starRepository,
       rpgRepository: this.rpgRepository,

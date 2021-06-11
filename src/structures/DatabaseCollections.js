@@ -15,11 +15,40 @@ const cmdSchema = mongoose.Schema({
   maintenanceReason: { type: String, default: '' },
 });
 
+const bolehamSchema = mongoose.Schema({
+  _id: { type: String },
+  class: { type: Number },
+  life: { type: Number },
+  maxLife: { type: Number },
+  mana: { type: Number },
+  maxMana: { type: Number },
+  damage: { type: Number },
+  protection: { type: Number },
+  abilityPower: { type: Number },
+  level: { type: Number },
+  xp: { type: Number },
+  abilities: { type: Array, default: [] },
+  uniquePower: { type: Number },
+  loots: { type: Array, default: [] },
+  inventory: { type: Array, default: [] },
+  money: { type: Number },
+  adventureCooldown: { type: String, default: '0' },
+  death: { type: String, default: '0' },
+  weapon: { type: Number },
+  armor: { type: Number },
+  inBattle: { type: Boolean, default: false },
+  backpack: { type: Number },
+  resetRoll: { type: Number },
+  familiar: { type: Number },
+  proficiency: { type: Object, default: {} },
+});
+
 const guildSchema = mongoose.Schema({
   id: { type: String, unique: true },
   prefix: { type: String, default: process.env.BOT_PREFIX },
   blockedChannels: { type: Array, default: [] },
   disabledCommands: { type: Array, default: [] },
+  eventsChannel: { type: String },
   lang: { type: String, default: 'pt-BR' },
 });
 
@@ -53,6 +82,7 @@ const rpgSchema = mongoose.Schema({
   jobId: { type: Number, default: 0 },
   jobCooldown: { type: String, default: '00000000' },
   familiar: { type: Object, default: {} },
+  newSet: { type: Boolean },
 });
 
 const userSchema = mongoose.Schema({
@@ -115,11 +145,13 @@ const guild = mongoose.model('guild', guildSchema);
 const rpg = mongoose.model('rpg', rpgSchema);
 const user = mongoose.model('usersdb', userSchema);
 const warn = mongoose.model('warn', warnSchema);
+const boleham = mongoose.model('boleham', bolehamSchema);
 
 module.exports.Cmds = cmd;
 module.exports.Commands = commands;
 module.exports.Guilds = guild;
 module.exports.Status = status;
 module.exports.Rpg = rpg;
+module.exports.Boleham = boleham;
 module.exports.Users = user;
 module.exports.Warns = warn;
