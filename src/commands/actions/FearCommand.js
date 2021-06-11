@@ -18,7 +18,7 @@ module.exports = class FearCommand extends Command {
     const rand = await getImageUrl('fear');
     const user = ctx.message.mentions.users.first();
 
-    if (!user) {
+    if (!user || user?.id === ctx.message.author.id) {
       const embed = new MessageEmbed()
         .setTitle(ctx.locale('commands:fear.no-mention.embed_title'))
         .setColor('#000000')
