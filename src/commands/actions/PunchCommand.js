@@ -18,7 +18,7 @@ module.exports = class PunchCommand extends Command {
 
     if (user && user.bot) return ctx.replyT('error', 'commands:punch.bot');
 
-    if (!user) return ctx.reply('error', 'commands:punch.no-mention');
+    if (!user) return ctx.replyT('error', 'commands:punch.no-mention');
 
     if (user === ctx.message.author) return ctx.replyT('error', 'commands:punch.self-mention');
 
