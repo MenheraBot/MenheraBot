@@ -40,6 +40,7 @@ const bolehamSchema = mongoose.Schema({
   backpack: { type: Number },
   resetRoll: { type: Number },
   familiar: { type: Number },
+  speed: { type: Number },
   proficiency: { type: Object, default: {} },
 });
 
