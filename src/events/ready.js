@@ -11,7 +11,6 @@ module.exports = class ReadyEvent {
     if (this.client.user.id === '708014856711962654' && this.client.shard.ids[0] === 0) {
       const DiscordBotList = new Dbl(this.client);
       DiscordBotList.init();
-      http.clearCommands();
       const status = new StatusPage(this.client);
       status.submit();
     }
