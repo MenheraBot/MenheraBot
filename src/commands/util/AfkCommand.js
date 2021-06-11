@@ -15,6 +15,12 @@ module.exports = class AfkCommand extends Command {
 
     await ctx.client.database.Users.updateOne({ id: ctx.message.author.id }, { $set: { afk: true, afkReason: reason } });
 
+    const member = ctx.message.channel.guild.members.cache.get(ctx.message.author.id);
+
     ctx.replyT('success', 'commands:afk.success');
+    if (member.manageable) {
+      const newNick = member.nickname ? `[AFK] ${member.nickname}` : `[AFK] ${member.user.username}`;
+      member.setNickname(newNick, 'AFK System');
+    }
   }
 };

@@ -39,7 +39,10 @@ module.exports = class MessageReceive {
       authorData.afk = false;
       authorData.afkReason = null;
       await authorData.save();
-      message.channel.send(t('commands:afk.back'))
+      const member = await message.channel.guild.members.fetch(message.author.id);
+      if (member.manageable && member.nickname) if (member.nickname.slice(0, 5) === '[AFK]') member.setNickname(member.nickname.substring(5), 'AFK System');
+
+      message.channel.send(`<:MenheraWink:767210250637279252> | ${t('commands:afk.back')}`)
         .then((msg) => msg.delete({
           timeout: 5000,
         })).catch();
@@ -47,7 +50,7 @@ module.exports = class MessageReceive {
 
     if (process.env.NODE_ENV === 'development') prefix = process.env.BOT_PREFIX;
 
-    if (message.content.startsWith(`<@!${this.client.user.id}>`) || message.content.startsWith(`<@${this.client.user.id}>`)) return message.channel.send(`${t('events:mention.start')} ${message.author}, ${t('events:mention.end', { prefix })}`);
+    if (message.content.startsWith(`<@!${this.client.user.id}>`) || message.content.startsWith(`<@${this.client.user.id}>`)) return message.channel.send(`<:MenheraWink:767210250637279252> | ${t('events:mention.start')} ${message.author}, ${t('events:mention.end', { prefix })}`);
 
     if (!message.content.toLowerCase().startsWith(prefix)) return;
 
