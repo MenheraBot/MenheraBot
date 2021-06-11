@@ -27,7 +27,7 @@ module.exports = class ShipCommand extends Command {
     if (!user1) return ctx.replyT('error', 'commands:ship.unknow-user');
     if (!user2) return ctx.replyT('error', 'commands:ship.unknow-user');
 
-    const dbUserToTakeValue1 = await this.client.database.Users.findOne({ id: user1.id }, { shipValue: 1, _id: 0 });
+    const dbUserToTakeValue1 = await this.client.database.Users.findOne({ id: user1.id }, { shipValue: 1, casado: 1, _id: 0 });
     const dbUserToTakeValue2 = await this.client.database.Users.findOne({ id: user2.id }, { shipValue: 1, _id: 0 });
 
     const FinalValue1 = dbUserToTakeValue1?.shipValue ? dbUserToTakeValue1.shipValue : Math.floor(Math.random() * 55);
