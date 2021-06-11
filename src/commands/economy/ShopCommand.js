@@ -253,7 +253,7 @@ function lojaComprar(ctx, embedMessage, constants) {
           embedMessage.delete({ timeout: 500 }).catch();
           ctx.replyT('error', 'commands:shop.dataRolls_fields.buy_rolls.invalid-number');
         } else {
-          if ((valor * valorRoll) > ctx.data.user.estrelinhas) return ctx.replyt('error', 'commands:shop.dataRolls_fields.buy_rolls.poor');
+          if ((valor * valorRoll) > ctx.data.user.estrelinhas) return ctx.replyT('error', 'commands:shop.dataRolls_fields.buy_rolls.poor');
 
           ctx.data.user.estrelinhas -= (valor * valorRoll);
           ctx.data.user.rolls += valor;
