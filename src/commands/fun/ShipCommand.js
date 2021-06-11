@@ -13,14 +13,13 @@ module.exports = class ShipCommand extends Command {
 
   async run(ctx) {
     if (!ctx.args[0]) return ctx.replyT('error', 'commands:ship.missing-args');
-    if (!ctx.args[1]) return ctx.replyT('error', 'commands:ship.missing-args');
 
     let user2;
     let user1;
 
     try {
       user1 = await this.client.users.fetch(ctx.args[0].replace(/[<@!>]/g, ''));
-      user2 = await this.client.users.fetch(ctx.args[1].replace(/[<@!>]/g, ''));
+      user2 = ctx.args[1] ? await this.client.users.fetch(ctx.args[1].replace(/[<@!>]/g, '')) : ctx.message.author;
     } catch {
       return ctx.replyT('error', 'commands:ship.unknow-user');
     }
@@ -45,12 +44,15 @@ module.exports = class ShipCommand extends Command {
     const avatarLinkTwo = user2.displayAvatarURL({ format: 'png', size: 256 });
     const bufferedShipImage = await NewHttp.shipRequest(avatarLinkOne, avatarLinkTwo, value);
 
-    const username1 = user1.username;
-    const username2 = user2.username;
-    const mix = `${username1.substring(0, username1.length / 2) + username2.substring(username2.length / 2, username2.length)}`.replace(' ', '');
+    const member1 = ctx.message.guild.members.cache.get(user1.id);
+    const member2 = ctx.message.guild.members.cache.get(user2.id);
+
+    const name1 = (member1 && member1?.nickname) ? member1.nickname : user1.username;
+    const name2 = (member2 && member2?.nickname) ? member2.nickname : user2.username;
+    const mix = `${name1.substring(0, name1.length / 2) + name2.substring(name2.length / 2, name2.length)}`.replace(' ', '');
 
     const embed = new MessageEmbed()
-      .setTitle(`${username1} + ${username2} = ${mix}`)
+      .setTitle(`${name1} + ${name2} = ${mix}`)
       .setDescription(`\n${ctx.locale('commands:ship.value')} **${value.toString()}%**\n\n${ctx.locale('commands:ship.default')}`);
 
     if (!bufferedShipImage.err) {

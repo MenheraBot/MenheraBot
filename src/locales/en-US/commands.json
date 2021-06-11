@@ -367,8 +367,8 @@
   },
   "ship": {
     "description": "Would you make a good couple?",
-    "usage": "<user1> <user2>",
-    "missing-args": "you didn't mention two users",
+    "usage": "<user1> [user2]",
+    "missing-args": "you didn't mention an user",
     "no-dbuser": "user not found in database",
     "unknow-user": "user not found",
     "value": "Ship value:",
@@ -1090,5 +1090,9 @@
     "no-args": "you did not choose which sound you want to play. Choices: `{{audios}}`",
     "unknow-args": "this sound does not exist you dumb, you need to see if you wrote it right. Choices: `{{audios}}`"
   },
-  "http-error": "hmmm... Some error happened while receiving the image... Please try again"
+  "http-error": "hmmm... Some error happened while receiving the image... Please try again",
+  "gado": {
+    "description": "BRO THAT'S A SIMP",
+    "usage": "[mention || image]"
+  }
 }

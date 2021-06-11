@@ -373,8 +373,8 @@
   },
   "ship": {
     "description": "Será que vocês dariam um bom casal?",
-    "usage": "<usuário1> <usuário2>",
-    "missing-args": "você não mencionou dois usuários",
+    "usage": "<usuário1> [usuário2]",
+    "missing-args": "você não mencionou um usuário",
     "no-dbuser": "usuário nao encontrado na database",
     "value": "Valor do ship:",
     "unknow-user": "usuário não encontrado",
@@ -1110,5 +1110,9 @@
     "no-args": "você não escolheu qual som desejas tocar. Escolhas: `{{audios}}`",
     "unknow-args": "esse som não existe aleki, tu precisa ver direitinho se escreveu certo. Escolhas: `{{audios}}`"
   },
-  "http-error": "hmmm... Algum erro aconteceu ao processar a imagem... Tente novamente"
+  "http-error": "hmmm... Algum erro aconteceu ao processar a imagem... Tente novamente",
+  "gado": {
+    "description": "Ala o Gado ó",
+    "usage": "[menção || imagem]"
+  }
 }
