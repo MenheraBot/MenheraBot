@@ -1053,6 +1053,8 @@
     "dungeon": "Dungeon/Boss",
     "job": "Trabalhar",
     "vote": "Votar em Mim",
+    "death": "Você está morto por mais",
+    "hotel": "Você ficará no hotel por mais",
     "minutes": "minutos",
     "hours": "horas",
     "error": "você não possui cooldowns ainda! Crie um perfil primeiro!"
