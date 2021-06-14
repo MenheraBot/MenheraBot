@@ -12,6 +12,6 @@ module.exports = class GuildsRepository {
   }
 
   async delete(guildID) {
-    return this.guildModal.deleteOne({ id: guildID });
+    await this.guildModal.deleteOne({ id: guildID });
   }
 };
