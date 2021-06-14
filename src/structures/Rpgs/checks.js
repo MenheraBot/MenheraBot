@@ -195,7 +195,7 @@ const continueBattle = async (ctx, inimigo, habilidades, user, type, ataque, toS
     .setFooter(ctx.locale('roleplay:battle.footer'))
     .setColor('#f04682')
     .setDescription(texto);
-  ctx.sendC(toSay, embed);
+  await ctx.sendC(toSay, embed);
 
   const filter = (m) => m.author.id === ctx.message.author.id;
   const collector = ctx.message.channel.createMessageCollector(filter, { max: 1, time: 15000, errors: ['time'] });
