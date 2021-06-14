@@ -9,12 +9,9 @@ module.exports = class CommandRepository {
     });
   }
 
-  create(
-    commandName,
-    {
-      category, ptDescription, ptUsage, usDescription, usUsage,
-    },
-  ) {
+  create(commandName, {
+    category, ptDescription, ptUsage, usDescription, usUsage,
+  }) {
     return this.commandModal.create({
       name: commandName,
       category,
@@ -25,12 +22,9 @@ module.exports = class CommandRepository {
     });
   }
 
-  updateByName(
-    commandName,
-    {
-      category, ptDescription, ptUsage, usDescription, usUsage,
-    },
-  ) {
+  updateByName(commandName, {
+    category, ptDescription, ptUsage, usDescription, usUsage,
+  }) {
     return this.commandModal.updateOne(
       {
         name: commandName,

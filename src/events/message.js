@@ -1,6 +1,5 @@
 const { MessageEmbed, Collection } = require('discord.js');
 const i18next = require('i18next');
-const Util = require('../utils/Util');
 const makeRequest = require('../utils/HTTPrequests');
 const CommandContext = require('../structures/CommandContext');
 
@@ -26,7 +25,7 @@ module.exports = class MessageReceive {
     if (message.channel.type === 'dm') return;
     if (!message.channel.permissionsFor(message.guild.me).has('SEND_MESSAGES')) return;
 
-    const server = await Util.databaseGuildEnsure(this.client, message.guild);
+    const server = await this.client.repositories.guildRepository.find(message.guild.id);
     let prefix = server.prefix?.toLowerCase() ?? process.env.BOT_PREFIX;
     const language = server?.lang ?? 'pt-BR';
     const t = i18next.getFixedT(language);
@@ -36,16 +35,11 @@ module.exports = class MessageReceive {
     let authorData = await this.client.repositories.userRepository.find(message.author.id);
 
     if (authorData?.afk) {
-      authorData.afk = false;
-      authorData.afkReason = null;
-      await authorData.save();
+      this.client.repositories.userRepository.update(message.author.id, { $set: { afk: false, afkReason: null } });
       const member = await message.channel.guild.members.fetch(message.author.id);
       if (member.manageable && member.nickname) if (member.nickname.slice(0, 5) === '[AFK]') member.setNickname(member.nickname.substring(5), 'AFK System');
 
-      message.channel.send(`<:MenheraWink:767210250637279252> | ${t('commands:afk.back')}`)
-        .then((msg) => msg.delete({
-          timeout: 5000,
-        })).catch();
+      message.channel.send(`<:MenheraWink:767210250637279252> | ${t('commands:afk.back')}`).then((msg) => { if (msg.deletable) msg.delete({ timeout: 5000 }); });
     }
 
     if (process.env.NODE_ENV === 'development') prefix = process.env.BOT_PREFIX;
@@ -121,7 +115,6 @@ module.exports = class MessageReceive {
     try {
       new Promise((res, _) => { // eslint-disable-line
         res(command.run(ctx));
-        // console.log(`[CMD (${this.client.shard.ids[0]})] ${command.config.name.toUpperCase()} | USER: ${message.author.tag} - ${message.author.id} | GUILD: ${message.guild.name}`);
       }).catch(async (err) => {
         const errorWebHook = await this.client.fetchWebhook(process.env.BUG_HOOK_ID, process.env.BUG_HOOK_TOKEN);
 

@@ -3,6 +3,10 @@ module.exports = class GuildsRepository {
     this.guildModal = guildModal;
   }
 
+  async find(guildID) {
+    return this.guildModal.findOne({ id: guildID });
+  }
+
   create(guildID, lang) {
     this.guildModal.create({ id: guildID, lang });
   }

@@ -3,6 +3,10 @@ module.exports = class UserRepository {
     this.userModal = userModal;
   }
 
+  async update(userId, data) {
+    this.userModal.updateOne({ id: userId }, data);
+  }
+
   async findOrCreate(userID) {
     const result = await this.userModal.findOne({ id: userID });
     if (result) return result;
@@ -19,7 +23,7 @@ module.exports = class UserRepository {
   }
 
   async create(userID) {
-    return this.userModal.create({ id: userID });
+    return this.userModal.create({ id: userID, shipValue: Math.floor(Math.random() * 55) });
   }
 
   findAfkByIDs(ids) {
