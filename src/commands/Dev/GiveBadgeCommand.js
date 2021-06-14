@@ -10,19 +10,13 @@ module.exports = class GiveBadgeCommand extends Command {
     });
   }
 
-  // eslint-disable-next-line no-unused-vars
   async run(ctx) {
-    const user = await this.client.database.Users.findOne({ id: ctx.args[0] });
     const badgeId = parseInt(ctx.args[1]);
 
     if (!badgeId) return ctx.reply('error', 'Cade o id da badge?');
 
-    if (user.badges) {
-      user.badges.push({ id: badgeId, obtainAt: Date.now() });
-    } else {
-      user.badges = [{ id: badgeId, obtainAt: Date.now() }];
-    }
-    user.save();
+    this.client.repositories.userRepository.update(ctx.args[0], { $push: { badges: { id: badgeId, obtainAt: Date.now() } } });
+
     ctx.send('Concluido');
   }
 };
