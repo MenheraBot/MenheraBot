@@ -17,4 +17,12 @@ module.exports = class StatusRepository {
       });
     }
   }
+
+  addMaintenance(commandName) {
+    this.statusModal.updateOne({ _id: 'main' }, { $push: { disabledCommands: commandName } });
+  }
+
+  removeMaintenance(commandName) {
+    this.statusModal.updateOne({ _id: 'main' }, { $pull: { disabledCommands: commandName } });
+  }
 };
