@@ -41,7 +41,7 @@ module.exports = class BattleBoss extends Command {
     habilidades.forEach((hab) => {
       embed.addField(hab.name, `🔮 | **${ctx.locale('commands:boss.damage')}:** ${hab.damage}\n💧 | **${ctx.locale('commands:boss.cost')}** ${hab.cost}`);
     });
-    ctx.send(embed);
+    await ctx.send(embed);
 
     const filter = (m) => m.author.id === ctx.message.author.id;
     const collector = ctx.message.channel.createMessageCollector(filter, { max: 1, time: 30000, errors: ['time'] });
