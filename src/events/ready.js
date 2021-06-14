@@ -1,6 +1,5 @@
 const http = require('../utils/HTTPrequests');
 const Dbl = require('../utils/DBL');
-const { StatusPage } = require('../utils/StatusManager');
 
 module.exports = class ReadyEvent {
   constructor(client) {
@@ -11,8 +10,6 @@ module.exports = class ReadyEvent {
     if (this.client.user.id === '708014856711962654' && this.client.shard.ids[0] === 0) {
       const DiscordBotList = new Dbl(this.client);
       DiscordBotList.init();
-      const status = new StatusPage(this.client);
-      status.submit();
     }
     this.client.user.setActivity('🥱 | Acabei de acoidar :3');
 
