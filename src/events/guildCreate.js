@@ -20,17 +20,9 @@ module.exports = class GuildCreate {
   }
 
   async run(guild) {
-    let server = await this.client.database.Guilds.findOne({ id: guild.id });
-    if (!server) {
-      server = new this.client.database.Guilds({
-        id: guild.id,
-        lang: this.region[guild.region],
-      });
-      server.lang = this.region[guild.region];
-      server.save();
-    }
-    const webhook = await this.client.fetchWebhook(process.env.GUILDS_HOOK_ID, process.env.GUILDS_HOOK_TOKEN);
+    this.client.repositories.guildRepository.create(guild.id, this.region[guild.region]);
 
+    const webhook = await this.client.fetchWebhook(process.env.GUILDS_HOOK_ID, process.env.GUILDS_HOOK_TOKEN);
     webhook.send(`<:MenheraWink:767210250637279252> | Fui adicionada do servidor **${guild}**`);
   }
 };

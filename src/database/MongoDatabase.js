@@ -6,6 +6,7 @@ const RpgRepository = require('./repositories/RpgRepository');
 const StarRepository = require('./repositories/StarRepository');
 const UserRepository = require('./repositories/UserRepository');
 const MamarRepository = require('./repositories/MamarRepository');
+const GuildRepository = require('./repositories/GuildsRepository');
 
 module.exports = class MongoDatabase {
   constructor(uri) {
@@ -28,6 +29,7 @@ module.exports = class MongoDatabase {
     this.starRepository = new StarRepository(this.Users);
     this.rpgRepository = new RpgRepository(this.Rpg);
     this.mamarRepository = new MamarRepository(this.userRepository);
+    this.guildRepository = new GuildRepository(this.Guilds);
   }
 
   get repositories() {
@@ -38,6 +40,7 @@ module.exports = class MongoDatabase {
       starRepository: this.starRepository,
       rpgRepository: this.rpgRepository,
       mamarRepository: this.mamarRepository,
+      guildRepository: this.guildRepository,
     };
   }
 

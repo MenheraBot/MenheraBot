@@ -13,10 +13,10 @@ module.exports = class SarrarCommand extends Command {
   }
 
   async run(ctx) {
-    const randSozinho = await getImageUrl('sarrar_sozinho');
     const user = ctx.message.mentions.users.first();
 
     if (!user) {
+      const randSozinho = await getImageUrl('sarrar_sozinho');
       const embed = new MessageEmbed()
         .setTitle(ctx.locale('commands:sarrar.no-mention.embed_title'))
         .setColor('#000000')
@@ -26,18 +26,18 @@ module.exports = class SarrarCommand extends Command {
         .setFooter(ctx.locale('commands:sarrar.no-mention.embed_footer'))
         .setAuthor(ctx.message.author.tag, ctx.message.author.displayAvatarURL());
 
-      return ctx.send(embed).then((msg) => {
-        msg.react('✅').catch();
+      await ctx.send(embed).then(async (msg) => {
+        await msg.react('✅').catch();
         const filter = (reaction, usuario) => reaction.emoji.name === '✅' && usuario.id !== ctx.message.author.id && !usuario.bot;
 
         const coletor = msg.createReactionCollector(filter, { max: 1, time: 30000 });
 
         coletor.on('collect', (_, colectorUser) => {
-          msg.delete().catch();
           SarrarCommand.sarrada(ctx, colectorUser);
+          msg.delete();
         });
       });
-    } return SarrarCommand.sarrada(ctx, ctx.message.mentions.users.first());
+    } SarrarCommand.sarrada(ctx, ctx.message.mentions.users.first());
   }
 
   static async sarrada(ctx, reactUser) {
