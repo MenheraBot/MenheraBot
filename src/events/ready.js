@@ -21,22 +21,8 @@ module.exports = class ReadyEvent {
     setInterval(async () => {
       const shardId = this.client.shard.ids[0];
       const atividade = await http.getActivity(shardId);
-      this.client.user.setPresence({
-        activity: atividade,
-      });
-      const ping = await this.client.database.Status.findById(shardId);
-      if (!ping) {
-        const newShard = new this.client.database.Status({
-          _id: shardId, ping: this.client.ws.ping, guilds: this.client.guilds.cache.size, uptime: this.client.uptime, lastPingAt: Date.now(),
-        });
-        await newShard.save();
-      } else {
-        ping.ping = this.client.ws.ping;
-        ping.lastPingAt = Date.now();
-        ping.guilds = this.client.guilds.cache.size;
-        ping.uptime = `${this.client.uptime}`;
-        await ping.save();
-      }
+      this.client.user.setPresence({ activity: atividade });
+      this.client.repositories.statusRepository.CreateOrUpdate(shardId, this.client.ws.ping, Date.now(), this.client.guilds.cache.size, `${this.client.uptime}`);
     }, 1000 * 60);
   }
 };
