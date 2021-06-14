@@ -38,13 +38,9 @@ module.exports = class MarryCommand extends Command {
       const yesColetor = msg.createReactionCollector(filterYes, { max: 1, time: 14500 });
       const noColetor = msg.createReactionCollector(filterNo, { max: 1, time: 14500 });
 
-      noColetor.on('collect', async () => {
-        await msg.reactions.removeAll().catch();
-        return ctx.send(`${mencionado} ${ctx.locale('commands:marry.negated')} ${ctx.message.author}`);
-      });
+      noColetor.on('collect', () => ctx.send(`${mencionado} ${ctx.locale('commands:marry.negated')} ${ctx.message.author}`));
 
       yesColetor.on('collect', async () => {
-        await msg.reactions.removeAll().catch();
         ctx.send(`💍${ctx.message.author} ${ctx.locale('commands:marry.acepted')} ${mencionado}💍`);
 
         moment.locale('pt-br');
