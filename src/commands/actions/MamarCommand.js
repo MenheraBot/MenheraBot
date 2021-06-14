@@ -21,8 +21,6 @@ module.exports = class MamarCommand extends Command {
 
     if (mention === ctx.message.author) return ctx.replyT('error', 'commands:mamar.self-mention');
 
-    await ctx.client.database.mamarRepository.mamar(ctx.message.author.id, mention.id);
-
     const rand = await getImageUrl('mamar');
     const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
     const embed = new MessageEmbed()
@@ -34,5 +32,6 @@ module.exports = class MamarCommand extends Command {
       .setAuthor(ctx.message.author.tag, avatar);
 
     ctx.send(embed);
+    await ctx.client.database.mamarRepository.mamar(ctx.message.author.id, mention.id);
   }
 };
