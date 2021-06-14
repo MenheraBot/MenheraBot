@@ -9,11 +9,11 @@ module.exports = class CommandContext {
   }
 
   async replyT(emoji, text, translateOptions = {}) {
-    return this.message.channel.send(`${this.client.constants.emotes[emoji] || '🐛'} **|** ${this.message.author}, ${this.i18n(text, translateOptions)}`);
+    return this.message.channel.send(`${this.client.constants.emojis[emoji] || '🐛'} **|** ${this.message.author}, ${this.i18n(text, translateOptions)}`);
   }
 
   async reply(emoji, text) {
-    return this.message.channel.send(`${this.client.constants.emotes[emoji] || '🐛'} **|** ${this.message.author}, ${text}`);
+    return this.message.channel.send(`${this.client.constants.emojis[emoji] || '🐛'} **|** ${this.message.author}, ${text}`);
   }
 
   async send(message) {
