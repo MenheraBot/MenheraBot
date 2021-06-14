@@ -39,7 +39,10 @@ module.exports = class MessageReceive {
       const member = await message.channel.guild.members.fetch(message.author.id);
       if (member.manageable && member.nickname) if (member.nickname.slice(0, 5) === '[AFK]') member.setNickname(member.nickname.substring(5), 'AFK System');
 
-      message.channel.send(`<:MenheraWink:767210250637279252> | ${t('commands:afk.back')}`).then((msg) => { if (msg.deletable) msg.delete({ timeout: 5000 }); });
+      message.channel.send(`<:MenheraWink:767210250637279252> | ${t('commands:afk.back')}`)
+        .then((msg) => {
+          if (msg.deletable) msg.delete({ timeout: 5000 });
+        });
     }
 
     if (process.env.NODE_ENV === 'development') prefix = process.env.BOT_PREFIX;
