@@ -24,11 +24,11 @@ module.exports = class DivorceCommand extends Command {
     const user2Mention = await this.client.users.fetch(ctx.data.user.casado);
 
     ctx.send(`${ctx.locale('commands:divorce.confirmation')} ${user2Mention}`).then((msg) => {
-      msg.react('✅');
-      msg.react('❌');
+      msg.react(this.client.constants.emojis.yes);
+      msg.react(this.client.constants.emojis.no);
 
-      const filterYes = (reaction, usuario) => reaction.emoji.name === '✅' && usuario.id === ctx.message.author.id;
-      const filterNo = (reação, u) => reação.emoji.name === '❌' && u.id === ctx.message.author.id;
+      const filterYes = (reaction, usuario) => reaction.emoji.name === this.client.constants.emojis.yes && usuario.id === ctx.message.author.id;
+      const filterNo = (reação, u) => reação.emoji.name === this.client.constants.emojis.no && u.id === ctx.message.author.id;
 
       const yesColetor = msg.createReactionCollector(filterYes, { max: 1, time: 14500 });
       const noColetor = msg.createReactionCollector(filterNo, { max: 1, time: 14500 });

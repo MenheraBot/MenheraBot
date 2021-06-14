@@ -29,11 +29,11 @@ module.exports = class MarryCommand extends Command {
     if (user2.casado && user2.casado !== 'false') return ctx.replyT('error', 'commands:marry.mention-married');
 
     ctx.send(`${mencionado} ${ctx.locale('commands:marry.confirmation_start')} ${ctx.message.author}? ${ctx.locale('commands:marry.confirmation_end')}`).then((msg) => {
-      msg.react('✅');
-      msg.react('❌');
+      msg.react(this.client.constants.emojis.yes);
+      msg.react(this.client.constants.emojis.no);
 
-      const filterYes = (reaction, usuario) => reaction.emoji.name === '✅' && usuario.id === mencionado.id;
-      const filterNo = (reação, user) => reação.emoji.name === '❌' && user.id === mencionado.id;
+      const filterYes = (reaction, usuario) => reaction.emoji.name === this.client.constants.emojis.yes && usuario.id === mencionado.id;
+      const filterNo = (reação, user) => reação.emoji.name === this.client.constants.emojis.no && user.id === mencionado.id;
 
       const yesColetor = msg.createReactionCollector(filterYes, { max: 1, time: 14500 });
       const noColetor = msg.createReactionCollector(filterNo, { max: 1, time: 14500 });

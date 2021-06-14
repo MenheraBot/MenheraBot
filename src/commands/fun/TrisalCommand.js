@@ -61,11 +61,11 @@ module.exports = class TrisalCommand extends Command {
     const messageMention2 = await this.client.users.fetch(mencionado2);
 
     const msg = await ctx.send(`${ctx.locale('commands:trisal.accept-message')} ${ctx.message.author}, ${messageMention1}, ${messageMention2}`);
-    await msg.react('✅');
+    await msg.react(this.client.constants.emojis.yes);
 
     const acceptableIds = [ctx.message.author.id, mencionado1, mencionado2];
 
-    const filter = (reaction, usuario) => reaction.emoji.name === '✅' && acceptableIds.includes(usuario.id);
+    const filter = (reaction, usuario) => reaction.emoji.name === this.client.constants.emojis.yes && acceptableIds.includes(usuario.id);
 
     const collector = msg.createReactionCollector(filter, { time: 14000 });
 

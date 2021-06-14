@@ -64,6 +64,8 @@ const emojis = {
   notify: '<:notify:759607330597502976>',
   wink: '<:MenheraWink:767210250637279252>',
   level: '<a:LevelUp:760954035779272755>',
+  yes: '✅',
+  no: '❌',
   map: '🗺️',
   question: '❓',
   yellow_circle: '🟡',

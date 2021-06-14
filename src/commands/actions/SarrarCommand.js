@@ -27,8 +27,8 @@ module.exports = class SarrarCommand extends Command {
         .setAuthor(ctx.message.author.tag, ctx.message.author.displayAvatarURL());
 
       await ctx.send(embed).then(async (msg) => {
-        await msg.react('✅').catch();
-        const filter = (reaction, usuario) => reaction.emoji.name === '✅' && usuario.id !== ctx.message.author.id && !usuario.bot;
+        await msg.react(this.client.constants.emojis.yes).catch();
+        const filter = (reaction, usuario) => reaction.emoji.name === this.client.constants.emojis.yes && usuario.id !== ctx.message.author.id && !usuario.bot;
 
         const coletor = msg.createReactionCollector(filter, { max: 1, time: 30000 });
 

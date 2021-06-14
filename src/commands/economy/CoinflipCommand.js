@@ -34,8 +34,8 @@ module.exports = class CoinflipCommand extends Command {
     if (valor > db2.estrelinhas) return ctx.send(`<:negacao:759603958317711371> **|** ${user2} ${ctx.locale('commands:coinflip.poor')}`);
 
     ctx.send(`${user2}, ${user1} ${ctx.locale('commands:coinflip.confirm-start', { value: valor })} ${user1} ${ctx.locale('commands:coinflip.confirm-middle')} ${user2} ${ctx.locale('commands:coinflip.win')}!\n${user2} ${ctx.locale('commands:coinflip.confirm-end')}`).then((msg) => {
-      msg.react('✅');
-      const filter = (reaction, usuario) => reaction.emoji.name === '✅' && usuario.id === user2.id;
+      msg.react(this.client.constants.emojis.yes);
+      const filter = (reaction, usuario) => reaction.emoji.name === this.client.constants.emojis.yes && usuario.id === user2.id;
 
       const coletor = msg.createReactionCollector(filter, { max: 1, time: 7000 });
 
