@@ -6,7 +6,7 @@ module.exports = class StatusRepository {
   async CreateOrUpdate(shardID, ping, lastPingAt, guilds, uptime) {
     const result = await this.statusModal.findById(shardID);
     if (result) {
-      this.statusModal.updateOneById({ _id: shardID }, {
+      this.statusModal.updateOne({ _id: shardID }, {
         $set: {
           ping, lastPingAt, guilds, uptime,
         },
