@@ -36,6 +36,8 @@ Até o momento pensei nas seguintes coisas:
 
 - O mundo de Boleham será dinâmico, e eu tentarei fazer sempre uma atualização mudando o mundo. Ter um comando `m!lore` que mostra a lore atual do rpg, e a cada atualização de evento, adicionar mais uma página de lore, mudando algo no mundo, e mudando algo tipo mobs ou ent poderes especiais durante o evento da atualização.
 
+- Quest: O RPG terá quests que o jogador pode pegar na guilda. Ele só poderá trocar de quest ao terminar uma, e só continuará avançando na historia ao finalizar a quest atual. Quests especiais aparecerão em eventos.
+
 ## Classes
 
 O RPG será dividido em classes que o usuário poderá escolher ao se registrar
@@ -72,3 +74,21 @@ O RPG será dividido em classes que o usuário poderá escolher ao se registrar
 - Maior facilidade em acertar ataques básicos mistos de habilidades
 - Velocidade média ao caminhar normalmente, alta velocidade montado em um lobo
 - Vida mediana, porem aguenta tranquilo com uma armadura
+
+#### Ceifador
+
+**Descrição -** Ceifador será uma classe dividida em 3 subclasses. Um assassino sombrio que necessita de almas para continuar vagando pelas terras sem ter que voltar de onde sairam, o inferno.
+
+**Armas Disponíveis -** Foiçe, maça, corrente, mangual e grimório.
+
+**Armaduras Disponíveis -** Somente leves
+
+**Estilo de Habilidades -** Dano foco, cegueiras e vampirismo
+
+**Atributos:**
+
+- Os ceifadores são mestres de matar, possuem baixa defesa, mas muita vida, que fora roubada de suas vítimas.
+- Tem velocidade mediana, já que andam sobrevoando carregando suas armas longas e pesadas.
+
+**Especial -** Os ceifadores possuem um atributo especial, eles podem se subdividir em 3 tipos.
+Ao entrar no mundo, o ceifador é apenas um ceifador, mas ele pode se tornar um: `Ceifador Das Trevas`, que busca matar aqueles que não aceitam morrer (disponível ao matar um player em PvP), `Ceifador Errantes`, buscam somente matar aqueles que devem morrer para a sua própria sobrevivência (disponível ao completar uma quest do tipo `longa` na guilda) e por fim, o `Ceifador Deplorável`, que se arrepende de ter assinado o contrato como ceifador, e se nega a seguir as ordes do mal (disponível ao fugir da dungeon).

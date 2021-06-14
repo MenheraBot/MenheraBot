@@ -42,6 +42,7 @@ const bolehamSchema = mongoose.Schema({
   familiar: { type: Number },
   speed: { type: Number },
   proficiency: { type: Object, default: {} },
+  quest: { type: Object },
 });
 
 const guildSchema = mongoose.Schema({
