@@ -4,7 +4,7 @@ module.exports = class UserRepository {
   }
 
   async update(userId, query) {
-    this.userModal.updateOne({ id: userId }, query);
+    await this.userModal.updateOne({ id: userId }, query);
   }
 
   async findOrCreate(userID) {

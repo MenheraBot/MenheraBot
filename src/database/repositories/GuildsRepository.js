@@ -7,11 +7,11 @@ module.exports = class GuildsRepository {
     return this.guildModal.findOne({ id: guildID });
   }
 
-  create(guildID, lang) {
-    this.guildModal.create({ id: guildID, lang });
+  async create(guildID, lang) {
+    return this.guildModal.create({ id: guildID, lang });
   }
 
-  delete(guildID) {
-    this.guildModal.deleteOne({ id: guildID });
+  async delete(guildID) {
+    return this.guildModal.deleteOne({ id: guildID });
   }
 };
