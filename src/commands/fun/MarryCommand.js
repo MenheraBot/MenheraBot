@@ -22,9 +22,9 @@ module.exports = class MarryCommand extends Command {
 
     if (authorData.casado && authorData.casado !== 'false') return ctx.replyT('error', 'commands:marry.married');
 
-    const user2 = await this.client.database.Users.findOne({ id: mencionado.id });
+    const user2 = await this.client.repositories.userRepository.findOrCreate(mencionado.id);
 
-    if (!user2) return ctx.replyT('warm', 'commands:marry.no-dbuser');
+    if (!user2) return ctx.replyT('warn', 'commands:marry.no-dbuser');
 
     if (user2.casado && user2.casado !== 'false') return ctx.replyT('error', 'commands:marry.mention-married');
 
@@ -47,8 +47,8 @@ module.exports = class MarryCommand extends Command {
 
         const dataFormated = moment(Date.now()).format('l LTS');
 
-        await this.client.database.Users.updateOne({ id: ctx.message.author.id }, { $set: { casado: mencionado.id, data: dataFormated } });
-        await this.client.database.Users.updateOne({ id: mencionado.id }, { $set: { casado: ctx.message.author.id, data: dataFormated } });
+        await this.client.repositories.userRepository.update(ctx.message.author.id, { $set: { casado: mencionado.id, data: dataFormated } });
+        await this.client.repositories.userRepository.update(mencionado.id, { $set: { casado: ctx.message.author.id, data: dataFormated } });
       });
     });
   }
