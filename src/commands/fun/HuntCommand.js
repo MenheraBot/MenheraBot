@@ -64,58 +64,43 @@ module.exports = class HuntCommand extends Command {
       }));
     }
 
-    if (parseInt(authorData.caçarTime) < Date.now()) {
-      const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
-      const embed = new MessageEmbed()
-        .setTitle(ctx.locale('commands:hunt.title'))
-        .setColor('#faa40f')
-        .setThumbnail(avatar)
-        .setFooter(ctx.locale('commands:hunt.footer'));
+    if (parseInt(authorData.caçarTime) > Date.now()) return ctx.replyT('error', 'commands:hunt.cooldown', { time: moment.utc(parseInt(authorData.caçarTime - Date.now())).format('mm:ss') });
 
-      switch (option) {
-        case 'demônio': {
-          const dc = probabilidadeDemonio[Math.floor(Math.random() * probabilidadeDemonio.length)];
-          authorData.caçados += dc;
-          authorData.caçarTime = this.client.constants.probabilities.defaultTime + Date.now();
-          authorData.save();
-          embed.setDescription(`${ctx.locale('commands:hunt.description_start', { value: dc })} ${ctx.locale('commands:hunt.demons')}`);
-          ctx.send(embed);
-          break;
-        }
+    const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
+    const cooldown = this.client.constants.probabilities.defaultTime + Date.now();
+    const embed = new MessageEmbed()
+      .setTitle(ctx.locale('commands:hunt.title'))
+      .setColor('#faa40f')
+      .setThumbnail(avatar)
+      .setFooter(ctx.locale('commands:hunt.footer'));
 
-        case 'anjos': {
-          const da = probabilidadeAnjo[Math.floor(Math.random() * probabilidadeAnjo.length)];
-          authorData.anjos += da;
-          authorData.caçarTime = this.client.constants.probabilities.defaultTime + Date.now();
-          authorData.save();
-          embed.setDescription(`${ctx.locale('commands:hunt.description_start', { value: da })} ${ctx.locale('commands:hunt.angels')}`);
-          ctx.send(embed);
-          break;
-        }
-
-        case 'semideuses': {
-          const ds = probabilidadeSD[Math.floor(Math.random() * probabilidadeSD.length)];
-          authorData.semideuses += ds;
-          authorData.caçarTime = this.client.constants.probabilities.defaultTime + Date.now();
-          authorData.save();
-          embed.setDescription(`${ctx.locale('commands:hunt.description_start', { value: ds })} ${ctx.locale('commands:hunt.sd')}`);
-          ctx.send(embed);
-          break;
-        }
-
-        case 'deus': {
-          const dd = probabilidadeDeuses[Math.floor(Math.random() * probabilidadeDeuses.length)];
-          authorData.deuses += dd;
-          authorData.caçarTime = this.client.constants.probabilities.defaultTime + Date.now();
-          authorData.save();
-          if (dd > 0) embed.setColor('#e800ff');
-          embed.setDescription((dd > 0) ? ctx.locale('commands:hunt.god_hunted_success', { value: dd }) : ctx.locale('commands:hunt.god_hunted_fail', { value: dd }));
-          ctx.send(embed);
-          break;
-        }
+    switch (option) {
+      case 'demônio': {
+        const dc = probabilidadeDemonio[Math.floor(Math.random() * probabilidadeDemonio.length)];
+        this.client.repositories.userRepository.update(ctx.message.author.id, { $set: { caçados: dc, caçarTime: cooldown } });
+        embed.setDescription(`${ctx.locale('commands:hunt.description_start', { value: dc })} ${ctx.locale('commands:hunt.demons')}`);
+        break;
       }
-    } else {
-      ctx.replyT('error', 'commands:hunt.cooldown', { time: moment.utc(parseInt(authorData.caçarTime - Date.now())).format('mm:ss') });
+      case 'anjos': {
+        const da = probabilidadeAnjo[Math.floor(Math.random() * probabilidadeAnjo.length)];
+        this.client.repositories.userRepository.update(ctx.message.author.id, { $set: { anjos: da, caçarTime: cooldown } });
+        embed.setDescription(`${ctx.locale('commands:hunt.description_start', { value: da })} ${ctx.locale('commands:hunt.angels')}`);
+        break;
+      }
+      case 'semideuses': {
+        const ds = probabilidadeSD[Math.floor(Math.random() * probabilidadeSD.length)];
+        this.client.repositories.userRepository.update(ctx.message.author.id, { $set: { semideuses: ds, caçarTime: cooldown } });
+        embed.setDescription(`${ctx.locale('commands:hunt.description_start', { value: ds })} ${ctx.locale('commands:hunt.sd')}`);
+        break;
+      }
+      case 'deus': {
+        const dd = probabilidadeDeuses[Math.floor(Math.random() * probabilidadeDeuses.length)];
+        this.client.repositories.userRepository.update(ctx.message.author.id, { $set: { deuses: dd, caçarTime: cooldown } });
+        if (dd > 0) embed.setColor('#e800ff');
+        embed.setDescription((dd > 0) ? ctx.locale('commands:hunt.god_hunted_success', { value: dd }) : ctx.locale('commands:hunt.god_hunted_fail', { value: dd }));
+        break;
+      }
     }
+    ctx.send(embed);
   }
 };
