@@ -3,6 +3,10 @@ module.exports = class UserRepository {
     this.userModal = userModal;
   }
 
+  async multiUpdate(IDs, query) {
+    await this.userModal.updateMany({ id: { $in: IDs } }, query);
+  }
+
   async update(userId, query) {
     await this.userModal.updateOne({ id: userId }, query);
   }

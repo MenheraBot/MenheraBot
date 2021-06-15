@@ -20,21 +20,8 @@ module.exports = class UnTrisalCommand extends Command {
     const collector = msg.createReactionCollector(filter, { max: 1, time: 14000 });
 
     collector.on('collect', async () => {
-      const user1 = await this.client.database.Users.findOne({ id: ctx.data.user.trisal[0] });
-      const user2 = await this.client.database.Users.findOne({ id: ctx.data.user.trisal[1] });
+      this.client.repositories.userRepository.multiUpdate([ctx.message.author.id, ctx.data.user.trisal[0], ctx.data.user.trisal[1]], { trisal: [] });
 
-      ctx.data.user.trisal = [];
-      await ctx.data.user.save();
-
-      if (user1) {
-        user1.trisal = [];
-        await user1.save();
-      }
-
-      if (user2) {
-        user2.trisal = [];
-        await user2.save();
-      }
       await ctx.replyT('success', 'commands:untrisal.done');
     });
   }
