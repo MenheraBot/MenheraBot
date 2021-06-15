@@ -53,14 +53,8 @@ const getEnemyByUserLevel = (user, type, dungeonLevel, ctx) => {
   if (!validLevels[dungeonLevel]) return false;
 
   if (user.level < validLevels[dungeonLevel].minUserLevel) {
-    const canGoLevels = [];
-    const values = Object.values(validLevels);
-
-    values.forEach((a) => {
-      if (user.level >= a.minUserLevel) canGoLevels.push(a.level);
-    });
-
-    const MaxMinLevel = Math.max(...canGoLevels);
+    const MaxMinLevel = Object.values(validLevels)
+      .reduce((maxLevel, obj) => (user.level >= obj.minUserLevel && obj.level > maxLevel ? obj.level : maxLevel), 0);
 
     ctx.replyT('error', 'commands:dungeon.min-level-warn', { level: MaxMinLevel });
     return 'LOW-LEVEL';
