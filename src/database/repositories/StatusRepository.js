@@ -7,7 +7,7 @@ module.exports = class StatusRepository {
     const result = await this.statusModal.findById(shardID);
     if (result) {
       this.statusModal.updateOne({ _id: shardID }, {
-          ping, lastPingAt, guilds, uptime,
+        ping, lastPingAt, guilds, uptime,
       });
     } else {
       this.statusModal.create({
