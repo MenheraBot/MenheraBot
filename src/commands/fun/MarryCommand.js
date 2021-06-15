@@ -47,8 +47,7 @@ module.exports = class MarryCommand extends Command {
 
         const dataFormated = moment(Date.now()).format('l LTS');
 
-        await this.client.repositories.userRepository.update(ctx.message.author.id, { $set: { casado: mencionado.id, data: dataFormated } });
-        await this.client.repositories.userRepository.update(mencionado.id, { $set: { casado: ctx.message.author.id, data: dataFormated } });
+        await this.client.repositories.relationshipRepository.marry(ctx.message.author.id, mencionado.id, dataFormated);
       });
     });
   }
