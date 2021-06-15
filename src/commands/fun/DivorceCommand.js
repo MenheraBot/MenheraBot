@@ -40,8 +40,8 @@ module.exports = class DivorceCommand extends Command {
       yesColetor.on('collect', async () => {
         ctx.send(`${ctx.message.author} ${ctx.locale('commands:divorce.confirmed_start')} ${user2Mention}. ${ctx.locale('commands:divorce.confirmed_end')}`);
 
-        await this.client.database.Users.updateOne({ id: ctx.data.user.casado }, { $set: { casado: 'false', data: null } });
-        await this.client.database.Users.updateOne({ id: ctx.data.user.id }, { $set: { casado: 'false', data: null } });
+        await this.client.repositories.userRepository.update(ctx.data.user.casado, { $set: { casado: 'false', data: null } });
+        await this.client.repositories.userRepository.update(ctx.message.author.id, { $set: { casado: 'false', data: null } });
       });
     });
   }
