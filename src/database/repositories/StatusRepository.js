@@ -22,7 +22,7 @@ module.exports = class StatusRepository {
     await this.statusModal.updateOne({ _id: 'main' }, { $push: { disabledCommands: commandName } });
   }
 
- async removeMaintenance(commandName) {
+  async removeMaintenance(commandName) {
     await this.statusModal.updateOne({ _id: 'main' }, { $pull: { disabledCommands: commandName } });
   }
 };
