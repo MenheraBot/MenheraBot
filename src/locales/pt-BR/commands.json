@@ -296,7 +296,7 @@
           "value": "1 - Vender Demônios ({{demon}}⭐) \n2 - Vender Anjos ({{angel}}⭐)\n3 - Vender Semi-Deuses ({{demi}}⭐)\n4 - Vender Deuses ({{god}}⭐)\n\nDigite sua escolha e a quantidade. Exemplo: (`1 50`)"
         }
       },
-      "invalid-args": "este valor não é um número válido!",
+      "invalid-args": "este valor não é um número válido! Você deve passar a opção e a quantidade",
       "poor": "você não possui todos estes {{var}}!",
       "success-demon": "você vendeu **{{value}}** <:DEMON:758765044443381780> demônios e recebeu **{{cost}}** ⭐ estrelinhas!\nAgora você tem **{{quantity}}** <:DEMON:758765044443381780> e **{{star}}**⭐",
       "success-angel": "você vendeu **{{value}}** <:Angel:758765044204437535> anjos e recebeu **{{cost}}** ⭐ estrelinhas!\nAgora você tem **{{quantity}}** <:Angel:758765044204437535> e **{{star}}**⭐",
