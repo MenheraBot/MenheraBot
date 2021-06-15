@@ -18,8 +18,8 @@ module.exports = class StatusRepository {
     }
   }
 
-  addMaintenance(commandName) {
-    this.statusModal.updateOne({ _id: 'main' }, { $push: { disabledCommands: commandName } });
+  async addMaintenance(commandName) {
+    await this.statusModal.updateOne({ _id: 'main' }, { $push: { disabledCommands: commandName } });
   }
 
   removeMaintenance(commandName) {
