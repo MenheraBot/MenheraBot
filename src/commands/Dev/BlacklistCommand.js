@@ -21,7 +21,7 @@ module.exports = class BlackilistCommand extends Command {
         if (!user || user === null) return ctx.reply('error', 'user not found');
         const reason = ctx.args.slice(2).join(' ') || 'Sem razão informada';
 
-        this.client.repositories.userRepository.update(ctx.args[1], { $set: { ban: true, banReason: reason } });
+        this.client.repositories.userRepository.update(ctx.args[1], { ban: true, banReason: reason });
 
         ctx.reply('success', 'usuário banido de usar a Menhera!');
         break;
