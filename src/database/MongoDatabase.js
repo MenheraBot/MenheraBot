@@ -8,6 +8,7 @@ const UserRepository = require('./repositories/UserRepository');
 const MamarRepository = require('./repositories/MamarRepository');
 const GuildRepository = require('./repositories/GuildsRepository');
 const StatusRepository = require('./repositories/StatusRepository');
+const BadgeRepository = require('./repositories/BadgeRepository');
 
 module.exports = class MongoDatabase {
   constructor(uri) {
@@ -32,6 +33,7 @@ module.exports = class MongoDatabase {
     this.mamarRepository = new MamarRepository(this.userRepository);
     this.guildRepository = new GuildRepository(this.Guilds);
     this.statusRepository = new StatusRepository(this.Status);
+    this.badgeRepository = new BadgeRepository(this.userRepository);
   }
 
   get repositories() {
@@ -44,6 +46,7 @@ module.exports = class MongoDatabase {
       mamarRepository: this.mamarRepository,
       guildRepository: this.guildRepository,
       statusRepository: this.statusRepository,
+      badgeRepository: this.badgeRepository,
     };
   }
 

@@ -15,7 +15,7 @@ module.exports = class GiveBadgeCommand extends Command {
 
     if (!badgeId) return ctx.reply('error', 'Cade o id da badge?');
 
-    this.client.repositories.userRepository.update(ctx.args[0], { $push: { badges: { id: badgeId, obtainAt: Date.now() } } });
+    this.client.repositories.badgeRepository.addBadge(ctx.args[0], badgeId);
 
     ctx.send('Concluido');
   }
