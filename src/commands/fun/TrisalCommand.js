@@ -73,11 +73,8 @@ module.exports = class TrisalCommand extends Command {
       if (!acceptedIds.includes(user.id)) acceptedIds.push(user.id);
 
       if (acceptedIds.length === 3) {
-        this.client.repositories.userRepository.update(user1.id, { $set: { trisal: [mencionado1, mencionado2] } });
-        this.client.repositories.userRepository.update(user2.id, { $set: { trisal: [ctx.message.author.id, mencionado2] } });
-        this.client.repositories.userRepository.update(user3.id, { $set: { trisal: [ctx.message.author.id, mencionado1] } });
-
         ctx.replyT('success', 'commands:trisal.done');
+        await this.client.repositories.relationshipRepository.trisal(user1.id, user2.id, user3.id);
       }
     });
 

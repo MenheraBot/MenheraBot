@@ -12,4 +12,14 @@ module.exports = class RelationshipRepository {
     await this.userRepository.update(userOneID, { casado: 'false', data: null });
     await this.userRepository.update(userTwoID, { casado: 'false', data: null });
   }
+
+  async trisal(userOneID, userTwoID, userThreeID) {
+    await this.userRepository.update(userOneID, { trisal: [userTwoID, userThreeID] });
+    await this.userRepository.update(userTwoID, { trisal: [userOneID, userThreeID] });
+    await this.userRepository.update(userThreeID, { trisal: [userOneID, userThreeID] });
+  }
+
+  async untrisal(userOneID, userTwoID, userThreeID) {
+    await this.userRepository.multiUpdate([userOneID, userTwoID, userThreeID], { trisal: [] });
+  }
 };

@@ -20,8 +20,7 @@ module.exports = class UnTrisalCommand extends Command {
     const collector = msg.createReactionCollector(filter, { max: 1, time: 14000 });
 
     collector.on('collect', async () => {
-      this.client.repositories.userRepository.multiUpdate([ctx.message.author.id, ctx.data.user.trisal[0], ctx.data.user.trisal[1]], { trisal: [] });
-
+      this.client.repositories.relationshipRepository.untrisal(ctx.message.author.id, ctx.data.user.trisal[0], ctx.data.user.trisal[1]);
       await ctx.replyT('success', 'commands:untrisal.done');
     });
   }
