@@ -77,25 +77,25 @@ module.exports = class HuntCommand extends Command {
     switch (option) {
       case 'demônio': {
         const dc = probabilidadeDemonio[Math.floor(Math.random() * probabilidadeDemonio.length)];
-        this.client.repositories.userRepository.update(ctx.message.author.id, { $set: { caçados: dc, caçarTime: cooldown } });
+        this.client.repositories.huntRepository.huntDemon(ctx.message.author.id, dc, cooldown);
         embed.setDescription(`${ctx.locale('commands:hunt.description_start', { value: dc })} ${ctx.locale('commands:hunt.demons')}`);
         break;
       }
       case 'anjos': {
         const da = probabilidadeAnjo[Math.floor(Math.random() * probabilidadeAnjo.length)];
-        this.client.repositories.userRepository.update(ctx.message.author.id, { $set: { anjos: da, caçarTime: cooldown } });
+        this.client.repositories.huntRepository.huntAngel(ctx.message.author.id, da, cooldown);
         embed.setDescription(`${ctx.locale('commands:hunt.description_start', { value: da })} ${ctx.locale('commands:hunt.angels')}`);
         break;
       }
       case 'semideuses': {
         const ds = probabilidadeSD[Math.floor(Math.random() * probabilidadeSD.length)];
-        this.client.repositories.userRepository.update(ctx.message.author.id, { $set: { semideuses: ds, caçarTime: cooldown } });
+        this.client.repositories.huntRepository.huntDemigod(ctx.message.author.id, ds, cooldown);
         embed.setDescription(`${ctx.locale('commands:hunt.description_start', { value: ds })} ${ctx.locale('commands:hunt.sd')}`);
         break;
       }
       case 'deus': {
         const dd = probabilidadeDeuses[Math.floor(Math.random() * probabilidadeDeuses.length)];
-        this.client.repositories.userRepository.update(ctx.message.author.id, { $set: { deuses: dd, caçarTime: cooldown } });
+        this.client.repositories.huntRepository.huntGod(ctx.message.author.id, dd, cooldown);
         if (dd > 0) embed.setColor('#e800ff');
         embed.setDescription((dd > 0) ? ctx.locale('commands:hunt.god_hunted_success', { value: dd }) : ctx.locale('commands:hunt.god_hunted_fail', { value: dd }));
         break;
