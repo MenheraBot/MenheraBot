@@ -74,30 +74,36 @@ module.exports = class HuntCommand extends Command {
       .setThumbnail(avatar)
       .setFooter(ctx.locale('commands:hunt.footer'));
 
+    const areYouTheHuntOrTheHunter = async (probability, saveFn) => {
+      const value = probability[Math.floor(Math.random() * probability.length)];
+      await saveFn(ctx.message.author.id, value, cooldown);
+      return value;
+    };
+
+    const {
+      huntRepository, huntAngel, huntDemigod, huntGod,
+    } = this.client.repositories;
+
     switch (option) {
       case 'demônio': {
-        const dc = probabilidadeDemonio[Math.floor(Math.random() * probabilidadeDemonio.length)];
-        this.client.repositories.huntRepository.huntDemon(ctx.message.author.id, dc, cooldown);
-        embed.setDescription(`${ctx.locale('commands:hunt.description_start', { value: dc })} ${ctx.locale('commands:hunt.demons')}`);
+        const demons = await areYouTheHuntOrTheHunter(probabilidadeDemonio, huntRepository);
+        embed.setDescription(`${ctx.locale('commands:hunt.description_start', { value: demons })} ${ctx.locale('commands:hunt.demons')}`);
         break;
       }
       case 'anjos': {
-        const da = probabilidadeAnjo[Math.floor(Math.random() * probabilidadeAnjo.length)];
-        this.client.repositories.huntRepository.huntAngel(ctx.message.author.id, da, cooldown);
-        embed.setDescription(`${ctx.locale('commands:hunt.description_start', { value: da })} ${ctx.locale('commands:hunt.angels')}`);
+        const angels = await areYouTheHuntOrTheHunter(probabilidadeAnjo, huntAngel);
+        embed.setDescription(`${ctx.locale('commands:hunt.description_start', { value: angels })} ${ctx.locale('commands:hunt.angels')}`);
         break;
       }
       case 'semideuses': {
-        const ds = probabilidadeSD[Math.floor(Math.random() * probabilidadeSD.length)];
-        this.client.repositories.huntRepository.huntDemigod(ctx.message.author.id, ds, cooldown);
-        embed.setDescription(`${ctx.locale('commands:hunt.description_start', { value: ds })} ${ctx.locale('commands:hunt.sd')}`);
+        const demigods = await areYouTheHuntOrTheHunter(probabilidadeSD, huntDemigod);
+        embed.setDescription(`${ctx.locale('commands:hunt.description_start', { value: demigods })} ${ctx.locale('commands:hunt.sd')}`);
         break;
       }
       case 'deus': {
-        const dd = probabilidadeDeuses[Math.floor(Math.random() * probabilidadeDeuses.length)];
-        this.client.repositories.huntRepository.huntGod(ctx.message.author.id, dd, cooldown);
-        if (dd > 0) embed.setColor('#e800ff');
-        embed.setDescription((dd > 0) ? ctx.locale('commands:hunt.god_hunted_success', { value: dd }) : ctx.locale('commands:hunt.god_hunted_fail', { value: dd }));
+        const gods = await areYouTheHuntOrTheHunter(probabilidadeDeuses, huntGod);
+        if (gods > 0) embed.setColor('#e800ff');
+        embed.setDescription((gods > 0) ? ctx.locale('commands:hunt.god_hunted_success', { value: gods }) : ctx.locale('commands:hunt.god_hunted_fail', { value: gods }));
         break;
       }
     }
