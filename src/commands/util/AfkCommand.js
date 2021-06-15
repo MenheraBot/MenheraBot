@@ -20,7 +20,7 @@ module.exports = class AfkCommand extends Command {
     ctx.replyT('success', 'commands:afk.success');
     if (member.manageable) {
       const newNick = member.nickname ? `[AFK] ${member.nickname}` : `[AFK] ${member.user.username}`;
-      member.setNickname(newNick, 'AFK System');
+      if (newNick.length <= 32) member.setNickname(newNick, 'AFK System');
     }
   }
 };
