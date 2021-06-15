@@ -29,7 +29,7 @@ module.exports = class BlackilistCommand extends Command {
       case 'remove': {
         if (!user || user === null) return ctx.reply('error', 'user not found');
 
-        this.client.repositories.userRepository.update(ctx.args[1], { $set: { ban: false, banReason: null } });
+        this.client.repositories.userRepository.update(ctx.args[1], { ban: false, banReason: null });
 
         ctx.reply('success', 'usuário desbanido');
         break;
