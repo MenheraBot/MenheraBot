@@ -3,6 +3,10 @@ module.exports = class RpgRepository {
     this.modal = rpgModal;
   }
 
+  async find(userID) {
+    return this.rpgModal.findById(userID);
+  }
+
   async findByIdOrCreate(userID) {
     const result = await this.rpgModal.findById(userID);
     if (result) return result;

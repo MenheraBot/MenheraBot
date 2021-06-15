@@ -24,7 +24,7 @@ module.exports = class WalletCommand extends Command {
       pessoa = ctx.message.author;
     }
 
-    const user = await this.client.database.repositories.userRepository.find(pessoa.id);
+    const user = await this.client.repositories.userRepository.find(pessoa.id);
     if (!user) return ctx.replyT('error', 'commands:wallet.no-dbuser');
 
     let cor;
@@ -68,7 +68,7 @@ module.exports = class WalletCommand extends Command {
       },
       ]);
 
-    const rpguser = await this.client.database.Rpg.findById(user.id);
+    const rpguser = await this.client.repositories.rpgRepository.find(user.id);
     if (rpguser && rpguser.resetRoll) embed.addField(`🔑 | RPG ${ctx.locale('commands:wallet.rolls')}`, `**${rpguser.resetRoll}**`, true);
 
     ctx.sendC(ctx.message.author, embed);
