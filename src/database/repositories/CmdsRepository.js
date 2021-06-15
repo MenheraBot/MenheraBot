@@ -7,8 +7,8 @@ module.exports = class CmdRepository {
     return this.cmdModal.findById(commandName);
   }
 
-  editMaintenance(commandName, maintenanceStatus, maintenanceReason) {
-    this.cmdModal.updateOne({ _id: commandName }, { $set: { maintenance: maintenanceStatus, maintenanceReason } });
+  async editMaintenance(commandName, maintenanceStatus, maintenanceReason) {
+    await this.cmdModal.updateOne({ _id: commandName }, { $set: { maintenance: maintenanceStatus, maintenanceReason } });
   }
 
   create(commandName) {
