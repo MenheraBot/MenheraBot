@@ -6,21 +6,21 @@ module.exports = class StatusRepository {
   async CreateOrUpdate(shardID, ping, lastPingAt, guilds, uptime) {
     const result = await this.statusModal.findById(shardID);
     if (result) {
-      this.statusModal.updateOne({ _id: shardID }, {
+      await this.statusModal.updateOne({ _id: shardID }, {
         ping, lastPingAt, guilds, uptime,
       });
     } else {
-      this.statusModal.create({
+      await this.statusModal.create({
         _id: shardID, ping, lastPingAt, guilds, uptime,
       });
     }
   }
 
-  async addMaintenance(commandName) {
-    await this.statusModal.updateOne({ _id: 'main' }, { $push: { disabledCommands: commandName } });
+  async addMaintenance(commandName, maintenanceReason) {
+    await this.statusModal.updateOne({ _id: 'main' }, { $push: { disabledCommands: { name: commandName, reason: maintenanceReason } } });
   }
 
   async removeMaintenance(commandName) {
-    await this.statusModal.updateOne({ _id: 'main' }, { $pull: { disabledCommands: commandName } });
+    await this.statusModal.updateOne({ _id: 'main' }, { $pull: { disabledCommands: { $elemMatch: { name: commandName } } } });
   }
 };
