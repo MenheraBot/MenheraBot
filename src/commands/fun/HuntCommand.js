@@ -73,20 +73,19 @@ module.exports = class HuntCommand extends Command {
       .setColor('#faa40f')
       .setThumbnail(avatar)
       .setFooter(ctx.locale('commands:hunt.footer'));
+    const {
+      huntDemon, huntAngel, huntDemigod, huntGod,
+    } = this.client.repositories.huntRepository;
 
     const areYouTheHuntOrTheHunter = async (probability, saveFn) => {
       const value = probability[Math.floor(Math.random() * probability.length)];
-      await saveFn(ctx.message.author.id, value, cooldown);
+      await saveFn.call(this.client.repositories.huntRepository, ctx.message.author.id, value, cooldown);
       return value;
     };
 
-    const {
-      huntRepository, huntAngel, huntDemigod, huntGod,
-    } = this.client.repositories;
-
     switch (option) {
       case 'demônio': {
-        const demons = await areYouTheHuntOrTheHunter(probabilidadeDemonio, huntRepository);
+        const demons = await areYouTheHuntOrTheHunter(probabilidadeDemonio, huntDemon);
         embed.setDescription(`${ctx.locale('commands:hunt.description_start', { value: demons })} ${ctx.locale('commands:hunt.demons')}`);
         break;
       }
