@@ -38,7 +38,7 @@ module.exports = class MongoDatabase {
     this.statusRepository = new StatusRepository(this.Status);
     this.badgeRepository = new BadgeRepository(this.userRepository);
     this.maintenanceRepository = new MaintenanceRepository(this.cmdRepository, this.statusRepository);
-    this.huntRepository = new HuntRepository(this.userRepository);
+    this.huntRepository = new HuntRepository(this.Users);
     this.relationshipRepository = new RelationshipRepository(this.userRepository);
     this.blacklistRepository = new BlacklistRepository(this.userRepository);
   }
