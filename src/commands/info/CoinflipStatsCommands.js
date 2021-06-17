@@ -64,7 +64,7 @@ module.exports = class CoinflipStatsCommand extends Command {
           inline: true,
         },
       ]);
-    totalMoney > 0 ? embed.addField(`✅ | ${ctx.locale('commands:coinflipstats.profit')}`, `**${totalMoney}** :star:`, true) : embed.addField(`❌ | ${ctx.locale('commands:coinflipstats.loss')}`, `**${totalMoney}** :star:`, true);
+    totalMoney > 0 ? embed.addField(`${this.client.constants.emojis.yes} | ${ctx.locale('commands:coinflipstats.profit')}`, `**${totalMoney}** :star:`, true) : embed.addField(`${this.client.constants.emojis.no} | ${ctx.locale('commands:coinflipstats.loss')}`, `**${totalMoney}** :star:`, true);
 
     ctx.sendC(ctx.message.author, embed);
   }

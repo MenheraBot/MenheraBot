@@ -6,6 +6,13 @@ const RpgRepository = require('./repositories/RpgRepository');
 const StarRepository = require('./repositories/StarRepository');
 const UserRepository = require('./repositories/UserRepository');
 const MamarRepository = require('./repositories/MamarRepository');
+const GuildRepository = require('./repositories/GuildsRepository');
+const StatusRepository = require('./repositories/StatusRepository');
+const BadgeRepository = require('./repositories/BadgeRepository');
+const MaintenanceRepository = require('./repositories/MaintenanceRepository');
+const HuntRepository = require('./repositories/HuntRepository');
+const RelationshipRepository = require('./repositories/RelationshipRepository');
+const BlacklistRepository = require('./repositories/BlacklistRepository');
 
 module.exports = class MongoDatabase {
   constructor(uri) {
@@ -17,7 +24,6 @@ module.exports = class MongoDatabase {
     this.Commands = MongoModals.Commands;
     this.Guilds = MongoModals.Guilds;
     this.Status = MongoModals.Status;
-    this.Reminders = MongoModals.Reminders;
     this.Rpg = MongoModals.Rpg;
     this.Users = MongoModals.Users;
     this.Warns = MongoModals.Warns;
@@ -28,6 +34,13 @@ module.exports = class MongoDatabase {
     this.starRepository = new StarRepository(this.Users);
     this.rpgRepository = new RpgRepository(this.Rpg);
     this.mamarRepository = new MamarRepository(this.userRepository);
+    this.guildRepository = new GuildRepository(this.Guilds);
+    this.statusRepository = new StatusRepository(this.Status);
+    this.badgeRepository = new BadgeRepository(this.userRepository);
+    this.maintenanceRepository = new MaintenanceRepository(this.cmdRepository, this.statusRepository);
+    this.huntRepository = new HuntRepository(this.Users);
+    this.relationshipRepository = new RelationshipRepository(this.userRepository);
+    this.blacklistRepository = new BlacklistRepository(this.userRepository);
   }
 
   get repositories() {
@@ -38,6 +51,13 @@ module.exports = class MongoDatabase {
       starRepository: this.starRepository,
       rpgRepository: this.rpgRepository,
       mamarRepository: this.mamarRepository,
+      guildRepository: this.guildRepository,
+      statusRepository: this.statusRepository,
+      badgeRepository: this.badgeRepository,
+      maintenanceRepository: this.maintenanceRepository,
+      huntRepository: this.huntRepository,
+      relationshipRepository: this.relationshipRepository,
+      blacklistRepository: this.blacklistRepository,
     };
   }
 

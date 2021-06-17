@@ -22,37 +22,30 @@ module.exports = class MarryCommand extends Command {
 
     if (authorData.casado && authorData.casado !== 'false') return ctx.replyT('error', 'commands:marry.married');
 
-    const user2 = await this.client.database.Users.findOne({ id: mencionado.id });
+    const user2 = await this.client.repositories.userRepository.findOrCreate(mencionado.id);
 
-    if (!user2) return ctx.replyT('warm', 'commands:marry.no-dbuser');
+    if (!user2) return ctx.replyT('warn', 'commands:marry.no-dbuser');
 
     if (user2.casado && user2.casado !== 'false') return ctx.replyT('error', 'commands:marry.mention-married');
 
-    ctx.send(`${mencionado} ${ctx.locale('commands:marry.confirmation_start')} ${ctx.message.author}? ${ctx.locale('commands:marry.confirmation_end')}`).then((msg) => {
-      msg.react('✅');
-      msg.react('❌');
+    ctx.send(`${mencionado} ${ctx.locale('commands:marry.confirmation_start')} ${ctx.message.author}? ${ctx.locale('commands:marry.confirmation_end')}`).then(async (msg) => {
+      msg.react(this.client.constants.emojis.yes);
+      msg.react(this.client.constants.emojis.no);
 
-      const filterYes = (reaction, usuario) => reaction.emoji.name === '✅' && usuario.id === mencionado.id;
-      const filterNo = (reação, user) => reação.emoji.name === '❌' && user.id === mencionado.id;
+      const filter = (reaction, usuario) => reaction.me && usuario.id === mencionado.id;
 
-      const yesColetor = msg.createReactionCollector(filterYes, { max: 1, time: 14500 });
-      const noColetor = msg.createReactionCollector(filterNo, { max: 1, time: 14500 });
+      const colector = await msg.createReactionCollector(filter, { max: 1, time: 15000 });
 
-      noColetor.on('collect', async () => {
-        await msg.reactions.removeAll().catch();
-        return ctx.send(`${mencionado} ${ctx.locale('commands:marry.negated')} ${ctx.message.author}`);
-      });
+      colector.on('collect', async (reaction) => {
+        if (reaction.emoji.name === this.client.constants.emojis.no) return ctx.send(`${mencionado} ${ctx.locale('commands:marry.negated')} ${ctx.message.author}`);
 
-      yesColetor.on('collect', async () => {
-        await msg.reactions.removeAll().catch();
         ctx.send(`💍${ctx.message.author} ${ctx.locale('commands:marry.acepted')} ${mencionado}💍`);
 
         moment.locale('pt-br');
 
         const dataFormated = moment(Date.now()).format('l LTS');
 
-        await this.client.database.Users.updateOne({ id: ctx.message.author.id }, { $set: { casado: mencionado.id, data: dataFormated } });
-        await this.client.database.Users.updateOne({ id: mencionado.id }, { $set: { casado: ctx.message.author.id, data: dataFormated } });
+        await this.client.repositories.relationshipRepository.marry(ctx.message.author.id, mencionado.id, dataFormated);
       });
     });
   }

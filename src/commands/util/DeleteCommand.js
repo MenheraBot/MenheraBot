@@ -13,11 +13,11 @@ module.exports = class DeleteCommand extends Command {
 
   async run(ctx) {
     ctx.replyT('warn', 'commands:delete.confirm').then(async (msg) => {
-      msg.react('✅').catch();
-      msg.react('❌').catch();
+      msg.react(this.client.constants.emojis.yes).catch();
+      msg.react(this.client.constants.emojis.no).catch();
 
-      const filter = (reaction, usuario) => reaction.emoji.name === '✅' && usuario.id === ctx.message.author.id;
-      const filter1 = (reação, user) => reação.emoji.name === '❌' && user.id === ctx.message.author.id;
+      const filter = (reaction, usuario) => reaction.emoji.name === this.client.constants.emojis.yes && usuario.id === ctx.message.author.id;
+      const filter1 = (reação, user) => reação.emoji.name === this.client.constants.emojis.no && user.id === ctx.message.author.id;
 
       const ncoletor = msg.createReactionCollector(filter1, { max: 1, time: 5000 });
       const coletor = msg.createReactionCollector(filter, { max: 1, time: 5000 });

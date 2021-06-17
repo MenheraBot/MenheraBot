@@ -24,22 +24,27 @@ const getEnemyByUserLevel = (user, type, dungeonLevel, ctx) => {
     1: {
       minUserLevel: 0,
       mob: random(mobsFile.inicial),
+      level: 1,
     },
     2: {
       minUserLevel: 4,
       mob: random(mobsFile.medio),
+      level: 2,
     },
     3: {
       minUserLevel: 9,
       mob: random(mobsFile.hard),
+      level: 3,
     },
     4: {
       minUserLevel: 13,
       mob: random(mobsFile.impossible),
+      level: 4,
     },
     5: {
       minUserLevel: 30,
       mob: random(mobsFile.evolved),
+      level: 5,
     },
   };
 
@@ -48,7 +53,10 @@ const getEnemyByUserLevel = (user, type, dungeonLevel, ctx) => {
   if (!validLevels[dungeonLevel]) return false;
 
   if (user.level < validLevels[dungeonLevel].minUserLevel) {
-    ctx.replyT('error', 'commands:dungeon.min-level-warn');
+    const MaxMinLevel = Object.values(validLevels)
+      .reduce((maxLevel, obj) => (user.level >= obj.minUserLevel && obj.level > maxLevel ? obj.level : maxLevel), 0);
+
+    ctx.replyT('error', 'commands:dungeon.min-level-warn', { level: MaxMinLevel });
     return 'LOW-LEVEL';
   }
 
