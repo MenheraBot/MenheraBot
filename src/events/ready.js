@@ -11,10 +11,16 @@ module.exports = class ReadyEvent {
       const DiscordBotList = new Dbl(this.client);
       DiscordBotList.init();
       setInterval(async () => {
-        const shardId = this.client.shard.ids[0];
-        const atividade = await http.getActivity(shardId);
+        const atividade = await http.getActivity(this.client.shard.ids[0]);
         this.client.user.setPresence({ activity: atividade });
-        this.client.repositories.statusRepository.CreateOrUpdate(shardId, this.client.ws.ping, Date.now(), this.client.guilds.cache.size, `${this.client.uptime}`);
+
+        const allShardsPing = await this.client.shard.broadcastEval('this.ws.ping');
+        const allShardsUptime = await this.client.shard.broadcastEval('this.ws.client.uptime');
+        const guildsPerShardCount = await this.client.shard.broadcastEval('this.guilds.cache.size');
+
+        allShardsPing.map(async (shardPing, id) => {
+          this.client.repositories.statusRepository.CreateOrUpdate(id, shardPing, Date.now(), guildsPerShardCount[id], `${allShardsUptime[id]}`);
+        });
       }, 1000 * 60);
     }
     this.client.user.setActivity('🥱 | Acabei de acoidar :3');
