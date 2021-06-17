@@ -8,7 +8,7 @@ module.exports = class TrisalCommand extends Command {
       name: 'trisal',
       cooldown: 10,
       category: 'diversão',
-      clientPermissions: ['MANAGE_MESSAGES', 'EMBED_LINKS'],
+      clientPermissions: ['MANAGE_MESSAGES', 'EMBED_LINKS', 'ADD_REACTIONS'],
     });
   }
 

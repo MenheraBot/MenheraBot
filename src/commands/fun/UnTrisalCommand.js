@@ -6,6 +6,7 @@ module.exports = class UnTrisalCommand extends Command {
       name: 'untrisal',
       cooldown: 10,
       category: 'diversão',
+      clientPermissions: ['ADD_REACTIONS'],
     });
   }
 
