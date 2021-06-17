@@ -6,7 +6,6 @@ module.exports = class UnTrisalCommand extends Command {
       name: 'untrisal',
       cooldown: 10,
       category: 'diversão',
-      clientPermissions: ['ADD_REACTIONS'],
     });
   }
 
@@ -14,14 +13,28 @@ module.exports = class UnTrisalCommand extends Command {
     if (ctx.data.user.trisal?.length === 0) return ctx.replyT('error', 'commands:untrisal.error');
 
     const msg = await ctx.send(ctx.locale('commands:untrisal.sure'));
-    await msg.react(this.client.constants.emojis.yes);
+    await msg.react('✅');
 
-    const filter = (reaction, usuario) => reaction.emoji.name === this.client.constants.emojis.yes && usuario.id === ctx.message.author.id;
+    const filter = (reaction, usuario) => reaction.emoji.name === '✅' && usuario.id === ctx.message.author.id;
 
     const collector = msg.createReactionCollector(filter, { max: 1, time: 14000 });
 
     collector.on('collect', async () => {
-      this.client.repositories.relationshipRepository.untrisal(ctx.message.author.id, ctx.data.user.trisal[0], ctx.data.user.trisal[1]);
+      const user1 = await this.client.database.Users.findOne({ id: ctx.data.user.trisal[0] });
+      const user2 = await this.client.database.Users.findOne({ id: ctx.data.user.trisal[1] });
+
+      ctx.data.user.trisal = [];
+      await ctx.data.user.save();
+
+      if (user1) {
+        user1.trisal = [];
+        await user1.save();
+      }
+
+      if (user2) {
+        user2.trisal = [];
+        await user2.save();
+      }
       await ctx.replyT('success', 'commands:untrisal.done');
     });
   }

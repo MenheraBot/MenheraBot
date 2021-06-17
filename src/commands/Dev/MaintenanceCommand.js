@@ -21,16 +21,25 @@ module.exports = class MaintenanceCommand extends Command {
       return ctx.reply('error', 'este comando não existe');
     }
 
-    const command = await this.client.repositories.cmdRepository.findByName(cmd.config.name);
+    const command = await this.client.database.repositories.cmdRepository.findByName(cmd.config.name);
+    const mainStatus = await this.client.database.Status.findById('main');
 
     if (command.maintenance) {
-      this.client.repositories.maintenanceRepository.removeMaintenance(cmd.config.name);
-      ctx.reply('success', 'comando **REMOVIDO** da manutenção.');
+      command.maintenance = false;
+      command.maintenanceReason = '';
+      mainStatus.disabledCommands.splice(mainStatus.disabledCommands.findIndex((c) => c.name === cmd.name), 1);
+      await command.save().then(() => {
+        ctx.reply('success', 'comando **REMOVIDO** da manutenção.');
+      });
     } else {
       const reason = ctx.args.slice(1).join(' ');
-      this.client.repositories.statusRepository.addMaintenance(cmd.config.name, reason);
-
-      ctx.reply('success', 'comando **ADICIONADO** a manutenção.');
+      command.maintenance = true;
+      command.maintenanceReason = reason;
+      mainStatus.disabledCommands.push({ name: cmd.config.name, reason });
+      await command.save().then(() => {
+        ctx.reply('success', 'comando **ADICIONADO** a manutenção.');
+      });
     }
+    await mainStatus.save();
   }
 };

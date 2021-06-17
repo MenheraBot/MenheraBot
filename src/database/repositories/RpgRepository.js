@@ -1,10 +1,6 @@
 module.exports = class RpgRepository {
   constructor(rpgModal) {
-    this.rpgModal = rpgModal;
-  }
-
-  async find(userID) {
-    return this.rpgModal.findById(userID);
+    this.modal = rpgModal;
   }
 
   async findByIdOrCreate(userID) {

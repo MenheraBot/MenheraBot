@@ -32,6 +32,6 @@ module.exports = class MamarCommand extends Command {
       .setAuthor(ctx.message.author.tag, avatar);
 
     ctx.send(embed);
-    await ctx.client.repositories.mamarRepository.mamar(ctx.message.author.id, mention.id);
+    await ctx.client.database.mamarRepository.mamar(ctx.message.author.id, mention.id);
   }
 };

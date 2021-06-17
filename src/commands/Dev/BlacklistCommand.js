@@ -14,30 +14,33 @@ module.exports = class BlackilistCommand extends Command {
   async run(ctx) {
     if (!ctx.args[1]) return ctx.reply('error', 'só faltou o id né minha flor');
 
-    const user = await this.client.users.fetch(ctx.args[1]).catch();
+    const user = await this.client.database.Users.findOne({ id: ctx.args[1] });
+
+    const user2 = await this.client.users.fetch(ctx.args[1]).catch();
 
     switch (ctx.args[0]) {
       case 'add': {
         if (!user || user === null) return ctx.reply('error', 'user not found');
         const reason = ctx.args.slice(2).join(' ') || 'Sem razão informada';
-
-        this.client.repositories.blacklistRepository.ban(ctx.args[1], reason);
+        user.ban = true;
+        user.banReason = reason;
+        user.save();
 
         ctx.reply('success', 'usuário banido de usar a Menhera!');
         break;
       }
       case 'remove': {
         if (!user || user === null) return ctx.reply('error', 'user not found');
-
-        this.client.repositories.blacklistRepository.unban(ctx.args[1]);
+        user.ban = false;
+        user.banReason = null;
+        user.save();
 
         ctx.reply('success', 'usuário desbanido');
         break;
       }
       case 'find': {
         if (!user || user === null) return ctx.reply('error', 'user not found');
-        const usr = await this.client.repositories.userRepository.find(ctx.args[1]);
-        const msg = `== USER BANNED INFO ==\n\n• User :: ${user.tag} - (${user.id})\n• Banned :: ${usr.ban}\n• Reason :: ${usr.banReason}`;
+        const msg = `== USER BANNED INFO ==\n\n• User :: ${user2.tag} - (${user2.id})\n• Banned :: ${user.ban}\n• Reason :: ${user.banReason}`;
         ctx.message.channel.send(msg, { code: 'asciidoc' });
         break;
       }
