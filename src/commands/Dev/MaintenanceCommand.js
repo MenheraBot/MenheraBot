@@ -28,7 +28,7 @@ module.exports = class MaintenanceCommand extends Command {
       ctx.reply('success', 'comando **REMOVIDO** da manutenção.');
     } else {
       const reason = ctx.args.slice(1).join(' ');
-      this.client.repositories.statusRepository.addMaintenance(cmd.config.name, reason);
+      this.client.repositories.maintenanceRepository.addMaintenance(cmd.config.name, reason);
 
       ctx.reply('success', 'comando **ADICIONADO** a manutenção.');
     }
