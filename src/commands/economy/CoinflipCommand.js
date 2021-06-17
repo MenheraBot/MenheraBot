@@ -25,8 +25,8 @@ module.exports = class CoinflipCommand extends Command {
     if (Number.isNaN(parseInt(valor))) return ctx.replyT('error', 'commands:coinflip.invalid-value');
     if (parseInt(valor) < 1) return ctx.replyT('error', 'commands:coinflip.invalid-value');
 
-    const db1 = await this.client.repositories.userRepository.find(user1.id);
-    const db2 = await this.client.repositories.userRepository.find(user2.id);
+    const db1 = await this.client.database.Users.findOne({ id: user1.id });
+    const db2 = await this.client.database.Users.findOne({ id: user2.id });
 
     if (!db1 || !db2) return ctx.replyT('error', 'commands:coinflip.no-dbuser');
 
@@ -34,8 +34,8 @@ module.exports = class CoinflipCommand extends Command {
     if (valor > db2.estrelinhas) return ctx.send(`<:negacao:759603958317711371> **|** ${user2} ${ctx.locale('commands:coinflip.poor')}`);
 
     ctx.send(`${user2}, ${user1} ${ctx.locale('commands:coinflip.confirm-start', { value: valor })} ${user1} ${ctx.locale('commands:coinflip.confirm-middle')} ${user2} ${ctx.locale('commands:coinflip.win')}!\n${user2} ${ctx.locale('commands:coinflip.confirm-end')}`).then((msg) => {
-      msg.react(this.client.constants.emojis.yes);
-      const filter = (reaction, usuario) => reaction.emoji.name === this.client.constants.emojis.yes && usuario.id === user2.id;
+      msg.react('✅');
+      const filter = (reaction, usuario) => reaction.emoji.name === '✅' && usuario.id === user2.id;
 
       const coletor = msg.createReactionCollector(filter, { max: 1, time: 7000 });
 
@@ -54,8 +54,8 @@ module.exports = class CoinflipCommand extends Command {
           ctx.send(`${ctx.locale('commands:coinflip.coroa')}\n${user2} ${ctx.locale('commands:coinflip.coroa-texto', { value: valor })} ${user1}`);
         }
 
-        await this.client.repositories.starRepository.add(winner, valor);
-        await this.client.repositories.starRepository.remove(loser, valor);
+        await this.client.database.repositories.starRepository.add(winner, valor);
+        await this.client.database.repositories.starRepository.remove(loser, valor);
         await http.postCoinflipGame(winner, loser, parseInt(valor), Date.now());
       });
     });

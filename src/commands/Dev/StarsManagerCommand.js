@@ -18,13 +18,13 @@ module.exports = class StarManagerCommand extends Command {
 
     switch (option.toLowerCase()) {
       case 'add':
-        await this.client.repositories.starRepository.add(id, value);
+        await this.client.database.repositories.starRepository.add(id, value);
         break;
       case 'remove':
-        await this.client.repositories.starRepository.remove(id, value);
+        await this.client.database.repositories.starRepository.remove(id, value);
         break;
       case 'set':
-        await this.client.repositories.starRepository.set(id, value);
+        await this.client.database.repositories.starRepository.set(id, value);
         break;
       default:
         return ctx.reply('error', 'Use `m!managestar <userId> <add | remove | set> <valor>`');

@@ -23,19 +23,25 @@ module.exports = class DivorceCommand extends Command {
   async divorciar(ctx) {
     const user2Mention = await this.client.users.fetch(ctx.data.user.casado);
 
-    ctx.send(`${ctx.locale('commands:divorce.confirmation')} ${user2Mention}`).then(async (msg) => {
-      msg.react(this.client.constants.emojis.yes);
-      msg.react(this.client.constants.emojis.no);
+    ctx.send(`${ctx.locale('commands:divorce.confirmation')} ${user2Mention}`).then((msg) => {
+      msg.react('✅');
+      msg.react('❌');
 
-      const filter = (reaction, usuario) => reaction.me && usuario.id === ctx.message.author.id;
+      const filterYes = (reaction, usuario) => reaction.emoji.name === '✅' && usuario.id === ctx.message.author.id;
+      const filterNo = (reação, u) => reação.emoji.name === '❌' && u.id === ctx.message.author.id;
 
-      const colector = msg.createReactionCollector(filter, { max: 1, time: 15000 });
+      const yesColetor = msg.createReactionCollector(filterYes, { max: 1, time: 14500 });
+      const noColetor = msg.createReactionCollector(filterNo, { max: 1, time: 14500 });
 
-      colector.on('collect', async (reaction) => {
-        if (reaction.emoji.name === this.client.constants.emojis.no) return ctx.replyT('success', ctx.locale('commands:divorce.canceled'));
+      noColetor.on('collect', () => {
+        ctx.replyT('success', ctx.locale('commands:divorce.canceled'));
+      });
+
+      yesColetor.on('collect', async () => {
         ctx.send(`${ctx.message.author} ${ctx.locale('commands:divorce.confirmed_start')} ${user2Mention}. ${ctx.locale('commands:divorce.confirmed_end')}`);
 
-        await this.client.repositories.relationshipRepository.divorce(ctx.data.casado, ctx.message.author.id);
+        await this.client.database.Users.updateOne({ id: ctx.data.user.casado }, { $set: { casado: 'false', data: null } });
+        await this.client.database.Users.updateOne({ id: ctx.data.user.id }, { $set: { casado: 'false', data: null } });
       });
     });
   }
