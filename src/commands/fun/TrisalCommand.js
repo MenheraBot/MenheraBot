@@ -8,12 +8,14 @@ module.exports = class TrisalCommand extends Command {
       name: 'trisal',
       cooldown: 10,
       category: 'diversão',
-      clientPermissions: ['MANAGE_MESSAGES', 'EMBED_LINKS', 'ADD_REACTIONS'],
+      clientPermissions: ['MANAGE_MESSAGES', 'EMBED_LINKS'],
     });
   }
 
   async run(ctx) {
-    const authorData = ctx.data.user;
+    let authorData = ctx.data.user;
+    if (!authorData) authorData = await this.client.database.repositories.userRepository.find(ctx.message.author.id);
+    if (!authorData) return ctx.replyT('error', 'commands:trisal.no-owner');
     if (authorData.trisal?.length === 0 && !ctx.args[1]) return ctx.replyT('error', 'commands:trisal.no-args');
 
     if (authorData.trisal?.length > 0) {
@@ -48,8 +50,8 @@ module.exports = class TrisalCommand extends Command {
     if (mencionado1 === mencionado2) return ctx.retryT('error', 'commands:trisal:same-mention');
 
     const user1 = authorData;
-    const user2 = await this.client.repositories.userRepository.find(mencionado1);
-    const user3 = await this.client.repositories.userRepository.find(mencionado2);
+    const user2 = await this.client.database.repositories.userRepository.find(mencionado1);
+    const user3 = await this.client.database.repositories.userRepository.find(mencionado2);
 
     if (!user1 || !user2 || !user3) return ctx.replyT('error', 'commands:trisal.no-db');
 
@@ -59,11 +61,11 @@ module.exports = class TrisalCommand extends Command {
     const messageMention2 = await this.client.users.fetch(mencionado2);
 
     const msg = await ctx.send(`${ctx.locale('commands:trisal.accept-message')} ${ctx.message.author}, ${messageMention1}, ${messageMention2}`);
-    await msg.react(this.client.constants.emojis.yes);
+    await msg.react('✅');
 
     const acceptableIds = [ctx.message.author.id, mencionado1, mencionado2];
 
-    const filter = (reaction, usuario) => reaction.emoji.name === this.client.constants.emojis.yes && acceptableIds.includes(usuario.id);
+    const filter = (reaction, usuario) => reaction.emoji.name === '✅' && acceptableIds.includes(usuario.id);
 
     const collector = msg.createReactionCollector(filter, { time: 14000 });
 
@@ -73,8 +75,14 @@ module.exports = class TrisalCommand extends Command {
       if (!acceptedIds.includes(user.id)) acceptedIds.push(user.id);
 
       if (acceptedIds.length === 3) {
+        user1.trisal = [mencionado1, mencionado2];
+        user2.trisal = [ctx.message.author.id, mencionado2];
+        user3.trisal = [ctx.message.author.id, mencionado1];
+        await user1.save();
+        await user2.save();
+        await user3.save();
+
         ctx.replyT('success', 'commands:trisal.done');
-        await this.client.repositories.relationshipRepository.trisal(user1.id, user2.id, user3.id);
       }
     });
 

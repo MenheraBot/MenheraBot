@@ -294,7 +294,7 @@
           "value": "1 - Sell Demons ({{demon}}⭐) \n2 - Sell Angels ({{angel}}⭐) \n3 - Sell Semi-Gods ({{demi}}⭐) \n4 - Sell Gods ({{god}}⭐) \n\nEnter your choice and quantity. Example: (`1 50`)"
         }
       },
-      "invalid-args": "this value is not a valid number! You must say the option and the quantity",
+      "invalid-args": "this value is not a valid number!",
       "poor": "you don't have all these {{var}}!",
       "success-demon": "you sold **{{value}}** <:DEMON:758765044443381780> demons and received ** {{cost}} ** ⭐ star! \nNow you have ** {{quantity}} ** <:DEMON:758765044443381780> and **{{star}}** ⭐ ",
       "success-angel": "you sold ** {{value}} ** <:Angel:758765044204437535> angels and received ** {{cost}} ** ⭐ star! \nNow you have ** {{quantity}} ** <:Angel:758765044204437535> and ** {{star}} ** ⭐ ",
@@ -676,7 +676,7 @@
     "scape": "Runaway",
     "non-aventure": "you are not an adventurer. Use m!register to start",
     "no-args": "you need to say to what level do you want to go.",
-    "min-level-warn": "**you are too weak to this level! You can go to level {{level}} and under**",
+    "min-level-warn": "**you are too weak to this level! Try going to a lower level**",
     "no-level": "the Dungeon doesn't have this level! Available levels are: `1`,`2`,`3`, `4`, or `5`",
     "no-enemy": "Not this one! An error occurred when I went to detect which enemy you will find, sorry about that ... Try again ",
     "preparation": {
@@ -1033,8 +1033,6 @@
     "dungeon": "Dungeon/Boss",
     "job": "Work",
     "vote": "Vote for Me",
-    "death": "You are dead for anothe",
-    "hotel": "You will stay at the hotel for another",
     "minutes": "minutes",
     "hours": "hours",
     "error": "you don't have cooldowns yet! Create a profile first!"

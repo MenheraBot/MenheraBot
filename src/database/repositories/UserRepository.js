@@ -3,14 +3,6 @@ module.exports = class UserRepository {
     this.userModal = userModal;
   }
 
-  async multiUpdate(IDs, query) {
-    await this.userModal.updateMany({ id: { $in: IDs } }, query);
-  }
-
-  async update(userId, query) {
-    await this.userModal.updateOne({ id: userId }, query);
-  }
-
   async findOrCreate(userID) {
     const result = await this.userModal.findOne({ id: userID });
     if (result) return result;
@@ -27,7 +19,7 @@ module.exports = class UserRepository {
   }
 
   async create(userID) {
-    return this.userModal.create({ id: userID, shipValue: Math.floor(Math.random() * 55) });
+    return this.userModal.create({ id: userID });
   }
 
   findAfkByIDs(ids) {

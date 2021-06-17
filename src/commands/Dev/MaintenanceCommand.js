@@ -21,9 +21,9 @@ module.exports = class MaintenanceCommand extends Command {
       return ctx.reply('error', 'este comando não existe');
     }
 
-    const command = await this.client.repositories.cmdRepository.findByName(cmd.config.name);
+    const command = await this.client.database.repositories.cmdRepository.findByName(cmd.config.name);
 
-    if (command.maintenance) {
+   if (command.maintenance) {
       this.client.repositories.maintenanceRepository.removeMaintenance(cmd.config.name);
       ctx.reply('success', 'comando **REMOVIDO** da manutenção.');
     } else {
