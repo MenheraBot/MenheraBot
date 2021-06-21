@@ -27,7 +27,9 @@ module.exports = class DivorceCommand extends Command {
       msg.react(this.client.constants.emojis.yes);
       msg.react(this.client.constants.emojis.no);
 
-      const filter = (reaction, usuario) => reaction.me && usuario.id === ctx.message.author.id;
+      const validReactions = [this.client.constants.emojis.no, this.client.constants.emojis.yes];
+
+      const filter = (reaction, usuario) => validReactions.includes(reaction.emoji.name) && usuario.id === ctx.message.author.id;
 
       const colector = msg.createReactionCollector(filter, { max: 1, time: 15000 });
 

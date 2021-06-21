@@ -32,7 +32,9 @@ module.exports = class MarryCommand extends Command {
       msg.react(this.client.constants.emojis.yes);
       msg.react(this.client.constants.emojis.no);
 
-      const filter = (reaction, usuario) => reaction.me && usuario.id === mencionado.id;
+      const validReactions = [this.client.constants.emojis.no, this.client.constants.emojis.yes];
+
+      const filter = (reaction, usuario) => validReactions.includes(reaction.emoji.name) && usuario.id === mencionado.id;
 
       const colector = await msg.createReactionCollector(filter, { max: 1, time: 15000 });
 
