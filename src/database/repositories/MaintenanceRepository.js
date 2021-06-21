@@ -6,7 +6,7 @@ module.exports = class MaintenanceRepository {
 
   async addMaintenance(commandName, maintenanceReason) {
     this.cmdRepository.editMaintenance(commandName, true, maintenanceReason);
-    this.statusRepository.addMaintenance(commandName);
+    this.statusRepository.addMaintenance(commandName, maintenanceReason);
   }
 
   async removeMaintenance(commandName) {

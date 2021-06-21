@@ -21,6 +21,6 @@ module.exports = class StatusRepository {
   }
 
   async removeMaintenance(commandName) {
-    await this.statusModal.updateOne({ _id: 'main' }, { $pull: { disabledCommands: { $elemMatch: { name: commandName } } } });
+    await this.statusModal.updateOne({ _id: 'main' }, { $pull: { disabledCommands: { name: commandName } } });
   }
 };
