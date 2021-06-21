@@ -36,7 +36,7 @@ module.exports = class AudioCommand extends Command {
 
     if (dis) {
       dis.on('finish', () => {
-        if (ctx.message.guild.me.voice.channelID) ctx.message.guild.me.voice.channel.leave();
+        if (ctx.message.guild.me.voice.channelID) ctx.message.guild.me.voice.channel.leave().catch(() => null);
       });
     }
   }
