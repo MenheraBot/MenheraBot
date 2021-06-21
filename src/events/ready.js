@@ -23,6 +23,14 @@ module.exports = class ReadyEvent {
         });
       }, 1000 * 60);
     }
+
+    if (this.client.user.id === '708014856711962654' && this.client.shard.ids[0] !== 0) {
+      setInterval(async () => {
+        const atividade = await http.getActivity(this.client.shard.ids[0]);
+        this.client.user.setPresence({ activity: atividade });
+      }, 1000 * 60);
+    }
+
     this.client.user.setActivity('🥱 | Acabei de acoidar :3');
 
     console.log('[READY] Menhera se conectou com o Discord!');
