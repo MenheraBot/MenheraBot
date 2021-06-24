@@ -691,7 +691,7 @@
     "scape": "Fugir",
     "non-aventure": "você não é um aventureiro. Use m!register para começar",
     "no-level": "a Dungeon não possui este nível! Os níveis são: `1`,`2`,`3`, `4`, ou `5`",
-    "min-level-warn": "**você é muito fraco para este nível! Você pode ir para o nível {{level}} e mais baixo**",
+    "min-level-warn": "**você é muito fraco para este nível! Seu maior nível disponível é {{level}}.**\nPara ir ao nível `{{wantLevel}}`, você deve ser no mínimo nível **{{toGo}}**",
     "no-args": "você precisa dizer para qual nível deseja ir!",
     "no-enemy": "Essa não! Ocorreu um erro quando fui detectar qual inimigo você encontrará, desculpe por isso... Tente novamente",
     "preparation": {

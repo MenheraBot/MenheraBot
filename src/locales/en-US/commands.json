@@ -675,9 +675,9 @@
     "scape": "Runaway",
     "non-aventure": "you are not an adventurer. Use m!register to start",
     "no-args": "you need to say to what level do you want to go.",
-    "min-level-warn": "**you are too weak to this level! You can go to level {{level}} and under**",
+    "min-level-warn": "**you are too weak for this level! Your highest available level is {{level}}.** \nTo go to the `{{wantLevel}}` level, you must be at the minimum level **{{toGo}}**",
     "no-level": "the Dungeon doesn't have this level! Available levels are: `1`,`2`,`3`, `4`, or `5`",
-    "no-enemy": "Not this one! An error occurred when I went to detect which enemy you will find, sorry about that ... Try again ",
+    "no-enemy": "Not this one! An error occurred when I went to detect which enemy you will find, sorry about that... Try again",
     "preparation": {
       "title": "Battle preparation",
       "description": "Send a ** YES ** to enter the dungeon ",
