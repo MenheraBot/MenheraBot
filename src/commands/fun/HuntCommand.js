@@ -98,7 +98,7 @@ module.exports = class HuntCommand extends Command {
         const demigods = await areYouTheHuntOrTheHunter(probabilidadeSD, huntDemigod);
         embed.setTitle(ctx.locale('commands:hunt.sd'))
           .setColor(COLORS.HuntSD)
-          .setDescription(ctx.locale('commands:hunt.description_start', { value: demigods, hunt: ctx.locale('ctx.hunt.sd') }));
+          .setDescription(ctx.locale('commands:hunt.description_start', { value: demigods, hunt: ctx.locale('commands:hunt.sd') }));
         break;
       }
       case 'deus': {
