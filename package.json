@@ -1,6 +1,6 @@
 {
   "name": "menhera-bot",
-  "version": "2.9.3b-dev",
+  "version": "2.9.3c-dev",
   "description": "Uma bot brasileira de RPG para o Discord",
   "main": "shard.js",
   "scripts": {

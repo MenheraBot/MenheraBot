@@ -3,7 +3,7 @@
     "description": "Stays AFK",
     "usage": "[reason]",
     "reason": "**{{tag}}** is AFK: `{{reason}}`",
-    "back": "welcome back >...<",
+    "back": "Welcome back",
     "success": "AFK mode has been activated! To make your life easier, I will disable it when you send a message !!!"
   },
   "bicuda": {
