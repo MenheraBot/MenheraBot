@@ -206,7 +206,7 @@ const continueBattle = async (ctx, inimigo, habilidades, user, type, ataque, toS
   await ctx.sendC(toSay, embed);
 
   const filter = (m) => m.author.id === ctx.message.author.id;
-  const collector = ctx.message.channel.createMessageCollector(filter, { max: 1, time: 15000, errors: ['time'] });
+  const collector = ctx.message.channel.createMessageCollector(filter, { max: 1, time: 7000, errors: ['time'] });
 
   let time = false;
 
@@ -221,9 +221,10 @@ const continueBattle = async (ctx, inimigo, habilidades, user, type, ataque, toS
 
   setTimeout(() => {
     if (!time) {
+      collector.stop();
       return enemyShot(ctx, user, inimigo, type, `⚔️ | ${ctx.locale('roleplay:battle.timeout')}`);
     }
-  }, 15000);
+  }, 7000);
 };
 
 const finalChecks = async (ctx, user) => {
