@@ -1,0 +1,20 @@
+{
+  "mention": {
+    "start": "Hi sweetie",
+    "end": "my name is Menhera, in this server, my prefix is `{{prefix}}`. Use `{{prefix}}help` to see all of my commands"
+  },
+  "cooldown": "Wait **{{time}}** seconds until use the command `{{cmd}}`! Please >...<",
+  "maintenance": "**MAINTENANCE**\n This command are in maintenance for a while!\n\n**Reason:** {{reason}}",
+  "blocked-channel": "my commands are blocked in this channel",
+  "error_embed": {
+    "title": "<:menhera_cry:744041825140211732> | There was an error trying to execute the command {{cmd}}",
+    "report_title": "<:ok:727975974125436959> | Report this problem",
+    "report_value": "Emter inmy support server to report this problem to my owner",
+    "error_msg": "There was an error trying to execute this command! Report that to my Owner!"
+  },
+  "reminder": {
+    "no-channel": "I tried to send on the channel you asked for, but I couldn't send messages there ...",
+    "no-dm": "I tried to send in your dm, but I couldn't ...",
+    "reminder": "lembrete"
+  }
+}
