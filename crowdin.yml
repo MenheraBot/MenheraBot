@@ -1,3 +1,5 @@
 files:
   - source: /src/locales/en-US/
     translation: /src/locales/crowdin/%locale_with_underscore%/%original_file_name%
+  - source: /src/locales/pt-BR
+    translation: /src/locales/crowdin/%locale_with_underscore%/%original_file_name%
