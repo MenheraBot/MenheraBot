@@ -347,7 +347,7 @@
     "no-args": "você deve escolher entre caçar demônios, anjos, semideuses e deuses",
     "help": "**COMO FUNCIONA O CAÇAR?**\nVocê pode caçar a cada uma hora, e você pode escolher entre 4 caças: `demonios`, `anjos`, `semideuses` e `deuses`\nQuanto mais pra direita, mais valioso, mas também, mais dificil de se caçar, e menor a chance de sucesso\nEm meu servidor de suporte, as chances de caça são maiores!\n**Boas Caçadas**",
     "footer": "Sabia que em meu servidor de suporte, suas chances de sucesso são maiores?",
-    "description_start": "Você saiu para caçar com o Super Xandão, e voltou para casa com mais **{{value}} {{hunt}}** pra conta",
+    "description_start": "Você saiu para caçar **{{hunt}}** com o Super Xandão, e voltou para casa com mais **{{value}}** pra conta",
     "god_hunted_success": "CARACA!!! VOCÊ SE MOSTROU UM HERÓI FRUTO DE UMA VONTADE DIVINA, ASSIM COMO XANDÃO, E CONSEGUIU CAÇAR `{{value}}` DEUS!!!!!!",
     "god_hunted_fail": "Caçar Deuses é uma missão extremamente difícil, e você não obteve sucesso. Mas fique tranquilo, herói, você ainda conseguirá! ",
     "demons": "Demônios",

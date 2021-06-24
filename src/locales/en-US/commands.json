@@ -341,7 +341,7 @@
     "no-args": "you must choose between hunting demons, angels, demigods and gods",
     "help": "** HOW DOES HUNTING WORK? ** \nYou can hunt every hour, and you can choose from 4 hunts: `demons`, `angels`,` demigods` and `gods` \nThe farther to the right, the more valuable, but also, more difficult to hunt, and less chance of success \nOn my support server, the chances of hunting are greater!",
     "footer": "Did you know that on my support server, your chances of success are greater?",
-    "description_start": "You went hunting with Super Xandão, and you returned home with more **{{value}} {{hunt}}** to count",
+    "description_start": "You went hunting {{hunt}} with Super Xandão, and you returned home with more **{{value}}** to count",
     "god_hunted_success": "HOLLY MOLLY!!! YOU BECOME A HERO FRUIT OF A DIVINE FORÇE, AS WELL AS XANDÃO, AND GOT ​​HUNTING `{{value}}` GOD !!!!!!",
     "god_hunted_fail": "Hunting Gods is an extremely difficult mission, and you have not been successful. But rest assured, hero, you can still do it!",
     "demons": "Demons",
