@@ -680,7 +680,7 @@
     "no-enemy": "Not this one! An error occurred when I went to detect which enemy you will find, sorry about that... Try again",
     "preparation": {
       "title": "Battle preparation",
-      "description": "Send a ** YES ** to enter the dungeon ",
+      "description": "Send a **YES** to enter the dungeon ",
       "footer": "These skills are available for use",
       "stats": "Their current status is",
       "description_end": "------AVAILABLE SKILLS------"

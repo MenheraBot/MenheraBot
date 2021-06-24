@@ -465,9 +465,7 @@
     "times": "vezes",
     "family-level": "Nível da Família",
     "family-money": "Dinheiro da Família",
-    "not-user": "este usuário não usou nenhum comando meu",
-    "family": "Família",
-    "null": "SEM FAMÍLIA"
+    "not-user": "este usuário não usou nenhum comando meu"
   },
   "updates": {
     "description": "Veja as minhas últimas atualzações",
