@@ -1,6 +1,7 @@
 const { MessageEmbed } = require('discord.js');
 const moment = require('moment');
 const Command = require('../../structures/command');
+const { COLORS } = require('../../structures/MenheraConstants');
 
 module.exports = class HuntCommand extends Command {
   constructor(client) {
@@ -15,15 +16,13 @@ module.exports = class HuntCommand extends Command {
   async run(ctx) {
     const authorData = ctx.data.user;
 
-    const validOptions = ['demonios', 'anjos', 'semideuses', 'deuses', 'ajuda', 'probabilidades'];
-
     const validArgs = [{
       opção: 'demônio',
-      arguments: ['demonios', 'demônios', 'demons', 'demonio', 'demônio'],
+      arguments: ['demonios', 'demônios', 'demons', 'demonio', 'demônio', 'demon'],
     },
     {
       opção: 'anjos',
-      arguments: ['anjos', 'anjo', 'angels'],
+      arguments: ['anjos', 'anjo', 'angels', 'angel'],
     },
     {
       opção: 'semideuses',
@@ -44,13 +43,10 @@ module.exports = class HuntCommand extends Command {
     ];
 
     if (!ctx.args[0]) return ctx.reply('error', `${ctx.locale('commands:hunt.no-args')}`);
-    const selectedOption = validArgs.some((so) => so.arguments.includes(ctx.args[0].toLowerCase()));
-    if (!selectedOption) return ctx.reply('error', `${ctx.locale('commands:hunt.no-args')}`);
-    const filtredOption = validArgs.filter((f) => f.arguments.includes(ctx.args[0].toLowerCase()));
+    const filtredOption = validArgs.filter((so) => so.arguments.includes(ctx.args[0].toLowerCase()));
+    if (filtredOption.length === 0) return ctx.reply('error', `${ctx.locale('commands:hunt.no-args')}`);
 
     const option = filtredOption[0].opção;
-
-    if (!option) return ctx.reply('error', `${ctx.locale('commands:hunt.no-args')} \`${validOptions.join('`, `')}\``);
 
     const probabilidadeDemonio = ctx.message.guild.id === '717061688460967988' ? this.client.constants.probabilities.support.demon : this.client.constants.probabilities.normal.demon;
     const probabilidadeAnjo = ctx.message.guild.id === '717061688460967988' ? this.client.constants.probabilities.support.angel : this.client.constants.probabilities.normal.angel;
@@ -69,10 +65,10 @@ module.exports = class HuntCommand extends Command {
     const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
     const cooldown = this.client.constants.probabilities.defaultTime + Date.now();
     const embed = new MessageEmbed()
-      .setTitle(ctx.locale('commands:hunt.title'))
-      .setColor('#faa40f')
-      .setThumbnail(avatar)
-      .setFooter(ctx.locale('commands:hunt.footer'));
+      .setColor(COLORS.HuntDefault)
+      .setThumbnail(avatar);
+    if (ctx.message.channel.id === '717061688460967988') embed.setFooter(ctx.locale('commands:hunt.footer'));
+
     const {
       huntDemon, huntAngel, huntDemigod, huntGod,
     } = this.client.repositories.huntRepository;
@@ -86,23 +82,31 @@ module.exports = class HuntCommand extends Command {
     switch (option) {
       case 'demônio': {
         const demons = await areYouTheHuntOrTheHunter(probabilidadeDemonio, huntDemon);
-        embed.setDescription(`${ctx.locale('commands:hunt.description_start', { value: demons })} ${ctx.locale('commands:hunt.demons')}`);
+        embed.setTitle(ctx.locale('commands:hunt.demons'))
+          .setColor(COLORS.HuntDemon)
+          .setDescription(ctx.locale('commands:hunt.description_start', { value: demons, hunt: ctx.locale('commands:hunt.demons') }));
         break;
       }
       case 'anjos': {
         const angels = await areYouTheHuntOrTheHunter(probabilidadeAnjo, huntAngel);
-        embed.setDescription(`${ctx.locale('commands:hunt.description_start', { value: angels })} ${ctx.locale('commands:hunt.angels')}`);
+        embed.setTitle(ctx.locale('commands:hunt.angels'))
+          .setColor(COLORS.HuntAngel)
+          .setDescription(ctx.locale('commands:hunt.description_start', { value: angels, hunt: ctx.locale('commands:hunt.angels') }));
         break;
       }
       case 'semideuses': {
         const demigods = await areYouTheHuntOrTheHunter(probabilidadeSD, huntDemigod);
-        embed.setDescription(`${ctx.locale('commands:hunt.description_start', { value: demigods })} ${ctx.locale('commands:hunt.sd')}`);
+        embed.setTitle(ctx.locale('commands:hunt.sd'))
+          .setColor(COLORS.HuntSD)
+          .setDescription(ctx.locale('commands:hunt.description_start', { value: demigods, hunt: ctx.locale('ctx.hunt.sd') }));
         break;
       }
       case 'deus': {
         const gods = await areYouTheHuntOrTheHunter(probabilidadeDeuses, huntGod);
-        if (gods > 0) embed.setColor('#e800ff');
-        embed.setDescription((gods > 0) ? ctx.locale('commands:hunt.god_hunted_success', { value: gods }) : ctx.locale('commands:hunt.god_hunted_fail', { value: gods }));
+        embed.setColor(COLORS.HuntGod)
+          .setTitle(ctx.locale('commands:hunt.gods'))
+          .setDescription((gods > 0) ? ctx.locale('commands:hunt.god_hunted_success', { value: gods, hunt: ctx.locale('commands:hunt.gods') }) : ctx.locale('commands:hunt.god_hunted_fail'));
+        if (gods > 0) embed.setColor(COLORS.HuntGod);
         break;
       }
     }
