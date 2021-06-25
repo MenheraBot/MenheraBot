@@ -65,9 +65,13 @@ module.exports = class NewHttp {
     return returnData;
   }
 
-  static async macetavaRequest(image) {
+  static async macetavaRequest(image, authorName, authorDiscriminator, authorImage) {
     let err = false;
-    const data = await request.get('/macetava', { data: { image } }).catch(() => { err = true; });
+    const data = await request.get('/macetava', {
+      data: {
+        image, authorName, authorDiscriminator, authorImage,
+      },
+    }).catch(() => { err = true; });
     const returnData = { err, data: data?.data };
     return returnData;
   }

@@ -24,7 +24,7 @@ module.exports = class MacetavaCommand extends Command {
 
     if (ctx.message.attachments.first()) link = ctx.message.attachments.first().url;
 
-    const res = await NewHttp.macetavaRequest(link);
+    const res = await NewHttp.macetavaRequest(link, ctx.message.author.username, ctx.message.author.discriminator, ctx.message.author.displayAvatarURL({ format: 'png', size: 512 }));
     if (res.err) return ctx.replyT('error', 'commands:http-error');
 
     ctx.sendC(ctx.message.author, new MessageAttachment(Buffer.from(res.data), 'macetava.png'));
