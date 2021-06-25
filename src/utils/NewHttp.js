@@ -64,4 +64,11 @@ module.exports = class NewHttp {
     const returnData = { err, data: data?.data };
     return returnData;
   }
+
+  static async macetavaRequest(image) {
+    let err = false;
+    const data = await request.get('/macetava', { data: { image } }).catch(() => { err = true; });
+    const returnData = { err, data: data?.data };
+    return returnData;
+  }
 };

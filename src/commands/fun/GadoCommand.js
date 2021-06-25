@@ -18,6 +18,11 @@ module.exports = class GadoCommand extends Command {
 
     if (ctx.message.mentions.users.first()) link = ctx.message.mentions.users.first().displayAvatarURL({ format: 'png', size: 512 });
 
+    if (ctx.message?.reference?.messageID) {
+      const fetchedMessage = await ctx.message.channel.messages.fetch(ctx.message.reference.messageID);
+      if (fetchedMessage.attachments.first()) link = fetchedMessage.attachments.first().url;
+    }
+
     if (ctx.message.attachments.first()) link = ctx.message.attachments.first().url;
 
     const res = await NewHttp.gadoRequest(link);
