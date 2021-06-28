@@ -80,7 +80,7 @@ const COLORS = {
   HuntDemon: '#df1b1b',
   HuntAngel: '#efe9e9',
   HuntSD: '#3cb5f0',
-  HuntGod: '#df93fd',
+  HuntGod: '#b115bf',
 };
 
 const BLACKJACK_CARDS = [
