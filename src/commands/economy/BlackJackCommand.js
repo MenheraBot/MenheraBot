@@ -245,14 +245,14 @@ module.exports = class BlackJackCommand extends Command {
     }
 
     if (userTotal === 21 && menheraTotal !== 21) {
-      embed.addField(ctx.locale('commands:blackjack.result'), ctx.locale('commands:blackjack.user-21', { value: valor }));
+      embed.addField(ctx.locale('commands:blackjack.result'), ctx.locale('commands:blackjack.user-21', { value: valor * 2 }));
       ctx.client.repositories.starRepository.add(ctx.message.author.id, valor);
       ctx.sendC(ctx.message.author, embed);
       return;
     }
 
     if (menheraTotal > 21 && userTotal <= 21) {
-      embed.addField(ctx.locale('commands:blackjack.result'), ctx.locale('commands:blackjack.menhera-bust', { value: valor }));
+      embed.addField(ctx.locale('commands:blackjack.result'), ctx.locale('commands:blackjack.menhera-bust', { value: valor * 2 }));
       ctx.client.repositories.starRepository.add(ctx.message.author.id, valor);
       ctx.sendC(ctx.message.author, embed);
       return;
@@ -285,7 +285,7 @@ module.exports = class BlackJackCommand extends Command {
       return;
     }
 
-    embed.addField(ctx.locale('commands:blackjack.result'), ctx.locale('commands:blackjack.user-bigger', { value: valor }));
+    embed.addField(ctx.locale('commands:blackjack.result'), ctx.locale('commands:blackjack.user-bigger', { value: valor * 2 }));
     ctx.client.repositories.starRepository.add(ctx.message.author.id, valor);
     ctx.sendC(ctx.message.author, embed);
   }
