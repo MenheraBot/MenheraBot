@@ -233,7 +233,7 @@ module.exports = class BlackJackCommand extends Command {
     const newRes = await NewHttp.blackjackRequest(valor, userCards, dealerCards, userTotal, menheraTotal, true, { yourHand: ctx.locale('commands:blackjack.your-hand'), dealerHand: ctx.locale('commands:blackjack.dealer-hand') });
 
     if (!newRes.err) {
-      const newAtt = new MessageAttachment(Buffer.from(res.data), 'bj.png');
+      const newAtt = new MessageAttachment(Buffer.from(newRes.data), 'bj.png');
       embed.attachFiles(newAtt)
         .setImage('attachment://bj.png');
     }
