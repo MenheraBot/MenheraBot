@@ -47,7 +47,7 @@ module.exports = class FamiliarCommand extends Command {
           type: userFamiliar[1].boost.type,
         };
         await user.save();
-        sentMessage.edit({ content: `${ctx.message.author}, ${ctx.replyT('commands:familiar.success', { name: ctx.locale(`roleplay:familiar.${userFamiliar[0]}`) })}`, embed: null });
+        sentMessage.edit({ content: `${ctx.message.author}, ${ctx.locale('commands:familiar.success', { name: ctx.locale(`roleplay:familiar.${userFamiliar[0]}`) })}`, embed: null });
       }, 3000);
     } else {
       const embed = new MessageEmbed()
