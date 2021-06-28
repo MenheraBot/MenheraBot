@@ -75,4 +75,16 @@ module.exports = class NewHttp {
     const returnData = { err, data: data?.data };
     return returnData;
   }
+
+  static async blackjackRequest(aposta, userCards, menheraCards, userTotal, menheraTotal, isEnd, i18n) {
+    let err = false;
+    if (!isEnd) menheraCards[1].hidden = true;
+    const data = await request.get('/blackjack', {
+      data: {
+        userCards, menheraCards, userTotal, menheraTotal, i18n, aposta,
+      },
+    }).catch(() => { err = true; });
+    const returnData = { err, data: data?.data };
+    return returnData;
+  }
 };

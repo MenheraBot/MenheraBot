@@ -1109,6 +1109,21 @@
     "initial-options": "**[1] Start** - Start the game\n**[2] Surrender** - Surrender from the game (and losses the bet)",
     "options": "**[1] Buy** - Draw one more card\n**[2] Stop** - Stop your bet here",
     "footer": "Send the option of your choice in the chat, you got 10 seconds",
-    "poor": "you don't have all these stars to bet on!"
+    "poor": "you don't have all these stars to bet on!",
+    "your-hand": "Your Hand",
+    "dealer-hand": "Menhera's Hand",
+    "timeout": "you took too long to play. Menhera ran out of patience, you lost everything!",
+    "result": "👑 | Results",
+    "blackjack": "You did a BlackJack!!! You received double the prize! **{{value}}** :star:",
+    "explode": "You bust! That's why you lost everything :(",
+    "menhera-bj": "Menhera has a Blackjack. You lost everything, and Menhera won everything hehe",
+    "menhera-21": "Menhera hits 21, you lololololost 👍",
+    "user-21": "You hit 21, my kid! You won **{{value}}** :star:",
+    "menhera-bust": "Menhera bust! The **{{value}}** :star: it's all yours",
+    "draw": "Both bust. Because Menhera is so humble, she returned your bet to your account!",
+    "both-21": "Both hit 21, but Menhera has the upper hand. Unfortunately that's how casinos work. You lost everything.",
+    "equal": "Both you and Menhera hit the same amount. Menhera Wins UwU",
+    "menhera-bigger": "Menhera is closer to 21, she wins!",
+    "user-bigger": "You're closer to 21, you won **{{value}}** :star:"
   }
 }

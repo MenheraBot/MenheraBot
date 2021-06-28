@@ -1,31 +1,32 @@
 const { BLACKJACK_CARDS } = require('@structures/MenheraConstants');
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed, MessageAttachment } = require('discord.js');
+const NewHttp = require('@utils/NewHttp');
 const Command = require('../../structures/command');
 
 const CalculateHandValue = (cards) => {
   const realValue = cards.reduce((p, c) => {
     if (c <= 13) {
       p.push({
-        value: (c > 10 ? 10 : c), isAce: (c === 1), suit: 1, id: c,
+        value: (c > 10 ? 10 : c), isAce: (c === 1), id: c,
       });
     }
 
     if (c > 13 && c <= 26) {
       const newC = c - 13;
       p.push({
-        value: (newC > 10 ? 10 : newC), isAce: (newC === 1), suit: 2, id: c,
+        value: (newC > 10 ? 10 : newC), isAce: (newC === 1), id: c,
       });
     }
     if (c > 26 && c <= 39) {
       const newC = c - 26;
       p.push({
-        value: (newC > 10 ? 10 : newC), isAce: (newC === 1), suit: 3, id: c,
+        value: (newC > 10 ? 10 : newC), isAce: (newC === 1), id: c,
       });
     }
     if (c > 39 && c <= 52) {
       const newC = c - 39;
       p.push({
-        value: (newC > 10 ? 10 : newC), isAce: (newC === 1), suit: 4, id: c,
+        value: (newC > 10 ? 10 : newC), isAce: (newC === 1), id: c,
       });
     }
     return p;
@@ -39,7 +40,7 @@ module.exports = class BlackJackCommand extends Command {
       name: 'blackjack',
       aliases: ['bj', '21'],
       category: 'economia',
-      cooldown: 20,
+      cooldown: 15,
       clientPermissions: ['EMBED_LINKS', 'MANAGE_MESSAGES'],
     });
   }
@@ -57,26 +58,38 @@ module.exports = class BlackJackCommand extends Command {
     const dealerCards = matchCards.splice(0, 2);
     const playerCards = matchCards.splice(0, 2);
 
-    const embed = new MessageEmbed().setTitle('BLACKJACK').setDescription(`Suas Cartas: **${CalculateHandValue(playerCards).map((a) => `${a.value}`).join(', ')}**\nMesa Cartas: **${dealerCards[0]}, \`Carta Virada\`**`)
-      .addField(ctx.locale('commands:blackjack.available-options'), ctx.locale('commands:blackjack.initial-options'))
-      .setFooter(ctx.locale('commands:blackjack.footer'));
+    const res = await NewHttp.blackjackRequest(valor, CalculateHandValue(playerCards), CalculateHandValue(dealerCards), BlackJackCommand.checkHandFinalValue(CalculateHandValue(playerCards)), BlackJackCommand.checkHandFinalValue(CalculateHandValue([dealerCards[0]])), false, { yourHand: ctx.locale('commands:blackjack.your-hand'), dealerHand: ctx.locale('commands:blackjack.dealer-hand') });
+
+    const embed = new MessageEmbed()
+      .setTitle('⭐ | BlackJack')
+      .setDescription(`${ctx.locale('commands:blackjack.your-hand')}: **${CalculateHandValue(playerCards).map((a) => `${a.value}`).join(', ')}** -> \`${BlackJackCommand.checkHandFinalValue(CalculateHandValue(playerCards))}\`\n${ctx.locale('commands:blackjack.dealer-hand')}: **${CalculateHandValue([dealerCards[0]]).map((a) => `${a.value}`).join(', ')}** -> \`${BlackJackCommand.checkHandFinalValue(CalculateHandValue([dealerCards[0]]))}\``)
+      .addField(ctx.locale('commands:blackjack.available-options'), ctx.locale('commands:blackjack.options'))
+      .setFooter(ctx.locale('commands:blackjack.footer'))
+      .setColor(ctx.data.user.cor)
+      .setThumbnail(ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true }));
+
+    if (!res.err) {
+      const attachment = new MessageAttachment(Buffer.from(res.data), 'blackjack.png');
+      embed.attachFiles(attachment)
+        .setImage('attachment://blackjack.png');
+    }
+
     ctx.sendC(ctx.message.author, embed);
 
-    const acceptOptions = ['começar', 'comecar', '1', 'start'];
-    const pararOptions = ['desistir', 'surrender', '2'];
+    const acceptOptions = ['comprar', '1', 'buy', 'draw'];
+    const pararOptions = ['parar', '2', 'stop'];
 
     const filter = (msg) => msg.author.id === ctx.message.author.id;
     const collector = ctx.message.channel.createMessageCollector(filter, { max: 1, time: 10000 });
 
     const timeout = setTimeout(() => {
-      ctx.reply('error', 'tempo esgotado');
+      ctx.replyT('error', 'commands:blackjack.timeout');
       ctx.client.repositories.starRepository.remove(ctx.message.author.id, valor);
     }, 12000);
     collector.on('collect', (msg) => {
       if (pararOptions.includes(msg.content)) {
         clearTimeout(timeout);
-        ctx.send('Você desistiu');
-        ctx.client.repositories.starRepository.remove(ctx.message.author.id, valor);
+        BlackJackCommand.finishGame(ctx, valor, dealerCards, playerCards, matchCards);
       } else if (acceptOptions.includes(msg.content)) {
         clearTimeout(timeout);
         BlackJackCommand.continueFromBuy(ctx, valor, dealerCards, playerCards, matchCards);
@@ -84,7 +97,7 @@ module.exports = class BlackJackCommand extends Command {
     });
   }
 
-  static continueFromBuy(ctx, valor, dealerCards, usrCards, deckCards) {
+  static async continueFromBuy(ctx, valor, dealerCards, usrCards, deckCards) {
     if (usrCards.length === 2) {
       const oldUserCards = CalculateHandValue(usrCards);
       const oldUserTotal = BlackJackCommand.checkHandFinalValue(oldUserCards);
@@ -100,9 +113,21 @@ module.exports = class BlackJackCommand extends Command {
     const userCards = CalculateHandValue(playerCards);
     const userTotal = BlackJackCommand.checkHandFinalValue(userCards);
 
-    const embed = new MessageEmbed().setTitle('BLACKJACK').setDescription(`Suas Cartas: **${userCards.map((a) => `${a.value}`).join(', ')}**\n**SUA MAO:**${userTotal} \nMesa Cartas: **${dealerCards[0]}, \`Carta Virada\`**`)
+    const res = await NewHttp.blackjackRequest(valor, userCards, CalculateHandValue(dealerCards), userTotal, BlackJackCommand.checkHandFinalValue(CalculateHandValue([dealerCards[0]])), false, { yourHand: ctx.locale('commands:blackjack.your-hand'), dealerHand: ctx.locale('commands:blackjack.dealer-hand') });
+
+    const embed = new MessageEmbed()
+      .setTitle('⭐ | BlackJack')
+      .setDescription(`${ctx.locale('commands:blackjack.your-hand')}: **${CalculateHandValue(playerCards).map((a) => `${a.value}`).join(', ')}** -> \`${BlackJackCommand.checkHandFinalValue(CalculateHandValue(playerCards))}\`\n${ctx.locale('commands:blackjack.dealer-hand')}: **${CalculateHandValue([dealerCards[0]]).map((a) => `${a.value}`).join(', ')}** -> \`${BlackJackCommand.checkHandFinalValue(CalculateHandValue([dealerCards[0]]))}\``)
       .addField(ctx.locale('commands:blackjack.available-options'), ctx.locale('commands:blackjack.options'))
-      .setFooter(ctx.locale('commands:blackjack.footer'));
+      .setFooter(ctx.locale('commands:blackjack.footer'))
+      .setColor(ctx.data.user.cor)
+      .setThumbnail(ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true }));
+
+    if (!res.err) {
+      const attachment = new MessageAttachment(Buffer.from(res.data), 'blackjack.png');
+      embed.attachFiles(attachment)
+        .setImage('attachment://blackjack.png');
+    }
 
     ctx.sendC(ctx.message.author, embed);
 
@@ -113,7 +138,7 @@ module.exports = class BlackJackCommand extends Command {
     const collector = ctx.message.channel.createMessageCollector(filter, { max: 1, time: 10000 });
 
     const timeout = setTimeout(() => {
-      ctx.reply('error', 'tempo esgotado');
+      ctx.replyT('error', 'commands:blackjack.timeout');
       ctx.client.repositories.starRepository.remove(ctx.message.author.id, valor);
     }, 12000);
 
@@ -129,10 +154,6 @@ module.exports = class BlackJackCommand extends Command {
       } else if (acceptOptions.includes(msg.content)) {
         clearTimeout(timeout);
         BlackJackCommand.continueFromBuy(ctx, valor, dealerCards, playerCards, matchCards);
-      } else {
-        clearTimeout(timeout);
-        ctx.client.repositories.starRepository.remove(ctx.message.author.id, valor);
-        ctx.reply('error', 'Movimento invalido, perdeu tudo');
       }
     });
   }
@@ -146,83 +167,122 @@ module.exports = class BlackJackCommand extends Command {
       total = cards.reduce((p, a) => ((a.isAce ? 11 : a.value) + p), 0);
     } else total = baseSum;
 
-    console.log(baseSum, total);
-    console.log(cards);
-
     return total;
   }
 
   static async finishGame(ctx, valor, menheraCards, playerCards, matchCards) {
     const userCards = CalculateHandValue(playerCards);
-    let dealerCards = CalculateHandValue(menheraCards);
+    const dealerCards = CalculateHandValue(menheraCards);
 
     const userTotal = BlackJackCommand.checkHandFinalValue(userCards);
     let menheraTotal = BlackJackCommand.checkHandFinalValue(dealerCards);
 
+    const embed = new MessageEmbed()
+      .setTitle('⭐ | BlackJack')
+      .setDescription(`${ctx.locale('commands:blackjack.your-hand')}: **${userCards.map((a) => `${a.value}`).join(', ')}** -> \`${userTotal}\`\n${ctx.locale('commands:blackjack.dealer-hand')}: **${dealerCards.map((a) => `${a.value}`).join(', ')}** -> \`${menheraTotal}\``)
+      .setColor(ctx.data.user.cor)
+      .setThumbnail(ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true }));
+
+    const res = await NewHttp.blackjackRequest(valor, userCards, dealerCards, userTotal, menheraTotal, true, { yourHand: ctx.locale('commands:blackjack.your-hand'), dealerHand: ctx.locale('commands:blackjack.dealer-hand') });
+
+    if (!res.err) {
+      const attachment = new MessageAttachment(Buffer.from(res.data), 'blackjack.png');
+      embed.attachFiles(attachment)
+        .setImage('attachment://blackjack.png');
+    }
+
     if (userTotal === 21 && playerCards.length === 2) {
-      ctx.message.channel.send('BLACKJACK!!! Você ganhou');
-      ctx.client.repositories.starRepository.add(ctx.message.author.id, valor);
+      embed.addField(ctx.locale('commands:blackjack.result'), ctx.locale('commands:blackjack.blackjack', { value: (valor * 4) }));
+      ctx.client.repositories.starRepository.add(ctx.message.author.id, (valor * 2));
+      ctx.sendC(ctx.message.author, embed);
       return;
     }
 
     // Estourou
     if (userTotal > 21) {
-      ctx.message.channel.send(`Você Estourou! Perdeu tudo\nSua mao: ${userTotal}\nMenhera: ${menheraTotal}`);
+      embed.addField(ctx.locale('commands:blackjack.result'), ctx.locale('commands:blackjack.explode'));
       ctx.client.repositories.starRepository.remove(ctx.message.author.id, valor);
+      ctx.sendC(ctx.message.author, embed);
       return;
     }
 
     // Continua
 
     if (menheraTotal === 21 && userTotal !== 21) {
-      ctx.message.channel.send(`A Menhera tem um blackjack! Perdeu tudo\nnSua mao: ${userTotal}\nMenhera: ${menheraTotal}`);
+      embed.addField(ctx.locale('commands:blackjack.result'), ctx.locale('commands:blackjack.menhera-bj'));
       ctx.client.repositories.starRepository.remove(ctx.message.author.id, valor);
+      ctx.sendC(ctx.message.author, embed);
       return;
     }
 
-    if (menheraTotal < 17) {
+    if (menheraTotal < 17 || menheraTotal < userTotal) {
       do {
-        dealerCards = [...dealerCards, ...CalculateHandValue(matchCards.splice(0, 1))];
+        const newCards = CalculateHandValue(matchCards.splice(0, 1));
+        dealerCards.push(...newCards);
         menheraTotal = BlackJackCommand.checkHandFinalValue(dealerCards);
-      } while (menheraTotal < 17);
+      } while (menheraTotal < 17 && menheraTotal < userTotal);
+    }
+
+    embed.setDescription(`${ctx.locale('commands:blackjack.your-hand')}: **${userCards.map((a) => `${a.value}`).join(', ')}** -> \`${userTotal}\`\n${ctx.locale('commands:blackjack.dealer-hand')}: **${dealerCards.map((a) => `${a.value}`).join(', ')}** -> \`${menheraTotal}\``);
+
+    const newRes = await NewHttp.blackjackRequest(valor, userCards, dealerCards, userTotal, menheraTotal, true, { yourHand: ctx.locale('commands:blackjack.your-hand'), dealerHand: ctx.locale('commands:blackjack.dealer-hand') });
+
+    if (!newRes.err) {
+      const newAtt = new MessageAttachment(Buffer.from(res.data), 'newBj.png');
+      embed.attachFiles(newAtt)
+        .setImage('attachment://newBj.png');
     }
 
     if (menheraTotal === 21 && userTotal !== 21) {
-      ctx.message.channel.send(`A Menhera fez 21! Tu foi de ralo\nSua mao: ${userTotal}\nMenhera: ${menheraTotal}`);
+      embed.addField(ctx.locale('commands:blackjack.result'), ctx.locale('commands:blackjack.menhera-21'));
       ctx.client.repositories.starRepository.remove(ctx.message.author.id, valor);
+      ctx.sendC(ctx.message.author, embed);
       return;
     }
 
     if (userTotal === 21 && menheraTotal !== 21) {
-      ctx.message.channel.send(`Tu fez 21 pia, dale\nnSua mao: ${userTotal}\nMenhera: ${menheraTotal}`);
+      embed.addField(ctx.locale('commands:blackjack.result'), ctx.locale('commands:blackjack.user-21', { value: valor }));
       ctx.client.repositories.starRepository.add(ctx.message.author.id, valor);
+      ctx.sendC(ctx.message.author, embed);
       return;
     }
 
     if (menheraTotal > 21 && userTotal <= 21) {
-      ctx.message.channel.send(`A Menhera estourou, dale pra ti\nnSua mao: ${userTotal}\nMenhera: ${menheraTotal}`);
+      embed.addField(ctx.locale('commands:blackjack.result'), ctx.locale('commands:blackjack.menhera-bust', { value: valor }));
       ctx.client.repositories.starRepository.add(ctx.message.author.id, valor);
+      ctx.sendC(ctx.message.author, embed);
       return;
     }
 
     if (menheraTotal > 21 && userTotal > 21) {
-      ctx.message.channel.send(`Ambos estouraram, nada acontece\nnSua mao: ${userTotal}\nMenhera: ${menheraTotal}`);
+      embed.addField(ctx.locale('commands:blackjack.result'), ctx.locale('commands:blackjack.draw'));
+      ctx.sendC(ctx.message.author, embed);
       return;
     }
 
     if (menheraTotal === 21 && userTotal === 21) {
-      ctx.message.channel.send('Ambos fizeram 21, mas a Menhera tem preferência. Infelizmente assim que funcionam os cassinos. Perdeu Tudo');
+      embed.addField(ctx.locale('commands:blackjack.result'), ctx.locale('commands:blackjack.both-21'));
       ctx.client.repositories.starRepository.remove(ctx.message.author.id, valor);
+      ctx.sendC(ctx.message.author, embed);
+      return;
+    }
+
+    if (menheraTotal === userTotal) {
+      embed.addField(ctx.locale('commands:blackjack.result'), ctx.locale('commands:blackjack.equal'));
+      ctx.client.repositories.starRepository.remove(ctx.message.author.id, valor);
+      ctx.sendC(ctx.message.author, embed);
       return;
     }
 
     if (menheraTotal > userTotal) {
-      ctx.message.channel.send(`A Menhera está mais proxima de 21, ela ganha!\nSua mao: ${userTotal}\nMenhera: ${menheraTotal}`);
+      embed.addField(ctx.locale('commands:blackjack.result'), ctx.locale('commands:blackjack.menhera-bigger'));
       ctx.client.repositories.starRepository.remove(ctx.message.author.id, valor);
+      ctx.sendC(ctx.message.author, embed);
       return;
     }
 
-    ctx.message.channel.send(`Você está mais próximo de 21, você ganhou\nSua mao: ${userTotal}\nMenhera: ${menheraTotal}`);
+    embed.addField(ctx.locale('commands:blackjack.result'), ctx.locale('commands:blackjack.user-bigger', { value: valor }));
     ctx.client.repositories.starRepository.add(ctx.message.author.id, valor);
+    ctx.sendC(ctx.message.author, embed);
   }
 };
