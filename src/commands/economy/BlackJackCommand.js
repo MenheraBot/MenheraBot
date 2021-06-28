@@ -177,7 +177,7 @@ module.exports = class BlackJackCommand extends Command {
     const userTotal = BlackJackCommand.checkHandFinalValue(userCards);
     let menheraTotal = BlackJackCommand.checkHandFinalValue(dealerCards);
 
-    const embed = new MessageEmbed()
+    let embed = new MessageEmbed()
       .setTitle('⭐ | BlackJack')
       .setDescription(`${ctx.locale('commands:blackjack.your-hand')}: **${userCards.map((a) => `${a.value}`).join(', ')}** -> \`${userTotal}\`\n${ctx.locale('commands:blackjack.dealer-hand')}: **${dealerCards.map((a) => `${a.value}`).join(', ')}** -> \`${menheraTotal}\``)
       .setColor(ctx.data.user.cor)
@@ -223,14 +223,18 @@ module.exports = class BlackJackCommand extends Command {
       } while (menheraTotal < 17 && menheraTotal < userTotal);
     }
 
-    embed.setDescription(`${ctx.locale('commands:blackjack.your-hand')}: **${userCards.map((a) => `${a.value}`).join(', ')}** -> \`${userTotal}\`\n${ctx.locale('commands:blackjack.dealer-hand')}: **${dealerCards.map((a) => `${a.value}`).join(', ')}** -> \`${menheraTotal}\``);
+    embed = new MessageEmbed()
+      .setTitle('⭐ | BlackJack')
+      .setDescription(`${ctx.locale('commands:blackjack.your-hand')}: **${userCards.map((a) => `${a.value}`).join(', ')}** -> \`${userTotal}\`\n${ctx.locale('commands:blackjack.dealer-hand')}: **${dealerCards.map((a) => `${a.value}`).join(', ')}** -> \`${menheraTotal}\``)
+      .setColor(ctx.data.user.cor)
+      .setThumbnail(ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true }));
 
     const newRes = await NewHttp.blackjackRequest(valor, userCards, dealerCards, userTotal, menheraTotal, true, { yourHand: ctx.locale('commands:blackjack.your-hand'), dealerHand: ctx.locale('commands:blackjack.dealer-hand') });
 
     if (!newRes.err) {
-      const newAtt = new MessageAttachment(Buffer.from(res.data), 'newBj.png');
+      const newAtt = new MessageAttachment(Buffer.from(res.data), 'blackjack.png');
       embed.attachFiles(newAtt)
-        .setImage('attachment://newBj.png');
+        .setImage('attachment://blackjack.png');
     }
 
     if (menheraTotal === 21 && userTotal !== 21) {
