@@ -106,7 +106,7 @@ module.exports = class HuntCommand extends Command {
         embed.setColor(COLORS.HuntGod)
           .setTitle(ctx.locale('commands:hunt.gods'))
           .setDescription((gods > 0) ? ctx.locale('commands:hunt.god_hunted_success', { value: gods, hunt: ctx.locale('commands:hunt.gods') }) : ctx.locale('commands:hunt.god_hunted_fail'));
-        if (gods > 0) embed.setColor(COLORS.HuntGod);
+        if (gods > 0) embed.setColor(COLORS.HuntGod).setImage('https://i.imgur.com/053khaH.gif');
         break;
       }
     }
