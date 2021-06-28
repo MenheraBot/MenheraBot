@@ -1,4 +1,6 @@
 const { BLACKJACK_CARDS } = require('@structures/MenheraConstants');
+
+const { postBlackJack } = require('@utils/HTTPrequests');
 const { MessageEmbed, MessageAttachment } = require('discord.js');
 const NewHttp = require('@utils/NewHttp');
 const Command = require('../../structures/command');
@@ -195,6 +197,7 @@ module.exports = class BlackJackCommand extends Command {
       embed.addField(ctx.locale('commands:blackjack.result'), ctx.locale('commands:blackjack.blackjack', { value: (valor * 4) }));
       ctx.client.repositories.starRepository.add(ctx.message.author.id, (valor * 2));
       ctx.sendC(ctx.message.author, embed);
+      postBlackJack(ctx.message.author.id, true, (valor * 2));
       return;
     }
 
@@ -203,6 +206,7 @@ module.exports = class BlackJackCommand extends Command {
       embed.addField(ctx.locale('commands:blackjack.result'), ctx.locale('commands:blackjack.explode'));
       ctx.client.repositories.starRepository.remove(ctx.message.author.id, valor);
       ctx.sendC(ctx.message.author, embed);
+      postBlackJack(ctx.message.author.id, false, (valor * 2));
       return;
     }
 
@@ -212,6 +216,7 @@ module.exports = class BlackJackCommand extends Command {
       embed.addField(ctx.locale('commands:blackjack.result'), ctx.locale('commands:blackjack.menhera-bj'));
       ctx.client.repositories.starRepository.remove(ctx.message.author.id, valor);
       ctx.sendC(ctx.message.author, embed);
+      postBlackJack(ctx.message.author.id, false, (valor * 2));
       return;
     }
 
@@ -241,6 +246,7 @@ module.exports = class BlackJackCommand extends Command {
       embed.addField(ctx.locale('commands:blackjack.result'), ctx.locale('commands:blackjack.menhera-21'));
       ctx.client.repositories.starRepository.remove(ctx.message.author.id, valor);
       ctx.sendC(ctx.message.author, embed);
+      postBlackJack(ctx.message.author.id, false, (valor * 2));
       return;
     }
 
@@ -248,6 +254,7 @@ module.exports = class BlackJackCommand extends Command {
       embed.addField(ctx.locale('commands:blackjack.result'), ctx.locale('commands:blackjack.user-21', { value: valor * 2 }));
       ctx.client.repositories.starRepository.add(ctx.message.author.id, valor);
       ctx.sendC(ctx.message.author, embed);
+      postBlackJack(ctx.message.author.id, true, (valor * 2));
       return;
     }
 
@@ -255,6 +262,7 @@ module.exports = class BlackJackCommand extends Command {
       embed.addField(ctx.locale('commands:blackjack.result'), ctx.locale('commands:blackjack.menhera-bust', { value: valor * 2 }));
       ctx.client.repositories.starRepository.add(ctx.message.author.id, valor);
       ctx.sendC(ctx.message.author, embed);
+      postBlackJack(ctx.message.author.id, true, (valor * 2));
       return;
     }
 
@@ -268,6 +276,7 @@ module.exports = class BlackJackCommand extends Command {
       embed.addField(ctx.locale('commands:blackjack.result'), ctx.locale('commands:blackjack.both-21'));
       ctx.client.repositories.starRepository.remove(ctx.message.author.id, valor);
       ctx.sendC(ctx.message.author, embed);
+      postBlackJack(ctx.message.author.id, false, (valor * 2));
       return;
     }
 
@@ -275,6 +284,7 @@ module.exports = class BlackJackCommand extends Command {
       embed.addField(ctx.locale('commands:blackjack.result'), ctx.locale('commands:blackjack.equal'));
       ctx.client.repositories.starRepository.remove(ctx.message.author.id, valor);
       ctx.sendC(ctx.message.author, embed);
+      postBlackJack(ctx.message.author.id, false, (valor * 2));
       return;
     }
 
@@ -282,11 +292,13 @@ module.exports = class BlackJackCommand extends Command {
       embed.addField(ctx.locale('commands:blackjack.result'), ctx.locale('commands:blackjack.menhera-bigger'));
       ctx.client.repositories.starRepository.remove(ctx.message.author.id, valor);
       ctx.sendC(ctx.message.author, embed);
+      postBlackJack(ctx.message.author.id, false, (valor * 2));
       return;
     }
 
     embed.addField(ctx.locale('commands:blackjack.result'), ctx.locale('commands:blackjack.user-bigger', { value: valor * 2 }));
     ctx.client.repositories.starRepository.add(ctx.message.author.id, valor);
     ctx.sendC(ctx.message.author, embed);
+    postBlackJack(ctx.message.author.id, true, (valor * 2));
   }
 };
