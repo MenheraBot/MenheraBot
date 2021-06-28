@@ -35,9 +35,14 @@ module.exports = class MessageReceive {
     let authorData = await this.client.repositories.userRepository.find(message.author.id);
 
     if (authorData?.afk) {
-      this.client.repositories.userRepository.update(message.author.id, { $set: { afk: false, afkReason: null } });
+      this.client.repositories.userRepository.update(message.author.id, { afk: false, afkReason: null, afkGuild: null });
       const member = await message.channel.guild.members.fetch(message.author.id);
-      if (member.manageable && member.nickname) if (member.nickname.slice(0, 5) === '[AFK]') member.setNickname(member.nickname.substring(5), 'AFK System');
+
+      if (message.guild.id !== authorData?.afkGuild) {
+        const afkGuild = this.client.guild.cache.get(authorData.afkGuild);
+        const guildMember = await afkGuild.members.fetch(message.author.id);
+        if (guildMember.manageable && guildMember.nickname) if (guildMember.nickname.slice(0, 5) === '[AFK]') guildMember.setNickname(guildMember.nickname.substring(5), 'AFK System');
+      } else if (member.manageable && member.nickname) if (member.nickname.slice(0, 5) === '[AFK]') member.setNickname(member.nickname.substring(5), 'AFK System');
 
       message.channel.send(`<:MenheraWink:767210250637279252> | ${t('commands:afk.back')}, ${message.author} >...<`)
         .then((msg) => {

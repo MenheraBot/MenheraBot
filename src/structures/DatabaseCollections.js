@@ -67,6 +67,7 @@ const userSchema = mongoose.Schema({
   banReason: { type: String, default: null },
   afk: { type: Boolean, default: false },
   afkReason: { type: String, default: null },
+  afkGuild: { type: String, default: null },
   cor: { type: String, default: '#a788ff' },
   cores: { type: Array, default: [{ nome: '0 - Padrão', cor: '#a788ff', preço: 0 }] },
   caçados: { type: Number, default: 0 },
