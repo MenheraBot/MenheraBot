@@ -53,7 +53,8 @@ module.exports = class BlackJackCommand extends Command {
 
     if (ctx.data.user.estrelinhas < valor) return ctx.replyT('error', 'commands:blackjack.poor');
 
-    const matchCards = BLACKJACK_CARDS.sort(() => Math.random() - 0.5);
+    const matchCards = BLACKJACK_CARDS;
+    matchCards.sort(() => Math.random() - 0.5);
 
     const dealerCards = matchCards.splice(0, 2);
     const playerCards = matchCards.splice(0, 2);
