@@ -6,7 +6,7 @@ const shopEconomy = {
     green: 300000,
     pink: 500000,
     yellow: 400000,
-    your_choice: 10000000,
+    your_choice: 700000,
   },
   hunts: {
     roll: 7000,
