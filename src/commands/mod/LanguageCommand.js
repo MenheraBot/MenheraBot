@@ -23,15 +23,13 @@ module.exports = class LanguageCommand extends Command {
       collector.on('collect', (r) => {
         switch (r.emoji.name) {
           case '🇧🇷':
-            ctx.data.server.lang = 'pt-BR';
-            ctx.data.server.save();
-            msg.delete({ timeout: 100 });
+            ctx.client.repositories.guildRepository.updateLang(ctx.message.guild.id, 'pt-BR');
+            msg.delete();
             ctx.message.channel.send(':map: | Agora eu irei falar em ~~brasileiro~~ português');
             break;
           case '🇺🇸':
-            ctx.data.server.lang = 'en-US';
-            ctx.data.server.save();
-            msg.delete({ timeout: 100 });
+            ctx.client.repositories.guildRepository.updateLang(ctx.message.guild.id, 'en-US');
+            msg.delete();
             ctx.message.channel.send(":map: | Now I'll talk in english");
             break;
         }

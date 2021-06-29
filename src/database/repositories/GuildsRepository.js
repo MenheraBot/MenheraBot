@@ -20,4 +20,8 @@ module.exports = class GuildsRepository {
   async delete(guildID) {
     await this.guildModal.deleteOne({ id: guildID });
   }
+
+  async updateLang(guildID, lang) {
+    await this.guildModal.updateOne({ id: guildID }, { lang });
+  }
 };
