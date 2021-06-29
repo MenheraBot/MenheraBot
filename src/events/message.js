@@ -1,5 +1,6 @@
 const { MessageEmbed, Collection } = require('discord.js');
 const i18next = require('i18next');
+const { LANGUAGES } = require('@structures/MenheraConstants');
 const makeRequest = require('../utils/HTTPrequests');
 const CommandContext = require('../structures/CommandContext');
 
@@ -27,7 +28,7 @@ module.exports = class MessageReceive {
 
     const server = await this.client.repositories.guildRepository.findOrCreate(message.guild.id);
     let prefix = server?.prefix?.toLowerCase() ?? process.env.BOT_PREFIX;
-    const language = server?.lang ?? 'pt-BR';
+    const language = LANGUAGES[server?.lang] ?? LANGUAGES['pt-BR'];
     const t = i18next.getFixedT(language);
 
     if (message.mentions.users.size > 0) this.notifyAfk(message, t, message.mentions.users.map((u) => u.id));

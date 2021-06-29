@@ -89,8 +89,14 @@ const BLACKJACK_CARDS = [
   27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39,
   40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52];
 
+const LANGUAGES = {
+  'pt-BR': 'pt_BR',
+  'en-US': 'en_US',
+};
+
 Object.freeze(BLACKJACK_CARDS);
 Object.freeze(COLORS);
+Object.freeze(LANGUAGES);
 Object.freeze(emojis);
 Object.freeze(shopEconomy);
 Object.freeze(probabilities);
@@ -98,5 +104,5 @@ Object.freeze(rpg);
 Object.freeze(votes);
 
 module.exports = {
-  shopEconomy, probabilities, rpg, votes, emojis, COLORS, BLACKJACK_CARDS,
+  shopEconomy, probabilities, rpg, votes, emojis, COLORS, BLACKJACK_CARDS, LANGUAGES,
 };
