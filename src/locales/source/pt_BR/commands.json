@@ -925,7 +925,7 @@
     "footer": "Enviado por "
   },
   "coinflipstats": {
-    "description": "Mostre seus dados de jogos de coinflip",
+    "description": "Mostre dados algum jogador de jogos do coinflip",
     "usage": "[usuário]",
     "embed-title": "Status do coinflip de {{user}}",
     "no-data": "você nunca jogou uma partida de coinflip!",
@@ -1143,5 +1143,11 @@
     "equal": "Tanto você quanto a menhera fizeram o mesmo valor. Menhera ganha",
     "menhera-bigger": "A Menhera está mais proxima de 21, ela ganhou!",
     "user-bigger": "Você está mais próximo de 21, você ganhou **{{value}}** :star:"
+  },
+  "blackjackstats": {
+    "usage": "[usuário]",
+    "description": "Veja os status de BlackJack de alguém",
+    "embed-title": "Status do blackjack de {{user}}",
+    "no-data": "você nunca jogou uma partida de blackjack!"
   }
 }

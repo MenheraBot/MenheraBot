@@ -25,8 +25,8 @@ module.exports = class MessageReceive {
     if (message.channel.type === 'dm') return;
     if (!message.channel.permissionsFor(message.guild.me).has('SEND_MESSAGES')) return;
 
-    const server = await this.client.repositories.guildRepository.find(message.guild.id);
-    let prefix = server.prefix?.toLowerCase() ?? process.env.BOT_PREFIX;
+    const server = await this.client.repositories.guildRepository.findOrCreate(message.guild.id);
+    let prefix = server?.prefix?.toLowerCase() ?? process.env.BOT_PREFIX;
     const language = server?.lang ?? 'pt-BR';
     const t = i18next.getFixedT(language);
 

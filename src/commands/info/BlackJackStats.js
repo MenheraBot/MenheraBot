@@ -3,21 +3,11 @@ const { MessageEmbed } = require('discord.js');
 const http = require('../../utils/HTTPrequests');
 const Command = require('../../structures/command');
 
-/* const returnObject = {
-  playedGames,
-  lostGames,
-  winGames,
-  winMoney,
-  lostMoney,
-  winPorcentage,
-  lostPorcentage,
-}; */
-
-module.exports = class CoinflipStatsCommand extends Command {
+module.exports = class BlackJackStatsCommand extends Command {
   constructor(client) {
     super(client, {
-      name: 'coinflipstats',
-      aliases: ['cfs'],
+      name: 'blackjackstats',
+      aliases: ['bjs'],
       cooldown: 5,
       category: 'info',
     });
@@ -26,16 +16,16 @@ module.exports = class CoinflipStatsCommand extends Command {
   async run(ctx) {
     const userDb = await this.client.database.repositories.userRepository.find(ctx.args[0] ? ctx.args[0].replace(/[<@!>]/g, '') : ctx.message.author.id);
     if (!userDb) return ctx.replyT('error', 'commands:coinflipstats.error');
-    const data = await http.getCoinflipUserStats(userDb ? userDb.id : ctx.message.author.id);
+    const data = await http.getBlackJackStats(userDb ? userDb.id : ctx.message.author.id);
     if (data.error) return ctx.replyT('error', 'commands:coinflipstats.error');
-    if (!data || !data.playedGames || data.playedGames === undefined) return ctx.replyT('error', 'commands:coinflipstats.no-data');
+    if (!data || !data.playedGames || data.playedGames === undefined) return ctx.replyT('error', 'commands:blackjackstats.no-data');
 
     const totalMoney = data.winMoney - data.lostMoney;
 
     const userName = await this.client.users.fetch(userDb ? userDb.id : ctx.message.author.id);
 
     const embed = new MessageEmbed()
-      .setTitle(ctx.locale('commands:coinflipstats.embed-title', { user: userName.tag }))
+      .setTitle(ctx.locale('commands:blackjackstats.embed-title', { user: userName.tag }))
       .setColor(userDb.cor)
       .setFooter(ctx.locale('commands:coinflipstats.embed-footer'))
       .addFields([
