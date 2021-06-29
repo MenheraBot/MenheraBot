@@ -13,7 +13,7 @@ module.exports = class AfkCommand extends Command {
     const args = ctx.args.join(' ');
     const reason = args.length ? args.replace(/`/g, '') : 'AFK';
 
-    await ctx.client.database.Users.updateOne({ id: ctx.message.author.id }, { $set: { afk: true, afkReason: reason } });
+    await ctx.client.database.Users.updateOne({ id: ctx.message.author.id }, { afk: true, afkReason: reason, afkGuild: ctx.message.guild.id });
 
     const member = ctx.message.channel.guild.members.cache.get(ctx.message.author.id);
 

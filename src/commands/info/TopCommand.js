@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-await-in-loop */
 const { MessageEmbed } = require('discord.js');
@@ -55,7 +56,49 @@ module.exports = class TopCommand extends Command {
     } else if (argsVotos.includes(argumento)) {
       this.topVotos(ctx, pagina);
     } else if (argsDungeon.includes(argumento)) {
-      this.topDungeon(ctx, pagina);
+      const validClasses = [{
+        opção: 'Assassino',
+        arguments: ['assassino', 'assassin', 'a'],
+      },
+      {
+        opção: 'Bárbaro',
+        arguments: ['bárbaro', 'barbaro', 'barbarian', 'b'],
+      },
+      {
+        opção: 'Clérigo',
+        arguments: ['clérigo', 'clerigo', 'cleric', 'c'],
+      },
+      {
+        opção: 'Druida',
+        arguments: ['druida', 'druid', 'd'],
+      },
+      {
+        opção: 'Espadachim',
+        arguments: ['espadachim', 'swordman', 'e', 'sw'],
+      },
+      {
+        opção: 'Feiticeiro',
+        arguments: ['feiticeiro', 'sorcerer', 'so'],
+      },
+      {
+        opção: 'Monge',
+        arguments: ['monge', 'monk', 'm'],
+      },
+      {
+        opção: 'Necromante',
+        arguments: ['necromante', 'necromancer', 'n'],
+      },
+      ];
+
+      const filtredOption = ctx.args[1] ? validClasses.filter((so) => so.arguments.includes(ctx.args[1].toLowerCase())) : [];
+
+      const option = filtredOption.length > 0 ? filtredOption[0].opção : false;
+
+      if (option) {
+        this.topDungeon(ctx, pagina, option);
+      } else {
+        this.topDungeon(ctx, pagina, false);
+      }
     } else if (argsCommands.includes(argumento)) {
       TopCommand.topCommands(ctx);
     } else if (argsUsers.includes(argumento)) {
@@ -302,7 +345,7 @@ module.exports = class TopCommand extends Command {
     ctx.sendC(ctx.message.author, embed);
   }
 
-  async topDungeon(ctx, pagina) {
+  async topDungeon(ctx, pagina, classToSearch) {
     const quantidade = await this.client.database.Rpg.countDocuments();
 
     let skip = 0;
@@ -310,23 +353,27 @@ module.exports = class TopCommand extends Command {
       skip = (pagina - 1) * 10;
     }
 
-    const res = await this.client.database.Rpg.find({}, ['level', '_id', 'xp'], {
+    const res = classToSearch ? await this.client.database.Rpg.find({ class: classToSearch }, ['level', '_id', 'xp'], {
+      skip,
+      limit: 10,
+      sort: { level: -1, xp: -1 },
+    }) : await this.client.database.Rpg.find({}, ['level', '_id', 'xp', 'class'], {
       skip,
       limit: 10,
       sort: { level: -1, xp: -1 },
     });
 
     const embed = new MessageEmbed()
-
-      .setTitle(`<:Chest:760957557538947133> | ${ctx.locale('commands:top.rpgTitle')} ${(pagina > 1) ? pagina : 1} º`)
       .setColor('#a1f5ee');
 
+    classToSearch ? embed.setTitle(`<:Chest:760957557538947133> | Top ${ctx.locale(`roleplay:classes.${classToSearch}`)} ${(skip > 0) ? (skip / 10) + 1 : 1} º`) : embed.setTitle(`<:Chest:760957557538947133> | ${ctx.locale('commands:top.rpgTitle')} ${(skip > 0) ? (skip / 10) + 1 : 1} º`);
+
     for (let i = 0; i < res.length; i++) {
-      const member = await this.client.users.fetch(res[i].id).catch();
+      const member = await this.client.users.fetch(res[i].id).catch(() => null);
       if (!member) {
-        embed.addField(`** ${skip + 1 + i} -** \`USER NOT FOUND\``, `Level: **${res[i].level}**\nXp: **${res[i].xp}**`, false);
+        classToSearch ? embed.addField(`** ${skip + 1 + i} -** \`USER NOT FOUND\``, `Level: **${res[i].level}**\nXp: **${res[i].xp}**`, false) : embed.addField(`** ${skip + 1 + i} -** \`USER NOT FOUND\`  | ${ctx.locale(`roleplay:classes.${res[i].class}`)}`, `Level: **${res[i].level}**\nXp: **${res[i].xp}**`, false);
       } else {
-        embed.addField(`**${skip + 1 + i} -** ${member.username}`, `Level: **${res[i].level}**\nXp: **${res[i].xp}**`, false);
+        classToSearch ? embed.addField(`**${skip + 1 + i} -** ${member.username}`, `Level: **${res[i].level}**\nXp: **${res[i].xp}**`, false) : embed.addField(`**${skip + 1 + i} -** ${member.username} | ${ctx.locale(`roleplay:classes.${res[i].class}`)}`, `Level: **${res[i].level}**\nXp: **${res[i].xp}**`, false);
       }
     }
     ctx.sendC(ctx.message.author, embed);

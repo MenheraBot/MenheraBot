@@ -67,6 +67,7 @@ const userSchema = mongoose.Schema({
   banReason: { type: String, default: null },
   afk: { type: Boolean, default: false },
   afkReason: { type: String, default: null },
+  afkGuild: { type: String, default: null },
   cor: { type: String, default: '#a788ff' },
   cores: { type: Array, default: [{ nome: '0 - Padrão', cor: '#a788ff', preço: 0 }] },
   caçados: { type: Number, default: 0 },
@@ -91,14 +92,6 @@ const userSchema = mongoose.Schema({
   }
 */
 
-const warnSchema = mongoose.Schema({
-  userId: String,
-  warnerId: String,
-  guildId: String,
-  reason: String,
-  data: String,
-});
-
 const commandsSchema = mongoose.Schema({
   name: { type: String },
   pt_description: { type: String },
@@ -114,7 +107,6 @@ const status = mongoose.model('status', statusSchema);
 const guild = mongoose.model('guild', guildSchema);
 const rpg = mongoose.model('rpg', rpgSchema);
 const user = mongoose.model('usersdb', userSchema);
-const warn = mongoose.model('warn', warnSchema);
 
 module.exports.Cmds = cmd;
 module.exports.Commands = commands;
@@ -122,4 +114,3 @@ module.exports.Guilds = guild;
 module.exports.Status = status;
 module.exports.Rpg = rpg;
 module.exports.Users = user;
-module.exports.Warns = warn;

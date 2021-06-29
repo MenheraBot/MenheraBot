@@ -180,3 +180,42 @@ module.exports.postCoinflipGame = async (winnerId, loserId, betValue, date) => {
 
   await request(options).catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
 };
+
+module.exports.postBlackJack = async (userId, didWin, betValue) => {
+  const options = {
+    method: 'POST',
+    uri: `${process.env.API_IP}/api/blackjack`,
+    headers: {
+      'User-Agent': 'MenheraClient',
+      token: process.env.API_TOKEN,
+    },
+    body: {
+      userId, didWin, betValue,
+    },
+    json: true,
+  };
+
+  await request(options).catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
+};
+
+module.exports.getBlackJackStats = async (id) => {
+  const options = {
+    method: 'GET',
+    uri: `${process.env.API_IP}/api/blackjack`,
+    headers: {
+      'User-Agent': 'MenheraClient',
+      token: process.env.API_TOKEN,
+    },
+    body: {
+      userId: id,
+    },
+    json: true,
+  };
+
+  let has = false;
+
+  await request(options).then((data) => {
+    has = data;
+  }).catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
+  return has;
+};

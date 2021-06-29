@@ -19,16 +19,16 @@ const shopEconomy = {
 
 const probabilities = {
   support: {
-    demon: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 4],
-    angel: [0, 0, 0, 1, 1, 1, 1, 2],
-    demigod: [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    demon: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 4, 5, 6],
+    angel: [0, 0, 0, 1, 1, 1, 2, 3],
+    demigod: [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2],
     god: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
   },
   normal: {
-    demon: [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 4],
-    angel: [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2],
-    demigod: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    god: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    demon: [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 4, 5],
+    angel: [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3],
+    demigod: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2],
+    god: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
   },
   defaultTime: 3600000,
 };
@@ -75,6 +75,28 @@ const emojis = {
   lock: '🔒',
 };
 
+const COLORS = {
+  HuntDefault: '#df93fd',
+  HuntDemon: '#df1b1b',
+  HuntAngel: '#efe9e9',
+  HuntSD: '#3cb5f0',
+  HuntGod: '#b115bf',
+};
+
+const BLACKJACK_CARDS = [
+  1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
+  14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26,
+  27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39,
+  40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52];
+
+Object.freeze(BLACKJACK_CARDS);
+Object.freeze(COLORS);
+Object.freeze(emojis);
+Object.freeze(shopEconomy);
+Object.freeze(probabilities);
+Object.freeze(rpg);
+Object.freeze(votes);
+
 module.exports = {
-  shopEconomy, probabilities, rpg, votes, emojis,
+  shopEconomy, probabilities, rpg, votes, emojis, COLORS, BLACKJACK_CARDS,
 };

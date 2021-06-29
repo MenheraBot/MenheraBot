@@ -26,7 +26,6 @@ module.exports = class MongoDatabase {
     this.Status = MongoModals.Status;
     this.Rpg = MongoModals.Rpg;
     this.Users = MongoModals.Users;
-    this.Warns = MongoModals.Warns;
 
     this.userRepository = new UserRepository(this.Users);
     this.commandRepository = new CommandRepository(this.Commands);

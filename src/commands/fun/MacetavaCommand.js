@@ -2,11 +2,10 @@ const { MessageAttachment } = require('discord.js');
 const Command = require('../../structures/command');
 const NewHttp = require('../../utils/NewHttp');
 
-module.exports = class GadoCommand extends Command {
+module.exports = class MacetavaCommand extends Command {
   constructor(client) {
     super(client, {
-      name: 'gado',
-      aliases: ['simp'],
+      name: 'macetava',
       cooldown: 10,
       category: 'diversão',
       clientPermissions: ['ATTACH_FILES'],
@@ -25,9 +24,9 @@ module.exports = class GadoCommand extends Command {
 
     if (ctx.message.attachments.first()) link = ctx.message.attachments.first().url;
 
-    const res = await NewHttp.gadoRequest(link);
+    const res = await NewHttp.macetavaRequest(link, ctx.message.author.username, ctx.message.author.discriminator, ctx.message.author.displayAvatarURL({ format: 'png', size: 512 }));
     if (res.err) return ctx.replyT('error', 'commands:http-error');
 
-    ctx.sendC(ctx.message.author, new MessageAttachment(Buffer.from(res.data), 'gado.png'));
+    ctx.sendC(ctx.message.author, new MessageAttachment(Buffer.from(res.data), 'macetava.png'));
   }
 };

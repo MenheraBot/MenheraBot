@@ -3,7 +3,7 @@
     "description": "Se coloque em AFK",
     "usage": "[motivo]",
     "reason": "**{{tag}}** está AFK: `{{reason}}`",
-    "back": "bem vindo de volta >...<",
+    "back": "Bem vindo de volta",
     "success": "o modo AFK foi ativado! Para facilitar sua vida, vou desativá-lo caso mande uma mensagem!!!"
   },
   "bicuda": {
@@ -347,10 +347,9 @@
     "no-args": "você deve escolher entre caçar demônios, anjos, semideuses e deuses",
     "help": "**COMO FUNCIONA O CAÇAR?**\nVocê pode caçar a cada uma hora, e você pode escolher entre 4 caças: `demonios`, `anjos`, `semideuses` e `deuses`\nQuanto mais pra direita, mais valioso, mas também, mais dificil de se caçar, e menor a chance de sucesso\nEm meu servidor de suporte, as chances de caça são maiores!\n**Boas Caçadas**",
     "footer": "Sabia que em meu servidor de suporte, suas chances de sucesso são maiores?",
-    "title": "Caçada",
-    "description_start": "Você saiu para caçar com o Super Xandão, e caçou `{{value}}`",
+    "description_start": "Você saiu para caçar **{{hunt}}** com o Super Xandão, e voltou para casa com mais **{{value}}** pra conta",
     "god_hunted_success": "CARACA!!! VOCÊ SE MOSTROU UM HERÓI FRUTO DE UMA VONTADE DIVINA, ASSIM COMO XANDÃO, E CONSEGUIU CAÇAR `{{value}}` DEUS!!!!!!",
-    "god_hunted_fail": "Caçar Deuses é uma missão extremamente difícil, e você acabou não conseguindo, levando um total de `{{value}}` deuses pra casa",
+    "god_hunted_fail": "Caçar Deuses é uma missão extremamente difícil, e você não obteve sucesso. Mas fique tranquilo, herói, você ainda conseguirá! ",
     "demons": "Demônios",
     "angels": "Anjos",
     "sd": "Semideuses",
@@ -466,9 +465,7 @@
     "times": "vezes",
     "family-level": "Nível da Família",
     "family-money": "Dinheiro da Família",
-    "not-user": "este usuário não usou nenhum comando meu",
-    "family": "Família",
-    "null": "SEM FAMÍLIA"
+    "not-user": "este usuário não usou nenhum comando meu"
   },
   "updates": {
     "description": "Veja as minhas últimas atualzações",
@@ -540,7 +537,7 @@
     "description": "Mostra as informações atuais do bot",
     "usage": "",
     "title": "🎉 HOJE É MEU ANIVERSÁRIO🎉",
-    "embed_description": "Oi, meu nome é **{{name}}**, e eu sou uma Bot Brasileira para Discord com foco em diversão e RPG! Fui criada em **{{createdAt}}** e entrei nesse servidor **{{joinedAt}}**.\n\nUm pouco sobre mim: Meu nome é Menhera, tenho 16 anos e AMO, mas tipo AMO usar essas carinhas: (>...<). Para saber mais, entre em meu [twitter](https://twitter.com/__MenheraBot), em meu [servidor de suporte](https://discord.gg/fZMdQbA) e em meu [WEBSITE](https://menherabot.xyz/)",
+    "embed_description": "Oi, meu nome é **{{name}}**, e eu sou uma Bot Brasileira para Discord com foco em diversão e RPG! Fui criada em **{{createdAt}}** e entrei nesse servidor **{{joinedAt}}**.\n\nUm pouco sobre mim: Meu nome é Menhera, tenho 16 anos e AMO, mas tipo AMO usar essas carinhas: (>...<). Para saber mais, entre em meu [twitter](https://twitter.com/__MenheraBot), em meu [servidor de suporte](https://discord.gg/fZMdQbA) e em meu [WEBSITE](https://menherabot.xyz/). Se você quiser ajudar a enviar diversão ao resto do mundo, você pode me ajduar [me ensinando novos idiomas](https://translate.menherabot.xyz)",
     "embed_footer": "foi criada por",
     "channels": "Canais",
     "memory": "Memória",
@@ -565,7 +562,7 @@
     "rpg": "RPG",
     "util": "Útil",
     "link_name": "Links Adicionais",
-    "link_value": "[Adicione-me](https://discord.com/api/oauth2/authorize?client_id=708014856711962654&permissions=1007025271&scope=bot) | [Vote em mim](https://top.gg/bot/708014856711962654/vote) | [Meu servidor de Suporte](https://discord.gg/fZMdQbA) | [Meu WebSite](https://menhera-site.vercel.app/comandos)",
+    "link_value": "[Adicione-me](https://discord.com/api/oauth2/authorize?client_id=708014856711962654&permissions=1007025271&scope=bot) | [Vote em mim](https://top.gg/bot/708014856711962654/vote) | [Meu servidor de Suporte](https://discord.gg/fZMdQbA) | [Meu WebSite](https://menherabot.xyz) | [Ajude a me Traduzir](https://translate.menherabot.xyz)",
     "dm_sent": "enviei meus comandos para sua dm, olha lá >.<",
     "dm_error": "aparentemente suas dms estão fechadas, não posso te enviar minha página de ajuda",
     "without-info": "Sem informações para o comando {{cmd}}",
@@ -692,7 +689,7 @@
     "scape": "Fugir",
     "non-aventure": "você não é um aventureiro. Use m!register para começar",
     "no-level": "a Dungeon não possui este nível! Os níveis são: `1`,`2`,`3`, `4`, ou `5`",
-    "min-level-warn": "**você é muito fraco para este nível! Você pode ir para o nível {{level}} e mais baixo**",
+    "min-level-warn": "**você é muito fraco para este nível! Seu maior nível disponível é {{level}}.**\nPara ir ao nível `{{wantLevel}}`, você deve ser no mínimo nível **{{toGo}}**",
     "no-args": "você precisa dizer para qual nível deseja ir!",
     "no-enemy": "Essa não! Ocorreu um erro quando fui detectar qual inimigo você encontrará, desculpe por isso... Tente novamente",
     "preparation": {
@@ -1115,6 +1112,21 @@
   "http-error": "hmmm... Algum erro aconteceu ao processar a imagem... Tente novamente",
   "gado": {
     "description": "Ala o Gado ó",
-    "usage": "[menção || imagem]"
+    "usage": "[@menção || imagem || responder à uma mensagem com uma imagem]"
+  },
+  "macetava": {
+    "description": "Ja viu o meme do macetava do casas bahia? É exatamente isso",
+    "usage": "[@menção || imagem || responder à uma mensagem com uma imagem]"
+  },
+  "blackjack": {
+    "description": "Aposte contra a Menhera no Blackjack (ou 21)",
+    "usage": "<aposta>",
+    "bad-usage": "você não fez sua aposta",
+    "invalid-value": "o valor da aposta deve ser maior que 1000 e menor que 50000",
+    "available-options": "Opções Disponíveis",
+    "initial-options": "**[1] Começar** - Começe o jogo\n **[2] Desistir** - Desista deste jogo (e perca sua aposta)",
+    "options": "**[1] Comprar** - Compre mais uma carta\n**[2] Parar** - Pare por aqui sua aposta",
+    "footer": "Envie no chat a Opção de sua escolha, você tem 10 segundos",
+    "poor": "você não possui todas essas estrelinhas para apostar!"
   }
 }

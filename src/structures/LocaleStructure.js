@@ -6,16 +6,16 @@ const translationBackend = require('i18next-node-fs-backend');
 class LocaleStructure {
   constructor() {
     this.ns = ['commands', 'events', 'permissions', 'roleplay'];
-    this.languages = ['pt-BR', 'en-US'];
+    this.languages = ['pt_BR', 'en_US'];
   }
 
   async load() {
     try {
-      const filepath = path.resolve(__dirname, '..', 'locales');
+      const filepath = path.resolve(__dirname, '..', 'locales', 'source');
       await i18next.use(translationBackend).init({
         ns: this.ns,
         preload: readdirSync(filepath),
-        fallbackLng: 'pt-BR',
+        fallbackLng: 'pt_BR',
         backend: {
           loadPath: `${filepath}/{{lng}}/{{ns}}.json`,
         },

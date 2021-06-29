@@ -1,10 +1,10 @@
 {
   "name": "menhera-bot",
-  "version": "2.9.2k",
+  "version": "2.9.3g-stable",
   "description": "Uma bot brasileira de RPG para o Discord",
   "main": "shard.js",
   "scripts": {
-    "build": "rm -rf dist/* && babel src --extensions \".js,.ts\" --ignore *.spec.js --out-dir dist --copy-files --source-maps --verbose",
+    "build": "rm -rf dist/* && babel src --extensions \".js,.ts\" --ignore *.spec.js --out-dir dist --copy-files --verbose",
     "start": "cross-env NODE_ENV=production node shard.js",
     "dev": "npm run build && cross-env NODE_ENV=development node shard.js",
    "lint:fix": "eslint --fix .",

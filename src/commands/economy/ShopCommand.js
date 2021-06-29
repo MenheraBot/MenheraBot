@@ -306,28 +306,28 @@ function lojaVender(ctx, embedMessage, constants, repo) {
         if (valor > ctx.data.user.caçados) return ctx.replyT('error', 'commands:shop.dataVender.poor', { var: 'demônios' });
         repo.update(ctx.message.author.id, { $inc: { caçados: -valor, estrelinhas: (valor * valorDemonio) } });
         ctx.replyT('success', 'commands:shop.dataVender.success-demon', {
-          value: valor, cost: valor * valorDemonio, quantity: ctx.data.user.caçados, star: ctx.data.user.estrelinhas,
+          value: valor, cost: valor * valorDemonio, quantity: (ctx.data.user.caçados - valor), star: (ctx.data.user.estrelinhas + (valor * valorDemonio)),
         });
         break;
       case '2':
         if (valor > ctx.data.user.anjos) return ctx.replyT('error', 'commands:shop.dataVender.poor', { var: 'anjos' });
         repo.update(ctx.message.author.id, { $inc: { anjos: -valor, estrelinhas: (valor * valorAnjo) } });
         ctx.replyT('success', 'commands:shop.dataVender.success-angel', {
-          value: valor, cost: valor * valorAnjo, quantity: ctx.data.user.anjos, star: ctx.data.user.estrelinhas,
+          value: valor, cost: valor * valorAnjo, quantity: (ctx.data.user.anjos - valor), star: (ctx.data.user.estrelinhas + (valor * valorAnjo)),
         });
         break;
       case '3':
         if (valor > ctx.data.user.semideuses) return ctx.replyT('error', 'commands:shop.dataVender.poor', { var: 'semideuses' });
         repo.update(ctx.message.author.id, { $inc: { semideuses: -valor, estrelinhas: (valor * valorSD) } });
         ctx.replyT('success', 'commands:shop.dataVender.success-sd', {
-          value: valor, cost: valor * valorSD, quantity: ctx.data.user.semideuses, star: ctx.data.user.estrelinhas,
+          value: valor, cost: valor * valorSD, quantity: (ctx.data.user.semideuses - valor), star: (ctx.data.user.estrelinhas + (valor * valorSD)),
         });
         break;
       case '4':
         if (valor > ctx.data.user.deuses) return ctx.replyT('error', 'commands:shop.dataVender.poor', { var: 'deuses' });
         repo.update(ctx.message.author.id, { $inc: { deuses: -valor, estrelinhas: (valor * valorDeus) } });
         ctx.replyT('success', 'commands:shop.dataVender.success-god', {
-          value: valor, cost: valor * valorDeus, quantity: ctx.data.user.deuses, star: ctx.data.user.estrelinhas,
+          value: valor, cost: valor * valorDeus, quantity: (ctx.data.user.deuses - valor), star: (ctx.data.user.estrelinhas + (valor * valorDeus)),
         });
         break;
       default:

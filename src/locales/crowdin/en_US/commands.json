@@ -3,7 +3,7 @@
     "description": "Stays AFK",
     "usage": "[reason]",
     "reason": "**{{tag}}** is AFK: `{{reason}}`",
-    "back": "welcome back >...<",
+    "back": "Welcome back",
     "success": "AFK mode has been activated! To make your life easier, I will disable it when you send a message !!!"
   },
   "bicuda": {
@@ -341,10 +341,9 @@
     "no-args": "you must choose between hunting demons, angels, demigods and gods",
     "help": "** HOW DOES HUNTING WORK? ** \nYou can hunt every hour, and you can choose from 4 hunts: `demons`, `angels`,` demigods` and `gods` \nThe farther to the right, the more valuable, but also, more difficult to hunt, and less chance of success \nOn my support server, the chances of hunting are greater!",
     "footer": "Did you know that on my support server, your chances of success are greater?",
-    "title": "Hunt",
-    "description_start": "You went out to hunt with Super Xandão, and hunted `{{value}}`",
+    "description_start": "You went hunting {{hunt}} with Super Xandão, and you returned home with more **{{value}}** to count",
     "god_hunted_success": "HOLLY MOLLY!!! YOU BECOME A HERO FRUIT OF A DIVINE FORÇE, AS WELL AS XANDÃO, AND GOT ​​HUNTING `{{value}}` GOD !!!!!!",
-    "god_hunted_fail": "Hunting Gods is an extremely difficult mission, and you ended up failing, taking a total of `{{value}}` gods home",
+    "god_hunted_fail": "Hunting Gods is an extremely difficult mission, and you have not been successful. But rest assured, hero, you can still do it!",
     "demons": "Demons",
     "angels": "Angels",
     "sd": "Demigods",
@@ -530,7 +529,7 @@
   "botinfo": {
     "description": "Shows current bot information",
     "title": "🎉 TODAY IS MY BIRTHDAY 🎉",
-    "embed_description": "Hi my name is **{{name}}**, and I'm a Brazilian Bot for Discord with a focus on fun and RPG! I was created in **{{createdAt}}** and joined this server in **{{joinedAt}}**.\n\nA little bit about me: My name is Menhera, I am 16 years old and I LOVE, I mean, I LOOOOVE to use these faces: (>...<). To learn more, go to my [twitter](https://twitter.com/__MenheraBot), my [support server](https://discord.gg/fZMdQbA) and my [WEBSITE](https://menherabot.xyz)",
+    "embed_description": "Hi my name is **{{name}}**, and I'm a Brazilian Bot for Discord with a focus on fun and RPG! I was created in **{{createdAt}}** and joined this server in **{{joinedAt}}**.\n\nA little bit about me: My name is Menhera, I am 16 years old and I LOVE, I mean, I LOOOOVE to use these faces: (>...<). To learn more, go to my [twitter](https://twitter.com/__MenheraBot), my [support server](https://discord.gg/fZMdQbA) and my [WEBSITE](https://menherabot.xyz). If you want, you can help sending fun for all the world [translating me](https://translate.menherabot.xyz)",
     "embed_footer": "was created by",
     "channels": "Channels",
     "memory": "Memory",
@@ -554,7 +553,7 @@
     "rpg": "RPG",
     "util": "Useful",
     "link_name": "Additional Links",
-    "link_value": "[Add me](https://discord.com/api/oauth2/authorize?client_id=708014856711962654&permissions=1007025271&scope=bot) | [Vote for me](https://top.gg/bot/708014856711962654/vote) | [My Support Server](https://discord.gg/fZMdQbA) | [My WebSite](https://menhera-site.vercel.app/comandos)",
+    "link_value": "[Add me](https://discord.com/api/oauth2/authorize?client_id=708014856711962654&permissions=1007025271&scope=bot) | [Vote for me](https://top.gg/bot/708014856711962654/vote) | [My Support Server](https://discord.gg/fZMdQbA) | [My WebSite](https://menherabot.xyz) | [Help Translate Me](https://translate.menherabot.xyz)",
     "dm_sent": "I sent my commands to your dm, look there >.<",
     "dm_error": "apparently your dms are closed, i can't send you my help page",
     "without-info": "No command information for {{cmd}}",
@@ -676,12 +675,12 @@
     "scape": "Runaway",
     "non-aventure": "you are not an adventurer. Use m!register to start",
     "no-args": "you need to say to what level do you want to go.",
-    "min-level-warn": "**you are too weak to this level! You can go to level {{level}} and under**",
+    "min-level-warn": "**you are too weak for this level! Your highest available level is {{level}}.** \nTo go to the `{{wantLevel}}` level, you must be at the minimum level **{{toGo}}**",
     "no-level": "the Dungeon doesn't have this level! Available levels are: `1`,`2`,`3`, `4`, or `5`",
-    "no-enemy": "Not this one! An error occurred when I went to detect which enemy you will find, sorry about that ... Try again ",
+    "no-enemy": "Not this one! An error occurred when I went to detect which enemy you will find, sorry about that... Try again",
     "preparation": {
       "title": "Battle preparation",
-      "description": "Send a ** YES ** to enter the dungeon ",
+      "description": "Send a **YES** to enter the dungeon ",
       "footer": "These skills are available for use",
       "stats": "Their current status is",
       "description_end": "------AVAILABLE SKILLS------"
@@ -1094,7 +1093,22 @@
   },
   "http-error": "hmmm... Some error happened while receiving the image... Please try again",
   "gado": {
-    "description": "BRO THAT'S A SIMP",
-    "usage": "[mention || image]"
+    "description": "Look there the simp",
+    "usage": "[@mention || image || reply to a message that has an attachment]"
+  },
+  "macetava": {
+    "description": "Did you ever seen the brazilian meme of 'macetava' from Casasa Bahia? Is exactly that",
+    "usage": "[@mention || image || reply to a message that has an attachment]"
+  },
+  "blackjack": {
+    "description": "Bet against Menhera in Blackjack (or 21)",
+    "usage": "<bet>",
+    "bad-usage": "you didn't place your bet",
+    "invalid-value": "the bet amount must be greater than 1000 and less than 50000",
+    "available-options": "Available Options",
+    "initial-options": "**[1] Start** - Start the game\n**[2] Surrender** - Surrender from the game (and losses the bet)",
+    "options": "**[1] Buy** - Draw one more card\n**[2] Stop** - Stop your bet here",
+    "footer": "Send the option of your choice in the chat, you got 10 seconds",
+    "poor": "you don't have all these stars to bet on!"
   }
 }
