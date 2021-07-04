@@ -3,6 +3,7 @@
 /* eslint-disable import/no-dynamic-require */
 const { Client, Collection } = require('discord.js');
 const Sentry = require('@sentry/node');
+require('@sentry/tracing');
 const i18next = require('i18next');
 
 const EventManager = require('./structures/EventManager');
@@ -36,6 +37,7 @@ module.exports = class MenheraClient extends Client {
       dsn: process.env.SENTRY_DNS,
       environment: process.env.NODE_ENV,
       serverName: 'MenheraVPS',
+      tracesSampleRate: 1.0,
     });
 
     const locales = new LocaleStructure();
