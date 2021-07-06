@@ -42,6 +42,7 @@ module.exports = class MessageReceive {
       if (message.guild.id !== authorData?.afkGuild) {
         const afkGuild = await this.client.guilds.fetch(authorData.afkGuild);
         const guildMember = await afkGuild?.members.fetch(message.author.id);
+        await afkGuild?.members.fetch(this.client.user.id);
         if (guildMember?.manageable && guildMember?.nickname) if (guildMember.nickname.slice(0, 5) === '[AFK]') guildMember.setNickname(guildMember.nickname.substring(5), 'AFK System');
       } else if (member.manageable && member.nickname) if (member.nickname.slice(0, 5) === '[AFK]') member.setNickname(member.nickname.substring(5), 'AFK System');
 
