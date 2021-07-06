@@ -319,9 +319,10 @@ module.exports = class VillageCommand extends Command {
         return 'ALL';
       }
       const [query, qty = 1] = content.trim().split(/ +/g);
+      const qtyFiltred = qty.replace(/\D+/g, '');
       const item = displayedItems.find((_, i) => Number(query) === (i + 1));
       if (item) {
-        return [item, qty];
+        return [item, qtyFiltred];
       }
     });
     collector.setHandle((_, result) => {

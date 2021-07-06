@@ -13,6 +13,7 @@ const MaintenanceRepository = require('./repositories/MaintenanceRepository');
 const HuntRepository = require('./repositories/HuntRepository');
 const RelationshipRepository = require('./repositories/RelationshipRepository');
 const BlacklistRepository = require('./repositories/BlacklistRepository');
+const TopRepository = require('./repositories/TopRepository');
 
 module.exports = class MongoDatabase {
   constructor(uri) {
@@ -40,6 +41,7 @@ module.exports = class MongoDatabase {
     this.huntRepository = new HuntRepository(this.Users);
     this.relationshipRepository = new RelationshipRepository(this.userRepository);
     this.blacklistRepository = new BlacklistRepository(this.userRepository);
+    this.topRepository = new TopRepository(this.Users);
   }
 
   get repositories() {
@@ -57,6 +59,7 @@ module.exports = class MongoDatabase {
       huntRepository: this.huntRepository,
       relationshipRepository: this.relationshipRepository,
       blacklistRepository: this.blacklistRepository,
+      topRepository: this.topRepository,
     };
   }
 

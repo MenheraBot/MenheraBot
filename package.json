@@ -1,13 +1,13 @@
 {
   "name": "menhera-bot",
-  "version": "2.9.3i-stable",
+  "version": "2.9.3j-stable",
   "description": "Uma bot brasileira de RPG para o Discord",
   "main": "shard.js",
   "scripts": {
     "build": "rm -rf dist/* && babel src --extensions \".js,.ts\" --ignore *.spec.js --out-dir dist --copy-files --verbose",
     "start": "cross-env NODE_ENV=production node shard.js",
     "dev": "npm run build && cross-env NODE_ENV=development node shard.js",
-   "lint:fix": "eslint --fix .",
+    "lint:fix": "eslint --fix .",
     "lint:test": "eslint .",
     "build:test": "tsc --noEmit",
     "test": "jest",
@@ -18,7 +18,8 @@
   "author": "Luxanna Crownguard (ySnoopyDogy)",
   "dependencies": {
     "@discordjs/opus": "^0.5.0",
-    "@sentry/node": "^5.24.2",
+    "@sentry/node": "^6.8.0",
+    "@sentry/tracing": "^6.8.0",
     "axios": "^0.21.1",
     "babel-plugin-module-resolver": "^4.1.0",
     "bufferutil": "^4.0.3",
