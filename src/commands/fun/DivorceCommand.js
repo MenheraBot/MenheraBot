@@ -37,7 +37,7 @@ module.exports = class DivorceCommand extends Command {
         if (reaction.emoji.name === this.client.constants.emojis.no) return ctx.replyT('success', ctx.locale('commands:divorce.canceled'));
         ctx.send(`${ctx.message.author} ${ctx.locale('commands:divorce.confirmed_start')} ${user2Mention}. ${ctx.locale('commands:divorce.confirmed_end')}`);
 
-        await this.client.repositories.relationshipRepository.divorce(ctx.data.casado, ctx.message.author.id);
+        await this.client.repositories.relationshipRepository.divorce(ctx.data.user.casado, ctx.message.author.id);
       });
     });
   }
