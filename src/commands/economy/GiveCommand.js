@@ -59,7 +59,7 @@ module.exports = class GiveCommand extends Command {
     const value = parseInt(input.replace(/\D+/g, ''));
     if (!value || value < 1) return GiveCommand.replyInvalidValueError(ctx);
 
-    const toData = await GiveCommand.client.repositories.userRepository.findOrCreate(to.id);
+    const toData = await this.client.repositories.userRepository.findOrCreate(to.id);
     if (!toData) return GiveCommand.replyNoAccountError(ctx);
 
     const authorData = ctx.data.user;
