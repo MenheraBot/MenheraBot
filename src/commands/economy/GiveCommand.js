@@ -47,20 +47,20 @@ module.exports = class GiveCommand extends Command {
     const selectedOption =
       ctx.args[0] &&
       validArgs.find((option) => option.arguments.includes(ctx.args[0].toLowerCase()));
-    if (!selectedOption) return this.replyInvalidArgsError(ctx);
+    if (!selectedOption) return GiveCommand.replyInvalidArgsError(ctx);
 
     const to = ctx.message.mentions.users.first();
-    if (!to) return this.replyBadUsageError(ctx);
-    if (to.id === ctx.message.author.id) return this.replyForYourselfError(ctx);
+    if (!to) return GiveCommand.replyBadUsageError(ctx);
+    if (to.id === ctx.message.author.id) return GiveCommand.replyForYourselfError(ctx);
 
     const input = ctx.args[2];
-    if (!input) return this.replyBadUsageError(ctx);
+    if (!input) return GiveCommand.replyBadUsageError(ctx);
 
     const value = parseInt(input.replace(/\D+/g, ''));
-    if (!value || value < 1) return this.replyInvalidValueError(ctx);
+    if (!value || value < 1) return GiveCommand.replyInvalidValueError(ctx);
 
-    const toData = await this.client.database.repositories.userRepository.findOrCreate(to.id);
-    if (!toData) return this.replyNoAccountError(ctx);
+    const toData = await GiveCommand.client.repositories.userRepository.findOrCreate(to.id);
+    if (!toData) return GiveCommand.replyNoAccountError(ctx);
 
     const authorData = ctx.data.user;
     const option = selectedOption.opção;
