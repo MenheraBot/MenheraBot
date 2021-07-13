@@ -51,6 +51,7 @@ module.exports = class GiveCommand extends Command {
 
     const to = ctx.message.mentions.users.first();
     if (!to) return GiveCommand.replyBadUsageError(ctx);
+    if (to.bot) return GiveCommand.replyNoAccountError(ctx);
     if (to.id === ctx.message.author.id) return GiveCommand.replyForYourselfError(ctx);
 
     const input = ctx.args[2];
