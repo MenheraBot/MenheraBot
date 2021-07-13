@@ -1,4 +1,5 @@
 const Command = require('../../structures/command');
+const { emojis } = require('../../structures/MenheraConstants');
 
 module.exports = class GiveCommand extends Command {
   constructor(client) {
@@ -15,7 +16,7 @@ module.exports = class GiveCommand extends Command {
 
     await this.client.repositories.giveRepository.giveStars(user.id, user2.id, valor);
 
-    ctx.reply('success', `${ctx.locale('commands:give.transfered', { value: valor, emoji: '⭐' })} ${mencionado}`);
+    ctx.reply('success', `${ctx.locale('commands:give.transfered', { value: valor, emoji: emojis.star })} ${mencionado}`);
   }
 
   async giveDemon(user, user2, valor, ctx, mencionado) {
@@ -23,7 +24,7 @@ module.exports = class GiveCommand extends Command {
 
     await this.client.repositories.giveRepository.giveDemons(user.id, user2.id, valor);
 
-    ctx.reply('success', `${ctx.locale('commands:give.transfered', { value: valor, emoji: '<:Demon:758765044443381780>' })} ${mencionado}`);
+    ctx.reply('success', `${ctx.locale('commands:give.transfered', { value: valor, emoji: emojis.demon })} ${mencionado}`);
   }
 
   async giveAngel(user, user2, valor, ctx, mencionado) {
@@ -31,7 +32,7 @@ module.exports = class GiveCommand extends Command {
 
     await this.client.repositories.giveRepository.giveAngels(user.id, user2.id, valor);
 
-    ctx.reply('success', `${ctx.locale('commands:give.transfered', { value: valor, emoji: '<:Angel:758765044204437535>' })} ${mencionado}`);
+    ctx.reply('success', `${ctx.locale('commands:give.transfered', { value: valor, emoji: emojis.angel })} ${mencionado}`);
   }
 
   async giveSD(user, user2, valor, ctx, mencionado) {
@@ -39,7 +40,7 @@ module.exports = class GiveCommand extends Command {
 
     await this.client.repositories.giveRepository.giveSemigods(user.id, user2.id, valor);
 
-    ctx.reply('success', `${ctx.locale('commands:give.transfered', { value: valor, emoji: '<:SemiGod:758766732235374674>' })} ${mencionado}`);
+    ctx.reply('success', `${ctx.locale('commands:give.transfered', { value: valor, emoji: emojis.semigod })} ${mencionado}`);
   }
 
   async giveGod(user, user2, valor, ctx, mencionado) {
@@ -47,7 +48,7 @@ module.exports = class GiveCommand extends Command {
 
     await this.client.repositories.giveRepository.giveGods(user.id, user2.id, valor);
 
-    ctx.reply('success', `${ctx.locale('commands:give.transfered', { value: valor, emoji: '<:God:758474639570894899>' })} ${mencionado}`);
+    ctx.reply('success', `${ctx.locale('commands:give.transfered', { value: valor, emoji: emojis.god })} ${mencionado}`);
   }
 
   async run(ctx) {
