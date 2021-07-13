@@ -127,7 +127,7 @@ module.exports = class GiveCommand extends Command {
   async giveSD(from, to, value, ctx, mentionString) {
     if (value > from.semideuses) return this.replyNotEnoughtError(ctx, 'semigods');
 
-    await this.client.repositories.giveRepository.giveSemigods(from.id, to.id, value);
+    await this.client.repositories.giveRepository.giveDemigods(from.id, to.id, value);
 
     return this.replySuccess(ctx, value, emojis.semigod, mentionString);
   }

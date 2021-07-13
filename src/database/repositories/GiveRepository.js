@@ -14,14 +14,14 @@ module.exports = class GiveRepository {
   }
 
   giveDemons(fromID, toID, value) {
-    return this._give('caçadas', fromID, toID, value);
+    return this._give('caçados', fromID, toID, value);
   }
 
   giveAngels(fromID, toID, value) {
     return this._give('anjos', fromID, toID, value);
   }
 
-  giveSemigods(fromID, toID, value) {
+  giveDemigods(fromID, toID, value) {
     return this._give('semideuses', fromID, toID, value);
   }
 

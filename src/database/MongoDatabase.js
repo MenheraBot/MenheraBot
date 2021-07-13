@@ -14,7 +14,7 @@ const HuntRepository = require('./repositories/HuntRepository');
 const RelationshipRepository = require('./repositories/RelationshipRepository');
 const BlacklistRepository = require('./repositories/BlacklistRepository');
 const TopRepository = require('./repositories/TopRepository');
-const { default: GiveRepository } = require('./repositories/GiveRepository');
+const GiveRepository = require('./repositories/GiveRepository');
 
 module.exports = class MongoDatabase {
   constructor(uri) {
