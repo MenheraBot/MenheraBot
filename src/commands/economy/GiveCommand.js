@@ -47,11 +47,11 @@ module.exports = class GiveCommand extends Command {
     const value = parseInt(input.replace(/\D+/g, ''));
     if (!value || value < 1) return this.replyInvalidValueError(ctx);
 
-    const authorData = ctx.data.user;
-    const option = selectedOption.opção;
-
     const toData = await this.client.database.repositories.userRepository.findOrCreate(to.id);
     if (!toData) return this.replyNoAccountError(ctx);
+
+    const authorData = ctx.data.user;
+    const option = selectedOption.opção;
 
     switch (option) {
       case 'estrelinhas':
