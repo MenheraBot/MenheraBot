@@ -5,15 +5,14 @@ module.exports = {
     node: true,
     jest: true,
   },
-  extends: [
-    'airbnb-base',
-  ],
+  extends: ['airbnb-base', 'prettier'],
   parserOptions: {
     ecmaVersion: 12,
   },
   parser: '@typescript-eslint/parser',
-  plugins: ['import'],
+  plugins: ['import', 'prettier'],
   rules: {
+    'prettier/prettier': 'error',
     'no-console': 'off',
     'consistent-return': 'off',
     'class-methods-use-this': ['error', { exceptMethods: ['run'] }],
