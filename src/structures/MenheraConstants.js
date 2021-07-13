@@ -78,6 +78,11 @@ const emojis = {
   sword: '⚔️',
   scape: '🐥',
   lock: '🔒',
+  star: '⭐',
+  demon: '<:Demon:758765044443381780>',
+  angel: '<:Angel:758765044204437535>',
+  semigod: '<:SemiGod:758766732235374674>',
+  god: '<:God:758474639570894899>',
 };
 
 const COLORS = {
