@@ -4,7 +4,9 @@ module.exports = class ShardManager {
   }
 
   async getFromCollection(collection, id) {
-    const data = await this.client.shard.broadcastEval(`this.${collection}.cache.get('${id}')`).then((a) => a.filter((b) => b));
+    const data = await this.client.shard
+      .broadcastEval(`this.${collection}.cache.get('${id}')`)
+      .then((a) => a.filter((b) => b));
     return data[0];
   }
 

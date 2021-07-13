@@ -56,41 +56,44 @@ module.exports = class TopCommand extends Command {
     } else if (argsVotos.includes(argumento)) {
       this.topVotos(ctx, pagina);
     } else if (argsDungeon.includes(argumento)) {
-      const validClasses = [{
-        opção: 'Assassino',
-        arguments: ['assassino', 'assassin', 'a'],
-      },
-      {
-        opção: 'Bárbaro',
-        arguments: ['bárbaro', 'barbaro', 'barbarian', 'b'],
-      },
-      {
-        opção: 'Clérigo',
-        arguments: ['clérigo', 'clerigo', 'cleric', 'c'],
-      },
-      {
-        opção: 'Druida',
-        arguments: ['druida', 'druid', 'd'],
-      },
-      {
-        opção: 'Espadachim',
-        arguments: ['espadachim', 'swordman', 'e', 'sw'],
-      },
-      {
-        opção: 'Feiticeiro',
-        arguments: ['feiticeiro', 'sorcerer', 'so'],
-      },
-      {
-        opção: 'Monge',
-        arguments: ['monge', 'monk', 'm'],
-      },
-      {
-        opção: 'Necromante',
-        arguments: ['necromante', 'necromancer', 'n'],
-      },
+      const validClasses = [
+        {
+          opção: 'Assassino',
+          arguments: ['assassino', 'assassin', 'a'],
+        },
+        {
+          opção: 'Bárbaro',
+          arguments: ['bárbaro', 'barbaro', 'barbarian', 'b'],
+        },
+        {
+          opção: 'Clérigo',
+          arguments: ['clérigo', 'clerigo', 'cleric', 'c'],
+        },
+        {
+          opção: 'Druida',
+          arguments: ['druida', 'druid', 'd'],
+        },
+        {
+          opção: 'Espadachim',
+          arguments: ['espadachim', 'swordman', 'e', 'sw'],
+        },
+        {
+          opção: 'Feiticeiro',
+          arguments: ['feiticeiro', 'sorcerer', 'so'],
+        },
+        {
+          opção: 'Monge',
+          arguments: ['monge', 'monk', 'm'],
+        },
+        {
+          opção: 'Necromante',
+          arguments: ['necromante', 'necromancer', 'n'],
+        },
       ];
 
-      const filtredOption = ctx.args[1] ? validClasses.filter((so) => so.arguments.includes(ctx.args[1].toLowerCase())) : [];
+      const filtredOption = ctx.args[1]
+        ? validClasses.filter((so) => so.arguments.includes(ctx.args[1].toLowerCase()))
+        : [];
 
       const option = filtredOption.length > 0 ? filtredOption[0].opção : false;
 
@@ -111,7 +114,7 @@ module.exports = class TopCommand extends Command {
   async topMamados(ctx, pagina) {
     const quantidade = await this.client.database.Users.countDocuments();
     let skip = 0;
-    if (!Number.isNaN(pagina) && pagina > 0 && pagina < (quantidade / 10)) {
+    if (!Number.isNaN(pagina) && pagina > 0 && pagina < quantidade / 10) {
       skip = (pagina - 1) * 10;
     }
 
@@ -123,7 +126,7 @@ module.exports = class TopCommand extends Command {
 
     const embed = new MessageEmbed()
 
-      .setTitle(`👑 | ${ctx.locale('commands:top.mamouTitle')} ${(pagina > 1) ? pagina : 1}º`)
+      .setTitle(`👑 | ${ctx.locale('commands:top.mamouTitle')} ${pagina > 1 ? pagina : 1}º`)
       .setColor('#eab3fa');
 
     for (let i = 0; i < res.length; i++) {
@@ -131,7 +134,11 @@ module.exports = class TopCommand extends Command {
       const member = await this.client.users.fetch(res[i].id).catch();
       const memberName = member?.username ?? res[i].id;
 
-      embed.addField(`**${skip + 1 + i} -** ${memberName}`, `${ctx.locale('commands:top.suckled')}: **${res[i].mamadas}**`, false);
+      embed.addField(
+        `**${skip + 1 + i} -** ${memberName}`,
+        `${ctx.locale('commands:top.suckled')}: **${res[i].mamadas}**`,
+        false,
+      );
     }
     ctx.sendC(ctx.message.author, embed);
   }
@@ -140,7 +147,7 @@ module.exports = class TopCommand extends Command {
     const quantidade = await this.client.database.Users.countDocuments();
 
     let skip = 0;
-    if (!Number.isNaN(pagina) && pagina > 0 && pagina < (quantidade / 10)) {
+    if (!Number.isNaN(pagina) && pagina > 0 && pagina < quantidade / 10) {
       skip = (pagina - 1) * 10;
     }
 
@@ -152,15 +159,23 @@ module.exports = class TopCommand extends Command {
 
     const embed = new MessageEmbed()
 
-      .setTitle(`👑 |  ${ctx.locale('commands:top.mamadoresTitle')} ${(pagina > 1) ? pagina : 1}º`)
+      .setTitle(`👑 |  ${ctx.locale('commands:top.mamadoresTitle')} ${pagina > 1 ? pagina : 1}º`)
       .setColor('#eab3fa');
 
     for (let i = 0; i < res.length; i++) {
       const member = await this.client.users.fetch(res[i].id).catch();
       if (!member) {
-        embed.addField(`**${skip + 1 + i} -** ${res[i].nome}`, `${ctx.locale('commands:top.suck')}: **${res[i].mamou}**`, false);
+        embed.addField(
+          `**${skip + 1 + i} -** ${res[i].nome}`,
+          `${ctx.locale('commands:top.suck')}: **${res[i].mamou}**`,
+          false,
+        );
       } else {
-        embed.addField(`**${skip + 1 + i} -** ${member.username}`, `${ctx.locale('commands:top.suck')}: **${res[i].mamou}**`, false);
+        embed.addField(
+          `**${skip + 1 + i} -** ${member.username}`,
+          `${ctx.locale('commands:top.suck')}: **${res[i].mamou}**`,
+          false,
+        );
       }
     }
     ctx.sendC(ctx.message.author, embed);
@@ -170,7 +185,7 @@ module.exports = class TopCommand extends Command {
     const quantidade = await this.client.database.Users.countDocuments();
 
     let skip = 0;
-    if (!Number.isNaN(pagina) && pagina > 0 && pagina < (quantidade / 10)) {
+    if (!Number.isNaN(pagina) && pagina > 0 && pagina < quantidade / 10) {
       skip = (pagina - 1) * 10;
     }
 
@@ -182,15 +197,27 @@ module.exports = class TopCommand extends Command {
 
     const embed = new MessageEmbed()
 
-      .setTitle(`<:DEMON:758765044443381780> |  ${ctx.locale('commands:top.demonTitle')} ${(pagina > 1) ? pagina : 1}º`)
+      .setTitle(
+        `<:DEMON:758765044443381780> |  ${ctx.locale('commands:top.demonTitle')} ${
+          pagina > 1 ? pagina : 1
+        }º`,
+      )
       .setColor('#ec8227');
 
     for (let i = 0; i < res.length; i++) {
       const member = await this.client.users.fetch(res[i].id).catch();
       if (!member) {
-        embed.addField(`**${skip + 1 + i} -** ${res[i].nome} `, `${ctx.locale('commands:top.demons')}: ** ${res[i].caçados}** `, false);
+        embed.addField(
+          `**${skip + 1 + i} -** ${res[i].nome} `,
+          `${ctx.locale('commands:top.demons')}: ** ${res[i].caçados}** `,
+          false,
+        );
       } else {
-        embed.addField(`**${skip + 1 + i} -** ${member.username} `, `${ctx.locale('commands:top.demons')}: ** ${res[i].caçados}** `, false);
+        embed.addField(
+          `**${skip + 1 + i} -** ${member.username} `,
+          `${ctx.locale('commands:top.demons')}: ** ${res[i].caçados}** `,
+          false,
+        );
       }
     }
     ctx.sendC(ctx.message.author, embed);
@@ -200,7 +227,7 @@ module.exports = class TopCommand extends Command {
     const quantidade = await this.client.database.Users.countDocuments();
 
     let skip = 0;
-    if (!Number.isNaN(pagina) && pagina > 0 && pagina < (quantidade / 10)) {
+    if (!Number.isNaN(pagina) && pagina > 0 && pagina < quantidade / 10) {
       skip = (pagina - 1) * 10;
     }
 
@@ -212,15 +239,27 @@ module.exports = class TopCommand extends Command {
 
     const embed = new MessageEmbed()
 
-      .setTitle(`<:ANGEL:758765044204437535> | ${ctx.locale('commands:top.angelTitle')} ${(pagina > 1) ? pagina : 1}º`)
+      .setTitle(
+        `<:ANGEL:758765044204437535> | ${ctx.locale('commands:top.angelTitle')} ${
+          pagina > 1 ? pagina : 1
+        }º`,
+      )
       .setColor('#bdecee');
 
     for (let i = 0; i < res.length; i++) {
       const member = await this.client.users.fetch(res[i].id).catch();
       if (!member) {
-        embed.addField(`** ${skip + 1 + i} -** ${res[i].nome} `, `${ctx.locale('commands:top.angels')}: ** ${res[i].anjos}** `, false);
+        embed.addField(
+          `** ${skip + 1 + i} -** ${res[i].nome} `,
+          `${ctx.locale('commands:top.angels')}: ** ${res[i].anjos}** `,
+          false,
+        );
       } else {
-        embed.addField(`** ${skip + 1 + i} -** ${member.username} `, `${ctx.locale('commands:top.angels')}: ** ${res[i].anjos}** `, false);
+        embed.addField(
+          `** ${skip + 1 + i} -** ${member.username} `,
+          `${ctx.locale('commands:top.angels')}: ** ${res[i].anjos}** `,
+          false,
+        );
       }
     }
     ctx.sendC(ctx.message.author, embed);
@@ -230,7 +269,7 @@ module.exports = class TopCommand extends Command {
     const quantidade = await this.client.database.Users.countDocuments();
 
     let skip = 0;
-    if (!Number.isNaN(pagina) && pagina > 0 && pagina < (quantidade / 10)) {
+    if (!Number.isNaN(pagina) && pagina > 0 && pagina < quantidade / 10) {
       skip = (pagina - 1) * 10;
     }
 
@@ -242,15 +281,27 @@ module.exports = class TopCommand extends Command {
 
     const embed = new MessageEmbed()
 
-      .setTitle(`<:SEMIGOD:758766732235374674> | ${ctx.locale('commands:top.sdTitle')} ${(pagina > 1) ? pagina : 1}º`)
+      .setTitle(
+        `<:SEMIGOD:758766732235374674> | ${ctx.locale('commands:top.sdTitle')} ${
+          pagina > 1 ? pagina : 1
+        }º`,
+      )
       .setColor('#eab3fa');
 
     for (let i = 0; i < res.length; i++) {
       const member = await this.client.users.fetch(res[i].id).catch();
       if (!member) {
-        embed.addField(`** ${skip + 1 + i} -** ${res[i].nome} `, `${ctx.locale('commands:top.demigods')}: ** ${res[i].semideuses}** `, false);
+        embed.addField(
+          `** ${skip + 1 + i} -** ${res[i].nome} `,
+          `${ctx.locale('commands:top.demigods')}: ** ${res[i].semideuses}** `,
+          false,
+        );
       } else {
-        embed.addField(`** ${skip + 1 + i} -** ${member.username} `, `${ctx.locale('commands:top.demigods')}: ** ${res[i].semideuses}** `, false);
+        embed.addField(
+          `** ${skip + 1 + i} -** ${member.username} `,
+          `${ctx.locale('commands:top.demigods')}: ** ${res[i].semideuses}** `,
+          false,
+        );
       }
     }
     ctx.sendC(ctx.message.author, embed);
@@ -260,7 +311,7 @@ module.exports = class TopCommand extends Command {
     const quantidade = await this.client.database.Users.countDocuments();
 
     let skip = 0;
-    if (!Number.isNaN(pagina) && pagina > 0 && pagina < (quantidade / 10)) {
+    if (!Number.isNaN(pagina) && pagina > 0 && pagina < quantidade / 10) {
       skip = (pagina - 1) * 10;
     }
 
@@ -272,15 +323,27 @@ module.exports = class TopCommand extends Command {
 
     const embed = new MessageEmbed()
 
-      .setTitle(`<:God:758474639570894899> | ${ctx.locale('commands:top.godTitle')} ${(pagina > 1) ? pagina : 1}º`)
+      .setTitle(
+        `<:God:758474639570894899> | ${ctx.locale('commands:top.godTitle')} ${
+          pagina > 1 ? pagina : 1
+        }º`,
+      )
       .setColor('#a67cec');
 
     for (let i = 0; i < res.length; i++) {
       const member = await this.client.users.fetch(res[i].id).catch();
       if (!member) {
-        embed.addField(`** ${skip + 1 + i} -** ${res[i].nome} `, `${ctx.locale('commands:top.gods')}: ** ${res[i].deuses}** `, false);
+        embed.addField(
+          `** ${skip + 1 + i} -** ${res[i].nome} `,
+          `${ctx.locale('commands:top.gods')}: ** ${res[i].deuses}** `,
+          false,
+        );
       } else {
-        embed.addField(`** ${skip + 1 + i} -** ${member.username} `, `${ctx.locale('commands:top.gods')}: ** ${res[i].deuses}** `, false);
+        embed.addField(
+          `** ${skip + 1 + i} -** ${member.username} `,
+          `${ctx.locale('commands:top.gods')}: ** ${res[i].deuses}** `,
+          false,
+        );
       }
     }
     ctx.sendC(ctx.message.author, embed);
@@ -290,7 +353,7 @@ module.exports = class TopCommand extends Command {
     const quantidade = await this.client.database.Users.countDocuments();
 
     let skip = 0;
-    if (!Number.isNaN(pagina) && pagina > 0 && pagina < (quantidade / 10)) {
+    if (!Number.isNaN(pagina) && pagina > 0 && pagina < quantidade / 10) {
       skip = (pagina - 1) * 10;
     }
 
@@ -301,15 +364,23 @@ module.exports = class TopCommand extends Command {
     });
 
     const embed = new MessageEmbed()
-      .setTitle(`⭐ | ${ctx.locale('commands:top.starsTitle')} ${(pagina > 1) ? pagina : 1} º`)
+      .setTitle(`⭐ | ${ctx.locale('commands:top.starsTitle')} ${pagina > 1 ? pagina : 1} º`)
       .setColor('#74bd63');
 
     for (let i = 0; i < res.length; i++) {
       const member = await this.client.users.fetch(res[i].id).catch();
       if (!member) {
-        embed.addField(`** ${skip + 1 + i} -** ${res[i].nome} `, `${ctx.locale('commands:top.stars')}: ** ${res[i].estrelinhas}** `, false);
+        embed.addField(
+          `** ${skip + 1 + i} -** ${res[i].nome} `,
+          `${ctx.locale('commands:top.stars')}: ** ${res[i].estrelinhas}** `,
+          false,
+        );
       } else {
-        embed.addField(`** ${skip + 1 + i} -** ${member.username} `, `${ctx.locale('commands:top.stars')}: ** ${res[i].estrelinhas}** `, false);
+        embed.addField(
+          `** ${skip + 1 + i} -** ${member.username} `,
+          `${ctx.locale('commands:top.stars')}: ** ${res[i].estrelinhas}** `,
+          false,
+        );
       }
     }
     ctx.sendC(ctx.message.author, embed);
@@ -319,7 +390,7 @@ module.exports = class TopCommand extends Command {
     const quantidade = await this.client.database.Users.countDocuments();
 
     let skip = 0;
-    if (!Number.isNaN(pagina) && pagina > 0 && pagina < (quantidade / 10)) {
+    if (!Number.isNaN(pagina) && pagina > 0 && pagina < quantidade / 10) {
       skip = (pagina - 1) * 10;
     }
 
@@ -331,15 +402,27 @@ module.exports = class TopCommand extends Command {
 
     const embed = new MessageEmbed()
 
-      .setTitle(`<:ok:727975974125436959> | ${ctx.locale('commands:top.voteTitle')} ${(pagina > 1) ? pagina : 1} º`)
+      .setTitle(
+        `<:ok:727975974125436959> | ${ctx.locale('commands:top.voteTitle')} ${
+          pagina > 1 ? pagina : 1
+        } º`,
+      )
       .setColor('#ff29ae');
 
     for (let i = 0; i < res.length; i++) {
       const member = await this.client.users.fetch(res[i].id).catch();
       if (!member) {
-        embed.addField(`** ${skip + 1 + i} -** ${res[i].nome} `, `Upvotes: ** ${res[i].votos}** `, false);
+        embed.addField(
+          `** ${skip + 1 + i} -** ${res[i].nome} `,
+          `Upvotes: ** ${res[i].votos}** `,
+          false,
+        );
       } else {
-        embed.addField(`** ${skip + 1 + i} -** ${member.username} `, `Upvotes: ** ${res[i].votos}** `, false);
+        embed.addField(
+          `** ${skip + 1 + i} -** ${member.username} `,
+          `Upvotes: ** ${res[i].votos}** `,
+          false,
+        );
       }
     }
     ctx.sendC(ctx.message.author, embed);
@@ -349,31 +432,66 @@ module.exports = class TopCommand extends Command {
     const quantidade = await this.client.database.Rpg.countDocuments();
 
     let skip = 0;
-    if (!Number.isNaN(pagina) && pagina > 0 && pagina < (quantidade / 10)) {
+    if (!Number.isNaN(pagina) && pagina > 0 && pagina < quantidade / 10) {
       skip = (pagina - 1) * 10;
     }
 
-    const res = classToSearch ? await this.client.database.Rpg.find({ class: classToSearch }, ['level', '_id', 'xp'], {
-      skip,
-      limit: 10,
-      sort: { level: -1, xp: -1 },
-    }) : await this.client.database.Rpg.find({}, ['level', '_id', 'xp', 'class'], {
-      skip,
-      limit: 10,
-      sort: { level: -1, xp: -1 },
-    });
+    const res = classToSearch
+      ? await this.client.database.Rpg.find({ class: classToSearch }, ['level', '_id', 'xp'], {
+          skip,
+          limit: 10,
+          sort: { level: -1, xp: -1 },
+        })
+      : await this.client.database.Rpg.find({}, ['level', '_id', 'xp', 'class'], {
+          skip,
+          limit: 10,
+          sort: { level: -1, xp: -1 },
+        });
 
-    const embed = new MessageEmbed()
-      .setColor('#a1f5ee');
+    const embed = new MessageEmbed().setColor('#a1f5ee');
 
-    classToSearch ? embed.setTitle(`<:Chest:760957557538947133> | Top ${ctx.locale(`roleplay:classes.${classToSearch}`)} ${(skip > 0) ? (skip / 10) + 1 : 1} º`) : embed.setTitle(`<:Chest:760957557538947133> | ${ctx.locale('commands:top.rpgTitle')} ${(skip > 0) ? (skip / 10) + 1 : 1} º`);
+    classToSearch
+      ? embed.setTitle(
+          `<:Chest:760957557538947133> | Top ${ctx.locale(`roleplay:classes.${classToSearch}`)} ${
+            skip > 0 ? skip / 10 + 1 : 1
+          } º`,
+        )
+      : embed.setTitle(
+          `<:Chest:760957557538947133> | ${ctx.locale('commands:top.rpgTitle')} ${
+            skip > 0 ? skip / 10 + 1 : 1
+          } º`,
+        );
 
     for (let i = 0; i < res.length; i++) {
       const member = await this.client.users.fetch(res[i].id).catch(() => null);
       if (!member) {
-        classToSearch ? embed.addField(`** ${skip + 1 + i} -** \`USER NOT FOUND\``, `Level: **${res[i].level}**\nXp: **${res[i].xp}**`, false) : embed.addField(`** ${skip + 1 + i} -** \`USER NOT FOUND\`  | ${ctx.locale(`roleplay:classes.${res[i].class}`)}`, `Level: **${res[i].level}**\nXp: **${res[i].xp}**`, false);
+        classToSearch
+          ? embed.addField(
+              `** ${skip + 1 + i} -** \`USER NOT FOUND\``,
+              `Level: **${res[i].level}**\nXp: **${res[i].xp}**`,
+              false,
+            )
+          : embed.addField(
+              `** ${skip + 1 + i} -** \`USER NOT FOUND\`  | ${ctx.locale(
+                `roleplay:classes.${res[i].class}`,
+              )}`,
+              `Level: **${res[i].level}**\nXp: **${res[i].xp}**`,
+              false,
+            );
       } else {
-        classToSearch ? embed.addField(`**${skip + 1 + i} -** ${member.username}`, `Level: **${res[i].level}**\nXp: **${res[i].xp}**`, false) : embed.addField(`**${skip + 1 + i} -** ${member.username} | ${ctx.locale(`roleplay:classes.${res[i].class}`)}`, `Level: **${res[i].level}**\nXp: **${res[i].xp}**`, false);
+        classToSearch
+          ? embed.addField(
+              `**${skip + 1 + i} -** ${member.username}`,
+              `Level: **${res[i].level}**\nXp: **${res[i].xp}**`,
+              false,
+            )
+          : embed.addField(
+              `**${skip + 1 + i} -** ${member.username} | ${ctx.locale(
+                `roleplay:classes.${res[i].class}`,
+              )}`,
+              `Level: **${res[i].level}**\nXp: **${res[i].xp}**`,
+              false,
+            );
       }
     }
     ctx.sendC(ctx.message.author, embed);
@@ -387,7 +505,13 @@ module.exports = class TopCommand extends Command {
       .setColor('#f47fff');
 
     for (let i = 0; i < res.length; i++) {
-      embed.addField(`**${i + 1} -** ${Util.captalize(res[i].name)} `, `${ctx.locale('commands:top.used')} **${res[i].usages}** ${ctx.locale('commands:top.times')}`, false);
+      embed.addField(
+        `**${i + 1} -** ${Util.captalize(res[i].name)} `,
+        `${ctx.locale('commands:top.used')} **${res[i].usages}** ${ctx.locale(
+          'commands:top.times',
+        )}`,
+        false,
+      );
     }
     ctx.sendC(ctx.message.author, embed);
   }
@@ -401,7 +525,11 @@ module.exports = class TopCommand extends Command {
 
     for (let i = 0; i < res.length; i++) {
       const member = await this.client.users.fetch(res[i].id).catch();
-      embed.addField(`**${i + 1} -** ${Util.captalize(member.username)} `, `${ctx.locale('commands:top.use')} **${res[i].uses}** ${ctx.locale('commands:top.times')}`, false);
+      embed.addField(
+        `**${i + 1} -** ${Util.captalize(member.username)} `,
+        `${ctx.locale('commands:top.use')} **${res[i].uses}** ${ctx.locale('commands:top.times')}`,
+        false,
+      );
     }
     ctx.sendC(ctx.message.author, embed);
   }
@@ -420,14 +548,24 @@ module.exports = class TopCommand extends Command {
     const res = await http.getProfileCommands(fetchedUser.id);
     const embed = new MessageEmbed()
 
-      .setTitle(`<:MenheraSmile2:767210250364780554> |  ${ctx.locale('commands:top.user', { user: fetchedUser.username })}`)
+      .setTitle(
+        `<:MenheraSmile2:767210250364780554> |  ${ctx.locale('commands:top.user', {
+          user: fetchedUser.username,
+        })}`,
+      )
       .setColor('#f47fff');
 
     if (!res || res.cmds.count === 0) return ctx.replyT('error', 'commands:top.not-user');
 
     for (let i = 0; i < res.array.length; i++) {
       if (i > 10) break;
-      embed.addField(`**${i + 1} -** ${Util.captalize(res.array[i].name)} `, `${ctx.locale('commands:top.use')} **${res.array[i].count}** ${ctx.locale('commands:top.times')}`, false);
+      embed.addField(
+        `**${i + 1} -** ${Util.captalize(res.array[i].name)} `,
+        `${ctx.locale('commands:top.use')} **${res.array[i].count}** ${ctx.locale(
+          'commands:top.times',
+        )}`,
+        false,
+      );
     }
     ctx.sendC(ctx.message.author, embed);
   }

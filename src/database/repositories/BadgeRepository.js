@@ -4,6 +4,8 @@ module.exports = class BadgeRepository {
   }
 
   async addBadge(userID, badgeID) {
-    await this.userRepository.update(userID, { $push: { badges: { id: badgeID, obtainAt: Date.now() } } });
+    await this.userRepository.update(userID, {
+      $push: { badges: { id: badgeID, obtainAt: Date.now() } },
+    });
   }
 };

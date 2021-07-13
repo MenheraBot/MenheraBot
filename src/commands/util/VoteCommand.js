@@ -20,7 +20,10 @@ module.exports = class VoteCommand extends Command {
       .setURL('https://top.gg/bot/708014856711962654/vote')
       .setImage('https://i.imgur.com/27GxqX1.jpg')
       .setDescription(ctx.locale('commands:vote.embed_description'))
-      .setFooter(`${ctx.locale('commands:vote.embed_footer')} ${ctx.message.author.tag}`, ctx.message.author.displayAvatarURL())
+      .setFooter(
+        `${ctx.locale('commands:vote.embed_footer')} ${ctx.message.author.tag}`,
+        ctx.message.author.displayAvatarURL(),
+      )
       .setTimestamp();
 
     ctx.send(embed);

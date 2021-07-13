@@ -4,7 +4,10 @@ module.exports = class HuntRepository {
   }
 
   async huntDemon(userID, value, cooldown) {
-    await this.userModal.updateOne({ id: userID }, { $inc: { caçados: value }, caçarTime: cooldown });
+    await this.userModal.updateOne(
+      { id: userID },
+      { $inc: { caçados: value }, caçarTime: cooldown },
+    );
   }
 
   async huntAngel(userID, value, cooldown) {
@@ -12,10 +15,16 @@ module.exports = class HuntRepository {
   }
 
   async huntDemigod(userID, value, cooldown) {
-    await this.userModal.updateOne({ id: userID }, { $inc: { semideuses: value }, caçarTime: cooldown });
+    await this.userModal.updateOne(
+      { id: userID },
+      { $inc: { semideuses: value }, caçarTime: cooldown },
+    );
   }
 
   async huntGod(userID, value, cooldown) {
-    await this.userModal.updateOne({ id: userID }, { $inc: { deuses: value }, caçarTime: cooldown });
+    await this.userModal.updateOne(
+      { id: userID },
+      { $inc: { deuses: value }, caçarTime: cooldown },
+    );
   }
 };

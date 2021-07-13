@@ -8,9 +8,15 @@ class RPGUtil {
         p[exists].amount++;
         return p;
       }
-      return [...p, {
-        name: v.name, amount: 1, value: v.value, job_id: v.job_id || 0,
-      }];
+      return [
+        ...p,
+        {
+          name: v.name,
+          amount: 1,
+          value: v.value,
+          job_id: v.job_id || 0,
+        },
+      ];
     }, []);
   }
 
@@ -20,7 +26,9 @@ class RPGUtil {
       throw new Error(`${userRpgData.id} not has a backpack.`);
     }
 
-    const backpack = ferreiro.find((item) => item.category === 'backpack' && item.id === backpackId);
+    const backpack = ferreiro.find(
+      (item) => item.category === 'backpack' && item.id === backpackId,
+    );
     if (!backpack) {
       throw new Error(`${userRpgData.id} has a fake backpack. (${backpackId})`);
     }
@@ -33,12 +41,15 @@ class RPGUtil {
   }
 
   static addItemInInventory(user, item, amount = 1) {
-    user.inventory.push(...(new Array(amount).fill(item)));
+    user.inventory.push(...new Array(amount).fill(item));
   }
 
   static removeItemInLoots(user, itemName, amount = 1) {
     for (let i = 0; i < amount; i++) {
-      user.loots.splice(user.loots.findIndex((loot) => loot.name === itemName), 1);
+      user.loots.splice(
+        user.loots.findIndex((loot) => loot.name === itemName),
+        1,
+      );
     }
   }
 }

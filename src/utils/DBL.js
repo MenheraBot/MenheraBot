@@ -7,10 +7,14 @@ module.exports = class DiscordBots {
   }
 
   async init() {
-    const dbl = new DBL(process.env.DBL_TOKEN, {
-      webhookPort: process.env.DBLHOOK_PORT,
-      webhookAuth: process.env.DBL_AUTH,
-    }, this.client);
+    const dbl = new DBL(
+      process.env.DBL_TOKEN,
+      {
+        webhookPort: process.env.DBLHOOK_PORT,
+        webhookAuth: process.env.DBL_AUTH,
+      },
+      this.client,
+    );
 
     dbl.webhook.on('vote', async (vote) => {
       const user = await this.client.database.Users.findOne({ id: vote.user });
@@ -23,8 +27,12 @@ module.exports = class DiscordBots {
       const constants = this.client.constants.votes;
 
       let { rollQuantity, rpgRollQuantity } = constants;
-      let starQuantity = Math.floor(Math.random() * (constants.maxStarValue - constants.minStarValue + 1)) + constants.minStarValue;
-      let rpgMoneyQuantity = Math.floor(Math.random() * (constants.maxStoneValue - constants.minStoneValue + 1)) + constants.minStoneValue;
+      let starQuantity =
+        Math.floor(Math.random() * (constants.maxStarValue - constants.minStarValue + 1)) +
+        constants.minStarValue;
+      let rpgMoneyQuantity =
+        Math.floor(Math.random() * (constants.maxStoneValue - constants.minStoneValue + 1)) +
+        constants.minStoneValue;
       let embedTitle = '<:God:758474639570894899> | Obrigada por votar em mim';
       let embedDescription = `Obrigada por votar em mim bebezinho, cada voto me ajuda e inspira minha dona a continuar me cuidando! ❤️\n\nComo forma de agradecimento, você recebeu **1**🔑 e **${starQuantity}**⭐!\n\nSabia que a cada 20 votos você ganha um prêmio especial? E que você ja votou **${user.votos}** vezes em mim? **OBRIGADA**\n\nVote em mim novamente em 12 horas <a:LevelUp:760954035779272755>`;
 
@@ -66,7 +74,7 @@ module.exports = class DiscordBots {
 
       user.rolls += rollQuantity;
       user.estrelinhas += starQuantity;
-      user.voteCooldown = (Date.now() + 43200000);
+      user.voteCooldown = Date.now() + 43200000;
       await user.save();
 
       const functionToEval = async (id, embedToSend) => {

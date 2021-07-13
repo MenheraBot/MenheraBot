@@ -26,7 +26,9 @@ module.exports = class MamarCommand extends Command {
     const embed = new MessageEmbed()
       .setTitle(ctx.locale('commands:mamar.embed_title'))
       .setColor('#000000')
-      .setDescription(`${ctx.message.author} ${ctx.locale('commands:mamar.embed_description')} ${mention}`)
+      .setDescription(
+        `${ctx.message.author} ${ctx.locale('commands:mamar.embed_description')} ${mention}`,
+      )
       .setImage(rand)
       .setThumbnail(avatar)
       .setAuthor(ctx.message.author.tag, avatar);

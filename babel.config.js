@@ -6,7 +6,8 @@ module.exports = {
         targets: {
           node: 'current',
         },
-      }],
+      },
+    ],
     '@babel/preset-typescript',
   ],
   overrides: [
@@ -26,16 +27,17 @@ module.exports = {
     },
   ],
   plugins: [
-    ['module-resolver', {
-      alias: {
-        '@structures': './src/structures',
-        '@interfaces': './src/interfaces',
-        '@utils': './src/utils',
-        '@database': './src/database',
+    [
+      'module-resolver',
+      {
+        alias: {
+          '@structures': './src/structures',
+          '@interfaces': './src/interfaces',
+          '@utils': './src/utils',
+          '@database': './src/database',
+        },
       },
-    }],
+    ],
   ],
-  ignore: [
-    '**/*.spec.ts',
-  ],
+  ignore: ['**/*.spec.ts'],
 };

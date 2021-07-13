@@ -26,7 +26,14 @@ module.exports = class InventoryCommand extends Command {
 
     const items = user.inventory.filter((item) => item.type !== 'Arma');
 
-    const normalizeItems = (arr) => countItems(arr).reduce((p, count) => `${p}**${count.job_id > 0 ? ctx.locale(`roleplay:job.${count.job_id}.${count.name}`) : count.name}** (${count.amount})\n`, '');
+    const normalizeItems = (arr) =>
+      countItems(arr).reduce(
+        (p, count) =>
+          `${p}**${
+            count.job_id > 0 ? ctx.locale(`roleplay:job.${count.job_id}.${count.name}`) : count.name
+          }** (${count.amount})\n`,
+        '',
+      );
     const itemText = normalizeItems(items);
     const lootText = normalizeItems(user.loots);
 
@@ -37,10 +44,24 @@ module.exports = class InventoryCommand extends Command {
     armaText += `🛡️ | ${ctx.locale('commands:inventory.prt')}: **${user.protection.armor}**\n`;
 
     const backpack = RPGUtil.getBackpack(user);
-    if (backpack) embed.addField(`🧺 | ${ctx.locale('commands:inventory.backpack')}`, ctx.locale('commands:inventory.backpack-value', { name: backpack.name, max: backpack.capacity, value: backpack.value }));
-    if (armaText.length > 0) embed.addField(`⚔️ | ${ctx.locale('commands:inventory.battle')}`, armaText);
-    if (items.length > 0) embed.addField(`💊 | ${ctx.locale('commands:inventory.items')}`, itemText);
-    if (lootText.length > 0) embed.addField(`<:Chest:760957557538947133> | ${ctx.locale('commands:inventory.loots')}`, lootText);
+    if (backpack)
+      embed.addField(
+        `🧺 | ${ctx.locale('commands:inventory.backpack')}`,
+        ctx.locale('commands:inventory.backpack-value', {
+          name: backpack.name,
+          max: backpack.capacity,
+          value: backpack.value,
+        }),
+      );
+    if (armaText.length > 0)
+      embed.addField(`⚔️ | ${ctx.locale('commands:inventory.battle')}`, armaText);
+    if (items.length > 0)
+      embed.addField(`💊 | ${ctx.locale('commands:inventory.items')}`, itemText);
+    if (lootText.length > 0)
+      embed.addField(
+        `<:Chest:760957557538947133> | ${ctx.locale('commands:inventory.loots')}`,
+        lootText,
+      );
 
     ctx.sendC(ctx.message.author, embed);
   }

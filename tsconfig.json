@@ -12,12 +12,13 @@
       "@structures/*": ["structures/*"],
       "@database/*": ["database/*"],
       "@utils/*": ["utils/*"],
-      "@interfaces/*": ["interfaces/*"],
+      "@interfaces/*": ["interfaces/*"]
     },
-      // Ensure that .d.ts files are created by tsc, but not .js files
+    // Ensure that .d.ts files are created by tsc, but not .js files
     "declaration": true,
     // Ensure that Babel can safely transpile files in the TypeScript project
     "isolatedModules": true
   },
+  "include": ["src"],
   "exclude": ["dist", "node_modules"]
 }

@@ -20,7 +20,13 @@ module.exports = class PingCommand extends Command {
     if (!ctx.args[0]) {
       const embed = new MessageEmbed()
         .setTitle('🏓 | Pong!')
-        .setDescription(`📡 | ${ctx.locale('commands:ping.api')} **${Date.now() - ctx.message.createdTimestamp}ms**\n📡 | ${ctx.locale('commands:ping.latency')} **${Math.round(this.client.ws.ping)}ms**\n🖲️ | Shard: **${this.client.shard.ids}** / **${this.client.shard.count - 1}**`)
+        .setDescription(
+          `📡 | ${ctx.locale('commands:ping.api')} **${
+            Date.now() - ctx.message.createdTimestamp
+          }ms**\n📡 | ${ctx.locale('commands:ping.latency')} **${Math.round(
+            this.client.ws.ping,
+          )}ms**\n🖲️ | Shard: **${this.client.shard.ids}** / **${this.client.shard.count - 1}**`,
+        )
         .setFooter(ctx.message.author.tag, avatar)
         .setTimestamp()
         .setColor('#eab3fa');
@@ -30,7 +36,9 @@ module.exports = class PingCommand extends Command {
     const allShardsInformation = await this.client.shard.broadcastEval('this.ws');
     const allShardsUptime = await this.client.shard.broadcastEval('this.ws.client.uptime');
     const guildsPerShardCount = await this.client.shard.broadcastEval('this.guilds.cache.size');
-    const allShardsMemoryUsedByProcess = await this.client.shard.broadcastEval('process.memoryUsage().heapUsed');
+    const allShardsMemoryUsedByProcess = await this.client.shard.broadcastEval(
+      'process.memoryUsage().heapUsed',
+    );
 
     const tabled = allShardsInformation.reduce((p, c, n) => {
       const conninfo = {
