@@ -13,8 +13,7 @@ module.exports = class GiveCommand extends Command {
   async giveStar(user, user2, valor, ctx, mencionado) {
     if (valor > user.estrelinhas) return ctx.reply('error', `${ctx.locale('commands:give.poor')} ${ctx.locale('commands:give.stars')}`);
 
-    await this.client.database.Users.updateOne({ id: user.id }, { $inc: { estrelinhas: -valor } });
-    await this.client.database.Users.updateOne({ id: user2.id }, { $inc: { estrelinhas: valor } });
+    await this.client.repositories.giveRepository.giveStars(user.id, user2.id, valor);
 
     ctx.reply('success', `${ctx.locale('commands:give.transfered', { value: valor, emoji: '⭐' })} ${mencionado}`);
   }
@@ -22,8 +21,7 @@ module.exports = class GiveCommand extends Command {
   async giveDemon(user, user2, valor, ctx, mencionado) {
     if (valor > user.caçados) return ctx.reply('error', `${ctx.locale('commands:give.poor')} ${ctx.locale('commands:give.demons')}`);
 
-    await this.client.repositories.userRepository.update(user.id, { $inc: { caçados: -valor } });
-    await this.client.repositories.userRepository.update(user2.id, { $inc: { caçados: valor } });
+    await this.client.repositories.giveRepository.giveDemons(user.id, user2.id, valor);
 
     ctx.reply('success', `${ctx.locale('commands:give.transfered', { value: valor, emoji: '<:Demon:758765044443381780>' })} ${mencionado}`);
   }
@@ -31,8 +29,7 @@ module.exports = class GiveCommand extends Command {
   async giveAngel(user, user2, valor, ctx, mencionado) {
     if (valor > user.anjos) return ctx.reply('error', `${ctx.locale('commands:give.poor')} ${ctx.locale('commands:give.angels')}`);
 
-    await this.client.repositories.userRepository.update(user.id, { $inc: { anjos: -valor } });
-    await this.client.repositories.userRepository.update(user2.id, { $inc: { anjos: valor } });
+    await this.client.repositories.giveRepository.giveAngels(user.id, user2.id, valor);
 
     ctx.reply('success', `${ctx.locale('commands:give.transfered', { value: valor, emoji: '<:Angel:758765044204437535>' })} ${mencionado}`);
   }
@@ -40,8 +37,7 @@ module.exports = class GiveCommand extends Command {
   async giveSD(user, user2, valor, ctx, mencionado) {
     if (valor > user.semideuses) return ctx.reply('error', `${ctx.locale('commands:give.poor')} ${ctx.locale('commands:give.semigods')}`);
 
-    await this.client.repositories.userRepository.update(user.id, { $inc: { semideuses: -valor } });
-    await this.client.repositories.userRepository.update(user2.id, { $inc: { semideuses: valor } });
+    await this.client.repositories.giveRepository.giveSemigods(user.id, user2.id, valor);
 
     ctx.reply('success', `${ctx.locale('commands:give.transfered', { value: valor, emoji: '<:SemiGod:758766732235374674>' })} ${mencionado}`);
   }
@@ -49,8 +45,7 @@ module.exports = class GiveCommand extends Command {
   async giveGod(user, user2, valor, ctx, mencionado) {
     if (valor > user.deuses) return ctx.reply('error', `${ctx.locale('commands:give.poor')} ${ctx.locale('commands:give.gods')}`);
 
-    await this.client.repositories.userRepository.update(user.id, { $inc: { deuses: -valor } });
-    await this.client.repositories.userRepository.update(user2.id, { $inc: { deuses: valor } });
+    await this.client.repositories.giveRepository.giveGods(user.id, user2.id, valor);
 
     ctx.reply('success', `${ctx.locale('commands:give.transfered', { value: valor, emoji: '<:God:758474639570894899>' })} ${mencionado}`);
   }
