@@ -120,42 +120,42 @@ module.exports = class GiveCommand extends Command {
   }
 
   async giveStar(from, to, value, ctx, mentionString) {
-    if (value > from.estrelinhas) return this.replyNotEnoughtError(ctx, 'stars');
+    if (value > from.estrelinhas) return GiveCommand.replyNotEnoughtError(ctx, 'stars');
 
     await this.client.repositories.giveRepository.giveStars(from.id, to.id, value);
 
-    return this.replySuccess(ctx, value, emojis.star, mentionString);
+    return GiveCommand.replySuccess(ctx, value, emojis.star, mentionString);
   }
 
   async giveDemon(from, to, value, ctx, mentionString) {
-    if (value > from.caçados) return this.replyNotEnoughtError(ctx, 'demons');
+    if (value > from.caçados) return GiveCommand.replyNotEnoughtError(ctx, 'demons');
 
     await this.client.repositories.giveRepository.giveDemons(from.id, to.id, value);
 
-    return this.replySuccess(ctx, value, emojis.demon, mentionString);
+    return GiveCommand.replySuccess(ctx, value, emojis.demon, mentionString);
   }
 
   async giveAngel(from, to, value, ctx, mentionString) {
-    if (value > from.anjos) return this.replyNotEnoughtError(ctx, 'angels');
+    if (value > from.anjos) return GiveCommand.replyNotEnoughtError(ctx, 'angels');
 
     await this.client.repositories.giveRepository.giveAngels(from.id, to.id, value);
 
-    return this.replySuccess(ctx, value, emojis.angel, mentionString);
+    return GiveCommand.replySuccess(ctx, value, emojis.angel, mentionString);
   }
 
   async giveSD(from, to, value, ctx, mentionString) {
-    if (value > from.semideuses) return this.replyNotEnoughtError(ctx, 'semigods');
+    if (value > from.semideuses) return GiveCommand.replyNotEnoughtError(ctx, 'semigods');
 
     await this.client.repositories.giveRepository.giveDemigods(from.id, to.id, value);
 
-    return this.replySuccess(ctx, value, emojis.semigod, mentionString);
+    return GiveCommand.replySuccess(ctx, value, emojis.semigod, mentionString);
   }
 
   async giveGod(from, to, value, ctx, mentionString) {
-    if (value > from.deuses) return this.replyNotEnoughtError(ctx, 'gods');
+    if (value > from.deuses) return GiveCommand.replyNotEnoughtError(ctx, 'gods');
 
     await this.client.repositories.giveRepository.giveGods(from.id, to.id, value);
 
-    return this.replySuccess(ctx, value, emojis.god, mentionString);
+    return GiveCommand.replySuccess(ctx, value, emojis.god, mentionString);
   }
 };
