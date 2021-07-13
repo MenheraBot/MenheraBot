@@ -10,33 +10,35 @@ module.exports = class TopRepository {
   }
 
   async _getTop(userID, topType) {
-    const res = await this.userModal.aggregate([{
-      $sort: {
-        [topType]: -1,
+    const res = await this.userModal.aggregate([
+      {
+        $sort: {
+          [topType]: -1,
+        },
       },
-    },
-    {
-      $group: {
-        _id: false,
-        user: {
-          $push: {
-            _id: '$id',
-            [topType]: `$${topType}`,
+      {
+        $group: {
+          _id: false,
+          user: {
+            $push: {
+              _id: '$id',
+              [topType]: `$${topType}`,
+            },
           },
         },
       },
-    },
-    {
-      $unwind: {
-        path: '$user',
-        includeArrayIndex: 'rank',
+      {
+        $unwind: {
+          path: '$user',
+          includeArrayIndex: 'rank',
+        },
       },
-    },
-    {
-      $match: {
-        'user._id': userID,
+      {
+        $match: {
+          'user._id': userID,
+        },
       },
-    }]);
+    ]);
 
     return res[0];
   }

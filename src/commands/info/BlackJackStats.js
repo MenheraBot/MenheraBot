@@ -14,11 +14,14 @@ module.exports = class BlackJackStatsCommand extends Command {
   }
 
   async run(ctx) {
-    const userDb = await this.client.database.repositories.userRepository.find(ctx.args[0] ? ctx.args[0].replace(/[<@!>]/g, '') : ctx.message.author.id);
+    const userDb = await this.client.database.repositories.userRepository.find(
+      ctx.args[0] ? ctx.args[0].replace(/[<@!>]/g, '') : ctx.message.author.id,
+    );
     if (!userDb) return ctx.replyT('error', 'commands:coinflipstats.error');
     const data = await http.getBlackJackStats(userDb ? userDb.id : ctx.message.author.id);
     if (data.error) return ctx.replyT('error', 'commands:coinflipstats.error');
-    if (!data || !data.playedGames || data.playedGames === undefined) return ctx.replyT('error', 'commands:blackjackstats.no-data');
+    if (!data || !data.playedGames || data.playedGames === undefined)
+      return ctx.replyT('error', 'commands:blackjackstats.no-data');
 
     const totalMoney = data.winMoney - data.lostMoney;
 
@@ -55,7 +58,17 @@ module.exports = class BlackJackStatsCommand extends Command {
           inline: true,
         },
       ]);
-    totalMoney > 0 ? embed.addField(`${this.client.constants.emojis.yes} | ${ctx.locale('commands:coinflipstats.profit')}`, `**${totalMoney}** :star:`, true) : embed.addField(`${this.client.constants.emojis.no} | ${ctx.locale('commands:coinflipstats.loss')}`, `**${totalMoney}** :star:`, true);
+    totalMoney > 0
+      ? embed.addField(
+          `${this.client.constants.emojis.yes} | ${ctx.locale('commands:coinflipstats.profit')}`,
+          `**${totalMoney}** :star:`,
+          true,
+        )
+      : embed.addField(
+          `${this.client.constants.emojis.no} | ${ctx.locale('commands:coinflipstats.loss')}`,
+          `**${totalMoney}** :star:`,
+          true,
+        );
 
     ctx.sendC(ctx.message.author, embed);
   }

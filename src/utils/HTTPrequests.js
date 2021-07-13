@@ -11,7 +11,9 @@ module.exports.getImageUrl = async (type) => {
     json: true,
   };
 
-  const response = await request(options).catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
+  const response = await request(options).catch((err) =>
+    console.log(`[HTTP ERROR] ${err.message}`),
+  );
 
   return response?.url || 'https://i.imgur.com/DHVUlFf.png';
 };
@@ -52,7 +54,8 @@ module.exports.getActivity = async (shard) => {
   };
 
   const result = await request(options).catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
-  if (!result) return { name: `❤️ | Menhera foi criada pela Lux | Shard ${shard}`, type: 'PLAYING' };
+  if (!result)
+    return { name: `❤️ | Menhera foi criada pela Lux | Shard ${shard}`, type: 'PLAYING' };
   return result;
 };
 
@@ -95,9 +98,11 @@ module.exports.getProfileCommands = async (id) => {
 
   let has = false;
 
-  await request(options).then((data) => {
-    has = data;
-  }).catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
+  await request(options)
+    .then((data) => {
+      has = data;
+    })
+    .catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
 
   return has;
 };
@@ -115,9 +120,11 @@ module.exports.getTopCommands = async () => {
 
   let has = false;
 
-  await request(options).then((data) => {
-    has = data;
-  }).catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
+  await request(options)
+    .then((data) => {
+      has = data;
+    })
+    .catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
 
   return has;
 };
@@ -135,9 +142,11 @@ module.exports.getTopUsers = async () => {
 
   let has = false;
 
-  await request(options).then((data) => {
-    has = data;
-  }).catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
+  await request(options)
+    .then((data) => {
+      has = data;
+    })
+    .catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
 
   return has;
 };
@@ -158,9 +167,11 @@ module.exports.getCoinflipUserStats = async (id) => {
 
   let has = false;
 
-  await request(options).then((data) => {
-    has = data;
-  }).catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
+  await request(options)
+    .then((data) => {
+      has = data;
+    })
+    .catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
   return has;
 };
 
@@ -173,7 +184,10 @@ module.exports.postCoinflipGame = async (winnerId, loserId, betValue, date) => {
       token: process.env.API_TOKEN,
     },
     body: {
-      winnerId, loserId, betValue, date,
+      winnerId,
+      loserId,
+      betValue,
+      date,
     },
     json: true,
   };
@@ -190,7 +204,9 @@ module.exports.postBlackJack = async (userId, didWin, betValue) => {
       token: process.env.API_TOKEN,
     },
     body: {
-      userId, didWin, betValue,
+      userId,
+      didWin,
+      betValue,
     },
     json: true,
   };
@@ -214,8 +230,10 @@ module.exports.getBlackJackStats = async (id) => {
 
   let has = false;
 
-  await request(options).then((data) => {
-    has = data;
-  }).catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
+  await request(options)
+    .then((data) => {
+      has = data;
+    })
+    .catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
   return has;
 };

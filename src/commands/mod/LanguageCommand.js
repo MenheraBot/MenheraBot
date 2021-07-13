@@ -19,7 +19,12 @@ module.exports = class LanguageCommand extends Command {
         msg.react('🇺🇸');
       }, 500);
 
-      const collector = msg.createReactionCollector((r, u) => (r.emoji.name === '🇧🇷', '🇺🇸') && (u.id !== this.client.user.id && u.id === ctx.message.author.id));
+      const collector = msg.createReactionCollector(
+        (r, u) =>
+          (r.emoji.name === '🇧🇷', '🇺🇸') &&
+          u.id !== this.client.user.id &&
+          u.id === ctx.message.author.id,
+      );
       collector.on('collect', (r) => {
         switch (r.emoji.name) {
           case '🇧🇷':

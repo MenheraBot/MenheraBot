@@ -18,7 +18,10 @@ module.exports = class SuportCommand extends Command {
       .setURL('https://discord.gg/fZMdQbA')
       .setColor('#970045')
       .setImage('https://i.imgur.com/ZsKuh8W.png')
-      .setFooter(`${ctx.locale('commands:support.embed_footer')} ${ctx.message.author.tag}`, ctx.message.author.displayAvatarURL())
+      .setFooter(
+        `${ctx.locale('commands:support.embed_footer')} ${ctx.message.author.tag}`,
+        ctx.message.author.displayAvatarURL(),
+      )
       .setTimestamp();
     ctx.sendC(ctx.message.author, embed);
   }

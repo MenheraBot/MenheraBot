@@ -16,14 +16,15 @@ module.exports = class AbilityInfoCommand extends Command {
   async run(ctx) {
     if (!ctx.args[0]) return ctx.replyT('question', 'commands:infohabilidade.no-args');
 
-    const validArgs = [{
-      opção: 'classe',
-      arguments: ['classe', 'class', 'c'],
-    },
-    {
-      opção: 'minhas',
-      arguments: ['minhas', 'minha', 'meu', 'meus', 'mine', 'my'],
-    },
+    const validArgs = [
+      {
+        opção: 'classe',
+        arguments: ['classe', 'class', 'c'],
+      },
+      {
+        opção: 'minhas',
+        arguments: ['minhas', 'minha', 'meu', 'meus', 'mine', 'my'],
+      },
     ];
 
     const selectedOption = validArgs.some((so) => so.arguments.includes(ctx.args[0].toLowerCase()));
@@ -44,11 +45,24 @@ module.exports = class AbilityInfoCommand extends Command {
   }
 
   static getClass(ctx) {
-    const classes = ['assassino', 'barbaro', 'clerigo', 'druida', 'espadachim', 'feiticeiro', 'monge', 'necromante'];
+    const classes = [
+      'assassino',
+      'barbaro',
+      'clerigo',
+      'druida',
+      'espadachim',
+      'feiticeiro',
+      'monge',
+      'necromante',
+    ];
 
-    const normalized = ctx.args[1].toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    const normalized = ctx.args[1]
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '');
 
-    if (!classes.includes(normalized)) return ctx.replyT('error', 'commands:infohabilidade.invalid-class');
+    if (!classes.includes(normalized))
+      return ctx.replyT('error', 'commands:infohabilidade.invalid-class');
 
     let filtrado;
 
@@ -86,7 +100,16 @@ module.exports = class AbilityInfoCommand extends Command {
       .setColor('#9cfcde');
 
     filtredOption.forEach((hab) => {
-      embed.addField(hab.name, `📜 | **${ctx.locale('commands:infohabilidade.desc')}:** ${hab.description}\n⚔️ | **${ctx.locale('commands:infohabilidade.dmg')}:** ${hab.damage}\n💉 | **${ctx.locale('commands:infohabilidade.heal')}:** ${hab.heal}\n💧 | **${ctx.locale('commands:infohabilidade.cost')}:** ${hab.cost}\n🧿 | **${ctx.locale('commands:infohabilidade.type')}:** ${hab.type}`);
+      embed.addField(
+        hab.name,
+        `📜 | **${ctx.locale('commands:infohabilidade.desc')}:** ${
+          hab.description
+        }\n⚔️ | **${ctx.locale('commands:infohabilidade.dmg')}:** ${
+          hab.damage
+        }\n💉 | **${ctx.locale('commands:infohabilidade.heal')}:** ${hab.heal}\n💧 | **${ctx.locale(
+          'commands:infohabilidade.cost',
+        )}:** ${hab.cost}\n🧿 | **${ctx.locale('commands:infohabilidade.type')}:** ${hab.type}`,
+      );
     });
 
     return ctx.sendC(ctx.message.author, embed);
@@ -155,7 +178,9 @@ module.exports = class AbilityInfoCommand extends Command {
         break;
     }
 
-    const uniquePowerFiltred = filtrado.uniquePowers.filter((f) => f.name === user.uniquePower.name);
+    const uniquePowerFiltred = filtrado.uniquePowers.filter(
+      (f) => f.name === user.uniquePower.name,
+    );
     const abilitiesFiltred = [];
 
     user.abilities.forEach((hab) => {
@@ -167,10 +192,28 @@ module.exports = class AbilityInfoCommand extends Command {
       .setTitle(`🔮 | ${ctx.locale('commands:infohabilidade.your-abilities')}`)
       .setColor('#a9ec67');
 
-    embed.addField(` ${ctx.locale('commands:infohabilidade.uniquePower')}: ${uniquePowerFiltred[0].name}`, `📜 | **${ctx.locale('commands:infohabilidade.desc')}:** ${uniquePowerFiltred[0].description}\n⚔️ | **${ctx.locale('commands:infohabilidade.dmg')}:** ${uniquePowerFiltred[0].damage}\n💉 | **${ctx.locale('commands:infohabilidade.heal')}:** ${uniquePowerFiltred[0].heal}\n💧 | **${ctx.locale('commands:infohabilidade.cost')}:** ${uniquePowerFiltred[0].cost}`);
+    embed.addField(
+      ` ${ctx.locale('commands:infohabilidade.uniquePower')}: ${uniquePowerFiltred[0].name}`,
+      `📜 | **${ctx.locale('commands:infohabilidade.desc')}:** ${
+        uniquePowerFiltred[0].description
+      }\n⚔️ | **${ctx.locale('commands:infohabilidade.dmg')}:** ${
+        uniquePowerFiltred[0].damage
+      }\n💉 | **${ctx.locale('commands:infohabilidade.heal')}:** ${
+        uniquePowerFiltred[0].heal
+      }\n💧 | **${ctx.locale('commands:infohabilidade.cost')}:** ${uniquePowerFiltred[0].cost}`,
+    );
 
     abilitiesFiltred.forEach((hab) => {
-      embed.addField(`🔮 | ${ctx.locale('commands:infohabilidade.ability')}: ${hab.name}`, `📜 | **${ctx.locale('commands:infohabilidade.desc')}:** ${hab.description}\n⚔️ | **${ctx.locale('commands:infohabilidade.dmg')}:** ${hab.damage}\n💉 | **${ctx.locale('commands:infohabilidade.heal')}:** ${hab.heal}\n💧 | **${ctx.locale('commands:infohabilidade.cost')}:** ${hab.cost}`);
+      embed.addField(
+        `🔮 | ${ctx.locale('commands:infohabilidade.ability')}: ${hab.name}`,
+        `📜 | **${ctx.locale('commands:infohabilidade.desc')}:** ${
+          hab.description
+        }\n⚔️ | **${ctx.locale('commands:infohabilidade.dmg')}:** ${
+          hab.damage
+        }\n💉 | **${ctx.locale('commands:infohabilidade.heal')}:** ${hab.heal}\n💧 | **${ctx.locale(
+          'commands:infohabilidade.cost',
+        )}:** ${hab.cost}`,
+      );
     });
     return ctx.sendC(ctx.message.author, embed);
   }

@@ -24,7 +24,9 @@ module.exports = class CryCommand extends Command {
       const embed = new MessageEmbed()
         .setTitle(ctx.locale('commands:cry.no-mention.embed_title'))
         .setColor('#000000')
-        .setDescription(`${ctx.message.author} ${ctx.locale('commands:cry.no-mention.embed_description')}`)
+        .setDescription(
+          `${ctx.message.author} ${ctx.locale('commands:cry.no-mention.embed_description')}`,
+        )
         .setThumbnail(avatar)
         .setImage(rand)
         .setAuthor(ctx.message.author.tag, avatar);
@@ -36,7 +38,11 @@ module.exports = class CryCommand extends Command {
     const embed = new MessageEmbed()
       .setTitle(ctx.locale('commands:cry.embed_title'))
       .setColor('#000000')
-      .setDescription(`${user} ${ctx.locale('commands:cry.embed_description_start')} ${ctx.message.author} ${ctx.locale('commands:cry.embed_description_end')}`)
+      .setDescription(
+        `${user} ${ctx.locale('commands:cry.embed_description_start')} ${
+          ctx.message.author
+        } ${ctx.locale('commands:cry.embed_description_end')}`,
+      )
       .setImage(rand)
       .setThumbnail(avatar)
       .setAuthor(ctx.message.author.tag, avatar);

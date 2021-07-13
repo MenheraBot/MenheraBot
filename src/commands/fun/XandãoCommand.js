@@ -69,14 +69,16 @@ module.exports = class XandãoCommand extends Command {
           avatarURL: 'https://i.imgur.com/8KNCucR.png',
         });
       } else {
-        await ctx.message.channel.createWebhook('Super Xandão', {
-          avatar: 'https://i.imgur.com/8KNCucR.png',
-        }).then((web) => {
-          web.send(fala, {
-            username: 'Super Xandão',
-            avatarURL: 'https://i.imgur.com/8KNCucR.png',
+        await ctx.message.channel
+          .createWebhook('Super Xandão', {
+            avatar: 'https://i.imgur.com/8KNCucR.png',
+          })
+          .then((web) => {
+            web.send(fala, {
+              username: 'Super Xandão',
+              avatarURL: 'https://i.imgur.com/8KNCucR.png',
+            });
           });
-        });
       }
     } catch (err) {
       ctx.replyT('error', 'commands:xandão.err_message');

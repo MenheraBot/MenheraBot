@@ -23,7 +23,9 @@ module.exports = class SniffCommand extends Command {
       const embed = new MessageEmbed()
         .setTitle(ctx.locale('commands:sniff.no-mention.embed_title'))
         .setColor('#000000')
-        .setDescription(`${ctx.message.author} ${ctx.locale('commands:sniff.no-mention.embed_description')}`)
+        .setDescription(
+          `${ctx.message.author} ${ctx.locale('commands:sniff.no-mention.embed_description')}`,
+        )
         .setThumbnail(avatar)
         .setImage(rand)
         .setAuthor(ctx.message.author.tag, avatar);
@@ -34,7 +36,9 @@ module.exports = class SniffCommand extends Command {
     const embed = new MessageEmbed()
       .setTitle('Sniff Sniff')
       .setColor('#000000')
-      .setDescription(`${ctx.message.author} ${ctx.locale('commands:sniff.embed_description')} ${user}`)
+      .setDescription(
+        `${ctx.message.author} ${ctx.locale('commands:sniff.embed_description')} ${user}`,
+      )
       .setImage(rand)
       .setThumbnail(avatar)
       .setAuthor(ctx.message.author.tag, avatar);

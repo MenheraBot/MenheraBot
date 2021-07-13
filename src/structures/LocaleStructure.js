@@ -31,7 +31,8 @@ class LocaleStructure {
   }
 
   reload() {
-    return i18next.reloadResources(this.languages, this.ns)
+    return i18next
+      .reloadResources(this.languages, this.ns)
       .then(() => true)
       .catch(() => false);
   }
