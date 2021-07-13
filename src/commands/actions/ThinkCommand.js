@@ -23,7 +23,9 @@ module.exports = class ThinksCOmmand extends Command {
       const embed = new MessageEmbed()
         .setTitle(ctx.locale('commands:think.no-mention.embed_title'))
         .setColor('#000000')
-        .setDescription(`${ctx.message.author} ${ctx.locale('commands:think.no-mention.embed_description')}`)
+        .setDescription(
+          `${ctx.message.author} ${ctx.locale('commands:think.no-mention.embed_description')}`,
+        )
         .setThumbnail(avatar)
         .setImage(rand)
         .setAuthor(ctx.message.author.tag, avatar);
@@ -34,7 +36,9 @@ module.exports = class ThinksCOmmand extends Command {
     const embed = new MessageEmbed()
       .setTitle(ctx.locale('commands:think.embed_title'))
       .setColor('#000000')
-      .setDescription(`${ctx.message.author} ${ctx.locale('commands:think.embed_description')} ${user} hehehehe`)
+      .setDescription(
+        `${ctx.message.author} ${ctx.locale('commands:think.embed_description')} ${user} hehehehe`,
+      )
       .setImage(rand)
       .setThumbnail(avatar)
       .setAuthor(ctx.message.author.tag, avatar);

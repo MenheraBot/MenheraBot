@@ -31,7 +31,9 @@ module.exports = class KissCommand extends Command {
     const embed = new MessageEmbed()
       .setTitle(ctx.locale('commands:kiss.embed_title'))
       .setColor('#000000')
-      .setDescription(`${ctx.message.author} ${ctx.locale('commands:kiss.embed_description')} ${user}`)
+      .setDescription(
+        `${ctx.message.author} ${ctx.locale('commands:kiss.embed_description')} ${user}`,
+      )
       .setImage(rand)
       .setThumbnail(avatar)
       .setAuthor(ctx.message.author.tag, avatar);

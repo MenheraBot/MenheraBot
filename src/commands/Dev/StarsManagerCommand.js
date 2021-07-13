@@ -14,7 +14,8 @@ module.exports = class StarManagerCommand extends Command {
   async run(ctx) {
     const [id, option, value] = ctx.args;
 
-    if (!value) return ctx.reply('error', 'Use `m!managestar <userId> <add | remove | set> <valor>`');
+    if (!value)
+      return ctx.reply('error', 'Use `m!managestar <userId> <add | remove | set> <valor>`');
 
     switch (option.toLowerCase()) {
       case 'add':

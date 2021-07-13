@@ -38,7 +38,10 @@ module.exports = class MongoDatabase {
     this.guildRepository = new GuildRepository(this.Guilds);
     this.statusRepository = new StatusRepository(this.Status);
     this.badgeRepository = new BadgeRepository(this.userRepository);
-    this.maintenanceRepository = new MaintenanceRepository(this.cmdRepository, this.statusRepository);
+    this.maintenanceRepository = new MaintenanceRepository(
+      this.cmdRepository,
+      this.statusRepository,
+    );
     this.huntRepository = new HuntRepository(this.Users);
     this.relationshipRepository = new RelationshipRepository(this.userRepository);
     this.blacklistRepository = new BlacklistRepository(this.userRepository);
@@ -68,18 +71,24 @@ module.exports = class MongoDatabase {
 
   createConnection() {
     return new Promise((resolve, reject) => {
-      mongoose.connect(this.uri, {
-        useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true,
-      }, (err) => {
-        if (err) {
-          console.error(`(x) Error to connecting to database \n${err}`);
+      mongoose.connect(
+        this.uri,
+        {
+          useNewUrlParser: true,
+          useUnifiedTopology: true,
+          useCreateIndex: true,
+        },
+        (err) => {
+          if (err) {
+            console.error(`(x) Error to connecting to database \n${err}`);
 
-          return reject(err);
-        }
+            return reject(err);
+          }
 
-        console.log('[DATABASE] Conectado com sucesso à database');
-        return resolve();
-      });
+          console.log('[DATABASE] Conectado com sucesso à database');
+          return resolve();
+        },
+      );
     });
   }
 };

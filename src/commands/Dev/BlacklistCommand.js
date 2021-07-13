@@ -42,7 +42,10 @@ module.exports = class BlackilistCommand extends Command {
         break;
       }
       default:
-        ctx.reply('error', 'porra lux, n sabe nem usar o próprio bot? Opções: `add`, `remove`, `find`');
+        ctx.reply(
+          'error',
+          'porra lux, n sabe nem usar o próprio bot? Opções: `add`, `remove`, `find`',
+        );
     }
   }
 };

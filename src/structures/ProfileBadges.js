@@ -19,7 +19,8 @@ const Badges = {
     availabeStartAt: '24/12/2020',
     availabeStoptAt: '26/12/2020',
     rarityLevel: 5,
-    description: 'Esta badge foi possível ganhar ao participar do evento de natal de 2020 no servidor de suporte da Menhera',
+    description:
+      'Esta badge foi possível ganhar ao participar do evento de natal de 2020 no servidor de suporte da Menhera',
     link: 'https://media.discordapp.net/attachments/793669360857907200/793681506215395338/badge1.png',
   },
   2: {

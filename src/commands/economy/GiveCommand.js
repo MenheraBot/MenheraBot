@@ -1,26 +1,36 @@
 const Command = require('../../structures/command');
 const { emojis } = require('../../structures/MenheraConstants');
 
-const validArgs = [{
-  opção: 'estrelinhas',
-  arguments: ['estrelinhas', 'stars', 'star', 'estrelas'],
-},
-{
-  opção: 'demônio',
-  arguments: ['demonios', 'demônios', 'demons', 'demonio', 'demônio'],
-},
-{
-  opção: 'anjos',
-  arguments: ['anjos', 'anjo', 'angels'],
-},
-{
-  opção: 'semideuses',
-  arguments: ['semideuses', 'semideus', 'semi-deuses', 'sd', 'semi-deus', 'demigods', 'dg', 'demigod'],
-},
-{
-  opção: 'deus',
-  arguments: ['deus', 'deuses', 'gods', 'god'],
-},
+const validArgs = [
+  {
+    opção: 'estrelinhas',
+    arguments: ['estrelinhas', 'stars', 'star', 'estrelas'],
+  },
+  {
+    opção: 'demônio',
+    arguments: ['demonios', 'demônios', 'demons', 'demonio', 'demônio'],
+  },
+  {
+    opção: 'anjos',
+    arguments: ['anjos', 'anjo', 'angels'],
+  },
+  {
+    opção: 'semideuses',
+    arguments: [
+      'semideuses',
+      'semideus',
+      'semi-deuses',
+      'sd',
+      'semi-deus',
+      'demigods',
+      'dg',
+      'demigod',
+    ],
+  },
+  {
+    opção: 'deus',
+    arguments: ['deus', 'deuses', 'gods', 'god'],
+  },
 ];
 
 module.exports = class GiveCommand extends Command {
@@ -34,7 +44,9 @@ module.exports = class GiveCommand extends Command {
   }
 
   async run(ctx) {
-    const selectedOption = ctx.args[0] && validArgs.find((option) => option.arguments.includes(ctx.args[0].toLowerCase()));
+    const selectedOption =
+      ctx.args[0] &&
+      validArgs.find((option) => option.arguments.includes(ctx.args[0].toLowerCase()));
     if (!selectedOption) return this.replyInvalidArgsError(ctx);
 
     const to = ctx.message.mentions.users.first();
@@ -93,11 +105,17 @@ module.exports = class GiveCommand extends Command {
   }
 
   static replyNotEnoughtError(ctx, localeField) {
-    return ctx.reply('error', `${ctx.locale('commands:give.poor')} ${ctx.locale(`commands:give.${localeField}`)}`);
+    return ctx.reply(
+      'error',
+      `${ctx.locale('commands:give.poor')} ${ctx.locale(`commands:give.${localeField}`)}`,
+    );
   }
 
   static replySuccess(ctx, value, emoji, mentionString) {
-    return ctx.reply('success', `${ctx.locale('commands:give.transfered', { value, emoji })} ${mentionString}`);
+    return ctx.reply(
+      'success',
+      `${ctx.locale('commands:give.transfered', { value, emoji })} ${mentionString}`,
+    );
   }
 
   async giveStar(from, to, value, ctx, mentionString) {

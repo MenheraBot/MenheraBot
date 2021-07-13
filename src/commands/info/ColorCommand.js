@@ -28,7 +28,9 @@ module.exports = class ColorCommand extends Command {
     const embed = new MessageEmbed()
       .setTitle(`🏳️‍🌈 | ${ctx.locale('commands:color.embed_title')}`)
       .setColor('#aee285')
-      .setDescription(ctx.locale('commands:color.embed_description', { prefix: ctx.data.server.prefix }));
+      .setDescription(
+        ctx.locale('commands:color.embed_description', { prefix: ctx.data.server.prefix }),
+      );
 
     const validArgs = [];
 
@@ -39,7 +41,9 @@ module.exports = class ColorCommand extends Command {
     if (!ctx.args[0]) return ctx.sendC(ctx.message.author, embed);
 
     if (validArgs.includes(ctx.args[0])) {
-      const findColor = authorData.cores.filter((cor) => cor.nome.startsWith(ctx.args[0]) || cor.nome.startsWith(`**${ctx.args[0]}`));
+      const findColor = authorData.cores.filter(
+        (cor) => cor.nome.startsWith(ctx.args[0]) || cor.nome.startsWith(`**${ctx.args[0]}`),
+      );
 
       const dataChoose = {
         title: ctx.locale('commands:color.dataChoose.title'),

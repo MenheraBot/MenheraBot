@@ -60,7 +60,10 @@ const userSchema = mongoose.Schema({
   mamadas: { type: Number, default: 0 },
   mamou: { type: Number, default: 0 },
   casado: { type: String, default: 'false' },
-  nota: { type: String, default: 'Eu amo a Menhera >.<\nVocê pode alterar esta mensagem com m!sobremim' },
+  nota: {
+    type: String,
+    default: 'Eu amo a Menhera >.<\nVocê pode alterar esta mensagem com m!sobremim',
+  },
   data: { type: String, default: undefined },
   shipValue: { type: String, default: null },
   ban: { type: Boolean, default: false },

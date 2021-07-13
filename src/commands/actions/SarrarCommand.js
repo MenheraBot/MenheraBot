@@ -20,7 +20,11 @@ module.exports = class SarrarCommand extends Command {
       const embed = new MessageEmbed()
         .setTitle(ctx.locale('commands:sarrar.no-mention.embed_title'))
         .setColor('#000000')
-        .setDescription(`${ctx.locale('commands:sarrar.no-mention.embed_description_start')} ${ctx.message.author}?\n${ctx.locale('commands:sarrar.no-mention.embed_description_end')}`)
+        .setDescription(
+          `${ctx.locale('commands:sarrar.no-mention.embed_description_start')} ${
+            ctx.message.author
+          }?\n${ctx.locale('commands:sarrar.no-mention.embed_description_end')}`,
+        )
         .setImage(randSozinho)
         .setThumbnail(ctx.message.author.displayAvatarURL())
         .setFooter(ctx.locale('commands:sarrar.no-mention.embed_footer'))
@@ -28,7 +32,10 @@ module.exports = class SarrarCommand extends Command {
 
       await ctx.send(embed).then(async (msg) => {
         await msg.react(this.client.constants.emojis.yes).catch();
-        const filter = (reaction, usuario) => reaction.emoji.name === this.client.constants.emojis.yes && usuario.id !== ctx.message.author.id && !usuario.bot;
+        const filter = (reaction, usuario) =>
+          reaction.emoji.name === this.client.constants.emojis.yes &&
+          usuario.id !== ctx.message.author.id &&
+          !usuario.bot;
 
         const coletor = msg.createReactionCollector(filter, { max: 1, time: 30000 });
 
@@ -37,7 +44,8 @@ module.exports = class SarrarCommand extends Command {
           msg.delete();
         });
       });
-    } SarrarCommand.sarrada(ctx, ctx.message.mentions.users.first());
+    }
+    SarrarCommand.sarrada(ctx, ctx.message.mentions.users.first());
   }
 
   static async sarrada(ctx, reactUser) {
@@ -49,7 +57,9 @@ module.exports = class SarrarCommand extends Command {
 
       .setTitle(ctx.locale('commands:sarrar.embed_title'))
       .setColor('#000000')
-      .setDescription(`${ctx.message.author} ${ctx.locale('commands:sarrar.embed_description')} ${reactUser}`)
+      .setDescription(
+        `${ctx.message.author} ${ctx.locale('commands:sarrar.embed_description')} ${reactUser}`,
+      )
       .setImage(rand)
       .setThumbnail(avatar)
       .setAuthor(ctx.message.author.tag, avatar);

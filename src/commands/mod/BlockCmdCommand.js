@@ -14,13 +14,16 @@ module.exports = class BlockCmdCommand extends Command {
   async run(ctx) {
     if (!ctx.args[0]) return ctx.replyT('error', 'commands:blockcommand.no-args');
 
-    const cmd = this.client.commands.get(ctx.args[0]) || this.client.commands.get(this.client.aliases.get(ctx.args[0]));
+    const cmd =
+      this.client.commands.get(ctx.args[0]) ||
+      this.client.commands.get(this.client.aliases.get(ctx.args[0]));
 
     if (!cmd) return ctx.replyT('error', 'commands:blockcommand.no-cmd');
 
     if (cmd.config.devsOnly) return ctx.replyT('error', 'commands:blockcommand.dev-cmd');
 
-    if (cmd.config.name === this.config.name) return ctx.replyT('error', 'commands:blockcommand.foda');
+    if (cmd.config.name === this.config.name)
+      return ctx.replyT('error', 'commands:blockcommand.foda');
 
     if (ctx.data.server.disabledCommands?.includes(cmd.config.name)) {
       const index = ctx.data.server.disabledCommands.indexOf(cmd.config.name);
