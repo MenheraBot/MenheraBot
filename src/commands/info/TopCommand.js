@@ -198,7 +198,8 @@ module.exports = class TopCommand extends Command {
     const embed = new MessageEmbed()
 
       .setTitle(
-        `<:DEMON:758765044443381780> |  ${ctx.locale('commands:top.demonTitle')} ${pagina > 1 ? pagina : 1
+        `<:DEMON:758765044443381780> |  ${ctx.locale('commands:top.demonTitle')} ${
+          pagina > 1 ? pagina : 1
         }º`,
       )
       .setColor('#ec8227');
@@ -239,7 +240,8 @@ module.exports = class TopCommand extends Command {
     const embed = new MessageEmbed()
 
       .setTitle(
-        `<:ANGEL:758765044204437535> | ${ctx.locale('commands:top.angelTitle')} ${pagina > 1 ? pagina : 1
+        `<:ANGEL:758765044204437535> | ${ctx.locale('commands:top.angelTitle')} ${
+          pagina > 1 ? pagina : 1
         }º`,
       )
       .setColor('#bdecee');
@@ -280,7 +282,8 @@ module.exports = class TopCommand extends Command {
     const embed = new MessageEmbed()
 
       .setTitle(
-        `<:SEMIGOD:758766732235374674> | ${ctx.locale('commands:top.sdTitle')} ${pagina > 1 ? pagina : 1
+        `<:SEMIGOD:758766732235374674> | ${ctx.locale('commands:top.sdTitle')} ${
+          pagina > 1 ? pagina : 1
         }º`,
       )
       .setColor('#eab3fa');
@@ -321,7 +324,8 @@ module.exports = class TopCommand extends Command {
     const embed = new MessageEmbed()
 
       .setTitle(
-        `<:God:758474639570894899> | ${ctx.locale('commands:top.godTitle')} ${pagina > 1 ? pagina : 1
+        `<:God:758474639570894899> | ${ctx.locale('commands:top.godTitle')} ${
+          pagina > 1 ? pagina : 1
         }º`,
       )
       .setColor('#a67cec');
@@ -399,7 +403,8 @@ module.exports = class TopCommand extends Command {
     const embed = new MessageEmbed()
 
       .setTitle(
-        `<:ok:727975974125436959> | ${ctx.locale('commands:top.voteTitle')} ${pagina > 1 ? pagina : 1
+        `<:ok:727975974125436959> | ${ctx.locale('commands:top.voteTitle')} ${
+          pagina > 1 ? pagina : 1
         } º`,
       )
       .setColor('#ff29ae');
@@ -433,58 +438,60 @@ module.exports = class TopCommand extends Command {
 
     const res = classToSearch
       ? await this.client.database.Rpg.find({ class: classToSearch }, ['level', '_id', 'xp'], {
-        skip,
-        limit: 10,
-        sort: { level: -1, xp: -1 },
-      })
+          skip,
+          limit: 10,
+          sort: { level: -1, xp: -1 },
+        })
       : await this.client.database.Rpg.find({}, ['level', '_id', 'xp', 'class'], {
-        skip,
-        limit: 10,
-        sort: { level: -1, xp: -1 },
-      });
+          skip,
+          limit: 10,
+          sort: { level: -1, xp: -1 },
+        });
 
     const embed = new MessageEmbed().setColor('#a1f5ee');
 
     classToSearch
       ? embed.setTitle(
-        `<:Chest:760957557538947133> | Top ${ctx.locale(`roleplay:classes.${classToSearch}`)} ${skip > 0 ? skip / 10 + 1 : 1
-        } º`,
-      )
+          `<:Chest:760957557538947133> | Top ${ctx.locale(`roleplay:classes.${classToSearch}`)} ${
+            skip > 0 ? skip / 10 + 1 : 1
+          } º`,
+        )
       : embed.setTitle(
-        `<:Chest:760957557538947133> | ${ctx.locale('commands:top.rpgTitle')} ${skip > 0 ? skip / 10 + 1 : 1
-        } º`,
-      );
+          `<:Chest:760957557538947133> | ${ctx.locale('commands:top.rpgTitle')} ${
+            skip > 0 ? skip / 10 + 1 : 1
+          } º`,
+        );
 
     for (let i = 0; i < res.length; i++) {
       const member = await this.client.users.fetch(res[i].id).catch(() => null);
       if (!member) {
         classToSearch
           ? embed.addField(
-            `** ${skip + 1 + i} -** \`USER NOT FOUND\``,
-            `Level: **${res[i].level}**\nXp: **${res[i].xp}**`,
-            false,
-          )
+              `** ${skip + 1 + i} -** \`USER NOT FOUND\``,
+              `Level: **${res[i].level}**\nXp: **${res[i].xp}**`,
+              false,
+            )
           : embed.addField(
-            `** ${skip + 1 + i} -** \`USER NOT FOUND\`  | ${ctx.locale(
-              `roleplay:classes.${res[i].class}`,
-            )}`,
-            `Level: **${res[i].level}**\nXp: **${res[i].xp}**`,
-            false,
-          );
+              `** ${skip + 1 + i} -** \`USER NOT FOUND\`  | ${ctx.locale(
+                `roleplay:classes.${res[i].class}`,
+              )}`,
+              `Level: **${res[i].level}**\nXp: **${res[i].xp}**`,
+              false,
+            );
       } else {
         classToSearch
           ? embed.addField(
-            `**${skip + 1 + i} -** ${member.username}`,
-            `Level: **${res[i].level}**\nXp: **${res[i].xp}**`,
-            false,
-          )
+              `**${skip + 1 + i} -** ${member.username}`,
+              `Level: **${res[i].level}**\nXp: **${res[i].xp}**`,
+              false,
+            )
           : embed.addField(
-            `**${skip + 1 + i} -** ${member.username} | ${ctx.locale(
-              `roleplay:classes.${res[i].class}`,
-            )}`,
-            `Level: **${res[i].level}**\nXp: **${res[i].xp}**`,
-            false,
-          );
+              `**${skip + 1 + i} -** ${member.username} | ${ctx.locale(
+                `roleplay:classes.${res[i].class}`,
+              )}`,
+              `Level: **${res[i].level}**\nXp: **${res[i].xp}**`,
+              false,
+            );
       }
     }
     ctx.sendC(ctx.message.author, embed);

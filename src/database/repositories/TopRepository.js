@@ -52,6 +52,6 @@ module.exports = class TopRepository {
   }
 
   async getUserHuntRank(userID, huntType) {
-    return this._getTop(userID, huntType)
+    return this._getTop(userID, huntType);
   }
 };
