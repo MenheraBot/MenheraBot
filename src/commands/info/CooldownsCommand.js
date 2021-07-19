@@ -28,65 +28,66 @@ module.exports = class CooldownsCommand extends Command {
 
     huntCooldownInMilis < 0
       ? (txt += `\`${ctx.locale('commands:cooldowns.hunt')}\` | ${ctx.locale(
-          'commands:cooldowns.no-cooldown',
-        )}\n`)
+        'commands:cooldowns.no-cooldown',
+      )}\n`)
       : (txt += `\`${ctx.locale('commands:cooldowns.hunt')}\` | **${moment
-          .utc(huntCooldownInMilis)
-          .format('mm:ss')}** ${ctx.locale('commands:cooldowns.minutes')}\n`);
+        .utc(huntCooldownInMilis)
+        .format('mm:ss')}** ${ctx.locale('commands:cooldowns.minutes')}\n`);
     if (userRpg) {
       if (deathTimeInMilis > 0)
-        txt += `\`${ctx.locale('commands:cooldowns.death')}\` | ${
-          deathTimeInMilis > 3600000
-            ? `**${moment.utc(deathTimeInMilis).format('HH:mm:ss')}** ${ctx.locale(
-                'commands:cooldowns.hours',
-              )}`
-            : `**${moment.utc(deathTimeInMilis).format('mm:ss')}** ${ctx.locale(
-                'commands:cooldowns.minutes',
-              )}`
-        }\n`;
+        txt += `\`${ctx.locale('commands:cooldowns.death')}\` | ${deathTimeInMilis > 3600000
+          ? `**${moment.utc(deathTimeInMilis).format('HH:mm:ss')}** ${ctx.locale(
+            'commands:cooldowns.hours',
+          )}`
+          : `**${moment.utc(deathTimeInMilis).format('mm:ss')}** ${ctx.locale(
+            'commands:cooldowns.minutes',
+          )}`
+          }\n`;
       if (hotelTimeInMilis > 0)
-        txt += `\`${ctx.locale('commands:cooldowns.hotel')}\` | ${
-          hotelTimeInMilis > 3600000
-            ? `**${moment.utc(hotelTimeInMilis).format('HH:mm:ss')}** ${ctx.locale(
-                'commands:cooldowns.hours',
-              )}`
-            : `**${moment.utc(hotelTimeInMilis).format('mm:ss')}** ${ctx.locale(
-                'commands:cooldowns.minutes',
-              )}`
-        }\n`;
-      dungeonCooldownInMilis < 0
-        ? (txt += `\`${ctx.locale('commands:cooldowns.dungeon')}\` | ${ctx.locale(
+        txt += `\`${ctx.locale('commands:cooldowns.hotel')}\` | ${hotelTimeInMilis > 3600000
+          ? `**${moment.utc(hotelTimeInMilis).format('HH:mm:ss')}** ${ctx.locale(
+            'commands:cooldowns.hours',
+          )}`
+          : `**${moment.utc(hotelTimeInMilis).format('mm:ss')}** ${ctx.locale(
+            'commands:cooldowns.minutes',
+          )}`
+          }\n`;
+
+      if (deathTimeInMilis <= 0 && hotelTimeInMilis <= 0) {
+        dungeonCooldownInMilis < 0
+          ? (txt += `\`${ctx.locale('commands:cooldowns.dungeon')}\` | ${ctx.locale(
             'commands:cooldowns.no-cooldown',
           )}\n`)
-        : (txt += `\`${ctx.locale('commands:cooldowns.dungeon')}\` | **${moment
+          : (txt += `\`${ctx.locale('commands:cooldowns.dungeon')}\` | **${moment
             .utc(dungeonCooldownInMilis)
             .format('mm:ss')}** ${ctx.locale('commands:cooldowns.minutes')}\n`);
+      }
+
+
       jobCooldownInMilis < 0
         ? (txt += `\`${ctx.locale('commands:cooldowns.job')}\` | ${ctx.locale(
-            'commands:cooldowns.no-cooldown',
-          )}\n`)
-        : (txt += `\`${ctx.locale('commands:cooldowns.job')}\` | ${
-            jobCooldownInMilis > 3600000
-              ? `**${moment.utc(jobCooldownInMilis).format('HH:mm:ss')}** ${ctx.locale(
-                  'commands:cooldowns.hours',
-                )}`
-              : `**${moment.utc(jobCooldownInMilis).format('mm:ss')}** ${ctx.locale(
-                  'commands:cooldowns.minutes',
-                )}`
+          'commands:cooldowns.no-cooldown',
+        )}\n`)
+        : (txt += `\`${ctx.locale('commands:cooldowns.job')}\` | ${jobCooldownInMilis > 3600000
+          ? `**${moment.utc(jobCooldownInMilis).format('HH:mm:ss')}** ${ctx.locale(
+            'commands:cooldowns.hours',
+          )}`
+          : `**${moment.utc(jobCooldownInMilis).format('mm:ss')}** ${ctx.locale(
+            'commands:cooldowns.minutes',
+          )}`
           }\n`);
     }
     voteCooldownInMilis && voteCooldownInMilis < 0
       ? (txt += `\`${ctx.locale('commands:cooldowns.vote')}\` | ${ctx.locale(
-          'commands:cooldowns.no-cooldown',
-        )}`)
-      : (txt += `\`${ctx.locale('commands:cooldowns.vote')}\` | ${
-          voteCooldownInMilis > 3600000
-            ? `**${moment.utc(voteCooldownInMilis).format('HH:mm:ss')}** ${ctx.locale(
-                'commands:cooldowns.hours',
-              )}`
-            : `**${moment.utc(voteCooldownInMilis).format('mm:ss')}** ${ctx.locale(
-                'commands:cooldowns.minutes',
-              )}`
+        'commands:cooldowns.no-cooldown',
+      )}`)
+      : (txt += `\`${ctx.locale('commands:cooldowns.vote')}\` | ${voteCooldownInMilis > 3600000
+        ? `**${moment.utc(voteCooldownInMilis).format('HH:mm:ss')}** ${ctx.locale(
+          'commands:cooldowns.hours',
+        )}`
+        : `**${moment.utc(voteCooldownInMilis).format('mm:ss')}** ${ctx.locale(
+          'commands:cooldowns.minutes',
+        )}`
         }`);
 
     const embed = new MessageEmbed()
