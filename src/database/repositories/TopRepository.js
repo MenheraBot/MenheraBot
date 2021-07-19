@@ -50,4 +50,8 @@ module.exports = class TopRepository {
   async getUserStarsRank(userID) {
     return this._getTop(userID, TOP_TYPES.stars);
   }
+
+  async getUserHuntRank(userID, huntType) {
+    return this._getTop(userID, huntType)
+  }
 };

@@ -114,9 +114,17 @@ module.exports = class HuntCommand extends Command {
       return value;
     };
 
+    const huntEnum = {
+      DEMON: 'caçados',
+      ANGEL: 'anjos',
+      DEMIGOD: 'semideuses',
+      GOD: 'deuses',
+    }
+
     switch (option) {
       case 'demônio': {
         const demons = await areYouTheHuntOrTheHunter(probabilidadeDemonio, huntDemon);
+        const { rank } = await this.client.repositories.topRepository.getUserHuntRank(ctx.message.author.id, huntEnum.DEMON)
         embed
           .setTitle(ctx.locale('commands:hunt.demons'))
           .setColor(COLORS.HuntDemon)
@@ -124,12 +132,14 @@ module.exports = class HuntCommand extends Command {
             ctx.locale('commands:hunt.description_start', {
               value: demons,
               hunt: ctx.locale('commands:hunt.demons'),
+              rank: rank + 1,
             }),
           );
         break;
       }
       case 'anjos': {
         const angels = await areYouTheHuntOrTheHunter(probabilidadeAnjo, huntAngel);
+        const { rank } = await this.client.repositories.topRepository.getUserHuntRank(ctx.message.author.id, huntEnum.ANGEL)
         embed
           .setTitle(ctx.locale('commands:hunt.angels'))
           .setColor(COLORS.HuntAngel)
@@ -137,12 +147,14 @@ module.exports = class HuntCommand extends Command {
             ctx.locale('commands:hunt.description_start', {
               value: angels,
               hunt: ctx.locale('commands:hunt.angels'),
+              rank: rank + 1,
             }),
           );
         break;
       }
       case 'semideuses': {
         const demigods = await areYouTheHuntOrTheHunter(probabilidadeSD, huntDemigod);
+        const { rank } = await this.client.repositories.topRepository.getUserHuntRank(ctx.message.author.id, huntEnum.DEMIGOD)
         embed
           .setTitle(ctx.locale('commands:hunt.sd'))
           .setColor(COLORS.HuntSD)
@@ -150,22 +162,25 @@ module.exports = class HuntCommand extends Command {
             ctx.locale('commands:hunt.description_start', {
               value: demigods,
               hunt: ctx.locale('commands:hunt.sd'),
+              rank: rank + 1,
             }),
           );
         break;
       }
       case 'deus': {
         const gods = await areYouTheHuntOrTheHunter(probabilidadeDeuses, huntGod);
+        const { rank } = await this.client.repositories.topRepository.getUserHuntRank(ctx.message.author.id, huntEnum.GOD)
         embed
           .setColor(COLORS.HuntGod)
           .setTitle(ctx.locale('commands:hunt.gods'))
           .setDescription(
             gods > 0
               ? ctx.locale('commands:hunt.god_hunted_success', {
-                  value: gods,
-                  hunt: ctx.locale('commands:hunt.gods'),
-                })
-              : ctx.locale('commands:hunt.god_hunted_fail'),
+                value: gods,
+                hunt: ctx.locale('commands:hunt.gods'),
+                rank: rank + 1,
+              })
+              : ctx.locale('commands:hunt.god_hunted_fail', { rank: rank + 1, }),
           );
         if (gods > 0)
           embed.setColor(COLORS.HuntGod).setThumbnail('https://i.imgur.com/053khaH.gif');
