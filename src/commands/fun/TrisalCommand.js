@@ -14,7 +14,8 @@ module.exports = class TrisalCommand extends Command {
 
   async run(ctx) {
     const authorData = ctx.data.user;
-    if (authorData.trisal?.length === 0 && !ctx.args[1]) return ctx.replyT('error', 'commands:trisal.no-args');
+    if (authorData.trisal?.length === 0 && !ctx.args[1])
+      return ctx.replyT('error', 'commands:trisal.no-args');
 
     if (authorData.trisal?.length > 0) {
       const marryTwo = await this.client.users.fetch(authorData.trisal[0]);
@@ -22,9 +23,17 @@ module.exports = class TrisalCommand extends Command {
 
       if (!marryTwo || !marryThree) return ctx.replyT('error', 'commands:trisal.marry-not-found');
 
-      const userOneAvatar = ctx.message.author.displayAvatarURL({ dynamic: false, size: 256, format: 'png' });
+      const userOneAvatar = ctx.message.author.displayAvatarURL({
+        dynamic: false,
+        size: 256,
+        format: 'png',
+      });
       const userTwoAvatar = marryTwo.displayAvatarURL({ dynamic: false, size: 256, format: 'png' });
-      const userThreeAvatar = marryThree.displayAvatarURL({ dynamic: false, size: 256, format: 'png' });
+      const userThreeAvatar = marryThree.displayAvatarURL({
+        dynamic: false,
+        size: 256,
+        format: 'png',
+      });
 
       const res = await NewHttp.trisalRequest(userOneAvatar, userTwoAvatar, userThreeAvatar);
       if (res.err) return ctx.replyT('error', 'commands:http-error');
@@ -33,7 +42,11 @@ module.exports = class TrisalCommand extends Command {
 
       const embed = new MessageEmbed()
         .attachFiles(attachment)
-        .setDescription(`${ctx.locale('commands:trisal.embed.description')} ${ctx.message.author}, ${marryTwo}, ${marryThree}`)
+        .setDescription(
+          `${ctx.locale('commands:trisal.embed.description')} ${
+            ctx.message.author
+          }, ${marryTwo}, ${marryThree}`,
+        )
         .setColor('#ac76f9')
         .setImage('attachment://trisal.png');
 
@@ -43,8 +56,10 @@ module.exports = class TrisalCommand extends Command {
     const [mencionado1, mencionado2] = ctx.message.mentions.users.keyArray();
 
     if (!mencionado1 || !mencionado2) return ctx.replyT('error', 'commands:trisal.no-mention');
-    if (mencionado1 === ctx.message.author.id || mencionado2 === ctx.message.author.id) return ctx.replyT('error', 'commands:trisal.self-mention');
-    if (mencionado1.bot || mencionado2.bot) return ctx.replyT('error', 'commands:trisal.bot-mention');
+    if (mencionado1 === ctx.message.author.id || mencionado2 === ctx.message.author.id)
+      return ctx.replyT('error', 'commands:trisal.self-mention');
+    if (mencionado1.bot || mencionado2.bot)
+      return ctx.replyT('error', 'commands:trisal.bot-mention');
     if (mencionado1 === mencionado2) return ctx.retryT('error', 'commands:trisal:same-mention');
 
     const user1 = authorData;
@@ -53,17 +68,24 @@ module.exports = class TrisalCommand extends Command {
 
     if (!user1 || !user2 || !user3) return ctx.replyT('error', 'commands:trisal.no-db');
 
-    if (user2.trisal?.length > 0 || user3.trisal?.length > 0) return ctx.replyT('error', 'commands:trisal.comedor-de-casadas');
+    if (user2.trisal?.length > 0 || user3.trisal?.length > 0)
+      return ctx.replyT('error', 'commands:trisal.comedor-de-casadas');
 
     const messageMention1 = await this.client.users.fetch(mencionado1);
     const messageMention2 = await this.client.users.fetch(mencionado2);
 
-    const msg = await ctx.send(`${ctx.locale('commands:trisal.accept-message')} ${ctx.message.author}, ${messageMention1}, ${messageMention2}`);
+    const msg = await ctx.send(
+      `${ctx.locale('commands:trisal.accept-message')} ${
+        ctx.message.author
+      }, ${messageMention1}, ${messageMention2}`,
+    );
     await msg.react(this.client.constants.emojis.yes);
 
     const acceptableIds = [ctx.message.author.id, mencionado1, mencionado2];
 
-    const filter = (reaction, usuario) => reaction.emoji.name === this.client.constants.emojis.yes && acceptableIds.includes(usuario.id);
+    const filter = (reaction, usuario) =>
+      reaction.emoji.name === this.client.constants.emojis.yes &&
+      acceptableIds.includes(usuario.id);
 
     const collector = msg.createReactionCollector(filter, { time: 14000 });
 

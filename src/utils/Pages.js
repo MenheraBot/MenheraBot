@@ -89,17 +89,19 @@ class PagesCollector extends MessageCollector {
   }
 
   static arrFindByElemOrIndex(arr) {
-    return (str) => arr.find((elem, i) => elem === str?.toLowerCase() || (i + 1) === Number(str));
+    return (str) => arr.find((elem, i) => elem === str?.toLowerCase() || i + 1 === Number(str));
   }
 
   static arrFindByItemNameOrIndex(items) {
-    return (str) => items.find(
-      (item, i) => (item?.name ?? item?.id).toLowerCase() === str?.toLowerCase() || (i + 1) === Number(str),
-    );
+    return (str) =>
+      items.find(
+        (item, i) =>
+          (item?.name ?? item?.id).toLowerCase() === str?.toLowerCase() || i + 1 === Number(str),
+      );
   }
 
   static arrFindByIndex(arr) {
-    return (str) => arr.find((_, i) => (i + 1) === Number(str));
+    return (str) => arr.find((_, i) => i + 1 === Number(str));
   }
 
   static continue() {

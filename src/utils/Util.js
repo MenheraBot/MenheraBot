@@ -9,7 +9,7 @@ module.exports = class Util {
   }
 
   static async databaseEnsure(model, query, defaultValue) {
-    return await model.findOne(query) ?? model.create(defaultValue);
+    return (await model.findOne(query)) ?? model.create(defaultValue);
   }
 
   static async databaseUserEnsure(client, userOrMember) {

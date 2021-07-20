@@ -18,7 +18,11 @@ module.exports = class MenheraClient extends Client {
   constructor(options = {}, config) {
     super(options);
 
-    this.database = new Database(process.env.NODE_ENV === 'development' ? process.env.DEV_DATABASE_URI : process.env.DATABASE_URI);
+    this.database = new Database(
+      process.env.NODE_ENV === 'development'
+        ? process.env.DEV_DATABASE_URI
+        : process.env.DATABASE_URI,
+    );
     this.commands = new Collection();
     this.aliases = new Collection();
     this.events = new EventManager(this);
@@ -50,8 +54,8 @@ module.exports = class MenheraClient extends Client {
   }
 
   async reloadCommand(commandName) {
-    const command = this.commands.get(commandName)
-      || this.commands.get(this.aliases.get(commandName));
+    const command =
+      this.commands.get(commandName) || this.commands.get(this.aliases.get(commandName));
     if (!command) return false;
 
     return FileUtil.reloadFile(command.dir, (cmd) => this.loadCommand(cmd, command.dir));

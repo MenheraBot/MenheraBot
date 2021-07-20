@@ -28,9 +28,26 @@ module.exports = class StatusCommand extends Command {
     if (!user) return ctx.replyT('error', 'commands:status.not-found');
 
     const userAvatarLink = mentioned.displayAvatarURL({ format: 'png' });
-    const dmg = user?.familiar?.id && user.familiar.type === 'damage' ? user.damage + user?.weapon?.damage + (familiarsFile[user.familiar.id].boost.value + ((user.familiar.level - 1) * familiarsFile[user.familiar.id].boost.value)) : user.damage + user?.weapon?.damage;
-    const ptr = user?.familiar?.id && user.familiar.type === 'armor' ? user.armor + user?.protection?.armor + (familiarsFile[user.familiar.id].boost.value + ((user.familiar.level - 1) * familiarsFile[user.familiar.id].boost.value)) : user.armor + user?.protection?.armor;
-    const ap = user?.familiar?.id && user.familiar.type === 'abilityPower' ? user.abilityPower + (familiarsFile[user.familiar.id].boost.value + (user.familiar.level - 1) * familiarsFile[user.familiar.id].boost.value) : user.abilityPower;
+    const dmg =
+      user?.familiar?.id && user.familiar.type === 'damage'
+        ? user.damage +
+          user?.weapon?.damage +
+          (familiarsFile[user.familiar.id].boost.value +
+            (user.familiar.level - 1) * familiarsFile[user.familiar.id].boost.value)
+        : user.damage + user?.weapon?.damage;
+    const ptr =
+      user?.familiar?.id && user.familiar.type === 'armor'
+        ? user.armor +
+          user?.protection?.armor +
+          (familiarsFile[user.familiar.id].boost.value +
+            (user.familiar.level - 1) * familiarsFile[user.familiar.id].boost.value)
+        : user.armor + user?.protection?.armor;
+    const ap =
+      user?.familiar?.id && user.familiar.type === 'abilityPower'
+        ? user.abilityPower +
+          (familiarsFile[user.familiar.id].boost.value +
+            (user.familiar.level - 1) * familiarsFile[user.familiar.id].boost.value)
+        : user.abilityPower;
 
     const UserDataToSend = {
       life: user.life,

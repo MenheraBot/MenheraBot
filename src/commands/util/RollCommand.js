@@ -15,7 +15,8 @@ module.exports = class RollCommand extends Command {
       const rpgUser = await this.client.database.Rpg.findById(ctx.message.author.id);
       if (!rpgUser) return ctx.replyT('error', 'commands:roll.no-adventure');
 
-      if (parseInt(rpgUser.dungeonCooldown) < Date.now()) return ctx.replyT('error', 'commands:roll.can-dungeon');
+      if (parseInt(rpgUser.dungeonCooldown) < Date.now())
+        return ctx.replyT('error', 'commands:roll.can-dungeon');
 
       if (rpgUser.resetRoll < 1) return ctx.replyT('error', 'commands:roll.dungeon-poor');
 
@@ -24,7 +25,8 @@ module.exports = class RollCommand extends Command {
       await rpgUser.save();
       ctx.replyT('success', 'commands:roll.dungeon-success');
     } else {
-      if (parseInt(authorData.caçarTime) < Date.now()) return ctx.replyT('error', 'commands:roll.can-hunt');
+      if (parseInt(authorData.caçarTime) < Date.now())
+        return ctx.replyT('error', 'commands:roll.can-hunt');
 
       if (authorData.rolls < 1) return ctx.replyT('error', 'commands:roll.poor');
 

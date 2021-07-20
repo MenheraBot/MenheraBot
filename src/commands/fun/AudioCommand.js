@@ -17,9 +17,13 @@ module.exports = class AudioCommand extends Command {
 
     const availableFiles = ['gemidao', 'among', 'rojao', 'wpp', 'yamete', 'atumalaca', 'ratinho'];
 
-    if (!ctx.args[0]) return ctx.replyT('error', 'commands:audio.no-args', { audios: availableFiles.join('`, `') });
+    if (!ctx.args[0])
+      return ctx.replyT('error', 'commands:audio.no-args', { audios: availableFiles.join('`, `') });
 
-    if (!availableFiles.includes(ctx.args[0])) return ctx.replyT('error', 'commands:audio.unknow-args', { audios: availableFiles.join('`, `') });
+    if (!availableFiles.includes(ctx.args[0]))
+      return ctx.replyT('error', 'commands:audio.unknow-args', {
+        audios: availableFiles.join('`, `'),
+      });
 
     ctx.message.react('🍰');
 

@@ -29,13 +29,20 @@ module.exports = class VillageCommand extends Command {
       .setColor('#bbfd7c')
       .setTitle(ctx.locale('commands:village.index.title'))
       .setDescription(ctx.locale('commands:village.index.description'))
-      .addField(ctx.locale('commands:village.index.field_name'), ctx.locale('commands:village.index.field_value'))
+      .addField(
+        ctx.locale('commands:village.index.field_name'),
+        ctx.locale('commands:village.index.field_value'),
+      )
       .setFooter(ctx.locale('commands:village.index.footer'));
 
     const sent = await ctx.sendC(ctx.message.author, embed);
 
     const options = ['bruxa', 'ferreiro', 'hotel', 'guilda'];
-    const collector = new PagesCollector(ctx.message.channel, { sent, ctx }, { max: 2, time: 30000, errors: ['time'] })
+    const collector = new PagesCollector(
+      ctx.message.channel,
+      { sent, ctx },
+      { max: 2, time: 30000, errors: ['time'] },
+    )
       .setInvalidOption(() => collector.replyT('error', 'commands:village.invalid-option'))
       .setFindOption(PagesCollector.arrFindByElemOrIndex(options))
       .setHandle((_, option) => VillageCommand[option](ctx, user, collector))
@@ -43,7 +50,9 @@ module.exports = class VillageCommand extends Command {
   }
 
   static async bruxa(ctx, user, collector) {
-    const items = itemsFile.bruxa.filter((item) => user.level >= item.minLevel && (!item.maxLevel || user.level <= item.maxLevel));
+    const items = itemsFile.bruxa.filter(
+      (item) => user.level >= item.minLevel && (!item.maxLevel || user.level <= item.maxLevel),
+    );
 
     const embed = new MessageEmbed()
       .setTitle(`🏠 | ${ctx.locale('commands:village.bruxa.title')}`)
@@ -53,15 +62,16 @@ module.exports = class VillageCommand extends Command {
       .addFields(
         items.map((item, i) => ({
           name: `---------------[ ${i + 1} ]---------------\n${item.name}`,
-          value: `📜 | **${ctx.locale('commands:village.desc')}:** ${item.description}\n💎 |** ${ctx.locale('commands:village.cost')}:** ${item.value}`,
-
+          value: `📜 | **${ctx.locale('commands:village.desc')}:** ${
+            item.description
+          }\n💎 |** ${ctx.locale('commands:village.cost')}:** ${item.value}`,
         })),
       );
 
     collector.send(ctx.message.author, embed);
     collector.setFindOption((content) => {
       const [query, qty = 1] = content.trim().split(/ +/g);
-      const item = items.find((i, n) => i.name === query.toLowerCase() || Number(query) === (n + 1));
+      const item = items.find((i, n) => i.name === query.toLowerCase() || Number(query) === n + 1);
       if (item) return { item, qty: Number(qty) };
     });
     collector.setHandle((_, { item, qty }) => {
@@ -80,11 +90,15 @@ module.exports = class VillageCommand extends Command {
       }
 
       const backpack = RPGUtil.getBackpack(user);
-      if ((backpack.value + qty) > backpack.capacity) {
+      if (backpack.value + qty > backpack.capacity) {
         return collector.replyT('error', 'commands:village.backpack-full');
       }
 
-      collector.replyT('success', 'commands:village.bruxa.bought', { quantidade: qty, name: item.name, valor: value });
+      collector.replyT('success', 'commands:village.bruxa.bought', {
+        quantidade: qty,
+        name: item.name,
+        valor: value,
+      });
 
       RPGUtil.addItemInInventory(user, { name: item.name, damage: item.damage }, qty);
       user.money -= value;
@@ -114,7 +128,9 @@ module.exports = class VillageCommand extends Command {
 
     collector.send(ctx.message.author, embed);
     collector.setFindOption(PagesCollector.arrFindByElemOrIndex(categories));
-    collector.setHandle((_, category) => VillageCommand.ferreiroEquipamentos(category, ctx, user, collector));
+    collector.setHandle((_, category) =>
+      VillageCommand.ferreiroEquipamentos(category, ctx, user, collector),
+    );
     return PagesCollector.continue();
   }
 
@@ -135,23 +151,36 @@ module.exports = class VillageCommand extends Command {
       .setColor('#b99c81')
       .setTitle(`⚒️ | ${ctx.locale('commands:village.ferreiro.title')}`)
       .setDescription(
-        `<:atencao:759603958418767922> | ${ctx.locale(`commands:village.ferreiro.${category}.description`)}`,
+        `<:atencao:759603958418767922> | ${ctx.locale(
+          `commands:village.ferreiro.${category}.description`,
+        )}`,
       )
       .setFooter(ctx.locale('commands:village.ferreiro.footer'));
 
-    const equips = itemsFile.ferreiro.filter((item) => (item.category === category) && !item.isNotTrade);
+    const equips = itemsFile.ferreiro.filter(
+      (item) => item.category === category && !item.isNotTrade,
+    );
 
-    const parseMissingItems = (equip) => Object.entries(equip.required_items)
-      .reduce((p, [name, qty]) => `${p} **${qty} ${name}**\n`, '');
+    const parseMissingItems = (equip) =>
+      Object.entries(equip.required_items).reduce(
+        (p, [name, qty]) => `${p} **${qty} ${name}**\n`,
+        '',
+      );
 
-    embed.addFields(equips.map((equip, i) => ({
-      name: `**${i + 1}** - ${equip.id}`,
-      value: [
-        `${emojis[category]} | ${ctx.locale(`commands:village.ferreiro.${mainProp}`)} **${equip[mainProp]}**`,
-        `💎 | ${ctx.locale('commands:village.ferreiro.cost')}: **${equip.price}**`,
-        `<:Chest:760957557538947133> | ${ctx.locale('commands:village.ferreiro.itens-needed')}: ${parseMissingItems(equip)}`,
-      ].join('\n'),
-    })));
+    embed.addFields(
+      equips.map((equip, i) => ({
+        name: `**${i + 1}** - ${equip.id}`,
+        value: [
+          `${emojis[category]} | ${ctx.locale(`commands:village.ferreiro.${mainProp}`)} **${
+            equip[mainProp]
+          }**`,
+          `💎 | ${ctx.locale('commands:village.ferreiro.cost')}: **${equip.price}**`,
+          `<:Chest:760957557538947133> | ${ctx.locale(
+            'commands:village.ferreiro.itens-needed',
+          )}: ${parseMissingItems(equip)}`,
+        ].join('\n'),
+      })),
+    );
 
     const userItems = RPGUtil.countItems(user.loots);
 
@@ -163,24 +192,26 @@ module.exports = class VillageCommand extends Command {
       }
 
       const requiredItems = Object.entries(equip.required_items);
-      const missingItems = requiredItems
-        .reduce((p, [name, qty]) => {
-          const item = userItems.find((i) => i.name === name);
-          if (!item) {
-            return [...p, { name, qty }];
-          }
+      const missingItems = requiredItems.reduce((p, [name, qty]) => {
+        const item = userItems.find((i) => i.name === name);
+        if (!item) {
+          return [...p, { name, qty }];
+        }
 
-          if (item.amount < qty) {
-            return [...p, { name, qty: qty - item.amount }];
-          }
+        if (item.amount < qty) {
+          return [...p, { name, qty: qty - item.amount }];
+        }
 
-          return p;
-        }, []);
+        return p;
+      }, []);
 
       if (missingItems.length > 0) {
         const items = missingItems.map((item) => `${item.qty} ${item.name}`).join(', ');
 
-        return ctx.reply('error', `${ctx.locale(`commands:village.ferreiro.${category}.poor`, { items })}`);
+        return ctx.reply(
+          'error',
+          `${ctx.locale(`commands:village.ferreiro.${category}.poor`, { items })}`,
+        );
       }
 
       requiredItems.forEach(([name, qty]) => RPGUtil.removeItemInLoots(user, name, qty));
@@ -223,12 +254,16 @@ module.exports = class VillageCommand extends Command {
       .setFooter(ctx.locale('commands:village.hotel.footer'))
       .setColor('#e7a8ec');
 
-    embed.addFields(itemsFile.hotel.map(({
-      name, time, life, mana,
-    }, i) => ({
-      name: `${i + 1} - ${ctx.locale(`commands:village.hotel.fields.${name}`)}`,
-      value: `⌛ | ${ctx.locale('commands:village.hotel.fields.value', { time: moment.duration(time).format('D[d], H[h], m[m], s[s]', { trim: 'both' }), life, mana })}`,
-    })));
+    embed.addFields(
+      itemsFile.hotel.map(({ name, time, life, mana }, i) => ({
+        name: `${i + 1} - ${ctx.locale(`commands:village.hotel.fields.${name}`)}`,
+        value: `⌛ | ${ctx.locale('commands:village.hotel.fields.value', {
+          time: moment.duration(time).format('D[d], H[h], m[m], s[s]', { trim: 'both' }),
+          life,
+          mana,
+        })}`,
+      })),
+    );
 
     collector.send(ctx.message.author, embed);
     collector.setFindOption(PagesCollector.arrFindByIndex(itemsFile.hotel));
@@ -286,24 +321,34 @@ module.exports = class VillageCommand extends Command {
     const allItems = RPGUtil.countItems(user.loots);
 
     if (allItems.length === 0) {
-      return collector.send(ctx.message.author,
+      return collector.send(
+        ctx.message.author,
         embed
           .setDescription(ctx.locale('commands:village.guilda.no-loots'))
           .setFooter('No Looots!')
-          .setColor('#f01010'));
+          .setColor('#f01010'),
+      );
     }
 
-    let txt = ctx.locale('commands:village.guilda.money', { money: user.money }) + ctx.locale('commands:village.guilda.sell-all');
+    let txt =
+      ctx.locale('commands:village.guilda.money', { money: user.money }) +
+      ctx.locale('commands:village.guilda.sell-all');
 
     let displayedItems = allItems;
     // eslint-disable-next-line no-restricted-syntax
     for (const i in allItems) {
       // eslint-disable-next-line no-loop-func
       const separator = `---------------**[ ${parseInt(i) + 1} ]**---------------`;
-      const name = `<:Chest:760957557538947133> | **${allItems[i].job_id > 0 ? ctx.locale(`roleplay:job.${allItems[i].job_id}.${allItems[i].name}`) : allItems[i].name}** ( ${allItems[i].amount} )`;
-      const value = `💎 | **${ctx.locale('commands:village.guilda.value')}:** ${allItems[i].value}\n`;
+      const name = `<:Chest:760957557538947133> | **${
+        allItems[i].job_id > 0
+          ? ctx.locale(`roleplay:job.${allItems[i].job_id}.${allItems[i].name}`)
+          : allItems[i].name
+      }** ( ${allItems[i].amount} )`;
+      const value = `💎 | **${ctx.locale('commands:village.guilda.value')}:** ${
+        allItems[i].value
+      }\n`;
       const item = `${separator}\n ${name}\n ${value}`;
-      if ((txt.length + item.length) <= 1800) {
+      if (txt.length + item.length <= 1800) {
         txt += item;
       } else {
         displayedItems = displayedItems.slice(0, i);
@@ -320,7 +365,7 @@ module.exports = class VillageCommand extends Command {
       }
       const [query, qty = 1] = content.trim().split(/ +/g);
       const qtyFiltred = qty === 1 ? qty : qty.replace(/\D+/g, '');
-      const item = displayedItems.find((_, i) => Number(query) === (i + 1));
+      const item = displayedItems.find((_, i) => Number(query) === i + 1);
       if (item) {
         return [item, qtyFiltred];
       }
@@ -332,13 +377,16 @@ module.exports = class VillageCommand extends Command {
         let sold = 0;
         const total = allItems.reduce((p, item) => {
           sold += item.amount;
-          return p + (item.value * item.amount);
+          return p + item.value * item.amount;
         }, 0);
         user.loots = [];
         user.money += total;
         user.save();
 
-        return collector.replyT('success', 'commands:village.guilda.sold-all', { amount: sold, value: total });
+        return collector.replyT('success', 'commands:village.guilda.sold-all', {
+          amount: sold,
+          value: total,
+        });
       }
 
       const [item, qty] = result;
@@ -348,7 +396,12 @@ module.exports = class VillageCommand extends Command {
       }
 
       if (qty > item.amount) {
-        return ctx.reply('error', `${ctx.locale('commands:village.guilda.poor')} ${qty} ${item.job_id > 0 ? ctx.locale(`roleplay:job.${item.job_id}.${item.name}`) : item.name}`);
+        return ctx.reply(
+          'error',
+          `${ctx.locale('commands:village.guilda.poor')} ${qty} ${
+            item.job_id > 0 ? ctx.locale(`roleplay:job.${item.job_id}.${item.name}`) : item.name
+          }`,
+        );
       }
 
       const total = parseInt(qty) * parseInt(item.value);
@@ -360,8 +413,13 @@ module.exports = class VillageCommand extends Command {
       user.money += total;
 
       user.save();
-      const itemNameTranslate = item.job_id > 0 ? ctx.locale(`roleplay:job.${item.job_id}.${item.name}`) : item.name;
-      return ctx.replyT('success', 'commands:village.guilda.sold', { quantity: qty, name: itemNameTranslate, value: total });
+      const itemNameTranslate =
+        item.job_id > 0 ? ctx.locale(`roleplay:job.${item.job_id}.${item.name}`) : item.name;
+      return ctx.replyT('success', 'commands:village.guilda.sold', {
+        quantity: qty,
+        name: itemNameTranslate,
+        value: total,
+      });
     });
     return PagesCollector.continue();
   }
