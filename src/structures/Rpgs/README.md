@@ -30,6 +30,14 @@ Até o momento pensei nas seguintes coisas:
 - A dungeon agora terá parties, que podem ser de até 3 jogadores
 - Bosses serão spawnados aleatoriamentes, sem limite de jogadores por party
 
+• **Localização**
+
+- Boleham terá um Mapa, e as pessoas podem viajar pelo mundo, indo para outras cidades. Quanto mais longe da cidade principal, melhor os loots e mais forte os monstros
+
+- Tempo de viajem: Ao viajar para um lugar, o usuário ficara X tempo sem poder usar comandos (Depende da distância da cidade que o usuário escolheu)
+
+- Mercadores: Ao viajar para cidades, o usuário terá a chance de encontrar mercadores, que possuem uma loja com preços e itens diferenciados.
+
 • Mecânica
 
 - O principal fator das batalhas é a velocidade de movimento, que definirá sua chace de desviar de um ataque. O cálculo de baseia na proficiência de ataque básico do inimigo tambem
@@ -37,6 +45,22 @@ Até o momento pensei nas seguintes coisas:
 - O mundo de Boleham será dinâmico, e eu tentarei fazer sempre uma atualização mudando o mundo. Ter um comando `m!lore` que mostra a lore atual do rpg, e a cada atualização de evento, adicionar mais uma página de lore, mudando algo no mundo, e mudando algo tipo mobs ou ent poderes especiais durante o evento da atualização.
 
 - Quest: O RPG terá quests que o jogador pode pegar na guilda. Ele só poderá trocar de quest ao terminar uma, e só continuará avançando na historia ao finalizar a quest atual. Quests especiais aparecerão em eventos.
+
+• Clã
+
+- Usuários poderão criar clãs gastando pedras mágicas. Para poder criar um clã precisa estar certo nível, e depois que o clã é criado, o dono pode convidar pessoas para entrar no clã.
+
+- Top Clãs, onde haverão todos os clãs existentes divididos por membros e força
+
+- Guerra de Clãs: Clãs poderão abrir guerras entre si, essas guerras valerá dinheiro do clã, e todos os usuários batalharão contra todos.
+
+- Grandes Clãs: Além de clãs entre os membros dos servidores, haverão os Grandes Clãs, que serão clãs que uma pessoa cria e MUITAS pessoas entram, por exemplo, eu crio um clã, e vou invitando pessoas até o clã ficar gigante e disputar entre os maiores clãs.
+
+- O dono do clã só pode convidar usuários que ele tenha um nível de amizade
+
+• Amizade
+
+- Ao participar de eventos e parties, os usuários criarão amizades entre si. Quanto maior o nível de amizade, mais coisas poderão fazer juntos, como troca de itens.
 
 ## Classes
 
