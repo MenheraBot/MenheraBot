@@ -77,8 +77,7 @@ export default class MenheraClient extends Client {
     const command =
       this.commands.get(commandName) || this.commands.get(this.aliases.get(commandName));
     if (!command) return false;
-    // @ts-ignore
-    return FileUtil.reloadFile(command.dir, (cmd: any) => this.loadCommand(cmd, command.dir));
+    return FileUtil.reloadFile(command.dir, (cmd: Command) => this.loadCommand(cmd, command.dir));
   }
 
   login(token: string) {

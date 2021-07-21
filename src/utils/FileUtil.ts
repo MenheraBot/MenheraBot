@@ -1,28 +1,28 @@
 /* eslint-disable global-require */
 /* eslint-disable import/no-dynamic-require */
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
 
-module.exports = class FileUtil {
-  static filename(filepath) {
+export default class FileUtil {
+  static filename(filepath: string) {
     return path.parse(filepath).name;
   }
 
-  static reloadFile(filepath, reloadFunction = () => null) {
+  static reloadFile(filepath: string, reloadFunction: Function): Function {
     const dir = path.resolve(filepath);
     delete require.cache[dir];
     return reloadFunction(require(dir), dir);
   }
 
-  static async readDirectory(directory, loadFunction = () => null) {
+  static async readDirectory(directory: string, loadFunction: Function) {
     return Promise.all(
-      FileUtil.readdirRecursive(directory).map((filepath) =>
+      FileUtil.readdirRecursive(directory).map((filepath: string) =>
         loadFunction(require(path.resolve(filepath)), filepath),
       ),
     );
   }
 
-  static readdirRecursive(directory) {
+  static readdirRecursive(directory: string) {
     return fs.readdirSync(directory).reduce((p, file) => {
       const filepath = path.join(directory, file);
       const validExtensions = ['.ts', '.js'];
@@ -38,4 +38,4 @@ module.exports = class FileUtil {
       return [...p, filepath];
     }, []);
   }
-};
+}
