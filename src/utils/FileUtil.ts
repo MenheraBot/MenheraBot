@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable global-require */
 /* eslint-disable import/no-dynamic-require */
 import fs from 'fs';
@@ -8,7 +9,10 @@ export default class FileUtil {
     return path.parse(filepath).name;
   }
 
-  static reloadFile(filepath: string, reloadFunction: Function): Function {
+  static reloadFile(
+    filepath: string,
+    reloadFunction: (file: unknown, dir: string) => unknown,
+  ): unknown {
     const dir = path.resolve(filepath);
     delete require.cache[dir];
     return reloadFunction(require(dir), dir);
