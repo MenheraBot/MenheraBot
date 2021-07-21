@@ -20,3 +20,15 @@ export interface IEvent {
   dir: string;
   run: (args: Array<unknown>) => Promise<unknown>;
 }
+
+export interface IHttpPicassoReutrn {
+  err: boolean;
+  data?: unknown;
+}
+
+export interface IBlackjackCards {
+  value: number;
+  isAce: boolean;
+  id: number;
+  hidden?: boolean;
+}
