@@ -1,8 +1,10 @@
-const http = require('../utils/HTTPrequests');
-const Dbl = require('../utils/DBL');
+import http from '@utils/HTTPrequests';
 
-module.exports = class ReadyEvent {
-  constructor(client) {
+import Dbl from '@utils/DBL';
+import MenheraClient from 'MenheraClient';
+
+export default class ReadyEvent {
+  constructor(public client: MenheraClient) {
     this.client = client;
   }
 
@@ -41,4 +43,4 @@ module.exports = class ReadyEvent {
 
     console.log('[READY] Menhera se conectou com o Discord!');
   }
-};
+}

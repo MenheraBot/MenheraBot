@@ -18,7 +18,7 @@ export interface ICommandConfig {
 export interface IEvent {
   name: string;
   dir: string;
-  run: (args: Array<unknown>) => Promise<unknown>;
+  run: (...args: Array<unknown>) => Promise<unknown>;
 }
 
 export interface IHttpPicassoReutrn {
