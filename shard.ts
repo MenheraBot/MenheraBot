@@ -1,8 +1,12 @@
-const { ShardingManager } = require('discord.js');
-const path = require('path');
-require('dotenv').config();
+import { ShardingManager } from 'discord.js';
 
-async function startApp() {
+import path from 'path';
+
+import { config } from 'dotenv';
+
+config();
+
+(async () => {
   console.log('[APP] Iniciating application...');
 
   const shardCount = process.env.NODE_ENV === 'development' ? 1 : 5;
@@ -17,6 +21,4 @@ async function startApp() {
   });
 
   shards.spawn().then(() => console.log('[SHARDING MANAGER] All shards has been spawned'));
-}
-
-startApp();
+})();
