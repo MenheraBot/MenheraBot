@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 export interface IClientConfigs {
   commandsDirectory: string;
   eventsDirectory: string;
@@ -12,4 +13,10 @@ export interface ICommandConfig {
   userPermissions?: Array<string>;
   clientPermissions?: Array<string>;
   devsOnly?: boolean;
+}
+
+export interface IEvent {
+  name: string;
+  dir: string;
+  run: (args: Array<unknown>) => Promise<unknown>;
 }

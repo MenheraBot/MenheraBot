@@ -26,6 +26,7 @@ module.exports = {
     'import/extensions': [0, 'never', { ts: 'never' }],
     'no-use-before-define': ['error', { variables: false }],
     'linebreak-style': 'off',
+    'import/no-cycle': 'off',
   },
   settings: {
     'import/parsers': {
