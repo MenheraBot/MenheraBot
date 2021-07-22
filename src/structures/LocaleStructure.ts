@@ -1,15 +1,19 @@
-const { readdirSync } = require('fs-extra');
-const path = require('path');
-const i18next = require('i18next');
-const translationBackend = require('i18next-node-fs-backend');
+import { readdirSync } from 'fs-extra';
+import path from 'path';
+import i18next from 'i18next';
+import translationBackend from 'i18next-node-fs-backend';
 
-class LocaleStructure {
+export default class LocaleStructure {
+  public ns: Array<string>;
+
+  public languages: Array<string>;
+
   constructor() {
     this.ns = ['commands', 'events', 'permissions', 'roleplay'];
     this.languages = ['pt_BR', 'en_US'];
   }
 
-  async load() {
+  async load(): Promise<void> {
     try {
       const filepath = path.resolve(__dirname, '..', 'locales', 'source');
       await i18next.use(translationBackend).init({
@@ -22,7 +26,7 @@ class LocaleStructure {
         interpolation: {
           escapeValue: false,
         },
-        returnEmpyString: false,
+        returnEmptyString: false,
       });
       console.log('[LOCALES] Locales loaded!');
     } catch (err) {
@@ -30,12 +34,12 @@ class LocaleStructure {
     }
   }
 
-  reload() {
-    return i18next
-      .reloadResources(this.languages, this.ns)
-      .then(() => true)
-      .catch(() => false);
+  async reload(): Promise<boolean> {
+    try {
+      await i18next.reloadResources(this.languages, this.ns);
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 }
-
-module.exports = LocaleStructure;
