@@ -18,12 +18,21 @@ module.exports = class WorkCommand extends Command {
 
   async run(ctx) {
     const user = await this.client.database.Rpg.findById(ctx.message.author.id);
-    if (!user) return ctx.replyT('error', 'commands:work.not-register', { prefix: ctx.data.server.prefix });
+    if (!user)
+      return ctx.replyT('error', 'commands:work.not-register', { prefix: ctx.data.server.prefix });
 
     const jobId = user.jobId || 0;
-    if (jobId < 1) return ctx.replyT('error', 'commands:work.not-work', { prefix: ctx.data.server.prefix });
+    if (jobId < 1)
+      return ctx.replyT('error', 'commands:work.not-work', { prefix: ctx.data.server.prefix });
 
-    if (parseInt(user.jobCooldown) > Date.now()) return parseInt(user.jobCooldown - Date.now()) > 3600000 ? ctx.replyT('error', 'commands:work.cooldown-hour', { time: moment.utc(parseInt(user.jobCooldown - Date.now())).format('HH:mm:ss') }) : ctx.replyT('error', 'commands:work.cooldown-minute', { time: moment.utc(parseInt(user.jobCooldown - Date.now())).format('mm:ss') });
+    if (parseInt(user.jobCooldown) > Date.now())
+      return parseInt(user.jobCooldown - Date.now()) > 3600000
+        ? ctx.replyT('error', 'commands:work.cooldown-hour', {
+            time: moment.utc(parseInt(user.jobCooldown - Date.now())).format('HH:mm:ss'),
+          })
+        : ctx.replyT('error', 'commands:work.cooldown-minute', {
+            time: moment.utc(parseInt(user.jobCooldown - Date.now())).format('mm:ss'),
+          });
 
     const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
 
@@ -32,9 +41,7 @@ module.exports = class WorkCommand extends Command {
       .setColor('#a6ff25')
       .setThumbnail(avatar);
 
-    const {
-      name, xp, work_cooldown_in_hours, min_money, max_money,
-    } = jobsFile[jobId];
+    const { name, xp, work_cooldown_in_hours, min_money, max_money } = jobsFile[jobId];
 
     const items = itemsFile.jobs[jobId];
 
@@ -48,8 +55,20 @@ module.exports = class WorkCommand extends Command {
     const traslatedJobName = ctx.locale(`roleplay:job.${jobId}.${name}`);
     const translatedItemName = ctx.locale(`roleplay:job.${jobId}.${selectedItem.name}`);
 
-    embed.setDescription(ctx.locale('commands:work.embed-description', { job: traslatedJobName, money: totalMoney, xp }))
-      .addField(ctx.locale('commands:work.field-name'), canGet ? ctx.locale('commands:work.field-value', { item: translatedItemName }) : ctx.locale('commands:work.field-value-full'));
+    embed
+      .setDescription(
+        ctx.locale('commands:work.embed-description', {
+          job: traslatedJobName,
+          money: totalMoney,
+          xp,
+        }),
+      )
+      .addField(
+        ctx.locale('commands:work.field-name'),
+        canGet
+          ? ctx.locale('commands:work.field-value', { item: translatedItemName })
+          : ctx.locale('commands:work.field-value-full'),
+      );
 
     if (canGet) user.loots.push(selectedItem);
     user.jobCooldown = Date.now() + totalCooldown;

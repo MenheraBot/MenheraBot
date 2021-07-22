@@ -16,12 +16,17 @@ module.exports = class UpdateCommand extends Command {
 
     if (ctx.args[0].toLowerCase() === 'locales') {
       const locale = new LocaleStructure();
-      return locale.reload()
+      return locale
+        .reload()
         .then(() => ctx.reply('success', 'locales reiniciados! :sparkles:'))
         .catch((e) => ctx.reply('error', `erro ao reiniciar os locales: ${e.message}`));
     }
 
-    await this.client.reloadCommand(ctx.args[0]).catch((e) => ctx.reply('error', `Erro ao reiniciar o comando ${ctx.args[0]}! : ${e.message}`));
+    await this.client
+      .reloadCommand(ctx.args[0])
+      .catch((e) =>
+        ctx.reply('error', `Erro ao reiniciar o comando ${ctx.args[0]}! : ${e.message}`),
+      );
 
     ctx.reply('success', `${ctx.args[0]} recarregado com sucesso!`);
   }

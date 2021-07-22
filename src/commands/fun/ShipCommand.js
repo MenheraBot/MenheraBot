@@ -19,7 +19,9 @@ module.exports = class ShipCommand extends Command {
 
     try {
       user1 = await this.client.users.fetch(ctx.args[0].replace(/[<@!>]/g, ''));
-      user2 = ctx.args[1] ? await this.client.users.fetch(ctx.args[1].replace(/[<@!>]/g, '')) : ctx.message.author;
+      user2 = ctx.args[1]
+        ? await this.client.users.fetch(ctx.args[1].replace(/[<@!>]/g, ''))
+        : ctx.message.author;
     } catch {
       return ctx.replyT('error', 'commands:ship.unknow-user');
     }
@@ -30,8 +32,12 @@ module.exports = class ShipCommand extends Command {
     const dbUserToTakeValue1 = await this.client.repositories.userRepository.find(user1.id);
     const dbUserToTakeValue2 = await this.client.repositories.userRepository.find(user2.id);
 
-    const FinalValue1 = dbUserToTakeValue1?.shipValue ? dbUserToTakeValue1.shipValue : Math.floor(Math.random() * 55);
-    const FinalValue2 = dbUserToTakeValue2?.shipValue ? dbUserToTakeValue2.shipValue : Math.floor(Math.random() * 55);
+    const FinalValue1 = dbUserToTakeValue1?.shipValue
+      ? dbUserToTakeValue1.shipValue
+      : Math.floor(Math.random() * 55);
+    const FinalValue2 = dbUserToTakeValue2?.shipValue
+      ? dbUserToTakeValue2.shipValue
+      : Math.floor(Math.random() * 55);
 
     let value = Number(FinalValue1) + Number(FinalValue2);
     if (Number(value) >= 100) {
@@ -47,25 +53,65 @@ module.exports = class ShipCommand extends Command {
     const member1 = ctx.message.guild.members.cache.get(user1.id);
     const member2 = ctx.message.guild.members.cache.get(user2.id);
 
-    const name1 = (member1 && member1?.nickname) ? member1.nickname : user1.username;
-    const name2 = (member2 && member2?.nickname) ? member2.nickname : user2.username;
-    const mix = `${name1.substring(0, name1.length / 2) + name2.substring(name2.length / 2, name2.length)}`.replace(' ', '');
+    const name1 = member1 && member1?.nickname ? member1.nickname : user1.username;
+    const name2 = member2 && member2?.nickname ? member2.nickname : user2.username;
+    const mix = `${
+      name1.substring(0, name1.length / 2) + name2.substring(name2.length / 2, name2.length)
+    }`.replace(' ', '');
 
     const embed = new MessageEmbed()
       .setTitle(`${name1} + ${name2} = ${mix}`)
-      .setDescription(`\n${ctx.locale('commands:ship.value')} **${value.toString()}%**\n\n${ctx.locale('commands:ship.default')}`);
+      .setDescription(
+        `\n${ctx.locale('commands:ship.value')} **${value.toString()}%**\n\n${ctx.locale(
+          'commands:ship.default',
+        )}`,
+      );
 
     if (!bufferedShipImage.err) {
       const attachment = new MessageAttachment(Buffer.from(bufferedShipImage.data), 'ship.png');
-      embed.attachFiles(attachment)
-        .setImage('attachment://ship.png');
+      embed.attachFiles(attachment).setImage('attachment://ship.png');
     } else embed.setFooter(ctx.locale('commands:http-error'));
 
-    if (Number(value) >= 25) embed.setColor('#cadf2a').setDescription(`\n${ctx.locale('commands:ship.value')} **${value.toString()}%**\n\n${ctx.locale('commands:ship.low')}`);
-    if (Number(value) >= 50) embed.setColor('#d8937b').setDescription(`\n${ctx.locale('commands:ship.value')} **${value.toString()}%**\n\n${ctx.locale('commands:ship.ok')}`);
-    if (Number(value) >= 75) embed.setColor('#f34a4a').setDescription(`\n${ctx.locale('commands:ship.value')} **${value.toString()}%**\n\n${ctx.locale('commands:ship.medium')}`);
-    if (Number(value) >= 99) embed.setColor('#ec2c2c').setDescription(`\n${ctx.locale('commands:ship.value')} **${value.toString()}%**\n\n${ctx.locale('commands:ship.high')}`);
-    if (Number(value) === 100) embed.setColor('#ff00df').setDescription(`\n${ctx.locale('commands:ship.value')} **${value.toString()}%**\n\n${ctx.locale('commands:ship.perfect')}`);
+    if (Number(value) >= 25)
+      embed
+        .setColor('#cadf2a')
+        .setDescription(
+          `\n${ctx.locale('commands:ship.value')} **${value.toString()}%**\n\n${ctx.locale(
+            'commands:ship.low',
+          )}`,
+        );
+    if (Number(value) >= 50)
+      embed
+        .setColor('#d8937b')
+        .setDescription(
+          `\n${ctx.locale('commands:ship.value')} **${value.toString()}%**\n\n${ctx.locale(
+            'commands:ship.ok',
+          )}`,
+        );
+    if (Number(value) >= 75)
+      embed
+        .setColor('#f34a4a')
+        .setDescription(
+          `\n${ctx.locale('commands:ship.value')} **${value.toString()}%**\n\n${ctx.locale(
+            'commands:ship.medium',
+          )}`,
+        );
+    if (Number(value) >= 99)
+      embed
+        .setColor('#ec2c2c')
+        .setDescription(
+          `\n${ctx.locale('commands:ship.value')} **${value.toString()}%**\n\n${ctx.locale(
+            'commands:ship.high',
+          )}`,
+        );
+    if (Number(value) === 100)
+      embed
+        .setColor('#ff00df')
+        .setDescription(
+          `\n${ctx.locale('commands:ship.value')} **${value.toString()}%**\n\n${ctx.locale(
+            'commands:ship.perfect',
+          )}`,
+        );
 
     ctx.sendC(`${ctx.message.author}\n**${ctx.locale('commands:ship.message-start')}**`, embed);
   }

@@ -28,38 +28,50 @@ module.exports = class BotinfoCommand extends Command {
       .setColor('#fa8dd7')
       // .setTitle(t('commands:botinfo.title'))
       .setThumbnail('https://i.imgur.com/b5y0nd4.png')
-      .setDescription(ctx.locale('commands:botinfo.embed_description', {
-        name: this.client.user.username, createdAt: moment.utc(this.client.user.createdAt).format('LLLL'), joinedAt: moment.utc(ctx.message.guild.me.joinedAt).format('LLLL'),
-      }))
-      .setFooter(`${this.client.user.username} ${ctx.locale('commands:botinfo.embed_footer')} ${owner.tag}`, owner.displayAvatarURL({
-        format: 'png',
-        dynamic: true,
-      }))
-      .addFields([{
-        name: '🌐 | Servers | 🌐',
-        value: `\`\`\`${await this.client.shardManager.getAllSizeObject('guilds')}\`\`\``,
-        inline: true,
-      },
-      {
-        name: `🗄️ | ${ctx.locale('commands:botinfo.channels')} | 🗄️`,
-        value: `\`\`\`${await this.client.shardManager.getAllSizeObject('channels')}\`\`\``,
-        inline: true,
-      },
-      {
-        name: '⏳ | Uptime | ⏳',
-        value: `\`\`\`${moment.duration(this.client.uptime).format('D[d], H[h], m[m], s[s]')}\`\`\``,
-        inline: true,
-      },
-      {
-        name: `<:memoryram:762817135394553876> | ${ctx.locale('commands:botinfo.memory')} | <:memoryram:762817135394553876>`,
-        value: `\`\`\`${(memoryUsedPolish / 1024 / 1024).toFixed(2)}MB\`\`\``,
-        inline: true,
-      },
-      {
-        name: `🇧🇷 | ${ctx.locale('commands:botinfo.version')} | 🇧🇷`,
-        value: `\`\`\`${version}\`\`\``,
-        inline: true,
-      },
+      .setDescription(
+        ctx.locale('commands:botinfo.embed_description', {
+          name: this.client.user.username,
+          createdAt: moment.utc(this.client.user.createdAt).format('LLLL'),
+          joinedAt: moment.utc(ctx.message.guild.me.joinedAt).format('LLLL'),
+        }),
+      )
+      .setFooter(
+        `${this.client.user.username} ${ctx.locale('commands:botinfo.embed_footer')} ${owner.tag}`,
+        owner.displayAvatarURL({
+          format: 'png',
+          dynamic: true,
+        }),
+      )
+      .addFields([
+        {
+          name: '🌐 | Servers | 🌐',
+          value: `\`\`\`${await this.client.shardManager.getAllSizeObject('guilds')}\`\`\``,
+          inline: true,
+        },
+        {
+          name: `🗄️ | ${ctx.locale('commands:botinfo.channels')} | 🗄️`,
+          value: `\`\`\`${await this.client.shardManager.getAllSizeObject('channels')}\`\`\``,
+          inline: true,
+        },
+        {
+          name: '⏳ | Uptime | ⏳',
+          value: `\`\`\`${moment
+            .duration(this.client.uptime)
+            .format('D[d], H[h], m[m], s[s]')}\`\`\``,
+          inline: true,
+        },
+        {
+          name: `<:memoryram:762817135394553876> | ${ctx.locale(
+            'commands:botinfo.memory',
+          )} | <:memoryram:762817135394553876>`,
+          value: `\`\`\`${(memoryUsedPolish / 1024 / 1024).toFixed(2)}MB\`\`\``,
+          inline: true,
+        },
+        {
+          name: `🇧🇷 | ${ctx.locale('commands:botinfo.version')} | 🇧🇷`,
+          value: `\`\`\`${version}\`\`\``,
+          inline: true,
+        },
       ]);
     ctx.send(embed);
   }

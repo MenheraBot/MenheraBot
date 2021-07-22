@@ -16,7 +16,9 @@ module.exports = class MaintenanceCommand extends Command {
       return ctx.reply('error', 'você não informou o comando desejado');
     }
 
-    const cmd = this.client.commands.get(ctx.args[0]) || this.client.commands.get(this.client.aliases.get(ctx.args[0]));
+    const cmd =
+      this.client.commands.get(ctx.args[0]) ||
+      this.client.commands.get(this.client.aliases.get(ctx.args[0]));
     if (!cmd) {
       return ctx.reply('error', 'este comando não existe');
     }

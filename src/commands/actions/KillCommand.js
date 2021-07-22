@@ -38,7 +38,11 @@ module.exports = class KillCommand extends Command {
       const Rembed = new MessageEmbed()
         .setTitle(ctx.locale('commands:kill.bot.embed_title'))
         .setColor('#000000')
-        .setDescription(`${ctx.locale('commands:kill.bot.embed_description_start')} \n${ctx.message.author} ${ctx.locale('commands:kill.bot.embed_description_end')} ${user}`)
+        .setDescription(
+          `${ctx.locale('commands:kill.bot.embed_description_start')} \n${
+            ctx.message.author
+          } ${ctx.locale('commands:kill.bot.embed_description_end')} ${user}`,
+        )
         .setImage(Rrand)
         .setThumbnail(avatar)
         .setAuthor(ctx.message.author.tag, avatar);
@@ -49,7 +53,9 @@ module.exports = class KillCommand extends Command {
     const embed = new MessageEmbed()
       .setTitle(ctx.locale('commands:kill.embed_title'))
       .setColor('#000000')
-      .setDescription(`${ctx.message.author} ${ctx.locale('commands:kill.embed_description')} ${user}`)
+      .setDescription(
+        `${ctx.message.author} ${ctx.locale('commands:kill.embed_description')} ${user}`,
+      )
       .setImage(rand)
       .setThumbnail(avatar)
       .setAuthor(ctx.message.author.tag, avatar);

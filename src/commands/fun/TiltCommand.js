@@ -16,9 +16,7 @@ module.exports = class HumorCommand extends Command {
 
     const mention = ctx.message.mentions.users.first();
 
-    const list = [
-      'https://i.imgur.com/HNZeSQt.png',
-    ];
+    const list = ['https://i.imgur.com/HNZeSQt.png'];
 
     const rand = list[Math.floor(Math.random() * list.length)];
 

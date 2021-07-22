@@ -19,7 +19,13 @@ module.exports = class ReadyEvent {
         const guildsPerShardCount = await this.client.shard.broadcastEval('this.guilds.cache.size');
 
         allShardsPing.map(async (shardPing, id) => {
-          this.client.repositories.statusRepository.CreateOrUpdate(id, shardPing, Date.now(), guildsPerShardCount[id], `${allShardsUptime[id]}`);
+          this.client.repositories.statusRepository.CreateOrUpdate(
+            id,
+            shardPing,
+            Date.now(),
+            guildsPerShardCount[id],
+            `${allShardsUptime[id]}`,
+          );
         });
       }, 1000 * 60);
     }

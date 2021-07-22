@@ -14,7 +14,7 @@ module.exports = class ReportCommand extends Command {
 
   async run(ctx) {
     const argumentos = ctx.args.join(' ');
-    const cor = `#${(`000000${Math.random().toString(16).slice(2, 8).toUpperCase()}`).slice(-6)}`;
+    const cor = `#${`000000${Math.random().toString(16).slice(2, 8).toUpperCase()}`.slice(-6)}`;
 
     if (!argumentos) return ctx.replyT('error', 'commands:report.no-args');
 
@@ -24,9 +24,15 @@ module.exports = class ReportCommand extends Command {
       .setThumbnail(ctx.message.author.displayAvatarURL({ dynamic: true }))
       .setFooter(`ID do usuário: ${ctx.message.author.id}`)
       .setTimestamp()
-      .setAuthor(`Novo Bug Reportado por ${ctx.message.author.tag}`, ctx.message.author.displayAvatarURL({ dynamic: true }));
+      .setAuthor(
+        `Novo Bug Reportado por ${ctx.message.author.tag}`,
+        ctx.message.author.displayAvatarURL({ dynamic: true }),
+      );
 
-    const reportWebhook = await this.client.fetchWebhook(process.env.BUG_HOOK_ID, process.env.BUG_HOOK_TOKEN);
+    const reportWebhook = await this.client.fetchWebhook(
+      process.env.BUG_HOOK_ID,
+      process.env.BUG_HOOK_TOKEN,
+    );
 
     reportWebhook.send(embed);
 

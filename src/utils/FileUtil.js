@@ -16,7 +16,9 @@ module.exports = class FileUtil {
 
   static async readDirectory(directory, loadFunction = () => null) {
     return Promise.all(
-      FileUtil.readdirRecursive(directory).map((filepath) => loadFunction(require(path.resolve(filepath)), filepath)),
+      FileUtil.readdirRecursive(directory).map((filepath) =>
+        loadFunction(require(path.resolve(filepath)), filepath),
+      ),
     );
   }
 

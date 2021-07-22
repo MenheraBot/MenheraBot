@@ -15,9 +15,21 @@ module.exports = class RegisterCommand extends Command {
   async run(ctx) {
     const user = await this.client.database.Rpg.findById(ctx.message.author.id);
 
-    if (user) return ctx.replyT('error', 'commands:register.already', { name: ctx.message.author.username });
+    if (user)
+      return ctx.replyT('error', 'commands:register.already', {
+        name: ctx.message.author.username,
+      });
 
-    const classes = [ctx.locale('commands:register.Assassino'), ctx.locale('commands:register.Bárbaro'), ctx.locale('commands:register.Clérigo'), ctx.locale('commands:register.Druida'), ctx.locale('commands:register.Espadachim'), ctx.locale('commands:register.Feiticeiro'), ctx.locale('commands:register.Monge'), ctx.locale('commands:register.Necromante')];
+    const classes = [
+      ctx.locale('commands:register.Assassino'),
+      ctx.locale('commands:register.Bárbaro'),
+      ctx.locale('commands:register.Clérigo'),
+      ctx.locale('commands:register.Druida'),
+      ctx.locale('commands:register.Espadachim'),
+      ctx.locale('commands:register.Feiticeiro'),
+      ctx.locale('commands:register.Monge'),
+      ctx.locale('commands:register.Necromante'),
+    ];
 
     let description = ctx.locale('commands:register.text');
 

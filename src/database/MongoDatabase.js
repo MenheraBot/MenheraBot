@@ -14,6 +14,7 @@ const HuntRepository = require('./repositories/HuntRepository');
 const RelationshipRepository = require('./repositories/RelationshipRepository');
 const BlacklistRepository = require('./repositories/BlacklistRepository');
 const TopRepository = require('./repositories/TopRepository');
+const GiveRepository = require('./repositories/GiveRepository');
 
 module.exports = class MongoDatabase {
   constructor(uri) {
@@ -37,11 +38,15 @@ module.exports = class MongoDatabase {
     this.guildRepository = new GuildRepository(this.Guilds);
     this.statusRepository = new StatusRepository(this.Status);
     this.badgeRepository = new BadgeRepository(this.userRepository);
-    this.maintenanceRepository = new MaintenanceRepository(this.cmdRepository, this.statusRepository);
+    this.maintenanceRepository = new MaintenanceRepository(
+      this.cmdRepository,
+      this.statusRepository,
+    );
     this.huntRepository = new HuntRepository(this.Users);
     this.relationshipRepository = new RelationshipRepository(this.userRepository);
     this.blacklistRepository = new BlacklistRepository(this.userRepository);
     this.topRepository = new TopRepository(this.Users);
+    this.giveRepository = new GiveRepository(this.Users);
   }
 
   get repositories() {
@@ -60,23 +65,30 @@ module.exports = class MongoDatabase {
       relationshipRepository: this.relationshipRepository,
       blacklistRepository: this.blacklistRepository,
       topRepository: this.topRepository,
+      giveRepository: this.giveRepository,
     };
   }
 
   createConnection() {
     return new Promise((resolve, reject) => {
-      mongoose.connect(this.uri, {
-        useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true,
-      }, (err) => {
-        if (err) {
-          console.error(`(x) Error to connecting to database \n${err}`);
+      mongoose.connect(
+        this.uri,
+        {
+          useNewUrlParser: true,
+          useUnifiedTopology: true,
+          useCreateIndex: true,
+        },
+        (err) => {
+          if (err) {
+            console.error(`(x) Error to connecting to database \n${err}`);
 
-          return reject(err);
-        }
+            return reject(err);
+          }
 
-        console.log('[DATABASE] Conectado com sucesso à database');
-        return resolve();
-      });
+          console.log('[DATABASE] Conectado com sucesso à database');
+          return resolve();
+        },
+      );
     });
   }
 };

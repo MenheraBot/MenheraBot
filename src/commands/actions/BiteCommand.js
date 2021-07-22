@@ -31,7 +31,9 @@ module.exports = class BiteCommand extends Command {
     const embed = new MessageEmbed()
       .setTitle(ctx.locale('commands:bite.embed_title'))
       .setColor('#000000')
-      .setDescription(`${ctx.message.author} ${ctx.locale('commands:bite.embed_description')} ${user} :3`)
+      .setDescription(
+        `${ctx.message.author} ${ctx.locale('commands:bite.embed_description')} ${user} :3`,
+      )
       .setImage(rand)
       .setThumbnail(avatar)
       .setAuthor(ctx.message.author.tag, avatar);

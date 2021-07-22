@@ -29,15 +29,24 @@ module.exports = class DivorceCommand extends Command {
 
       const validReactions = [this.client.constants.emojis.no, this.client.constants.emojis.yes];
 
-      const filter = (reaction, usuario) => validReactions.includes(reaction.emoji.name) && usuario.id === ctx.message.author.id;
+      const filter = (reaction, usuario) =>
+        validReactions.includes(reaction.emoji.name) && usuario.id === ctx.message.author.id;
 
       const colector = msg.createReactionCollector(filter, { max: 1, time: 15000 });
 
       colector.on('collect', async (reaction) => {
-        if (reaction.emoji.name === this.client.constants.emojis.no) return ctx.replyT('success', ctx.locale('commands:divorce.canceled'));
-        ctx.send(`${ctx.message.author} ${ctx.locale('commands:divorce.confirmed_start')} ${user2Mention}. ${ctx.locale('commands:divorce.confirmed_end')}`);
+        if (reaction.emoji.name === this.client.constants.emojis.no)
+          return ctx.replyT('success', ctx.locale('commands:divorce.canceled'));
+        ctx.send(
+          `${ctx.message.author} ${ctx.locale(
+            'commands:divorce.confirmed_start',
+          )} ${user2Mention}. ${ctx.locale('commands:divorce.confirmed_end')}`,
+        );
 
-        await this.client.repositories.relationshipRepository.divorce(ctx.data.user.casado, ctx.message.author.id);
+        await this.client.repositories.relationshipRepository.divorce(
+          ctx.data.user.casado,
+          ctx.message.author.id,
+        );
       });
     });
   }

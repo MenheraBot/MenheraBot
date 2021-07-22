@@ -33,10 +33,12 @@ module.exports = class ProfileCommand extends Command {
         return ctx.replyT('error', 'commands:profile.unknow-user');
       }
     }
-    if (user?.casado !== 'false' && user?.casado) marry = await this.client.users.fetch(user.casado);
+    if (user?.casado !== 'false' && user?.casado)
+      marry = await this.client.users.fetch(user.casado);
 
     if (!user) return ctx.replyT('error', 'commands:profile.no-dbuser');
-    if (user.ban && ctx.message.author.id !== process.env.OWNER) return ctx.replyT('error', 'commands:profile.banned', { reason: user.banReason });
+    if (user.ban && ctx.message.author.id !== process.env.OWNER)
+      return ctx.replyT('error', 'commands:profile.banned', { reason: user.banReason });
 
     const avatar = member.displayAvatarURL({ format: 'png' });
     const usageCommands = await http.getProfileCommands(member.id);
