@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
-const statusSchema = mongoose.Schema({
+const statusSchema = new mongoose.Schema({
   _id: { type: String },
   ping: { type: Number, default: 0 },
   disabledCommands: { type: Array },
@@ -9,13 +9,13 @@ const statusSchema = mongoose.Schema({
   lastPingAt: { type: String },
 });
 
-const cmdSchema = mongoose.Schema({
+const cmdSchema = new mongoose.Schema({
   _id: { type: String },
   maintenance: { type: Boolean, default: false },
   maintenanceReason: { type: String, default: '' },
 });
 
-const guildSchema = mongoose.Schema({
+const guildSchema = new mongoose.Schema({
   id: { type: String, unique: true },
   prefix: { type: String, default: process.env.BOT_PREFIX },
   blockedChannels: { type: Array, default: [] },
@@ -23,7 +23,7 @@ const guildSchema = mongoose.Schema({
   lang: { type: String, default: 'pt-BR' },
 });
 
-const rpgSchema = mongoose.Schema({
+const rpgSchema = new mongoose.Schema({
   _id: { type: String },
   class: { type: String },
   life: { type: Number, default: 100 },
@@ -55,7 +55,7 @@ const rpgSchema = mongoose.Schema({
   familiar: { type: Object, default: {} },
 });
 
-const userSchema = mongoose.Schema({
+const userSchema = new mongoose.Schema({
   id: { type: String, unique: true },
   mamadas: { type: Number, default: 0 },
   mamou: { type: Number, default: 0 },
@@ -95,7 +95,7 @@ const userSchema = mongoose.Schema({
   }
 */
 
-const commandsSchema = mongoose.Schema({
+const commandsSchema = new mongoose.Schema({
   name: { type: String },
   pt_description: { type: String },
   pt_usage: { type: String },

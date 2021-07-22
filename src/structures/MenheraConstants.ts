@@ -113,12 +113,13 @@ Object.freeze(probabilities);
 Object.freeze(rpg);
 Object.freeze(votes);
 
+export { emojis };
+
 export default {
   shopEconomy,
   probabilities,
   rpg,
   votes,
-  emojis,
   COLORS,
   BLACKJACK_CARDS,
   LANGUAGES,
