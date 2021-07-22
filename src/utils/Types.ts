@@ -102,6 +102,13 @@ export interface IInventoryUser {
   minLevel?: number;
 }
 
+export interface IGuildSchema {
+  id: string;
+  prefix: string;
+  blockedChannels: Array<string>;
+  disabledCommands: Array<string>;
+  lang: string;
+}
 export interface IUserRpgSchema {
   _id: string;
   class: string;
@@ -180,4 +187,9 @@ export interface IRESTGameStats {
   lostMoney: number;
   winPorcentage: string;
   lostPorcentage: string;
+}
+
+export interface IContextData {
+  user: IUserSchema;
+  server: IGuildSchema;
 }
