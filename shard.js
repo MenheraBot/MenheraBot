@@ -10,6 +10,8 @@ async function startApp() {
   const shards = new ShardingManager(path.resolve(__dirname, 'dist', 'index.js'), {
     respawn: true,
     totalShards: shardCount,
+    token:
+      process.env.NODE_ENV === 'development' ? process.env.DEV_BOT_TOKEN : process.env.BOT_TOKEN,
   });
 
   shards.on('shardCreate', (shard) => {
