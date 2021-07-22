@@ -15,6 +15,7 @@ MenheraBot is an open source Discord bot made in JavaScript with [Discord.js](ht
 Feel free to add a star ⭐ to the repository to promote the project!
 
 ## ⚠️ Disclaimer ⚠️
+
 Menhera is currently changing her language and lib. We are going from JavaScript with Discord.js to TypeSript with Eris
 You can help us making pr's. Thanks for understanding.
 
