@@ -113,7 +113,7 @@ Object.freeze(probabilities);
 Object.freeze(rpg);
 Object.freeze(votes);
 
-module.exports = {
+export default {
   shopEconomy,
   probabilities,
   rpg,
