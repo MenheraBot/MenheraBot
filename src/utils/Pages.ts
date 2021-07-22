@@ -1,4 +1,5 @@
-const { MessageCollector } = require('discord.js');
+import CommandContext from '@structures/CommandContext';
+import { Message, MessageCollector, TextChannel } from 'discord.js';
 
 /**
  * returns the function when the first argument is not
@@ -8,7 +9,19 @@ const { MessageCollector } = require('discord.js');
 const func = (fn) => (typeof fn === 'function' ? fn : () => fn);
 
 class PagesCollector extends MessageCollector {
-  constructor(channel, { ctx, sent }, collectorOptions = { max: 5 }) {
+  public ctx: CommandContext;
+
+  public message: Message;
+
+  public sent: Message;
+
+  public invalidOption;
+
+  public findOption;
+
+  public handler;
+
+  constructor(public channel: TextChannel, { ctx, sent }, public collectorOptions = { max: 5 }) {
     super(channel, (m) => m.author.id === ctx.message.author.id, collectorOptions);
     this.ctx = ctx;
     this.message = ctx.message;
@@ -67,7 +80,7 @@ class PagesCollector extends MessageCollector {
     return this.sent;
   }
 
-  async onCollect(message) {
+  async onCollect(message: Message) {
     const option = await func(this.findOption)(message.content);
 
     if (!option) {
@@ -100,8 +113,8 @@ class PagesCollector extends MessageCollector {
       );
   }
 
-  static arrFindByIndex(arr) {
-    return (str) => arr.find((_, i) => i + 1 === Number(str));
+  static arrFindByIndex(arr: string[]) {
+    return (str: string) => arr.find((_: any, i: number) => i + 1 === Number(str));
   }
 
   static continue() {
