@@ -1,8 +1,10 @@
-const DBL = require('dblapi.js');
-const { MessageEmbed } = require('discord.js');
+import DBL from 'dblapi.js';
 
-module.exports = class DiscordBots {
-  constructor(client) {
+import { MessageEmbed } from 'discord.js';
+import MenheraClient from 'MenheraClient';
+
+export default class DiscordBots {
+  constructor(public client: MenheraClient) {
     this.client = client;
   }
 
@@ -10,7 +12,7 @@ module.exports = class DiscordBots {
     const dbl = new DBL(
       process.env.DBL_TOKEN,
       {
-        webhookPort: process.env.DBLHOOK_PORT,
+        webhookPort: parseInt(process.env.DBLHOOK_PORT),
         webhookAuth: process.env.DBL_AUTH,
       },
       this.client,
@@ -77,7 +79,7 @@ module.exports = class DiscordBots {
       user.voteCooldown = Date.now() + 43200000;
       await user.save();
 
-      const functionToEval = async (id, embedToSend) => {
+      const functionToEval = async (id: string, embedToSend: MessageEmbed) => {
         let hasSend = false;
         const userInShard = await this.client.users.fetch(id).catch();
 
@@ -90,7 +92,7 @@ module.exports = class DiscordBots {
           }
         }
       };
-
+      // @ts-ignore
       await this.client.shard.broadcastEval(functionToEval(vote.user, embed));
     });
 
@@ -101,4 +103,4 @@ module.exports = class DiscordBots {
       dbl.postStats(guilds, shardId, shardsCount);
     }, 1800000);
   }
-};
+}
