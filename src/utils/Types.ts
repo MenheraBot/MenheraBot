@@ -161,3 +161,23 @@ export interface IUserSchema {
   voteCooldown: string;
   trisal: Array<string>;
 }
+
+export interface ICommandUsedData {
+  authorName: string;
+  authorId: string;
+  guildName: string;
+  guildId: string;
+  commandName: string;
+  data: number;
+  args: string;
+}
+
+export interface IRESTGameStats {
+  playedGames: number;
+  lostGames: number;
+  winGames: number;
+  winMoney: number;
+  lostMoney: number;
+  winPorcentage: string;
+  lostPorcentage: string;
+}

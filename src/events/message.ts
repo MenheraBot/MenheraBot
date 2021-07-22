@@ -1,3 +1,4 @@
+/* eslint-disable import/named */
 import { MessageEmbed, Collection, Message } from 'discord.js';
 
 import i18next, { TFunction } from 'i18next';
@@ -6,7 +7,7 @@ import { LANGUAGES } from '@structures/MenheraConstants';
 
 import MenheraClient from 'MenheraClient';
 import { IUserSchema } from '@utils/Types';
-import makeRequest from '@utils/HTTPrequests';
+import { postCommand } from '@utils/HTTPrequests';
 import CommandContext from '@structures/CommandContext';
 
 export default class MessageReceive {
@@ -256,7 +257,7 @@ export default class MessageReceive {
         data: Date.now(),
         args: args.join(' '),
       };
-      await makeRequest.postCommand(data).catch();
+      await postCommand(data).catch();
     }
   }
 }

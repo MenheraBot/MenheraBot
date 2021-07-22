@@ -1,6 +1,7 @@
-const request = require('request-promise');
+import request from 'request-promise';
+import { ICommandUsedData, IRESTGameStats } from './Types';
 
-module.exports.getImageUrl = async (type) => {
+export const getImageUrl = async (type: string): Promise<string> => {
   const options = {
     method: 'GET',
     uri: `${process.env.API_IP}/api/assets/${type}`,
@@ -11,14 +12,20 @@ module.exports.getImageUrl = async (type) => {
     json: true,
   };
 
-  const response = await request(options).catch((err) =>
+  const response = await request(options).catch((err: Error) =>
     console.log(`[HTTP ERROR] ${err.message}`),
   );
 
   return response?.url || 'https://i.imgur.com/DHVUlFf.png';
 };
-
-module.exports.postRpg = async (userId, userClass, userLevel, dungeonLevel, death, date) => {
+export const postRpg = async (
+  userId: string,
+  userClass: string,
+  userLevel: number,
+  dungeonLevel: number,
+  death: boolean,
+  date: string,
+): Promise<void> => {
   const options = {
     method: 'POST',
     uri: `${process.env.API_IP}/api/rpg`,
@@ -36,10 +43,12 @@ module.exports.postRpg = async (userId, userClass, userLevel, dungeonLevel, deat
     },
     json: true,
   };
-  await request(options).catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
+  await request(options).catch((err: Error) => console.log(`[HTTP ERROR] ${err.message}`));
 };
 
-module.exports.getActivity = async (shard) => {
+type activity = 'PLAYING' | 'WATCHING' | 'STREAMING' | 'LISTENING';
+
+export const getActivity = async (shard: number): Promise<{ name: string; type: activity }> => {
   const options = {
     method: 'GET',
     uri: `${process.env.API_IP}/api/activity`,
@@ -53,13 +62,15 @@ module.exports.getActivity = async (shard) => {
     json: true,
   };
 
-  const result = await request(options).catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
+  const result = await request(options).catch((err: Error) =>
+    console.log(`[HTTP ERROR] ${err.message}`),
+  );
   if (!result)
     return { name: `❤️ | Menhera foi criada pela Lux | Shard ${shard}`, type: 'PLAYING' };
   return result;
 };
 
-module.exports.postCommand = async (data) => {
+export const postCommand = async (data: ICommandUsedData): Promise<void> => {
   const options = {
     method: 'POST',
     uri: `${process.env.API_IP}/api/commands`,
@@ -79,10 +90,14 @@ module.exports.postCommand = async (data) => {
     json: true,
   };
 
-  await request(options).catch((err) => console.log(`[HTTP ERROR]${err.message}`));
+  await request(options).catch((err: Error) => console.log(`[HTTP ERROR]${err.message}`));
 };
 
-module.exports.getProfileCommands = async (id) => {
+export const getProfileCommands = async (
+  id: string,
+): Promise<
+  boolean | { cmds: { count: number }; array: Array<{ name: string; count: number }> }
+> => {
   const options = {
     method: 'GET',
     uri: `${process.env.API_IP}/api/usages/user`,
@@ -96,18 +111,18 @@ module.exports.getProfileCommands = async (id) => {
     json: true,
   };
 
-  let has = false;
+  let has: boolean | Array<{ name: string; count: number }> = false;
 
   await request(options)
-    .then((data) => {
+    .then((data: Array<{ name: string; count: number }>) => {
       has = data;
     })
-    .catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
+    .catch((err: Error) => console.log(`[HTTP ERROR] ${err.message}`));
 
   return has;
 };
 
-module.exports.getTopCommands = async () => {
+export const getTopCommands = async (): Promise<boolean | { name: string; count: number }[]> => {
   const options = {
     method: 'GET',
     uri: `${process.env.API_IP}/api/usages/top/command`,
@@ -118,18 +133,18 @@ module.exports.getTopCommands = async () => {
     json: true,
   };
 
-  let has = false;
+  let has: boolean | { name: string; count: number }[] = false;
 
   await request(options)
-    .then((data) => {
+    .then((data: { name: string; count: number }[]) => {
       has = data;
     })
-    .catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
+    .catch((err: Error) => console.log(`[HTTP ERROR] ${err.message}`));
 
   return has;
 };
 
-module.exports.getTopUsers = async () => {
+export const getTopUsers = async (): Promise<boolean | { id: string; uses: number }[]> => {
   const options = {
     method: 'GET',
     uri: `${process.env.API_IP}/api/usages/top/user`,
@@ -140,18 +155,18 @@ module.exports.getTopUsers = async () => {
     json: true,
   };
 
-  let has = false;
+  let has: boolean | { id: string; uses: number }[] = false;
 
   await request(options)
-    .then((data) => {
+    .then((data: { id: string; uses: number }[]) => {
       has = data;
     })
-    .catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
+    .catch((err: Error) => console.log(`[HTTP ERROR] ${err.message}`));
 
   return has;
 };
 
-module.exports.getCoinflipUserStats = async (id) => {
+export const getCoinflipUserStats = async (id: string): Promise<boolean | IRESTGameStats> => {
   const options = {
     method: 'GET',
     uri: `${process.env.API_IP}/api/coinflip`,
@@ -165,17 +180,22 @@ module.exports.getCoinflipUserStats = async (id) => {
     json: true,
   };
 
-  let has = false;
+  let has: boolean | IRESTGameStats = false;
 
   await request(options)
-    .then((data) => {
+    .then((data: IRESTGameStats) => {
       has = data;
     })
-    .catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
+    .catch((err: Error) => console.log(`[HTTP ERROR] ${err.message}`));
   return has;
 };
 
-module.exports.postCoinflipGame = async (winnerId, loserId, betValue, date) => {
+export const postCoinflipGame = async (
+  winnerId: string,
+  loserId: string,
+  betValue: number,
+  date: number,
+): Promise<void> => {
   const options = {
     method: 'POST',
     uri: `${process.env.API_IP}/api/coinflip`,
@@ -192,10 +212,14 @@ module.exports.postCoinflipGame = async (winnerId, loserId, betValue, date) => {
     json: true,
   };
 
-  await request(options).catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
+  await request(options).catch((err: Error) => console.log(`[HTTP ERROR] ${err.message}`));
 };
 
-module.exports.postBlackJack = async (userId, didWin, betValue) => {
+export const postBlackJack = async (
+  userId: string,
+  didWin: boolean,
+  betValue: number,
+): Promise<void> => {
   const options = {
     method: 'POST',
     uri: `${process.env.API_IP}/api/blackjack`,
@@ -214,7 +238,7 @@ module.exports.postBlackJack = async (userId, didWin, betValue) => {
   await request(options).catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
 };
 
-module.exports.getBlackJackStats = async (id) => {
+export const getBlackJackStats = async (id: string): Promise<boolean | IRESTGameStats> => {
   const options = {
     method: 'GET',
     uri: `${process.env.API_IP}/api/blackjack`,
@@ -228,12 +252,12 @@ module.exports.getBlackJackStats = async (id) => {
     json: true,
   };
 
-  let has = false;
+  let has: boolean | IRESTGameStats = false;
 
   await request(options)
-    .then((data) => {
+    .then((data: IRESTGameStats) => {
       has = data;
     })
-    .catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
+    .catch((err: Error) => console.log(`[HTTP ERROR] ${err.message}`));
   return has;
 };
