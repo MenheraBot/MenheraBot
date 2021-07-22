@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-expressions */
 const { MessageEmbed } = require('discord.js');
 const http = require('../../utils/HTTPrequests');
-const Command = require('../../structures/command');
+const Command = require('../../structures/Command');
 
 module.exports = class BlackJackStatsCommand extends Command {
   constructor(client) {

@@ -1,5 +1,5 @@
 const moment = require('moment');
-const Command = require('../../structures/command');
+const Command = require('../../structures/Command');
 
 module.exports = class MarryCommand extends Command {
   constructor(client) {

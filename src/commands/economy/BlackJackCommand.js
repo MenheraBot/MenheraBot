@@ -3,7 +3,7 @@ const { BLACKJACK_CARDS } = require('@structures/MenheraConstants');
 const { postBlackJack } = require('@utils/HTTPrequests');
 const { MessageEmbed, MessageAttachment } = require('discord.js');
 const NewHttp = require('@utils/NewHttp');
-const Command = require('../../structures/command');
+const Command = require('../../structures/Command');
 
 const CalculateHandValue = (cards) => {
   const realValue = cards.reduce((p, c) => {

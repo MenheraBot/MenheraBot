@@ -1,6 +1,6 @@
 const NewHttp = require('@utils/NewHttp');
 const { MessageEmbed, MessageAttachment } = require('discord.js');
-const Command = require('../../structures/command');
+const Command = require('../../structures/Command');
 
 module.exports = class TrisalCommand extends Command {
   constructor(client) {

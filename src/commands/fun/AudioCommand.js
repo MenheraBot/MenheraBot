@@ -1,5 +1,5 @@
 const { resolve } = require('path');
-const Command = require('../../structures/command');
+const Command = require('../../structures/Command');
 
 module.exports = class AudioCommand extends Command {
   constructor(client) {

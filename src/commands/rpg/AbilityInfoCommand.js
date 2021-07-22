@@ -1,5 +1,5 @@
 const { MessageEmbed } = require('discord.js');
-const Command = require('../../structures/command');
+const Command = require('../../structures/Command');
 const abilitiesFile = require('../../structures/RpgHandler').abiltiies;
 
 module.exports = class AbilityInfoCommand extends Command {

@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-expressions */
 const { MessageEmbed } = require('discord.js');
 const moment = require('moment');
-const Command = require('../../structures/command');
+const Command = require('../../structures/Command');
 
 module.exports = class CooldownsCommand extends Command {
   constructor(client) {

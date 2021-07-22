@@ -1,7 +1,7 @@
 /* eslint-disable guard-for-in */
 const { MessageEmbed } = require('discord.js');
 const moment = require('moment');
-const Command = require('../../structures/command');
+const Command = require('../../structures/Command');
 const PagesCollector = require('../../utils/Pages');
 const itemsFile = require('../../structures/RpgHandler').items;
 const RPGUtil = require('../../utils/RPGUtil');

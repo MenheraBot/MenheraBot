@@ -1,5 +1,16 @@
-module.exports = class Command {
-  constructor(client, options) {
+/* eslint-disable no-unused-vars */
+import { ICommandConfig } from '@utils/Types';
+import MenheraClient from 'MenheraClient';
+import CommandContext from './CommandContext';
+
+export default class Command {
+  public config: ICommandConfig;
+
+  public dir: string;
+
+  public run: (ctx: CommandContext) => Promise<unknown>;
+
+  constructor(public client: MenheraClient, options: ICommandConfig) {
     this.client = client;
 
     this.config = {
@@ -15,4 +26,4 @@ module.exports = class Command {
 
     this.dir = null;
   }
-};
+}

@@ -1,5 +1,5 @@
 /* eslint-disable no-use-before-define */
-const Command = require('../../structures/command');
+const Command = require('../../structures/Command');
 
 module.exports = class ShopCommand extends Command {
   constructor(client) {

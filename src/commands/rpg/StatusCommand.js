@@ -1,7 +1,7 @@
 const NewHttp = require('@utils/NewHttp');
 const { MessageAttachment } = require('discord.js');
 const familiarsFile = require('../../structures/RpgHandler').familiars;
-const Command = require('../../structures/command');
+const Command = require('../../structures/Command');
 
 module.exports = class StatusCommand extends Command {
   constructor(client) {

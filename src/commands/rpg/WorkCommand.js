@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 const { MessageEmbed } = require('discord.js');
 const moment = require('moment');
-const Command = require('../../structures/command');
+const Command = require('../../structures/Command');
 const jobsFile = require('../../structures/Rpgs/jobs.json');
 const itemsFile = require('../../structures/Rpgs/items.json');
 const rpgUtil = require('../../utils/RPGUtil');

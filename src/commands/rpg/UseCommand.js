@@ -1,5 +1,5 @@
 const { MessageEmbed } = require('discord.js');
-const Command = require('../../structures/command');
+const Command = require('../../structures/Command');
 
 function countItems(arr) {
   return arr.reduce((p, v) => {

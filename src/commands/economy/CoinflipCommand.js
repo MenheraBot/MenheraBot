@@ -1,4 +1,4 @@
-const Command = require('../../structures/command');
+const Command = require('../../structures/Command');
 const http = require('../../utils/HTTPrequests');
 
 module.exports = class CoinflipCommand extends Command {

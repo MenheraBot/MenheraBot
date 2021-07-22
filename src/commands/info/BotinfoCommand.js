@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const moment = require('moment');
-const Command = require('../../structures/command');
+const Command = require('../../structures/Command');
 require('moment-duration-format');
 const { version } = require('../../../package.json');
 

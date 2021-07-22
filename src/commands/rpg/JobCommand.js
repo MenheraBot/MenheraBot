@@ -1,5 +1,5 @@
 const { MessageEmbed } = require('discord.js');
-const Command = require('../../structures/command');
+const Command = require('../../structures/Command');
 const jobsFile = require('../../structures/Rpgs/jobs.json');
 
 module.exports = class JobCommand extends Command {

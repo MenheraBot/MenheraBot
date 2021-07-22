@@ -1,5 +1,5 @@
 const { MessageEmbed } = require('discord.js');
-const Command = require('../../structures/command');
+const Command = require('../../structures/Command');
 const familiarsFile = require('../../structures/Rpgs/familiar.json');
 
 module.exports = class BattleBoss extends Command {

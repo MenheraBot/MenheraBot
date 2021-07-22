@@ -1,4 +1,4 @@
-const Command = require('../../structures/command');
+const Command = require('../../structures/Command');
 const { emojis } = require('../../structures/MenheraConstants');
 
 const validArgs = [

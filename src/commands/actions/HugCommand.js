@@ -1,5 +1,5 @@
 const { MessageEmbed } = require('discord.js');
-const Command = require('../../structures/command');
+const Command = require('../../structures/Command');
 const { getImageUrl } = require('../../utils/HTTPrequests');
 
 module.exports = class HugCommand extends Command {

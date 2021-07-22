@@ -1,4 +1,4 @@
-const Command = require('../../structures/command');
+const Command = require('../../structures/Command');
 const LocaleStructure = require('../../structures/LocaleStructure');
 
 module.exports = class UpdateCommand extends Command {

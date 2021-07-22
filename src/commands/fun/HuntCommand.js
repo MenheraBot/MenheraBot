@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const moment = require('moment');
-const Command = require('../../structures/command');
+const Command = require('../../structures/Command');
 const { COLORS } = require('../../structures/MenheraConstants');
 
 module.exports = class HuntCommand extends Command {

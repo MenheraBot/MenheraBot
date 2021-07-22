@@ -1,4 +1,4 @@
-const Command = require('../../structures/command');
+const Command = require('../../structures/Command');
 
 module.exports = class XandãoCommand extends Command {
   constructor(client) {

@@ -1,7 +1,7 @@
 const { MessageEmbed } = require('discord.js');
 const table = require('string-table');
 const moment = require('moment');
-const Command = require('../../structures/command');
+const Command = require('../../structures/Command');
 require('moment-duration-format');
 
 module.exports = class PingCommand extends Command {

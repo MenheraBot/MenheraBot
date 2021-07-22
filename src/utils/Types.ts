@@ -1,3 +1,5 @@
+import { BitFieldResolvable, PermissionString } from 'discord.js';
+
 /* eslint-disable no-unused-vars */
 export interface IClientConfigs {
   commandsDirectory: string;
@@ -10,8 +12,8 @@ export interface ICommandConfig {
   aliases: Array<string>;
   description?: string;
   cooldown?: number;
-  userPermissions?: Array<string>;
-  clientPermissions?: Array<string>;
+  userPermissions?: BitFieldResolvable<PermissionString>[];
+  clientPermissions?: BitFieldResolvable<PermissionString>[];
   devsOnly?: boolean;
 }
 
@@ -31,4 +33,44 @@ export interface IBlackjackCards {
   isAce: boolean;
   id: number;
   hidden?: boolean;
+}
+
+interface IColor {
+  nome: string;
+  cor: string;
+  preço: number;
+}
+
+interface IBadge {
+  id: number;
+  obtainAt: string;
+}
+
+export interface IUserSchema {
+  id: string;
+  mamadas: number;
+  mamou: number;
+  casado: string;
+  nota: string;
+  data?: string;
+  shipValue?: string;
+  ban?: boolean;
+  banReason?: string;
+  afk: boolean;
+  afkReason: string;
+  afkGuild?: string;
+  cor: string;
+  cores: Array<IColor>;
+  caçados: number;
+  anjos: number;
+  semideuses: number;
+  deuses: number;
+  caçarTime: string;
+  rolls: number;
+  rollTime: string;
+  estrelinhas: number;
+  votos: number;
+  badges: Array<IBadge>;
+  voteCooldown: string;
+  trisal: Array<string>;
 }

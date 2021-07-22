@@ -1,6 +1,6 @@
 const { MessageAttachment } = require('discord.js');
 const NewHttp = require('@utils/NewHttp');
-const Command = require('../../structures/command');
+const Command = require('../../structures/Command');
 const Util = require('../../utils/Util');
 const http = require('../../utils/HTTPrequests');
 

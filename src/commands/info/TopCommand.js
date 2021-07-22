@@ -2,7 +2,7 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-await-in-loop */
 const { MessageEmbed } = require('discord.js');
-const Command = require('../../structures/command');
+const Command = require('../../structures/Command');
 const http = require('../../utils/HTTPrequests');
 const Util = require('../../utils/Util');
 

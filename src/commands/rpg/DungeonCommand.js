@@ -1,7 +1,7 @@
 const { MessageEmbed } = require('discord.js');
 const familiarsFile = require('../../structures/Rpgs/familiar.json');
 
-const Command = require('../../structures/command');
+const Command = require('../../structures/Command');
 
 module.exports = class DungeonCommand extends Command {
   constructor(client) {

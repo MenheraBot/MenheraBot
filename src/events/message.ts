@@ -1,21 +1,27 @@
-const { MessageEmbed, Collection } = require('discord.js');
-const i18next = require('i18next');
-const { LANGUAGES } = require('@structures/MenheraConstants');
-const makeRequest = require('../utils/HTTPrequests');
-const CommandContext = require('../structures/CommandContext');
+import { MessageEmbed, Collection, Message } from 'discord.js';
 
-const cooldowns = new Collection();
-const warnedUserCooldowns = new Map();
+import i18next, { TFunction } from 'i18next';
 
-module.exports = class MessageReceive {
-  constructor(client) {
+import { LANGUAGES } from '@structures/MenheraConstants';
+
+import MenheraClient from 'MenheraClient';
+import { IUserSchema } from '@utils/Types';
+import makeRequest from '@utils/HTTPrequests';
+import CommandContext from '@structures/CommandContext';
+
+export default class MessageReceive {
+  private cooldowns: Collection<string, Collection<string, number>> = new Collection();
+
+  private warnedUserCooldowns: Map<string, boolean> = new Map();
+
+  constructor(public client: MenheraClient) {
     this.client = client;
   }
 
-  async notifyAfk(message, t, userIds) {
+  async notifyAfk(message: Message, t: TFunction, userIds: Array<string>): Promise<void> {
     const afkUsers = await this.client.repositories.userRepository.findAfkByIDs(userIds);
 
-    afkUsers.forEach(async (data) => {
+    afkUsers.forEach(async (data: IUserSchema) => {
       const user = await this.client.users.fetch(data.id);
       if (user.id !== message.author.id)
         message.channel.send(
@@ -27,7 +33,7 @@ module.exports = class MessageReceive {
     });
   }
 
-  async run(message) {
+  async run(message: Message) {
     if (message.author.bot) return;
     if (message.channel.type === 'dm') return;
     if (!message.channel.permissionsFor(message.guild.me).has('SEND_MESSAGES')) return;
@@ -129,20 +135,21 @@ module.exports = class MessageReceive {
         })}`,
       );
 
-    if (!cooldowns.has(command.config.name)) cooldowns.set(command.config.name, new Collection());
+    if (!this.cooldowns.has(command.config.name))
+      this.cooldowns.set(command.config.name, new Collection());
 
     if (process.env.OWNER !== message.author.id) {
       const now = Date.now();
-      const timestamps = cooldowns.get(command.config.name);
+      const timestamps = this.cooldowns.get(command.config.name);
       const cooldownAmount = (command.config.cooldown || 3) * 1000;
 
       if (timestamps.has(message.author.id)) {
         const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
-        const hasBeenWarned = warnedUserCooldowns.get(message.author.id);
+        const hasBeenWarned = this.warnedUserCooldowns.get(message.author.id);
 
         if (now < expirationTime) {
           if (hasBeenWarned) return;
-          warnedUserCooldowns.set(message.author.id, true);
+          this.warnedUserCooldowns.set(message.author.id, true);
           const timeLeft = (expirationTime - now) / 1000;
           return message.channel.send(
             `<:atencao:759603958418767922> | ${t('events:cooldown', {
@@ -154,10 +161,10 @@ module.exports = class MessageReceive {
       }
 
       timestamps.set(message.author.id, now);
-      warnedUserCooldowns.set(message.author.id, false);
+      this.warnedUserCooldowns.set(message.author.id, false);
       setTimeout(() => {
         timestamps.delete(message.author.id);
-        warnedUserCooldowns.delete(message.author.id);
+        this.warnedUserCooldowns.delete(message.author.id);
       }, cooldownAmount);
     }
 
@@ -252,4 +259,4 @@ module.exports = class MessageReceive {
       await makeRequest.postCommand(data).catch();
     }
   }
-};
+}
