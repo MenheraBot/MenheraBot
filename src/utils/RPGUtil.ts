@@ -1,7 +1,8 @@
-const { ferreiro } = require('../structures/Rpgs/items.json');
+import { ferreiro } from '../structures/Rpgs/items.json';
+import { IInventoryUser, IUserRpgSchema } from './Types';
 
-class RPGUtil {
-  static countItems(items) {
+export default class RPGUtil {
+  static countItems(items: IInventoryUser[]): Array<IInventoryUser & { amount: number }> {
     return items.reduce((p, v) => {
       const exists = p.findIndex((x) => x.name === v.name);
       if (exists !== -1) {
@@ -20,17 +21,21 @@ class RPGUtil {
     }, []);
   }
 
-  static getBackpack(userRpgData) {
+  static getBackpack(userRpgData: IUserRpgSchema): {
+    name: string;
+    capacity: number;
+    value: number;
+  } {
     const backpackId = userRpgData?.backpack.name;
     if (!backpackId) {
-      throw new Error(`${userRpgData.id} not has a backpack.`);
+      throw new Error(`${userRpgData._id} doesn't has a backpack.`);
     }
 
     const backpack = ferreiro.find(
       (item) => item.category === 'backpack' && item.id === backpackId,
     );
     if (!backpack) {
-      throw new Error(`${userRpgData.id} has a fake backpack. (${backpackId})`);
+      throw new Error(`${userRpgData._id} has a fake backpack. (${backpackId})`);
     }
 
     return {
@@ -40,11 +45,11 @@ class RPGUtil {
     };
   }
 
-  static addItemInInventory(user, item, amount = 1) {
+  static addItemInInventory(user: IUserRpgSchema, item: IInventoryUser, amount = 1): void {
     user.inventory.push(...new Array(amount).fill(item));
   }
 
-  static removeItemInLoots(user, itemName, amount = 1) {
+  static removeItemInLoots(user: IUserRpgSchema, itemName: string, amount = 1): void {
     for (let i = 0; i < amount; i++) {
       user.loots.splice(
         user.loots.findIndex((loot) => loot.name === itemName),
@@ -53,5 +58,3 @@ class RPGUtil {
     }
   }
 }
-
-module.exports = RPGUtil;
