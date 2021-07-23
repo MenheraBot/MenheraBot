@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
 import { BitFieldResolvable, PermissionString } from 'discord.js';
+import { Document } from 'mongoose';
 
 /* eslint-disable no-unused-vars */
 export interface IClientConfigs {
@@ -195,8 +196,8 @@ export interface IMobAttack {
 }
 
 export interface IContextData {
-  user: IUserSchema;
-  server: IGuildSchema;
+  user: IUserSchema & Document;
+  server: IGuildSchema & Document;
 }
 
 export type mobType =

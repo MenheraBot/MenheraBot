@@ -1,7 +1,9 @@
-const Command = require('../../structures/Command');
+import CommandContext from '@structures/CommandContext';
+import MenheraClient from 'MenheraClient';
+import Command from '@structures/Command';
 
-module.exports = class LanguageCommand extends Command {
-  constructor(client) {
+export default class LanguageCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'language',
       aliases: ['linguagem', 'lang'],
@@ -12,7 +14,7 @@ module.exports = class LanguageCommand extends Command {
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     ctx.replyT('question', 'commands:language.question').then((msg) => {
       msg.react('🇧🇷');
       setTimeout(() => {
@@ -41,4 +43,4 @@ module.exports = class LanguageCommand extends Command {
       });
     });
   }
-};
+}

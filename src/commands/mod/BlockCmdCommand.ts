@@ -1,7 +1,9 @@
-const Command = require('../../structures/Command');
+import CommandContext from '@structures/CommandContext';
+import MenheraClient from 'MenheraClient';
+import Command from '@structures/Command';
 
-module.exports = class BlockCmdCommand extends Command {
-  constructor(client) {
+export default class BlockCmdCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'blockcommand',
       aliases: ['blockcmd', 'blockearcomando'],
@@ -11,7 +13,7 @@ module.exports = class BlockCmdCommand extends Command {
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     if (!ctx.args[0]) return ctx.replyT('error', 'commands:blockcommand.no-args');
 
     const cmd =
@@ -38,4 +40,4 @@ module.exports = class BlockCmdCommand extends Command {
 
     await ctx.data.server.save();
   }
-};
+}

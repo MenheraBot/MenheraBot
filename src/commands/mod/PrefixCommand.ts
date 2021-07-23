@@ -1,7 +1,9 @@
-const Command = require('../../structures/Command');
+import CommandContext from '@structures/CommandContext';
+import MenheraClient from 'MenheraClient';
+import Command from '@structures/Command';
 
-module.exports = class PrefixCommand extends Command {
-  constructor(client) {
+export default class PrefixCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'prefix',
       aliases: ['prefixo'],
@@ -12,7 +14,7 @@ module.exports = class PrefixCommand extends Command {
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     const [prefix] = ctx.args;
     if (!prefix) return ctx.replyT('error', 'commands:prefix.no-args');
     if (prefix.length > 3) return ctx.replyT('error', 'commands:prefix.invalid-input');
@@ -22,4 +24,4 @@ module.exports = class PrefixCommand extends Command {
 
     ctx.replyT('success', 'commands:prefix.done', { prefix: ctx.data.server.prefix });
   }
-};
+}

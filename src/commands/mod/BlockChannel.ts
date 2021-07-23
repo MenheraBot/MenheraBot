@@ -1,7 +1,9 @@
-const Command = require('../../structures/Command');
+import CommandContext from '@structures/CommandContext';
+import MenheraClient from 'MenheraClient';
+import Command from '@structures/Command';
 
-module.exports = class BlockChannelCommand extends Command {
-  constructor(client) {
+export default class BlockChannelCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'blockchannel',
       aliases: ['bloquearcanal'],
@@ -11,7 +13,7 @@ module.exports = class BlockChannelCommand extends Command {
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     if (ctx.data.server.blockedChannels.includes(ctx.message.channel.id)) {
       const index = ctx.data.server.blockedChannels.indexOf(ctx.message.channel.id);
       if (index > -1) {
@@ -25,4 +27,4 @@ module.exports = class BlockChannelCommand extends Command {
 
     ctx.data.server.save();
   }
-};
+}
