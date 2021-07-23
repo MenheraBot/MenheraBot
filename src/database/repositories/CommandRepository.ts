@@ -1,15 +1,17 @@
-module.exports = class CommandRepository {
-  constructor(commandModal) {
+import { Commands } from '@structures/DatabaseCollections';
+
+export default class CommandRepository {
+  constructor(private commandModal: typeof Commands) {
     this.commandModal = commandModal;
   }
 
-  findByName(commandName) {
+  findByName(commandName: string) {
     return this.commandModal.findOne({
       name: commandName,
     });
   }
 
-  create(commandName, { category, ptDescription, ptUsage, usDescription, usUsage }) {
+  create(commandName: string, { category, ptDescription, ptUsage, usDescription, usUsage }) {
     return this.commandModal.create({
       name: commandName,
       category,
@@ -20,7 +22,7 @@ module.exports = class CommandRepository {
     });
   }
 
-  updateByName(commandName, { category, ptDescription, ptUsage, usDescription, usUsage }) {
+  updateByName(commandName: string, { category, ptDescription, ptUsage, usDescription, usUsage }) {
     return this.commandModal.updateOne(
       {
         name: commandName,
@@ -34,4 +36,4 @@ module.exports = class CommandRepository {
       },
     );
   }
-};
+}

@@ -1,18 +1,20 @@
-module.exports = class StarRepository {
-  constructor(userModal) {
+import { Users } from '@structures/DatabaseCollections';
+
+export default class StarRepository {
+  constructor(private userModal: typeof Users) {
     this.userModal = userModal;
   }
 
-  async add(userID, value) {
+  async add(userID: string, value: number) {
     await this.userModal.updateOne({ id: userID }, { $inc: { estrelinhas: value } });
   }
 
-  async remove(userID, value) {
+  async remove(userID: string, value: number) {
     const invertedValue = value * -1;
     await this.userModal.updateOne({ id: userID }, { $inc: { estrelinhas: invertedValue } });
   }
 
-  async set(userID, value) {
+  async set(userID: string, value: number) {
     await this.userModal.updateOne({ id: userID }, { $set: { estrelinhas: value } });
   }
-};
+}

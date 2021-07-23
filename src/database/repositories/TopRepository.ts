@@ -1,15 +1,17 @@
 /* eslint-disable no-underscore-dangle */
+import { Users } from '@structures/DatabaseCollections';
+
 const TOP_TYPES = {
   mamou: 'mamou',
   stars: 'estrelinhas',
 };
 
-module.exports = class TopRepository {
-  constructor(userModal) {
+export default class TopRepository {
+  constructor(private userModal: typeof Users) {
     this.userModal = userModal;
   }
 
-  async _getTop(userID, topType) {
+  async _getTop(userID: string, topType: string) {
     const res = await this.userModal.aggregate([
       {
         $sort: {
@@ -43,15 +45,15 @@ module.exports = class TopRepository {
     return res[0];
   }
 
-  async getUserMamouRank(userID) {
+  async getUserMamouRank(userID: string) {
     return this._getTop(userID, TOP_TYPES.mamou);
   }
 
-  async getUserStarsRank(userID) {
+  async getUserStarsRank(userID: string) {
     return this._getTop(userID, TOP_TYPES.stars);
   }
 
-  async getUserHuntRank(userID, huntType) {
+  async getUserHuntRank(userID: string, huntType: string) {
     return this._getTop(userID, huntType);
   }
-};
+}

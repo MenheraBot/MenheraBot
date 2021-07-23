@@ -1,9 +1,17 @@
-module.exports = class StatusRepository {
-  constructor(statusModal) {
+import { Status } from '@structures/DatabaseCollections';
+
+export default class StatusRepository {
+  constructor(private statusModal: typeof Status) {
     this.statusModal = statusModal;
   }
 
-  async CreateOrUpdate(shardID, ping, lastPingAt, guilds, uptime) {
+  async CreateOrUpdate(
+    shardID: number,
+    ping: number,
+    lastPingAt: number,
+    guilds: number,
+    uptime: number,
+  ) {
     const result = await this.statusModal.findById(shardID);
     if (result) {
       await this.statusModal.updateOne(
@@ -26,17 +34,17 @@ module.exports = class StatusRepository {
     }
   }
 
-  async addMaintenance(commandName, maintenanceReason) {
+  async addMaintenance(commandName: string, maintenanceReason: string) {
     await this.statusModal.updateOne(
       { _id: 'main' },
       { $push: { disabledCommands: { name: commandName, reason: maintenanceReason } } },
     );
   }
 
-  async removeMaintenance(commandName) {
+  async removeMaintenance(commandName: string) {
     await this.statusModal.updateOne(
       { _id: 'main' },
       { $pull: { disabledCommands: { name: commandName } } },
     );
   }
-};
+}

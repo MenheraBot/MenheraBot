@@ -1,9 +1,11 @@
-module.exports = class MamarRepository {
-  constructor(userRepository) {
+import UserRepository from './UserRepository';
+
+export default class MamarRepository {
+  constructor(private userRepository: UserRepository) {
     this.userRepository = userRepository;
   }
 
-  async mamar(fromUserID, toUserID, qty = 1) {
+  async mamar(fromUserID: string, toUserID: string, qty = 1) {
     const fromUser = await this.userRepository.findOrCreate(fromUserID);
     const toUser = await this.userRepository.findOrCreate(toUserID);
 
@@ -15,4 +17,4 @@ module.exports = class MamarRepository {
 
     return { toUser, fromUser };
   }
-};
+}
