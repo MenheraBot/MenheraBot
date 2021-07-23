@@ -5,11 +5,4 @@ import checks from './Rpgs/checks';
 import jobs from './Rpgs/jobs.json';
 import familiars from './Rpgs/familiar.json';
 
-export default {
-  abilities,
-  mobs,
-  items,
-  checks,
-  jobs,
-  familiars,
-};
+export { abilities, mobs, items, checks, jobs, familiars };

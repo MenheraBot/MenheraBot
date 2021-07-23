@@ -1,15 +1,33 @@
-const moment = require('moment');
-const { MessageEmbed } = require('discord.js');
-const RPGUtil = require('../../utils/RPGUtil');
-const mobsFile = require('../RpgHandler').mobs;
-const abilitiesFile = require('../RpgHandler').abiltiies;
-const familiarsFile = require('../RpgHandler').familiars;
-const http = require('../../utils/HTTPrequests');
-const constants = require('../MenheraConstants');
+import moment from 'moment';
+import { Message, MessageEmbed } from 'discord.js';
+import {
+  IAbility,
+  IBattleChoice,
+  IDungeonMob,
+  IMobAttack,
+  IUniquePower,
+  IUserRpgSchema,
+} from '@utils/Types';
+import CommandContext from '@structures/CommandContext';
+import { Document } from 'mongoose';
+import RPGUtil from '../../utils/RPGUtil';
+import {
+  mobs as mobsFile,
+  abilities as abilitiesFile,
+  familiars as familiarsFile,
+} from '../RpgHandler';
 
-const random = (arr) => arr[Math.floor(Math.random() * arr.length)];
+import { postRpg } from '../../utils/HTTPrequests';
+import { rpg } from '../MenheraConstants';
 
-const getEnemyByUserLevel = (user, type, dungeonLevel, ctx) => {
+const random = (arr: Array<any>): any => arr[Math.floor(Math.random() * arr.length)];
+
+const getEnemyByUserLevel = (
+  user: IUserRpgSchema,
+  type: string,
+  dungeonLevel: number,
+  ctx: CommandContext,
+): IDungeonMob | boolean | string => {
   if (type === 'boss') {
     if (user.level > 24 && user.level < 30) {
       return random([...mobsFile.boss, ...mobsFile.gods]);
@@ -70,12 +88,18 @@ const getEnemyByUserLevel = (user, type, dungeonLevel, ctx) => {
   return validLevels[dungeonLevel].mob;
 };
 
-const battle = async (ctx, escolha, user, inimigo, type) => {
-  let danoUser;
+const battle = async (
+  ctx: CommandContext,
+  escolha: IBattleChoice,
+  user: IUserRpgSchema & Document,
+  inimigo: IDungeonMob,
+  type: 'boss' | 'dungeon',
+) => {
+  let danoUser: number;
   if (escolha.scape) {
     ctx.replyT('scape', 'roleplay:scape');
     user.inBattle = false;
-    user.dungeonCooldown = constants.rpg.scapeCooldown + Date.now();
+    user.dungeonCooldown = `${rpg.scapeCooldown + Date.now()}`;
     await user.save();
     return;
   }
@@ -145,11 +169,16 @@ const battle = async (ctx, escolha, user, inimigo, type) => {
   return enemyShot(ctx, user, enemy, type, toSay);
 };
 
-const morte = async (ctx, user, toSay, inimigo) => {
-  http.postRpg(user.id, user.class, user.level, inimigo.dgLevel, true, Date.now());
+const morte = async (
+  ctx: CommandContext,
+  user: IUserRpgSchema & Document,
+  toSay: string,
+  inimigo: IDungeonMob,
+) => {
+  postRpg(user.id, user.class, user.level, inimigo.dgLevel, true, Date.now());
 
   ctx.reply('error', `${toSay}\n\n${ctx.locale('roleplay:death')}`);
-  user.death = Date.now() + constants.rpg.deathCooldown;
+  user.death = `{Date.now() + rpg.deathCooldown}`;
   user.life = 0;
   user.inBattle = false;
   try {
@@ -161,10 +190,16 @@ const morte = async (ctx, user, toSay, inimigo) => {
   }
 };
 
-const enemyShot = async (ctx, user, inimigo, type, toSay) => {
-  const habilidades = await getAbilities(user);
+const enemyShot = async (
+  ctx: CommandContext,
+  user: IUserRpgSchema & Document,
+  inimigo: IDungeonMob,
+  type: 'boss' | 'dungeon',
+  toSay: string,
+) => {
+  const habilidades = getAbilities(user);
 
-  let danoRecebido;
+  let danoRecebido: number;
   const armadura =
     user?.familiar?.id && user.familiar.type === 'armor'
       ? user.armor +
@@ -173,7 +208,7 @@ const enemyShot = async (ctx, user, inimigo, type, toSay) => {
           (user.familiar.level - 1) * familiarsFile[user.familiar.id].boost.value)
       : user.armor + user.protection.armor;
 
-  const ataque = await inimigo.ataques[Math.floor(Math.random() * inimigo.ataques.length)];
+  const ataque = inimigo.ataques[Math.floor(Math.random() * inimigo.ataques.length)];
 
   if (ataque.damage - armadura < 5) {
     danoRecebido = 5;
@@ -189,10 +224,19 @@ const enemyShot = async (ctx, user, inimigo, type, toSay) => {
   continueBattle(ctx, inimigo, habilidades, user, type, ataque, toSay);
 };
 
-const continueBattle = async (ctx, inimigo, habilidades, user, type, ataque, toSay) => {
-  const options = [
+const continueBattle = async (
+  ctx: CommandContext,
+  inimigo: IDungeonMob,
+  habilidades: Array<IUniquePower & IAbility>,
+  user: IUserRpgSchema & Document,
+  type: 'boss' | 'dungeon',
+  ataque: IMobAttack,
+  toSay: string,
+) => {
+  const options: Array<IBattleChoice> = [
     {
       name: ctx.locale('commands:dungeon.scape'),
+      // @ts-ignore
       damage: '🐥',
       scape: true,
     },
@@ -267,11 +311,10 @@ const continueBattle = async (ctx, inimigo, habilidades, user, type, ataque, toS
     .setDescription(texto);
   await ctx.sendC(toSay, embed);
 
-  const filter = (m) => m.author.id === ctx.message.author.id;
+  const filter = (m: Message) => m.author.id === ctx.message.author.id;
   const collector = ctx.message.channel.createMessageCollector(filter, {
     max: 1,
     time: 7000,
-    errors: ['time'],
   });
 
   let time = false;
@@ -293,7 +336,7 @@ const continueBattle = async (ctx, inimigo, habilidades, user, type, ataque, toS
   }, 7000);
 };
 
-const finalChecks = async (ctx, user) => {
+const finalChecks = async (ctx: CommandContext, user: IUserRpgSchema & Document) => {
   let texto = '';
 
   setTimeout(async () => {
@@ -354,7 +397,7 @@ const finalChecks = async (ctx, user) => {
   }, 500);
 };
 
-const newAbilities = async (ctx, user) => {
+const newAbilities = async (ctx: CommandContext, user: IUserRpgSchema & Document) => {
   setTimeout(async () => {
     if (user.level === 5) {
       switch (user.class) {
@@ -691,11 +734,16 @@ const newAbilities = async (ctx, user) => {
   }, 500);
 };
 
-const resultBattle = async (ctx, user, inimigo, toSay) => {
+const resultBattle = async (
+  ctx: CommandContext,
+  user: IUserRpgSchema & Document,
+  inimigo: IDungeonMob,
+  toSay: string,
+) => {
   const randomLoot = inimigo.loots[Math.floor(Math.random() * inimigo.loots.length)];
   let canGetLoot = true;
 
-  http.postRpg(user.id, user.class, user.level, inimigo.dgLevel, false, Date.now());
+  postRpg(user.id, user.class, user.level, inimigo.dgLevel, false, Date.now());
 
   const backpack = RPGUtil.getBackpack(user);
   if (backpack.value >= backpack.capacity) canGetLoot = false;
@@ -727,7 +775,7 @@ const resultBattle = async (ctx, user, inimigo, toSay) => {
   return finalChecks(ctx, user);
 };
 
-const getAbilities = async (user) => {
+const getAbilities = (user: IUserRpgSchema): Array<IAbility & IUniquePower> => {
   const abilities = [];
 
   let filtrado;
@@ -789,11 +837,13 @@ const getAbilities = async (user) => {
       break;
   }
 
-  const uniquePowerFiltred = filtrado.uniquePowers.filter((f) => f.name === user.uniquePower.name);
+  const uniquePowerFiltred = filtrado.uniquePowers.filter(
+    (f: IUniquePower) => f.name === user.uniquePower.name,
+  );
   const abilitiesFiltred = [];
 
   user.abilities.forEach((hab) => {
-    const a = filtrado.normalAbilities.filter((f) => f.name === hab.name);
+    const a = filtrado.normalAbilities.filter((f: IAbility) => f.name === hab.name);
     abilitiesFiltred.push(a[0]);
   });
 
@@ -806,7 +856,7 @@ const getAbilities = async (user) => {
   return abilities;
 };
 
-const initialChecks = async (user, ctx) => {
+const initialChecks = (user: IUserRpgSchema & Document, ctx: CommandContext) => {
   let pass = true;
   const motivo = [];
 
@@ -822,21 +872,21 @@ const initialChecks = async (user, ctx) => {
       name: `💔 | ${ctx.locale('roleplay:initial.no-life')}`,
       value: ctx.locale('roleplay:initial.no-life-text', {
         time:
-          parseInt(user.death - Date.now()) > 3600000
-            ? moment.utc(parseInt(user.death - Date.now())).format('HH:mm:ss')
-            : moment.utc(parseInt(user.death - Date.now())).format('mm:ss'),
+          parseInt(user.death) - Date.now() > 3600000
+            ? moment.utc(parseInt(user.death) - Date.now()).format('HH:mm:ss')
+            : moment.utc(parseInt(user.death) - Date.now()).format('mm:ss'),
       }),
     });
   }
-  if (user.dungeonCooldown > Date.now()) {
+  if (parseInt(user.dungeonCooldown) > Date.now()) {
     pass = false;
     motivo.push({
       name: `💤 | ${ctx.locale('roleplay:initial.tired')}`,
       value: ctx.locale('roleplay:initial.tired-text', {
         time:
-          parseInt(user.dungeonCooldown - Date.now()) > 3600000
-            ? moment.utc(parseInt(user.dungeonCooldown - Date.now())).format('HH:mm:ss')
-            : moment.utc(parseInt(user.dungeonCooldown - Date.now())).format('mm:ss'),
+          parseInt(user.dungeonCooldown) - Date.now() > 3600000
+            ? moment.utc(parseInt(user.dungeonCooldown) - Date.now()).format('HH:mm:ss')
+            : moment.utc(parseInt(user.dungeonCooldown) - Date.now()).format('mm:ss'),
       }),
     });
   }
@@ -847,9 +897,9 @@ const initialChecks = async (user, ctx) => {
       name: '🏨 | Hotel',
       value: ctx.locale('roleplay:initial.hotel-text', {
         time:
-          parseInt(user.hotelTime - Date.now()) > 3600000
-            ? moment.utc(parseInt(user.hotelTime - Date.now())).format('HH:mm:ss')
-            : moment.utc(parseInt(user.hotelTime - Date.now())).format('mm:ss'),
+          parseInt(user.hotelTime) - Date.now() > 3600000
+            ? moment.utc(parseInt(user.hotelTime) - Date.now()).format('HH:mm:ss')
+            : moment.utc(parseInt(user.hotelTime) - Date.now()).format('mm:ss'),
       }),
     });
   }
@@ -872,7 +922,7 @@ const initialChecks = async (user, ctx) => {
   return user.save().then(() => pass);
 };
 
-const confirmRegister = async (user, ctx) => {
+const confirmRegister = async (user: IUserRpgSchema & Document, ctx: CommandContext) => {
   setTimeout(async () => {
     switch (user.class) {
       case 'Assassino': {
@@ -1044,7 +1094,7 @@ const confirmRegister = async (user, ctx) => {
   }, 1000);
 };
 
-const evolve = async (user, ctx) => {
+const evolve = async (user: IUserRpgSchema & Document, ctx: CommandContext) => {
   switch (user.class) {
     case 'Assassino': {
       user.abilities.push(abilitiesFile.assassin.normalAbilities[4]);
@@ -1138,7 +1188,7 @@ const evolve = async (user, ctx) => {
   }
 };
 
-module.exports = {
+export {
   getEnemyByUserLevel,
   battle,
   morte,

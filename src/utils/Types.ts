@@ -47,7 +47,7 @@ interface IBadge {
   obtainAt: string;
 }
 
-interface IAbility {
+export interface IAbility {
   name: string;
   description: string;
   cooldown: number;
@@ -56,7 +56,7 @@ interface IAbility {
   cost: number;
 }
 
-interface IUniquePower {
+export interface IUniquePower {
   name: string;
   description: string;
   cooldown: number;
@@ -70,10 +70,10 @@ interface IMobLoot {
   name: string;
   value: number;
 }
-
 interface IUserWeapon {
   name: string;
   damage: number;
+  type?: string;
 }
 
 interface IUserArmor {
@@ -189,7 +189,42 @@ export interface IRESTGameStats {
   lostPorcentage: string;
 }
 
+export interface IMobAttack {
+  name: string;
+  damage: number;
+}
+
 export interface IContextData {
   user: IUserSchema;
   server: IGuildSchema;
+}
+
+export type mobType =
+  | 'inicial'
+  | 'medio'
+  | 'hard'
+  | 'impossible'
+  | 'Boss'
+  | 'God'
+  | 'Evolved'
+  | 'Universal';
+
+export interface IDungeonMob {
+  loots: Array<IMobLoot>;
+  ataques: Array<IMobAttack>;
+  type?: mobType;
+  name: string;
+  life: number;
+  damage: string;
+  armor: number;
+  xp: number;
+  dgLevel?: number;
+}
+
+export interface IBattleChoice {
+  name: string;
+  damage: number;
+  scape?: boolean;
+  cost?: number;
+  heal?: number;
 }

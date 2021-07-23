@@ -24,7 +24,7 @@ export const postRpg = async (
   userLevel: number,
   dungeonLevel: number,
   death: boolean,
-  date: string,
+  date: number,
 ): Promise<void> => {
   const options = {
     method: 'POST',
