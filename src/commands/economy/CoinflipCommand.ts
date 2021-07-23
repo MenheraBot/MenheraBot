@@ -1,8 +1,15 @@
-const Command = require('../../structures/Command');
-const http = require('../../utils/HTTPrequests');
+import CommandContext from '@structures/CommandContext';
+import MenheraClient from 'MenheraClient';
 
-module.exports = class CoinflipCommand extends Command {
-  constructor(client) {
+import { emojis } from '@structures/MenheraConstants';
+
+import Command from '@structures/Command';
+
+import { MessageReaction, User } from 'discord.js';
+import http from '@utils/HTTPrequests';
+
+export default class CoinflipCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'coinflip',
       aliases: ['cf'],
@@ -11,7 +18,7 @@ module.exports = class CoinflipCommand extends Command {
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     const user1 = ctx.message.author;
     const user2 = ctx.message.mentions.users.first();
     const input = ctx.args[1];
@@ -31,8 +38,8 @@ module.exports = class CoinflipCommand extends Command {
 
     if (!db1 || !db2) return ctx.replyT('error', 'commands:coinflip.no-dbuser');
 
-    if (valor > db1.estrelinhas) return ctx.replyT('error', 'commands:coinflip.poor');
-    if (valor > db2.estrelinhas)
+    if (parseInt(valor) > db1.estrelinhas) return ctx.replyT('error', 'commands:coinflip.poor');
+    if (parseInt(valor) > db2.estrelinhas)
       return ctx.send(
         `<:negacao:759603958317711371> **|** ${user2} ${ctx.locale('commands:coinflip.poor')}`,
       );
@@ -46,9 +53,9 @@ module.exports = class CoinflipCommand extends Command {
         )}!\n${user2} ${ctx.locale('commands:coinflip.confirm-end')}`,
       )
       .then((msg) => {
-        msg.react(this.client.constants.emojis.yes);
-        const filter = (reaction, usuario) =>
-          reaction.emoji.name === this.client.constants.emojis.yes && usuario.id === user2.id;
+        msg.react(emojis.yes);
+        const filter = (reaction: MessageReaction, usuario: User) =>
+          reaction.emoji.name === emojis.yes && usuario.id === user2.id;
 
         const coletor = msg.createReactionCollector(filter, { max: 1, time: 7000 });
 
@@ -79,10 +86,10 @@ module.exports = class CoinflipCommand extends Command {
             );
           }
 
-          await this.client.repositories.starRepository.add(winner, valor);
-          await this.client.repositories.starRepository.remove(loser, valor);
+          await this.client.repositories.starRepository.add(winner, parseInt(valor));
+          await this.client.repositories.starRepository.remove(loser, parseInt(valor));
           await http.postCoinflipGame(winner, loser, parseInt(valor), Date.now());
         });
       });
   }
-};
+}

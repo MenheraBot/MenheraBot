@@ -1,8 +1,13 @@
 /* eslint-disable no-use-before-define */
-const Command = require('../../structures/Command');
+import Command from '@structures/Command';
+import CommandContext from '@structures/CommandContext';
+import MenheraClient from 'MenheraClient';
+import { shopEconomy } from '@structures/MenheraConstants';
+import { Message } from 'discord.js';
+import UserRepository from '@database/repositories/UserRepository';
 
-module.exports = class ShopCommand extends Command {
-  constructor(client) {
+export default class ShopCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'shop',
       aliases: ['loja'],
@@ -12,7 +17,7 @@ module.exports = class ShopCommand extends Command {
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     const saldoAtual = ctx.data.user.estrelinhas;
 
     const validArgs = ['1', '2'];
@@ -35,13 +40,14 @@ module.exports = class ShopCommand extends Command {
         },
       ],
     };
-    const embedMessage = await ctx.sendC(ctx.message.author, { embed: dataLoja });
+    const embedMessage = (await ctx.sendC(ctx.message.author.toString(), {
+      embed: dataLoja,
+    })) as Message;
 
-    const filter = (m) => m.author.id === ctx.message.author.id;
+    const filter = (m: Message) => m.author.id === ctx.message.author.id;
     const collector = ctx.message.channel.createMessageCollector(filter, {
       max: 1,
       time: 30000,
-      errors: ['time'],
     });
 
     collector.on('collect', (m) => {
@@ -50,24 +56,13 @@ module.exports = class ShopCommand extends Command {
 
       if (m.content === '1') {
         // eslint-disable-next-line no-use-before-define
-        lojaComprar(
-          ctx,
-          embedMessage,
-          this.client.constants,
-          this.client.repositories.userRepository,
-        );
-      } else
-        lojaVender(
-          ctx,
-          embedMessage,
-          this.client.constants,
-          this.client.repositories.userRepository,
-        );
+        lojaComprar(ctx, embedMessage, this.client.repositories.userRepository);
+      } else lojaVender(ctx, embedMessage, this.client.repositories.userRepository);
     });
   }
-};
+}
 
-function lojaComprar(ctx, embedMessage, constants, repo) {
+function lojaComprar(ctx: CommandContext, embedMessage: Message, repo: UserRepository) {
   const saldoAtual = ctx.data.user.estrelinhas;
   const dataComprar = {
     title: ctx.locale('commands:shop.embed_title'),
@@ -87,15 +82,14 @@ function lojaComprar(ctx, embedMessage, constants, repo) {
       },
     ],
   };
-  embedMessage.edit(ctx.message.author, { embed: dataComprar }).catch();
+  embedMessage.edit(ctx.message.author, { embed: dataComprar }).catch(() => null);
 
   const validBuyArgs = ['1', '2'];
 
-  const filter = (m) => m.author.id === ctx.message.author.id;
+  const filter = (m: Message) => m.author.id === ctx.message.author.id;
   const collector = ctx.message.channel.createMessageCollector(filter, {
     max: 1,
     time: 30000,
-    errors: ['time'],
   });
 
   collector.on('collect', (m) => {
@@ -108,37 +102,37 @@ function lojaComprar(ctx, embedMessage, constants, repo) {
       const coresDisponíveis = [
         {
           cor: '#6308c0',
-          preço: constants.shopEconomy.colors.purple,
+          preço: shopEconomy.colors.purple,
           nome: `**${ctx.locale('commands:shop.colors.purple')}**`,
         },
         {
           cor: '#df0509',
-          preço: constants.shopEconomy.colors.red,
+          preço: shopEconomy.colors.red,
           nome: `**${ctx.locale('commands:shop.colors.red')}**`,
         },
         {
           cor: '#55e0f7',
-          preço: constants.shopEconomy.colors.cian,
+          preço: shopEconomy.colors.cian,
           nome: `**${ctx.locale('commands:shop.colors.cian')}**`,
         },
         {
           cor: '#03fd1c',
-          preço: constants.shopEconomy.colors.green,
+          preço: shopEconomy.colors.green,
           nome: `**${ctx.locale('commands:shop.colors.green')}**`,
         },
         {
           cor: '#fd03c9',
-          preço: constants.shopEconomy.colors.pink,
+          preço: shopEconomy.colors.pink,
           nome: `**${ctx.locale('commands:shop.colors.pink')}**`,
         },
         {
           cor: '#e2ff08',
-          preço: constants.shopEconomy.colors.yellow,
+          preço: shopEconomy.colors.yellow,
           nome: `**${ctx.locale('commands:shop.colors.yellow')}**`,
         },
         {
           cor: 'SUA ESCOLHA',
-          preço: constants.shopEconomy.colors.your_choice,
+          preço: shopEconomy.colors.your_choice,
           nome: `**${ctx.locale('commands:shop.colors.your_choice')}**`,
         },
       ];
@@ -172,11 +166,10 @@ function lojaComprar(ctx, embedMessage, constants, repo) {
 
       const validCorArgs = ['1', '2', '3', '4', '5', '6', '7'];
 
-      const filtroCor = (msg) => msg.author.id === ctx.message.author.id;
+      const filtroCor = (msg: Message) => msg.author.id === ctx.message.author.id;
       const CorColetor = ctx.message.channel.createMessageCollector(filtroCor, {
         max: 1,
         time: 30000,
-        errors: ['time'],
       });
 
       CorColetor.on('collect', async (msg) => {
@@ -262,22 +255,21 @@ function lojaComprar(ctx, embedMessage, constants, repo) {
                 .then(() => embedMessage.delete({ timeout: 500 }).catch());
             choice = 6;
 
-            const hexFiltro = (hexMsg) => hexMsg.author.id === ctx.message.author.id;
-            const hexColletor = await ctx.message.channel.createMessageCollector(hexFiltro, {
+            const hexFiltro = (hexMsg: Message) => hexMsg.author.id === ctx.message.author.id;
+            const hexColletor = ctx.message.channel.createMessageCollector(hexFiltro, {
               max: 1,
               time: 30000,
-              errors: ['time'],
             });
             await ctx.send(ctx.locale('commands:shop.buy_colors.yc-message'));
 
-            hexColletor.on('collect', (hexMsg) => {
-              const isHexColor = (hex) =>
+            hexColletor.on('collect', (hexMsg: Message) => {
+              const isHexColor = (hex: string) =>
                 typeof hex === 'string' && hex.length === 6 && !Number.isNaN(Number(`0x${hex}`));
               if (isHexColor(hexMsg.content)) {
                 const toPush = {
                   nome: '7 - Sua Escolha',
                   cor: `#${hexMsg.content}`,
-                  preço: constants.shopEconomy.colors.your_choice,
+                  preço: shopEconomy.colors.your_choice,
                 };
                 repo.update(ctx.message.author.id, {
                   $inc: { estrelinhas: -coresDisponíveis[6].preço },
@@ -315,7 +307,7 @@ function lojaComprar(ctx, embedMessage, constants, repo) {
     } else {
       // abre loja de rolls
 
-      const valorRoll = constants.shopEconomy.hunts.roll;
+      const valorRoll = shopEconomy.hunts.roll;
       const rollsAtual = ctx.data.user.rolls;
 
       const dataRolls = {
@@ -342,11 +334,10 @@ function lojaComprar(ctx, embedMessage, constants, repo) {
 
       embedMessage.edit(ctx.message.author, { embed: dataRolls });
 
-      const filterColetor = (msg) => msg.author.id === ctx.message.author.id;
+      const filterColetor = (msg: Message) => msg.author.id === ctx.message.author.id;
       const quantidadeCollector = ctx.message.channel.createMessageCollector(filterColetor, {
         max: 1,
         time: 30000,
-        errors: ['time'],
       });
 
       quantidadeCollector.on('collect', (msg) => {
@@ -377,7 +368,7 @@ function lojaComprar(ctx, embedMessage, constants, repo) {
   });
 }
 
-function lojaVender(ctx, embedMessage, constants, repo) {
+function lojaVender(ctx: CommandContext, embedMessage: Message, repo: UserRepository) {
   const saldoAtual = ctx.data.user.estrelinhas;
 
   const demons = ctx.data.user.caçados || 0;
@@ -385,10 +376,10 @@ function lojaVender(ctx, embedMessage, constants, repo) {
   const sd = ctx.data.user.semideuses || 0;
   const deuses = ctx.data.user.deuses || 0;
 
-  const valorDemonio = constants.shopEconomy.hunts.demon;
-  const valorAnjo = constants.shopEconomy.hunts.angel;
-  const valorSD = constants.shopEconomy.hunts.demigod;
-  const valorDeus = constants.shopEconomy.hunts.god;
+  const valorDemonio = shopEconomy.hunts.demon;
+  const valorAnjo = shopEconomy.hunts.angel;
+  const valorSD = shopEconomy.hunts.demigod;
+  const valorDeus = shopEconomy.hunts.god;
 
   const dataVender = {
     title: ctx.locale('commands:shop.embed_title'),
@@ -422,11 +413,10 @@ function lojaVender(ctx, embedMessage, constants, repo) {
 
   embedMessage.edit(ctx.message.author, { embed: dataVender }).catch();
 
-  const filter = (m) => m.author.id === ctx.message.author.id;
+  const filter = (m: Message) => m.author.id === ctx.message.author.id;
   const collector = ctx.message.channel.createMessageCollector(filter, {
     max: 1,
     time: 30000,
-    errors: ['time'],
   });
 
   collector.on('collect', (m) => {

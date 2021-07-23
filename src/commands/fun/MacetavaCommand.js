@@ -1,6 +1,6 @@
 const { MessageAttachment } = require('discord.js');
 const Command = require('../../structures/Command');
-const NewHttp = require('../../utils/NewHttp');
+const NewHttp = require('../../utils/HTTPrequests');
 
 module.exports = class MacetavaCommand extends Command {
   constructor(client) {

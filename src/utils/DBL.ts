@@ -3,6 +3,8 @@ import DBL from 'dblapi.js';
 import { MessageEmbed } from 'discord.js';
 import MenheraClient from 'MenheraClient';
 
+import { votes as constants } from '@structures/MenheraConstants';
+
 export default class DiscordBots {
   constructor(public client: MenheraClient) {
     this.client = client;
@@ -25,8 +27,6 @@ export default class DiscordBots {
       if (!user) return;
 
       user.votos += 1;
-
-      const constants = this.client.constants.votes;
 
       let { rollQuantity, rpgRollQuantity } = constants;
       let starQuantity =
@@ -76,7 +76,7 @@ export default class DiscordBots {
 
       user.rolls += rollQuantity;
       user.estrelinhas += starQuantity;
-      user.voteCooldown = Date.now() + 43200000;
+      user.voteCooldown = `${Date.now() + 43200000}`;
       await user.save();
 
       const functionToEval = async (id: string, embedToSend: MessageEmbed) => {
@@ -97,10 +97,11 @@ export default class DiscordBots {
     });
 
     this.client.setInterval(async () => {
-      const guilds = await this.client.shardManager.getAllSizeObject('guilds');
+      const info = await this.client.shard.fetchClientValues('guilds.cache.size');
+      const guildCount = info.reduce((prev, val) => prev + val);
       const shardId = 0;
       const shardsCount = this.client.shard.count;
-      dbl.postStats(guilds, shardId, shardsCount);
+      dbl.postStats(guildCount, shardId, shardsCount);
     }, 1800000);
   }
 }

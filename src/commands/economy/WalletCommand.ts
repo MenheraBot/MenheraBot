@@ -1,8 +1,10 @@
-const { MessageEmbed } = require('discord.js');
-const Command = require('../../structures/Command');
+import { MessageEmbed } from 'discord.js';
+import Command from '@structures/Command';
+import MenheraClient from 'MenheraClient';
+import CommandContext from '@structures/CommandContext';
 
-module.exports = class WalletCommand extends Command {
-  constructor(client) {
+export default class WalletCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'wallet',
       aliases: ['carteira'],
@@ -11,7 +13,7 @@ module.exports = class WalletCommand extends Command {
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     let pessoa;
 
     if (ctx.args[0]) {
@@ -77,6 +79,6 @@ module.exports = class WalletCommand extends Command {
         true,
       );
 
-    ctx.sendC(ctx.message.author, embed);
+    ctx.sendC(ctx.message.author.toString(), embed);
   }
-};
+}

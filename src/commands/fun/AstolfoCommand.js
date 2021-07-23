@@ -1,5 +1,5 @@
 const { MessageAttachment } = require('discord.js');
-const NewHttp = require('../../utils/NewHttp');
+const NewHttp = require('../../utils/HTTPrequests');
 const Command = require('../../structures/Command');
 
 module.exports = class AstolfoCommand extends Command {

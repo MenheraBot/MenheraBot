@@ -1,6 +1,6 @@
 const { MessageEmbed, MessageAttachment } = require('discord.js');
 const Command = require('../../structures/Command');
-const NewHttp = require('../../utils/NewHttp.js');
+const NewHttp = require('../../utils/HTTPrequests.js');
 
 module.exports = class ShipCommand extends Command {
   constructor(client) {

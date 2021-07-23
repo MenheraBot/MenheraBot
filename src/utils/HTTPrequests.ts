@@ -1,263 +1,287 @@
-import request from 'request-promise';
-import { ICommandUsedData, IRESTGameStats } from './Types';
+import axios from 'axios';
 
-export const getImageUrl = async (type: string): Promise<string> => {
-  const options = {
-    method: 'GET',
-    uri: `${process.env.API_IP}/api/assets/${type}`,
-    headers: {
-      'User-Agent': 'MenheraClient',
-      token: process.env.API_TOKEN,
-    },
-    json: true,
-  };
-
-  const response = await request(options).catch((err: Error) =>
-    console.log(`[HTTP ERROR] ${err.message}`),
-  );
-
-  return response?.url || 'https://i.imgur.com/DHVUlFf.png';
-};
-export const postRpg = async (
-  userId: string,
-  userClass: string,
-  userLevel: number,
-  dungeonLevel: number,
-  death: boolean,
-  date: number,
-): Promise<void> => {
-  const options = {
-    method: 'POST',
-    uri: `${process.env.API_IP}/api/rpg`,
-    headers: {
-      'User-Agent': 'MenheraClient',
-      token: process.env.API_TOKEN,
-    },
-    body: {
-      userId,
-      userClass,
-      userLevel,
-      dungeonLevel,
-      death,
-      date,
-    },
-    json: true,
-  };
-  await request(options).catch((err: Error) => console.log(`[HTTP ERROR] ${err.message}`));
-};
+import {
+  IBlackjackCards,
+  ICommandUsedData,
+  IHttpPicassoReutrn,
+  IRESTGameStats,
+} from '@utils/Types';
 
 type activity = 'PLAYING' | 'WATCHING' | 'STREAMING' | 'LISTENING';
 
-export const getActivity = async (shard: number): Promise<{ name: string; type: activity }> => {
-  const options = {
-    method: 'GET',
-    uri: `${process.env.API_IP}/api/activity`,
-    headers: {
-      'User-Agent': 'MenheraClient',
-      token: process.env.API_TOKEN,
-    },
-    body: {
-      shard: shard || 0,
-    },
-    json: true,
-  };
+const request = axios.create({
+  baseURL: 'http://localhost:2080',
+  timeout: 5000,
+  headers: {
+    'Content-Type': 'application/json',
+    'User-Agent': 'Menhera-Client',
+  },
+});
 
-  const result = await request(options).catch((err: Error) =>
-    console.log(`[HTTP ERROR] ${err.message}`),
-  );
-  if (!result)
-    return { name: `❤️ | Menhera foi criada pela Lux | Shard ${shard}`, type: 'PLAYING' };
-  return result;
-};
+const apiRequest = axios.create({
+  baseURL: `${process.env.API_IP}/api`,
+  timeout: 5000,
+  headers: {
+    'Content-Type': 'application/json',
+    'User-Agent': 'Menhera-Client',
+    token: process.env.API_TOKEN,
+  },
+});
 
-export const postCommand = async (data: ICommandUsedData): Promise<void> => {
-  const options = {
-    method: 'POST',
-    uri: `${process.env.API_IP}/api/commands`,
-    headers: {
-      'User-Agent': 'MenheraClient',
-      token: process.env.API_TOKEN,
-    },
-    body: {
-      authorName: data.authorName,
-      authorId: data.authorId,
-      guildName: data.guildName,
-      guildId: data.guildId,
-      commandName: data.commandName,
-      data: data.data,
-      args: data.args,
-    },
-    json: true,
-  };
+export default class HttpRequests {
+  static async getAssetImageUrl(type: string): Promise<string> {
+    try {
+      const data = await apiRequest.get(`/assets/${type}`);
+      return data.data.url;
+    } catch {
+      return 'https://i.imgur.com/DHVUlFf.png';
+    }
+  }
 
-  await request(options).catch((err: Error) => console.log(`[HTTP ERROR]${err.message}`));
-};
+  static async getProfileCommands(
+    id: string,
+  ): Promise<boolean | { cmds: { count: number }; array: Array<{ name: string; count: number }> }> {
+    try {
+      const data = await apiRequest.get('/usages/user', { data: { userId: id } });
+      if (data.status === 200) return data.data;
+    } catch {
+      return false;
+    }
+    return false;
+  }
 
-export const getProfileCommands = async (
-  id: string,
-): Promise<
-  boolean | { cmds: { count: number }; array: Array<{ name: string; count: number }> }
-> => {
-  const options = {
-    method: 'GET',
-    uri: `${process.env.API_IP}/api/usages/user`,
-    headers: {
-      'User-Agent': 'MenheraClient',
-      token: process.env.API_TOKEN,
-    },
-    body: {
-      userId: id,
-    },
-    json: true,
-  };
+  static async getTopCommands(): Promise<boolean | { name: string; count: number }[]> {
+    try {
+      const data = await apiRequest.get('/usages/top/command');
+      if (data.status === 200) return data.data;
+    } catch {
+      return false;
+    }
 
-  let has: boolean | Array<{ name: string; count: number }> = false;
+    return false;
+  }
 
-  await request(options)
-    .then((data: Array<{ name: string; count: number }>) => {
-      has = data;
-    })
-    .catch((err: Error) => console.log(`[HTTP ERROR] ${err.message}`));
+  static async getTopUsers(): Promise<boolean | { id: string; uses: number }[]> {
+    try {
+      const data = await apiRequest.get('/usages/top/user');
+      if (data.status === 200) return data.data;
+    } catch {
+      return false;
+    }
+    return false;
+  }
 
-  return has;
-};
+  static async getCoinflipUserStats(id: string): Promise<boolean | IRESTGameStats> {
+    try {
+      const data = await apiRequest.get('/coinflip', { data: { userId: id } });
+      if (data.status === 400) return false;
+      if (!data.data.error) return data.data;
+    } catch {
+      return false;
+    }
 
-export const getTopCommands = async (): Promise<boolean | { name: string; count: number }[]> => {
-  const options = {
-    method: 'GET',
-    uri: `${process.env.API_IP}/api/usages/top/command`,
-    headers: {
-      'User-Agent': 'MenheraClient',
-      token: process.env.API_TOKEN,
-    },
-    json: true,
-  };
+    return false;
+  }
 
-  let has: boolean | { name: string; count: number }[] = false;
+  static async postCommand(data: ICommandUsedData): Promise<void> {
+    await apiRequest
+      .post('/commands', {
+        data: {
+          authorName: data.authorName,
+          authorId: data.authorId,
+          guildName: data.guildName,
+          guildId: data.guildId,
+          commandName: data.commandName,
+          data: data.data,
+          args: data.args,
+        },
+      })
+      .catch(() => null);
+  }
 
-  await request(options)
-    .then((data: { name: string; count: number }[]) => {
-      has = data;
-    })
-    .catch((err: Error) => console.log(`[HTTP ERROR] ${err.message}`));
+  static async getActivity(shard: number): Promise<{ name: string; type: activity }> {
+    try {
+      const data = await apiRequest.get('/activity', { data: { shard: shard || 0 } });
+      return data.data;
+    } catch {
+      return { name: `❤️ | Menhera foi criada pela Lux | Shard ${shard}`, type: 'PLAYING' };
+    }
+  }
 
-  return has;
-};
+  static async getBlackJackStats(id: string): Promise<boolean | IRESTGameStats> {
+    try {
+      const data = await apiRequest.get('/blackjack', { data: { userId: id } });
+      if (data.status === 400) return false;
+      if (!data.data.error) return data.data;
+    } catch {
+      return false;
+    }
 
-export const getTopUsers = async (): Promise<boolean | { id: string; uses: number }[]> => {
-  const options = {
-    method: 'GET',
-    uri: `${process.env.API_IP}/api/usages/top/user`,
-    headers: {
-      'User-Agent': 'MenheraClient',
-      token: process.env.API_TOKEN,
-    },
-    json: true,
-  };
+    return false;
+  }
 
-  let has: boolean | { id: string; uses: number }[] = false;
+  static async postBlackJack(userId: string, didWin: boolean, betValue: number): Promise<void> {
+    await apiRequest.post('/blackjack', { data: { userId, didWin, betValue } }).catch(() => null);
+  }
 
-  await request(options)
-    .then((data: { id: string; uses: number }[]) => {
-      has = data;
-    })
-    .catch((err: Error) => console.log(`[HTTP ERROR] ${err.message}`));
+  static async postCoinflipGame(
+    winnerId: string,
+    loserId: string,
+    betValue: number,
+    date: number,
+  ): Promise<void> {
+    await apiRequest
+      .post('/coinflip', { data: { winnerId, loserId, betValue, date } })
+      .catch(() => null);
+  }
 
-  return has;
-};
+  static async postRpg(
+    userId: string,
+    userClass: string,
+    userLevel: number,
+    dungeonLevel: number,
+    death: boolean,
+    date: number,
+  ): Promise<void> {
+    await apiRequest
+      .post('/rpg', { data: { userId, userClass, userLevel, dungeonLevel, death, date } })
+      .catch(() => null);
+  }
 
-export const getCoinflipUserStats = async (id: string): Promise<boolean | IRESTGameStats> => {
-  const options = {
-    method: 'GET',
-    uri: `${process.env.API_IP}/api/coinflip`,
-    headers: {
-      'User-Agent': 'MenheraClient',
-      token: process.env.API_TOKEN,
-    },
-    body: {
-      userId: id,
-    },
-    json: true,
-  };
+  static async astolfoRequest(text: string): Promise<IHttpPicassoReutrn> {
+    try {
+      const data = await request.get('/astolfo', { data: { text } });
+      return { err: false, data: data.data };
+    } catch {
+      return { err: true };
+    }
+  }
 
-  let has: boolean | IRESTGameStats = false;
+  static async philoRequest(text: string): Promise<IHttpPicassoReutrn> {
+    try {
+      const data = await request.get('/philo', { data: { text } });
+      return { err: false, data: data?.data };
+    } catch {
+      return { err: true };
+    }
+  }
 
-  await request(options)
-    .then((data: IRESTGameStats) => {
-      has = data;
-    })
-    .catch((err: Error) => console.log(`[HTTP ERROR] ${err.message}`));
-  return has;
-};
+  static async shipRequest(
+    linkOne: string,
+    linkTwo: string,
+    shipValue: number,
+  ): Promise<IHttpPicassoReutrn> {
+    try {
+      const data = await request.get('/ship', { data: { linkOne, linkTwo, shipValue } });
+      return { err: false, data: data?.data };
+    } catch {
+      return { err: true };
+    }
+  }
 
-export const postCoinflipGame = async (
-  winnerId: string,
-  loserId: string,
-  betValue: number,
-  date: number,
-): Promise<void> => {
-  const options = {
-    method: 'POST',
-    uri: `${process.env.API_IP}/api/coinflip`,
-    headers: {
-      'User-Agent': 'MenheraClient',
-      token: process.env.API_TOKEN,
-    },
-    body: {
-      winnerId,
-      loserId,
-      betValue,
-      date,
-    },
-    json: true,
-  };
+  static async trisalRequest(
+    userOne: string,
+    userTwo: string,
+    userThree: string,
+  ): Promise<IHttpPicassoReutrn> {
+    try {
+      const data = await request.get('/trisal', { data: { userOne, userTwo, userThree } });
+      return { err: false, data: data?.data };
+    } catch {
+      return { err: true };
+    }
+  }
 
-  await request(options).catch((err: Error) => console.log(`[HTTP ERROR] ${err.message}`));
-};
+  static async profileRequest(
+    user: string,
+    marry: string,
+    usageCommands: number,
+    i18n: unknown,
+  ): Promise<IHttpPicassoReutrn> {
+    try {
+      const data = await request.get('/profile', {
+        data: {
+          user,
+          marry,
+          usageCommands,
+          i18n,
+        },
+      });
+      return { err: false, data: data?.data };
+    } catch {
+      return { err: true };
+    }
+  }
 
-export const postBlackJack = async (
-  userId: string,
-  didWin: boolean,
-  betValue: number,
-): Promise<void> => {
-  const options = {
-    method: 'POST',
-    uri: `${process.env.API_IP}/api/blackjack`,
-    headers: {
-      'User-Agent': 'MenheraClient',
-      token: process.env.API_TOKEN,
-    },
-    body: {
-      userId,
-      didWin,
-      betValue,
-    },
-    json: true,
-  };
+  static async statusRequest(
+    user: string,
+    userAvatarLink: string,
+    i18n: unknown,
+  ): Promise<IHttpPicassoReutrn> {
+    try {
+      const data = await request.get('/status', {
+        data: { user, userAvatarLink, i18n },
+      });
+      return { err: false, data: data?.data };
+    } catch {
+      return { err: true };
+    }
+  }
 
-  await request(options).catch((err) => console.log(`[HTTP ERROR] ${err.message}`));
-};
+  static async gadoRequest(image: string): Promise<IHttpPicassoReutrn> {
+    try {
+      const data = await request.get('/gado', { data: { image } });
+      return { err: false, data: data?.data };
+    } catch {
+      return { err: true };
+    }
+  }
 
-export const getBlackJackStats = async (id: string): Promise<boolean | IRESTGameStats> => {
-  const options = {
-    method: 'GET',
-    uri: `${process.env.API_IP}/api/blackjack`,
-    headers: {
-      'User-Agent': 'MenheraClient',
-      token: process.env.API_TOKEN,
-    },
-    body: {
-      userId: id,
-    },
-    json: true,
-  };
+  static async macetavaRequest(
+    image: string,
+    authorName: string,
+    authorDiscriminator: string,
+    authorImage: string,
+  ): Promise<IHttpPicassoReutrn> {
+    try {
+      const data = await request.get('/macetava', {
+        data: {
+          image,
+          authorName,
+          authorDiscriminator,
+          authorImage,
+        },
+      });
+      return { err: false, data: data?.data };
+    } catch {
+      return { err: true };
+    }
+  }
 
-  let has: boolean | IRESTGameStats = false;
-
-  await request(options)
-    .then((data: IRESTGameStats) => {
-      has = data;
-    })
-    .catch((err: Error) => console.log(`[HTTP ERROR] ${err.message}`));
-  return has;
-};
+  static async blackjackRequest(
+    aposta: number,
+    userCards: Array<IBlackjackCards>,
+    menheraCards: Array<IBlackjackCards>,
+    userTotal: number,
+    menheraTotal: number,
+    isEnd: boolean,
+    i18n: unknown,
+  ) {
+    try {
+      if (!isEnd) menheraCards[1].hidden = true;
+      const data = await request.get('/blackjack', {
+        data: {
+          userCards,
+          menheraCards,
+          userTotal,
+          menheraTotal,
+          i18n,
+          aposta,
+        },
+      });
+      return { err: false, data: data?.data };
+    } catch {
+      return { err: true };
+    }
+  }
+}

@@ -1,13 +1,14 @@
-const items = require('../items.json');
-const mobs = require('../mobs.json');
+import { IDungeonMob, IMobLoot } from '@utils/Types';
+import items from '../items.json';
+import mobs from '../mobs.json';
 
 it('should check if the items required by ferreiro exists', () => {
   const drops = Object.keys(mobs).reduce((p, v) => {
     const loots = mobs[v]
-      .map((mob) => mob.loots)
+      .map((mob: IDungeonMob) => mob.loots)
       .flat()
-      .map((loot) => loot?.name)
-      .filter((loot) => loot);
+      .map((loot: IMobLoot) => loot?.name)
+      .filter((loot: IMobLoot) => loot);
     return p.concat(loots);
   }, []);
 

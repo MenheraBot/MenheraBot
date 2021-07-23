@@ -7,7 +7,7 @@ import { LANGUAGES } from '@structures/MenheraConstants';
 
 import MenheraClient from 'MenheraClient';
 import { IUserSchema } from '@utils/Types';
-import { postCommand } from '@utils/HTTPrequests';
+import http from '@utils/HTTPrequests';
 import CommandContext from '@structures/CommandContext';
 
 export default class MessageReceive {
@@ -257,7 +257,7 @@ export default class MessageReceive {
         data: Date.now(),
         args: args.join(' '),
       };
-      await postCommand(data).catch();
+      await http.postCommand(data);
     }
   }
 }

@@ -1,4 +1,4 @@
-const NewHttp = require('@utils/NewHttp');
+const NewHttp = require('@utils/HTTPrequests');
 const { MessageAttachment } = require('discord.js');
 const familiarsFile = require('../../structures/RpgHandler').familiars;
 const Command = require('../../structures/Command');

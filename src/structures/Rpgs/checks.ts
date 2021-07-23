@@ -17,7 +17,7 @@ import {
   familiars as familiarsFile,
 } from '../RpgHandler';
 
-import { postRpg } from '../../utils/HTTPrequests';
+import http from '../../utils/HTTPrequests';
 import { rpg } from '../MenheraConstants';
 
 const random = (arr: Array<any>): any => arr[Math.floor(Math.random() * arr.length)];
@@ -175,7 +175,7 @@ const morte = async (
   toSay: string,
   inimigo: IDungeonMob,
 ) => {
-  postRpg(user.id, user.class, user.level, inimigo.dgLevel, true, Date.now());
+  http.postRpg(user.id, user.class, user.level, inimigo.dgLevel, true, Date.now());
 
   ctx.reply('error', `${toSay}\n\n${ctx.locale('roleplay:death')}`);
   user.death = `{Date.now() + rpg.deathCooldown}`;
@@ -743,7 +743,7 @@ const resultBattle = async (
   const randomLoot = inimigo.loots[Math.floor(Math.random() * inimigo.loots.length)];
   let canGetLoot = true;
 
-  postRpg(user.id, user.class, user.level, inimigo.dgLevel, false, Date.now());
+  http.postRpg(user.id, user.class, user.level, inimigo.dgLevel, false, Date.now());
 
   const backpack = RPGUtil.getBackpack(user);
   if (backpack.value >= backpack.capacity) canGetLoot = false;

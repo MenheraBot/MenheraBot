@@ -67,7 +67,7 @@ export interface IUniquePower {
   type: string;
 }
 
-interface IMobLoot {
+export interface IMobLoot {
   name: string;
   value: number;
 }
@@ -110,7 +110,7 @@ export interface IGuildSchema {
   disabledCommands: Array<string>;
   lang: string;
 }
-export interface IUserRpgSchema {
+export interface IUserRpgSchema extends Document {
   _id: string;
   class: string;
   life: number;
@@ -141,7 +141,7 @@ export interface IUserRpgSchema {
   familiar: IUserFamiliar;
 }
 
-export interface IUserSchema {
+export interface IUserSchema extends Document {
   id: string;
   mamadas: number;
   mamou: number;

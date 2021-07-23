@@ -26,7 +26,7 @@ export default class ReadyEvent {
             shardPing,
             Date.now(),
             guildsPerShardCount[id],
-            `${allShardsUptime[id]}`,
+            allShardsUptime[id],
           );
         });
       }, 1000 * 60);
