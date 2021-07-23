@@ -11,7 +11,7 @@ export interface IClientConfigs {
 export interface ICommandConfig {
   name: string;
   category: string;
-  aliases: Array<string>;
+  aliases?: Array<string>;
   description?: string;
   cooldown?: number;
   userPermissions?: BitFieldResolvable<PermissionString>[];
@@ -228,4 +228,33 @@ export interface IBattleChoice {
   scape?: boolean;
   cost?: number;
   heal?: number;
+}
+
+export interface ICmdSchema {
+  _id: string;
+  maintenance: boolean;
+  maintenanceReason: string;
+}
+
+export interface ICommandsSchema {
+  name: string;
+  pt_description: string;
+  pt_usage: string;
+  us_description: string;
+  us_usage: string;
+  category: string;
+}
+
+interface IDisabledCommand {
+  name: string;
+  reason: string;
+}
+
+export interface IStatusSchema {
+  _id: string;
+  ping: number;
+  disabledCommands: Array<IDisabledCommand>;
+  guilds: number;
+  uptime: string;
+  lastPingAt: string;
 }

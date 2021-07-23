@@ -1,7 +1,9 @@
-const Command = require('../../structures/Command');
+import CommandContext from '@structures/CommandContext';
+import MenheraClient from 'MenheraClient';
+import Command from '@structures/Command';
 
-module.exports = class GiveBadgeCommand extends Command {
-  constructor(client) {
+export default class GiveBadgeCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'gb',
       description: 'Lansa uma badge pra um usuario',
@@ -10,7 +12,7 @@ module.exports = class GiveBadgeCommand extends Command {
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     const badgeId = parseInt(ctx.args[1]);
 
     if (!badgeId) return ctx.reply('error', 'Cade o id da badge?');
@@ -19,4 +21,4 @@ module.exports = class GiveBadgeCommand extends Command {
 
     ctx.send('Concluido');
   }
-};
+}

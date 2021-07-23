@@ -1,8 +1,10 @@
-const Command = require('../../structures/Command');
-const LocaleStructure = require('../../structures/LocaleStructure');
+import CommandContext from '@structures/CommandContext';
+import MenheraClient from 'MenheraClient';
+import Command from '@structures/Command';
+import LocaleStructure from '@structures/LocaleStructure';
 
-module.exports = class UpdateCommand extends Command {
-  constructor(client) {
+export default class UpdateCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'reload',
       description: 'Updata um comando',
@@ -11,7 +13,7 @@ module.exports = class UpdateCommand extends Command {
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     if (!ctx.args[0]) return ctx.reply('error', 'nenhum comando foi informado!');
 
     if (ctx.args[0].toLowerCase() === 'locales') {
@@ -30,4 +32,4 @@ module.exports = class UpdateCommand extends Command {
 
     ctx.reply('success', `${ctx.args[0]} recarregado com sucesso!`);
   }
-};
+}

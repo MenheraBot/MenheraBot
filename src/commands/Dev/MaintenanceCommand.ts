@@ -1,7 +1,9 @@
-const Command = require('../../structures/Command');
+import CommandContext from '@structures/CommandContext';
+import MenheraClient from 'MenheraClient';
+import Command from '@structures/Command';
 
-module.exports = class MaintenanceCommand extends Command {
-  constructor(client) {
+export default class MaintenanceCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'maintenance',
       aliases: ['cmd'],
@@ -11,7 +13,7 @@ module.exports = class MaintenanceCommand extends Command {
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     if (!ctx.args[0]) {
       return ctx.reply('error', 'você não informou o comando desejado');
     }
@@ -35,4 +37,4 @@ module.exports = class MaintenanceCommand extends Command {
       ctx.reply('success', 'comando **ADICIONADO** a manutenção.');
     }
   }
-};
+}

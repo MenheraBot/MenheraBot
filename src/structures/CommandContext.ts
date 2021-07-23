@@ -1,5 +1,5 @@
 import { IContextData } from '@utils/Types';
-import { Message, MessageOptions } from 'discord.js';
+import { Message, MessageEmbed, MessageOptions } from 'discord.js';
 import { TFunction } from 'i18next';
 import MenheraClient from 'MenheraClient';
 import { emojis } from '@structures/MenheraConstants';
@@ -31,7 +31,7 @@ export default class CommandContext {
     );
   }
 
-  async send(message: string) {
+  async send(message: string | MessageEmbed) {
     return this.message.channel.send(message);
   }
 

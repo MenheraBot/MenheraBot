@@ -14,7 +14,6 @@ import Command from './structures/Command';
 
 import Database from './database/MongoDatabase';
 import { IClientConfigs, ICommandConfig } from './utils/Types';
-import RpgChecks from './structures/Rpgs/checks';
 import LocaleStructure from './structures/LocaleStructure';
 import FileUtil from './utils/FileUtil';
 
@@ -26,8 +25,6 @@ export default class MenheraClient extends Client {
   public aliases: Collection<string, string>;
 
   public events: EventManager;
-
-  public rpgChecks: typeof RpgChecks;
 
   constructor(options = {}, public config: IClientConfigs) {
     super(options);
@@ -41,7 +38,6 @@ export default class MenheraClient extends Client {
     this.aliases = new Collection();
     this.events = new EventManager(this);
     this.config = config;
-    this.rpgChecks = RpgChecks;
   }
 
   get repositories() {

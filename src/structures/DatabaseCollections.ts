@@ -1,4 +1,11 @@
-import { IGuildSchema, IUserRpgSchema, IUserSchema } from '@utils/Types';
+import {
+  ICmdSchema,
+  ICommandsSchema,
+  IGuildSchema,
+  IStatusSchema,
+  IUserRpgSchema,
+  IUserSchema,
+} from '@utils/Types';
 import { Document, Schema, model } from 'mongoose';
 
 const statusSchema = new Schema({
@@ -105,9 +112,9 @@ const commandsSchema = new Schema({
   category: { type: String },
 });
 
-export const Cmds = model('Cmd', cmdSchema);
-export const Commands = model('commands', commandsSchema);
-export const Guilds = model('status', statusSchema);
-export const Status = model<IGuildSchema & Document>('guild', guildSchema);
+export const Cmds = model<ICmdSchema & Document>('Cmd', cmdSchema);
+export const Commands = model<ICommandsSchema & Document>('commands', commandsSchema);
+export const Status = model<IStatusSchema & Document>('status', statusSchema);
+export const Guilds = model<IGuildSchema & Document>('guild', guildSchema);
 export const Rpg = model<IUserRpgSchema & Document>('rpg', rpgSchema);
 export const Users = model<IUserSchema & Document>('usersdb', userSchema);

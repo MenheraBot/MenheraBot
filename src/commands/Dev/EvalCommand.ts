@@ -1,19 +1,21 @@
-const { MessageEmbed } = require('discord.js');
-const util = require('util');
-const Command = require('../../structures/Command');
+import CommandContext from '@structures/CommandContext';
+import { MessageEmbed } from 'discord.js';
+import MenheraClient from 'MenheraClient';
+import util from 'util';
 
-module.exports = class EvalCommand extends Command {
-  constructor(client) {
+import Command from '@structures/Command';
+
+export default class EvalCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'eval',
-      description: 'Evaleda um código js puro',
       devsOnly: true,
       category: 'Dev',
     });
   }
 
   // eslint-disable-next-line no-unused-vars
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     try {
       // eslint-disable-next-line no-eval
       let evaled = await eval(ctx.args.join(' '));
@@ -32,4 +34,4 @@ module.exports = class EvalCommand extends Command {
       ctx.send(embed);
     }
   }
-};
+}

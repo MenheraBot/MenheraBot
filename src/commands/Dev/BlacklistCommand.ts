@@ -1,7 +1,9 @@
-const Command = require('../../structures/Command');
+import CommandContext from '@structures/CommandContext';
+import MenheraClient from 'MenheraClient';
+import Command from '../../structures/Command';
 
-module.exports = class BlackilistCommand extends Command {
-  constructor(client) {
+export default class BlackilistCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'blacklist',
       aliases: ['bl'],
@@ -11,7 +13,7 @@ module.exports = class BlackilistCommand extends Command {
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     if (!ctx.args[1]) return ctx.reply('error', 'só faltou o id né minha flor');
 
     const user = await this.client.users.fetch(ctx.args[1]).catch();
@@ -48,4 +50,4 @@ module.exports = class BlackilistCommand extends Command {
         );
     }
   }
-};
+}
