@@ -1,4 +1,4 @@
-const shopEconomy = {
+export const shopEconomy = {
   colors: {
     purple: 50000,
     red: 100000,
@@ -17,7 +17,7 @@ const shopEconomy = {
   },
 };
 
-const probabilities = {
+export const probabilities = {
   support: {
     demon: [
       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 4, 5, 6,
@@ -38,14 +38,14 @@ const probabilities = {
   defaultTime: 3600000,
 };
 
-const rpg = {
+export const rpg = {
   bossCooldown: 3600000,
   dungeonCooldown: 3600000,
   scapeCooldown: 7200000,
   deathCooldown: 43200000,
 };
 
-const votes = {
+export const votes = {
   rollQuantity: 1,
   maxStarValue: 3600,
   minStarValue: 1200,
@@ -62,7 +62,7 @@ const votes = {
   rpgRoll20Multiplier: 4,
 };
 
-const emojis = {
+export const emojis = {
   success: '<:positivo:759603958485614652>',
   error: '<:negacao:759603958317711371>',
   warn: '<:atencao:759603958418767922>',
@@ -85,7 +85,7 @@ const emojis = {
   god: '<:God:758474639570894899>',
 };
 
-const COLORS = {
+export const COLORS = {
   HuntDefault: '#df93fd',
   HuntDemon: '#df1b1b',
   HuntAngel: '#efe9e9',
@@ -93,13 +93,13 @@ const COLORS = {
   HuntGod: '#b115bf',
 };
 
-const BLACKJACK_CARDS = [
+export const BLACKJACK_CARDS = [
   1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,
   28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51,
   52,
 ];
 
-const LANGUAGES = {
+export const LANGUAGES = {
   'pt-BR': 'pt_BR',
   'en-US': 'en_US',
 };
@@ -112,15 +112,3 @@ Object.freeze(shopEconomy);
 Object.freeze(probabilities);
 Object.freeze(rpg);
 Object.freeze(votes);
-
-export { emojis };
-
-export default {
-  shopEconomy,
-  probabilities,
-  rpg,
-  votes,
-  COLORS,
-  BLACKJACK_CARDS,
-  LANGUAGES,
-};

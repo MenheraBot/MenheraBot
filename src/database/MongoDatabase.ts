@@ -1,33 +1,75 @@
-const mongoose = require('mongoose');
-const MongoModals = require('../structures/DatabaseCollections');
-const CmdRepository = require('./repositories/CmdsRepository');
-const CommandRepository = require('./repositories/CommandRepository');
-const RpgRepository = require('./repositories/RpgRepository');
-const StarRepository = require('./repositories/StarRepository');
-const UserRepository = require('./repositories/UserRepository');
-const MamarRepository = require('./repositories/MamarRepository');
-const GuildRepository = require('./repositories/GuildsRepository');
-const StatusRepository = require('./repositories/StatusRepository');
-const BadgeRepository = require('./repositories/BadgeRepository');
-const MaintenanceRepository = require('./repositories/MaintenanceRepository');
-const HuntRepository = require('./repositories/HuntRepository');
-const RelationshipRepository = require('./repositories/RelationshipRepository');
-const BlacklistRepository = require('./repositories/BlacklistRepository');
-const TopRepository = require('./repositories/TopRepository');
-const GiveRepository = require('./repositories/GiveRepository');
+import mongoose from 'mongoose';
+import { Cmds, Commands, Guilds, Status, Rpg, Users } from '../structures/DatabaseCollections';
+import CmdRepository from './repositories/CmdsRepository';
+import CommandRepository from './repositories/CommandRepository';
+import RpgRepository from './repositories/RpgRepository';
+import StarRepository from './repositories/StarRepository';
+import UserRepository from './repositories/UserRepository';
+import MamarRepository from './repositories/MamarRepository';
+import GuildRepository from './repositories/GuildsRepository';
+import StatusRepository from './repositories/StatusRepository';
+import BadgeRepository from './repositories/BadgeRepository';
+import MaintenanceRepository from './repositories/MaintenanceRepository';
+import HuntRepository from './repositories/HuntRepository';
+import RelationshipRepository from './repositories/RelationshipRepository';
+import BlacklistRepository from './repositories/BlacklistRepository';
+import TopRepository from './repositories/TopRepository';
+import GiveRepository from './repositories/GiveRepository';
 
-module.exports = class MongoDatabase {
-  constructor(uri) {
+export default class MongoDatabase {
+  public Cmds: typeof Cmds;
+
+  public Commands: typeof Commands;
+
+  public Guilds: typeof Guilds;
+
+  public Status: typeof Status;
+
+  public Rpg: typeof Rpg;
+
+  public Users: typeof Users;
+
+  public userRepository: UserRepository;
+
+  public commandRepository: CommandRepository;
+
+  public cmdRepository: CmdRepository;
+
+  public starRepository: StarRepository;
+
+  public rpgRepository: RpgRepository;
+
+  public mamarRepository: MamarRepository;
+
+  public guildRepository: GuildRepository;
+
+  public statusRepository: StatusRepository;
+
+  public badgeRepository: BadgeRepository;
+
+  public maintenanceRepository: MaintenanceRepository;
+
+  public huntRepository: HuntRepository;
+
+  public relationshipRepository: RelationshipRepository;
+
+  public blacklistRepository: BlacklistRepository;
+
+  public topRepository: TopRepository;
+
+  public giveRepository: GiveRepository;
+
+  constructor(public uri: string) {
     this.uri = uri;
 
     // TODO: add modal to the name for readability
     // para fazer isso tem que mudar todos os codigos que estão usando `database.(nome_sem_modal)` to repositories
-    this.Cmds = MongoModals.Cmds;
-    this.Commands = MongoModals.Commands;
-    this.Guilds = MongoModals.Guilds;
-    this.Status = MongoModals.Status;
-    this.Rpg = MongoModals.Rpg;
-    this.Users = MongoModals.Users;
+    this.Cmds = Cmds;
+    this.Commands = Commands;
+    this.Guilds = Guilds;
+    this.Status = Status;
+    this.Rpg = Rpg;
+    this.Users = Users;
 
     this.userRepository = new UserRepository(this.Users);
     this.commandRepository = new CommandRepository(this.Commands);
@@ -69,7 +111,7 @@ module.exports = class MongoDatabase {
     };
   }
 
-  createConnection() {
+  createConnection(): Promise<void> {
     return new Promise((resolve, reject) => {
       mongoose.connect(
         this.uri,
@@ -91,4 +133,4 @@ module.exports = class MongoDatabase {
       );
     });
   }
-};
+}

@@ -14,10 +14,8 @@ import Command from './structures/Command';
 
 import Database from './database/MongoDatabase';
 import { IClientConfigs, ICommandConfig } from './utils/Types';
-import Constants from './structures/MenheraConstants';
 import RpgChecks from './structures/Rpgs/checks';
 import LocaleStructure from './structures/LocaleStructure';
-import ShardManager from './structures/ShardManager';
 import FileUtil from './utils/FileUtil';
 
 export default class MenheraClient extends Client {
@@ -29,11 +27,7 @@ export default class MenheraClient extends Client {
 
   public events: EventManager;
 
-  public constants: typeof Constants;
-
   public rpgChecks: typeof RpgChecks;
-
-  public shardManager: ShardManager;
 
   constructor(options = {}, public config: IClientConfigs) {
     super(options);
@@ -47,9 +41,7 @@ export default class MenheraClient extends Client {
     this.aliases = new Collection();
     this.events = new EventManager(this);
     this.config = config;
-    this.constants = Constants;
     this.rpgChecks = RpgChecks;
-    this.shardManager = new ShardManager(this);
   }
 
   get repositories() {

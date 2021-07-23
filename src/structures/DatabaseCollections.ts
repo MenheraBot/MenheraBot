@@ -1,6 +1,7 @@
-import mongoose from 'mongoose';
+import { IGuildSchema, IUserRpgSchema, IUserSchema } from '@utils/Types';
+import { Document, Schema, model } from 'mongoose';
 
-const statusSchema = new mongoose.Schema({
+const statusSchema = new Schema({
   _id: { type: String },
   ping: { type: Number, default: 0 },
   disabledCommands: { type: Array },
@@ -9,13 +10,13 @@ const statusSchema = new mongoose.Schema({
   lastPingAt: { type: String },
 });
 
-const cmdSchema = new mongoose.Schema({
+const cmdSchema = new Schema({
   _id: { type: String },
   maintenance: { type: Boolean, default: false },
   maintenanceReason: { type: String, default: '' },
 });
 
-const guildSchema = new mongoose.Schema({
+const guildSchema = new Schema({
   id: { type: String, unique: true },
   prefix: { type: String, default: process.env.BOT_PREFIX },
   blockedChannels: { type: Array, default: [] },
@@ -23,7 +24,7 @@ const guildSchema = new mongoose.Schema({
   lang: { type: String, default: 'pt-BR' },
 });
 
-const rpgSchema = new mongoose.Schema({
+const rpgSchema = new Schema({
   _id: { type: String },
   class: { type: String },
   life: { type: Number, default: 100 },
@@ -55,7 +56,7 @@ const rpgSchema = new mongoose.Schema({
   familiar: { type: Object, default: {} },
 });
 
-const userSchema = new mongoose.Schema({
+const userSchema = new Schema({
   id: { type: String, unique: true },
   mamadas: { type: Number, default: 0 },
   mamou: { type: Number, default: 0 },
@@ -95,7 +96,7 @@ const userSchema = new mongoose.Schema({
   }
 */
 
-const commandsSchema = new mongoose.Schema({
+const commandsSchema = new Schema({
   name: { type: String },
   pt_description: { type: String },
   pt_usage: { type: String },
@@ -104,16 +105,9 @@ const commandsSchema = new mongoose.Schema({
   category: { type: String },
 });
 
-const cmd = mongoose.model('Cmd', cmdSchema);
-const commands = mongoose.model('commands', commandsSchema);
-const status = mongoose.model('status', statusSchema);
-const guild = mongoose.model('guild', guildSchema);
-const rpg = mongoose.model('rpg', rpgSchema);
-const user = mongoose.model('usersdb', userSchema);
-
-module.exports.Cmds = cmd;
-module.exports.Commands = commands;
-module.exports.Guilds = guild;
-module.exports.Status = status;
-module.exports.Rpg = rpg;
-module.exports.Users = user;
+export const Cmds = model('Cmd', cmdSchema);
+export const Commands = model('commands', commandsSchema);
+export const Guilds = model('status', statusSchema);
+export const Status = model<IGuildSchema & Document>('guild', guildSchema);
+export const Rpg = model<IUserRpgSchema & Document>('rpg', rpgSchema);
+export const Users = model<IUserSchema & Document>('usersdb', userSchema);

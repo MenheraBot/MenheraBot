@@ -19,18 +19,15 @@ export default class CommandContext {
     this.i18n = i18n;
   }
 
-  async replyT(emoji: typeof emojis, text: string, translateOptions = {}) {
+  async replyT(emoji: string, text: string, translateOptions = {}) {
     return this.message.channel.send(
-      `${this.client.constants.emojis[emoji] || '🐛'} **|** ${this.message.author}, ${this.i18n(
-        text,
-        translateOptions,
-      )}`,
+      `${emojis[emoji] || '🐛'} **|** ${this.message.author}, ${this.i18n(text, translateOptions)}`,
     );
   }
 
-  async reply(emoji: typeof emojis, text: string) {
+  async reply(emoji: string, text: string) {
     return this.message.channel.send(
-      `${this.client.constants.emojis[emoji] || '🐛'} **|** ${this.message.author}, ${text}`,
+      `${emojis[emoji] || '🐛'} **|** ${this.message.author}, ${text}`,
     );
   }
 
