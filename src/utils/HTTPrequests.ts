@@ -53,7 +53,7 @@ export default class HttpRequests {
     return false;
   }
 
-  static async getTopCommands(): Promise<false | { name: string; count: number }[]> {
+  static async getTopCommands(): Promise<false | { name: string; usages: number }[]> {
     try {
       const data = await apiRequest.get('/usages/top/command');
       if (data.status === 200) return data.data;
