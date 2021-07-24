@@ -1,13 +1,15 @@
 /* eslint-disable no-unused-expressions */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-await-in-loop */
-const { MessageEmbed } = require('discord.js');
-const Command = require('../../structures/Command');
-const http = require('../../utils/HTTPrequests');
-const Util = require('../../utils/Util');
+import CommandContext from '@structures/CommandContext';
+import { MessageEmbed } from 'discord.js';
+import MenheraClient from 'MenheraClient';
+import Command from '../../structures/Command';
+import http from '../../utils/HTTPrequests';
+import Util from '../../utils/Util';
 
-module.exports = class TopCommand extends Command {
-  constructor(client) {
+export default class TopCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'top',
       aliases: ['rank'],
@@ -17,7 +19,7 @@ module.exports = class TopCommand extends Command {
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     const { prefix } = ctx.data.server;
 
     let pagina = 1;
@@ -111,7 +113,7 @@ module.exports = class TopCommand extends Command {
     } else ctx.replyT('warn', 'commands:top.txt', { prefix });
   }
 
-  async topMamados(ctx, pagina) {
+  async topMamados(ctx: CommandContext, pagina: number) {
     const quantidade = await this.client.database.Users.countDocuments();
     let skip = 0;
     if (!Number.isNaN(pagina) && pagina > 0 && pagina < quantidade / 10) {
@@ -140,10 +142,10 @@ module.exports = class TopCommand extends Command {
         false,
       );
     }
-    ctx.sendC(ctx.message.author, embed);
+    ctx.sendC(ctx.message.author.toString(), embed);
   }
 
-  async topMamadores(ctx, pagina) {
+  async topMamadores(ctx: CommandContext, pagina: number) {
     const quantidade = await this.client.database.Users.countDocuments();
 
     let skip = 0;
@@ -166,7 +168,7 @@ module.exports = class TopCommand extends Command {
       const member = await this.client.users.fetch(res[i].id).catch();
       if (!member) {
         embed.addField(
-          `**${skip + 1 + i} -** ${res[i].nome}`,
+          `**${skip + 1 + i} -** ${res[i].id}`,
           `${ctx.locale('commands:top.suck')}: **${res[i].mamou}**`,
           false,
         );
@@ -178,7 +180,7 @@ module.exports = class TopCommand extends Command {
         );
       }
     }
-    ctx.sendC(ctx.message.author, embed);
+    ctx.sendC(ctx.message.author.toString(), embed);
   }
 
   async topDemonios(ctx, pagina) {
@@ -220,7 +222,7 @@ module.exports = class TopCommand extends Command {
         );
       }
     }
-    ctx.sendC(ctx.message.author, embed);
+    ctx.sendC(ctx.message.author.toString(), embed);
   }
 
   async topAnjos(ctx, pagina) {
@@ -569,4 +571,4 @@ module.exports = class TopCommand extends Command {
     }
     ctx.sendC(ctx.message.author, embed);
   }
-};
+}

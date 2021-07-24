@@ -1,8 +1,10 @@
-const { MessageEmbed } = require('discord.js');
-const Command = require('../../structures/Command');
+import CommandContext from '@structures/CommandContext';
+import { MessageEmbed } from 'discord.js';
+import MenheraClient from 'MenheraClient';
+import Command from '../../structures/Command';
 
-module.exports = class VoteCommand extends Command {
-  constructor(client) {
+export default class VoteCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'vote',
       aliases: ['votar', 'upvote'],
@@ -13,7 +15,7 @@ module.exports = class VoteCommand extends Command {
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     const embed = new MessageEmbed()
       .setTitle(ctx.locale('commands:vote.embed_title'))
       .setColor('#f763f8')
@@ -28,4 +30,4 @@ module.exports = class VoteCommand extends Command {
 
     ctx.send(embed);
   }
-};
+}

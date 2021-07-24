@@ -1,11 +1,13 @@
-const { MessageAttachment } = require('discord.js');
-const NewHttp = require('@utils/HTTPrequests');
-const Command = require('../../structures/Command');
-const Util = require('../../utils/Util');
-const http = require('../../utils/HTTPrequests');
+import { MessageAttachment, User } from 'discord.js';
+import Command from '@structures/Command';
+import Util from '@utils/Util';
+import http from '@utils/HTTPrequests';
+import MenheraClient from 'MenheraClient';
+import CommandContext from '@structures/CommandContext';
+import { IUserDataToProfile } from '@utils/Types';
 
-module.exports = class ProfileCommand extends Command {
-  constructor(client) {
+export default class ProfileCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'profile',
       aliases: ['perfil'],
@@ -15,15 +17,15 @@ module.exports = class ProfileCommand extends Command {
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     const authorData = ctx.data.user;
     const userId = Util.getIdByMention(ctx.args[0]);
 
     let user = authorData;
     let member = ctx.message.author;
-    let marry = 'false';
+    let marry: string | User = 'false';
 
-    if (userId && userId !== ctx.message.author) {
+    if (userId && userId !== ctx.message.author.id) {
       try {
         member = await this.client.users.fetch(ctx.args[0].replace(/[<@!>]/g, ''));
         if (member.bot) return ctx.replyT('error', 'commands:profile.bot');
@@ -43,7 +45,7 @@ module.exports = class ProfileCommand extends Command {
     const avatar = member.displayAvatarURL({ format: 'png' });
     const usageCommands = await http.getProfileCommands(member.id);
 
-    const userSendData = {
+    const userSendData: IUserDataToProfile = {
       cor: user.cor,
       avatar,
       votos: user.votos,
@@ -69,10 +71,12 @@ module.exports = class ProfileCommand extends Command {
       tres: ctx.locale('commands:profile.tres'),
     };
 
-    const res = await NewHttp.profileRequest(userSendData, marry, usageCommands, i18nData);
+    const res = await http.profileRequest(userSendData, marry, usageCommands, i18nData);
 
     if (res.err) return ctx.replyT('error', 'commands:http-error');
 
-    ctx.sendC(ctx.message.author, new MessageAttachment(Buffer.from(res.data), 'profile.png'));
+    ctx.sendC(ctx.message.author.toString(), {
+      files: [new MessageAttachment(Buffer.from(res.data), 'profile.png')],
+    });
   }
-};
+}

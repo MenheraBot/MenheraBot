@@ -1,11 +1,13 @@
-const { MessageEmbed } = require('discord.js');
-const moment = require('moment');
-const Command = require('../../structures/Command');
-require('moment-duration-format');
-const { version } = require('../../../package.json');
+import { MessageEmbed } from 'discord.js';
+import moment from 'moment';
+import Command from '@structures/Command';
+import 'moment-duration-format';
+import MenheraClient from 'MenheraClient';
+import CommandContext from '@structures/CommandContext';
+import { version } from '../../../package.json';
 
-module.exports = class BotinfoCommand extends Command {
-  constructor(client) {
+export default class BotinfoCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'botinfo',
       aliases: ['menhera'],
@@ -15,7 +17,13 @@ module.exports = class BotinfoCommand extends Command {
     });
   }
 
-  async run(ctx) {
+  async getAllSizeObject(collection: string): Promise<number> {
+    const info = await this.client.shard.fetchClientValues(`${collection}.cache.size`);
+    const i = info.reduce((prev, val) => prev + val);
+    return i;
+  }
+
+  async run(ctx: CommandContext) {
     const owner = await this.client.users.fetch(process.env.OWNER);
     if (ctx.data.server.lang === 'pt-BR') {
       moment.locale('pt-br');
@@ -45,12 +53,12 @@ module.exports = class BotinfoCommand extends Command {
       .addFields([
         {
           name: '🌐 | Servers | 🌐',
-          value: `\`\`\`${await this.client.shardManager.getAllSizeObject('guilds')}\`\`\``,
+          value: `\`\`\`${await this.getAllSizeObject('guilds')}\`\`\``,
           inline: true,
         },
         {
           name: `🗄️ | ${ctx.locale('commands:botinfo.channels')} | 🗄️`,
-          value: `\`\`\`${await this.client.shardManager.getAllSizeObject('channels')}\`\`\``,
+          value: `\`\`\`${await this.getAllSizeObject('channels')}\`\`\``,
           inline: true,
         },
         {
@@ -75,4 +83,4 @@ module.exports = class BotinfoCommand extends Command {
       ]);
     ctx.send(embed);
   }
-};
+}

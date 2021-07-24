@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import { BitFieldResolvable, PermissionString } from 'discord.js';
+import { BitFieldResolvable, PermissionString, User } from 'discord.js';
 import { Document } from 'mongoose';
 
 /* eslint-disable no-unused-vars */
@@ -27,7 +27,7 @@ export interface IEvent {
 
 export interface IHttpPicassoReutrn {
   err: boolean;
-  data?: unknown;
+  data?: Buffer;
 }
 
 export interface IBlackjackCards {
@@ -181,13 +181,30 @@ export interface ICommandUsedData {
 }
 
 export interface IRESTGameStats {
-  playedGames: number;
-  lostGames: number;
-  winGames: number;
-  winMoney: number;
-  lostMoney: number;
-  winPorcentage: string;
-  lostPorcentage: string;
+  playedGames?: number;
+  lostGames?: number;
+  winGames?: number;
+  winMoney?: number;
+  lostMoney?: number;
+  winPorcentage?: string;
+  lostPorcentage?: string;
+  error?: boolean;
+}
+
+export interface IUserDataToProfile {
+  cor: string;
+  avatar: string;
+  votos: number;
+  nota: string;
+  tag: string;
+  flagsArray: Array<string>;
+  casado: string | User;
+  voteCooldown: string;
+  badges: Array<IBadge>;
+  username: string;
+  data: string;
+  mamadas: number;
+  mamou: number;
 }
 
 export interface IMobAttack {

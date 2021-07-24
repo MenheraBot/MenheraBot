@@ -1,20 +1,13 @@
 /* eslint-disable no-unused-expressions */
-const { MessageEmbed } = require('discord.js');
-const http = require('../../utils/HTTPrequests');
-const Command = require('../../structures/Command');
+import { MessageEmbed } from 'discord.js';
+import http from '@utils/HTTPrequests';
+import Command from '@structures/Command';
+import MenheraClient from 'MenheraClient';
+import CommandContext from '@structures/CommandContext';
+import { emojis } from '@structures/MenheraConstants';
 
-/* const returnObject = {
-  playedGames,
-  lostGames,
-  winGames,
-  winMoney,
-  lostMoney,
-  winPorcentage,
-  lostPorcentage,
-}; */
-
-module.exports = class CoinflipStatsCommand extends Command {
-  constructor(client) {
+export default class CoinflipStatsCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'coinflipstats',
       aliases: ['cfs'],
@@ -23,7 +16,7 @@ module.exports = class CoinflipStatsCommand extends Command {
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     const userDb = await this.client.database.repositories.userRepository.find(
       ctx.args[0] ? ctx.args[0].replace(/[<@!>]/g, '') : ctx.message.author.id,
     );
@@ -70,16 +63,16 @@ module.exports = class CoinflipStatsCommand extends Command {
       ]);
     totalMoney > 0
       ? embed.addField(
-          `${this.client.constants.emojis.yes} | ${ctx.locale('commands:coinflipstats.profit')}`,
+          `${emojis.yes} | ${ctx.locale('commands:coinflipstats.profit')}`,
           `**${totalMoney}** :star:`,
           true,
         )
       : embed.addField(
-          `${this.client.constants.emojis.no} | ${ctx.locale('commands:coinflipstats.loss')}`,
+          `${emojis.no} | ${ctx.locale('commands:coinflipstats.loss')}`,
           `**${totalMoney}** :star:`,
           true,
         );
 
-    ctx.sendC(ctx.message.author, embed);
+    ctx.sendC(ctx.message.author.toString(), embed);
   }
-};
+}

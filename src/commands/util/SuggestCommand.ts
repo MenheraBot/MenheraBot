@@ -1,8 +1,10 @@
-const { MessageEmbed } = require('discord.js');
-const Command = require('../../structures/Command');
+import CommandContext from '@structures/CommandContext';
+import { MessageEmbed } from 'discord.js';
+import MenheraClient from 'MenheraClient';
+import Command from '../../structures/Command';
 
-module.exports = class SuggestCommand extends Command {
-  constructor(client) {
+export default class SuggestCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'suggest',
       aliases: ['sugerir', 'sugestão'],
@@ -11,7 +13,7 @@ module.exports = class SuggestCommand extends Command {
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     const argumentos = ctx.args.join(' ');
     const cor = `#${`000000${Math.random().toString(16).slice(2, 8).toUpperCase()}`.slice(-6)}`;
 
@@ -38,4 +40,4 @@ module.exports = class SuggestCommand extends Command {
     if (ctx.message.deletable) ctx.message.delete();
     ctx.replyT('heart', 'commands:suggest.thanks');
   }
-};
+}

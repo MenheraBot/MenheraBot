@@ -56,7 +56,7 @@ class PagesCollector extends MessageCollector {
    * Send a new page message or edit the current
    * @param  {...any} args arguments of #TextChannel.send or #Message.edit
    */
-  async send(args: TextChannel['send'] | Message['edit']) {
+  async send(args) {
     if (!this.sent || this.sent.deleted) {
       this.sent = await this.channel.send(args);
     } else {

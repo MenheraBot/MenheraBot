@@ -1,7 +1,9 @@
-const Command = require('../../structures/Command');
+import Command from '@structures/Command';
+import CommandContext from '@structures/CommandContext';
+import MenheraClient from 'MenheraClient';
 
-module.exports = class AfkCommand extends Command {
-  constructor(client) {
+export default class AfkCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'afk',
       cooldown: 5,
@@ -9,7 +11,7 @@ module.exports = class AfkCommand extends Command {
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     const args = ctx.args.join(' ');
     const reason = args.length ? args.replace(/`/g, '') : 'AFK';
 
@@ -18,6 +20,7 @@ module.exports = class AfkCommand extends Command {
       { afk: true, afkReason: reason, afkGuild: ctx.message.guild.id },
     );
 
+    if (ctx.message.channel.type === 'dm') return;
     const member = ctx.message.channel.guild.members.cache.get(ctx.message.author.id);
 
     ctx.replyT('success', 'commands:afk.success');
@@ -28,4 +31,4 @@ module.exports = class AfkCommand extends Command {
       if (newNick.length <= 32) member.setNickname(newNick, 'AFK System');
     }
   }
-};
+}

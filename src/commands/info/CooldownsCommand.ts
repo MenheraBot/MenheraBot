@@ -1,10 +1,12 @@
 /* eslint-disable no-unused-expressions */
-const { MessageEmbed } = require('discord.js');
-const moment = require('moment');
-const Command = require('../../structures/Command');
+import { MessageEmbed } from 'discord.js';
+import moment from 'moment';
+import Command from '@structures/Command';
+import MenheraClient from 'MenheraClient';
+import CommandContext from '@structures/CommandContext';
 
-module.exports = class CooldownsCommand extends Command {
-  constructor(client) {
+export default class CooldownsCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'cooldowns',
       aliases: ['recargas', 'cooldowns', 'cd'],
@@ -13,15 +15,15 @@ module.exports = class CooldownsCommand extends Command {
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     const userRpg = await this.client.database.Rpg.findById(ctx.message.author.id);
     if (!ctx.data.user) return ctx.replyT('error', 'commands:cooldowns.error');
 
     const huntCooldownInMilis = parseInt(ctx.data.user?.caçarTime) - Date.now();
-    const dungeonCooldownInMilis = userRpg ? parseInt(userRpg.dungeonCooldown) - Date.now() : false;
-    const jobCooldownInMilis = userRpg ? parseInt(userRpg.jobCooldown) - Date.now() : false;
-    const deathTimeInMilis = userRpg ? parseInt(userRpg.death) - Date.now() : false;
-    const hotelTimeInMilis = userRpg ? parseInt(userRpg.hotelTime) - Date.now() : false;
+    const dungeonCooldownInMilis = userRpg ? parseInt(userRpg.dungeonCooldown) - Date.now() : 0;
+    const jobCooldownInMilis = userRpg ? parseInt(userRpg.jobCooldown) - Date.now() : 0;
+    const deathTimeInMilis = userRpg ? parseInt(userRpg.death) - Date.now() : 0;
+    const hotelTimeInMilis = userRpg ? parseInt(userRpg.hotelTime) - Date.now() : 0;
     const voteCooldownInMilis = parseInt(ctx.data.user?.voteCooldown) - Date.now();
 
     let txt = '';
@@ -98,6 +100,6 @@ module.exports = class CooldownsCommand extends Command {
       .setColor('#6597df')
       .setDescription(txt);
 
-    ctx.sendC(ctx.message.author, embed);
+    ctx.sendC(ctx.message.author.toString(), embed);
   }
-};
+}

@@ -1,8 +1,10 @@
-const { MessageEmbed } = require('discord.js');
-const Command = require('../../structures/Command');
+import CommandContext from '@structures/CommandContext';
+import { MessageEmbed } from 'discord.js';
+import MenheraClient from 'MenheraClient';
+import Command from '../../structures/Command';
 
-module.exports = class SuportCommand extends Command {
-  constructor(client) {
+export default class SuportCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'support',
       aliases: ['suporte'],
@@ -12,7 +14,7 @@ module.exports = class SuportCommand extends Command {
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     const embed = new MessageEmbed()
       .setTitle(ctx.locale('commands:support.embed_title'))
       .setURL('https://discord.gg/fZMdQbA')
@@ -23,6 +25,6 @@ module.exports = class SuportCommand extends Command {
         ctx.message.author.displayAvatarURL(),
       )
       .setTimestamp();
-    ctx.sendC(ctx.message.author, embed);
+    ctx.sendC(ctx.message.author.toString(), embed);
   }
-};
+}

@@ -1,7 +1,9 @@
-const Command = require('../../structures/Command');
+import Command from '@structures/Command';
+import MenheraClient from 'MenheraClient';
+import CommandContext from '@structures/CommandContext';
 
-module.exports = class AboutMeCommand extends Command {
-  constructor(client) {
+export default class AboutMeCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'aboutme',
       aliases: ['sobremim'],
@@ -10,7 +12,7 @@ module.exports = class AboutMeCommand extends Command {
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     const nota = ctx.args.join(' ');
     if (!nota) return ctx.replyT('error', 'commands:aboutme.no-args');
     if (nota.length > 200) return ctx.replyT('error', 'commands:aboutme.args-limit');
@@ -19,4 +21,4 @@ module.exports = class AboutMeCommand extends Command {
 
     ctx.replyT('success', 'commands:aboutme.success');
   }
-};
+}

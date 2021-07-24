@@ -1,8 +1,10 @@
-const { MessageEmbed } = require('discord.js');
-const Command = require('../../structures/Command');
+import CommandContext from '@structures/CommandContext';
+import { MessageEmbed } from 'discord.js';
+import MenheraClient from 'MenheraClient';
+import Command from '../../structures/Command';
 
-module.exports = class ColorCommand extends Command {
-  constructor(client) {
+export default class ColorCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'color',
       aliases: ['cor'],
@@ -12,10 +14,10 @@ module.exports = class ColorCommand extends Command {
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     const authorData = ctx.data.user;
 
-    const haspadrao = await authorData.cores.filter((pc) => pc.cor === '#a788ff');
+    const haspadrao = authorData.cores.filter((pc) => pc.cor === '#a788ff');
 
     if (haspadrao.length === 0) {
       authorData.cores.push({
@@ -38,7 +40,7 @@ module.exports = class ColorCommand extends Command {
       embed.addField(`${authorData.cores[i].nome}`, `${authorData.cores[i].cor}`);
       validArgs.push(authorData.cores[i].nome.replace(/[^\d]+/g, ''));
     }
-    if (!ctx.args[0]) return ctx.sendC(ctx.message.author, embed);
+    if (!ctx.args[0]) return ctx.sendC(ctx.message.author.toString(), embed);
 
     if (validArgs.includes(ctx.args[0])) {
       const findColor = authorData.cores.filter(
@@ -54,9 +56,9 @@ module.exports = class ColorCommand extends Command {
         },
       };
 
-      ctx.sendC(ctx.message.author, { embed: dataChoose });
+      ctx.sendC(ctx.message.author.toString(), { embed: dataChoose });
       authorData.cor = findColor[0].cor;
       authorData.save();
     } else ctx.replyT('error', 'commands:color.no-own', { prefix: ctx.data.server.prefix });
   }
-};
+}

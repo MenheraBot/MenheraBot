@@ -1,7 +1,9 @@
-const Command = require('../../structures/Command');
+import CommandContext from '@structures/CommandContext';
+import MenheraClient from 'MenheraClient';
+import Command from '../../structures/Command';
 
-module.exports = class SayCommand extends Command {
-  constructor(client) {
+export default class SayCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'say',
       aliases: ['dizer'],
@@ -12,10 +14,10 @@ module.exports = class SayCommand extends Command {
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     const sayMessage = ctx.args.join(' ');
     if (!sayMessage) return ctx.replyT('error', 'commands:say.no-args');
     if (ctx.message.deletable) ctx.message.delete();
     ctx.send(`${sayMessage}\n\n📢 | ${ctx.message.author}`);
   }
-};
+}

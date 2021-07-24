@@ -1,10 +1,15 @@
 /* eslint-disable no-unused-expressions */
-const { MessageEmbed } = require('discord.js');
-const http = require('../../utils/HTTPrequests');
-const Command = require('../../structures/Command');
+import { MessageEmbed } from 'discord.js';
 
-module.exports = class BlackJackStatsCommand extends Command {
-  constructor(client) {
+import http from '@utils/HTTPrequests';
+
+import Command from '@structures/Command';
+import MenheraClient from 'MenheraClient';
+import { emojis } from '@structures/MenheraConstants';
+import CommandContext from '@structures/CommandContext';
+
+export default class BlackJackStatsCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'blackjackstats',
       aliases: ['bjs'],
@@ -13,13 +18,13 @@ module.exports = class BlackJackStatsCommand extends Command {
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     const userDb = await this.client.database.repositories.userRepository.find(
       ctx.args[0] ? ctx.args[0].replace(/[<@!>]/g, '') : ctx.message.author.id,
     );
     if (!userDb) return ctx.replyT('error', 'commands:coinflipstats.error');
     const data = await http.getBlackJackStats(userDb ? userDb.id : ctx.message.author.id);
-    if (data.error) return ctx.replyT('error', 'commands:coinflipstats.error');
+    if (data?.error) return ctx.replyT('error', 'commands:coinflipstats.error');
     if (!data || !data.playedGames || data.playedGames === undefined)
       return ctx.replyT('error', 'commands:blackjackstats.no-data');
 
@@ -60,16 +65,16 @@ module.exports = class BlackJackStatsCommand extends Command {
       ]);
     totalMoney > 0
       ? embed.addField(
-          `${this.client.constants.emojis.yes} | ${ctx.locale('commands:coinflipstats.profit')}`,
+          `${emojis.yes} | ${ctx.locale('commands:coinflipstats.profit')}`,
           `**${totalMoney}** :star:`,
           true,
         )
       : embed.addField(
-          `${this.client.constants.emojis.no} | ${ctx.locale('commands:coinflipstats.loss')}`,
+          `${emojis.no} | ${ctx.locale('commands:coinflipstats.loss')}`,
           `**${totalMoney}** :star:`,
           true,
         );
 
-    ctx.sendC(ctx.message.author, embed);
+    ctx.sendC(ctx.message.author.toString(), embed);
   }
-};
+}

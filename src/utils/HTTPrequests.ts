@@ -5,7 +5,9 @@ import {
   ICommandUsedData,
   IHttpPicassoReutrn,
   IRESTGameStats,
+  IUserDataToProfile,
 } from '@utils/Types';
+import { User } from 'discord.js';
 
 type activity = 'PLAYING' | 'WATCHING' | 'STREAMING' | 'LISTENING';
 
@@ -71,16 +73,16 @@ export default class HttpRequests {
     return false;
   }
 
-  static async getCoinflipUserStats(id: string): Promise<boolean | IRESTGameStats> {
+  static async getCoinflipUserStats(id: string): Promise<IRESTGameStats> {
     try {
       const data = await apiRequest.get('/coinflip', { data: { userId: id } });
-      if (data.status === 400) return false;
+      if (data.status === 400) return { error: true };
       if (!data.data.error) return data.data;
     } catch {
-      return false;
+      return { error: true };
     }
 
-    return false;
+    return { error: true };
   }
 
   static async postCommand(data: ICommandUsedData): Promise<void> {
@@ -108,16 +110,16 @@ export default class HttpRequests {
     }
   }
 
-  static async getBlackJackStats(id: string): Promise<boolean | IRESTGameStats> {
+  static async getBlackJackStats(id: string): Promise<IRESTGameStats> {
     try {
       const data = await apiRequest.get('/blackjack', { data: { userId: id } });
-      if (data.status === 400) return false;
+      if (data.status === 400) return { error: true };
       if (!data.data.error) return data.data;
     } catch {
-      return false;
+      return { error: true };
     }
 
-    return false;
+    return { error: true };
   }
 
   static async postBlackJack(userId: string, didWin: boolean, betValue: number): Promise<void> {
@@ -193,9 +195,11 @@ export default class HttpRequests {
   }
 
   static async profileRequest(
-    user: string,
-    marry: string,
-    usageCommands: number,
+    user: IUserDataToProfile,
+    marry: string | User,
+    usageCommands:
+      | boolean
+      | { cmds: { count: number }; array: Array<{ name: string; count: number }> },
     i18n: unknown,
   ): Promise<IHttpPicassoReutrn> {
     try {

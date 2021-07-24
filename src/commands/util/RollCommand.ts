@@ -1,7 +1,9 @@
-const Command = require('../../structures/Command');
+import Command from '@structures/Command';
+import CommandContext from '@structures/CommandContext';
+import MenheraClient from 'MenheraClient';
 
-module.exports = class RollCommand extends Command {
-  constructor(client) {
+export default class RollCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'roll',
       cooldown: 5,
@@ -9,7 +11,7 @@ module.exports = class RollCommand extends Command {
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     const authorData = ctx.data.user;
     if (ctx.args[0]) {
       const rpgUser = await this.client.database.Rpg.findById(ctx.message.author.id);
@@ -36,4 +38,4 @@ module.exports = class RollCommand extends Command {
       ctx.replyT('success', 'commands:roll.success');
     }
   }
-};
+}

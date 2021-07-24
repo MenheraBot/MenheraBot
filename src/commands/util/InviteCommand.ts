@@ -1,8 +1,10 @@
-const { MessageEmbed } = require('discord.js');
-const Command = require('../../structures/Command');
+import CommandContext from '@structures/CommandContext';
+import { MessageEmbed } from 'discord.js';
+import MenheraClient from 'MenheraClient';
+import Command from '@structures/Command';
 
-module.exports = class InviteCommand extends Command {
-  constructor(client) {
+export default class InviteCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'invite',
       aliases: ['adicionar'],
@@ -12,7 +14,7 @@ module.exports = class InviteCommand extends Command {
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     const embed = new MessageEmbed()
       .setTitle(ctx.locale('commands:invite.embed_title'))
       .setColor('#f763f8')
@@ -27,6 +29,6 @@ module.exports = class InviteCommand extends Command {
       )
       .setTimestamp();
 
-    ctx.send(embed).catch((err) => console.log(err));
+    ctx.send(embed).catch(() => null);
   }
-};
+}

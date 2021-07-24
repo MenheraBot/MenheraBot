@@ -56,6 +56,7 @@
     "@types/fs-extra": "^9.0.12",
     "@types/i18next-node-fs-backend": "^2.1.1",
     "@types/jest": "^26.0.24",
+    "@types/moment-duration-format": "^2.2.3",
     "@types/mongoose": "^5.11.97",
     "@typescript-eslint/parser": "^4.24.0",
     "eslint": "^7.13.0",

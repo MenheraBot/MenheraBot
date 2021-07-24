@@ -1,11 +1,13 @@
-const { MessageEmbed } = require('discord.js');
-const table = require('string-table');
-const moment = require('moment');
-const Command = require('../../structures/Command');
-require('moment-duration-format');
+import { MessageEmbed } from 'discord.js';
+import table from 'string-table';
+import moment from 'moment';
+import Command from '@structures/Command';
+import 'moment-duration-format';
+import MenheraClient from 'MenheraClient';
+import CommandContext from '@structures/CommandContext';
 
-module.exports = class PingCommand extends Command {
-  constructor(client) {
+export default class PingCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'ping',
       cooldown: 5,
@@ -14,7 +16,7 @@ module.exports = class PingCommand extends Command {
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     if (!ctx.args[0]) {
@@ -65,4 +67,4 @@ module.exports = class PingCommand extends Command {
 
     ctx.send(`\`\`\`${table.create(tabled)}\`\`\``);
   }
-};
+}

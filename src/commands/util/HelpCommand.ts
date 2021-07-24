@@ -1,9 +1,12 @@
-const { MessageEmbed } = require('discord.js');
-const Command = require('../../structures/Command');
-const Util = require('../../utils/Util');
+import CommandContext from '@structures/CommandContext';
+import { IGuildSchema } from '@utils/Types';
+import { MessageEmbed } from 'discord.js';
+import MenheraClient from 'MenheraClient';
+import Command from '@structures/Command';
+import Util from '@utils/Util';
 
-module.exports = class HelpCommand extends Command {
-  constructor(client) {
+export default class HelpCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'help',
       aliases: ['ajuda', 'h'],
@@ -13,7 +16,7 @@ module.exports = class HelpCommand extends Command {
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     if (ctx.args[0]) {
       // eslint-disable-next-line no-use-before-define
       return getCMD(ctx);
@@ -21,20 +24,20 @@ module.exports = class HelpCommand extends Command {
     // eslint-disable-next-line no-use-before-define
     return getAll(ctx);
   }
-};
+}
 
-function getCommmandSize(category, client) {
+function getCommmandSize(category: string, client: MenheraClient) {
   return client.commands.filter((c) => c.config.category === category).size;
 }
 
-function getCategory(category, client, server) {
+function getCategory(category: string, client: MenheraClient, server: IGuildSchema) {
   return client.commands
     .filter((c) => c.config.category === category)
     .map((c) => `\`${server.prefix}${c.config.name}\``)
     .join(', ');
 }
 
-function getAll(ctx) {
+function getAll(ctx: CommandContext) {
   const embed = new MessageEmbed();
   embed.setColor('#b880e6');
   embed.setThumbnail(ctx.client.user.displayAvatarURL());
@@ -80,7 +83,7 @@ function getAll(ctx) {
     });
 }
 
-function getCMD(ctx) {
+function getCMD(ctx: CommandContext) {
   const embed = new MessageEmbed();
 
   const cmd =
