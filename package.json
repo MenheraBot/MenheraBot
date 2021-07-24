@@ -1,8 +1,8 @@
 {
   "name": "menhera-bot",
-  "version": "2.9.5-wip",
+  "version": "2.9.5-dev",
   "description": "Uma bot brasileira de RPG para o Discord",
-  "main": "shard.js",
+  "main": "dist/shard.js",
   "scripts": {
     "prepare": "husky install",
     "postinstall": "husky install",
