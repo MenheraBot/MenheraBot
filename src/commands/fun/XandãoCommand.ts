@@ -1,5 +1,6 @@
 import Command from '@structures/Command';
 import CommandContext from '@structures/CommandContext';
+import { User } from 'discord.js';
 import MenheraClient from 'MenheraClient';
 
 export default class XandãoCommand extends Command {
@@ -64,7 +65,9 @@ export default class XandãoCommand extends Command {
     try {
       const webhooks = await ctx.message.channel.fetchWebhooks();
 
-      const ownWebhooks = webhooks.filter((hook) => hook.owner.id === this.client.user.id);
+      const ownWebhooks = webhooks.filter(
+        (hook) => hook.owner instanceof User && hook.owner.id === this.client.user.id,
+      );
 
       if (ownWebhooks.first()) {
         await ownWebhooks.first().send(fala, {
