@@ -1,6 +1,5 @@
-FROM node:14.15
+FROM node:14.15-alpine
 
-RUN mkdir -p /usr/home/main
 WORKDIR /usr/home/main
 
 COPY . /usr/home/main/
