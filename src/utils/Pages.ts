@@ -70,14 +70,14 @@ export default class PagesCollector extends MessageCollector {
     return this.sent;
   }
 
-  delete(...args) {
+  delete(options?: { timeout?: number; reason?: string }) {
     const original = this.sent;
     if (original && !original.deleted) {
-      original.delete(...args);
+      original.delete(options);
     }
   }
 
-  async replyT(...args) {
+  async replyT(...args: Parameters<CommandContext['replyT']>) {
     const sent = await this.ctx.replyT(...args);
     this.delete();
     this.sent = sent;
