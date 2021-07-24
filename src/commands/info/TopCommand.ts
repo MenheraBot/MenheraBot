@@ -120,7 +120,7 @@ export default class TopCommand extends Command {
       skip = (pagina - 1) * 10;
     }
 
-    const res = await this.client.database.Users.find({}, ['mamadas', 'nome', 'id'], {
+    const res = await this.client.database.Users.find({}, ['mamadas', 'id'], {
       skip,
       limit: 10,
       sort: { mamadas: -1 },
@@ -153,7 +153,7 @@ export default class TopCommand extends Command {
       skip = (pagina - 1) * 10;
     }
 
-    const res = await this.client.database.Users.find({}, ['mamou', 'nome', 'id'], {
+    const res = await this.client.database.Users.find({}, ['mamou', 'id'], {
       skip,
       limit: 10,
       sort: { mamou: -1 },
@@ -191,7 +191,7 @@ export default class TopCommand extends Command {
       skip = (pagina - 1) * 10;
     }
 
-    const res = await this.client.database.Users.find({}, ['caçados', 'nome', 'id'], {
+    const res = await this.client.database.Users.find({}, ['caçados', 'id'], {
       skip,
       limit: 10,
       sort: { caçados: -1 },
@@ -210,7 +210,7 @@ export default class TopCommand extends Command {
       const member = await this.client.users.fetch(res[i].id).catch();
       if (!member) {
         embed.addField(
-          `**${skip + 1 + i} -** ${res[i].nome} `,
+          `**${skip + 1 + i} -** ${res[i].id} `,
           `${ctx.locale('commands:top.demons')}: ** ${res[i].caçados}** `,
           false,
         );
@@ -233,7 +233,7 @@ export default class TopCommand extends Command {
       skip = (pagina - 1) * 10;
     }
 
-    const res = await this.client.database.Users.find({}, ['anjos', 'nome', 'id'], {
+    const res = await this.client.database.Users.find({}, ['anjos', 'id'], {
       skip,
       limit: 10,
       sort: { anjos: -1 },
@@ -252,7 +252,7 @@ export default class TopCommand extends Command {
       const member = await this.client.users.fetch(res[i].id).catch();
       if (!member) {
         embed.addField(
-          `** ${skip + 1 + i} -** ${res[i].nome} `,
+          `** ${skip + 1 + i} -** ${res[i].id} `,
           `${ctx.locale('commands:top.angels')}: ** ${res[i].anjos}** `,
           false,
         );
@@ -275,7 +275,7 @@ export default class TopCommand extends Command {
       skip = (pagina - 1) * 10;
     }
 
-    const res = await this.client.database.Users.find({}, ['semideuses', 'nome', 'id'], {
+    const res = await this.client.database.Users.find({}, ['semideuses', 'id'], {
       skip,
       limit: 10,
       sort: { semideuses: -1 },
@@ -294,7 +294,7 @@ export default class TopCommand extends Command {
       const member = await this.client.users.fetch(res[i].id).catch();
       if (!member) {
         embed.addField(
-          `** ${skip + 1 + i} -** ${res[i].nome} `,
+          `** ${skip + 1 + i} -** ${res[i].id} `,
           `${ctx.locale('commands:top.demigods')}: ** ${res[i].semideuses}** `,
           false,
         );
@@ -317,7 +317,7 @@ export default class TopCommand extends Command {
       skip = (pagina - 1) * 10;
     }
 
-    const res = await this.client.database.Users.find({}, ['deuses', 'nome', 'id'], {
+    const res = await this.client.database.Users.find({}, ['deuses', 'id'], {
       skip,
       limit: 10,
       sort: { deuses: -1 },
@@ -336,7 +336,7 @@ export default class TopCommand extends Command {
       const member = await this.client.users.fetch(res[i].id).catch();
       if (!member) {
         embed.addField(
-          `** ${skip + 1 + i} -** ${res[i].nome} `,
+          `** ${skip + 1 + i} -** ${res[i].id} `,
           `${ctx.locale('commands:top.gods')}: ** ${res[i].deuses}** `,
           false,
         );
@@ -359,7 +359,7 @@ export default class TopCommand extends Command {
       skip = (pagina - 1) * 10;
     }
 
-    const res = await this.client.database.Users.find({}, ['estrelinhas', 'nome', 'id'], {
+    const res = await this.client.database.Users.find({}, ['estrelinhas', 'id'], {
       skip,
       limit: 10,
       sort: { estrelinhas: -1 },
@@ -373,7 +373,7 @@ export default class TopCommand extends Command {
       const member = await this.client.users.fetch(res[i].id).catch();
       if (!member) {
         embed.addField(
-          `** ${skip + 1 + i} -** ${res[i].nome} `,
+          `** ${skip + 1 + i} -** ${res[i].id} `,
           `${ctx.locale('commands:top.stars')}: ** ${res[i].estrelinhas}** `,
           false,
         );
@@ -396,7 +396,7 @@ export default class TopCommand extends Command {
       skip = (pagina - 1) * 10;
     }
 
-    const res = await this.client.database.Users.find({}, ['votos', 'nome', 'id'], {
+    const res = await this.client.database.Users.find({}, ['votos', 'id'], {
       skip,
       limit: 10,
       sort: { votos: -1 },
@@ -415,7 +415,7 @@ export default class TopCommand extends Command {
       const member = await this.client.users.fetch(res[i].id).catch();
       if (!member) {
         embed.addField(
-          `** ${skip + 1 + i} -** ${res[i].nome} `,
+          `** ${skip + 1 + i} -** ${res[i].id} `,
           `Upvotes: ** ${res[i].votos}** `,
           false,
         );
@@ -501,6 +501,7 @@ export default class TopCommand extends Command {
 
   static async topCommands(ctx) {
     const res = await http.getTopCommands();
+    if (!res) return ctx.replyT('error', 'commands:http-error');
     const embed = new MessageEmbed()
 
       .setTitle(`:robot: |  ${ctx.locale('commands:top.commands')}`)
@@ -520,6 +521,7 @@ export default class TopCommand extends Command {
 
   async topUsers(ctx) {
     const res = await http.getTopUsers();
+    if (!res) return ctx.replyT('error', 'commands:http-error');
     const embed = new MessageEmbed()
 
       .setTitle(`<:MenheraSmile2:767210250364780554> |  ${ctx.locale('commands:top.users')}`)

@@ -43,7 +43,7 @@ export default class HttpRequests {
 
   static async getProfileCommands(
     id: string,
-  ): Promise<boolean | { cmds: { count: number }; array: Array<{ name: string; count: number }> }> {
+  ): Promise<false | { cmds: { count: number }; array: Array<{ name: string; count: number }> }> {
     try {
       const data = await apiRequest.get('/usages/user', { data: { userId: id } });
       if (data.status === 200) return data.data;
@@ -53,7 +53,7 @@ export default class HttpRequests {
     return false;
   }
 
-  static async getTopCommands(): Promise<boolean | { name: string; count: number }[]> {
+  static async getTopCommands(): Promise<false | { name: string; count: number }[]> {
     try {
       const data = await apiRequest.get('/usages/top/command');
       if (data.status === 200) return data.data;
@@ -64,7 +64,7 @@ export default class HttpRequests {
     return false;
   }
 
-  static async getTopUsers(): Promise<boolean | { id: string; uses: number }[]> {
+  static async getTopUsers(): Promise<false | { id: string; uses: number }[]> {
     try {
       const data = await apiRequest.get('/usages/top/user');
       if (data.status === 200) return data.data;

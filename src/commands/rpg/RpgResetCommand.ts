@@ -28,9 +28,8 @@ export default class RpgResetCommand extends Command {
 
     collector.on('collect', async (m) => {
       if (m.content.toLowerCase() === 'sim' || m.content.toLowerCase() === 'yes') {
-        this.client.database.Rpg.findByIdAndDelete(ctx.message.author.id).then(
-          ctx.replyT('success', 'commands:reset.success', { prefix: ctx.data.server.prefix }),
-        );
+        await this.client.database.Rpg.findByIdAndDelete(ctx.message.author.id);
+        ctx.replyT('success', 'commands:reset.success', { prefix: ctx.data.server.prefix });
       } else ctx.replyT('error', 'commands:reset.cancel');
     });
   }
