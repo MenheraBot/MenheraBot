@@ -11,7 +11,7 @@
     "dev": "npm run build && cross-env NODE_ENV=development node shard.js",
     "lint:fix": "eslint --fix .",
     "lint:test": "eslint .",
-    "build:test": "tsc --noEmit",
+    "typecheck": "tsc --noEmit",
     "test": "jest",
     "docker:build": "docker build -t menhera .",
     "docker:run": "docker run -d --name MenheraBot menhera"
