@@ -1,9 +1,20 @@
-const { MessageEmbed } = require('discord.js');
-const Command = require('../../structures/Command');
-const familiarsFile = require('../../structures/Rpgs/familiar.json');
+import { Message, MessageEmbed } from 'discord.js';
+import Command from '@structures/Command';
+import { familiars as familiarsFile } from '@structures/RpgHandler';
+import MenheraClient from 'MenheraClient';
+import CommandContext from '@structures/CommandContext';
+import {
+  getEnemyByUserLevel,
+  initialChecks,
+  getAbilities,
+  battle,
+  enemyShot,
+} from '@structures/Rpgs/checks';
+import { rpg } from '@structures/MenheraConstants';
+import { IAbility, IBattleChoice, IDungeonMob, IUserRpgSchema } from '@utils/Types';
 
-module.exports = class BattleBoss extends Command {
-  constructor(client) {
+export default class BattleBoss extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'boss',
       cooldown: 5,
@@ -12,14 +23,14 @@ module.exports = class BattleBoss extends Command {
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     const user = await this.client.database.Rpg.findById(ctx.message.author.id);
     if (!user) return ctx.replyT('error', 'commands:boss.non-aventure');
 
     if (user.level < 20) return ctx.replyT('error', 'commands:boss.min-level');
 
-    const inimigo = this.client.rpgChecks.getEnemyByUserLevel(user, 'boss');
-    const canGo = await this.client.rpgChecks.initialChecks(user, ctx);
+    const inimigo = getEnemyByUserLevel(user, 'boss') as IDungeonMob;
+    const canGo = await initialChecks(user, ctx);
 
     if (!canGo) return;
 
@@ -38,7 +49,7 @@ module.exports = class BattleBoss extends Command {
             (user.familiar.level - 1) * familiarsFile[user.familiar.id].boost.value)
         : user.armor + user.protection.armor;
 
-    const habilidades = await this.client.rpgChecks.getAbilities(user);
+    const habilidades = await getAbilities(user);
 
     if (user.uniquePower.name === 'Morte Instantânea') {
       habilidades.splice(
@@ -78,28 +89,34 @@ module.exports = class BattleBoss extends Command {
     });
     await ctx.send(embed);
 
-    const filter = (m) => m.author.id === ctx.message.author.id;
+    const filter = (m: Message) => m.author.id === ctx.message.author.id;
     const collector = ctx.message.channel.createMessageCollector(filter, {
       max: 1,
       time: 30000,
-      errors: ['time'],
     });
 
     collector.on('collect', (m) => {
       if (m.content.toLowerCase() === 'sim' || m.content.toLowerCase() === 'yes') {
-        this.battle(ctx, inimigo, habilidades, user, 'boss');
+        BattleBoss.battle(ctx, inimigo, habilidades, user, 'boss');
       } else return ctx.replyT('error', 'commands:boss.amarelou');
     });
   }
 
-  async battle(ctx, inimigo, habilidades, user, type) {
-    user.dungeonCooldown = this.client.constants.rpg.bossCooldown + Date.now();
+  static async battle(
+    ctx: CommandContext,
+    inimigo: IDungeonMob,
+    habilidades: IAbility[],
+    user: IUserRpgSchema,
+    type: 'boss' | 'dungeon',
+  ) {
+    user.dungeonCooldown = `${rpg.bossCooldown + Date.now()}`;
     user.inBattle = true;
     await user.save();
 
-    const options = [
+    const options: IBattleChoice[] = [
       {
         name: ctx.locale('commands:dungeon.scape'),
+        // @ts-ignore
         damage: '🐥',
         scape: true,
       },
@@ -142,13 +159,12 @@ module.exports = class BattleBoss extends Command {
       .setTitle(`BossBattle: ${inimigo.name}`)
       .setColor('#f04682')
       .setDescription(texto);
-    ctx.sendC(ctx.message.author, embed);
+    ctx.sendC(ctx.message.author.toString(), embed);
 
     const filter = (m) => m.author.id === ctx.message.author.id;
     const collector = ctx.message.channel.createMessageCollector(filter, {
       max: 1,
       time: 15000,
-      errors: ['time'],
     });
 
     let time = false;
@@ -157,9 +173,9 @@ module.exports = class BattleBoss extends Command {
       time = true;
       const choice = Number(m.content);
       if (escolhas.includes(choice)) {
-        return this.client.rpgChecks.battle(ctx, options[choice], user, inimigo, type);
+        return battle(ctx, options[choice], user, inimigo, type);
       }
-      return this.client.rpgChecks.enemyShot(
+      return enemyShot(
         ctx,
         user,
         inimigo,
@@ -170,7 +186,7 @@ module.exports = class BattleBoss extends Command {
 
     setTimeout(() => {
       if (!time) {
-        return this.client.rpgChecks.enemyShot(
+        return enemyShot(
           ctx,
           user,
           inimigo,
@@ -180,4 +196,4 @@ module.exports = class BattleBoss extends Command {
       }
     }, 15000);
   }
-};
+}

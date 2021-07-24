@@ -1,8 +1,11 @@
-const { MessageEmbed } = require('discord.js');
-const Command = require('../../structures/Command');
+import { MessageEmbed } from 'discord.js';
+import Command from '@structures/Command';
+import MenheraClient from 'MenheraClient';
+import CommandContext from '@structures/CommandContext';
+import { confirmRegister } from '@structures/Rpgs/checks';
 
-module.exports = class RegisterCommand extends Command {
-  constructor(client) {
+export default class RegisterCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'register',
       aliases: ['registrar'],
@@ -12,7 +15,7 @@ module.exports = class RegisterCommand extends Command {
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     const user = await this.client.database.Rpg.findById(ctx.message.author.id);
 
     if (user)
@@ -93,8 +96,8 @@ module.exports = class RegisterCommand extends Command {
           _id: ctx.message.author.id,
           class: option,
         }).save();
-        this.client.rpgChecks.confirmRegister(user, ctx);
+        confirmRegister(user, ctx);
       } else ctx.replyT('error', 'commands:register.canceled');
     });
   }
-};
+}

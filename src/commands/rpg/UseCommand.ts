@@ -1,19 +1,11 @@
-const { MessageEmbed } = require('discord.js');
-const Command = require('../../structures/Command');
+import { MessageEmbed } from 'discord.js';
+import Command from '@structures/Command';
+import RpgUtil from '@utils/RPGUtil';
+import MenheraClient from 'MenheraClient';
+import CommandContext from '@structures/CommandContext';
 
-function countItems(arr) {
-  return arr.reduce((p, v) => {
-    const exists = p.findIndex((x) => x.name === v);
-    if (exists !== -1) {
-      p[exists].amount += 1;
-      return p;
-    }
-    return [...p, { name: v, amount: 1 }];
-  }, []);
-}
-
-module.exports = class UseCommand extends Command {
-  constructor(client) {
+export default class UseCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'use',
       aliases: ['usar'],
@@ -22,7 +14,7 @@ module.exports = class UseCommand extends Command {
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     const user = await this.client.database.Rpg.findById(ctx.message.author.id);
     if (!user) return ctx.replyT('error', 'commands:use.non-aventure');
 
@@ -52,7 +44,7 @@ module.exports = class UseCommand extends Command {
       if (inv.type !== 'Arma') items.push(inv.name);
     });
 
-    const juntos = countItems(items);
+    const juntos = RpgUtil.countItems(items);
 
     juntos.forEach((count) => {
       number++;
@@ -67,19 +59,20 @@ module.exports = class UseCommand extends Command {
       embed.setColor('#e53910');
     }
 
-    if (!ctx.args[0]) return ctx.sendC(ctx.message.author, embed);
+    if (!ctx.args[0]) return ctx.sendC(ctx.message.author.toString(), embed);
 
     if (!option.includes(ctx.args[0])) return ctx.replyT('error', 'commands:use.invalid-option');
 
     const choice = user.inventory.filter(
       (f) =>
         f.name ===
-        user.inventory[user.inventory.findIndex((i) => i.name === juntos[ctx.args[0] - 1].name)]
-          .name,
+        user.inventory[
+          user.inventory.findIndex((i) => i.name === juntos[parseInt(ctx.args[0]) - 1].name)
+        ].name,
     );
 
     const input = ctx.args[1];
-    let quantidade;
+    let quantidade: number;
 
     if (!input) {
       quantidade = 1;
@@ -89,7 +82,7 @@ module.exports = class UseCommand extends Command {
 
     if (quantidade < 1) return ctx.replyT('error', 'commands:use.invalid-option');
 
-    if (quantidade > juntos[ctx.args[0] - 1].amount)
+    if (quantidade > juntos[parseInt(ctx.args[0]) - 1].amount)
       return ctx.replyT('error', 'commands:use.bigger');
 
     if (choice[0].name.indexOf('💧') > -1) {
@@ -104,7 +97,7 @@ module.exports = class UseCommand extends Command {
 
     for (let i = 0; i < quantidade; i++) {
       user.inventory.splice(
-        user.inventory.findIndex((item) => item.name === juntos[ctx.args[0] - 1].name),
+        user.inventory.findIndex((item) => item.name === juntos[parseInt(ctx.args[0]) - 1].name),
         1,
       );
     }
@@ -120,4 +113,4 @@ module.exports = class UseCommand extends Command {
       maxMana: user.maxMana,
     });
   }
-};
+}

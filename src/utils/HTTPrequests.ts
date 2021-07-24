@@ -6,6 +6,7 @@ import {
   IHttpPicassoReutrn,
   IRESTGameStats,
   IUserDataToProfile,
+  IUserDataToSend,
 } from '@utils/Types';
 import { User } from 'discord.js';
 
@@ -218,7 +219,7 @@ export default class HttpRequests {
   }
 
   static async statusRequest(
-    user: string,
+    user: IUserDataToSend,
     userAvatarLink: string,
     i18n: unknown,
   ): Promise<IHttpPicassoReutrn> {

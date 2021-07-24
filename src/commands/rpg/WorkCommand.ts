@@ -1,13 +1,15 @@
 /* eslint-disable camelcase */
-const { MessageEmbed } = require('discord.js');
-const moment = require('moment');
-const Command = require('../../structures/Command');
-const jobsFile = require('../../structures/Rpgs/jobs.json');
-const itemsFile = require('../../structures/Rpgs/items.json');
-const rpgUtil = require('../../utils/RPGUtil');
+import { MessageEmbed } from 'discord.js';
+import moment from 'moment';
+import Command from '@structures/Command';
+import { jobs as jobsFile, items as itemsFile } from '@structures/RpgHandler';
+import rpgUtil from '@utils/RPGUtil';
+import MenheraClient from 'MenheraClient';
+import CommandContext from '@structures/CommandContext';
+import { finalChecks } from '@structures/Rpgs/checks';
 
-module.exports = class WorkCommand extends Command {
-  constructor(client) {
+export default class WorkCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'work',
       aliases: ['trabalhar'],
@@ -16,7 +18,7 @@ module.exports = class WorkCommand extends Command {
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     const user = await this.client.database.Rpg.findById(ctx.message.author.id);
     if (!user)
       return ctx.replyT('error', 'commands:work.not-register', { prefix: ctx.data.server.prefix });
@@ -26,12 +28,12 @@ module.exports = class WorkCommand extends Command {
       return ctx.replyT('error', 'commands:work.not-work', { prefix: ctx.data.server.prefix });
 
     if (parseInt(user.jobCooldown) > Date.now())
-      return parseInt(user.jobCooldown - Date.now()) > 3600000
+      return parseInt(user.jobCooldown) - Date.now() > 3600000
         ? ctx.replyT('error', 'commands:work.cooldown-hour', {
-            time: moment.utc(parseInt(user.jobCooldown - Date.now())).format('HH:mm:ss'),
+            time: moment.utc(parseInt(user.jobCooldown) - Date.now()).format('HH:mm:ss'),
           })
         : ctx.replyT('error', 'commands:work.cooldown-minute', {
-            time: moment.utc(parseInt(user.jobCooldown - Date.now())).format('mm:ss'),
+            time: moment.utc(parseInt(user.jobCooldown) - Date.now()).format('mm:ss'),
           });
 
     const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
@@ -71,13 +73,13 @@ module.exports = class WorkCommand extends Command {
       );
 
     if (canGet) user.loots.push(selectedItem);
-    user.jobCooldown = Date.now() + totalCooldown;
+    user.jobCooldown = `${Date.now() + totalCooldown}`;
     user.money += totalMoney;
     user.xp += xp;
     await user.save();
 
-    await this.client.rpgChecks.finalChecks(ctx, user);
+    await finalChecks(ctx, user);
 
-    ctx.sendC(ctx.message.author, embed);
+    ctx.sendC(ctx.message.author.toString(), embed);
   }
-};
+}

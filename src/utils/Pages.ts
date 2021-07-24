@@ -8,7 +8,7 @@ import { Message, MessageCollector, TextChannel } from 'discord.js';
  */
 const func = (fn) => (typeof fn === 'function' ? fn : () => fn);
 
-class PagesCollector extends MessageCollector {
+export default class PagesCollector extends MessageCollector {
   public ctx: CommandContext;
 
   public message: Message;
@@ -21,7 +21,11 @@ class PagesCollector extends MessageCollector {
 
   public handler;
 
-  constructor(public channel: TextChannel, { ctx, sent }, public collectorOptions = { max: 5 }) {
+  constructor(
+    public channel: TextChannel,
+    { ctx, sent },
+    public collectorOptions = { max: 5, time: 60000 },
+  ) {
     super(channel, (m) => m.author.id === ctx.message.author.id, collectorOptions);
     this.ctx = ctx;
     this.message = ctx.message;
@@ -56,7 +60,7 @@ class PagesCollector extends MessageCollector {
    * Send a new page message or edit the current
    * @param  {...any} args arguments of #TextChannel.send or #Message.edit
    */
-  async send(args) {
+  async send(...args) {
     if (!this.sent || this.sent.deleted) {
       this.sent = await this.channel.send(args);
     } else {
@@ -113,13 +117,11 @@ class PagesCollector extends MessageCollector {
       );
   }
 
-  static arrFindByIndex(arr: string[]) {
-    return (str: string) => arr.find((_: any, i: number) => i + 1 === Number(str));
+  static arrFindByIndex(arr: any[]) {
+    return (str: any) => arr.find((_: any, i: number) => i + 1 === Number(str));
   }
 
   static continue() {
     return 'CONTINUE';
   }
 }
-
-module.exports = PagesCollector;

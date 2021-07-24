@@ -1,19 +1,12 @@
-const { MessageEmbed } = require('discord.js');
-const Command = require('../../structures/Command');
-const familiarsFile = require('../../structures/Rpgs/familiar.json');
-/*
-NA DATABASE:
+import { Message, MessageEmbed } from 'discord.js';
+import Command from '@structures/Command';
 
- familiar: {
-   id: number
-   level: number
-   xp: number
-   nextlevelXp: number
- }
+import { familiars as familiarsFile } from '@structures/RpgHandler';
+import MenheraClient from 'MenheraClient';
+import CommandContext from '@structures/CommandContext';
 
-*/
-module.exports = class FamiliarCommand extends Command {
-  constructor(client) {
+export default class FamiliarCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'familiar',
       aliases: ['pet'],
@@ -23,7 +16,7 @@ module.exports = class FamiliarCommand extends Command {
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     const user = await this.client.database.Rpg.findById(ctx.message.author.id);
     if (!user)
       return ctx.replyT('error', 'commands:familiar.no-user', { prefix: ctx.data.server.prefix });
@@ -38,7 +31,7 @@ module.exports = class FamiliarCommand extends Command {
         .setDescription(ctx.locale('commands:familiar.summon-description'))
         .setColor('#6ee2f8')
         .setImage('https://i.imgur.com/nbbBZWo.gif');
-      const sentMessage = await ctx.sendC(ctx.message.author, embed);
+      const sentMessage = (await ctx.sendC(ctx.message.author.toString(), embed)) as Message;
       setTimeout(async () => {
         user.familiar = {
           id: userFamiliar[0],
@@ -89,7 +82,7 @@ module.exports = class FamiliarCommand extends Command {
             },
           ],
         );
-      ctx.sendC(ctx.message.author, embed);
+      ctx.sendC(ctx.message.author.toString(), embed);
     }
   }
-};
+}

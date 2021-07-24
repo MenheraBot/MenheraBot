@@ -1,9 +1,13 @@
-const { MessageEmbed } = require('discord.js');
-const Command = require('../../structures/Command');
-const familiarsFile = require('../../structures/Rpgs/familiar.json');
+import { Message, MessageEmbed, User } from 'discord.js';
+import Command from '@structures/Command';
+import { familiars as familiarsFile } from '@structures/RpgHandler';
+import MenheraClient from 'MenheraClient';
+import CommandContext from '@structures/CommandContext';
+import { IAbility, IBattleChoice, IUserRpgSchema } from '@utils/Types';
+import { getAbilities } from '@structures/Rpgs/checks';
 
-module.exports = class PvPCommands extends Command {
-  constructor(client) {
+export default class PvPCommands extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'pvp',
       cooldown: 10,
@@ -12,7 +16,7 @@ module.exports = class PvPCommands extends Command {
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     const mention = ctx.message.mentions.users.first();
     const valor = ctx.args[1];
     if (!mention) return ctx.replyT('error', 'commands:pvp.no-args');
@@ -83,7 +87,7 @@ module.exports = class PvPCommands extends Command {
         }\n-----------------------------\n ${ctx.locale('commands:pvp.send-to-accept')}`,
       );
 
-    let aposta = false;
+    let aposta: false | number = false;
 
     if (valor) {
       if (user1.life <= 0 || user2.life <= 0) return ctx.replyT('error', 'commands:pvp.no-life');
@@ -123,13 +127,12 @@ module.exports = class PvPCommands extends Command {
         }\n-----------------------------\n ${ctx.locale('commands:pvp.send-to-accept')}`,
       );
 
-    ctx.sendC(mention, embed);
+    ctx.sendC(mention.toString(), embed);
 
-    const acceptFilter = (m) => m.author.id === mention.id;
+    const acceptFilter = (m: Message) => m.author.id === mention.id;
     const acceptCollector = ctx.message.channel.createMessageCollector(acceptFilter, {
       max: 1,
       time: 10000,
-      errors: ['time'],
     });
 
     acceptCollector.on('collect', async (m) => {
@@ -146,7 +149,14 @@ module.exports = class PvPCommands extends Command {
     });
   }
 
-  async makeBattle(user1, user2, member1, member2, aposta, ctx) {
+  async makeBattle(
+    user1: IUserRpgSchema,
+    user2: IUserRpgSchema,
+    member1: User,
+    member2: User,
+    aposta: number | false,
+    ctx: CommandContext,
+  ) {
     const options = [];
 
     if (!aposta) {
@@ -167,8 +177,8 @@ module.exports = class PvPCommands extends Command {
           : user1.damage + user1.weapon.damage,
     });
 
-    const user1abilities = await this.client.rpgChecks.getAbilities(user1);
-    const user2abilities = await this.client.rpgChecks.getAbilities(user2);
+    const user1abilities = getAbilities(user1);
+    const user2abilities = getAbilities(user2);
 
     options.push(...user1abilities);
 
@@ -195,13 +205,12 @@ module.exports = class PvPCommands extends Command {
       .setTitle(`${ctx.locale('commands:pvp.battle.title', { user: member1.tag })}`)
       .setColor('#f04682')
       .setDescription(texto);
-    ctx.sendC(member1, embed);
+    ctx.sendC(member1.toString(), embed);
 
-    const filter = (m) => m.author.id === member1.id;
+    const filter = (m: Message) => m.author.id === member1.id;
     const collector = ctx.message.channel.createMessageCollector(filter, {
       max: 1,
       time: 6800,
-      errors: ['time'],
     });
 
     let time = false;
@@ -257,18 +266,18 @@ module.exports = class PvPCommands extends Command {
   }
 
   async continueBattle(
-    ctx,
-    escolha,
-    user1,
-    user2,
-    member1,
-    member2,
-    user1abilities,
-    user2abilities,
-    aposta,
-    attackText,
+    ctx: CommandContext,
+    escolha: IBattleChoice | false,
+    user1: IUserRpgSchema,
+    user2: IUserRpgSchema,
+    member1: User,
+    member2: User,
+    user1abilities: IAbility[],
+    user2abilities: IAbility[],
+    aposta: false | number,
+    attackText: string,
   ) {
-    let toSay;
+    let toSay: string;
     if (!attackText) {
       let danoUser = 0;
       if (escolha) {
@@ -331,13 +340,17 @@ module.exports = class PvPCommands extends Command {
               (user2.familiar.level - 1) * familiarsFile[user1.familiar.id]?.boost.value)
           : user2.armor;
       let danoDado = danoUser - enemyArmor;
-      if (escolha.name === 'Ataque Básico' || escolha.name === 'Basic Attack') danoDado = danoUser;
+      if (
+        (escolha as IBattleChoice).name === 'Ataque Básico' ||
+        (escolha as IBattleChoice).name === 'Basic Attack'
+      )
+        danoDado = danoUser;
       if (danoDado < 0) danoDado = 0;
       user2.life -= danoDado;
 
       toSay = `⚔️ | ${ctx.locale('commands:pvp.battle.attack', {
         enemy: member2.tag,
-        choice: escolha.name,
+        choice: (escolha as IBattleChoice).name,
         damage: danoDado,
         user: member1.tag,
       })}`;
@@ -389,13 +402,12 @@ module.exports = class PvPCommands extends Command {
       .setTitle(`${ctx.locale('commands:pvp.battle.title', { user: member2.tag })}`)
       .setFooter(ctx.locale('commands:dungeon.battle.footer'));
 
-    ctx.sendC(member2, embed);
+    ctx.sendC(member2.toString(), embed);
 
-    const filter = (m) => m.author.id === member2.id;
+    const filter = (m: Message) => m.author.id === member2.id;
     const collector = ctx.message.channel.createMessageCollector(filter, {
       max: 1,
       time: 6800,
-      errors: ['time'],
     });
 
     let time = false;
@@ -452,7 +464,15 @@ module.exports = class PvPCommands extends Command {
     }, 7100);
   }
 
-  async endBattle(ctx, user1, user2, member1, member2, aposta, toSay) {
+  async endBattle(
+    ctx: CommandContext,
+    user1: IUserRpgSchema,
+    user2: IUserRpgSchema,
+    member1: User,
+    member2: User,
+    aposta: number | false,
+    toSay: string,
+  ) {
     const text = `${toSay}\n${ctx.locale('commands:pvp.enough', { user: member2.tag })}`;
     const embed = new MessageEmbed()
       .setColor('#e905ff')
@@ -464,7 +484,7 @@ module.exports = class PvPCommands extends Command {
       user2.money -= aposta;
       user1.inBattle = false;
       user2.inBattle = false;
-      user2.death = Date.now() + 7200000;
+      user2.death = `${Date.now() + 7200000}`;
       user2.life = 0;
       await user1.save();
       await user2.save();
@@ -484,4 +504,4 @@ module.exports = class PvPCommands extends Command {
     embed.addField(ctx.locale('commands:pvp.aposta'), ctx.locale('commands:pvp.not-aposta'));
     ctx.send(embed);
   }
-};
+}

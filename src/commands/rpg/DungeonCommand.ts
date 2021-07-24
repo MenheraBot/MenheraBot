@@ -1,10 +1,21 @@
-const { MessageEmbed } = require('discord.js');
-const familiarsFile = require('../../structures/Rpgs/familiar.json');
+import { Message, MessageEmbed } from 'discord.js';
+import { familiars as familiarsFile } from '@structures/RpgHandler';
 
-const Command = require('../../structures/Command');
+import Command from '@structures/Command';
+import MenheraClient from 'MenheraClient';
+import CommandContext from '@structures/CommandContext';
+import {
+  getEnemyByUserLevel,
+  initialChecks,
+  getAbilities,
+  enemyShot,
+  battle,
+} from '@structures/Rpgs/checks';
+import { rpg } from '@structures/MenheraConstants';
+import { IAbility, IBattleChoice, IDungeonMob, IUserRpgSchema } from '@utils/Types';
 
-module.exports = class DungeonCommand extends Command {
-  constructor(client) {
+export default class DungeonCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'dungeon',
       cooldown: 10,
@@ -13,7 +24,7 @@ module.exports = class DungeonCommand extends Command {
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     const user = await this.client.database.Rpg.findById(ctx.message.author.id);
     if (!user) return ctx.replyT('error', 'commands:dungeon.non-aventure');
 
@@ -23,18 +34,13 @@ module.exports = class DungeonCommand extends Command {
 
     if (!polishedInput) return ctx.replyT('error', 'commands:dungeon.no-args');
 
-    const inimigo = await this.client.rpgChecks.getEnemyByUserLevel(
-      user,
-      'dungeon',
-      polishedInput,
-      ctx,
-    );
+    const inimigo = getEnemyByUserLevel(user, 'dungeon', parseInt(polishedInput), ctx);
 
     if (!inimigo) return ctx.replyT('error', 'commands:dungeon.no-level');
 
     if (inimigo === 'LOW-LEVEL') return;
 
-    const canGo = await this.client.rpgChecks.initialChecks(user, ctx);
+    const canGo = await initialChecks(user, ctx);
 
     if (!canGo) return;
 
@@ -53,7 +59,7 @@ module.exports = class DungeonCommand extends Command {
             (user.familiar.level - 1) * familiarsFile[user.familiar.id].boost.value)
         : user.armor + user.protection.armor;
 
-    const habilidades = await this.client.rpgChecks.getAbilities(user);
+    const habilidades = getAbilities(user);
 
     const embed = new MessageEmbed()
       .setTitle(`⌛ | ${ctx.locale('commands:dungeon.preparation.title')}`)
@@ -86,28 +92,34 @@ module.exports = class DungeonCommand extends Command {
     });
     await ctx.send(embed);
 
-    const filter = (m) => m.author.id === ctx.message.author.id;
+    const filter = (m: Message) => m.author.id === ctx.message.author.id;
     const collector = ctx.message.channel.createMessageCollector(filter, {
       max: 1,
       time: 30000,
-      errors: ['time'],
     });
 
     collector.on('collect', (m) => {
       if (m.content.toLowerCase() === 'sim' || m.content.toLowerCase() === 'yes') {
-        this.battle(ctx, inimigo, habilidades, user, 'dungeon');
+        DungeonCommand.battle(ctx, inimigo as IDungeonMob, habilidades, user, 'dungeon');
       } else return ctx.replyT('error', 'commands:dungeon.arregou');
     });
   }
 
-  async battle(ctx, inimigo, habilidades, user, type) {
-    user.dungeonCooldown = this.client.constants.rpg.dungeonCooldown + Date.now();
+  static async battle(
+    ctx: CommandContext,
+    inimigo: IDungeonMob,
+    habilidades: IAbility[],
+    user: IUserRpgSchema,
+    type: 'boss' | 'dungeon',
+  ) {
+    user.dungeonCooldown = `${rpg.dungeonCooldown + Date.now()}`;
     user.inBattle = true;
     await user.save();
 
-    const options = [
+    const options: IBattleChoice[] = [
       {
         name: ctx.locale('commands:dungeon.scape'),
+        // @ts-ignore
         damage: '🐥',
         scape: true,
       },
@@ -151,13 +163,12 @@ module.exports = class DungeonCommand extends Command {
       .setTitle(`${ctx.locale('commands:dungeon.battle.title')}${inimigo.name}`)
       .setColor('#f04682')
       .setDescription(texto);
-    ctx.sendC(ctx.message.author, embed);
+    ctx.sendC(ctx.message.author.toString(), embed);
 
-    const filter = (m) => m.author.id === ctx.message.author.id;
+    const filter = (m: Message) => m.author.id === ctx.message.author.id;
     const collector = ctx.message.channel.createMessageCollector(filter, {
       max: 1,
       time: 15000,
-      errors: ['time'],
     });
 
     let time = false;
@@ -166,9 +177,9 @@ module.exports = class DungeonCommand extends Command {
       time = true;
       const choice = Number(m.content);
       if (escolhas.includes(choice)) {
-        this.client.rpgChecks.battle(ctx, options[choice], user, inimigo, type);
+        battle(ctx, options[choice], user, inimigo, type);
       } else {
-        this.client.rpgChecks.enemyShot(
+        enemyShot(
           ctx,
           user,
           inimigo,
@@ -180,7 +191,7 @@ module.exports = class DungeonCommand extends Command {
 
     setTimeout(() => {
       if (!time) {
-        this.client.rpgChecks.enemyShot(
+        enemyShot(
           ctx,
           user,
           inimigo,
@@ -190,4 +201,4 @@ module.exports = class DungeonCommand extends Command {
       }
     }, 15000);
   }
-};
+}

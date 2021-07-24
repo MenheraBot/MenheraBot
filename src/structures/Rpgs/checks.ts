@@ -25,9 +25,9 @@ const random = (arr: Array<any>): any => arr[Math.floor(Math.random() * arr.leng
 const getEnemyByUserLevel = (
   user: IUserRpgSchema,
   type: string,
-  dungeonLevel: number,
-  ctx: CommandContext,
-): IDungeonMob | boolean | string => {
+  dungeonLevel?: number,
+  ctx?: CommandContext,
+): IDungeonMob | false | string => {
   if (type === 'boss') {
     if (user.level > 24 && user.level < 30) {
       return random([...mobsFile.boss, ...mobsFile.gods]);
@@ -856,7 +856,10 @@ const getAbilities = (user: IUserRpgSchema): Array<IAbility & IUniquePower> => {
   return abilities;
 };
 
-const initialChecks = (user: IUserRpgSchema & Document, ctx: CommandContext) => {
+const initialChecks = async (
+  user: IUserRpgSchema & Document,
+  ctx: CommandContext,
+): Promise<boolean> => {
   let pass = true;
   const motivo = [];
 
@@ -919,7 +922,8 @@ const initialChecks = (user: IUserRpgSchema & Document, ctx: CommandContext) => 
     });
     ctx.send(texto);
   }
-  return user.save().then(() => pass);
+  await user.save();
+  return pass;
 };
 
 const confirmRegister = async (user: IUserRpgSchema & Document, ctx: CommandContext) => {

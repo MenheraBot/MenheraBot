@@ -1,10 +1,12 @@
-const NewHttp = require('@utils/HTTPrequests');
-const { MessageAttachment } = require('discord.js');
-const familiarsFile = require('../../structures/RpgHandler').familiars;
-const Command = require('../../structures/Command');
+import http from '@utils/HTTPrequests';
+import { MessageAttachment } from 'discord.js';
+import { familiars as familiarsFile } from '@structures/RpgHandler';
+import Command from '@structures/Command';
+import MenheraClient from 'MenheraClient';
+import CommandContext from '@structures/CommandContext';
 
-module.exports = class StatusCommand extends Command {
-  constructor(client) {
+export default class StatusCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'status',
       aliases: ['stats'],
@@ -14,7 +16,7 @@ module.exports = class StatusCommand extends Command {
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     let mentioned;
     if (ctx.args[0]) {
       try {
@@ -74,10 +76,12 @@ module.exports = class StatusCommand extends Command {
       userJob: ctx.locale(`roleplay:job.${user.jobId}.name`),
     };
 
-    const res = await NewHttp.statusRequest(UserDataToSend, userAvatarLink, i18nData);
+    const res = await http.statusRequest(UserDataToSend, userAvatarLink, i18nData);
 
     if (res.err) return ctx.replyT('error', 'commands:http-error');
 
-    ctx.sendC(ctx.message.author, new MessageAttachment(Buffer.from(res.data), 'status.png'));
+    ctx.sendC(ctx.message.author.toString(), {
+      files: [new MessageAttachment(Buffer.from(res.data), 'status.png')],
+    });
   }
-};
+}

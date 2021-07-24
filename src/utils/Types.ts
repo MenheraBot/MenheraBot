@@ -89,7 +89,7 @@ interface IUserFamiliar {
   level: number;
   xp: number;
   nextLevelXp: number;
-  type: TFamiliarBoost;
+  type: TFamiliarBoost | string;
 }
 
 export interface IInventoryUser {
@@ -97,7 +97,7 @@ export interface IInventoryUser {
   description?: string;
   type?: string;
   job_id?: number;
-  damage: number;
+  damage?: number;
   value?: number;
   maxLevel?: number;
   minLevel?: number;
@@ -274,4 +274,20 @@ export interface IStatusSchema {
   guilds: number;
   uptime: string;
   lastPingAt: string;
+}
+
+export interface IUserDataToSend {
+  life: number;
+  maxLife: number;
+  mana: number;
+  maxMana: number;
+  xp: number;
+  level: number;
+  nextLevelXp: number;
+  damage: any;
+  armor: any;
+  abilityPower: any;
+  tag: any;
+  money: number;
+  jobId: number;
 }

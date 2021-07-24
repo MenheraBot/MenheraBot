@@ -1,9 +1,11 @@
-const { MessageEmbed } = require('discord.js');
-const Command = require('../../structures/Command');
-const jobsFile = require('../../structures/Rpgs/jobs.json');
+import { MessageEmbed } from 'discord.js';
+import Command from '@structures/Command';
+import { jobs as jobsFile } from '@structures/RpgHandler';
+import CommandContext from '@structures/CommandContext';
+import MenheraClient from 'MenheraClient';
 
-module.exports = class JobCommand extends Command {
-  constructor(client) {
+export default class JobCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'job',
       aliases: ['trabalho'],
@@ -13,7 +15,7 @@ module.exports = class JobCommand extends Command {
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     const user = await this.client.database.Rpg.findById(ctx.message.author.id);
     if (!user) return ctx.replyT('error', 'commands:job.not-registred');
 
@@ -40,7 +42,7 @@ module.exports = class JobCommand extends Command {
         );
       }
 
-      return ctx.sendC(ctx.message.author, embed);
+      return ctx.sendC(ctx.message.author.toString(), embed);
     }
 
     const escolha = ctx.args[0].replace(/\D+/g, '');
@@ -60,4 +62,4 @@ module.exports = class JobCommand extends Command {
       job: ctx.locale(`roleplay:job.${escolha}.${jobsFile[escolha].name}`),
     });
   }
-};
+}

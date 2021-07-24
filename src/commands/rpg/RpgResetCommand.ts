@@ -1,7 +1,10 @@
-const Command = require('../../structures/Command');
+import Command from '@structures/Command';
+import CommandContext from '@structures/CommandContext';
+import { Message } from 'discord.js';
+import MenheraClient from 'MenheraClient';
 
-module.exports = class RpgResetCommand extends Command {
-  constructor(client) {
+export default class RpgResetCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'reset',
       aliases: ['resetar'],
@@ -10,18 +13,17 @@ module.exports = class RpgResetCommand extends Command {
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     const user = await this.client.database.Rpg.findById(ctx.message.author.id);
     if (!user) return ctx.replyT('error', 'commands:reset.non-aventure');
     if (user.level < 4) return ctx.replyT('error', 'commands:reset.low-level');
 
     ctx.replyT('warn', 'commands:reset.confirm');
 
-    const filter = (m) => m.author.id === ctx.message.author.id;
+    const filter = (m: Message) => m.author.id === ctx.message.author.id;
     const collector = ctx.message.channel.createMessageCollector(filter, {
       max: 1,
       time: 30000,
-      errors: ['time'],
     });
 
     collector.on('collect', async (m) => {
@@ -32,4 +34,4 @@ module.exports = class RpgResetCommand extends Command {
       } else ctx.replyT('error', 'commands:reset.cancel');
     });
   }
-};
+}

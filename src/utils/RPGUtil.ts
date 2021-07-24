@@ -49,7 +49,11 @@ export default class RPGUtil {
     user.inventory.push(...new Array(amount).fill(item));
   }
 
-  static removeItemInLoots(user: IUserRpgSchema, itemName: string, amount = 1): void {
+  static removeItemInLoots(
+    user: IUserRpgSchema,
+    itemName: string,
+    amount: number | unknown = 1,
+  ): void {
     for (let i = 0; i < amount; i++) {
       user.loots.splice(
         user.loots.findIndex((loot) => loot.name === itemName),

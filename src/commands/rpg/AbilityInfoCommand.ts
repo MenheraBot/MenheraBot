@@ -1,9 +1,13 @@
-const { MessageEmbed } = require('discord.js');
-const Command = require('../../structures/Command');
-const abilitiesFile = require('../../structures/RpgHandler').abiltiies;
+import MenheraClient from 'MenheraClient';
 
-module.exports = class AbilityInfoCommand extends Command {
-  constructor(client) {
+import { MessageEmbed } from 'discord.js';
+import Command from '@structures/Command';
+
+import CommandContext from '@structures/CommandContext';
+import { abilities as abilitiesFile } from '@structures/RpgHandler';
+
+export default class AbilityInfoCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'infohabilidade',
       aliases: ['ih', 'abilityinfo'],
@@ -13,7 +17,7 @@ module.exports = class AbilityInfoCommand extends Command {
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     if (!ctx.args[0]) return ctx.replyT('question', 'commands:infohabilidade.no-args');
 
     const validArgs = [
@@ -115,7 +119,7 @@ module.exports = class AbilityInfoCommand extends Command {
     return ctx.sendC(ctx.message.author, embed);
   }
 
-  async getAll(ctx) {
+  async getAll(ctx: CommandContext) {
     const user = await this.client.database.Rpg.findById(ctx.message.author.id);
     if (!user) return ctx.replyT('error', 'commands:infohabilidade.non-aventure');
 
@@ -215,6 +219,6 @@ module.exports = class AbilityInfoCommand extends Command {
         )}:** ${hab.cost}`,
       );
     });
-    return ctx.sendC(ctx.message.author, embed);
+    return ctx.sendC(ctx.message.author.toString(), embed);
   }
-};
+}

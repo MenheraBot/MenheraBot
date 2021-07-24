@@ -1,10 +1,11 @@
-const { MessageEmbed } = require('discord.js');
-const Command = require('../../structures/Command');
-const RPGUtil = require('../../utils/RPGUtil');
-const { countItems } = require('../../utils/RPGUtil');
+import { MessageEmbed } from 'discord.js';
+import Command from '@structures/Command';
+import RPGUtil from '@utils/RPGUtil';
+import MenheraClient from 'MenheraClient';
+import CommandContext from '@structures/CommandContext';
 
-module.exports = class InventoryCommand extends Command {
-  constructor(client) {
+export default class InventoryCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'inventory',
       aliases: ['inventario', 'inv', 'inventário'],
@@ -14,7 +15,7 @@ module.exports = class InventoryCommand extends Command {
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     const user = await this.client.database.Rpg.findById(ctx.message.author.id);
     if (!user) return ctx.replyT('error', 'commands:inventory.non-aventure');
 
@@ -27,7 +28,7 @@ module.exports = class InventoryCommand extends Command {
     const items = user.inventory.filter((item) => item.type !== 'Arma');
 
     const normalizeItems = (arr) =>
-      countItems(arr).reduce(
+      RPGUtil.countItems(arr).reduce(
         (p, count) =>
           `${p}**${
             count.job_id > 0 ? ctx.locale(`roleplay:job.${count.job_id}.${count.name}`) : count.name
@@ -63,6 +64,6 @@ module.exports = class InventoryCommand extends Command {
         lootText,
       );
 
-    ctx.sendC(ctx.message.author, embed);
+    ctx.sendC(ctx.message.author.toString(), embed);
   }
-};
+}

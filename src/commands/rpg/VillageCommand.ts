@@ -1,14 +1,17 @@
 /* eslint-disable guard-for-in */
-const { MessageEmbed } = require('discord.js');
-const moment = require('moment');
-const Command = require('../../structures/Command');
-const PagesCollector = require('../../utils/Pages');
-const itemsFile = require('../../structures/RpgHandler').items;
-const RPGUtil = require('../../utils/RPGUtil');
-require('moment-duration-format');
+import { MessageEmbed, TextChannel } from 'discord.js';
+import moment from 'moment';
+import Command from '@structures/Command';
+import PagesCollector from '@utils/Pages';
+import { items as itemsFile } from '@structures/RpgHandler';
+import RPGUtil from '@utils/RPGUtil';
+import 'moment-duration-format';
+import MenheraClient from 'MenheraClient';
+import CommandContext from '@structures/CommandContext';
+import { IUserRpgSchema } from '@utils/Types';
 
-module.exports = class VillageCommand extends Command {
-  constructor(client) {
+export default class VillageCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'village',
       aliases: ['vila'],
@@ -18,8 +21,9 @@ module.exports = class VillageCommand extends Command {
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     const user = await this.client.database.Rpg.findById(ctx.message.author.id);
+    if (ctx.message.channel.type === 'dm') return;
 
     if (!user) {
       return ctx.replyT('error', 'commands:village.non-aventure');
@@ -35,13 +39,13 @@ module.exports = class VillageCommand extends Command {
       )
       .setFooter(ctx.locale('commands:village.index.footer'));
 
-    const sent = await ctx.sendC(ctx.message.author, embed);
+    const sent = await ctx.sendC(ctx.message.author.toString(), embed);
 
     const options = ['bruxa', 'ferreiro', 'hotel', 'guilda'];
     const collector = new PagesCollector(
-      ctx.message.channel,
+      ctx.message.channel as TextChannel,
       { sent, ctx },
-      { max: 2, time: 30000, errors: ['time'] },
+      { max: 2, time: 60000 },
     )
       .setInvalidOption(() => collector.replyT('error', 'commands:village.invalid-option'))
       .setFindOption(PagesCollector.arrFindByElemOrIndex(options))
@@ -49,7 +53,7 @@ module.exports = class VillageCommand extends Command {
       .start();
   }
 
-  static async bruxa(ctx, user, collector) {
+  static async bruxa(ctx: CommandContext, user: IUserRpgSchema, collector: PagesCollector) {
     const items = itemsFile.bruxa.filter(
       (item) => user.level >= item.minLevel && (!item.maxLevel || user.level <= item.maxLevel),
     );
@@ -110,7 +114,7 @@ module.exports = class VillageCommand extends Command {
     return PagesCollector.continue();
   }
 
-  static ferreiro(ctx, user, collector) {
+  static ferreiro(ctx: CommandContext, user: IUserRpgSchema, collector: PagesCollector) {
     if (user.level < 9) {
       return collector.replyT('error', 'commands:village.ferreiro.low-level', { level: 9 });
     }
@@ -134,7 +138,12 @@ module.exports = class VillageCommand extends Command {
     return PagesCollector.continue();
   }
 
-  static ferreiroEquipamentos(category, ctx, user, collector) {
+  static ferreiroEquipamentos(
+    category: string,
+    ctx: CommandContext,
+    user: IUserRpgSchema,
+    collector: PagesCollector,
+  ) {
     const emojis = {
       sword: '🗡️',
       armor: '🛡️',
@@ -199,7 +208,7 @@ module.exports = class VillageCommand extends Command {
         }
 
         if (item.amount < qty) {
-          return [...p, { name, qty: qty - item.amount }];
+          return [...p, { name, qty: (qty as number) - item.amount }];
         }
 
         return p;
@@ -247,7 +256,7 @@ module.exports = class VillageCommand extends Command {
     return PagesCollector.continue();
   }
 
-  static hotel(ctx, user, collector) {
+  static hotel(ctx: CommandContext, user: IUserRpgSchema, collector: PagesCollector) {
     const embed = new MessageEmbed()
       .setTitle(`🏨 | ${ctx.locale('commands:village.hotel.title')}`)
       .setDescription(ctx.locale('commands:village:hotel.description'))
@@ -268,10 +277,10 @@ module.exports = class VillageCommand extends Command {
     collector.send(ctx.message.author, embed);
     collector.setFindOption(PagesCollector.arrFindByIndex(itemsFile.hotel));
     collector.setHandle((_, option) => {
-      if (user.hotelTime > Date.now()) {
+      if (parseInt(user.hotelTime) > Date.now()) {
         return collector.replyT('error', 'commands:village.hotel.already');
       }
-      if (user.life < 1 && user.death > Date.now()) {
+      if (user.life < 1 && parseInt(user.death) > Date.now()) {
         return collector.replyT('error', 'commands:village.hotel.dead');
       }
 
@@ -312,7 +321,7 @@ module.exports = class VillageCommand extends Command {
     return PagesCollector.continue();
   }
 
-  static guilda(ctx, user, collector) {
+  static guilda(ctx: CommandContext, user: IUserRpgSchema, collector: PagesCollector) {
     const embed = new MessageEmbed()
       .setTitle(`🏠 | ${ctx.locale('commands:village.guilda.title')}`)
       .setColor('#98b849')
@@ -351,7 +360,7 @@ module.exports = class VillageCommand extends Command {
       if (txt.length + item.length <= 1800) {
         txt += item;
       } else {
-        displayedItems = displayedItems.slice(0, i);
+        displayedItems = displayedItems.slice(0, parseInt(i));
         break;
       }
     }
@@ -423,4 +432,4 @@ module.exports = class VillageCommand extends Command {
     });
     return PagesCollector.continue();
   }
-};
+}
