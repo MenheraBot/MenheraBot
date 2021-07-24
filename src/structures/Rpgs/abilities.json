@@ -5,9 +5,9 @@
         "name": "Morte Instantânea",
         "description": "Arranca metade da vida do inimigo com um tapa, apenas o básico",
         "cooldown": 86400000,
-        "damage": "50% da Vida",
+        "damage": 1000000000000,
         "heal": 0,
-        "cost": "`100% da Mana Máxima`",
+        "cost": 10000000000,
         "type": "ativo"
       },
       {

@@ -1,0 +1,206 @@
+import { MessageEmbed } from 'discord.js';
+import moment from 'moment';
+import Command from '@structures/Command';
+import { COLORS, probabilities } from '@structures/MenheraConstants';
+import MenheraClient from 'MenheraClient';
+import CommandContext from '@structures/CommandContext';
+
+export default class HuntCommand extends Command {
+  constructor(client: MenheraClient) {
+    super(client, {
+      name: 'hunt',
+      aliases: ['cacar', 'caça', 'caca', 'caçar'],
+      category: 'diversão',
+      clientPermissions: ['EMBED_LINKS'],
+    });
+  }
+
+  async run(ctx: CommandContext) {
+    const authorData = ctx.data.user;
+
+    const validArgs = [
+      {
+        opção: 'demônio',
+        arguments: ['demonios', 'demônios', 'demons', 'demonio', 'demônio', 'demon'],
+      },
+      {
+        opção: 'anjos',
+        arguments: ['anjos', 'anjo', 'angels', 'angel'],
+      },
+      {
+        opção: 'semideuses',
+        arguments: [
+          'semideuses',
+          'semideus',
+          'semi-deuses',
+          'sd',
+          'semi-deus',
+          'demigods',
+          'dg',
+          'demigod',
+        ],
+      },
+      {
+        opção: 'deus',
+        arguments: ['deus', 'deuses', 'gods', 'god'],
+      },
+      {
+        opção: 'ajuda',
+        arguments: ['ajudas', 'help', 'h', 'ajuda'],
+      },
+      {
+        opção: 'probabilidades',
+        arguments: ['probabilidades', 'probabilidade', 'probability', 'probabilities'],
+      },
+    ];
+
+    if (!ctx.args[0]) return ctx.reply('error', `${ctx.locale('commands:hunt.no-args')}`);
+    const filtredOption = validArgs.filter((so) =>
+      so.arguments.includes(ctx.args[0].toLowerCase()),
+    );
+    if (filtredOption.length === 0)
+      return ctx.reply('error', `${ctx.locale('commands:hunt.no-args')}`);
+
+    const option = filtredOption[0].opção;
+
+    const probabilidadeDemonio =
+      ctx.message.guild.id === '717061688460967988'
+        ? probabilities.support.demon
+        : probabilities.normal.demon;
+    const probabilidadeAnjo =
+      ctx.message.guild.id === '717061688460967988'
+        ? probabilities.support.angel
+        : probabilities.normal.angel;
+    const probabilidadeSD =
+      ctx.message.guild.id === '717061688460967988'
+        ? probabilities.support.demigod
+        : probabilities.normal.demigod;
+    const probabilidadeDeuses =
+      ctx.message.guild.id === '717061688460967988'
+        ? probabilities.support.god
+        : probabilities.normal.god;
+
+    if (option === 'ajuda') return ctx.replyT('question', 'commands:hunt.help');
+    if (option === 'probabilidades') {
+      return ctx.send(
+        ctx.locale('commands:hunt.probabilities', {
+          demon: probabilidadeDemonio,
+          angel: probabilidadeAnjo,
+          demi: probabilidadeSD,
+          god: probabilidadeDeuses,
+        }),
+      );
+    }
+
+    if (parseInt(authorData.caçarTime) > Date.now())
+      return ctx.replyT('error', 'commands:hunt.cooldown', {
+        time: moment.utc(parseInt(authorData.caçarTime) - Date.now()).format('mm:ss'),
+      });
+
+    const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
+    const cooldown = probabilities.defaultTime + Date.now();
+    const embed = new MessageEmbed().setColor(COLORS.HuntDefault).setThumbnail(avatar);
+    if (ctx.message.channel.id === '717061688460967988')
+      embed.setFooter(ctx.locale('commands:hunt.footer'));
+
+    const { huntDemon, huntAngel, huntDemigod, huntGod } = this.client.repositories.huntRepository;
+
+    const areYouTheHuntOrTheHunter = async (probability: Array<number>, saveFn) => {
+      const value = probability[Math.floor(Math.random() * probability.length)];
+      await saveFn.call(
+        this.client.repositories.huntRepository,
+        ctx.message.author.id,
+        value,
+        cooldown,
+      );
+      return value;
+    };
+
+    const huntEnum = {
+      DEMON: 'caçados',
+      ANGEL: 'anjos',
+      DEMIGOD: 'semideuses',
+      GOD: 'deuses',
+    };
+
+    switch (option) {
+      case 'demônio': {
+        const demons = await areYouTheHuntOrTheHunter(probabilidadeDemonio, huntDemon);
+        const { rank } = await this.client.repositories.topRepository.getUserHuntRank(
+          ctx.message.author.id,
+          huntEnum.DEMON,
+        );
+        embed
+          .setTitle(ctx.locale('commands:hunt.demons'))
+          .setColor(COLORS.HuntDemon)
+          .setDescription(
+            ctx.locale('commands:hunt.description_start', {
+              value: demons,
+              hunt: ctx.locale('commands:hunt.demons'),
+              rank: rank + 1,
+            }),
+          );
+        break;
+      }
+      case 'anjos': {
+        const angels = await areYouTheHuntOrTheHunter(probabilidadeAnjo, huntAngel);
+        const { rank } = await this.client.repositories.topRepository.getUserHuntRank(
+          ctx.message.author.id,
+          huntEnum.ANGEL,
+        );
+        embed
+          .setTitle(ctx.locale('commands:hunt.angels'))
+          .setColor(COLORS.HuntAngel)
+          .setDescription(
+            ctx.locale('commands:hunt.description_start', {
+              value: angels,
+              hunt: ctx.locale('commands:hunt.angels'),
+              rank: rank + 1,
+            }),
+          );
+        break;
+      }
+      case 'semideuses': {
+        const demigods = await areYouTheHuntOrTheHunter(probabilidadeSD, huntDemigod);
+        const { rank } = await this.client.repositories.topRepository.getUserHuntRank(
+          ctx.message.author.id,
+          huntEnum.DEMIGOD,
+        );
+        embed
+          .setTitle(ctx.locale('commands:hunt.sd'))
+          .setColor(COLORS.HuntSD)
+          .setDescription(
+            ctx.locale('commands:hunt.description_start', {
+              value: demigods,
+              hunt: ctx.locale('commands:hunt.sd'),
+              rank: rank + 1,
+            }),
+          );
+        break;
+      }
+      case 'deus': {
+        const gods = await areYouTheHuntOrTheHunter(probabilidadeDeuses, huntGod);
+        const { rank } = await this.client.repositories.topRepository.getUserHuntRank(
+          ctx.message.author.id,
+          huntEnum.GOD,
+        );
+        embed
+          .setColor(COLORS.HuntGod)
+          .setTitle(ctx.locale('commands:hunt.gods'))
+          .setDescription(
+            gods > 0
+              ? ctx.locale('commands:hunt.god_hunted_success', {
+                  value: gods,
+                  hunt: ctx.locale('commands:hunt.gods'),
+                  rank: rank + 1,
+                })
+              : ctx.locale('commands:hunt.god_hunted_fail', { rank: rank + 1 }),
+          );
+        if (gods > 0)
+          embed.setColor(COLORS.HuntGod).setThumbnail('https://i.imgur.com/053khaH.gif');
+        break;
+      }
+    }
+    ctx.send(embed);
+  }
+}
