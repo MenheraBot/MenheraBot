@@ -1,9 +1,11 @@
-const { MessageEmbed } = require('discord.js');
-const Command = require('../../structures/Command');
-const { getImageUrl } = require('../../utils/HTTPrequests');
+import { MessageEmbed } from 'discord.js';
+import Command from '@structures/Command';
+import http from '@utils/HTTPrequests';
+import MenheraClient from 'MenheraClient';
+import CommandContext from '@structures/CommandContext';
 
-module.exports = class CryCommand extends Command {
-  constructor(client) {
+export default class CryCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'cry',
       aliases: ['chorar'],
@@ -12,10 +14,10 @@ module.exports = class CryCommand extends Command {
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
 
-    const rand = await getImageUrl('cry');
+    const rand = await http.getAssetImageUrl('cry');
     const user = ctx.message.mentions.users.first();
 
     if (user && user.bot) return ctx.replyT('error', 'commands:cry.bot');
@@ -49,4 +51,4 @@ module.exports = class CryCommand extends Command {
 
     await ctx.send(embed);
   }
-};
+}

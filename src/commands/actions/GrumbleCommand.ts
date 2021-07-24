@@ -1,9 +1,11 @@
-const { MessageEmbed } = require('discord.js');
-const Command = require('../../structures/Command');
-const { getImageUrl } = require('../../utils/HTTPrequests');
+import { MessageEmbed } from 'discord.js';
+import Command from '@structures/Command';
+import http from '@utils/HTTPrequests';
+import MenheraClient from 'MenheraClient';
+import CommandContext from '@structures/CommandContext';
 
-module.exports = class GrumbleCommand extends Command {
-  constructor(client) {
+export default class GrumbleCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'grumble',
       aliases: ['resmungar', 'humpf'],
@@ -12,10 +14,10 @@ module.exports = class GrumbleCommand extends Command {
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
 
-    const rand = await getImageUrl('grumble');
+    const rand = await http.getAssetImageUrl('grumble');
 
     const embed = new MessageEmbed()
       .setTitle(ctx.locale('commands:grumble.embed_title'))
@@ -27,4 +29,4 @@ module.exports = class GrumbleCommand extends Command {
 
     ctx.send(embed);
   }
-};
+}

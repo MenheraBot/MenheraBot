@@ -1,9 +1,11 @@
-const { MessageEmbed } = require('discord.js');
-const Command = require('../../structures/Command');
-const { getImageUrl } = require('../../utils/HTTPrequests');
+import { MessageEmbed } from 'discord.js';
+import Command from '@structures/Command';
+import http from '@utils/HTTPrequests';
+import MenheraClient from 'MenheraClient';
+import CommandContext from '@structures/CommandContext';
 
-module.exports = class MamarCommand extends Command {
-  constructor(client) {
+export default class MamarCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'mamar',
       aliases: ['suck', 'sugada'],
@@ -12,7 +14,7 @@ module.exports = class MamarCommand extends Command {
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     const mention = ctx.message.mentions.users.first();
 
     if (!mention) return ctx.replyT('error', 'commands:mamar.no-mention');
@@ -21,7 +23,7 @@ module.exports = class MamarCommand extends Command {
 
     if (mention === ctx.message.author) return ctx.replyT('error', 'commands:mamar.self-mention');
 
-    const rand = await getImageUrl('mamar');
+    const rand = await http.getAssetImageUrl('mamar');
     const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
     const embed = new MessageEmbed()
       .setTitle(ctx.locale('commands:mamar.embed_title'))
@@ -36,4 +38,4 @@ module.exports = class MamarCommand extends Command {
     ctx.send(embed);
     await ctx.client.repositories.mamarRepository.mamar(ctx.message.author.id, mention.id);
   }
-};
+}

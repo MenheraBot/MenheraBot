@@ -1,9 +1,12 @@
-const { MessageEmbed } = require('discord.js');
-const Command = require('../../structures/Command');
-const { getImageUrl } = require('../../utils/HTTPrequests');
+import CommandContext from '@structures/CommandContext';
+import MenheraClient from 'MenheraClient';
 
-module.exports = class ShyCommand extends Command {
-  constructor(client) {
+import { MessageEmbed } from 'discord.js';
+import Command from '@structures/Command';
+import http from '@utils/HTTPrequests';
+
+export default class ShyCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'shy',
       aliases: ['vergonha'],
@@ -12,10 +15,10 @@ module.exports = class ShyCommand extends Command {
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
 
-    const rand = await getImageUrl('shy');
+    const rand = await http.getAssetImageUrl('shy');
     const user = ctx.message.mentions.users.first();
 
     if (!user || user === ctx.message.author) {
@@ -46,4 +49,4 @@ module.exports = class ShyCommand extends Command {
 
     ctx.send(embed);
   }
-};
+}

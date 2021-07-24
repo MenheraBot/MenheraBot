@@ -1,9 +1,12 @@
-const { MessageEmbed } = require('discord.js');
-const Command = require('../../structures/Command');
-const { getImageUrl } = require('../../utils/HTTPrequests');
+import CommandContext from '@structures/CommandContext';
 
-module.exports = class ResurrectCommand extends Command {
-  constructor(client) {
+import { MessageEmbed } from 'discord.js';
+import Command from '@structures/Command';
+import http from '@utils/HTTPrequests';
+import MenheraClient from 'MenheraClient';
+
+export default class ResurrectCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'resurrect',
       aliases: ['reviver', 'ressuscitar'],
@@ -12,8 +15,8 @@ module.exports = class ResurrectCommand extends Command {
     });
   }
 
-  async run(ctx) {
-    const rand = await getImageUrl('resurrect');
+  async run(ctx: CommandContext) {
+    const rand = await http.getAssetImageUrl('resurrect');
     const user = ctx.message.mentions.users.first();
     const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
 
@@ -35,4 +38,4 @@ module.exports = class ResurrectCommand extends Command {
 
     ctx.send(embed);
   }
-};
+}

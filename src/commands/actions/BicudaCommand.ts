@@ -1,9 +1,11 @@
-const { MessageEmbed } = require('discord.js');
-const Command = require('../../structures/Command');
-const { getImageUrl } = require('../../utils/HTTPrequests');
+import { MessageEmbed } from 'discord.js';
+import Command from '@structures/Command';
+import http from '@utils/HTTPrequests';
+import MenheraClient from 'MenheraClient';
+import CommandContext from '@structures/CommandContext';
 
-module.exports = class BicudaCommand extends Command {
-  constructor(client) {
+export default class BicudaCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'bicuda',
       aliases: ['chutar'],
@@ -12,8 +14,8 @@ module.exports = class BicudaCommand extends Command {
     });
   }
 
-  async run(ctx) {
-    const rand = await getImageUrl('bicuda');
+  async run(ctx: CommandContext) {
+    const rand = await http.getAssetImageUrl('bicuda');
     const user = ctx.message.mentions.users.first();
 
     if (!user) {
@@ -40,4 +42,4 @@ module.exports = class BicudaCommand extends Command {
 
     return ctx.send(embed);
   }
-};
+}

@@ -1,9 +1,11 @@
-const { MessageEmbed } = require('discord.js');
-const Command = require('../../structures/Command');
-const { getImageUrl } = require('../../utils/HTTPrequests');
+import CommandContext from '@structures/CommandContext';
+import { MessageEmbed } from 'discord.js';
+import MenheraClient from 'MenheraClient';
+import Command from '../../structures/Command';
+import http from '../../utils/HTTPrequests';
 
-module.exports = class HugCommand extends Command {
-  constructor(client) {
+export default class HugCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'hug',
       aliases: ['abracar', 'abraçar'],
@@ -12,8 +14,8 @@ module.exports = class HugCommand extends Command {
     });
   }
 
-  async run(ctx) {
-    const rand = await getImageUrl('hug');
+  async run(ctx: CommandContext) {
+    const rand = await http.getAssetImageUrl('hug');
     const user = ctx.message.mentions.users.first();
 
     if (user && user.bot) return ctx.replyT('error', 'commands:hug.bot');
@@ -40,4 +42,4 @@ module.exports = class HugCommand extends Command {
 
     ctx.send(embed);
   }
-};
+}

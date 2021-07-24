@@ -1,9 +1,12 @@
-const { MessageEmbed } = require('discord.js');
-const Command = require('../../structures/Command');
-const { getImageUrl } = require('../../utils/HTTPrequests');
+import { MessageEmbed, MessageReaction, User } from 'discord.js';
+import Command from '@structures/Command';
+import http from '@utils/HTTPrequests';
+import MenheraClient from 'MenheraClient';
+import CommandContext from '@structures/CommandContext';
+import { emojis } from '@structures/MenheraConstants';
 
-module.exports = class SarrarCommand extends Command {
-  constructor(client) {
+export default class SarrarCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'sarrar',
       aliases: ['dance'],
@@ -12,11 +15,11 @@ module.exports = class SarrarCommand extends Command {
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     const user = ctx.message.mentions.users.first();
 
     if (!user) {
-      const randSozinho = await getImageUrl('sarrar_sozinho');
+      const randSozinho = await http.getAssetImageUrl('sarrar_sozinho');
       const embed = new MessageEmbed()
         .setTitle(ctx.locale('commands:sarrar.no-mention.embed_title'))
         .setColor('#000000')
@@ -31,9 +34,9 @@ module.exports = class SarrarCommand extends Command {
         .setAuthor(ctx.message.author.tag, ctx.message.author.displayAvatarURL());
 
       await ctx.send(embed).then(async (msg) => {
-        await msg.react(this.client.constants.emojis.yes).catch();
-        const filter = (reaction, usuario) =>
-          reaction.emoji.name === this.client.constants.emojis.yes &&
+        await msg.react(emojis.yes).catch();
+        const filter = (reaction: MessageReaction, usuario: User) =>
+          reaction.emoji.name === emojis.yes &&
           usuario.id !== ctx.message.author.id &&
           !usuario.bot;
 
@@ -48,8 +51,8 @@ module.exports = class SarrarCommand extends Command {
     SarrarCommand.sarrada(ctx, ctx.message.mentions.users.first());
   }
 
-  static async sarrada(ctx, reactUser) {
-    const rand = await getImageUrl('sarrar');
+  static async sarrada(ctx: CommandContext, reactUser: User) {
+    const rand = await http.getAssetImageUrl('sarrar');
 
     const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
 
@@ -66,4 +69,4 @@ module.exports = class SarrarCommand extends Command {
 
     ctx.send(Embed);
   }
-};
+}

@@ -1,9 +1,11 @@
-const { MessageEmbed } = require('discord.js');
-const Command = require('../../structures/Command');
-const { getImageUrl } = require('../../utils/HTTPrequests');
+import { MessageEmbed } from 'discord.js';
+import Command from '@structures/Command';
+import http from '@utils/HTTPrequests';
+import MenheraClient from 'MenheraClient';
+import CommandContext from '@structures/CommandContext';
 
-module.exports = class PunchCommand extends Command {
-  constructor(client) {
+export default class PunchCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'punch',
       aliases: ['socar'],
@@ -12,8 +14,8 @@ module.exports = class PunchCommand extends Command {
     });
   }
 
-  async run(ctx) {
-    const rand = await getImageUrl('punch');
+  async run(ctx: CommandContext) {
+    const rand = await http.getAssetImageUrl('punch');
     const user = ctx.message.mentions.users.first();
 
     if (user && user.bot) return ctx.replyT('error', 'commands:punch.bot');
@@ -36,4 +38,4 @@ module.exports = class PunchCommand extends Command {
 
     ctx.send(embed);
   }
-};
+}
