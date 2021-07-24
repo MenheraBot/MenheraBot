@@ -1,8 +1,11 @@
-const { resolve } = require('path');
-const Command = require('../../structures/Command');
+import MenheraClient from 'MenheraClient';
 
-module.exports = class AudioCommand extends Command {
-  constructor(client) {
+import { resolve } from 'path';
+import Command from '@structures/Command';
+import CommandContext from '@structures/CommandContext';
+
+export default class AudioCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'audio',
       category: 'diversão',
@@ -11,7 +14,7 @@ module.exports = class AudioCommand extends Command {
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     const { voice } = ctx.message.member;
     if (!voice.channelID) return ctx.replyT('error', 'commands:audio.not-in-voice');
 
@@ -32,7 +35,7 @@ module.exports = class AudioCommand extends Command {
     try {
       await ctx.message.member.voice.channel.join().then(async (conn) => {
         const audioLocal = resolve(`src/media/audio/${ctx.args[0]}.mp3`);
-        dis = await conn.play(audioLocal);
+        dis = conn.play(audioLocal);
       });
     } catch {
       ctx.replyT('error', 'commands:audio.no-perm');
@@ -48,4 +51,4 @@ module.exports = class AudioCommand extends Command {
       }
     }
   }
-};
+}

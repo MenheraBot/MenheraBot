@@ -1,9 +1,12 @@
-const NewHttp = require('@utils/HTTPrequests');
-const { MessageEmbed, MessageAttachment } = require('discord.js');
-const Command = require('../../structures/Command');
+import http from '@utils/HTTPrequests';
+import { MessageEmbed, MessageAttachment, MessageReaction, User } from 'discord.js';
+import Command from '@structures/Command';
+import MenheraClient from 'MenheraClient';
+import CommandContext from '@structures/CommandContext';
+import { emojis } from '@structures/MenheraConstants';
 
-module.exports = class TrisalCommand extends Command {
-  constructor(client) {
+export default class TrisalCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'trisal',
       cooldown: 10,
@@ -12,7 +15,7 @@ module.exports = class TrisalCommand extends Command {
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     const authorData = ctx.data.user;
     if (authorData.trisal?.length === 0 && !ctx.args[1])
       return ctx.replyT('error', 'commands:trisal.no-args');
@@ -35,13 +38,13 @@ module.exports = class TrisalCommand extends Command {
         format: 'png',
       });
 
-      const res = await NewHttp.trisalRequest(userOneAvatar, userTwoAvatar, userThreeAvatar);
+      const res = await http.trisalRequest(userOneAvatar, userTwoAvatar, userThreeAvatar);
       if (res.err) return ctx.replyT('error', 'commands:http-error');
 
       const attachment = new MessageAttachment(Buffer.from(res.data), 'trisal.png');
 
       const embed = new MessageEmbed()
-        .attachFiles(attachment)
+        .attachFiles([attachment])
         .setDescription(
           `${ctx.locale('commands:trisal.embed.description')} ${
             ctx.message.author
@@ -58,9 +61,7 @@ module.exports = class TrisalCommand extends Command {
     if (!mencionado1 || !mencionado2) return ctx.replyT('error', 'commands:trisal.no-mention');
     if (mencionado1 === ctx.message.author.id || mencionado2 === ctx.message.author.id)
       return ctx.replyT('error', 'commands:trisal.self-mention');
-    if (mencionado1.bot || mencionado2.bot)
-      return ctx.replyT('error', 'commands:trisal.bot-mention');
-    if (mencionado1 === mencionado2) return ctx.retryT('error', 'commands:trisal:same-mention');
+    if (mencionado1 === mencionado2) return ctx.replyT('error', 'commands:trisal:same-mention');
 
     const user1 = authorData;
     const user2 = await this.client.repositories.userRepository.find(mencionado1);
@@ -79,13 +80,12 @@ module.exports = class TrisalCommand extends Command {
         ctx.message.author
       }, ${messageMention1}, ${messageMention2}`,
     );
-    await msg.react(this.client.constants.emojis.yes);
+    await msg.react(emojis.yes);
 
     const acceptableIds = [ctx.message.author.id, mencionado1, mencionado2];
 
-    const filter = (reaction, usuario) =>
-      reaction.emoji.name === this.client.constants.emojis.yes &&
-      acceptableIds.includes(usuario.id);
+    const filter = (reaction: MessageReaction, usuario: User) =>
+      reaction.emoji.name === emojis.yes && acceptableIds.includes(usuario.id);
 
     const collector = msg.createReactionCollector(filter, { time: 14000 });
 
@@ -104,4 +104,4 @@ module.exports = class TrisalCommand extends Command {
       if (acceptedIds.length !== 3) ctx.replyT('error', 'commands:trisal.error');
     }, 15000);
   }
-};
+}

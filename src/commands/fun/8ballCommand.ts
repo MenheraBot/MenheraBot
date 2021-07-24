@@ -1,14 +1,16 @@
-const Command = require('../../structures/Command');
+import CommandContext from '@structures/CommandContext';
+import MenheraClient from 'MenheraClient';
+import Command from '@structures/Command';
 
-module.exports = class EightBallCommand extends Command {
-  constructor(client) {
+export default class EightBallCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: '8ball',
       category: 'diversão',
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     if (ctx.args.length < 1) return ctx.replyT('error', 'commands:8ball.no-args');
 
     const lingua = ctx.data.server.lang || 'pt-BR';
@@ -73,4 +75,4 @@ module.exports = class EightBallCommand extends Command {
 
     ctx.send(`${respostaRandom}, ${ctx.message.author}`);
   }
-};
+}

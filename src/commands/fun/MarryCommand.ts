@@ -1,17 +1,21 @@
-const moment = require('moment');
-const Command = require('../../structures/Command');
+import moment from 'moment';
+import Command from '@structures/Command';
+import MenheraClient from 'MenheraClient';
+import CommandContext from '@structures/CommandContext';
+import { emojis } from '@structures/MenheraConstants';
+import { MessageReaction, User } from 'discord.js';
 
-module.exports = class MarryCommand extends Command {
-  constructor(client) {
+export default class MarryCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'marry',
       aliases: ['casar'],
       category: 'diversão',
-      clientPermission: ['EMBED_LINKS', 'ADD_REACTIONS', 'MANAGE_MESSAGES'],
+      clientPermissions: ['EMBED_LINKS', 'ADD_REACTIONS', 'MANAGE_MESSAGES'],
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     const authorData = ctx.data.user;
 
     const mencionado = ctx.message.mentions.users.first();
@@ -38,18 +42,18 @@ module.exports = class MarryCommand extends Command {
         }? ${ctx.locale('commands:marry.confirmation_end')}`,
       )
       .then(async (msg) => {
-        msg.react(this.client.constants.emojis.yes);
-        msg.react(this.client.constants.emojis.no);
+        msg.react(emojis.yes);
+        msg.react(emojis.no);
 
-        const validReactions = [this.client.constants.emojis.no, this.client.constants.emojis.yes];
+        const validReactions = [emojis.no, emojis.yes];
 
-        const filter = (reaction, usuario) =>
+        const filter = (reaction: MessageReaction, usuario: User) =>
           validReactions.includes(reaction.emoji.name) && usuario.id === mencionado.id;
 
         const colector = await msg.createReactionCollector(filter, { max: 1, time: 15000 });
 
         colector.on('collect', async (reaction) => {
-          if (reaction.emoji.name === this.client.constants.emojis.no)
+          if (reaction.emoji.name === emojis.no)
             return ctx.send(
               `${mencionado} ${ctx.locale('commands:marry.negated')} ${ctx.message.author}`,
             );
@@ -70,4 +74,4 @@ module.exports = class MarryCommand extends Command {
         });
       });
   }
-};
+}

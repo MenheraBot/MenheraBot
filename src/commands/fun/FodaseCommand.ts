@@ -1,9 +1,11 @@
-const { MessageEmbed } = require('discord.js');
-const Command = require('../../structures/Command');
-const { getImageUrl } = require('../../utils/HTTPrequests');
+import { MessageEmbed } from 'discord.js';
+import Command from '@structures/Command';
+import http from '@utils/HTTPrequests';
+import MenheraClient from 'MenheraClient';
+import CommandContext from '@structures/CommandContext';
 
-module.exports = class FodaseCommand extends Command {
-  constructor(client) {
+export default class FodaseCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'fodase',
       aliases: ['fds', 'fuck'],
@@ -12,7 +14,7 @@ module.exports = class FodaseCommand extends Command {
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     if (ctx.message.deletable) ctx.message.delete();
 
     const frases =
@@ -29,7 +31,7 @@ module.exports = class FodaseCommand extends Command {
           ];
 
     const frasesUsada = frases[Math.floor(Math.random() * frases.length)];
-    const rand = await getImageUrl('fodase');
+    const rand = await http.getAssetImageUrl('fodase');
 
     const embed = new MessageEmbed()
       .setImage(rand)
@@ -38,4 +40,4 @@ module.exports = class FodaseCommand extends Command {
 
     ctx.send(embed);
   }
-};
+}

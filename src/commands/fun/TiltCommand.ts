@@ -1,8 +1,10 @@
-const { MessageEmbed } = require('discord.js');
-const Command = require('../../structures/Command');
+import { MessageEmbed } from 'discord.js';
+import Command from '@structures/Command';
+import MenheraClient from 'MenheraClient';
+import CommandContext from '@structures/CommandContext';
 
-module.exports = class HumorCommand extends Command {
-  constructor(client) {
+export default class HumorCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'tilt',
       aliases: ['tiltado', 'tiltas'],
@@ -11,7 +13,7 @@ module.exports = class HumorCommand extends Command {
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     if (ctx.message.deletable) ctx.message.delete();
 
     const mention = ctx.message.mentions.users.first();
@@ -32,4 +34,4 @@ module.exports = class HumorCommand extends Command {
 
     ctx.send(embed);
   }
-};
+}

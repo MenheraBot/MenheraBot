@@ -1,9 +1,11 @@
-const { MessageEmbed, MessageAttachment } = require('discord.js');
-const Command = require('../../structures/Command');
-const NewHttp = require('../../utils/HTTPrequests.js');
+import { MessageEmbed, MessageAttachment, User } from 'discord.js';
+import Command from '@structures/Command';
+import NewHttp from '@utils/HTTPrequests.js';
+import MenheraClient from 'MenheraClient';
+import CommandContext from '@structures/CommandContext';
 
-module.exports = class ShipCommand extends Command {
-  constructor(client) {
+export default class ShipCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'ship',
       category: 'diversão',
@@ -11,11 +13,11 @@ module.exports = class ShipCommand extends Command {
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     if (!ctx.args[0]) return ctx.replyT('error', 'commands:ship.missing-args');
 
-    let user2;
-    let user1;
+    let user2: User;
+    let user1: User;
 
     try {
       user1 = await this.client.users.fetch(ctx.args[0].replace(/[<@!>]/g, ''));
@@ -69,7 +71,7 @@ module.exports = class ShipCommand extends Command {
 
     if (!bufferedShipImage.err) {
       const attachment = new MessageAttachment(Buffer.from(bufferedShipImage.data), 'ship.png');
-      embed.attachFiles(attachment).setImage('attachment://ship.png');
+      embed.attachFiles([attachment]).setImage('attachment://ship.png');
     } else embed.setFooter(ctx.locale('commands:http-error'));
 
     if (Number(value) >= 25)
@@ -115,4 +117,4 @@ module.exports = class ShipCommand extends Command {
 
     ctx.sendC(`${ctx.message.author}\n**${ctx.locale('commands:ship.message-start')}**`, embed);
   }
-};
+}

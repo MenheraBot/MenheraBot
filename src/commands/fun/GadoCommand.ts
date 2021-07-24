@@ -1,18 +1,21 @@
-const { MessageAttachment } = require('discord.js');
-const Command = require('../../structures/Command');
-const NewHttp = require('../../utils/HTTPrequests');
+import { MessageAttachment } from 'discord.js';
+import Command from '@structures/Command';
+import http from '@utils/HTTPrequests';
+import CommandContext from '@structures/CommandContext';
+import MenheraClient from 'MenheraClient';
 
-module.exports = class MacetavaCommand extends Command {
-  constructor(client) {
+export default class GadoCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
-      name: 'macetava',
+      name: 'gado',
+      aliases: ['simp'],
       cooldown: 10,
       category: 'diversão',
       clientPermissions: ['ATTACH_FILES'],
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     let link = ctx.message.author.displayAvatarURL({ format: 'png', size: 512 });
 
     if (ctx.message.mentions.users.first())
@@ -27,14 +30,11 @@ module.exports = class MacetavaCommand extends Command {
 
     if (ctx.message.attachments.first()) link = ctx.message.attachments.first().url;
 
-    const res = await NewHttp.macetavaRequest(
-      link,
-      ctx.message.author.username,
-      ctx.message.author.discriminator,
-      ctx.message.author.displayAvatarURL({ format: 'png', size: 512 }),
-    );
+    const res = await http.gadoRequest(link);
     if (res.err) return ctx.replyT('error', 'commands:http-error');
 
-    ctx.sendC(ctx.message.author, new MessageAttachment(Buffer.from(res.data), 'macetava.png'));
+    ctx.sendC(ctx.message.author.toString(), {
+      files: [new MessageAttachment(Buffer.from(res.data), 'gado.png')],
+    });
   }
-};
+}

@@ -1,10 +1,12 @@
-const { MessageEmbed } = require('discord.js');
-const moment = require('moment');
-const Command = require('../../structures/Command');
-const { COLORS } = require('../../structures/MenheraConstants');
+import { MessageEmbed } from 'discord.js';
+import moment from 'moment';
+import Command from '@structures/Command';
+import { COLORS, probabilities } from '@structures/MenheraConstants';
+import MenheraClient from 'MenheraClient';
+import CommandContext from '@structures/CommandContext';
 
-module.exports = class HuntCommand extends Command {
-  constructor(client) {
+export default class HuntCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'hunt',
       aliases: ['cacar', 'caça', 'caca', 'caçar'],
@@ -13,7 +15,7 @@ module.exports = class HuntCommand extends Command {
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     const authorData = ctx.data.user;
 
     const validArgs = [
@@ -63,20 +65,20 @@ module.exports = class HuntCommand extends Command {
 
     const probabilidadeDemonio =
       ctx.message.guild.id === '717061688460967988'
-        ? this.client.constants.probabilities.support.demon
-        : this.client.constants.probabilities.normal.demon;
+        ? probabilities.support.demon
+        : probabilities.normal.demon;
     const probabilidadeAnjo =
       ctx.message.guild.id === '717061688460967988'
-        ? this.client.constants.probabilities.support.angel
-        : this.client.constants.probabilities.normal.angel;
+        ? probabilities.support.angel
+        : probabilities.normal.angel;
     const probabilidadeSD =
       ctx.message.guild.id === '717061688460967988'
-        ? this.client.constants.probabilities.support.demigod
-        : this.client.constants.probabilities.normal.demigod;
+        ? probabilities.support.demigod
+        : probabilities.normal.demigod;
     const probabilidadeDeuses =
       ctx.message.guild.id === '717061688460967988'
-        ? this.client.constants.probabilities.support.god
-        : this.client.constants.probabilities.normal.god;
+        ? probabilities.support.god
+        : probabilities.normal.god;
 
     if (option === 'ajuda') return ctx.replyT('question', 'commands:hunt.help');
     if (option === 'probabilidades') {
@@ -92,18 +94,18 @@ module.exports = class HuntCommand extends Command {
 
     if (parseInt(authorData.caçarTime) > Date.now())
       return ctx.replyT('error', 'commands:hunt.cooldown', {
-        time: moment.utc(parseInt(authorData.caçarTime - Date.now())).format('mm:ss'),
+        time: moment.utc(parseInt(authorData.caçarTime) - Date.now()).format('mm:ss'),
       });
 
     const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
-    const cooldown = this.client.constants.probabilities.defaultTime + Date.now();
+    const cooldown = probabilities.defaultTime + Date.now();
     const embed = new MessageEmbed().setColor(COLORS.HuntDefault).setThumbnail(avatar);
     if (ctx.message.channel.id === '717061688460967988')
       embed.setFooter(ctx.locale('commands:hunt.footer'));
 
     const { huntDemon, huntAngel, huntDemigod, huntGod } = this.client.repositories.huntRepository;
 
-    const areYouTheHuntOrTheHunter = async (probability, saveFn) => {
+    const areYouTheHuntOrTheHunter = async (probability: Array<number>, saveFn) => {
       const value = probability[Math.floor(Math.random() * probability.length)];
       await saveFn.call(
         this.client.repositories.huntRepository,
@@ -201,4 +203,4 @@ module.exports = class HuntCommand extends Command {
     }
     ctx.send(embed);
   }
-};
+}

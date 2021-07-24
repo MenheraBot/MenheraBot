@@ -1,7 +1,9 @@
-const Command = require('../../structures/Command');
+import Command from '@structures/Command';
+import CommandContext from '@structures/CommandContext';
+import MenheraClient from 'MenheraClient';
 
-module.exports = class XandãoCommand extends Command {
-  constructor(client) {
+export default class XandãoCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'xandão',
       aliases: ['xandao'],
@@ -10,7 +12,8 @@ module.exports = class XandãoCommand extends Command {
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
+    if (ctx.message.channel.type === 'dm') return;
     const texto = ctx.args.join(' ');
 
     const frases = [
@@ -53,7 +56,7 @@ module.exports = class XandãoCommand extends Command {
 
     const fraseEscolhida = frases[Math.floor(Math.random() * frases.length)];
 
-    let fala;
+    let fala: string;
     if (!texto) {
       fala = fraseEscolhida;
     } else fala = `${texto}\n\n📢 | ${ctx.message.author}`;
@@ -84,4 +87,4 @@ module.exports = class XandãoCommand extends Command {
       ctx.replyT('error', 'commands:xandão.err_message');
     }
   }
-};
+}

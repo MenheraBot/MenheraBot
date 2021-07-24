@@ -1,7 +1,11 @@
-const Command = require('../../structures/Command');
+import Command from '@structures/Command';
+import MenheraClient from 'MenheraClient';
+import { emojis } from '@structures/MenheraConstants';
+import CommandContext from '@structures/CommandContext';
+import { MessageReaction, User } from 'discord.js';
 
-module.exports = class UnTrisalCommand extends Command {
-  constructor(client) {
+export default class UnTrisalCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'untrisal',
       cooldown: 10,
@@ -10,15 +14,14 @@ module.exports = class UnTrisalCommand extends Command {
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     if (ctx.data.user.trisal?.length === 0) return ctx.replyT('error', 'commands:untrisal.error');
 
     const msg = await ctx.send(ctx.locale('commands:untrisal.sure'));
-    await msg.react(this.client.constants.emojis.yes);
+    await msg.react(emojis.yes);
 
-    const filter = (reaction, usuario) =>
-      reaction.emoji.name === this.client.constants.emojis.yes &&
-      usuario.id === ctx.message.author.id;
+    const filter = (reaction: MessageReaction, usuario: User) =>
+      reaction.emoji.name === emojis.yes && usuario.id === ctx.message.author.id;
 
     const collector = msg.createReactionCollector(filter, { max: 1, time: 14000 });
 
@@ -31,4 +34,4 @@ module.exports = class UnTrisalCommand extends Command {
       await ctx.replyT('success', 'commands:untrisal.done');
     });
   }
-};
+}

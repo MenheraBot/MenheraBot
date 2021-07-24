@@ -1,19 +1,20 @@
-const Command = require('../../structures/Command');
+import Command from '@structures/Command';
+import CommandContext from '@structures/CommandContext';
+import MenheraClient from 'MenheraClient';
 
-module.exports = class SuccumbCommand extends Command {
-  constructor(client) {
+export default class SuccumbCommand extends Command {
+  constructor(client: MenheraClient) {
     super(client, {
       name: 'sucumba',
       category: 'diversão',
     });
   }
 
-  async run(ctx) {
+  async run(ctx: CommandContext) {
     const user = ctx.message.mentions.users.first() || ctx.args.join(' ');
     if (!user) return ctx.reply('error', 'n/a');
-    if (user.id === ctx.message.author.id) return ctx.reply('error', 'n/a');
     ctx.send(
       `${ctx.locale('commands:sucumba.start')} **${user}** ${ctx.locale('commands:sucumba.end')}`,
     );
   }
-};
+}
