@@ -1,8 +1,8 @@
 import CommandContext from '@structures/CommandContext';
 import { MessageEmbed } from 'discord.js';
 import MenheraClient from 'MenheraClient';
-import Command from 'structures/Command';
-import http from 'utils/HTTPrequests';
+import Command from '@structures/Command';
+import http from '@utils/HTTPrequests';
 
 export default class FearCommand extends Command {
   constructor(client: MenheraClient) {

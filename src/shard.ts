@@ -1,8 +1,8 @@
 import { ShardingManager } from 'discord.js';
 
-import path from 'path';
-
 import { config } from 'dotenv';
+
+import { join } from 'path';
 
 config();
 
@@ -11,7 +11,7 @@ config();
 
   const shardCount = process.env.NODE_ENV === 'development' ? 1 : 'auto';
 
-  const shards = new ShardingManager(path.resolve(__dirname, 'dist', 'index.js'), {
+  const shards = new ShardingManager(join(__dirname, './index.js'), {
     respawn: true,
     totalShards: shardCount,
     token:

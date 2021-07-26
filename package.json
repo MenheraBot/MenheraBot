@@ -1,14 +1,14 @@
 {
   "name": "menhera-bot",
-  "version": "2.9.5-wip",
+  "version": "2.9.5-dev",
   "description": "Uma bot brasileira de RPG para o Discord",
-  "main": "shard.js",
+  "main": "dist/shard.js",
   "scripts": {
     "prepare": "husky install",
     "postinstall": "husky install",
     "build": "rm -rf dist/* && babel src --extensions \".js,.ts\" --ignore *.spec.js --out-dir dist --copy-files --verbose",
     "start": "cross-env NODE_ENV=production node shard.js",
-    "dev": "npm run build && cross-env NODE_ENV=development node shard.js",
+    "dev": "npm run build && cross-env NODE_ENV=development node .",
     "lint:fix": "eslint --fix .",
     "lint:test": "eslint .",
     "typecheck": "tsc --noEmit",
