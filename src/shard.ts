@@ -7,7 +7,7 @@ import { join } from 'path';
 config();
 
 (async () => {
-  console.log('[APP] Iniciating application...');
+  console.log('[APP] Initiating application...');
 
   const shardCount = process.env.NODE_ENV === 'development' ? 1 : 'auto';
 
@@ -22,5 +22,5 @@ config();
     console.warn(`[SHARDING MANAGER] Launching shard ${shard.id}`);
   });
 
-  shards.spawn().then(() => console.log('[SHARDING MANAGER] All shards has been spawned'));
+  shards.spawn().then(() => console.log('[SHARDING MANAGER] All shards have been spawned'));
 })();
