@@ -8,7 +8,7 @@ export default class RPGUtil {
       const item = acc.get(cur.name);
 
       if (item) {
-        item.amount += 1;
+        item.amount++;
       } else {
         acc.set(cur.name, {
           ...cur,

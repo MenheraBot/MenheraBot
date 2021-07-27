@@ -4,9 +4,9 @@ import MenheraClient from 'MenheraClient';
 import CommandContext from './CommandContext';
 
 export default class Command {
-  public config: ICommandConfig;
+  public config: Required<ICommandConfig>;
 
-  public dir: string;
+  public dir!: string;
 
   public run?(ctx: CommandContext): Promise<any>;
 
@@ -14,16 +14,13 @@ export default class Command {
     this.client = client;
 
     this.config = {
-      name: options.name || null,
+      name: options.name,
       category: options.category || 'util',
       aliases: options.aliases || [],
-      description: options.description || null,
       cooldown: options.cooldown || 3,
-      userPermissions: options.userPermissions || null,
-      clientPermissions: options.clientPermissions || null,
-      devsOnly: options.devsOnly || false,
+      userPermissions: options?.userPermissions ?? [],
+      clientPermissions: options?.clientPermissions ?? [],
+      devsOnly: !!options.devsOnly,
     };
-
-    this.dir = null;
   }
 }

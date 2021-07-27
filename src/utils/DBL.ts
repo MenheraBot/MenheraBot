@@ -104,13 +104,11 @@ export default class DiscordBots {
     });
 
     this.client.setInterval(async () => {
-      if (this.client.shard) {
-        const info = await this.client.shard.fetchClientValues('guilds.cache.size');
-        const guildCount = info.reduce((prev, val) => prev + val);
-        const shardId = 0;
-        const shardsCount = this.client.shard.count;
-        dbl.postStats(guildCount, shardId, shardsCount);
-      }
+      const info = await this.client.shard.fetchClientValues('guilds.cache.size');
+      const guildCount = info.reduce((prev, val) => prev + val);
+      const shardId = 0;
+      const shardsCount = this.client.shard.count;
+      dbl.postStats(guildCount, shardId, shardsCount);
     }, 1800000);
   }
 }

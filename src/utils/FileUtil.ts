@@ -9,9 +9,9 @@ export default class FileUtil {
     return path.parse(filepath).name;
   }
 
-  static reloadFile(
+  static reloadFile<A>(
     filepath: string,
-    reloadFunction: (file: unknown, dir: string) => unknown,
+    reloadFunction: (file: A, dir: string) => unknown,
   ): unknown {
     const dir = path.resolve(filepath);
     delete require.cache[dir];
