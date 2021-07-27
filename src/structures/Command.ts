@@ -1,14 +1,13 @@
-/* eslint-disable no-unused-vars */
 import { ICommandConfig } from '@utils/Types';
 import MenheraClient from 'MenheraClient';
 import CommandContext from './CommandContext';
 
-export default class Command {
+export default abstract class Command {
   public config: ICommandConfig;
 
   public dir: string;
 
-  public run?(ctx: CommandContext): Promise<any>;
+  abstract run(ctx: CommandContext): Promise<any>;
 
   constructor(public client: MenheraClient, options: ICommandConfig) {
     this.client = client;

@@ -29,35 +29,35 @@ export default class MongoDatabase {
 
   public Users: typeof Users;
 
-  public userRepository: UserRepository;
+  private userRepository: UserRepository;
 
-  public commandRepository: CommandRepository;
+  private commandRepository: CommandRepository;
 
-  public cmdRepository: CmdRepository;
+  private cmdRepository: CmdRepository;
 
-  public starRepository: StarRepository;
+  private starRepository: StarRepository;
 
-  public rpgRepository: RpgRepository;
+  private rpgRepository: RpgRepository;
 
-  public mamarRepository: MamarRepository;
+  private mamarRepository: MamarRepository;
 
-  public guildRepository: GuildRepository;
+  private guildRepository: GuildRepository;
 
-  public statusRepository: StatusRepository;
+  private statusRepository: StatusRepository;
 
-  public badgeRepository: BadgeRepository;
+  private badgeRepository: BadgeRepository;
 
-  public maintenanceRepository: MaintenanceRepository;
+  private maintenanceRepository: MaintenanceRepository;
 
-  public huntRepository: HuntRepository;
+  private huntRepository: HuntRepository;
 
-  public relationshipRepository: RelationshipRepository;
+  private relationshipRepository: RelationshipRepository;
 
-  public blacklistRepository: BlacklistRepository;
+  private blacklistRepository: BlacklistRepository;
 
-  public topRepository: TopRepository;
+  private topRepository: TopRepository;
 
-  public giveRepository: GiveRepository;
+  private giveRepository: GiveRepository;
 
   constructor(public uri: string) {
     this.uri = uri;
