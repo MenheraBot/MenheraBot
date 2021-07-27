@@ -2,7 +2,7 @@ import { IContextData } from '@utils/Types';
 import { Message, MessageEmbed, MessageOptions } from 'discord.js';
 import { TFunction } from 'i18next';
 import MenheraClient from 'MenheraClient';
-import { emojis } from '@structures/MenheraConstants';
+import { emojis, EmojiTypes } from '@structures/MenheraConstants';
 
 export default class CommandContext {
   constructor(
@@ -19,13 +19,13 @@ export default class CommandContext {
     this.i18n = i18n;
   }
 
-  async replyT(emoji: string, text: string, translateOptions = {}) {
+  async replyT(emoji: EmojiTypes, text: string, translateOptions = {}) {
     return this.message.channel.send(
       `${emojis[emoji] || '🐛'} **|** ${this.message.author}, ${this.i18n(text, translateOptions)}`,
     );
   }
 
-  async reply(emoji: string, text: string) {
+  async reply(emoji: EmojiTypes, text: string) {
     return this.message.channel.send(
       `${emojis[emoji] || '🐛'} **|** ${this.message.author}, ${text}`,
     );
