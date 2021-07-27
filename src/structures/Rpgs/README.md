@@ -36,7 +36,9 @@ Até o momento pensei nas seguintes coisas:
 
 - Tempo de viajem: Ao viajar para um lugar, o usuário ficara X tempo sem poder usar comandos (Depende da distância da cidade que o usuário escolheu)
 
-- Mercadores: Ao viajar para cidades, o usuário terá a chance de encontrar mercadores, que possuem uma loja com preços e itens diferenciados.
+- Mercantes: Ao viajar para cidades, o usuário terá a chance de encontrar Mercantes, que possuem uma loja com preços e itens diferenciados.
+
+- Regiões: Cada jogador nascerá em uma região. Até o momento pensei em 3 regioes. Cada região seria mais abundante em certos materias, por exemplo, uma regiao de solo fertil possui alimentos mais baratos, e mais diversidade de itens em plantação, enquanto numa região de mineração, itens como espadas seriam mais baratas.
 
 • Mecânica
 
@@ -45,6 +47,16 @@ Até o momento pensei nas seguintes coisas:
 - O mundo de Boleham será dinâmico, e eu tentarei fazer sempre uma atualização mudando o mundo. Ter um comando `m!lore` que mostra a lore atual do rpg, e a cada atualização de evento, adicionar mais uma página de lore, mudando algo no mundo, e mudando algo tipo mobs ou ent poderes especiais durante o evento da atualização.
 
 - Quest: O RPG terá quests que o jogador pode pegar na guilda. Ele só poderá trocar de quest ao terminar uma, e só continuará avançando na historia ao finalizar a quest atual. Quests especiais aparecerão em eventos.
+
+- Alimentos: O usuário poderá recarregar sua energia (mana e vida) com alimentos. Atualmente ele precisa ficar sem jogar no hotel. Com os alimentos, ele pode comer algo pra revitalizar tanto a mana quanto a vida
+
+- Cansaço: O usuário possui um status de cansaço. Ir em uma dungeon cansa bastante, enquanto viagens também. Quanto mais cansado o usuário está, pior é o resultado dele em batalhas. Por exemplo, um usuário cansado possui a velocidade de movimento e as chances de acertos menores. Para revitalizar o cansaço, o usuário deve descansar em um hotel ou em uma de suas casas
+
+• **Casas**
+
+- Será possível comprar/alugar casas em localizações. Inicialmente as casas servem somente para descansar e guardar grandes quantidades de itens. O jogador pode comprar, por exemplo, uma casa na sua terra natal, e uma casa na região mais longe dele, assim quando ele ir pra aquela regiao, ele pode descansar da longa viagem, e também guardar itens de seus drops sem precisar gastar com hotel
+
+- Casas de Clã: Um clã pode comprar uma casa para habitar seus membros. A casa de clã possui um limite de membros, e para aumentar esse limite, o dono do clã deve pagar mais para aumentar a casa
 
 • Clã
 
