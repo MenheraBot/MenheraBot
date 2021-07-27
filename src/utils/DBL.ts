@@ -11,6 +11,18 @@ export default class DiscordBots {
   }
 
   async init() {
+    if (!process.env.DBL_TOKEN) {
+      throw new Error('No DBL token provided');
+    }
+
+    if (!process.env.DBL_PORT) {
+      throw new Error('No DBL port provided');
+    }
+
+    if (!process.env.DBLHOOK_PORT) {
+      throw new Error('No DBLHOOK port provided');
+    }
+
     const dbl = new DBL(
       process.env.DBL_TOKEN,
       {
@@ -19,6 +31,10 @@ export default class DiscordBots {
       },
       this.client,
     );
+
+    if (!dbl.webhook) {
+      throw new Error('DBL webhook not found');
+    }
 
     dbl.webhook.on('vote', async (vote) => {
       const user = await this.client.database.Users.findOne({ id: vote.user });
@@ -79,29 +95,22 @@ export default class DiscordBots {
       user.voteCooldown = `${Date.now() + 43200000}`;
       await user.save();
 
-      const functionToEval = async (id: string, embedToSend: MessageEmbed) => {
-        let hasSend = false;
-        const userInShard = await this.client.users.fetch(id).catch();
-
-        if (userInShard && !hasSend) {
-          hasSend = true;
-          try {
-            await userInShard.send(embedToSend);
-          } catch {
-            // console.log('[DBL] Cannot send message to user');
-          }
-        }
+      const sendMessageToUser = async (id: string, embedToSend: MessageEmbed) => {
+        const userInShard = await this.client.users.fetch(id);
+        await userInShard.send(embedToSend);
       };
-      // @ts-ignore
-      await this.client.shard.broadcastEval(functionToEval(vote.user, embed));
+
+      sendMessageToUser(vote.user, embed).catch();
     });
 
     this.client.setInterval(async () => {
-      const info = await this.client.shard.fetchClientValues('guilds.cache.size');
-      const guildCount = info.reduce((prev, val) => prev + val);
-      const shardId = 0;
-      const shardsCount = this.client.shard.count;
-      dbl.postStats(guildCount, shardId, shardsCount);
+      if (this.client.shard) {
+        const info = await this.client.shard.fetchClientValues('guilds.cache.size');
+        const guildCount = info.reduce((prev, val) => prev + val);
+        const shardId = 0;
+        const shardsCount = this.client.shard.count;
+        dbl.postStats(guildCount, shardId, shardsCount);
+      }
     }, 1800000);
   }
 }
