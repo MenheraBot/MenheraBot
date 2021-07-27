@@ -1,24 +1,25 @@
 import { ferreiro } from '../structures/Rpgs/items.json';
 import { IInventoryUser, IUserRpgSchema } from './Types';
 
+type ResultItem = IInventoryUser & { amount: number };
 export default class RPGUtil {
-  static countItems(items: IInventoryUser[]): Array<IInventoryUser & { amount: number }> {
-    return items.reduce((p, v) => {
-      const exists = p.findIndex((x) => x.name === v.name);
-      if (exists !== -1) {
-        p[exists].amount++;
-        return p;
-      }
-      return [
-        ...p,
-        {
-          name: v.name,
+  static countItems(items: IInventoryUser[]): Array<ResultItem> {
+    const result = items.reduce((acc, cur) => {
+      const item = acc.get(cur.name);
+
+      if (item) {
+        item.amount += 1;
+      } else {
+        acc.set(cur.name, {
+          ...cur,
           amount: 1,
-          value: v.value,
-          job_id: v.job_id || 0,
-        },
-      ];
-    }, []);
+        });
+      }
+
+      return acc;
+    }, new Map<string, ResultItem>());
+
+    return [...result.values()];
   }
 
   static getBackpack(userRpgData: IUserRpgSchema): {
@@ -40,7 +41,7 @@ export default class RPGUtil {
 
     return {
       name: backpack.id,
-      capacity: backpack.capacity,
+      capacity: backpack?.capacity ?? 0,
       value: userRpgData.loots.length + userRpgData.inventory.length,
     };
   }
@@ -49,11 +50,7 @@ export default class RPGUtil {
     user.inventory.push(...new Array(amount).fill(item));
   }
 
-  static removeItemInLoots(
-    user: IUserRpgSchema,
-    itemName: string,
-    amount: number | unknown = 1,
-  ): void {
+  static removeItemInLoots(user: IUserRpgSchema, itemName: string, amount: number = 1): void {
     for (let i = 0; i < amount; i++) {
       user.loots.splice(
         user.loots.findIndex((loot) => loot.name === itemName),
