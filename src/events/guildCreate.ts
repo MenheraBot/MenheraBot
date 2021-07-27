@@ -27,6 +27,10 @@ export default class GuildCreate {
   async run(guild: Guild) {
     this.client.repositories.guildRepository.create(guild.id, this.region[guild.region]);
 
+    if (!process.env.GUILDS_HOOK_ID) {
+      throw new Error('GUILDS_HOOK_ID is not defined');
+    }
+
     const webhook = await this.client.fetchWebhook(
       process.env.GUILDS_HOOK_ID,
       process.env.GUILDS_HOOK_TOKEN,
