@@ -11,6 +11,10 @@ export default class GuildDelete {
 
     this.client.repositories.guildRepository.delete(guild.id);
 
+    if (!process.env.GUILDS_HOOK_ID) {
+      throw new Error('GUILDS_HOOK_ID is not defined');
+    }
+
     const webhook = await this.client.fetchWebhook(
       process.env.GUILDS_HOOK_ID,
       process.env.GUILDS_HOOK_TOKEN,
