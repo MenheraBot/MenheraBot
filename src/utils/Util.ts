@@ -1,16 +1,17 @@
 import { Guild, GuildMember, User } from 'discord.js';
 import MenheraClient from 'MenheraClient';
+import { Model } from 'mongoose';
 
 const MENTION_REGEX = /^(?:<@!?)?([0-9]{16,18})(?:>)?$/;
 export default class Util {
-  static getIdByMention(mention: string): string {
+  static getIdByMention(mention: string): string | null {
     if (!mention) return null;
     const regexResult = MENTION_REGEX.exec(mention);
     return regexResult && regexResult[1];
   }
 
   static async databaseEnsure(
-    model,
+    model: Model<any, {}>,
     query: { id: string },
     defaultValue: { id: string; shipValue?: number },
   ) {

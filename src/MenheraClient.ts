@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 /* eslint-disable global-require */
 /* eslint-disable import/no-dynamic-require */
-import { Client, Collection } from 'discord.js';
+import { Client, Collection, ShardClientUtil } from 'discord.js';
 
 import Sentry from '@sentry/node';
 import i18next from 'i18next';
@@ -26,13 +26,16 @@ export default class MenheraClient extends Client {
 
   public events: EventManager;
 
+  // shard is always present when using the ShardingManager
+  public shard!: ShardClientUtil;
+
   constructor(options = {}, public config: IClientConfigs) {
     super(options);
 
     this.database = new Database(
       process.env.NODE_ENV === 'development'
-        ? process.env.DEV_DATABASE_URI
-        : process.env.DATABASE_URI,
+        ? (process.env.DEV_DATABASE_URI as string)
+        : (process.env.DATABASE_URI as string),
     );
     this.commands = new Collection();
     this.aliases = new Collection();
@@ -63,9 +66,12 @@ export default class MenheraClient extends Client {
 
   async reloadCommand(commandName: string) {
     const command =
-      this.commands.get(commandName) || this.commands.get(this.aliases.get(commandName));
+      this.commands.get(commandName) || this.commands.get(this.aliases.get(commandName) as string);
     if (!command) return false;
-    return FileUtil.reloadFile(command.dir, (cmd: Command) => this.loadCommand(cmd, command.dir));
+
+    return FileUtil.reloadFile<typeof Command>(command.dir, (cmd) =>
+      this.loadCommand(cmd, command.dir),
+    );
   }
 
   login(token: string) {
@@ -93,14 +99,15 @@ export default class MenheraClient extends Client {
     }
   }
 
-  async loadCommand(NewCommand, filepath: string) {
-    const command = new NewCommand(this);
+  async loadCommand(NewCommand: typeof Command, filepath: string) {
+    // @ts-expect-error
+    const command: Command = new NewCommand(this);
 
     command.dir = filepath;
 
     this.commands.set(command.config.name, command);
     this.aliases.set(command.config.name, command.config.name);
-    command.config.aliases.forEach((a: string) => this.aliases.set(a, command.config.name));
+    command.config?.aliases.forEach((a: string) => this.aliases.set(a, command.config.name));
 
     const cmdInDb = await this.repositories.cmdRepository.findByName(command.config.name);
     if (!cmdInDb) {

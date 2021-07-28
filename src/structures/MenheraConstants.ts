@@ -85,6 +85,8 @@ export const emojis = {
   god: '<:God:758474639570894899>',
 };
 
+export type EmojiTypes = keyof typeof emojis;
+
 export const COLORS = {
   HuntDefault: '#df93fd',
   HuntDemon: '#df1b1b',

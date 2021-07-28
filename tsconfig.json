@@ -1,11 +1,7 @@
 {
+  "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "target": "ES2020",
-    "lib": ["es2020"],
     "outDir": "dist",
-    "esModuleInterop": true,
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
     "baseUrl": "src",
     "skipLibCheck": true,
     "paths": {
@@ -14,11 +10,7 @@
       "@utils/*": ["utils/*"],
       "@interfaces/*": ["interfaces/*"]
     },
-    // Ensure that .d.ts files are created by tsc, but not .js files
-    "declaration": true,
-    // Ensure that Babel can safely transpile files in the TypeScript project
-    "isolatedModules": true
   },
   "include": ["src"],
-  "exclude": ["dist", "node_modules"]
+  "exclude": ["dist"]
 }
