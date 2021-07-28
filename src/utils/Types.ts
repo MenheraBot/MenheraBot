@@ -291,3 +291,5 @@ export interface IUserDataToSend {
   money: number;
   jobId: number;
 }
+
+export type CollectionsType = 'userRepository';

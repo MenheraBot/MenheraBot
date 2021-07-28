@@ -51,7 +51,9 @@ export default class MessageReceive {
         message.mentions.users.map((u) => u.id),
       );
 
-    let authorData = await this.client.repositories.userRepository.find(message.author.id);
+    const authorData = await this.client.repositories.userRepository.findOrCreate(
+      message.author.id,
+    );
 
     if (authorData?.afk) {
       this.client.repositories.userRepository.update(message.author.id, {
@@ -191,9 +193,6 @@ export default class MessageReceive {
         );
       }
     }
-
-    if (!authorData)
-      authorData = await this.client.repositories.userRepository.create(message.author.id);
 
     const ctx = new CommandContext(this.client, message, args, { user: authorData, server }, t);
 

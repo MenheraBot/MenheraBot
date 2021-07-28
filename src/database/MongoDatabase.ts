@@ -60,8 +60,6 @@ export default class MongoDatabase {
   private giveRepository: GiveRepository;
 
   constructor(public uri: string) {
-    this.uri = uri;
-
     // TODO: add modal to the name for readability
     // para fazer isso tem que mudar todos os codigos que estão usando `database.(nome_sem_modal)` to repositories
     this.Cmds = Cmds;
@@ -91,7 +89,23 @@ export default class MongoDatabase {
     this.giveRepository = new GiveRepository(this.Users);
   }
 
-  get repositories() {
+  get repositories(): {
+    userRepository: UserRepository;
+    commandRepository: CommandRepository;
+    cmdRepository: CmdRepository;
+    starRepository: StarRepository;
+    rpgRepository: RpgRepository;
+    mamarRepository: MamarRepository;
+    guildRepository: GuildRepository;
+    statusRepository: StatusRepository;
+    badgeRepository: BadgeRepository;
+    maintenanceRepository: MaintenanceRepository;
+    huntRepository: HuntRepository;
+    relationshipRepository: RelationshipRepository;
+    blacklistRepository: BlacklistRepository;
+    topRepository: TopRepository;
+    giveRepository: GiveRepository;
+  } {
     return {
       userRepository: this.userRepository,
       commandRepository: this.commandRepository,

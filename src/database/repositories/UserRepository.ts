@@ -14,7 +14,7 @@ export default class UserRepository {
   }
 
   async findOrCreate(userID: string) {
-    const result = await this.userModal.findOne({ id: userID });
+    const result = await this.find(userID);
     if (result) return result;
 
     return this.userModal.create({ id: userID });

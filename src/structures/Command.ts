@@ -7,7 +7,7 @@ export default abstract class Command {
 
   public dir: string;
 
-  abstract run(ctx: CommandContext): Promise<any>;
+  abstract run(ctx: CommandContext): Promise<unknown>;
 
   constructor(public client: MenheraClient, options: ICommandConfig) {
     this.client = client;

@@ -33,6 +33,8 @@ module.exports = {
     'no-use-before-define': ['error', { variables: false }],
     'linebreak-style': 'off',
     'import/no-cycle': 'off',
+    'no-useless-constructor': 'off',
+    '@typescript-eslint/no-useless-constructor': ['error'],
   },
   settings: {
     'import/parsers': {
