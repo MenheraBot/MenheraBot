@@ -41,7 +41,7 @@ export default class RPGUtil {
 
     return {
       name: backpack.id,
-      capacity: backpack?.capacity ?? 0,
+      capacity: backpack.capacity ?? 0,
       value: userRpgData.loots.length + userRpgData.inventory.length,
     };
   }
