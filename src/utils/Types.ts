@@ -12,7 +12,6 @@ export interface ICommandConfig {
   name: string;
   category: string;
   aliases?: Array<string>;
-  description?: string;
   cooldown?: number;
   userPermissions?: BitFieldResolvable<PermissionString>[];
   clientPermissions?: BitFieldResolvable<PermissionString>[];

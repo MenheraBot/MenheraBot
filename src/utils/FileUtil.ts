@@ -9,9 +9,9 @@ export default class FileUtil {
     return path.parse(filepath).name;
   }
 
-  static reloadFile(
+  static reloadFile<A>(
     filepath: string,
-    reloadFunction: (file: unknown, dir: string) => unknown,
+    reloadFunction: (file: A, dir: string) => unknown,
   ): unknown {
     const dir = path.resolve(filepath);
     delete require.cache[dir];
@@ -26,8 +26,8 @@ export default class FileUtil {
     );
   }
 
-  static readdirRecursive(directory: string) {
-    return fs.readdirSync(directory).reduce((p, file) => {
+  static readdirRecursive(directory: string): string[] {
+    return fs.readdirSync(directory).reduce<string[]>((p, file) => {
       const filepath = path.join(directory, file);
       const validExtensions = ['.ts', '.js'];
 
