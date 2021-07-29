@@ -11,7 +11,7 @@
 - [x] Fix database
 - [ ] Fix commands
   - [x] Actions
-  - [ ] Dev
+  - [x] Dev
   - [ ] Economy
   - [ ] fun
   - [ ] info

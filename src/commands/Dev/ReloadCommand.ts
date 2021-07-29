@@ -2,18 +2,18 @@ import CommandContext from '@structures/CommandContext';
 import MenheraClient from 'MenheraClient';
 import Command from '@structures/Command';
 import LocaleStructure from '@structures/LocaleStructure';
+import { Message } from 'discord.js';
 
 export default class UpdateCommand extends Command {
   constructor(client: MenheraClient) {
     super(client, {
       name: 'reload',
-      description: 'Updata um comando',
       devsOnly: true,
       category: 'Dev',
     });
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<Message> {
     if (!ctx.args[0]) return ctx.reply('error', 'nenhum comando foi informado!');
 
     if (ctx.args[0].toLowerCase() === 'locales') {
@@ -30,6 +30,6 @@ export default class UpdateCommand extends Command {
         ctx.reply('error', `Erro ao reiniciar o comando ${ctx.args[0]}! : ${e.message}`),
       );
 
-    ctx.reply('success', `${ctx.args[0]} recarregado com sucesso!`);
+    return ctx.reply('success', `${ctx.args[0]} recarregado com sucesso!`);
   }
 }

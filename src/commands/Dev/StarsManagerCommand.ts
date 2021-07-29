@@ -1,19 +1,19 @@
 import Command from '@structures/Command';
 import CommandContext from '@structures/CommandContext';
 import MenheraClient from 'MenheraClient';
+import { Message } from 'discord.js';
 
 export default class StarManagerCommand extends Command {
   constructor(client: MenheraClient) {
     super(client, {
       name: 'managestar',
       aliases: ['ms'],
-      description: 'Edite as estrelas de um usuário',
       devsOnly: true,
       category: 'Dev',
     });
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<Message> {
     const [id, option, value] = ctx.args;
 
     if (!value)
@@ -33,6 +33,6 @@ export default class StarManagerCommand extends Command {
         return ctx.reply('error', 'Use `m!managestar <userId> <add | remove | set> <valor>`');
     }
 
-    ctx.reply('success', `Estrelinhas de ${id} alteradas com sucesso :star:`);
+    return ctx.reply('success', `Estrelinhas de ${id} alteradas com sucesso :star:`);
   }
 }

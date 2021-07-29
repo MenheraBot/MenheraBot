@@ -1,5 +1,5 @@
 import CommandContext from '@structures/CommandContext';
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import MenheraClient from 'MenheraClient';
 import util from 'util';
 
@@ -15,7 +15,7 @@ export default class EvalCommand extends Command {
   }
 
   // eslint-disable-next-line no-unused-vars
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<Message> {
     try {
       // eslint-disable-next-line no-eval
       let evaled = await eval(ctx.args.join(' '));
@@ -23,7 +23,7 @@ export default class EvalCommand extends Command {
       evaled = evaled.replace(new RegExp(`${this.client.token}`, 'g'), undefined);
 
       if (evaled.length > 1800) evaled = `${evaled.slice(0, 1800)}...`;
-      ctx.message.channel.send(evaled, { code: 'js' });
+      return ctx.message.channel.send(evaled, { code: 'js' });
     } catch (err) {
       const errorMessage = err.stack.length > 1800 ? `${err.stack.slice(0, 1800)}...` : err.stack;
       const embed = new MessageEmbed();
@@ -31,7 +31,7 @@ export default class EvalCommand extends Command {
       embed.setTitle('<:negacao:759603958317711371> | Erro');
       embed.setDescription(`\`\`\`js\n${errorMessage}\`\`\``);
 
-      ctx.send(embed);
+      return ctx.send(embed);
     }
   }
 }
