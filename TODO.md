@@ -15,6 +15,6 @@
   - [x] Economy
   - [x] fun
   - [x] info
-  - [ ] mod
+  - [x] mod
   - [ ] rpg
   - [ ] util

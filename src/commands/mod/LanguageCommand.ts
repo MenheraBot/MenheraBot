@@ -1,6 +1,7 @@
 import CommandContext from '@structures/CommandContext';
 import MenheraClient from 'MenheraClient';
 import Command from '@structures/Command';
+import { Message } from 'discord.js';
 
 export default class LanguageCommand extends Command {
   constructor(client: MenheraClient) {
@@ -14,7 +15,7 @@ export default class LanguageCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<Message | void> {
     ctx.replyT('question', 'commands:language.question').then((msg) => {
       msg.react('🇧🇷');
       setTimeout(() => {
@@ -23,21 +24,25 @@ export default class LanguageCommand extends Command {
 
       const collector = msg.createReactionCollector(
         (r, u) =>
-          (r.emoji.name === '🇧🇷', '🇺🇸') &&
-          u.id !== this.client.user.id &&
+          (r.emoji.name === `🇧🇷` || r.emoji.name === '🇺🇸') &&
+          u.id !== this.client.user?.id &&
           u.id === ctx.message.author.id,
       );
-      collector.on('collect', (r) => {
+
+      collector.on('collect', async (r) => {
+        if (!ctx.message.guild) return;
         switch (r.emoji.name) {
           case '🇧🇷':
-            ctx.client.repositories.guildRepository.updateLang(ctx.message.guild.id, 'pt-BR');
-            msg.delete();
-            ctx.message.channel.send(':map: | Agora eu irei falar em ~~brasileiro~~ português');
+            await ctx.client.repositories.guildRepository.updateLang(ctx.message.guild.id, 'pt-BR');
+            await msg.delete();
+            await ctx.message.channel.send(
+              ':map: | Agora eu irei falar em ~~brasileiro~~ português',
+            );
             break;
           case '🇺🇸':
-            ctx.client.repositories.guildRepository.updateLang(ctx.message.guild.id, 'en-US');
-            msg.delete();
-            ctx.message.channel.send(":map: | Now I'll talk in english");
+            await ctx.client.repositories.guildRepository.updateLang(ctx.message.guild.id, 'en-US');
+            await msg.delete();
+            await ctx.message.channel.send(":map: | Now I'll talk in english");
             break;
         }
       });

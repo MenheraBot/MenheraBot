@@ -1,6 +1,7 @@
 import CommandContext from '@structures/CommandContext';
 import MenheraClient from 'MenheraClient';
 import Command from '@structures/Command';
+import { Message } from 'discord.js';
 
 export default class PrefixCommand extends Command {
   constructor(client: MenheraClient) {
@@ -8,20 +9,18 @@ export default class PrefixCommand extends Command {
       name: 'prefix',
       aliases: ['prefixo'],
       cooldown: 10,
-      description: 'Troque meu prefixo neste servidor',
       userPermissions: ['MANAGE_CHANNELS'],
       category: 'moderação',
     });
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<Message> {
     const [prefix] = ctx.args;
     if (!prefix) return ctx.replyT('error', 'commands:prefix.no-args');
     if (prefix.length > 3) return ctx.replyT('error', 'commands:prefix.invalid-input');
 
-    ctx.data.server.prefix = prefix;
-    ctx.data.server.save();
+    await this.client.repositories.guildRepository.update(ctx.data.server.id, { prefix });
 
-    ctx.replyT('success', 'commands:prefix.done', { prefix: ctx.data.server.prefix });
+    return ctx.replyT('success', 'commands:prefix.done', { prefix: ctx.data.server.prefix });
   }
 }
