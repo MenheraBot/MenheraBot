@@ -3,13 +3,12 @@
   "compilerOptions": {
     "outDir": "dist",
     "baseUrl": "src",
-    "skipLibCheck": true,
     "paths": {
       "@structures/*": ["structures/*"],
       "@database/*": ["database/*"],
       "@utils/*": ["utils/*"],
       "@interfaces/*": ["interfaces/*"]
-    },
+    }
   },
   "include": ["src"],
   "exclude": ["dist"]
