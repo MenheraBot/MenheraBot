@@ -4,6 +4,7 @@ import CommandContext from '@structures/CommandContext';
 import { emojis } from '@structures/MenheraConstants';
 import { IUserSchema } from '@utils/Types';
 import MenheraClient from 'MenheraClient';
+import { Message } from 'discord.js';
 
 const validArgs = [
   {
@@ -47,7 +48,46 @@ export default class GiveCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
+  static replyInvalidArgsError(ctx: CommandContext): Promise<Message> {
+    return ctx.replyT('error', 'commands:give.no-args', { prefix: ctx.data.server.prefix });
+  }
+
+  static replyBadUsageError(ctx: CommandContext): Promise<Message> {
+    return ctx.replyT('error', 'commands:give.bad-usage');
+  }
+
+  static replyForYourselfError(ctx: CommandContext): Promise<Message> {
+    return ctx.replyT('error', 'commands:give.self-mention');
+  }
+
+  static replyInvalidValueError(ctx: CommandContext): Promise<Message> {
+    return ctx.replyT('error', 'commands:give.invalid-value');
+  }
+
+  static replyNoAccountError(ctx: CommandContext): Promise<Message> {
+    return ctx.replyT('error', 'commands:give.no-dbuser');
+  }
+
+  static replyNotEnoughtError(ctx: CommandContext, localeField: string): Promise<Message> {
+    return ctx.reply(
+      'error',
+      `${ctx.locale('commands:give.poor')} ${ctx.locale(`commands:give.${localeField}`)}`,
+    );
+  }
+
+  static replySuccess(
+    ctx: CommandContext,
+    value: number,
+    emoji: string,
+    mentionString: string,
+  ): Promise<Message> {
+    return ctx.reply(
+      'success',
+      `${ctx.locale('commands:give.transfered', { value, emoji })} ${mentionString}`,
+    );
+  }
+
+  async run(ctx: CommandContext): Promise<Message | void> {
     const selectedOption =
       ctx.args[0] &&
       validArgs.find((option) => option.arguments.includes(ctx.args[0].toLowerCase()));
@@ -72,55 +112,21 @@ export default class GiveCommand extends Command {
 
     switch (option) {
       case 'estrelinhas':
-        this.giveStar(authorData, toData, value, ctx, to.toString());
+        await this.giveStar(authorData, toData, value, ctx, to.toString());
         break;
       case 'demônio':
-        this.giveDemon(authorData, toData, value, ctx, to.toString());
+        await this.giveDemon(authorData, toData, value, ctx, to.toString());
         break;
       case 'anjos':
-        this.giveAngel(authorData, toData, value, ctx, to.toString());
+        await this.giveAngel(authorData, toData, value, ctx, to.toString());
         break;
       case 'semideuses':
-        this.giveSD(authorData, toData, value, ctx, to.toString());
+        await this.giveSD(authorData, toData, value, ctx, to.toString());
         break;
       case 'deus':
-        this.giveGod(authorData, toData, value, ctx, to.toString());
+        await this.giveGod(authorData, toData, value, ctx, to.toString());
         break;
     }
-  }
-
-  static replyInvalidArgsError(ctx: CommandContext) {
-    return ctx.replyT('error', 'commands:give.no-args', { prefix: ctx.data.server.prefix });
-  }
-
-  static replyBadUsageError(ctx: CommandContext) {
-    return ctx.replyT('error', 'commands:give.bad-usage');
-  }
-
-  static replyForYourselfError(ctx: CommandContext) {
-    return ctx.replyT('error', 'commands:give.self-mention');
-  }
-
-  static replyInvalidValueError(ctx: CommandContext) {
-    return ctx.replyT('error', 'commands:give.invalid-value');
-  }
-
-  static replyNoAccountError(ctx: CommandContext) {
-    return ctx.replyT('error', 'commands:give.no-dbuser');
-  }
-
-  static replyNotEnoughtError(ctx: CommandContext, localeField: string) {
-    return ctx.reply(
-      'error',
-      `${ctx.locale('commands:give.poor')} ${ctx.locale(`commands:give.${localeField}`)}`,
-    );
-  }
-
-  static replySuccess(ctx: CommandContext, value: number, emoji: string, mentionString: string) {
-    return ctx.reply(
-      'success',
-      `${ctx.locale('commands:give.transfered', { value, emoji })} ${mentionString}`,
-    );
   }
 
   async giveStar(
@@ -129,7 +135,7 @@ export default class GiveCommand extends Command {
     value: number,
     ctx: CommandContext,
     mentionString: string,
-  ) {
+  ): Promise<Message> {
     if (value > from.estrelinhas) return GiveCommand.replyNotEnoughtError(ctx, 'stars');
 
     await this.client.repositories.giveRepository.giveStars(from.id, to.id, value);
@@ -143,7 +149,7 @@ export default class GiveCommand extends Command {
     value: number,
     ctx: CommandContext,
     mentionString: string,
-  ) {
+  ): Promise<Message> {
     if (value > from.caçados) return GiveCommand.replyNotEnoughtError(ctx, 'demons');
 
     await this.client.repositories.giveRepository.giveDemons(from.id, to.id, value);
@@ -157,7 +163,7 @@ export default class GiveCommand extends Command {
     value: number,
     ctx: CommandContext,
     mentionString: string,
-  ) {
+  ): Promise<Message> {
     if (value > from.anjos) return GiveCommand.replyNotEnoughtError(ctx, 'angels');
 
     await this.client.repositories.giveRepository.giveAngels(from.id, to.id, value);
@@ -171,7 +177,7 @@ export default class GiveCommand extends Command {
     value: number,
     ctx: CommandContext,
     mentionString: string,
-  ) {
+  ): Promise<Message> {
     if (value > from.semideuses) return GiveCommand.replyNotEnoughtError(ctx, 'semigods');
 
     await this.client.repositories.giveRepository.giveDemigods(from.id, to.id, value);
@@ -185,7 +191,7 @@ export default class GiveCommand extends Command {
     value: number,
     ctx: CommandContext,
     mentionString: string,
-  ) {
+  ): Promise<Message> {
     if (value > from.deuses) return GiveCommand.replyNotEnoughtError(ctx, 'gods');
 
     await this.client.repositories.giveRepository.giveGods(from.id, to.id, value);

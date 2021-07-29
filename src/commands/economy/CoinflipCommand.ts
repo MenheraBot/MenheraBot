@@ -5,7 +5,7 @@ import { emojis } from '@structures/MenheraConstants';
 
 import Command from '@structures/Command';
 
-import { MessageReaction, User } from 'discord.js';
+import { Message, MessageReaction, User } from 'discord.js';
 import http from '@utils/HTTPrequests';
 
 export default class CoinflipCommand extends Command {
@@ -18,7 +18,7 @@ export default class CoinflipCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<Message | void> {
     const user1 = ctx.message.author;
     const user2 = ctx.message.mentions.users.first();
     const input = ctx.args[1];
@@ -67,7 +67,7 @@ export default class CoinflipCommand extends Command {
           let loser = user2.id;
 
           if (choice === 'Cara') {
-            ctx.send(
+            await ctx.send(
               `${ctx.locale('commands:coinflip.cara')}\n${user1} ${ctx.locale(
                 'commands:coinflip.cara-texto-start',
                 { value: valor },
@@ -78,7 +78,7 @@ export default class CoinflipCommand extends Command {
           } else {
             winner = user2.id;
             loser = user1.id;
-            ctx.send(
+            await ctx.send(
               `${ctx.locale('commands:coinflip.coroa')}\n${user2} ${ctx.locale(
                 'commands:coinflip.coroa-texto',
                 { value: valor },

@@ -1,14 +1,14 @@
 import { BLACKJACK_CARDS } from '@structures/MenheraConstants';
 
-import { MessageEmbed, MessageAttachment, Message } from 'discord.js';
+import { Message, MessageAttachment, MessageEmbed } from 'discord.js';
 import http from '@utils/HTTPrequests';
 import Command from '@structures/Command';
 import MenheraClient from 'MenheraClient';
 import CommandContext from '@structures/CommandContext';
 import { IBlackjackCards } from '@utils/Types';
 
-const CalculateHandValue = (cards: Array<number>): Array<IBlackjackCards> => {
-  const realValue = cards.reduce((p: Array<IBlackjackCards>, c: number) => {
+const CalculateHandValue = (cards: Array<number>): Array<IBlackjackCards> =>
+  cards.reduce((p: Array<IBlackjackCards>, c: number) => {
     if (c <= 13) {
       p.push({
         value: c > 10 ? 10 : c,
@@ -43,8 +43,6 @@ const CalculateHandValue = (cards: Array<number>): Array<IBlackjackCards> => {
     }
     return p;
   }, []);
-  return realValue;
-};
 
 export default class BlackJackCommand extends Command {
   constructor(client: MenheraClient) {
@@ -57,91 +55,13 @@ export default class BlackJackCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
-    const input = ctx.args[0];
-    if (!input) return ctx.replyT('error', 'commands:blackjack.bad-usage');
-    const valor = parseInt(input.replace(/\D+/g, ''));
-    if (!valor || valor > 50000 || valor < 1000)
-      return ctx.replyT('error', 'commands:blackjack.invalid-value');
-
-    if (ctx.data.user.estrelinhas < valor) return ctx.replyT('error', 'commands:blackjack.poor');
-
-    const matchCards = [...BLACKJACK_CARDS].sort(() => Math.random() - 0.5);
-
-    const dealerCards = matchCards.splice(0, 2);
-    const playerCards = matchCards.splice(0, 2);
-
-    const res = await http.blackjackRequest(
-      valor,
-      CalculateHandValue(playerCards),
-      CalculateHandValue(dealerCards),
-      BlackJackCommand.checkHandFinalValue(CalculateHandValue(playerCards)),
-      BlackJackCommand.checkHandFinalValue(CalculateHandValue([dealerCards[0]])),
-      false,
-      {
-        yourHand: ctx.locale('commands:blackjack.your-hand'),
-        dealerHand: ctx.locale('commands:blackjack.dealer-hand'),
-      },
-    );
-
-    const embed = new MessageEmbed()
-      .setTitle('⭐ | BlackJack')
-      .setDescription(
-        `${ctx.locale('commands:blackjack.your-hand')}: **${CalculateHandValue(playerCards)
-          .map((a) => `${a.value}`)
-          .join(', ')}** -> \`${BlackJackCommand.checkHandFinalValue(
-          CalculateHandValue(playerCards),
-        )}\`\n${ctx.locale('commands:blackjack.dealer-hand')}: **${CalculateHandValue([
-          dealerCards[0],
-        ])
-          .map((a) => `${a.value}`)
-          .join(', ')}** -> \`${BlackJackCommand.checkHandFinalValue(
-          CalculateHandValue([dealerCards[0]]),
-        )}\``,
-      )
-      .addField(
-        ctx.locale('commands:blackjack.available-options'),
-        ctx.locale('commands:blackjack.options'),
-      )
-      .setFooter(ctx.locale('commands:blackjack.footer'))
-      .setColor(ctx.data.user.cor)
-      .setThumbnail(ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true }));
-
-    if (!res.err) {
-      const attachment = new MessageAttachment(Buffer.from(res.data), 'blackjack.png');
-      embed.attachFiles([attachment]).setImage('attachment://blackjack.png');
-    }
-
-    ctx.sendC(ctx.message.author.toString(), embed);
-
-    const acceptOptions = ['comprar', '1', 'buy', 'draw'];
-    const pararOptions = ['parar', '2', 'stop'];
-
-    const filter = (msg: Message) => msg.author.id === ctx.message.author.id;
-    const collector = ctx.message.channel.createMessageCollector(filter, { max: 1, time: 10000 });
-
-    const timeout = setTimeout(() => {
-      ctx.replyT('error', 'commands:blackjack.timeout');
-      ctx.client.repositories.starRepository.remove(ctx.message.author.id, valor);
-    }, 12000);
-    collector.on('collect', (msg) => {
-      if (pararOptions.includes(msg.content)) {
-        clearTimeout(timeout);
-        BlackJackCommand.finishGame(ctx, valor, dealerCards, playerCards, matchCards);
-      } else if (acceptOptions.includes(msg.content)) {
-        clearTimeout(timeout);
-        BlackJackCommand.continueFromBuy(ctx, valor, dealerCards, playerCards, matchCards);
-      }
-    });
-  }
-
   static async continueFromBuy(
     ctx: CommandContext,
     valor: number,
     dealerCards: Array<number>,
     usrCards: Array<number>,
     deckCards: Array<number>,
-  ) {
+  ): Promise<void> {
     if (usrCards.length === 2) {
       const oldUserCards = CalculateHandValue(usrCards);
       const oldUserTotal = BlackJackCommand.checkHandFinalValue(oldUserCards);
@@ -195,11 +115,11 @@ export default class BlackJackCommand extends Command {
       .setThumbnail(ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true }));
 
     if (!res.err) {
-      const attachment = new MessageAttachment(Buffer.from(res.data), 'blackjack.png');
+      const attachment = new MessageAttachment(Buffer.from(res.data as Buffer), 'blackjack.png');
       embed.attachFiles([attachment]).setImage('attachment://blackjack.png');
     }
 
-    ctx.sendC(ctx.message.author.toString(), embed);
+    await ctx.sendC(ctx.message.author.toString(), embed);
 
     const acceptOptions = ['comprar', '1', 'buy', 'draw'];
     const pararOptions = ['parar', '2', 'stop'];
@@ -246,7 +166,7 @@ export default class BlackJackCommand extends Command {
     menheraCards: number[],
     playerCards: number[],
     matchCards: number[],
-  ) {
+  ): Promise<void> {
     const userCards = CalculateHandValue(playerCards);
     const dealerCards = CalculateHandValue(menheraCards);
 
@@ -279,7 +199,7 @@ export default class BlackJackCommand extends Command {
     );
 
     if (!res.err) {
-      const attachment = new MessageAttachment(Buffer.from(res.data), 'blackjack.png');
+      const attachment = new MessageAttachment(Buffer.from(res.data as Buffer), 'blackjack.png');
       embed.attachFiles([attachment]).setImage('attachment://blackjack.png');
     }
 
@@ -288,9 +208,9 @@ export default class BlackJackCommand extends Command {
         ctx.locale('commands:blackjack.result'),
         ctx.locale('commands:blackjack.blackjack', { value: valor * 4 }),
       );
-      ctx.client.repositories.starRepository.add(ctx.message.author.id, valor * 2);
-      ctx.sendC(ctx.message.author.toString(), embed);
-      http.postBlackJack(ctx.message.author.id, true, valor * 2);
+      await ctx.client.repositories.starRepository.add(ctx.message.author.id, valor * 2);
+      await ctx.sendC(ctx.message.author.toString(), embed);
+      await http.postBlackJack(ctx.message.author.id, true, valor * 2);
       return;
     }
 
@@ -300,9 +220,9 @@ export default class BlackJackCommand extends Command {
         ctx.locale('commands:blackjack.result'),
         ctx.locale('commands:blackjack.explode'),
       );
-      ctx.client.repositories.starRepository.remove(ctx.message.author.id, valor);
-      ctx.sendC(ctx.message.author.toString(), embed);
-      http.postBlackJack(ctx.message.author.id, false, valor * 2);
+      await ctx.client.repositories.starRepository.remove(ctx.message.author.id, valor);
+      await ctx.sendC(ctx.message.author.toString(), embed);
+      await http.postBlackJack(ctx.message.author.id, false, valor * 2);
       return;
     }
 
@@ -313,9 +233,9 @@ export default class BlackJackCommand extends Command {
         ctx.locale('commands:blackjack.result'),
         ctx.locale('commands:blackjack.menhera-bj'),
       );
-      ctx.client.repositories.starRepository.remove(ctx.message.author.id, valor);
-      ctx.sendC(ctx.message.author.toString(), embed);
-      http.postBlackJack(ctx.message.author.id, false, valor * 2);
+      await ctx.client.repositories.starRepository.remove(ctx.message.author.id, valor);
+      await ctx.sendC(ctx.message.author.toString(), embed);
+      await http.postBlackJack(ctx.message.author.id, false, valor * 2);
       return;
     }
 
@@ -353,7 +273,7 @@ export default class BlackJackCommand extends Command {
     );
 
     if (!newRes.err) {
-      const newAtt = new MessageAttachment(Buffer.from(newRes.data), 'bj.png');
+      const newAtt = new MessageAttachment(Buffer.from(newRes.data as Buffer), 'bj.png');
       embed.attachFiles([newAtt]).setImage('attachment://bj.png');
     }
 
@@ -362,9 +282,9 @@ export default class BlackJackCommand extends Command {
         ctx.locale('commands:blackjack.result'),
         ctx.locale('commands:blackjack.menhera-21'),
       );
-      ctx.client.repositories.starRepository.remove(ctx.message.author.id, valor);
-      ctx.sendC(ctx.message.author.toString(), embed);
-      http.postBlackJack(ctx.message.author.id, false, valor * 2);
+      await ctx.client.repositories.starRepository.remove(ctx.message.author.id, valor);
+      await ctx.sendC(ctx.message.author.toString(), embed);
+      await http.postBlackJack(ctx.message.author.id, false, valor * 2);
       return;
     }
 
@@ -373,9 +293,9 @@ export default class BlackJackCommand extends Command {
         ctx.locale('commands:blackjack.result'),
         ctx.locale('commands:blackjack.user-21', { value: valor * 2 }),
       );
-      ctx.client.repositories.starRepository.add(ctx.message.author.id, valor);
-      ctx.sendC(ctx.message.author.toString(), embed);
-      http.postBlackJack(ctx.message.author.id, true, valor * 2);
+      await ctx.client.repositories.starRepository.add(ctx.message.author.id, valor);
+      await ctx.sendC(ctx.message.author.toString(), embed);
+      await http.postBlackJack(ctx.message.author.id, true, valor * 2);
       return;
     }
 
@@ -384,9 +304,9 @@ export default class BlackJackCommand extends Command {
         ctx.locale('commands:blackjack.result'),
         ctx.locale('commands:blackjack.menhera-bust', { value: valor * 2 }),
       );
-      ctx.client.repositories.starRepository.add(ctx.message.author.id, valor);
-      ctx.sendC(ctx.message.author.toString(), embed);
-      http.postBlackJack(ctx.message.author.id, true, valor * 2);
+      await ctx.client.repositories.starRepository.add(ctx.message.author.id, valor);
+      await ctx.sendC(ctx.message.author.toString(), embed);
+      await http.postBlackJack(ctx.message.author.id, true, valor * 2);
       return;
     }
 
@@ -395,7 +315,7 @@ export default class BlackJackCommand extends Command {
         ctx.locale('commands:blackjack.result'),
         ctx.locale('commands:blackjack.draw'),
       );
-      ctx.sendC(ctx.message.author.toString(), embed);
+      await ctx.sendC(ctx.message.author.toString(), embed);
       return;
     }
 
@@ -404,9 +324,9 @@ export default class BlackJackCommand extends Command {
         ctx.locale('commands:blackjack.result'),
         ctx.locale('commands:blackjack.both-21'),
       );
-      ctx.client.repositories.starRepository.remove(ctx.message.author.id, valor);
-      ctx.sendC(ctx.message.author.toString(), embed);
-      http.postBlackJack(ctx.message.author.id, false, valor * 2);
+      await ctx.client.repositories.starRepository.remove(ctx.message.author.id, valor);
+      await ctx.sendC(ctx.message.author.toString(), embed);
+      await http.postBlackJack(ctx.message.author.id, false, valor * 2);
       return;
     }
 
@@ -415,9 +335,9 @@ export default class BlackJackCommand extends Command {
         ctx.locale('commands:blackjack.result'),
         ctx.locale('commands:blackjack.equal'),
       );
-      ctx.client.repositories.starRepository.remove(ctx.message.author.id, valor);
-      ctx.sendC(ctx.message.author.toString(), embed);
-      http.postBlackJack(ctx.message.author.id, false, valor * 2);
+      await ctx.client.repositories.starRepository.remove(ctx.message.author.id, valor);
+      await ctx.sendC(ctx.message.author.toString(), embed);
+      await http.postBlackJack(ctx.message.author.id, false, valor * 2);
       return;
     }
 
@@ -426,9 +346,9 @@ export default class BlackJackCommand extends Command {
         ctx.locale('commands:blackjack.result'),
         ctx.locale('commands:blackjack.menhera-bigger'),
       );
-      ctx.client.repositories.starRepository.remove(ctx.message.author.id, valor);
-      ctx.sendC(ctx.message.author.toString(), embed);
-      http.postBlackJack(ctx.message.author.id, false, valor * 2);
+      await ctx.client.repositories.starRepository.remove(ctx.message.author.id, valor);
+      await ctx.sendC(ctx.message.author.toString(), embed);
+      await http.postBlackJack(ctx.message.author.id, false, valor * 2);
       return;
     }
 
@@ -436,8 +356,86 @@ export default class BlackJackCommand extends Command {
       ctx.locale('commands:blackjack.result'),
       ctx.locale('commands:blackjack.user-bigger', { value: valor * 2 }),
     );
-    ctx.client.repositories.starRepository.add(ctx.message.author.id, valor);
+    await ctx.client.repositories.starRepository.add(ctx.message.author.id, valor);
+    await ctx.sendC(ctx.message.author.toString(), embed);
+    await http.postBlackJack(ctx.message.author.id, true, valor * 2);
+  }
+
+  async run(ctx: CommandContext): Promise<Message | void> {
+    const input = ctx.args[0];
+    if (!input) return ctx.replyT('error', 'commands:blackjack.bad-usage');
+    const valor = parseInt(input.replace(/\D+/g, ''));
+    if (!valor || valor > 50000 || valor < 1000)
+      return ctx.replyT('error', 'commands:blackjack.invalid-value');
+
+    if (ctx.data.user.estrelinhas < valor) return ctx.replyT('error', 'commands:blackjack.poor');
+
+    const matchCards = [...BLACKJACK_CARDS].sort(() => Math.random() - 0.5);
+
+    const dealerCards = matchCards.splice(0, 2);
+    const playerCards = matchCards.splice(0, 2);
+
+    const res = await http.blackjackRequest(
+      valor,
+      CalculateHandValue(playerCards),
+      CalculateHandValue(dealerCards),
+      BlackJackCommand.checkHandFinalValue(CalculateHandValue(playerCards)),
+      BlackJackCommand.checkHandFinalValue(CalculateHandValue([dealerCards[0]])),
+      false,
+      {
+        yourHand: ctx.locale('commands:blackjack.your-hand'),
+        dealerHand: ctx.locale('commands:blackjack.dealer-hand'),
+      },
+    );
+
+    const embed = new MessageEmbed()
+      .setTitle('⭐ | BlackJack')
+      .setDescription(
+        `${ctx.locale('commands:blackjack.your-hand')}: **${CalculateHandValue(playerCards)
+          .map((a) => `${a.value}`)
+          .join(', ')}** -> \`${BlackJackCommand.checkHandFinalValue(
+          CalculateHandValue(playerCards),
+        )}\`\n${ctx.locale('commands:blackjack.dealer-hand')}: **${CalculateHandValue([
+          dealerCards[0],
+        ])
+          .map((a) => `${a.value}`)
+          .join(', ')}** -> \`${BlackJackCommand.checkHandFinalValue(
+          CalculateHandValue([dealerCards[0]]),
+        )}\``,
+      )
+      .addField(
+        ctx.locale('commands:blackjack.available-options'),
+        ctx.locale('commands:blackjack.options'),
+      )
+      .setFooter(ctx.locale('commands:blackjack.footer'))
+      .setColor(ctx.data.user.cor)
+      .setThumbnail(ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true }));
+
+    if (!res.err) {
+      const attachment = new MessageAttachment(Buffer.from(res.data as Buffer), 'blackjack.png');
+      embed.attachFiles([attachment]).setImage('attachment://blackjack.png');
+    }
+
     ctx.sendC(ctx.message.author.toString(), embed);
-    http.postBlackJack(ctx.message.author.id, true, valor * 2);
+
+    const acceptOptions = ['comprar', '1', 'buy', 'draw'];
+    const pararOptions = ['parar', '2', 'stop'];
+
+    const filter = (msg: Message) => msg.author.id === ctx.message.author.id;
+    const collector = ctx.message.channel.createMessageCollector(filter, { max: 1, time: 10000 });
+
+    const timeout = setTimeout(() => {
+      ctx.replyT('error', 'commands:blackjack.timeout');
+      ctx.client.repositories.starRepository.remove(ctx.message.author.id, valor);
+    }, 12000);
+    collector.on('collect', (msg) => {
+      if (pararOptions.includes(msg.content)) {
+        clearTimeout(timeout);
+        BlackJackCommand.finishGame(ctx, valor, dealerCards, playerCards, matchCards);
+      } else if (acceptOptions.includes(msg.content)) {
+        clearTimeout(timeout);
+        BlackJackCommand.continueFromBuy(ctx, valor, dealerCards, playerCards, matchCards);
+      }
+    });
   }
 }

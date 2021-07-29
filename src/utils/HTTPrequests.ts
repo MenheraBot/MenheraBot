@@ -284,7 +284,7 @@ export default class HttpRequests {
           aposta,
         },
       });
-      return { err: false, data: data?.data };
+      return { err: false, data: data.data };
     } catch {
       return { err: true };
     }

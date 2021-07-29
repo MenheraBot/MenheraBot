@@ -12,7 +12,7 @@
 - [ ] Fix commands
   - [x] Actions
   - [x] Dev
-  - [ ] Economy
+  - [x] Economy
   - [ ] fun
   - [ ] info
   - [ ] mod

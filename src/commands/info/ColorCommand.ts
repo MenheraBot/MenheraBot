@@ -23,7 +23,7 @@ export default class ColorCommand extends Command {
       authorData.cores.push({
         nome: '0 - Padrão',
         cor: '#a788ff',
-        preço: 0,
+        price: 0,
       });
       authorData.save().then();
     }

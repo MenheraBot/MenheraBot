@@ -1,4 +1,4 @@
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed, User } from 'discord.js';
 import Command from '@structures/Command';
 import MenheraClient from 'MenheraClient';
 import CommandContext from '@structures/CommandContext';
@@ -13,8 +13,8 @@ export default class WalletCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
-    let pessoa;
+  async run(ctx: CommandContext): Promise<Message | Message[]> {
+    let pessoa: User;
 
     if (ctx.args[0]) {
       try {
@@ -79,6 +79,6 @@ export default class WalletCommand extends Command {
         true,
       );
 
-    ctx.sendC(ctx.message.author.toString(), embed);
+    return ctx.sendC(ctx.message.author.toString(), embed);
   }
 }
