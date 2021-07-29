@@ -1,4 +1,4 @@
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import Command from '@structures/Command';
 import MenheraClient from 'MenheraClient';
 import CommandContext from '@structures/CommandContext';
@@ -14,7 +14,7 @@ export default class BiteCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<Message> {
     const rand = await http.getAssetImageUrl('bite');
     const user = ctx.message.mentions.users.first();
 
@@ -40,6 +40,6 @@ export default class BiteCommand extends Command {
       .setThumbnail(avatar)
       .setAuthor(ctx.message.author.tag, avatar);
 
-    ctx.send(embed);
+    return ctx.send(embed);
   }
 }

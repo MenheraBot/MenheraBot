@@ -1,5 +1,5 @@
 import CommandContext from '@structures/CommandContext';
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import MenheraClient from 'MenheraClient';
 import Command from '@structures/Command';
 import http from '@utils/HTTPrequests';
@@ -14,7 +14,7 @@ export default class FearCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<Message> {
     const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     const rand = await http.getAssetImageUrl('fear');
@@ -44,6 +44,6 @@ export default class FearCommand extends Command {
       .setThumbnail(avatar)
       .setAuthor(ctx.message.author.tag, avatar);
 
-    await ctx.send(embed);
+    return ctx.send(embed);
   }
 }

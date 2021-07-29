@@ -1,10 +1,10 @@
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import Command from '@structures/Command';
 import http from '@utils/HTTPrequests';
 import MenheraClient from 'MenheraClient';
 import CommandContext from '@structures/CommandContext';
 
-module.exports = class LaughtCommand extends Command {
+export default class LaughtCommand extends Command {
   constructor(client: MenheraClient) {
     super(client, {
       name: 'laugh',
@@ -14,7 +14,7 @@ module.exports = class LaughtCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<Message> {
     const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     const rand = await http.getAssetImageUrl('laugh');
@@ -46,6 +46,6 @@ module.exports = class LaughtCommand extends Command {
       .setThumbnail(avatar)
       .setAuthor(ctx.message.author.tag, avatar);
 
-    await ctx.send(embed);
+    return ctx.send(embed);
   }
-};
+}

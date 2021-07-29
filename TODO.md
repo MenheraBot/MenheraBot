@@ -1,4 +1,5 @@
 - [ ] Fix types
+
   - [x] `FileUtil.ts` (Fix requires to imports)
   - [ ] `Pages.ts` (Delete that pls)
   - [ ] `MenheraClient.ts` (Alguns trco la)
@@ -9,7 +10,7 @@
 - [x] Fix events
 - [x] Fix database
 - [ ] Fix commands
-  - [ ] Actions
+  - [x] Actions
   - [ ] Dev
   - [ ] Economy
   - [ ] fun

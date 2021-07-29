@@ -1,7 +1,7 @@
 import CommandContext from '@structures/CommandContext';
 import MenheraClient from 'MenheraClient';
 
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import Command from '@structures/Command';
 import http from '@utils/HTTPrequests';
 
@@ -15,7 +15,7 @@ export default class ShyCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<Message> {
     const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     const rand = await http.getAssetImageUrl('shy');
@@ -47,6 +47,6 @@ export default class ShyCommand extends Command {
       .setThumbnail(avatar)
       .setAuthor(ctx.message.author.tag, avatar);
 
-    ctx.send(embed);
+    return ctx.send(embed);
   }
 }

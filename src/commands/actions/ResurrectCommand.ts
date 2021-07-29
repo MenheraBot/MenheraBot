@@ -1,6 +1,6 @@
 import CommandContext from '@structures/CommandContext';
 
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import Command from '@structures/Command';
 import http from '@utils/HTTPrequests';
 import MenheraClient from 'MenheraClient';
@@ -15,7 +15,7 @@ export default class ResurrectCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<Message> {
     const rand = await http.getAssetImageUrl('resurrect');
     const user = ctx.message.mentions.users.first();
     const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
@@ -36,6 +36,6 @@ export default class ResurrectCommand extends Command {
       .setThumbnail(avatar)
       .setAuthor(ctx.message.author.tag, avatar);
 
-    ctx.send(embed);
+    return ctx.send(embed);
   }
 }
