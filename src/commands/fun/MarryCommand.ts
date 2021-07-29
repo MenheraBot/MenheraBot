@@ -3,7 +3,7 @@ import Command from '@structures/Command';
 import MenheraClient from 'MenheraClient';
 import CommandContext from '@structures/CommandContext';
 import { emojis } from '@structures/MenheraConstants';
-import { MessageReaction, User } from 'discord.js';
+import { Message, MessageReaction, User } from 'discord.js';
 
 export default class MarryCommand extends Command {
   constructor(client: MenheraClient) {
@@ -15,7 +15,7 @@ export default class MarryCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<Message | void> {
     const authorData = ctx.data.user;
 
     const mencionado = ctx.message.mentions.users.first();
@@ -42,8 +42,8 @@ export default class MarryCommand extends Command {
         }? ${ctx.locale('commands:marry.confirmation_end')}`,
       )
       .then(async (msg) => {
-        msg.react(emojis.yes);
-        msg.react(emojis.no);
+        await msg.react(emojis.yes);
+        await msg.react(emojis.no);
 
         const validReactions = [emojis.no, emojis.yes];
 
@@ -58,7 +58,7 @@ export default class MarryCommand extends Command {
               `${mencionado} ${ctx.locale('commands:marry.negated')} ${ctx.message.author}`,
             );
 
-          ctx.send(
+          await ctx.send(
             `💍${ctx.message.author} ${ctx.locale('commands:marry.acepted')} ${mencionado}💍`,
           );
 

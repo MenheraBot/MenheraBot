@@ -8,19 +8,19 @@ import { Message } from 'discord.js';
 
 const validArgs = [
   {
-    opção: 'estrelinhas',
+    option: 'estrelinhas',
     arguments: ['estrelinhas', 'stars', 'star', 'estrelas'],
   },
   {
-    opção: 'demônio',
+    option: 'demônio',
     arguments: ['demonios', 'demônios', 'demons', 'demonio', 'demônio'],
   },
   {
-    opção: 'anjos',
+    option: 'anjos',
     arguments: ['anjos', 'anjo', 'angels'],
   },
   {
-    opção: 'semideuses',
+    option: 'semideuses',
     arguments: [
       'semideuses',
       'semideus',
@@ -33,7 +33,7 @@ const validArgs = [
     ],
   },
   {
-    opção: 'deus',
+    option: 'deus',
     arguments: ['deus', 'deuses', 'gods', 'god'],
   },
 ];
@@ -108,7 +108,7 @@ export default class GiveCommand extends Command {
     if (!toData) return GiveCommand.replyNoAccountError(ctx);
 
     const authorData = ctx.data.user;
-    const option = selectedOption.opção;
+    const { option } = selectedOption;
 
     switch (option) {
       case 'estrelinhas':

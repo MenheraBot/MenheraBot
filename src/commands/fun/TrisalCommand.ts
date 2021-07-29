@@ -1,5 +1,5 @@
 import http from '@utils/HTTPrequests';
-import { MessageEmbed, MessageAttachment, MessageReaction, User } from 'discord.js';
+import { Message, MessageAttachment, MessageEmbed, MessageReaction, User } from 'discord.js';
 import Command from '@structures/Command';
 import MenheraClient from 'MenheraClient';
 import CommandContext from '@structures/CommandContext';
@@ -15,7 +15,7 @@ export default class TrisalCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<Message | void> {
     const authorData = ctx.data.user;
     if (authorData.trisal?.length === 0 && !ctx.args[1])
       return ctx.replyT('error', 'commands:trisal.no-args');
@@ -41,7 +41,7 @@ export default class TrisalCommand extends Command {
       const res = await http.trisalRequest(userOneAvatar, userTwoAvatar, userThreeAvatar);
       if (res.err) return ctx.replyT('error', 'commands:http-error');
 
-      const attachment = new MessageAttachment(Buffer.from(res.data), 'trisal.png');
+      const attachment = new MessageAttachment(Buffer.from(res.data as Buffer), 'trisal.png');
 
       const embed = new MessageEmbed()
         .attachFiles([attachment])
@@ -89,13 +89,13 @@ export default class TrisalCommand extends Command {
 
     const collector = msg.createReactionCollector(filter, { time: 14000 });
 
-    const acceptedIds = [];
+    const acceptedIds: string[] = [];
 
     collector.on('collect', async (_reaction, user) => {
       if (!acceptedIds.includes(user.id)) acceptedIds.push(user.id);
 
       if (acceptedIds.length === 3) {
-        ctx.replyT('success', 'commands:trisal.done');
+        await ctx.replyT('success', 'commands:trisal.done');
         await this.client.repositories.relationshipRepository.trisal(user1.id, user2.id, user3.id);
       }
     });

@@ -19,6 +19,26 @@ export default class TopCommand extends Command {
     });
   }
 
+  static async topCommands(ctx) {
+    const res = await http.getTopCommands();
+    if (!res) return ctx.replyT('error', 'commands:http-error');
+    const embed = new MessageEmbed()
+
+      .setTitle(`:robot: |  ${ctx.locale('commands:top.commands')}`)
+      .setColor('#f47fff');
+
+    for (let i = 0; i < res.length; i++) {
+      embed.addField(
+        `**${i + 1} -** ${Util.captalize(res[i].name)} `,
+        `${ctx.locale('commands:top.used')} **${res[i].usages}** ${ctx.locale(
+          'commands:top.times',
+        )}`,
+        false,
+      );
+    }
+    ctx.sendC(ctx.message.author, embed);
+  }
+
   async run(ctx: CommandContext) {
     const { prefix } = ctx.data.server;
 
@@ -60,35 +80,35 @@ export default class TopCommand extends Command {
     } else if (argsDungeon.includes(argumento)) {
       const validClasses = [
         {
-          opção: 'Assassino',
+          option: 'Assassino',
           arguments: ['assassino', 'assassin', 'a'],
         },
         {
-          opção: 'Bárbaro',
+          option: 'Bárbaro',
           arguments: ['bárbaro', 'barbaro', 'barbarian', 'b'],
         },
         {
-          opção: 'Clérigo',
+          option: 'Clérigo',
           arguments: ['clérigo', 'clerigo', 'cleric', 'c'],
         },
         {
-          opção: 'Druida',
+          option: 'Druida',
           arguments: ['druida', 'druid', 'd'],
         },
         {
-          opção: 'Espadachim',
+          option: 'Espadachim',
           arguments: ['espadachim', 'swordman', 'e', 'sw'],
         },
         {
-          opção: 'Feiticeiro',
+          option: 'Feiticeiro',
           arguments: ['feiticeiro', 'sorcerer', 'so'],
         },
         {
-          opção: 'Monge',
+          option: 'Monge',
           arguments: ['monge', 'monk', 'm'],
         },
         {
-          opção: 'Necromante',
+          option: 'Necromante',
           arguments: ['necromante', 'necromancer', 'n'],
         },
       ];
@@ -97,7 +117,7 @@ export default class TopCommand extends Command {
         ? validClasses.filter((so) => so.arguments.includes(ctx.args[1].toLowerCase()))
         : [];
 
-      const option = filtredOption.length > 0 ? filtredOption[0].opção : false;
+      const option = filtredOption.length > 0 ? filtredOption[0].option : false;
 
       if (option) {
         this.topDungeon(ctx, pagina, option);
@@ -495,26 +515,6 @@ export default class TopCommand extends Command {
               false,
             );
       }
-    }
-    ctx.sendC(ctx.message.author, embed);
-  }
-
-  static async topCommands(ctx) {
-    const res = await http.getTopCommands();
-    if (!res) return ctx.replyT('error', 'commands:http-error');
-    const embed = new MessageEmbed()
-
-      .setTitle(`:robot: |  ${ctx.locale('commands:top.commands')}`)
-      .setColor('#f47fff');
-
-    for (let i = 0; i < res.length; i++) {
-      embed.addField(
-        `**${i + 1} -** ${Util.captalize(res[i].name)} `,
-        `${ctx.locale('commands:top.used')} **${res[i].usages}** ${ctx.locale(
-          'commands:top.times',
-        )}`,
-        false,
-      );
     }
     ctx.sendC(ctx.message.author, embed);
   }

@@ -1,4 +1,4 @@
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import Command from '@structures/Command';
 import MenheraClient from 'MenheraClient';
 import CommandContext from '@structures/CommandContext';
@@ -13,8 +13,8 @@ export default class HumorCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
-    if (ctx.message.deletable) ctx.message.delete();
+  async run(ctx: CommandContext): Promise<Message> {
+    if (ctx.message.deletable) await ctx.message.delete();
 
     const mention = ctx.message.mentions.users.first();
 
@@ -32,6 +32,6 @@ export default class HumorCommand extends Command {
       embed.setDescription(`${ctx.locale('commands:tilt.phrase-mention')} ${mention}`);
     }
 
-    ctx.send(embed);
+    return ctx.send(embed);
   }
 }

@@ -1,4 +1,4 @@
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import moment from 'moment';
 import Command from '@structures/Command';
 import { COLORS, probabilities } from '@structures/MenheraConstants';
@@ -15,20 +15,21 @@ export default class HuntCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<Message | void> {
     const authorData = ctx.data.user;
+    if (!ctx.message.guild) return;
 
     const validArgs = [
       {
-        opção: 'demônio',
+        option: 'demônio',
         arguments: ['demonios', 'demônios', 'demons', 'demonio', 'demônio', 'demon'],
       },
       {
-        opção: 'anjos',
+        option: 'anjos',
         arguments: ['anjos', 'anjo', 'angels', 'angel'],
       },
       {
-        opção: 'semideuses',
+        option: 'semideuses',
         arguments: [
           'semideuses',
           'semideus',
@@ -41,15 +42,15 @@ export default class HuntCommand extends Command {
         ],
       },
       {
-        opção: 'deus',
+        option: 'deus',
         arguments: ['deus', 'deuses', 'gods', 'god'],
       },
       {
-        opção: 'ajuda',
+        option: 'ajuda',
         arguments: ['ajudas', 'help', 'h', 'ajuda'],
       },
       {
-        opção: 'probabilidades',
+        option: 'probabilidades',
         arguments: ['probabilidades', 'probabilidade', 'probability', 'probabilities'],
       },
     ];
@@ -61,7 +62,7 @@ export default class HuntCommand extends Command {
     if (filtredOption.length === 0)
       return ctx.reply('error', `${ctx.locale('commands:hunt.no-args')}`);
 
-    const option = filtredOption[0].opção;
+    const { option } = filtredOption[0];
 
     const probabilidadeDemonio =
       ctx.message.guild.id === '717061688460967988'
@@ -105,23 +106,27 @@ export default class HuntCommand extends Command {
 
     const { huntDemon, huntAngel, huntDemigod, huntGod } = this.client.repositories.huntRepository;
 
-    const areYouTheHuntOrTheHunter = async (probability: Array<number>, saveFn) => {
+    const areYouTheHuntOrTheHunter = async (
+      probability: Array<number>,
+      saveFn: typeof huntDemon,
+    ) => {
       const value = probability[Math.floor(Math.random() * probability.length)];
       await saveFn.call(
         this.client.repositories.huntRepository,
         ctx.message.author.id,
         value,
-        cooldown,
+        cooldown.toString(),
       );
       return value;
     };
 
-    const huntEnum = {
-      DEMON: 'caçados',
-      ANGEL: 'anjos',
-      DEMIGOD: 'semideuses',
-      GOD: 'deuses',
-    };
+    // eslint-disable-next-line no-shadow
+    enum huntEnum {
+      DEMON = 'caçados',
+      ANGEL = 'anjos',
+      DEMIGOD = 'semideuses',
+      GOD = 'deuses',
+    }
 
     switch (option) {
       case 'demônio': {
@@ -201,6 +206,6 @@ export default class HuntCommand extends Command {
         break;
       }
     }
-    ctx.send(embed);
+    return ctx.send(embed);
   }
 }

@@ -2,7 +2,7 @@ import Command from '@structures/Command';
 import MenheraClient from 'MenheraClient';
 import { emojis } from '@structures/MenheraConstants';
 import CommandContext from '@structures/CommandContext';
-import { MessageReaction, User } from 'discord.js';
+import { Message, MessageReaction, User } from 'discord.js';
 
 export default class UnTrisalCommand extends Command {
   constructor(client: MenheraClient) {
@@ -14,7 +14,7 @@ export default class UnTrisalCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<Message | void> {
     if (ctx.data.user.trisal?.length === 0) return ctx.replyT('error', 'commands:untrisal.error');
 
     const msg = await ctx.send(ctx.locale('commands:untrisal.sure'));
@@ -26,12 +26,12 @@ export default class UnTrisalCommand extends Command {
     const collector = msg.createReactionCollector(filter, { max: 1, time: 14000 });
 
     collector.on('collect', async () => {
-      this.client.repositories.relationshipRepository.untrisal(
+      await this.client.repositories.relationshipRepository.untrisal(
         ctx.message.author.id,
         ctx.data.user.trisal[0],
         ctx.data.user.trisal[1],
       );
-      await ctx.replyT('success', 'commands:untrisal.done');
+      return ctx.replyT('success', 'commands:untrisal.done');
     });
   }
 }

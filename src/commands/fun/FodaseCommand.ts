@@ -1,4 +1,4 @@
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import Command from '@structures/Command';
 import http from '@utils/HTTPrequests';
 import MenheraClient from 'MenheraClient';
@@ -14,8 +14,8 @@ export default class FodaseCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
-    if (ctx.message.deletable) ctx.message.delete();
+  async run(ctx: CommandContext): Promise<Message> {
+    if (ctx.message.deletable) await ctx.message.delete();
 
     const frases =
       ctx.data.server.lang === 'pt-BR'
@@ -38,6 +38,6 @@ export default class FodaseCommand extends Command {
       .setFooter(`Autor: ${ctx.message.author.username}`)
       .setTitle(frasesUsada);
 
-    ctx.send(embed);
+    return ctx.send(embed);
   }
 }

@@ -17,37 +17,6 @@ export default class AbilityInfoCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
-    if (!ctx.args[0]) return ctx.replyT('question', 'commands:infohabilidade.no-args');
-
-    const validArgs = [
-      {
-        opção: 'classe',
-        arguments: ['classe', 'class', 'c'],
-      },
-      {
-        opção: 'minhas',
-        arguments: ['minhas', 'minha', 'meu', 'meus', 'mine', 'my'],
-      },
-    ];
-
-    const selectedOption = validArgs.some((so) => so.arguments.includes(ctx.args[0].toLowerCase()));
-    if (!selectedOption) return ctx.replyT('error', 'commands:infohabilidade.invalid-option');
-    const filtredOption = validArgs.filter((f) => f.arguments.includes(ctx.args[0].toLowerCase()));
-
-    const option = filtredOption[0].opção;
-
-    switch (option) {
-      case 'classe':
-        if (!ctx.args[1]) return ctx.replyT('error', 'commands:infohabilidade.no-class');
-        AbilityInfoCommand.getClass(ctx);
-        break;
-      case 'minhas':
-        this.getAll(ctx);
-        break;
-    }
-  }
-
   static getClass(ctx) {
     const classes = [
       'assassino',
@@ -117,6 +86,37 @@ export default class AbilityInfoCommand extends Command {
     });
 
     return ctx.sendC(ctx.message.author, embed);
+  }
+
+  async run(ctx: CommandContext) {
+    if (!ctx.args[0]) return ctx.replyT('question', 'commands:infohabilidade.no-args');
+
+    const validArgs = [
+      {
+        option: 'classe',
+        arguments: ['classe', 'class', 'c'],
+      },
+      {
+        option: 'minhas',
+        arguments: ['minhas', 'minha', 'meu', 'meus', 'mine', 'my'],
+      },
+    ];
+
+    const selectedOption = validArgs.some((so) => so.arguments.includes(ctx.args[0].toLowerCase()));
+    if (!selectedOption) return ctx.replyT('error', 'commands:infohabilidade.invalid-option');
+    const filtredOption = validArgs.filter((f) => f.arguments.includes(ctx.args[0].toLowerCase()));
+
+    const { option } = filtredOption[0];
+
+    switch (option) {
+      case 'classe':
+        if (!ctx.args[1]) return ctx.replyT('error', 'commands:infohabilidade.no-class');
+        AbilityInfoCommand.getClass(ctx);
+        break;
+      case 'minhas':
+        this.getAll(ctx);
+        break;
+    }
   }
 
   async getAll(ctx: CommandContext) {

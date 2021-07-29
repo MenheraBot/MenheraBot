@@ -1,9 +1,9 @@
 import Command from '@structures/Command';
 import CommandContext from '@structures/CommandContext';
-import { User } from 'discord.js';
+import { Message } from 'discord.js';
 import MenheraClient from 'MenheraClient';
 
-export default class XandãoCommand extends Command {
+export default class XandaoCommand extends Command {
   constructor(client: MenheraClient) {
     super(client, {
       name: 'xandão',
@@ -13,7 +13,7 @@ export default class XandãoCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<Message | void> {
     if (ctx.message.channel.type === 'dm') return;
     const texto = ctx.args.join(' ');
 
@@ -65,12 +65,12 @@ export default class XandãoCommand extends Command {
     try {
       const webhooks = await ctx.message.channel.fetchWebhooks();
 
-      const ownWebhooks = webhooks.filter(
-        (hook) => hook.owner instanceof User && hook.owner.id === this.client.user.id,
-      );
+      const clientUser = this.client.user;
+      if (!clientUser) return;
+      const ownWebhook = webhooks.filter((hook) => hook.owner.id === clientUser.id).first();
 
-      if (ownWebhooks.first()) {
-        await ownWebhooks.first().send(fala, {
+      if (ownWebhook) {
+        await ownWebhook.send(fala, {
           username: 'Super Xandão',
           avatarURL: 'https://i.imgur.com/8KNCucR.png',
         });
@@ -87,7 +87,7 @@ export default class XandãoCommand extends Command {
           });
       }
     } catch (err) {
-      ctx.replyT('error', 'commands:xandão.err_message');
+      return ctx.replyT('error', 'commands:xandão.err_message');
     }
   }
 }

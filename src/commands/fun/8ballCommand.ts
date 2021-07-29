@@ -1,6 +1,7 @@
 import CommandContext from '@structures/CommandContext';
 import MenheraClient from 'MenheraClient';
 import Command from '@structures/Command';
+import { Message } from 'discord.js';
 
 export default class EightBallCommand extends Command {
   constructor(client: MenheraClient) {
@@ -10,7 +11,7 @@ export default class EightBallCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<Message> {
     if (ctx.args.length < 1) return ctx.replyT('error', 'commands:8ball.no-args');
 
     const lingua = ctx.data.server.lang || 'pt-BR';
@@ -73,6 +74,6 @@ export default class EightBallCommand extends Command {
 
     const respostaRandom = respostas[Math.floor(Math.random() * respostas.length)];
 
-    ctx.send(`${respostaRandom}, ${ctx.message.author}`);
+    return ctx.send(`${respostaRandom}, ${ctx.message.author}`);
   }
 }

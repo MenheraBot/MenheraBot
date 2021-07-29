@@ -1,4 +1,4 @@
-import { MessageEmbed, MessageAttachment, User } from 'discord.js';
+import { Message, MessageAttachment, MessageEmbed, User } from 'discord.js';
 import Command from '@structures/Command';
 import NewHttp from '@utils/HTTPrequests.js';
 import MenheraClient from 'MenheraClient';
@@ -13,8 +13,9 @@ export default class ShipCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<Message | Message[] | void> {
     if (!ctx.args[0]) return ctx.replyT('error', 'commands:ship.missing-args');
+    if (!ctx.message.guild) return;
 
     let user2: User;
     let user1: User;
@@ -70,7 +71,10 @@ export default class ShipCommand extends Command {
       );
 
     if (!bufferedShipImage.err) {
-      const attachment = new MessageAttachment(Buffer.from(bufferedShipImage.data), 'ship.png');
+      const attachment = new MessageAttachment(
+        Buffer.from(bufferedShipImage.data as Buffer),
+        'ship.png',
+      );
       embed.attachFiles([attachment]).setImage('attachment://ship.png');
     } else embed.setFooter(ctx.locale('commands:http-error'));
 
@@ -115,6 +119,9 @@ export default class ShipCommand extends Command {
           )}`,
         );
 
-    ctx.sendC(`${ctx.message.author}\n**${ctx.locale('commands:ship.message-start')}**`, embed);
+    return ctx.sendC(
+      `${ctx.message.author}\n**${ctx.locale('commands:ship.message-start')}**`,
+      embed,
+    );
   }
 }

@@ -13,7 +13,7 @@
   - [x] Actions
   - [x] Dev
   - [x] Economy
-  - [ ] fun
+  - [x] fun
   - [ ] info
   - [ ] mod
   - [ ] rpg

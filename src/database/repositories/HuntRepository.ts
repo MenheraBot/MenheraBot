@@ -23,7 +23,7 @@ export default class HuntRepository {
     );
   }
 
-  async huntGod(userID: string, value: string, cooldown: string): Promise<void> {
+  async huntGod(userID: string, value: number, cooldown: string): Promise<void> {
     await this.userModal.updateOne(
       { id: userID },
       { $inc: { deuses: value }, caçarTime: cooldown },

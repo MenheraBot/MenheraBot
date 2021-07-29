@@ -1,4 +1,4 @@
-import { MessageAttachment } from 'discord.js';
+import { Message, MessageAttachment } from 'discord.js';
 import Command from '@structures/Command';
 import http from '@utils/HTTPrequests';
 import CommandContext from '@structures/CommandContext';
@@ -15,26 +15,33 @@ export default class GadoCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
-    let link = ctx.message.author.displayAvatarURL({ format: 'png', size: 512 });
+  async run(ctx: CommandContext): Promise<Message | Message[]> {
+    let link: string = ctx.message.author.displayAvatarURL({
+      format: 'png',
+      size: 512,
+    });
 
-    if (ctx.message.mentions.users.first())
-      link = ctx.message.mentions.users.first().displayAvatarURL({ format: 'png', size: 512 });
+    const MentionedUser = ctx.message.mentions.users.first();
+    const referencedMessage = ctx.message.reference?.messageID;
+    const attachment = ctx.message.attachments.first();
 
-    if (ctx.message?.reference?.messageID) {
-      const fetchedMessage = await ctx.message.channel.messages.fetch(
-        ctx.message.reference.messageID,
-      );
-      if (fetchedMessage.attachments.first()) link = fetchedMessage.attachments.first().url;
+    if (MentionedUser) {
+      link = MentionedUser.displayAvatarURL({ format: 'png', size: 512 });
     }
 
-    if (ctx.message.attachments.first()) link = ctx.message.attachments.first().url;
+    if (referencedMessage) {
+      const fetchedMessage = await ctx.message.channel.messages.fetch(referencedMessage);
+      const fetched = fetchedMessage.attachments.first();
+      if (fetched) link = fetched.url;
+    }
+
+    if (attachment) link = attachment.url;
 
     const res = await http.gadoRequest(link);
     if (res.err) return ctx.replyT('error', 'commands:http-error');
 
-    ctx.sendC(ctx.message.author.toString(), {
-      files: [new MessageAttachment(Buffer.from(res.data), 'gado.png')],
+    return ctx.sendC(ctx.message.author.toString(), {
+      files: [new MessageAttachment(Buffer.from(res.data as Buffer), 'gado.png')],
     });
   }
 }
