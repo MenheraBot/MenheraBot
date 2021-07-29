@@ -10,7 +10,7 @@ export default class EventManager {
     this.events = new Map();
   }
 
-  add(name: string, filepath: string, event: IEvent) {
+  add(name: string, filepath: string, event: IEvent): void {
     event.dir = filepath;
     event.run = event.run.bind(event);
     this.client.on(name, event.run);

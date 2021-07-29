@@ -2,7 +2,7 @@ import { Guild } from 'discord.js';
 import MenheraClient from 'MenheraClient';
 
 export default class GuildCreate {
-  private region: { [key: string]: string };
+  private readonly region: { [key: string]: string };
 
   constructor(public client: MenheraClient) {
     this.client = client;
@@ -24,13 +24,19 @@ export default class GuildCreate {
     };
   }
 
-  async run(guild: Guild) {
-    this.client.repositories.guildRepository.create(guild.id, this.region[guild.region]);
+  async run(guild: Guild): Promise<void> {
+    await this.client.repositories.guildRepository.create(guild.id, this.region[guild.region]);
+
+    if (!process.env.GUILDS_HOOK_ID) {
+      throw new Error('GUILDS_HOOK_ID is not defined');
+    }
 
     const webhook = await this.client.fetchWebhook(
       process.env.GUILDS_HOOK_ID,
       process.env.GUILDS_HOOK_TOKEN,
     );
-    webhook.send(`<:MenheraWink:767210250637279252> | Fui adicionada do servidor **${guild}**`);
+    await webhook.send(
+      `<:MenheraWink:767210250637279252> | Fui adicionada do servidor **${guild}**`,
+    );
   }
 }

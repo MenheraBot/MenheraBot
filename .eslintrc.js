@@ -35,6 +35,8 @@ module.exports = {
     'import/no-cycle': 'off',
     'no-useless-constructor': 'off',
     '@typescript-eslint/no-useless-constructor': ['error'],
+    'import/no-named-as-default': 0,
+    'import/no-named-as-default-member': 0,
   },
   settings: {
     'import/parsers': {

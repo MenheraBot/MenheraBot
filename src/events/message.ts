@@ -34,14 +34,17 @@ export default class MessageReceive {
     });
   }
 
-  async run(message: Message) {
+  async run(message: Message): Promise<Message | void> {
     if (message.author.bot) return;
     if (message.channel.type === 'dm') return;
-    if (!message.channel.permissionsFor(message.guild.me).has('SEND_MESSAGES')) return;
+    if (!message.guild) return;
+    if (!this.client.user) return;
+    if (message.guild.me && !message.channel.permissionsFor(message.guild.me)?.has('SEND_MESSAGES'))
+      return;
 
     const server = await this.client.repositories.guildRepository.findOrCreate(message.guild.id);
     let prefix = server?.prefix?.toLowerCase() ?? process.env.BOT_PREFIX;
-    const language = LANGUAGES[server?.lang] ?? LANGUAGES['pt-BR'];
+    const language = LANGUAGES[server.lang] ?? LANGUAGES['pt-BR'];
     const t = i18next.getFixedT(language);
 
     if (message.mentions.users.size > 0)
@@ -64,15 +67,15 @@ export default class MessageReceive {
       const member = await message.channel.guild.members.fetch(message.author.id);
 
       if (message.guild.id !== authorData?.afkGuild) {
-        const afkGuild = await this.client.guilds.fetch(authorData.afkGuild);
-        const guildMember = await afkGuild?.members.fetch(message.author.id);
-        await afkGuild?.members.fetch(this.client.user.id);
+        const afkGuild = await this.client.guilds.fetch(authorData?.afkGuild).catch();
+        const guildMember = await afkGuild?.members.fetch(message.author.id).catch();
+        await afkGuild?.members.fetch(this.client.user.id).catch();
         if (guildMember?.manageable && guildMember?.nickname)
           if (guildMember.nickname.slice(0, 5) === '[AFK]')
-            guildMember.setNickname(guildMember.nickname.substring(5), 'AFK System');
+            await guildMember.setNickname(guildMember.nickname.substring(5), 'AFK System');
       } else if (member.manageable && member.nickname)
         if (member.nickname.slice(0, 5) === '[AFK]')
-          member.setNickname(member.nickname.substring(5), 'AFK System');
+          await member.setNickname(member.nickname.substring(5), 'AFK System');
 
       message.channel
         .send(
@@ -83,7 +86,7 @@ export default class MessageReceive {
         });
     }
 
-    if (process.env.NODE_ENV === 'development') prefix = process.env.BOT_PREFIX;
+    if (process.env.NODE_ENV === 'development') prefix = process.env.BOT_PREFIX as string;
 
     if (
       message.content.startsWith(`<@!${this.client.user.id}>`) ||
@@ -99,17 +102,20 @@ export default class MessageReceive {
     if (!message.content.toLowerCase().startsWith(prefix)) return;
 
     const args = message.content.slice(prefix.length).trim().split(/ +/g);
-    const cmd = args.shift().toLowerCase();
+    const cmd = args.shift()?.toLowerCase();
+
+    if (!cmd) return;
 
     const command =
-      this.client.commands.get(cmd) || this.client.commands.get(this.client.aliases.get(cmd));
+      this.client.commands.get(cmd) ||
+      this.client.commands.get(this.client.aliases.get(cmd) as string);
     if (!command) return;
 
     const dbCommand = await this.client.repositories.cmdRepository.findByName(command.config.name);
 
     if (
       server.blockedChannels?.includes(message.channel.id) &&
-      !message.member.hasPermission('MANAGE_CHANNELS')
+      !message.member?.hasPermission('MANAGE_CHANNELS')
     )
       return message.channel.send(`🔒 | ${t('events:blocked-channel')}`);
 
@@ -121,7 +127,7 @@ export default class MessageReceive {
       );
 
     if (command.config.devsOnly && process.env.OWNER !== message.author.id)
-      return message.channel.send(t('permissions:ONLY_DEVS'));
+      return message.channel.send(`${t('permissions:ONLY_DEVS')}`);
 
     if (server.disabledCommands?.includes(command.config.name))
       return message.channel.send(
@@ -143,11 +149,11 @@ export default class MessageReceive {
 
     if (process.env.OWNER !== message.author.id) {
       const now = Date.now();
-      const timestamps = this.cooldowns.get(command.config.name);
+      const timestamps = this.cooldowns.get(command.config.name) as Collection<string, number>;
       const cooldownAmount = (command.config.cooldown || 3) * 1000;
 
       if (timestamps.has(message.author.id)) {
-        const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
+        const expirationTime = (timestamps.get(message.author.id) as number) + cooldownAmount;
         const hasBeenWarned = this.warnedUserCooldowns.get(message.author.id);
 
         if (now < expirationTime) {
@@ -174,8 +180,8 @@ export default class MessageReceive {
     if (command.config.userPermissions?.length) {
       const missing = message.channel
         .permissionsFor(message.author)
-        .missing(command.config.userPermissions);
-      if (missing.length) {
+        ?.missing(command.config.userPermissions);
+      if (missing?.length) {
         const perm = missing.map((value) => t(`permissions:${value}`)).join(', ');
         return message.channel.send(
           `<:negacao:759603958317711371> | ${t('permissions:USER_MISSING_PERMISSION', { perm })}`,
@@ -185,8 +191,8 @@ export default class MessageReceive {
     if (command.config.clientPermissions?.length) {
       const missing = message.channel
         .permissionsFor(this.client.user)
-        .missing(command.config.clientPermissions);
-      if (missing.length) {
+        ?.missing(command.config.clientPermissions);
+      if (missing?.length) {
         const perm = missing.map((value) => t(`permissions:${value}`)).join(', ');
         return message.channel.send(
           `<:negacao:759603958317711371> | ${t('permissions:CLIENT_MISSING_PERMISSION', { perm })}`,
@@ -201,8 +207,8 @@ export default class MessageReceive {
         res(command.run(ctx));
       }).catch(async (err) => {
         const errorWebHook = await this.client.fetchWebhook(
-          process.env.BUG_HOOK_ID,
-          process.env.BUG_HOOK_TOKEN,
+          process.env.BUG_HOOK_ID as string,
+          process.env.BUG_HOOK_TOKEN as string,
         );
 
         const errorMessage = err.stack.length > 1800 ? `${err.stack.slice(0, 1800)}...` : err.stack;
@@ -212,20 +218,20 @@ export default class MessageReceive {
         embed.setDescription(`\`\`\`js\n${errorMessage}\`\`\``);
         embed.addField(
           '<:atencao:759603958418767922> | Usage',
-          `UserId: \`${message.author.id}\` \nServerId: \`${message.guild.id}\``,
+          `UserId: \`${message.author.id}\` \nServerId: \`${message.guild?.id ?? 'NO GUILD'}\``,
         );
         embed.setTimestamp();
         embed.addField(t('events:error_embed.report_title'), t('events:error_embed.report_value'));
 
         message.channel
           .send(embed)
-          .catch(() => message.channel.send(t('events:error_embed.error_msg')));
-        if (this.client.user.id === '708014856711962654') errorWebHook.send(embed).catch();
+          .catch(() => message.channel.send(`${t('events:error_embed.error_msg')}`));
+        if (this.client.user?.id === '708014856711962654') errorWebHook.send(embed).catch();
       });
     } catch (err) {
       const errorWebHook = await this.client.fetchWebhook(
-        process.env.BUG_HOOK_ID,
-        process.env.BUG_HOOK_TOKEN,
+        process.env.BUG_HOOK_ID as string,
+        process.env.BUG_HOOK_TOKEN as string,
       );
 
       const errorMessage = err.stack.length > 1800 ? `${err.stack.slice(0, 1800)}...` : err.stack;
@@ -242,7 +248,7 @@ export default class MessageReceive {
 
       message.channel
         .send(embed)
-        .catch(() => message.channel.send(t('events:error_embed.error_msg')));
+        .catch(() => message.channel.send(`${t('events:error_embed.error_msg')}`));
       if (this.client.user.id === '708014856711962654') errorWebHook.send(embed).catch();
       console.error(err.stack);
     }

@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { Cmds, Commands, Guilds, Status, Rpg, Users } from '../structures/DatabaseCollections';
+import { Cmds, Commands, Guilds, Rpg, Status, Users } from '@structures/DatabaseCollections';
 import CmdRepository from './repositories/CmdsRepository';
 import CommandRepository from './repositories/CommandRepository';
 import RpgRepository from './repositories/RpgRepository';
@@ -29,35 +29,35 @@ export default class MongoDatabase {
 
   public Users: typeof Users;
 
-  private userRepository: UserRepository;
+  private readonly userRepository: UserRepository;
 
-  private commandRepository: CommandRepository;
+  private readonly commandRepository: CommandRepository;
 
-  private cmdRepository: CmdRepository;
+  private readonly cmdRepository: CmdRepository;
 
-  private starRepository: StarRepository;
+  private readonly starRepository: StarRepository;
 
-  private rpgRepository: RpgRepository;
+  private readonly rpgRepository: RpgRepository;
 
-  private mamarRepository: MamarRepository;
+  private readonly mamarRepository: MamarRepository;
 
-  private guildRepository: GuildRepository;
+  private readonly guildRepository: GuildRepository;
 
-  private statusRepository: StatusRepository;
+  private readonly statusRepository: StatusRepository;
 
-  private badgeRepository: BadgeRepository;
+  private readonly badgeRepository: BadgeRepository;
 
-  private maintenanceRepository: MaintenanceRepository;
+  private readonly maintenanceRepository: MaintenanceRepository;
 
-  private huntRepository: HuntRepository;
+  private readonly huntRepository: HuntRepository;
 
-  private relationshipRepository: RelationshipRepository;
+  private readonly relationshipRepository: RelationshipRepository;
 
-  private blacklistRepository: BlacklistRepository;
+  private readonly blacklistRepository: BlacklistRepository;
 
-  private topRepository: TopRepository;
+  private readonly topRepository: TopRepository;
 
-  private giveRepository: GiveRepository;
+  private readonly giveRepository: GiveRepository;
 
   constructor(public uri: string) {
     // TODO: add modal to the name for readability

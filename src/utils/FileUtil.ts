@@ -1,33 +1,33 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable global-require */
-/* eslint-disable import/no-dynamic-require */
+import Command from '@structures/Command';
 import fs from 'fs';
 import path from 'path';
+import { IEvent } from './Types';
 
 export default class FileUtil {
-  static filename(filepath: string) {
+  static filename(filepath: string): string {
     return path.parse(filepath).name;
   }
 
-  static reloadFile(
+  static async reloadFile<A>(
     filepath: string,
-    reloadFunction: (file: unknown, dir: string) => unknown,
-  ): unknown {
+    reloadFunction: (file: A, dir: string) => Promise<void>,
+  ): Promise<void> {
     const dir = path.resolve(filepath);
     delete require.cache[dir];
-    return reloadFunction(require(dir), dir);
+    reloadFunction(await import(dir), dir);
   }
 
-  static async readDirectory(directory: string, loadFunction: Function) {
-    return Promise.all(
-      FileUtil.readdirRecursive(directory).map((filepath: string) =>
-        loadFunction(require(path.resolve(filepath)), filepath),
-      ),
-    );
+  static readDirectory(
+    directory: string,
+    loadFunction: (arch: typeof Command | IEvent, pathToArch: string) => void,
+  ): void {
+    FileUtil.readdirRecursive(directory).map(async (filepath: string) => {
+      await loadFunction(await import(path.resolve(filepath)), filepath);
+    });
   }
 
-  static readdirRecursive(directory: string) {
-    return fs.readdirSync(directory).reduce((p, file) => {
+  static readdirRecursive(directory: string): string[] {
+    return fs.readdirSync(directory).reduce<string[]>((p, file) => {
       const filepath = path.join(directory, file);
       const validExtensions = ['.ts', '.js'];
 

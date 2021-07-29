@@ -271,7 +271,7 @@ export default class HttpRequests {
     menheraTotal: number,
     isEnd: boolean,
     i18n: unknown,
-  ) {
+  ): Promise<{ err: boolean; data?: Buffer }> {
     try {
       if (!isEnd) menheraCards[1].hidden = true;
       const data = await request.get('/blackjack', {

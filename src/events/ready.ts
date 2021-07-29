@@ -8,35 +8,51 @@ export default class ReadyEvent {
     this.client = client;
   }
 
-  async run() {
-    if (this.client.user.id === '708014856711962654' && this.client.shard.ids[0] === 0) {
-      const DiscordBotList = new Dbl(this.client);
-      DiscordBotList.init();
-      setInterval(async () => {
-        const atividade = await http.getActivity(this.client.shard.ids[0]);
-        this.client.user.setPresence({ activity: atividade });
+  async run(): Promise<void> {
+    if (!this.client.user) return;
 
-        const allShardsPing = await this.client.shard.broadcastEval('this.ws.ping');
-        const allShardsUptime = await this.client.shard.broadcastEval('this.ws.client.uptime');
-        const guildsPerShardCount = await this.client.shard.broadcastEval('this.guilds.cache.size');
+    const INTERVAL = 1000 * 60;
+    const MAIN_MENHERA_ID = '708014856711962654';
+    const FIRST_SHARD_ID = 0;
 
-        allShardsPing.map(async (shardPing, id) => {
-          this.client.repositories.statusRepository.CreateOrUpdate(
-            id,
-            shardPing,
-            Date.now(),
-            guildsPerShardCount[id],
-            allShardsUptime[id],
-          );
-        });
-      }, 1000 * 60);
-    }
+    const updateActivity = async (shard: number) => {
+      if (!this.client.user) return;
 
-    if (this.client.user.id === '708014856711962654' && this.client.shard.ids[0] !== 0) {
-      setInterval(async () => {
-        const atividade = await http.getActivity(this.client.shard.ids[0]);
-        this.client.user.setPresence({ activity: atividade });
-      }, 1000 * 60);
+      const activity = await http.getActivity(shard);
+      return this.client.user.setPresence({ activity });
+    };
+
+    const saveCurrentBotStatus = async () => {
+      const allShardsPing = await this.client.shard.fetchClientValues('ws.ping');
+      const allShardsUptime = await this.client.shard.fetchClientValues('ws.client.uptime');
+      const guildsPerShardCount = await this.client.shard.fetchClientValues('guilds.cache.size');
+
+      allShardsPing.forEach((shardPing, id) => {
+        this.client.repositories.statusRepository.CreateOrUpdate(
+          id,
+          shardPing,
+          Date.now(),
+          guildsPerShardCount[id],
+          allShardsUptime[id],
+        );
+      });
+    };
+
+    if (this.client.user.id === MAIN_MENHERA_ID) {
+      const firstShard = this.client.shard?.ids[0];
+
+      this.client.setInterval(() => {
+        updateActivity(firstShard);
+      }, INTERVAL);
+
+      if (firstShard === FIRST_SHARD_ID) {
+        const DiscordBotList = new Dbl(this.client);
+        DiscordBotList.init();
+
+        this.client.setInterval(() => {
+          saveCurrentBotStatus();
+        }, INTERVAL);
+      }
     }
 
     this.client.user.setActivity('🥱 | Acabei de acoidar :3');

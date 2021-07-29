@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    /* Basic Options */
+    "target": "ES2020" /* Specify ECMAScript target version */,
+    "module": "CommonJS" /* Specify module code generation */,
+    "lib": ["ESNext"] /* Specify library files to be included in the compilation. */,
+    "noEmit": true /* Do not emit outputs. */,
+    "resolveJsonModule": true /* Allows importing modules with a ‘.json’ extension */,
+
+    "isolatedModules": true /* Transpile each file as a separate module (similar to 'ts.transpileModule'). */,
+
+    "newLine": "lf" /* Specify the end of line sequence to be used when emitting files: ‘CRLF’ (dos) or ‘LF’ (unix). */,
+    "noEmitHelpers": true,
+    "preserveConstEnums": true,
+    "pretty": true,
+    "removeComments": true /* Strips all comments from TypeScript files when converting into JavaScript */,
+
+    /* Strict Type-Checking Options */
+    "strict": true /* Enable all strict type-checking options. */,
+    "noImplicitThis": true /* Raise error on 'this' expressions with an implied 'any' type. */,
+    "noImplicitAny": true /* Raise error on expressions and declarations with an implied 'any' type. */,
+
+    /* Additional Checks */
+    "noUnusedLocals": true,
+
+    /* Module Resolution Options */
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+
+    /* Advanced Options */
+    "skipLibCheck": true /* Skip type checking of declaration files. */,
+    "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */
+  },
+  "include": ["packages/**/*", "apps/**/*"],
+  "exclude": ["node_modules", ".yarn"]
+}

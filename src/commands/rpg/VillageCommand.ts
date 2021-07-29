@@ -8,7 +8,7 @@ import RPGUtil from '@utils/RPGUtil';
 import 'moment-duration-format';
 import MenheraClient from 'MenheraClient';
 import CommandContext from '@structures/CommandContext';
-import { IUserRpgSchema } from '@utils/Types';
+import { IUserRpgSchema, TBruxaOptions } from '@utils/Types';
 
 export default class VillageCommand extends Command {
   constructor(client: MenheraClient) {
@@ -49,7 +49,7 @@ export default class VillageCommand extends Command {
     )
       .setInvalidOption(() => collector.replyT('error', 'commands:village.invalid-option'))
       .setFindOption(PagesCollector.arrFindByElemOrIndex(options))
-      .setHandle((_, option) => VillageCommand[option](ctx, user, collector))
+      .setHandle((_, option: TBruxaOptions) => VillageCommand[option](ctx, user, collector))
       .start();
   }
 
@@ -73,7 +73,7 @@ export default class VillageCommand extends Command {
       );
 
     collector.send(ctx.message.author, embed);
-    collector.setFindOption((content) => {
+    collector.setFindOption((content: string) => {
       const [query, qty = 1] = content.trim().split(/ +/g);
       const item = items.find((i, n) => i.name === query.toLowerCase() || Number(query) === n + 1);
       if (item) return { item, qty: Number(qty) };

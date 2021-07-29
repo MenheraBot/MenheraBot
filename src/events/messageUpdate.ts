@@ -6,7 +6,7 @@ export default class MessageUpdate {
     this.client = client;
   }
 
-  run(oldMessage: Message, newMessage: Message) {
+  run(oldMessage: Message, newMessage: Message): void {
     if (oldMessage.content === newMessage.content) return;
     this.client.emit('message', newMessage);
   }

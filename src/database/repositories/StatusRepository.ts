@@ -11,7 +11,7 @@ export default class StatusRepository {
     lastPingAt: number,
     guilds: number,
     uptime: number,
-  ) {
+  ): Promise<void> {
     const result = await this.statusModal.findById(shardID);
     if (result) {
       await this.statusModal.updateOne(
@@ -34,7 +34,7 @@ export default class StatusRepository {
     }
   }
 
-  async addMaintenance(commandName: string, maintenanceReason: string) {
+  async addMaintenance(commandName: string, maintenanceReason: string): Promise<void> {
     await this.statusModal.updateOne(
       { _id: 'main' },
       { $push: { disabledCommands: { name: commandName, reason: maintenanceReason } } },

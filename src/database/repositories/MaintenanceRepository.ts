@@ -7,13 +7,13 @@ export default class MaintenanceRepository {
     this.statusRepository = statusRepository;
   }
 
-  async addMaintenance(commandName: string, maintenanceReason: string) {
-    this.cmdRepository.editMaintenance(commandName, true, maintenanceReason);
-    this.statusRepository.addMaintenance(commandName, maintenanceReason);
+  async addMaintenance(commandName: string, maintenanceReason: string): Promise<void> {
+    await this.cmdRepository.editMaintenance(commandName, true, maintenanceReason);
+    await this.statusRepository.addMaintenance(commandName, maintenanceReason);
   }
 
-  async removeMaintenance(commandName: string) {
-    this.cmdRepository.editMaintenance(commandName, false, null);
-    this.statusRepository.removeMaintenance(commandName);
+  async removeMaintenance(commandName: string): Promise<void> {
+    await this.cmdRepository.editMaintenance(commandName, false, null);
+    await this.statusRepository.removeMaintenance(commandName);
   }
 }

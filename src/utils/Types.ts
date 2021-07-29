@@ -1,4 +1,19 @@
 /* eslint-disable camelcase */
+import BadgeRepository from '@database/repositories/BadgeRepository';
+import BlacklistRepository from '@database/repositories/BlacklistRepository';
+import CmdRepository from '@database/repositories/CmdsRepository';
+import CommandRepository from '@database/repositories/CommandRepository';
+import GiveRepository from '@database/repositories/GiveRepository';
+import GuildsRepository from '@database/repositories/GuildsRepository';
+import HuntRepository from '@database/repositories/HuntRepository';
+import MaintenanceRepository from '@database/repositories/MaintenanceRepository';
+import MamarRepository from '@database/repositories/MamarRepository';
+import RelationshipRepository from '@database/repositories/RelationshipRepository';
+import RpgRepository from '@database/repositories/RpgRepository';
+import StarRepository from '@database/repositories/StarRepository';
+import StatusRepository from '@database/repositories/StatusRepository';
+import TopRepository from '@database/repositories/TopRepository';
+import UserRepository from '@database/repositories/UserRepository';
 import { BitFieldResolvable, PermissionString, User } from 'discord.js';
 import { Document } from 'mongoose';
 
@@ -12,7 +27,6 @@ export interface ICommandConfig {
   name: string;
   category: string;
   aliases?: Array<string>;
-  description?: string;
   cooldown?: number;
   userPermissions?: BitFieldResolvable<PermissionString>[];
   clientPermissions?: BitFieldResolvable<PermissionString>[];
@@ -85,14 +99,15 @@ interface IUserArmor {
 type TFamiliarBoost = 'abilityPower' | 'damage' | 'armor';
 
 interface IUserFamiliar {
-  id: string;
+  id: number;
+  number: string;
   level: number;
   xp: number;
   nextLevelXp: number;
-  type: TFamiliarBoost | string;
+  type: TFamiliarBoost;
 }
 
-export interface IInventoryUser {
+export interface IInventoryItem {
   name: string;
   description?: string;
   type?: string;
@@ -103,7 +118,7 @@ export interface IInventoryUser {
   minLevel?: number;
 }
 
-export interface IGuildSchema {
+export interface IGuildSchema extends Document {
   id: string;
   prefix: string;
   blockedChannels: Array<string>;
@@ -126,7 +141,7 @@ export interface IUserRpgSchema extends Document {
   abilities: Array<IAbility>;
   uniquePower: IUniquePower;
   loots: Array<IMobLoot>;
-  inventory: Array<IInventoryUser>;
+  inventory: Array<IInventoryItem>;
   money: number;
   dungeonCooldown: string;
   death: string;
@@ -153,7 +168,7 @@ export interface IUserSchema extends Document {
   banReason?: string;
   afk: boolean;
   afkReason: string;
-  afkGuild?: string;
+  afkGuild: string;
   cor: string;
   cores: Array<IColor>;
   caçados: number;
@@ -242,18 +257,18 @@ export interface IDungeonMob {
 export interface IBattleChoice {
   name: string;
   damage: number;
-  scape?: boolean;
-  cost?: number;
-  heal?: number;
+  scape: boolean;
+  cost: number;
+  heal: number;
 }
 
-export interface ICmdSchema {
+export interface ICmdSchema extends Document {
   _id: string;
   maintenance: boolean;
-  maintenanceReason: string;
+  maintenanceReason: string | null;
 }
 
-export interface ICommandsSchema {
+export interface ICommandsSchema extends Document {
   name: string;
   pt_description: string;
   pt_usage: string;
@@ -267,7 +282,7 @@ interface IDisabledCommand {
   reason: string;
 }
 
-export interface IStatusSchema {
+export interface IStatusSchema extends Document {
   _id: string;
   ping: number;
   disabledCommands: Array<IDisabledCommand>;
@@ -284,12 +299,66 @@ export interface IUserDataToSend {
   xp: number;
   level: number;
   nextLevelXp: number;
-  damage: any;
-  armor: any;
-  abilityPower: any;
-  tag: any;
+  damage: number;
+  armor: number;
+  abilityPower: number;
+  tag: string;
   money: number;
   jobId: number;
 }
+export interface IDatabaseRepositories {
+  userRepository: UserRepository;
+  commandRepository: CommandRepository;
+  cmdRepository: CmdRepository;
+  starRepository: StarRepository;
+  rpgRepository: RpgRepository;
+  mamarRepository: MamarRepository;
+  guildRepository: GuildsRepository;
+  statusRepository: StatusRepository;
+  badgeRepository: BadgeRepository;
+  maintenanceRepository: MaintenanceRepository;
+  huntRepository: HuntRepository;
+  relationshipRepository: RelationshipRepository;
+  blacklistRepository: BlacklistRepository;
+  topRepository: TopRepository;
+  giveRepository: GiveRepository;
+}
 
-export type CollectionsType = 'userRepository';
+export interface IHotelItems {
+  name: string;
+  time: number;
+  life: number;
+  mana: number;
+}
+
+export type TBruxaOptions = 'bruxa' | 'ferreiro' | 'hotel' | 'guilda';
+
+export interface IMobsFile {
+  inicial: IDungeonMob[];
+  medio: IDungeonMob[];
+  hard: IDungeonMob[];
+  impossible: IDungeonMob[];
+  boss: IDungeonMob[];
+  gods: IDungeonMob[];
+  evolved: IDungeonMob[];
+  universal: IDungeonMob[];
+}
+
+interface IFamiliarBoost {
+  name: string;
+  type: TFamiliarBoost;
+  level_boost: number;
+  value: number;
+}
+
+interface IFamiliarFromFile {
+  id: number;
+  boost: IFamiliarBoost;
+  image: string;
+}
+
+export interface IFamiliarFile {
+  1: IFamiliarFromFile;
+  2: IFamiliarFromFile;
+  3: IFamiliarFromFile;
+}

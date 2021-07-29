@@ -20,22 +20,22 @@ import {
 import http from '../../utils/HTTPrequests';
 import { rpg } from '../MenheraConstants';
 
-const random = (arr: Array<any>): any => arr[Math.floor(Math.random() * arr.length)];
+const random = <T>(arr: Array<T>): T => arr[Math.floor(Math.random() * arr.length)];
 
 const getEnemyByUserLevel = (
   user: IUserRpgSchema,
   type: string,
-  dungeonLevel?: number,
+  dungeonLevel?: 1 | 2 | 3 | 4 | 5,
   ctx?: CommandContext,
 ): IDungeonMob | false | string => {
   if (type === 'boss') {
     if (user.level > 24 && user.level < 30) {
-      return random([...mobsFile.boss, ...mobsFile.gods]);
+      return random<IDungeonMob>([...mobsFile.boss, ...mobsFile.gods]);
     }
     if (user.level >= 30) {
-      return random([...mobsFile.gods, ...mobsFile.universal]);
+      return random<IDungeonMob>([...mobsFile.gods, ...mobsFile.universal]);
     }
-    return random(mobsFile.boss);
+    return random<IDungeonMob>(mobsFile.boss);
   }
 
   const validLevels = {
@@ -77,11 +77,12 @@ const getEnemyByUserLevel = (
       0,
     );
 
-    ctx.replyT('error', 'commands:dungeon.min-level-warn', {
-      level: MaxMinLevel,
-      toGo: validLevels[dungeonLevel].minUserLevel,
-      wantLevel: dungeonLevel,
-    });
+    if (ctx)
+      ctx.replyT('error', 'commands:dungeon.min-level-warn', {
+        level: MaxMinLevel,
+        toGo: validLevels[dungeonLevel].minUserLevel,
+        wantLevel: dungeonLevel,
+      });
     return 'LOW-LEVEL';
   }
 
@@ -94,7 +95,7 @@ const battle = async (
   user: IUserRpgSchema & Document,
   inimigo: IDungeonMob,
   type: 'boss' | 'dungeon',
-) => {
+): Promise<void> => {
   let danoUser: number;
   if (escolha.scape) {
     ctx.replyT('scape', 'roleplay:scape');
@@ -117,7 +118,7 @@ const battle = async (
     danoUser = inimigo.life / 2;
     user.mana = 0;
   } else {
-    if (user.mana < escolha.cost)
+    if (user.mana < escolha?.cost)
       return enemyShot(
         ctx,
         user,
@@ -125,8 +126,8 @@ const battle = async (
         type,
         `⚔️ | ${ctx.locale('roleplay:battle.no-mana', { name: escolha.name })}`,
       );
-    if (escolha.heal > 0) {
-      user.life += escolha.heal;
+    if (escolha?.heal > 0) {
+      user.life += escolha?.heal;
       if (user.life > user.maxLife) user.life = user.maxLife;
     }
     danoUser =
@@ -136,7 +137,7 @@ const battle = async (
             familiarsFile[user.familiar.id].boost.value +
             (user.familiar.level - 1) * familiarsFile[user.familiar.id].boost.value)
         : user.abilityPower * escolha.damage;
-    user.mana -= escolha.cost;
+    user.mana -= escolha?.cost;
   }
 
   const enemyArmor = inimigo.armor;
@@ -173,8 +174,8 @@ const morte = async (
   ctx: CommandContext,
   user: IUserRpgSchema & Document,
   toSay: string,
-  inimigo: IDungeonMob,
-) => {
+  inimigo: IDungeonMob & { dgLevel: number },
+): Promise<void> => {
   http.postRpg(user.id, user.class, user.level, inimigo.dgLevel, true, Date.now());
 
   ctx.reply('error', `${toSay}\n\n${ctx.locale('roleplay:death')}`);
