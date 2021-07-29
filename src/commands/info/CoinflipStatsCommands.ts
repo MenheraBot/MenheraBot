@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-expressions */
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import http from '@utils/HTTPrequests';
 import Command from '@structures/Command';
 import MenheraClient from 'MenheraClient';
@@ -16,15 +15,17 @@ export default class CoinflipStatsCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
-    const userDb = await this.client.database.repositories.userRepository.find(
-      ctx.args[0] ? ctx.args[0].replace(/[<@!>]/g, '') : ctx.message.author.id,
-    );
+  async run(ctx: CommandContext): Promise<Message | Message[]> {
+    const userDb = ctx.args[0]
+      ? await this.client.database.repositories.userRepository.find(
+          ctx.args[0].replace(/[<@!>]/g, ''),
+        )
+      : ctx.data.user;
+
     if (!userDb) return ctx.replyT('error', 'commands:coinflipstats.error');
     const data = await http.getCoinflipUserStats(userDb ? userDb.id : ctx.message.author.id);
     if (data.error) return ctx.replyT('error', 'commands:coinflipstats.error');
-    if (!data || !data.playedGames || data.playedGames === undefined)
-      return ctx.replyT('error', 'commands:coinflipstats.no-data');
+    if (!data || !data.playedGames) return ctx.replyT('error', 'commands:coinflipstats.no-data');
 
     const totalMoney = data.winMoney - data.lostMoney;
 
@@ -61,6 +62,7 @@ export default class CoinflipStatsCommand extends Command {
           inline: true,
         },
       ]);
+    // eslint-disable-next-line no-unused-expressions
     totalMoney > 0
       ? embed.addField(
           `${emojis.yes} | ${ctx.locale('commands:coinflipstats.profit')}`,
@@ -73,6 +75,6 @@ export default class CoinflipStatsCommand extends Command {
           true,
         );
 
-    ctx.sendC(ctx.message.author.toString(), embed);
+    return ctx.sendC(ctx.message.author.toString(), embed);
   }
 }

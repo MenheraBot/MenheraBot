@@ -1,8 +1,9 @@
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import Command from '@structures/Command';
 import Util from '@utils/Util';
 import MenheraClient from 'MenheraClient';
 import CommandContext from '@structures/CommandContext';
+import { IUserSchema } from '@utils/Types';
 
 export default class AvatarCommand extends Command {
   constructor(client: MenheraClient) {
@@ -14,11 +15,11 @@ export default class AvatarCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<Message | Message[]> {
     const authorData = ctx.data.user;
 
     let user = ctx.message.author;
-    let db = authorData;
+    let db: IUserSchema | null = authorData;
 
     const userId = Util.getIdByMention(ctx.args[0]);
     if (userId && userId !== ctx.message.author.id) {
@@ -40,11 +41,11 @@ export default class AvatarCommand extends Command {
       .setColor(cor)
       .setFooter(ctx.locale('commands:avatar.footer'));
 
-    if (user.id === this.client.user.id) {
+    if (user.id === this.client.user?.id) {
       embed.setTitle(ctx.locale('commands:avatar.client_title', { user: user.username }));
       embed.setColor('#f276f3');
       embed.setFooter(ctx.locale('commands:avatar.client_footer', { user: user.username }));
     }
-    ctx.sendC(ctx.message.author.toString(), embed);
+    return ctx.sendC(ctx.message.author.toString(), embed);
   }
 }

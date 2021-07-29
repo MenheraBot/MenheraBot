@@ -54,7 +54,7 @@ export interface IBlackjackCards {
 interface IColor {
   nome: string;
   cor: string;
-  preço: number;
+  price: number;
 }
 
 interface IBadge {
@@ -196,13 +196,13 @@ export interface ICommandUsedData {
 }
 
 export interface IRESTGameStats {
-  playedGames?: number;
-  lostGames?: number;
-  winGames?: number;
-  winMoney?: number;
-  lostMoney?: number;
-  winPorcentage?: string;
-  lostPorcentage?: string;
+  playedGames: number;
+  lostGames: number;
+  winGames: number;
+  winMoney: number;
+  lostMoney: number;
+  winPorcentage: string;
+  lostPorcentage: string;
   error?: boolean;
 }
 

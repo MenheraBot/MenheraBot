@@ -2,7 +2,7 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-await-in-loop */
 import CommandContext from '@structures/CommandContext';
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import MenheraClient from 'MenheraClient';
 import Command from '../../structures/Command';
 import http from '../../utils/HTTPrequests';
@@ -19,7 +19,7 @@ export default class TopCommand extends Command {
     });
   }
 
-  static async topCommands(ctx) {
+  static async topCommands(ctx: CommandContext): Promise<Message | Message[]> {
     const res = await http.getTopCommands();
     if (!res) return ctx.replyT('error', 'commands:http-error');
     const embed = new MessageEmbed()
@@ -36,10 +36,10 @@ export default class TopCommand extends Command {
         false,
       );
     }
-    ctx.sendC(ctx.message.author, embed);
+    return ctx.sendC(ctx.message.author.toString(), embed);
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<Message | Message[]> {
     const { prefix } = ctx.data.server;
 
     let pagina = 1;
@@ -62,22 +62,30 @@ export default class TopCommand extends Command {
     const argsUser = ['usuario', 'user', 'usuário'];
 
     if (argsMamou.includes(argumento)) {
-      this.topMamadores(ctx, pagina);
-    } else if (argsMamados.includes(argumento)) {
-      this.topMamados(ctx, pagina);
-    } else if (argsEstrelinhas.includes(argumento)) {
-      this.topEstrelinhas(ctx, pagina);
-    } else if (argsDemonios.includes(argumento)) {
-      this.topDemonios(ctx, pagina);
-    } else if (argsAnjos.includes(argumento)) {
-      this.topAnjos(ctx, pagina);
-    } else if (argsSemideuses.includes(argumento)) {
-      this.topSD(ctx, pagina);
-    } else if (argsDeuses.includes(argumento)) {
-      this.topDeuses(ctx, pagina);
-    } else if (argsVotos.includes(argumento)) {
-      this.topVotos(ctx, pagina);
-    } else if (argsDungeon.includes(argumento)) {
+      return this.topMamadores(ctx, pagina);
+    }
+    if (argsMamados.includes(argumento)) {
+      return this.topMamados(ctx, pagina);
+    }
+    if (argsEstrelinhas.includes(argumento)) {
+      return this.topEstrelinhas(ctx, pagina);
+    }
+    if (argsDemonios.includes(argumento)) {
+      return this.topDemonios(ctx, pagina);
+    }
+    if (argsAnjos.includes(argumento)) {
+      return this.topAnjos(ctx, pagina);
+    }
+    if (argsSemideuses.includes(argumento)) {
+      return this.topSD(ctx, pagina);
+    }
+    if (argsDeuses.includes(argumento)) {
+      return this.topDeuses(ctx, pagina);
+    }
+    if (argsVotos.includes(argumento)) {
+      return this.topVotos(ctx, pagina);
+    }
+    if (argsDungeon.includes(argumento)) {
       const validClasses = [
         {
           option: 'Assassino',
@@ -120,20 +128,23 @@ export default class TopCommand extends Command {
       const option = filtredOption.length > 0 ? filtredOption[0].option : false;
 
       if (option) {
-        this.topDungeon(ctx, pagina, option);
-      } else {
-        this.topDungeon(ctx, pagina, false);
+        return this.topDungeon(ctx, pagina, option);
       }
-    } else if (argsCommands.includes(argumento)) {
-      TopCommand.topCommands(ctx);
-    } else if (argsUsers.includes(argumento)) {
-      this.topUsers(ctx);
-    } else if (argsUser.includes(argumento)) {
-      this.topUser(ctx);
-    } else ctx.replyT('warn', 'commands:top.txt', { prefix });
+      return this.topDungeon(ctx, pagina, false);
+    }
+    if (argsCommands.includes(argumento)) {
+      return TopCommand.topCommands(ctx);
+    }
+    if (argsUsers.includes(argumento)) {
+      return this.topUsers(ctx);
+    }
+    if (argsUser.includes(argumento)) {
+      return this.topUser(ctx);
+    }
+    return ctx.replyT('warn', 'commands:top.txt', { prefix });
   }
 
-  async topMamados(ctx: CommandContext, pagina: number) {
+  async topMamados(ctx: CommandContext, pagina: number): Promise<Message | Message[]> {
     const quantidade = await this.client.database.Users.countDocuments();
     let skip = 0;
     if (!Number.isNaN(pagina) && pagina > 0 && pagina < quantidade / 10) {
@@ -162,10 +173,10 @@ export default class TopCommand extends Command {
         false,
       );
     }
-    ctx.sendC(ctx.message.author.toString(), embed);
+    return ctx.sendC(ctx.message.author.toString(), embed);
   }
 
-  async topMamadores(ctx: CommandContext, pagina: number) {
+  async topMamadores(ctx: CommandContext, pagina: number): Promise<Message | Message[]> {
     const quantidade = await this.client.database.Users.countDocuments();
 
     let skip = 0;
@@ -200,10 +211,10 @@ export default class TopCommand extends Command {
         );
       }
     }
-    ctx.sendC(ctx.message.author.toString(), embed);
+    return ctx.sendC(ctx.message.author.toString(), embed);
   }
 
-  async topDemonios(ctx, pagina) {
+  async topDemonios(ctx: CommandContext, pagina: number): Promise<Message | Message[]> {
     const quantidade = await this.client.database.Users.countDocuments();
 
     let skip = 0;
@@ -242,10 +253,10 @@ export default class TopCommand extends Command {
         );
       }
     }
-    ctx.sendC(ctx.message.author.toString(), embed);
+    return ctx.sendC(ctx.message.author.toString(), embed);
   }
 
-  async topAnjos(ctx, pagina) {
+  async topAnjos(ctx: CommandContext, pagina: number): Promise<Message | Message[]> {
     const quantidade = await this.client.database.Users.countDocuments();
 
     let skip = 0;
@@ -284,10 +295,10 @@ export default class TopCommand extends Command {
         );
       }
     }
-    ctx.sendC(ctx.message.author, embed);
+    return ctx.sendC(ctx.message.author.toString(), embed);
   }
 
-  async topSD(ctx, pagina) {
+  async topSD(ctx: CommandContext, pagina: number): Promise<Message | Message[]> {
     const quantidade = await this.client.database.Users.countDocuments();
 
     let skip = 0;
@@ -326,10 +337,10 @@ export default class TopCommand extends Command {
         );
       }
     }
-    ctx.sendC(ctx.message.author, embed);
+    return ctx.sendC(ctx.message.author.toString(), embed);
   }
 
-  async topDeuses(ctx, pagina) {
+  async topDeuses(ctx: CommandContext, pagina: number): Promise<Message | Message[]> {
     const quantidade = await this.client.database.Users.countDocuments();
 
     let skip = 0;
@@ -368,10 +379,10 @@ export default class TopCommand extends Command {
         );
       }
     }
-    ctx.sendC(ctx.message.author, embed);
+    return ctx.sendC(ctx.message.author.toString(), embed);
   }
 
-  async topEstrelinhas(ctx, pagina) {
+  async topEstrelinhas(ctx: CommandContext, pagina: number): Promise<Message | Message[]> {
     const quantidade = await this.client.database.Users.countDocuments();
 
     let skip = 0;
@@ -405,10 +416,10 @@ export default class TopCommand extends Command {
         );
       }
     }
-    ctx.sendC(ctx.message.author, embed);
+    return ctx.sendC(ctx.message.author.toString(), embed);
   }
 
-  async topVotos(ctx, pagina) {
+  async topVotos(ctx: CommandContext, pagina: number): Promise<Message | Message[]> {
     const quantidade = await this.client.database.Users.countDocuments();
 
     let skip = 0;
@@ -447,10 +458,14 @@ export default class TopCommand extends Command {
         );
       }
     }
-    ctx.sendC(ctx.message.author, embed);
+    return ctx.sendC(ctx.message.author.toString(), embed);
   }
 
-  async topDungeon(ctx, pagina, classToSearch) {
+  async topDungeon(
+    ctx: CommandContext,
+    pagina: number,
+    classToSearch: string | false,
+  ): Promise<Message | Message[]> {
     const quantidade = await this.client.database.Rpg.countDocuments();
 
     let skip = 0;
@@ -516,10 +531,10 @@ export default class TopCommand extends Command {
             );
       }
     }
-    ctx.sendC(ctx.message.author, embed);
+    return ctx.sendC(ctx.message.author.toString(), embed);
   }
 
-  async topUsers(ctx) {
+  async topUsers(ctx: CommandContext): Promise<Message | Message[]> {
     const res = await http.getTopUsers();
     if (!res) return ctx.replyT('error', 'commands:http-error');
     const embed = new MessageEmbed()
@@ -535,10 +550,10 @@ export default class TopCommand extends Command {
         false,
       );
     }
-    ctx.sendC(ctx.message.author, embed);
+    return ctx.sendC(ctx.message.author.toString(), embed);
   }
 
-  async topUser(ctx) {
+  async topUser(ctx: CommandContext): Promise<Message | Message[]> {
     const user = ctx.args[1] ? ctx.args[1].replace(/[<@!>]/g, '') : ctx.message.author.id;
 
     let fetchedUser;
@@ -571,6 +586,6 @@ export default class TopCommand extends Command {
         false,
       );
     }
-    ctx.sendC(ctx.message.author, embed);
+    return ctx.sendC(ctx.message.author.toString(), embed);
   }
 }

@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-expressions */
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 
 import http from '@utils/HTTPrequests';
 
@@ -18,15 +18,14 @@ export default class BlackJackStatsCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<Message | Message[]> {
     const userDb = await this.client.database.repositories.userRepository.find(
       ctx.args[0] ? ctx.args[0].replace(/[<@!>]/g, '') : ctx.message.author.id,
     );
     if (!userDb) return ctx.replyT('error', 'commands:coinflipstats.error');
     const data = await http.getBlackJackStats(userDb ? userDb.id : ctx.message.author.id);
     if (data?.error) return ctx.replyT('error', 'commands:coinflipstats.error');
-    if (!data || !data.playedGames || data.playedGames === undefined)
-      return ctx.replyT('error', 'commands:blackjackstats.no-data');
+    if (!data || !data.playedGames) return ctx.replyT('error', 'commands:blackjackstats.no-data');
 
     const totalMoney = data.winMoney - data.lostMoney;
 
@@ -75,6 +74,6 @@ export default class BlackJackStatsCommand extends Command {
           true,
         );
 
-    ctx.sendC(ctx.message.author.toString(), embed);
+    return ctx.sendC(ctx.message.author.toString(), embed);
   }
 }

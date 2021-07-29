@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-expressions */
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import moment from 'moment';
 import Command from '@structures/Command';
 import MenheraClient from 'MenheraClient';
@@ -15,16 +15,16 @@ export default class CooldownsCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<Message | Message[]> {
     const userRpg = await this.client.database.Rpg.findById(ctx.message.author.id);
     if (!ctx.data.user) return ctx.replyT('error', 'commands:cooldowns.error');
 
-    const huntCooldownInMilis = parseInt(ctx.data.user?.caçarTime) - Date.now();
+    const huntCooldownInMilis = parseInt(ctx.data.user.caçarTime) - Date.now();
     const dungeonCooldownInMilis = userRpg ? parseInt(userRpg.dungeonCooldown) - Date.now() : 0;
     const jobCooldownInMilis = userRpg ? parseInt(userRpg.jobCooldown) - Date.now() : 0;
     const deathTimeInMilis = userRpg ? parseInt(userRpg.death) - Date.now() : 0;
     const hotelTimeInMilis = userRpg ? parseInt(userRpg.hotelTime) - Date.now() : 0;
-    const voteCooldownInMilis = parseInt(ctx.data.user?.voteCooldown) - Date.now();
+    const voteCooldownInMilis = parseInt(ctx.data.user.voteCooldown) - Date.now();
 
     let txt = '';
 
@@ -100,6 +100,6 @@ export default class CooldownsCommand extends Command {
       .setColor('#6597df')
       .setDescription(txt);
 
-    ctx.sendC(ctx.message.author.toString(), embed);
+    return ctx.sendC(ctx.message.author.toString(), embed);
   }
 }

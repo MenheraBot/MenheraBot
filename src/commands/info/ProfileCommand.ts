@@ -1,10 +1,10 @@
-import { MessageAttachment, User } from 'discord.js';
+import { Message, MessageAttachment, User } from 'discord.js';
 import Command from '@structures/Command';
 import Util from '@utils/Util';
 import http from '@utils/HTTPrequests';
 import MenheraClient from 'MenheraClient';
 import CommandContext from '@structures/CommandContext';
-import { IUserDataToProfile } from '@utils/Types';
+import { IUserDataToProfile, IUserSchema } from '@utils/Types';
 
 export default class ProfileCommand extends Command {
   constructor(client: MenheraClient) {
@@ -17,11 +17,10 @@ export default class ProfileCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
-    const authorData = ctx.data.user;
+  async run(ctx: CommandContext): Promise<Message | Message[]> {
     const userId = Util.getIdByMention(ctx.args[0]);
 
-    let user = authorData;
+    let { user }: { user: IUserSchema | null } = ctx.data;
     let member = ctx.message.author;
     let marry: string | User = 'false';
 
@@ -35,12 +34,13 @@ export default class ProfileCommand extends Command {
         return ctx.replyT('error', 'commands:profile.unknow-user');
       }
     }
-    if (user?.casado !== 'false' && user?.casado)
-      marry = await this.client.users.fetch(user.casado);
-
     if (!user) return ctx.replyT('error', 'commands:profile.no-dbuser');
+
     if (user.ban && ctx.message.author.id !== process.env.OWNER)
       return ctx.replyT('error', 'commands:profile.banned', { reason: user.banReason });
+
+    if (user?.casado !== 'false' && user?.casado)
+      marry = await this.client.users.fetch(user.casado);
 
     const avatar = member.displayAvatarURL({ format: 'png' });
     const usageCommands = await http.getProfileCommands(member.id);
@@ -51,12 +51,12 @@ export default class ProfileCommand extends Command {
       votos: user.votos,
       nota: user.nota,
       tag: member.tag,
-      flagsArray: member.flags?.toArray(),
+      flagsArray: member.flags?.toArray() ?? ['NONE'],
       casado: user.casado,
       voteCooldown: user.voteCooldown,
       badges: user.badges,
       username: member.username,
-      data: user.data,
+      data: user.data as string,
       mamadas: user.mamadas,
       mamou: user.mamou,
     };
@@ -75,8 +75,8 @@ export default class ProfileCommand extends Command {
 
     if (res.err) return ctx.replyT('error', 'commands:http-error');
 
-    ctx.sendC(ctx.message.author.toString(), {
-      files: [new MessageAttachment(Buffer.from(res.data), 'profile.png')],
+    return ctx.sendC(ctx.message.author.toString(), {
+      files: [new MessageAttachment(Buffer.from(res.data as Buffer), 'profile.png')],
     });
   }
 }

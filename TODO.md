@@ -14,7 +14,7 @@
   - [x] Dev
   - [x] Economy
   - [x] fun
-  - [ ] info
+  - [x] info
   - [ ] mod
   - [ ] rpg
   - [ ] util
