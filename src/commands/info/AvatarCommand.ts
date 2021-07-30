@@ -25,7 +25,7 @@ export default class AvatarCommand extends Command {
     if (userId && userId !== ctx.message.author.id) {
       try {
         user = await this.client.users.fetch(ctx.args[0].replace(/[<@!>]/g, ''));
-        db = await this.client.database.repositories.userRepository.find(user.id);
+        db = await this.client.repositories.userRepository.find(user.id);
       } catch {
         return ctx.replyT('error', 'commands:avatar.unknow-user');
       }

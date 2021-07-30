@@ -1,6 +1,7 @@
 import Command from '@structures/Command';
 import CommandContext from '@structures/CommandContext';
 import MenheraClient from 'MenheraClient';
+import { Message } from 'discord.js';
 
 export default class AfkCommand extends Command {
   constructor(client: MenheraClient) {
@@ -11,9 +12,11 @@ export default class AfkCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<Message | void> {
     const args = ctx.args.join(' ');
     const reason = args.length ? args.replace(/`/g, '') : 'AFK';
+
+    if (!ctx.message.guild) return;
 
     await ctx.client.database.Users.updateOne(
       { id: ctx.message.author.id },
@@ -23,12 +26,12 @@ export default class AfkCommand extends Command {
     if (ctx.message.channel.type === 'dm') return;
     const member = ctx.message.channel.guild.members.cache.get(ctx.message.author.id);
 
-    ctx.replyT('success', 'commands:afk.success');
-    if (member.manageable) {
-      const newNick = member.nickname
-        ? `[AFK] ${member.nickname}`
-        : `[AFK] ${member.user.username}`;
-      if (newNick.length <= 32) member.setNickname(newNick, 'AFK System');
+    if (member?.manageable) {
+      const newNick = member?.nickname
+        ? `[AFK] ${member?.nickname}`
+        : `[AFK] ${member?.user.username}`;
+      if (newNick.length <= 32) await member?.setNickname(newNick, 'AFK System');
     }
+    return ctx.replyT('success', 'commands:afk.success');
   }
 }

@@ -1,10 +1,11 @@
 import MenheraClient from 'MenheraClient';
 
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import Command from '@structures/Command';
 
 import CommandContext from '@structures/CommandContext';
 import { abilities as abilitiesFile } from '@structures/RpgHandler';
+import { IAbility, IClassAbilities } from '@utils/Types';
 
 export default class AbilityInfoCommand extends Command {
   constructor(client: MenheraClient) {
@@ -17,25 +18,11 @@ export default class AbilityInfoCommand extends Command {
     });
   }
 
-  static getClass(ctx) {
-    const classes = [
-      'assassino',
-      'barbaro',
-      'clerigo',
-      'druida',
-      'espadachim',
-      'feiticeiro',
-      'monge',
-      'necromante',
-    ];
-
+  static getClass(ctx: CommandContext): Promise<Message | Message[]> {
     const normalized = ctx.args[1]
       .toLowerCase()
       .normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '');
-
-    if (!classes.includes(normalized))
-      return ctx.replyT('error', 'commands:infohabilidade.invalid-class');
 
     let filtrado;
 
@@ -64,6 +51,8 @@ export default class AbilityInfoCommand extends Command {
       case 'necromante':
         filtrado = abilitiesFile.necromante;
         break;
+      default:
+        return ctx.replyT('error', 'commands:infohabilidade.invalid-class');
     }
 
     const filtredOption = filtrado.uniquePowers;
@@ -85,10 +74,10 @@ export default class AbilityInfoCommand extends Command {
       );
     });
 
-    return ctx.sendC(ctx.message.author, embed);
+    return ctx.sendC(ctx.message.author.toString(), embed);
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<Message | Message[] | void> {
     if (!ctx.args[0]) return ctx.replyT('question', 'commands:infohabilidade.no-args');
 
     const validArgs = [
@@ -108,22 +97,18 @@ export default class AbilityInfoCommand extends Command {
 
     const { option } = filtredOption[0];
 
-    switch (option) {
-      case 'classe':
-        if (!ctx.args[1]) return ctx.replyT('error', 'commands:infohabilidade.no-class');
-        AbilityInfoCommand.getClass(ctx);
-        break;
-      case 'minhas':
-        this.getAll(ctx);
-        break;
+    if (option === 'classe') {
+      if (!ctx.args[1]) return ctx.replyT('error', 'commands:infohabilidade.no-class');
+      return AbilityInfoCommand.getClass(ctx);
     }
+    if (option === 'minhas') return this.getAll(ctx);
   }
 
-  async getAll(ctx: CommandContext) {
-    const user = await this.client.database.Rpg.findById(ctx.message.author.id);
+  async getAll(ctx: CommandContext): Promise<Message | Message[]> {
+    const user = await this.client.repositories.rpgRepository.find(ctx.message.author.id);
     if (!user) return ctx.replyT('error', 'commands:infohabilidade.non-aventure');
 
-    let filtrado;
+    let filtrado: IClassAbilities;
 
     switch (user.class) {
       case 'Assassino':
@@ -180,12 +165,14 @@ export default class AbilityInfoCommand extends Command {
       case 'Senhor das Trevas':
         filtrado = abilitiesFile.necromante;
         break;
+      default:
+        return ctx.replyT('error', 'commands:infohabilidade.no-class');
     }
 
     const uniquePowerFiltred = filtrado.uniquePowers.filter(
       (f) => f.name === user.uniquePower.name,
     );
-    const abilitiesFiltred = [];
+    const abilitiesFiltred: IAbility[] = [];
 
     user.abilities.forEach((hab) => {
       const a = filtrado.normalAbilities.filter((f) => f.name === hab.name);

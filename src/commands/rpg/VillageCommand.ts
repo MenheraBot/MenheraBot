@@ -1,5 +1,5 @@
 /* eslint-disable guard-for-in */
-import { MessageEmbed, TextChannel } from 'discord.js';
+import { Message, MessageEmbed, TextChannel } from 'discord.js';
 import moment from 'moment';
 import Command from '@structures/Command';
 import PagesCollector from '@utils/Pages';
@@ -8,7 +8,16 @@ import RPGUtil from '@utils/RPGUtil';
 import 'moment-duration-format';
 import MenheraClient from 'MenheraClient';
 import CommandContext from '@structures/CommandContext';
-import { IUserRpgSchema, TBruxaOptions } from '@utils/Types';
+import {
+  IBruxaItem,
+  IFerreiroItem,
+  IHotelItem,
+  IInventoryItem,
+  IRequiredItems,
+  IUserRpgSchema,
+  TFerreiroOptions,
+  TVilaOptions,
+} from '@utils/Types';
 
 export default class VillageCommand extends Command {
   constructor(client: MenheraClient) {
@@ -21,39 +30,11 @@ export default class VillageCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
-    const user = await this.client.database.Rpg.findById(ctx.message.author.id);
-    if (ctx.message.channel.type === 'dm') return;
-
-    if (!user) {
-      return ctx.replyT('error', 'commands:village.non-aventure');
-    }
-
-    const embed = new MessageEmbed()
-      .setColor('#bbfd7c')
-      .setTitle(ctx.locale('commands:village.index.title'))
-      .setDescription(ctx.locale('commands:village.index.description'))
-      .addField(
-        ctx.locale('commands:village.index.field_name'),
-        ctx.locale('commands:village.index.field_value'),
-      )
-      .setFooter(ctx.locale('commands:village.index.footer'));
-
-    const sent = await ctx.sendC(ctx.message.author.toString(), embed);
-
-    const options = ['bruxa', 'ferreiro', 'hotel', 'guilda'];
-    const collector = new PagesCollector(
-      ctx.message.channel as TextChannel,
-      { sent, ctx },
-      { max: 2, time: 60000 },
-    )
-      .setInvalidOption(() => collector.replyT('error', 'commands:village.invalid-option'))
-      .setFindOption(PagesCollector.arrFindByElemOrIndex(options))
-      .setHandle((_, option: TBruxaOptions) => VillageCommand[option](ctx, user, collector))
-      .start();
-  }
-
-  static async bruxa(ctx: CommandContext, user: IUserRpgSchema, collector: PagesCollector) {
+  static async bruxa(
+    ctx: CommandContext,
+    user: IUserRpgSchema,
+    collector: PagesCollector,
+  ): Promise<string> {
     const items = itemsFile.bruxa.filter(
       (item) => user.level >= item.minLevel && (!item.maxLevel || user.level <= item.maxLevel),
     );
@@ -72,13 +53,13 @@ export default class VillageCommand extends Command {
         })),
       );
 
-    collector.send(ctx.message.author, embed);
+    await collector.send(ctx.message.author, embed);
     collector.setFindOption((content: string) => {
       const [query, qty = 1] = content.trim().split(/ +/g);
       const item = items.find((i, n) => i.name === query.toLowerCase() || Number(query) === n + 1);
       if (item) return { item, qty: Number(qty) };
     });
-    collector.setHandle((_, { item, qty }) => {
+    collector.setHandle((_: unknown, { item, qty }: { item: IBruxaItem; qty: number }) => {
       if (Number.isNaN(qty) || qty < 1) {
         return collector.replyT('error', 'commands:village.invalid-quantity');
       }
@@ -114,12 +95,16 @@ export default class VillageCommand extends Command {
     return PagesCollector.continue();
   }
 
-  static ferreiro(ctx: CommandContext, user: IUserRpgSchema, collector: PagesCollector) {
+  static async ferreiro(
+    ctx: CommandContext,
+    user: IUserRpgSchema,
+    collector: PagesCollector,
+  ): Promise<Message | string> {
     if (user.level < 9) {
       return collector.replyT('error', 'commands:village.ferreiro.low-level', { level: 9 });
     }
 
-    const categories = ['sword', 'backpack', 'armor'];
+    const categories: TFerreiroOptions[] = ['sword', 'backpack', 'armor'];
     const categoriesNames = categories.map(
       (name, i) => `**${i + 1}** - ${ctx.locale(`commands:village.ferreiro.categories.${name}`)}`,
     );
@@ -130,30 +115,30 @@ export default class VillageCommand extends Command {
       .addField(ctx.locale('commands:village.ferreiro.field_name'), categoriesNames)
       .setFooter(ctx.locale('commands:village.ferreiro.footer'));
 
-    collector.send(ctx.message.author, embed);
+    await collector.send(ctx.message.author, embed);
     collector.setFindOption(PagesCollector.arrFindByElemOrIndex(categories));
-    collector.setHandle((_, category) =>
+    collector.setHandle((_: unknown, category: TFerreiroOptions) =>
       VillageCommand.ferreiroEquipamentos(category, ctx, user, collector),
     );
     return PagesCollector.continue();
   }
 
-  static ferreiroEquipamentos(
-    category: string,
+  static async ferreiroEquipamentos(
+    category: TFerreiroOptions,
     ctx: CommandContext,
     user: IUserRpgSchema,
     collector: PagesCollector,
-  ) {
+  ): Promise<Message | string> {
     const emojis = {
       sword: '🗡️',
       armor: '🛡️',
       backpack: '🧺',
     };
 
-    const mainProp = {
-      sword: 'damage',
-      armor: 'protection',
-      backpack: 'capacity',
+    const mainProp: 'damage' | 'protection' | 'capacity' = {
+      sword: 'damage' as 'damage' | 'protection' | 'capacity',
+      armor: 'protection' as 'damage' | 'protection' | 'capacity',
+      backpack: 'capacity' as 'damage' | 'protection' | 'capacity',
     }[category];
 
     const embed = new MessageEmbed()
@@ -170,8 +155,8 @@ export default class VillageCommand extends Command {
       (item) => item.category === category && !item.isNotTrade,
     );
 
-    const parseMissingItems = (equip) =>
-      Object.entries(equip.required_items).reduce(
+    const parseMissingItems = (equip: IFerreiroItem) =>
+      Object.entries(equip.required_items as IRequiredItems).reduce(
         (p, [name, qty]) => `${p} **${qty} ${name}**\n`,
         '',
       );
@@ -193,70 +178,80 @@ export default class VillageCommand extends Command {
 
     const userItems = RPGUtil.countItems(user.loots);
 
-    collector.send(ctx.message.author, embed);
+    await collector.send(ctx.message.author, embed);
     collector.setFindOption(PagesCollector.arrFindByItemNameOrIndex(equips));
-    collector.setHandle((_, equip) => {
-      if (user.money < equip.price) {
-        return ctx.replyT('error', 'commands:village.poor');
-      }
-
-      const requiredItems = Object.entries(equip.required_items);
-      const missingItems = requiredItems.reduce((p, [name, qty]) => {
-        const item = userItems.find((i) => i.name === name);
-        if (!item) {
-          return [...p, { name, qty }];
+    collector.setHandle(
+      // eslint-disable-next-line camelcase
+      (_: unknown, equip: IFerreiroItem & { price: number; required_items: IRequiredItems }) => {
+        if (user.money < equip.price) {
+          return ctx.replyT('error', 'commands:village.poor');
         }
 
-        if (item.amount < qty) {
-          return [...p, { name, qty: (qty as number) - item.amount }];
-        }
+        const requiredItems = Object.entries(equip.required_items);
+        const missingItems = requiredItems.reduce(
+          (p: { qty: number; name: string }[], [name, qty]) => {
+            const item = userItems.find((i) => i.name === name);
+            if (!item) {
+              return [...p, { name, qty }];
+            }
 
-        return p;
-      }, []);
+            if (item.amount < qty) {
+              return [...p, { name, qty: (qty as number) - item.amount }];
+            }
 
-      if (missingItems.length > 0) {
-        const items = missingItems.map((item) => `${item.qty} ${item.name}`).join(', ');
-
-        return ctx.reply(
-          'error',
-          `${ctx.locale(`commands:village.ferreiro.${category}.poor`, { items })}`,
+            return p;
+          },
+          [],
         );
-      }
 
-      requiredItems.forEach(([name, qty]) => RPGUtil.removeItemInLoots(user, name, qty));
+        if (missingItems.length > 0) {
+          const items = missingItems.map((item) => `${item.qty} ${item.name}`).join(', ');
 
-      switch (category) {
-        case 'sword':
-          user.weapon = {
-            name: equip.id,
-            damage: equip.damage,
-          };
-          break;
+          return ctx.reply(
+            'error',
+            `${ctx.locale(`commands:village.ferreiro.${category}.poor`, { items })}`,
+          );
+        }
 
-        case 'armor':
-          user.protection = {
-            name: equip.id,
-            armor: equip.protection,
-          };
-          break;
+        requiredItems.forEach(([name, qty]) => RPGUtil.removeItemInLoots(user, name, qty));
 
-        case 'backpack':
-          user.backpack = {
-            name: equip.id,
-          };
-          break;
-      }
+        switch (category) {
+          case 'sword':
+            user.weapon = {
+              name: equip.id,
+              damage: equip.damage as number,
+            };
+            break;
 
-      user.money -= equip.price;
+          case 'armor':
+            user.protection = {
+              name: equip.id,
+              armor: equip.protection as number,
+            };
+            break;
 
-      user.save();
-      ctx.replyT('success', `commands:village.ferreiro.${category}.change`, { equip: equip.id });
-      collector.finish();
-    });
+          case 'backpack':
+            user.backpack = {
+              name: equip.id,
+            };
+            break;
+        }
+
+        user.money -= equip.price;
+
+        user.save();
+        ctx.replyT('success', `commands:village.ferreiro.${category}.change`, { equip: equip.id });
+        collector.finish();
+      },
+    );
     return PagesCollector.continue();
   }
 
-  static hotel(ctx: CommandContext, user: IUserRpgSchema, collector: PagesCollector) {
+  static async hotel(
+    ctx: CommandContext,
+    user: IUserRpgSchema,
+    collector: PagesCollector,
+  ): Promise<Message | string> {
     const embed = new MessageEmbed()
       .setTitle(`🏨 | ${ctx.locale('commands:village.hotel.title')}`)
       .setDescription(ctx.locale('commands:village:hotel.description'))
@@ -274,9 +269,9 @@ export default class VillageCommand extends Command {
       })),
     );
 
-    collector.send(ctx.message.author, embed);
+    await collector.send(ctx.message.author, embed);
     collector.setFindOption(PagesCollector.arrFindByIndex(itemsFile.hotel));
-    collector.setHandle((_, option) => {
+    collector.setHandle(async (_: unknown, option: IHotelItem) => {
       if (parseInt(user.hotelTime) > Date.now()) {
         return collector.replyT('error', 'commands:village.hotel.already');
       }
@@ -284,7 +279,7 @@ export default class VillageCommand extends Command {
         return collector.replyT('error', 'commands:village.hotel.dead');
       }
 
-      user.hotelTime = option.time + Date.now();
+      user.hotelTime = `${option.time + Date.now()}`;
 
       if (!option) {
         collector.finish();
@@ -313,15 +308,19 @@ export default class VillageCommand extends Command {
         if (user.mana > user.maxMana) user.mana = user.maxMana;
       }
 
-      user.save();
+      await user.save();
 
-      collector.replyT('success', 'commands:village.hotel.done');
+      await collector.replyT('success', 'commands:village.hotel.done');
       collector.finish();
     });
     return PagesCollector.continue();
   }
 
-  static guilda(ctx: CommandContext, user: IUserRpgSchema, collector: PagesCollector) {
+  static async guilda(
+    ctx: CommandContext,
+    user: IUserRpgSchema,
+    collector: PagesCollector,
+  ): Promise<Message | string> {
     const embed = new MessageEmbed()
       .setTitle(`🏠 | ${ctx.locale('commands:village.guilda.title')}`)
       .setColor('#98b849')
@@ -349,7 +348,7 @@ export default class VillageCommand extends Command {
       // eslint-disable-next-line no-loop-func
       const separator = `---------------**[ ${parseInt(i) + 1} ]**---------------`;
       const name = `<:Chest:760957557538947133> | **${
-        allItems[i].job_id > 0
+        allItems[i].job_id
           ? ctx.locale(`roleplay:job.${allItems[i].job_id}.${allItems[i].name}`)
           : allItems[i].name
       }** ( ${allItems[i].amount} )`;
@@ -367,8 +366,8 @@ export default class VillageCommand extends Command {
 
     embed.setDescription(txt);
 
-    collector.send(ctx.message.author, embed);
-    collector.setFindOption((content) => {
+    await collector.send(ctx.message.author, embed);
+    collector.setFindOption((content: string) => {
       if (Number(content) === 0) {
         return 'ALL';
       }
@@ -379,57 +378,98 @@ export default class VillageCommand extends Command {
         return [item, qtyFiltred];
       }
     });
-    collector.setHandle((_, result) => {
-      collector.finish();
+    collector.setHandle(
+      async (
+        _: unknown,
+        result: 'ALL' | [item: IInventoryItem & { amount: number }, qty: number],
+      ) => {
+        collector.finish();
 
-      if (result === 'ALL') {
-        let sold = 0;
-        const total = allItems.reduce((p, item) => {
-          sold += item.amount;
-          return p + item.value * item.amount;
-        }, 0);
-        user.loots = [];
+        if (result === 'ALL') {
+          let sold = 0;
+          const total = allItems.reduce((p, item) => {
+            sold += item.amount;
+            return p + (item.value as number) * item.amount;
+          }, 0);
+          user.loots = [];
+          user.money += total;
+          await user.save();
+
+          return collector.replyT('success', 'commands:village.guilda.sold-all', {
+            amount: sold,
+            value: total,
+          });
+        }
+
+        const [item, qty] = result;
+
+        if (qty < 1) {
+          return ctx.replyT('error', 'commands:village.invalid-quantity');
+        }
+
+        if (qty > item.amount) {
+          return ctx.reply(
+            'error',
+            `${ctx.locale('commands:village.guilda.poor')} ${qty} ${
+              item.job_id && item.job_id > 0
+                ? ctx.locale(`roleplay:job.${item.job_id}.${item.name}`)
+                : item.name
+            }`,
+          );
+        }
+
+        const total = qty * (item.value as number);
+        if (Number.isNaN(total)) {
+          return ctx.replyT('error', 'commands:village.guilda.unespected-error');
+        }
+
+        RPGUtil.removeItemInLoots(user, item.name, qty);
         user.money += total;
-        user.save();
 
-        return collector.replyT('success', 'commands:village.guilda.sold-all', {
-          amount: sold,
+        await user.save();
+        const itemNameTranslate =
+          item.job_id && item.job_id > 0
+            ? ctx.locale(`roleplay:job.${item.job_id}.${item.name}`)
+            : item.name;
+        return ctx.replyT('success', 'commands:village.guilda.sold', {
+          quantity: qty,
+          name: itemNameTranslate,
           value: total,
         });
-      }
-
-      const [item, qty] = result;
-
-      if (qty < 1) {
-        return ctx.replyT('error', 'commands:village.invalid-quantity');
-      }
-
-      if (qty > item.amount) {
-        return ctx.reply(
-          'error',
-          `${ctx.locale('commands:village.guilda.poor')} ${qty} ${
-            item.job_id > 0 ? ctx.locale(`roleplay:job.${item.job_id}.${item.name}`) : item.name
-          }`,
-        );
-      }
-
-      const total = parseInt(qty) * parseInt(item.value);
-      if (Number.isNaN(total)) {
-        return ctx.replyT('error', 'commands:village.guilda.unespected-error');
-      }
-
-      RPGUtil.removeItemInLoots(user, item.name, qty);
-      user.money += total;
-
-      user.save();
-      const itemNameTranslate =
-        item.job_id > 0 ? ctx.locale(`roleplay:job.${item.job_id}.${item.name}`) : item.name;
-      return ctx.replyT('success', 'commands:village.guilda.sold', {
-        quantity: qty,
-        name: itemNameTranslate,
-        value: total,
-      });
-    });
+      },
+    );
     return PagesCollector.continue();
+  }
+
+  async run(ctx: CommandContext): Promise<Message | void> {
+    const user = await this.client.repositories.rpgRepository.find(ctx.message.author.id);
+    if (ctx.message.channel.type === 'dm') return;
+
+    if (!user) {
+      return ctx.replyT('error', 'commands:village.non-aventure');
+    }
+
+    const embed = new MessageEmbed()
+      .setColor('#bbfd7c')
+      .setTitle(ctx.locale('commands:village.index.title'))
+      .setDescription(ctx.locale('commands:village.index.description'))
+      .addField(
+        ctx.locale('commands:village.index.field_name'),
+        ctx.locale('commands:village.index.field_value'),
+      )
+      .setFooter(ctx.locale('commands:village.index.footer'));
+
+    const sent = await ctx.sendC(ctx.message.author.toString(), embed);
+
+    const options = ['bruxa', 'ferreiro', 'hotel', 'guilda'];
+    const collector = new PagesCollector(
+      ctx.message.channel as TextChannel,
+      { sent, ctx },
+      { max: 2, time: 60000 },
+    )
+      .setInvalidOption(() => collector.replyT('error', 'commands:village.invalid-option'))
+      .setFindOption(PagesCollector.arrFindByElemOrIndex(options))
+      .setHandle((_: unknown, option: TVilaOptions) => VillageCommand[option](ctx, user, collector))
+      .start();
   }
 }

@@ -7,14 +7,12 @@
 
 - [x] Fix Utils (Falta pages)
 - [x] Fix structures (Falta rpg checks)
-- [x] Fix events
-- [x] Fix database
-- [ ] Fix commands
+  [x] Fix commands
   - [x] Actions
   - [x] Dev
   - [x] Economy
   - [x] fun
   - [x] info
   - [x] mod
-  - [ ] rpg
-  - [ ] util
+  - [x] rpg
+  - [x] util

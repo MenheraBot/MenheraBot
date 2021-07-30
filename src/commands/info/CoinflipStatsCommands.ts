@@ -17,9 +17,7 @@ export default class CoinflipStatsCommand extends Command {
 
   async run(ctx: CommandContext): Promise<Message | Message[]> {
     const userDb = ctx.args[0]
-      ? await this.client.database.repositories.userRepository.find(
-          ctx.args[0].replace(/[<@!>]/g, ''),
-        )
+      ? await this.client.repositories.userRepository.find(ctx.args[0].replace(/[<@!>]/g, ''))
       : ctx.data.user;
 
     if (!userDb) return ctx.replyT('error', 'commands:coinflipstats.error');

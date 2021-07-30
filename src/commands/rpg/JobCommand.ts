@@ -1,8 +1,9 @@
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import Command from '@structures/Command';
 import { jobs as jobsFile } from '@structures/RpgHandler';
 import CommandContext from '@structures/CommandContext';
 import MenheraClient from 'MenheraClient';
+import { TJobIndexes } from '@utils/Types';
 
 export default class JobCommand extends Command {
   constructor(client: MenheraClient) {
@@ -15,11 +16,11 @@ export default class JobCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
-    const user = await this.client.database.Rpg.findById(ctx.message.author.id);
+  async run(ctx: CommandContext): Promise<Message | Message[]> {
+    const user = await this.client.repositories.rpgRepository.find(ctx.message.author.id);
     if (!user) return ctx.replyT('error', 'commands:job.not-registred');
 
-    const array = Object.entries(jobsFile);
+    const AllJobKeys = Object.keys(jobsFile);
 
     if (!ctx.args[0]) {
       const embed = new MessageEmbed()
@@ -27,8 +28,8 @@ export default class JobCommand extends Command {
         .setColor('#9f4dd2')
         .setTitle(ctx.locale('commands:job.embed-title'));
 
-      for (let i = 1; i <= array.length; i++) {
-        const job = jobsFile[i];
+      for (let i = 1; i <= AllJobKeys.length; i++) {
+        const job = jobsFile[i as TJobIndexes];
         embed.addField(
           `**[ ${i} ]** - ${ctx.locale(`roleplay:job.${i}.${job.name}`)}`,
           `${ctx.locale('commands:job.min-level')}: \`${job.min_level}\`\n${ctx.locale(
@@ -48,18 +49,25 @@ export default class JobCommand extends Command {
     const escolha = ctx.args[0].replace(/\D+/g, '');
     if (!escolha || escolha.length === 0) return ctx.replyT('error', 'commands:job.invalid');
 
-    if (parseInt(escolha) < 1 || parseInt(escolha) > array.length || !jobsFile[escolha])
+    const parsedChoice = parseInt(escolha);
+
+    if (
+      parsedChoice < 1 ||
+      parsedChoice > AllJobKeys.length ||
+      !jobsFile[parsedChoice as TJobIndexes]
+    )
       return ctx.replyT('error', 'commands:job.invalid');
 
-    const minLevel = jobsFile[escolha].min_level;
+    const minLevel = jobsFile[parsedChoice as TJobIndexes].min_level;
     if (minLevel > user.level)
       return ctx.replyT('error', 'commands:job.no-level', { level: minLevel });
 
-    user.jobId = parseInt(escolha);
-    await user.save();
+    await this.client.repositories.rpgRepository.update(ctx.message.author.id, {
+      jobId: parsedChoice,
+    });
 
-    ctx.replyT('success', 'commands:job.finish', {
-      job: ctx.locale(`roleplay:job.${escolha}.${jobsFile[escolha].name}`),
+    return ctx.replyT('success', 'commands:job.finish', {
+      job: ctx.locale(`roleplay:job.${escolha}.${jobsFile[parsedChoice as TJobIndexes].name}`),
     });
   }
 }

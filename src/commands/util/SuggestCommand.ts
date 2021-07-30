@@ -1,5 +1,5 @@
 import CommandContext from '@structures/CommandContext';
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import MenheraClient from 'MenheraClient';
 import Command from '../../structures/Command';
 
@@ -13,7 +13,7 @@ export default class SuggestCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<Message> {
     const argumentos = ctx.args.join(' ');
     const cor = `#${`000000${Math.random().toString(16).slice(2, 8).toUpperCase()}`.slice(-6)}`;
 
@@ -31,13 +31,13 @@ export default class SuggestCommand extends Command {
       );
 
     const webhook = await this.client.fetchWebhook(
-      process.env.SUGGEST_HOOK_ID,
-      process.env.SUGGEST_HOOK_TOKEN,
+      process.env.SUGGEST_HOOK_ID as string,
+      process.env.SUGGEST_HOOK_TOKEN as string,
     );
 
     await webhook.send(embed);
 
-    if (ctx.message.deletable) ctx.message.delete();
-    ctx.replyT('heart', 'commands:suggest.thanks');
+    if (ctx.message.deletable) await ctx.message.delete();
+    return ctx.replyT('heart', 'commands:suggest.thanks');
   }
 }

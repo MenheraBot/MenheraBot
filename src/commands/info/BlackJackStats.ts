@@ -19,7 +19,7 @@ export default class BlackJackStatsCommand extends Command {
   }
 
   async run(ctx: CommandContext): Promise<Message | Message[]> {
-    const userDb = await this.client.database.repositories.userRepository.find(
+    const userDb = await this.client.repositories.userRepository.find(
       ctx.args[0] ? ctx.args[0].replace(/[<@!>]/g, '') : ctx.message.author.id,
     );
     if (!userDb) return ctx.replyT('error', 'commands:coinflipstats.error');

@@ -1,8 +1,9 @@
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import Command from '@structures/Command';
 import RpgUtil from '@utils/RPGUtil';
 import MenheraClient from 'MenheraClient';
 import CommandContext from '@structures/CommandContext';
+import { IInventoryItem } from '@utils/Types';
 
 export default class UseCommand extends Command {
   constructor(client: MenheraClient) {
@@ -14,8 +15,8 @@ export default class UseCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
-    const user = await this.client.database.Rpg.findById(ctx.message.author.id);
+  async run(ctx: CommandContext): Promise<Message | Message[] | void> {
+    const user = await this.client.repositories.rpgRepository.find(ctx.message.author.id);
     if (!user) return ctx.replyT('error', 'commands:use.non-aventure');
 
     if (user.inBattle) return ctx.replyT('error', 'commands:use.in-battle');
@@ -35,20 +36,17 @@ export default class UseCommand extends Command {
       );
 
     let itemText = '';
-    const items = [];
-
-    let number = 0;
-    const option = [];
+    const items: IInventoryItem[] = [];
 
     user.inventory.forEach((inv) => {
-      if (inv.type !== 'Arma') items.push(inv.name);
+      if (inv.type !== 'Arma') items.push(inv);
     });
 
     const juntos = RpgUtil.countItems(items);
 
+    let number = 0;
     juntos.forEach((count) => {
       number++;
-      option.push(number.toString());
       itemText += `------------**[ ${number} ]**------------\n**${count.name}** ( ${count.amount} )\n`;
     });
 
@@ -61,7 +59,8 @@ export default class UseCommand extends Command {
 
     if (!ctx.args[0]) return ctx.sendC(ctx.message.author.toString(), embed);
 
-    if (!option.includes(ctx.args[0])) return ctx.replyT('error', 'commands:use.invalid-option');
+    if (parseInt(ctx.args[0]) < 1 || parseInt(ctx.args[0]) > number)
+      return ctx.replyT('error', 'commands:use.invalid-option');
 
     const choice = user.inventory.filter(
       (f) =>
@@ -85,6 +84,8 @@ export default class UseCommand extends Command {
     if (quantidade > juntos[parseInt(ctx.args[0]) - 1].amount)
       return ctx.replyT('error', 'commands:use.bigger');
 
+    if (!choice[0].damage) return ctx.replyT('error', 'commands:use.error');
+
     if (choice[0].name.indexOf('💧') > -1) {
       if (user.mana === user.maxMana) return ctx.replyT('error', 'commands:use.full-mana');
       user.mana += choice[0].damage * quantidade;
@@ -104,7 +105,7 @@ export default class UseCommand extends Command {
 
     await user.save();
 
-    ctx.replyT('success', 'commands:use.used', {
+    return ctx.replyT('success', 'commands:use.used', {
       quantidade,
       choice: choice[0].name,
       life: user.life,

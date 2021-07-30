@@ -1,6 +1,6 @@
 import CommandContext from '@structures/CommandContext';
 import { IGuildSchema } from '@utils/Types';
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import MenheraClient from 'MenheraClient';
 import Command from '@structures/Command';
 import Util from '@utils/Util';
@@ -16,7 +16,7 @@ export default class HelpCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<Message | void> {
     if (ctx.args[0]) {
       // eslint-disable-next-line no-use-before-define
       return getCMD(ctx);
@@ -26,18 +26,19 @@ export default class HelpCommand extends Command {
   }
 }
 
-function getCommmandSize(category: string, client: MenheraClient) {
+function getCommmandSize(category: string, client: MenheraClient): number {
   return client.commands.filter((c) => c.config.category === category).size;
 }
 
-function getCategory(category: string, client: MenheraClient, server: IGuildSchema) {
+function getCategory(category: string, client: MenheraClient, server: IGuildSchema): string {
   return client.commands
     .filter((c) => c.config.category === category)
     .map((c) => `\`${server.prefix}${c.config.name}\``)
     .join(', ');
 }
 
-function getAll(ctx: CommandContext) {
+function getAll(ctx: CommandContext): void {
+  if (!ctx.client.user) return;
   const embed = new MessageEmbed();
   embed.setColor('#b880e6');
   embed.setThumbnail(ctx.client.user.displayAvatarURL());
@@ -75,20 +76,20 @@ function getAll(ctx: CommandContext) {
 
   ctx.message.author
     .send(embed)
-    .then(() => {
-      ctx.replyT('success', 'commands:help.dm_sent');
+    .then(async () => {
+      await ctx.replyT('success', 'commands:help.dm_sent');
     })
-    .catch(() => {
-      ctx.replyT('error', 'commands:help.dm_error');
+    .catch(async () => {
+      await ctx.replyT('error', 'commands:help.dm_error');
     });
 }
 
-function getCMD(ctx: CommandContext) {
+async function getCMD(ctx: CommandContext): Promise<void | Message> {
   const embed = new MessageEmbed();
 
   const cmd =
     ctx.client.commands.get(ctx.args[0].toLowerCase()) ||
-    ctx.client.commands.get(ctx.client.aliases.get(ctx.args[0].toLowerCase()));
+    ctx.client.commands.get(ctx.client.aliases.get(ctx.args[0].toLowerCase()) as string);
 
   let info = ctx.locale('commands:help.without-info', { cmd: ctx.args[0].toLowerCase() });
 

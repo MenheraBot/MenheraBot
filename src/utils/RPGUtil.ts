@@ -1,4 +1,4 @@
-import { ferreiro } from '../structures/Rpgs/items.json';
+import { items as ItemsFile } from '../structures/RpgHandler';
 import { IInventoryItem, IUserRpgSchema } from './Types';
 
 type ResultItem = IInventoryItem & { amount: number };
@@ -32,7 +32,7 @@ export default class RPGUtil {
       throw new Error(`${userRpgData._id} doesn't has a backpack.`);
     }
 
-    const backpack = ferreiro.find(
+    const backpack = ItemsFile.ferreiro.find(
       (item) => item.category === 'backpack' && item.id === backpackId,
     );
     if (!backpack) {

@@ -1,5 +1,5 @@
 import http from '@utils/HTTPrequests';
-import { MessageAttachment } from 'discord.js';
+import { Message, MessageAttachment } from 'discord.js';
 import { familiars as familiarsFile } from '@structures/RpgHandler';
 import Command from '@structures/Command';
 import MenheraClient from 'MenheraClient';
@@ -16,7 +16,7 @@ export default class StatusCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<Message | Message[]> {
     let mentioned;
     if (ctx.args[0]) {
       try {
@@ -26,7 +26,7 @@ export default class StatusCommand extends Command {
       }
     } else mentioned = ctx.message.author;
 
-    const user = await this.client.database.Rpg.findById(mentioned.id);
+    const user = await this.client.repositories.rpgRepository.find(mentioned.id);
     if (!user) return ctx.replyT('error', 'commands:status.not-found');
 
     const userAvatarLink = mentioned.displayAvatarURL({ format: 'png' });
@@ -80,8 +80,8 @@ export default class StatusCommand extends Command {
 
     if (res.err) return ctx.replyT('error', 'commands:http-error');
 
-    ctx.sendC(ctx.message.author.toString(), {
-      files: [new MessageAttachment(Buffer.from(res.data), 'status.png')],
+    return ctx.sendC(ctx.message.author.toString(), {
+      files: [new MessageAttachment(Buffer.from(res.data as Buffer), 'status.png')],
     });
   }
 }

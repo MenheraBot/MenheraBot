@@ -7,14 +7,15 @@ import {
   IMobAttack,
   IUniquePower,
   IUserRpgSchema,
+  TDungeonLevel,
 } from '@utils/Types';
 import CommandContext from '@structures/CommandContext';
 import { Document } from 'mongoose';
 import RPGUtil from '../../utils/RPGUtil';
 import {
-  mobs as mobsFile,
   abilities as abilitiesFile,
   familiars as familiarsFile,
+  mobs as mobsFile,
 } from '../RpgHandler';
 
 import http from '../../utils/HTTPrequests';
@@ -25,7 +26,7 @@ const random = <T>(arr: Array<T>): T => arr[Math.floor(Math.random() * arr.lengt
 const getEnemyByUserLevel = (
   user: IUserRpgSchema,
   type: string,
-  dungeonLevel?: 1 | 2 | 3 | 4 | 5,
+  dungeonLevel?: TDungeonLevel,
   ctx?: CommandContext,
 ): IDungeonMob | false | string => {
   if (type === 'boss') {

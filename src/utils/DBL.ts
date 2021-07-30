@@ -37,8 +37,8 @@ export default class DiscordBots {
     }
 
     dbl.webhook.on('vote', async (vote) => {
-      const user = await this.client.database.Users.findOne({ id: vote.user });
-      const rpgUser = await this.client.database.Rpg.findById(vote.user);
+      const user = await this.client.repositories.userRepository.find(vote.user);
+      const rpgUser = await this.client.repositories.rpgRepository.find(vote.user);
 
       if (!user) return;
 

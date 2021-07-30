@@ -1,5 +1,5 @@
 import CommandContext from '@structures/CommandContext';
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import MenheraClient from 'MenheraClient';
 import Command from '@structures/Command';
 
@@ -14,7 +14,7 @@ export default class ReportCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<Message> {
     const argumentos = ctx.args.join(' ');
     const cor = `#${`000000${Math.random().toString(16).slice(2, 8).toUpperCase()}`.slice(-6)}`;
 
@@ -32,13 +32,13 @@ export default class ReportCommand extends Command {
       );
 
     const reportWebhook = await this.client.fetchWebhook(
-      process.env.BUG_HOOK_ID,
-      process.env.BUG_HOOK_TOKEN,
+      process.env.BUG_HOOK_ID as string,
+      process.env.BUG_HOOK_TOKEN as string,
     );
 
-    reportWebhook.send(embed);
+    await reportWebhook.send(embed);
 
-    if (ctx.message.deletable) ctx.message.delete();
-    ctx.replyT('success', 'commands:report.thanks');
+    if (ctx.message.deletable) await ctx.message.delete();
+    return ctx.replyT('success', 'commands:report.thanks');
   }
 }

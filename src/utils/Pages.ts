@@ -1,13 +1,13 @@
 import CommandContext from '@structures/CommandContext';
 import { Message, MessageCollector, TextChannel } from 'discord.js';
-import { IHotelItems, IInventoryItem, IMobLoot, TBruxaOptions } from './Types';
+import { IFerreiroItem, IHotelItem, IInventoryItem, IMobLoot } from './Types';
 
 export default class PagesCollector extends MessageCollector {
   public ctx: CommandContext;
 
   public message: Message;
 
-  public sent: Message;
+  public sent: Message | Message[];
 
   public invalidOption: null;
 
@@ -17,7 +17,7 @@ export default class PagesCollector extends MessageCollector {
 
   constructor(
     public channel: TextChannel,
-    { ctx, sent }: { ctx: CommandContext; sent: Message },
+    { ctx, sent }: { ctx: CommandContext; sent: Message | Message[] },
     public collectorOptions = { max: 5, time: 60000 },
   ) {
     super(channel, (m) => m.author.id === ctx.message.author.id, collectorOptions);
@@ -27,6 +27,27 @@ export default class PagesCollector extends MessageCollector {
     this.invalidOption = null;
     this.findOption = null;
     this.handler = null;
+  }
+
+  static arrFindByElemOrIndex(arr: Array<IMobLoot | IInventoryItem | IFerreiroItem | string>) {
+    return (str: string): IMobLoot | IInventoryItem | IFerreiroItem | string | undefined =>
+      arr.find((elem, i) => elem === str?.toLowerCase() || i + 1 === Number(str));
+  }
+
+  static arrFindByItemNameOrIndex(items: Array<IMobLoot | IInventoryItem | IFerreiroItem>) {
+    return (str: string): IMobLoot | IInventoryItem | IFerreiroItem | undefined =>
+      items.find((item, i) =>
+        'name' in item ? item.name.toLowerCase() === str?.toLowerCase() : i + 1 === Number(str),
+      );
+  }
+
+  static arrFindByIndex(arr: Array<IHotelItem>) {
+    return (str: string): IHotelItem | undefined =>
+      arr.find((_: IHotelItem, i: number) => i + 1 === Number(str));
+  }
+
+  static continue(): string {
+    return 'CONTINUE';
   }
 
   start(): this {
@@ -93,26 +114,5 @@ export default class PagesCollector extends MessageCollector {
    */
   finish(): void {
     return this.stop('finish');
-  }
-
-  static arrFindByElemOrIndex(arr: Array<TBruxaOptions>) {
-    return (str: TBruxaOptions): TBruxaOptions | undefined =>
-      arr.find((elem, i) => elem === str?.toLowerCase() || i + 1 === Number(str));
-  }
-
-  static arrFindByItemNameOrIndex(items: Array<IMobLoot | IInventoryItem>) {
-    return (str: string): IMobLoot | IInventoryItem | undefined =>
-      items.find(
-        (item, i) => item.name.toLowerCase() === str?.toLowerCase() || i + 1 === Number(str),
-      );
-  }
-
-  static arrFindByIndex(arr: Array<IHotelItems>) {
-    return (str: string): IHotelItems | undefined =>
-      arr.find((_: IHotelItems, i: number) => i + 1 === Number(str));
-  }
-
-  static continue(): string {
-    return 'CONTINUE';
   }
 }

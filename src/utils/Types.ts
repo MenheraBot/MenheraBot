@@ -98,9 +98,12 @@ interface IUserArmor {
 
 type TFamiliarBoost = 'abilityPower' | 'damage' | 'armor';
 
+export type TFamiliarID = 1 | 2 | 3;
+
+export type TJobIndexes = 1 | 2 | 3 | 4;
+
 interface IUserFamiliar {
-  id: number;
-  number: string;
+  id: TFamiliarID;
   level: number;
   xp: number;
   nextLevelXp: number;
@@ -151,7 +154,7 @@ export interface IUserRpgSchema extends Document {
   inBattle: boolean;
   backpack: { name: string };
   resetRoll: number;
-  jobId: number;
+  jobId: TJobIndexes;
   jobCooldown: string;
   familiar: IUserFamiliar;
 }
@@ -256,10 +259,10 @@ export interface IDungeonMob {
 
 export interface IBattleChoice {
   name: string;
-  damage: number;
-  scape: boolean;
+  damage: number | string;
+  scape?: boolean;
   cost: number;
-  heal: number;
+  heal?: number;
 }
 
 export interface ICmdSchema extends Document {
@@ -324,14 +327,9 @@ export interface IDatabaseRepositories {
   giveRepository: GiveRepository;
 }
 
-export interface IHotelItems {
-  name: string;
-  time: number;
-  life: number;
-  mana: number;
-}
+export type TVilaOptions = 'bruxa' | 'ferreiro' | 'hotel' | 'guilda';
 
-export type TBruxaOptions = 'bruxa' | 'ferreiro' | 'hotel' | 'guilda';
+export type TFerreiroOptions = 'sword' | 'armor' | 'backpack';
 
 export interface IMobsFile {
   inicial: IDungeonMob[];
@@ -344,6 +342,22 @@ export interface IMobsFile {
   universal: IDungeonMob[];
 }
 
+export interface IClassAbilities {
+  uniquePowers: IUniquePower[];
+  normalAbilities: IAbility[];
+}
+
+export interface IAbilitiesFile {
+  assassin: IClassAbilities;
+  barbarian: IClassAbilities;
+  clerigo: IClassAbilities;
+  druida: IClassAbilities;
+  espadachim: IClassAbilities;
+  feiticeiro: IClassAbilities;
+  monge: IClassAbilities;
+  necromante: IClassAbilities;
+}
+
 interface IFamiliarBoost {
   name: string;
   type: TFamiliarBoost;
@@ -351,8 +365,8 @@ interface IFamiliarBoost {
   value: number;
 }
 
-interface IFamiliarFromFile {
-  id: number;
+export interface IFamiliarFromFile {
+  id: TFamiliarID;
   boost: IFamiliarBoost;
   image: string;
 }
@@ -361,4 +375,74 @@ export interface IFamiliarFile {
   1: IFamiliarFromFile;
   2: IFamiliarFromFile;
   3: IFamiliarFromFile;
+}
+
+export interface IJobFromFile {
+  name: string;
+  min_level: number;
+  work_cooldown_in_hours: number;
+  xp: number;
+  min_money: number;
+  max_money: number;
+}
+
+export interface IJobFile {
+  1: IJobFromFile;
+  2: IJobFromFile;
+  3: IJobFromFile;
+  4: IJobFromFile;
+}
+
+export type TDungeonLevel = 1 | 2 | 3 | 4 | 5;
+
+export interface IBruxaItem {
+  name: string;
+  description: string;
+  type: string;
+  damage: number;
+  value: number;
+  maxLevel?: number;
+  minLevel: number;
+}
+
+export interface IRequiredItems {
+  [name: string]: number;
+}
+
+export interface IFerreiroItem {
+  id: string;
+  price?: number;
+  protection?: number;
+  capacity?: number;
+  isNotTrade?: boolean;
+  damage?: number;
+  category: string;
+  required_items?: IRequiredItems;
+}
+
+export interface IHotelItem {
+  name: string;
+  time: number;
+  life: number | 'MAX';
+  mana: number | 'MAX';
+}
+
+export interface IJobsItem {
+  name: string;
+  value: number;
+  job_id: TJobIndexes;
+}
+
+interface IJobsFromFile {
+  1: IJobsItem[];
+  2: IJobsItem[];
+  3: IJobsItem[];
+  4: IJobsItem[];
+}
+
+export interface IITemsFile {
+  bruxa: IBruxaItem[];
+  ferreiro: IFerreiroItem[];
+  hotel: IHotelItem[];
+  jobs: IJobsFromFile;
 }

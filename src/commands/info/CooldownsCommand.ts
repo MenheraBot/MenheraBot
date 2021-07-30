@@ -16,7 +16,7 @@ export default class CooldownsCommand extends Command {
   }
 
   async run(ctx: CommandContext): Promise<Message | Message[]> {
-    const userRpg = await this.client.database.Rpg.findById(ctx.message.author.id);
+    const userRpg = await this.client.repositories.rpgRepository.find(ctx.message.author.id);
     if (!ctx.data.user) return ctx.replyT('error', 'commands:cooldowns.error');
 
     const huntCooldownInMilis = parseInt(ctx.data.user.caçarTime) - Date.now();

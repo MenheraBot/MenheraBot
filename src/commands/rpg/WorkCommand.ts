@@ -1,12 +1,13 @@
 /* eslint-disable camelcase */
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import moment from 'moment';
 import Command from '@structures/Command';
-import { jobs as jobsFile, items as itemsFile } from '@structures/RpgHandler';
+import { items as itemsFile, jobs as jobsFile } from '@structures/RpgHandler';
 import rpgUtil from '@utils/RPGUtil';
 import MenheraClient from 'MenheraClient';
 import CommandContext from '@structures/CommandContext';
 import { finalChecks } from '@structures/Rpgs/checks';
+import { TJobIndexes } from '@utils/Types';
 
 export default class WorkCommand extends Command {
   constructor(client: MenheraClient) {
@@ -18,13 +19,13 @@ export default class WorkCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
-    const user = await this.client.database.Rpg.findById(ctx.message.author.id);
+  async run(ctx: CommandContext): Promise<Message | Message[]> {
+    const user = await this.client.repositories.rpgRepository.find(ctx.message.author.id);
     if (!user)
       return ctx.replyT('error', 'commands:work.not-register', { prefix: ctx.data.server.prefix });
 
-    const jobId = user.jobId || 0;
-    if (jobId < 1)
+    const jobId: TJobIndexes = user.jobId ?? null;
+    if (!jobId)
       return ctx.replyT('error', 'commands:work.not-work', { prefix: ctx.data.server.prefix });
 
     if (parseInt(user.jobCooldown) > Date.now())
@@ -80,6 +81,6 @@ export default class WorkCommand extends Command {
 
     await finalChecks(ctx, user);
 
-    ctx.sendC(ctx.message.author.toString(), embed);
+    return ctx.sendC(ctx.message.author.toString(), embed);
   }
 }

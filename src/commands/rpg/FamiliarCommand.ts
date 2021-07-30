@@ -4,6 +4,7 @@ import Command from '@structures/Command';
 import { familiars as familiarsFile } from '@structures/RpgHandler';
 import MenheraClient from 'MenheraClient';
 import CommandContext from '@structures/CommandContext';
+import { TFamiliarID } from '@utils/Types';
 
 export default class FamiliarCommand extends Command {
   constructor(client: MenheraClient) {
@@ -16,8 +17,8 @@ export default class FamiliarCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
-    const user = await this.client.database.Rpg.findById(ctx.message.author.id);
+  async run(ctx: CommandContext): Promise<Message | Message[] | void> {
+    const user = await this.client.repositories.rpgRepository.find(ctx.message.author.id);
     if (!user)
       return ctx.replyT('error', 'commands:familiar.no-user', { prefix: ctx.data.server.prefix });
 
@@ -33,15 +34,16 @@ export default class FamiliarCommand extends Command {
         .setImage('https://i.imgur.com/nbbBZWo.gif');
       const sentMessage = (await ctx.sendC(ctx.message.author.toString(), embed)) as Message;
       setTimeout(async () => {
-        user.familiar = {
-          id: userFamiliar[0],
-          level: 1,
-          xp: 0,
-          nextLevelXp: 1500,
-          type: userFamiliar[1].boost.type,
-        };
-        await user.save();
-        sentMessage.edit({
+        await this.client.repositories.rpgRepository.update(ctx.message.author.id, {
+          familiar: {
+            id: parseInt(userFamiliar[0]) as TFamiliarID,
+            level: 1,
+            xp: 0,
+            nextLevelXp: 1500,
+            type: userFamiliar[1].boost.type,
+          },
+        });
+        await sentMessage.edit({
           content: `${ctx.message.author}, ${ctx.locale('commands:familiar.success', {
             name: ctx.locale(`roleplay:familiar.${userFamiliar[0]}`),
           })}`,
@@ -82,7 +84,7 @@ export default class FamiliarCommand extends Command {
             },
           ],
         );
-      ctx.sendC(ctx.message.author.toString(), embed);
+      return ctx.sendC(ctx.message.author.toString(), embed);
     }
   }
 }

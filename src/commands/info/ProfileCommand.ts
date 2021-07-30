@@ -29,7 +29,7 @@ export default class ProfileCommand extends Command {
         member = await this.client.users.fetch(ctx.args[0].replace(/[<@!>]/g, ''));
         if (member.bot) return ctx.replyT('error', 'commands:profile.bot');
 
-        user = await this.client.database.repositories.userRepository.find(member.id);
+        user = await this.client.repositories.userRepository.find(member.id);
       } catch {
         return ctx.replyT('error', 'commands:profile.unknow-user');
       }
