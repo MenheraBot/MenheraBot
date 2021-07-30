@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 import BadgeRepository from '@database/repositories/BadgeRepository';
 import BlacklistRepository from '@database/repositories/BlacklistRepository';
+import CacheRepository from '@database/repositories/CacheRepository';
 import CmdRepository from '@database/repositories/CmdsRepository';
 import CommandRepository from '@database/repositories/CommandRepository';
 import GiveRepository from '@database/repositories/GiveRepository';
@@ -115,8 +116,8 @@ export interface IInventoryItem {
   minLevel?: number;
 }
 
-export interface IGuildSchema extends Document {
-  id: string;
+export interface IGuildSchema {
+  id?: string;
   prefix: string;
   blockedChannels: Array<string>;
   disabledCommands: Array<string>;
@@ -226,7 +227,7 @@ export interface IMobAttack {
 
 export interface IContextData {
   user: IUserSchema & Document;
-  server: IGuildSchema & Document;
+  server: IGuildSchema | (IGuildSchema & Document);
 }
 
 export type mobType =
@@ -305,6 +306,7 @@ export interface IUserDataToSend {
 }
 export interface IDatabaseRepositories {
   userRepository: UserRepository;
+  cacheRepository: CacheRepository;
   commandRepository: CommandRepository;
   cmdRepository: CmdRepository;
   starRepository: StarRepository;

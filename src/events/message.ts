@@ -45,7 +45,7 @@ export default class MessageReceive extends Event {
     if (message.guild.me && !message.channel.permissionsFor(message.guild.me)?.has('SEND_MESSAGES'))
       return;
 
-    const server = await this.client.repositories.guildRepository.findOrCreate(message.guild.id);
+    const server = await this.client.repositories.cacheRepository.fetchGuild(message.guild.id);
     let prefix = server?.prefix?.toLowerCase() ?? process.env.BOT_PREFIX;
     const language = LANGUAGES[server.lang] ?? LANGUAGES['pt-BR'];
     const t = i18next.getFixedT(language);

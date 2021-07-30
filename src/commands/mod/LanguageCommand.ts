@@ -33,14 +33,20 @@ export default class LanguageCommand extends Command {
         if (!ctx.message.guild) return;
         switch (r.emoji.name) {
           case '🇧🇷':
-            await ctx.client.repositories.guildRepository.updateLang(ctx.message.guild.id, 'pt-BR');
+            await ctx.client.repositories.cacheRepository.updateGuildLanguage(
+              ctx.message.guild.id,
+              'pt-BR',
+            );
             await msg.delete();
             await ctx.message.channel.send(
               ':map: | Agora eu irei falar em ~~brasileiro~~ português',
             );
             break;
           case '🇺🇸':
-            await ctx.client.repositories.guildRepository.updateLang(ctx.message.guild.id, 'en-US');
+            await ctx.client.repositories.cacheRepository.updateGuildLanguage(
+              ctx.message.guild.id,
+              'en-US',
+            );
             await msg.delete();
             await ctx.message.channel.send(":map: | Now I'll talk in english");
             break;

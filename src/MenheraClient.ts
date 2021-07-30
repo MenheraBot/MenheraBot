@@ -8,11 +8,11 @@ import '@sentry/tracing';
 import { IClientConfigs, ICommandConfig, IDatabaseRepositories } from '@utils/Types';
 import FileUtil from '@utils/FileUtil';
 import Event from '@structures/Event';
+import Database from '@database/Databases';
 import EventManager from './structures/EventManager';
 
 import Command from './structures/Command';
 
-import Database from './database/MongoDatabase';
 import LocaleStructure from './structures/LocaleStructure';
 
 export default class MenheraClient extends Client {
@@ -34,6 +34,7 @@ export default class MenheraClient extends Client {
       process.env.NODE_ENV === 'development'
         ? (process.env.DEV_DATABASE_URI as string)
         : (process.env.DATABASE_URI as string),
+      true,
     );
     this.commands = new Collection();
     this.aliases = new Collection();

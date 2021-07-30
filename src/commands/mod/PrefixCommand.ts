@@ -19,7 +19,10 @@ export default class PrefixCommand extends Command {
     if (!prefix) return ctx.replyT('error', 'commands:prefix.no-args');
     if (prefix.length > 3) return ctx.replyT('error', 'commands:prefix.invalid-input');
 
-    await this.client.repositories.guildRepository.update(ctx.data.server.id, { prefix });
+    await this.client.repositories.cacheRepository.updateGuildPrefix(
+      ctx.message.guild?.id ?? '',
+      prefix,
+    );
 
     return ctx.replyT('success', 'commands:prefix.done', { prefix: ctx.data.server.prefix });
   }

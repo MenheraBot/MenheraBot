@@ -29,14 +29,17 @@ export default class BlockCmdCommand extends Command {
       return ctx.replyT('error', 'commands:blockcommand.foda');
 
     if (ctx.data.server.disabledCommands?.includes(cmd.config.name)) {
-      const index = ctx.data.server.disabledCommands.indexOf(cmd.config.name);
-
-      ctx.data.server.disabledCommands.splice(index, 1);
-      await ctx.data.server.save();
+      await this.client.repositories.cacheRepository.enableCommandInGuild(
+        ctx.message.guild?.id ?? '',
+        cmd.config.name,
+      );
       return ctx.replyT('success', 'commands:blockcommand.unblock', { cmd: cmd.config.name });
     }
-    ctx.data.server.disabledCommands.push(cmd.config.name);
-    await ctx.data.server.save();
+
+    await this.client.repositories.cacheRepository.disableCommandInGuild(
+      ctx.message.guild?.id ?? '',
+      cmd.config.name,
+    );
     return ctx.replyT('success', 'commands:blockcommand.block', { cmd: cmd.config.name });
   }
 }
