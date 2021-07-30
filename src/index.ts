@@ -15,7 +15,7 @@ const client = new MenheraClient(
   },
 );
 
-async function loadMenhera() {
+(async () => {
   await client.init();
 
   client
@@ -26,6 +26,4 @@ async function loadMenhera() {
     )
     .then(() => console.log('[INDEX] Logged in'))
     .catch((e) => console.log(`[FATALERROR] Failure connecting to Discord! ${e.message}!`));
-}
-
-loadMenhera();
+})();

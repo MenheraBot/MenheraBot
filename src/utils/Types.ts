@@ -33,12 +33,6 @@ export interface ICommandConfig {
   devsOnly?: boolean;
 }
 
-export interface IEvent {
-  name: string;
-  dir: string;
-  run: (...args: Array<unknown>) => Promise<unknown>;
-}
-
 export interface IHttpPicassoReutrn {
   err: boolean;
   data?: Buffer;
@@ -165,13 +159,13 @@ export interface IUserSchema extends Document {
   mamou: number;
   casado: string;
   nota: string;
-  data?: string;
+  data?: string | null;
   shipValue?: string;
   ban?: boolean;
-  banReason?: string;
+  banReason?: string | null;
   afk: boolean;
-  afkReason: string;
-  afkGuild: string;
+  afkReason: string | null;
+  afkGuild: string | null;
   cor: string;
   cores: Array<IColor>;
   caçados: number;

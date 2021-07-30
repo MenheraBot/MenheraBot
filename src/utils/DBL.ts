@@ -108,7 +108,7 @@ export default class DiscordBots {
       const guildCount = info.reduce((prev, val) => prev + val);
       const shardId = 0;
       const shardsCount = this.client.shard.count;
-      dbl.postStats(guildCount, shardId, shardsCount);
+      await dbl.postStats(guildCount, shardId, shardsCount);
     }, 1800000);
   }
 }

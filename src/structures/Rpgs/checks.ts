@@ -3,6 +3,7 @@ import { Message, MessageEmbed } from 'discord.js';
 import {
   IAbility,
   IBattleChoice,
+  IClassAbilities,
   IDungeonMob,
   IMobAttack,
   IUniquePower,
@@ -99,14 +100,15 @@ const battle = async (
 ): Promise<void> => {
   let danoUser: number;
   if (escolha.scape) {
-    ctx.replyT('scape', 'roleplay:scape');
-    user.inBattle = false;
-    user.dungeonCooldown = `${rpg.scapeCooldown + Date.now()}`;
-    await user.save();
+    await ctx.replyT('scape', 'roleplay:scape');
+    await ctx.client.repositories.rpgRepository.update(ctx.message.author.id, {
+      inBattle: false,
+      dungeonCooldown: `${rpg.scapeCooldown + Date.now()}`,
+    });
     return;
   }
   if (escolha.name === 'Ataque Básico' || escolha.name === 'Basic Attack') {
-    danoUser = escolha.damage;
+    danoUser = escolha.damage as number;
   } else if (escolha.name === 'Morte Instantânea') {
     if (user.mana < user.maxMana)
       return enemyShot(
@@ -127,17 +129,17 @@ const battle = async (
         type,
         `⚔️ | ${ctx.locale('roleplay:battle.no-mana', { name: escolha.name })}`,
       );
-    if (escolha?.heal > 0) {
-      user.life += escolha?.heal;
+    if (escolha.heal && escolha.heal > 0) {
+      user.life += escolha.heal;
       if (user.life > user.maxLife) user.life = user.maxLife;
     }
     danoUser =
       user?.familiar?.id && user.familiar.type === 'abilityPower'
-        ? escolha.damage *
+        ? (escolha.damage as number) *
           (user.abilityPower +
             familiarsFile[user.familiar.id].boost.value +
             (user.familiar.level - 1) * familiarsFile[user.familiar.id].boost.value)
-        : user.abilityPower * escolha.damage;
+        : user.abilityPower * (escolha.damage as number);
     user.mana -= escolha?.cost;
   }
 
@@ -175,30 +177,28 @@ const morte = async (
   ctx: CommandContext,
   user: IUserRpgSchema & Document,
   toSay: string,
-  inimigo: IDungeonMob & { dgLevel: number },
+  inimigo: IDungeonMob,
 ): Promise<void> => {
-  http.postRpg(user.id, user.class, user.level, inimigo.dgLevel, true, Date.now());
+  await http.postRpg(user.id, user.class, user.level, inimigo.dgLevel ?? 0, true, Date.now());
 
-  ctx.reply('error', `${toSay}\n\n${ctx.locale('roleplay:death')}`);
+  await ctx.reply('error', `${toSay}\n\n${ctx.locale('roleplay:death')}`);
   user.death = `{Date.now() + rpg.deathCooldown}`;
   user.life = 0;
   user.inBattle = false;
-  try {
-    await user.save();
-  } catch (e) {
-    setTimeout(async () => {
-      await user.save();
-    }, 1000);
-  }
+  await ctx.client.repositories.rpgRepository.update(ctx.message.author.id, {
+    death: `${Date.now() + rpg.deathCooldown}`,
+    life: 0,
+    inBattle: false,
+  });
 };
 
-const enemyShot = async (
+const enemyShot = (
   ctx: CommandContext,
   user: IUserRpgSchema & Document,
   inimigo: IDungeonMob,
   type: 'boss' | 'dungeon',
   toSay: string,
-) => {
+): Promise<void> => {
   const habilidades = getAbilities(user);
 
   let danoRecebido: number;
@@ -223,7 +223,7 @@ const enemyShot = async (
     return morte(ctx, user, toSay, inimigo);
   }
   user.life = vidaUser;
-  continueBattle(ctx, inimigo, habilidades, user, type, ataque, toSay);
+  return continueBattle(ctx, inimigo, habilidades, user, type, ataque, toSay);
 };
 
 const continueBattle = async (
@@ -234,18 +234,19 @@ const continueBattle = async (
   type: 'boss' | 'dungeon',
   ataque: IMobAttack,
   toSay: string,
-) => {
+): Promise<void> => {
   const options: Array<IBattleChoice> = [
     {
       name: ctx.locale('commands:dungeon.scape'),
-      // @ts-ignore
       damage: '🐥',
       scape: true,
+      cost: 0,
     },
   ];
 
   options.push({
     name: ctx.locale('roleplay:basic-attack'),
+    cost: 0,
     damage:
       user?.familiar?.id && user.familiar.type === 'damage'
         ? user.damage +
@@ -298,13 +299,10 @@ const continueBattle = async (
     earmor: inimigo.armor,
   });
 
-  const escolhas = [];
-
   for (let i = 0; i < options.length; i += 1) {
     texto += `\n**${i}** - ${options[i].name} | **${options[i].cost || 0}**💧, **${
       options[i].damage
     }**🗡️`;
-    escolhas.push(i);
   }
 
   const embed = new MessageEmbed()
@@ -324,7 +322,7 @@ const continueBattle = async (
   collector.on('collect', (m) => {
     time = true;
     const choice = Number(m.content);
-    if (escolhas.includes(choice)) {
+    if (choice >= 0 && choice < options.length) {
       return battle(ctx, options[choice], user, inimigo, type); // Mandar os dados de ataque, e defesa do inimigo, para fazer o calculo lá
     }
     return enemyShot(ctx, user, inimigo, type, `⚔️ |  ${ctx.locale('roleplay:battle.new-tatic')}`);
@@ -338,7 +336,7 @@ const continueBattle = async (
   }, 7000);
 };
 
-const finalChecks = async (ctx: CommandContext, user: IUserRpgSchema & Document) => {
+const finalChecks = async (ctx: CommandContext, user: IUserRpgSchema & Document): Promise<void> => {
   let texto = '';
 
   setTimeout(async () => {
@@ -353,8 +351,8 @@ const finalChecks = async (ctx: CommandContext, user: IUserRpgSchema & Document)
         user.armor += 2;
         texto += '**<a:LevelUp:760954035779272755> LEVEL UP <a:LevelUp:760954035779272755>**';
         await user.save();
-        ctx.send(texto);
-        newAbilities(ctx, user);
+        await ctx.send(texto);
+        await newAbilities(ctx, user);
       }
     } else if (user.level > 4 && user.level < 10) {
       if (user.xp >= user.nextLevelXp) {
@@ -365,9 +363,9 @@ const finalChecks = async (ctx: CommandContext, user: IUserRpgSchema & Document)
         user.damage += 5;
         user.armor += 3;
         texto += '**<a:LevelUp:760954035779272755> LEVEL UP <a:LevelUp:760954035779272755>**';
-        ctx.send(texto);
+        await ctx.send(texto);
         await user.save();
-        newAbilities(ctx, user);
+        await newAbilities(ctx, user);
       }
     } else if (user.level > 9 && user.level < 29) {
       if (user.xp >= user.nextLevelXp) {
@@ -378,9 +376,9 @@ const finalChecks = async (ctx: CommandContext, user: IUserRpgSchema & Document)
         user.damage += 7;
         user.armor += 5;
         texto += '**<a:LevelUp:760954035779272755> LEVEL UP <a:LevelUp:760954035779272755>**';
-        ctx.send(texto);
+        await ctx.send(texto);
         await user.save();
-        newAbilities(ctx, user);
+        await newAbilities(ctx, user);
       }
     } else if (user.level >= 29) {
       if (user.xp >= user.nextLevelXp) {
@@ -391,15 +389,18 @@ const finalChecks = async (ctx: CommandContext, user: IUserRpgSchema & Document)
         user.damage += 10;
         user.armor += 2;
         texto += '**<a:LevelUp:760954035779272755> LEVEL UP <a:LevelUp:760954035779272755>**';
-        ctx.send(texto);
+        await ctx.send(texto);
         await user.save();
-        newAbilities(ctx, user);
+        await newAbilities(ctx, user);
       }
     }
   }, 500);
 };
 
-const newAbilities = async (ctx: CommandContext, user: IUserRpgSchema & Document) => {
+const newAbilities = async (
+  ctx: CommandContext,
+  user: IUserRpgSchema & Document,
+): Promise<void> => {
   setTimeout(async () => {
     if (user.level === 5) {
       switch (user.class) {
@@ -408,7 +409,7 @@ const newAbilities = async (ctx: CommandContext, user: IUserRpgSchema & Document
           user.maxMana += 20;
           user.abilityPower += 1;
           await user.save();
-          ctx.replyT('level', 'roleplay:new-ability', {
+          await ctx.replyT('level', 'roleplay:new-ability', {
             level: user.level,
             ability: abilitiesFile.assassin.normalAbilities[1].name,
           });
@@ -418,7 +419,7 @@ const newAbilities = async (ctx: CommandContext, user: IUserRpgSchema & Document
           user.maxLife += 20;
           user.abilityPower += 1;
           await user.save();
-          ctx.replyT('level', 'roleplay:new-ability', {
+          await ctx.replyT('level', 'roleplay:new-ability', {
             level: user.level,
             ability: abilitiesFile.barbarian.normalAbilities[1].name,
           });
@@ -428,7 +429,7 @@ const newAbilities = async (ctx: CommandContext, user: IUserRpgSchema & Document
           user.abilityPower += 1;
           user.maxMana += 20;
           await user.save();
-          ctx.replyT('level', 'roleplay:new-ability', {
+          await ctx.replyT('level', 'roleplay:new-ability', {
             level: user.level,
             ability: abilitiesFile.clerigo.normalAbilities[1].name,
           });
@@ -437,7 +438,7 @@ const newAbilities = async (ctx: CommandContext, user: IUserRpgSchema & Document
           user.abilities.push(abilitiesFile.druida.normalAbilities[1]);
           user.abilityPower += 1;
           await user.save();
-          ctx.replyT('level', 'roleplay:new-ability', {
+          await ctx.replyT('level', 'roleplay:new-ability', {
             level: user.level,
             ability: abilitiesFile.druida.normalAbilities[1].name,
           });
@@ -446,7 +447,7 @@ const newAbilities = async (ctx: CommandContext, user: IUserRpgSchema & Document
           user.abilities.push(abilitiesFile.espadachim.normalAbilities[1]);
           user.abilityPower += 2;
           await user.save();
-          ctx.replyT('level', 'roleplay:new-ability', {
+          await ctx.replyT('level', 'roleplay:new-ability', {
             level: user.level,
             ability: abilitiesFile.espadachim.normalAbilities[1].name,
           });
@@ -457,7 +458,7 @@ const newAbilities = async (ctx: CommandContext, user: IUserRpgSchema & Document
             user.maxMana += 20;
             user.abilityPower += 1;
             await user.save();
-            ctx.replyT('level', 'roleplay:new-ability', {
+            await ctx.replyT('level', 'roleplay:new-ability', {
               level: user.level,
               ability: abilitiesFile.feiticeiro.normalAbilities[1].name,
             });
@@ -467,7 +468,7 @@ const newAbilities = async (ctx: CommandContext, user: IUserRpgSchema & Document
             user.maxMana += 20;
             user.abilityPower += 1;
             await user.save();
-            ctx.replyT('level', 'roleplay:new-ability', {
+            await ctx.replyT('level', 'roleplay:new-ability', {
               level: user.level,
               ability: abilitiesFile.feiticeiro.normalAbilities[2].name,
             });
@@ -477,7 +478,7 @@ const newAbilities = async (ctx: CommandContext, user: IUserRpgSchema & Document
             user.maxMana += 20;
             user.abilityPower += 1;
             await user.save();
-            ctx.replyT('level', 'roleplay:new-ability', {
+            await ctx.replyT('level', 'roleplay:new-ability', {
               level: user.level,
               ability: abilitiesFile.feiticeiro.normalAbilities[3].name,
             });
@@ -487,7 +488,7 @@ const newAbilities = async (ctx: CommandContext, user: IUserRpgSchema & Document
           user.abilities.push(abilitiesFile.monge.normalAbilities[1]);
           user.abilityPower += 1;
           await user.save();
-          ctx.replyT('level', 'roleplay:new-ability', {
+          await ctx.replyT('level', 'roleplay:new-ability', {
             level: user.level,
             ability: abilitiesFile.monge.normalAbilities[1].name,
           });
@@ -497,7 +498,7 @@ const newAbilities = async (ctx: CommandContext, user: IUserRpgSchema & Document
           user.maxMana += 20;
           user.abilityPower += 1;
           await user.save();
-          ctx.replyT('level', 'roleplay:new-ability', {
+          await ctx.replyT('level', 'roleplay:new-ability', {
             level: user.level,
             ability: abilitiesFile.necromante.normalAbilities[1].name,
           });
@@ -511,7 +512,7 @@ const newAbilities = async (ctx: CommandContext, user: IUserRpgSchema & Document
           user.abilities.push(abilitiesFile.assassin.normalAbilities[2]);
           user.abilityPower += 1;
           await user.save();
-          ctx.replyT('level', 'roleplay:new-ability', {
+          await ctx.replyT('level', 'roleplay:new-ability', {
             level: user.level,
             ability: abilitiesFile.assassin.normalAbilities[2].name,
           });
@@ -521,7 +522,7 @@ const newAbilities = async (ctx: CommandContext, user: IUserRpgSchema & Document
           user.maxLife += 50;
           user.abilityPower += 1;
           await user.save();
-          ctx.replyT('level', 'roleplay:new-ability', {
+          await ctx.replyT('level', 'roleplay:new-ability', {
             level: user.level,
             ability: abilitiesFile.barbarian.normalAbilities[2].name,
           });
@@ -531,7 +532,7 @@ const newAbilities = async (ctx: CommandContext, user: IUserRpgSchema & Document
           user.abilityPower += 1;
           user.maxMana += 20;
           await user.save();
-          ctx.replyT('level', 'roleplay:new-ability', {
+          await ctx.replyT('level', 'roleplay:new-ability', {
             level: user.level,
             ability: abilitiesFile.clerigo.normalAbilities[2].name,
           });
@@ -540,7 +541,7 @@ const newAbilities = async (ctx: CommandContext, user: IUserRpgSchema & Document
           user.abilities.push(abilitiesFile.druida.normalAbilities[2]);
           user.abilityPower += 1;
           await user.save();
-          ctx.replyT('level', 'roleplay:new-ability', {
+          await ctx.replyT('level', 'roleplay:new-ability', {
             level: user.level,
             ability: abilitiesFile.druida.normalAbilities[2].name,
           });
@@ -549,7 +550,7 @@ const newAbilities = async (ctx: CommandContext, user: IUserRpgSchema & Document
           user.abilities.push(abilitiesFile.espadachim.normalAbilities[2]);
           user.abilityPower += 1;
           await user.save();
-          ctx.replyT('level', 'roleplay:new-ability', {
+          await ctx.replyT('level', 'roleplay:new-ability', {
             level: user.level,
             ability: abilitiesFile.espadachim.normalAbilities[2].name,
           });
@@ -560,7 +561,7 @@ const newAbilities = async (ctx: CommandContext, user: IUserRpgSchema & Document
             user.maxMana += 25;
             user.abilityPower += 1;
             await user.save();
-            ctx.replyT('level', 'roleplay:new-ability', {
+            await ctx.replyT('level', 'roleplay:new-ability', {
               level: user.level,
               ability: abilitiesFile.feiticeiro.normalAbilities[4].name,
             });
@@ -570,7 +571,7 @@ const newAbilities = async (ctx: CommandContext, user: IUserRpgSchema & Document
             user.maxMana += 25;
             user.abilityPower += 1;
             await user.save();
-            ctx.replyT('level', 'roleplay:new-ability', {
+            await ctx.replyT('level', 'roleplay:new-ability', {
               level: user.level,
               ability: abilitiesFile.feiticeiro.normalAbilities[5].name,
             });
@@ -580,7 +581,7 @@ const newAbilities = async (ctx: CommandContext, user: IUserRpgSchema & Document
             user.maxMana += 25;
             user.abilityPower += 1;
             await user.save();
-            ctx.replyT('level', 'roleplay:new-ability', {
+            await ctx.replyT('level', 'roleplay:new-ability', {
               level: user.level,
               ability: abilitiesFile.feiticeiro.normalAbilities[6].name,
             });
@@ -590,7 +591,7 @@ const newAbilities = async (ctx: CommandContext, user: IUserRpgSchema & Document
           user.abilities.push(abilitiesFile.monge.normalAbilities[2]);
           user.abilityPower += 1;
           await user.save();
-          ctx.replyT('level', 'roleplay:new-ability', {
+          await ctx.replyT('level', 'roleplay:new-ability', {
             level: user.level,
             ability: abilitiesFile.monge.normalAbilities[2].name,
           });
@@ -600,7 +601,7 @@ const newAbilities = async (ctx: CommandContext, user: IUserRpgSchema & Document
           user.maxMana += 25;
           user.abilityPower += 1;
           await user.save();
-          ctx.replyT('level', 'roleplay:new-ability', {
+          await ctx.replyT('level', 'roleplay:new-ability', {
             level: user.level,
             ability: abilitiesFile.necromante.normalAbilities[2].name,
           });
@@ -615,7 +616,7 @@ const newAbilities = async (ctx: CommandContext, user: IUserRpgSchema & Document
           user.abilityPower += 1;
           user.damage += 10;
           await user.save();
-          ctx.replyT('level', 'roleplay:new-ability', {
+          await ctx.replyT('level', 'roleplay:new-ability', {
             level: user.level,
             ability: abilitiesFile.assassin.normalAbilities[3].name,
           });
@@ -625,7 +626,7 @@ const newAbilities = async (ctx: CommandContext, user: IUserRpgSchema & Document
           user.maxLife += 50;
           user.abilityPower += 1;
           await user.save();
-          ctx.replyT('level', 'roleplay:new-ability', {
+          await ctx.replyT('level', 'roleplay:new-ability', {
             level: user.level,
             ability: abilitiesFile.barbarian.normalAbilities[3].name,
           });
@@ -635,7 +636,7 @@ const newAbilities = async (ctx: CommandContext, user: IUserRpgSchema & Document
           user.abilityPower += 1;
           user.maxMana += 40;
           await user.save();
-          ctx.replyT('level', 'roleplay:new-ability', {
+          await ctx.replyT('level', 'roleplay:new-ability', {
             level: user.level,
             ability: abilitiesFile.clerigo.normalAbilities[3].name,
           });
@@ -645,7 +646,7 @@ const newAbilities = async (ctx: CommandContext, user: IUserRpgSchema & Document
           user.abilityPower += 1;
           user.maxMana += 30;
           await user.save();
-          ctx.replyT('level', 'roleplay:new-ability', {
+          await ctx.replyT('level', 'roleplay:new-ability', {
             level: user.level,
             ability: abilitiesFile.druida.normalAbilities[3].name,
           });
@@ -655,7 +656,7 @@ const newAbilities = async (ctx: CommandContext, user: IUserRpgSchema & Document
           user.abilityPower += 1;
           user.damage += 10;
           await user.save();
-          ctx.replyT('level', 'roleplay:new-ability', {
+          await ctx.replyT('level', 'roleplay:new-ability', {
             level: user.level,
             ability: abilitiesFile.espadachim.normalAbilities[3].name,
           });
@@ -666,7 +667,7 @@ const newAbilities = async (ctx: CommandContext, user: IUserRpgSchema & Document
             user.maxMana += 40;
             user.abilityPower += 1;
             await user.save();
-            ctx.replyT('level', 'roleplay:new-ability', {
+            await ctx.replyT('level', 'roleplay:new-ability', {
               level: user.level,
               ability: abilitiesFile.feiticeiro.normalAbilities[7].name,
             });
@@ -676,7 +677,7 @@ const newAbilities = async (ctx: CommandContext, user: IUserRpgSchema & Document
             user.maxMana += 40;
             user.abilityPower += 1;
             await user.save();
-            ctx.replyT('level', 'roleplay:new-ability', {
+            await ctx.replyT('level', 'roleplay:new-ability', {
               level: user.level,
               ability: abilitiesFile.feiticeiro.normalAbilities[8].name,
             });
@@ -686,7 +687,7 @@ const newAbilities = async (ctx: CommandContext, user: IUserRpgSchema & Document
             user.maxMana += 40;
             user.abilityPower += 1;
             await user.save();
-            ctx.replyT('level', 'roleplay:new-ability', {
+            await ctx.replyT('level', 'roleplay:new-ability', {
               level: user.level,
               ability: abilitiesFile.feiticeiro.normalAbilities[9].name,
             });
@@ -696,7 +697,7 @@ const newAbilities = async (ctx: CommandContext, user: IUserRpgSchema & Document
           user.abilities.push(abilitiesFile.monge.normalAbilities[3]);
           user.abilityPower += 2;
           await user.save();
-          ctx.replyT('level', 'roleplay:new-ability', {
+          await ctx.replyT('level', 'roleplay:new-ability', {
             level: user.level,
             ability: abilitiesFile.monge.normalAbilities[3].name,
           });
@@ -706,7 +707,7 @@ const newAbilities = async (ctx: CommandContext, user: IUserRpgSchema & Document
           user.maxMana += 40;
           user.abilityPower += 1;
           await user.save();
-          ctx.replyT('level', 'roleplay:new-ability', {
+          await ctx.replyT('level', 'roleplay:new-ability', {
             level: user.level,
             ability: abilitiesFile.necromante.normalAbilities[3].name,
           });
@@ -722,7 +723,7 @@ const newAbilities = async (ctx: CommandContext, user: IUserRpgSchema & Document
       user.xp = 0;
       user.nextLevelXp = 1000000;
       await user.save();
-      ctx.replyT('warn', 'roleplay:boss');
+      await ctx.replyT('warn', 'roleplay:boss');
     } else if (user.level === 25) {
       user.xp = 0;
       user.nextLevelXp = 3000000;
@@ -731,7 +732,7 @@ const newAbilities = async (ctx: CommandContext, user: IUserRpgSchema & Document
       user.xp = 0;
       user.nextLevelXp = 5000000;
       user.abilityPower += 1;
-      evolve(user, ctx);
+      await evolve(user, ctx);
     }
   }, 500);
 };
@@ -741,11 +742,11 @@ const resultBattle = async (
   user: IUserRpgSchema & Document,
   inimigo: IDungeonMob,
   toSay: string,
-) => {
+): Promise<void> => {
   const randomLoot = inimigo.loots[Math.floor(Math.random() * inimigo.loots.length)];
   let canGetLoot = true;
 
-  http.postRpg(user.id, user.class, user.level, inimigo.dgLevel, false, Date.now());
+  await http.postRpg(user.id, user.class, user.level, inimigo.dgLevel ?? 0, false, Date.now());
 
   const backpack = RPGUtil.getBackpack(user);
   if (backpack.value >= backpack.capacity) canGetLoot = false;
@@ -767,7 +768,7 @@ const resultBattle = async (
       },
     ]);
 
-  ctx.sendC(toSay, embed);
+  await ctx.sendC(toSay, embed);
   user.xp += inimigo.xp;
   if (canGetLoot) {
     user.loots.push(randomLoot);
@@ -780,7 +781,7 @@ const resultBattle = async (
 const getAbilities = (user: IUserRpgSchema): Array<IAbility & IUniquePower> => {
   const abilities = [];
 
-  let filtrado;
+  let filtrado: IClassAbilities;
 
   switch (user.class) {
     case 'Assassino':
@@ -837,12 +838,15 @@ const getAbilities = (user: IUserRpgSchema): Array<IAbility & IUniquePower> => {
     case 'Senhor das Trevas':
       filtrado = abilitiesFile.necromante;
       break;
+    default:
+      filtrado = abilitiesFile.assassin;
+      break;
   }
 
   const uniquePowerFiltred = filtrado.uniquePowers.filter(
     (f: IUniquePower) => f.name === user.uniquePower.name,
   );
-  const abilitiesFiltred = [];
+  const abilitiesFiltred: Array<IAbility | IUniquePower> = [];
 
   user.abilities.forEach((hab) => {
     const a = filtrado.normalAbilities.filter((f: IAbility) => f.name === hab.name);
@@ -922,13 +926,16 @@ const initialChecks = async (
     motivo.forEach((m) => {
       texto += `\n**${m.name}:** ${m.value}`;
     });
-    ctx.send(texto);
+    await ctx.send(texto);
   }
   await user.save();
   return pass;
 };
 
-const confirmRegister = async (user: IUserRpgSchema & Document, ctx: CommandContext) => {
+const confirmRegister = async (
+  user: IUserRpgSchema & Document,
+  ctx: CommandContext,
+): Promise<void> => {
   setTimeout(async () => {
     switch (user.class) {
       case 'Assassino': {
@@ -948,7 +955,7 @@ const confirmRegister = async (user: IUserRpgSchema & Document, ctx: CommandCont
         };
         user.uniquePower = choiceAssassin;
         await user.save();
-        ctx.replyT('success', 'roleplay:registred');
+        await ctx.replyT('success', 'roleplay:registred');
         break;
       }
 
@@ -969,7 +976,7 @@ const confirmRegister = async (user: IUserRpgSchema & Document, ctx: CommandCont
         };
         user.uniquePower = choiceBarbaro;
         await user.save();
-        ctx.replyT('success', 'roleplay:registred');
+        await ctx.replyT('success', 'roleplay:registred');
         break;
       }
 
@@ -989,7 +996,7 @@ const confirmRegister = async (user: IUserRpgSchema & Document, ctx: CommandCont
         };
         user.uniquePower = choiceDruida;
         await user.save();
-        ctx.replyT('success', 'roleplay:registred');
+        await ctx.replyT('success', 'roleplay:registred');
         break;
       }
 
@@ -1010,7 +1017,7 @@ const confirmRegister = async (user: IUserRpgSchema & Document, ctx: CommandCont
         };
         user.uniquePower = choiceEspadachim;
         await user.save();
-        ctx.replyT('success', 'roleplay:registred');
+        await ctx.replyT('success', 'roleplay:registred');
         break;
       }
 
@@ -1031,7 +1038,7 @@ const confirmRegister = async (user: IUserRpgSchema & Document, ctx: CommandCont
         };
         user.uniquePower = choiceFeiticeiro;
         await user.save();
-        ctx.replyT('success', 'roleplay:registred');
+        await ctx.replyT('success', 'roleplay:registred');
         break;
       }
 
@@ -1052,7 +1059,7 @@ const confirmRegister = async (user: IUserRpgSchema & Document, ctx: CommandCont
         };
         user.uniquePower = choiceClerigo;
         await user.save();
-        ctx.replyT('success', 'roleplay:registred');
+        await ctx.replyT('success', 'roleplay:registred');
         break;
       }
 
@@ -1072,7 +1079,7 @@ const confirmRegister = async (user: IUserRpgSchema & Document, ctx: CommandCont
           type: 'Arma',
         };
         await user.save();
-        ctx.replyT('success', 'roleplay:registred');
+        await ctx.replyT('success', 'roleplay:registred');
         break;
       }
 
@@ -1093,14 +1100,14 @@ const confirmRegister = async (user: IUserRpgSchema & Document, ctx: CommandCont
         };
         user.uniquePower = choiceNecromante;
         await user.save();
-        ctx.replyT('success', 'roleplay:registred');
+        await ctx.replyT('success', 'roleplay:registred');
         break;
       }
     }
   }, 1000);
 };
 
-const evolve = async (user: IUserRpgSchema & Document, ctx: CommandContext) => {
+const evolve = async (user: IUserRpgSchema & Document, ctx: CommandContext): Promise<void> => {
   switch (user.class) {
     case 'Assassino': {
       user.abilities.push(abilitiesFile.assassin.normalAbilities[4]);
@@ -1108,7 +1115,7 @@ const evolve = async (user: IUserRpgSchema & Document, ctx: CommandContext) => {
       user.class = 'Senhor das Sombras';
       await user.save();
       const translatedEvolve = ctx.locale(`roleplay:classes.${user.class}`);
-      ctx.replyT('warn', 'roleplay:evolve', { class: translatedEvolve });
+      await ctx.replyT('warn', 'roleplay:evolve', { class: translatedEvolve });
       break;
     }
     case 'Bárbaro': {
@@ -1117,7 +1124,7 @@ const evolve = async (user: IUserRpgSchema & Document, ctx: CommandContext) => {
       user.class = 'Berserker';
       await user.save();
       const translatedEvolve = ctx.locale(`roleplay:classes.${user.class}`);
-      ctx.replyT('warn', 'roleplay:evolve', { class: translatedEvolve });
+      await ctx.replyT('warn', 'roleplay:evolve', { class: translatedEvolve });
       break;
     }
     case 'Clérigo': {
@@ -1126,7 +1133,7 @@ const evolve = async (user: IUserRpgSchema & Document, ctx: CommandContext) => {
       user.class = 'Arcanjo';
       await user.save();
       const translatedEvolve = ctx.locale(`roleplay:classes.${user.class}`);
-      ctx.replyT('warn', 'roleplay:evolve', { class: translatedEvolve });
+      await ctx.replyT('warn', 'roleplay:evolve', { class: translatedEvolve });
       break;
     }
     case 'Druida': {
@@ -1135,7 +1142,7 @@ const evolve = async (user: IUserRpgSchema & Document, ctx: CommandContext) => {
       user.class = 'Guardião da Natureza';
       await user.save();
       const translatedEvolve = ctx.locale(`roleplay:classes.${user.class}`);
-      ctx.replyT('warn', 'roleplay:evolve', { class: translatedEvolve });
+      await ctx.replyT('warn', 'roleplay:evolve', { class: translatedEvolve });
       break;
     }
     case 'Espadachim': {
@@ -1144,7 +1151,7 @@ const evolve = async (user: IUserRpgSchema & Document, ctx: CommandContext) => {
       user.class = 'Mestre das Armas';
       await user.save();
       const translatedEvolve = ctx.locale(`roleplay:classes.${user.class}`);
-      ctx.replyT('warn', 'roleplay:evolve', { class: translatedEvolve });
+      await ctx.replyT('warn', 'roleplay:evolve', { class: translatedEvolve });
       break;
     }
     case 'Feiticeiro': {
@@ -1154,7 +1161,7 @@ const evolve = async (user: IUserRpgSchema & Document, ctx: CommandContext) => {
         user.class = 'Senhor das Galáxias';
         await user.save();
         const translatedEvolve = ctx.locale(`roleplay:classes.${user.class}`);
-        ctx.replyT('warn', 'roleplay:evolve', { class: translatedEvolve });
+        await ctx.replyT('warn', 'roleplay:evolve', { class: translatedEvolve });
       }
       if (user.uniquePower.name === 'Linhagem: Dracônica') {
         user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[11]);
@@ -1162,7 +1169,7 @@ const evolve = async (user: IUserRpgSchema & Document, ctx: CommandContext) => {
         user.class = 'Mestre dos Elementos';
         await user.save();
         const translatedEvolve = ctx.locale(`roleplay:classes.${user.class}`);
-        ctx.replyT('warn', 'roleplay:evolve', { class: translatedEvolve });
+        await ctx.replyT('warn', 'roleplay:evolve', { class: translatedEvolve });
       }
       if (user.uniquePower.name === 'Linhagem: Demoníaca') {
         user.abilities.push(abilitiesFile.feiticeiro.normalAbilities[12]);
@@ -1170,7 +1177,7 @@ const evolve = async (user: IUserRpgSchema & Document, ctx: CommandContext) => {
         user.class = 'Conjurador Demoníaco';
         await user.save();
         const translatedEvolve = ctx.locale(`roleplay:classes.${user.class}`);
-        ctx.replyT('warn', 'roleplay:evolve', { class: translatedEvolve });
+        await ctx.replyT('warn', 'roleplay:evolve', { class: translatedEvolve });
       }
       break;
     }
@@ -1179,7 +1186,7 @@ const evolve = async (user: IUserRpgSchema & Document, ctx: CommandContext) => {
       user.class = 'Sacerdote';
       await user.save();
       const translatedEvolve = ctx.locale(`roleplay:classes.${user.class}`);
-      ctx.replyT('warn', 'roleplay:evolve', { class: translatedEvolve });
+      await ctx.replyT('warn', 'roleplay:evolve', { class: translatedEvolve });
       break;
     }
     case 'Necromante': {
@@ -1188,7 +1195,7 @@ const evolve = async (user: IUserRpgSchema & Document, ctx: CommandContext) => {
       user.class = 'Senhor das Trevas';
       await user.save();
       const translatedEvolve = ctx.locale(`roleplay:classes.${user.class}`);
-      ctx.replyT('warn', 'roleplay:evolve', { class: translatedEvolve });
+      await ctx.replyT('warn', 'roleplay:evolve', { class: translatedEvolve });
       break;
     }
   }

@@ -72,17 +72,17 @@ export default class PagesCollector extends MessageCollector {
   }
 
   async send(...args: Parameters<Message['edit']>): Promise<Message> {
-    if (!this.sent || this.sent.deleted) {
+    if (!this.sent || (this.sent as Message).deleted) {
       this.sent = await this.channel.send(args);
     } else {
-      this.sent = await this.sent.edit(args);
+      this.sent = await (this.sent as Message).edit(args);
     }
 
     return this.sent;
   }
 
   delete(options?: { timeout?: number; reason?: string }): void {
-    const original = this.sent;
+    const original = this.sent as Message;
     if (original && !original.deleted) {
       original.delete(options);
     }
@@ -95,7 +95,7 @@ export default class PagesCollector extends MessageCollector {
     return this.sent;
   }
 
-  async onCollect(message: Message): Promise<undefined | void> {
+  async onCollect(message: Message): Promise<void> {
     const option = this.findOption(message.content);
 
     if (!option) {

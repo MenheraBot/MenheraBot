@@ -63,7 +63,7 @@ export default class JobCommand extends Command {
       return ctx.replyT('error', 'commands:job.no-level', { level: minLevel });
 
     await this.client.repositories.rpgRepository.update(ctx.message.author.id, {
-      jobId: parsedChoice,
+      jobId: parsedChoice as TJobIndexes,
     });
 
     return ctx.replyT('success', 'commands:job.finish', {

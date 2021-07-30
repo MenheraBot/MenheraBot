@@ -1,5 +1,5 @@
 /* eslint-disable import/named */
-import { MessageEmbed, Collection, Message } from 'discord.js';
+import { Collection, Message, MessageEmbed } from 'discord.js';
 
 import i18next, { TFunction } from 'i18next';
 
@@ -9,28 +9,31 @@ import MenheraClient from 'MenheraClient';
 import { IUserSchema } from '@utils/Types';
 import http from '@utils/HTTPrequests';
 import CommandContext from '@structures/CommandContext';
+import Event from '@structures/Event';
 
-export default class MessageReceive {
+export default class MessageReceive extends Event {
   private cooldowns: Collection<string, Collection<string, number>> = new Collection();
 
   private warnedUserCooldowns: Map<string, boolean> = new Map();
 
   constructor(public client: MenheraClient) {
-    this.client = client;
+    super(client);
   }
 
   async notifyAfk(message: Message, t: TFunction, userIds: Array<string>): Promise<void> {
     const afkUsers = await this.client.repositories.userRepository.findAfkByIDs(userIds);
 
-    afkUsers.forEach(async (data: IUserSchema) => {
-      const user = await this.client.users.fetch(data.id);
-      if (user.id !== message.author.id)
-        message.channel.send(
-          `<:notify:759607330597502976> | ${t('commands:afk.reason', {
-            tag: user.tag,
-            reason: data.afkReason,
-          })}`,
-        );
+    if (!afkUsers) return;
+
+    afkUsers.map(async (data: IUserSchema) => {
+      if (data.id !== message.author.id) return;
+      const userFetched = await this.client.users.fetch(data.id).catch();
+      await message.channel.send(
+        `<:notify:759607330597502976> | ${t('commands:afk.reason', {
+          tag: userFetched.tag,
+          reason: data.afkReason,
+        })}`,
+      );
     });
   }
 
@@ -48,7 +51,7 @@ export default class MessageReceive {
     const t = i18next.getFixedT(language);
 
     if (message.mentions.users.size > 0)
-      this.notifyAfk(
+      await this.notifyAfk(
         message,
         t,
         message.mentions.users.map((u) => u.id),
@@ -59,23 +62,29 @@ export default class MessageReceive {
     );
 
     if (authorData?.afk) {
-      this.client.repositories.userRepository.update(message.author.id, {
+      await this.client.repositories.userRepository.update(message.author.id, {
         afk: false,
         afkReason: null,
         afkGuild: null,
       });
       const member = await message.channel.guild.members.fetch(message.author.id);
 
-      if (message.guild.id !== authorData?.afkGuild) {
-        const afkGuild = await this.client.guilds.fetch(authorData?.afkGuild).catch();
-        const guildMember = await afkGuild?.members.fetch(message.author.id).catch();
-        await afkGuild?.members.fetch(this.client.user.id).catch();
-        if (guildMember?.manageable && guildMember?.nickname)
-          if (guildMember.nickname.slice(0, 5) === '[AFK]')
-            await guildMember.setNickname(guildMember.nickname.substring(5), 'AFK System');
-      } else if (member.manageable && member.nickname)
-        if (member.nickname.slice(0, 5) === '[AFK]')
-          await member.setNickname(member.nickname.substring(5), 'AFK System');
+      const guildAfkId = authorData?.afkGuild;
+
+      try {
+        if (guildAfkId && message.guild.id !== guildAfkId) {
+          const afkGuild = await this.client.guilds.fetch(guildAfkId).catch();
+          const guildMember = await afkGuild?.members.fetch(message.author.id).catch();
+          await afkGuild?.members.fetch(this.client.user.id).catch();
+          if (guildMember?.manageable && guildMember?.nickname)
+            if (guildMember.nickname.slice(0, 5) === '[AFK]')
+              await guildMember.setNickname(guildMember.nickname.substring(5), 'AFK System');
+        } else if (member.manageable && member.nickname)
+          if (member.nickname.slice(0, 5) === '[AFK]')
+            await member.setNickname(member.nickname.substring(5), 'AFK System');
+      } catch {
+        // owo
+      }
 
       message.channel
         .send(
@@ -204,6 +213,7 @@ export default class MessageReceive {
 
     try {
       new Promise((res) => {
+        if (!command.run) return;
         res(command.run(ctx));
       }).catch(async (err) => {
         const errorWebHook = await this.client.fetchWebhook(

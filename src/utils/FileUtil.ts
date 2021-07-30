@@ -1,7 +1,5 @@
-import Command from '@structures/Command';
 import fs from 'fs';
 import path from 'path';
-import { IEvent } from './Types';
 
 export default class FileUtil {
   static filename(filepath: string): string {
@@ -14,12 +12,12 @@ export default class FileUtil {
   ): Promise<void> {
     const dir = path.resolve(filepath);
     delete require.cache[dir];
-    reloadFunction(await import(dir), dir);
+    await reloadFunction(await import(dir), dir);
   }
 
-  static readDirectory(
+  static readDirectory<T>(
     directory: string,
-    loadFunction: (arch: typeof Command | IEvent, pathToArch: string) => void,
+    loadFunction: (arch: T, pathToArch: string) => void,
   ): void {
     FileUtil.readdirRecursive(directory).map(async (filepath: string) => {
       await loadFunction(await import(path.resolve(filepath)), filepath);

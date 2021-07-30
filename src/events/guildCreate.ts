@@ -1,11 +1,12 @@
 import { Guild } from 'discord.js';
 import MenheraClient from 'MenheraClient';
+import Event from '@structures/Event';
 
-export default class GuildCreate {
+export default class GuildCreate extends Event {
   private readonly region: { [key: string]: string };
 
   constructor(public client: MenheraClient) {
-    this.client = client;
+    super(client);
     this.region = {
       brazil: 'pt-BR',
       europe: 'en-US',

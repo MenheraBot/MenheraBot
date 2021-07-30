@@ -41,7 +41,7 @@ export default class StatusRepository {
     );
   }
 
-  async removeMaintenance(commandName: string) {
+  async removeMaintenance(commandName: string): Promise<void> {
     await this.statusModal.updateOne(
       { _id: 'main' },
       { $pull: { disabledCommands: { name: commandName } } },

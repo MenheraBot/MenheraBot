@@ -2,10 +2,11 @@ import http from '@utils/HTTPrequests';
 
 import Dbl from '@utils/DBL';
 import MenheraClient from 'MenheraClient';
+import Event from '@structures/Event';
 
-export default class ReadyEvent {
+export default class ReadyEvent extends Event {
   constructor(public client: MenheraClient) {
-    this.client = client;
+    super(client);
   }
 
   async run(): Promise<void> {
@@ -47,7 +48,7 @@ export default class ReadyEvent {
 
       if (firstShard === FIRST_SHARD_ID) {
         const DiscordBotList = new Dbl(this.client);
-        DiscordBotList.init();
+        await DiscordBotList.init();
 
         this.client.setInterval(() => {
           saveCurrentBotStatus();
@@ -55,7 +56,7 @@ export default class ReadyEvent {
       }
     }
 
-    this.client.user.setActivity('🥱 | Acabei de acoidar :3');
+    await this.client.user.setActivity('🥱 | Acabei de acoidar :3');
 
     console.log('[READY] Menhera se conectou com o Discord!');
   }

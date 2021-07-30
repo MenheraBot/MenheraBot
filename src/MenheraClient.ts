@@ -5,8 +5,9 @@ import i18next from 'i18next';
 
 import '@sentry/tracing';
 
-import { IClientConfigs, ICommandConfig, IDatabaseRepositories, IEvent } from '@utils/Types';
+import { IClientConfigs, ICommandConfig, IDatabaseRepositories } from '@utils/Types';
 import FileUtil from '@utils/FileUtil';
+import Event from '@structures/Event';
 import EventManager from './structures/EventManager';
 
 import Command from './structures/Command';
@@ -117,14 +118,17 @@ export default class MenheraClient extends Client {
   }
 
   loadCommands(directory: string): void {
-    FileUtil.readDirectory(directory, async (cmd: typeof Command, filepath: string) => {
-      await this.loadCommand(cmd, filepath);
-    });
+    FileUtil.readDirectory<typeof Command>(
+      directory,
+      async (cmd: typeof Command, filepath: string) => {
+        await this.loadCommand(cmd, filepath);
+      },
+    );
   }
 
   loadEvents(directory: string): void {
-    FileUtil.readDirectory(directory, (Event: IEvent, filepath: string) => {
-      this.events.add(FileUtil.filename(filepath), filepath, new Event(this));
+    FileUtil.readDirectory(directory, (EventFile: typeof Event, filepath: string) => {
+      this.events.add(FileUtil.filename(filepath), filepath, new EventFile(this));
     });
   }
 }

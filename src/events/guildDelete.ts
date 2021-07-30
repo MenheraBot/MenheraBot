@@ -1,9 +1,10 @@
 import { Guild } from 'discord.js';
 import MenheraClient from 'MenheraClient';
+import Event from '@structures/Event';
 
-export default class GuildDelete {
+export default class GuildDelete extends Event {
   constructor(public client: MenheraClient) {
-    this.client = client;
+    super(client);
   }
 
   async run(guild: Guild): Promise<void> {

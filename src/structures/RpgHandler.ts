@@ -1,4 +1,4 @@
-import abilities from './Rpgs/abilities.json';
+import abilities from './Rpgs/ability';
 import mobs from './Rpgs/mobs';
 import items from './Rpgs/items';
 import jobs from './Rpgs/jobs';
