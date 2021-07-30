@@ -44,7 +44,7 @@ export default class CoinflipCommand extends Command {
         `<:negacao:759603958317711371> **|** ${user2} ${ctx.locale('commands:coinflip.poor')}`,
       );
 
-    ctx
+    return ctx
       .send(
         `${user2}, ${user1} ${ctx.locale('commands:coinflip.confirm-start', {
           value: valor,

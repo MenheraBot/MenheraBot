@@ -35,7 +35,7 @@ export default class MarryCommand extends Command {
     if (user2.casado && user2.casado !== 'false')
       return ctx.replyT('error', 'commands:marry.mention-married');
 
-    ctx
+    return ctx
       .send(
         `${mencionado} ${ctx.locale('commands:marry.confirmation_start')} ${
           ctx.message.author
@@ -50,7 +50,7 @@ export default class MarryCommand extends Command {
         const filter = (reaction: MessageReaction, usuario: User) =>
           validReactions.includes(reaction.emoji.name) && usuario.id === mencionado.id;
 
-        const colector = await msg.createReactionCollector(filter, { max: 1, time: 15000 });
+        const colector = msg.createReactionCollector(filter, { max: 1, time: 15000 });
 
         colector.on('collect', async (reaction) => {
           if (reaction.emoji.name === emojis.no)
