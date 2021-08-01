@@ -1,4 +1,4 @@
-import { Message, MessageEmbed } from 'discord.js';
+import { MessageEmbed } from 'discord.js';
 import Command from '@structures/Command';
 import { jobs as jobsFile } from '@structures/RpgHandler';
 import CommandContext from '@structures/CommandContext';
@@ -16,9 +16,12 @@ export default class JobCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext): Promise<Message | Message[]> {
+  async run(ctx: CommandContext): Promise<void> {
     const user = await this.client.repositories.rpgRepository.find(ctx.message.author.id);
-    if (!user) return ctx.replyT('error', 'commands:job.not-registred');
+    if (!user) {
+      await ctx.replyT('error', 'commands:job.not-registred');
+      return;
+    }
 
     const AllJobKeys = Object.keys(jobsFile);
 
@@ -43,11 +46,15 @@ export default class JobCommand extends Command {
         );
       }
 
-      return ctx.sendC(ctx.message.author.toString(), embed);
+      await ctx.sendC(ctx.message.author.toString(), embed);
+      return;
     }
 
     const escolha = ctx.args[0].replace(/\D+/g, '');
-    if (!escolha || escolha.length === 0) return ctx.replyT('error', 'commands:job.invalid');
+    if (!escolha || escolha.length === 0) {
+      await ctx.replyT('error', 'commands:job.invalid');
+      return;
+    }
 
     const parsedChoice = parseInt(escolha);
 
@@ -55,18 +62,22 @@ export default class JobCommand extends Command {
       parsedChoice < 1 ||
       parsedChoice > AllJobKeys.length ||
       !jobsFile[parsedChoice as TJobIndexes]
-    )
-      return ctx.replyT('error', 'commands:job.invalid');
+    ) {
+      await ctx.replyT('error', 'commands:job.invalid');
+      return;
+    }
 
     const minLevel = jobsFile[parsedChoice as TJobIndexes].min_level;
-    if (minLevel > user.level)
-      return ctx.replyT('error', 'commands:job.no-level', { level: minLevel });
+    if (minLevel > user.level) {
+      await ctx.replyT('error', 'commands:job.no-level', { level: minLevel });
+      return;
+    }
 
     await this.client.repositories.rpgRepository.update(ctx.message.author.id, {
       jobId: parsedChoice as TJobIndexes,
     });
 
-    return ctx.replyT('success', 'commands:job.finish', {
+    await ctx.replyT('success', 'commands:job.finish', {
       job: ctx.locale(`roleplay:job.${escolha}.${jobsFile[parsedChoice as TJobIndexes].name}`),
     });
   }

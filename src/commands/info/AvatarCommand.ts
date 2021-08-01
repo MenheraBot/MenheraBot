@@ -1,4 +1,4 @@
-import { Message, MessageEmbed } from 'discord.js';
+import { MessageEmbed } from 'discord.js';
 import Command from '@structures/Command';
 import Util from '@utils/Util';
 import MenheraClient from 'MenheraClient';
@@ -15,7 +15,7 @@ export default class AvatarCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext): Promise<Message | Message[]> {
+  async run(ctx: CommandContext): Promise<void> {
     const authorData = ctx.data.user;
 
     let user = ctx.message.author;
@@ -27,7 +27,8 @@ export default class AvatarCommand extends Command {
         user = await this.client.users.fetch(ctx.args[0].replace(/[<@!>]/g, ''));
         db = await this.client.repositories.userRepository.find(user.id);
       } catch {
-        return ctx.replyT('error', 'commands:avatar.unknow-user');
+        await ctx.replyT('error', 'commands:avatar.unknow-user');
+        return;
       }
     }
 
@@ -46,6 +47,6 @@ export default class AvatarCommand extends Command {
       embed.setColor('#f276f3');
       embed.setFooter(ctx.locale('commands:avatar.client_footer', { user: user.username }));
     }
-    return ctx.sendC(ctx.message.author.toString(), embed);
+    await ctx.sendC(ctx.message.author.toString(), embed);
   }
 }

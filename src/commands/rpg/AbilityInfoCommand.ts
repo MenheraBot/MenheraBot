@@ -77,8 +77,11 @@ export default class AbilityInfoCommand extends Command {
     return ctx.sendC(ctx.message.author.toString(), embed);
   }
 
-  async run(ctx: CommandContext): Promise<Message | Message[] | void> {
-    if (!ctx.args[0]) return ctx.replyT('question', 'commands:infohabilidade.no-args');
+  async run(ctx: CommandContext): Promise<void> {
+    if (!ctx.args[0]) {
+      await ctx.replyT('question', 'commands:infohabilidade.no-args');
+      return;
+    }
 
     const validArgs = [
       {
@@ -92,16 +95,26 @@ export default class AbilityInfoCommand extends Command {
     ];
 
     const selectedOption = validArgs.some((so) => so.arguments.includes(ctx.args[0].toLowerCase()));
-    if (!selectedOption) return ctx.replyT('error', 'commands:infohabilidade.invalid-option');
+    if (!selectedOption) {
+      await ctx.replyT('error', 'commands:infohabilidade.invalid-option');
+      return;
+    }
     const filtredOption = validArgs.filter((f) => f.arguments.includes(ctx.args[0].toLowerCase()));
 
     const { option } = filtredOption[0];
 
     if (option === 'classe') {
-      if (!ctx.args[1]) return ctx.replyT('error', 'commands:infohabilidade.no-class');
-      return AbilityInfoCommand.getClass(ctx);
+      if (!ctx.args[1]) {
+        await ctx.replyT('error', 'commands:infohabilidade.no-class');
+        return;
+      }
+
+      await AbilityInfoCommand.getClass(ctx);
+      return;
     }
-    if (option === 'minhas') return this.getAll(ctx);
+    if (option === 'minhas') {
+      await this.getAll(ctx);
+    }
   }
 
   async getAll(ctx: CommandContext): Promise<Message | Message[]> {

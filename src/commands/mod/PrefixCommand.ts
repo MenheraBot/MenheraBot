@@ -1,7 +1,6 @@
 import CommandContext from '@structures/CommandContext';
 import MenheraClient from 'MenheraClient';
 import Command from '@structures/Command';
-import { Message } from 'discord.js';
 
 export default class PrefixCommand extends Command {
   constructor(client: MenheraClient) {
@@ -14,13 +13,19 @@ export default class PrefixCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext): Promise<Message> {
+  async run(ctx: CommandContext): Promise<void> {
     const [prefix] = ctx.args;
-    if (!prefix) return ctx.replyT('error', 'commands:prefix.no-args');
-    if (prefix.length > 3) return ctx.replyT('error', 'commands:prefix.invalid-input');
+    if (!prefix) {
+      await ctx.replyT('error', 'commands:prefix.no-args');
+      return;
+    }
+    if (prefix.length > 3) {
+      await ctx.replyT('error', 'commands:prefix.invalid-input');
+      return;
+    }
 
     await this.client.repositories.guildRepository.update(ctx.data.server.id, { prefix });
 
-    return ctx.replyT('success', 'commands:prefix.done', { prefix: ctx.data.server.prefix });
+    await ctx.replyT('success', 'commands:prefix.done', { prefix: ctx.data.server.prefix });
   }
 }

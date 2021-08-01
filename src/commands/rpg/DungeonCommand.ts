@@ -119,15 +119,24 @@ export default class DungeonCommand extends Command {
     }, 15000);
   }
 
-  async run(ctx: CommandContext): Promise<Message | Message[] | void> {
+  async run(ctx: CommandContext): Promise<void> {
     const user = await this.client.repositories.rpgRepository.find(ctx.message.author.id);
-    if (!user) return ctx.replyT('error', 'commands:dungeon.non-aventure');
+    if (!user) {
+      await ctx.replyT('error', 'commands:dungeon.non-aventure');
+      return;
+    }
 
-    if (!ctx.args[0]) return ctx.replyT('error', 'commands:dungeon.no-args');
+    if (!ctx.args[0]) {
+      await ctx.replyT('error', 'commands:dungeon.no-args');
+      return;
+    }
 
     const polishedInput = ctx.args[0].replace(/\D+/g, '');
 
-    if (!polishedInput) return ctx.replyT('error', 'commands:dungeon.no-args');
+    if (!polishedInput) {
+      await ctx.replyT('error', 'commands:dungeon.no-args');
+      return;
+    }
 
     const inimigo = getEnemyByUserLevel(
       user,
@@ -136,7 +145,10 @@ export default class DungeonCommand extends Command {
       ctx,
     );
 
-    if (!inimigo) return ctx.replyT('error', 'commands:dungeon.no-level');
+    if (!inimigo) {
+      await ctx.replyT('error', 'commands:dungeon.no-level');
+      return;
+    }
 
     if (inimigo === 'LOW-LEVEL') return;
 

@@ -1,5 +1,5 @@
 import CommandContext from '@structures/CommandContext';
-import { Message, MessageEmbed } from 'discord.js';
+import { MessageEmbed } from 'discord.js';
 import MenheraClient from 'MenheraClient';
 import Command from '../../structures/Command';
 
@@ -14,7 +14,7 @@ export default class ColorCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext): Promise<Message | Message[]> {
+  async run(ctx: CommandContext): Promise<void> {
     const authorData = ctx.data.user;
 
     const haspadrao = authorData.cores.some((pc) => pc.cor === '#a788ff');
@@ -37,7 +37,10 @@ export default class ColorCommand extends Command {
       embed.addField(`${authorData.cores[i].nome}`, `${authorData.cores[i].cor}`);
       validArgs.push(authorData.cores[i].nome.replace(/[^\d]+/g, ''));
     }
-    if (!ctx.args[0]) return ctx.sendC(ctx.message.author.toString(), embed);
+    if (!ctx.args[0]) {
+      await ctx.sendC(ctx.message.author.toString(), embed);
+      return;
+    }
 
     if (validArgs.includes(ctx.args[0])) {
       const findColor = authorData.cores.filter(
@@ -55,8 +58,9 @@ export default class ColorCommand extends Command {
       await this.client.repositories.userRepository.update(ctx.message.author.id, {
         cor: findColor[0].cor,
       });
-      return ctx.sendC(ctx.message.author.toString(), { embed: dataChoose });
+      await ctx.sendC(ctx.message.author.toString(), { embed: dataChoose });
+      return;
     }
-    return ctx.replyT('error', 'commands:color.no-own', { prefix: ctx.data.server.prefix });
+    await ctx.replyT('error', 'commands:color.no-own', { prefix: ctx.data.server.prefix });
   }
 }

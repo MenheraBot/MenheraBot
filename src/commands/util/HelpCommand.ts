@@ -16,13 +16,14 @@ export default class HelpCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext): Promise<Message | void> {
+  async run(ctx: CommandContext): Promise<void> {
     if (ctx.args[0]) {
       // eslint-disable-next-line no-use-before-define
-      return getCMD(ctx);
+      await getCMD(ctx);
+      return;
     }
     // eslint-disable-next-line no-use-before-define
-    return getAll(ctx);
+    await getAll(ctx);
   }
 }
 

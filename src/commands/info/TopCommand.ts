@@ -39,13 +39,16 @@ export default class TopCommand extends Command {
     return ctx.sendC(ctx.message.author.toString(), embed);
   }
 
-  async run(ctx: CommandContext): Promise<Message | Message[]> {
+  async run(ctx: CommandContext): Promise<void> {
     const { prefix } = ctx.data.server;
 
     let pagina = 1;
 
     const argumento = ctx.args[0];
-    if (!argumento) return ctx.replyT('error', 'commands:top.txt', { prefix });
+    if (!argumento) {
+      await ctx.replyT('error', 'commands:top.txt', { prefix });
+      return;
+    }
     if (ctx.args[1]) pagina = parseInt(ctx.args[1]);
 
     const argsDemonios = ['demonios', 'demônios', 'demons'];
@@ -62,28 +65,36 @@ export default class TopCommand extends Command {
     const argsUser = ['usuario', 'user', 'usuário'];
 
     if (argsMamou.includes(argumento)) {
-      return this.topMamadores(ctx, pagina);
+      await this.topMamadores(ctx, pagina);
+      return;
     }
     if (argsMamados.includes(argumento)) {
-      return this.topMamados(ctx, pagina);
+      await this.topMamados(ctx, pagina);
+      return;
     }
     if (argsEstrelinhas.includes(argumento)) {
-      return this.topEstrelinhas(ctx, pagina);
+      await this.topEstrelinhas(ctx, pagina);
+      return;
     }
     if (argsDemonios.includes(argumento)) {
-      return this.topDemonios(ctx, pagina);
+      await this.topDemonios(ctx, pagina);
+      return;
     }
     if (argsAnjos.includes(argumento)) {
-      return this.topAnjos(ctx, pagina);
+      await this.topAnjos(ctx, pagina);
+      return;
     }
     if (argsSemideuses.includes(argumento)) {
-      return this.topSD(ctx, pagina);
+      await this.topSD(ctx, pagina);
+      return;
     }
     if (argsDeuses.includes(argumento)) {
-      return this.topDeuses(ctx, pagina);
+      await this.topDeuses(ctx, pagina);
+      return;
     }
     if (argsVotos.includes(argumento)) {
-      return this.topVotos(ctx, pagina);
+      await this.topVotos(ctx, pagina);
+      return;
     }
     if (argsDungeon.includes(argumento)) {
       const validClasses = [
@@ -128,20 +139,25 @@ export default class TopCommand extends Command {
       const option = filtredOption.length > 0 ? filtredOption[0].option : false;
 
       if (option) {
-        return this.topDungeon(ctx, pagina, option);
+        await this.topDungeon(ctx, pagina, option);
+        return;
       }
-      return this.topDungeon(ctx, pagina, false);
+      await this.topDungeon(ctx, pagina, false);
+      return;
     }
     if (argsCommands.includes(argumento)) {
-      return TopCommand.topCommands(ctx);
+      await TopCommand.topCommands(ctx);
+      return;
     }
     if (argsUsers.includes(argumento)) {
-      return this.topUsers(ctx);
+      await this.topUsers(ctx);
+      return;
     }
     if (argsUser.includes(argumento)) {
-      return this.topUser(ctx);
+      await this.topUser(ctx);
+      return;
     }
-    return ctx.replyT('warn', 'commands:top.txt', { prefix });
+    await ctx.replyT('warn', 'commands:top.txt', { prefix });
   }
 
   async topMamados(ctx: CommandContext, pagina: number): Promise<Message | Message[]> {

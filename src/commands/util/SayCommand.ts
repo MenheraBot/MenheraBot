@@ -1,6 +1,5 @@
 import CommandContext from '@structures/CommandContext';
 import MenheraClient from 'MenheraClient';
-import { Message } from 'discord.js';
 import Command from '../../structures/Command';
 
 export default class SayCommand extends Command {
@@ -15,10 +14,13 @@ export default class SayCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext): Promise<Message> {
+  async run(ctx: CommandContext): Promise<void> {
     const sayMessage = ctx.args.join(' ');
-    if (!sayMessage) return ctx.replyT('error', 'commands:say.no-args');
+    if (!sayMessage) {
+      await ctx.replyT('error', 'commands:say.no-args');
+      return;
+    }
     if (ctx.message.deletable) await ctx.message.delete();
-    return ctx.send(`${sayMessage}\n\n📢 | ${ctx.message.author}`);
+    await ctx.send(`${sayMessage}\n\n📢 | ${ctx.message.author}`);
   }
 }

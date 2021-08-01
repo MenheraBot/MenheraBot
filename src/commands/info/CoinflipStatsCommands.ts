@@ -1,4 +1,4 @@
-import { Message, MessageEmbed } from 'discord.js';
+import { MessageEmbed } from 'discord.js';
 import http from '@utils/HTTPrequests';
 import Command from '@structures/Command';
 import MenheraClient from 'MenheraClient';
@@ -15,15 +15,24 @@ export default class CoinflipStatsCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext): Promise<Message | Message[]> {
+  async run(ctx: CommandContext): Promise<void> {
     const userDb = ctx.args[0]
       ? await this.client.repositories.userRepository.find(ctx.args[0].replace(/[<@!>]/g, ''))
       : ctx.data.user;
 
-    if (!userDb) return ctx.replyT('error', 'commands:coinflipstats.error');
+    if (!userDb) {
+      await ctx.replyT('error', 'commands:coinflipstats.error');
+      return;
+    }
     const data = await http.getCoinflipUserStats(userDb ? userDb.id : ctx.message.author.id);
-    if (data.error) return ctx.replyT('error', 'commands:coinflipstats.error');
-    if (!data || !data.playedGames) return ctx.replyT('error', 'commands:coinflipstats.no-data');
+    if (data.error) {
+      await ctx.replyT('error', 'commands:coinflipstats.error');
+      return;
+    }
+    if (!data || !data.playedGames) {
+      await ctx.replyT('error', 'commands:coinflipstats.no-data');
+      return;
+    }
 
     const totalMoney = data.winMoney - data.lostMoney;
 
@@ -73,6 +82,6 @@ export default class CoinflipStatsCommand extends Command {
           true,
         );
 
-    return ctx.sendC(ctx.message.author.toString(), embed);
+    await ctx.sendC(ctx.message.author.toString(), embed);
   }
 }

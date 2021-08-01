@@ -1,4 +1,4 @@
-import { Message, MessageEmbed } from 'discord.js';
+import { MessageEmbed } from 'discord.js';
 import Command from '@structures/Command';
 import RPGUtil from '@utils/RPGUtil';
 import MenheraClient from 'MenheraClient';
@@ -16,9 +16,12 @@ export default class InventoryCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext): Promise<Message | Message[]> {
+  async run(ctx: CommandContext): Promise<void> {
     const user = await this.client.repositories.rpgRepository.find(ctx.message.author.id);
-    if (!user) return ctx.replyT('error', 'commands:inventory.non-aventure');
+    if (!user) {
+      await ctx.replyT('error', 'commands:inventory.non-aventure');
+      return;
+    }
 
     const cor = ctx.data.user.cor ?? '#8f877f';
 
@@ -67,6 +70,6 @@ export default class InventoryCommand extends Command {
         lootText,
       );
 
-    return ctx.sendC(ctx.message.author.toString(), embed);
+    await ctx.sendC(ctx.message.author.toString(), embed);
   }
 }

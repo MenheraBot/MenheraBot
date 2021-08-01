@@ -2,7 +2,7 @@ import Command from '@structures/Command';
 import MenheraClient from 'MenheraClient';
 import { emojis } from '@structures/MenheraConstants';
 import CommandContext from '@structures/CommandContext';
-import { Message, MessageReaction, User } from 'discord.js';
+import { MessageReaction, User } from 'discord.js';
 
 export default class UnTrisalCommand extends Command {
   constructor(client: MenheraClient) {
@@ -14,8 +14,11 @@ export default class UnTrisalCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext): Promise<Message | void> {
-    if (ctx.data.user.trisal?.length === 0) return ctx.replyT('error', 'commands:untrisal.error');
+  async run(ctx: CommandContext): Promise<void> {
+    if (ctx.data.user.trisal?.length === 0) {
+      await ctx.replyT('error', 'commands:untrisal.error');
+      return;
+    }
 
     const msg = await ctx.send(ctx.locale('commands:untrisal.sure'));
     await msg.react(emojis.yes);

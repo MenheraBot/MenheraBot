@@ -22,5 +22,5 @@ export default class Command {
     };
   }
 
-  public run?(ctx: CommandContext): Promise<unknown>;
+  public run?(ctx: CommandContext): Promise<void>;
 }

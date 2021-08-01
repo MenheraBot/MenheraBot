@@ -1,7 +1,6 @@
 import CommandContext from '@structures/CommandContext';
 import MenheraClient from 'MenheraClient';
 import Command from '@structures/Command';
-import { Message } from 'discord.js';
 
 export default class LanguageCommand extends Command {
   constructor(client: MenheraClient) {
@@ -15,8 +14,8 @@ export default class LanguageCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext): Promise<Message | void> {
-    ctx.replyT('question', 'commands:language.question').then((msg) => {
+  async run(ctx: CommandContext): Promise<void> {
+    await ctx.replyT('question', 'commands:language.question').then((msg) => {
       msg.react('🇧🇷');
       setTimeout(() => {
         msg.react('🇺🇸');

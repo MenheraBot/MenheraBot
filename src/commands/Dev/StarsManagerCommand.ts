@@ -1,7 +1,6 @@
 import Command from '@structures/Command';
 import CommandContext from '@structures/CommandContext';
 import MenheraClient from 'MenheraClient';
-import { Message } from 'discord.js';
 
 export default class StarManagerCommand extends Command {
   constructor(client: MenheraClient) {
@@ -13,11 +12,13 @@ export default class StarManagerCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext): Promise<Message> {
+  async run(ctx: CommandContext): Promise<void> {
     const [id, option, value] = ctx.args;
 
-    if (!value)
-      return ctx.reply('error', 'Use `m!managestar <userId> <add | remove | set> <valor>`');
+    if (!value) {
+      await ctx.reply('error', 'Use `m!managestar <userId> <add | remove | set> <valor>`');
+      return;
+    }
 
     switch (option.toLowerCase()) {
       case 'add':
@@ -30,9 +31,10 @@ export default class StarManagerCommand extends Command {
         await this.client.repositories.starRepository.set(id, parseInt(value));
         break;
       default:
-        return ctx.reply('error', 'Use `m!managestar <userId> <add | remove | set> <valor>`');
+        await ctx.reply('error', 'Use `m!managestar <userId> <add | remove | set> <valor>`');
+        return;
     }
 
-    return ctx.reply('success', `Estrelinhas de ${id} alteradas com sucesso :star:`);
+    await ctx.reply('success', `Estrelinhas de ${id} alteradas com sucesso :star:`);
   }
 }

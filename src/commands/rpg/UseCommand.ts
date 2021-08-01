@@ -1,4 +1,4 @@
-import { Message, MessageEmbed } from 'discord.js';
+import { MessageEmbed } from 'discord.js';
 import Command from '@structures/Command';
 import RpgUtil from '@utils/RPGUtil';
 import MenheraClient from 'MenheraClient';
@@ -15,12 +15,21 @@ export default class UseCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext): Promise<Message | Message[] | void> {
+  async run(ctx: CommandContext): Promise<void> {
     const user = await this.client.repositories.rpgRepository.find(ctx.message.author.id);
-    if (!user) return ctx.replyT('error', 'commands:use.non-aventure');
+    if (!user) {
+      await ctx.replyT('error', 'commands:use.non-aventure');
+      return;
+    }
 
-    if (user.inBattle) return ctx.replyT('error', 'commands:use.in-battle');
-    if (parseInt(user.death) > Date.now()) return ctx.replyT('error', 'commands:use.dead');
+    if (user.inBattle) {
+      await ctx.replyT('error', 'commands:use.in-battle');
+      return;
+    }
+    if (parseInt(user.death) > Date.now()) {
+      await ctx.replyT('error', 'commands:use.dead');
+      return;
+    }
 
     const embed = new MessageEmbed()
       .setTitle(`💊 | ${ctx.locale('commands:use.title')}`)
@@ -57,10 +66,15 @@ export default class UseCommand extends Command {
       embed.setColor('#e53910');
     }
 
-    if (!ctx.args[0]) return ctx.sendC(ctx.message.author.toString(), embed);
+    if (!ctx.args[0]) {
+      await ctx.sendC(ctx.message.author.toString(), embed);
+      return;
+    }
 
-    if (parseInt(ctx.args[0]) < 1 || parseInt(ctx.args[0]) > number)
-      return ctx.replyT('error', 'commands:use.invalid-option');
+    if (parseInt(ctx.args[0]) < 1 || parseInt(ctx.args[0]) > number) {
+      await ctx.replyT('error', 'commands:use.invalid-option');
+      return;
+    }
 
     const choice = user.inventory.filter(
       (f) =>
@@ -79,22 +93,39 @@ export default class UseCommand extends Command {
 
     if (Number.isNaN(quantidade)) quantidade = 1;
 
-    if (quantidade < 1) return ctx.replyT('error', 'commands:use.invalid-option');
+    if (quantidade < 1) {
+      await ctx.replyT('error', 'commands:use.invalid-option');
+      return;
+    }
 
-    if (quantidade > juntos[parseInt(ctx.args[0]) - 1].amount)
-      return ctx.replyT('error', 'commands:use.bigger');
+    if (quantidade > juntos[parseInt(ctx.args[0]) - 1].amount) {
+      await ctx.replyT('error', 'commands:use.bigger');
+      return;
+    }
 
-    if (!choice[0].damage) return ctx.replyT('error', 'commands:use.error');
+    if (!choice[0].damage) {
+      await ctx.replyT('error', 'commands:use.error');
+      return;
+    }
 
     if (choice[0].name.indexOf('💧') > -1) {
-      if (user.mana === user.maxMana) return ctx.replyT('error', 'commands:use.full-mana');
+      if (user.mana === user.maxMana) {
+        await ctx.replyT('error', 'commands:use.full-mana');
+        return;
+      }
       user.mana += choice[0].damage * quantidade;
       if (user.mana > user.maxMana) user.mana = user.maxMana;
     } else if (choice[0].name.indexOf('🩸') > -1) {
-      if (user.life === user.maxLife) return ctx.replyT('error', 'commands:use.full-life');
+      if (user.life === user.maxLife) {
+        await ctx.replyT('error', 'commands:use.full-life');
+        return;
+      }
       user.life += choice[0].damage * quantidade;
       if (user.life > user.maxLife) user.life = user.maxLife;
-    } else return ctx.replyT('error', 'commands:use.error');
+    } else {
+      await ctx.replyT('error', 'commands:use.error');
+      return;
+    }
 
     for (let i = 0; i < quantidade; i++) {
       user.inventory.splice(
@@ -105,7 +136,7 @@ export default class UseCommand extends Command {
 
     await user.save();
 
-    return ctx.replyT('success', 'commands:use.used', {
+    await ctx.replyT('success', 'commands:use.used', {
       quantidade,
       choice: choice[0].name,
       life: user.life,

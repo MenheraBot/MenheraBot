@@ -117,11 +117,17 @@ export default class BattleBoss extends Command {
     }, 15000);
   }
 
-  async run(ctx: CommandContext): Promise<Message | void> {
+  async run(ctx: CommandContext): Promise<void> {
     const user = await this.client.repositories.rpgRepository.find(ctx.message.author.id);
-    if (!user) return ctx.replyT('error', 'commands:boss.non-aventure');
+    if (!user) {
+      await ctx.replyT('error', 'commands:boss.non-aventure');
+      return;
+    }
 
-    if (user.level < 20) return ctx.replyT('error', 'commands:boss.min-level');
+    if (user.level < 20) {
+      await ctx.replyT('error', 'commands:boss.min-level');
+      return;
+    }
 
     const inimigo = getEnemyByUserLevel(user, 'boss') as IDungeonMob;
     const canGo = await initialChecks(user, ctx);

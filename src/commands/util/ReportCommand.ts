@@ -1,5 +1,5 @@
 import CommandContext from '@structures/CommandContext';
-import { Message, MessageEmbed } from 'discord.js';
+import { MessageEmbed } from 'discord.js';
 import MenheraClient from 'MenheraClient';
 import Command from '@structures/Command';
 
@@ -14,11 +14,14 @@ export default class ReportCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext): Promise<Message> {
+  async run(ctx: CommandContext): Promise<void> {
     const argumentos = ctx.args.join(' ');
     const cor = `#${`000000${Math.random().toString(16).slice(2, 8).toUpperCase()}`.slice(-6)}`;
 
-    if (!argumentos) return ctx.replyT('error', 'commands:report.no-args');
+    if (!argumentos) {
+      await ctx.replyT('error', 'commands:report.no-args');
+      return;
+    }
 
     const embed = new MessageEmbed()
       .setDescription(`${argumentos}`)
@@ -39,6 +42,6 @@ export default class ReportCommand extends Command {
     await reportWebhook.send(embed);
 
     if (ctx.message.deletable) await ctx.message.delete();
-    return ctx.replyT('success', 'commands:report.thanks');
+    await ctx.replyT('success', 'commands:report.thanks');
   }
 }

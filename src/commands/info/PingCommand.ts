@@ -1,4 +1,4 @@
-import { Message, MessageEmbed, WebSocketManager, WebSocketShard } from 'discord.js';
+import { MessageEmbed, WebSocketManager, WebSocketShard } from 'discord.js';
 import moment from 'moment';
 import Command from '@structures/Command';
 import 'moment-duration-format';
@@ -15,7 +15,7 @@ export default class PingCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext): Promise<Message> {
+  async run(ctx: CommandContext): Promise<void> {
     const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     if (!ctx.args[0]) {
@@ -32,7 +32,8 @@ export default class PingCommand extends Command {
         .setTimestamp()
         .setColor('#eab3fa');
 
-      return ctx.send(embed);
+      await ctx.send(embed);
+      return;
     }
     const allShardsInformation: Array<WebSocketManager> = await this.client.shard.broadcastEval(
       'this.ws',
@@ -86,6 +87,6 @@ export default class PingCommand extends Command {
       [],
     );
 
-    return ctx.send(`\`\`\`${tabled}\`\`\``);
+    await ctx.send(`\`\`\`${tabled}\`\`\``);
   }
 }

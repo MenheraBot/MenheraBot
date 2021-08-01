@@ -361,14 +361,22 @@ export default class BlackJackCommand extends Command {
     await http.postBlackJack(ctx.message.author.id, true, valor * 2);
   }
 
-  async run(ctx: CommandContext): Promise<Message | void> {
+  async run(ctx: CommandContext): Promise<void> {
     const input = ctx.args[0];
-    if (!input) return ctx.replyT('error', 'commands:blackjack.bad-usage');
+    if (!input) {
+      await ctx.replyT('error', 'commands:blackjack.bad-usage');
+      return;
+    }
     const valor = parseInt(input.replace(/\D+/g, ''));
-    if (!valor || valor > 50000 || valor < 1000)
-      return ctx.replyT('error', 'commands:blackjack.invalid-value');
+    if (!valor || valor > 50000 || valor < 1000) {
+      await ctx.replyT('error', 'commands:blackjack.invalid-value');
+      return;
+    }
 
-    if (ctx.data.user.estrelinhas < valor) return ctx.replyT('error', 'commands:blackjack.poor');
+    if (ctx.data.user.estrelinhas < valor) {
+      await ctx.replyT('error', 'commands:blackjack.poor');
+      return;
+    }
 
     const matchCards = [...BLACKJACK_CARDS].sort(() => Math.random() - 0.5);
 
@@ -416,7 +424,7 @@ export default class BlackJackCommand extends Command {
       embed.attachFiles([attachment]).setImage('attachment://blackjack.png');
     }
 
-    ctx.sendC(ctx.message.author.toString(), embed);
+    await ctx.sendC(ctx.message.author.toString(), embed);
 
     const acceptOptions = ['comprar', '1', 'buy', 'draw'];
     const pararOptions = ['parar', '2', 'stop'];

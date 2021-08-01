@@ -1,4 +1,4 @@
-import { Message, MessageEmbed } from 'discord.js';
+import { MessageEmbed } from 'discord.js';
 import Command from '@structures/Command';
 import http from '@utils/HTTPrequests';
 import MenheraClient from 'MenheraClient';
@@ -14,13 +14,16 @@ export default class CryCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext): Promise<Message> {
+  async run(ctx: CommandContext): Promise<void> {
     const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     const rand = await http.getAssetImageUrl('cry');
     const user = ctx.message.mentions.users.first();
 
-    if (user && user.bot) return ctx.replyT('error', 'commands:cry.bot');
+    if (user && user.bot) {
+      await ctx.replyT('error', 'commands:cry.bot');
+      return;
+    }
 
     if (!user || user === ctx.message.author) {
       const embed = new MessageEmbed()
@@ -33,21 +36,21 @@ export default class CryCommand extends Command {
         .setImage(rand)
         .setAuthor(ctx.message.author.tag, avatar);
 
-      return ctx.send(embed);
+      await ctx.send(embed);
+      return;
     }
 
     const embed = new MessageEmbed()
       .setTitle(ctx.locale('commands:cry.embed_title'))
       .setColor('#000000')
       .setDescription(
-        `${user} ${ctx.locale('commands:cry.embed_description_start')} ${
-          ctx.message.author
-        } ${ctx.locale('commands:cry.embed_description_end')}`,
+        `${user} ${ctx.locale('commands:cry.embed_description_start')}
+         ${ctx.message.author} ${ctx.locale('commands:cry.embed_description_end')}`,
       )
       .setImage(rand)
       .setThumbnail(avatar)
       .setAuthor(ctx.message.author.tag, avatar);
 
-    return ctx.send(embed);
+    await ctx.send(embed);
   }
 }

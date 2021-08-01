@@ -441,12 +441,13 @@ export default class VillageCommand extends Command {
     return PagesCollector.continue();
   }
 
-  async run(ctx: CommandContext): Promise<Message | void> {
+  async run(ctx: CommandContext): Promise<void> {
     const user = await this.client.repositories.rpgRepository.find(ctx.message.author.id);
     if (ctx.message.channel.type === 'dm') return;
 
     if (!user) {
-      return ctx.replyT('error', 'commands:village.non-aventure');
+      await ctx.replyT('error', 'commands:village.non-aventure');
+      return;
     }
 
     const embed = new MessageEmbed()

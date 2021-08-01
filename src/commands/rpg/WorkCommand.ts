@@ -1,5 +1,6 @@
+/* eslint-disable no-unused-expressions */
 /* eslint-disable camelcase */
-import { Message, MessageEmbed } from 'discord.js';
+import { MessageEmbed } from 'discord.js';
 import moment from 'moment';
 import Command from '@structures/Command';
 import { items as itemsFile, jobs as jobsFile } from '@structures/RpgHandler';
@@ -19,24 +20,29 @@ export default class WorkCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext): Promise<Message | Message[]> {
+  async run(ctx: CommandContext): Promise<void> {
     const user = await this.client.repositories.rpgRepository.find(ctx.message.author.id);
-    if (!user)
-      return ctx.replyT('error', 'commands:work.not-register', { prefix: ctx.data.server.prefix });
+    if (!user) {
+      await ctx.replyT('error', 'commands:work.not-register', { prefix: ctx.data.server.prefix });
+      return;
+    }
 
     const jobId: TJobIndexes = user.jobId ?? null;
-    if (!jobId)
-      return ctx.replyT('error', 'commands:work.not-work', { prefix: ctx.data.server.prefix });
+    if (!jobId) {
+      await ctx.replyT('error', 'commands:work.not-work', { prefix: ctx.data.server.prefix });
+      return;
+    }
 
-    if (parseInt(user.jobCooldown) > Date.now())
-      return parseInt(user.jobCooldown) - Date.now() > 3600000
-        ? ctx.replyT('error', 'commands:work.cooldown-hour', {
+    if (parseInt(user.jobCooldown) > Date.now()) {
+      parseInt(user.jobCooldown) - Date.now() > 3600000
+        ? await ctx.replyT('error', 'commands:work.cooldown-hour', {
             time: moment.utc(parseInt(user.jobCooldown) - Date.now()).format('HH:mm:ss'),
           })
-        : ctx.replyT('error', 'commands:work.cooldown-minute', {
+        : await ctx.replyT('error', 'commands:work.cooldown-minute', {
             time: moment.utc(parseInt(user.jobCooldown) - Date.now()).format('mm:ss'),
           });
-
+      return;
+    }
     const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     const embed = new MessageEmbed()
@@ -81,6 +87,6 @@ export default class WorkCommand extends Command {
 
     await finalChecks(ctx, user);
 
-    return ctx.sendC(ctx.message.author.toString(), embed);
+    await ctx.sendC(ctx.message.author.toString(), embed);
   }
 }

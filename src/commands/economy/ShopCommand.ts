@@ -456,7 +456,7 @@ export default class ShopCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext): Promise<Message | void> {
+  async run(ctx: CommandContext): Promise<void> {
     const saldoAtual = ctx.data.user.estrelinhas;
 
     const validArgs = ['1', '2'];

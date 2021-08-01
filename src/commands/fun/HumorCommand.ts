@@ -1,4 +1,4 @@
-import { Message, MessageEmbed } from 'discord.js';
+import { MessageEmbed } from 'discord.js';
 import MenheraClient from 'MenheraClient';
 import Command from '@structures/Command';
 import http from '@utils/HTTPrequests';
@@ -13,7 +13,7 @@ export default class HumorCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext): Promise<Message> {
+  async run(ctx: CommandContext): Promise<void> {
     if (ctx.message.deletable) await ctx.message.delete();
 
     const rand = await http.getAssetImageUrl('humor');
@@ -22,6 +22,6 @@ export default class HumorCommand extends Command {
       .setImage(rand)
       .setTitle(`${ctx.message.author.username} ${ctx.locale('commands:humor.phrase')}`);
 
-    return ctx.send(embed);
+    await ctx.send(embed);
   }
 }

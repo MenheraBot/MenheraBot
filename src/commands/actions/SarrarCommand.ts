@@ -1,4 +1,4 @@
-import { Message, MessageEmbed, MessageReaction, User } from 'discord.js';
+import { MessageEmbed, MessageReaction, User } from 'discord.js';
 import Command from '@structures/Command';
 import http from '@utils/HTTPrequests';
 import MenheraClient from 'MenheraClient';
@@ -15,7 +15,7 @@ export default class SarrarCommand extends Command {
     });
   }
 
-  static async sarrada(ctx: CommandContext, reactUser: User): Promise<Message> {
+  static async sarrada(ctx: CommandContext, reactUser: User): Promise<void> {
     const rand = await http.getAssetImageUrl('sarrar');
 
     const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
@@ -31,7 +31,7 @@ export default class SarrarCommand extends Command {
       .setThumbnail(avatar)
       .setAuthor(ctx.message.author.tag, avatar);
 
-    return ctx.send(Embed);
+    await ctx.send(Embed);
   }
 
   async run(ctx: CommandContext): Promise<void> {
@@ -43,9 +43,10 @@ export default class SarrarCommand extends Command {
         .setTitle(ctx.locale('commands:sarrar.no-mention.embed_title'))
         .setColor('#000000')
         .setDescription(
-          `${ctx.locale('commands:sarrar.no-mention.embed_description_start')} ${
-            ctx.message.author
-          }?\n${ctx.locale('commands:sarrar.no-mention.embed_description_end')}`,
+          `${ctx.locale('commands:sarrar.no-mention.embed_description_start')}
+           ${ctx.message.author}?\n${ctx.locale(
+            'commands:sarrar.no-mention.embed_description_end',
+          )}`,
         )
         .setImage(randSozinho)
         .setThumbnail(ctx.message.author.displayAvatarURL())

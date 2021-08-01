@@ -1,4 +1,4 @@
-import { Message, MessageAttachment } from 'discord.js';
+import { MessageAttachment } from 'discord.js';
 import Command from '@structures/Command';
 import http from '@utils/HTTPrequests';
 import CommandContext from '@structures/CommandContext';
@@ -15,7 +15,7 @@ export default class GadoCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext): Promise<Message | Message[]> {
+  async run(ctx: CommandContext): Promise<void> {
     let link: string = ctx.message.author.displayAvatarURL({
       format: 'png',
       size: 512,
@@ -38,9 +38,12 @@ export default class GadoCommand extends Command {
     if (attachment) link = attachment.url;
 
     const res = await http.gadoRequest(link);
-    if (res.err) return ctx.replyT('error', 'commands:http-error');
+    if (res.err) {
+      await ctx.replyT('error', 'commands:http-error');
+      return;
+    }
 
-    return ctx.sendC(ctx.message.author.toString(), {
+    await ctx.sendC(ctx.message.author.toString(), {
       files: [new MessageAttachment(Buffer.from(res.data as Buffer), 'gado.png')],
     });
   }

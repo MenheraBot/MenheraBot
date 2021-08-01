@@ -1,6 +1,6 @@
 import Command from '@structures/Command';
 import CommandContext from '@structures/CommandContext';
-import { Message } from 'discord.js';
+import { User } from 'discord.js';
 import MenheraClient from 'MenheraClient';
 
 export default class XandaoCommand extends Command {
@@ -13,7 +13,7 @@ export default class XandaoCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext): Promise<Message | void> {
+  async run(ctx: CommandContext): Promise<void> {
     if (ctx.message.channel.type === 'dm') return;
     const texto = ctx.args.join(' ');
 
@@ -67,7 +67,9 @@ export default class XandaoCommand extends Command {
 
       const clientUser = this.client.user;
       if (!clientUser) return;
-      const ownWebhook = webhooks.filter((hook) => hook.owner.id === clientUser.id).first();
+      const ownWebhook = webhooks
+        .filter((hook) => (hook.owner as User).id === clientUser.id)
+        .first();
 
       if (ownWebhook) {
         await ownWebhook.send(fala, {
@@ -87,7 +89,7 @@ export default class XandaoCommand extends Command {
           });
       }
     } catch (err) {
-      return ctx.replyT('error', 'commands:xandão.err_message');
+      await ctx.replyT('error', 'commands:xandão.err_message');
     }
   }
 }

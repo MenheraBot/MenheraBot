@@ -1,4 +1,4 @@
-import { Message, MessageAttachment } from 'discord.js';
+import { MessageAttachment } from 'discord.js';
 import Command from '@structures/Command';
 import NewHttp from '@utils/HTTPrequests';
 import MenheraClient from 'MenheraClient';
@@ -14,7 +14,7 @@ export default class MacetavaCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext): Promise<Message | Message[]> {
+  async run(ctx: CommandContext): Promise<void> {
     let link = ctx.message.author.displayAvatarURL({ format: 'png', size: 512 });
 
     const MentionedUser = ctx.message.mentions.users.first();
@@ -38,9 +38,11 @@ export default class MacetavaCommand extends Command {
       ctx.message.author.discriminator,
       ctx.message.author.displayAvatarURL({ format: 'png', size: 512 }),
     );
-    if (res.err) return ctx.replyT('error', 'commands:http-error');
-
-    return ctx.sendC(ctx.message.author.toString(), {
+    if (res.err) {
+      await ctx.replyT('error', 'commands:http-error');
+      return;
+    }
+    await ctx.sendC(ctx.message.author.toString(), {
       files: [new MessageAttachment(Buffer.from(res.data as Buffer), 'macetava.png')],
     });
   }

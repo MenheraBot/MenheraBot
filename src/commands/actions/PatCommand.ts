@@ -1,4 +1,4 @@
-import { Message, MessageEmbed } from 'discord.js';
+import { MessageEmbed } from 'discord.js';
 import Command from '@structures/Command';
 import http from '@utils/HTTPrequests';
 import MenheraClient from 'MenheraClient';
@@ -14,13 +14,19 @@ export default class PatCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext): Promise<Message> {
+  async run(ctx: CommandContext): Promise<void> {
     const rand = await http.getAssetImageUrl('pat');
     const user = ctx.message.mentions.users.first();
 
-    if (!user) return ctx.replyT('error', 'commands:pat.no-mention');
+    if (!user) {
+      await ctx.replyT('error', 'commands:pat.no-mention');
+      return;
+    }
 
-    if (user === ctx.message.author) return ctx.replyT('error', 'commands:pat.self-mention');
+    if (user === ctx.message.author) {
+      await ctx.replyT('error', 'commands:pat.self-mention');
+      return;
+    }
 
     const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
 
@@ -34,6 +40,6 @@ export default class PatCommand extends Command {
       .setThumbnail(avatar)
       .setAuthor(ctx.message.author.tag, avatar);
 
-    return ctx.send(embed);
+    await ctx.send(embed);
   }
 }

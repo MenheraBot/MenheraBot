@@ -1,7 +1,6 @@
 import CommandContext from '@structures/CommandContext';
 import MenheraClient from 'MenheraClient';
 import Command from '@structures/Command';
-import { Message } from 'discord.js';
 
 export default class GiveBadgeCommand extends Command {
   constructor(client: MenheraClient) {
@@ -12,13 +11,16 @@ export default class GiveBadgeCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext): Promise<Message> {
+  async run(ctx: CommandContext): Promise<void> {
     const badgeId = parseInt(ctx.args[1]);
 
-    if (!badgeId) return ctx.reply('error', 'Cade o id da badge?');
+    if (!badgeId) {
+      await ctx.reply('error', 'Cade o id da badge?');
+      return;
+    }
 
     await this.client.repositories.badgeRepository.addBadge(ctx.args[0], badgeId);
 
-    return ctx.send('Concluido');
+    await ctx.send('Concluido');
   }
 }

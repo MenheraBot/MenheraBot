@@ -16,19 +16,31 @@ export default class PvPCommands extends Command {
     });
   }
 
-  async run(ctx: CommandContext): Promise<Message | Message[] | void> {
+  async run(ctx: CommandContext): Promise<void> {
     const mention = ctx.message.mentions.users.first();
     const valor = ctx.args[1];
-    if (!mention) return ctx.replyT('error', 'commands:pvp.no-args');
+    if (!mention) {
+      await ctx.replyT('error', 'commands:pvp.no-args');
+      return;
+    }
 
-    if (mention.bot) return ctx.replyT('error', 'commands:pvp.bot');
+    if (mention.bot) {
+      await ctx.replyT('error', 'commands:pvp.bot');
+      return;
+    }
 
-    if (mention === ctx.message.author) return ctx.replyT('error', 'comands:pvp.self-mention');
+    if (mention === ctx.message.author) {
+      await ctx.replyT('error', 'comands:pvp.self-mention');
+      return;
+    }
 
     const user1 = await this.client.repositories.rpgRepository.find(ctx.message.author.id);
     const user2 = await this.client.repositories.rpgRepository.find(mention.id);
 
-    if (!user1 || !user2) return ctx.replyT('error', 'commands:pvp.no-user');
+    if (!user1 || !user2) {
+      await ctx.replyT('error', 'commands:pvp.no-user');
+      return;
+    }
 
     const dmgView2 =
       user2?.familiar?.id && user2.familiar.type === 'damage'
@@ -90,19 +102,39 @@ export default class PvPCommands extends Command {
     let aposta: false | number = false;
 
     if (valor) {
-      if (user1.life <= 0 || user2.life <= 0) return ctx.replyT('error', 'commands:pvp.no-life');
+      if (user1.life <= 0 || user2.life <= 0) {
+        await ctx.replyT('error', 'commands:pvp.no-life');
+        return;
+      }
       aposta = parseInt(valor.replace(/\D+/g, ''));
-      if (Number.isNaN(aposta)) return ctx.replyT('error', 'commands:pvp.invalid-value');
-      if (aposta <= 0) return ctx.replyT('error', 'commands:pvp.invalid-value');
-      if (aposta > user1.money) return ctx.replyT('error', 'commands:pvp.you-poor');
-      if (aposta > user2.money)
-        return ctx.replyT('error', 'commands:pvp.his-poor', { user: mention.tag });
+      if (Number.isNaN(aposta)) {
+        await ctx.replyT('error', 'commands:pvp.invalid-value');
+        return;
+      }
+      if (aposta <= 0) {
+        await ctx.replyT('error', 'commands:pvp.invalid-value');
+        return;
+      }
+      if (aposta > user1.money) {
+        await ctx.replyT('error', 'commands:pvp.you-poor');
+        return;
+      }
+      if (aposta > user2.money) {
+        await ctx.replyT('error', 'commands:pvp.his-poor', { user: mention.tag });
+        return;
+      }
       embed.setColor('RED');
       embed.setFooter(ctx.locale('commands:pvp.is-competitive', { aposta }));
     }
 
-    if (user1.inBattle) return ctx.replyT('error', 'commands:pvp.in-battle-one');
-    if (user2.inBattle) return ctx.replyT('error', 'commands:pvp.in-battle-two');
+    if (user1.inBattle) {
+      await ctx.replyT('error', 'commands:pvp.in-battle-one');
+      return;
+    }
+    if (user2.inBattle) {
+      await ctx.replyT('error', 'commands:pvp.in-battle-two');
+      return;
+    }
 
     if (!aposta)
       embed.setDescription(

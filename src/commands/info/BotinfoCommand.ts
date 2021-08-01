@@ -1,4 +1,4 @@
-import { Message, MessageEmbed } from 'discord.js';
+import { MessageEmbed } from 'discord.js';
 import moment from 'moment';
 import Command from '@structures/Command';
 import 'moment-duration-format';
@@ -22,7 +22,7 @@ export default class BotinfoCommand extends Command {
     return info.reduce((prev, val) => prev + val, 0);
   }
 
-  async run(ctx: CommandContext): Promise<Message | Message[]> {
+  async run(ctx: CommandContext): Promise<void> {
     const owner = await this.client.users.fetch(process.env.OWNER as string);
     if (ctx.data.server.lang === 'pt-BR') {
       moment.locale('pt-br');
@@ -80,6 +80,6 @@ export default class BotinfoCommand extends Command {
           inline: true,
         },
       ]);
-    return ctx.send(embed);
+    await ctx.send(embed);
   }
 }

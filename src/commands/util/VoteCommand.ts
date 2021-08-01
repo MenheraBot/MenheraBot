@@ -1,5 +1,5 @@
 import CommandContext from '@structures/CommandContext';
-import { Message, MessageEmbed } from 'discord.js';
+import { MessageEmbed } from 'discord.js';
 import MenheraClient from 'MenheraClient';
 import Command from '../../structures/Command';
 
@@ -14,7 +14,7 @@ export default class VoteCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext): Promise<Message> {
+  async run(ctx: CommandContext): Promise<void> {
     const embed = new MessageEmbed()
       .setTitle(ctx.locale('commands:vote.embed_title'))
       .setColor('#f763f8')
@@ -27,6 +27,6 @@ export default class VoteCommand extends Command {
       )
       .setTimestamp();
 
-    return ctx.send(embed);
+    await ctx.send(embed);
   }
 }

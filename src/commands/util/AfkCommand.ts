@@ -1,7 +1,6 @@
 import Command from '@structures/Command';
 import CommandContext from '@structures/CommandContext';
 import MenheraClient from 'MenheraClient';
-import { Message } from 'discord.js';
 
 export default class AfkCommand extends Command {
   constructor(client: MenheraClient) {
@@ -12,7 +11,7 @@ export default class AfkCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext): Promise<Message | void> {
+  async run(ctx: CommandContext): Promise<void> {
     const args = ctx.args.join(' ');
     const reason = args.length ? args.replace(/`/g, '') : 'AFK';
 
@@ -32,6 +31,6 @@ export default class AfkCommand extends Command {
         : `[AFK] ${member?.user.username}`;
       if (newNick.length <= 32) await member?.setNickname(newNick, 'AFK System');
     }
-    return ctx.replyT('success', 'commands:afk.success');
+    await ctx.replyT('success', 'commands:afk.success');
   }
 }

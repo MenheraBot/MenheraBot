@@ -1,4 +1,4 @@
-import { Message, MessageEmbed } from 'discord.js';
+import { MessageEmbed } from 'discord.js';
 import moment from 'moment';
 import Command from '@structures/Command';
 import { COLORS, probabilities } from '@structures/MenheraConstants';
@@ -15,7 +15,7 @@ export default class HuntCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext): Promise<Message | void> {
+  async run(ctx: CommandContext): Promise<void> {
     const authorData = ctx.data.user;
     if (!ctx.message.guild) return;
 
@@ -55,12 +55,17 @@ export default class HuntCommand extends Command {
       },
     ];
 
-    if (!ctx.args[0]) return ctx.reply('error', `${ctx.locale('commands:hunt.no-args')}`);
+    if (!ctx.args[0]) {
+      await ctx.reply('error', `${ctx.locale('commands:hunt.no-args')}`);
+      return;
+    }
     const filtredOption = validArgs.filter((so) =>
       so.arguments.includes(ctx.args[0].toLowerCase()),
     );
-    if (filtredOption.length === 0)
-      return ctx.reply('error', `${ctx.locale('commands:hunt.no-args')}`);
+    if (filtredOption.length === 0) {
+      await ctx.reply('error', `${ctx.locale('commands:hunt.no-args')}`);
+      return;
+    }
 
     const { option } = filtredOption[0];
 
@@ -81,9 +86,12 @@ export default class HuntCommand extends Command {
         ? probabilities.support.god
         : probabilities.normal.god;
 
-    if (option === 'ajuda') return ctx.replyT('question', 'commands:hunt.help');
+    if (option === 'ajuda') {
+      await ctx.replyT('question', 'commands:hunt.help');
+      return;
+    }
     if (option === 'probabilidades') {
-      return ctx.send(
+      await ctx.send(
         ctx.locale('commands:hunt.probabilities', {
           demon: probabilidadeDemonio,
           angel: probabilidadeAnjo,
@@ -91,12 +99,15 @@ export default class HuntCommand extends Command {
           god: probabilidadeDeuses,
         }),
       );
+      return;
     }
 
-    if (parseInt(authorData.caçarTime) > Date.now())
-      return ctx.replyT('error', 'commands:hunt.cooldown', {
+    if (parseInt(authorData.caçarTime) > Date.now()) {
+      await ctx.replyT('error', 'commands:hunt.cooldown', {
         time: moment.utc(parseInt(authorData.caçarTime) - Date.now()).format('mm:ss'),
       });
+      return;
+    }
 
     const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
     const cooldown = probabilities.defaultTime + Date.now();
@@ -206,6 +217,6 @@ export default class HuntCommand extends Command {
         break;
       }
     }
-    return ctx.send(embed);
+    await ctx.send(embed);
   }
 }

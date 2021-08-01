@@ -1,5 +1,5 @@
 import http from '@utils/HTTPrequests';
-import { Message, MessageAttachment } from 'discord.js';
+import { MessageAttachment } from 'discord.js';
 import { familiars as familiarsFile } from '@structures/RpgHandler';
 import Command from '@structures/Command';
 import MenheraClient from 'MenheraClient';
@@ -16,18 +16,22 @@ export default class StatusCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext): Promise<Message | Message[]> {
+  async run(ctx: CommandContext): Promise<void> {
     let mentioned;
     if (ctx.args[0]) {
       try {
         mentioned = await this.client.users.fetch(ctx.args[0].replace(/[<@!>]/g, ''));
       } catch {
-        return ctx.replyT('error', 'commands:status.not-found');
+        await ctx.replyT('error', 'commands:status.not-found');
+        return;
       }
     } else mentioned = ctx.message.author;
 
     const user = await this.client.repositories.rpgRepository.find(mentioned.id);
-    if (!user) return ctx.replyT('error', 'commands:status.not-found');
+    if (!user) {
+      await ctx.replyT('error', 'commands:status.not-found');
+      return;
+    }
 
     const userAvatarLink = mentioned.displayAvatarURL({ format: 'png' });
     const dmg =
@@ -78,9 +82,12 @@ export default class StatusCommand extends Command {
 
     const res = await http.statusRequest(UserDataToSend, userAvatarLink, i18nData);
 
-    if (res.err) return ctx.replyT('error', 'commands:http-error');
+    if (res.err) {
+      await ctx.replyT('error', 'commands:http-error');
+      return;
+    }
 
-    return ctx.sendC(ctx.message.author.toString(), {
+    await ctx.sendC(ctx.message.author.toString(), {
       files: [new MessageAttachment(Buffer.from(res.data as Buffer), 'status.png')],
     });
   }

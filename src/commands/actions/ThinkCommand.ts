@@ -1,4 +1,4 @@
-import { Message, MessageEmbed } from 'discord.js';
+import { MessageEmbed } from 'discord.js';
 import Command from '@structures/Command';
 import http from '@utils/HTTPrequests';
 import MenheraClient from 'MenheraClient';
@@ -14,12 +14,15 @@ export default class ThinksCOmmand extends Command {
     });
   }
 
-  async run(ctx: CommandContext): Promise<Message> {
+  async run(ctx: CommandContext): Promise<void> {
     const rand = await http.getAssetImageUrl('think');
     const user = ctx.message.mentions.users.first();
     const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
 
-    if (user && user.bot) return ctx.replyT('success', 'commands:think.bot');
+    if (user && user.bot) {
+      await ctx.replyT('success', 'commands:think.bot');
+      return;
+    }
 
     if (!user || user === ctx.message.author) {
       const embed = new MessageEmbed()
@@ -32,7 +35,8 @@ export default class ThinksCOmmand extends Command {
         .setImage(rand)
         .setAuthor(ctx.message.author.tag, avatar);
 
-      return ctx.send(embed);
+      await ctx.send(embed);
+      return;
     }
 
     const embed = new MessageEmbed()
@@ -45,6 +49,6 @@ export default class ThinksCOmmand extends Command {
       .setThumbnail(avatar)
       .setAuthor(ctx.message.author.tag, avatar);
 
-    return ctx.send(embed);
+    await ctx.send(embed);
   }
 }

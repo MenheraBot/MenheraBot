@@ -15,13 +15,13 @@ export default class DivorceCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext): Promise<Message | void> {
+  async run(ctx: CommandContext): Promise<void> {
     const authorData = ctx.data.user;
 
     if (authorData.casado && authorData.casado !== 'false') {
       return this.divorciar(ctx);
     }
-    return ctx.replyT('warn', 'commands:divorce.author-single');
+    await ctx.replyT('warn', 'commands:divorce.author-single');
   }
 
   async divorciar(ctx: CommandContext): Promise<void> {

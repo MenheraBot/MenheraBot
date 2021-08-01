@@ -1,4 +1,4 @@
-import { Message, MessageAttachment } from 'discord.js';
+import { MessageAttachment } from 'discord.js';
 import Command from '@structures/Command';
 import http from '@utils/HTTPrequests';
 import MenheraClient from 'MenheraClient';
@@ -14,16 +14,22 @@ export default class PhiloCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext): Promise<Message | Message[]> {
-    if (!ctx.args[0]) return ctx.replyT('error', 'commands:philo.no-args');
+  async run(ctx: CommandContext): Promise<void> {
+    if (!ctx.args[0]) {
+      await ctx.replyT('error', 'commands:philo.no-args');
+      return;
+    }
 
     const text = ctx.args.join(' ');
 
     const res = await http.philoRequest(text);
 
-    if (res.err) return ctx.replyT('error', 'commands:http-error');
+    if (res.err) {
+      await ctx.replyT('error', 'commands:http-error');
+      return;
+    }
 
-    return ctx.sendC(ctx.message.author.toString(), {
+    await ctx.sendC(ctx.message.author.toString(), {
       files: [new MessageAttachment(Buffer.from(res.data as Buffer), 'filosófico.png')],
     });
   }

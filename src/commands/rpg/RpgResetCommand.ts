@@ -13,10 +13,16 @@ export default class RpgResetCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext): Promise<Message | void> {
+  async run(ctx: CommandContext): Promise<void> {
     const user = await this.client.repositories.rpgRepository.find(ctx.message.author.id);
-    if (!user) return ctx.replyT('error', 'commands:reset.non-aventure');
-    if (user.level < 4) return ctx.replyT('error', 'commands:reset.low-level');
+    if (!user) {
+      await ctx.replyT('error', 'commands:reset.non-aventure');
+      return;
+    }
+    if (user.level < 4) {
+      await ctx.replyT('error', 'commands:reset.low-level');
+      return;
+    }
 
     await ctx.replyT('warn', 'commands:reset.confirm');
 

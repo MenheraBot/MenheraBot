@@ -87,25 +87,47 @@ export default class GiveCommand extends Command {
     );
   }
 
-  async run(ctx: CommandContext): Promise<Message | void> {
+  async run(ctx: CommandContext): Promise<void> {
     const selectedOption =
       ctx.args[0] &&
       validArgs.find((option) => option.arguments.includes(ctx.args[0].toLowerCase()));
-    if (!selectedOption) return GiveCommand.replyInvalidArgsError(ctx);
+    if (!selectedOption) {
+      await GiveCommand.replyInvalidArgsError(ctx);
+      return;
+    }
 
     const to = ctx.message.mentions.users.first();
-    if (!to) return GiveCommand.replyBadUsageError(ctx);
-    if (to.bot) return GiveCommand.replyNoAccountError(ctx);
-    if (to.id === ctx.message.author.id) return GiveCommand.replyForYourselfError(ctx);
+    if (!to) {
+      await GiveCommand.replyBadUsageError(ctx);
+      return;
+    }
+    if (to.bot) {
+      await GiveCommand.replyNoAccountError(ctx);
+      return;
+    }
+
+    if (to.id === ctx.message.author.id) {
+      await GiveCommand.replyForYourselfError(ctx);
+      return;
+    }
 
     const input = ctx.args[2];
-    if (!input) return GiveCommand.replyBadUsageError(ctx);
+    if (!input) {
+      await GiveCommand.replyBadUsageError(ctx);
+      return;
+    }
 
     const value = parseInt(input.replace(/\D+/g, ''));
-    if (!value || value < 1) return GiveCommand.replyInvalidValueError(ctx);
+    if (!value || value < 1) {
+      await GiveCommand.replyInvalidValueError(ctx);
+      return;
+    }
 
     const toData = await this.client.repositories.userRepository.findOrCreate(to.id);
-    if (!toData) return GiveCommand.replyNoAccountError(ctx);
+    if (!toData) {
+      await GiveCommand.replyNoAccountError(ctx);
+      return;
+    }
 
     const authorData = ctx.data.user;
     const { option } = selectedOption;

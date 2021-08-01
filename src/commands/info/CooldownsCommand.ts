@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-expressions */
-import { Message, MessageEmbed } from 'discord.js';
+import { MessageEmbed } from 'discord.js';
 import moment from 'moment';
 import Command from '@structures/Command';
 import MenheraClient from 'MenheraClient';
@@ -15,9 +15,12 @@ export default class CooldownsCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext): Promise<Message | Message[]> {
+  async run(ctx: CommandContext): Promise<void> {
     const userRpg = await this.client.repositories.rpgRepository.find(ctx.message.author.id);
-    if (!ctx.data.user) return ctx.replyT('error', 'commands:cooldowns.error');
+    if (!ctx.data.user) {
+      await ctx.replyT('error', 'commands:cooldowns.error');
+      return;
+    }
 
     const huntCooldownInMilis = parseInt(ctx.data.user.caçarTime) - Date.now();
     const dungeonCooldownInMilis = userRpg ? parseInt(userRpg.dungeonCooldown) - Date.now() : 0;
@@ -100,6 +103,6 @@ export default class CooldownsCommand extends Command {
       .setColor('#6597df')
       .setDescription(txt);
 
-    return ctx.sendC(ctx.message.author.toString(), embed);
+    await ctx.sendC(ctx.message.author.toString(), embed);
   }
 }

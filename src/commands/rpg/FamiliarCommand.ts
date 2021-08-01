@@ -17,12 +17,17 @@ export default class FamiliarCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext): Promise<Message | Message[] | void> {
+  async run(ctx: CommandContext): Promise<void> {
     const user = await this.client.repositories.rpgRepository.find(ctx.message.author.id);
-    if (!user)
-      return ctx.replyT('error', 'commands:familiar.no-user', { prefix: ctx.data.server.prefix });
+    if (!user) {
+      await ctx.replyT('error', 'commands:familiar.no-user', { prefix: ctx.data.server.prefix });
+      return;
+    }
 
-    if (user.level < 15) return ctx.replyT('error', 'commands:familiar.no-level');
+    if (user.level < 15) {
+      await ctx.replyT('error', 'commands:familiar.no-level');
+      return;
+    }
 
     if (!user.familiar || !user.familiar.id) {
       const array = Object.entries(familiarsFile);
@@ -84,7 +89,7 @@ export default class FamiliarCommand extends Command {
             },
           ],
         );
-      return ctx.sendC(ctx.message.author.toString(), embed);
+      await ctx.sendC(ctx.message.author.toString(), embed);
     }
   }
 }

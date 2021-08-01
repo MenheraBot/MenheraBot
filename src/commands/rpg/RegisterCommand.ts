@@ -15,13 +15,15 @@ export default class RegisterCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext): Promise<Message | void> {
+  async run(ctx: CommandContext): Promise<void> {
     const user = await this.client.repositories.rpgRepository.find(ctx.message.author.id);
 
-    if (user)
-      return ctx.replyT('error', 'commands:register.already', {
+    if (user) {
+      await ctx.replyT('error', 'commands:register.already', {
         name: ctx.message.author.username,
       });
+      return;
+    }
 
     const classes = [
       ctx.locale('commands:register.Assassino'),
