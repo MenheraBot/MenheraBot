@@ -37,10 +37,7 @@
     "millify": "^3.5.2",
     "moment": "^2.28.0",
     "moment-duration-format": "^2.3.2",
-    "mongoose": "^5.12.7",
-    "request": "^2.88.2",
-    "request-promise": "^4.2.6",
-    "string-table": "^0.1.5"
+    "mongoose": "^5.12.7"
   },
   "repository": {
     "type": "git",
@@ -58,6 +55,7 @@
     "@types/jest": "^26.0.24",
     "@types/moment-duration-format": "^2.2.3",
     "@types/mongoose": "^5.11.97",
+    "@typescript-eslint/eslint-plugin": "^4.28.5",
     "@typescript-eslint/parser": "^4.24.0",
     "eslint": "^7.13.0",
     "eslint-config-airbnb-base": "^14.2.1",

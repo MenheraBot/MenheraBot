@@ -1,29 +1,23 @@
 import CommandContext from '@structures/CommandContext';
 import { Message, MessageCollector, TextChannel } from 'discord.js';
-
-/**
- * returns the function when the first argument is not
- * @param {any} fn
- * @returns {Function}
- */
-const func = (fn) => (typeof fn === 'function' ? fn : () => fn);
+import { IFerreiroItem, IHotelItem, IInventoryItem, IMobLoot } from './Types';
 
 export default class PagesCollector extends MessageCollector {
   public ctx: CommandContext;
 
   public message: Message;
 
-  public sent: Message;
+  public sent: Message | Message[];
 
-  public invalidOption;
+  public invalidOption: null;
 
-  public findOption;
+  public findOption: null;
 
-  public handler;
+  public handler: null;
 
   constructor(
     public channel: TextChannel,
-    { ctx, sent },
+    { ctx, sent }: { ctx: CommandContext; sent: Message | Message[] },
     public collectorOptions = { max: 5, time: 60000 },
   ) {
     super(channel, (m) => m.author.id === ctx.message.author.id, collectorOptions);
@@ -35,64 +29,81 @@ export default class PagesCollector extends MessageCollector {
     this.handler = null;
   }
 
-  start() {
+  static arrFindByElemOrIndex(arr: Array<IMobLoot | IInventoryItem | IFerreiroItem | string>) {
+    return (str: string): IMobLoot | IInventoryItem | IFerreiroItem | string | undefined =>
+      arr.find((elem, i) => elem === str?.toLowerCase() || i + 1 === Number(str));
+  }
+
+  static arrFindByItemNameOrIndex(items: Array<IMobLoot | IInventoryItem | IFerreiroItem>) {
+    return (str: string): IMobLoot | IInventoryItem | IFerreiroItem | undefined =>
+      items.find((item, i) =>
+        'name' in item ? item.name.toLowerCase() === str?.toLowerCase() : i + 1 === Number(str),
+      );
+  }
+
+  static arrFindByIndex(arr: Array<IHotelItem>) {
+    return (str: string): IHotelItem | undefined =>
+      arr.find((_: IHotelItem, i: number) => i + 1 === Number(str));
+  }
+
+  static continue(): string {
+    return 'CONTINUE';
+  }
+
+  start(): this {
     this.on('collect', (msg) => this.onCollect(msg));
     return this;
   }
 
-  setFindOption(fn) {
+  setFindOption(fn): this {
     this.findOption = fn;
     return this;
   }
 
-  setInvalidOption(fn) {
+  setInvalidOption(fn): this {
     this.invalidOption = fn;
     return this;
   }
 
-  setHandle(fn) {
+  setHandle(fn): this {
     this.collected.clear();
     this.handler = fn;
     return this;
   }
 
-  /**
-   * Send a new page message or edit the current
-   * @param  {...any} args arguments of #TextChannel.send or #Message.edit
-   */
-  async send(...args) {
-    if (!this.sent || this.sent.deleted) {
+  async send(...args: Parameters<Message['edit']>): Promise<Message> {
+    if (!this.sent || (this.sent as Message).deleted) {
       this.sent = await this.channel.send(args);
     } else {
-      this.sent = await this.sent.edit(args);
+      this.sent = await (this.sent as Message).edit(args);
     }
 
     return this.sent;
   }
 
-  delete(options?: { timeout?: number; reason?: string }) {
-    const original = this.sent;
+  delete(options?: { timeout?: number; reason?: string }): void {
+    const original = this.sent as Message;
     if (original && !original.deleted) {
       original.delete(options);
     }
   }
 
-  async replyT(...args: Parameters<CommandContext['replyT']>) {
+  async replyT(...args: Parameters<CommandContext['replyT']>): Promise<Message> {
     const sent = await this.ctx.replyT(...args);
     this.delete();
     this.sent = sent;
     return this.sent;
   }
 
-  async onCollect(message: Message) {
-    const option = await func(this.findOption)(message.content);
+  async onCollect(message: Message): Promise<void> {
+    const option = this.findOption(message.content);
 
     if (!option) {
       this.finish();
-      return func(this.invalidOption)(message, this);
+      return this.invalidOption(message, this);
     }
 
-    const res = await func(this.handler)(message, option, this);
+    const res = this.handler(message, option, this);
     if (res !== 'CONTINUE') {
       this.finish();
     }
@@ -101,27 +112,7 @@ export default class PagesCollector extends MessageCollector {
   /**
    * Stop collector listener
    */
-  finish() {
+  finish(): void {
     return this.stop('finish');
-  }
-
-  static arrFindByElemOrIndex(arr) {
-    return (str) => arr.find((elem, i) => elem === str?.toLowerCase() || i + 1 === Number(str));
-  }
-
-  static arrFindByItemNameOrIndex(items) {
-    return (str) =>
-      items.find(
-        (item, i) =>
-          (item?.name ?? item?.id).toLowerCase() === str?.toLowerCase() || i + 1 === Number(str),
-      );
-  }
-
-  static arrFindByIndex(arr: any[]) {
-    return (str: any) => arr.find((_: any, i: number) => i + 1 === Number(str));
-  }
-
-  static continue() {
-    return 'CONTINUE';
   }
 }

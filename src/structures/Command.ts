@@ -8,8 +8,6 @@ export default class Command {
 
   public dir!: string;
 
-  public run?(ctx: CommandContext): Promise<any>;
-
   constructor(public client: MenheraClient, options: ICommandConfig) {
     this.client = client;
 
@@ -23,4 +21,6 @@ export default class Command {
       devsOnly: !!options.devsOnly,
     };
   }
+
+  public run?(ctx: CommandContext): Promise<void>;
 }

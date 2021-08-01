@@ -3,6 +3,7 @@ import Command from '@structures/Command';
 import RPGUtil from '@utils/RPGUtil';
 import MenheraClient from 'MenheraClient';
 import CommandContext from '@structures/CommandContext';
+import { IInventoryItem, IMobLoot } from '@utils/Types';
 
 export default class InventoryCommand extends Command {
   constructor(client: MenheraClient) {
@@ -15,11 +16,14 @@ export default class InventoryCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
-    const user = await this.client.database.Rpg.findById(ctx.message.author.id);
-    if (!user) return ctx.replyT('error', 'commands:inventory.non-aventure');
+  async run(ctx: CommandContext): Promise<void> {
+    const user = await this.client.repositories.rpgRepository.find(ctx.message.author.id);
+    if (!user) {
+      await ctx.replyT('error', 'commands:inventory.non-aventure');
+      return;
+    }
 
-    const cor = ctx.data.user?.cor ?? '#8f877f';
+    const cor = ctx.data.user.cor ?? '#8f877f';
 
     const embed = new MessageEmbed()
       .setTitle(`<:Chest:760957557538947133> | ${ctx.locale('commands:inventory.title')}`)
@@ -27,11 +31,13 @@ export default class InventoryCommand extends Command {
 
     const items = user.inventory.filter((item) => item.type !== 'Arma');
 
-    const normalizeItems = (arr) =>
+    const normalizeItems = (arr: IMobLoot[] | IInventoryItem[]) =>
       RPGUtil.countItems(arr).reduce(
         (p, count) =>
           `${p}**${
-            count.job_id > 0 ? ctx.locale(`roleplay:job.${count.job_id}.${count.name}`) : count.name
+            count.job_id && count.job_id > 0
+              ? ctx.locale(`roleplay:job.${count.job_id}.${count.name}`)
+              : count.name
           }** (${count.amount})\n`,
         '',
       );
@@ -64,6 +70,6 @@ export default class InventoryCommand extends Command {
         lootText,
       );
 
-    ctx.sendC(ctx.message.author.toString(), embed);
+    await ctx.sendC(ctx.message.author.toString(), embed);
   }
 }

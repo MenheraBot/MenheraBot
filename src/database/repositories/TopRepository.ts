@@ -1,17 +1,18 @@
 /* eslint-disable no-underscore-dangle */
 import { Users } from '@structures/DatabaseCollections';
 
-const TOP_TYPES = {
-  mamou: 'mamou',
-  stars: 'estrelinhas',
-};
+// eslint-disable-next-line no-shadow
+enum TOP_ENUM {
+  mamou = 'mamou',
+  stars = 'estrelinhas',
+}
 
 export default class TopRepository {
   constructor(private userModal: typeof Users) {
     this.userModal = userModal;
   }
 
-  async _getTop(userID: string, topType: string) {
+  async _getTop(userID: string, topType: string): Promise<{ rank: number }> {
     const res = await this.userModal.aggregate([
       {
         $sort: {
@@ -45,15 +46,15 @@ export default class TopRepository {
     return res[0];
   }
 
-  async getUserMamouRank(userID: string) {
-    return this._getTop(userID, TOP_TYPES.mamou);
+  async getUserMamouRank(userID: string): Promise<{ rank: number }> {
+    return this._getTop(userID, TOP_ENUM.mamou);
   }
 
-  async getUserStarsRank(userID: string) {
-    return this._getTop(userID, TOP_TYPES.stars);
+  async getUserStarsRank(userID: string): Promise<{ rank: number }> {
+    return this._getTop(userID, TOP_ENUM.stars);
   }
 
-  async getUserHuntRank(userID: string, huntType: string) {
+  async getUserHuntRank(userID: string, huntType: string): Promise<{ rank: number }> {
     return this._getTop(userID, huntType);
   }
 }

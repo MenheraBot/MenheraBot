@@ -14,18 +14,15 @@ export default class ColorCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<void> {
     const authorData = ctx.data.user;
 
-    const haspadrao = authorData.cores.filter((pc) => pc.cor === '#a788ff');
+    const haspadrao = authorData.cores.some((pc) => pc.cor === '#a788ff');
 
-    if (haspadrao.length === 0) {
-      authorData.cores.push({
-        nome: '0 - Padrão',
-        cor: '#a788ff',
-        preço: 0,
+    if (!haspadrao) {
+      await this.client.repositories.userRepository.update(ctx.message.author.id, {
+        $push: { cores: { nome: '0 - Padrão', cor: '#a788ff', price: 0 } },
       });
-      authorData.save().then();
     }
     const embed = new MessageEmbed()
       .setTitle(`🏳️‍🌈 | ${ctx.locale('commands:color.embed_title')}`)
@@ -40,7 +37,10 @@ export default class ColorCommand extends Command {
       embed.addField(`${authorData.cores[i].nome}`, `${authorData.cores[i].cor}`);
       validArgs.push(authorData.cores[i].nome.replace(/[^\d]+/g, ''));
     }
-    if (!ctx.args[0]) return ctx.sendC(ctx.message.author.toString(), embed);
+    if (!ctx.args[0]) {
+      await ctx.sendC(ctx.message.author.toString(), embed);
+      return;
+    }
 
     if (validArgs.includes(ctx.args[0])) {
       const findColor = authorData.cores.filter(
@@ -55,10 +55,12 @@ export default class ColorCommand extends Command {
           url: 'https://i.imgur.com/t94XkgG.png',
         },
       };
-
-      ctx.sendC(ctx.message.author.toString(), { embed: dataChoose });
-      authorData.cor = findColor[0].cor;
-      authorData.save();
-    } else ctx.replyT('error', 'commands:color.no-own', { prefix: ctx.data.server.prefix });
+      await this.client.repositories.userRepository.update(ctx.message.author.id, {
+        cor: findColor[0].cor,
+      });
+      await ctx.sendC(ctx.message.author.toString(), { embed: dataChoose });
+      return;
+    }
+    await ctx.replyT('error', 'commands:color.no-own', { prefix: ctx.data.server.prefix });
   }
 }

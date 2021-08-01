@@ -14,18 +14,22 @@ export default class BiteCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<void> {
     const rand = await http.getAssetImageUrl('bite');
     const user = ctx.message.mentions.users.first();
 
-    if (user && user.bot) return ctx.replyT('warn', 'commands:bite.bot');
-
+    if (user && user.bot) {
+      await ctx.replyT('warn', 'commands:bite.bot');
+      return;
+    }
     if (!user) {
-      return ctx.replyT('error', 'commands:bite.no-mention');
+      await ctx.replyT('error', 'commands:bite.no-mention');
+      return;
     }
 
     if (user === ctx.message.author) {
-      return ctx.replyT('error', 'commands:bite.self-mention');
+      await ctx.replyT('error', 'commands:bite.self-mention');
+      return;
     }
 
     const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
@@ -40,6 +44,6 @@ export default class BiteCommand extends Command {
       .setThumbnail(avatar)
       .setAuthor(ctx.message.author.tag, avatar);
 
-    ctx.send(embed);
+    await ctx.send(embed);
   }
 }

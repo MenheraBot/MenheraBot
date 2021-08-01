@@ -1,4 +1,4 @@
-import { MessageEmbed } from 'discord.js';
+import { MessageEmbed, User } from 'discord.js';
 import Command from '@structures/Command';
 import MenheraClient from 'MenheraClient';
 import CommandContext from '@structures/CommandContext';
@@ -13,21 +13,25 @@ export default class WalletCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
-    let pessoa;
+  async run(ctx: CommandContext): Promise<void> {
+    let pessoa: User;
 
     if (ctx.args[0]) {
       try {
         pessoa = await this.client.users.fetch(ctx.args[0].replace(/[<@!>]/g, ''));
       } catch {
-        return ctx.replyT('error', 'commands:wallet.unknow-user');
+        await ctx.replyT('error', 'commands:wallet.unknow-user');
+        return;
       }
     } else {
       pessoa = ctx.message.author;
     }
 
     const user = await this.client.repositories.userRepository.find(pessoa.id);
-    if (!user) return ctx.replyT('error', 'commands:wallet.no-dbuser');
+    if (!user) {
+      await ctx.replyT('error', 'commands:wallet.no-dbuser');
+      return;
+    }
 
     let cor;
 
@@ -79,6 +83,6 @@ export default class WalletCommand extends Command {
         true,
       );
 
-    ctx.sendC(ctx.message.author.toString(), embed);
+    await ctx.sendC(ctx.message.author.toString(), embed);
   }
 }

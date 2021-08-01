@@ -14,18 +14,23 @@ export default class HugCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<void> {
     const rand = await http.getAssetImageUrl('hug');
     const user = ctx.message.mentions.users.first();
 
-    if (user && user.bot) return ctx.replyT('error', 'commands:hug.bot');
+    if (user && user.bot) {
+      await ctx.replyT('error', 'commands:hug.bot');
+      return;
+    }
 
     if (!user) {
-      return ctx.replyT('error', 'commands:hug.no-mention');
+      await ctx.replyT('error', 'commands:hug.no-mention');
+      return;
     }
 
     if (user === ctx.message.author) {
-      return ctx.replyT('error', 'commands:hug.self-mention');
+      await ctx.replyT('error', 'commands:hug.self-mention');
+      return;
     }
 
     const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
@@ -40,6 +45,6 @@ export default class HugCommand extends Command {
       .setThumbnail(avatar)
       .setAuthor(ctx.message.author.tag, avatar);
 
-    ctx.send(embed);
+    await ctx.send(embed);
   }
 }

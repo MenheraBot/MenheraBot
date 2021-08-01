@@ -15,16 +15,25 @@ export default class ResurrectCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<void> {
     const rand = await http.getAssetImageUrl('resurrect');
     const user = ctx.message.mentions.users.first();
     const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
 
-    if (!user) return ctx.replyT('question', 'commands:resurrect.no-mention');
+    if (!user) {
+      await ctx.replyT('question', 'commands:resurrect.no-mention');
+      return;
+    }
 
-    if (user === ctx.message.author) return ctx.replyT('question', 'commands:resurrect.no-mention');
+    if (user === ctx.message.author) {
+      await ctx.replyT('question', 'commands:resurrect.no-mention');
+      return;
+    }
 
-    if (user.bot) return ctx.replyT('success', 'commands:resurrect.bot');
+    if (user.bot) {
+      await ctx.replyT('success', 'commands:resurrect.bot');
+      return;
+    }
 
     const embed = new MessageEmbed()
       .setTitle(ctx.locale('commands:resurrect.embed_title'))
@@ -36,6 +45,6 @@ export default class ResurrectCommand extends Command {
       .setThumbnail(avatar)
       .setAuthor(ctx.message.author.tag, avatar);
 
-    ctx.send(embed);
+    await ctx.send(embed);
   }
 }

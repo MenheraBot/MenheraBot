@@ -74,7 +74,7 @@ export default class HttpRequests {
     return false;
   }
 
-  static async getCoinflipUserStats(id: string): Promise<IRESTGameStats> {
+  static async getCoinflipUserStats(id: string): Promise<IRESTGameStats | { error: true }> {
     try {
       const data = await apiRequest.get('/coinflip', { data: { userId: id } });
       if (data.status === 400) return { error: true };
@@ -111,7 +111,7 @@ export default class HttpRequests {
     }
   }
 
-  static async getBlackJackStats(id: string): Promise<IRESTGameStats> {
+  static async getBlackJackStats(id: string): Promise<IRESTGameStats | { error: true }> {
     try {
       const data = await apiRequest.get('/blackjack', { data: { userId: id } });
       if (data.status === 400) return { error: true };
@@ -271,7 +271,7 @@ export default class HttpRequests {
     menheraTotal: number,
     isEnd: boolean,
     i18n: unknown,
-  ) {
+  ): Promise<{ err: boolean; data?: Buffer }> {
     try {
       if (!isEnd) menheraCards[1].hidden = true;
       const data = await request.get('/blackjack', {
@@ -284,7 +284,7 @@ export default class HttpRequests {
           aposta,
         },
       });
-      return { err: false, data: data?.data };
+      return { err: false, data: data.data };
     } catch {
       return { err: true };
     }

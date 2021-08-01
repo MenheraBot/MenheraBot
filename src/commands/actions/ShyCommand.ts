@@ -15,7 +15,7 @@ export default class ShyCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<void> {
     const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     const rand = await http.getAssetImageUrl('shy');
@@ -32,21 +32,21 @@ export default class ShyCommand extends Command {
         .setImage(rand)
         .setAuthor(ctx.message.author.tag, avatar);
 
-      return ctx.send(embed);
+      await ctx.send(embed);
+      return;
     }
 
     const embed = new MessageEmbed()
       .setTitle(ctx.locale('commands:shy.embed_title'))
       .setColor('#000000')
       .setDescription(
-        `${user} ${ctx.locale('commands:shy.embed_description_start')} ${
-          ctx.message.author
-        } ${ctx.locale('commands:shy.embed_description_end')}`,
+        `${user} ${ctx.locale('commands:shy.embed_description_start')} 
+        ${ctx.message.author} ${ctx.locale('commands:shy.embed_description_end')}`,
       )
       .setImage(rand)
       .setThumbnail(avatar)
       .setAuthor(ctx.message.author.tag, avatar);
 
-    ctx.send(embed);
+    await ctx.send(embed);
   }
 }

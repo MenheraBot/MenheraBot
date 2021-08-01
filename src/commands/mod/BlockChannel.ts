@@ -13,18 +13,19 @@ export default class BlockChannelCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<void> {
     if (ctx.data.server.blockedChannels.includes(ctx.message.channel.id)) {
       const index = ctx.data.server.blockedChannels.indexOf(ctx.message.channel.id);
-      if (index > -1) {
-        ctx.data.server.blockedChannels.splice(index, 1);
-        ctx.replyT('success', 'commands:blockchannel.unblock');
-      }
-    } else {
-      ctx.data.server.blockedChannels.push(ctx.message.channel.id);
-      ctx.replyT('success', 'commands:blockchannel.block', { prefix: ctx.data.server.prefix });
-    }
 
-    ctx.data.server.save();
+      ctx.data.server.blockedChannels.splice(index, 1);
+      await ctx.data.server.save();
+      await ctx.replyT('success', 'commands:blockchannel.unblock');
+      return;
+    }
+    ctx.data.server.blockedChannels.push(ctx.message.channel.id);
+    await ctx.data.server.save();
+    await ctx.replyT('success', 'commands:blockchannel.block', {
+      prefix: ctx.data.server.prefix,
+    });
   }
 }

@@ -10,7 +10,7 @@ export default class DiscordBots {
     this.client = client;
   }
 
-  async init() {
+  async init(): Promise<void> {
     if (!process.env.DBL_TOKEN) {
       throw new Error('No DBL token provided');
     }
@@ -37,8 +37,8 @@ export default class DiscordBots {
     }
 
     dbl.webhook.on('vote', async (vote) => {
-      const user = await this.client.database.Users.findOne({ id: vote.user });
-      const rpgUser = await this.client.database.Rpg.findById(vote.user);
+      const user = await this.client.repositories.userRepository.find(vote.user);
+      const rpgUser = await this.client.repositories.rpgRepository.find(vote.user);
 
       if (!user) return;
 
@@ -108,7 +108,7 @@ export default class DiscordBots {
       const guildCount = info.reduce((prev, val) => prev + val);
       const shardId = 0;
       const shardsCount = this.client.shard.count;
-      dbl.postStats(guildCount, shardId, shardsCount);
+      await dbl.postStats(guildCount, shardId, shardsCount);
     }, 1800000);
   }
 }

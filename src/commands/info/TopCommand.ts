@@ -2,7 +2,7 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-await-in-loop */
 import CommandContext from '@structures/CommandContext';
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import MenheraClient from 'MenheraClient';
 import Command from '../../structures/Command';
 import http from '../../utils/HTTPrequests';
@@ -19,13 +19,36 @@ export default class TopCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
+  static async topCommands(ctx: CommandContext): Promise<Message | Message[]> {
+    const res = await http.getTopCommands();
+    if (!res) return ctx.replyT('error', 'commands:http-error');
+    const embed = new MessageEmbed()
+
+      .setTitle(`:robot: |  ${ctx.locale('commands:top.commands')}`)
+      .setColor('#f47fff');
+
+    for (let i = 0; i < res.length; i++) {
+      embed.addField(
+        `**${i + 1} -** ${Util.captalize(res[i].name)} `,
+        `${ctx.locale('commands:top.used')} **${res[i].usages}** ${ctx.locale(
+          'commands:top.times',
+        )}`,
+        false,
+      );
+    }
+    return ctx.sendC(ctx.message.author.toString(), embed);
+  }
+
+  async run(ctx: CommandContext): Promise<void> {
     const { prefix } = ctx.data.server;
 
     let pagina = 1;
 
     const argumento = ctx.args[0];
-    if (!argumento) return ctx.replyT('error', 'commands:top.txt', { prefix });
+    if (!argumento) {
+      await ctx.replyT('error', 'commands:top.txt', { prefix });
+      return;
+    }
     if (ctx.args[1]) pagina = parseInt(ctx.args[1]);
 
     const argsDemonios = ['demonios', 'demônios', 'demons'];
@@ -42,53 +65,69 @@ export default class TopCommand extends Command {
     const argsUser = ['usuario', 'user', 'usuário'];
 
     if (argsMamou.includes(argumento)) {
-      this.topMamadores(ctx, pagina);
-    } else if (argsMamados.includes(argumento)) {
-      this.topMamados(ctx, pagina);
-    } else if (argsEstrelinhas.includes(argumento)) {
-      this.topEstrelinhas(ctx, pagina);
-    } else if (argsDemonios.includes(argumento)) {
-      this.topDemonios(ctx, pagina);
-    } else if (argsAnjos.includes(argumento)) {
-      this.topAnjos(ctx, pagina);
-    } else if (argsSemideuses.includes(argumento)) {
-      this.topSD(ctx, pagina);
-    } else if (argsDeuses.includes(argumento)) {
-      this.topDeuses(ctx, pagina);
-    } else if (argsVotos.includes(argumento)) {
-      this.topVotos(ctx, pagina);
-    } else if (argsDungeon.includes(argumento)) {
+      await this.topMamadores(ctx, pagina);
+      return;
+    }
+    if (argsMamados.includes(argumento)) {
+      await this.topMamados(ctx, pagina);
+      return;
+    }
+    if (argsEstrelinhas.includes(argumento)) {
+      await this.topEstrelinhas(ctx, pagina);
+      return;
+    }
+    if (argsDemonios.includes(argumento)) {
+      await this.topDemonios(ctx, pagina);
+      return;
+    }
+    if (argsAnjos.includes(argumento)) {
+      await this.topAnjos(ctx, pagina);
+      return;
+    }
+    if (argsSemideuses.includes(argumento)) {
+      await this.topSD(ctx, pagina);
+      return;
+    }
+    if (argsDeuses.includes(argumento)) {
+      await this.topDeuses(ctx, pagina);
+      return;
+    }
+    if (argsVotos.includes(argumento)) {
+      await this.topVotos(ctx, pagina);
+      return;
+    }
+    if (argsDungeon.includes(argumento)) {
       const validClasses = [
         {
-          opção: 'Assassino',
+          option: 'Assassino',
           arguments: ['assassino', 'assassin', 'a'],
         },
         {
-          opção: 'Bárbaro',
+          option: 'Bárbaro',
           arguments: ['bárbaro', 'barbaro', 'barbarian', 'b'],
         },
         {
-          opção: 'Clérigo',
+          option: 'Clérigo',
           arguments: ['clérigo', 'clerigo', 'cleric', 'c'],
         },
         {
-          opção: 'Druida',
+          option: 'Druida',
           arguments: ['druida', 'druid', 'd'],
         },
         {
-          opção: 'Espadachim',
+          option: 'Espadachim',
           arguments: ['espadachim', 'swordman', 'e', 'sw'],
         },
         {
-          opção: 'Feiticeiro',
+          option: 'Feiticeiro',
           arguments: ['feiticeiro', 'sorcerer', 'so'],
         },
         {
-          opção: 'Monge',
+          option: 'Monge',
           arguments: ['monge', 'monk', 'm'],
         },
         {
-          opção: 'Necromante',
+          option: 'Necromante',
           arguments: ['necromante', 'necromancer', 'n'],
         },
       ];
@@ -97,23 +136,31 @@ export default class TopCommand extends Command {
         ? validClasses.filter((so) => so.arguments.includes(ctx.args[1].toLowerCase()))
         : [];
 
-      const option = filtredOption.length > 0 ? filtredOption[0].opção : false;
+      const option = filtredOption.length > 0 ? filtredOption[0].option : false;
 
       if (option) {
-        this.topDungeon(ctx, pagina, option);
-      } else {
-        this.topDungeon(ctx, pagina, false);
+        await this.topDungeon(ctx, pagina, option);
+        return;
       }
-    } else if (argsCommands.includes(argumento)) {
-      TopCommand.topCommands(ctx);
-    } else if (argsUsers.includes(argumento)) {
-      this.topUsers(ctx);
-    } else if (argsUser.includes(argumento)) {
-      this.topUser(ctx);
-    } else ctx.replyT('warn', 'commands:top.txt', { prefix });
+      await this.topDungeon(ctx, pagina, false);
+      return;
+    }
+    if (argsCommands.includes(argumento)) {
+      await TopCommand.topCommands(ctx);
+      return;
+    }
+    if (argsUsers.includes(argumento)) {
+      await this.topUsers(ctx);
+      return;
+    }
+    if (argsUser.includes(argumento)) {
+      await this.topUser(ctx);
+      return;
+    }
+    await ctx.replyT('warn', 'commands:top.txt', { prefix });
   }
 
-  async topMamados(ctx: CommandContext, pagina: number) {
+  async topMamados(ctx: CommandContext, pagina: number): Promise<Message | Message[]> {
     const quantidade = await this.client.database.Users.countDocuments();
     let skip = 0;
     if (!Number.isNaN(pagina) && pagina > 0 && pagina < quantidade / 10) {
@@ -142,10 +189,10 @@ export default class TopCommand extends Command {
         false,
       );
     }
-    ctx.sendC(ctx.message.author.toString(), embed);
+    return ctx.sendC(ctx.message.author.toString(), embed);
   }
 
-  async topMamadores(ctx: CommandContext, pagina: number) {
+  async topMamadores(ctx: CommandContext, pagina: number): Promise<Message | Message[]> {
     const quantidade = await this.client.database.Users.countDocuments();
 
     let skip = 0;
@@ -180,10 +227,10 @@ export default class TopCommand extends Command {
         );
       }
     }
-    ctx.sendC(ctx.message.author.toString(), embed);
+    return ctx.sendC(ctx.message.author.toString(), embed);
   }
 
-  async topDemonios(ctx, pagina) {
+  async topDemonios(ctx: CommandContext, pagina: number): Promise<Message | Message[]> {
     const quantidade = await this.client.database.Users.countDocuments();
 
     let skip = 0;
@@ -222,10 +269,10 @@ export default class TopCommand extends Command {
         );
       }
     }
-    ctx.sendC(ctx.message.author.toString(), embed);
+    return ctx.sendC(ctx.message.author.toString(), embed);
   }
 
-  async topAnjos(ctx, pagina) {
+  async topAnjos(ctx: CommandContext, pagina: number): Promise<Message | Message[]> {
     const quantidade = await this.client.database.Users.countDocuments();
 
     let skip = 0;
@@ -264,10 +311,10 @@ export default class TopCommand extends Command {
         );
       }
     }
-    ctx.sendC(ctx.message.author, embed);
+    return ctx.sendC(ctx.message.author.toString(), embed);
   }
 
-  async topSD(ctx, pagina) {
+  async topSD(ctx: CommandContext, pagina: number): Promise<Message | Message[]> {
     const quantidade = await this.client.database.Users.countDocuments();
 
     let skip = 0;
@@ -306,10 +353,10 @@ export default class TopCommand extends Command {
         );
       }
     }
-    ctx.sendC(ctx.message.author, embed);
+    return ctx.sendC(ctx.message.author.toString(), embed);
   }
 
-  async topDeuses(ctx, pagina) {
+  async topDeuses(ctx: CommandContext, pagina: number): Promise<Message | Message[]> {
     const quantidade = await this.client.database.Users.countDocuments();
 
     let skip = 0;
@@ -348,10 +395,10 @@ export default class TopCommand extends Command {
         );
       }
     }
-    ctx.sendC(ctx.message.author, embed);
+    return ctx.sendC(ctx.message.author.toString(), embed);
   }
 
-  async topEstrelinhas(ctx, pagina) {
+  async topEstrelinhas(ctx: CommandContext, pagina: number): Promise<Message | Message[]> {
     const quantidade = await this.client.database.Users.countDocuments();
 
     let skip = 0;
@@ -385,10 +432,10 @@ export default class TopCommand extends Command {
         );
       }
     }
-    ctx.sendC(ctx.message.author, embed);
+    return ctx.sendC(ctx.message.author.toString(), embed);
   }
 
-  async topVotos(ctx, pagina) {
+  async topVotos(ctx: CommandContext, pagina: number): Promise<Message | Message[]> {
     const quantidade = await this.client.database.Users.countDocuments();
 
     let skip = 0;
@@ -427,10 +474,14 @@ export default class TopCommand extends Command {
         );
       }
     }
-    ctx.sendC(ctx.message.author, embed);
+    return ctx.sendC(ctx.message.author.toString(), embed);
   }
 
-  async topDungeon(ctx, pagina, classToSearch) {
+  async topDungeon(
+    ctx: CommandContext,
+    pagina: number,
+    classToSearch: string | false,
+  ): Promise<Message | Message[]> {
     const quantidade = await this.client.database.Rpg.countDocuments();
 
     let skip = 0;
@@ -496,30 +547,10 @@ export default class TopCommand extends Command {
             );
       }
     }
-    ctx.sendC(ctx.message.author, embed);
+    return ctx.sendC(ctx.message.author.toString(), embed);
   }
 
-  static async topCommands(ctx) {
-    const res = await http.getTopCommands();
-    if (!res) return ctx.replyT('error', 'commands:http-error');
-    const embed = new MessageEmbed()
-
-      .setTitle(`:robot: |  ${ctx.locale('commands:top.commands')}`)
-      .setColor('#f47fff');
-
-    for (let i = 0; i < res.length; i++) {
-      embed.addField(
-        `**${i + 1} -** ${Util.captalize(res[i].name)} `,
-        `${ctx.locale('commands:top.used')} **${res[i].usages}** ${ctx.locale(
-          'commands:top.times',
-        )}`,
-        false,
-      );
-    }
-    ctx.sendC(ctx.message.author, embed);
-  }
-
-  async topUsers(ctx) {
+  async topUsers(ctx: CommandContext): Promise<Message | Message[]> {
     const res = await http.getTopUsers();
     if (!res) return ctx.replyT('error', 'commands:http-error');
     const embed = new MessageEmbed()
@@ -535,10 +566,10 @@ export default class TopCommand extends Command {
         false,
       );
     }
-    ctx.sendC(ctx.message.author, embed);
+    return ctx.sendC(ctx.message.author.toString(), embed);
   }
 
-  async topUser(ctx) {
+  async topUser(ctx: CommandContext): Promise<Message | Message[]> {
     const user = ctx.args[1] ? ctx.args[1].replace(/[<@!>]/g, '') : ctx.message.author.id;
 
     let fetchedUser;
@@ -571,6 +602,6 @@ export default class TopCommand extends Command {
         false,
       );
     }
-    ctx.sendC(ctx.message.author, embed);
+    return ctx.sendC(ctx.message.author.toString(), embed);
   }
 }

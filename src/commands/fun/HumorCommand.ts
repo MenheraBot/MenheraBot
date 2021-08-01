@@ -13,8 +13,8 @@ export default class HumorCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
-    if (ctx.message.deletable) ctx.message.delete();
+  async run(ctx: CommandContext): Promise<void> {
+    if (ctx.message.deletable) await ctx.message.delete();
 
     const rand = await http.getAssetImageUrl('humor');
 
@@ -22,6 +22,6 @@ export default class HumorCommand extends Command {
       .setImage(rand)
       .setTitle(`${ctx.message.author.username} ${ctx.locale('commands:humor.phrase')}`);
 
-    ctx.send(embed);
+    await ctx.send(embed);
   }
 }

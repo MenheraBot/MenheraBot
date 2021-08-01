@@ -101,7 +101,7 @@ export const BLACKJACK_CARDS = [
   52,
 ];
 
-export const LANGUAGES = {
+export const LANGUAGES: { [key: string]: string } = {
   'pt-BR': 'pt_BR',
   'en-US': 'en_US',
 };

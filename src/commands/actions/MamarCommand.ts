@@ -14,14 +14,23 @@ export default class MamarCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<void> {
     const mention = ctx.message.mentions.users.first();
 
-    if (!mention) return ctx.replyT('error', 'commands:mamar.no-mention');
+    if (!mention) {
+      await ctx.replyT('error', 'commands:mamar.no-mention');
+      return;
+    }
 
-    if (mention.bot) return ctx.reply('warn', `${ctx.locale('commands:mamar.bot')} ${mention}`);
+    if (mention.bot) {
+      await ctx.reply('warn', `${ctx.locale('commands:mamar.bot')} ${mention}`);
+      return;
+    }
 
-    if (mention === ctx.message.author) return ctx.replyT('error', 'commands:mamar.self-mention');
+    if (mention === ctx.message.author) {
+      await ctx.replyT('error', 'commands:mamar.self-mention');
+      return;
+    }
 
     const rand = await http.getAssetImageUrl('mamar');
     const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
@@ -35,7 +44,7 @@ export default class MamarCommand extends Command {
       .setThumbnail(avatar)
       .setAuthor(ctx.message.author.tag, avatar);
 
-    ctx.send(embed);
+    await ctx.send(embed);
     await ctx.client.repositories.mamarRepository.mamar(ctx.message.author.id, mention.id);
   }
 }

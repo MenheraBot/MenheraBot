@@ -1,5 +1,4 @@
-import { MessageEmbed } from 'discord.js';
-import table from 'string-table';
+import { MessageEmbed, WebSocketManager, WebSocketShard } from 'discord.js';
 import moment from 'moment';
 import Command from '@structures/Command';
 import 'moment-duration-format';
@@ -16,7 +15,7 @@ export default class PingCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<void> {
     const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     if (!ctx.args[0]) {
@@ -33,38 +32,61 @@ export default class PingCommand extends Command {
         .setTimestamp()
         .setColor('#eab3fa');
 
-      return ctx.send(embed);
+      await ctx.send(embed);
+      return;
     }
-    const allShardsInformation = await this.client.shard.broadcastEval('this.ws');
-    const allShardsUptime = await this.client.shard.broadcastEval('this.ws.client.uptime');
-    const guildsPerShardCount = await this.client.shard.broadcastEval('this.guilds.cache.size');
-    const allShardsMemoryUsedByProcess = await this.client.shard.broadcastEval(
+    const allShardsInformation: Array<WebSocketManager> = await this.client.shard.broadcastEval(
+      'this.ws',
+    );
+    const allShardsUptime: Array<number> = await this.client.shard.broadcastEval(
+      'this.ws.client.uptime',
+    );
+    const guildsPerShardCount: Array<number> = await this.client.shard.broadcastEval(
+      'this.guilds.cache.size',
+    );
+    const allShardsMemoryUsedByProcess: Array<number> = await this.client.shard.broadcastEval(
       'process.memoryUsage().heapUsed',
     );
 
-    const tabled = allShardsInformation.reduce((p, c, n) => {
-      const conninfo = {
-        0: 'READY',
-        1: 'CONNECTING',
-        2: 'RECONNECTING',
-        3: 'IDLE',
-        4: 'NEARLY',
-        5: 'DISCONNECTED',
-        6: 'WAITING_FOR_GUILDS',
-        7: 'IDENTIFYING',
-        8: 'RESUMING',
-      };
-      p.push({
-        Shard: c.shards[0].id,
-        Ping: `${c.shards[0].ping}ms`,
-        Status: conninfo[c.shards[0].status],
-        Uptime: moment.duration(allShardsUptime[n]).format('D[d], H[h], m[m], s[s]'),
-        Ram: `${(allShardsMemoryUsedByProcess[n] / 1024 / 1024).toFixed(2)} MB`,
-        Guilds: guildsPerShardCount[n],
-      });
-      return p;
-    }, []);
+    const tabled = allShardsInformation.reduce(
+      (
+        p: Array<{
+          Shard: number;
+          Ping: string;
+          Status: string;
+          Uptime: string;
+          Ram: string;
+          Guilds: number;
+        }>,
+        c,
+        n,
+      ) => {
+        const conninfo = {
+          0: 'READY',
+          1: 'CONNECTING',
+          2: 'RECONNECTING',
+          3: 'IDLE',
+          4: 'NEARLY',
+          5: 'DISCONNECTED',
+          6: 'WAITING_FOR_GUILDS',
+          7: 'IDENTIFYING',
+          8: 'RESUMING',
+        };
 
-    ctx.send(`\`\`\`${table.create(tabled)}\`\`\``);
+        const FirstShard = c.shards.first() as WebSocketShard;
+        p.push({
+          Shard: FirstShard.id,
+          Ping: `${FirstShard.ping}ms`,
+          Status: conninfo[FirstShard.status as 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8],
+          Uptime: moment.duration(allShardsUptime[n]).format('D[d], H[h], m[m], s[s]'),
+          Ram: `${(allShardsMemoryUsedByProcess[n] / 1024 / 1024).toFixed(2)} MB`,
+          Guilds: guildsPerShardCount[n],
+        });
+        return p;
+      },
+      [],
+    );
+
+    await ctx.send(`\`\`\`${tabled}\`\`\``);
   }
 }

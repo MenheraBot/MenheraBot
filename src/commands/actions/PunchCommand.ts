@@ -14,15 +14,23 @@ export default class PunchCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<void> {
     const rand = await http.getAssetImageUrl('punch');
     const user = ctx.message.mentions.users.first();
 
-    if (user && user.bot) return ctx.replyT('error', 'commands:punch.bot');
+    if (user && user.bot) {
+      await ctx.replyT('error', 'commands:punch.bot');
+      return;
+    }
 
-    if (!user) return ctx.replyT('error', 'commands:punch.no-mention');
-
-    if (user === ctx.message.author) return ctx.replyT('error', 'commands:punch.self-mention');
+    if (!user) {
+      await ctx.replyT('error', 'commands:punch.no-mention');
+      return;
+    }
+    if (user === ctx.message.author) {
+      await ctx.replyT('error', 'commands:punch.self-mention');
+      return;
+    }
 
     const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
 
@@ -36,6 +44,6 @@ export default class PunchCommand extends Command {
       .setThumbnail(avatar)
       .setAuthor(ctx.message.author.tag, avatar);
 
-    ctx.send(embed);
+    await ctx.send(embed);
   }
 }

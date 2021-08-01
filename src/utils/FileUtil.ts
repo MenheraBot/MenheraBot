@@ -1,29 +1,27 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable global-require */
-/* eslint-disable import/no-dynamic-require */
 import fs from 'fs';
 import path from 'path';
 
 export default class FileUtil {
-  static filename(filepath: string) {
+  static filename(filepath: string): string {
     return path.parse(filepath).name;
   }
 
-  static reloadFile<A>(
+  static async reloadFile<A>(
     filepath: string,
-    reloadFunction: (file: A, dir: string) => unknown,
-  ): unknown {
+    reloadFunction: (file: A, dir: string) => Promise<void>,
+  ): Promise<void> {
     const dir = path.resolve(filepath);
     delete require.cache[dir];
-    return reloadFunction(require(dir), dir);
+    await reloadFunction(await import(dir), dir);
   }
 
-  static async readDirectory(directory: string, loadFunction: Function) {
-    return Promise.all(
-      FileUtil.readdirRecursive(directory).map((filepath: string) =>
-        loadFunction(require(path.resolve(filepath)), filepath),
-      ),
-    );
+  static readDirectory<T>(
+    directory: string,
+    loadFunction: (arch: T, pathToArch: string) => void,
+  ): void {
+    FileUtil.readdirRecursive(directory).map(async (filepath: string) => {
+      await loadFunction(await import(path.resolve(filepath)), filepath);
+    });
   }
 
   static readdirRecursive(directory: string): string[] {

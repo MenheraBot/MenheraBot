@@ -1,11 +1,12 @@
 import { Guild } from 'discord.js';
 import MenheraClient from 'MenheraClient';
+import Event from '@structures/Event';
 
-export default class GuildCreate {
-  private region: { [key: string]: string };
+export default class GuildCreate extends Event {
+  private readonly region: { [key: string]: string };
 
   constructor(public client: MenheraClient) {
-    this.client = client;
+    super(client);
     this.region = {
       brazil: 'pt-BR',
       europe: 'en-US',
@@ -24,8 +25,8 @@ export default class GuildCreate {
     };
   }
 
-  async run(guild: Guild) {
-    this.client.repositories.guildRepository.create(guild.id, this.region[guild.region]);
+  async run(guild: Guild): Promise<void> {
+    await this.client.repositories.guildRepository.create(guild.id, this.region[guild.region]);
 
     if (!process.env.GUILDS_HOOK_ID) {
       throw new Error('GUILDS_HOOK_ID is not defined');
@@ -35,6 +36,8 @@ export default class GuildCreate {
       process.env.GUILDS_HOOK_ID,
       process.env.GUILDS_HOOK_TOKEN,
     );
-    webhook.send(`<:MenheraWink:767210250637279252> | Fui adicionada do servidor **${guild}**`);
+    await webhook.send(
+      `<:MenheraWink:767210250637279252> | Fui adicionada do servidor **${guild}**`,
+    );
   }
 }

@@ -9,13 +9,12 @@ export default class VoteCommand extends Command {
       name: 'vote',
       aliases: ['votar', 'upvote'],
       cooldown: 5,
-      description: 'Vote no bot (pfv vote, isso ajuda muito X3 >.< ',
       category: 'util',
       clientPermissions: ['EMBED_LINKS'],
     });
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<void> {
     const embed = new MessageEmbed()
       .setTitle(ctx.locale('commands:vote.embed_title'))
       .setColor('#f763f8')
@@ -28,6 +27,6 @@ export default class VoteCommand extends Command {
       )
       .setTimestamp();
 
-    ctx.send(embed);
+    await ctx.send(embed);
   }
 }

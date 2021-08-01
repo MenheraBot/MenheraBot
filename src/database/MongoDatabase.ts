@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { Cmds, Commands, Guilds, Status, Rpg, Users } from '../structures/DatabaseCollections';
+import { Cmds, Commands, Guilds, Rpg, Status, Users } from '@structures/DatabaseCollections';
 import CmdRepository from './repositories/CmdsRepository';
 import CommandRepository from './repositories/CommandRepository';
 import RpgRepository from './repositories/RpgRepository';
@@ -29,39 +29,37 @@ export default class MongoDatabase {
 
   public Users: typeof Users;
 
-  public userRepository: UserRepository;
+  private readonly userRepository: UserRepository;
 
-  public commandRepository: CommandRepository;
+  private readonly commandRepository: CommandRepository;
 
-  public cmdRepository: CmdRepository;
+  private readonly cmdRepository: CmdRepository;
 
-  public starRepository: StarRepository;
+  private readonly starRepository: StarRepository;
 
-  public rpgRepository: RpgRepository;
+  private readonly rpgRepository: RpgRepository;
 
-  public mamarRepository: MamarRepository;
+  private readonly mamarRepository: MamarRepository;
 
-  public guildRepository: GuildRepository;
+  private readonly guildRepository: GuildRepository;
 
-  public statusRepository: StatusRepository;
+  private readonly statusRepository: StatusRepository;
 
-  public badgeRepository: BadgeRepository;
+  private readonly badgeRepository: BadgeRepository;
 
-  public maintenanceRepository: MaintenanceRepository;
+  private readonly maintenanceRepository: MaintenanceRepository;
 
-  public huntRepository: HuntRepository;
+  private readonly huntRepository: HuntRepository;
 
-  public relationshipRepository: RelationshipRepository;
+  private readonly relationshipRepository: RelationshipRepository;
 
-  public blacklistRepository: BlacklistRepository;
+  private readonly blacklistRepository: BlacklistRepository;
 
-  public topRepository: TopRepository;
+  private readonly topRepository: TopRepository;
 
-  public giveRepository: GiveRepository;
+  private readonly giveRepository: GiveRepository;
 
   constructor(public uri: string) {
-    this.uri = uri;
-
     // TODO: add modal to the name for readability
     // para fazer isso tem que mudar todos os codigos que estão usando `database.(nome_sem_modal)` to repositories
     this.Cmds = Cmds;
@@ -91,7 +89,23 @@ export default class MongoDatabase {
     this.giveRepository = new GiveRepository(this.Users);
   }
 
-  get repositories() {
+  get repositories(): {
+    userRepository: UserRepository;
+    commandRepository: CommandRepository;
+    cmdRepository: CmdRepository;
+    starRepository: StarRepository;
+    rpgRepository: RpgRepository;
+    mamarRepository: MamarRepository;
+    guildRepository: GuildRepository;
+    statusRepository: StatusRepository;
+    badgeRepository: BadgeRepository;
+    maintenanceRepository: MaintenanceRepository;
+    huntRepository: HuntRepository;
+    relationshipRepository: RelationshipRepository;
+    blacklistRepository: BlacklistRepository;
+    topRepository: TopRepository;
+    giveRepository: GiveRepository;
+  } {
     return {
       userRepository: this.userRepository,
       commandRepository: this.commandRepository,

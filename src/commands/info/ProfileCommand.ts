@@ -4,7 +4,7 @@ import Util from '@utils/Util';
 import http from '@utils/HTTPrequests';
 import MenheraClient from 'MenheraClient';
 import CommandContext from '@structures/CommandContext';
-import { IUserDataToProfile } from '@utils/Types';
+import { IUserDataToProfile, IUserSchema } from '@utils/Types';
 
 export default class ProfileCommand extends Command {
   constructor(client: MenheraClient) {
@@ -17,30 +17,39 @@ export default class ProfileCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
-    const authorData = ctx.data.user;
+  async run(ctx: CommandContext): Promise<void> {
     const userId = Util.getIdByMention(ctx.args[0]);
 
-    let user = authorData;
+    let { user }: { user: IUserSchema | null } = ctx.data;
     let member = ctx.message.author;
     let marry: string | User = 'false';
 
     if (userId && userId !== ctx.message.author.id) {
       try {
         member = await this.client.users.fetch(ctx.args[0].replace(/[<@!>]/g, ''));
-        if (member.bot) return ctx.replyT('error', 'commands:profile.bot');
+        if (member.bot) {
+          await ctx.replyT('error', 'commands:profile.bot');
+          return;
+        }
 
-        user = await this.client.database.repositories.userRepository.find(member.id);
+        user = await this.client.repositories.userRepository.find(member.id);
       } catch {
-        return ctx.replyT('error', 'commands:profile.unknow-user');
+        await ctx.replyT('error', 'commands:profile.unknow-user');
+        return;
       }
     }
+    if (!user) {
+      await ctx.replyT('error', 'commands:profile.no-dbuser');
+      return;
+    }
+
+    if (user.ban && ctx.message.author.id !== process.env.OWNER) {
+      await ctx.replyT('error', 'commands:profile.banned', { reason: user.banReason });
+      return;
+    }
+
     if (user?.casado !== 'false' && user?.casado)
       marry = await this.client.users.fetch(user.casado);
-
-    if (!user) return ctx.replyT('error', 'commands:profile.no-dbuser');
-    if (user.ban && ctx.message.author.id !== process.env.OWNER)
-      return ctx.replyT('error', 'commands:profile.banned', { reason: user.banReason });
 
     const avatar = member.displayAvatarURL({ format: 'png' });
     const usageCommands = await http.getProfileCommands(member.id);
@@ -51,12 +60,12 @@ export default class ProfileCommand extends Command {
       votos: user.votos,
       nota: user.nota,
       tag: member.tag,
-      flagsArray: member.flags?.toArray(),
+      flagsArray: member.flags?.toArray() ?? ['NONE'],
       casado: user.casado,
       voteCooldown: user.voteCooldown,
       badges: user.badges,
       username: member.username,
-      data: user.data,
+      data: user.data as string,
       mamadas: user.mamadas,
       mamou: user.mamou,
     };
@@ -73,10 +82,13 @@ export default class ProfileCommand extends Command {
 
     const res = await http.profileRequest(userSendData, marry, usageCommands, i18nData);
 
-    if (res.err) return ctx.replyT('error', 'commands:http-error');
+    if (res.err) {
+      await ctx.replyT('error', 'commands:http-error');
+      return;
+    }
 
-    ctx.sendC(ctx.message.author.toString(), {
-      files: [new MessageAttachment(Buffer.from(res.data), 'profile.png')],
+    await ctx.sendC(ctx.message.author.toString(), {
+      files: [new MessageAttachment(Buffer.from(res.data as Buffer), 'profile.png')],
     });
   }
 }

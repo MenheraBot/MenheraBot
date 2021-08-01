@@ -1,6 +1,7 @@
 config.json
 .vscode/
 node_modules/
+.idea/
 logs/
 dist/
 .env

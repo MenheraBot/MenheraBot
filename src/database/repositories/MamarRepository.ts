@@ -1,3 +1,4 @@
+import { IUserSchema } from '@utils/Types';
 import UserRepository from './UserRepository';
 
 export default class MamarRepository {
@@ -5,7 +6,11 @@ export default class MamarRepository {
     this.userRepository = userRepository;
   }
 
-  async mamar(fromUserID: string, toUserID: string, qty = 1) {
+  async mamar(
+    fromUserID: string,
+    toUserID: string,
+    qty = 1,
+  ): Promise<{ toUser: IUserSchema; fromUser: IUserSchema }> {
     const fromUser = await this.userRepository.findOrCreate(fromUserID);
     const toUser = await this.userRepository.findOrCreate(toUserID);
 

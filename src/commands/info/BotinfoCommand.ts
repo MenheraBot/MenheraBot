@@ -19,12 +19,11 @@ export default class BotinfoCommand extends Command {
 
   async getAllSizeObject(collection: string): Promise<number> {
     const info = await this.client.shard.fetchClientValues(`${collection}.cache.size`);
-    const i = info.reduce((prev, val) => prev + val);
-    return i;
+    return info.reduce((prev, val) => prev + val, 0);
   }
 
-  async run(ctx: CommandContext) {
-    const owner = await this.client.users.fetch(process.env.OWNER);
+  async run(ctx: CommandContext): Promise<void> {
+    const owner = await this.client.users.fetch(process.env.OWNER as string);
     if (ctx.data.server.lang === 'pt-BR') {
       moment.locale('pt-br');
     } else moment.locale('en-us');
@@ -38,13 +37,13 @@ export default class BotinfoCommand extends Command {
       .setThumbnail('https://i.imgur.com/b5y0nd4.png')
       .setDescription(
         ctx.locale('commands:botinfo.embed_description', {
-          name: this.client.user.username,
-          createdAt: moment.utc(this.client.user.createdAt).format('LLLL'),
-          joinedAt: moment.utc(ctx.message.guild.me.joinedAt).format('LLLL'),
+          name: this.client.user?.username,
+          createdAt: moment.utc(this.client.user?.createdAt).format('LLLL'),
+          joinedAt: moment.utc(ctx.message?.guild?.me?.joinedAt).format('LLLL'),
         }),
       )
       .setFooter(
-        `${this.client.user.username} ${ctx.locale('commands:botinfo.embed_footer')} ${owner.tag}`,
+        `${this.client.user?.username} ${ctx.locale('commands:botinfo.embed_footer')} ${owner.tag}`,
         owner.displayAvatarURL({
           format: 'png',
           dynamic: true,
@@ -81,6 +80,6 @@ export default class BotinfoCommand extends Command {
           inline: true,
         },
       ]);
-    ctx.send(embed);
+    await ctx.send(embed);
   }
 }

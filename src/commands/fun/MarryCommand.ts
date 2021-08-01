@@ -15,42 +15,57 @@ export default class MarryCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<void> {
     const authorData = ctx.data.user;
 
     const mencionado = ctx.message.mentions.users.first();
 
-    if (!mencionado) return ctx.replyT('error', 'commands:marry.no-mention');
-    if (mencionado.bot) return ctx.replyT('error', 'commands:marry.bot');
-    if (mencionado.id === ctx.message.author.id)
-      return ctx.replyT('error', 'commands:marry.self-mention');
+    if (!mencionado) {
+      await ctx.replyT('error', 'commands:marry.no-mention');
+      return;
+    }
+    if (mencionado.bot) {
+      await ctx.replyT('error', 'commands:marry.bot');
+      return;
+    }
+    if (mencionado.id === ctx.message.author.id) {
+      await ctx.replyT('error', 'commands:marry.self-mention');
+      return;
+    }
 
-    if (authorData.casado && authorData.casado !== 'false')
-      return ctx.replyT('error', 'commands:marry.married');
+    if (authorData.casado && authorData.casado !== 'false') {
+      await ctx.replyT('error', 'commands:marry.married');
+      return;
+    }
 
     const user2 = await this.client.repositories.userRepository.findOrCreate(mencionado.id);
 
-    if (!user2) return ctx.replyT('warn', 'commands:marry.no-dbuser');
+    if (!user2) {
+      await ctx.replyT('warn', 'commands:marry.no-dbuser');
+      return;
+    }
 
-    if (user2.casado && user2.casado !== 'false')
-      return ctx.replyT('error', 'commands:marry.mention-married');
+    if (user2.casado && user2.casado !== 'false') {
+      await ctx.replyT('error', 'commands:marry.mention-married');
+      return;
+    }
 
-    ctx
+    return ctx
       .send(
         `${mencionado} ${ctx.locale('commands:marry.confirmation_start')} ${
           ctx.message.author
         }? ${ctx.locale('commands:marry.confirmation_end')}`,
       )
       .then(async (msg) => {
-        msg.react(emojis.yes);
-        msg.react(emojis.no);
+        await msg.react(emojis.yes);
+        await msg.react(emojis.no);
 
         const validReactions = [emojis.no, emojis.yes];
 
         const filter = (reaction: MessageReaction, usuario: User) =>
           validReactions.includes(reaction.emoji.name) && usuario.id === mencionado.id;
 
-        const colector = await msg.createReactionCollector(filter, { max: 1, time: 15000 });
+        const colector = msg.createReactionCollector(filter, { max: 1, time: 15000 });
 
         colector.on('collect', async (reaction) => {
           if (reaction.emoji.name === emojis.no)
@@ -58,7 +73,7 @@ export default class MarryCommand extends Command {
               `${mencionado} ${ctx.locale('commands:marry.negated')} ${ctx.message.author}`,
             );
 
-          ctx.send(
+          await ctx.send(
             `💍${ctx.message.author} ${ctx.locale('commands:marry.acepted')} ${mencionado}💍`,
           );
 

@@ -14,8 +14,11 @@ export default class UnTrisalCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
-    if (ctx.data.user.trisal?.length === 0) return ctx.replyT('error', 'commands:untrisal.error');
+  async run(ctx: CommandContext): Promise<void> {
+    if (ctx.data.user.trisal?.length === 0) {
+      await ctx.replyT('error', 'commands:untrisal.error');
+      return;
+    }
 
     const msg = await ctx.send(ctx.locale('commands:untrisal.sure'));
     await msg.react(emojis.yes);
@@ -26,12 +29,12 @@ export default class UnTrisalCommand extends Command {
     const collector = msg.createReactionCollector(filter, { max: 1, time: 14000 });
 
     collector.on('collect', async () => {
-      this.client.repositories.relationshipRepository.untrisal(
+      await this.client.repositories.relationshipRepository.untrisal(
         ctx.message.author.id,
         ctx.data.user.trisal[0],
         ctx.data.user.trisal[1],
       );
-      await ctx.replyT('success', 'commands:untrisal.done');
+      return ctx.replyT('success', 'commands:untrisal.done');
     });
   }
 }

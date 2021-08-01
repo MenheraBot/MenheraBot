@@ -14,7 +14,7 @@ export default class InviteCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<void> {
     const embed = new MessageEmbed()
       .setTitle(ctx.locale('commands:invite.embed_title'))
       .setColor('#f763f8')
@@ -29,6 +29,6 @@ export default class InviteCommand extends Command {
       )
       .setTimestamp();
 
-    ctx.send(embed).catch(() => null);
+    await ctx.send(embed);
   }
 }

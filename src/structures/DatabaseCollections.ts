@@ -73,7 +73,7 @@ const userSchema = new Schema({
     default: 'Eu amo a Menhera >.<\nVocê pode alterar esta mensagem com m!sobremim',
   },
   data: { type: String, default: undefined },
-  shipValue: { type: String, default: null },
+  shipValue: { type: String, default: Math.floor(Math.random() * 55) },
   ban: { type: Boolean, default: false },
   banReason: { type: String, default: null },
   afk: { type: Boolean, default: false },

@@ -1,9 +1,9 @@
-import { ferreiro } from '../structures/Rpgs/items.json';
-import { IInventoryUser, IUserRpgSchema } from './Types';
+import { items as ItemsFile } from '../structures/RpgHandler';
+import { IInventoryItem, IUserRpgSchema } from './Types';
 
-type ResultItem = IInventoryUser & { amount: number };
+type ResultItem = IInventoryItem & { amount: number };
 export default class RPGUtil {
-  static countItems(items: IInventoryUser[]): Array<ResultItem> {
+  static countItems(items: IInventoryItem[]): Array<ResultItem> {
     const result = items.reduce((acc, cur) => {
       const item = acc.get(cur.name);
 
@@ -32,7 +32,7 @@ export default class RPGUtil {
       throw new Error(`${userRpgData._id} doesn't has a backpack.`);
     }
 
-    const backpack = ferreiro.find(
+    const backpack = ItemsFile.ferreiro.find(
       (item) => item.category === 'backpack' && item.id === backpackId,
     );
     if (!backpack) {
@@ -46,11 +46,11 @@ export default class RPGUtil {
     };
   }
 
-  static addItemInInventory(user: IUserRpgSchema, item: IInventoryUser, amount = 1): void {
+  static addItemInInventory(user: IUserRpgSchema, item: IInventoryItem, amount = 1): void {
     user.inventory.push(...new Array(amount).fill(item));
   }
 
-  static removeItemInLoots(user: IUserRpgSchema, itemName: string, amount: number = 1): void {
+  static removeItemInLoots(user: IUserRpgSchema, itemName: string, amount = 1): void {
     for (let i = 0; i < amount; i++) {
       user.loots.splice(
         user.loots.findIndex((loot) => loot.name === itemName),

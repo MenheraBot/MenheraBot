@@ -14,13 +14,19 @@ export default class PokeCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<void> {
     const rand = await http.getAssetImageUrl('poke');
     const user = ctx.message.mentions.users.first();
 
-    if (!user) return ctx.replyT('error', 'commands:poke.no-mention');
+    if (!user) {
+      await ctx.replyT('error', 'commands:poke.no-mention');
+      return;
+    }
 
-    if (user === ctx.message.author) return ctx.replyT('error', 'commands:poke.self-mention');
+    if (user === ctx.message.author) {
+      await ctx.replyT('error', 'commands:poke.self-mention');
+      return;
+    }
 
     const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
 
@@ -34,6 +40,6 @@ export default class PokeCommand extends Command {
       .setThumbnail(avatar)
       .setAuthor(ctx.message.author.tag, avatar);
 
-    ctx.send(embed);
+    await ctx.send(embed);
   }
 }

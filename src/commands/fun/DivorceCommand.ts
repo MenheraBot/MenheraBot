@@ -15,23 +15,23 @@ export default class DivorceCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<void> {
     const authorData = ctx.data.user;
 
     if (authorData.casado && authorData.casado !== 'false') {
       return this.divorciar(ctx);
     }
-    ctx.replyT('warn', 'commands:divorce.author-single');
+    await ctx.replyT('warn', 'commands:divorce.author-single');
   }
 
-  async divorciar(ctx) {
+  async divorciar(ctx: CommandContext): Promise<void> {
     const user2Mention = await this.client.users.fetch(ctx.data.user.casado);
 
     ctx
       .send(`${ctx.locale('commands:divorce.confirmation')} ${user2Mention}`)
       .then(async (msg: Message) => {
-        msg.react(emojis.yes);
-        msg.react(emojis.no);
+        await msg.react(emojis.yes);
+        await msg.react(emojis.no);
 
         const validReactions = [emojis.no, emojis.yes];
 
@@ -43,7 +43,7 @@ export default class DivorceCommand extends Command {
         colector.on('collect', async (reaction) => {
           if (reaction.emoji.name === emojis.no)
             return ctx.replyT('success', ctx.locale('commands:divorce.canceled'));
-          ctx.send(
+          await ctx.send(
             `${ctx.message.author} ${ctx.locale(
               'commands:divorce.confirmed_start',
             )} ${user2Mention}. ${ctx.locale('commands:divorce.confirmed_end')}`,
