@@ -120,16 +120,13 @@ export default class Databases {
     };
   }
 
-  createRedisConnection(): Promise<void> {
-    return new Promise((resolve, reject) => {
-      try {
-        this.redisClient = new Redis({ path: process.env.REDIS_PATH as string });
-        resolve();
-      } catch (err) {
-        console.log(`[REDIS] Error connecting to redis ${err}`);
-        reject(err);
-      }
-    });
+  createRedisConnection(): void {
+    try {
+      this.redisClient = new Redis({ path: process.env.REDIS_PATH as string });
+    } catch (err) {
+      console.log(`[REDIS] Error connecting to redis ${err}`);
+      throw err;
+    }
   }
 
   createConnection(): Promise<void> {
