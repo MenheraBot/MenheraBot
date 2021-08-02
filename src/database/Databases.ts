@@ -66,7 +66,7 @@ export default class Databases {
 
   private readonly giveRepository: GiveRepository;
 
-  constructor(public uri: string, wantRedisCache: boolean) {
+  constructor(public uri: string, withRedisCache: boolean) {
     // TODO: add modal to the name for readability
     // para fazer isso tem que mudar todos os codigos que estão usando `database.(nome_sem_modal)` to repositories
     this.Cmds = Cmds;
@@ -76,7 +76,7 @@ export default class Databases {
     this.Rpg = Rpg;
     this.Users = Users;
 
-    if (wantRedisCache) this.createRedisConnection();
+    if (withRedisCache) this.createRedisConnection();
 
     this.userRepository = new UserRepository(this.Users);
     this.commandRepository = new CommandRepository(this.Commands);
