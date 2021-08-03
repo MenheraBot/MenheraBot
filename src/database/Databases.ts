@@ -1,5 +1,8 @@
 import mongoose from 'mongoose';
+import Redis from 'ioredis';
 import { Cmds, Commands, Guilds, Rpg, Status, Users } from '@structures/DatabaseCollections';
+import { IDatabaseRepositories } from '@utils/Types';
+import CacheRepository from './repositories/CacheRepository';
 import CmdRepository from './repositories/CmdsRepository';
 import CommandRepository from './repositories/CommandRepository';
 import RpgRepository from './repositories/RpgRepository';
@@ -16,7 +19,7 @@ import BlacklistRepository from './repositories/BlacklistRepository';
 import TopRepository from './repositories/TopRepository';
 import GiveRepository from './repositories/GiveRepository';
 
-export default class MongoDatabase {
+export default class Databases {
   public Cmds: typeof Cmds;
 
   public Commands: typeof Commands;
@@ -28,6 +31,8 @@ export default class MongoDatabase {
   public Rpg: typeof Rpg;
 
   public Users: typeof Users;
+
+  public redisClient: Redis.Redis | null = null;
 
   private readonly userRepository: UserRepository;
 
@@ -49,6 +54,8 @@ export default class MongoDatabase {
 
   private readonly maintenanceRepository: MaintenanceRepository;
 
+  private readonly cacheRepository: CacheRepository;
+
   private readonly huntRepository: HuntRepository;
 
   private readonly relationshipRepository: RelationshipRepository;
@@ -59,7 +66,7 @@ export default class MongoDatabase {
 
   private readonly giveRepository: GiveRepository;
 
-  constructor(public uri: string) {
+  constructor(public uri: string, withRedisCache: boolean) {
     // TODO: add modal to the name for readability
     // para fazer isso tem que mudar todos os codigos que estão usando `database.(nome_sem_modal)` to repositories
     this.Cmds = Cmds;
@@ -69,6 +76,8 @@ export default class MongoDatabase {
     this.Rpg = Rpg;
     this.Users = Users;
 
+    if (withRedisCache) this.createRedisConnection();
+
     this.userRepository = new UserRepository(this.Users);
     this.commandRepository = new CommandRepository(this.Commands);
     this.cmdRepository = new CmdRepository(this.Cmds);
@@ -76,6 +85,7 @@ export default class MongoDatabase {
     this.rpgRepository = new RpgRepository(this.Rpg);
     this.mamarRepository = new MamarRepository(this.userRepository);
     this.guildRepository = new GuildRepository(this.Guilds);
+    this.cacheRepository = new CacheRepository(this.redisClient, this.guildRepository);
     this.statusRepository = new StatusRepository(this.Status);
     this.badgeRepository = new BadgeRepository(this.userRepository);
     this.maintenanceRepository = new MaintenanceRepository(
@@ -89,29 +99,14 @@ export default class MongoDatabase {
     this.giveRepository = new GiveRepository(this.Users);
   }
 
-  get repositories(): {
-    userRepository: UserRepository;
-    commandRepository: CommandRepository;
-    cmdRepository: CmdRepository;
-    starRepository: StarRepository;
-    rpgRepository: RpgRepository;
-    mamarRepository: MamarRepository;
-    guildRepository: GuildRepository;
-    statusRepository: StatusRepository;
-    badgeRepository: BadgeRepository;
-    maintenanceRepository: MaintenanceRepository;
-    huntRepository: HuntRepository;
-    relationshipRepository: RelationshipRepository;
-    blacklistRepository: BlacklistRepository;
-    topRepository: TopRepository;
-    giveRepository: GiveRepository;
-  } {
+  get repositories(): IDatabaseRepositories {
     return {
       userRepository: this.userRepository,
       commandRepository: this.commandRepository,
       cmdRepository: this.cmdRepository,
       starRepository: this.starRepository,
       rpgRepository: this.rpgRepository,
+      cacheRepository: this.cacheRepository,
       mamarRepository: this.mamarRepository,
       guildRepository: this.guildRepository,
       statusRepository: this.statusRepository,
@@ -123,6 +118,16 @@ export default class MongoDatabase {
       topRepository: this.topRepository,
       giveRepository: this.giveRepository,
     };
+  }
+
+  createRedisConnection(): void {
+    try {
+      this.redisClient = new Redis({ path: process.env.REDIS_PATH as string });
+    } catch (err) {
+      console.log(`[REDIS] Error connecting to redis ${err}`);
+      this.redisClient = null;
+      throw err;
+    }
   }
 
   createConnection(): Promise<void> {

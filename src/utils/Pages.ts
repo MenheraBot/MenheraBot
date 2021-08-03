@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import CommandContext from '@structures/CommandContext';
 import { Message, MessageCollector, TextChannel } from 'discord.js';
 import { IFerreiroItem, IHotelItem, IInventoryItem, IMobLoot } from './Types';
@@ -9,11 +10,11 @@ export default class PagesCollector extends MessageCollector {
 
   public sent: Message | Message[];
 
-  public invalidOption: null;
+  public invalidOption: unknown;
 
-  public findOption: null;
+  public findOption: unknown;
 
-  public handler: null;
+  public handler: unknown;
 
   constructor(
     public channel: TextChannel,
@@ -55,17 +56,17 @@ export default class PagesCollector extends MessageCollector {
     return this;
   }
 
-  setFindOption(fn): this {
+  setFindOption(fn: unknown): this {
     this.findOption = fn;
     return this;
   }
 
-  setInvalidOption(fn): this {
+  setInvalidOption(fn: unknown): this {
     this.invalidOption = fn;
     return this;
   }
 
-  setHandle(fn): this {
+  setHandle(fn: unknown): this {
     this.collected.clear();
     this.handler = fn;
     return this;
@@ -96,13 +97,15 @@ export default class PagesCollector extends MessageCollector {
   }
 
   async onCollect(message: Message): Promise<void> {
+    // @ts-ignore
     const option = this.findOption(message.content);
 
     if (!option) {
       this.finish();
+      // @ts-ignore
       return this.invalidOption(message, this);
     }
-
+    // @ts-ignore
     const res = this.handler(message, option, this);
     if (res !== 'CONTINUE') {
       this.finish();

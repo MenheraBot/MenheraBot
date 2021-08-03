@@ -4,7 +4,6 @@ import Command from '@structures/Command';
 import 'moment-duration-format';
 import MenheraClient from 'MenheraClient';
 import CommandContext from '@structures/CommandContext';
-import { version } from '../../../package.json';
 
 export default class BotinfoCommand extends Command {
   constructor(client: MenheraClient) {
@@ -18,6 +17,7 @@ export default class BotinfoCommand extends Command {
   }
 
   async getAllSizeObject(collection: string): Promise<number> {
+    if (!this.client.shard) return 0;
     const info = await this.client.shard.fetchClientValues(`${collection}.cache.size`);
     return info.reduce((prev, val) => prev + val, 0);
   }
@@ -27,6 +27,7 @@ export default class BotinfoCommand extends Command {
     if (ctx.data.server.lang === 'pt-BR') {
       moment.locale('pt-br');
     } else moment.locale('en-us');
+    if (!this.client.shard) return;
 
     const memoryUsedGross = await this.client.shard.broadcastEval('process.memoryUsage().heapUsed');
     const memoryUsedPolish = memoryUsedGross.reduce((a, b) => a + b, 0);
@@ -72,11 +73,6 @@ export default class BotinfoCommand extends Command {
             'commands:botinfo.memory',
           )} | <:memoryram:762817135394553876>`,
           value: `\`\`\`${(memoryUsedPolish / 1024 / 1024).toFixed(2)}MB\`\`\``,
-          inline: true,
-        },
-        {
-          name: `🇧🇷 | ${ctx.locale('commands:botinfo.version')} | 🇧🇷`,
-          value: `\`\`\`${version}\`\`\``,
           inline: true,
         },
       ]);

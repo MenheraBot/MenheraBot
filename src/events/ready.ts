@@ -24,6 +24,7 @@ export default class ReadyEvent extends Event {
     };
 
     const saveCurrentBotStatus = async () => {
+      if (!this.client.shard) return;
       const allShardsPing = await this.client.shard.fetchClientValues('ws.ping');
       const allShardsUptime = await this.client.shard.fetchClientValues('ws.client.uptime');
       const guildsPerShardCount = await this.client.shard.fetchClientValues('guilds.cache.size');
@@ -40,7 +41,8 @@ export default class ReadyEvent extends Event {
     };
 
     if (this.client.user.id === MAIN_MENHERA_ID) {
-      const firstShard = this.client.shard?.ids[0];
+      if (!this.client.shard) return;
+      const firstShard = this.client.shard.ids[0];
 
       this.client.setInterval(() => {
         updateActivity(firstShard);

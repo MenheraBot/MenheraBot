@@ -1,6 +1,6 @@
 import { MessageAttachment, MessageEmbed, User } from 'discord.js';
 import Command from '@structures/Command';
-import NewHttp from '@utils/HTTPrequests.js';
+import NewHttp from '@utils/HTTPrequests';
 import MenheraClient from 'MenheraClient';
 import CommandContext from '@structures/CommandContext';
 

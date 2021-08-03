@@ -20,7 +20,7 @@ export default class FileUtil {
     loadFunction: (arch: T, pathToArch: string) => void,
   ): void {
     FileUtil.readdirRecursive(directory).map(async (filepath: string) => {
-      await loadFunction(await import(path.resolve(filepath)), filepath);
+      loadFunction((await import(path.resolve(filepath))).default, filepath);
     });
   }
 
