@@ -768,13 +768,13 @@ const resultBattle = async (
       },
     ]);
 
-  await ctx.sendC(toSay, embed);
   user.xp += inimigo.xp;
   if (canGetLoot) {
     user.loots.push(randomLoot);
   }
   user.inBattle = false;
   await user.save();
+  await ctx.sendC(toSay, embed);
   return finalChecks(ctx, user);
 };
 
