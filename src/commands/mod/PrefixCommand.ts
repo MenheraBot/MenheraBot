@@ -24,7 +24,11 @@ export default class PrefixCommand extends Command {
       return;
     }
 
-    await this.client.repositories.guildRepository.update(ctx.data.server.id, { prefix });
+    ctx.data.server.prefix = prefix;
+    await this.client.repositories.cacheRepository.updateGuild(
+      ctx.message.guild?.id as string,
+      ctx.data.server,
+    );
 
     await ctx.replyT('success', 'commands:prefix.done', { prefix: ctx.data.server.prefix });
   }

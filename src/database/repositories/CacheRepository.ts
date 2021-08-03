@@ -27,85 +27,11 @@ export default class CacheRepository {
     return guildDataFromMongo;
   }
 
-  async enableCommandInGuild(guildID: string, commandName: string): Promise<void> {
+  async updateGuild(guildID: string, update: IGuildSchema): Promise<void> {
     if (this.redisClient) {
-      const dataAtual = await this.redisClient.get(`guild:${guildID}`);
-      if (dataAtual) {
-        const jsonData = JSON.parse(dataAtual);
-        const index = jsonData.disabledCommands.indexOf(commandName);
-        jsonData.disabledCommands.splice(index, 1);
-        const afterChanges = JSON.stringify(jsonData);
-        await this.redisClient.set(`guild:${guildID}`, afterChanges);
-      }
+      const stringedObject = JSON.stringify(update);
+      await this.redisClient.set(`guild:${guildID}`, stringedObject);
     }
-    await this.guildRepository.update(guildID, { $pull: { disabledCommands: commandName } });
-  }
-
-  async disableCommandInGuild(guildID: string, commandName: string): Promise<void> {
-    if (this.redisClient) {
-      const dataAtual = await this.redisClient.get(`guild:${guildID}`);
-      if (dataAtual) {
-        const jsonData = JSON.parse(dataAtual);
-        jsonData.disabledCommands.push(commandName);
-        const afterChanges = JSON.stringify(jsonData);
-        await this.redisClient.set(`guild:${guildID}`, afterChanges);
-      }
-    }
-    await this.guildRepository.update(guildID, { $push: { disabledCommands: commandName } });
-  }
-
-  async removeBlockedChannel(guildID: string, channelID: string): Promise<void> {
-    if (this.redisClient) {
-      const dataAtual = await this.redisClient.get(`guild:${guildID}`);
-      if (dataAtual) {
-        const jsonData = JSON.parse(dataAtual);
-        const index = jsonData.blockedChannels.indexOf(channelID);
-        jsonData.blockedChannels.splice(index, 1);
-        const afterChanges = JSON.stringify(jsonData);
-        await this.redisClient.set(`guild:${guildID}`, afterChanges);
-      }
-    }
-    await this.guildRepository.update(guildID, { $pull: { blockedChannels: channelID } });
-  }
-
-  async addBlockedChannel(guildID: string, channelID: string): Promise<void> {
-    if (this.redisClient) {
-      const dataAtual = await this.redisClient.get(`guild:${guildID}`);
-      if (dataAtual) {
-        const jsonData = JSON.parse(dataAtual);
-        jsonData.blockedChannels.push(channelID);
-        const afterChanges = JSON.stringify(jsonData);
-        await this.redisClient.set(`guild:${guildID}`, afterChanges);
-      }
-    }
-    await this.guildRepository.update(guildID, { $push: { blockedChannels: channelID } });
-  }
-
-  async updateGuildPrefix(guildID: string, prefix: string): Promise<void> {
-    if (this.redisClient) {
-      const dataAtual = await this.redisClient.get(`guild:${guildID}`);
-      if (dataAtual) {
-        const jsonData = JSON.parse(dataAtual);
-        jsonData.prefix = prefix;
-        const afterChanges = JSON.stringify(jsonData);
-        await this.redisClient.set(`guild:${guildID}`, afterChanges);
-      }
-    }
-
-    await this.guildRepository.update(guildID, { prefix });
-  }
-
-  async updateGuildLanguage(guildID: string, lang: string): Promise<void> {
-    if (this.redisClient) {
-      const dataAtual = await this.redisClient.get(`guild:${guildID}`);
-      if (dataAtual) {
-        const jsonData = JSON.parse(dataAtual);
-        jsonData.lang = lang;
-        const afterChanges = JSON.stringify(jsonData);
-        await this.redisClient.set(`guild:${guildID}`, afterChanges);
-      }
-    }
-
-    this.guildRepository.updateLang(guildID, lang);
+    await this.guildRepository.update(guildID, update);
   }
 }

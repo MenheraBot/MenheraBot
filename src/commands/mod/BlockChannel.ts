@@ -1,8 +1,6 @@
 import CommandContext from '@structures/CommandContext';
 import MenheraClient from 'MenheraClient';
 import Command from '@structures/Command';
-import { IGuildSchema } from '@utils/Types';
-import { Document } from 'mongoose';
 
 export default class BlockChannelCommand extends Command {
   constructor(client: MenheraClient) {
@@ -20,12 +18,18 @@ export default class BlockChannelCommand extends Command {
       const index = ctx.data.server.blockedChannels.indexOf(ctx.message.channel.id);
 
       ctx.data.server.blockedChannels.splice(index, 1);
-      await (ctx.data.server as IGuildSchema & Document).save();
+      await this.client.repositories.cacheRepository.updateGuild(
+        ctx.message.guild?.id as string,
+        ctx.data.server,
+      );
       await ctx.replyT('success', 'commands:blockchannel.unblock');
       return;
     }
     ctx.data.server.blockedChannels.push(ctx.message.channel.id);
-    await (ctx.data.server as IGuildSchema & Document).save();
+    await this.client.repositories.cacheRepository.updateGuild(
+      ctx.message.guild?.id as string,
+      ctx.data.server,
+    );
     await ctx.replyT('success', 'commands:blockchannel.block', {
       prefix: ctx.data.server.prefix,
     });
