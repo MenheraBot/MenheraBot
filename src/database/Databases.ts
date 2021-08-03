@@ -122,7 +122,7 @@ export default class Databases {
 
   createRedisConnection(): void {
     try {
-      this.redisClient = new Redis({ path: process.env.REDIS_PATH as string });
+      this.redisClient = new Redis(/* { path: process.env.REDIS_PATH as string } */);
     } catch (err) {
       console.log(`[REDIS] Error connecting to redis ${err}`);
       this.redisClient = null;
