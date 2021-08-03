@@ -12,7 +12,7 @@
     "lint:fix": "eslint --fix .",
     "lint:test": "eslint .",
     "typecheck": "tsc --noEmit",
-    "test": "jest",
+    "test": "jest --passWithNoTests",
     "docker:build": "docker build -t menhera .",
     "docker:run": "docker run -d --name MenheraBot menhera"
   },
