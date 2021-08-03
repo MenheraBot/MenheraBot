@@ -1,6 +1,6 @@
-import { Client, Collection, ShardClientUtil } from 'discord.js';
+import { Client, Collection } from 'discord.js';
 
-import Sentry from '@sentry/node';
+import * as Sentry from '@sentry/node';
 import i18next from 'i18next';
 
 import '@sentry/tracing';
@@ -9,11 +9,11 @@ import { IClientConfigs, ICommandConfig, IDatabaseRepositories } from '@utils/Ty
 import FileUtil from '@utils/FileUtil';
 import Event from '@structures/Event';
 import Database from '@database/Databases';
-import EventManager from './structures/EventManager';
+import EventManager from '@structures/EventManager';
 
-import Command from './structures/Command';
+import Command from '@structures/Command';
 
-import LocaleStructure from './structures/LocaleStructure';
+import LocaleStructure from '@structures/LocaleStructure';
 
 export default class MenheraClient extends Client {
   public database: Database;
@@ -23,9 +23,6 @@ export default class MenheraClient extends Client {
   public aliases: Collection<string, string>;
 
   public events: EventManager;
-
-  // shard is always present when using the ShardingManager
-  public shard!: ShardClientUtil;
 
   constructor(options = {}, public config: IClientConfigs) {
     super(options);

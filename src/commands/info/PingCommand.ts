@@ -1,9 +1,12 @@
-import { MessageEmbed, WebSocketManager, WebSocketShard } from 'discord.js';
+import { MessageEmbed } from 'discord.js';
 import moment from 'moment';
 import Command from '@structures/Command';
 import 'moment-duration-format';
 import MenheraClient from 'MenheraClient';
 import CommandContext from '@structures/CommandContext';
+import { IShardArrayFromWs } from '@utils/Types';
+import { Console } from 'console';
+import { Transform } from 'stream';
 
 export default class PingCommand extends Command {
   constructor(client: MenheraClient) {
@@ -16,6 +19,7 @@ export default class PingCommand extends Command {
   }
 
   async run(ctx: CommandContext): Promise<void> {
+    if (!this.client.shard) return;
     const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     if (!ctx.args[0]) {
@@ -35,7 +39,7 @@ export default class PingCommand extends Command {
       await ctx.send(embed);
       return;
     }
-    const allShardsInformation: Array<WebSocketManager> = await this.client.shard.broadcastEval(
+    const allShardsInformation: Array<IShardArrayFromWs> = await this.client.shard.broadcastEval(
       'this.ws',
     );
     const allShardsUptime: Array<number> = await this.client.shard.broadcastEval(
@@ -51,7 +55,6 @@ export default class PingCommand extends Command {
     const tabled = allShardsInformation.reduce(
       (
         p: Array<{
-          Shard: number;
           Ping: string;
           Status: string;
           Uptime: string;
@@ -73,11 +76,10 @@ export default class PingCommand extends Command {
           8: 'RESUMING',
         };
 
-        const FirstShard = c.shards.first() as WebSocketShard;
+        const FirstShard = c.shards[0];
         p.push({
-          Shard: FirstShard.id,
           Ping: `${FirstShard.ping}ms`,
-          Status: conninfo[FirstShard.status as 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8],
+          Status: conninfo[FirstShard.status],
           Uptime: moment.duration(allShardsUptime[n]).format('D[d], H[h], m[m], s[s]'),
           Ram: `${(allShardsMemoryUsedByProcess[n] / 1024 / 1024).toFixed(2)} MB`,
           Guilds: guildsPerShardCount[n],
@@ -87,6 +89,21 @@ export default class PingCommand extends Command {
       [],
     );
 
-    await ctx.send(`\`\`\`${tabled}\`\`\``);
+    const ts = new Transform({
+      transform(chunk, _, cb) {
+        cb(null, chunk);
+      },
+    });
+    const logger = new Console({ stdout: ts });
+
+    function getTable(data: typeof tabled) {
+      logger.table(data);
+      return (ts.read() || '').toString();
+    }
+
+    const stringTable = getTable(tabled);
+    await ctx.sendC(`\`\`\`${stringTable.replace('(index)', ' Shard ')}\`\`\``, {
+      split: { prepend: '```\n', append: '```' },
+    });
   }
 }

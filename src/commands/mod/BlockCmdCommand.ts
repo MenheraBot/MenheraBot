@@ -1,6 +1,8 @@
 import CommandContext from '@structures/CommandContext';
 import MenheraClient from 'MenheraClient';
 import Command from '@structures/Command';
+import { IGuildSchema } from '@utils/Types';
+import { Document } from 'mongoose';
 
 export default class BlockCmdCommand extends Command {
   constructor(client: MenheraClient) {
@@ -42,12 +44,12 @@ export default class BlockCmdCommand extends Command {
       const index = ctx.data.server.disabledCommands.indexOf(cmd.config.name);
 
       ctx.data.server.disabledCommands.splice(index, 1);
-      await ctx.data.server.save();
+      await (ctx.data.server as IGuildSchema & Document).save();
       await ctx.replyT('success', 'commands:blockcommand.unblock', { cmd: cmd.config.name });
       return;
     }
     ctx.data.server.disabledCommands.push(cmd.config.name);
-    await ctx.data.server.save();
+    await (ctx.data.server as IGuildSchema & Document).save();
     await ctx.replyT('success', 'commands:blockcommand.block', { cmd: cmd.config.name });
   }
 }

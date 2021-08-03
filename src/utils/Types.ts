@@ -442,3 +442,28 @@ export interface IITemsFile {
   hotel: IHotelItem[];
   jobs: IJobsFromFile;
 }
+
+export type TShardStatus = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
+
+export interface IShardFromClient {
+  id: number;
+  status: TShardStatus;
+  sequence: number;
+  closeSequence: number;
+  sessionID: string;
+  ping: number;
+  lastPingTimestamp: number;
+  lastHeartbeatAcked: boolean;
+}
+
+export interface IShardArrayFromWs {
+  _events: unknown;
+  _eventsCount: number;
+  gateway: string;
+  totalShards: number;
+  shards: IShardFromClient[];
+  status: TShardStatus;
+  destroyed: boolean;
+  reconnecting: boolean;
+  sessionStartLimit: unknown;
+}

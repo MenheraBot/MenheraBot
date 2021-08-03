@@ -1,9 +1,31 @@
 {
-  "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "outDir": "dist",
     "baseUrl": "src",
+    "target": "ES2020",
+    "module": "CommonJS",
+    "lib": ["ESNext"],
+    "resolveJsonModule": true,
+
+    "isolatedModules": true,
+    "importHelpers": true,
+
+    "newLine": "lf",
+    "noEmitHelpers": true,
+    "preserveConstEnums": true,
+    "pretty": true,
+    "removeComments": true,
+    "strict": true,
+    "noImplicitThis": true,
+    "noImplicitAny": true ,
+
+    "noUnusedLocals": true,
+
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+
     "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
     "paths": {
       "@structures/*": ["structures/*"],
       "@database/*": ["database/*"],
@@ -11,6 +33,5 @@
       "@interfaces/*": ["interfaces/*"]
     }
   },
-  "include": ["src"],
-  "exclude": ["dist"]
+  "include": ["src"]
 }
