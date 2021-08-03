@@ -466,7 +466,7 @@ export default class VillageCommand extends Command {
     const collector = new PagesCollector(
       ctx.message.channel as TextChannel,
       { sent, ctx },
-      { max: 3, time: 60000 },
+      { max: 5, time: 60000 },
     )
       .setInvalidOption(() => collector.replyT('error', 'commands:village.invalid-option'))
       .setFindOption(PagesCollector.arrFindByElemOrIndex(options))
