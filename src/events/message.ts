@@ -120,7 +120,9 @@ export default class MessageReceive extends Event {
       this.client.commands.get(this.client.aliases.get(cmd) as string);
     if (!command) return;
 
-    const dbCommand = await this.client.repositories.cmdRepository.findByName(command.config.name);
+    const dbCommand = await this.client.repositories.cacheRepository.fetchCommand(
+      command.config.name,
+    );
 
     if (
       server.blockedChannels?.includes(message.channel.id) &&

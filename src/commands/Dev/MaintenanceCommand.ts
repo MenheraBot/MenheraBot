@@ -26,7 +26,7 @@ export default class MaintenanceCommand extends Command {
       return;
     }
 
-    const command = await this.client.repositories.cmdRepository.findByName(cmd.config.name);
+    const command = await this.client.repositories.cacheRepository.fetchCommand(cmd.config.name);
 
     if (!command) {
       await ctx.reply('error', 'este comando não existe');
@@ -35,11 +35,19 @@ export default class MaintenanceCommand extends Command {
 
     if (command.maintenance) {
       await this.client.repositories.maintenanceRepository.removeMaintenance(cmd.config.name);
+      await this.client.repositories.cacheRepository.updateCommand(cmd.config.name, {
+        maintenance: false,
+        maintenanceReason: null,
+      });
       await ctx.reply('success', 'comando **REMOVIDO** da manutenção.');
       return;
     }
     const reason = ctx.args.slice(1).join(' ');
     await this.client.repositories.maintenanceRepository.addMaintenance(cmd.config.name, reason);
+    await this.client.repositories.cacheRepository.updateCommand(cmd.config.name, {
+      maintenance: true,
+      maintenanceReason: reason,
+    });
 
     await ctx.reply('success', 'comando **ADICIONADO** a manutenção.');
   }

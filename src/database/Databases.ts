@@ -85,7 +85,11 @@ export default class Databases {
     this.rpgRepository = new RpgRepository(this.Rpg);
     this.mamarRepository = new MamarRepository(this.userRepository);
     this.guildRepository = new GuildRepository(this.Guilds);
-    this.cacheRepository = new CacheRepository(this.redisClient, this.guildRepository);
+    this.cacheRepository = new CacheRepository(
+      this.redisClient,
+      this.guildRepository,
+      this.cmdRepository,
+    );
     this.statusRepository = new StatusRepository(this.Status);
     this.badgeRepository = new BadgeRepository(this.userRepository);
     this.maintenanceRepository = new MaintenanceRepository(

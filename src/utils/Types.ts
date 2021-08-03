@@ -260,8 +260,8 @@ export interface IBattleChoice {
   heal?: number;
 }
 
-export interface ICmdSchema extends Document {
-  _id: string;
+export interface ICmdSchema {
+  _id?: string;
   maintenance: boolean;
   maintenanceReason: string | null;
 }
