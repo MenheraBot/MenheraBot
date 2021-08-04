@@ -17,10 +17,11 @@ export default class AfkCommand extends Command {
 
     if (!ctx.message.guild) return;
 
-    await ctx.client.database.Users.updateOne(
-      { id: ctx.message.author.id },
-      { afk: true, afkReason: reason, afkGuild: ctx.message.guild.id },
-    );
+    await this.client.repositories.cacheRepository.updateAfk(ctx.message.author.id, {
+      afk: true,
+      afkReason: reason,
+      afkGuild: ctx.message.guild.id,
+    });
 
     if (ctx.message.channel.type === 'dm') return;
     const member = ctx.message.channel.guild.members.cache.get(ctx.message.author.id);

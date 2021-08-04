@@ -57,17 +57,17 @@ export default class MessageReceive extends Event {
         message.mentions.users.map((u) => u.id),
       );
 
-    let authorData = await this.client.repositories.userRepository.find(message.author.id);
+    const afkData = await this.client.repositories.cacheRepository.fetchAfk(message.author.id);
 
-    if (authorData?.afk) {
-      await this.client.repositories.userRepository.update(message.author.id, {
+    if (afkData && afkData.afk) {
+      await this.client.repositories.cacheRepository.updateAfk(message.author.id, {
         afk: false,
         afkReason: null,
         afkGuild: null,
       });
       const member = await message.channel.guild.members.fetch(message.author.id);
 
-      const guildAfkId = authorData?.afkGuild;
+      const guildAfkId = afkData?.afkGuild;
 
       try {
         if (guildAfkId && message.guild.id !== guildAfkId) {
@@ -127,6 +127,10 @@ export default class MessageReceive extends Event {
       !message.member?.hasPermission('MANAGE_CHANNELS')
     )
       return message.channel.send(`🔒 | ${t('events:blocked-channel')}`);
+
+    const authorData = await this.client.repositories.userRepository.findOrCreate(
+      message.author.id,
+    );
 
     if (authorData?.ban)
       return message.channel.send(
@@ -211,9 +215,6 @@ export default class MessageReceive extends Event {
 
     if (command.config.category === 'rpg')
       return message.channel.send({ content: t('roleplay:new') });
-
-    if (!authorData)
-      authorData = await this.client.repositories.userRepository.create(message.author.id);
 
     const ctx = new CommandContext(this.client, message, args, { user: authorData, server }, t);
 

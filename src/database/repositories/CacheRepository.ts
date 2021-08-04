@@ -1,15 +1,51 @@
-import { ICmdSchema, IGuildSchema } from '@utils/Types';
+import { IAfkUserData, ICmdSchema, IGuildSchema } from '@utils/Types';
 import { Redis } from 'ioredis';
 import { Document } from 'mongoose';
 import CmdRepository from './CmdsRepository';
 import GuildsRepository from './GuildsRepository';
+import UserRepository from './UserRepository';
 
 export default class CacheRepository {
   constructor(
     private redisClient: Redis | null,
     private guildRepository: GuildsRepository,
     private cmdRepository: CmdRepository,
+    private userRepository: UserRepository,
   ) {}
+
+  async fetchAfk(userID: string): Promise<null | IAfkUserData> {
+    if (this.redisClient) {
+      const afkData = await this.redisClient.get(`afk:${userID}`);
+      if (afkData) return JSON.parse(afkData);
+    }
+    const afkDataFromMongo = await this.userRepository.find(userID);
+    if (!afkDataFromMongo) return null;
+
+    if (this.redisClient) {
+      await this.redisClient.set(
+        `afk:${userID}`,
+        JSON.stringify({
+          afk: afkDataFromMongo.afk,
+          afkGuild: afkDataFromMongo.afkGuild,
+          afkReason: afkDataFromMongo.afkReason,
+        }),
+      );
+    }
+
+    return {
+      afk: afkDataFromMongo.afk,
+      afkGuild: afkDataFromMongo.afkGuild,
+      afkReason: afkDataFromMongo.afkReason,
+    };
+  }
+
+  async updateAfk(userID: string, afkData: IAfkUserData): Promise<void> {
+    if (this.redisClient) {
+      const stringedObject = JSON.stringify(afkData);
+      await this.redisClient.set(`afk:${userID}`, stringedObject);
+    }
+    await this.userRepository.update(userID, afkData);
+  }
 
   async fetchCommand(commandName: string): Promise<ICmdSchema | (ICmdSchema & Document) | null> {
     if (this.redisClient) {

@@ -467,3 +467,9 @@ export interface IShardArrayFromWs {
   reconnecting: boolean;
   sessionStartLimit: unknown;
 }
+
+export interface IAfkUserData {
+  afk: boolean;
+  afkGuild: string | null;
+  afkReason: string | null;
+}
