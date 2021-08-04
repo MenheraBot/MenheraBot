@@ -6,7 +6,7 @@ import i18next, { TFunction } from 'i18next';
 import { LANGUAGES } from '@structures/MenheraConstants';
 
 import MenheraClient from 'MenheraClient';
-import { IUserSchema } from '@utils/Types';
+import { IAfkUserData, IUserSchema } from '@utils/Types';
 import http from '@utils/HTTPrequests';
 import CommandContext from '@structures/CommandContext';
 import Event from '@structures/Event';
@@ -37,6 +37,48 @@ export default class MessageReceive extends Event {
     });
   }
 
+  async resolveAfk(message: Message, t: TFunction, afkData: IAfkUserData): Promise<void> {
+    if (message.channel.type === 'DM') return;
+    if (!message.guild) return;
+    if (!this.client.user) return;
+    await this.client.repositories.cacheRepository.updateAfk(message.author.id, {
+      afk: false,
+      afkReason: null,
+      afkGuild: null,
+    });
+    if (!message.guild) return;
+    const member = await message.channel.guild.members.fetch(message.author.id);
+
+    const guildAfkId = afkData?.afkGuild;
+
+    try {
+      if (guildAfkId && message.guild.id !== guildAfkId) {
+        const afkGuild = await this.client.guilds.fetch(guildAfkId).catch();
+        const guildMember = await afkGuild?.members.fetch(message.author.id).catch();
+        await afkGuild?.members.fetch(this.client.user.id).catch();
+        if (guildMember?.manageable && guildMember?.nickname)
+          if (guildMember.nickname.slice(0, 5) === '[AFK]')
+            guildMember.setNickname(guildMember.nickname.substring(5), 'AFK System');
+      } else if (member.manageable && member.nickname)
+        if (member.nickname.slice(0, 5) === '[AFK]')
+          member.setNickname(member.nickname.substring(5), 'AFK System');
+    } catch {
+      // owo
+    }
+
+    message.channel
+      .send(
+        `<:MenheraWink:767210250637279252> | ${t('commands:afk.back')}, ${message.author} >...<`,
+      )
+      .then((msg) => {
+        if (msg.deletable) {
+          setTimeout(() => {
+            msg.delete();
+          }, 5000);
+        }
+      });
+  }
+
   async run(message: Message): Promise<void> {
     if (message.author.bot) return;
     if (message.channel.type === 'DM') return;
@@ -59,43 +101,7 @@ export default class MessageReceive extends Event {
 
     const afkData = await this.client.repositories.cacheRepository.fetchAfk(message.author.id);
 
-    if (afkData && afkData.afk) {
-      await this.client.repositories.cacheRepository.updateAfk(message.author.id, {
-        afk: false,
-        afkReason: null,
-        afkGuild: null,
-      });
-      const member = await message.channel.guild.members.fetch(message.author.id);
-
-      const guildAfkId = afkData?.afkGuild;
-
-      try {
-        if (guildAfkId && message.guild.id !== guildAfkId) {
-          const afkGuild = await this.client.guilds.fetch(guildAfkId).catch();
-          const guildMember = await afkGuild?.members.fetch(message.author.id).catch();
-          await afkGuild?.members.fetch(this.client.user.id).catch();
-          if (guildMember?.manageable && guildMember?.nickname)
-            if (guildMember.nickname.slice(0, 5) === '[AFK]')
-              await guildMember.setNickname(guildMember.nickname.substring(5), 'AFK System');
-        } else if (member.manageable && member.nickname)
-          if (member.nickname.slice(0, 5) === '[AFK]')
-            await member.setNickname(member.nickname.substring(5), 'AFK System');
-      } catch {
-        // owo
-      }
-
-      message.channel
-        .send(
-          `<:MenheraWink:767210250637279252> | ${t('commands:afk.back')}, ${message.author} >...<`,
-        )
-        .then((msg) => {
-          if (msg.deletable) {
-            setTimeout(() => {
-              msg.delete();
-            }, 5000);
-          }
-        });
-    }
+    if (afkData && afkData.afk) this.resolveAfk(message, t, afkData);
 
     if (process.env.NODE_ENV === 'development') prefix = process.env.BOT_PREFIX as string;
 
