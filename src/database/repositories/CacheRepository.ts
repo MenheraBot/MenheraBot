@@ -22,8 +22,9 @@ export default class CacheRepository {
     if (!afkDataFromMongo) return null;
 
     if (this.redisClient) {
-      await this.redisClient.set(
+      await this.redisClient.setex(
         `afk:${userID}`,
+        3600,
         JSON.stringify({
           afk: afkDataFromMongo.afk,
           afkGuild: afkDataFromMongo.afkGuild,
@@ -42,7 +43,7 @@ export default class CacheRepository {
   async updateAfk(userID: string, afkData: IAfkUserData): Promise<void> {
     if (this.redisClient) {
       const stringedObject = JSON.stringify(afkData);
-      await this.redisClient.set(`afk:${userID}`, stringedObject);
+      await this.redisClient.setex(`afk:${userID}`, 3600, stringedObject);
     }
     await this.userRepository.update(userID, afkData);
   }
