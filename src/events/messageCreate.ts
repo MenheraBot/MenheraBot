@@ -26,7 +26,7 @@ export default class MessageReceive extends Event {
     if (!afkUsers) return;
 
     afkUsers.map(async (data: IUserSchema) => {
-      if (data.id !== message.author.id) return;
+      if (data.id === message.author.id) return;
       const userFetched = await this.client.users.fetch(data.id).catch();
       await message.channel.send(
         `<:notify:759607330597502976> | ${t('commands:afk.reason', {
