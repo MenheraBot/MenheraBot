@@ -37,14 +37,17 @@ export default class CommandContext {
     if (typeof message === 'string')
       return this.message.channel.send({
         content: message,
-        reply: { messageReference: this.message },
+        reply: { messageReference: this.message, failIfNotExists: false },
       });
     if (message instanceof MessageEmbed)
       return this.message.channel.send({
         embeds: [message],
-        reply: { messageReference: this.message },
+        reply: { messageReference: this.message, failIfNotExists: false },
       });
-    return this.message.channel.send({ reply: { messageReference: this.message }, ...message });
+    return this.message.channel.send({
+      reply: { messageReference: this.message, failIfNotExists: false },
+      ...message,
+    });
   }
 
   async sendC(
@@ -57,7 +60,7 @@ export default class CommandContext {
     return this.message.channel.send({
       content,
       ...config,
-      reply: { messageReference: this.message },
+      reply: { messageReference: this.message, failIfNotExists: false },
     });
   }
 

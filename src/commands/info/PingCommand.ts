@@ -4,7 +4,6 @@ import Command from '@structures/Command';
 import 'moment-duration-format';
 import MenheraClient from 'MenheraClient';
 import CommandContext from '@structures/CommandContext';
-import { IShardArrayFromWs } from '@utils/Types';
 import { Console } from 'console';
 import { Transform } from 'stream';
 
@@ -39,16 +38,15 @@ export default class PingCommand extends Command {
       await ctx.send(embed);
       return;
     }
-    const allShardsInformation: Array<IShardArrayFromWs> =
-      (await this.client.shard.fetchClientValues('this.ws')) as Array<IShardArrayFromWs>;
-    const allShardsUptime: Array<number> = (await this.client.shard.fetchClientValues(
-      'this.ws.client.uptime',
+    const allShardsInformation = await this.client.shard.broadcastEval((client) => client.ws);
+    const allShardsUptime: Array<number> = (await this.client.shard.broadcastEval(
+      (client) => client.uptime,
     )) as number[];
     const guildsPerShardCount: Array<number> = (await this.client.shard.fetchClientValues(
-      'this.guilds.cache.size',
+      'guilds.cache.size',
     )) as number[];
-    const allShardsMemoryUsedByProcess: Array<number> = (await this.client.shard.fetchClientValues(
-      'process.memoryUsage().heapUsed',
+    const allShardsMemoryUsedByProcess: Array<number> = (await this.client.shard.broadcastEval(
+      () => process.memoryUsage().heapUsed,
     )) as number[];
 
     const tabled = allShardsInformation.reduce(
@@ -78,7 +76,7 @@ export default class PingCommand extends Command {
         const FirstShard = c.shards[0];
         p.push({
           Ping: `${FirstShard.ping}ms`,
-          Status: conninfo[FirstShard.status],
+          Status: conninfo[FirstShard.status as keyof typeof conninfo],
           Uptime: moment.duration(allShardsUptime[n]).format('D[d], H[h], m[m], s[s]'),
           Ram: `${(allShardsMemoryUsedByProcess[n] / 1024 / 1024).toFixed(2)} MB`,
           Guilds: guildsPerShardCount[n],
