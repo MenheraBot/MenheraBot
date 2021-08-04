@@ -1,4 +1,5 @@
 {
+  "new": "**A Versão 2.0 do RPG está chegando!**\n\nOs comandos do Rpg foram desativados :( \nMas calma lá! Isso não é o fim!\n\nO mundo de Boleham está passando por mudanças drásticas. As profecias dos Feiticeiros da linhagem Dracônica estavam certas! Horrores estão por vir...\n\nVocê pode acompanhar o que está acontecendo no mundo de Boleham em https://menherabot.xyz/pt/newrpg \nEntre em meu servidor de suporte para descobrir mais informações sobre o **Fim dos Tempos**",
   "battle": {
     "no-mana": "Você tenta usar **{{name}}**, mas não tem mana o suficiente para isso! O inimigo revida!",
     "attack": "Você ataca **{{enemy}}** com **{{choice}}**, e causa **{{damage}}** de dano",

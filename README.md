@@ -14,10 +14,9 @@
 MenheraBot is an open source Discord bot made in JavaScript with [Discord.js](https://discord.js.org) by [Luxanna](https://github.com/ySnoopyDogy)
 Feel free to add a star ⭐ to the repository to promote the project!
 
-## ⚠️ Disclaimer ⚠️
+## Contributing
 
-Menhera is currently changing her language and lib. We are going from JavaScript with Discord.js to TypeSript with Eris
-You can help us making pr's. Thanks for understanding.
+Pull requests are always welcome. You can make PRs and Issues. When creating pr's, the branch of the pr needs to be `dev`.
 
 ## Features
 
@@ -37,10 +36,6 @@ Menhera has an RPG in the medieval style, which offers:
 ### Lot of Commands
 
 She has many features, with **7 categories of commands**, including many action commands, image and fun commands, economy, her main funcionality: **RPG** and much more
-
-## You can help in my development
-
-I am created in JavaScript with the [discord.js](https://discord.js.org) API, pull requests are always welcome
 
 ## Support
 
