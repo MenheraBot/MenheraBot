@@ -211,6 +211,9 @@ export default class MessageReceive extends Event {
       }
     }
 
+    if (command.config.category === 'rpg')
+      return message.channel.send({ content: t('roleplay:new') });
+
     const ctx = new CommandContext(this.client, message, args, { user: authorData, server }, t);
 
     try {
