@@ -14,8 +14,8 @@ export default class LanguageCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
-    ctx.replyT('question', 'commands:language.question').then((msg) => {
+  async run(ctx: CommandContext): Promise<void> {
+    await ctx.replyT('question', 'commands:language.question').then((msg) => {
       msg.react('🇧🇷');
       setTimeout(() => {
         msg.react('🇺🇸');
@@ -23,21 +23,33 @@ export default class LanguageCommand extends Command {
 
       const collector = msg.createReactionCollector(
         (r, u) =>
-          (r.emoji.name === '🇧🇷', '🇺🇸') &&
-          u.id !== this.client.user.id &&
+          (r.emoji.name === `🇧🇷` || r.emoji.name === '🇺🇸') &&
+          u.id !== this.client.user?.id &&
           u.id === ctx.message.author.id,
       );
-      collector.on('collect', (r) => {
+
+      collector.on('collect', async (r) => {
+        if (!ctx.message.guild) return;
         switch (r.emoji.name) {
           case '🇧🇷':
-            ctx.client.repositories.guildRepository.updateLang(ctx.message.guild.id, 'pt-BR');
-            msg.delete();
-            ctx.message.channel.send(':map: | Agora eu irei falar em ~~brasileiro~~ português');
+            ctx.data.server.lang = 'pt-BR';
+            await this.client.repositories.cacheRepository.updateGuild(
+              ctx.message.guild.id,
+              ctx.data.server,
+            );
+            await msg.delete();
+            await ctx.message.channel.send(
+              ':map: | Agora eu irei falar em ~~brasileiro~~ português',
+            );
             break;
           case '🇺🇸':
-            ctx.client.repositories.guildRepository.updateLang(ctx.message.guild.id, 'en-US');
-            msg.delete();
-            ctx.message.channel.send(":map: | Now I'll talk in english");
+            ctx.data.server.lang = 'en-US';
+            await this.client.repositories.cacheRepository.updateGuild(
+              ctx.message.guild.id,
+              ctx.data.server,
+            );
+            await msg.delete();
+            await ctx.message.channel.send(":map: | Now I'll talk in english");
             break;
         }
       });

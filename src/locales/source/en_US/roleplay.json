@@ -1,4 +1,5 @@
 {
+  "new": "**RPG Version 2.0 is coming!**\n\nThe Rpg commands have been disabled :( \nBut calm down! This is not the end!\n\nThe world of Boleham is undergoing changes. The Draconic Bloodline Sorcerers' prophecies were right! Horrors are to come...\n\nYou can follow what's happening in the world of Boleham at https://menherabot.xyz/en/newrpg (Only available in portuguese) \nEnter my server to find out more about the **End of Times**",
   "battle": {
     "no-mana": "You try to use **{{name}}**, but dont have mana! The enemy retaliate!",
     "attack": "You attack **{{enemy}}** with **{{choice}}**, and deal **{{damage}}** damage",

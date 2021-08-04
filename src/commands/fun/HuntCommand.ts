@@ -15,20 +15,21 @@ export default class HuntCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<void> {
     const authorData = ctx.data.user;
+    if (!ctx.message.guild) return;
 
     const validArgs = [
       {
-        opção: 'demônio',
+        option: 'demônio',
         arguments: ['demonios', 'demônios', 'demons', 'demonio', 'demônio', 'demon'],
       },
       {
-        opção: 'anjos',
+        option: 'anjos',
         arguments: ['anjos', 'anjo', 'angels', 'angel'],
       },
       {
-        opção: 'semideuses',
+        option: 'semideuses',
         arguments: [
           'semideuses',
           'semideus',
@@ -41,27 +42,32 @@ export default class HuntCommand extends Command {
         ],
       },
       {
-        opção: 'deus',
+        option: 'deus',
         arguments: ['deus', 'deuses', 'gods', 'god'],
       },
       {
-        opção: 'ajuda',
+        option: 'ajuda',
         arguments: ['ajudas', 'help', 'h', 'ajuda'],
       },
       {
-        opção: 'probabilidades',
+        option: 'probabilidades',
         arguments: ['probabilidades', 'probabilidade', 'probability', 'probabilities'],
       },
     ];
 
-    if (!ctx.args[0]) return ctx.reply('error', `${ctx.locale('commands:hunt.no-args')}`);
+    if (!ctx.args[0]) {
+      await ctx.reply('error', `${ctx.locale('commands:hunt.no-args')}`);
+      return;
+    }
     const filtredOption = validArgs.filter((so) =>
       so.arguments.includes(ctx.args[0].toLowerCase()),
     );
-    if (filtredOption.length === 0)
-      return ctx.reply('error', `${ctx.locale('commands:hunt.no-args')}`);
+    if (filtredOption.length === 0) {
+      await ctx.reply('error', `${ctx.locale('commands:hunt.no-args')}`);
+      return;
+    }
 
-    const option = filtredOption[0].opção;
+    const { option } = filtredOption[0];
 
     const probabilidadeDemonio =
       ctx.message.guild.id === '717061688460967988'
@@ -80,9 +86,12 @@ export default class HuntCommand extends Command {
         ? probabilities.support.god
         : probabilities.normal.god;
 
-    if (option === 'ajuda') return ctx.replyT('question', 'commands:hunt.help');
+    if (option === 'ajuda') {
+      await ctx.replyT('question', 'commands:hunt.help');
+      return;
+    }
     if (option === 'probabilidades') {
-      return ctx.send(
+      await ctx.send(
         ctx.locale('commands:hunt.probabilities', {
           demon: probabilidadeDemonio,
           angel: probabilidadeAnjo,
@@ -90,12 +99,15 @@ export default class HuntCommand extends Command {
           god: probabilidadeDeuses,
         }),
       );
+      return;
     }
 
-    if (parseInt(authorData.caçarTime) > Date.now())
-      return ctx.replyT('error', 'commands:hunt.cooldown', {
+    if (parseInt(authorData.caçarTime) > Date.now()) {
+      await ctx.replyT('error', 'commands:hunt.cooldown', {
         time: moment.utc(parseInt(authorData.caçarTime) - Date.now()).format('mm:ss'),
       });
+      return;
+    }
 
     const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
     const cooldown = probabilities.defaultTime + Date.now();
@@ -105,23 +117,27 @@ export default class HuntCommand extends Command {
 
     const { huntDemon, huntAngel, huntDemigod, huntGod } = this.client.repositories.huntRepository;
 
-    const areYouTheHuntOrTheHunter = async (probability: Array<number>, saveFn) => {
+    const areYouTheHuntOrTheHunter = async (
+      probability: Array<number>,
+      saveFn: typeof huntDemon,
+    ) => {
       const value = probability[Math.floor(Math.random() * probability.length)];
       await saveFn.call(
         this.client.repositories.huntRepository,
         ctx.message.author.id,
         value,
-        cooldown,
+        cooldown.toString(),
       );
       return value;
     };
 
-    const huntEnum = {
-      DEMON: 'caçados',
-      ANGEL: 'anjos',
-      DEMIGOD: 'semideuses',
-      GOD: 'deuses',
-    };
+    // eslint-disable-next-line no-shadow
+    enum huntEnum {
+      DEMON = 'caçados',
+      ANGEL = 'anjos',
+      DEMIGOD = 'semideuses',
+      GOD = 'deuses',
+    }
 
     switch (option) {
       case 'demônio': {
@@ -201,6 +217,6 @@ export default class HuntCommand extends Command {
         break;
       }
     }
-    ctx.send(embed);
+    await ctx.send(embed);
   }
 }

@@ -10,13 +10,9 @@ export default class DiscordBots {
     this.client = client;
   }
 
-  async init() {
+  async init(): Promise<void> {
     if (!process.env.DBL_TOKEN) {
       throw new Error('No DBL token provided');
-    }
-
-    if (!process.env.DBL_PORT) {
-      throw new Error('No DBL port provided');
     }
 
     if (!process.env.DBLHOOK_PORT) {
@@ -26,7 +22,7 @@ export default class DiscordBots {
     const dbl = new DBL(
       process.env.DBL_TOKEN,
       {
-        webhookPort: parseInt(process.env.DBLHOOK_PORT),
+        webhookPort: Number(process.env.DBLHOOK_PORT),
         webhookAuth: process.env.DBL_AUTH,
       },
       this.client,
@@ -37,8 +33,8 @@ export default class DiscordBots {
     }
 
     dbl.webhook.on('vote', async (vote) => {
-      const user = await this.client.database.Users.findOne({ id: vote.user });
-      const rpgUser = await this.client.database.Rpg.findById(vote.user);
+      const user = await this.client.repositories.userRepository.find(vote.user);
+      const rpgUser = await this.client.repositories.rpgRepository.find(vote.user);
 
       if (!user) return;
 
@@ -104,11 +100,12 @@ export default class DiscordBots {
     });
 
     this.client.setInterval(async () => {
+      if (!this.client.shard) return;
       const info = await this.client.shard.fetchClientValues('guilds.cache.size');
       const guildCount = info.reduce((prev, val) => prev + val);
       const shardId = 0;
       const shardsCount = this.client.shard.count;
-      dbl.postStats(guildCount, shardId, shardsCount);
+      await dbl.postStats(guildCount, shardId, shardsCount);
     }, 1800000);
   }
 }

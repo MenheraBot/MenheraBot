@@ -6,28 +6,28 @@ export default class GiveRepository {
     this.userModal = userModal;
   }
 
-  async _give(field: string, fromID: string, toID: string, value: number) {
+  async _give(field: string, fromID: string, toID: string, value: number): Promise<void> {
     await this.userModal.updateOne({ id: fromID }, { $inc: { [field]: -value } });
     await this.userModal.updateOne({ id: toID }, { $inc: { [field]: value } });
   }
 
-  giveStars(fromID: string, toID: string, value: number) {
+  async giveStars(fromID: string, toID: string, value: number): Promise<void> {
     return this._give('estrelinhas', fromID, toID, value);
   }
 
-  giveDemons(fromID: string, toID: string, value: number) {
+  async giveDemons(fromID: string, toID: string, value: number): Promise<void> {
     return this._give('caçados', fromID, toID, value);
   }
 
-  giveAngels(fromID: string, toID: string, value: number) {
+  async giveAngels(fromID: string, toID: string, value: number): Promise<void> {
     return this._give('anjos', fromID, toID, value);
   }
 
-  giveDemigods(fromID: string, toID: string, value: number) {
+  async giveDemigods(fromID: string, toID: string, value: number): Promise<void> {
     return this._give('semideuses', fromID, toID, value);
   }
 
-  giveGods(fromID: string, toID: string, value: number) {
+  async giveGods(fromID: string, toID: string, value: number): Promise<void> {
     return this._give('deuses', fromID, toID, value);
   }
 }

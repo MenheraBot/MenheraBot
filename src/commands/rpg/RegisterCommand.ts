@@ -1,4 +1,4 @@
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import Command from '@structures/Command';
 import MenheraClient from 'MenheraClient';
 import CommandContext from '@structures/CommandContext';
@@ -15,13 +15,15 @@ export default class RegisterCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
-    const user = await this.client.database.Rpg.findById(ctx.message.author.id);
+  async run(ctx: CommandContext): Promise<void> {
+    const user = await this.client.repositories.rpgRepository.find(ctx.message.author.id);
 
-    if (user)
-      return ctx.replyT('error', 'commands:register.already', {
+    if (user) {
+      await ctx.replyT('error', 'commands:register.already', {
         name: ctx.message.author.username,
       });
+      return;
+    }
 
     const classes = [
       ctx.locale('commands:register.Assassino'),
@@ -45,59 +47,52 @@ export default class RegisterCommand extends Command {
       description += `\n${i + 1} - **${classes[i]}**`;
     }
     embed.setDescription(description);
-    ctx.send(embed);
+    await ctx.send(embed);
 
-    const filter = (m) => m.author.id === ctx.message.author.id;
+    const filter = (m: Message) => m.author.id === ctx.message.author.id;
     const collector = ctx.message.channel.createMessageCollector(filter, { max: 1 });
 
     collector.on('collect', (m) => {
       switch (m.content) {
         case '1':
-          this.confirmação(ctx, 'Assassino');
-          break;
+          return this.confirmation(ctx, 'Assassino');
         case '2':
-          this.confirmação(ctx, 'Bárbaro');
-          break;
+          return this.confirmation(ctx, 'Bárbaro');
         case '3':
-          this.confirmação(ctx, 'Clérigo');
-          break;
+          return this.confirmation(ctx, 'Clérigo');
         case '4':
-          this.confirmação(ctx, 'Druida');
-          break;
+          return this.confirmation(ctx, 'Druida');
         case '5':
-          this.confirmação(ctx, 'Espadachim');
-          break;
+          return this.confirmation(ctx, 'Espadachim');
         case '6':
-          this.confirmação(ctx, 'Feiticeiro');
-          break;
+          return this.confirmation(ctx, 'Feiticeiro');
         case '7':
-          this.confirmação(ctx, 'Monge');
-          break;
+          return this.confirmation(ctx, 'Monge');
         case '8':
-          this.confirmação(ctx, 'Necromante');
-          break;
+          return this.confirmation(ctx, 'Necromante');
         default:
           return ctx.replyT('error', 'commands:register.invalid-input');
       }
     });
   }
 
-  confirmação(ctx, option) {
+  async confirmation(ctx: CommandContext, option: string): Promise<Message | void> {
     const selectedOption = ctx.locale(`commands:register.${option}`);
-    ctx.replyT('warn', 'commands:register.confirm', { option: selectedOption });
+    await ctx.replyT('warn', 'commands:register.confirm', { option: selectedOption });
 
-    const filtro = (m) => m.author.id === ctx.message.author.id;
+    const filtro = (m: Message) => m.author.id === ctx.message.author.id;
     const confirmCollector = ctx.message.channel.createMessageCollector(filtro, { max: 1 });
 
-    confirmCollector.on('collect', async (m) => {
+    confirmCollector.on('collect', async (m: Message) => {
       if (m.content.toLowerCase() === 'sim' || m.content.toLowerCase() === 'yes') {
-        ctx.replyT('success', 'commands:register.confirmed', { option: selectedOption });
-        const user = await new this.client.database.Rpg({
-          _id: ctx.message.author.id,
-          class: option,
-        }).save();
-        confirmRegister(user, ctx);
-      } else ctx.replyT('error', 'commands:register.canceled');
+        await ctx.replyT('success', 'commands:register.confirmed', { option: selectedOption });
+        const user = await this.client.repositories.rpgRepository.create(
+          ctx.message.author.id,
+          option,
+        );
+        return confirmRegister(user, ctx);
+      }
+      return ctx.replyT('error', 'commands:register.canceled');
     });
   }
 }

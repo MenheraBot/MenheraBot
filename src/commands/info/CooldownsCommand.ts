@@ -15,16 +15,19 @@ export default class CooldownsCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
-    const userRpg = await this.client.database.Rpg.findById(ctx.message.author.id);
-    if (!ctx.data.user) return ctx.replyT('error', 'commands:cooldowns.error');
+  async run(ctx: CommandContext): Promise<void> {
+    const userRpg = await this.client.repositories.rpgRepository.find(ctx.message.author.id);
+    if (!ctx.data.user) {
+      await ctx.replyT('error', 'commands:cooldowns.error');
+      return;
+    }
 
-    const huntCooldownInMilis = parseInt(ctx.data.user?.caçarTime) - Date.now();
+    const huntCooldownInMilis = parseInt(ctx.data.user.caçarTime) - Date.now();
     const dungeonCooldownInMilis = userRpg ? parseInt(userRpg.dungeonCooldown) - Date.now() : 0;
     const jobCooldownInMilis = userRpg ? parseInt(userRpg.jobCooldown) - Date.now() : 0;
     const deathTimeInMilis = userRpg ? parseInt(userRpg.death) - Date.now() : 0;
     const hotelTimeInMilis = userRpg ? parseInt(userRpg.hotelTime) - Date.now() : 0;
-    const voteCooldownInMilis = parseInt(ctx.data.user?.voteCooldown) - Date.now();
+    const voteCooldownInMilis = parseInt(ctx.data.user.voteCooldown) - Date.now();
 
     let txt = '';
 
@@ -100,6 +103,6 @@ export default class CooldownsCommand extends Command {
       .setColor('#6597df')
       .setDescription(txt);
 
-    ctx.sendC(ctx.message.author.toString(), embed);
+    await ctx.sendC(ctx.message.author.toString(), embed);
   }
 }

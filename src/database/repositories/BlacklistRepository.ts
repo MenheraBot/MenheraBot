@@ -5,11 +5,11 @@ export default class BlacklistRepository {
     this.userRepository = userRepository;
   }
 
-  async ban(userID: string, reason: string) {
+  async ban(userID: string, reason: string): Promise<void> {
     await this.userRepository.update(userID, { ban: true, banReason: reason });
   }
 
-  async unban(userID: string) {
+  async unban(userID: string): Promise<void> {
     await this.userRepository.update(userID, { ban: false, banReason: null });
   }
 }

@@ -15,7 +15,26 @@ export default class SarrarCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
+  static async sarrada(ctx: CommandContext, reactUser: User): Promise<void> {
+    const rand = await http.getAssetImageUrl('sarrar');
+
+    const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
+
+    const Embed = new MessageEmbed()
+
+      .setTitle(ctx.locale('commands:sarrar.embed_title'))
+      .setColor('#000000')
+      .setDescription(
+        `${ctx.message.author} ${ctx.locale('commands:sarrar.embed_description')} ${reactUser}`,
+      )
+      .setImage(rand)
+      .setThumbnail(avatar)
+      .setAuthor(ctx.message.author.tag, avatar);
+
+    await ctx.send(Embed);
+  }
+
+  async run(ctx: CommandContext): Promise<void> {
     const user = ctx.message.mentions.users.first();
 
     if (!user) {
@@ -24,9 +43,10 @@ export default class SarrarCommand extends Command {
         .setTitle(ctx.locale('commands:sarrar.no-mention.embed_title'))
         .setColor('#000000')
         .setDescription(
-          `${ctx.locale('commands:sarrar.no-mention.embed_description_start')} ${
-            ctx.message.author
-          }?\n${ctx.locale('commands:sarrar.no-mention.embed_description_end')}`,
+          `${ctx.locale('commands:sarrar.no-mention.embed_description_start')}
+           ${ctx.message.author}?\n${ctx.locale(
+            'commands:sarrar.no-mention.embed_description_end',
+          )}`,
         )
         .setImage(randSozinho)
         .setThumbnail(ctx.message.author.displayAvatarURL())
@@ -47,26 +67,6 @@ export default class SarrarCommand extends Command {
           msg.delete();
         });
       });
-    }
-    SarrarCommand.sarrada(ctx, ctx.message.mentions.users.first());
-  }
-
-  static async sarrada(ctx: CommandContext, reactUser: User) {
-    const rand = await http.getAssetImageUrl('sarrar');
-
-    const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
-
-    const Embed = new MessageEmbed()
-
-      .setTitle(ctx.locale('commands:sarrar.embed_title'))
-      .setColor('#000000')
-      .setDescription(
-        `${ctx.message.author} ${ctx.locale('commands:sarrar.embed_description')} ${reactUser}`,
-      )
-      .setImage(rand)
-      .setThumbnail(avatar)
-      .setAuthor(ctx.message.author.tag, avatar);
-
-    ctx.send(Embed);
+    } else await SarrarCommand.sarrada(ctx, user);
   }
 }

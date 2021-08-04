@@ -6,19 +6,21 @@ export default class GiveBadgeCommand extends Command {
   constructor(client: MenheraClient) {
     super(client, {
       name: 'gb',
-      description: 'Lansa uma badge pra um usuario',
       devsOnly: true,
       category: 'Dev',
     });
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<void> {
     const badgeId = parseInt(ctx.args[1]);
 
-    if (!badgeId) return ctx.reply('error', 'Cade o id da badge?');
+    if (!badgeId) {
+      await ctx.reply('error', 'Cade o id da badge?');
+      return;
+    }
 
-    this.client.repositories.badgeRepository.addBadge(ctx.args[0], badgeId);
+    await this.client.repositories.badgeRepository.addBadge(ctx.args[0], badgeId);
 
-    ctx.send('Concluido');
+    await ctx.send('Concluido');
   }
 }

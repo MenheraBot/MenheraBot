@@ -5,14 +5,14 @@ import Command from '@structures/Command';
 import MenheraClient from 'MenheraClient';
 import CommandContext from '@structures/CommandContext';
 import {
+  battle,
+  enemyShot,
+  getAbilities,
   getEnemyByUserLevel,
   initialChecks,
-  getAbilities,
-  enemyShot,
-  battle,
 } from '@structures/Rpgs/checks';
 import { rpg } from '@structures/MenheraConstants';
-import { IAbility, IBattleChoice, IDungeonMob, IUserRpgSchema } from '@utils/Types';
+import { IAbility, IBattleChoice, IDungeonMob, IUserRpgSchema, TDungeonLevel } from '@utils/Types';
 
 export default class DungeonCommand extends Command {
   constructor(client: MenheraClient) {
@@ -24,19 +24,131 @@ export default class DungeonCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
-    const user = await this.client.database.Rpg.findById(ctx.message.author.id);
-    if (!user) return ctx.replyT('error', 'commands:dungeon.non-aventure');
+  async battle(
+    ctx: CommandContext,
+    inimigo: IDungeonMob,
+    habilidades: IAbility[],
+    user: IUserRpgSchema,
+    type: 'boss' | 'dungeon',
+  ): Promise<void> {
+    await this.client.repositories.rpgRepository.update(ctx.message.author.id, {
+      dungeonCooldown: `${rpg.bossCooldown + Date.now()}`,
+      inBattle: true,
+    });
 
-    if (!ctx.args[0]) return ctx.replyT('error', 'commands:dungeon.no-args');
+    const options: IBattleChoice[] = [
+      {
+        name: ctx.locale('commands:dungeon.scape'),
+        damage: '🐥',
+        scape: true,
+        cost: 0,
+      },
+    ];
+
+    options.push({
+      name: ctx.locale('commands:dungeon.battle.basic'),
+      cost: 0,
+      damage:
+        user?.familiar?.id && user.familiar.type === 'damage'
+          ? user.damage +
+            user.weapon.damage +
+            (familiarsFile[user.familiar.id].boost.value +
+              (user.familiar.level - 1) * familiarsFile[user.familiar.id].boost.value)
+          : user.damage + user.weapon.damage,
+    });
+
+    habilidades.forEach((hab) => {
+      options.push(hab);
+    });
+
+    let texto = `${ctx.locale('commands:dungeon.battle.enter', {
+      type: inimigo.type,
+      name: inimigo.name,
+    })}\n\n❤️ | ${ctx.locale('commands:dungeon.life')}: **${inimigo.life}**\n⚔️ | ${ctx.locale(
+      'commands:dungeon.damage',
+    )}: **${inimigo.damage}**\n🛡️ | ${ctx.locale('commands:dungeon.armor')}: **${
+      inimigo.armor
+    }**\n\n${ctx.locale('commands:dungeon.battle.end')}`;
+
+    for (let i = 0; i < options.length; i++) {
+      texto += `\n**${i}** - ${options[i].name} | **${options[i].cost || 0}**💧, **${
+        options[i].damage
+      }**🗡️`;
+    }
+
+    const embed = new MessageEmbed()
+      .setFooter(ctx.locale('commands:dungeon.battle.footer'))
+      .setTitle(`${ctx.locale('commands:dungeon.battle.title')}${inimigo.name}`)
+      .setColor('#f04682')
+      .setDescription(texto);
+    await ctx.sendC(ctx.message.author.toString(), embed);
+
+    const filter = (m: Message) => m.author.id === ctx.message.author.id;
+    const collector = ctx.message.channel.createMessageCollector(filter, {
+      max: 1,
+      time: 15000,
+    });
+
+    let time = false;
+
+    collector.on('collect', (m) => {
+      time = true;
+      const choice = Number(m.content);
+      if (choice >= 0 && choice < options.length) {
+        return battle(ctx, options[choice], user, inimigo, type);
+      }
+      return enemyShot(
+        ctx,
+        user,
+        inimigo,
+        type,
+        `⚔️ |  ${ctx.locale('commands:dungeon.battle.newTecnique')}`,
+      );
+    });
+
+    setTimeout(() => {
+      if (!time) {
+        enemyShot(
+          ctx,
+          user,
+          inimigo,
+          type,
+          `⚔️ |  ${ctx.locale('commands:dungeon.battle.timeout')}`,
+        );
+      }
+    }, 15000);
+  }
+
+  async run(ctx: CommandContext): Promise<void> {
+    const user = await this.client.repositories.rpgRepository.find(ctx.message.author.id);
+    if (!user) {
+      await ctx.replyT('error', 'commands:dungeon.non-aventure');
+      return;
+    }
+
+    if (!ctx.args[0]) {
+      await ctx.replyT('error', 'commands:dungeon.no-args');
+      return;
+    }
 
     const polishedInput = ctx.args[0].replace(/\D+/g, '');
 
-    if (!polishedInput) return ctx.replyT('error', 'commands:dungeon.no-args');
+    if (!polishedInput) {
+      await ctx.replyT('error', 'commands:dungeon.no-args');
+      return;
+    }
 
-    const inimigo = getEnemyByUserLevel(user, 'dungeon', parseInt(polishedInput), ctx);
+    const inimigo = getEnemyByUserLevel(
+      user,
+      'dungeon',
+      parseInt(polishedInput) as TDungeonLevel,
+      ctx,
+    );
 
-    if (!inimigo) return ctx.replyT('error', 'commands:dungeon.no-level');
+    if (!inimigo) {
+      await ctx.replyT('error', 'commands:dungeon.no-level');
+      return;
+    }
 
     if (inimigo === 'LOW-LEVEL') return;
 
@@ -100,105 +212,8 @@ export default class DungeonCommand extends Command {
 
     collector.on('collect', (m) => {
       if (m.content.toLowerCase() === 'sim' || m.content.toLowerCase() === 'yes') {
-        DungeonCommand.battle(ctx, inimigo as IDungeonMob, habilidades, user, 'dungeon');
+        this.battle(ctx, inimigo as IDungeonMob, habilidades, user, 'dungeon');
       } else return ctx.replyT('error', 'commands:dungeon.arregou');
     });
-  }
-
-  static async battle(
-    ctx: CommandContext,
-    inimigo: IDungeonMob,
-    habilidades: IAbility[],
-    user: IUserRpgSchema,
-    type: 'boss' | 'dungeon',
-  ) {
-    user.dungeonCooldown = `${rpg.dungeonCooldown + Date.now()}`;
-    user.inBattle = true;
-    await user.save();
-
-    const options: IBattleChoice[] = [
-      {
-        name: ctx.locale('commands:dungeon.scape'),
-        // @ts-ignore
-        damage: '🐥',
-        scape: true,
-      },
-    ];
-
-    options.push({
-      name: ctx.locale('commands:dungeon.battle.basic'),
-      damage:
-        user?.familiar?.id && user.familiar.type === 'damage'
-          ? user.damage +
-            user.weapon.damage +
-            (familiarsFile[user.familiar.id].boost.value +
-              (user.familiar.level - 1) * familiarsFile[user.familiar.id].boost.value)
-          : user.damage + user.weapon.damage,
-    });
-
-    habilidades.forEach((hab) => {
-      options.push(hab);
-    });
-
-    let texto = `${ctx.locale('commands:dungeon.battle.enter', {
-      type: inimigo.type,
-      name: inimigo.name,
-    })}\n\n❤️ | ${ctx.locale('commands:dungeon.life')}: **${inimigo.life}**\n⚔️ | ${ctx.locale(
-      'commands:dungeon.damage',
-    )}: **${inimigo.damage}**\n🛡️ | ${ctx.locale('commands:dungeon.armor')}: **${
-      inimigo.armor
-    }**\n\n${ctx.locale('commands:dungeon.battle.end')}`;
-
-    const escolhas = [];
-
-    for (let i = 0; i < options.length; i++) {
-      texto += `\n**${i}** - ${options[i].name} | **${options[i].cost || 0}**💧, **${
-        options[i].damage
-      }**🗡️`;
-      escolhas.push(i);
-    }
-
-    const embed = new MessageEmbed()
-      .setFooter(ctx.locale('commands:dungeon.battle.footer'))
-      .setTitle(`${ctx.locale('commands:dungeon.battle.title')}${inimigo.name}`)
-      .setColor('#f04682')
-      .setDescription(texto);
-    ctx.sendC(ctx.message.author.toString(), embed);
-
-    const filter = (m: Message) => m.author.id === ctx.message.author.id;
-    const collector = ctx.message.channel.createMessageCollector(filter, {
-      max: 1,
-      time: 15000,
-    });
-
-    let time = false;
-
-    collector.on('collect', (m) => {
-      time = true;
-      const choice = Number(m.content);
-      if (escolhas.includes(choice)) {
-        battle(ctx, options[choice], user, inimigo, type);
-      } else {
-        enemyShot(
-          ctx,
-          user,
-          inimigo,
-          type,
-          `⚔️ |  ${ctx.locale('commands:dungeon.battle.newTecnique')}`,
-        );
-      }
-    });
-
-    setTimeout(() => {
-      if (!time) {
-        enemyShot(
-          ctx,
-          user,
-          inimigo,
-          type,
-          `⚔️ |  ${ctx.locale('commands:dungeon.battle.timeout')}`,
-        );
-      }
-    }, 15000);
   }
 }

@@ -14,7 +14,7 @@ export default class FearCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<void> {
     const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     const rand = await http.getAssetImageUrl('fear');
@@ -31,7 +31,8 @@ export default class FearCommand extends Command {
         .setImage(rand)
         .setAuthor(ctx.message.author.tag, avatar);
 
-      return ctx.send(embed);
+      await ctx.send(embed);
+      return;
     }
 
     const embed = new MessageEmbed()

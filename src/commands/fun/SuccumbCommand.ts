@@ -10,10 +10,13 @@ export default class SuccumbCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<void> {
     const user = ctx.message.mentions.users.first() || ctx.args.join(' ');
-    if (!user) return ctx.reply('error', 'n/a');
-    ctx.send(
+    if (!user) {
+      await ctx.reply('error', 'n/a');
+      return;
+    }
+    await ctx.send(
       `${ctx.locale('commands:sucumba.start')} **${user}** ${ctx.locale('commands:sucumba.end')}`,
     );
   }

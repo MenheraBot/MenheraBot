@@ -7,17 +7,18 @@ export default class StarManagerCommand extends Command {
     super(client, {
       name: 'managestar',
       aliases: ['ms'],
-      description: 'Edite as estrelas de um usuário',
       devsOnly: true,
       category: 'Dev',
     });
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<void> {
     const [id, option, value] = ctx.args;
 
-    if (!value)
-      return ctx.reply('error', 'Use `m!managestar <userId> <add | remove | set> <valor>`');
+    if (!value) {
+      await ctx.reply('error', 'Use `m!managestar <userId> <add | remove | set> <valor>`');
+      return;
+    }
 
     switch (option.toLowerCase()) {
       case 'add':
@@ -30,9 +31,10 @@ export default class StarManagerCommand extends Command {
         await this.client.repositories.starRepository.set(id, parseInt(value));
         break;
       default:
-        return ctx.reply('error', 'Use `m!managestar <userId> <add | remove | set> <valor>`');
+        await ctx.reply('error', 'Use `m!managestar <userId> <add | remove | set> <valor>`');
+        return;
     }
 
-    ctx.reply('success', `Estrelinhas de ${id} alteradas com sucesso :star:`);
+    await ctx.reply('success', `Estrelinhas de ${id} alteradas com sucesso :star:`);
   }
 }

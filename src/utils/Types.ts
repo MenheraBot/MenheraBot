@@ -1,4 +1,20 @@
 /* eslint-disable camelcase */
+import BadgeRepository from '@database/repositories/BadgeRepository';
+import BlacklistRepository from '@database/repositories/BlacklistRepository';
+import CacheRepository from '@database/repositories/CacheRepository';
+import CmdRepository from '@database/repositories/CmdsRepository';
+import CommandRepository from '@database/repositories/CommandRepository';
+import GiveRepository from '@database/repositories/GiveRepository';
+import GuildsRepository from '@database/repositories/GuildsRepository';
+import HuntRepository from '@database/repositories/HuntRepository';
+import MaintenanceRepository from '@database/repositories/MaintenanceRepository';
+import MamarRepository from '@database/repositories/MamarRepository';
+import RelationshipRepository from '@database/repositories/RelationshipRepository';
+import RpgRepository from '@database/repositories/RpgRepository';
+import StarRepository from '@database/repositories/StarRepository';
+import StatusRepository from '@database/repositories/StatusRepository';
+import TopRepository from '@database/repositories/TopRepository';
+import UserRepository from '@database/repositories/UserRepository';
 import { BitFieldResolvable, PermissionString, User } from 'discord.js';
 import { Document } from 'mongoose';
 
@@ -18,12 +34,6 @@ export interface ICommandConfig {
   devsOnly?: boolean;
 }
 
-export interface IEvent {
-  name: string;
-  dir: string;
-  run: (...args: Array<unknown>) => Promise<unknown>;
-}
-
 export interface IHttpPicassoReutrn {
   err: boolean;
   data?: Buffer;
@@ -39,7 +49,7 @@ export interface IBlackjackCards {
 interface IColor {
   nome: string;
   cor: string;
-  preço: number;
+  price: number;
 }
 
 interface IBadge {
@@ -83,15 +93,19 @@ interface IUserArmor {
 
 type TFamiliarBoost = 'abilityPower' | 'damage' | 'armor';
 
+export type TFamiliarID = 1 | 2 | 3;
+
+export type TJobIndexes = 1 | 2 | 3 | 4;
+
 interface IUserFamiliar {
-  id: string;
+  id: TFamiliarID;
   level: number;
   xp: number;
   nextLevelXp: number;
-  type: TFamiliarBoost | string;
+  type: TFamiliarBoost;
 }
 
-export interface IInventoryUser {
+export interface IInventoryItem {
   name: string;
   description?: string;
   type?: string;
@@ -103,7 +117,7 @@ export interface IInventoryUser {
 }
 
 export interface IGuildSchema {
-  id: string;
+  id?: string;
   prefix: string;
   blockedChannels: Array<string>;
   disabledCommands: Array<string>;
@@ -125,7 +139,7 @@ export interface IUserRpgSchema extends Document {
   abilities: Array<IAbility>;
   uniquePower: IUniquePower;
   loots: Array<IMobLoot>;
-  inventory: Array<IInventoryUser>;
+  inventory: Array<IInventoryItem>;
   money: number;
   dungeonCooldown: string;
   death: string;
@@ -135,7 +149,7 @@ export interface IUserRpgSchema extends Document {
   inBattle: boolean;
   backpack: { name: string };
   resetRoll: number;
-  jobId: number;
+  jobId: TJobIndexes;
   jobCooldown: string;
   familiar: IUserFamiliar;
 }
@@ -146,13 +160,13 @@ export interface IUserSchema extends Document {
   mamou: number;
   casado: string;
   nota: string;
-  data?: string;
+  data?: string | null;
   shipValue?: string;
   ban?: boolean;
-  banReason?: string;
+  banReason?: string | null;
   afk: boolean;
-  afkReason: string;
-  afkGuild?: string;
+  afkReason: string | null;
+  afkGuild: string | null;
   cor: string;
   cores: Array<IColor>;
   caçados: number;
@@ -180,13 +194,13 @@ export interface ICommandUsedData {
 }
 
 export interface IRESTGameStats {
-  playedGames?: number;
-  lostGames?: number;
-  winGames?: number;
-  winMoney?: number;
-  lostMoney?: number;
-  winPorcentage?: string;
-  lostPorcentage?: string;
+  playedGames: number;
+  lostGames: number;
+  winGames: number;
+  winMoney: number;
+  lostMoney: number;
+  winPorcentage: string;
+  lostPorcentage: string;
   error?: boolean;
 }
 
@@ -213,7 +227,7 @@ export interface IMobAttack {
 
 export interface IContextData {
   user: IUserSchema & Document;
-  server: IGuildSchema & Document;
+  server: IGuildSchema | (IGuildSchema & Document);
 }
 
 export type mobType =
@@ -240,19 +254,19 @@ export interface IDungeonMob {
 
 export interface IBattleChoice {
   name: string;
-  damage: number;
+  damage: number | string;
   scape?: boolean;
-  cost?: number;
+  cost: number;
   heal?: number;
 }
 
 export interface ICmdSchema {
-  _id: string;
+  _id?: string;
   maintenance: boolean;
-  maintenanceReason: string;
+  maintenanceReason: string | null;
 }
 
-export interface ICommandsSchema {
+export interface ICommandsSchema extends Document {
   name: string;
   pt_description: string;
   pt_usage: string;
@@ -266,7 +280,7 @@ interface IDisabledCommand {
   reason: string;
 }
 
-export interface IStatusSchema {
+export interface IStatusSchema extends Document {
   _id: string;
   ping: number;
   disabledCommands: Array<IDisabledCommand>;
@@ -283,10 +297,179 @@ export interface IUserDataToSend {
   xp: number;
   level: number;
   nextLevelXp: number;
-  damage: any;
-  armor: any;
-  abilityPower: any;
-  tag: any;
+  damage: number;
+  armor: number;
+  abilityPower: number;
+  tag: string;
   money: number;
   jobId: number;
+}
+export interface IDatabaseRepositories {
+  userRepository: UserRepository;
+  cacheRepository: CacheRepository;
+  commandRepository: CommandRepository;
+  cmdRepository: CmdRepository;
+  starRepository: StarRepository;
+  rpgRepository: RpgRepository;
+  mamarRepository: MamarRepository;
+  guildRepository: GuildsRepository;
+  statusRepository: StatusRepository;
+  badgeRepository: BadgeRepository;
+  maintenanceRepository: MaintenanceRepository;
+  huntRepository: HuntRepository;
+  relationshipRepository: RelationshipRepository;
+  blacklistRepository: BlacklistRepository;
+  topRepository: TopRepository;
+  giveRepository: GiveRepository;
+}
+
+export type TVilaOptions = 'bruxa' | 'ferreiro' | 'hotel' | 'guilda';
+
+export type TFerreiroOptions = 'sword' | 'armor' | 'backpack';
+
+export interface IMobsFile {
+  inicial: IDungeonMob[];
+  medio: IDungeonMob[];
+  hard: IDungeonMob[];
+  impossible: IDungeonMob[];
+  boss: IDungeonMob[];
+  gods: IDungeonMob[];
+  evolved: IDungeonMob[];
+  universal: IDungeonMob[];
+}
+
+export interface IClassAbilities {
+  uniquePowers: IUniquePower[];
+  normalAbilities: IAbility[];
+}
+
+export interface IAbilitiesFile {
+  assassin: IClassAbilities;
+  barbarian: IClassAbilities;
+  clerigo: IClassAbilities;
+  druida: IClassAbilities;
+  espadachim: IClassAbilities;
+  feiticeiro: IClassAbilities;
+  monge: IClassAbilities;
+  necromante: IClassAbilities;
+}
+
+interface IFamiliarBoost {
+  name: string;
+  type: TFamiliarBoost;
+  level_boost: number;
+  value: number;
+}
+
+export interface IFamiliarFromFile {
+  id: TFamiliarID;
+  boost: IFamiliarBoost;
+  image: string;
+}
+
+export interface IFamiliarFile {
+  1: IFamiliarFromFile;
+  2: IFamiliarFromFile;
+  3: IFamiliarFromFile;
+}
+
+export interface IJobFromFile {
+  name: string;
+  min_level: number;
+  work_cooldown_in_hours: number;
+  xp: number;
+  min_money: number;
+  max_money: number;
+}
+
+export interface IJobFile {
+  1: IJobFromFile;
+  2: IJobFromFile;
+  3: IJobFromFile;
+  4: IJobFromFile;
+}
+
+export type TDungeonLevel = 1 | 2 | 3 | 4 | 5;
+
+export interface IBruxaItem {
+  name: string;
+  description: string;
+  type: string;
+  damage: number;
+  value: number;
+  maxLevel?: number;
+  minLevel: number;
+}
+
+export interface IRequiredItems {
+  [name: string]: number;
+}
+
+export interface IFerreiroItem {
+  id: string;
+  price?: number;
+  protection?: number;
+  capacity?: number;
+  isNotTrade?: boolean;
+  damage?: number;
+  category: string;
+  required_items?: IRequiredItems;
+}
+
+export interface IHotelItem {
+  name: string;
+  time: number;
+  life: number | 'MAX';
+  mana: number | 'MAX';
+}
+
+export interface IJobsItem {
+  name: string;
+  value: number;
+  job_id: TJobIndexes;
+}
+
+interface IJobsFromFile {
+  1: IJobsItem[];
+  2: IJobsItem[];
+  3: IJobsItem[];
+  4: IJobsItem[];
+}
+
+export interface IITemsFile {
+  bruxa: IBruxaItem[];
+  ferreiro: IFerreiroItem[];
+  hotel: IHotelItem[];
+  jobs: IJobsFromFile;
+}
+
+export type TShardStatus = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
+
+export interface IShardFromClient {
+  id: number;
+  status: TShardStatus;
+  sequence: number;
+  closeSequence: number;
+  sessionID: string;
+  ping: number;
+  lastPingTimestamp: number;
+  lastHeartbeatAcked: boolean;
+}
+
+export interface IShardArrayFromWs {
+  _events: unknown;
+  _eventsCount: number;
+  gateway: string;
+  totalShards: number;
+  shards: IShardFromClient[];
+  status: TShardStatus;
+  destroyed: boolean;
+  reconnecting: boolean;
+  sessionStartLimit: unknown;
+}
+
+export interface IAfkUserData {
+  afk: boolean;
+  afkGuild: string | null;
+  afkReason: string | null;
 }

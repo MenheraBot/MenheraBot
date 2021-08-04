@@ -4,7 +4,6 @@ import Command from '@structures/Command';
 import 'moment-duration-format';
 import MenheraClient from 'MenheraClient';
 import CommandContext from '@structures/CommandContext';
-import { version } from '../../../package.json';
 
 export default class BotinfoCommand extends Command {
   constructor(client: MenheraClient) {
@@ -18,16 +17,17 @@ export default class BotinfoCommand extends Command {
   }
 
   async getAllSizeObject(collection: string): Promise<number> {
+    if (!this.client.shard) return 0;
     const info = await this.client.shard.fetchClientValues(`${collection}.cache.size`);
-    const i = info.reduce((prev, val) => prev + val);
-    return i;
+    return info.reduce((prev, val) => prev + val, 0);
   }
 
-  async run(ctx: CommandContext) {
-    const owner = await this.client.users.fetch(process.env.OWNER);
+  async run(ctx: CommandContext): Promise<void> {
+    const owner = await this.client.users.fetch(process.env.OWNER as string);
     if (ctx.data.server.lang === 'pt-BR') {
       moment.locale('pt-br');
     } else moment.locale('en-us');
+    if (!this.client.shard) return;
 
     const memoryUsedGross = await this.client.shard.broadcastEval('process.memoryUsage().heapUsed');
     const memoryUsedPolish = memoryUsedGross.reduce((a, b) => a + b, 0);
@@ -38,13 +38,13 @@ export default class BotinfoCommand extends Command {
       .setThumbnail('https://i.imgur.com/b5y0nd4.png')
       .setDescription(
         ctx.locale('commands:botinfo.embed_description', {
-          name: this.client.user.username,
-          createdAt: moment.utc(this.client.user.createdAt).format('LLLL'),
-          joinedAt: moment.utc(ctx.message.guild.me.joinedAt).format('LLLL'),
+          name: this.client.user?.username,
+          createdAt: moment.utc(this.client.user?.createdAt).format('LLLL'),
+          joinedAt: moment.utc(ctx.message?.guild?.me?.joinedAt).format('LLLL'),
         }),
       )
       .setFooter(
-        `${this.client.user.username} ${ctx.locale('commands:botinfo.embed_footer')} ${owner.tag}`,
+        `${this.client.user?.username} ${ctx.locale('commands:botinfo.embed_footer')} ${owner.tag}`,
         owner.displayAvatarURL({
           format: 'png',
           dynamic: true,
@@ -75,12 +75,7 @@ export default class BotinfoCommand extends Command {
           value: `\`\`\`${(memoryUsedPolish / 1024 / 1024).toFixed(2)}MB\`\`\``,
           inline: true,
         },
-        {
-          name: `🇧🇷 | ${ctx.locale('commands:botinfo.version')} | 🇧🇷`,
-          value: `\`\`\`${version}\`\`\``,
-          inline: true,
-        },
       ]);
-    ctx.send(embed);
+    await ctx.send(embed);
   }
 }

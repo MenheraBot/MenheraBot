@@ -1,5 +1,8 @@
 import mongoose from 'mongoose';
-import { Cmds, Commands, Guilds, Status, Rpg, Users } from '../structures/DatabaseCollections';
+import Redis from 'ioredis';
+import { Cmds, Commands, Guilds, Rpg, Status, Users } from '@structures/DatabaseCollections';
+import { IDatabaseRepositories } from '@utils/Types';
+import CacheRepository from './repositories/CacheRepository';
 import CmdRepository from './repositories/CmdsRepository';
 import CommandRepository from './repositories/CommandRepository';
 import RpgRepository from './repositories/RpgRepository';
@@ -16,7 +19,7 @@ import BlacklistRepository from './repositories/BlacklistRepository';
 import TopRepository from './repositories/TopRepository';
 import GiveRepository from './repositories/GiveRepository';
 
-export default class MongoDatabase {
+export default class Databases {
   public Cmds: typeof Cmds;
 
   public Commands: typeof Commands;
@@ -29,39 +32,41 @@ export default class MongoDatabase {
 
   public Users: typeof Users;
 
-  public userRepository: UserRepository;
+  public redisClient: Redis.Redis | null = null;
 
-  public commandRepository: CommandRepository;
+  private readonly userRepository: UserRepository;
 
-  public cmdRepository: CmdRepository;
+  private readonly commandRepository: CommandRepository;
 
-  public starRepository: StarRepository;
+  private readonly cmdRepository: CmdRepository;
 
-  public rpgRepository: RpgRepository;
+  private readonly starRepository: StarRepository;
 
-  public mamarRepository: MamarRepository;
+  private readonly rpgRepository: RpgRepository;
 
-  public guildRepository: GuildRepository;
+  private readonly mamarRepository: MamarRepository;
 
-  public statusRepository: StatusRepository;
+  private readonly guildRepository: GuildRepository;
 
-  public badgeRepository: BadgeRepository;
+  private readonly statusRepository: StatusRepository;
 
-  public maintenanceRepository: MaintenanceRepository;
+  private readonly badgeRepository: BadgeRepository;
 
-  public huntRepository: HuntRepository;
+  private readonly maintenanceRepository: MaintenanceRepository;
 
-  public relationshipRepository: RelationshipRepository;
+  private readonly cacheRepository: CacheRepository;
 
-  public blacklistRepository: BlacklistRepository;
+  private readonly huntRepository: HuntRepository;
 
-  public topRepository: TopRepository;
+  private readonly relationshipRepository: RelationshipRepository;
 
-  public giveRepository: GiveRepository;
+  private readonly blacklistRepository: BlacklistRepository;
 
-  constructor(public uri: string) {
-    this.uri = uri;
+  private readonly topRepository: TopRepository;
 
+  private readonly giveRepository: GiveRepository;
+
+  constructor(public uri: string, withRedisCache: boolean) {
     // TODO: add modal to the name for readability
     // para fazer isso tem que mudar todos os codigos que estão usando `database.(nome_sem_modal)` to repositories
     this.Cmds = Cmds;
@@ -71,6 +76,8 @@ export default class MongoDatabase {
     this.Rpg = Rpg;
     this.Users = Users;
 
+    if (withRedisCache) this.createRedisConnection();
+
     this.userRepository = new UserRepository(this.Users);
     this.commandRepository = new CommandRepository(this.Commands);
     this.cmdRepository = new CmdRepository(this.Cmds);
@@ -78,6 +85,12 @@ export default class MongoDatabase {
     this.rpgRepository = new RpgRepository(this.Rpg);
     this.mamarRepository = new MamarRepository(this.userRepository);
     this.guildRepository = new GuildRepository(this.Guilds);
+    this.cacheRepository = new CacheRepository(
+      this.redisClient,
+      this.guildRepository,
+      this.cmdRepository,
+      this.userRepository,
+    );
     this.statusRepository = new StatusRepository(this.Status);
     this.badgeRepository = new BadgeRepository(this.userRepository);
     this.maintenanceRepository = new MaintenanceRepository(
@@ -91,13 +104,14 @@ export default class MongoDatabase {
     this.giveRepository = new GiveRepository(this.Users);
   }
 
-  get repositories() {
+  get repositories(): IDatabaseRepositories {
     return {
       userRepository: this.userRepository,
       commandRepository: this.commandRepository,
       cmdRepository: this.cmdRepository,
       starRepository: this.starRepository,
       rpgRepository: this.rpgRepository,
+      cacheRepository: this.cacheRepository,
       mamarRepository: this.mamarRepository,
       guildRepository: this.guildRepository,
       statusRepository: this.statusRepository,
@@ -109,6 +123,20 @@ export default class MongoDatabase {
       topRepository: this.topRepository,
       giveRepository: this.giveRepository,
     };
+  }
+
+  createRedisConnection(): void {
+    try {
+      this.redisClient = new Redis({ db: process.env.NODE_ENV === 'development' ? 1 : 0 });
+      this.redisClient.once('connect', () => {
+        this.redisClient?.flushdb();
+        console.log('[REDIS] Conected to redis database');
+      });
+    } catch (err) {
+      console.log(`[REDIS] Error connecting to redis ${err}`);
+      this.redisClient = null;
+      throw err;
+    }
   }
 
   createConnection(): Promise<void> {

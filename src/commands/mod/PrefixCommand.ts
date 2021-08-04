@@ -8,20 +8,28 @@ export default class PrefixCommand extends Command {
       name: 'prefix',
       aliases: ['prefixo'],
       cooldown: 10,
-      description: 'Troque meu prefixo neste servidor',
       userPermissions: ['MANAGE_CHANNELS'],
       category: 'moderação',
     });
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<void> {
     const [prefix] = ctx.args;
-    if (!prefix) return ctx.replyT('error', 'commands:prefix.no-args');
-    if (prefix.length > 3) return ctx.replyT('error', 'commands:prefix.invalid-input');
+    if (!prefix) {
+      await ctx.replyT('error', 'commands:prefix.no-args');
+      return;
+    }
+    if (prefix.length > 3) {
+      await ctx.replyT('error', 'commands:prefix.invalid-input');
+      return;
+    }
 
     ctx.data.server.prefix = prefix;
-    ctx.data.server.save();
+    await this.client.repositories.cacheRepository.updateGuild(
+      ctx.message.guild?.id as string,
+      ctx.data.server,
+    );
 
-    ctx.replyT('success', 'commands:prefix.done', { prefix: ctx.data.server.prefix });
+    await ctx.replyT('success', 'commands:prefix.done', { prefix: ctx.data.server.prefix });
   }
 }

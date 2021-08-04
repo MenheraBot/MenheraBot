@@ -1,5 +1,5 @@
 import http from '@utils/HTTPrequests';
-import { MessageEmbed, MessageAttachment, MessageReaction, User } from 'discord.js';
+import { MessageAttachment, MessageEmbed, MessageReaction, User } from 'discord.js';
 import Command from '@structures/Command';
 import MenheraClient from 'MenheraClient';
 import CommandContext from '@structures/CommandContext';
@@ -15,16 +15,21 @@ export default class TrisalCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<void> {
     const authorData = ctx.data.user;
-    if (authorData.trisal?.length === 0 && !ctx.args[1])
-      return ctx.replyT('error', 'commands:trisal.no-args');
+    if (authorData.trisal?.length === 0 && !ctx.args[1]) {
+      await ctx.replyT('error', 'commands:trisal.no-args');
+      return;
+    }
 
     if (authorData.trisal?.length > 0) {
       const marryTwo = await this.client.users.fetch(authorData.trisal[0]);
       const marryThree = await this.client.users.fetch(authorData.trisal[1]);
 
-      if (!marryTwo || !marryThree) return ctx.replyT('error', 'commands:trisal.marry-not-found');
+      if (!marryTwo || !marryThree) {
+        await ctx.replyT('error', 'commands:trisal.marry-not-found');
+        return;
+      }
 
       const userOneAvatar = ctx.message.author.displayAvatarURL({
         dynamic: false,
@@ -39,9 +44,12 @@ export default class TrisalCommand extends Command {
       });
 
       const res = await http.trisalRequest(userOneAvatar, userTwoAvatar, userThreeAvatar);
-      if (res.err) return ctx.replyT('error', 'commands:http-error');
+      if (res.err) {
+        await ctx.replyT('error', 'commands:http-error');
+        return;
+      }
 
-      const attachment = new MessageAttachment(Buffer.from(res.data), 'trisal.png');
+      const attachment = new MessageAttachment(Buffer.from(res.data as Buffer), 'trisal.png');
 
       const embed = new MessageEmbed()
         .attachFiles([attachment])
@@ -53,24 +61,38 @@ export default class TrisalCommand extends Command {
         .setColor('#ac76f9')
         .setImage('attachment://trisal.png');
 
-      return ctx.send(embed);
+      await ctx.send(embed);
+      return;
     }
 
     const [mencionado1, mencionado2] = ctx.message.mentions.users.keyArray();
 
-    if (!mencionado1 || !mencionado2) return ctx.replyT('error', 'commands:trisal.no-mention');
-    if (mencionado1 === ctx.message.author.id || mencionado2 === ctx.message.author.id)
-      return ctx.replyT('error', 'commands:trisal.self-mention');
-    if (mencionado1 === mencionado2) return ctx.replyT('error', 'commands:trisal:same-mention');
+    if (!mencionado1 || !mencionado2) {
+      await ctx.replyT('error', 'commands:trisal.no-mention');
+      return;
+    }
+    if (mencionado1 === ctx.message.author.id || mencionado2 === ctx.message.author.id) {
+      await ctx.replyT('error', 'commands:trisal.self-mention');
+      return;
+    }
+    if (mencionado1 === mencionado2) {
+      await ctx.replyT('error', 'commands:trisal:same-mention');
+      return;
+    }
 
     const user1 = authorData;
     const user2 = await this.client.repositories.userRepository.find(mencionado1);
     const user3 = await this.client.repositories.userRepository.find(mencionado2);
 
-    if (!user1 || !user2 || !user3) return ctx.replyT('error', 'commands:trisal.no-db');
+    if (!user1 || !user2 || !user3) {
+      await ctx.replyT('error', 'commands:trisal.no-db');
+      return;
+    }
 
-    if (user2.trisal?.length > 0 || user3.trisal?.length > 0)
-      return ctx.replyT('error', 'commands:trisal.comedor-de-casadas');
+    if (user2.trisal?.length > 0 || user3.trisal?.length > 0) {
+      await ctx.replyT('error', 'commands:trisal.comedor-de-casadas');
+      return;
+    }
 
     const messageMention1 = await this.client.users.fetch(mencionado1);
     const messageMention2 = await this.client.users.fetch(mencionado2);
@@ -89,13 +111,13 @@ export default class TrisalCommand extends Command {
 
     const collector = msg.createReactionCollector(filter, { time: 14000 });
 
-    const acceptedIds = [];
+    const acceptedIds: string[] = [];
 
     collector.on('collect', async (_reaction, user) => {
       if (!acceptedIds.includes(user.id)) acceptedIds.push(user.id);
 
       if (acceptedIds.length === 3) {
-        ctx.replyT('success', 'commands:trisal.done');
+        await ctx.replyT('success', 'commands:trisal.done');
         await this.client.repositories.relationshipRepository.trisal(user1.id, user2.id, user3.id);
       }
     });

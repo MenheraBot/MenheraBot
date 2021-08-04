@@ -16,19 +16,31 @@ export default class PvPCommands extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<void> {
     const mention = ctx.message.mentions.users.first();
     const valor = ctx.args[1];
-    if (!mention) return ctx.replyT('error', 'commands:pvp.no-args');
+    if (!mention) {
+      await ctx.replyT('error', 'commands:pvp.no-args');
+      return;
+    }
 
-    if (mention.bot) return ctx.replyT('error', 'commands:pvp.bot');
+    if (mention.bot) {
+      await ctx.replyT('error', 'commands:pvp.bot');
+      return;
+    }
 
-    if (mention === ctx.message.author) return ctx.replyT('error', 'comands:pvp.self-mention');
+    if (mention === ctx.message.author) {
+      await ctx.replyT('error', 'comands:pvp.self-mention');
+      return;
+    }
 
-    const user1 = await this.client.database.Rpg.findById(ctx.message.author.id);
-    const user2 = await this.client.database.Rpg.findById(mention.id);
+    const user1 = await this.client.repositories.rpgRepository.find(ctx.message.author.id);
+    const user2 = await this.client.repositories.rpgRepository.find(mention.id);
 
-    if (!user1 || !user2) return ctx.replyT('error', 'commands:pvp.no-user');
+    if (!user1 || !user2) {
+      await ctx.replyT('error', 'commands:pvp.no-user');
+      return;
+    }
 
     const dmgView2 =
       user2?.familiar?.id && user2.familiar.type === 'damage'
@@ -90,19 +102,39 @@ export default class PvPCommands extends Command {
     let aposta: false | number = false;
 
     if (valor) {
-      if (user1.life <= 0 || user2.life <= 0) return ctx.replyT('error', 'commands:pvp.no-life');
+      if (user1.life <= 0 || user2.life <= 0) {
+        await ctx.replyT('error', 'commands:pvp.no-life');
+        return;
+      }
       aposta = parseInt(valor.replace(/\D+/g, ''));
-      if (Number.isNaN(aposta)) return ctx.replyT('error', 'commands:pvp.invalid-value');
-      if (aposta <= 0) return ctx.replyT('error', 'commands:pvp.invalid-value');
-      if (aposta > user1.money) return ctx.replyT('error', 'commands:pvp.you-poor');
-      if (aposta > user2.money)
-        return ctx.replyT('error', 'commands:pvp.his-poor', { user: mention.tag });
+      if (Number.isNaN(aposta)) {
+        await ctx.replyT('error', 'commands:pvp.invalid-value');
+        return;
+      }
+      if (aposta <= 0) {
+        await ctx.replyT('error', 'commands:pvp.invalid-value');
+        return;
+      }
+      if (aposta > user1.money) {
+        await ctx.replyT('error', 'commands:pvp.you-poor');
+        return;
+      }
+      if (aposta > user2.money) {
+        await ctx.replyT('error', 'commands:pvp.his-poor', { user: mention.tag });
+        return;
+      }
       embed.setColor('RED');
       embed.setFooter(ctx.locale('commands:pvp.is-competitive', { aposta }));
     }
 
-    if (user1.inBattle) return ctx.replyT('error', 'commands:pvp.in-battle-one');
-    if (user2.inBattle) return ctx.replyT('error', 'commands:pvp.in-battle-two');
+    if (user1.inBattle) {
+      await ctx.replyT('error', 'commands:pvp.in-battle-one');
+      return;
+    }
+    if (user2.inBattle) {
+      await ctx.replyT('error', 'commands:pvp.in-battle-two');
+      return;
+    }
 
     if (!aposta)
       embed.setDescription(
@@ -127,7 +159,7 @@ export default class PvPCommands extends Command {
         }\n-----------------------------\n ${ctx.locale('commands:pvp.send-to-accept')}`,
       );
 
-    ctx.sendC(mention.toString(), embed);
+    await ctx.sendC(mention.toString(), embed);
 
     const acceptFilter = (m: Message) => m.author.id === mention.id;
     const acceptCollector = ctx.message.channel.createMessageCollector(acceptFilter, {
@@ -156,8 +188,8 @@ export default class PvPCommands extends Command {
     member2: User,
     aposta: number | false,
     ctx: CommandContext,
-  ) {
-    const options = [];
+  ): Promise<Message | Message[] | void> {
+    const options: IBattleChoice[] = [];
 
     if (!aposta) {
       user1.life = user1.maxLife;
@@ -168,6 +200,7 @@ export default class PvPCommands extends Command {
 
     options.push({
       name: ctx.locale('commands:dungeon.battle.basic'),
+      cost: 0,
       damage:
         user1?.familiar?.id && user1.familiar.type === 'damage'
           ? user1.damage +
@@ -191,13 +224,10 @@ export default class PvPCommands extends Command {
       user2.armor
     }**\n\n${ctx.locale('commands:pvp.battle.end')}`;
 
-    const escolhas = [];
-
     for (let i = 0; i < options.length; i++) {
       texto += `\n**${i + 1}** - ${options[i].name} | **${options[i].cost || 0}**💧, **${
         options[i].damage
       }**🗡️`;
-      escolhas.push(i + 1);
     }
 
     const embed = new MessageEmbed()
@@ -205,7 +235,7 @@ export default class PvPCommands extends Command {
       .setTitle(`${ctx.locale('commands:pvp.battle.title', { user: member1.tag })}`)
       .setColor('#f04682')
       .setDescription(texto);
-    ctx.sendC(member1.toString(), embed);
+    await ctx.sendC(member1.toString(), embed);
 
     const filter = (m: Message) => m.author.id === member1.id;
     const collector = ctx.message.channel.createMessageCollector(filter, {
@@ -218,7 +248,7 @@ export default class PvPCommands extends Command {
     collector.on('collect', (m) => {
       time = true;
       const choice = Number(m.content);
-      if (escolhas.includes(choice)) {
+      if (choice > 0 && choice <= options.length) {
         this.continueBattle(
           ctx,
           options[choice - 1],
@@ -275,14 +305,15 @@ export default class PvPCommands extends Command {
     user1abilities: IAbility[],
     user2abilities: IAbility[],
     aposta: false | number,
-    attackText: string,
-  ) {
-    let toSay: string;
+    attackText: string | null,
+  ): Promise<Message | Message[] | void> {
+    if (escolha && typeof escolha.damage === 'string') return;
+    let toSay = '';
     if (!attackText) {
       let danoUser = 0;
       if (escolha) {
         if (escolha.name === 'Ataque Básico' || escolha.name === 'Basic Attack') {
-          danoUser = escolha.damage;
+          danoUser = escolha.damage as number;
         } else if (escolha.name === 'Morte Instantânea') {
           user1.life -= 50;
           return this.continueBattle(
@@ -318,17 +349,17 @@ export default class PvPCommands extends Command {
                 user2: member2.tag,
               })}`,
             );
-          if (escolha.heal > 0) {
+          if (escolha.heal && escolha.heal > 0) {
             user1.life += escolha.heal;
             if (user1.life > user1.maxLife) user1.life = user1.maxLife;
           }
           danoUser =
             user1?.familiar?.id && user1.familiar.type === 'abilityPower'
-              ? escolha.damage *
+              ? (escolha.damage as number) *
                 (user1.abilityPower +
                   familiarsFile[user1.familiar.id].boost.value +
                   (user1.familiar.level - 1) * familiarsFile[user1.familiar.id].boost.value)
-              : user1.abilityPower * escolha.damage;
+              : user1.abilityPower * (escolha.damage as number);
           user1.mana -= escolha.cost;
         }
       }
@@ -341,8 +372,8 @@ export default class PvPCommands extends Command {
           : user2.armor;
       let danoDado = danoUser - enemyArmor;
       if (
-        (escolha as IBattleChoice).name === 'Ataque Básico' ||
-        (escolha as IBattleChoice).name === 'Basic Attack'
+        (escolha && escolha.name === 'Ataque Básico') ||
+        (escolha && escolha.name === 'Basic Attack')
       )
         danoDado = danoUser;
       if (danoDado < 0) danoDado = 0;
@@ -356,18 +387,21 @@ export default class PvPCommands extends Command {
       })}`;
     }
 
+    const textToSend = attackText || toSay;
+
     if (user2.life < 1) {
-      return this.endBattle(ctx, user1, user2, member1, member2, aposta, attackText || toSay);
+      return this.endBattle(ctx, user1, user2, member1, member2, aposta, textToSend);
     }
 
     if (user1.life < 1) {
-      return this.endBattle(ctx, user2, user1, member2, member1, aposta, attackText || toSay);
+      return this.endBattle(ctx, user2, user1, member2, member1, aposta, textToSend);
     }
 
-    const options = [];
+    const options: IBattleChoice[] = [];
 
     options.push({
       name: ctx.locale('commands:dungeon.battle.basic'),
+      cost: 0,
       damage:
         user2?.familiar?.id && user2.familiar.type === 'damage'
           ? user2.damage +
@@ -387,13 +421,10 @@ export default class PvPCommands extends Command {
       user1.armor
     }**\n\n${ctx.locale('commands:pvp.battle.end')}`;
 
-    const escolhas = [];
-
     for (let i = 0; i < options.length; i++) {
       texto += `\n**${i + 1}** - ${options[i].name} | **${options[i].cost || 0}**💧, **${
         options[i].damage
       }**🗡️`;
-      escolhas.push(i + 1);
     }
 
     const embed = new MessageEmbed()
@@ -402,7 +433,7 @@ export default class PvPCommands extends Command {
       .setTitle(`${ctx.locale('commands:pvp.battle.title', { user: member2.tag })}`)
       .setFooter(ctx.locale('commands:dungeon.battle.footer'));
 
-    ctx.sendC(member2.toString(), embed);
+    await ctx.sendC(member2.toString(), embed);
 
     const filter = (m: Message) => m.author.id === member2.id;
     const collector = ctx.message.channel.createMessageCollector(filter, {
@@ -415,7 +446,7 @@ export default class PvPCommands extends Command {
     collector.on('collect', (m) => {
       time = true;
       const choice = Number(m.content);
-      if (escolhas.includes(choice)) {
+      if (choice > 0 && choice <= options.length) {
         this.continueBattle(
           ctx,
           options[choice - 1],
@@ -472,7 +503,7 @@ export default class PvPCommands extends Command {
     member2: User,
     aposta: number | false,
     toSay: string,
-  ) {
+  ): Promise<Message> {
     const text = `${toSay}\n${ctx.locale('commands:pvp.enough', { user: member2.tag })}`;
     const embed = new MessageEmbed()
       .setColor('#e905ff')
@@ -495,13 +526,10 @@ export default class PvPCommands extends Command {
       return ctx.send(embed);
     }
 
-    const findFirstUserWithoutAposta = await this.client.database.Rpg.findById(member1.id);
-    const findSecondUserWithoutAposta = await this.client.database.Rpg.findById(member2.id);
-    findFirstUserWithoutAposta.inBattle = false;
-    findSecondUserWithoutAposta.inBattle = false;
-    findFirstUserWithoutAposta.save();
-    findSecondUserWithoutAposta.save();
+    await this.client.repositories.rpgRepository.update(member1.id, { inBatle: false });
+    await this.client.repositories.rpgRepository.update(member2.id, { inBatle: false });
+
     embed.addField(ctx.locale('commands:pvp.aposta'), ctx.locale('commands:pvp.not-aposta'));
-    ctx.send(embed);
+    return ctx.send(embed);
   }
 }

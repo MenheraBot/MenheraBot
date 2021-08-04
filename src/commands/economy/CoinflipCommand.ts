@@ -18,33 +18,60 @@ export default class CoinflipCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<void> {
     const user1 = ctx.message.author;
     const user2 = ctx.message.mentions.users.first();
     const input = ctx.args[1];
-    if (!input) return ctx.replyT('error', 'commands:coinflip.invalid-value');
+    if (!input) {
+      await ctx.replyT('error', 'commands:coinflip.invalid-value');
+      return;
+    }
     const valor = input.replace(/\D+/g, '');
 
-    if (!user2) return ctx.replyT('error', 'commands:coinflip.no-mention');
-    if (user2.bot) return ctx.replyT('error', 'commands:coinflip.bot');
-    if (user2.id === user1.id) return ctx.replyT('error', 'commands:coinflip.self-mention');
+    if (!user2) {
+      await ctx.replyT('error', 'commands:coinflip.no-mention');
+      return;
+    }
 
-    if (Number.isNaN(parseInt(valor)))
-      return ctx.replyT('error', 'commands:coinflip.invalid-value');
-    if (parseInt(valor) < 1) return ctx.replyT('error', 'commands:coinflip.invalid-value');
+    if (user2.bot) {
+      await ctx.replyT('error', 'commands:coinflip.bot');
+      return;
+    }
+    if (user2.id === user1.id) {
+      await ctx.replyT('error', 'commands:coinflip.self-mention');
+      return;
+    }
+
+    if (Number.isNaN(parseInt(valor))) {
+      await ctx.replyT('error', 'commands:coinflip.invalid-value');
+      return;
+    }
+    if (parseInt(valor) < 1) {
+      await ctx.replyT('error', 'commands:coinflip.invalid-value');
+      return;
+    }
 
     const db1 = await this.client.repositories.userRepository.find(user1.id);
     const db2 = await this.client.repositories.userRepository.find(user2.id);
 
-    if (!db1 || !db2) return ctx.replyT('error', 'commands:coinflip.no-dbuser');
+    if (!db1 || !db2) {
+      await ctx.replyT('error', 'commands:coinflip.no-dbuser');
+      return;
+    }
 
-    if (parseInt(valor) > db1.estrelinhas) return ctx.replyT('error', 'commands:coinflip.poor');
-    if (parseInt(valor) > db2.estrelinhas)
-      return ctx.send(
+    if (parseInt(valor) > db1.estrelinhas) {
+      await ctx.replyT('error', 'commands:coinflip.poor');
+      return;
+    }
+
+    if (parseInt(valor) > db2.estrelinhas) {
+      await ctx.send(
         `<:negacao:759603958317711371> **|** ${user2} ${ctx.locale('commands:coinflip.poor')}`,
       );
+      return;
+    }
 
-    ctx
+    return ctx
       .send(
         `${user2}, ${user1} ${ctx.locale('commands:coinflip.confirm-start', {
           value: valor,
@@ -67,7 +94,7 @@ export default class CoinflipCommand extends Command {
           let loser = user2.id;
 
           if (choice === 'Cara') {
-            ctx.send(
+            await ctx.send(
               `${ctx.locale('commands:coinflip.cara')}\n${user1} ${ctx.locale(
                 'commands:coinflip.cara-texto-start',
                 { value: valor },
@@ -78,7 +105,7 @@ export default class CoinflipCommand extends Command {
           } else {
             winner = user2.id;
             loser = user1.id;
-            ctx.send(
+            await ctx.send(
               `${ctx.locale('commands:coinflip.coroa')}\n${user2} ${ctx.locale(
                 'commands:coinflip.coroa-texto',
                 { value: valor },

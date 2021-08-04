@@ -3,6 +3,7 @@ import Command from '@structures/Command';
 import { jobs as jobsFile } from '@structures/RpgHandler';
 import CommandContext from '@structures/CommandContext';
 import MenheraClient from 'MenheraClient';
+import { TJobIndexes } from '@utils/Types';
 
 export default class JobCommand extends Command {
   constructor(client: MenheraClient) {
@@ -15,11 +16,14 @@ export default class JobCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
-    const user = await this.client.database.Rpg.findById(ctx.message.author.id);
-    if (!user) return ctx.replyT('error', 'commands:job.not-registred');
+  async run(ctx: CommandContext): Promise<void> {
+    const user = await this.client.repositories.rpgRepository.find(ctx.message.author.id);
+    if (!user) {
+      await ctx.replyT('error', 'commands:job.not-registred');
+      return;
+    }
 
-    const array = Object.entries(jobsFile);
+    const AllJobKeys = Object.keys(jobsFile);
 
     if (!ctx.args[0]) {
       const embed = new MessageEmbed()
@@ -27,8 +31,8 @@ export default class JobCommand extends Command {
         .setColor('#9f4dd2')
         .setTitle(ctx.locale('commands:job.embed-title'));
 
-      for (let i = 1; i <= array.length; i++) {
-        const job = jobsFile[i];
+      for (let i = 1; i <= AllJobKeys.length; i++) {
+        const job = jobsFile[i as TJobIndexes];
         embed.addField(
           `**[ ${i} ]** - ${ctx.locale(`roleplay:job.${i}.${job.name}`)}`,
           `${ctx.locale('commands:job.min-level')}: \`${job.min_level}\`\n${ctx.locale(
@@ -42,24 +46,39 @@ export default class JobCommand extends Command {
         );
       }
 
-      return ctx.sendC(ctx.message.author.toString(), embed);
+      await ctx.sendC(ctx.message.author.toString(), embed);
+      return;
     }
 
     const escolha = ctx.args[0].replace(/\D+/g, '');
-    if (!escolha || escolha.length === 0) return ctx.replyT('error', 'commands:job.invalid');
+    if (!escolha || escolha.length === 0) {
+      await ctx.replyT('error', 'commands:job.invalid');
+      return;
+    }
 
-    if (parseInt(escolha) < 1 || parseInt(escolha) > array.length || !jobsFile[escolha])
-      return ctx.replyT('error', 'commands:job.invalid');
+    const parsedChoice = parseInt(escolha);
 
-    const minLevel = jobsFile[escolha].min_level;
-    if (minLevel > user.level)
-      return ctx.replyT('error', 'commands:job.no-level', { level: minLevel });
+    if (
+      parsedChoice < 1 ||
+      parsedChoice > AllJobKeys.length ||
+      !jobsFile[parsedChoice as TJobIndexes]
+    ) {
+      await ctx.replyT('error', 'commands:job.invalid');
+      return;
+    }
 
-    user.jobId = parseInt(escolha);
-    await user.save();
+    const minLevel = jobsFile[parsedChoice as TJobIndexes].min_level;
+    if (minLevel > user.level) {
+      await ctx.replyT('error', 'commands:job.no-level', { level: minLevel });
+      return;
+    }
 
-    ctx.replyT('success', 'commands:job.finish', {
-      job: ctx.locale(`roleplay:job.${escolha}.${jobsFile[escolha].name}`),
+    await this.client.repositories.rpgRepository.update(ctx.message.author.id, {
+      jobId: parsedChoice as TJobIndexes,
+    });
+
+    await ctx.replyT('success', 'commands:job.finish', {
+      job: ctx.locale(`roleplay:job.${escolha}.${jobsFile[parsedChoice as TJobIndexes].name}`),
     });
   }
 }

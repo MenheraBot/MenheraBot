@@ -14,7 +14,7 @@ export default class GrumbleCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<void> {
     const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     const rand = await http.getAssetImageUrl('grumble');
@@ -27,6 +27,6 @@ export default class GrumbleCommand extends Command {
       .setImage(rand)
       .setAuthor(ctx.message.author.tag, avatar);
 
-    ctx.send(embed);
+    await ctx.send(embed);
   }
 }

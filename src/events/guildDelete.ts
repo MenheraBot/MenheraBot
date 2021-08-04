@@ -1,15 +1,16 @@
 import { Guild } from 'discord.js';
 import MenheraClient from 'MenheraClient';
+import Event from '@structures/Event';
 
-export default class GuildDelete {
+export default class GuildDelete extends Event {
   constructor(public client: MenheraClient) {
-    this.client = client;
+    super(client);
   }
 
-  async run(guild: Guild) {
+  async run(guild: Guild): Promise<void> {
     if (!guild || !guild.id || !guild.name) return;
 
-    this.client.repositories.guildRepository.delete(guild.id);
+    await this.client.repositories.guildRepository.delete(guild.id);
 
     if (!process.env.GUILDS_HOOK_ID) {
       throw new Error('GUILDS_HOOK_ID is not defined');
@@ -20,6 +21,8 @@ export default class GuildDelete {
       process.env.GUILDS_HOOK_TOKEN,
     );
 
-    webhook.send(`<:menhera_cry:744041825140211732> | Fui removida do servidor **${guild.name}**`);
+    await webhook.send(
+      `<:menhera_cry:744041825140211732> | Fui removida do servidor **${guild.name}**`,
+    );
   }
 }

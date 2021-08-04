@@ -14,8 +14,8 @@ export default class FodaseCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
-    if (ctx.message.deletable) ctx.message.delete();
+  async run(ctx: CommandContext): Promise<void> {
+    if (ctx.message.deletable) await ctx.message.delete();
 
     const frases =
       ctx.data.server.lang === 'pt-BR'
@@ -38,6 +38,6 @@ export default class FodaseCommand extends Command {
       .setFooter(`Autor: ${ctx.message.author.username}`)
       .setTitle(frasesUsada);
 
-    ctx.send(embed);
+    await ctx.send(embed);
   }
 }

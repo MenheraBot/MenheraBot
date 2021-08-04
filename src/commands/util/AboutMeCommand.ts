@@ -12,13 +12,19 @@ export default class AboutMeCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<void> {
     const nota = ctx.args.join(' ');
-    if (!nota) return ctx.replyT('error', 'commands:aboutme.no-args');
-    if (nota.length > 200) return ctx.replyT('error', 'commands:aboutme.args-limit');
+    if (!nota) {
+      await ctx.replyT('error', 'commands:aboutme.no-args');
+      return;
+    }
+    if (nota.length > 200) {
+      await ctx.replyT('error', 'commands:aboutme.args-limit');
+      return;
+    }
 
-    await ctx.client.database.Users.updateOne({ id: ctx.message.author.id }, { $set: { nota } });
+    await ctx.client.repositories.userRepository.update(ctx.message.author.id, { nota });
 
-    ctx.replyT('success', 'commands:aboutme.success');
+    await ctx.replyT('success', 'commands:aboutme.success');
   }
 }

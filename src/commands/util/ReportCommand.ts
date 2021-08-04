@@ -14,11 +14,14 @@ export default class ReportCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<void> {
     const argumentos = ctx.args.join(' ');
     const cor = `#${`000000${Math.random().toString(16).slice(2, 8).toUpperCase()}`.slice(-6)}`;
 
-    if (!argumentos) return ctx.replyT('error', 'commands:report.no-args');
+    if (!argumentos) {
+      await ctx.replyT('error', 'commands:report.no-args');
+      return;
+    }
 
     const embed = new MessageEmbed()
       .setDescription(`${argumentos}`)
@@ -32,13 +35,13 @@ export default class ReportCommand extends Command {
       );
 
     const reportWebhook = await this.client.fetchWebhook(
-      process.env.BUG_HOOK_ID,
-      process.env.BUG_HOOK_TOKEN,
+      process.env.BUG_HOOK_ID as string,
+      process.env.BUG_HOOK_TOKEN as string,
     );
 
-    reportWebhook.send(embed);
+    await reportWebhook.send(embed);
 
-    if (ctx.message.deletable) ctx.message.delete();
-    ctx.replyT('success', 'commands:report.thanks');
+    if (ctx.message.deletable) await ctx.message.delete();
+    await ctx.replyT('success', 'commands:report.thanks');
   }
 }

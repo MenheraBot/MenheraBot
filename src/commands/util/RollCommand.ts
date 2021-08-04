@@ -11,31 +11,44 @@ export default class RollCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<void> {
     const authorData = ctx.data.user;
     if (ctx.args[0]) {
-      const rpgUser = await this.client.database.Rpg.findById(ctx.message.author.id);
-      if (!rpgUser) return ctx.replyT('error', 'commands:roll.no-adventure');
+      const rpgUser = await this.client.repositories.rpgRepository.find(ctx.message.author.id);
+      if (!rpgUser) {
+        await ctx.replyT('error', 'commands:roll.no-adventure');
+        return;
+      }
 
-      if (parseInt(rpgUser.dungeonCooldown) < Date.now())
-        return ctx.replyT('error', 'commands:roll.can-dungeon');
+      if (parseInt(rpgUser.dungeonCooldown) < Date.now()) {
+        await ctx.replyT('error', 'commands:roll.can-dungeon');
+        return;
+      }
 
-      if (rpgUser.resetRoll < 1) return ctx.replyT('error', 'commands:roll.dungeon-poor');
+      if (rpgUser.resetRoll < 1) {
+        await ctx.replyT('error', 'commands:roll.dungeon-poor');
+        return;
+      }
 
       rpgUser.resetRoll -= 1;
       rpgUser.dungeonCooldown = '0';
       await rpgUser.save();
-      ctx.replyT('success', 'commands:roll.dungeon-success');
-    } else {
-      if (parseInt(authorData.caçarTime) < Date.now())
-        return ctx.replyT('error', 'commands:roll.can-hunt');
-
-      if (authorData.rolls < 1) return ctx.replyT('error', 'commands:roll.poor');
-
-      authorData.rolls -= 1;
-      authorData.caçarTime = '000000000000';
-      await authorData.save();
-      ctx.replyT('success', 'commands:roll.success');
+      await ctx.replyT('success', 'commands:roll.dungeon-success');
+      return;
     }
+    if (parseInt(authorData.caçarTime) < Date.now()) {
+      await ctx.replyT('error', 'commands:roll.can-hunt');
+      return;
+    }
+
+    if (authorData.rolls < 1) {
+      await ctx.replyT('error', 'commands:roll.poor');
+      return;
+    }
+
+    authorData.rolls -= 1;
+    authorData.caçarTime = '000000000000';
+    await authorData.save();
+    await ctx.replyT('success', 'commands:roll.success');
   }
 }

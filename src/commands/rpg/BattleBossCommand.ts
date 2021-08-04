@@ -4,11 +4,11 @@ import { familiars as familiarsFile } from '@structures/RpgHandler';
 import MenheraClient from 'MenheraClient';
 import CommandContext from '@structures/CommandContext';
 import {
-  getEnemyByUserLevel,
-  initialChecks,
-  getAbilities,
   battle,
   enemyShot,
+  getAbilities,
+  getEnemyByUserLevel,
+  initialChecks,
 } from '@structures/Rpgs/checks';
 import { rpg } from '@structures/MenheraConstants';
 import { IAbility, IBattleChoice, IDungeonMob, IUserRpgSchema } from '@utils/Types';
@@ -23,11 +23,111 @@ export default class BattleBoss extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
-    const user = await this.client.database.Rpg.findById(ctx.message.author.id);
-    if (!user) return ctx.replyT('error', 'commands:boss.non-aventure');
+  async battle(
+    ctx: CommandContext,
+    inimigo: IDungeonMob,
+    habilidades: IAbility[],
+    user: IUserRpgSchema,
+    type: 'boss' | 'dungeon',
+  ): Promise<void> {
+    await this.client.repositories.rpgRepository.update(ctx.message.author.id, {
+      dungeonCooldown: `${rpg.bossCooldown + Date.now()}`,
+      inBattle: true,
+    });
 
-    if (user.level < 20) return ctx.replyT('error', 'commands:boss.min-level');
+    const options: Array<IBattleChoice> = [
+      {
+        name: ctx.locale('commands:dungeon.scape'),
+        damage: '🐥',
+        scape: true,
+        cost: 0,
+      },
+    ];
+
+    options.push({
+      name: ctx.locale('commands:boss.battle.basic'),
+      cost: 0,
+      damage:
+        user?.familiar?.id && user.familiar.type === 'damage'
+          ? user.damage +
+            user.weapon.damage +
+            (familiarsFile[user.familiar.id].boost.value +
+              (user.familiar.level - 1) * familiarsFile[user.familiar.id].boost.value)
+          : user.damage + user.weapon.damage,
+    });
+
+    habilidades.forEach((hab) => {
+      options.push(hab);
+    });
+
+    let texto = `${ctx.locale('commands:boss.battle.enter', {
+      enemy: inimigo.name,
+    })}\n\n❤️ | ${ctx.locale('commands:boss.life')}: **${inimigo.life}**\n⚔️ | ${ctx.locale(
+      'commands:boss.damage',
+    )}: **${inimigo.damage}**\n🛡️ | ${ctx.locale('commands:boss.armor')}: **${
+      inimigo.armor
+    }**\n\n${ctx.locale('commands:boss.battle.end')}`;
+
+    for (let i = 0; i < options.length; i++) {
+      texto += `\n**${i}** - ${options[i].name} | **${options[i].cost || 0}**💧, **${
+        options[i].damage
+      }**🗡️`;
+    }
+
+    const embed = new MessageEmbed()
+      .setFooter(ctx.locale('commands:boss.battle.footer'))
+      .setTitle(`BossBattle: ${inimigo.name}`)
+      .setColor('#f04682')
+      .setDescription(texto);
+    await ctx.sendC(ctx.message.author.toString(), embed);
+
+    const filter = (m: Message) => m.author.id === ctx.message.author.id;
+    const collector = ctx.message.channel.createMessageCollector(filter, {
+      max: 1,
+      time: 15000,
+    });
+
+    let time = false;
+
+    collector.on('collect', (m) => {
+      time = true;
+      const choice = Number(m.content);
+      if (choice >= 0 && choice < options.length) {
+        return battle(ctx, options[choice], user, inimigo, type);
+      }
+      return enemyShot(
+        ctx,
+        user,
+        inimigo,
+        type,
+        `⚔️ |  ${ctx.locale('commands:boss.battle.newTecnique')}`,
+      );
+    });
+
+    setTimeout(() => {
+      if (!time) {
+        return enemyShot(
+          ctx,
+          user,
+          inimigo,
+          type,
+          `⚔️ |  ${ctx.locale('commands:boss.battle.timeout')}`,
+        );
+      }
+    }, 15000);
+  }
+
+  async run(ctx: CommandContext): Promise<void> {
+    const user = await this.client.repositories.rpgRepository.find(ctx.message.author.id);
+    if (!user) {
+      await ctx.replyT('error', 'commands:boss.non-aventure');
+      return;
+    }
+
+    if (user.level < 20) {
+      await ctx.replyT('error', 'commands:boss.min-level');
+      return;
+    }
 
     const inimigo = getEnemyByUserLevel(user, 'boss') as IDungeonMob;
     const canGo = await initialChecks(user, ctx);
@@ -49,7 +149,7 @@ export default class BattleBoss extends Command {
             (user.familiar.level - 1) * familiarsFile[user.familiar.id].boost.value)
         : user.armor + user.protection.armor;
 
-    const habilidades = await getAbilities(user);
+    const habilidades = getAbilities(user);
 
     if (user.uniquePower.name === 'Morte Instantânea') {
       habilidades.splice(
@@ -97,103 +197,8 @@ export default class BattleBoss extends Command {
 
     collector.on('collect', (m) => {
       if (m.content.toLowerCase() === 'sim' || m.content.toLowerCase() === 'yes') {
-        BattleBoss.battle(ctx, inimigo, habilidades, user, 'boss');
+        this.battle(ctx, inimigo, habilidades, user, 'boss');
       } else return ctx.replyT('error', 'commands:boss.amarelou');
     });
-  }
-
-  static async battle(
-    ctx: CommandContext,
-    inimigo: IDungeonMob,
-    habilidades: IAbility[],
-    user: IUserRpgSchema,
-    type: 'boss' | 'dungeon',
-  ) {
-    user.dungeonCooldown = `${rpg.bossCooldown + Date.now()}`;
-    user.inBattle = true;
-    await user.save();
-
-    const options: IBattleChoice[] = [
-      {
-        name: ctx.locale('commands:dungeon.scape'),
-        // @ts-ignore
-        damage: '🐥',
-        scape: true,
-      },
-    ];
-
-    options.push({
-      name: ctx.locale('commands:boss.battle.basic'),
-      damage:
-        user?.familiar?.id && user.familiar.type === 'damage'
-          ? user.damage +
-            user.weapon.damage +
-            (familiarsFile[user.familiar.id].boost.value +
-              (user.familiar.level - 1) * familiarsFile[user.familiar.id].boost.value)
-          : user.damage + user.weapon.damage,
-    });
-
-    habilidades.forEach((hab) => {
-      options.push(hab);
-    });
-
-    let texto = `${ctx.locale('commands:boss.battle.enter', {
-      enemy: inimigo.name,
-    })}\n\n❤️ | ${ctx.locale('commands:boss.life')}: **${inimigo.life}**\n⚔️ | ${ctx.locale(
-      'commands:boss.damage',
-    )}: **${inimigo.damage}**\n🛡️ | ${ctx.locale('commands:boss.armor')}: **${
-      inimigo.armor
-    }**\n\n${ctx.locale('commands:boss.battle.end')}`;
-
-    const escolhas = [];
-
-    for (let i = 0; i < options.length; i++) {
-      texto += `\n**${i}** - ${options[i].name} | **${options[i].cost || 0}**💧, **${
-        options[i].damage
-      }**🗡️`;
-      escolhas.push(i);
-    }
-
-    const embed = new MessageEmbed()
-      .setFooter(ctx.locale('commands:boss.battle.footer'))
-      .setTitle(`BossBattle: ${inimigo.name}`)
-      .setColor('#f04682')
-      .setDescription(texto);
-    ctx.sendC(ctx.message.author.toString(), embed);
-
-    const filter = (m) => m.author.id === ctx.message.author.id;
-    const collector = ctx.message.channel.createMessageCollector(filter, {
-      max: 1,
-      time: 15000,
-    });
-
-    let time = false;
-
-    collector.on('collect', (m) => {
-      time = true;
-      const choice = Number(m.content);
-      if (escolhas.includes(choice)) {
-        return battle(ctx, options[choice], user, inimigo, type);
-      }
-      return enemyShot(
-        ctx,
-        user,
-        inimigo,
-        type,
-        `⚔️ |  ${ctx.locale('commands:boss.battle.newTecnique')}`,
-      );
-    });
-
-    setTimeout(() => {
-      if (!time) {
-        return enemyShot(
-          ctx,
-          user,
-          inimigo,
-          type,
-          `⚔️ |  ${ctx.locale('commands:boss.battle.timeout')}`,
-        );
-      }
-    }, 15000);
   }
 }

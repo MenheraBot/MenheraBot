@@ -1,21 +1,19 @@
-/* eslint-disable camelcase */
-/* eslint-disable global-require */
-/* eslint-disable import/no-dynamic-require */
-import { Client, Collection, ShardClientUtil } from 'discord.js';
+import { Client, Collection } from 'discord.js';
 
-import Sentry from '@sentry/node';
+import * as Sentry from '@sentry/node';
 import i18next from 'i18next';
 
 import '@sentry/tracing';
 
-import EventManager from './structures/EventManager';
+import { IClientConfigs, ICommandConfig, IDatabaseRepositories } from '@utils/Types';
+import FileUtil from '@utils/FileUtil';
+import Event from '@structures/Event';
+import Database from '@database/Databases';
+import EventManager from '@structures/EventManager';
 
-import Command from './structures/Command';
+import Command from '@structures/Command';
 
-import Database from './database/MongoDatabase';
-import { IClientConfigs, ICommandConfig } from './utils/Types';
-import LocaleStructure from './structures/LocaleStructure';
-import FileUtil from './utils/FileUtil';
+import LocaleStructure from '@structures/LocaleStructure';
 
 export default class MenheraClient extends Client {
   public database: Database;
@@ -26,9 +24,6 @@ export default class MenheraClient extends Client {
 
   public events: EventManager;
 
-  // shard is always present when using the ShardingManager
-  public shard!: ShardClientUtil;
-
   constructor(options = {}, public config: IClientConfigs) {
     super(options);
 
@@ -36,6 +31,7 @@ export default class MenheraClient extends Client {
       process.env.NODE_ENV === 'development'
         ? (process.env.DEV_DATABASE_URI as string)
         : (process.env.DATABASE_URI as string),
+      true,
     );
     this.commands = new Collection();
     this.aliases = new Collection();
@@ -43,11 +39,11 @@ export default class MenheraClient extends Client {
     this.config = config;
   }
 
-  get repositories() {
+  get repositories(): IDatabaseRepositories {
     return this.database.repositories;
   }
 
-  async init() {
+  async init(): Promise<true> {
     Sentry.init({
       dsn: process.env.SENTRY_DNS,
       environment: process.env.NODE_ENV,
@@ -59,26 +55,26 @@ export default class MenheraClient extends Client {
 
     await locales.load();
     await this.database.createConnection();
-    await this.loadCommands(this.config.commandsDirectory);
-    await this.loadEvents(this.config.eventsDirectory);
+    this.loadCommands(this.config.commandsDirectory);
+    this.loadEvents(this.config.eventsDirectory);
     return true;
   }
 
-  async reloadCommand(commandName: string) {
+  async reloadCommand(commandName: string): Promise<void | false> {
     const command =
       this.commands.get(commandName) || this.commands.get(this.aliases.get(commandName) as string);
     if (!command) return false;
 
-    return FileUtil.reloadFile<typeof Command>(command.dir, (cmd) =>
+    await FileUtil.reloadFile<typeof Command>(command.dir, (cmd) =>
       this.loadCommand(cmd, command.dir),
     );
   }
 
-  login(token: string) {
+  login(token: string): Promise<string> {
     return super.login(token);
   }
 
-  async postExistingCommand(command: ICommandConfig) {
+  async postExistingCommand(command: ICommandConfig): Promise<void> {
     const tPt = i18next.getFixedT('pt-BR');
     const tUs = i18next.getFixedT('en-US');
 
@@ -93,14 +89,14 @@ export default class MenheraClient extends Client {
     };
 
     if (exists) {
-      this.repositories.commandRepository.updateByName(command.name, data);
+      await this.repositories.commandRepository.updateByName(command.name, data);
     } else {
-      this.repositories.commandRepository.create(command.name, data);
+      await this.repositories.commandRepository.create(command.name, data);
     }
   }
 
-  async loadCommand(NewCommand: typeof Command, filepath: string) {
-    // @ts-expect-error
+  async loadCommand(NewCommand: typeof Command, filepath: string): Promise<void> {
+    // @ts-expect-error Abstract class cannot be invoked
     const command: Command = new NewCommand(this);
 
     command.dir = filepath;
@@ -111,23 +107,26 @@ export default class MenheraClient extends Client {
 
     const cmdInDb = await this.repositories.cmdRepository.findByName(command.config.name);
     if (!cmdInDb) {
-      this.repositories.cmdRepository.create(command.config.name);
+      await this.repositories.cmdRepository.create(command.config.name);
     }
 
     if (command.config.category !== 'Dev') {
-      this.postExistingCommand(command.config);
+      await this.postExistingCommand(command.config);
     }
   }
 
-  loadCommands(directory: string) {
-    // @ts-ignore
-    return FileUtil.readDirectory(directory, (...args) => this.loadCommand(...args));
+  loadCommands(directory: string): void {
+    FileUtil.readDirectory<typeof Command>(
+      directory,
+      async (cmd: typeof Command, filepath: string) => {
+        await this.loadCommand(cmd, filepath);
+      },
+    );
   }
 
-  loadEvents(directory: string) {
-    // @ts-ignore
-    return FileUtil.readDirectory(directory, (Event: any, filepath: string) => {
-      this.events.add(FileUtil.filename(filepath), filepath, new Event(this));
+  loadEvents(directory: string): void {
+    FileUtil.readDirectory(directory, (EventFile: typeof Event, filepath: string) => {
+      this.events.add(FileUtil.filename(filepath), filepath, new EventFile(this));
     });
   }
 }

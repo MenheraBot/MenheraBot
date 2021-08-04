@@ -13,31 +13,47 @@ export default class BlockCmdCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
-    if (!ctx.args[0]) return ctx.replyT('error', 'commands:blockcommand.no-args');
+  async run(ctx: CommandContext): Promise<void> {
+    if (!ctx.args[0]) {
+      await ctx.replyT('error', 'commands:blockcommand.no-args');
+      return;
+    }
 
     const cmd =
       this.client.commands.get(ctx.args[0]) ||
-      this.client.commands.get(this.client.aliases.get(ctx.args[0]));
+      this.client.commands.get(this.client.aliases.get(ctx.args[0]) as string);
 
-    if (!cmd) return ctx.replyT('error', 'commands:blockcommand.no-cmd');
+    if (!cmd) {
+      await ctx.replyT('error', 'commands:blockcommand.no-cmd');
+      return;
+    }
 
-    if (cmd.config.devsOnly) return ctx.replyT('error', 'commands:blockcommand.dev-cmd');
+    if (cmd.config.devsOnly) {
+      await ctx.replyT('error', 'commands:blockcommand.dev-cmd');
+      return;
+    }
 
-    if (cmd.config.name === this.config.name)
-      return ctx.replyT('error', 'commands:blockcommand.foda');
+    if (cmd.config.name === this.config.name) {
+      await ctx.replyT('error', 'commands:blockcommand.foda');
+      return;
+    }
 
     if (ctx.data.server.disabledCommands?.includes(cmd.config.name)) {
       const index = ctx.data.server.disabledCommands.indexOf(cmd.config.name);
-      if (index > -1) {
-        ctx.data.server.disabledCommands.splice(index, 1);
-        ctx.replyT('success', 'commands:blockcommand.unblock', { cmd: cmd.config.name });
-      }
-    } else {
-      ctx.data.server.disabledCommands.push(cmd.config.name);
-      ctx.replyT('success', 'commands:blockcommand.block', { cmd: cmd.config.name });
-    }
 
-    await ctx.data.server.save();
+      ctx.data.server.disabledCommands.splice(index, 1);
+      await this.client.repositories.cacheRepository.updateGuild(
+        ctx.message.guild?.id as string,
+        ctx.data.server,
+      );
+      await ctx.replyT('success', 'commands:blockcommand.unblock', { cmd: cmd.config.name });
+      return;
+    }
+    ctx.data.server.disabledCommands.push(cmd.config.name);
+    await this.client.repositories.cacheRepository.updateGuild(
+      ctx.message.guild?.id as string,
+      ctx.data.server,
+    );
+    await ctx.replyT('success', 'commands:blockcommand.block', { cmd: cmd.config.name });
   }
 }

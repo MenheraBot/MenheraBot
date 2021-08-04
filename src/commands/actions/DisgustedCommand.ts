@@ -14,12 +14,15 @@ export default class DisgustedCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<void> {
     const rand = await http.getAssetImageUrl('disgusted');
     const user = ctx.message.mentions.users.first();
     const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
 
-    if (user && user.bot) return ctx.replyT('error', 'commands:disgusted.bot');
+    if (user && user.bot) {
+      await ctx.replyT('error', 'commands:disgusted.bot');
+      return;
+    }
 
     if (!user || user.id === ctx.message.author.id) {
       const embed = new MessageEmbed()
@@ -31,8 +34,8 @@ export default class DisgustedCommand extends Command {
         .setThumbnail(avatar)
         .setImage(rand)
         .setAuthor(ctx.message.author.tag, avatar);
-
-      return ctx.send(embed);
+      await ctx.send(embed);
+      return;
     }
 
     const embed = new MessageEmbed()
@@ -45,6 +48,6 @@ export default class DisgustedCommand extends Command {
       .setThumbnail(avatar)
       .setAuthor(ctx.message.author.tag, avatar);
 
-    return ctx.send(embed);
+    await ctx.send(embed);
   }
 }

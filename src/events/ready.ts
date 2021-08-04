@@ -2,13 +2,14 @@ import http from '@utils/HTTPrequests';
 
 import Dbl from '@utils/DBL';
 import MenheraClient from 'MenheraClient';
+import Event from '@structures/Event';
 
-export default class ReadyEvent {
+export default class ReadyEvent extends Event {
   constructor(public client: MenheraClient) {
-    this.client = client;
+    super(client);
   }
 
-  async run() {
+  async run(): Promise<void> {
     if (!this.client.user) return;
 
     const INTERVAL = 1000 * 60;
@@ -23,6 +24,7 @@ export default class ReadyEvent {
     };
 
     const saveCurrentBotStatus = async () => {
+      if (!this.client.shard) return;
       const allShardsPing = await this.client.shard.fetchClientValues('ws.ping');
       const allShardsUptime = await this.client.shard.fetchClientValues('ws.client.uptime');
       const guildsPerShardCount = await this.client.shard.fetchClientValues('guilds.cache.size');
@@ -39,7 +41,8 @@ export default class ReadyEvent {
     };
 
     if (this.client.user.id === MAIN_MENHERA_ID) {
-      const firstShard = this.client.shard?.ids[0];
+      if (!this.client.shard) return;
+      const firstShard = this.client.shard.ids[0];
 
       this.client.setInterval(() => {
         updateActivity(firstShard);
@@ -47,7 +50,7 @@ export default class ReadyEvent {
 
       if (firstShard === FIRST_SHARD_ID) {
         const DiscordBotList = new Dbl(this.client);
-        DiscordBotList.init();
+        await DiscordBotList.init();
 
         this.client.setInterval(() => {
           saveCurrentBotStatus();
@@ -55,7 +58,7 @@ export default class ReadyEvent {
       }
     }
 
-    this.client.user.setActivity('🥱 | Acabei de acoidar :3');
+    await this.client.user.setActivity('🥱 | Acabei de acoidar :3');
 
     console.log('[READY] Menhera se conectou com o Discord!');
   }

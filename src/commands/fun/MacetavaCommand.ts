@@ -14,31 +14,36 @@ export default class MacetavaCommand extends Command {
     });
   }
 
-  async run(ctx: CommandContext) {
+  async run(ctx: CommandContext): Promise<void> {
     let link = ctx.message.author.displayAvatarURL({ format: 'png', size: 512 });
 
-    if (ctx.message.mentions.users.first())
-      link = ctx.message.mentions.users.first().displayAvatarURL({ format: 'png', size: 512 });
+    const MentionedUser = ctx.message.mentions.users.first();
+    const referencedMessage = ctx.message.reference?.messageID;
+    const attachment = ctx.message.attachments.first();
 
-    if (ctx.message?.reference?.messageID) {
-      const fetchedMessage = await ctx.message.channel.messages.fetch(
-        ctx.message.reference.messageID,
-      );
-      if (fetchedMessage.attachments.first()) link = fetchedMessage.attachments.first().url;
+    if (MentionedUser) {
+      link = MentionedUser.displayAvatarURL({ format: 'png', size: 512 });
     }
 
-    if (ctx.message.attachments.first()) link = ctx.message.attachments.first().url;
+    if (referencedMessage) {
+      const fetchedMessage = await ctx.message.channel.messages.fetch(referencedMessage);
+      const fetched = fetchedMessage.attachments.first();
+      if (fetched) link = fetched.url;
+    }
 
+    if (attachment) link = attachment.url;
     const res = await NewHttp.macetavaRequest(
       link,
       ctx.message.author.username,
       ctx.message.author.discriminator,
       ctx.message.author.displayAvatarURL({ format: 'png', size: 512 }),
     );
-    if (res.err) return ctx.replyT('error', 'commands:http-error');
-
-    ctx.sendC(ctx.message.author.toString(), {
-      files: [new MessageAttachment(Buffer.from(res.data), 'macetava.png')],
+    if (res.err) {
+      await ctx.replyT('error', 'commands:http-error');
+      return;
+    }
+    await ctx.sendC(ctx.message.author.toString(), {
+      files: [new MessageAttachment(Buffer.from(res.data as Buffer), 'macetava.png')],
     });
   }
 }

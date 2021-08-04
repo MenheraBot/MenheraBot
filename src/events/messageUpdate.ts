@@ -1,12 +1,13 @@
 import { Message } from 'discord.js';
 import MenheraClient from 'MenheraClient';
+import Event from '@structures/Event';
 
-export default class MessageUpdate {
+export default class MessageUpdate extends Event {
   constructor(public client: MenheraClient) {
-    this.client = client;
+    super(client);
   }
 
-  run(oldMessage: Message, newMessage: Message) {
+  async run(oldMessage: Message, newMessage: Message): Promise<void> {
     if (oldMessage.content === newMessage.content) return;
     this.client.emit('message', newMessage);
   }
