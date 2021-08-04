@@ -57,9 +57,7 @@ export default class MessageReceive extends Event {
         message.mentions.users.map((u) => u.id),
       );
 
-    const authorData = await this.client.repositories.userRepository.findOrCreate(
-      message.author.id,
-    );
+    let authorData = await this.client.repositories.userRepository.find(message.author.id);
 
     if (authorData?.afk) {
       await this.client.repositories.userRepository.update(message.author.id, {
@@ -213,6 +211,9 @@ export default class MessageReceive extends Event {
 
     if (command.config.category === 'rpg')
       return message.channel.send({ content: t('roleplay:new') });
+
+    if (!authorData)
+      authorData = await this.client.repositories.userRepository.create(message.author.id);
 
     const ctx = new CommandContext(this.client, message, args, { user: authorData, server }, t);
 
