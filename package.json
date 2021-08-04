@@ -12,9 +12,12 @@
     "lint:fix": "eslint --fix .",
     "lint:test": "eslint .",
     "typecheck": "tsc --noEmit",
-    "test": "jest --passWithNoTests",
     "docker:build": "docker build -t menhera .",
-    "docker:run": "docker run -d --name MenheraBot menhera"
+    "docker:run": "docker run -d --name MenheraBot menhera",
+    "test": "jest --passWithNoTests --runInBand --no-cache",
+    "test:staged": "npm test -- --findRelatedTests",
+    "test:ci": "npm test -- --coverage",
+    "test:coveralls": "npm run test:ci && coveralls < coverage/lcov.info"
   },
   "keywords": [],
   "author": "Luxanna Crownguard (ySnoopyDogy)",
@@ -27,7 +30,6 @@
     "dblapi.js": "^2.4.1",
     "discord.js": "^12.5.3",
     "dotenv": "^10.0.0",
-    "erlpack": "^0.1.3",
     "fs-extra": "^10.0.0",
     "i18next": "^20.3.5",
     "i18next-node-fs-backend": "^2.1.3",
@@ -64,7 +66,11 @@
     "jest": "^27.0.6",
     "lint-staged": "^11.1.1",
     "prettier": "^2.3.2",
+    "ts-jest": "^27.0.4",
     "tslib": "^2.3.0",
     "typescript": "^4.3.5"
+  },
+  "optionalDependencies": {
+    "erlpack": "^0.1.3"
   }
 }
