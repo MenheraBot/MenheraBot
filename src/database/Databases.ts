@@ -89,6 +89,7 @@ export default class Databases {
       this.redisClient,
       this.guildRepository,
       this.cmdRepository,
+      this.userRepository,
     );
     this.statusRepository = new StatusRepository(this.Status);
     this.badgeRepository = new BadgeRepository(this.userRepository);
