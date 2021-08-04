@@ -14,7 +14,7 @@ export default class XandaoCommand extends Command {
   }
 
   async run(ctx: CommandContext): Promise<void> {
-    if (ctx.message.channel.type === 'dm') return;
+    if (ctx.message.channel.type === 'DM' || ctx.message.channel.isThread()) return;
     const texto = ctx.args.join(' ');
 
     const frases = [
@@ -72,7 +72,8 @@ export default class XandaoCommand extends Command {
         .first();
 
       if (ownWebhook) {
-        await ownWebhook.send(fala, {
+        await ownWebhook.send({
+          content: fala,
           username: 'Super Xandão',
           avatarURL: 'https://i.imgur.com/8KNCucR.png',
         });
@@ -82,7 +83,8 @@ export default class XandaoCommand extends Command {
             avatar: 'https://i.imgur.com/8KNCucR.png',
           })
           .then((web) => {
-            web.send(fala, {
+            web.send({
+              content: fala,
               username: 'Super Xandão',
               avatarURL: 'https://i.imgur.com/8KNCucR.png',
             });

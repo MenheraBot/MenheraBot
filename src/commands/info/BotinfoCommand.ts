@@ -18,7 +18,9 @@ export default class BotinfoCommand extends Command {
 
   async getAllSizeObject(collection: string): Promise<number> {
     if (!this.client.shard) return 0;
-    const info = await this.client.shard.fetchClientValues(`${collection}.cache.size`);
+    const info = (await this.client.shard.fetchClientValues(
+      `${collection}.cache.size`,
+    )) as number[];
     return info.reduce((prev, val) => prev + val, 0);
   }
 
@@ -29,7 +31,9 @@ export default class BotinfoCommand extends Command {
     } else moment.locale('en-us');
     if (!this.client.shard) return;
 
-    const memoryUsedGross = await this.client.shard.broadcastEval('process.memoryUsage().heapUsed');
+    const memoryUsedGross = await this.client.shard.broadcastEval(
+      () => process.memoryUsage().heapUsed,
+    );
     const memoryUsedPolish = memoryUsedGross.reduce((a, b) => a + b, 0);
 
     const embed = new MessageEmbed()

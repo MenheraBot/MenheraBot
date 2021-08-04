@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import MenheraClient from 'MenheraClient';
 import Event from '@structures/Event';
+import { ClientEvents } from 'discord.js';
 
 export default class EventManager {
   public events: Map<string, Event>;
@@ -10,7 +11,7 @@ export default class EventManager {
     this.events = new Map();
   }
 
-  add(name: string, filepath: string, event: Event): void {
+  add(name: keyof ClientEvents, filepath: string, event: Event): void {
     event.dir = filepath;
     if (!event.run) return;
     event.run = event.run.bind(event);

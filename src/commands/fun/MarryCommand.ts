@@ -62,10 +62,12 @@ export default class MarryCommand extends Command {
 
         const validReactions = [emojis.no, emojis.yes];
 
-        const filter = (reaction: MessageReaction, usuario: User) =>
-          validReactions.includes(reaction.emoji.name) && usuario.id === mencionado.id;
+        const filter = (reaction: MessageReaction, usuario: User) => {
+          if (!reaction.emoji.name) return false;
+          return validReactions.includes(reaction.emoji.name) && usuario.id === mencionado.id;
+        };
 
-        const colector = msg.createReactionCollector(filter, { max: 1, time: 15000 });
+        const colector = msg.createReactionCollector({ filter, max: 1, time: 15000 });
 
         colector.on('collect', async (reaction) => {
           if (reaction.emoji.name === emojis.no)

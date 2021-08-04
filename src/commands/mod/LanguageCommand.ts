@@ -21,12 +21,12 @@ export default class LanguageCommand extends Command {
         msg.react('🇺🇸');
       }, 500);
 
-      const collector = msg.createReactionCollector(
-        (r, u) =>
+      const collector = msg.createReactionCollector({
+        filter: (r, u) =>
           (r.emoji.name === `🇧🇷` || r.emoji.name === '🇺🇸') &&
           u.id !== this.client.user?.id &&
           u.id === ctx.message.author.id,
-      );
+      });
 
       collector.on('collect', async (r) => {
         if (!ctx.message.guild) return;

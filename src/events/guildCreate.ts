@@ -26,7 +26,10 @@ export default class GuildCreate extends Event {
   }
 
   async run(guild: Guild): Promise<void> {
-    await this.client.repositories.guildRepository.create(guild.id, this.region[guild.region]);
+    await this.client.repositories.guildRepository.create(
+      guild.id,
+      this.region[guild.preferredLocale],
+    );
 
     if (!process.env.GUILDS_HOOK_ID) {
       throw new Error('GUILDS_HOOK_ID is not defined');

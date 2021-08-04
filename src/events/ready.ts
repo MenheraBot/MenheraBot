@@ -20,14 +20,18 @@ export default class ReadyEvent extends Event {
       if (!this.client.user) return;
 
       const activity = await http.getActivity(shard);
-      return this.client.user.setPresence({ activity });
+      return this.client.user.setActivity(activity);
     };
 
     const saveCurrentBotStatus = async () => {
       if (!this.client.shard) return;
-      const allShardsPing = await this.client.shard.fetchClientValues('ws.ping');
-      const allShardsUptime = await this.client.shard.fetchClientValues('ws.client.uptime');
-      const guildsPerShardCount = await this.client.shard.fetchClientValues('guilds.cache.size');
+      const allShardsPing = (await this.client.shard.fetchClientValues('ws.ping')) as number[];
+      const allShardsUptime = (await this.client.shard.fetchClientValues(
+        'ws.client.uptime',
+      )) as number[];
+      const guildsPerShardCount = (await this.client.shard.fetchClientValues(
+        'guilds.cache.size',
+      )) as number[];
 
       allShardsPing.forEach((shardPing, id) => {
         this.client.repositories.statusRepository.CreateOrUpdate(
@@ -44,7 +48,7 @@ export default class ReadyEvent extends Event {
       if (!this.client.shard) return;
       const firstShard = this.client.shard.ids[0];
 
-      this.client.setInterval(() => {
+      setInterval(() => {
         updateActivity(firstShard);
       }, INTERVAL);
 
@@ -52,7 +56,7 @@ export default class ReadyEvent extends Event {
         const DiscordBotList = new Dbl(this.client);
         await DiscordBotList.init();
 
-        this.client.setInterval(() => {
+        setInterval(() => {
           saveCurrentBotStatus();
         }, INTERVAL);
       }

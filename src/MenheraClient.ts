@@ -1,4 +1,4 @@
-import { Client, Collection } from 'discord.js';
+import { Client, ClientEvents, ClientOptions, Collection } from 'discord.js';
 
 import * as Sentry from '@sentry/node';
 import i18next from 'i18next';
@@ -24,7 +24,7 @@ export default class MenheraClient extends Client {
 
   public events: EventManager;
 
-  constructor(options = {}, public config: IClientConfigs) {
+  constructor(options: ClientOptions, public config: IClientConfigs) {
     super(options);
 
     this.database = new Database(
@@ -103,7 +103,8 @@ export default class MenheraClient extends Client {
 
     this.commands.set(command.config.name, command);
     this.aliases.set(command.config.name, command.config.name);
-    command.config?.aliases.forEach((a: string) => this.aliases.set(a, command.config.name));
+    if (command.config?.aliases)
+      command.config?.aliases.forEach((a: string) => this.aliases.set(a, command.config.name));
 
     const cmdInDb = await this.repositories.cmdRepository.findByName(command.config.name);
     if (!cmdInDb) {
@@ -126,7 +127,11 @@ export default class MenheraClient extends Client {
 
   loadEvents(directory: string): void {
     FileUtil.readDirectory(directory, (EventFile: typeof Event, filepath: string) => {
-      this.events.add(FileUtil.filename(filepath), filepath, new EventFile(this));
+      this.events.add(
+        FileUtil.filename(filepath) as keyof ClientEvents,
+        filepath,
+        new EventFile(this),
+      );
     });
   }
 }

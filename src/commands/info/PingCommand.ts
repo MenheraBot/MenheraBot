@@ -39,18 +39,17 @@ export default class PingCommand extends Command {
       await ctx.send(embed);
       return;
     }
-    const allShardsInformation: Array<IShardArrayFromWs> = await this.client.shard.broadcastEval(
-      'this.ws',
-    );
-    const allShardsUptime: Array<number> = await this.client.shard.broadcastEval(
+    const allShardsInformation: Array<IShardArrayFromWs> =
+      (await this.client.shard.fetchClientValues('this.ws')) as Array<IShardArrayFromWs>;
+    const allShardsUptime: Array<number> = (await this.client.shard.fetchClientValues(
       'this.ws.client.uptime',
-    );
-    const guildsPerShardCount: Array<number> = await this.client.shard.broadcastEval(
+    )) as number[];
+    const guildsPerShardCount: Array<number> = (await this.client.shard.fetchClientValues(
       'this.guilds.cache.size',
-    );
-    const allShardsMemoryUsedByProcess: Array<number> = await this.client.shard.broadcastEval(
+    )) as number[];
+    const allShardsMemoryUsedByProcess: Array<number> = (await this.client.shard.fetchClientValues(
       'process.memoryUsage().heapUsed',
-    );
+    )) as number[];
 
     const tabled = allShardsInformation.reduce(
       (
@@ -102,8 +101,8 @@ export default class PingCommand extends Command {
     }
 
     const stringTable = getTable(tabled);
-    await ctx.sendC(`\`\`\`${stringTable.replace('(index)', ' Shard ')}\`\`\``, {
-      split: { prepend: '```\n', append: '```' },
-    });
+    await ctx.send(
+      `\`\`\`${stringTable.replace('(index)', ' Shard ').replace("'", ' ').slice(0, 1992)}\`\`\``,
+    );
   }
 }

@@ -1,4 +1,4 @@
-import { MessageEmbed } from 'discord.js';
+import { ColorResolvable, MessageEmbed } from 'discord.js';
 import Command from '@structures/Command';
 import Util from '@utils/Util';
 import MenheraClient from 'MenheraClient';
@@ -39,7 +39,7 @@ export default class AvatarCommand extends Command {
     const embed = new MessageEmbed()
       .setTitle(ctx.locale('commands:avatar.title', { user: user.username }))
       .setImage(img)
-      .setColor(cor)
+      .setColor(cor as ColorResolvable)
       .setFooter(ctx.locale('commands:avatar.footer'));
 
     if (user.id === this.client.user?.id) {

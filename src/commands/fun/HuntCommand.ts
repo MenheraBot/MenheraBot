@@ -1,4 +1,4 @@
-import { MessageEmbed } from 'discord.js';
+import { ColorResolvable, MessageEmbed } from 'discord.js';
 import moment from 'moment';
 import Command from '@structures/Command';
 import { COLORS, probabilities } from '@structures/MenheraConstants';
@@ -111,7 +111,9 @@ export default class HuntCommand extends Command {
 
     const avatar = ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true });
     const cooldown = probabilities.defaultTime + Date.now();
-    const embed = new MessageEmbed().setColor(COLORS.HuntDefault).setThumbnail(avatar);
+    const embed = new MessageEmbed()
+      .setColor(COLORS.HuntDefault as ColorResolvable)
+      .setThumbnail(avatar);
     if (ctx.message.channel.id === '717061688460967988')
       embed.setFooter(ctx.locale('commands:hunt.footer'));
 
@@ -148,7 +150,7 @@ export default class HuntCommand extends Command {
         );
         embed
           .setTitle(ctx.locale('commands:hunt.demons'))
-          .setColor(COLORS.HuntDemon)
+          .setColor(COLORS.HuntDemon as ColorResolvable)
           .setDescription(
             ctx.locale('commands:hunt.description_start', {
               value: demons,
@@ -166,7 +168,7 @@ export default class HuntCommand extends Command {
         );
         embed
           .setTitle(ctx.locale('commands:hunt.angels'))
-          .setColor(COLORS.HuntAngel)
+          .setColor(COLORS.HuntAngel as ColorResolvable)
           .setDescription(
             ctx.locale('commands:hunt.description_start', {
               value: angels,
@@ -184,7 +186,7 @@ export default class HuntCommand extends Command {
         );
         embed
           .setTitle(ctx.locale('commands:hunt.sd'))
-          .setColor(COLORS.HuntSD)
+          .setColor(COLORS.HuntSD as ColorResolvable)
           .setDescription(
             ctx.locale('commands:hunt.description_start', {
               value: demigods,
@@ -201,7 +203,7 @@ export default class HuntCommand extends Command {
           huntEnum.GOD,
         );
         embed
-          .setColor(COLORS.HuntGod)
+          .setColor(COLORS.HuntGod as ColorResolvable)
           .setTitle(ctx.locale('commands:hunt.gods'))
           .setDescription(
             gods > 0
@@ -213,7 +215,9 @@ export default class HuntCommand extends Command {
               : ctx.locale('commands:hunt.god_hunted_fail', { rank: rank + 1 }),
           );
         if (gods > 0)
-          embed.setColor(COLORS.HuntGod).setThumbnail('https://i.imgur.com/053khaH.gif');
+          embed
+            .setColor(COLORS.HuntGod as ColorResolvable)
+            .setThumbnail('https://i.imgur.com/053khaH.gif');
         break;
       }
     }

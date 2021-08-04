@@ -15,7 +15,7 @@ import StarRepository from '@database/repositories/StarRepository';
 import StatusRepository from '@database/repositories/StatusRepository';
 import TopRepository from '@database/repositories/TopRepository';
 import UserRepository from '@database/repositories/UserRepository';
-import { BitFieldResolvable, PermissionString, User } from 'discord.js';
+import { PermissionResolvable, User } from 'discord.js';
 import { Document } from 'mongoose';
 
 /* eslint-disable no-unused-vars */
@@ -29,8 +29,8 @@ export interface ICommandConfig {
   category: string;
   aliases?: Array<string>;
   cooldown?: number;
-  userPermissions?: BitFieldResolvable<PermissionString>[];
-  clientPermissions?: BitFieldResolvable<PermissionString>[];
+  userPermissions?: PermissionResolvable[];
+  clientPermissions?: PermissionResolvable[];
   devsOnly?: boolean;
 }
 

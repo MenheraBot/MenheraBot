@@ -1,5 +1,5 @@
 import { IContextData } from '@utils/Types';
-import { Message, MessageEmbed, MessageOptions } from 'discord.js';
+import { Message, MessageAttachment, MessageEmbed, MessageOptions } from 'discord.js';
 import { TFunction } from 'i18next';
 import MenheraClient from 'MenheraClient';
 import { emojis, EmojiTypes } from '@structures/MenheraConstants';
@@ -31,12 +31,34 @@ export default class CommandContext {
     );
   }
 
-  async send(message: string | MessageEmbed): Promise<Message> {
-    return this.message.channel.send(message);
+  async send(
+    message: string | MessageEmbed | (MessageOptions & { files?: MessageAttachment[] | [null] }),
+  ): Promise<Message> {
+    if (typeof message === 'string')
+      return this.message.channel.send({
+        content: message,
+        reply: { messageReference: this.message },
+      });
+    if (message instanceof MessageEmbed)
+      return this.message.channel.send({
+        embeds: [message],
+        reply: { messageReference: this.message },
+      });
+    return this.message.channel.send({ reply: { messageReference: this.message }, ...message });
   }
 
-  async sendC(content: string, config: MessageOptions): Promise<Message | Message[]> {
-    return this.message.channel.send(content, config);
+  async sendC(
+    content: string,
+    config: (MessageOptions & { files?: MessageAttachment[] | [null] }) | MessageEmbed,
+  ): Promise<Message> {
+    if (config instanceof MessageEmbed) {
+      return this.message.channel.send({ content, embeds: [config] });
+    }
+    return this.message.channel.send({
+      content,
+      ...config,
+      reply: { messageReference: this.message },
+    });
   }
 
   locale(text: string, translateVars = {}): string {

@@ -6,7 +6,7 @@ import i18next, { TFunction } from 'i18next';
 import { LANGUAGES } from '@structures/MenheraConstants';
 
 import MenheraClient from 'MenheraClient';
-import { IUserSchema } from '@utils/Types';
+import { IAfkUserData, IUserSchema } from '@utils/Types';
 import http from '@utils/HTTPrequests';
 import CommandContext from '@structures/CommandContext';
 import Event from '@structures/Event';
@@ -26,7 +26,7 @@ export default class MessageReceive extends Event {
     if (!afkUsers) return;
 
     afkUsers.map(async (data: IUserSchema) => {
-      if (data.id !== message.author.id) return;
+      if (data.id === message.author.id) return;
       const userFetched = await this.client.users.fetch(data.id).catch();
       await message.channel.send(
         `<:notify:759607330597502976> | ${t('commands:afk.reason', {
@@ -37,9 +37,51 @@ export default class MessageReceive extends Event {
     });
   }
 
-  async run(message: Message): Promise<Message | void> {
+  async resolveAfk(message: Message, t: TFunction, afkData: IAfkUserData): Promise<void> {
+    if (message.channel.type === 'DM') return;
+    if (!message.guild) return;
+    if (!this.client.user) return;
+    await this.client.repositories.cacheRepository.updateAfk(message.author.id, {
+      afk: false,
+      afkReason: null,
+      afkGuild: null,
+    });
+    if (!message.guild) return;
+    const member = await message.channel.guild.members.fetch(message.author.id);
+
+    const guildAfkId = afkData?.afkGuild;
+
+    try {
+      if (guildAfkId && message.guild.id !== guildAfkId) {
+        const afkGuild = await this.client.guilds.fetch(guildAfkId).catch();
+        const guildMember = await afkGuild?.members.fetch(message.author.id).catch();
+        await afkGuild?.members.fetch(this.client.user.id).catch();
+        if (guildMember?.manageable && guildMember?.nickname)
+          if (guildMember.nickname.slice(0, 5) === '[AFK]')
+            guildMember.setNickname(guildMember.nickname.substring(5), 'AFK System');
+      } else if (member.manageable && member.nickname)
+        if (member.nickname.slice(0, 5) === '[AFK]')
+          member.setNickname(member.nickname.substring(5), 'AFK System');
+    } catch {
+      // owo
+    }
+
+    message.channel
+      .send(
+        `<:MenheraWink:767210250637279252> | ${t('commands:afk.back')}, ${message.author} >...<`,
+      )
+      .then((msg) => {
+        if (msg.deletable) {
+          setTimeout(() => {
+            msg.delete();
+          }, 5000);
+        }
+      });
+  }
+
+  async run(message: Message): Promise<void> {
     if (message.author.bot) return;
-    if (message.channel.type === 'dm') return;
+    if (message.channel.type === 'DM') return;
     if (!message.guild) return;
     if (!this.client.user) return;
     if (message.guild.me && !message.channel.permissionsFor(message.guild.me)?.has('SEND_MESSAGES'))
@@ -59,52 +101,22 @@ export default class MessageReceive extends Event {
 
     const afkData = await this.client.repositories.cacheRepository.fetchAfk(message.author.id);
 
-    if (afkData && afkData.afk) {
-      await this.client.repositories.cacheRepository.updateAfk(message.author.id, {
-        afk: false,
-        afkReason: null,
-        afkGuild: null,
-      });
-      const member = await message.channel.guild.members.fetch(message.author.id);
-
-      const guildAfkId = afkData?.afkGuild;
-
-      try {
-        if (guildAfkId && message.guild.id !== guildAfkId) {
-          const afkGuild = await this.client.guilds.fetch(guildAfkId).catch();
-          const guildMember = await afkGuild?.members.fetch(message.author.id).catch();
-          await afkGuild?.members.fetch(this.client.user.id).catch();
-          if (guildMember?.manageable && guildMember?.nickname)
-            if (guildMember.nickname.slice(0, 5) === '[AFK]')
-              await guildMember.setNickname(guildMember.nickname.substring(5), 'AFK System');
-        } else if (member.manageable && member.nickname)
-          if (member.nickname.slice(0, 5) === '[AFK]')
-            await member.setNickname(member.nickname.substring(5), 'AFK System');
-      } catch {
-        // owo
-      }
-
-      message.channel
-        .send(
-          `<:MenheraWink:767210250637279252> | ${t('commands:afk.back')}, ${message.author} >...<`,
-        )
-        .then((msg) => {
-          if (msg.deletable) msg.delete({ timeout: 5000 });
-        });
-    }
+    if (afkData && afkData.afk) this.resolveAfk(message, t, afkData);
 
     if (process.env.NODE_ENV === 'development') prefix = process.env.BOT_PREFIX as string;
 
     if (
       message.content.startsWith(`<@!${this.client.user.id}>`) ||
       message.content.startsWith(`<@${this.client.user.id}>`)
-    )
-      return message.channel.send(
+    ) {
+      await message.channel.send(
         `<:MenheraWink:767210250637279252> | ${t('events:mention.start')} ${message.author}, ${t(
           'events:mention.end',
           { prefix },
         )}`,
       );
+      return;
+    }
 
     if (!message.content.toLowerCase().startsWith(prefix)) return;
 
@@ -124,38 +136,48 @@ export default class MessageReceive extends Event {
 
     if (
       server.blockedChannels?.includes(message.channel.id) &&
-      !message.member?.hasPermission('MANAGE_CHANNELS')
-    )
-      return message.channel.send(`🔒 | ${t('events:blocked-channel')}`);
+      !message.member?.permissions.has('MANAGE_CHANNELS')
+    ) {
+      await message.channel.send(`🔒 | ${t('events:blocked-channel')}`);
+      return;
+    }
 
     const authorData = await this.client.repositories.userRepository.findOrCreate(
       message.author.id,
     );
 
-    if (authorData?.ban)
-      return message.channel.send(
+    if (authorData?.ban) {
+      await message.channel.send(
         `<:negacao:759603958317711371> | ${t('permissions:BANNED_INFO', {
           banReason: authorData?.banReason,
         })}`,
       );
+      return;
+    }
 
-    if (command.config.devsOnly && process.env.OWNER !== message.author.id)
-      return message.channel.send(`${t('permissions:ONLY_DEVS')}`);
+    if (command.config.devsOnly && process.env.OWNER !== message.author.id) {
+      await message.channel.send(`${t('permissions:ONLY_DEVS')}`);
+      return;
+    }
 
-    if (server.disabledCommands?.includes(command.config.name))
-      return message.channel.send(
+    if (server.disabledCommands?.includes(command.config.name)) {
+      await message.channel.send(
         `🔒 | ${t('permissions:DISABLED_COMMAND', {
           prefix: server.prefix,
           cmd: command.config.name,
         })}`,
       );
+      return;
+    }
 
-    if (dbCommand?.maintenance && process.env.OWNER !== message.author.id)
-      return message.channel.send(
+    if (dbCommand?.maintenance && process.env.OWNER !== message.author.id) {
+      await message.channel.send(
         `<:negacao:759603958317711371> | ${t('events:maintenance', {
           reason: dbCommand.maintenanceReason,
         })}`,
       );
+      return;
+    }
 
     if (!this.cooldowns.has(command.config.name))
       this.cooldowns.set(command.config.name, new Collection());
@@ -173,12 +195,13 @@ export default class MessageReceive extends Event {
           if (hasBeenWarned) return;
           this.warnedUserCooldowns.set(message.author.id, true);
           const timeLeft = (expirationTime - now) / 1000;
-          return message.channel.send(
+          await message.channel.send(
             `<:atencao:759603958418767922> | ${t('events:cooldown', {
               time: timeLeft.toFixed(2),
               cmd: command.config.name,
             })}`,
           );
+          return;
         }
       }
 
@@ -190,31 +213,35 @@ export default class MessageReceive extends Event {
       }, cooldownAmount);
     }
 
-    if (command.config.userPermissions?.length) {
+    if (command.config.userPermissions) {
       const missing = message.channel
         .permissionsFor(message.author)
         ?.missing(command.config.userPermissions);
       if (missing?.length) {
         const perm = missing.map((value) => t(`permissions:${value}`)).join(', ');
-        return message.channel.send(
+        await message.channel.send(
           `<:negacao:759603958317711371> | ${t('permissions:USER_MISSING_PERMISSION', { perm })}`,
         );
+        return;
       }
     }
-    if (command.config.clientPermissions?.length) {
+    if (command.config.clientPermissions) {
       const missing = message.channel
         .permissionsFor(this.client.user)
         ?.missing(command.config.clientPermissions);
       if (missing?.length) {
         const perm = missing.map((value) => t(`permissions:${value}`)).join(', ');
-        return message.channel.send(
+        await message.channel.send(
           `<:negacao:759603958317711371> | ${t('permissions:CLIENT_MISSING_PERMISSION', { perm })}`,
         );
+        return;
       }
     }
 
-    if (command.config.category === 'rpg')
-      return message.channel.send({ content: t('roleplay:new') });
+    if (command.config.category === 'rpg') {
+      await message.channel.send({ content: t('roleplay:new') });
+      return;
+    }
 
     const ctx = new CommandContext(this.client, message, args, { user: authorData, server }, t);
 
@@ -241,9 +268,10 @@ export default class MessageReceive extends Event {
         embed.addField(t('events:error_embed.report_title'), t('events:error_embed.report_value'));
 
         message.channel
-          .send(embed)
+          .send({ embeds: [embed] })
           .catch(() => message.channel.send(`${t('events:error_embed.error_msg')}`));
-        if (this.client.user?.id === '708014856711962654') errorWebHook.send(embed).catch();
+        if (this.client.user?.id === '708014856711962654')
+          errorWebHook.send({ embeds: [embed] }).catch();
       });
     } catch (err) {
       const errorWebHook = await this.client.fetchWebhook(
@@ -264,9 +292,10 @@ export default class MessageReceive extends Event {
       embed.addField(t('events:error_embed.report_title'), t('events:error_embed.report_value'));
 
       message.channel
-        .send(embed)
+        .send({ embeds: [embed] })
         .catch(() => message.channel.send(`${t('events:error_embed.error_msg')}`));
-      if (this.client.user.id === '708014856711962654') errorWebHook.send(embed).catch();
+      if (this.client.user.id === '708014856711962654')
+        errorWebHook.send({ embeds: [embed] }).catch();
       console.error(err.stack);
     }
     if (this.client.user.id === '708014856711962654') {

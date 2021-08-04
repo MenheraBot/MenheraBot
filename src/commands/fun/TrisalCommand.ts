@@ -52,7 +52,6 @@ export default class TrisalCommand extends Command {
       const attachment = new MessageAttachment(Buffer.from(res.data as Buffer), 'trisal.png');
 
       const embed = new MessageEmbed()
-        .attachFiles([attachment])
         .setDescription(
           `${ctx.locale('commands:trisal.embed.description')} ${
             ctx.message.author
@@ -61,11 +60,11 @@ export default class TrisalCommand extends Command {
         .setColor('#ac76f9')
         .setImage('attachment://trisal.png');
 
-      await ctx.send(embed);
+      await ctx.send({ embeds: [embed], files: [attachment] });
       return;
     }
 
-    const [mencionado1, mencionado2] = ctx.message.mentions.users.keyArray();
+    const [mencionado1, mencionado2] = ctx.message.mentions.users.keys();
 
     if (!mencionado1 || !mencionado2) {
       await ctx.replyT('error', 'commands:trisal.no-mention');
@@ -109,7 +108,7 @@ export default class TrisalCommand extends Command {
     const filter = (reaction: MessageReaction, usuario: User) =>
       reaction.emoji.name === emojis.yes && acceptableIds.includes(usuario.id);
 
-    const collector = msg.createReactionCollector(filter, { time: 14000 });
+    const collector = msg.createReactionCollector({ filter, time: 14000 });
 
     const acceptedIds: string[] = [];
 

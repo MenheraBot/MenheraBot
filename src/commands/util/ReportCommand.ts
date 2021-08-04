@@ -1,5 +1,5 @@
 import CommandContext from '@structures/CommandContext';
-import { MessageEmbed } from 'discord.js';
+import { ColorResolvable, MessageEmbed } from 'discord.js';
 import MenheraClient from 'MenheraClient';
 import Command from '@structures/Command';
 
@@ -25,7 +25,7 @@ export default class ReportCommand extends Command {
 
     const embed = new MessageEmbed()
       .setDescription(`${argumentos}`)
-      .setColor(cor)
+      .setColor(cor as ColorResolvable)
       .setThumbnail(ctx.message.author.displayAvatarURL({ dynamic: true }))
       .setFooter(`ID do usuário: ${ctx.message.author.id}`)
       .setTimestamp()
@@ -39,7 +39,7 @@ export default class ReportCommand extends Command {
       process.env.BUG_HOOK_TOKEN as string,
     );
 
-    await reportWebhook.send(embed);
+    await reportWebhook.send({ embeds: [embed] });
 
     if (ctx.message.deletable) await ctx.message.delete();
     await ctx.replyT('success', 'commands:report.thanks');

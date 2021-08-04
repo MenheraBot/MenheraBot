@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import { Awaited } from 'discord.js';
 import MenheraClient from 'MenheraClient';
 
 export default class Event {
@@ -6,5 +7,5 @@ export default class Event {
 
   constructor(public client: MenheraClient) {}
 
-  public run?(...args: unknown[]): Promise<unknown>;
+  public run?(...args: unknown[]): Awaited<void>;
 }

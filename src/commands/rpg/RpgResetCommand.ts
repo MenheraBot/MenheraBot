@@ -1,6 +1,5 @@
 import Command from '@structures/Command';
 import CommandContext from '@structures/CommandContext';
-import { Message } from 'discord.js';
 import MenheraClient from 'MenheraClient';
 
 export default class RpgResetCommand extends Command {
@@ -14,30 +13,6 @@ export default class RpgResetCommand extends Command {
   }
 
   async run(ctx: CommandContext): Promise<void> {
-    const user = await this.client.repositories.rpgRepository.find(ctx.message.author.id);
-    if (!user) {
-      await ctx.replyT('error', 'commands:reset.non-aventure');
-      return;
-    }
-    if (user.level < 4) {
-      await ctx.replyT('error', 'commands:reset.low-level');
-      return;
-    }
-
-    await ctx.replyT('warn', 'commands:reset.confirm');
-
-    const filter = (m: Message) => m.author.id === ctx.message.author.id;
-    const collector = ctx.message.channel.createMessageCollector(filter, {
-      max: 1,
-      time: 30000,
-    });
-
-    collector.on('collect', async (m) => {
-      if (m.content.toLowerCase() === 'sim' || m.content.toLowerCase() === 'yes') {
-        await this.client.repositories.rpgRepository.delete(ctx.message.author.id);
-        return ctx.replyT('success', 'commands:reset.success', { prefix: ctx.data.server.prefix });
-      }
-      return ctx.replyT('error', 'commands:reset.cancel');
-    });
+    console.log(ctx.data.user.votos);
   }
 }
