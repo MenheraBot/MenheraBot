@@ -15,10 +15,6 @@ export default class DiscordBots {
       throw new Error('No DBL token provided');
     }
 
-    if (!process.env.DBL_PORT) {
-      throw new Error('No DBL port provided');
-    }
-
     if (!process.env.DBLHOOK_PORT) {
       throw new Error('No DBLHOOK port provided');
     }
@@ -26,7 +22,7 @@ export default class DiscordBots {
     const dbl = new DBL(
       process.env.DBL_TOKEN,
       {
-        webhookPort: parseInt(process.env.DBLHOOK_PORT),
+        webhookPort: Number(process.env.DBLHOOK_PORT),
         webhookAuth: process.env.DBL_AUTH,
       },
       this.client,
