@@ -31,9 +31,9 @@ export default class BotinfoCommand extends Command {
     } else moment.locale('en-us');
     if (!this.client.shard) return;
 
-    const memoryUsedGross = (await this.client.shard.fetchClientValues(
-      'process.memoryUsage().heapUsed',
-    )) as number[];
+    const memoryUsedGross = await this.client.shard.broadcastEval(
+      () => process.memoryUsage().heapUsed,
+    );
     const memoryUsedPolish = memoryUsedGross.reduce((a, b) => a + b, 0);
 
     const embed = new MessageEmbed()
