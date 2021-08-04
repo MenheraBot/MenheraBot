@@ -76,7 +76,7 @@ function getAll(ctx: CommandContext): void {
   embed.addField(ctx.locale('commands:help.link_name'), ctx.locale('commands:help.link_value'));
 
   ctx.message.author
-    .send(embed)
+    .send({ embeds: [embed] })
     .then(async () => {
       await ctx.replyT('success', 'commands:help.dm_sent');
     })
@@ -97,7 +97,7 @@ async function getCMD(ctx: CommandContext): Promise<void | Message> {
   if (!cmd) return ctx.send(embed.setColor('#ff0000').setDescription(info));
 
   info = `**${ctx.locale('commands:help.cmd')}**: ${Util.captalize(cmd.config.name)}`;
-  if (cmd.config.aliases.length > 0)
+  if (cmd.config.aliases && cmd.config.aliases.length > 0)
     info += `\n**${ctx.locale('commands:help.aliases')}**: ${cmd.config.aliases
       .map((a) => `\`${a}\``)
       .join(', ')}`;

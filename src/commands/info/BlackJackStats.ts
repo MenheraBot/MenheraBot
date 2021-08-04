@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-expressions */
-import { MessageEmbed } from 'discord.js';
+import { ColorResolvable, MessageEmbed } from 'discord.js';
 
 import http from '@utils/HTTPrequests';
 
@@ -42,7 +42,7 @@ export default class BlackJackStatsCommand extends Command {
 
     const embed = new MessageEmbed()
       .setTitle(ctx.locale('commands:blackjackstats.embed-title', { user: userName.tag }))
-      .setColor(userDb.cor)
+      .setColor(userDb.cor as ColorResolvable)
       .setFooter(ctx.locale('commands:coinflipstats.embed-footer'))
       .addFields([
         {

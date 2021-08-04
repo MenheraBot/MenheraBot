@@ -18,7 +18,7 @@ export default class MacetavaCommand extends Command {
     let link = ctx.message.author.displayAvatarURL({ format: 'png', size: 512 });
 
     const MentionedUser = ctx.message.mentions.users.first();
-    const referencedMessage = ctx.message.reference?.messageID;
+    const referencedMessage = ctx.message.reference?.messageId;
     const attachment = ctx.message.attachments.first();
 
     if (MentionedUser) {

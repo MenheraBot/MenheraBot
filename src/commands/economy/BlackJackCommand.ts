@@ -1,6 +1,6 @@
 import { BLACKJACK_CARDS } from '@structures/MenheraConstants';
 
-import { Message, MessageAttachment, MessageEmbed } from 'discord.js';
+import { ColorResolvable, Message, MessageAttachment, MessageEmbed } from 'discord.js';
 import http from '@utils/HTTPrequests';
 import Command from '@structures/Command';
 import MenheraClient from 'MenheraClient';
@@ -111,21 +111,22 @@ export default class BlackJackCommand extends Command {
         ctx.locale('commands:blackjack.options'),
       )
       .setFooter(ctx.locale('commands:blackjack.footer'))
-      .setColor(ctx.data.user.cor)
+      .setColor(ctx.data.user.cor as ColorResolvable)
       .setThumbnail(ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true }));
 
     if (!res.err) {
       const attachment = new MessageAttachment(Buffer.from(res.data as Buffer), 'blackjack.png');
-      embed.attachFiles([attachment]).setImage('attachment://blackjack.png');
+      embed.setImage('attachment://blackjack.png');
+      await ctx.sendC(ctx.message.author.toString(), { embeds: [embed], files: [attachment] });
+    } else {
+      await ctx.sendC(ctx.message.author.toString(), embed);
     }
-
-    await ctx.sendC(ctx.message.author.toString(), embed);
 
     const acceptOptions = ['comprar', '1', 'buy', 'draw'];
     const pararOptions = ['parar', '2', 'stop'];
 
     const filter = (msg: Message) => msg.author.id === ctx.message.author.id;
-    const collector = ctx.message.channel.createMessageCollector(filter, { max: 1, time: 10000 });
+    const collector = ctx.message.channel.createMessageCollector({ filter, max: 1, time: 10000 });
 
     const timeout = setTimeout(() => {
       ctx.replyT('error', 'commands:blackjack.timeout');
@@ -182,7 +183,7 @@ export default class BlackJackCommand extends Command {
           'commands:blackjack.dealer-hand',
         )}: **${dealerCards.map((a) => `${a.value}`).join(', ')}** -> \`${menheraTotal}\``,
       )
-      .setColor(ctx.data.user.cor)
+      .setColor(ctx.data.user.cor as ColorResolvable)
       .setThumbnail(ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true }));
 
     const res = await http.blackjackRequest(
@@ -198,9 +199,11 @@ export default class BlackJackCommand extends Command {
       },
     );
 
+    let attc: MessageAttachment | null = null;
+
     if (!res.err) {
-      const attachment = new MessageAttachment(Buffer.from(res.data as Buffer), 'blackjack.png');
-      embed.attachFiles([attachment]).setImage('attachment://blackjack.png');
+      attc = new MessageAttachment(Buffer.from(res.data as Buffer), 'blackjack.png');
+      embed.setImage('attachment://blackjack.png');
     }
 
     if (userTotal === 21 && playerCards.length === 2) {
@@ -209,7 +212,11 @@ export default class BlackJackCommand extends Command {
         ctx.locale('commands:blackjack.blackjack', { value: valor * 4 }),
       );
       await ctx.client.repositories.starRepository.add(ctx.message.author.id, valor * 2);
-      await ctx.sendC(ctx.message.author.toString(), embed);
+      if (attc) {
+        await ctx.sendC(ctx.message.author.toString(), { embeds: [embed], files: [attc] });
+      } else {
+        await ctx.sendC(ctx.message.author.toString(), embed);
+      }
       await http.postBlackJack(ctx.message.author.id, true, valor * 2);
       return;
     }
@@ -221,7 +228,11 @@ export default class BlackJackCommand extends Command {
         ctx.locale('commands:blackjack.explode'),
       );
       await ctx.client.repositories.starRepository.remove(ctx.message.author.id, valor);
-      await ctx.sendC(ctx.message.author.toString(), embed);
+      if (attc) {
+        await ctx.sendC(ctx.message.author.toString(), { embeds: [embed], files: [attc] });
+      } else {
+        await ctx.sendC(ctx.message.author.toString(), embed);
+      }
       await http.postBlackJack(ctx.message.author.id, false, valor * 2);
       return;
     }
@@ -234,7 +245,11 @@ export default class BlackJackCommand extends Command {
         ctx.locale('commands:blackjack.menhera-bj'),
       );
       await ctx.client.repositories.starRepository.remove(ctx.message.author.id, valor);
-      await ctx.sendC(ctx.message.author.toString(), embed);
+      if (attc) {
+        await ctx.sendC(ctx.message.author.toString(), { embeds: [embed], files: [attc] });
+      } else {
+        await ctx.sendC(ctx.message.author.toString(), embed);
+      }
       await http.postBlackJack(ctx.message.author.id, false, valor * 2);
       return;
     }
@@ -256,7 +271,7 @@ export default class BlackJackCommand extends Command {
           'commands:blackjack.dealer-hand',
         )}: **${dealerCards.map((a) => `${a.value}`).join(', ')}** -> \`${menheraTotal}\``,
       )
-      .setColor(ctx.data.user.cor)
+      .setColor(ctx.data.user.cor as ColorResolvable)
       .setThumbnail(ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true }));
 
     const newRes = await http.blackjackRequest(
@@ -273,8 +288,8 @@ export default class BlackJackCommand extends Command {
     );
 
     if (!newRes.err) {
-      const newAtt = new MessageAttachment(Buffer.from(newRes.data as Buffer), 'bj.png');
-      embed.attachFiles([newAtt]).setImage('attachment://bj.png');
+      attc = new MessageAttachment(Buffer.from(newRes.data as Buffer), 'bj.png');
+      embed.setImage('attachment://bj.png');
     }
 
     if (menheraTotal === 21 && userTotal !== 21) {
@@ -283,7 +298,11 @@ export default class BlackJackCommand extends Command {
         ctx.locale('commands:blackjack.menhera-21'),
       );
       await ctx.client.repositories.starRepository.remove(ctx.message.author.id, valor);
-      await ctx.sendC(ctx.message.author.toString(), embed);
+      if (attc) {
+        await ctx.sendC(ctx.message.author.toString(), { embeds: [embed], files: [attc] });
+      } else {
+        await ctx.sendC(ctx.message.author.toString(), embed);
+      }
       await http.postBlackJack(ctx.message.author.id, false, valor * 2);
       return;
     }
@@ -294,7 +313,11 @@ export default class BlackJackCommand extends Command {
         ctx.locale('commands:blackjack.user-21', { value: valor * 2 }),
       );
       await ctx.client.repositories.starRepository.add(ctx.message.author.id, valor);
-      await ctx.sendC(ctx.message.author.toString(), embed);
+      if (attc) {
+        await ctx.sendC(ctx.message.author.toString(), { embeds: [embed], files: [attc] });
+      } else {
+        await ctx.sendC(ctx.message.author.toString(), embed);
+      }
       await http.postBlackJack(ctx.message.author.id, true, valor * 2);
       return;
     }
@@ -305,7 +328,11 @@ export default class BlackJackCommand extends Command {
         ctx.locale('commands:blackjack.menhera-bust', { value: valor * 2 }),
       );
       await ctx.client.repositories.starRepository.add(ctx.message.author.id, valor);
-      await ctx.sendC(ctx.message.author.toString(), embed);
+      if (attc) {
+        await ctx.sendC(ctx.message.author.toString(), { embeds: [embed], files: [attc] });
+      } else {
+        await ctx.sendC(ctx.message.author.toString(), embed);
+      }
       await http.postBlackJack(ctx.message.author.id, true, valor * 2);
       return;
     }
@@ -315,7 +342,11 @@ export default class BlackJackCommand extends Command {
         ctx.locale('commands:blackjack.result'),
         ctx.locale('commands:blackjack.draw'),
       );
-      await ctx.sendC(ctx.message.author.toString(), embed);
+      if (attc) {
+        await ctx.sendC(ctx.message.author.toString(), { embeds: [embed], files: [attc] });
+      } else {
+        await ctx.sendC(ctx.message.author.toString(), embed);
+      }
       return;
     }
 
@@ -325,7 +356,11 @@ export default class BlackJackCommand extends Command {
         ctx.locale('commands:blackjack.both-21'),
       );
       await ctx.client.repositories.starRepository.remove(ctx.message.author.id, valor);
-      await ctx.sendC(ctx.message.author.toString(), embed);
+      if (attc) {
+        await ctx.sendC(ctx.message.author.toString(), { embeds: [embed], files: [attc] });
+      } else {
+        await ctx.sendC(ctx.message.author.toString(), embed);
+      }
       await http.postBlackJack(ctx.message.author.id, false, valor * 2);
       return;
     }
@@ -336,7 +371,11 @@ export default class BlackJackCommand extends Command {
         ctx.locale('commands:blackjack.equal'),
       );
       await ctx.client.repositories.starRepository.remove(ctx.message.author.id, valor);
-      await ctx.sendC(ctx.message.author.toString(), embed);
+      if (attc) {
+        await ctx.sendC(ctx.message.author.toString(), { embeds: [embed], files: [attc] });
+      } else {
+        await ctx.sendC(ctx.message.author.toString(), embed);
+      }
       await http.postBlackJack(ctx.message.author.id, false, valor * 2);
       return;
     }
@@ -347,7 +386,11 @@ export default class BlackJackCommand extends Command {
         ctx.locale('commands:blackjack.menhera-bigger'),
       );
       await ctx.client.repositories.starRepository.remove(ctx.message.author.id, valor);
-      await ctx.sendC(ctx.message.author.toString(), embed);
+      if (attc) {
+        await ctx.sendC(ctx.message.author.toString(), { embeds: [embed], files: [attc] });
+      } else {
+        await ctx.sendC(ctx.message.author.toString(), embed);
+      }
       await http.postBlackJack(ctx.message.author.id, false, valor * 2);
       return;
     }
@@ -357,7 +400,11 @@ export default class BlackJackCommand extends Command {
       ctx.locale('commands:blackjack.user-bigger', { value: valor * 2 }),
     );
     await ctx.client.repositories.starRepository.add(ctx.message.author.id, valor);
-    await ctx.sendC(ctx.message.author.toString(), embed);
+    if (attc) {
+      await ctx.sendC(ctx.message.author.toString(), { embeds: [embed], files: [attc] });
+    } else {
+      await ctx.sendC(ctx.message.author.toString(), embed);
+    }
     await http.postBlackJack(ctx.message.author.id, true, valor * 2);
   }
 
@@ -416,21 +463,27 @@ export default class BlackJackCommand extends Command {
         ctx.locale('commands:blackjack.options'),
       )
       .setFooter(ctx.locale('commands:blackjack.footer'))
-      .setColor(ctx.data.user.cor)
+      .setColor(ctx.data.user.cor as ColorResolvable)
       .setThumbnail(ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true }));
 
+    let attc: MessageAttachment | null = null;
+
     if (!res.err) {
-      const attachment = new MessageAttachment(Buffer.from(res.data as Buffer), 'blackjack.png');
-      embed.attachFiles([attachment]).setImage('attachment://blackjack.png');
+      attc = new MessageAttachment(Buffer.from(res.data as Buffer), 'blackjack.png');
+      embed.setImage('attachment://blackjack.png');
     }
 
-    await ctx.sendC(ctx.message.author.toString(), embed);
+    if (attc) {
+      await ctx.sendC(ctx.message.author.toString(), { embeds: [embed], files: [attc] });
+    } else {
+      await ctx.sendC(ctx.message.author.toString(), embed);
+    }
 
     const acceptOptions = ['comprar', '1', 'buy', 'draw'];
     const pararOptions = ['parar', '2', 'stop'];
 
     const filter = (msg: Message) => msg.author.id === ctx.message.author.id;
-    const collector = ctx.message.channel.createMessageCollector(filter, { max: 1, time: 10000 });
+    const collector = ctx.message.channel.createMessageCollector({ filter, max: 1, time: 10000 });
 
     const timeout = setTimeout(() => {
       ctx.replyT('error', 'commands:blackjack.timeout');

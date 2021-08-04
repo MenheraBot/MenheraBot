@@ -1,5 +1,5 @@
 import CommandContext from '@structures/CommandContext';
-import { MessageEmbed } from 'discord.js';
+import { ColorResolvable, MessageEmbed } from 'discord.js';
 import MenheraClient from 'MenheraClient';
 import Command from '../../structures/Command';
 
@@ -50,7 +50,7 @@ export default class ColorCommand extends Command {
       const dataChoose = {
         title: ctx.locale('commands:color.dataChoose.title'),
         description: ctx.locale('commands:color.dataChoose.title'),
-        color: findColor[0].cor,
+        color: findColor[0].cor as ColorResolvable,
         thumbnail: {
           url: 'https://i.imgur.com/t94XkgG.png',
         },
@@ -58,7 +58,7 @@ export default class ColorCommand extends Command {
       await this.client.repositories.userRepository.update(ctx.message.author.id, {
         cor: findColor[0].cor,
       });
-      await ctx.sendC(ctx.message.author.toString(), { embed: dataChoose });
+      await ctx.sendC(ctx.message.author.toString(), { embeds: [dataChoose] });
       return;
     }
     await ctx.replyT('error', 'commands:color.no-own', { prefix: ctx.data.server.prefix });

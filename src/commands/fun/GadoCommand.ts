@@ -22,7 +22,7 @@ export default class GadoCommand extends Command {
     });
 
     const MentionedUser = ctx.message.mentions.users.first();
-    const referencedMessage = ctx.message.reference?.messageID;
+    const referencedMessage = ctx.message.reference?.messageId;
     const attachment = ctx.message.attachments.first();
 
     if (MentionedUser) {

@@ -25,8 +25,8 @@ export default class DeleteCommand extends Command {
       const filter1 = (reacao: MessageReaction, user: User) =>
         reacao.emoji.name === emojis.no && user.id === ctx.message.author.id;
 
-      const ncoletor = msg.createReactionCollector(filter1, { max: 1, time: 5000 });
-      const coletor = msg.createReactionCollector(filter, { max: 1, time: 5000 });
+      const ncoletor = msg.createReactionCollector({ filter: filter1, max: 1, time: 5000 });
+      const coletor = msg.createReactionCollector({ filter, max: 1, time: 5000 });
 
       ncoletor.on('collect', () => {
         ctx.replyT('success', 'commands:delete.negated');

@@ -84,7 +84,7 @@ export default class CoinflipCommand extends Command {
         const filter = (reaction: MessageReaction, usuario: User) =>
           reaction.emoji.name === emojis.yes && usuario.id === user2.id;
 
-        const coletor = msg.createReactionCollector(filter, { max: 1, time: 7000 });
+        const coletor = msg.createReactionCollector({ filter, max: 1, time: 7000 });
 
         coletor.on('collect', async () => {
           const shirleyTeresinha = ['Cara', 'Coroa'];

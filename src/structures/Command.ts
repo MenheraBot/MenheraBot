@@ -4,7 +4,7 @@ import MenheraClient from 'MenheraClient';
 import CommandContext from './CommandContext';
 
 export default class Command {
-  public config: Required<ICommandConfig>;
+  public config: ICommandConfig;
 
   public dir!: string;
 
@@ -16,8 +16,8 @@ export default class Command {
       category: options.category || 'util',
       aliases: options.aliases || [],
       cooldown: options.cooldown || 3,
-      userPermissions: options?.userPermissions ?? [],
-      clientPermissions: options?.clientPermissions ?? [],
+      userPermissions: options?.userPermissions,
+      clientPermissions: options?.clientPermissions,
       devsOnly: !!options.devsOnly,
     };
   }

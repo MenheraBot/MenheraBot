@@ -56,7 +56,7 @@ export default class BlackilistCommand extends Command {
         }
 
         const msg = `== USER BANNED INFO ==\n\n• User :: ${user.tag} - (${user.id})\n• Banned :: ${usr.ban}\n• Reason :: ${usr.banReason}`;
-        await ctx.message.channel.send(msg, { code: 'asciidoc' });
+        await ctx.message.channel.send(`\`\`\`asciidocmsg\n${msg}\`\`\``);
         return;
       }
       default:

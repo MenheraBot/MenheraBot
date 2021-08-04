@@ -26,7 +26,7 @@ export default class UnTrisalCommand extends Command {
     const filter = (reaction: MessageReaction, usuario: User) =>
       reaction.emoji.name === emojis.yes && usuario.id === ctx.message.author.id;
 
-    const collector = msg.createReactionCollector(filter, { max: 1, time: 14000 });
+    const collector = msg.createReactionCollector({ filter, max: 1, time: 14000 });
 
     collector.on('collect', async () => {
       await this.client.repositories.relationshipRepository.untrisal(

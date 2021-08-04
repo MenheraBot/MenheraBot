@@ -81,12 +81,11 @@ export default class ShipCommand extends Command {
         )}`,
       );
 
+    let attc: MessageAttachment | null = null;
+
     if (!bufferedShipImage.err) {
-      const attachment = new MessageAttachment(
-        Buffer.from(bufferedShipImage.data as Buffer),
-        'ship.png',
-      );
-      embed.attachFiles([attachment]).setImage('attachment://ship.png');
+      attc = new MessageAttachment(Buffer.from(bufferedShipImage.data as Buffer), 'ship.png');
+      embed.setImage('attachment://ship.png');
     } else embed.setFooter(ctx.locale('commands:http-error'));
 
     if (Number(value) >= 25)
@@ -130,9 +129,14 @@ export default class ShipCommand extends Command {
           )}`,
         );
 
-    await ctx.sendC(
-      `${ctx.message.author}\n**${ctx.locale('commands:ship.message-start')}**`,
-      embed,
-    );
+    if (attc)
+      await ctx.sendC(`${ctx.message.author}\n**${ctx.locale('commands:ship.message-start')}**`, {
+        embeds: [embed],
+        files: [attc],
+      });
+    else
+      await ctx.sendC(`${ctx.message.author}\n**${ctx.locale('commands:ship.message-start')}**`, {
+        embeds: [embed],
+      });
   }
 }

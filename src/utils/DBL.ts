@@ -93,15 +93,15 @@ export default class DiscordBots {
 
       const sendMessageToUser = async (id: string, embedToSend: MessageEmbed) => {
         const userInShard = await this.client.users.fetch(id);
-        await userInShard.send(embedToSend);
+        await userInShard.send({ embeds: [embedToSend] });
       };
 
       sendMessageToUser(vote.user, embed).catch();
     });
 
-    this.client.setInterval(async () => {
+    setInterval(async () => {
       if (!this.client.shard) return;
-      const info = await this.client.shard.fetchClientValues('guilds.cache.size');
+      const info = (await this.client.shard.fetchClientValues('guilds.cache.size')) as number[];
       const guildCount = info.reduce((prev, val) => prev + val);
       const shardId = 0;
       const shardsCount = this.client.shard.count;

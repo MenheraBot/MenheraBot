@@ -23,7 +23,7 @@ export default class AfkCommand extends Command {
       afkGuild: ctx.message.guild.id,
     });
 
-    if (ctx.message.channel.type === 'dm') return;
+    if (ctx.message.channel.type === 'DM') return;
     const member = ctx.message.channel.guild.members.cache.get(ctx.message.author.id);
 
     if (member?.manageable) {

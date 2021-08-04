@@ -60,7 +60,7 @@ export default class SarrarCommand extends Command {
           usuario.id !== ctx.message.author.id &&
           !usuario.bot;
 
-        const coletor = msg.createReactionCollector(filter, { max: 1, time: 30000 });
+        const coletor = msg.createReactionCollector({ filter, max: 1, time: 30000 });
 
         coletor.on('collect', (_, colectorUser) => {
           SarrarCommand.sarrada(ctx, colectorUser);
