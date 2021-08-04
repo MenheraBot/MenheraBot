@@ -1,4 +1,4 @@
-const MENTION_REGEX = /^(?:<@!?)?([0-9]{16,18})(:>)?$/;
+const MENTION_REGEX = /^(?:<@!?)?([0-9]{16,18})(?:>)?$/;
 export default class Util {
   static getIdByMention(mention: string): string | null {
     if (!mention) return null;
