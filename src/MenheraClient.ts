@@ -63,6 +63,7 @@ export default class MenheraClient extends Client {
     await locales.load();
     await this.database.createConnection();
     this.loadTextCommands(this.config.commandsDirectory);
+    this.loadSlashCommands(this.config.interactionsDirectory);
     this.loadEvents(this.config.eventsDirectory);
     return true;
   }

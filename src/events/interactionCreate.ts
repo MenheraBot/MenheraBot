@@ -146,7 +146,8 @@ export default class InteractionCreate extends Event {
 
     try {
       if (!command.run) return;
-      await command.run(ctx).catch(() => {
+      await command.run(ctx).catch((err) => {
+        console.log(err);
         interaction.reply({ content: t('events:error_embed.title'), ephemeral: true });
       });
     } catch {

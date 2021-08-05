@@ -14,7 +14,6 @@ const client = new MenheraClient(
       GuildBanManager: 0,
       GuildInviteManager: 0,
       GuildStickerManager: 0,
-      PermissionOverwriteManager: 0,
       ReactionManager: 0,
       ReactionUserManager: 0,
     }),
