@@ -15,13 +15,21 @@ import StarRepository from '@database/repositories/StarRepository';
 import StatusRepository from '@database/repositories/StatusRepository';
 import TopRepository from '@database/repositories/TopRepository';
 import UserRepository from '@database/repositories/UserRepository';
-import { PermissionResolvable, User } from 'discord.js';
+import { ApplicationCommandData, PermissionResolvable, User } from 'discord.js';
 import { Document } from 'mongoose';
 
-/* eslint-disable no-unused-vars */
 export interface IClientConfigs {
   commandsDirectory: string;
+  interactionsDirectory: string;
   eventsDirectory: string;
+}
+
+export interface IInteractionCommandConfig extends ApplicationCommandData {
+  devsOnly?: boolean;
+  category: string;
+  cooldown?: number;
+  userPermissions?: PermissionResolvable[];
+  clientPermissions?: PermissionResolvable[];
 }
 
 export interface ICommandConfig {

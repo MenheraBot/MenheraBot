@@ -12,6 +12,7 @@ import Database from '@database/Databases';
 import EventManager from '@structures/EventManager';
 
 import Command from '@structures/Command';
+import InteractionCommand from '@structures/InteractionCommand';
 
 import LocaleStructure from '@structures/LocaleStructure';
 
@@ -20,9 +21,13 @@ export default class MenheraClient extends Client {
 
   public commands: Collection<string, Command>;
 
+  public slashCommands: Collection<string, InteractionCommand>;
+
   public aliases: Collection<string, string>;
 
   public events: EventManager;
+
+  public cooldowns: Collection<string, Collection<string, number>>;
 
   constructor(options: ClientOptions, public config: IClientConfigs) {
     super(options);
@@ -31,10 +36,12 @@ export default class MenheraClient extends Client {
       process.env.NODE_ENV === 'development'
         ? (process.env.DEV_DATABASE_URI as string)
         : (process.env.DATABASE_URI as string),
-      true,
+      process.env.NODE_ENV !== 'development',
     );
     this.commands = new Collection();
+    this.slashCommands = new Collection();
     this.aliases = new Collection();
+    this.cooldowns = new Collection();
     this.events = new EventManager(this);
     this.config = config;
   }
@@ -55,7 +62,8 @@ export default class MenheraClient extends Client {
 
     await locales.load();
     await this.database.createConnection();
-    this.loadCommands(this.config.commandsDirectory);
+    this.loadTextCommands(this.config.commandsDirectory);
+    this.loadSlashCommands(this.config.interactionsDirectory);
     this.loadEvents(this.config.eventsDirectory);
     return true;
   }
@@ -66,7 +74,7 @@ export default class MenheraClient extends Client {
     if (!command) return false;
 
     await FileUtil.reloadFile<typeof Command>(command.dir, (cmd) =>
-      this.loadCommand(cmd, command.dir),
+      this.loadTextCommand(cmd, command.dir),
     );
   }
 
@@ -95,7 +103,7 @@ export default class MenheraClient extends Client {
     }
   }
 
-  async loadCommand(NewCommand: typeof Command, filepath: string): Promise<void> {
+  async loadTextCommand(NewCommand: typeof Command, filepath: string): Promise<void> {
     // @ts-expect-error Abstract class cannot be invoked
     const command: Command = new NewCommand(this);
 
@@ -116,11 +124,34 @@ export default class MenheraClient extends Client {
     }
   }
 
-  loadCommands(directory: string): void {
+  loadTextCommands(directory: string): void {
     FileUtil.readDirectory<typeof Command>(
       directory,
       async (cmd: typeof Command, filepath: string) => {
-        await this.loadCommand(cmd, filepath);
+        await this.loadTextCommand(cmd, filepath);
+      },
+    );
+  }
+
+  async loadSlashCommand(NewCommand: typeof InteractionCommand, filepath: string): Promise<void> {
+    // @ts-expect-error Abstract class cannot be invoked
+    const command: InteractionCommand = new NewCommand(this);
+
+    command.dir = filepath;
+
+    this.slashCommands.set(command.config.name, command);
+
+    const cmdInDb = await this.repositories.cmdRepository.findByName(command.config.name);
+    if (!cmdInDb) {
+      await this.repositories.cmdRepository.create(command.config.name);
+    }
+  }
+
+  loadSlashCommands(directory: string): void {
+    FileUtil.readDirectory<typeof InteractionCommand>(
+      directory,
+      async (cmd: typeof InteractionCommand, filepath: string) => {
+        await this.loadSlashCommand(cmd, filepath);
       },
     );
   }

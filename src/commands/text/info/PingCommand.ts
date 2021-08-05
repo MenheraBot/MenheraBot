@@ -38,18 +38,18 @@ export default class PingCommand extends Command {
       await ctx.send(embed);
       return;
     }
-    const allShardsInformation = await this.client.shard.broadcastEval((client) => client.ws);
-    const allShardsUptime: Array<number> = (await this.client.shard.broadcastEval(
-      (client) => client.uptime,
+    const allShardsPing = (await this.client.shard.fetchClientValues('ws.ping')) as number[];
+    const allShardsStatus = (await this.client.shard.fetchClientValues('ws.status')) as number[];
+    const allShardsUptime = (await this.client.shard.fetchClientValues(
+      'ws.client.uptime',
     )) as number[];
-    const guildsPerShardCount: Array<number> = (await this.client.shard.fetchClientValues(
+    const guildsPerShardCount = (await this.client.shard.fetchClientValues(
       'guilds.cache.size',
     )) as number[];
     const allShardsMemoryUsedByProcess: Array<number> = (await this.client.shard.broadcastEval(
       () => process.memoryUsage().heapUsed,
     )) as number[];
-
-    const tabled = allShardsInformation.reduce(
+    const tabled = allShardsPing.reduce(
       (
         p: Array<{
           Ping: string;
@@ -72,11 +72,9 @@ export default class PingCommand extends Command {
           7: 'IDENTIFYING',
           8: 'RESUMING',
         };
-
-        const FirstShard = c.shards[0];
         p.push({
-          Ping: `${FirstShard.ping}ms`,
-          Status: conninfo[FirstShard.status as keyof typeof conninfo],
+          Ping: `${c}ms`,
+          Status: conninfo[allShardsStatus[n] as keyof typeof conninfo],
           Uptime: moment.duration(allShardsUptime[n]).format('D[d], H[h], m[m], s[s]'),
           Ram: `${(allShardsMemoryUsedByProcess[n] / 1024 / 1024).toFixed(2)} MB`,
           Guilds: guildsPerShardCount[n],
@@ -100,7 +98,7 @@ export default class PingCommand extends Command {
 
     const stringTable = getTable(tabled);
     await ctx.send(
-      `\`\`\`${stringTable.replace('(index)', ' Shard ').replace("'", ' ').slice(0, 1992)}\`\`\``,
+      `\`\`\`${stringTable.replace('(index)', ' Shard ').replace(/'/g, ' ').slice(0, 1992)}\`\`\``,
     );
   }
 }
