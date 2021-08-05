@@ -19,8 +19,11 @@ export default class InteractionCommandContext {
     public i18n: TFunction,
   ) {}
 
-  async reply(options: string | MessagePayload | InteractionReplyOptions): Promise<Message | void> {
-    if (typeof options === 'string') return this.interaction.reply({ content: options });
+  async reply(
+    options: string | MessagePayload | InteractionReplyOptions,
+    ephemeral = false,
+  ): Promise<Message | void> {
+    if (typeof options === 'string') return this.interaction.reply({ content: options, ephemeral });
 
     return this.interaction.reply(options);
   }

@@ -201,6 +201,7 @@
   "coinflip": {
     "description": "Bet stars on a coin toss with someone",
     "usage": "<@mention> <value>",
+    "bet": "Bet",
     "invalid-value": "this value is not valid",
     "no-mention": "you didn't mention your opponent",
     "bot": "bots cannot bet e.e",
@@ -210,7 +211,7 @@
     "confirm-start": "challenged you to a heads-up bet worth **{{value}}** ⭐. Heads,",
     "confirm-middle": "wins, tails, ",
     "win": "wins",
-    "confirm-end": "must accept by reacting with ✅! He has **7** seconds!",
+    "confirm-end": "Do you accept? you got **7** seconds",
     "cara": "**HEADS**",
     "coroa": "**TAILS**",
     "cara-texto-start": "won {{value}} :star: betting with ",

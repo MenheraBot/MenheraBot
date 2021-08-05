@@ -239,6 +239,14 @@ export default class MessageReceive extends Event {
       }
     }
 
+    const isSlash = this.client.slashCommands.some(
+      (slash) => slash.config.name === command.config.name,
+    );
+
+    if (isSlash) {
+      message.channel.send(`⚠️ | ${t('permissions:SLASH_COMMAND')}`);
+    }
+
     if (command.config.category === 'rpg') {
       await message.channel.send({ content: t('roleplay:new') });
       return;
