@@ -1111,7 +1111,7 @@
     "available-options": "Available Options",
     "initial-options": "**[1] Start** - Start the game\n**[2] Surrender** - Surrender from the game (and losses the bet)",
     "options": "**[1] Buy** - Draw one more card\n**[2] Stop** - Stop your bet here",
-    "footer": "Send the option of your choice in the chat, you got 10 seconds",
+    "footer": "You got 10 seconds",
     "poor": "you don't have all these stars to bet on!",
     "your-hand": "Your Hand",
     "dealer-hand": "Menhera's Hand",
