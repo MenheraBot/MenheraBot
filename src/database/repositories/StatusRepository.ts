@@ -18,9 +18,9 @@ export default class StatusRepository {
         { _id: shardID },
         {
           ping,
-          lastPingAt: lastPingAt.toString(),
+          lastPingAt: `${lastPingAt ?? 0}`,
           guilds,
-          uptime: uptime.toString(),
+          uptime: `${uptime ?? 0}`,
         },
       );
     } else {

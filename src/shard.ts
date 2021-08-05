@@ -13,6 +13,7 @@ const shards = new ShardingManager(join(__dirname, './index.js'), {
   respawn: true,
   totalShards: SHARD_COUNT,
   token: DISCORD_TOKEN,
+  mode: 'worker',
 });
 
 shards.on('shardCreate', (shard) => {

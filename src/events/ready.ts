@@ -14,7 +14,7 @@ export default class ReadyEvent extends Event {
 
     const INTERVAL = 1000 * 60;
     const MAIN_MENHERA_ID = '708014856711962654';
-    const FIRST_SHARD_ID = 0;
+    const LAST_SHARD_ID = this.client.shard?.count;
 
     const updateActivity = async (shard: number) => {
       if (!this.client.user) return;
@@ -52,7 +52,7 @@ export default class ReadyEvent extends Event {
         updateActivity(firstShard);
       }, INTERVAL);
 
-      if (firstShard === FIRST_SHARD_ID) {
+      if (firstShard === LAST_SHARD_ID) {
         const DiscordBotList = new Dbl(this.client);
         await DiscordBotList.init();
 
@@ -62,7 +62,7 @@ export default class ReadyEvent extends Event {
       }
     }
 
-    await this.client.user.setActivity('🥱 | Acabei de acoidar :3');
+    this.client.user.setActivity('🥱 | Acabei de acoidar :3');
 
     console.log('[READY] Menhera se conectou com o Discord!');
   }
