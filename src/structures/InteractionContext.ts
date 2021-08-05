@@ -23,7 +23,25 @@ export default class InteractionCommandContext {
     options: string | MessagePayload | InteractionReplyOptions,
     ephemeral = false,
   ): Promise<Message | void> {
-    if (typeof options === 'string') return this.interaction.reply({ content: options, ephemeral });
+    if (typeof options === 'string')
+      return this.interaction.reply({
+        content: options,
+        ephemeral,
+      });
+
+    return this.interaction.reply(options);
+  }
+
+  async replyE(
+    emoji: EmojiTypes,
+    options: string | MessagePayload | InteractionReplyOptions,
+    ephemeral = false,
+  ): Promise<Message | void> {
+    if (typeof options === 'string')
+      return this.interaction.reply({
+        content: `${emojis[emoji] || '🐛'} **|** ${options}`,
+        ephemeral,
+      });
 
     return this.interaction.reply(options);
   }
