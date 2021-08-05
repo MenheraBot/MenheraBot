@@ -1104,6 +1104,8 @@
   "blackjack": {
     "description": "Bet against Menhera in Blackjack (or 21)",
     "usage": "<bet>",
+    "buy": "Draw",
+    "stop": "Stop",
     "bad-usage": "you didn't place your bet",
     "invalid-value": "the bet amount must be greater than 1000 and less than 50000",
     "available-options": "Available Options",

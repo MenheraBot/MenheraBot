@@ -24,7 +24,7 @@ export default class CoinflipInteractionCommand extends InteractionCommand {
           required: true,
         },
       ],
-      category: 'info',
+      category: 'economy',
       cooldown: 5,
       clientPermissions: ['EMBED_LINKS'],
     });

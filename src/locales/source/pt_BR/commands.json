@@ -1134,6 +1134,8 @@
     "timeout": "você demorou muito para jogar. A Menhera ficou sem paciência, você perdeu tudo!",
     "result": "👑 | Resultado",
     "blackjack": "Você fez um BlalcJack!!! Você recebeu o dobro do prêmio! **{{value}}** :star:",
+    "buy": "Comprar",
+    "stop": "Parar",
     "explode": "Você estourou! Por isso, perdeu tudo :(",
     "menhera-bj": "A Menhera tem um Blackjack. Você perdeu tudo, e a Menhera ganhou tudo hehe",
     "menhera-21": "A Menhera fez 21. Tu foi de ralo",
