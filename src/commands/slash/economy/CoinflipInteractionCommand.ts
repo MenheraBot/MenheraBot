@@ -118,6 +118,7 @@ export default class CoinflipInteractionCommand extends InteractionCommand {
           },
         ],
       });
+      return;
     }
 
     const shirleyTeresinha = ['Cara', 'Coroa'];
