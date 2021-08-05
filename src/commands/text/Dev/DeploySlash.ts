@@ -24,7 +24,7 @@ export default class EvalCommand extends Command {
           defaultPermission: c.config.defaultPermission,
         });
         return p;
-      });
+      }, []);
       ctx.send('Iniciando deploy');
       await this.client.application?.commands.set(allCommands);
       ctx.send('Todos comandos foram settados! Temos até 1 hora para tudo atualizar');
