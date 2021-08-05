@@ -17,6 +17,7 @@ const client = new MenheraClient(
       ReactionManager: 0,
       ReactionUserManager: 0,
     }),
+    failIfNotExists: false,
     intents: ['GUILDS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS'],
   },
   {

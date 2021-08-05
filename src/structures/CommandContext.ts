@@ -37,15 +37,15 @@ export default class CommandContext {
     if (typeof message === 'string')
       return this.message.channel.send({
         content: message,
-        reply: { messageReference: this.message, failIfNotExists: false },
+        reply: { messageReference: this.message },
       });
     if (message instanceof MessageEmbed)
       return this.message.channel.send({
         embeds: [message],
-        reply: { messageReference: this.message, failIfNotExists: false },
+        reply: { messageReference: this.message },
       });
     return this.message.channel.send({
-      reply: { messageReference: this.message, failIfNotExists: false },
+      reply: { messageReference: this.message },
       ...message,
     });
   }
@@ -60,7 +60,7 @@ export default class CommandContext {
     return this.message.channel.send({
       content,
       ...config,
-      reply: { messageReference: this.message, failIfNotExists: false },
+      reply: { messageReference: this.message },
     });
   }
 
