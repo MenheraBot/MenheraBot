@@ -109,6 +109,9 @@ export default class MenheraClient extends Client {
     command.dir = filepath;
 
     this.commands.set(command.config.name, command);
+    this.aliases.set(command.config.name, command.config.name);
+    if (command.config?.aliases)
+      command.config?.aliases.forEach((a: string) => this.aliases.set(a, command.config.name));
 
     const cmdInDb = await this.repositories.cmdRepository.findByName(command.config.name);
     if (!cmdInDb) {
