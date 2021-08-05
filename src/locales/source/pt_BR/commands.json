@@ -563,7 +563,7 @@
     "rpg": "RPG",
     "util": "Útil",
     "link_name": "Links Adicionais",
-    "link_value": "[Adicione-me](https://discord.com/api/oauth2/authorize?client_id=708014856711962654&permissions=1007025271&scope=bot) | [Vote em mim](https://top.gg/bot/708014856711962654/vote) | [Meu servidor de Suporte](https://discord.gg/fZMdQbA) | [Meu WebSite](https://menherabot.xyz) | [Ajude a me Traduzir](https://translate.menherabot.xyz)",
+    "link_value": "[Adicione-me](https://discord.com/api/oauth2/authorize?client_id=708014856711962654&permissions=260608224336&scope=applications.commands%20bot) | [Vote em mim](https://top.gg/bot/708014856711962654/vote) | [Meu servidor de Suporte](https://discord.gg/fZMdQbA) | [Meu WebSite](https://menherabot.xyz) | [Ajude a me Traduzir](https://translate.menherabot.xyz)",
     "dm_sent": "enviei meus comandos para sua dm, olha lá >.<",
     "dm_error": "aparentemente suas dms estão fechadas, não posso te enviar minha página de ajuda",
     "without-info": "Sem informações para o comando {{cmd}}",
