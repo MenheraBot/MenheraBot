@@ -1,6 +1,6 @@
 import CommandContext from '@structures/CommandContext';
 import MenheraClient from 'MenheraClient';
-import Command from '../../structures/Command';
+import Command from '../../../structures/Command';
 
 export default class BlackilistCommand extends Command {
   constructor(client: MenheraClient) {

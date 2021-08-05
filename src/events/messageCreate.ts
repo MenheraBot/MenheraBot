@@ -12,8 +12,6 @@ import CommandContext from '@structures/CommandContext';
 import Event from '@structures/Event';
 
 export default class MessageReceive extends Event {
-  private cooldowns: Collection<string, Collection<string, number>> = new Collection();
-
   private warnedUserCooldowns: Map<string, boolean> = new Map();
 
   constructor(public client: MenheraClient) {
@@ -179,12 +177,15 @@ export default class MessageReceive extends Event {
       return;
     }
 
-    if (!this.cooldowns.has(command.config.name))
-      this.cooldowns.set(command.config.name, new Collection());
+    if (!this.client.cooldowns.has(command.config.name))
+      this.client.cooldowns.set(command.config.name, new Collection());
 
     if (process.env.OWNER !== message.author.id) {
       const now = Date.now();
-      const timestamps = this.cooldowns.get(command.config.name) as Collection<string, number>;
+      const timestamps = this.client.cooldowns.get(command.config.name) as Collection<
+        string,
+        number
+      >;
       const cooldownAmount = (command.config.cooldown || 3) * 1000;
 
       if (timestamps.has(message.author.id)) {

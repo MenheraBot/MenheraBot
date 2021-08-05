@@ -4,9 +4,9 @@
 import CommandContext from '@structures/CommandContext';
 import { Message, MessageEmbed } from 'discord.js';
 import MenheraClient from 'MenheraClient';
-import Command from '../../structures/Command';
-import http from '../../utils/HTTPrequests';
-import Util from '../../utils/Util';
+import Command from '../../../structures/Command';
+import http from '../../../utils/HTTPrequests';
+import Util from '../../../utils/Util';
 
 export default class TopCommand extends Command {
   constructor(client: MenheraClient) {

@@ -11,7 +11,6 @@ const client = new MenheraClient(
       UserManager: 2000,
       VoiceStateManager: 0,
       BaseGuildEmojiManager: 0,
-      ApplicationCommandManager: 0,
       GuildBanManager: 0,
       GuildInviteManager: 0,
       GuildStickerManager: 0,
@@ -22,7 +21,8 @@ const client = new MenheraClient(
     intents: ['GUILDS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS'],
   },
   {
-    commandsDirectory: resolve(__dirname, 'commands'),
+    commandsDirectory: resolve(__dirname, 'commands', 'text'),
+    interactionsDirectory: resolve(__dirname, 'commands', 'slash'),
     eventsDirectory: resolve(__dirname, 'events'),
   },
 );
