@@ -202,6 +202,7 @@
     "description": "Bet stars on a coin toss with someone",
     "usage": "<@mention> <value>",
     "bet": "Bet",
+    "timeout": "Time Out",
     "invalid-value": "this value is not valid",
     "no-mention": "you didn't mention your opponent",
     "bot": "bots cannot bet e.e",

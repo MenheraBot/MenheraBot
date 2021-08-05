@@ -1,9 +1,10 @@
-import { MessageButton, MessageComponentInteraction } from 'discord.js';
+import { MessageButton } from 'discord.js';
 import 'moment-duration-format';
 import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/InteractionCommand';
 import InteractionCommandContext from '@structures/InteractionContext';
 import HttpRequests from '@utils/HTTPrequests';
+import Util from '@utils/Util';
 
 export default class CoinflipInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {
@@ -97,47 +98,58 @@ export default class CoinflipInteractionCommand extends InteractionCommand {
       components: [{ type: 1, components: [ConfirmButton] }],
     });
 
-    const filter = (int: MessageComponentInteraction) =>
-      int.customId === ctx.interaction.id && int.user.id === user2.toString();
+    const coletor = await Util.collectComponentInteractionWithId(
+      ctx.interaction.channel,
+      user2.id,
+      ctx.interaction.id,
+      7000,
+    );
 
-    const coletor = ctx.interaction.channel.createMessageComponentCollector({
-      filter,
-      max: 1,
-      time: 7000,
-    });
+    if (!coletor) {
+      ctx.interaction.editReply({
+        components: [
+          {
+            type: 1,
+            components: [
+              ConfirmButton.setDisabled(true)
+                .setLabel(ctx.locale('commands:coinflip.timeout'))
+                .setEmoji('⌛'),
+            ],
+          },
+        ],
+      });
+    }
 
-    coletor.on('collect', async () => {
-      const shirleyTeresinha = ['Cara', 'Coroa'];
-      const choice = shirleyTeresinha[Math.floor(Math.random() * shirleyTeresinha.length)];
+    const shirleyTeresinha = ['Cara', 'Coroa'];
+    const choice = shirleyTeresinha[Math.floor(Math.random() * shirleyTeresinha.length)];
 
-      let winner = user1.id;
-      let loser = user2.id;
+    let winner = user1.id;
+    let loser = user2.id;
 
-      if (choice === 'Cara') {
-        await ctx.editReply({
-          content: `${ctx.locale('commands:coinflip.cara')}\n${user1.toString()} ${ctx.locale(
-            'commands:coinflip.cara-texto-start',
-            { value: input },
-          )} ${user2}! ${ctx.locale('commands:coinflip.cara-text-middle')} ${user2} ${ctx.locale(
-            'commands:coinflip.cara-text-end',
-          )}`,
-          components: [],
-        });
-      } else {
-        winner = user2.id;
-        loser = user1.id;
-        await ctx.editReply({
-          content: `${ctx.locale('commands:coinflip.coroa')}\n${user2.toString()} ${ctx.locale(
-            'commands:coinflip.coroa-texto',
-            { value: input },
-          )} ${user1.toString()}`,
-          components: [],
-        });
-      }
+    if (choice === 'Cara') {
+      await ctx.editReply({
+        content: `${ctx.locale('commands:coinflip.cara')}\n${user1.toString()} ${ctx.locale(
+          'commands:coinflip.cara-texto-start',
+          { value: input },
+        )} ${user2.toString()}! ${ctx.locale(
+          'commands:coinflip.cara-text-middle',
+        )} ${user2.toString()} ${ctx.locale('commands:coinflip.cara-text-end')}`,
+        components: [],
+      });
+    } else {
+      winner = user2.id;
+      loser = user1.id;
+      await ctx.editReply({
+        content: `${ctx.locale('commands:coinflip.coroa')}\n${user2.toString()} ${ctx.locale(
+          'commands:coinflip.coroa-texto',
+          { value: input },
+        )} ${user1.toString()}`,
+        components: [],
+      });
+    }
 
-      await this.client.repositories.starRepository.add(winner, input);
-      await this.client.repositories.starRepository.remove(loser, input);
-      await HttpRequests.postCoinflipGame(winner, loser, input, Date.now());
-    });
+    await this.client.repositories.starRepository.add(winner, input);
+    await this.client.repositories.starRepository.remove(loser, input);
+    await HttpRequests.postCoinflipGame(winner, loser, input, Date.now());
   }
 }

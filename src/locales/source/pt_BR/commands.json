@@ -203,6 +203,7 @@
     "description": "Aposte estrelinhas num cara ou coroa com alguem",
     "usage": "<@menção> <valor>",
     "bet": "Apostar",
+    "timeout": "Tempo Esgotado",
     "invalid-value": "este valor não é válido",
     "no-mention": "você não mencionou seu adversário",
     "bot": "bots não podem apostar e.e",

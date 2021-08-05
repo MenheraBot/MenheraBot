@@ -12,6 +12,24 @@ export default class Util {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
 
+  static async collectComponentInteractionWithId(
+    channel: TextBasedChannels,
+    authorID: string,
+    customId: string,
+    time: number,
+  ): Promise<null | MessageComponentInteraction> {
+    return channel
+      .awaitMessageComponent({
+        filter: (m) => m.user.id === authorID && m.customId === customId,
+        time,
+      })
+      .then((interaction) => {
+        interaction.deferUpdate();
+        return interaction;
+      })
+      .catch(() => null);
+  }
+
   static async collectComponentInteraction(
     channel: TextBasedChannels,
     authorID: string,
