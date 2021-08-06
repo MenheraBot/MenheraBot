@@ -292,10 +292,10 @@
     "dataVender": {
       "main": {
         "description": "Seu saldo atual é de **{{saldo}}**⭐ estrelinhas e suas caças são:\n\n<:DEMON:758765044443381780>: **{{demons}}** demônios\n<:ANGEL:758765044204437535>: **{{anjos}}** anjos\n<:SEMIGOD:758766732235374674>: **{{sd}}** semideuses\n<:God:758474639570894899>: **{{deuses}}** deuses",
-        "footer": "Digite no chat a opção de sua escolha e o valor",
+        "footer": "COMECE A USAR SLASH COMMANDS HERMANITO",
         "fields": {
-          "name": "Opções de Vendas",
-          "value": "1 - Vender Demônios ({{demon}}⭐) \n2 - Vender Anjos ({{angel}}⭐)\n3 - Vender Semi-Deuses ({{demi}}⭐)\n4 - Vender Deuses ({{god}}⭐)\n\nDigite sua escolha e a quantidade. Exemplo: (`1 50`)"
+          "name": "Valor das Caças",
+          "value": "<:DEMON:758765044443381780> Demônios - **{{demon}}**⭐ \n<:ANGEL:758765044204437535> Anjos - **{{angel}}**⭐\n<:SEMIGOD:758766732235374674> SemiDeuses - **{{demi}}**⭐\n<:God:758474639570894899> Deuses - **{{god}}**⭐"
         }
       },
       "invalid-args": "este valor não é um número válido! Você deve passar a opção e a quantidade",

@@ -293,7 +293,7 @@
         "footer": "Type in the chat the option of your choice and the value",
         "fields": {
           "name": "Sales Options",
-          "value": "1 - Sell Demons ({{demon}}⭐) \n2 - Sell Angels ({{angel}}⭐) \n3 - Sell Semi-Gods ({{demi}}⭐) \n4 - Sell Gods ({{god}}⭐) \n\nEnter your choice and quantity. Example: (`1 50`)"
+          "value": "<:DEMON:758765044443381780> Demons - **{{demon}}**⭐ \n<:ANGEL:758765044204437535> Angels - **{{angel}}**⭐\n<:SEMIGOD:758766732235374674> Demigods - **{{demi}}**⭐\n<:God:758474639570894899> Gods - **{{god}}**⭐"
         }
       },
       "invalid-args": "this value is not a valid number! You must say the option and the quantity",
