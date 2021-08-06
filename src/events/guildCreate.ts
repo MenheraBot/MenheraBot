@@ -28,7 +28,7 @@ export default class GuildCreate extends Event {
   async run(guild: Guild): Promise<void> {
     await this.client.repositories.guildRepository.create(
       guild.id,
-      this.region[guild.preferredLocale],
+      this.region[guild.preferredLocale ?? 'brazil'],
     );
 
     if (!process.env.GUILDS_HOOK_ID) {
