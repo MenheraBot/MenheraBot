@@ -10,6 +10,7 @@ export default class AstolfoCommand extends Command {
       name: 'astolfo',
       cooldown: 10,
       category: 'diversão',
+      clientPermissions: ['ATTACH_FILES'],
     });
   }
 
