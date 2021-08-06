@@ -1,8 +1,8 @@
-import CommandContext from '@structures/CommandContext';
+import CommandContext from '@structures/command/CommandContext';
 import { IGuildSchema } from '@utils/Types';
 import { Message, MessageEmbed } from 'discord.js';
 import MenheraClient from 'MenheraClient';
-import Command from '@structures/Command';
+import Command from '@structures/command/Command';
 import Util from '@utils/Util';
 
 export default class HelpCommand extends Command {

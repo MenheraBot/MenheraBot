@@ -8,7 +8,7 @@ import { LANGUAGES } from '@structures/MenheraConstants';
 import MenheraClient from 'MenheraClient';
 import { IAfkUserData, IUserSchema } from '@utils/Types';
 import http from '@utils/HTTPrequests';
-import CommandContext from '@structures/CommandContext';
+import CommandContext from '@structures/command/CommandContext';
 import Event from '@structures/Event';
 
 export default class MessageReceive extends Event {

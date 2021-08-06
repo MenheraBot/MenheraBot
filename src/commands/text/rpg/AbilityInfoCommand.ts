@@ -1,8 +1,8 @@
 import MenheraClient from 'MenheraClient';
 
-import Command from '@structures/Command';
+import Command from '@structures/command/Command';
 
-import CommandContext from '@structures/CommandContext';
+import CommandContext from '@structures/command/CommandContext';
 
 export default class AbilityInfoCommand extends Command {
   constructor(client: MenheraClient) {

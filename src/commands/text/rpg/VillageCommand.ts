@@ -1,7 +1,7 @@
-import Command from '@structures/Command';
+import Command from '@structures/command/Command';
 import 'moment-duration-format';
 import MenheraClient from 'MenheraClient';
-import CommandContext from '@structures/CommandContext';
+import CommandContext from '@structures/command/CommandContext';
 
 export default class VillageCommand extends Command {
   constructor(client: MenheraClient) {

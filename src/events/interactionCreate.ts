@@ -4,7 +4,7 @@ import Event from '@structures/Event';
 import i18next from 'i18next';
 
 import { LANGUAGES } from '@structures/MenheraConstants';
-import InteractionCommandContext from '@structures/InteractionContext';
+import InteractionCommandContext from '@structures/command/InteractionContext';
 
 export default class InteractionCreate extends Event {
   constructor(public client: MenheraClient) {

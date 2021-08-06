@@ -1,9 +1,9 @@
 import { MessageAttachment, User } from 'discord.js';
-import Command from '@structures/Command';
+import Command from '@structures/command/Command';
 import Util from '@utils/Util';
 import http from '@utils/HTTPrequests';
 import MenheraClient from 'MenheraClient';
-import CommandContext from '@structures/CommandContext';
+import CommandContext from '@structures/command/CommandContext';
 import { IUserDataToProfile, IUserSchema } from '@utils/Types';
 
 export default class ProfileCommand extends Command {

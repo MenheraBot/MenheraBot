@@ -11,8 +11,8 @@ import Event from '@structures/Event';
 import Database from '@database/Databases';
 import EventManager from '@structures/EventManager';
 
-import Command from '@structures/Command';
-import InteractionCommand from '@structures/InteractionCommand';
+import Command from '@structures/command/Command';
+import InteractionCommand from '@structures/command/InteractionCommand';
 
 import LocaleStructure from '@structures/LocaleStructure';
 
