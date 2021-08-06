@@ -14,7 +14,7 @@ export default class ReadyEvent extends Event {
 
     const INTERVAL = 1000 * 60;
     const MAIN_MENHERA_ID = '708014856711962654';
-    const LAST_SHARD_ID = this.client.shard?.count;
+    const LAST_SHARD_ID = (this.client.shard?.count as number) - 1;
 
     const updateActivity = async (shard: number) => {
       if (!this.client.user) return;
