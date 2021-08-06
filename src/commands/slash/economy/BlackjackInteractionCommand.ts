@@ -164,13 +164,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
 
     if (collected.customId === `${ctx.interaction.id}|BUY`) {
       if (userTotal >= 21) {
-        BlackjackInteractionCommand.continueFromBuy(
-          ctx,
-          valor,
-          dealerCards,
-          playerCards,
-          matchCards,
-        );
+        BlackjackInteractionCommand.finishGame(ctx, valor, dealerCards, playerCards, matchCards);
         return;
       }
       BlackjackInteractionCommand.continueFromBuy(ctx, valor, dealerCards, playerCards, matchCards);
