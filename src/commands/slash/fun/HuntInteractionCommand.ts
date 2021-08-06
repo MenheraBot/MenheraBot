@@ -2,8 +2,8 @@ import 'moment-duration-format';
 import moment from 'moment';
 import MenheraClient from 'MenheraClient';
 import { COLORS, probabilities } from '@structures/MenheraConstants';
-import InteractionCommand from '@structures/InteractionCommand';
-import InteractionCommandContext from '@structures/InteractionContext';
+import InteractionCommand from '@structures/command/InteractionCommand';
+import InteractionCommandContext from '@structures/command/InteractionContext';
 import { ColorResolvable, MessageEmbed } from 'discord.js';
 
 export default class HuntInteractionCommand extends InteractionCommand {
