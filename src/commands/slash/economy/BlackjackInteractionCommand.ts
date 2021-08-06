@@ -321,8 +321,8 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
     );
 
     if (!newRes.err) {
-      attc = new MessageAttachment(Buffer.from(newRes.data as Buffer), 'bj.png');
-      embed.setImage('attachment://bj.png');
+      attc = new MessageAttachment(Buffer.from(newRes.data as Buffer), 'blackjack.png');
+      embed.setImage('attachment://blackjack.png');
     }
 
     if (menheraTotal === 21 && userTotal !== 21) {
