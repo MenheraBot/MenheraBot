@@ -1,5 +1,5 @@
 import CommandContext from '@structures/command/CommandContext';
-import { ColorResolvable, MessageButton, MessageEmbed } from 'discord.js';
+import { ColorResolvable, MessageEmbed } from 'discord.js';
 import MenheraClient from 'MenheraClient';
 import Command from '../../../structures/command/Command';
 
@@ -38,23 +38,7 @@ export default class SuggestCommand extends Command {
       process.env.SUGGEST_HOOK_TOKEN as string,
     );
 
-    const firstButton = new MessageButton()
-      .setLabel('Aceitar')
-      .setStyle('SUCCESS')
-      .setCustomId('OK');
-
-    const secondButton = new MessageButton().setLabel('Negar').setStyle('DANGER').setCustomId('NO');
-
-    const thirdButton = new MessageButton()
-      .setLabel('Fila')
-      .setCustomId('FILA')
-      .setEmoji('🟡')
-      .setStyle('PRIMARY');
-
-    await webhook.send({
-      embeds: [embed],
-      components: [{ type: 1, components: [firstButton, secondButton, thirdButton] }],
-    });
+    await webhook.send({ embeds: [embed] });
 
     if (ctx.message.deletable) await ctx.message.delete();
     await ctx.replyT('heart', 'commands:suggest.thanks');
