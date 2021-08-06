@@ -239,9 +239,12 @@ export default class MessageReceive extends Event {
       }
     }
 
-    const isSlash = this.client.slashCommands.some(
-      (slash) => slash.config.name === command.config.name,
-    );
+    const isSlash = this.client.slashCommands.some((slash) => {
+      if (slash.config.name === command.config.name) return true;
+
+      if (command.config.aliases && command.config.aliases.includes(slash.config.name)) return true;
+      return false;
+    });
 
     if (isSlash) {
       message.channel.send(`⚠️ | ${t('permissions:SLASH_COMMAND')}`);
