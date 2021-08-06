@@ -12,8 +12,13 @@ export default class InteractionCreate extends Event {
   }
 
   async run(interaction: Interaction): Promise<void> {
-    if (!interaction.isCommand() || !interaction.inGuild()) return;
-    if (interaction.channel?.type === 'DM') return;
+    if (!interaction.isCommand()) return;
+    if (!interaction.inGuild() || interaction.channel?.type === 'DM')
+      return interaction.reply({
+        content:
+          'SLASH COMMANDS ARE ONLY AVAILABLE IN GUILDS\nCOMANDOS SLASH ESTÃO DISPONÍVEIS APENAS EM SERVIDORES',
+        ephemeral: true,
+      });
 
     const server = await this.client.repositories.cacheRepository.fetchGuild(interaction.guildId);
     const language = LANGUAGES[server.lang] ?? LANGUAGES['pt-BR'];
