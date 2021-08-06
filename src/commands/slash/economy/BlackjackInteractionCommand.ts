@@ -141,10 +141,10 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
 
     if (!res.err) {
       const timestamp = Date.now();
-      const attachment = new MessageAttachment(
+      /* const attachment = new MessageAttachment(
         Buffer.from(res.data as Buffer),
         `blackjack-${timestamp}.png`,
-      );
+      ); */
       embed.setImage(`attachment://blackjack-${timestamp}.png`);
       await repliedMessage.edit({
         embeds: [embed],
