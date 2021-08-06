@@ -148,7 +148,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
       embed.setImage(`attachment://blackjack-${timestamp}.png`);
       await repliedMessage.edit({
         embeds: [embed],
-        files: [attachment],
+        files: [],
         components: [{ type: 1, components: [BuyButton, StopButton] }],
       });
     } else {
@@ -252,7 +252,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
       );
       await ctx.client.repositories.starRepository.add(ctx.interaction.user.id, valor * 2);
       if (attc) {
-        await repliedMessage.edit({ embeds: [embed], files: [attc], components: [] });
+        await repliedMessage.edit({ embeds: [embed], files: [], components: [] });
       } else {
         await repliedMessage.edit({ embeds: [embed], components: [] });
       }
@@ -268,7 +268,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
       );
       await ctx.client.repositories.starRepository.remove(ctx.interaction.user.id, valor);
       if (attc) {
-        await repliedMessage.edit({ embeds: [embed], files: [attc], components: [] });
+        await repliedMessage.edit({ embeds: [embed], files: [], components: [] });
       } else {
         await repliedMessage.edit({ embeds: [embed], components: [] });
       }
@@ -285,7 +285,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
       );
       await ctx.client.repositories.starRepository.remove(ctx.interaction.user.id, valor);
       if (attc) {
-        await repliedMessage.edit({ embeds: [embed], files: [attc], components: [] });
+        await repliedMessage.edit({ embeds: [embed], files: [], components: [] });
       } else {
         await repliedMessage.edit({ embeds: [embed], components: [] });
       }
@@ -342,7 +342,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
       );
       await ctx.client.repositories.starRepository.remove(ctx.interaction.user.id, valor);
       if (attc) {
-        await repliedMessage.edit({ embeds: [embed], files: [attc], components: [] });
+        await repliedMessage.edit({ embeds: [embed], files: [], components: [] });
       } else {
         await repliedMessage.edit({ embeds: [embed], components: [] });
       }
@@ -357,7 +357,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
       );
       await ctx.client.repositories.starRepository.add(ctx.interaction.user.id, valor);
       if (attc) {
-        await repliedMessage.edit({ embeds: [embed], files: [attc], components: [] });
+        await repliedMessage.edit({ embeds: [embed], files: [], components: [] });
       } else {
         await repliedMessage.edit({ embeds: [embed], components: [] });
       }
@@ -372,7 +372,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
       );
       await ctx.client.repositories.starRepository.add(ctx.interaction.user.id, valor);
       if (attc) {
-        await repliedMessage.edit({ embeds: [embed], files: [attc], components: [] });
+        await repliedMessage.edit({ embeds: [embed], files: [], components: [] });
       } else {
         await repliedMessage.edit({ embeds: [embed], components: [] });
       }
@@ -386,7 +386,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
         ctx.locale('commands:blackjack.draw'),
       );
       if (attc) {
-        await repliedMessage.edit({ embeds: [embed], files: [attc], components: [] });
+        await repliedMessage.edit({ embeds: [embed], files: [], components: [] });
       } else {
         await repliedMessage.edit({ embeds: [embed], components: [] });
       }
@@ -400,7 +400,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
       );
       await ctx.client.repositories.starRepository.remove(ctx.interaction.user.id, valor);
       if (attc) {
-        await repliedMessage.edit({ embeds: [embed], files: [attc], components: [] });
+        await repliedMessage.edit({ embeds: [embed], files: [], components: [] });
       } else {
         await repliedMessage.edit({ embeds: [embed], components: [] });
       }
@@ -415,7 +415,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
       );
       await ctx.client.repositories.starRepository.remove(ctx.interaction.user.id, valor);
       if (attc) {
-        await repliedMessage.edit({ embeds: [embed], files: [attc], components: [] });
+        await repliedMessage.edit({ embeds: [embed], files: [], components: [] });
       } else {
         await repliedMessage.edit({ embeds: [embed], components: [] });
       }
@@ -430,7 +430,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
       );
       await ctx.client.repositories.starRepository.remove(ctx.interaction.user.id, valor);
       if (attc) {
-        await repliedMessage.edit({ embeds: [embed], files: [attc], components: [] });
+        await repliedMessage.edit({ embeds: [embed], files: [], components: [] });
       } else {
         await repliedMessage.edit({ embeds: [embed], components: [] });
       }
@@ -444,7 +444,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
     );
     await ctx.client.repositories.starRepository.add(ctx.interaction.user.id, valor);
     if (attc) {
-      await repliedMessage.edit({ embeds: [embed], files: [attc], components: [] });
+      await repliedMessage.edit({ embeds: [embed], files: [], components: [] });
     } else {
       await repliedMessage.edit({ embeds: [embed], components: [] });
     }
