@@ -114,7 +114,7 @@ export default class HuntCommand extends Command {
     const embed = new MessageEmbed()
       .setColor(COLORS.HuntDefault as ColorResolvable)
       .setThumbnail(avatar);
-    if (ctx.message.channel.id === '717061688460967988')
+    if (ctx.message.guild.id !== '717061688460967988')
       embed.setFooter(ctx.locale('commands:hunt.footer'));
 
     const { huntDemon, huntAngel, huntDemigod, huntGod } = this.client.repositories.huntRepository;
