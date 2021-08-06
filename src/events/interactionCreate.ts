@@ -5,6 +5,7 @@ import i18next from 'i18next';
 
 import { LANGUAGES } from '@structures/MenheraConstants';
 import InteractionCommandContext from '@structures/command/InteractionContext';
+import HttpRequests from '@utils/HTTPrequests';
 
 export default class InteractionCreate extends Event {
   constructor(public client: MenheraClient) {
@@ -157,6 +158,19 @@ export default class InteractionCreate extends Event {
       });
     } catch {
       interaction.reply({ content: t('events:error_embed.title'), ephemeral: true });
+    }
+    if (this.client?.user && this.client.user.id === '708014856711962654') {
+      if (!interaction.guild) return;
+      const data = {
+        authorName: interaction.user.tag,
+        authorId: interaction.user.id,
+        guildName: interaction.guild.name,
+        guildId: interaction.guild.id,
+        commandName: command.config.name,
+        data: Date.now(),
+        args: 'SLASH',
+      };
+      await HttpRequests.postCommand(data);
     }
   }
 }

@@ -272,7 +272,6 @@ export default class HttpRequests {
     isEnd: boolean,
     i18n: unknown,
   ): Promise<{ err: boolean; data?: Buffer }> {
-    return { err: true }; // TEMPORARY
     try {
       if (!isEnd) menheraCards[1].hidden = true;
       const data = await request.get('/blackjack', {
