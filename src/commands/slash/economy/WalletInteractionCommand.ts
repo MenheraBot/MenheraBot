@@ -8,7 +8,7 @@ export default class WalletInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {
     super(client, {
       name: 'carteira',
-      description: 'Mostra a carteira de alguém',
+      description: '「💳」・Mostra a carteira de alguém',
       options: [
         {
           name: 'user',

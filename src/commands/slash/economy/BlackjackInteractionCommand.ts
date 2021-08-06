@@ -55,7 +55,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {
     super(client, {
       name: 'blackjack',
-      description: 'Disputa num jogo de BlackJack contra a Menhera',
+      description: '「🃏」・Disputa num jogo de BlackJack contra a Menhera',
       options: [
         {
           name: 'aposta',

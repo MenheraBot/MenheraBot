@@ -10,7 +10,7 @@ export default class CoinflipInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {
     super(client, {
       name: 'coinflip',
-      description: 'Disputa num jogo de Cara e Coroa com um amigo',
+      description: '「💶」・Disputa num jogo de Cara e Coroa com um amigo',
       options: [
         {
           name: 'user',

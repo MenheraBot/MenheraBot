@@ -11,7 +11,7 @@ export default class PingInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {
     super(client, {
       name: 'ping',
-      description: 'Mostra o ping do bot',
+      description: '「📡」・Mostra o ping do bot',
       options: [
         {
           name: 'shards',

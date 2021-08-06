@@ -8,7 +8,7 @@ export default class GiveInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {
     super(client, {
       name: 'give',
-      description: 'Transfira algo de seu inventário para alguém',
+      description: '「🎁」・Transfira algo de seu inventário para alguém',
       options: [
         {
           name: 'user',
