@@ -1,6 +1,5 @@
 import {
   ColorResolvable,
-  Message,
   MessageAttachment,
   MessageButton,
   MessageEmbed,
