@@ -1,7 +1,7 @@
-import Command from '@structures/Command';
+import Command from '@structures/command/Command';
 import MenheraClient from 'MenheraClient';
 import { emojis } from '@structures/MenheraConstants';
-import CommandContext from '@structures/CommandContext';
+import CommandContext from '@structures/command/CommandContext';
 import { MessageReaction, User } from 'discord.js';
 
 export default class UnTrisalCommand extends Command {

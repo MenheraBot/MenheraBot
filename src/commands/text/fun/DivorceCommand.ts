@@ -1,5 +1,5 @@
-import Command from '@structures/Command';
-import CommandContext from '@structures/CommandContext';
+import Command from '@structures/command/Command';
+import CommandContext from '@structures/command/CommandContext';
 import MenheraClient from 'MenheraClient';
 import { emojis } from '@structures/MenheraConstants';
 import { Message, MessageReaction, User } from 'discord.js';

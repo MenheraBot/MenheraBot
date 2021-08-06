@@ -1,9 +1,9 @@
 import { MessageEmbed } from 'discord.js';
 import moment from 'moment';
-import Command from '@structures/Command';
+import Command from '@structures/command/Command';
 import 'moment-duration-format';
 import MenheraClient from 'MenheraClient';
-import CommandContext from '@structures/CommandContext';
+import CommandContext from '@structures/command/CommandContext';
 import { Console } from 'console';
 import { Transform } from 'stream';
 

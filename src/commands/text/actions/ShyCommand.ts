@@ -1,8 +1,8 @@
-import CommandContext from '@structures/CommandContext';
+import CommandContext from '@structures/command/CommandContext';
 import MenheraClient from 'MenheraClient';
 
 import { MessageEmbed } from 'discord.js';
-import Command from '@structures/Command';
+import Command from '@structures/command/Command';
 import http from '@utils/HTTPrequests';
 
 export default class ShyCommand extends Command {
@@ -40,7 +40,7 @@ export default class ShyCommand extends Command {
       .setTitle(ctx.locale('commands:shy.embed_title'))
       .setColor('#000000')
       .setDescription(
-        `${user} ${ctx.locale('commands:shy.embed_description_start')} 
+        `${user} ${ctx.locale('commands:shy.embed_description_start')}
         ${ctx.message.author} ${ctx.locale('commands:shy.embed_description_end')}`,
       )
       .setImage(rand)

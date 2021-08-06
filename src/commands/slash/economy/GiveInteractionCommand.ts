@@ -1,8 +1,8 @@
 import { emojis } from '@structures/MenheraConstants';
 import { IUserSchema } from '@utils/Types';
 import MenheraClient from 'MenheraClient';
-import InteractionCommand from '@structures/InteractionCommand';
-import InteractionCommandContext from '@structures/InteractionContext';
+import InteractionCommand from '@structures/command/InteractionCommand';
+import InteractionCommandContext from '@structures/command/InteractionContext';
 
 export default class GiveInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {

@@ -1,7 +1,7 @@
-import CommandContext from '@structures/CommandContext';
+import CommandContext from '@structures/command/CommandContext';
 import { ColorResolvable, MessageEmbed } from 'discord.js';
 import MenheraClient from 'MenheraClient';
-import Command from '../../../structures/Command';
+import Command from '../../../structures/command/Command';
 
 export default class SuggestCommand extends Command {
   constructor(client: MenheraClient) {

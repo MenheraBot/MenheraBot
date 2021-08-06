@@ -4,8 +4,8 @@ import 'moment-duration-format';
 import MenheraClient from 'MenheraClient';
 import { Console } from 'console';
 import { Transform } from 'stream';
-import InteractionCommand from '@structures/InteractionCommand';
-import InteractionCommandContext from '@structures/InteractionContext';
+import InteractionCommand from '@structures/command/InteractionCommand';
+import InteractionCommandContext from '@structures/command/InteractionContext';
 
 export default class PingInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {

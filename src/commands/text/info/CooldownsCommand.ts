@@ -1,9 +1,9 @@
 /* eslint-disable no-unused-expressions */
 import { MessageEmbed } from 'discord.js';
 import moment from 'moment';
-import Command from '@structures/Command';
+import Command from '@structures/command/Command';
 import MenheraClient from 'MenheraClient';
-import CommandContext from '@structures/CommandContext';
+import CommandContext from '@structures/command/CommandContext';
 
 export default class CooldownsCommand extends Command {
   constructor(client: MenheraClient) {

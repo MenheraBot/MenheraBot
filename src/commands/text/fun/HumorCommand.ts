@@ -1,8 +1,8 @@
 import { MessageEmbed } from 'discord.js';
 import MenheraClient from 'MenheraClient';
-import Command from '@structures/Command';
+import Command from '@structures/command/Command';
 import http from '@utils/HTTPrequests';
-import CommandContext from '@structures/CommandContext';
+import CommandContext from '@structures/command/CommandContext';
 
 export default class HumorCommand extends Command {
   constructor(client: MenheraClient) {

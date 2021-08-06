@@ -1,6 +1,6 @@
-import CommandContext from '@structures/CommandContext';
+import CommandContext from '@structures/command/CommandContext';
 import MenheraClient from 'MenheraClient';
-import Command from '@structures/Command';
+import Command from '@structures/command/Command';
 
 export default class BlockCmdCommand extends Command {
   constructor(client: MenheraClient) {

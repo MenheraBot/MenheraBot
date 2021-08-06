@@ -1,8 +1,8 @@
 import { ColorResolvable, MessageEmbed } from 'discord.js';
 import 'moment-duration-format';
 import MenheraClient from 'MenheraClient';
-import InteractionCommand from '@structures/InteractionCommand';
-import InteractionCommandContext from '@structures/InteractionContext';
+import InteractionCommand from '@structures/command/InteractionCommand';
+import InteractionCommandContext from '@structures/command/InteractionContext';
 
 export default class WalletInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {

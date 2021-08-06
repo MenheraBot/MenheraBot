@@ -1,8 +1,8 @@
 import { MessageEmbed } from 'discord.js';
-import Command from '@structures/Command';
+import Command from '@structures/command/Command';
 import http from '@utils/HTTPrequests';
 import MenheraClient from 'MenheraClient';
-import CommandContext from '@structures/CommandContext';
+import CommandContext from '@structures/command/CommandContext';
 
 export default class LaughtCommand extends Command {
   constructor(client: MenheraClient) {
@@ -39,7 +39,7 @@ export default class LaughtCommand extends Command {
       .setTitle(ctx.locale('commands:laugh.embed_title'))
       .setColor('#000000')
       .setDescription(
-        `${user} ${ctx.locale('commands:laugh.embed_description_start')} 
+        `${user} ${ctx.locale('commands:laugh.embed_description_start')}
         ${ctx.message.author} ${ctx.locale('commands:laugh.embed_description_end')}`,
       )
       .setImage(rand)

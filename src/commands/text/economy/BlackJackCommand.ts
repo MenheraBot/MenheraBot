@@ -2,9 +2,9 @@ import { BLACKJACK_CARDS } from '@structures/MenheraConstants';
 
 import { ColorResolvable, Message, MessageAttachment, MessageEmbed } from 'discord.js';
 import http from '@utils/HTTPrequests';
-import Command from '@structures/Command';
+import Command from '@structures/command/Command';
 import MenheraClient from 'MenheraClient';
-import CommandContext from '@structures/CommandContext';
+import CommandContext from '@structures/command/CommandContext';
 import { IBlackjackCards } from '@utils/Types';
 
 const CalculateHandValue = (cards: Array<number>): Array<IBlackjackCards> =>
