@@ -1,9 +1,9 @@
-import CommandContext from '@structures/CommandContext';
+import CommandContext from '@structures/command/CommandContext';
 import { MessageEmbed } from 'discord.js';
 import MenheraClient from 'MenheraClient';
 import util from 'util';
 
-import Command from '@structures/Command';
+import Command from '@structures/command/Command';
 
 export default class EvalCommand extends Command {
   constructor(client: MenheraClient) {

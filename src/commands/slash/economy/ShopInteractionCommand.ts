@@ -1,6 +1,6 @@
 import MenheraClient from 'MenheraClient';
-import InteractionCommand from '@structures/InteractionCommand';
-import InteractionCommandContext from '@structures/InteractionContext';
+import InteractionCommand from '@structures/command/InteractionCommand';
+import InteractionCommandContext from '@structures/command/InteractionContext';
 
 import { shopEconomy } from '@structures/MenheraConstants';
 import { ColorResolvable, CommandInteractionOption } from 'discord.js';

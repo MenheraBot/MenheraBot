@@ -1,7 +1,7 @@
 import { MessageAttachment } from 'discord.js';
 import NewHttp from '@utils/HTTPrequests';
-import Command from '@structures/Command';
-import CommandContext from '@structures/CommandContext';
+import Command from '@structures/command/Command';
+import CommandContext from '@structures/command/CommandContext';
 import MenheraClient from '../../../MenheraClient';
 
 export default class AstolfoCommand extends Command {

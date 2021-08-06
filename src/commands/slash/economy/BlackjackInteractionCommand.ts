@@ -7,8 +7,8 @@ import {
 } from 'discord.js';
 import 'moment-duration-format';
 import MenheraClient from 'MenheraClient';
-import InteractionCommand from '@structures/InteractionCommand';
-import InteractionCommandContext from '@structures/InteractionContext';
+import InteractionCommand from '@structures/command/InteractionCommand';
+import InteractionCommandContext from '@structures/command/InteractionContext';
 import http from '@utils/HTTPrequests';
 import { IBlackjackCards } from '@utils/Types';
 import { BLACKJACK_CARDS } from '@structures/MenheraConstants';

@@ -1,8 +1,8 @@
 /* eslint-disable no-param-reassign */
-import CommandContext from '@structures/CommandContext';
+import CommandContext from '@structures/command/CommandContext';
 import MenheraClient from 'MenheraClient';
 
-import Command from '@structures/Command';
+import Command from '@structures/command/Command';
 import { ApplicationCommandData } from 'discord.js';
 
 export default class EvalCommand extends Command {

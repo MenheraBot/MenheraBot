@@ -3,10 +3,10 @@ import { ColorResolvable, MessageEmbed } from 'discord.js';
 
 import http from '@utils/HTTPrequests';
 
-import Command from '@structures/Command';
+import Command from '@structures/command/Command';
 import MenheraClient from 'MenheraClient';
 import { emojis } from '@structures/MenheraConstants';
-import CommandContext from '@structures/CommandContext';
+import CommandContext from '@structures/command/CommandContext';
 
 export default class BlackJackStatsCommand extends Command {
   constructor(client: MenheraClient) {

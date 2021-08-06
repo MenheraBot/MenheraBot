@@ -1,7 +1,7 @@
 import { ColorResolvable, MessageEmbed, User } from 'discord.js';
-import Command from '@structures/Command';
+import Command from '@structures/command/Command';
 import MenheraClient from 'MenheraClient';
-import CommandContext from '@structures/CommandContext';
+import CommandContext from '@structures/command/CommandContext';
 
 export default class WalletCommand extends Command {
   constructor(client: MenheraClient) {

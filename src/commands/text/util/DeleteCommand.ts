@@ -1,8 +1,8 @@
-import Command from '@structures/Command';
+import Command from '@structures/command/Command';
 import MenheraClient from 'MenheraClient';
 import { emojis } from '@structures/MenheraConstants';
 import { MessageReaction, User } from 'discord.js';
-import CommandContext from '@structures/CommandContext';
+import CommandContext from '@structures/command/CommandContext';
 
 export default class DeleteCommand extends Command {
   constructor(client: MenheraClient) {

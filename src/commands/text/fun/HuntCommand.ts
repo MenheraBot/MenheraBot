@@ -1,9 +1,9 @@
 import { ColorResolvable, MessageEmbed } from 'discord.js';
 import moment from 'moment';
-import Command from '@structures/Command';
+import Command from '@structures/command/Command';
 import { COLORS, probabilities } from '@structures/MenheraConstants';
 import MenheraClient from 'MenheraClient';
-import CommandContext from '@structures/CommandContext';
+import CommandContext from '@structures/command/CommandContext';
 
 export default class HuntCommand extends Command {
   constructor(client: MenheraClient) {

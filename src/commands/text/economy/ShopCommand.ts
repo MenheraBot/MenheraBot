@@ -1,5 +1,5 @@
-import Command from '@structures/Command';
-import CommandContext from '@structures/CommandContext';
+import Command from '@structures/command/Command';
+import CommandContext from '@structures/command/CommandContext';
 import MenheraClient from 'MenheraClient';
 import { shopEconomy } from '@structures/MenheraConstants';
 import { ColorResolvable, Message } from 'discord.js';

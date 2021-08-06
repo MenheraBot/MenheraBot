@@ -1,7 +1,7 @@
-import CommandContext from '@structures/CommandContext';
+import CommandContext from '@structures/command/CommandContext';
 
 import { MessageEmbed } from 'discord.js';
-import Command from '@structures/Command';
+import Command from '@structures/command/Command';
 import http from '@utils/HTTPrequests';
 import MenheraClient from 'MenheraClient';
 

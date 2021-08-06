@@ -1,10 +1,10 @@
 /* eslint-disable no-unused-expressions */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-await-in-loop */
-import CommandContext from '@structures/CommandContext';
+import CommandContext from '@structures/command/CommandContext';
 import { Message, MessageEmbed } from 'discord.js';
 import MenheraClient from 'MenheraClient';
-import Command from '../../../structures/Command';
+import Command from '../../../structures/command/Command';
 import http from '../../../utils/HTTPrequests';
 import Util from '../../../utils/Util';
 
