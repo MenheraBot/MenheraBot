@@ -90,13 +90,11 @@ export default class HttpRequests {
     console.log(info);
     await apiRequest
       .post('/commands', {
-        data: {
-          authorId: info.authorId,
-          guildId: info.guildId,
-          commandName: info.commandName,
-          data: info.data,
-          args: info.args,
-        },
+        authorId: info.authorId,
+        guildId: info.guildId,
+        commandName: info.commandName,
+        data: info.data,
+        args: info.args,
       })
       .catch(() => null);
   }
