@@ -13,7 +13,7 @@ export default class EightballInteractionCommand extends InteractionCommand {
       options: [
         {
           name: 'pergunta',
-          type: 3,
+          type: 'STRING',
           description: 'Pergunta para ser feita',
           required: true,
         },

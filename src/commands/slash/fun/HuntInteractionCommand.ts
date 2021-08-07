@@ -14,7 +14,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
       options: [
         {
           name: 'tipo',
-          type: 3,
+          type: 'STRING',
           description: 'Tipo da caça',
           required: true,
           choices: [

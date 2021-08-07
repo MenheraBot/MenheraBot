@@ -15,13 +15,13 @@ export default class CoinflipInteractionCommand extends InteractionCommand {
         {
           name: 'user',
           description: 'Usuário para disputar',
-          type: 6,
+          type: 'USER',
           required: true,
         },
         {
           name: 'aposta',
           description: 'Valor da aposta',
-          type: 4,
+          type: 'INTEGER',
           required: true,
         },
       ],

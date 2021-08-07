@@ -13,13 +13,13 @@ export default class GiveInteractionCommand extends InteractionCommand {
         {
           name: 'user',
           description: 'Usuário para transferir',
-          type: 6,
+          type: 'USER',
           required: true,
         },
         {
           name: 'tipo',
           description: 'O tipo de item que quer transferir',
-          type: 3,
+          type: 'STRING',
           choices: [
             {
               name: 'Estrelinhas',
@@ -47,7 +47,7 @@ export default class GiveInteractionCommand extends InteractionCommand {
         {
           name: 'valor',
           description: 'A quantidade para transferir',
-          type: 4,
+          type: 'INTEGER',
           required: true,
         },
       ],

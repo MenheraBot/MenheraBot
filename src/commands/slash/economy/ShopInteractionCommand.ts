@@ -14,17 +14,17 @@ export default class ShopInteractionCommand extends InteractionCommand {
         {
           name: 'comprar',
           description: 'Abre a loja de compras',
-          type: 2,
+          type: 'SUB_COMMAND_GROUP',
           options: [
             {
               name: 'cores',
               description: '「🌈」・Compre cores para dar um UP em seu perfil!',
-              type: 1,
+              type: 'SUB_COMMAND',
               options: [
                 {
                   name: 'cor',
                   description: 'Cor para comprar',
-                  type: 3,
+                  type: 'STRING',
                   required: true,
                   choices: [
                     {
@@ -60,7 +60,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
                 {
                   name: 'hex',
                   description: 'Código da cor ao comprar a opção 7',
-                  type: 3,
+                  type: 'STRING',
                   required: false,
                 },
               ],
@@ -68,12 +68,12 @@ export default class ShopInteractionCommand extends InteractionCommand {
             {
               name: 'rolls',
               description: '「🎟️」・Compre rolls para resetar seu tempo de caça',
-              type: 1,
+              type: 'SUB_COMMAND',
               options: [
                 {
                   name: 'quantidade',
                   description: 'Quantidade de rolls que você quer comprar',
-                  type: 4,
+                  type: 'INTEGER',
                   required: true,
                 },
               ],
@@ -83,12 +83,12 @@ export default class ShopInteractionCommand extends InteractionCommand {
         {
           name: 'vender',
           description: '「💸」・ Venda suas caças',
-          type: 1,
+          type: 'SUB_COMMAND',
           options: [
             {
               name: 'tipo',
               description: 'Tipo da caça para vender',
-              type: 3,
+              type: 'STRING',
               required: true,
               choices: [
                 {
@@ -112,7 +112,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
             {
               name: 'quantidade',
               description: 'Quantidade de caças para vender',
-              type: 4,
+              type: 'INTEGER',
               required: true,
             },
           ],
@@ -120,17 +120,17 @@ export default class ShopInteractionCommand extends InteractionCommand {
         {
           name: 'info',
           description: 'Mostra a tabela de preços da Menhera',
-          type: 2,
+          type: 'SUB_COMMAND_GROUP',
           options: [
             {
               name: 'comprar',
               description: '「📈」・ Mostra os preços de itens de compras',
-              type: 1,
+              type: 'SUB_COMMAND',
               options: [
                 {
                   name: 'tipo',
                   description: 'Tipo da compra para precificar',
-                  type: 3,
+                  type: 'STRING',
                   required: true,
                   choices: [
                     {
@@ -148,12 +148,12 @@ export default class ShopInteractionCommand extends InteractionCommand {
             {
               name: 'vender',
               description: '「📈」・ Mostra os preços de itens de venda',
-              type: 1,
+              type: 'SUB_COMMAND',
               options: [
                 {
                   name: 'tipo',
                   description: 'Tipo de vendas para precificar',
-                  type: 3,
+                  type: 'STRING',
                   required: true,
                   choices: [
                     {

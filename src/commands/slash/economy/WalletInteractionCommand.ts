@@ -13,7 +13,7 @@ export default class WalletInteractionCommand extends InteractionCommand {
         {
           name: 'user',
           description: 'Usuário para mostrar a carteira',
-          type: 6,
+          type: 'USER',
           required: false,
         },
       ],

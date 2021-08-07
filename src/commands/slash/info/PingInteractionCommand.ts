@@ -15,7 +15,7 @@ export default class PingInteractionCommand extends InteractionCommand {
       options: [
         {
           name: 'shards',
-          type: 3,
+          type: 'STRING',
           description: 'Mostra as informações de todas as Shards',
           required: false,
         },

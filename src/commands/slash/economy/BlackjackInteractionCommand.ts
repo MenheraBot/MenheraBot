@@ -61,7 +61,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
         {
           name: 'aposta',
           description: 'Valor da aposta',
-          type: 4,
+          type: 'INTEGER',
           required: true,
         },
       ],
