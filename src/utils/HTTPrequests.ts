@@ -87,6 +87,7 @@ export default class HttpRequests {
   }
 
   static async postCommand(info: ICommandUsedData): Promise<void> {
+    console.log(info);
     await apiRequest
       .post('/commands', {
         data: {
