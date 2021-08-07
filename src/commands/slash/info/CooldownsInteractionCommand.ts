@@ -6,7 +6,7 @@ import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 
-export default class PingInteractionCommand extends InteractionCommand {
+export default class CooldownsInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {
     super(client, {
       name: 'cooldowns',

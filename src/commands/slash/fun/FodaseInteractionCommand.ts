@@ -4,7 +4,7 @@ import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageEmbed } from 'discord.js';
 import HttpRequests from '@utils/HTTPrequests';
 
-export default class HuntInteractionCommand extends InteractionCommand {
+export default class FodaseInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {
     super(client, {
       name: 'fodase',

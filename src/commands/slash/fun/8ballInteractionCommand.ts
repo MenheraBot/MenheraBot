@@ -5,7 +5,7 @@ import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageEmbed } from 'discord.js';
 
-export default class HuntInteractionCommand extends InteractionCommand {
+export default class EightballInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {
     super(client, {
       name: '8ball',
