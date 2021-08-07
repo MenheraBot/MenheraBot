@@ -327,6 +327,8 @@
   "divorce": {
     "description": "Don't you want to be married to that horn anymore? Divorce with this command",
     "author-single": "you are not married to anyone",
+    "divorce": "Divorce",
+    "cancell": "Cancell",
     "confirmation": "Do you really want to divorce from",
     "canceled": "I think it’s good that you're still married, but if you thought about breaking up once, maybe you’ll think more often ... If the relationship doesn’t make you feel good, there’s no point in continuing…",
     "confirmed_start": "just got divorced from",

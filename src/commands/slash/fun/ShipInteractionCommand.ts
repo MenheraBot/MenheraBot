@@ -4,7 +4,7 @@ import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageAttachment, MessageEmbed, User } from 'discord.js';
 import HttpRequests from '@utils/HTTPrequests';
 
-export default class HumorInteractionCommand extends InteractionCommand {
+export default class ShipInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {
     super(client, {
       name: 'ship',

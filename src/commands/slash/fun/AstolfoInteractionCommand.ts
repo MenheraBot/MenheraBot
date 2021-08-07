@@ -5,7 +5,7 @@ import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageAttachment } from 'discord.js';
 import HttpRequests from '@utils/HTTPrequests';
 
-export default class EightballInteractionCommand extends InteractionCommand {
+export default class AstolfoInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {
     super(client, {
       name: 'astolfo',

@@ -4,7 +4,7 @@ import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { TextChannel, User } from 'discord.js';
 
-export default class EightballInteractionCommand extends InteractionCommand {
+export default class XandaoInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {
     super(client, {
       name: 'xandao',

@@ -329,6 +329,8 @@
   "divorce": {
     "description": "Não quer mais ficar casado com aquele corno? Divorcie com este comando",
     "usage": "",
+    "divorce": "Divorciar",
+    "cancell": "Cancelar",
     "author-single": "você não está casado com ninguém",
     "confirmation": "Você realmente quer se divorciar de",
     "canceled": "eu acho bom que ainda estejam casados, mas se tu pensou em terminar uma vez, talvez pense mais vezes... Se o relacionamento não te faz bem, não tem por que continuar...",
