@@ -160,16 +160,16 @@ export default class InteractionCreate extends Event {
     } catch {
       interaction.reply({ content: t('events:error_embed.title'), ephemeral: true });
     }
-    if (this.client?.user /* && this.client.user.id === '708014856711962654' */) {
-      if (!interaction.guild) return;
-      const data: ICommandUsedData = {
-        authorId: interaction.user.id,
-        guildId: interaction.guild.id,
-        commandName: command.config.name,
-        data: Date.now(),
-        args: 'SLASH',
-      };
-      await HttpRequests.postCommand(data);
-    }
+
+    if (!interaction.guild) return;
+    const data: ICommandUsedData = {
+      authorId: interaction.user.id,
+      guildId: interaction.guild.id,
+      commandName: command.config.name,
+      data: Date.now(),
+      args: 'SLASH',
+    };
+
+    await HttpRequests.postCommand(data);
   }
 }

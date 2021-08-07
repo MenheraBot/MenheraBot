@@ -310,15 +310,14 @@ export default class MessageReceive extends Event {
         errorWebHook.send({ embeds: [embed] }).catch();
       console.error(err.stack);
     }
-    if (this.client.user.id === '708014856711962654') {
-      const toSend: ICommandUsedData = {
-        authorId: message.author.id,
-        guildId: message.guild.id,
-        commandName: command.config.name,
-        data: Date.now(),
-        args: args.join(' '),
-      };
-      await http.postCommand(toSend);
-    }
+
+    const toSend: ICommandUsedData = {
+      authorId: message.author.id,
+      guildId: message.guild.id,
+      commandName: command.config.name,
+      data: Date.now(),
+      args: args.join(' '),
+    };
+    await http.postCommand(toSend);
   }
 }
