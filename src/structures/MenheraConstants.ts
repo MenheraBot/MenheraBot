@@ -1,3 +1,5 @@
+import { ColorResolvable } from 'discord.js';
+
 export const shopEconomy = {
   colors: {
     purple: 50000,
@@ -87,12 +89,13 @@ export const emojis = {
 
 export type EmojiTypes = keyof typeof emojis;
 
-export const COLORS = {
+export const COLORS: { [key: string]: ColorResolvable } = {
   HuntDefault: '#df93fd',
   HuntDemon: '#df1b1b',
   HuntAngel: '#efe9e9',
   HuntSD: '#3cb5f0',
   HuntGod: '#b115bf',
+  Aqua: '#03f3ff',
 };
 
 export const BLACKJACK_CARDS = [

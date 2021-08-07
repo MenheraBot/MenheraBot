@@ -320,6 +320,8 @@
   "8ball": {
     "description": "Ask me something",
     "usage": "<question>",
+    "question": "Your Question",
+    "answer": "Answer",
     "no-args": "you must send a question for me to answer"
   },
   "divorce": {

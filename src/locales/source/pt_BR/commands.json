@@ -322,6 +322,8 @@
   "8ball": {
     "description": "Pergunte algo para mim",
     "usage": "<pergunta>",
+    "question": "Sua Pergunta",
+    "answer": "Respota",
     "no-args": "você deve enviar uma pergunta para eu responder"
   },
   "divorce": {
