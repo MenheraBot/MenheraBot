@@ -372,7 +372,7 @@
     "mention-married": "calma lá comedor de casadas, este usuário já está casado!",
     "accepted": "{{toMarry}} aceitou o pedido de casamento de {{author}}. Que os pombinhos aproveitem a noite de núpcias hihi",
     "negated": "{{toMarry}} negou o pedido de casamento de {{author}}",
-    "first-text": "{{toMarry}}, você recebeu um pedido de casamento de {{author}}\n\n{{toMarry}}, você aceita {{author}} como sua legítima esposa (ou leegítimo marido), prometendo ser fiel,\nAmá-la(o) e respeitá-la(o)\nNa alegria e na tristeza,\nNa saúde e na doença,\nNa riqueza e na pobreza,\nPor todos os dias das suas vidas, até que a morte os separe (ou o `/divorciar`)?",
+    "first-text": "{{toMarry}}, você recebeu um pedido de casamento de {{author}}\n\n{{toMarry}}, você aceita {{author}} como sua legítima esposa (ou legítimo marido), prometendo ser fiel,\nAmá-la(o) e respeitá-la(o)\nNa alegria e na tristeza,\nNa saúde e na doença,\nNa riqueza e na pobreza,\nPor todos os dias das suas vidas, até que a morte os separe (ou o `/divorciar`)?",
     "accept": "Aceito",
     "deny": "Nego"
   },
