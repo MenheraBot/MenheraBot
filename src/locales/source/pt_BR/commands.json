@@ -398,6 +398,7 @@
   "xandão": {
     "description": "SEM PRESSÃO",
     "usage": "[texto]",
+    "only-text": "Este comando não está disponível em threads",
     "err_message": "Para que eu possa executar este comando, peça para que os administradores me concedam a permissão `Gerenciar Webhooks`"
   },
   "avatar": {

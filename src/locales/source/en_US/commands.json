@@ -392,6 +392,7 @@
   "xandão": {
     "description": "NO PRESSURE (this is a portuguese only command)",
     "usage": "[text]",
+    "only-text": "This command isn't available on threads",
     "err_message": "In order for me to run this command, ask administrators to grant me `Manage Webhooks` permission"
   },
   "avatar": {
