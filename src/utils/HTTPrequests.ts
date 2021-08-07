@@ -87,7 +87,6 @@ export default class HttpRequests {
   }
 
   static async postCommand(info: ICommandUsedData): Promise<void> {
-    console.log(info);
     await apiRequest
       .post('/commands', {
         authorId: info.authorId,
@@ -121,7 +120,7 @@ export default class HttpRequests {
   }
 
   static async postBlackJack(userId: string, didWin: boolean, betValue: number): Promise<void> {
-    await apiRequest.post('/blackjack', { data: { userId, didWin, betValue } }).catch(() => null);
+    await apiRequest.post('/blackjack', { userId, didWin, betValue }).catch(() => null);
   }
 
   static async postCoinflipGame(
@@ -130,9 +129,7 @@ export default class HttpRequests {
     betValue: number,
     date: number,
   ): Promise<void> {
-    await apiRequest
-      .post('/coinflip', { data: { winnerId, loserId, betValue, date } })
-      .catch(() => null);
+    await apiRequest.post('/coinflip', { winnerId, loserId, betValue, date }).catch(() => null);
   }
 
   static async postRpg(
@@ -144,7 +141,7 @@ export default class HttpRequests {
     date: number,
   ): Promise<void> {
     await apiRequest
-      .post('/rpg', { data: { userId, userClass, userLevel, dungeonLevel, death, date } })
+      .post('/rpg', { userId, userClass, userLevel, dungeonLevel, death, date })
       .catch(() => null);
   }
 
