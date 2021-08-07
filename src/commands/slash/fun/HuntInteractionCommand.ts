@@ -41,7 +41,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
           ],
         },
       ],
-      category: 'info',
+      category: 'fun',
       cooldown: 5,
       clientPermissions: ['EMBED_LINKS'],
     });
