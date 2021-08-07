@@ -359,16 +359,16 @@
   "marry": {
     "description": "Marry with the love of your life",
     "usage": "<@mention>",
-    "no-mention": "you must mention the user you want to marry",
     "bot": "you can't marry bots",
     "self-mention": "you can't marry yourself :(",
     "married": "you are already married !!",
     "no-dbuser": "suck this user to add him to my database",
     "mention-married": "calm there married eater, this user is already married!",
-    "confirmation_start": "accepted to marry",
-    "confirmation_end": "You have 15 seconds to accept",
-    "acepted": "just married with",
-    "negated": "denied marry with"
+    "accepted": "{{toMarry}} agreed to marry {{author}}. Hope the lovebirds enjoy the wedding night hehe",
+    "negated": "{{toMarry}} denied the marriage proposal of {{author}}",
+    "first-text": "{{toMarry}}, you received a marriage proposal from {{author}}\n\n{{toMarry}}, do you accept {{author}} as your rightful wife (or rightful husband), promising to be faithful,\nTo love and respect you,\nIn joy and sorrow,\nIn health and sickness,\nIn wealth and poverty,\nAll the days of your life, until death do you part (or `/divorce` you)?",
+    "accept": "I Accept",
+    "deny": "I Deny"
   },
   "ship": {
     "description": "Would you make a good couple?",

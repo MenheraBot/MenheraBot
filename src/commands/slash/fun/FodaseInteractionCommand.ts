@@ -11,7 +11,6 @@ export default class FodaseInteractionCommand extends InteractionCommand {
       description: '「🖕」・Lançe um famoso "Foda-se" no chat',
       category: 'fun',
       cooldown: 5,
-      clientPermissions: ['EMBED_LINKS'],
     });
   }
 
