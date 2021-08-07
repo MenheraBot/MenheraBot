@@ -1113,7 +1113,7 @@
     "no-args": "você não escolheu qual som desejas tocar. Escolhas: `{{audios}}`",
     "unknow-args": "esse som não existe aleki, tu precisa ver direitinho se escreveu certo. Escolhas: `{{audios}}`"
   },
-  "http-error": "hmmm... Algum erro aconteceu ao processar a imagem... Tente novamente",
+  "http-error": "hmmm... Algum erro aconteceu ao processar a imagem... Talvez o servidor de processamento de imagens esteja fora do ar... Tente novamente mais tarde!",
   "gado": {
     "description": "Ala o Gado ó",
     "usage": "[@menção || imagem || responder à uma mensagem com uma imagem]"

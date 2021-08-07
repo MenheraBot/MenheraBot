@@ -1095,7 +1095,7 @@
     "no-args": "you did not choose which sound you want to play. Choices: `{{audios}}`",
     "unknow-args": "this sound does not exist you dumb, you need to see if you wrote it right. Choices: `{{audios}}`"
   },
-  "http-error": "hmmm... Some error happened while receiving the image... Please try again",
+  "http-error": "hmmm... Some error happened while receiving the image... Maybe the image generator server is out... Please try again later",
   "gado": {
     "description": "Look there the simp",
     "usage": "[@mention || image || reply to a message that has an attachment]"
