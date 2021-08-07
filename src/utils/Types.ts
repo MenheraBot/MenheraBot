@@ -192,9 +192,7 @@ export interface IUserSchema extends Document {
 }
 
 export interface ICommandUsedData {
-  authorName: string;
   authorId: string;
-  guildName: string;
   guildId: string;
   commandName: string;
   data: number;

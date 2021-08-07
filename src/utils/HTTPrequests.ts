@@ -86,17 +86,15 @@ export default class HttpRequests {
     return { error: true };
   }
 
-  static async postCommand(data: ICommandUsedData): Promise<void> {
+  static async postCommand(info: ICommandUsedData): Promise<void> {
     await apiRequest
       .post('/commands', {
         data: {
-          authorName: data.authorName,
-          authorId: data.authorId,
-          guildName: data.guildName,
-          guildId: data.guildId,
-          commandName: data.commandName,
-          data: data.data,
-          args: data.args,
+          authorId: info.authorId,
+          guildId: info.guildId,
+          commandName: info.commandName,
+          data: info.data,
+          args: info.args,
         },
       })
       .catch(() => null);

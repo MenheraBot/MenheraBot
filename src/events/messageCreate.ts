@@ -6,7 +6,7 @@ import i18next, { TFunction } from 'i18next';
 import { LANGUAGES } from '@structures/MenheraConstants';
 
 import MenheraClient from 'MenheraClient';
-import { IAfkUserData, IUserSchema } from '@utils/Types';
+import { IAfkUserData, ICommandUsedData, IUserSchema } from '@utils/Types';
 import http from '@utils/HTTPrequests';
 import CommandContext from '@structures/command/CommandContext';
 import Event from '@structures/Event';
@@ -311,16 +311,14 @@ export default class MessageReceive extends Event {
       console.error(err.stack);
     }
     if (this.client.user.id === '708014856711962654') {
-      const data = {
-        authorName: message.author.tag,
+      const toSend: ICommandUsedData = {
         authorId: message.author.id,
-        guildName: message.guild.name,
         guildId: message.guild.id,
         commandName: command.config.name,
         data: Date.now(),
         args: args.join(' '),
       };
-      await http.postCommand(data);
+      await http.postCommand(toSend);
     }
   }
 }

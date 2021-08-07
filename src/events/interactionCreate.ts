@@ -6,6 +6,7 @@ import i18next from 'i18next';
 import { LANGUAGES } from '@structures/MenheraConstants';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import HttpRequests from '@utils/HTTPrequests';
+import { ICommandUsedData } from '@utils/Types';
 
 export default class InteractionCreate extends Event {
   constructor(public client: MenheraClient) {
@@ -161,10 +162,8 @@ export default class InteractionCreate extends Event {
     }
     if (this.client?.user && this.client.user.id === '708014856711962654') {
       if (!interaction.guild) return;
-      const data = {
-        authorName: interaction.user.tag,
+      const data: ICommandUsedData = {
         authorId: interaction.user.id,
-        guildName: interaction.guild.name,
         guildId: interaction.guild.id,
         commandName: command.config.name,
         data: Date.now(),
