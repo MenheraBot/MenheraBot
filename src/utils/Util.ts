@@ -1,4 +1,4 @@
-import { MessageComponentInteraction, TextBasedChannels } from 'discord.js';
+import { CollectorFilter, MessageComponentInteraction, TextBasedChannels } from 'discord.js';
 
 const MENTION_REGEX = /^(?:<@!?)?([0-9]{16,18})(?:>)?$/;
 export default class Util {
@@ -23,6 +23,20 @@ export default class Util {
         filter: (m) => m.user.id === authorID && m.customId === customId,
         time,
       })
+      .then((interaction) => {
+        interaction.deferUpdate();
+        return interaction;
+      })
+      .catch(() => null);
+  }
+
+  static async collectComponentInteractionWithCustomFilter(
+    channel: TextBasedChannels,
+    filter: CollectorFilter<[MessageComponentInteraction]>,
+    time: number,
+  ): Promise<null | MessageComponentInteraction> {
+    return channel
+      .awaitMessageComponent({ filter, time })
       .then((interaction) => {
         interaction.deferUpdate();
         return interaction;
