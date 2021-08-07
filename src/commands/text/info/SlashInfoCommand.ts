@@ -25,7 +25,9 @@ export default class SlashinfoCommand extends Command {
       .setTitle('Estado dos Slash Commands')
       .setColor('BLURPLE')
       .setDescription(
-        `Ainda faltam **${allTextCommands - allSlashCommands}** comandos para serem transcritos`,
+        `Ainda faltam **${
+          allTextCommands - allSlashCommands
+        }** comandos para serem transcritos\nAo chegar à **50%** de progresso, comandos de texto que já possuem slash pararão de funcionar!`,
       )
       .addFields(
         [
