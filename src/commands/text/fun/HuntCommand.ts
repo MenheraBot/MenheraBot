@@ -129,6 +129,7 @@ export default class HuntCommand extends Command {
         ctx.message.author.id,
         value,
         cooldown.toString(),
+        0,
       );
       return value;
     };

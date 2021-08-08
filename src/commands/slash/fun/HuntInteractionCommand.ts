@@ -40,6 +40,12 @@ export default class HuntInteractionCommand extends InteractionCommand {
             },
           ],
         },
+        {
+          name: 'rolls',
+          description: 'Quantidade de rolls que você quer usar de uma vez só',
+          type: 'INTEGER',
+          required: false,
+        },
       ],
       category: 'fun',
       cooldown: 5,
@@ -57,6 +63,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
       await ctx.replyT('error', `${ctx.locale('commands:hunt.no-args')}`, {}, true);
       return;
     }
+
     const probabilidadeDemonio =
       ctx.interaction.guild.id === '717061688460967988'
         ? probabilities.support.demon
@@ -86,10 +93,30 @@ export default class HuntInteractionCommand extends InteractionCommand {
       return;
     }
 
-    if (parseInt(authorData.caçarTime) > Date.now()) {
-      await ctx.replyT('error', 'commands:hunt.cooldown', {
-        time: moment.utc(parseInt(authorData.caçarTime) - Date.now()).format('mm:ss'),
-      });
+    const rollsToUse = ctx.args[1]?.value as number;
+
+    if (rollsToUse) {
+      if (rollsToUse < 1) {
+        ctx.replyT('error', 'commands:hunt.invalid-rolls', {}, true);
+        return;
+      }
+      if (rollsToUse > ctx.data.user.rolls) {
+        ctx.replyT('error', 'commands:hunt.rolls-poor', {}, true);
+        return;
+      }
+    }
+
+    const canHunt = parseInt(authorData.caçarTime) < Date.now();
+
+    if (!canHunt && !rollsToUse) {
+      ctx.replyT(
+        'error',
+        'commands:hunt.cooldown',
+        {
+          time: moment.utc(parseInt(authorData.caçarTime) - Date.now()).format('mm:ss'),
+        },
+        true,
+      );
       return;
     }
 
@@ -103,16 +130,24 @@ export default class HuntInteractionCommand extends InteractionCommand {
 
     const { huntDemon, huntAngel, huntDemigod, huntGod } = this.client.repositories.huntRepository;
 
+    const toRun = canHunt && rollsToUse ? rollsToUse + 1 : rollsToUse ?? 1;
+
     const areYouTheHuntOrTheHunter = async (
       probability: Array<number>,
       saveFn: typeof huntDemon,
     ) => {
-      const value = probability[Math.floor(Math.random() * probability.length)];
+      let value = 0;
+
+      for (let i = toRun; i > 0; i--) {
+        value += probability[Math.floor(Math.random() * probability.length)];
+      }
+
       await saveFn.call(
         this.client.repositories.huntRepository,
         ctx.interaction.user.id,
         value,
         cooldown.toString(),
+        rollsToUse || 0,
       );
       return value;
     };
@@ -140,6 +175,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
               value: demons,
               hunt: ctx.locale('commands:hunt.demons'),
               rank: rank + 1,
+              count: toRun,
             }),
           );
         break;
@@ -158,6 +194,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
               value: angels,
               hunt: ctx.locale('commands:hunt.angels'),
               rank: rank + 1,
+              count: toRun,
             }),
           );
         break;
@@ -176,6 +213,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
               value: demigods,
               hunt: ctx.locale('commands:hunt.sd'),
               rank: rank + 1,
+              count: toRun,
             }),
           );
         break;
@@ -192,11 +230,12 @@ export default class HuntInteractionCommand extends InteractionCommand {
           .setDescription(
             gods > 0
               ? ctx.locale('commands:hunt.god_hunted_success', {
-                  value: gods,
+                  count: gods,
                   hunt: ctx.locale('commands:hunt.gods'),
                   rank: rank + 1,
+                  toRun,
                 })
-              : ctx.locale('commands:hunt.god_hunted_fail', { rank: rank + 1 }),
+              : ctx.locale('commands:hunt.god_hunted_fail', { rank: rank + 1, count: toRun }),
           );
         if (gods > 0)
           embed

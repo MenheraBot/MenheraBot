@@ -247,7 +247,8 @@ export default class MessageReceive extends Event {
     });
 
     if (isSlash) {
-      if (Math.random() === 0) message.channel.send(`⚠️ | ${t('permissions:SLASH_COMMAND')}`);
+      if (Math.random().toFixed(1) === '0.1')
+        message.channel.send(`⚠️ | ${t('permissions:SLASH_COMMAND')}`);
     }
 
     if (command.config.category === 'rpg') {

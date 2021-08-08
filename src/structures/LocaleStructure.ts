@@ -10,7 +10,7 @@ export default class LocaleStructure {
 
   constructor() {
     this.ns = ['commands', 'events', 'permissions', 'roleplay'];
-    this.languages = ['pt_BR', 'en_US'];
+    this.languages = ['pt-BR', 'en-US'];
   }
 
   async load(): Promise<void> {
@@ -19,7 +19,7 @@ export default class LocaleStructure {
       await i18next.use(translationBackend).init({
         ns: this.ns,
         preload: readdirSync(filepath),
-        fallbackLng: 'pt_BR',
+        fallbackLng: 'pt-BR',
         backend: {
           loadPath: `${filepath}/{{lng}}/{{ns}}.json`,
         },
