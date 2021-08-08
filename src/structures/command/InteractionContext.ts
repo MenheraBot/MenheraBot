@@ -46,6 +46,12 @@ export default class InteractionCommandContext {
     return this.interaction.reply(options);
   }
 
+  async deferedReplyT(emoji: EmojiTypes, text: string, translateOptions = {}): Promise<void> {
+    await this.interaction.editReply({
+      content: `${emojis[emoji] || '🐛'} **|** ${this.i18n(text, translateOptions)}`,
+    });
+  }
+
   async replyT(
     emoji: EmojiTypes,
     text: string,
