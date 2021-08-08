@@ -211,7 +211,7 @@ export interface IRESTGameStats {
 }
 
 export interface IUserDataToProfile {
-  cor: string;
+  cor: ColorResolvable;
   avatar: string;
   votos: number;
   nota: string;
