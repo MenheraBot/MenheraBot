@@ -13,7 +13,7 @@ import { User } from 'discord.js';
 type activity = 'PLAYING' | 'WATCHING' | 'STREAMING' | 'LISTENING';
 
 const request = axios.create({
-  baseURL: 'http://localhost:2080',
+  baseURL: process.env.PICASSO_IP,
   timeout: 5000,
   headers: {
     'Content-Type': 'application/json',
