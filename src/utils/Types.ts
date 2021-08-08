@@ -15,7 +15,7 @@ import StarRepository from '@database/repositories/StarRepository';
 import StatusRepository from '@database/repositories/StatusRepository';
 import TopRepository from '@database/repositories/TopRepository';
 import UserRepository from '@database/repositories/UserRepository';
-import { ApplicationCommandData, PermissionResolvable, User } from 'discord.js';
+import { ApplicationCommandData, ColorResolvable, PermissionResolvable, User } from 'discord.js';
 import { Document } from 'mongoose';
 
 export interface IClientConfigs {
@@ -56,7 +56,7 @@ export interface IBlackjackCards {
 
 interface IColor {
   nome: string;
-  cor: string;
+  cor: ColorResolvable;
   price: number;
 }
 
@@ -175,7 +175,7 @@ export interface IUserSchema extends Document {
   afk: boolean;
   afkReason: string | null;
   afkGuild: string | null;
-  cor: string;
+  cor: ColorResolvable;
   cores: Array<IColor>;
   caçados: number;
   anjos: number;

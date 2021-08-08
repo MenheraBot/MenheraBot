@@ -1,5 +1,4 @@
 import {
-  ColorResolvable,
   Message,
   MessageAttachment,
   MessageButton,
@@ -123,7 +122,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
         )}\``,
       )
       .setFooter(ctx.locale('commands:blackjack.footer'))
-      .setColor(ctx.data.user.cor as ColorResolvable)
+      .setColor(ctx.data.user.cor)
       .setThumbnail(ctx.interaction.user.displayAvatarURL({ format: 'png', dynamic: true }));
 
     const BuyButton = new MessageButton()
@@ -218,7 +217,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
           'commands:blackjack.dealer-hand',
         )}: **${dealerCards.map((a) => `${a.value}`).join(', ')}** -> \`${menheraTotal}\``,
       )
-      .setColor(ctx.data.user.cor as ColorResolvable)
+      .setColor(ctx.data.user.cor)
       .setThumbnail(ctx.interaction.user.displayAvatarURL({ format: 'png', dynamic: true }));
 
     const res = await http.blackjackRequest(
@@ -310,7 +309,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
           'commands:blackjack.dealer-hand',
         )}: **${dealerCards.map((a) => `${a.value}`).join(', ')}** -> \`${menheraTotal}\``,
       )
-      .setColor(ctx.data.user.cor as ColorResolvable)
+      .setColor(ctx.data.user.cor)
       .setThumbnail(ctx.interaction.user.displayAvatarURL({ format: 'png', dynamic: true }));
 
     const newRes = await http.blackjackRequest(
@@ -501,7 +500,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
         )}\``,
       )
       .setFooter(ctx.locale('commands:blackjack.footer'))
-      .setColor(ctx.data.user.cor as ColorResolvable)
+      .setColor(ctx.data.user.cor)
       .setThumbnail(ctx.interaction.user.displayAvatarURL({ format: 'png', dynamic: true }));
 
     let attc: MessageAttachment | null = null;

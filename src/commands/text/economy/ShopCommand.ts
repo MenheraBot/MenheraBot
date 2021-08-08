@@ -2,7 +2,7 @@ import Command from '@structures/command/Command';
 import CommandContext from '@structures/command/CommandContext';
 import MenheraClient from 'MenheraClient';
 import { shopEconomy } from '@structures/MenheraConstants';
-import { ColorResolvable, Message } from 'discord.js';
+import { Message } from 'discord.js';
 import UserRepository from '@database/repositories/UserRepository';
 
 export default class ShopCommand extends Command {
@@ -24,7 +24,7 @@ export default class ShopCommand extends Command {
     const saldoAtual = ctx.data.user.estrelinhas;
     const dataComprar = {
       title: ctx.locale('commands:shop.embed_title'),
-      color: '#6cbe50' as ColorResolvable,
+      color: '#6cbe50' as const,
       thumbnail: {
         url: 'https://i.imgur.com/t94XkgG.png',
       },
@@ -98,7 +98,7 @@ export default class ShopCommand extends Command {
 
         const dataCores = {
           title: ctx.locale('commands:shop.dataCores_fields.title'),
-          color: '#6cbe50' as ColorResolvable,
+          color: '#6cbe50' as const,
           thumbnail: {
             url: 'https://i.imgur.com/t94XkgG.png',
           },
@@ -304,7 +304,7 @@ export default class ShopCommand extends Command {
 
         const dataRolls = {
           title: ctx.locale('commands:shop.dataRolls_fields.title'),
-          color: '#b66642' as ColorResolvable,
+          color: '#b66642' as const,
           thumbnail: {
             url: 'https://i.imgur.com/t94XkgG.png',
           },
@@ -388,7 +388,7 @@ export default class ShopCommand extends Command {
 
     const dataVender = {
       title: ctx.locale('commands:shop.embed_title'),
-      color: '#e77fa1' as ColorResolvable,
+      color: '#e77fa1' as const,
       thumbnail: {
         url: 'https://i.imgur.com/t94XkgG.png',
       },
@@ -511,7 +511,7 @@ export default class ShopCommand extends Command {
 
     const dataLoja = {
       title: ctx.locale('commands:shop.embed_title'),
-      color: '#559bf7' as ColorResolvable,
+      color: '#559bf7' as const,
       thumbnail: {
         url: 'https://i.imgur.com/t94XkgG.png',
       },

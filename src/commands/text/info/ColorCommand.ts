@@ -1,5 +1,5 @@
 import CommandContext from '@structures/command/CommandContext';
-import { ColorResolvable, MessageEmbed } from 'discord.js';
+import { MessageEmbed } from 'discord.js';
 import MenheraClient from 'MenheraClient';
 import Command from '../../../structures/command/Command';
 
@@ -50,7 +50,7 @@ export default class ColorCommand extends Command {
       const dataChoose = {
         title: ctx.locale('commands:color.dataChoose.title'),
         description: ctx.locale('commands:color.dataChoose.title'),
-        color: findColor[0].cor as ColorResolvable,
+        color: findColor[0].cor,
         thumbnail: {
           url: 'https://i.imgur.com/t94XkgG.png',
         },

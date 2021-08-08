@@ -1,6 +1,6 @@
 import { BLACKJACK_CARDS } from '@structures/MenheraConstants';
 
-import { ColorResolvable, Message, MessageAttachment, MessageEmbed } from 'discord.js';
+import { Message, MessageAttachment, MessageEmbed } from 'discord.js';
 import http from '@utils/HTTPrequests';
 import Command from '@structures/command/Command';
 import MenheraClient from 'MenheraClient';
@@ -111,7 +111,7 @@ export default class BlackJackCommand extends Command {
         ctx.locale('commands:blackjack.options'),
       )
       .setFooter(ctx.locale('commands:blackjack.footer'))
-      .setColor(ctx.data.user.cor as ColorResolvable)
+      .setColor(ctx.data.user.cor)
       .setThumbnail(ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true }));
 
     if (!res.err) {
@@ -183,7 +183,7 @@ export default class BlackJackCommand extends Command {
           'commands:blackjack.dealer-hand',
         )}: **${dealerCards.map((a) => `${a.value}`).join(', ')}** -> \`${menheraTotal}\``,
       )
-      .setColor(ctx.data.user.cor as ColorResolvable)
+      .setColor(ctx.data.user.cor)
       .setThumbnail(ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true }));
 
     const res = await http.blackjackRequest(
@@ -271,7 +271,7 @@ export default class BlackJackCommand extends Command {
           'commands:blackjack.dealer-hand',
         )}: **${dealerCards.map((a) => `${a.value}`).join(', ')}** -> \`${menheraTotal}\``,
       )
-      .setColor(ctx.data.user.cor as ColorResolvable)
+      .setColor(ctx.data.user.cor)
       .setThumbnail(ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true }));
 
     const newRes = await http.blackjackRequest(
@@ -463,7 +463,7 @@ export default class BlackJackCommand extends Command {
         ctx.locale('commands:blackjack.options'),
       )
       .setFooter(ctx.locale('commands:blackjack.footer'))
-      .setColor(ctx.data.user.cor as ColorResolvable)
+      .setColor(ctx.data.user.cor)
       .setThumbnail(ctx.message.author.displayAvatarURL({ format: 'png', dynamic: true }));
 
     let attc: MessageAttachment | null = null;

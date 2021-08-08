@@ -1,4 +1,4 @@
-import { ColorResolvable, MessageEmbed } from 'discord.js';
+import { MessageEmbed } from 'discord.js';
 import 'moment-duration-format';
 import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
@@ -36,11 +36,11 @@ export default class WalletInteractionCommand extends InteractionCommand {
 
     if (user.cor) {
       cor = user.cor;
-    } else cor = '#a788ff';
+    } else cor = '#a788ff' as const;
 
     const embed = new MessageEmbed()
       .setTitle(ctx.locale('commands:wallet.title', { user: pessoa.tag }))
-      .setColor(cor as ColorResolvable)
+      .setColor(cor)
       .addFields([
         {
           name: `⭐ | ${ctx.locale('commands:wallet.stars')}`,

@@ -1,4 +1,4 @@
-import { ColorResolvable, MessageEmbed, User } from 'discord.js';
+import { MessageEmbed, User } from 'discord.js';
 import Command from '@structures/command/Command';
 import MenheraClient from 'MenheraClient';
 import CommandContext from '@structures/command/CommandContext';
@@ -37,11 +37,11 @@ export default class WalletCommand extends Command {
 
     if (user.cor) {
       cor = user.cor;
-    } else cor = '#a788ff';
+    } else cor = '#a788ff' as const;
 
     const embed = new MessageEmbed()
       .setTitle(ctx.locale('commands:wallet.title', { user: pessoa.tag }))
-      .setColor(cor as ColorResolvable)
+      .setColor(cor)
       .addFields([
         {
           name: `⭐ | ${ctx.locale('commands:wallet.stars')}`,

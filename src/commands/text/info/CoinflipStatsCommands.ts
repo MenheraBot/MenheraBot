@@ -1,4 +1,4 @@
-import { ColorResolvable, MessageEmbed } from 'discord.js';
+import { MessageEmbed } from 'discord.js';
 import http from '@utils/HTTPrequests';
 import Command from '@structures/command/Command';
 import MenheraClient from 'MenheraClient';
@@ -40,7 +40,7 @@ export default class CoinflipStatsCommand extends Command {
 
     const embed = new MessageEmbed()
       .setTitle(ctx.locale('commands:coinflipstats.embed-title', { user: userName.tag }))
-      .setColor(userDb.cor as ColorResolvable)
+      .setColor(userDb.cor)
       .setFooter(ctx.locale('commands:coinflipstats.embed-footer'))
       .addFields([
         {

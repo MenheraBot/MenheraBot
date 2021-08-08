@@ -3,7 +3,7 @@ import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 
 import { shopEconomy } from '@structures/MenheraConstants';
-import { ColorResolvable, CommandInteractionOption } from 'discord.js';
+import { CommandInteractionOption } from 'discord.js';
 
 export default class ShopInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {
@@ -246,7 +246,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
 
       const dataCores = {
         title: ctx.locale('commands:shop.dataCores_fields.title'),
-        color: '#6cbe50' as ColorResolvable,
+        color: '#6cbe50' as const,
         thumbnail: {
           url: 'https://i.imgur.com/t94XkgG.png',
         },
@@ -272,7 +272,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
     const valorRoll = shopEconomy.hunts.roll;
     const dataRolls = {
       title: ctx.locale('commands:shop.dataRolls_fields.title'),
-      color: '#b66642' as ColorResolvable,
+      color: '#b66642' as const,
       thumbnail: {
         url: 'https://i.imgur.com/t94XkgG.png',
       },
@@ -302,7 +302,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
 
       const dataVender = {
         title: ctx.locale('commands:shop.embed_title'),
-        color: '#e77fa1' as ColorResolvable,
+        color: '#e77fa1' as const,
         thumbnail: {
           url: 'https://i.imgur.com/t94XkgG.png',
         },

@@ -4,7 +4,7 @@ import MenheraClient from 'MenheraClient';
 import { COLORS, probabilities } from '@structures/MenheraConstants';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { ColorResolvable, MessageEmbed } from 'discord.js';
+import { MessageEmbed } from 'discord.js';
 
 export default class HuntInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {
@@ -122,9 +122,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
 
     const avatar = ctx.interaction.user.displayAvatarURL({ format: 'png', dynamic: true });
     const cooldown = probabilities.defaultTime + Date.now();
-    const embed = new MessageEmbed()
-      .setColor(COLORS.HuntDefault as ColorResolvable)
-      .setThumbnail(avatar);
+    const embed = new MessageEmbed().setColor(COLORS.HuntDefault).setThumbnail(avatar);
     if (ctx.interaction.guild.id !== '717061688460967988')
       embed.setFooter(ctx.locale('commands:hunt.footer'));
 
@@ -169,7 +167,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
         );
         embed
           .setTitle(ctx.locale('commands:hunt.demons'))
-          .setColor(COLORS.HuntDemon as ColorResolvable)
+          .setColor(COLORS.HuntDemon)
           .setDescription(
             ctx.locale('commands:hunt.description_start', {
               value: demons,
@@ -188,7 +186,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
         );
         embed
           .setTitle(ctx.locale('commands:hunt.angels'))
-          .setColor(COLORS.HuntAngel as ColorResolvable)
+          .setColor(COLORS.HuntAngel)
           .setDescription(
             ctx.locale('commands:hunt.description_start', {
               value: angels,
@@ -207,7 +205,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
         );
         embed
           .setTitle(ctx.locale('commands:hunt.sd'))
-          .setColor(COLORS.HuntSD as ColorResolvable)
+          .setColor(COLORS.HuntSD)
           .setDescription(
             ctx.locale('commands:hunt.description_start', {
               value: demigods,
@@ -225,7 +223,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
           huntEnum.GOD,
         );
         embed
-          .setColor(COLORS.HuntGod as ColorResolvable)
+          .setColor(COLORS.HuntGod)
           .setTitle(ctx.locale('commands:hunt.gods'))
           .setDescription(
             gods > 0
@@ -238,9 +236,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
               : ctx.locale('commands:hunt.god_hunted_fail', { rank: rank + 1, count: toRun }),
           );
         if (gods > 0)
-          embed
-            .setColor(COLORS.HuntGod as ColorResolvable)
-            .setThumbnail('https://i.imgur.com/053khaH.gif');
+          embed.setColor(COLORS.HuntGod).setThumbnail('https://i.imgur.com/053khaH.gif');
         break;
       }
     }
