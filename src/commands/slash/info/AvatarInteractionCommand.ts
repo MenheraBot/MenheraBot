@@ -37,7 +37,7 @@ export default class AvatarInteractionCommand extends InteractionCommand {
         user = await this.client.users.fetch(mentionUser.id);
         db = await this.client.repositories.userRepository.find(user.id);
       } catch {
-        await ctx.replyT('error', 'commands:avatar.unknow-user');
+        await ctx.replyT('error', 'commands:avatar.unknow-user', {}, true);
         return;
       }
     }
