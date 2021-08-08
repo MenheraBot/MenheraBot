@@ -1092,7 +1092,8 @@
     "description": "End the trisal you no longer want to participate in",
     "usage": "",
     "error": "you are not in any trisal!",
-    "sure": "are you sure you want to finish the trisal? You have 14 seconds to react",
+    "sure": "are you sure you want to break up with your trisal? You have 15 seconds to confirm",
+    "cofnrim": "Breakup",
     "done": "Your trisal is over! There's no way. He finished...."
   },
   "audio": {

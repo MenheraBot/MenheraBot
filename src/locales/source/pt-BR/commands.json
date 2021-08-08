@@ -1110,7 +1110,8 @@
     "description": "Acabe com o trisal que você não quer mais participar",
     "usage": "",
     "error": "você não está em nenhum trisal!",
-    "sure": "você tem certeza que quer terminar o trisal? Tens 14 segundos para reagir",
+    "sure": "você tem certeza que quer terminar o trisal? Tens 15 segundos para confirmar",
+    "confirm": "Terminar",
     "done": "O seu trisal acabou! Não tem mais jeito. Acabou...."
   },
   "audio": {
