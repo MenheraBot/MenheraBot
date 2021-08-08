@@ -137,6 +137,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
       .setLabel(ctx.locale('commands:blackjack.stop'));
 
     const message = (await ctx.interaction.fetchReply()) as Message;
+    message.removeAttachments();
     if (!res.err) {
       const timestamp = Date.now();
       const attachment = new MessageAttachment(
@@ -236,6 +237,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
     let attc: MessageAttachment | null = null;
 
     const message = (await ctx.interaction.fetchReply()) as Message;
+    message.removeAttachments();
 
     if (!res.err) {
       const timestamp = Date.now();
