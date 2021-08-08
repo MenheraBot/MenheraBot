@@ -27,7 +27,7 @@ export default class SlashinfoCommand extends Command {
       .setDescription(
         `Ainda faltam **${
           allTextCommands - allSlashCommands
-        }** comandos para serem transcritos\nAo chegar à **50%** de progresso, comandos de texto que já possuem slash pararão de funcionar!`,
+        }** comandos para serem transcritos\nOs comandos normais pararão de funcionar em alguns meses devido à mudanças do Discord!`,
       )
       .addFields(
         [
