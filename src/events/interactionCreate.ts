@@ -1,4 +1,4 @@
-import { Interaction, Collection, ClientUser } from 'discord.js';
+import { Interaction, Collection, ClientUser, GuildMember } from 'discord.js';
 import MenheraClient from 'MenheraClient';
 import Event from '@structures/Event';
 import i18next from 'i18next';
@@ -34,7 +34,7 @@ export default class InteractionCreate extends Event {
 
     if (
       server.blockedChannels?.includes(interaction.channelId) &&
-      !message.member?.permissions.has('MANAGE_CHANNELS')
+      !(interaction.member as GuildMember).permissions.has('MANAGE_CHANNELS')
     ) {
       interaction.reply({ content: `🔒 | ${t('events:blocked-channel')}`, ephemeral: true });
       return;
