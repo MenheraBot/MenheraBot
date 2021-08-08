@@ -32,7 +32,10 @@ export default class InteractionCreate extends Event {
       return;
     }
 
-    if (server.blockedChannels?.includes(interaction.channelId)) {
+    if (
+      server.blockedChannels?.includes(interaction.channelId) &&
+      !message.member?.permissions.has('MANAGE_CHANNELS')
+    ) {
       interaction.reply({ content: `🔒 | ${t('events:blocked-channel')}`, ephemeral: true });
       return;
     }
