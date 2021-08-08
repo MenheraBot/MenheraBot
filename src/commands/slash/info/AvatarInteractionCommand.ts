@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-expressions */
 import { MessageEmbed } from 'discord.js';
-import 'moment-duration-format';
 import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';

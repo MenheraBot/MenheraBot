@@ -1,5 +1,4 @@
 import Command from '@structures/command/Command';
-import 'moment-duration-format';
 import MenheraClient from 'MenheraClient';
 import CommandContext from '@structures/command/CommandContext';
 import { MessageEmbed } from 'discord.js';

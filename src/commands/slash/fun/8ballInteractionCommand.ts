@@ -1,4 +1,3 @@
-import 'moment-duration-format';
 import MenheraClient from 'MenheraClient';
 import { COLORS } from '@structures/MenheraConstants';
 import InteractionCommand from '@structures/command/InteractionCommand';
