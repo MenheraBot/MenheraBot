@@ -28,7 +28,7 @@
   "MANAGE_WEBHOOK": "Manage WebHooks",
   "MANAGE_EMOJIS": "Manage Emojis",
   "ONLY_DEVS": "This command is exclusive of my owner",
-  "SLASH_COMMAND": "Discord announced that currently known commands will end! This command is now available in the new Slash `/` mode. Eventually all commands will be just slash. So start using them now to get used to it! This warning will only be sent for commands that are already available in slash",
+  "SLASH_COMMAND": "This command is already available in slash!",
   "UNKNOW_SLASH": "> This command doesn't exists!",
   "USER_MISSING_PERMISSION": "you don't have `{{perm}}` permission to be able to execute this command.",
   "CLIENT_MISSING_PERMISSION": "I don't have `{{perm}}` permission to be able to execute this command.",
