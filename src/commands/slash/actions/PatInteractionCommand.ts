@@ -29,7 +29,7 @@ export default class PatInteractionCommand extends InteractionCommand {
     const user = ctx.args[0].user as User;
 
     if (user.id === ctx.interaction.user.id) {
-      await ctx.replyT('error', 'commands:pat.self-mention');
+      await ctx.replyT('error', 'commands:pat.self-mention', {}, true);
       return;
     }
 
