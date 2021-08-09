@@ -79,6 +79,7 @@ export const emojis = {
   yellow_circle: '🟡',
   heart: '❤️',
   sword: '⚔️',
+  rainbow: '🌈',
   scape: '🐥',
   lock: '🔒',
   star: '⭐',
@@ -97,6 +98,7 @@ export const COLORS: { [key: string]: ColorResolvable } = {
   HuntSD: '#3cb5f0',
   HuntGod: '#b115bf',
   Aqua: '#03f3ff',
+  Purple: '#7f28c4',
 };
 
 export const BLACKJACK_CARDS = [

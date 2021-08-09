@@ -421,12 +421,12 @@
     "description": "Mude a cor de seu perfil",
     "usage": "[cor]",
     "embed_title": "Suas Cores",
-    "embed_description": "Use {{prefix}}cor [escolha] para trocar a cor de seu perfil",
+    "embed_description": "Escolha abaixo qual a cor que quer usar! Você tem 30 segundos",
     "dataChoose": {
       "title": "Sua cor foi alterada com sucesso",
       "description": "Você ja pode ver seu perfil com sua nova cor!"
     },
-    "no-own": "você não possui esta cor! Use {{prefix}}cor para ver as cores disponíveis"
+    "choose": "Escolha sua cor"
   },
   "profile": {
     "description": "Veja o seu perfil, ou o de alguem",

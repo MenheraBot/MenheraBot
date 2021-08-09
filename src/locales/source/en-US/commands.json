@@ -415,12 +415,12 @@
     "description": "Change the color of your profile",
     "usage": "[color]",
     "embed_title": "Your Colors",
-    "embed_description": "Use {{prefix}}color [choice] to change the color of your profile",
+    "embed_description": "Choose down bellow the color to change your profile. You got 30 seconds",
     "dataChoose": {
       "title": "Your color has been successfully changed",
       "description": "You can now see your profile with your new color!"
     },
-    "no-own": "you don't have this color! Use {{prefix}}color to see available colors"
+    "choose": "Choose your color"
   },
   "profile": {
     "description": "See your profile, or someone else's",
