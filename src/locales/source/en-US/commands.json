@@ -18,11 +18,11 @@
   "bite": {
     "description": "Bite someone :3",
     "usage": "<@mention>",
-    "bot": "you bit a robot ... -5 teeth in the mouth",
+    "bot": "You bit a robot ... -5 teeth in the mouth",
     "no-mention": "You have to mention who you want to bite duuh",
-    "self-mention": "look at the the masochist, do it right now, no command needed",
+    "self-mention": "Ooo look at the the masochist, do it right now, no command needed",
     "embed_title": "Bites",
-    "embed_description": "bit"
+    "embed_description": "{{author}} bit {{mention}}"
   },
   "cry": {
     "description": "Show everyone that you're crying, so that you get attention",

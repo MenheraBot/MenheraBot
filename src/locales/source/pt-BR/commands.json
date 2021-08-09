@@ -18,11 +18,11 @@
   "bite": {
     "description": "Morde alguem X3 Moidi :3",
     "usage": "<@menção>",
-    "bot": "você mordeu um robô... -5 dentes na boca",
+    "bot": "Você mordeu um robô... -5 dentes na boca",
     "no-mention": "Tu tem que mencionar quem tu quer morder neah",
     "self-mention": "Ala o masoquista, faça isso agora mesmo, não precisa de comando",
     "embed_title": "Morder",
-    "embed_description": "moideu"
+    "embed_description": "{{author}} moideu {{mention}}"
   },
   "cry": {
     "description": "Mostre a todos que você está chorando, vai que assim tu ganha atenção",
