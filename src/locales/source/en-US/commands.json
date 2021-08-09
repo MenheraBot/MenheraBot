@@ -134,10 +134,10 @@
     "description": "Resurrect someone dead",
     "usage": "<@mention>",
     "no-mention": "How to resurrect the nothing, which never died?",
-    "self-mention": "wait wut?? If you're dead, how are you typing?",
-    "bot": "a robot has been restarted UwU >. <",
+    "self-mention": "Wait wut?? If you're dead, how are you typing?",
+    "bot": "A robot has been restarted UwU >. <",
     "embed_title": "Resurrect",
-    "embed_description": "resurrected"
+    "embed_description": "{{author}} resurrected {{mention}}"
   },
   "sarrar": {
     "description": "Dance with me?",

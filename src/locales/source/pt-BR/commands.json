@@ -134,11 +134,10 @@
   "resurrect": {
     "description": "Ressuscite alguém morto",
     "usage": "<@menção>",
-    "no-mention": "Como ressuscitar o nada, que nunca morreu",
-    "self-mention": "uai, se tu ta morto, como tu ta digitando?",
-    "bot": "um robô foi religado UwU >.<",
+    "self-mention": "Uai, se tu ta morto, como tu ta digitando?",
+    "bot": "Um robô foi religado UwU >.<",
     "embed_title": "Ressuscitar",
-    "embed_description": "ressuscitou"
+    "embed_description": "**VOCÊ NÃO MATARÁ MEUS ALIADOS**\n{{author}} ressuscitou {{mention}}"
   },
   "sarrar": {
     "description": "Sarra comigo?",
