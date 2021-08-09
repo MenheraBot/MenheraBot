@@ -14,7 +14,7 @@ export default class DisgustedInteractionCommand extends InteractionCommand {
         {
           name: 'user',
           type: 'USER',
-          description: 'Usuário que te fez chorar',
+          description: 'Usuário que tu ta com nojo',
           required: false,
         },
       ],
