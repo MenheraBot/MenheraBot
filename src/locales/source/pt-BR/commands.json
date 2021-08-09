@@ -144,12 +144,12 @@
     "usage": "[@menção]",
     "no-mention": {
       "embed_title": "Sarra Comigo?",
-      "embed_description_start": "Alguém quer sarrar com",
-      "embed_description_end": "Reaja para sarrar",
+      "embed_description": "Alguém quer sarrar com {{author}}?",
       "embed_footer": "Quer sarrar comigo? 30 segundos para aceitar a sarrada"
     },
     "embed_title": "Sarrar",
-    "embed_description": "sarrou com"
+    "embed_description": "{{mention}} aceitou o poder, e sarrou com {{author}}",
+    "sarrar": "Aceitar a Sarrada"
   },
   "shot": {
     "description": "Atire em alguém",

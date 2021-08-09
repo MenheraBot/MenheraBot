@@ -144,12 +144,12 @@
     "usage": "[@mention]",
     "no-mention": {
       "embed_title": "Dance with me?",
-      "embed_description_start": "Someone wants to dance with",
-      "embed_description_end": "React to dance",
+      "embed_description": "Someone wants to dance with {{author}}?",
       "embed_footer": "Do you want to dance with me? 30 seconds to accept the dance"
     },
     "embed_title": "Dance",
-    "embed_description": "danced with"
+    "embed_description": "{{mention}} danced with {{author}}",
+    "sarrar": "Accept Dance"
   },
   "shot": {
     "description": "Shoot someone",
