@@ -6,7 +6,6 @@ import {
   IHttpPicassoReutrn,
   IRESTGameStats,
   IUserDataToProfile,
-  IUserDataToSend,
 } from '@utils/Types';
 import { User } from 'discord.js';
 
@@ -132,19 +131,6 @@ export default class HttpRequests {
     await apiRequest.post('/coinflip', { winnerId, loserId, betValue, date }).catch(() => null);
   }
 
-  static async postRpg(
-    userId: string,
-    userClass: string,
-    userLevel: number,
-    dungeonLevel: number,
-    death: boolean,
-    date: number,
-  ): Promise<void> {
-    await apiRequest
-      .post('/rpg', { userId, userClass, userLevel, dungeonLevel, death, date })
-      .catch(() => null);
-  }
-
   static async astolfoRequest(text: string): Promise<IHttpPicassoReutrn> {
     try {
       const data = await request.get('/astolfo', { data: { text } });
@@ -205,21 +191,6 @@ export default class HttpRequests {
           usageCommands,
           i18n,
         },
-      });
-      return { err: false, data: data?.data };
-    } catch {
-      return { err: true };
-    }
-  }
-
-  static async statusRequest(
-    user: IUserDataToSend,
-    userAvatarLink: string,
-    i18n: unknown,
-  ): Promise<IHttpPicassoReutrn> {
-    try {
-      const data = await request.get('/status', {
-        data: { user, userAvatarLink, i18n },
       });
       return { err: false, data: data?.data };
     } catch {

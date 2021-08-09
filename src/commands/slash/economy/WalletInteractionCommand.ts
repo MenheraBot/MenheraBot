@@ -73,14 +73,6 @@ export default class WalletInteractionCommand extends InteractionCommand {
         },
       ]);
 
-    const rpguser = await this.client.repositories.rpgRepository.find(user.id);
-    if (rpguser && rpguser.resetRoll)
-      embed.addField(
-        `🔑 | RPG ${ctx.locale('commands:wallet.rolls')}`,
-        `**${rpguser.resetRoll}**`,
-        true,
-      );
-
     await ctx.reply({ embeds: [embed] });
   }
 }

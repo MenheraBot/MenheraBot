@@ -59,7 +59,6 @@ export default class TopCommand extends Command {
     const argsMamados = ['mamados', 'chupados', 'suckled'];
     const argsEstrelinhas = ['estrelinhas', 'estrelinha', 'stars', 'star'];
     const argsVotos = ['votadores', 'voto', 'votes', 'votos', 'upvotes', 'upvote', 'vote'];
-    const argsDungeon = ['dungeon', 'rpg'];
     const argsCommands = ['comandos', 'commands', 'cmds', 'cmd'];
     const argsUsers = ['usuarios', 'usuários', 'users'];
     const argsUser = ['usuario', 'user', 'usuário'];
@@ -94,55 +93,6 @@ export default class TopCommand extends Command {
     }
     if (argsVotos.includes(argumento)) {
       await this.topVotos(ctx, pagina);
-      return;
-    }
-    if (argsDungeon.includes(argumento)) {
-      const validClasses = [
-        {
-          option: 'Assassino',
-          arguments: ['assassino', 'assassin', 'a'],
-        },
-        {
-          option: 'Bárbaro',
-          arguments: ['bárbaro', 'barbaro', 'barbarian', 'b'],
-        },
-        {
-          option: 'Clérigo',
-          arguments: ['clérigo', 'clerigo', 'cleric', 'c'],
-        },
-        {
-          option: 'Druida',
-          arguments: ['druida', 'druid', 'd'],
-        },
-        {
-          option: 'Espadachim',
-          arguments: ['espadachim', 'swordman', 'e', 'sw'],
-        },
-        {
-          option: 'Feiticeiro',
-          arguments: ['feiticeiro', 'sorcerer', 'so'],
-        },
-        {
-          option: 'Monge',
-          arguments: ['monge', 'monk', 'm'],
-        },
-        {
-          option: 'Necromante',
-          arguments: ['necromante', 'necromancer', 'n'],
-        },
-      ];
-
-      const filtredOption = ctx.args[1]
-        ? validClasses.filter((so) => so.arguments.includes(ctx.args[1].toLowerCase()))
-        : [];
-
-      const option = filtredOption.length > 0 ? filtredOption[0].option : false;
-
-      if (option) {
-        await this.topDungeon(ctx, pagina, option);
-        return;
-      }
-      await this.topDungeon(ctx, pagina, false);
       return;
     }
     if (argsCommands.includes(argumento)) {
@@ -472,79 +422,6 @@ export default class TopCommand extends Command {
           `Upvotes: ** ${res[i].votos}** `,
           false,
         );
-      }
-    }
-    return ctx.sendC(ctx.message.author.toString(), embed);
-  }
-
-  async topDungeon(
-    ctx: CommandContext,
-    pagina: number,
-    classToSearch: string | false,
-  ): Promise<Message | Message[]> {
-    const quantidade = await this.client.database.Rpg.countDocuments();
-
-    let skip = 0;
-    if (!Number.isNaN(pagina) && pagina > 0 && pagina < quantidade / 10) {
-      skip = (pagina - 1) * 10;
-    }
-
-    const res = classToSearch
-      ? await this.client.database.Rpg.find({ class: classToSearch }, ['level', '_id', 'xp'], {
-          skip,
-          limit: 10,
-          sort: { level: -1, xp: -1 },
-        })
-      : await this.client.database.Rpg.find({}, ['level', '_id', 'xp', 'class'], {
-          skip,
-          limit: 10,
-          sort: { level: -1, xp: -1 },
-        });
-
-    const embed = new MessageEmbed().setColor('#a1f5ee');
-
-    classToSearch
-      ? embed.setTitle(
-          `<:Chest:760957557538947133> | Top ${ctx.locale(`roleplay:classes.${classToSearch}`)} ${
-            skip > 0 ? skip / 10 + 1 : 1
-          } º`,
-        )
-      : embed.setTitle(
-          `<:Chest:760957557538947133> | ${ctx.locale('commands:top.rpgTitle')} ${
-            skip > 0 ? skip / 10 + 1 : 1
-          } º`,
-        );
-
-    for (let i = 0; i < res.length; i++) {
-      const member = await this.client.users.fetch(res[i].id).catch(() => null);
-      if (!member) {
-        classToSearch
-          ? embed.addField(
-              `** ${skip + 1 + i} -** \`USER NOT FOUND\``,
-              `Level: **${res[i].level}**\nXp: **${res[i].xp}**`,
-              false,
-            )
-          : embed.addField(
-              `** ${skip + 1 + i} -** \`USER NOT FOUND\`  | ${ctx.locale(
-                `roleplay:classes.${res[i].class}`,
-              )}`,
-              `Level: **${res[i].level}**\nXp: **${res[i].xp}**`,
-              false,
-            );
-      } else {
-        classToSearch
-          ? embed.addField(
-              `**${skip + 1 + i} -** ${member.username}`,
-              `Level: **${res[i].level}**\nXp: **${res[i].xp}**`,
-              false,
-            )
-          : embed.addField(
-              `**${skip + 1 + i} -** ${member.username} | ${ctx.locale(
-                `roleplay:classes.${res[i].class}`,
-              )}`,
-              `Level: **${res[i].level}**\nXp: **${res[i].xp}**`,
-              false,
-            );
       }
     }
     return ctx.sendC(ctx.message.author.toString(), embed);

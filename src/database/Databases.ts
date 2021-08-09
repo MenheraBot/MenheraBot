@@ -1,11 +1,10 @@
 import mongoose from 'mongoose';
 import Redis from 'ioredis';
-import { Cmds, Commands, Guilds, Rpg, Status, Users } from '@structures/DatabaseCollections';
+import { Cmds, Commands, Guilds, Status, Users } from '@structures/DatabaseCollections';
 import { IDatabaseRepositories } from '@utils/Types';
 import CacheRepository from './repositories/CacheRepository';
 import CmdRepository from './repositories/CmdsRepository';
 import CommandRepository from './repositories/CommandRepository';
-import RpgRepository from './repositories/RpgRepository';
 import StarRepository from './repositories/StarRepository';
 import UserRepository from './repositories/UserRepository';
 import MamarRepository from './repositories/MamarRepository';
@@ -28,8 +27,6 @@ export default class Databases {
 
   public Status: typeof Status;
 
-  public Rpg: typeof Rpg;
-
   public Users: typeof Users;
 
   public redisClient: Redis.Redis | null = null;
@@ -41,8 +38,6 @@ export default class Databases {
   private readonly cmdRepository: CmdRepository;
 
   private readonly starRepository: StarRepository;
-
-  private readonly rpgRepository: RpgRepository;
 
   private readonly mamarRepository: MamarRepository;
 
@@ -73,7 +68,6 @@ export default class Databases {
     this.Commands = Commands;
     this.Guilds = Guilds;
     this.Status = Status;
-    this.Rpg = Rpg;
     this.Users = Users;
 
     if (withRedisCache) this.createRedisConnection();
@@ -82,7 +76,6 @@ export default class Databases {
     this.commandRepository = new CommandRepository(this.Commands);
     this.cmdRepository = new CmdRepository(this.Cmds);
     this.starRepository = new StarRepository(this.Users);
-    this.rpgRepository = new RpgRepository(this.Rpg);
     this.mamarRepository = new MamarRepository(this.userRepository);
     this.guildRepository = new GuildRepository(this.Guilds);
     this.cacheRepository = new CacheRepository(
@@ -110,7 +103,6 @@ export default class Databases {
       commandRepository: this.commandRepository,
       cmdRepository: this.cmdRepository,
       starRepository: this.starRepository,
-      rpgRepository: this.rpgRepository,
       cacheRepository: this.cacheRepository,
       mamarRepository: this.mamarRepository,
       guildRepository: this.guildRepository,

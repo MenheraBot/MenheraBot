@@ -1,5 +1,5 @@
 import { Users } from '@structures/DatabaseCollections';
-import { UpdateQuery, UpdateWithAggregationPipeline } from 'mongoose';
+import { Document, UpdateQuery, UpdateWithAggregationPipeline } from 'mongoose';
 import { IUserSchema } from '@utils/Types';
 
 export default class UserRepository {
@@ -21,7 +21,7 @@ export default class UserRepository {
     await this.userModal.updateOne({ id: userId }, query);
   }
 
-  async findOrCreate(userID: string): Promise<IUserSchema> {
+  async findOrCreate(userID: string): Promise<IUserSchema & Document> {
     const result = await this.find(userID);
     if (result) return result;
 
@@ -32,15 +32,15 @@ export default class UserRepository {
     await this.userModal.deleteOne({ id: userID });
   }
 
-  async find(userID: string): Promise<IUserSchema | null> {
+  async find(userID: string): Promise<(IUserSchema & Document) | null> {
     return this.userModal.findOne({ id: userID });
   }
 
-  async create(userID: string): Promise<IUserSchema> {
+  async create(userID: string): Promise<IUserSchema & Document> {
     return this.userModal.create({ id: userID, shipValue: Math.floor(Math.random() * 55) });
   }
 
-  async findAfkByIDs(ids: Array<string>): Promise<IUserSchema[] | null> {
+  async findAfkByIDs(ids: Array<string>): Promise<(IUserSchema & Document)[] | null> {
     return this.userModal.find({ id: { $in: ids }, afk: true });
   }
 }

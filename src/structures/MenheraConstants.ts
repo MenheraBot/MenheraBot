@@ -40,28 +40,17 @@ export const probabilities = {
   defaultTime: 3600000,
 };
 
-export const rpg = {
-  bossCooldown: 3600000,
-  dungeonCooldown: 3600000,
-  scapeCooldown: 7200000,
-  deathCooldown: 43200000,
-};
-
 export const votes = {
   rollQuantity: 1,
   maxStarValue: 3600,
   minStarValue: 1200,
-  rpgRollQuantity: 1,
   maxStoneValue: 980,
   minStoneValue: 100,
   rollWeekendMultiplier: 2,
   starWeekendMultiplier: 2,
   stoneWeekendMultiplier: 2,
-  rpgRollWeekendMultiplier: 2,
   roll20Multiplier: 4,
   star20Multiplier: 4,
-  rpgMoney20Multiplier: 4,
-  rpgRoll20Multiplier: 4,
 };
 
 export const emojis = {
@@ -119,5 +108,4 @@ Object.freeze(LANGUAGES);
 Object.freeze(emojis);
 Object.freeze(shopEconomy);
 Object.freeze(probabilities);
-Object.freeze(rpg);
 Object.freeze(votes);

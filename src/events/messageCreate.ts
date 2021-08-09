@@ -251,11 +251,6 @@ export default class MessageReceive extends Event {
         message.channel.send(`⚠️ | ${t('permissions:SLASH_COMMAND')}`);
     }
 
-    if (command.config.category === 'rpg') {
-      await message.channel.send({ content: t('roleplay:new') });
-      return;
-    }
-
     const ctx = new CommandContext(this.client, message, args, { user: authorData, server }, t);
 
     try {

@@ -65,10 +65,6 @@ function getAll(ctx: CommandContext): void {
     getCategory('moderação', ctx.client, ctx.data.server),
   );
   embed.addField(
-    `${ctx.locale('commands:help.rpg')} (${getCommmandSize('rpg', ctx.client)})`,
-    getCategory('rpg', ctx.client, ctx.data.server),
-  );
-  embed.addField(
     `${ctx.locale('commands:help.util')} (${getCommmandSize('util', ctx.client)})`,
     getCategory('util', ctx.client, ctx.data.server),
   );

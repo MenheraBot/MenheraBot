@@ -3,7 +3,6 @@ import {
   ICommandsSchema,
   IGuildSchema,
   IStatusSchema,
-  IUserRpgSchema,
   IUserSchema,
 } from '@utils/Types';
 import { Document, Schema, model } from 'mongoose';
@@ -29,38 +28,6 @@ const guildSchema = new Schema({
   blockedChannels: { type: Array, default: [] },
   disabledCommands: { type: Array, default: [] },
   lang: { type: String, default: 'pt-BR' },
-});
-
-const rpgSchema = new Schema({
-  _id: { type: String },
-  class: { type: String },
-  life: { type: Number, default: 100 },
-  armor: { type: Number, default: 0 },
-  damage: { type: Number, default: 0 },
-  mana: { type: Number, default: 0 },
-  maxLife: { type: Number, default: 100 },
-  maxMana: { type: Number, default: 20 },
-  abilityPower: { type: Number, default: 0 },
-  level: { type: Number, default: 0 },
-  xp: { type: Number, default: 0 },
-  nextLevelXp: { type: Number, default: 10 },
-  abilities: { type: Array, default: [] },
-  abilitiesCooldown: { type: Array, default: [] },
-  uniquePower: { type: Object },
-  loots: { type: Array, default: [] },
-  inventory: { type: Array, default: [] },
-  money: { type: Number, default: 0 },
-  dungeonCooldown: { type: String, default: '00000000' },
-  death: { type: String, default: '00000000' },
-  weapon: { type: Object },
-  protection: { type: Object, default: { name: 'Armadura Padrão', armor: 1 } },
-  hotelTime: { type: String, default: '00000000' },
-  inBattle: { type: Boolean, default: false },
-  backpack: { type: Object, default: { name: 'Mochila de Pele de Lobo' } },
-  resetRoll: { type: Number, default: 0 },
-  jobId: { type: Number, default: 0 },
-  jobCooldown: { type: String, default: '00000000' },
-  familiar: { type: Object, default: {} },
 });
 
 const userSchema = new Schema({
@@ -95,14 +62,6 @@ const userSchema = new Schema({
   trisal: { type: Array, default: [] },
 });
 
-/*
-  Objeto do array das badges:
-  {
-    id: badgeId
-    obtainAt: Date.now()
-  }
-*/
-
 const commandsSchema = new Schema({
   name: { type: String },
   pt_description: { type: String },
@@ -116,5 +75,4 @@ export const Cmds = model<ICmdSchema & Document>('Cmd', cmdSchema);
 export const Commands = model<ICommandsSchema & Document>('commands', commandsSchema);
 export const Status = model<IStatusSchema & Document>('status', statusSchema);
 export const Guilds = model<IGuildSchema & Document>('guild', guildSchema);
-export const Rpg = model<IUserRpgSchema & Document>('rpg', rpgSchema);
 export const Users = model<IUserSchema & Document>('usersdb', userSchema);
