@@ -91,14 +91,15 @@ export const emojis = {
 
 export type EmojiTypes = keyof typeof emojis;
 
-export const COLORS: { [key: string]: ColorResolvable } = {
-  HuntDefault: '#df93fd',
-  HuntDemon: '#df1b1b',
-  HuntAngel: '#efe9e9',
-  HuntSD: '#3cb5f0',
-  HuntGod: '#b115bf',
-  Aqua: '#03f3ff',
-  Purple: '#7f28c4',
+export const COLORS = {
+  HuntDefault: '#df93fd' as ColorResolvable,
+  HuntDemon: '#df1b1b' as ColorResolvable,
+  HuntAngel: '#efe9e9' as ColorResolvable,
+  HuntSD: '#3cb5f0' as ColorResolvable,
+  HuntGod: '#b115bf' as ColorResolvable,
+  Aqua: '#03f3ff' as ColorResolvable,
+  Purple: '#7f28c4' as ColorResolvable,
+  ACTIONS: '#fa8cc5' as ColorResolvable,
 };
 
 export const BLACKJACK_CARDS = [
