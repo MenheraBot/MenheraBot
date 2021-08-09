@@ -84,22 +84,20 @@
   "kiss": {
     "description": "Kiss that loved one",
     "usage": "<@mention>",
-    "bot": "you kissed a robot, and ended up touching a peeled wire. Lucky he had slippers on his feet. The connection with the Earth was cut, no circuit was closed. This time it was safe.",
-    "no-mention": "you have to mention who you want to kiss you dumb",
+    "bot": "You kissed a robot, and ended up touching a peeled wire. Lucky he had slippers on his feet. The connection with the Earth was cut, no circuit was closed. This time it was safe.",
     "self-mention": "I know self-love is important, but please kiss someone other than yourself",
     "embed_title": "Kiss",
-    "embed_description": "kissed"
+    "embed_description": "{{author}} kissed {{mention}}"
   },
   "laugh": {
     "description": "Show everyone that you're laughing",
     "usage": "[@mention]",
     "no-mention": {
       "embed_title": "ASDKSAKDSAK LAUGHING",
-      "embed_description": "is pissing with laughter"
+      "embed_description": "{{author}} is pissing with laughter"
     },
     "embed_title": "LOL",
-    "embed_description_start": "made",
-    "embed_description_end": "fall to the ground laughing"
+    "embed_description": "{{mention}} make {{author}} fall to the ground laughing"
   },
   "mamar": {
     "description": "Give that monster quality suck",

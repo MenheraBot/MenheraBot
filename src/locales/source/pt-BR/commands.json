@@ -94,12 +94,11 @@
     "description": "Mostre a todos que estás rindo",
     "usage": "[@menção]",
     "no-mention": {
-      "embed_title": "KKKK RINDO",
-      "embed_description": "está se mijando de rir"
+      "embed_title": "KKLKLKLK PARABENS ZÉ",
+      "embed_description": "{{author}} está se mijando de rir"
     },
     "embed_title": "RINDO",
-    "embed_description_start": "fez",
-    "embed_description_end": "cair no chão de tanto rir"
+    "embed_description": "{{mention}} fez {{author}} cair no chão de tanto rir, namoral {{mention}}, muito bom mesmo!"
   },
   "mamar": {
     "description": "Da aquela mamada de qualidade monstra",
