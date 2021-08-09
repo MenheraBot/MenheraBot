@@ -112,18 +112,16 @@
   "pat": {
     "description": "Faça carinho em alguem",
     "usage": "<@menção>",
-    "no-mention": "tu tem que mencionar em quem tu quer fazer carinho",
-    "self-mention": "se tu quiser tu pode fazer carinho em si mesmo agora. Utilize meu comando somente para fazer carinho em outras pessoas",
+    "self-mention": "Olha cara, se tu quiser tu pode fazer carinho em si mesmo agora. Utilize meu comando somente para fazer carinho em outras pessoas",
     "embed_title": "Carinho",
-    "embed_description": "fez carinho em"
+    "embed_description": "{{author}} fez carinho em {{mention}}"
   },
   "poke": {
     "description": "Cutuque alguem",
     "usage": "<@menção>",
-    "no-mention": "tu tem que mencionar quem tu quer cutucar neah",
-    "self-mention": "cutucar a si mesmo não tem graça! Mencione quem tu quer cutucar",
+    "self-mention": "Cutucar a si mesmo não tem graça! Mencione quem tu quer cutucar",
     "embed_title": "Cutucar",
-    "embed_description": "cutucou"
+    "embed_description": "{{author}} cutucou {{mention}}"
   },
   "punch": {
     "description": "Soca alguem na porrada",

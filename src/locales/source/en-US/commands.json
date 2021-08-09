@@ -111,18 +111,16 @@
   "pat": {
     "description": "Pat someone's head",
     "usage": "<@mention>",
-    "no-mention": "you have to mention who you want to cuddle",
-    "self-mention": "if you want you can cuddle yourself now. Use my command only to cuddle others",
+    "self-mention": "If you want you can cuddle yourself now. Use my command only to cuddle others",
     "embed_title": "Cuddle",
-    "embed_description": "just cuddle"
+    "embed_description": "{{author}} just cuddle {{mention}}"
   },
   "poke": {
     "description": "Poke Someone",
     "usage": "<@mention>",
-    "no-mention": "you have to mention who you want to poke duuuh",
-    "self-mention": "poking yourself is no fun! Mention who you want to poke",
+    "self-mention": "Poking yourself is no fun! Mention who you want to poke",
     "embed_title": "Poke",
-    "embed_description": "poked"
+    "embed_description": "{{author}} poked {{mention}}"
   },
   "punch": {
     "description": "Punch someone in the ass",
