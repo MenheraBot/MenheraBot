@@ -74,7 +74,7 @@
     "description": "Mate aquele que você não suporta mais",
     "usage": "<@menção>",
     "no-mention": "Se tu não matar ninguém, tu não comete crimes. STONKS",
-    "self-mention": "Uu não gosto de suicídio...",
+    "self-mention": "Eu não gosto de suicídio...",
     "bot": {
       "embed_title": "Desligar",
       "embed_description": "*Robôs não podem ser mortos, mas podem ser desligados...*\n{{author}} desligou o bot {{mention}}"

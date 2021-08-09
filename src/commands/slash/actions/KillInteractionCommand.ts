@@ -30,7 +30,7 @@ export default class KillInteractionCommand extends InteractionCommand {
     const avatar = ctx.interaction.user.displayAvatarURL({ format: 'png', dynamic: true });
 
     if (user.id === ctx.interaction.user.id) {
-      await ctx.replyT('error', 'commands:kill.self-mention');
+      await ctx.replyT('error', 'commands:kill.self-mention', {}, true);
       return;
     }
 
