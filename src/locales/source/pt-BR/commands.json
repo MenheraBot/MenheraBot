@@ -273,7 +273,8 @@
       "buy-success": "certo! Você comprou a cor **{{name}}** por **{{price}}** ⭐! Você ficou com **{{stars}}** ⭐ estrelinhas",
       "yc-message": "Envie um código de hexcolor **SEM A HASHTAG** (Exemplo: AABBCC) de sua escolha para adicionar em seu perfil",
       "yc-confirm": "UUUAUUUU!!! VOCÊ ACABOU DE COMPRAR UMA COR DE SUA ESCOLHA!!!\nSua escolha atual é **#{{color}}**\nVocê gastou **{{price}}** ⭐ e ficou com **{{stars}}** ⭐ estrelinhas",
-      "invalid-color": "esta cor não é uma cor válida!"
+      "invalid-color": "esta cor não é uma cor válida!",
+      "no-name": "Sem nome especificado"
     },
     "dataRolls_fields": {
       "title": "Compre Rolls",

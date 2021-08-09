@@ -63,6 +63,12 @@ export default class ShopInteractionCommand extends InteractionCommand {
                   type: 'STRING',
                   required: false,
                 },
+                {
+                  name: 'nome',
+                  description: 'Nome da cor para a identificar. Máximo 20 caracteres',
+                  type: 'STRING',
+                  required: false,
+                },
               ],
             },
             {
@@ -558,10 +564,6 @@ export default class ShopInteractionCommand extends InteractionCommand {
         break;
 
       case '7': {
-        if (ctx.data.user.cores.some((res) => res.nome.startsWith('7'))) {
-          ctx.replyT('yellow_circle', 'commands:shop.buy_colors.has-color', {}, true);
-          return;
-        }
         if (ctx.data.user.estrelinhas < availableColors[6].price) {
           ctx.replyT('error', 'commands:shop.buy_colors.poor', {}, true);
           return;
@@ -573,15 +575,31 @@ export default class ShopInteractionCommand extends InteractionCommand {
             .options as CommandInteractionOption[]
         )[1]?.value as string;
 
+        const name =
+          (
+            (
+              (ctx.args[0].options as CommandInteractionOption[])[0]
+                .options as CommandInteractionOption[]
+            )[2]?.value as string
+          )?.slice(0, 20) ?? ctx.locale('shop:buy_colors.no-name');
+
         if (!hexColor) {
           ctx.replyT('error', 'commands:shop.buy_colors.invalid-color', {}, true);
           return;
         }
+
+        if (
+          ctx.data.user.cores.some((a) => `${a.cor}`.replace('#', '') === hexColor.replace('#', ''))
+        ) {
+          ctx.replyT('yellow_circle', 'commands:shop.buy_colors.has-color', {}, true);
+          return;
+        }
+
         const isHexColor = (hex: string) => hex.length === 6 && !Number.isNaN(Number(`0x${hex}`));
 
         if (isHexColor(hexColor.replace('#', ''))) {
           const toPush = {
-            nome: '7 - Sua Escolha',
+            nome: name,
             cor: `#${hexColor.replace('#', '')}`,
             price: shopEconomy.colors.your_choice,
           };
