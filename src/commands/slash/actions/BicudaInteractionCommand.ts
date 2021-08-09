@@ -2,7 +2,7 @@ import MenheraClient from 'MenheraClient';
 import { COLORS } from '@structures/MenheraConstants';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { MessageEmbed } from 'discord.js';
+import { MessageEmbed, User } from 'discord.js';
 import HttpRequests from '@utils/HTTPrequests';
 
 export default class BicudaInteractionCommand extends InteractionCommand {
@@ -26,14 +26,9 @@ export default class BicudaInteractionCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const rand = await HttpRequests.getAssetImageUrl('bicuda');
-    const { user } = ctx.args[0];
+    const user = ctx.args[0].user as User;
 
-    if (!user) {
-      await ctx.replyT('error', 'commands:bicuda.no-mention', {}, true);
-      return;
-    }
-
-    if (user && user.bot) {
+    if (user.bot) {
       await ctx.replyT('warn', 'commands:bicuda.bot');
       return;
     }

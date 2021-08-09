@@ -2,7 +2,7 @@ import MenheraClient from 'MenheraClient';
 import { COLORS } from '@structures/MenheraConstants';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { MessageEmbed } from 'discord.js';
+import { MessageEmbed, User } from 'discord.js';
 import HttpRequests from '@utils/HTTPrequests';
 
 export default class KillInteractionCommand extends InteractionCommand {
@@ -26,13 +26,8 @@ export default class KillInteractionCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const rand = await HttpRequests.getAssetImageUrl('kill');
-    const { user } = ctx.args[0];
+    const user = ctx.args[0].user as User;
     const avatar = ctx.interaction.user.displayAvatarURL({ format: 'png', dynamic: true });
-
-    if (!user) {
-      await ctx.replyT('error', 'commands:kill.no-mention', {}, true);
-      return;
-    }
 
     if (user.id === ctx.interaction.user.id) {
       await ctx.replyT('error', 'commands:kill.self-mention');
