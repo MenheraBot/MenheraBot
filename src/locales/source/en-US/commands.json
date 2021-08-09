@@ -38,13 +38,13 @@
   "disgusted": {
     "description": "eeeewwww disgusting",
     "usage": "<@mention>",
-    "bot": "HMMMM LOOK AT THAT GUY, HE DISGUST ROBOTS",
+    "bot": "HMMMM LOOK AT THAT GUY, HE DISGUST ROBOTS K K K K K what a meme",
     "no-mention": {
       "embed_title": "Yuck",
-      "embed_description": "is disgusted nheeem"
+      "embed_description": "{{author}} is disgusted nheeem"
     },
     "embed_title": "Yuck",
-    "embed_description": "is disgusted from"
+    "embed_description": "{{author}} is disgusted from {{mention}}"
   },
   "fear": {
     "description": "ARE YOU AFRAID?",

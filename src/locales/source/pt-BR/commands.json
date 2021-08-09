@@ -41,10 +41,10 @@
     "bot": "Iiii ala tu tem nojinho de bot ui ui ui",
     "no-mention": {
       "embed_title": "Nojo",
-      "embed_description": "está com nojinho blé"
+      "embed_description": "{{author}} está com nojinho blé"
     },
     "embed_title": "Nojo",
-    "embed_description": "está com nojo de"
+    "embed_description": "{{author}} está com nojo de {{mention}}"
   },
   "fear": {
     "description": "ESTÁS COM MEDO?????",
