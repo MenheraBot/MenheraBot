@@ -27,14 +27,13 @@
   "cry": {
     "description": "Show everyone that you're crying, so that you get attention",
     "usage": "[@mention]",
-    "bot": "nor does it come that any bot makes someone cry, they are friendly and fun. Like me",
+    "bot": "Nop nop, nor does it come that any bot makes someone cry, they are friendly and fun. Like me UwU",
     "no-mention": {
       "embed_title": "Crying :(",
-      "embed_description": "is crying"
+      "embed_description": "{{author}} is crying"
     },
     "embed_title": "Crying :(",
-    "embed_description_start": "made",
-    "embed_description_end": "cry"
+    "embed_description": "{{mention}} made {{author}} cry"
   },
   "disgusted": {
     "description": "eeeewwww disgusting",

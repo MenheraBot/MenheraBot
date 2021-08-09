@@ -27,14 +27,13 @@
   "cry": {
     "description": "Mostre a todos que você está chorando, vai que assim tu ganha atenção",
     "usage": "[@menção]",
-    "bot": "nem vem que nenhum bot faz alguem chorar, eles são amigáveis e divertidos. Assim como eu",
+    "bot": "Naaaah não, nem vem que nenhum bot faz alguem chorar, eles são amigáveis e divertidos. Assim como eu UwU",
     "no-mention": {
       "embed_title": "Chorando :(",
-      "embed_description": "está chorando"
+      "embed_description": "{{author}} está chorando"
     },
     "embed_title": "Chorando :(",
-    "embed_description_start": "fez",
-    "embed_description_end": "chorar"
+    "embed_description": "{{mention}} fez {{author}} chorar"
   },
   "disgusted": {
     "description": "Eca que nojo",
