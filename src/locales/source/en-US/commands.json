@@ -126,10 +126,9 @@
     "description": "Punch someone in the ass",
     "usage": "<@mention>",
     "bot": "SAY NO TO THE BOTS AGRESSION",
-    "no-mention": "you have to mention who you want to punch",
     "self-mention": "I will not make you punch yourself, mention someone else",
     "embed_title": "PUNCH IN THE FACE",
-    "embed_description": "punched"
+    "embed_description": "{{author}} punched {{mention}}"
   },
   "resurrect": {
     "description": "Resurrect someone dead",

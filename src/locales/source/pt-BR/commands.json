@@ -126,11 +126,10 @@
   "punch": {
     "description": "Soca alguem na porrada",
     "usage": "<@menção>",
-    "bot": "DIGA NÃO A AGRESSÃO A ROBÔS",
-    "no-mention": "tu tem que mencionar em quem tu quer lançar aquele socão nas fuça",
-    "self-mention": "eu não vou fazer tu se bater, mencione outra pessoa",
+    "bot": "DIGA NÃO A AGRESSÃO À ROBÔS",
+    "self-mention": "VEM DE CHICOTE, ALGEMAS, CORDA DE ALPINISTA. AI QUE EU PERCEBI QUE O CARA É SADOMASOQUISTA! Eu não vou fazer tu se bater, mencione outra pessoa",
     "embed_title": "Toma soco leve 🤜",
-    "embed_description": "socou"
+    "embed_description": "{{author}} meteu o soquinho leve em {{mention}}"
   },
   "resurrect": {
     "description": "Ressuscite alguém morto",
