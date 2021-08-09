@@ -60,7 +60,7 @@
     "description": "Resmungue humpf",
     "usage": "",
     "embed_title": "Humpf",
-    "embed_description": "está resmungando"
+    "embed_description": "{{author}} está resmungando"
   },
   "hug": {
     "description": "Abraça alguém",

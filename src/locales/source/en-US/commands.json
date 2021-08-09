@@ -59,7 +59,7 @@
   "grumbe": {
     "description": "Grumble humpf",
     "embed_title": "Humpf",
-    "embed_description": "is grumbling"
+    "embed_description": "{{author}} is grumbling"
   },
   "hug": {
     "description": "Hug someone",
