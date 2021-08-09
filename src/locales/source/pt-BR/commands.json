@@ -9,11 +9,11 @@
   "bicuda": {
     "description": "Da uma bicuda em alguem",
     "usage": "<@menção>",
-    "bot": "você chutou um robô, se pa que quebrou a perna. Só se pa... assim...",
-    "no-mention": "eae avatar, vai parar de chutar o ar? Menciona quem quer chutar.",
-    "self-mention": "???? isso nem é possível cara, n tem como se autochutar. Mencione outro usuário por favor",
+    "bot": "Você chutou um robô, se pa que quebrou a perna. Só se pa... assim...",
+    "no-mention": "Eae avatar, vai parar de chutar o ar? Menciona quem quer chutar.",
+    "self-mention": "Wtf véi isso nem é possível, não tem como se autochutar. Mencione outro usuário por favor",
     "embed_title": "Bicuda",
-    "embed_description": "meteu o bicudão em"
+    "embed_description": "{{author}} meteu o bicudão em {{mention}}"
   },
   "bite": {
     "description": "Morde alguem X3 Moidi :3",

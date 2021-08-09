@@ -9,11 +9,11 @@
   "bicuda": {
     "description": "Kick someones butt",
     "usage": "<@mention>",
-    "bot": "you kicked a robot, you probably broke your leg... I guess",
-    "no-mention": "supp avatar, are you going to stop kicking the air? Mention someone else to kick",
-    "self-mention": "???? this isn't even possible dude, mention someone else",
+    "bot": "You kicked a robot, you probably broke your leg... I guess",
+    "no-mention": "Supp avatar, are you going to stop kicking the air? Mention someone else to kick",
+    "self-mention": "Yooo This isn't even possible dude, mention someone else",
     "embed_title": "What a Kick",
-    "embed_description": "kicked"
+    "embed_description": "{{author}} kicked {{mention}}"
   },
   "bite": {
     "description": "Bite someone :3",

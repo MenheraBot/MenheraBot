@@ -29,7 +29,7 @@ export default class BicudaInteractionCommand extends InteractionCommand {
     const { user } = ctx.args[0];
 
     if (!user) {
-      await ctx.replyT('error', 'commands:bicuda.no-mention');
+      await ctx.replyT('error', 'commands:bicuda.no-mention', {}, true);
       return;
     }
 
@@ -39,7 +39,7 @@ export default class BicudaInteractionCommand extends InteractionCommand {
     }
 
     if (user.id === ctx.interaction.user.id) {
-      await ctx.replyT('error', 'commands:bicuda.self-mention');
+      await ctx.replyT('error', 'commands:bicuda.self-mention', {}, true);
       return;
     }
 
@@ -49,9 +49,10 @@ export default class BicudaInteractionCommand extends InteractionCommand {
       .setTitle(ctx.locale('commands:bicuda.embed_title'))
       .setColor(COLORS.ACTIONS)
       .setDescription(
-        `${ctx.interaction.user.toString()} ${ctx.locale(
-          'commands:bicuda.embed_description',
-        )} ${user.toString()}`,
+        ctx.locale('commands:bicuda.embed_description', {
+          author: ctx.interaction.user.toString(),
+          mention: user.toString(),
+        }),
       )
       .setImage(rand)
       .setThumbnail(avatar);
