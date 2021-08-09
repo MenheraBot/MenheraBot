@@ -64,11 +64,10 @@
   "hug": {
     "description": "Hug someone",
     "usage": "<@mention>",
-    "bot": "you went to hug a robot, but ended up touching where you shouldn't, and took an electric discharge of 220V and 10mA, luckily the current used in the bot is low ...",
-    "no-mention": "you must mention who wants to hug",
-    "self-mention": "you are not the elastic woman to hug yourself, please mention who you want to hug",
+    "bot": "You went to hug a robot, but ended up touching where you shouldn't, and took an electric discharge of 220V and 10mA, luckily the current used in the bot is low ...",
+    "self-mention": "You are not the elastic woman to hug yourself, please mention who you want to hug",
     "embed_title": "Hug",
-    "embed_description": "just hugged"
+    "embed_description": "{{author}} give a huge hug in {{mention}}"
   },
   "kill": {
     "description": "Kill the one you can't stand anymore",

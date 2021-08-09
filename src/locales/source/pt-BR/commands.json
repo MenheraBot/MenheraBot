@@ -65,11 +65,10 @@
   "hug": {
     "description": "Abraça alguém",
     "usage": "<@menção>",
-    "bot": "você foi abraçar um robô, mas acabou tocando onde não devia, e tomou uma descarga elétrica de 220V e 10mA, sorte que a corrente usada no bot é baixa...",
-    "no-mention": "você deve mencionar quem quer abraçar",
-    "self-mention": "tu não é a mulher elástico pra se abraçar, por favor, mencione quem você quer abraçar",
+    "bot": "Você foi abraçar um robô, mas acabou tocando onde não devia, e tomou uma descarga elétrica de 220V e 10mA, sorte que a corrente usada no bot é baixa...",
+    "self-mention": "Tu não é a mulher elástico pra se abraçar, por favor, mencione quem você quer abraçar",
     "embed_title": "Abraçar",
-    "embed_description": "acaba de abraçar"
+    "embed_description": "{{author}} deu um abraço quentinho em {{mention}}"
   },
   "kill": {
     "description": "Mate aquele que você não suporta mais",
