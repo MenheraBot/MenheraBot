@@ -105,10 +105,10 @@
     "description": "Give that monster quality suck",
     "usage": "<@mention>",
     "no-mention": "LOL look at the autistic suckling nowhere",
-    "bot": "just got his mouth wet with oil sucking the bot",
-    "self-mention": "don't try to deceive me, I know you can't suckle yourself! Appoint another person to suck",
+    "bot": "{{author}} just got his mouth wet with oil sucking the bot {{mention}}",
+    "self-mention": "Don't try to deceive me, I know you can't suckle yourself! Appoint another person to suck",
     "embed_title": "Suck",
-    "embed_description": "Suckled"
+    "embed_description": "{{author}} **suckled** {{mention}}"
   },
   "pat": {
     "description": "Pat someone's head",

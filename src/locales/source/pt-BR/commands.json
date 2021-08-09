@@ -106,10 +106,10 @@
     "description": "Da aquela mamada de qualidade monstra",
     "usage": "<@menção>",
     "no-mention": "KKK ala o autista mamando o nada",
-    "bot": "acabou de sujar a boca de óleo mamano o bot",
-    "self-mention": "não tenta me enganar, eu sei que tu não consegue mamar a si mesmo! Marque outra pessoa para mamar",
+    "bot": "{{author}} acabou de sujar a boca de óleo lansando o mamadão no bot {{mention}}",
+    "self-mention": "Não tenta me enganar, eu sei que tu não consegue mamar a si mesmo! Marque outra pessoa para mamar",
     "embed_title": "Mamar",
-    "embed_description": "mamou"
+    "embed_description": "{{author}} lansou o mamadão, o famoso bereguedjonson, a linguada, a mamadela, a lambidinha em {{mention}}"
   },
   "pat": {
     "description": "Faça carinho em alguem",
