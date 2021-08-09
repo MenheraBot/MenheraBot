@@ -427,7 +427,8 @@
       "title": "Sua cor foi alterada com sucesso",
       "description": "Você ja pode ver seu perfil com sua nova cor!"
     },
-    "choose": "Escolha sua cor"
+    "choose": "Escolha sua cor",
+    "min-color": "você precisa ter no mínimo 2 cores para usar este comando!"
   },
   "profile": {
     "description": "Veja o seu perfil, ou o de alguem",

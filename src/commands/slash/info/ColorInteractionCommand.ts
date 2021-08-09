@@ -57,6 +57,11 @@ export default class ColorInteractionCommand extends InteractionCommand {
       .setMaxValues(1)
       .setPlaceholder(`${emojis.rainbow} ${ctx.locale('commands:color.choose')}`);
 
+    if (authorData.cores.length < 2) {
+      ctx.replyT('error', 'commands:color.min-color', {}, true);
+      return;
+    }
+
     for (let i = 0; i < authorData.cores.length; i++) {
       if (authorData.cores[i].cor !== authorData.cor) {
         embed.addField(`${authorData.cores[i].nome}`, `${authorData.cores[i].cor}`);

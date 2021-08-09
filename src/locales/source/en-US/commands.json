@@ -421,7 +421,8 @@
       "title": "Your color has been successfully changed",
       "description": "You can now see your profile with your new color!"
     },
-    "choose": "Choose your color"
+    "choose": "Choose your color",
+    "min-color": "you need to have at least 2 colors to use this command!"
   },
   "profile": {
     "description": "See your profile, or someone else's",
