@@ -73,15 +73,14 @@
   "kill": {
     "description": "Kill the one you can't stand anymore",
     "usage": "<@mention>",
-    "no-mention": "if you don't kill anyone, you don't commit crimes. STONKS",
+    "no-mention": "If you don't kill anyone, you don't commit crimes. STONKS",
     "self-mention": "I don't like suicide ...",
     "bot": {
-      "embed_title": "Disconnect",
-      "embed_description_start": "*Robots cannot be killed, but they can be turned off ...*",
-      "embed_description_end": "turned off the bot"
+      "embed_title": "Shutdown",
+      "embed_description": "*Robots cannot be killed, but they can be turned off ...*\n{{author}} shutdown the bot {{mention}}"
     },
     "embed_title": "Kill",
-    "embed_description": "K I L L E D"
+    "embed_description": "{{author}} **K I L L E D** {{mention}}"
   },
   "kiss": {
     "description": "Kiss that loved one",

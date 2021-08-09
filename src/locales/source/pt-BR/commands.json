@@ -74,15 +74,14 @@
   "kill": {
     "description": "Mate aquele que você não suporta mais",
     "usage": "<@menção>",
-    "no-mention": "se tu não matar ninguém, tu não comete crimes. STONKS",
-    "self-mention": "eu não gosto de suicídio...",
+    "no-mention": "Se tu não matar ninguém, tu não comete crimes. STONKS",
+    "self-mention": "Uu não gosto de suicídio...",
     "bot": {
       "embed_title": "Desligar",
-      "embed_description_start": "*Robôs não podem ser mortos, mas podem ser desligados...*",
-      "embed_description_end": "desligou o bot"
+      "embed_description": "*Robôs não podem ser mortos, mas podem ser desligados...*\n{{author}} desligou o bot {{mention}}"
     },
     "embed_title": "Matar",
-    "embed_description": "M A T O U"
+    "embed_description": "{{author}} **M A T O U** {{mention}}"
   },
   "kiss": {
     "description": "Beija aquela pessoa amada",
