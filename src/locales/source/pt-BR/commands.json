@@ -51,10 +51,10 @@
     "usage": "[@menção]",
     "no-mention": {
       "embed_title": "MEDO",
-      "embed_description": "está com medo"
+      "embed_description": "{{author}} está com medo"
     },
     "embed_title": "MEDO",
-    "embed_description": "esta com medo de"
+    "embed_description": "{{author}} esta com medo de {{mention}}"
   },
   "grumble": {
     "description": "Resmungue humpf",

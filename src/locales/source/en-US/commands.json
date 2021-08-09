@@ -51,10 +51,10 @@
     "usage": "[@mention]",
     "no-mention": {
       "embed_title": "AFRAID",
-      "embed_description": "is afraid"
+      "embed_description": "{{author}} is afraid"
     },
     "embed_title": "AFRAID",
-    "embed_description": "is afraid of"
+    "embed_description": "{{author}} is afraid of {{mention}}"
   },
   "grumbe": {
     "description": "Grumble humpf",
