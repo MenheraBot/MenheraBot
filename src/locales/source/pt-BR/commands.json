@@ -176,6 +176,16 @@
     "embed_title": "TAPÃO",
     "embed_description": "{{author}} meteu o tapão em {{mention}}"
   },
+  "sniff": {
+    "description": "hmmmmm cheirin bão",
+    "usage": "[usuário]",
+    "bot": "Olha, algo me diz que esse bot só tem cheiro de metal",
+    "no-mention": {
+      "embed_title": "Hmmmm Cheirin Bão",
+      "embed_description": "{{author}} Está Cheirando (??? que bom né)"
+    },
+    "embed_description": "{{author}} fez sabe o que? Colocou o nariz em {{mention}} e cheirou. Pois é full estranho, mas é isso"
+  },
   "think": {
     "description": "Gabriel o pensador apenas",
     "usage": "[@menção]",
@@ -994,16 +1004,6 @@
       "no-mana": "{{user}} tenta usar {{name}}, mas não tem mana o suficiente, {{user2}} contra-ataca",
       "insta-kill": "{{user}} quebrou as regras sagradas tentando desferir um golpe proibído pelas leis do um contra um do mundo de Boleham, {{user2}} contra-ataca"
     }
-  },
-  "sniff": {
-    "description": "hmmmmm cheirin bão",
-    "usage": "[usuário]",
-    "bot": "olha, algo me diz que esse bot só tem cheiro de metal",
-    "no-mention": {
-      "embed_title": "Hmmmm Cheirin",
-      "embed_description": "Está Cheirando"
-    },
-    "embed_description": "Cheirou"
   },
   "work": {
     "description": "Trabalhe para ganhar itens, dinheiro e xp",
