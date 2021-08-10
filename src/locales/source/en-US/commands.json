@@ -154,21 +154,19 @@
   "shot": {
     "description": "Shoot someone",
     "usage": "<@mention>",
-    "no-mention": "you have to mention who you want to shoot",
-    "self-mention": "say no to suicide",
+    "self-mention": "Say no to suicide",
     "embed_title": "Shoot",
-    "embed_description": "bullet"
+    "embed_description": "{{author}} shoot {{mention}}"
   },
   "shy": {
     "description": "imin shame",
     "usage": "[@mention]",
     "no-mention": {
       "embed_title": "Shame 👉👈",
-      "embed_description": "ashamed >.<"
+      "embed_description": "{{author}} ashamed >.<"
     },
     "embed_title": "Shame 👉👈",
-    "embed_description_start": "made",
-    "embed_description_end": "shamed >.<"
+    "embed_description": "{{mention}} made {{author}} shamed >.<"
   },
   "slap": {
     "description": "Slap someone",

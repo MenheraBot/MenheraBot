@@ -163,11 +163,10 @@
     "usage": "[@menção]",
     "no-mention": {
       "embed_title": "Vergonhinha 👉👈",
-      "embed_description": "está com vergonha >.<"
+      "embed_description": "{{author}} está com vergonha >.<"
     },
     "embed_title": "Vergonhinha 👉👈",
-    "embed_description_start": "deixou",
-    "embed_description_end": "com vergonha >.<"
+    "embed_description": "{{mention}} deixou {{author}} com vergonha >.<"
   },
   "slap": {
     "description": "Tapeia alguem",
