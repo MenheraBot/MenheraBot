@@ -52,7 +52,7 @@ export default class SniffInteractionCommand extends InteractionCommand {
 
     const embed = new MessageEmbed()
       .setTitle('Sniff Sniff')
-      .setColor('#000000')
+      .setColor(COLORS.ACTIONS)
       .setDescription(
         ctx.locale('commands:sniff.embed_description', {
           author: ctx.interaction.user.toString(),
