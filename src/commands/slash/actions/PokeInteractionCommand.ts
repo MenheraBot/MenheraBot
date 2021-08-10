@@ -5,7 +5,7 @@ import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageEmbed, User } from 'discord.js';
 import HttpRequests from '@utils/HTTPrequests';
 
-export default class CryInteractionCommand extends InteractionCommand {
+export default class PokeInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {
     super(client, {
       name: 'cutucar',
