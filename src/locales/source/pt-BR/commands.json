@@ -6,11 +6,20 @@
     "back": "Bem vindo de volta",
     "success": "o modo AFK foi ativado! Para facilitar sua vida, vou desativá-lo caso mande uma mensagem!!!"
   },
+  "angry": {
+    "description": "",
+    "usage": "[usuário]",
+    "bot": "Ah para né vei, nenhum bot te deixaria com raiva (a não ser que ele esteja full lagado hehe)",
+    "no-mention": {
+      "embed_title": "Raiva",
+      "embed_description": "{{author}} Está P. da vida"
+    },
+    "embed_description": "{{author}} esta puto da cara com {{mention}}, deve ter feito merda né só pode"
+  },
   "bicuda": {
     "description": "Da uma bicuda em alguem",
     "usage": "<@menção>",
     "bot": "Você chutou um robô, se pa que quebrou a perna. Só se pa... assim...",
-    "no-mention": "Eae avatar, vai parar de chutar o ar? Menciona quem quer chutar.",
     "self-mention": "Wtf véi isso nem é possível, não tem como se autochutar. Mencione outro usuário por favor",
     "embed_title": "Bicuda",
     "embed_description": "{{author}} meteu o bicudão em {{mention}}"
@@ -19,7 +28,6 @@
     "description": "Morde alguem X3 Moidi :3",
     "usage": "<@menção>",
     "bot": "Você mordeu um robô... -5 dentes na boca",
-    "no-mention": "Tu tem que mencionar quem tu quer morder neah",
     "self-mention": "Ala o masoquista, faça isso agora mesmo, não precisa de comando",
     "embed_title": "Morder",
     "embed_description": "{{author}} moideu {{mention}}"
@@ -73,7 +81,6 @@
   "kill": {
     "description": "Mate aquele que você não suporta mais",
     "usage": "<@menção>",
-    "no-mention": "Se tu não matar ninguém, tu não comete crimes. STONKS",
     "self-mention": "Eu não gosto de suicídio...",
     "bot": {
       "embed_title": "Desligar",
@@ -103,7 +110,6 @@
   "mamar": {
     "description": "Da aquela mamada de qualidade monstra",
     "usage": "<@menção>",
-    "no-mention": "KKK ala o autista mamando o nada",
     "bot": "{{author}} acabou de sujar a boca de óleo lansando o mamadão no bot {{mention}}",
     "self-mention": "Não tenta me enganar, eu sei que tu não consegue mamar a si mesmo! Marque outra pessoa para mamar",
     "embed_title": "Mamar",
@@ -342,8 +348,7 @@
   },
   "humor": {
     "description": "Mande quando alguem fizer aquela piadoca do joca",
-    "usage": "",
-    "phrase": "achou você engraçadão ein"
+    "usage": ""
   },
   "hunt": {
     "description": "Caçe demônios como XANDÃO",
