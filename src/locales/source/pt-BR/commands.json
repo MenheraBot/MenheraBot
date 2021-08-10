@@ -154,10 +154,9 @@
   "shot": {
     "description": "Atire em alguém",
     "usage": "<@menção>",
-    "no-mention": "tu tem que mencionar em quem tu quer atirar",
-    "self-mention": "suicídio não!!!",
+    "self-mention": "EU NÃO GOSTO DE SUICÍDIO MAS BAH VEI JA FALEI NO `/matar`!!!",
     "embed_title": "Atirar",
-    "embed_description": "meteu bala em"
+    "embed_description": "{{author}} meteu bala em {{mention}}"
   },
   "shy": {
     "description": "oto com vergonha",
