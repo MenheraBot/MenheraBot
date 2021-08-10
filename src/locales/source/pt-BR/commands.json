@@ -189,13 +189,13 @@
   "think": {
     "description": "Gabriel o pensador apenas",
     "usage": "[@menção]",
-    "bot": "Awnnn que coisa mais linda, você está pensando num bot >.<",
+    "bot": "Awnnn que coisa mais linda, você está pensando num bot >.<. Obrigada babe",
     "no-mention": {
       "embed_title": "Pensar",
-      "embed_description": "está pensando"
+      "embed_description": "{{author}} está pensando 🤔"
     },
-    "embed_title": "Pensar",
-    "embed_description": "está pensando em"
+    "embed_title": "❤️ Pensar Apaixonante",
+    "embed_description": "{{author}} está pensando em {{mention}}. Que coisa mais fofa, ja pensaram em `/casar`?"
   },
   "coinflip": {
     "description": "Aposte estrelinhas num cara ou coroa com alguem",

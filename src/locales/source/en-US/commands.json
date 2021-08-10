@@ -192,10 +192,10 @@
     "bot": "Awnnn what a beautiful thing, you are thinking in a bot >.<",
     "no-mention": {
       "embed_title": "Think",
-      "embed_description": "is thinking"
+      "embed_description": "{{author}} is thinking"
     },
-    "embed_title": "Think",
-    "embed_description": "is thinking in"
+    "embed_title": "❤️ Loving Thought",
+    "embed_description": "{{author}} is thinking in {{mention}}"
   },
   "coinflip": {
     "description": "Bet stars on a coin toss with someone",
