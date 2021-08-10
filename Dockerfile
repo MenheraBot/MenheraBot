@@ -1,8 +1,8 @@
-FROM node:14.15-alpine
+FROM node:16.6-alpine
 
 WORKDIR /usr/home/main
 
 COPY . /usr/home/main/
 RUN npm install && npm run build
 
-CMD [ "npm", "run", "dev:builded" ]
+CMD [ "npm", "run", "dev" ]
