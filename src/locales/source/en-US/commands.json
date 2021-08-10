@@ -171,11 +171,10 @@
   "slap": {
     "description": "Slap someone",
     "usage": "<@mention>",
-    "bot": "Do not slap robots maaaan",
-    "no-mention": "you have to mention who you want to hit",
+    "bot": "Do not slap robots my broooo",
     "self-mention": "I will not make you hit yourself, mention someone else",
     "embed_title": "Slap",
-    "embed_description": "slapped"
+    "embed_description": "{{author}} slapped {{mention}}"
   },
   "think": {
     "description": "Thinking",

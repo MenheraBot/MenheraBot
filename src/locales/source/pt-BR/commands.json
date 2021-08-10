@@ -171,11 +171,10 @@
   "slap": {
     "description": "Tapeia alguem",
     "usage": "<@menção>",
-    "bot": "DIGA NÃO A AGRESSÃO A ROBÔS",
-    "no-mention": "tu tem que mencionar em quem tu quer bater",
-    "self-mention": "eu não vou fazer tu se bater, mencione outra pessoa",
+    "bot": "DIGA NÃO A AGRESSÃO À ROBÔS",
+    "self-mention": "Eu não vou fazer tu se bater, mencione outra pessoa",
     "embed_title": "TAPÃO",
-    "embed_description": "meteu o tapão em"
+    "embed_description": "{{author}} meteu o tapão em {{mention}}"
   },
   "think": {
     "description": "Gabriel o pensador apenas",
