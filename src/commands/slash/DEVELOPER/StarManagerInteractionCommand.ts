@@ -2,7 +2,7 @@ import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 
-export default class MaintenanceSlashInteractionCommand extends InteractionCommand {
+export default class ManageStartSlashInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {
     super(client, {
       name: 'managestar',
