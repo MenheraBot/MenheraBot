@@ -632,8 +632,8 @@
   "suggest": {
     "description": "Sugira algo para a dona do bot",
     "usage": "<sugestão>",
-    "no-args": "você não digitou o que quer sugerir para a Lux sobre o bot",
-    "thanks": "mutissimo obrigada por me enviar uma sugestão <3"
+    "no-args": "Sugira algo mais detalhado!",
+    "thanks": "Mutissimo obrigada por me enviar uma sugestão <3"
   },
   "support": {
     "description": "Link de convite para o servidor de suporte do Bot",

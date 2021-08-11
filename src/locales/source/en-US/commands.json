@@ -615,7 +615,7 @@
   "suggest": {
     "description": "Suggest something to the bot owner",
     "usage": "<suggestion>",
-    "no-args": "you didn't type what you want to suggest to Lux about the bot",
+    "no-args": "Suggest something more detailed",
     "thanks": "thank you so much for sending me a suggestion <3"
   },
   "support": {
