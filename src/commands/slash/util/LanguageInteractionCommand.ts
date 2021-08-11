@@ -105,10 +105,26 @@ export default class LanguageInteractionCommand extends InteractionCommand {
       ctx.interaction.guild?.id as string,
       ctx.data.server,
     );
-    if (lang === 'pt-LIGMA') {
-      ctx.editReply({ components: [], content: ctx.locale('commands:language.ligma') });
-      return;
+
+    switch (lang) {
+      case 'en-US':
+        ctx.editReply({
+          components: [],
+          content: 'A you wish, I will speak english on this server',
+        });
+        break;
+      case 'pt-BR':
+        ctx.editReply({
+          components: [],
+          content: 'Perfeito, vou falar português nesse servidor',
+        });
+        break;
+      default:
+        ctx.editReply({
+          components: [],
+          content:
+            'Ta na mão cpx, vo fala com a gurizada desse server de um jeito mais, digamos assim, de putão',
+        });
     }
-    ctx.editReply({ components: [], content: ctx.locale('commands:language.change') });
   }
 }

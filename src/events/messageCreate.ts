@@ -3,8 +3,6 @@ import { Collection, Message, MessageEmbed } from 'discord.js';
 
 import i18next, { TFunction } from 'i18next';
 
-import { LANGUAGES } from '@structures/MenheraConstants';
-
 import MenheraClient from 'MenheraClient';
 import { IAfkUserData, ICommandUsedData, IUserSchema } from '@utils/Types';
 import http from '@utils/HTTPrequests';
@@ -87,7 +85,7 @@ export default class MessageReceive extends Event {
 
     const server = await this.client.repositories.cacheRepository.fetchGuild(message.guild.id);
     let prefix = server.prefix.toLowerCase() ?? process.env.BOT_PREFIX;
-    const language = LANGUAGES[server.lang] ?? LANGUAGES['pt-BR'];
+    const language = server.lang ?? 'pt-BR';
     const t = i18next.getFixedT(language);
 
     if (message.mentions.users.size > 0)

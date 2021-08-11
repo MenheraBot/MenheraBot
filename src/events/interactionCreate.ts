@@ -2,8 +2,6 @@ import { Interaction, Collection, ClientUser, GuildMember } from 'discord.js';
 import MenheraClient from 'MenheraClient';
 import Event from '@structures/Event';
 import i18next from 'i18next';
-
-import { LANGUAGES } from '@structures/MenheraConstants';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import HttpRequests from '@utils/HTTPrequests';
 import { ICommandUsedData } from '@utils/Types';
@@ -23,7 +21,7 @@ export default class InteractionCreate extends Event {
       });
 
     const server = await this.client.repositories.cacheRepository.fetchGuild(interaction.guildId);
-    const language = LANGUAGES[server.lang] ?? LANGUAGES['pt-BR'];
+    const language = server.lang ?? 'pt-BR';
     const t = i18next.getFixedT(language);
 
     const command = this.client.slashCommands.get(interaction.commandName);

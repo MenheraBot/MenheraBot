@@ -490,8 +490,7 @@
     "question": "What language do you want me to speak?",
     "select": "Select the language clicking here",
     "english": "American English",
-    "portuguese": "Brazilian Portuguese",
-    "change": "Como preferir, a partir de agora vou falar portugues"
+    "portuguese": "Brazilian Portuguese"
   },
   "prefix": {
     "description": "Change my prefix on this server",

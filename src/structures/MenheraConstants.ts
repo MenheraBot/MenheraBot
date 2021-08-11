@@ -100,14 +100,8 @@ export const BLACKJACK_CARDS = [
   52,
 ];
 
-export const LANGUAGES: { [key: string]: string } = {
-  'pt-BR': 'pt_BR',
-  'en-US': 'en_US',
-};
-
 Object.freeze(BLACKJACK_CARDS);
 Object.freeze(COLORS);
-Object.freeze(LANGUAGES);
 Object.freeze(emojis);
 Object.freeze(shopEconomy);
 Object.freeze(probabilities);
