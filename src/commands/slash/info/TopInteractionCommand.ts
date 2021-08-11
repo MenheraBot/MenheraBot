@@ -1,27 +1,95 @@
-/* eslint-disable no-unused-expressions */
-/* eslint-disable no-param-reassign */
 /* eslint-disable no-await-in-loop */
-import CommandContext from '@structures/command/CommandContext';
-import { Message, MessageEmbed } from 'discord.js';
 import MenheraClient from 'MenheraClient';
-import Command from '../../../structures/command/Command';
-import http from '../../../utils/HTTPrequests';
-import Util from '../../../utils/Util';
+import InteractionCommand from '@structures/command/InteractionCommand';
+import InteractionCommandContext from '@structures/command/InteractionContext';
+import { MessageEmbed } from 'discord.js';
+import HttpRequests from '@utils/HTTPrequests';
+import Util from '@utils/Util';
+import { emojis } from '@structures/MenheraConstants';
 
-export default class TopCommand extends Command {
+export default class TopInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {
     super(client, {
       name: 'top',
-      aliases: ['rank'],
-      cooldown: 7,
+      description: '「💹」・Veja o top de usuários da Menhera',
+      category: 'util',
+      options: [
+        {
+          type: 'STRING',
+          name: 'tipo',
+          description: 'Tipo do top que você quer ver',
+          required: true,
+          choices: [
+            {
+              name: '💋 | Mamadores',
+              value: 'mamadores',
+            },
+            {
+              name: '👅 | Mamados',
+              value: 'mamados',
+            },
+            {
+              name: '⭐ | Estrelinhas',
+              value: 'estrelinhas',
+            },
+            {
+              name: '😈 | Demônios',
+              value: 'demonios',
+            },
+            {
+              name: '👼 | Anjos',
+              value: 'anjos',
+            },
+            {
+              name: '🙌 | Semideuses',
+              value: 'semideuses',
+            },
+            {
+              name: '✝️ | Deuses',
+              value: 'deuses',
+            },
+            {
+              name: '🆙 | Votos',
+              value: 'votos',
+            },
+            {
+              name: '📟 | Comandos',
+              value: 'comandos',
+            },
+            {
+              name: '👥 | Usuários',
+              value: 'users',
+            },
+            {
+              name: '👤 | Usuário',
+              value: 'user',
+            },
+          ],
+        },
+        {
+          type: 'INTEGER',
+          name: 'pagina',
+          description: 'Página do top que tu quer ver',
+          required: false,
+        },
+        {
+          type: 'USER',
+          name: 'user',
+          description: 'Caso queira ver o top users, diga qual vai ser o usuário',
+          required: false,
+        },
+      ],
+      cooldown: 5,
       clientPermissions: ['EMBED_LINKS'],
-      category: 'info',
     });
   }
 
-  static async topCommands(ctx: CommandContext): Promise<Message | Message[]> {
-    const res = await http.getTopCommands();
-    if (!res) return ctx.replyT('error', 'commands:http-error');
+  static async topCommands(ctx: InteractionCommandContext): Promise<void> {
+    const res = await HttpRequests.getTopCommands();
+    if (!res) {
+      ctx.editReply({ content: `${emojis.error} | ${ctx.locale('commands:http-error')}` });
+      return;
+    }
     const embed = new MessageEmbed()
 
       .setTitle(`:robot: |  ${ctx.locale('commands:top.commands')}`)
@@ -36,81 +104,52 @@ export default class TopCommand extends Command {
         false,
       );
     }
-    return ctx.sendC(ctx.message.author.toString(), embed);
+    ctx.editReply({ embeds: [embed] });
   }
 
-  async run(ctx: CommandContext): Promise<void> {
-    const { prefix } = ctx.data.server;
+  async run(ctx: InteractionCommandContext): Promise<void> {
+    const type = ctx.options.getString('tipo', true);
+    const pagina = ctx.options.getInteger('pagina') ?? 1;
 
-    let pagina = 1;
+    await ctx.interaction.deferReply();
 
-    const argumento = ctx.args[0];
-    if (!argumento) {
-      await ctx.replyT('error', 'commands:top.txt', { prefix });
-      return;
+    switch (type) {
+      case 'mamadores':
+        this.topMamadores(ctx, pagina);
+        return;
+      case 'mamados':
+        this.topMamados(ctx, pagina);
+        return;
+      case 'estrelinhas':
+        this.topEstrelinhas(ctx, pagina);
+        return;
+      case 'demonios':
+        this.topDemonios(ctx, pagina);
+        return;
+      case 'anjos':
+        this.topAnjos(ctx, pagina);
+        return;
+      case 'semideuses':
+        this.topSD(ctx, pagina);
+        return;
+      case 'deuses':
+        this.topDeuses(ctx, pagina);
+        return;
+      case 'votos':
+        this.topVotos(ctx, pagina);
+        return;
+      case 'comandos':
+        TopInteractionCommand.topCommands(ctx);
+        return;
+      case 'users':
+        this.topUsers(ctx);
+        return;
+      case 'user':
+        TopInteractionCommand.topUser(ctx);
     }
-    if (ctx.args[1]) pagina = parseInt(ctx.args[1]);
-
-    const argsDemonios = ['demonios', 'demônios', 'demons'];
-    const argsAnjos = ['anjos', 'angels'];
-    const argsSemideuses = ['semideuses', 'semi-deuses', 'sd', 'demigods', 'dg'];
-    const argsDeuses = ['deuses', 'gods'];
-    const argsMamou = ['mamou', 'mamadores', 'suckers'];
-    const argsMamados = ['mamados', 'chupados', 'suckled'];
-    const argsEstrelinhas = ['estrelinhas', 'estrelinha', 'stars', 'star'];
-    const argsVotos = ['votadores', 'voto', 'votes', 'votos', 'upvotes', 'upvote', 'vote'];
-    const argsCommands = ['comandos', 'commands', 'cmds', 'cmd'];
-    const argsUsers = ['usuarios', 'usuários', 'users'];
-    const argsUser = ['usuario', 'user', 'usuário'];
-
-    if (argsMamou.includes(argumento)) {
-      await this.topMamadores(ctx, pagina);
-      return;
-    }
-    if (argsMamados.includes(argumento)) {
-      await this.topMamados(ctx, pagina);
-      return;
-    }
-    if (argsEstrelinhas.includes(argumento)) {
-      await this.topEstrelinhas(ctx, pagina);
-      return;
-    }
-    if (argsDemonios.includes(argumento)) {
-      await this.topDemonios(ctx, pagina);
-      return;
-    }
-    if (argsAnjos.includes(argumento)) {
-      await this.topAnjos(ctx, pagina);
-      return;
-    }
-    if (argsSemideuses.includes(argumento)) {
-      await this.topSD(ctx, pagina);
-      return;
-    }
-    if (argsDeuses.includes(argumento)) {
-      await this.topDeuses(ctx, pagina);
-      return;
-    }
-    if (argsVotos.includes(argumento)) {
-      await this.topVotos(ctx, pagina);
-      return;
-    }
-    if (argsCommands.includes(argumento)) {
-      await TopCommand.topCommands(ctx);
-      return;
-    }
-    if (argsUsers.includes(argumento)) {
-      await this.topUsers(ctx);
-      return;
-    }
-    if (argsUser.includes(argumento)) {
-      await this.topUser(ctx);
-      return;
-    }
-    await ctx.replyT('warn', 'commands:top.txt', { prefix });
   }
 
-  async topMamados(ctx: CommandContext, pagina: number): Promise<Message | Message[]> {
+  async topMamados(ctx: InteractionCommandContext, pagina: number): Promise<void> {
     const quantidade = await this.client.database.Users.countDocuments();
     let skip = 0;
     if (!Number.isNaN(pagina) && pagina > 0 && pagina < quantidade / 10) {
@@ -129,7 +168,6 @@ export default class TopCommand extends Command {
       .setColor('#eab3fa');
 
     for (let i = 0; i < res.length; i++) {
-      // eslint-disable-next-line no-await-in-loop
       const member = await this.client.users.fetch(res[i].id).catch();
       const memberName = member?.username ?? res[i].id;
 
@@ -139,10 +177,10 @@ export default class TopCommand extends Command {
         false,
       );
     }
-    return ctx.sendC(ctx.message.author.toString(), embed);
+    ctx.editReply({ embeds: [embed] });
   }
 
-  async topMamadores(ctx: CommandContext, pagina: number): Promise<Message | Message[]> {
+  async topMamadores(ctx: InteractionCommandContext, pagina: number): Promise<void> {
     const quantidade = await this.client.database.Users.countDocuments();
 
     let skip = 0;
@@ -177,10 +215,10 @@ export default class TopCommand extends Command {
         );
       }
     }
-    return ctx.sendC(ctx.message.author.toString(), embed);
+    ctx.editReply({ embeds: [embed] });
   }
 
-  async topDemonios(ctx: CommandContext, pagina: number): Promise<Message | Message[]> {
+  async topDemonios(ctx: InteractionCommandContext, pagina: number): Promise<void> {
     const quantidade = await this.client.database.Users.countDocuments();
 
     let skip = 0;
@@ -219,10 +257,10 @@ export default class TopCommand extends Command {
         );
       }
     }
-    return ctx.sendC(ctx.message.author.toString(), embed);
+    ctx.editReply({ embeds: [embed] });
   }
 
-  async topAnjos(ctx: CommandContext, pagina: number): Promise<Message | Message[]> {
+  async topAnjos(ctx: InteractionCommandContext, pagina: number): Promise<void> {
     const quantidade = await this.client.database.Users.countDocuments();
 
     let skip = 0;
@@ -261,10 +299,10 @@ export default class TopCommand extends Command {
         );
       }
     }
-    return ctx.sendC(ctx.message.author.toString(), embed);
+    ctx.editReply({ embeds: [embed] });
   }
 
-  async topSD(ctx: CommandContext, pagina: number): Promise<Message | Message[]> {
+  async topSD(ctx: InteractionCommandContext, pagina: number): Promise<void> {
     const quantidade = await this.client.database.Users.countDocuments();
 
     let skip = 0;
@@ -303,10 +341,10 @@ export default class TopCommand extends Command {
         );
       }
     }
-    return ctx.sendC(ctx.message.author.toString(), embed);
+    ctx.editReply({ embeds: [embed] });
   }
 
-  async topDeuses(ctx: CommandContext, pagina: number): Promise<Message | Message[]> {
+  async topDeuses(ctx: InteractionCommandContext, pagina: number): Promise<void> {
     const quantidade = await this.client.database.Users.countDocuments();
 
     let skip = 0;
@@ -345,10 +383,10 @@ export default class TopCommand extends Command {
         );
       }
     }
-    return ctx.sendC(ctx.message.author.toString(), embed);
+    ctx.editReply({ embeds: [embed] });
   }
 
-  async topEstrelinhas(ctx: CommandContext, pagina: number): Promise<Message | Message[]> {
+  async topEstrelinhas(ctx: InteractionCommandContext, pagina: number): Promise<void> {
     const quantidade = await this.client.database.Users.countDocuments();
 
     let skip = 0;
@@ -382,10 +420,10 @@ export default class TopCommand extends Command {
         );
       }
     }
-    return ctx.sendC(ctx.message.author.toString(), embed);
+    ctx.editReply({ embeds: [embed] });
   }
 
-  async topVotos(ctx: CommandContext, pagina: number): Promise<Message | Message[]> {
+  async topVotos(ctx: InteractionCommandContext, pagina: number): Promise<void> {
     const quantidade = await this.client.database.Users.countDocuments();
 
     let skip = 0;
@@ -424,12 +462,15 @@ export default class TopCommand extends Command {
         );
       }
     }
-    return ctx.sendC(ctx.message.author.toString(), embed);
+    ctx.editReply({ embeds: [embed] });
   }
 
-  async topUsers(ctx: CommandContext): Promise<Message | Message[]> {
-    const res = await http.getTopUsers();
-    if (!res) return ctx.replyT('error', 'commands:http-error');
+  async topUsers(ctx: InteractionCommandContext): Promise<void> {
+    const res = await HttpRequests.getTopUsers();
+    if (!res) {
+      ctx.editReply({ content: `${emojis.error} |  ${ctx.locale('commands:http-error')}` });
+      return;
+    }
     const embed = new MessageEmbed()
 
       .setTitle(`<:MenheraSmile2:767210250364780554> |  ${ctx.locale('commands:top.users')}`)
@@ -443,31 +484,31 @@ export default class TopCommand extends Command {
         false,
       );
     }
-    return ctx.sendC(ctx.message.author.toString(), embed);
+    ctx.editReply({ embeds: [embed] });
   }
 
-  async topUser(ctx: CommandContext): Promise<Message | Message[]> {
-    const user = ctx.args[1] ? ctx.args[1].replace(/[<@!>]/g, '') : ctx.message.author.id;
+  static async topUser(ctx: InteractionCommandContext): Promise<void> {
+    const user = ctx.options.getUser('user') ?? ctx.interaction.user;
 
-    let fetchedUser;
-
-    try {
-      fetchedUser = await this.client.users.fetch(user).catch();
-    } catch {
-      return ctx.replyT('error', 'commands:top.not-user');
+    if (!user) {
+      ctx.editReply({ content: `${emojis.error} | ${ctx.locale('commands:top.not-user')}` });
+      return;
     }
 
-    const res = await http.getProfileCommands(fetchedUser.id);
+    const res = await HttpRequests.getProfileCommands(user.id);
     const embed = new MessageEmbed()
 
       .setTitle(
         `<:MenheraSmile2:767210250364780554> |  ${ctx.locale('commands:top.user', {
-          user: fetchedUser.username,
+          user: user.username,
         })}`,
       )
       .setColor('#f47fff');
 
-    if (!res || res.cmds.count === 0) return ctx.replyT('error', 'commands:top.not-user');
+    if (!res || res.cmds.count === 0) {
+      ctx.editReply({ content: `${emojis.error} | ${ctx.locale('commands:top.not-user')}` });
+      return;
+    }
 
     for (let i = 0; i < res.array.length; i++) {
       if (i > 10) break;
@@ -479,6 +520,6 @@ export default class TopCommand extends Command {
         false,
       );
     }
-    return ctx.sendC(ctx.message.author.toString(), embed);
+    ctx.editReply({ embeds: [embed] });
   }
 }
