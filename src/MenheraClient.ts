@@ -69,12 +69,12 @@ export default class MenheraClient extends Client {
   }
 
   async reloadCommand(commandName: string): Promise<void | false> {
-    const command =
-      this.commands.get(commandName) || this.commands.get(this.aliases.get(commandName) as string);
+    const command = this.slashCommands.get(commandName);
+
     if (!command) return false;
 
-    await FileUtil.reloadFile<typeof Command>(command.dir, (cmd) =>
-      this.loadTextCommand(cmd, command.dir),
+    await FileUtil.reloadFile<typeof InteractionCommand>(command.dir, (cmd) =>
+      this.loadSlashCommand(cmd, command.dir),
     );
   }
 

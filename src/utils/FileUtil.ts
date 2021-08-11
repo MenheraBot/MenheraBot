@@ -12,7 +12,7 @@ export default class FileUtil {
   ): Promise<void> {
     const dir = path.resolve(filepath);
     delete require.cache[dir];
-    await reloadFunction(await import(dir), dir);
+    await reloadFunction((await import(dir)).default, dir);
   }
 
   static readDirectory<T>(
