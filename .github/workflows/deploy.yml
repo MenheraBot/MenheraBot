@@ -16,6 +16,7 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
             cd ${{ secrets.PROJECT_PATH }}
+            git stash
             git pull origin master
             npm install
             npm run build
@@ -32,6 +33,7 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
             cd ${{ secrets.PROJECT_PATH_DEV }}
+            git stash
             git pull origin dev
             npm install
             npm run build

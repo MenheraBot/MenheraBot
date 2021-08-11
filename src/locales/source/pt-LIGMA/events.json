@@ -1,0 +1,11 @@
+{
+  "cooldown": "Te acalma precoce, espera mais **{{time}}** segunos. Para de spamma que saporra é chatona.",
+  "maintenance": "**MANUTENÇÃO**\n Este comando ta sendo arrumado por alguma merda ai\n\n**Motivo:** {{reason}}",
+  "blocked-channel": "meus comandos estão bloqueados neste canal!",
+  "error_embed": {
+    "title": "<:menhera_cry:744041825140211732> | Ocorreu um erro ao executar o comando {{cmd}}",
+    "report_title": "<:ok:727975974125436959> | Reporte esse problema",
+    "report_value": "Entre em meu servidor de suporte para reportar esse problema à minha dona",
+    "error_msg": "Aparentemente ocorreu um erro ao executar este comando! Reporte isso à minha dona em meu servidor de suporte!"
+  }
+}

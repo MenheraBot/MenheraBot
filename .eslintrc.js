@@ -7,13 +7,18 @@ module.exports = {
   },
   extends: [
     'airbnb-base',
+    'prettier',
+    'eslint:recommended',
+    'plugin:@typescript-eslint/eslint-recommended',
+    'plugin:@typescript-eslint/recommended',
   ],
   parserOptions: {
     ecmaVersion: 12,
   },
   parser: '@typescript-eslint/parser',
-  plugins: ['import'],
+  plugins: ['import', 'prettier'],
   rules: {
+    'prettier/prettier': 'error',
     'no-console': 'off',
     'consistent-return': 'off',
     'class-methods-use-this': ['error', { exceptMethods: ['run'] }],
@@ -27,6 +32,11 @@ module.exports = {
     'import/extensions': [0, 'never', { ts: 'never' }],
     'no-use-before-define': ['error', { variables: false }],
     'linebreak-style': 'off',
+    'import/no-cycle': 'off',
+    'no-useless-constructor': 'off',
+    '@typescript-eslint/no-useless-constructor': ['error'],
+    'import/no-named-as-default': 0,
+    'import/no-named-as-default-member': 0,
   },
   settings: {
     'import/parsers': {

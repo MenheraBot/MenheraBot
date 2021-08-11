@@ -1,0 +1,617 @@
+{
+  "angry": {
+    "description": "",
+    "usage": "[usuário]",
+    "bot": "no no no, stop right here. Bots dont let you angry (unless they are lagged hehe)",
+    "no-mention": {
+      "embed_title": "Angry",
+      "embed_description": "{{author}} is angry"
+    },
+    "embed_description": "{{author}} is angry with {{mention}}"
+  },
+  "bicuda": {
+    "description": "Kick someones butt",
+    "usage": "<@mention>",
+    "bot": "You kicked a robot, you probably broke your leg... I guess",
+    "self-mention": "Yooo This isn't even possible dude, mention someone else",
+    "embed_title": "What a Kick",
+    "embed_description": "{{author}} kicked {{mention}}"
+  },
+  "bite": {
+    "description": "Bite someone :3",
+    "usage": "<@mention>",
+    "bot": "You bit a robot ... -5 teeth in the mouth",
+    "self-mention": "Ooo look at the the masochist, do it right now, no command needed",
+    "embed_title": "Bites",
+    "embed_description": "{{author}} bit {{mention}}"
+  },
+  "cry": {
+    "description": "Show everyone that you're crying, so that you get attention",
+    "usage": "[@mention]",
+    "bot": "Nop nop, nor does it come that any bot makes someone cry, they are friendly and fun. Like me UwU",
+    "no-mention": {
+      "embed_title": "Crying :(",
+      "embed_description": "{{author}} is crying"
+    },
+    "embed_title": "Crying :(",
+    "embed_description": "{{mention}} made {{author}} cry"
+  },
+  "disgusted": {
+    "description": "eeeewwww disgusting",
+    "usage": "<@mention>",
+    "bot": "HMMMM LOOK AT THAT GUY, HE DISGUST ROBOTS K K K K K what a meme",
+    "no-mention": {
+      "embed_title": "Yuck",
+      "embed_description": "{{author}} is disgusted nheeem"
+    },
+    "embed_title": "Yuck",
+    "embed_description": "{{author}} is disgusted from {{mention}}"
+  },
+  "fear": {
+    "description": "ARE YOU AFRAID?",
+    "usage": "[@mention]",
+    "no-mention": {
+      "embed_title": "AFRAID",
+      "embed_description": "{{author}} is afraid"
+    },
+    "embed_title": "AFRAID",
+    "embed_description": "{{author}} is afraid of {{mention}}"
+  },
+  "grumbe": {
+    "description": "Grumble humpf",
+    "embed_title": "Humpf",
+    "embed_description": "{{author}} is grumbling"
+  },
+  "hug": {
+    "description": "Hug someone",
+    "usage": "<@mention>",
+    "bot": "You went to hug a robot, but ended up touching where you shouldn't, and took an electric discharge of 220V and 10mA, luckily the current used in the bot is low ...",
+    "self-mention": "You are not the elastic woman to hug yourself, please mention who you want to hug",
+    "embed_title": "Hug",
+    "embed_description": "{{author}} give a huge hug in {{mention}}"
+  },
+  "kill": {
+    "description": "Kill the one you can't stand anymore",
+    "usage": "<@mention>",
+    "self-mention": "I don't like suicide ...",
+    "bot": {
+      "embed_title": "Shutdown",
+      "embed_description": "*Robots cannot be killed, but they can be turned off ...*\n{{author}} shutdown the bot {{mention}}"
+    },
+    "embed_title": "Kill",
+    "embed_description": "{{author}} **K I L L E D** {{mention}}"
+  },
+  "kiss": {
+    "description": "Kiss that loved one",
+    "usage": "<@mention>",
+    "bot": "You kissed a robot, and ended up touching a peeled wire. Lucky he had slippers on his feet. The connection with the Earth was cut, no circuit was closed. This time it was safe.",
+    "self-mention": "I know self-love is important, but please kiss someone other than yourself",
+    "embed_title": "Kiss",
+    "embed_description": "{{author}} kissed {{mention}}"
+  },
+  "laugh": {
+    "description": "Show everyone that you're laughing",
+    "usage": "[@mention]",
+    "no-mention": {
+      "embed_title": "ASDKSAKDSAK LAUGHING",
+      "embed_description": "{{author}} is pissing with laughter"
+    },
+    "embed_title": "LOL",
+    "embed_description": "{{mention}} make {{author}} fall to the ground laughing"
+  },
+  "mamar": {
+    "description": "Give that monster quality suck",
+    "usage": "<@mention>",
+    "bot": "{{author}} just got his mouth wet with oil sucking the bot {{mention}}",
+    "self-mention": "Don't try to deceive me, I know you can't suckle yourself! Appoint another person to suck",
+    "embed_title": "Suck",
+    "embed_description": "{{author}} **suckled** {{mention}}"
+  },
+  "pat": {
+    "description": "Pat someone's head",
+    "usage": "<@mention>",
+    "self-mention": "If you want you can cuddle yourself now. Use my command only to cuddle others",
+    "embed_title": "Cuddle",
+    "embed_description": "{{author}} just cuddle {{mention}}"
+  },
+  "poke": {
+    "description": "Poke Someone",
+    "usage": "<@mention>",
+    "self-mention": "Poking yourself is no fun! Mention who you want to poke",
+    "embed_title": "Poke",
+    "embed_description": "{{author}} poked {{mention}}"
+  },
+  "punch": {
+    "description": "Punch someone in the ass",
+    "usage": "<@mention>",
+    "bot": "SAY NO TO THE BOTS AGRESSION",
+    "self-mention": "I will not make you punch yourself, mention someone else",
+    "embed_title": "PUNCH IN THE FACE",
+    "embed_description": "{{author}} punched {{mention}}"
+  },
+  "resurrect": {
+    "description": "Resurrect someone dead",
+    "usage": "<@mention>",
+    "no-mention": "How to resurrect the nothing, which never died?",
+    "self-mention": "Wait wut?? If you're dead, how are you typing?",
+    "bot": "A robot has been restarted UwU >. <",
+    "embed_title": "Resurrect",
+    "embed_description": "{{author}} resurrected {{mention}}"
+  },
+  "sarrar": {
+    "description": "Dance with me?",
+    "usage": "[@mention]",
+    "no-mention": {
+      "embed_title": "Dance with me?",
+      "embed_description": "Someone wants to dance with {{author}}?",
+      "embed_footer": "Do you want to dance with me? 30 seconds to accept the dance"
+    },
+    "embed_title": "Dance",
+    "embed_description": "{{mention}} danced with {{author}}",
+    "sarrar": "Accept Dance"
+  },
+  "shot": {
+    "description": "Shoot someone",
+    "usage": "<@mention>",
+    "self-mention": "Say no to suicide",
+    "embed_title": "Shoot",
+    "embed_description": "{{author}} shoot {{mention}}"
+  },
+  "shy": {
+    "description": "imin shame",
+    "usage": "[@mention]",
+    "no-mention": {
+      "embed_title": "Shame 👉👈",
+      "embed_description": "{{author}} ashamed >.<"
+    },
+    "embed_title": "Shame 👉👈",
+    "embed_description": "{{mention}} made {{author}} shamed >.<"
+  },
+  "slap": {
+    "description": "Slap someone",
+    "usage": "<@mention>",
+    "bot": "Do not slap robots my broooo",
+    "self-mention": "I will not make you hit yourself, mention someone else",
+    "embed_title": "Slap",
+    "embed_description": "{{author}} slapped {{mention}}"
+  },
+  "sniff": {
+    "description": "nhammm what a nice smell",
+    "usage": "[user]",
+    "bot": "Well, i guess this bot smells metal",
+    "no-mention": {
+      "embed_title": "HMMMM SNIFF SNIFF",
+      "embed_description": "{{author}} is sniffing"
+    },
+    "embed_description": "{{author}} sniffed {{mention}}"
+  },
+  "think": {
+    "description": "Thinking",
+    "usage": "[@mention]",
+    "bot": "Awnnn what a beautiful thing, you are thinking in a bot >.<",
+    "no-mention": {
+      "embed_title": "Think",
+      "embed_description": "{{author}} is thinking"
+    },
+    "embed_title": "❤️ Loving Thought",
+    "embed_description": "{{author}} is thinking in {{mention}}"
+  },
+  "coinflip": {
+    "description": "Bet stars on a coin toss with someone",
+    "usage": "<@mention> <value>",
+    "bet": "Bet",
+    "timeout": "Time Out",
+    "invalid-value": "this value is not valid",
+    "bot": "bots cannot bet e.e",
+    "self-mention": "you cannot bet against yourself",
+    "no-dbuser": "this user does not have a Menhera's Bank account!",
+    "poor": "you don't have all these stars to bet on!",
+    "confirm": "{{author}} challenged you to a heads-up bet worth **{{value}}** ⭐. Heads, {{author}} wins, tails, {{mention}} wins. Do you accept? you got **7** seconds",
+    "cara": "**HEADS**",
+    "coroa": "**TAILS**",
+    "cara-texto": "{{author}} won {{value}} :star: betting with {{mention}}. I'm sorry {{mention}}, we are not always victorious",
+    "coroa-texto": "{{mention}} won {{value}} :star: betting against {{author}}"
+  },
+  "give": {
+    "description": "Transfer something from your inventory to someone",
+    "usage": "<option> <@mention> <value>",
+    "self-mention": "you cannot mention yourself!",
+    "no-dbuser": "this user does not have a Menhera's Bank account!",
+    "invalid-value": "The value to be given must be greater than 0",
+    "poor": "you don't have this much of",
+    "transfered": "you transferred **{{value}}** {{emoji}} to",
+    "stars": "stars",
+    "demons": "demons",
+    "angels": "angels",
+    "semigods": "demigods",
+    "gods": "gods"
+  },
+  "shop": {
+    "description": "Access the Menhera's thrift store",
+    "embed_title": "Menhera's Thrift store",
+    "colors": {
+      "purple": "1 - Dark purple",
+      "red": "2 - Red",
+      "cian": "3 - Cian",
+      "green": "4 - Neon Green",
+      "pink": "5 - Hot Pink",
+      "yellow": "6 - Yellow",
+      "your_choice": "7 - Your Choice"
+    },
+    "dataCores_fields": {
+      "title": "Buy Colors for Your Profile",
+      "field_name": "Price List",
+      "color_code": "Color code:",
+      "price": "Price:"
+    },
+    "buy_colors": {
+      "has-color": "I appreciate your excitement to buy at my thrift store, but you already have this color!",
+      "poor": "you don't have enough stars to buy this color!",
+      "buy-success": "all done! You bought the color **{{name}}** for **{{price}}** ⭐! You got **{{stars}} **⭐ stars",
+      "yc-message": "Submit a hexcolor code **WITHOUT A HASHTAG** (Example: AABBCC) of your choice to add to your profile",
+      "yc-confirm": "WOOOOW !!! YOU'VE JUST BUYED A COLOR OF YOUR CHOICE !!! \nYour current choice is **#{{color}}** \nYou spent **{{price}}** ⭐ and got **{{stars}}** ⭐ stars",
+      "invalid-color": "this color is not a valid color!",
+      "no-name": "No name passed"
+    },
+    "dataRolls_fields": {
+      "fields": {
+        "name": "Price List",
+        "value": "1 Roll = **{{price}}** ⭐"
+      },
+      "buy_rolls": {
+        "invalid-number": "this value is not a valid number!",
+        "poor": "you don't have enough stars to buy this amount of rolls!",
+        "success": "you bought **{{quantity}}** 🔑 rolls for **{{value}}** ⭐ stars! \nNow you have **{{rolls}}** 🔑 and **{{stars}}** ⭐"
+      }
+    },
+    "dataVender": {
+      "main": {
+        "fields": {
+          "name": "Sales Options",
+          "value": "<:DEMON:758765044443381780> Demons - **{{demon}}**⭐ \n<:ANGEL:758765044204437535> Angels - **{{angel}}**⭐\n<:SEMIGOD:758766732235374674> Demigods - **{{demi}}**⭐\n<:God:758474639570894899> Gods - **{{god}}**⭐"
+        }
+      },
+      "invalid-args": "this value is not a valid number! You must say the option and the quantity",
+      "poor": "you don't have all these {{var}}!",
+      "success-demon": "you sold **{{value}}** <:DEMON:758765044443381780> demons and received ** {{cost}} ** ⭐ star! \nNow you have ** {{quantity}} ** <:DEMON:758765044443381780> and **{{star}}** ⭐ ",
+      "success-angel": "you sold ** {{value}} ** <:Angel:758765044204437535> angels and received ** {{cost}} ** ⭐ star! \nNow you have ** {{quantity}} ** <:Angel:758765044204437535> and ** {{star}} ** ⭐ ",
+      "success-sd": "you sold ** {{value}} ** <:SEMIGOD:758766732235374674> demigods and received ** {{cost}} ** ⭐ star! \nNow you have ** {{quantity}} ** <:SEMIGOD:758766732235374674> and ** {{star}} ** ⭐ ",
+      "success-god": "you sold ** {{value}} ** <:God:758474639570894899> gods and received ** {{cost}} ** ⭐ star! \nNow you have ** {{quantity}} ** <:God:758474639570894899> and ** {{star}} ** ⭐ "
+    }
+  },
+  "wallet": {
+    "description": "See someone's wallet",
+    "usage": "[user]",
+    "no-dbuser": "this user is not in my database",
+    "title": "{{user}}'s Wallet",
+    "stars": "Stars",
+    "rolls": "Rolls",
+    "unknow-user": "user not found",
+    "demons": "Demons",
+    "angels": "Angels",
+    "sd": "Demigods",
+    "god": "Gods"
+  },
+  "8ball": {
+    "description": "Ask me something",
+    "usage": "<question>",
+    "question": "Your Question",
+    "answer": "Answer",
+    "no-args": "you must send a question for me to answer"
+  },
+  "divorce": {
+    "description": "Don't you want to be married to that horn anymore? Divorce with this command",
+    "author-single": "you are not married to anyone",
+    "divorce": "Divorce",
+    "cancell": "Cancell",
+    "confirmation": "Do you really want to divorce from",
+    "canceled": "I think it’s good that you're still married, but if you thought about breaking up once, maybe you’ll think more often ... If the relationship doesn’t make you feel good, there’s no point in continuing…",
+    "confirmed_start": "just got divorced from",
+    "confirmed_end": "I'm sorry for having finished everything ... But it's okay, all relationships are just experiences, you still have a lot of life ahead of you, and you will still find people who do you as well as you deserve"
+  },
+  "fodase": {
+    "description": "Did someone send something that nobody asked? Take the fuck"
+  },
+  "humor": {
+    "description": "Send it when someone makes that joke joke"
+  },
+  "hunt": {
+    "description": "Hunt demons like XANDÃO",
+    "probabilities": "Hunt probabilitites\n\nDemons: `[{{demon}}]`\nAngels: `[{{angel}}]`\nDemigods: `[{{demi}}]`\nGods: `[{{god}}]`",
+    "no-args": "you must choose between hunting demons, angels, demigods and gods",
+    "help": "** HOW DOES HUNTING WORK? ** \nYou can hunt every hour, and you can choose from 4 hunts: `demons`, `angels`,` demigods` and `gods` \nThe farther to the right, the more valuable, but also, more difficult to hunt, and less chance of success \nOn my support server, the chances of hunting are greater!",
+    "footer": "Did you know that on my support server, your chances of success are greater?",
+    "description_start": "You went hunting **{{hunt}}** **{{count}}** time with Super Xandão, and you returned home with more **{{value}}** to count. You are in **#{{rank}}** on the {{hunt}} top",
+    "description_start_plural": "You went hunting **{{hunt}}** **{{count}}** times with Super Xandão, and you returned home with more **{{value}}** to count. You are in **#{{rank}}** on the {{hunt}} top",
+    "god_hunted_success": "HOLLY MOLLY!!! YOU BECOME A HERO FRUIT OF A DIVINE FORÇE, AS WELL AS XANDÃO, AND GOT ​​HUNTING `{{count}}` GOD IN **{{toRun}}** TRIES! WITH THAT SAID, YOU ARE IN **#{{rank}}** ON GOD MENHERA'S TOP",
+    "god_hunted_success_plural": "HOLLY MOLLY!!! YOU BECOME A HERO FRUIT OF A DIVINE FORÇE, AS WELL AS XANDÃO, AND GOT ​​HUNTING `{{count}}` GODS IN **{{toRun}}** TRIES! WITH THAT SAID, YOU ARE IN **#{{rank}}** ON GOD MENHERA'S TOP",
+    "god_hunted_fail": "Hunting Gods is an extremely difficult mission, and in **{{count}}** try you have not been successful. But rest assured, hero, you can still do it! You are in **{{rank}}** on god's top",
+    "god_hunted_fail_plural": "Hunting Gods is an extremely difficult mission, and in **{{count}}** tries you have not been successful. But rest assured, hero, you can still do it! You are in **{{rank}}** on god's top",
+    "demons": "Demons",
+    "angels": "Angels",
+    "sd": "Demigods",
+    "gods": "Gods",
+    "invalid-rolls": "this amount of rolls is invalid!",
+    "rolls-poor": "you dont have all this rolls!",
+    "cooldown": "rest champion, you've already gone on your hunt. Try again in ** {{time}} ** minutes \n <:attention:759603958418767922> | ** TIP: ** Did you know that on my support server, the chances of hunting are greater? m!support"
+  },
+  "marry": {
+    "description": "Marry with the love of your life",
+    "usage": "<@mention>",
+    "bot": "you can't marry bots",
+    "self-mention": "you can't marry yourself :(",
+    "married": "you are already married !!",
+    "no-dbuser": "suck this user to add him to my database",
+    "mention-married": "calm there married eater, this user is already married!",
+    "accepted": "{{toMarry}} agreed to marry {{author}}. Hope the lovebirds enjoy the wedding night hehe",
+    "negated": "{{toMarry}} denied the marriage proposal of {{author}}",
+    "first-text": "{{toMarry}}, you received a marriage proposal from {{author}}\n\n{{toMarry}}, do you accept {{author}} as your rightful wife (or rightful husband), promising to be faithful,\nTo love and respect you,\nIn joy and sorrow,\nIn health and sickness,\nIn wealth and poverty,\nAll the days of your life, until death do you part (or `/divorce` you)?",
+    "accept": "I Accept",
+    "deny": "I Deny"
+  },
+  "ship": {
+    "description": "Would you make a good couple?",
+    "usage": "<user1> [user2]",
+    "missing-args": "you didn't mention an user",
+    "no-dbuser": "user not found in database",
+    "unknow-user": "user not found",
+    "value": "Ship value:",
+    "message-start": "Would the two lovebirds make a good couple?",
+    "default": "Maybe the bot that is broken, or you will not work at all :(",
+    "low": "Yeah, nothing is impossible right kekw",
+    "ok": "WHAT A COUPLE couple, can already date",
+    "medium": "Aren't these two already dating? Because they should",
+    "high": "What a magnificent couple, just perfect",
+    "perfect": "MY FRIEND, THOSE GUYS ARE MADE TO ANOTHER PRO"
+  },
+  "xandão": {
+    "description": "NO PRESSURE (this is a portuguese only command)",
+    "usage": "[text]",
+    "only-text": "This command isn't available on threads",
+    "err_message": "In order for me to run this command, ask administrators to grant me `Manage Webhooks` permission"
+  },
+  "avatar": {
+    "description": "Shows someone's avatar",
+    "usage": "[user]",
+    "title": "{{user}}'s avatar",
+    "footer": "What a beautiful image uwuwu",
+    "unknow-user": "user not found",
+    "client_title": "my avayar ({{user}})",
+    "client_footer": "I'm very beautiful, right?"
+  },
+  "color": {
+    "description": "Change the color of your profile",
+    "usage": "[color]",
+    "embed_title": "Your Colors",
+    "embed_description": "Choose down bellow the color to change your profile. You got 30 seconds",
+    "dataChoose": {
+      "title": "Your color has been successfully changed",
+      "description": "You can now see your profile with your new color!"
+    },
+    "choose": "Choose your color",
+    "min-color": "you need to have at least 2 colors to use this command!"
+  },
+  "profile": {
+    "description": "See your profile, or someone else's",
+    "usage": "[user]",
+    "bot": "What? OMEGALUL fuck the bots, robots don't have a profile",
+    "no-dbuser": "this user does not have a profile!",
+    "banned": "this user is **banned** from using Menhera \n **Reason:** `{{reason}}`",
+    "mamou": "Suck",
+    "unknow-user": "user not found",
+    "mamado": "Suckled",
+    "married-with": "Married with",
+    "married-in": "Married in",
+    "about-me": "About Me",
+    "commands": "Commands",
+    "zero": "used my commands",
+    "um": "times. It most used command was",
+    "dois": "used",
+    "tres": "times",
+    "commands-usage": "{{user}} used my commands {{usedCount}} times. His most used command was {{mostUsedCommandName}}, used {{mostUsedCommandCount}} times"
+  },
+  "top": {
+    "description": "See the top of my users",
+    "usage": "<option> [page | user]",
+   "mamadoresTitle": "Suckers Leaderboard",
+    "mamouTitle": "Suckled Leaderboard",
+    "demonTitle": "Demons Leaderboard",
+    "angelTitle": "Angels Leaderboard",
+    "sdTitle": "Demigods Leaderboard",
+    "godTitle": "Gods Leaderboard",
+    "starsTitle": "Stars Leaderboard",
+    "voteTitle": "Upvotes Leaderboard",
+    "commands": "Most Used Commands",
+    "users": "Users Who Most Used Commands",
+    "suckled": "Suckled",
+    "suck": "Suck",
+    "demons": "Demons",
+    "angels": "Angels",
+    "demigods": "Demigods",
+    "gods": "Gods",
+    "stars": "Stars",
+    "members": "Members",
+    "used": "Used",
+    "use": "Used",
+    "user": "Most used commands from {{user}}",
+    "times": "times",
+    "not-user": "this user didn't use any commands"
+  },
+  "blockchannel": {
+    "description": "Lock or Unlock the current channel from using my commands",
+    "block": "My commands were **Blocked** on channel {{channel}}! Use `/blockcanal` to unlock them",
+    "unblock": "My commands were **Unblocked** on channel {{channel}}"
+  },
+  "language": {
+    "description": "Change the language I speak on this server",
+    "question": "What language do you want me to speak?",
+    "select": "Select the language clicking here",
+    "english": "American English",
+    "portuguese": "Brazilian Portuguese"
+  },
+  "aboutme": {
+    "description": "Change your About Me",
+    "usage": "<text>",
+    "no-args": "you didn't tell me what you want to put in your 'About Me'",
+    "args-limit": "your sobremim cannot be longer than 200 characters",
+    "success": "your 'About Me' has been successfully changed! Use m!Profile >.<"
+  },
+  "botinfo": {
+    "description": "Shows current bot information",
+    "title": "🎉 TODAY IS MY BIRTHDAY 🎉",
+    "embed_description": "Hi my name is **{{name}}**, and I'm a Brazilian Bot for Discord with a focus on fun and RPG! I was created in **{{createdAt}}** and joined this server in **{{joinedAt}}**.\n\nA little bit about me: My name is Menhera, I am 16 years old and I LOVE, I mean, I LOOOOVE to use these faces: (>...<). To learn more, go to my [twitter](https://twitter.com/__MenheraBot), my [support server](https://discord.gg/fZMdQbA) and my [WEBSITE](https://menherabot.xyz). If you want, you can help sending fun for all the world [translating me](https://translate.menherabot.xyz)",
+    "embed_footer": "was created by",
+    "channels": "Channels",
+    "memory": "Memory",
+    "users": "Users (cached)",
+    "version": "Version"
+  },
+  "delete": {
+    "description": "Delete your profile from the database",
+    "confirm": "Are you sure you want to delete your account from the server database? \nYou have 5 seconds to decide",
+    "negated": "Perfect!! Your profile ** has not ** been deleted",
+    "acepted": "Your profile has been deleted from my database :(",
+    "btn_confirm": "Delete",
+    "ban": "You have been **banned** from using Menhera! If you think this was an error, come to my support server"
+  },
+  "invite": {
+    "description": "Add the bot on some server",
+    "embed_title": "Click to add me on any server",
+    "embed_footer": "Command executed by {{user}}",
+    "embed_description": "This link will take you directly to the discord page to add the bot to any server you manage"
+  },
+  "ping": {
+    "description": "Shows the ping of the bot and its API",
+    "latency": "Latency:",
+    "api": "API Latency:"
+  },
+  "suggest": {
+    "description": "Suggest something to the bot owner",
+    "usage": "<suggestion>",
+    "no-args": "Suggest something more detailed",
+    "thanks": "thank you so much for sending me a suggestion <3"
+  },
+  "support": {
+    "description": "Invitation link to Bot support server",
+    "embed_title": "Click here to enter Menhera's support server",
+    "embed_footer": "Command executed by"
+  },
+  "vote": {
+    "description": "Vote for the bot (pelase vote, it helps a lot X3 >.<)",
+    "embed_title": "Click to vote for me",
+    "embed_footer": "Command executed by",
+    "embed_description": "Votes help in promoting the bot, and this is extremely important"
+  },
+  "coinflipstats": {
+    "description": "Show your coinflip game data",
+    "usage": "[user]",
+    "embed-title": "Coinflip stats for {{user}}",
+    "no-data": "you never played a coinflip game!",
+    "embed-footer": "You are amazing",
+    "played": "Matches Played",
+    "wins": "Wins",
+    "loses": "Losses",
+    "earnMoney": "Earned Money",
+    "lostMoney": "Lost Money",
+    "profit": "Total Profit",
+    "loss": "Total Loss",
+    "error": "an error occurred while checking this user's statistics"
+  },
+  "philo": {
+    "description": "To be or not to be, that's the question",
+    "usage": "<text>",
+    "no-args": "you didn't tell me any arguments! And if you don't know what an argument is, an argument can be defined as a statement accompanied by justification (rhetorical argument) or as a juxtaposition of two opposing statements, argument and counter-argument"
+  },
+  "blockcommand": {
+    "description": "Disable a command in this server",
+    "usage": "<command>",
+    "no-args": "you didn't quote any commands!",
+    "no-cmd": "this command does not exist!",
+    "dev-cmd": "you do not have access to this command!",
+    "unblock": "the command `/{{cmd}}` has been re-enabled on this server!",
+    "block": "the command `/{{cmd}}` has been disabled on this server!",
+    "foda": "Are you happy? If you disable this command you will no longer be able to use it, stop"
+  },
+  "cooldowns": {
+    "description": "See your cooldowns",
+    "usage": "",
+    "title": "⌛ | Your cooldown times",
+    "no-cooldown": "You can already do that!",
+    "hunt": "Hunt",
+    "dungeon": "Dungeon/Boss",
+    "job": "Work",
+    "vote": "Vote for Me",
+    "death": "You are dead for anothe",
+    "hotel": "You will stay at the hotel for another",
+    "minutes": "minutes",
+    "hours": "hours",
+    "error": "you don't have cooldowns yet! Create a profile first!"
+  },
+  "astolfo": {
+    "description": "It's big, isn't it? Astolfo said",
+    "usage": "<text>",
+    "no-args": "what is big? Tell me?"
+  },
+  "trisal": {
+    "description": "Form a trisal and see your metadinhas",
+    "usage": "[@mention1 & @mention2]",
+    "marry-not-found": "a user of your trisal was not found",
+    "no-owner": "you need to use the 'suck' command to create an account first >.<",
+    "embed": {
+      "description": "As much as it is not something serious, these 3 are together: "
+    },
+    "self-mention": "you can't make a couple with yourself",
+    "same-mention": "you can't mention the same user 2 times",
+    "bot-mention": "you cannot form a trisal with a bot. In fact this is even weird ... I feel sorry for you for trying to get a bot.",
+    "no-db": "one of the members of trisal was not found in the database! The best thing now is to undo this trisal and start another one",
+    "comedor-de-casadas": "UOUOUOU calm there married eater, one of the users you mentioned is already in a trisal",
+    "accept-message": ":heart: | Do you accept to form a trisal? You 3 must react to this message in 14 seconds!",
+    "done": "congratulations, you three formed a beautiful trisal! Use this command again to see your pictures together",
+    "error": "the 3 did not react to the message in time! Try again, maybe with someone who wants to, who knows"
+  },
+  "untrisal": {
+    "description": "End the trisal you no longer want to participate in",
+    "usage": "",
+    "error": "you are not in any trisal!",
+    "sure": "are you sure you want to break up with your trisal? You have 15 seconds to confirm",
+    "cofnrim": "Breakup",
+    "done": "Your trisal is over! There's no way. He finished...."
+  },
+  "http-error": "hmmm... Some error happened while receiving the image... Maybe the image generator server is out... Please try again later",
+  "gado": {
+    "description": "Look there the simp",
+    "usage": "[@mention || image || reply to a message that has an attachment]"
+  },
+  "macetava": {
+    "description": "Did you ever seen the brazilian meme of 'macetava' from Casasa Bahia? Is exactly that",
+    "usage": "[@mention || image || reply to a message that has an attachment]"
+  },
+  "blackjack": {
+    "description": "Bet against Menhera in Blackjack (or 21)",
+    "usage": "<bet>",
+    "buy": "Draw",
+    "stop": "Stop",
+    "bad-usage": "you didn't place your bet",
+    "invalid-value": "the bet amount must be greater than 1000 and less than 50000",
+    "available-options": "Available Options",
+    "initial-options": "**[1] Start** - Start the game\n**[2] Surrender** - Surrender from the game (and losses the bet)",
+    "options": "**[1] Buy** - Draw one more card\n**[2] Stop** - Stop your bet here",
+    "footer": "You got 10 seconds",
+    "poor": "you don't have all these stars to bet on!",
+    "your-hand": "Your Hand",
+    "dealer-hand": "Menhera's Hand",
+    "timeout": "you took too long to play. Menhera ran out of patience, you lost everything!",
+    "result": "👑 | Results",
+    "blackjack": "You did a BlackJack!!! You received double the prize! **{{value}}** :star:",
+    "explode": "You bust! That's why you lost everything :(",
+    "menhera-bj": "Menhera has a Blackjack. You lost everything, and Menhera won everything hehe",
+    "menhera-21": "Menhera hits 21, you lololololost 👍",
+    "user-21": "You hit 21, my kid! You won **{{value}}** :star:",
+    "menhera-bust": "Menhera bust! The **{{value}}** :star: it's all yours",
+    "draw": "Both bust. Because Menhera is so humble, she returned your bet to your account!",
+    "both-21": "Both hit 21, but Menhera has the upper hand. Unfortunately that's how casinos work. You lost everything.",
+    "equal": "Both you and Menhera hit the same amount. Menhera Wins UwU",
+    "menhera-bigger": "Menhera is closer to 21, she wins!",
+    "user-bigger": "You're closer to 21, you won **{{value}}** :star:"
+  }
+}

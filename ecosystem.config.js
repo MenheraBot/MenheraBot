@@ -1,9 +1,14 @@
 module.exports = {
-  apps: [{
-    name: 'Menhera',
-    script: './shard.js',
-    watch: false,
-    max_memory_restart: '768M',
-    interpreter_args: '--max-old-space-size=768',
-  }],
+  apps: [
+    {
+      name: 'Menhera',
+      script: './dist/shard.js',
+      watch: false,
+      max_memory_restart: '4096M',
+      interpreter_args: '--max-old-space-size=4096',
+      env: {
+        NODE_ENV: 'production',
+      },
+    },
+  ],
 };

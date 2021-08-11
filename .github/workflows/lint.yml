@@ -2,27 +2,46 @@ name: Linter
 
 on:
   pull_request:
-    types: [opened]
+    types:
+      - opened
+      - synchronize
+      - reopened
   push:
     branches:
-     - master
-     - dev
+      - master
+      - dev
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 3
+    strategy:
+      matrix:
+        node-version: [16.6.x]
+
     steps:
-      - uses: actions/checkout@v1
-      - name: Setup Node.js V14
-        uses: actions/setup-node@v1
+      - uses: actions/checkout@v2
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
         with:
-          node-version: 14.x
+          node-version: ${{ matrix.node-version }}
+          # cache: npm
+
+      - name: Restore build from cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
       - name: Install dependencies
         run: npm install
       - name: Run tests
         run: npm test
       - name: Run Linter
         run: npm run lint:test
+      - name: Typecheck
+        run: npm run typecheck
       - name: Run Build
-        run: cp .env.example .env && npm run build:test
+        run: cp .env.example .env && npm run build
