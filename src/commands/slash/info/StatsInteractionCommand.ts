@@ -83,13 +83,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
     const getReduced = (arr: number[]) => arr.reduce((p, c) => p + c, 0);
 
     const [AllGuilds, AllChannels, AllMembers, AllMemoryUsed, AllCachedMembers] =
-      (await Promise.all(promises)) as [
-        AllGuild: number[],
-        AllChannels: number[],
-        AllMembers: number[],
-        AllMemoryUsed: number[],
-        AllCachedMembers: number[],
-      ];
+      (await Promise.all(promises)) as number[][];
 
     const embed = new MessageEmbed()
       .setColor('#fa8dd7')

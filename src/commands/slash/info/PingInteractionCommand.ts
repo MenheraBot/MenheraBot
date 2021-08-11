@@ -31,17 +31,22 @@ export default class PingInteractionCommand extends InteractionCommand {
     const avatar = ctx.interaction.user.displayAvatarURL({ format: 'png', dynamic: true });
 
     if (ctx.options.getString('shards')) {
-      const allShardsPing = (await this.client.shard.fetchClientValues('ws.ping')) as number[];
-      const allShardsStatus = (await this.client.shard.fetchClientValues('ws.status')) as number[];
-      const allShardsUptime = (await this.client.shard.fetchClientValues(
-        'ws.client.uptime',
-      )) as number[];
-      const guildsPerShardCount = (await this.client.shard.fetchClientValues(
-        'guilds.cache.size',
-      )) as number[];
-      const allShardsMemoryUsedByProcess: Array<number> = (await this.client.shard.broadcastEval(
-        () => process.memoryUsage().heapUsed,
-      )) as number[];
+      const promises = [
+        this.client.shard.fetchClientValues('ws.ping'),
+        this.client.shard.fetchClientValues('ws.status'),
+        this.client.shard.fetchClientValues('ws.client.uptime'),
+        this.client.shard.fetchClientValues('guilds.cache.size'),
+        this.client.shard.broadcastEval(() => process.memoryUsage().heapUsed),
+      ];
+
+      const [
+        allShardsPing,
+        allShardsStatus,
+        allShardsUptime,
+        guildsPerShardCount,
+        allShardsMemoryUsedByProcess,
+      ] = (await Promise.all(promises)) as number[][];
+
       const tabled = allShardsPing.reduce(
         (
           p: Array<{
@@ -77,6 +82,18 @@ export default class PingInteractionCommand extends InteractionCommand {
         [],
       );
 
+      const shardCount = this.client.shard.count;
+
+      const getAverage = (arr: number[]) => arr.reduce((p, c) => p + c, 0) / shardCount;
+
+      tabled.push({
+        Ping: `${getAverage(allShardsPing)}ms`,
+        Status: 'AVERAGE',
+        Uptime: moment.duration(getAverage(allShardsUptime)).format('D[d], H[h], m[m], s[s]'),
+        Ram: `${(getAverage(allShardsMemoryUsedByProcess) / 1024 / 1024).toFixed(2)} MB`,
+        Guilds: getAverage(guildsPerShardCount),
+      });
+
       const ts = new Transform({
         transform(chunk, _, cb) {
           cb(null, chunk);
@@ -91,10 +108,8 @@ export default class PingInteractionCommand extends InteractionCommand {
 
       const stringTable = getTable(tabled);
       await ctx.reply(
-        `\`\`\`${stringTable
-          .replace('(index)', ' Shard ')
-          .replace(/'/g, ' ')
-          .slice(0, 1992)}\`\`\``,
+        ` O shard ${shardCount} é uma linha de médias, para saber o total, use /stats menhera
+        \`\`\`${stringTable.replace('(index)', ' Shard ').replace(/'/g, ' ').slice(0, 1992)}\`\`\``,
       );
       return;
     }
