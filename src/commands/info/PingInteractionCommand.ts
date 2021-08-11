@@ -87,11 +87,11 @@ export default class PingInteractionCommand extends InteractionCommand {
       const getAverage = (arr: number[]) => arr.reduce((p, c) => p + c, 0) / shardCount;
 
       tabled.push({
-        Ping: `${getAverage(allShardsPing)}ms`,
+        Ping: `${getAverage(allShardsPing).toFixed(2)}ms`,
         Status: 'AVERAGE',
         Uptime: moment.duration(getAverage(allShardsUptime)).format('D[d], H[h], m[m], s[s]'),
         Ram: `${(getAverage(allShardsMemoryUsedByProcess) / 1024 / 1024).toFixed(2)} MB`,
-        Guilds: getAverage(guildsPerShardCount),
+        Guilds: parseInt(getAverage(guildsPerShardCount).toFixed(2)),
       });
 
       const ts = new Transform({
