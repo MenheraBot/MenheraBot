@@ -493,8 +493,9 @@
   "blockchannel": {
     "description": "Bloqueie ou Desbloqueie o canal atual de usar meus comandos",
     "usage": "",
-    "block": "meus comandos foram **Bloqueados** neste canal! Use {{prefix}}bloquear para desbloqueá-los",
-    "unblock": "meus comandos foram **Liberados** neste canal!"
+    "block": "Meus comandos foram **Bloqueados** no canal {{channel}}! Use `/blockcanal` para desbloqueá-los",
+    "unblock": "Meus comandos foram **Liberados** no canal {{channel}}!",
+    "invalid-channel": "Este comando só pode ser executado em canais de texto!"
   },
   "language": {
     "description": "Troque a língua com que eu falo neste servidor",

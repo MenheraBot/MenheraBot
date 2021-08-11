@@ -482,8 +482,8 @@
   },
   "blockchannel": {
     "description": "Lock or Unlock the current channel from using my commands",
-    "block": "my commands were ** Blocked ** on this channel! Use {{prefix}}lock to unlock them",
-    "unblock": "my commands were **Unblocked** on this channel!"
+    "block": "My commands were **Blocked** on channel {{channel}}! Use `/blockcanal` to unlock them",
+    "unblock": "My commands were **Unblocked** on channel {{channel}}"
   },
   "language": {
     "description": "Change the language I speak on this server",
