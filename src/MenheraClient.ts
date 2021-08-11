@@ -72,6 +72,12 @@ export default class MenheraClient extends Client {
     );
   }
 
+  // eslint-disable-next-line class-methods-use-this
+  async reloadLocales(): Promise<void> {
+    const locale = new LocaleStructure();
+    locale.reload();
+  }
+
   login(token: string): Promise<string> {
     return super.login(token);
   }

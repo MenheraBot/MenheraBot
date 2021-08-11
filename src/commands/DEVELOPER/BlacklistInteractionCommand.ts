@@ -39,7 +39,7 @@ export default class BlacklistInteractionCommand extends InteractionCommand {
           type: 'STRING',
           name: 'motivo',
           description: 'Motivo do ban',
-          required: true,
+          required: false,
         },
       ],
       defaultPermission: false,

@@ -52,6 +52,7 @@ export default class PhiloInteractionCommand extends InteractionCommand {
       ctx.editReply({
         content: `No total, ${res?.size} comandos foram adicionados neste servidor!`,
       });
+      return;
     }
     const text = ctx.options.getString('frase', true);
 

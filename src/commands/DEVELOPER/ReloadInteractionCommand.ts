@@ -26,17 +26,15 @@ export default class ReloadSlashInteractionCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     if (ctx.options.getString('comando', true).toLowerCase() === 'locales') {
-      await this.client.shard?.broadcastEval(async () => {
-        const LocaleStructure = (await import('@structures/LocaleStructure')).default;
-        const locale = new LocaleStructure();
-        locale.reload();
-      });
+      // @ts-ignore
+      await this.client.shard?.broadcastEval((c) => c.reloadLocales());
     }
 
     const command = ctx.options.getString('comando', true).toLowerCase();
 
     if (!this.client.slashCommands.get(command)) {
       ctx.replyE('error', 'NAO TEM NENHUM COMANDO COM, ESE NOME');
+      return;
     }
 
     // @ts-ignore
