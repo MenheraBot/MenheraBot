@@ -570,7 +570,9 @@
     "usage": "",
     "confirm": "Você tem certeza que deseja excluir sua conta da database do servidor?\nVocê tem 5 segundos para decidir",
     "negated": "Perfeito!! Seu perfil **não** foi excluído",
-    "acepted": "Seu perfil foi deletado da minha database :("
+    "acepted": "Seu perfil foi deletado da minha database :(",
+    "btn_confirm": "Deletar",
+    "ban": "Você foi banido de usar a Menhera! Caso pense que isso foi um erro, venha para meu servidor de suporte"
   },
   "help": {
     "description": "Mostra a pagina de ajuda do bot",

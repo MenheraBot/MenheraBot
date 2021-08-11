@@ -207,6 +207,16 @@ export default class HttpRequests {
     }
   }
 
+  static async getUserDeleteUsages(userId: string): Promise<{ count?: number; err: boolean }> {
+    try {
+      const data = await apiRequest.get('/usages/user/delete', { data: { userId } });
+      if (data) return { count: data.data.count, err: false };
+      return { err: true };
+    } catch {
+      return { err: true };
+    }
+  }
+
   static async macetavaRequest(
     image: string,
     authorName: string,

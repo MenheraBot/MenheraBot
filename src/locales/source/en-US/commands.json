@@ -555,7 +555,9 @@
     "description": "Delete your profile from the database",
     "confirm": "Are you sure you want to delete your account from the server database? \nYou have 5 seconds to decide",
     "negated": "Perfect!! Your profile ** has not ** been deleted",
-    "acepted": "Your profile has been deleted from my database :("
+    "acepted": "Your profile has been deleted from my database :(",
+    "btn_confirm": "Delete",
+    "ban": "You have been **banned** from using Menhera! If you think this was an error, come to my support server"
   },
   "help": {
     "description": "Displays the bot's help page",
