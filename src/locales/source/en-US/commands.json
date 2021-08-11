@@ -487,7 +487,11 @@
   },
   "language": {
     "description": "Change the language I speak on this server",
-    "question": "What language do you want me to speak?"
+    "question": "What language do you want me to speak?",
+    "select": "Select the language clicking here",
+    "english": "American English",
+    "portuguese": "Brazilian Portuguese",
+    "change": "Como preferir, a partir de agora vou falar portugues"
   },
   "prefix": {
     "description": "Change my prefix on this server",

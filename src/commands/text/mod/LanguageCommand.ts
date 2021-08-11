@@ -15,44 +15,28 @@ export default class LanguageCommand extends Command {
   }
 
   async run(ctx: CommandContext): Promise<void> {
-    await ctx.replyT('question', 'commands:language.question').then((msg) => {
-      msg.react('🇧🇷');
-      setTimeout(() => {
-        msg.react('🇺🇸');
-      }, 500);
+    await ctx.replyT('question', 'commands:language.question');
 
-      const collector = msg.createReactionCollector({
-        filter: (r, u) =>
-          (r.emoji.name === `🇧🇷` || r.emoji.name === '🇺🇸') &&
-          u.id !== this.client.user?.id &&
-          u.id === ctx.message.author.id,
-      });
-
-      collector.on('collect', async (r) => {
-        if (!ctx.message.guild) return;
-        switch (r.emoji.name) {
-          case '🇧🇷':
-            ctx.data.server.lang = 'pt-BR';
-            await this.client.repositories.cacheRepository.updateGuild(
-              ctx.message.guild.id,
-              ctx.data.server,
-            );
-            await msg.delete();
-            await ctx.message.channel.send(
-              ':map: | Agora eu irei falar em ~~brasileiro~~ português',
-            );
-            break;
-          case '🇺🇸':
-            ctx.data.server.lang = 'en-US';
-            await this.client.repositories.cacheRepository.updateGuild(
-              ctx.message.guild.id,
-              ctx.data.server,
-            );
-            await msg.delete();
-            await ctx.message.channel.send(":map: | Now I'll talk in english");
-            break;
-        }
-      });
-    });
+    if (!ctx.message.guild) return;
+    switch (r.emoji.name) {
+      case '🇧🇷':
+        ctx.data.server.lang = 'pt-BR';
+        await this.client.repositories.cacheRepository.updateGuild(
+          ctx.message.guild.id,
+          ctx.data.server,
+        );
+        await msg.delete();
+        await ctx.message.channel.send(':map: | Agora eu irei falar em ~~brasileiro~~ português');
+        break;
+      case '🇺🇸':
+        ctx.data.server.lang = 'en-US';
+        await this.client.repositories.cacheRepository.updateGuild(
+          ctx.message.guild.id,
+          ctx.data.server,
+        );
+        await msg.delete();
+        await ctx.message.channel.send(":map: | Now I'll talk in english");
+        break;
+    }
   }
 }

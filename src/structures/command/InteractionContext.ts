@@ -27,12 +27,14 @@ export default class InteractionCommandContext {
     ephemeral = false,
   ): Promise<Message | void> {
     if (typeof options === 'string')
-      return this.interaction.reply({
-        content: options,
-        ephemeral,
-      });
+      return this.interaction
+        .reply({
+          content: options,
+          ephemeral,
+        })
+        .catch(() => undefined);
 
-    return this.interaction.reply(options);
+    return this.interaction.reply(options).catch(() => undefined);
   }
 
   async replyE(
@@ -46,13 +48,15 @@ export default class InteractionCommandContext {
         ephemeral,
       });
 
-    return this.interaction.reply(options);
+    return this.interaction.reply(options).catch(() => undefined);
   }
 
   async deferedReplyT(emoji: EmojiTypes, text: string, translateOptions = {}): Promise<void> {
-    await this.interaction.editReply({
-      content: `${emojis[emoji] || '🐛'} **|** ${this.i18n(text, translateOptions)}`,
-    });
+    await this.interaction
+      .editReply({
+        content: `${emojis[emoji] || '🐛'} **|** ${this.i18n(text, translateOptions)}`,
+      })
+      .catch(() => undefined);
   }
 
   async replyT(
@@ -61,22 +65,24 @@ export default class InteractionCommandContext {
     translateOptions = {},
     ephemeral = false,
   ): Promise<Message | void> {
-    return this.interaction.reply({
-      content: `${emojis[emoji] || '🐛'} **|** ${this.i18n(text, translateOptions)}`,
-      ephemeral,
-    });
+    return this.interaction
+      .reply({
+        content: `${emojis[emoji] || '🐛'} **|** ${this.i18n(text, translateOptions)}`,
+        ephemeral,
+      })
+      .catch(() => undefined);
   }
 
   async send(options: MessagePayload | InteractionReplyOptions): Promise<void> {
-    await this.interaction.followUp(options);
+    await this.interaction.followUp(options).catch(() => undefined);
   }
 
   async deleteReply(): Promise<void> {
-    return this.interaction.deleteReply();
+    return this.interaction.deleteReply().catch(() => undefined);
   }
 
   async editReply(options: MessagePayload | InteractionReplyOptions): Promise<void> {
-    await this.interaction.editReply(options);
+    await this.interaction.editReply(options).catch(() => undefined);
   }
 
   locale(text: string, translateVars = {}): string {

@@ -500,7 +500,12 @@
   "language": {
     "description": "Troque a língua com que eu falo neste servidor",
     "usage": "",
-    "question": "Qual língua você quer que eu fale?"
+    "question": "Qual língua você quer que eu fale?",
+    "select": "Escolha a língua clicando aqui!",
+    "english": "Inglês Americano",
+    "portuguese": "Português Brasileiro",
+    "change": "As you wish, I will speak english on this server",
+    "ligma": "Ta na mão cpx, vo fala com a gurizada desse server de um jeito mais, digamos assim, de putão"
   },
   "prefix": {
     "description": "Troque meu prefixo neste servidor",
