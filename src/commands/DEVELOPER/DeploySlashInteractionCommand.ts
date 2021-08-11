@@ -23,6 +23,10 @@ export default class DeploySlashInteractionCommand extends InteractionCommand {
               name: 'Server',
               value: 'server',
             },
+            {
+              name: 'DEVELOPER',
+              value: 'developer',
+            },
           ],
           required: true,
         },
@@ -63,6 +67,34 @@ export default class DeploySlashInteractionCommand extends InteractionCommand {
       await this.client.application?.commands.set(allCommands);
       ctx.editReply({
         content: 'Todos comandos foram settados! Temos até 1 hora para tudo atualizar',
+      });
+      return;
+    }
+
+    if (ctx.options.getString('option', true) === 'developer') {
+      const permissionSet: string[] = [];
+
+      const allCommands = this.client.slashCommands.reduce<ApplicationCommandData[]>((p, c) => {
+        if (!c.config.devsOnly) return p;
+        permissionSet.push(c.config.name);
+        p.push({
+          name: c.config.name,
+          description: c.config.description,
+          options: c.config.options,
+          defaultPermission: c.config.defaultPermission,
+        });
+        return p;
+      }, []);
+
+      ctx.reply('Iniciando deploy');
+      const res = await ctx.interaction.guild?.commands.set(allCommands);
+
+      res?.forEach((a) => {
+        if (permissionSet.includes(a.name)) {
+          a.permissions.add({
+            permissions: [{ id: ctx.interaction.user.id, permission: true, type: 'USER' }],
+          });
+        }
       });
       return;
     }
