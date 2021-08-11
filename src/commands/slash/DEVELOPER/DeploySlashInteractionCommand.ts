@@ -8,7 +8,7 @@ export default class DeploySlashInteractionCommand extends InteractionCommand {
     super(client, {
       name: 'deploy',
       description: 'da deploy nos slash',
-      category: 'util',
+      category: 'dev',
       options: [
         {
           type: 'STRING',
