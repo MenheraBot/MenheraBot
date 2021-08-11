@@ -87,14 +87,11 @@ export default class CoinflipInteractionCommand extends InteractionCommand {
       .setStyle('SUCCESS');
 
     ctx.reply({
-      content: `${user2.toString()}, ${user1.toString()} ${ctx.locale(
-        'commands:coinflip.confirm-start',
-        {
-          value: input,
-        },
-      )} ${user1} ${ctx.locale('commands:coinflip.confirm-middle')} ${user2} ${ctx.locale(
-        'commands:coinflip.win',
-      )}!\n${user2} ${ctx.locale('commands:coinflip.confirm-end')}`,
+      content: ctx.locale('commands:coinflip.confirm', {
+        value: input,
+        author: ctx.interaction.user.toString(),
+        mention: user2.toString(),
+      }),
       components: [{ type: 1, components: [ConfirmButton] }],
     });
 
@@ -129,22 +126,20 @@ export default class CoinflipInteractionCommand extends InteractionCommand {
 
     if (choice === 'Cara') {
       await ctx.editReply({
-        content: `${ctx.locale('commands:coinflip.cara')}\n${user1.toString()} ${ctx.locale(
-          'commands:coinflip.cara-texto-start',
-          { value: input },
-        )} ${user2.toString()}! ${ctx.locale(
-          'commands:coinflip.cara-text-middle',
-        )} ${user2.toString()} ${ctx.locale('commands:coinflip.cara-text-end')}`,
+        content: `${ctx.locale('commands:coinflip.cara')}\n${ctx.locale(
+          'commands:coinflip.cara-texto',
+          { value: input, author: user1.toString(), mention: user2.toString() },
+        )}`,
         components: [],
       });
     } else {
       winner = user2.id;
       loser = user1.id;
       await ctx.editReply({
-        content: `${ctx.locale('commands:coinflip.coroa')}\n${user2.toString()} ${ctx.locale(
+        content: `${ctx.locale('commands:coinflip.coroa')}\n${ctx.locale(
           'commands:coinflip.coroa-texto',
-          { value: input },
-        )} ${user1.toString()}`,
+          { value: input, author: user1.toString(), mention: user2.toString() },
+        )}`,
         components: [],
       });
     }

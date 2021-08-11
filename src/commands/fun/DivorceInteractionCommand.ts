@@ -68,9 +68,10 @@ export default class DivorceInteractionCommand extends InteractionCommand {
 
     if (collected.customId.endsWith('CONFIRM')) {
       ctx.editReply({
-        content: `${emojis.success} | ${ctx.interaction.user.toString()} ${ctx.locale(
-          'commands:divorce.confirmed_start',
-        )} <@${authorData.casado}>. ${ctx.locale('commands:divorce.confirmed_end')}`,
+        content: `${emojis.success} | ${ctx.locale('commands:divorce.confirmed', {
+          author: ctx.interaction.user.toString(),
+          mention: `<@${authorData.casado}>`,
+        })}`,
         components: [
           {
             type: 1,
