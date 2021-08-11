@@ -3,7 +3,6 @@ import BadgeRepository from '@database/repositories/BadgeRepository';
 import BlacklistRepository from '@database/repositories/BlacklistRepository';
 import CacheRepository from '@database/repositories/CacheRepository';
 import CmdRepository from '@database/repositories/CmdsRepository';
-import CommandRepository from '@database/repositories/CommandRepository';
 import GiveRepository from '@database/repositories/GiveRepository';
 import GuildsRepository from '@database/repositories/GuildsRepository';
 import HuntRepository from '@database/repositories/HuntRepository';
@@ -18,7 +17,6 @@ import { ApplicationCommandData, ColorResolvable, PermissionResolvable, User } f
 import { Document } from 'mongoose';
 
 export interface IClientConfigs {
-  commandsDirectory: string;
   interactionsDirectory: string;
   eventsDirectory: string;
 }
@@ -93,7 +91,6 @@ export interface IUserSchema {
   deuses: number;
   caçarTime: string;
   rolls: number;
-  rollTime: string;
   estrelinhas: number;
   votos: number;
   badges: Array<IBadge>;
@@ -172,7 +169,6 @@ export interface IStatusSchema extends Document {
 export interface IDatabaseRepositories {
   userRepository: UserRepository;
   cacheRepository: CacheRepository;
-  commandRepository: CommandRepository;
   cmdRepository: CmdRepository;
   starRepository: StarRepository;
   mamarRepository: MamarRepository;

@@ -1,11 +1,10 @@
 import { Client, ClientEvents, ClientOptions, Collection } from 'discord.js';
 
 import * as Sentry from '@sentry/node';
-import i18next from 'i18next';
 
 import '@sentry/tracing';
 
-import { IClientConfigs, ICommandConfig, IDatabaseRepositories } from '@utils/Types';
+import { IClientConfigs, IDatabaseRepositories } from '@utils/Types';
 import FileUtil from '@utils/FileUtil';
 import Event from '@structures/Event';
 import Database from '@database/Databases';
@@ -62,7 +61,6 @@ export default class MenheraClient extends Client {
 
     await locales.load();
     await this.database.createConnection();
-    this.loadTextCommands(this.config.commandsDirectory);
     this.loadSlashCommands(this.config.interactionsDirectory);
     this.loadEvents(this.config.eventsDirectory);
     return true;
@@ -82,7 +80,7 @@ export default class MenheraClient extends Client {
     return super.login(token);
   }
 
-  async postExistingCommand(command: ICommandConfig): Promise<void> {
+  /* async postExistingCommand(command: ICommandConfig): Promise<void> {
     const tPt = i18next.getFixedT('pt-BR');
     const tUs = i18next.getFixedT('en-US');
 
@@ -101,37 +99,7 @@ export default class MenheraClient extends Client {
     } else {
       await this.repositories.commandRepository.create(command.name, data);
     }
-  }
-
-  async loadTextCommand(NewCommand: typeof Command, filepath: string): Promise<void> {
-    // @ts-expect-error Abstract class cannot be invoked
-    const command: Command = new NewCommand(this);
-
-    command.dir = filepath;
-
-    this.commands.set(command.config.name, command);
-    this.aliases.set(command.config.name, command.config.name);
-    if (command.config?.aliases)
-      command.config?.aliases.forEach((a: string) => this.aliases.set(a, command.config.name));
-
-    const cmdInDb = await this.repositories.cmdRepository.findByName(command.config.name);
-    if (!cmdInDb) {
-      await this.repositories.cmdRepository.create(command.config.name);
-    }
-
-    if (command.config.category !== 'Dev') {
-      await this.postExistingCommand(command.config);
-    }
-  }
-
-  loadTextCommands(directory: string): void {
-    FileUtil.readDirectory<typeof Command>(
-      directory,
-      async (cmd: typeof Command, filepath: string) => {
-        await this.loadTextCommand(cmd, filepath);
-      },
-    );
-  }
+  } */
 
   async loadSlashCommand(NewCommand: typeof InteractionCommand, filepath: string): Promise<void> {
     // @ts-expect-error Abstract class cannot be invoked

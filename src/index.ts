@@ -5,7 +5,7 @@ import MenheraClient from './MenheraClient';
 const client = new MenheraClient(
   {
     makeCache: Options.cacheWithLimits({
-      MessageManager: 100,
+      MessageManager: 50,
       PresenceManager: 0,
       StageInstanceManager: 0,
       UserManager: 2000,
@@ -21,8 +21,7 @@ const client = new MenheraClient(
     intents: ['GUILDS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS'],
   },
   {
-    commandsDirectory: resolve(__dirname, 'commands', 'text'),
-    interactionsDirectory: resolve(__dirname, 'commands', 'slash'),
+    interactionsDirectory: resolve(__dirname, 'commands'),
     eventsDirectory: resolve(__dirname, 'events'),
   },
 );

@@ -1,10 +1,4 @@
-import {
-  ICmdSchema,
-  ICommandsSchema,
-  IGuildSchema,
-  IStatusSchema,
-  IUserSchema,
-} from '@utils/Types';
+import { ICmdSchema, IGuildSchema, IStatusSchema, IUserSchema } from '@utils/Types';
 import { Document, Schema, model } from 'mongoose';
 
 const statusSchema = new Schema({
@@ -43,9 +37,6 @@ const userSchema = new Schema({
   shipValue: { type: String, default: Math.floor(Math.random() * 55) },
   ban: { type: Boolean, default: false },
   banReason: { type: String, default: null },
-  afk: { type: Boolean, default: false },
-  afkReason: { type: String, default: null },
-  afkGuild: { type: String, default: null },
   cor: { type: String, default: '#a788ff' },
   cores: { type: Array, default: [{ nome: '0 - Padrão', cor: '#a788ff', preço: 0 }] },
   caçados: { type: Number, default: 0 },
@@ -54,7 +45,6 @@ const userSchema = new Schema({
   deuses: { type: Number, default: 0 },
   caçarTime: { type: String, default: '000000000000' },
   rolls: { type: Number, default: 0 },
-  rollTime: { type: String, default: '000000000000' },
   estrelinhas: { type: Number, default: 0 },
   votos: { type: Number, default: 0 },
   badges: { type: Array, default: [] },
@@ -62,17 +52,7 @@ const userSchema = new Schema({
   trisal: { type: Array, default: [] },
 });
 
-const commandsSchema = new Schema({
-  name: { type: String },
-  pt_description: { type: String },
-  pt_usage: { type: String },
-  us_description: { type: String },
-  us_usage: { type: String },
-  category: { type: String },
-});
-
 export const Cmds = model<ICmdSchema & Document>('Cmd', cmdSchema);
-export const Commands = model<ICommandsSchema & Document>('commands', commandsSchema);
 export const Status = model<IStatusSchema & Document>('status', statusSchema);
 export const Guilds = model<IGuildSchema & Document>('guild', guildSchema);
 export const Users = model<IUserSchema & Document>('usersdb', userSchema);

@@ -1,10 +1,9 @@
 import mongoose from 'mongoose';
 import Redis from 'ioredis';
-import { Cmds, Commands, Guilds, Status, Users } from '@structures/DatabaseCollections';
+import { Cmds, Guilds, Status, Users } from '@structures/DatabaseCollections';
 import { IDatabaseRepositories } from '@utils/Types';
 import CacheRepository from './repositories/CacheRepository';
 import CmdRepository from './repositories/CmdsRepository';
-import CommandRepository from './repositories/CommandRepository';
 import StarRepository from './repositories/StarRepository';
 import UserRepository from './repositories/UserRepository';
 import MamarRepository from './repositories/MamarRepository';
@@ -21,8 +20,6 @@ import GiveRepository from './repositories/GiveRepository';
 export default class Databases {
   public Cmds: typeof Cmds;
 
-  public Commands: typeof Commands;
-
   public Guilds: typeof Guilds;
 
   public Status: typeof Status;
@@ -32,8 +29,6 @@ export default class Databases {
   public redisClient: Redis.Redis | null = null;
 
   private readonly userRepository: UserRepository;
-
-  private readonly commandRepository: CommandRepository;
 
   private readonly cmdRepository: CmdRepository;
 
@@ -65,7 +60,6 @@ export default class Databases {
     // TODO: add modal to the name for readability
     // para fazer isso tem que mudar todos os codigos que estão usando `database.(nome_sem_modal)` to repositories
     this.Cmds = Cmds;
-    this.Commands = Commands;
     this.Guilds = Guilds;
     this.Status = Status;
     this.Users = Users;
@@ -73,7 +67,6 @@ export default class Databases {
     if (withRedisCache) this.createRedisConnection();
 
     this.userRepository = new UserRepository(this.Users);
-    this.commandRepository = new CommandRepository(this.Commands);
     this.cmdRepository = new CmdRepository(this.Cmds);
     this.starRepository = new StarRepository(this.Users);
     this.mamarRepository = new MamarRepository(this.userRepository);
@@ -82,7 +75,6 @@ export default class Databases {
       this.redisClient,
       this.guildRepository,
       this.cmdRepository,
-      this.userRepository,
     );
     this.statusRepository = new StatusRepository(this.Status);
     this.badgeRepository = new BadgeRepository(this.userRepository);
@@ -100,7 +92,6 @@ export default class Databases {
   get repositories(): IDatabaseRepositories {
     return {
       userRepository: this.userRepository,
-      commandRepository: this.commandRepository,
       cmdRepository: this.cmdRepository,
       starRepository: this.starRepository,
       cacheRepository: this.cacheRepository,
