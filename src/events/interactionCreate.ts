@@ -1,4 +1,4 @@
-import { Interaction, Collection, ClientUser, GuildMember } from 'discord.js';
+import { Interaction, Collection, ClientUser, GuildMember, MessageEmbed } from 'discord.js';
 import MenheraClient from 'MenheraClient';
 import Event from '@structures/Event';
 import i18next from 'i18next';
@@ -45,7 +45,6 @@ export default class InteractionCreate extends Event {
     if (server.disabledCommands?.includes(command.config.name)) {
       await interaction.reply({
         content: `🔒 | ${t('permissions:DISABLED_COMMAND', {
-          prefix: server.prefix,
           cmd: command.config.name,
         })}`,
         ephemeral: true,
@@ -70,35 +69,30 @@ export default class InteractionCreate extends Event {
     if (!this.client.cooldowns.has(command.config.name))
       this.client.cooldowns.set(command.config.name, new Collection());
 
-    if (process.env.OWNER !== interaction.user.id) {
-      const now = Date.now();
-      const timestamps = this.client.cooldowns.get(command.config.name) as Collection<
-        string,
-        number
-      >;
-      const cooldownAmount = (command.config.cooldown || 3) * 1000;
+    const now = Date.now();
+    const timestamps = this.client.cooldowns.get(command.config.name) as Collection<string, number>;
+    const cooldownAmount = (command.config.cooldown || 3) * 1000;
 
-      if (timestamps.has(interaction.user.id)) {
-        const expirationTime = (timestamps.get(interaction.user.id) as number) + cooldownAmount;
+    if (timestamps.has(interaction.user.id)) {
+      const expirationTime = (timestamps.get(interaction.user.id) as number) + cooldownAmount;
 
-        if (now < expirationTime) {
-          const timeLeft = (expirationTime - now) / 1000;
-          await interaction.reply({
-            content: `<:atencao:759603958418767922> | ${t('events:cooldown', {
-              time: timeLeft.toFixed(2),
-              cmd: command.config.name,
-            })}`,
-            ephemeral: true,
-          });
-          return;
-        }
+      if (now < expirationTime) {
+        const timeLeft = (expirationTime - now) / 1000;
+        await interaction.reply({
+          content: `<:atencao:759603958418767922> | ${t('events:cooldown', {
+            time: timeLeft.toFixed(2),
+            cmd: command.config.name,
+          })}`,
+          ephemeral: true,
+        });
+        return;
       }
-
-      timestamps.set(interaction.user.id, now);
-      setTimeout(() => {
-        timestamps.delete(interaction.user.id);
-      }, cooldownAmount);
     }
+
+    timestamps.set(interaction.user.id, now);
+    setTimeout(() => {
+      timestamps.delete(interaction.user.id);
+    }, cooldownAmount);
 
     if (command.config.userPermissions) {
       const missing = interaction.channel
@@ -153,11 +147,48 @@ export default class InteractionCreate extends Event {
 
     try {
       if (!command.run) return;
-      await command.run(ctx).catch((err) => {
-        console.log(err);
+      await command.run(ctx).catch(async (err) => {
+        console.error(err.stack);
+        const errorWebHook = await this.client.fetchWebhook(
+          process.env.BUG_HOOK_ID as string,
+          process.env.BUG_HOOK_TOKEN as string,
+        );
+
+        const errorMessage = err.stack.length > 1800 ? `${err.stack.slice(0, 1800)}...` : err.stack;
+        const embed = new MessageEmbed();
+        embed.setColor('#fd0000');
+        embed.setTitle(t('events:error_embed.title', { cmd: command.config.name }));
+        embed.setDescription(`\`\`\`js\n${errorMessage}\`\`\``);
+        embed.addField(
+          '<:atencao:759603958418767922> | Usage',
+          `UserId: \`${interaction.user.id}\` \nServerId: \`${interaction.guild?.id}\``,
+        );
+        embed.setTimestamp();
+        embed.addField(t('events:error_embed.report_title'), t('events:error_embed.report_value'));
+
+        if (this.client.user?.id === '708014856711962654') errorWebHook.send({ embeds: [embed] });
         interaction.reply({ content: t('events:error_embed.title'), ephemeral: true });
       });
-    } catch {
+    } catch (err) {
+      console.error(err.stack);
+      const errorWebHook = await this.client.fetchWebhook(
+        process.env.BUG_HOOK_ID as string,
+        process.env.BUG_HOOK_TOKEN as string,
+      );
+
+      const errorMessage = err.stack.length > 1800 ? `${err.stack.slice(0, 1800)}...` : err.stack;
+      const embed = new MessageEmbed();
+      embed.setColor('#fd0000');
+      embed.setTitle(t('events:error_embed.title', { cmd: command.config.name }));
+      embed.setDescription(`\`\`\`js\n${errorMessage}\`\`\``);
+      embed.addField(
+        '<:atencao:759603958418767922> | Usage',
+        `UserId: \`${interaction.user.id}\` \nServerId: \`${interaction.guild?.id}\``,
+      );
+      embed.setTimestamp();
+      embed.addField(t('events:error_embed.report_title'), t('events:error_embed.report_value'));
+
+      if (this.client.user?.id === '708014856711962654') errorWebHook.send({ embeds: [embed] });
       interaction.reply({ content: t('events:error_embed.title'), ephemeral: true });
     }
 
