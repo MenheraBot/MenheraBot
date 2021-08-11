@@ -33,5 +33,5 @@
   "USER_MISSING_PERMISSION": "you don't have `{{perm}}` permission to be able to execute this command.",
   "CLIENT_MISSING_PERMISSION": "I don't have `{{perm}}` permission to be able to execute this command.",
   "BANNED_INFO": "you are banned from using Menhera!\n\nReason: `{{banReason}}`",
-  "DISABLED_COMMAND": "This command is disabled on this server! Use `{{prefix}}blockcommand {{cmd}}` to re-enable it"
+  "DISABLED_COMMAND": "This command is disabled on this server! Use `/blockcommand {{cmd}}` to re-enable it"
 }
