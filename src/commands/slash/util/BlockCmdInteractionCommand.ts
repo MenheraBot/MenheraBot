@@ -1,27 +1,28 @@
-import CommandContext from '@structures/command/CommandContext';
 import MenheraClient from 'MenheraClient';
-import Command from '@structures/command/Command';
+import InteractionCommand from '@structures/command/InteractionCommand';
+import InteractionCommandContext from '@structures/command/InteractionContext';
 
-export default class BlockCmdCommand extends Command {
+export default class BlockCmdInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {
     super(client, {
-      name: 'blockcommand',
-      aliases: ['blockcmd', 'blockearcomando'],
-      cooldown: 10,
-      userPermissions: ['MANAGE_GUILD'],
-      category: 'moderação',
+      name: 'blockcomando',
+      description: '「🚫」・Muda as permissões de uso de comandos meus nesse servidor!',
+      category: 'util',
+      options: [
+        {
+          type: 'STRING',
+          name: 'comando',
+          description: 'Comando para bloquear/desbloquear',
+          required: true,
+        },
+      ],
+      cooldown: 7,
+      clientPermissions: ['EMBED_LINKS'],
     });
   }
 
-  async run(ctx: CommandContext): Promise<void> {
-    if (!ctx.args[0]) {
-      await ctx.replyT('error', 'commands:blockcommand.no-args');
-      return;
-    }
-
-    const cmd =
-      this.client.commands.get(ctx.args[0]) ||
-      this.client.commands.get(this.client.aliases.get(ctx.args[0]) as string);
+  async run(ctx: InteractionCommandContext): Promise<void> {
+    const cmd = this.client.slashCommands.get(ctx.options.getString('comando', true));
 
     if (!cmd) {
       await ctx.replyT('error', 'commands:blockcommand.no-cmd');
@@ -43,7 +44,7 @@ export default class BlockCmdCommand extends Command {
 
       ctx.data.server.disabledCommands.splice(index, 1);
       await this.client.repositories.cacheRepository.updateGuild(
-        ctx.message.guild?.id as string,
+        ctx.interaction.guild?.id as string,
         ctx.data.server,
       );
       await ctx.replyT('success', 'commands:blockcommand.unblock', { cmd: cmd.config.name });
@@ -51,7 +52,7 @@ export default class BlockCmdCommand extends Command {
     }
     ctx.data.server.disabledCommands.push(cmd.config.name);
     await this.client.repositories.cacheRepository.updateGuild(
-      ctx.message.guild?.id as string,
+      ctx.interaction.guild?.id as string,
       ctx.data.server,
     );
     await ctx.replyT('success', 'commands:blockcommand.block', { cmd: cmd.config.name });

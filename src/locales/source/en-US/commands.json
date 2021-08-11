@@ -1025,9 +1025,9 @@
     "no-args": "you didn't quote any commands!",
     "no-cmd": "this command does not exist!",
     "dev-cmd": "you do not have access to this command!",
-    "unblock": "the command `{{cmd}}` has been re-enabled on this server!",
-    "block": "the command `{{cmd}}` has been disabled on this server!",
-    "foda": "are you happy? If you disable this command you will no longer be able to use it, stop"
+    "unblock": "the command `/{{cmd}}` has been re-enabled on this server!",
+    "block": "the command `/{{cmd}}` has been disabled on this server!",
+    "foda": "Are you happy? If you disable this command you will no longer be able to use it, stop"
   },
   "cooldowns": {
     "description": "See your cooldowns",

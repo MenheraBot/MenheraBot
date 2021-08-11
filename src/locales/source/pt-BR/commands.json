@@ -1049,9 +1049,9 @@
     "no-args": "você não citou nenhum comando!",
     "no-cmd": "este comando não existe!",
     "dev-cmd": "você não tem acesso à este comando!",
-    "unblock": "o comando `{{cmd}}` foi reabilitado neste servidor!",
-    "block": "o comando `{{cmd}}` foi desabilitado neste servidor!",
-    "foda": "tu é feliz? Se tu desabilita esse comando n vai poder mais usar ele o cabaço, te liga vei"
+    "unblock": "o comando `/{{cmd}}` foi reabilitado neste servidor!",
+    "block": "o comando `/{{cmd}}` foi desabilitado neste servidor!",
+    "foda": "Tu é feliz né? Se tu desabilita esse comando n vai poder mais usar ele o cabaço, te liga vei"
   },
   "cooldowns": {
     "description": "Mostra seus tempos de recarga",
