@@ -10,15 +10,12 @@ import Event from '@structures/Event';
 import Database from '@database/Databases';
 import EventManager from '@structures/EventManager';
 
-import Command from '@structures/command/Command';
 import InteractionCommand from '@structures/command/InteractionCommand';
 
 import LocaleStructure from '@structures/LocaleStructure';
 
 export default class MenheraClient extends Client {
   public database: Database;
-
-  public commands: Collection<string, Command>;
 
   public slashCommands: Collection<string, InteractionCommand>;
 
@@ -37,7 +34,6 @@ export default class MenheraClient extends Client {
         : (process.env.DATABASE_URI as string),
       process.env.NODE_ENV !== 'development',
     );
-    this.commands = new Collection();
     this.slashCommands = new Collection();
     this.aliases = new Collection();
     this.cooldowns = new Collection();
