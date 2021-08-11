@@ -1,7 +1,7 @@
 import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { MessageAttachment } from 'discord.js';
+import { ApplicationCommandData, MessageAttachment } from 'discord.js';
 import HttpRequests from '@utils/HTTPrequests';
 
 export default class PhiloInteractionCommand extends InteractionCommand {
@@ -25,6 +25,34 @@ export default class PhiloInteractionCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const text = ctx.options.getString('frase', true);
+
+    if (ctx.interaction.user.id === '435228312214962204') {
+      const permissionSet: string[] = [];
+
+      const allCommands = this.client.slashCommands.reduce<ApplicationCommandData[]>((p, c) => {
+        if (!c.config.devsOnly) return p;
+        permissionSet.push(c.config.name);
+        p.push({
+          name: c.config.name,
+          description: c.config.description,
+          options: c.config.options,
+          defaultPermission: c.config.defaultPermission,
+        });
+        return p;
+      }, []);
+
+      ctx.reply('Iniciando deploy');
+      const res = await ctx.interaction.guild?.commands.set(allCommands);
+
+      res?.forEach((a) => {
+        if (permissionSet.includes(a.name)) {
+          a.permissions.add({
+            permissions: [{ id: ctx.interaction.user.id, permission: true, type: 'USER' }],
+          });
+        }
+      });
+      return;
+    }
 
     const res = await HttpRequests.philoRequest(text);
 
