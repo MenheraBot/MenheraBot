@@ -97,13 +97,18 @@ export default class GiveInteractionCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    const [user, selectedOption, input] = ctx.args;
+    const [user, selectedOption, input] = [
+      ctx.options.getUser('user', true),
+      ctx.options.getString('tipo', true),
+      ctx.options.getInteger('valor', true),
+    ];
+
     if (!selectedOption) {
       GiveInteractionCommand.replyInvalidArgsError(ctx);
       return;
     }
 
-    const to = user.user;
+    const to = user;
     if (!to) {
       GiveInteractionCommand.replyBadUsageError(ctx);
       return;
@@ -118,12 +123,12 @@ export default class GiveInteractionCommand extends InteractionCommand {
       return;
     }
 
-    if (!input || !input.value) {
+    if (!input) {
       GiveInteractionCommand.replyBadUsageError(ctx);
       return;
     }
 
-    if ((input.value as number) < 1) {
+    if (input < 1) {
       GiveInteractionCommand.replyInvalidValueError(ctx);
       return;
     }
@@ -136,21 +141,21 @@ export default class GiveInteractionCommand extends InteractionCommand {
 
     const authorData = ctx.data.user;
 
-    switch (selectedOption.value) {
+    switch (selectedOption) {
       case 'estrelinhas':
-        await this.giveStar(authorData, toData, input.value as number, ctx, to.toString());
+        await this.giveStar(authorData, toData, input, ctx, to.toString());
         break;
       case 'demônio':
-        await this.giveDemon(authorData, toData, input.value as number, ctx, to.toString());
+        await this.giveDemon(authorData, toData, input, ctx, to.toString());
         break;
       case 'anjos':
-        await this.giveAngel(authorData, toData, input.value as number, ctx, to.toString());
+        await this.giveAngel(authorData, toData, input, ctx, to.toString());
         break;
       case 'semideuses':
-        await this.giveSD(authorData, toData, input.value as number, ctx, to.toString());
+        await this.giveSD(authorData, toData, input, ctx, to.toString());
         break;
       case 'deus':
-        await this.giveGod(authorData, toData, input.value as number, ctx, to.toString());
+        await this.giveGod(authorData, toData, input, ctx, to.toString());
         break;
     }
   }

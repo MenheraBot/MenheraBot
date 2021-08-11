@@ -26,7 +26,7 @@ export default class DisgustedInteractionCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const rand = await HttpRequests.getAssetImageUrl('disgusted');
-    const user = ctx.args[0]?.user;
+    const user = ctx.options.getUser('user');
     const avatar = ctx.interaction.user.displayAvatarURL({ format: 'png', dynamic: true });
 
     if (!user || user.id === ctx.interaction.user.id) {

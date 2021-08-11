@@ -2,7 +2,7 @@ import MenheraClient from 'MenheraClient';
 import { COLORS } from '@structures/MenheraConstants';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { MessageEmbed, User } from 'discord.js';
+import { MessageEmbed } from 'discord.js';
 import HttpRequests from '@utils/HTTPrequests';
 
 export default class MamarInteractionCommand extends InteractionCommand {
@@ -26,7 +26,7 @@ export default class MamarInteractionCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    const mention = ctx.args[0].user as User;
+    const mention = ctx.options.getUser('user', true);
 
     if (mention.bot) {
       await ctx.replyT(

@@ -30,7 +30,8 @@ export default class AvatarInteractionCommand extends InteractionCommand {
     let { user } = ctx.interaction;
     let db: IUserSchema | null = authorData;
 
-    const mentionUser = ctx.args[0]?.user;
+    const mentionUser = ctx.options.getUser('user');
+
     if (mentionUser && mentionUser.id !== ctx.interaction.user.id) {
       try {
         user = await this.client.users.fetch(mentionUser.id);

@@ -88,7 +88,7 @@ export default class EightballInteractionCommand extends InteractionCommand {
       .addFields([
         {
           name: ctx.locale('commands:8ball.question'),
-          value: `${ctx.args[0].value}`,
+          value: `${ctx.options.getString('pergunta', true)}`,
         },
         {
           name: ctx.locale('commands:8ball.answer'),

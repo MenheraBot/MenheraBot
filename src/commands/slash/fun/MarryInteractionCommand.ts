@@ -1,7 +1,7 @@
 import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { MessageButton, MessageComponentInteraction, TextBasedChannels, User } from 'discord.js';
+import { MessageButton, MessageComponentInteraction, TextBasedChannels } from 'discord.js';
 import { emojis } from '@structures/MenheraConstants';
 import Util from '@utils/Util';
 import moment from 'moment';
@@ -27,7 +27,7 @@ export default class MarryInteractionCommand extends InteractionCommand {
   async run(ctx: InteractionCommandContext): Promise<void> {
     const authorData = ctx.data.user;
 
-    const mencionado = ctx.args[0].user as User;
+    const mencionado = ctx.options.getUser('user', true);
 
     if (mencionado.bot) {
       await ctx.replyT('error', 'commands:marry.bot', {}, true);

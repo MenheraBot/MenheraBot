@@ -3,7 +3,6 @@ import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 
 import { shopEconomy } from '@structures/MenheraConstants';
-import { CommandInteractionOption } from 'discord.js';
 
 export default class ShopInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {
@@ -180,36 +179,36 @@ export default class ShopInteractionCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    const type = ctx.args[0];
+    const type = ctx.options.getSubcommandGroup(false);
 
-    if (type.name === 'comprar') {
-      if ((type.options as CommandInteractionOption[])[0].name === 'cores') {
+    if (!type) {
+      return this.sellHunts(ctx);
+    }
+
+    if (type === 'comprar') {
+      const option = ctx.options.getSubcommand();
+      if (option === 'cores') {
         return this.buyColor(ctx);
       }
-      if ((type.options as CommandInteractionOption[])[0].name === 'rolls') {
+      if (option === 'rolls') {
         return this.buyRolls(ctx);
       }
     }
 
-    if (type.name === 'vender') {
-      return this.sellHunts(ctx);
-    }
-
-    if (type.name === 'info') {
-      if ((type.options as CommandInteractionOption[])[0].name === 'comprar') {
+    if (type === 'info') {
+      const option = ctx.options.getSubcommand();
+      if (option === 'comprar') {
         return ShopInteractionCommand.buyInfo(ctx);
       }
 
-      if ((type.options as CommandInteractionOption[])[0].name === 'vender') {
+      if (option === 'vender') {
         return ShopInteractionCommand.sellInfo(ctx);
       }
     }
   }
 
   static async buyInfo(ctx: InteractionCommandContext): Promise<void> {
-    const type = (
-      (ctx.args[0].options as CommandInteractionOption[])[0].options as CommandInteractionOption[]
-    )[0]?.value as string;
+    const type = ctx.options.getString('tipo', true);
 
     if (type === '1') {
       const availableColors = [
@@ -296,9 +295,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
   }
 
   static async sellInfo(ctx: InteractionCommandContext): Promise<void> {
-    const type = (
-      (ctx.args[0].options as CommandInteractionOption[])[0].options as CommandInteractionOption[]
-    )[0]?.value as string;
+    const type = ctx.options.getString('tipo', true);
 
     if (type === '1') {
       const valorDemonio = shopEconomy.hunts.demon;
@@ -335,13 +332,8 @@ export default class ShopInteractionCommand extends InteractionCommand {
     const valorSD = shopEconomy.hunts.demigod;
     const valorDeus = shopEconomy.hunts.god;
 
-    const type = (ctx.args[0].options as CommandInteractionOption[])[0]?.value;
-    const valor = (ctx.args[0].options as CommandInteractionOption[])[1]?.value as number;
-
-    if (!valor || !type) {
-      ctx.replyT('error', 'commands:shop.dataVender.invalid-args', {}, true);
-      return;
-    }
+    const type = ctx.options.getString('tipo', true);
+    const valor = ctx.options.getInteger('quantidade', true);
 
     if (Number.isNaN(valor) || valor < 1) {
       ctx.replyT('error', 'commands:shop.dataVender.invalid-args', {}, true);
@@ -417,9 +409,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
   async buyRolls(ctx: InteractionCommandContext): Promise<void> {
     const valorRoll = shopEconomy.hunts.roll;
 
-    const valor = (
-      (ctx.args[0].options as CommandInteractionOption[])[0].options as CommandInteractionOption[]
-    )[0]?.value as number;
+    const valor = ctx.options.getInteger('quantidade', true);
 
     if (!valor) {
       ctx.replyT('error', 'commands:shop.dataRolls_fields.buy_rolls.invalid-number', {}, true);
@@ -488,9 +478,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
       },
     ];
 
-    const selectedColor = (
-      (ctx.args[0].options as CommandInteractionOption[])[0].options as CommandInteractionOption[]
-    )[0].value;
+    const selectedColor = ctx.options.getString('cor');
 
     let choice = 0;
 
@@ -570,18 +558,10 @@ export default class ShopInteractionCommand extends InteractionCommand {
         }
         choice = 6;
 
-        const hexColor = (
-          (ctx.args[0].options as CommandInteractionOption[])[0]
-            .options as CommandInteractionOption[]
-        )[1]?.value as string;
+        const hexColor = ctx.options.getString('hex');
 
         const name =
-          (
-            (
-              (ctx.args[0].options as CommandInteractionOption[])[0]
-                .options as CommandInteractionOption[]
-            )[2]?.value as string
-          )?.slice(0, 20) ?? ctx.locale('shop:buy_colors.no-name');
+          ctx.options.getString('nome')?.slice(0, 20) ?? ctx.locale('shop:buy_colors.no-name');
 
         if (!hexColor) {
           ctx.replyT('error', 'commands:shop.buy_colors.invalid-color', {}, true);

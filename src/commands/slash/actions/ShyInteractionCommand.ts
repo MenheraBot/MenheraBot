@@ -28,7 +28,7 @@ export default class ShyInteractionCommand extends InteractionCommand {
     const avatar = ctx.interaction.user.displayAvatarURL({ format: 'png', dynamic: true });
 
     const rand = await HttpRequests.getAssetImageUrl('shy');
-    const user = ctx.args[0]?.user;
+    const user = ctx.options.getUser('user');
 
     if (!user || user.id === ctx.interaction.user.id) {
       const embed = new MessageEmbed()

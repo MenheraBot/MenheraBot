@@ -30,7 +30,7 @@ export default class PingInteractionCommand extends InteractionCommand {
     if (!this.client.shard) return;
     const avatar = ctx.interaction.user.displayAvatarURL({ format: 'png', dynamic: true });
 
-    if (ctx.args[0] && ctx.args[0].value) {
+    if (ctx.options.getString('shards')) {
       const allShardsPing = (await this.client.shard.fetchClientValues('ws.ping')) as number[];
       const allShardsStatus = (await this.client.shard.fetchClientValues('ws.status')) as number[];
       const allShardsUptime = (await this.client.shard.fetchClientValues(

@@ -57,7 +57,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
     const authorData = ctx.data.user;
     if (!ctx.interaction.guild) return;
 
-    const selected = ctx.args[0].value as string;
+    const selected = ctx.options.getString('tipo', true);
 
     if (!selected) {
       await ctx.replyT('error', `${ctx.locale('commands:hunt.no-args')}`, {}, true);
@@ -93,7 +93,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
       return;
     }
 
-    const rollsToUse = ctx.args[1]?.value as number;
+    const rollsToUse = ctx.options.getInteger('rolls');
 
     if (rollsToUse) {
       if (rollsToUse < 1) {

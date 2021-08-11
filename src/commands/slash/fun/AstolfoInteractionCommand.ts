@@ -24,7 +24,7 @@ export default class AstolfoInteractionCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    const text = ctx.args[0].value as string;
+    const text = ctx.options.getString('frase', true);
 
     const res = await HttpRequests.astolfoRequest(text);
 

@@ -52,7 +52,7 @@ export default class SarrarInteractionCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    const user = ctx.args[0]?.user;
+    const user = ctx.options.getUser('user');
 
     if (user && user.id !== ctx.interaction.user.id) {
       SarrarInteractionCommand.sarrada(ctx, user);

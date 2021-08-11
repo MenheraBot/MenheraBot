@@ -1,7 +1,7 @@
 import { IContextData } from '@utils/Types';
 import {
   CommandInteraction,
-  CommandInteractionOption,
+  CommandInteractionOptionResolver,
   InteractionReplyOptions,
   Message,
   MessagePayload,
@@ -14,10 +14,13 @@ export default class InteractionCommandContext {
   constructor(
     public client: MenheraClient,
     public interaction: CommandInteraction,
-    public args: ReadonlyArray<CommandInteractionOption>,
     public data: IContextData,
     public i18n: TFunction,
   ) {}
+
+  get options(): CommandInteractionOptionResolver {
+    return this.interaction.options;
+  }
 
   async reply(
     options: string | MessagePayload | InteractionReplyOptions,

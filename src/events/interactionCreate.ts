@@ -149,7 +149,6 @@ export default class InteractionCreate extends Event {
     const ctx = new InteractionCommandContext(
       this.client,
       interaction,
-      interaction.options.data,
       { user: authorData, server },
       t,
     );

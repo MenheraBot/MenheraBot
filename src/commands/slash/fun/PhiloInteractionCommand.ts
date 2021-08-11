@@ -24,7 +24,7 @@ export default class PhiloInteractionCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    const text = ctx.args[0].value as string;
+    const text = ctx.options.getString('frase', true);
 
     const res = await HttpRequests.philoRequest(text);
 

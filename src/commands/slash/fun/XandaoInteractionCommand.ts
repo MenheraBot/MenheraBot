@@ -29,7 +29,7 @@ export default class XandaoInteractionCommand extends InteractionCommand {
     }
 
     ctx.interaction.deferReply();
-    const texto = ctx.args[0]?.value;
+    const texto = ctx.options.getString('texto');
 
     const frases = [
       'SEM PRESSÃO, AQUI É XANDÃO',

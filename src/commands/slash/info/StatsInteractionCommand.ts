@@ -51,7 +51,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    const type = ctx.args[0].name;
+    const type = ctx.options.getSubcommand();
 
     switch (type) {
       case 'coinflip':
@@ -143,7 +143,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
   }
 
   static async blackjack(ctx: InteractionCommandContext): Promise<void> {
-    const user = ctx.interaction.options.getUser('user') ?? ctx.interaction.user;
+    const user = ctx.options.getUser('user') ?? ctx.interaction.user;
 
     const data = await HttpRequests.getBlackJackStats(user.id);
 
@@ -207,7 +207,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
   }
 
   static async coinflip(ctx: InteractionCommandContext): Promise<void> {
-    const user = ctx.interaction.options.getUser('user') ?? ctx.interaction.user;
+    const user = ctx.options.getUser('user') ?? ctx.interaction.user;
 
     const data = await HttpRequests.getCoinflipUserStats(user.id);
 

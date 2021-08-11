@@ -26,7 +26,7 @@ export default class ProfileInteractionCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     let { user }: { user: IUserSchema | null } = ctx.data;
-    const member = ctx.args[0]?.user ?? ctx.interaction.user;
+    const member = ctx.options.getUser('user') ?? ctx.interaction.user;
     let marry: string | User = 'false';
 
     if (member.id !== ctx.interaction.user.id) {

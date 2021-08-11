@@ -6,7 +6,6 @@ import {
   MessageButton,
   MessageComponentInteraction,
   MessageEmbed,
-  User,
 } from 'discord.js';
 import HttpRequests from '@utils/HTTPrequests';
 import { emojis } from '@structures/MenheraConstants';
@@ -39,7 +38,7 @@ export default class TrisalInteractionCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const authorData = ctx.data.user;
-    if (authorData.trisal?.length === 0 && !ctx.args[1]?.user) {
+    if (authorData.trisal?.length === 0 && !ctx.options.getUser('user')) {
       await ctx.replyT('error', 'commands:trisal.no-args', {}, true);
       return;
     }
@@ -86,8 +85,8 @@ export default class TrisalInteractionCommand extends InteractionCommand {
       return;
     }
 
-    const mencionado1 = ctx.args[0]?.user as User;
-    const mencionado2 = ctx.args[1]?.user as User;
+    const mencionado1 = ctx.options.getUser('user');
+    const mencionado2 = ctx.options.getUser('user_dois');
 
     if (!mencionado1 || !mencionado2) {
       await ctx.replyT('error', 'commands:trisal.no-mention', {}, true);

@@ -1,7 +1,7 @@
 import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { MessageAttachment, MessageEmbed, User } from 'discord.js';
+import { MessageAttachment, MessageEmbed } from 'discord.js';
 import HttpRequests from '@utils/HTTPrequests';
 
 export default class ShipInteractionCommand extends InteractionCommand {
@@ -32,8 +32,8 @@ export default class ShipInteractionCommand extends InteractionCommand {
   async run(ctx: InteractionCommandContext): Promise<void> {
     if (!ctx.interaction.guild) return;
 
-    const user1 = ctx.args[0].user as User;
-    const user2 = ctx.args[1]?.user ?? ctx.interaction.user;
+    const user1 = ctx.options.getUser('user', true);
+    const user2 = ctx.options.getUser('user_dois') ?? ctx.interaction.user;
 
     if (!user1) {
       await ctx.replyT('error', 'commands:ship.unknow-user', {}, true);

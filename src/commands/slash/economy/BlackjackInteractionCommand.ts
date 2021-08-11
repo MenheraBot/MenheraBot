@@ -450,7 +450,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    const valor = ctx.args[0].value as number;
+    const valor = ctx.options.getInteger('aposta', true);
     if (!valor) {
       await ctx.replyT('error', 'commands:blackjack.bad-usage', {}, true);
       return;

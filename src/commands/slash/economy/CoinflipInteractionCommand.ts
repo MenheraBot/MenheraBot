@@ -33,8 +33,9 @@ export default class CoinflipInteractionCommand extends InteractionCommand {
   async run(ctx: InteractionCommandContext): Promise<void> {
     if (!ctx.interaction.channel) return;
     const user1 = ctx.interaction.user;
-    const user2 = ctx.args[0].user;
-    const input = ctx.args[1].value as number;
+    const user2 = ctx.options.getUser('user', true);
+    const input = ctx.options.getInteger('aposta', true);
+
     if (!input) {
       await ctx.replyT('error', 'commands:coinflip.invalid-value', {}, true);
       return;
