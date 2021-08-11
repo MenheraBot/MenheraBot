@@ -18,7 +18,6 @@ const cmdSchema = new Schema({
 
 const guildSchema = new Schema({
   id: { type: String, unique: true },
-  prefix: { type: String, default: process.env.BOT_PREFIX },
   blockedChannels: { type: Array, default: [] },
   disabledCommands: { type: Array, default: [] },
   lang: { type: String, default: 'pt-BR' },

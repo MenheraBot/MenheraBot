@@ -39,8 +39,4 @@ export default class UserRepository {
   async create(userID: string): Promise<IUserSchema & Document> {
     return this.userModal.create({ id: userID, shipValue: Math.floor(Math.random() * 55) });
   }
-
-  async findAfkByIDs(ids: Array<string>): Promise<(IUserSchema & Document)[] | null> {
-    return this.userModal.find({ id: { $in: ids }, afk: true });
-  }
 }

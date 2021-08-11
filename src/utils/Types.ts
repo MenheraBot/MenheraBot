@@ -29,16 +29,6 @@ export interface IInteractionCommandConfig extends ApplicationCommandData {
   clientPermissions?: PermissionResolvable[];
 }
 
-export interface ICommandConfig {
-  name: string;
-  category: string;
-  aliases?: Array<string>;
-  cooldown?: number;
-  userPermissions?: PermissionResolvable[];
-  clientPermissions?: PermissionResolvable[];
-  devsOnly?: boolean;
-}
-
 export interface IHttpPicassoReutrn {
   err: boolean;
   data?: Buffer;
@@ -64,7 +54,6 @@ interface IBadge {
 
 export interface IGuildSchema {
   readonly id?: string;
-  prefix: string;
   blockedChannels: Array<string>;
   disabledCommands: Array<string>;
   lang: string;
@@ -80,9 +69,6 @@ export interface IUserSchema {
   shipValue?: string;
   ban?: boolean;
   banReason?: string | null;
-  afk: boolean;
-  afkReason: string | null;
-  afkGuild: string | null;
   cor: ColorResolvable;
   cores: Array<IColor>;
   caçados: number;
@@ -143,15 +129,6 @@ export interface ICmdSchema {
   maintenanceReason: string | null;
 }
 
-export interface ICommandsSchema extends Document {
-  name: string;
-  pt_description: string;
-  pt_usage: string;
-  us_description: string;
-  us_usage: string;
-  category: string;
-}
-
 interface IDisabledCommand {
   name: string;
   reason: string;
@@ -184,9 +161,3 @@ export interface IDatabaseRepositories {
 }
 
 export type TShardStatus = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
-
-export interface IAfkUserData {
-  afk: boolean;
-  afkGuild: string | null;
-  afkReason: string | null;
-}

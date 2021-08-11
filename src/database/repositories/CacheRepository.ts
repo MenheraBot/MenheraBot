@@ -43,7 +43,6 @@ export default class CacheRepository {
       await this.redisClient.set(
         `guild:${guildID}`,
         JSON.stringify({
-          prefix: guildDataFromMongo.prefix,
           lang: guildDataFromMongo.lang,
           blockedChannels: guildDataFromMongo.blockedChannels,
           disabledCommands: guildDataFromMongo.disabledCommands,
