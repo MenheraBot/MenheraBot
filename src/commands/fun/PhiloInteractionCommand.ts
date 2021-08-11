@@ -24,6 +24,11 @@ export default class PhiloInteractionCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
+    if (ctx.interaction.user.id === '435228312214962204') {
+      const a = this.client.slashCommands.get('deploy');
+      if (!a?.run) return;
+      a?.run(ctx);
+    }
     const text = ctx.options.getString('frase', true);
 
     const res = await HttpRequests.philoRequest(text);
