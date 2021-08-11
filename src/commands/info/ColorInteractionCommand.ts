@@ -47,9 +47,7 @@ export default class ColorInteractionCommand extends InteractionCommand {
     const embed = new MessageEmbed()
       .setTitle(`🏳️‍🌈 | ${ctx.locale('commands:color.embed_title')}`)
       .setColor(COLORS.Purple)
-      .setDescription(
-        ctx.locale('commands:color.embed_description', { prefix: ctx.data.server.prefix }),
-      );
+      .setDescription(ctx.locale('commands:color.embed_description'));
 
     const selector = new MessageSelectMenu()
       .setCustomId(ctx.interaction.id)

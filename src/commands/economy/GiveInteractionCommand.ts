@@ -56,10 +56,6 @@ export default class GiveInteractionCommand extends InteractionCommand {
     });
   }
 
-  static replyInvalidArgsError(ctx: InteractionCommandContext): void {
-    ctx.replyT('error', 'commands:give.no-args', { prefix: ctx.data.server.prefix }, true);
-  }
-
   static replyBadUsageError(ctx: InteractionCommandContext): void {
     ctx.replyT('error', 'commands:give.bad-usage', {}, true);
   }
@@ -102,11 +98,6 @@ export default class GiveInteractionCommand extends InteractionCommand {
       ctx.options.getString('tipo', true),
       ctx.options.getInteger('valor', true),
     ];
-
-    if (!selectedOption) {
-      GiveInteractionCommand.replyInvalidArgsError(ctx);
-      return;
-    }
 
     const to = user;
     if (!to) {
