@@ -93,32 +93,10 @@ export default class LanguageInteractionCommand extends InteractionCommand {
             },
           ],
         });
+        return;
       }
-    }
-
-    this.editLang(ctx, (collectInteracion as SelectMenuInteraction).values[0]);
-
-    /* if (!ctx.message.guild) return;
-    switch (r.emoji.name) {
-      case '🇧🇷':
-        ctx.data.server.lang = 'pt-BR';
-        await this.client.repositories.cacheRepository.updateGuild(
-          ctx.message.guild.id,
-          ctx.data.server,
-        );
-        await msg.delete();
-        await ctx.message.channel.send(':map: | Agora eu irei falar em ~~brasileiro~~ português');
-        break;
-      case '🇺🇸':
-        ctx.data.server.lang = 'en-US';
-        await this.client.repositories.cacheRepository.updateGuild(
-          ctx.message.guild.id,
-          ctx.data.server,
-        );
-        await msg.delete();
-        await ctx.message.channel.send(":map: | Now I'll talk in english");
-        break;
-  } */
+      this.editLang(ctx, 'pt-LIGMA');
+    } else this.editLang(ctx, (collectInteracion as SelectMenuInteraction).values[0]);
   }
 
   async editLang(ctx: InteractionCommandContext, lang: string): Promise<void> {
