@@ -47,6 +47,7 @@ export default class DeploySlashInteractionCommand extends InteractionCommand {
           content: 'SENHA ERRADA ANIMAL. CASO QUERIA DAR DEPLOY GLOBAL, A SENHA É "MACACO PREGO"',
           ephemeral: true,
         });
+        return;
       }
       const allCommands = this.client.slashCommands.reduce<ApplicationCommandData[]>((p, c) => {
         if (c.config.devsOnly) return p;
