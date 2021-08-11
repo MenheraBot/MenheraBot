@@ -183,18 +183,18 @@
       "embed_title": "Hmmmm Cheirin Bão",
       "embed_description": "{{author}} Está Cheirando (??? que bom né)"
     },
-    "embed_description": "{{author}} fez sabe o que? Colocou o nariz em {{mention}} e cheirou. Pois é full estranho, mas é isso"
+    "embed_description": "{{author}} ta cheirando o cu de {{mention}}"
   },
   "think": {
     "description": "Gabriel o pensador apenas",
     "usage": "[@menção]",
-    "bot": "Awnnn que coisa mais linda, você está pensando num bot >.<. Obrigada babe",
+    "bot": "Esquisito pensando e m bot",
     "no-mention": {
       "embed_title": "Pensar",
-      "embed_description": "{{author}} está pensando 🤔"
+      "embed_description": "{{author}} está pensando 🤔 graças a deus"
     },
-    "embed_title": "❤️ Pensar Apaixonante",
-    "embed_description": "{{author}} está pensando em {{mention}}. Que coisa mais fofa, ja pensaram em `/casar`?"
+    "embed_title": "❤️ Pensar Gay",
+    "embed_description": "{{author}} está pensando em {{mention}}. Que coisa de puto locoooo"
   },
   "coinflip": {
     "description": "Aposte estrelinhas num cara ou coroa com alguem",
@@ -286,14 +286,14 @@
     "description": "Veja a carteira de alguém",
     "usage": "[usuário]",
     "no-dbuser": "este espermatozoide não está em minha database",
-    "title": "Carteira de {{user}}",
-    "stars": "Estrelinhas",
-    "rolls": "Rolls",
+    "title": "Carteira bosta de {{user}}",
+    "stars": "Estrela Amarela",
+    "rolls": "Chavezinha",
     "unknow-user": "usuário não encontrado",
-    "demons": "Demônios",
-    "angels": "Anjos",
-    "sd": "Semideuses",
-    "god": "Deuses"
+    "demons": "Bicho Vermelho",
+    "angels": "Bicho rosa",
+    "sd": "Menhera Rosa",
+    "god": "Menhera Sorrindo"
   },
   "8ball": {
     "description": "Pergunte algo para mim",
@@ -323,21 +323,21 @@
   "hunt": {
     "description": "Caçe demônios como XANDÃO",
     "usage": "",
-    "probabilities": "Probabilidades de caça\n\nDemônios: `[{{demon}}]`\nAnjos: `[{{angel}}]`\nSemideuses: `[{{demi}}]`\nDeuses: `[{{god}}]`",
-    "footer": "Sabia que em meu servidor de suporte, suas chances de sucesso são maiores?",
-    "description_start": "Você saiu para caçar **{{hunt}}** **{{count}}** vez com o Super Xandão, e voltou para casa com mais **{{value}}** pra conta. Você está em **#{{rank}}** lugar do top {{hunt}}",
-    "description_start_plural": "Você saiu para caçar **{{hunt}}** **{{count}}** vezes com o Super Xandão, e voltou para casa com mais **{{value}}** pra conta. Você está em **#{{rank}}** lugar do top {{hunt}}",
-    "god_hunted_success": "DALE PORRAAAA!!! VOCÊ SE MOSTROU UM HERÓI FRUTO DE UMA VONTADE DIVINA, ASSIM COMO XANDÃO, E CONSEGUIU CAÇAR `{{count}}` DEUS EM **{{toRun}}** TENTATIVAS! APENAS O BÁSICO MEU LINDO, COM ISSO VOCÊ ESTÁ EM **#{{rank}}** LUGAR DO TOP",
-    "god_hunted_success_plural": "DALE PORRAAAA!!! VOCÊ SE MOSTROU UM HERÓI FRUTO DE UMA VONTADE DIVINA, ASSIM COMO XANDÃO, E CONSEGUIU CAÇAR `{{count}}` DEUSES EM **{{toRun}}** TENTATIVAS! APENAS O BÁSICO MEU LINDO, COM ISSO VOCÊ ESTÁ EM **#{{rank}}** LUGAR DO TOP",
-    "god_hunted_fail": "Caçar Deuses é uma missão extremamente difícil, e com **{{count}}** tentativa você não obteve sucesso. Mas fique tranquilo, herói, você ainda conseguirá! Você está em **#{{rank}}** lugar do top deus",
-    "god_hunted_fail_plural": "Caçar Deuses é uma missão extremamente difícil, e com **{{count}}** tentativas você não obteve sucesso. Mas fique tranquilo, herói, você ainda conseguirá! Você está em **#{{rank}}** lugar do top deus",
+    "probabilities": "Chances de pega essas porra\n\nDemônios: `[{{demon}}]`\nAnjos: `[{{angel}}]`\nSemideuses: `[{{demi}}]`\nDeuses: `[{{god}}]`",
+    "footer": "Sabia que se tu ir na porra do meu servidor de suporte tu ganha mais coisa?",
+    "description_start": "Tu foi pega **{{hunt}}** **{{count}}** vez com o Super Xandão, e pego  **{{value}}**. Com essa merda tu ta em **#{{rank}}** do top {{hunt}} 👍",
+    "description_start_plural": "Tu saiu por ai pra pega **{{hunt}}** **{{count}}** vezes com o Super Xandão, e meteu pra dentro um total de **{{value}}**. Teu lugar do top {{hunt}} é **#{{rank}}**",
+    "god_hunted_success": "DALE PORRAAAA!!! TU PEGO `{{count}}` DEUS EM **{{toRun}}** TENTATIVAS! APENAS O BÁSICO MEU LINDO, COM ISSO VOCÊ ESTÁ EM **#{{rank}}** LUGAR DO TOP",
+    "god_hunted_success_plural": "VAMOO CARALHOOOOOOO. FORAM `{{count}}` DEUSES EM **{{toRun}}** TENTATIVAS! VAMO CARALHO.  **#{{rank}}** LUGAR DO TOP",
+    "god_hunted_fail": "Caçar Deuses é uma missão extremamente difícil, e como tu é um merda, com **{{count}}** tentativa tu nao pego nada. **#{{rank}}** lugar do top deus",
+    "god_hunted_fail_plural": "KKKK NEM COM **{{count}}** TENTATIVAS TU PEGA ALGO MLK KKKK PODRAO VEI VSF. **#{{rank}}** lugar do top deus",
     "demons": "Demônios",
     "angels": "Anjos",
     "sd": "Semideuses",
     "gods": "Deuses",
-    "invalid-rolls": "este número de rolls é invalido!",
-    "rolls-poor": "você não tem essa quantidade de rolls",
-    "cooldown": "descanse campeão, você já saiu na sua caçada. Tente novamente em **{{time}}** minutos\n<:atencao:759603958418767922> | **DICA:** Sabia que em meu servidor de suporte, as chances de caça são maiores? m!suporte"
+    "invalid-rolls": "Bota um numero de rolls serio ne krl",
+    "rolls-poor": "Tu é pobre e n tem tudo issod e rolls",
+    "cooldown": "Te acalma porra, tu ta ni cooldown por mais **{{time}}** minutos\n<:atencao:759603958418767922> | **DICA:** Vai pro meu servidor de suporte pra pega mais coisa. Se tu ja ta, fodase"
   },
   "marry": {
     "description": "Casa com o amor de sua vida",
@@ -359,11 +359,11 @@
     "value": "Valor do ship:",
     "unknow-user": "usuário não encontrado",
     "message-start": "Será que os dois pombinhos dariam um bom casal?",
-    "default": "Talvez o bot que seja quebrado, ou vocês não darão certo mesmo :(",
-    "low": "É, nada é impossível né k k k",
-    "ok": "Mazaaaa casal, ja podem namorar ja",
-    "medium": "Esses dois já não estão namorando? Pois deveriam",
-    "high": "Que casal magnífico véi, perfeitos apenas",
+    "default": "Nunca vao ficar sozinhos fodase",
+    "low": "Nao sei como nao se odeiam, podres",
+    "ok": "Ah, da pra se pega ja sla",
+    "medium": "Blz vcs dois se dariam bem, mas so isso",
+    "high": "Aaaaa ai sim ein, casalzão voces",
     "perfect": "HMMMM SADADÃO PEGADOR, TA NO DALE ESSES AI EIN"
   },
   "xandão": {
@@ -375,7 +375,7 @@
   "avatar": {
     "description": "Mostra o avatar de alguem",
     "usage": "[usuário]",
-    "title": "Avatar de {{user}}",
+    "title": "Foto merda {{user}}",
     "footer": "Olha o tipo da imagem do mkl vei ah vsf",
     "unknow-user": "usuário não encontrado",
     "client_title": "Meu avatar ({{user}})",
@@ -387,11 +387,11 @@
     "embed_title": "Suas Cores",
     "embed_description": "Bota ai embaixo a cor que tu quer! Você tem 30 segundos",
     "dataChoose": {
-      "title": "Sua cor foi alterada com sucesso",
-      "description": "Você ja pode ver seu perfil com sua nova cor!"
+      "title": "Troco a Cor",
+      "description": "Ja troquei essa merda ai"
     },
     "choose": "Escolha sua cor",
-    "min-color": "você precisa ter no mínimo 2 cores para usar este comando!"
+    "min-color": "O seu pobre, tu tem que ter no minimo 2 cor pra usa isso"
   },
   "profile": {
     "description": "Veja o seu perfil, ou o de alguem",
@@ -399,23 +399,20 @@
     "bot": "Que? KKK fodase os bots, robôs não tem perfil",
     "no-dbuser": "este usuário não possui perfil!",
     "banned": "este usuário está **banido** de usar a Menhera\n**Motivo:** `{{reason}}`",
-    "mamou": "Mamou",
+    "mamou": "Lambeu",
     "unknow-user": "usuário não encontrado",
-    "mamado": "Mamado",
+    "mamado": "Lambido",
     "married-with": "Ta pegando",
     "married-in": "Casados em",
-    "about-me": "Sobre Mim",
+    "about-me": "Textinho Merda",
     "commands": "Comandos",
-    "zero": "usou meus comandos",
-    "um": "vezes. Seu comando mais usado foi",
-    "dois": "usou",
-    "tres": "vezes.",
-    "commands-usage": "{{user}} usou meus comandos {{usedCount}} vezes. Seu comando mais usado foi {{mostUsedCommandName}}, usou {{mostUsedCommandCount}} vezes"
+    "zero": "usou essas merda",
+    "commands-usage": "{{user}} usou essas merda {{usedCount}} vezes. O que ele mais usou foi {{mostUsedCommandName}}, que foram {{mostUsedCommandCount}} vezes"
   },
   "top": {
     "description": "Veja o top de meus usuários",
     "usage": "<opção> [página | usuário]",
-     "mamadoresTitle": "Placar de Mamadores",
+    "mamadoresTitle": "Placar de Mamadores",
     "mamouTitle": "Placar de Mamados",
     "demonTitle": "Placar de Demônios",
     "angelTitle": "Placar de Anjos",
@@ -484,9 +481,9 @@
   "invite": {
     "description": "Adicione o bot em algum servidor",
     "usage": "",
-    "embed_title": "Clique para me adicionar em algum servidor",
+    "embed_title": "Clica aqui pra me adicionar em mais servidores",
     "embed_footer": "Comando executado por {{user}}",
-    "embed_description": "Este link te levará direto para a página do discord para adicionar o bot em algum servidor que você administre"
+    "embed_description": "Gostou de mim? Foda-se, agora me adiciona num servidor teu ai"
   },
   "ping": {
     "description": "Mostra o ping do bot e de sua API",
@@ -497,27 +494,26 @@
   "suggest": {
     "description": "Sugira algo para a dona do bot",
     "usage": "<sugestão>",
-    "no-args": "Sugira algo mais detalhado!",
-    "thanks": "Mutissimo obrigada por me enviar uma sugestão <3"
+    "no-args": "FAZ ALGO MAIS DETALHADO NÉ PORRA",
+    "thanks": "Vlw ai"
   },
   "support": {
     "description": "Link de convite para o servidor de suporte do Bot",
     "usage": "",
-    "embed_title": "Clique aqui para entrar no servidor de suporte da Menhera",
-    "embed_footer": "Comando executado por"
+    "embed_title": "Clica aqui pora entra no meu servidor de suporte, so tem demente la",
+    "embed_footer": "Quem usou essa merda foi "
   },
   "vote": {
-    "description": "Vote no bot (pfv vote, isso ajuda muito X3 >.<)",
     "usage": "",
     "embed_title": "Clique para votar em mim",
-    "embed_footer": "Comando executado por {{author}}",
-    "embed_description": "Votos ajudam na divulgação do bot, e isso é extremamente importante"
+    "embed_footer": "{{author}} que usou isso",
+    "embed_description": "Vota ai que tu ganha uns premiozinho merda e eras"
   },
   "coinflipstats": {
     "description": "Mostre dados algum jogador de jogos do coinflip",
     "usage": "[usuário]",
     "embed-title": "Status do coinflip de {{user}}",
-    "no-data": "você nunca jogou uma partida de coinflip!",
+    "no-data": "Esse mlk nunca jogou algum coinflip",
     "embed-footer": "Tu é tri vei",
     "played": "Partidas Jogadas",
     "wins": "Vitórias",
@@ -526,7 +522,7 @@
     "lostMoney": "Dinheiro Perdido",
     "profit": "Lucro Total",
     "loss": "Prejuízo Total",
-    "error": "ocorreu um erro ao checar as estatísticas deste usuário"
+    "error": "Deu um erro ao pegar os status ai"
   },
   "philo": {
     "description": "Ser ou não ser, eis a questão",
@@ -561,29 +557,29 @@
   "trisal": {
     "description": "Forme um trisal e veja suas metadinhas",
     "usage": "[@menção1 & @menção2]",
-    "marry-not-found": "um usuário de seu trisal não foi encontrado",
+    "marry-not-found": "Um dos cara do teu trisal nao foi encontrado vei. Meteu o pé",
     "no-owner": "utilize o comando mamar para que eu crie uma conta pra você antes de tudo >.<",
     "embed": {
-      "description": "Por mais que não seja algo sério, estes 3 estão juntinhos: "
+      "description": "Esses 3 tao juntos nessa putice de trisal:"
     },
-    "self-mention": "você não pode fazer um casal consigo memso",
-    "same-mention": "você n pode mencionar o mesmo usuário 2 vezes",
+    "self-mention": "Tu não pode ficar consigo mesmo né porra",
+    "same-mention": "Tu n pode marcar a mesma pessoa duas vezes ne caralho",
     "bot-mention": "você não pode formar um trisal com um bot. Na verdade isso é até esquisito... Sinto pena de ti por ter tentado ficar com um bot.",
     "no-db": "um dos integrantes do trisal não foi encontrado no banco de dados! O melhor agora é desfazer este trisal e começar um outro",
     "comedor-de-casadas": "UOUOUOU calma lá comedor de casadas, um dos usuários que você mencionou ja está em um trisal",
-    "accept-message": ":heart: | Vocês aceitam formar um trisal? Os três devem clicar no botão em até 15 segundos",
+    "accept-message": ":heart: | Vocês aceitam formar um trisal? Os três tem que clicar aqui em até 15 segundos",
     "done": "parabéns, vocês três formaram um trisal lindo! Utilize este comando novamente para ver suas fotinhas juntas",
-    "error": "os 3 não reagiram à mensagem a tempo! Tente novamente, talvez com alguem que queira, quem sabe"
+    "error": "Alguem dos 3 n reagiu a tempo, e agora todos tao sozinho. Parabens ein"
   },
   "untrisal": {
     "description": "Acabe com o trisal que você não quer mais participar",
     "usage": "",
-    "error": "você não está em nenhum trisal!",
-    "sure": "você tem certeza que quer terminar o trisal? Tens 15 segundos para confirmar",
+    "error": "Mlk ta sozinho vei KASDKASKD pqp",
+    "sure": "Serião que tu quer acabar com tudo?",
     "confirm": "Terminar",
-    "done": "O seu trisal acabou! Não tem mais jeito. Acabou...."
+    "done": "TA SOLTEIRO DNV MEU CPX VAMOOOO"
   },
-  "http-error": "hmmm... Algum erro aconteceu ao processar a imagem... Talvez o servidor de processamento de imagens esteja fora do ar... Tente novamente mais tarde!",
+  "http-error": "Ah porra o servidor de imagens caiu de novo nessa porra. Vai ter que tentar dnv mais tarde",
   "gado": {
     "description": "Ala o Gado ó",
     "usage": "[@menção || imagem || responder à uma mensagem com uma imagem]"
@@ -595,27 +591,25 @@
   "blackjack": {
     "description": "Aposte contra a Menhera no Blackjack (ou 21)",
     "usage": "<aposta>",
-    "bad-usage": "você não fez sua aposta",
-    "invalid-value": "o valor da aposta deve ser maior que 1000 e menor que 50000",
+    "bad-usage": "Tu nao fez a tua aposta o animal",
+    "invalid-value": "Bah cara tu ta de tiração né, tu não viu que a aposta mínima é 1000 e a máxima 50000??? Animal de teta",
     "available-options": "Opções Disponíveis",
-    "initial-options": "**[1] Começar** - Começe o jogo\n **[2] Desistir** - Desista deste jogo (e perca sua aposta)",
-    "options": "**[1] Comprar** - Compre mais uma carta\n**[2] Parar** - Pare por aqui sua aposta",
-    "footer": "Você tem 10 segundos",
-    "poor": "você não possui todas essas estrelinhas para apostar!",
+    "footer": "Tu Tem 10 segundos cara",
+    "poor": "KKK QUE CARA POBRE MANO N TEM DINHEIRO PRA APOSTA!",
     "your-hand": "Sua Mão",
     "dealer-hand": "Mão da Menhera",
-    "timeout": "você demorou muito para jogar. A Menhera ficou sem paciência, você perdeu tudo!",
+    "timeout": "Ah vai te fude, tu demorou pra caralho pra responder, perdi a paciencia. Perdeu tudo",
     "result": "👑 | Resultado",
-    "blackjack": "Você fez um BlalcJack!!! Você recebeu o dobro do prêmio! **{{value}}** :star:",
+    "blackjack": "DALE CARALHO É BLACKJACK!!! Você recebeu o dobro do prêmio! **{{value}}** :star:",
     "buy": "Comprar",
     "stop": "Parar",
-    "explode": "Você estourou! Por isso, perdeu tudo :(",
-    "menhera-bj": "A Menhera tem um Blackjack. Você perdeu tudo, e a Menhera ganhou tudo hehe",
-    "menhera-21": "A Menhera fez 21. Tu foi de ralo",
-    "user-21": "Tu fez 21 meu guri, só dale só dale! Ganhaste **{{value}}** :star:",
-    "menhera-bust": "A Menhera estourou! Os **{{value}}** :star: é teu",
-    "draw": "Ambos estouraram. Por conta da Menhera ser muito humilde, ela devolveu sua aposta!",
-    "both-21": "Ambos fizeram 21, mas a Menhera tem preferência. Infelizmente é assim que funcionam os cassinos. Você perdeu Tudo",
+    "explode": "KKK KABUUUMMM; ESTOUROU IRMAO, BYE BYE MINZIE. PERDEU TUDO",
+    "menhera-bj": "Menhera foi de Blackjack. GG falow lixo",
+    "menhera-21": "Menhera lansou um 21, tu perdeu",
+    "user-21": "Dale porra, 21 nessa caralha! Ganhaste **{{value}}** :star:",
+    "menhera-bust": "A Menhera fez cosplay de árabe e estourou! Os **{{value}}** :star: é teu",
+    "draw": "Os dois estouraram, e como sou muito úmido, devolvi tua grana, já que tu precisa",
+    "both-21": "Ok, nós dois fizemo 21. EU PEGO TUDO FODA-SE TENHO PREFERENCIA. BEM VINDO AO MUNDO DOS CASSINOS",
     "equal": "Tanto você quanto a menhera fizeram o mesmo valor. Menhera ganha",
     "menhera-bigger": "A Menhera está mais proxima de 21, ela ganhou!",
     "user-bigger": "Você está mais próximo de 21, você ganhou **{{value}}** :star:"
@@ -623,7 +617,7 @@
   "blackjackstats": {
     "usage": "[usuário]",
     "description": "Veja os status de BlackJack de alguém",
-    "embed-title": "Status do blackjack de {{user}}",
-    "no-data": "você nunca jogou uma partida de blackjack!"
+    "embed-title": "Status do blackjack desse troço: {{user}}",
+    "no-data": "Bah mlk tu nunca jogo BlackJack. Que pagadinha meu nego veio"
   }
 }
