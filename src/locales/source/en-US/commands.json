@@ -545,7 +545,7 @@
     "embed_footer": "was created by",
     "channels": "Channels",
     "memory": "Memory",
-    "users": "Users",
+    "users": "Users (cached)",
     "version": "Version"
   },
   "delete": {

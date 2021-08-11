@@ -77,16 +77,19 @@ export default class StatsInteractionCommand extends InteractionCommand {
         c.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0),
       ),
       this.client.shard.broadcastEval(() => process.memoryUsage().heapUsed),
+      this.client.shard.fetchClientValues('users.cache.size'),
     ];
 
     const getReduced = (arr: number[]) => arr.reduce((p, c) => p + c, 0);
 
-    const [AllGuilds, AllChannels, AllMembers, AllMemoryUsed] = (await Promise.all(promises)) as [
-      AllGuild: number[],
-      AllChannels: number[],
-      AllMembers: number[],
-      AllMemoryUsed: number[],
-    ];
+    const [AllGuilds, AllChannels, AllMembers, AllMemoryUsed, AllCachedMembers] =
+      (await Promise.all(promises)) as [
+        AllGuild: number[],
+        AllChannels: number[],
+        AllMembers: number[],
+        AllMemoryUsed: number[],
+        AllCachedMembers: number[],
+      ];
 
     const embed = new MessageEmbed()
       .setColor('#fa8dd7')
@@ -118,7 +121,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
         },
         {
           name: `👥 | ${ctx.locale('commands:botinfo.users')} | 👥`,
-          value: `\`\`\`${getReduced(AllMembers)}\`\`\``,
+          value: `\`\`\`${getReduced(AllMembers)} (${getReduced(AllCachedMembers)})\`\`\``,
           inline: true,
         },
         {
