@@ -80,27 +80,6 @@ export default class MenheraClient extends Client {
     return super.login(token);
   }
 
-  /* async postExistingCommand(command: ICommandConfig): Promise<void> {
-    const tPt = i18next.getFixedT('pt-BR');
-    const tUs = i18next.getFixedT('en-US');
-
-    const exists = await this.repositories.commandRepository.findByName(command.name);
-
-    const data = {
-      category: command.category,
-      ptDescription: tPt(`commands:${command.name}.description`),
-      ptUsage: tPt(`commands:${command.name}.usage`),
-      usDescription: tUs(`commands:${command.name}.description`),
-      usUsage: tUs(`commands:${command.name}.usage`),
-    };
-
-    if (exists) {
-      await this.repositories.commandRepository.updateByName(command.name, data);
-    } else {
-      await this.repositories.commandRepository.create(command.name, data);
-    }
-  } */
-
   async loadSlashCommand(NewCommand: typeof InteractionCommand, filepath: string): Promise<void> {
     // @ts-expect-error Abstract class cannot be invoked
     const command: InteractionCommand = new NewCommand(this);

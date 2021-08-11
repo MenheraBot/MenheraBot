@@ -49,6 +49,7 @@ export default class DeploySlashInteractionCommand extends InteractionCommand {
         });
       }
       const allCommands = this.client.slashCommands.reduce<ApplicationCommandData[]>((p, c) => {
+        if (c.config.devsOnly) return p;
         p.push({
           name: c.config.name,
           description: c.config.description,
@@ -65,7 +66,10 @@ export default class DeploySlashInteractionCommand extends InteractionCommand {
       return;
     }
 
+    const permissionSet: string[] = [];
+
     const allCommands = this.client.slashCommands.reduce<ApplicationCommandData[]>((p, c) => {
+      if (c.config.devsOnly) permissionSet.push(c.config.name);
       p.push({
         name: c.config.name,
         description: c.config.description,
@@ -74,8 +78,18 @@ export default class DeploySlashInteractionCommand extends InteractionCommand {
       });
       return p;
     }, []);
+
     ctx.reply('Iniciando deploy');
     const res = await ctx.interaction.guild?.commands.set(allCommands);
+
+    res?.forEach((a) => {
+      if (permissionSet.includes(a.name)) {
+        a.permissions.add({
+          permissions: [{ id: ctx.interaction.user.id, permission: true, type: 'USER' }],
+        });
+      }
+    });
+
     ctx.editReply({ content: `No total, ${res?.size} comandos foram adicionados neste servidor!` });
   }
 }
