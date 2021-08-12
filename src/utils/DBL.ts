@@ -78,10 +78,10 @@ export default class DiscordBots {
 
       const sendMessageToUser = async (id: string, embedToSend: MessageEmbed) => {
         const userInShard = await this.client.users.fetch(id);
-        await userInShard.send({ embeds: [embedToSend] });
+        await userInShard.send({ embeds: [embedToSend] }).catch(() => null);
       };
 
-      sendMessageToUser(vote.user, embed).catch();
+      sendMessageToUser(vote.user, embed).catch(() => null);
     });
 
     setInterval(async () => {
