@@ -81,8 +81,8 @@ export default class ColorInteractionCommand extends InteractionCommand {
     const filter = (int: MessageComponentInteraction) =>
       int.user.id === ctx.interaction.user.id && int.customId === ctx.interaction.id;
 
-    const collect = await ctx.interaction.channel
-      ?.awaitMessageComponent({ componentType: 'SELECT_MENU', time: 15000, filter })
+    const collect = await ctx.channel
+      .awaitMessageComponent({ componentType: 'SELECT_MENU', time: 15000, filter })
       .catch(() => null);
 
     if (!collect || !collect.isSelectMenu()) {

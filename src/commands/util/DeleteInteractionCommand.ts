@@ -1,7 +1,7 @@
 import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { MessageButton, TextBasedChannels } from 'discord.js';
+import { MessageButton } from 'discord.js';
 import { emojis } from '@structures/MenheraConstants';
 import Util from '@utils/Util';
 import HttpRequests from '@utils/HTTPrequests';
@@ -40,7 +40,7 @@ export default class DeleteInteractionCommand extends InteractionCommand {
     });
 
     const collect = await Util.collectComponentInteractionWithId(
-      ctx.interaction.channel as TextBasedChannels,
+      ctx.channel,
       ctx.interaction.user.id,
       ctx.interaction.id,
       5000,

@@ -9,7 +9,7 @@
   3 = Disponível ajudando a Menhera reportando bugs de nível alto
   4 = Disponível ajudando no Desenvolvimento da Menhera
   5 = Disponível por tempo limitado em eventos especiais
-  6 =Disponível somente para amigos próximos da Lux
+  6 = Disponível somente para amigos próximos da Lux
   7 = Exclusivo e praticamente impossivel
 */
 
@@ -86,6 +86,22 @@ const Badges = {
     rarityLevel: 2,
     description: 'Disponível para usuários que votaram mais de 100 vezes na Menhera',
     link: 'https://media.discordapp.net/attachments/793669360857907200/839951784785346600/MenheraThumbsUp.png',
+  },
+  10: {
+    name: 'Rpg V1',
+    availabeStartAt: '12/08/2021',
+    availabeStoptAt: '12/08/2021',
+    rarityLevel: 5,
+    description: 'Dado a todas pessoas que jogaram o RPG da Menhera em sua versão 1.0',
+    link: 'https://media.discordapp.net/attachments/793669360857907200/875366274987872286/rpg.png',
+  },
+  11: {
+    name: 'Rpg V1 TOP PLAYERS',
+    availabeStartAt: '12/08/2021',
+    availabeStoptAt: '12/08/2021',
+    rarityLevel: 7,
+    description: 'Dado ao top 3 de cada classe do antigo RPG',
+    link: 'https://media.discordapp.net/attachments/793669360857907200/875373756737028187/boleham.png',
   },
 };
 

@@ -44,7 +44,7 @@ export default class DiscordBots {
         Math.floor(Math.random() * (constants.maxStarValue - constants.minStarValue + 1)) +
         constants.minStarValue;
       let embedTitle = '<:God:758474639570894899> | Obrigada por votar em mim';
-      let embedDescription = `Obrigada por votar em mim bebezinho, cada voto me ajuda e inspira minha dona a continuar me cuidando! ❤️\n\nComo forma de agradecimento, você recebeu **1**🔑 e **${starQuantity}**⭐!\n\nSabia que a cada 20 votos você ganha um prêmio especial? E que você ja votou **${user.votos}** vezes em mim? **OBRIGADA**\n\nVote em mim novamente em 12 horas <a:LevelUp:760954035779272755>`;
+      let embedDescription = `Obrigada por votar em mim bebezinho, cada voto me ajuda e inspira minha dona a continuar me cuidando! ❤️\n\nComo forma de agradecimento, você recebeu **1**🔑 e **${starQuantity}**⭐!\n\nSabia que a cada 20 votos você ganha um prêmio especial? E que você ja votou **${user.votos}** vezes em mim? **OBRIGADA**\n\nVote em mim novamente em 12 horas <a:MenheraChibiTableSlam:768621225143697459>`;
 
       if (vote.isWeekend) {
         rollQuantity *= constants.rollWeekendMultiplier;
@@ -57,7 +57,7 @@ export default class DiscordBots {
         rollQuantity *= constants.roll20Multiplier;
         starQuantity *= constants.star20Multiplier;
         embedTitle = '<:Angel:758765044204437535> | OWO VOCÊ RECEBEU UM PRÊMIO ESPECIAL!!!';
-        embedDescription = `Obrigada por votar em mim bebezinho, cada voto me ajuda e inspira minha dona a continuar me cuidando! ❤️\n\nVocê votou ${user.votos} vezes em mim, e por isso, ganhou o **QUADRUPLO** de prêmios! Toma-te ${starQuantity}⭐ e **${rollQuantity}**🔑 \n\nVote em mim novamente em 12 horas <a:LevelUp:760954035779272755>`;
+        embedDescription = `Obrigada por votar em mim bebezinho, cada voto me ajuda e inspira minha dona a continuar me cuidando! ❤️\n\nVocê votou ${user.votos} vezes em mim, e por isso, ganhou o **QUADRUPLO** de prêmios! Toma-te ${starQuantity}⭐ e **${rollQuantity}**🔑 \n\nVote em mim novamente em 12 horas <a:MenheraChibiTableSlam:768621225143697459>`;
       }
 
       if (user.votos % 20 === 0 && vote.isWeekend) {
@@ -78,10 +78,10 @@ export default class DiscordBots {
 
       const sendMessageToUser = async (id: string, embedToSend: MessageEmbed) => {
         const userInShard = await this.client.users.fetch(id);
-        await userInShard.send({ embeds: [embedToSend] });
+        await userInShard.send({ embeds: [embedToSend] }).catch(() => null);
       };
 
-      sendMessageToUser(vote.user, embed).catch();
+      sendMessageToUser(vote.user, embed).catch(() => null);
     });
 
     setInterval(async () => {

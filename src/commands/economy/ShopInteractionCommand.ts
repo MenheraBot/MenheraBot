@@ -101,16 +101,24 @@ export default class ShopInteractionCommand extends InteractionCommand {
                   value: '1',
                 },
                 {
-                  name: 'Anjos',
+                  name: 'Gigantes',
                   value: '2',
                 },
                 {
-                  name: 'Semideuses',
+                  name: 'Anjos',
                   value: '3',
                 },
                 {
-                  name: 'Deuses',
+                  name: 'Arcanjos',
                   value: '4',
+                },
+                {
+                  name: 'Semideuses',
+                  value: '5',
+                },
+                {
+                  name: 'Deuses',
+                  value: '6',
                 },
               ],
             },
@@ -299,7 +307,9 @@ export default class ShopInteractionCommand extends InteractionCommand {
 
     if (type === '1') {
       const valorDemonio = shopEconomy.hunts.demon;
+      const valorGigante = shopEconomy.hunts.giant;
       const valorAnjo = shopEconomy.hunts.angel;
+      const valorArch = shopEconomy.hunts.arcangel;
       const valorSD = shopEconomy.hunts.demigod;
       const valorDeus = shopEconomy.hunts.god;
 
@@ -314,7 +324,9 @@ export default class ShopInteractionCommand extends InteractionCommand {
             name: ctx.locale('commands:shop.dataVender.main.fields.name'),
             value: ctx.locale('commands:shop.dataVender.main.fields.value', {
               demon: valorDemonio,
+              giant: valorGigante,
               angel: valorAnjo,
+              archangel: valorArch,
               demi: valorSD,
               god: valorDeus,
             }),
@@ -328,7 +340,9 @@ export default class ShopInteractionCommand extends InteractionCommand {
 
   async sellHunts(ctx: InteractionCommandContext): Promise<void> {
     const valorDemonio = shopEconomy.hunts.demon;
+    const valorGigante = shopEconomy.hunts.giant;
     const valorAnjo = shopEconomy.hunts.angel;
+    const valorArch = shopEconomy.hunts.arcangel;
     const valorSD = shopEconomy.hunts.demigod;
     const valorDeus = shopEconomy.hunts.god;
 
@@ -357,6 +371,21 @@ export default class ShopInteractionCommand extends InteractionCommand {
         });
         break;
       case '2':
+        if (valor > ctx.data.user.giants) {
+          ctx.replyT('error', 'commands:shop.dataVender.poor', { var: 'gigantes' }, true);
+          return;
+        }
+        this.client.repositories.userRepository.update(ctx.interaction.user.id, {
+          $inc: { giants: -valor, estrelinhas: valor * valorGigante },
+        });
+        ctx.replyT('success', 'commands:shop.dataVender.success-giant', {
+          value: valor,
+          cost: valor * valorGigante,
+          quantity: ctx.data.user.anjos - valor,
+          star: ctx.data.user.estrelinhas + valor * valorGigante,
+        });
+        break;
+      case '3':
         if (valor > ctx.data.user.anjos) {
           ctx.replyT('error', 'commands:shop.dataVender.poor', { var: 'anjos' }, true);
           return;
@@ -371,7 +400,22 @@ export default class ShopInteractionCommand extends InteractionCommand {
           star: ctx.data.user.estrelinhas + valor * valorAnjo,
         });
         break;
-      case '3':
+      case '4':
+        if (valor > ctx.data.user.arcanjos) {
+          ctx.replyT('error', 'commands:shop.dataVender.poor', { var: 'arcanjos' }, true);
+          return;
+        }
+        this.client.repositories.userRepository.update(ctx.interaction.user.id, {
+          $inc: { arcanjos: -valor, estrelinhas: valor * valorArch },
+        });
+        ctx.replyT('success', 'commands:shop.dataVender.success-archangel', {
+          value: valor,
+          cost: valor * valorArch,
+          quantity: ctx.data.user.anjos - valor,
+          star: ctx.data.user.estrelinhas + valor * valorArch,
+        });
+        break;
+      case '5':
         if (valor > ctx.data.user.semideuses) {
           ctx.replyT('error', 'commands:shop.dataVender.poor', { var: 'semideuses' }, true);
           return;
@@ -386,7 +430,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
           star: ctx.data.user.estrelinhas + valor * valorSD,
         });
         break;
-      case '4':
+      case '6':
         if (valor > ctx.data.user.deuses) {
           ctx.replyT('error', 'commands:shop.dataVender.poor', { var: 'deuses' }, true);
           return;

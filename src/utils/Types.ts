@@ -72,7 +72,9 @@ export interface IUserSchema {
   cor: ColorResolvable;
   cores: Array<IColor>;
   caçados: number;
+  giants: number;
   anjos: number;
+  arcanjos: number;
   semideuses: number;
   deuses: number;
   caçarTime: string;

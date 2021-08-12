@@ -271,15 +271,17 @@
       "main": {
         "fields": {
           "name": "Valor das Caças",
-          "value": "<:DEMON:758765044443381780> Demônios - **{{demon}}**⭐ \n<:ANGEL:758765044204437535> Anjos - **{{angel}}**⭐\n<:SEMIGOD:758766732235374674> SemiDeuses - **{{demi}}**⭐\n<:God:758474639570894899> Deuses - **{{god}}**⭐"
+          "value": "<:DEMON:758765044443381780> Demônios - **{{demon}}**⭐\n👨 Gigantes - **{{giant}}**⭐ \n<:ANGEL:758765044204437535> Anjos - **{{angel}}**⭐\n👼 Arcanjos - **{{archangel}}**⭐\n<:SEMIGOD:758766732235374674> SemiDeuses - **{{demi}}**⭐\n<:God:758474639570894899> Deuses - **{{god}}**⭐"
         }
       },
       "invalid-args": "este valor não é um número válido! Você deve passar a opção e a quantidade",
       "poor": "ASKDSAKD mlk pobre n tem tudo isso de {{var}}!",
-      "success-demon": "você vendeu **{{value}}** <:DEMON:758765044443381780> demônios e recebeu **{{cost}}** ⭐ estrelinhas!\nAgora você tem **{{quantity}}** <:DEMON:758765044443381780> e **{{star}}**⭐",
-      "success-angel": "você vendeu **{{value}}** <:Angel:758765044204437535> anjos e recebeu **{{cost}}** ⭐ estrelinhas!\nAgora você tem **{{quantity}}** <:Angel:758765044204437535> e **{{star}}**⭐",
-      "success-sd": "você vendeu **{{value}}** <:SEMIGOD:758766732235374674> semideuses e recebeu **{{cost}}** ⭐ estrelinhas!\nAgora você tem **{{quantity}}** <:SEMIGOD:758766732235374674> e **{{star}}**⭐",
-      "success-god": "você vendeu **{{value}}** <:God:758474639570894899> deuses e recebeu **{{cost}}** ⭐ estrelinhas!\nAgora você tem **{{quantity}}** <:God:758474639570894899> e **{{star}}**⭐"
+      "success-demon": "you sold **{{value}}** <:DEMON:758765044443381780> demons and received ** {{cost}} ** ⭐ star! \nNow you have ** {{quantity}} ** <:DEMON:758765044443381780> and **{{star}}** ⭐ ",
+      "success-angel": "you sold ** {{value}} ** <:Angel:758765044204437535> angels and received ** {{cost}} ** ⭐ star! \nNow you have ** {{quantity}} ** <:Angel:758765044204437535> and ** {{star}} ** ⭐ ",
+      "success-giant": "you sold ** {{value}} ** 👨 giants and received ** {{cost}} ** ⭐ star! \nNow you have ** {{quantity}} ** 👨 and ** {{star}} ** ⭐ ",
+      "success-sd": "you sold ** {{value}} ** <:SEMIGOD:758766732235374674> demigods and received ** {{cost}} ** ⭐ star! \nNow you have ** {{quantity}} ** <:SEMIGOD:758766732235374674> and ** {{star}} ** ⭐ ",
+      "success-archangel": "you sold ** {{value}} ** 👼 archangel and received ** {{cost}} ** ⭐ star! \nNow you have ** {{quantity}} ** 👼 and ** {{star}} ** ⭐ ",
+      "success-god": "you sold ** {{value}} ** <:God:758474639570894899> gods and received ** {{cost}} ** ⭐ star! \nNow you have ** {{quantity}} ** <:God:758474639570894899> and ** {{star}} ** ⭐ "
     }
   },
   "wallet": {
@@ -323,7 +325,7 @@
   "hunt": {
     "description": "Caçe demônios como XANDÃO",
     "usage": "",
-    "probabilities": "Chances de pega essas porra\n\nDemônios: `[{{demon}}]`\nAnjos: `[{{angel}}]`\nSemideuses: `[{{demi}}]`\nDeuses: `[{{god}}]`",
+    "probabilities": "Chances de pega essas porra\n\nDemônios: `[{{demon}}]`\nGigantes: `[{{giant}}]`\nAnjos: `[{{angel}}]`\nArcanjos: `[{{archangel}}]`\nSemideuses: `[{{demi}}]`\nDeuses: `[{{god}}]`",
     "footer": "Sabia que se tu ir na porra do meu servidor de suporte tu ganha mais coisa?",
     "description_start": "Tu foi pega **{{hunt}}** **{{count}}** vez com o Super Xandão, e pego  **{{value}}**. Com essa merda tu ta em **#{{rank}}** do top {{hunt}} 👍",
     "description_start_plural": "Tu saiu por ai pra pega **{{hunt}}** **{{count}}** vezes com o Super Xandão, e meteu pra dentro um total de **{{value}}**. Teu lugar do top {{hunt}} é **#{{rank}}**",
@@ -334,6 +336,8 @@
     "demons": "Demônios",
     "angels": "Anjos",
     "sd": "Semideuses",
+    "giants": "Gigantes",
+    "archangel": "Arcanjos",
     "gods": "Deuses",
     "invalid-rolls": "Bota um numero de rolls serio ne krl",
     "rolls-poor": "Tu é pobre e n tem tudo issod e rolls",
@@ -419,6 +423,8 @@
     "sdTitle": "Placar de Semideuses",
     "godTitle": "Placar de Deuses",
     "starsTitle": "Placar de Estrelinhas",
+    "giantTitle": "Placar de Gigantes",
+    "arcangelTitle": "Placar de Arcanjos",
     "voteTitle": "Placar de Upvotes",
     "commands": "Comandos Mais Usados",
     "users": "Usuários Que Mais Usaram Comandos",
@@ -426,6 +432,8 @@
     "suck": "Mamou",
     "demons": "Demônios",
     "angels": "Anjos",
+    "archangels": "Arcanjos",
+    "giants": "Gigantes",
     "demigods": "Semideuses",
     "gods": "Deuses",
     "stars": "Estrelinhas",

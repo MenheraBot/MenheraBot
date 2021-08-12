@@ -15,6 +15,14 @@ export default class GiveRepository {
     return this._give('estrelinhas', fromID, toID, value);
   }
 
+  async giveGiants(fromID: string, toID: string, value: number): Promise<void> {
+    return this._give('giants', fromID, toID, value);
+  }
+
+  async giveArchangel(fromID: string, toID: string, value: number): Promise<void> {
+    return this._give('arcanjos', fromID, toID, value);
+  }
+
   async giveDemons(fromID: string, toID: string, value: number): Promise<void> {
     return this._give('caçados', fromID, toID, value);
   }

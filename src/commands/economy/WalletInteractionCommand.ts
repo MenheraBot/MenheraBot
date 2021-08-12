@@ -57,8 +57,18 @@ export default class WalletInteractionCommand extends InteractionCommand {
           inline: true,
         },
         {
+          name: `🦍 | ${ctx.locale('commands:hunt.giants')}`,
+          value: `**${user.giants || 0}**`,
+          inline: true,
+        },
+        {
           name: `<:ANGEL:758765044204437535> | ${ctx.locale('commands:wallet.angels')}`,
           value: `**${user.anjos}**`,
+          inline: true,
+        },
+        {
+          name: `👼| ${ctx.locale('commands:hunt.archangel')}`,
+          value: `**${user.arcanjos || 0}**`,
           inline: true,
         },
         {

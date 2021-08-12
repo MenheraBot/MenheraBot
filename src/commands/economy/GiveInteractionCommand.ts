@@ -30,8 +30,16 @@ export default class GiveInteractionCommand extends InteractionCommand {
               value: 'demônio',
             },
             {
+              name: 'Gigantes',
+              value: 'gigantes',
+            },
+            {
               name: 'Anjos',
               value: 'anjos',
+            },
+            {
+              name: 'Arcanjos',
+              value: 'arcanjos',
             },
             {
               name: 'SemiDeuses',
@@ -139,8 +147,14 @@ export default class GiveInteractionCommand extends InteractionCommand {
       case 'demônio':
         await this.giveDemon(authorData, toData, input, ctx, to.toString());
         break;
+      case 'gigantes':
+        await this.giveGiant(authorData, toData, input, ctx, to.toString());
+        break;
       case 'anjos':
         await this.giveAngel(authorData, toData, input, ctx, to.toString());
+        break;
+      case 'arcanjos':
+        await this.giveArchangel(authorData, toData, input, ctx, to.toString());
         break;
       case 'semideuses':
         await this.giveSD(authorData, toData, input, ctx, to.toString());
@@ -149,6 +163,34 @@ export default class GiveInteractionCommand extends InteractionCommand {
         await this.giveGod(authorData, toData, input, ctx, to.toString());
         break;
     }
+  }
+
+  async giveGiant(
+    from: IUserSchema,
+    to: IUserSchema,
+    value: number,
+    ctx: InteractionCommandContext,
+    mentionString: string,
+  ): Promise<void> {
+    if (value > from.giants) return GiveInteractionCommand.replyNotEnoughtError(ctx, 'giants');
+
+    await this.client.repositories.giveRepository.giveGiants(from.id, to.id, value);
+
+    return GiveInteractionCommand.replySuccess(ctx, value, emojis.star, mentionString);
+  }
+
+  async giveArchangel(
+    from: IUserSchema,
+    to: IUserSchema,
+    value: number,
+    ctx: InteractionCommandContext,
+    mentionString: string,
+  ): Promise<void> {
+    if (value > from.arcanjos) return GiveInteractionCommand.replyNotEnoughtError(ctx, 'archangel');
+
+    await this.client.repositories.giveRepository.giveArchangel(from.id, to.id, value);
+
+    return GiveInteractionCommand.replySuccess(ctx, value, emojis.star, mentionString);
   }
 
   async giveStar(

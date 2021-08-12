@@ -268,14 +268,16 @@
       "main": {
         "fields": {
           "name": "Sales Options",
-          "value": "<:DEMON:758765044443381780> Demons - **{{demon}}**⭐ \n<:ANGEL:758765044204437535> Angels - **{{angel}}**⭐\n<:SEMIGOD:758766732235374674> Demigods - **{{demi}}**⭐\n<:God:758474639570894899> Gods - **{{god}}**⭐"
+          "value": "<:DEMON:758765044443381780> Demons - **{{demon}}**⭐ \n👨 Giants - **{{giant}}**⭐\n<:ANGEL:758765044204437535> Angels - **{{angel}}**⭐\n👼 Archangels - **{{archangel}}**⭐\n<:SEMIGOD:758766732235374674> Demigods - **{{demi}}**⭐\n<:God:758474639570894899> Gods - **{{god}}**⭐"
         }
       },
       "invalid-args": "this value is not a valid number! You must say the option and the quantity",
       "poor": "you don't have all these {{var}}!",
       "success-demon": "you sold **{{value}}** <:DEMON:758765044443381780> demons and received ** {{cost}} ** ⭐ star! \nNow you have ** {{quantity}} ** <:DEMON:758765044443381780> and **{{star}}** ⭐ ",
       "success-angel": "you sold ** {{value}} ** <:Angel:758765044204437535> angels and received ** {{cost}} ** ⭐ star! \nNow you have ** {{quantity}} ** <:Angel:758765044204437535> and ** {{star}} ** ⭐ ",
+      "success-giant": "you sold ** {{value}} ** 👨 giants and received ** {{cost}} ** ⭐ star! \nNow you have ** {{quantity}} ** 👨 and ** {{star}} ** ⭐ ",
       "success-sd": "you sold ** {{value}} ** <:SEMIGOD:758766732235374674> demigods and received ** {{cost}} ** ⭐ star! \nNow you have ** {{quantity}} ** <:SEMIGOD:758766732235374674> and ** {{star}} ** ⭐ ",
+      "success-archangel": "you sold ** {{value}} ** 👼 archangel and received ** {{cost}} ** ⭐ star! \nNow you have ** {{quantity}} ** 👼 and ** {{star}} ** ⭐ ",
       "success-god": "you sold ** {{value}} ** <:God:758474639570894899> gods and received ** {{cost}} ** ⭐ star! \nNow you have ** {{quantity}} ** <:God:758474639570894899> and ** {{star}} ** ⭐ "
     }
   },
@@ -317,7 +319,7 @@
   },
   "hunt": {
     "description": "Hunt demons like XANDÃO",
-    "probabilities": "Hunt probabilitites\n\nDemons: `[{{demon}}]`\nAngels: `[{{angel}}]`\nDemigods: `[{{demi}}]`\nGods: `[{{god}}]`",
+    "probabilities": "Hunt probabilitites\n\nDemons: `[{{demon}}]`\nGiants: `[{{giant}}]`\nAngels: `[{{angel}}]`\nArchangels: `[{{archangel}}]`\nDemigods: `[{{demi}}]`\nGods: `[{{god}}]`",
     "no-args": "you must choose between hunting demons, angels, demigods and gods",
     "help": "** HOW DOES HUNTING WORK? ** \nYou can hunt every hour, and you can choose from 4 hunts: `demons`, `angels`,` demigods` and `gods` \nThe farther to the right, the more valuable, but also, more difficult to hunt, and less chance of success \nOn my support server, the chances of hunting are greater!",
     "footer": "Did you know that on my support server, your chances of success are greater?",
@@ -328,6 +330,8 @@
     "god_hunted_fail": "Hunting Gods is an extremely difficult mission, and in **{{count}}** try you have not been successful. But rest assured, hero, you can still do it! You are in **{{rank}}** on god's top",
     "god_hunted_fail_plural": "Hunting Gods is an extremely difficult mission, and in **{{count}}** tries you have not been successful. But rest assured, hero, you can still do it! You are in **{{rank}}** on god's top",
     "demons": "Demons",
+    "giants": "Giants",
+    "archangel": "Archangels",
     "angels": "Angels",
     "sd": "Demigods",
     "gods": "Gods",
@@ -413,12 +417,14 @@
   "top": {
     "description": "See the top of my users",
     "usage": "<option> [page | user]",
-   "mamadoresTitle": "Suckers Leaderboard",
+    "mamadoresTitle": "Suckers Leaderboard",
     "mamouTitle": "Suckled Leaderboard",
     "demonTitle": "Demons Leaderboard",
     "angelTitle": "Angels Leaderboard",
     "sdTitle": "Demigods Leaderboard",
     "godTitle": "Gods Leaderboard",
+    "giantTitle": "Giants Leaderboard",
+    "arcangelTitle": "Archangel Leaderboard",
     "starsTitle": "Stars Leaderboard",
     "voteTitle": "Upvotes Leaderboard",
     "commands": "Most Used Commands",
@@ -428,6 +434,8 @@
     "demons": "Demons",
     "angels": "Angels",
     "demigods": "Demigods",
+    "arcangels": "Archangels",
+    "giants": "Giants",
     "gods": "Gods",
     "stars": "Stars",
     "members": "Members",

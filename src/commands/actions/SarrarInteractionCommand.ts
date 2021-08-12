@@ -2,13 +2,8 @@ import MenheraClient from 'MenheraClient';
 import { COLORS } from '@structures/MenheraConstants';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import {
-  Message,
-  MessageButton,
-  MessageComponentInteraction,
-  MessageEmbed,
-  User,
-} from 'discord.js';
+import { MessageButton, MessageComponentInteraction, MessageEmbed, User } from 'discord.js';
+import Util from '@utils/Util';
 import HttpRequests from '@utils/HTTPrequests';
 
 export default class SarrarInteractionCommand extends InteractionCommand {
@@ -77,24 +72,21 @@ export default class SarrarInteractionCommand extends InteractionCommand {
       .setLabel(ctx.locale('commands:sarrar.sarrar'))
       .setStyle('PRIMARY');
 
-    const message = (await ctx.reply({
+    ctx.reply({
       embeds: [embed],
       components: [{ type: 'ACTION_ROW', components: [Button] }],
-      fetchReply: true,
-    })) as Message;
+    });
 
-    const filter = (int: MessageComponentInteraction) => {
-      int.deferUpdate();
-      return (
-        int.user.id !== ctx.interaction.user.id &&
-        !int.user.bot &&
-        int.customId === ctx.interaction.id
-      );
-    };
+    const filter = (int: MessageComponentInteraction) =>
+      int.user.id !== ctx.interaction.user.id &&
+      !int.user.bot &&
+      int.customId === ctx.interaction.id;
 
-    const collected = await message
-      .awaitMessageComponent({ filter, time: 30000 })
-      .catch(() => null);
+    const collected = await Util.collectComponentInteractionWithCustomFilter(
+      ctx.channel,
+      filter,
+      30000,
+    ).catch(() => null);
 
     if (!collected) {
       ctx.editReply({
