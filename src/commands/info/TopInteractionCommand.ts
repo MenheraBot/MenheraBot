@@ -5,7 +5,7 @@ import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageEmbed } from 'discord.js';
 import HttpRequests from '@utils/HTTPrequests';
 import Util from '@utils/Util';
-import { emojis } from '@structures/MenheraConstants';
+import { COLORS, emojis } from '@structures/MenheraConstants';
 
 export default class TopInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {
@@ -253,7 +253,7 @@ export default class TopInteractionCommand extends InteractionCommand {
           pagina > 1 ? pagina : 1
         }º`,
       )
-      .setColor('#ec8227');
+      .setColor(COLORS.HuntDemon);
 
     for (let i = 0; i < res.length; i++) {
       const member = await this.client.users.fetch(res[i].id).catch();
@@ -291,7 +291,7 @@ export default class TopInteractionCommand extends InteractionCommand {
     const embed = new MessageEmbed()
 
       .setTitle(`🧚‍♂️ | ${ctx.locale('commands:top.arcangelTitle')} ${pagina > 1 ? pagina : 1}º`)
-      .setColor('#bdecee');
+      .setColor(COLORS.HuntArchangel);
 
     for (let i = 0; i < res.length; i++) {
       const member = await this.client.users.fetch(res[i].id).catch();
@@ -329,7 +329,7 @@ export default class TopInteractionCommand extends InteractionCommand {
     const embed = new MessageEmbed()
 
       .setTitle(`👨 | ${ctx.locale('commands:top.giantTitle')} ${pagina > 1 ? pagina : 1}º`)
-      .setColor('#bdecee');
+      .setColor(COLORS.HuntGiant);
 
     for (let i = 0; i < res.length; i++) {
       const member = await this.client.users.fetch(res[i].id).catch();
@@ -371,7 +371,7 @@ export default class TopInteractionCommand extends InteractionCommand {
           pagina > 1 ? pagina : 1
         }º`,
       )
-      .setColor('#bdecee');
+      .setColor(COLORS.HuntAngel);
 
     for (let i = 0; i < res.length; i++) {
       const member = await this.client.users.fetch(res[i].id).catch();
@@ -413,7 +413,7 @@ export default class TopInteractionCommand extends InteractionCommand {
           pagina > 1 ? pagina : 1
         }º`,
       )
-      .setColor('#eab3fa');
+      .setColor(COLORS.HuntSD);
 
     for (let i = 0; i < res.length; i++) {
       const member = await this.client.users.fetch(res[i].id).catch();
@@ -455,7 +455,7 @@ export default class TopInteractionCommand extends InteractionCommand {
           pagina > 1 ? pagina : 1
         }º`,
       )
-      .setColor('#a67cec');
+      .setColor(COLORS.HuntGod);
 
     for (let i = 0; i < res.length; i++) {
       const member = await this.client.users.fetch(res[i].id).catch();
