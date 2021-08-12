@@ -52,7 +52,6 @@ export default class DivorceInteractionCommand extends InteractionCommand {
 
     if (!collected) {
       ctx.editReply({
-        content: (await ctx.interaction.fetchReply()).content,
         components: [
           {
             type: 1,

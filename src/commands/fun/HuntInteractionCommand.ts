@@ -23,8 +23,16 @@ export default class HuntInteractionCommand extends InteractionCommand {
               value: 'demônio',
             },
             {
+              name: 'Gigantes',
+              value: 'gigantes',
+            },
+            {
               name: 'Anjos',
               value: 'anjos',
+            },
+            {
+              name: 'Arcanjos',
+              value: 'arcanjos',
             },
             {
               name: 'Semideuses',
@@ -64,30 +72,20 @@ export default class HuntInteractionCommand extends InteractionCommand {
       return;
     }
 
-    const probabilidadeDemonio =
+    const Probabilities =
       ctx.interaction.guild.id === '717061688460967988'
-        ? probabilities.support.demon
-        : probabilities.normal.demon;
-    const probabilidadeAnjo =
-      ctx.interaction.guild.id === '717061688460967988'
-        ? probabilities.support.angel
-        : probabilities.normal.angel;
-    const probabilidadeSD =
-      ctx.interaction.guild.id === '717061688460967988'
-        ? probabilities.support.demigod
-        : probabilities.normal.demigod;
-    const probabilidadeDeuses =
-      ctx.interaction.guild.id === '717061688460967988'
-        ? probabilities.support.god
-        : probabilities.normal.god;
+        ? probabilities.support
+        : probabilities.normal;
 
     if (selected === 'probabilidades') {
       await ctx.reply(
         ctx.locale('commands:hunt.probabilities', {
-          demon: probabilidadeDemonio,
-          angel: probabilidadeAnjo,
-          demi: probabilidadeSD,
-          god: probabilidadeDeuses,
+          demon: Probabilities.demon,
+          giant: Probabilities.giant,
+          angel: Probabilities.angel,
+          archangel: Probabilities.arcangel,
+          demi: Probabilities.demigod,
+          god: Probabilities.god,
         }),
       );
       return;
@@ -126,7 +124,8 @@ export default class HuntInteractionCommand extends InteractionCommand {
     if (ctx.interaction.guild.id !== '717061688460967988')
       embed.setFooter(ctx.locale('commands:hunt.footer'));
 
-    const { huntDemon, huntAngel, huntDemigod, huntGod } = this.client.repositories.huntRepository;
+    const { huntDemon, huntGiant, huntAngel, huntArchangel, huntDemigod, huntGod } =
+      this.client.repositories.huntRepository;
 
     const toRun = canHunt && rollsToUse ? rollsToUse + 1 : rollsToUse ?? 1;
 
@@ -155,12 +154,14 @@ export default class HuntInteractionCommand extends InteractionCommand {
       DEMON = 'caçados',
       ANGEL = 'anjos',
       DEMIGOD = 'semideuses',
+      GIANT = 'giants',
+      ARCHANGEL = 'arcanjos',
       GOD = 'deuses',
     }
 
     switch (selected) {
       case 'demônio': {
-        const demons = await areYouTheHuntOrTheHunter(probabilidadeDemonio, huntDemon);
+        const demons = await areYouTheHuntOrTheHunter(Probabilities.demon, huntDemon);
         const { rank } = await this.client.repositories.topRepository.getUserHuntRank(
           ctx.interaction.user.id,
           huntEnum.DEMON,
@@ -178,8 +179,27 @@ export default class HuntInteractionCommand extends InteractionCommand {
           );
         break;
       }
+      case 'gigantes': {
+        const demons = await areYouTheHuntOrTheHunter(Probabilities.giant, huntGiant);
+        const { rank } = await this.client.repositories.topRepository.getUserHuntRank(
+          ctx.interaction.user.id,
+          huntEnum.GIANT,
+        );
+        embed
+          .setTitle(ctx.locale('commands:hunt.giants'))
+          .setColor(COLORS.HuntDemon)
+          .setDescription(
+            ctx.locale('commands:hunt.description_start', {
+              value: demons,
+              hunt: ctx.locale('commands:hunt.giants'),
+              rank: rank + 1,
+              count: toRun,
+            }),
+          );
+        break;
+      }
       case 'anjos': {
-        const angels = await areYouTheHuntOrTheHunter(probabilidadeAnjo, huntAngel);
+        const angels = await areYouTheHuntOrTheHunter(Probabilities.angel, huntAngel);
         const { rank } = await this.client.repositories.topRepository.getUserHuntRank(
           ctx.interaction.user.id,
           huntEnum.ANGEL,
@@ -197,8 +217,27 @@ export default class HuntInteractionCommand extends InteractionCommand {
           );
         break;
       }
+      case 'arcanjos': {
+        const angels = await areYouTheHuntOrTheHunter(Probabilities.arcangel, huntArchangel);
+        const { rank } = await this.client.repositories.topRepository.getUserHuntRank(
+          ctx.interaction.user.id,
+          huntEnum.ARCHANGEL,
+        );
+        embed
+          .setTitle(ctx.locale('commands:hunt.archangel'))
+          .setColor(COLORS.HuntAngel)
+          .setDescription(
+            ctx.locale('commands:hunt.description_start', {
+              value: angels,
+              hunt: ctx.locale('commands:hunt.archangel'),
+              rank: rank + 1,
+              count: toRun,
+            }),
+          );
+        break;
+      }
       case 'semideuses': {
-        const demigods = await areYouTheHuntOrTheHunter(probabilidadeSD, huntDemigod);
+        const demigods = await areYouTheHuntOrTheHunter(Probabilities.demigod, huntDemigod);
         const { rank } = await this.client.repositories.topRepository.getUserHuntRank(
           ctx.interaction.user.id,
           huntEnum.DEMIGOD,
@@ -217,7 +256,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
         break;
       }
       case 'deus': {
-        const gods = await areYouTheHuntOrTheHunter(probabilidadeDeuses, huntGod);
+        const gods = await areYouTheHuntOrTheHunter(Probabilities.god, huntGod);
         const { rank } = await this.client.repositories.topRepository.getUserHuntRank(
           ctx.interaction.user.id,
           huntEnum.GOD,

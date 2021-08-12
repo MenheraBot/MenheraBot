@@ -12,10 +12,29 @@ export default class HuntRepository {
     );
   }
 
+  async huntGiant(userID: string, value: number, cooldown: string, rolls: number): Promise<void> {
+    await this.userModal.updateOne(
+      { id: userID },
+      { $inc: { giants: value, rolls: -rolls }, caçarTime: cooldown },
+    );
+  }
+
   async huntAngel(userID: string, value: number, cooldown: string, rolls: number): Promise<void> {
     await this.userModal.updateOne(
       { id: userID },
       { $inc: { anjos: value, rolls: -rolls }, caçarTime: cooldown },
+    );
+  }
+
+  async huntArchangel(
+    userID: string,
+    value: number,
+    cooldown: string,
+    rolls: number,
+  ): Promise<void> {
+    await this.userModal.updateOne(
+      { id: userID },
+      { $inc: { arcanjos: value, rolls: -rolls }, caçarTime: cooldown },
     );
   }
 
