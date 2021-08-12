@@ -1,7 +1,7 @@
 import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { MessageSelectMenu, SelectMenuInteraction, TextBasedChannels } from 'discord.js';
+import { MessageSelectMenu, SelectMenuInteraction } from 'discord.js';
 import { emojis } from '@structures/MenheraConstants';
 import Util from '@utils/Util';
 
@@ -44,7 +44,7 @@ export default class LanguageInteractionCommand extends InteractionCommand {
     });
 
     const collectInteracion = await Util.collectComponentInteractionWithId(
-      ctx.interaction.channel as TextBasedChannels,
+      ctx.channel,
       ctx.interaction.user.id,
       ctx.interaction.id,
       6969,
@@ -77,7 +77,7 @@ export default class LanguageInteractionCommand extends InteractionCommand {
       });
 
       const newCollect = await Util.collectComponentInteractionWithId(
-        ctx.interaction.channel as TextBasedChannels,
+        ctx.channel,
         ctx.interaction.user.id,
         ctx.interaction.id,
         6969,

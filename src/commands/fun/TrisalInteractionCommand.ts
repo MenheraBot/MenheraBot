@@ -132,14 +132,14 @@ export default class TrisalInteractionCommand extends InteractionCommand {
     const filter = (int: MessageComponentInteraction) =>
       acceptableIds.includes(int.user.id) && int.customId === ctx.interaction.id;
 
-    const collector = ctx.interaction.channel?.createMessageComponentCollector({
+    const collector = ctx.channel.createMessageComponentCollector({
       filter,
       time: 15000,
     });
 
     const acceptedIds: string[] = [];
 
-    collector?.on('collect', async (int) => {
+    collector.on('collect', async (int) => {
       if (!acceptedIds.includes(int.user.id)) acceptedIds.push(int.user.id);
       int.deferUpdate();
 
@@ -157,7 +157,7 @@ export default class TrisalInteractionCommand extends InteractionCommand {
       }
     });
 
-    collector?.once('end', () => {
+    collector.once('end', () => {
       if (acceptedIds.length !== 3)
         ctx.editReply({
           content: `${emojis.error} | ${ctx.locale('commands:trisal.error')}`,

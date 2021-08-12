@@ -1,10 +1,4 @@
-import {
-  Message,
-  MessageAttachment,
-  MessageButton,
-  MessageEmbed,
-  TextBasedChannels,
-} from 'discord.js';
+import { Message, MessageAttachment, MessageButton, MessageEmbed } from 'discord.js';
 import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
@@ -157,7 +151,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
     }
 
     const collected = await Util.collectComponentInteraction(
-      ctx.interaction.channel as TextBasedChannels,
+      ctx.channel,
       ctx.interaction.user.id,
       10000,
     );
@@ -533,7 +527,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
     }
 
     const collected = await Util.collectComponentInteraction(
-      ctx.interaction.channel as TextBasedChannels,
+      ctx.channel,
       ctx.interaction.user.id,
       10000,
     );

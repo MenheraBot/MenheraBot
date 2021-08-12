@@ -5,6 +5,7 @@ import {
   InteractionReplyOptions,
   Message,
   MessagePayload,
+  TextBasedChannels,
 } from 'discord.js';
 import { TFunction } from 'i18next';
 import MenheraClient from 'MenheraClient';
@@ -20,6 +21,10 @@ export default class InteractionCommandContext {
 
   get options(): CommandInteractionOptionResolver {
     return this.interaction.options;
+  }
+
+  get channel(): TextBasedChannels {
+    return this.interaction.channel as TextBasedChannels;
   }
 
   async reply(

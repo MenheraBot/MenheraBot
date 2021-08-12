@@ -31,7 +31,6 @@ export default class CoinflipInteractionCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    if (!ctx.interaction.channel) return;
     const user1 = ctx.interaction.user;
     const user2 = ctx.options.getUser('user', true);
     const input = ctx.options.getInteger('aposta', true);
@@ -96,7 +95,7 @@ export default class CoinflipInteractionCommand extends InteractionCommand {
     });
 
     const coletor = await Util.collectComponentInteractionWithId(
-      ctx.interaction.channel,
+      ctx.channel,
       user2.id,
       ctx.interaction.id,
       7000,

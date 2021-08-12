@@ -1,7 +1,7 @@
 import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { TextChannel, User } from 'discord.js';
+import { User } from 'discord.js';
 
 export default class XandaoInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {
@@ -23,9 +23,9 @@ export default class XandaoInteractionCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    if (!ctx.interaction.channel) return;
-    if (ctx.interaction.channel.type === 'DM' || ctx.interaction.channel.isThread()) {
+    if (ctx.channel.type === 'DM' || ctx.channel.isThread()) {
       ctx.replyT('error', 'commands:xandão.only-text', {}, true);
+      return;
     }
 
     ctx.interaction.deferReply();
@@ -77,7 +77,7 @@ export default class XandaoInteractionCommand extends InteractionCommand {
     } else fala = `${texto}\n\n📢 | ${ctx.interaction.user.toString()}`;
 
     try {
-      const webhooks = await (ctx.interaction.channel as TextChannel).fetchWebhooks();
+      const webhooks = await ctx.channel.fetchWebhooks();
 
       const clientUser = this.client.user;
       if (!clientUser) return;
@@ -93,7 +93,7 @@ export default class XandaoInteractionCommand extends InteractionCommand {
         });
         ctx.deleteReply();
       } else {
-        await (ctx.interaction.channel as TextChannel)
+        await ctx.channel
           .createWebhook('Super Xandão', {
             avatar: 'https://i.imgur.com/8KNCucR.png',
           })
