@@ -187,7 +187,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
         );
         embed
           .setTitle(ctx.locale('commands:hunt.giants'))
-          .setColor(COLORS.HuntDemon)
+          .setColor(COLORS.HuntGiant)
           .setDescription(
             ctx.locale('commands:hunt.description_start', {
               value: demons,
@@ -225,7 +225,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
         );
         embed
           .setTitle(ctx.locale('commands:hunt.archangel'))
-          .setColor(COLORS.HuntAngel)
+          .setColor(COLORS.HuntArchangel)
           .setDescription(
             ctx.locale('commands:hunt.description_start', {
               value: angels,

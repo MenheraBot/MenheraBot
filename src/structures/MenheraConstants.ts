@@ -91,6 +91,8 @@ export const COLORS = {
   HuntAngel: '#efe9e9' as ColorResolvable,
   HuntSD: '#3cb5f0' as ColorResolvable,
   HuntGod: '#b115bf' as ColorResolvable,
+  HuntGiant: '#fa611f' as ColorResolvable,
+  HuntArchangel: '#a2f29e' as ColorResolvable,
   Aqua: '#03f3ff' as ColorResolvable,
   Purple: '#7f28c4' as ColorResolvable,
   ACTIONS: '#fa8cc5' as ColorResolvable,
