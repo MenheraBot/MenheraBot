@@ -114,7 +114,7 @@ export default class PingInteractionCommand extends InteractionCommand {
       return;
     }
     const embed = new MessageEmbed()
-      .setTitle('🏓 | Pongasdsadsada!')
+      .setTitle('🏓 | Pong!')
       .setDescription(
         `📡 | ${ctx.locale('commands:ping.api')} **${
           Date.now() - ctx.interaction.createdTimestamp
