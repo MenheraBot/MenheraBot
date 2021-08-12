@@ -167,7 +167,9 @@ export default class InteractionCreate extends Event {
         embed.addField(t('events:error_embed.report_title'), t('events:error_embed.report_value'));
 
         if (this.client.user?.id === '708014856711962654') errorWebHook.send({ embeds: [embed] });
-        interaction.reply({ content: t('events:error_embed.title'), ephemeral: true });
+        if (interaction.deferred) {
+          interaction.webhook.send({ content: t('events:error_embed.title'), ephemeral: true });
+        } else interaction.reply({ content: t('events:error_embed.title'), ephemeral: true });
       });
     } catch (err) {
       console.error(err.stack);
@@ -189,7 +191,9 @@ export default class InteractionCreate extends Event {
       embed.addField(t('events:error_embed.report_title'), t('events:error_embed.report_value'));
 
       if (this.client.user?.id === '708014856711962654') errorWebHook.send({ embeds: [embed] });
-      interaction.reply({ content: t('events:error_embed.title'), ephemeral: true });
+      if (interaction.deferred) {
+        interaction.webhook.send({ content: t('events:error_embed.title'), ephemeral: true });
+      } else interaction.reply({ content: t('events:error_embed.title'), ephemeral: true });
     }
 
     if (!interaction.guild) return;
