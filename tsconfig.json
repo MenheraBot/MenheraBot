@@ -30,7 +30,8 @@
       "@structures/*": ["structures/*"],
       "@database/*": ["database/*"],
       "@utils/*": ["utils/*"],
-      "@interfaces/*": ["interfaces/*"]
+      "@interfaces/*": ["interfaces/*"],
+      "@roleplay/*": ["structures/roleplay/*"]
     }
   },
   "include": ["src"]

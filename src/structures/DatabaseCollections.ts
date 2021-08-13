@@ -1,5 +1,6 @@
 import { ICmdSchema, IGuildSchema, IStatusSchema, IUserSchema } from '@utils/Types';
 import { Document, Schema, model } from 'mongoose';
+import { IRpgUserSchema } from './roleplay/Types';
 
 const statusSchema = new Schema({
   _id: { type: String },
@@ -53,7 +54,33 @@ const userSchema = new Schema({
   trisal: { type: Array, default: [] },
 });
 
+const rpgSchema = new Schema({
+  id: { type: String, unique: true },
+  classId: { type: Number },
+  raceId: { type: Number },
+  speed: { type: Number },
+  regionId: { type: Number },
+  locationId: { type: Number },
+  level: { type: Number, default: 1 },
+  xp: { type: Number, default: 0 },
+  life: { type: Number, default: 100 },
+  mana: { type: Number, default: 20 },
+  tiredness: { type: Number, default: 100 },
+  maxLife: { type: Number, default: 100 },
+  maxMana: { type: Number, default: 20 },
+  baseArmor: { type: Number, default: 1 },
+  baseDamage: { type: Number, default: 3 },
+  attackSkill: { type: Number, default: 40 },
+  abilitySkill: { type: Number, default: 40 },
+  abilityPower: { type: Number, default: 1 },
+  abilities: { type: Array, default: [] },
+  inventory: { type: Array, default: [] },
+  inHand: { type: Object },
+  clanId: { type: Number, default: null },
+});
+
 export const Cmds = model<ICmdSchema & Document>('Cmd', cmdSchema);
 export const Status = model<IStatusSchema & Document>('status', statusSchema);
 export const Guilds = model<IGuildSchema & Document>('guild', guildSchema);
 export const Users = model<IUserSchema & Document>('usersdb', userSchema);
+export const Rpg = model<IRpgUserSchema & Document>('rpg', rpgSchema);
