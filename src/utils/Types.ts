@@ -13,7 +13,12 @@ import StarRepository from '@database/repositories/StarRepository';
 import StatusRepository from '@database/repositories/StatusRepository';
 import TopRepository from '@database/repositories/TopRepository';
 import UserRepository from '@database/repositories/UserRepository';
-import { ApplicationCommandData, ColorResolvable, PermissionResolvable, User } from 'discord.js';
+import {
+  ChatInputApplicationCommandData,
+  ColorResolvable,
+  PermissionResolvable,
+  User,
+} from 'discord.js';
 import { Document } from 'mongoose';
 
 export interface IClientConfigs {
@@ -21,7 +26,7 @@ export interface IClientConfigs {
   eventsDirectory: string;
 }
 
-export interface IInteractionCommandConfig extends ApplicationCommandData {
+export interface IInteractionCommandConfig extends ChatInputApplicationCommandData {
   devsOnly?: boolean;
   category: string;
   cooldown?: number;
