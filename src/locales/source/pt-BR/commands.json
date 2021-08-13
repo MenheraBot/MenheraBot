@@ -257,6 +257,7 @@
       "no-name": "Sem nome especificado"
     },
     "dataRolls_fields": {
+      "title": "Comprar Rolls",
       "fields": {
         "name": "Tabela de Preços",
         "value": "1 Roll = **{{price}}** ⭐"

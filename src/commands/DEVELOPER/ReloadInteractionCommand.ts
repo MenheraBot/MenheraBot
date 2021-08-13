@@ -28,6 +28,7 @@ export default class ReloadSlashInteractionCommand extends InteractionCommand {
     if (ctx.options.getString('comando', true).toLowerCase() === 'locales') {
       // @ts-ignore
       await this.client.shard?.broadcastEval((c) => c.reloadLocales());
+      ctx.reply('Locales REcarregados');
       return;
     }
 

@@ -254,6 +254,7 @@
       "no-name": "No name passed"
     },
     "dataRolls_fields": {
+      "title": "Buy Rolls",
       "fields": {
         "name": "Price List",
         "value": "1 Roll = **{{price}}** ⭐"
