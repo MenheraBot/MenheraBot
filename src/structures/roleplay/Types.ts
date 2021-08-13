@@ -19,11 +19,11 @@ export interface IInHand {
   armor: IArmor;
 }
 
-export type ClassType = keyof typeof classes;
+export type TClassId = keyof typeof classes;
 
 export interface IRpgUserSchema {
   readonly id: string;
-  classId: ClassType;
+  classId: TClassId;
   raceId: number;
   speed: number;
   regionId: number;
@@ -77,4 +77,23 @@ export interface IClassesFile {
   baseAttributesPerLevel: IAttributesPerLevel;
   availableWeapons: TWeapons[];
   availableArmors: TArmors[];
+}
+
+export type TEffectTarget = 'self' | 'allies' | 'enemies';
+
+export type TEffectType = 'invisibility' | 'venom' | 'slow' | 'attack';
+
+export interface IAbilityEffect {
+  target: TEffectTarget;
+  type: TEffectType;
+  turns?: number;
+  value?: number;
+  amount?: number | 'ALL';
+}
+
+export interface IAbilitiesFile {
+  classId: TClassId;
+  cost: number;
+  turnsCooldown: number;
+  effects: Array<IAbilityEffect>;
 }
