@@ -12,33 +12,59 @@ export interface IArmor {
   boots: number;
 }
 
-export interface IInHand {
+export interface IEquiped {
   weapon: number;
   armor: IArmor;
 }
 
+export interface IMoney {
+  gold: number;
+  silver: number;
+  bronze: number;
+}
+
+interface IQuest {
+  id: number;
+  progress: number;
+}
+
+export interface IUserQuests {
+  daily: Array<IQuest>;
+  available: Array<IQuest>;
+  active: IQuest;
+}
+
+export interface IJob {
+  id: number;
+  level: number;
+  xp: number;
+}
+
 export interface IRpgUserSchema {
   readonly id: string;
+  classId: number;
   raceId: number;
-  speed: number;
-  regionId: number;
   locationId: number;
   level: number;
   xp: number;
   life: number;
   mana: number;
   tiredness: number;
+  speed: number;
   maxLife: number;
   maxMana: number;
   baseArmor: number;
   baseDamage: number;
   attackSkill: number;
   abilitySkill: number;
-  abilityPower: number;
   abilities: Array<IAbility>;
   inventory: number[];
-  inHand: IInHand;
-  clanId: number;
+  equiped: IEquiped;
+  job: IJob;
+  cooldown: unknown;
+  money: IMoney;
+  quests: IUserQuests;
+  clanId: number | null;
 }
 
 interface IAttributesPerLevel {

@@ -55,28 +55,30 @@ const userSchema = new Schema({
 });
 
 const rpgSchema = new Schema({
-  id: { type: String, unique: true },
-  classId: { type: Number },
-  raceId: { type: Number },
-  speed: { type: Number },
-  regionId: { type: Number },
-  locationId: { type: Number },
-  level: { type: Number, default: 1 },
-  xp: { type: Number, default: 0 },
-  life: { type: Number, default: 100 },
-  mana: { type: Number, default: 20 },
-  tiredness: { type: Number, default: 100 },
-  maxLife: { type: Number, default: 100 },
-  maxMana: { type: Number, default: 20 },
-  baseArmor: { type: Number, default: 1 },
-  baseDamage: { type: Number, default: 3 },
-  attackSkill: { type: Number, default: 40 },
-  abilitySkill: { type: Number, default: 40 },
-  abilityPower: { type: Number, default: 1 },
-  abilities: { type: Array, default: [] },
-  inventory: { type: Array, default: [] },
-  inHand: { type: Object },
-  clanId: { type: Number, default: null },
+  id: { type: String, unique: true }, // User Id
+  classId: { type: Number }, // Id from user class
+  raceId: { type: Number }, // Id from user race
+  locationId: { type: Number }, // Id from the region that the user are
+  level: { type: Number, default: 1 }, // User Level
+  xp: { type: Number, default: 0 }, // User xp
+  life: { type: Number, default: 100 }, // User Life
+  mana: { type: Number, default: 20 }, // User mana
+  tiredness: { type: Number, default: 100 }, // percentage of tiredness of user, 100 = good, 0 = bad
+  speed: { type: Number }, // Base speed from user
+  maxLife: { type: Number, default: 100 }, // max life that the user can reach
+  maxMana: { type: Number, default: 20 }, // Max mana that the user can reach
+  baseArmor: { type: Number, default: 1 }, // Base armor
+  baseDamage: { type: Number, default: 3 }, // Base damage from basic attacks
+  attackSkill: { type: Number, default: 40 }, // Facility of dealling damage with basic attack
+  abilitySkill: { type: Number, default: 40 }, // Facility of dealling damage with all abilities
+  abilities: { type: Array, default: [] }, // User abilities
+  inventory: { type: Array, default: [] }, // User inventory of usable items
+  equiped: { type: Object }, // User inventory of equiped itens
+  job: { type: Object }, // Informations about the user job
+  cooldown: { type: Object }, // All cooldowns that block the user form using commands for some reason
+  money: { type: Object, default: { gold: 0, silver: 0, bronze: 0 } }, // All the money from user
+  quests: { type: Object }, // This object has the available daily quests and the extra quests
+  clanId: { type: Number, default: null }, // Id from the user's clan
 });
 
 export const Cmds = model<ICmdSchema & Document>('Cmd', cmdSchema);
