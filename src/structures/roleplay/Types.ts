@@ -1,5 +1,3 @@
-import classes from './data/Classes';
-
 export interface IAbility {
   id: number;
   level: number;
@@ -19,11 +17,8 @@ export interface IInHand {
   armor: IArmor;
 }
 
-export type TClassId = keyof typeof classes;
-
 export interface IRpgUserSchema {
   readonly id: string;
-  classId: TClassId;
   raceId: number;
   speed: number;
   regionId: number;
@@ -81,19 +76,52 @@ export interface IClassesFile {
 
 export type TEffectTarget = 'self' | 'allies' | 'enemies';
 
-export type TEffectType = 'invisibility' | 'venom' | 'slow' | 'attack';
+export type TEffectType =
+  | 'invisibility'
+  | 'poison'
+  | 'slow'
+  | 'attack'
+  | 'speed'
+  | 'armor_penetration'
+  | 'armor_buff'
+  | 'life_buff'
+  | 'vampirism'
+  | 'degradation'
+  | 'confusion'
+  | 'heal'
+  | 'blind';
+
+export type TElements = 'light' | 'darkness' | 'fire' | 'nature' | 'gravity' | 'prisma';
 
 export interface IAbilityEffect {
   target: TEffectTarget;
   type: TEffectType;
-  turns?: number;
-  value?: number;
   amount?: number | 'ALL';
+  value?: number;
+  isValuePercentage?: boolean;
+  turns?: number;
 }
 
 export interface IAbilitiesFile {
-  classId: TClassId;
   cost: number;
+  element: TElements;
   turnsCooldown: number;
+  randomChoice?: boolean;
   effects: Array<IAbilityEffect>;
+}
+
+export type TRaceName = 'elf' | 'goblin' | 'human' | 'orc' | 'chained' | 'saint';
+
+export type TRaceFacilityType = 'element' | 'armor' | 'buff' | 'loot';
+
+export interface IRaceFacility {
+  type: TRaceFacilityType;
+  info: TElements | 'buff' | 'rare';
+  value: number;
+  isPercentage: boolean;
+}
+
+export interface IRacesFiles {
+  name: TRaceName;
+  facility: IRaceFacility;
 }
