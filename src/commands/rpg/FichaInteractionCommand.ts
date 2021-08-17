@@ -15,5 +15,7 @@ export default class BicudaInteractionCommand extends InteractionCommand {
     });
   }
 
-  async run(ctx: InteractionCommandContext): Promise<void> {}
+  async run(ctx: InteractionCommandContext): Promise<void> {
+    
+  }
 }

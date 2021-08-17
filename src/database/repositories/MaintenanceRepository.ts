@@ -2,10 +2,7 @@ import CmdRepository from './CmdsRepository';
 import StatusRepository from './StatusRepository';
 
 export default class MaintenanceRepository {
-  constructor(private cmdRepository: CmdRepository, private statusRepository: StatusRepository) {
-    this.cmdRepository = cmdRepository;
-    this.statusRepository = statusRepository;
-  }
+  constructor(private cmdRepository: CmdRepository, private statusRepository: StatusRepository) {}
 
   async addMaintenance(commandName: string, maintenanceReason: string): Promise<void> {
     await this.cmdRepository.editMaintenance(commandName, true, maintenanceReason);

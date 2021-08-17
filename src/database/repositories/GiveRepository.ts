@@ -2,9 +2,7 @@ import { Users } from '@structures/DatabaseCollections';
 
 /* eslint-disable no-underscore-dangle */
 export default class GiveRepository {
-  constructor(private userModal: typeof Users) {
-    this.userModal = userModal;
-  }
+  constructor(private userModal: typeof Users) {}
 
   async _give(field: string, fromID: string, toID: string, value: number): Promise<void> {
     await this.userModal.updateOne({ id: fromID }, { $inc: { [field]: -value } });
