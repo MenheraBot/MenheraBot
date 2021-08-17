@@ -15,6 +15,7 @@ export interface IArmor {
 export interface IEquiped {
   weapon: number;
   armor: IArmor;
+  backpack: number;
 }
 
 export interface IMoney {
@@ -40,6 +41,11 @@ export interface IJob {
   xp: number;
 }
 
+export interface IInventoryItem {
+  id: number;
+  amount: number;
+}
+
 export interface IRpgUserSchema {
   readonly id: string;
   classId: number;
@@ -58,7 +64,7 @@ export interface IRpgUserSchema {
   attackSkill: number;
   abilitySkill: number;
   abilities: Array<IAbility>;
-  inventory: number[];
+  inventory: Array<IInventoryItem>;
   equiped: IEquiped;
   job: IJob;
   cooldown: unknown;
