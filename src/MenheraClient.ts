@@ -13,6 +13,7 @@ import EventManager from '@structures/EventManager';
 import InteractionCommand from '@structures/command/InteractionCommand';
 
 import LocaleStructure from '@structures/LocaleStructure';
+import BolehamManager from '@structures/roleplay/BolehamManager';
 
 export default class MenheraClient extends Client {
   public database: Database;
@@ -20,6 +21,8 @@ export default class MenheraClient extends Client {
   public slashCommands: Collection<string, InteractionCommand>;
 
   public aliases: Collection<string, string>;
+
+  public boleham: BolehamManager;
 
   public events: EventManager;
 
@@ -38,6 +41,7 @@ export default class MenheraClient extends Client {
     this.aliases = new Collection();
     this.cooldowns = new Collection();
     this.events = new EventManager(this);
+    this.boleham = new BolehamManager(this);
     this.config = config;
   }
 

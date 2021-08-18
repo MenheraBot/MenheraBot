@@ -1,8 +1,9 @@
+import { RpgClassNames } from '@structures/MenheraConstants';
+
 export interface IAbility {
   id: number;
   level: number;
   xp: number;
-  xpToUp: number;
 }
 
 export interface IArmor {
@@ -100,8 +101,13 @@ export type TWeapons =
 export type TArmors = 'light' | 'medium' | 'heavy';
 
 export interface IClassesFile {
-  name: string;
+  name: RpgClassNames;
   baseAttributesPerLevel: IAttributesPerLevel;
+  baseArmor: number;
+  baseDamage: number;
+  attackSkill: number;
+  abilitySkill: number;
+  speed: number;
   availableWeapons: TWeapons[];
   availableArmors: TArmors[];
 }
@@ -156,4 +162,16 @@ export interface IRaceFacility {
 export interface IRacesFiles {
   name: TRaceName;
   facility: IRaceFacility;
+}
+
+export interface IBasicData {
+  id: string;
+  classId: number;
+  raceId: number;
+  abilities: IAbility[];
+  baseArmor: number;
+  baseDamage: number;
+  attackSkill: number;
+  abilitySkill: number;
+  speed: number;
 }

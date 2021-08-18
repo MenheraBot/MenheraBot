@@ -1,0 +1,54 @@
+{
+  "classes": {
+    "1": {
+      "name": "Assassino",
+      "description": "Furtivos e aniquiladores. Com seus conhecimentos em emboscadas, o assassino busca matar sua vítima com ilusões, antes mesmo dela perceber que seu fim chegou!"
+    },
+    "2": {
+      "name": "Caçador",
+      "description": "Os caçadores utilizam de armas de longa distância para derrubar seus inimigos. Lobos são seus melhores amigos, e seus melhores suportes de batalha."
+    },
+    "3": {
+      "name": "Ceifador",
+      "description": "Ceifador será uma classe dividida em 3 subclasses. Um assassino sombrio que necessita de almas para continuar vagando pelas terras sem ter que voltar de onde sairam, o inferno."
+    },
+    "4": {
+      "name": "Guerreiro",
+      "description": "Nada melhor numa batalha do que o equilíbrio entre dano e armadura. É exatamente isso que o Guerreiro é, uma máquina de causar dano enquanto aguenta perseverante."
+    },
+    "5": {
+      "name": "Ilusionista",
+      "description": "Ilusionistas são feiticeiros que focaram seus estudos em enganar o inimigo. Destrói seus inimigos acabando tanto com seu físico, quanto com seu mental"
+    },
+    "6": {
+      "name": "Paladino",
+      "description": "Conhecedor das artes espirituais, paladinos procuram segurar todo o dano da batalha enquanto aproveitam de habiilidades sagradas para salvar seu povo"
+    }
+  },
+  "races": {
+    "1": {
+      "name": "Elfo",
+      "description": "Elfos são os melhores amigos da natureza. Possuem uma grande afinidade com esse elemento, sem contar em seus traços físicos facilmente perceptíveis, como suas orelhas"
+    },
+    "2": {
+      "name": "Goblin",
+      "description": "São profissionais quando a questão é roubar. Seus conhecimentos ajudam a achar itens que ninguém conseguiria achar, principalmente em restos mortais"
+    },
+    "3": {
+      "name": "Humano",
+      "description": "Descobridores do Fogo, por sua descoberta e uso contínuo, aprendeu cada parte das invocações, criando uma alta afinidade com o elemento"
+    },
+    "4": {
+      "name": "Orc",
+      "description": "Monstros que possuem discernimento do que é certo e errado e, por isso, são aceitos na sociedade. Por sua carne dura, são mais fortes no quesito de não tomar dano"
+    },
+    "5": {
+      "name": "Acorrentado",
+      "description": "Humanos amaldiçoados. No passado, após cometerem crimes pesados, os dragões amaldiçoaram uma grande parte da humanidade, os tornando em acorrentados. Por estarem ligados diretamente à magia negra, possuem alta afinidade com o elemento escuridão"
+    },
+    "6": {
+      "name": "Santo",
+      "description": "Humanos abençoados. Sempre estudaram as artes da luz, sendo a raça mais próxima de um dragão possível. Por seus estudos, possuem alta afinidade com o elemento Luz"
+    }
+  }
+}

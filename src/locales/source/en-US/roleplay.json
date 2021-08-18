@@ -1,0 +1,54 @@
+{
+  "classes": {
+    "1": {
+      "name": "Assassin",
+      "description": "Stealths and annihilators. With his knowledge of ambushes, the assassin seeks to kill his victim with illusions, even before he realizes that his end has come!"
+    },
+    "2": {
+      "name": "Hunter",
+      "description": "Hunters use long-range weapons to take down their enemies. Wolves are your best friends, and your best battle supporters."
+    },
+    "3": {
+      "name": "Reaper",
+      "description": "Reaper will be a class divided into 3 subclasses. A dark assassin who needs souls to continue wandering the lands without having to go back to where they left off, hell."
+    },
+    "4": {
+      "name": "Warrior",
+      "description": "Nothing better in battle than the balance between damage and armor. That's exactly what the Warrior is, a machine to deal damage while persevering."
+    },
+    "5": {
+      "name": "Illusionists",
+      "description": "Illusionists are sorcerers who have focused their studies on deceiving the enemy. Destroy your enemies by killing both your physical and your mental"
+    },
+    "6": {
+      "name": "Paladin",
+      "description": "Knowledgeable in the spiritual arts, paladins seek to withstand all the damage of battle while harnessing sacred abilities to save their people."
+    }
+  },
+  "races": {
+    "1": {
+      "name": "Elf",
+      "description": "Elves are nature's best friends. They have a great affinity with this element, not to mention their easily noticeable physical features, such as their ears"
+    },
+    "2": {
+      "name": "Goblin",
+      "description": "They are professionals when it comes to stealing. Your knowledge helps you find items that no one could find, especially in human remains"
+    },
+    "3": {
+      "name": "Human",
+      "description": "Firefinders, through their discovery and continued use, learned every part of the invocations, creating a high affinity for the element."
+    },
+    "4": {
+      "name": "Orc",
+      "description": "Monsters that have insight into what is right and wrong and, therefore, are accepted in society. Due to their tough meat, they are stronger in terms of not taking damage"
+    },
+    "5": {
+      "name": "Chained",
+      "description": "Cursed humans. In the past, after committing heavy crimes, dragons cursed a large part of humanity, turning them into chains. As they are directly linked to black magic, they have a high affinity with the dark element"
+    },
+    "6": {
+      "name": "Saint",
+      "description": "Blessed humans. They always studied the arts of light, being the closest race to a dragon possible. Due to their studies, they have a high affinity with the Light element."
+    }
+  }
+}

@@ -9,6 +9,7 @@ import HuntRepository from '@database/repositories/HuntRepository';
 import MaintenanceRepository from '@database/repositories/MaintenanceRepository';
 import MamarRepository from '@database/repositories/MamarRepository';
 import RelationshipRepository from '@database/repositories/RelationshipRepository';
+import RpgRepository from '@database/repositories/RpgRepository';
 import StarRepository from '@database/repositories/StarRepository';
 import StatusRepository from '@database/repositories/StatusRepository';
 import TopRepository from '@database/repositories/TopRepository';
@@ -158,6 +159,7 @@ export interface IDatabaseRepositories {
   mamarRepository: MamarRepository;
   guildRepository: GuildsRepository;
   statusRepository: StatusRepository;
+  rpgRepository: RpgRepository;
   badgeRepository: BadgeRepository;
   maintenanceRepository: MaintenanceRepository;
   huntRepository: HuntRepository;

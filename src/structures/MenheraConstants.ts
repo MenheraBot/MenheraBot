@@ -81,7 +81,23 @@ export const emojis = {
   us: '🇺🇸',
   br: '🇧🇷',
   ligma: '<:MenheraDevil:768621225420652595>',
+  rpg: {
+    Assassin: '<:assassin:877497643897585735>',
+    Hunter: '<:hunter:877500109401784360>',
+    Reaper: '<:reaper:877501630713561129>',
+    Warrior: '<:warrior:877500315543404584>',
+    Illusionist: '<:illusionist:877499942904680478>',
+    Paladin: '<:paladin:877500563540037632>',
+    elf: '<:elfo:877573220390301736>',
+    goblin: '<:goblin:877573777024745552>',
+    chained: '<:chained:877575893596389498>',
+    saint: '<:saint:877576342965735464>',
+    human: '<:human:877576375698083940>',
+    orc: '<:orc:877576354059665408>',
+  },
 };
+
+export type RpgClassNames = keyof typeof emojis.rpg;
 
 export type EmojiTypes = keyof typeof emojis;
 
@@ -95,6 +111,7 @@ export const COLORS = {
   HuntArchangel: '#a2f29e' as ColorResolvable,
   Aqua: '#03f3ff' as ColorResolvable,
   Purple: '#7f28c4' as ColorResolvable,
+  Pear: '#bdffc4' as ColorResolvable,
   ACTIONS: '#fa8cc5' as ColorResolvable,
 };
 

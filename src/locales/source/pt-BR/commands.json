@@ -634,5 +634,15 @@
     "description": "Veja os status de BlackJack de alguém",
     "embed-title": "Status do blackjack de {{user}}",
     "no-data": "você nunca jogou uma partida de blackjack!"
+  },
+  "ficha": {
+    "register": {
+      "title": "Bem-Vindo Ao Mundo de Boleham!",
+      "select-class": "Escolha sua Classe",
+      "select-race": "Escolha sua Raça",
+      "error": "Ocorreu um erro na criação de sua conta",
+      "done": "Bem-Vindo ao Mundo de Boleham! Você já pode ir para o mercado da Capital para comprar equipamentos!",
+      "description": "Neste momento você vai fazer o seu registro. Primeiro escolha a sua classe, e então a sua raça! Para escolher é só selecionar na caixa abaixo!"
+    }
   }
 }

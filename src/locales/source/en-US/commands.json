@@ -622,5 +622,15 @@
     "equal": "Both you and Menhera hit the same amount. Menhera Wins UwU",
     "menhera-bigger": "Menhera is closer to 21, she wins!",
     "user-bigger": "You're closer to 21, you won **{{value}}** :star:"
+  },
+  "ficha": {
+    "register": {
+      "title": "Welcome to the World of Boleham!",
+      "select-class": "Choose your Class",
+      "select-race": "Choose your race",
+      "error": "There was an error creating your account",
+      "done": "Welcome to the World of Boreham! You can now go to the Capital Market to buy equipment!",
+      "description": "At this point you will register. First choose your class, then your race! To choose, just select in the box below!"
+    }
   }
 }

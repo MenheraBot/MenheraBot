@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import Redis from 'ioredis';
-import { Cmds, Guilds, Status, Users } from '@structures/DatabaseCollections';
+import { Cmds, Guilds, Status, Users, Rpg } from '@structures/DatabaseCollections';
 import { IDatabaseRepositories } from '@utils/Types';
 import CacheRepository from './repositories/CacheRepository';
 import CmdRepository from './repositories/CmdsRepository';
@@ -16,6 +16,7 @@ import RelationshipRepository from './repositories/RelationshipRepository';
 import BlacklistRepository from './repositories/BlacklistRepository';
 import TopRepository from './repositories/TopRepository';
 import GiveRepository from './repositories/GiveRepository';
+import RpgRepository from './repositories/RpgRepository';
 
 export default class Databases {
   public Cmds: typeof Cmds;
@@ -25,6 +26,8 @@ export default class Databases {
   public Status: typeof Status;
 
   public Users: typeof Users;
+
+  public Rpg: typeof Rpg;
 
   public redisClient: Redis.Redis | null = null;
 
@@ -46,6 +49,8 @@ export default class Databases {
 
   private readonly cacheRepository: CacheRepository;
 
+  private readonly rpgRepository: RpgRepository;
+
   private readonly huntRepository: HuntRepository;
 
   private readonly relationshipRepository: RelationshipRepository;
@@ -63,6 +68,7 @@ export default class Databases {
     this.Guilds = Guilds;
     this.Status = Status;
     this.Users = Users;
+    this.Rpg = Rpg;
 
     if (withRedisCache) this.createRedisConnection();
 
@@ -78,6 +84,7 @@ export default class Databases {
     );
     this.statusRepository = new StatusRepository(this.Status);
     this.badgeRepository = new BadgeRepository(this.userRepository);
+    this.rpgRepository = new RpgRepository(this.Rpg);
     this.maintenanceRepository = new MaintenanceRepository(
       this.cmdRepository,
       this.statusRepository,
@@ -100,6 +107,7 @@ export default class Databases {
       statusRepository: this.statusRepository,
       badgeRepository: this.badgeRepository,
       maintenanceRepository: this.maintenanceRepository,
+      rpgRepository: this.rpgRepository,
       huntRepository: this.huntRepository,
       relationshipRepository: this.relationshipRepository,
       blacklistRepository: this.blacklistRepository,

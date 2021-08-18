@@ -58,7 +58,7 @@ const rpgSchema = new Schema({
   id: { type: String, unique: true }, // User Id
   classId: { type: Number }, // Id from user class
   raceId: { type: Number }, // Id from user race
-  locationId: { type: Number }, // Id from the region that the user are
+  locationId: { type: Number, default: 0 }, // Id from the region that the user are
   level: { type: Number, default: 1 }, // User Level
   xp: { type: Number, default: 0 }, // User xp
   life: { type: Number, default: 100 }, // User Life
@@ -67,10 +67,10 @@ const rpgSchema = new Schema({
   speed: { type: Number }, // Base speed from user
   maxLife: { type: Number, default: 100 }, // max life that the user can reach
   maxMana: { type: Number, default: 20 }, // Max mana that the user can reach
-  baseArmor: { type: Number, default: 1 }, // Base armor
-  baseDamage: { type: Number, default: 3 }, // Base damage from basic attacks
-  attackSkill: { type: Number, default: 40 }, // Facility of dealling damage with basic attack
-  abilitySkill: { type: Number, default: 40 }, // Facility of dealling damage with all abilities
+  baseArmor: { type: Number }, // Base armor
+  baseDamage: { type: Number }, // Base damage from basic attacks
+  attackSkill: { type: Number }, // Facility of dealling damage with basic attack
+  abilitySkill: { type: Number }, // Facility of dealling damage with all abilities
   abilities: { type: Array, default: [] }, // User abilities
   inventory: { type: Array, default: [] }, // User inventory of usable items
   equiped: { type: Object }, // User inventory of equiped itens
