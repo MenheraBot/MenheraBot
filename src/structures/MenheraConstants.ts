@@ -108,7 +108,11 @@ export const emojis = {
     silver: '<:silver:878054145834229861>',
     gold: '<:gold:878054145796472922>',
     tired: '<:tired:878080871477940224>',
-    speed: '<:speed:878084387923709992>',
+    speed: '<:speed:878089794113110076>',
+    attack_skill: '<:attack_skill:878087236812439612>',
+    ability_skill: '<:ability_skill:878087221704536065>',
+    lucky: '<:lucky:878088065644654613>',
+    level: '<:level:878090363598942258>',
   },
 };
 

@@ -65,6 +65,7 @@ const rpgSchema = new Schema({
   mana: { type: Number, default: 20 }, // User mana
   tiredness: { type: Number, default: 100 }, // percentage of tiredness of user, 100 = good, 0 = bad
   speed: { type: Number }, // Base speed from user
+  lucky: { type: Number, default: 1 }, // Base lucky for gettinh loots
   maxLife: { type: Number, default: 100 }, // max life that the user can reach
   maxMana: { type: Number, default: 20 }, // Max mana that the user can reach
   baseArmor: { type: Number }, // Base armor

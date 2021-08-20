@@ -58,6 +58,7 @@ export interface IRpgUserSchema {
   mana: number;
   tiredness: number;
   speed: number;
+  lucky: number;
   maxLife: number;
   maxMana: number;
   baseArmor: number;

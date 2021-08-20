@@ -656,7 +656,11 @@
       "tired": "Tiredness",
       "damage": "Base Damage",
       "armor": "Base Armor",
-      "speed": "Speed"
+      "speed": "Speed",
+      "atkSkill": "Attack Skill",
+      "abtSkill": "Ability Skill",
+      "lucky": "Lucky",
+      "level": "Level"
     }
   }
 }

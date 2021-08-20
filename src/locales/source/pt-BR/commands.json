@@ -668,7 +668,11 @@
       "tired": "Cansaço",
       "damage": "Dano Base",
       "armor": "Armadura Base",
-      "speed": "Velocidade"
+      "speed": "Velocidade",
+      "atkSkill": "Facilidade de Ataque",
+      "abtSkill": "Facilidade de Habilidade",
+      "lucky": "Sorte",
+      "level": "Nível"
     }
   }
 }

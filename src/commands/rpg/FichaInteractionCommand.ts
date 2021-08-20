@@ -115,6 +115,11 @@ export default class BicudaInteractionCommand extends InteractionCommand {
       color: ctx.data.user.cor,
       fields: [
         {
+          name: `${emojis.roleplay_custom.level} | ${translateFromCommand('second.level')}`,
+          value: `**${user.level}**`,
+          inline: true,
+        },
+        {
           name: `${emojis.blood} | ${translateFromCommand('second.life')}`,
           value: `${user.life} / ${user.maxLife}`,
           inline: true,
@@ -131,7 +136,7 @@ export default class BicudaInteractionCommand extends InteractionCommand {
         },
         {
           name: `${emojis.roleplay_custom.tired} | ${translateFromCommand('second.tired')}`,
-          value: `**${user.tiredness}%**`,
+          value: `${user.tiredness}**%**`,
           inline: true,
         },
         {
@@ -149,10 +154,31 @@ export default class BicudaInteractionCommand extends InteractionCommand {
           value: `${user.speed}`,
           inline: true,
         },
+        {
+          name: `${emojis.roleplay_custom.attack_skill} | ${translateFromCommand(
+            'second.atkSkill',
+          )}`,
+          value: `${user.attackSkill}`,
+          inline: true,
+        },
+        {
+          name: `${emojis.roleplay_custom.ability_skill} | ${translateFromCommand(
+            'second.abtSkill',
+          )}`,
+          value: `${user.abilitySkill}`,
+          inline: true,
+        },
+        {
+          name: `${emojis.roleplay_custom.lucky} | ${translateFromCommand('second.lucky')}`,
+          value: `${user.lucky}`,
+          inline: true,
+        },
       ],
     };
 
-    const abilitiesEmbed = {};
+    const abilitiesEmbed = {
+      title: translateFromCommand('third.title', { user: member.username }),
+    };
 
     const infoButton = new MessageButton()
       .setCustomId(`${ctx.interaction.id} | INFO`)
