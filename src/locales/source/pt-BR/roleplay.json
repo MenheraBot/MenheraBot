@@ -61,7 +61,7 @@
     "2": {
       "name": "Quasar"
     },
-    "3":{
+    "3": {
       "name": "Motréate"
     },
     "4": {
@@ -91,7 +91,7 @@
       "name": "Corte Único"
     },
     "104": {
-      "name": "Corrida" 
+      "name": "Corrida"
     },
     "201": {
       "name": "Envenenamento"
@@ -152,6 +152,12 @@
     },
     "604": {
       "name": "Inquisição"
+    }
+  },
+  "buildings": {
+    "0": {
+      "name": "Mercado",
+      "description": "Uma loja do governo de Boleham. Venda e compre itens aqui por um preço menor"
     }
   }
 }

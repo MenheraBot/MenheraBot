@@ -15,5 +15,4 @@ const MaxXpPerLevel = {
   14: 75000,
   15: 100000,
 };
-
 export default { MaxXpPerLevel };

@@ -666,5 +666,9 @@
       "title": "{{user}}'s Abilities",
       "ability-info": "Level: **{{level}}**\nCost: **{{cost}}**\nExperience: **{{xp}}**\nCooldown: **{{cooldown}}** Turns"
     }
+  },
+  "cidade": {
+    "description": "Choose below what you want to do in {{city}}",
+    "select": "Select what you want to do"
   }
 }

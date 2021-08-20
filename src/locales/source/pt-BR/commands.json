@@ -678,5 +678,9 @@
       "title": "Habilidades de {{user}}",
       "ability-info": "Nível: **{{level}}**\nCusto: **{{cost}}**\nExperiência: **{{xp}}**\nTempo de Recarga: **{{cooldown}}** Turnos"
     }
+  },
+  "cidade": {
+    "description": "Escolha abaixo o que você quer fazer em {{city}}",
+    "select": "Selecione o que você quer fazer"
   }
 }

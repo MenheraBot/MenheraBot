@@ -153,5 +153,11 @@
     "604": {
       "name": "Inquisition"
     }
+  },
+  "buildings": {
+    "0": {
+      "name": "Mart",
+      "description": "A Boleham government store. Sell ​​and buy items here for a lower price"
+    }
   }
 }

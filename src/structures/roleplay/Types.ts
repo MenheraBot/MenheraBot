@@ -176,3 +176,8 @@ export interface IBasicData {
   abilitySkill: number;
   speed: number;
 }
+
+export interface IBuildingFile {
+  name: string;
+  locationId: number;
+}

@@ -1,5 +1,5 @@
 import MenheraClient from 'MenheraClient';
-import { IAbilitiesFile, IBasicData, IClassesFile, IRacesFiles } from './Types';
+import { IAbilitiesFile, IBasicData, IBuildingFile, IClassesFile, IRacesFiles } from './Types';
 
 export default class BasicFunctions {
   constructor(private client: MenheraClient) {}
@@ -36,7 +36,15 @@ export default class BasicFunctions {
     return this.client.boleham.Experiences[level];
   }
 
-  getAbilityById(id: number): IAbilitiesFile {
+  getAbilityById(id: number | string): IAbilitiesFile {
     return this.client.boleham.Abilities.filter((a) => a[0] === `${id}`)[0][1];
+  }
+
+  getAllBuildingsFromLocationId(locationId: number): [string, IBuildingFile][] {
+    return this.client.boleham.Buildings.filter((a) => a[1].locationId === locationId);
+  }
+
+  getBuildingById(id: number | string): IBuildingFile {
+    return this.client.boleham.Buildings.filter((a) => a[0] === `${id}`)[0][1];
   }
 }

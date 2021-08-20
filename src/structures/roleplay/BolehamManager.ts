@@ -1,10 +1,11 @@
 import MenheraClient from 'MenheraClient';
 import BasicFunctions from './BasicFunctions';
 import abilities from './data/Abilities';
+import buildings from './data/Buildings';
 import classes from './data/Classes';
 import ecosystem from './data/Ecosystem';
 import races from './data/Races';
-import { IAbilitiesFile, IClassesFile, IRacesFiles } from './Types';
+import { IAbilitiesFile, IBuildingFile, IClassesFile, IRacesFiles } from './Types';
 
 export default class BolehamManager {
   public classesFile: typeof classes;
@@ -15,12 +16,15 @@ export default class BolehamManager {
 
   public ecosystemFile: typeof ecosystem;
 
+  public buildingFile: typeof buildings;
+
   public Functions: BasicFunctions;
 
   constructor(client: MenheraClient) {
     this.classesFile = classes;
     this.racesFile = races;
     this.abilitiesFile = abilities;
+    this.buildingFile = buildings;
     this.ecosystemFile = ecosystem;
     this.Functions = new BasicFunctions(client);
   }
@@ -39,5 +43,9 @@ export default class BolehamManager {
 
   get Experiences(): { [key: number]: number } {
     return this.ecosystemFile.MaxXpPerLevel;
+  }
+
+  get Buildings(): [string, IBuildingFile][] {
+    return Object.entries(this.buildingFile);
   }
 }
