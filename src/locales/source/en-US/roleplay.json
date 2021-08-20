@@ -61,7 +61,7 @@
     "2": {
       "name": "Quasar"
     },
-    "3":{
+    "3": {
       "name": "Motreate"
     },
     "4": {
@@ -78,6 +78,80 @@
     },
     "8": {
       "name": "Pandemonium"
+    }
+  },
+  "abilities": {
+    "101": {
+      "name": "You don't see me anymore!"
+    },
+    "102": {
+      "name": "Razor"
+    },
+    "103": {
+      "name": "Single Cut"
+    },
+    "104": {
+      "name": "Run"
+    },
+    "201": {
+      "name": "Poisoning"
+    },
+    "202": {
+      "name": "Pack, Come on!"
+    },
+    "203": {
+      "name": "Piercing arrow"
+    },
+    "204": {
+      "name": "5 Elements Arrow"
+    },
+    "301": {
+      "name": "Dracula"
+    },
+    "302": {
+      "name": "Degrading Curse"
+    },
+    "303": {
+      "name": "You will not escape!"
+    },
+    "304": {
+      "name": "Matriarch Scythe"
+    },
+    "401": {
+      "name": "Crescendum"
+    },
+    "402": {
+      "name": "Defensive Attack"
+    },
+    "403": {
+      "name": "Protect Me"
+    },
+    "404": {
+      "name": "Protect Yourselves"
+    },
+    "501": {
+      "name": "Manipulation"
+    },
+    "502": {
+      "name": "Undresses"
+    },
+    "503": {
+      "name": "Explosion"
+    },
+    "504": {
+      "name": "Area Control"
+    },
+    "601": {
+      "name": "Divine Attack"
+    },
+    "602": {
+      "name": "I Will Revitalize You"
+    },
+    "603": {
+      "name": "Take Cover"
+    },
+    "604": {
+      "name": "Inquisition"
     }
   }
 }

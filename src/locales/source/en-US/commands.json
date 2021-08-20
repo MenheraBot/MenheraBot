@@ -661,6 +661,10 @@
       "abtSkill": "Ability Skill",
       "lucky": "Lucky",
       "level": "Level"
+    },
+    "third": {
+      "title": "{{user}}'s Abilities",
+      "ability-info": "Level: **{{level}}**\nCost: **{{cost}}**\nExperience: **{{xp}}**\nCooldown: **{{cooldown}}** Turns"
     }
   }
 }

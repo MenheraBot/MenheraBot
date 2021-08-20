@@ -233,7 +233,7 @@ const Abilities: { [key: number]: IAbilitiesFile } = {
         target: 'self',
         type: 'life_buff',
         isValuePercentage: true,
-        turns: 50,
+        turns: 100,
         value: 8,
       },
     ],
@@ -267,7 +267,7 @@ const Abilities: { [key: number]: IAbilitiesFile } = {
   },
   404: {
     cost: 20,
-    element: 'prisma',
+    element: 'nature',
     turnsCooldown: 6,
     randomChoice: true,
     effects: [
@@ -338,6 +338,7 @@ const Abilities: { [key: number]: IAbilitiesFile } = {
         amount: 1,
         type: 'slow',
         value: 7,
+        turns: 5,
         isValuePercentage: true,
       },
     ],

@@ -4,6 +4,7 @@ import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import {
+  EmbedFieldData,
   MessageActionRowComponent,
   MessageButton,
   MessageComponentInteraction,
@@ -176,8 +177,25 @@ export default class BicudaInteractionCommand extends InteractionCommand {
       ],
     };
 
-    const abilitiesEmbed = {
+    const abilityEmbed = {
       title: translateFromCommand('third.title', { user: member.username }),
+      color: ctx.data.user.cor,
+      fields: user.abilities.reduce((p: EmbedFieldData[], c) => {
+        const abilityInfo = this.client.boleham.Functions.getAbilityById(c.id);
+        const field = {
+          name: `${emojis.roleplay_custom[abilityInfo.element]} | ${ctx.locale(
+            `roleplay:abilities.${c.id}.name`,
+          )}`,
+          value: translateFromCommand('third.ability-info', {
+            level: c.level,
+            xp: c.xp,
+            cost: abilityInfo.cost,
+            cooldown: abilityInfo.turnsCooldown,
+          }),
+          inline: true,
+        };
+        return [...p, field];
+      }, []),
     };
 
     const infoButton = new MessageButton()
@@ -213,6 +231,21 @@ export default class BicudaInteractionCommand extends InteractionCommand {
       max: 3,
     });
 
+    collector.on('end', () => {
+      ctx.editReply({
+        components: [
+          {
+            type: 'ACTION_ROW',
+            components: [
+              infoButton.setDisabled(true).setLabel(ctx.locale('common:timesup')),
+              statusButton.setDisabled(true).setLabel(ctx.locale('common:timesup')),
+              abilityButton.setDisabled(true).setLabel(ctx.locale('common:timesup')),
+            ],
+          },
+        ],
+      });
+    });
+
     collector.on('collect', (int) => {
       int.deferUpdate();
       let toSendEmbed: MessageEmbedOptions = registerInfoEmbed;
@@ -235,7 +268,7 @@ export default class BicudaInteractionCommand extends InteractionCommand {
           ];
           break;
         case 'ABILITY':
-          toSendEmbed = abilitiesEmbed;
+          toSendEmbed = abilityEmbed;
           toSendComponents = [
             infoButton.setDisabled(false).setStyle('PRIMARY'),
             statusButton.setDisabled(false).setStyle('PRIMARY'),

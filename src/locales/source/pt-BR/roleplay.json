@@ -79,5 +79,79 @@
     "8": {
       "name": "Pandemônio"
     }
+  },
+  "abilities": {
+    "101": {
+      "name": "Você não me vê mais!"
+    },
+    "102": {
+      "name": "Navalha"
+    },
+    "103": {
+      "name": "Corte Único"
+    },
+    "104": {
+      "name": "Corrida" 
+    },
+    "201": {
+      "name": "Envenenamento"
+    },
+    "202": {
+      "name": "Matilha, Venha!"
+    },
+    "203": {
+      "name": "Flecha Perfurante"
+    },
+    "204": {
+      "name": "Flecha dos 5 Elementos"
+    },
+    "301": {
+      "name": "Drácula"
+    },
+    "302": {
+      "name": "Maldição Degradativa"
+    },
+    "303": {
+      "name": "Você não escapará!"
+    },
+    "304": {
+      "name": "Foice Matriarca"
+    },
+    "401": {
+      "name": "Crescendum"
+    },
+    "402": {
+      "name": "Ataque Defensivo"
+    },
+    "403": {
+      "name": "Proteja-me"
+    },
+    "404": {
+      "name": "Protegei-vos"
+    },
+    "501": {
+      "name": "Manipulação"
+    },
+    "502": {
+      "name": "Despida-se"
+    },
+    "503": {
+      "name": "Esplosão"
+    },
+    "504": {
+      "name": "Controle de Área"
+    },
+    "601": {
+      "name": "Divino Ataque"
+    },
+    "602": {
+      "name": "Revitalizar-te-ei"
+    },
+    "603": {
+      "name": "Proteja-se"
+    },
+    "604": {
+      "name": "Inquisição"
+    }
   }
 }

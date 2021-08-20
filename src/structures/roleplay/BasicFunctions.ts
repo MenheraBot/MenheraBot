@@ -1,5 +1,5 @@
 import MenheraClient from 'MenheraClient';
-import { IBasicData, IClassesFile, IRacesFiles } from './Types';
+import { IAbilitiesFile, IBasicData, IClassesFile, IRacesFiles } from './Types';
 
 export default class BasicFunctions {
   constructor(private client: MenheraClient) {}
@@ -34,5 +34,9 @@ export default class BasicFunctions {
 
   getMaxXpForLevel(level: number): number {
     return this.client.boleham.Experiences[level];
+  }
+
+  getAbilityById(id: number): IAbilitiesFile {
+    return this.client.boleham.Abilities.filter((a) => a[0] === `${id}`)[0][1];
   }
 }

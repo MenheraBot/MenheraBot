@@ -673,6 +673,10 @@
       "abtSkill": "Facilidade de Habilidade",
       "lucky": "Sorte",
       "level": "Nível"
+    },
+    "third": {
+      "title": "Habilidades de {{user}}",
+      "ability-info": "Nível: **{{level}}**\nCusto: **{{cost}}**\nExperiência: **{{xp}}**\nTempo de Recarga: **{{cooldown}}** Turnos"
     }
   }
 }

@@ -113,6 +113,12 @@ export const emojis = {
     ability_skill: '<:ability_skill:878087221704536065>',
     lucky: '<:lucky:878088065644654613>',
     level: '<:level:878090363598942258>',
+    fire: '<:fire:878320932807147552>',
+    prisma: '<:prism:878320933318836224>',
+    nature: '<:nature:878320933230751846>',
+    light: '<:light:878320933457244170>',
+    gravity: '<:gravity:878320932614185030>',
+    darkness: '<:darkness:878320931741765694>',
   },
 };
 
