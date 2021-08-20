@@ -652,7 +652,11 @@
       "title": "{{user}}'s Statuses",
       "life": "Life",
       "mana": "Mana",
-      "xp": "Experience"
+      "xp": "Experience",
+      "tired": "Tiredness",
+      "damage": "Base Damage",
+      "armor": "Base Armor",
+      "speed": "Speed"
     }
   }
 }

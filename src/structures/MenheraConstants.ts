@@ -75,6 +75,7 @@ export const emojis = {
   double_hammer: '⚒️',
   blood: '🩸',
   mana: '💧',
+  shield: '🛡️',
   xp: '✨',
   rainbow: '🌈',
   money: '💰',
@@ -106,6 +107,8 @@ export const emojis = {
     bronze: '<:bronze:878054145561604158>',
     silver: '<:silver:878054145834229861>',
     gold: '<:gold:878054145796472922>',
+    tired: '<:tired:878080871477940224>',
+    speed: '<:speed:878084387923709992>',
   },
 };
 

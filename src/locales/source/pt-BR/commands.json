@@ -664,7 +664,11 @@
       "title": "Status de {{user}}",
       "life": "Vida",
       "mana": "Mana",
-      "xp": "Experiência"
+      "xp": "Experiência",
+      "tired": "Cansaço",
+      "damage": "Dano Base",
+      "armor": "Armadura Base",
+      "speed": "Velocidade"
     }
   }
 }

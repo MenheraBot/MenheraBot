@@ -129,6 +129,26 @@ export default class BicudaInteractionCommand extends InteractionCommand {
           value: `${user.xp} / ${this.client.boleham.Functions.getMaxXpForLevel(user.level)}`,
           inline: true,
         },
+        {
+          name: `${emojis.roleplay_custom.tired} | ${translateFromCommand('second.tired')}`,
+          value: `**${user.tiredness}%**`,
+          inline: true,
+        },
+        {
+          name: `${emojis.sword} | ${translateFromCommand('second.damage')}`,
+          value: `${user.baseDamage}`,
+          inline: true,
+        },
+        {
+          name: `${emojis.shield} | ${translateFromCommand('second.armor')}`,
+          value: `${user.baseArmor}`,
+          inline: true,
+        },
+        {
+          name: `${emojis.roleplay_custom.speed} | ${translateFromCommand('second.speed')}`,
+          value: `${user.speed}`,
+          inline: true,
+        },
       ],
     };
 
