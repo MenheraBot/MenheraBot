@@ -50,5 +50,34 @@
       "name": "Saint",
       "description": "Blessed humans. They always studied the arts of light, being the closest race to a dragon possible. Due to their studies, they have a high affinity with the Light element."
     }
+  },
+  "locations": {
+    "0": {
+      "name": "Enochia"
+    },
+    "1": {
+      "name": "Jotefiel"
+    },
+    "2": {
+      "name": "Quasar"
+    },
+    "3":{
+      "name": "Motreate"
+    },
+    "4": {
+      "name": "Obsotrea"
+    },
+    "5": {
+      "name": "Arpendia"
+    },
+    "6": {
+      "name": "Boat Harbor City"
+    },
+    "7": {
+      "name": "Isle of Horrors"
+    },
+    "8": {
+      "name": "Pandemonium"
+    }
   }
 }

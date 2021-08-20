@@ -50,5 +50,34 @@
       "name": "Santo",
       "description": "Humanos abençoados. Sempre estudaram as artes da luz, sendo a raça mais próxima de um dragão possível. Por seus estudos, possuem alta afinidade com o elemento Luz"
     }
+  },
+  "locations": {
+    "0": {
+      "name": "Enóquia"
+    },
+    "1": {
+      "name": "Jotefiel"
+    },
+    "2": {
+      "name": "Quasar"
+    },
+    "3":{
+      "name": "Motréate"
+    },
+    "4": {
+      "name": "Obsótrea"
+    },
+    "5": {
+      "name": "Arpêndia"
+    },
+    "6": {
+      "name": "Cidade do Porto"
+    },
+    "7": {
+      "name": "Ilha dos Horrores"
+    },
+    "8": {
+      "name": "Pandemônio"
+    }
   }
 }

@@ -636,6 +636,10 @@
     "no-data": "você nunca jogou uma partida de blackjack!"
   },
   "ficha": {
+    "status": "Ver Status",
+    "ability": "Ver Habilidades",
+    "info": "Ver Informações",
+    "non-user": "Este usuário não está registrado como um aventureiro",
     "register": {
       "title": "Bem-Vindo Ao Mundo de Boleham!",
       "select-class": "Escolha sua Classe",
@@ -643,6 +647,24 @@
       "error": "Ocorreu um erro na criação de sua conta",
       "done": "Bem-Vindo ao Mundo de Boleham! Você já pode ir para o mercado da Capital para comprar equipamentos!",
       "description": "Neste momento você vai fazer o seu registro. Primeiro escolha a sua classe, e então a sua raça! Para escolher é só selecionar na caixa abaixo!"
+    },
+    "first": {
+      "title": "Informações de Registro de {{user}}",
+      "class": "Classe",
+      "race": "Raça",
+      "location": "Localização Atual",
+      "money": "Moedas",
+      "clan": "Clã",
+      "no-clan": "Nenhum Clã",
+      "job": "Trabalho",
+      "no-job": "Nenhum Trabalho",
+      "money-info": "{{emoji_bronze}} | Bronze: **{{bronze}}**\n{{emoji_silver}} | Prata: **{{silver}}**\n{{emoji_gold}} | Ouro: **{{gold}}**"
+    },
+    "second": {
+      "title": "Status de {{user}}",
+      "life": "Vida",
+      "mana": "Mana",
+      "xp": "Experiência"
     }
   }
 }

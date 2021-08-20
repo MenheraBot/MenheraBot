@@ -624,6 +624,10 @@
     "user-bigger": "You're closer to 21, you won **{{value}}** :star:"
   },
   "ficha": {
+    "status": "See Statuses",
+    "ability": "See Abilities",
+    "info": "See Info",
+    "non-user": "This user isn't registered as an adventurer",
     "register": {
       "title": "Welcome to the World of Boleham!",
       "select-class": "Choose your Class",
@@ -631,6 +635,24 @@
       "error": "There was an error creating your account",
       "done": "Welcome to the World of Boreham! You can now go to the Capital Market to buy equipment!",
       "description": "At this point you will register. First choose your class, then your race! To choose, just select in the box below!"
+    },
+    "first": {
+      "title": "{{user}}'s Register Info",
+      "class": "Class",
+      "race": "Race",
+      "location": "Current Location",
+      "money": "Coins",
+      "clan": "Clan",
+      "no-clan": "No Clan",
+      "job": "Job",
+      "no-job": "No Job",
+      "money-info": "{{emoji_bronze}} | Bronze: **{{bronze}}**\n{{emoji_silver}} | Silver: **{{silver}}**\n{{emoji_gold}} | Gold: **{{gold}}**"
+    },
+    "second": {
+      "title": "{{user}}'s Statuses",
+      "life": "Life",
+      "mana": "Mana",
+      "xp": "Experience"
     }
   }
 }

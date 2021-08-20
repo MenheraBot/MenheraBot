@@ -3,9 +3,19 @@
 import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { MessageEmbed, MessageSelectMenu } from 'discord.js';
+import {
+  MessageActionRowComponent,
+  MessageButton,
+  MessageComponentInteraction,
+  MessageEmbed,
+  MessageEmbedOptions,
+  MessageSelectMenu,
+  User,
+} from 'discord.js';
 import { COLORS, emojis } from '@structures/MenheraConstants';
 import Util from '@utils/Util';
+import { IRpgUserSchema } from '@structures/roleplay/Types';
+import { Document } from 'mongoose';
 
 export default class BicudaInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {
@@ -27,23 +37,172 @@ export default class BicudaInteractionCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    const user = await this.client.repositories.rpgRepository.findUser(ctx.interaction.user.id);
+    const userToFind = ctx.options.getUser('user');
+    const user = await this.client.repositories.rpgRepository.findUser(
+      userToFind?.id ?? ctx.interaction.user.id,
+    );
 
-    if (!user) {
+    if (!userToFind && !user) {
       this.registerUser(ctx);
       return;
     }
-    return this.showFicha(ctx);
+
+    if (!user) {
+      ctx.replyT('error', 'commands:ficha.non-user');
+      return;
+    }
+    return this.showFicha(ctx, user, ctx.options.getUser('user') ?? ctx.interaction.user);
   }
 
-  async showFicha(ctx: InteractionCommandContext): Promise<void> {
-    const user = ctx.options.getUser('user') ?? ctx.interaction.user;
+  async showFicha(
+    ctx: InteractionCommandContext,
+    user: IRpgUserSchema & Document,
+    member: User,
+  ): Promise<void> {
+    const userClassData = this.client.boleham.Functions.getClassDataById(user.classId);
+    const userRaceData = this.client.boleham.Functions.getRaceDataById(user.raceId);
 
-    const embed = new MessageEmbed()
-      .setTitle('SEXO?')
-      .setDescription(`TUA CLASSE E COISAS ASSIM TLG${this.client.ws.ping} ${user.toString()}`);
+    const translateFromCommand = (field: string, options = {}, namespace = 'commands:ficha') =>
+      ctx.locale(`${namespace}.${field}`, options);
 
-    ctx.reply({ embeds: [embed] });
+    const registerInfoEmbed = {
+      title: translateFromCommand('first.title', { user: member.username }),
+      color: ctx.data.user.cor,
+      image: { url: 'https://i.imgur.com/ooHGEBj.jpg' },
+      fields: [
+        {
+          name: `${emojis.rpg[userClassData.name]} | ${translateFromCommand('first.class')}`,
+          value: ctx.locale(`roleplay:classes.${user.classId}.name`),
+          inline: true,
+        },
+        {
+          name: `${emojis.rpg[userRaceData.name]} |${translateFromCommand('first.race')}`,
+          value: ctx.locale(`roleplay:races.${user.raceId}.name`),
+          inline: true,
+        },
+        {
+          name: `${emojis.money} | ${translateFromCommand('first.money')}`,
+          value: translateFromCommand('first.money-info', {
+            bronze: user.money.bronze,
+            silver: user.money.silver,
+            gold: user.money.gold,
+            emoji_bronze: emojis.roleplay_custom.bronze,
+            emoji_silver: emojis.roleplay_custom.silver,
+            emoji_gold: emojis.roleplay_custom.gold,
+          }),
+          inline: true,
+        },
+        {
+          name: `${emojis.pin} | ${translateFromCommand('first.location')}`,
+          value: ctx.locale(`roleplay:locations.${user.locationId}.name`),
+          inline: true,
+        },
+        {
+          name: `${emojis.trident} | ${translateFromCommand('first.clan')}`,
+          value: user.clanId ? `${user.clanId}` : translateFromCommand('first.no-clan'),
+          inline: true,
+        },
+        {
+          name: `${emojis.double_hammer} | ${translateFromCommand('first.job')}`,
+          value: user.job?.id ? `${user.job.id}` : translateFromCommand('first.no-job'),
+          inline: true,
+        },
+      ],
+    };
+
+    const statusEmbed = {
+      title: translateFromCommand('second.title', { user: member.username }),
+      color: ctx.data.user.cor,
+      fields: [
+        {
+          name: `${emojis.blood} | ${translateFromCommand('second.life')}`,
+          value: `${user.life} / ${user.maxLife}`,
+          inline: true,
+        },
+        {
+          name: `${emojis.mana} | ${translateFromCommand('second.mana')}`,
+          value: `${user.mana} / ${user.maxMana}`,
+          inline: true,
+        },
+        {
+          name: `${emojis.xp} | ${translateFromCommand('second.xp')}`,
+          value: `${user.xp} / ${this.client.boleham.Functions.getMaxXpForLevel(user.level)}`,
+          inline: true,
+        },
+      ],
+    };
+
+    const abilitiesEmbed = {};
+
+    const infoButton = new MessageButton()
+      .setCustomId(`${ctx.interaction.id} | INFO`)
+      .setStyle('SECONDARY')
+      .setDisabled(true)
+      .setLabel(translateFromCommand('info'));
+
+    const statusButton = new MessageButton()
+      .setCustomId(`${ctx.interaction.id} | STATUS`)
+      .setStyle('PRIMARY')
+      .setLabel(translateFromCommand('status'));
+
+    const abilityButton = new MessageButton()
+      .setCustomId(`${ctx.interaction.id} | ABILITY`)
+      .setStyle('PRIMARY')
+      .setLabel(translateFromCommand('ability'));
+
+    ctx.reply({
+      embeds: [registerInfoEmbed],
+      components: [{ type: 'ACTION_ROW', components: [infoButton, statusButton, abilityButton] }],
+    });
+
+    const filter = (int: MessageComponentInteraction) =>
+      int.customId.startsWith(ctx.interaction.id) && int.user.id === ctx.interaction.user.id;
+
+    if (!ctx.interaction.channel) return;
+
+    const collector = ctx.interaction.channel.createMessageComponentCollector({
+      filter,
+      componentType: 'BUTTON',
+      time: 30000,
+      max: 3,
+    });
+
+    collector.on('collect', (int) => {
+      int.deferUpdate();
+      let toSendEmbed: MessageEmbedOptions = registerInfoEmbed;
+      let toSendComponents: MessageActionRowComponent[] = [];
+      switch (int.customId.replace(`${ctx.interaction.id} | `, '')) {
+        case 'STATUS':
+          toSendEmbed = statusEmbed;
+          toSendComponents = [
+            infoButton.setDisabled(false).setStyle('PRIMARY'),
+            statusButton.setDisabled(true).setStyle('SECONDARY'),
+            abilityButton.setDisabled(false).setStyle('PRIMARY'),
+          ];
+          break;
+        case 'INFO':
+          toSendEmbed = registerInfoEmbed;
+          toSendComponents = [
+            infoButton.setDisabled(true).setStyle('SECONDARY'),
+            statusButton.setDisabled(false).setStyle('PRIMARY'),
+            abilityButton.setDisabled(false).setStyle('PRIMARY'),
+          ];
+          break;
+        case 'ABILITY':
+          toSendEmbed = abilitiesEmbed;
+          toSendComponents = [
+            infoButton.setDisabled(false).setStyle('PRIMARY'),
+            statusButton.setDisabled(false).setStyle('PRIMARY'),
+            abilityButton.setDisabled(true).setStyle('SECONDARY'),
+          ];
+          break;
+      }
+
+      ctx.editReply({
+        embeds: [toSendEmbed],
+        components: [{ type: 'ACTION_ROW', components: toSendComponents }],
+      });
+    });
   }
 
   async registerUser(ctx: InteractionCommandContext): Promise<void> {
@@ -148,7 +307,7 @@ export default class BicudaInteractionCommand extends InteractionCommand {
     if (!raceCollected.isSelectMenu()) return;
     const choosedRace = raceCollected.values[0];
 
-    const initialData = this.client.boleham.basicFunction.getDataToRegister(
+    const initialData = this.client.boleham.Functions.getDataToRegister(
       ctx.interaction.user.id,
       choosedClass,
       choosedRace,
