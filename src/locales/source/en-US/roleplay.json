@@ -159,5 +159,11 @@
       "name": "Mart",
       "description": "A Boleham government store. Sell ​​and buy items here for a lower price"
     }
+  },
+  "mart": {
+    "embed-title": "Welcome to the Central Market",
+    "embed-description": "Do you want to sell or buy items? Choose with the buttons below!",
+    "buy": "Buy",
+    "sell": "Sell"
   }
 }

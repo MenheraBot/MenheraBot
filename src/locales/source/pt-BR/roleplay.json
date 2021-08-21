@@ -159,5 +159,12 @@
       "name": "Mercado",
       "description": "Uma loja do governo de Boleham. Venda e compre itens aqui por um preço menor"
     }
+  },
+  "mart": {
+    "embed-title": "Bem-Vindo ao Mercado Central",
+    "embed-description": "Você deseja vender ou comprar itens? Escolha com os botões abaixo!",
+    "buy": "Comprar",
+    "sell": "Vender",
+    "sell-base-text": "Escolha abaixo todos os itens que desejas vender. Aqui estão os valores dos itens de seu inventário\n\n"
   }
 }

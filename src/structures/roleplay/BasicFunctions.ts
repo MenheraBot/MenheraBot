@@ -1,5 +1,12 @@
 import MenheraClient from 'MenheraClient';
-import { IAbilitiesFile, IBasicData, IBuildingFile, IClassesFile, IRacesFiles } from './Types';
+import {
+  IAbilitiesFile,
+  IBasicData,
+  IBuildingFile,
+  IClassesFile,
+  IItemFile,
+  IRacesFiles,
+} from './Types';
 
 export default class BasicFunctions {
   constructor(private client: MenheraClient) {}
@@ -46,5 +53,9 @@ export default class BasicFunctions {
 
   getBuildingById(id: number | string): IBuildingFile {
     return this.client.boleham.Buildings.filter((a) => a[0] === `${id}`)[0][1];
+  }
+
+  getItemById(id: number | string): IItemFile {
+    return this.client.boleham.Items.filter((a) => a[0] === `${id}`)[0][1];
   }
 }

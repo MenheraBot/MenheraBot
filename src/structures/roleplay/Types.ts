@@ -1,3 +1,4 @@
+import InteractionCommandContext from '@structures/command/InteractionContext';
 import { RpgClassNames } from '@structures/MenheraConstants';
 
 export interface IAbility {
@@ -180,4 +181,9 @@ export interface IBasicData {
 export interface IBuildingFile {
   name: string;
   locationId: number;
+  execute: (ctx: InteractionCommandContext, user: IRpgUserSchema) => Promise<void>;
+}
+
+export interface IItemFile {
+  price: IMoney;
 }

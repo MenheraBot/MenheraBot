@@ -76,6 +76,10 @@ export default class AvatarInteractionCommand extends InteractionCommand {
       });
       return;
     }
-    console.log(); // Create switch to indetify what was selected and send to external funcions
+    if (!collected.isSelectMenu()) return;
+
+    const selectedBuild = this.client.boleham.Functions.getBuildingById(collected.values[0]);
+
+    selectedBuild.execute(ctx, user);
   }
 }
