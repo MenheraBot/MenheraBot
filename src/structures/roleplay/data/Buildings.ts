@@ -74,6 +74,7 @@ const buildings: { [key: number]: IBuildingFile } = {
               });
 
               embed.setDescription(text);
+              ctx.editReply({ embeds: [embed] });
               break;
             }
           }
