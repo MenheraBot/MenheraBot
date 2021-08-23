@@ -5,6 +5,7 @@ import {
   IBuildingFile,
   IClassesFile,
   IItemFile,
+  IMoney,
   IRacesFiles,
 } from './Types';
 
@@ -57,5 +58,12 @@ export default class BasicFunctions {
 
   getItemById(id: number | string): IItemFile {
     return this.client.boleham.Items.filter((a) => a[0] === `${id}`)[0][1];
+  }
+
+  static mergeCoins(baseCoins: IMoney, toMerge: IMoney): IMoney {
+    baseCoins.bronze += toMerge.bronze;
+    baseCoins.silver += toMerge.silver;
+    baseCoins.gold += toMerge.gold;
+    return baseCoins;
   }
 }

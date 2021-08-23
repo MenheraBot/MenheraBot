@@ -1,4 +1,4 @@
-import { IClassesFile } from '../Types';
+import { IClassesFile } from '@roleplay/Types';
 
 const classes: { [key: number]: IClassesFile } = {
   1: {

@@ -39,7 +39,7 @@ export default class InteractionCommandContext {
         })
         .catch(() => undefined);
 
-    return this.interaction.reply(options).catch(() => undefined);
+    return this.interaction.reply(options).catch((e) => console.log(e));
   }
 
   async replyE(
@@ -53,7 +53,7 @@ export default class InteractionCommandContext {
         ephemeral,
       });
 
-    return this.interaction.reply(options).catch(() => undefined);
+    return this.interaction.reply(options).catch((e) => console.log(e));
   }
 
   async deferedReplyT(emoji: EmojiTypes, text: string, translateOptions = {}): Promise<void> {
@@ -61,7 +61,7 @@ export default class InteractionCommandContext {
       .editReply({
         content: `${emojis[emoji] || '🐛'} **|** ${this.i18n(text, translateOptions)}`,
       })
-      .catch(() => undefined);
+      .catch((e) => console.log(e));
   }
 
   async replyT(
@@ -75,19 +75,19 @@ export default class InteractionCommandContext {
         content: `${emojis[emoji] || '🐛'} **|** ${this.i18n(text, translateOptions)}`,
         ephemeral,
       })
-      .catch(() => undefined);
+      .catch((e) => console.log(e));
   }
 
   async send(options: MessagePayload | InteractionReplyOptions): Promise<void> {
-    await this.interaction.followUp(options).catch(() => undefined);
+    await this.interaction.followUp(options).catch((e) => console.log(e));
   }
 
   async deleteReply(): Promise<void> {
-    return this.interaction.deleteReply().catch(() => undefined);
+    return this.interaction.deleteReply().catch((e) => console.log(e));
   }
 
   async editReply(options: MessagePayload | InteractionReplyOptions): Promise<void> {
-    await this.interaction.editReply(options).catch(() => undefined);
+    await this.interaction.editReply(options).catch((e) => console.log(e));
   }
 
   locale(text: string, translateVars = {}): string {

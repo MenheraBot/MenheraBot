@@ -1,4 +1,4 @@
-import { IItemFile } from '../Types';
+import { IItemFile } from '@roleplay/Types';
 
 const items: { [key: number]: IItemFile } = {
   0: {
@@ -6,6 +6,13 @@ const items: { [key: number]: IItemFile } = {
       gold: 0,
       silver: 0,
       bronze: 1,
+    },
+  },
+  1: {
+    price: {
+      gold: 0,
+      silver: 0,
+      bronze: 3,
     },
   },
 };

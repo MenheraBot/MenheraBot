@@ -1,4 +1,4 @@
-import { IAbilitiesFile } from '../Types';
+import { IAbilitiesFile } from '@roleplay/Types';
 
 const Abilities: { [key: number]: IAbilitiesFile } = {
   101: {

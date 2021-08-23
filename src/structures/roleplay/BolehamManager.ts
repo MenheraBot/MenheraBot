@@ -1,12 +1,18 @@
 import MenheraClient from 'MenheraClient';
-import BasicFunctions from './BasicFunctions';
-import abilities from './data/Abilities';
-import buildings from './data/Buildings';
-import classes from './data/Classes';
-import ecosystem from './data/Ecosystem';
-import items from './data/Items';
-import races from './data/Races';
-import { IAbilitiesFile, IBuildingFile, IClassesFile, IItemFile, IRacesFiles } from './Types';
+import BasicFunctions from '@roleplay/BasicFunctions';
+import abilities from '@roleplay/data/Abilities';
+import buildings from '@roleplay/data/Buildings';
+import classes from '@roleplay/data/Classes';
+import ecosystem from '@roleplay/data/Ecosystem';
+import items from '@roleplay/data/Items';
+import races from '@roleplay/data/Races';
+import {
+  IAbilitiesFile,
+  IBuildingFile,
+  IClassesFile,
+  IItemFile,
+  IRacesFiles,
+} from '@roleplay/Types';
 
 export default class BolehamManager {
   public classesFile: typeof classes;

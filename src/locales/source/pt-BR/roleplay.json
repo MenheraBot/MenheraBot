@@ -154,6 +154,14 @@
       "name": "Inquisição"
     }
   },
+  "items": {
+    "0": {
+      "name": "Pedrinha"
+    },
+    "1": {
+      "name": "Madeirinha"
+    }
+  },
   "buildings": {
     "0": {
       "name": "Mercado",

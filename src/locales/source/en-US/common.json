@@ -3,5 +3,6 @@
   "accept": "Accept",
   "portuguese": "Portuguese",
   "english": "English",
-  "not-registred": "You are not registered on Rpg! Use `/ficha` to register"
+  "not-registred": "You are not registered on Rpg! Use `/ficha` to register",
+  "select-all-values": "Select all items you want"
 }
