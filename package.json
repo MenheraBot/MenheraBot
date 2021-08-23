@@ -22,7 +22,6 @@
   "keywords": [],
   "author": "Luxanna Crownguard (ySnoopyDogy)",
   "dependencies": {
-    "@discordjs/opus": "^0.5.3",
     "@sentry/node": "^6.10.0",
     "@sentry/tracing": "^6.10.0",
     "axios": "^0.21.1",
@@ -51,7 +50,6 @@
     "@types/fs-extra": "^9.0.12",
     "@types/i18next-node-fs-backend": "^2.1.1",
     "@types/ioredis": "^4.26.6",
-    "@types/jest": "^26.0.24",
     "@types/moment-duration-format": "^2.2.3",
     "@types/mongoose": "^5.11.97",
     "@typescript-eslint/eslint-plugin": "^4.29.0",
