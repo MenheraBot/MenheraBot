@@ -1,6 +1,6 @@
 import { Rpg } from '@structures/DatabaseCollections';
 import { IBasicData, IRpgUserSchema } from '@structures/roleplay/Types';
-import { Document } from 'mongoose';
+import { Document, UpdateQuery, UpdateWithAggregationPipeline } from 'mongoose';
 
 export default class RpgRepository {
   constructor(private rpgModal: typeof Rpg) {}
@@ -14,5 +14,12 @@ export default class RpgRepository {
       .create(data)
       .then(() => true)
       .catch(() => false);
+  }
+
+  async editUser(
+    userID: string,
+    query: UpdateQuery<IRpgUserSchema> | UpdateWithAggregationPipeline,
+  ): Promise<void> {
+    await this.rpgModal.updateOne({ id: userID }, query);
   }
 }

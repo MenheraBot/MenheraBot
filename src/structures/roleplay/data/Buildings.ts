@@ -7,6 +7,7 @@ import {
   MessageEmbed,
   MessageSelectMenu,
 } from 'discord.js';
+import { resolveCustomId } from '@roleplay/Utils';
 import BasicFunctions from '@roleplay/BasicFunctions';
 import { IBuildingFile, IRpgUserSchema } from '@roleplay/Types';
 
@@ -40,38 +41,58 @@ const buildings: { [key: number]: IBuildingFile } = {
 
       const collect = ctx.channel.createMessageComponentCollector({ filter, max: 10, time: 15000 });
 
-      collect.on('end', () => {
-        ctx.editReply({
-          components: [
-            {
-              type: 'ACTION_ROW',
-              components: [sellButton.setLabel(ctx.locale('common:timesup')).setDisabled(true)],
-            },
-          ],
-        });
+      collect.on('end', async () => {
+        const reply = await ctx.interaction.fetchReply().catch(() => null);
+        if (!reply) return;
+        if (reply.components && reply.components?.length > 0) {
+          ctx.editReply({
+            components: [],
+          });
+        }
       });
 
-      collect.on('collect', (int) => {
+      collect.on('collect', async (int) => {
         collect.resetTimer({ time: 20000 });
         int.deferUpdate();
-        switch (int.customId.replace(`${ctx.interaction.id} | `, '')) {
+
+        switch (resolveCustomId(int.customId)) {
           case 'BUY':
             ctx.editReply({ embeds: [embed.setDescription('COMPRANDO')] });
             break;
           case 'SELECT': {
             if (!int.isSelectMenu()) break;
+
             let soldValue = {
               gold: 0,
               silver: 0,
               bronze: 0,
             };
+
             for (let i = 0; i < int.values.length; i++) {
-              const found = user.inventory.findIndex((a) => a.id === Number(int.values[i]));
+              const found = user.inventory.findIndex(
+                (a) => a.id === Number(int.values[i].split(' ')[0]),
+              );
               if (found !== -1) user.inventory[found].amount -= 1;
               if (user.inventory[found].amount <= 0) user.inventory.splice(found, 1);
-              const { price } = ctx.client.boleham.Functions.getItemById(int.values[i]);
+              const { price } = ctx.client.boleham.Functions.getItemById(
+                int.values[i].split(' ')[0],
+              );
               soldValue = BasicFunctions.mergeCoins(soldValue, price);
             }
+
+            await ctx.client.repositories.rpgRepository.editUser(ctx.interaction.user.id, {
+              inventory: user.inventory,
+              money: BasicFunctions.mergeCoins(user.money, soldValue),
+            });
+
+            ctx.editReply({
+              content: ctx.locale('roleplay:mart.sell-items', {
+                count: int.values.length,
+                money: soldValue,
+              }),
+              embeds: [],
+            });
+            collect.stop();
             break;
           }
           case 'SELL': {
@@ -79,7 +100,7 @@ const buildings: { [key: number]: IBuildingFile } = {
 
             const createSelectMenu = () =>
               new MessageSelectMenu()
-                .setCustomId(`${ctx.interaction.id} | SELECT`)
+                .setCustomId(`${ctx.interaction.id} ${Date.now()} | SELECT`)
                 .setPlaceholder(ctx.locale('common:select-all-values'))
                 .setMinValues(1);
 
@@ -111,8 +132,6 @@ const buildings: { [key: number]: IBuildingFile } = {
               type: 'ACTION_ROW',
               components: [a],
             }));
-
-            console.log(componentsToSend[0].components);
 
             embed.setDescription(text);
             ctx.editReply({

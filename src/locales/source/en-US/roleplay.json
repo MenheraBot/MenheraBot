@@ -164,6 +164,9 @@
     "embed-title": "Welcome to the Central Market",
     "embed-description": "Do you want to sell or buy items? Choose with the buttons below!",
     "buy": "Buy",
-    "sell": "Sell"
+    "sell": "Sell",
+    "sell-items": "You sold **{{count}}** item for `{{money.bronze}}` bronze coins, `{{money.silver}}` silver coins and `{{money.gold}}` coins gold",
+    "sell-items-plural": "You sold **{{count}}** items for `{{money.bronze}}` bronze coins, `{{money.silver}}` silver coins and `{{money.gold}}` coins gold",
+    "sell-base-text": "Choose below all the items you want to sell. Here are the values ​​of your inventory items\n\n"
   }
 }

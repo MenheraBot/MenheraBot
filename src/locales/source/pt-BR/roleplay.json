@@ -173,6 +173,8 @@
     "embed-description": "Você deseja vender ou comprar itens? Escolha com os botões abaixo!",
     "buy": "Comprar",
     "sell": "Vender",
+    "sell-items": "Você vendeu **{{count}}** item por `{{money.bronze}}` moedas de bronze, `{{money.silver}}` modeas de prata e `{{money.gold}}` modeas de ouro",
+    "sell-items-plural": "Você vendeu **{{count}}** itens por `{{money.bronze}}` moedas de bronze, `{{money.silver}}` modeas de prata e `{{money.gold}}` modeas de ouro",
     "sell-base-text": "Escolha abaixo todos os itens que desejas vender. Aqui estão os valores dos itens de seu inventário\n\n"
   }
 }
