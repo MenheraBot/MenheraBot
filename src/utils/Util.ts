@@ -57,4 +57,10 @@ export default class Util {
       })
       .catch(() => null);
   }
+
+  static getSecondsToTheEndOfDay(): number {
+    const date = new Date();
+    const passedSeconds = date.getHours() * 3600 + date.getMinutes() * 60 + date.getSeconds();
+    return 86400 - passedSeconds;
+  }
 }

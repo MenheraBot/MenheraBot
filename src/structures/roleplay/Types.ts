@@ -7,17 +7,22 @@ export interface IAbility {
   xp: number;
 }
 
+interface ILeveledItem {
+  id: number;
+  level: number;
+}
+
 export interface IArmor {
-  head: number;
-  chest: number;
-  pants: number;
-  boots: number;
+  head: ILeveledItem;
+  chest: ILeveledItem;
+  pants: ILeveledItem;
+  boots: ILeveledItem;
 }
 
 export interface IEquiped {
-  weapon: number;
+  weapon: ILeveledItem;
   armor: IArmor;
-  backpack: number;
+  backpack: ILeveledItem;
 }
 
 export interface IMoney {
@@ -184,6 +189,19 @@ export interface IBuildingFile {
   execute: (ctx: InteractionCommandContext, user: IRpgUserSchema) => Promise<void>;
 }
 
+export type TItemRarity = 'common' | 'rare' | 'epic' | 'mythical' | 'legendary' | 'ascendant';
+
+export type TItemType = 'armor' | 'potion' | 'weapon' | 'drop';
+
 export interface IItemFile {
   price: IMoney;
+  rarity: TItemRarity;
+  type: TItemType;
+  duration?: number;
+}
+
+export interface IEnochiaShop {
+  armors: ILeveledItem[];
+  weapons: ILeveledItem[];
+  potions: ILeveledItem[];
 }

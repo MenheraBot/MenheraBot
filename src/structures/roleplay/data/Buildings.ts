@@ -7,7 +7,7 @@ import {
   MessageEmbed,
   MessageSelectMenu,
 } from 'discord.js';
-import { resolveCustomId } from '@roleplay/Utils';
+import { resolveCustomId, resolveEnochiaMart } from '@roleplay/Utils';
 import BasicFunctions from '@roleplay/BasicFunctions';
 import { IBuildingFile, IRpgUserSchema } from '@roleplay/Types';
 
@@ -56,9 +56,15 @@ const buildings: { [key: number]: IBuildingFile } = {
         int.deferUpdate();
 
         switch (resolveCustomId(int.customId)) {
-          case 'BUY':
+          case 'BUY': {
+            const itemsToApear = await ctx.client.repositories.rpgRepository.getUserEnochiaMart(
+              int.user.id,
+              resolveEnochiaMart(user.level, ctx.client.boleham.Items),
+            );
+            console.log(itemsToApear);
             ctx.editReply({ embeds: [embed.setDescription('COMPRANDO')] });
             break;
+          }
           case 'SELECT': {
             if (!int.isSelectMenu()) break;
 

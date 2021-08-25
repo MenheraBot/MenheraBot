@@ -84,7 +84,7 @@ export default class Databases {
     );
     this.statusRepository = new StatusRepository(this.Status);
     this.badgeRepository = new BadgeRepository(this.userRepository);
-    this.rpgRepository = new RpgRepository(this.Rpg);
+    this.rpgRepository = new RpgRepository(this.Rpg, this.redisClient);
     this.maintenanceRepository = new MaintenanceRepository(
       this.cmdRepository,
       this.statusRepository,
