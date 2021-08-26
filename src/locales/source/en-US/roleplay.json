@@ -154,6 +154,14 @@
       "name": "Inquisition"
     }
   },
+  "items": {
+    "0": {
+      "name": "Stone"
+    },
+    "1": {
+      "name": "Wood"
+    }
+  },
   "buildings": {
     "0": {
       "name": "Mart",
@@ -165,6 +173,8 @@
     "embed-description": "Do you want to sell or buy items? Choose with the buttons below!",
     "buy": "Buy",
     "sell": "Sell",
+    "buy-desc": "Select below which items you want to buy.\nYour Wallet: {{emojis.gold}} **{{money.gold}}**, {{emojis.silver}} **{{money.silver}}** and {{emojis.bronze}} **{{emojis.bronze}}**",
+    "buy-title": "Buy Items",
     "sell-items": "You sold **{{count}}** item for `{{money.bronze}}` bronze coins, `{{money.silver}}` silver coins and `{{money.gold}}` coins gold",
     "sell-items-plural": "You sold **{{count}}** items for `{{money.bronze}}` bronze coins, `{{money.silver}}` silver coins and `{{money.gold}}` coins gold",
     "sell-base-text": "Choose below all the items you want to sell. Here are the values ​​of your inventory items\n\n"

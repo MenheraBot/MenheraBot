@@ -7,7 +7,7 @@ export interface IAbility {
   xp: number;
 }
 
-interface ILeveledItem {
+export interface ILeveledItem {
   id: number;
   level: number;
 }
@@ -198,6 +198,8 @@ export interface IItemFile {
   rarity: TItemRarity;
   type: TItemType;
   duration?: number;
+  data: unknown;
+  equipable: boolean;
 }
 
 export interface IEnochiaShop {

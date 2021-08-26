@@ -4,5 +4,7 @@
   "portuguese": "Portuguese",
   "english": "English",
   "not-registred": "You are not registered on Rpg! Use `/ficha` to register",
-  "select-all-values": "Select all items you want"
+  "select-all-values": "Select all items you want",
+  "level": "Level {{level}}",
+  "no-money": "You don't have enough money for this!"
 }

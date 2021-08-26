@@ -4,6 +4,7 @@ import {
   IBasicData,
   IBuildingFile,
   IClassesFile,
+  IInventoryItem,
   IItemFile,
   IMoney,
   IRacesFiles,
@@ -60,10 +61,44 @@ export default class BasicFunctions {
     return this.client.boleham.Items.filter((a) => a[0] === `${id}`)[0][1];
   }
 
-  static mergeCoins(baseCoins: IMoney, toMerge: IMoney): IMoney {
-    baseCoins.bronze += toMerge.bronze;
-    baseCoins.silver += toMerge.silver;
-    baseCoins.gold += toMerge.gold;
+  /* 
+  getBackPackLimit(backpack: ILeveledItem): number {
+    const backpackInfo = this.getItemById(backpack.id);
+    backpackInfo;
+  }
+ */
+  static mergeInventory(
+    inventory: IInventoryItem[],
+    toMerge: number | string,
+    remove?: boolean,
+  ): IInventoryItem[] {
+    if (remove) {
+      const found = inventory.findIndex((a) => `${a.id}` === `${toMerge}`);
+      if (found !== -1) inventory[found].amount -= 1;
+      if (inventory[found].amount <= 0) inventory.splice(found, 1);
+      return inventory;
+    }
+
+    const found = inventory.findIndex((a) => a.id === toMerge);
+    if (found !== -1) {
+      inventory[found].amount += 1;
+      return inventory;
+    }
+
+    inventory.push({ id: Number(toMerge), amount: 1 });
+    return inventory;
+  }
+
+  static mergeCoins(baseCoins: IMoney, toMerge: IMoney, negated?: boolean): IMoney {
+    if (negated) {
+      baseCoins.bronze -= toMerge.bronze;
+      baseCoins.silver -= toMerge.silver;
+      baseCoins.gold -= toMerge.gold;
+    } else {
+      baseCoins.bronze += toMerge.bronze;
+      baseCoins.silver += toMerge.silver;
+      baseCoins.gold += toMerge.gold;
+    }
     return baseCoins;
   }
 }

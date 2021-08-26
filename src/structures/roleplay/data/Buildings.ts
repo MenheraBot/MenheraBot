@@ -7,7 +7,7 @@ import {
   MessageEmbed,
   MessageSelectMenu,
 } from 'discord.js';
-import { resolveCustomId, resolveEnochiaMart } from '@roleplay/Utils';
+import { canBuy, resolveCustomId, resolveEnochiaMart } from '@roleplay/Utils';
 import BasicFunctions from '@roleplay/BasicFunctions';
 import { IBuildingFile, IRpgUserSchema } from '@roleplay/Types';
 
@@ -61,8 +61,118 @@ const buildings: { [key: number]: IBuildingFile } = {
               int.user.id,
               resolveEnochiaMart(user.level, ctx.client.boleham.Items),
             );
-            console.log(itemsToApear);
-            ctx.editReply({ embeds: [embed.setDescription('COMPRANDO')] });
+
+            embed
+              .setDescription(
+                ctx.locale('roleplay:mart.buy-desc', {
+                  emojis: {
+                    gold: emojis.roleplay_custom.gold,
+                    silver: emojis.roleplay_custom.silver,
+                    bronze: emojis.roleplay_custom.bronze,
+                  },
+                  money: user.money,
+                }),
+              )
+              .setTitle(ctx.locale('roleplay:mart.buy-title'));
+
+            const selectMenu = new MessageSelectMenu()
+              .setMinValues(1)
+              .setMaxValues(9)
+              .setPlaceholder(ctx.locale('common:select-all-values'))
+              .setCustomId(`${ctx.interaction.id} | BUY_CHOOSE`);
+
+            itemsToApear.armors.forEach((a, i) => {
+              const item = ctx.client.boleham.Functions.getItemById(a.id);
+              selectMenu.addOptions({
+                label: ctx.locale(`roleplay:items.${a.id}.name`),
+                value: `${a.id} ${i}`,
+                description: ctx.locale(`roleplay:items.${a.id}.description`),
+              });
+              embed.addField(
+                `${ctx.locale(`roleplay:items.${a.id}.name`)} | ${ctx.locale('common:level', {
+                  level: a.level,
+                })}`,
+                `${ctx.locale(`roleplay:items.${a.id}.description`)}\n${
+                  emojis.roleplay_custom.bronze
+                } | ${item.price.bronze}\n${emojis.roleplay_custom.silver} | ${
+                  item.price.silver
+                }\n${emojis.roleplay_custom.gold} | ${item.price.gold}`,
+                true,
+              );
+            });
+
+            itemsToApear.weapons.forEach((a, i) => {
+              const item = ctx.client.boleham.Functions.getItemById(a.id);
+              selectMenu.addOptions({
+                label: ctx.locale(`roleplay:items.${a.id}.name`),
+                value: `${a.id} ${i}`,
+                description: ctx.locale(`roleplay:items.${a.id}.description`),
+              });
+              embed.addField(
+                `${ctx.locale(`roleplay:items.${a.id}.name`)} | ${ctx.locale('common:level', {
+                  level: a.level,
+                })}`,
+                `${ctx.locale(`roleplay:items.${a.id}.description`)}\n${
+                  emojis.roleplay_custom.bronze
+                } | ${item.price.bronze}\n${emojis.roleplay_custom.silver} | ${
+                  item.price.silver
+                }\n${emojis.roleplay_custom.gold} | ${item.price.gold}`,
+                true,
+              );
+            });
+
+            itemsToApear.potions.forEach((a, i) => {
+              const item = ctx.client.boleham.Functions.getItemById(a.id);
+              selectMenu.addOptions({
+                label: ctx.locale(`roleplay:items.${a.id}.name`),
+                value: `${a.id} ${i}`,
+                description: ctx.locale(`roleplay:items.${a.id}.description`),
+              });
+              embed.addField(
+                `${ctx.locale(`roleplay:items.${a.id}.name`)} | ${ctx.locale('common:level', {
+                  level: a.level,
+                })}`,
+                `${ctx.locale(`roleplay:items.${a.id}.description`)}\n${
+                  emojis.roleplay_custom.bronze
+                } | ${item.price.bronze}\n${emojis.roleplay_custom.silver} | ${
+                  item.price.silver
+                }\n${emojis.roleplay_custom.gold} | ${item.price.gold}`,
+                true,
+              );
+            });
+
+            ctx.editReply({
+              embeds: [embed],
+              components: [{ type: 'ACTION_ROW', components: [selectMenu] }],
+            });
+            break;
+          }
+          case 'BUY_CHOOSE': {
+            if (!int.isSelectMenu()) break;
+            let buyValue = {
+              gold: 0,
+              silver: 0,
+              bronze: 0,
+            };
+
+            for (let i = 0; i < int.values.length; i++) {
+              const itemId = int.values[i].split(' ')[0];
+              const { price } = ctx.client.boleham.Functions.getItemById(itemId);
+              user.inventory = BasicFunctions.mergeInventory(user.inventory, itemId);
+
+              buyValue = BasicFunctions.mergeCoins(buyValue, price, true);
+            }
+            user.money = BasicFunctions.mergeCoins(user.money, buyValue);
+            if (!canBuy(user.money)) {
+              ctx.editReply({
+                embeds: [embed.spliceFields(0, 9).setDescription(ctx.locale('common:no-money'))],
+              });
+              return;
+            }
+
+            // CREATE IF TO SEE IF BACKPACK IS GREATHER THAN MAXIMUM VALUE  if(user.inventory.length > user.equiped.backpack)
+
+            collect.stop();
             break;
           }
           case 'SELECT': {
@@ -75,14 +185,10 @@ const buildings: { [key: number]: IBuildingFile } = {
             };
 
             for (let i = 0; i < int.values.length; i++) {
-              const found = user.inventory.findIndex(
-                (a) => a.id === Number(int.values[i].split(' ')[0]),
-              );
-              if (found !== -1) user.inventory[found].amount -= 1;
-              if (user.inventory[found].amount <= 0) user.inventory.splice(found, 1);
-              const { price } = ctx.client.boleham.Functions.getItemById(
-                int.values[i].split(' ')[0],
-              );
+              const itemId = int.values[i].split(' ')[0];
+              const { price } = ctx.client.boleham.Functions.getItemById(itemId);
+
+              user.inventory = BasicFunctions.mergeInventory(user.inventory, itemId, true);
               soldValue = BasicFunctions.mergeCoins(soldValue, price);
             }
 

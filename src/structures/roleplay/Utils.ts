@@ -1,4 +1,6 @@
-import { IEnochiaShop, IItemFile, TItemRarity, TItemType } from './Types';
+import { IEnochiaShop, IItemFile, IMoney, TItemRarity, TItemType } from './Types';
+
+const randomFromArray = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
 
 const resolveCustomId = (customId: string): string =>
   customId
@@ -28,21 +30,29 @@ const resolveEnochiaMart = (userLevel: number, itemsFile: [string, IItemFile][])
     itemsFile.filter((a) => a[1].rarity === rarity && a[1].type === type);
 
   for (let i = 0; i < 3; i++) {
-    const selectedArmor = getItemsByRarityAndType(calculateRarity(), 'armor');
+    const allArmors = getItemsByRarityAndType(calculateRarity(), 'armor');
+    const selectedArmor = randomFromArray(allArmors);
     shopToReturn.armors.push({ id: Number(selectedArmor[0]), level: getItemLevel(userLevel) });
   }
 
   for (let i = 0; i < 3; i++) {
-    const selectedWeapon = getItemsByRarityAndType(calculateRarity(), 'weapon');
-    shopToReturn.armors.push({ id: Number(selectedWeapon[0]), level: getItemLevel(userLevel) });
+    const allWeapons = getItemsByRarityAndType(calculateRarity(), 'weapon');
+    const selectedWeapon = randomFromArray(allWeapons);
+    shopToReturn.weapons.push({ id: Number(selectedWeapon[0]), level: getItemLevel(userLevel) });
   }
 
   for (let i = 0; i < 3; i++) {
-    const selectedPotion = getItemsByRarityAndType(calculateRarity(), 'potion');
-    shopToReturn.armors.push({ id: Number(selectedPotion[0]), level: getItemLevel(userLevel) });
+    const allPotions = getItemsByRarityAndType(calculateRarity(), 'potion');
+    const selectedPotion = randomFromArray(allPotions);
+    shopToReturn.potions.push({ id: Number(selectedPotion[0]), level: getItemLevel(userLevel) });
   }
 
   return shopToReturn;
 };
 
-export { resolveCustomId, resolveEnochiaMart };
+const canBuy = (money: IMoney): boolean => {
+  if (money.bronze < 0 || money.silver < 0 || money.gold < 0) return false;
+  return true;
+};
+
+export { canBuy, resolveCustomId, resolveEnochiaMart, randomFromArray };
