@@ -6,8 +6,10 @@ import {
   IClassesFile,
   IInventoryItem,
   IItemFile,
+  ILeveledItem,
   IMoney,
   IRacesFiles,
+  UsableItem,
 } from './Types';
 
 export default class BasicFunctions {
@@ -57,16 +59,17 @@ export default class BasicFunctions {
     return this.client.boleham.Buildings.filter((a) => a[0] === `${id}`)[0][1];
   }
 
-  getItemById(id: number | string): IItemFile {
+  // NEED HELP HERE
+
+  getItemById<T extends boolean>(id: number | string): IItemFile<T> {
     return this.client.boleham.Items.filter((a) => a[0] === `${id}`)[0][1];
   }
 
-  /* 
   getBackPackLimit(backpack: ILeveledItem): number {
-    const backpackInfo = this.getItemById(backpack.id);
-    backpackInfo;
+    const backpackInfo = this.getItemById<UsableItem>(backpack.id);
+    return backpackInfo.data.value + backpackInfo.data.perLevel * backpack.level;
   }
- */
+
   static mergeInventory(
     inventory: IInventoryItem[],
     toMerge: number | string,

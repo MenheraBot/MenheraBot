@@ -17,7 +17,10 @@ const calculateRarity = (): TItemRarity => {
   return 'common';
 };
 
-const resolveEnochiaMart = (userLevel: number, itemsFile: [string, IItemFile][]): IEnochiaShop => {
+const resolveEnochiaMart = (
+  userLevel: number,
+  itemsFile: [string, IItemFile<boolean>][],
+): IEnochiaShop => {
   const shopToReturn: IEnochiaShop = {
     armors: [],
     weapons: [],

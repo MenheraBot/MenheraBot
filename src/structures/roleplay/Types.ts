@@ -191,16 +191,30 @@ export interface IBuildingFile {
 
 export type TItemRarity = 'common' | 'rare' | 'epic' | 'mythical' | 'legendary' | 'ascendant';
 
-export type TItemType = 'armor' | 'potion' | 'weapon' | 'drop';
+export type TItemType = 'armor' | 'potion' | 'weapon' | 'drop' | 'backpack';
 
-export interface IItemFile {
+interface IItemData {
+  value: number;
+  perLevel: number;
+}
+
+export interface IUsableItem {
   price: IMoney;
   rarity: TItemRarity;
   type: TItemType;
-  duration?: number;
-  data: unknown;
-  equipable: boolean;
+  data: IItemData;
 }
+
+export interface IUnusableItem {
+  price: IMoney;
+  rarity: TItemRarity;
+  type: TItemType;
+}
+
+export type UsableItem = true;
+export type UnusableItem = false;
+
+export type IItemFile<T extends boolean> = T extends true ? IUsableItem : IUnusableItem;
 
 export interface IEnochiaShop {
   armors: ILeveledItem[];

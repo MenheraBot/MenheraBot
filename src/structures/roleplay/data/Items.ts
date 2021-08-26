@@ -1,6 +1,6 @@
 import { IItemFile } from '@roleplay/Types';
 
-const items: { [key: number]: IItemFile } = {
+const items: { [key: number]: IItemFile<boolean> } = {
   0: {
     price: {
       gold: 0,

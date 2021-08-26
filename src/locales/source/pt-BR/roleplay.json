@@ -175,6 +175,7 @@
     "sell": "Vender",
     "buy-desc": "Selecione abaixo quais itens tu quer comprar.\nSeus bens: {{emojis.gold}} **{{money.gold}}**, {{emojis.silver}} **{{money.silver}}** e {{emojis.bronze}} **{{money.bronze}}**",
     "buy-title": "Compre Itens",
+    "buy-items": "Você comprou **{{items}}** por **{{money.gold}}** modeas de ouro, **{{money.silver}}** modeas de prata e **{{money.bronze}}** moedas de bronze",
     "sell-items": "Você vendeu **{{count}}** item por `{{money.bronze}}` moedas de bronze, `{{money.silver}}` modeas de prata e `{{money.gold}}` modeas de ouro",
     "sell-items-plural": "Você vendeu **{{count}}** itens por `{{money.bronze}}` moedas de bronze, `{{money.silver}}` modeas de prata e `{{money.gold}}` modeas de ouro",
     "sell-base-text": "Escolha abaixo todos os itens que desejas vender. Aqui estão os valores dos itens de seu inventário\n\n"

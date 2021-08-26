@@ -170,7 +170,32 @@ const buildings: { [key: number]: IBuildingFile } = {
               return;
             }
 
-            // CREATE IF TO SEE IF BACKPACK IS GREATHER THAN MAXIMUM VALUE  if(user.inventory.length > user.equiped.backpack)
+            if (
+              user.inventory.length >
+              ctx.client.boleham.Functions.getBackPackLimit(user.equiped.backpack)
+            ) {
+              ctx.editReply({
+                embeds: [
+                  embed.spliceFields(0, 9).setDescription(ctx.locale('common:backpack-full')),
+                ],
+              });
+              return;
+            }
+
+            await ctx.client.repositories.rpgRepository.editUser(ctx.interaction.user.id, {
+              inventory: user.inventory,
+              money: BasicFunctions.mergeCoins(user.money, buyValue),
+            });
+
+            ctx.editReply({
+              content: ctx.locale('roleplay:mart.buy-items', {
+                items: int.values
+                  .map((a) => `${ctx.locale(`roleplay:items.${a.split(' ')[0]}.name`)}`)
+                  .join(', '),
+                money: buyValue,
+              }),
+              embeds: [],
+            });
 
             collect.stop();
             break;

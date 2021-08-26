@@ -59,7 +59,7 @@ export default class BolehamManager {
     return Object.entries(this.buildingFile);
   }
 
-  get Items(): [string, IItemFile][] {
+  get Items(): [string, IItemFile<boolean>][] {
     return Object.entries(this.itemsFile);
   }
 }
