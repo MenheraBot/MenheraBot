@@ -688,6 +688,11 @@
     "usables": "Equipáveis",
     "no-item": "Sem Item",
     "armor": "Armaduras",
+    "weapon": "Arma",
+    "backpack": "Mochila",
+    "usable": "Itens Usáveis",
+    "other": "Outros Itens",
+    "no-home": "Essa casa não existe!",
     "first": {
       "title": "Inventário de {{user}}",
       "description": "Escolha abaixo em qual inventário você quer mexer. Você pode ver o inventário de suas casas. No invenário padrão, você pode escolher usar itens, como poções, armas e armaduras"

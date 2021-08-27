@@ -676,6 +676,11 @@
     "usables": "Equipables",
     "no-item": "No Items",
     "armor": "Armors",
+    "weapon": "Weapon",
+    "backpack": "Backpack",
+    "usable": "Usable Items",
+    "other": "Other Items",
+    "no-home": "That home does not exist",
     "first": {
       "title": "{{user}}'s Inventory",
       "description": "Choose below which inventory you want to tinker with. You can see the inventory of your houses. In the standard inventory, you can choose to use items such as potions, weapons and armor"

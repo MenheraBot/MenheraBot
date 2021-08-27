@@ -86,6 +86,7 @@ const rpgSchema = new Schema({
 const homeSchema = new Schema({
   ownerId: { type: String },
   locationId: { type: Number },
+  name: { type: String, default: '' },
   isClanHome: { type: Boolean, default: false },
   inventory: { type: Array, default: [] },
 });

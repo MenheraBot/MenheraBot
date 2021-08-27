@@ -120,6 +120,7 @@ export const emojis = {
     light: '<:light:878320933457244170>',
     gravity: '<:gravity:878320932614185030>',
     darkness: '<:darkness:878320931741765694>',
+    backpack: '<:backpack:880920927171383386>',
   },
 };
 

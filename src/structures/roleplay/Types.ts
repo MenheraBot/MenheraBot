@@ -78,7 +78,7 @@ export interface IRpgUserSchema {
   job: IJob;
   cooldown: unknown;
   money: IMoney;
-  homes: number[]; // Array of locationId
+  homes: string[]; // Array of HomeID
   quests: IUserQuests;
   clanId: number | null;
 }
@@ -86,6 +86,7 @@ export interface IHomeSchema {
   ownerId: string;
   locationId: number;
   isClanHome: boolean;
+  name: string;
   inventory: Array<IInventoryItem>;
 }
 

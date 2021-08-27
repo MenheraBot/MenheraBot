@@ -156,7 +156,8 @@
   },
   "items": {
     "0": {
-      "name": "Cloth Backpack"
+      "name": "Cloth Backpack",
+      "description": "A small backpack made of cloth that has little storage, but helps with daily missions"
     }
   },
   "buildings": {

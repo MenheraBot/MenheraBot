@@ -8,4 +8,8 @@ export default class HomeRepository {
   async getAllUserHomes(userId: string): Promise<(IHomeSchema & Document)[]> {
     return this.homeModal.find({ ownerId: userId });
   }
+
+  async getHomeById(homeId: string): Promise<IHomeSchema | null> {
+    return this.homeModal.findById(homeId);
+  }
 }

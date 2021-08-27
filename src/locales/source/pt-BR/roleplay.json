@@ -156,7 +156,8 @@
   },
   "items": {
     "0": {
-      "name": "Mochila de Pano"
+      "name": "Mochila de Pano",
+      "description": "Uma pequena mochila feita de pano que possui pequeno armazenamento, mas ajuda para as missões diárias"
     }
   },
   "buildings": {
