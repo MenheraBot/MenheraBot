@@ -143,6 +143,7 @@ export default class InteractionCreate extends Event {
       interaction,
       { user: authorData, server },
       t,
+      command.config.name,
     );
 
     try {

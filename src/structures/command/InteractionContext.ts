@@ -17,6 +17,7 @@ export default class InteractionCommandContext {
     public interaction: CommandInteraction,
     public data: IContextData,
     public i18n: TFunction,
+    private commandName: string,
   ) {}
 
   get options(): CommandInteractionOptionResolver {
@@ -92,5 +93,9 @@ export default class InteractionCommandContext {
 
   locale(text: string, translateVars = {}): string {
     return this.i18n(text, translateVars);
+  }
+
+  translate(text: string, translateVars = {}): string {
+    return this.i18n(`commands:${this.commandName}.${text}`, translateVars);
   }
 }
