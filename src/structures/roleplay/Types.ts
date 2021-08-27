@@ -7,20 +7,26 @@ export interface IAbility {
   xp: number;
 }
 
+export interface IInventoryItem {
+  id: number;
+  amount: number;
+  level?: number;
+}
+
 export interface ILeveledItem {
   id: number;
   level: number;
 }
 
 export interface IArmor {
-  head: ILeveledItem;
-  chest: ILeveledItem;
-  pants: ILeveledItem;
-  boots: ILeveledItem;
+  head?: ILeveledItem;
+  chest?: ILeveledItem;
+  pants?: ILeveledItem;
+  boots?: ILeveledItem;
 }
 
 export interface IEquiped {
-  weapon: ILeveledItem;
+  weapon?: ILeveledItem;
   armor: IArmor;
   backpack: ILeveledItem;
 }
@@ -48,11 +54,6 @@ export interface IJob {
   xp: number;
 }
 
-export interface IInventoryItem {
-  id: number;
-  amount: number;
-}
-
 export interface IRpgUserSchema {
   readonly id: string;
   classId: number;
@@ -77,8 +78,15 @@ export interface IRpgUserSchema {
   job: IJob;
   cooldown: unknown;
   money: IMoney;
+  homes: number[]; // Array of locationId
   quests: IUserQuests;
   clanId: number | null;
+}
+export interface IHomeSchema {
+  ownerId: string;
+  locationId: number;
+  isClanHome: boolean;
+  inventory: Array<IInventoryItem>;
 }
 
 interface IAttributesPerLevel {
@@ -181,6 +189,7 @@ export interface IBasicData {
   attackSkill: number;
   abilitySkill: number;
   speed: number;
+  equiped: IEquiped;
 }
 
 export interface IBuildingFile {

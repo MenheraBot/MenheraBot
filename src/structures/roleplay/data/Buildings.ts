@@ -235,6 +235,11 @@ const buildings: { [key: number]: IBuildingFile } = {
           case 'SELL': {
             let text = ctx.locale('roleplay:mart.sell-base-text');
 
+            if (user.inventory.length === 0) {
+              ctx.editReply({ content: ctx.locale('common:no-itens-in-inventory') });
+              return;
+            }
+
             const createSelectMenu = () =>
               new MessageSelectMenu()
                 .setCustomId(`${ctx.interaction.id} ${Date.now()} | SELECT`)

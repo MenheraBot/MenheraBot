@@ -7,5 +7,14 @@
   "select-all-values": "Selecione todos itens que quiser",
   "level": "Nível {{level}}",
   "no-money": "Você não possui dinheiro o suficiente para isso!",
-  "backpack-full": "Sua mochila esta cheia"
+  "backpack-full": "Sua mochila esta cheia",
+  "home-in": "Casa em {{location}}",
+  "use-item": "Usar Itens",
+  "no-itens-in-inventory": "Seu invenário não possui itens",
+  "rpg": {
+    "head": "Capacete",
+    "chest": "Peitoral",
+    "pants": "Calça",
+    "boosts": "Botas"
+  }
 }

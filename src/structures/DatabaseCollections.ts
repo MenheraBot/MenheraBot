@@ -1,6 +1,6 @@
 import { ICmdSchema, IGuildSchema, IStatusSchema, IUserSchema } from '@utils/Types';
 import { Document, Schema, model } from 'mongoose';
-import { IRpgUserSchema } from './roleplay/Types';
+import { IHomeSchema, IRpgUserSchema } from './roleplay/Types';
 
 const statusSchema = new Schema({
   _id: { type: String },
@@ -76,10 +76,18 @@ const rpgSchema = new Schema({
   inventory: { type: Array, default: [] }, // User inventory of usable items
   equiped: { type: Object }, // User inventory of equiped itens
   job: { type: Object }, // Informations about the user job
+  homes: { type: Array, default: [] }, // Id of all user homes
   cooldown: { type: Object }, // All cooldowns that block the user form using commands for some reason
   money: { type: Object, default: { gold: 0, silver: 0, bronze: 0 } }, // All the money from user
   quests: { type: Object }, // This object has the available daily quests and the extra quests
   clanId: { type: Number, default: null }, // Id from the user's clan
+});
+
+const homeSchema = new Schema({
+  ownerId: { type: String },
+  locationId: { type: Number },
+  isClanHome: { type: Boolean, default: false },
+  inventory: { type: Array, default: [] },
 });
 
 export const Cmds = model<ICmdSchema & Document>('Cmd', cmdSchema);
@@ -87,3 +95,4 @@ export const Status = model<IStatusSchema & Document>('status', statusSchema);
 export const Guilds = model<IGuildSchema & Document>('guild', guildSchema);
 export const Users = model<IUserSchema & Document>('usersdb', userSchema);
 export const Rpg = model<IRpgUserSchema & Document>('rpg', rpgSchema);
+export const Homes = model<IHomeSchema & Document>('homes', homeSchema);

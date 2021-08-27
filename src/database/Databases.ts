@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import Redis from 'ioredis';
-import { Cmds, Guilds, Status, Users, Rpg } from '@structures/DatabaseCollections';
+import { Cmds, Guilds, Status, Users, Rpg, Homes } from '@structures/DatabaseCollections';
 import { IDatabaseRepositories } from '@utils/Types';
 import CacheRepository from './repositories/CacheRepository';
 import CmdRepository from './repositories/CmdsRepository';
@@ -17,6 +17,7 @@ import BlacklistRepository from './repositories/BlacklistRepository';
 import TopRepository from './repositories/TopRepository';
 import GiveRepository from './repositories/GiveRepository';
 import RpgRepository from './repositories/RpgRepository';
+import HomeRepository from './repositories/HomeRepository';
 
 export default class Databases {
   public Cmds: typeof Cmds;
@@ -29,7 +30,9 @@ export default class Databases {
 
   public Rpg: typeof Rpg;
 
-  public redisClient: Redis.Redis | null = null;
+  public Homes: typeof Homes;
+
+  private redisClient: Redis.Redis | null = null;
 
   private readonly userRepository: UserRepository;
 
@@ -61,6 +64,8 @@ export default class Databases {
 
   private readonly giveRepository: GiveRepository;
 
+  private readonly homeRepository: HomeRepository;
+
   constructor(public uri: string, withRedisCache: boolean) {
     // TODO: add modal to the name for readability
     // para fazer isso tem que mudar todos os codigos que estão usando `database.(nome_sem_modal)` to repositories
@@ -69,6 +74,7 @@ export default class Databases {
     this.Status = Status;
     this.Users = Users;
     this.Rpg = Rpg;
+    this.Homes = Homes;
 
     if (withRedisCache) this.createRedisConnection();
 
@@ -93,6 +99,7 @@ export default class Databases {
     this.relationshipRepository = new RelationshipRepository(this.userRepository);
     this.blacklistRepository = new BlacklistRepository(this.userRepository);
     this.topRepository = new TopRepository(this.Users);
+    this.homeRepository = new HomeRepository(this.Homes);
     this.giveRepository = new GiveRepository(this.Users);
   }
 
@@ -113,6 +120,7 @@ export default class Databases {
       blacklistRepository: this.blacklistRepository,
       topRepository: this.topRepository,
       giveRepository: this.giveRepository,
+      homeRepository: this.homeRepository,
     };
   }
 

@@ -66,6 +66,7 @@ export const emojis = {
   yes: '✅',
   no: '❌',
   map: '🗺️',
+  home: '🏘️',
   pin: '📍',
   question: '❓',
   yellow_circle: '🟡',

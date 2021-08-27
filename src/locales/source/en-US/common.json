@@ -7,5 +7,14 @@
   "select-all-values": "Select all items you want",
   "level": "Level {{level}}",
   "no-money": "You don't have enough money for this!",
-  "backpack-full": "Your backpack is full!"
+  "backpack-full": "Your backpack is full!",
+  "home-in": "Home in {{location}}",
+  "use-item": "Use Items",
+  "no-itens-in-inventory": "Your inventory has no items",
+  "rpg": {
+    "head": "Helmet",
+    "chest": "Chestplate",
+    "pants": "Pants",
+    "boosts": "Boots"
+  }
 }

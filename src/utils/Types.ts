@@ -14,6 +14,7 @@ import StarRepository from '@database/repositories/StarRepository';
 import StatusRepository from '@database/repositories/StatusRepository';
 import TopRepository from '@database/repositories/TopRepository';
 import UserRepository from '@database/repositories/UserRepository';
+import HomeRepository from '@database/repositories/HomeRepository';
 import {
   ChatInputApplicationCommandData,
   ColorResolvable,
@@ -167,6 +168,7 @@ export interface IDatabaseRepositories {
   blacklistRepository: BlacklistRepository;
   topRepository: TopRepository;
   giveRepository: GiveRepository;
+  homeRepository: HomeRepository;
 }
 
 export type TShardStatus = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;

@@ -672,8 +672,13 @@
     "select": "Select what you want to do"
   },
   "inventario": {
+    "select-home": "Select the Home",
+    "usables": "Equipables",
+    "no-item": "No Items",
+    "armor": "Armors",
     "first": {
-      "title": "{{user}}'s Inventory"
+      "title": "{{user}}'s Inventory",
+      "description": "Choose below which inventory you want to tinker with. You can see the inventory of your houses. In the standard inventory, you can choose to use items such as potions, weapons and armor"
     }
   }
 }

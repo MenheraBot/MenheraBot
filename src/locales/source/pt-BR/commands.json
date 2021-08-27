@@ -684,8 +684,13 @@
     "select": "Selecione o que você quer fazer"
   },
   "inventario": {
+    "select-home": "Escolha a casa",
+    "usables": "Equipáveis",
+    "no-item": "Sem Item",
+    "armor": "Armaduras",
     "first": {
-      "title": "Inventário de {{user}}"
+      "title": "Inventário de {{user}}",
+      "description": "Escolha abaixo em qual inventário você quer mexer. Você pode ver o inventário de suas casas. No invenário padrão, você pode escolher usar itens, como poções, armas e armaduras"
     }
   }
 }
