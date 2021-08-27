@@ -87,7 +87,7 @@ export default class HttpRequests {
 
   static async postCommand(info: ICommandUsedData): Promise<void> {
     await apiRequest
-      .post('/commands', {
+      .post(`commands?name=${info.commandName}`, {
         authorId: info.authorId,
         guildId: info.guildId,
         commandName: info.commandName,
