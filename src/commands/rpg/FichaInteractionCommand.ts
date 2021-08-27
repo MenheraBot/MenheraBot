@@ -16,7 +16,7 @@ import Util from '@utils/Util';
 import { IRpgUserSchema } from '@structures/roleplay/Types';
 import { Document } from 'mongoose';
 
-export default class BicudaInteractionCommand extends InteractionCommand {
+export default class FichaInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {
     super(client, {
       name: 'ficha',

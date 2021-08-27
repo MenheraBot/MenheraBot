@@ -5,7 +5,7 @@ import InteractionCommandContext from '@structures/command/InteractionContext';
 import { emojis } from '@structures/MenheraConstants';
 import Util from '@utils/Util';
 
-export default class AvatarInteractionCommand extends InteractionCommand {
+export default class CityInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {
     super(client, {
       name: 'cidade',
