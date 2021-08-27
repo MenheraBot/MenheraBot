@@ -682,5 +682,10 @@
   "cidade": {
     "description": "Escolha abaixo o que você quer fazer em {{city}}",
     "select": "Selecione o que você quer fazer"
+  },
+  "inventario": {
+    "first": {
+      "title": "Inventário de {{user}}"
+    }
   }
 }

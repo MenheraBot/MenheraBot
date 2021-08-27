@@ -670,5 +670,10 @@
   "cidade": {
     "description": "Choose below what you want to do in {{city}}",
     "select": "Select what you want to do"
+  },
+  "inventario": {
+    "first": {
+      "title": "{{user}}'s Inventory"
+    }
   }
 }
