@@ -9,7 +9,9 @@ import {
   ILeveledItem,
   IMoney,
   IRacesFiles,
-  UsableItem,
+  IUnusableItem,
+  IUsableItem,
+  AsAnUsableItem,
 } from './Types';
 
 export default class BasicFunctions {
@@ -59,14 +61,14 @@ export default class BasicFunctions {
     return this.client.boleham.Buildings.filter((a) => a[0] === `${id}`)[0][1];
   }
 
-  // NEED HELP HERE
+  getItemById<T extends boolean>(id: number | string): IItemFile<T>;
 
-  getItemById<T extends boolean>(id: number | string): IItemFile<T> {
+  getItemById(id: number | string): IUsableItem | IUnusableItem {
     return this.client.boleham.Items.filter((a) => a[0] === `${id}`)[0][1];
   }
 
   getBackPackLimit(backpack: ILeveledItem): number {
-    const backpackInfo = this.getItemById<UsableItem>(backpack.id);
+    const backpackInfo = this.getItemById<AsAnUsableItem>(backpack.id);
     return backpackInfo.data.value + backpackInfo.data.perLevel * backpack.level;
   }
 

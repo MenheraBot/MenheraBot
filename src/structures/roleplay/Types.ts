@@ -211,8 +211,8 @@ export interface IUnusableItem {
   type: TItemType;
 }
 
-export type UsableItem = true;
-export type UnusableItem = false;
+export type AsAnUsableItem = true;
+export type AsAnUnasableItem = false;
 
 export type IItemFile<T extends boolean> = T extends true ? IUsableItem : IUnusableItem;
 
