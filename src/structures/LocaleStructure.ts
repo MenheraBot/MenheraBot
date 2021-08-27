@@ -30,7 +30,7 @@ export default class LocaleStructure {
       });
       console.log('[LOCALES] Locales loaded!');
     } catch (err) {
-      console.log(`[LOCALES] Falha no Load dos Locales: ${err.message}`);
+      if (err instanceof Error) console.log(`[LOCALES] Falha no Load dos Locales: ${err.message}`);
     }
   }
 

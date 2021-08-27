@@ -36,13 +36,15 @@ export default class EvalSlashInteractionCommand extends InteractionCommand {
       await ctx.reply(`\`\`\`js\n ${evaled}\`\`\``);
       return;
     } catch (err) {
-      const errorMessage = err.stack.length > 1800 ? `${err.stack.slice(0, 1800)}...` : err.stack;
-      const embed = new MessageEmbed();
-      embed.setColor('#ff0000');
-      embed.setTitle('<:negacao:759603958317711371> | Erro');
-      embed.setDescription(`\`\`\`js\n${errorMessage}\`\`\``);
+      if (err instanceof Error && err.stack) {
+        const errorMessage = err.stack.length > 1800 ? `${err.stack.slice(0, 1800)}...` : err.stack;
+        const embed = new MessageEmbed();
+        embed.setColor('#ff0000');
+        embed.setTitle('<:negacao:759603958317711371> | Erro');
+        embed.setDescription(`\`\`\`js\n${errorMessage}\`\`\``);
 
-      await ctx.reply({ embeds: [embed] });
+        await ctx.reply({ embeds: [embed] });
+      }
     }
   }
 }

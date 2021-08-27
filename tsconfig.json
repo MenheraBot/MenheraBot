@@ -20,6 +20,8 @@
     "noImplicitAny": true ,
 
     "noUnusedLocals": true,
+    
+    "useUnknownInCatchVariables": true,
 
     "moduleResolution": "node",
     "esModuleInterop": true,
