@@ -1,4 +1,12 @@
-import { IEnochiaShop, IItemFile, IMoney, TItemRarity, TItemType } from './Types';
+import {
+  IEnochiaShop,
+  IItemFile,
+  IMoney,
+  IRpgUserSchema,
+  IUsableItem,
+  TItemRarity,
+  TItemType,
+} from './Types';
 
 const randomFromArray = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
 
@@ -56,6 +64,23 @@ const resolveEnochiaMart = (
 const canBuy = (money: IMoney): boolean => {
   if (money.bronze < 0 || money.silver < 0 || money.gold < 0) return false;
   return true;
+};
+
+const usePotion = (
+  user: IRpgUserSchema,
+  potion: IUsableItem,
+  itemLevel: number,
+): IRpgUserSchema => {
+  if (potion.helperType === 'heal') {
+    user.life += potion.data.value + itemLevel * potion.data.perLevel;
+    if (user.life > user.maxLife) user.life = user.maxLife;
+  }
+
+  if (potion.helperType === 'mana') {
+    user.mana += potion.data.value + itemLevel * potion.data.perLevel;
+  }
+
+  
 };
 
 export { canBuy, resolveCustomId, resolveEnochiaMart, randomFromArray };

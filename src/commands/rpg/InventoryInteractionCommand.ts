@@ -10,6 +10,7 @@ import {
 } from 'discord.js';
 import { emojis } from '@structures/MenheraConstants';
 import { resolveCustomId } from '@roleplay/Utils';
+import { AsAnUsableItem } from '@structures/roleplay/Types';
 
 export default class InventoryInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {
@@ -30,89 +31,96 @@ export default class InventoryInteractionCommand extends InteractionCommand {
       return;
     }
 
-    const embed = new MessageEmbed()
-      .setTitle(ctx.translate('first.title', { user: ctx.interaction.user.username }))
-      .setColor(ctx.data.user.cor)
-      .setDescription(ctx.translate('first.description'))
-      .addField(
-        `${emojis.shield} | ${ctx.translate('armor')}`,
-        `${ctx.locale('common:rpg.head')} - ${
-          user.equiped.armor?.head
-            ? `**${ctx.locale(
-                `roleplay:items.${user.equiped.armor.head.id}.name`,
-              )}** - ${ctx.locale('common:level', { level: user.equiped.armor.head.level })}`
-            : ctx.translate('no-item')
-        }\n${ctx.locale('common:rpg.chest')} - ${
-          user.equiped.armor?.chest
-            ? `**${ctx.locale(
-                `roleplay:items.${user.equiped.armor.chest.id}.name`,
-              )}** - ${ctx.locale('common:level', { level: user.equiped.armor.chest.level })}`
-            : ctx.translate('no-item')
-        }\n${ctx.locale('common:rpg.pants')} - ${
-          user.equiped.armor?.pants
-            ? `**${ctx.locale(
-                `roleplay:items.${user.equiped.armor.pants.id}.name`,
-              )}** - ${ctx.locale('common:level', { level: user.equiped.armor.pants.level })}`
-            : ctx.translate('no-item')
-        }\n${ctx.locale('common:rpg.boots')} - ${
-          user.equiped.armor?.boots
-            ? `**${ctx.locale(
-                `roleplay:items.${user.equiped.armor.boots.id}.name`,
-              )}** - ${ctx.locale('common:level', { level: user.equiped.armor.boots.level })}`
-            : ctx.translate('no-item')
-        }`,
-        true,
-      )
-      .addField(
-        `${emojis.sword} | ${ctx.translate('weapon')}`,
-        `${
-          user.equiped.weapon
-            ? `**${ctx.locale(`roleplay:items.${user.equiped.weapon.id}.name`)}** - ${ctx.locale(
-                'common:level',
-                { level: user.equiped.weapon.level },
-              )}\n${ctx.locale(`roleplay:items.${user.equiped.weapon.id}.description`)}`
-            : ctx.translate('no-item')
-        }`,
-        true,
-      )
-      .addField(
-        `${emojis.roleplay_custom.backpack} | ${ctx.translate('backpack')}`,
-        `${
-          user.equiped.backpack
-            ? `**${ctx.locale(`roleplay:items.${user.equiped.backpack.id}.name`)}** - ${ctx.locale(
-                'common:level',
-                { level: user.equiped.backpack.level },
-              )}\n${ctx.locale(`roleplay:items.${user.equiped.backpack.id}.description`)}`
-            : ctx.translate('no-item')
-        }`,
-        true,
-      );
+    const setDefaultEmbed = () => {
+      const embed = new MessageEmbed()
+        .setTitle(ctx.translate('first.title', { user: ctx.interaction.user.username }))
+        .setColor(ctx.data.user.cor)
+        .setDescription(ctx.translate('first.description'))
+        .addField(
+          `${emojis.shield} | ${ctx.translate('armor')}`,
+          `${ctx.locale('common:rpg.head')} - ${
+            user.equiped.armor?.head
+              ? `**${ctx.locale(
+                  `roleplay:items.${user.equiped.armor.head.id}.name`,
+                )}** - ${ctx.locale('common:level', { level: user.equiped.armor.head.level })}`
+              : ctx.translate('no-item')
+          }\n${ctx.locale('common:rpg.chest')} - ${
+            user.equiped.armor?.chest
+              ? `**${ctx.locale(
+                  `roleplay:items.${user.equiped.armor.chest.id}.name`,
+                )}** - ${ctx.locale('common:level', { level: user.equiped.armor.chest.level })}`
+              : ctx.translate('no-item')
+          }\n${ctx.locale('common:rpg.pants')} - ${
+            user.equiped.armor?.pants
+              ? `**${ctx.locale(
+                  `roleplay:items.${user.equiped.armor.pants.id}.name`,
+                )}** - ${ctx.locale('common:level', { level: user.equiped.armor.pants.level })}`
+              : ctx.translate('no-item')
+          }\n${ctx.locale('common:rpg.boots')} - ${
+            user.equiped.armor?.boots
+              ? `**${ctx.locale(
+                  `roleplay:items.${user.equiped.armor.boots.id}.name`,
+                )}** - ${ctx.locale('common:level', { level: user.equiped.armor.boots.level })}`
+              : ctx.translate('no-item')
+          }`,
+          true,
+        )
+        .addField(
+          `${emojis.sword} | ${ctx.translate('weapon')}`,
+          `${
+            user.equiped.weapon
+              ? `**${ctx.locale(`roleplay:items.${user.equiped.weapon.id}.name`)}** - ${ctx.locale(
+                  'common:level',
+                  { level: user.equiped.weapon.level },
+                )}\n${ctx.locale(`roleplay:items.${user.equiped.weapon.id}.description`)}`
+              : ctx.translate('no-item')
+          }`,
+          true,
+        )
+        .addField(
+          `${emojis.roleplay_custom.backpack} | ${ctx.translate('backpack')}`,
+          `${
+            user.equiped.backpack
+              ? `**${ctx.locale(
+                  `roleplay:items.${user.equiped.backpack.id}.name`,
+                )}** - ${ctx.locale('common:level', {
+                  level: user.equiped.backpack.level,
+                })}\n${ctx.locale(`roleplay:items.${user.equiped.backpack.id}.description`)}`
+              : ctx.translate('no-item')
+          }`,
+          true,
+        );
 
-    const usableItems = user.inventory.filter((a) => a.level);
-    const otherItems = user.inventory.filter((a) => typeof a.level === 'undefined');
+      const usableItems = user.inventory.filter((a) => a.level);
+      const otherItems = user.inventory.filter((a) => typeof a.level === 'undefined');
 
-    if (usableItems.length > 0) {
-      embed.addField(
-        ctx.translate('usable'),
-        usableItems
-          .map(
-            (a) =>
-              `**${ctx.locale(`roleplay:items.${a.id}.name`)}** - ${ctx.locale('common:level', {
-                level: a.level ?? 0,
-              })} | \`${a.amount}\``,
-          )
-          .join('\n'),
-      );
-    }
+      if (usableItems.length > 0) {
+        embed.addField(
+          ctx.translate('usable'),
+          usableItems
+            .map(
+              (a) =>
+                `**${ctx.locale(`roleplay:items.${a.id}.name`)}** - ${ctx.locale('common:level', {
+                  level: a.level ?? 0,
+                })} | \`${a.amount}\``,
+            )
+            .join('\n'),
+        );
+      }
 
-    if (otherItems.length > 0) {
-      embed.addField(
-        ctx.translate('other'),
-        otherItems
-          .map((a) => `**${ctx.locale(`roleplay:items.${a.id}.name`)}** -  ${a.amount}`)
-          .join('\n'),
-      );
-    }
+      if (otherItems.length > 0) {
+        embed.addField(
+          ctx.translate('other'),
+          otherItems
+            .map((a) => `**${ctx.locale(`roleplay:items.${a.id}.name`)}** -  ${a.amount}`)
+            .join('\n'),
+        );
+      }
+
+      return embed;
+    };
+
+    const embed = setDefaultEmbed();
 
     const selector = new MessageSelectMenu()
       .setPlaceholder(ctx.translate('select-home'))
@@ -124,6 +132,8 @@ export default class InventoryInteractionCommand extends InteractionCommand {
       .setCustomId(`${ctx.interaction.id} | INVENTORY`)
       .setLabel(ctx.locale('common:use-item'))
       .setStyle('PRIMARY');
+
+    if (user.inventory.filter((a) => a.level).length === 0) button.setDisabled(true);
 
     if (user.homes.length > 0) {
       const AllUserHomes = await this.client.repositories.homeRepository.getAllUserHomes(
@@ -160,6 +170,18 @@ export default class InventoryInteractionCommand extends InteractionCommand {
       if (!int.isButton() && !int.isSelectMenu()) return;
 
       switch (resolveCustomId(int.customId)) {
+        case 'CHANGE': {
+          if (!int.isSelectMenu()) return;
+          int.values.forEach((a) => {
+            const item = this.client.boleham.Functions.getItemById<AsAnUsableItem>(a.split(' ')[0]);
+            const fromUserInventory = user.inventory.filter(item => `${item.id}` === a && `${item.level}` === a.split(' ')[1]);
+            switch(item.type) {
+              case 'potion';
+            } 
+          });
+
+          break;
+        }
         case 'HOME': {
           if (!int.isSelectMenu()) return;
           const selectedHome = await this.client.repositories.homeRepository.getHomeById(
@@ -169,7 +191,77 @@ export default class InventoryInteractionCommand extends InteractionCommand {
             ctx.editReply({ content: ctx.translate('no-home') });
             return;
           }
-          embed.setDescription(ctx.translate('second.description', { home: selectedHome.name }));
+          embed.setTitle(ctx.translate('second.description', { name: selectedHome.name }));
+
+          const clanUsableItems = selectedHome.inventory.filter((a) => a.level);
+          const clanOtherItems = selectedHome.inventory.filter(
+            (a) => typeof a.level === 'undefined',
+          );
+
+          if (clanUsableItems.length > 0) {
+            embed.addField(
+              ctx.translate('usable'),
+              clanUsableItems
+                .map(
+                  (a) =>
+                    `**${ctx.locale(`roleplay:items.${a.id}.name`)}** - ${ctx.locale(
+                      'common:level',
+                      {
+                        level: a.level ?? 0,
+                      },
+                    )} | \`${a.amount}\``,
+                )
+                .join('\n'),
+            );
+          }
+
+          if (clanOtherItems.length > 0) {
+            embed.addField(
+              ctx.translate('other'),
+              clanOtherItems
+                .map((a) => `**${ctx.locale(`roleplay:items.${a.id}.name`)}** -  ${a.amount}`)
+                .join('\n'),
+            );
+          }
+
+          ctx.editReply({ embeds: [embed] });
+          break;
+        }
+        case 'INVENTORY': {
+          embed.setDescription(ctx.translate('third.description'));
+
+          const usableItems = user.inventory.filter((a) => a.level);
+
+          const itensSelect = new MessageSelectMenu()
+            .setCustomId(`${ctx.interaction.id} | CHANGE`)
+            .setPlaceholder(ctx.locale('common:select-all-values'))
+            .setMinValues(1);
+
+          if (usableItems.length > 0) {
+            embed.addField(
+              ctx.translate('usable'),
+              usableItems
+                .map((a, i) => {
+                  itensSelect.addOptions({
+                    label: ctx.locale(`roleplay:items.${a.id}.name`),
+                    value: `${a.id} ${a.level ?? 0} ${i}`,
+                  });
+                  return `**${ctx.locale(`roleplay:items.${a.id}.name`)}** - ${ctx.locale(
+                    'common:level',
+                    {
+                      level: a.level ?? 0,
+                    },
+                  )} | \`${a.amount}\``;
+                })
+                .join('\n'),
+            );
+          }
+
+          ctx.editReply({
+            embeds: [embed],
+            components: [{ type: 'ACTION_ROW', components: [itensSelect] }],
+          });
+          break;
         }
       }
     });

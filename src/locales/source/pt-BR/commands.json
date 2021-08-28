@@ -696,6 +696,12 @@
     "first": {
       "title": "Inventário de {{user}}",
       "description": "Escolha abaixo em qual inventário você quer mexer. Você pode ver o inventário de suas casas. No invenário padrão, você pode escolher usar itens, como poções, armas e armaduras"
+    },
+    "second": {
+      "description": "Inventário da Casa {{name}}"
+    },
+    "third": {
+      "description": "Escolha abaixo os itens que você quer usar. Lembrando que poções ativarão seu efeito, e armas serão substituídas pelas atuais\n**AVISO** CASO VOCÊ NÃO TENHA ESPAÇO NA MOCHILA, O ITEM SERÁ JOGADO FORA!!!!"
     }
   }
 }

@@ -143,6 +143,7 @@ export type TEffectType =
   | 'degradation'
   | 'confusion'
   | 'heal'
+  | 'mana'
   | 'blind';
 
 export type TElements = 'light' | 'darkness' | 'fire' | 'nature' | 'gravity' | 'prisma';
@@ -201,7 +202,15 @@ export interface IBuildingFile {
 
 export type TItemRarity = 'common' | 'rare' | 'epic' | 'mythical' | 'legendary' | 'ascendant';
 
-export type TItemType = 'armor' | 'potion' | 'weapon' | 'drop' | 'backpack';
+export type TItemType =
+  | 'chest'
+  | 'head'
+  | 'boots'
+  | 'pants'
+  | 'potion'
+  | 'weapon'
+  | 'drop'
+  | 'backpack';
 
 interface IItemData {
   value: number;
@@ -213,12 +222,18 @@ export interface IUsableItem {
   rarity: TItemRarity;
   type: TItemType;
   data: IItemData;
+  helperType: TEffectType;
 }
 
 export interface IUnusableItem {
   price: IMoney;
   rarity: TItemRarity;
   type: TItemType;
+}
+
+export interface IItemIdAndLevel {
+  id: number | string;
+  level: number | string;
 }
 
 export type AsAnUsableItem = true;

@@ -12,6 +12,7 @@ import {
   IUnusableItem,
   IUsableItem,
   AsAnUsableItem,
+  IItemIdAndLevel,
 } from './Types';
 
 export default class BasicFunctions {
@@ -75,23 +76,33 @@ export default class BasicFunctions {
 
   static mergeInventory(
     inventory: IInventoryItem[],
-    toMerge: number | string,
+    toMerge: IItemIdAndLevel,
     remove?: boolean,
   ): IInventoryItem[] {
     if (remove) {
-      const found = inventory.findIndex((a) => `${a.id}` === `${toMerge}`);
+      const found =
+        toMerge.level !== 0
+          ? inventory.findIndex(
+              (a) => `${a.id}` === `${toMerge.id}` && `${a.level} === ${toMerge.level}`,
+            )
+          : inventory.findIndex((a) => `${a.id}` === `${toMerge.id}`);
       if (found !== -1) inventory[found].amount -= 1;
       if (inventory[found].amount <= 0) inventory.splice(found, 1);
       return inventory;
     }
 
-    const found = inventory.findIndex((a) => a.id === toMerge);
+    const found =
+      toMerge.level !== 0
+        ? inventory.findIndex(
+            (a) => `${a.id}` === `${toMerge.id}` && `${a.level} === ${toMerge.level}`,
+          )
+        : inventory.findIndex((a) => `${a.id}` === `${toMerge.id}`);
     if (found !== -1) {
       inventory[found].amount += 1;
       return inventory;
     }
 
-    inventory.push({ id: Number(toMerge), amount: 1 });
+    if (toMerge.id !== 0) inventory.push({ id: Number(toMerge), amount: 1 });
     return inventory;
   }
 

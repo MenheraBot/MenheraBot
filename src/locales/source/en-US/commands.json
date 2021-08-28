@@ -684,6 +684,12 @@
     "first": {
       "title": "{{user}}'s Inventory",
       "description": "Choose below which inventory you want to tinker with. You can see the inventory of your houses. In the standard inventory, you can choose to use items such as potions, weapons and armor"
+    },
+    "second": {
+      "description": "{{name}}'s Home Inventory"
+    },
+    "third": {
+      "description": "Choose below the items you want to use. Remembering that potions will activate their effect, and weapons will be replaced by the current ones\n**WARNING** IF YOU DON'T HAVE SPACE IN YOUR BACKPACK, THE ITEM WILL BE THROWN!!!!"
     }
   }
 }

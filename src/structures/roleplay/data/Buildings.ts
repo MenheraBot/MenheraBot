@@ -85,7 +85,7 @@ const buildings: { [key: number]: IBuildingFile } = {
               const item = ctx.client.boleham.Functions.getItemById(a.id);
               selectMenu.addOptions({
                 label: ctx.locale(`roleplay:items.${a.id}.name`),
-                value: `${a.id} ${i}`,
+                value: `${a.id} ${a.level} ${i}`,
                 description: ctx.locale(`roleplay:items.${a.id}.description`),
               });
               embed.addField(
@@ -105,7 +105,7 @@ const buildings: { [key: number]: IBuildingFile } = {
               const item = ctx.client.boleham.Functions.getItemById(a.id);
               selectMenu.addOptions({
                 label: ctx.locale(`roleplay:items.${a.id}.name`),
-                value: `${a.id} ${i}`,
+                value: `${a.id} ${a.level} ${i}`,
                 description: ctx.locale(`roleplay:items.${a.id}.description`),
               });
               embed.addField(
@@ -125,7 +125,7 @@ const buildings: { [key: number]: IBuildingFile } = {
               const item = ctx.client.boleham.Functions.getItemById(a.id);
               selectMenu.addOptions({
                 label: ctx.locale(`roleplay:items.${a.id}.name`),
-                value: `${a.id} ${i}`,
+                value: `${a.id} ${a.level} ${i}`,
                 description: ctx.locale(`roleplay:items.${a.id}.description`),
               });
               embed.addField(
@@ -156,9 +156,12 @@ const buildings: { [key: number]: IBuildingFile } = {
             };
 
             for (let i = 0; i < int.values.length; i++) {
-              const itemId = int.values[i].split(' ')[0];
+              const [itemId, itemLevel] = int.values[i].split(' ');
               const { price } = ctx.client.boleham.Functions.getItemById(itemId);
-              user.inventory = BasicFunctions.mergeInventory(user.inventory, itemId);
+              user.inventory = BasicFunctions.mergeInventory(user.inventory, {
+                id: itemId,
+                level: itemLevel,
+              });
 
               buyValue = BasicFunctions.mergeCoins(buyValue, price, true);
             }
@@ -210,10 +213,14 @@ const buildings: { [key: number]: IBuildingFile } = {
             };
 
             for (let i = 0; i < int.values.length; i++) {
-              const itemId = int.values[i].split(' ')[0];
+              const [itemId, itemLevel] = int.values[i].split(' ');
               const { price } = ctx.client.boleham.Functions.getItemById(itemId);
 
-              user.inventory = BasicFunctions.mergeInventory(user.inventory, itemId, true);
+              user.inventory = BasicFunctions.mergeInventory(
+                user.inventory,
+                { id: itemId, level: itemLevel },
+                true,
+              );
               soldValue = BasicFunctions.mergeCoins(soldValue, price);
             }
 
@@ -265,7 +272,7 @@ const buildings: { [key: number]: IBuildingFile } = {
                 }
                 selectMenus[index].addOptions({
                   label: ctx.locale(`roleplay:items.${item.id}.name`),
-                  value: `${item.id} ${i} ${index}`,
+                  value: `${item.id} ${item.level ?? 0} ${i} ${index}`,
                 });
               }
             });
