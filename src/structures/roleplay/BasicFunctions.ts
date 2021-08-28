@@ -82,10 +82,8 @@ export default class BasicFunctions {
     if (remove) {
       const found =
         toMerge.level !== 0
-          ? inventory.findIndex(
-              (a) => `${a.id}` === `${toMerge.id}` && `${a.level} === ${toMerge.level}`,
-            )
-          : inventory.findIndex((a) => `${a.id}` === `${toMerge.id}`);
+          ? inventory.findIndex((a) => a.id === toMerge.id && a.level === toMerge.level)
+          : inventory.findIndex((a) => a.id === toMerge.id);
       if (found !== -1) inventory[found].amount -= 1;
       if (inventory[found].amount <= 0) inventory.splice(found, 1);
       return inventory;
@@ -93,16 +91,15 @@ export default class BasicFunctions {
 
     const found =
       toMerge.level !== 0
-        ? inventory.findIndex(
-            (a) => `${a.id}` === `${toMerge.id}` && `${a.level} === ${toMerge.level}`,
-          )
-        : inventory.findIndex((a) => `${a.id}` === `${toMerge.id}`);
+        ? inventory.findIndex((a) => a.id === toMerge.id && a.level === toMerge.level)
+        : inventory.findIndex((a) => a.id === toMerge.id);
     if (found !== -1) {
       inventory[found].amount += 1;
       return inventory;
     }
 
-    if (toMerge.id !== 0) inventory.push({ id: Number(toMerge), amount: 1 });
+    if (toMerge.id === 0) inventory.push({ id: Number(toMerge.id), amount: 1 });
+    else inventory.push({ id: Number(toMerge.id), amount: 1, level: Number(toMerge.level) });
     return inventory;
   }
 

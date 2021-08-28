@@ -159,8 +159,8 @@ const buildings: { [key: number]: IBuildingFile } = {
               const [itemId, itemLevel] = int.values[i].split(' ');
               const { price } = ctx.client.boleham.Functions.getItemById(itemId);
               user.inventory = BasicFunctions.mergeInventory(user.inventory, {
-                id: itemId,
-                level: itemLevel,
+                id: Number(itemId),
+                level: Number(itemLevel),
               });
 
               buyValue = BasicFunctions.mergeCoins(buyValue, price, true);
@@ -218,7 +218,7 @@ const buildings: { [key: number]: IBuildingFile } = {
 
               user.inventory = BasicFunctions.mergeInventory(
                 user.inventory,
-                { id: itemId, level: itemLevel },
+                { id: Number(itemId), level: Number(itemLevel) },
                 true,
               );
               soldValue = BasicFunctions.mergeCoins(soldValue, price);

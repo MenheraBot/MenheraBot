@@ -202,15 +202,9 @@ export interface IBuildingFile {
 
 export type TItemRarity = 'common' | 'rare' | 'epic' | 'mythical' | 'legendary' | 'ascendant';
 
-export type TItemType =
-  | 'chest'
-  | 'head'
-  | 'boots'
-  | 'pants'
-  | 'potion'
-  | 'weapon'
-  | 'drop'
-  | 'backpack';
+export type TArmorType = 'chest' | 'head' | 'boots' | 'pants';
+
+export type TItemType = 'armor' | 'potion' | 'weapon' | 'drop' | 'backpack';
 
 interface IItemData {
   value: number;
@@ -222,7 +216,7 @@ export interface IUsableItem {
   rarity: TItemRarity;
   type: TItemType;
   data: IItemData;
-  helperType: TEffectType;
+  helperType: TEffectType | TArmorType;
 }
 
 export interface IUnusableItem {
@@ -232,8 +226,8 @@ export interface IUnusableItem {
 }
 
 export interface IItemIdAndLevel {
-  id: number | string;
-  level: number | string;
+  id: number;
+  level: number;
 }
 
 export type AsAnUsableItem = true;

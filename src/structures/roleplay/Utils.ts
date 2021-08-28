@@ -1,6 +1,9 @@
+import BasicFunctions from './BasicFunctions';
 import {
   IEnochiaShop,
+  IInventoryItem,
   IItemFile,
+  IItemIdAndLevel,
   IMoney,
   IRpgUserSchema,
   IUsableItem,
@@ -69,18 +72,30 @@ const canBuy = (money: IMoney): boolean => {
 const usePotion = (
   user: IRpgUserSchema,
   potion: IUsableItem,
-  itemLevel: number,
-): IRpgUserSchema => {
+  itemData: IItemIdAndLevel,
+): [number, IInventoryItem[]] => {
+  let newData = potion.helperType === 'heal' ? user.life : user.mana;
+
   if (potion.helperType === 'heal') {
-    user.life += potion.data.value + itemLevel * potion.data.perLevel;
-    if (user.life > user.maxLife) user.life = user.maxLife;
+    newData += potion.data.value + itemData.level * potion.data.perLevel;
+    if (newData > user.maxLife) newData = user.maxLife;
   }
 
   if (potion.helperType === 'mana') {
-    user.mana += potion.data.value + itemLevel * potion.data.perLevel;
+    newData += potion.data.value + itemData.level * potion.data.perLevel;
+    if (newData > user.maxMana) newData = user.maxMana;
   }
 
-  
+  const newInventory = BasicFunctions.mergeInventory(
+    user.inventory,
+    {
+      id: itemData.id,
+      level: itemData.level,
+    },
+    true,
+  );
+
+  return [newData, newInventory];
 };
 
-export { canBuy, resolveCustomId, resolveEnochiaMart, randomFromArray };
+export { canBuy, resolveCustomId, resolveEnochiaMart, randomFromArray, usePotion };

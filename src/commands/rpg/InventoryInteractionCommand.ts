@@ -9,7 +9,7 @@ import {
   MessageSelectMenu,
 } from 'discord.js';
 import { emojis } from '@structures/MenheraConstants';
-import { resolveCustomId } from '@roleplay/Utils';
+import { resolveCustomId, usePotion } from '@roleplay/Utils';
 import { AsAnUsableItem } from '@structures/roleplay/Types';
 
 export default class InventoryInteractionCommand extends InteractionCommand {
@@ -174,10 +174,21 @@ export default class InventoryInteractionCommand extends InteractionCommand {
           if (!int.isSelectMenu()) return;
           int.values.forEach((a) => {
             const item = this.client.boleham.Functions.getItemById<AsAnUsableItem>(a.split(' ')[0]);
-            const fromUserInventory = user.inventory.filter(item => `${item.id}` === a && `${item.level}` === a.split(' ')[1]);
-            switch(item.type) {
-              case 'potion';
-            } 
+            const fromUserInventory = user.inventory.filter(
+              (itm) => `${itm.id}` === a && `${itm.level}` === a.split(' ')[1],
+            )[0];
+            switch (item.type) {
+              case 'potion': {
+                const [newData, newInventory] = usePotion(user, item, {
+                  id: fromUserInventory.id,
+                  level: fromUserInventory.level ?? 0,
+                });
+                if (item.helperType === 'mana') user.mana = newData;
+                if (item.helperType === 'heal') user.life = newData;
+                user.inventory = newInventory;
+                break;
+              }
+            }
           });
 
           break;
