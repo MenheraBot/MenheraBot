@@ -119,7 +119,7 @@ export default class TopInteractionCommand extends InteractionCommand {
     const type = ctx.options.getString('tipo', true);
     const pagina = ctx.options.getInteger('pagina') ?? 1;
 
-    await ctx.interaction.deferReply();
+    await ctx.interaction.deferReply().catch(() => null);
 
     switch (type) {
       case 'mamadores':
