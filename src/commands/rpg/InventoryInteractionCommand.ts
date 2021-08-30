@@ -11,6 +11,7 @@ import {
 import { emojis } from '@structures/MenheraConstants';
 import { resolveCustomId, usePotion } from '@roleplay/Utils';
 import { AsAnUsableItem } from '@structures/roleplay/Types';
+import BasicFunctions from '@structures/roleplay/BasicFunctions';
 
 export default class InventoryInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {
@@ -168,6 +169,7 @@ export default class InventoryInteractionCommand extends InteractionCommand {
 
     collector.on('collect', async (int) => {
       if (!int.isButton() && !int.isSelectMenu()) return;
+      collector.resetTimer();
 
       switch (resolveCustomId(int.customId)) {
         case 'CHANGE': {
@@ -188,8 +190,163 @@ export default class InventoryInteractionCommand extends InteractionCommand {
                 user.inventory = newInventory;
                 break;
               }
+              case 'weapon': {
+                if (user.equiped.weapon)
+                  user.inventory = BasicFunctions.mergeInventory(user.inventory, {
+                    id: user.equiped.weapon.id,
+                    level: user.equiped.weapon.level,
+                  });
+
+                user.equiped.weapon = {
+                  id: fromUserInventory.id,
+                  level: fromUserInventory.level ?? 0,
+                };
+
+                user.inventory = BasicFunctions.mergeInventory(
+                  user.inventory,
+                  {
+                    id: fromUserInventory.id,
+                    level: fromUserInventory.level ?? 0,
+                  },
+                  true,
+                );
+                break;
+              }
+              case 'backpack': {
+                if (user.equiped.backpack)
+                  user.inventory = BasicFunctions.mergeInventory(user.inventory, {
+                    id: user.equiped.backpack.id,
+                    level: user.equiped.backpack.level,
+                  });
+
+                user.equiped.backpack = {
+                  id: fromUserInventory.id,
+                  level: fromUserInventory.level ?? 0,
+                };
+
+                user.inventory = BasicFunctions.mergeInventory(
+                  user.inventory,
+                  {
+                    id: fromUserInventory.id,
+                    level: fromUserInventory.level ?? 0,
+                  },
+                  true,
+                );
+                break;
+              }
+              case 'armor': {
+                switch (item.helperType) {
+                  case 'head': {
+                    if (user.equiped.armor.head)
+                      user.inventory = BasicFunctions.mergeInventory(user.inventory, {
+                        id: user.equiped.armor.head.id,
+                        level: user.equiped.armor.head.level,
+                      });
+
+                    user.equiped.armor.head = {
+                      id: fromUserInventory.id,
+                      level: fromUserInventory.level ?? 0,
+                    };
+
+                    user.inventory = BasicFunctions.mergeInventory(
+                      user.inventory,
+                      {
+                        id: fromUserInventory.id,
+                        level: fromUserInventory.level ?? 0,
+                      },
+                      true,
+                    );
+                    break;
+                  }
+                  case 'chest': {
+                    if (user.equiped.armor.chest)
+                      user.inventory = BasicFunctions.mergeInventory(user.inventory, {
+                        id: user.equiped.armor.chest.id,
+                        level: user.equiped.armor.chest.level,
+                      });
+
+                    user.equiped.armor.chest = {
+                      id: fromUserInventory.id,
+                      level: fromUserInventory.level ?? 0,
+                    };
+
+                    user.inventory = BasicFunctions.mergeInventory(
+                      user.inventory,
+                      {
+                        id: fromUserInventory.id,
+                        level: fromUserInventory.level ?? 0,
+                      },
+                      true,
+                    );
+                    break;
+                  }
+                  case 'pants': {
+                    if (user.equiped.armor.pants)
+                      user.inventory = BasicFunctions.mergeInventory(user.inventory, {
+                        id: user.equiped.armor.pants.id,
+                        level: user.equiped.armor.pants.level,
+                      });
+
+                    user.equiped.armor.pants = {
+                      id: fromUserInventory.id,
+                      level: fromUserInventory.level ?? 0,
+                    };
+
+                    user.inventory = BasicFunctions.mergeInventory(
+                      user.inventory,
+                      {
+                        id: fromUserInventory.id,
+                        level: fromUserInventory.level ?? 0,
+                      },
+                      true,
+                    );
+                    break;
+                  }
+                  case 'boots': {
+                    if (user.equiped.armor.boots)
+                      user.inventory = BasicFunctions.mergeInventory(user.inventory, {
+                        id: user.equiped.armor.boots.id,
+                        level: user.equiped.armor.boots.level,
+                      });
+
+                    user.equiped.armor.boots = {
+                      id: fromUserInventory.id,
+                      level: fromUserInventory.level ?? 0,
+                    };
+
+                    user.inventory = BasicFunctions.mergeInventory(
+                      user.inventory,
+                      {
+                        id: fromUserInventory.id,
+                        level: fromUserInventory.level ?? 0,
+                      },
+                      true,
+                    );
+                    break;
+                  }
+                }
+              }
             }
           });
+          if (
+            user.inventory.length >
+            this.client.boleham.Functions.getBackPackLimit(user.equiped.backpack)
+          ) {
+            for (
+              let i = user.inventory.length;
+              i > this.client.boleham.Functions.getBackPackLimit(user.equiped.backpack);
+              i--
+            ) {
+              user.inventory.pop();
+            }
+          }
+
+          await this.client.repositories.rpgRepository.editUser(ctx.interaction.user.id, user);
+
+          collector.stop();
+
+          embed.setDescription(ctx.translate('third.changed', { count: int.values.length }));
+          ctx.editReply({ content: '', embeds: [embed], components: [] });
 
           break;
         }

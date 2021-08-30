@@ -689,6 +689,8 @@
       "description": "{{name}}'s Home Inventory"
     },
     "third": {
+      "changed": "You used {{count}} item that was in your inventory!",
+      "changed-plural": "You used {{count}} items that were in your inventory!",
       "description": "Choose below the items you want to use. Remembering that potions will activate their effect, and weapons will be replaced by the current ones\n**WARNING** IF YOU DON'T HAVE SPACE IN YOUR BACKPACK, THE ITEM WILL BE THROWN!!!!"
     }
   }

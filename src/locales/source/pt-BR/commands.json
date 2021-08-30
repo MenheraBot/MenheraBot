@@ -701,6 +701,8 @@
       "description": "Inventário da Casa {{name}}"
     },
     "third": {
+      "changed": "Você utilizou {{count}} item que estava em seu inventário!",
+      "changed-plural": "Você utilizou {{count}} itens que estava em seu inventário!",
       "description": "Escolha abaixo os itens que você quer usar. Lembrando que poções ativarão seu efeito, e armas serão substituídas pelas atuais\n**AVISO** CASO VOCÊ NÃO TENHA ESPAÇO NA MOCHILA, O ITEM SERÁ JOGADO FORA!!!!"
     }
   }
