@@ -341,7 +341,11 @@ export default class InventoryInteractionCommand extends InteractionCommand {
             }
           }
 
-          await this.client.repositories.rpgRepository.editUser(ctx.interaction.user.id, user);
+          await this.client.repositories.rpgRepository.editUser(ctx.interaction.user.id, {
+            life: user.life,
+            mana: user.mana,
+            equiped: user.equiped,
+          });
 
           collector.stop();
 
