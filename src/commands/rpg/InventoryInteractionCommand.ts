@@ -345,6 +345,7 @@ export default class InventoryInteractionCommand extends InteractionCommand {
             life: user.life,
             mana: user.mana,
             equiped: user.equiped,
+            inventory: user.inventory,
           });
 
           collector.stop();
