@@ -58,6 +58,7 @@ const resolveDailyQuests = (userLevel: number, questsFile: [string, IQuestsFile]
       id: Number(a[0]),
       level: getQuestLevel(userLevel),
       progress: 0,
+      finished: false,
     };
     return toReturn;
   });

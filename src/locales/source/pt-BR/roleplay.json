@@ -164,6 +164,10 @@
     "0": {
       "name": "Mercado",
       "description": "Uma loja do governo de Boleham. Venda e compre itens aqui por um preço menor"
+    },
+    "1": {
+      "name": "Guilda",
+      "description": "A guilda de toda Boleham! Aqui você pode ver missões que ajudam os moradores do mundo todo!"
     }
   },
   "mart": {
