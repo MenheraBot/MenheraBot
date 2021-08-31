@@ -33,6 +33,7 @@ const calculateRarity = (): TItemRarity => {
 const resolveDailyQuests = (userLevel: number, questsFile: [string, IQuestsFile][]): IQuest[] => {
   const getQuestLevel = (level: number): number => Math.floor(level / 3) + 1;
   const availableQuests = questsFile.filter((a) => {
+    if (!a[1].isDaily) return false;
     if (userLevel < a[1].minUserLevel) return false;
     if (a[1].maxUserLevel && userLevel > a[1].maxUserLevel) return false;
     return true;

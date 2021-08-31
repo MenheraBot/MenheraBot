@@ -186,6 +186,8 @@
     "first": {
       "title": "Boleham Guild",
       "daily": "Daily Quests",
+      "active": "Active Quest",
+      "no-active": "No active missions",
       "no-daily": "There was an error viewing your daily quests",
       "description": "Welcome to the Boleham Guild! Here you can do world quests to evolve and help villagers on quests that risk their lives for money! Here are your missions! If you want to search for more quests or look for a job, you can do it all choosing below!"
     }

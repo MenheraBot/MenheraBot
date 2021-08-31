@@ -46,7 +46,7 @@ export interface IQuest {
 
 export interface IUserQuests {
   available: Array<IQuest>;
-  active: IQuest;
+  active?: IQuest;
 }
 
 export interface IJob {
@@ -271,5 +271,6 @@ export interface IQuestsFile {
   minUserLevel: number;
   maxUserLevel?: number;
   objective: IQuestObjective;
+  isDaily: boolean;
   reward: IQuestRewardMoney | IQuestRewardItem;
 }

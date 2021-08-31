@@ -46,5 +46,41 @@ export default async (ctx: InteractionCommandContext, user: IRpgUserSchema): Pro
           .join('\n\n')
       : ctx.locale('roleplay:guild.first.no-daily'),
   );
+
+  const activeQuest = user.quests?.active
+    ? ctx.client.boleham.Functions.getQuestById(user.quests.active.id)
+    : null;
+
+  embed.addField(
+    ctx.locale('roleplay:guild.first.active'),
+    activeQuest
+      ? `**${ctx.locale(`roleplay:quests.${user.quests.active?.id}.name`)}**\n**${ctx.locale(
+          'common:objective',
+        )}**: ${ctx.locale(`roleplay:quests.${user.quests.active?.id}.description`, {
+          value:
+            activeQuest.objective.value +
+            activeQuest.objective.perLevel * (user.quests.active?.level ?? 0),
+        })}\n${ctx.locale('common:progress')}: ${
+          user.quests.active?.finished
+            ? ctx.locale('common:completed')
+            : `${user.quests.active?.progress}/${
+                activeQuest.objective.value +
+                activeQuest.objective.perLevel * (user.quests.active?.level ?? 0)
+              }`
+        }\n**${ctx.locale('common:rewards')}:**\n ${ctx.locale('common:experience')} - ${
+          activeQuest.reward.experience * (user.quests.active?.level ?? 0)
+        }\n${
+          activeQuest.reward.type === 'money'
+            ? `**${ctx.locale('common:money')}:** ${emojis.roleplay_custom.gold} ${
+                activeQuest.reward.amount.gold
+              }, ${emojis.roleplay_custom.silver} ${activeQuest.reward.amount.silver}, ${
+                emojis.roleplay_custom.bronze
+              } ${activeQuest.reward.amount.bronze}`
+            : `**${ctx.locale('common:items')}:** ${ctx.locale(
+                `roleplay:items.${activeQuest.reward.value}.name`,
+              )}`
+        }`
+      : ctx.locale('roleplay:guild.first.no-active'),
+  );
   ctx.editReply({ embeds: [embed] });
 };
