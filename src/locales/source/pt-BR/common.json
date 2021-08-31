@@ -17,5 +17,12 @@
     "chest": "Peitoral",
     "pants": "Calça",
     "boots": "Botas"
-  }
+  },
+  "objective": "Objetivo",
+  "progress": "Progresso",
+  "completed": "Completo",
+  "rewards": "Recompensas",
+  "experience": "Experiência",
+  "money": "Dinheiro",
+  "items": "Itens"
 }

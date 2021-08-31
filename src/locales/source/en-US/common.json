@@ -17,5 +17,12 @@
     "chest": "Chestplate",
     "pants": "Pants",
     "boots": "Boots"
-  }
+  },
+  "objective": "Objective",
+  "progress": "Progress",
+  "completed": "Completed",
+  "rewards": "Rewards",
+  "experience": "Experience",
+  "money": "Money",
+  "items": "Items"
 }

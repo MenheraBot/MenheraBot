@@ -13,6 +13,7 @@ import {
   IUsableItem,
   AsAnUsableItem,
   IItemIdAndLevel,
+  IQuestsFile,
 } from './Types';
 
 export default class BasicFunctions {
@@ -61,6 +62,10 @@ export default class BasicFunctions {
 
   getBuildingById(id: number | string): IBuildingFile {
     return this.client.boleham.Buildings.filter((a) => a[0] === `${id}`)[0][1];
+  }
+
+  getQuestById(id: number | string): IQuestsFile {
+    return this.client.boleham.Quests.filter((a) => a[0] === `${id}`)[0][1];
   }
 
   getItemById<T extends boolean>(id: number | string): IItemFile<T>;

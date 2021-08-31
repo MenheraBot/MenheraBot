@@ -41,6 +41,7 @@ export interface IQuest {
   id: number;
   level: number;
   progress: number;
+  finished: boolean;
 }
 
 export interface IUserQuests {
@@ -242,24 +243,33 @@ export interface IEnochiaShop {
   potions: ILeveledItem[];
 }
 
-type TQuestObjectiveType = 'drop' | 'use_item';
-type TQuestRewardType = 'money';
+type TQuestObjectiveType = 'drop' | 'use_item' | 'kill_enemy';
 
 interface IQuestObjective {
   type: TQuestObjectiveType;
   value: number;
   perLevel: number;
+  amount: number;
 }
 
-interface IQUestReward {
-  type: TQuestRewardType;
+interface IQuestRewardMoney {
+  type: 'money';
   experience: number;
   perLevel: number;
+  amount: IMoney;
+}
+
+interface IQuestRewardItem {
+  type: 'item';
+  experience: number;
+  perLevel: number;
+  amount: number;
+  value: number;
 }
 
 export interface IQuestsFile {
   minUserLevel: number;
   maxUserLevel?: number;
   objective: IQuestObjective;
-  reward: IQUestReward;
+  reward: IQuestRewardMoney | IQuestRewardItem;
 }
