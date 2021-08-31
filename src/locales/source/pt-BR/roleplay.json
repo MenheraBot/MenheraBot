@@ -177,5 +177,11 @@
     "sell-items": "Você vendeu **{{count}}** item por `{{money.bronze}}` moedas de bronze, `{{money.silver}}` modeas de prata e `{{money.gold}}` modeas de ouro",
     "sell-items-plural": "Você vendeu **{{count}}** itens por `{{money.bronze}}` moedas de bronze, `{{money.silver}}` modeas de prata e `{{money.gold}}` modeas de ouro",
     "sell-base-text": "Escolha abaixo todos os itens que desejas vender. Aqui estão os valores dos itens de seu inventário\n\n"
+  },
+  "guild": {
+    "first": {
+      "title": "Guilda de Boleham",
+      "description": "Bem-Vindo à Guilda de Boleham! Aqui você pode fazer missões do mundo para evoluir e ajudar os aldeões em missões que arriscam suas vidas em troca de dinheiro! Aqui estão suas missões! Caso queira procurar por mais missões ou procurar um trabalho, pode fazer tudo escolhendo abaixo!"
+    }
   }
 }

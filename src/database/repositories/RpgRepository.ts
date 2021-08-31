@@ -1,5 +1,5 @@
 import { Rpg } from '@structures/DatabaseCollections';
-import { IBasicData, IEnochiaShop, IRpgUserSchema } from '@structures/roleplay/Types';
+import { IBasicData, IEnochiaShop, IRpgUserSchema, IUserQuests } from '@structures/roleplay/Types';
 import { Redis } from 'ioredis';
 import { Document, UpdateQuery, UpdateWithAggregationPipeline } from 'mongoose';
 import Util from '@utils/Util';
@@ -30,6 +30,23 @@ export default class RpgRepository {
       );
     }
     return userShop;
+  }
+
+  async getUserDailyQuests(
+    userID: string,
+    userQuests: IUserQuests[],
+  ): Promise<IUserQuests[] | null> {
+    if (this.redisClient) {
+      const cachedMissions = await this.redisClient.get(`daily_quests:${userID}`);
+      if (cachedMissions) return JSON.parse(cachedMissions);
+
+      await this.redisClient.setex(
+        `daily_quests:${userID}`,
+        Util.getSecondsToTheEndOfDay(),
+        JSON.stringify(userQuests),
+      );
+    }
+    return null;
   }
 
   async editUser(

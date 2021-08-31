@@ -43,7 +43,6 @@ interface IQuest {
 }
 
 export interface IUserQuests {
-  daily: Array<IQuest>;
   available: Array<IQuest>;
   active: IQuest;
 }
@@ -197,6 +196,7 @@ export interface IBasicData {
 export interface IBuildingFile {
   name: string;
   locationId: number;
+  minLevel: number;
   execute: (ctx: InteractionCommandContext, user: IRpgUserSchema) => Promise<void>;
 }
 

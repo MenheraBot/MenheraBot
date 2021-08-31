@@ -6,6 +6,7 @@
   "not-registred": "You are not registered on Rpg! Use `/ficha` to register",
   "select-all-values": "Select all items you want",
   "level": "Level {{level}}",
+  "min-level": "You must be level **{{level}}** for this!",
   "no-money": "You don't have enough money for this!",
   "backpack-full": "Your backpack is full!",
   "home-in": "Home in {{location}}",

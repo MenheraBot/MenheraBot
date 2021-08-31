@@ -80,6 +80,15 @@ export default class CityInteractionCommand extends InteractionCommand {
 
     const selectedBuild = this.client.boleham.Functions.getBuildingById(collected.values[0]);
 
+    if (user.level < selectedBuild.minLevel) {
+      ctx.editReply({
+        content: `> ${ctx.locale('common:min-level', { level: selectedBuild.minLevel })}`,
+        embeds: [],
+        components: [],
+      });
+      return;
+    }
+
     selectedBuild.execute(ctx, user);
   }
 }
