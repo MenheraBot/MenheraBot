@@ -9,7 +9,7 @@ import {
 } from 'discord.js';
 import BasicFunctions from '../BasicFunctions';
 import { IRpgUserSchema } from '../Types';
-import { canBuy, resolveCustomId, resolveEnochiaMart } from '../Utils';
+import { canBuy, resolveCustomId } from '../Utils';
 
 export default async (ctx: InteractionCommandContext, user: IRpgUserSchema): Promise<void> => {
   const embed = new MessageEmbed()
@@ -57,7 +57,8 @@ export default async (ctx: InteractionCommandContext, user: IRpgUserSchema): Pro
       case 'BUY': {
         const itemsToApear = await ctx.client.repositories.rpgRepository.getUserEnochiaMart(
           int.user.id,
-          resolveEnochiaMart(user.level, ctx.client.boleham.Items),
+          user.level,
+          ctx.client.boleham.Items,
         );
 
         embed
