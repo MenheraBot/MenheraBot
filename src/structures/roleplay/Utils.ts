@@ -5,6 +5,8 @@ import {
   IItemFile,
   IItemIdAndLevel,
   IMoney,
+  IQuest,
+  IQuestsFile,
   IRpgUserSchema,
   IUsableItem,
   TItemRarity,
@@ -26,6 +28,39 @@ const calculateRarity = (): TItemRarity => {
   if (random <= 3) return 'mythical';
   if (random <= 20) return 'rare';
   return 'common';
+};
+
+const resolveDailyQuests = (userLevel: number, questsFile: [string, IQuestsFile][]): IQuest[] => {
+  const getQuestLevel = (level: number): number => Math.floor(level / 3) + 1;
+  const availableQuests = questsFile.filter((a) => {
+    if (userLevel < a[1].minUserLevel) return false;
+    if (a[1].maxUserLevel && userLevel > a[1].maxUserLevel) return false;
+    return true;
+  });
+
+  const selectedQuests: [string, IQuestsFile][] = [];
+
+  for (let i = 0; i < 3; i++) {
+    const randomizedQuest = randomFromArray(availableQuests);
+    if (
+      typeof selectedQuests.find((a) => a[0] === randomizedQuest[0]) !== 'undefined' &&
+      availableQuests.length > 3
+    ) {
+      i -= 1;
+      // eslint-disable-next-line no-continue
+      continue;
+    }
+    selectedQuests.push(randomizedQuest);
+  }
+
+  return selectedQuests.map((a) => {
+    const toReturn = {
+      id: Number(a[0]),
+      level: getQuestLevel(userLevel),
+      progress: 0,
+    };
+    return toReturn;
+  });
 };
 
 const resolveEnochiaMart = (
@@ -98,4 +133,11 @@ const usePotion = (
   return [newData, newInventory];
 };
 
-export { canBuy, resolveCustomId, resolveEnochiaMart, randomFromArray, usePotion };
+export {
+  canBuy,
+  resolveCustomId,
+  resolveEnochiaMart,
+  randomFromArray,
+  usePotion,
+  resolveDailyQuests,
+};

@@ -8,7 +8,9 @@ export default async (ctx: InteractionCommandContext, user: IRpgUserSchema): Pro
     .setTitle(ctx.translate('first.title'))
     .setDescription(ctx.translate('first.description'));
 
-  const userDailyQuests = ctx.client.repositories.rpgRepository.getUserDailyQuests(
+  const userDailyQuests = await ctx.client.repositories.rpgRepository.getUserDailyQuests(
     ctx.interaction.user.id,
+    user.level,
+    ctx.client.boleham.Quests,
   );
 };

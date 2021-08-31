@@ -3,13 +3,14 @@ import {
   IBasicData,
   IEnochiaShop,
   IItemFile,
+  IQuest,
+  IQuestsFile,
   IRpgUserSchema,
-  IUserQuests,
 } from '@structures/roleplay/Types';
 import { Redis } from 'ioredis';
 import { Document, UpdateQuery, UpdateWithAggregationPipeline } from 'mongoose';
 import Util from '@utils/Util';
-import { resolveEnochiaMart } from '@structures/roleplay/Utils';
+import { resolveDailyQuests, resolveEnochiaMart } from '@structures/roleplay/Utils';
 
 export default class RpgRepository {
   constructor(private rpgModal: typeof Rpg, private redisClient: Redis | null) {}
@@ -48,17 +49,22 @@ export default class RpgRepository {
 
   async getUserDailyQuests(
     userID: string,
-    userQuests: IUserQuests[],
-  ): Promise<IUserQuests[] | null> {
+    userLevel: number,
+    questsFile: [string, IQuestsFile][],
+  ): Promise<IQuest[] | null> {
     if (this.redisClient) {
       const cachedMissions = await this.redisClient.get(`daily_quests:${userID}`);
       if (cachedMissions) return JSON.parse(cachedMissions);
 
+      const newUserQuests = resolveDailyQuests(userLevel, questsFile);
+
       await this.redisClient.setex(
         `daily_quests:${userID}`,
         Util.getSecondsToTheEndOfDay(),
-        JSON.stringify(userQuests),
+        JSON.stringify(newUserQuests),
       );
+
+      return newUserQuests;
     }
     return null;
   }
