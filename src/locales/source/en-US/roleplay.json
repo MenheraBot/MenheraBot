@@ -188,8 +188,17 @@
       "daily": "Daily Quests",
       "active": "Active Quest",
       "no-active": "No active missions",
+      "claim": "Claim",
+      "get": "Get Quest",
+      "no-available-quests": "You don't have any quests available!",
+      "select-quest": "Choose your next mission",
       "no-daily": "There was an error viewing your daily quests",
       "description": "Welcome to the Boleham Guild! Here you can do world quests to evolve and help villagers on quests that risk their lives for money! Here are your missions! If you want to search for more quests or look for a job, you can do it all choosing below!"
+    },
+    "second": {
+      "taken": "You started the quest **{{name}}**! Good luck",
+      "money-reward": "{{emojis.gold}} | {{money.gold}}\n{{emojis.silver}} | {{money.silver}}\n{{emojis.bronze}} | {{money.bronze}}",
+      "description": "Choose a mission to do below. Note that after choosing a mission, you can only get another one when you finish it."
     }
   }
 }

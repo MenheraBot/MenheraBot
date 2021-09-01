@@ -188,8 +188,17 @@
       "daily": "Missões Diárias",
       "active": "Missão Ativa",
       "no-active": "Nenhuma missão ativa",
+      "claim": "Reinvidicar",
+      "get": "Pegar Missão",
+      "no-available-quests": "Você não possui nenhuma missão disponível!",
+      "select-quest": "Escolha a sua próxima missão",
       "no-daily": "Ocorreu um erro ao ver suas missões diárias",
       "description": "Bem-Vindo à Guilda de Boleham! Aqui você pode fazer missões do mundo para evoluir e ajudar os aldeões em missões que arriscam suas vidas em troca de dinheiro! Aqui estão suas missões! Caso queira procurar por mais missões ou procurar um trabalho, pode fazer tudo escolhendo abaixo!"
+    },
+    "second": {
+      "taken": "Você iniciou a missão **{{name}}**! Boa sorte",
+      "money-reward": "{{emojis.gold}} | {{money.gold}}\n{{emojis.silver}} | {{money.silver}}\n{{emojis.bronze}} | {{money.bronze}}",
+      "description": "Escolha abaixo uma missão para fazer. Note que, após escolher uma missão, só será possível pegar outra ao finalizá-la"
     }
   }
 }

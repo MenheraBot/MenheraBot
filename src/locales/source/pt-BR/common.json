@@ -8,7 +8,7 @@
   "level": "Nível {{level}}",
   "min-level": "Você precisa ser nível **{{level}}** para isso!",
   "no-money": "Você não possui dinheiro o suficiente para isso!",
-  "backpack-full": "Sua mochila esta cheia",
+  "backpack-full": "Sua mochila esta cheia! Esvazie ela e tente novamente!",
   "home-in": "Casa em {{location}}",
   "use-item": "Usar Itens",
   "no-itens-in-inventory": "Seu invenário não possui itens",

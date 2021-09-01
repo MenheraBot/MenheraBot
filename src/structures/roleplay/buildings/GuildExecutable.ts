@@ -1,7 +1,14 @@
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { emojis } from '@structures/MenheraConstants';
-import { MessageEmbed } from 'discord.js';
-import { IRpgUserSchema } from '../Types';
+import {
+  MessageButton,
+  MessageComponentInteraction,
+  MessageEmbed,
+  MessageSelectMenu,
+} from 'discord.js';
+import { IQuest, IRpgUserSchema } from '../Types';
+import { resolveCustomId } from '../Utils';
+import BasicFunctions from '../BasicFunctions';
 
 export default async (ctx: InteractionCommandContext, user: IRpgUserSchema): Promise<void> => {
   const embed = new MessageEmbed()
@@ -82,5 +89,158 @@ export default async (ctx: InteractionCommandContext, user: IRpgUserSchema): Pro
         }`
       : ctx.locale('roleplay:guild.first.no-active'),
   );
-  ctx.editReply({ embeds: [embed] });
+
+  const claimButton = new MessageButton()
+    .setCustomId(`${ctx.interaction.id} | CLAIM`)
+    .setLabel(ctx.locale('roleplay:guild.first.claim'))
+    .setStyle('PRIMARY')
+    .setDisabled(true);
+
+  const questButton = new MessageButton()
+    .setCustomId(`${ctx.interaction.id} | GET`)
+    .setLabel(ctx.locale('roleplay:guild.first.get'))
+    .setStyle('PRIMARY')
+    .setDisabled(true);
+
+  if (userDailyQuests?.some((a) => a.finished && !a.claimed)) claimButton.setDisabled(false);
+  if (!user.quests.active || (user.quests.active.finished && user.quests.active.claimed))
+    questButton.setDisabled(false).setStyle('SUCCESS');
+  ctx.editReply({
+    embeds: [embed],
+    components: [{ type: 'ACTION_ROW', components: [claimButton, questButton] }],
+  });
+
+  const filter = (int: MessageComponentInteraction) =>
+    int.customId.startsWith(ctx.interaction.id) && int.user.id === ctx.interaction.user.id;
+
+  const collector = ctx.channel.createMessageComponentCollector({ filter, max: 2, time: 10000 });
+
+  collector.on('collect', async (int) => {
+    int.deferUpdate();
+
+    switch (resolveCustomId(int.customId)) {
+      case 'CLAIM': {
+        const toClaim: IQuest[] = [];
+
+        if (userDailyQuests)
+          toClaim.push(...userDailyQuests.filter((a) => a.finished && !a.claimed));
+
+        if (user.quests.active && user.quests.active.finished && user.quests.active.claimed)
+          toClaim.push(user.quests.active);
+
+        toClaim.forEach((a) => {
+          const quest = ctx.client.boleham.Functions.getQuestById(a.id);
+          user.xp += quest.reward.experience * a.level;
+          if (quest.reward.type === 'money')
+            user.money = BasicFunctions.mergeCoins(
+              user.money,
+              BasicFunctions.mergeCoins(quest.reward.amount, {
+                bronze: quest.reward.perLevel.bronze * a.level,
+                silver: quest.reward.perLevel.silver * a.level,
+                gold: quest.reward.perLevel.gold * a.level,
+              }),
+            );
+          else {
+            for (let i = quest.reward.amount + quest.reward.perLevel * a.level; i > 0; i--)
+              BasicFunctions.mergeInventory(user.inventory, quest.reward.value);
+          }
+        });
+
+        if (
+          user.inventory.length >
+          ctx.client.boleham.Functions.getBackPackLimit(user.equiped.backpack)
+        ) {
+          ctx.editReply({
+            embeds: [embed.setDescription(ctx.locale('common:backpack-full'))],
+          });
+          return;
+        }
+
+        // @TODO Função para chegar level do usuário, vida e tudo mais
+
+        ctx.editReply({ content: 'sexo', components: [] });
+        break;
+      }
+      case 'GET': {
+        const availableQuests = user.quests.available.filter((a) => !a.finished && !a.claimed);
+
+        if (availableQuests.length === 0) {
+          ctx.editReply({
+            embeds: [embed.setDescription(ctx.locale('roleplay:guild.first.no-available-quests'))],
+            components: [],
+          });
+          return;
+        }
+
+        collector.resetTimer();
+
+        const selectQuest = new MessageSelectMenu()
+          .setMinValues(1)
+          .setMaxValues(1)
+          .setCustomId(`${ctx.interaction.id} | QUEST`)
+          .setPlaceholder(ctx.locale('roleplay:guild.first.select-quest'));
+
+        embed.setDescription(ctx.locale('roleplay:guild.second.description'));
+
+        availableQuests.forEach((a) => {
+          const quest = ctx.client.boleham.Functions.getQuestById(a.id);
+          embed.addField(
+            ctx.locale(`roleplay:quests.${a.id}.name`),
+            `${ctx.locale(`roleplay:quests.${a.id}.description`)}\n**${ctx.locale(
+              'common:rewards',
+            )}:**\n${ctx.locale('common.experience')}: ${quest.reward.experience * a.level}\n${
+              quest.reward.type === 'money'
+                ? ctx.locale('roleplay:guild.second.money-reward', {
+                    money: BasicFunctions.mergeCoins(quest.reward.amount, {
+                      bronze: quest.reward.perLevel.bronze * a.level,
+                      silver: quest.reward.perLevel.silver * a.level,
+                      gold: quest.reward.perLevel.gold * a.level,
+                    }),
+                    emojis: {
+                      gold: emojis.roleplay_custom.gold,
+                      silver: emojis.roleplay_custom.silver,
+                      bronze: emojis.roleplay_custom.bronze,
+                    },
+                  })
+                : `${ctx.locale(`roleplay:items.${quest.reward.value.id}.name`)} (${
+                    quest.reward.amount
+                  }) | ${ctx.locale('common:level', { level: quest.reward.value.level })}`
+            }`,
+          );
+          selectQuest.addOptions({
+            label: ctx.locale(`roleplay:quests.${a.id}.name`),
+            value: `${a.id}`,
+          });
+        });
+
+        ctx.editReply({
+          embeds: [embed],
+          components: [{ type: 'ACTION_ROW', components: [selectQuest] }],
+        });
+        break;
+      }
+      case 'QUEST': {
+        if (!int.isSelectMenu()) return;
+        const getQuestLevel = (level: number): number => Math.floor(level / 3) + 1;
+
+        user.quests.active = {
+          claimed: false,
+          finished: false,
+          id: Number(int.values[0]),
+          level: getQuestLevel(user.level),
+          progress: 0,
+        };
+        await ctx.client.repositories.rpgRepository.editUser(user.id, { quests: user.quests });
+
+        ctx.editReply({
+          components: [],
+          embeds: [],
+          content: ctx.locale('roleplay:guild.second.taken', {
+            name: ctx.locale(`roleplay:quests.${int.values[0]}.name`),
+          }),
+        });
+        break;
+      }
+    }
+  });
 };

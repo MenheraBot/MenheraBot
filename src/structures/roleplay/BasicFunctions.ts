@@ -12,7 +12,6 @@ import {
   IUnusableItem,
   IUsableItem,
   AsAnUsableItem,
-  IItemIdAndLevel,
   IQuestsFile,
 } from './Types';
 
@@ -81,7 +80,7 @@ export default class BasicFunctions {
 
   static mergeInventory(
     inventory: IInventoryItem[],
-    toMerge: IItemIdAndLevel,
+    toMerge: ILeveledItem,
     remove?: boolean,
   ): IInventoryItem[] {
     if (remove) {

@@ -42,6 +42,7 @@ export interface IQuest {
   level: number;
   progress: number;
   finished: boolean;
+  claimed: boolean;
 }
 
 export interface IUserQuests {
@@ -227,11 +228,6 @@ export interface IUnusableItem {
   type: TItemType;
 }
 
-export interface IItemIdAndLevel {
-  id: number;
-  level: number;
-}
-
 export type AsAnUsableItem = true;
 export type AsAnUnasableItem = false;
 
@@ -255,7 +251,7 @@ interface IQuestObjective {
 interface IQuestRewardMoney {
   type: 'money';
   experience: number;
-  perLevel: number;
+  perLevel: IMoney;
   amount: IMoney;
 }
 
@@ -264,7 +260,7 @@ interface IQuestRewardItem {
   experience: number;
   perLevel: number;
   amount: number;
-  value: number;
+  value: ILeveledItem;
 }
 
 export interface IQuestsFile {

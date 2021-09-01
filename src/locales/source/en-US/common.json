@@ -8,7 +8,7 @@
   "level": "Level {{level}}",
   "min-level": "You must be level **{{level}}** for this!",
   "no-money": "You don't have enough money for this!",
-  "backpack-full": "Your backpack is full!",
+  "backpack-full": "Your backpack is full! Empty it and try again!",
   "home-in": "Home in {{location}}",
   "use-item": "Use Items",
   "no-itens-in-inventory": "Your inventory has no items",

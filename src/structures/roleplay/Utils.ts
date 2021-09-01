@@ -3,7 +3,7 @@ import {
   IEnochiaShop,
   IInventoryItem,
   IItemFile,
-  IItemIdAndLevel,
+  ILeveledItem,
   IMoney,
   IQuest,
   IQuestsFile,
@@ -60,6 +60,7 @@ const resolveDailyQuests = (userLevel: number, questsFile: [string, IQuestsFile]
       level: getQuestLevel(userLevel),
       progress: 0,
       finished: false,
+      claimed: false,
     };
     return toReturn;
   });
@@ -109,7 +110,7 @@ const canBuy = (money: IMoney): boolean => {
 const usePotion = (
   user: IRpgUserSchema,
   potion: IUsableItem,
-  itemData: IItemIdAndLevel,
+  itemData: ILeveledItem,
 ): [number, IInventoryItem[]] => {
   let newData = potion.helperType === 'heal' ? user.life : user.mana;
 
