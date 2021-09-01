@@ -20,8 +20,9 @@ export default class CacheRepository {
     if (!commandDataFromMongo) return null;
 
     if (this.redisClient) {
-      await this.redisClient.set(
+      await this.redisClient.setex(
         `command:${commandName}`,
+        3600,
         JSON.stringify({
           maintenance: commandDataFromMongo.maintenance,
           maintenanceReason: commandDataFromMongo.maintenanceReason,
@@ -40,8 +41,9 @@ export default class CacheRepository {
     const guildDataFromMongo = await this.guildRepository.findOrCreate(guildID);
 
     if (this.redisClient)
-      await this.redisClient.set(
+      await this.redisClient.setex(
         `guild:${guildID}`,
+        3600,
         JSON.stringify({
           lang: guildDataFromMongo.lang,
           blockedChannels: guildDataFromMongo.blockedChannels,
@@ -55,7 +57,7 @@ export default class CacheRepository {
   async updateGuild(guildID: string, update: IGuildSchema): Promise<void> {
     if (this.redisClient) {
       const stringedObject = JSON.stringify(update);
-      await this.redisClient.set(`guild:${guildID}`, stringedObject);
+      await this.redisClient.setex(`guild:${guildID}`, 3600, stringedObject);
     }
     await this.guildRepository.update(guildID, update);
   }
@@ -63,7 +65,7 @@ export default class CacheRepository {
   async updateCommand(commandName: string, update: ICmdSchema): Promise<void> {
     if (this.redisClient) {
       const stringedObject = JSON.stringify(update);
-      await this.redisClient.set(`command:${commandName}`, stringedObject);
+      await this.redisClient.setex(`command:${commandName}`, 3600, stringedObject);
     }
   }
 }
