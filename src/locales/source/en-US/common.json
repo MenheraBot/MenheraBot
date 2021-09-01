@@ -24,5 +24,6 @@
   "rewards": "Rewards",
   "experience": "Experience",
   "money": "Money",
-  "items": "Items"
+  "items": "Items",
+  "level_up": "LEVEL UP! Now you're level **{{level}}**! Check your new statuses"
 }

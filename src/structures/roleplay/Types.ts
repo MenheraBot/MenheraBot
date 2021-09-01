@@ -270,3 +270,8 @@ export interface IQuestsFile {
   isDaily: boolean;
   reward: IQuestRewardMoney | IQuestRewardItem;
 }
+
+export interface IUpdatedUserInfo {
+  level: number;
+  xp: number;
+}

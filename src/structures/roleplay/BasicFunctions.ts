@@ -1,4 +1,6 @@
+/* eslint-disable no-param-reassign */
 import MenheraClient from 'MenheraClient';
+import { Document } from 'mongoose';
 import {
   IAbilitiesFile,
   IBasicData,
@@ -13,6 +15,8 @@ import {
   IUsableItem,
   AsAnUsableItem,
   IQuestsFile,
+  IUpdatedUserInfo,
+  IRpgUserSchema,
 } from './Types';
 
 export default class BasicFunctions {
@@ -71,6 +75,20 @@ export default class BasicFunctions {
 
   getItemById(id: number | string): IUsableItem | IUnusableItem {
     return this.client.boleham.Items.filter((a) => a[0] === `${id}`)[0][1];
+  }
+
+  checkUserUp(user: IRpgUserSchema | (IRpgUserSchema & Document)): {
+    updatedUser: IUpdatedUserInfo;
+    didUp: boolean;
+  } {
+    let didUp = false;
+    if (user.xp >= this.client.boleham.Experiences[user.level]) {
+      user.level += 1;
+      user.xp = 0;
+      didUp = true;
+    }
+
+    return { updatedUser: { level: user.level, xp: user.xp }, didUp };
   }
 
   getBackPackLimit(backpack: ILeveledItem): number {

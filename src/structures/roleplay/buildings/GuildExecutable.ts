@@ -103,7 +103,7 @@ export default async (ctx: InteractionCommandContext, user: IRpgUserSchema): Pro
     .setDisabled(true);
 
   if (userDailyQuests?.some((a) => a.finished && !a.claimed)) claimButton.setDisabled(false);
-  if (!user.quests.active || (user.quests.active.finished && user.quests.active.claimed))
+  if (!user.quests?.active || (user.quests?.active?.finished && user.quests?.active?.claimed))
     questButton.setDisabled(false).setStyle('SUCCESS');
   ctx.editReply({
     embeds: [embed],
@@ -156,17 +156,33 @@ export default async (ctx: InteractionCommandContext, user: IRpgUserSchema): Pro
           return;
         }
 
-        // @TODO Função para chegar level do usuário, vida e tudo mais
+        const { updatedUser, didUp } = ctx.client.boleham.Functions.checkUserUp(user);
 
-        ctx.editReply({ content: 'sexo', components: [] });
+        if (!didUp)
+          ctx.editReply({ content: ctx.locale('roleplay:guild.second.claimed'), components: [] });
+        else
+          ctx.editReply({
+            content: `${ctx.locale('roleplay:guild.second.claimed')}\n\n${ctx.locale(
+              'common:level_up',
+              { level: user.level },
+            )}`,
+            components: [],
+            embeds: [],
+          });
+
+        await ctx.client.repositories.rpgRepository.editUser(user.id, updatedUser);
         break;
       }
       case 'GET': {
-        const availableQuests = user.quests.available.filter((a) => !a.finished && !a.claimed);
+        const availableQuests = user.quests?.available.filter((a) => !a.finished && !a.claimed);
 
-        if (availableQuests.length === 0) {
+        if (!availableQuests || availableQuests.length === 0) {
           ctx.editReply({
-            embeds: [embed.setDescription(ctx.locale('roleplay:guild.first.no-available-quests'))],
+            embeds: [
+              embed
+                .setDescription(ctx.locale('roleplay:guild.first.no-available-quests'))
+                .spliceFields(0, 2),
+            ],
             components: [],
           });
           return;

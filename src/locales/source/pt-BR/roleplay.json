@@ -197,6 +197,7 @@
     },
     "second": {
       "taken": "Você iniciou a missão **{{name}}**! Boa sorte",
+      "claimed": "Você resgatou todas as suas missões com sucesso!",
       "money-reward": "{{emojis.gold}} | {{money.gold}}\n{{emojis.silver}} | {{money.silver}}\n{{emojis.bronze}} | {{money.bronze}}",
       "description": "Escolha abaixo uma missão para fazer. Note que, após escolher uma missão, só será possível pegar outra ao finalizá-la"
     }
