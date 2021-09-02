@@ -75,4 +75,12 @@ export default class RpgRepository {
   ): Promise<void> {
     await this.rpgModal.updateOne({ id: userID }, query);
   }
+
+  async getUserParty(userID: string): Promise<string[] | null> {
+    if (!this.redisClient) return null;
+    const party = await this.redisClient.get(`party:${userID}`);
+    if (!party) return null;
+
+    return JSON.parse(party);
+  }
 }

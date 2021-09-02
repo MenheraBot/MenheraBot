@@ -693,5 +693,10 @@
       "changed-plural": "You used {{count}} items that were in your inventory!",
       "description": "Choose below the items you want to use. Remembering that potions will activate their effect, and weapons will be replaced by the current ones\n**WARNING** IF YOU DON'T HAVE SPACE IN YOUR BACKPACK, THE ITEM WILL BE THROWN!!!!"
     }
+  },
+  "party": {
+    "no-mention": "You didn't mention the players in your party",
+    "title": "Battle Group",
+    "description": "This is your battle group. Below are the stats of your companions. If you want to end the party, do so using the button below"
   }
 }

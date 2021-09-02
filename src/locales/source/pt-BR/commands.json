@@ -705,5 +705,10 @@
       "changed-plural": "Você utilizou {{count}} itens que estava em seu inventário!",
       "description": "Escolha abaixo os itens que você quer usar. Lembrando que poções ativarão seu efeito, e armas serão substituídas pelas atuais\n**AVISO** CASO VOCÊ NÃO TENHA ESPAÇO NA MOCHILA, O ITEM SERÁ JOGADO FORA!!!!"
     }
+  },
+  "party": {
+    "no-mention": "Você não mencionou os jogadores do seu grupo",
+    "title": "Grupo de Batalha",
+    "description": "Este é o seu grupo de batalha. Abaixo estão os status dos seus companheiros. Caso queira terminar a party, faça-o no botão abaixo"
   }
 }
