@@ -1,7 +1,7 @@
 import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { ApplicationCommandData } from 'discord.js';
+import { ApplicationCommand, ApplicationCommandData } from 'discord.js';
 
 export default class DeploySlashInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {
@@ -63,7 +63,7 @@ export default class DeploySlashInteractionCommand extends InteractionCommand {
         });
         return p;
       }, []);
-      ctx.reply('Iniciando deploy');
+      await ctx.reply('Iniciando deploy');
       await this.client.application?.commands.set(allCommands);
       ctx.editReply({
         content: 'Todos comandos foram settados! Temos até 1 hora para tudo atualizar',
@@ -73,23 +73,24 @@ export default class DeploySlashInteractionCommand extends InteractionCommand {
 
     if (ctx.options.getString('option', true) === 'developer') {
       const permissionSet: string[] = [];
+      const commandCreated: ApplicationCommand[] = [];
 
-      const allCommands = this.client.slashCommands.reduce<ApplicationCommandData[]>((p, c) => {
-        if (!c.config.devsOnly) return p;
-        permissionSet.push(c.config.name);
-        p.push({
-          name: c.config.name,
-          description: c.config.description,
-          options: c.config.options,
-          defaultPermission: c.config.defaultPermission,
+      await ctx.reply('Iniciando deploy');
+
+      this.client.slashCommands.map(async (p) => {
+        if (!p.config.devsOnly) return;
+        permissionSet.push(p.config.name);
+        const res = await ctx.interaction.guild?.commands.create({
+          name: p.config.name,
+          description: p.config.description,
+          options: p.config.options,
+          defaultPermission: p.config.defaultPermission,
         });
-        return p;
-      }, []);
+        if (!res) return;
+        commandCreated.push(res);
+      });
 
-      ctx.reply('Iniciando deploy');
-      const res = await ctx.interaction.guild?.commands.set(allCommands);
-
-      res?.forEach((a) => {
+      commandCreated.forEach((a) => {
         if (permissionSet.includes(a.name)) {
           a.permissions.add({
             permissions: [{ id: ctx.interaction.user.id, permission: true, type: 'USER' }],
@@ -112,7 +113,7 @@ export default class DeploySlashInteractionCommand extends InteractionCommand {
       return p;
     }, []);
 
-    ctx.reply('Iniciando deploy');
+    await ctx.reply('Iniciando deploy');
     const res = await ctx.interaction.guild?.commands.set(allCommands);
 
     res?.forEach((a) => {
