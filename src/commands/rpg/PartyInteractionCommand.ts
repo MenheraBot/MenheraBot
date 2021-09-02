@@ -36,8 +36,6 @@ export default class PartyInteractionCommand extends InteractionCommand {
       return;
     }
 
-    // Todo
-
     const userParty = await this.client.repositories.rpgRepository.getUserParty(user.id);
     const userOne = ctx.options.getUser('user_one');
     const userTwo = ctx.options.getUser('user_two');
@@ -51,8 +49,32 @@ export default class PartyInteractionCommand extends InteractionCommand {
 
     if (userParty) {
       embed.setDescription(ctx.translate('description'));
+      embed.addField(
+        ctx.interaction.user.username,
+        ctx.translate('stats', {
+          life: user.life,
+          maxLife: user.maxLife,
+          mana: user.mana,
+          maxMana: user.maxMana,
+          tiredness: user.tiredness,
+        }),
+      );
       userParty.map(async (a) => {
-        embed.addField('a', a);
+        const fetchedUser = await this.client.users.fetch(a);
+        const userStats = await this.client.repositories.rpgRepository.findUser(a);
+        if (!userStats || !fetchedUser)
+          return embed.addField(ctx.translate('not-found'), ctx.translate('not-found-value'));
+
+        embed.addField(
+          fetchedUser.username,
+          ctx.translate('stats', {
+            life: userStats.life,
+            maxLife: userStats.maxLife,
+            mana: userStats.mana,
+            maxMana: userStats.maxMana,
+            tiredness: userStats.tiredness,
+          }),
+        );
       });
 
       ctx.editReply({ embeds: [embed], components: [{ type: 'ACTION_ROW', components: [] }] });

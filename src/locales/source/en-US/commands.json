@@ -697,6 +697,9 @@
   "party": {
     "no-mention": "You didn't mention the players in your party",
     "title": "Battle Group",
-    "description": "This is your battle group. Below are the stats of your companions. If you want to end the party, do so using the button below"
+    "not-found": "Ops...",
+    "not-found-value": "This player was not found... Maybe it's better to finish this group",
+    "description": "This is your battle group. Below are the stats of your companions. If you want to end the party, do so using the button below",
+    "stats": "**Life:** {{life}}/{{maxLife}}\n**Mana:** {{mana}}/{{maxMana}}\n**Tiredness: ** {{tiredness}}%"
   }
 }

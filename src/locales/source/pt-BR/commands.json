@@ -709,6 +709,9 @@
   "party": {
     "no-mention": "Você não mencionou os jogadores do seu grupo",
     "title": "Grupo de Batalha",
-    "description": "Este é o seu grupo de batalha. Abaixo estão os status dos seus companheiros. Caso queira terminar a party, faça-o no botão abaixo"
+    "not-found": "Ops...",
+    "not-found-value": "Esse jogador não foi encontrado... Talvez seja melhor terminar esse grupo",
+    "description": "Este é o seu grupo de batalha. Abaixo estão os status dos seus companheiros. Caso queira terminar a party, faça-o no botão abaixo",
+    "stats": "**Vida:** {{life}}/{{maxLife}}\n**Mana:** {{mana}}/{{maxMana}}\n**Cansaço: ** {{tiredness}}%"
   }
 }
