@@ -19,31 +19,31 @@ export default class HuntInteractionCommand extends InteractionCommand {
           required: true,
           choices: [
             {
-              name: 'Demônios',
+              name: '😈 | Demônios',
               value: 'demônio',
             },
             {
-              name: 'Gigantes',
+              name: '👊 | Gigantes',
               value: 'gigantes',
             },
             {
-              name: 'Anjos',
+              name: '👼 | Anjos',
               value: 'anjos',
             },
             {
-              name: 'Arcanjos',
+              name: '🧚‍♂️ | Arcanjos',
               value: 'arcanjos',
             },
             {
-              name: 'Semideuses',
+              name: '🙌 | Semideuses',
               value: 'semideuses',
             },
             {
-              name: 'Deuses',
+              name: '✝️ | Deuses',
               value: 'deus',
             },
             {
-              name: 'Probabilidades',
+              name: '📊 | Probabilidades',
               value: 'probabilidades',
             },
           ],

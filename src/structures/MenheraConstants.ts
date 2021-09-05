@@ -71,6 +71,8 @@ export const emojis = {
   heart: '❤️',
   sword: '⚔️',
   rainbow: '🌈',
+  giant: '🦍',
+  archangel: '👼',
   scape: '🐥',
   lock: '🔒',
   star: '⭐',
