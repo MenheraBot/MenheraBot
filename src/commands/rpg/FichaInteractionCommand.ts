@@ -47,7 +47,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
     }
 
     if (!user) {
-      ctx.replyT('error', 'commands:ficha.non-user');
+      ctx.replyT('error', 'commands:ficha.non-user', {}, true);
       return;
     }
     return this.showFicha(ctx, user, ctx.options.getUser('user') ?? ctx.interaction.user);

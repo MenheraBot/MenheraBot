@@ -3,6 +3,7 @@ import {
   IBasicData,
   IEnochiaShop,
   IItemFile,
+  IPartyData,
   IQuest,
   IQuestsFile,
   IRpgUserSchema,
@@ -76,11 +77,21 @@ export default class RpgRepository {
     await this.rpgModal.updateOne({ id: userID }, query);
   }
 
-  async getUserParty(userID: string): Promise<string[] | null> {
+  async getUserParty(userID: string): Promise<IPartyData | null> {
     if (!this.redisClient) return null;
     const party = await this.redisClient.get(`party:${userID}`);
     if (!party) return null;
 
     return JSON.parse(party);
+  }
+
+  async createParty(userID: string, party: string[], leader: string): Promise<void> {
+    if (!this.redisClient) return;
+    await this.redisClient.set(`party:${userID}`, JSON.stringify({ leader, party }));
+  }
+
+  async deleteParty(userID: string): Promise<void> {
+    if (!this.redisClient) return;
+    await this.redisClient.del(`party:${userID}`);
   }
 }

@@ -28,7 +28,7 @@ export default class InventoryInteractionCommand extends InteractionCommand {
   async run(ctx: InteractionCommandContext): Promise<void> {
     const user = await this.client.repositories.rpgRepository.findUser(ctx.interaction.user.id);
     if (!user) {
-      ctx.replyT('error', 'common:not-registred');
+      ctx.replyT('error', 'common:not-registred', {}, true);
       return;
     }
 

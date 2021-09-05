@@ -130,12 +130,14 @@ export default class InteractionCreate extends Event {
     );
 
     if (authorData?.ban) {
-      await interaction.reply({
-        content: `<:negacao:759603958317711371> | ${t('permissions:BANNED_INFO', {
-          banReason: authorData?.banReason,
-        })}`,
-        ephemeral: true,
-      });
+      await interaction
+        .reply({
+          content: `<:negacao:759603958317711371> | ${t('permissions:BANNED_INFO', {
+            banReason: authorData?.banReason,
+          })}`,
+          ephemeral: true,
+        })
+        .catch(() => null);
       return;
     }
     const ctx = new InteractionCommandContext(

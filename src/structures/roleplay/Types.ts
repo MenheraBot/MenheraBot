@@ -275,3 +275,8 @@ export interface IUpdatedUserInfo {
   level: number;
   xp: number;
 }
+
+export interface IPartyData {
+  leader: string;
+  party: string[];
+}
