@@ -80,6 +80,8 @@ export const emojis = {
   xp: '✨',
   rainbow: '🌈',
   money: '💰',
+  giant: '🦍',
+  archangel: '👼',
   scape: '🐥',
   lock: '🔒',
   star: '⭐',

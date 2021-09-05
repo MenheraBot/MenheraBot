@@ -22,31 +22,31 @@ export default class GiveInteractionCommand extends InteractionCommand {
           type: 'STRING',
           choices: [
             {
-              name: 'Estrelinhas',
+              name: '⭐ | Estrelinhas',
               value: 'estrelinhas',
             },
             {
-              name: 'Demônios',
+              name: '😈 | Demônios',
               value: 'demônio',
             },
             {
-              name: 'Gigantes',
+              name: '👊 | Gigantes',
               value: 'gigantes',
             },
             {
-              name: 'Anjos',
+              name: '👼 | Anjos',
               value: 'anjos',
             },
             {
-              name: 'Arcanjos',
+              name: '🧚‍♂️ | Arcanjos',
               value: 'arcanjos',
             },
             {
-              name: 'SemiDeuses',
+              name: '🙌 | Semideuses',
               value: 'semideuses',
             },
             {
-              name: 'Deuses',
+              name: '✝️ | Deuses',
               value: 'deus',
             },
           ],
@@ -176,7 +176,7 @@ export default class GiveInteractionCommand extends InteractionCommand {
 
     await this.client.repositories.giveRepository.giveGiants(from.id, to.id, value);
 
-    return GiveInteractionCommand.replySuccess(ctx, value, emojis.star, mentionString);
+    return GiveInteractionCommand.replySuccess(ctx, value, emojis.giant, mentionString);
   }
 
   async giveArchangel(
@@ -190,7 +190,7 @@ export default class GiveInteractionCommand extends InteractionCommand {
 
     await this.client.repositories.giveRepository.giveArchangel(from.id, to.id, value);
 
-    return GiveInteractionCommand.replySuccess(ctx, value, emojis.star, mentionString);
+    return GiveInteractionCommand.replySuccess(ctx, value, emojis.archangel, mentionString);
   }
 
   async giveStar(
