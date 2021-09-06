@@ -2,9 +2,7 @@ import { IUserSchema } from '@utils/Types';
 import UserRepository from './UserRepository';
 
 export default class MamarRepository {
-  constructor(private userRepository: UserRepository) {
-    this.userRepository = userRepository;
-  }
+  constructor(private userRepository: UserRepository) {}
 
   async mamar(
     fromUserID: string,

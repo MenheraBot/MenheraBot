@@ -61,6 +61,13 @@ export default class DeploySlashInteractionCommand extends InteractionCommand {
           options: c.config.options,
           defaultPermission: c.config.defaultPermission,
         });
+        this.client.repositories.commandsRepository.updateByName({
+          _id: c.config.name,
+          category: c.config.category,
+          cooldown: c.config.cooldown ?? 3,
+          description: c.config.description,
+          options: c.config.options ?? [],
+        });
         return p;
       }, []);
       ctx.reply('Iniciando deploy');
@@ -68,6 +75,9 @@ export default class DeploySlashInteractionCommand extends InteractionCommand {
       ctx.editReply({
         content: 'Todos comandos foram settados! Temos até 1 hora para tudo atualizar',
       });
+      await this.client.repositories.commandsRepository.deleteOldCommands(
+        allCommands.map((a) => a.name),
+      );
       return;
     }
 

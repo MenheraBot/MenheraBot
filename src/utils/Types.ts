@@ -3,6 +3,7 @@ import BadgeRepository from '@database/repositories/BadgeRepository';
 import BlacklistRepository from '@database/repositories/BlacklistRepository';
 import CacheRepository from '@database/repositories/CacheRepository';
 import CmdRepository from '@database/repositories/CmdsRepository';
+import CommandsRepository from '@database/repositories/CommandsRepository';
 import GiveRepository from '@database/repositories/GiveRepository';
 import GuildsRepository from '@database/repositories/GuildsRepository';
 import HuntRepository from '@database/repositories/HuntRepository';
@@ -14,6 +15,7 @@ import StatusRepository from '@database/repositories/StatusRepository';
 import TopRepository from '@database/repositories/TopRepository';
 import UserRepository from '@database/repositories/UserRepository';
 import {
+  ApplicationCommandOptionData,
   ChatInputApplicationCommandData,
   ColorResolvable,
   PermissionResolvable,
@@ -136,6 +138,14 @@ export interface ICmdSchema {
   maintenanceReason: string | null;
 }
 
+export interface ICommandsSchema {
+  _id: string;
+  description: string;
+  category: string;
+  cooldown: number;
+  options: ApplicationCommandOptionData[];
+}
+
 interface IDisabledCommand {
   name: string;
   reason: string;
@@ -164,6 +174,7 @@ export interface IDatabaseRepositories {
   relationshipRepository: RelationshipRepository;
   blacklistRepository: BlacklistRepository;
   topRepository: TopRepository;
+  commandsRepository: CommandsRepository;
   giveRepository: GiveRepository;
 }
 

@@ -1,9 +1,7 @@
 import { Users } from '@structures/DatabaseCollections';
 
 export default class StarRepository {
-  constructor(private userModal: typeof Users) {
-    this.userModal = userModal;
-  }
+  constructor(private userModal: typeof Users) {}
 
   async add(userID: string, value: number): Promise<void> {
     await this.userModal.updateOne({ id: userID }, { $inc: { estrelinhas: value } });

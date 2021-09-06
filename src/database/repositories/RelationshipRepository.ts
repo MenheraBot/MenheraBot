@@ -1,9 +1,7 @@
 import UserRepository from './UserRepository';
 
 export default class RelationshipRepository {
-  constructor(private userRepository: UserRepository) {
-    this.userRepository = userRepository;
-  }
+  constructor(private userRepository: UserRepository) {}
 
   async marry(userOneID: string, userTwoID: string, data: string): Promise<void> {
     await this.userRepository.update(userOneID, { casado: userTwoID, data });

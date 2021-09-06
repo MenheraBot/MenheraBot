@@ -1,9 +1,7 @@
 import { Status } from '@structures/DatabaseCollections';
 
 export default class StatusRepository {
-  constructor(private statusModal: typeof Status) {
-    this.statusModal = statusModal;
-  }
+  constructor(private statusModal: typeof Status) {}
 
   async CreateOrUpdate(
     shardID: number,

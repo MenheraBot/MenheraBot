@@ -8,9 +8,7 @@ enum TOP_ENUM {
 }
 
 export default class TopRepository {
-  constructor(private userModal: typeof Users) {
-    this.userModal = userModal;
-  }
+  constructor(private userModal: typeof Users) {}
 
   async _getTop(userID: string, topType: string): Promise<{ rank: number }> {
     const res = await this.userModal.aggregate([
