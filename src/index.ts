@@ -18,7 +18,7 @@ const client = new MenheraClient(
       ReactionUserManager: 0,
     }),
     failIfNotExists: false,
-    intents: ['GUILDS', 'GUILD_MESSAGES'],
+    intents: ['GUILDS'],
   },
   {
     interactionsDirectory: resolve(__dirname, 'commands'),
