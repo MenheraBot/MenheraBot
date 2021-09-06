@@ -14,6 +14,7 @@ import StatusRepository from '@database/repositories/StatusRepository';
 import TopRepository from '@database/repositories/TopRepository';
 import UserRepository from '@database/repositories/UserRepository';
 import {
+  ApplicationCommandOptionData,
   ChatInputApplicationCommandData,
   ColorResolvable,
   PermissionResolvable,
@@ -134,6 +135,14 @@ export interface ICmdSchema {
   _id?: string;
   maintenance: boolean;
   maintenanceReason: string | null;
+}
+
+export interface ICommandsSchema {
+  _id: string;
+  description: string;
+  category: string;
+  cooldown: number;
+  options: ApplicationCommandOptionData[];
 }
 
 interface IDisabledCommand {
