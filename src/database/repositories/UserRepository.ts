@@ -3,9 +3,7 @@ import { Document, UpdateQuery, UpdateWithAggregationPipeline } from 'mongoose';
 import { IUserSchema } from '@utils/Types';
 
 export default class UserRepository {
-  constructor(private userModal: typeof Users) {
-    this.userModal = userModal;
-  }
+  constructor(private userModal: typeof Users) {}
 
   async multiUpdate(
     IDs: Array<string>,

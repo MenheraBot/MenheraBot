@@ -3,9 +3,7 @@ import { IGuildSchema } from '@utils/Types';
 import { UpdateQuery, UpdateWithAggregationPipeline } from 'mongoose';
 
 export default class GuildsRepository {
-  constructor(private guildModal: typeof Guilds) {
-    this.guildModal = guildModal;
-  }
+  constructor(private guildModal: typeof Guilds) {}
 
   async find(guildID: string): Promise<IGuildSchema | null> {
     return this.guildModal.findOne({ id: guildID });

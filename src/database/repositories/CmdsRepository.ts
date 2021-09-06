@@ -2,9 +2,7 @@ import { Cmds } from '@structures/DatabaseCollections';
 import { ICmdSchema } from '@utils/Types';
 
 export default class CmdRepository {
-  constructor(private cmdModal: typeof Cmds) {
-    this.cmdModal = cmdModal;
-  }
+  constructor(private cmdModal: typeof Cmds) {}
 
   async findByName(commandName: string): Promise<ICmdSchema | null> {
     return this.cmdModal.findById(commandName);

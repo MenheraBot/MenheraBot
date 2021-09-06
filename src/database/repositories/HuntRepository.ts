@@ -1,9 +1,7 @@
 import { Users } from '@structures/DatabaseCollections';
 
 export default class HuntRepository {
-  constructor(private userModal: typeof Users) {
-    this.userModal = userModal;
-  }
+  constructor(private userModal: typeof Users) {}
 
   async huntDemon(userID: string, value: number, cooldown: string, rolls: number): Promise<void> {
     await this.userModal.updateOne(

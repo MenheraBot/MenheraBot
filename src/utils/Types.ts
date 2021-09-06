@@ -3,6 +3,7 @@ import BadgeRepository from '@database/repositories/BadgeRepository';
 import BlacklistRepository from '@database/repositories/BlacklistRepository';
 import CacheRepository from '@database/repositories/CacheRepository';
 import CmdRepository from '@database/repositories/CmdsRepository';
+import CommandsRepository from '@database/repositories/CommandsRepository';
 import GiveRepository from '@database/repositories/GiveRepository';
 import GuildsRepository from '@database/repositories/GuildsRepository';
 import HuntRepository from '@database/repositories/HuntRepository';
@@ -173,6 +174,7 @@ export interface IDatabaseRepositories {
   relationshipRepository: RelationshipRepository;
   blacklistRepository: BlacklistRepository;
   topRepository: TopRepository;
+  commandsRepository: CommandsRepository;
   giveRepository: GiveRepository;
 }
 

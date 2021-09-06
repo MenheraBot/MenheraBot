@@ -1,9 +1,7 @@
 import UserRepository from './UserRepository';
 
 export default class BlacklistRepository {
-  constructor(private userRepository: UserRepository) {
-    this.userRepository = userRepository;
-  }
+  constructor(private userRepository: UserRepository) {}
 
   async ban(userID: string, reason: string): Promise<void> {
     await this.userRepository.update(userID, { ban: true, banReason: reason });
