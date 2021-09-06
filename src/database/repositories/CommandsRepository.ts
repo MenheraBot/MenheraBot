@@ -1,11 +1,12 @@
 import { Commands } from '@structures/DatabaseCollections';
+import { ICommandsSchema } from '@utils/Types';
 
 export default class CommandsRepository {
   constructor(private commandsModal: typeof Commands) {}
 
-  async updateByName(commandName: string): Promise<void> {
-    const updated = await this.commandsModal.findByIdAndUpdate(commandName);
-    if (!updated) await this.commandsModal.create({ _id: commandName });
+  async updateByName(command: ICommandsSchema): Promise<void> {
+    const updated = await this.commandsModal.findByIdAndUpdate(command._id);
+    if (!updated) await this.commandsModal.create(command);
   }
 
   async deleteOldCommands(existingCommands: string[]): Promise<void> {
