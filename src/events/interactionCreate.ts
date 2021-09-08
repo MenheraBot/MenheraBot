@@ -14,11 +14,13 @@ export default class InteractionCreate extends Event {
   async run(interaction: Interaction): Promise<void> {
     if (!interaction.isCommand()) return;
     if (!interaction.inGuild() || interaction.channel?.type === 'DM')
-      return interaction.reply({
-        content:
-          'SLASH COMMANDS ARE ONLY AVAILABLE IN GUILDS\nCOMANDOS SLASH ESTÃO DISPONÍVEIS APENAS EM SERVIDORES',
-        ephemeral: true,
-      });
+      return interaction
+        .reply({
+          content:
+            'SLASH COMMANDS ARE ONLY AVAILABLE IN GUILDS\nCOMANDOS SLASH ESTÃO DISPONÍVEIS APENAS EM SERVIDORES',
+          ephemeral: true,
+        })
+        .catch(() => undefined);
 
     const server = await this.client.repositories.cacheRepository.fetchGuild(interaction.guildId);
     const language = server.lang ?? 'pt-BR';
@@ -26,7 +28,9 @@ export default class InteractionCreate extends Event {
 
     const command = this.client.slashCommands.get(interaction.commandName);
     if (!command) {
-      interaction.reply({ content: t('permissions:UNKNOW_SLASH'), ephemeral: true });
+      interaction
+        .reply({ content: t('permissions:UNKNOW_SLASH'), ephemeral: true })
+        .catch(() => null);
       return;
     }
 
@@ -34,7 +38,9 @@ export default class InteractionCreate extends Event {
       server.blockedChannels?.includes(interaction.channelId) &&
       !(interaction.member as GuildMember).permissions.has('MANAGE_CHANNELS')
     ) {
-      interaction.reply({ content: `🔒 | ${t('events:blocked-channel')}`, ephemeral: true });
+      interaction
+        .reply({ content: `🔒 | ${t('events:blocked-channel')}`, ephemeral: true })
+        .catch(() => null);
       return;
     }
 
@@ -43,12 +49,14 @@ export default class InteractionCreate extends Event {
     );
 
     if (server.disabledCommands?.includes(command.config.name)) {
-      await interaction.reply({
-        content: `🔒 | ${t('permissions:DISABLED_COMMAND', {
-          cmd: command.config.name,
-        })}`,
-        ephemeral: true,
-      });
+      await interaction
+        .reply({
+          content: `🔒 | ${t('permissions:DISABLED_COMMAND', {
+            cmd: command.config.name,
+          })}`,
+          ephemeral: true,
+        })
+        .catch(() => null);
       return;
     }
     if (command.config.devsOnly && process.env.OWNER !== interaction.user.id) {
@@ -57,12 +65,14 @@ export default class InteractionCreate extends Event {
     }
 
     if (dbCommand?.maintenance && process.env.OWNER !== interaction.user.id) {
-      await interaction.reply({
-        content: `<:negacao:759603958317711371> | ${t('events:maintenance', {
-          reason: dbCommand.maintenanceReason,
-        })}`,
-        ephemeral: true,
-      });
+      await interaction
+        .reply({
+          content: `<:negacao:759603958317711371> | ${t('events:maintenance', {
+            reason: dbCommand.maintenanceReason,
+          })}`,
+          ephemeral: true,
+        })
+        .catch(() => null);
       return;
     }
 
@@ -78,13 +88,15 @@ export default class InteractionCreate extends Event {
 
       if (now < expirationTime) {
         const timeLeft = (expirationTime - now) / 1000;
-        await interaction.reply({
-          content: `<:atencao:759603958418767922> | ${t('events:cooldown', {
-            time: timeLeft.toFixed(2),
-            cmd: command.config.name,
-          })}`,
-          ephemeral: true,
-        });
+        await interaction
+          .reply({
+            content: `<:atencao:759603958418767922> | ${t('events:cooldown', {
+              time: timeLeft.toFixed(2),
+              cmd: command.config.name,
+            })}`,
+            ephemeral: true,
+          })
+          .catch(() => null);
         return;
       }
     }
@@ -100,12 +112,14 @@ export default class InteractionCreate extends Event {
         ?.missing(command.config.userPermissions);
       if (missing?.length) {
         const perm = missing.map((value) => t(`permissions:${value}`)).join(', ');
-        await interaction.reply({
-          content: `<:negacao:759603958317711371> | ${t('permissions:USER_MISSING_PERMISSION', {
-            perm,
-          })}`,
-          ephemeral: true,
-        });
+        await interaction
+          .reply({
+            content: `<:negacao:759603958317711371> | ${t('permissions:USER_MISSING_PERMISSION', {
+              perm,
+            })}`,
+            ephemeral: true,
+          })
+          .catch(() => null);
         return;
       }
     }
@@ -115,12 +129,14 @@ export default class InteractionCreate extends Event {
         ?.missing(command.config.clientPermissions);
       if (missing?.length) {
         const perm = missing.map((value) => t(`permissions:${value}`)).join(', ');
-        await interaction.reply({
-          content: `<:negacao:759603958317711371> | ${t('permissions:CLIENT_MISSING_PERMISSION', {
-            perm,
-          })}`,
-          ephemeral: true,
-        });
+        await interaction
+          .reply({
+            content: `<:negacao:759603958317711371> | ${t('permissions:CLIENT_MISSING_PERMISSION', {
+              perm,
+            })}`,
+            ephemeral: true,
+          })
+          .catch(() => null);
         return;
       }
     }
@@ -130,12 +146,14 @@ export default class InteractionCreate extends Event {
     );
 
     if (authorData?.ban) {
-      await interaction.reply({
-        content: `<:negacao:759603958317711371> | ${t('permissions:BANNED_INFO', {
-          banReason: authorData?.banReason,
-        })}`,
-        ephemeral: true,
-      });
+      await interaction
+        .reply({
+          content: `<:negacao:759603958317711371> | ${t('permissions:BANNED_INFO', {
+            banReason: authorData?.banReason,
+          })}`,
+          ephemeral: true,
+        })
+        .catch(() => null);
       return;
     }
     const ctx = new InteractionCommandContext(
@@ -168,8 +186,13 @@ export default class InteractionCreate extends Event {
 
         if (this.client.user?.id === '708014856711962654') errorWebHook.send({ embeds: [embed] });
         if (interaction.deferred) {
-          interaction.webhook.send({ content: t('events:error_embed.title'), ephemeral: true });
-        } else interaction.reply({ content: t('events:error_embed.title'), ephemeral: true });
+          interaction.webhook
+            .send({ content: t('events:error_embed.title'), ephemeral: true })
+            .catch(() => null);
+        } else
+          interaction
+            .reply({ content: t('events:error_embed.title'), ephemeral: true })
+            .catch(() => null);
       });
     } catch (err) {
       console.error(err.stack);
@@ -192,8 +215,13 @@ export default class InteractionCreate extends Event {
 
       if (this.client.user?.id === '708014856711962654') errorWebHook.send({ embeds: [embed] });
       if (interaction.deferred) {
-        interaction.webhook.send({ content: t('events:error_embed.title'), ephemeral: true });
-      } else interaction.reply({ content: t('events:error_embed.title'), ephemeral: true });
+        interaction.webhook
+          .send({ content: t('events:error_embed.title'), ephemeral: true })
+          .catch(() => null);
+      } else
+        interaction
+          .reply({ content: t('events:error_embed.title'), ephemeral: true })
+          .catch(() => null);
     }
 
     if (!interaction.guild) return;
@@ -202,7 +230,7 @@ export default class InteractionCreate extends Event {
       guildId: interaction.guild.id,
       commandName: command.config.name,
       data: Date.now(),
-      args: 'SLASH',
+      args: interaction.options.data,
     };
 
     await HttpRequests.postCommand(data);
