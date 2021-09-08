@@ -109,9 +109,6 @@ export const Cmds = model<ICmdSchema & Document>('Cmd', cmdSchema);
 export const Status = model<IStatusSchema & Document>('status', statusSchema);
 export const Guilds = model<IGuildSchema & Document>('guild', guildSchema);
 export const Users = model<IUserSchema & Document>('usersdb', userSchema);
-<<<<<<< HEAD
 export const Rpg = model<IRpgUserSchema & Document>('rpg', rpgSchema);
 export const Homes = model<IHomeSchema & Document>('homes', homeSchema);
-=======
 export const Commands = model<ICommandsSchema & Document>('commands', commandUseSchema);
->>>>>>> c23ef935802d44cbd244ef07edb84c9ee4ad869b

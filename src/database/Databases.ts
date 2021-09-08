@@ -1,10 +1,6 @@
 import mongoose from 'mongoose';
 import Redis from 'ioredis';
-<<<<<<< HEAD
-import { Cmds, Guilds, Status, Users, Rpg, Homes } from '@structures/DatabaseCollections';
-=======
-import { Cmds, Commands, Guilds, Status, Users } from '@structures/DatabaseCollections';
->>>>>>> c23ef935802d44cbd244ef07edb84c9ee4ad869b
+import { Cmds, Commands, Guilds, Status, Users, Rpg, Homes } from '@structures/DatabaseCollections';
 import { IDatabaseRepositories } from '@utils/Types';
 import CacheRepository from './repositories/CacheRepository';
 import CmdRepository from './repositories/CmdsRepository';
@@ -20,12 +16,9 @@ import RelationshipRepository from './repositories/RelationshipRepository';
 import BlacklistRepository from './repositories/BlacklistRepository';
 import TopRepository from './repositories/TopRepository';
 import GiveRepository from './repositories/GiveRepository';
-<<<<<<< HEAD
 import RpgRepository from './repositories/RpgRepository';
 import HomeRepository from './repositories/HomeRepository';
-=======
 import CommandsRepository from './repositories/CommandsRepository';
->>>>>>> c23ef935802d44cbd244ef07edb84c9ee4ad869b
 
 export default class Databases {
   public Cmds: typeof Cmds;
