@@ -18,6 +18,7 @@ import {
   ApplicationCommandOptionData,
   ChatInputApplicationCommandData,
   ColorResolvable,
+  CommandInteractionOption,
   PermissionResolvable,
   User,
 } from 'discord.js';
@@ -98,7 +99,7 @@ export interface ICommandUsedData {
   guildId: string;
   commandName: string;
   data: number;
-  args: string;
+  args: Readonly<CommandInteractionOption[]>;
 }
 
 export interface IRESTGameStats {
