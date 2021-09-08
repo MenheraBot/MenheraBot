@@ -3,6 +3,7 @@ import BadgeRepository from '@database/repositories/BadgeRepository';
 import BlacklistRepository from '@database/repositories/BlacklistRepository';
 import CacheRepository from '@database/repositories/CacheRepository';
 import CmdRepository from '@database/repositories/CmdsRepository';
+import CommandsRepository from '@database/repositories/CommandsRepository';
 import GiveRepository from '@database/repositories/GiveRepository';
 import GuildsRepository from '@database/repositories/GuildsRepository';
 import HuntRepository from '@database/repositories/HuntRepository';
@@ -16,8 +17,10 @@ import TopRepository from '@database/repositories/TopRepository';
 import UserRepository from '@database/repositories/UserRepository';
 import HomeRepository from '@database/repositories/HomeRepository';
 import {
+  ApplicationCommandOptionData,
   ChatInputApplicationCommandData,
   ColorResolvable,
+  CommandInteractionOption,
   PermissionResolvable,
   User,
 } from 'discord.js';
@@ -98,7 +101,7 @@ export interface ICommandUsedData {
   guildId: string;
   commandName: string;
   data: number;
-  args: string;
+  args: Readonly<CommandInteractionOption[]>;
 }
 
 export interface IRESTGameStats {
@@ -138,6 +141,14 @@ export interface ICmdSchema {
   maintenanceReason: string | null;
 }
 
+export interface ICommandsSchema {
+  _id: string;
+  description: string;
+  category: string;
+  cooldown: number;
+  options: ApplicationCommandOptionData[];
+}
+
 interface IDisabledCommand {
   name: string;
   reason: string;
@@ -167,6 +178,7 @@ export interface IDatabaseRepositories {
   relationshipRepository: RelationshipRepository;
   blacklistRepository: BlacklistRepository;
   topRepository: TopRepository;
+  commandsRepository: CommandsRepository;
   giveRepository: GiveRepository;
   homeRepository: HomeRepository;
 }

@@ -1,6 +1,10 @@
 import mongoose from 'mongoose';
 import Redis from 'ioredis';
+<<<<<<< HEAD
 import { Cmds, Guilds, Status, Users, Rpg, Homes } from '@structures/DatabaseCollections';
+=======
+import { Cmds, Commands, Guilds, Status, Users } from '@structures/DatabaseCollections';
+>>>>>>> c23ef935802d44cbd244ef07edb84c9ee4ad869b
 import { IDatabaseRepositories } from '@utils/Types';
 import CacheRepository from './repositories/CacheRepository';
 import CmdRepository from './repositories/CmdsRepository';
@@ -16,11 +20,17 @@ import RelationshipRepository from './repositories/RelationshipRepository';
 import BlacklistRepository from './repositories/BlacklistRepository';
 import TopRepository from './repositories/TopRepository';
 import GiveRepository from './repositories/GiveRepository';
+<<<<<<< HEAD
 import RpgRepository from './repositories/RpgRepository';
 import HomeRepository from './repositories/HomeRepository';
+=======
+import CommandsRepository from './repositories/CommandsRepository';
+>>>>>>> c23ef935802d44cbd244ef07edb84c9ee4ad869b
 
 export default class Databases {
   public Cmds: typeof Cmds;
+
+  public Commands: typeof Commands;
 
   public Guilds: typeof Guilds;
 
@@ -62,14 +72,15 @@ export default class Databases {
 
   private readonly topRepository: TopRepository;
 
+  private readonly commandsRepository: CommandsRepository;
+
   private readonly giveRepository: GiveRepository;
 
   private readonly homeRepository: HomeRepository;
 
   constructor(public uri: string, withRedisCache: boolean) {
-    // TODO: add modal to the name for readability
-    // para fazer isso tem que mudar todos os codigos que estão usando `database.(nome_sem_modal)` to repositories
     this.Cmds = Cmds;
+    this.Commands = Commands;
     this.Guilds = Guilds;
     this.Status = Status;
     this.Users = Users;
@@ -101,6 +112,7 @@ export default class Databases {
     this.topRepository = new TopRepository(this.Users);
     this.homeRepository = new HomeRepository(this.Homes);
     this.giveRepository = new GiveRepository(this.Users);
+    this.commandsRepository = new CommandsRepository(this.Commands);
   }
 
   get repositories(): IDatabaseRepositories {
@@ -119,6 +131,7 @@ export default class Databases {
       relationshipRepository: this.relationshipRepository,
       blacklistRepository: this.blacklistRepository,
       topRepository: this.topRepository,
+      commandsRepository: this.commandsRepository,
       giveRepository: this.giveRepository,
       homeRepository: this.homeRepository,
     };
