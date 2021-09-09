@@ -5,6 +5,5 @@ node_modules/
 logs/
 dist/
 .env
-yarn.lock
 package-lock.json
 coverage/

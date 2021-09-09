@@ -30,5 +30,9 @@
       "money-reward": "{{emojis.gold}} | {{money.gold}}\n{{emojis.silver}} | {{money.silver}}\n{{emojis.bronze}} | {{money.bronze}}",
       "description": "Escolha abaixo uma missão para fazer. Note que, após escolher uma missão, só será possível pegar outra ao finalizá-la"
     }
+  },
+  "training_camp": {
+    "title": "Campo de Treinamento",
+    "description": "Bem-Vindo ao campo de treinamento! Aqui você pode lutar contra pequenos monstros para treinar seus poderes. O campo de treinamento é seguro, você vai batalhar contra um, e somente um monstro"
   }
 }

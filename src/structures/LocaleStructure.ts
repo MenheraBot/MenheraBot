@@ -1,7 +1,7 @@
 import { readdirSync } from 'fs-extra';
 import path from 'path';
 import i18next from 'i18next';
-import translationBackend from 'i18next-node-fs-backend';
+import translationBackend from 'i18next-fs-backend';
 
 export default class LocaleStructure {
   public ns: Array<string>;
