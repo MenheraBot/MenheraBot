@@ -41,27 +41,31 @@ export default class InventoryInteractionCommand extends InteractionCommand {
           `${emojis.shield} | ${ctx.translate('armor')}`,
           `${ctx.locale('common:rpg.head')} - ${
             user.equiped.armor?.head
-              ? `**${ctx.locale(
-                  `roleplay:items.${user.equiped.armor.head.id}.name`,
-                )}** - ${ctx.locale('common:level', { level: user.equiped.armor.head.level })}`
+              ? `**${ctx.locale(`items:${user.equiped.armor.head.id}.name`)}** - ${ctx.locale(
+                  'common:level',
+                  { level: user.equiped.armor.head.level },
+                )}`
               : ctx.translate('no-item')
           }\n${ctx.locale('common:rpg.chest')} - ${
             user.equiped.armor?.chest
-              ? `**${ctx.locale(
-                  `roleplay:items.${user.equiped.armor.chest.id}.name`,
-                )}** - ${ctx.locale('common:level', { level: user.equiped.armor.chest.level })}`
+              ? `**${ctx.locale(`items:${user.equiped.armor.chest.id}.name`)}** - ${ctx.locale(
+                  'common:level',
+                  { level: user.equiped.armor.chest.level },
+                )}`
               : ctx.translate('no-item')
           }\n${ctx.locale('common:rpg.pants')} - ${
             user.equiped.armor?.pants
-              ? `**${ctx.locale(
-                  `roleplay:items.${user.equiped.armor.pants.id}.name`,
-                )}** - ${ctx.locale('common:level', { level: user.equiped.armor.pants.level })}`
+              ? `**${ctx.locale(`items:${user.equiped.armor.pants.id}.name`)}** - ${ctx.locale(
+                  'common:level',
+                  { level: user.equiped.armor.pants.level },
+                )}`
               : ctx.translate('no-item')
           }\n${ctx.locale('common:rpg.boots')} - ${
             user.equiped.armor?.boots
-              ? `**${ctx.locale(
-                  `roleplay:items.${user.equiped.armor.boots.id}.name`,
-                )}** - ${ctx.locale('common:level', { level: user.equiped.armor.boots.level })}`
+              ? `**${ctx.locale(`items:${user.equiped.armor.boots.id}.name`)}** - ${ctx.locale(
+                  'common:level',
+                  { level: user.equiped.armor.boots.level },
+                )}`
               : ctx.translate('no-item')
           }`,
           true,
@@ -70,10 +74,10 @@ export default class InventoryInteractionCommand extends InteractionCommand {
           `${emojis.sword} | ${ctx.translate('weapon')}`,
           `${
             user.equiped.weapon
-              ? `**${ctx.locale(`roleplay:items.${user.equiped.weapon.id}.name`)}** - ${ctx.locale(
+              ? `**${ctx.locale(`items:${user.equiped.weapon.id}.name`)}** - ${ctx.locale(
                   'common:level',
                   { level: user.equiped.weapon.level },
-                )}\n${ctx.locale(`roleplay:items.${user.equiped.weapon.id}.description`)}`
+                )}\n${ctx.locale(`items:${user.equiped.weapon.id}.description`)}`
               : ctx.translate('no-item')
           }`,
           true,
@@ -82,11 +86,12 @@ export default class InventoryInteractionCommand extends InteractionCommand {
           `${emojis.roleplay_custom.backpack} | ${ctx.translate('backpack')}`,
           `${
             user.equiped.backpack
-              ? `**${ctx.locale(
-                  `roleplay:items.${user.equiped.backpack.id}.name`,
-                )}** - ${ctx.locale('common:level', {
-                  level: user.equiped.backpack.level,
-                })}\n${ctx.locale(`roleplay:items.${user.equiped.backpack.id}.description`)}`
+              ? `**${ctx.locale(`items:${user.equiped.backpack.id}.name`)}** - ${ctx.locale(
+                  'common:level',
+                  {
+                    level: user.equiped.backpack.level,
+                  },
+                )}\n${ctx.locale(`items:${user.equiped.backpack.id}.description`)}`
               : ctx.translate('no-item')
           }`,
           true,
@@ -101,7 +106,7 @@ export default class InventoryInteractionCommand extends InteractionCommand {
           usableItems
             .map(
               (a) =>
-                `**${ctx.locale(`roleplay:items.${a.id}.name`)}** - ${ctx.locale('common:level', {
+                `**${ctx.locale(`items:${a.id}.name`)}** - ${ctx.locale('common:level', {
                   level: a.level ?? 0,
                 })} | \`${a.amount}\``,
             )
@@ -113,7 +118,7 @@ export default class InventoryInteractionCommand extends InteractionCommand {
         embed.addField(
           ctx.translate('other'),
           otherItems
-            .map((a) => `**${ctx.locale(`roleplay:items.${a.id}.name`)}** -  ${a.amount}`)
+            .map((a) => `**${ctx.locale(`items:${a.id}.name`)}** -  ${a.amount}`)
             .join('\n'),
         );
       }
@@ -377,12 +382,9 @@ export default class InventoryInteractionCommand extends InteractionCommand {
               clanUsableItems
                 .map(
                   (a) =>
-                    `**${ctx.locale(`roleplay:items.${a.id}.name`)}** - ${ctx.locale(
-                      'common:level',
-                      {
-                        level: a.level ?? 0,
-                      },
-                    )} | \`${a.amount}\``,
+                    `**${ctx.locale(`items:${a.id}.name`)}** - ${ctx.locale('common:level', {
+                      level: a.level ?? 0,
+                    })} | \`${a.amount}\``,
                 )
                 .join('\n'),
             );
@@ -392,7 +394,7 @@ export default class InventoryInteractionCommand extends InteractionCommand {
             embed.addField(
               ctx.translate('other'),
               clanOtherItems
-                .map((a) => `**${ctx.locale(`roleplay:items.${a.id}.name`)}** -  ${a.amount}`)
+                .map((a) => `**${ctx.locale(`items:${a.id}.name`)}** -  ${a.amount}`)
                 .join('\n'),
             );
           }
@@ -416,15 +418,12 @@ export default class InventoryInteractionCommand extends InteractionCommand {
               usableItems
                 .map((a, i) => {
                   itensSelect.addOptions({
-                    label: ctx.locale(`roleplay:items.${a.id}.name`),
+                    label: ctx.locale(`items:${a.id}.name`),
                     value: `${a.id} ${a.level ?? 0} ${i}`,
                   });
-                  return `**${ctx.locale(`roleplay:items.${a.id}.name`)}** - ${ctx.locale(
-                    'common:level',
-                    {
-                      level: a.level ?? 0,
-                    },
-                  )} | \`${a.amount}\``;
+                  return `**${ctx.locale(`items:${a.id}.name`)}** - ${ctx.locale('common:level', {
+                    level: a.level ?? 0,
+                  })} | \`${a.amount}\``;
                 })
                 .join('\n'),
             );

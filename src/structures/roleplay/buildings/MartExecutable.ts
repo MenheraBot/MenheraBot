@@ -13,19 +13,19 @@ import { canBuy, resolveCustomId } from '../Utils';
 
 export default async (ctx: InteractionCommandContext, user: IRpgUserSchema): Promise<void> => {
   const embed = new MessageEmbed()
-    .setTitle(ctx.locale('roleplay:mart.embed-title'))
+    .setTitle(ctx.locale('buildings:mart.embed-title'))
     .setColor(ctx.data.user.cor)
-    .setDescription(ctx.locale('roleplay:mart.embed-description'));
+    .setDescription(ctx.locale('buildings:mart.embed-description'));
 
   const sellButton = new MessageButton()
     .setCustomId(`${ctx.interaction.id} | SELL`)
     .setStyle('PRIMARY')
-    .setLabel(ctx.locale('roleplay:mart.sell'));
+    .setLabel(ctx.locale('buildings:mart.sell'));
 
   const buyButton = new MessageButton()
     .setCustomId(`${ctx.interaction.id} | BUY`)
     .setStyle('PRIMARY')
-    .setLabel(ctx.locale('roleplay:mart.buy'));
+    .setLabel(ctx.locale('buildings:mart.buy'));
 
   if (user.inventory.length === 0) sellButton.setDisabled(true);
 
@@ -63,7 +63,7 @@ export default async (ctx: InteractionCommandContext, user: IRpgUserSchema): Pro
 
         embed
           .setDescription(
-            ctx.locale('roleplay:mart.buy-desc', {
+            ctx.locale('buildings:mart.buy-desc', {
               emojis: {
                 gold: emojis.roleplay_custom.gold,
                 silver: emojis.roleplay_custom.silver,
@@ -72,7 +72,7 @@ export default async (ctx: InteractionCommandContext, user: IRpgUserSchema): Pro
               money: user.money,
             }),
           )
-          .setTitle(ctx.locale('roleplay:mart.buy-title'));
+          .setTitle(ctx.locale('buildings:mart.buy-title'));
 
         const selectMenu = new MessageSelectMenu()
           .setMinValues(1)
@@ -83,17 +83,17 @@ export default async (ctx: InteractionCommandContext, user: IRpgUserSchema): Pro
         itemsToApear.armors.forEach((a, i) => {
           const item = ctx.client.boleham.Functions.getItemById(a.id);
           selectMenu.addOptions({
-            label: ctx.locale(`roleplay:items.${a.id}.name`),
+            label: ctx.locale(`items:${a.id}.name`),
             value: `${a.id} ${a.level} ${i}`,
-            description: ctx.locale(`roleplay:items.${a.id}.description`),
+            description: ctx.locale(`items:${a.id}.description`),
           });
           embed.addField(
-            `${ctx.locale(`roleplay:items.${a.id}.name`)} | ${ctx.locale('common:level', {
+            `${ctx.locale(`items:${a.id}.name`)} | ${ctx.locale('common:level', {
               level: a.level,
             })}`,
-            `${ctx.locale(`roleplay:items.${a.id}.description`)}\n${
-              emojis.roleplay_custom.bronze
-            } | ${item.price.bronze}\n${emojis.roleplay_custom.silver} | ${item.price.silver}\n${
+            `${ctx.locale(`items:${a.id}.description`)}\n${emojis.roleplay_custom.bronze} | ${
+              item.price.bronze
+            }\n${emojis.roleplay_custom.silver} | ${item.price.silver}\n${
               emojis.roleplay_custom.gold
             } | ${item.price.gold}`,
             true,
@@ -103,17 +103,17 @@ export default async (ctx: InteractionCommandContext, user: IRpgUserSchema): Pro
         itemsToApear.weapons.forEach((a, i) => {
           const item = ctx.client.boleham.Functions.getItemById(a.id);
           selectMenu.addOptions({
-            label: ctx.locale(`roleplay:items.${a.id}.name`),
+            label: ctx.locale(`items:${a.id}.name`),
             value: `${a.id} ${a.level} ${i}`,
-            description: ctx.locale(`roleplay:items.${a.id}.description`),
+            description: ctx.locale(`items:${a.id}.description`),
           });
           embed.addField(
-            `${ctx.locale(`roleplay:items.${a.id}.name`)} | ${ctx.locale('common:level', {
+            `${ctx.locale(`items:${a.id}.name`)} | ${ctx.locale('common:level', {
               level: a.level,
             })}`,
-            `${ctx.locale(`roleplay:items.${a.id}.description`)}\n${
-              emojis.roleplay_custom.bronze
-            } | ${item.price.bronze}\n${emojis.roleplay_custom.silver} | ${item.price.silver}\n${
+            `${ctx.locale(`items:${a.id}.description`)}\n${emojis.roleplay_custom.bronze} | ${
+              item.price.bronze
+            }\n${emojis.roleplay_custom.silver} | ${item.price.silver}\n${
               emojis.roleplay_custom.gold
             } | ${item.price.gold}`,
             true,
@@ -123,17 +123,17 @@ export default async (ctx: InteractionCommandContext, user: IRpgUserSchema): Pro
         itemsToApear.potions.forEach((a, i) => {
           const item = ctx.client.boleham.Functions.getItemById(a.id);
           selectMenu.addOptions({
-            label: ctx.locale(`roleplay:items.${a.id}.name`),
+            label: ctx.locale(`items:${a.id}.name`),
             value: `${a.id} ${a.level} ${i}`,
-            description: ctx.locale(`roleplay:items.${a.id}.description`),
+            description: ctx.locale(`items:${a.id}.description`),
           });
           embed.addField(
-            `${ctx.locale(`roleplay:items.${a.id}.name`)} | ${ctx.locale('common:level', {
+            `${ctx.locale(`items:${a.id}.name`)} | ${ctx.locale('common:level', {
               level: a.level,
             })}`,
-            `${ctx.locale(`roleplay:items.${a.id}.description`)}\n${
-              emojis.roleplay_custom.bronze
-            } | ${item.price.bronze}\n${emojis.roleplay_custom.silver} | ${item.price.silver}\n${
+            `${ctx.locale(`items:${a.id}.description`)}\n${emojis.roleplay_custom.bronze} | ${
+              item.price.bronze
+            }\n${emojis.roleplay_custom.silver} | ${item.price.silver}\n${
               emojis.roleplay_custom.gold
             } | ${item.price.gold}`,
             true,
@@ -188,9 +188,9 @@ export default async (ctx: InteractionCommandContext, user: IRpgUserSchema): Pro
         });
 
         ctx.editReply({
-          content: ctx.locale('roleplay:mart.buy-items', {
+          content: ctx.locale('buildings:mart.buy-items', {
             items: int.values
-              .map((a) => `${ctx.locale(`roleplay:items.${a.split(' ')[0]}.name`)}`)
+              .map((a) => `${ctx.locale(`items:${a.split(' ')[0]}.name`)}`)
               .join(', '),
             money: buyValue,
           }),
@@ -227,7 +227,7 @@ export default async (ctx: InteractionCommandContext, user: IRpgUserSchema): Pro
         });
 
         ctx.editReply({
-          content: ctx.locale('roleplay:mart.sell-items', {
+          content: ctx.locale('buildings:mart.sell-items', {
             count: int.values.length,
             money: soldValue,
           }),
@@ -237,7 +237,7 @@ export default async (ctx: InteractionCommandContext, user: IRpgUserSchema): Pro
         break;
       }
       case 'SELL': {
-        let text = ctx.locale('roleplay:mart.sell-base-text');
+        let text = ctx.locale('buildings:mart.sell-base-text');
 
         if (user.inventory.length === 0) {
           ctx.editReply({ content: ctx.locale('common:no-itens-in-inventory') });
@@ -256,9 +256,9 @@ export default async (ctx: InteractionCommandContext, user: IRpgUserSchema): Pro
 
         user.inventory.forEach((item) => {
           const { price } = ctx.client.boleham.Functions.getItemById(item.id);
-          text += `${ctx.locale(`roleplay:items.${item.id}.name`)} - ${
-            emojis.roleplay_custom.bronze
-          } **${price.bronze}**, ${emojis.roleplay_custom.silver} **${price.silver}**, ${
+          text += `${ctx.locale(`items:${item.id}.name`)} - ${emojis.roleplay_custom.bronze} **${
+            price.bronze
+          }**, ${emojis.roleplay_custom.silver} **${price.silver}**, ${
             emojis.roleplay_custom.gold
           } **${price.gold}** \n`;
 
@@ -268,7 +268,7 @@ export default async (ctx: InteractionCommandContext, user: IRpgUserSchema): Pro
               selectMenus.push(createSelectMenu());
             }
             selectMenus[index].addOptions({
-              label: ctx.locale(`roleplay:items.${item.id}.name`),
+              label: ctx.locale(`items:${item.id}.name`),
               value: `${item.id} ${item.level ?? 0} ${i} ${index}`,
             });
           }

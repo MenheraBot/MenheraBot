@@ -154,12 +154,6 @@
       "name": "Inquisição"
     }
   },
-  "items": {
-    "0": {
-      "name": "Mochila de Pano",
-      "description": "Uma pequena mochila feita de pano que possui pequeno armazenamento, mas ajuda para as missões diárias"
-    }
-  },
   "buildings": {
     "0": {
       "name": "Mercado",
@@ -168,38 +162,6 @@
     "1": {
       "name": "Guilda",
       "description": "A guilda de toda Boleham! Aqui você pode ver missões que ajudam os moradores do mundo todo!"
-    }
-  },
-  "mart": {
-    "embed-title": "Bem-Vindo ao Mercado Central",
-    "embed-description": "Você deseja vender ou comprar itens? Escolha com os botões abaixo!",
-    "buy": "Comprar",
-    "sell": "Vender",
-    "buy-desc": "Selecione abaixo quais itens tu quer comprar.\nSeus bens: {{emojis.gold}} **{{money.gold}}**, {{emojis.silver}} **{{money.silver}}** e {{emojis.bronze}} **{{money.bronze}}**",
-    "buy-title": "Compre Itens",
-    "buy-items": "Você comprou **{{items}}** por **{{money.gold}}** modeas de ouro, **{{money.silver}}** modeas de prata e **{{money.bronze}}** moedas de bronze",
-    "sell-items": "Você vendeu **{{count}}** item por `{{money.bronze}}` moedas de bronze, `{{money.silver}}` modeas de prata e `{{money.gold}}` modeas de ouro",
-    "sell-items-plural": "Você vendeu **{{count}}** itens por `{{money.bronze}}` moedas de bronze, `{{money.silver}}` modeas de prata e `{{money.gold}}` modeas de ouro",
-    "sell-base-text": "Escolha abaixo todos os itens que desejas vender. Aqui estão os valores dos itens de seu inventário\n\n"
-  },
-  "guild": {
-    "first": {
-      "title": "Guilda de Boleham",
-      "daily": "Missões Diárias",
-      "active": "Missão Ativa",
-      "no-active": "Nenhuma missão ativa",
-      "claim": "Reinvidicar",
-      "get": "Pegar Missão",
-      "no-available-quests": "Você não possui nenhuma missão disponível!",
-      "select-quest": "Escolha a sua próxima missão",
-      "no-daily": "Ocorreu um erro ao ver suas missões diárias",
-      "description": "Bem-Vindo à Guilda de Boleham! Aqui você pode fazer missões do mundo para evoluir e ajudar os aldeões em missões que arriscam suas vidas em troca de dinheiro! Aqui estão suas missões! Caso queira procurar por mais missões ou procurar um trabalho, pode fazer tudo escolhendo abaixo!"
-    },
-    "second": {
-      "taken": "Você iniciou a missão **{{name}}**! Boa sorte",
-      "claimed": "Você resgatou todas as suas missões com sucesso!",
-      "money-reward": "{{emojis.gold}} | {{money.gold}}\n{{emojis.silver}} | {{money.silver}}\n{{emojis.bronze}} | {{money.bronze}}",
-      "description": "Escolha abaixo uma missão para fazer. Note que, após escolher uma missão, só será possível pegar outra ao finalizá-la"
     }
   }
 }

@@ -13,8 +13,8 @@ import BasicFunctions from '../BasicFunctions';
 export default async (ctx: InteractionCommandContext, user: IRpgUserSchema): Promise<void> => {
   const embed = new MessageEmbed()
     .setColor(ctx.data.user.cor)
-    .setTitle(ctx.locale('roleplay:guild.first.title'))
-    .setDescription(ctx.locale('roleplay:guild.first.description'));
+    .setTitle(ctx.locale('buildings:guild.first.title'))
+    .setDescription(ctx.locale('buildings:guild.first.description'));
 
   const userDailyQuests = await ctx.client.repositories.rpgRepository.getUserDailyQuests(
     ctx.interaction.user.id,
@@ -23,14 +23,14 @@ export default async (ctx: InteractionCommandContext, user: IRpgUserSchema): Pro
   );
 
   embed.addField(
-    ctx.locale('roleplay:guild.first.daily'),
+    ctx.locale('buildings:guild.first.daily'),
     userDailyQuests
       ? userDailyQuests
           .map((a) => {
             const quest = ctx.client.boleham.Functions.getQuestById(a.id);
-            return `**${ctx.locale(`roleplay:quests.${a.id}.name`)}**\n**${ctx.locale(
+            return `**${ctx.locale(`quests:${a.id}.name`)}**\n**${ctx.locale(
               'common:objective',
-            )}**: ${ctx.locale(`roleplay:quests.${a.id}.description`, {
+            )}**: ${ctx.locale(`quests:${a.id}.description`, {
               value: quest.objective.value + quest.objective.perLevel * a.level,
             })}\n${ctx.locale('common:progress')}: ${
               a.finished
@@ -51,7 +51,7 @@ export default async (ctx: InteractionCommandContext, user: IRpgUserSchema): Pro
             }`;
           })
           .join('\n\n')
-      : ctx.locale('roleplay:guild.first.no-daily'),
+      : ctx.locale('buildings:guild.first.no-daily'),
   );
 
   const activeQuest = user.quests?.active
@@ -59,11 +59,11 @@ export default async (ctx: InteractionCommandContext, user: IRpgUserSchema): Pro
     : null;
 
   embed.addField(
-    ctx.locale('roleplay:guild.first.active'),
+    ctx.locale('buildings:guild.first.active'),
     activeQuest
-      ? `**${ctx.locale(`roleplay:quests.${user.quests.active?.id}.name`)}**\n**${ctx.locale(
+      ? `**${ctx.locale(`quests:${user.quests.active?.id}.name`)}**\n**${ctx.locale(
           'common:objective',
-        )}**: ${ctx.locale(`roleplay:quests.${user.quests.active?.id}.description`, {
+        )}**: ${ctx.locale(`quests:${user.quests.active?.id}.description`, {
           value:
             activeQuest.objective.value +
             activeQuest.objective.perLevel * (user.quests.active?.level ?? 0),
@@ -84,21 +84,21 @@ export default async (ctx: InteractionCommandContext, user: IRpgUserSchema): Pro
                 emojis.roleplay_custom.bronze
               } ${activeQuest.reward.amount.bronze}`
             : `**${ctx.locale('common:items')}:** ${ctx.locale(
-                `roleplay:items.${activeQuest.reward.value}.name`,
+                `items:${activeQuest.reward.value}.name`,
               )}`
         }`
-      : ctx.locale('roleplay:guild.first.no-active'),
+      : ctx.locale('buildings:guild.first.no-active'),
   );
 
   const claimButton = new MessageButton()
     .setCustomId(`${ctx.interaction.id} | CLAIM`)
-    .setLabel(ctx.locale('roleplay:guild.first.claim'))
+    .setLabel(ctx.locale('buildings:guild.first.claim'))
     .setStyle('PRIMARY')
     .setDisabled(true);
 
   const questButton = new MessageButton()
     .setCustomId(`${ctx.interaction.id} | GET`)
-    .setLabel(ctx.locale('roleplay:guild.first.get'))
+    .setLabel(ctx.locale('buildings:guild.first.get'))
     .setStyle('PRIMARY')
     .setDisabled(true);
 
@@ -159,10 +159,10 @@ export default async (ctx: InteractionCommandContext, user: IRpgUserSchema): Pro
         const { updatedUser, didUp } = ctx.client.boleham.Functions.checkUserUp(user);
 
         if (!didUp)
-          ctx.editReply({ content: ctx.locale('roleplay:guild.second.claimed'), components: [] });
+          ctx.editReply({ content: ctx.locale('buildings:guild.second.claimed'), components: [] });
         else
           ctx.editReply({
-            content: `${ctx.locale('roleplay:guild.second.claimed')}\n\n${ctx.locale(
+            content: `${ctx.locale('buildings:guild.second.claimed')}\n\n${ctx.locale(
               'common:level_up',
               { level: user.level },
             )}`,
@@ -180,7 +180,7 @@ export default async (ctx: InteractionCommandContext, user: IRpgUserSchema): Pro
           ctx.editReply({
             embeds: [
               embed
-                .setDescription(ctx.locale('roleplay:guild.first.no-available-quests'))
+                .setDescription(ctx.locale('buildings:guild.first.no-available-quests'))
                 .spliceFields(0, 2),
             ],
             components: [],
@@ -194,19 +194,19 @@ export default async (ctx: InteractionCommandContext, user: IRpgUserSchema): Pro
           .setMinValues(1)
           .setMaxValues(1)
           .setCustomId(`${ctx.interaction.id} | QUEST`)
-          .setPlaceholder(ctx.locale('roleplay:guild.first.select-quest'));
+          .setPlaceholder(ctx.locale('buildings:guild.first.select-quest'));
 
-        embed.setDescription(ctx.locale('roleplay:guild.second.description'));
+        embed.setDescription(ctx.locale('buildings:guild.second.description'));
 
         availableQuests.forEach((a) => {
           const quest = ctx.client.boleham.Functions.getQuestById(a.id);
           embed.addField(
-            ctx.locale(`roleplay:quests.${a.id}.name`),
-            `${ctx.locale(`roleplay:quests.${a.id}.description`)}\n**${ctx.locale(
+            ctx.locale(`quests:${a.id}.name`),
+            `${ctx.locale(`quests:${a.id}.description`)}\n**${ctx.locale(
               'common:rewards',
             )}:**\n${ctx.locale('common.experience')}: ${quest.reward.experience * a.level}\n${
               quest.reward.type === 'money'
-                ? ctx.locale('roleplay:guild.second.money-reward', {
+                ? ctx.locale('buildings:guild.second.money-reward', {
                     money: BasicFunctions.mergeCoins(quest.reward.amount, {
                       bronze: quest.reward.perLevel.bronze * a.level,
                       silver: quest.reward.perLevel.silver * a.level,
@@ -218,13 +218,13 @@ export default async (ctx: InteractionCommandContext, user: IRpgUserSchema): Pro
                       bronze: emojis.roleplay_custom.bronze,
                     },
                   })
-                : `${ctx.locale(`roleplay:items.${quest.reward.value.id}.name`)} (${
+                : `${ctx.locale(`items:${quest.reward.value.id}.name`)} (${
                     quest.reward.amount
                   }) | ${ctx.locale('common:level', { level: quest.reward.value.level })}`
             }`,
           );
           selectQuest.addOptions({
-            label: ctx.locale(`roleplay:quests.${a.id}.name`),
+            label: ctx.locale(`quests:${a.id}.name`),
             value: `${a.id}`,
           });
         });
@@ -251,8 +251,8 @@ export default async (ctx: InteractionCommandContext, user: IRpgUserSchema): Pro
         ctx.editReply({
           components: [],
           embeds: [],
-          content: ctx.locale('roleplay:guild.second.taken', {
-            name: ctx.locale(`roleplay:quests.${int.values[0]}.name`),
+          content: ctx.locale('buildings:guild.second.taken', {
+            name: ctx.locale(`quests:${int.values[0]}.name`),
           }),
         });
         break;
