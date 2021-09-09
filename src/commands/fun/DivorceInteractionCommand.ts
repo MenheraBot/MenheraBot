@@ -1,7 +1,7 @@
 import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { MessageButton, MessageComponentInteraction } from 'discord.js';
+import { MessageButton } from 'discord.js';
 import { emojis } from '@structures/MenheraConstants';
 import Util from '@utils/Util';
 
@@ -41,12 +41,10 @@ export default class DivorceInteractionCommand extends InteractionCommand {
       components: [{ type: 1, components: [ConfirmButton, CancellButton] }],
     });
 
-    const filter = (int: MessageComponentInteraction) =>
-      int.customId.startsWith(ctx.interaction.id) && int.user.id === ctx.interaction.user.id;
-
-    const collected = await Util.collectComponentInteractionWithCustomFilter(
+    const collected = await Util.collectComponentInteractionWithStartingId(
       ctx.channel,
-      filter,
+      ctx.interaction.user.id,
+      ctx.interaction.id,
       15000,
     );
 

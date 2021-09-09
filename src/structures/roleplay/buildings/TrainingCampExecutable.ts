@@ -1,6 +1,8 @@
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageButton, MessageEmbed } from 'discord.js';
+import Util from '@utils/Util';
 import { IRpgUserSchema } from '../Types';
+import { resolveCustomId } from '../Utils';
 
 export default async (ctx: InteractionCommandContext, user: IRpgUserSchema): Promise<void> => {
   const embed = new MessageEmbed()
@@ -22,4 +24,30 @@ export default async (ctx: InteractionCommandContext, user: IRpgUserSchema): Pro
     embeds: [embed],
     components: [{ type: 'ACTION_ROW', components: [acceptButton, notNowButton] }],
   });
+
+  const collected = await Util.collectComponentInteractionWithStartingId(
+    ctx.channel,
+    ctx.interaction.user.id,
+    ctx.interaction.id,
+    15000,
+  );
+
+  if (!collected) {
+    ctx.editReply({
+      components: [
+        {
+          type: 'ACTION_ROW',
+          components: [
+            acceptButton.setDisabled(true).setLabel(ctx.locale('common:timesup')),
+            notNowButton.setDisabled(true).setLabel(ctx.locale('common:timesup')),
+          ],
+        },
+      ],
+    });
+    return;
+  }
+
+  if (resolveCustomId(collected.customId) === 'NEGATE') {
+    ctx.deleteReply();
+  }
 };
