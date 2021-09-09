@@ -1,0 +1,33 @@
+{
+  "mart": {
+    "embed-title": "Welcome to the Central Market",
+    "embed-description": "Do you want to sell or buy items? Choose with the buttons below!",
+    "buy": "Buy",
+    "sell": "Sell",
+    "buy-desc": "Select below which items you want to buy.\nYour Wallet: {{emojis.gold}} **{{money.gold}}**, {{emojis.silver}} **{{money.silver}}** and {{emojis.bronze}} **{{emojis.bronze}}**",
+    "buy-title": "Buy Items",
+    "buy-items": "You bought **{{items}}** for **{{money.gold}}** gold coins, **{{money.silver}}** silver coins and * *{{money.bronze}}** bronze coins",
+    "sell-items": "You sold **{{count}}** item for `{{money.bronze}}` bronze coins, `{{money.silver}}` silver coins and `{{money.gold}}` coins gold",
+    "sell-items-plural": "You sold **{{count}}** items for `{{money.bronze}}` bronze coins, `{{money.silver}}` silver coins and `{{money.gold}}` coins gold",
+    "sell-base-text": "Choose below all the items you want to sell. Here are the values ​​of your inventory items\n\n"
+  },
+  "guild": {
+    "first": {
+      "title": "Boleham Guild",
+      "daily": "Daily Quests",
+      "active": "Active Quest",
+      "no-active": "No active missions",
+      "claim": "Claim",
+      "get": "Get Quest",
+      "no-available-quests": "You don't have any quests available!",
+      "select-quest": "Choose your next mission",
+      "no-daily": "There was an error viewing your daily quests",
+      "description": "Welcome to the Boleham Guild! Here you can do world quests to evolve and help villagers on quests that risk their lives for money! Here are your missions! If you want to search for more quests or look for a job, you can do it all choosing below!"
+    },
+    "second": {
+      "taken": "You started the quest **{{name}}**! Good luck",
+      "money-reward": "{{emojis.gold}} | {{money.gold}}\n{{emojis.silver}} | {{money.silver}}\n{{emojis.bronze}} | {{money.bronze}}",
+      "description": "Choose a mission to do below. Note that after choosing a mission, you can only get another one when you finish it."
+    }
+  }
+}
