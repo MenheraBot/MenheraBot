@@ -33,6 +33,8 @@
   },
   "training_camp": {
     "title": "Campo de Treinamento",
+    "join": "Entrar na Batalha",
+    "not-now": "Agora Não",
     "description": "Bem-Vindo ao campo de treinamento! Aqui você pode lutar contra pequenos monstros para treinar seus poderes. O campo de treinamento é seguro, você vai batalhar contra um, e somente um monstro"
   }
 }

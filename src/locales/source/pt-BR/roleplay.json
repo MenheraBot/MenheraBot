@@ -162,6 +162,10 @@
     "1": {
       "name": "Guilda",
       "description": "A guilda de toda Boleham! Aqui você pode ver missões que ajudam os moradores do mundo todo!"
+    },
+    "2": {
+      "name": "Campo de Treinamento",
+      "description": "Uma área para treinar suas habilidades numa batalha segura"
     }
   }
 }

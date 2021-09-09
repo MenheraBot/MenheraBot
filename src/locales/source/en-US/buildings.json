@@ -29,5 +29,11 @@
       "money-reward": "{{emojis.gold}} | {{money.gold}}\n{{emojis.silver}} | {{money.silver}}\n{{emojis.bronze}} | {{money.bronze}}",
       "description": "Choose a mission to do below. Note that after choosing a mission, you can only get another one when you finish it."
     }
+  },
+  "training_camp": {
+    "title": "Training Camp",
+    "join": "Join Battle",
+    "not-now": "Not Now",
+    "description": "Welcome to training camp! Here you can fight small monsters to train your powers. The training ground is safe, you will battle one, and only one monster."
   }
 }

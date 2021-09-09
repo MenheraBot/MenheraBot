@@ -162,6 +162,10 @@
     "1": {
       "name": "Guild",
       "description": "The guild of all Boreham! Here you can see quests that help residents around the world!"
+    },
+    "2": {
+      "name": "Training Camp",
+      "description": "An area to train your skills in a safe battle"
     }
   }
 }
