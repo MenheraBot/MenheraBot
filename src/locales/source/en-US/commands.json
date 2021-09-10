@@ -1,5 +1,5 @@
 {
-  "angry": {
+  "raiva": {
     "description": "",
     "usage": "[usuário]",
     "bot": "no no no, stop right here. Bots dont let you angry (unless they are lagged hehe)",
@@ -17,7 +17,7 @@
     "embed_title": "What a Kick",
     "embed_description": "{{author}} kicked {{mention}}"
   },
-  "bite": {
+  "morder": {
     "description": "Bite someone :3",
     "usage": "<@mention>",
     "bot": "You bit a robot ... -5 teeth in the mouth",
@@ -25,7 +25,7 @@
     "embed_title": "Bites",
     "embed_description": "{{author}} bit {{mention}}"
   },
-  "cry": {
+  "chorar": {
     "description": "Show everyone that you're crying, so that you get attention",
     "usage": "[@mention]",
     "bot": "Nop nop, nor does it come that any bot makes someone cry, they are friendly and fun. Like me UwU",
@@ -36,7 +36,7 @@
     "embed_title": "Crying :(",
     "embed_description": "{{mention}} made {{author}} cry"
   },
-  "disgusted": {
+  "nojo": {
     "description": "eeeewwww disgusting",
     "usage": "<@mention>",
     "bot": "HMMMM LOOK AT THAT GUY, HE DISGUST ROBOTS K K K K K what a meme",
@@ -47,7 +47,7 @@
     "embed_title": "Yuck",
     "embed_description": "{{author}} is disgusted from {{mention}}"
   },
-  "fear": {
+  "medo": {
     "description": "ARE YOU AFRAID?",
     "usage": "[@mention]",
     "no-mention": {
@@ -57,12 +57,12 @@
     "embed_title": "AFRAID",
     "embed_description": "{{author}} is afraid of {{mention}}"
   },
-  "grumbe": {
+  "resmungar": {
     "description": "Grumble humpf",
     "embed_title": "Humpf",
     "embed_description": "{{author}} is grumbling"
   },
-  "hug": {
+  "abracar": {
     "description": "Hug someone",
     "usage": "<@mention>",
     "bot": "You went to hug a robot, but ended up touching where you shouldn't, and took an electric discharge of 220V and 10mA, luckily the current used in the bot is low ...",
@@ -70,7 +70,7 @@
     "embed_title": "Hug",
     "embed_description": "{{author}} give a huge hug in {{mention}}"
   },
-  "kill": {
+  "matar": {
     "description": "Kill the one you can't stand anymore",
     "usage": "<@mention>",
     "self-mention": "I don't like suicide ...",
@@ -81,7 +81,7 @@
     "embed_title": "Kill",
     "embed_description": "{{author}} **K I L L E D** {{mention}}"
   },
-  "kiss": {
+  "beijar": {
     "description": "Kiss that loved one",
     "usage": "<@mention>",
     "bot": "You kissed a robot, and ended up touching a peeled wire. Lucky he had slippers on his feet. The connection with the Earth was cut, no circuit was closed. This time it was safe.",
@@ -89,7 +89,7 @@
     "embed_title": "Kiss",
     "embed_description": "{{author}} kissed {{mention}}"
   },
-  "laugh": {
+  "rir": {
     "description": "Show everyone that you're laughing",
     "usage": "[@mention]",
     "no-mention": {
@@ -107,21 +107,21 @@
     "embed_title": "Suck",
     "embed_description": "{{author}} **suckled** {{mention}}"
   },
-  "pat": {
+  "carinho": {
     "description": "Pat someone's head",
     "usage": "<@mention>",
     "self-mention": "If you want you can cuddle yourself now. Use my command only to cuddle others",
     "embed_title": "Cuddle",
     "embed_description": "{{author}} just cuddle {{mention}}"
   },
-  "poke": {
+  "cutucar": {
     "description": "Poke Someone",
     "usage": "<@mention>",
     "self-mention": "Poking yourself is no fun! Mention who you want to poke",
     "embed_title": "Poke",
     "embed_description": "{{author}} poked {{mention}}"
   },
-  "punch": {
+  "socar": {
     "description": "Punch someone in the ass",
     "usage": "<@mention>",
     "bot": "SAY NO TO THE BOTS AGRESSION",
@@ -129,7 +129,7 @@
     "embed_title": "PUNCH IN THE FACE",
     "embed_description": "{{author}} punched {{mention}}"
   },
-  "resurrect": {
+  "ressuscitar": {
     "description": "Resurrect someone dead",
     "usage": "<@mention>",
     "no-mention": "How to resurrect the nothing, which never died?",
@@ -150,14 +150,14 @@
     "embed_description": "{{mention}} danced with {{author}}",
     "sarrar": "Accept Dance"
   },
-  "shot": {
+  "atirar": {
     "description": "Shoot someone",
     "usage": "<@mention>",
     "self-mention": "Say no to suicide",
     "embed_title": "Shoot",
     "embed_description": "{{author}} shoot {{mention}}"
   },
-  "shy": {
+  "vergonha": {
     "description": "imin shame",
     "usage": "[@mention]",
     "no-mention": {
@@ -167,7 +167,7 @@
     "embed_title": "Shame 👉👈",
     "embed_description": "{{mention}} made {{author}} shamed >.<"
   },
-  "slap": {
+  "tapa": {
     "description": "Slap someone",
     "usage": "<@mention>",
     "bot": "Do not slap robots my broooo",
@@ -175,7 +175,7 @@
     "embed_title": "Slap",
     "embed_description": "{{author}} slapped {{mention}}"
   },
-  "sniff": {
+  "cheirar": {
     "description": "nhammm what a nice smell",
     "usage": "[user]",
     "bot": "Well, i guess this bot smells metal",
@@ -185,7 +185,7 @@
     },
     "embed_description": "{{author}} sniffed {{mention}}"
   },
-  "think": {
+  "pensar": {
     "description": "Thinking",
     "usage": "[@mention]",
     "bot": "Awnnn what a beautiful thing, you are thinking in a bot >.<",
@@ -205,7 +205,7 @@
     "bot": "bots cannot bet e.e",
     "self-mention": "you cannot bet against yourself",
     "no-dbuser": "this user does not have a Menhera's Bank account!",
-    "poor": "you don't have all these stars to bet on!",
+    "poor": "{{user}} don't have all these stars to bet on!",
     "confirm": "{{author}} challenged you to a heads-up bet worth **{{value}}** ⭐. Heads, {{author}} wins, tails, {{mention}} wins. Do you accept? you got **7** seconds",
     "cara": "**HEADS**",
     "coroa": "**TAILS**",
@@ -226,7 +226,7 @@
     "semigods": "demigods",
     "gods": "gods"
   },
-  "shop": {
+  "loja": {
     "description": "Access the Menhera's thrift store",
     "embed_title": "Menhera's Thrift store",
     "colors": {
@@ -282,7 +282,7 @@
       "success-god": "you sold ** {{value}} ** <:God:758474639570894899> gods and received ** {{cost}} ** ⭐ star! \nNow you have ** {{quantity}} ** <:God:758474639570894899> and ** {{star}} ** ⭐ "
     }
   },
-  "wallet": {
+  "carteira": {
     "description": "See someone's wallet",
     "usage": "[user]",
     "no-dbuser": "this user is not in my database",
@@ -302,23 +302,24 @@
     "answer": "Answer",
     "no-args": "you must send a question for me to answer"
   },
-  "divorce": {
+  "divorciar": {
     "description": "Don't you want to be married to that horn anymore? Divorce with this command",
     "author-single": "you are not married to anyone",
     "divorce": "Divorce",
-    "cancell": "Cancell",
+    "cancel": "Cancel",
     "confirmation": "Do you really want to divorce from",
     "canceled": "I think it’s good that you're still married, but if you thought about breaking up once, maybe you’ll think more often ... If the relationship doesn’t make you feel good, there’s no point in continuing…",
     "confirmed_start": "just got divorced from",
     "confirmed_end": "I'm sorry for having finished everything ... But it's okay, all relationships are just experiences, you still have a lot of life ahead of you, and you will still find people who do you as well as you deserve"
   },
   "fodase": {
-    "description": "Did someone send something that nobody asked? Take the fuck"
+    "description": "Did someone send something that nobody asked? Take the fuck",
+    "author": "Author: {{author}}"
   },
   "humor": {
     "description": "Send it when someone makes that joke joke"
   },
-  "hunt": {
+  "cacar": {
     "description": "Hunt demons like XANDÃO",
     "probabilities": "Hunt probabilitites\n\nDemons: `[{{demon}}]`\nGiants: `[{{giant}}]`\nAngels: `[{{angel}}]`\nArchangels: `[{{archangel}}]`\nDemigods: `[{{demi}}]`\nGods: `[{{god}}]`",
     "no-args": "you must choose between hunting demons, angels, demigods and gods",
@@ -340,7 +341,7 @@
     "rolls-poor": "you dont have all this rolls!",
     "cooldown": "rest champion, you've already gone on your hunt. Try again in ** {{time}} ** minutes \n <:attention:759603958418767922> | ** TIP: ** Did you know that on my support server, the chances of hunting are greater? m!support"
   },
-  "marry": {
+  "casar": {
     "description": "Marry with the love of your life",
     "usage": "<@mention>",
     "bot": "you can't marry bots",
@@ -369,7 +370,7 @@
     "high": "What a magnificent couple, just perfect",
     "perfect": "MY FRIEND, THOSE GUYS ARE MADE TO ANOTHER PRO"
   },
-  "xandão": {
+  "xandao": {
     "description": "NO PRESSURE (this is a portuguese only command)",
     "usage": "[text]",
     "only-text": "This command isn't available on threads",
@@ -384,7 +385,7 @@
     "client_title": "my avayar ({{user}})",
     "client_footer": "I'm very beautiful, right?"
   },
-  "color": {
+  "cor": {
     "description": "Change the color of your profile",
     "usage": "[color]",
     "embed_title": "Your Colors",
@@ -396,7 +397,7 @@
     "choose": "Choose your color",
     "min-color": "you need to have at least 2 colors to use this command!"
   },
-  "profile": {
+  "perfil": {
     "description": "See your profile, or someone else's",
     "usage": "[user]",
     "bot": "What? OMEGALUL fuck the bots, robots don't have a profile",
@@ -456,29 +457,19 @@
     "sure": "Are you sure you want to delete all channels from the list?",
     "done": "My commands have been released on all server channels! Yayyy"
   },
-  "language": {
+  "idioma": {
     "description": "Change the language I speak on this server",
     "question": "What language do you want me to speak?",
     "select": "Select the language clicking here",
     "english": "American English",
     "portuguese": "Brazilian Portuguese"
   },
-  "aboutme": {
+  "sobremim": {
     "description": "Change your About Me",
     "usage": "<text>",
     "no-args": "you didn't tell me what you want to put in your 'About Me'",
     "args-limit": "your sobremim cannot be longer than 200 characters",
     "success": "your 'About Me' has been successfully changed! Use m!Profile >.<"
-  },
-  "botinfo": {
-    "description": "Shows current bot information",
-    "title": "🎉 TODAY IS MY BIRTHDAY 🎉",
-    "embed_description": "Hi my name is **{{name}}**, and I'm a Brazilian Bot for Discord with a focus on fun and RPG! I was created in **{{createdAt}}** and joined this server in **{{joinedAt}}**.\n\nA little bit about me: My name is Menhera, I am 16 years old and I LOVE, I mean, I LOOOOVE to use these faces: (>...<). To learn more, go to my [twitter](https://twitter.com/__MenheraBot), my [support server](https://discord.gg/fZMdQbA) and my [WEBSITE](https://menherabot.xyz). If you want, you can help sending fun for all the world [translating me](https://translate.menherabot.xyz)",
-    "embed_footer": "was created by",
-    "channels": "Channels",
-    "memory": "Memory",
-    "users": "Users (cached)",
-    "version": "Version"
   },
   "delete": {
     "description": "Delete your profile from the database",
@@ -488,7 +479,7 @@
     "btn_confirm": "Delete",
     "ban": "You have been **banned** from using Menhera! If you think this was an error, come to my support server"
   },
-  "invite": {
+  "convidar": {
     "description": "Add the bot on some server",
     "embed_title": "Click to add me on any server",
     "embed_footer": "Command executed by {{user}}",
@@ -499,44 +490,56 @@
     "latency": "Latency:",
     "api": "API Latency:"
   },
-  "suggest": {
-    "description": "Suggest something to the bot owner",
-    "usage": "<suggestion>",
-    "no-args": "Suggest something more detailed",
-    "thanks": "thank you so much for sending me a suggestion <3"
-  },
-  "support": {
+  "suporte": {
     "description": "Invitation link to Bot support server",
     "embed_title": "Click here to enter Menhera's support server",
     "embed_footer": "Command executed by"
   },
-  "vote": {
+  "votar": {
     "description": "Vote for the bot (pelase vote, it helps a lot X3 >.<)",
     "embed_title": "Click to vote for me",
     "embed_footer": "Command executed by",
     "embed_description": "Votes help in promoting the bot, and this is extremely important"
   },
-  "coinflipstats": {
-    "description": "Show your coinflip game data",
-    "usage": "[user]",
-    "embed-title": "Coinflip stats for {{user}}",
-    "no-data": "you never played a coinflip game!",
-    "embed-footer": "You are amazing",
-    "played": "Matches Played",
-    "wins": "Wins",
-    "loses": "Losses",
-    "earnMoney": "Earned Money",
-    "lostMoney": "Lost Money",
-    "profit": "Total Profit",
-    "loss": "Total Loss",
-    "error": "an error occurred while checking this user's statistics"
+  "status": {
+    "coinflip": {
+      "description": "Show your coinflip game data",
+      "usage": "[user]",
+      "embed-title": "Coinflip stats for {{user}}",
+      "no-data": "you never played a coinflip game!",
+      "embed-footer": "You are amazing",
+      "played": "Matches Played",
+      "wins": "Wins",
+      "loses": "Losses",
+      "earnMoney": "Earned Money",
+      "lostMoney": "Lost Money",
+      "profit": "Total Profit",
+      "loss": "Total Loss",
+      "error": "an error occurred while checking this user's statistics"
+    },
+    "botinfo": {
+      "description": "Shows current bot information",
+      "title": "🎉 TODAY IS MY BIRTHDAY 🎉",
+      "embed_description": "Hi my name is **{{name}}**, and I'm a Brazilian Bot for Discord with a focus on fun and RPG! I was created in **{{createdAt}}** and joined this server in **{{joinedAt}}**.\n\nA little bit about me: My name is Menhera, I am 16 years old and I LOVE, I mean, I LOOOOVE to use these faces: (>...<). To learn more, go to my [twitter](https://twitter.com/__MenheraBot), my [support server](https://discord.gg/fZMdQbA) and my [WEBSITE](https://menherabot.xyz). If you want, you can help sending fun for all the world [translating me](https://translate.menherabot.xyz)",
+      "embed_footer": "was created by",
+      "channels": "Channels",
+      "memory": "Memory",
+      "users": "Users (cached)",
+      "version": "Version"
+    },
+    "blackjack": {
+      "usage": "[user]",
+      "description": "See blackjack status from someone",
+      "embed-title": "{{user}}'s Blackjack Status",
+      "no-data": "you never played a blackjack game!"
+    }
   },
-  "philo": {
+  "filosofia": {
     "description": "To be or not to be, that's the question",
     "usage": "<text>",
     "no-args": "you didn't tell me any arguments! And if you don't know what an argument is, an argument can be defined as a statement accompanied by justification (rhetorical argument) or as a juxtaposition of two opposing statements, argument and counter-argument"
   },
-  "blockcommand": {
+  "blockcomando": {
     "description": "Disable a command in this server",
     "usage": "<command>",
     "no-args": "you didn't quote any commands!",

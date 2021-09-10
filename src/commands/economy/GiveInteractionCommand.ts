@@ -65,27 +65,23 @@ export default class GiveInteractionCommand extends InteractionCommand {
   }
 
   static replyBadUsageError(ctx: InteractionCommandContext): void {
-    ctx.replyT('error', 'commands:give.bad-usage', {}, true);
+    ctx.replyT('error', 'bad-usage', {}, true);
   }
 
   static replyForYourselfError(ctx: InteractionCommandContext): void {
-    ctx.replyT('error', 'commands:give.self-mention', {}, true);
+    ctx.replyT('error', 'self-mention', {}, true);
   }
 
   static replyInvalidValueError(ctx: InteractionCommandContext): void {
-    ctx.replyT('error', 'commands:give.invalid-value', {}, true);
+    ctx.replyT('error', 'invalid-value', {}, true);
   }
 
   static replyNoAccountError(ctx: InteractionCommandContext): void {
-    ctx.replyT('error', 'commands:give.no-dbuser', {}, true);
+    ctx.replyT('error', 'no-dbuser', {}, true);
   }
 
   static replyNotEnoughtError(ctx: InteractionCommandContext, localeField: string): void {
-    ctx.replyE(
-      'error',
-      `${ctx.locale('commands:give.poor')} ${ctx.locale(`commands:give.${localeField}`)}`,
-      true,
-    );
+    ctx.replyE('error', `${ctx.translate('poor')} ${ctx.translate(localeField)}`, true);
   }
 
   static replySuccess(
@@ -94,10 +90,7 @@ export default class GiveInteractionCommand extends InteractionCommand {
     emoji: string,
     mentionString: string,
   ): void {
-    ctx.replyE(
-      'success',
-      `${ctx.locale('commands:give.transfered', { value, emoji })} ${mentionString}`,
-    );
+    ctx.replyE('success', `${ctx.translate('transfered', { value, emoji })} ${mentionString}`);
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
@@ -117,7 +110,7 @@ export default class GiveInteractionCommand extends InteractionCommand {
       return;
     }
 
-    if (to.id === ctx.interaction.user.id) {
+    if (to.id === ctx.author.id) {
       GiveInteractionCommand.replyForYourselfError(ctx);
       return;
     }

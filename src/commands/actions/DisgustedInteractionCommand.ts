@@ -27,15 +27,15 @@ export default class DisgustedInteractionCommand extends InteractionCommand {
   async run(ctx: InteractionCommandContext): Promise<void> {
     const rand = await HttpRequests.getAssetImageUrl('disgusted');
     const user = ctx.options.getUser('user');
-    const avatar = ctx.interaction.user.displayAvatarURL({ format: 'png', dynamic: true });
+    const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
 
-    if (!user || user.id === ctx.interaction.user.id) {
+    if (!user || user.id === ctx.author.id) {
       const embed = new MessageEmbed()
-        .setTitle(ctx.locale('commands:disgusted.no-mention.embed_title'))
+        .setTitle(ctx.translate('no-mention.embed_title'))
         .setColor(COLORS.ACTIONS)
         .setDescription(
-          ctx.locale('commands:disgusted.no-mention.embed_description', {
-            author: ctx.interaction.user.toString(),
+          ctx.translate('no-mention.embed_description', {
+            author: ctx.author.toString(),
           }),
         )
         .setThumbnail(avatar)
@@ -45,16 +45,16 @@ export default class DisgustedInteractionCommand extends InteractionCommand {
     }
 
     if (user.bot) {
-      await ctx.replyT('error', 'commands:disgusted.bot');
+      await ctx.replyT('error', 'bot');
       return;
     }
 
     const embed = new MessageEmbed()
-      .setTitle('Nojo')
+      .setTitle(ctx.translate('embed_title'))
       .setColor(COLORS.ACTIONS)
       .setDescription(
-        ctx.locale('commands:disgusted.embed_description', {
-          author: ctx.interaction.user.toString(),
+        ctx.translate('embed_description', {
+          author: ctx.author.toString(),
           mention: user.toString(),
         }),
       )

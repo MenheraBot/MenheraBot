@@ -5,7 +5,7 @@ export default class CommandsRepository {
   constructor(private commandsModal: typeof Commands) {}
 
   async updateByName(command: ICommandsSchema): Promise<void> {
-    const updated = await this.commandsModal.findByIdAndUpdate(command._id);
+    const updated = await this.commandsModal.findByIdAndUpdate(command._id, command);
     if (!updated) await this.commandsModal.create(command);
   }
 

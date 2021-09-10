@@ -40,23 +40,23 @@ export default class ColorInteractionCommand extends InteractionCommand {
     const haspadrao = authorData.cores.some((pc) => pc.cor === '#a788ff');
 
     if (!haspadrao) {
-      await this.client.repositories.userRepository.update(ctx.interaction.user.id, {
+      await this.client.repositories.userRepository.update(ctx.author.id, {
         $push: { cores: { nome: '0 - Padrão', cor: '#a788ff', price: 0 } },
       });
     }
     const embed = new MessageEmbed()
-      .setTitle(`🏳️‍🌈 | ${ctx.locale('commands:color.embed_title')}`)
+      .setTitle(`🏳️‍🌈 | ${ctx.translate('embed_title')}`)
       .setColor(COLORS.Purple)
-      .setDescription(ctx.locale('commands:color.embed_description'));
+      .setDescription(ctx.translate('embed_description'));
 
     const selector = new MessageSelectMenu()
       .setCustomId(ctx.interaction.id)
       .setMinValues(1)
       .setMaxValues(1)
-      .setPlaceholder(`${emojis.rainbow} ${ctx.locale('commands:color.choose')}`);
+      .setPlaceholder(`${emojis.rainbow} ${ctx.translate('choose')}`);
 
     if (authorData.cores.length < 2) {
-      ctx.replyT('error', 'commands:color.min-color', {}, true);
+      ctx.replyT('error', 'min-color', {}, true);
       return;
     }
 
@@ -79,7 +79,7 @@ export default class ColorInteractionCommand extends InteractionCommand {
     });
 
     const filter = (int: MessageComponentInteraction) =>
-      int.user.id === ctx.interaction.user.id && int.customId === ctx.interaction.id;
+      int.user.id === ctx.author.id && int.customId === ctx.interaction.id;
 
     const collect = await ctx.channel
       .awaitMessageComponent({ componentType: 'SELECT_MENU', time: 15000, filter })
@@ -103,15 +103,15 @@ export default class ColorInteractionCommand extends InteractionCommand {
     const selected = collect.values[0] as ColorResolvable;
 
     const dataChoose = {
-      title: ctx.locale('commands:color.dataChoose.title'),
-      description: ctx.locale('commands:color.dataChoose.title'),
+      title: ctx.translate('dataChoose.title'),
+      description: ctx.translate('dataChoose.title'),
       color: selected,
       thumbnail: {
         url: 'https://i.imgur.com/t94XkgG.png',
       },
     };
 
-    await this.client.repositories.userRepository.update(ctx.interaction.user.id, {
+    await this.client.repositories.userRepository.update(ctx.author.id, {
       cor: selected,
     });
 

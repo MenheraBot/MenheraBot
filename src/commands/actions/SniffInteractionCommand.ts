@@ -27,15 +27,15 @@ export default class SniffInteractionCommand extends InteractionCommand {
   async run(ctx: InteractionCommandContext): Promise<void> {
     const rand = await HttpRequests.getAssetImageUrl('sniff');
     const user = ctx.options.getUser('user');
-    const avatar = ctx.interaction.user.displayAvatarURL({ format: 'png', dynamic: true });
+    const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
 
-    if (!user || user.id === ctx.interaction.user.id) {
+    if (!user || user.id === ctx.author.id) {
       const embed = new MessageEmbed()
-        .setTitle(ctx.locale('commands:sniff.no-mention.embed_title'))
+        .setTitle(ctx.translate('no-mention.embed_title'))
         .setColor(COLORS.ACTIONS)
         .setDescription(
-          ctx.locale('commands:sniff.no-mention.embed_description', {
-            author: ctx.interaction.user.toString(),
+          ctx.translate('no-mention.embed_description', {
+            author: ctx.author.toString(),
           }),
         )
         .setThumbnail(avatar)
@@ -46,7 +46,7 @@ export default class SniffInteractionCommand extends InteractionCommand {
     }
 
     if (user.bot) {
-      await ctx.replyT('error', 'commands:sniff.bot');
+      await ctx.replyT('error', 'bot');
       return;
     }
 
@@ -54,8 +54,8 @@ export default class SniffInteractionCommand extends InteractionCommand {
       .setTitle('Sniff Sniff')
       .setColor(COLORS.ACTIONS)
       .setDescription(
-        ctx.locale('commands:sniff.embed_description', {
-          author: ctx.interaction.user.toString(),
+        ctx.translate('embed_description', {
+          author: ctx.author.toString(),
           mention: user.toString(),
         }),
       )

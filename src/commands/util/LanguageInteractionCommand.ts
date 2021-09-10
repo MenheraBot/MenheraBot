@@ -22,30 +22,30 @@ export default class LanguageInteractionCommand extends InteractionCommand {
       .setCustomId(ctx.interaction.id)
       .setMinValues(1)
       .setMaxValues(1)
-      .setPlaceholder(ctx.locale('commands:language.select'))
+      .setPlaceholder(ctx.translate('select'))
       .addOptions([
         {
           label: ctx.locale('common:english'),
-          description: ctx.locale('commands:language.english'),
+          description: ctx.translate('english'),
           value: 'en-US',
           emoji: emojis.us,
         },
         {
           label: ctx.locale('common:portuguese'),
-          description: ctx.locale('commands:language.portuguese'),
+          description: ctx.translate('portuguese'),
           value: 'pt-BR',
           emoji: emojis.br,
         },
       ]);
 
     await ctx.reply({
-      content: `${emojis.question} | ${ctx.locale('commands:language.question')}`,
+      content: `${emojis.question} | ${ctx.translate('question')}`,
       components: [{ type: 'ACTION_ROW', components: [selector] }],
     });
 
     const collectInteracion = await Util.collectComponentInteractionWithId(
       ctx.channel,
-      ctx.interaction.user.id,
+      ctx.author.id,
       ctx.interaction.id,
       6969,
     ).catch(() => null);
@@ -53,7 +53,7 @@ export default class LanguageInteractionCommand extends InteractionCommand {
     if (!collectInteracion) {
       if (ctx.data.server.lang === 'en-US' || ctx.data.user.mamadas < 169) {
         ctx.editReply({
-          content: `${emojis.question} | ${ctx.locale('commands:language.question')}`,
+          content: `${emojis.question} | ${ctx.translate('question')}`,
           components: [
             {
               type: 'ACTION_ROW',
@@ -72,20 +72,20 @@ export default class LanguageInteractionCommand extends InteractionCommand {
       });
 
       ctx.editReply({
-        content: `${emojis.question} | ${ctx.locale('commands:language.question')}`,
+        content: `${emojis.question} | ${ctx.translate('question')}`,
         components: [{ type: 'ACTION_ROW', components: [selector] }],
       });
 
       const newCollect = await Util.collectComponentInteractionWithId(
         ctx.channel,
-        ctx.interaction.user.id,
+        ctx.author.id,
         ctx.interaction.id,
         6969,
       ).catch(() => null);
 
       if (!newCollect) {
         ctx.editReply({
-          content: `${emojis.question} | ${ctx.locale('commands:language.question')}`,
+          content: `${emojis.question} | ${ctx.translate('question')}`,
           components: [
             {
               type: 'ACTION_ROW',

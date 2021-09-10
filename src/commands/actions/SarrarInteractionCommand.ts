@@ -28,14 +28,14 @@ export default class SarrarInteractionCommand extends InteractionCommand {
   static async sarrada(ctx: InteractionCommandContext, user: User): Promise<void> {
     const rand = await HttpRequests.getAssetImageUrl('sarrar');
 
-    const avatar = ctx.interaction.user.displayAvatarURL({ format: 'png', dynamic: true });
+    const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     const embed = new MessageEmbed()
-      .setTitle(ctx.locale('commands:sarrar.embed_title'))
+      .setTitle(ctx.translate('embed_title'))
       .setColor(COLORS.ACTIONS)
       .setDescription(
-        ctx.locale('commands:sarrar.embed_description', {
-          author: ctx.interaction.user.toString(),
+        ctx.translate('embed_description', {
+          author: ctx.author.toString(),
           mention: user.toString(),
         }),
       )
@@ -49,27 +49,27 @@ export default class SarrarInteractionCommand extends InteractionCommand {
   async run(ctx: InteractionCommandContext): Promise<void> {
     const user = ctx.options.getUser('user');
 
-    if (user && user.id !== ctx.interaction.user.id) {
+    if (user && user.id !== ctx.author.id) {
       SarrarInteractionCommand.sarrada(ctx, user);
       return;
     }
 
     const randSozinho = await HttpRequests.getAssetImageUrl('sarrar_sozinho');
     const embed = new MessageEmbed()
-      .setTitle(ctx.locale('commands:sarrar.no-mention.embed_title'))
+      .setTitle(ctx.translate('no-mention.embed_title'))
       .setColor(COLORS.ACTIONS)
       .setDescription(
-        ctx.locale('commands:sarrar.no-mention.embed_description', {
-          author: ctx.interaction.user.toString(),
+        ctx.translate('no-mention.embed_description', {
+          author: ctx.author.toString(),
         }),
       )
       .setImage(randSozinho)
-      .setThumbnail(ctx.interaction.user.displayAvatarURL())
-      .setFooter(ctx.locale('commands:sarrar.no-mention.embed_footer'));
+      .setThumbnail(ctx.author.displayAvatarURL())
+      .setFooter(ctx.translate('no-mention.embed_footer'));
 
     const Button = new MessageButton()
       .setCustomId(ctx.interaction.id)
-      .setLabel(ctx.locale('commands:sarrar.sarrar'))
+      .setLabel(ctx.translate('sarrar'))
       .setStyle('PRIMARY');
 
     ctx.reply({
@@ -78,7 +78,7 @@ export default class SarrarInteractionCommand extends InteractionCommand {
     });
 
     const filter = (int: MessageComponentInteraction) =>
-      int.user.id !== ctx.interaction.user.id &&
+      int.user.id !== ctx.author.id &&
       !int.user.bot &&
       int.customId === ctx.interaction.id;
 

@@ -25,17 +25,17 @@ export default class BlockCmdInteractionCommand extends InteractionCommand {
     const cmd = this.client.slashCommands.get(ctx.options.getString('comando', true));
 
     if (!cmd) {
-      await ctx.replyT('error', 'commands:blockcommand.no-cmd');
+      await ctx.replyL('error', 'commands:blockcomando.no-cmd');
       return;
     }
 
     if (cmd.config.devsOnly) {
-      await ctx.replyT('error', 'commands:blockcommand.dev-cmd');
+      await ctx.replyL('error', 'commands:blockcomando.dev-cmd');
       return;
     }
 
     if (cmd.config.name === this.config.name) {
-      await ctx.replyT('error', 'commands:blockcommand.foda');
+      await ctx.replyL('error', 'commands:blockcomando.foda');
       return;
     }
 
@@ -47,7 +47,7 @@ export default class BlockCmdInteractionCommand extends InteractionCommand {
         ctx.interaction.guild?.id as string,
         ctx.data.server,
       );
-      await ctx.replyT('success', 'commands:blockcommand.unblock', { cmd: cmd.config.name });
+      await ctx.replyL('success', 'commands:blockcomando.unblock', { cmd: cmd.config.name });
       return;
     }
     ctx.data.server.disabledCommands.push(cmd.config.name);
@@ -55,6 +55,6 @@ export default class BlockCmdInteractionCommand extends InteractionCommand {
       ctx.interaction.guild?.id as string,
       ctx.data.server,
     );
-    await ctx.replyT('success', 'commands:blockcommand.block', { cmd: cmd.config.name });
+    await ctx.replyL('success', 'commands:blockcomando.block', { cmd: cmd.config.name });
   }
 }

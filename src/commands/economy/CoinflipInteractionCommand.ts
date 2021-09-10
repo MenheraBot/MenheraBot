@@ -31,31 +31,31 @@ export default class CoinflipInteractionCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    const user1 = ctx.interaction.user;
+    const user1 = ctx.author;
     const user2 = ctx.options.getUser('user', true);
     const input = ctx.options.getInteger('aposta', true);
 
     if (!input) {
-      await ctx.replyT('error', 'commands:coinflip.invalid-value', {}, true);
+      await ctx.replyT('error', 'invalid-value', {}, true);
       return;
     }
 
     if (!user2) {
-      await ctx.replyT('error', 'commands:coinflip.no-mention', {}, true);
+      await ctx.replyT('error', 'no-mention', {}, true);
       return;
     }
 
     if (user2.bot) {
-      await ctx.replyT('error', 'commands:coinflip.bot', {}, true);
+      await ctx.replyT('error', 'bot', {}, true);
       return;
     }
     if (user2.id === user1.id) {
-      await ctx.replyT('error', 'commands:coinflip.self-mention', {}, true);
+      await ctx.replyT('error', 'self-mention', {}, true);
       return;
     }
 
     if (input < 1) {
-      await ctx.replyT('error', 'commands:coinflip.invalid-value', {}, true);
+      await ctx.replyT('error', 'invalid-value', {}, true);
       return;
     }
 
@@ -63,32 +63,29 @@ export default class CoinflipInteractionCommand extends InteractionCommand {
     const db2 = await this.client.repositories.userRepository.find(user2.id);
 
     if (!db1 || !db2) {
-      await ctx.replyT('error', 'commands:coinflip.no-dbuser', {}, true);
+      await ctx.replyT('error', 'no-dbuser', {}, true);
       return;
     }
 
     if (input > db1.estrelinhas) {
-      await ctx.replyT('error', 'commands:coinflip.poor', {}, true);
+      await ctx.replyT('error', 'poor', { user: user1.toString() }, true);
       return;
     }
 
     if (input > db2.estrelinhas) {
-      await ctx.reply(
-        `<:negacao:759603958317711371> **|** ${user2} ${ctx.locale('commands:coinflip.poor')}`,
-        true,
-      );
+      await ctx.replyT('error', 'poor', { user: user2.toString() }, true);
       return;
     }
 
     const ConfirmButton = new MessageButton()
       .setCustomId(ctx.interaction.id)
-      .setLabel(ctx.locale('commands:coinflip.bet'))
+      .setLabel(ctx.translate('bet'))
       .setStyle('SUCCESS');
 
     ctx.reply({
-      content: ctx.locale('commands:coinflip.confirm', {
+      content: ctx.translate('confirm', {
         value: input,
-        author: ctx.interaction.user.toString(),
+        author: ctx.author.toString(),
         mention: user2.toString(),
       }),
       components: [{ type: 1, components: [ConfirmButton] }],
@@ -102,14 +99,12 @@ export default class CoinflipInteractionCommand extends InteractionCommand {
     );
 
     if (!coletor) {
-      ctx.interaction.editReply({
+      ctx.editReply({
         components: [
           {
             type: 1,
             components: [
-              ConfirmButton.setDisabled(true)
-                .setLabel(ctx.locale('commands:coinflip.timeout'))
-                .setEmoji('⌛'),
+              ConfirmButton.setDisabled(true).setLabel(ctx.translate('timeout')).setEmoji('⌛'),
             ],
           },
         ],
@@ -125,20 +120,22 @@ export default class CoinflipInteractionCommand extends InteractionCommand {
 
     if (choice === 'Cara') {
       await ctx.editReply({
-        content: `${ctx.locale('commands:coinflip.cara')}\n${ctx.locale(
-          'commands:coinflip.cara-texto',
-          { value: input, author: user1.toString(), mention: user2.toString() },
-        )}`,
+        content: `${ctx.translate('cara')}\n${ctx.translate('cara-texto', {
+          value: input,
+          author: user1.toString(),
+          mention: user2.toString(),
+        })}`,
         components: [],
       });
     } else {
       winner = user2.id;
       loser = user1.id;
       await ctx.editReply({
-        content: `${ctx.locale('commands:coinflip.coroa')}\n${ctx.locale(
-          'commands:coinflip.coroa-texto',
-          { value: input, author: user1.toString(), mention: user2.toString() },
-        )}`,
+        content: `${ctx.translate('coroa')}\n${ctx.translate('coroa-texto', {
+          value: input,
+          author: user1.toString(),
+          mention: user2.toString(),
+        })}`,
         components: [],
       });
     }

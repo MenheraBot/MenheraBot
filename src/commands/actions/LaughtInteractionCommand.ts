@@ -25,18 +25,18 @@ export default class LaughtInteractionCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    const avatar = ctx.interaction.user.displayAvatarURL({ format: 'png', dynamic: true });
+    const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     const rand = await HttpRequests.getAssetImageUrl('laugh');
     const user = ctx.options.getUser('user');
 
-    if (!user || user.id === ctx.interaction.user.id) {
+    if (!user || user.id === ctx.author.id) {
       const embed = new MessageEmbed()
-        .setTitle(ctx.locale('commands:laugh.no-mention.embed_title'))
+        .setTitle(ctx.translate('no-mention.embed_title'))
         .setColor(COLORS.ACTIONS)
         .setDescription(
-          ctx.locale('commands:laugh.no-mention.embed_description', {
-            author: ctx.interaction.user.toString(),
+          ctx.translate('no-mention.embed_description', {
+            author: ctx.author.toString(),
           }),
         )
         .setThumbnail(avatar)
@@ -47,11 +47,11 @@ export default class LaughtInteractionCommand extends InteractionCommand {
     }
 
     const embed = new MessageEmbed()
-      .setTitle(ctx.locale('commands:laugh.embed_title'))
+      .setTitle(ctx.translate('embed_title'))
       .setColor(COLORS.ACTIONS)
       .setDescription(
-        ctx.locale('commands:laugh.embed_description', {
-          author: ctx.interaction.user.toString(),
+        ctx.translate('embed_description', {
+          author: ctx.author.toString(),
           mention: user.toString(),
         }),
       )

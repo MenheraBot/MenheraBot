@@ -27,24 +27,24 @@ export default class ResurrectInteractionCommand extends InteractionCommand {
   async run(ctx: InteractionCommandContext): Promise<void> {
     const rand = await HttpRequests.getAssetImageUrl('resurrect');
     const user = ctx.options.getUser('user', true);
-    const avatar = ctx.interaction.user.displayAvatarURL({ format: 'png', dynamic: true });
+    const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
 
-    if (user.id === ctx.interaction.user.id) {
-      await ctx.replyT('question', 'commands:resurrect.self-mention', {}, true);
+    if (user.id === ctx.author.id) {
+      await ctx.replyT('question', 'self-mention', {}, true);
       return;
     }
 
     if (user.bot) {
-      await ctx.replyT('success', 'commands:resurrect.bot');
+      await ctx.replyT('success', 'bot');
       return;
     }
 
     const embed = new MessageEmbed()
-      .setTitle(ctx.locale('commands:resurrect.embed_title'))
+      .setTitle(ctx.translate('embed_title'))
       .setColor(COLORS.ACTIONS)
       .setDescription(
-        ctx.locale('commands:resurrect.embed_description', {
-          author: ctx.interaction.user.toString(),
+        ctx.translate('embed_description', {
+          author: ctx.author.toString(),
           mention: user.toString(),
         }),
       )

@@ -16,7 +16,7 @@ export default class SupportInteractionCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const embed = new MessageEmbed()
-      .setTitle(ctx.locale('commands:support.embed_title'))
+      .setTitle(ctx.translate('embed_title'))
       .setURL('https://discord.gg/fZMdQbA')
       .setColor('#970045')
       .setImage('https://i.imgur.com/ZsKuh8W.png')

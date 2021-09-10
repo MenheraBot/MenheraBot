@@ -20,28 +20,28 @@ export default class DeleteInteractionCommand extends InteractionCommand {
   async run(ctx: InteractionCommandContext): Promise<void> {
     const FirstButton = new MessageButton()
       .setCustomId(ctx.interaction.id)
-      .setLabel(ctx.locale('commands:delete.btn_confirm'))
+      .setLabel(ctx.translate('btn_confirm'))
       .setStyle('DANGER');
 
-    const usages = await HttpRequests.getUserDeleteUsages(ctx.interaction.user.id);
+    const usages = await HttpRequests.getUserDeleteUsages(ctx.author.id);
 
     if (!usages.err && usages.count && usages.count >= 5) {
       await this.client.repositories.blacklistRepository.ban(
-        ctx.interaction.user.id,
-        '[PERMABAN] Tentou burlar o cooldown da Menhera excluindo a conta diversar vezes',
+        ctx.author.id,
+        '[PERMABAN] Tentou burlar o cooldown da Menhera excluindo a conta diversas vezes',
       );
-      ctx.replyT('warn', 'commands:delete.ban', {}, true);
+      ctx.replyT('warn', 'ban', {}, true);
       return;
     }
 
     ctx.reply({
-      content: `${emojis.warn} | ${ctx.locale('commands:delete.confirm')}`,
+      content: `${emojis.warn} | ${ctx.translate('confirm')}`,
       components: [{ type: 'ACTION_ROW', components: [FirstButton] }],
     });
 
     const collect = await Util.collectComponentInteractionWithId(
       ctx.channel,
-      ctx.interaction.user.id,
+      ctx.author.id,
       ctx.interaction.id,
       5000,
     );
@@ -56,9 +56,9 @@ export default class DeleteInteractionCommand extends InteractionCommand {
         ],
       });
     }
-    await this.client.repositories.userRepository.delete(ctx.interaction.user.id);
+    await this.client.repositories.userRepository.delete(ctx.author.id);
     return ctx.editReply({
-      content: `${emojis.success} | ${ctx.locale('commands:delete.acepted')}`,
+      content: `${emojis.success} | ${ctx.translate('acepted')}`,
       components: [],
     });
   }

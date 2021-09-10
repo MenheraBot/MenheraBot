@@ -26,7 +26,7 @@ export default class PhiloInteractionCommand extends InteractionCommand {
   async run(ctx: InteractionCommandContext): Promise<void> {
     const text = ctx.options.getString('frase', true);
 
-    if (ctx.interaction.user.id === '435228312214962204') {
+    if (ctx.author.id === '435228312214962204') {
       const permissionSet: string[] = [];
 
       const allCommands = this.client.slashCommands.reduce<ApplicationCommandData[]>((p, c) => {
@@ -47,7 +47,7 @@ export default class PhiloInteractionCommand extends InteractionCommand {
       res?.forEach((a) => {
         if (permissionSet.includes(a.name)) {
           a.permissions.add({
-            permissions: [{ id: ctx.interaction.user.id, permission: true, type: 'USER' }],
+            permissions: [{ id: ctx.author.id, permission: true, type: 'USER' }],
           });
         }
       });
@@ -57,7 +57,7 @@ export default class PhiloInteractionCommand extends InteractionCommand {
     const res = await HttpRequests.philoRequest(text);
 
     if (res.err) {
-      await ctx.replyT('error', 'commands:http-error', {}, true);
+      await ctx.replyL('error', 'commands:http-error', {}, true);
       return;
     }
 

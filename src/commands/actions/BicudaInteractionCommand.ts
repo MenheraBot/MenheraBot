@@ -29,23 +29,23 @@ export default class BicudaInteractionCommand extends InteractionCommand {
     const user = ctx.options.getUser('user', true);
 
     if (user.bot) {
-      await ctx.replyT('warn', 'commands:bicuda.bot');
+      await ctx.replyL('warn', 'commands:bicuda.bot');
       return;
     }
 
-    if (user.id === ctx.interaction.user.id) {
-      await ctx.replyT('error', 'commands:bicuda.self-mention', {}, true);
+    if (user.id === ctx.author.id) {
+      await ctx.replyL('error', 'commands:bicuda.self-mention', {}, true);
       return;
     }
 
-    const avatar = ctx.interaction.user.displayAvatarURL({ format: 'png', dynamic: true });
+    const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     const embed = new MessageEmbed()
       .setTitle(ctx.locale('commands:bicuda.embed_title'))
       .setColor(COLORS.ACTIONS)
       .setDescription(
         ctx.locale('commands:bicuda.embed_description', {
-          author: ctx.interaction.user.toString(),
+          author: ctx.author.toString(),
           mention: user.toString(),
         }),
       )

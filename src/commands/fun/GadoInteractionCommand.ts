@@ -32,7 +32,7 @@ export default class GadoInteractionCommand extends InteractionCommand {
 
     const res = await HttpRequests.gadoRequest(link);
     if (res.err) {
-      await ctx.replyT('error', 'commands:http-error', {}, true);
+      await ctx.replyL('error', 'commands:http-error', {}, true);
       return;
     }
 
