@@ -77,8 +77,17 @@ export default class SarrarInteractionCommand extends InteractionCommand {
       components: [{ type: 'ACTION_ROW', components: [Button] }],
     });
 
-    const filter = (int: MessageComponentInteraction) =>
-      int.user.id !== ctx.author.id && !int.user.bot && int.customId === ctx.interaction.id;
+    const filter = async (int: MessageComponentInteraction) => {
+      if (int.user.bot) return false;
+      if (int.customId !== ctx.interaction.id) return false;
+      if (int.user.id === ctx.author.id) return false;
+
+      const isUserbanned = await this.client.repositories.blacklistRepository.isUserBanned(
+        int.user.id,
+      );
+
+      return !isUserbanned;
+    };
 
     const collected = await Util.collectComponentInteractionWithCustomFilter(
       ctx.channel,
