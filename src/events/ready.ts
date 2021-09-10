@@ -57,7 +57,7 @@ export default class ReadyEvent extends Event {
         await DiscordBotList.init();
 
         const allBannedUsers = await this.client.repositories.userRepository.getAllBannedUsersId();
-        await this.client.repositories.cacheRepository.addBannedUsers(allBannedUsers);
+        await this.client.repositories.blacklistRepository.addBannedUsers(allBannedUsers);
 
         setInterval(() => {
           saveCurrentBotStatus();
