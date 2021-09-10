@@ -37,7 +37,7 @@ export default class AvatarInteractionCommand extends InteractionCommand {
         user = await this.client.users.fetch(mentionUser.id);
         db = await this.client.repositories.userRepository.find(user.id);
       } catch {
-        await ctx.replyT('error', 'commands:avatar.unknow-user', {}, true);
+        await ctx.replyT('error', 'unknow-user', {}, true);
         return;
       }
     }
@@ -47,15 +47,15 @@ export default class AvatarInteractionCommand extends InteractionCommand {
     const img = user.displayAvatarURL({ dynamic: true, size: 1024 });
 
     const embed = new MessageEmbed()
-      .setTitle(ctx.locale('commands:avatar.title', { user: user.username }))
+      .setTitle(ctx.translate('title', { user: user.username }))
       .setImage(img)
       .setColor(cor)
-      .setFooter(ctx.locale('commands:avatar.footer'));
+      .setFooter(ctx.translate('footer'));
 
     if (user.id === this.client.user?.id) {
-      embed.setTitle(ctx.locale('commands:avatar.client_title', { user: user.username }));
+      embed.setTitle(ctx.translate('client_title', { user: user.username }));
       embed.setColor('#f276f3');
-      embed.setFooter(ctx.locale('commands:avatar.client_footer', { user: user.username }));
+      embed.setFooter(ctx.translate('client_footer', { user: user.username }));
     }
     await ctx.reply({ embeds: [embed] });
   }

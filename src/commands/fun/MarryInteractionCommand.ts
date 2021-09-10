@@ -30,43 +30,48 @@ export default class MarryInteractionCommand extends InteractionCommand {
     const mencionado = ctx.options.getUser('user', true);
 
     if (mencionado.bot) {
-      await ctx.replyT('error', 'commands:marry.bot', {}, true);
+      await ctx.replyT('error', 'bot', {}, true);
       return;
     }
     if (mencionado.id === ctx.author.id) {
-      await ctx.replyT('error', 'commands:marry.self-mention', {}, true);
+      await ctx.replyT('error', 'self-mention', {}, true);
       return;
     }
 
     if (authorData.casado && authorData.casado !== 'false') {
-      await ctx.replyT('error', 'commands:marry.married', {}, true);
+      await ctx.replyT('error', 'married', {}, true);
       return;
     }
 
     const user2 = await this.client.repositories.userRepository.find(mencionado.id);
 
     if (!user2) {
-      await ctx.replyT('warn', 'commands:marry.no-dbuser', {}, true);
+      await ctx.replyT('warn', 'no-dbuser', {}, true);
+      return;
+    }
+
+    if (user2.ban === true) {
+      await ctx.replyT('error', 'banned-user', {}, true);
       return;
     }
 
     if (user2.casado && user2.casado !== 'false') {
-      await ctx.replyT('error', 'commands:marry.mention-married', {}, true);
+      await ctx.replyT('error', 'mention-married', {}, true);
       return;
     }
 
     const ConfirmButton = new MessageButton()
       .setCustomId(`${ctx.interaction.id} CONFIRM`)
-      .setLabel(ctx.locale('commands:marry.accept'))
+      .setLabel(ctx.translate('accept'))
       .setStyle('SUCCESS');
 
     const CancellButton = new MessageButton()
       .setCustomId(`${ctx.interaction.id} CANCEL`)
-      .setLabel(ctx.locale('commands:marry:deny'))
+      .setLabel(ctx.translate('deny'))
       .setStyle('DANGER');
 
     ctx.reply({
-      content: ctx.locale('commands:marry.first-text', {
+      content: ctx.translate('first-text', {
         author: ctx.author.toString(),
         toMarry: mencionado.toString(),
       }),
@@ -97,7 +102,7 @@ export default class MarryInteractionCommand extends InteractionCommand {
 
     if (collected.customId.endsWith('CANCEL')) {
       ctx.editReply({
-        content: `${emojis.error} | ${ctx.locale('commands:marry.negated', {
+        content: `${emojis.error} | ${ctx.translate('negated', {
           toMarry: mencionado.toString(),
           author: ctx.author.toString(),
         })}`,
@@ -115,7 +120,7 @@ export default class MarryInteractionCommand extends InteractionCommand {
     }
 
     ctx.editReply({
-      content: `${emojis.ring} | ${ctx.locale('commands:marry.accepted', {
+      content: `${emojis.ring} | ${ctx.translate('accepted', {
         toMarry: mencionado.toString(),
         author: ctx.author.toString(),
       })}`,

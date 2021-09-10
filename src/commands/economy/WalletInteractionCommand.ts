@@ -27,7 +27,12 @@ export default class WalletInteractionCommand extends InteractionCommand {
 
     const user = await this.client.repositories.userRepository.find(pessoa.id);
     if (!user) {
-      await ctx.replyT('error', 'commands:wallet.no-dbuser', {}, true);
+      await ctx.replyT('error', 'no-dbuser', {}, true);
+      return;
+    }
+
+    if (user.ban === true) {
+      ctx.replyT('error', 'banned-user', {}, true);
       return;
     }
 
@@ -38,46 +43,46 @@ export default class WalletInteractionCommand extends InteractionCommand {
     } else cor = '#a788ff' as const;
 
     const embed = new MessageEmbed()
-      .setTitle(ctx.locale('commands:wallet.title', { user: pessoa.tag }))
+      .setTitle(ctx.translate('title', { user: pessoa.tag }))
       .setColor(cor)
       .addFields([
         {
-          name: `⭐ | ${ctx.locale('commands:wallet.stars')}`,
+          name: `⭐ | ${ctx.translate('stars')}`,
           value: `**${user.estrelinhas}**`,
           inline: true,
         },
         {
-          name: `🔑 | ${ctx.locale('commands:wallet.rolls')}`,
+          name: `🔑 | ${ctx.translate('rolls')}`,
           value: `**${user.rolls}**`,
           inline: true,
         },
         {
-          name: `<:DEMON:758765044443381780> | ${ctx.locale('commands:wallet.demons')} `,
+          name: `<:DEMON:758765044443381780> | ${ctx.translate('demons')} `,
           value: `**${user.caçados}**`,
           inline: true,
         },
         {
-          name: `🦍 | ${ctx.locale('commands:hunt.giants')}`,
+          name: `🦍 | ${ctx.translate('giants')}`,
           value: `**${user.giants || 0}**`,
           inline: true,
         },
         {
-          name: `<:ANGEL:758765044204437535> | ${ctx.locale('commands:wallet.angels')}`,
+          name: `<:ANGEL:758765044204437535> | ${ctx.translate('angels')}`,
           value: `**${user.anjos}**`,
           inline: true,
         },
         {
-          name: `👼| ${ctx.locale('commands:hunt.archangel')}`,
+          name: `👼| ${ctx.translate('archangel')}`,
           value: `**${user.arcanjos || 0}**`,
           inline: true,
         },
         {
-          name: `<:SemiGod:758766732235374674> | ${ctx.locale('commands:wallet.sd')}`,
+          name: `<:SemiGod:758766732235374674> | ${ctx.translate('sd')}`,
           value: `**${user.semideuses}**`,
           inline: true,
         },
         {
-          name: `<:God:758474639570894899> | ${ctx.locale('commands:wallet.god')}`,
+          name: `<:God:758474639570894899> | ${ctx.translate('god')}`,
           value: `**${user.deuses}**`,
           inline: true,
         },

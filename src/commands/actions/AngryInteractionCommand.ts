@@ -46,7 +46,7 @@ export default class AngryInteractionCommand extends InteractionCommand {
     }
 
     if (user.bot) {
-      await ctx.replyT('error', 'commands:angry.bot');
+      await ctx.replyL('error', 'commands:angry.bot');
       return;
     }
 

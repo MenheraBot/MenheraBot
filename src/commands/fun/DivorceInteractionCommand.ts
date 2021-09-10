@@ -20,24 +20,22 @@ export default class DivorceInteractionCommand extends InteractionCommand {
     const authorData = ctx.data.user;
 
     if (!authorData.casado || authorData.casado === 'false') {
-      await ctx.replyT('warn', 'commands:divorce.author-single', {}, true);
+      await ctx.replyT('warn', 'author-single', {}, true);
       return;
     }
 
     const ConfirmButton = new MessageButton()
       .setCustomId(`${ctx.interaction.id} CONFIRM`)
-      .setLabel(ctx.locale('commands:divorce.divorce'))
+      .setLabel(ctx.translate('divorce'))
       .setStyle('SUCCESS');
 
     const CancellButton = new MessageButton()
       .setCustomId(`${ctx.interaction.id} CANCEL`)
-      .setLabel(ctx.locale('commands:divorce:cancell'))
+      .setLabel(ctx.translate('cancel'))
       .setStyle('DANGER');
 
     ctx.reply({
-      content: `${emojis.question} | ${ctx.locale('commands:divorce.confirmation')} <@${
-        authorData.casado
-      }> ?`,
+      content: `${emojis.question} | ${ctx.translate('confirmation')} <@${authorData.casado}> ?`,
       components: [{ type: 1, components: [ConfirmButton, CancellButton] }],
     });
 
@@ -65,7 +63,7 @@ export default class DivorceInteractionCommand extends InteractionCommand {
 
     if (collected.customId.endsWith('CONFIRM')) {
       ctx.editReply({
-        content: `${emojis.success} | ${ctx.locale('commands:divorce.confirmed', {
+        content: `${emojis.success} | ${ctx.translate('confirmed', {
           author: ctx.author.toString(),
           mention: `<@${authorData.casado}>`,
         })}`,
@@ -86,7 +84,7 @@ export default class DivorceInteractionCommand extends InteractionCommand {
       );
     } else {
       ctx.editReply({
-        content: `${emojis.error} | ${ctx.locale('commands:divorce.canceled')}`,
+        content: `${emojis.error} | ${ctx.translate('canceled')}`,
         components: [
           {
             type: 1,

@@ -16,13 +16,13 @@ export default class VoteInteractionCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const embed = new MessageEmbed()
-      .setTitle(ctx.locale('commands:vote.embed_title'))
+      .setTitle(ctx.translate('embed_title'))
       .setColor('#f763f8')
       .setURL('https://top.gg/bot/708014856711962654/vote')
       .setImage('https://i.imgur.com/27GxqX1.jpg')
-      .setDescription(ctx.locale('commands:vote.embed_description'))
+      .setDescription(ctx.translate('embed_description'))
       .setFooter(
-        ctx.locale('commands:vote.embed_footer', { author: ctx.author.tag }),
+        ctx.translate('embed_footer', { author: ctx.author.tag }),
         ctx.author.displayAvatarURL(),
       )
       .setTimestamp();

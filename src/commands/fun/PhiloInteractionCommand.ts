@@ -57,7 +57,7 @@ export default class PhiloInteractionCommand extends InteractionCommand {
     const res = await HttpRequests.philoRequest(text);
 
     if (res.err) {
-      await ctx.replyT('error', 'commands:http-error', {}, true);
+      await ctx.replyL('error', 'commands:http-error', {}, true);
       return;
     }
 

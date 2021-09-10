@@ -61,7 +61,7 @@ export default class BlockChannelInteractionCommand extends InteractionCommand {
       const selectedChannel = ctx.options.getChannel('canal', true);
 
       if (selectedChannel?.type !== 'GUILD_TEXT') {
-        ctx.replyT('error', 'commands:blockcanal.invalid-channel', {}, true);
+        ctx.replyL('error', 'commands:blockcanal.invalid-channel', {}, true);
         return;
       }
 
@@ -73,7 +73,7 @@ export default class BlockChannelInteractionCommand extends InteractionCommand {
           ctx.interaction.guild?.id as string,
           ctx.data.server,
         );
-        await ctx.replyT('success', 'commands:blockcanal.unblock', {
+        await ctx.replyL('success', 'commands:blockcanal.unblock', {
           channel: selectedChannel.toString(),
         });
         return;
@@ -83,7 +83,7 @@ export default class BlockChannelInteractionCommand extends InteractionCommand {
         ctx.interaction.guild?.id as string,
         ctx.data.server,
       );
-      await ctx.replyT('success', 'commands:blockcanal.block', {
+      await ctx.replyL('success', 'commands:blockcanal.block', {
         channel: selectedChannel.toString(),
       });
       return;

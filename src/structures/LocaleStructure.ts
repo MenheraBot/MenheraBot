@@ -19,7 +19,7 @@ export default class LocaleStructure {
       'items',
       'quests',
     ];
-    this.languages = ['pt-BR', 'en-US', 'pt-LIGMA'];
+    this.languages = ['pt-BR', 'en-US'];
   }
 
   async load(): Promise<void> {

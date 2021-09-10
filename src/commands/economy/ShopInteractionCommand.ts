@@ -223,55 +223,55 @@ export default class ShopInteractionCommand extends InteractionCommand {
         {
           cor: '#6308c0',
           price: shopEconomy.colors.purple,
-          nome: `**${ctx.locale('commands:shop.colors.purple')}**`,
+          nome: `**${ctx.translate('colors.purple')}**`,
         },
         {
           cor: '#df0509',
           price: shopEconomy.colors.red,
-          nome: `**${ctx.locale('commands:shop.colors.red')}**`,
+          nome: `**${ctx.translate('colors.red')}**`,
         },
         {
           cor: '#55e0f7',
           price: shopEconomy.colors.cian,
-          nome: `**${ctx.locale('commands:shop.colors.cian')}**`,
+          nome: `**${ctx.translate('colors.cian')}**`,
         },
         {
           cor: '#03fd1c',
           price: shopEconomy.colors.green,
-          nome: `**${ctx.locale('commands:shop.colors.green')}**`,
+          nome: `**${ctx.translate('colors.green')}**`,
         },
         {
           cor: '#fd03c9',
           price: shopEconomy.colors.pink,
-          nome: `**${ctx.locale('commands:shop.colors.pink')}**`,
+          nome: `**${ctx.translate('colors.pink')}**`,
         },
         {
           cor: '#e2ff08',
           price: shopEconomy.colors.yellow,
-          nome: `**${ctx.locale('commands:shop.colors.yellow')}**`,
+          nome: `**${ctx.translate('colors.yellow')}**`,
         },
         {
           cor: 'SUA ESCOLHA',
           price: shopEconomy.colors.your_choice,
-          nome: `**${ctx.locale('commands:shop.colors.your_choice')}**`,
+          nome: `**${ctx.translate('colors.your_choice')}**`,
         },
       ];
 
       const dataCores = {
-        title: ctx.locale('commands:shop.dataCores_fields.title'),
+        title: ctx.translate('dataCores_fields.title'),
         color: '#6cbe50' as const,
         thumbnail: {
           url: 'https://i.imgur.com/t94XkgG.png',
         },
         fields: [
           {
-            name: ctx.locale('commands:shop.dataCores_fields.field_name'),
+            name: ctx.translate('dataCores_fields.field_name'),
             value: availableColors
               .map(
                 (c) =>
-                  `${c.nome} | ${ctx.locale('commands:shop.dataCores_fields.color_code')} \`${
+                  `${c.nome} | ${ctx.translate('dataCores_fields.color_code')} \`${
                     c.cor
-                  }\` | ${ctx.locale('commands:shop.dataCores_fields.price')} **${c.price}**⭐`,
+                  }\` | ${ctx.translate('dataCores_fields.price')} **${c.price}**⭐`,
               )
               .join('\n'),
             inline: false,
@@ -284,15 +284,15 @@ export default class ShopInteractionCommand extends InteractionCommand {
 
     const valorRoll = shopEconomy.hunts.roll;
     const dataRolls = {
-      title: ctx.locale('commands:shop.dataRolls_fields.title'),
+      title: ctx.translate('dataRolls_fields.title'),
       color: '#b66642' as const,
       thumbnail: {
         url: 'https://i.imgur.com/t94XkgG.png',
       },
       fields: [
         {
-          name: ctx.locale('commands:shop.dataRolls_fields.fields.name'),
-          value: ctx.locale('commands:shop.dataRolls_fields.fields.value', {
+          name: ctx.translate('dataRolls_fields.fields.name'),
+          value: ctx.translate('dataRolls_fields.fields.value', {
             price: valorRoll,
           }),
           inline: false,
@@ -314,15 +314,15 @@ export default class ShopInteractionCommand extends InteractionCommand {
       const valorDeus = shopEconomy.hunts.god;
 
       const dataVender = {
-        title: ctx.locale('commands:shop.embed_title'),
+        title: ctx.translate('embed_title'),
         color: '#e77fa1' as const,
         thumbnail: {
           url: 'https://i.imgur.com/t94XkgG.png',
         },
         fields: [
           {
-            name: ctx.locale('commands:shop.dataVender.main.fields.name'),
-            value: ctx.locale('commands:shop.dataVender.main.fields.value', {
+            name: ctx.translate('dataVender.main.fields.name'),
+            value: ctx.translate('dataVender.main.fields.value', {
               demon: valorDemonio,
               giant: valorGigante,
               angel: valorAnjo,
@@ -350,20 +350,20 @@ export default class ShopInteractionCommand extends InteractionCommand {
     const valor = ctx.options.getInteger('quantidade', true);
 
     if (Number.isNaN(valor) || valor < 1) {
-      ctx.replyT('error', 'commands:shop.dataVender.invalid-args', {}, true);
+      ctx.replyT('error', 'dataVender.invalid-args', {}, true);
       return;
     }
 
     switch (type) {
       case '1':
         if (valor > ctx.data.user.caçados) {
-          ctx.replyT('error', 'commands:shop.dataVender.poor', { var: 'demônios' }, true);
+          ctx.replyT('error', 'dataVender.poor', { var: 'demônios' }, true);
           return;
         }
         this.client.repositories.userRepository.update(ctx.author.id, {
           $inc: { caçados: -valor, estrelinhas: valor * valorDemonio },
         });
-        ctx.replyT('success', 'commands:shop.dataVender.success-demon', {
+        ctx.replyT('success', 'dataVender.success-demon', {
           value: valor,
           cost: valor * valorDemonio,
           quantity: ctx.data.user.caçados - valor,
@@ -372,13 +372,13 @@ export default class ShopInteractionCommand extends InteractionCommand {
         break;
       case '2':
         if (valor > ctx.data.user.giants) {
-          ctx.replyT('error', 'commands:shop.dataVender.poor', { var: 'gigantes' }, true);
+          ctx.replyT('error', 'dataVender.poor', { var: 'gigantes' }, true);
           return;
         }
         this.client.repositories.userRepository.update(ctx.author.id, {
           $inc: { giants: -valor, estrelinhas: valor * valorGigante },
         });
-        ctx.replyT('success', 'commands:shop.dataVender.success-giant', {
+        ctx.replyT('success', 'dataVender.success-giant', {
           value: valor,
           cost: valor * valorGigante,
           quantity: ctx.data.user.anjos - valor,
@@ -387,13 +387,13 @@ export default class ShopInteractionCommand extends InteractionCommand {
         break;
       case '3':
         if (valor > ctx.data.user.anjos) {
-          ctx.replyT('error', 'commands:shop.dataVender.poor', { var: 'anjos' }, true);
+          ctx.replyT('error', 'dataVender.poor', { var: 'anjos' }, true);
           return;
         }
         this.client.repositories.userRepository.update(ctx.author.id, {
           $inc: { anjos: -valor, estrelinhas: valor * valorAnjo },
         });
-        ctx.replyT('success', 'commands:shop.dataVender.success-angel', {
+        ctx.replyT('success', 'dataVender.success-angel', {
           value: valor,
           cost: valor * valorAnjo,
           quantity: ctx.data.user.anjos - valor,
@@ -402,13 +402,13 @@ export default class ShopInteractionCommand extends InteractionCommand {
         break;
       case '4':
         if (valor > ctx.data.user.arcanjos) {
-          ctx.replyT('error', 'commands:shop.dataVender.poor', { var: 'arcanjos' }, true);
+          ctx.replyT('error', 'dataVender.poor', { var: 'arcanjos' }, true);
           return;
         }
         this.client.repositories.userRepository.update(ctx.author.id, {
           $inc: { arcanjos: -valor, estrelinhas: valor * valorArch },
         });
-        ctx.replyT('success', 'commands:shop.dataVender.success-archangel', {
+        ctx.replyT('success', 'dataVender.success-archangel', {
           value: valor,
           cost: valor * valorArch,
           quantity: ctx.data.user.anjos - valor,
@@ -417,13 +417,13 @@ export default class ShopInteractionCommand extends InteractionCommand {
         break;
       case '5':
         if (valor > ctx.data.user.semideuses) {
-          ctx.replyT('error', 'commands:shop.dataVender.poor', { var: 'semideuses' }, true);
+          ctx.replyT('error', 'dataVender.poor', { var: 'semideuses' }, true);
           return;
         }
         this.client.repositories.userRepository.update(ctx.author.id, {
           $inc: { semideuses: -valor, estrelinhas: valor * valorSD },
         });
-        ctx.replyT('success', 'commands:shop.dataVender.success-sd', {
+        ctx.replyT('success', 'dataVender.success-sd', {
           value: valor,
           cost: valor * valorSD,
           quantity: ctx.data.user.semideuses - valor,
@@ -432,13 +432,13 @@ export default class ShopInteractionCommand extends InteractionCommand {
         break;
       case '6':
         if (valor > ctx.data.user.deuses) {
-          ctx.replyT('error', 'commands:shop.dataVender.poor', { var: 'deuses' }, true);
+          ctx.replyT('error', 'dataVender.poor', { var: 'deuses' }, true);
           return;
         }
         this.client.repositories.userRepository.update(ctx.author.id, {
           $inc: { deuses: -valor, estrelinhas: valor * valorDeus },
         });
-        ctx.replyT('success', 'commands:shop.dataVender.success-god', {
+        ctx.replyT('success', 'dataVender.success-god', {
           value: valor,
           cost: valor * valorDeus,
           quantity: ctx.data.user.deuses - valor,
@@ -446,7 +446,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
         });
         break;
       default:
-        ctx.replyT('error', 'commands:shop.dataVender.invalid-args', {}, true);
+        ctx.replyT('error', 'dataVender.invalid-args', {}, true);
     }
   }
 
@@ -456,16 +456,16 @@ export default class ShopInteractionCommand extends InteractionCommand {
     const valor = ctx.options.getInteger('quantidade', true);
 
     if (!valor) {
-      ctx.replyT('error', 'commands:shop.dataRolls_fields.buy_rolls.invalid-number', {}, true);
+      ctx.replyT('error', 'dataRolls_fields.buy_rolls.invalid-number', {}, true);
       return;
     }
     if (Number.isNaN(valor) || valor < 1) {
-      ctx.replyT('error', 'commands:shop.dataRolls_fields.buy_rolls.invalid-number', {}, true);
+      ctx.replyT('error', 'dataRolls_fields.buy_rolls.invalid-number', {}, true);
       return;
     }
 
     if (valor * valorRoll > ctx.data.user.estrelinhas) {
-      ctx.replyT('error', 'commands:shop.dataRolls_fields.buy_rolls.poor', {}, true);
+      ctx.replyT('error', 'dataRolls_fields.buy_rolls.poor', {}, true);
       return;
     }
 
@@ -475,7 +475,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
       $inc: { rolls: valor, estrelinhas: -valueToPay },
     });
 
-    ctx.replyT('success', 'commands:shop.dataRolls_fields.buy_rolls.success', {
+    ctx.replyT('success', 'dataRolls_fields.buy_rolls.success', {
       quantity: valor,
       value: valueToPay,
       rolls: ctx.data.user.rolls + valor,
@@ -488,37 +488,37 @@ export default class ShopInteractionCommand extends InteractionCommand {
       {
         cor: '#6308c0',
         price: shopEconomy.colors.purple,
-        nome: `**${ctx.locale('commands:shop.colors.purple')}**`,
+        nome: `**${ctx.translate('colors.purple')}**`,
       },
       {
         cor: '#df0509',
         price: shopEconomy.colors.red,
-        nome: `**${ctx.locale('commands:shop.colors.red')}**`,
+        nome: `**${ctx.translate('colors.red')}**`,
       },
       {
         cor: '#55e0f7',
         price: shopEconomy.colors.cian,
-        nome: `**${ctx.locale('commands:shop.colors.cian')}**`,
+        nome: `**${ctx.translate('colors.cian')}**`,
       },
       {
         cor: '#03fd1c',
         price: shopEconomy.colors.green,
-        nome: `**${ctx.locale('commands:shop.colors.green')}**`,
+        nome: `**${ctx.translate('colors.green')}**`,
       },
       {
         cor: '#fd03c9',
         price: shopEconomy.colors.pink,
-        nome: `**${ctx.locale('commands:shop.colors.pink')}**`,
+        nome: `**${ctx.translate('colors.pink')}**`,
       },
       {
         cor: '#e2ff08',
         price: shopEconomy.colors.yellow,
-        nome: `**${ctx.locale('commands:shop.colors.yellow')}**`,
+        nome: `**${ctx.translate('colors.yellow')}**`,
       },
       {
         cor: 'SUA ESCOLHA',
         price: shopEconomy.colors.your_choice,
-        nome: `**${ctx.locale('commands:shop.colors.your_choice')}**`,
+        nome: `**${ctx.translate('colors.your_choice')}**`,
       },
     ];
 
@@ -529,22 +529,22 @@ export default class ShopInteractionCommand extends InteractionCommand {
     switch (selectedColor) {
       case '1':
         if (ctx.data.user.cores.some((res) => res.cor === availableColors[0].cor)) {
-          ctx.replyT('yellow_circle', 'commands:shop.buy_colors.has-color', {}, true);
+          ctx.replyT('yellow_circle', 'buy_colors.has-color', {}, true);
           return;
         }
         if (ctx.data.user.estrelinhas < availableColors[0].price) {
-          ctx.replyT('error', 'commands:shop.buy_colors.poor', {}, true);
+          ctx.replyT('error', 'buy_colors.poor', {}, true);
           return;
         }
         choice = 0;
         break;
       case '2':
         if (ctx.data.user.cores.some((res) => res.cor === availableColors[1].cor)) {
-          ctx.replyT('yellow_circle', 'commands:shop.buy_colors.has-color', {}, true);
+          ctx.replyT('yellow_circle', 'buy_colors.has-color', {}, true);
           return;
         }
         if (ctx.data.user.estrelinhas < availableColors[1].price) {
-          ctx.replyT('error', 'commands:shop.buy_colors.poor', {}, true);
+          ctx.replyT('error', 'buy_colors.poor', {}, true);
           return;
         }
 
@@ -552,44 +552,44 @@ export default class ShopInteractionCommand extends InteractionCommand {
         break;
       case '3':
         if (ctx.data.user.cores.some((res) => res.cor === availableColors[2].cor)) {
-          ctx.replyT('yellow_circle', 'commands:shop.buy_colors.has-color', {}, true);
+          ctx.replyT('yellow_circle', 'buy_colors.has-color', {}, true);
           return;
         }
         if (ctx.data.user.estrelinhas < availableColors[2].price) {
-          ctx.replyT('error', 'commands:shop.buy_colors.poor', {}, true);
+          ctx.replyT('error', 'buy_colors.poor', {}, true);
           return;
         }
         choice = 2;
         break;
       case '4':
         if (ctx.data.user.cores.some((res) => res.cor === availableColors[3].cor)) {
-          ctx.replyT('yellow_circle', 'commands:shop.buy_colors.has-color', {}, true);
+          ctx.replyT('yellow_circle', 'buy_colors.has-color', {}, true);
           return;
         }
         if (ctx.data.user.estrelinhas < availableColors[3].price) {
-          ctx.replyT('error', 'commands:shop.buy_colors.poor', {}, true);
+          ctx.replyT('error', 'buy_colors.poor', {}, true);
           return;
         }
         choice = 3;
         break;
       case '5':
         if (ctx.data.user.cores.some((res) => res.cor === availableColors[4].cor)) {
-          ctx.replyT('yellow_circle', 'commands:shop.buy_colors.has-color', {}, true);
+          ctx.replyT('yellow_circle', 'buy_colors.has-color', {}, true);
           return;
         }
         if (ctx.data.user.estrelinhas < availableColors[4].price) {
-          ctx.replyT('error', 'commands:shop.buy_colors.poor', {}, true);
+          ctx.replyT('error', 'buy_colors.poor', {}, true);
           return;
         }
         choice = 4;
         break;
       case '6':
         if (ctx.data.user.cores.some((res) => res.cor === availableColors[5].cor)) {
-          ctx.replyT('yellow_circle', 'commands:shop.buy_colors.has-color', {}, true);
+          ctx.replyT('yellow_circle', 'buy_colors.has-color', {}, true);
           return;
         }
         if (ctx.data.user.estrelinhas < availableColors[5].price) {
-          ctx.replyT('error', 'commands:shop.buy_colors.poor', {}, true);
+          ctx.replyT('error', 'buy_colors.poor', {}, true);
           return;
         }
         choice = 5;
@@ -597,7 +597,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
 
       case '7': {
         if (ctx.data.user.estrelinhas < availableColors[6].price) {
-          ctx.replyT('error', 'commands:shop.buy_colors.poor', {}, true);
+          ctx.replyT('error', 'buy_colors.poor', {}, true);
           return;
         }
         choice = 6;
@@ -605,17 +605,17 @@ export default class ShopInteractionCommand extends InteractionCommand {
         const hexColor = ctx.options.getString('hex');
 
         const name =
-          ctx.options.getString('nome')?.slice(0, 20) ?? ctx.locale('shop:buy_colors.no-name');
+          ctx.options.getString('nome')?.slice(0, 20) ?? ctx.translate('buy_colors.no-name');
 
         if (!hexColor) {
-          ctx.replyT('error', 'commands:shop.buy_colors.invalid-color', {}, true);
+          ctx.replyT('error', 'buy_colors.invalid-color', {}, true);
           return;
         }
 
         if (
           ctx.data.user.cores.some((a) => `${a.cor}`.replace('#', '') === hexColor.replace('#', ''))
         ) {
-          ctx.replyT('yellow_circle', 'commands:shop.buy_colors.has-color', {}, true);
+          ctx.replyT('yellow_circle', 'buy_colors.has-color', {}, true);
           return;
         }
 
@@ -631,13 +631,13 @@ export default class ShopInteractionCommand extends InteractionCommand {
             $inc: { estrelinhas: -availableColors[6].price },
             $push: { cores: toPush },
           });
-          ctx.replyT('success', 'commands:shop.buy_colors.yc-confirm', {
+          ctx.replyT('success', 'buy_colors.yc-confirm', {
             color: hexColor,
             price: availableColors[6].price,
             stars: ctx.data.user.estrelinhas - availableColors[6].price,
           });
         } else {
-          ctx.replyT('error', 'commands:shop.buy_colors.invalid-color', {}, true);
+          ctx.replyT('error', 'buy_colors.invalid-color', {}, true);
         }
       }
     }
@@ -646,7 +646,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
         $inc: { estrelinhas: -availableColors[choice].price },
         $push: { cores: availableColors[choice] },
       });
-      ctx.replyT('success', 'commands:shop.buy_colors.buy-success', {
+      ctx.replyT('success', 'buy_colors.buy-success', {
         name: availableColors[choice].nome,
         price: availableColors[choice].price,
         stars: ctx.data.user.estrelinhas - availableColors[choice].price,

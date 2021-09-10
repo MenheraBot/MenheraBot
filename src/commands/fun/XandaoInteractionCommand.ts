@@ -24,7 +24,7 @@ export default class XandaoInteractionCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     if (ctx.channel.type === 'DM' || ctx.channel.isThread()) {
-      ctx.replyT('error', 'commands:xandão.only-text', {}, true);
+      ctx.replyT('error', 'only-text', {}, true);
       return;
     }
 
@@ -107,7 +107,7 @@ export default class XandaoInteractionCommand extends InteractionCommand {
         ctx.deleteReply();
       }
     } catch (err) {
-      await ctx.editReply({ content: `${ctx.locale('commands:xandão.err_message')}` });
+      await ctx.editReply({ content: `${ctx.translate('err_message')}` });
     }
   }
 }

@@ -37,7 +37,7 @@ export default class MacetavaInteractionCommand extends InteractionCommand {
     );
 
     if (res.err) {
-      await ctx.replyT('error', 'commands:http-error', {}, true);
+      await ctx.replyL('error', 'commands:http-error', {}, true);
       return;
     }
 

@@ -100,15 +100,13 @@ export default class TopInteractionCommand extends InteractionCommand {
     }
     const embed = new MessageEmbed()
 
-      .setTitle(`:robot: |  ${ctx.locale('commands:top.commands')}`)
+      .setTitle(`:robot: |  ${ctx.translate('commands')}`)
       .setColor('#f47fff');
 
     for (let i = 0; i < res.length; i++) {
       embed.addField(
         `**${i + 1} -** ${Util.captalize(res[i].name)} `,
-        `${ctx.locale('commands:top.used')} **${res[i].usages}** ${ctx.locale(
-          'commands:top.times',
-        )}`,
+        `${ctx.translate('used')} **${res[i].usages}** ${ctx.translate('times')}`,
         false,
       );
     }
@@ -170,7 +168,7 @@ export default class TopInteractionCommand extends InteractionCommand {
       skip = (pagina - 1) * 10;
     }
 
-    const res = await this.client.database.Users.find({}, ['mamadas', 'id'], {
+    const res = await this.client.database.Users.find({ ban: false }, ['mamadas', 'id'], {
       skip,
       limit: 10,
       sort: { mamadas: -1 },
@@ -178,7 +176,7 @@ export default class TopInteractionCommand extends InteractionCommand {
 
     const embed = new MessageEmbed()
 
-      .setTitle(`👑 | ${ctx.locale('commands:top.mamouTitle')} ${pagina > 1 ? pagina : 1}º`)
+      .setTitle(`👑 | ${ctx.translate('mamouTitle')} ${pagina > 1 ? pagina : 1}º`)
       .setColor('#eab3fa');
 
     for (let i = 0; i < res.length; i++) {
@@ -187,7 +185,7 @@ export default class TopInteractionCommand extends InteractionCommand {
 
       embed.addField(
         `**${skip + 1 + i} -** ${memberName}`,
-        `${ctx.locale('commands:top.suckled')}: **${res[i].mamadas}**`,
+        `${ctx.translate('suckled')}: **${res[i].mamadas}**`,
         false,
       );
     }
@@ -202,7 +200,7 @@ export default class TopInteractionCommand extends InteractionCommand {
       skip = (pagina - 1) * 10;
     }
 
-    const res = await this.client.database.Users.find({}, ['mamou', 'id'], {
+    const res = await this.client.database.Users.find({ ban: false }, ['mamou', 'id'], {
       skip,
       limit: 10,
       sort: { mamou: -1 },
@@ -210,7 +208,7 @@ export default class TopInteractionCommand extends InteractionCommand {
 
     const embed = new MessageEmbed()
 
-      .setTitle(`👑 |  ${ctx.locale('commands:top.mamadoresTitle')} ${pagina > 1 ? pagina : 1}º`)
+      .setTitle(`👑 |  ${ctx.translate('mamadoresTitle')} ${pagina > 1 ? pagina : 1}º`)
       .setColor('#eab3fa');
 
     for (let i = 0; i < res.length; i++) {
@@ -218,13 +216,13 @@ export default class TopInteractionCommand extends InteractionCommand {
       if (!member) {
         embed.addField(
           `**${skip + 1 + i} -** ${res[i].id}`,
-          `${ctx.locale('commands:top.suck')}: **${res[i].mamou}**`,
+          `${ctx.translate('suck')}: **${res[i].mamou}**`,
           false,
         );
       } else {
         embed.addField(
           `**${skip + 1 + i} -** ${member.username}`,
-          `${ctx.locale('commands:top.suck')}: **${res[i].mamou}**`,
+          `${ctx.translate('suck')}: **${res[i].mamou}**`,
           false,
         );
       }
@@ -240,7 +238,7 @@ export default class TopInteractionCommand extends InteractionCommand {
       skip = (pagina - 1) * 10;
     }
 
-    const res = await this.client.database.Users.find({}, ['caçados', 'id'], {
+    const res = await this.client.database.Users.find({ ban: false }, ['caçados', 'id'], {
       skip,
       limit: 10,
       sort: { caçados: -1 },
@@ -249,9 +247,7 @@ export default class TopInteractionCommand extends InteractionCommand {
     const embed = new MessageEmbed()
 
       .setTitle(
-        `<:DEMON:758765044443381780> |  ${ctx.locale('commands:top.demonTitle')} ${
-          pagina > 1 ? pagina : 1
-        }º`,
+        `<:DEMON:758765044443381780> |  ${ctx.translate('demonTitle')} ${pagina > 1 ? pagina : 1}º`,
       )
       .setColor(COLORS.HuntDemon);
 
@@ -260,13 +256,13 @@ export default class TopInteractionCommand extends InteractionCommand {
       if (!member) {
         embed.addField(
           `**${skip + 1 + i} -** ${res[i].id} `,
-          `${ctx.locale('commands:top.demons')}: ** ${res[i].caçados}** `,
+          `${ctx.translate('demons')}: ** ${res[i].caçados}** `,
           false,
         );
       } else {
         embed.addField(
           `**${skip + 1 + i} -** ${member.username} `,
-          `${ctx.locale('commands:top.demons')}: ** ${res[i].caçados}** `,
+          `${ctx.translate('demons')}: ** ${res[i].caçados}** `,
           false,
         );
       }
@@ -282,7 +278,7 @@ export default class TopInteractionCommand extends InteractionCommand {
       skip = (pagina - 1) * 10;
     }
 
-    const res = await this.client.database.Users.find({}, ['arcanjos', 'id'], {
+    const res = await this.client.database.Users.find({ ban: false }, ['arcanjos', 'id'], {
       skip,
       limit: 10,
       sort: { arcanjos: -1 },
@@ -290,7 +286,7 @@ export default class TopInteractionCommand extends InteractionCommand {
 
     const embed = new MessageEmbed()
 
-      .setTitle(`🧚‍♂️ | ${ctx.locale('commands:top.arcangelTitle')} ${pagina > 1 ? pagina : 1}º`)
+      .setTitle(`🧚‍♂️ | ${ctx.translate('arcangelTitle')} ${pagina > 1 ? pagina : 1}º`)
       .setColor(COLORS.HuntArchangel);
 
     for (let i = 0; i < res.length; i++) {
@@ -298,13 +294,13 @@ export default class TopInteractionCommand extends InteractionCommand {
       if (!member) {
         embed.addField(
           `** ${skip + 1 + i} -** ${res[i].id} `,
-          `${ctx.locale('commands:top.archangels')}: ** ${res[i].arcanjos}** `,
+          `${ctx.translate('archangels')}: ** ${res[i].arcanjos}** `,
           false,
         );
       } else {
         embed.addField(
           `** ${skip + 1 + i} -** ${member.username} `,
-          `${ctx.locale('commands:top.archangels')}: ** ${res[i].arcanjos}** `,
+          `${ctx.translate('archangels')}: ** ${res[i].arcanjos}** `,
           false,
         );
       }
@@ -320,7 +316,7 @@ export default class TopInteractionCommand extends InteractionCommand {
       skip = (pagina - 1) * 10;
     }
 
-    const res = await this.client.database.Users.find({}, ['giants', 'id'], {
+    const res = await this.client.database.Users.find({ ban: false }, ['giants', 'id'], {
       skip,
       limit: 10,
       sort: { giants: -1 },
@@ -328,7 +324,7 @@ export default class TopInteractionCommand extends InteractionCommand {
 
     const embed = new MessageEmbed()
 
-      .setTitle(`👨 | ${ctx.locale('commands:top.giantTitle')} ${pagina > 1 ? pagina : 1}º`)
+      .setTitle(`👨 | ${ctx.translate('giantTitle')} ${pagina > 1 ? pagina : 1}º`)
       .setColor(COLORS.HuntGiant);
 
     for (let i = 0; i < res.length; i++) {
@@ -336,13 +332,13 @@ export default class TopInteractionCommand extends InteractionCommand {
       if (!member) {
         embed.addField(
           `** ${skip + 1 + i} -** ${res[i].id} `,
-          `${ctx.locale('commands:top.giants')}: ** ${res[i].giants}** `,
+          `${ctx.translate('giants')}: ** ${res[i].giants}** `,
           false,
         );
       } else {
         embed.addField(
           `** ${skip + 1 + i} -** ${member.username} `,
-          `${ctx.locale('commands:top.giants')}: ** ${res[i].giants}** `,
+          `${ctx.translate('giants')}: ** ${res[i].giants}** `,
           false,
         );
       }
@@ -358,7 +354,7 @@ export default class TopInteractionCommand extends InteractionCommand {
       skip = (pagina - 1) * 10;
     }
 
-    const res = await this.client.database.Users.find({}, ['anjos', 'id'], {
+    const res = await this.client.database.Users.find({ ban: false }, ['anjos', 'id'], {
       skip,
       limit: 10,
       sort: { anjos: -1 },
@@ -367,9 +363,7 @@ export default class TopInteractionCommand extends InteractionCommand {
     const embed = new MessageEmbed()
 
       .setTitle(
-        `<:ANGEL:758765044204437535> | ${ctx.locale('commands:top.angelTitle')} ${
-          pagina > 1 ? pagina : 1
-        }º`,
+        `<:ANGEL:758765044204437535> | ${ctx.translate('angelTitle')} ${pagina > 1 ? pagina : 1}º`,
       )
       .setColor(COLORS.HuntAngel);
 
@@ -378,13 +372,13 @@ export default class TopInteractionCommand extends InteractionCommand {
       if (!member) {
         embed.addField(
           `** ${skip + 1 + i} -** ${res[i].id} `,
-          `${ctx.locale('commands:top.angels')}: ** ${res[i].anjos}** `,
+          `${ctx.translate('angels')}: ** ${res[i].anjos}** `,
           false,
         );
       } else {
         embed.addField(
           `** ${skip + 1 + i} -** ${member.username} `,
-          `${ctx.locale('commands:top.angels')}: ** ${res[i].anjos}** `,
+          `${ctx.translate('angels')}: ** ${res[i].anjos}** `,
           false,
         );
       }
@@ -400,7 +394,7 @@ export default class TopInteractionCommand extends InteractionCommand {
       skip = (pagina - 1) * 10;
     }
 
-    const res = await this.client.database.Users.find({}, ['semideuses', 'id'], {
+    const res = await this.client.database.Users.find({ ban: false }, ['semideuses', 'id'], {
       skip,
       limit: 10,
       sort: { semideuses: -1 },
@@ -409,9 +403,7 @@ export default class TopInteractionCommand extends InteractionCommand {
     const embed = new MessageEmbed()
 
       .setTitle(
-        `<:SEMIGOD:758766732235374674> | ${ctx.locale('commands:top.sdTitle')} ${
-          pagina > 1 ? pagina : 1
-        }º`,
+        `<:SEMIGOD:758766732235374674> | ${ctx.translate('sdTitle')} ${pagina > 1 ? pagina : 1}º`,
       )
       .setColor(COLORS.HuntSD);
 
@@ -420,13 +412,13 @@ export default class TopInteractionCommand extends InteractionCommand {
       if (!member) {
         embed.addField(
           `** ${skip + 1 + i} -** ${res[i].id} `,
-          `${ctx.locale('commands:top.demigods')}: ** ${res[i].semideuses}** `,
+          `${ctx.translate('demigods')}: ** ${res[i].semideuses}** `,
           false,
         );
       } else {
         embed.addField(
           `** ${skip + 1 + i} -** ${member.username} `,
-          `${ctx.locale('commands:top.demigods')}: ** ${res[i].semideuses}** `,
+          `${ctx.translate('demigods')}: ** ${res[i].semideuses}** `,
           false,
         );
       }
@@ -442,7 +434,7 @@ export default class TopInteractionCommand extends InteractionCommand {
       skip = (pagina - 1) * 10;
     }
 
-    const res = await this.client.database.Users.find({}, ['deuses', 'id'], {
+    const res = await this.client.database.Users.find({ ban: false }, ['deuses', 'id'], {
       skip,
       limit: 10,
       sort: { deuses: -1 },
@@ -451,9 +443,7 @@ export default class TopInteractionCommand extends InteractionCommand {
     const embed = new MessageEmbed()
 
       .setTitle(
-        `<:God:758474639570894899> | ${ctx.locale('commands:top.godTitle')} ${
-          pagina > 1 ? pagina : 1
-        }º`,
+        `<:God:758474639570894899> | ${ctx.translate('godTitle')} ${pagina > 1 ? pagina : 1}º`,
       )
       .setColor(COLORS.HuntGod);
 
@@ -462,13 +452,13 @@ export default class TopInteractionCommand extends InteractionCommand {
       if (!member) {
         embed.addField(
           `** ${skip + 1 + i} -** ${res[i].id} `,
-          `${ctx.locale('commands:top.gods')}: ** ${res[i].deuses}** `,
+          `${ctx.translate('gods')}: ** ${res[i].deuses}** `,
           false,
         );
       } else {
         embed.addField(
           `** ${skip + 1 + i} -** ${member.username} `,
-          `${ctx.locale('commands:top.gods')}: ** ${res[i].deuses}** `,
+          `${ctx.translate('gods')}: ** ${res[i].deuses}** `,
           false,
         );
       }
@@ -484,14 +474,14 @@ export default class TopInteractionCommand extends InteractionCommand {
       skip = (pagina - 1) * 10;
     }
 
-    const res = await this.client.database.Users.find({}, ['estrelinhas', 'id'], {
+    const res = await this.client.database.Users.find({ ban: false }, ['estrelinhas', 'id'], {
       skip,
       limit: 10,
       sort: { estrelinhas: -1 },
     });
 
     const embed = new MessageEmbed()
-      .setTitle(`⭐ | ${ctx.locale('commands:top.starsTitle')} ${pagina > 1 ? pagina : 1} º`)
+      .setTitle(`⭐ | ${ctx.translate('starsTitle')} ${pagina > 1 ? pagina : 1} º`)
       .setColor('#74bd63');
 
     for (let i = 0; i < res.length; i++) {
@@ -499,13 +489,13 @@ export default class TopInteractionCommand extends InteractionCommand {
       if (!member) {
         embed.addField(
           `** ${skip + 1 + i} -** ${res[i].id} `,
-          `${ctx.locale('commands:top.stars')}: ** ${res[i].estrelinhas}** `,
+          `${ctx.translate('stars')}: ** ${res[i].estrelinhas}** `,
           false,
         );
       } else {
         embed.addField(
           `** ${skip + 1 + i} -** ${member.username} `,
-          `${ctx.locale('commands:top.stars')}: ** ${res[i].estrelinhas}** `,
+          `${ctx.translate('stars')}: ** ${res[i].estrelinhas}** `,
           false,
         );
       }
@@ -521,7 +511,7 @@ export default class TopInteractionCommand extends InteractionCommand {
       skip = (pagina - 1) * 10;
     }
 
-    const res = await this.client.database.Users.find({}, ['votos', 'id'], {
+    const res = await this.client.database.Users.find({ ban: false }, ['votos', 'id'], {
       skip,
       limit: 10,
       sort: { votos: -1 },
@@ -530,9 +520,7 @@ export default class TopInteractionCommand extends InteractionCommand {
     const embed = new MessageEmbed()
 
       .setTitle(
-        `<:ok:727975974125436959> | ${ctx.locale('commands:top.voteTitle')} ${
-          pagina > 1 ? pagina : 1
-        } º`,
+        `<:ok:727975974125436959> | ${ctx.translate('voteTitle')} ${pagina > 1 ? pagina : 1} º`,
       )
       .setColor('#ff29ae');
 
@@ -563,14 +551,14 @@ export default class TopInteractionCommand extends InteractionCommand {
     }
     const embed = new MessageEmbed()
 
-      .setTitle(`<:MenheraSmile2:767210250364780554> |  ${ctx.locale('commands:top.users')}`)
+      .setTitle(`<:MenheraSmile2:767210250364780554> |  ${ctx.translate('users')}`)
       .setColor('#f47fff');
 
     for (let i = 0; i < res.length; i++) {
       const member = await this.client.users.fetch(res[i].id).catch();
       embed.addField(
         `**${i + 1} -** ${Util.captalize(member.username)} `,
-        `${ctx.locale('commands:top.use')} **${res[i].uses}** ${ctx.locale('commands:top.times')}`,
+        `${ctx.translate('use')} **${res[i].uses}** ${ctx.translate('times')}`,
         false,
       );
     }
@@ -581,7 +569,7 @@ export default class TopInteractionCommand extends InteractionCommand {
     const user = ctx.options.getUser('user') ?? ctx.author;
 
     if (!user) {
-      ctx.editReply({ content: `${emojis.error} | ${ctx.locale('commands:top.not-user')}` });
+      ctx.editReply({ content: `${emojis.error} | ${ctx.translate('not-user')}` });
       return;
     }
 
@@ -589,14 +577,14 @@ export default class TopInteractionCommand extends InteractionCommand {
     const embed = new MessageEmbed()
 
       .setTitle(
-        `<:MenheraSmile2:767210250364780554> |  ${ctx.locale('commands:top.user', {
+        `<:MenheraSmile2:767210250364780554> |  ${ctx.translate('user', {
           user: user.username,
         })}`,
       )
       .setColor('#f47fff');
 
     if (!res || res.cmds.count === 0) {
-      ctx.editReply({ content: `${emojis.error} | ${ctx.locale('commands:top.not-user')}` });
+      ctx.editReply({ content: `${emojis.error} | ${ctx.translate('not-user')}` });
       return;
     }
 
@@ -604,9 +592,7 @@ export default class TopInteractionCommand extends InteractionCommand {
       if (i > 10) break;
       embed.addField(
         `**${i + 1} -** ${Util.captalize(res.array[i].name)} `,
-        `${ctx.locale('commands:top.use')} **${res.array[i].count}** ${ctx.locale(
-          'commands:top.times',
-        )}`,
+        `${ctx.translate('use')} **${res.array[i].count}** ${ctx.locale('commands:top.times')}`,
         false,
       );
     }

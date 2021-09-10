@@ -25,12 +25,12 @@ export default class AboutmeInteractionCommand extends InteractionCommand {
     const nota = ctx.options.getString('frase', true);
 
     if (nota.length > 200) {
-      await ctx.replyT('error', 'commands:aboutme.args-limit', {}, true);
+      await ctx.replyT('error', 'args-limit', {}, true);
       return;
     }
 
     await ctx.client.repositories.userRepository.update(ctx.author.id, { nota });
 
-    await ctx.replyT('success', 'commands:aboutme.success');
+    await ctx.replyT('success', 'success');
   }
 }

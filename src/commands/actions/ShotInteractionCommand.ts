@@ -29,17 +29,17 @@ export default class ShotInteractionCommand extends InteractionCommand {
     const user = ctx.options.getUser('user', true);
 
     if (user.id === ctx.author.id) {
-      await ctx.replyT('error', 'commands:shot.self-mention', {}, true);
+      await ctx.replyT('error', 'self-mention', {}, true);
       return;
     }
 
     const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     const embed = new MessageEmbed()
-      .setTitle(ctx.locale('commands:shot.embed_title'))
+      .setTitle(ctx.translate('embed_title'))
       .setColor(COLORS.ACTIONS)
       .setDescription(
-        ctx.locale('commands:shot.embed_description', {
+        ctx.translate('embed_description', {
           author: ctx.author.toString(),
           mention: user.toString(),
         }),

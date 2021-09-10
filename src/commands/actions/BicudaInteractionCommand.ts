@@ -29,12 +29,12 @@ export default class BicudaInteractionCommand extends InteractionCommand {
     const user = ctx.options.getUser('user', true);
 
     if (user.bot) {
-      await ctx.replyT('warn', 'commands:bicuda.bot');
+      await ctx.replyL('warn', 'commands:bicuda.bot');
       return;
     }
 
     if (user.id === ctx.author.id) {
-      await ctx.replyT('error', 'commands:bicuda.self-mention', {}, true);
+      await ctx.replyL('error', 'commands:bicuda.self-mention', {}, true);
       return;
     }
 

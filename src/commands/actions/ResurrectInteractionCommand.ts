@@ -30,20 +30,20 @@ export default class ResurrectInteractionCommand extends InteractionCommand {
     const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     if (user.id === ctx.author.id) {
-      await ctx.replyT('question', 'commands:resurrect.self-mention', {}, true);
+      await ctx.replyT('question', 'self-mention', {}, true);
       return;
     }
 
     if (user.bot) {
-      await ctx.replyT('success', 'commands:resurrect.bot');
+      await ctx.replyT('success', 'bot');
       return;
     }
 
     const embed = new MessageEmbed()
-      .setTitle(ctx.locale('commands:resurrect.embed_title'))
+      .setTitle(ctx.translate('embed_title'))
       .setColor(COLORS.ACTIONS)
       .setDescription(
-        ctx.locale('commands:resurrect.embed_description', {
+        ctx.translate('embed_description', {
           author: ctx.author.toString(),
           mention: user.toString(),
         }),

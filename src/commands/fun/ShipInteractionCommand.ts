@@ -36,12 +36,20 @@ export default class ShipInteractionCommand extends InteractionCommand {
     const user2 = ctx.options.getUser('user_dois') ?? ctx.author;
 
     if (!user1) {
-      await ctx.replyT('error', 'commands:ship.unknow-user', {}, true);
+      await ctx.replyT('error', 'unknow-user', {}, true);
       return;
     }
 
     if (!user2) {
-      await ctx.replyT('error', 'commands:ship.unknow-user', {}, true);
+      await ctx.replyT('error', 'unknow-user', {}, true);
+      return;
+    }
+
+    if (
+      (await this.client.repositories.blacklistRepository.isUserBanned(user1.id)) === true ||
+      (await this.client.repositories.blacklistRepository.isUserBanned(user2.id)) === true
+    ) {
+      ctx.replyT('error', 'banned-user', {}, true);
       return;
     }
 
@@ -78,9 +86,7 @@ export default class ShipInteractionCommand extends InteractionCommand {
     const embed = new MessageEmbed()
       .setTitle(`${name1} + ${name2} = ${mix}`)
       .setDescription(
-        `\n${ctx.locale('commands:ship.value')} **${value.toString()}%**\n\n${ctx.locale(
-          'commands:ship.default',
-        )}`,
+        `\n${ctx.translate('value')} **${value}%**\n\n${ctx.locale('commands:ship.default')}`,
       );
 
     let attc: MessageAttachment | null = null;
@@ -93,53 +99,33 @@ export default class ShipInteractionCommand extends InteractionCommand {
     if (Number(value) >= 25)
       embed
         .setColor('#cadf2a')
-        .setDescription(
-          `\n${ctx.locale('commands:ship.value')} **${value.toString()}%**\n\n${ctx.locale(
-            'commands:ship.low',
-          )}`,
-        );
+        .setDescription(`\n${ctx.translate('cvalue')} **${value}%**\n\n${ctx.translate('low')}`);
     if (Number(value) >= 50)
       embed
         .setColor('#d8937b')
-        .setDescription(
-          `\n${ctx.locale('commands:ship.value')} **${value.toString()}%**\n\n${ctx.locale(
-            'commands:ship.ok',
-          )}`,
-        );
+        .setDescription(`\n${ctx.translate('value')} **${value}%**\n\n${ctx.translate('ok')}`);
     if (Number(value) >= 75)
       embed
         .setColor('#f34a4a')
-        .setDescription(
-          `\n${ctx.locale('commands:ship.value')} **${value.toString()}%**\n\n${ctx.locale(
-            'commands:ship.medium',
-          )}`,
-        );
+        .setDescription(`\n${ctx.translate('value')} **${value}%**\n\n${ctx.translate('medium')}`);
     if (Number(value) >= 99)
       embed
         .setColor('#ec2c2c')
-        .setDescription(
-          `\n${ctx.locale('commands:ship.value')} **${value.toString()}%**\n\n${ctx.locale(
-            'commands:ship.high',
-          )}`,
-        );
+        .setDescription(`\n${ctx.translate('value')} **${value}%**\n\n${ctx.translate('high')}`);
     if (Number(value) === 100)
       embed
         .setColor('#ff00df')
-        .setDescription(
-          `\n${ctx.locale('commands:ship.value')} **${value.toString()}%**\n\n${ctx.locale(
-            'commands:ship.perfect',
-          )}`,
-        );
+        .setDescription(`\n${ctx.translate('value')} **${value}%**\n\n${ctx.translate('perfect')}`);
 
     if (attc)
       await ctx.reply({
-        content: `**${ctx.locale('commands:ship.message-start')}**`,
+        content: `**${ctx.translate('message-start')}**`,
         embeds: [embed],
         files: [attc],
       });
     else
       await ctx.reply({
-        content: `**${ctx.locale('commands:ship.message-start')}**`,
+        content: `**${ctx.translate('message-start')}**`,
         embeds: [embed],
       });
   }

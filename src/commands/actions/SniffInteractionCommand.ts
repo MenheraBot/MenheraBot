@@ -31,10 +31,10 @@ export default class SniffInteractionCommand extends InteractionCommand {
 
     if (!user || user.id === ctx.author.id) {
       const embed = new MessageEmbed()
-        .setTitle(ctx.locale('commands:sniff.no-mention.embed_title'))
+        .setTitle(ctx.translate('no-mention.embed_title'))
         .setColor(COLORS.ACTIONS)
         .setDescription(
-          ctx.locale('commands:sniff.no-mention.embed_description', {
+          ctx.translate('no-mention.embed_description', {
             author: ctx.author.toString(),
           }),
         )
@@ -46,7 +46,7 @@ export default class SniffInteractionCommand extends InteractionCommand {
     }
 
     if (user.bot) {
-      await ctx.replyT('error', 'commands:sniff.bot');
+      await ctx.replyT('error', 'bot');
       return;
     }
 
@@ -54,7 +54,7 @@ export default class SniffInteractionCommand extends InteractionCommand {
       .setTitle('Sniff Sniff')
       .setColor(COLORS.ACTIONS)
       .setDescription(
-        ctx.locale('commands:sniff.embed_description', {
+        ctx.translate('embed_description', {
           author: ctx.author.toString(),
           mention: user.toString(),
         }),

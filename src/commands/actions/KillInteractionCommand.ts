@@ -30,7 +30,7 @@ export default class KillInteractionCommand extends InteractionCommand {
     const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     if (user.id === ctx.author.id) {
-      await ctx.replyT('error', 'commands:kill.self-mention', {}, true);
+      await ctx.replyT('error', 'self-mention', {}, true);
       return;
     }
 
@@ -45,10 +45,10 @@ export default class KillInteractionCommand extends InteractionCommand {
       const Rrand = ro[Math.floor(Math.random() * ro.length)];
 
       const Rembed = new MessageEmbed()
-        .setTitle(ctx.locale('commands:kill.bot.embed_title'))
+        .setTitle(ctx.translate('bot.embed_title'))
         .setColor(COLORS.ACTIONS)
         .setDescription(
-          ctx.locale('commands:kill.bot.embed_description', {
+          ctx.translate('bot.embed_description', {
             author: ctx.author.toString(),
             mention: user.toString(),
           }),
@@ -61,10 +61,10 @@ export default class KillInteractionCommand extends InteractionCommand {
     }
 
     const embed = new MessageEmbed()
-      .setTitle(ctx.locale('commands:kill.embed_title'))
+      .setTitle(ctx.translate('embed_title'))
       .setColor(COLORS.ACTIONS)
       .setDescription(
-        ctx.locale('commands:kill.embed_description', {
+        ctx.translate('embed_description', {
           author: ctx.author.toString(),
           mention: user.toString(),
         }),

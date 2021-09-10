@@ -68,7 +68,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
     const selected = ctx.options.getString('tipo', true);
 
     if (!selected) {
-      await ctx.replyT('error', `${ctx.locale('commands:hunt.no-args')}`, {}, true);
+      await ctx.replyT('error', 'no-args', {}, true);
       return;
     }
 
@@ -79,7 +79,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
 
     if (selected === 'probabilidades') {
       await ctx.reply(
-        ctx.locale('commands:hunt.probabilities', {
+        ctx.translate('probabilities', {
           demon: Probabilities.demon,
           giant: Probabilities.giant,
           angel: Probabilities.angel,
@@ -95,11 +95,11 @@ export default class HuntInteractionCommand extends InteractionCommand {
 
     if (rollsToUse) {
       if (rollsToUse < 1) {
-        ctx.replyT('error', 'commands:hunt.invalid-rolls', {}, true);
+        ctx.replyT('error', 'invalid-rolls', {}, true);
         return;
       }
       if (rollsToUse > ctx.data.user.rolls) {
-        ctx.replyT('error', 'commands:hunt.rolls-poor', {}, true);
+        ctx.replyT('error', 'rolls-poor', {}, true);
         return;
       }
     }
@@ -109,7 +109,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
     if (!canHunt && !rollsToUse) {
       ctx.replyT(
         'error',
-        'commands:hunt.cooldown',
+        'cooldown',
         {
           time: moment.utc(parseInt(authorData.caçarTime) - Date.now()).format('mm:ss'),
         },
@@ -121,8 +121,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
     const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
     const cooldown = probabilities.defaultTime + Date.now();
     const embed = new MessageEmbed().setColor(COLORS.HuntDefault).setThumbnail(avatar);
-    if (ctx.interaction.guild.id !== '717061688460967988')
-      embed.setFooter(ctx.locale('commands:hunt.footer'));
+    if (ctx.interaction.guild.id !== '717061688460967988') embed.setFooter(ctx.translate('footer'));
 
     const { huntDemon, huntGiant, huntAngel, huntArchangel, huntDemigod, huntGod } =
       this.client.repositories.huntRepository;
@@ -167,12 +166,12 @@ export default class HuntInteractionCommand extends InteractionCommand {
           huntEnum.DEMON,
         );
         embed
-          .setTitle(ctx.locale('commands:hunt.demons'))
+          .setTitle(ctx.translate('demons'))
           .setColor(COLORS.HuntDemon)
           .setDescription(
-            ctx.locale('commands:hunt.description_start', {
+            ctx.translate('description_start', {
               value: demons,
-              hunt: ctx.locale('commands:hunt.demons'),
+              hunt: ctx.translate('demons'),
               rank: rank + 1,
               count: toRun,
             }),
@@ -186,12 +185,12 @@ export default class HuntInteractionCommand extends InteractionCommand {
           huntEnum.GIANT,
         );
         embed
-          .setTitle(ctx.locale('commands:hunt.giants'))
+          .setTitle(ctx.translate('giants'))
           .setColor(COLORS.HuntGiant)
           .setDescription(
-            ctx.locale('commands:hunt.description_start', {
+            ctx.translate('description_start', {
               value: demons,
-              hunt: ctx.locale('commands:hunt.giants'),
+              hunt: ctx.translate('giants'),
               rank: rank + 1,
               count: toRun,
             }),
@@ -205,12 +204,12 @@ export default class HuntInteractionCommand extends InteractionCommand {
           huntEnum.ANGEL,
         );
         embed
-          .setTitle(ctx.locale('commands:hunt.angels'))
+          .setTitle(ctx.translate('angels'))
           .setColor(COLORS.HuntAngel)
           .setDescription(
-            ctx.locale('commands:hunt.description_start', {
+            ctx.translate('description_start', {
               value: angels,
-              hunt: ctx.locale('commands:hunt.angels'),
+              hunt: ctx.translate('angels'),
               rank: rank + 1,
               count: toRun,
             }),
@@ -224,10 +223,10 @@ export default class HuntInteractionCommand extends InteractionCommand {
           huntEnum.ARCHANGEL,
         );
         embed
-          .setTitle(ctx.locale('commands:hunt.archangel'))
+          .setTitle(ctx.translate('archangel'))
           .setColor(COLORS.HuntArchangel)
           .setDescription(
-            ctx.locale('commands:hunt.description_start', {
+            ctx.translate('description_start', {
               value: angels,
               hunt: ctx.locale('commands:hunt.archangel'),
               rank: rank + 1,
@@ -243,12 +242,12 @@ export default class HuntInteractionCommand extends InteractionCommand {
           huntEnum.DEMIGOD,
         );
         embed
-          .setTitle(ctx.locale('commands:hunt.sd'))
+          .setTitle(ctx.translate('sd'))
           .setColor(COLORS.HuntSD)
           .setDescription(
-            ctx.locale('commands:hunt.description_start', {
+            ctx.translate('description_start', {
               value: demigods,
-              hunt: ctx.locale('commands:hunt.sd'),
+              hunt: ctx.translate('sd'),
               rank: rank + 1,
               count: toRun,
             }),
@@ -263,16 +262,16 @@ export default class HuntInteractionCommand extends InteractionCommand {
         );
         embed
           .setColor(COLORS.HuntGod)
-          .setTitle(ctx.locale('commands:hunt.gods'))
+          .setTitle(ctx.translate('gods'))
           .setDescription(
             gods > 0
-              ? ctx.locale('commands:hunt.god_hunted_success', {
+              ? ctx.translate('god_hunted_success', {
                   count: gods,
-                  hunt: ctx.locale('commands:hunt.gods'),
+                  hunt: ctx.translate('gods'),
                   rank: rank + 1,
                   toRun,
                 })
-              : ctx.locale('commands:hunt.god_hunted_fail', { rank: rank + 1, count: toRun }),
+              : ctx.translate('god_hunted_fail', { rank: rank + 1, count: toRun }),
           );
         if (gods > 0)
           embed.setColor(COLORS.HuntGod).setThumbnail('https://i.imgur.com/053khaH.gif');

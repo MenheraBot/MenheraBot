@@ -31,10 +31,10 @@ export default class SarrarInteractionCommand extends InteractionCommand {
     const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     const embed = new MessageEmbed()
-      .setTitle(ctx.locale('commands:sarrar.embed_title'))
+      .setTitle(ctx.translate('embed_title'))
       .setColor(COLORS.ACTIONS)
       .setDescription(
-        ctx.locale('commands:sarrar.embed_description', {
+        ctx.translate('embed_description', {
           author: ctx.author.toString(),
           mention: user.toString(),
         }),
@@ -56,20 +56,20 @@ export default class SarrarInteractionCommand extends InteractionCommand {
 
     const randSozinho = await HttpRequests.getAssetImageUrl('sarrar_sozinho');
     const embed = new MessageEmbed()
-      .setTitle(ctx.locale('commands:sarrar.no-mention.embed_title'))
+      .setTitle(ctx.translate('no-mention.embed_title'))
       .setColor(COLORS.ACTIONS)
       .setDescription(
-        ctx.locale('commands:sarrar.no-mention.embed_description', {
+        ctx.translate('no-mention.embed_description', {
           author: ctx.author.toString(),
         }),
       )
       .setImage(randSozinho)
       .setThumbnail(ctx.author.displayAvatarURL())
-      .setFooter(ctx.locale('commands:sarrar.no-mention.embed_footer'));
+      .setFooter(ctx.translate('no-mention.embed_footer'));
 
     const Button = new MessageButton()
       .setCustomId(ctx.interaction.id)
-      .setLabel(ctx.locale('commands:sarrar.sarrar'))
+      .setLabel(ctx.translate('sarrar'))
       .setStyle('PRIMARY');
 
     ctx.reply({
@@ -77,8 +77,17 @@ export default class SarrarInteractionCommand extends InteractionCommand {
       components: [{ type: 'ACTION_ROW', components: [Button] }],
     });
 
-    const filter = (int: MessageComponentInteraction) =>
-      int.user.id !== ctx.author.id && !int.user.bot && int.customId === ctx.interaction.id;
+    const filter = async (int: MessageComponentInteraction) => {
+      if (int.user.bot) return false;
+      if (int.customId !== ctx.interaction.id) return false;
+      if (int.user.id === ctx.author.id) return false;
+
+      const isUserbanned = await this.client.repositories.blacklistRepository.isUserBanned(
+        int.user.id,
+      );
+
+      return !isUserbanned;
+    };
 
     const collected = await Util.collectComponentInteractionWithCustomFilter(
       ctx.channel,
