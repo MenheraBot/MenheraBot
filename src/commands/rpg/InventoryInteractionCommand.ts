@@ -26,7 +26,7 @@ export default class InventoryInteractionCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    const user = await this.client.repositories.rpgRepository.findUser(ctx.interaction.user.id);
+    const user = await this.client.repositories.rpgRepository.findUser(ctx.author.id);
     if (!user) {
       ctx.replyT('error', 'common:not-registred', {}, true);
       return;
@@ -34,7 +34,7 @@ export default class InventoryInteractionCommand extends InteractionCommand {
 
     const setDefaultEmbed = () => {
       const embed = new MessageEmbed()
-        .setTitle(ctx.translate('first.title', { user: ctx.interaction.user.username }))
+        .setTitle(ctx.translate('first.title', { user: ctx.author.username }))
         .setColor(ctx.data.user.cor)
         .setDescription(ctx.translate('first.description'))
         .addField(
@@ -143,7 +143,7 @@ export default class InventoryInteractionCommand extends InteractionCommand {
 
     if (user.homes.length > 0) {
       const AllUserHomes = await this.client.repositories.homeRepository.getAllUserHomes(
-        ctx.interaction.user.id,
+        ctx.author.id,
       );
 
       selector.addOptions(
@@ -168,7 +168,7 @@ export default class InventoryInteractionCommand extends InteractionCommand {
     ctx.reply({ embeds: [embed], components });
 
     const filter = (int: MessageComponentInteraction) =>
-      int.customId.startsWith(ctx.interaction.id) && int.user.id === ctx.interaction.user.id;
+      int.customId.startsWith(ctx.interaction.id) && int.user.id === ctx.author.id;
 
     const collector = ctx.channel.createMessageComponentCollector({ filter, time: 10000, max: 5 });
 
@@ -346,7 +346,7 @@ export default class InventoryInteractionCommand extends InteractionCommand {
             }
           }
 
-          await this.client.repositories.rpgRepository.editUser(ctx.interaction.user.id, {
+          await this.client.repositories.rpgRepository.editUser(ctx.author.id, {
             life: user.life,
             mana: user.mana,
             equiped: user.equiped,

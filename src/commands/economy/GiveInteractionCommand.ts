@@ -117,7 +117,7 @@ export default class GiveInteractionCommand extends InteractionCommand {
       return;
     }
 
-    if (to.id === ctx.interaction.user.id) {
+    if (to.id === ctx.author.id) {
       GiveInteractionCommand.replyForYourselfError(ctx);
       return;
     }

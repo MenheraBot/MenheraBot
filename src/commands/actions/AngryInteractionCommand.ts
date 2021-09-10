@@ -27,15 +27,15 @@ export default class AngryInteractionCommand extends InteractionCommand {
   async run(ctx: InteractionCommandContext): Promise<void> {
     const rand = await HttpRequests.getAssetImageUrl('angry');
     const user = ctx.options.getUser('user', false);
-    const avatar = ctx.interaction.user.displayAvatarURL({ format: 'png', dynamic: true });
+    const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
 
-    if (!user || user.id === ctx.interaction.user.id) {
+    if (!user || user.id === ctx.author.id) {
       const embed = new MessageEmbed()
         .setTitle(ctx.locale('commands:angry.no-mention.embed_title'))
         .setColor(COLORS.ACTIONS)
         .setDescription(
           ctx.locale('commands:angry.no-mention.embed_description', {
-            author: ctx.interaction.user.toString(),
+            author: ctx.author.toString(),
           }),
         )
         .setThumbnail(avatar)
@@ -55,7 +55,7 @@ export default class AngryInteractionCommand extends InteractionCommand {
       .setColor(COLORS.ACTIONS)
       .setDescription(
         ctx.locale('commands:angry.embed_description', {
-          author: ctx.interaction.user.toString(),
+          author: ctx.author.toString(),
           mention: user.toString(),
         }),
       )

@@ -23,7 +23,7 @@ export default class WalletInteractionCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    const pessoa = ctx.options.getUser('user') ?? ctx.interaction.user;
+    const pessoa = ctx.options.getUser('user') ?? ctx.author;
 
     const user = await this.client.repositories.userRepository.find(pessoa.id);
     if (!user) {

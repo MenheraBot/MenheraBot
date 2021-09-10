@@ -40,7 +40,7 @@ export default class ColorInteractionCommand extends InteractionCommand {
     const haspadrao = authorData.cores.some((pc) => pc.cor === '#a788ff');
 
     if (!haspadrao) {
-      await this.client.repositories.userRepository.update(ctx.interaction.user.id, {
+      await this.client.repositories.userRepository.update(ctx.author.id, {
         $push: { cores: { nome: '0 - Padrão', cor: '#a788ff', price: 0 } },
       });
     }
@@ -79,7 +79,7 @@ export default class ColorInteractionCommand extends InteractionCommand {
     });
 
     const filter = (int: MessageComponentInteraction) =>
-      int.user.id === ctx.interaction.user.id && int.customId === ctx.interaction.id;
+      int.user.id === ctx.author.id && int.customId === ctx.interaction.id;
 
     const collect = await ctx.channel
       .awaitMessageComponent({ componentType: 'SELECT_MENU', time: 15000, filter })
@@ -111,7 +111,7 @@ export default class ColorInteractionCommand extends InteractionCommand {
       },
     };
 
-    await this.client.repositories.userRepository.update(ctx.interaction.user.id, {
+    await this.client.repositories.userRepository.update(ctx.author.id, {
       cor: selected,
     });
 

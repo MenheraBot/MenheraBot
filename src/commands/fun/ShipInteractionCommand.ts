@@ -33,7 +33,7 @@ export default class ShipInteractionCommand extends InteractionCommand {
     if (!ctx.interaction.guild) return;
 
     const user1 = ctx.options.getUser('user', true);
-    const user2 = ctx.options.getUser('user_dois') ?? ctx.interaction.user;
+    const user2 = ctx.options.getUser('user_dois') ?? ctx.author;
 
     if (!user1) {
       await ctx.replyT('error', 'commands:ship.unknow-user', {}, true);

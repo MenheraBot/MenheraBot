@@ -38,7 +38,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
   async run(ctx: InteractionCommandContext): Promise<void> {
     const userToFind = ctx.options.getUser('user');
     const user = await this.client.repositories.rpgRepository.findUser(
-      userToFind?.id ?? ctx.interaction.user.id,
+      userToFind?.id ?? ctx.author.id,
     );
 
     if (!userToFind && !user) {
@@ -50,7 +50,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
       ctx.replyT('error', 'commands:ficha.non-user', {}, true);
       return;
     }
-    return this.showFicha(ctx, user, ctx.options.getUser('user') ?? ctx.interaction.user);
+    return this.showFicha(ctx, user, ctx.options.getUser('user') ?? ctx.author);
   }
 
   async showFicha(
@@ -218,7 +218,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
     });
 
     const filter = (int: MessageComponentInteraction) =>
-      int.customId.startsWith(ctx.interaction.id) && int.user.id === ctx.interaction.user.id;
+      int.customId.startsWith(ctx.interaction.id) && int.user.id === ctx.author.id;
 
     if (!ctx.interaction.channel) return;
 
@@ -305,7 +305,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
     const embed = new MessageEmbed()
       .setTitle(ctx.locale('commands:ficha.register.title'))
       .setColor(COLORS.Pear)
-      .setThumbnail(ctx.interaction.user.displayAvatarURL())
+      .setThumbnail(ctx.author.displayAvatarURL())
       .setDescription(text);
 
     ctx.reply({
@@ -315,7 +315,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
 
     const classCollected = await Util.collectComponentInteractionWithId(
       ctx.channel,
-      ctx.interaction.user.id,
+      ctx.author.id,
       ctx.interaction.id,
       90000,
     );
@@ -365,7 +365,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
 
     const raceCollected = await Util.collectComponentInteractionWithId(
       ctx.channel,
-      ctx.interaction.user.id,
+      ctx.author.id,
       ctx.interaction.id,
       90000,
     );
@@ -385,7 +385,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
     const choosedRace = raceCollected.values[0];
 
     const initialData = this.client.boleham.Functions.getDataToRegister(
-      ctx.interaction.user.id,
+      ctx.author.id,
       choosedClass,
       choosedRace,
     );

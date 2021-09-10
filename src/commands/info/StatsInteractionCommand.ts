@@ -137,7 +137,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
   }
 
   static async blackjack(ctx: InteractionCommandContext): Promise<void> {
-    const user = ctx.options.getUser('user') ?? ctx.interaction.user;
+    const user = ctx.options.getUser('user') ?? ctx.author;
 
     const data = await HttpRequests.getBlackJackStats(user.id);
 
@@ -201,7 +201,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
   }
 
   static async coinflip(ctx: InteractionCommandContext): Promise<void> {
-    const user = ctx.options.getUser('user') ?? ctx.interaction.user;
+    const user = ctx.options.getUser('user') ?? ctx.author;
 
     const data = await HttpRequests.getCoinflipUserStats(user.id);
 

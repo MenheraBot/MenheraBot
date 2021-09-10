@@ -31,7 +31,7 @@ export default class CoinflipInteractionCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    const user1 = ctx.interaction.user;
+    const user1 = ctx.author;
     const user2 = ctx.options.getUser('user', true);
     const input = ctx.options.getInteger('aposta', true);
 
@@ -88,7 +88,7 @@ export default class CoinflipInteractionCommand extends InteractionCommand {
     ctx.reply({
       content: ctx.locale('commands:coinflip.confirm', {
         value: input,
-        author: ctx.interaction.user.toString(),
+        author: ctx.author.toString(),
         mention: user2.toString(),
       }),
       components: [{ type: 1, components: [ConfirmButton] }],

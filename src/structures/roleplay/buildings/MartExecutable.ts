@@ -35,7 +35,7 @@ export default async (ctx: InteractionCommandContext, user: IRpgUserSchema): Pro
   });
 
   const filter = (int: MessageComponentInteraction) =>
-    int.customId.startsWith(ctx.interaction.id) && int.user.id === ctx.interaction.user.id;
+    int.customId.startsWith(ctx.interaction.id) && int.user.id === ctx.author.id;
 
   const collect = ctx.channel.createMessageComponentCollector({ filter, max: 7, time: 15000 });
 
@@ -182,7 +182,7 @@ export default async (ctx: InteractionCommandContext, user: IRpgUserSchema): Pro
           return;
         }
 
-        await ctx.client.repositories.rpgRepository.editUser(ctx.interaction.user.id, {
+        await ctx.client.repositories.rpgRepository.editUser(ctx.author.id, {
           inventory: user.inventory,
           money: BasicFunctions.mergeCoins(user.money, buyValue),
         });
@@ -221,7 +221,7 @@ export default async (ctx: InteractionCommandContext, user: IRpgUserSchema): Pro
           soldValue = BasicFunctions.mergeCoins(soldValue, price);
         }
 
-        await ctx.client.repositories.rpgRepository.editUser(ctx.interaction.user.id, {
+        await ctx.client.repositories.rpgRepository.editUser(ctx.author.id, {
           inventory: user.inventory,
           money: BasicFunctions.mergeCoins(user.money, soldValue),
         });

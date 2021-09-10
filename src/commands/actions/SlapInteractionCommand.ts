@@ -33,19 +33,19 @@ export default class SlapInteractionCommand extends InteractionCommand {
       return;
     }
 
-    if (user.id === ctx.interaction.user.id) {
+    if (user.id === ctx.author.id) {
       await ctx.replyT('error', 'commands:slap.self-mention', {}, true);
       return;
     }
 
-    const avatar = ctx.interaction.user.displayAvatarURL({ format: 'png', dynamic: true });
+    const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     const embed = new MessageEmbed()
       .setTitle(ctx.locale('commands:slap.embed_title'))
       .setColor(COLORS.ACTIONS)
       .setDescription(
         ctx.locale('commands:slap.embed_description', {
-          author: ctx.interaction.user.toString(),
+          author: ctx.author.toString(),
           mention: user.toString(),
         }),
       )

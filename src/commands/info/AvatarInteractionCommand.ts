@@ -32,7 +32,7 @@ export default class AvatarInteractionCommand extends InteractionCommand {
 
     const mentionUser = ctx.options.getUser('user');
 
-    if (mentionUser && mentionUser.id !== ctx.interaction.user.id) {
+    if (mentionUser && mentionUser.id !== ctx.author.id) {
       try {
         user = await this.client.users.fetch(mentionUser.id);
         db = await this.client.repositories.userRepository.find(user.id);

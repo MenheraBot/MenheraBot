@@ -17,7 +17,7 @@ export default class CityInteractionCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    const user = await this.client.repositories.rpgRepository.findUser(ctx.interaction.user.id);
+    const user = await this.client.repositories.rpgRepository.findUser(ctx.author.id);
     if (!user) {
       ctx.replyT('error', 'common:not-registred', {}, true);
       return;
@@ -60,7 +60,7 @@ export default class CityInteractionCommand extends InteractionCommand {
 
     const collected = await Util.collectComponentInteractionWithId(
       ctx.channel,
-      ctx.interaction.user.id,
+      ctx.author.id,
       ctx.interaction.id,
       15000,
     );

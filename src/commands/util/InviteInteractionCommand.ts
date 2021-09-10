@@ -24,8 +24,8 @@ export default class InviteInteractionCommand extends InteractionCommand {
       .setImage('https://i.imgur.com/ZsKuh8W.png')
       .setDescription(ctx.locale('commands:invite.embed_description'))
       .setFooter(
-        ctx.locale('commands:invite.embed_footer', { user: ctx.interaction.user.tag }),
-        ctx.interaction.user.displayAvatarURL(),
+        ctx.locale('commands:invite.embed_footer', { user: ctx.author.tag }),
+        ctx.author.displayAvatarURL(),
       )
       .setTimestamp();
 

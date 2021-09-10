@@ -17,7 +17,7 @@ export default async (ctx: InteractionCommandContext, user: IRpgUserSchema): Pro
     .setDescription(ctx.locale('buildings:guild.first.description'));
 
   const userDailyQuests = await ctx.client.repositories.rpgRepository.getUserDailyQuests(
-    ctx.interaction.user.id,
+    ctx.author.id,
     user.level,
     ctx.client.boleham.Quests,
   );
@@ -111,7 +111,7 @@ export default async (ctx: InteractionCommandContext, user: IRpgUserSchema): Pro
   });
 
   const filter = (int: MessageComponentInteraction) =>
-    int.customId.startsWith(ctx.interaction.id) && int.user.id === ctx.interaction.user.id;
+    int.customId.startsWith(ctx.interaction.id) && int.user.id === ctx.author.id;
 
   const collector = ctx.channel.createMessageComponentCollector({ filter, max: 2, time: 10000 });
 

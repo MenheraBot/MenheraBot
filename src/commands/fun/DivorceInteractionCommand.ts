@@ -43,7 +43,7 @@ export default class DivorceInteractionCommand extends InteractionCommand {
 
     const collected = await Util.collectComponentInteractionWithStartingId(
       ctx.channel,
-      ctx.interaction.user.id,
+      ctx.author.id,
       ctx.interaction.id,
       15000,
     );
@@ -66,7 +66,7 @@ export default class DivorceInteractionCommand extends InteractionCommand {
     if (collected.customId.endsWith('CONFIRM')) {
       ctx.editReply({
         content: `${emojis.success} | ${ctx.locale('commands:divorce.confirmed', {
-          author: ctx.interaction.user.toString(),
+          author: ctx.author.toString(),
           mention: `<@${authorData.casado}>`,
         })}`,
         components: [
@@ -82,7 +82,7 @@ export default class DivorceInteractionCommand extends InteractionCommand {
 
       await this.client.repositories.relationshipRepository.divorce(
         ctx.data.user.casado,
-        ctx.interaction.user.id,
+        ctx.author.id,
       );
     } else {
       ctx.editReply({

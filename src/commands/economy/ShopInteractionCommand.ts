@@ -360,7 +360,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
           ctx.replyT('error', 'commands:shop.dataVender.poor', { var: 'demônios' }, true);
           return;
         }
-        this.client.repositories.userRepository.update(ctx.interaction.user.id, {
+        this.client.repositories.userRepository.update(ctx.author.id, {
           $inc: { caçados: -valor, estrelinhas: valor * valorDemonio },
         });
         ctx.replyT('success', 'commands:shop.dataVender.success-demon', {
@@ -375,7 +375,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
           ctx.replyT('error', 'commands:shop.dataVender.poor', { var: 'gigantes' }, true);
           return;
         }
-        this.client.repositories.userRepository.update(ctx.interaction.user.id, {
+        this.client.repositories.userRepository.update(ctx.author.id, {
           $inc: { giants: -valor, estrelinhas: valor * valorGigante },
         });
         ctx.replyT('success', 'commands:shop.dataVender.success-giant', {
@@ -390,7 +390,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
           ctx.replyT('error', 'commands:shop.dataVender.poor', { var: 'anjos' }, true);
           return;
         }
-        this.client.repositories.userRepository.update(ctx.interaction.user.id, {
+        this.client.repositories.userRepository.update(ctx.author.id, {
           $inc: { anjos: -valor, estrelinhas: valor * valorAnjo },
         });
         ctx.replyT('success', 'commands:shop.dataVender.success-angel', {
@@ -405,7 +405,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
           ctx.replyT('error', 'commands:shop.dataVender.poor', { var: 'arcanjos' }, true);
           return;
         }
-        this.client.repositories.userRepository.update(ctx.interaction.user.id, {
+        this.client.repositories.userRepository.update(ctx.author.id, {
           $inc: { arcanjos: -valor, estrelinhas: valor * valorArch },
         });
         ctx.replyT('success', 'commands:shop.dataVender.success-archangel', {
@@ -420,7 +420,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
           ctx.replyT('error', 'commands:shop.dataVender.poor', { var: 'semideuses' }, true);
           return;
         }
-        this.client.repositories.userRepository.update(ctx.interaction.user.id, {
+        this.client.repositories.userRepository.update(ctx.author.id, {
           $inc: { semideuses: -valor, estrelinhas: valor * valorSD },
         });
         ctx.replyT('success', 'commands:shop.dataVender.success-sd', {
@@ -435,7 +435,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
           ctx.replyT('error', 'commands:shop.dataVender.poor', { var: 'deuses' }, true);
           return;
         }
-        this.client.repositories.userRepository.update(ctx.interaction.user.id, {
+        this.client.repositories.userRepository.update(ctx.author.id, {
           $inc: { deuses: -valor, estrelinhas: valor * valorDeus },
         });
         ctx.replyT('success', 'commands:shop.dataVender.success-god', {
@@ -471,7 +471,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
 
     const valueToPay = valor * valorRoll;
 
-    this.client.repositories.userRepository.update(ctx.interaction.user.id, {
+    this.client.repositories.userRepository.update(ctx.author.id, {
       $inc: { rolls: valor, estrelinhas: -valueToPay },
     });
 
@@ -627,7 +627,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
             cor: `#${hexColor.replace('#', '')}`,
             price: shopEconomy.colors.your_choice,
           };
-          this.client.repositories.userRepository.update(ctx.interaction.user.id, {
+          this.client.repositories.userRepository.update(ctx.author.id, {
             $inc: { estrelinhas: -availableColors[6].price },
             $push: { cores: toPush },
           });
@@ -642,7 +642,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
       }
     }
     if (choice !== 6) {
-      await this.client.repositories.userRepository.update(ctx.interaction.user.id, {
+      await this.client.repositories.userRepository.update(ctx.author.id, {
         $inc: { estrelinhas: -availableColors[choice].price },
         $push: { cores: availableColors[choice] },
       });

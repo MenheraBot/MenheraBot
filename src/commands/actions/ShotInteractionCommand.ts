@@ -28,19 +28,19 @@ export default class ShotInteractionCommand extends InteractionCommand {
     const rand = await HttpRequests.getAssetImageUrl('shot');
     const user = ctx.options.getUser('user', true);
 
-    if (user.id === ctx.interaction.user.id) {
+    if (user.id === ctx.author.id) {
       await ctx.replyT('error', 'commands:shot.self-mention', {}, true);
       return;
     }
 
-    const avatar = ctx.interaction.user.displayAvatarURL({ format: 'png', dynamic: true });
+    const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     const embed = new MessageEmbed()
       .setTitle(ctx.locale('commands:shot.embed_title'))
       .setColor(COLORS.ACTIONS)
       .setDescription(
         ctx.locale('commands:shot.embed_description', {
-          author: ctx.interaction.user.toString(),
+          author: ctx.author.toString(),
           mention: user.toString(),
         }),
       )

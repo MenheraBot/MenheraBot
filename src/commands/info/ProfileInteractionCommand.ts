@@ -26,10 +26,10 @@ export default class ProfileInteractionCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     let { user }: { user: IUserSchema | null } = ctx.data;
-    const member = ctx.options.getUser('user') ?? ctx.interaction.user;
+    const member = ctx.options.getUser('user') ?? ctx.author;
     let marry: string | User = 'false';
 
-    if (member.id !== ctx.interaction.user.id) {
+    if (member.id !== ctx.author.id) {
       if (member.bot) {
         await ctx.replyT('error', 'commands:profile.bot', {}, true);
         return;
@@ -42,7 +42,7 @@ export default class ProfileInteractionCommand extends InteractionCommand {
       return;
     }
 
-    if (user.ban && ctx.interaction.user.id !== process.env.OWNER) {
+    if (user.ban && ctx.author.id !== process.env.OWNER) {
       await ctx.replyT('error', 'commands:profile.banned', { reason: user.banReason }, true);
       return;
     }

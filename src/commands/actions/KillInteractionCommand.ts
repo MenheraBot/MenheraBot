@@ -27,9 +27,9 @@ export default class KillInteractionCommand extends InteractionCommand {
   async run(ctx: InteractionCommandContext): Promise<void> {
     const rand = await HttpRequests.getAssetImageUrl('kill');
     const user = ctx.options.getUser('user', true);
-    const avatar = ctx.interaction.user.displayAvatarURL({ format: 'png', dynamic: true });
+    const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
 
-    if (user.id === ctx.interaction.user.id) {
+    if (user.id === ctx.author.id) {
       await ctx.replyT('error', 'commands:kill.self-mention', {}, true);
       return;
     }
@@ -49,7 +49,7 @@ export default class KillInteractionCommand extends InteractionCommand {
         .setColor(COLORS.ACTIONS)
         .setDescription(
           ctx.locale('commands:kill.bot.embed_description', {
-            author: ctx.interaction.user.toString(),
+            author: ctx.author.toString(),
             mention: user.toString(),
           }),
         )
@@ -65,7 +65,7 @@ export default class KillInteractionCommand extends InteractionCommand {
       .setColor(COLORS.ACTIONS)
       .setDescription(
         ctx.locale('commands:kill.embed_description', {
-          author: ctx.interaction.user.toString(),
+          author: ctx.author.toString(),
           mention: user.toString(),
         }),
       )

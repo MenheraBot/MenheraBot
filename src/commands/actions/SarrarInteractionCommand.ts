@@ -28,14 +28,14 @@ export default class SarrarInteractionCommand extends InteractionCommand {
   static async sarrada(ctx: InteractionCommandContext, user: User): Promise<void> {
     const rand = await HttpRequests.getAssetImageUrl('sarrar');
 
-    const avatar = ctx.interaction.user.displayAvatarURL({ format: 'png', dynamic: true });
+    const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     const embed = new MessageEmbed()
       .setTitle(ctx.locale('commands:sarrar.embed_title'))
       .setColor(COLORS.ACTIONS)
       .setDescription(
         ctx.locale('commands:sarrar.embed_description', {
-          author: ctx.interaction.user.toString(),
+          author: ctx.author.toString(),
           mention: user.toString(),
         }),
       )
@@ -49,7 +49,7 @@ export default class SarrarInteractionCommand extends InteractionCommand {
   async run(ctx: InteractionCommandContext): Promise<void> {
     const user = ctx.options.getUser('user');
 
-    if (user && user.id !== ctx.interaction.user.id) {
+    if (user && user.id !== ctx.author.id) {
       SarrarInteractionCommand.sarrada(ctx, user);
       return;
     }
@@ -60,11 +60,11 @@ export default class SarrarInteractionCommand extends InteractionCommand {
       .setColor(COLORS.ACTIONS)
       .setDescription(
         ctx.locale('commands:sarrar.no-mention.embed_description', {
-          author: ctx.interaction.user.toString(),
+          author: ctx.author.toString(),
         }),
       )
       .setImage(randSozinho)
-      .setThumbnail(ctx.interaction.user.displayAvatarURL())
+      .setThumbnail(ctx.author.displayAvatarURL())
       .setFooter(ctx.locale('commands:sarrar.no-mention.embed_footer'));
 
     const Button = new MessageButton()
@@ -78,9 +78,7 @@ export default class SarrarInteractionCommand extends InteractionCommand {
     });
 
     const filter = (int: MessageComponentInteraction) =>
-      int.user.id !== ctx.interaction.user.id &&
-      !int.user.bot &&
-      int.customId === ctx.interaction.id;
+      int.user.id !== ctx.author.id && !int.user.bot && int.customId === ctx.interaction.id;
 
     const collected = await Util.collectComponentInteractionWithCustomFilter(
       ctx.channel,

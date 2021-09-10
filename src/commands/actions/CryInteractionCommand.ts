@@ -25,18 +25,18 @@ export default class CryInteractionCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    const avatar = ctx.interaction.user.displayAvatarURL({ format: 'png', dynamic: true });
+    const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     const rand = await HttpRequests.getAssetImageUrl('cry');
     const user = ctx.options.getUser('user');
 
-    if (!user || user.id === ctx.interaction.user.id) {
+    if (!user || user.id === ctx.author.id) {
       const embed = new MessageEmbed()
         .setTitle(ctx.locale('commands:cry.no-mention.embed_title'))
         .setColor(COLORS.ACTIONS)
         .setDescription(
           ctx.locale('commands:cry.no-mention.embed_description', {
-            author: ctx.interaction.user.toString(),
+            author: ctx.author.toString(),
           }),
         )
         .setThumbnail(avatar)
@@ -56,7 +56,7 @@ export default class CryInteractionCommand extends InteractionCommand {
       .setColor(COLORS.ACTIONS)
       .setDescription(
         ctx.locale('commands:cry.embed_description', {
-          author: ctx.interaction.user.toString(),
+          author: ctx.author.toString(),
           mention: user.toString(),
         }),
       )

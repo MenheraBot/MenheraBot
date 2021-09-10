@@ -29,7 +29,7 @@ export default class AboutmeInteractionCommand extends InteractionCommand {
       return;
     }
 
-    await ctx.client.repositories.userRepository.update(ctx.interaction.user.id, { nota });
+    await ctx.client.repositories.userRepository.update(ctx.author.id, { nota });
 
     await ctx.replyT('success', 'commands:aboutme.success');
   }

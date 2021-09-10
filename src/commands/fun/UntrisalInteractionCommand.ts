@@ -34,7 +34,7 @@ export default class UntrisalInteractionCommand extends InteractionCommand {
 
     const confirmed = await Util.collectComponentInteractionWithId(
       ctx.channel,
-      ctx.interaction.user.id,
+      ctx.author.id,
       ctx.interaction.id,
       15000,
     );
@@ -52,7 +52,7 @@ export default class UntrisalInteractionCommand extends InteractionCommand {
     }
 
     await this.client.repositories.relationshipRepository.untrisal(
-      ctx.interaction.user.id,
+      ctx.author.id,
       ctx.data.user.trisal[0],
       ctx.data.user.trisal[1],
     );

@@ -74,7 +74,7 @@ export default class XandaoInteractionCommand extends InteractionCommand {
     let fala: string;
     if (!texto) {
       fala = fraseEscolhida;
-    } else fala = `${texto}\n\n📢 | ${ctx.interaction.user.toString()}`;
+    } else fala = `${texto}\n\n📢 | ${ctx.author.toString()}`;
 
     try {
       const webhooks = await ctx.channel.fetchWebhooks();

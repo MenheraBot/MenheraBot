@@ -17,7 +17,7 @@ export default class GrumbleInteractionCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    const avatar = ctx.interaction.user.displayAvatarURL({ format: 'png', dynamic: true });
+    const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     const rand = await HttpRequests.getAssetImageUrl('grumble');
 
@@ -26,7 +26,7 @@ export default class GrumbleInteractionCommand extends InteractionCommand {
       .setColor(COLORS.ACTIONS)
       .setDescription(
         ctx.locale('commands:grumble.embed_description', {
-          author: ctx.interaction.user.toString(),
+          author: ctx.author.toString(),
         }),
       )
       .setThumbnail(avatar)

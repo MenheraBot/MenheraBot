@@ -52,7 +52,7 @@ export default class TrisalInteractionCommand extends InteractionCommand {
         return;
       }
 
-      const userOneAvatar = ctx.interaction.user.displayAvatarURL({
+      const userOneAvatar = ctx.author.displayAvatarURL({
         dynamic: false,
         size: 256,
         format: 'png',
@@ -75,7 +75,7 @@ export default class TrisalInteractionCommand extends InteractionCommand {
       const embed = new MessageEmbed()
         .setDescription(
           `${ctx.locale('commands:trisal.embed.description')} ${
-            ctx.interaction.user
+            ctx.author
           }, ${marryTwo}, ${marryThree}`,
         )
         .setColor('#ac76f9')
@@ -92,7 +92,7 @@ export default class TrisalInteractionCommand extends InteractionCommand {
       await ctx.replyT('error', 'commands:trisal.no-mention', {}, true);
       return;
     }
-    if (mencionado1.id === ctx.interaction.user.id || mencionado2.id === ctx.interaction.user.id) {
+    if (mencionado1.id === ctx.author.id || mencionado2.id === ctx.author.id) {
       await ctx.replyT('error', 'commands:trisal.self-mention', {}, true);
       return;
     }
@@ -123,11 +123,11 @@ export default class TrisalInteractionCommand extends InteractionCommand {
     await ctx.reply({
       content: `${ctx.locale(
         'commands:trisal.accept-message',
-      )} ${ctx.interaction.user.toString()}, ${mencionado1.toString()}, ${mencionado2.toString()}`,
+      )} ${ctx.author.toString()}, ${mencionado1.toString()}, ${mencionado2.toString()}`,
       components: [{ type: 'ACTION_ROW', components: [ConfirmButton] }],
     });
 
-    const acceptableIds = [ctx.interaction.user.id, mencionado1.id, mencionado2.id];
+    const acceptableIds = [ctx.author.id, mencionado1.id, mencionado2.id];
 
     const filter = (int: MessageComponentInteraction) =>
       acceptableIds.includes(int.user.id) && int.customId === ctx.interaction.id;

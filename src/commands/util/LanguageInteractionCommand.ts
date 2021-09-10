@@ -45,7 +45,7 @@ export default class LanguageInteractionCommand extends InteractionCommand {
 
     const collectInteracion = await Util.collectComponentInteractionWithId(
       ctx.channel,
-      ctx.interaction.user.id,
+      ctx.author.id,
       ctx.interaction.id,
       6969,
     ).catch(() => null);
@@ -78,7 +78,7 @@ export default class LanguageInteractionCommand extends InteractionCommand {
 
       const newCollect = await Util.collectComponentInteractionWithId(
         ctx.channel,
-        ctx.interaction.user.id,
+        ctx.author.id,
         ctx.interaction.id,
         6969,
       ).catch(() => null);

@@ -27,7 +27,7 @@ export default async (ctx: InteractionCommandContext, user: IRpgUserSchema): Pro
 
   const collected = await Util.collectComponentInteractionWithStartingId(
     ctx.channel,
-    ctx.interaction.user.id,
+    ctx.author.id,
     ctx.interaction.id,
     15000,
   );
@@ -49,5 +49,8 @@ export default async (ctx: InteractionCommandContext, user: IRpgUserSchema): Pro
 
   if (resolveCustomId(collected.customId) === 'NEGATE') {
     ctx.deleteReply();
+    return;
   }
+
+  const inParty = await ctx.client.repositories.rpgRepository.getUserParty(ctx.user.id);
 };

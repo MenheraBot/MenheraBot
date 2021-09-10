@@ -32,7 +32,7 @@ export default class PartyInteractionCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    const user = await this.client.repositories.rpgRepository.findUser(ctx.interaction.user.id);
+    const user = await this.client.repositories.rpgRepository.findUser(ctx.author.id);
     if (!user) {
       ctx.replyT('error', 'common:not-registred', {}, true);
       return;
@@ -42,7 +42,7 @@ export default class PartyInteractionCommand extends InteractionCommand {
     const userOne = ctx.options.getUser('user_one');
     const userTwo = ctx.options.getUser('user_two');
 
-    if (userOne?.id === ctx.interaction.user.id || userTwo?.id === ctx.interaction.user.id) {
+    if (userOne?.id === ctx.author.id || userTwo?.id === ctx.author.id) {
       ctx.replyT('error', 'commands:party.self-mention', {}, true);
       return;
     }
@@ -62,7 +62,7 @@ export default class PartyInteractionCommand extends InteractionCommand {
     if (userParty) {
       embed.setDescription(ctx.translate('description'));
       embed.addField(
-        ctx.interaction.user.username,
+        ctx.author.username,
         ctx.translate('stats', {
           life: user.life,
           maxLife: user.maxLife,
@@ -71,7 +71,7 @@ export default class PartyInteractionCommand extends InteractionCommand {
           tiredness: user.tiredness,
         }),
       );
-      const toDel: string[] = [ctx.interaction.user.id];
+      const toDel: string[] = [ctx.author.id];
       const promises = userParty.party.map(async (a) => {
         toDel.push(a);
         const fetchedUser = await this.client.users.fetch(a);
@@ -106,7 +106,7 @@ export default class PartyInteractionCommand extends InteractionCommand {
 
       const collected = await Util.collectComponentInteractionWithId(
         ctx.channel,
-        ctx.interaction.user.id,
+        ctx.author.id,
         ctx.interaction.id,
         10000,
       );
@@ -129,7 +129,7 @@ export default class PartyInteractionCommand extends InteractionCommand {
 
       ctx.editReply({
         content: ctx.translate('party-end', {
-          author: ctx.interaction.user.toString(),
+          author: ctx.author.toString(),
           users: toDel.map((a) => `<@${a}>`).join(', '),
         }),
         components: [],
@@ -181,7 +181,7 @@ export default class PartyInteractionCommand extends InteractionCommand {
     const length = userOne && userTwo ? 2 : 1;
 
     embed.setDescription(
-      ctx.translate('ask-desc', { count: length, author: ctx.interaction.user.toString() }),
+      ctx.translate('ask-desc', { count: length, author: ctx.author.toString() }),
     );
 
     const acceptButton = new MessageButton()
@@ -226,31 +226,23 @@ export default class PartyInteractionCommand extends InteractionCommand {
       }
 
       if (length === 1) {
-        this.client.repositories.rpgRepository.createParty(
-          ctx.interaction.user.id,
-          accepted,
-          ctx.interaction.user.id,
-        );
+        this.client.repositories.rpgRepository.createParty(ctx.author.id, accepted, ctx.author.id);
         this.client.repositories.rpgRepository.createParty(
           accepted[0],
-          [ctx.interaction.user.id],
-          ctx.interaction.user.id,
+          [ctx.author.id],
+          ctx.author.id,
         );
       } else {
-        this.client.repositories.rpgRepository.createParty(
-          ctx.interaction.user.id,
-          accepted,
-          ctx.interaction.user.id,
-        );
+        this.client.repositories.rpgRepository.createParty(ctx.author.id, accepted, ctx.author.id);
         this.client.repositories.rpgRepository.createParty(
           accepted[0],
-          [ctx.interaction.user.id, accepted[1]],
-          ctx.interaction.user.id,
+          [ctx.author.id, accepted[1]],
+          ctx.author.id,
         );
         this.client.repositories.rpgRepository.createParty(
           accepted[1],
-          [ctx.interaction.user.id, accepted[0]],
-          ctx.interaction.user.id,
+          [ctx.author.id, accepted[0]],
+          ctx.author.id,
         );
       }
 

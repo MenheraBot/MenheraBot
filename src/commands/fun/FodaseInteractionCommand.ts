@@ -18,12 +18,12 @@ export default class FodaseInteractionCommand extends InteractionCommand {
     const frases =
       ctx.data.server.lang === 'pt-BR'
         ? [
-            `${ctx.interaction.user.username} disse que fodase`,
+            `${ctx.author.username} disse que fodase`,
             'Inteligente, pena que fodase',
             'Ta, e o fodase?',
           ]
         : [
-            `${ctx.interaction.user.username} said it dont care`,
+            `${ctx.author.username} said it dont care`,
             'Nice, but fuck it',
             "Cool, but i don't care",
           ];
@@ -33,7 +33,7 @@ export default class FodaseInteractionCommand extends InteractionCommand {
 
     const embed = new MessageEmbed()
       .setImage(rand)
-      .setFooter(`Autor: ${ctx.interaction.user.username}`)
+      .setFooter(`Autor: ${ctx.author.username}`)
       .setTitle(frasesUsada);
 
     await ctx.reply({ embeds: [embed] });

@@ -23,11 +23,11 @@ export default class DeleteInteractionCommand extends InteractionCommand {
       .setLabel(ctx.locale('commands:delete.btn_confirm'))
       .setStyle('DANGER');
 
-    const usages = await HttpRequests.getUserDeleteUsages(ctx.interaction.user.id);
+    const usages = await HttpRequests.getUserDeleteUsages(ctx.author.id);
 
     if (!usages.err && usages.count && usages.count >= 5) {
       await this.client.repositories.blacklistRepository.ban(
-        ctx.interaction.user.id,
+        ctx.author.id,
         '[PERMABAN] Tentou burlar o cooldown da Menhera excluindo a conta diversar vezes',
       );
       ctx.replyT('warn', 'commands:delete.ban', {}, true);
@@ -41,7 +41,7 @@ export default class DeleteInteractionCommand extends InteractionCommand {
 
     const collect = await Util.collectComponentInteractionWithId(
       ctx.channel,
-      ctx.interaction.user.id,
+      ctx.author.id,
       ctx.interaction.id,
       5000,
     );
@@ -56,7 +56,7 @@ export default class DeleteInteractionCommand extends InteractionCommand {
         ],
       });
     }
-    await this.client.repositories.userRepository.delete(ctx.interaction.user.id);
+    await this.client.repositories.userRepository.delete(ctx.author.id);
     return ctx.editReply({
       content: `${emojis.success} | ${ctx.locale('commands:delete.acepted')}`,
       components: [],

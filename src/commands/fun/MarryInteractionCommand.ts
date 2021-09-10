@@ -33,7 +33,7 @@ export default class MarryInteractionCommand extends InteractionCommand {
       await ctx.replyT('error', 'commands:marry.bot', {}, true);
       return;
     }
-    if (mencionado.id === ctx.interaction.user.id) {
+    if (mencionado.id === ctx.author.id) {
       await ctx.replyT('error', 'commands:marry.self-mention', {}, true);
       return;
     }
@@ -67,7 +67,7 @@ export default class MarryInteractionCommand extends InteractionCommand {
 
     ctx.reply({
       content: ctx.locale('commands:marry.first-text', {
-        author: ctx.interaction.user.toString(),
+        author: ctx.author.toString(),
         toMarry: mencionado.toString(),
       }),
       components: [{ type: 1, components: [ConfirmButton, CancellButton] }],
@@ -99,7 +99,7 @@ export default class MarryInteractionCommand extends InteractionCommand {
       ctx.editReply({
         content: `${emojis.error} | ${ctx.locale('commands:marry.negated', {
           toMarry: mencionado.toString(),
-          author: ctx.interaction.user.toString(),
+          author: ctx.author.toString(),
         })}`,
         components: [
           {
@@ -117,7 +117,7 @@ export default class MarryInteractionCommand extends InteractionCommand {
     ctx.editReply({
       content: `${emojis.ring} | ${ctx.locale('commands:marry.accepted', {
         toMarry: mencionado.toString(),
-        author: ctx.interaction.user.toString(),
+        author: ctx.author.toString(),
       })}`,
       components: [
         {
@@ -135,7 +135,7 @@ export default class MarryInteractionCommand extends InteractionCommand {
     const dataFormated = moment(Date.now()).format('l LTS');
 
     await this.client.repositories.relationshipRepository.marry(
-      ctx.interaction.user.id,
+      ctx.author.id,
       mencionado.id,
       dataFormated,
     );

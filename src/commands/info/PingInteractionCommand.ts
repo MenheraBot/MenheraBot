@@ -28,7 +28,7 @@ export default class PingInteractionCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     if (!this.client.shard) return;
-    const avatar = ctx.interaction.user.displayAvatarURL({ format: 'png', dynamic: true });
+    const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     if (ctx.options.getString('shards')) {
       const promises = [
@@ -122,7 +122,7 @@ export default class PingInteractionCommand extends InteractionCommand {
           this.client.ws.ping,
         )}ms**\n🖲️ | Shard: **${this.client.shard.ids}** / **${this.client.shard.count - 1}**`,
       )
-      .setFooter(ctx.interaction.user.tag, avatar)
+      .setFooter(ctx.author.tag, avatar)
       .setTimestamp()
       .setColor('#eab3fa');
 

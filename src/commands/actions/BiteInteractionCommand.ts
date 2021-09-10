@@ -33,19 +33,19 @@ export default class BiteInteractionCommand extends InteractionCommand {
       return;
     }
 
-    if (user.id === ctx.interaction.user.id) {
+    if (user.id === ctx.author.id) {
       await ctx.replyT('error', 'commands:bite.self-mention', {}, true);
       return;
     }
 
-    const avatar = ctx.interaction.user.displayAvatarURL({ format: 'png', dynamic: true });
+    const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     const embed = new MessageEmbed()
       .setTitle(ctx.locale('commands:bite.embed_title'))
       .setColor(COLORS.ACTIONS)
       .setDescription(
         ctx.locale('commands:bite.embed_description', {
-          author: ctx.interaction.user.toString(),
+          author: ctx.author.toString(),
           mention: user.toString(),
         }),
       )

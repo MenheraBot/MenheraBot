@@ -578,7 +578,7 @@ export default class TopInteractionCommand extends InteractionCommand {
   }
 
   static async topUser(ctx: InteractionCommandContext): Promise<void> {
-    const user = ctx.options.getUser('user') ?? ctx.interaction.user;
+    const user = ctx.options.getUser('user') ?? ctx.author;
 
     if (!user) {
       ctx.editReply({ content: `${emojis.error} | ${ctx.locale('commands:top.not-user')}` });

@@ -22,8 +22,8 @@ export default class VoteInteractionCommand extends InteractionCommand {
       .setImage('https://i.imgur.com/27GxqX1.jpg')
       .setDescription(ctx.locale('commands:vote.embed_description'))
       .setFooter(
-        ctx.locale('commands:vote.embed_footer', { author: ctx.interaction.user.tag }),
-        ctx.interaction.user.displayAvatarURL(),
+        ctx.locale('commands:vote.embed_footer', { author: ctx.author.tag }),
+        ctx.author.displayAvatarURL(),
       )
       .setTimestamp();
 

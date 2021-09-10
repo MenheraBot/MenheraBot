@@ -31,9 +31,9 @@ export default class MacetavaInteractionCommand extends InteractionCommand {
 
     const res = await HttpRequests.macetavaRequest(
       link,
-      ctx.interaction.user.username,
-      ctx.interaction.user.discriminator,
-      ctx.interaction.user.displayAvatarURL({ format: 'png', size: 512 }),
+      ctx.author.username,
+      ctx.author.discriminator,
+      ctx.author.displayAvatarURL({ format: 'png', size: 512 }),
     );
 
     if (res.err) {
