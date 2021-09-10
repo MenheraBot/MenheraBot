@@ -34,6 +34,7 @@
     "title": "Training Camp",
     "join": "Join Battle",
     "not-now": "Not Now",
-    "description": "Welcome to training camp! Here you can fight small monsters to train your powers. The training ground is safe, you will battle one, and only one monster."
+    "description": "Welcome to training camp! Here you can fight small monsters to train your powers. The training ground is safe, you will battle one, and only one monster.",
+    "in-party": "You cannot enter the training camp in a party!"
   }
 }

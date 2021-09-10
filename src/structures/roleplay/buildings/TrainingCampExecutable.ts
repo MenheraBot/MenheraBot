@@ -52,5 +52,14 @@ export default async (ctx: InteractionCommandContext, user: IRpgUserSchema): Pro
     return;
   }
 
-  const inParty = await ctx.client.repositories.rpgRepository.getUserParty(ctx.user.id);
+  const inParty = await ctx.client.repositories.rpgRepository.getUserParty(ctx.author.id);
+
+  if (inParty) {
+    ctx.editReply({
+      components: [],
+      embeds: [
+        embed.setDescription(ctx.locale('buildings:training_camp.in-party')).setColor('RED'),
+      ],
+    });
+  }
 };
