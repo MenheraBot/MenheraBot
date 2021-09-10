@@ -84,6 +84,7 @@ export const emojis = {
   archangel: '👼',
   scape: '🐥',
   lock: '🔒',
+  list: '📜',
   star: '⭐',
   demon: '<:Demon:758765044443381780>',
   angel: '<:Angel:758765044204437535>',

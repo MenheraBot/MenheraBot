@@ -9,6 +9,7 @@
     "build": "rm -rf dist && tsc --project tsconfig.json && tscpaths -p tsconfig.json -s ./src -o ./dist && cp -R ./src/locales ./dist/locales",
     "start": "NODE_ENV=production node .",
     "dev": "NODE_ENV=development node .",
+    "run:dev": "npm run build && npm run dev",
     "lint:fix": "eslint --fix .",
     "lint:test": "eslint .",
     "typecheck": "tsc --noEmit",

@@ -1,6 +1,7 @@
 {
   "timesup": "Tempo Esgotado",
   "accept": "Aceitar",
+  "confirm": "Confirm",
   "portuguese": "Português",
   "english": "Inglês",
   "not-registred": "Você não é registrado no Rpg! Use `/ficha` para se registrar",
