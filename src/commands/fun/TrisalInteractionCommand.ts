@@ -108,6 +108,11 @@ export default class TrisalInteractionCommand extends InteractionCommand {
       return;
     }
 
+    if (user1.ban === true || user2.ban === true || user3.ban === true) {
+      await ctx.replyT('error', 'banned-user', {}, true);
+      return;
+    }
+
     if (user2.trisal?.length > 0 || user3.trisal?.length > 0) {
       await ctx.replyT('error', 'comedor-de-casadas', {}, true);
       return;

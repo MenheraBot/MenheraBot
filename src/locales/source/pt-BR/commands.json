@@ -581,6 +581,7 @@
   "trisal": {
     "description": "Forme um trisal e veja suas metadinhas",
     "usage": "[@menção1 & @menção2]",
+    "banned-user": "Este trisal não pode acontecer pois possui usuários banidos da Menhera!",
     "marry-not-found": "um usuário de seu trisal não foi encontrado",
     "no-owner": "utilize o comando mamar para que eu crie uma conta pra você antes de tudo >.<",
     "embed": {

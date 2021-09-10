@@ -578,6 +578,7 @@
     "description": "Form a trisal and see your metadinhas",
     "usage": "[@mention1 & @mention2]",
     "marry-not-found": "a user of your trisal was not found",
+    "banned-user":"This trisal cannot be made because it is banned from Menhera!",
     "no-owner": "you need to use the 'suck' command to create an account first >.<",
     "embed": {
       "description": "As much as it is not something serious, these 3 are together: "
