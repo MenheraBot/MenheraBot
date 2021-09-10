@@ -209,6 +209,7 @@
     "confirm": "{{author}} te desafiou para uma aposta de Cara ou Coroa valendo **{{value}}** :star:. Caso caia Cara, {{author}} vence, caso caia coroa, {{mention}} vence.\nVocê aceita? Tens **7** Segundos",
     "cara": "**CARA**",
     "coroa": "**COROA**",
+    "banned-user": "Este usuário não pode apostar pois está banido da Menhera!",
     "cara-texto": "{{author}} ganhou {{value}} :star: apostando com {{mention}}. Sinto muito {{mention}}, nem sempre saimos vitoriosos.",
     "coroa-texto": "{{mention}} ganhou a aposta valendo {{value}} :star: contra {{author}}"
   },

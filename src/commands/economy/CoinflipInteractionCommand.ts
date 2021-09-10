@@ -67,6 +67,11 @@ export default class CoinflipInteractionCommand extends InteractionCommand {
       return;
     }
 
+    if (db2.ban === true) {
+      await ctx.replyT('error', 'banned-user', {}, true);
+      return;
+    }
+
     if (input > db1.estrelinhas) {
       await ctx.replyT('error', 'poor', { user: user1.toString() }, true);
       return;

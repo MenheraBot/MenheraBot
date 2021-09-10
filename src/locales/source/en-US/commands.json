@@ -208,6 +208,7 @@
     "poor": "{{user}} don't have all these stars to bet on!",
     "confirm": "{{author}} challenged you to a heads-up bet worth **{{value}}** ⭐. Heads, {{author}} wins, tails, {{mention}} wins. Do you accept? you got **7** seconds",
     "cara": "**HEADS**",
+    "banned-user": "This user cannot bet because it is banned from Menhera!",
     "coroa": "**TAILS**",
     "cara-texto": "{{author}} won {{value}} :star: betting with {{mention}}. I'm sorry {{mention}}, we are not always victorious",
     "coroa-texto": "{{mention}} won {{value}} :star: betting against {{author}}"
