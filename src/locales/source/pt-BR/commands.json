@@ -216,6 +216,7 @@
   "give": {
     "description": "Transfira algo de seu inventário para alguém",
     "usage": "<opção> <@menção> <valor>",
+    "banned-user":"Este usuário não aceita presentes pois está banido da Menhera!",
     "self-mention": "você não pode mencionar a si mesmo!",
     "no-dbuser": "este usuário não possui uma conta no Menhera's Bank!",
     "invalid-value": "O valor a ser dado deve ser maior que 0",

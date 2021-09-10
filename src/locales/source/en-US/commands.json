@@ -217,6 +217,7 @@
     "description": "Transfer something from your inventory to someone",
     "usage": "<option> <@mention> <value>",
     "self-mention": "you cannot mention yourself!",
+    "banned-user": "This user doesnt accepts gifts because it is banned from Menhera!",
     "no-dbuser": "this user does not have a Menhera's Bank account!",
     "invalid-value": "The value to be given must be greater than 0",
     "poor": "you don't have this much of",
