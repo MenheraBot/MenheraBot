@@ -359,7 +359,8 @@
     "negated": "{{toMarry}} negou o pedido de casamento de {{author}}",
     "first-text": "{{toMarry}}, você recebeu um pedido de casamento de {{author}}\n\n{{toMarry}}, você aceita {{author}} como sua legítima esposa (ou legítimo marido), prometendo ser fiel,\nAmá-la(o) e respeitá-la(o)\nNa alegria e na tristeza,\nNa saúde e na doença,\nNa riqueza e na pobreza,\nPor todos os dias das suas vidas, até que a morte os separe (ou o `/divorciar`)?",
     "accept": "Aceito",
-    "deny": "Nego"
+    "deny": "Nego",
+    "banned-user":"Este usuário não pode se casar pois está banido da Menhera!"
   },
   "ship": {
     "description": "Será que vocês dariam um bom casal?",

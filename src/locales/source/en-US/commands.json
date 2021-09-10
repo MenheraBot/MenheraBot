@@ -356,7 +356,8 @@
     "negated": "{{toMarry}} denied the marriage proposal of {{author}}",
     "first-text": "{{toMarry}}, you received a marriage proposal from {{author}}\n\n{{toMarry}}, do you accept {{author}} as your rightful wife (or rightful husband), promising to be faithful,\nTo love and respect you,\nIn joy and sorrow,\nIn health and sickness,\nIn wealth and poverty,\nAll the days of your life, until death do you part (or `/divorce` you)?",
     "accept": "I Accept",
-    "deny": "I Deny"
+    "deny": "I Deny",
+    "banned-user":"This user cannot be married because it is banned from Menhera!"
   },
   "ship": {
     "description": "Would you make a good couple?",
