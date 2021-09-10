@@ -62,10 +62,24 @@ export default class InteractionCommandContext {
     return this.interaction.reply(options).catch(() => undefined);
   }
 
-  async deferedReplyT(emoji: EmojiTypes, text: string, translateOptions = {}): Promise<void> {
+  async deferedReplyL(emoji: EmojiTypes, text: string, translateOptions = {}): Promise<void> {
     await this.interaction
       .editReply({
         content: `${emojis[emoji] || '🐛'} **|** ${this.i18n(text, translateOptions)}`,
+      })
+      .catch(() => undefined);
+  }
+
+  async replyL(
+    emoji: EmojiTypes,
+    text: string,
+    translateOptions = {},
+    ephemeral = false,
+  ): Promise<Message | void> {
+    return this.interaction
+      .reply({
+        content: `${emojis[emoji] || '🐛'} **|** ${this.i18n(text, translateOptions)}`,
+        ephemeral,
       })
       .catch(() => undefined);
   }
@@ -78,7 +92,7 @@ export default class InteractionCommandContext {
   ): Promise<Message | void> {
     return this.interaction
       .reply({
-        content: `${emojis[emoji] || '🐛'} **|** ${this.i18n(text, translateOptions)}`,
+        content: `${emojis[emoji] || '🐛'} **|** ${this.translate(text, translateOptions)}`,
         ephemeral,
       })
       .catch(() => undefined);

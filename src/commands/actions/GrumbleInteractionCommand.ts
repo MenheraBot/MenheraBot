@@ -17,16 +17,16 @@ export default class GrumbleInteractionCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    const avatar = ctx.interaction.user.displayAvatarURL({ format: 'png', dynamic: true });
+    const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     const rand = await HttpRequests.getAssetImageUrl('grumble');
 
     const embed = new MessageEmbed()
-      .setTitle(ctx.locale('commands:grumble.embed_title'))
+      .setTitle(ctx.translate('embed_title'))
       .setColor(COLORS.ACTIONS)
       .setDescription(
-        ctx.locale('commands:grumble.embed_description', {
-          author: ctx.interaction.user.toString(),
+        ctx.translate('embed_description', {
+          author: ctx.author.toString(),
         }),
       )
       .setThumbnail(avatar)

@@ -19,7 +19,7 @@ export default class CooldownsInteractionCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     if (!ctx.data.user) {
-      await ctx.replyT('error', 'commands:cooldowns.error', {}, true);
+      await ctx.replyT('error', 'error', {}, true);
       return;
     }
 
@@ -29,29 +29,21 @@ export default class CooldownsInteractionCommand extends InteractionCommand {
     let txt = '';
 
     huntCooldownInMilis < 0
-      ? (txt += `\`${ctx.locale('commands:cooldowns.hunt')}\` | ${ctx.locale(
-          'commands:cooldowns.no-cooldown',
-        )}\n`)
-      : (txt += `\`${ctx.locale('commands:cooldowns.hunt')}\` | **${moment
+      ? (txt += `\`${ctx.translate('hunt')}\` | ${ctx.translate('no-cooldown')}\n`)
+      : (txt += `\`${ctx.translate('hunt')}\` | **${moment
           .utc(huntCooldownInMilis)
-          .format('mm:ss')}** ${ctx.locale('commands:cooldowns.minutes')}\n`);
+          .format('mm:ss')}** ${ctx.translate('minutes')}\n`);
 
     voteCooldownInMilis && voteCooldownInMilis < 0
-      ? (txt += `\`${ctx.locale('commands:cooldowns.vote')}\` | ${ctx.locale(
-          'commands:cooldowns.no-cooldown',
-        )}`)
-      : (txt += `\`${ctx.locale('commands:cooldowns.vote')}\` | ${
+      ? (txt += `\`${ctx.translate('vote')}\` | ${ctx.translate('no-cooldown')}`)
+      : (txt += `\`${ctx.translate('vote')}\` | ${
           voteCooldownInMilis > 3600000
-            ? `**${moment.utc(voteCooldownInMilis).format('HH:mm:ss')}** ${ctx.locale(
-                'commands:cooldowns.hours',
-              )}`
-            : `**${moment.utc(voteCooldownInMilis).format('mm:ss')}** ${ctx.locale(
-                'commands:cooldowns.minutes',
-              )}`
+            ? `**${moment.utc(voteCooldownInMilis).format('HH:mm:ss')}** ${ctx.translate('hours')}`
+            : `**${moment.utc(voteCooldownInMilis).format('mm:ss')}** ${ctx.translate('minutes')}`
         }`);
 
     const embed = new MessageEmbed()
-      .setTitle(ctx.locale('commands:cooldowns.title'))
+      .setTitle(ctx.translate('title'))
       .setColor('#6597df')
       .setDescription(txt);
 

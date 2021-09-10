@@ -29,29 +29,26 @@ export default class MamarInteractionCommand extends InteractionCommand {
     const mention = ctx.options.getUser('user', true);
 
     if (mention.bot) {
-      await ctx.replyT(
-        'warn',
-        ctx.locale('commands:mamar.bot', {
-          author: ctx.interaction.user.toString(),
-          mention: mention.toString(),
-        }),
-      );
+      await ctx.replyT('warn', 'bot', {
+        author: ctx.author.toString(),
+        mention: mention.toString(),
+      });
       return;
     }
 
-    if (mention.id === ctx.interaction.user.id) {
-      await ctx.replyT('error', 'commands:mamar.self-mention', {}, true);
+    if (mention.id === ctx.author.id) {
+      await ctx.replyT('error', 'self-mention', {}, true);
       return;
     }
 
     const rand = await HttpRequests.getAssetImageUrl('mamar');
-    const avatar = ctx.interaction.user.displayAvatarURL({ format: 'png', dynamic: true });
+    const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
     const embed = new MessageEmbed()
-      .setTitle(ctx.locale('commands:mamar.embed_title'))
+      .setTitle(ctx.translate('embed_title'))
       .setColor(COLORS.ACTIONS)
       .setDescription(
-        ctx.locale('commands:mamar.embed_description', {
-          author: ctx.interaction.user.toString(),
+        ctx.translate('embed_description', {
+          author: ctx.author.toString(),
           mention: mention.toString(),
         }),
       )
@@ -59,6 +56,6 @@ export default class MamarInteractionCommand extends InteractionCommand {
       .setThumbnail(avatar);
 
     await ctx.reply({ embeds: [embed] });
-    await ctx.client.repositories.mamarRepository.mamar(ctx.interaction.user.id, mention.id);
+    await ctx.client.repositories.mamarRepository.mamar(ctx.author.id, mention.id);
   }
 }

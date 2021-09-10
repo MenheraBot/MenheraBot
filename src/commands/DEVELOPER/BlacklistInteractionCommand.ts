@@ -76,7 +76,7 @@ export default class BlacklistInteractionCommand extends InteractionCommand {
           await ctx.replyE('error', 'user not found');
           return;
         }
-        const usr = await this.client.repositories.userRepository.find(user.id);
+        const usr = await this.client.repositories.userRepository.getBannedUserInfo(user.id);
         if (!usr) {
           await ctx.replyE('error', 'Nenhum user');
           return;

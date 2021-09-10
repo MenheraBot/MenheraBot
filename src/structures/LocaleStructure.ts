@@ -10,7 +10,7 @@ export default class LocaleStructure {
 
   constructor() {
     this.ns = ['common', 'commands', 'events', 'permissions'];
-    this.languages = ['pt-BR', 'en-US', 'pt-LIGMA'];
+    this.languages = ['pt-BR', 'en-US'];
   }
 
   async load(): Promise<void> {

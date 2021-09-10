@@ -96,7 +96,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
         }),
       )
       .setFooter(
-        `${this.client.user?.username} ${ctx.locale('commands:botinfo.embed_footer')} ${owner.tag}`,
+        `${this.client.user?.username} ${ctx.translate('botinfo.embed_footer')} ${owner.tag}`,
         owner.displayAvatarURL({
           format: 'png',
           dynamic: true,
@@ -109,12 +109,12 @@ export default class StatsInteractionCommand extends InteractionCommand {
           inline: true,
         },
         {
-          name: `🗄️ | ${ctx.locale('commands:botinfo.channels')} | 🗄️`,
+          name: `🗄️ | ${ctx.translate('botinfo.channels')} | 🗄️`,
           value: `\`\`\`${getReduced(AllChannels)}\`\`\``,
           inline: true,
         },
         {
-          name: `👥 | ${ctx.locale('commands:botinfo.users')} | 👥`,
+          name: `👥 | ${ctx.translate('botinfo.users')} | 👥`,
           value: `\`\`\`${getReduced(AllMembers)} (${getReduced(AllCachedMembers)})\`\`\``,
           inline: true,
         },
@@ -126,8 +126,8 @@ export default class StatsInteractionCommand extends InteractionCommand {
           inline: true,
         },
         {
-          name: `<:memoryram:762817135394553876> | ${ctx.locale(
-            'commands:botinfo.memory',
+          name: `<:memoryram:762817135394553876> | ${ctx.translate(
+            'botinfo.memory',
           )} | <:memoryram:762817135394553876>`,
           value: `\`\`\`${(getReduced(AllMemoryUsed) / 1024 / 1024).toFixed(2)}MB\`\`\``,
           inline: true,
@@ -137,49 +137,49 @@ export default class StatsInteractionCommand extends InteractionCommand {
   }
 
   static async blackjack(ctx: InteractionCommandContext): Promise<void> {
-    const user = ctx.options.getUser('user') ?? ctx.interaction.user;
+    const user = ctx.options.getUser('user') ?? ctx.author;
 
     const data = await HttpRequests.getBlackJackStats(user.id);
 
     if (data.error) {
-      await ctx.replyT('error', 'commands:coinflipstats.error', {}, true);
+      await ctx.replyT('error', 'coinflip.error', {}, true);
       return;
     }
 
     if (!data.playedGames) {
-      await ctx.replyT('error', 'commands:blackjackstats.no-data', {}, true);
+      await ctx.replyT('error', 'blackjack.no-data', {}, true);
       return;
     }
 
     const totalMoney = data.winMoney - data.lostMoney;
 
     const embed = new MessageEmbed()
-      .setTitle(ctx.locale('commands:blackjackstats.embed-title', { user: user.tag }))
+      .setTitle(ctx.translate('blackjack.embed-title', { user: user.tag }))
       .setColor(COLORS.Purple)
-      .setFooter(ctx.locale('commands:coinflipstats.embed-footer'))
+      .setFooter(ctx.locale('coinflip.embed-footer'))
       .addFields([
         {
-          name: `🎰 | ${ctx.locale('commands:coinflipstats.played')}`,
+          name: `🎰 | ${ctx.translate('coinflip.played')}`,
           value: `**${data.playedGames}**`,
           inline: true,
         },
         {
-          name: `🏆 | ${ctx.locale('commands:coinflipstats.wins')}`,
+          name: `🏆 | ${ctx.translate('coinflip.wins')}`,
           value: `**${data.winGames}** | (${data.winPorcentage}) **%**`,
           inline: true,
         },
         {
-          name: `🦧 | ${ctx.locale('commands:coinflipstats.loses')}`,
+          name: `🦧 | ${ctx.translate('coinflip.loses')}`,
           value: `**${data.lostGames}** | (${data.lostPorcentage}) **%**`,
           inline: true,
         },
         {
-          name: `📥 | ${ctx.locale('commands:coinflipstats.earnMoney')}`,
+          name: `📥 | ${ctx.translate('coinflip.earnMoney')}`,
           value: `**${data.winMoney}** :star:`,
           inline: true,
         },
         {
-          name: `📤 | ${ctx.locale('commands:coinflipstats.lostMoney')}`,
+          name: `📤 | ${ctx.translate('coinflip.lostMoney')}`,
           value: `**${data.lostMoney}** :star:`,
           inline: true,
         },
@@ -187,12 +187,12 @@ export default class StatsInteractionCommand extends InteractionCommand {
     // eslint-disable-next-line no-unused-expressions
     totalMoney > 0
       ? embed.addField(
-          `${emojis.yes} | ${ctx.locale('commands:coinflipstats.profit')}`,
+          `${emojis.yes} | ${ctx.translate('coinflip.profit')}`,
           `**${totalMoney}** :star:`,
           true,
         )
       : embed.addField(
-          `${emojis.no} | ${ctx.locale('commands:coinflipstats.loss')}`,
+          `${emojis.no} | ${ctx.translate('coinflip.loss')}`,
           `**${totalMoney}** :star:`,
           true,
         );
@@ -201,49 +201,49 @@ export default class StatsInteractionCommand extends InteractionCommand {
   }
 
   static async coinflip(ctx: InteractionCommandContext): Promise<void> {
-    const user = ctx.options.getUser('user') ?? ctx.interaction.user;
+    const user = ctx.options.getUser('user') ?? ctx.author;
 
     const data = await HttpRequests.getCoinflipUserStats(user.id);
 
     if (data.error) {
-      await ctx.replyT('error', 'commands:coinflipstats.error');
+      await ctx.replyT('error', 'coinflip.error');
       return;
     }
 
     if (!data.playedGames) {
-      await ctx.replyT('error', 'commands:coinflipstats.no-data');
+      await ctx.replyT('error', 'coinflip.no-data');
       return;
     }
 
     const totalMoney = data.winMoney - data.lostMoney;
 
     const embed = new MessageEmbed()
-      .setTitle(ctx.locale('commands:coinflipstats.embed-title', { user: user.tag }))
+      .setTitle(ctx.translate('coinflip.embed-title', { user: user.tag }))
       .setColor(COLORS.Purple)
-      .setFooter(ctx.locale('commands:coinflipstats.embed-footer'))
+      .setFooter(ctx.translate('coinflip.embed-footer'))
       .addFields([
         {
-          name: `🎰 | ${ctx.locale('commands:coinflipstats.played')}`,
+          name: `🎰 | ${ctx.translate('coinflip.played')}`,
           value: `**${data.playedGames}**`,
           inline: true,
         },
         {
-          name: `🏆 | ${ctx.locale('commands:coinflipstats.wins')}`,
+          name: `🏆 | ${ctx.translate('coinflip.wins')}`,
           value: `**${data.winGames}** | (${data.winPorcentage}) **%**`,
           inline: true,
         },
         {
-          name: `🦧 | ${ctx.locale('commands:coinflipstats.loses')}`,
+          name: `🦧 | ${ctx.translate('coinflip.loses')}`,
           value: `**${data.lostGames}** | (${data.lostPorcentage}) **%**`,
           inline: true,
         },
         {
-          name: `📥 | ${ctx.locale('commands:coinflipstats.earnMoney')}`,
+          name: `📥 | ${ctx.translate('coinflip.earnMoney')}`,
           value: `**${data.winMoney}** :star:`,
           inline: true,
         },
         {
-          name: `📤 | ${ctx.locale('commands:coinflipstats.lostMoney')}`,
+          name: `📤 | ${ctx.translate('coinflip.lostMoney')}`,
           value: `**${data.lostMoney}** :star:`,
           inline: true,
         },
@@ -251,12 +251,12 @@ export default class StatsInteractionCommand extends InteractionCommand {
     // eslint-disable-next-line no-unused-expressions
     totalMoney > 0
       ? embed.addField(
-          `${emojis.yes} | ${ctx.locale('commands:coinflipstats.profit')}`,
+          `${emojis.yes} | ${ctx.translate('coinflip.profit')}`,
           `**${totalMoney}** :star:`,
           true,
         )
       : embed.addField(
-          `${emojis.no} | ${ctx.locale('commands:coinflipstats.loss')}`,
+          `${emojis.no} | ${ctx.translate('coinflip.loss')}`,
           `**${totalMoney}** :star:`,
           true,
         );

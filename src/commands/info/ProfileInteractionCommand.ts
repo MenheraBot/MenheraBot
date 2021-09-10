@@ -26,24 +26,24 @@ export default class ProfileInteractionCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     let { user }: { user: IUserSchema | null } = ctx.data;
-    const member = ctx.options.getUser('user') ?? ctx.interaction.user;
+    const member = ctx.options.getUser('user') ?? ctx.author;
     let marry: string | User = 'false';
 
-    if (member.id !== ctx.interaction.user.id) {
+    if (member.id !== ctx.author.id) {
       if (member.bot) {
-        await ctx.replyT('error', 'commands:profile.bot', {}, true);
+        await ctx.replyT('error', 'bot', {}, true);
         return;
       }
       user = await this.client.repositories.userRepository.find(member.id);
     }
 
     if (!user) {
-      await ctx.replyT('error', 'commands:profile.no-dbuser', {}, true);
+      await ctx.replyT('error', 'no-dbuser', {}, true);
       return;
     }
 
-    if (user.ban && ctx.interaction.user.id !== process.env.OWNER) {
-      await ctx.replyT('error', 'commands:profile.banned', { reason: user.banReason }, true);
+    if (user.ban && ctx.author.id !== process.env.OWNER) {
+      await ctx.replyT('error', 'banned', { reason: user.banReason }, true);
       return;
     }
 
@@ -72,19 +72,19 @@ export default class ProfileInteractionCommand extends InteractionCommand {
     };
 
     const i18nData = {
-      aboutme: ctx.locale('commands:profile.about-me'),
-      mamado: ctx.locale('commands:profile.mamado'),
-      mamou: ctx.locale('commands:profile.mamou'),
-      zero: ctx.locale('commands:profile.zero'),
-      um: ctx.locale('commands:profile.um'),
-      dois: ctx.locale('commands:profile.dois'),
-      tres: ctx.locale('commands:profile.tres'),
+      aboutme: ctx.translate('about-me'),
+      mamado: ctx.translate('mamado'),
+      mamou: ctx.translate('mamou'),
+      zero: ctx.translate('zero'),
+      um: ctx.translate('um'),
+      dois: ctx.translate('dois'),
+      tres: ctx.translate('tres'),
     };
 
     const res = await HttpRequests.profileRequest(userSendData, marry, usageCommands, i18nData);
 
     if (res.err) {
-      await ctx.deferedReplyT('error', 'commands:http-error');
+      await ctx.deferedReplyL('error', 'commands:http-error');
       return;
     }
 

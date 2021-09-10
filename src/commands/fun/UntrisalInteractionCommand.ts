@@ -18,23 +18,23 @@ export default class UntrisalInteractionCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     if (ctx.data.user.trisal?.length === 0) {
-      await ctx.replyT('error', 'commands:untrisal.error', {}, true);
+      await ctx.replyT('error', 'error', {}, true);
       return;
     }
 
     const button = new MessageButton()
       .setStyle('SUCCESS')
       .setCustomId(ctx.interaction.id)
-      .setLabel(ctx.locale('commands:untrisal.confirm'));
+      .setLabel(ctx.translate('confirm'));
 
     await ctx.reply({
-      content: `${emojis.question} | ${ctx.locale('commands:untrisal.sure')}`,
+      content: `${emojis.question} | ${ctx.translate('sure')}`,
       components: [{ type: 'ACTION_ROW', components: [button] }],
     });
 
     const confirmed = await Util.collectComponentInteractionWithId(
       ctx.channel,
-      ctx.interaction.user.id,
+      ctx.author.id,
       ctx.interaction.id,
       15000,
     );
@@ -52,12 +52,12 @@ export default class UntrisalInteractionCommand extends InteractionCommand {
     }
 
     await this.client.repositories.relationshipRepository.untrisal(
-      ctx.interaction.user.id,
+      ctx.author.id,
       ctx.data.user.trisal[0],
       ctx.data.user.trisal[1],
     );
     ctx.editReply({
-      content: `${emojis.success} | ${ctx.locale('commands:untrisal.done')}`,
+      content: `${emojis.success} | ${ctx.translate('done')}`,
       components: [
         { type: 'ACTION_ROW', components: [button.setDisabled(true).setStyle('PRIMARY')] },
       ],

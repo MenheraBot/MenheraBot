@@ -29,7 +29,7 @@ export default class AstolfoInteractionCommand extends InteractionCommand {
     const res = await HttpRequests.astolfoRequest(text);
 
     if (res.err) {
-      await ctx.replyT('error', 'commands:http-error', {}, true);
+      await ctx.replyL('error', 'commands:http-error', {}, true);
       return;
     }
 

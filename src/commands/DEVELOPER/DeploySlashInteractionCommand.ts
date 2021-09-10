@@ -102,7 +102,7 @@ export default class DeploySlashInteractionCommand extends InteractionCommand {
       res?.forEach((a) => {
         if (permissionSet.includes(a.name)) {
           a.permissions.add({
-            permissions: [{ id: ctx.interaction.user.id, permission: true, type: 'USER' }],
+            permissions: [{ id: ctx.author.id, permission: true, type: 'USER' }],
           });
         }
       });
@@ -128,7 +128,7 @@ export default class DeploySlashInteractionCommand extends InteractionCommand {
     res?.forEach((a) => {
       if (permissionSet.includes(a.name)) {
         a.permissions.add({
-          permissions: [{ id: ctx.interaction.user.id, permission: true, type: 'USER' }],
+          permissions: [{ id: ctx.author.id, permission: true, type: 'USER' }],
         });
       }
     });

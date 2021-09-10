@@ -87,11 +87,11 @@ export default class EightballInteractionCommand extends InteractionCommand {
     const embed = new MessageEmbed()
       .addFields([
         {
-          name: ctx.locale('commands:8ball.question'),
+          name: ctx.translate('question'),
           value: `${ctx.options.getString('pergunta', true)}`,
         },
         {
-          name: ctx.locale('commands:8ball.answer'),
+          name: ctx.translate('answer'),
           value: respostaRandom,
         },
       ])
