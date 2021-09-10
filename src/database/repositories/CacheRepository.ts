@@ -1,3 +1,4 @@
+import { Users } from '@structures/DatabaseCollections';
 import { ICmdSchema, IGuildSchema } from '@utils/Types';
 import { Redis } from 'ioredis';
 import { Document } from 'mongoose';
@@ -9,6 +10,7 @@ export default class CacheRepository {
     private redisClient: Redis | null,
     private guildRepository: GuildsRepository,
     private cmdRepository: CmdRepository,
+    private userModal: typeof Users,
   ) {}
 
   async fetchCommand(commandName: string): Promise<ICmdSchema | (ICmdSchema & Document) | null> {
@@ -67,5 +69,26 @@ export default class CacheRepository {
       const stringedObject = JSON.stringify(update);
       await this.redisClient.setex(`command:${commandName}`, 3600, stringedObject);
     }
+  }
+
+  async addBannedUsers(user: string[] | string): Promise<void> {
+    if (!this.redisClient) return;
+    await this.redisClient.sadd('banned_users', user);
+  }
+
+  async removeBannedUser(user: string): Promise<void> {
+    if (!this.redisClient) return;
+    await this.redisClient.srem('banned_users', user);
+  }
+
+  async isUserBanned(user: string): Promise<boolean> {
+    if (this.redisClient) {
+      const isBan = await this.redisClient.sismember('banned_users', user);
+      return isBan !== 0;
+    }
+
+    const isBanned = await this.userModal.findOne({ id: user }, ['ban']);
+    if (!isBanned) return false;
+    return isBanned.ban ?? false;
   }
 }

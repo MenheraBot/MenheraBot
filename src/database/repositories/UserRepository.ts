@@ -37,4 +37,9 @@ export default class UserRepository {
   async create(userID: string): Promise<IUserSchema & Document> {
     return this.userModal.create({ id: userID, shipValue: Math.floor(Math.random() * 55) });
   }
+
+  async getAllBannedUsersId(): Promise<string[]> {
+    const bannedUsers = await this.userModal.find({ ban: true }, ['id']);
+    return bannedUsers.map((a) => a.id);
+  }
 }
