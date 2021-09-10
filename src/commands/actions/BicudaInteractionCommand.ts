@@ -41,10 +41,10 @@ export default class BicudaInteractionCommand extends InteractionCommand {
     const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     const embed = new MessageEmbed()
-      .setTitle(ctx.locale('commands:bicuda.embed_title'))
+      .setTitle(ctx.translate('embed_title'))
       .setColor(COLORS.ACTIONS)
       .setDescription(
-        ctx.locale('commands:bicuda.embed_description', {
+        ctx.translate('embed_description', {
           author: ctx.author.toString(),
           mention: user.toString(),
         }),

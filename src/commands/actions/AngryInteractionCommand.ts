@@ -31,10 +31,10 @@ export default class AngryInteractionCommand extends InteractionCommand {
 
     if (!user || user.id === ctx.author.id) {
       const embed = new MessageEmbed()
-        .setTitle(ctx.locale('commands:angry.no-mention.embed_title'))
+        .setTitle(ctx.translate('no-mention.embed_title'))
         .setColor(COLORS.ACTIONS)
         .setDescription(
-          ctx.locale('commands:angry.no-mention.embed_description', {
+          ctx.translate('no-mention.embed_description', {
             author: ctx.author.toString(),
           }),
         )
@@ -54,7 +54,7 @@ export default class AngryInteractionCommand extends InteractionCommand {
       .setTitle('Sniff Sniff')
       .setColor(COLORS.ACTIONS)
       .setDescription(
-        ctx.locale('commands:angry.embed_description', {
+        ctx.translate('embed_description', {
           author: ctx.author.toString(),
           mention: user.toString(),
         }),

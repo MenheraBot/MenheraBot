@@ -89,7 +89,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
       .setColor('#fa8dd7')
       .setThumbnail('https://i.imgur.com/b5y0nd4.png')
       .setDescription(
-        ctx.locale('commands:botinfo.embed_description', {
+        ctx.translate('botinfo.embed_description', {
           name: this.client.user?.username,
           createdAt: moment.utc(this.client.user?.createdAt).format('LLLL'),
           joinedAt: moment.utc(ctx.interaction?.guild?.me?.joinedAt).format('LLLL'),
@@ -156,7 +156,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
     const embed = new MessageEmbed()
       .setTitle(ctx.translate('blackjack.embed-title', { user: user.tag }))
       .setColor(COLORS.Purple)
-      .setFooter(ctx.locale('coinflip.embed-footer'))
+      .setFooter(ctx.translate('coinflip.embed-footer'))
       .addFields([
         {
           name: `🎰 | ${ctx.translate('coinflip.played')}`,
