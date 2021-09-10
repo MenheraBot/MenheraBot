@@ -208,6 +208,7 @@
     "poor": "{{user}} don't have all these stars to bet on!",
     "confirm": "{{author}} challenged you to a heads-up bet worth **{{value}}** ⭐. Heads, {{author}} wins, tails, {{mention}} wins. Do you accept? you got **7** seconds",
     "cara": "**HEADS**",
+    "banned-user": "This user cannot bet because it is banned from Menhera!",
     "coroa": "**TAILS**",
     "cara-texto": "{{author}} won {{value}} :star: betting with {{mention}}. I'm sorry {{mention}}, we are not always victorious",
     "coroa-texto": "{{mention}} won {{value}} :star: betting against {{author}}"
@@ -216,6 +217,7 @@
     "description": "Transfer something from your inventory to someone",
     "usage": "<option> <@mention> <value>",
     "self-mention": "you cannot mention yourself!",
+    "banned-user": "This user doesnt accepts gifts because it is banned from Menhera!",
     "no-dbuser": "this user does not have a Menhera's Bank account!",
     "invalid-value": "The value to be given must be greater than 0",
     "poor": "you don't have this much of",
@@ -293,7 +295,8 @@
     "demons": "Demons",
     "angels": "Angels",
     "sd": "Demigods",
-    "god": "Gods"
+    "god": "Gods",
+    "banned-user": "This user doesnt have wallet because it is banned from Menhera!"
   },
   "8ball": {
     "description": "Ask me something",
@@ -353,7 +356,8 @@
     "negated": "{{toMarry}} denied the marriage proposal of {{author}}",
     "first-text": "{{toMarry}}, you received a marriage proposal from {{author}}\n\n{{toMarry}}, do you accept {{author}} as your rightful wife (or rightful husband), promising to be faithful,\nTo love and respect you,\nIn joy and sorrow,\nIn health and sickness,\nIn wealth and poverty,\nAll the days of your life, until death do you part (or `/divorce` you)?",
     "accept": "I Accept",
-    "deny": "I Deny"
+    "deny": "I Deny",
+    "banned-user":"This user cannot be married because it is banned from Menhera!"
   },
   "ship": {
     "description": "Would you make a good couple?",
@@ -368,7 +372,8 @@
     "ok": "WHAT A COUPLE couple, can already date",
     "medium": "Aren't these two already dating? Because they should",
     "high": "What a magnificent couple, just perfect",
-    "perfect": "MY FRIEND, THOSE GUYS ARE MADE TO ANOTHER PRO"
+    "perfect": "MY FRIEND, THOSE GUYS ARE MADE TO ANOTHER PRO",
+    "banned-user":"You cannot ship this user because it is banned from Menhera!"
   },
   "xandao": {
     "description": "NO PRESSURE (this is a portuguese only command)",
@@ -573,6 +578,7 @@
     "description": "Form a trisal and see your metadinhas",
     "usage": "[@mention1 & @mention2]",
     "marry-not-found": "a user of your trisal was not found",
+    "banned-user":"This trisal cannot be made because it is banned from Menhera!",
     "no-owner": "you need to use the 'suck' command to create an account first >.<",
     "embed": {
       "description": "As much as it is not something serious, these 3 are together: "

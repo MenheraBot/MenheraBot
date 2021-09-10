@@ -26,6 +26,25 @@ export default class InteractionCreate extends Event {
     const language = server.lang ?? 'pt-BR';
     const t = i18next.getFixedT(language);
 
+    const isUserBanned = await this.client.repositories.blacklistRepository.isUserBanned(
+      interaction.user.id,
+    );
+
+    if (isUserBanned) {
+      const userBannedInfo = await this.client.repositories.userRepository.getBannedUserInfo(
+        interaction.user.id,
+      );
+      await interaction
+        .reply({
+          content: `<:negacao:759603958317711371> | ${t('permissions:BANNED_INFO', {
+            banReason: userBannedInfo?.banReason,
+          })}`,
+          ephemeral: true,
+        })
+        .catch(() => null);
+      return;
+    }
+
     const command = this.client.slashCommands.get(interaction.commandName);
     if (!command) {
       interaction
@@ -145,17 +164,6 @@ export default class InteractionCreate extends Event {
       interaction.user.id,
     );
 
-    if (authorData?.ban) {
-      await interaction
-        .reply({
-          content: `<:negacao:759603958317711371> | ${t('permissions:BANNED_INFO', {
-            banReason: authorData?.banReason,
-          })}`,
-          ephemeral: true,
-        })
-        .catch(() => null);
-      return;
-    }
     const ctx = new InteractionCommandContext(
       this.client,
       interaction,

@@ -50,6 +50,11 @@ export default class MarryInteractionCommand extends InteractionCommand {
       return;
     }
 
+    if (user2.ban === true) {
+      await ctx.replyT('error', 'banned-user', {}, true);
+      return;
+    }
+
     if (user2.casado && user2.casado !== 'false') {
       await ctx.replyT('error', 'mention-married', {}, true);
       return;

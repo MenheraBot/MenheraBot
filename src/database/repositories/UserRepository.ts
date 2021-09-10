@@ -34,7 +34,16 @@ export default class UserRepository {
     return this.userModal.findOne({ id: userID });
   }
 
+  async getBannedUserInfo(userID: string): Promise<(IUserSchema & Document) | null> {
+    return this.userModal.findOne({ id: userID }, ['ban', 'banReason']);
+  }
+
   async create(userID: string): Promise<IUserSchema & Document> {
     return this.userModal.create({ id: userID, shipValue: Math.floor(Math.random() * 55) });
+  }
+
+  async getAllBannedUsersId(): Promise<string[]> {
+    const bannedUsers = await this.userModal.find({ ban: true }, ['id']);
+    return bannedUsers.map((a) => a.id);
   }
 }

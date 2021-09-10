@@ -31,6 +31,11 @@ export default class WalletInteractionCommand extends InteractionCommand {
       return;
     }
 
+    if (user.ban === true) {
+      ctx.replyT('error', 'banned-user', {}, true);
+      return;
+    }
+
     let cor;
 
     if (user.cor) {

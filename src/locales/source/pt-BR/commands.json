@@ -209,12 +209,14 @@
     "confirm": "{{author}} te desafiou para uma aposta de Cara ou Coroa valendo **{{value}}** :star:. Caso caia Cara, {{author}} vence, caso caia coroa, {{mention}} vence.\nVocê aceita? Tens **7** Segundos",
     "cara": "**CARA**",
     "coroa": "**COROA**",
+    "banned-user": "Este usuário não pode apostar pois está banido da Menhera!",
     "cara-texto": "{{author}} ganhou {{value}} :star: apostando com {{mention}}. Sinto muito {{mention}}, nem sempre saimos vitoriosos.",
     "coroa-texto": "{{mention}} ganhou a aposta valendo {{value}} :star: contra {{author}}"
   },
   "give": {
     "description": "Transfira algo de seu inventário para alguém",
     "usage": "<opção> <@menção> <valor>",
+    "banned-user":"Este usuário não aceita presentes pois está banido da Menhera!",
     "self-mention": "você não pode mencionar a si mesmo!",
     "no-dbuser": "este usuário não possui uma conta no Menhera's Bank!",
     "invalid-value": "O valor a ser dado deve ser maior que 0",
@@ -296,7 +298,8 @@
     "demons": "Demônios",
     "angels": "Anjos",
     "sd": "Semideuses",
-    "god": "Deuses"
+    "god": "Deuses",
+    "banned-user": "Este usuário não possui carteira pois está banido da Menhera!"
   },
   "8ball": {
     "description": "Pergunte algo para mim",
@@ -356,7 +359,8 @@
     "negated": "{{toMarry}} negou o pedido de casamento de {{author}}",
     "first-text": "{{toMarry}}, você recebeu um pedido de casamento de {{author}}\n\n{{toMarry}}, você aceita {{author}} como sua legítima esposa (ou legítimo marido), prometendo ser fiel,\nAmá-la(o) e respeitá-la(o)\nNa alegria e na tristeza,\nNa saúde e na doença,\nNa riqueza e na pobreza,\nPor todos os dias das suas vidas, até que a morte os separe (ou o `/divorciar`)?",
     "accept": "Aceito",
-    "deny": "Nego"
+    "deny": "Nego",
+    "banned-user":"Este usuário não pode se casar pois está banido da Menhera!"
   },
   "ship": {
     "description": "Será que vocês dariam um bom casal?",
@@ -369,7 +373,8 @@
     "ok": "Mazaaaa casal, ja podem namorar ja",
     "medium": "Esses dois já não estão namorando? Pois deveriam",
     "high": "Que casal magnífico véi, perfeitos apenas",
-    "perfect": "MEEEU AMIGO, OS CARA SÃO FEITOS UM PRO OUTRO"
+    "perfect": "MEEEU AMIGO, OS CARA SÃO FEITOS UM PRO OUTRO",
+    "banned-user":"Você não pode shipar esse usuário pois está banido da Menhera!"
   },
   "xandao": {
     "description": "SEM PRESSÃO",
@@ -576,6 +581,7 @@
   "trisal": {
     "description": "Forme um trisal e veja suas metadinhas",
     "usage": "[@menção1 & @menção2]",
+    "banned-user": "Este trisal não pode acontecer pois possui usuários banidos da Menhera!",
     "marry-not-found": "um usuário de seu trisal não foi encontrado",
     "no-owner": "utilize o comando mamar para que eu crie uma conta pra você antes de tudo >.<",
     "embed": {

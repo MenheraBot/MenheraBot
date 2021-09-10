@@ -168,7 +168,7 @@ export default class TopInteractionCommand extends InteractionCommand {
       skip = (pagina - 1) * 10;
     }
 
-    const res = await this.client.database.Users.find({}, ['mamadas', 'id'], {
+    const res = await this.client.database.Users.find({ ban: false }, ['mamadas', 'id'], {
       skip,
       limit: 10,
       sort: { mamadas: -1 },
@@ -200,7 +200,7 @@ export default class TopInteractionCommand extends InteractionCommand {
       skip = (pagina - 1) * 10;
     }
 
-    const res = await this.client.database.Users.find({}, ['mamou', 'id'], {
+    const res = await this.client.database.Users.find({ ban: false }, ['mamou', 'id'], {
       skip,
       limit: 10,
       sort: { mamou: -1 },
@@ -238,7 +238,7 @@ export default class TopInteractionCommand extends InteractionCommand {
       skip = (pagina - 1) * 10;
     }
 
-    const res = await this.client.database.Users.find({}, ['caçados', 'id'], {
+    const res = await this.client.database.Users.find({ ban: false }, ['caçados', 'id'], {
       skip,
       limit: 10,
       sort: { caçados: -1 },
@@ -278,7 +278,7 @@ export default class TopInteractionCommand extends InteractionCommand {
       skip = (pagina - 1) * 10;
     }
 
-    const res = await this.client.database.Users.find({}, ['arcanjos', 'id'], {
+    const res = await this.client.database.Users.find({ ban: false }, ['arcanjos', 'id'], {
       skip,
       limit: 10,
       sort: { arcanjos: -1 },
@@ -316,7 +316,7 @@ export default class TopInteractionCommand extends InteractionCommand {
       skip = (pagina - 1) * 10;
     }
 
-    const res = await this.client.database.Users.find({}, ['giants', 'id'], {
+    const res = await this.client.database.Users.find({ ban: false }, ['giants', 'id'], {
       skip,
       limit: 10,
       sort: { giants: -1 },
@@ -354,7 +354,7 @@ export default class TopInteractionCommand extends InteractionCommand {
       skip = (pagina - 1) * 10;
     }
 
-    const res = await this.client.database.Users.find({}, ['anjos', 'id'], {
+    const res = await this.client.database.Users.find({ ban: false }, ['anjos', 'id'], {
       skip,
       limit: 10,
       sort: { anjos: -1 },
@@ -394,7 +394,7 @@ export default class TopInteractionCommand extends InteractionCommand {
       skip = (pagina - 1) * 10;
     }
 
-    const res = await this.client.database.Users.find({}, ['semideuses', 'id'], {
+    const res = await this.client.database.Users.find({ ban: false }, ['semideuses', 'id'], {
       skip,
       limit: 10,
       sort: { semideuses: -1 },
@@ -434,7 +434,7 @@ export default class TopInteractionCommand extends InteractionCommand {
       skip = (pagina - 1) * 10;
     }
 
-    const res = await this.client.database.Users.find({}, ['deuses', 'id'], {
+    const res = await this.client.database.Users.find({ ban: false }, ['deuses', 'id'], {
       skip,
       limit: 10,
       sort: { deuses: -1 },
@@ -474,7 +474,7 @@ export default class TopInteractionCommand extends InteractionCommand {
       skip = (pagina - 1) * 10;
     }
 
-    const res = await this.client.database.Users.find({}, ['estrelinhas', 'id'], {
+    const res = await this.client.database.Users.find({ ban: false }, ['estrelinhas', 'id'], {
       skip,
       limit: 10,
       sort: { estrelinhas: -1 },
@@ -511,7 +511,7 @@ export default class TopInteractionCommand extends InteractionCommand {
       skip = (pagina - 1) * 10;
     }
 
-    const res = await this.client.database.Users.find({}, ['votos', 'id'], {
+    const res = await this.client.database.Users.find({ ban: false }, ['votos', 'id'], {
       skip,
       limit: 10,
       sort: { votos: -1 },

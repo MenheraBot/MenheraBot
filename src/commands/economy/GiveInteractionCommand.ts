@@ -115,6 +115,11 @@ export default class GiveInteractionCommand extends InteractionCommand {
       return;
     }
 
+    if (await this.client.repositories.blacklistRepository.isUserBanned(to.id)) {
+      ctx.replyT('error', 'banned-user', {}, true);
+      return;
+    }
+
     if (!input) {
       GiveInteractionCommand.replyBadUsageError(ctx);
       return;

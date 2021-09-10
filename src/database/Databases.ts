@@ -88,7 +88,7 @@ export default class Databases {
     );
     this.huntRepository = new HuntRepository(this.Users);
     this.relationshipRepository = new RelationshipRepository(this.userRepository);
-    this.blacklistRepository = new BlacklistRepository(this.userRepository);
+    this.blacklistRepository = new BlacklistRepository(this.userRepository, this.redisClient);
     this.topRepository = new TopRepository(this.Users);
     this.giveRepository = new GiveRepository(this.Users);
     this.commandsRepository = new CommandsRepository(this.Commands);

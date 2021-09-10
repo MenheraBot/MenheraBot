@@ -45,6 +45,14 @@ export default class ShipInteractionCommand extends InteractionCommand {
       return;
     }
 
+    if (
+      (await this.client.repositories.blacklistRepository.isUserBanned(user1.id)) === true ||
+      (await this.client.repositories.blacklistRepository.isUserBanned(user2.id)) === true
+    ) {
+      ctx.replyT('error', 'banned-user', {}, true);
+      return;
+    }
+
     const dbUserToTakeValue1 = await this.client.repositories.userRepository.find(user1.id);
     const dbUserToTakeValue2 = await this.client.repositories.userRepository.find(user2.id);
 
