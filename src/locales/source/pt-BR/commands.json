@@ -373,7 +373,8 @@
     "ok": "Mazaaaa casal, ja podem namorar ja",
     "medium": "Esses dois já não estão namorando? Pois deveriam",
     "high": "Que casal magnífico véi, perfeitos apenas",
-    "perfect": "MEEEU AMIGO, OS CARA SÃO FEITOS UM PRO OUTRO"
+    "perfect": "MEEEU AMIGO, OS CARA SÃO FEITOS UM PRO OUTRO",
+    "banned-user":"Você não pode shipar esse usuário pois está banido da Menhera!"
   },
   "xandao": {
     "description": "SEM PRESSÃO",

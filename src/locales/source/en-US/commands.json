@@ -372,7 +372,8 @@
     "ok": "WHAT A COUPLE couple, can already date",
     "medium": "Aren't these two already dating? Because they should",
     "high": "What a magnificent couple, just perfect",
-    "perfect": "MY FRIEND, THOSE GUYS ARE MADE TO ANOTHER PRO"
+    "perfect": "MY FRIEND, THOSE GUYS ARE MADE TO ANOTHER PRO",
+    "banned-user":"You cannot ship this user because it is banned from Menhera!"
   },
   "xandao": {
     "description": "NO PRESSURE (this is a portuguese only command)",
