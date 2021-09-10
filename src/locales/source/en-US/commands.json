@@ -446,10 +446,15 @@
     "times": "times",
     "not-user": "this user didn't use any commands"
   },
-  "blockchannel": {
+  "blockcanal": {
     "description": "Lock or Unlock the current channel from using my commands",
     "block": "My commands were **Blocked** on channel {{channel}}! Use `/blockcanal` to unlock them",
-    "unblock": "My commands were **Unblocked** on channel {{channel}}"
+    "unblock": "My commands were **Unblocked** on channel {{channel}}",
+    "invalid-channel": "This command can only be run on text channels!",
+    "blocked-channels": "Blocked Channels List",
+    "zero-value": "No channel blocked!",
+    "sure": "Are you sure you want to delete all channels from the list?",
+    "done": "My commands have been released on all server channels! Yayyy"
   },
   "language": {
     "description": "Change the language I speak on this server",

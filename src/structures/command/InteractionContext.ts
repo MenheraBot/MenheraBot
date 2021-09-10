@@ -6,6 +6,7 @@ import {
   Message,
   MessagePayload,
   TextBasedChannels,
+  User,
 } from 'discord.js';
 import { TFunction } from 'i18next';
 import MenheraClient from 'MenheraClient';
@@ -17,6 +18,7 @@ export default class InteractionCommandContext {
     public interaction: CommandInteraction,
     public data: IContextData,
     public i18n: TFunction,
+    private commandName: string,
   ) {}
 
   get options(): CommandInteractionOptionResolver {
@@ -25,6 +27,10 @@ export default class InteractionCommandContext {
 
   get channel(): TextBasedChannels {
     return this.interaction.channel as TextBasedChannels;
+  }
+
+  get author(): User {
+    return this.interaction.user;
   }
 
   async reply(
@@ -92,5 +98,9 @@ export default class InteractionCommandContext {
 
   locale(text: string, translateVars = {}): string {
     return this.i18n(text, translateVars);
+  }
+
+  translate(text: string, translateVars = {}): string {
+    return this.i18n(`commands:${this.commandName}.${text}`, translateVars);
   }
 }
