@@ -448,12 +448,16 @@
     "times": "vezes",
     "not-user": "este usuário não usou nenhum comando meu"
   },
-  "blockchannel": {
+  "blockcanal": {
     "description": "Bloqueie ou Desbloqueie o canal atual de usar meus comandos",
     "usage": "",
     "block": "Meus comandos foram **Bloqueados** no canal {{channel}}! Use `/blockcanal` para desbloqueá-los",
     "unblock": "Meus comandos foram **Liberados** no canal {{channel}}!",
-    "invalid-channel": "Este comando só pode ser executado em canais de texto!"
+    "invalid-channel": "Este comando só pode ser executado em canais de texto!",
+    "blocked-channels": "Lista de Canais Bloqueados",
+    "zero-value": "Nenhum canal bloqueado!",
+    "sure": "Você tem certeza que quer deletar todos os canais da lista?",
+    "done": "Meus comandos foram liberados em todos os canais do servidor! Yayyy"
   },
   "language": {
     "description": "Troque a língua com que eu falo neste servidor",

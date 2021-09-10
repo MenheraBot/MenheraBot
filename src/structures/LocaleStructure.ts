@@ -1,7 +1,7 @@
 import { readdirSync } from 'fs-extra';
 import path from 'path';
 import i18next from 'i18next';
-import translationBackend from 'i18next-node-fs-backend';
+import translationBackend from 'i18next-fs-backend';
 
 export default class LocaleStructure {
   public ns: Array<string>;
@@ -30,7 +30,7 @@ export default class LocaleStructure {
       });
       console.log('[LOCALES] Locales loaded!');
     } catch (err) {
-      console.log(`[LOCALES] Falha no Load dos Locales: ${err.message}`);
+      if (err instanceof Error) console.log(`[LOCALES] Falha no Load dos Locales: ${err.message}`);
     }
   }
 

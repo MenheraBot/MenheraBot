@@ -161,17 +161,62 @@ export default class InteractionCreate extends Event {
       interaction,
       { user: authorData, server },
       t,
+      command.config.name,
     );
 
     try {
       if (!command.run) return;
       await command.run(ctx).catch(async (err) => {
-        console.error(err.stack);
         const errorWebHook = await this.client.fetchWebhook(
           process.env.BUG_HOOK_ID as string,
           process.env.BUG_HOOK_TOKEN as string,
         );
+        if (interaction.deferred) {
+          interaction.webhook
+            .send({ content: t('events:error_embed.title'), ephemeral: true })
+            .catch(() => null);
+        } else
+          interaction
+            .reply({ content: t('events:error_embed.title'), ephemeral: true })
+            .catch(() => null);
 
+        if (err instanceof Error && err.stack) {
+          const errorMessage =
+            err.stack.length > 1800 ? `${err.stack.slice(0, 1800)}...` : err.stack;
+          const embed = new MessageEmbed();
+          embed.setColor('#fd0000');
+          embed.setTitle(t('events:error_embed.title', { cmd: command.config.name }));
+          embed.setDescription(`\`\`\`js\n${errorMessage}\`\`\``);
+          embed.addField(
+            '<:atencao:759603958418767922> | Usage',
+            `UserId: \`${interaction.user.id}\` \nServerId: \`${interaction.guild?.id}\``,
+          );
+          embed.setTimestamp();
+          embed.addField(
+            t('events:error_embed.report_title'),
+            t('events:error_embed.report_value'),
+          );
+
+          if (this.client.user?.id === '708014856711962654')
+            errorWebHook.send({ embeds: [embed] }).catch(() => null);
+        }
+      });
+    } catch (err) {
+      const errorWebHook = await this.client.fetchWebhook(
+        process.env.BUG_HOOK_ID as string,
+        process.env.BUG_HOOK_TOKEN as string,
+      );
+
+      if (interaction.deferred) {
+        interaction.webhook
+          .send({ content: t('events:error_embed.title'), ephemeral: true })
+          .catch(() => null);
+      } else
+        interaction
+          .reply({ content: t('events:error_embed.title'), ephemeral: true })
+          .catch(() => null);
+
+      if (err instanceof Error && err.stack) {
         const errorMessage = err.stack.length > 1800 ? `${err.stack.slice(0, 1800)}...` : err.stack;
         const embed = new MessageEmbed();
         embed.setColor('#fd0000');
@@ -184,44 +229,9 @@ export default class InteractionCreate extends Event {
         embed.setTimestamp();
         embed.addField(t('events:error_embed.report_title'), t('events:error_embed.report_value'));
 
-        if (this.client.user?.id === '708014856711962654') errorWebHook.send({ embeds: [embed] });
-        if (interaction.deferred) {
-          interaction.webhook
-            .send({ content: t('events:error_embed.title'), ephemeral: true })
-            .catch(() => null);
-        } else
-          interaction
-            .reply({ content: t('events:error_embed.title'), ephemeral: true })
-            .catch(() => null);
-      });
-    } catch (err) {
-      console.error(err.stack);
-      const errorWebHook = await this.client.fetchWebhook(
-        process.env.BUG_HOOK_ID as string,
-        process.env.BUG_HOOK_TOKEN as string,
-      );
-
-      const errorMessage = err.stack.length > 1800 ? `${err.stack.slice(0, 1800)}...` : err.stack;
-      const embed = new MessageEmbed();
-      embed.setColor('#fd0000');
-      embed.setTitle(t('events:error_embed.title', { cmd: command.config.name }));
-      embed.setDescription(`\`\`\`js\n${errorMessage}\`\`\``);
-      embed.addField(
-        '<:atencao:759603958418767922> | Usage',
-        `UserId: \`${interaction.user.id}\` \nServerId: \`${interaction.guild?.id}\``,
-      );
-      embed.setTimestamp();
-      embed.addField(t('events:error_embed.report_title'), t('events:error_embed.report_value'));
-
-      if (this.client.user?.id === '708014856711962654') errorWebHook.send({ embeds: [embed] });
-      if (interaction.deferred) {
-        interaction.webhook
-          .send({ content: t('events:error_embed.title'), ephemeral: true })
-          .catch(() => null);
-      } else
-        interaction
-          .reply({ content: t('events:error_embed.title'), ephemeral: true })
-          .catch(() => null);
+        if (this.client.user?.id === '708014856711962654')
+          errorWebHook.send({ embeds: [embed] }).catch(() => null);
+      }
     }
 
     if (!interaction.guild) return;

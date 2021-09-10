@@ -1,19 +1,52 @@
 import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
+import { MessageButton } from 'discord.js';
+import { emojis } from '@structures/MenheraConstants';
+import Util from '@utils/Util';
 
 export default class BlockChannelInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {
     super(client, {
       name: 'blockcanal',
-      description: '「🚫」・Mude as permissões de usar comandos meus em algum canal',
+      description: '「🚫」・Mude as permissões de comandos nos canais',
       category: 'util',
       options: [
         {
-          type: 'CHANNEL',
-          name: 'canal',
-          description: 'Canal para ser bloqueado/desbloqueado',
-          required: true,
+          name: 'config',
+          description: '「🚫」・ Adicione ou remova um canal da lista de bloqueados',
+          type: 'SUB_COMMAND',
+          options: [
+            {
+              type: 'CHANNEL',
+              name: 'canal',
+              description: 'Canal para ser bloqueado/desbloqueado',
+              required: true,
+            },
+          ],
+        },
+        {
+          name: 'lista',
+          description: '「📄」・ Modifique a lista de comandos bloqueados',
+          type: 'SUB_COMMAND',
+          options: [
+            {
+              name: 'opcao',
+              description: 'A opção que você deseja fazer na lista de comandos bloqueados',
+              type: 'STRING',
+              required: true,
+              choices: [
+                {
+                  name: '🗑️ | Remover Todos Canais',
+                  value: 'delete',
+                },
+                {
+                  name: '📜 | Ver Canais Bloqueados',
+                  value: 'view',
+                },
+              ],
+            },
+          ],
         },
       ],
       cooldown: 7,
@@ -22,33 +55,86 @@ export default class BlockChannelInteractionCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    const selectedChannel = ctx.options.getChannel('canal', true);
+    const selectedOption = ctx.options.getSubcommand(true);
 
-    if (selectedChannel?.type !== 'GUILD_TEXT') {
-      ctx.replyT('error', 'commands:blockchannel.invalid-channel', {}, true);
-      return;
-    }
+    if (selectedOption === 'config') {
+      const selectedChannel = ctx.options.getChannel('canal', true);
 
-    if (ctx.data.server.blockedChannels.includes(selectedChannel.id)) {
-      const index = ctx.data.server.blockedChannels.indexOf(selectedChannel.id);
+      if (selectedChannel?.type !== 'GUILD_TEXT') {
+        ctx.replyT('error', 'commands:blockcanal.invalid-channel', {}, true);
+        return;
+      }
 
-      ctx.data.server.blockedChannels.splice(index, 1);
+      if (ctx.data.server.blockedChannels.includes(selectedChannel.id)) {
+        const index = ctx.data.server.blockedChannels.indexOf(selectedChannel.id);
+
+        ctx.data.server.blockedChannels.splice(index, 1);
+        await this.client.repositories.cacheRepository.updateGuild(
+          ctx.interaction.guild?.id as string,
+          ctx.data.server,
+        );
+        await ctx.replyT('success', 'commands:blockcanal.unblock', {
+          channel: selectedChannel.toString(),
+        });
+        return;
+      }
+      ctx.data.server.blockedChannels.push(selectedChannel.id);
       await this.client.repositories.cacheRepository.updateGuild(
         ctx.interaction.guild?.id as string,
         ctx.data.server,
       );
-      await ctx.replyT('success', 'commands:blockchannel.unblock', {
+      await ctx.replyT('success', 'commands:blockcanal.block', {
         channel: selectedChannel.toString(),
       });
       return;
     }
-    ctx.data.server.blockedChannels.push(selectedChannel.id);
-    await this.client.repositories.cacheRepository.updateGuild(
-      ctx.interaction.guild?.id as string,
-      ctx.data.server,
-    );
-    await ctx.replyT('success', 'commands:blockchannel.block', {
-      channel: selectedChannel.toString(),
-    });
+
+    const option = ctx.options.getString('opcao', true);
+
+    switch (option) {
+      case 'view':
+        ctx.reply({
+          content: `${emojis.list} | ${ctx.translate('blocked-channels')}\n\n${
+            ctx.data.server.blockedChannels.length === 0
+              ? ctx.translate('zero-value')
+              : ctx.data.server.blockedChannels.map((a) => `• <#${a}>`).join('\n')
+          }`,
+        });
+        break;
+      case 'delete': {
+        ctx.reply({
+          content: ctx.translate('sure'),
+          components: [
+            {
+              type: 'ACTION_ROW',
+              components: [
+                new MessageButton()
+                  .setCustomId(ctx.interaction.id)
+                  .setStyle('DANGER')
+                  .setLabel(ctx.locale('common:confirm')),
+              ],
+            },
+          ],
+        });
+
+        const confirmed = await Util.collectComponentInteractionWithId(
+          ctx.channel,
+          ctx.author.id,
+          ctx.interaction.id,
+          7000,
+        );
+
+        if (confirmed && ctx.interaction.guild) {
+          this.client.repositories.guildRepository.update(ctx.interaction.guild.id, {
+            blockedChannels: [],
+          });
+          ctx.editReply({ components: [], content: `${emojis.yes} | ${ctx.translate('done')}` });
+          return;
+        }
+
+        ctx.deleteReply();
+        break;
+      }
+    }
   }
 }
