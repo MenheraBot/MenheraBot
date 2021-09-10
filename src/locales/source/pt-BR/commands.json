@@ -297,7 +297,8 @@
     "demons": "Demônios",
     "angels": "Anjos",
     "sd": "Semideuses",
-    "god": "Deuses"
+    "god": "Deuses",
+    "banned-user": "Este usuário não possui carteira pois está banido da Menhera!"
   },
   "8ball": {
     "description": "Pergunte algo para mim",

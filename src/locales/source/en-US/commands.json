@@ -294,7 +294,8 @@
     "demons": "Demons",
     "angels": "Angels",
     "sd": "Demigods",
-    "god": "Gods"
+    "god": "Gods",
+    "banned-user": "This user doesnt have wallet because it is banned from Menhera!"
   },
   "8ball": {
     "description": "Ask me something",
