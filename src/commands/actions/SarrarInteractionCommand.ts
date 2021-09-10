@@ -78,9 +78,7 @@ export default class SarrarInteractionCommand extends InteractionCommand {
     });
 
     const filter = (int: MessageComponentInteraction) =>
-      int.user.id !== ctx.author.id &&
-      !int.user.bot &&
-      int.customId === ctx.interaction.id;
+      int.user.id !== ctx.author.id && !int.user.bot && int.customId === ctx.interaction.id;
 
     const collected = await Util.collectComponentInteractionWithCustomFilter(
       ctx.channel,
