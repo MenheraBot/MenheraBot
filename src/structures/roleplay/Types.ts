@@ -280,3 +280,13 @@ export interface IPartyData {
   leader: string;
   party: string[];
 }
+
+export interface IMobsFile {
+  availableLocations: number[];
+  baseLife: number;
+  baseSpeed: number;
+  baseArmor: number;
+  baseDamage: number;
+  attackSkill: number;
+  attacks: Array<IAbility>;
+}
