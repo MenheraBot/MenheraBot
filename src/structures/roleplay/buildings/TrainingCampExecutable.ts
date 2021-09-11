@@ -61,5 +61,9 @@ export default async (ctx: InteractionCommandContext, user: IRpgUserSchema): Pro
         embed.setDescription(ctx.locale('buildings:training_camp.in-party')).setColor('RED'),
       ],
     });
+    return;
   }
+
+  // TODO const selectedMob = ctx.client.boleham.Battle
+  console.log(user.speed);
 };

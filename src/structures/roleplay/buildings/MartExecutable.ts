@@ -7,7 +7,7 @@ import {
   MessageEmbed,
   MessageSelectMenu,
 } from 'discord.js';
-import BasicFunctions from '../BasicFunctions';
+import BasicFunctions from '../../Functions/BasicFunctions';
 import { IRpgUserSchema } from '../Types';
 import { canBuy, resolveCustomId } from '../Utils';
 
