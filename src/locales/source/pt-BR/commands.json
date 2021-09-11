@@ -216,7 +216,7 @@
   "give": {
     "description": "Transfira algo de seu inventário para alguém",
     "usage": "<opção> <@menção> <valor>",
-    "banned-user":"Este usuário não aceita presentes pois está banido da Menhera!",
+    "banned-user": "Este usuário não aceita presentes pois está banido da Menhera!",
     "self-mention": "você não pode mencionar a si mesmo!",
     "no-dbuser": "este usuário não possui uma conta no Menhera's Bank!",
     "invalid-value": "O valor a ser dado deve ser maior que 0",
@@ -297,6 +297,8 @@
     "unknow-user": "usuário não encontrado",
     "demons": "Demônios",
     "angels": "Anjos",
+    "giants": "Gigantes",
+    "archangel": "Arcanjos",
     "sd": "Semideuses",
     "god": "Deuses",
     "banned-user": "Este usuário não possui carteira pois está banido da Menhera!"
@@ -360,7 +362,7 @@
     "first-text": "{{toMarry}}, você recebeu um pedido de casamento de {{author}}\n\n{{toMarry}}, você aceita {{author}} como sua legítima esposa (ou legítimo marido), prometendo ser fiel,\nAmá-la(o) e respeitá-la(o)\nNa alegria e na tristeza,\nNa saúde e na doença,\nNa riqueza e na pobreza,\nPor todos os dias das suas vidas, até que a morte os separe (ou o `/divorciar`)?",
     "accept": "Aceito",
     "deny": "Nego",
-    "banned-user":"Este usuário não pode se casar pois está banido da Menhera!"
+    "banned-user": "Este usuário não pode se casar pois está banido da Menhera!"
   },
   "ship": {
     "description": "Será que vocês dariam um bom casal?",
@@ -374,7 +376,7 @@
     "medium": "Esses dois já não estão namorando? Pois deveriam",
     "high": "Que casal magnífico véi, perfeitos apenas",
     "perfect": "MEEEU AMIGO, OS CARA SÃO FEITOS UM PRO OUTRO",
-    "banned-user":"Você não pode shipar esse usuário pois está banido da Menhera!"
+    "banned-user": "Você não pode shipar esse usuário pois está banido da Menhera!"
   },
   "xandao": {
     "description": "SEM PRESSÃO",
