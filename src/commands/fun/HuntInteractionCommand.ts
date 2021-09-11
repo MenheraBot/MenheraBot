@@ -228,7 +228,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
           .setDescription(
             ctx.translate('description_start', {
               value: angels,
-              hunt: ctx.locale('commands:hunt.archangel'),
+              hunt: ctx.translate('archangel'),
               rank: rank + 1,
               count: toRun,
             }),

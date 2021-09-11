@@ -85,9 +85,7 @@ export default class ShipInteractionCommand extends InteractionCommand {
 
     const embed = new MessageEmbed()
       .setTitle(`${name1} + ${name2} = ${mix}`)
-      .setDescription(
-        `\n${ctx.translate('value')} **${value}%**\n\n${ctx.locale('commands:ship.default')}`,
-      );
+      .setDescription(`\n${ctx.translate('value')} **${value}%**\n\n${ctx.translate('default')}`);
 
     let attc: MessageAttachment | null = null;
 

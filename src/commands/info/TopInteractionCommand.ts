@@ -592,7 +592,7 @@ export default class TopInteractionCommand extends InteractionCommand {
       if (i > 10) break;
       embed.addField(
         `**${i + 1} -** ${Util.captalize(res.array[i].name)} `,
-        `${ctx.translate('use')} **${res.array[i].count}** ${ctx.locale('commands:top.times')}`,
+        `${ctx.translate('use')} **${res.array[i].count}** ${ctx.translate('times')}`,
         false,
       );
     }
