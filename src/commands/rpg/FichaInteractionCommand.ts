@@ -47,7 +47,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
     }
 
     if (!user) {
-      ctx.replyT('error', 'commands:ficha.non-user', {}, true);
+      ctx.replyT('error', 'non-user', {}, true);
       return;
     }
     return this.showFicha(ctx, user, ctx.options.getUser('user') ?? ctx.author);
@@ -61,27 +61,24 @@ export default class FichaInteractionCommand extends InteractionCommand {
     const userClassData = this.client.boleham.Functions.getClassDataById(user.classId);
     const userRaceData = this.client.boleham.Functions.getRaceDataById(user.raceId);
 
-    const translateFromCommand = (field: string, options = {}, namespace = 'commands:ficha') =>
-      ctx.locale(`${namespace}.${field}`, options);
-
     const registerInfoEmbed = {
-      title: translateFromCommand('first.title', { user: member.username }),
+      title: ctx.translate('first.title', { user: member.username }),
       color: ctx.data.user.cor,
       image: { url: 'https://i.imgur.com/ooHGEBj.jpg' },
       fields: [
         {
-          name: `${emojis.rpg[userClassData.name]} | ${translateFromCommand('first.class')}`,
+          name: `${emojis.rpg[userClassData.name]} | ${ctx.translate('first.class')}`,
           value: ctx.locale(`roleplay:classes.${user.classId}.name`),
           inline: true,
         },
         {
-          name: `${emojis.rpg[userRaceData.name]} |${translateFromCommand('first.race')}`,
+          name: `${emojis.rpg[userRaceData.name]} | ${ctx.translate('first.race')}`,
           value: ctx.locale(`roleplay:races.${user.raceId}.name`),
           inline: true,
         },
         {
-          name: `${emojis.money} | ${translateFromCommand('first.money')}`,
-          value: translateFromCommand('first.money-info', {
+          name: `${emojis.money} | ${ctx.translate('first.money')}`,
+          value: ctx.translate('first.money-info', {
             bronze: user.money.bronze,
             silver: user.money.silver,
             gold: user.money.gold,
@@ -92,83 +89,79 @@ export default class FichaInteractionCommand extends InteractionCommand {
           inline: true,
         },
         {
-          name: `${emojis.pin} | ${translateFromCommand('first.location')}`,
+          name: `${emojis.pin} | ${ctx.translate('first.location')}`,
           value: ctx.locale(`roleplay:locations.${user.locationId}.name`),
           inline: true,
         },
         {
-          name: `${emojis.trident} | ${translateFromCommand('first.clan')}`,
-          value: user.clanId ? `${user.clanId}` : translateFromCommand('first.no-clan'),
+          name: `${emojis.trident} | ${ctx.translate('first.clan')}`,
+          value: user.clanId ? `${user.clanId}` : ctx.translate('first.no-clan'),
           inline: true,
         },
         {
-          name: `${emojis.double_hammer} | ${translateFromCommand('first.job')}`,
-          value: user.job?.id ? `${user.job.id}` : translateFromCommand('first.no-job'),
+          name: `${emojis.double_hammer} | ${ctx.translate('first.job')}`,
+          value: user.job?.id ? `${user.job.id}` : ctx.translate('first.no-job'),
           inline: true,
         },
       ],
     };
 
     const statusEmbed = {
-      title: translateFromCommand('second.title', { user: member.username }),
+      title: ctx.translate('second.title', { user: member.username }),
       color: ctx.data.user.cor,
       fields: [
         {
-          name: `${emojis.roleplay_custom.level} | ${translateFromCommand('second.level')}`,
+          name: `${emojis.roleplay_custom.level} | ${ctx.translate('second.level')}`,
           value: `**${user.level}**`,
           inline: true,
         },
         {
-          name: `${emojis.blood} | ${translateFromCommand('second.life')}`,
+          name: `${emojis.blood} | ${ctx.translate('second.life')}`,
           value: `${user.life} / ${user.maxLife}`,
           inline: true,
         },
         {
-          name: `${emojis.mana} | ${translateFromCommand('second.mana')}`,
+          name: `${emojis.mana} | ${ctx.translate('second.mana')}`,
           value: `${user.mana} / ${user.maxMana}`,
           inline: true,
         },
         {
-          name: `${emojis.xp} | ${translateFromCommand('second.xp')}`,
+          name: `${emojis.xp} | ${ctx.translate('second.xp')}`,
           value: `${user.xp} / ${this.client.boleham.Functions.getMaxXpForLevel(user.level)}`,
           inline: true,
         },
         {
-          name: `${emojis.roleplay_custom.tired} | ${translateFromCommand('second.tired')}`,
+          name: `${emojis.roleplay_custom.tired} | ${ctx.translate('second.tired')}`,
           value: `${user.tiredness}**%**`,
           inline: true,
         },
         {
-          name: `${emojis.sword} | ${translateFromCommand('second.damage')}`,
+          name: `${emojis.sword} | ${ctx.translate('second.damage')}`,
           value: `${user.baseDamage}`,
           inline: true,
         },
         {
-          name: `${emojis.shield} | ${translateFromCommand('second.armor')}`,
+          name: `${emojis.shield} | ${ctx.translate('second.armor')}`,
           value: `${user.baseArmor}`,
           inline: true,
         },
         {
-          name: `${emojis.roleplay_custom.speed} | ${translateFromCommand('second.speed')}`,
+          name: `${emojis.roleplay_custom.speed} | ${ctx.translate('second.speed')}`,
           value: `${user.speed}`,
           inline: true,
         },
         {
-          name: `${emojis.roleplay_custom.attack_skill} | ${translateFromCommand(
-            'second.atkSkill',
-          )}`,
+          name: `${emojis.roleplay_custom.attack_skill} | ${ctx.translate('second.atkSkill')}`,
           value: `${user.attackSkill}`,
           inline: true,
         },
         {
-          name: `${emojis.roleplay_custom.ability_skill} | ${translateFromCommand(
-            'second.abtSkill',
-          )}`,
+          name: `${emojis.roleplay_custom.ability_skill} | ${ctx.translate('second.abtSkill')}`,
           value: `${user.abilitySkill}`,
           inline: true,
         },
         {
-          name: `${emojis.roleplay_custom.lucky} | ${translateFromCommand('second.lucky')}`,
+          name: `${emojis.roleplay_custom.lucky} | ${ctx.translate('second.lucky')}`,
           value: `${user.lucky}`,
           inline: true,
         },
@@ -176,7 +169,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
     };
 
     const abilityEmbed = {
-      title: translateFromCommand('third.title', { user: member.username }),
+      title: ctx.translate('third.title', { user: member.username }),
       color: ctx.data.user.cor,
       fields: user.abilities.reduce((p: EmbedFieldData[], c) => {
         const abilityInfo = this.client.boleham.Functions.getAbilityById(c.id);
@@ -184,7 +177,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
           name: `${emojis.roleplay_custom[abilityInfo.element]} | ${ctx.locale(
             `roleplay:abilities.${c.id}.name`,
           )}`,
-          value: translateFromCommand('third.ability-info', {
+          value: ctx.translate('third.ability-info', {
             level: c.level,
             xp: c.xp,
             cost: abilityInfo.cost,
@@ -200,17 +193,17 @@ export default class FichaInteractionCommand extends InteractionCommand {
       .setCustomId(`${ctx.interaction.id} | INFO`)
       .setStyle('SECONDARY')
       .setDisabled(true)
-      .setLabel(translateFromCommand('info'));
+      .setLabel(ctx.translate('info'));
 
     const statusButton = new MessageButton()
       .setCustomId(`${ctx.interaction.id} | STATUS`)
       .setStyle('PRIMARY')
-      .setLabel(translateFromCommand('status'));
+      .setLabel(ctx.translate('status'));
 
     const abilityButton = new MessageButton()
       .setCustomId(`${ctx.interaction.id} | ABILITY`)
       .setStyle('PRIMARY')
-      .setLabel(translateFromCommand('ability'));
+      .setLabel(ctx.translate('ability'));
 
     ctx.reply({
       embeds: [registerInfoEmbed],
@@ -283,13 +276,13 @@ export default class FichaInteractionCommand extends InteractionCommand {
   }
 
   async registerUser(ctx: InteractionCommandContext): Promise<void> {
-    let text = `${ctx.locale('commands:ficha.register.description')}\n`;
+    let text = `${ctx.translate('register.description')}\n`;
 
     const SelectOption = new MessageSelectMenu()
       .setCustomId(ctx.interaction.id)
       .setMinValues(1)
       .setMaxValues(1)
-      .setPlaceholder(ctx.locale('commands:ficha.register.select-class'));
+      .setPlaceholder(ctx.translate('register.select-class'));
 
     this.client.boleham.Classes.forEach((cls) => {
       SelectOption.addOptions({
@@ -303,7 +296,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
     });
 
     const embed = new MessageEmbed()
-      .setTitle(ctx.locale('commands:ficha.register.title'))
+      .setTitle(ctx.translate('register.title'))
       .setColor(COLORS.Pear)
       .setThumbnail(ctx.author.displayAvatarURL())
       .setDescription(text);
@@ -341,9 +334,9 @@ export default class FichaInteractionCommand extends InteractionCommand {
       .setCustomId(ctx.interaction.id)
       .setMinValues(1)
       .setMaxValues(1)
-      .setPlaceholder(ctx.locale('commands:ficha.register.select-race'));
+      .setPlaceholder(ctx.translate('register.select-race'));
 
-    text = `${ctx.locale('commands:ficha.register.description')}\n`;
+    text = `${ctx.translate('register.description')}\n`;
 
     this.client.boleham.Races.forEach((cls) => {
       selectRace.addOptions({
@@ -395,14 +388,14 @@ export default class FichaInteractionCommand extends InteractionCommand {
       ctx.editReply({
         embeds: [],
         components: [],
-        content: ctx.locale('commands:ficha.register.error'),
+        content: ctx.translate('register.error'),
       });
       return;
     }
     ctx.editReply({
       embeds: [],
       components: [],
-      content: ctx.locale('commands:ficha.register.done'),
+      content: ctx.translate('register.done'),
     });
   }
 }

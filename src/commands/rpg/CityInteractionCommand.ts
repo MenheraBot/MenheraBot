@@ -19,7 +19,7 @@ export default class CityInteractionCommand extends InteractionCommand {
   async run(ctx: InteractionCommandContext): Promise<void> {
     const user = await this.client.repositories.rpgRepository.findUser(ctx.author.id);
     if (!user) {
-      ctx.replyT('error', 'common:not-registred', {}, true);
+      ctx.replyL('error', 'common:not-registred', {}, true);
       return;
     }
 
@@ -29,13 +29,13 @@ export default class CityInteractionCommand extends InteractionCommand {
       .setCustomId(ctx.interaction.id)
       .setMaxValues(1)
       .setMinValues(1)
-      .setPlaceholder(ctx.locale('commands:cidade.select'));
+      .setPlaceholder(ctx.translate('select'));
 
     const embed = new MessageEmbed()
       .setTitle(`${emojis.map} | ${ctx.locale(`roleplay:locations.${user.locationId}.name`)}`)
       .setColor(ctx.data.user.cor)
       .setDescription(
-        ctx.locale('commands:cidade.description', {
+        ctx.translate('description', {
           city: ctx.locale(`roleplay:locations.${user.locationId}.name`),
         }),
       )

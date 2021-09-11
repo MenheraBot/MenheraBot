@@ -713,6 +713,7 @@
     }
   },
   "party": {
+    "user-banned": "{{user}} não pode formar uma party com você",
     "no-mention": "Você não mencionou os jogadores do seu grupo",
     "title": "Grupo de Batalha",
     "not-found": "Ops...",

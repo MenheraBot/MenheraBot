@@ -34,7 +34,7 @@ export default class PartyInteractionCommand extends InteractionCommand {
   async run(ctx: InteractionCommandContext): Promise<void> {
     const user = await this.client.repositories.rpgRepository.findUser(ctx.author.id);
     if (!user) {
-      ctx.replyT('error', 'common:not-registred', {}, true);
+      ctx.replyL('error', 'common:not-registred', {}, true);
       return;
     }
 
@@ -43,17 +43,17 @@ export default class PartyInteractionCommand extends InteractionCommand {
     const userTwo = ctx.options.getUser('user_two');
 
     if (userOne?.id === ctx.author.id || userTwo?.id === ctx.author.id) {
-      ctx.replyT('error', 'commands:party.self-mention', {}, true);
+      ctx.replyT('error', 'self-mention', {}, true);
       return;
     }
 
     if (userOne && userOne.id === userTwo?.id) {
-      ctx.replyT('error', 'commands:party.same-mention', {}, true);
+      ctx.replyT('error', 'same-mention', {}, true);
       return;
     }
 
     if (!userParty && !userOne && !userTwo) {
-      ctx.replyT('error', 'commands:party.no-mention', {}, true);
+      ctx.replyT('error', 'no-mention', {}, true);
       return;
     }
 
@@ -143,36 +143,46 @@ export default class PartyInteractionCommand extends InteractionCommand {
 
     if (userOne) {
       ids.push(userOne.id);
+
+      const isUserBanned = await this.client.repositories.blacklistRepository.isUserBanned(
+        userOne.id,
+      );
+
+      if (isUserBanned) {
+        ctx.replyT('error', 'user-banned', { user: userOne.toString() }, true);
+        return;
+      }
+
       const findedUser = await this.client.repositories.rpgRepository.findUser(userOne.id);
       if (!findedUser) {
-        ctx.replyT(
-          'error',
-          'commands:party.user-not-registred',
-          { user: userOne.toString() },
-          true,
-        );
+        ctx.replyT('error', 'user-banned', { user: userOne.toString() }, true);
         return;
       }
       const firstPary = await this.client.repositories.rpgRepository.getUserParty(userOne.id);
       if (firstPary) {
-        ctx.replyT('error', 'commands:party.user-has-party', { user: userOne.toString() }, true);
+        ctx.replyT('error', 'user-has-party', { user: userOne.toString() }, true);
         return;
       }
     }
 
     if (userTwo) {
       ids.push(userTwo.id);
+
+      const isUserBanned = await this.client.repositories.blacklistRepository.isUserBanned(
+        userTwo.id,
+      );
+
+      if (isUserBanned) {
+        ctx.replyT('error', 'user-banned', { user: userTwo.toString() }, true);
+        return;
+      }
+
       const findedUser = await this.client.repositories.rpgRepository.findUser(userTwo.id);
       if (!findedUser) {
-        ctx.replyT(
-          'error',
-          'commands:party.user-not-registred',
-          { user: userTwo.toString() },
-          true,
-        );
+        ctx.replyT('error', 'user-not-registred', { user: userTwo.toString() }, true);
         const secondParty = await this.client.repositories.rpgRepository.getUserParty(userTwo.id);
         if (secondParty) {
-          ctx.replyT('error', 'commands:party.user-has-party', { user: userTwo.toString() }, true);
+          ctx.replyT('error', 'user-has-party', { user: userTwo.toString() }, true);
           return;
         }
       }

@@ -709,6 +709,7 @@
     }
   },
   "party": {
+    "user-banned": "{{user}} cannot be in your party because it is banned from Menhera",
     "no-mention": "You didn't mention the players in your party",
     "title": "Battle Group",
     "not-found": "Ops...",
