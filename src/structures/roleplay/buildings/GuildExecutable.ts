@@ -8,7 +8,7 @@ import {
 } from 'discord.js';
 import { IQuest, IRpgUserSchema } from '../Types';
 import { resolveCustomId } from '../Utils';
-import BasicFunctions from '../../Functions/BasicFunctions';
+import BasicFunctions from '../Functions/BasicFunctions';
 
 export default async (ctx: InteractionCommandContext, user: IRpgUserSchema): Promise<void> => {
   const embed = new MessageEmbed()

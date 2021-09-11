@@ -11,7 +11,7 @@ import {
 import { emojis } from '@structures/MenheraConstants';
 import { resolveCustomId, usePotion } from '@roleplay/Utils';
 import { AsAnUsableItem } from '@structures/roleplay/Types';
-import BasicFunctions from '@structures/Functions/BasicFunctions';
+import BasicFunctions from '@structures/roleplay/Functions/BasicFunctions';
 
 export default class InventoryInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {

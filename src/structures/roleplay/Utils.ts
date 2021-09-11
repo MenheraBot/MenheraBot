@@ -1,4 +1,4 @@
-import BasicFunctions from '../Functions/BasicFunctions';
+import BasicFunctions from './Functions/BasicFunctions';
 import {
   IEnochiaShop,
   IInventoryItem,

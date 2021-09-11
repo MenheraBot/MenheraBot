@@ -1,5 +1,5 @@
 import MenheraClient from 'MenheraClient';
-import BasicFunctions from '@structures/Functions/BasicFunctions';
+import BasicFunctions from '@structures/roleplay/Functions/BasicFunctions';
 import abilities from '@roleplay/data/Abilities';
 import buildings from '@roleplay/data/Buildings';
 import classes from '@roleplay/data/Classes';
@@ -14,7 +14,7 @@ import {
   IQuestsFile,
   IRacesFiles,
 } from '@roleplay/Types';
-import BattleFunctions from '@structures/Functions/BattleFunctions';
+import BattleFunctions from '@structures/roleplay/Functions/BattleFunctions';
 import quests from './data/Quests';
 
 export default class BolehamManager {

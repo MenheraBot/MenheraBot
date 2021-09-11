@@ -17,7 +17,7 @@ import {
   IQuestsFile,
   IUpdatedUserInfo,
   IRpgUserSchema,
-} from '../roleplay/Types';
+} from '../Types';
 
 export default class BasicFunctions {
   constructor(private client: MenheraClient) {}
