@@ -160,6 +160,7 @@ export interface IAbilityEffect {
 }
 
 export interface IAbilitiesFile {
+  description?: string;
   cost: number;
   element: TElements;
   turnsCooldown: number;
@@ -264,6 +265,7 @@ interface IQuestRewardItem {
 }
 
 export interface IQuestsFile {
+  description?: string;
   minUserLevel: number;
   maxUserLevel?: number;
   objective: IQuestObjective;
@@ -281,18 +283,35 @@ export interface IPartyData {
   party: string[];
 }
 
+export interface IMobAttackEffect {
+  type: TEffectType;
+  value?: number;
+  isValuePercentage?: boolean;
+  turns?: number;
+}
+
 export interface IMobAttacksFile {
+  description?: string;
   element: TElements;
-  randomChoice?: boolean;
-  effects: Array<IAbilityEffect>;
+  effects: Array<IMobAttackEffect>;
+}
+
+export interface IMobAttributePerLevel {
+  baseLife: number;
+  baseSpeed: number;
+  baseArmor: number;
+  baseDamage: number;
+  baseSkill: number;
 }
 
 export interface IMobsFile {
+  description?: string;
   availableLocations: number[];
   baseLife: number;
   baseSpeed: number;
   baseArmor: number;
   baseDamage: number;
   baseSkill: number;
+  perLevel: IMobAttributePerLevel;
   availableAttacks: number[];
 }

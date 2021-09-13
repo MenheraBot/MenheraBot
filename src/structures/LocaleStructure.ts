@@ -10,14 +10,15 @@ export default class LocaleStructure {
 
   constructor() {
     this.ns = [
-      'common',
-      'commands',
-      'events',
-      'permissions',
-      'roleplay',
       'buildings',
+      'commands',
+      'common',
+      'events',
       'items',
+      'mobs',
+      'permissions',
       'quests',
+      'roleplay',
     ];
     this.languages = ['pt-BR', 'en-US'];
   }
