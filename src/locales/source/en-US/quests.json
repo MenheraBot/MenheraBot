@@ -1,7 +1,7 @@
 {
   "0": {
     "name": "Bloody Treasure",
-    "description": "Kill {{count}} goblin",
-    "description-plural": "Kill {{count}} goblins"
+    "description": "Go to the training camp and kill {{count}} trained goblin",
+    "description-plural": "Go to the training camp and kill {{count}} trained goblins"
   }
 }
