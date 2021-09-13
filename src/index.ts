@@ -8,7 +8,7 @@ const client = new MenheraClient(
       MessageManager: 50,
       PresenceManager: 0,
       StageInstanceManager: 0,
-      UserManager: 2000,
+      UserManager: 50,
       VoiceStateManager: 0,
       BaseGuildEmojiManager: 0,
       GuildBanManager: 0,
@@ -18,7 +18,7 @@ const client = new MenheraClient(
       ReactionUserManager: 0,
     }),
     failIfNotExists: false,
-    intents: ['GUILDS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS'],
+    intents: ['GUILDS'],
   },
   {
     interactionsDirectory: resolve(__dirname, 'commands'),
