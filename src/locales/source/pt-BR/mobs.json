@@ -1,4 +1,14 @@
 {
-  "mobs": {},
-  "attacks": {}
+  "mobs": {
+    "0": {
+      "name": "Goblin Treinado",
+      "description": "Uma cópia de um goblin criada pela guilda para treinar novos aventureiros"
+    }
+  },
+  "attacks": {
+    "0": {
+      "name": "Ataque Básico",
+      "description": "{{name}} golpeia com sua adaga, causando um pequeno dano"
+    }
+  }
 }

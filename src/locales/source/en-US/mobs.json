@@ -1,4 +1,14 @@
 {
-  "mobs": {},
-  "attacks": {}
+  "mobs": {
+    "0": {
+      "name": "Trained Goblin",
+      "description": "A copy of a goblin created by the guild to train new adventurers"
+    }
+  },
+  "attacks": {
+    "0": {
+      "name": "Basic Attack",
+      "description": "{{name}} slashes with his dagger, dealing small damage"
+    }
+  }
 }

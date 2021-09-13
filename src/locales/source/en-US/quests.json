@@ -1,1 +1,7 @@
-{}
+{
+  "0": {
+    "name": "Bloody Treasure",
+    "description": "Kill {{count}} goblin",
+    "description-plural": "Kill {{count}} goblins"
+  }
+}

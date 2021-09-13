@@ -31,7 +31,7 @@ export default async (ctx: InteractionCommandContext, user: IRpgUserSchema): Pro
             return `**${ctx.locale(`quests:${a.id}.name`)}**\n**${ctx.locale(
               'common:objective',
             )}**: ${ctx.locale(`quests:${a.id}.description`, {
-              value: quest.objective.value + quest.objective.perLevel * a.level,
+              count: quest.objective.value + quest.objective.perLevel * a.level,
             })}\n${ctx.locale('common:progress')}: ${
               a.finished
                 ? ctx.locale('common:completed')
@@ -64,7 +64,7 @@ export default async (ctx: InteractionCommandContext, user: IRpgUserSchema): Pro
       ? `**${ctx.locale(`quests:${user.quests.active?.id}.name`)}**\n**${ctx.locale(
           'common:objective',
         )}**: ${ctx.locale(`quests:${user.quests.active?.id}.description`, {
-          value:
+          count:
             activeQuest.objective.value +
             activeQuest.objective.perLevel * (user.quests.active?.level ?? 0),
         })}\n${ctx.locale('common:progress')}: ${

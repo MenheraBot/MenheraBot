@@ -1,1 +1,7 @@
-{}
+{
+  "0": {
+    "name": "Tesouro Sangrento",
+    "description": "Mate {{count}} goblin",
+    "description-plural": "Mate {{count}} goblins"
+  }
+}
