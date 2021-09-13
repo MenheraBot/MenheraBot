@@ -6,7 +6,7 @@ import {
   IUserSchema,
 } from '@utils/Types';
 import { Document, Schema, model } from 'mongoose';
-import { IHomeSchema, IRpgUserSchema } from './roleplay/Types';
+import { IHomeSchema, IRpgUserSchema } from '../roleplay/Types';
 
 const statusSchema = new Schema({
   _id: { type: String },

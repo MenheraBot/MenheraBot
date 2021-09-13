@@ -1,4 +1,4 @@
-import { IRacesFiles } from '@roleplay/Types';
+import { IRacesFiles } from 'roleplay/Types';
 
 const races: { [key: number]: IRacesFiles } = {
   1: {

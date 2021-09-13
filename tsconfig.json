@@ -17,10 +17,10 @@
     "removeComments": true,
     "strict": true,
     "noImplicitThis": true,
-    "noImplicitAny": true ,
+    "noImplicitAny": true,
 
     "noUnusedLocals": true,
-    
+
     "useUnknownInCatchVariables": true,
 
     "moduleResolution": "node",
@@ -33,7 +33,7 @@
       "@database/*": ["database/*"],
       "@utils/*": ["utils/*"],
       "@interfaces/*": ["interfaces/*"],
-      "@roleplay/*": ["structures/roleplay/*"]
+      "@roleplay/*": ["roleplay/*"]
     }
   },
   "include": ["src"]

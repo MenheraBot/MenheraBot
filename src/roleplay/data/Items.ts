@@ -1,4 +1,4 @@
-import { IItemFile } from '@roleplay/Types';
+import { IItemFile } from 'roleplay/Types';
 
 const items: { [key: number]: IItemFile<boolean> } = {
   0: {

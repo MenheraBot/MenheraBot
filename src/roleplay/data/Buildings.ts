@@ -1,4 +1,4 @@
-import { IBuildingFile } from '@roleplay/Types';
+import { IBuildingFile } from 'roleplay/Types';
 import GuildExecutable from '../buildings/GuildExecutable';
 import MartExecutable from '../buildings/MartExecutable';
 import TrainingCampExecutable from '../buildings/TrainingCampExecutable';

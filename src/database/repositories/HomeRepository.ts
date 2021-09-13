@@ -1,5 +1,5 @@
 import { Homes } from '@structures/DatabaseCollections';
-import { IHomeSchema } from '@structures/roleplay/Types';
+import { IHomeSchema } from 'roleplay/Types';
 import { Document } from 'mongoose';
 
 export default class HomeRepository {

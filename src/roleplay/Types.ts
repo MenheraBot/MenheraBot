@@ -281,12 +281,18 @@ export interface IPartyData {
   party: string[];
 }
 
+export interface IMobAttacksFile {
+  element: TElements;
+  randomChoice?: boolean;
+  effects: Array<IAbilityEffect>;
+}
+
 export interface IMobsFile {
   availableLocations: number[];
   baseLife: number;
   baseSpeed: number;
   baseArmor: number;
   baseDamage: number;
-  attackSkill: number;
-  attacks: Array<IAbility>;
+  baseSkill: number;
+  availableAttacks: number[];
 }

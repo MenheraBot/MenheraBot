@@ -13,7 +13,7 @@ import EventManager from '@structures/EventManager';
 import InteractionCommand from '@structures/command/InteractionCommand';
 
 import LocaleStructure from '@structures/LocaleStructure';
-import BolehamManager from '@structures/roleplay/BolehamManager';
+import BolehamManager from 'roleplay/BolehamManager';
 
 export default class MenheraClient extends Client {
   public database: Database;
