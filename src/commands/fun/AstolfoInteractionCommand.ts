@@ -26,16 +26,16 @@ export default class AstolfoInteractionCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const text = ctx.options.getString('frase', true);
-    await ctx.interaction.deferReply().catch(() => null);
+    await ctx.defer();
 
     const res = await HttpRequests.astolfoRequest(text);
 
     if (res.err) {
-      await ctx.editReply({ content: `${emojis.error} | ${ctx.locale('commands:http-error')}` });
+      await ctx.defer({ content: `${emojis.error} | ${ctx.locale('commands:http-error')}` });
       return;
     }
 
-    await ctx.editReply({
+    await ctx.defer({
       files: [new MessageAttachment(Buffer.from(res.data as Buffer), 'astolfo.png')],
     });
   }

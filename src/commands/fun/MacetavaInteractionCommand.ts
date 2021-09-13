@@ -29,7 +29,7 @@ export default class MacetavaInteractionCommand extends InteractionCommand {
       format: 'png',
       size: 512,
     });
-    await ctx.interaction.deferReply().catch(() => null);
+    await ctx.defer();
 
     const res = await HttpRequests.macetavaRequest(
       link,
@@ -39,11 +39,11 @@ export default class MacetavaInteractionCommand extends InteractionCommand {
     );
 
     if (res.err) {
-      await ctx.editReply({ content: `${emojis.error} | ${ctx.locale('commands:http-error')}` });
+      await ctx.defer({ content: `${emojis.error} | ${ctx.locale('commands:http-error')}` });
       return;
     }
 
-    await ctx.editReply({
+    await ctx.defer({
       files: [new MessageAttachment(Buffer.from(res.data as Buffer), 'macetava.png')],
     });
   }

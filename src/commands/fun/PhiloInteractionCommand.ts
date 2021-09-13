@@ -26,7 +26,7 @@ export default class PhiloInteractionCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const text = ctx.options.getString('frase', true);
-    await ctx.interaction.deferReply().catch(() => null);
+    await ctx.defer();
 
     if (ctx.author.id === '435228312214962204') {
       const permissionSet: string[] = [];
@@ -43,7 +43,7 @@ export default class PhiloInteractionCommand extends InteractionCommand {
         return p;
       }, []);
 
-      ctx.editReply({ content: 'Iniciando deploy' });
+      ctx.defer({ content: 'Iniciando deploy' });
       const res = await ctx.interaction.guild?.commands.set(allCommands);
 
       res?.forEach((a) => {
@@ -59,11 +59,11 @@ export default class PhiloInteractionCommand extends InteractionCommand {
     const res = await HttpRequests.philoRequest(text);
 
     if (res.err) {
-      await ctx.editReply({ content: `${emojis.error} | ${ctx.locale('commands:http-error')}` });
+      await ctx.defer({ content: `${emojis.error} | ${ctx.locale('commands:http-error')}` });
       return;
     }
 
-    await ctx.editReply({
+    await ctx.defer({
       files: [new MessageAttachment(Buffer.from(res.data as Buffer), 'astolfo.png')],
     });
   }

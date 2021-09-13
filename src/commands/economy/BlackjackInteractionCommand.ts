@@ -420,7 +420,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
       return;
     }
 
-    await ctx.interaction.deferReply().catch(() => null);
+    await ctx.defer();
 
     const matchCards = [...BLACKJACK_CARDS].sort(() => Math.random() - 0.5);
 
@@ -475,13 +475,13 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
       .setLabel(ctx.translate('stop'));
 
     if (attc) {
-      await ctx.editReply({
+      await ctx.defer({
         embeds: [embed],
         files: [attc],
         components: [{ type: 1, components: [BuyButton, StopButton] }],
       });
     } else {
-      await ctx.editReply({
+      await ctx.defer({
         embeds: [embed],
         components: [{ type: 1, components: [BuyButton, StopButton] }],
       });
@@ -490,7 +490,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
     const collected = await Util.collectComponentInteraction(ctx.channel, ctx.author.id, 10000);
 
     if (!collected) {
-      ctx.editReply({ content: `${emojis.error} ${ctx.translate('timeout')}` });
+      ctx.defer({ content: `${emojis.error} ${ctx.translate('timeout')}` });
       ctx.client.repositories.starRepository.remove(ctx.author.id, valor);
       return;
     }

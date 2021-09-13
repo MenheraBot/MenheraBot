@@ -33,6 +33,18 @@ export default class InteractionCommandContext {
     return this.interaction.user;
   }
 
+  async defer(
+    options?: MessagePayload | InteractionReplyOptions,
+    ephemeral = false,
+  ): Promise<void> {
+    if (this.interaction.deferred && options) {
+      await this.interaction.followUp(options).catch(() => null);
+      return;
+    }
+
+    await this.interaction.deferReply({ ephemeral }).catch(() => null);
+  }
+
   async reply(
     options: string | MessagePayload | InteractionReplyOptions,
     ephemeral = false,
