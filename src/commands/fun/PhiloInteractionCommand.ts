@@ -3,6 +3,7 @@ import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { ApplicationCommandData, MessageAttachment } from 'discord.js';
 import HttpRequests from '@utils/HTTPrequests';
+import { emojis } from '@structures/MenheraConstants';
 
 export default class PhiloInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {
@@ -25,6 +26,7 @@ export default class PhiloInteractionCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const text = ctx.options.getString('frase', true);
+    await ctx.defer();
 
     if (ctx.author.id === '435228312214962204') {
       const permissionSet: string[] = [];
@@ -41,7 +43,7 @@ export default class PhiloInteractionCommand extends InteractionCommand {
         return p;
       }, []);
 
-      ctx.reply('Iniciando deploy');
+      ctx.defer({ content: 'Iniciando deploy' });
       const res = await ctx.interaction.guild?.commands.set(allCommands);
 
       res?.forEach((a) => {
@@ -57,11 +59,11 @@ export default class PhiloInteractionCommand extends InteractionCommand {
     const res = await HttpRequests.philoRequest(text);
 
     if (res.err) {
-      await ctx.replyL('error', 'commands:http-error', {}, true);
+      await ctx.defer({ content: `${emojis.error} | ${ctx.locale('commands:http-error')}` });
       return;
     }
 
-    await ctx.reply({
+    await ctx.defer({
       files: [new MessageAttachment(Buffer.from(res.data as Buffer), 'astolfo.png')],
     });
   }

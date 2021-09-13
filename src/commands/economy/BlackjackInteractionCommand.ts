@@ -4,7 +4,7 @@ import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import http from '@utils/HTTPrequests';
 import { IBlackjackCards } from '@utils/Types';
-import { BLACKJACK_CARDS } from '@structures/MenheraConstants';
+import { BLACKJACK_CARDS, emojis } from '@structures/MenheraConstants';
 import Util from '@utils/Util';
 
 const CalculateHandValue = (cards: Array<number>): Array<IBlackjackCards> =>
@@ -420,6 +420,8 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
       return;
     }
 
+    await ctx.defer();
+
     const matchCards = [...BLACKJACK_CARDS].sort(() => Math.random() - 0.5);
 
     const dealerCards = matchCards.splice(0, 2);
@@ -473,13 +475,13 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
       .setLabel(ctx.translate('stop'));
 
     if (attc) {
-      await ctx.reply({
+      await ctx.defer({
         embeds: [embed],
         files: [attc],
         components: [{ type: 1, components: [BuyButton, StopButton] }],
       });
     } else {
-      await ctx.reply({
+      await ctx.defer({
         embeds: [embed],
         components: [{ type: 1, components: [BuyButton, StopButton] }],
       });
@@ -488,7 +490,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
     const collected = await Util.collectComponentInteraction(ctx.channel, ctx.author.id, 10000);
 
     if (!collected) {
-      ctx.replyT('error', 'timeout');
+      ctx.defer({ content: `${emojis.error} ${ctx.translate('timeout')}` });
       ctx.client.repositories.starRepository.remove(ctx.author.id, valor);
       return;
     }

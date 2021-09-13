@@ -3,6 +3,7 @@ import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageAttachment } from 'discord.js';
 import HttpRequests from '@utils/HTTPrequests';
+import { emojis } from '@structures/MenheraConstants';
 
 export default class GadoInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {
@@ -29,14 +30,19 @@ export default class GadoInteractionCommand extends InteractionCommand {
       format: 'png',
       size: 512,
     });
+    await ctx.defer();
 
     const res = await HttpRequests.gadoRequest(link);
     if (res.err) {
-      await ctx.replyL('error', 'commands:http-error', {}, true);
+      await ctx.defer({
+        ephemeral: false,
+        content: `${emojis.error} |  ${ctx.locale('commands:http-error')}`,
+      });
       return;
     }
 
-    await ctx.reply({
+    await ctx.defer({
+      ephemeral: false,
       files: [new MessageAttachment(Buffer.from(res.data as Buffer), 'gado.png')],
     });
   }

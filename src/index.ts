@@ -8,7 +8,7 @@ const client = new MenheraClient(
       MessageManager: 50,
       PresenceManager: 0,
       StageInstanceManager: 0,
-      UserManager: 100,
+      UserManager: 50,
       VoiceStateManager: 0,
       BaseGuildEmojiManager: 0,
       GuildBanManager: 0,

@@ -50,7 +50,7 @@ export default class ProfileInteractionCommand extends InteractionCommand {
     if (user?.casado !== 'false' && user?.casado)
       marry = await this.client.users.fetch(user.casado);
 
-    await ctx.interaction.deferReply().catch(() => null);
+    await ctx.defer();
 
     const avatar = member.displayAvatarURL({ format: 'png' });
     const usageCommands = await HttpRequests.getProfileCommands(member.id);
