@@ -5,6 +5,7 @@ import { COLORS, probabilities } from '@structures/MenheraConstants';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageEmbed } from 'discord.js';
+import HttpRequests from '@utils/HTTPrequests';
 
 export default class HuntInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {
@@ -176,10 +177,11 @@ export default class HuntInteractionCommand extends InteractionCommand {
               count: toRun,
             }),
           );
+        HttpRequests.postHuntCommand(ctx.author.id, 'demon', demons);
         break;
       }
       case 'gigantes': {
-        const demons = await areYouTheHuntOrTheHunter(Probabilities.giant, huntGiant);
+        const giants = await areYouTheHuntOrTheHunter(Probabilities.giant, huntGiant);
         const { rank } = await this.client.repositories.topRepository.getUserHuntRank(
           ctx.author.id,
           huntEnum.GIANT,
@@ -189,12 +191,13 @@ export default class HuntInteractionCommand extends InteractionCommand {
           .setColor(COLORS.HuntGiant)
           .setDescription(
             ctx.translate('description_start', {
-              value: demons,
+              value: giants,
               hunt: ctx.translate('giants'),
               rank: rank + 1,
               count: toRun,
             }),
           );
+        HttpRequests.postHuntCommand(ctx.author.id, 'giant', giants);
         break;
       }
       case 'anjos': {
@@ -214,10 +217,11 @@ export default class HuntInteractionCommand extends InteractionCommand {
               count: toRun,
             }),
           );
+        HttpRequests.postHuntCommand(ctx.author.id, 'angel', angels);
         break;
       }
       case 'arcanjos': {
-        const angels = await areYouTheHuntOrTheHunter(Probabilities.arcangel, huntArchangel);
+        const archangels = await areYouTheHuntOrTheHunter(Probabilities.arcangel, huntArchangel);
         const { rank } = await this.client.repositories.topRepository.getUserHuntRank(
           ctx.author.id,
           huntEnum.ARCHANGEL,
@@ -227,12 +231,13 @@ export default class HuntInteractionCommand extends InteractionCommand {
           .setColor(COLORS.HuntArchangel)
           .setDescription(
             ctx.translate('description_start', {
-              value: angels,
+              value: archangels,
               hunt: ctx.translate('archangel'),
               rank: rank + 1,
               count: toRun,
             }),
           );
+        HttpRequests.postHuntCommand(ctx.author.id, 'archangel', archangels);
         break;
       }
       case 'semideuses': {
@@ -252,6 +257,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
               count: toRun,
             }),
           );
+        HttpRequests.postHuntCommand(ctx.author.id, 'demigod', demigods);
         break;
       }
       case 'deus': {
@@ -275,6 +281,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
           );
         if (gods > 0)
           embed.setColor(COLORS.HuntGod).setThumbnail('https://i.imgur.com/053khaH.gif');
+        HttpRequests.postHuntCommand(ctx.author.id, 'god', gods);
         break;
       }
     }
