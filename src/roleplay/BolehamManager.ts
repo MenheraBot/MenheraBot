@@ -11,11 +11,15 @@ import {
   IBuildingFile,
   IClassesFile,
   IItemFile,
+  IMobAttacksFile,
+  IMobsFile,
   IQuestsFile,
   IRacesFiles,
 } from 'roleplay/Types';
 import BattleFunctions from 'roleplay/Functions/BattleFunctions';
 import quests from './data/Quests';
+import mobs from './data/Mobs';
+import attacks from './data/MobAttacks';
 
 export default class BolehamManager {
   private classesFile: typeof classes;
@@ -32,6 +36,10 @@ export default class BolehamManager {
 
   private itemsFile: typeof items;
 
+  private mobsFile: typeof mobs;
+
+  private attackFile: typeof attacks;
+
   public Functions: BasicFunctions;
 
   public Battle: BattleFunctions;
@@ -44,6 +52,8 @@ export default class BolehamManager {
     this.itemsFile = items;
     this.questsFile = quests;
     this.ecosystemFile = ecosystem;
+    this.mobsFile = mobs;
+    this.attackFile = attacks;
     this.Functions = new BasicFunctions(client);
     this.Battle = new BattleFunctions(client);
   }
@@ -74,5 +84,13 @@ export default class BolehamManager {
 
   get Items(): [string, IItemFile<boolean>][] {
     return Object.entries(this.itemsFile);
+  }
+
+  get Mobs(): [string, IMobsFile][] {
+    return Object.entries(this.mobsFile);
+  }
+
+  get MobsAttack(): [string, IMobAttacksFile][] {
+    return Object.entries(this.attackFile);
   }
 }

@@ -307,6 +307,7 @@ export interface IMobAttributePerLevel {
 export interface IMobsFile {
   description?: string;
   availableLocations: number[];
+  minUserLevel: number;
   baseLife: number;
   baseSpeed: number;
   baseArmor: number;
