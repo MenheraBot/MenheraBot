@@ -539,6 +539,17 @@
       "description": "See blackjack status from someone",
       "embed-title": "{{user}}'s Blackjack Status",
       "no-data": "you never played a blackjack game!"
+    },
+    "hunt": {
+      "no-data": "You never hunted",
+      "embed-title": "{{user}}'s Hunt Status",
+      "display-data": "**Attempts:** {{tries}}\n**Rating:** {{success}}%\n**Total Hunted:** {{hunted}}",
+      "demon": "Demons",
+      "angel": "Angels",
+      "demigod": "Demigods",
+      "giant": "Giants",
+      "archangel": "Archangels",
+      "god": "Gods"
     }
   },
   "filosofia": {
