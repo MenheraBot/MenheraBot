@@ -530,7 +530,7 @@
       "lostMoney": "Dinheiro Perdido",
       "profit": "Lucro Total",
       "loss": "Prejuízo Total",
-      "error": "ocorreu um erro ao checar as estatísticas deste usuário"
+      "error": "Ocorreu um erro ao checar as estatísticas deste usuário. Provavelmente ele nunca usou o comando"
     },
     "botinfo": {
       "description": "Mostra as informações atuais do bot",
@@ -548,6 +548,17 @@
       "description": "Veja os status de BlackJack de alguém",
       "embed-title": "Status do blackjack de {{user}}",
       "no-data": "você nunca jogou uma partida de blackjack!"
+    },
+    "hunt": {
+      "no-data": "você nunca caçou",
+      "embed-title": "Status de caçada de {{user}}",
+      "display-data": "**Tentativas:** {{tries}}\n**Aproveitamento:** {{success}}%\n**Total Caçados:** {{hunted}}",
+      "demon": "Demônios",
+      "angel": "Anjos",
+      "demigod": "Semideuses",
+      "giant": "Gigantes",
+      "archangel": "Arcanjos",
+      "god": "Deuses"
     }
   },
   "filosofia": {

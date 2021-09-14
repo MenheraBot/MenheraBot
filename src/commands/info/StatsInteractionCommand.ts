@@ -39,6 +39,19 @@ export default class StatsInteractionCommand extends InteractionCommand {
           ],
         },
         {
+          name: 'cacar',
+          description: '「🏹」・Veja os status de caças de alguem',
+          type: 'SUB_COMMAND',
+          options: [
+            {
+              name: 'user',
+              description: 'Usuário para ver os status',
+              type: 'USER',
+              required: false,
+            },
+          ],
+        },
+        {
           name: 'menhera',
           description: '「🧉」・Veja os status atuais da Menhera',
           type: 'SUB_COMMAND',
@@ -54,6 +67,8 @@ export default class StatsInteractionCommand extends InteractionCommand {
     const type = ctx.options.getSubcommand();
 
     switch (type) {
+      case 'cacar':
+        return StatsInteractionCommand.hunt(ctx);
       case 'coinflip':
         return StatsInteractionCommand.coinflip(ctx);
       case 'blackjack':
@@ -61,6 +76,104 @@ export default class StatsInteractionCommand extends InteractionCommand {
       case 'menhera':
         return this.menhera(ctx);
     }
+  }
+
+  static async hunt(ctx: InteractionCommandContext): Promise<void> {
+    const user = ctx.options.getUser('user') ?? ctx.author;
+
+    const data = await HttpRequests.getHuntUserStats(user.id);
+
+    if (data.error) {
+      await ctx.replyT('error', 'coinflip.error', {}, true);
+      return;
+    }
+
+    if (!data.user_id) {
+      await ctx.replyT('error', 'hunt.no-data', {}, true);
+      return;
+    }
+
+    const embed = new MessageEmbed()
+      .setTitle(ctx.translate('hunt.embed-title', { user: user.tag }))
+      .setColor(ctx.data.user.cor)
+      .addFields([
+        {
+          name: `${emojis.demon} | ${ctx.translate('hunt.demon')}`,
+          value: `${ctx.translate('hunt.display-data', {
+            tries: data.demon_tries,
+            success:
+              data.demon_success === 0
+                ? '0'
+                : ((data.demon_success / data.demon_tries) * 100).toFixed(1).replace('.0', ''),
+            hunted: data.demon_hunted,
+          })}`,
+          inline: true,
+        },
+        {
+          name: `${emojis.giant} | ${ctx.translate('hunt.giant')}`,
+          value: `${ctx.translate('hunt.display-data', {
+            tries: data.giant_tries,
+            success:
+              data.giant_success === 0
+                ? '0'
+                : ((data.giant_success / data.giant_tries) * 100).toFixed(1).replace('.0', ''),
+            hunted: data.giant_hunted,
+          })}`,
+          inline: true,
+        },
+        {
+          name: `${emojis.angel} | ${ctx.translate('hunt.angel')}`,
+          value: `${ctx.translate('hunt.display-data', {
+            tries: data.angel_tries,
+            success:
+              data.angel_success === 0
+                ? '0'
+                : ((data.angel_success / data.angel_tries) * 100).toFixed(1).replace('.0', ''),
+            hunted: data.angel_hunted,
+          })}`,
+          inline: true,
+        },
+        {
+          name: `${emojis.archangel} | ${ctx.translate('hunt.archangel')}`,
+          value: `${ctx.translate('hunt.display-data', {
+            tries: data.archangel_tries,
+            success:
+              data.archangel_success === 0
+                ? '0'
+                : ((data.archangel_success / data.archangel_tries) * 100)
+                    .toFixed(1)
+                    .replace('.0', ''),
+            hunted: data.archangel_hunted,
+          })}`,
+          inline: true,
+        },
+        {
+          name: `${emojis.semigod} | ${ctx.translate('hunt.demigod')}`,
+          value: `${ctx.translate('hunt.display-data', {
+            tries: data.demigod_tries,
+            success:
+              data.demigod_success === 0
+                ? '0'
+                : ((data.demigod_success / data.demigod_tries) * 100).toFixed(1).replace('.0', ''),
+            hunted: data.demigod_hunted,
+          })}`,
+          inline: true,
+        },
+        {
+          name: `${emojis.god} | ${ctx.translate('hunt.god')}`,
+          value: `${ctx.translate('hunt.display-data', {
+            tries: data.god_tries,
+            success:
+              data.god_success === 0
+                ? '0'
+                : ((data.god_success / data.god_tries) * 100).toFixed(1).replace('.0', ''),
+            hunted: data.god_hunted,
+          })}`,
+          inline: true,
+        },
+      ]);
+
+    await ctx.reply({ embeds: [embed] });
   }
 
   async menhera(ctx: InteractionCommandContext): Promise<void> {
