@@ -5,6 +5,7 @@ import {
   ICommandUsedData,
   IHttpPicassoReutrn,
   IRESTGameStats,
+  IRESTHuntStats,
   IUserDataToProfile,
 } from '@utils/Types';
 import { User } from 'discord.js';
@@ -129,6 +130,22 @@ export default class HttpRequests {
     date: number,
   ): Promise<void> {
     await apiRequest.post('/coinflip', { winnerId, loserId, betValue, date }).catch(() => null);
+  }
+
+  static async postHuntCommand(userId: string, huntType: string, value: number): Promise<void> {
+    await apiRequest.post('/hunt', { userId, huntType, value }).catch(() => null);
+  }
+
+  static async getHuntUserStats(id: string): Promise<IRESTHuntStats | { error: true }> {
+    try {
+      const data = await apiRequest.get('/hunt', { data: { userId: id } });
+      if (data.status === 400) return { error: true };
+      if (!data.data.error) return data.data;
+    } catch {
+      return { error: true };
+    }
+
+    return { error: true };
   }
 
   static async astolfoRequest(text: string): Promise<IHttpPicassoReutrn> {
