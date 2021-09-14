@@ -133,6 +133,7 @@ export interface IRESTHuntStats {
   god_tries: number;
   god_success: number;
   god_hunted: number;
+  error?: boolean;
 }
 
 export interface IUserDataToProfile {

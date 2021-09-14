@@ -132,8 +132,12 @@ export default class HttpRequests {
     await apiRequest.post('/coinflip', { winnerId, loserId, betValue, date }).catch(() => null);
   }
 
-  static async postHuntCommand(userId: string, huntType: string, value: number): Promise<void> {
-    await apiRequest.post('/hunt', { userId, huntType, value }).catch(() => null);
+  static async postHuntCommand(
+    userId: string,
+    huntType: string,
+    { value, success, tries }: { value: number; success: number; tries: number },
+  ): Promise<void> {
+    await apiRequest.post('/hunt', { userId, huntType, value, success, tries }).catch(() => null);
   }
 
   static async getHuntUserStats(id: string): Promise<IRESTHuntStats | { error: true }> {

@@ -39,6 +39,19 @@ export default class StatsInteractionCommand extends InteractionCommand {
           ],
         },
         {
+          name: 'cacar',
+          description: '「🏹」・Veja os status de caças de alguem',
+          type: 'SUB_COMMAND',
+          options: [
+            {
+              name: 'user',
+              description: 'Usuário para ver os status',
+              type: 'USER',
+              required: false,
+            },
+          ],
+        },
+        {
           name: 'menhera',
           description: '「🧉」・Veja os status atuais da Menhera',
           type: 'SUB_COMMAND',
@@ -54,6 +67,8 @@ export default class StatsInteractionCommand extends InteractionCommand {
     const type = ctx.options.getSubcommand();
 
     switch (type) {
+      case 'cacar':
+        return StatsInteractionCommand.hunt(ctx);
       case 'coinflip':
         return StatsInteractionCommand.coinflip(ctx);
       case 'blackjack':
@@ -61,6 +76,31 @@ export default class StatsInteractionCommand extends InteractionCommand {
       case 'menhera':
         return this.menhera(ctx);
     }
+  }
+
+  static async hunt(ctx: InteractionCommandContext): Promise<void> {
+    const user = ctx.options.getUser('user') ?? ctx.author;
+
+    const data = await HttpRequests.getHuntUserStats(user.id);
+
+    console.log(data);
+
+    if (data.error) {
+      await ctx.replyT('error', 'coinflip.error', {}, true);
+      return;
+    }
+
+    if (!data.user_id) {
+      await ctx.replyT('error', 'blackjack.no-data', {}, true);
+      return;
+    }
+
+    const embed = new MessageEmbed()
+      .setTitle(ctx.translate('blackjack.embed-title', { user: user.tag }))
+      .setColor(COLORS.Purple)
+      .setFooter(ctx.translate('coinflip.embed-footer'));
+
+    await ctx.reply({ embeds: [embed] });
   }
 
   async menhera(ctx: InteractionCommandContext): Promise<void> {
