@@ -317,3 +317,34 @@ export interface IMobsFile {
   perLevel: IMobAttributePerLevel;
   availableAttacks: number[];
 }
+
+export interface IBattleEntityEffect {
+  type: TEffectType;
+  value: number;
+  isValuePercentage: boolean;
+  turns: number;
+}
+
+export interface IBattleMob {
+  life: number;
+  speed: number;
+  armor: number;
+  damage: number;
+  attackSkill: number;
+  attacks: IMobAttacksFile[];
+  level: number;
+  effects: IBattleEntityEffect[];
+}
+
+export interface IBattleUser {
+  life: number;
+  speed: number;
+  armor: number;
+  damage: number;
+  attackSkill: number;
+  abilities: IMobAttacksFile[];
+  level: number;
+  effects: IBattleEntityEffect[];
+}
+
+export type TBattleEntity = IBattleMob | IBattleUser;

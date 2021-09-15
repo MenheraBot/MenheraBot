@@ -17,6 +17,7 @@ import {
   IQuestsFile,
   IUpdatedUserInfo,
   IRpgUserSchema,
+  IMobAttacksFile,
 } from '../Types';
 
 export default class BasicFunctions {
@@ -75,6 +76,12 @@ export default class BasicFunctions {
 
   getItemById(id: number | string): IUsableItem | IUnusableItem {
     return this.client.boleham.Items.filter((a) => a[0] === `${id}`)[0][1];
+  }
+
+  getMobAttacks(mobAttacks: number[]): IMobAttacksFile[] {
+    return mobAttacks.map(
+      (a) => this.client.boleham.MobsAttack.filter((b) => b[0] === `${a}`)[0][1],
+    );
   }
 
   checkUserUp(user: IRpgUserSchema | (IRpgUserSchema & Document)): {
