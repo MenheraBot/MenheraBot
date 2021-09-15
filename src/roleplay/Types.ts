@@ -332,19 +332,20 @@ export interface IBattleMob {
   damage: number;
   attackSkill: number;
   attacks: IMobAttacksFile[];
-  level: number;
   effects: IBattleEntityEffect[];
 }
 
 export interface IBattleUser {
   life: number;
+  mana: number;
+  tiredness: number;
   speed: number;
+  lucky: number;
   armor: number;
   damage: number;
   attackSkill: number;
-  abilities: IMobAttacksFile[];
-  level: number;
-  effects: IBattleEntityEffect[];
+  abilitySkill: number;
+  abilities: Array<IAbility>;
 }
 
 export type TBattleEntity = IBattleMob | IBattleUser;

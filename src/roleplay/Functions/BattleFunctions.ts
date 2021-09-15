@@ -38,7 +38,7 @@ export default class BattleFunctions {
       const attackSkill = mob.baseSkill + mob.perLevel.baseSkill * mob.level;
       const attacks = this.client.boleham.Functions.getMobAttacks(mob.availableAttacks);
 
-      return { life, speed, armor, damage, attackSkill, attacks, effects: [], level: mob.level };
+      return { life, speed, armor, damage, attackSkill, attacks, effects: [] };
     });
   }
 }
