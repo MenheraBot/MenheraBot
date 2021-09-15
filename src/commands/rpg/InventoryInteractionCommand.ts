@@ -9,9 +9,9 @@ import {
   MessageSelectMenu,
 } from 'discord.js';
 import { emojis } from '@structures/MenheraConstants';
-import { resolveCustomId, usePotion } from 'roleplay/Utils';
-import { AsAnUsableItem } from 'roleplay/Types';
-import BasicFunctions from 'roleplay/Functions/BasicFunctions';
+import { resolveCustomId, usePotion } from '@roleplay/Utils';
+import { AsAnUsableItem } from '@roleplay/Types';
+import BasicFunctions from '@roleplay/Functions/BasicFunctions';
 
 export default class InventoryInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {

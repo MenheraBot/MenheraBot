@@ -65,5 +65,6 @@ export default async (ctx: InteractionCommandContext, user: IRpgUserSchema): Pro
   }
 
   const selectedMob = ctx.client.boleham.Battle.getRandomMob(user.level, 2, 1, true);
-  console.log(user.speed);
+
+  console.log(selectedMob);
 };

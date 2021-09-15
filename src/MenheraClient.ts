@@ -13,7 +13,7 @@ import EventManager from '@structures/EventManager';
 import InteractionCommand from '@structures/command/InteractionCommand';
 
 import LocaleStructure from '@structures/LocaleStructure';
-import BolehamManager from 'roleplay/BolehamManager';
+import BolehamManager from '@roleplay/BolehamManager';
 
 export default class MenheraClient extends Client {
   public database: Database;
@@ -35,7 +35,7 @@ export default class MenheraClient extends Client {
       process.env.NODE_ENV === 'development'
         ? (process.env.DEV_DATABASE_URI as string)
         : (process.env.DATABASE_URI as string),
-      true,
+      false,
     );
     this.slashCommands = new Collection();
     this.aliases = new Collection();

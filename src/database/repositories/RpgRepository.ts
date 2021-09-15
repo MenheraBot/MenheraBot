@@ -11,7 +11,7 @@ import {
 import { Redis } from 'ioredis';
 import { Document, UpdateQuery, UpdateWithAggregationPipeline } from 'mongoose';
 import Util from '@utils/Util';
-import { resolveDailyQuests, resolveEnochiaMart } from 'roleplay/Utils';
+import { resolveDailyQuests, resolveEnochiaMart } from '@roleplay/Utils';
 
 export default class RpgRepository {
   constructor(private rpgModal: typeof Rpg, private redisClient: Redis | null) {}

@@ -13,7 +13,7 @@ import {
 } from 'discord.js';
 import { COLORS, emojis } from '@structures/MenheraConstants';
 import Util from '@utils/Util';
-import { IRpgUserSchema } from 'roleplay/Types';
+import { IRpgUserSchema } from '@roleplay/Types';
 import { Document } from 'mongoose';
 
 export default class FichaInteractionCommand extends InteractionCommand {

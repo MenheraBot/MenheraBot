@@ -20,6 +20,7 @@ export default class BattleFunctions {
 
     const choosenMob = randomFromArray(availableMobs)[1];
     const mobsToReturn = Math.floor(Math.random() * maxMobs) + 1;
-    return Array<IMobsFile>().fill(choosenMob, 0, mobsToReturn);
+
+    return Array<IMobsFile>(mobsToReturn).fill(choosenMob, 0, mobsToReturn);
   }
 }
