@@ -363,3 +363,8 @@ export interface IBattleUser {
 }
 
 export type TBattleEntity = IBattleMob | IBattleUser;
+
+export interface IReturnData<T> {
+  id: number;
+  data: T;
+}

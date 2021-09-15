@@ -286,13 +286,13 @@ export default class FichaInteractionCommand extends InteractionCommand {
 
     this.client.boleham.Classes.forEach((cls) => {
       SelectOption.addOptions({
-        label: ctx.locale(`roleplay:classes.${cls[0]}.name`),
-        value: cls[0],
-        emoji: emojis.rpg[cls[1].name],
+        label: ctx.locale(`roleplay:classes.${cls.id}.name`),
+        value: `${cls.id}`,
+        emoji: emojis.rpg[cls.data.name],
       });
-      text += `\n${emojis.rpg[cls[1].name]} | **${ctx.locale(
-        `roleplay:classes.${cls[0]}.name`,
-      )}** - ${ctx.locale(`roleplay:classes.${cls[0]}.description`)}\n`;
+      text += `\n${emojis.rpg[cls.data.name]} | **${ctx.locale(
+        `roleplay:classes.${cls.id}.name`,
+      )}** - ${ctx.locale(`roleplay:classes.${cls.id}.description`)}\n`;
     });
 
     const embed = new MessageEmbed()
@@ -340,13 +340,13 @@ export default class FichaInteractionCommand extends InteractionCommand {
 
     this.client.boleham.Races.forEach((cls) => {
       selectRace.addOptions({
-        label: ctx.locale(`roleplay:races.${cls[0]}.name`),
-        value: cls[0],
-        emoji: emojis.rpg[cls[1].name],
+        label: ctx.locale(`roleplay:races.${cls.id}.name`),
+        value: `${cls.id}`,
+        emoji: emojis.rpg[cls.data.name],
       });
-      text += `\n${emojis.rpg[cls[1].name]} | **${ctx.locale(
-        `roleplay:races.${cls[0]}.name`,
-      )}** - ${ctx.locale(`roleplay:races.${cls[0]}.description`)}\n`;
+      text += `\n${emojis.rpg[cls.data.name]} | **${ctx.locale(
+        `roleplay:races.${cls.id}.name`,
+      )}** - ${ctx.locale(`roleplay:races.${cls.id}.description`)}\n`;
     });
 
     embed.setDescription(text).setColor(COLORS.HuntGiant);
@@ -379,8 +379,8 @@ export default class FichaInteractionCommand extends InteractionCommand {
 
     const initialData = this.client.boleham.Functions.getDataToRegister(
       ctx.author.id,
-      choosedClass,
-      choosedRace,
+      Number(choosedClass),
+      Number(choosedRace),
     );
 
     const created = await this.client.repositories.rpgRepository.createUser(initialData);

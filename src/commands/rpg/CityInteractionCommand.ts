@@ -42,15 +42,15 @@ export default class CityInteractionCommand extends InteractionCommand {
       .addFields(
         buildings.reduce((p: EmbedFieldData[], c) => {
           const toReturn = {
-            name: ctx.locale(`roleplay:buildings.${c[0]}.name`),
-            value: ctx.locale(`roleplay:buildings.${c[0]}.description`),
+            name: ctx.locale(`roleplay:buildings.${c.id}.name`),
+            value: ctx.locale(`roleplay:buildings.${c.id}.description`),
             inline: true,
           };
 
           select.addOptions({
-            label: ctx.locale(`roleplay:buildings.${c[0]}.name`),
-            value: c[0],
-            description: ctx.locale(`roleplay:buildings.${c[0]}.description`),
+            label: ctx.locale(`roleplay:buildings.${c.id}.name`),
+            value: `${c.id}`,
+            description: ctx.locale(`roleplay:buildings.${c.id}.description`),
           });
           return [...p, toReturn];
         }, []),
@@ -78,7 +78,9 @@ export default class CityInteractionCommand extends InteractionCommand {
     }
     if (!collected.isSelectMenu()) return;
 
-    const selectedBuild = this.client.boleham.Functions.getBuildingById(collected.values[0]);
+    const selectedBuild = this.client.boleham.Functions.getBuildingById(
+      Number(collected.values[0]),
+    );
 
     if (user.level < selectedBuild.minLevel) {
       ctx.editReply({

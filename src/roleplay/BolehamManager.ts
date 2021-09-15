@@ -15,11 +15,13 @@ import {
   IMobsFile,
   IQuestsFile,
   IRacesFiles,
+  IReturnData,
 } from '@roleplay/Types';
 import BattleFunctions from '@roleplay/Functions/BattleFunctions';
 import quests from './data/Quests';
 import mobs from './data/Mobs';
 import attacks from './data/MobAttacks';
+import { parseEntry } from './Utils';
 
 export default class BolehamManager {
   private classesFile: typeof classes;
@@ -58,39 +60,39 @@ export default class BolehamManager {
     this.Battle = new BattleFunctions(client);
   }
 
-  get Classes(): [string, IClassesFile][] {
-    return Object.entries(this.classesFile);
+  get Classes(): IReturnData<IClassesFile>[] {
+    return parseEntry(Object.entries(this.classesFile));
   }
 
-  get Races(): [string, IRacesFiles][] {
-    return Object.entries(this.racesFile);
+  get Races(): IReturnData<IRacesFiles>[] {
+    return parseEntry(Object.entries(this.racesFile));
   }
 
-  get Abilities(): [string, IAbilitiesFile][] {
-    return Object.entries(this.abilitiesFile);
+  get Abilities(): IReturnData<IAbilitiesFile>[] {
+    return parseEntry(Object.entries(this.abilitiesFile));
   }
 
   get Experiences(): { [key: number]: number } {
     return this.ecosystemFile.MaxXpPerLevel;
   }
 
-  get Buildings(): [string, IBuildingFile][] {
-    return Object.entries(this.buildingFile);
+  get Buildings(): IReturnData<IBuildingFile>[] {
+    return parseEntry(Object.entries(this.buildingFile));
   }
 
-  get Quests(): [string, IQuestsFile][] {
-    return Object.entries(this.questsFile);
+  get Quests(): IReturnData<IQuestsFile>[] {
+    return parseEntry(Object.entries(this.questsFile));
   }
 
-  get Items(): [string, IItemFile<boolean>][] {
-    return Object.entries(this.itemsFile);
+  get Items(): IReturnData<IItemFile<boolean>>[] {
+    return parseEntry(Object.entries(this.itemsFile));
   }
 
-  get Mobs(): [string, IMobsFile][] {
-    return Object.entries(this.mobsFile);
+  get Mobs(): IReturnData<IMobsFile>[] {
+    return parseEntry(Object.entries(this.mobsFile));
   }
 
-  get MobsAttack(): [string, IMobAttacksFile][] {
-    return Object.entries(this.attackFile);
+  get MobsAttack(): IReturnData<IMobAttacksFile>[] {
+    return parseEntry(Object.entries(this.attackFile));
   }
 }

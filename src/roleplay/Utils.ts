@@ -7,6 +7,7 @@ import {
   IMoney,
   IQuest,
   IQuestsFile,
+  IReturnData,
   IRpgUserSchema,
   IUsableItem,
   TItemRarity,
@@ -30,21 +31,24 @@ const calculateRarity = (): TItemRarity => {
   return 'common';
 };
 
-const resolveDailyQuests = (userLevel: number, questsFile: [string, IQuestsFile][]): IQuest[] => {
+const resolveDailyQuests = (
+  userLevel: number,
+  questsFile: IReturnData<IQuestsFile>[],
+): IQuest[] => {
   const getQuestLevel = (level: number): number => Math.floor(level / 3) + 1;
   const availableQuests = questsFile.filter((a) => {
-    if (!a[1].isDaily) return false;
-    if (userLevel < a[1].minUserLevel) return false;
-    if (a[1].maxUserLevel && userLevel > a[1].maxUserLevel) return false;
+    if (!a.data.isDaily) return false;
+    if (userLevel < a.data.minUserLevel) return false;
+    if (a.data.maxUserLevel && userLevel > a.data.maxUserLevel) return false;
     return true;
   });
 
-  const selectedQuests: [string, IQuestsFile][] = [];
+  const selectedQuests: IReturnData<IQuestsFile>[] = [];
 
   for (let i = 0; i < 3; i++) {
     const randomizedQuest = randomFromArray(availableQuests);
     if (
-      typeof selectedQuests.find((a) => a[0] === randomizedQuest[0]) !== 'undefined' &&
+      typeof selectedQuests.find((a) => a.id === randomizedQuest.id) !== 'undefined' &&
       availableQuests.length > 3
     ) {
       i -= 1;
@@ -56,7 +60,7 @@ const resolveDailyQuests = (userLevel: number, questsFile: [string, IQuestsFile]
 
   return selectedQuests.map((a) => {
     const toReturn = {
-      id: Number(a[0]),
+      id: a.id,
       level: getQuestLevel(userLevel),
       progress: 0,
       finished: false,
@@ -68,7 +72,7 @@ const resolveDailyQuests = (userLevel: number, questsFile: [string, IQuestsFile]
 
 const resolveEnochiaMart = (
   userLevel: number,
-  itemsFile: [string, IItemFile<boolean>][],
+  itemsFile: IReturnData<IItemFile<boolean>>[],
 ): IEnochiaShop => {
   const shopToReturn: IEnochiaShop = {
     armors: [],
@@ -79,24 +83,24 @@ const resolveEnochiaMart = (
   const getItemLevel = (level: number): number => Math.floor(level / 5) + 1;
 
   const getItemsByRarityAndType = (rarity: TItemRarity, type: TItemType) =>
-    itemsFile.filter((a) => a[1].rarity === rarity && a[1].type === type);
+    itemsFile.filter((a) => a.data.rarity === rarity && a.data.type === type);
 
   for (let i = 0; i < 3; i++) {
     const allArmors = getItemsByRarityAndType(calculateRarity(), 'armor');
     const selectedArmor = randomFromArray(allArmors);
-    shopToReturn.armors.push({ id: Number(selectedArmor[0]), level: getItemLevel(userLevel) });
+    shopToReturn.armors.push({ id: selectedArmor.id, level: getItemLevel(userLevel) });
   }
 
   for (let i = 0; i < 3; i++) {
     const allWeapons = getItemsByRarityAndType(calculateRarity(), 'weapon');
     const selectedWeapon = randomFromArray(allWeapons);
-    shopToReturn.weapons.push({ id: Number(selectedWeapon[0]), level: getItemLevel(userLevel) });
+    shopToReturn.weapons.push({ id: selectedWeapon.id, level: getItemLevel(userLevel) });
   }
 
   for (let i = 0; i < 3; i++) {
     const allPotions = getItemsByRarityAndType(calculateRarity(), 'potion');
     const selectedPotion = randomFromArray(allPotions);
-    shopToReturn.potions.push({ id: Number(selectedPotion[0]), level: getItemLevel(userLevel) });
+    shopToReturn.potions.push({ id: selectedPotion.id, level: getItemLevel(userLevel) });
   }
 
   return shopToReturn;
@@ -136,6 +140,9 @@ const usePotion = (
   return [newData, newInventory];
 };
 
+const parseEntry = <T>(entry: [string, T][]): IReturnData<T>[] =>
+  entry.map((a) => ({ id: Number(a[0]), data: a[1] }));
+
 export {
   canBuy,
   resolveCustomId,
@@ -143,4 +150,5 @@ export {
   randomFromArray,
   usePotion,
   resolveDailyQuests,
+  parseEntry,
 };

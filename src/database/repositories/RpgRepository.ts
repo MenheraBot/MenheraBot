@@ -6,6 +6,7 @@ import {
   IPartyData,
   IQuest,
   IQuestsFile,
+  IReturnData,
   IRpgUserSchema,
 } from 'roleplay/Types';
 import { Redis } from 'ioredis';
@@ -30,7 +31,7 @@ export default class RpgRepository {
   async getUserEnochiaMart(
     userID: string,
     userLevel: number,
-    itemsFile: [string, IItemFile<boolean>][],
+    itemsFile: IReturnData<IItemFile<boolean>>[],
   ): Promise<IEnochiaShop> {
     if (this.redisClient) {
       const cachedShop = await this.redisClient.get(`enochia_shop:${userID}`);
@@ -51,7 +52,7 @@ export default class RpgRepository {
   async getUserDailyQuests(
     userID: string,
     userLevel: number,
-    questsFile: [string, IQuestsFile][],
+    questsFile: IReturnData<IQuestsFile>[],
   ): Promise<IQuest[] | null> {
     if (this.redisClient) {
       const cachedMissions = await this.redisClient.get(`daily_quests:${userID}`);

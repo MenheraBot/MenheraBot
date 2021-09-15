@@ -18,31 +18,30 @@ import {
   IUpdatedUserInfo,
   IRpgUserSchema,
   IMobAttacksFile,
+  IReturnData,
 } from '../Types';
 
 export default class BasicFunctions {
   constructor(private client: MenheraClient) {}
 
-  getClassDataById(classId: number | string): IClassesFile {
-    return this.client.boleham.Classes.filter((cls) => cls[0] === `${classId}`)[0][1];
+  getClassDataById(classId: number): IClassesFile {
+    return this.client.boleham.Classes.filter((cls) => cls.id === classId)[0].data;
   }
 
-  getRaceDataById(raceId: number | string): IRacesFiles {
-    return this.client.boleham.Races.filter((cls) => cls[0] === `${raceId}`)[0][1];
+  getRaceDataById(raceId: number): IRacesFiles {
+    return this.client.boleham.Races.filter((cls) => cls.id === raceId)[0].data;
   }
 
-  getDataToRegister(userID: string, classID: string, raceID: string): IBasicData {
+  getDataToRegister(userID: string, classID: number, raceID: number): IBasicData {
     const selectedClass = this.getClassDataById(classID);
 
-    const firstAbility = this.client.boleham.Abilities.filter(
-      (a) => a[0] === `${100 * Number(classID) + 1}`,
-    )[0];
+    const firstAbility = this.client.boleham.Abilities.filter((a) => a.id === 100 * classID + 1)[0];
 
     return {
       id: userID,
-      classId: Number(classID),
-      raceId: Number(raceID),
-      abilities: [{ id: Number(firstAbility[0]), level: 1, xp: 0 }],
+      classId: classID,
+      raceId: raceID,
+      abilities: [{ id: firstAbility.id, level: 1, xp: 0 }],
       baseArmor: selectedClass.baseArmor,
       baseDamage: selectedClass.baseDamage,
       attackSkill: selectedClass.attackSkill,
@@ -56,32 +55,30 @@ export default class BasicFunctions {
     return this.client.boleham.Experiences[level];
   }
 
-  getAbilityById(id: number | string): IAbilitiesFile {
-    return this.client.boleham.Abilities.filter((a) => a[0] === `${id}`)[0][1];
+  getAbilityById(id: number): IAbilitiesFile {
+    return this.client.boleham.Abilities.filter((a) => a.id === id)[0].data;
   }
 
-  getAllBuildingsFromLocationId(locationId: number): [string, IBuildingFile][] {
-    return this.client.boleham.Buildings.filter((a) => a[1].locationId === locationId);
+  getAllBuildingsFromLocationId(locationId: number): IReturnData<IBuildingFile>[] {
+    return this.client.boleham.Buildings.filter((a) => a.data.locationId === locationId);
   }
 
-  getBuildingById(id: number | string): IBuildingFile {
-    return this.client.boleham.Buildings.filter((a) => a[0] === `${id}`)[0][1];
+  getBuildingById(id: number): IBuildingFile {
+    return this.client.boleham.Buildings.filter((a) => a.id === id)[0].data;
   }
 
-  getQuestById(id: number | string): IQuestsFile {
-    return this.client.boleham.Quests.filter((a) => a[0] === `${id}`)[0][1];
+  getQuestById(id: number): IQuestsFile {
+    return this.client.boleham.Quests.filter((a) => a.id === id)[0].data;
   }
 
   getItemById<T extends boolean>(id: number | string): IItemFile<T>;
 
-  getItemById(id: number | string): IUsableItem | IUnusableItem {
-    return this.client.boleham.Items.filter((a) => a[0] === `${id}`)[0][1];
+  getItemById(id: number): IUsableItem | IUnusableItem {
+    return this.client.boleham.Items.filter((a) => a.id === id)[0].data;
   }
 
   getMobAttacks(mobAttacks: number[]): IMobAttacksFile[] {
-    return mobAttacks.map(
-      (a) => this.client.boleham.MobsAttack.filter((b) => b[0] === `${a}`)[0][1],
-    );
+    return mobAttacks.map((a) => this.client.boleham.MobsAttack.filter((b) => b.id === a)[0].data);
   }
 
   checkUserUp(user: IRpgUserSchema | (IRpgUserSchema & Document)): {

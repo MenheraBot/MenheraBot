@@ -31,7 +31,7 @@ Menhera has an RPG in the medieval style, which offers:
 - 💰 Global Economy
 - 🧟 Adventures against monsters and bosses in Dungeons
 - ✨ Many classes with different skills and styles
-- 🏹 Daily and Story Questions
+- 🏹 Daily and Story Questionse
 - 🛒 Users can buy houses to sell items or create custom work areas
 - 🏆 Global Player Rank
 - ⛵️ Different locations with differents purposes

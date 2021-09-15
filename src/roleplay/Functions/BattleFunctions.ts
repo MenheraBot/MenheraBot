@@ -21,12 +21,12 @@ export default class BattleFunctions {
   ): (IMobsFile & { level: number })[] {
     const availableMobs = this.client.boleham.Mobs.filter(
       (a) =>
-        a[1].minUserLevel <= userLevel &&
-        a[1].isLocationBuilding === fromBuilding &&
-        a[1].availableLocations.includes(mobLocation),
+        a.data.minUserLevel <= userLevel &&
+        a.data.isLocationBuilding === fromBuilding &&
+        a.data.availableLocations.includes(mobLocation),
     );
 
-    const choosenMob = randomFromArray(availableMobs)[1];
+    const choosenMob = randomFromArray(availableMobs).data;
     const mobsToReturn = Math.floor(Math.random() * maxMobs) + 1;
 
     const calculatedMobLevel = Math.floor(userLevel / 4) * 10 + Math.floor(Math.random() * 10);
