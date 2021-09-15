@@ -117,7 +117,11 @@ export default class FichaInteractionCommand extends InteractionCommand {
         },
         {
           name: `${emojis.blood} | ${ctx.translate('second.life')}`,
-          value: `${user.life} / ${user.maxLife}`,
+          value: `${user.life} / ${ctx.client.boleham.Battle.getUserMaxLife(
+            user.classId,
+            user.level,
+            user.armor,
+          )}`,
           inline: true,
         },
         {

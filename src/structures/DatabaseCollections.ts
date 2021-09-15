@@ -80,10 +80,6 @@ const rpgSchema = new Schema({
   tiredness: { type: Number, default: 100 }, // percentage of tiredness of user, 100 = good, 0 = bad
   speed: { type: Number }, // Base speed from user
   lucky: { type: Number, default: 1 }, // Base lucky for gettinh loots
-  maxLife: { type: Number, default: 100 }, // max life that the user can reach
-  maxMana: { type: Number, default: 20 }, // Max mana that the user can reach
-  baseArmor: { type: Number }, // Base armor
-  baseDamage: { type: Number }, // Base damage from basic attacks
   attackSkill: { type: Number }, // Facility of dealling damage with basic attack
   abilitySkill: { type: Number }, // Facility of dealling damage with all abilities
   abilities: { type: Array, default: [] }, // User abilities

@@ -56,6 +56,31 @@ export interface IJob {
   xp: number;
 }
 
+export type TEffectTarget = 'self' | 'allies' | 'enemies';
+
+export type TEffectType =
+  | 'invisibility'
+  | 'poison'
+  | 'slow'
+  | 'attack'
+  | 'speed'
+  | 'armor_penetration'
+  | 'armor_buff'
+  | 'life_buff'
+  | 'mana_buff'
+  | 'damage_buff'
+  | 'vampirism'
+  | 'degradation'
+  | 'confusion'
+  | 'heal'
+  | 'blind';
+
+export interface IEffectData {
+  type: TEffectType;
+  target: TEffectTarget;
+  value: number;
+}
+
 export interface IRpgUserSchema {
   readonly id: string;
   classId: number;
@@ -68,10 +93,6 @@ export interface IRpgUserSchema {
   tiredness: number;
   speed: number;
   lucky: number;
-  maxLife: number;
-  maxMana: number;
-  baseArmor: number;
-  baseDamage: number;
   attackSkill: number;
   abilitySkill: number;
   abilities: Array<IAbility>;
@@ -99,7 +120,7 @@ interface IAttributesPerLevel {
   baseArmor: number;
   baseDamage: number;
   attackSkill: number;
-  abilityPower: number;
+  abilitySkill: number;
 }
 
 export type TWeapons =
@@ -121,6 +142,8 @@ export type TArmors = 'light' | 'medium' | 'heavy';
 export interface IClassesFile {
   name: RpgClassNames;
   baseAttributesPerLevel: IAttributesPerLevel;
+  baseMana: number;
+  baseLife: number;
   baseArmor: number;
   baseDamage: number;
   attackSkill: number;
@@ -129,24 +152,6 @@ export interface IClassesFile {
   availableWeapons: TWeapons[];
   availableArmors: TArmors[];
 }
-
-export type TEffectTarget = 'self' | 'allies' | 'enemies';
-
-export type TEffectType =
-  | 'invisibility'
-  | 'poison'
-  | 'slow'
-  | 'attack'
-  | 'speed'
-  | 'armor_penetration'
-  | 'armor_buff'
-  | 'life_buff'
-  | 'vampirism'
-  | 'degradation'
-  | 'confusion'
-  | 'heal'
-  | 'mana'
-  | 'blind';
 
 export type TElements = 'light' | 'darkness' | 'fire' | 'nature' | 'gravity' | 'prisma';
 
@@ -188,8 +193,6 @@ export interface IBasicData {
   classId: number;
   raceId: number;
   abilities: IAbility[];
-  baseArmor: number;
-  baseDamage: number;
   attackSkill: number;
   abilitySkill: number;
   speed: number;
@@ -220,6 +223,7 @@ export interface IUsableItem {
   type: TItemType;
   data: IItemData;
   helperType: TEffectType | TArmorType;
+  effects: IEffectData[];
 }
 
 export interface IUnusableItem {
@@ -345,7 +349,19 @@ export interface IAbilityResolved {
 
 export interface IResolvedWeapon {
   damage: number;
-  effect: TEffectType;
+  effect: IEffectData[];
+}
+
+interface ResolveArmor {
+  armor: number;
+  effect: IEffectData[];
+}
+
+export interface IResolvedArmor {
+  boots?: ResolveArmor;
+  chest?: ResolveArmor;
+  pants?: ResolveArmor;
+  head?: ResolveArmor;
 }
 
 export interface IBattleUser {
