@@ -65,9 +65,23 @@ export default class PartyInteractionCommand extends InteractionCommand {
         ctx.author.username,
         ctx.translate('stats', {
           life: user.life,
-          maxLife: user.maxLife,
+          maxLife: ctx.client.boleham.Battle.getUserMaxLife(
+            user.classId,
+            user.level,
+            ctx.client.boleham.Battle.resolveArmor(user.equiped.armor),
+            user.equiped.weapon
+              ? ctx.client.boleham.Battle.resolveWeapon(user.equiped.weapon)
+              : null,
+          ),
           mana: user.mana,
-          maxMana: user.maxMana,
+          maxMana: ctx.client.boleham.Battle.getUserMaxMana(
+            user.classId,
+            user.level,
+            ctx.client.boleham.Battle.resolveArmor(user.equiped.armor),
+            user.equiped.weapon
+              ? ctx.client.boleham.Battle.resolveWeapon(user.equiped.weapon)
+              : null,
+          ),
           tiredness: user.tiredness,
         }),
       );
@@ -83,9 +97,23 @@ export default class PartyInteractionCommand extends InteractionCommand {
           fetchedUser.username,
           ctx.translate('stats', {
             life: userStats.life,
-            maxLife: userStats.maxLife,
+            maxLife: ctx.client.boleham.Battle.getUserMaxLife(
+              userStats.classId,
+              userStats.level,
+              ctx.client.boleham.Battle.resolveArmor(userStats.equiped.armor),
+              userStats.equiped.weapon
+                ? ctx.client.boleham.Battle.resolveWeapon(userStats.equiped.weapon)
+                : null,
+            ),
             mana: userStats.mana,
-            maxMana: userStats.maxMana,
+            maxMana: ctx.client.boleham.Battle.getUserMaxMana(
+              userStats.classId,
+              userStats.level,
+              ctx.client.boleham.Battle.resolveArmor(userStats.equiped.armor),
+              userStats.equiped.weapon
+                ? ctx.client.boleham.Battle.resolveWeapon(userStats.equiped.weapon)
+                : null,
+            ),
             tiredness: userStats.tiredness,
           }),
           true,

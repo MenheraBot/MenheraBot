@@ -73,6 +73,7 @@ export type TEffectType =
   | 'degradation'
   | 'confusion'
   | 'heal'
+  | 'mana'
   | 'blind';
 
 export interface IEffectData {

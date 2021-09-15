@@ -186,10 +186,30 @@ export default class InventoryInteractionCommand extends InteractionCommand {
             )[0];
             switch (item.type) {
               case 'potion': {
-                const [newData, newInventory] = usePotion(user, item, {
-                  id: fromUserInventory.id,
-                  level: fromUserInventory.level ?? 0,
-                });
+                const [newData, newInventory] = usePotion(
+                  user,
+                  item,
+                  {
+                    id: fromUserInventory.id,
+                    level: fromUserInventory.level ?? 0,
+                  },
+                  ctx.client.boleham.Battle.getUserMaxLife(
+                    user.classId,
+                    user.level,
+                    ctx.client.boleham.Battle.resolveArmor(user.equiped.armor),
+                    user.equiped.weapon
+                      ? ctx.client.boleham.Battle.resolveWeapon(user.equiped.weapon)
+                      : null,
+                  ),
+                  ctx.client.boleham.Battle.getUserMaxMana(
+                    user.classId,
+                    user.level,
+                    ctx.client.boleham.Battle.resolveArmor(user.equiped.armor),
+                    user.equiped.weapon
+                      ? ctx.client.boleham.Battle.resolveWeapon(user.equiped.weapon)
+                      : null,
+                  ),
+                );
                 if (item.helperType === 'mana') user.mana = newData;
                 if (item.helperType === 'heal') user.life = newData;
                 user.inventory = newInventory;

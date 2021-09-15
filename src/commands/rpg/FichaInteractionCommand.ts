@@ -120,13 +120,23 @@ export default class FichaInteractionCommand extends InteractionCommand {
           value: `${user.life} / ${ctx.client.boleham.Battle.getUserMaxLife(
             user.classId,
             user.level,
-            user.armor,
+            ctx.client.boleham.Battle.resolveArmor(user.equiped.armor),
+            user.equiped.weapon
+              ? ctx.client.boleham.Battle.resolveWeapon(user.equiped.weapon)
+              : null,
           )}`,
           inline: true,
         },
         {
           name: `${emojis.mana} | ${ctx.translate('second.mana')}`,
-          value: `${user.mana} / ${user.maxMana}`,
+          value: `${user.mana} / ${ctx.client.boleham.Battle.getUserMaxMana(
+            user.classId,
+            user.level,
+            ctx.client.boleham.Battle.resolveArmor(user.equiped.armor),
+            user.equiped.weapon
+              ? ctx.client.boleham.Battle.resolveWeapon(user.equiped.weapon)
+              : null,
+          )}`,
           inline: true,
         },
         {
@@ -141,12 +151,26 @@ export default class FichaInteractionCommand extends InteractionCommand {
         },
         {
           name: `${emojis.sword} | ${ctx.translate('second.damage')}`,
-          value: `${user.baseDamage}`,
+          value: `${ctx.client.boleham.Battle.getUserDamage(
+            user.classId,
+            user.level,
+            ctx.client.boleham.Battle.resolveArmor(user.equiped.armor),
+            user.equiped.weapon
+              ? ctx.client.boleham.Battle.resolveWeapon(user.equiped.weapon)
+              : null,
+          )}`,
           inline: true,
         },
         {
           name: `${emojis.shield} | ${ctx.translate('second.armor')}`,
-          value: `${user.baseArmor}`,
+          value: `${ctx.client.boleham.Battle.getUserArmor(
+            user.classId,
+            user.level,
+            ctx.client.boleham.Battle.resolveArmor(user.equiped.armor),
+            user.equiped.weapon
+              ? ctx.client.boleham.Battle.resolveWeapon(user.equiped.weapon)
+              : null,
+          )}`,
           inline: true,
         },
         {

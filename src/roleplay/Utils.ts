@@ -115,17 +115,19 @@ const usePotion = (
   user: IRpgUserSchema,
   potion: IUsableItem,
   itemData: ILeveledItem,
+  maxLife: number,
+  maxMana: number,
 ): [number, IInventoryItem[]] => {
   let newData = potion.helperType === 'heal' ? user.life : user.mana;
 
   if (potion.helperType === 'heal') {
     newData += potion.data.value + itemData.level * potion.data.perLevel;
-    if (newData > user.maxLife) newData = user.maxLife;
+    if (newData > maxLife) newData = maxLife;
   }
 
   if (potion.helperType === 'mana') {
     newData += potion.data.value + itemData.level * potion.data.perLevel;
-    if (newData > user.maxMana) newData = user.maxMana;
+    if (newData > maxMana) newData = maxMana;
   }
 
   const newInventory = BasicFunctions.mergeInventory(

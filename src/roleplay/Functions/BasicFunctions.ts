@@ -42,8 +42,6 @@ export default class BasicFunctions {
       classId: classID,
       raceId: raceID,
       abilities: [{ id: firstAbility.id, level: 1, xp: 0 }],
-      baseArmor: selectedClass.baseArmor,
-      baseDamage: selectedClass.baseDamage,
       attackSkill: selectedClass.attackSkill,
       abilitySkill: selectedClass.abilitySkill,
       speed: selectedClass.speed,

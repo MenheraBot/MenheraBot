@@ -195,7 +195,7 @@ export default class BattleFunctions {
     classId: number,
     level: number,
     armor: IResolvedArmor,
-    weapon?: IResolvedWeapon,
+    weapon?: IResolvedWeapon | null,
   ): number {
     const classData = this.client.boleham.Functions.getClassDataById(classId);
 
