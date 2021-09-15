@@ -9,9 +9,9 @@
 [![](https://top.gg/api/widget/upvotes/708014856711962654.svg)](https://top.gg/bot/708014856711962654/vote)
 [![Crowdin](https://badges.crowdin.net/menherabot/localized.svg)](https://crowdin.com/project/menherabot)
 
-> Menhera is animating more than 7000 servers with her functionalities
+> Menhera is animating more than 10000 servers with her functionalities
 
-MenheraBot is an open source Discord bot made in JavaScript with [Discord.js](https://discord.js.org) by [Luxanna](https://github.com/ySnoopyDogy)
+MenheraBot is an open source Discord bot made in TypeScript with [Discord.js](https://discord.js.org) by [Luxanna](https://github.com/ySnoopyDogy)
 Feel free to add a star ⭐ to the repository to promote the project!
 
 ## Contributing
@@ -29,13 +29,20 @@ Menhera can be used in brazilian portuguese or english
 Menhera has an RPG in the medieval style, which offers:
 
 - 💰 Global Economy
-- 🧟 Adventures against monsters in Dungeons
-- ✨ More than 8 different classes with 5 skills
+- 🧟 Adventures against monsters and bosses in Dungeons
+- ✨ Many classes with different skills and styles
+- 🏹 Daily and Story Questions
+- 🛒 Users can buy houses to sell items or create custom work areas
 - 🏆 Global Player Rank
+- ⛵️ Different locations with differents purposes
+- 🧬 Many races to modify your battle style
+- 🔰 Clans to unite people to fight agains global bosses and other clans
+- ⚔️ An interative battle system
+- 🎆 And way more features that you can only describes playing
 
 ### Lot of Commands
 
-She has many features, with **7 categories of commands**, including many action commands, image and fun commands, economy, her main funcionality: **RPG** and much more
+She has many features, with **6 categories of commands**, including many action commands, image, fun, economy, her main funcionality: **RPG** and much more. All commands are in [this site](https://menherabot.xyz/). All commands uses interactions, such as buttons and slash commands!
 
 ## Support
 
