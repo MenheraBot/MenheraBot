@@ -7,7 +7,7 @@ export default class BattleFunctions {
 
   getRandomMob(
     userLevel: number,
-    userLocation: number,
+    mobLocation: number,
     maxMobs: number,
     fromBuilding: boolean,
   ): (IMobsFile & { level: number })[] {
@@ -15,7 +15,7 @@ export default class BattleFunctions {
       (a) =>
         a[1].minUserLevel <= userLevel &&
         a[1].isLocationBuilding === fromBuilding &&
-        a[1].availableLocations.includes(userLocation),
+        a[1].availableLocations.includes(mobLocation),
     );
 
     const choosenMob = randomFromArray(availableMobs)[1];
