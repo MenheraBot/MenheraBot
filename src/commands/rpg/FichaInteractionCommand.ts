@@ -50,7 +50,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
       ctx.replyT('error', 'non-user', {}, true);
       return;
     }
-    return this.showFicha(ctx, user, ctx.options.getUser('user') ?? ctx.author);
+    return this.showFicha(ctx, user, userToFind ?? ctx.author);
   }
 
   async showFicha(

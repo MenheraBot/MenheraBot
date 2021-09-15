@@ -72,7 +72,7 @@ export default class BattleFunctions {
 
     if (user.equiped.weapon) weapon = this.resolveWeapon(user.equiped.weapon);
 
-    const equiped = this.resolveArmor(user.equiped.armor);
+    const equiped = this.resolveArmor(user.equiped?.armor);
 
     const armor = this.getUserArmor(user.classId, user.level, equiped, weapon);
 
@@ -104,7 +104,7 @@ export default class BattleFunctions {
   resolveArmor(armor: IArmor): IResolvedArmor {
     const resolved: IResolvedArmor = {};
 
-    if (armor.boots) {
+    if (armor?.boots) {
       const bootData = this.client.boleham.Functions.getItemById<AsAnUsableItem>(armor.boots.id);
 
       resolved.boots = {
@@ -113,7 +113,7 @@ export default class BattleFunctions {
       };
     }
 
-    if (armor.chest) {
+    if (armor?.chest) {
       const chestData = this.client.boleham.Functions.getItemById<AsAnUsableItem>(armor.chest.id);
 
       resolved.chest = {
@@ -122,7 +122,7 @@ export default class BattleFunctions {
       };
     }
 
-    if (armor.pants) {
+    if (armor?.pants) {
       const pantsData = this.client.boleham.Functions.getItemById<AsAnUsableItem>(armor.pants.id);
 
       resolved.pants = {
@@ -131,7 +131,7 @@ export default class BattleFunctions {
       };
     }
 
-    if (armor.head) {
+    if (armor?.head) {
       const headData = this.client.boleham.Functions.getItemById<AsAnUsableItem>(armor.head.id);
 
       resolved.head = {
@@ -160,28 +160,28 @@ export default class BattleFunctions {
       }, 0);
     }
 
-    if (armor.boots && armor.boots.effect.some((a) => a.type === 'life_buff')) {
+    if (armor?.boots && armor.boots.effect.some((a) => a.type === 'life_buff')) {
       maxLife += armor.boots.effect.reduce((p, c) => {
         if (c.type !== 'life_buff' || c.target !== 'self') return p;
         return p + c.value;
       }, 0);
     }
 
-    if (armor.pants && armor.pants.effect.some((a) => a.type === 'life_buff')) {
+    if (armor?.pants && armor.pants.effect.some((a) => a.type === 'life_buff')) {
       maxLife += armor.pants.effect.reduce((p, c) => {
         if (c.type !== 'life_buff' || c.target !== 'self') return p;
         return p + c.value;
       }, 0);
     }
 
-    if (armor.chest && armor.chest.effect.some((a) => a.type === 'life_buff')) {
+    if (armor?.chest && armor.chest.effect.some((a) => a.type === 'life_buff')) {
       maxLife += armor.chest.effect.reduce((p, c) => {
         if (c.type !== 'life_buff' || c.target !== 'self') return p;
         return p + c.value;
       }, 0);
     }
 
-    if (armor.head && armor.head.effect.some((a) => a.type === 'life_buff')) {
+    if (armor?.head && armor.head.effect.some((a) => a.type === 'life_buff')) {
       maxLife += armor.head.effect.reduce((p, c) => {
         if (c.type !== 'life_buff' || c.target !== 'self') return p;
         return p + c.value;
@@ -208,28 +208,28 @@ export default class BattleFunctions {
       }, 0);
     }
 
-    if (armor.boots && armor.boots.effect.some((a) => a.type === 'mana_buff')) {
+    if (armor?.boots && armor.boots.effect.some((a) => a.type === 'mana_buff')) {
       maxMana += armor.boots.effect.reduce((p, c) => {
         if (c.type !== 'mana_buff' || c.target !== 'self') return p;
         return p + c.value;
       }, 0);
     }
 
-    if (armor.pants && armor.pants.effect.some((a) => a.type === 'mana_buff')) {
+    if (armor?.pants && armor.pants.effect.some((a) => a.type === 'mana_buff')) {
       maxMana += armor.pants.effect.reduce((p, c) => {
         if (c.type !== 'mana_buff' || c.target !== 'self') return p;
         return p + c.value;
       }, 0);
     }
 
-    if (armor.chest && armor.chest.effect.some((a) => a.type === 'mana_buff')) {
+    if (armor?.chest && armor.chest.effect.some((a) => a.type === 'mana_buff')) {
       maxMana += armor.chest.effect.reduce((p, c) => {
         if (c.type !== 'mana_buff' || c.target !== 'self') return p;
         return p + c.value;
       }, 0);
     }
 
-    if (armor.head && armor.head.effect.some((a) => a.type === 'mana_buff')) {
+    if (armor?.head && armor.head.effect.some((a) => a.type === 'mana_buff')) {
       maxMana += armor.head.effect.reduce((p, c) => {
         if (c.type !== 'mana_buff' || c.target !== 'self') return p;
         return p + c.value;
@@ -251,28 +251,28 @@ export default class BattleFunctions {
 
     if (weapon) damage += weapon.damage;
 
-    if (armor.boots && armor.boots.effect.some((a) => a.type === 'damage_buff')) {
+    if (armor?.boots && armor.boots.effect.some((a) => a.type === 'damage_buff')) {
       damage += armor.boots.effect.reduce((p, c) => {
         if (c.target !== 'self' || c.type !== 'damage_buff') return p;
         return p + c.value;
       }, 0);
     }
 
-    if (armor.chest && armor.chest.effect.some((a) => a.type === 'damage_buff')) {
+    if (armor?.chest && armor.chest.effect.some((a) => a.type === 'damage_buff')) {
       damage += armor.chest.effect.reduce((p, c) => {
         if (c.target !== 'self' || c.type !== 'damage_buff') return p;
         return p + c.value;
       }, 0);
     }
 
-    if (armor.head && armor.head.effect.some((a) => a.type === 'damage_buff')) {
+    if (armor?.head && armor.head.effect.some((a) => a.type === 'damage_buff')) {
       damage += armor.head.effect.reduce((p, c) => {
         if (c.target !== 'self' || c.type !== 'damage_buff') return p;
         return p + c.value;
       }, 0);
     }
 
-    if (armor.pants && armor.pants.effect.some((a) => a.type === 'damage_buff')) {
+    if (armor?.pants && armor.pants.effect.some((a) => a.type === 'damage_buff')) {
       damage += armor.pants.effect.reduce((p, c) => {
         if (c.target !== 'self' || c.type !== 'damage_buff') return p;
         return p + c.value;
@@ -299,7 +299,7 @@ export default class BattleFunctions {
       }, 0);
     }
 
-    if (armor.boots) {
+    if (armor?.boots) {
       userArmor += armor.boots.armor;
       if (armor.boots.effect.some((a) => a.type === 'armor_buff')) {
         userArmor += armor.boots.effect.reduce((p, c) => {
@@ -309,7 +309,7 @@ export default class BattleFunctions {
       }
     }
 
-    if (armor.chest) {
+    if (armor?.chest) {
       userArmor += armor.chest.armor;
       if (armor.chest.effect.some((a) => a.type === 'armor_buff')) {
         userArmor += armor.chest.effect.reduce((p, c) => {
@@ -319,7 +319,7 @@ export default class BattleFunctions {
       }
     }
 
-    if (armor.head) {
+    if (armor?.head) {
       userArmor += armor.head.armor;
       if (armor.head.effect.some((a) => a.type === 'armor_buff')) {
         userArmor += armor.head.effect.reduce((p, c) => {
@@ -329,7 +329,7 @@ export default class BattleFunctions {
       }
     }
 
-    if (armor.pants) {
+    if (armor?.pants) {
       userArmor += armor.pants.armor;
       if (armor.pants.effect.some((a) => a.type === 'armor_buff')) {
         userArmor += armor.pants.effect.reduce((p, c) => {
