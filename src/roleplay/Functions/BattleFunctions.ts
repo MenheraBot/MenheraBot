@@ -1,4 +1,12 @@
-import { IBattleMob, IMobsFile } from '@roleplay/Types';
+import {
+  AsAnUsableItem,
+  IAbilityResolved,
+  IBattleMob,
+  IBattleUser,
+  IMobsFile,
+  IRpgUserSchema,
+  TEffectType,
+} from '@roleplay/Types';
 import { randomFromArray } from '@roleplay/Utils';
 import MenheraClient from 'MenheraClient';
 
@@ -40,5 +48,74 @@ export default class BattleFunctions {
 
       return { life, speed, armor, damage, attackSkill, attacks, effects: [] };
     });
+  }
+
+  prepareUserForBattle(user: IRpgUserSchema): IBattleUser {
+    const userClassData = this.client.boleham.Functions.getClassDataById(user.classId);
+    const { life, mana, tiredness, speed, lucky, attackSkill, abilitySkill } = user;
+    let armor = user.baseArmor + userClassData.baseAttributesPerLevel.baseArmor * user.level;
+    const damage = user.baseDamage + userClassData.baseAttributesPerLevel.baseDamage * user.level;
+    let weapon: IBattleUser['weapon'] = null;
+    const abilities: IAbilityResolved[] = user.abilities.map((a) => {
+      const abilityData = this.client.boleham.Functions.getAbilityById(a.id);
+      return {
+        cost: abilityData.cost,
+        element: abilityData.element,
+        turnsCooldown: abilityData.turnsCooldown,
+        randomChoice: abilityData.randomChoice ?? false,
+        effects: abilityData.effects,
+        level: a.level,
+      };
+    });
+
+    if (user.equiped.weapon) {
+      const weaponData = this.client.boleham.Functions.getItemById<AsAnUsableItem>(
+        user.equiped.weapon.id,
+      );
+      weapon = {
+        effect: weaponData.helperType as TEffectType,
+        damage: weaponData.data.value + weaponData.data.perLevel * user.equiped.weapon.level,
+      };
+    }
+
+    const equiped = user.equiped.armor;
+
+    if (equiped.boots) {
+      const bootData = this.client.boleham.Functions.getItemById<AsAnUsableItem>(equiped.boots.id);
+
+      armor += bootData.data.value + bootData.data.perLevel * equiped.boots.level;
+    }
+
+    if (equiped.chest) {
+      const chestData = this.client.boleham.Functions.getItemById<AsAnUsableItem>(equiped.chest.id);
+
+      armor += chestData.data.value + chestData.data.perLevel * equiped.chest.level;
+    }
+
+    if (equiped.head) {
+      const headData = this.client.boleham.Functions.getItemById<AsAnUsableItem>(equiped.head.id);
+
+      armor += headData.data.value + headData.data.perLevel * equiped.head.level;
+    }
+
+    if (equiped.pants) {
+      const pantsData = this.client.boleham.Functions.getItemById<AsAnUsableItem>(equiped.pants.id);
+
+      armor += pantsData.data.value + pantsData.data.perLevel * equiped.pants.level;
+    }
+
+    return {
+      life,
+      mana,
+      tiredness,
+      speed,
+      lucky,
+      armor,
+      damage,
+      weapon,
+      attackSkill,
+      abilitySkill,
+      abilities,
+    };
   }
 }

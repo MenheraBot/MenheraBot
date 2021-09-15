@@ -7,7 +7,6 @@ const races: { [key: number]: IRacesFiles } = {
       type: 'element',
       info: 'nature',
       value: 6,
-      isPercentage: true,
     },
   },
   2: {
@@ -16,7 +15,6 @@ const races: { [key: number]: IRacesFiles } = {
       type: 'loot',
       info: 'rare',
       value: 3,
-      isPercentage: true,
     },
   },
   3: {
@@ -25,7 +23,6 @@ const races: { [key: number]: IRacesFiles } = {
       type: 'element',
       info: 'fire',
       value: 6,
-      isPercentage: true,
     },
   },
   4: {
@@ -34,7 +31,6 @@ const races: { [key: number]: IRacesFiles } = {
       type: 'armor',
       info: 'buff',
       value: 6,
-      isPercentage: true,
     },
   },
   5: {
@@ -43,7 +39,6 @@ const races: { [key: number]: IRacesFiles } = {
       type: 'element',
       info: 'darkness',
       value: 6,
-      isPercentage: true,
     },
   },
   6: {
@@ -52,7 +47,6 @@ const races: { [key: number]: IRacesFiles } = {
       type: 'element',
       info: 'light',
       value: 6,
-      isPercentage: true,
     },
   },
 };

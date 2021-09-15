@@ -176,7 +176,6 @@ export interface IRaceFacility {
   type: TRaceFacilityType;
   info: TElements | 'buff' | 'rare';
   value: number;
-  isPercentage: boolean;
 }
 
 export interface IRacesFiles {
@@ -335,6 +334,20 @@ export interface IBattleMob {
   effects: IBattleEntityEffect[];
 }
 
+export interface IAbilityResolved {
+  cost: number;
+  element: TElements;
+  turnsCooldown: number;
+  randomChoice: boolean;
+  effects: Array<IAbilityEffect>;
+  level: number;
+}
+
+export interface IResolvedWeapon {
+  damage: number;
+  effect: TEffectType;
+}
+
 export interface IBattleUser {
   life: number;
   mana: number;
@@ -345,7 +358,8 @@ export interface IBattleUser {
   damage: number;
   attackSkill: number;
   abilitySkill: number;
-  abilities: Array<IAbility>;
+  weapon: IResolvedWeapon | null;
+  abilities: Array<IAbilityResolved>;
 }
 
 export type TBattleEntity = IBattleMob | IBattleUser;
