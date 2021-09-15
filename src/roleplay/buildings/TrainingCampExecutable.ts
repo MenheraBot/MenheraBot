@@ -64,6 +64,6 @@ export default async (ctx: InteractionCommandContext, user: IRpgUserSchema): Pro
     return;
   }
 
-  // TODO const selectedMob = ctx.client.boleham.Battle
+  const selectedMob = ctx.client.boleham.Battle.getRandomMob(user.level, 2, 1, true);
   console.log(user.speed);
 };

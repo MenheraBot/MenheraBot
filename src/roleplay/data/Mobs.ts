@@ -17,6 +17,8 @@ const mobs: { [key: number]: IMobsFile } = {
       baseSpeed: 2,
     },
     availableAttacks: [0],
+    isLocationBuilding: true,
+    minUserLevel: 1,
   },
 };
 

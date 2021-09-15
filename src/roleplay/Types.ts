@@ -308,6 +308,7 @@ export interface IMobsFile {
   description?: string;
   availableLocations: number[];
   minUserLevel: number;
+  isLocationBuilding: boolean;
   baseLife: number;
   baseSpeed: number;
   baseArmor: number;
