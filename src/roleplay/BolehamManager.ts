@@ -24,38 +24,29 @@ import attacks from './data/MobAttacks';
 import { parseEntry } from './Utils';
 
 export default class BolehamManager {
-  private classesFile: typeof classes;
+  private classesFile = classes;
 
-  private racesFile: typeof races;
+  private racesFile = races;
 
-  private abilitiesFile: typeof abilities;
+  private abilitiesFile = abilities;
 
-  private ecosystemFile: typeof ecosystem;
+  private ecosystemFile = ecosystem;
 
-  private buildingFile: typeof buildings;
+  private buildingFile = buildings;
 
-  private questsFile: typeof quests;
+  private questsFile = quests;
 
-  private itemsFile: typeof items;
+  private itemsFile = items;
 
-  private mobsFile: typeof mobs;
+  private mobsFile = mobs;
 
-  private attackFile: typeof attacks;
+  private attackFile = attacks;
 
   public Functions: BasicFunctions;
 
   public Battle: BattleFunctions;
 
   constructor(client: MenheraClient) {
-    this.classesFile = classes;
-    this.racesFile = races;
-    this.abilitiesFile = abilities;
-    this.buildingFile = buildings;
-    this.itemsFile = items;
-    this.questsFile = quests;
-    this.ecosystemFile = ecosystem;
-    this.mobsFile = mobs;
-    this.attackFile = attacks;
     this.Functions = new BasicFunctions(client);
     this.Battle = new BattleFunctions(client);
   }
