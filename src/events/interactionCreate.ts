@@ -79,7 +79,9 @@ export default class InteractionCreate extends Event {
       return;
     }
     if (command.config.devsOnly && process.env.OWNER !== interaction.user.id) {
-      await interaction.reply({ content: `${t('permissions:ONLY_DEVS')}`, ephemeral: true });
+      await interaction
+        .reply({ content: `${t('permissions:ONLY_DEVS')}`, ephemeral: true })
+        .catch(() => null);
       return;
     }
 

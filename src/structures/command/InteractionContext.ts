@@ -57,7 +57,7 @@ export default class InteractionCommandContext {
         })
         .catch(() => undefined);
 
-    return this.interaction.reply(options).catch((e) => console.log(e));
+    return this.interaction.reply(options).catch(() => undefined);
   }
 
   async replyE(
@@ -66,10 +66,12 @@ export default class InteractionCommandContext {
     ephemeral = false,
   ): Promise<Message | void> {
     if (typeof options === 'string')
-      return this.interaction.reply({
-        content: `${emojis[emoji] || '🐛'} **|** ${options}`,
-        ephemeral,
-      });
+      return this.interaction
+        .reply({
+          content: `${emojis[emoji] || '🐛'} **|** ${options}`,
+          ephemeral,
+        })
+        .catch(() => undefined);
 
     return this.interaction.reply(options).catch((e) => console.log(e));
   }
@@ -79,7 +81,7 @@ export default class InteractionCommandContext {
       .editReply({
         content: `${emojis[emoji] || '🐛'} **|** ${this.i18n(text, translateOptions)}`,
       })
-      .catch((e) => console.log(e));
+      .catch(() => undefined);
   }
 
   async replyL(
@@ -93,7 +95,7 @@ export default class InteractionCommandContext {
         content: `${emojis[emoji] || '🐛'} **|** ${this.i18n(text, translateOptions)}`,
         ephemeral,
       })
-      .catch((e) => console.log(e));
+      .catch(() => undefined);
   }
 
   async replyT(
@@ -111,15 +113,15 @@ export default class InteractionCommandContext {
   }
 
   async send(options: MessagePayload | InteractionReplyOptions): Promise<void> {
-    await this.interaction.followUp(options).catch((e) => console.log(e));
+    await this.interaction.followUp(options).catch(() => undefined);
   }
 
   async deleteReply(): Promise<void> {
-    return this.interaction.deleteReply().catch((e) => console.log(e));
+    return this.interaction.deleteReply().catch(() => undefined);
   }
 
   async editReply(options: MessagePayload | InteractionReplyOptions): Promise<void> {
-    await this.interaction.editReply(options).catch((e) => console.log(e));
+    await this.interaction.editReply(options).catch(() => undefined);
   }
 
   locale(text: string, translateVars = {}): string {
