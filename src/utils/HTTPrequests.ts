@@ -21,6 +21,14 @@ const request = axios.create({
   },
 });
 
+const topggRequest = axios.create({
+  baseURL: `https://top.gg/api`,
+  headers: {
+    'Content-Type': 'application/json',
+    Authorization: process.env.DBL_TOKEN,
+  },
+});
+
 const apiRequest = axios.create({
   baseURL: `${process.env.API_IP}/api`,
   timeout: 5000,
@@ -62,6 +70,14 @@ export default class HttpRequests {
     }
 
     return false;
+  }
+
+  static async postBotStatus(botId: string, serverCount: number[], shardId: number): Promise<void> {
+    await topggRequest
+      .post(`/bots/${botId}/stats`, {
+        data: { server_count: serverCount, shard_id: shardId, shard_count: serverCount.length },
+      })
+      .catch(() => null);
   }
 
   static async getTopUsers(): Promise<false | { id: string; uses: number }[]> {
