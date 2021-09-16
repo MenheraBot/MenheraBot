@@ -1,7 +1,7 @@
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageButton, MessageEmbed } from 'discord.js';
 import Util from '@utils/Util';
-import util from 'util';
+import BolehamBattle from '@roleplay/BolehamBattle';
 import { IRpgUserSchema } from '../Types';
 import { resolveCustomId } from '../Utils';
 
@@ -69,8 +69,5 @@ export default async (ctx: InteractionCommandContext, user: IRpgUserSchema): Pro
   const parsedToBattleMob = ctx.client.boleham.Battle.prepareMobForBattle(selectedMob);
   const parsedToBattleUser = ctx.client.boleham.Battle.prepareUserForBattle(user);
 
-  console.log(
-    util.inspect(parsedToBattleMob, false, null, true),
-    util.inspect(parsedToBattleUser, false, null, true),
-  );
+  await new BolehamBattle(ctx, [parsedToBattleUser], parsedToBattleMob).startBattle();
 };
