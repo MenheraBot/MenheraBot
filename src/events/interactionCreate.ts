@@ -12,7 +12,6 @@ export default class InteractionCreate extends Event {
   }
 
   async run(interaction: Interaction): Promise<void> {
-    console.log(interaction);
     if (!interaction.isCommand()) return;
     if (!interaction.inGuild() || interaction.channel?.type === 'DM')
       return interaction
