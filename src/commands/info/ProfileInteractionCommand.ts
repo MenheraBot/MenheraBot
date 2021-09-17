@@ -3,7 +3,7 @@ import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { IUserDataToProfile, IUserSchema } from '@utils/Types';
 import HttpRequests from '@utils/HTTPrequests';
-import { MessageAttachment, User } from 'discord.js';
+import { MessageAttachment, User } from 'discord.js-light';
 
 export default class ProfileInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {

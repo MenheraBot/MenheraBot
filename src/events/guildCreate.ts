@@ -1,4 +1,4 @@
-import { Guild } from 'discord.js';
+import { Guild } from 'discord.js-light';
 import MenheraClient from 'MenheraClient';
 import Event from '@structures/Event';
 

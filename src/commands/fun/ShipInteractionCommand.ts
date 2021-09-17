@@ -1,7 +1,7 @@
 import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { MessageAttachment, MessageEmbed } from 'discord.js';
+import { MessageAttachment, MessageEmbed } from 'discord.js-light';
 import HttpRequests from '@utils/HTTPrequests';
 
 export default class ShipInteractionCommand extends InteractionCommand {
@@ -30,8 +30,6 @@ export default class ShipInteractionCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    if (!ctx.interaction.guild) return;
-
     const user1 = ctx.options.getUser('user', true);
     const user2 = ctx.options.getUser('user_dois') ?? ctx.author;
 
@@ -74,8 +72,11 @@ export default class ShipInteractionCommand extends InteractionCommand {
     const avatarLinkTwo = user2.displayAvatarURL({ format: 'png', size: 256 });
     const bufferedShipImage = await HttpRequests.shipRequest(avatarLinkOne, avatarLinkTwo, value);
 
-    const member1 = ctx.interaction.guild.members.cache.get(user1.id);
-    const member2 = ctx.interaction.guild.members.cache.get(user2.id);
+    const guild =
+      ctx.interaction.guild ?? (await this.client.guilds.fetch(ctx.interaction.guildId ?? ''));
+
+    const member1 = await guild.members.fetch(user1.id);
+    const member2 = await guild.members.fetch(user2.id);
 
     const name1 = member1 && member1?.nickname ? member1.nickname : user1.username;
     const name2 = member2 && member2?.nickname ? member2.nickname : user2.username;

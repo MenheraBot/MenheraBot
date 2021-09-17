@@ -2,7 +2,7 @@ import MenheraClient from 'MenheraClient';
 import { COLORS } from '@structures/MenheraConstants';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { MessageButton, MessageComponentInteraction, MessageEmbed, User } from 'discord.js';
+import { MessageButton, MessageComponentInteraction, MessageEmbed, User } from 'discord.js-light';
 import Util from '@utils/Util';
 import HttpRequests from '@utils/HTTPrequests';
 

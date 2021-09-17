@@ -1,7 +1,7 @@
 import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { MessageSelectMenu, SelectMenuInteraction } from 'discord.js';
+import { MessageSelectMenu, SelectMenuInteraction } from 'discord.js-light';
 import { emojis } from '@structures/MenheraConstants';
 import Util from '@utils/Util';
 

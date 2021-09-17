@@ -1,4 +1,4 @@
-import { Interaction, Collection, ClientUser, GuildMember, MessageEmbed } from 'discord.js';
+import { Interaction, Collection, ClientUser, GuildMember, MessageEmbed } from 'discord.js-light';
 import MenheraClient from 'MenheraClient';
 import Event from '@structures/Event';
 import i18next from 'i18next';

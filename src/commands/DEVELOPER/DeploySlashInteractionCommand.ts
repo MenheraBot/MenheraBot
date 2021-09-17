@@ -1,7 +1,7 @@
 import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { ApplicationCommandData } from 'discord.js';
+import { ApplicationCommandData } from 'discord.js-light';
 
 export default class DeploySlashInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {

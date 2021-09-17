@@ -1,6 +1,6 @@
 import 'dotenv/config';
 
-import { ShardingManager } from 'discord.js';
+import { ShardingManager } from 'discord.js-light';
 import { join } from 'path';
 
 console.log('[APP] Initiating application...');

@@ -3,7 +3,7 @@ import Router from 'koa-router';
 import koaBody from 'koa-body';
 import cors from '@koa/cors';
 
-import { MessageEmbed } from 'discord.js';
+import { MessageEmbed } from 'discord.js-light';
 import MenheraClient from 'MenheraClient';
 
 import { votes as constants } from '@structures/MenheraConstants';

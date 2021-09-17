@@ -1,4 +1,4 @@
-import { Message, MessageAttachment, MessageButton, MessageEmbed } from 'discord.js';
+import { Message, MessageAttachment, MessageButton, MessageEmbed } from 'discord.js-light';
 import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';

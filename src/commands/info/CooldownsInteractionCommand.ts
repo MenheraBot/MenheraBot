@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-expressions */
-import { MessageEmbed } from 'discord.js';
+import { MessageEmbed } from 'discord.js-light';
 import moment from 'moment';
 import 'moment-duration-format';
 import MenheraClient from 'MenheraClient';
