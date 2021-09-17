@@ -1,7 +1,7 @@
 import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { User } from 'discord.js';
+import { User } from 'discord.js-light';
 
 export default class XandaoInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {

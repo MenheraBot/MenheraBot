@@ -8,7 +8,7 @@ import {
   IRESTHuntStats,
   IUserDataToProfile,
 } from '@utils/Types';
-import { User } from 'discord.js';
+import { User } from 'discord.js-light';
 
 type activity = 'PLAYING' | 'WATCHING' | 'STREAMING' | 'LISTENING';
 

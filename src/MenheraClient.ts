@@ -1,4 +1,4 @@
-import { Client, ClientEvents, ClientOptions, Collection } from 'discord.js';
+import { Client, ClientEvents, ClientOptions, Collection } from 'discord.js-light';
 
 import * as Sentry from '@sentry/node';
 

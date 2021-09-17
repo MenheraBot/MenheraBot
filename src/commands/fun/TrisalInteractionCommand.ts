@@ -6,7 +6,7 @@ import {
   MessageButton,
   MessageComponentInteraction,
   MessageEmbed,
-} from 'discord.js';
+} from 'discord.js-light';
 import HttpRequests from '@utils/HTTPrequests';
 import { emojis } from '@structures/MenheraConstants';
 

@@ -21,7 +21,7 @@ import {
   CommandInteractionOption,
   PermissionResolvable,
   User,
-} from 'discord.js';
+} from 'discord.js-light';
 import { Document } from 'mongoose';
 
 export interface IClientConfigs {
