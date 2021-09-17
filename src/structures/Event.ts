@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { Awaited } from 'discord.js';
+import { Awaited } from 'discord.js-light';
 import MenheraClient from 'MenheraClient';
 
 export default class Event {

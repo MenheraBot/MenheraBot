@@ -1,7 +1,7 @@
 import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { MessageAttachment, MessageEmbed } from 'discord.js';
+import { MessageAttachment, MessageEmbed } from 'discord.js-light';
 import HttpRequests from '@utils/HTTPrequests';
 
 export default class ShipInteractionCommand extends InteractionCommand {

@@ -1929,20 +1929,6 @@ discord.js-light@^4.1.4:
   dependencies:
     discord.js "github:discordjs/discord.js#9a833b1e0eb638c60c4abbb9255ed64a170e4679"
 
-discord.js@^13.1.0:
-  version "13.1.0"
-  resolved "https://registry.yarnpkg.com/discord.js/-/discord.js-13.1.0.tgz#99f6a2a8be88d31906ff0148e9b1cb603ebb2e2e"
-  integrity sha512-gxO4CXKdHpqA+WKG+f5RNnd3srTDj5uFJHgOathksDE90YNq/Qijkd2WlMgTTMS6AJoEnHxI7G9eDQHCuZ+xDA==
-  dependencies:
-    "@discordjs/builders" "^0.5.0"
-    "@discordjs/collection" "^0.2.1"
-    "@discordjs/form-data" "^3.0.1"
-    "@sapphire/async-queue" "^1.1.4"
-    "@types/ws" "^7.4.7"
-    discord-api-types "^0.22.0"
-    node-fetch "^2.6.1"
-    ws "^7.5.1"
-
 "discord.js@github:discordjs/discord.js#9a833b1e0eb638c60c4abbb9255ed64a170e4679":
   version "13.2.0-dev"
   resolved "https://codeload.github.com/discordjs/discord.js/tar.gz/9a833b1e0eb638c60c4abbb9255ed64a170e4679"

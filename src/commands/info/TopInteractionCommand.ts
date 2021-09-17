@@ -2,7 +2,7 @@
 import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { MessageEmbed } from 'discord.js';
+import { MessageEmbed } from 'discord.js-light';
 import HttpRequests from '@utils/HTTPrequests';
 import Util from '@utils/Util';
 import { COLORS, emojis } from '@structures/MenheraConstants';

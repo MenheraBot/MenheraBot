@@ -11,7 +11,7 @@ const client = new MenheraClient(
       GuildChannelManager: 0, // guild.channels
       GuildBanManager: 0, // guild.bans
       GuildInviteManager: 0, // guild.invites
-      GuildManager: Infinity, // client.guilds
+      GuildManager: 0, // client.guilds
       GuildMemberManager: 0, // guild.members
       GuildStickerManager: 0, // guild.stickers
       MessageManager: 0, // channel.messages

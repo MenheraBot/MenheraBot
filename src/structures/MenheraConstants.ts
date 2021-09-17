@@ -1,4 +1,4 @@
-import { ColorResolvable } from 'discord.js';
+import { ColorResolvable } from 'discord.js-light';
 
 export const shopEconomy = {
   colors: {
