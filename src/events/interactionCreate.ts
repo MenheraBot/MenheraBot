@@ -1,4 +1,4 @@
-import { Interaction, Collection, ClientUser, GuildMember, MessageEmbed } from 'discord.js-light';
+import { Interaction, Collection, GuildMember, MessageEmbed } from 'discord.js-light';
 import MenheraClient from 'MenheraClient';
 import Event from '@structures/Event';
 import i18next from 'i18next';
@@ -126,8 +126,14 @@ export default class InteractionCreate extends Event {
     }, cooldownAmount);
 
     if (command.config.userPermissions) {
+      const member =
+        interaction.member instanceof GuildMember
+          ? interaction.member
+          : await (
+              await this.client.guilds.fetch(interaction.guildId)
+            ).members.fetch(interaction.user.id);
       const missing = interaction.channel
-        ?.permissionsFor(interaction.user)
+        ?.permissionsFor(member)
         ?.missing(command.config.userPermissions);
       if (missing?.length) {
         const perm = missing.map((value) => t(`permissions:${value}`)).join(', ');
@@ -143,8 +149,11 @@ export default class InteractionCreate extends Event {
       }
     }
     if (command.config.clientPermissions) {
+      const clientMember = await (
+        await this.client.guilds.fetch(interaction.guildId)
+      ).members.fetch(this.client.user?.id ?? '');
       const missing = interaction.channel
-        ?.permissionsFor(this.client.user as ClientUser)
+        ?.permissionsFor(clientMember)
         ?.missing(command.config.clientPermissions);
       if (missing?.length) {
         const perm = missing.map((value) => t(`permissions:${value}`)).join(', ');
