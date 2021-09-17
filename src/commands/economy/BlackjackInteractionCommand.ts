@@ -126,8 +126,9 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
       .setStyle('DANGER')
       .setLabel(ctx.translate('stop'));
 
-    const message = (await ctx.interaction.fetchReply()) as Message;
+    const message = await ctx.channel.messages.fetch((await ctx.interaction.fetchReply()).id);
     message.removeAttachments();
+
     if (!res.err) {
       const timestamp = Date.now();
       const attachment = new MessageAttachment(
