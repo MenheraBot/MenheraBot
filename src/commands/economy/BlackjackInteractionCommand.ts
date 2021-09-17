@@ -1,4 +1,4 @@
-import { Message, MessageAttachment, MessageButton, MessageEmbed } from 'discord.js-light';
+import { MessageAttachment, MessageButton, MessageEmbed } from 'discord.js-light';
 import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
@@ -223,7 +223,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
 
     let attc: MessageAttachment | null = null;
 
-    const message = (await ctx.interaction.fetchReply()) as Message;
+    const message = await ctx.channel.messages.fetch((await ctx.interaction.fetchReply()).id);
     message.removeAttachments();
 
     if (!res.err) {
