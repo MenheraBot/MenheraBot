@@ -18,8 +18,8 @@ jobs:
             cd ${{ secrets.PROJECT_PATH }}
             git stash
             git pull origin master
-            npm install
-            npm run build
+            yarn install
+            yarn build
             echo Everything went ok!
   Deploy-Development:
     if: github.ref == 'refs/heads/dev'
@@ -35,6 +35,6 @@ jobs:
             cd ${{ secrets.PROJECT_PATH_DEV }}
             git stash
             git pull origin dev
-            npm install
-            npm run build
+            yarn install
+            yarn build
             echo Everything went ok!
