@@ -1,12 +1,16 @@
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { Message, MessageOptions, MessagePayload, TextBasedChannels } from 'discord.js';
 import EventEmitter from 'events';
-import { TBattleEntity } from './Types';
+import { IBattleUser, TBattleEntity } from './Types';
 
 export default class BolehamBattle extends EventEmitter {
   private attackerIndex = 0;
 
   private defenderIndex = 0;
+
+  private battlelingStartStatus: IBattleUser[] | null = [];
+
+  private enemyStartStatus: IBattleUser[] | null = [];
 
   constructor(
     private ctx: InteractionCommandContext,
@@ -14,6 +18,23 @@ export default class BolehamBattle extends EventEmitter {
     private enemy: TBattleEntity[],
   ) {
     super();
+    this.saveCurrentUserStats();
+  }
+
+  private saveCurrentUserStats(): void {
+    this.battleling.forEach((a) => {
+      if (a.isUser) {
+        if (!this.battlelingStartStatus) this.battlelingStartStatus = [];
+        this.battlelingStartStatus.push(a);
+      } else this.battlelingStartStatus = null;
+    });
+
+    this.enemy.forEach((a) => {
+      if (a.isUser) {
+        if (!this.enemyStartStatus) this.enemyStartStatus = [];
+        this.enemyStartStatus.push(a);
+      } else this.battlelingStartStatus = null;
+    });
   }
 
   private onError(reason: string): void {

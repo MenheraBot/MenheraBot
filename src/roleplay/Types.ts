@@ -337,6 +337,7 @@ export interface IBattleMob {
   attackSkill: number;
   attacks: IMobAttacksFile[];
   effects: IBattleEntityEffect[];
+  isUser: false;
 }
 
 export interface IAbilityResolved {
@@ -365,6 +366,12 @@ export interface IResolvedArmor {
   head?: ResolveArmor;
 }
 
+export interface IResolvedQuest {
+  id: number;
+  objective: { type: TQuestObjectiveType; value: number };
+  progress: number;
+}
+
 export interface IBattleUser {
   life: number;
   mana: number;
@@ -377,6 +384,8 @@ export interface IBattleUser {
   abilitySkill: number;
   weapon: IResolvedWeapon | null;
   abilities: Array<IAbilityResolved>;
+  isUser: true;
+  quests: IResolvedQuest[];
 }
 
 export type TBattleEntity = IBattleMob | IBattleUser;

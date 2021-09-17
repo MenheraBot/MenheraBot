@@ -6,7 +6,9 @@ import {
   IBattleUser,
   ILeveledItem,
   IMobsFile,
+  IQuest,
   IResolvedArmor,
+  IResolvedQuest,
   IResolvedWeapon,
   IRpgUserSchema,
 } from '@roleplay/Types';
@@ -49,11 +51,11 @@ export default class BattleFunctions {
       const attackSkill = mob.baseSkill + mob.perLevel.baseSkill * mob.level;
       const attacks = this.client.boleham.Functions.getMobAttacks(mob.availableAttacks);
 
-      return { life, speed, armor, damage, attackSkill, attacks, effects: [] };
+      return { life, speed, armor, damage, attackSkill, attacks, effects: [], isUser: false };
     });
   }
 
-  prepareUserForBattle(user: IRpgUserSchema): IBattleUser {
+  async prepareUserForBattle(user: IRpgUserSchema): Promise<IBattleUser> {
     const { life, mana, tiredness, speed, lucky, attackSkill, abilitySkill } = user;
 
     let weapon: IBattleUser['weapon'] = null;
@@ -78,6 +80,15 @@ export default class BattleFunctions {
 
     const damage = this.getUserDamage(user.classId, user.level, equiped, weapon);
 
+    const quests = this.resolveQuests(
+      user?.quests?.active,
+      await this.client.repositories.rpgRepository.getUserDailyQuests(
+        user.id,
+        user.level,
+        this.client.boleham.Quests,
+      ),
+    );
+
     return {
       life,
       mana,
@@ -90,7 +101,47 @@ export default class BattleFunctions {
       attackSkill,
       abilitySkill,
       abilities,
+      isUser: true,
+      quests,
     };
+  }
+
+  resolveQuests(active: IQuest | undefined, daily: IQuest[] | null): IResolvedQuest[] {
+    const quests: IResolvedQuest[] = [];
+    if (active) {
+      const { id, progress, finished, level } = active;
+      if (!finished) {
+        const questData = this.client.boleham.Functions.getQuestById(id);
+        const objective = {
+          type: questData.objective.type,
+          value: questData.objective.value + questData.objective.perLevel * level,
+        };
+        quests.push({
+          id,
+          progress,
+          objective,
+        });
+      }
+    }
+
+    if (daily) {
+      daily.forEach((a) => {
+        const { id, progress, finished, level } = a;
+        if (finished) return;
+        const questData = this.client.boleham.Functions.getQuestById(id);
+        const objective = {
+          type: questData.objective.type,
+          value: questData.objective.value + questData.objective.perLevel * level,
+        };
+        quests.push({
+          id,
+          progress,
+          objective,
+        });
+      });
+    }
+
+    return quests;
   }
 
   resolveWeapon(weapon: ILeveledItem): IResolvedWeapon {
