@@ -61,7 +61,7 @@ export default class BlockChannelInteractionCommand extends InteractionCommand {
       const selectedChannel = ctx.options.getChannel('canal', true);
 
       if (selectedChannel?.type !== 'GUILD_TEXT') {
-        ctx.replyT('error', 'commands:invalid-channel', {}, true);
+        ctx.replyT('error', 'invalid-channel', {}, true);
         return;
       }
 
