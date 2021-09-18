@@ -6,7 +6,7 @@
   "scripts": {
     "prepare": "husky install",
     "postinstall": "husky install",
-    "build": "rm -rf dist && tsc --project tsconfig.json && tscpaths -p tsconfig.json -s ./src -o ./dist && cp -R ./src/locales ./dist/locales",
+    "build": "rm -rf dist && tsc --project tsconfig.json && tscpaths -p tsconfig.json -s ./src -o ./dist && cp -R ./locales ./dist/locales",
     "start": "NODE_ENV=production node .",
     "dev": "NODE_ENV=development node .",
     "run:dev": "npm run build && npm run dev",

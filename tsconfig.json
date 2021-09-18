@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "outDir": "dist",
-    "baseUrl": "src",
+    "baseUrl": ".",
     "target": "ES2020",
     "module": "CommonJS",
     "lib": ["ESNext"],
@@ -17,7 +17,7 @@
     "removeComments": true,
     "strict": true,
     "noImplicitThis": true,
-    "noImplicitAny": true ,
+    "noImplicitAny": true,
 
     "noUnusedLocals": true,
 
@@ -27,11 +27,11 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "paths": {
-      "@structures/*": ["structures/*"],
-      "@database/*": ["database/*"],
-      "@utils/*": ["utils/*"],
-      "@interfaces/*": ["interfaces/*"]
+      "@structures/*": ["src/structures/*"],
+      "@database/*": ["src/database/*"],
+      "@utils/*": ["src/utils/*"],
+      "@interfaces/*": ["src/interfaces/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src", "locales"]
 }
