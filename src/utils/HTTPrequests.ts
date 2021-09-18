@@ -34,7 +34,7 @@ const topggRequest = axios.create({
 });
 
 const apiRequest = axios.create({
-  baseURL: `${process.env.API_URL}/api`,
+  baseURL: `${process.env.API_URL}/v1/api`,
   timeout: 5000,
   headers: {
     'Content-Type': 'application/json',
