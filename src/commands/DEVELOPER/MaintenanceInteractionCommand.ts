@@ -5,7 +5,7 @@ import InteractionCommandContext from '@structures/command/InteractionContext';
 export default class MaintenanceSlashInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {
     super(client, {
-      name: 'manuntencao',
+      name: 'manutencao',
       description: 'Coloca ou tira um comando da manutencao',
       category: 'dev',
       options: [
