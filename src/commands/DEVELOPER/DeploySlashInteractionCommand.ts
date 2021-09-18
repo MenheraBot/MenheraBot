@@ -79,12 +79,14 @@ export default class DeploySlashInteractionCommand extends InteractionCommand {
       const disabledCommands =
         await this.client.repositories.cmdRepository.getAllCommandsInMaintenance();
 
-      disabledCommands.forEach((a) => {
+      disabledCommands.map((a) => {
         const data = toAPIData.get(a._id);
         data.disabled = {
           isDisabled: a._id,
           reason: a.maintenanceReason,
         };
+        toAPIData.set(a._id, data);
+        return a;
       });
 
       await HttpRequests.postCommandStatus(Array.from(toAPIData.values()));
