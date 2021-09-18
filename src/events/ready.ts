@@ -20,27 +20,6 @@ export default class ReadyEvent {
       return this.client.user.setActivity(activity);
     };
 
-    const saveCurrentBotStatus = async () => {
-      if (!this.client.shard) return;
-      const allShardsPing = (await this.client.shard.fetchClientValues('ws.ping')) as number[];
-      const allShardsUptime = (await this.client.shard.fetchClientValues(
-        'ws.client.uptime',
-      )) as number[];
-      const guildsPerShardCount = (await this.client.shard.fetchClientValues(
-        'guilds.cache.size',
-      )) as number[];
-
-      allShardsPing.forEach((shardPing, id) => {
-        this.client.repositories.statusRepository.CreateOrUpdate(
-          id,
-          shardPing,
-          Date.now(),
-          guildsPerShardCount[id],
-          allShardsUptime[id],
-        );
-      });
-    };
-
     if (this.client.user.id === MAIN_MENHERA_ID) {
       if (!this.client.shard) return;
       const firstShard = this.client.shard.ids[0];
@@ -55,10 +34,6 @@ export default class ReadyEvent {
 
         const allBannedUsers = await this.client.repositories.userRepository.getAllBannedUsersId();
         await this.client.repositories.blacklistRepository.addBannedUsers(allBannedUsers);
-
-        setInterval(() => {
-          saveCurrentBotStatus();
-        }, INTERVAL);
       }
     }
 
