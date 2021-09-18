@@ -1,7 +1,7 @@
 import http from '@utils/HTTPrequests';
 
 import Dbl from '@utils/DBL';
-import MenheraClient from 'MenheraClient';
+import MenheraClient from 'src/MenheraClient';
 
 export default class ReadyEvent {
   constructor(private client: MenheraClient) {}

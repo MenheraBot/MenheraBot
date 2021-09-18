@@ -1,6 +1,6 @@
 import 'moment-duration-format';
 import moment from 'moment';
-import MenheraClient from 'MenheraClient';
+import MenheraClient from 'src/MenheraClient';
 import { COLORS, probabilities } from '@structures/MenheraConstants';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';

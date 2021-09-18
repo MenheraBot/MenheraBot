@@ -1,5 +1,5 @@
 import { Interaction } from 'discord.js-light';
-import MenheraClient from 'MenheraClient';
+import MenheraClient from 'src/MenheraClient';
 import InteractionCommandExecutor from '@structures/command/InteractionCommandExecutor';
 
 export default class InteractionCreate {

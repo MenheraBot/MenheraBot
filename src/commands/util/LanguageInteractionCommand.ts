@@ -1,4 +1,4 @@
-import MenheraClient from 'MenheraClient';
+import MenheraClient from 'src/MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageSelectMenu, SelectMenuInteraction } from 'discord.js-light';

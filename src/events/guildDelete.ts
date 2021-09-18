@@ -1,5 +1,5 @@
 import { Guild } from 'discord.js-light';
-import MenheraClient from 'MenheraClient';
+import MenheraClient from 'src/MenheraClient';
 
 export default class GuildDelete {
   constructor(private client: MenheraClient) {}

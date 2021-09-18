@@ -9,7 +9,7 @@ import {
   User,
 } from 'discord.js-light';
 import { TFunction } from 'i18next';
-import MenheraClient from 'MenheraClient';
+import MenheraClient from 'src/MenheraClient';
 import { emojis, EmojiTypes } from '@structures/MenheraConstants';
 
 export default class InteractionCommandContext {
