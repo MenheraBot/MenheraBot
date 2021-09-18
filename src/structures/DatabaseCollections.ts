@@ -1,20 +1,5 @@
-import {
-  ICmdSchema,
-  ICommandsSchema,
-  IGuildSchema,
-  IStatusSchema,
-  IUserSchema,
-} from '@utils/Types';
+import { ICmdSchema, ICommandsSchema, IGuildSchema, IUserSchema } from '@utils/Types';
 import { Document, Schema, model } from 'mongoose';
-
-const statusSchema = new Schema({
-  _id: { type: String },
-  ping: { type: Number, default: 0 },
-  disabledCommands: { type: Array },
-  guilds: { type: Number, default: 0 },
-  uptime: { type: String, default: '0' },
-  lastPingAt: { type: String },
-});
 
 const cmdSchema = new Schema({
   _id: { type: String },
@@ -68,7 +53,6 @@ const userSchema = new Schema({
 });
 
 export const Cmds = model<ICmdSchema & Document>('Cmd', cmdSchema);
-export const Status = model<IStatusSchema & Document>('status', statusSchema);
 export const Guilds = model<IGuildSchema & Document>('guild', guildSchema);
 export const Users = model<IUserSchema & Document>('usersdb', userSchema);
 export const Commands = model<ICommandsSchema & Document>('commands', commandUseSchema);

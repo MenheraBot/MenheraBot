@@ -3,7 +3,6 @@ import BadgeRepository from '@database/repositories/BadgeRepository';
 import BlacklistRepository from '@database/repositories/BlacklistRepository';
 import CacheRepository from '@database/repositories/CacheRepository';
 import CmdRepository from '@database/repositories/CmdsRepository';
-import CommandsRepository from '@database/repositories/CommandsRepository';
 import GiveRepository from '@database/repositories/GiveRepository';
 import GuildsRepository from '@database/repositories/GuildsRepository';
 import HuntRepository from '@database/repositories/HuntRepository';
@@ -11,7 +10,6 @@ import MaintenanceRepository from '@database/repositories/MaintenanceRepository'
 import MamarRepository from '@database/repositories/MamarRepository';
 import RelationshipRepository from '@database/repositories/RelationshipRepository';
 import StarRepository from '@database/repositories/StarRepository';
-import StatusRepository from '@database/repositories/StatusRepository';
 import TopRepository from '@database/repositories/TopRepository';
 import UserRepository from '@database/repositories/UserRepository';
 import {
@@ -156,6 +154,11 @@ export interface IContextData {
   server: IGuildSchema | (IGuildSchema & Document);
 }
 
+export interface IDisabled {
+  isDisabled: boolean;
+  reason: string;
+}
+
 export interface ICmdSchema {
   _id?: string;
   maintenance: boolean;
@@ -163,25 +166,23 @@ export interface ICmdSchema {
 }
 
 export interface ICommandsSchema {
-  _id: string;
-  description: string;
+  name: string;
   category: string;
   cooldown: number;
+  description: string;
   options: ApplicationCommandOptionData[];
+  disabled: IDisabled;
 }
 
-interface IDisabledCommand {
-  name: string;
-  reason: string;
-}
-
-export interface IStatusSchema extends Document {
-  _id: string;
-  ping: number;
-  disabledCommands: Array<IDisabledCommand>;
+export interface IStatusSchema {
+  id: number;
+  memoryUsed: number;
+  uptime: number;
   guilds: number;
-  uptime: string;
-  lastPingAt: string;
+  unavailable: number;
+  ping: number;
+  lastPingAt: number;
+  members: number;
 }
 
 export interface IDatabaseRepositories {
@@ -191,14 +192,12 @@ export interface IDatabaseRepositories {
   starRepository: StarRepository;
   mamarRepository: MamarRepository;
   guildRepository: GuildsRepository;
-  statusRepository: StatusRepository;
   badgeRepository: BadgeRepository;
   maintenanceRepository: MaintenanceRepository;
   huntRepository: HuntRepository;
   relationshipRepository: RelationshipRepository;
   blacklistRepository: BlacklistRepository;
   topRepository: TopRepository;
-  commandsRepository: CommandsRepository;
   giveRepository: GiveRepository;
 }
 
