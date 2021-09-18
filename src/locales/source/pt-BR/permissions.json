@@ -25,7 +25,7 @@
   "CHANGE_NICKNAME": "Mudar Apelido",
   "MANAGE_NICKNAMES": "Gerenciar Apelidos",
   "MANAGE_ROLES": "Gerenciar Cargos",
-  "MANAGE_WEBHOOK": "Gerenciar WebHooks",
+  "MANAGE_WEBHOOKS": "Gerenciar Webhooks",
   "MANAGE_EMOJIS": "Gerenciar Emojis",
   "ONLY_DEVS": "Este comando é de uso esclusivo da minha dona >...<",
   "SLASH_COMMAND": "Este comando já está disponível em slash!",
