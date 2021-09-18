@@ -62,8 +62,8 @@ export default class HttpRequests {
     }
   }
 
-  static async postCommandStatus(command: ICommandsData): Promise<void> {
-    await StatusRequest.put('/commands', { data: { ...command } }).catch(() => null);
+  static async postCommandStatus(commands: ICommandsData[]): Promise<void> {
+    await StatusRequest.post('/commands', { data: { commands } }).catch(() => null);
   }
 
   static async postShardStatus(shardData: IStatusData): Promise<void> {

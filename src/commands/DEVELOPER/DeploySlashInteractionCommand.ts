@@ -2,6 +2,7 @@ import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { ApplicationCommandData } from 'discord.js-light';
+import HttpRequests from '@utils/HTTPrequests';
 
 export default class DeploySlashInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {
@@ -53,8 +54,18 @@ export default class DeploySlashInteractionCommand extends InteractionCommand {
         });
         return;
       }
+
+      const toAPIData = new Map();
+
       const allCommands = this.client.slashCommands.reduce<ApplicationCommandData[]>((p, c) => {
         if (c.config.devsOnly) return p;
+        toAPIData.set(c.config.name, {
+          name: c.config.name,
+          category: c.config.category,
+          cooldown: c.config.cooldown ?? 0,
+          description: c.config.description,
+          options: c.config.options ?? [],
+        });
         p.push({
           name: c.config.name,
           description: c.config.description,
@@ -64,6 +75,20 @@ export default class DeploySlashInteractionCommand extends InteractionCommand {
         return p;
       }, []);
       ctx.reply('Iniciando deploy');
+
+      const disabledCommands =
+        await this.client.repositories.cmdRepository.getAllCommandsInMaintenance();
+
+      disabledCommands.forEach((a) => {
+        const data = toAPIData.get(a._id);
+        data.disabled = {
+          isDisabled: a._id,
+          reason: a.maintenanceReason,
+        };
+      });
+
+      await HttpRequests.postCommandStatus(Array.from(toAPIData.values()));
+
       await this.client.application?.commands.set(allCommands);
       ctx.editReply({
         content: 'Todos comandos foram settados! Temos até 1 hora para tudo atualizar',

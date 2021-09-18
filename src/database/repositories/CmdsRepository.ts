@@ -8,6 +8,10 @@ export default class CmdRepository {
     return this.cmdModal.findById(commandName);
   }
 
+  async getAllCommandsInMaintenance(): Promise<ICmdSchema[]> {
+    return this.cmdModal.find({ maintenance: true });
+  }
+
   async editMaintenance(
     commandName: string,
     maintenanceStatus: boolean,

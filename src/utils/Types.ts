@@ -156,7 +156,7 @@ export interface IContextData {
 
 export interface IDisabled {
   isDisabled: boolean;
-  reason: string;
+  reason: string | null;
 }
 
 export interface ICmdSchema {

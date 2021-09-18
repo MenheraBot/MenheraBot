@@ -1,6 +1,7 @@
 import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
+import HttpRequests from '@utils/HTTPrequests';
 
 export default class MaintenanceSlashInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {
@@ -49,6 +50,10 @@ export default class MaintenanceSlashInteractionCommand extends InteractionComma
         maintenance: false,
         maintenanceReason: null,
       });
+      await HttpRequests.updateCommandStatusMaintenance(command._id, {
+        isDisabled: false,
+        reason: null,
+      });
       await ctx.replyE('success', 'comando **REMOVIDO** da manutenção.');
       return;
     }
@@ -57,6 +62,11 @@ export default class MaintenanceSlashInteractionCommand extends InteractionComma
     await this.client.repositories.cacheRepository.updateCommand(cmd.config.name, {
       maintenance: true,
       maintenanceReason: reason,
+    });
+
+    await HttpRequests.updateCommandStatusMaintenance(cmd.config.name, {
+      isDisabled: true,
+      reason,
     });
 
     await ctx.replyE('success', 'comando **ADICIONADO** a manutenção.');
