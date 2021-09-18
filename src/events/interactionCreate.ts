@@ -11,22 +11,14 @@ export default class InteractionCreate {
 
   async run(interaction: Interaction): Promise<void> {
     if (!interaction.isCommand()) return;
-    if (!interaction.inGuild() || interaction.channel?.type === 'DM')
-      return interaction
-        .reply({
-          content:
-            'SLASH COMMANDS ARE ONLY AVAILABLE IN GUILDS\nCOMANDOS SLASH ESTÃO DISPONÍVEIS APENAS EM SERVIDORES',
-          ephemeral: true,
-        })
-        .catch(() => undefined);
+    if (!interaction.inGuild() || interaction.channel?.type === 'DM') return;
 
     const server = await this.client.repositories.cacheRepository.fetchGuild(
       interaction.guildId,
       interaction.guild?.preferredLocale ?? languageByLocale.brazil,
     );
 
-    const language = server.lang ?? 'pt-BR';
-    const t = i18next.getFixedT(language);
+    const t = i18next.getFixedT(server.lang ?? 'pt-BR');
 
     const isUserBanned = await this.client.repositories.blacklistRepository.isUserBanned(
       interaction.user.id,
@@ -45,6 +37,12 @@ export default class InteractionCreate {
         })
         .catch(() => null);
       return;
+    }
+
+    if (!this.client.channels.cache.has(interaction.channelId)) {
+      const channel = await this.client.channels.fetch(interaction.channelId);
+      this.client.channels.cache.forceSet(interaction.channelId, channel);
+      interaction.guild?.channels.cache.forceSet(interaction.channelId, channel);
     }
 
     const command = this.client.slashCommands.get(interaction.commandName);
