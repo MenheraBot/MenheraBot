@@ -16,11 +16,12 @@ import { User } from 'discord.js-light';
 type activity = 'PLAYING' | 'WATCHING' | 'STREAMING' | 'LISTENING';
 
 const request = axios.create({
-  baseURL: process.env.PICASSO_IP,
+  baseURL: `${process.env.API_URL}/picasso`,
   timeout: 5000,
   headers: {
     'Content-Type': 'application/json',
-    'User-Agent': 'Menhera-Client',
+    'User-Agent': process.env.MENHERA_AGENT,
+    Authorization: process.env.API_TOKEN,
   },
 });
 
