@@ -1,6 +1,6 @@
 import { emojis } from '@structures/MenheraConstants';
 import { IUserSchema } from '@utils/Types';
-import MenheraClient from 'src/MenheraClient';
+import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 

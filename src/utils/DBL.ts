@@ -4,7 +4,7 @@ import koaBody from 'koa-body';
 import cors from '@koa/cors';
 
 import { MessageEmbed } from 'discord.js-light';
-import MenheraClient from 'src/MenheraClient';
+import MenheraClient from 'MenheraClient';
 
 import { votes as constants } from '@structures/MenheraConstants';
 import HttpRequests from './HTTPrequests';

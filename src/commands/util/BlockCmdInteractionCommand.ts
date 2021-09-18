@@ -1,4 +1,4 @@
-import MenheraClient from 'src/MenheraClient';
+import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 

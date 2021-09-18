@@ -3,7 +3,7 @@ import HttpRequests from '@utils/HTTPrequests';
 import { ICommandUsedData } from '@utils/Types';
 import { Interaction, Collection, GuildMember, MessageEmbed } from 'discord.js-light';
 import i18next from 'i18next';
-import MenheraClient from 'src/MenheraClient';
+import MenheraClient from 'MenheraClient';
 import InteractionCommandContext from './InteractionContext';
 
 const InteractionCommandExecutor = async (

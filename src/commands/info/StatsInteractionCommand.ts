@@ -1,4 +1,4 @@
-import MenheraClient from 'src/MenheraClient';
+import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import HttpRequests from '@utils/HTTPrequests';
@@ -185,18 +185,12 @@ export default class StatsInteractionCommand extends InteractionCommand {
 
     const promises = [
       this.client.shard.fetchClientValues('guilds.cache.size'),
-      this.client.shard.fetchClientValues('channels.cache.size'),
-      this.client.shard.broadcastEval((c) =>
-        c.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0),
-      ),
       this.client.shard.broadcastEval(() => process.memoryUsage().heapUsed),
-      this.client.shard.fetchClientValues('users.cache.size'),
     ];
 
     const getReduced = (arr: number[]) => arr.reduce((p, c) => p + c, 0);
 
-    const [AllGuilds, AllChannels, AllMembers, AllMemoryUsed, AllCachedMembers] =
-      (await Promise.all(promises)) as number[][];
+    const [AllGuilds, AllMemoryUsed] = (await Promise.all(promises)) as number[][];
 
     const embed = new MessageEmbed()
       .setColor('#fa8dd7')
@@ -219,16 +213,6 @@ export default class StatsInteractionCommand extends InteractionCommand {
         {
           name: '🌐 | Servers | 🌐',
           value: `\`\`\`${getReduced(AllGuilds)}\`\`\``,
-          inline: true,
-        },
-        {
-          name: `🗄️ | ${ctx.translate('botinfo.channels')} | 🗄️`,
-          value: `\`\`\`${getReduced(AllChannels)}\`\`\``,
-          inline: true,
-        },
-        {
-          name: `👥 | ${ctx.translate('botinfo.users')} | 👥`,
-          value: `\`\`\`${getReduced(AllMembers)} (${getReduced(AllCachedMembers)})\`\`\``,
           inline: true,
         },
         {
