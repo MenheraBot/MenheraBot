@@ -165,7 +165,7 @@ export interface ICmdSchema {
   maintenanceReason: string | null;
 }
 
-export interface ICommandsSchema {
+export interface ICommandsData {
   name: string;
   category: string;
   cooldown: number;
@@ -174,7 +174,7 @@ export interface ICommandsSchema {
   disabled: IDisabled;
 }
 
-export interface IStatusSchema {
+export interface IStatusData {
   id: number;
   memoryUsed: number;
   uptime: number;
