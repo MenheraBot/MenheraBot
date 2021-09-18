@@ -1,30 +1,43 @@
-import { Options } from 'discord.js-light';
+import { Options, SnowflakeUtil, Channel } from 'discord.js-light';
 import { resolve } from 'path';
 import MenheraClient from './MenheraClient';
+
+const channelFilter = (channel: Channel) =>
+  !channel.isText() ||
+  !channel.lastMessageId ||
+  SnowflakeUtil.deconstruct(channel.lastMessageId).timestamp < Date.now() - 3600000;
 
 const client = new MenheraClient(
   {
     makeCache: Options.cacheWithLimits({
-      ApplicationCommandManager: 0, // guild.commands
-      BaseGuildEmojiManager: 0, // guild.emojis
-      ChannelManager: 0, // client.channels
-      GuildChannelManager: 0, // guild.channels
-      GuildBanManager: 0, // guild.bans
-      GuildInviteManager: 0, // guild.invites
-      GuildManager: 0, // client.guilds
-      GuildMemberManager: 0, // guild.members
-      GuildStickerManager: 0, // guild.stickers
-      MessageManager: 0, // channel.messages
-      PermissionOverwriteManager: 0, // channel.permissionOverwrites
-      PresenceManager: 0, // guild.presences
-      ReactionManager: 0, // message.reactions
-      ReactionUserManager: 0, // reaction.users
-      RoleManager: 0, // guild.roles
-      StageInstanceManager: 0, // guild.stageInstances
-      ThreadManager: 0, // channel.threads
-      ThreadMemberManager: 0, // threadchannel.members
-      UserManager: 0, // client.users
-      VoiceStateManager: 0, // guild.voiceStates
+      GuildManager: Infinity,
+      RoleManager: Infinity,
+      PermissionOverwriteManager: Infinity,
+      ChannelManager: {
+        maxSize: 0,
+        sweepFilter: () => channelFilter,
+        sweepInterval: 3600,
+      },
+      GuildChannelManager: {
+        maxSize: 0,
+        sweepFilter: () => channelFilter,
+        sweepInterval: 3600,
+      },
+      ApplicationCommandManager: 0,
+      BaseGuildEmojiManager: 0,
+      GuildBanManager: 0,
+      GuildInviteManager: 0,
+      GuildMemberManager: 0,
+      GuildStickerManager: 0,
+      MessageManager: 0,
+      PresenceManager: 0,
+      ReactionManager: 0,
+      ReactionUserManager: 0,
+      StageInstanceManager: 0,
+      ThreadManager: 0,
+      ThreadMemberManager: 0,
+      UserManager: 0,
+      VoiceStateManager: 0,
     }),
     failIfNotExists: false,
     intents: ['GUILDS'],

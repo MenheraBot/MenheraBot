@@ -2,12 +2,9 @@ import http from '@utils/HTTPrequests';
 
 import Dbl from '@utils/DBL';
 import MenheraClient from 'MenheraClient';
-import Event from '@structures/Event';
 
-export default class ReadyEvent extends Event {
-  constructor(public client: MenheraClient) {
-    super(client);
-  }
+export default class ReadyEvent {
+  constructor(private client: MenheraClient) {}
 
   async run(): Promise<void> {
     if (!this.client.user) return;

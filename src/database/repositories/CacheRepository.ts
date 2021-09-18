@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 import { ICmdSchema, IGuildSchema } from '@utils/Types';
 import { Redis } from 'ioredis';
 import { Document } from 'mongoose';
@@ -33,12 +34,15 @@ export default class CacheRepository {
     return commandDataFromMongo;
   }
 
-  async fetchGuild(guildID: string): Promise<IGuildSchema | (IGuildSchema & Document)> {
+  async fetchGuild(
+    guildID: string,
+    preferredLocale: string,
+  ): Promise<IGuildSchema | (IGuildSchema & Document)> {
     if (this.redisClient) {
       const guildData = await this.redisClient.get(`guild:${guildID}`);
       if (guildData) return JSON.parse(guildData);
     }
-    const guildDataFromMongo = await this.guildRepository.findOrCreate(guildID);
+    const guildDataFromMongo = await this.guildRepository.findOrCreate(guildID, preferredLocale);
 
     if (this.redisClient)
       await this.redisClient.setex(

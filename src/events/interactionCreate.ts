@@ -1,15 +1,13 @@
 import { Interaction, Collection, GuildMember, MessageEmbed } from 'discord.js-light';
 import MenheraClient from 'MenheraClient';
-import Event from '@structures/Event';
 import i18next from 'i18next';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import HttpRequests from '@utils/HTTPrequests';
+import { languageByLocale } from '@structures/MenheraConstants';
 import { ICommandUsedData } from '@utils/Types';
 
-export default class InteractionCreate extends Event {
-  constructor(public client: MenheraClient) {
-    super(client);
-  }
+export default class InteractionCreate {
+  constructor(private client: MenheraClient) {}
 
   async run(interaction: Interaction): Promise<void> {
     if (!interaction.isCommand()) return;
@@ -22,7 +20,11 @@ export default class InteractionCreate extends Event {
         })
         .catch(() => undefined);
 
-    const server = await this.client.repositories.cacheRepository.fetchGuild(interaction.guildId);
+    const server = await this.client.repositories.cacheRepository.fetchGuild(
+      interaction.guildId,
+      interaction.guild?.preferredLocale ?? languageByLocale.brazil,
+    );
+
     const language = server.lang ?? 'pt-BR';
     const t = i18next.getFixedT(language);
 
@@ -148,6 +150,7 @@ export default class InteractionCreate extends Event {
         return;
       }
     }
+
     if (command.config.clientPermissions) {
       const clientMember = await (
         await this.client.guilds.fetch(interaction.guildId)
