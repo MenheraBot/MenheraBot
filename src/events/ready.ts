@@ -1,7 +1,6 @@
-import http from '@utils/HTTPrequests';
-
 import Dbl from '@utils/DBL';
 import MenheraClient from 'MenheraClient';
+import HttpRequests from '@utils/HTTPrequests';
 
 export default class ReadyEvent {
   constructor(private client: MenheraClient) {}
@@ -16,8 +15,29 @@ export default class ReadyEvent {
     const updateActivity = async (shard: number) => {
       if (!this.client.user) return;
 
-      const activity = await http.getActivity(shard);
+      const activity = await HttpRequests.getActivity(shard);
       return this.client.user.setActivity(activity);
+    };
+
+    const postShardStatus = async (shardId: number) => {
+      const memoryUsed = process.memoryUsage().heapUsed;
+      const uptime = this.client.uptime ?? 0;
+      const guilds = this.client.guilds.cache.size;
+      const unavailable = this.client.guilds.cache.reduce((p, c) => (c.available ? p : p + 1), 0);
+      const { ping } = this.client.ws;
+      const lastPingAt = Date.now();
+      const members = this.client.guilds.cache.reduce((p, c) => p + c.memberCount, 0);
+
+      await HttpRequests.postShardStatus({
+        id: shardId,
+        guilds,
+        lastPingAt,
+        members,
+        memoryUsed,
+        ping,
+        unavailable,
+        uptime,
+      });
     };
 
     if (this.client.user.id === MAIN_MENHERA_ID) {
@@ -27,6 +47,10 @@ export default class ReadyEvent {
       setInterval(() => {
         updateActivity(firstShard);
       }, INTERVAL);
+
+      setInterval(() => {
+        postShardStatus(firstShard);
+      }, 15 * 1000);
 
       if (firstShard === LAST_SHARD_ID) {
         const DiscordBotList = new Dbl(this.client);
