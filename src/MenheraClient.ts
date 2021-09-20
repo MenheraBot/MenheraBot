@@ -1,4 +1,4 @@
-import { Client, ClientEvents, ClientOptions } from 'discord.js-light';
+import { Client, ClientEvents, ClientOptions, Collection } from 'discord.js-light';
 
 import * as Sentry from '@sentry/node';
 
@@ -17,13 +17,13 @@ import LocaleStructure from '@structures/LocaleStructure';
 export default class MenheraClient extends Client {
   public database: Database;
 
-  public slashCommands: Map<string, InteractionCommand>;
+  public slashCommands: Collection<string, InteractionCommand>;
 
-  public aliases: Map<string, string>;
+  public aliases: Collection<string, string>;
 
   public events: EventManager;
 
-  public cooldowns: Map<string, Map<string, number>>;
+  public cooldowns: Collection<string, Collection<string, number>>;
 
   constructor(options: ClientOptions, public config: IClientConfigs) {
     super(options);
@@ -34,9 +34,9 @@ export default class MenheraClient extends Client {
         : (process.env.DATABASE_URI as string),
       process.env.NODE_ENV !== 'development',
     );
-    this.slashCommands = new Map();
-    this.aliases = new Map();
-    this.cooldowns = new Map();
+    this.slashCommands = new Collection();
+    this.aliases = new Collection();
+    this.cooldowns = new Collection();
     this.events = new EventManager(this);
     this.config = config;
   }

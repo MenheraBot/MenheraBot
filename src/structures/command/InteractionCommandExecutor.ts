@@ -1,7 +1,7 @@
 import { languageByLocale } from '@structures/MenheraConstants';
 import HttpRequests from '@utils/HTTPrequests';
 import { ICommandUsedData } from '@utils/Types';
-import { Interaction, GuildMember, MessageEmbed } from 'discord.js-light';
+import { Interaction, GuildMember, MessageEmbed, Collection } from 'discord.js-light';
 import i18next from 'i18next';
 import MenheraClient from 'MenheraClient';
 import InteractionCommandContext from './InteractionContext';
@@ -87,7 +87,7 @@ const InteractionCommandExecutor = async (
   }
 
   if (!client.cooldowns.has(command.config.name))
-    client.cooldowns.set(command.config.name, new Map());
+    client.cooldowns.set(command.config.name, new Collection());
 
   const now = Date.now();
   const timestamps = client.cooldowns.get(command.config.name) as Map<string, number>;
