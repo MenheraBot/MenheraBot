@@ -1,6 +1,9 @@
 {
   "name": "menhera-bot",
   "version": "3.0.1",
+  "engines": {
+    "node": "^16.6.0"
+  },
   "description": "Uma bot brasileira de RPG para o Discord",
   "main": "dist/shard.js",
   "scripts": {
@@ -28,7 +31,6 @@
     "@sentry/tracing": "^6.10.0",
     "axios": "^0.21.1",
     "bufferutil": "^4.0.3",
-    "discord-api-types": "^0.23.1",
     "discord.js-light": "timotejroiko/discord.js-light#v4",
     "dotenv": "^10.0.0",
     "fs-extra": "^10.0.0",
@@ -38,7 +40,6 @@
     "koa": "^2.13.1",
     "koa-body": "^4.2.0",
     "koa-router": "^10.1.1",
-    "millify": "^4.0.0",
     "moment": "^2.29.1",
     "moment-duration-format": "^2.3.2",
     "mongoose": "^6.0.5",

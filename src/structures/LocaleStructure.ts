@@ -1,4 +1,4 @@
-import { readdirSync } from 'fs-extra';
+import { readdirSync } from 'fs';
 import path from 'path';
 import i18next from 'i18next';
 import translationBackend from 'i18next-fs-backend';
