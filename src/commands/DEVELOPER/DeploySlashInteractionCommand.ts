@@ -3,6 +3,7 @@ import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { ApplicationCommandData } from 'discord.js-light';
 import HttpRequests from '@utils/HTTPrequests';
+import { ICommandsData } from '@utils/Types';
 
 export default class DeploySlashInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {
@@ -19,6 +20,10 @@ export default class DeploySlashInteractionCommand extends InteractionCommand {
             {
               name: 'Global',
               value: 'global',
+            },
+            {
+              name: 'Site',
+              value: 'site',
             },
             {
               name: 'Server',
@@ -46,6 +51,35 @@ export default class DeploySlashInteractionCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
+    if (ctx.options.getString('option', true) === 'site') {
+      const toAPIData = new Map<string, ICommandsData>();
+
+      const disabledCommands =
+        await this.client.repositories.cmdRepository.getAllCommandsInMaintenance();
+
+      await Promise.all(
+        this.client.slashCommands.map(async (c) => {
+          const found = disabledCommands.find((a) => a._id?.toString() === c.config.name);
+
+          toAPIData.set(c.config.name, {
+            name: c.config.name,
+            category: c.config.category,
+            cooldown: c.config.cooldown ?? 0,
+            description: c.config.description,
+            options: c.config.options ?? [],
+            disabled: {
+              isDisabled: found?.maintenance ?? false,
+              reason: found?.maintenanceReason ?? null,
+            },
+          });
+        }),
+      );
+
+      await HttpRequests.postCommandStatus(Array.from(toAPIData.values()));
+      ctx.reply('Commandos deployados');
+      return;
+    }
+
     if (ctx.options.getString('option', true) === 'global') {
       if (!ctx.options.getString('senha') || ctx.options.getString('senha') !== 'MACACO PREGO') {
         ctx.reply({
