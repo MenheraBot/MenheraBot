@@ -60,10 +60,7 @@ export default class DiscordBots {
       if (!this.client.shard) return;
       if (!this.client.user) return;
       const info = (await this.client.shard.fetchClientValues('guilds.cache.size')) as number[];
-      const res = await HttpRequests.postBotStatus(
-        this.client.user.id,
-        info.reduce((p, c) => p + c, 0),
-      );
+      const res = await HttpRequests.postBotStatus(this.client.user.id, info);
       this.client.users.forge(process.env.OWNER as string).send(res);
     }, 1800000);
   }
