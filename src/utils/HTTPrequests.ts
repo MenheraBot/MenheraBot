@@ -103,12 +103,13 @@ export default class HttpRequests {
     return false;
   }
 
-  static async postBotStatus(botId: string, serverCount: number[], shardId: number): Promise<void> {
-    await topggRequest
+  static async postBotStatus(botId: string, serverCount: number): Promise<string> {
+    return topggRequest
       .post(`/bots/${botId}/stats`, {
-        data: { server_count: serverCount, shard_id: shardId, shard_count: serverCount.length },
+        data: { server_count: serverCount },
       })
-      .catch(() => null);
+      .then((a) => `${a?.status} ${a?.statusText} | ${a?.data}`)
+      .catch(() => `Errozada`);
   }
 
   static async getTopUsers(): Promise<false | { id: string; uses: number }[]> {
