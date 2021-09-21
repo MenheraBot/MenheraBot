@@ -103,11 +103,10 @@ export default class HttpRequests {
     return false;
   }
 
-  static async postBotStatus(botId: string, serverCount: number[]): Promise<string> {
-    return topggRequest
+  static async postBotStatus(botId: string, serverCount: number[]): Promise<void> {
+    await topggRequest
       .post(`/bots/${botId}/stats`, { server_count: serverCount })
-      .then((a) => `${a?.status} ${a?.statusText} | ${a?.data}`)
-      .catch((a) => `Errozada ${a.stauts} | ${a.message}`);
+      .catch(() => null);
   }
 
   static async getTopUsers(): Promise<false | { id: string; uses: number }[]> {
