@@ -9,9 +9,11 @@ export default class InteractionCreate {
     if (!interaction.isCommand() || !interaction.inGuild()) return;
 
     if (!this.client.channels.cache.has(interaction.channelId)) {
-      const channel = await this.client.channels.fetch(interaction.channelId);
-      this.client.channels.cache.forceSet(interaction.channelId, channel);
-      interaction.guild?.channels.cache.forceSet(interaction.channelId, channel);
+      const channel = await this.client.channels.fetch(interaction.channelId).catch(() => null);
+      if (channel) {
+        this.client.channels.cache.forceSet(interaction.channelId, channel);
+        interaction.guild?.channels.cache.forceSet(interaction.channelId, channel);
+      }
     }
 
     InteractionCommandExecutor(this.client, interaction);

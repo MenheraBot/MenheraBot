@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 import { MessageAttachment, MessageButton, MessageEmbed } from 'discord.js-light';
 import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
@@ -126,8 +127,10 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
       .setStyle('DANGER')
       .setLabel(ctx.translate('stop'));
 
-    const message = await ctx.channel.messages.fetch((await ctx.interaction.fetchReply()).id);
-    message.removeAttachments();
+    const message = await ctx.channel.messages
+      .fetch((await ctx.interaction.fetchReply()).id)
+      .catch(() => null);
+    if (message) message.removeAttachments();
 
     if (!res.err) {
       const timestamp = Date.now();
@@ -137,16 +140,27 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
       );
       embed.setImage(`attachment://blackjack-${timestamp}.png`);
 
-      await message.edit({
-        embeds: [embed],
-        files: [attachment],
-        components: [{ type: 1, components: [BuyButton, StopButton] }],
-      });
+      message
+        ? await message.edit({
+            embeds: [embed],
+            files: [attachment],
+            components: [{ type: 1, components: [BuyButton, StopButton] }],
+          })
+        : await ctx.editReply({
+            embeds: [embed],
+            files: [attachment],
+            components: [{ type: 1, components: [BuyButton, StopButton] }],
+          });
     } else {
-      await message.edit({
-        embeds: [embed],
-        components: [{ type: 1, components: [BuyButton, StopButton] }],
-      });
+      message
+        ? await message.edit({
+            embeds: [embed],
+            components: [{ type: 1, components: [BuyButton, StopButton] }],
+          })
+        : await ctx.editReply({
+            embeds: [embed],
+            components: [{ type: 1, components: [BuyButton, StopButton] }],
+          });
     }
 
     const collected = await Util.collectComponentInteraction(ctx.channel, ctx.author.id, 10000);
@@ -223,8 +237,10 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
 
     let attc: MessageAttachment | null = null;
 
-    const message = await ctx.channel.messages.fetch((await ctx.interaction.fetchReply()).id);
-    message.removeAttachments();
+    const message = await ctx.channel.messages
+      .fetch((await ctx.interaction.fetchReply()).id)
+      .catch(() => null);
+    if (message) message.removeAttachments();
 
     if (!res.err) {
       const timestamp = Date.now();
@@ -236,9 +252,13 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
       embed.addField(ctx.translate('result'), ctx.translate('blackjack', { value: valor * 4 }));
       await ctx.client.repositories.starRepository.add(ctx.author.id, valor * 2);
       if (attc) {
-        await message.edit({ embeds: [embed], files: [attc], components: [] });
+        message
+          ? await message.edit({ embeds: [embed], files: [attc], components: [] })
+          : ctx.editReply({ embeds: [embed], files: [attc], components: [] });
       } else {
-        await message.edit({ embeds: [embed], components: [] });
+        message
+          ? await message.edit({ embeds: [embed], components: [] })
+          : ctx.editReply({ embeds: [embed], components: [] });
       }
       await http.postBlackJack(ctx.author.id, true, valor * 2);
       return;
@@ -249,9 +269,13 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
       embed.addField(ctx.translate('result'), ctx.translate('explode'));
       await ctx.client.repositories.starRepository.remove(ctx.author.id, valor);
       if (attc) {
-        await message.edit({ embeds: [embed], files: [attc], components: [] });
+        message
+          ? await message.edit({ embeds: [embed], files: [attc], components: [] })
+          : ctx.editReply({ embeds: [embed], files: [attc], components: [] });
       } else {
-        await message.edit({ embeds: [embed], components: [] });
+        message
+          ? await message.edit({ embeds: [embed], components: [] })
+          : ctx.editReply({ embeds: [embed], components: [] });
       }
       await http.postBlackJack(ctx.author.id, false, valor * 2);
       return;
@@ -263,9 +287,13 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
       embed.addField(ctx.translate('result'), ctx.translate('menhera-bj'));
       await ctx.client.repositories.starRepository.remove(ctx.author.id, valor);
       if (attc) {
-        await message.edit({ embeds: [embed], files: [attc], components: [] });
+        message
+          ? await message.edit({ embeds: [embed], files: [attc], components: [] })
+          : ctx.editReply({ embeds: [embed], files: [attc], components: [] });
       } else {
-        await message.edit({ embeds: [embed], components: [] });
+        message
+          ? await message.edit({ embeds: [embed], components: [] })
+          : ctx.editReply({ embeds: [embed], components: [] });
       }
       await http.postBlackJack(ctx.author.id, false, valor * 2);
       return;
@@ -317,9 +345,13 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
       embed.addField(ctx.translate('result'), ctx.translate('menhera-21'));
       await ctx.client.repositories.starRepository.remove(ctx.author.id, valor);
       if (attc) {
-        await message.edit({ embeds: [embed], files: [attc], components: [] });
+        message
+          ? await message.edit({ embeds: [embed], files: [attc], components: [] })
+          : ctx.editReply({ embeds: [embed], files: [attc], components: [] });
       } else {
-        await message.edit({ embeds: [embed], components: [] });
+        message
+          ? await message.edit({ embeds: [embed], components: [] })
+          : ctx.editReply({ embeds: [embed], components: [] });
       }
       await http.postBlackJack(ctx.author.id, false, valor * 2);
       return;
@@ -329,9 +361,13 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
       embed.addField(ctx.translate('result'), ctx.translate('user-21', { value: valor * 2 }));
       await ctx.client.repositories.starRepository.add(ctx.author.id, valor);
       if (attc) {
-        await message.edit({ embeds: [embed], files: [attc], components: [] });
+        message
+          ? await message.edit({ embeds: [embed], files: [attc], components: [] })
+          : ctx.editReply({ embeds: [embed], files: [attc], components: [] });
       } else {
-        await message.edit({ embeds: [embed], components: [] });
+        message
+          ? await message.edit({ embeds: [embed], components: [] })
+          : ctx.editReply({ embeds: [embed], components: [] });
       }
       await http.postBlackJack(ctx.author.id, true, valor * 2);
       return;
@@ -341,9 +377,13 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
       embed.addField(ctx.translate('result'), ctx.translate('menhera-bust', { value: valor * 2 }));
       await ctx.client.repositories.starRepository.add(ctx.author.id, valor);
       if (attc) {
-        await message.edit({ embeds: [embed], files: [attc], components: [] });
+        message
+          ? await message.edit({ embeds: [embed], files: [attc], components: [] })
+          : ctx.editReply({ embeds: [embed], files: [attc], components: [] });
       } else {
-        await message.edit({ embeds: [embed], components: [] });
+        message
+          ? await message.edit({ embeds: [embed], components: [] })
+          : ctx.editReply({ embeds: [embed], components: [] });
       }
       await http.postBlackJack(ctx.author.id, true, valor * 2);
       return;
@@ -352,9 +392,13 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
     if (menheraTotal > 21 && userTotal > 21) {
       embed.addField(ctx.translate('result'), ctx.translate('draw'));
       if (attc) {
-        await message.edit({ embeds: [embed], files: [attc], components: [] });
+        message
+          ? await message.edit({ embeds: [embed], files: [attc], components: [] })
+          : ctx.editReply({ embeds: [embed], files: [attc], components: [] });
       } else {
-        await message.edit({ embeds: [embed], components: [] });
+        message
+          ? await message.edit({ embeds: [embed], components: [] })
+          : ctx.editReply({ embeds: [embed], components: [] });
       }
       return;
     }
@@ -363,9 +407,13 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
       embed.addField(ctx.translate('result'), ctx.translate('both-21'));
       await ctx.client.repositories.starRepository.remove(ctx.author.id, valor);
       if (attc) {
-        await message.edit({ embeds: [embed], files: [attc], components: [] });
+        message
+          ? await message.edit({ embeds: [embed], files: [attc], components: [] })
+          : ctx.editReply({ embeds: [embed], files: [attc], components: [] });
       } else {
-        await message.edit({ embeds: [embed], components: [] });
+        message
+          ? await message.edit({ embeds: [embed], components: [] })
+          : ctx.editReply({ embeds: [embed], components: [] });
       }
       await http.postBlackJack(ctx.author.id, false, valor * 2);
       return;
@@ -375,9 +423,13 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
       embed.addField(ctx.translate('result'), ctx.translate('equal'));
       await ctx.client.repositories.starRepository.remove(ctx.author.id, valor);
       if (attc) {
-        await message.edit({ embeds: [embed], files: [attc], components: [] });
+        message
+          ? await message.edit({ embeds: [embed], files: [attc], components: [] })
+          : ctx.editReply({ embeds: [embed], files: [attc], components: [] });
       } else {
-        await message.edit({ embeds: [embed], components: [] });
+        message
+          ? await message.edit({ embeds: [embed], components: [] })
+          : ctx.editReply({ embeds: [embed], components: [] });
       }
       await http.postBlackJack(ctx.author.id, false, valor * 2);
       return;
@@ -387,9 +439,13 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
       embed.addField(ctx.translate('result'), ctx.translate('menhera-bigger'));
       await ctx.client.repositories.starRepository.remove(ctx.author.id, valor);
       if (attc) {
-        await message.edit({ embeds: [embed], files: [attc], components: [] });
+        message
+          ? await message.edit({ embeds: [embed], files: [attc], components: [] })
+          : ctx.editReply({ embeds: [embed], files: [attc], components: [] });
       } else {
-        await message.edit({ embeds: [embed], components: [] });
+        message
+          ? await message.edit({ embeds: [embed], components: [] })
+          : ctx.editReply({ embeds: [embed], components: [] });
       }
       await http.postBlackJack(ctx.author.id, false, valor * 2);
       return;
@@ -398,9 +454,13 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
     embed.addField(ctx.translate('result'), ctx.translate('user-bigger', { value: valor * 2 }));
     await ctx.client.repositories.starRepository.add(ctx.author.id, valor);
     if (attc) {
-      await message.edit({ embeds: [embed], files: [attc], components: [] });
+      message
+        ? await message.edit({ embeds: [embed], files: [attc], components: [] })
+        : ctx.editReply({ embeds: [embed], files: [attc], components: [] });
     } else {
-      await message.edit({ embeds: [embed], components: [] });
+      message
+        ? await message.edit({ embeds: [embed], components: [] })
+        : ctx.editReply({ embeds: [embed], components: [] });
     }
     await http.postBlackJack(ctx.author.id, true, valor * 2);
   }
