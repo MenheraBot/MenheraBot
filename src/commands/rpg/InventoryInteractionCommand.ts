@@ -7,7 +7,7 @@ import {
   MessageComponentInteraction,
   MessageEmbed,
   MessageSelectMenu,
-} from 'discord.js';
+} from 'discord.js-light';
 import { emojis } from '@structures/MenheraConstants';
 import { resolveCustomId, usePotion } from '@roleplay/Utils';
 import { AsAnUsableItem } from '@roleplay/Types';

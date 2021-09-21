@@ -1,5 +1,5 @@
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { Message, MessageOptions, MessagePayload, TextBasedChannels } from 'discord.js';
+import { Message, MessageOptions, MessagePayload, TextBasedChannels } from 'discord.js-light';
 import EventEmitter from 'events';
 import { IBattleUser, TBattleEntity } from './Types';
 

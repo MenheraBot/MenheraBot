@@ -1,5 +1,5 @@
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { MessageButton, MessageEmbed } from 'discord.js';
+import { MessageButton, MessageEmbed } from 'discord.js-light';
 import Util from '@utils/Util';
 import BolehamBattle from '@roleplay/BolehamBattle';
 import { IRpgUserSchema } from '../Types';

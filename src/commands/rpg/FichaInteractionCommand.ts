@@ -10,7 +10,7 @@ import {
   MessageEmbedOptions,
   MessageSelectMenu,
   User,
-} from 'discord.js';
+} from 'discord.js-light';
 import { COLORS, emojis } from '@structures/MenheraConstants';
 import Util from '@utils/Util';
 import { IRpgUserSchema } from '@roleplay/Types';
