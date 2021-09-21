@@ -75,8 +75,8 @@ export default class ShipInteractionCommand extends InteractionCommand {
     const guild =
       ctx.interaction.guild ?? (await this.client.guilds.fetch(ctx.interaction.guildId ?? ''));
 
-    const member1 = await guild.members.fetch(user1.id);
-    const member2 = await guild.members.fetch(user2.id);
+    const member1 = await guild.members.fetch(user1.id).catch(() => null);
+    const member2 = await guild.members.fetch(user2.id).catch(() => null);
 
     const name1 = member1 && member1?.nickname ? member1.nickname : user1.username;
     const name2 = member2 && member2?.nickname ? member2.nickname : user2.username;
