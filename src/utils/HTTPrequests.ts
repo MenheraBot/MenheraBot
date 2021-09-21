@@ -75,9 +75,9 @@ export default class HttpRequests {
     commandName: string,
     maintenance: IDisabled,
   ): Promise<void> {
-    await StatusRequest.patch(`/commands/${commandName}`, { data: { ...maintenance } }).catch(
-      () => null,
-    );
+    await StatusRequest.patch(`/commands/${commandName}`, {
+      data: { disabled: maintenance },
+    }).catch(() => null);
   }
 
   static async getProfileCommands(

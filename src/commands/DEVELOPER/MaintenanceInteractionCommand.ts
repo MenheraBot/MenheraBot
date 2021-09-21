@@ -50,7 +50,7 @@ export default class MaintenanceSlashInteractionCommand extends InteractionComma
         maintenance: false,
         maintenanceReason: null,
       });
-      await HttpRequests.updateCommandStatusMaintenance(command._id, {
+      await HttpRequests.updateCommandStatusMaintenance(cmd.config.name, {
         isDisabled: false,
         reason: null,
       });
@@ -64,7 +64,7 @@ export default class MaintenanceSlashInteractionCommand extends InteractionComma
       maintenanceReason: reason,
     });
 
-    await HttpRequests.updateCommandStatusMaintenance(command._id, {
+    await HttpRequests.updateCommandStatusMaintenance(cmd.config.name, {
       isDisabled: true,
       reason,
     });
