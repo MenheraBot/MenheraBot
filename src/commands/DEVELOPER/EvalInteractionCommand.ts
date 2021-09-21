@@ -2,7 +2,7 @@ import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import util from 'util';
-import { MessageEmbed } from 'discord.js';
+import { MessageEmbed } from 'discord.js-light';
 
 export default class EvalSlashInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {

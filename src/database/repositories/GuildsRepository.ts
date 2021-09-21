@@ -16,10 +16,10 @@ export default class GuildsRepository {
     await this.guildModal.updateOne({ id: guildID }, query);
   }
 
-  async findOrCreate(guildID: string): Promise<IGuildSchema> {
+  async findOrCreate(guildID: string, preferredLocale: string): Promise<IGuildSchema> {
     const guild = await this.find(guildID);
     if (guild) return guild;
-    return this.create(guildID, 'pt-BR');
+    return this.create(guildID, preferredLocale);
   }
 
   async create(guildID: string, lang: string): Promise<IGuildSchema> {

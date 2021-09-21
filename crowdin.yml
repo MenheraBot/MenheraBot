@@ -1,5 +1,0 @@
-files:
-  - source: /src/locales/source/pt-BR/*.json
-    translation: /src/locales/crowdin/%locale%/%original_file_name%
-commit_message: "\UF09F8C90"
-append_commit_message: false

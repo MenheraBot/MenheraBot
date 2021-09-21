@@ -2,22 +2,26 @@ import axios from 'axios';
 
 import {
   IBlackjackCards,
+  ICommandsData,
   ICommandUsedData,
+  IDisabled,
   IHttpPicassoReutrn,
   IRESTGameStats,
   IRESTHuntStats,
+  IStatusData,
   IUserDataToProfile,
 } from '@utils/Types';
-import { User } from 'discord.js';
+import { User } from 'discord.js-light';
 
 type activity = 'PLAYING' | 'WATCHING' | 'STREAMING' | 'LISTENING';
 
 const request = axios.create({
-  baseURL: process.env.PICASSO_IP,
+  baseURL: `${process.env.API_URL}/picasso`,
   timeout: 5000,
   headers: {
     'Content-Type': 'application/json',
-    'User-Agent': 'Menhera-Client',
+    'User-Agent': process.env.MENHERA_AGENT,
+    Authorization: process.env.API_TOKEN,
   },
 });
 
@@ -30,12 +34,22 @@ const topggRequest = axios.create({
 });
 
 const apiRequest = axios.create({
-  baseURL: `${process.env.API_IP}/api`,
+  baseURL: `${process.env.API_URL}/v1/api`,
   timeout: 5000,
   headers: {
     'Content-Type': 'application/json',
-    'User-Agent': 'Menhera-Client',
-    token: process.env.API_TOKEN,
+    'User-Agent': process.env.MENHERA_AGENT,
+    Authorization: process.env.API_TOKEN,
+  },
+});
+
+const StatusRequest = axios.create({
+  baseURL: `${process.env.API_URL}/status`,
+  timeout: 5000,
+  headers: {
+    'Content-Type': 'application/json',
+    'User-Agent': process.env.MENHERA_AGENT,
+    Authorization: process.env.API_TOKEN,
   },
 });
 
@@ -47,6 +61,23 @@ export default class HttpRequests {
     } catch {
       return 'https://i.imgur.com/DHVUlFf.png';
     }
+  }
+
+  static async postCommandStatus(commands: ICommandsData[]): Promise<void> {
+    await StatusRequest.post('/commands', { data: { commands } }).catch(() => null);
+  }
+
+  static async postShardStatus(shardData: IStatusData): Promise<void> {
+    await StatusRequest.put(`/shard/${shardData.id}`, { data: { ...shardData } }).catch(() => null);
+  }
+
+  static async updateCommandStatusMaintenance(
+    commandName: string,
+    maintenance: IDisabled,
+  ): Promise<void> {
+    await StatusRequest.patch(`/commands/${commandName}`, {
+      data: { disabled: maintenance },
+    }).catch(() => null);
   }
 
   static async getProfileCommands(
@@ -72,11 +103,9 @@ export default class HttpRequests {
     return false;
   }
 
-  static async postBotStatus(botId: string, serverCount: number[], shardId: number): Promise<void> {
+  static async postBotStatus(botId: string, serverCount: number[]): Promise<void> {
     await topggRequest
-      .post(`/bots/${botId}/stats`, {
-        data: { server_count: serverCount, shard_id: shardId, shard_count: serverCount.length },
-      })
+      .post(`/bots/${botId}/stats`, { server_count: serverCount })
       .catch(() => null);
   }
 

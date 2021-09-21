@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-expressions */
-import { MessageEmbed } from 'discord.js';
+import { MessageEmbed } from 'discord.js-light';
 import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';

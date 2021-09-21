@@ -1,7 +1,9 @@
 import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { ApplicationCommand, ApplicationCommandData } from 'discord.js';
+import { ApplicationCommandData, ApplicationCommand } from 'discord.js-light';
+import HttpRequests from '@utils/HTTPrequests';
+import { ICommandsData } from '@utils/Types';
 
 export default class DeploySlashInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {
@@ -18,6 +20,10 @@ export default class DeploySlashInteractionCommand extends InteractionCommand {
             {
               name: 'Global',
               value: 'global',
+            },
+            {
+              name: 'Site',
+              value: 'site',
             },
             {
               name: 'Server',
@@ -45,6 +51,36 @@ export default class DeploySlashInteractionCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
+    if (ctx.options.getString('option', true) === 'site') {
+      const toAPIData = new Map<string, ICommandsData>();
+
+      const disabledCommands =
+        await this.client.repositories.cmdRepository.getAllCommandsInMaintenance();
+
+      await Promise.all(
+        this.client.slashCommands.map(async (c) => {
+          if (c.config.category === 'dev') return;
+          const found = disabledCommands.find((a) => a._id?.toString() === c.config.name);
+
+          toAPIData.set(c.config.name, {
+            name: c.config.name,
+            category: c.config.category,
+            cooldown: c.config.cooldown ?? 0,
+            description: c.config.description,
+            options: c.config.options ?? [],
+            disabled: {
+              isDisabled: found?.maintenance ?? false,
+              reason: found?.maintenanceReason ?? null,
+            },
+          });
+        }),
+      );
+
+      await HttpRequests.postCommandStatus(Array.from(toAPIData.values()));
+      ctx.reply('Commandos deployados');
+      return;
+    }
+
     if (ctx.options.getString('option', true) === 'global') {
       if (!ctx.options.getString('senha') || ctx.options.getString('senha') !== 'MACACO PREGO') {
         ctx.reply({
@@ -53,31 +89,47 @@ export default class DeploySlashInteractionCommand extends InteractionCommand {
         });
         return;
       }
+
+      const toAPIData = new Map();
+
       const allCommands = this.client.slashCommands.reduce<ApplicationCommandData[]>((p, c) => {
         if (c.config.devsOnly) return p;
+        toAPIData.set(c.config.name, {
+          name: c.config.name,
+          category: c.config.category,
+          cooldown: c.config.cooldown ?? 0,
+          description: c.config.description,
+          options: c.config.options ?? [],
+        });
         p.push({
           name: c.config.name,
           description: c.config.description,
           options: c.config.options,
           defaultPermission: c.config.defaultPermission,
         });
-        this.client.repositories.commandsRepository.updateByName({
-          _id: c.config.name,
-          category: c.config.category,
-          cooldown: c.config.cooldown ?? 3,
-          description: c.config.description,
-          options: c.config.options ?? [],
-        });
         return p;
       }, []);
-      await ctx.reply('Iniciando deploy');
+      ctx.reply('Iniciando deploy');
+
+      const disabledCommands =
+        await this.client.repositories.cmdRepository.getAllCommandsInMaintenance();
+
+      disabledCommands.map((a) => {
+        const data = toAPIData.get(a._id);
+        data.disabled = {
+          isDisabled: a._id,
+          reason: a.maintenanceReason,
+        };
+        toAPIData.set(a._id, data);
+        return a;
+      });
+
+      await HttpRequests.postCommandStatus(Array.from(toAPIData.values()));
+
       await this.client.application?.commands.set(allCommands);
       ctx.editReply({
         content: 'Todos comandos foram settados! Temos até 1 hora para tudo atualizar',
       });
-      await this.client.repositories.commandsRepository.deleteOldCommands(
-        allCommands.map((a) => a.name),
-      );
       return;
     }
 

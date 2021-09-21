@@ -7,7 +7,7 @@ import {
   MessagePayload,
   TextBasedChannels,
   User,
-} from 'discord.js';
+} from 'discord.js-light';
 import { TFunction } from 'i18next';
 import MenheraClient from 'MenheraClient';
 import { emojis, EmojiTypes } from '@structures/MenheraConstants';

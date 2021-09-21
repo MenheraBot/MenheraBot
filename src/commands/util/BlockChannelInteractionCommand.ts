@@ -1,7 +1,7 @@
 import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { MessageButton } from 'discord.js';
+import { MessageButton } from 'discord.js-light';
 import { emojis } from '@structures/MenheraConstants';
 import Util from '@utils/Util';
 
@@ -61,7 +61,7 @@ export default class BlockChannelInteractionCommand extends InteractionCommand {
       const selectedChannel = ctx.options.getChannel('canal', true);
 
       if (selectedChannel?.type !== 'GUILD_TEXT') {
-        ctx.replyT('error', 'commands:invalid-channel', {}, true);
+        ctx.replyT('error', 'invalid-channel', {}, true);
         return;
       }
 

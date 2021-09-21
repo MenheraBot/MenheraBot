@@ -1,4 +1,4 @@
-import { CollectorFilter, MessageComponentInteraction, TextBasedChannels } from 'discord.js';
+import { CollectorFilter, MessageComponentInteraction, TextBasedChannels } from 'discord.js-light';
 
 const MENTION_REGEX = /^(?:<@!?)?([0-9]{16,18})(?:>)?$/;
 export default class Util {

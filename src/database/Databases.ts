@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import Redis from 'ioredis';
-import { Cmds, Commands, Guilds, Status, Users, Rpg, Homes } from '@structures/DatabaseCollections';
+import { Cmds, Guilds, Users, Rpg, Homes } from '@structures/DatabaseCollections';
 import { IDatabaseRepositories } from '@utils/Types';
 import CacheRepository from './repositories/CacheRepository';
 import CmdRepository from './repositories/CmdsRepository';
@@ -8,7 +8,6 @@ import StarRepository from './repositories/StarRepository';
 import UserRepository from './repositories/UserRepository';
 import MamarRepository from './repositories/MamarRepository';
 import GuildRepository from './repositories/GuildsRepository';
-import StatusRepository from './repositories/StatusRepository';
 import BadgeRepository from './repositories/BadgeRepository';
 import MaintenanceRepository from './repositories/MaintenanceRepository';
 import HuntRepository from './repositories/HuntRepository';
@@ -18,16 +17,11 @@ import TopRepository from './repositories/TopRepository';
 import GiveRepository from './repositories/GiveRepository';
 import RpgRepository from './repositories/RpgRepository';
 import HomeRepository from './repositories/HomeRepository';
-import CommandsRepository from './repositories/CommandsRepository';
 
 export default class Databases {
   public Cmds: typeof Cmds;
 
-  public Commands: typeof Commands;
-
   public Guilds: typeof Guilds;
-
-  public Status: typeof Status;
 
   public Users: typeof Users;
 
@@ -47,8 +41,6 @@ export default class Databases {
 
   private readonly guildRepository: GuildRepository;
 
-  private readonly statusRepository: StatusRepository;
-
   private readonly badgeRepository: BadgeRepository;
 
   private readonly maintenanceRepository: MaintenanceRepository;
@@ -65,17 +57,13 @@ export default class Databases {
 
   private readonly topRepository: TopRepository;
 
-  private readonly commandsRepository: CommandsRepository;
-
   private readonly giveRepository: GiveRepository;
 
   private readonly homeRepository: HomeRepository;
 
   constructor(public uri: string, withRedisCache: boolean) {
     this.Cmds = Cmds;
-    this.Commands = Commands;
     this.Guilds = Guilds;
-    this.Status = Status;
     this.Users = Users;
     this.Rpg = Rpg;
     this.Homes = Homes;
@@ -92,20 +80,16 @@ export default class Databases {
       this.guildRepository,
       this.cmdRepository,
     );
-    this.statusRepository = new StatusRepository(this.Status);
     this.badgeRepository = new BadgeRepository(this.userRepository);
     this.rpgRepository = new RpgRepository(this.Rpg, this.redisClient);
-    this.maintenanceRepository = new MaintenanceRepository(
-      this.cmdRepository,
-      this.statusRepository,
-    );
+    this.maintenanceRepository = new MaintenanceRepository(this.cmdRepository);
+    this.maintenanceRepository = new MaintenanceRepository(this.cmdRepository);
     this.huntRepository = new HuntRepository(this.Users);
     this.relationshipRepository = new RelationshipRepository(this.userRepository);
     this.blacklistRepository = new BlacklistRepository(this.userRepository, this.redisClient);
     this.topRepository = new TopRepository(this.Users);
     this.homeRepository = new HomeRepository(this.Homes);
     this.giveRepository = new GiveRepository(this.Users);
-    this.commandsRepository = new CommandsRepository(this.Commands);
   }
 
   get repositories(): IDatabaseRepositories {
@@ -116,7 +100,6 @@ export default class Databases {
       cacheRepository: this.cacheRepository,
       mamarRepository: this.mamarRepository,
       guildRepository: this.guildRepository,
-      statusRepository: this.statusRepository,
       badgeRepository: this.badgeRepository,
       maintenanceRepository: this.maintenanceRepository,
       rpgRepository: this.rpgRepository,
@@ -124,7 +107,6 @@ export default class Databases {
       relationshipRepository: this.relationshipRepository,
       blacklistRepository: this.blacklistRepository,
       topRepository: this.topRepository,
-      commandsRepository: this.commandsRepository,
       giveRepository: this.giveRepository,
       homeRepository: this.homeRepository,
     };

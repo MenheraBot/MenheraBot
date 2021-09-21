@@ -527,11 +527,9 @@
     "botinfo": {
       "description": "Shows current bot information",
       "title": "🎉 TODAY IS MY BIRTHDAY 🎉",
-      "embed_description": "Hi my name is **{{name}}**, and I'm a Brazilian Bot for Discord with a focus on fun and RPG! I was created in **{{createdAt}}** and joined this server in **{{joinedAt}}**.\n\nA little bit about me: My name is Menhera, I am 16 years old and I LOVE, I mean, I LOOOOVE to use these faces: (>...<). To learn more, go to my [twitter](https://twitter.com/__MenheraBot), my [support server](https://discord.gg/fZMdQbA) and my [WEBSITE](https://menherabot.xyz). If you want, you can help sending fun for all the world [translating me](https://translate.menherabot.xyz)",
+      "embed_description": "Hi my name is **{{name}}**, and I'm a Brazilian Bot for Discord with a focus on fun and RPG! I was created in **{{createdAt}}** and joined this server in **{{joinedAt}}**.\n\nA little bit about me: My name is Menhera, I am 16 years old and I LOVE, I mean, I LOOOOVE to use these faces: (>...<). To learn more, go to my [twitter](https://twitter.com/__MenheraBot), my [support server](https://discord.gg/fZMdQbA) and my [WEBSITE](https://menherabot.xyz).",
       "embed_footer": "was created by",
-      "channels": "Channels",
       "memory": "Memory",
-      "users": "Users (cached)",
       "version": "Version"
     },
     "blackjack": {

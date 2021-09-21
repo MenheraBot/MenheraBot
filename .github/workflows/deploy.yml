@@ -18,7 +18,7 @@ jobs:
             git stash
             git pull origin master
             yarn install
-            yarn build build
+            yarn build
             echo Everything went ok!
   Deploy-Development:
     if: github.ref == 'refs/heads/dev'

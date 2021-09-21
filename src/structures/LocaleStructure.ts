@@ -1,4 +1,4 @@
-import { readdirSync } from 'fs-extra';
+import { readdirSync } from 'fs';
 import path from 'path';
 import i18next from 'i18next';
 import translationBackend from 'i18next-fs-backend';
@@ -25,7 +25,7 @@ export default class LocaleStructure {
 
   async load(): Promise<void> {
     try {
-      const filepath = path.resolve(__dirname, '..', 'locales', 'source');
+      const filepath = path.resolve(__dirname, '..', '..', 'locales');
       await i18next.use(translationBackend).init({
         ns: this.ns,
         preload: readdirSync(filepath),

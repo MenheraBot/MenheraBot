@@ -1,34 +1,11 @@
-import {
-  ICmdSchema,
-  ICommandsSchema,
-  IGuildSchema,
-  IStatusSchema,
-  IUserSchema,
-} from '@utils/Types';
+import { ICmdSchema, IGuildSchema, IUserSchema } from '@utils/Types';
 import { Document, Schema, model } from 'mongoose';
 import { IHomeSchema, IRpgUserSchema } from '../roleplay/Types';
-
-const statusSchema = new Schema({
-  _id: { type: String },
-  ping: { type: Number, default: 0 },
-  disabledCommands: { type: Array },
-  guilds: { type: Number, default: 0 },
-  uptime: { type: String, default: '0' },
-  lastPingAt: { type: String },
-});
 
 const cmdSchema = new Schema({
   _id: { type: String },
   maintenance: { type: Boolean, default: false },
   maintenanceReason: { type: String, default: '' },
-});
-
-const commandUseSchema = new Schema({
-  _id: { type: String },
-  description: { type: String },
-  category: { type: String },
-  cooldown: { type: Number },
-  options: { type: Array, default: [] },
 });
 
 const guildSchema = new Schema({
@@ -102,9 +79,7 @@ const homeSchema = new Schema({
 });
 
 export const Cmds = model<ICmdSchema & Document>('Cmd', cmdSchema);
-export const Status = model<IStatusSchema & Document>('status', statusSchema);
 export const Guilds = model<IGuildSchema & Document>('guild', guildSchema);
 export const Users = model<IUserSchema & Document>('usersdb', userSchema);
 export const Rpg = model<IRpgUserSchema & Document>('rpg', rpgSchema);
 export const Homes = model<IHomeSchema & Document>('homes', homeSchema);
-export const Commands = model<ICommandsSchema & Document>('commands', commandUseSchema);

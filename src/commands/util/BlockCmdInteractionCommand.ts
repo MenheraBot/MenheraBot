@@ -18,6 +18,7 @@ export default class BlockCmdInteractionCommand extends InteractionCommand {
       ],
       cooldown: 7,
       clientPermissions: ['EMBED_LINKS'],
+      userPermissions: ['MANAGE_GUILD'],
     });
   }
 

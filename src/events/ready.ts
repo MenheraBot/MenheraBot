@@ -1,13 +1,9 @@
-import http from '@utils/HTTPrequests';
-
 import Dbl from '@utils/DBL';
 import MenheraClient from 'MenheraClient';
-import Event from '@structures/Event';
+import HttpRequests from '@utils/HTTPrequests';
 
-export default class ReadyEvent extends Event {
-  constructor(public client: MenheraClient) {
-    super(client);
-  }
+export default class ReadyEvent {
+  constructor(private client: MenheraClient) {}
 
   async run(): Promise<void> {
     if (!this.client.user) return;
@@ -19,28 +15,28 @@ export default class ReadyEvent extends Event {
     const updateActivity = async (shard: number) => {
       if (!this.client.user) return;
 
-      const activity = await http.getActivity(shard);
+      const activity = await HttpRequests.getActivity(shard);
       return this.client.user.setActivity(activity);
     };
 
-    const saveCurrentBotStatus = async () => {
-      if (!this.client.shard) return;
-      const allShardsPing = (await this.client.shard.fetchClientValues('ws.ping')) as number[];
-      const allShardsUptime = (await this.client.shard.fetchClientValues(
-        'ws.client.uptime',
-      )) as number[];
-      const guildsPerShardCount = (await this.client.shard.fetchClientValues(
-        'guilds.cache.size',
-      )) as number[];
+    const postShardStatus = async (shardId: number) => {
+      const memoryUsed = process.memoryUsage().heapUsed;
+      const uptime = this.client.uptime ?? 0;
+      const guilds = this.client.guilds.cache.size;
+      const unavailable = this.client.guilds.cache.reduce((p, c) => (c.available ? p : p + 1), 0);
+      const { ping } = this.client.ws;
+      const lastPingAt = Date.now();
+      const members = this.client.guilds.cache.reduce((p, c) => p + c.memberCount, 0);
 
-      allShardsPing.forEach((shardPing, id) => {
-        this.client.repositories.statusRepository.CreateOrUpdate(
-          id,
-          shardPing,
-          Date.now(),
-          guildsPerShardCount[id],
-          allShardsUptime[id],
-        );
+      await HttpRequests.postShardStatus({
+        id: shardId,
+        guilds,
+        lastPingAt,
+        members,
+        memoryUsed,
+        ping,
+        unavailable,
+        uptime,
       });
     };
 
@@ -52,16 +48,16 @@ export default class ReadyEvent extends Event {
         updateActivity(firstShard);
       }, INTERVAL);
 
+      setInterval(() => {
+        postShardStatus(firstShard);
+      }, 15 * 1000);
+
       if (firstShard === LAST_SHARD_ID) {
         const DiscordBotList = new Dbl(this.client);
         await DiscordBotList.init();
 
         const allBannedUsers = await this.client.repositories.userRepository.getAllBannedUsersId();
         await this.client.repositories.blacklistRepository.addBannedUsers(allBannedUsers);
-
-        setInterval(() => {
-          saveCurrentBotStatus();
-        }, INTERVAL);
       }
     }
 

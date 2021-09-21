@@ -3,7 +3,7 @@ import Router from 'koa-router';
 import koaBody from 'koa-body';
 import cors from '@koa/cors';
 
-import { MessageEmbed } from 'discord.js';
+import { MessageEmbed } from 'discord.js-light';
 import MenheraClient from 'MenheraClient';
 
 import { votes as constants } from '@structures/MenheraConstants';
@@ -60,7 +60,7 @@ export default class DiscordBots {
       if (!this.client.shard) return;
       if (!this.client.user) return;
       const info = (await this.client.shard.fetchClientValues('guilds.cache.size')) as number[];
-      await HttpRequests.postBotStatus(this.client.user.id, info, this.client.shard.ids[0]);
+      await HttpRequests.postBotStatus(this.client.user.id, info);
     }, 1800000);
   }
 

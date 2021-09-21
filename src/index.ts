@@ -1,21 +1,43 @@
-import { Options } from 'discord.js';
+import { Options, SnowflakeUtil, Channel } from 'discord.js-light';
 import { resolve } from 'path';
 import MenheraClient from './MenheraClient';
+
+const channelFilter = (channel: Channel) =>
+  !channel.isText() ||
+  !channel.lastMessageId ||
+  SnowflakeUtil.deconstruct(channel.lastMessageId).timestamp < Date.now() - 3600000;
 
 const client = new MenheraClient(
   {
     makeCache: Options.cacheWithLimits({
-      MessageManager: 50,
-      PresenceManager: 0,
-      StageInstanceManager: 0,
-      UserManager: 50,
-      VoiceStateManager: 0,
+      GuildManager: Infinity,
+      RoleManager: Infinity,
+      PermissionOverwriteManager: Infinity,
+      ChannelManager: {
+        maxSize: 0,
+        sweepFilter: () => channelFilter,
+        sweepInterval: 3600,
+      },
+      GuildChannelManager: {
+        maxSize: 0,
+        sweepFilter: () => channelFilter,
+        sweepInterval: 3600,
+      },
+      ApplicationCommandManager: 0,
       BaseGuildEmojiManager: 0,
       GuildBanManager: 0,
       GuildInviteManager: 0,
+      GuildMemberManager: 0,
       GuildStickerManager: 0,
+      MessageManager: 0,
+      PresenceManager: 0,
       ReactionManager: 0,
       ReactionUserManager: 0,
+      StageInstanceManager: 0,
+      ThreadManager: 0,
+      ThreadMemberManager: 0,
+      UserManager: 0,
+      VoiceStateManager: 0,
     }),
     failIfNotExists: false,
     intents: ['GUILDS'],

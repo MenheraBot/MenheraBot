@@ -3,7 +3,6 @@ import BadgeRepository from '@database/repositories/BadgeRepository';
 import BlacklistRepository from '@database/repositories/BlacklistRepository';
 import CacheRepository from '@database/repositories/CacheRepository';
 import CmdRepository from '@database/repositories/CmdsRepository';
-import CommandsRepository from '@database/repositories/CommandsRepository';
 import GiveRepository from '@database/repositories/GiveRepository';
 import GuildsRepository from '@database/repositories/GuildsRepository';
 import HuntRepository from '@database/repositories/HuntRepository';
@@ -12,7 +11,6 @@ import MamarRepository from '@database/repositories/MamarRepository';
 import RelationshipRepository from '@database/repositories/RelationshipRepository';
 import RpgRepository from '@database/repositories/RpgRepository';
 import StarRepository from '@database/repositories/StarRepository';
-import StatusRepository from '@database/repositories/StatusRepository';
 import TopRepository from '@database/repositories/TopRepository';
 import UserRepository from '@database/repositories/UserRepository';
 import HomeRepository from '@database/repositories/HomeRepository';
@@ -23,7 +21,7 @@ import {
   CommandInteractionOption,
   PermissionResolvable,
   User,
-} from 'discord.js';
+} from 'discord.js-light';
 import { Document } from 'mongoose';
 
 export interface IClientConfigs {
@@ -158,32 +156,35 @@ export interface IContextData {
   server: IGuildSchema | (IGuildSchema & Document);
 }
 
+export interface IDisabled {
+  isDisabled: boolean;
+  reason: string | null;
+}
+
 export interface ICmdSchema {
   _id?: string;
   maintenance: boolean;
   maintenanceReason: string | null;
 }
 
-export interface ICommandsSchema {
-  _id: string;
-  description: string;
+export interface ICommandsData {
+  name: string;
   category: string;
   cooldown: number;
+  description: string;
   options: ApplicationCommandOptionData[];
+  disabled: IDisabled;
 }
 
-interface IDisabledCommand {
-  name: string;
-  reason: string;
-}
-
-export interface IStatusSchema extends Document {
-  _id: string;
-  ping: number;
-  disabledCommands: Array<IDisabledCommand>;
+export interface IStatusData {
+  id: number;
+  memoryUsed: number;
+  uptime: number;
   guilds: number;
-  uptime: string;
-  lastPingAt: string;
+  unavailable: number;
+  ping: number;
+  lastPingAt: number;
+  members: number;
 }
 
 export interface IDatabaseRepositories {
@@ -193,7 +194,6 @@ export interface IDatabaseRepositories {
   starRepository: StarRepository;
   mamarRepository: MamarRepository;
   guildRepository: GuildsRepository;
-  statusRepository: StatusRepository;
   rpgRepository: RpgRepository;
   badgeRepository: BadgeRepository;
   maintenanceRepository: MaintenanceRepository;
@@ -201,7 +201,6 @@ export interface IDatabaseRepositories {
   relationshipRepository: RelationshipRepository;
   blacklistRepository: BlacklistRepository;
   topRepository: TopRepository;
-  commandsRepository: CommandsRepository;
   giveRepository: GiveRepository;
   homeRepository: HomeRepository;
 }
