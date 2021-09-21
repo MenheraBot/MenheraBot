@@ -33,7 +33,6 @@
     "bufferutil": "^4.0.3",
     "discord.js-light": "timotejroiko/discord.js-light#v4",
     "dotenv": "^10.0.0",
-    "fs-extra": "^10.0.0",
     "i18next": "^20.3.5",
     "i18next-fs-backend": "^1.1.1",
     "ioredis": "^4.27.7",
