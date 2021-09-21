@@ -1,4 +1,4 @@
-import { Interaction } from 'discord.js-light';
+import { Interaction, Collection, ThreadChannel, GuildChannel } from 'discord.js-light';
 import MenheraClient from 'MenheraClient';
 import InteractionCommandExecutor from '@structures/command/InteractionCommandExecutor';
 
@@ -11,8 +11,13 @@ export default class InteractionCreate {
     if (!this.client.channels.cache.has(interaction.channelId)) {
       const channel = await this.client.channels.fetch(interaction.channelId).catch(() => null);
       if (channel) {
-        this.client.channels.cache.forceSet(interaction.channelId, channel);
-        interaction.guild?.channels.cache.forceSet(interaction.channelId, channel);
+        (this.client.channels.cache as Collection<string, ThreadChannel | GuildChannel>).forceSet(
+          interaction.channelId,
+          channel,
+        );
+        (
+          interaction.guild?.channels.cache as Collection<string, ThreadChannel | GuildChannel>
+        ).forceSet(interaction.channelId, channel);
       }
     }
 

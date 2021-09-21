@@ -1912,7 +1912,7 @@ discord-api-types@^0.22.0:
 
 discord.js-light@timotejroiko/discord.js-light#v4:
   version "4.1.5"
-  resolved "https://codeload.github.com/timotejroiko/discord.js-light/tar.gz/962b44fac66a82b8f402a8d76aa82c5d62f39095"
+  resolved "https://codeload.github.com/timotejroiko/discord.js-light/tar.gz/5466b4e46f84d5d0be0da10685b553d4f3a17a74"
   dependencies:
     discord.js "github:discordjs/discord.js#9a833b1e0eb638c60c4abbb9255ed64a170e4679"
 
