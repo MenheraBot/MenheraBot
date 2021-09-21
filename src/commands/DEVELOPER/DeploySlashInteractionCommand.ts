@@ -59,6 +59,7 @@ export default class DeploySlashInteractionCommand extends InteractionCommand {
 
       await Promise.all(
         this.client.slashCommands.map(async (c) => {
+          if (c.config.category === 'dev') return;
           const found = disabledCommands.find((a) => a._id?.toString() === c.config.name);
 
           toAPIData.set(c.config.name, {
