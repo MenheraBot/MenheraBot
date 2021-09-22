@@ -1,3 +1,6 @@
+import { COLORS, emojis } from '@structures/MenheraConstants';
+import { MessageEmbed } from 'discord.js-light';
+import { TFunction } from 'i18next';
 import BasicFunctions from './Functions/BasicFunctions';
 import {
   IEnochiaShop,
@@ -145,6 +148,12 @@ const usePotion = (
 const parseEntry = <T>(entry: [string, T][]): IReturnData<T>[] =>
   entry.map((a) => ({ id: Number(a[0]), data: a[1] }));
 
+const createBaseBattleEmbed = (locale: TFunction, user: string, enemy: string): MessageEmbed =>
+  new MessageEmbed()
+    .setTitle(`${emojis.sword} | ${locale('common:battle')}`)
+    .setColor(COLORS.Colorless)
+    .setDescription(locale('common:battle_desc', { user, enemy }));
+
 export {
   canBuy,
   resolveCustomId,
@@ -153,4 +162,5 @@ export {
   usePotion,
   resolveDailyQuests,
   parseEntry,
+  createBaseBattleEmbed,
 };

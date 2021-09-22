@@ -26,5 +26,7 @@
   "experience": "Experience",
   "money": "Money",
   "items": "Items",
-  "level_up": "LEVEL UP! Now you're level **{{level}}**! Check your new statuses"
+  "level_up": "LEVEL UP! Now you're level **{{level}}**! Check your new statuses",
+  "battle": "Battle",
+  "battle_desc": "**{{user}}** must take an action against **{{enemy}}**"
 }

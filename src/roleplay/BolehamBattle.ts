@@ -1,7 +1,8 @@
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { Message, MessageOptions, MessagePayload, TextBasedChannels } from 'discord.js-light';
+import { Message, MessageOptions, MessagePayload } from 'discord.js-light';
 import EventEmitter from 'events';
 import { IBattleUser, TBattleEntity } from './Types';
+import { createBaseBattleEmbed } from './Utils';
 
 export default class BolehamBattle extends EventEmitter {
   private attackerIndex = 0;
@@ -14,7 +15,7 @@ export default class BolehamBattle extends EventEmitter {
 
   constructor(
     private ctx: InteractionCommandContext,
-    private battleling: TBattleEntity[],
+    private battleling: IBattleUser[],
     private enemy: TBattleEntity[],
   ) {
     super();
@@ -44,18 +45,23 @@ export default class BolehamBattle extends EventEmitter {
   private async send(options: string | MessagePayload | MessageOptions): Promise<Message | void> {
     const channel =
       !this.ctx?.channel?.send || this.ctx.channel.partial
-        ? ((await this.ctx.client.channels.fetch(
-            this.ctx.interaction.channelId,
-          )) as TextBasedChannels)
+        ? await this.ctx.client.channels.fetch(this.ctx.interaction.channelId).catch(() => null)
         : this.ctx.channel;
+
+    if (!channel) return this.onError('FETCH_CHANNEL');
+
+    if (!channel.isText()) return this.onError('NOT_TEXT');
 
     return channel.send(options).catch(() => this.onError('SEND_MESSAGE'));
   }
 
   public async startBattle(): Promise<this> {
-    this.send(
-      `${this.battleling[0].life} ${this.enemy[0].speed} ${this.attackerIndex}, ${this.defenderIndex}`,
+    const embed = createBaseBattleEmbed(
+      this.ctx.locale.bind(this.ctx),
+      `<@${this.battleling[0].id}>`,
+      'name' in this.enemy[0] ? this.enemy[0].name : `<@${this.enemy[0].id}>`,
     );
+    this.send({ embeds: [embed] });
 
     return this;
   }

@@ -1,5 +1,3 @@
-import { ColorResolvable } from 'discord.js-light';
-
 export const shopEconomy = {
   colors: {
     purple: 50000,
@@ -148,17 +146,18 @@ export const languageByLocale = {
 export type EmojiTypes = keyof typeof emojis;
 
 export const COLORS = {
-  HuntDefault: '#df93fd' as ColorResolvable,
-  HuntDemon: '#df1b1b' as ColorResolvable,
-  HuntAngel: '#efe9e9' as ColorResolvable,
-  HuntSD: '#3cb5f0' as ColorResolvable,
-  HuntGod: '#b115bf' as ColorResolvable,
-  HuntGiant: '#fa611f' as ColorResolvable,
-  HuntArchangel: '#a2f29e' as ColorResolvable,
-  Aqua: '#03f3ff' as ColorResolvable,
-  Purple: '#7f28c4' as ColorResolvable,
-  Pear: '#bdffc4' as ColorResolvable,
-  ACTIONS: '#fa8cc5' as ColorResolvable,
+  HuntDefault: '#df93fd' as const,
+  HuntDemon: '#df1b1b' as const,
+  HuntAngel: '#efe9e9' as const,
+  HuntSD: '#3cb5f0' as const,
+  HuntGod: '#b115bf' as const,
+  HuntGiant: '#fa611f' as const,
+  HuntArchangel: '#a2f29e' as const,
+  Aqua: '#03f3ff' as const,
+  Purple: '#7f28c4' as const,
+  Pear: '#bdffc4' as const,
+  ACTIONS: '#fa8cc5' as const,
+  Colorless: '#36393F' as const,
 };
 
 export const BLACKJACK_CARDS = [

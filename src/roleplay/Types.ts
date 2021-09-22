@@ -330,6 +330,7 @@ export interface IBattleEntityEffect {
 }
 
 export interface IBattleMob {
+  name: string;
   life: number;
   speed: number;
   armor: number;
@@ -373,6 +374,7 @@ export interface IResolvedQuest {
 }
 
 export interface IBattleUser {
+  id: string;
   life: number;
   mana: number;
   tiredness: number;
