@@ -31,12 +31,23 @@ export default class MacetavaInteractionCommand extends InteractionCommand {
     });
     await ctx.defer();
 
-    const res = await HttpRequests.macetavaRequest(
-      link,
-      ctx.author.username,
-      ctx.author.discriminator,
-      ctx.author.displayAvatarURL({ format: 'png', size: 512 }),
-    );
+    const res = this.client.picassoWs.isAlive
+      ? await this.client.picassoWs.makeRequest({
+          id: ctx.interaction.id,
+          type: 'macetava',
+          data: {
+            image: link,
+            authorName: ctx.author.username,
+            authorDiscriminator: ctx.author.discriminator,
+            authorImage: ctx.author.displayAvatarURL({ format: 'png', size: 512 }),
+          },
+        })
+      : await HttpRequests.macetavaRequest(
+          link,
+          ctx.author.username,
+          ctx.author.discriminator,
+          ctx.author.displayAvatarURL({ format: 'png', size: 512 }),
+        );
 
     if (res.err) {
       await ctx.defer({ content: `${emojis.error} | ${ctx.locale('commands:http-error')}` });
