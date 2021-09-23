@@ -70,7 +70,13 @@ export default class ShipInteractionCommand extends InteractionCommand {
 
     const avatarLinkOne = user1.displayAvatarURL({ format: 'png', size: 256 });
     const avatarLinkTwo = user2.displayAvatarURL({ format: 'png', size: 256 });
-    const bufferedShipImage = await HttpRequests.shipRequest(avatarLinkOne, avatarLinkTwo, value);
+    const bufferedShipImage = this.client.picassoWs.isAlive
+      ? await this.client.picassoWs.makeRequest({
+          id: ctx.interaction.id,
+          type: 'ship',
+          data: { linkOne: avatarLinkOne, linkTwo: avatarLinkTwo, shipValue: value },
+        })
+      : await HttpRequests.shipRequest(avatarLinkOne, avatarLinkTwo, value);
 
     const guild =
       ctx.interaction.guild ?? (await this.client.guilds.fetch(ctx.interaction.guildId ?? ''));
