@@ -1,3 +1,4 @@
+import { IPicassoWebsocketRequest } from '@utils/Types';
 import WebSocket from 'ws';
 
 export default class PicassoWebSocket {
@@ -82,7 +83,9 @@ export default class PicassoWebSocket {
     //   this.ws.on('message', (msg: Buffer) => this.handleData(JSON.parse(msg.toString())));
   }
 
-  // NEED TO IMPLEMENT
-
-  // handleData(data: unknown) {}
+  public async makeRequest<T>(
+    data: IPicassoWebsocketRequest,
+  ): Promise<T & { err: boolean; data: Buffer }> {
+    return this.isAlive;
+  }
 }
