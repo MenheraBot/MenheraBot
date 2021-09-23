@@ -84,8 +84,9 @@ export default class PicassoWebSocket {
   }
 
   public async makeRequest<T>(
-    data: IPicassoWebsocketRequest,
-  ): Promise<T & { err: boolean; data: Buffer }> {
-    return this.isAlive;
+    toSend: IPicassoWebsocketRequest<T>,
+  ): Promise<{ err: boolean; data: Buffer }> {
+    console.log(this.isAlive);
+    return { err: true, data: Buffer.alloc(Number(toSend.id)) };
   }
 }
