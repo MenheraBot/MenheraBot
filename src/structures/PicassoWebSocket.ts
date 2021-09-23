@@ -58,7 +58,6 @@ export default class PicassoWebSocket {
 
   private onClose(): void {
     if (this.ruuningError) return;
-    console.log('CLOSE');
     if (this.ws) this.ws.terminate();
     if (this.pingTimeout) clearTimeout(this.pingTimeout);
 
