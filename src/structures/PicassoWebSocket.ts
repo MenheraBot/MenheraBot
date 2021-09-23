@@ -7,36 +7,62 @@ export default class PicassoWebSocket {
 
   private ws: WebSocket | null = null;
 
+  private retries = 0;
+
+  private ruuningError = false;
+
+  constructor(private shardId: number) {}
+
   async connect(): Promise<void> {
     try {
-      this.ws = new WebSocket(`${process.env.PICASSO_WEBSOCKET}`);
+      this.ws = new WebSocket(`${process.env.PICASSO_WEBSOCKET}?id=${this.shardId}`);
       this.prepareListeners();
+      console.log(`[WEBSOCKET] Client ${this.shardId} is trying to connect`);
     } catch (err) {
       if (err instanceof Error) console.log(`[WEBSOCKET] Error when connecting: ${err.message}`);
     }
   }
 
-  private heartbeat(): void {
-    if (typeof this.pingTimeout === 'undefined') return;
-    clearTimeout(this.pingTimeout);
+  private onError(err: Error): void {
+    this.ruuningError = true;
+    if (this.retries >= 5) {
+      console.log(`[WEBSOCKET] Client ${this.shardId} stopped trying to reconnect`);
+      if (this.ws) this.ws.removeAllListeners();
+      return;
+    }
 
-    this.isAlive = true;
-    this.ws?.pong(16);
-
-    this.pingTimeout = setTimeout(() => {
-      this.ws?.terminate();
-    }, 15000);
-  }
-
-  private onClose(): void {
-    if (!this.ws) return;
-
-    this.ws.terminate();
+    console.log(`[WEBSOCKET] Error: ${err.message}`);
     if (this.pingTimeout) clearTimeout(this.pingTimeout);
 
     setTimeout(() => {
-      if (!this.ws) return;
-      this.ws.removeAllListeners();
+      this.retries += 1;
+      this.connect();
+    }, 15000);
+  }
+
+  private heartbeat(data?: Buffer): void {
+    this.ruuningError = false;
+    if (typeof this.pingTimeout !== 'undefined') clearTimeout(this.pingTimeout);
+
+    this.isAlive = true;
+    if (data) this.ws?.pong(data);
+
+    this.pingTimeout = setTimeout(
+      (manager) => {
+        if (manager && manager.readyState === manager.OPEN) manager.terminate();
+      },
+      15000,
+      this.ws,
+    );
+  }
+
+  private onClose(): void {
+    if (this.ruuningError) return;
+    console.log('CLOSE');
+    if (this.ws) this.ws.terminate();
+    if (this.pingTimeout) clearTimeout(this.pingTimeout);
+
+    setTimeout(() => {
       this.connect();
     }, 5000);
   }
@@ -44,7 +70,14 @@ export default class PicassoWebSocket {
   private prepareListeners(): void {
     if (!this.ws) return;
 
-    this.ws.once('open', this.heartbeat).once('close', this.onClose).on('ping', this.heartbeat);
+    this.ws
+      .on('open', () => {
+        console.log('[WEBSOCKET] Connected Successfully');
+        this.heartbeat();
+      })
+      .on('close', () => this.onClose())
+      .on('error', (err) => this.onError(err))
+      .on('ping', (data) => this.heartbeat(data));
 
     //   this.ws.on('message', (msg: Buffer) => this.handleData(JSON.parse(msg.toString())));
   }

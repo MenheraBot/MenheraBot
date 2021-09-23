@@ -42,7 +42,7 @@ export default class MenheraClient extends Client {
     this.cooldowns = new Collection();
     this.events = new EventManager(this);
     this.config = config;
-    this.picassoWs = new PicassoWebSocket();
+    this.picassoWs = new PicassoWebSocket(this.shard?.ids[0] ?? 0);
   }
 
   get repositories(): IDatabaseRepositories {
