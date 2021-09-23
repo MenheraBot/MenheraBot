@@ -87,18 +87,41 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
     const userCards = CalculateHandValue(playerCards);
     const userTotal = BlackjackInteractionCommand.checkHandFinalValue(userCards);
 
-    const res = await http.blackjackRequest(
-      valor,
-      userCards,
-      CalculateHandValue(dealerCards),
-      userTotal,
-      BlackjackInteractionCommand.checkHandFinalValue(CalculateHandValue([dealerCards[0]])),
-      false,
-      {
-        yourHand: ctx.translate('your-hand'),
-        dealerHand: ctx.translate('dealer-hand'),
-      },
-    );
+    const res = ctx.client.picassoWs.isAlive
+      ? await ctx.client.picassoWs.makeRequest({
+          id: ctx.interaction.id,
+          type: 'blackjack',
+          data: {
+            userCards,
+            menheraCards: CalculateHandValue(dealerCards),
+            userTotal,
+            menheraTotal: BlackjackInteractionCommand.checkHandFinalValue(
+              CalculateHandValue([dealerCards[0]]).map((a, i) => {
+                if (i === 1) {
+                  a.hidden = true;
+                }
+                return a;
+              }),
+            ),
+            i18n: {
+              yourHand: ctx.translate('your-hand'),
+              dealerHand: ctx.translate('dealer-hand'),
+            },
+            aposta: valor,
+          },
+        })
+      : await http.blackjackRequest(
+          valor,
+          userCards,
+          CalculateHandValue(dealerCards),
+          userTotal,
+          BlackjackInteractionCommand.checkHandFinalValue(CalculateHandValue([dealerCards[0]])),
+          false,
+          {
+            yourHand: ctx.translate('your-hand'),
+            dealerHand: ctx.translate('dealer-hand'),
+          },
+        );
 
     const embed = new MessageEmbed()
       .setTitle('⭐ | BlackJack')
@@ -222,18 +245,26 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
       .setColor(ctx.data.user.cor)
       .setThumbnail(ctx.author.displayAvatarURL({ format: 'png', dynamic: true }));
 
-    const res = await http.blackjackRequest(
-      valor,
-      userCards,
-      dealerCards,
-      userTotal,
-      menheraTotal,
-      true,
-      {
-        yourHand: ctx.translate('your-hand'),
-        dealerHand: ctx.translate('dealer-hand'),
-      },
-    );
+    const res = ctx.client.picassoWs.isAlive
+      ? await ctx.client.picassoWs.makeRequest({
+          id: ctx.interaction.id,
+          type: 'blackjack',
+          data: {
+            userCards,
+            menheraCards,
+            userTotal,
+            menheraTotal,
+            i18n: {
+              yourHand: ctx.translate('your-hand'),
+              dealerHand: ctx.translate('dealer-hand'),
+            },
+            aposta: valor,
+          },
+        })
+      : await http.blackjackRequest(valor, userCards, dealerCards, userTotal, menheraTotal, true, {
+          yourHand: ctx.translate('your-hand'),
+          dealerHand: ctx.translate('dealer-hand'),
+        });
 
     let attc: MessageAttachment | null = null;
 
@@ -319,18 +350,26 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
       .setColor(ctx.data.user.cor)
       .setThumbnail(ctx.author.displayAvatarURL({ format: 'png', dynamic: true }));
 
-    const newRes = await http.blackjackRequest(
-      valor,
-      userCards,
-      dealerCards,
-      userTotal,
-      menheraTotal,
-      true,
-      {
-        yourHand: ctx.translate('your-hand'),
-        dealerHand: ctx.translate('dealer-hand'),
-      },
-    );
+    const newRes = ctx.client.picassoWs.isAlive
+      ? await ctx.client.picassoWs.makeRequest({
+          id: ctx.interaction.id,
+          type: 'blackjack',
+          data: {
+            userCards,
+            menheraCards,
+            userTotal,
+            menheraTotal,
+            i18n: {
+              yourHand: ctx.translate('your-hand'),
+              dealerHand: ctx.translate('dealer-hand'),
+            },
+            aposta: valor,
+          },
+        })
+      : await http.blackjackRequest(valor, userCards, dealerCards, userTotal, menheraTotal, true, {
+          yourHand: ctx.translate('your-hand'),
+          dealerHand: ctx.translate('dealer-hand'),
+        });
 
     if (!newRes.err) {
       const timestamp = Date.now();
@@ -488,18 +527,43 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
     const dealerCards = matchCards.splice(0, 2);
     const playerCards = matchCards.splice(0, 2);
 
-    const res = await http.blackjackRequest(
-      valor,
-      CalculateHandValue(playerCards),
-      CalculateHandValue(dealerCards),
-      BlackjackInteractionCommand.checkHandFinalValue(CalculateHandValue(playerCards)),
-      BlackjackInteractionCommand.checkHandFinalValue(CalculateHandValue([dealerCards[0]])),
-      false,
-      {
-        yourHand: ctx.translate('your-hand'),
-        dealerHand: ctx.translate('dealer-hand'),
-      },
-    );
+    const res = this.client.picassoWs.isAlive
+      ? await this.client.picassoWs.makeRequest({
+          id: ctx.interaction.id,
+          type: 'blackjack',
+          data: {
+            userCards: CalculateHandValue(playerCards),
+            menheraCards: CalculateHandValue(dealerCards),
+            userTotal: BlackjackInteractionCommand.checkHandFinalValue(
+              CalculateHandValue(playerCards),
+            ),
+            menheraTotal: BlackjackInteractionCommand.checkHandFinalValue(
+              CalculateHandValue([dealerCards[0]]).map((a, i) => {
+                if (i === 1) {
+                  a.hidden = true;
+                }
+                return a;
+              }),
+            ),
+            i18n: {
+              yourHand: ctx.translate('your-hand'),
+              dealerHand: ctx.translate('dealer-hand'),
+            },
+            aposta: valor,
+          },
+        })
+      : await http.blackjackRequest(
+          valor,
+          CalculateHandValue(playerCards),
+          CalculateHandValue(dealerCards),
+          BlackjackInteractionCommand.checkHandFinalValue(CalculateHandValue(playerCards)),
+          BlackjackInteractionCommand.checkHandFinalValue(CalculateHandValue([dealerCards[0]])),
+          false,
+          {
+            yourHand: ctx.translate('your-hand'),
+            dealerHand: ctx.translate('dealer-hand'),
+          },
+        );
 
     const embed = new MessageEmbed()
       .setTitle('⭐ | BlackJack')
