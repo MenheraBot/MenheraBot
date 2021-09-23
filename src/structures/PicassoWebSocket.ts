@@ -1,4 +1,4 @@
-import { IPicassoWebsocketRequest } from '@utils/Types';
+import { IPicassoReturnData, IPicassoWebsocketRequest } from '@utils/Types';
 import WebSocket from 'ws';
 
 export default class PicassoWebSocket {
@@ -83,10 +83,10 @@ export default class PicassoWebSocket {
     //   this.ws.on('message', (msg: Buffer) => this.handleData(JSON.parse(msg.toString())));
   }
 
-  public async makeRequest<T>(
-    toSend: IPicassoWebsocketRequest<T>,
-  ): Promise<{ err: boolean; data: Buffer }> {
+  public async makeRequest<T>(toSend: IPicassoWebsocketRequest<T>): Promise<IPicassoReturnData> {
     console.log(this.isAlive);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     return { err: true, data: Buffer.alloc(Number(toSend.id)) };
   }
 }

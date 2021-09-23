@@ -35,10 +35,16 @@ export interface IInteractionCommandConfig extends ChatInputApplicationCommandDa
   clientPermissions?: PermissionResolvable[];
 }
 
-export interface IHttpPicassoReutrn {
-  err: boolean;
-  data?: Buffer;
+export interface IPicassoErrorReutrn {
+  err: true;
 }
+
+export interface ISuccessPicassoReutrn {
+  err: false;
+  data: Buffer;
+}
+
+export type IPicassoReturnData = IPicassoErrorReutrn | ISuccessPicassoReutrn;
 
 export interface IBlackjackCards {
   value: number;
