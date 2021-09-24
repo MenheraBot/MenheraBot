@@ -40,7 +40,7 @@ export interface IPicassoErrorReutrn {
 }
 
 export interface ISuccessPicassoReutrn {
-  err: false;
+  err?: false;
   data: Buffer;
 }
 

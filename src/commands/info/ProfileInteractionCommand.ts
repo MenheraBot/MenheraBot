@@ -95,7 +95,7 @@ export default class ProfileInteractionCommand extends InteractionCommand {
     }
 
     await ctx.editReply({
-      files: [new MessageAttachment(Buffer.from(res.data as Buffer), 'profile.png')],
+      files: [new MessageAttachment(res.data, 'profile.png')],
     });
   }
 }

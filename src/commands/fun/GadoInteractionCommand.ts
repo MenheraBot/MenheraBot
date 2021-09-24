@@ -49,7 +49,7 @@ export default class GadoInteractionCommand extends InteractionCommand {
 
     await ctx.defer({
       ephemeral: false,
-      files: [new MessageAttachment(Buffer.from(res.data as Buffer), 'gado.png')],
+      files: [new MessageAttachment(res.data, 'gado.png')],
     });
   }
 }

@@ -28,7 +28,7 @@ export default class PicassoWebSocket {
     this.ruuningError = true;
     this.isAlive = false;
     if (this.retries >= 5) {
-      console.log(`[WEBSOCKET] Client ${this.shardId} stopped trying to reconnect`);
+      console.log(`[WEBSOCKET] Client ${this.shardId} stopped... trying to reconnect`);
       if (this.ws) this.ws.removeAllListeners();
       return;
     }
@@ -53,12 +53,13 @@ export default class PicassoWebSocket {
       (manager) => {
         if (manager && manager.readyState === manager.OPEN) manager.terminate();
       },
-      15000,
+      20000,
       this.ws,
     );
   }
 
-  private onClose(): void {
+  private onClose(a: number): void {
+    console.log(a);
     if (this.ruuningError) return;
     if (this.ws) this.ws.terminate();
     if (this.pingTimeout) clearTimeout(this.pingTimeout);
@@ -73,20 +74,50 @@ export default class PicassoWebSocket {
 
     this.ws
       .on('open', () => {
-        console.log('[WEBSOCKET] Connected Successfully');
+        console.log(`[WEBSOCKET] Client ${this.shardId} Connected Successfully`);
+        this.retries = 0;
         this.heartbeat();
       })
-      .on('close', () => this.onClose())
+      .on('close', (a) => this.onClose(a))
       .on('error', (err) => this.onError(err))
       .on('ping', (data) => this.heartbeat(data));
-
-    //   this.ws.on('message', (msg: Buffer) => this.handleData(JSON.parse(msg.toString())));
   }
 
   public async makeRequest<T>(toSend: IPicassoWebsocketRequest<T>): Promise<IPicassoReturnData> {
-    console.log(this.isAlive);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    return { err: true, data: Buffer.alloc(Number(toSend.id)) };
+    if (!this.isAlive) return { err: true };
+    if (!this.ws) return { err: true };
+
+    this.ws.send(JSON.stringify(toSend));
+
+    return new Promise((res) => {
+      if (!this.ws) return res({ err: true });
+      const timeout = setTimeout(() => {
+        res({ err: true });
+      }, 5000);
+
+      const resolveError = () => {
+        clearTimeout(timeout);
+        this.ws?.removeListener('message', handler);
+        return res({ err: true });
+      };
+
+      const resolveSuccess = (receivedData: IPicassoReturnData) => {
+        clearTimeout(timeout);
+        this.ws?.removeListener('message', handler);
+        return res(receivedData);
+      };
+
+      const handler = (msg: Buffer) => {
+        const parsedData = JSON.parse(msg.toString());
+
+        if (!parsedData?.id) return;
+        if (parsedData.id !== toSend.id) return;
+        if (!parsedData?.res) return resolveError();
+
+        return resolveSuccess({ data: Buffer.from(parsedData.res) });
+      };
+
+      this.ws.on('message', handler);
+    });
   }
 }

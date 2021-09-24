@@ -157,10 +157,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
 
     if (!res.err) {
       const timestamp = Date.now();
-      const attachment = new MessageAttachment(
-        Buffer.from(res.data as Buffer),
-        `blackjack-${timestamp}.png`,
-      );
+      const attachment = new MessageAttachment(res.data, `blackjack-${timestamp}.png`);
       embed.setImage(`attachment://blackjack-${timestamp}.png`);
 
       message
@@ -275,7 +272,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
 
     if (!res.err) {
       const timestamp = Date.now();
-      attc = new MessageAttachment(Buffer.from(res.data as Buffer), `blackjack-${timestamp}.png`);
+      attc = new MessageAttachment(res.data, `blackjack-${timestamp}.png`);
       embed.setImage(`attachment://blackjack-${timestamp}.png`);
     }
 
@@ -585,7 +582,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
     let attc: MessageAttachment | null = null;
 
     if (!res.err) {
-      attc = new MessageAttachment(Buffer.from(res.data as Buffer), 'blackjack.png');
+      attc = new MessageAttachment(res.data, 'blackjack.png');
       embed.setImage('attachment://blackjack.png');
     }
 

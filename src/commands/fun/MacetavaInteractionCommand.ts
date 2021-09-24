@@ -55,7 +55,7 @@ export default class MacetavaInteractionCommand extends InteractionCommand {
     }
 
     await ctx.defer({
-      files: [new MessageAttachment(Buffer.from(res.data as Buffer), 'macetava.png')],
+      files: [new MessageAttachment(res.data, 'macetava.png')],
     });
   }
 }

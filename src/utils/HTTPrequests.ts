@@ -200,7 +200,7 @@ export default class HttpRequests {
   static async astolfoRequest(text: string): Promise<IPicassoReturnData> {
     try {
       const data = await request.get('/astolfo', { data: { text } });
-      return { err: false, data: data.data };
+      return { err: false, data: Buffer.from(data.data) };
     } catch {
       return { err: true };
     }
@@ -209,7 +209,7 @@ export default class HttpRequests {
   static async philoRequest(text: string): Promise<IPicassoReturnData> {
     try {
       const data = await request.get('/philo', { data: { text } });
-      return { err: false, data: data?.data };
+      return { err: false, data: Buffer.from(data.data) };
     } catch {
       return { err: true };
     }
@@ -222,7 +222,7 @@ export default class HttpRequests {
   ): Promise<IPicassoReturnData> {
     try {
       const data = await request.get('/ship', { data: { linkOne, linkTwo, shipValue } });
-      return { err: false, data: data?.data };
+      return { err: false, data: Buffer.from(data.data) };
     } catch {
       return { err: true };
     }
@@ -235,7 +235,7 @@ export default class HttpRequests {
   ): Promise<IPicassoReturnData> {
     try {
       const data = await request.get('/trisal', { data: { userOne, userTwo, userThree } });
-      return { err: false, data: data?.data };
+      return { err: false, data: Buffer.from(data.data) };
     } catch {
       return { err: true };
     }
@@ -258,7 +258,7 @@ export default class HttpRequests {
           i18n,
         },
       });
-      return { err: false, data: data?.data };
+      return { err: false, data: Buffer.from(data.data) };
     } catch {
       return { err: true };
     }
@@ -267,7 +267,7 @@ export default class HttpRequests {
   static async gadoRequest(image: string): Promise<IPicassoReturnData> {
     try {
       const data = await request.get('/gado', { data: { image } });
-      return { err: false, data: data?.data };
+      return { err: false, data: Buffer.from(data.data) };
     } catch {
       return { err: true };
     }
@@ -298,7 +298,7 @@ export default class HttpRequests {
           authorImage,
         },
       });
-      return { err: false, data: data?.data };
+      return { err: false, data: Buffer.from(data.data) };
     } catch {
       return { err: true };
     }
@@ -325,7 +325,7 @@ export default class HttpRequests {
           aposta,
         },
       });
-      return { err: false, data: data.data };
+      return { err: false, data: Buffer.from(data.data) };
     } catch {
       return { err: true };
     }

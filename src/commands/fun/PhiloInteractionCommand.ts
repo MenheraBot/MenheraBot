@@ -70,7 +70,7 @@ export default class PhiloInteractionCommand extends InteractionCommand {
     }
 
     await ctx.defer({
-      files: [new MessageAttachment(Buffer.from(res.data as Buffer), 'astolfo.png')],
+      files: [new MessageAttachment(res.data, 'astolfo.png')],
     });
   }
 }
