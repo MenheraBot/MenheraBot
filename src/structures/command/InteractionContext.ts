@@ -66,10 +66,12 @@ export default class InteractionCommandContext {
     ephemeral = false,
   ): Promise<Message | void> {
     if (typeof options === 'string')
-      return this.interaction.reply({
-        content: `${emojis[emoji] || '🐛'} **|** ${options}`,
-        ephemeral,
-      });
+      return this.interaction
+        .reply({
+          content: `${emojis[emoji] || '🐛'} **|** ${options}`,
+          ephemeral,
+        })
+        .catch(() => undefined);
 
     return this.interaction.reply(options).catch(() => undefined);
   }

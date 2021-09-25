@@ -144,7 +144,7 @@ export default class TrisalInteractionCommand extends InteractionCommand {
 
     collector.on('collect', async (int) => {
       if (!acceptedIds.includes(int.user.id)) acceptedIds.push(int.user.id);
-      int.deferUpdate();
+      int.deferUpdate().catch(() => null);
 
       if (acceptedIds.length === 3) {
         await ctx.editReply({
