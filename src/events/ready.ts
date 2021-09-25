@@ -45,7 +45,7 @@ export default class ReadyEvent {
             this.client.shard?.broadcastEval((c) =>
               c.guilds.cache.reduce((p, b) => (b.available ? p + b.memberCount : p), 0),
             ),
-            this.client.shard?.ids[0],
+            this.client.shard?.broadcastEval((c) => c.shard?.ids[0]),
           ])) as number[][];
 
           const toSendData: IStatusData[] = Array(this.client.shard?.count)
