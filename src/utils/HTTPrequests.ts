@@ -71,6 +71,10 @@ export default class HttpRequests {
     await StatusRequest.put('/shards', { data: { shards } }).catch(() => null);
   }
 
+  static async resetCommandsUses(): Promise<void> {
+    await StatusRequest.delete('/commands/uses').catch(() => null);
+  }
+
   static async updateCommandStatusMaintenance(
     commandName: string,
     maintenance: IDisabled,

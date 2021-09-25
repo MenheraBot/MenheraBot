@@ -70,6 +70,7 @@ export default class ReadyEvent {
 
         const allBannedUsers = await this.client.repositories.userRepository.getAllBannedUsersId();
         await this.client.repositories.blacklistRepository.addBannedUsers(allBannedUsers);
+        await HttpRequests.resetCommandsUses();
       }
     }
 
