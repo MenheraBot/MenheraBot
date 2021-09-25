@@ -33,7 +33,7 @@ export default class ReadyEvent {
         await DiscordBotList.init();
 
         const postShardStatus = async () => {
-          const promises = [
+          const results = (await Promise.all([
             this.client.shard?.broadcastEval(() => process.memoryUsage().heapUsed),
             this.client.shard?.broadcastEval((c) => c.uptime),
             this.client.shard?.fetchClientValues('guilds.cache.size'),
@@ -46,18 +46,20 @@ export default class ReadyEvent {
               c.guilds.cache.reduce((p, b) => (b.available ? p + b.memberCount : p), 0),
             ),
             this.client.shard?.ids[0],
-          ] as Promise<number[]>[];
+          ])) as number[][];
 
-          const toSendData: IStatusData[] = (await Promise.all(promises)).map((a) => ({
-            memoryUsed: a[0],
-            uptime: a[1],
-            guilds: a[2],
-            unavailable: a[3],
-            ping: a[4],
-            members: a[5],
-            id: a[6],
-            lastPingAt: Date.now(),
-          }));
+          const toSendData: IStatusData[] = Array(this.client.shard?.count)
+            .fill('a')
+            .map((_, i) => ({
+              memoryUsed: results[i][0],
+              uptime: results[i][1],
+              guilds: results[i][2],
+              unavailable: results[i][3],
+              ping: results[i][4],
+              members: results[i][5],
+              id: results[i][6],
+              lastPingAt: Date.now(),
+            }));
 
           await HttpRequests.postShardStatus(toSendData);
         };
