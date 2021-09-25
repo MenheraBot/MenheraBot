@@ -70,7 +70,7 @@ export default class TrisalInteractionCommand extends InteractionCommand {
         return;
       }
 
-      const attachment = new MessageAttachment(Buffer.from(res.data as Buffer), 'trisal.png');
+      const attachment = new MessageAttachment(res.data, 'trisal.png');
 
       const embed = new MessageEmbed()
         .setDescription(

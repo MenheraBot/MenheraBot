@@ -28,7 +28,13 @@ export default class AstolfoInteractionCommand extends InteractionCommand {
     const text = ctx.options.getString('frase', true);
     await ctx.defer();
 
-    const res = await HttpRequests.astolfoRequest(text);
+    const res = this.client.picassoWs.isAlive
+      ? await this.client.picassoWs.makeRequest({
+          id: ctx.interaction.id,
+          type: 'astolfo',
+          data: { text },
+        })
+      : await HttpRequests.astolfoRequest(text);
 
     if (res.err) {
       await ctx.defer({ content: `${emojis.error} | ${ctx.locale('commands:http-error')}` });
@@ -36,7 +42,7 @@ export default class AstolfoInteractionCommand extends InteractionCommand {
     }
 
     await ctx.defer({
-      files: [new MessageAttachment(Buffer.from(res.data as Buffer), 'astolfo.png')],
+      files: [new MessageAttachment(res.data, 'astolfo.png')],
     });
   }
 }

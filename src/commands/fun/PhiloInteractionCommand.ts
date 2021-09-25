@@ -56,7 +56,13 @@ export default class PhiloInteractionCommand extends InteractionCommand {
       return;
     }
 
-    const res = await HttpRequests.philoRequest(text);
+    const res = this.client.picassoWs.isAlive
+      ? await this.client.picassoWs.makeRequest({
+          id: ctx.interaction.id,
+          type: 'philo',
+          data: { text },
+        })
+      : await HttpRequests.philoRequest(text);
 
     if (res.err) {
       await ctx.defer({ content: `${emojis.error} | ${ctx.locale('commands:http-error')}` });
@@ -64,7 +70,7 @@ export default class PhiloInteractionCommand extends InteractionCommand {
     }
 
     await ctx.defer({
-      files: [new MessageAttachment(Buffer.from(res.data as Buffer), 'astolfo.png')],
+      files: [new MessageAttachment(res.data, 'astolfo.png')],
     });
   }
 }

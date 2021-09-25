@@ -5,7 +5,7 @@ import {
   ICommandsData,
   ICommandUsedData,
   IDisabled,
-  IHttpPicassoReutrn,
+  IPicassoReturnData,
   IRESTGameStats,
   IRESTHuntStats,
   IStatusData,
@@ -197,19 +197,19 @@ export default class HttpRequests {
     return { error: true };
   }
 
-  static async astolfoRequest(text: string): Promise<IHttpPicassoReutrn> {
+  static async astolfoRequest(text: string): Promise<IPicassoReturnData> {
     try {
       const data = await request.get('/astolfo', { data: { text } });
-      return { err: false, data: data.data };
+      return { err: false, data: Buffer.from(data.data) };
     } catch {
       return { err: true };
     }
   }
 
-  static async philoRequest(text: string): Promise<IHttpPicassoReutrn> {
+  static async philoRequest(text: string): Promise<IPicassoReturnData> {
     try {
       const data = await request.get('/philo', { data: { text } });
-      return { err: false, data: data?.data };
+      return { err: false, data: Buffer.from(data.data) };
     } catch {
       return { err: true };
     }
@@ -219,10 +219,10 @@ export default class HttpRequests {
     linkOne: string,
     linkTwo: string,
     shipValue: number,
-  ): Promise<IHttpPicassoReutrn> {
+  ): Promise<IPicassoReturnData> {
     try {
       const data = await request.get('/ship', { data: { linkOne, linkTwo, shipValue } });
-      return { err: false, data: data?.data };
+      return { err: false, data: Buffer.from(data.data) };
     } catch {
       return { err: true };
     }
@@ -232,10 +232,10 @@ export default class HttpRequests {
     userOne: string,
     userTwo: string,
     userThree: string,
-  ): Promise<IHttpPicassoReutrn> {
+  ): Promise<IPicassoReturnData> {
     try {
       const data = await request.get('/trisal', { data: { userOne, userTwo, userThree } });
-      return { err: false, data: data?.data };
+      return { err: false, data: Buffer.from(data.data) };
     } catch {
       return { err: true };
     }
@@ -248,7 +248,7 @@ export default class HttpRequests {
       | boolean
       | { cmds: { count: number }; array: Array<{ name: string; count: number }> },
     i18n: unknown,
-  ): Promise<IHttpPicassoReutrn> {
+  ): Promise<IPicassoReturnData> {
     try {
       const data = await request.get('/profile', {
         data: {
@@ -258,16 +258,16 @@ export default class HttpRequests {
           i18n,
         },
       });
-      return { err: false, data: data?.data };
+      return { err: false, data: Buffer.from(data.data) };
     } catch {
       return { err: true };
     }
   }
 
-  static async gadoRequest(image: string): Promise<IHttpPicassoReutrn> {
+  static async gadoRequest(image: string): Promise<IPicassoReturnData> {
     try {
       const data = await request.get('/gado', { data: { image } });
-      return { err: false, data: data?.data };
+      return { err: false, data: Buffer.from(data.data) };
     } catch {
       return { err: true };
     }
@@ -288,7 +288,7 @@ export default class HttpRequests {
     authorName: string,
     authorDiscriminator: string,
     authorImage: string,
-  ): Promise<IHttpPicassoReutrn> {
+  ): Promise<IPicassoReturnData> {
     try {
       const data = await request.get('/macetava', {
         data: {
@@ -298,7 +298,7 @@ export default class HttpRequests {
           authorImage,
         },
       });
-      return { err: false, data: data?.data };
+      return { err: false, data: Buffer.from(data.data) };
     } catch {
       return { err: true };
     }
@@ -312,7 +312,7 @@ export default class HttpRequests {
     menheraTotal: number,
     isEnd: boolean,
     i18n: unknown,
-  ): Promise<{ err: boolean; data?: Buffer }> {
+  ): Promise<IPicassoReturnData> {
     try {
       if (!isEnd) menheraCards[1].hidden = true;
       const data = await request.get('/blackjack', {
@@ -325,7 +325,7 @@ export default class HttpRequests {
           aposta,
         },
       });
-      return { err: false, data: data.data };
+      return { err: false, data: Buffer.from(data.data) };
     } catch {
       return { err: true };
     }
