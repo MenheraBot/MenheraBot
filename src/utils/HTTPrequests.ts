@@ -67,8 +67,8 @@ export default class HttpRequests {
     await StatusRequest.post('/commands', { data: { commands } }).catch(() => null);
   }
 
-  static async postShardStatus(shardData: IStatusData): Promise<void> {
-    await StatusRequest.put(`/shard/${shardData.id}`, { data: { ...shardData } }).catch(() => null);
+  static async postShardStatus(shards: IStatusData[]): Promise<void> {
+    await StatusRequest.put('/shards', { data: { shards } }).catch(() => null);
   }
 
   static async updateCommandStatusMaintenance(
@@ -139,6 +139,7 @@ export default class HttpRequests {
         commandName: info.commandName,
         data: info.data,
         args: info.args,
+        shardId: info.shardId,
       })
       .catch(() => null);
   }

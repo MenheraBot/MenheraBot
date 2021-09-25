@@ -1,6 +1,7 @@
 import Dbl from '@utils/DBL';
 import MenheraClient from 'MenheraClient';
 import HttpRequests from '@utils/HTTPrequests';
+import { IStatusData } from '@utils/Types';
 
 export default class ReadyEvent {
   constructor(private client: MenheraClient) {}
@@ -19,27 +20,6 @@ export default class ReadyEvent {
       return this.client.user.setActivity(activity);
     };
 
-    const postShardStatus = async (shardId: number) => {
-      const memoryUsed = process.memoryUsage().heapUsed;
-      const uptime = this.client.uptime ?? 0;
-      const guilds = this.client.guilds.cache.size;
-      const unavailable = this.client.guilds.cache.reduce((p, c) => (c.available ? p : p + 1), 0);
-      const { ping } = this.client.ws;
-      const lastPingAt = Date.now();
-      const members = this.client.guilds.cache.reduce((p, c) => p + c.memberCount, 0);
-
-      await HttpRequests.postShardStatus({
-        id: shardId,
-        guilds,
-        lastPingAt,
-        members,
-        memoryUsed,
-        ping,
-        unavailable,
-        uptime,
-      });
-    };
-
     if (this.client.user.id === MAIN_MENHERA_ID) {
       if (!this.client.shard) return;
       const firstShard = this.client.shard.ids[0];
@@ -48,13 +28,43 @@ export default class ReadyEvent {
         updateActivity(firstShard);
       }, INTERVAL);
 
-      setInterval(() => {
-        postShardStatus(firstShard);
-      }, 15 * 1000);
-
       if (firstShard === LAST_SHARD_ID) {
         const DiscordBotList = new Dbl(this.client);
         await DiscordBotList.init();
+
+        const postShardStatus = async () => {
+          const promises = [
+            this.client.shard?.broadcastEval(() => process.memoryUsage().heapUsed),
+            this.client.shard?.broadcastEval((c) => c.uptime),
+            this.client.shard?.fetchClientValues('guilds.cache.size'),
+            this.client.shard?.broadcastEval((c) =>
+              c.guilds.cache.reduce((p, b) => (b.available ? p : p + 1), 0),
+            ),
+            this.client.shard?.broadcastEval((c) => c.ws.ping),
+
+            this.client.shard?.broadcastEval((c) =>
+              c.guilds.cache.reduce((p, b) => (b.available ? p + b.memberCount : p), 0),
+            ),
+            this.client.shard?.ids[0],
+          ] as Promise<number[]>[];
+
+          const toSendData: IStatusData[] = (await Promise.all(promises)).map((a) => ({
+            memoryUsed: a[0],
+            uptime: a[1],
+            guilds: a[2],
+            unavailable: a[3],
+            ping: a[4],
+            members: a[5],
+            id: a[6],
+            lastPingAt: Date.now(),
+          }));
+
+          await HttpRequests.postShardStatus(toSendData);
+        };
+
+        setInterval(() => {
+          postShardStatus();
+        }, 15 * 1000);
 
         const allBannedUsers = await this.client.repositories.userRepository.getAllBannedUsersId();
         await this.client.repositories.blacklistRepository.addBannedUsers(allBannedUsers);

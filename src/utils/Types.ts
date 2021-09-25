@@ -98,6 +98,7 @@ export interface ICommandUsedData {
   commandName: string;
   data: number;
   args: Readonly<CommandInteractionOption[]>;
+  shardId: number;
 }
 
 export interface IRESTGameStats {
