@@ -1,6 +1,6 @@
 {
   "name": "menhera-bot",
-  "version": "3.0.1",
+  "version": "3.1.0",
   "engines": {
     "node": "^=16.6.0"
   },
@@ -41,7 +41,8 @@
     "koa-router": "^10.1.1",
     "moment": "^2.29.1",
     "moment-duration-format": "^2.3.2",
-    "mongoose": "^6.0.7"
+    "mongoose": "^6.0.7",
+    "ws": "^8.2.2"
   },
   "repository": {
     "type": "git",

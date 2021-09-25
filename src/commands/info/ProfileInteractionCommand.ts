@@ -81,7 +81,13 @@ export default class ProfileInteractionCommand extends InteractionCommand {
       tres: ctx.translate('tres'),
     };
 
-    const res = await HttpRequests.profileRequest(userSendData, marry, usageCommands, i18nData);
+    const res = this.client.picassoWs.isAlive
+      ? await this.client.picassoWs.makeRequest({
+          id: ctx.interaction.id,
+          type: 'profile',
+          data: { user: userSendData, marry, usageCommands, i18n: i18nData },
+        })
+      : await HttpRequests.profileRequest(userSendData, marry, usageCommands, i18nData);
 
     if (res.err) {
       await ctx.deferedReplyL('error', 'commands:http-error');
@@ -89,7 +95,7 @@ export default class ProfileInteractionCommand extends InteractionCommand {
     }
 
     await ctx.editReply({
-      files: [new MessageAttachment(Buffer.from(res.data as Buffer), 'profile.png')],
+      files: [new MessageAttachment(res.data, 'profile.png')],
     });
   }
 }
