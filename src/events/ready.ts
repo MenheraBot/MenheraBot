@@ -51,13 +51,13 @@ export default class ReadyEvent {
           const toSendData: IStatusData[] = Array(this.client.shard?.count)
             .fill('a')
             .map((_, i) => ({
-              memoryUsed: results[i][0],
-              uptime: results[i][1],
-              guilds: results[i][2],
-              unavailable: results[i][3],
-              ping: results[i][4],
-              members: results[i][5],
-              id: results[i][6],
+              memoryUsed: results[0][i],
+              uptime: results[1][i],
+              guilds: results[2][i],
+              unavailable: results[3][i],
+              ping: results[4][i],
+              members: results[5][i],
+              id: results[6][i],
               lastPingAt: Date.now(),
             }));
 
