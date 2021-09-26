@@ -37,10 +37,16 @@ export interface IInteractionCommandConfig extends ChatInputApplicationCommandDa
   clientPermissions?: PermissionResolvable[];
 }
 
-export interface IHttpPicassoReutrn {
-  err: boolean;
-  data?: Buffer;
+export interface IPicassoErrorReutrn {
+  err: true;
 }
+
+export interface ISuccessPicassoReutrn {
+  err?: false;
+  data: Buffer;
+}
+
+export type IPicassoReturnData = IPicassoErrorReutrn | ISuccessPicassoReutrn;
 
 export interface IBlackjackCards {
   value: number;
@@ -100,6 +106,7 @@ export interface ICommandUsedData {
   commandName: string;
   data: number;
   args: Readonly<CommandInteractionOption[]>;
+  shardId: number;
 }
 
 export interface IRESTGameStats {
@@ -206,3 +213,9 @@ export interface IDatabaseRepositories {
 }
 
 export type TShardStatus = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
+
+export interface IPicassoWebsocketRequest<T> {
+  id: string;
+  type: string;
+  data: T;
+}

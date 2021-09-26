@@ -28,7 +28,7 @@ export default class XandaoInteractionCommand extends InteractionCommand {
       return;
     }
 
-    ctx.interaction.deferReply();
+    ctx.defer();
     const texto = ctx.options.getString('texto');
 
     const frases = [

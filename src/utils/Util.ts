@@ -42,7 +42,7 @@ export default class Util {
         time,
       })
       .then((interaction) => {
-        interaction.deferUpdate();
+        interaction.deferUpdate().catch(() => null);
         return interaction;
       })
       .catch(() => null);
@@ -56,7 +56,7 @@ export default class Util {
     return channel
       .awaitMessageComponent({ filter, time })
       .then((interaction) => {
-        interaction.deferUpdate();
+        interaction.deferUpdate().catch(() => null);
         return interaction;
       })
       .catch(() => null);
@@ -70,7 +70,7 @@ export default class Util {
     return channel
       .awaitMessageComponent({ filter: (m) => m.user.id === authorID, time })
       .then((interaction) => {
-        interaction.deferUpdate();
+        interaction.deferUpdate().catch(() => null);
         return interaction;
       })
       .catch(() => null);

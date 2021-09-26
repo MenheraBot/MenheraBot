@@ -14,6 +14,7 @@ import InteractionCommand from '@structures/command/InteractionCommand';
 
 import LocaleStructure from '@structures/LocaleStructure';
 import BolehamManager from '@roleplay/BolehamManager';
+import PicassoWebSocket from '@structures/PicassoWebSocket';
 
 export default class MenheraClient extends Client {
   public database: Database;
@@ -25,6 +26,8 @@ export default class MenheraClient extends Client {
   public boleham: BolehamManager;
 
   public events: EventManager;
+
+  public picassoWs: PicassoWebSocket;
 
   public cooldowns: Collection<string, Collection<string, number>>;
 
@@ -43,6 +46,7 @@ export default class MenheraClient extends Client {
     this.events = new EventManager(this);
     this.boleham = new BolehamManager(this);
     this.config = config;
+    this.picassoWs = new PicassoWebSocket(this.shard?.ids[0] ?? 0);
   }
 
   get repositories(): IDatabaseRepositories {
@@ -63,6 +67,7 @@ export default class MenheraClient extends Client {
     await this.database.createConnection();
     this.loadSlashCommands(this.config.interactionsDirectory);
     this.loadEvents(this.config.eventsDirectory);
+    this.picassoWs.connect().catch(() => null);
     return true;
   }
 

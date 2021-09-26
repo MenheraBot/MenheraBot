@@ -70,7 +70,7 @@ export default class TrisalInteractionCommand extends InteractionCommand {
         return;
       }
 
-      const attachment = new MessageAttachment(Buffer.from(res.data as Buffer), 'trisal.png');
+      const attachment = new MessageAttachment(res.data, 'trisal.png');
 
       const embed = new MessageEmbed()
         .setDescription(
@@ -144,7 +144,7 @@ export default class TrisalInteractionCommand extends InteractionCommand {
 
     collector.on('collect', async (int) => {
       if (!acceptedIds.includes(int.user.id)) acceptedIds.push(int.user.id);
-      int.deferUpdate();
+      int.deferUpdate().catch(() => null);
 
       if (acceptedIds.length === 3) {
         await ctx.editReply({

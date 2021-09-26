@@ -32,7 +32,13 @@ export default class GadoInteractionCommand extends InteractionCommand {
     });
     await ctx.defer();
 
-    const res = await HttpRequests.gadoRequest(link);
+    const res = this.client.picassoWs.isAlive
+      ? await this.client.picassoWs.makeRequest({
+          id: ctx.interaction.id,
+          type: 'gado',
+          data: { image: link },
+        })
+      : await HttpRequests.gadoRequest(link);
     if (res.err) {
       await ctx.defer({
         ephemeral: false,
@@ -43,7 +49,7 @@ export default class GadoInteractionCommand extends InteractionCommand {
 
     await ctx.defer({
       ephemeral: false,
-      files: [new MessageAttachment(Buffer.from(res.data as Buffer), 'gado.png')],
+      files: [new MessageAttachment(res.data, 'gado.png')],
     });
   }
 }

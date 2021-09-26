@@ -1,10 +1,3 @@
----
-name: Pull Request
-about: Create a Pull Request
-labels: '❓ Help Wanted'
-assignees: ''
----
-
 **What did you change in this PR?**
 A clear and concise description of what did you change with this PR
 
