@@ -13,7 +13,7 @@ export default class ReadyEvent {
     if (this.client.user.id !== process.env.MENHERA_ID) return;
     if (!this.client.shard) return;
 
-    const isMasterShard = (id: number) => id === 0;
+    const isMasterShard = (id: number) => id === (this.client.shard?.count as number) - 1;
 
     const updateActivity = async (shard: number) =>
       this.client.user?.setActivity(await HttpRequests.getActivity(shard));
