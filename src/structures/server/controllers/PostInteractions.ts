@@ -4,10 +4,9 @@ import { Context } from 'koa';
 import Router from 'koa-router';
 import MenheraClient from 'MenheraClient';
 import { Client } from 'discord.js-light';
-import authenticateDsicordRequests from '../middlewares/authenticateDsicordRequests';
+import authenticateDsicordRequests from '../middlewares/authenticateDiscordRequests';
 
 const handleRequest = async (ctx: Context, client: MenheraClient) => {
-  console.log(ctx.request);
   if (ctx.request.body.type === 1) {
     ctx.status = 200;
     ctx.body = { type: 1 };
