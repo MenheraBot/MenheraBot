@@ -1,7 +1,7 @@
 import { languageByLocale } from '@structures/MenheraConstants';
 import HttpRequests from '@utils/HTTPrequests';
 import { ICommandUsedData } from '@utils/Types';
-import { Interaction, GuildMember, MessageEmbed, Collection, Guild } from 'discord.js-light';
+import { Interaction, GuildMember, MessageEmbed, Collection } from 'discord.js-light';
 import i18next from 'i18next';
 import MenheraClient from 'MenheraClient';
 import InteractionCommandContext from './InteractionContext';
@@ -120,9 +120,7 @@ const InteractionCommandExecutor = async (
     const member =
       interaction.member instanceof GuildMember
         ? interaction.member
-        : await (client.guilds.cache.get(interaction.user.id) as Guild).members.fetch(
-            interaction.user.id,
-          );
+        : await (await client.guilds.fetch(interaction.guildId)).members.fetch(interaction.user.id);
     const missing = interaction.channel
       ?.permissionsFor(member)
       ?.missing(command.config.userPermissions);
@@ -142,7 +140,7 @@ const InteractionCommandExecutor = async (
 
   if (command.config.clientPermissions) {
     const clientMember = await (
-      client.guilds.cache.get(interaction.user.id) as Guild
+      await client.guilds.fetch(interaction.guildId)
     ).members.fetch(client.user?.id ?? '');
     const missing = interaction.channel
       ?.permissionsFor(clientMember)
