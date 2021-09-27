@@ -31,6 +31,11 @@ export default class PingInteractionCommand extends InteractionCommand {
     const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     if (ctx.options.getString('shards')) {
+      if (!(await this.client.isShardingProcessEnded())) {
+        ctx.replyL('error', 'common:sharding_in_progress');
+        return;
+      }
+
       const promises = [
         this.client.shard.fetchClientValues('ws.ping'),
         this.client.shard.fetchClientValues('ws.status'),
