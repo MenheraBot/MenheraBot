@@ -139,9 +139,9 @@ const InteractionCommandExecutor = async (
   }
 
   if (command.config.clientPermissions) {
-    const clientMember = await (
-      await client.guilds.fetch(interaction.guildId)
-    ).members.fetch(client.user?.id ?? '');
+    const clientMember = interaction.guild?.members.cache.get(
+      client.user?.id as string,
+    ) as GuildMember;
     const missing = interaction.channel
       ?.permissionsFor(clientMember)
       ?.missing(command.config.clientPermissions);
