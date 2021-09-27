@@ -4,12 +4,25 @@ import { Context } from 'koa';
 import Router from 'koa-router';
 import MenheraClient from 'MenheraClient';
 import { Client } from 'discord.js-light';
+import { commandsInGuild } from '@structures/MenheraConstants';
 import authenticateDiscordRequests from '../middlewares/authenticateDiscordRequests';
 
 const handleRequest = async (ctx: Context, client: MenheraClient) => {
   if (ctx.request.body.type === 1) {
     ctx.status = 200;
     ctx.body = { type: 1 };
+    return;
+  }
+
+  if (typeof ctx.request.body.guildId === 'undefined') {
+    ctx.status = 200;
+    ctx.body = {
+      type: 4,
+      data: {
+        content: commandsInGuild,
+        flags: 1 << 6,
+      },
+    };
     return;
   }
 

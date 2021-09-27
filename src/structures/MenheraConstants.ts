@@ -127,6 +127,9 @@ export const BLACKJACK_CARDS = [
 export const clientUnreadyString =
   '🇧🇷 | A Menhera ainda não se conectou 100%! Aguarde um pouquinho antes de tentar novamente!\n🇺🇸 | Menhera is not yet 100% connected! Wait a while before trying again!';
 
+export const commandsInGuild =
+  '🇧🇷 | Você só pode usar comandos em servidores\n🇺🇸 | You can only uses commands in guilds';
+
 Object.freeze(BLACKJACK_CARDS);
 Object.freeze(COLORS);
 Object.freeze(emojis);
