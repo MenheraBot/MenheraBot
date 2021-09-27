@@ -14,7 +14,7 @@ const handleRequest = async (ctx: Context, client: MenheraClient) => {
     return;
   }
 
-  if (typeof ctx.request.body.guildId === 'undefined') {
+  if (typeof ctx.request.body.guild_id === 'undefined') {
     ctx.status = 200;
     ctx.body = {
       type: 4,
