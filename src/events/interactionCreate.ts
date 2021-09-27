@@ -26,6 +26,8 @@ export default class InteractionCreate {
       }
     }
 
+    console.log(this.client.shard?.ids[0], interaction);
+
     InteractionCommandExecutor(this.client, interaction);
   }
 }
