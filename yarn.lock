@@ -1910,9 +1910,10 @@ discord-api-types@^0.22.0:
   resolved "https://registry.yarnpkg.com/discord-api-types/-/discord-api-types-0.22.0.tgz#34dc57fe8e016e5eaac5e393646cd42a7e1ccc2a"
   integrity sha512-l8yD/2zRbZItUQpy7ZxBJwaLX/Bs2TGaCthRppk8Sw24LOIWg12t9JEreezPoYD0SQcC2htNNo27kYEpYW/Srg==
 
-discord.js-light@timotejroiko/discord.js-light#v4:
-  version "4.1.5"
-  resolved "https://codeload.github.com/timotejroiko/discord.js-light/tar.gz/5466b4e46f84d5d0be0da10685b553d4f3a17a74"
+discord.js-light@^4.1.6:
+  version "4.1.6"
+  resolved "https://registry.yarnpkg.com/discord.js-light/-/discord.js-light-4.1.6.tgz#d5e100c2806eb099563556f852b8ce1fdc273aca"
+  integrity sha512-qh9X1SuKpeN0whokavQGXRd58TiQqv/4jswJ+98TY4VzwPmbpKSdr2dIHuN4xSNP3M5ppp04gFR19uRzHcSnMQ==
   dependencies:
     discord.js "github:discordjs/discord.js#9a833b1e0eb638c60c4abbb9255ed64a170e4679"
 
@@ -5337,6 +5338,11 @@ tsutils@^3.21.0:
   integrity sha512-mHKK3iUXL+3UF6xL5k0PEhKRUBKPBCv/+RkEOpjRWxxx27KKRBmmA60A9pgOUvMi8GKhRMPEmjBRPzs2W7O1OA==
   dependencies:
     tslib "^1.8.1"
+
+tweetnacl@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/tweetnacl/-/tweetnacl-1.0.3.tgz#ac0af71680458d8a6378d0d0d050ab1407d35596"
+  integrity sha512-6rt+RN7aOi1nGMyC4Xa5DdYiukl2UWCbcJft7YhxReBGQD7OAM8Pbxw6YMo4r2diNEA8FEmu32YOn9rhaiE5yw==
 
 type-check@^0.4.0, type-check@~0.4.0:
   version "0.4.0"

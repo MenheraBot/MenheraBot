@@ -3,5 +3,6 @@
   "accept": "Accept",
   "confirm": "Confirm",
   "portuguese": "Portuguese",
-  "english": "English"
+  "english": "English",
+  "sharding_in_progress": "Menhera still waking up! Try again later"
 }
