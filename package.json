@@ -1,6 +1,6 @@
 {
   "name": "menhera-bot",
-  "version": "3.3.0",
+  "version": "3.3.1",
   "engines": {
     "node": "^=16.6.0"
   },
@@ -31,7 +31,7 @@
     "@sentry/tracing": "^6.13.1",
     "axios": "^0.21.4",
     "bufferutil": "^4.0.3",
-    "discord.js-light": "timotejroiko/discord.js-light#v4",
+    "discord.js-light": "^4.1.6",
     "dotenv": "^10.0.0",
     "i18next": "^21.0.0",
     "i18next-fs-backend": "^1.1.1",
