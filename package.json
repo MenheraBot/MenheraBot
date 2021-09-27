@@ -42,6 +42,7 @@
     "moment": "^2.29.1",
     "moment-duration-format": "^2.3.2",
     "mongoose": "^6.0.7",
+    "tweetnacl": "^1.0.3",
     "ws": "^8.2.2"
   },
   "repository": {
