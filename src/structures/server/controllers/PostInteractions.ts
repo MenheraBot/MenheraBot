@@ -4,7 +4,7 @@ import { Context } from 'koa';
 import Router from 'koa-router';
 import MenheraClient from 'MenheraClient';
 import { Client } from 'discord.js-light';
-import authenticateDsicordRequests from '../middlewares/authenticateDiscordRequests';
+import authenticateDiscordRequests from '../middlewares/authenticateDiscordRequests';
 
 const handleRequest = async (ctx: Context, client: MenheraClient) => {
   if (ctx.request.body.type === 1) {
@@ -27,10 +27,11 @@ const handleRequest = async (ctx: Context, client: MenheraClient) => {
       },
     )
     .catch(() => null);
+  ctx.respond = false;
 };
 
 export default (client: MenheraClient): Router => {
   const router = new Router();
-  router.post('/interactions', authenticateDsicordRequests, (ctx) => handleRequest(ctx, client));
+  router.post('/interactions', authenticateDiscordRequests, (ctx) => handleRequest(ctx, client));
   return router;
 };
