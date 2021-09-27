@@ -13,7 +13,7 @@ const handleRequest = async (ctx: Context, client: MenheraClient) => {
     return;
   }
 
-  const shardToExecute = Number(ctx.request.body.guildId) >> 22 % (client.shard?.count as number);
+  const shardToExecute = (Number(ctx.request.body.guildId) >> 22) % (client.shard?.count as number);
   await client.shard
     ?.broadcastEval(
       (c: Client, { data }: { data: unknown }) => {
