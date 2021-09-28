@@ -1,10 +1,4 @@
-import {
-  Interaction,
-  Collection,
-  ThreadChannel,
-  GuildChannel,
-  TextChannel,
-} from 'discord.js-light';
+import { Interaction, Collection, ThreadChannel, GuildChannel } from 'discord.js-light';
 import MenheraClient from 'MenheraClient';
 import InteractionCommandExecutor from '@structures/command/InteractionCommandExecutor';
 import { clientUnreadyString } from '@structures/MenheraConstants';
@@ -31,9 +25,6 @@ export default class InteractionCreate {
         ).forceSet(interaction.channelId, channel);
       }
     }
-
-    if (interaction.user.id === '435228312214962204')
-      console.log(interaction.channel as TextChannel, (interaction.channel as TextChannel).guild);
 
     InteractionCommandExecutor(this.client, interaction);
   }
