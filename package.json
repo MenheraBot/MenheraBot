@@ -1,6 +1,6 @@
 {
   "name": "menhera-bot",
-  "version": "3.2.0",
+  "version": "3.3.2",
   "engines": {
     "node": "^=16.6.0"
   },
@@ -31,7 +31,7 @@
     "@sentry/tracing": "^6.13.1",
     "axios": "^0.21.4",
     "bufferutil": "^4.0.3",
-    "discord.js-light": "timotejroiko/discord.js-light#v4",
+    "discord.js-light": "^4.1.6",
     "dotenv": "^10.0.0",
     "i18next": "^21.0.0",
     "i18next-fs-backend": "^1.1.1",
@@ -42,6 +42,7 @@
     "moment": "^2.29.1",
     "moment-duration-format": "^2.3.2",
     "mongoose": "^6.0.7",
+    "tweetnacl": "^1.0.3",
     "ws": "^8.2.2"
   },
   "repository": {

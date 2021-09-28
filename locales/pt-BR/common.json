@@ -28,5 +28,6 @@
   "items": "Itens",
   "level_up": "Você subiu para o nível **{{level}}**! Cheque seus novos status",
   "battle": "Batalha",
-  "battle_desc": "**{{user}}** deve tomar uma ação contra **{{enemy}}**"
+  "battle_desc": "**{{user}}** deve tomar uma ação contra **{{enemy}}**",
+  "sharding_in_progress": "A Menhera ainda está iniciando! Tente novamente mais tarde"
 }

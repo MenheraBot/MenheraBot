@@ -53,6 +53,14 @@ export default class MenheraClient extends Client {
     return this.database.repositories;
   }
 
+  async isShardingProcessEnded(): Promise<boolean> {
+    if (!this.shard) return false;
+    return this.shard
+      .broadcastEval((c) => c.isReady())
+      .catch(() => false)
+      .then(() => true);
+  }
+
   async init(): Promise<true> {
     Sentry.init({
       dsn: process.env.SENTRY_DNS,

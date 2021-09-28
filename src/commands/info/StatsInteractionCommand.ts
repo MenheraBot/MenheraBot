@@ -183,6 +183,11 @@ export default class StatsInteractionCommand extends InteractionCommand {
     } else moment.locale('en-us');
     if (!this.client.shard) return;
 
+    if (!(await this.client.isShardingProcessEnded())) {
+      ctx.replyL('error', 'common:sharding_in_progress');
+      return;
+    }
+
     const promises = [
       this.client.shard.fetchClientValues('guilds.cache.size'),
       this.client.shard.broadcastEval(() => process.memoryUsage().heapUsed),
