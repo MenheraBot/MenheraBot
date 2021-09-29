@@ -309,6 +309,7 @@
     "question": "Sua Pergunta",
     "answer": "Respota",
     "no-args": "você deve enviar uma pergunta para eu responder",
+    "ask": "Pergunte à Menhera",
     "answers": {
       "0": "É certo",
       "1": "Sem dúvida",

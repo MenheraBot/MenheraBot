@@ -1,5 +1,5 @@
 import MenheraClient from 'MenheraClient';
-import { COLORS, EightBallAnswers } from '@structures/MenheraConstants';
+import { COLORS, EightBallAnswers, emojis } from '@structures/MenheraConstants';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageEmbed, MessageAttachment } from 'discord.js-light';
@@ -40,8 +40,9 @@ export default class EightballInteractionCommand extends InteractionCommand {
           randomAnswer.type,
         );
 
+    const embed = new MessageEmbed().setTitle(`${emojis.question} | ${ctx.translate('ask')}`);
     if (res.err) {
-      const embed = new MessageEmbed()
+      embed
         .addFields([
           {
             name: ctx.translate('question'),
@@ -58,6 +59,7 @@ export default class EightballInteractionCommand extends InteractionCommand {
       return;
     }
 
-    await ctx.defer({ files: [new MessageAttachment(res.data, '8ball.png')] });
+    embed.setImage('attachment://8ball.png').setColor(COLORS.Purple);
+    await ctx.defer({ embeds: [embed], files: [new MessageAttachment(res.data, '8ball.png')] });
   }
 }

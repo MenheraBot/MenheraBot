@@ -306,6 +306,7 @@
     "question": "Your Question",
     "answer": "Answer",
     "no-args": "you must send a question for me to answer",
+    "ask": "Ask Menhera",
     "answers": {
       "0": "It is certain",
       "1": "Without a doubt",
