@@ -66,7 +66,7 @@ export default async (ctx: InteractionCommandContext, user: IRpgUserSchema): Pro
   }
 
   const selectedMob = ctx.client.boleham.Battle.getRandomMob(user.level, 2, 1, true);
-  const parsedToBattleMob = ctx.client.boleham.Battle.prepareMobForBattle(selectedMob);
+  const parsedToBattleMob = ctx.client.boleham.Battle.prepareMobForBattle(selectedMob, ctx.i18n);
   const parsedToBattleUser = await ctx.client.boleham.Battle.prepareUserForBattle(user);
 
   await new BolehamBattle(ctx, [parsedToBattleUser], parsedToBattleMob).startBattle();

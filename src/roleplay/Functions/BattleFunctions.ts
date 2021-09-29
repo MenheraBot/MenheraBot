@@ -13,6 +13,7 @@ import {
   IRpgUserSchema,
 } from '@roleplay/Types';
 import { randomFromArray } from '@roleplay/Utils';
+import { TFunction } from 'i18next';
 import MenheraClient from 'MenheraClient';
 
 export default class BattleFunctions {
@@ -23,7 +24,7 @@ export default class BattleFunctions {
     mobLocation: number,
     maxMobs: number,
     fromBuilding: boolean,
-  ): (IMobsFile & { level: number })[] {
+  ): (IMobsFile & { level: number; id: number })[] {
     const availableMobs = this.client.boleham.Mobs.filter(
       (a) =>
         a.data.minUserLevel <= userLevel &&
@@ -31,18 +32,21 @@ export default class BattleFunctions {
         a.data.availableLocations.includes(mobLocation),
     );
 
-    const choosenMob = randomFromArray(availableMobs).data;
+    const choosenMob = randomFromArray(availableMobs);
     const mobsToReturn = Math.floor(Math.random() * maxMobs) + 1;
 
     const calculatedMobLevel = Math.floor(userLevel / 4) * 10 + Math.floor(Math.random() * 10);
     const level = calculatedMobLevel === 0 ? 1 : calculatedMobLevel;
 
     return Array<IMobsFile>(mobsToReturn)
-      .fill(choosenMob, 0, mobsToReturn)
-      .map((a) => ({ ...a, level }));
+      .fill(choosenMob.data, 0, mobsToReturn)
+      .map((a) => ({ ...a, level, id: choosenMob.id }));
   }
 
-  prepareMobForBattle(mobs: (IMobsFile & { level: number })[]): IBattleMob[] {
+  prepareMobForBattle(
+    mobs: (IMobsFile & { level: number; id: number })[],
+    locale: TFunction,
+  ): IBattleMob[] {
     return mobs.map((mob) => {
       const life = mob.baseLife + mob.perLevel.baseLife * mob.level;
       const speed = mob.baseSpeed + mob.perLevel.baseSpeed * mob.level;
@@ -51,7 +55,17 @@ export default class BattleFunctions {
       const attackSkill = mob.baseSkill + mob.perLevel.baseSkill * mob.level;
       const attacks = this.client.boleham.Functions.getMobAttacks(mob.availableAttacks);
 
-      return { life, speed, armor, damage, attackSkill, attacks, effects: [], isUser: false };
+      return {
+        life,
+        speed,
+        armor,
+        damage,
+        attackSkill,
+        attacks,
+        effects: [],
+        isUser: false,
+        name: locale(`mobs:${mob.id}.name`),
+      };
     });
   }
 
@@ -90,6 +104,7 @@ export default class BattleFunctions {
     );
 
     return {
+      id: user.id,
       life,
       mana,
       tiredness,
