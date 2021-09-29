@@ -106,43 +106,43 @@ export const languageByLocale = {
 export const EightBallAnswers: { id: number; type: T8BallAnsweTypes }[] = [
   {
     id: 0,
-    type: 'afirmative',
+    type: 'positive',
   },
   {
     id: 1,
-    type: 'afirmative',
+    type: 'positive',
   },
   {
     id: 2,
-    type: 'afirmative',
+    type: 'positive',
   },
   {
     id: 3,
-    type: 'afirmative',
+    type: 'positive',
   },
   {
     id: 4,
-    type: 'afirmative',
+    type: 'positive',
   },
   {
     id: 5,
-    type: 'afirmative',
+    type: 'positive',
   },
   {
     id: 6,
-    type: 'afirmative',
+    type: 'positive',
   },
   {
     id: 7,
-    type: 'afirmative',
+    type: 'positive',
   },
   {
     id: 8,
-    type: 'afirmative',
+    type: 'positive',
   },
   {
     id: 9,
-    type: 'afirmative',
+    type: 'positive',
   },
   {
     id: 10,

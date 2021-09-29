@@ -33,14 +33,22 @@ export default class EightballInteractionCommand extends InteractionCommand {
       ? await this.client.picassoWs.makeRequest({
           type: '8ball',
           id: ctx.interaction.id,
-          data: { question: ctx.translate(`answers.${randomAnswer.id}`), type: randomAnswer.type },
+          data: {
+            question: ctx.options.getString('pergunta', true),
+            answer: ctx.translate(`answers.${randomAnswer.id}`),
+            type: randomAnswer.type,
+            username: ctx.author.username,
+          },
         })
-      : await HttpRequests.EightballRequest(
-          ctx.translate(`answers.${randomAnswer.id}`),
-          randomAnswer.type,
-        );
+      : await HttpRequests.EightballRequest({
+          answer: ctx.translate(`answers.${randomAnswer.id}`),
+          question: ctx.options.getString('pergunta', true),
+          type: randomAnswer.type,
+          username: ctx.author.username,
+        });
 
     const embed = new MessageEmbed().setTitle(`${emojis.question} | ${ctx.translate('ask')}`);
+
     if (res.err) {
       embed
         .addFields([

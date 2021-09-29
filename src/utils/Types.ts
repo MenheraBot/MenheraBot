@@ -35,7 +35,7 @@ export interface IInteractionCommandConfig extends ChatInputApplicationCommandDa
   clientPermissions?: PermissionResolvable[];
 }
 
-export type T8BallAnsweTypes = 'negative' | 'afirmative' | 'neutral';
+export type T8BallAnsweTypes = 'negative' | 'positive' | 'neutral';
 
 export interface IPicassoErrorReutrn {
   err: true;

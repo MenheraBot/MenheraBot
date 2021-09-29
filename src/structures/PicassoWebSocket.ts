@@ -28,7 +28,7 @@ export default class PicassoWebSocket {
     this.ruuningError = true;
     this.isAlive = false;
     if (this.retries >= 5) {
-      console.log(`[WEBSOCKET] Client ${this.shardId} stopped... trying to reconnect`);
+      console.log(`[WEBSOCKET] Client ${this.shardId} stopped... it won't reconnect anymore`);
       if (this.ws) this.ws.removeAllListeners();
       return;
     }
@@ -58,8 +58,8 @@ export default class PicassoWebSocket {
     );
   }
 
-  private onClose(a: number): void {
-    console.log(a);
+  private onClose(): void {
+    this.isAlive = false;
     if (this.ruuningError) return;
     if (this.ws) this.ws.terminate();
     if (this.pingTimeout) clearTimeout(this.pingTimeout);
@@ -78,7 +78,7 @@ export default class PicassoWebSocket {
         this.retries = 0;
         this.heartbeat();
       })
-      .on('close', (a) => this.onClose(a))
+      .on('close', () => this.onClose())
       .on('error', (err) => this.onError(err))
       .on('ping', (data) => this.heartbeat(data));
   }
