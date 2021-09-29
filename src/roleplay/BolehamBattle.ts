@@ -1,5 +1,6 @@
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { Message, MessageOptions, MessagePayload } from 'discord.js-light';
+import { emojis } from '@structures/MenheraConstants';
+import { Message, MessageOptions, MessagePayload, EmbedFieldData } from 'discord.js-light';
 import EventEmitter from 'events';
 import { IBattleUser, TBattleEntity } from './Types';
 import { createBaseBattleEmbed } from './Utils';
@@ -8,6 +9,8 @@ export default class BolehamBattle extends EventEmitter {
   private attackerIndex = 0;
 
   private defenderIndex = 0;
+
+  private battleMessage?: Message;
 
   private battlelingStartStatus: IBattleUser[] | null = [];
 
@@ -42,17 +45,40 @@ export default class BolehamBattle extends EventEmitter {
     this.emit('error', reason);
   }
 
-  private async send(options: string | MessagePayload | MessageOptions): Promise<Message | void> {
-    const channel =
-      !this.ctx?.channel?.send || this.ctx.channel.partial
-        ? await this.ctx.client.channels.fetch(this.ctx.interaction.channelId).catch(() => null)
-        : this.ctx.channel;
+  private async createNewMessage(options: string | MessagePayload | MessageOptions): Promise<void> {
+    const sentMessage = await this.ctx.interaction.followUp(options).catch(() => null);
 
-    if (!channel) return this.onError('FETCH_CHANNEL');
+    if (!sentMessage) return this.onError('SEND_MESSAGE');
 
-    if (!channel.isText()) return this.onError('NOT_TEXT');
+    if (!(sentMessage instanceof Message)) {
+      this.battleMessage = new Message(this.ctx.client, sentMessage);
+    } else this.battleMessage = sentMessage;
+  }
 
-    return channel.send(options).catch(() => this.onError('SEND_MESSAGE'));
+  private async editOrCreateMessage(
+    options: string | MessagePayload | MessageOptions,
+  ): Promise<void> {
+    if (!this.battleMessage || this.battleMessage.deleted) return this.createNewMessage(options);
+    this.battleMessage.edit(options).catch(() => this.createNewMessage(options));
+  }
+
+  private addStatusBuilds(): EmbedFieldData[] {
+    return [
+      {
+        name: this.ctx.locale('common:your_status'),
+        inline: true,
+        value: `${emojis.blood} | ${this.ctx.locale('roleplay:stats.life')}: **${
+          this.battleling[this.attackerIndex].life
+        }**`,
+      },
+      {
+        name: this.ctx.locale('common:entity_status'),
+        inline: true,
+        value: `${emojis.blood} | ${this.ctx.locale('roleplay:stats.life')}: **${
+          this.enemy[this.defenderIndex].life
+        }**`,
+      },
+    ];
   }
 
   public async startBattle(): Promise<this> {
@@ -60,8 +86,8 @@ export default class BolehamBattle extends EventEmitter {
       this.ctx.locale.bind(this.ctx),
       `<@${this.battleling[0].id}>`,
       'name' in this.enemy[0] ? this.enemy[0].name : `<@${this.enemy[0].id}>`,
-    );
-    this.send({ embeds: [embed] });
+    ).addFields(this.addStatusBuilds());
+    this.editOrCreateMessage({ embeds: [embed] });
 
     return this;
   }

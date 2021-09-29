@@ -167,5 +167,8 @@
       "name": "Campo de Treinamento",
       "description": "Uma área para treinar suas habilidades numa batalha segura"
     }
+  },
+  "stats": {
+    "life": "Vida"
   }
 }

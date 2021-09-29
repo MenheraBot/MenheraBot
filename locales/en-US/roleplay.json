@@ -167,5 +167,8 @@
       "name": "Training Camp",
       "description": "An area to train your skills in a safe battle"
     }
+  },
+  "stats": {
+    "life": "Life"
   }
 }
