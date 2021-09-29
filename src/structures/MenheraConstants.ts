@@ -1,3 +1,4 @@
+import { T8BallAnsweTypes } from '@utils/Types';
 import { ColorResolvable } from 'discord.js-light';
 
 export const shopEconomy = {
@@ -102,6 +103,89 @@ export const languageByLocale = {
   'us-south': 'en-US',
   'us-west': 'en-US',
 };
+
+export const EightBallAnswers: { id: number; type: T8BallAnsweTypes }[] = [
+  {
+    id: 0,
+    type: 'afirmative',
+  },
+  {
+    id: 1,
+    type: 'afirmative',
+  },
+  {
+    id: 2,
+    type: 'afirmative',
+  },
+  {
+    id: 3,
+    type: 'afirmative',
+  },
+  {
+    id: 4,
+    type: 'afirmative',
+  },
+  {
+    id: 5,
+    type: 'afirmative',
+  },
+  {
+    id: 6,
+    type: 'afirmative',
+  },
+  {
+    id: 7,
+    type: 'afirmative',
+  },
+  {
+    id: 8,
+    type: 'afirmative',
+  },
+  {
+    id: 9,
+    type: 'afirmative',
+  },
+  {
+    id: 10,
+    type: 'negative',
+  },
+  {
+    id: 11,
+    type: 'negative',
+  },
+  {
+    id: 12,
+    type: 'negative',
+  },
+  {
+    id: 13,
+    type: 'negative',
+  },
+  {
+    id: 14,
+    type: 'negative',
+  },
+  {
+    id: 15,
+    type: 'neutral',
+  },
+  {
+    id: 16,
+    type: 'neutral',
+  },
+  {
+    id: 17,
+    type: 'neutral',
+  },
+  {
+    id: 18,
+    type: 'neutral',
+  },
+  {
+    id: 19,
+    type: 'neutral',
+  },
+];
 
 export type EmojiTypes = keyof typeof emojis;
 

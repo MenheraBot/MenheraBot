@@ -38,7 +38,7 @@ export default class InteractionCommandContext {
     ephemeral = false,
   ): Promise<void> {
     if (this.interaction.deferred && options) {
-      await this.interaction.followUp(options).catch(() => null);
+      await this.send(options);
       return;
     }
 
