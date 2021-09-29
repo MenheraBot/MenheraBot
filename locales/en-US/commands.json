@@ -305,7 +305,29 @@
     "usage": "<question>",
     "question": "Your Question",
     "answer": "Answer",
-    "no-args": "you must send a question for me to answer"
+    "no-args": "you must send a question for me to answer",
+    "answers": {
+      "0": "It is certain",
+      "1": "Without a doubt",
+      "2": "You may rely on it",
+      "3": "Yes definitely",
+      "4": "It is decidedly so",
+      "5": "As I see it, yes",
+      "6": "Most likely",
+      "7": "Yes",
+      "8": "Outlook good",
+      "9": "Signs point to yes",
+      "10": "Don’t count on it",
+      "11": "Outlook not so good",
+      "12": "My sources say no",
+      "13": "Very doubtful",
+      "14": "My reply is no",
+      "15": "Reply hazy try again",
+      "16": "Better not tell you now",
+      "17": "Ask again later",
+      "18": "Cannot predict now",
+      "19": "Concentrate and ask again"
+    }
   },
   "divorciar": {
     "description": "Don't you want to be married to that horn anymore? Divorce with this command",

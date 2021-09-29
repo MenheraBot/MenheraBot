@@ -308,7 +308,29 @@
     "usage": "<pergunta>",
     "question": "Sua Pergunta",
     "answer": "Respota",
-    "no-args": "você deve enviar uma pergunta para eu responder"
+    "no-args": "você deve enviar uma pergunta para eu responder",
+    "answers": {
+      "0": "É certo",
+      "1": "Sem dúvida",
+      "2": "Você pode confiar nisso",
+      "3": "Sim, definitivamente",
+      "4": "Certamente que sim",
+      "5": "A meu ver, sim",
+      "6": "Provavelmente",
+      "7": "Sim",
+      "8": "Em minha perspectiva, sim",
+      "9": "Os sinais apontam para sim",
+      "10": "Não conte com isso",
+      "11": "Em minha perspectiva não é tão bom",
+      "12": "Minhas fontes dizem não",
+      "13": "Muito duvidoso",
+      "14": "Minha resposta é não",
+      "15": "Resposta nebulosa, tente novamente",
+      "16": "Melhor não dizer agora",
+      "17": "Pergunte novamente mais tarde",
+      "18": "Não é possível prever agora",
+      "19": "Concentre-se e pergunte novamente"
+    }
   },
   "divorciar": {
     "description": "Não quer mais ficar casado com aquele corno? Divorcie com este comando",
