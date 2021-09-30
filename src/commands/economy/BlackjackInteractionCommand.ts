@@ -93,15 +93,15 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
           type: 'blackjack',
           data: {
             userCards,
-            menheraCards: CalculateHandValue(dealerCards),
+            menheraCards: CalculateHandValue(dealerCards).map((a, i) => {
+              if (i === 1) {
+                a.hidden = true;
+              }
+              return a;
+            }),
             userTotal,
             menheraTotal: BlackjackInteractionCommand.checkHandFinalValue(
-              CalculateHandValue([dealerCards[0]]).map((a, i) => {
-                if (i === 1) {
-                  a.hidden = true;
-                }
-                return a;
-              }),
+              CalculateHandValue([dealerCards[0]]),
             ),
             i18n: {
               yourHand: ctx.translate('your-hand'),
@@ -248,7 +248,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
           type: 'blackjack',
           data: {
             userCards,
-            menheraCards,
+            menheraCards: dealerCards,
             userTotal,
             menheraTotal,
             i18n: {
@@ -353,7 +353,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
           type: 'blackjack',
           data: {
             userCards,
-            menheraCards,
+            menheraCards: dealerCards,
             userTotal,
             menheraTotal,
             i18n: {
@@ -530,17 +530,17 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
           type: 'blackjack',
           data: {
             userCards: CalculateHandValue(playerCards),
-            menheraCards: CalculateHandValue(dealerCards),
+            menheraCards: CalculateHandValue(dealerCards).map((a, i) => {
+              if (i === 1) {
+                a.hidden = true;
+              }
+              return a;
+            }),
             userTotal: BlackjackInteractionCommand.checkHandFinalValue(
               CalculateHandValue(playerCards),
             ),
             menheraTotal: BlackjackInteractionCommand.checkHandFinalValue(
-              CalculateHandValue([dealerCards[0]]).map((a, i) => {
-                if (i === 1) {
-                  a.hidden = true;
-                }
-                return a;
-              }),
+              CalculateHandValue([dealerCards[0]]),
             ),
             i18n: {
               yourHand: ctx.translate('your-hand'),
