@@ -113,8 +113,10 @@ export default class PingInteractionCommand extends InteractionCommand {
 
       const stringTable = getTable(tabled);
       await ctx.reply(
-        ` O shard ${shardCount} é uma linha de médias, para saber o total, use /stats menhera
-        \`\`\`${stringTable.replace('(index)', ' Shard ').replace(/'/g, ' ').slice(0, 1992)}\`\`\``,
+        `\`\`\`${stringTable
+          .replace('(index)', ' Shard ')
+          .replace(/'/g, ' ')
+          .slice(0, 1992)}\`\`\``,
       );
       return;
     }
