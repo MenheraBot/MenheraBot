@@ -64,7 +64,7 @@ export default class BattleFunctions {
         attacks,
         effects: [],
         isUser: false,
-        name: locale(`mobs:${mob.id}.name`),
+        name: locale(`mobs:mobs.${mob.id}.name`),
       };
     });
   }

@@ -55,9 +55,7 @@ export default class BolehamBattle extends EventEmitter {
     } else this.battleMessage = sentMessage;
   }
 
-  private async editOrCreateMessage(
-    options: string | MessagePayload | MessageOptions,
-  ): Promise<void> {
+  private async editMessage(options: string | MessagePayload | MessageOptions): Promise<void> {
     if (!this.battleMessage || this.battleMessage.deleted) return this.createNewMessage(options);
     this.battleMessage.edit(options).catch(() => this.createNewMessage(options));
   }
@@ -87,7 +85,7 @@ export default class BolehamBattle extends EventEmitter {
       `<@${this.battleling[0].id}>`,
       'name' in this.enemy[0] ? this.enemy[0].name : `<@${this.enemy[0].id}>`,
     ).addFields(this.addStatusBuilds());
-    this.editOrCreateMessage({ embeds: [embed] });
+    this.editMessage({ embeds: [embed] });
 
     return this;
   }
