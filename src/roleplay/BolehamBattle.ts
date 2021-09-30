@@ -12,7 +12,7 @@ export default class BolehamBattle extends EventEmitter {
 
   private battleMessage?: Message;
 
-  private battlelingStartStatus: IBattleUser[] | null = [];
+  private battlelingStartStatus: IBattleUser[] = [];
 
   private enemyStartStatus: IBattleUser[] | null = [];
 
@@ -27,17 +27,14 @@ export default class BolehamBattle extends EventEmitter {
 
   private saveCurrentUserStats(): void {
     this.battleling.forEach((a) => {
-      if (a.isUser) {
-        if (!this.battlelingStartStatus) this.battlelingStartStatus = [];
-        this.battlelingStartStatus.push(a);
-      } else this.battlelingStartStatus = null;
+      this.battlelingStartStatus.push(a);
     });
 
     this.enemy.forEach((a) => {
       if (a.isUser) {
         if (!this.enemyStartStatus) this.enemyStartStatus = [];
         this.enemyStartStatus.push(a);
-      } else this.battlelingStartStatus = null;
+      } else this.enemyStartStatus = null;
     });
   }
 
@@ -60,23 +57,46 @@ export default class BolehamBattle extends EventEmitter {
     this.battleMessage.edit(options).catch(() => this.createNewMessage(options));
   }
 
-  private addStatusBuilds(): EmbedFieldData[] {
-    return [
+  private addStatusBuilds(inverse = false): EmbedFieldData[] {
+    const actualEnemy = this.enemy[this.defenderIndex];
+    const defaultReturn = [
       {
         name: this.ctx.locale('common:your_status'),
         inline: true,
         value: `${emojis.blood} | ${this.ctx.locale('roleplay:stats.life')}: **${
           this.battleling[this.attackerIndex].life
+        }**\n${emojis.mana} | ${this.ctx.locale('roleplay:stats.mana')}: **${
+          this.battleling[this.attackerIndex].mana
+        }**\n${emojis.roleplay_custom.tired} | ${this.ctx.locale('roleplay:stats.tiredness')}: **${
+          this.battleling[this.attackerIndex].tiredness
+        }**\n${emojis.roleplay_custom.speed} | ${this.ctx.locale('roleplay:stats.speed')}: **${
+          this.battleling[this.attackerIndex].speed
+        }**\n${emojis.sword} | ${this.ctx.locale('roleplay:stats.damage')}: **${
+          this.battleling[this.attackerIndex].damage
+        }**\n${emojis.shield} | ${this.ctx.locale('roleplay:stats.armor')}: **${
+          this.battleling[this.attackerIndex].armor
         }**`,
       },
       {
         name: this.ctx.locale('common:entity_status'),
         inline: true,
         value: `${emojis.blood} | ${this.ctx.locale('roleplay:stats.life')}: **${
-          this.enemy[this.defenderIndex].life
+          actualEnemy.life
+        }**\n${emojis.mana} | ${this.ctx.locale('roleplay:stats.mana')}: **${
+          actualEnemy.isUser ? actualEnemy.mana : '???'
+        }**\n${emojis.roleplay_custom.tired} | ${this.ctx.locale('roleplay:stats.tiredness')}: **${
+          actualEnemy.isUser ? actualEnemy.tiredness : '???'
+        }**\n${emojis.roleplay_custom.speed} | ${this.ctx.locale('roleplay:stats.speed')}: **${
+          actualEnemy.speed
+        }**\n${emojis.sword} | ${this.ctx.locale('roleplay:stats.damage')}: **${
+          actualEnemy.damage
+        }**\n${emojis.shield} | ${this.ctx.locale('roleplay:stats.armor')}: **${
+          actualEnemy.armor
         }**`,
       },
     ];
+
+    return inverse ? defaultReturn.reverse() : defaultReturn;
   }
 
   public async startBattle(): Promise<this> {

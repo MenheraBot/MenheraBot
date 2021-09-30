@@ -169,6 +169,11 @@
     }
   },
   "stats": {
-    "life": "Life"
+    "life": "Life",
+    "mana": "Mana",
+    "tiredness": "Tiredness",
+    "speed": "Speed",
+    "damage": "Damage",
+    "armor": "Defesa"
   }
 }

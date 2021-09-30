@@ -169,6 +169,11 @@
     }
   },
   "stats": {
-    "life": "Vida"
+    "life": "Vida",
+    "mana": "Mana",
+    "tiredness": "Cansaço",
+    "speed": "Velocidade",
+    "damage": "Dano",
+    "armor": "Defesa"
   }
 }
