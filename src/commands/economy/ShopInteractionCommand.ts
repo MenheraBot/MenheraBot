@@ -381,7 +381,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
         ctx.replyT('success', 'dataVender.success-giant', {
           value: valor,
           cost: valor * valorGigante,
-          quantity: ctx.data.user.anjos - valor,
+          quantity: ctx.data.user.giants - valor,
           star: ctx.data.user.estrelinhas + valor * valorGigante,
         });
         break;
@@ -411,7 +411,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
         ctx.replyT('success', 'dataVender.success-archangel', {
           value: valor,
           cost: valor * valorArch,
-          quantity: ctx.data.user.anjos - valor,
+          quantity: ctx.data.user.arcanjos - valor,
           star: ctx.data.user.estrelinhas + valor * valorArch,
         });
         break;
