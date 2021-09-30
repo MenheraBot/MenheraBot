@@ -8,11 +8,11 @@ export default class ShopInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {
     super(client, {
       name: 'loja',
-      description: 'Abre o brechó da Menhera',
+      description: '「💴」・Abre o brechó da Menhera',
       options: [
         {
           name: 'comprar',
-          description: 'Abre a loja de compras',
+          description: '「🛒」・Abre a loja de compras',
           type: 'SUB_COMMAND_GROUP',
           options: [
             {
@@ -132,7 +132,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
         },
         {
           name: 'info',
-          description: 'Mostra a tabela de preços da Menhera',
+          description: '「📊」・Mostra a tabela de preços da Menhera',
           type: 'SUB_COMMAND_GROUP',
           options: [
             {
@@ -381,7 +381,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
         ctx.replyT('success', 'dataVender.success-giant', {
           value: valor,
           cost: valor * valorGigante,
-          quantity: ctx.data.user.anjos - valor,
+          quantity: ctx.data.user.giants - valor,
           star: ctx.data.user.estrelinhas + valor * valorGigante,
         });
         break;
@@ -411,7 +411,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
         ctx.replyT('success', 'dataVender.success-archangel', {
           value: valor,
           cost: valor * valorArch,
-          quantity: ctx.data.user.anjos - valor,
+          quantity: ctx.data.user.arcanjos - valor,
           star: ctx.data.user.estrelinhas + valor * valorArch,
         });
         break;

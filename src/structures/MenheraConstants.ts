@@ -1,3 +1,5 @@
+import { T8BallAnsweTypes } from '@utils/Types';
+
 export const shopEconomy = {
   colors: {
     purple: 50000,
@@ -142,6 +144,89 @@ export const languageByLocale = {
   'us-south': 'en-US',
   'us-west': 'en-US',
 };
+
+export const EightBallAnswers: { id: number; type: T8BallAnsweTypes }[] = [
+  {
+    id: 0,
+    type: 'positive',
+  },
+  {
+    id: 1,
+    type: 'positive',
+  },
+  {
+    id: 2,
+    type: 'positive',
+  },
+  {
+    id: 3,
+    type: 'positive',
+  },
+  {
+    id: 4,
+    type: 'positive',
+  },
+  {
+    id: 5,
+    type: 'positive',
+  },
+  {
+    id: 6,
+    type: 'positive',
+  },
+  {
+    id: 7,
+    type: 'positive',
+  },
+  {
+    id: 8,
+    type: 'positive',
+  },
+  {
+    id: 9,
+    type: 'positive',
+  },
+  {
+    id: 10,
+    type: 'negative',
+  },
+  {
+    id: 11,
+    type: 'negative',
+  },
+  {
+    id: 12,
+    type: 'negative',
+  },
+  {
+    id: 13,
+    type: 'negative',
+  },
+  {
+    id: 14,
+    type: 'negative',
+  },
+  {
+    id: 15,
+    type: 'neutral',
+  },
+  {
+    id: 16,
+    type: 'neutral',
+  },
+  {
+    id: 17,
+    type: 'neutral',
+  },
+  {
+    id: 18,
+    type: 'neutral',
+  },
+  {
+    id: 19,
+    type: 'neutral',
+  },
+];
 
 export type EmojiTypes = keyof typeof emojis;
 

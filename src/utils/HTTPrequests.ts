@@ -211,6 +211,15 @@ export default class HttpRequests {
     }
   }
 
+  static async EightballRequest<T>(sendData: T): Promise<IPicassoReturnData> {
+    try {
+      const data = await request.get('/8ball', { data: sendData });
+      return { err: false, data: Buffer.from(data.data) };
+    } catch {
+      return { err: true };
+    }
+  }
+
   static async philoRequest(text: string): Promise<IPicassoReturnData> {
     try {
       const data = await request.get('/philo', { data: { text } });
