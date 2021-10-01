@@ -77,6 +77,6 @@
     "typescript": "^4.4.3"
   },
   "optionalDependencies": {
-    "erlpack": "^0.1.3"
+    "erlpack": "github:almeidx/erlpack#f0c535f73817fd914806d6ca26a7730c14e0fb7c"
   }
 }
