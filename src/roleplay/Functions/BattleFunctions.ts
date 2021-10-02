@@ -4,13 +4,16 @@ import {
   IArmor,
   IBattleMob,
   IBattleUser,
+  IInventoryItem,
   ILeveledItem,
   IMobsFile,
   IQuest,
   IResolvedArmor,
+  IResolvedBattleInventory,
   IResolvedQuest,
   IResolvedWeapon,
   IRpgUserSchema,
+  TBattleUsableItemType,
 } from '@roleplay/Types';
 import { randomFromArray } from '@roleplay/Utils';
 import { TFunction } from 'i18next';
@@ -77,6 +80,7 @@ export default class BattleFunctions {
     const abilities: IAbilityResolved[] = user.abilities.map((a) => {
       const abilityData = this.client.boleham.Functions.getAbilityById(a.id);
       return {
+        id: a.id,
         cost: abilityData.cost,
         element: abilityData.element,
         turnsCooldown: abilityData.turnsCooldown,
@@ -93,6 +97,8 @@ export default class BattleFunctions {
     const armor = this.getUserArmor(user.classId, user.level, equiped, weapon);
 
     const damage = this.getUserDamage(user.classId, user.level, equiped, weapon);
+
+    const inventory = this.getUserBattleInventory(user.inventory);
 
     const quests = this.resolveQuests(
       user?.quests?.active,
@@ -112,6 +118,7 @@ export default class BattleFunctions {
       lucky,
       armor,
       damage,
+      inventory,
       weapon,
       attackSkill,
       abilitySkill,
@@ -303,6 +310,27 @@ export default class BattleFunctions {
     }
 
     return maxMana;
+  }
+
+  getUserBattleInventory(inventory: IInventoryItem[]): IResolvedBattleInventory[] {
+    const acceptableItems = ['potion'];
+
+    return inventory.reduce((p: IResolvedBattleInventory[], c) => {
+      const foundItem = this.client.boleham.Functions.getItemById<AsAnUsableItem>(c.id);
+      if (acceptableItems.includes(foundItem.type)) {
+        for (let i = 0; i < c.amount; i++) {
+          p.push({
+            id: c.id,
+            level: c.level ?? 0,
+            data: foundItem.data,
+            effects: foundItem.effects,
+            type: foundItem.type as TBattleUsableItemType,
+          });
+        }
+        return p;
+      }
+      return p;
+    }, []);
   }
 
   getUserDamage(

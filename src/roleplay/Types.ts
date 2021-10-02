@@ -213,6 +213,8 @@ export type TArmorType = 'chest' | 'head' | 'boots' | 'pants';
 
 export type TItemType = 'armor' | 'potion' | 'weapon' | 'drop' | 'backpack';
 
+export type TBattleUsableItemType = 'potion';
+
 interface IItemData {
   value: number;
   perLevel: number;
@@ -295,6 +297,7 @@ export interface IMobAttackEffect {
 }
 
 export interface IMobAttacksFile {
+  id: number;
   description?: string;
   element: TElements;
   effects: Array<IMobAttackEffect>;
@@ -342,6 +345,7 @@ export interface IBattleMob {
 }
 
 export interface IAbilityResolved {
+  id: number;
   cost: number;
   element: TElements;
   turnsCooldown: number;
@@ -373,6 +377,14 @@ export interface IResolvedQuest {
   progress: number;
 }
 
+export interface IResolvedBattleInventory {
+  id: number;
+  level: number;
+  type: TBattleUsableItemType;
+  data: IItemData;
+  effects: IEffectData[];
+}
+
 export interface IBattleUser {
   id: string;
   life: number;
@@ -385,6 +397,7 @@ export interface IBattleUser {
   attackSkill: number;
   abilitySkill: number;
   weapon: IResolvedWeapon | null;
+  inventory: IResolvedBattleInventory[];
   abilities: Array<IAbilityResolved>;
   isUser: true;
   quests: IResolvedQuest[];

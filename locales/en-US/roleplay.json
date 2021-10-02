@@ -175,5 +175,9 @@
     "speed": "Speed",
     "damage": "Damage",
     "armor": "Defesa"
+  },
+  "battle": {
+    "select-ability": "Attack with an Ability",
+    "basic-attack": "Ataque Básico"
   }
 }

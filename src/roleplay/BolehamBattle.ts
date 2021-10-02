@@ -1,6 +1,15 @@
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { emojis } from '@structures/MenheraConstants';
-import { Message, MessageOptions, MessagePayload, EmbedFieldData } from 'discord.js-light';
+import {
+  Message,
+  MessageOptions,
+  MessagePayload,
+  EmbedFieldData,
+  MessageSelectMenu,
+  MessageSelectOptionData,
+  MessageButton,
+  MessageActionRow,
+} from 'discord.js-light';
 import EventEmitter from 'events';
 import { IBattleUser, TBattleEntity } from './Types';
 import { createBaseBattleEmbed } from './Utils';
@@ -57,6 +66,58 @@ export default class BolehamBattle extends EventEmitter {
     this.battleMessage.edit(options).catch(() => this.createNewMessage(options));
   }
 
+  private createMessageComponents(user: IBattleUser): MessageActionRow[] {
+    const abilitiesRow = new MessageActionRow().addComponents(
+      new MessageSelectMenu()
+        .setCustomId(`${this.ctx.interaction.id} | ABILITY`)
+        .setMinValues(1)
+        .setMaxValues(1)
+        .setPlaceholder(this.ctx.locale('roleplay:battle.select-ability'))
+        .addOptions(
+          user.abilities.reduce((p: MessageSelectOptionData[], c) => {
+            p.push({
+              label: this.ctx.locale(`roleplay:abilities.${c.id}.name`),
+              value: `${c.id}`,
+              description: this.ctx.locale(`roleplay:abilities.${c.id}.description`),
+            });
+            return p;
+          }, []),
+        ),
+    );
+
+    const basicButton = new MessageButton()
+      .setCustomId(`${this.ctx.interaction.id} | BASIC`)
+      .setEmoji(emojis.sword)
+      .setLabel(this.ctx.locale('roleplay:battle.basic-attack'))
+      .setStyle('PRIMARY');
+
+    const buttonRows = new MessageActionRow().addComponents(basicButton);
+
+    const inventoryItens = new MessageActionRow().addComponents(
+      new MessageSelectMenu()
+        .setCustomId(`${this.ctx.interaction.id} | INVENTORY`)
+        .setPlaceholder(this.ctx.locale('roleplay:battle.inventory-itens'))
+        .setDisabled(true)
+        .setMinValues(1)
+        .setMaxValues(1),
+    );
+
+    if (user.inventory.length > 0) {
+      for (let i = 0; i < user.inventory.length; i++) {
+        if (i >= 24) break;
+        (inventoryItens.components[0] as MessageSelectMenu)
+          .addOptions({
+            label: this.ctx.locale(`items:${user.inventory[i].id}.name`),
+            value: `${user.inventory[i].id} ${i}`,
+            description: this.ctx.locale(`items:${user.inventory[i].id}.description`),
+          })
+          .setDisabled(false);
+      }
+    }
+
+    return [buttonRows, abilitiesRow, inventoryItens];
+  }
+
   private addStatusBuilds(inverse = false): EmbedFieldData[] {
     const actualEnemy = this.enemy[this.defenderIndex];
     const defaultReturn = [
@@ -105,7 +166,10 @@ export default class BolehamBattle extends EventEmitter {
       `<@${this.battleling[0].id}>`,
       'name' in this.enemy[0] ? this.enemy[0].name : `<@${this.enemy[0].id}>`,
     ).addFields(this.addStatusBuilds());
-    this.editMessage({ embeds: [embed] });
+    this.editMessage({
+      embeds: [embed],
+      components: this.createMessageComponents(this.battleling[0]),
+    });
 
     return this;
   }
