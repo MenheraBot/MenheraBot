@@ -53,6 +53,7 @@ const Abilities: { [key: number]: IAbilitiesFile } = {
       {
         target: 'self',
         turns: 2,
+        type: 'heal',
         value: 20,
         isValuePercentage: true,
       },
@@ -93,6 +94,7 @@ const Abilities: { [key: number]: IAbilitiesFile } = {
     effects: [
       {
         target: 'self',
+        type: 'attack',
         turns: 4,
         value: 23,
         isValuePercentage: true,
