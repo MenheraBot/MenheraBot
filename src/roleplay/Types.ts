@@ -137,8 +137,11 @@ export type TWeapons =
 
 export type TArmors = 'light' | 'medium' | 'heavy';
 
+export type TElements = 'light' | 'darkness' | 'fire' | 'nature' | 'gravity' | 'prisma';
+
 export interface IClassesFile {
   name: RpgClassNames;
+  afinity: TElements;
   baseAttributesPerLevel: IAttributesPerLevel;
   baseMana: number;
   baseLife: number;
@@ -149,8 +152,6 @@ export interface IClassesFile {
   availableWeapons: TWeapons[];
   availableArmors: TArmors[];
 }
-
-export type TElements = 'light' | 'darkness' | 'fire' | 'nature' | 'gravity' | 'prisma';
 
 export interface IAbilityEffect {
   target: TEffectTarget;
@@ -344,6 +345,7 @@ export interface IAbilityResolved {
   randomChoice: boolean;
   effects: Array<IAbilityEffect>;
   level: number;
+  inCooldown: number;
 }
 
 export interface IResolvedWeapon {
@@ -375,6 +377,7 @@ export interface IResolvedBattleInventory {
   type: TBattleUsableItemType;
   data: IItemData;
   effects: IEffectData[];
+  amount: number;
 }
 
 export interface IBattleUser {
@@ -390,6 +393,7 @@ export interface IBattleUser {
   weapon: IResolvedWeapon | null;
   inventory: IResolvedBattleInventory[];
   abilities: Array<IAbilityResolved>;
+  afinity: TElements;
   isUser: true;
   quests: IResolvedQuest[];
 }
@@ -406,4 +410,18 @@ export interface IBasicAttack {
   damage: number;
 }
 
-export type TBattleTurn = IBasicAttack;
+export interface IResolvedAbilityEffect {
+  target: TEffectTarget;
+  type: TEffectType;
+  amount: number | 'ALL';
+  value: number;
+  isValuePercentage: boolean;
+  turns: number;
+}
+
+export interface IAbilityAttack {
+  type: 'ability';
+  effects: IResolvedAbilityEffect[];
+}
+
+export type TBattleTurn = IBasicAttack | IAbilityAttack;

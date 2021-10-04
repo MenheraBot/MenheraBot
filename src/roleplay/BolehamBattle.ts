@@ -7,14 +7,15 @@ import {
   EmbedFieldData,
   MessageSelectMenu,
   MessageSelectOptionData,
+  SelectMenuInteraction,
   MessageButton,
   MessageComponentInteraction,
   MessageActionRow,
 } from 'discord.js-light';
 import EventEmitter from 'events';
 import BattleFunctions from './Functions/BattleFunctions';
-import { IBattleUser, TBattleEntity, TBattleTurn } from './Types';
-import { createBaseBattleEmbed } from './Utils';
+import { IAbilityResolved, IBattleUser, TBattleEntity, TBattleTurn } from './Types';
+import { createBaseBattleEmbed, resolveEffects } from './Utils';
 
 export default class BolehamBattle extends EventEmitter {
   private attackerIndex = 0;
@@ -82,6 +83,8 @@ export default class BolehamBattle extends EventEmitter {
         .setPlaceholder(this.ctx.locale('roleplay:battle.select-ability'))
         .addOptions(
           user.abilities.reduce((p: MessageSelectOptionData[], c) => {
+            if (c.cost > user.mana || c.inCooldown > 0) return p;
+
             p.push({
               label: this.ctx.locale(`roleplay:abilities.${c.id}.name`),
               value: `${c.id}`,
@@ -111,11 +114,11 @@ export default class BolehamBattle extends EventEmitter {
       );
 
       for (let i = 0; i < user.inventory.length; i++) {
-        if (i >= 24) break;
+        if (i === 25) break;
         (inventoryItens.components[0] as MessageSelectMenu)
           .addOptions({
             label: this.ctx.locale(`items:${user.inventory[i].id}.name`),
-            value: `${user.inventory[i].id} ${i}`,
+            value: `${user.inventory[i].id} ${user.inventory[i].level}`,
             description: this.ctx.locale(`items:${user.inventory[i].id}.description`),
           })
           .setDisabled(false);
@@ -193,6 +196,20 @@ export default class BolehamBattle extends EventEmitter {
           findedUser.tiredness,
         ),
       };
+
+    if (int.customId.endsWith('ABILITY')) {
+      const ability = findedUser.abilities.find(
+        (a) => a.id === Number((int as SelectMenuInteraction).values[0]),
+      ) as IAbilityResolved;
+
+      ability.inCooldown = ability.turnsCooldown;
+      findedUser.mana -= ability.cost;
+
+      return {
+        type: 'ability',
+        effects: resolveEffects(findedUser, ability),
+      };
+    }
   }
 
   public async startBattle(): Promise<this> {

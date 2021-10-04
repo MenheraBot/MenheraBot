@@ -11,6 +11,7 @@ const classes: { [key: number]: IClassesFile } = {
       attackSkill: 4,
       abilitySkill: 2,
     },
+    afinity: 'darkness',
     baseArmor: 3,
     baseDamage: 12,
     attackSkill: 50,
@@ -22,6 +23,7 @@ const classes: { [key: number]: IClassesFile } = {
   },
   2: {
     name: 'Hunter',
+    afinity: 'nature',
     baseAttributesPerLevel: {
       maxLife: 40,
       maxMana: 5,
@@ -41,6 +43,7 @@ const classes: { [key: number]: IClassesFile } = {
   },
   3: {
     name: 'Reaper',
+    afinity: 'darkness',
     baseAttributesPerLevel: {
       maxLife: 60,
       maxMana: 8,
@@ -60,6 +63,7 @@ const classes: { [key: number]: IClassesFile } = {
   },
   4: {
     name: 'Warrior',
+    afinity: 'fire',
     baseAttributesPerLevel: {
       maxLife: 60,
       maxMana: 6,
@@ -79,6 +83,7 @@ const classes: { [key: number]: IClassesFile } = {
   },
   5: {
     name: 'Illusionist',
+    afinity: 'gravity',
     baseAttributesPerLevel: {
       maxLife: 40,
       maxMana: 13,
@@ -98,6 +103,7 @@ const classes: { [key: number]: IClassesFile } = {
   },
   6: {
     name: 'Paladin',
+    afinity: 'light',
     baseAttributesPerLevel: {
       maxLife: 50,
       maxMana: 6,

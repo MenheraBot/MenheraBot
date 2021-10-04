@@ -85,6 +85,7 @@ export default class BattleFunctions {
         randomChoice: abilityData.randomChoice ?? false,
         effects: abilityData.effects,
         level: a.level,
+        inCooldown: 0,
       };
     });
 
@@ -95,6 +96,8 @@ export default class BattleFunctions {
     const armor = this.getUserArmor(user.classId, user.level, equiped, weapon);
 
     const damage = this.getUserDamage(user.classId, user.level, equiped, weapon);
+
+    const { afinity } = this.client.boleham.Functions.getClassDataById(user.classId);
 
     const inventory = this.getUserBattleInventory(user.inventory);
 
@@ -116,6 +119,7 @@ export default class BattleFunctions {
       armor,
       damage,
       inventory,
+      afinity,
       weapon,
       attackSkill,
       abilitySkill,
@@ -315,15 +319,15 @@ export default class BattleFunctions {
     return inventory.reduce((p: IResolvedBattleInventory[], c) => {
       const foundItem = this.client.boleham.Functions.getItemById<AsAnUsableItem>(c.id);
       if (acceptableItems.includes(foundItem.type)) {
-        for (let i = 0; i < c.amount; i++) {
-          p.push({
-            id: c.id,
-            level: c.level ?? 0,
-            data: foundItem.data,
-            effects: foundItem.effects,
-            type: foundItem.type as TBattleUsableItemType,
-          });
-        }
+        p.push({
+          id: c.id,
+          level: c.level ?? 0,
+          data: foundItem.data,
+          effects: foundItem.effects,
+          type: foundItem.type as TBattleUsableItemType,
+          amount: c.amount,
+        });
+
         return p;
       }
       return p;

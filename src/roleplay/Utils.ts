@@ -1,8 +1,11 @@
+/* eslint-disable no-nested-ternary */
 import { COLORS, emojis } from '@structures/MenheraConstants';
 import { MessageEmbed } from 'discord.js-light';
 import { TFunction } from 'i18next';
 import BasicFunctions from './Functions/BasicFunctions';
 import {
+  IAbilityResolved,
+  IBattleUser,
   IEnochiaShop,
   IInventoryItem,
   IItemFile,
@@ -10,6 +13,7 @@ import {
   IMoney,
   IQuest,
   IQuestsFile,
+  IResolvedAbilityEffect,
   IReturnData,
   IRpgUserSchema,
   IUsableItem,
@@ -154,6 +158,36 @@ const createBaseBattleEmbed = (locale: TFunction, user: string, enemy: string): 
     .setColor(COLORS.Colorless)
     .setDescription(locale('common:battle_desc', { user, enemy }));
 
+const resolveEffects = (user: IBattleUser, ability: IAbilityResolved): IResolvedAbilityEffect[] => {
+  if (ability.randomChoice) {
+    const selected = randomFromArray(ability.effects);
+    return [
+      {
+        amount: selected.amount ?? 0,
+        isValuePercentage: selected.isValuePercentage ?? false,
+        target: selected.target,
+        turns: selected.turns ?? 0,
+        type: selected.type,
+        value: selected.value ? selected.value * ability.level : 0,
+      },
+    ];
+  }
+
+  return ability.effects.map((a) => ({
+    amount: a.amount ?? 0,
+    isValuePercentage: a.isValuePercentage ?? false,
+    target: a.target,
+    turns: a.turns ?? 0,
+    type: a.type,
+    value: a.value
+      ? a.isValuePercentage
+        ? a.value
+        : a.value * ability.level +
+          (ability.element === user.afinity ? a.value * ability.level * 0.1 : 0)
+      : 0,
+  }));
+};
+
 export {
   canBuy,
   resolveCustomId,
@@ -162,5 +196,6 @@ export {
   usePotion,
   resolveDailyQuests,
   parseEntry,
+  resolveEffects,
   createBaseBattleEmbed,
 };
