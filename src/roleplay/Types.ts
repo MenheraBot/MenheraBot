@@ -63,7 +63,6 @@ export type TEffectType =
   | 'poison'
   | 'slow'
   | 'attack'
-  | 'speed'
   | 'armor_penetration'
   | 'armor_buff'
   | 'life_buff'
@@ -92,7 +91,6 @@ export interface IRpgUserSchema {
   life: number;
   mana: number;
   tiredness: number;
-  speed: number;
   lucky: number;
   attackSkill: number;
   abilitySkill: number;
@@ -117,7 +115,6 @@ export interface IHomeSchema {
 interface IAttributesPerLevel {
   maxLife: number;
   maxMana: number;
-  speed: number;
   baseArmor: number;
   baseDamage: number;
   attackSkill: number;
@@ -149,7 +146,6 @@ export interface IClassesFile {
   baseDamage: number;
   attackSkill: number;
   abilitySkill: number;
-  speed: number;
   availableWeapons: TWeapons[];
   availableArmors: TArmors[];
 }
@@ -196,7 +192,6 @@ export interface IBasicData {
   abilities: IAbility[];
   attackSkill: number;
   abilitySkill: number;
-  speed: number;
   equiped: IEquiped;
 }
 
@@ -305,7 +300,6 @@ export interface IMobAttacksFile {
 
 export interface IMobAttributePerLevel {
   baseLife: number;
-  baseSpeed: number;
   baseArmor: number;
   baseDamage: number;
   baseSkill: number;
@@ -317,7 +311,6 @@ export interface IMobsFile {
   minUserLevel: number;
   isLocationBuilding: boolean;
   baseLife: number;
-  baseSpeed: number;
   baseArmor: number;
   baseDamage: number;
   baseSkill: number;
@@ -335,7 +328,6 @@ export interface IBattleEntityEffect {
 export interface IBattleMob {
   name: string;
   life: number;
-  speed: number;
   armor: number;
   damage: number;
   attackSkill: number;
@@ -390,7 +382,6 @@ export interface IBattleUser {
   life: number;
   mana: number;
   tiredness: number;
-  speed: number;
   lucky: number;
   armor: number;
   damage: number;
@@ -409,3 +400,10 @@ export interface IReturnData<T> {
   id: number;
   data: T;
 }
+
+export interface IBasicAttack {
+  type: 'basic';
+  damage: number;
+}
+
+export type TBattleTurn = IBasicAttack;

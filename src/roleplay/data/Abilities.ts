@@ -52,7 +52,6 @@ const Abilities: { [key: number]: IAbilitiesFile } = {
     effects: [
       {
         target: 'self',
-        type: 'speed',
         turns: 2,
         value: 20,
         isValuePercentage: true,
@@ -94,7 +93,6 @@ const Abilities: { [key: number]: IAbilitiesFile } = {
     effects: [
       {
         target: 'self',
-        type: 'speed',
         turns: 4,
         value: 23,
         isValuePercentage: true,

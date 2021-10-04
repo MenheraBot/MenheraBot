@@ -174,11 +174,6 @@ export default class FichaInteractionCommand extends InteractionCommand {
           inline: true,
         },
         {
-          name: `${emojis.roleplay_custom.speed} | ${ctx.translate('second.speed')}`,
-          value: `${user.speed}`,
-          inline: true,
-        },
-        {
           name: `${emojis.roleplay_custom.attack_skill} | ${ctx.translate('second.atkSkill')}`,
           value: `${user.attackSkill}`,
           inline: true,

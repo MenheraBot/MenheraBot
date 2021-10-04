@@ -55,7 +55,6 @@ const rpgSchema = new Schema({
   life: { type: Number, default: 100 }, // User Life
   mana: { type: Number, default: 20 }, // User mana
   tiredness: { type: Number, default: 100 }, // percentage of tiredness of user, 100 = good, 0 = bad
-  speed: { type: Number }, // Base speed from user
   lucky: { type: Number, default: 1 }, // Base lucky for gettinh loots
   attackSkill: { type: Number }, // Facility of dealling damage with basic attack
   abilitySkill: { type: Number }, // Facility of dealling damage with all abilities

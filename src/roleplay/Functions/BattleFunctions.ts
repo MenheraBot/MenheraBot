@@ -52,7 +52,6 @@ export default class BattleFunctions {
   ): IBattleMob[] {
     return mobs.map((mob) => {
       const life = mob.baseLife + mob.perLevel.baseLife * mob.level;
-      const speed = mob.baseSpeed + mob.perLevel.baseSpeed * mob.level;
       const armor = mob.baseArmor + mob.perLevel.baseArmor * mob.level;
       const damage = mob.baseDamage + mob.perLevel.baseDamage * mob.level;
       const attackSkill = mob.baseSkill + mob.perLevel.baseSkill * mob.level;
@@ -60,7 +59,6 @@ export default class BattleFunctions {
 
       return {
         life,
-        speed,
         armor,
         damage,
         attackSkill,
@@ -73,7 +71,7 @@ export default class BattleFunctions {
   }
 
   async prepareUserForBattle(user: IRpgUserSchema): Promise<IBattleUser> {
-    const { life, mana, tiredness, speed, lucky, attackSkill, abilitySkill } = user;
+    const { life, mana, tiredness, lucky, attackSkill, abilitySkill } = user;
 
     let weapon: IBattleUser['weapon'] = null;
 
@@ -114,7 +112,6 @@ export default class BattleFunctions {
       life,
       mana,
       tiredness,
-      speed,
       lucky,
       armor,
       damage,
@@ -434,5 +431,15 @@ export default class BattleFunctions {
     }
 
     return userArmor;
+  }
+
+  static CalculateAttackDamage(
+    attackDamage: number,
+    attackSkill: number,
+    tiredness: number,
+  ): number {
+    const baseDamage = attackDamage + attackDamage * (attackSkill / 100);
+    const totalDamage = (tiredness / 100) * (0.7 * baseDamage) + attackDamage * 0.3;
+    return totalDamage;
   }
 }

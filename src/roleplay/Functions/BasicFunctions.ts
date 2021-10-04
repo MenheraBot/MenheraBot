@@ -44,7 +44,6 @@ export default class BasicFunctions {
       abilities: [{ id: firstAbility.id, level: 1, xp: 0 }],
       attackSkill: selectedClass.attackSkill,
       abilitySkill: selectedClass.abilitySkill,
-      speed: selectedClass.speed,
       equiped: { armor: {}, backpack: { id: 0, level: 1 } },
     };
   }
