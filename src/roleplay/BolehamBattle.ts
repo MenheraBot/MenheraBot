@@ -14,8 +14,14 @@ import {
 } from 'discord.js-light';
 import EventEmitter from 'events';
 import BattleFunctions from './Functions/BattleFunctions';
-import { IAbilityResolved, IBattleUser, TBattleEntity, TBattleTurn } from './Types';
-import { createBaseBattleEmbed, resolveEffects } from './Utils';
+import {
+  IAbilityResolved,
+  IBattleUser,
+  IResolvedBattleInventory,
+  TBattleEntity,
+  TBattleTurn,
+} from './Types';
+import { createBaseBattleEmbed, isDead, resolveEffects, resolveItemUsage } from './Utils';
 
 export default class BolehamBattle extends EventEmitter {
   private attackerIndex = 0;
@@ -37,6 +43,7 @@ export default class BolehamBattle extends EventEmitter {
   ) {
     super();
     this.saveCurrentUserStats();
+    this.startBattle();
   }
 
   private saveCurrentUserStats(): void {
@@ -75,25 +82,31 @@ export default class BolehamBattle extends EventEmitter {
   }
 
   private createMessageComponents(user: IBattleUser): MessageActionRow[] {
-    const abilitiesRow = new MessageActionRow().addComponents(
-      new MessageSelectMenu()
-        .setCustomId(`${this.ctx.interaction.id} | ABILITY`)
-        .setMinValues(1)
-        .setMaxValues(1)
-        .setPlaceholder(this.ctx.locale('roleplay:battle.select-ability'))
-        .addOptions(
-          user.abilities.reduce((p: MessageSelectOptionData[], c) => {
-            if (c.cost > user.mana || c.inCooldown > 0) return p;
+    const toSendComponents: MessageActionRow[] = [];
 
-            p.push({
-              label: this.ctx.locale(`roleplay:abilities.${c.id}.name`),
-              value: `${c.id}`,
-              description: this.ctx.locale(`roleplay:abilities.${c.id}.description`),
-            });
-            return p;
-          }, []),
+    if (user.abilities.some((a) => a.inCooldown < 1 && a.cost <= user.mana)) {
+      toSendComponents.push(
+        new MessageActionRow().addComponents(
+          new MessageSelectMenu()
+            .setCustomId(`${this.ctx.interaction.id} | ABILITY`)
+            .setMinValues(1)
+            .setMaxValues(1)
+            .setPlaceholder(this.ctx.locale('roleplay:battle.select-ability'))
+            .addOptions(
+              user.abilities.reduce((p: MessageSelectOptionData[], c) => {
+                if (c.cost > user.mana || c.inCooldown > 0) return p;
+
+                p.push({
+                  label: this.ctx.locale(`roleplay:abilities.${c.id}.name`),
+                  value: `${c.id}`,
+                  description: this.ctx.locale(`roleplay:abilities.${c.id}.description`),
+                });
+                return p;
+              }, []),
+            ),
         ),
-    );
+      );
+    }
 
     const basicButton = new MessageButton()
       .setCustomId(`${this.ctx.interaction.id} | BASIC`)
@@ -101,7 +114,7 @@ export default class BolehamBattle extends EventEmitter {
       .setLabel(this.ctx.locale('roleplay:battle.basic-attack'))
       .setStyle('PRIMARY');
 
-    const buttonRows = new MessageActionRow().addComponents(basicButton);
+    toSendComponents.push(new MessageActionRow().addComponents(basicButton));
 
     if (user.inventory.length > 0) {
       const inventoryItens = new MessageActionRow().addComponents(
@@ -113,20 +126,44 @@ export default class BolehamBattle extends EventEmitter {
           .setMaxValues(1),
       );
 
-      for (let i = 0; i < user.inventory.length; i++) {
-        if (i === 25) break;
-        (inventoryItens.components[0] as MessageSelectMenu)
-          .addOptions({
-            label: this.ctx.locale(`items:${user.inventory[i].id}.name`),
-            value: `${user.inventory[i].id} ${user.inventory[i].level}`,
-            description: this.ctx.locale(`items:${user.inventory[i].id}.description`),
-          })
-          .setDisabled(false);
+      if (user.inventory.some((a) => a.amount > 0)) {
+        for (let i = 0; i < user.inventory.length; i++) {
+          if (i === 25) break;
+          if (user.inventory[i].amount > 0) {
+            (inventoryItens.components[0] as MessageSelectMenu)
+              .addOptions({
+                label: this.ctx.locale(`items:${user.inventory[i].id}.name`),
+                value: `${user.inventory[i].id} ${user.inventory[i].level}`,
+                description: this.ctx.locale(`items:${user.inventory[i].id}.description`),
+              })
+              .setDisabled(false);
+          }
+        }
+        toSendComponents.push(inventoryItens);
       }
-      return [buttonRows, abilitiesRow, inventoryItens];
     }
 
-    return [buttonRows, abilitiesRow];
+    return toSendComponents;
+  }
+
+  private changeTurn(): void {
+    const newIndex = (currentIndex: number, array: TBattleEntity[]): number => {
+      const nextIndex = (index: number) => (index === array.length ? 0 : index + 1);
+      let returnedIndex = nextIndex(currentIndex);
+      for (let i = 0; i <= array.length; i++) {
+        if (!isDead(array[returnedIndex])) break;
+        returnedIndex = nextIndex(returnedIndex);
+      }
+      return returnedIndex;
+    };
+
+    if (this.turn === 'attacker') {
+      this.turn = 'defender';
+      this.attackerIndex = newIndex(this.attackerIndex, this.attacking);
+    } else {
+      this.turn = 'attacker';
+      this.attackerIndex = newIndex(this.defenderIndex, this.defending);
+    }
   }
 
   private addStatusBuilds(inverse = false): EmbedFieldData[] {
@@ -210,9 +247,18 @@ export default class BolehamBattle extends EventEmitter {
         effects: resolveEffects(findedUser, ability),
       };
     }
+
+    const [itemId, itemLevel] = int.customId.split(' ');
+    const item = findedUser.inventory.find(
+      (a) => a.id === Number(itemId) && a.level === Number(itemLevel),
+    ) as IResolvedBattleInventory;
+
+    item.amount -= 1;
+
+    return resolveItemUsage(item);
   }
 
-  public async startBattle(): Promise<this> {
+  private async startBattle(): Promise<void> {
     const embed = createBaseBattleEmbed(
       this.ctx.locale.bind(this.ctx),
       `<@${this.attacking[0].id}>`,
@@ -222,7 +268,5 @@ export default class BolehamBattle extends EventEmitter {
       embeds: [embed],
       components: this.createMessageComponents(this.attacking[0]),
     });
-
-    return this;
   }
 }

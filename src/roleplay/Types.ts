@@ -78,6 +78,7 @@ export type TEffectType =
 export interface IEffectData {
   type: TEffectType;
   target: TEffectTarget;
+  amount: number;
   value: number;
 }
 
@@ -424,4 +425,9 @@ export interface IAbilityAttack {
   effects: IResolvedAbilityEffect[];
 }
 
-export type TBattleTurn = IBasicAttack | IAbilityAttack;
+export interface IInventoryAttack {
+  type: 'inventory';
+  effects: IEffectData[];
+}
+
+export type TBattleTurn = IBasicAttack | IAbilityAttack | IInventoryAttack;

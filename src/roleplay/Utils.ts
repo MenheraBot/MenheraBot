@@ -14,11 +14,14 @@ import {
   IQuest,
   IQuestsFile,
   IResolvedAbilityEffect,
+  IResolvedBattleInventory,
   IReturnData,
   IRpgUserSchema,
   IUsableItem,
   TItemRarity,
+  IInventoryAttack,
   TItemType,
+  TBattleEntity,
 } from './Types';
 
 const randomFromArray = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
@@ -188,6 +191,24 @@ const resolveEffects = (user: IBattleUser, ability: IAbilityResolved): IResolved
   }));
 };
 
+const resolveItemUsage = (item: IResolvedBattleInventory): IInventoryAttack => {
+  switch (item.type) {
+    case 'potion': {
+      return {
+        type: 'inventory',
+        effects: item.effects.map((a) => ({
+          target: a.target,
+          amount: a.amount,
+          type: a.type,
+          value: a.value + item.data.perLevel * item.level,
+        })),
+      };
+    }
+  }
+};
+
+const isDead = (entity: TBattleEntity): boolean => entity.life === 0;
+
 export {
   canBuy,
   resolveCustomId,
@@ -195,7 +216,9 @@ export {
   randomFromArray,
   usePotion,
   resolveDailyQuests,
+  isDead,
   parseEntry,
+  resolveItemUsage,
   resolveEffects,
   createBaseBattleEmbed,
 };
