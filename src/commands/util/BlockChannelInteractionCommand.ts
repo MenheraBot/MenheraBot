@@ -22,6 +22,7 @@ export default class BlockChannelInteractionCommand extends InteractionCommand {
               name: 'canal',
               description: 'Canal para ser bloqueado/desbloqueado',
               required: true,
+              channelTypes: ['GUILD_TEXT'],
             },
           ],
         },
