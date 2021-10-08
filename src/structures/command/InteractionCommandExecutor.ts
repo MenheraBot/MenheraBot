@@ -11,7 +11,7 @@ const InteractionCommandExecutor = async (
   interaction: Interaction,
 ): Promise<void> => {
   if (!interaction.isCommand()) return;
-  if (!interaction.inGuild() || interaction.channel?.type === 'DM') return;
+  if (!interaction.inGuild()) return;
   const server = await client.repositories.cacheRepository.fetchGuild(
     interaction.guildId,
     interaction.guild?.preferredLocale ?? languageByLocale.brazil,
