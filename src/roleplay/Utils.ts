@@ -155,11 +155,11 @@ const usePotion = (
 const parseEntry = <T>(entry: [string, T][]): IReturnData<T>[] =>
   entry.map((a) => ({ id: Number(a[0]), data: a[1] }));
 
-const createBaseBattleEmbed = (locale: TFunction, user: string, enemy: string): MessageEmbed =>
+const createBaseBattleEmbed = (locale: TFunction, entities: string[]): MessageEmbed =>
   new MessageEmbed()
     .setTitle(`${emojis.sword} | ${locale('common:battle')}`)
     .setColor(COLORS.Colorless)
-    .setDescription(locale('common:battle_desc', { user, enemy }));
+    .setDescription(locale('common:battle_desc', { user: entities[0], enemy: entities[1] }));
 
 const resolveEffects = (user: IBattleUser, ability: IAbilityResolved): IResolvedAbilityEffect[] => {
   if (ability.randomChoice) {
@@ -207,7 +207,7 @@ const resolveItemUsage = (item: IResolvedBattleInventory): IInventoryAttack => {
   }
 };
 
-const isDead = (entity: TBattleEntity): boolean => entity.life === 0;
+const isDead = (entity: TBattleEntity): boolean => entity.life <= 0;
 
 export {
   canBuy,

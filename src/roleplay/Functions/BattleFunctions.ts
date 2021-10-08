@@ -4,6 +4,7 @@ import {
   IArmor,
   IBattleMob,
   IBattleUser,
+  IEffectData,
   IInventoryItem,
   ILeveledItem,
   IMobsFile,
@@ -13,6 +14,8 @@ import {
   IResolvedQuest,
   IResolvedWeapon,
   IRpgUserSchema,
+  ISufferedEffect,
+  TBattleEntity,
   TBattleUsableItemType,
 } from '@roleplay/Types';
 import { randomFromArray } from '@roleplay/Utils';
@@ -125,6 +128,7 @@ export default class BattleFunctions {
       abilitySkill,
       abilities,
       isUser: true,
+      effects: [],
       quests,
     };
   }
@@ -441,9 +445,27 @@ export default class BattleFunctions {
     attackDamage: number,
     attackSkill: number,
     tiredness: number,
+    effects: ISufferedEffect[],
   ): number {
-    const baseDamage = attackDamage + attackDamage * (attackSkill / 100);
+    let baseDamage = attackDamage + attackDamage * (attackSkill / 100);
+
+    if (effects.some((a) => a.type === 'damage_buff')) {
+      effects.forEach((a) => {
+        if (a.type !== 'damage_buff') return;
+
+        baseDamage = a.isValuePercentage
+          ? baseDamage + baseDamage * (a.value / 100)
+          : baseDamage + a.value;
+      });
+    }
+
     const totalDamage = (tiredness / 100) * (0.7 * baseDamage) + attackDamage * 0.3;
     return totalDamage;
   }
+
+  /* static CalculateAttackEffectiveness(
+    attackDamage: number,
+    attacker: TBattleEntity,
+    defender: TBattleEntity,
+  ): number {} */
 }

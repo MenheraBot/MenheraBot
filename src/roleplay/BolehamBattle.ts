@@ -16,7 +16,10 @@ import EventEmitter from 'events';
 import BattleFunctions from './Functions/BattleFunctions';
 import {
   IAbilityResolved,
+  IBattleMob,
   IBattleUser,
+  IEffectData,
+  IResolvedAbilityEffect,
   IResolvedBattleInventory,
   TBattleEntity,
   TBattleTurn,
@@ -43,7 +46,7 @@ export default class BolehamBattle extends EventEmitter {
   ) {
     super();
     this.saveCurrentUserStats();
-    this.startBattle();
+    this.battle();
   }
 
   private saveCurrentUserStats(): void {
@@ -60,7 +63,11 @@ export default class BolehamBattle extends EventEmitter {
   }
 
   private onError(reason: string): void {
-    this.emit('error', reason);
+    this.emit('exception', reason);
+  }
+
+  private onEndBattle(winner: TBattleEntity[]): void {
+    this.emit('endBattle', winner);
   }
 
   private async sendMessageToChannel(
@@ -148,7 +155,7 @@ export default class BolehamBattle extends EventEmitter {
 
   private changeTurn(): void {
     const newIndex = (currentIndex: number, array: TBattleEntity[]): number => {
-      const nextIndex = (index: number) => (index === array.length ? 0 : index + 1);
+      const nextIndex = (index: number) => (index + 1 === array.length ? 0 : index + 1);
       let returnedIndex = nextIndex(currentIndex);
       for (let i = 0; i <= array.length; i++) {
         if (!isDead(array[returnedIndex])) break;
@@ -231,6 +238,7 @@ export default class BolehamBattle extends EventEmitter {
           findedUser.damage,
           findedUser.attackSkill,
           findedUser.tiredness,
+          findedUser.effects,
         ),
       };
 
@@ -239,7 +247,7 @@ export default class BolehamBattle extends EventEmitter {
         (a) => a.id === Number((int as SelectMenuInteraction).values[0]),
       ) as IAbilityResolved;
 
-      ability.inCooldown = ability.turnsCooldown;
+      ability.inCooldown = ability.turnsCooldown + 1;
       findedUser.mana -= ability.cost;
 
       return {
@@ -258,15 +266,82 @@ export default class BolehamBattle extends EventEmitter {
     return resolveItemUsage(item);
   }
 
-  private async startBattle(): Promise<void> {
+  private getEntitiesDisplay(): Array<string> {
+    const defenderEntity = this.defending[this.defenderIndex];
+    const defendingName =
+      'name' in defenderEntity ? defenderEntity.name : `<@${defenderEntity.id}>`;
+    const entities = [`<@${this.attacking[this.attackerIndex].id}>`, defendingName];
+
+    if (this.turn === 'defender') entities.reverse();
+
+    return entities;
+  }
+
+  private executeEffects(effects: IEffectData[] | IResolvedAbilityEffect[]): void;
+
+  private makeAction(action: TBattleTurn | null): void | true {
+    const user = this.getSelf();
+    const allies = this.getAllies();
+    const enemies = this.getEnemies();
+
+    if (!action) {
+      this.changeTurn();
+      return;
+    }
+
+    switch (action.type) {
+      case 'inventory':
+      case 'ability':
+        this.executeEffects(action.effects);
+        break;
+      case 'basic':
+        enemies[this.defenderIndex].life -= action.damage;
+    }
+  }
+
+  private getEnemies<T extends boolean>(): T extends true ? IBattleUser[] : IBattleMob[];
+
+  private getEnemies(): TBattleEntity[] {
+    return this.turn === 'attacker' ? this.defending : this.attacking;
+  }
+
+  private getAllies<T extends boolean>(): T extends true ? IBattleUser[] : IBattleMob[];
+
+  private getAllies(): TBattleEntity[] {
+    return this.turn === 'attacker' ? this.attacking : this.defending;
+  }
+
+  private getSelf<T extends boolean>(): T extends true ? IBattleUser : IBattleMob;
+
+  private getSelf(): TBattleEntity {
+    return this.turn === 'attacker'
+      ? this.attacking[this.attackerIndex]
+      : this.defending[this.defenderIndex];
+  }
+
+  private checkEndBattle(): boolean {
+    const attackingDead = this.attacking.every((a) => isDead(a));
+    const defendingDead = this.defending.every((a) => isDead(a));
+    if (attackingDead || defendingDead) {
+      this.onEndBattle(attackingDead ? this.attacking : this.defending);
+      return true;
+    }
+    return false;
+  }
+
+  private async battle(): Promise<void> {
     const embed = createBaseBattleEmbed(
       this.ctx.locale.bind(this.ctx),
-      `<@${this.attacking[0].id}>`,
-      'name' in this.defending[0] ? this.defending[0].name : `<@${this.defending[0].id}>`,
+      this.getEntitiesDisplay(),
     ).addFields(this.addStatusBuilds());
+
     this.makeMessage({
       embeds: [embed],
-      components: this.createMessageComponents(this.attacking[0]),
+      components: this.createMessageComponents(this.getSelf<true>()),
     });
+
+    const action = await this.waitUserResponse(this.attacking[this.attackerIndex].id);
+    const makeAction = this.makeAction(action);
+    //  if (makeAction) return;
   }
 }

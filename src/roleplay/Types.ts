@@ -381,6 +381,13 @@ export interface IResolvedBattleInventory {
   amount: number;
 }
 
+export interface ISufferedEffect {
+  type: TEffectType;
+  value: number;
+  isValuePercentage: boolean;
+  turns: number;
+}
+
 export interface IBattleUser {
   id: string;
   life: number;
@@ -395,6 +402,7 @@ export interface IBattleUser {
   inventory: IResolvedBattleInventory[];
   abilities: Array<IAbilityResolved>;
   afinity: TElements;
+  effects: ISufferedEffect[];
   isUser: true;
   quests: IResolvedQuest[];
 }
