@@ -1,8 +1,8 @@
 import { Awaitable } from 'discord.js-light';
 import MenheraClient from 'MenheraClient';
 
-export default abstract class Event {
+export default class Event {
   constructor(public client: MenheraClient) {}
 
-  public abstract run?(...args: unknown[]): Awaitable<void>;
+  public run?(...args: unknown[]): Awaitable<void>;
 }
