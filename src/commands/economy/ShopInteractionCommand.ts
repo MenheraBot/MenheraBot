@@ -309,7 +309,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
       const valorDemonio = shopEconomy.hunts.demon;
       const valorGigante = shopEconomy.hunts.giant;
       const valorAnjo = shopEconomy.hunts.angel;
-      const valorArch = shopEconomy.hunts.arcangel;
+      const valorArch = shopEconomy.hunts.archangel;
       const valorSD = shopEconomy.hunts.demigod;
       const valorDeus = shopEconomy.hunts.god;
 
@@ -342,7 +342,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
     const valorDemonio = shopEconomy.hunts.demon;
     const valorGigante = shopEconomy.hunts.giant;
     const valorAnjo = shopEconomy.hunts.angel;
-    const valorArch = shopEconomy.hunts.arcangel;
+    const valorArch = shopEconomy.hunts.archangel;
     const valorSD = shopEconomy.hunts.demigod;
     const valorDeus = shopEconomy.hunts.god;
 

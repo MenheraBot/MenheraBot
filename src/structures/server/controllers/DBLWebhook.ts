@@ -10,7 +10,6 @@ const runVote = async (
   isWeekend: boolean,
 ): Promise<void> => {
   const user = await client.repositories.userRepository.find(userId);
-
   if (!user) return;
 
   user.votos += 1;

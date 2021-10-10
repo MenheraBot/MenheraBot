@@ -34,7 +34,7 @@ Menhera has an RPG in the medieval style, which offers:
 
 ### Lot of Commands
 
-She has many features, with **7 categories of commands**, including many action commands, image and fun commands, economy, her main funcionality: **RPG** and much more
+She has many features, with **7 categories of commands**, including many action commands, image and fun commands, economy, her main functionality: **RPG** and much more
 
 ## Support
 
@@ -51,7 +51,7 @@ According to the [LICENSE](https://github.com/ySnoopyDogy/MenheraBot/blob/master
 - [Discord](https://discord.gg/fZMdQbA)
 - [Github](https://github.com/ySnoopyDogy/MenheraBot)
 - [Top.GG](https://top.gg/bot/708014856711962654)
-- [Oficial Site](https://menherabot.xyz)
+- [Official Site](https://menherabot.xyz)
 
 ## Source
 
