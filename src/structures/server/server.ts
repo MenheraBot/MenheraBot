@@ -33,8 +33,7 @@ export default class HttpServer {
   }
 
   static getInstance(): HttpServer {
-    if (!this.instance) this.instance = new HttpServer();
-
+    this.instance ??= new HttpServer();
     return this.instance;
   }
 }
