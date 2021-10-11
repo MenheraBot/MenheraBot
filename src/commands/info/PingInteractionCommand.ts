@@ -2,8 +2,8 @@ import { MessageEmbed } from 'discord.js-light';
 import moment from 'moment';
 import 'moment-duration-format';
 import MenheraClient from 'MenheraClient';
-import { Console } from 'console';
-import { Transform } from 'stream';
+import { Console } from 'node:console';
+import { Transform } from 'node:stream';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 
