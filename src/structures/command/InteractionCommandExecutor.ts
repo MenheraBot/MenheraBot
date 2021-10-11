@@ -1,17 +1,21 @@
 import { languageByLocale } from '@structures/MenheraConstants';
 import HttpRequests from '@utils/HTTPrequests';
 import { ICommandUsedData } from '@utils/Types';
-import { Interaction, GuildMember, MessageEmbed, Collection } from 'discord.js-light';
+import {
+  CommandInteraction,
+  BaseGuildCommandInteraction,
+  GuildMember,
+  MessageEmbed,
+  Collection,
+} from 'discord.js-light';
 import i18next from 'i18next';
 import MenheraClient from 'MenheraClient';
 import InteractionCommandContext from './InteractionContext';
 
 const InteractionCommandExecutor = async (
   client: MenheraClient,
-  interaction: Interaction,
+  interaction: BaseGuildCommandInteraction<'present'> & CommandInteraction,
 ): Promise<void> => {
-  if (!interaction.isCommand()) return;
-  if (!interaction.inGuild()) return;
   const server = await client.repositories.cacheRepository.fetchGuild(
     interaction.guildId,
     interaction.guild?.preferredLocale ?? languageByLocale.brazil,

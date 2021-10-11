@@ -11,6 +11,7 @@ import MamarRepository from '@database/repositories/MamarRepository';
 import RelationshipRepository from '@database/repositories/RelationshipRepository';
 import StarRepository from '@database/repositories/StarRepository';
 import TopRepository from '@database/repositories/TopRepository';
+
 import UserRepository from '@database/repositories/UserRepository';
 import {
   ApplicationCommandOptionData,
