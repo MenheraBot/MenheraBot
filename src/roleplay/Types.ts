@@ -61,9 +61,7 @@ export type TEffectTarget = 'self' | 'allies' | 'enemies';
 export type TEffectType =
   | 'invisibility'
   | 'poison'
-  | 'slow'
   | 'attack'
-  | 'armor_penetration'
   | 'armor_buff'
   | 'life_buff'
   | 'mana_buff'

@@ -4,7 +4,6 @@ import {
   IArmor,
   IBattleMob,
   IBattleUser,
-  IEffectData,
   IInventoryItem,
   ILeveledItem,
   IMobsFile,
@@ -463,9 +462,49 @@ export default class BattleFunctions {
     return totalDamage;
   }
 
-  /* static CalculateAttackEffectiveness(
+  static CalculateTotalArmor(user: TBattleEntity): number {
+    let totalArmor = user.armor;
+
+    user.effects.forEach((effect) => {
+      switch (effect.type) {
+        case 'armor_buff':
+          totalArmor = effect.isValuePercentage
+            ? totalArmor + totalArmor * (effect.value / 100)
+            : totalArmor + effect.value;
+          break;
+        case 'degradation':
+          totalArmor = effect.isValuePercentage
+            ? totalArmor - totalArmor * (effect.value / 100)
+            : totalArmor - effect.value;
+      }
+    });
+
+    return totalArmor;
+  }
+
+  static CalculateAttackEffectiveness(
     attackDamage: number,
     attacker: TBattleEntity,
     defender: TBattleEntity,
-  ): number {} */
+  ): number {
+    const totalArmor = BattleFunctions.CalculateTotalArmor(defender);
+
+    let totalDamage =
+      attackDamage * (totalArmor >= 0 ? 100 / (100 + totalArmor) : 2 - 100 / (100 - totalArmor));
+
+    attacker.effects.forEach((e) => {
+      switch (e.type) {
+        case 'blind':
+          totalDamage -= totalDamage * (e.value / 100);
+          break;
+        case 'confusion': {
+          const randomized = Math.floor(Math.random() * 100);
+          totalDamage -= totalDamage - e.value / randomized;
+          break;
+        }
+      }
+    });
+
+    return totalDamage;
+  }
 }

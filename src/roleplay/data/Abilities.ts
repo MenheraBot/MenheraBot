@@ -77,14 +77,6 @@ const Abilities: { [key: number]: IAbilitiesFile } = {
         turns: 2,
         value: 2,
       },
-      {
-        target: 'enemies',
-        type: 'slow',
-        amount: 'ALL',
-        turns: 2,
-        value: 9,
-        isValuePercentage: true,
-      },
     ],
   },
   202: {
@@ -106,13 +98,6 @@ const Abilities: { [key: number]: IAbilitiesFile } = {
     element: 'nature',
     turnsCooldown: 6,
     effects: [
-      {
-        target: 'enemies',
-        amount: 1,
-        type: 'armor_penetration',
-        value: 30,
-        isValuePercentage: true,
-      },
       {
         target: 'enemies',
         amount: 1,
@@ -152,14 +137,6 @@ const Abilities: { [key: number]: IAbilitiesFile } = {
         turns: 3,
         value: 7,
       },
-      {
-        target: 'enemies',
-        type: 'slow',
-        amount: 'ALL',
-        turns: 2,
-        value: 30,
-        isValuePercentage: true,
-      },
     ],
   },
   301: {
@@ -182,12 +159,6 @@ const Abilities: { [key: number]: IAbilitiesFile } = {
     effects: [
       {
         target: 'enemies',
-        type: 'slow',
-        amount: 1,
-        turns: 1,
-      },
-      {
-        target: 'enemies',
         type: 'degradation',
         amount: 1,
         value: 2,
@@ -203,9 +174,9 @@ const Abilities: { [key: number]: IAbilitiesFile } = {
     effects: [
       {
         target: 'enemies',
-        type: 'slow',
+        type: 'blind',
         turns: 2,
-        value: 4,
+        value: 12,
         amount: 'ALL',
         isValuePercentage: true,
       },
@@ -336,10 +307,9 @@ const Abilities: { [key: number]: IAbilitiesFile } = {
       {
         target: 'enemies',
         amount: 1,
-        type: 'slow',
-        value: 7,
+        type: 'confusion',
+        value: 50,
         turns: 5,
-        isValuePercentage: true,
       },
     ],
   },

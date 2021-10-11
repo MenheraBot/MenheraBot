@@ -78,6 +78,7 @@ export default class BolehamBattle extends EventEmitter {
     if (!sentMessage) return this.onError('SEND_MESSAGE');
 
     if (!(sentMessage instanceof Message)) {
+      // @ts-expect-error Message is private
       this.battleMessage = new Message(this.ctx.client, sentMessage);
     } else this.battleMessage = sentMessage;
   }
@@ -277,12 +278,26 @@ export default class BolehamBattle extends EventEmitter {
     return entities;
   }
 
-  private executeEffects(effects: IEffectData[] | IResolvedAbilityEffect[]): void;
+  private executeEffects(
+    effects: IEffectData[] | IResolvedAbilityEffect[],
+    author: TBattleEntity,
+    defender: TBattleEntity,
+  ): void {
+    const willEffect = (number: number, toEffect: TBattleEntity[]): TBattleEntity[] => {
 
-  private makeAction(action: TBattleTurn | null): void | true {
+    };
+
+    effects.forEach((eff) => {
+      switch (eff.type) {
+        case 'armor_buff': {
+          
+        }
+      }
+    });
+  }
+
+  private makeAction(action: TBattleTurn | null): void | boolean {
     const user = this.getSelf();
-    const allies = this.getAllies();
-    const enemies = this.getEnemies();
 
     if (!action) {
       this.changeTurn();
@@ -292,11 +307,17 @@ export default class BolehamBattle extends EventEmitter {
     switch (action.type) {
       case 'inventory':
       case 'ability':
-        this.executeEffects(action.effects);
+        this.executeEffects(action.effects, this.getSelf(), this.getSelf(true));
         break;
       case 'basic':
-        enemies[this.defenderIndex].life -= action.damage;
+        this.getSelf(true).life -= BattleFunctions.CalculateAttackEffectiveness(
+          action.damage,
+          user,
+          this.getSelf(true),
+        );
     }
+
+    return this.checkEndBattle();
   }
 
   private getEnemies<T extends boolean>(): T extends true ? IBattleUser[] : IBattleMob[];
@@ -311,9 +332,14 @@ export default class BolehamBattle extends EventEmitter {
     return this.turn === 'attacker' ? this.attacking : this.defending;
   }
 
-  private getSelf<T extends boolean>(): T extends true ? IBattleUser : IBattleMob;
+  private getSelf<T extends boolean>(enemy?: boolean): T extends true ? IBattleUser : IBattleMob;
 
-  private getSelf(): TBattleEntity {
+  private getSelf(enemy?: boolean): TBattleEntity {
+    if (enemy)
+      return this.turn === 'defender'
+        ? this.attacking[this.attackerIndex]
+        : this.defending[this.defenderIndex];
+
     return this.turn === 'attacker'
       ? this.attacking[this.attackerIndex]
       : this.defending[this.defenderIndex];
@@ -342,6 +368,6 @@ export default class BolehamBattle extends EventEmitter {
 
     const action = await this.waitUserResponse(this.attacking[this.attackerIndex].id);
     const makeAction = this.makeAction(action);
-    //  if (makeAction) return;
+    if (makeAction) return;
   }
 }
