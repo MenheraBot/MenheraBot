@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { Awaitable } from 'discord.js-light';
 import MenheraClient from 'MenheraClient';
 

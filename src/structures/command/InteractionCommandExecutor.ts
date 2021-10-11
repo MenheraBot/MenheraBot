@@ -41,7 +41,7 @@ const InteractionCommandExecutor = async (
   const command = client.slashCommands.get(interaction.commandName);
   if (!command) {
     interaction
-      .reply({ content: t('permissions:UNKNOW_SLASH'), ephemeral: true })
+      .reply({ content: t('permissions:UNKNOWN_SLASH'), ephemeral: true })
       .catch(() => null);
     return;
   }

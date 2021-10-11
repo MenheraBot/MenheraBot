@@ -84,7 +84,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
           demon: Probabilities.demon,
           giant: Probabilities.giant,
           angel: Probabilities.angel,
-          archangel: Probabilities.arcangel,
+          archangel: Probabilities.archangel,
           demi: Probabilities.demigod,
           god: Probabilities.god,
         }),
@@ -226,7 +226,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
         break;
       }
       case 'arcanjos': {
-        const result = await areYouTheHuntOrTheHunter(Probabilities.arcangel, huntArchangel);
+        const result = await areYouTheHuntOrTheHunter(Probabilities.archangel, huntArchangel);
         const { rank } = await this.client.repositories.topRepository.getUserHuntRank(
           ctx.author.id,
           huntEnum.ARCHANGEL,

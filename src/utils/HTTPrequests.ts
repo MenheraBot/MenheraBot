@@ -12,8 +12,7 @@ import {
   IUserDataToProfile,
 } from '@utils/Types';
 import { User } from 'discord.js-light';
-
-type activity = 'PLAYING' | 'WATCHING' | 'STREAMING' | 'LISTENING';
+import type { ActivityType } from 'discord.js';
 
 const request = axios.create({
   baseURL: `${process.env.API_URL}/picasso`,
@@ -148,7 +147,9 @@ export default class HttpRequests {
       .catch(() => null);
   }
 
-  static async getActivity(shard: number): Promise<{ name: string; type: activity }> {
+  static async getActivity(
+    shard: number,
+  ): Promise<{ name: string; type: Exclude<ActivityType, 'CUSTOM'> }> {
     try {
       const data = await apiRequest.get('/activity', { data: { shard: shard || 0 } });
       return data.data;

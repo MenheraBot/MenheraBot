@@ -28,19 +28,23 @@ export default class CooldownsInteractionCommand extends InteractionCommand {
 
     let txt = '';
 
-    huntCooldownInMilis < 0
-      ? (txt += `\`${ctx.translate('hunt')}\` | ${ctx.translate('no-cooldown')}\n`)
-      : (txt += `\`${ctx.translate('hunt')}\` | **${moment
-          .utc(huntCooldownInMilis)
-          .format('mm:ss')}** ${ctx.translate('minutes')}\n`);
+    txt +=
+      huntCooldownInMilis < 0
+        ? `\`${ctx.translate('hunt')}\` | ${ctx.translate('no-cooldown')}\n`
+        : `\`${ctx.translate('hunt')}\` | **${moment
+            .utc(huntCooldownInMilis)
+            .format('mm:ss')}** ${ctx.translate('minutes')}\n`;
 
-    voteCooldownInMilis && voteCooldownInMilis < 0
-      ? (txt += `\`${ctx.translate('vote')}\` | ${ctx.translate('no-cooldown')}`)
-      : (txt += `\`${ctx.translate('vote')}\` | ${
-          voteCooldownInMilis > 3600000
-            ? `**${moment.utc(voteCooldownInMilis).format('HH:mm:ss')}** ${ctx.translate('hours')}`
-            : `**${moment.utc(voteCooldownInMilis).format('mm:ss')}** ${ctx.translate('minutes')}`
-        }`);
+    txt +=
+      voteCooldownInMilis < 0
+        ? `\`${ctx.translate('vote')}\` | ${ctx.translate('no-cooldown')}`
+        : `\`${ctx.translate('vote')}\` | ${
+            voteCooldownInMilis > 3600000
+              ? `**${moment.utc(voteCooldownInMilis).format('HH:mm:ss')}** ${ctx.translate(
+                  'hours',
+                )}`
+              : `**${moment.utc(voteCooldownInMilis).format('mm:ss')}** ${ctx.translate('minutes')}`
+          }`;
 
     const embed = new MessageEmbed()
       .setTitle(ctx.translate('title'))
