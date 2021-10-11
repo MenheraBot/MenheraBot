@@ -21,7 +21,7 @@
     "description": "Bite someone :3",
     "usage": "<@mention>",
     "bot": "You bit a robot ... -5 teeth in the mouth",
-    "self-mention": "Ooo look at the the masochist, do it right now, no command needed",
+    "self-mention": "Ooo look at the masochist, do it right now, no command needed",
     "embed_title": "Bites",
     "embed_description": "{{author}} bit {{mention}}"
   },
