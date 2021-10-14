@@ -156,6 +156,16 @@ export default class BolehamBattle extends EventEmitter {
     return toSendComponents;
   }
 
+  private finishTurn(): void {
+    this.defending.forEach(entity => {
+      entity.effects.forEach(effect => {
+        // EXECUTE ALL EFFECTS REDUCING BY 1 TURN, AND SPLICING IT IF IT IS ON 0
+
+        // I'M IN SCHOOL'S PC, FVCK GIT PUSH, FVCK TYPESCRIPT ON GITHUB.DEV
+      });
+    })
+  }
+
   private changeTurn(): void {
     const newIndex = (currentIndex: number, array: TBattleEntity[]): number => {
       const nextIndex = (index: number) => (index + 1 === array.length ? 0 : index + 1);
@@ -338,6 +348,8 @@ export default class BolehamBattle extends EventEmitter {
           this.getSelf(true),
         );
     }
+
+    this.changeTurn()
 
     return this.checkEndBattle();
   }
