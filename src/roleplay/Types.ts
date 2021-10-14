@@ -56,7 +56,7 @@ export interface IJob {
   xp: number;
 }
 
-export type TEffectTarget = 'self' | 'allies' | 'enemies';
+export type TEffectTarget = 'self' | 'allies' | 'enemies' | 'enemy';
 
 export type TEffectType =
   | 'invisibility'
@@ -155,7 +155,6 @@ export interface IClassesFile {
 export interface IAbilityEffect {
   target: TEffectTarget;
   type: TEffectType;
-  amount?: number | 'ALL';
   value?: number;
   isValuePercentage?: boolean;
   turns?: number;
@@ -325,17 +324,6 @@ export interface IBattleEntityEffect {
   turns: number;
 }
 
-export interface IBattleMob {
-  name: string;
-  life: number;
-  armor: number;
-  damage: number;
-  attackSkill: number;
-  attacks: IMobAttacksFile[];
-  effects: IBattleEntityEffect[];
-  isUser: false;
-}
-
 export interface IAbilityResolved {
   id: number;
   cost: number;
@@ -404,6 +392,16 @@ export interface IBattleUser {
   isUser: true;
   quests: IResolvedQuest[];
 }
+export interface IBattleMob {
+  name: string;
+  life: number;
+  armor: number;
+  damage: number;
+  attackSkill: number;
+  attacks: IMobAttacksFile[];
+  effects: ISufferedEffect[];
+  isUser: false;
+}
 
 export type TBattleEntity = IBattleMob | IBattleUser;
 
@@ -420,7 +418,6 @@ export interface IBasicAttack {
 export interface IResolvedAbilityEffect {
   target: TEffectTarget;
   type: TEffectType;
-  amount: number | 'ALL';
   value: number;
   isValuePercentage: boolean;
   turns: number;

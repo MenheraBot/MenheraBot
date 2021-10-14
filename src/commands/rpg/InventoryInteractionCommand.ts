@@ -157,7 +157,7 @@ export default class InventoryInteractionCommand extends InteractionCommand {
       );
     }
 
-    const components: MessageActionRowOptions[] =
+    const components: Required<MessageActionRowOptions>[] =
       selector.options.length === 0
         ? [{ type: 'ACTION_ROW', components: [button] }]
         : [

@@ -166,7 +166,6 @@ const resolveEffects = (user: IBattleUser, ability: IAbilityResolved): IResolved
     const selected = randomFromArray(ability.effects);
     return [
       {
-        amount: selected.amount ?? 0,
         isValuePercentage: selected.isValuePercentage ?? false,
         target: selected.target,
         turns: selected.turns ?? 0,
@@ -177,7 +176,6 @@ const resolveEffects = (user: IBattleUser, ability: IAbilityResolved): IResolved
   }
 
   return ability.effects.map((a) => ({
-    amount: a.amount ?? 0,
     isValuePercentage: a.isValuePercentage ?? false,
     target: a.target,
     turns: a.turns ?? 0,

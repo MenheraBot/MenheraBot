@@ -274,7 +274,7 @@ export default async (ctx: InteractionCommandContext, user: IRpgUserSchema): Pro
           }
         });
 
-        const componentsToSend: MessageActionRowOptions[] = selectMenus.map((a) => ({
+        const componentsToSend: Required<MessageActionRowOptions>[] = selectMenus.map((a) => ({
           type: 'ACTION_ROW',
           components: [a],
         }));

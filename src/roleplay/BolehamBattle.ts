@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { emojis } from '@structures/MenheraConstants';
 import {
@@ -23,6 +24,7 @@ import {
   IResolvedBattleInventory,
   TBattleEntity,
   TBattleTurn,
+  TEffectTarget,
 } from './Types';
 import { createBaseBattleEmbed, isDead, resolveEffects, resolveItemUsage } from './Utils';
 
@@ -283,14 +285,41 @@ export default class BolehamBattle extends EventEmitter {
     author: TBattleEntity,
     defender: TBattleEntity,
   ): void {
-    const willEffect = (number: number, toEffect: TBattleEntity[]): TBattleEntity[] => {
+    const willEffect = (type: TEffectTarget): TBattleEntity[] => {
+      if (type === 'self') return [author];
 
+      const totalAmout = type === 'allies' ? this.getAllies().length : this.getEnemies().length;
+
+      if (type === 'allies') {
+        const toReturn: TBattleEntity[] = [];
+
+        const allies = this.getAllies();
+
+        for (let i = 0; i < totalAmout; i++) toReturn.push(allies[i]);
+
+        return toReturn;
+      }
+
+      if (totalAmout === 1) return [defender];
+
+      const toReturn: TBattleEntity[] = [];
+
+      const enemies = this.getEnemies();
+
+      for (let i = 0; i < totalAmout; i++) toReturn.push(enemies[i]);
+
+      return toReturn;
     };
 
     effects.forEach((eff) => {
+      const whoWillEffect = willEffect(eff.target);
       switch (eff.type) {
         case 'armor_buff': {
-          
+          whoWillEffect.forEach((entity) => {
+            if ('isValuePercentage' in eff) return entity.effects.push(eff);
+
+            // TODO: Handle items usage
+          });
         }
       }
     });
@@ -369,5 +398,6 @@ export default class BolehamBattle extends EventEmitter {
     const action = await this.waitUserResponse(this.attacking[this.attackerIndex].id);
     const makeAction = this.makeAction(action);
     if (makeAction) return;
+    console.log('owo');
   }
 }

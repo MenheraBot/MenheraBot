@@ -12,9 +12,8 @@ const Abilities: { [key: number]: IAbilitiesFile } = {
         type: 'invisibility',
       },
       {
-        target: 'enemies',
+        target: 'enemy',
         type: 'attack',
-        amount: 1,
         value: 7,
       },
     ],
@@ -27,7 +26,6 @@ const Abilities: { [key: number]: IAbilitiesFile } = {
       {
         target: 'enemies',
         type: 'attack',
-        amount: 'ALL',
         value: 11,
       },
     ],
@@ -38,9 +36,8 @@ const Abilities: { [key: number]: IAbilitiesFile } = {
     element: 'darkness',
     effects: [
       {
-        target: 'enemies',
+        target: 'enemy',
         type: 'attack',
-        amount: 1,
         value: 16,
       },
     ],
@@ -67,13 +64,11 @@ const Abilities: { [key: number]: IAbilitiesFile } = {
       {
         target: 'enemies',
         type: 'attack',
-        amount: 'ALL',
         value: 4,
       },
       {
         target: 'enemies',
         type: 'poison',
-        amount: 'ALL',
         turns: 2,
         value: 2,
       },
@@ -99,8 +94,7 @@ const Abilities: { [key: number]: IAbilitiesFile } = {
     turnsCooldown: 6,
     effects: [
       {
-        target: 'enemies',
-        amount: 1,
+        target: 'enemy',
         type: 'attack',
         value: 14,
       },
@@ -113,27 +107,23 @@ const Abilities: { [key: number]: IAbilitiesFile } = {
     randomChoice: true,
     effects: [
       {
-        target: 'enemies',
+        target: 'enemy',
         type: 'blind',
-        amount: 1,
         turns: 3,
       },
       {
         target: 'enemies',
         type: 'blind',
-        amount: 'ALL',
         turns: 2,
       },
       {
         target: 'enemies',
         type: 'attack',
-        amount: 3,
         value: 13,
       },
       {
-        target: 'enemies',
+        target: 'enemy',
         type: 'poison',
-        amount: 1,
         turns: 3,
         value: 7,
       },
@@ -147,7 +137,6 @@ const Abilities: { [key: number]: IAbilitiesFile } = {
       {
         target: 'enemies',
         type: 'vampirism',
-        amount: 'ALL',
         value: 4,
       },
     ],
@@ -158,9 +147,8 @@ const Abilities: { [key: number]: IAbilitiesFile } = {
     element: 'darkness',
     effects: [
       {
-        target: 'enemies',
+        target: 'enemy',
         type: 'degradation',
-        amount: 1,
         value: 2,
         turns: 5,
         isValuePercentage: true,
@@ -177,7 +165,6 @@ const Abilities: { [key: number]: IAbilitiesFile } = {
         type: 'blind',
         turns: 2,
         value: 12,
-        amount: 'ALL',
         isValuePercentage: true,
       },
     ],
@@ -188,9 +175,8 @@ const Abilities: { [key: number]: IAbilitiesFile } = {
     turnsCooldown: 5,
     effects: [
       {
-        target: 'enemies',
+        target: 'enemy',
         type: 'attack',
-        amount: 1,
         value: 23,
       },
     ],
@@ -216,7 +202,6 @@ const Abilities: { [key: number]: IAbilitiesFile } = {
     effects: [
       {
         target: 'enemies',
-        amount: 2,
         type: 'attack',
         value: 16,
       },
@@ -245,7 +230,6 @@ const Abilities: { [key: number]: IAbilitiesFile } = {
       {
         target: 'allies',
         type: 'armor_buff',
-        amount: 'ALL',
         isValuePercentage: true,
         turns: 5,
         value: 3,
@@ -258,15 +242,13 @@ const Abilities: { [key: number]: IAbilitiesFile } = {
     turnsCooldown: 3,
     effects: [
       {
-        target: 'enemies',
+        target: 'enemy',
         type: 'confusion',
-        amount: 1,
         turns: 2,
       },
       {
-        target: 'enemies',
+        target: 'enemy',
         type: 'attack',
-        amount: 1,
         value: 6,
       },
     ],
@@ -280,7 +262,6 @@ const Abilities: { [key: number]: IAbilitiesFile } = {
         target: 'enemies',
         type: 'degradation',
         turns: 4,
-        amount: 'ALL',
         value: 3,
         isValuePercentage: true,
       },
@@ -294,7 +275,6 @@ const Abilities: { [key: number]: IAbilitiesFile } = {
       {
         target: 'enemies',
         type: 'attack',
-        amount: 2,
         value: 15,
       },
     ],
@@ -305,8 +285,7 @@ const Abilities: { [key: number]: IAbilitiesFile } = {
     turnsCooldown: 3,
     effects: [
       {
-        target: 'enemies',
-        amount: 1,
+        target: 'enemy',
         type: 'confusion',
         value: 50,
         turns: 5,
@@ -319,9 +298,8 @@ const Abilities: { [key: number]: IAbilitiesFile } = {
     turnsCooldown: 4,
     effects: [
       {
-        target: 'enemies',
+        target: 'enemy',
         type: 'attack',
-        amount: 1,
         value: 7,
       },
     ],
@@ -334,7 +312,6 @@ const Abilities: { [key: number]: IAbilitiesFile } = {
       {
         target: 'allies',
         type: 'heal',
-        amount: 'ALL',
         value: 30,
         isValuePercentage: true,
       },
@@ -348,7 +325,6 @@ const Abilities: { [key: number]: IAbilitiesFile } = {
       {
         target: 'allies',
         type: 'armor_buff',
-        amount: 'ALL',
         turns: 3,
         value: 7,
         isValuePercentage: true,
@@ -361,9 +337,8 @@ const Abilities: { [key: number]: IAbilitiesFile } = {
     turnsCooldown: 3,
     effects: [
       {
-        target: 'enemies',
+        target: 'enemy',
         type: 'attack',
-        amount: 1,
         value: 20,
       },
     ],
