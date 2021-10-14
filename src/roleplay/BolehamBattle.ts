@@ -157,13 +157,12 @@ export default class BolehamBattle extends EventEmitter {
   }
 
   private finishTurn(): void {
-    this.defending.forEach(entity => {
-      entity.effects.forEach(effect => {
+    this.defending.forEach((entity) => {
+      entity.effects.forEach((effect) => {
         // EXECUTE ALL EFFECTS REDUCING BY 1 TURN, AND SPLICING IT IF IT IS ON 0
-
         // I'M IN SCHOOL'S PC, FVCK GIT PUSH, FVCK TYPESCRIPT ON GITHUB.DEV
       });
-    })
+    });
   }
 
   private changeTurn(): void {
@@ -349,7 +348,7 @@ export default class BolehamBattle extends EventEmitter {
         );
     }
 
-    this.changeTurn()
+    this.changeTurn();
 
     return this.checkEndBattle();
   }
