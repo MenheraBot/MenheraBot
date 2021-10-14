@@ -48,7 +48,7 @@ export default class BolehamBattle extends EventEmitter {
   ) {
     super();
     this.saveCurrentUserStats();
-    this.battle();
+    this.userTurn();
   }
 
   private saveCurrentUserStats(): void {
@@ -285,43 +285,36 @@ export default class BolehamBattle extends EventEmitter {
     author: TBattleEntity,
     defender: TBattleEntity,
   ): void {
-    const willEffect = (type: TEffectTarget): TBattleEntity[] => {
-      if (type === 'self') return [author];
+    const willEffect = (targetType: TEffectTarget): TBattleEntity[] => {
+      if (targetType === 'self') return [author];
+      if (targetType === 'enemy') return [defender];
 
-      const totalAmout = type === 'allies' ? this.getAllies().length : this.getEnemies().length;
-
-      if (type === 'allies') {
-        const toReturn: TBattleEntity[] = [];
-
-        const allies = this.getAllies();
-
-        for (let i = 0; i < totalAmout; i++) toReturn.push(allies[i]);
-
-        return toReturn;
-      }
-
-      if (totalAmout === 1) return [defender];
-
-      const toReturn: TBattleEntity[] = [];
-
-      const enemies = this.getEnemies();
-
-      for (let i = 0; i < totalAmout; i++) toReturn.push(enemies[i]);
-
-      return toReturn;
+      return targetType === 'allies' ? this.getAllies() : this.getEnemies();
     };
 
     effects.forEach((eff) => {
       const whoWillEffect = willEffect(eff.target);
-      switch (eff.type) {
-        case 'armor_buff': {
-          whoWillEffect.forEach((entity) => {
-            if ('isValuePercentage' in eff) return entity.effects.push(eff);
+      whoWillEffect.forEach((entity) => {
+        if ('isValuePercentage' in eff) entity.effects.push(eff);
 
-            // TODO: Handle items usage
-          });
+        switch (eff.type) {
+          case 'armor_buff':
+            entity.armor += eff.value;
+            break;
+          case 'attack':
+            entity.life -= eff.value;
+            break;
+          case 'damage_buff':
+            entity.damage += eff.value;
+            break;
+          case 'heal':
+            entity.life += eff.value;
+            break;
+          case 'mana':
+            if ('mana' in entity) entity.mana += eff.value;
+            break;
         }
-      }
+      });
     });
   }
 
@@ -384,7 +377,7 @@ export default class BolehamBattle extends EventEmitter {
     return false;
   }
 
-  private async battle(): Promise<void> {
+  private async userTurn(): Promise<void> {
     const embed = createBaseBattleEmbed(
       this.ctx.locale.bind(this.ctx),
       this.getEntitiesDisplay(),
