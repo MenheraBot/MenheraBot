@@ -1,5 +1,5 @@
 import { Options, SnowflakeUtil, Channel } from 'discord.js-light';
-import { resolve } from 'path';
+import { resolve } from 'node:path';
 import MenheraClient from './MenheraClient';
 
 const channelFilter = (channel: Channel) =>

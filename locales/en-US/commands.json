@@ -1,7 +1,7 @@
 {
   "raiva": {
     "description": "",
-    "usage": "[usuário]",
+    "usage": "[user]",
     "bot": "no no no, stop right here. Bots dont let you angry (unless they are lagged hehe)",
     "no-mention": {
       "embed_title": "Angry",
@@ -21,7 +21,7 @@
     "description": "Bite someone :3",
     "usage": "<@mention>",
     "bot": "You bit a robot ... -5 teeth in the mouth",
-    "self-mention": "Ooo look at the the masochist, do it right now, no command needed",
+    "self-mention": "Ooo look at the masochist, do it right now, no command needed",
     "embed_title": "Bites",
     "embed_description": "{{author}} bit {{mention}}"
   },
@@ -124,7 +124,7 @@
   "socar": {
     "description": "Punch someone in the ass",
     "usage": "<@mention>",
-    "bot": "SAY NO TO THE BOTS AGRESSION",
+    "bot": "SAY NO TO THE BOTS AGGRESSION",
     "self-mention": "I will not make you punch yourself, mention someone else",
     "embed_title": "PUNCH IN THE FACE",
     "embed_description": "{{author}} punched {{mention}}"
@@ -208,7 +208,7 @@
     "poor": "{{user}} don't have all these stars to bet on!",
     "confirm": "{{author}} challenged you to a heads-up bet worth **{{value}}** ⭐. Heads, {{author}} wins, tails, {{mention}} wins. Do you accept? you got **7** seconds",
     "cara": "**HEADS**",
-    "banned-user": "This user cannot bet because it is banned from Menhera!",
+    "banned-user": "This user cannot bet because they're banned from Menhera!",
     "coroa": "**TAILS**",
     "cara-texto": "{{author}} won {{value}} :star: betting with {{mention}}. I'm sorry {{mention}}, we are not always victorious",
     "coroa-texto": "{{mention}} won {{value}} :star: betting against {{author}}"
@@ -217,7 +217,7 @@
     "description": "Transfer something from your inventory to someone",
     "usage": "<option> <@mention> <value>",
     "self-mention": "you cannot mention yourself!",
-    "banned-user": "This user doesnt accepts gifts because it is banned from Menhera!",
+    "banned-user": "This user cannot accept gifts because they're banned from Menhera!",
     "no-dbuser": "this user does not have a Menhera's Bank account!",
     "invalid-value": "The value to be given must be greater than 0",
     "poor": "you don't have this much of",
@@ -250,8 +250,8 @@
       "has-color": "I appreciate your excitement to buy at my thrift store, but you already have this color!",
       "poor": "you don't have enough stars to buy this color!",
       "buy-success": "all done! You bought the color **{{name}}** for **{{price}}** ⭐! You got **{{stars}} **⭐ stars",
-      "yc-message": "Submit a hexcolor code **WITHOUT A HASHTAG** (Example: AABBCC) of your choice to add to your profile",
-      "yc-confirm": "WOOOOW !!! YOU'VE JUST BUYED A COLOR OF YOUR CHOICE !!! \nYour current choice is **#{{color}}** \nYou spent **{{price}}** ⭐ and got **{{stars}}** ⭐ stars",
+      "yc-message": "Submit a hex color code **WITHOUT A HASHTAG** (Example: AABBCC) of your choice to add to your profile",
+      "yc-confirm": "WOOOOW !!! YOU'VE JUST BOUGHT A COLOR OF YOUR CHOICE !!! \nYour current choice is **#{{color}}** \nYou spent **{{price}}** ⭐ and got **{{stars}}** ⭐ stars",
       "invalid-color": "this color is not a valid color!",
       "no-name": "No name passed"
     },
@@ -298,7 +298,7 @@
     "angels": "Angels",
     "sd": "Demigods",
     "god": "Gods",
-    "banned-user": "This user doesnt have wallet because it is banned from Menhera!"
+    "banned-user": "This user doesn't have a wallet because they're banned from Menhera!"
   },
   "8ball": {
     "description": "Ask me something",
@@ -349,14 +349,14 @@
   },
   "cacar": {
     "description": "Hunt demons like XANDÃO",
-    "probabilities": "Hunt probabilitites\n\nDemons: `[{{demon}}]`\nGiants: `[{{giant}}]`\nAngels: `[{{angel}}]`\nArchangels: `[{{archangel}}]`\nDemigods: `[{{demi}}]`\nGods: `[{{god}}]`",
+    "probabilities": "Hunt probabilities\n\nDemons: `[{{demon}}]`\nGiants: `[{{giant}}]`\nAngels: `[{{angel}}]`\nArchangels: `[{{archangel}}]`\nDemigods: `[{{demi}}]`\nGods: `[{{god}}]`",
     "no-args": "you must choose between hunting demons, angels, demigods and gods",
     "help": "** HOW DOES HUNTING WORK? ** \nYou can hunt every hour, and you can choose from 4 hunts: `demons`, `angels`,` demigods` and `gods` \nThe farther to the right, the more valuable, but also, more difficult to hunt, and less chance of success \nOn my support server, the chances of hunting are greater!",
     "footer": "Did you know that on my support server, your chances of success are greater?",
     "description_start": "You went hunting **{{hunt}}** **{{count}}** time with Super Xandão, and you returned home with more **{{value}}** to count. You are in **#{{rank}}** on the {{hunt}} top",
     "description_start_plural": "You went hunting **{{hunt}}** **{{count}}** times with Super Xandão, and you returned home with more **{{value}}** to count. You are in **#{{rank}}** on the {{hunt}} top",
-    "god_hunted_success": "HOLLY MOLLY!!! YOU BECOME A HERO FRUIT OF A DIVINE FORÇE, AS WELL AS XANDÃO, AND GOT ​​HUNTING `{{count}}` GOD IN **{{toRun}}** TRIES! WITH THAT SAID, YOU ARE IN **#{{rank}}** ON GOD MENHERA'S TOP",
-    "god_hunted_success_plural": "HOLLY MOLLY!!! YOU BECOME A HERO FRUIT OF A DIVINE FORÇE, AS WELL AS XANDÃO, AND GOT ​​HUNTING `{{count}}` GODS IN **{{toRun}}** TRIES! WITH THAT SAID, YOU ARE IN **#{{rank}}** ON GOD MENHERA'S TOP",
+    "god_hunted_success": "HOLLY MOLLY!!! YOU BECOME A HERO FRUIT OF A DIVINE FORCE, AS WELL AS XANDÃO, AND GOT ​​HUNTING `{{count}}` GOD IN **{{toRun}}** TRIES! WITH THAT SAID, YOU ARE IN **#{{rank}}** ON GOD MENHERA'S TOP",
+    "god_hunted_success_plural": "HOLLY MOLLY!!! YOU BECOME A HERO FRUIT OF A DIVINE FORCE, AS WELL AS XANDÃO, AND GOT ​​HUNTING `{{count}}` GODS IN **{{toRun}}** TRIES! WITH THAT SAID, YOU ARE IN **#{{rank}}** ON GOD MENHERA'S TOP",
     "god_hunted_fail": "Hunting Gods is an extremely difficult mission, and in **{{count}}** try you have not been successful. But rest assured, hero, you can still do it! You are in **{{rank}}** on god's top",
     "god_hunted_fail_plural": "Hunting Gods is an extremely difficult mission, and in **{{count}}** tries you have not been successful. But rest assured, hero, you can still do it! You are in **{{rank}}** on god's top",
     "demons": "Demons",
@@ -412,7 +412,7 @@
     "title": "{{user}}'s avatar",
     "footer": "What a beautiful image uwuwu",
     "unknow-user": "user not found",
-    "client_title": "my avayar ({{user}})",
+    "client_title": "my avatar ({{user}})",
     "client_footer": "I'm very beautiful, right?"
   },
   "cor": {

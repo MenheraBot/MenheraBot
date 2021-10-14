@@ -37,18 +37,18 @@ export interface IInteractionCommandConfig extends ChatInputApplicationCommandDa
   clientPermissions?: PermissionResolvable[];
 }
 
-export type T8BallAnsweTypes = 'negative' | 'positive' | 'neutral';
+export type T8BallAnswerTypes = 'negative' | 'positive' | 'neutral';
 
-export interface IPicassoErrorReutrn {
+export interface IPicassoErrorReturn {
   err: true;
 }
 
-export interface ISuccessPicassoReutrn {
+export interface ISuccessPicassoReturn {
   err?: false;
   data: Buffer;
 }
 
-export type IPicassoReturnData = IPicassoErrorReutrn | ISuccessPicassoReutrn;
+export type IPicassoReturnData = IPicassoErrorReturn | ISuccessPicassoReturn;
 
 export interface IBlackjackCards {
   value: number;

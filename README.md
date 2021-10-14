@@ -58,7 +58,7 @@ According to the [LICENSE](https://github.com/ySnoopyDogy/MenheraBot/blob/master
 - [Discord](https://discord.gg/fZMdQbA)
 - [Github](https://github.com/ySnoopyDogy/MenheraBot)
 - [Top.GG](https://top.gg/bot/708014856711962654)
-- [Oficial Site](https://menherabot.xyz)
+- [Official Site](https://menherabot.xyz)
 
 ## Source
 

@@ -1,4 +1,4 @@
-import { T8BallAnsweTypes } from '@utils/Types';
+import { T8BallAnswerTypes } from '@utils/Types';
 
 export const shopEconomy = {
   colors: {
@@ -15,7 +15,7 @@ export const shopEconomy = {
     demon: 600,
     giant: 1900,
     angel: 3200,
-    arcangel: 5900,
+    archangel: 5900,
     demigod: 8000,
     god: 19000,
   },
@@ -28,7 +28,7 @@ export const probabilities = {
     ],
     giant: [0, 0, 0, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 3, 5],
     angel: [0, 0, 0, 1, 1, 1, 2, 3],
-    arcangel: [0, 0, 0, 0, 0, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2],
+    archangel: [0, 0, 0, 0, 0, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2],
     demigod: [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2],
     god: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
   },
@@ -39,7 +39,7 @@ export const probabilities = {
     ],
     giant: [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 3, 4],
     angel: [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3],
-    arcangel: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2],
+    archangel: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2],
     demigod: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2],
     god: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
   },
@@ -144,7 +144,7 @@ export const languageByLocale = {
   'us-west': 'en-US',
 };
 
-export const EightBallAnswers: { id: number; type: T8BallAnsweTypes }[] = [
+export const EightBallAnswers: { id: number; type: T8BallAnswerTypes }[] = [
   {
     id: 0,
     type: 'positive',

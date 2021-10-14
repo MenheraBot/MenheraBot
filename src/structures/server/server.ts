@@ -12,13 +12,13 @@ export default class HttpServer {
 
   private constructor() {
     this.koaApplication = new Koa();
-    this.registerDefaultMiddlewares();
+    this.registerDefaultMiddleware();
     this.koaApplication.listen({ port: process.env.HTTP_SERVER_PORT }, () =>
       console.log(`[HTTP] Server started at port ${process.env.HTTP_SERVER_PORT}`),
     );
   }
 
-  private registerDefaultMiddlewares(): void {
+  private registerDefaultMiddleware(): void {
     this.koaApplication.use(koaBody({ includeUnparsed: true })).use(cors());
   }
 
@@ -33,8 +33,7 @@ export default class HttpServer {
   }
 
   static getInstance(): HttpServer {
-    if (!this.instance) this.instance = new HttpServer();
-
+    this.instance ??= new HttpServer();
     return this.instance;
   }
 }

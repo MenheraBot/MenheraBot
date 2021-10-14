@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import MenheraClient from 'MenheraClient';
 import Event from '@structures/Event';
 import { ClientEvents } from 'discord.js-light';
