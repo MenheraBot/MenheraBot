@@ -459,6 +459,8 @@ export default class BolehamBattle extends EventEmitter {
     return false;
   }
 
+  private mobTurn(): Promise<void>;
+
   private async userTurn(): Promise<void> {
     const embed = createBaseBattleEmbed(
       this.ctx.locale.bind(this.ctx),
