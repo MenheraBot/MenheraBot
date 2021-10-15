@@ -2,6 +2,7 @@ import {
   AsAnUsableItem,
   IAbilityResolved,
   IArmor,
+  IBattleEntityEffect,
   IBattleMob,
   IBattleUser,
   IInventoryItem,
@@ -13,7 +14,6 @@ import {
   IResolvedQuest,
   IResolvedWeapon,
   IRpgUserSchema,
-  ISufferedEffect,
   TBattleEntity,
   TBattleUsableItemType,
 } from '@roleplay/Types';
@@ -444,7 +444,7 @@ export default class BattleFunctions {
     attackDamage: number,
     attackSkill: number,
     tiredness: number,
-    effects: ISufferedEffect[],
+    effects: IBattleEntityEffect[],
   ): number {
     let baseDamage = attackDamage + attackDamage * (attackSkill / 100);
 

@@ -26,7 +26,13 @@ import {
   TBattleTurn,
   TEffectTarget,
 } from './Types';
-import { createBaseBattleEmbed, isDead, resolveEffects, resolveItemUsage } from './Utils';
+import {
+  calculateValue,
+  createBaseBattleEmbed,
+  isDead,
+  resolveEffects,
+  resolveItemUsage,
+} from './Utils';
 
 export default class BolehamBattle extends EventEmitter {
   private attackerIndex = 0;
@@ -157,10 +163,71 @@ export default class BolehamBattle extends EventEmitter {
   }
 
   private finishTurn(): void {
-    this.defending.forEach((entity) => {
+    this.defending.forEach((entity, index) => {
       entity.effects.forEach((effect) => {
-        // EXECUTE ALL EFFECTS REDUCING BY 1 TURN, AND SPLICING IT IF IT IS ON 0
-        // I'M IN SCHOOL'S PC, FVCK GIT PUSH, FVCK TYPESCRIPT ON GITHUB.DEV
+        effect.turns -= 1;
+
+        switch (effect.type) {
+          case 'armor_buff':
+            if (!effect.wasExecuted)
+              entity.armor = calculateValue(entity.armor, effect.isValuePercentage, effect.value);
+            else if (effect.cumulative)
+              entity.armor = calculateValue(entity.armor, effect.isValuePercentage, effect.value);
+            break;
+          case 'blind':
+            if (effect.cumulative)
+              effect.value = calculateValue(effect.value, effect.isValuePercentage, effect.value);
+            break;
+          case 'confusion':
+            if (effect.cumulative)
+              effect.value = calculateValue(effect.value, effect.isValuePercentage, effect.value);
+            break;
+          case 'damage_buff':
+            if (!effect.wasExecuted)
+              entity.damage = calculateValue(entity.damage, effect.isValuePercentage, effect.value);
+            else if (effect.cumulative)
+              entity.damage = calculateValue(entity.damage, effect.isValuePercentage, effect.value);
+            break;
+          case 'degradation':
+            if (effect.cumulative)
+              effect.value = calculateValue(effect.value, effect.isValuePercentage, effect.value);
+            break;
+          case 'heal':
+            if (!effect.wasExecuted)
+              entity.life = calculateValue(entity.life, effect.isValuePercentage, effect.value);
+            else if (effect.cumulative)
+              entity.life = calculateValue(entity.life, effect.isValuePercentage, effect.value);
+            break;
+          case 'life_buff':
+            if (!effect.wasExecuted)
+              entity.life = calculateValue(entity.life, effect.isValuePercentage, effect.value);
+            else if (effect.cumulative)
+              entity.life = calculateValue(entity.life, effect.isValuePercentage, effect.value);
+            break;
+          case 'mana':
+            if (!effect.wasExecuted && entity.isUser)
+              entity.mana = calculateValue(entity.mana, effect.isValuePercentage, effect.value);
+            else if (effect.cumulative && entity.isUser)
+              entity.mana = calculateValue(entity.mana, effect.isValuePercentage, effect.value);
+            break;
+          case 'mana_buff':
+            if (!effect.wasExecuted && entity.isUser)
+              entity.mana = calculateValue(entity.mana, effect.isValuePercentage, effect.value);
+            else if (effect.cumulative && entity.isUser)
+              entity.mana = calculateValue(entity.mana, effect.isValuePercentage, effect.value);
+            break;
+          case 'poison':
+            if (effect.cumulative)
+              effect.value = calculateValue(effect.value, effect.isValuePercentage, effect.value);
+            break;
+          case 'vampirism':
+            if (effect.cumulative)
+              effect.value = calculateValue(effect.value, effect.isValuePercentage, effect.value);
+            break;
+        }
+
+        effect.wasExecuted = true;
+        if (effect.turns <= 0) entity.effects.splice(index, 1);
       });
     });
   }
@@ -175,6 +242,8 @@ export default class BolehamBattle extends EventEmitter {
       }
       return returnedIndex;
     };
+
+    this.finishTurn();
 
     if (this.turn === 'attacker') {
       this.turn = 'defender';
@@ -304,14 +373,19 @@ export default class BolehamBattle extends EventEmitter {
     effects.forEach((eff) => {
       const whoWillEffect = willEffect(eff.target);
       whoWillEffect.forEach((entity) => {
-        if ('isValuePercentage' in eff) entity.effects.push(eff);
+        if ('isValuePercentage' in eff)
+          return entity.effects.push({ ...(eff as IResolvedAbilityEffect), wasExecuted: false });
 
         switch (eff.type) {
           case 'armor_buff':
             entity.armor += eff.value;
             break;
           case 'attack':
-            entity.life -= eff.value;
+            entity.life -= BattleFunctions.CalculateAttackEffectiveness(
+              eff.value,
+              this.getSelf(),
+              this.getSelf(true),
+            );
             break;
           case 'damage_buff':
             entity.damage += eff.value;
@@ -330,10 +404,7 @@ export default class BolehamBattle extends EventEmitter {
   private makeAction(action: TBattleTurn | null): void | boolean {
     const user = this.getSelf();
 
-    if (!action) {
-      this.changeTurn();
-      return;
-    }
+    if (!action) return this.changeTurn();
 
     switch (action.type) {
       case 'inventory':

@@ -168,6 +168,7 @@ const resolveEffects = (user: IBattleUser, ability: IAbilityResolved): IResolved
       {
         isValuePercentage: selected.isValuePercentage ?? false,
         target: selected.target,
+        cumulative: selected.cumulative ?? false,
         turns: selected.turns ?? 0,
         type: selected.type,
         value: selected.value ? selected.value * ability.level : 0,
@@ -180,6 +181,7 @@ const resolveEffects = (user: IBattleUser, ability: IAbilityResolved): IResolved
     target: a.target,
     turns: a.turns ?? 0,
     type: a.type,
+    cumulative: a.cumulative ?? false,
     value: a.value
       ? a.isValuePercentage
         ? a.value
@@ -196,8 +198,8 @@ const resolveItemUsage = (item: IResolvedBattleInventory): IInventoryAttack => {
         type: 'inventory',
         effects: item.effects.map((a) => ({
           target: a.target,
-          amount: a.amount,
           type: a.type,
+          cumulative: a.cumulative,
           value: a.value + item.data.perLevel * item.level,
         })),
       };
@@ -206,6 +208,11 @@ const resolveItemUsage = (item: IResolvedBattleInventory): IInventoryAttack => {
 };
 
 const isDead = (entity: TBattleEntity): boolean => entity.life <= 0;
+
+const negate = (value: number): number => value * -1;
+
+const calculateValue = (toEffect: number, isValuePercentage: boolean, value: number): number =>
+  isValuePercentage ? toEffect + toEffect * (value / 100) : toEffect + value;
 
 export {
   canBuy,
@@ -218,5 +225,7 @@ export {
   parseEntry,
   resolveItemUsage,
   resolveEffects,
+  calculateValue,
+  negate,
   createBaseBattleEmbed,
 };

@@ -76,8 +76,8 @@ export type TEffectType =
 export interface IEffectData {
   type: TEffectType;
   target: TEffectTarget;
-  amount: number;
   value: number;
+  cumulative: boolean;
 }
 
 export interface IRpgUserSchema {
@@ -158,6 +158,7 @@ export interface IAbilityEffect {
   value?: number;
   isValuePercentage?: boolean;
   turns?: number;
+  cumulative?: boolean;
 }
 
 export interface IAbilitiesFile {
@@ -288,6 +289,7 @@ export interface IMobAttackEffect {
   value?: number;
   isValuePercentage?: boolean;
   turns?: number;
+  cumulative?: boolean;
 }
 
 export interface IMobAttacksFile {
@@ -322,6 +324,8 @@ export interface IBattleEntityEffect {
   value: number;
   isValuePercentage: boolean;
   turns: number;
+  cumulative: boolean;
+  wasExecuted: boolean;
 }
 
 export interface IAbilityResolved {
@@ -367,15 +371,8 @@ export interface IResolvedBattleInventory {
   amount: number;
 }
 
-export interface ISufferedEffect {
-  type: TEffectType;
-  value: number;
-  isValuePercentage: boolean;
-  turns: number;
-}
-
 export interface IBattleUser {
-  id: string;
+  readonly id: string;
   life: number;
   mana: number;
   tiredness: number;
@@ -388,18 +385,18 @@ export interface IBattleUser {
   inventory: IResolvedBattleInventory[];
   abilities: Array<IAbilityResolved>;
   afinity: TElements;
-  effects: ISufferedEffect[];
+  effects: IBattleEntityEffect[];
   isUser: true;
   quests: IResolvedQuest[];
 }
 export interface IBattleMob {
-  name: string;
+  readonly name: string;
   life: number;
   armor: number;
   damage: number;
   attackSkill: number;
   attacks: IMobAttacksFile[];
-  effects: ISufferedEffect[];
+  effects: IBattleEntityEffect[];
   isUser: false;
 }
 
@@ -421,6 +418,7 @@ export interface IResolvedAbilityEffect {
   value: number;
   isValuePercentage: boolean;
   turns: number;
+  cumulative: boolean;
 }
 
 export interface IAbilityAttack {
