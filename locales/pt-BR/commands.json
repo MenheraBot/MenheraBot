@@ -88,7 +88,8 @@
     "bot": "Você beijou um robô, e acabou tocando em um fio descascado. Sorte que ele estava com chinelo nos pés. A ligação com a Terra foi cortado, nenhum circuito se fechou. Dessa vez foi safe.",
     "self-mention": "Sim, eu sei que amor próprio é tudo, mas por favor, beije alguém que não seja si mesmo, vai que assim vocês não avançam pra um `/casar`",
     "embed_title": "Beijar",
-    "embed_description": "{{author}} deu uma bela de uma beijoca em {{mention}}"
+    "embed_description_0": "{{author}} deu uma bela de uma beijoca em {{mention}}",
+    "embed_description_1": "{{author}} deu um beijinho na bochecha de {{mention}}"
   },
   "rir": {
     "description": "Mostre a todos que estás rindo",
