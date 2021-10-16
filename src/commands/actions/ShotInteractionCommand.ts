@@ -25,7 +25,6 @@ export default class ShotInteractionCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    const rand = await HttpRequests.getAssetImageUrl('shot');
     const user = ctx.options.getUser('user', true);
 
     if (user.id === ctx.author.id) {
@@ -34,6 +33,7 @@ export default class ShotInteractionCommand extends InteractionCommand {
     }
 
     const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
+    const selectedImage = await HttpRequests.getAssetImageUrl('shot');
 
     const embed = new MessageEmbed()
       .setTitle(ctx.translate('embed_title'))
@@ -44,7 +44,7 @@ export default class ShotInteractionCommand extends InteractionCommand {
           mention: user.toString(),
         }),
       )
-      .setImage(rand)
+      .setImage(selectedImage)
       .setThumbnail(avatar);
 
     await ctx.reply({ embeds: [embed] });

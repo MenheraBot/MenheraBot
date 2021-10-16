@@ -19,7 +19,7 @@ export default class GrumbleInteractionCommand extends InteractionCommand {
   async run(ctx: InteractionCommandContext): Promise<void> {
     const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
 
-    const rand = await HttpRequests.getAssetImageUrl('grumble');
+    const selectedImage = await HttpRequests.getAssetImageUrl('grumble');
 
     const embed = new MessageEmbed()
       .setTitle(ctx.translate('embed_title'))
@@ -30,7 +30,7 @@ export default class GrumbleInteractionCommand extends InteractionCommand {
         }),
       )
       .setThumbnail(avatar)
-      .setImage(rand);
+      .setImage(selectedImage);
 
     await ctx.reply({ embeds: [embed] });
   }

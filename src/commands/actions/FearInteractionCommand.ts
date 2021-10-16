@@ -27,7 +27,7 @@ export default class FearInteractionCommand extends InteractionCommand {
   async run(ctx: InteractionCommandContext): Promise<void> {
     const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
 
-    const rand = await HttpRequests.getAssetImageUrl('fear');
+    const selectedImage = await HttpRequests.getAssetImageUrl('fear');
     const user = ctx.options.getUser('user');
 
     if (!user || user.id === ctx.author.id) {
@@ -40,7 +40,7 @@ export default class FearInteractionCommand extends InteractionCommand {
           }),
         )
         .setThumbnail(avatar)
-        .setImage(rand);
+        .setImage(selectedImage);
 
       await ctx.reply({ embeds: [embed] });
       return;
@@ -55,7 +55,7 @@ export default class FearInteractionCommand extends InteractionCommand {
           mention: user.toString(),
         }),
       )
-      .setImage(rand)
+      .setImage(selectedImage)
       .setThumbnail(avatar);
 
     await ctx.reply({ embeds: [embed] });

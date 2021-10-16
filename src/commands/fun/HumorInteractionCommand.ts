@@ -16,9 +16,9 @@ export default class HumorInteractionCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    const rand = await HttpRequests.getAssetImageUrl('humor');
+    const selectedImage = await HttpRequests.getAssetImageUrl('humor');
 
-    const embed = new MessageEmbed().setImage(rand).setColor('RANDOM');
+    const embed = new MessageEmbed().setImage(selectedImage).setColor('RANDOM');
 
     await ctx.reply({ embeds: [embed] });
   }

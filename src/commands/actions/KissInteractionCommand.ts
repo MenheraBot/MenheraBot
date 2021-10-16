@@ -47,7 +47,7 @@ export default class KissInteractionCommand extends InteractionCommand {
       return;
     }
 
-    const rand =
+    const selectedImage =
       ctx.options.getNumber('local', true) === 0
         ? await HttpRequests.getAssetImageUrl('kiss')
         : await HttpRequests.getAssetImageUrl('cheek');
@@ -62,7 +62,7 @@ export default class KissInteractionCommand extends InteractionCommand {
           mention: user.toString(),
         }),
       )
-      .setImage(rand)
+      .setImage(selectedImage)
       .setThumbnail(avatar);
 
     await ctx.reply({ embeds: [embed] });

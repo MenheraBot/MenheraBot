@@ -25,26 +25,25 @@ export default class KillInteractionCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    const rand = await HttpRequests.getAssetImageUrl('kill');
     const user = ctx.options.getUser('user', true);
-    const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     if (user.id === ctx.author.id) {
       await ctx.replyT('error', 'self-mention', {}, true);
       return;
     }
 
+    const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
+
     if (user.bot) {
-      // links de robos
-      const ro = [
+      const robotsLink = [
         'https://i.imgur.com/tv9wQai.gif',
         'https://i.imgur.com/X9uUyEB.gif',
         'https://i.imgur.com/rtsjxWQ.gif',
       ];
 
-      const Rrand = ro[Math.floor(Math.random() * ro.length)];
+      const selectedImage = robotsLink[Math.floor(Math.random() * robotsLink.length)];
 
-      const Rembed = new MessageEmbed()
+      const embed = new MessageEmbed()
         .setTitle(ctx.translate('bot.embed_title'))
         .setColor(COLORS.ACTIONS)
         .setDescription(
@@ -53,13 +52,14 @@ export default class KillInteractionCommand extends InteractionCommand {
             mention: user.toString(),
           }),
         )
-        .setImage(Rrand)
+        .setImage(selectedImage)
         .setThumbnail(avatar);
 
-      await ctx.reply({ embeds: [Rembed] });
+      await ctx.reply({ embeds: [embed] });
       return;
     }
 
+    const selectedImage = await HttpRequests.getAssetImageUrl('kill');
     const embed = new MessageEmbed()
       .setTitle(ctx.translate('embed_title'))
       .setColor(COLORS.ACTIONS)
@@ -69,7 +69,7 @@ export default class KillInteractionCommand extends InteractionCommand {
           mention: user.toString(),
         }),
       )
-      .setImage(rand)
+      .setImage(selectedImage)
       .setThumbnail(avatar);
 
     await ctx.reply({ embeds: [embed] });

@@ -25,10 +25,15 @@ export default class ThinkInteractionCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    const rand = await HttpRequests.getAssetImageUrl('think');
     const user = ctx.options.getUser('user');
-    const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
 
+    if (user?.bot) {
+      await ctx.replyT('success', 'bot');
+      return;
+    }
+
+    const selectedImage = await HttpRequests.getAssetImageUrl('think');
+    const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
     if (!user || user.id === ctx.author.id) {
       const embed = new MessageEmbed()
         .setTitle(ctx.translate('no-mention.embed_title'))
@@ -39,14 +44,9 @@ export default class ThinkInteractionCommand extends InteractionCommand {
           }),
         )
         .setThumbnail(avatar)
-        .setImage(rand);
+        .setImage(selectedImage);
 
       await ctx.reply({ embeds: [embed] });
-      return;
-    }
-
-    if (user.bot) {
-      await ctx.replyT('success', 'bot');
       return;
     }
 
@@ -59,7 +59,7 @@ export default class ThinkInteractionCommand extends InteractionCommand {
           mention: user.toString(),
         }),
       )
-      .setImage(rand)
+      .setImage(selectedImage)
       .setThumbnail(avatar);
 
     await ctx.reply({ embeds: [embed] });

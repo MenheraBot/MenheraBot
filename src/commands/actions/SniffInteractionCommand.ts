@@ -25,9 +25,15 @@ export default class SniffInteractionCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    const rand = await HttpRequests.getAssetImageUrl('sniff');
     const user = ctx.options.getUser('user');
+
+    if (user?.bot) {
+      await ctx.replyT('error', 'bot');
+      return;
+    }
+
     const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
+    const selectedImage = await HttpRequests.getAssetImageUrl('sniff');
 
     if (!user || user.id === ctx.author.id) {
       const embed = new MessageEmbed()
@@ -39,14 +45,9 @@ export default class SniffInteractionCommand extends InteractionCommand {
           }),
         )
         .setThumbnail(avatar)
-        .setImage(rand);
+        .setImage(selectedImage);
 
       await ctx.reply({ embeds: [embed] });
-      return;
-    }
-
-    if (user.bot) {
-      await ctx.replyT('error', 'bot');
       return;
     }
 
@@ -59,7 +60,7 @@ export default class SniffInteractionCommand extends InteractionCommand {
           mention: user.toString(),
         }),
       )
-      .setImage(rand)
+      .setImage(selectedImage)
       .setThumbnail(avatar);
 
     await ctx.reply({ embeds: [embed] });

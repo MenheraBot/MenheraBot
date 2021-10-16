@@ -41,7 +41,7 @@ export default class MamarInteractionCommand extends InteractionCommand {
       return;
     }
 
-    const rand = await HttpRequests.getAssetImageUrl('mamar');
+    const selectedImage = await HttpRequests.getAssetImageUrl('mamar');
     const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
     const embed = new MessageEmbed()
       .setTitle(ctx.translate('embed_title'))
@@ -52,7 +52,7 @@ export default class MamarInteractionCommand extends InteractionCommand {
           mention: mention.toString(),
         }),
       )
-      .setImage(rand)
+      .setImage(selectedImage)
       .setThumbnail(avatar);
 
     await ctx.reply({ embeds: [embed] });

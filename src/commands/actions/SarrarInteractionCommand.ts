@@ -26,7 +26,7 @@ export default class SarrarInteractionCommand extends InteractionCommand {
   }
 
   static async sarrada(ctx: InteractionCommandContext, user: User): Promise<void> {
-    const rand = await HttpRequests.getAssetImageUrl('sarrar');
+    const selectedImage = await HttpRequests.getAssetImageUrl('sarrar');
 
     const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
 
@@ -39,7 +39,7 @@ export default class SarrarInteractionCommand extends InteractionCommand {
           mention: user.toString(),
         }),
       )
-      .setImage(rand)
+      .setImage(selectedImage)
       .setThumbnail(avatar);
 
     if (ctx.interaction.replied) ctx.editReply({ embeds: [embed], components: [] });
