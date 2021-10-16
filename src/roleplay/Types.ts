@@ -423,11 +423,15 @@ export interface IResolvedAbilityEffect {
 
 export interface IAbilityAttack {
   type: 'ability';
+  id: number;
+  level: number;
   effects: IResolvedAbilityEffect[];
 }
 
 export interface IInventoryAttack {
   type: 'inventory';
+  id: number;
+  level: number;
   effects: IEffectData[];
 }
 

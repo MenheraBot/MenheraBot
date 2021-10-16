@@ -177,6 +177,9 @@
   },
   "battle": {
     "select-ability": "Attack with an Ability",
-    "basic-attack": "Ataque Básico"
+    "basic-attack": "Ataque Básico",
+    "attack-message": "{{attacker}} attacked {{defender}} with `{{name}}`, dealing **{{damage}}** damage",
+    "attack-message-null": "{{attacker}} took no action against {{defender}}",
+    "attack-message-item": "{{attacker}} used an item! **{{name}}**"
   }
 }

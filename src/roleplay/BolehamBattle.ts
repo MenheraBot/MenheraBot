@@ -34,6 +34,8 @@ import {
   resolveItemUsage,
 } from './Utils';
 
+type Tturn = 'defender' | 'attacker';
+
 export default class BolehamBattle extends EventEmitter {
   private attackerIndex = 0;
 
@@ -41,7 +43,9 @@ export default class BolehamBattle extends EventEmitter {
 
   private battleMessage?: Message;
 
-  private turn: 'defender' | 'attacker' = 'attacker';
+  private turn: Tturn = 'attacker';
+
+  private attackMessage = '';
 
   private attackerStartStatus: IBattleUser[] = [];
 
@@ -333,6 +337,8 @@ export default class BolehamBattle extends EventEmitter {
 
       return {
         type: 'ability',
+        id: ability.id,
+        level: ability.level,
         effects: resolveEffects(findedUser, ability),
       };
     }
@@ -401,6 +407,47 @@ export default class BolehamBattle extends EventEmitter {
     });
   }
 
+  private createAttackInfoText(action: TBattleTurn | null): void {
+    const [attacker, defender] = this.getEntitiesDisplay();
+    if (!action) {
+      this.attackMessage = this.ctx.locale('roleplay:battle.attack-message-null', {
+        attacker,
+        defender,
+      });
+      return;
+    }
+
+    switch (action.type) {
+      case 'basic':
+        this.attackMessage = this.ctx.locale('roleplay:battle.attack-message', {
+          attacker,
+          defender,
+          name: this.ctx.locale('roleplay:battle.basic-attack'),
+          damage: action.damage,
+        });
+        break;
+      case 'ability':
+        this.attackMessage = this.ctx.locale('roleplay:battle.attack-message', {
+          attacker,
+          defender,
+          name: `${this.ctx.locale(`roleplay:abilities.${action.id}.name`)} ${this.ctx.locale(
+            'common:level',
+            { level: action.level },
+          )}`,
+          damage: action.effects.reduce((p, c) => (c.type === 'attack' ? p + c.value : p), 0),
+        });
+        break;
+      case 'inventory':
+        this.attackMessage = this.ctx.locale('roleplay:battle.attack-message-item', {
+          attacker,
+          name: `${this.ctx.locale(`items:${action.id}.name`)} ${this.ctx.locale('common:level', {
+            level: action.level,
+          })}`,
+        });
+        break;
+    }
+  }
+
   private makeAction(action: TBattleTurn | null): void | boolean {
     const user = this.getSelf();
 
@@ -419,6 +466,7 @@ export default class BolehamBattle extends EventEmitter {
         );
     }
 
+    this.createAttackInfoText(action);
     this.changeTurn();
 
     return this.checkEndBattle();
@@ -459,12 +507,15 @@ export default class BolehamBattle extends EventEmitter {
     return false;
   }
 
-  private mobTurn(): Promise<void>;
+  /* private mobTurn(): Promise<void> {
+    
+  } */
 
   private async userTurn(): Promise<void> {
     const embed = createBaseBattleEmbed(
       this.ctx.locale.bind(this.ctx),
       this.getEntitiesDisplay(),
+      this.attackMessage,
     ).addFields(this.addStatusBuilds());
 
     this.makeMessage({

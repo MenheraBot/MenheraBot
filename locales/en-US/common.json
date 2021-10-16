@@ -28,7 +28,7 @@
   "items": "Items",
   "level_up": "LEVEL UP! Now you're level **{{level}}**! Check your new statuses",
   "battle": "Battle",
-  "battle_desc": "**{{user}}** must take an action against **{{enemy}}**",
+  "battle_desc": "{{text}}\n\n Now **{{user}}** must take an action against **{{enemy}}**",
   "sharding_in_progress": "Menhera still waking up! Try again later",
   "entity_status": "{{name}}'s Statuses",
   "your_status": "Your Stauses"
