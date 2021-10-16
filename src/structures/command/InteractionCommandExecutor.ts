@@ -97,6 +97,8 @@ const InteractionCommandExecutor = async (
   const timestamps = client.cooldowns.get(command.config.name) as Map<string, number>;
   const cooldownAmount = (command.config.cooldown || 3) * 1000;
 
+  if (now - interaction.createdTimestamp >= 3000) return;
+
   if (timestamps.has(interaction.user.id)) {
     const expirationTime = (timestamps.get(interaction.user.id) as number) + cooldownAmount;
 
