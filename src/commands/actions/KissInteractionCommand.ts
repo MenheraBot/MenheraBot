@@ -19,13 +19,13 @@ export default class KissInteractionCommand extends InteractionCommand {
           required: true,
         },
         {
-          type: 'NUMBER',
+          type: 'STRING',
           name: 'local',
           description: 'Lugar que você quer dar o beijo',
           required: true,
           choices: [
-            { name: '👄 | Boca', value: 0 },
-            { name: '🌸 | Bochecha', value: 1 },
+            { name: '👄 | Boca', value: '0' },
+            { name: '🌸 | Bochecha', value: '1' },
           ],
         },
       ],
@@ -48,7 +48,7 @@ export default class KissInteractionCommand extends InteractionCommand {
     }
 
     const selectedImage =
-      ctx.options.getNumber('local', true) === 0
+      ctx.options.getString('local', true) === '0'
         ? await HttpRequests.getAssetImageUrl('kiss')
         : await HttpRequests.getAssetImageUrl('cheek');
     const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
@@ -57,7 +57,7 @@ export default class KissInteractionCommand extends InteractionCommand {
       .setTitle(ctx.translate('embed_title'))
       .setColor(COLORS.ACTIONS)
       .setDescription(
-        ctx.translate(`embed_description_${ctx.options.getNumber('local')}`, {
+        ctx.translate(`embed_description_${ctx.options.getString('local')}`, {
           author: ctx.author.toString(),
           mention: user.toString(),
         }),
