@@ -87,7 +87,8 @@
     "bot": "You kissed a robot, and ended up touching a peeled wire. Lucky he had slippers on his feet. The connection with the Earth was cut, no circuit was closed. This time it was safe.",
     "self-mention": "I know self-love is important, but please kiss someone other than yourself",
     "embed_title": "Kiss",
-    "embed_description": "{{author}} kissed {{mention}}"
+    "embed_description_0": "{{author}} kissed {{mention}}",
+    "embed_description_1": "{{author}} kissed {{mention}}' cheek"
   },
   "rir": {
     "description": "Show everyone that you're laughing",

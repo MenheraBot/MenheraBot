@@ -25,9 +25,7 @@ export default class ResurrectInteractionCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    const rand = await HttpRequests.getAssetImageUrl('resurrect');
     const user = ctx.options.getUser('user', true);
-    const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     if (user.id === ctx.author.id) {
       await ctx.replyT('question', 'self-mention', {}, true);
@@ -39,6 +37,9 @@ export default class ResurrectInteractionCommand extends InteractionCommand {
       return;
     }
 
+    const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
+    const selectedImage = await HttpRequests.getAssetImageUrl('resurrect');
+
     const embed = new MessageEmbed()
       .setTitle(ctx.translate('embed_title'))
       .setColor(COLORS.ACTIONS)
@@ -48,7 +49,7 @@ export default class ResurrectInteractionCommand extends InteractionCommand {
           mention: user.toString(),
         }),
       )
-      .setImage(rand)
+      .setImage(selectedImage)
       .setThumbnail(avatar);
 
     await ctx.reply({ embeds: [embed] });

@@ -12,6 +12,7 @@ import RelationshipRepository from '@database/repositories/RelationshipRepositor
 import RpgRepository from '@database/repositories/RpgRepository';
 import StarRepository from '@database/repositories/StarRepository';
 import TopRepository from '@database/repositories/TopRepository';
+
 import UserRepository from '@database/repositories/UserRepository';
 import HomeRepository from '@database/repositories/HomeRepository';
 import {

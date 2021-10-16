@@ -1,6 +1,6 @@
 {
   "name": "menhera-bot",
-  "version": "3.3.6",
+  "version": "3.3.10",
   "engines": {
     "node": "^=16.6.0"
   },
@@ -77,6 +77,6 @@
     "typescript": "^4.4.3"
   },
   "optionalDependencies": {
-    "erlpack": "github:almeidx/erlpack#f0c535f73817fd914806d6ca26a7730c14e0fb7c"
+    "erlpack": "github:discord/erlpack"
   }
 }

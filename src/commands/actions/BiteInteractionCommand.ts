@@ -25,7 +25,6 @@ export default class BiteInteractionCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    const rand = await HttpRequests.getAssetImageUrl('bite');
     const user = ctx.options.getUser('user', true);
 
     if (user.bot) {
@@ -39,6 +38,7 @@ export default class BiteInteractionCommand extends InteractionCommand {
     }
 
     const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
+    const selectedImage = await HttpRequests.getAssetImageUrl('bite');
 
     const embed = new MessageEmbed()
       .setTitle(ctx.translate('embed_title'))
@@ -49,7 +49,7 @@ export default class BiteInteractionCommand extends InteractionCommand {
           mention: user.toString(),
         }),
       )
-      .setImage(rand)
+      .setImage(selectedImage)
       .setThumbnail(avatar);
 
     await ctx.reply({ embeds: [embed] });

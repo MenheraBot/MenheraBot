@@ -25,7 +25,6 @@ export default class PokeInteractionCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    const rand = await HttpRequests.getAssetImageUrl('poke');
     const user = ctx.options.getUser('user', true);
 
     if (user.id === ctx.author.id) {
@@ -33,6 +32,7 @@ export default class PokeInteractionCommand extends InteractionCommand {
       return;
     }
 
+    const selectedImage = await HttpRequests.getAssetImageUrl('poke');
     const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     const embed = new MessageEmbed()
@@ -44,7 +44,7 @@ export default class PokeInteractionCommand extends InteractionCommand {
           mention: user.toString(),
         }),
       )
-      .setImage(rand)
+      .setImage(selectedImage)
       .setThumbnail(avatar);
 
     await ctx.reply({ embeds: [embed] });

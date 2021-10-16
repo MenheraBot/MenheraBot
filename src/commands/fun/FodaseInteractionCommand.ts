@@ -29,10 +29,10 @@ export default class FodaseInteractionCommand extends InteractionCommand {
           ];
 
     const frasesUsada = frases[Math.floor(Math.random() * frases.length)];
-    const rand = await HttpRequests.getAssetImageUrl('fodase');
+    const selectedImage = await HttpRequests.getAssetImageUrl('fodase');
 
     const embed = new MessageEmbed()
-      .setImage(rand)
+      .setImage(selectedImage)
       .setFooter(ctx.translate('author', { author: ctx.author.username }))
       .setTitle(frasesUsada);
 

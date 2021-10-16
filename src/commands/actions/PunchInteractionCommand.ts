@@ -25,7 +25,6 @@ export default class PunchInteractionCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    const rand = await HttpRequests.getAssetImageUrl('punch');
     const user = ctx.options.getUser('user', true);
 
     if (user.bot) {
@@ -38,6 +37,7 @@ export default class PunchInteractionCommand extends InteractionCommand {
       return;
     }
 
+    const selectedImage = await HttpRequests.getAssetImageUrl('punch');
     const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     const embed = new MessageEmbed()
@@ -49,7 +49,7 @@ export default class PunchInteractionCommand extends InteractionCommand {
           mention: user.toString(),
         }),
       )
-      .setImage(rand)
+      .setImage(selectedImage)
       .setThumbnail(avatar);
     await ctx.reply({ embeds: [embed] });
   }
