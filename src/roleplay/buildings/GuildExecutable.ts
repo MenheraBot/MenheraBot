@@ -32,11 +32,11 @@ export default async (ctx: InteractionCommandContext, user: IRpgUserSchema): Pro
               'common:objective',
             )}**: ${ctx.locale(`quests:${a.id}.description`, {
               count: quest.objective.value + quest.objective.perLevel * a.level,
-            })}\n${ctx.locale('common:progress')}: ${
+            })}\n**${ctx.locale('common:progress')}**: ${
               a.finished
                 ? ctx.locale('common:completed')
                 : `${a.progress}/${quest.objective.value + quest.objective.perLevel * a.level}`
-            }\n**${ctx.locale('common:rewards')}:**\n ${ctx.locale('common:experience')} - ${
+            }\n**${ctx.locale('common:rewards')}:**\n**${ctx.locale('common:experience')}**:${
               quest.reward.experience * a.level
             }\n${
               quest.reward.type === 'money'
@@ -52,6 +52,7 @@ export default async (ctx: InteractionCommandContext, user: IRpgUserSchema): Pro
           })
           .join('\n\n')
       : ctx.locale('buildings:guild.first.no-daily'),
+    true,
   );
 
   const activeQuest = user.quests?.active
@@ -88,6 +89,7 @@ export default async (ctx: InteractionCommandContext, user: IRpgUserSchema): Pro
               )}`
         }`
       : ctx.locale('buildings:guild.first.no-active'),
+    true,
   );
 
   const claimButton = new MessageButton()
