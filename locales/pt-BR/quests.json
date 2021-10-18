@@ -3,5 +3,10 @@
     "name": "Tesouro Sangrento",
     "description": "Vá para o campo de treino e mate {{count}} goblin treinado",
     "description-plural": "Vá para o campo de treino e mate {{count}} goblins treinados"
+  },
+  "1": {
+    "name": "Juntos somos Mais Fortes",
+    "description": "Entre em um grupo com {{count}} pessoa",
+    "description-plural": "Entre em um grupo com {{count}} pessoas"
   }
 }
