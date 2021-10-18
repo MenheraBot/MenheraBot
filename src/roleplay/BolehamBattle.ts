@@ -35,7 +35,7 @@ import {
   resolveItemUsage,
 } from './Utils';
 
-type Tturn = 'defender' | 'attacker';
+type TurnType = 'defender' | 'attacker';
 
 export default class BolehamBattle extends EventEmitter {
   private attackerIndex = 0;
@@ -44,7 +44,7 @@ export default class BolehamBattle extends EventEmitter {
 
   private battleMessage?: Message;
 
-  private turn: Tturn = 'attacker';
+  private turn: TurnType = 'attacker';
 
   private attackMessage = '';
 
@@ -80,6 +80,7 @@ export default class BolehamBattle extends EventEmitter {
   }
 
   private onEndBattle(winner: TBattleEntity[]): void {
+    this.battleMessage?.delete().catch(() => null);
     this.emit('endBattle', winner);
   }
 
@@ -118,7 +119,8 @@ export default class BolehamBattle extends EventEmitter {
                 if (c.cost > user.mana || c.inCooldown > 0) return p;
 
                 p.push({
-                  label: this.ctx.locale(`roleplay:abilities.${c.id}.name`),
+                  emoji: emojis.roleplay_custom[c.element],
+                  label: `${this.ctx.locale(`roleplay:abilities.${c.id}.name`)}`,
                   value: `${c.id}`,
                   description: this.ctx.locale(`roleplay:abilities.${c.id}.description`),
                 });
@@ -299,8 +301,8 @@ export default class BolehamBattle extends EventEmitter {
 
   private async waitUserResponse(userId: string, timeout = 8000): Promise<TBattleTurn | null> {
     const filter = (int: MessageComponentInteraction) => {
-      if (int.user.id === userId && int.customId.startsWith(this.ctx.interaction.id)) return true;
       int.deferUpdate();
+      if (int.user.id === userId && int.customId.startsWith(this.ctx.interaction.id)) return true;
       return false;
     };
     const collected = await this.ctx.channel
@@ -385,7 +387,7 @@ export default class BolehamBattle extends EventEmitter {
 
         switch (eff.type) {
           case 'armor_buff':
-            entity.armor += eff.value;
+            entity.armor += Math.floor(eff.value);
             break;
           case 'attack':
             entity.life -= BattleFunctions.CalculateAttackEffectiveness(
@@ -395,13 +397,13 @@ export default class BolehamBattle extends EventEmitter {
             );
             break;
           case 'damage_buff':
-            entity.damage += eff.value;
+            entity.damage += Math.floor(eff.value);
             break;
           case 'heal':
-            entity.life += eff.value;
+            entity.life += Math.floor(eff.value);
             break;
           case 'mana':
-            if ('mana' in entity) entity.mana += eff.value;
+            if ('mana' in entity) entity.mana += Math.floor(eff.value);
             break;
         }
       });
@@ -522,6 +524,7 @@ export default class BolehamBattle extends EventEmitter {
 
   private mobTurn(): void {
     const mob = this.getSelf<false>();
+    const enemy = this.getSelf(true);
     const selectedAttack = randomFromArray(mob.attacks);
 
     const makeAction = this.makeAction({
@@ -532,13 +535,20 @@ export default class BolehamBattle extends EventEmitter {
       effects: selectedAttack.effects,
     });
 
+    console.log(`MOB ACTION ${makeAction}`);
+
+    console.log(`mob effects ${mob.effects.forEach((a) => ({ ...a }))}`);
+
     if (makeAction) return;
 
-    if (this.getSelf().isUser) this.userTurn();
+    if (enemy.isUser) this.userTurn();
     else this.mobTurn();
   }
 
   private async userTurn(): Promise<void> {
+    const attacker = this.getSelf<true>();
+    const enemy = this.getSelf(true);
+
     const embed = createBaseBattleEmbed(
       this.ctx.locale.bind(this.ctx),
       this.getEntitiesDisplay(),
@@ -547,19 +557,16 @@ export default class BolehamBattle extends EventEmitter {
 
     this.makeMessage({
       embeds: [embed],
-      components: this.createMessageComponents(this.getSelf<true>()),
+      components: this.createMessageComponents(attacker),
     });
 
-    console.log(this.attacking, this.defending);
-
-    const action = await this.waitUserResponse(this.attacking[this.attackerIndex].id);
+    const action = await this.waitUserResponse(attacker.id);
     const makeAction = this.makeAction(action);
-    console.log(`afkter action ${makeAction}`);
     if (makeAction) return;
 
-    // this.getSelf(false) will works as `this.getSelf(true)` because the turn already changed
+    console.log(`user effects ${attacker.effects.forEach((a) => ({ ...a }))}`);
 
-    if (this.getSelf().isUser) this.userTurn();
+    if (enemy.isUser) this.userTurn();
     else this.mobTurn();
   }
 }

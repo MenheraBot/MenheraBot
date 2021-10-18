@@ -504,6 +504,6 @@ export default class BattleFunctions {
       }
     });
 
-    return totalDamage;
+    return Math.floor(totalDamage);
   }
 }

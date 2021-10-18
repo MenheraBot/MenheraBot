@@ -241,7 +241,7 @@ export interface IEnochiaShop {
   potions: ILeveledItem[];
 }
 
-type TQuestObjectiveType = 'drop' | 'use_item' | 'kill_enemy';
+type TQuestObjectiveType = 'drop' | 'use_item' | 'kill_enemy' | 'enter_party';
 
 interface IQuestObjective {
   type: TQuestObjectiveType;

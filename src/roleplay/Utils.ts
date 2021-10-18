@@ -59,8 +59,9 @@ const resolveDailyQuests = (
 
   for (let i = 0; i < 3; i++) {
     const randomizedQuest = randomFromArray(availableQuests);
+    console.log(randomizedQuest);
     if (
-      typeof selectedQuests.find((a) => a.id === randomizedQuest.id) !== 'undefined' &&
+      typeof selectedQuests.find((a) => a?.id === randomizedQuest?.id) !== 'undefined' &&
       availableQuests.length > 3
     ) {
       i -= 1;
@@ -235,7 +236,7 @@ const isDead = (entity: TBattleEntity): boolean => entity.life <= 0;
 const negate = (value: number): number => value * -1;
 
 const calculateValue = (toEffect: number, isValuePercentage: boolean, value: number): number =>
-  isValuePercentage ? toEffect + toEffect * (value / 100) : toEffect + value;
+  Math.floor(isValuePercentage ? toEffect + toEffect * (value / 100) : toEffect + value);
 
 export {
   canBuy,
