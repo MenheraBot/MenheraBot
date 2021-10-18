@@ -30,6 +30,7 @@ import {
   calculateValue,
   createBaseBattleEmbed,
   isDead,
+  randomFromArray,
   resolveEffects,
   resolveItemUsage,
 } from './Utils';
@@ -445,6 +446,17 @@ export default class BolehamBattle extends EventEmitter {
           })}`,
         });
         break;
+      case 'mob':
+        this.attackMessage = this.ctx.locale('roleplay:battle.attack-message', {
+          attacker,
+          defender,
+          name: `${this.ctx.locale(`mobs:attacks.${action.id}.name`)} ${this.ctx.locale(
+            'common:level',
+            { level: action.level },
+          )}`,
+          damage: action.effects.reduce((p, c) => (c.type === 'attack' ? p + c.value : p), 0),
+        });
+        break;
     }
   }
 
@@ -454,6 +466,7 @@ export default class BolehamBattle extends EventEmitter {
     if (!action) return this.changeTurn();
 
     switch (action.type) {
+      case 'mob':
       case 'inventory':
       case 'ability':
         this.executeEffects(action.effects, this.getSelf(), this.getSelf(true));
@@ -507,9 +520,23 @@ export default class BolehamBattle extends EventEmitter {
     return false;
   }
 
-  /* private mobTurn(): Promise<void> {
-    
-  } */
+  private mobTurn(): void {
+    const mob = this.getSelf<false>();
+    const selectedAttack = randomFromArray(mob.attacks);
+
+    const makeAction = this.makeAction({
+      type: 'mob',
+      id: selectedAttack.id,
+      element: selectedAttack.element,
+      level: mob.level,
+      effects: selectedAttack.effects,
+    });
+
+    if (makeAction) return;
+
+    if (this.getSelf().isUser) this.userTurn();
+    else this.mobTurn();
+  }
 
   private async userTurn(): Promise<void> {
     const embed = createBaseBattleEmbed(
@@ -526,6 +553,10 @@ export default class BolehamBattle extends EventEmitter {
     const action = await this.waitUserResponse(this.attacking[this.attackerIndex].id);
     const makeAction = this.makeAction(action);
     if (makeAction) return;
-    console.log('owo');
+
+    // this.getSelf(false) will works as `this.getSelf(true)` because the turn already changed
+
+    if (this.getSelf().isUser) this.userTurn();
+    else this.mobTurn();
   }
 }

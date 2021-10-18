@@ -284,19 +284,11 @@ export interface IPartyData {
   party: string[];
 }
 
-export interface IMobAttackEffect {
-  type: TEffectType;
-  value?: number;
-  isValuePercentage?: boolean;
-  turns?: number;
-  cumulative?: boolean;
-}
-
 export interface IMobAttacksFile {
   id: number;
   description?: string;
   element: TElements;
-  effects: Array<IMobAttackEffect>;
+  effects: Array<IAbilityEffect>;
 }
 
 export interface IMobAttributePerLevel {
@@ -389,13 +381,23 @@ export interface IBattleUser {
   isUser: true;
   quests: IResolvedQuest[];
 }
+
+export interface IResolvedAbilityEffect {
+  target: TEffectTarget;
+  type: TEffectType;
+  value: number;
+  isValuePercentage: boolean;
+  turns: number;
+  cumulative: boolean;
+}
+
 export interface IBattleMob {
   readonly name: string;
   life: number;
   armor: number;
   damage: number;
-  attackSkill: number;
-  attacks: IMobAttacksFile[];
+  level: number;
+  attacks: Array<IMobAttacksFile & { effects: IResolvedAbilityEffect[] }>;
   effects: IBattleEntityEffect[];
   isUser: false;
 }
@@ -412,15 +414,6 @@ export interface IBasicAttack {
   damage: number;
 }
 
-export interface IResolvedAbilityEffect {
-  target: TEffectTarget;
-  type: TEffectType;
-  value: number;
-  isValuePercentage: boolean;
-  turns: number;
-  cumulative: boolean;
-}
-
 export interface IAbilityAttack {
   type: 'ability';
   id: number;
@@ -435,4 +428,12 @@ export interface IInventoryAttack {
   effects: IEffectData[];
 }
 
-export type TBattleTurn = IBasicAttack | IAbilityAttack | IInventoryAttack;
+export interface IMobAttack {
+  type: 'mob';
+  id: number;
+  level: number;
+  effects: IResolvedAbilityEffect[];
+  element: TElements;
+}
+
+export type TBattleTurn = IBasicAttack | IAbilityAttack | IInventoryAttack | IMobAttack;

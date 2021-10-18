@@ -17,7 +17,7 @@ import {
   TBattleEntity,
   TBattleUsableItemType,
 } from '@roleplay/Types';
-import { randomFromArray } from '@roleplay/Utils';
+import { randomFromArray, resolveMobAttack } from '@roleplay/Utils';
 import { TFunction } from 'i18next';
 import MenheraClient from 'MenheraClient';
 
@@ -56,18 +56,17 @@ export default class BattleFunctions {
       const life = mob.baseLife + mob.perLevel.baseLife * mob.level;
       const armor = mob.baseArmor + mob.perLevel.baseArmor * mob.level;
       const damage = mob.baseDamage + mob.perLevel.baseDamage * mob.level;
-      const attackSkill = mob.baseSkill + mob.perLevel.baseSkill * mob.level;
       const attacks = this.client.boleham.Functions.getMobAttacks(mob.availableAttacks);
 
       return {
+        name: locale(`mobs:mobs.${mob.id}.name`),
         life,
         armor,
         damage,
-        attackSkill,
-        attacks,
+        level: mob.level,
+        attacks: attacks.map((a) => resolveMobAttack(mob, a)),
         effects: [],
         isUser: false,
-        name: locale(`mobs:mobs.${mob.id}.name`),
       };
     });
   }

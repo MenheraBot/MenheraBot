@@ -9,6 +9,7 @@ const attacks: { [key: number]: IMobAttacksFile } = {
       {
         type: 'attack',
         value: 3,
+        target: 'enemy',
       },
     ],
   },

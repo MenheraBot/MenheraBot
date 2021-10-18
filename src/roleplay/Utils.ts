@@ -22,6 +22,8 @@ import {
   IInventoryAttack,
   TItemType,
   TBattleEntity,
+  IMobAttacksFile,
+  IMobsFile,
 } from './Types';
 
 const randomFromArray = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
@@ -213,6 +215,21 @@ const resolveItemUsage = (item: IResolvedBattleInventory): IInventoryAttack => {
   }
 };
 
+const resolveMobAttack = (
+  mob: IMobsFile & { level: number },
+  attack: IMobAttacksFile,
+): IMobAttacksFile & { effects: IResolvedAbilityEffect[] } => ({
+  ...attack,
+  effects: attack.effects.map((a) => ({
+    isValuePercentage: a.isValuePercentage ?? false,
+    target: a.target,
+    turns: a.turns ?? 0,
+    type: a.type,
+    cumulative: a.cumulative ?? false,
+    value: a.value ? a.value * mob.level : 0,
+  })),
+});
+
 const isDead = (entity: TBattleEntity): boolean => entity.life <= 0;
 
 const negate = (value: number): number => value * -1;
@@ -233,5 +250,6 @@ export {
   resolveEffects,
   calculateValue,
   negate,
+  resolveMobAttack,
   createBaseBattleEmbed,
 };
