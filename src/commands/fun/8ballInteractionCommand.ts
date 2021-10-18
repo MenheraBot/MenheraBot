@@ -1,5 +1,5 @@
 import MenheraClient from 'MenheraClient';
-import { COLORS, EightBallAnswers, emojis } from '@structures/MenheraConstants';
+import { COLORS, EightBallAnswers, emojis } from '@structures/Constants';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageEmbed, MessageAttachment } from 'discord.js-light';

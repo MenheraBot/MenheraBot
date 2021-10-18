@@ -1,4 +1,4 @@
-import { emojis } from '@structures/MenheraConstants';
+import { emojis } from '@structures/Constants';
 import { IUserSchema } from '@utils/Types';
 import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';

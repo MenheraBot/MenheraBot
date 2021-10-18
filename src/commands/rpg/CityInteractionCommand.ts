@@ -2,7 +2,7 @@ import { EmbedFieldData, MessageEmbed, MessageSelectMenu } from 'discord.js-ligh
 import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { emojis } from '@structures/MenheraConstants';
+import { emojis } from '@structures/Constants';
 import Util from '@utils/Util';
 
 export default class CityInteractionCommand extends InteractionCommand {

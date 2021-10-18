@@ -10,7 +10,7 @@ import {
 } from 'discord.js-light';
 import { TFunction } from 'i18next';
 import MenheraClient from 'MenheraClient';
-import { emojis, EmojiTypes } from '@structures/MenheraConstants';
+import { emojis, EmojiTypes } from '@structures/Constants';
 
 export default class InteractionCommandContext {
   constructor(

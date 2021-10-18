@@ -1,5 +1,5 @@
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { emojis } from '@structures/MenheraConstants';
+import { emojis } from '@structures/Constants';
 import {
   MessageActionRowOptions,
   MessageButton,

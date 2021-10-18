@@ -1,5 +1,5 @@
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { RpgClassNames } from '@structures/MenheraConstants';
+import { RpgClassNames } from '@structures/Constants';
 
 export interface IAbility {
   id: number;

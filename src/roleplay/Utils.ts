@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import { COLORS, emojis } from '@structures/MenheraConstants';
+import { COLORS, emojis } from '@structures/Constants';
 import { MessageEmbed } from 'discord.js-light';
 import { TFunction } from 'i18next';
 import BasicFunctions from './Functions/BasicFunctions';

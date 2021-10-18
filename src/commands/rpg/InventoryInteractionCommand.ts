@@ -8,7 +8,7 @@ import {
   MessageEmbed,
   MessageSelectMenu,
 } from 'discord.js-light';
-import { emojis } from '@structures/MenheraConstants';
+import { emojis } from '@structures/Constants';
 import { resolveCustomId, usePotion } from '@roleplay/Utils';
 import { AsAnUsableItem } from '@roleplay/Types';
 import BasicFunctions from '@roleplay/Functions/BasicFunctions';

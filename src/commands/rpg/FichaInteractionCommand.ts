@@ -11,7 +11,7 @@ import {
   MessageSelectMenu,
   User,
 } from 'discord.js-light';
-import { COLORS, emojis } from '@structures/MenheraConstants';
+import { COLORS, emojis } from '@structures/Constants';
 import Util from '@utils/Util';
 import { IRpgUserSchema } from '@roleplay/Types';
 import { Document } from 'mongoose';

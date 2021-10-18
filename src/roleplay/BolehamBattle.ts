@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { emojis } from '@structures/MenheraConstants';
+import { emojis } from '@structures/Constants';
 import {
   Message,
   MessageOptions,
@@ -550,8 +550,11 @@ export default class BolehamBattle extends EventEmitter {
       components: this.createMessageComponents(this.getSelf<true>()),
     });
 
+    console.log(this.attacking, this.defending);
+
     const action = await this.waitUserResponse(this.attacking[this.attackerIndex].id);
     const makeAction = this.makeAction(action);
+    console.log(`afkter action ${makeAction}`);
     if (makeAction) return;
 
     // this.getSelf(false) will works as `this.getSelf(true)` because the turn already changed

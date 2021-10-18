@@ -2,7 +2,7 @@ import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 
-import { shopEconomy } from '@structures/MenheraConstants';
+import { shopEconomy } from '@structures/Constants';
 
 export default class ShopInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {

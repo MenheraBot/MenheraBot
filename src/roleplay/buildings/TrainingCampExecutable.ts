@@ -72,5 +72,5 @@ export default async (ctx: InteractionCommandContext, user: IRpgUserSchema): Pro
   const parsedToBattleUser = await ctx.client.boleham.Battle.prepareUserForBattle(user);
 
   const BattleManager = new BolehamBattle(ctx, [parsedToBattleUser], parsedToBattleMob);
-  BattleManager.on('error', console.error);
+  BattleManager.on('exception', console.error).on('endBattle', console.log);
 };

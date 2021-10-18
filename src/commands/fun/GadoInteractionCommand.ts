@@ -3,7 +3,7 @@ import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageAttachment } from 'discord.js-light';
 import HttpRequests from '@utils/HTTPrequests';
-import { emojis } from '@structures/MenheraConstants';
+import { emojis } from '@structures/Constants';
 
 export default class GadoInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {

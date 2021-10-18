@@ -4,7 +4,7 @@ import { Context } from 'koa';
 import Router from 'koa-router';
 import MenheraClient from 'MenheraClient';
 import { Client } from 'discord.js-light';
-import { commandsInGuild } from '@structures/MenheraConstants';
+import { commandsInGuild } from '@structures/Constants';
 import authenticateDiscordRequests from '../middlewares/authenticateDiscordRequests';
 
 const handleRequest = async (ctx: Context, client: MenheraClient) => {

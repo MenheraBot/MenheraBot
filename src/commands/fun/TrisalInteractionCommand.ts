@@ -8,7 +8,7 @@ import {
   MessageEmbed,
 } from 'discord.js-light';
 import HttpRequests from '@utils/HTTPrequests';
-import { emojis } from '@structures/MenheraConstants';
+import { emojis } from '@structures/Constants';
 
 export default class TrisalInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {
