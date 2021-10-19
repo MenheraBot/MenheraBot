@@ -262,22 +262,21 @@ export default class BolehamBattle extends EventEmitter {
   }
 
   private addStatusBuilds(inverse = false): EmbedFieldData[] {
-    const actualEnemy = this.defending[this.defenderIndex];
+    const actualUser = this.getSelf<true>();
+    const actualEnemy = this.getSelf(true);
     const defaultReturn = [
       {
         name: this.ctx.locale('common:your_status'),
         inline: true,
         value: `${emojis.blood} | ${this.ctx.locale('roleplay:stats.life')}: **${
-          this.attacking[this.attackerIndex].life
-        }**\n${emojis.mana} | ${this.ctx.locale('roleplay:stats.mana')}: **${
-          this.attacking[this.attackerIndex].mana
-        }**\n${emojis.roleplay_custom.tired} | ${this.ctx.locale('roleplay:stats.tiredness')}: **${
-          this.attacking[this.attackerIndex].tiredness
-        }**\n${emojis.sword} | ${this.ctx.locale('roleplay:stats.damage')}: **${
-          this.attacking[this.attackerIndex].damage
-        }**\n${emojis.shield} | ${this.ctx.locale('roleplay:stats.armor')}: **${
-          this.attacking[this.attackerIndex].armor
-        }**`,
+          actualUser.life
+        }**\n${emojis.mana} | ${this.ctx.locale('roleplay:stats.mana')}: **${actualUser.mana}**\n${
+          emojis.roleplay_custom.tired
+        } | ${this.ctx.locale('roleplay:stats.tiredness')}: **${actualUser.tiredness}**\n${
+          emojis.sword
+        } | ${this.ctx.locale('roleplay:stats.damage')}: **${actualUser.damage}**\n${
+          emojis.shield
+        } | ${this.ctx.locale('roleplay:stats.armor')}: **${actualUser.armor}**`,
       },
       {
         name: this.ctx.locale('common:entity_status'),
@@ -285,9 +284,9 @@ export default class BolehamBattle extends EventEmitter {
         value: `${emojis.blood} | ${this.ctx.locale('roleplay:stats.life')}: **${
           actualEnemy.life
         }**\n${emojis.mana} | ${this.ctx.locale('roleplay:stats.mana')}: **${
-          actualEnemy.isUser ? actualEnemy.mana : '???'
+          actualEnemy.isUser ? actualEnemy.mana : '---'
         }**\n${emojis.roleplay_custom.tired} | ${this.ctx.locale('roleplay:stats.tiredness')}: **${
-          actualEnemy.isUser ? actualEnemy.tiredness : '???'
+          actualEnemy.isUser ? actualEnemy.tiredness : '---'
         }**\n${emojis.sword} | ${this.ctx.locale('roleplay:stats.damage')}: **${
           actualEnemy.damage
         }**\n${emojis.shield} | ${this.ctx.locale('roleplay:stats.armor')}: **${
@@ -516,7 +515,7 @@ export default class BolehamBattle extends EventEmitter {
     const attackingDead = this.attacking.every((a) => isDead(a));
     const defendingDead = this.defending.every((a) => isDead(a));
     if (attackingDead || defendingDead) {
-      this.onEndBattle(attackingDead ? this.attacking : this.defending);
+      this.onEndBattle(attackingDead ? this.defending : this.attacking);
       return true;
     }
     return false;
@@ -524,7 +523,6 @@ export default class BolehamBattle extends EventEmitter {
 
   private mobTurn(): void {
     const mob = this.getSelf<false>();
-    const enemy = this.getSelf(true);
     const selectedAttack = randomFromArray(mob.attacks);
 
     const makeAction = this.makeAction({
@@ -535,14 +533,9 @@ export default class BolehamBattle extends EventEmitter {
       effects: selectedAttack.effects,
     });
 
-    console.log(`MOB ACTION ${makeAction}`);
-
-    console.log(`mob effects ${mob.effects.forEach((a) => ({ ...a }))}`);
-
     if (makeAction) return;
 
-    if (enemy.isUser) this.userTurn();
-    else this.mobTurn();
+    this.userTurn();
   }
 
   private async userTurn(): Promise<void> {
@@ -553,7 +546,7 @@ export default class BolehamBattle extends EventEmitter {
       this.ctx.locale.bind(this.ctx),
       this.getEntitiesDisplay(),
       this.attackMessage,
-    ).addFields(this.addStatusBuilds());
+    ).addFields(this.addStatusBuilds(this.turn === 'defender'));
 
     this.makeMessage({
       embeds: [embed],
@@ -563,8 +556,6 @@ export default class BolehamBattle extends EventEmitter {
     const action = await this.waitUserResponse(attacker.id);
     const makeAction = this.makeAction(action);
     if (makeAction) return;
-
-    console.log(`user effects ${attacker.effects.forEach((a) => ({ ...a }))}`);
 
     if (enemy.isUser) this.userTurn();
     else this.mobTurn();
