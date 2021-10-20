@@ -59,7 +59,6 @@ const resolveDailyQuests = (
 
   for (let i = 0; i < 3; i++) {
     const randomizedQuest = randomFromArray(availableQuests);
-    console.log(randomizedQuest);
     if (
       typeof selectedQuests.find((a) => a?.id === randomizedQuest?.id) !== 'undefined' &&
       availableQuests.length > 3

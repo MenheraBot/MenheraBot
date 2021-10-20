@@ -2,7 +2,7 @@ import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageButton, MessageEmbed } from 'discord.js-light';
 import Util from '@utils/Util';
 import BolehamBattle from '@roleplay/BolehamBattle';
-import { IRpgUserSchema } from '../Types';
+import { IBattleUser, IRpgUserSchema } from '../Types';
 import { resolveCustomId } from '../Utils';
 
 export default async (ctx: InteractionCommandContext, user: IRpgUserSchema): Promise<void> => {
@@ -72,5 +72,7 @@ export default async (ctx: InteractionCommandContext, user: IRpgUserSchema): Pro
   const parsedToBattleUser = await ctx.client.boleham.Battle.prepareUserForBattle(user);
 
   const BattleManager = new BolehamBattle(ctx, [parsedToBattleUser], parsedToBattleMob);
-  BattleManager.on('exception', console.error).on('endBattle', console.log);
+  BattleManager.on('exception', console.error).on('endBattle', (a: IBattleUser[]) =>
+    console.log(a[0]),
+  );
 };

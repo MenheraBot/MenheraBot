@@ -30,6 +30,7 @@ import {
   calculateValue,
   createBaseBattleEmbed,
   isDead,
+  negate,
   randomFromArray,
   resolveEffects,
   resolveItemUsage,
@@ -170,7 +171,7 @@ export default class BolehamBattle extends EventEmitter {
   }
 
   private finishTurn(): void {
-    this.defending.forEach((entity, index) => {
+    const makeEffectsResults = (entity: TBattleEntity, index: number) => {
       entity.effects.forEach((effect) => {
         effect.turns -= 1;
 
@@ -183,11 +184,19 @@ export default class BolehamBattle extends EventEmitter {
             break;
           case 'blind':
             if (effect.cumulative)
-              effect.value = calculateValue(effect.value, effect.isValuePercentage, effect.value);
+              effect.value = calculateValue(
+                effect.value,
+                effect.isValuePercentage,
+                negate(effect.value),
+              );
             break;
           case 'confusion':
             if (effect.cumulative)
-              effect.value = calculateValue(effect.value, effect.isValuePercentage, effect.value);
+              effect.value = calculateValue(
+                effect.value,
+                effect.isValuePercentage,
+                negate(effect.value),
+              );
             break;
           case 'damage_buff':
             if (!effect.wasExecuted)
@@ -236,7 +245,10 @@ export default class BolehamBattle extends EventEmitter {
         effect.wasExecuted = true;
         if (effect.turns <= 0) entity.effects.splice(index, 1);
       });
-    });
+    };
+
+    this.defending.forEach(makeEffectsResults);
+    this.attacking.forEach(makeEffectsResults);
   }
 
   private changeTurn(): void {
@@ -383,6 +395,14 @@ export default class BolehamBattle extends EventEmitter {
       whoWillEffect.forEach((entity) => {
         if ('isValuePercentage' in eff)
           return entity.effects.push({ ...(eff as IResolvedAbilityEffect), wasExecuted: false });
+
+        console.log(
+          BattleFunctions.CalculateAttackEffectiveness(
+            eff.value,
+            this.getSelf(),
+            this.getSelf(true),
+          ),
+        );
 
         switch (eff.type) {
           case 'armor_buff':
