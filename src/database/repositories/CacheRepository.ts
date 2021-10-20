@@ -72,4 +72,19 @@ export default class CacheRepository {
       await this.redisClient.setex(`command:${commandName}`, 3600, stringedObject);
     }
   }
+
+  async addDeletedAccount(user: string[] | string): Promise<void> {
+    if (!this.redisClient) return;
+    await this.redisClient.sadd('deleted_accounts', user);
+  }
+
+  async removeDeletedAccount(user: string): Promise<void> {
+    if (!this.redisClient) return;
+    await this.redisClient.srem('deleted_accounts', user);
+  }
+
+  async getDeletedAccounts(): Promise<string[]> {
+    if (!this.redisClient) return [];
+    return this.redisClient.smembers('deleted_accounts');
+  }
 }
