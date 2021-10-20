@@ -610,6 +610,7 @@
     "no-args": "what is big? Tell me?"
   },
   "trisal": {
+    "no-args": "You're not on any trisals! Mention people to join in a polyamory >.<",
     "description": "Form a trisal and see your metadinhas",
     "usage": "[@mention1 & @mention2]",
     "marry-not-found": "a user of your trisal was not found",
