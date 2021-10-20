@@ -223,3 +223,16 @@ export interface ITopResult {
   id: string;
   value: number;
 }
+
+export enum TopRankingTypes {
+  mamadas = 'mamadas',
+  mamou = 'mamou',
+  demons = 'caçou',
+  archangels = 'arcanjos',
+  giants = 'giants',
+  angels = 'anjos',
+  demigods = 'semideuses',
+  gods = 'deuses',
+  stars = 'estrelinhas',
+  votes = 'votos',
+}

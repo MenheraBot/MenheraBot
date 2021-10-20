@@ -35,6 +35,8 @@ module.exports = {
     'import/no-cycle': 'off',
     'no-useless-constructor': 'off',
     '@typescript-eslint/no-useless-constructor': ['error'],
+    'no-shadow': 'off',
+    '@typescript-eslint/no-shadow': ['error'],
     'import/no-named-as-default': 0,
     'import/no-named-as-default-member': 0,
   },

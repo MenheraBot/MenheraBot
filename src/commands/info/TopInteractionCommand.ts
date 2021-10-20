@@ -6,7 +6,7 @@ import { MessageEmbed, ColorResolvable } from 'discord.js-light';
 import HttpRequests from '@utils/HTTPrequests';
 import Util from '@utils/Util';
 import { COLORS, emojis } from '@structures/MenheraConstants';
-import { ITopResult } from '@utils/Types';
+import { TopRankingTypes as TOP } from '@utils/Types';
 
 export default class TopInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {
@@ -93,6 +93,11 @@ export default class TopInteractionCommand extends InteractionCommand {
     });
   }
 
+  static calculateSkipCount(page: number, documents: number): number {
+    if (!Number.isNaN(page) && page > 0 && page < documents / 10) return (page - 1) * 10;
+    return 0;
+  }
+
   static async topCommands(ctx: InteractionCommandContext): Promise<void> {
     const res = await HttpRequests.getTopCommands();
     if (!res) {
@@ -116,40 +121,120 @@ export default class TopInteractionCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const type = ctx.options.getString('tipo', true);
-    const pagina = ctx.options.getInteger('pagina') ?? 1;
+    const page = ctx.options.getInteger('pagina') ?? 1;
 
     await ctx.defer();
 
     switch (type) {
       case 'mamadores':
-        this.topMamadores(ctx, pagina);
+        this.executeUserDataRelatedRanking(
+          ctx,
+          TOP.mamou,
+          emojis.crown,
+          ctx.translate('mamadoresTitle'),
+          ctx.translate('suck'),
+          page,
+          COLORS.Pinkie,
+        );
         return;
       case 'mamados':
-        this.topMamados(ctx, pagina);
+        this.executeUserDataRelatedRanking(
+          ctx,
+          TOP.mamadas,
+          emojis.lick,
+          ctx.translate('mamouTitle'),
+          ctx.translate('suckled'),
+          page,
+          COLORS.Pinkie,
+        );
         return;
       case 'estrelinhas':
-        this.topEstrelinhas(ctx, pagina);
+        this.executeUserDataRelatedRanking(
+          ctx,
+          TOP.stars,
+          emojis.star,
+          ctx.translate('startsTitle'),
+          ctx.translate('stars'),
+          page,
+          COLORS.Pear,
+        );
         return;
       case 'demonios':
-        this.topDemonios(ctx, pagina);
+        this.executeUserDataRelatedRanking(
+          ctx,
+          TOP.demons,
+          emojis.demon,
+          ctx.translate('demonTitle'),
+          ctx.translate('demons'),
+          page,
+          COLORS.HuntDemon,
+        );
         return;
       case 'gigantes':
-        this.topGigantes(ctx, pagina);
+        this.executeUserDataRelatedRanking(
+          ctx,
+          TOP.giants,
+          emojis.giant,
+          ctx.translate('giantTitle'),
+          ctx.translate('giants'),
+          page,
+          COLORS.HuntGiant,
+        );
         return;
       case 'anjos':
-        this.topAnjos(ctx, pagina);
+        this.executeUserDataRelatedRanking(
+          ctx,
+          TOP.angels,
+          emojis.angel,
+          ctx.translate('angelTitle'),
+          ctx.translate('angels'),
+          page,
+          COLORS.HuntAngel,
+        );
         return;
       case 'arcanjos':
-        this.topArcanjos(ctx, pagina);
+        this.executeUserDataRelatedRanking(
+          ctx,
+          TOP.archangels,
+          emojis.archangel,
+          ctx.translate('archangelTitle'),
+          ctx.translate('archangels'),
+          page,
+          COLORS.HuntArchangel,
+        );
         return;
       case 'semideuses':
-        this.topSD(ctx, pagina);
+        this.executeUserDataRelatedRanking(
+          ctx,
+          TOP.demigods,
+          emojis.semigod,
+          ctx.translate('sdTitle'),
+          ctx.translate('demigods'),
+          page,
+          COLORS.HuntSD,
+        );
         return;
       case 'deuses':
-        this.topDeuses(ctx, pagina);
+        this.executeUserDataRelatedRanking(
+          ctx,
+          TOP.gods,
+          emojis.god,
+          ctx.translate('godTitle'),
+          ctx.translate('gods'),
+          page,
+          COLORS.HuntGod,
+        );
         return;
       case 'votos':
-        this.topVotos(ctx, pagina);
+        this.executeUserDataRelatedRanking(
+          ctx,
+          TOP.votes,
+          emojis.ok,
+          ctx.translate('voteTitle'),
+          ctx.translate('votes'),
+          page,
+          COLORS.UltraPink,
+        );
         return;
       case 'comandos':
         TopInteractionCommand.topCommands(ctx);
@@ -162,418 +247,44 @@ export default class TopInteractionCommand extends InteractionCommand {
     }
   }
 
-  async createEmbed(
-    results: ITopResult[],
+  async executeUserDataRelatedRanking(
+    ctx: InteractionCommandContext,
+    labelType: TOP,
     emoji: string,
     embedTitle: string,
-    color: ColorResolvable,
     actor: string,
     page: number,
-    skip: number,
-  ): Promise<MessageEmbed> {
+    color: ColorResolvable,
+  ): Promise<void> {
+    const skip = TopInteractionCommand.calculateSkipCount(page, 1000);
+
+    const res = await this.client.repositories.userRepository.getTopRanking(
+      labelType,
+      skip,
+      await this.client.repositories.cacheRepository.getDeletedAccounts(),
+    );
+
     const embed = new MessageEmbed()
       .setTitle(`${emoji} | ${embedTitle} ${page > 1 ? page : 1}º`)
       .setColor(color);
 
-    for (let i = 0; i < results.length; i++) {
-      const member = await this.client.users.fetch(results[i].id).catch(() => null);
-      const memberName = member?.username ?? results[i].id;
-
-      embed.addField(
-        `**${skip + 1 + i} -** ${memberName}`,
-        `${actor}: **${results[i].value}**`,
-        false,
-      );
-    }
-    return embed;
-  }
-
-  async topMamados(ctx: InteractionCommandContext, pagina: number): Promise<void> {
-    const quantidade = await this.client.database.Users.countDocuments();
-    let skip = 0;
-    if (!Number.isNaN(pagina) && pagina > 0 && pagina < quantidade / 10) {
-      skip = (pagina - 1) * 10;
-    }
-
-    const res = await this.client.database.Users.find({ ban: false }, ['mamadas', 'id'], {
-      skip,
-      limit: 10,
-      sort: { mamadas: -1 },
-    });
-
-    const embed = new MessageEmbed()
-
-      .setTitle(`👑 | ${ctx.translate('mamouTitle')} ${pagina > 1 ? pagina : 1}º`)
-      .setColor('#eab3fa');
-
     for (let i = 0; i < res.length; i++) {
-      const member = await this.client.users.fetch(res[i].id).catch();
+      const member = await this.client.users.fetch(res[i].id).catch(() => null);
       const memberName = member?.username ?? res[i].id;
 
-      embed.addField(
-        `**${skip + 1 + i} -** ${memberName}`,
-        `${ctx.translate('suckled')}: **${res[i].mamadas}**`,
-        false,
-      );
-    }
-    ctx.editReply({ embeds: [embed] });
-  }
+      if (memberName.startsWith('Deleted User'))
+        this.client.repositories.cacheRepository.addDeletedAccount(res[i].id);
 
-  async topMamadores(ctx: InteractionCommandContext, pagina: number): Promise<void> {
-    const quantidade = await this.client.database.Users.countDocuments();
-
-    let skip = 0;
-    if (!Number.isNaN(pagina) && pagina > 0 && pagina < quantidade / 10) {
-      skip = (pagina - 1) * 10;
+      embed.addField(`**${skip + 1 + i} -** ${memberName}`, `${actor}: **${res[i].value}**`, false);
     }
 
-    const res = await this.client.database.Users.find({ ban: false }, ['mamou', 'id'], {
-      skip,
-      limit: 10,
-      sort: { mamou: -1 },
-    });
-
-    const embed = new MessageEmbed()
-
-      .setTitle(`👑 |  ${ctx.translate('mamadoresTitle')} ${pagina > 1 ? pagina : 1}º`)
-      .setColor('#eab3fa');
-
-    for (let i = 0; i < res.length; i++) {
-      const member = await this.client.users.fetch(res[i].id).catch();
-      if (!member) {
-        embed.addField(
-          `**${skip + 1 + i} -** ${res[i].id}`,
-          `${ctx.translate('suck')}: **${res[i].mamou}**`,
-          false,
-        );
-      } else {
-        embed.addField(
-          `**${skip + 1 + i} -** ${member.username}`,
-          `${ctx.translate('suck')}: **${res[i].mamou}**`,
-          false,
-        );
-      }
-    }
-    ctx.editReply({ embeds: [embed] });
-  }
-
-  async topDemonios(ctx: InteractionCommandContext, pagina: number): Promise<void> {
-    const quantidade = await this.client.database.Users.countDocuments();
-
-    let skip = 0;
-    if (!Number.isNaN(pagina) && pagina > 0 && pagina < quantidade / 10) {
-      skip = (pagina - 1) * 10;
-    }
-
-    const res = await this.client.database.Users.find({ ban: false }, ['caçados', 'id'], {
-      skip,
-      limit: 10,
-      sort: { caçados: -1 },
-    });
-
-    const embed = new MessageEmbed()
-
-      .setTitle(
-        `<:DEMON:758765044443381780> |  ${ctx.translate('demonTitle')} ${pagina > 1 ? pagina : 1}º`,
-      )
-      .setColor(COLORS.HuntDemon);
-
-    for (let i = 0; i < res.length; i++) {
-      const member = await this.client.users.fetch(res[i].id).catch();
-      if (!member) {
-        embed.addField(
-          `**${skip + 1 + i} -** ${res[i].id} `,
-          `${ctx.translate('demons')}: ** ${res[i].caçados}** `,
-          false,
-        );
-      } else {
-        embed.addField(
-          `**${skip + 1 + i} -** ${member.username} `,
-          `${ctx.translate('demons')}: ** ${res[i].caçados}** `,
-          false,
-        );
-      }
-    }
-    ctx.editReply({ embeds: [embed] });
-  }
-
-  async topArcanjos(ctx: InteractionCommandContext, pagina: number): Promise<void> {
-    const quantidade = await this.client.database.Users.countDocuments();
-
-    let skip = 0;
-    if (!Number.isNaN(pagina) && pagina > 0 && pagina < quantidade / 10) {
-      skip = (pagina - 1) * 10;
-    }
-
-    const res = await this.client.database.Users.find({ ban: false }, ['arcanjos', 'id'], {
-      skip,
-      limit: 10,
-      sort: { arcanjos: -1 },
-    });
-
-    const embed = new MessageEmbed()
-
-      .setTitle(`🧚‍♂️ | ${ctx.translate('arcangelTitle')} ${pagina > 1 ? pagina : 1}º`)
-      .setColor(COLORS.HuntArchangel);
-
-    for (let i = 0; i < res.length; i++) {
-      const member = await this.client.users.fetch(res[i].id).catch();
-      if (!member) {
-        embed.addField(
-          `** ${skip + 1 + i} -** ${res[i].id} `,
-          `${ctx.translate('archangels')}: ** ${res[i].arcanjos}** `,
-          false,
-        );
-      } else {
-        embed.addField(
-          `** ${skip + 1 + i} -** ${member.username} `,
-          `${ctx.translate('archangels')}: ** ${res[i].arcanjos}** `,
-          false,
-        );
-      }
-    }
-    ctx.editReply({ embeds: [embed] });
-  }
-
-  async topGigantes(ctx: InteractionCommandContext, pagina: number): Promise<void> {
-    const quantidade = await this.client.database.Users.countDocuments();
-
-    let skip = 0;
-    if (!Number.isNaN(pagina) && pagina > 0 && pagina < quantidade / 10) {
-      skip = (pagina - 1) * 10;
-    }
-
-    const res = await this.client.database.Users.find({ ban: false }, ['giants', 'id'], {
-      skip,
-      limit: 10,
-      sort: { giants: -1 },
-    });
-
-    const embed = new MessageEmbed()
-
-      .setTitle(`👨 | ${ctx.translate('giantTitle')} ${pagina > 1 ? pagina : 1}º`)
-      .setColor(COLORS.HuntGiant);
-
-    for (let i = 0; i < res.length; i++) {
-      const member = await this.client.users.fetch(res[i].id).catch();
-      if (!member) {
-        embed.addField(
-          `** ${skip + 1 + i} -** ${res[i].id} `,
-          `${ctx.translate('giants')}: ** ${res[i].giants}** `,
-          false,
-        );
-      } else {
-        embed.addField(
-          `** ${skip + 1 + i} -** ${member.username} `,
-          `${ctx.translate('giants')}: ** ${res[i].giants}** `,
-          false,
-        );
-      }
-    }
-    ctx.editReply({ embeds: [embed] });
-  }
-
-  async topAnjos(ctx: InteractionCommandContext, pagina: number): Promise<void> {
-    const quantidade = await this.client.database.Users.countDocuments();
-
-    let skip = 0;
-    if (!Number.isNaN(pagina) && pagina > 0 && pagina < quantidade / 10) {
-      skip = (pagina - 1) * 10;
-    }
-
-    const res = await this.client.database.Users.find({ ban: false }, ['anjos', 'id'], {
-      skip,
-      limit: 10,
-      sort: { anjos: -1 },
-    });
-
-    const embed = new MessageEmbed()
-
-      .setTitle(
-        `<:ANGEL:758765044204437535> | ${ctx.translate('angelTitle')} ${pagina > 1 ? pagina : 1}º`,
-      )
-      .setColor(COLORS.HuntAngel);
-
-    for (let i = 0; i < res.length; i++) {
-      const member = await this.client.users.fetch(res[i].id).catch();
-      if (!member) {
-        embed.addField(
-          `** ${skip + 1 + i} -** ${res[i].id} `,
-          `${ctx.translate('angels')}: ** ${res[i].anjos}** `,
-          false,
-        );
-      } else {
-        embed.addField(
-          `** ${skip + 1 + i} -** ${member.username} `,
-          `${ctx.translate('angels')}: ** ${res[i].anjos}** `,
-          false,
-        );
-      }
-    }
-    ctx.editReply({ embeds: [embed] });
-  }
-
-  async topSD(ctx: InteractionCommandContext, pagina: number): Promise<void> {
-    const quantidade = await this.client.database.Users.countDocuments();
-
-    let skip = 0;
-    if (!Number.isNaN(pagina) && pagina > 0 && pagina < quantidade / 10) {
-      skip = (pagina - 1) * 10;
-    }
-
-    const res = await this.client.database.Users.find({ ban: false }, ['semideuses', 'id'], {
-      skip,
-      limit: 10,
-      sort: { semideuses: -1 },
-    });
-
-    const embed = new MessageEmbed()
-
-      .setTitle(
-        `<:SEMIGOD:758766732235374674> | ${ctx.translate('sdTitle')} ${pagina > 1 ? pagina : 1}º`,
-      )
-      .setColor(COLORS.HuntSD);
-
-    for (let i = 0; i < res.length; i++) {
-      const member = await this.client.users.fetch(res[i].id).catch();
-      if (!member) {
-        embed.addField(
-          `** ${skip + 1 + i} -** ${res[i].id} `,
-          `${ctx.translate('demigods')}: ** ${res[i].semideuses}** `,
-          false,
-        );
-      } else {
-        embed.addField(
-          `** ${skip + 1 + i} -** ${member.username} `,
-          `${ctx.translate('demigods')}: ** ${res[i].semideuses}** `,
-          false,
-        );
-      }
-    }
-    ctx.editReply({ embeds: [embed] });
-  }
-
-  async topDeuses(ctx: InteractionCommandContext, pagina: number): Promise<void> {
-    const quantidade = await this.client.database.Users.countDocuments();
-
-    let skip = 0;
-    if (!Number.isNaN(pagina) && pagina > 0 && pagina < quantidade / 10) {
-      skip = (pagina - 1) * 10;
-    }
-
-    const res = await this.client.database.Users.find({ ban: false }, ['deuses', 'id'], {
-      skip,
-      limit: 10,
-      sort: { deuses: -1 },
-    });
-
-    const embed = new MessageEmbed()
-
-      .setTitle(
-        `<:God:758474639570894899> | ${ctx.translate('godTitle')} ${pagina > 1 ? pagina : 1}º`,
-      )
-      .setColor(COLORS.HuntGod);
-
-    for (let i = 0; i < res.length; i++) {
-      const member = await this.client.users.fetch(res[i].id).catch();
-      if (!member) {
-        embed.addField(
-          `** ${skip + 1 + i} -** ${res[i].id} `,
-          `${ctx.translate('gods')}: ** ${res[i].deuses}** `,
-          false,
-        );
-      } else {
-        embed.addField(
-          `** ${skip + 1 + i} -** ${member.username} `,
-          `${ctx.translate('gods')}: ** ${res[i].deuses}** `,
-          false,
-        );
-      }
-    }
-    ctx.editReply({ embeds: [embed] });
-  }
-
-  async topEstrelinhas(ctx: InteractionCommandContext, pagina: number): Promise<void> {
-    const quantidade = await this.client.database.Users.countDocuments();
-
-    let skip = 0;
-    if (!Number.isNaN(pagina) && pagina > 0 && pagina < quantidade / 10) {
-      skip = (pagina - 1) * 10;
-    }
-
-    const res = await this.client.database.Users.find({ ban: false }, ['estrelinhas', 'id'], {
-      skip,
-      limit: 10,
-      sort: { estrelinhas: -1 },
-    });
-
-    const embed = new MessageEmbed()
-      .setTitle(`⭐ | ${ctx.translate('starsTitle')} ${pagina > 1 ? pagina : 1} º`)
-      .setColor('#74bd63');
-
-    for (let i = 0; i < res.length; i++) {
-      const member = await this.client.users.fetch(res[i].id).catch();
-      if (!member) {
-        embed.addField(
-          `** ${skip + 1 + i} -** ${res[i].id} `,
-          `${ctx.translate('stars')}: ** ${res[i].estrelinhas}** `,
-          false,
-        );
-      } else {
-        embed.addField(
-          `** ${skip + 1 + i} -** ${member.username} `,
-          `${ctx.translate('stars')}: ** ${res[i].estrelinhas}** `,
-          false,
-        );
-      }
-    }
-    ctx.editReply({ embeds: [embed] });
-  }
-
-  async topVotos(ctx: InteractionCommandContext, pagina: number): Promise<void> {
-    const quantidade = await this.client.database.Users.countDocuments();
-
-    let skip = 0;
-    if (!Number.isNaN(pagina) && pagina > 0 && pagina < quantidade / 10) {
-      skip = (pagina - 1) * 10;
-    }
-
-    const res = await this.client.database.Users.find({ ban: false }, ['votos', 'id'], {
-      skip,
-      limit: 10,
-      sort: { votos: -1 },
-    });
-
-    const embed = new MessageEmbed()
-
-      .setTitle(
-        `<:ok:727975974125436959> | ${ctx.translate('voteTitle')} ${pagina > 1 ? pagina : 1} º`,
-      )
-      .setColor('#ff29ae');
-
-    for (let i = 0; i < res.length; i++) {
-      const member = await this.client.users.fetch(res[i].id).catch();
-      if (!member) {
-        embed.addField(
-          `** ${skip + 1 + i} -** ${res[i].id} `,
-          `Upvotes: ** ${res[i].votos}** `,
-          false,
-        );
-      } else {
-        embed.addField(
-          `** ${skip + 1 + i} -** ${member.username} `,
-          `Upvotes: ** ${res[i].votos}** `,
-          false,
-        );
-      }
-    }
-    ctx.editReply({ embeds: [embed] });
+    ctx.defer({ embeds: [embed] });
   }
 
   async topUsers(ctx: InteractionCommandContext): Promise<void> {
     const res = await HttpRequests.getTopUsers();
     if (!res) {
-      ctx.editReply({ content: `${emojis.error} |  ${ctx.locale('commands:http-error')}` });
+      ctx.defer({ content: `${emojis.error} |  ${ctx.locale('commands:http-error')}` });
       return;
     }
     const embed = new MessageEmbed()
@@ -589,14 +300,14 @@ export default class TopInteractionCommand extends InteractionCommand {
         false,
       );
     }
-    ctx.editReply({ embeds: [embed] });
+    ctx.defer({ embeds: [embed] });
   }
 
   static async topUser(ctx: InteractionCommandContext): Promise<void> {
     const user = ctx.options.getUser('user') ?? ctx.author;
 
     if (!user) {
-      ctx.editReply({ content: `${emojis.error} | ${ctx.translate('not-user')}` });
+      ctx.defer({ content: `${emojis.error} | ${ctx.translate('not-user')}` });
       return;
     }
 
@@ -611,7 +322,7 @@ export default class TopInteractionCommand extends InteractionCommand {
       .setColor('#f47fff');
 
     if (!res || res.cmds.count === 0) {
-      ctx.editReply({ content: `${emojis.error} | ${ctx.translate('not-user')}` });
+      ctx.defer({ content: `${emojis.error} | ${ctx.translate('not-user')}` });
       return;
     }
 
@@ -623,6 +334,6 @@ export default class TopInteractionCommand extends InteractionCommand {
         false,
       );
     }
-    ctx.editReply({ embeds: [embed] });
+    ctx.defer({ embeds: [embed] });
   }
 }

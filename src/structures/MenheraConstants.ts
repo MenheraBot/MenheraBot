@@ -62,6 +62,14 @@ export const emojis = {
   warn: '<:atencao:759603958418767922>',
   notify: '<:notify:759607330597502976>',
   wink: '<:MenheraWink:767210250637279252>',
+  devil: '<:MenheraDevil:768621225420652595>',
+  demon: '<:Demon:758765044443381780>',
+  angel: '<:Angel:758765044204437535>',
+  semigod: '<:SemiGod:758766732235374674>',
+  god: '<:God:758474639570894899>',
+  ok: '<:ok:727975974125436959>',
+  us: '🇺🇸',
+  br: '🇧🇷',
   ring: '💍',
   yes: '✅',
   no: '❌',
@@ -69,21 +77,16 @@ export const emojis = {
   question: '❓',
   yellow_circle: '🟡',
   heart: '❤️',
+  lick: '👅',
   sword: '⚔️',
   rainbow: '🌈',
   giant: '🦍',
   archangel: '👼',
+  crown: '👑',
   scape: '🐥',
   lock: '🔒',
   list: '📜',
   star: '⭐',
-  demon: '<:Demon:758765044443381780>',
-  angel: '<:Angel:758765044204437535>',
-  semigod: '<:SemiGod:758766732235374674>',
-  god: '<:God:758474639570894899>',
-  us: '🇺🇸',
-  br: '🇧🇷',
-  ligma: '<:MenheraDevil:768621225420652595>',
 };
 
 export const languageByLocale = {
@@ -200,6 +203,9 @@ export const COLORS = {
   Purple: '#7f28c4' as const,
   ACTIONS: '#fa8cc5' as const,
   Colorless: '#36393F' as const,
+  Pinkie: '#eab3fa' as const,
+  Pear: '#74bd63' as const,
+  UltraPink: '#ff29ae' as const,
 };
 
 export const BLACKJACK_CARDS = [

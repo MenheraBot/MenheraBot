@@ -1,6 +1,6 @@
 import { Users } from '@structures/DatabaseCollections';
 import { Document, UpdateQuery, UpdateWithAggregationPipeline } from 'mongoose';
-import { IUserSchema } from '@utils/Types';
+import { ITopResult, IUserSchema, TopRankingTypes } from '@utils/Types';
 
 export default class UserRepository {
   constructor(private userModal: typeof Users) {}
@@ -45,5 +45,24 @@ export default class UserRepository {
   async getAllBannedUsersId(): Promise<string[]> {
     const bannedUsers = await this.userModal.find({ ban: true }, ['id']);
     return bannedUsers.map((a) => a.id);
+  }
+
+  async getTopRanking<FieldType extends TopRankingTypes>(
+    field: FieldType,
+    skip: number,
+    ignoreUsers: string[] = [],
+    limit = 10,
+  ): Promise<ITopResult[]> {
+    const res = await this.userModal.find(
+      { ban: false, id: { $nin: ignoreUsers } },
+      [field, 'id'],
+      {
+        skip,
+        limit,
+        sort: { [field]: -1 },
+      },
+    );
+
+    return res.map((a) => ({ id: a.id, value: a[field] }));
   }
 }
