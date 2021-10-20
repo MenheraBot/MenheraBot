@@ -47,8 +47,8 @@ export default class UserRepository {
     return bannedUsers.map((a) => a.id);
   }
 
-  async getTopRanking<FieldType extends TopRankingTypes>(
-    field: FieldType,
+  async getTopRanking(
+    field: TopRankingTypes,
     skip: number,
     ignoreUsers: string[] = [],
     limit = 10,

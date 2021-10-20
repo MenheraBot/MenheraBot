@@ -227,7 +227,7 @@ export interface ITopResult {
 export enum TopRankingTypes {
   mamadas = 'mamadas',
   mamou = 'mamou',
-  demons = 'caçou',
+  demons = 'caçados',
   archangels = 'arcanjos',
   giants = 'giants',
   angels = 'anjos',
