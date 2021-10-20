@@ -2,10 +2,11 @@
 import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { MessageEmbed } from 'discord.js-light';
+import { MessageEmbed, ColorResolvable } from 'discord.js-light';
 import HttpRequests from '@utils/HTTPrequests';
 import Util from '@utils/Util';
 import { COLORS, emojis } from '@structures/MenheraConstants';
+import { ITopResult } from '@utils/Types';
 
 export default class TopInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {
@@ -159,6 +160,32 @@ export default class TopInteractionCommand extends InteractionCommand {
       case 'user':
         TopInteractionCommand.topUser(ctx);
     }
+  }
+
+  async createEmbed(
+    results: ITopResult[],
+    emoji: string,
+    embedTitle: string,
+    color: ColorResolvable,
+    actor: string,
+    page: number,
+    skip: number,
+  ): Promise<MessageEmbed> {
+    const embed = new MessageEmbed()
+      .setTitle(`${emoji} | ${embedTitle} ${page > 1 ? page : 1}º`)
+      .setColor(color);
+
+    for (let i = 0; i < results.length; i++) {
+      const member = await this.client.users.fetch(results[i].id).catch(() => null);
+      const memberName = member?.username ?? results[i].id;
+
+      embed.addField(
+        `**${skip + 1 + i} -** ${memberName}`,
+        `${actor}: **${results[i].value}**`,
+        false,
+      );
+    }
+    return embed;
   }
 
   async topMamados(ctx: InteractionCommandContext, pagina: number): Promise<void> {

@@ -218,3 +218,8 @@ export interface IPicassoWebsocketRequest<T> {
   type: string;
   data: T;
 }
+
+export interface ITopResult {
+  id: string;
+  value: number;
+}
