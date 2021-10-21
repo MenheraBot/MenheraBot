@@ -288,21 +288,20 @@
       "success-god": "você vendeu **{{value}}** <:God:758474639570894899> deuses e recebeu **{{cost}}** ⭐ estrelinhas!\nAgora você tem **{{quantity}}** <:God:758474639570894899> e **{{star}}**⭐"
     }
   },
-  "carteira": {
-    "description": "Veja a carteira de alguém",
-    "usage": "[usuário]",
+  "inventario": {
     "no-dbuser": "este usuário não está em minha database",
-    "title": "Carteira de {{user}}",
+    "bot": "O meu bem, desculpa te decepcionar, mas bots não tem inventários :(",
+    "title": "Inventário de {{user}}",
     "stars": "Estrelinhas",
     "rolls": "Rolls",
-    "unknow-user": "usuário não encontrado",
+    "unknow-user": "Usuário não encontrado",
     "demons": "Demônios",
     "angels": "Anjos",
     "giants": "Gigantes",
     "archangel": "Arcanjos",
     "sd": "Semideuses",
     "god": "Deuses",
-    "banned-user": "Este usuário não possui carteira pois está banido da Menhera!"
+    "banned-user": "Este usuário não possui inventário pois está banido da Menhera!"
   },
   "8ball": {
     "description": "Pergunte algo para mim",

@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ## [Unreleased]
 
+### Changed
+
+- Este arquivo agorá é escrito em português
+- O comando `carteira` foi renomeado para `inventario`
+
 ## [3.3.12] - 2021-10-20
 
 ### Added
