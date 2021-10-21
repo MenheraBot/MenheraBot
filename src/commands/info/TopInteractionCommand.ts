@@ -94,7 +94,10 @@ export default class TopInteractionCommand extends InteractionCommand {
   }
 
   static calculateSkipCount(page: number, documents: number): number {
-    if (!Number.isNaN(page) && page > 0 && page < documents / 10) return (page - 1) * 10;
+    if (!Number.isNaN(page) && page > 0) {
+      if (page >= documents / 10) return documents / 10;
+      return (page - 1) * 10;
+    }
     return 0;
   }
 
@@ -153,7 +156,7 @@ export default class TopInteractionCommand extends InteractionCommand {
           ctx,
           TOP.stars,
           emojis.star,
-          ctx.translate('startsTitle'),
+          ctx.translate('starsTitle'),
           ctx.translate('stars'),
           page,
           COLORS.Pear,
