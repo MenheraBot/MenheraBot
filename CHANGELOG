@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ## [Unreleased]
 
+### Added
+
+- Nova função pra criar mensagens no `IteractionCommandContext` junto de uma função pra criar a response bonintinha
+
+### Changed
+
+- O receptor deve clicar num botão para aceitar o presente do `/give`
+- O código do `/give` foi reescrito
+
 ## [3.3.12-hall] - 2021-10-20
 
 ### Added

@@ -215,14 +215,12 @@
     "coroa-texto": "{{mention}} won {{value}} :star: betting against {{author}}"
   },
   "give": {
-    "description": "Transfer something from your inventory to someone",
-    "usage": "<option> <@mention> <value>",
-    "self-mention": "you cannot mention yourself!",
+    "self-mention": "You cannot mention yourself!",
     "banned-user": "This user cannot accept gifts because they're banned from Menhera!",
-    "no-dbuser": "this user does not have a Menhera's Bank account!",
+    "no-dbuser": "This user does not have a Menhera's Bank account!",
     "invalid-value": "The value to be given must be greater than 0",
-    "poor": "you don't have this much of",
-    "transfered": "you transferred **{{value}}** {{emoji}} to",
+    "poor": "You don't have that many {{field}}",
+    "transfered": "You transferred **{{value}}** {{emoji}} to {{user}}",
     "stars": "stars",
     "demons": "demons",
     "angels": "angels",
@@ -232,6 +230,7 @@
   "loja": {
     "description": "Access the Menhera's thrift store",
     "embed_title": "Menhera's Thrift store",
+    "confirm": "{{user}}, {{author}} wants to send you {{count}} {{emoji}}, do you accept?",
     "colors": {
       "purple": "1 - Dark purple",
       "red": "2 - Red",

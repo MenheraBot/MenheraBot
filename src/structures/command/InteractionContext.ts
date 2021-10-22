@@ -11,6 +11,8 @@ import {
 import { TFunction } from 'i18next';
 import MenheraClient from 'MenheraClient';
 import { emojis, EmojiTypes } from '@structures/MenheraConstants';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { APIMessage } from 'discord-api-types';
 
 export default class InteractionCommandContext {
   constructor(
@@ -110,6 +112,26 @@ export default class InteractionCommandContext {
         ephemeral,
       })
       .catch(() => undefined);
+  }
+
+  prettyResponse(emoji: EmojiTypes, text: string, translateOptions = {}): string {
+    return `${emojis[emoji] || '🐛'} **|** ${this.translate(text, translateOptions)}`;
+  }
+
+  private resolveMessage(message: Message | APIMessage | null): Message | null {
+    if (!message) return null;
+    if (message instanceof Message) return message;
+    // @ts-expect-error Message constructor is private
+    return new Message(this.client, message);
+  }
+
+  async makeMessage(options: InteractionReplyOptions): Promise<Message | null> {
+    if (this.interaction.replied)
+      return this.resolveMessage(await this.interaction.editReply(options).catch(() => null));
+
+    return this.resolveMessage(
+      await this.interaction.reply({ ...options, fetchReply: true }).catch(() => null),
+    );
   }
 
   async send(options: MessagePayload | InteractionReplyOptions): Promise<void> {

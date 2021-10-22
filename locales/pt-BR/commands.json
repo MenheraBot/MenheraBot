@@ -215,14 +215,12 @@
     "coroa-texto": "{{mention}} ganhou a aposta valendo {{value}} :star: contra {{author}}"
   },
   "give": {
-    "description": "Transfira algo de seu inventário para alguém",
-    "usage": "<opção> <@menção> <valor>",
     "banned-user": "Este usuário não aceita presentes pois está banido da Menhera!",
-    "self-mention": "você não pode mencionar a si mesmo!",
-    "no-dbuser": "este usuário não possui uma conta no Menhera's Bank!",
+    "self-mention": "Você não pode mencionar a si mesmo!",
+    "no-dbuser": "Este usuário não possui uma conta no Menhera's Bank!",
     "invalid-value": "O valor a ser dado deve ser maior que 0",
-    "poor": "você não tem este tanto de",
-    "transfered": "você transferiu **{{value}}** {{emoji}} para",
+    "poor": "Você não possui tantos {{field}} assim!",
+    "transfered": "Você transferiu **{{value}}** {{emoji}} para {{user}}",
     "stars": "estrelinhas",
     "demons": "demônios",
     "angels": "anjos",
@@ -232,6 +230,7 @@
   "loja": {
     "description": "Acesse o brechó da Menhera",
     "usage": "",
+    "confirm": "{{user}}, {{author}} quer te enviar {{count}} {{emoji}}, você aceita?",
     "embed_title": "Brechó da Menhera",
     "embed_footer": "Digite no chat a opção de sua escolha",
     "invalid-option": "Essa escolha é inválida",
