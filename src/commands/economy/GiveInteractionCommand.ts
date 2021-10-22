@@ -131,6 +131,7 @@ export default class GiveInteractionCommand extends InteractionCommand {
         count: input,
         emoji: emojis[selectedOption],
       }),
+      components: [{ type: 'ACTION_ROW', components: [confirmButton, negateButton] }],
     });
 
     const selectedButton = await Util.collectComponentInteractionWithStartingId(
@@ -140,7 +141,7 @@ export default class GiveInteractionCommand extends InteractionCommand {
     );
 
     if (!selectedButton) {
-      ctx.editReply({
+      ctx.makeMessage({
         components: [
           {
             type: 'ACTION_ROW',

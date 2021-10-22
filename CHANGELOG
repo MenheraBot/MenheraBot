@@ -16,6 +16,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - O receptor deve clicar num botão para aceitar o presente do `/give`
 - O código do `/give` foi reescrito
 
+### Fix
+
+- Titulo do embed do top arcanjos
+
 ## [3.3.12-hall] - 2021-10-20
 
 ### Added

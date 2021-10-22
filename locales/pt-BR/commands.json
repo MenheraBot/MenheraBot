@@ -229,8 +229,8 @@
   },
   "loja": {
     "description": "Acesse o brechó da Menhera",
-    "usage": "",
     "confirm": "{{user}}, {{author}} quer te enviar {{count}} {{emoji}}, você aceita?",
+    "negated": "{{user}} recusou o presente!",
     "embed_title": "Brechó da Menhera",
     "embed_footer": "Digite no chat a opção de sua escolha",
     "invalid-option": "Essa escolha é inválida",
@@ -457,7 +457,7 @@
     "sdTitle": "Placar de Semideuses",
     "godTitle": "Placar de Deuses",
     "giantTitle": "Placar de Gigantes",
-    "arcangelTitle": "Placar de Arcanjos",
+    "archangelTitle": "Placar de Arcanjos",
     "starsTitle": "Placar de Estrelinhas",
     "voteTitle": "Placar de Upvotes",
     "commands": "Comandos Mais Usados",
