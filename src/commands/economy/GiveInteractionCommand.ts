@@ -125,7 +125,7 @@ export default class GiveInteractionCommand extends InteractionCommand {
       .setLabel(ctx.locale('common:negate'));
 
     await ctx.makeMessage({
-      content: ctx.translate('confirm', {
+      content: ctx.translate('confirmar', {
         user: toSendUser.toString(),
         author: ctx.author.toString(),
         count: input,
