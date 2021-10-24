@@ -15,7 +15,7 @@ const runVote = async (
   user.votos += 1;
 
   let { rollQuantity } = constants;
-  let caçadosQuantity = 0;
+  let caçadosQuantity = 5;
   let starQuantity =
     Math.floor(Math.random() * (constants.maxStarValue - constants.minStarValue + 1)) +
     constants.minStarValue;
