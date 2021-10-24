@@ -61,7 +61,7 @@ export default class GiveInteractionCommand extends InteractionCommand {
         },
       ],
       cooldown: 5,
-      category: 'economia',
+      category: 'economy',
     });
   }
 
