@@ -170,6 +170,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
         const { rank } = await this.client.repositories.topRepository.getUserHuntRank(
           ctx.author.id,
           huntEnum.DEMON,
+          await this.client.repositories.cacheRepository.getDeletedAccounts(),
         );
         embed
           .setTitle(ctx.translate('demons'))
@@ -190,6 +191,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
         const { rank } = await this.client.repositories.topRepository.getUserHuntRank(
           ctx.author.id,
           huntEnum.GIANT,
+          await this.client.repositories.cacheRepository.getDeletedAccounts(),
         );
         embed
           .setTitle(ctx.translate('giants'))
@@ -210,6 +212,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
         const { rank } = await this.client.repositories.topRepository.getUserHuntRank(
           ctx.author.id,
           huntEnum.ANGEL,
+          await this.client.repositories.cacheRepository.getDeletedAccounts(),
         );
         embed
           .setTitle(ctx.translate('angels'))
@@ -230,6 +233,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
         const { rank } = await this.client.repositories.topRepository.getUserHuntRank(
           ctx.author.id,
           huntEnum.ARCHANGEL,
+          await this.client.repositories.cacheRepository.getDeletedAccounts(),
         );
         embed
           .setTitle(ctx.translate('archangel'))
@@ -250,6 +254,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
         const { rank } = await this.client.repositories.topRepository.getUserHuntRank(
           ctx.author.id,
           huntEnum.DEMIGOD,
+          await this.client.repositories.cacheRepository.getDeletedAccounts(),
         );
         embed
           .setTitle(ctx.translate('sd'))
@@ -270,6 +275,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
         const { rank } = await this.client.repositories.topRepository.getUserHuntRank(
           ctx.author.id,
           huntEnum.GOD,
+          await this.client.repositories.cacheRepository.getDeletedAccounts(),
         );
         embed
           .setColor(COLORS.HuntGod)

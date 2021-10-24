@@ -10,8 +10,25 @@ enum TOP_ENUM {
 export default class TopRepository {
   constructor(private userModal: typeof Users) {}
 
-  async _getTop(userID: string, topType: string): Promise<{ rank: number }> {
+  async _getTop(
+    userID: string,
+    topType: string,
+    ignoredUsers: string[] = [],
+  ): Promise<{ rank: number }> {
     const res = await this.userModal.aggregate([
+      {
+        $project: {
+          [topType]: true,
+          id: true,
+          ban: true,
+        },
+      },
+      {
+        $match: {
+          id: { $nin: ignoredUsers },
+          ban: false,
+        },
+      },
       {
         $sort: {
           [topType]: -1,
@@ -52,7 +69,11 @@ export default class TopRepository {
     return this._getTop(userID, TOP_ENUM.stars);
   }
 
-  async getUserHuntRank(userID: string, huntType: string): Promise<{ rank: number }> {
-    return this._getTop(userID, huntType);
+  async getUserHuntRank(
+    userID: string,
+    huntType: string,
+    ignoredUsers: string[] = [],
+  ): Promise<{ rank: number }> {
+    return this._getTop(userID, huntType, ignoredUsers);
   }
 }

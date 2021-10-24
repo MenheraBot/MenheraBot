@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 - O receptor deve clicar num botão para aceitar o presente do `/give`
 - O código do `/give` foi reescrito
+- Contas banidas e/ou deletadas não aparecerão na contagem do top
 
 ### Fix
 
