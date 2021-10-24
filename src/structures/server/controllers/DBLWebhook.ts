@@ -20,11 +20,12 @@ const runVote = async (
     Math.floor(Math.random() * (constants.maxStarValue - constants.minStarValue + 1)) +
     constants.minStarValue;
   let embedTitle = '🍬 | É bom votar mesmo | 🍬';
-  let embedDescription = `É bom votar em mim... O dia das bruxas está chegando. Não esqueça que a noite de lua cheia está próxima\nPegue isso e suma! **1**🔑, **${starQuantity}**⭐!\n\nSabia que a cada 20 votos você ganha um prêmio especial? E que você ja votou **${user.votos}** vezes em mim? Acho bom mesmo <:halloween:900565922836783105>`;
+  let embedDescription = `É bom votar em mim... O dia das bruxas está chegando. Não esqueça que a noite de lua cheia está próxima\nPegue isso e suma! **${rollQuantity}**🔑, **${starQuantity}**⭐ **${caçadosQuantity}** <:Demon:758765044443381780>!\n\nSabia que a cada 20 votos você ganha um prêmio especial? E que você ja votou **${user.votos}** vezes em mim? Acho bom mesmo <:halloween:900565922836783105>`;
 
   if (isWeekend) {
     rollQuantity *= constants.rollWeekendMultiplier;
     starQuantity *= constants.starWeekendMultiplier;
+    caçadosQuantity *= 2;
     embedTitle = '🧙‍♀️ | O FIM ESTÁ PRÓXIMO | 🧙‍♀️';
     embedDescription = `Vote... VOttee... VOOOTEEEEEEEE! O FEITIÇO ESTÁ QUASE PRONTO\nContinue votando para que o ritual se complete\n\nSuas recompensas pelos seus sacrifícios: **${rollQuantity}**🔑, **${starQuantity}**⭐, **${caçadosQuantity}** <:Demon:758765044443381780>`;
   }
@@ -39,6 +40,7 @@ const runVote = async (
   }
 
   if (user.votos % 20 === 0 && isWeekend) {
+    caçadosQuantity *= 2;
     client.repositories.badgeRepository.addBadge(user.id, 12);
     embedTitle = '<:Demon:758765044443381780> | ESTÁ TUDO PRONTO | <:Demon:758765044443381780>';
     embedDescription = `É ISSO! VOCÊ CONSEGUIU! MEU PODER ESTÁ COMPLETO!\nGraças a sua ajuda eu consegui atingir o poder máximo! Obrigada! Agora eu posso finalmente começar com minha vingança....\nVocê recebeu **${starQuantity}** :star: , **${rollQuantity}** 🔑, **${caçadosQuantity}** <:Demon:758765044443381780> e um emblema`;
