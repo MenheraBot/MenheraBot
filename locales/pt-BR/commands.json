@@ -215,6 +215,8 @@
     "coroa-texto": "{{mention}} ganhou a aposta valendo {{value}} :star: contra {{author}}"
   },
   "give": {
+    "confirm": "Seguinte {{user}}, {{author}} quer te enviar **{{count}}** {{emoji}}, você aceita?",
+    "negated": "{{user}} recusou o presente!",
     "banned-user": "Este usuário não aceita presentes pois está banido da Menhera!",
     "self-mention": "Você não pode mencionar a si mesmo!",
     "no-dbuser": "Este usuário não possui uma conta no Menhera's Bank!",

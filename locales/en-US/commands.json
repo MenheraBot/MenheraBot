@@ -219,7 +219,7 @@
     "banned-user": "This user cannot accept gifts because they're banned from Menhera!",
     "no-dbuser": "This user does not have a Menhera's Bank account!",
     "invalid-value": "The value to be given must be greater than 0",
-    "confirmar": "{{user}}, {{author}} wants to send you {{count}} {{emoji}}, do you accept?",
+    "confirm": "Hey {{user}}, {{author}} wants to send you **{{count}}** {{emoji}}, do you accept?",
     "negated": "{{user}} refused the gift!",
     "poor": "You don't have that many {{field}}",
     "transfered": "You transferred **{{value}}** {{emoji}} to {{user}}",
