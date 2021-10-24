@@ -672,5 +672,8 @@
     "equal": "Both you and Menhera hit the same amount. Menhera Wins UwU",
     "menhera-bigger": "Menhera is closer to 21, she wins!",
     "user-bigger": "You're closer to 21, you won **{{value}}** :star:"
+  },
+  "inventario": {
+    "no-user": "This user does't have an inventory"
   }
 }

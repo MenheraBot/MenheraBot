@@ -74,6 +74,11 @@ export interface IGuildSchema {
   lang: string;
 }
 
+export interface IMagicItem {
+  id: number;
+  level: number;
+}
+
 export interface IUserSchema {
   readonly id: string;
   mamadas: number;
@@ -99,6 +104,8 @@ export interface IUserSchema {
   badges: Array<IBadge>;
   voteCooldown: string;
   trisal: Array<string>;
+  inventory: Array<IMagicItem>;
+  inUseItems: Array<IMagicItem>;
 }
 
 export interface ICommandUsedData {

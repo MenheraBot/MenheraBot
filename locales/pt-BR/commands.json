@@ -677,5 +677,8 @@
     "equal": "Tanto você quanto a menhera fizeram o mesmo valor. Menhera ganha",
     "menhera-bigger": "A Menhera está mais proxima de 21, ela ganhou!",
     "user-bigger": "Você está mais próximo de 21, você ganhou **{{value}}** :star:"
+  },
+  "inventario": {
+    "no-user": "Este usuário não possui inventário"
   }
 }
