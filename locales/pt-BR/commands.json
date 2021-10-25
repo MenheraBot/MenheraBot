@@ -679,6 +679,10 @@
     "user-bigger": "Você está mais próximo de 21, você ganhou **{{value}}** :star:"
   },
   "inventario": {
-    "no-user": "Este usuário não possui inventário"
+    "no-user": "Este usuário não possui inventário",
+    "title": "Inventário de {{user}}",
+    "no-item": "O inventário deste usuário está vazio!",
+    "active": "Itens Ativos",
+    "items": "Itens no Inventário"
   }
 }

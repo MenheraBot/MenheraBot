@@ -674,6 +674,10 @@
     "user-bigger": "You're closer to 21, you won **{{value}}** :star:"
   },
   "inventario": {
-    "no-user": "This user does't have an inventory"
+    "no-user": "This user does't have an inventory",
+    "title": "{{user}}'s Inventory",
+    "no-item": "This user's inventory is empty!",
+    "active": "Active Items",
+    "items": "Inventory Item"
   }
 }
