@@ -683,6 +683,7 @@
     "title": "Inventário de {{user}}",
     "no-item": "O inventário deste usuário está vazio!",
     "active": "Itens Ativos",
-    "items": "Itens no Inventário"
+    "items": "Itens no Inventário",
+    "use": "Usar Itens"
   }
 }

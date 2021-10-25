@@ -678,6 +678,7 @@
     "title": "{{user}}'s Inventory",
     "no-item": "This user's inventory is empty!",
     "active": "Active Items",
-    "items": "Inventory Item"
+    "items": "Inventory Item",
+    "use": "Use Items"
   }
 }

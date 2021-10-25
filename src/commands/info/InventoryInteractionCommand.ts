@@ -2,7 +2,8 @@
 import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { MessageEmbed } from 'discord.js-light';
+import { MessageEmbed, MessageButton } from 'discord.js-light';
+import Util, { disableComponents } from '@utils/Util';
 
 export default class InventoryInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {
@@ -82,5 +83,41 @@ export default class InventoryInteractionCommand extends InteractionCommand {
         : ctx.translate('no-item'),
       true,
     );
+
+    if (user.id !== ctx.author.id) {
+      ctx.makeMessage({ embeds: [embed] });
+      return;
+    }
+
+    const useItemButton = new MessageButton()
+      .setCustomId(ctx.interaction.id)
+      .setLabel(ctx.translate('use'))
+      .setStyle('PRIMARY');
+
+    await ctx.makeMessage({
+      embeds: [embed],
+      components: [{ type: 'ACTION_ROW', components: [useItemButton] }],
+    });
+
+    const collected = await Util.collectComponentInteractionWithId(
+      ctx.channel,
+      ctx.author.id,
+      ctx.interaction.id,
+      7000,
+    );
+
+    if (!collected) {
+      ctx.makeMessage({
+        components: [
+          {
+            type: 'ACTION_ROW',
+            components: disableComponents(ctx.locale('common:timesup'), [useItemButton]),
+          },
+        ],
+      });
+      return;
+    }
+
+    console.log('a');
   }
 }

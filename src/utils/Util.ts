@@ -22,7 +22,7 @@ export default class Util {
     channel: TextBasedChannels,
     authorID: string,
     customId: string,
-    time: number,
+    time = 7000,
   ): Promise<null | MessageComponentInteraction> {
     return channel
       .awaitMessageComponent({
