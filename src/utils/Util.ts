@@ -18,6 +18,13 @@ export default class Util {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
 
+  static async collectComponentInteractionWithId<T extends MessageComponentInteraction>(
+    channel: TextBasedChannels,
+    authorID: string,
+    customId: string,
+    time?: number,
+  ): Promise<null | T>;
+
   static async collectComponentInteractionWithId(
     channel: TextBasedChannels,
     authorID: string,
@@ -36,6 +43,12 @@ export default class Util {
       .catch(() => null);
   }
 
+  static async collectComponentInteractionWithCustomFilter<T extends MessageComponentInteraction>(
+    channel: TextBasedChannels,
+    filter: CollectorFilter<[T]>,
+    time?: number,
+  ): Promise<null | T>;
+
   static async collectComponentInteractionWithCustomFilter(
     channel: TextBasedChannels,
     filter: CollectorFilter<[MessageComponentInteraction]>,
@@ -50,10 +63,16 @@ export default class Util {
       .catch(() => null);
   }
 
+  static async collectComponentInteraction<T extends MessageComponentInteraction>(
+    channel: TextBasedChannels,
+    authorID: string,
+    time?: number,
+  ): Promise<null | T>;
+
   static async collectComponentInteraction(
     channel: TextBasedChannels,
     authorID: string,
-    time: number,
+    time = 10000,
   ): Promise<null | MessageComponentInteraction> {
     return channel
       .awaitMessageComponent({ filter: (m) => m.user.id === authorID, time })
@@ -63,6 +82,13 @@ export default class Util {
       })
       .catch(() => null);
   }
+
+  static async collectComponentInteractionWithStartingId<T extends MessageComponentInteraction>(
+    channel: TextBasedChannels,
+    authorID: string,
+    customId: string,
+    time?: number,
+  ): Promise<null | T>;
 
   static async collectComponentInteractionWithStartingId(
     channel: TextBasedChannels,

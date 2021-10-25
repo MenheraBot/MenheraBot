@@ -2,7 +2,7 @@
 import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { MessageEmbed, MessageButton } from 'discord.js-light';
+import { MessageEmbed, MessageButton, ButtonInteraction } from 'discord.js-light';
 import Util, { disableComponents } from '@utils/Util';
 
 export default class InventoryInteractionCommand extends InteractionCommand {
@@ -99,7 +99,7 @@ export default class InventoryInteractionCommand extends InteractionCommand {
       components: [{ type: 'ACTION_ROW', components: [useItemButton] }],
     });
 
-    const collected = await Util.collectComponentInteractionWithId(
+    const collected = await Util.collectComponentInteractionWithId<ButtonInteraction>(
       ctx.channel,
       ctx.author.id,
       ctx.interaction.id,
