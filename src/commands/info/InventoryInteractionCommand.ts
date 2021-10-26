@@ -10,7 +10,12 @@ import {
   MessageSelectOptionData,
 } from 'discord.js-light';
 import { IMagicItem } from '@utils/Types';
-import Util, { actionRow, disableComponents, resolveSeparatedStrings } from '@utils/Util';
+import Util, {
+  actionRow,
+  disableComponents,
+  resolveCustomId,
+  resolveSeparatedStrings,
+} from '@utils/Util';
 
 export default class InventoryInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {
@@ -66,6 +71,8 @@ export default class InventoryInteractionCommand extends InteractionCommand {
             (p, c) =>
               `${p}**${ctx.locale('common:name')}:** ${ctx.locale(
                 `data:magic-items.${c.id}.name`,
+              )}\n**${ctx.locale('common:description')}**: ${ctx.locale(
+                `data:magic-items.${c.id}.description`,
               )}\n**${ctx.locale('common:amount')}**: ${c.amount}\n`,
             '',
           )
@@ -95,25 +102,33 @@ export default class InventoryInteractionCommand extends InteractionCommand {
     }
 
     const useItemButton = new MessageButton()
-      .setCustomId(ctx.interaction.id)
+      .setCustomId(`${ctx.interaction.id} | USE`)
       .setLabel(ctx.translate('use'))
       .setStyle('PRIMARY');
+
+    const resetItemsButton = new MessageButton()
+      .setCustomId(`${ctx.interaction.id} | RESET`)
+      .setLabel(ctx.translate('reset'))
+      .setStyle('DANGER');
 
     const canUseItems = !(
       user.inventory.length === 0 ||
       user.inventory.every((a) => user.inUseItems.some((b) => b.id === a.id))
     );
 
+    const canResetItems = user.inUseItems.length > 0;
+
     if (!canUseItems) useItemButton.setDisabled(true);
+    if (!canResetItems) resetItemsButton.setDisabled(true);
 
     await ctx.makeMessage({
       embeds: [embed.setFooter(ctx.translate('use-footer'))],
-      components: [actionRow([useItemButton])],
+      components: [actionRow([useItemButton, resetItemsButton])],
     });
 
-    if (!canUseItems) return;
+    if (!canUseItems && !canResetItems) return;
 
-    const collected = await Util.collectComponentInteractionWithId<ButtonInteraction>(
+    const collected = await Util.collectComponentInteractionWithStartingId<ButtonInteraction>(
       ctx.channel,
       ctx.author.id,
       ctx.interaction.id,
@@ -123,6 +138,32 @@ export default class InventoryInteractionCommand extends InteractionCommand {
     if (!collected) {
       ctx.makeMessage({
         components: [actionRow(disableComponents(ctx.locale('common:timesup'), [useItemButton]))],
+      });
+      return;
+    }
+
+    if (resolveCustomId(collected.customId) === 'RESET') {
+      user.inUseItems.forEach((a) => {
+        const toPutItem = user.inventory.find((b) => a.id === b.id);
+        if (!toPutItem)
+          user.inventory.push({
+            amount: 1,
+            id: a.id,
+          });
+        else toPutItem.amount += 1;
+      });
+
+      user.inUseItems = [];
+
+      ctx.makeMessage({
+        components: [],
+        embeds: [],
+        content: ctx.prettyResponse('success', 'reseted'),
+      });
+
+      this.client.repositories.userRepository.update(ctx.author.id, {
+        inventory: user.inventory,
+        inUseItems: user.inUseItems,
       });
       return;
     }
@@ -138,6 +179,7 @@ export default class InventoryInteractionCommand extends InteractionCommand {
 
           p.push({
             label: ctx.locale(`data:magic-items.${c.id}.name`),
+            description: ctx.locale(`data:magic-items.${c.id}.description`),
             value: `${c.id}`,
           });
           return p;
@@ -163,13 +205,13 @@ export default class InventoryInteractionCommand extends InteractionCommand {
       return;
     }
 
-    const [itemId] = resolveSeparatedStrings(selectedItem.customId);
+    const [itemId] = resolveSeparatedStrings(selectedItem.values[0]);
 
     const findedItem = user.inventory.find((a) => a.id === Number(itemId)) as IMagicItem & {
       amount: number;
     };
 
-    if (user.itemsLimit >= user.inUseItems.length) {
+    if (user.inUseItems.length >= user.itemsLimit) {
       const replaceItem = new MessageSelectMenu()
         .setCustomId(`${ctx.interaction.id} | TOGGLE`)
         .setMaxValues(1)
@@ -179,6 +221,7 @@ export default class InventoryInteractionCommand extends InteractionCommand {
           user.inUseItems.reduce<MessageSelectOptionData[]>((p, c, i) => {
             p.push({
               label: ctx.locale(`data:magic-items.${c.id}.name`),
+              description: ctx.locale(`data:magic-items.${c.id}.description`),
               value: `${c.id} | ${i}`,
             });
             return p;
@@ -205,7 +248,7 @@ export default class InventoryInteractionCommand extends InteractionCommand {
         return;
       }
 
-      const [replaceItemId] = resolveSeparatedStrings(selectedItem.customId);
+      const [replaceItemId] = resolveSeparatedStrings(choosedReplace.values[0]);
 
       user.inUseItems.splice(user.inUseItems.findIndex((a) => a.id === Number(replaceItemId), 1));
 
