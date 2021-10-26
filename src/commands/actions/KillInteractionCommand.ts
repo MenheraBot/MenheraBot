@@ -28,7 +28,10 @@ export default class KillInteractionCommand extends InteractionCommand {
     const user = ctx.options.getUser('user', true);
 
     if (user.id === ctx.author.id) {
-      await ctx.replyT('error', 'self-mention', {}, true);
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'self-mention'),
+        ephemeral: true,
+      });
       return;
     }
 
@@ -55,7 +58,7 @@ export default class KillInteractionCommand extends InteractionCommand {
         .setImage(selectedImage)
         .setThumbnail(avatar);
 
-      await ctx.reply({ embeds: [embed] });
+      await ctx.makeMessage({ embeds: [embed] });
       return;
     }
 
@@ -72,6 +75,6 @@ export default class KillInteractionCommand extends InteractionCommand {
       .setImage(selectedImage)
       .setThumbnail(avatar);
 
-    await ctx.reply({ embeds: [embed] });
+    await ctx.makeMessage({ embeds: [embed] });
   }
 }

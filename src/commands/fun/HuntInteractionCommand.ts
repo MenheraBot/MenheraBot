@@ -69,7 +69,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
     const selected = ctx.options.getString('tipo', true);
 
     if (!selected) {
-      await ctx.replyT('error', 'no-args', {}, true);
+      await ctx.makeMessage({ content: ctx.prettyResponse('error', 'no-args'), ephemeral: true });
       return;
     }
 
@@ -79,8 +79,8 @@ export default class HuntInteractionCommand extends InteractionCommand {
         : probabilities.normal;
 
     if (selected === 'probabilidades') {
-      await ctx.reply(
-        ctx.translate('probabilities', {
+      await ctx.makeMessage({
+        content: ctx.translate('probabilities', {
           demon: Probabilities.demon,
           giant: Probabilities.giant,
           angel: Probabilities.angel,
@@ -88,7 +88,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
           demi: Probabilities.demigod,
           god: Probabilities.god,
         }),
-      );
+      });
       return;
     }
 
@@ -96,11 +96,11 @@ export default class HuntInteractionCommand extends InteractionCommand {
 
     if (rollsToUse) {
       if (rollsToUse < 1) {
-        ctx.replyT('error', 'invalid-rolls', {}, true);
+        ctx.makeMessage({ content: ctx.prettyResponse('error', 'invalid-rolls'), ephemeral: true });
         return;
       }
       if (rollsToUse > ctx.data.user.rolls) {
-        ctx.replyT('error', 'rolls-poor', {}, true);
+        ctx.makeMessage({ content: ctx.prettyResponse('error', 'rolls-poor'), ephemeral: true });
         return;
       }
     }
@@ -108,14 +108,12 @@ export default class HuntInteractionCommand extends InteractionCommand {
     const canHunt = parseInt(authorData.caçarTime) < Date.now();
 
     if (!canHunt && !rollsToUse) {
-      ctx.replyT(
-        'error',
-        'cooldown',
-        {
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'cooldown', {
           time: moment.utc(parseInt(authorData.caçarTime) - Date.now()).format('mm:ss'),
-        },
-        true,
-      );
+        }),
+        ephemeral: true,
+      });
       return;
     }
 
@@ -296,6 +294,6 @@ export default class HuntInteractionCommand extends InteractionCommand {
         break;
       }
     }
-    await ctx.reply({ embeds: [embed] });
+    await ctx.makeMessage({ embeds: [embed] });
   }
 }

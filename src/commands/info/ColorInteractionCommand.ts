@@ -56,7 +56,7 @@ export default class ColorInteractionCommand extends InteractionCommand {
       .setPlaceholder(`${emojis.rainbow} ${ctx.translate('choose')}`);
 
     if (authorData.cores.length < 2) {
-      ctx.replyT('error', 'min-color', {}, true);
+      ctx.makeMessage({ content: ctx.prettyResponse('error', 'min-color'), ephemeral: true });
       return;
     }
 
@@ -73,7 +73,7 @@ export default class ColorInteractionCommand extends InteractionCommand {
       }
     }
 
-    await ctx.reply({
+    await ctx.makeMessage({
       embeds: [embed],
       components: [{ type: 'ACTION_ROW', components: [selector] }],
     });
@@ -86,7 +86,7 @@ export default class ColorInteractionCommand extends InteractionCommand {
       .catch(() => null);
 
     if (!collect || !collect.isSelectMenu()) {
-      ctx.editReply({
+      ctx.makeMessage({
         embeds: [embed],
         components: [
           {
@@ -115,6 +115,6 @@ export default class ColorInteractionCommand extends InteractionCommand {
       cor: selected,
     });
 
-    ctx.editReply({ embeds: [dataChoose], components: [] });
+    ctx.makeMessage({ embeds: [dataChoose], components: [] });
   }
 }

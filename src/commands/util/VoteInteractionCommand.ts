@@ -27,6 +27,6 @@ export default class VoteInteractionCommand extends InteractionCommand {
       )
       .setTimestamp();
 
-    await ctx.reply({ embeds: [embed] });
+    await ctx.makeMessage({ embeds: [embed] });
   }
 }

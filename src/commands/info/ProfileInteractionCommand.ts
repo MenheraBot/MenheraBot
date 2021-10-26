@@ -31,19 +31,22 @@ export default class ProfileInteractionCommand extends InteractionCommand {
 
     if (member.id !== ctx.author.id) {
       if (member.bot) {
-        await ctx.replyT('error', 'bot', {}, true);
+        await ctx.makeMessage({ content: ctx.prettyResponse('error', 'bot'), ephemeral: true });
         return;
       }
       user = await this.client.repositories.userRepository.find(member.id);
     }
 
     if (!user) {
-      await ctx.replyT('error', 'no-dbuser', {}, true);
+      await ctx.makeMessage({ content: ctx.prettyResponse('error', 'no-dbuser'), ephemeral: true });
       return;
     }
 
     if (user.ban && ctx.author.id !== process.env.OWNER) {
-      await ctx.replyT('error', 'banned', { reason: user.banReason }, true);
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'banned', { reason: user.banReason }),
+        ephemeral: true,
+      });
       return;
     }
 
@@ -90,11 +93,11 @@ export default class ProfileInteractionCommand extends InteractionCommand {
       : await HttpRequests.profileRequest(userSendData, marry, usageCommands, i18nData);
 
     if (res.err) {
-      await ctx.deferedReplyL('error', 'commands:http-error');
+      await ctx.makeMessage({ content: ctx.prettyResponseLocale('error', 'commands:http-error') });
       return;
     }
 
-    await ctx.editReply({
+    await ctx.makeMessage({
       files: [new MessageAttachment(res.data, 'profile.png')],
     });
   }

@@ -36,26 +36,41 @@ export default class CoinflipInteractionCommand extends InteractionCommand {
     const input = ctx.options.getInteger('aposta', true);
 
     if (!input) {
-      await ctx.replyT('error', 'invalid-value', {}, true);
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'invalid-value'),
+        ephemeral: true,
+      });
       return;
     }
 
     if (!user2) {
-      await ctx.replyT('error', 'no-mention', {}, true);
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'no-mention'),
+        ephemeral: true,
+      });
       return;
     }
 
     if (user2.bot) {
-      await ctx.replyT('error', 'bot', {}, true);
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'bot'),
+        ephemeral: true,
+      });
       return;
     }
     if (user2.id === user1.id) {
-      await ctx.replyT('error', 'self-mention', {}, true);
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'self-mention'),
+        ephemeral: true,
+      });
       return;
     }
 
     if (input < 1) {
-      await ctx.replyT('error', 'invalid-value', {}, true);
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'invalid-value'),
+        ephemeral: true,
+      });
       return;
     }
 
@@ -63,22 +78,34 @@ export default class CoinflipInteractionCommand extends InteractionCommand {
     const db2 = await this.client.repositories.userRepository.find(user2.id);
 
     if (!db1 || !db2) {
-      await ctx.replyT('error', 'no-dbuser', {}, true);
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'no-dbuser'),
+        ephemeral: true,
+      });
       return;
     }
 
     if (db2.ban === true) {
-      await ctx.replyT('error', 'banned-user', {}, true);
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'banned-user'),
+        ephemeral: true,
+      });
       return;
     }
 
     if (input > db1.estrelinhas) {
-      await ctx.replyT('error', 'poor', { user: user1.toString() }, true);
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'poor', { user: user1.toString() }),
+        ephemeral: true,
+      });
       return;
     }
 
     if (input > db2.estrelinhas) {
-      await ctx.replyT('error', 'poor', { user: user2.toString() }, true);
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'poor', { user: user2.toString() }),
+        ephemeral: true,
+      });
       return;
     }
 
@@ -87,7 +114,7 @@ export default class CoinflipInteractionCommand extends InteractionCommand {
       .setLabel(ctx.translate('bet'))
       .setStyle('SUCCESS');
 
-    ctx.reply({
+    ctx.makeMessage({
       content: ctx.translate('confirm', {
         value: input,
         author: ctx.author.toString(),
@@ -104,7 +131,7 @@ export default class CoinflipInteractionCommand extends InteractionCommand {
     );
 
     if (!coletor) {
-      ctx.editReply({
+      ctx.makeMessage({
         components: [
           {
             type: 1,
@@ -124,7 +151,7 @@ export default class CoinflipInteractionCommand extends InteractionCommand {
     let loser = user2.id;
 
     if (choice === 'Cara') {
-      await ctx.editReply({
+      await ctx.makeMessage({
         content: `${ctx.translate('cara')}\n${ctx.translate('cara-texto', {
           value: input,
           author: user1.toString(),
@@ -135,7 +162,7 @@ export default class CoinflipInteractionCommand extends InteractionCommand {
     } else {
       winner = user2.id;
       loser = user1.id;
-      await ctx.editReply({
+      await ctx.makeMessage({
         content: `${ctx.translate('coroa')}\n${ctx.translate('coroa-texto', {
           value: input,
           author: user1.toString(),

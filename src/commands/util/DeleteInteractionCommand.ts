@@ -2,7 +2,6 @@ import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageButton } from 'discord.js-light';
-import { emojis } from '@structures/Constants';
 import Util from '@utils/Util';
 import HttpRequests from '@utils/HTTPrequests';
 
@@ -30,12 +29,12 @@ export default class DeleteInteractionCommand extends InteractionCommand {
         ctx.author.id,
         '[PERMABAN] Tentou burlar o cooldown da Menhera excluindo a conta diversas vezes',
       );
-      ctx.replyT('warn', 'ban', {}, true);
+      ctx.makeMessage({ content: ctx.prettyResponse('warn', 'ban'), ephemeral: true });
       return;
     }
 
-    ctx.reply({
-      content: `${emojis.warn} | ${ctx.translate('confirm')}`,
+    ctx.makeMessage({
+      content: ctx.prettyResponse('warn', 'confirm'),
       components: [{ type: 'ACTION_ROW', components: [FirstButton] }],
     });
 
@@ -47,7 +46,7 @@ export default class DeleteInteractionCommand extends InteractionCommand {
     );
 
     if (!collect) {
-      ctx.editReply({
+      ctx.makeMessage({
         components: [
           {
             type: 'ACTION_ROW',
@@ -57,8 +56,8 @@ export default class DeleteInteractionCommand extends InteractionCommand {
       });
     }
     await this.client.repositories.userRepository.delete(ctx.author.id);
-    return ctx.editReply({
-      content: `${emojis.success} | ${ctx.translate('acepted')}`,
+    ctx.makeMessage({
+      content: ctx.prettyResponse('success', 'acepted'),
       components: [],
     });
   }

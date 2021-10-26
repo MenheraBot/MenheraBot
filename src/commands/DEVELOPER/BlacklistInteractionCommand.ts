@@ -55,35 +55,37 @@ export default class BlacklistInteractionCommand extends InteractionCommand {
     switch (ctx.options.getString('tipo', true)) {
       case 'add': {
         if (!user) {
-          await ctx.replyE('error', 'user not found');
+          await ctx.makeMessage({
+            content: 'user not found',
+          });
           return;
         }
         const reason = ctx.options.getString('motivo', true);
 
         await this.client.repositories.blacklistRepository.ban(user.id, reason);
 
-        await ctx.replyE('success', 'usuário banido de usar a Menhera!');
+        await ctx.makeMessage({ content: 'usuário banido de usar a Menhera!' });
         return;
       }
       case 'remove': {
         await this.client.repositories.blacklistRepository.unban(user.id);
 
-        await ctx.replyE('success', 'usuário desbanido');
+        await ctx.makeMessage({ content: 'usuário desbanido' });
         return;
       }
       case 'find': {
         if (!user) {
-          await ctx.replyE('error', 'user not found');
+          await ctx.makeMessage({ content: 'user not found' });
           return;
         }
         const usr = await this.client.repositories.userRepository.getBannedUserInfo(user.id);
         if (!usr) {
-          await ctx.replyE('error', 'Nenhum user');
+          await ctx.makeMessage({ content: 'Nenhum user' });
           return;
         }
 
         const msg = `== USER BANNED INFO ==\n\n• User :: ${user.tag} - (${user.id})\n• Banned :: ${usr.ban}\n• Reason :: ${usr.banReason}`;
-        await ctx.reply(`\`\`\`asciidocmsg\n${msg}\`\`\``);
+        await ctx.makeMessage({ content: `\`\`\`asciidocmsg\n${msg}\`\`\`` });
       }
     }
   }

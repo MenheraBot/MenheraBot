@@ -39,7 +39,7 @@ export default class TrisalInteractionCommand extends InteractionCommand {
   async run(ctx: InteractionCommandContext): Promise<void> {
     const authorData = ctx.data.user;
     if (authorData.trisal?.length === 0 && !ctx.options.getUser('user')) {
-      await ctx.replyT('error', 'no-args', {}, true);
+      await ctx.makeMessage({ content: ctx.prettyResponse('error', 'no-args'), ephemeral: true });
       return;
     }
 
@@ -48,7 +48,10 @@ export default class TrisalInteractionCommand extends InteractionCommand {
       const marryThree = await this.client.users.fetch(authorData.trisal[1]);
 
       if (!marryTwo || !marryThree) {
-        await ctx.replyT('error', 'marry-not-found', {}, true);
+        await ctx.makeMessage({
+          content: ctx.prettyResponse('error', 'marry-not-found'),
+          ephemeral: true,
+        });
         return;
       }
 
@@ -66,7 +69,10 @@ export default class TrisalInteractionCommand extends InteractionCommand {
 
       const res = await HttpRequests.trisalRequest(userOneAvatar, userTwoAvatar, userThreeAvatar);
       if (res.err) {
-        await ctx.replyL('error', 'commands:http-error', {}, true);
+        await ctx.makeMessage({
+          content: ctx.prettyResponseLocale('error', 'commands:http-error'),
+          ephemeral: true,
+        });
         return;
       }
 
@@ -79,7 +85,7 @@ export default class TrisalInteractionCommand extends InteractionCommand {
         .setColor('#ac76f9')
         .setImage('attachment://trisal.png');
 
-      await ctx.reply({ embeds: [embed], files: [attachment] });
+      await ctx.makeMessage({ embeds: [embed], files: [attachment] });
       return;
     }
 
@@ -87,15 +93,24 @@ export default class TrisalInteractionCommand extends InteractionCommand {
     const mencionado2 = ctx.options.getUser('user_dois');
 
     if (!mencionado1 || !mencionado2) {
-      await ctx.replyT('error', 'no-mention', {}, true);
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'no-mention'),
+        ephemeral: true,
+      });
       return;
     }
     if (mencionado1.id === ctx.author.id || mencionado2.id === ctx.author.id) {
-      await ctx.replyT('error', 'self-mention', {}, true);
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'self-mention'),
+        ephemeral: true,
+      });
       return;
     }
     if (mencionado1.id === mencionado2.id) {
-      await ctx.replyT('error', 'same-mention', {}, true);
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'same-mention'),
+        ephemeral: true,
+      });
       return;
     }
 
@@ -104,17 +119,23 @@ export default class TrisalInteractionCommand extends InteractionCommand {
     const user3 = await this.client.repositories.userRepository.find(mencionado2.id);
 
     if (!user1 || !user2 || !user3) {
-      await ctx.replyT('error', 'no-db', {}, true);
+      await ctx.makeMessage({ content: ctx.prettyResponse('error', 'no-db'), ephemeral: true });
       return;
     }
 
     if (user1.ban === true || user2.ban === true || user3.ban === true) {
-      await ctx.replyT('error', 'banned-user', {}, true);
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'banned-user'),
+        ephemeral: true,
+      });
       return;
     }
 
     if (user2.trisal?.length > 0 || user3.trisal?.length > 0) {
-      await ctx.replyT('error', 'comedor-de-casadas', {}, true);
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'comedor-de-casadas'),
+        ephemeral: true,
+      });
       return;
     }
 
@@ -123,7 +144,7 @@ export default class TrisalInteractionCommand extends InteractionCommand {
       .setLabel(ctx.locale('common:accept'))
       .setStyle('SUCCESS');
 
-    await ctx.reply({
+    await ctx.makeMessage({
       content: `${ctx.translate(
         'accept-message',
       )} ${ctx.author.toString()}, ${mencionado1.toString()}, ${mencionado2.toString()}`,
@@ -147,8 +168,8 @@ export default class TrisalInteractionCommand extends InteractionCommand {
       int.deferUpdate().catch(() => null);
 
       if (acceptedIds.length === 3) {
-        await ctx.editReply({
-          content: `${emojis.success} | ${ctx.translate('done')}`,
+        await ctx.makeMessage({
+          content: ctx.prettyResponse('success', 'done'),
           components: [
             {
               type: 'ACTION_ROW',
@@ -162,8 +183,8 @@ export default class TrisalInteractionCommand extends InteractionCommand {
 
     collector.once('end', () => {
       if (acceptedIds.length !== 3)
-        ctx.editReply({
-          content: `${emojis.error} | ${ctx.translate('error')}`,
+        ctx.makeMessage({
+          content: ctx.prettyResponse('error', 'error'),
           components: [
             {
               type: 'ACTION_ROW',

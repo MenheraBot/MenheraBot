@@ -47,71 +47,8 @@ export default class InteractionCommandContext {
     await this.interaction.deferReply({ ephemeral }).catch(() => null);
   }
 
-  async reply(
-    options: string | MessagePayload | InteractionReplyOptions,
-    ephemeral = false,
-  ): Promise<Message | void> {
-    if (typeof options === 'string')
-      return this.interaction
-        .reply({
-          content: options,
-          ephemeral,
-        })
-        .catch(() => undefined);
-
-    return this.interaction.reply(options).catch(() => undefined);
-  }
-
-  async replyE(
-    emoji: EmojiTypes,
-    options: string | MessagePayload | InteractionReplyOptions,
-    ephemeral = false,
-  ): Promise<Message | void> {
-    if (typeof options === 'string')
-      return this.interaction
-        .reply({
-          content: `${emojis[emoji] || '🐛'} **|** ${options}`,
-          ephemeral,
-        })
-        .catch(() => undefined);
-
-    return this.interaction.reply(options).catch(() => undefined);
-  }
-
-  async deferedReplyL(emoji: EmojiTypes, text: string, translateOptions = {}): Promise<void> {
-    await this.interaction
-      .editReply({
-        content: `${emojis[emoji] || '🐛'} **|** ${this.i18n(text, translateOptions)}`,
-      })
-      .catch(() => undefined);
-  }
-
-  async replyL(
-    emoji: EmojiTypes,
-    text: string,
-    translateOptions = {},
-    ephemeral = false,
-  ): Promise<Message | void> {
-    return this.interaction
-      .reply({
-        content: `${emojis[emoji] || '🐛'} **|** ${this.i18n(text, translateOptions)}`,
-        ephemeral,
-      })
-      .catch(() => undefined);
-  }
-
-  async replyT(
-    emoji: EmojiTypes,
-    text: string,
-    translateOptions = {},
-    ephemeral = false,
-  ): Promise<Message | void> {
-    return this.interaction
-      .reply({
-        content: `${emojis[emoji] || '🐛'} **|** ${this.translate(text, translateOptions)}`,
-        ephemeral,
-      })
-      .catch(() => undefined);
+  prettyResponseLocale(emoji: EmojiTypes, text: string, translateOptions = {}): string {
+    return `${emojis[emoji] || '🐛'} **|** ${this.locale(text, translateOptions)}`;
   }
 
   prettyResponse(emoji: EmojiTypes, text: string, translateOptions = {}): string {
@@ -134,16 +71,12 @@ export default class InteractionCommandContext {
     );
   }
 
-  async send(options: MessagePayload | InteractionReplyOptions): Promise<void> {
-    await this.interaction.followUp(options).catch(() => undefined);
+  async send(options: MessagePayload | InteractionReplyOptions): Promise<Message | null> {
+    return this.resolveMessage(await this.interaction.followUp(options).catch(() => null));
   }
 
   async deleteReply(): Promise<void> {
     return this.interaction.deleteReply().catch(() => undefined);
-  }
-
-  async editReply(options: MessagePayload | InteractionReplyOptions): Promise<void> {
-    await this.interaction.editReply(options).catch(() => undefined);
   }
 
   locale(text: string, translateVars = {}): string {

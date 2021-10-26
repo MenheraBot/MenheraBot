@@ -32,6 +32,6 @@ export default class GrumbleInteractionCommand extends InteractionCommand {
       .setThumbnail(avatar)
       .setImage(selectedImage);
 
-    await ctx.reply({ embeds: [embed] });
+    await ctx.makeMessage({ embeds: [embed] });
   }
 }

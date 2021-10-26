@@ -19,7 +19,7 @@ export default class CooldownsInteractionCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     if (!ctx.data.user) {
-      await ctx.replyT('error', 'error', {}, true);
+      await ctx.makeMessage({ content: ctx.prettyResponse('error', 'error'), ephemeral: true });
       return;
     }
 
@@ -51,6 +51,6 @@ export default class CooldownsInteractionCommand extends InteractionCommand {
       .setColor('#6597df')
       .setDescription(txt);
 
-    await ctx.reply({ embeds: [embed] });
+    await ctx.makeMessage({ embeds: [embed] });
   }
 }

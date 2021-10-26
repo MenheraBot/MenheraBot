@@ -21,6 +21,6 @@ export default class SupportInteractionCommand extends InteractionCommand {
       .setColor('#970045')
       .setImage('https://i.imgur.com/ZsKuh8W.png')
       .setTimestamp();
-    await ctx.reply({ embeds: [embed], ephemeral: true });
+    await ctx.makeMessage({ embeds: [embed], ephemeral: true });
   }
 }

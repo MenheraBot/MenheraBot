@@ -62,7 +62,10 @@ export default class BlockChannelInteractionCommand extends InteractionCommand {
       const selectedChannel = ctx.options.getChannel('canal', true);
 
       if (selectedChannel?.type !== 'GUILD_TEXT') {
-        ctx.replyT('error', 'invalid-channel', {}, true);
+        ctx.makeMessage({
+          content: ctx.prettyResponse('error', 'invalid-channel'),
+          ephemeral: true,
+        });
         return;
       }
 
@@ -74,8 +77,10 @@ export default class BlockChannelInteractionCommand extends InteractionCommand {
           ctx.interaction.guild?.id as string,
           ctx.data.server,
         );
-        await ctx.replyT('success', 'unblock', {
-          channel: selectedChannel.toString(),
+        await ctx.makeMessage({
+          content: ctx.prettyResponse('success', 'unblock', {
+            channel: selectedChannel.toString(),
+          }),
         });
         return;
       }
@@ -84,8 +89,10 @@ export default class BlockChannelInteractionCommand extends InteractionCommand {
         ctx.interaction.guild?.id as string,
         ctx.data.server,
       );
-      await ctx.replyT('success', 'block', {
-        channel: selectedChannel.toString(),
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('success', 'block', {
+          channel: selectedChannel.toString(),
+        }),
       });
       return;
     }
@@ -94,7 +101,7 @@ export default class BlockChannelInteractionCommand extends InteractionCommand {
 
     switch (option) {
       case 'view':
-        ctx.reply({
+        ctx.makeMessage({
           content: `${emojis.list} | ${ctx.translate('blocked-channels')}\n\n${
             ctx.data.server.blockedChannels.length === 0
               ? ctx.translate('zero-value')
@@ -103,7 +110,7 @@ export default class BlockChannelInteractionCommand extends InteractionCommand {
         });
         break;
       case 'delete': {
-        ctx.reply({
+        ctx.makeMessage({
           content: ctx.translate('sure'),
           components: [
             {
@@ -129,7 +136,7 @@ export default class BlockChannelInteractionCommand extends InteractionCommand {
           this.client.repositories.guildRepository.update(ctx.interaction.guild.id, {
             blockedChannels: [],
           });
-          ctx.editReply({ components: [], content: `${emojis.yes} | ${ctx.translate('done')}` });
+          ctx.makeMessage({ components: [], content: ctx.prettyResponse('yes', 'done') });
           return;
         }
 

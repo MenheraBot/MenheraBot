@@ -29,15 +29,20 @@ export default class MamarInteractionCommand extends InteractionCommand {
     const mention = ctx.options.getUser('user', true);
 
     if (mention.bot) {
-      await ctx.replyT('warn', 'bot', {
-        author: ctx.author.toString(),
-        mention: mention.toString(),
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'bot', {
+          author: ctx.author.toString(),
+          mention: mention.toString(),
+        }),
       });
       return;
     }
 
     if (mention.id === ctx.author.id) {
-      await ctx.replyT('error', 'self-mention', {}, true);
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'self-mention'),
+        ephemeral: true,
+      });
       return;
     }
 
@@ -55,7 +60,7 @@ export default class MamarInteractionCommand extends InteractionCommand {
       .setImage(selectedImage)
       .setThumbnail(avatar);
 
-    await ctx.reply({ embeds: [embed] });
+    await ctx.makeMessage({ embeds: [embed] });
     await ctx.client.repositories.mamarRepository.mamar(ctx.author.id, mention.id);
   }
 }

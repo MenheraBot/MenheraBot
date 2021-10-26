@@ -12,7 +12,7 @@ export default class ReloadSlashInteractionCommand extends InteractionCommand {
       options: [
         {
           type: 'STRING',
-          name: 'comando',
+          name: 'opcao',
           description: 'Comando pra mete em maintenance',
           required: true,
         },
@@ -28,22 +28,22 @@ export default class ReloadSlashInteractionCommand extends InteractionCommand {
     if (ctx.options.getString('comando', true).toLowerCase() === 'locales') {
       // @ts-ignore
       await this.client.shard?.broadcastEval((c) => c.reloadLocales());
-      ctx.reply('Locales REcarregados');
+      ctx.makeMessage({ content: 'Locales Recarregados' });
       return;
     }
 
     const command = ctx.options.getString('comando', true).toLowerCase();
 
     if (!this.client.slashCommands.get(command)) {
-      ctx.replyE('error', 'NAO TEM NENHUM COMANDO COM, ESE NOME');
+      ctx.makeMessage({ content: 'NAO TEM NENHUM COMANDO COM, ESE NOME' });
       return;
     }
 
-    // @ts-ignore
+    // @ts-expect-error Reload command doesnt exist in client<boolean>
     await this.client.shard?.broadcastEval((c, { a }) => c.reloadCommand(a), {
       context: { a: command },
     });
 
-    await ctx.replyE('success', `${command} recarregado com sucesso!`);
+    await ctx.makeMessage({ content: `${command} recarregado com sucesso!` });
   }
 }

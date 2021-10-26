@@ -27,24 +27,26 @@ export default class WalletInteractionCommand extends InteractionCommand {
 
     const user = await this.client.repositories.userRepository.find(pessoa.id);
     if (!user) {
-      await ctx.replyT('error', 'no-dbuser', {}, true);
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'no-dbuser'),
+        ephemeral: true,
+      });
       return;
     }
 
     if (user.ban === true) {
-      ctx.replyT('error', 'banned-user', {}, true);
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'banned-user'),
+        ephemeral: true,
+      });
       return;
     }
 
-    let cor;
-
-    if (user.cor) {
-      cor = user.cor;
-    } else cor = '#a788ff' as const;
+    const color = user?.cor ?? ('#a788ff' as const);
 
     const embed = new MessageEmbed()
       .setTitle(ctx.translate('title', { user: pessoa.tag }))
-      .setColor(cor)
+      .setColor(color)
       .addFields([
         {
           name: `⭐ | ${ctx.translate('stars')}`,
@@ -88,6 +90,6 @@ export default class WalletInteractionCommand extends InteractionCommand {
         },
       ]);
 
-    await ctx.reply({ embeds: [embed] });
+    await ctx.makeMessage({ embeds: [embed] });
   }
 }

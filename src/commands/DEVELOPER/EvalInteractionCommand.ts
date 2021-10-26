@@ -33,7 +33,7 @@ export default class EvalSlashInteractionCommand extends InteractionCommand {
       evaled = evaled.replace(new RegExp(`${this.client.token}`, 'g'), undefined);
 
       if (evaled.length > 1800) evaled = `${evaled.slice(0, 1800)}...`;
-      await ctx.reply(`\`\`\`js\n ${evaled}\`\`\``);
+      await ctx.makeMessage({ content: `\`\`\`js\n ${evaled}\`\`\`` });
       return;
     } catch (err) {
       if (err instanceof Error && err.stack) {
@@ -43,7 +43,7 @@ export default class EvalSlashInteractionCommand extends InteractionCommand {
         embed.setTitle('<:negacao:759603958317711371> | Erro');
         embed.setDescription(`\`\`\`js\n${errorMessage}\`\`\``);
 
-        await ctx.reply({ embeds: [embed] });
+        await ctx.makeMessage({ embeds: [embed] });
       }
     }
   }

@@ -84,12 +84,18 @@ export default class StatsInteractionCommand extends InteractionCommand {
     const data = await HttpRequests.getHuntUserStats(user.id);
 
     if (data.error) {
-      await ctx.replyT('error', 'coinflip.error', {}, true);
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'coinflip.error'),
+        ephemeral: true,
+      });
       return;
     }
 
     if (!data.user_id) {
-      await ctx.replyT('error', 'hunt.no-data', {}, true);
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'hunt.no-data'),
+        ephemeral: true,
+      });
       return;
     }
 
@@ -173,7 +179,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
         },
       ]);
 
-    await ctx.reply({ embeds: [embed] });
+    await ctx.makeMessage({ embeds: [embed] });
   }
 
   async menhera(ctx: InteractionCommandContext): Promise<void> {
@@ -184,7 +190,9 @@ export default class StatsInteractionCommand extends InteractionCommand {
     if (!this.client.shard) return;
 
     if (!(await this.client.isShardingProcessEnded())) {
-      ctx.replyL('error', 'common:sharding_in_progress');
+      ctx.makeMessage({
+        content: ctx.prettyResponseLocale('error', 'common:sharding_in_progress'),
+      });
       return;
     }
 
@@ -235,7 +243,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
           inline: true,
         },
       ]);
-    await ctx.reply({ embeds: [embed] });
+    await ctx.makeMessage({ embeds: [embed] });
   }
 
   static async blackjack(ctx: InteractionCommandContext): Promise<void> {
@@ -244,12 +252,18 @@ export default class StatsInteractionCommand extends InteractionCommand {
     const data = await HttpRequests.getBlackJackStats(user.id);
 
     if (data.error) {
-      await ctx.replyT('error', 'coinflip.error', {}, true);
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'coinflip.error'),
+        ephemeral: true,
+      });
       return;
     }
 
     if (!data.playedGames) {
-      await ctx.replyT('error', 'blackjack.no-data', {}, true);
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'blackjack.no-data'),
+        ephemeral: true,
+      });
       return;
     }
 
@@ -299,7 +313,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
           true,
         );
 
-    await ctx.reply({ embeds: [embed] });
+    await ctx.makeMessage({ embeds: [embed] });
   }
 
   static async coinflip(ctx: InteractionCommandContext): Promise<void> {
@@ -308,12 +322,12 @@ export default class StatsInteractionCommand extends InteractionCommand {
     const data = await HttpRequests.getCoinflipUserStats(user.id);
 
     if (data.error) {
-      await ctx.replyT('error', 'coinflip.error');
+      await ctx.makeMessage({ content: ctx.prettyResponse('error', 'coinflip.error') });
       return;
     }
 
     if (!data.playedGames) {
-      await ctx.replyT('error', 'coinflip.no-data');
+      await ctx.makeMessage({ content: ctx.prettyResponse('error', 'coinflip.no-data') });
       return;
     }
 
@@ -363,6 +377,6 @@ export default class StatsInteractionCommand extends InteractionCommand {
           true,
         );
 
-    await ctx.reply({ embeds: [embed] });
+    await ctx.makeMessage({ embeds: [embed] });
   }
 }

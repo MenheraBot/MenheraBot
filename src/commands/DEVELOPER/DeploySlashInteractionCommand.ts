@@ -77,13 +77,13 @@ export default class DeploySlashInteractionCommand extends InteractionCommand {
       );
 
       await HttpRequests.postCommandStatus(Array.from(toAPIData.values()));
-      ctx.reply('Commandos deployados');
+      ctx.makeMessage({ content: 'Commandos deployados' });
       return;
     }
 
     if (ctx.options.getString('option', true) === 'global') {
       if (!ctx.options.getString('senha') || ctx.options.getString('senha') !== 'MACACO PREGO') {
-        ctx.reply({
+        ctx.makeMessage({
           content: 'SENHA ERRADA ANIMAL. CASO QUERIA DAR DEPLOY GLOBAL, A SENHA É "MACACO PREGO"',
           ephemeral: true,
         });
@@ -109,7 +109,7 @@ export default class DeploySlashInteractionCommand extends InteractionCommand {
         });
         return p;
       }, []);
-      ctx.reply('Iniciando deploy');
+      ctx.makeMessage({ content: 'Iniciando deploy' });
 
       const disabledCommands =
         await this.client.repositories.cmdRepository.getAllCommandsInMaintenance();
@@ -127,7 +127,7 @@ export default class DeploySlashInteractionCommand extends InteractionCommand {
       await HttpRequests.postCommandStatus(Array.from(toAPIData.values()));
 
       await this.client.application?.commands.set(allCommands);
-      ctx.editReply({
+      ctx.makeMessage({
         content: 'Todos comandos foram settados! Temos até 1 hora para tudo atualizar',
       });
       return;
@@ -148,7 +148,7 @@ export default class DeploySlashInteractionCommand extends InteractionCommand {
         return p;
       }, []);
 
-      ctx.reply('Iniciando deploy');
+      ctx.makeMessage({ content: 'Iniciando deploy' });
       const res = await ctx.interaction.guild?.commands.set(allCommands);
 
       res?.forEach((a) => {
@@ -158,6 +158,7 @@ export default class DeploySlashInteractionCommand extends InteractionCommand {
           });
         }
       });
+      ctx.makeMessage({ content: 'Comandos deployados no servidor' });
       return;
     }
 
@@ -174,7 +175,7 @@ export default class DeploySlashInteractionCommand extends InteractionCommand {
       return p;
     }, []);
 
-    ctx.reply('Iniciando deploy');
+    ctx.makeMessage({ content: 'Iniciando deploy' });
     const res = await ctx.interaction.guild?.commands.set(allCommands);
 
     res?.forEach((a) => {
@@ -185,6 +186,8 @@ export default class DeploySlashInteractionCommand extends InteractionCommand {
       }
     });
 
-    ctx.editReply({ content: `No total, ${res?.size} comandos foram adicionados neste servidor!` });
+    ctx.makeMessage({
+      content: `No total, ${res?.size} comandos foram adicionados neste servidor!`,
+    });
   }
 }

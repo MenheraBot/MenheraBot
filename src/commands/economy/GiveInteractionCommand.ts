@@ -66,15 +66,24 @@ export default class GiveInteractionCommand extends InteractionCommand {
   }
 
   static replyForYourselfError(ctx: InteractionCommandContext): void {
-    ctx.replyT('error', 'self-mention', {}, true);
+    ctx.makeMessage({
+      content: ctx.prettyResponse('error', 'self-mention'),
+      ephemeral: true,
+    });
   }
 
   static replyInvalidValueError(ctx: InteractionCommandContext): void {
-    ctx.replyT('error', 'invalid-value', {}, true);
+    ctx.makeMessage({
+      content: ctx.prettyResponse('error', 'invalid-value'),
+      ephemeral: true,
+    });
   }
 
   static replyNoAccountError(ctx: InteractionCommandContext): void {
-    ctx.replyT('error', 'no-dbuser', {}, true);
+    ctx.makeMessage({
+      content: ctx.prettyResponse('error', 'no-dbuser'),
+      ephemeral: true,
+    });
   }
 
   static replyNotEnoughtError(ctx: InteractionCommandContext, localeField: string): void {
@@ -110,7 +119,10 @@ export default class GiveInteractionCommand extends InteractionCommand {
     if (input < 1) return GiveInteractionCommand.replyInvalidValueError(ctx);
 
     if (await this.client.repositories.blacklistRepository.isUserBanned(toSendUser.id)) {
-      ctx.replyT('error', 'banned-user', {}, true);
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'banned-user'),
+        ephemeral: true,
+      });
       return;
     }
 

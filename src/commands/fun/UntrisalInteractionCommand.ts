@@ -2,7 +2,6 @@ import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageButton } from 'discord.js-light';
-import { emojis } from '@structures/Constants';
 import Util from '@utils/Util';
 
 export default class UntrisalInteractionCommand extends InteractionCommand {
@@ -18,7 +17,7 @@ export default class UntrisalInteractionCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     if (ctx.data.user.trisal?.length === 0) {
-      await ctx.replyT('error', 'error', {}, true);
+      await ctx.makeMessage({ content: ctx.prettyResponse('error', 'error'), ephemeral: true });
       return;
     }
 
@@ -27,8 +26,8 @@ export default class UntrisalInteractionCommand extends InteractionCommand {
       .setCustomId(ctx.interaction.id)
       .setLabel(ctx.translate('confirm'));
 
-    await ctx.reply({
-      content: `${emojis.question} | ${ctx.translate('sure')}`,
+    await ctx.makeMessage({
+      content: ctx.prettyResponse('question', 'sure'),
       components: [{ type: 'ACTION_ROW', components: [button] }],
     });
 
@@ -40,7 +39,7 @@ export default class UntrisalInteractionCommand extends InteractionCommand {
     );
 
     if (!confirmed) {
-      ctx.editReply({
+      ctx.makeMessage({
         components: [
           {
             type: 1,
@@ -56,8 +55,8 @@ export default class UntrisalInteractionCommand extends InteractionCommand {
       ctx.data.user.trisal[0],
       ctx.data.user.trisal[1],
     );
-    ctx.editReply({
-      content: `${emojis.success} | ${ctx.translate('done')}`,
+    ctx.makeMessage({
+      content: ctx.prettyResponse('success', 'done'),
       components: [
         { type: 'ACTION_ROW', components: [button.setDisabled(true).setStyle('PRIMARY')] },
       ],

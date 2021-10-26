@@ -42,8 +42,8 @@ export default class SarrarInteractionCommand extends InteractionCommand {
       .setImage(selectedImage)
       .setThumbnail(avatar);
 
-    if (ctx.interaction.replied) ctx.editReply({ embeds: [embed], components: [] });
-    else ctx.reply({ embeds: [embed], components: [] });
+    if (ctx.interaction.replied) ctx.makeMessage({ embeds: [embed], components: [] });
+    else ctx.makeMessage({ embeds: [embed], components: [] });
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
@@ -72,7 +72,7 @@ export default class SarrarInteractionCommand extends InteractionCommand {
       .setLabel(ctx.translate('sarrar'))
       .setStyle('PRIMARY');
 
-    ctx.reply({
+    ctx.makeMessage({
       embeds: [embed],
       components: [{ type: 'ACTION_ROW', components: [Button] }],
     });
@@ -96,7 +96,7 @@ export default class SarrarInteractionCommand extends InteractionCommand {
     ).catch(() => null);
 
     if (!collected) {
-      ctx.editReply({
+      ctx.makeMessage({
         embeds: [embed],
         components: [
           {

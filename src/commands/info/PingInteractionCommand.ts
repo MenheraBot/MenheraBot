@@ -32,7 +32,9 @@ export default class PingInteractionCommand extends InteractionCommand {
 
     if (ctx.options.getString('shards')) {
       if (!(await this.client.isShardingProcessEnded())) {
-        ctx.replyL('error', 'common:sharding_in_progress');
+        ctx.makeMessage({
+          content: ctx.prettyResponseLocale('error', 'common:sharding_in_progress'),
+        });
         return;
       }
 
@@ -112,12 +114,12 @@ export default class PingInteractionCommand extends InteractionCommand {
       };
 
       const stringTable = getTable(tabled);
-      await ctx.reply(
-        `\`\`\`${stringTable
+      await ctx.makeMessage({
+        content: `\`\`\`${stringTable
           .replace('(index)', ' Shard ')
           .replace(/'/g, ' ')
           .slice(0, 1992)}\`\`\``,
-      );
+      });
       return;
     }
     const embed = new MessageEmbed()
@@ -133,6 +135,6 @@ export default class PingInteractionCommand extends InteractionCommand {
       .setTimestamp()
       .setColor('#eab3fa');
 
-    await ctx.reply({ embeds: [embed] });
+    await ctx.makeMessage({ embeds: [embed] });
   }
 }

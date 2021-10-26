@@ -28,7 +28,9 @@ export default class AngryInteractionCommand extends InteractionCommand {
     const user = ctx.options.getUser('user', false);
 
     if (user?.bot) {
-      await ctx.replyL('error', 'commands:angry.bot');
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'bot'),
+      });
       return;
     }
 
@@ -47,7 +49,7 @@ export default class AngryInteractionCommand extends InteractionCommand {
         .setThumbnail(avatar)
         .setImage(selectedImage);
 
-      await ctx.reply({ embeds: [embed] });
+      await ctx.makeMessage({ embeds: [embed] });
       return;
     }
 
@@ -63,6 +65,6 @@ export default class AngryInteractionCommand extends InteractionCommand {
       .setImage(selectedImage)
       .setThumbnail(avatar);
 
-    await ctx.reply({ embeds: [embed] });
+    await ctx.makeMessage({ embeds: [embed] });
   }
 }

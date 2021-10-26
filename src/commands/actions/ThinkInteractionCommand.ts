@@ -28,7 +28,9 @@ export default class ThinkInteractionCommand extends InteractionCommand {
     const user = ctx.options.getUser('user');
 
     if (user?.bot) {
-      await ctx.replyT('success', 'bot');
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('success', 'bot'),
+      });
       return;
     }
 
@@ -46,7 +48,7 @@ export default class ThinkInteractionCommand extends InteractionCommand {
         .setThumbnail(avatar)
         .setImage(selectedImage);
 
-      await ctx.reply({ embeds: [embed] });
+      await ctx.makeMessage({ embeds: [embed] });
       return;
     }
 
@@ -62,6 +64,6 @@ export default class ThinkInteractionCommand extends InteractionCommand {
       .setImage(selectedImage)
       .setThumbnail(avatar);
 
-    await ctx.reply({ embeds: [embed] });
+    await ctx.makeMessage({ embeds: [embed] });
   }
 }

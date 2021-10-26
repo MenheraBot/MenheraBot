@@ -20,6 +20,6 @@ export default class HumorInteractionCommand extends InteractionCommand {
 
     const embed = new MessageEmbed().setImage(selectedImage).setColor('RANDOM');
 
-    await ctx.reply({ embeds: [embed] });
+    await ctx.makeMessage({ embeds: [embed] });
   }
 }

@@ -55,6 +55,10 @@ export default class ManageStartSlashInteractionCommand extends InteractionComma
         break;
     }
 
-    await ctx.replyE('success', `Estrelinhas de ${id} alteradas com sucesso :star:`);
+    await ctx.makeMessage({
+      content: `Estrelinhas de <@${id}> alteradas com sucesso :star:\n**Operação**: ${ctx.options.getString(
+        'option',
+      )}\n**Valor**: ${value}`,
+    });
   }
 }

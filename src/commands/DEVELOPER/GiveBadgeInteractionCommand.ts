@@ -35,6 +35,6 @@ export default class GiveBadgeSlashInteractionCommand extends InteractionCommand
       ctx.options.getInteger('badgeid', true),
     );
 
-    await ctx.reply('Concluido');
+    await ctx.makeMessage({ content: 'Concluido' });
   }
 }

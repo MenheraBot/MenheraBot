@@ -37,7 +37,10 @@ export default class AvatarInteractionCommand extends InteractionCommand {
         user = await this.client.users.fetch(mentionUser.id);
         db = await this.client.repositories.userRepository.find(user.id);
       } catch {
-        await ctx.replyT('error', 'unknow-user', {}, true);
+        await ctx.makeMessage({
+          content: ctx.prettyResponse('error', 'unknow-user'),
+          ephemeral: true,
+        });
         return;
       }
     }
@@ -57,6 +60,6 @@ export default class AvatarInteractionCommand extends InteractionCommand {
       embed.setColor('#f276f3');
       embed.setFooter(ctx.translate('client_footer', { user: user.username }));
     }
-    await ctx.reply({ embeds: [embed] });
+    await ctx.makeMessage({ embeds: [embed] });
   }
 }

@@ -34,12 +34,18 @@ export default class ShipInteractionCommand extends InteractionCommand {
     const user2 = ctx.options.getUser('user_dois') ?? ctx.author;
 
     if (!user1) {
-      await ctx.replyT('error', 'unknow-user', {}, true);
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'unknow-user'),
+        ephemeral: true,
+      });
       return;
     }
 
     if (!user2) {
-      await ctx.replyT('error', 'unknow-user', {}, true);
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'unknow-user'),
+        ephemeral: true,
+      });
       return;
     }
 
@@ -47,7 +53,7 @@ export default class ShipInteractionCommand extends InteractionCommand {
       (await this.client.repositories.blacklistRepository.isUserBanned(user1.id)) === true ||
       (await this.client.repositories.blacklistRepository.isUserBanned(user2.id)) === true
     ) {
-      ctx.replyT('error', 'banned-user', {}, true);
+      ctx.makeMessage({ content: ctx.prettyResponse('error', 'banned-user'), ephemeral: true });
       return;
     }
 
@@ -117,13 +123,13 @@ export default class ShipInteractionCommand extends InteractionCommand {
         .setDescription(`\n${ctx.translate('value')} **${value}%**\n\n${ctx.translate('perfect')}`);
 
     if (attc)
-      await ctx.reply({
+      await ctx.makeMessage({
         content: `**${ctx.translate('message-start')}**`,
         embeds: [embed],
         files: [attc],
       });
     else
-      await ctx.reply({
+      await ctx.makeMessage({
         content: `**${ctx.translate('message-start')}**`,
         embeds: [embed],
       });

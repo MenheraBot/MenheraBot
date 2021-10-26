@@ -42,7 +42,7 @@ export default class LaughtInteractionCommand extends InteractionCommand {
         .setThumbnail(avatar)
         .setImage(selectedImage);
 
-      await ctx.reply({ embeds: [embed] });
+      await ctx.makeMessage({ embeds: [embed] });
       return;
     }
 
@@ -58,6 +58,6 @@ export default class LaughtInteractionCommand extends InteractionCommand {
       .setImage(selectedImage)
       .setThumbnail(avatar);
 
-    await ctx.reply({ embeds: [embed] });
+    await ctx.makeMessage({ embeds: [embed] });
   }
 }
