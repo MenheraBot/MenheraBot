@@ -1,3 +1,4 @@
+import MagicItems from '@structures/MagicItems';
 import {
   CollectorFilter,
   MessageComponentInteraction,
@@ -7,6 +8,7 @@ import {
   MessageActionRowComponentResolvable,
   TextBasedChannels,
 } from 'discord.js-light';
+import { HuntingTypes, TMagicItemsFile } from './Types';
 
 const MENTION_REGEX = /^(?:<@!?)?(\d{16,18})(?:>)?$/;
 export default class Util {
@@ -132,3 +134,8 @@ export const disableComponents = <T extends MessageButton | MessageSelectMenu>(
 
 export const actionRow = (components: MessageActionRowComponentResolvable[]): MessageActionRow =>
   new MessageActionRow({ components });
+
+export const getMagicItemById = (id: number): { id: number; data: TMagicItemsFile<HuntingTypes> } =>
+  Object.entries(MagicItems)
+    .filter((a) => Number(a[0]) === id)
+    .map((a) => ({ id: Number(a[0]), data: a[1] }))[0];

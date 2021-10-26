@@ -66,9 +66,7 @@ export default class InventoryInteractionCommand extends InteractionCommand {
             (p, c) =>
               `${p}**${ctx.locale('common:name')}:** ${ctx.locale(
                 `data:magic-items.${c.id}.name`,
-              )}\n**${ctx.locale('common:level')}**: ${c.level}\n**${ctx.locale(
-                'common:amount',
-              )}**: ${c.amount}\n`,
+              )}\n**${ctx.locale('common:amount')}**: ${c.amount}\n`,
             '',
           )
         : ctx.translate('no-item'),
@@ -82,9 +80,9 @@ export default class InventoryInteractionCommand extends InteractionCommand {
             (p, c) =>
               `${p}**${ctx.locale('common:name')}:** ${ctx.locale(
                 `data:magic-items.${c.id}.name`,
-              )}\n**${ctx.locale('common:level')}**: ${c.level}\n**${ctx.locale(
-                'common:description',
-              )}**: ${ctx.locale(`data:magic-items.${c.id}.description`)}\n`,
+              )}\n**${ctx.locale('common:description')}**: ${ctx.locale(
+                `data:magic-items.${c.id}.description`,
+              )}\n`,
             '',
           )
         : ctx.translate('no-item'),
@@ -103,7 +101,7 @@ export default class InventoryInteractionCommand extends InteractionCommand {
 
     const canUseItems = !(
       user.inventory.length === 0 ||
-      user.inventory.every((a) => user.inUseItems.some((b) => b.id === a.id && b.level === a.level))
+      user.inventory.every((a) => user.inUseItems.some((b) => b.id === a.id))
     );
 
     if (!canUseItems) useItemButton.setDisabled(true);
@@ -136,11 +134,11 @@ export default class InventoryInteractionCommand extends InteractionCommand {
       .setMaxValues(1)
       .setOptions(
         user.inventory.reduce<MessageSelectOptionData[]>((p, c) => {
-          if (user.inUseItems.some((a) => a.id === c.id && a.level === c.level)) return p;
+          if (user.inUseItems.some((a) => a.id === c.id)) return p;
 
           p.push({
             label: ctx.locale(`data:magic-items.${c.id}.name`),
-            value: `${c.id} | ${c.level}`,
+            value: `${c.id}`,
           });
           return p;
         }, []),
@@ -165,11 +163,11 @@ export default class InventoryInteractionCommand extends InteractionCommand {
       return;
     }
 
-    const [itemId, itemLevel] = resolveSeparatedStrings(selectedItem.customId);
+    const [itemId] = resolveSeparatedStrings(selectedItem.customId);
 
-    const findedItem = user.inventory.find(
-      (a) => a.level === Number(itemId) && a.id === Number(itemLevel),
-    ) as IMagicItem & { amount: number };
+    const findedItem = user.inventory.find((a) => a.id === Number(itemId)) as IMagicItem & {
+      amount: number;
+    };
 
     if (user.itemsLimit >= user.inUseItems.length) {
       const replaceItem = new MessageSelectMenu()
@@ -181,7 +179,7 @@ export default class InventoryInteractionCommand extends InteractionCommand {
           user.inUseItems.reduce<MessageSelectOptionData[]>((p, c, i) => {
             p.push({
               label: ctx.locale(`data:magic-items.${c.id}.name`),
-              value: `${c.id} | ${c.level} | ${i}`,
+              value: `${c.id} | ${i}`,
             });
             return p;
           }, []),
@@ -207,23 +205,15 @@ export default class InventoryInteractionCommand extends InteractionCommand {
         return;
       }
 
-      const [replaceItemId, replaceItemLevel] = resolveSeparatedStrings(selectedItem.customId);
+      const [replaceItemId] = resolveSeparatedStrings(selectedItem.customId);
 
-      user.inUseItems.splice(
-        user.inUseItems.findIndex(
-          (a) => a.level === Number(replaceItemId) && a.id === Number(replaceItemLevel),
-          1,
-        ),
-      );
+      user.inUseItems.splice(user.inUseItems.findIndex((a) => a.id === Number(replaceItemId), 1));
 
-      const toPutItem = user.inventory.find(
-        (a) => a.id === Number(replaceItem) && a.level === Number(replaceItemLevel),
-      );
+      const toPutItem = user.inventory.find((a) => a.id === Number(replaceItem));
 
       if (!toPutItem)
         user.inventory.push({
           amount: 1,
-          level: Number(replaceItemLevel),
           id: Number(replaceItemId),
         });
       else toPutItem.amount += 1;
@@ -231,11 +221,11 @@ export default class InventoryInteractionCommand extends InteractionCommand {
 
     findedItem.amount -= 1;
 
-    user.inUseItems.push({ id: Number(itemId), level: Number(itemLevel) });
+    user.inUseItems.push({ id: Number(itemId) });
 
     if (findedItem.amount === 0)
       user.inventory.splice(
-        user.inventory.findIndex((a) => a.level === Number(itemId) && a.id === Number(itemLevel)),
+        user.inventory.findIndex((a) => a.id === Number(itemId)),
         1,
       );
 

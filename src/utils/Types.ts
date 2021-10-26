@@ -76,7 +76,6 @@ export interface IGuildSchema {
 
 export interface IMagicItem {
   id: number;
-  level: number;
 }
 
 export interface IUserSchema {
@@ -244,3 +243,33 @@ export enum TopRankingTypes {
   stars = 'estrelinhas',
   votes = 'votos',
 }
+
+export type HuntingTypes = 'demon' | 'giant' | 'angel' | 'archangel' | 'demigod' | 'god';
+
+interface HuntProbabiltyProps {
+  amount: number;
+  probabilty: number;
+}
+
+export interface HuntProbability {
+  demon: HuntProbabiltyProps[];
+  giant: HuntProbabiltyProps[];
+  angel: HuntProbabiltyProps[];
+  archangel: HuntProbabiltyProps[];
+  demigod: HuntProbabiltyProps[];
+  god: HuntProbabiltyProps[];
+}
+
+export interface IProbablyBoostItem<T extends HuntingTypes> {
+  type: 'PROBABILITY_BOOST';
+  huntType: T;
+  probabilities: HuntProbability[T];
+  cost: number;
+}
+
+export interface IReturnData<T> {
+  id: number;
+  data: T;
+}
+
+export type TMagicItemsFile<T extends HuntingTypes> = IProbablyBoostItem<T>;
