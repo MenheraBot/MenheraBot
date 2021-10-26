@@ -3,7 +3,7 @@ import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { ApplicationCommandData, MessageAttachment } from 'discord.js-light';
 import HttpRequests from '@utils/HTTPrequests';
-import { emojis } from '@structures/MenheraConstants';
+import { emojis } from '@structures/Constants';
 
 export default class PhiloInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {

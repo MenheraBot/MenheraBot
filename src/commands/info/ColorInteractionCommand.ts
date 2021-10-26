@@ -7,7 +7,7 @@ import {
 import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { COLORS, emojis } from '@structures/MenheraConstants';
+import { COLORS, emojis } from '@structures/Constants';
 
 export default class ColorInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {

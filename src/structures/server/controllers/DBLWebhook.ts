@@ -1,7 +1,7 @@
 import Router from 'koa-router';
 import MenheraClient from 'MenheraClient';
 
-import { votes as constants } from '@structures/MenheraConstants';
+import { votes as constants } from '@structures/Constants';
 import { MessageEmbed } from 'discord.js-light';
 
 const runVote = async (

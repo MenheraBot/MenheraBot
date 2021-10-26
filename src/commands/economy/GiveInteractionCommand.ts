@@ -1,4 +1,4 @@
-import { emojis, EmojiTypes } from '@structures/MenheraConstants';
+import { emojis, EmojiTypes } from '@structures/Constants';
 import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';

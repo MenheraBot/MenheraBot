@@ -1,4 +1,4 @@
-import { languageByLocale } from '@structures/MenheraConstants';
+import { languageByLocale } from '@structures/Constants';
 import HttpRequests from '@utils/HTTPrequests';
 import { ICommandUsedData } from '@utils/Types';
 import {
