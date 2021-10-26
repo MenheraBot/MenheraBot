@@ -5,7 +5,7 @@ import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import http from '@utils/HTTPrequests';
 import { IBlackjackCards } from '@utils/Types';
-import { BLACKJACK_CARDS, emojis } from '@structures/MenheraConstants';
+import { BLACKJACK_CARDS, emojis } from '@structures/Constants';
 import Util from '@utils/Util';
 
 const CalculateHandValue = (cards: Array<number>): Array<IBlackjackCards> =>

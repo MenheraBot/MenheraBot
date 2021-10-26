@@ -1,9 +1,12 @@
 {
+  "sharding_in_progress": "Menhera is still waking up! Try again later",
   "timesup": "Time's Up",
   "accept": "Accept",
   "confirm": "Confirm",
   "negate": "Negate",
   "portuguese": "Portuguese",
   "english": "English",
-  "sharding_in_progress": "Menhera is still waking up! Try again later"
+  "name": "Name",
+  "description": "Description",
+  "amount": "Amount"
 }

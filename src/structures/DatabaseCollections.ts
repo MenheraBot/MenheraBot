@@ -19,10 +19,7 @@ const userSchema = new Schema({
   mamadas: { type: Number, default: 0 },
   mamou: { type: Number, default: 0 },
   casado: { type: String, default: 'false' },
-  nota: {
-    type: String,
-    default: 'Eu amo a Menhera >.<\nVocê pode alterar esta mensagem com m!sobremim',
-  },
+  nota: { type: String, default: 'Eu amo a Menhera >.<\nUse /sobremim!' },
   data: { type: String, default: undefined },
   shipValue: { type: String, default: Math.floor(Math.random() * 55) },
   ban: { type: Boolean, default: false },
@@ -42,6 +39,9 @@ const userSchema = new Schema({
   badges: { type: Array, default: [] },
   voteCooldown: { type: String, default: '000000000000' },
   trisal: { type: Array, default: [] },
+  inventory: { type: Array, default: [] },
+  inUseItems: { type: Array, default: [] },
+  itemsLimit: { type: Number, default: 1 },
 });
 
 export const Cmds = model<ICmdSchema & Document>('Cmd', cmdSchema);

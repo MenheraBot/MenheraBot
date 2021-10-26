@@ -1,10 +1,10 @@
 {
   "name": "menhera-bot",
-  "version": "3.3.13-hall",
+  "version": "3.4.0",
   "engines": {
     "node": ">=16.6.0"
   },
-  "description": "Uma bot brasileira de RPG para o Discord",
+  "description": "A Brazilian Discord Bot foccused in Fun and RPG",
   "main": "dist/shard.js",
   "scripts": {
     "prepare": "husky install",

@@ -2,7 +2,7 @@ import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageButton, MessageComponentInteraction } from 'discord.js-light';
-import { emojis } from '@structures/MenheraConstants';
+import { emojis } from '@structures/Constants';
 import Util from '@utils/Util';
 import moment from 'moment';
 

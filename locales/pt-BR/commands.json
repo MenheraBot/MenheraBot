@@ -677,5 +677,21 @@
     "equal": "Tanto você quanto a menhera fizeram o mesmo valor. Menhera ganha",
     "menhera-bigger": "A Menhera está mais proxima de 21, ela ganhou!",
     "user-bigger": "Você está mais próximo de 21, você ganhou **{{value}}** :star:"
+  },
+  "inventario": {
+    "no-user": "Este usuário não possui inventário",
+    "title": "Inventário de {{user}}",
+    "no-item": "O inventário deste usuário está vazio!",
+    "active": "Itens Ativos",
+    "items": "Itens no Inventário",
+    "use": "Usar Itens",
+    "use-footer": "Clique no botão abaixo para usar itens",
+    "select": "Escolha um item para usar",
+    "choose-item": "Selecione um item para usar como seu item mágico principal",
+    "reset": "Remover Itens Ativos",
+    "reseted": "Feitoria! Todos seus itens ativos foram movidos para o inventário",
+    "choose-toggle": "Qual item você quer substituir?",
+    "equipped": "Sucesso! O item **{{name}}** foi selecionado como ativo! Você já pode desfrutar de seus poderes!",
+    "select-description": "Escolha um dos itens abaixos para ativá-lo. Caso não tenha espaço disponível, tu terá que escolher um dos itens ativos para substituílo"
   }
 }

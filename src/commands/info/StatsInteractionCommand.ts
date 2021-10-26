@@ -4,7 +4,7 @@ import InteractionCommandContext from '@structures/command/InteractionContext';
 import HttpRequests from '@utils/HTTPrequests';
 import moment from 'moment';
 import { MessageEmbed } from 'discord.js-light';
-import { COLORS, emojis } from '@structures/MenheraConstants';
+import { COLORS, emojis } from '@structures/Constants';
 
 export default class StatsInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {

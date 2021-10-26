@@ -672,5 +672,21 @@
     "equal": "Both you and Menhera hit the same amount. Menhera Wins UwU",
     "menhera-bigger": "Menhera is closer to 21, she wins!",
     "user-bigger": "You're closer to 21, you won **{{value}}** :star:"
+  },
+  "inventario": {
+    "no-user": "This user does't have an inventory",
+    "title": "{{user}}'s Inventory",
+    "no-item": "This user's inventory is empty!",
+    "active": "Active Items",
+    "items": "Inventory Item",
+    "use": "Use Items",
+    "use-footer": "Click the button below to use items",
+    "select": "Select an item to use",
+    "choose-item": "Select a Item to use as your main magic item",
+    "reset": "Reset Active Items",
+    "reseted": "All done! All of your items were moved to inventory",
+    "choose-toggle": "Wich item do you want to replace?",
+    "equipped": "Success! The **{{name}}** item has been selected as active! You can now enjoy its powers!",
+    "select-description": "Choose one of the items below to activate it. If there is no available space, you will have to choose one of the active items to replace it"
   }
 }

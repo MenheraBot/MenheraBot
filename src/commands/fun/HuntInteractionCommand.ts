@@ -1,7 +1,7 @@
 import 'moment-duration-format';
 import moment from 'moment';
 import MenheraClient from 'MenheraClient';
-import { COLORS, probabilities } from '@structures/MenheraConstants';
+import { COLORS, probabilities } from '@structures/Constants';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageEmbed } from 'discord.js-light';

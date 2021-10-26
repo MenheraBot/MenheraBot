@@ -1,7 +1,7 @@
 import { Interaction, Collection, ThreadChannel, GuildChannel } from 'discord.js-light';
 import MenheraClient from 'MenheraClient';
 import InteractionCommandExecutor from '@structures/command/InteractionCommandExecutor';
-import { clientUnreadyString } from '@structures/MenheraConstants';
+import { clientUnreadyString } from '@structures/Constants';
 
 export default class InteractionCreate {
   constructor(private client: MenheraClient) {}
