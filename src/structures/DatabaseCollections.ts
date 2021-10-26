@@ -21,7 +21,6 @@ const userSchema = new Schema({
   casado: { type: String, default: 'false' },
   nota: { type: String, default: 'Eu amo a Menhera >.<\nUse /sobremim!' },
   data: { type: String, default: undefined },
-  shipValue: { type: String, default: Math.floor(Math.random() * 55) },
   ban: { type: Boolean, default: false },
   banReason: { type: String, default: null },
   cor: { type: String, default: '#a788ff' },

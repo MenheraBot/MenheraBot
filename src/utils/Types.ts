@@ -85,7 +85,6 @@ export interface IUserSchema {
   casado: string;
   nota: string;
   data?: string | null;
-  shipValue?: string;
   ban?: boolean;
   banReason?: string | null;
   cor: ColorResolvable;
