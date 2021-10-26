@@ -3,6 +3,7 @@ import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 
 import { shopEconomy } from '@structures/Constants';
+import { MessageEmbed } from 'discord.js-light';
 
 export default class ShopInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {
@@ -15,6 +16,11 @@ export default class ShopInteractionCommand extends InteractionCommand {
           description: '「🛒」・Abre a loja de compras',
           type: 'SUB_COMMAND_GROUP',
           options: [
+            {
+              name: 'itens',
+              description: '「🔮」・ Compre itens mágicos para melhorar suas habilidades',
+              type: 'SUB_COMMAND',
+            },
             {
               name: 'cores',
               description: '「🌈」・Compre cores para dar um UP em seu perfil!',
@@ -201,6 +207,9 @@ export default class ShopInteractionCommand extends InteractionCommand {
       if (option === 'rolls') {
         return this.buyRolls(ctx);
       }
+      if (option === 'itens') {
+        return this.buyItems(ctx);
+      }
     }
 
     if (type === 'info') {
@@ -213,6 +222,14 @@ export default class ShopInteractionCommand extends InteractionCommand {
         return ShopInteractionCommand.sellInfo(ctx);
       }
     }
+  }
+
+  async buyItems(ctx: InteractionCommandContext): Promise<void> {
+    const embed = new MessageEmbed().setTitle('comprar');
+    this.client.repositories.userRepository.update(ctx.author.id, {
+      inventory: [{ id: 1, amount: 1 }],
+    });
+    ctx.makeMessage({ embeds: [embed] });
   }
 
   static async buyInfo(ctx: InteractionCommandContext): Promise<void> {
