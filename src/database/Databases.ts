@@ -15,6 +15,7 @@ import RelationshipRepository from './repositories/RelationshipRepository';
 import BlacklistRepository from './repositories/BlacklistRepository';
 import TopRepository from './repositories/TopRepository';
 import GiveRepository from './repositories/GiveRepository';
+import CoinflipRepository from './repositories/CoinflipRepository';
 
 export default class Databases {
   public Cmds: typeof Cmds;
@@ -40,6 +41,8 @@ export default class Databases {
   private readonly maintenanceRepository: MaintenanceRepository;
 
   private readonly cacheRepository: CacheRepository;
+
+  private readonly coinflipRepository: CoinflipRepository;
 
   private readonly huntRepository: HuntRepository;
 
@@ -68,6 +71,7 @@ export default class Databases {
       this.guildRepository,
       this.cmdRepository,
     );
+    this.coinflipRepository = new CoinflipRepository(this.starRepository);
     this.badgeRepository = new BadgeRepository(this.userRepository);
     this.maintenanceRepository = new MaintenanceRepository(this.cmdRepository);
     this.huntRepository = new HuntRepository(this.Users);
@@ -92,6 +96,7 @@ export default class Databases {
       blacklistRepository: this.blacklistRepository,
       topRepository: this.topRepository,
       giveRepository: this.giveRepository,
+      coinflipRepository: this.coinflipRepository,
     };
   }
 

@@ -74,7 +74,7 @@ export default class CoinflipInteractionCommand extends InteractionCommand {
       return;
     }
 
-    const db1 = await this.client.repositories.userRepository.find(user1.id);
+    const db1 = ctx.data.user;
     const db2 = await this.client.repositories.userRepository.find(user2.id);
 
     if (!db1 || !db2) {
@@ -172,8 +172,7 @@ export default class CoinflipInteractionCommand extends InteractionCommand {
       });
     }
 
-    await this.client.repositories.starRepository.add(winner, input);
-    await this.client.repositories.starRepository.remove(loser, input);
+    await this.client.repositories.coinflipRepository.coinflip(winner, loser, input);
     await HttpRequests.postCoinflipGame(winner, loser, input, Date.now());
   }
 }

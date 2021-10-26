@@ -3,6 +3,7 @@ import BadgeRepository from '@database/repositories/BadgeRepository';
 import BlacklistRepository from '@database/repositories/BlacklistRepository';
 import CacheRepository from '@database/repositories/CacheRepository';
 import CmdRepository from '@database/repositories/CmdsRepository';
+import CoinflipRepository from '@database/repositories/CoinflipRepository';
 import GiveRepository from '@database/repositories/GiveRepository';
 import GuildsRepository from '@database/repositories/GuildsRepository';
 import HuntRepository from '@database/repositories/HuntRepository';
@@ -215,6 +216,7 @@ export interface IDatabaseRepositories {
   blacklistRepository: BlacklistRepository;
   topRepository: TopRepository;
   giveRepository: GiveRepository;
+  coinflipRepository: CoinflipRepository;
 }
 
 export type TShardStatus = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
