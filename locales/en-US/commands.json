@@ -682,6 +682,8 @@
     "use": "Use Items",
     "use-footer": "Click the button below to use items",
     "select": "Select an item to use",
+    "choose-toggle": "Wich item do you want to replace?",
+    "equipped": "Success! The **{{name}}** item has been selected as active! You can now enjoy its powers!",
     "select-description": "Choose one of the items below to activate it. If there is no available space, you will have to choose one of the active items to replace it"
   }
 }

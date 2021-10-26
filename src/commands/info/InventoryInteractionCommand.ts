@@ -9,7 +9,8 @@ import {
   MessageSelectMenu,
   MessageSelectOptionData,
 } from 'discord.js-light';
-import Util, { actionRow, disableComponents } from '@utils/Util';
+import { IMagicItem } from '@utils/Types';
+import Util, { actionRow, disableComponents, resolveSeparatedStrings } from '@utils/Util';
 
 export default class InventoryInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {
@@ -164,10 +165,91 @@ export default class InventoryInteractionCommand extends InteractionCommand {
       return;
     }
 
-    if (user.itemsLimit < user.inUseItems.length) {
-      // TO DO: Remove a count in user inventory adn add to inUseItems, if necessary, split from inventory
-      user.inUseItems.push();
+    const [itemId, itemLevel] = resolveSeparatedStrings(selectedItem.customId);
+
+    const findedItem = user.inventory.find(
+      (a) => a.level === Number(itemId) && a.id === Number(itemLevel),
+    ) as IMagicItem & { amount: number };
+
+    if (user.itemsLimit >= user.inUseItems.length) {
+      const replaceItem = new MessageSelectMenu()
+        .setCustomId(`${ctx.interaction.id} | TOGGLE`)
+        .setMaxValues(1)
+        .setMinValues(1)
+        .setPlaceholder(ctx.translate('select'))
+        .setOptions(
+          user.inUseItems.reduce<MessageSelectOptionData[]>((p, c, i) => {
+            p.push({
+              label: ctx.locale(`data:magic-items.${c.id}.name`),
+              value: `${c.id} | ${c.level} | ${i}`,
+            });
+            return p;
+          }, []),
+        );
+
+      ctx.makeMessage({
+        components: [actionRow([replaceItem])],
+        embeds: [embed.setDescription('choose-toggle')],
+      });
+
+      const choosedReplace =
+        await Util.collectComponentInteractionWithStartingId<SelectMenuInteraction>(
+          ctx.channel,
+          ctx.author.id,
+          ctx.interaction.id,
+          7000,
+        );
+
+      if (!choosedReplace) {
+        ctx.makeMessage({
+          components: [actionRow(disableComponents(ctx.locale('common:timesup'), [replaceItem]))],
+        });
+        return;
+      }
+
+      const [replaceItemId, replaceItemLevel] = resolveSeparatedStrings(selectedItem.customId);
+
+      user.inUseItems.splice(
+        user.inUseItems.findIndex(
+          (a) => a.level === Number(replaceItemId) && a.id === Number(replaceItemLevel),
+          1,
+        ),
+      );
+
+      const toPutItem = user.inventory.find(
+        (a) => a.id === Number(replaceItem) && a.level === Number(replaceItemLevel),
+      );
+
+      if (!toPutItem)
+        user.inventory.push({
+          amount: 1,
+          level: Number(replaceItemLevel),
+          id: Number(replaceItemId),
+        });
+      else toPutItem.amount += 1;
     }
-    console.log('');
+
+    findedItem.amount -= 1;
+
+    user.inUseItems.push({ id: Number(itemId), level: Number(itemLevel) });
+
+    if (findedItem.amount === 0)
+      user.inventory.splice(
+        user.inventory.findIndex((a) => a.level === Number(itemId) && a.id === Number(itemLevel)),
+        1,
+      );
+
+    ctx.makeMessage({
+      components: [],
+      embeds: [],
+      content: ctx.prettyResponse('success', 'equipped', {
+        name: ctx.locale(`data:magic-items.${itemId}.name`),
+      }),
+    });
+
+    this.client.repositories.userRepository.update(ctx.author.id, {
+      inventory: user.inventory,
+      inUseItems: user.inUseItems,
+    });
   }
 }
