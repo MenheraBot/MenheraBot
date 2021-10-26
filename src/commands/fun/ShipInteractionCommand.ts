@@ -51,25 +51,19 @@ export default class ShipInteractionCommand extends InteractionCommand {
       return;
     }
 
-    const dbUserToTakeValue1 = await this.client.repositories.userRepository.find(user1.id);
-    const dbUserToTakeValue2 = await this.client.repositories.userRepository.find(user2.id);
+    const dbUserToTakeValue1 =
+      user1.id === ctx.author.id
+        ? ctx.data.user
+        : await this.client.repositories.userRepository.find(user1.id);
 
-    const FinalValue1 = dbUserToTakeValue1?.shipValue
-      ? dbUserToTakeValue1.shipValue
-      : Math.floor(Math.random() * 55);
-    const FinalValue2 = dbUserToTakeValue2?.shipValue
-      ? dbUserToTakeValue2.shipValue
-      : Math.floor(Math.random() * 55);
-
-    let value = Number(FinalValue1) + Number(FinalValue2);
-    if (Number(value) >= 100) {
-      value = 100;
-    }
+    let value = (Number(user1.id) % 51) + (Number(user2.id) % 51);
+    if (value > 100) value = 100;
 
     if (dbUserToTakeValue1?.casado && dbUserToTakeValue1?.casado === user2.id) value = 100;
 
     const avatarLinkOne = user1.displayAvatarURL({ format: 'png', size: 256 });
     const avatarLinkTwo = user2.displayAvatarURL({ format: 'png', size: 256 });
+
     const bufferedShipImage = this.client.picassoWs.isAlive
       ? await this.client.picassoWs.makeRequest({
           id: ctx.interaction.id,
@@ -101,23 +95,23 @@ export default class ShipInteractionCommand extends InteractionCommand {
       embed.setImage('attachment://ship.png');
     } else embed.setFooter(ctx.locale('commands:http-error'));
 
-    if (Number(value) >= 25)
+    if (value >= 25)
       embed
         .setColor('#cadf2a')
         .setDescription(`\n${ctx.translate('cvalue')} **${value}%**\n\n${ctx.translate('low')}`);
-    if (Number(value) >= 50)
+    if (value >= 50)
       embed
         .setColor('#d8937b')
         .setDescription(`\n${ctx.translate('value')} **${value}%**\n\n${ctx.translate('ok')}`);
-    if (Number(value) >= 75)
+    if (value >= 75)
       embed
         .setColor('#f34a4a')
         .setDescription(`\n${ctx.translate('value')} **${value}%**\n\n${ctx.translate('medium')}`);
-    if (Number(value) >= 99)
+    if (value >= 99)
       embed
         .setColor('#ec2c2c')
         .setDescription(`\n${ctx.translate('value')} **${value}%**\n\n${ctx.translate('high')}`);
-    if (Number(value) === 100)
+    if (value === 100)
       embed
         .setColor('#ff00df')
         .setDescription(`\n${ctx.translate('value')} **${value}%**\n\n${ctx.translate('perfect')}`);
