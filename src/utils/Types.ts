@@ -106,6 +106,7 @@ export interface IUserSchema {
   trisal: Array<string>;
   inventory: Array<IMagicItem & { amount: number }>;
   inUseItems: Array<IMagicItem>;
+  itemsLimit: number;
 }
 
 export interface ICommandUsedData {

@@ -41,6 +41,7 @@ const userSchema = new Schema({
   trisal: { type: Array, default: [] },
   inventory: { type: Array, default: [] },
   inUseItems: { type: Array, default: [] },
+  itemsLimit: { type: Number, default: 1 },
 });
 
 export const Cmds = model<ICmdSchema & Document>('Cmd', cmdSchema);

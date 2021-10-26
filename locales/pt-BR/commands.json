@@ -684,6 +684,9 @@
     "no-item": "O inventário deste usuário está vazio!",
     "active": "Itens Ativos",
     "items": "Itens no Inventário",
-    "use": "Usar Itens"
+    "use": "Usar Itens",
+    "use-footer": "Clique no botão abaixo para usar itens",
+    "select": "Escolha um item para usar",
+    "select-description": "Escolha um dos itens abaixos para ativá-lo. Caso não tenha espaço disponível, tu terá que escolher um dos itens ativos para substituílo"
   }
 }

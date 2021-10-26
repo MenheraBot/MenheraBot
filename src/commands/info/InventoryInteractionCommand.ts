@@ -1,9 +1,15 @@
-/* eslint-disable no-unused-expressions */
 import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { MessageEmbed, MessageButton, ButtonInteraction } from 'discord.js-light';
-import Util, { disableComponents } from '@utils/Util';
+import {
+  MessageEmbed,
+  MessageButton,
+  ButtonInteraction,
+  SelectMenuInteraction,
+  MessageSelectMenu,
+  MessageSelectOptionData,
+} from 'discord.js-light';
+import Util, { actionRow, disableComponents } from '@utils/Util';
 
 export default class InventoryInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {
@@ -94,10 +100,19 @@ export default class InventoryInteractionCommand extends InteractionCommand {
       .setLabel(ctx.translate('use'))
       .setStyle('PRIMARY');
 
+    const canUseItems = !(
+      user.inventory.length === 0 ||
+      user.inventory.every((a) => user.inUseItems.some((b) => b.id === a.id && b.level === a.level))
+    );
+
+    if (!canUseItems) useItemButton.setDisabled(true);
+
     await ctx.makeMessage({
-      embeds: [embed],
-      components: [{ type: 'ACTION_ROW', components: [useItemButton] }],
+      embeds: [embed.setFooter(ctx.translate('use-footer'))],
+      components: [actionRow([useItemButton])],
     });
+
+    if (!canUseItems) return;
 
     const collected = await Util.collectComponentInteractionWithId<ButtonInteraction>(
       ctx.channel,
@@ -108,16 +123,51 @@ export default class InventoryInteractionCommand extends InteractionCommand {
 
     if (!collected) {
       ctx.makeMessage({
-        components: [
-          {
-            type: 'ACTION_ROW',
-            components: disableComponents(ctx.locale('common:timesup'), [useItemButton]),
-          },
-        ],
+        components: [actionRow(disableComponents(ctx.locale('common:timesup'), [useItemButton]))],
       });
       return;
     }
 
-    console.log('a');
+    const availableItems = new MessageSelectMenu()
+      .setCustomId(`${ctx.interaction.id} | USE`)
+      .setPlaceholder(ctx.translate('select'))
+      .setMinValues(1)
+      .setMaxValues(1)
+      .setOptions(
+        user.inventory.reduce<MessageSelectOptionData[]>((p, c) => {
+          if (user.inUseItems.some((a) => a.id === c.id && a.level === c.level)) return p;
+
+          p.push({
+            label: ctx.locale(`data:magic-items.${c.id}.name`),
+            value: `${c.id} | ${c.level}`,
+          });
+          return p;
+        }, []),
+      );
+
+    embed.setDescription(ctx.translate('choose-item'));
+
+    ctx.makeMessage({ embeds: [embed], components: [actionRow([availableItems])] });
+
+    const selectedItem =
+      await Util.collectComponentInteractionWithStartingId<SelectMenuInteraction>(
+        ctx.channel,
+        ctx.author.id,
+        ctx.interaction.id,
+        7000,
+      );
+
+    if (!selectedItem) {
+      ctx.makeMessage({
+        components: [actionRow(disableComponents(ctx.locale('common:timesup'), [availableItems]))],
+      });
+      return;
+    }
+
+    if (user.itemsLimit < user.inUseItems.length) {
+      // TO DO: Remove a count in user inventory adn add to inUseItems, if necessary, split from inventory
+      user.inUseItems.push();
+    }
+    console.log('');
   }
 }

@@ -3,6 +3,8 @@ import {
   MessageComponentInteraction,
   MessageButton,
   MessageSelectMenu,
+  MessageActionRow,
+  MessageActionRowComponentResolvable,
   TextBasedChannels,
 } from 'discord.js-light';
 
@@ -52,7 +54,7 @@ export default class Util {
   static async collectComponentInteractionWithCustomFilter(
     channel: TextBasedChannels,
     filter: CollectorFilter<[MessageComponentInteraction]>,
-    time = 10000,
+    time = 7000,
   ): Promise<null | MessageComponentInteraction> {
     return channel
       .awaitMessageComponent({ filter, time })
@@ -72,7 +74,7 @@ export default class Util {
   static async collectComponentInteraction(
     channel: TextBasedChannels,
     authorID: string,
-    time = 10000,
+    time = 7000,
   ): Promise<null | MessageComponentInteraction> {
     return channel
       .awaitMessageComponent({ filter: (m) => m.user.id === authorID, time })
@@ -94,7 +96,7 @@ export default class Util {
     channel: TextBasedChannels,
     authorID: string,
     customId: string,
-    time = 10000,
+    time = 7000,
   ): Promise<null | MessageComponentInteraction> {
     return channel
       .awaitMessageComponent({
@@ -115,6 +117,8 @@ export const resolveCustomId = (customId: string): string =>
     .replace('|', '')
     .trim();
 
+export const resolveSeparatedStrings = (string: string): string[] => string.split(' | ');
+
 export const disableComponents = <T extends MessageButton | MessageSelectMenu>(
   label: string,
   components: T[],
@@ -125,3 +129,6 @@ export const disableComponents = <T extends MessageButton | MessageSelectMenu>(
     else c.setLabel(label);
     return c;
   });
+
+export const actionRow = (components: MessageActionRowComponentResolvable[]): MessageActionRow =>
+  new MessageActionRow({ components });
