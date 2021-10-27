@@ -1,5 +1,5 @@
 import { ICmdSchema, IGuildSchema, IUserSchema } from '@utils/Types';
-import { Document, Schema, model } from 'mongoose';
+import { Schema, model } from 'mongoose';
 
 const cmdSchema = new Schema({
   _id: { type: String },
@@ -8,14 +8,14 @@ const cmdSchema = new Schema({
 });
 
 const guildSchema = new Schema({
-  id: { type: String, unique: true },
+  id: { type: String, unique: true, index: true },
   blockedChannels: { type: Array, default: [] },
   disabledCommands: { type: Array, default: [] },
   lang: { type: String, default: 'pt-BR' },
 });
 
 const userSchema = new Schema({
-  id: { type: String, unique: true },
+  id: { type: String, unique: true, index: true },
   mamadas: { type: Number, default: 0 },
   mamou: { type: Number, default: 0 },
   casado: { type: String, default: 'false' },
@@ -43,6 +43,6 @@ const userSchema = new Schema({
   itemsLimit: { type: Number, default: 1 },
 });
 
-export const Cmds = model<ICmdSchema & Document>('Cmd', cmdSchema);
-export const Guilds = model<IGuildSchema & Document>('guild', guildSchema);
-export const Users = model<IUserSchema & Document>('usersdb', userSchema);
+export const Cmds = model<ICmdSchema>('Cmd', cmdSchema);
+export const Guilds = model<IGuildSchema>('guild', guildSchema);
+export const Users = model<IUserSchema>('usersdb', userSchema);
