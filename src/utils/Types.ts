@@ -245,7 +245,7 @@ export interface ITopResult {
   value: number;
 }
 
-export enum TopRankingTypes {
+export enum arcanjosarcanjosTopRankingTypes {
   mamadas = 'mamado',
   mamou = 'mamou',
   demons = 'demons',

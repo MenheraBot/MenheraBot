@@ -15,6 +15,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 - O modo que o ship é calculado foi alterado
 
+### Deprecated
+
+- Fields do banco de dados: `mamadas`, `casado`,`nota`,`data`, `cor`, `cores`, `caçados`, `anjos`, `arcanjos`, `semideuses`, `deuses`, `caçarTime`, `votos`. Estes foram mudados para nomes em inglẽs
+
 ### Removed
 
 - O campo shipValue foi removido do banco de dados!
