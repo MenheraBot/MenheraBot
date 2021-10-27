@@ -107,7 +107,7 @@
     "bot": "{{author}} acabou de sujar a boca de óleo lansando o mamadão no bot {{mention}}",
     "self-mention": "Não tenta me enganar, eu sei que tu não consegue mamar a si mesmo! Marque outra pessoa para mamar",
     "embed_title": "Mamar",
-    "user-banned": "Tu não pode mamar esse usuário por que ele ta mutado!",
+    "user-banned": "Tu não pode mamar esse usuário por que ele ta banido!",
     "embed_description": "{{author}} lansou o mamadão, o famoso bereguedjonson, a linguada, a mamadela, a lambidinha em {{mention}}"
   },
   "carinho": {
@@ -290,21 +290,6 @@
       "success-god": "você vendeu **{{value}}** <:God:758474639570894899> deuses e recebeu **{{cost}}** ⭐ estrelinhas!\nAgora você tem **{{quantity}}** <:God:758474639570894899> e **{{star}}**⭐"
     }
   },
-  "inventario": {
-    "no-dbuser": "este usuário não está em minha database",
-    "bot": "O meu bem, desculpa te decepcionar, mas bots não tem inventários :(",
-    "title": "Inventário de {{user}}",
-    "stars": "Estrelinhas",
-    "rolls": "Rolls",
-    "unknow-user": "Usuário não encontrado",
-    "demons": "Demônios",
-    "angels": "Anjos",
-    "giants": "Gigantes",
-    "archangel": "Arcanjos",
-    "sd": "Semideuses",
-    "god": "Deuses",
-    "banned-user": "Este usuário não possui inventário pois está banido da Menhera!"
-  },
   "8ball": {
     "description": "Pergunte algo para mim",
     "usage": "<pergunta>",
@@ -354,25 +339,23 @@
     "usage": ""
   },
   "cacar": {
-    "description": "Caçe demônios como XANDÃO",
     "usage": "",
     "probabilities": "Probabilidades de caça\n\nDemônios: `[{{demon}}]`\nGigantes: `[{{giant}}]`\nAnjos: `[{{angel}}]`\nArcanjos: `[{{archangel}}]`\nSemideuses: `[{{demi}}]`\nDeuses: `[{{god}}]`",
-    "footer": "Sabia que em meu servidor de suporte, suas chances de sucesso são maiores?",
-    "description_start": "Você saiu para caçar **{{hunt}}** **{{count}}** vez com o Super Xandão, e voltou para casa com mais **{{value}}** pra conta. Você está em **#{{rank}}** lugar do top {{hunt}}",
-    "description_start_plural": "Você saiu para caçar **{{hunt}}** **{{count}}** vezes com o Super Xandão, e voltou para casa com mais **{{value}}** pra conta. Você está em **#{{rank}}** lugar do top {{hunt}}",
+    "hunt_description": "Você saiu para caçar **{{hunt}}** **{{count}}** vez com o Super Xandão, e voltou para casa com mais **{{value}}** pra conta. Você está em **#{{rank}}** lugar do top {{hunt}}",
+    "hunt_description_plural": "Você saiu para caçar **{{hunt}}** **{{count}}** vezes com o Super Xandão, e voltou para casa com mais **{{value}}** pra conta. Você está em **#{{rank}}** lugar do top {{hunt}}",
     "god_hunted_success": "CARACA!!! VOCÊ SE MOSTROU UM HERÓI FRUTO DE UMA VONTADE DIVINA, ASSIM COMO XANDÃO, E CONSEGUIU CAÇAR `{{count}}` DEUS EM **{{toRun}}** TENTATIVAS! APENAS O BÁSICO MEU LINDO, COM ISSO VOCÊ ESTÁ EM **#{{rank}}** LUGAR DO TOP",
     "god_hunted_success_plural": "CARACA!!! VOCÊ SE MOSTROU UM HERÓI FRUTO DE UMA VONTADE DIVINA, ASSIM COMO XANDÃO, E CONSEGUIU CAÇAR `{{count}}` DEUSES EM **{{toRun}}** TENTATIVAS! APENAS O BÁSICO MEU LINDO, COM ISSO VOCÊ ESTÁ EM **#{{rank}}** LUGAR DO TOP",
     "god_hunted_fail": "Caçar Deuses é uma missão extremamente difícil, e com **{{count}}** tentativa você não obteve sucesso. Mas fique tranquilo, herói, você ainda conseguirá! Você está em **#{{rank}}** lugar do top deus",
     "god_hunted_fail_plural": "Caçar Deuses é uma missão extremamente difícil, e com **{{count}}** tentativas você não obteve sucesso. Mas fique tranquilo, herói, você ainda conseguirá! Você está em **#{{rank}}** lugar do top deus",
     "demons": "Demônios",
     "angels": "Anjos",
-    "sd": "Semideuses",
+    "demigods": "Semideuses",
     "giants": "Gigantes",
-    "archangel": "Arcanjos",
+    "archangels": "Arcanjos",
     "gods": "Deuses",
-    "invalid-rolls": "este número de rolls é invalido!",
-    "rolls-poor": "você não tem essa quantidade de rolls",
-    "cooldown": "descanse campeão, você já saiu na sua caçada. Tente novamente em **{{time}}** minutos\n<:atencao:759603958418767922> | **DICA:** Sabia que em meu servidor de suporte, as chances de caça são maiores? m!suporte"
+    "invalid-rolls": "Este número de rolls é invalido!",
+    "rolls-poor": "Você não tem essa quantidade de rolls",
+    "cooldown": "Descanse campeão, você já saiu na sua caçada. Tente novamente em **{{time}}** minutos ou use um `roll` em sua próxima caça"
   },
   "casar": {
     "description": "Casa com o amor de sua vida",

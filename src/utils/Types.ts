@@ -245,7 +245,7 @@ export interface ITopResult {
   value: number;
 }
 
-export enum arcanjosarcanjosTopRankingTypes {
+export enum TopRankingTypes {
   mamadas = 'mamado',
   mamou = 'mamou',
   demons = 'demons',
@@ -258,7 +258,7 @@ export enum arcanjosarcanjosTopRankingTypes {
   votes = 'votes',
 }
 
-export type HuntingTypes = 'demon' | 'giant' | 'angel' | 'archangel' | 'demigod' | 'god';
+export type HuntingTypes = 'demons' | 'giants' | 'angels' | 'archangels' | 'demigods' | 'gods';
 
 export interface HuntProbabiltyProps {
   amount: number;
@@ -266,12 +266,12 @@ export interface HuntProbabiltyProps {
 }
 
 export interface HuntProbability {
-  demon: HuntProbabiltyProps[];
-  giant: HuntProbabiltyProps[];
-  angel: HuntProbabiltyProps[];
-  archangel: HuntProbabiltyProps[];
-  demigod: HuntProbabiltyProps[];
-  god: HuntProbabiltyProps[];
+  demons: HuntProbabiltyProps[];
+  giants: HuntProbabiltyProps[];
+  angels: HuntProbabiltyProps[];
+  archangels: HuntProbabiltyProps[];
+  demigods: HuntProbabiltyProps[];
+  gods: HuntProbabiltyProps[];
 }
 
 export interface IProbablyBoostItem<T extends HuntingTypes> {
@@ -288,15 +288,11 @@ export interface IReturnData<T> {
 
 export type TMagicItemsFile<T extends HuntingTypes> = IProbablyBoostItem<T>;
 
-export enum TopRankingTypes {
-  mamadas = 'mamado',
-  mamou = 'mamou',
-  demons = 'demons',
-  archangels = 'archangels',
-  giants = 'giants',
-  angels = 'angels',
-  demigods = 'demigods',
-  gods = 'gods',
-  stars = 'estrelinhas',
-  votes = 'votes',
+export enum huntEnum {
+  DEMON = 'demons',
+  ANGEL = 'angels',
+  DEMIGOD = 'demigods',
+  GIANT = 'giants',
+  ARCHANGEL = 'archangels',
+  GOD = 'gods',
 }

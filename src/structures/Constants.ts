@@ -21,33 +21,8 @@ export const shopEconomy = {
   },
 };
 
-export const probabilities = {
-  support: {
-    demon: [
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 4, 5, 6,
-    ],
-    giant: [0, 0, 0, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 3, 5],
-    angel: [0, 0, 0, 1, 1, 1, 2, 3],
-    archangel: [0, 0, 0, 0, 0, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2],
-    demigod: [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2],
-    god: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-  },
-  normal: {
-    demon: [
-      0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2,
-      2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 4, 5,
-    ],
-    giant: [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 3, 4],
-    angel: [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3],
-    archangel: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2],
-    demigod: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2],
-    god: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-  },
-  defaultTime: 3600000,
-};
-
 export const defaultHuntingProbabilities = {
-  demon: [
+  demons: [
     { amount: 1, probabilty: 20 },
     { amount: 2, probabilty: 17 },
     { amount: 3, probabilty: 20 },
@@ -56,7 +31,7 @@ export const defaultHuntingProbabilities = {
     { amount: 5, probabilty: 7 },
     { amount: 6, probabilty: 3 },
   ],
-  giant: [
+  giants: [
     { amount: 0, probabilty: 30 },
     { amount: 1, probabilty: 30 },
     { amount: 2, probabilty: 25 },
@@ -65,28 +40,30 @@ export const defaultHuntingProbabilities = {
     { amount: 5, probabilty: 5 },
     { amount: 6, probabilty: 3 },
   ],
-  angel: [
+  angels: [
     { amount: 0, probabilty: 40 },
     { amount: 1, probabilty: 30 },
     { amount: 2, probabilty: 20 },
     { amount: 3, probabilty: 10 },
   ],
-  archangel: [
+  archangels: [
     { amount: 0, probabilty: 40 },
     { amount: 1, probabilty: 30 },
     { amount: 2, probabilty: 20 },
     { amount: 3, probabilty: 10 },
   ],
-  demigod: [
+  demigods: [
     { amount: 0, probabilty: 40 },
     { amount: 1, probabilty: 50 },
     { amount: 2, probabilty: 10 },
   ],
-  god: [
+  gods: [
     { amount: 0, probabilty: 80 },
     { amount: 1, probabilty: 20 },
   ],
 };
+
+export const defaultHuntCooldown = 3600000;
 
 export const votes = {
   rollQuantity: 1,
@@ -235,12 +212,12 @@ export type EmojiTypes = keyof typeof emojis;
 
 export const COLORS = {
   HuntDefault: '#df93fd' as const,
-  HuntDemon: '#df1b1b' as const,
-  HuntAngel: '#efe9e9' as const,
-  HuntSD: '#3cb5f0' as const,
-  HuntGod: '#b115bf' as const,
-  HuntGiant: '#fa611f' as const,
-  HuntArchangel: '#a2f29e' as const,
+  HuntDemons: '#df1b1b' as const,
+  HuntAngels: '#efe9e9' as const,
+  HuntDemigods: '#3cb5f0' as const,
+  HuntGods: '#b115bf' as const,
+  HuntGiants: '#fa611f' as const,
+  HuntArchangels: '#a2f29e' as const,
   Aqua: '#03f3ff' as const,
   Purple: '#7f28c4' as const,
   ACTIONS: '#fa8cc5' as const,
@@ -266,5 +243,4 @@ Object.freeze(BLACKJACK_CARDS);
 Object.freeze(COLORS);
 Object.freeze(emojis);
 Object.freeze(shopEconomy);
-Object.freeze(probabilities);
 Object.freeze(votes);

@@ -114,7 +114,7 @@ export default class TopInteractionCommand extends InteractionCommand {
 
     for (let i = 0; i < res.length; i++) {
       embed.addField(
-        `**${i + 1} -** ${Util.captalize(res[i].name)} `,
+        `**${i + 1} -** ${Util.capitalize(res[i].name)} `,
         `${ctx.translate('used')} **${res[i].usages}** ${ctx.translate('times')}`,
         false,
       );
@@ -170,7 +170,7 @@ export default class TopInteractionCommand extends InteractionCommand {
           ctx.translate('demonTitle'),
           ctx.translate('demons'),
           page,
-          COLORS.HuntDemon,
+          COLORS.HuntDemons,
         );
         return;
       case 'gigantes':
@@ -181,7 +181,7 @@ export default class TopInteractionCommand extends InteractionCommand {
           ctx.translate('giantTitle'),
           ctx.translate('giants'),
           page,
-          COLORS.HuntGiant,
+          COLORS.HuntGiants,
         );
         return;
       case 'anjos':
@@ -192,7 +192,7 @@ export default class TopInteractionCommand extends InteractionCommand {
           ctx.translate('angelTitle'),
           ctx.translate('angels'),
           page,
-          COLORS.HuntAngel,
+          COLORS.HuntAngels,
         );
         return;
       case 'arcanjos':
@@ -203,7 +203,7 @@ export default class TopInteractionCommand extends InteractionCommand {
           ctx.translate('archangelTitle'),
           ctx.translate('archangels'),
           page,
-          COLORS.HuntArchangel,
+          COLORS.HuntArchangels,
         );
         return;
       case 'semideuses':
@@ -214,7 +214,7 @@ export default class TopInteractionCommand extends InteractionCommand {
           ctx.translate('sdTitle'),
           ctx.translate('demigods'),
           page,
-          COLORS.HuntSD,
+          COLORS.HuntDemigods,
         );
         return;
       case 'deuses':
@@ -225,7 +225,7 @@ export default class TopInteractionCommand extends InteractionCommand {
           ctx.translate('godTitle'),
           ctx.translate('gods'),
           page,
-          COLORS.HuntGod,
+          COLORS.HuntGods,
         );
         return;
       case 'votos':
@@ -298,7 +298,7 @@ export default class TopInteractionCommand extends InteractionCommand {
     for (let i = 0; i < res.length; i++) {
       const member = await this.client.users.fetch(res[i].id).catch();
       embed.addField(
-        `**${i + 1} -** ${Util.captalize(member.username)} `,
+        `**${i + 1} -** ${Util.capitalize(member.username)} `,
         `${ctx.translate('use')} **${res[i].uses}** ${ctx.translate('times')}`,
         false,
       );
@@ -332,7 +332,7 @@ export default class TopInteractionCommand extends InteractionCommand {
     for (let i = 0; i < res.array.length; i++) {
       if (i > 10) break;
       embed.addField(
-        `**${i + 1} -** ${Util.captalize(res.array[i].name)} `,
+        `**${i + 1} -** ${Util.capitalize(res.array[i].name)} `,
         `${ctx.translate('use')} **${res.array[i].count}** ${ctx.translate('times')}`,
         false,
       );

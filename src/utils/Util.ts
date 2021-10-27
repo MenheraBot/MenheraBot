@@ -9,7 +9,7 @@ import {
   MessageActionRowComponentResolvable,
   TextBasedChannels,
 } from 'discord.js-light';
-import { HuntingTypes, TMagicItemsFile, HuntProbabiltyProps } from './Types';
+import { HuntingTypes, TMagicItemsFile } from './Types';
 
 const MENTION_REGEX = /^(?:<@!?)?(\d{16,18})(?:>)?$/;
 export default class Util {
@@ -19,7 +19,7 @@ export default class Util {
     return regexResult?.[1] ?? null;
   }
 
-  static captalize(str: string): string {
+  static capitalize(str: string): string {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
 
@@ -140,23 +140,3 @@ export const getMagicItemById = (id: number): { id: number; data: TMagicItemsFil
   Object.entries(MagicItems)
     .filter((a) => Number(a[0]) === id)
     .map((a) => ({ id: Number(a[0]), data: a[1] }))[0];
-
-export const calculateProbability = (probabilities: HuntProbabiltyProps[]): number => {
-  const chance = Math.floor(Math.random() * 100);
-
-  let accumulator = probabilities.reduce((p, c) => p + c.probabilty, 0);
-
-  const mapedChanges: { amount: number; probabilities: number[] }[] = probabilities.map((a) => {
-    const toReturn = [accumulator - a.probabilty, accumulator];
-    accumulator -= a.probabilty;
-    return { amount: a.amount, probabilities: toReturn };
-  });
-
-  for (const data of mapedChanges) {
-    const [min, max] = data.probabilities;
-    if (chance >= min && max <= chance) {
-      return data.amount;
-    }
-  }
-  return 0;
-};

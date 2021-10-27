@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import { Users } from '@structures/DatabaseCollections';
-import { IUserSchema } from '@utils/Types';
+import { HuntingTypes, IUserSchema } from '@utils/Types';
 
 // eslint-disable-next-line no-shadow
 enum TOP_ENUM {
@@ -13,7 +13,7 @@ export default class TopRepository {
 
   async _getTop(
     userID: string,
-    topType: string,
+    topType: keyof IUserSchema,
     ignoredUsers: string[] = [],
   ): Promise<{ rank: number }> {
     const res = await this.userModal.aggregate([
@@ -72,7 +72,7 @@ export default class TopRepository {
 
   async getUserHuntRank(
     userID: string,
-    huntType: keyof IUserSchema,
+    huntType: HuntingTypes,
     ignoredUsers: string[] = [],
   ): Promise<{ rank: number }> {
     return this._getTop(userID, huntType, ignoredUsers);
