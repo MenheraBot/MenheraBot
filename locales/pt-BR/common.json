@@ -1,8 +1,12 @@
 {
+  "sharding_in_progress": "A Menhera ainda está iniciando! Tente novamente mais tarde",
   "timesup": "Tempo Esgotado",
   "accept": "Aceitar",
   "confirm": "Confirm",
   "portuguese": "Português",
   "english": "Inglês",
-  "sharding_in_progress": "A Menhera ainda está iniciando! Tente novamente mais tarde"
+  "negate": "Negar",
+  "name": "Nome",
+  "description": "Descrição",
+  "amount": "Quantidade"
 }

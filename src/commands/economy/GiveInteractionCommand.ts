@@ -1,8 +1,9 @@
-import { emojis } from '@structures/MenheraConstants';
-import { IUserSchema } from '@utils/Types';
+import { emojis, EmojiTypes } from '@structures/Constants';
 import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
+import { MessageButton } from 'discord.js-light';
+import Util, { disableComponents, resolveCustomId } from '@utils/Util';
 
 export default class GiveInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {
@@ -23,31 +24,31 @@ export default class GiveInteractionCommand extends InteractionCommand {
           choices: [
             {
               name: '⭐ | Estrelinhas',
-              value: 'estrelinhas',
+              value: 'star',
             },
             {
               name: '😈 | Demônios',
-              value: 'demônio',
+              value: 'demon',
             },
             {
               name: '👊 | Gigantes',
-              value: 'gigantes',
+              value: 'giant',
             },
             {
               name: '👼 | Anjos',
-              value: 'anjos',
+              value: 'angel',
             },
             {
               name: '🧚‍♂️ | Arcanjos',
-              value: 'arcanjos',
+              value: 'archangel',
             },
             {
               name: '🙌 | Semideuses',
-              value: 'semideuses',
+              value: 'semigod',
             },
             {
               name: '✝️ | Deuses',
-              value: 'deus',
+              value: 'god',
             },
           ],
           required: true,
@@ -60,28 +61,45 @@ export default class GiveInteractionCommand extends InteractionCommand {
         },
       ],
       cooldown: 5,
-      category: 'economia',
+      category: 'economy',
+      authorDataFields: [
+        'estrelinhas',
+        'demons',
+        'giants',
+        'angels',
+        'archangels',
+        'gods',
+        'demigods',
+      ],
     });
   }
 
-  static replyBadUsageError(ctx: InteractionCommandContext): void {
-    ctx.replyT('error', 'bad-usage', {}, true);
-  }
-
   static replyForYourselfError(ctx: InteractionCommandContext): void {
-    ctx.replyT('error', 'self-mention', {}, true);
+    ctx.makeMessage({
+      content: ctx.prettyResponse('error', 'self-mention'),
+      ephemeral: true,
+    });
   }
 
   static replyInvalidValueError(ctx: InteractionCommandContext): void {
-    ctx.replyT('error', 'invalid-value', {}, true);
+    ctx.makeMessage({
+      content: ctx.prettyResponse('error', 'invalid-value'),
+      ephemeral: true,
+    });
   }
 
   static replyNoAccountError(ctx: InteractionCommandContext): void {
-    ctx.replyT('error', 'no-dbuser', {}, true);
+    ctx.makeMessage({
+      content: ctx.prettyResponse('error', 'no-dbuser'),
+      ephemeral: true,
+    });
   }
 
   static replyNotEnoughtError(ctx: InteractionCommandContext, localeField: string): void {
-    ctx.replyE('error', `${ctx.translate('poor')} ${ctx.translate(localeField)}`, true);
+    ctx.deleteReply();
+    ctx.send({
+      content: ctx.prettyResponse('error', 'poor', { field: ctx.translate(localeField) }),
+    });
   }
 
   static replySuccess(
@@ -90,175 +108,172 @@ export default class GiveInteractionCommand extends InteractionCommand {
     emoji: string,
     mentionString: string,
   ): void {
-    ctx.replyE('success', `${ctx.translate('transfered', { value, emoji })} ${mentionString}`);
+    ctx.makeMessage({
+      components: [],
+      content: ctx.prettyResponse('success', 'transfered', { value, emoji, user: mentionString }),
+    });
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    const [user, selectedOption, input] = [
+    const [toSendUser, selectedOption, input] = [
       ctx.options.getUser('user', true),
-      ctx.options.getString('tipo', true),
+      ctx.options.getString('tipo', true) as EmojiTypes,
       ctx.options.getInteger('valor', true),
     ];
 
-    const to = user;
-    if (!to) {
-      GiveInteractionCommand.replyBadUsageError(ctx);
-      return;
-    }
-    if (to.bot) {
-      GiveInteractionCommand.replyNoAccountError(ctx);
+    if (toSendUser.bot) return GiveInteractionCommand.replyNoAccountError(ctx);
+
+    if (toSendUser.id === ctx.author.id) return GiveInteractionCommand.replyForYourselfError(ctx);
+
+    if (input < 1) return GiveInteractionCommand.replyInvalidValueError(ctx);
+
+    if (await this.client.repositories.blacklistRepository.isUserBanned(toSendUser.id)) {
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'banned-user'),
+        ephemeral: true,
+      });
       return;
     }
 
-    if (to.id === ctx.author.id) {
-      GiveInteractionCommand.replyForYourselfError(ctx);
+    const confirmButton = new MessageButton()
+      .setCustomId(`${ctx.interaction.id} | ACCEPT`)
+      .setStyle('SUCCESS')
+      .setLabel(ctx.locale('common:accept'));
+
+    const negateButton = new MessageButton()
+      .setCustomId(`${ctx.interaction.id} | NEGATE`)
+      .setStyle('DANGER')
+      .setLabel(ctx.locale('common:negate'));
+
+    await ctx.makeMessage({
+      content: ctx.prettyResponse('question', 'confirm', {
+        user: toSendUser.toString(),
+        author: ctx.author.toString(),
+        count: input,
+        emoji: emojis[selectedOption],
+      }),
+      components: [{ type: 'ACTION_ROW', components: [confirmButton, negateButton] }],
+    });
+
+    const selectedButton = await Util.collectComponentInteractionWithStartingId(
+      ctx.channel,
+      toSendUser.id,
+      ctx.interaction.id,
+    );
+
+    if (!selectedButton) {
+      ctx.makeMessage({
+        components: [
+          {
+            type: 'ACTION_ROW',
+            components: disableComponents(ctx.locale('common:timesup'), [
+              confirmButton,
+              negateButton,
+            ]),
+          },
+        ],
+      });
       return;
     }
 
-    if (await this.client.repositories.blacklistRepository.isUserBanned(to.id)) {
-      ctx.replyT('error', 'banned-user', {}, true);
+    if (resolveCustomId(selectedButton.customId) === 'NEGATE') {
+      ctx.makeMessage({
+        content: ctx.translate('negated', { user: toSendUser.toString() }),
+        components: [
+          {
+            type: 'ACTION_ROW',
+            components: [
+              confirmButton.setDisabled(true).setStyle('SECONDARY'),
+              negateButton.setDisabled(true),
+            ],
+          },
+        ],
+      });
       return;
     }
 
-    if (!input) {
-      GiveInteractionCommand.replyBadUsageError(ctx);
-      return;
-    }
-
-    if (input < 1) {
-      GiveInteractionCommand.replyInvalidValueError(ctx);
-      return;
-    }
-
-    const toData = await this.client.repositories.userRepository.findOrCreate(to.id);
-    if (!toData) {
-      GiveInteractionCommand.replyNoAccountError(ctx);
-      return;
-    }
+    await this.client.repositories.userRepository.findOrCreate(toSendUser.id);
 
     const authorData = ctx.data.user;
 
     switch (selectedOption) {
-      case 'estrelinhas':
-        await this.giveStar(authorData, toData, input, ctx, to.toString());
+      case 'star':
+        if (input > authorData.estrelinhas)
+          return GiveInteractionCommand.replyNotEnoughtError(ctx, 'stars');
+
+        await this.client.repositories.giveRepository.giveStars(
+          ctx.author.id,
+          toSendUser.id,
+          input,
+        );
+        return GiveInteractionCommand.replySuccess(ctx, input, emojis.star, toSendUser.toString());
+      case 'demon':
+        if (input > authorData.demons)
+          return GiveInteractionCommand.replyNotEnoughtError(ctx, 'demons');
+        await this.client.repositories.giveRepository.giveDemons(
+          ctx.author.id,
+          toSendUser.id,
+          input,
+        );
+        return GiveInteractionCommand.replySuccess(ctx, input, emojis.demon, toSendUser.toString());
         break;
-      case 'demônio':
-        await this.giveDemon(authorData, toData, input, ctx, to.toString());
-        break;
-      case 'gigantes':
-        await this.giveGiant(authorData, toData, input, ctx, to.toString());
-        break;
-      case 'anjos':
-        await this.giveAngel(authorData, toData, input, ctx, to.toString());
-        break;
-      case 'arcanjos':
-        await this.giveArchangel(authorData, toData, input, ctx, to.toString());
-        break;
-      case 'semideuses':
-        await this.giveSD(authorData, toData, input, ctx, to.toString());
-        break;
-      case 'deus':
-        await this.giveGod(authorData, toData, input, ctx, to.toString());
-        break;
+      case 'giant':
+        if (input > authorData.giants)
+          return GiveInteractionCommand.replyNotEnoughtError(ctx, 'giants');
+        await this.client.repositories.giveRepository.giveGiants(
+          ctx.author.id,
+          toSendUser.id,
+          input,
+        );
+        return GiveInteractionCommand.replySuccess(ctx, input, emojis.giant, toSendUser.toString());
+      case 'angel':
+        if (input > authorData.angels)
+          return GiveInteractionCommand.replyNotEnoughtError(ctx, 'angels');
+
+        await this.client.repositories.giveRepository.giveAngels(
+          ctx.author.id,
+          toSendUser.id,
+          input,
+        );
+
+        return GiveInteractionCommand.replySuccess(ctx, input, emojis.angel, toSendUser.toString());
+      case 'archangel':
+        if (input > authorData.archangels)
+          return GiveInteractionCommand.replyNotEnoughtError(ctx, 'archangel');
+        await this.client.repositories.giveRepository.giveArchangel(
+          ctx.author.id,
+          toSendUser.id,
+          input,
+        );
+        return GiveInteractionCommand.replySuccess(
+          ctx,
+          input,
+          emojis.archangel,
+          toSendUser.toString(),
+        );
+      case 'semigod':
+        if (input > authorData.demigods)
+          return GiveInteractionCommand.replyNotEnoughtError(ctx, 'semigods');
+
+        await this.client.repositories.giveRepository.giveDemigods(
+          ctx.author.id,
+          toSendUser.id,
+          input,
+        );
+
+        return GiveInteractionCommand.replySuccess(
+          ctx,
+          input,
+          emojis.semigod,
+          toSendUser.toString(),
+        );
+      case 'god':
+        if (input > authorData.gods)
+          return GiveInteractionCommand.replyNotEnoughtError(ctx, 'gods');
+
+        await this.client.repositories.giveRepository.giveGods(ctx.author.id, toSendUser.id, input);
+
+        return GiveInteractionCommand.replySuccess(ctx, input, emojis.god, toSendUser.toString());
     }
-  }
-
-  async giveGiant(
-    from: IUserSchema,
-    to: IUserSchema,
-    value: number,
-    ctx: InteractionCommandContext,
-    mentionString: string,
-  ): Promise<void> {
-    if (value > from.giants) return GiveInteractionCommand.replyNotEnoughtError(ctx, 'giants');
-
-    await this.client.repositories.giveRepository.giveGiants(from.id, to.id, value);
-
-    return GiveInteractionCommand.replySuccess(ctx, value, emojis.giant, mentionString);
-  }
-
-  async giveArchangel(
-    from: IUserSchema,
-    to: IUserSchema,
-    value: number,
-    ctx: InteractionCommandContext,
-    mentionString: string,
-  ): Promise<void> {
-    if (value > from.arcanjos) return GiveInteractionCommand.replyNotEnoughtError(ctx, 'archangel');
-
-    await this.client.repositories.giveRepository.giveArchangel(from.id, to.id, value);
-
-    return GiveInteractionCommand.replySuccess(ctx, value, emojis.archangel, mentionString);
-  }
-
-  async giveStar(
-    from: IUserSchema,
-    to: IUserSchema,
-    value: number,
-    ctx: InteractionCommandContext,
-    mentionString: string,
-  ): Promise<void> {
-    if (value > from.estrelinhas) return GiveInteractionCommand.replyNotEnoughtError(ctx, 'stars');
-
-    await this.client.repositories.giveRepository.giveStars(from.id, to.id, value);
-
-    return GiveInteractionCommand.replySuccess(ctx, value, emojis.star, mentionString);
-  }
-
-  async giveDemon(
-    from: IUserSchema,
-    to: IUserSchema,
-    value: number,
-    ctx: InteractionCommandContext,
-    mentionString: string,
-  ): Promise<void> {
-    if (value > from.caçados) return GiveInteractionCommand.replyNotEnoughtError(ctx, 'demons');
-
-    await this.client.repositories.giveRepository.giveDemons(from.id, to.id, value);
-
-    return GiveInteractionCommand.replySuccess(ctx, value, emojis.demon, mentionString);
-  }
-
-  async giveAngel(
-    from: IUserSchema,
-    to: IUserSchema,
-    value: number,
-    ctx: InteractionCommandContext,
-    mentionString: string,
-  ): Promise<void> {
-    if (value > from.anjos) return GiveInteractionCommand.replyNotEnoughtError(ctx, 'angels');
-
-    await this.client.repositories.giveRepository.giveAngels(from.id, to.id, value);
-
-    return GiveInteractionCommand.replySuccess(ctx, value, emojis.angel, mentionString);
-  }
-
-  async giveSD(
-    from: IUserSchema,
-    to: IUserSchema,
-    value: number,
-    ctx: InteractionCommandContext,
-    mentionString: string,
-  ): Promise<void> {
-    if (value > from.semideuses)
-      return GiveInteractionCommand.replyNotEnoughtError(ctx, 'semigods');
-
-    await this.client.repositories.giveRepository.giveDemigods(from.id, to.id, value);
-
-    return GiveInteractionCommand.replySuccess(ctx, value, emojis.semigod, mentionString);
-  }
-
-  async giveGod(
-    from: IUserSchema,
-    to: IUserSchema,
-    value: number,
-    ctx: InteractionCommandContext,
-    mentionString: string,
-  ): Promise<void> {
-    if (value > from.deuses) return GiveInteractionCommand.replyNotEnoughtError(ctx, 'gods');
-
-    await this.client.repositories.giveRepository.giveGods(from.id, to.id, value);
-
-    return GiveInteractionCommand.replySuccess(ctx, value, emojis.god, mentionString);
   }
 }

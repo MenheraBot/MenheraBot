@@ -1,7 +1,7 @@
 import 'moment-duration-format';
 import moment from 'moment';
 import MenheraClient from 'MenheraClient';
-import { COLORS, probabilities } from '@structures/MenheraConstants';
+import { COLORS, probabilities } from '@structures/Constants';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageEmbed } from 'discord.js-light';
@@ -59,6 +59,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
       category: 'fun',
       cooldown: 5,
       clientPermissions: ['EMBED_LINKS'],
+      authorDataFields: ['rolls', 'huntCooldown'],
     });
   }
 
@@ -69,7 +70,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
     const selected = ctx.options.getString('tipo', true);
 
     if (!selected) {
-      await ctx.replyT('error', 'no-args', {}, true);
+      await ctx.makeMessage({ content: ctx.prettyResponse('error', 'no-args'), ephemeral: true });
       return;
     }
 
@@ -79,8 +80,8 @@ export default class HuntInteractionCommand extends InteractionCommand {
         : probabilities.normal;
 
     if (selected === 'probabilidades') {
-      await ctx.reply(
-        ctx.translate('probabilities', {
+      await ctx.makeMessage({
+        content: ctx.translate('probabilities', {
           demon: Probabilities.demon,
           giant: Probabilities.giant,
           angel: Probabilities.angel,
@@ -88,7 +89,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
           demi: Probabilities.demigod,
           god: Probabilities.god,
         }),
-      );
+      });
       return;
     }
 
@@ -96,26 +97,24 @@ export default class HuntInteractionCommand extends InteractionCommand {
 
     if (rollsToUse) {
       if (rollsToUse < 1) {
-        ctx.replyT('error', 'invalid-rolls', {}, true);
+        ctx.makeMessage({ content: ctx.prettyResponse('error', 'invalid-rolls'), ephemeral: true });
         return;
       }
       if (rollsToUse > ctx.data.user.rolls) {
-        ctx.replyT('error', 'rolls-poor', {}, true);
+        ctx.makeMessage({ content: ctx.prettyResponse('error', 'rolls-poor'), ephemeral: true });
         return;
       }
     }
 
-    const canHunt = parseInt(authorData.caçarTime) < Date.now();
+    const canHunt = authorData.huntCooldown < Date.now();
 
     if (!canHunt && !rollsToUse) {
-      ctx.replyT(
-        'error',
-        'cooldown',
-        {
-          time: moment.utc(parseInt(authorData.caçarTime) - Date.now()).format('mm:ss'),
-        },
-        true,
-      );
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'cooldown', {
+          time: moment.utc(authorData.huntCooldown - Date.now()).format('mm:ss'),
+        }),
+        ephemeral: true,
+      });
       return;
     }
 
@@ -154,14 +153,13 @@ export default class HuntInteractionCommand extends InteractionCommand {
       return { value, success, tries };
     };
 
-    // eslint-disable-next-line no-shadow
     enum huntEnum {
-      DEMON = 'caçados',
-      ANGEL = 'anjos',
-      DEMIGOD = 'semideuses',
+      DEMON = 'demons',
+      ANGEL = 'angels',
+      DEMIGOD = 'demigods',
       GIANT = 'giants',
-      ARCHANGEL = 'arcanjos',
-      GOD = 'deuses',
+      ARCHANGEL = 'archangels',
+      GOD = 'gods',
     }
 
     switch (selected) {
@@ -170,6 +168,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
         const { rank } = await this.client.repositories.topRepository.getUserHuntRank(
           ctx.author.id,
           huntEnum.DEMON,
+          await this.client.repositories.cacheRepository.getDeletedAccounts(),
         );
         embed
           .setTitle(ctx.translate('demons'))
@@ -190,6 +189,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
         const { rank } = await this.client.repositories.topRepository.getUserHuntRank(
           ctx.author.id,
           huntEnum.GIANT,
+          await this.client.repositories.cacheRepository.getDeletedAccounts(),
         );
         embed
           .setTitle(ctx.translate('giants'))
@@ -210,6 +210,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
         const { rank } = await this.client.repositories.topRepository.getUserHuntRank(
           ctx.author.id,
           huntEnum.ANGEL,
+          await this.client.repositories.cacheRepository.getDeletedAccounts(),
         );
         embed
           .setTitle(ctx.translate('angels'))
@@ -230,6 +231,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
         const { rank } = await this.client.repositories.topRepository.getUserHuntRank(
           ctx.author.id,
           huntEnum.ARCHANGEL,
+          await this.client.repositories.cacheRepository.getDeletedAccounts(),
         );
         embed
           .setTitle(ctx.translate('archangel'))
@@ -250,6 +252,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
         const { rank } = await this.client.repositories.topRepository.getUserHuntRank(
           ctx.author.id,
           huntEnum.DEMIGOD,
+          await this.client.repositories.cacheRepository.getDeletedAccounts(),
         );
         embed
           .setTitle(ctx.translate('sd'))
@@ -270,6 +273,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
         const { rank } = await this.client.repositories.topRepository.getUserHuntRank(
           ctx.author.id,
           huntEnum.GOD,
+          await this.client.repositories.cacheRepository.getDeletedAccounts(),
         );
         embed
           .setColor(COLORS.HuntGod)
@@ -290,6 +294,6 @@ export default class HuntInteractionCommand extends InteractionCommand {
         break;
       }
     }
-    await ctx.reply({ embeds: [embed] });
+    await ctx.makeMessage({ embeds: [embed] });
   }
 }

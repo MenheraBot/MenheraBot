@@ -22,15 +22,18 @@ export default class AboutmeInteractionCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    const nota = ctx.options.getString('frase', true);
+    const info = ctx.options.getString('frase', true);
 
-    if (nota.length > 200) {
-      await ctx.replyT('error', 'args-limit', {}, true);
+    if (info.length > 200) {
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'args-limit'),
+        ephemeral: true,
+      });
       return;
     }
 
-    await ctx.client.repositories.userRepository.update(ctx.author.id, { nota });
+    await ctx.client.repositories.userRepository.update(ctx.author.id, { info });
 
-    await ctx.replyT('success', 'success');
+    await ctx.makeMessage({ content: ctx.prettyResponse('success', 'success') });
   }
 }

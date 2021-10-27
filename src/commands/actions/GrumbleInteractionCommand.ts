@@ -1,5 +1,5 @@
 import MenheraClient from 'MenheraClient';
-import { COLORS } from '@structures/MenheraConstants';
+import { COLORS } from '@structures/Constants';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageEmbed } from 'discord.js-light';
@@ -32,6 +32,6 @@ export default class GrumbleInteractionCommand extends InteractionCommand {
       .setThumbnail(avatar)
       .setImage(selectedImage);
 
-    await ctx.reply({ embeds: [embed] });
+    await ctx.makeMessage({ embeds: [embed] });
   }
 }

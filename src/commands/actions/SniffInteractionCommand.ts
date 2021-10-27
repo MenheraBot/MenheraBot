@@ -1,5 +1,5 @@
 import MenheraClient from 'MenheraClient';
-import { COLORS } from '@structures/MenheraConstants';
+import { COLORS } from '@structures/Constants';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageEmbed } from 'discord.js-light';
@@ -28,7 +28,9 @@ export default class SniffInteractionCommand extends InteractionCommand {
     const user = ctx.options.getUser('user');
 
     if (user?.bot) {
-      await ctx.replyT('error', 'bot');
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'bot'),
+      });
       return;
     }
 
@@ -47,7 +49,7 @@ export default class SniffInteractionCommand extends InteractionCommand {
         .setThumbnail(avatar)
         .setImage(selectedImage);
 
-      await ctx.reply({ embeds: [embed] });
+      await ctx.makeMessage({ embeds: [embed] });
       return;
     }
 
@@ -63,6 +65,6 @@ export default class SniffInteractionCommand extends InteractionCommand {
       .setImage(selectedImage)
       .setThumbnail(avatar);
 
-    await ctx.reply({ embeds: [embed] });
+    await ctx.makeMessage({ embeds: [embed] });
   }
 }

@@ -2,7 +2,7 @@ import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageButton, MessageComponentInteraction } from 'discord.js-light';
-import { emojis } from '@structures/MenheraConstants';
+import { emojis } from '@structures/Constants';
 import Util from '@utils/Util';
 
 export default class DivorceInteractionCommand extends InteractionCommand {
@@ -13,14 +13,18 @@ export default class DivorceInteractionCommand extends InteractionCommand {
       category: 'fun',
       cooldown: 8,
       clientPermissions: ['EMBED_LINKS'],
+      authorDataFields: ['married'],
     });
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const authorData = ctx.data.user;
 
-    if (!authorData.casado || authorData.casado === 'false') {
-      await ctx.replyT('warn', 'author-single', {}, true);
+    if (!authorData.married) {
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('warn', 'author-single'),
+        ephemeral: true,
+      });
       return;
     }
 
@@ -34,8 +38,8 @@ export default class DivorceInteractionCommand extends InteractionCommand {
       .setLabel(ctx.translate('cancel'))
       .setStyle('DANGER');
 
-    ctx.reply({
-      content: `${emojis.question} | ${ctx.translate('confirmation')} <@${authorData.casado}> ?`,
+    ctx.makeMessage({
+      content: `${emojis.question} | ${ctx.translate('confirmation')} <@${authorData.married}> ?`,
       components: [{ type: 1, components: [ConfirmButton, CancellButton] }],
     });
 
@@ -49,7 +53,7 @@ export default class DivorceInteractionCommand extends InteractionCommand {
     );
 
     if (!collected) {
-      ctx.editReply({
+      ctx.makeMessage({
         components: [
           {
             type: 1,
@@ -64,10 +68,10 @@ export default class DivorceInteractionCommand extends InteractionCommand {
     }
 
     if (collected.customId.endsWith('CONFIRM')) {
-      ctx.editReply({
+      ctx.makeMessage({
         content: `${emojis.success} | ${ctx.translate('confirmed', {
           author: ctx.author.toString(),
-          mention: `<@${authorData.casado}>`,
+          mention: `<@${authorData.married}>`,
         })}`,
         components: [
           {
@@ -81,11 +85,11 @@ export default class DivorceInteractionCommand extends InteractionCommand {
       });
 
       await this.client.repositories.relationshipRepository.divorce(
-        ctx.data.user.casado,
+        authorData.married,
         ctx.author.id,
       );
     } else {
-      ctx.editReply({
+      ctx.makeMessage({
         content: `${emojis.error} | ${ctx.translate('canceled')}`,
         components: [
           {

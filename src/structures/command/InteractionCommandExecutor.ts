@@ -1,4 +1,5 @@
-import { languageByLocale } from '@structures/MenheraConstants';
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+import { languageByLocale } from '@structures/Constants';
 import HttpRequests from '@utils/HTTPrequests';
 import { ICommandUsedData } from '@utils/Types';
 import {
@@ -165,13 +166,20 @@ const InteractionCommandExecutor = async (
     }
   }
 
-  const authorData = await client.repositories.userRepository.findOrCreate(interaction.user.id);
+  const authorData =
+    command.config.authorDataFields.length > 0
+      ? await client.repositories.userRepository.findOrCreate(
+          interaction.user.id,
+          command.config.authorDataFields,
+        )
+      : null;
 
   const ctx = new InteractionCommandContext(
     client,
     interaction,
-    { user: authorData, server },
     t,
+    // @ts-expect-error
+    { server, user: authorData },
     command.config.name,
   );
 

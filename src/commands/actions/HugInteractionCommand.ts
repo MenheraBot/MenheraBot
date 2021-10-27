@@ -1,5 +1,5 @@
 import MenheraClient from 'MenheraClient';
-import { COLORS } from '@structures/MenheraConstants';
+import { COLORS } from '@structures/Constants';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageEmbed } from 'discord.js-light';
@@ -28,12 +28,17 @@ export default class GrumbleInteractionCommand extends InteractionCommand {
     const user = ctx.options.getUser('user', true);
 
     if (user.bot) {
-      await ctx.replyT('error', 'bot');
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'bot'),
+      });
       return;
     }
 
     if (user.id === ctx.author.id) {
-      await ctx.replyT('error', 'self-mention', {}, true);
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'self-mention'),
+        ephemeral: true,
+      });
       return;
     }
 
@@ -52,6 +57,6 @@ export default class GrumbleInteractionCommand extends InteractionCommand {
       .setImage(selectedImage)
       .setThumbnail(avatar);
 
-    await ctx.reply({ embeds: [embed] });
+    await ctx.makeMessage({ embeds: [embed] });
   }
 }

@@ -19,32 +19,49 @@ export default class WalletInteractionCommand extends InteractionCommand {
       category: 'economy',
       cooldown: 5,
       clientPermissions: ['EMBED_LINKS'],
+      authorDataFields: [
+        'estrelinhas',
+        'demons',
+        'giants',
+        'angels',
+        'archangels',
+        'selectedColor',
+        'gods',
+        'demigods',
+        'rolls',
+      ],
     });
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const pessoa = ctx.options.getUser('user') ?? ctx.author;
 
-    const user = await this.client.repositories.userRepository.find(pessoa.id);
+    const user =
+      pessoa.id === ctx.author.id
+        ? ctx.data.user
+        : await this.client.repositories.userRepository.find(pessoa.id);
+
     if (!user) {
-      await ctx.replyT('error', 'no-dbuser', {}, true);
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'no-dbuser'),
+        ephemeral: true,
+      });
       return;
     }
 
     if (user.ban === true) {
-      ctx.replyT('error', 'banned-user', {}, true);
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'banned-user'),
+        ephemeral: true,
+      });
       return;
     }
 
-    let cor;
-
-    if (user.cor) {
-      cor = user.cor;
-    } else cor = '#a788ff' as const;
+    const color = user?.selectedColor ?? ('#a788ff' as const);
 
     const embed = new MessageEmbed()
       .setTitle(ctx.translate('title', { user: pessoa.tag }))
-      .setColor(cor)
+      .setColor(color)
       .addFields([
         {
           name: `⭐ | ${ctx.translate('stars')}`,
@@ -58,36 +75,36 @@ export default class WalletInteractionCommand extends InteractionCommand {
         },
         {
           name: `<:DEMON:758765044443381780> | ${ctx.translate('demons')} `,
-          value: `**${user.caçados}**`,
+          value: `**${user.demons}**`,
           inline: true,
         },
         {
           name: `🦍 | ${ctx.translate('giants')}`,
-          value: `**${user.giants || 0}**`,
+          value: `**${user.giants}**`,
           inline: true,
         },
         {
           name: `<:ANGEL:758765044204437535> | ${ctx.translate('angels')}`,
-          value: `**${user.anjos}**`,
+          value: `**${user.angels}**`,
           inline: true,
         },
         {
           name: `👼| ${ctx.translate('archangel')}`,
-          value: `**${user.arcanjos || 0}**`,
+          value: `**${user.archangels}**`,
           inline: true,
         },
         {
           name: `<:SemiGod:758766732235374674> | ${ctx.translate('sd')}`,
-          value: `**${user.semideuses}**`,
+          value: `**${user.demigods}**`,
           inline: true,
         },
         {
           name: `<:God:758474639570894899> | ${ctx.translate('god')}`,
-          value: `**${user.deuses}**`,
+          value: `**${user.gods}**`,
           inline: true,
         },
       ]);
 
-    await ctx.reply({ embeds: [embed] });
+    await ctx.makeMessage({ embeds: [embed] });
   }
 }

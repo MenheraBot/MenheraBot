@@ -21,6 +21,17 @@ export default class ProfileInteractionCommand extends InteractionCommand {
       category: 'info',
       cooldown: 5,
       clientPermissions: ['EMBED_LINKS'],
+      authorDataFields: [
+        'married',
+        'selectedColor',
+        'votes',
+        'info',
+        'voteCooldown',
+        'badges',
+        'marriedData',
+        'mamado',
+        'mamou',
+      ],
     });
   }
 
@@ -31,24 +42,38 @@ export default class ProfileInteractionCommand extends InteractionCommand {
 
     if (member.id !== ctx.author.id) {
       if (member.bot) {
-        await ctx.replyT('error', 'bot', {}, true);
+        await ctx.makeMessage({ content: ctx.prettyResponse('error', 'bot'), ephemeral: true });
         return;
       }
-      user = await this.client.repositories.userRepository.find(member.id);
+      user = await this.client.repositories.userRepository.find(member.id, [
+        'married',
+        'selectedColor',
+        'votes',
+        'info',
+        'voteCooldown',
+        'badges',
+        'marriedData',
+        'mamado',
+        'mamou',
+        'ban',
+        'banReason',
+      ]);
     }
 
     if (!user) {
-      await ctx.replyT('error', 'no-dbuser', {}, true);
+      await ctx.makeMessage({ content: ctx.prettyResponse('error', 'no-dbuser'), ephemeral: true });
       return;
     }
 
     if (user.ban && ctx.author.id !== process.env.OWNER) {
-      await ctx.replyT('error', 'banned', { reason: user.banReason }, true);
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'banned', { reason: user.banReason }),
+        ephemeral: true,
+      });
       return;
     }
 
-    if (user?.casado !== 'false' && user?.casado)
-      marry = await this.client.users.fetch(user.casado);
+    if (user?.married) marry = await this.client.users.fetch(user.married);
 
     await ctx.defer();
 
@@ -56,18 +81,18 @@ export default class ProfileInteractionCommand extends InteractionCommand {
     const usageCommands = await HttpRequests.getProfileCommands(member.id);
 
     const userSendData: IUserDataToProfile = {
-      cor: user.cor,
+      cor: user.selectedColor,
       avatar,
-      votos: user.votos,
-      nota: user.nota,
+      votos: user.votes,
+      nota: user.info,
       tag: member.tag,
       flagsArray: member.flags?.toArray() ?? ['NONE'],
-      casado: user.casado,
-      voteCooldown: user.voteCooldown,
+      casado: user.married as string,
+      voteCooldown: user.voteCooldown as number,
       badges: user.badges,
       username: member.username,
-      data: user.data as string,
-      mamadas: user.mamadas,
+      data: user.marriedData as string,
+      mamadas: user.mamado,
       mamou: user.mamou,
     };
 
@@ -90,11 +115,11 @@ export default class ProfileInteractionCommand extends InteractionCommand {
       : await HttpRequests.profileRequest(userSendData, marry, usageCommands, i18nData);
 
     if (res.err) {
-      await ctx.deferedReplyL('error', 'commands:http-error');
+      await ctx.makeMessage({ content: ctx.prettyResponseLocale('error', 'commands:http-error') });
       return;
     }
 
-    await ctx.editReply({
+    await ctx.makeMessage({
       files: [new MessageAttachment(res.data, 'profile.png')],
     });
   }

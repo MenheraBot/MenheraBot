@@ -103,6 +103,15 @@ const Badges = {
     description: 'Dado ao top 3 de cada classe do antigo RPG',
     link: 'https://media.discordapp.net/attachments/793669360857907200/875373756737028187/boleham.png',
   },
+  12: {
+    name: 'Ascensão da Menhera | Halloween 2021',
+    availabeStartAt: '21/10/2021',
+    availabeStoptAt: '1/09/2021',
+    rarityLevel: 5,
+    description:
+      'Dado aos jogadores que ajudaram a Menhera a atingir o seu ápice do poder, iniciando seu plano de vingança...',
+    link: 'https://media.discordapp.net/attachments/793669360857907200/900569702680633344/halloween.png',
+  },
 };
 
 export default Badges;

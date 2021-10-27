@@ -5,11 +5,11 @@ export default class CmdRepository {
   constructor(private cmdModal: typeof Cmds) {}
 
   async findByName(commandName: string): Promise<ICmdSchema | null> {
-    return this.cmdModal.findById(commandName);
+    return this.cmdModal.findById(commandName, null, { lean: true });
   }
 
   async getAllCommandsInMaintenance(): Promise<ICmdSchema[]> {
-    return this.cmdModal.find({ maintenance: true });
+    return this.cmdModal.find({ maintenance: true }, null, { lean: true });
   }
 
   async editMaintenance(

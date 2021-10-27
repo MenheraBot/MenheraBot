@@ -36,6 +36,6 @@ export default class FodaseInteractionCommand extends InteractionCommand {
       .setFooter(ctx.translate('author', { author: ctx.author.username }))
       .setTitle(frasesUsada);
 
-    await ctx.reply({ embeds: [embed] });
+    await ctx.makeMessage({ embeds: [embed] });
   }
 }

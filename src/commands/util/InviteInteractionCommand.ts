@@ -29,6 +29,6 @@ export default class InviteInteractionCommand extends InteractionCommand {
       )
       .setTimestamp();
 
-    await ctx.reply({ embeds: [embed] });
+    await ctx.makeMessage({ embeds: [embed] });
   }
 }

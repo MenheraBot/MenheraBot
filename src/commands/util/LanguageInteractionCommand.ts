@@ -2,7 +2,7 @@ import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageSelectMenu, SelectMenuInteraction } from 'discord.js-light';
-import { emojis } from '@structures/MenheraConstants';
+import { emojis } from '@structures/Constants';
 import Util from '@utils/Util';
 
 export default class LanguageInteractionCommand extends InteractionCommand {
@@ -38,8 +38,8 @@ export default class LanguageInteractionCommand extends InteractionCommand {
         },
       ]);
 
-    await ctx.reply({
-      content: `${emojis.question} | ${ctx.translate('question')}`,
+    await ctx.makeMessage({
+      content: ctx.prettyResponse('question', 'question'),
       components: [{ type: 'ACTION_ROW', components: [selector] }],
     });
 
@@ -51,7 +51,7 @@ export default class LanguageInteractionCommand extends InteractionCommand {
     ).catch(() => null);
 
     if (!collectInteracion) {
-      ctx.editReply({
+      ctx.makeMessage({
         components: [
           {
             type: 'ACTION_ROW',
@@ -74,13 +74,13 @@ export default class LanguageInteractionCommand extends InteractionCommand {
 
     switch (lang) {
       case 'en-US':
-        ctx.editReply({
+        ctx.makeMessage({
           components: [],
           content: 'A you wish, I will speak english on this server',
         });
         break;
       case 'pt-BR':
-        ctx.editReply({
+        ctx.makeMessage({
           components: [],
           content: 'Perfeito, vou falar português nesse servidor',
         });

@@ -7,10 +7,45 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ## [Unreleased]
 
+### Added
+
+- NOVO COMANDO! `/inventario`
+
 ### Changed
 
-- Este arquivo agorá é escrito em português
-- O comando `carteira` foi renomeado para `inventario`
+- O modo que o ship é calculado foi alterado
+
+### Deprecated
+
+- Fields do banco de dados: `mamadas`, `casado`,`nota`,`data`, `cor`, `cores`, `caçados`, `anjos`, `arcanjos`, `semideuses`, `deuses`, `caçarTime`, `votos`. Estes foram mudados para nomes em inglẽs
+
+### Removed
+
+- O campo shipValue foi removido do banco de dados!
+
+## [3.3.13-hall] 2021-10-23
+
+### Added
+
+- Nova função pra criar mensagens no `IteractionCommandContext` junto de uma função pra criar a response bonintinha
+
+### Changed
+
+- O receptor deve clicar num botão para aceitar o presente do `/give`
+- O código do `/give` foi reescrito
+- Contas banidas e/ou deletadas não aparecerão na contagem do top
+
+### Fix
+
+- Titulo do embed do top arcanjos
+- Votos no evendo do Halloween dão demônios como prêmio
+- Categoria do Give
+
+## [3.3.12-hall] - 2021-10-20
+
+### Added
+
+- O evento de Halloween começou! Ajude à Menhera a chegar ao ápice de seu poder, para que ela possa finalmente se vingar...
 
 ## [3.3.12] - 2021-10-20
 

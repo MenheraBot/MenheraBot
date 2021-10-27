@@ -107,6 +107,7 @@
     "bot": "{{author}} acabou de sujar a boca de óleo lansando o mamadão no bot {{mention}}",
     "self-mention": "Não tenta me enganar, eu sei que tu não consegue mamar a si mesmo! Marque outra pessoa para mamar",
     "embed_title": "Mamar",
+    "user-banned": "Tu não pode mamar esse usuário por que ele ta mutado!",
     "embed_description": "{{author}} lansou o mamadão, o famoso bereguedjonson, a linguada, a mamadela, a lambidinha em {{mention}}"
   },
   "carinho": {
@@ -215,14 +216,14 @@
     "coroa-texto": "{{mention}} ganhou a aposta valendo {{value}} :star: contra {{author}}"
   },
   "give": {
-    "description": "Transfira algo de seu inventário para alguém",
-    "usage": "<opção> <@menção> <valor>",
+    "confirm": "Seguinte {{user}}, {{author}} quer te enviar **{{count}}** {{emoji}}, você aceita?",
+    "negated": "{{user}} recusou o presente!",
     "banned-user": "Este usuário não aceita presentes pois está banido da Menhera!",
-    "self-mention": "você não pode mencionar a si mesmo!",
-    "no-dbuser": "este usuário não possui uma conta no Menhera's Bank!",
+    "self-mention": "Você não pode mencionar a si mesmo!",
+    "no-dbuser": "Este usuário não possui uma conta no Menhera's Bank!",
     "invalid-value": "O valor a ser dado deve ser maior que 0",
-    "poor": "você não tem este tanto de",
-    "transfered": "você transferiu **{{value}}** {{emoji}} para",
+    "poor": "Você não possui tantos {{field}} assim!",
+    "transfered": "Você transferiu **{{value}}** {{emoji}} para {{user}}",
     "stars": "estrelinhas",
     "demons": "demônios",
     "angels": "anjos",
@@ -231,7 +232,8 @@
   },
   "loja": {
     "description": "Acesse o brechó da Menhera",
-    "usage": "",
+    "confirm": "{{user}}, {{author}} quer te enviar {{count}} {{emoji}}, você aceita?",
+    "negated": "{{user}} recusou o presente!",
     "embed_title": "Brechó da Menhera",
     "embed_footer": "Digite no chat a opção de sua escolha",
     "invalid-option": "Essa escolha é inválida",
@@ -457,7 +459,7 @@
     "sdTitle": "Placar de Semideuses",
     "godTitle": "Placar de Deuses",
     "giantTitle": "Placar de Gigantes",
-    "arcangelTitle": "Placar de Arcanjos",
+    "archangelTitle": "Placar de Arcanjos",
     "starsTitle": "Placar de Estrelinhas",
     "voteTitle": "Placar de Upvotes",
     "commands": "Comandos Mais Usados",
@@ -675,5 +677,22 @@
     "equal": "Tanto você quanto a menhera fizeram o mesmo valor. Menhera ganha",
     "menhera-bigger": "A Menhera está mais proxima de 21, ela ganhou!",
     "user-bigger": "Você está mais próximo de 21, você ganhou **{{value}}** :star:"
+  },
+  "inventario": {
+    "no-user": "Este usuário não possui inventário",
+    "title": "Inventário de {{user}}",
+    "no-item": "O inventário deste usuário está vazio!",
+    "active": "Itens Ativos",
+    "items": "Itens no Inventário",
+    "banned": "Este usuário está **banido** de usar a Menhera",
+    "use": "Usar Itens",
+    "use-footer": "Clique no botão abaixo para usar itens",
+    "select": "Escolha um item para usar",
+    "choose-item": "Selecione um item para usar como seu item mágico principal",
+    "reset": "Remover Itens Ativos",
+    "reseted": "Feitoria! Todos seus itens ativos foram movidos para o inventário",
+    "choose-toggle": "Qual item você quer substituir?",
+    "equipped": "Sucesso! O item **{{name}}** foi selecionado como ativo! Você já pode desfrutar de seus poderes!",
+    "select-description": "Escolha um dos itens abaixos para ativá-lo. Caso não tenha espaço disponível, tu terá que escolher um dos itens ativos para substituílo"
   }
 }

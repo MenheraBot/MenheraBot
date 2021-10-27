@@ -46,6 +46,48 @@ export const probabilities = {
   defaultTime: 3600000,
 };
 
+export const defaultHuntingProbabilities = {
+  demon: [
+    { amount: 1, probabilty: 20 },
+    { amount: 2, probabilty: 20 },
+    { amount: 3, probabilty: 22 },
+    { amount: 0, probabilty: 18 },
+    { amount: 4, probabilty: 15 },
+    { amount: 5, probabilty: 2 },
+    { amount: 6, probabilty: 3 },
+  ],
+  giant: [
+    { amount: 0, probabilty: 30 },
+    { amount: 1, probabilty: 30 },
+    { amount: 2, probabilty: 25 },
+    { amount: 3, probabilty: 10 },
+    { amount: 4, probabilty: 12 },
+    { amount: 5, probabilty: 5 },
+    { amount: 6, probabilty: 3 },
+  ],
+  angel: [
+    { amount: 0, probabilty: 40 },
+    { amount: 1, probabilty: 30 },
+    { amount: 2, probabilty: 20 },
+    { amount: 3, probabilty: 10 },
+  ],
+  archangel: [
+    { amount: 0, probabilty: 40 },
+    { amount: 1, probabilty: 30 },
+    { amount: 2, probabilty: 20 },
+    { amount: 3, probabilty: 10 },
+  ],
+  demigod: [
+    { amount: 0, probabilty: 40 },
+    { amount: 1, probabilty: 50 },
+    { amount: 2, probabilty: 10 },
+  ],
+  god: [
+    { amount: 0, probabilty: 80 },
+    { amount: 1, probabilty: 20 },
+  ],
+};
+
 export const votes = {
   rollQuantity: 1,
   maxStarValue: 3600,

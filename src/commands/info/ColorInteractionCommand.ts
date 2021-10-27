@@ -7,7 +7,7 @@ import {
 import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { COLORS, emojis } from '@structures/MenheraConstants';
+import { COLORS, emojis } from '@structures/Constants';
 
 export default class ColorInteractionCommand extends InteractionCommand {
   constructor(client: MenheraClient) {
@@ -17,6 +17,7 @@ export default class ColorInteractionCommand extends InteractionCommand {
       category: 'info',
       cooldown: 5,
       clientPermissions: ['EMBED_LINKS'],
+      authorDataFields: ['selectedColor', 'colors'],
     });
   }
 
@@ -37,7 +38,7 @@ export default class ColorInteractionCommand extends InteractionCommand {
   async run(ctx: InteractionCommandContext): Promise<void> {
     const authorData = ctx.data.user;
 
-    const haspadrao = authorData.cores.some((pc) => pc.cor === '#a788ff');
+    const haspadrao = authorData.colors.some((pc) => pc.cor === '#a788ff');
 
     if (!haspadrao) {
       await this.client.repositories.userRepository.update(ctx.author.id, {
@@ -55,25 +56,25 @@ export default class ColorInteractionCommand extends InteractionCommand {
       .setMaxValues(1)
       .setPlaceholder(`${emojis.rainbow} ${ctx.translate('choose')}`);
 
-    if (authorData.cores.length < 2) {
-      ctx.replyT('error', 'min-color', {}, true);
+    if (authorData.colors.length < 2) {
+      ctx.makeMessage({ content: ctx.prettyResponse('error', 'min-color'), ephemeral: true });
       return;
     }
 
-    for (let i = 0; i < authorData.cores.length; i++) {
-      if (authorData.cores[i].cor !== authorData.cor) {
-        embed.addField(`${authorData.cores[i].nome}`, `${authorData.cores[i].cor}`);
+    for (let i = 0; i < authorData.colors.length; i++) {
+      if (authorData.colors[i].cor !== authorData.selectedColor) {
+        embed.addField(`${authorData.colors[i].nome}`, `${authorData.colors[i].cor}`);
         selector.addOptions({
-          label: authorData.cores[i].nome.replaceAll('*', ''),
-          value: `${authorData.cores[i].cor}`,
+          label: authorData.colors[i].nome.replaceAll('*', ''),
+          value: `${authorData.colors[i].cor}`,
           emoji: ColorInteractionCommand.getEmojiFromColorName(
-            authorData.cores[i].nome.replace(/\D/g, ''),
+            authorData.colors[i].nome.replace(/\D/g, ''),
           ),
         });
       }
     }
 
-    await ctx.reply({
+    await ctx.makeMessage({
       embeds: [embed],
       components: [{ type: 'ACTION_ROW', components: [selector] }],
     });
@@ -86,7 +87,7 @@ export default class ColorInteractionCommand extends InteractionCommand {
       .catch(() => null);
 
     if (!collect || !collect.isSelectMenu()) {
-      ctx.editReply({
+      ctx.makeMessage({
         embeds: [embed],
         components: [
           {
@@ -115,6 +116,6 @@ export default class ColorInteractionCommand extends InteractionCommand {
       cor: selected,
     });
 
-    ctx.editReply({ embeds: [dataChoose], components: [] });
+    ctx.makeMessage({ embeds: [dataChoose], components: [] });
   }
 }

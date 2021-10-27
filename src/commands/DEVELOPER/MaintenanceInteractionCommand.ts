@@ -33,14 +33,14 @@ export default class MaintenanceSlashInteractionCommand extends InteractionComma
   async run(ctx: InteractionCommandContext): Promise<void> {
     const cmd = this.client.slashCommands.get(ctx.options.getString('comando', true));
     if (!cmd) {
-      await ctx.replyE('error', 'este comando não existe');
+      await ctx.makeMessage({ content: 'este comando não existe' });
       return;
     }
 
     const command = await this.client.repositories.cacheRepository.fetchCommand(cmd.config.name);
 
     if (!command) {
-      await ctx.replyE('error', 'este comando não existe');
+      await ctx.makeMessage({ content: 'este comando não existe' });
       return;
     }
 
@@ -54,7 +54,7 @@ export default class MaintenanceSlashInteractionCommand extends InteractionComma
         isDisabled: false,
         reason: null,
       });
-      await ctx.replyE('success', 'comando **REMOVIDO** da manutenção.');
+      await ctx.makeMessage({ content: 'comando **REMOVIDO** da manutenção.' });
       return;
     }
     const reason = ctx.options.getString('motivo') ?? 'Sem motivo informado';
@@ -69,6 +69,6 @@ export default class MaintenanceSlashInteractionCommand extends InteractionComma
       reason,
     });
 
-    await ctx.replyE('success', 'comando **ADICIONADO** a manutenção.');
+    await ctx.makeMessage({ content: 'comando **ADICIONADO** a manutenção.' });
   }
 }

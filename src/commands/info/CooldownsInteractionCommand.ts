@@ -14,17 +14,13 @@ export default class CooldownsInteractionCommand extends InteractionCommand {
       category: 'info',
       cooldown: 5,
       clientPermissions: ['EMBED_LINKS'],
+      authorDataFields: ['huntCooldown', 'voteCooldown'],
     });
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    if (!ctx.data.user) {
-      await ctx.replyT('error', 'error', {}, true);
-      return;
-    }
-
-    const huntCooldownInMilis = parseInt(ctx.data.user.caçarTime) - Date.now();
-    const voteCooldownInMilis = parseInt(ctx.data.user.voteCooldown) - Date.now();
+    const huntCooldownInMilis = ctx.data.user.huntCooldown - Date.now();
+    const voteCooldownInMilis = ctx.data.user.voteCooldown - Date.now();
 
     let txt = '';
 
@@ -51,6 +47,6 @@ export default class CooldownsInteractionCommand extends InteractionCommand {
       .setColor('#6597df')
       .setDescription(txt);
 
-    await ctx.reply({ embeds: [embed] });
+    await ctx.makeMessage({ embeds: [embed] });
   }
 }

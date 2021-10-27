@@ -9,7 +9,7 @@ export default class LocaleStructure {
   public languages: Array<string>;
 
   constructor() {
-    this.ns = ['common', 'commands', 'events', 'permissions'];
+    this.ns = ['common', 'commands', 'data', 'events', 'permissions'];
     this.languages = ['pt-BR', 'en-US'];
   }
 
