@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 import MagicItems from '@structures/MagicItems';
 import {
   CollectorFilter,
@@ -8,7 +9,7 @@ import {
   MessageActionRowComponentResolvable,
   TextBasedChannels,
 } from 'discord.js-light';
-import { HuntingTypes, TMagicItemsFile } from './Types';
+import { HuntingTypes, TMagicItemsFile, HuntProbabiltyProps } from './Types';
 
 const MENTION_REGEX = /^(?:<@!?)?(\d{16,18})(?:>)?$/;
 export default class Util {
@@ -139,3 +140,17 @@ export const getMagicItemById = (id: number): { id: number; data: TMagicItemsFil
   Object.entries(MagicItems)
     .filter((a) => Number(a[0]) === id)
     .map((a) => ({ id: Number(a[0]), data: a[1] }))[0];
+
+export const calculateProbability = (probabilities: HuntProbabiltyProps[]): number => {
+  const total = probabilities.reduce((acc, c) => acc + c.probabilty, 0);
+
+  const randomizedValue = Math.floor(Math.random() * total);
+
+  let accumulator = 0;
+  probabilities.forEach((a) => {
+    accumulator += a.probabilty;
+
+    if (randomizedValue < accumulator) return a.amount;
+  });
+  return 0;
+};

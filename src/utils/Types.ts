@@ -260,7 +260,7 @@ export enum arcanjosarcanjosTopRankingTypes {
 
 export type HuntingTypes = 'demon' | 'giant' | 'angel' | 'archangel' | 'demigod' | 'god';
 
-interface HuntProbabiltyProps {
+export interface HuntProbabiltyProps {
   amount: number;
   probabilty: number;
 }
