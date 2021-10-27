@@ -198,7 +198,7 @@ export default class GiveInteractionCommand extends InteractionCommand {
 
     switch (selectedOption) {
       case 'star':
-        if (input > authorData!.estrelinhas)
+        if (input > authorData.estrelinhas)
           return GiveInteractionCommand.replyNotEnoughtError(ctx, 'stars');
 
         await this.client.repositories.giveRepository.giveStars(

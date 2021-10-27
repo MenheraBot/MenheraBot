@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { languageByLocale } from '@structures/Constants';
 import HttpRequests from '@utils/HTTPrequests';
 import { ICommandUsedData } from '@utils/Types';
@@ -177,6 +178,7 @@ const InteractionCommandExecutor = async (
     client,
     interaction,
     t,
+    // @ts-expect-error
     { server, user: authorData },
     command.config.name,
   );

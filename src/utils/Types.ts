@@ -167,7 +167,7 @@ export interface IUserDataToProfile {
   mamou: number;
 }
 export interface IContextData {
-  user: IUserSchema | null;
+  user: IUserSchema;
   server: IGuildSchema;
 }
 
