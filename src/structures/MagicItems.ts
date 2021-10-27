@@ -3,7 +3,7 @@ import { HuntingTypes, TMagicItemsFile } from '@utils/Types';
 const MagicItems: { [id: number]: TMagicItemsFile<HuntingTypes> } = {
   1: {
     type: 'PROBABILITY_BOOST',
-    huntType: 'demon',
+    huntType: 'demons',
     probabilities: [
       { amount: 1, probabilty: 20 },
       { amount: 2, probabilty: 20 },
