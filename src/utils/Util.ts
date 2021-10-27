@@ -142,15 +142,21 @@ export const getMagicItemById = (id: number): { id: number; data: TMagicItemsFil
     .map((a) => ({ id: Number(a[0]), data: a[1] }))[0];
 
 export const calculateProbability = (probabilities: HuntProbabiltyProps[]): number => {
-  const total = probabilities.reduce((acc, c) => acc + c.probabilty, 0);
+  const chance = Math.floor(Math.random() * 100);
 
-  const randomizedValue = Math.floor(Math.random() * total);
+  let accumulator = probabilities.reduce((p, c) => p + c.probabilty, 0);
 
-  let accumulator = 0;
-  probabilities.forEach((a) => {
-    accumulator += a.probabilty;
-
-    if (randomizedValue < accumulator) return a.amount;
+  const mapedChanges: { amount: number; probabilities: number[] }[] = probabilities.map((a) => {
+    const toReturn = [accumulator - a.probabilty, accumulator];
+    accumulator -= a.probabilty;
+    return { amount: a.amount, probabilities: toReturn };
   });
+
+  for (const data of mapedChanges) {
+    const [min, max] = data.probabilities;
+    if (chance >= min && max <= chance) {
+      return data.amount;
+    }
+  }
   return 0;
 };
