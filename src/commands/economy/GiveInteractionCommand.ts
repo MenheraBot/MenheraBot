@@ -62,6 +62,15 @@ export default class GiveInteractionCommand extends InteractionCommand {
       ],
       cooldown: 5,
       category: 'economy',
+      authorDataFields: [
+        'estrelinhas',
+        'caçados',
+        'giants',
+        'anjos',
+        'arcanjos',
+        'deuses',
+        'semideuses',
+      ],
     });
   }
 
@@ -193,7 +202,7 @@ export default class GiveInteractionCommand extends InteractionCommand {
           return GiveInteractionCommand.replyNotEnoughtError(ctx, 'stars');
 
         await this.client.repositories.giveRepository.giveStars(
-          authorData.id,
+          ctx.author.id,
           toSendUser.id,
           input,
         );
@@ -202,7 +211,7 @@ export default class GiveInteractionCommand extends InteractionCommand {
         if (input > authorData.caçados)
           return GiveInteractionCommand.replyNotEnoughtError(ctx, 'demons');
         await this.client.repositories.giveRepository.giveDemons(
-          authorData.id,
+          ctx.author.id,
           toSendUser.id,
           input,
         );
@@ -212,7 +221,7 @@ export default class GiveInteractionCommand extends InteractionCommand {
         if (input > authorData.giants)
           return GiveInteractionCommand.replyNotEnoughtError(ctx, 'giants');
         await this.client.repositories.giveRepository.giveGiants(
-          authorData.id,
+          ctx.author.id,
           toSendUser.id,
           input,
         );
@@ -222,7 +231,7 @@ export default class GiveInteractionCommand extends InteractionCommand {
           return GiveInteractionCommand.replyNotEnoughtError(ctx, 'angels');
 
         await this.client.repositories.giveRepository.giveAngels(
-          authorData.id,
+          ctx.author.id,
           toSendUser.id,
           input,
         );
@@ -232,7 +241,7 @@ export default class GiveInteractionCommand extends InteractionCommand {
         if (input > authorData.arcanjos)
           return GiveInteractionCommand.replyNotEnoughtError(ctx, 'archangel');
         await this.client.repositories.giveRepository.giveArchangel(
-          authorData.id,
+          ctx.author.id,
           toSendUser.id,
           input,
         );
@@ -247,7 +256,7 @@ export default class GiveInteractionCommand extends InteractionCommand {
           return GiveInteractionCommand.replyNotEnoughtError(ctx, 'semigods');
 
         await this.client.repositories.giveRepository.giveDemigods(
-          authorData.id,
+          ctx.author.id,
           toSendUser.id,
           input,
         );
@@ -262,7 +271,7 @@ export default class GiveInteractionCommand extends InteractionCommand {
         if (input > authorData.deuses)
           return GiveInteractionCommand.replyNotEnoughtError(ctx, 'gods');
 
-        await this.client.repositories.giveRepository.giveGods(authorData.id, toSendUser.id, input);
+        await this.client.repositories.giveRepository.giveGods(ctx.author.id, toSendUser.id, input);
 
         return GiveInteractionCommand.replySuccess(ctx, input, emojis.god, toSendUser.toString());
     }

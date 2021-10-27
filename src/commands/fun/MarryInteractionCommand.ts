@@ -21,6 +21,7 @@ export default class MarryInteractionCommand extends InteractionCommand {
       ],
       category: 'fun',
       cooldown: 8,
+      authorDataFields: ['casado'],
     });
   }
 

@@ -189,6 +189,17 @@ export default class ShopInteractionCommand extends InteractionCommand {
       category: 'economy',
       cooldown: 5,
       clientPermissions: ['EMBED_LINKS'],
+      authorDataFields: [
+        'estrelinhas',
+        'caçados',
+        'giants',
+        'anjos',
+        'arcanjos',
+        'deuses',
+        'semideuses',
+        'cores',
+        'rolls',
+      ],
     });
   }
 

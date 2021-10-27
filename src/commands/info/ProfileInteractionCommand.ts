@@ -21,6 +21,19 @@ export default class ProfileInteractionCommand extends InteractionCommand {
       category: 'info',
       cooldown: 5,
       clientPermissions: ['EMBED_LINKS'],
+      authorDataFields: [
+        'ban',
+        'banReason',
+        'casado',
+        'cor',
+        'votos',
+        'nota',
+        'voteCooldown',
+        'badges',
+        'data',
+        'mamadas',
+        'mamou',
+      ],
     });
   }
 

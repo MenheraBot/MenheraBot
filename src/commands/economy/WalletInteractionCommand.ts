@@ -19,13 +19,27 @@ export default class WalletInteractionCommand extends InteractionCommand {
       category: 'economy',
       cooldown: 5,
       clientPermissions: ['EMBED_LINKS'],
+      authorDataFields: [
+        'estrelinhas',
+        'caçados',
+        'giants',
+        'anjos',
+        'arcanjos',
+        'deuses',
+        'semideuses',
+        'rolls',
+      ],
     });
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const pessoa = ctx.options.getUser('user') ?? ctx.author;
 
-    const user = await this.client.repositories.userRepository.find(pessoa.id);
+    const user =
+      pessoa.id === ctx.author.id
+        ? ctx.data.user
+        : await this.client.repositories.userRepository.find(pessoa.id);
+
     if (!user) {
       await ctx.makeMessage({
         content: ctx.prettyResponse('error', 'no-dbuser'),

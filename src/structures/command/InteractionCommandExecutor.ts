@@ -165,13 +165,19 @@ const InteractionCommandExecutor = async (
     }
   }
 
-  const authorData = await client.repositories.userRepository.findOrCreate(interaction.user.id);
+  const authorData =
+    command.config.authorDataFields.length > 0
+      ? await client.repositories.userRepository.findOrCreate(
+          interaction.user.id,
+          command.config.authorDataFields,
+        )
+      : null;
 
   const ctx = new InteractionCommandContext(
     client,
     interaction,
-    { user: authorData, server },
     t,
+    { server, user: authorData },
     command.config.name,
   );
 

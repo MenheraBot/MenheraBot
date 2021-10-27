@@ -61,6 +61,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
       category: 'economy',
       cooldown: 10,
       clientPermissions: ['EMBED_LINKS'],
+      authorDataFields: ['cor', 'estrelinhas'],
     });
   }
 

@@ -9,7 +9,7 @@ const runVote = async (
   userId: string,
   isWeekend: boolean,
 ): Promise<void> => {
-  const user = await client.repositories.userRepository.find(userId);
+  const user = await client.repositories.userRepository.find(userId, ['votos']);
   if (!user) return;
 
   user.votos += 1;
@@ -54,11 +54,14 @@ const runVote = async (
     .setThumbnail('https://i.imgur.com/O2wdphz.jpg')
     .setDescription(embedDescription);
 
-  user.rolls += rollQuantity;
-  user.estrelinhas += starQuantity;
-  user.caçados += caçadosQuantity;
-  user.voteCooldown = `${Date.now() + 43200000}`;
-  await user.save();
+  client.repositories.userRepository.update(user.id, {
+    $inc: {
+      rolls: rollQuantity,
+      estrelinhas: starQuantity,
+      caçados: caçadosQuantity,
+    },
+    voteCooldown: `${Date.now() + 43200000}`,
+  });
 
   const sendMessageToUser = async (id: string, embedToSend: MessageEmbed) => {
     const userInShard = client.users.forge(id);

@@ -17,6 +17,7 @@ export default class ColorInteractionCommand extends InteractionCommand {
       category: 'info',
       cooldown: 5,
       clientPermissions: ['EMBED_LINKS'],
+      authorDataFields: ['cor', 'cores'],
     });
   }
 

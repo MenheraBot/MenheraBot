@@ -46,6 +46,14 @@ export default class MamarInteractionCommand extends InteractionCommand {
       return;
     }
 
+    if (await this.client.repositories.blacklistRepository.isUserBanned(mention.id)) {
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'user-banned'),
+        ephemeral: true,
+      });
+      return;
+    }
+
     const selectedImage = await HttpRequests.getAssetImageUrl('mamar');
     const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
     const embed = new MessageEmbed()

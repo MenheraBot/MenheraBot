@@ -12,6 +12,7 @@ export default class UntrisalInteractionCommand extends InteractionCommand {
       category: 'fun',
       cooldown: 5,
       clientPermissions: ['EMBED_LINKS'],
+      authorDataFields: ['trisal'],
     });
   }
 

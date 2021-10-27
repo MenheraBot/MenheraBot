@@ -22,19 +22,10 @@ import {
   PermissionResolvable,
   User,
 } from 'discord.js-light';
-import { Document } from 'mongoose';
 
 export interface IClientConfigs {
   interactionsDirectory: string;
   eventsDirectory: string;
-}
-
-export interface IInteractionCommandConfig extends ChatInputApplicationCommandData {
-  devsOnly?: boolean;
-  category: string;
-  cooldown?: number;
-  userPermissions?: PermissionResolvable[];
-  clientPermissions?: PermissionResolvable[];
 }
 
 export type T8BallAnswerTypes = 'negative' | 'positive' | 'neutral';
@@ -108,6 +99,15 @@ export interface IUserSchema {
   itemsLimit: number;
 }
 
+export interface IInteractionCommandConfig extends ChatInputApplicationCommandData {
+  devsOnly?: boolean;
+  category: string;
+  cooldown?: number;
+  userPermissions?: PermissionResolvable[];
+  clientPermissions?: PermissionResolvable[];
+  authorDataFields?: Array<keyof IUserSchema>;
+}
+
 export interface ICommandUsedData {
   authorId: string;
   guildId: string;
@@ -167,8 +167,8 @@ export interface IUserDataToProfile {
   mamou: number;
 }
 export interface IContextData {
-  user: IUserSchema & Document;
-  server: IGuildSchema | (IGuildSchema & Document);
+  user: IUserSchema | null;
+  server: IGuildSchema;
 }
 
 export interface IDisabled {

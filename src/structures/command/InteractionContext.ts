@@ -18,8 +18,8 @@ export default class InteractionCommandContext {
   constructor(
     public client: MenheraClient,
     public interaction: CommandInteraction,
-    public data: IContextData,
     public i18n: TFunction,
+    public data: IContextData,
     private commandName: string,
   ) {}
 

@@ -59,6 +59,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
       category: 'fun',
       cooldown: 5,
       clientPermissions: ['EMBED_LINKS'],
+      authorDataFields: ['rolls', 'caçarTime'],
     });
   }
 

@@ -107,6 +107,7 @@
     "bot": "{{author}} acabou de sujar a boca de óleo lansando o mamadão no bot {{mention}}",
     "self-mention": "Não tenta me enganar, eu sei que tu não consegue mamar a si mesmo! Marque outra pessoa para mamar",
     "embed_title": "Mamar",
+    "user-banned": "Tu não pode mamar esse usuário por que ele ta mutado!",
     "embed_description": "{{author}} lansou o mamadão, o famoso bereguedjonson, a linguada, a mamadela, a lambidinha em {{mention}}"
   },
   "carinho": {

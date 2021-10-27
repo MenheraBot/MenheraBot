@@ -13,6 +13,7 @@ export default class DivorceInteractionCommand extends InteractionCommand {
       category: 'fun',
       cooldown: 8,
       clientPermissions: ['EMBED_LINKS'],
+      authorDataFields: ['casado'],
     });
   }
 
