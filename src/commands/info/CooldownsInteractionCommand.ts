@@ -14,13 +14,13 @@ export default class CooldownsInteractionCommand extends InteractionCommand {
       category: 'info',
       cooldown: 5,
       clientPermissions: ['EMBED_LINKS'],
-      authorDataFields: ['caçarTime', 'voteCooldown'],
+      authorDataFields: ['huntCooldown', 'voteCooldown'],
     });
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    const huntCooldownInMilis = parseInt(ctx.data.user.caçarTime) - Date.now();
-    const voteCooldownInMilis = parseInt(ctx.data.user.voteCooldown) - Date.now();
+    const huntCooldownInMilis = ctx.data.user.huntCooldown - Date.now();
+    const voteCooldownInMilis = ctx.data.user.voteCooldown - Date.now();
 
     let txt = '';
 

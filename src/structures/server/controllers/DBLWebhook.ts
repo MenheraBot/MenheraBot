@@ -9,10 +9,8 @@ const runVote = async (
   userId: string,
   isWeekend: boolean,
 ): Promise<void> => {
-  const user = await client.repositories.userRepository.find(userId, ['votos']);
+  const user = await client.repositories.userRepository.find(userId, ['votes']);
   if (!user) return;
-
-  user.votos += 1;
 
   let { rollQuantity } = constants;
   let caçadosQuantity = 5;
@@ -20,7 +18,7 @@ const runVote = async (
     Math.floor(Math.random() * (constants.maxStarValue - constants.minStarValue + 1)) +
     constants.minStarValue;
   let embedTitle = '🍬 | É bom votar mesmo | 🍬';
-  let embedDescription = `É bom votar em mim... O dia das bruxas está chegando. Não esqueça que a noite de lua cheia está próxima\nPegue isso e suma! **${rollQuantity}**🔑, **${starQuantity}**⭐ **${caçadosQuantity}** <:Demon:758765044443381780>!\n\nSabia que a cada 20 votos você ganha um prêmio especial? E que você ja votou **${user.votos}** vezes em mim? Acho bom mesmo <:halloween:900565922836783105>`;
+  let embedDescription = `É bom votar em mim... O dia das bruxas está chegando. Não esqueça que a noite de lua cheia está próxima\nPegue isso e suma! **${rollQuantity}**🔑, **${starQuantity}**⭐ **${caçadosQuantity}** <:Demon:758765044443381780>!\n\nSabia que a cada 20 votos você ganha um prêmio especial? E que você ja votou **${user.votes}** vezes em mim? Acho bom mesmo <:halloween:900565922836783105>`;
 
   if (isWeekend) {
     rollQuantity *= constants.rollWeekendMultiplier;
@@ -30,16 +28,16 @@ const runVote = async (
     embedDescription = `Vote... VOttee... VOOOTEEEEEEEE! O FEITIÇO ESTÁ QUASE PRONTO\nContinue votando para que o ritual se complete\n\nSuas recompensas pelos seus sacrifícios: **${rollQuantity}**🔑, **${starQuantity}**⭐, **${caçadosQuantity}** <:Demon:758765044443381780>`;
   }
 
-  if (user.votos % 20 === 0) {
+  if (user.votes % 20 === 0) {
     rollQuantity *= constants.roll20Multiplier;
     starQuantity *= constants.star20Multiplier;
     caçadosQuantity *= 2;
     embedTitle =
       '<:halloween:900565922836783105> | Eu Já Sinto o Poder Emanando do Meu Corpo | <:halloween:900565922836783105>';
-    embedDescription = `Continue para terminarmos o ritual, e eu ter todo o poder das Linhas Ley ❤️\n\nVocê votou ${user.votos} vezes em mim, e por isso, ganhou o **QUADRUPLO** de prêmios! Toma-te ${starQuantity}⭐, **${rollQuantity}**🔑, **${caçadosQuantity}** <:Demon:758765044443381780> \n\nVote em mim novamente em 12 horas <a:MenheraChibiTableSlam:768621225143697459>`;
+    embedDescription = `Continue para terminarmos o ritual, e eu ter todo o poder das Linhas Ley ❤️\n\nVocê votou ${user.votes} vezes em mim, e por isso, ganhou o **QUADRUPLO** de prêmios! Toma-te ${starQuantity}⭐, **${rollQuantity}**🔑, **${caçadosQuantity}** <:Demon:758765044443381780> \n\nVote em mim novamente em 12 horas <a:MenheraChibiTableSlam:768621225143697459>`;
   }
 
-  if (user.votos % 20 === 0 && isWeekend) {
+  if (user.votes % 20 === 0 && isWeekend) {
     caçadosQuantity *= 2;
     client.repositories.badgeRepository.addBadge(user.id, 12);
     embedTitle = '<:Demon:758765044443381780> | ESTÁ TUDO PRONTO | <:Demon:758765044443381780>';
@@ -56,11 +54,12 @@ const runVote = async (
 
   client.repositories.userRepository.update(user.id, {
     $inc: {
+      votes: 1,
       rolls: rollQuantity,
       estrelinhas: starQuantity,
-      caçados: caçadosQuantity,
+      demons: caçadosQuantity,
     },
-    voteCooldown: `${Date.now() + 43200000}`,
+    voteCooldown: Date.now() + 43200000,
   });
 
   const sendMessageToUser = async (id: string, embedToSend: MessageEmbed) => {

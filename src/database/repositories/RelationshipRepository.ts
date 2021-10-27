@@ -4,13 +4,13 @@ export default class RelationshipRepository {
   constructor(private userRepository: UserRepository) {}
 
   async marry(userOneID: string, userTwoID: string, data: string): Promise<void> {
-    await this.userRepository.update(userOneID, { casado: userTwoID, data });
-    await this.userRepository.update(userTwoID, { casado: userOneID, data });
+    await this.userRepository.update(userOneID, { married: userTwoID, marriedData: data });
+    await this.userRepository.update(userTwoID, { married: userOneID, marriedData: data });
   }
 
   async divorce(userOneID: string, userTwoID: string): Promise<void> {
-    await this.userRepository.update(userOneID, { casado: 'false', data: null });
-    await this.userRepository.update(userTwoID, { casado: 'false', data: null });
+    await this.userRepository.update(userOneID, { married: null, marriedData: null });
+    await this.userRepository.update(userTwoID, { married: null, marriedData: null });
   }
 
   async trisal(userOneID: string, userTwoID: string, userThreeID: string): Promise<void> {

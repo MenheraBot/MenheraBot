@@ -61,7 +61,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
       category: 'economy',
       cooldown: 10,
       clientPermissions: ['EMBED_LINKS'],
-      authorDataFields: ['cor', 'estrelinhas'],
+      authorDataFields: ['selectedColor', 'estrelinhas'],
     });
   }
 
@@ -138,7 +138,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
         )}\``,
       )
       .setFooter(ctx.translate('footer'))
-      .setColor(ctx.data.user.cor)
+      .setColor(ctx.data.user.selectedColor)
       .setThumbnail(ctx.author.displayAvatarURL({ format: 'png', dynamic: true }));
 
     const BuyButton = new MessageButton()
@@ -238,7 +238,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
           .map((a) => `${a.value}`)
           .join(', ')}** -> \`${menheraTotal}\``,
       )
-      .setColor(ctx.data.user.cor)
+      .setColor(ctx.data.user.selectedColor)
       .setThumbnail(ctx.author.displayAvatarURL({ format: 'png', dynamic: true }));
 
     const res = ctx.client.picassoWs.isAlive
@@ -343,7 +343,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
           .map((a) => `${a.value}`)
           .join(', ')}** -> \`${menheraTotal}\``,
       )
-      .setColor(ctx.data.user.cor)
+      .setColor(ctx.data.user.selectedColor)
       .setThumbnail(ctx.author.displayAvatarURL({ format: 'png', dynamic: true }));
 
     const newRes = ctx.client.picassoWs.isAlive
@@ -584,7 +584,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
         )}\``,
       )
       .setFooter(ctx.translate('footer'))
-      .setColor(ctx.data.user.cor)
+      .setColor(ctx.data.user.selectedColor)
       .setThumbnail(ctx.author.displayAvatarURL({ format: 'png', dynamic: true }));
 
     let attc: MessageAttachment | null = null;

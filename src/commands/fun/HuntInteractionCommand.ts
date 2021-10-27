@@ -59,7 +59,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
       category: 'fun',
       cooldown: 5,
       clientPermissions: ['EMBED_LINKS'],
-      authorDataFields: ['rolls', 'caçarTime'],
+      authorDataFields: ['rolls', 'huntCooldown'],
     });
   }
 
@@ -106,12 +106,12 @@ export default class HuntInteractionCommand extends InteractionCommand {
       }
     }
 
-    const canHunt = parseInt(authorData.caçarTime) < Date.now();
+    const canHunt = authorData.huntCooldown < Date.now();
 
     if (!canHunt && !rollsToUse) {
       ctx.makeMessage({
         content: ctx.prettyResponse('error', 'cooldown', {
-          time: moment.utc(parseInt(authorData.caçarTime) - Date.now()).format('mm:ss'),
+          time: moment.utc(authorData.huntCooldown - Date.now()).format('mm:ss'),
         }),
         ephemeral: true,
       });
@@ -153,14 +153,13 @@ export default class HuntInteractionCommand extends InteractionCommand {
       return { value, success, tries };
     };
 
-    // eslint-disable-next-line no-shadow
     enum huntEnum {
-      DEMON = 'caçados',
-      ANGEL = 'anjos',
-      DEMIGOD = 'semideuses',
+      DEMON = 'demons',
+      ANGEL = 'angels',
+      DEMIGOD = 'demigods',
       GIANT = 'giants',
-      ARCHANGEL = 'arcanjos',
-      GOD = 'deuses',
+      ARCHANGEL = 'archangels',
+      GOD = 'gods',
     }
 
     switch (selected) {

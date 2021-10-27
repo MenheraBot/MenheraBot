@@ -22,16 +22,14 @@ export default class ProfileInteractionCommand extends InteractionCommand {
       cooldown: 5,
       clientPermissions: ['EMBED_LINKS'],
       authorDataFields: [
-        'ban',
-        'banReason',
-        'casado',
-        'cor',
-        'votos',
-        'nota',
+        'married',
+        'selectedColor',
+        'votes',
+        'info',
         'voteCooldown',
         'badges',
-        'data',
-        'mamadas',
+        'marriedData',
+        'mamado',
         'mamou',
       ],
     });
@@ -47,7 +45,19 @@ export default class ProfileInteractionCommand extends InteractionCommand {
         await ctx.makeMessage({ content: ctx.prettyResponse('error', 'bot'), ephemeral: true });
         return;
       }
-      user = await this.client.repositories.userRepository.find(member.id);
+      user = await this.client.repositories.userRepository.find(member.id, [
+        'married',
+        'selectedColor',
+        'votes',
+        'info',
+        'voteCooldown',
+        'badges',
+        'marriedData',
+        'mamado',
+        'mamou',
+        'ban',
+        'banReason',
+      ]);
     }
 
     if (!user) {
@@ -63,8 +73,7 @@ export default class ProfileInteractionCommand extends InteractionCommand {
       return;
     }
 
-    if (user?.casado !== 'false' && user?.casado)
-      marry = await this.client.users.fetch(user.casado);
+    if (user?.married) marry = await this.client.users.fetch(user.married);
 
     await ctx.defer();
 
@@ -72,18 +81,18 @@ export default class ProfileInteractionCommand extends InteractionCommand {
     const usageCommands = await HttpRequests.getProfileCommands(member.id);
 
     const userSendData: IUserDataToProfile = {
-      cor: user.cor,
+      cor: user.selectedColor,
       avatar,
-      votos: user.votos,
-      nota: user.nota,
+      votos: user.votes,
+      nota: user.info,
       tag: member.tag,
       flagsArray: member.flags?.toArray() ?? ['NONE'],
-      casado: user.casado,
-      voteCooldown: user.voteCooldown,
+      casado: user.married as string,
+      voteCooldown: user.voteCooldown as number,
       badges: user.badges,
       username: member.username,
-      data: user.data as string,
-      mamadas: user.mamadas,
+      data: user.marriedData as string,
+      mamadas: user.mamado,
       mamou: user.mamou,
     };
 

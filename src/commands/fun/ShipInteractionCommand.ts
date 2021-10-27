@@ -57,15 +57,15 @@ export default class ShipInteractionCommand extends InteractionCommand {
       return;
     }
 
-    const dbUserToTakeValue1 =
+    const isUserMarried =
       user1.id === ctx.author.id
         ? ctx.data.user
-        : await this.client.repositories.userRepository.find(user1.id);
+        : await this.client.repositories.userRepository.find(user1.id, ['married']);
 
     let value = (Number(user1.id) % 51) + (Number(user2.id) % 51);
     if (value > 100) value = 100;
 
-    if (dbUserToTakeValue1?.casado && dbUserToTakeValue1?.casado === user2.id) value = 100;
+    if (isUserMarried?.married && isUserMarried?.married === user2.id) value = 100;
 
     const avatarLinkOne = user1.displayAvatarURL({ format: 'png', size: 256 });
     const avatarLinkTwo = user2.displayAvatarURL({ format: 'png', size: 256 });

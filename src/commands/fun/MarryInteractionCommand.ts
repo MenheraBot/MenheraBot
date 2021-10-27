@@ -21,7 +21,7 @@ export default class MarryInteractionCommand extends InteractionCommand {
       ],
       category: 'fun',
       cooldown: 8,
-      authorDataFields: ['casado'],
+      authorDataFields: ['married'],
     });
   }
 
@@ -42,12 +42,15 @@ export default class MarryInteractionCommand extends InteractionCommand {
       return;
     }
 
-    if (authorData.casado && authorData.casado !== 'false') {
+    if (authorData.married) {
       await ctx.makeMessage({ content: ctx.prettyResponse('error', 'married'), ephemeral: true });
       return;
     }
 
-    const user2 = await this.client.repositories.userRepository.find(mencionado.id);
+    const user2 = await this.client.repositories.userRepository.find(mencionado.id, [
+      'married',
+      'ban',
+    ]);
 
     if (!user2) {
       await ctx.makeMessage({ content: ctx.prettyResponse('warn', 'no-dbuser'), ephemeral: true });
@@ -62,7 +65,7 @@ export default class MarryInteractionCommand extends InteractionCommand {
       return;
     }
 
-    if (user2.casado && user2.casado !== 'false') {
+    if (user2.married) {
       await ctx.makeMessage({
         content: ctx.prettyResponse('error', 'mention-married'),
         ephemeral: true,

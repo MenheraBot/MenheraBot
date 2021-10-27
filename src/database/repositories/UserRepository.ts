@@ -40,7 +40,7 @@ export default class UserRepository {
     return this.userModal.findOne({ id: userID }, projection, { lean: true });
   }
 
-  async getBannedUserInfo(userID: string): Promise<(IUserSchema & Document) | null> {
+  async getBannedUserInfo(userID: string): Promise<IUserSchema | null> {
     return this.userModal.findOne({ id: userID }, ['ban', 'banReason'], { lean: true });
   }
 

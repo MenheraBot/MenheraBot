@@ -60,6 +60,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
       category: 'info',
       cooldown: 7,
       clientPermissions: ['EMBED_LINKS'],
+      authorDataFields: ['selectedColor'],
     });
   }
 
@@ -101,7 +102,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
 
     const embed = new MessageEmbed()
       .setTitle(ctx.translate('hunt.embed-title', { user: user.tag }))
-      .setColor(ctx.data.user.cor)
+      .setColor(ctx.data.user.selectedColor)
       .addFields([
         {
           name: `${emojis.demon} | ${ctx.translate('hunt.demon')}`,

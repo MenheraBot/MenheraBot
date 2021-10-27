@@ -191,13 +191,13 @@ export default class ShopInteractionCommand extends InteractionCommand {
       clientPermissions: ['EMBED_LINKS'],
       authorDataFields: [
         'estrelinhas',
-        'caçados',
+        'demons',
         'giants',
-        'anjos',
-        'arcanjos',
-        'deuses',
-        'semideuses',
-        'cores',
+        'angels',
+        'archangels',
+        'gods',
+        'demigods',
+        'colors',
         'rolls',
       ],
     });
@@ -387,7 +387,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
 
     switch (type) {
       case '1':
-        if (valor > ctx.data.user.caçados) {
+        if (valor > ctx.data.user.demons) {
           ctx.makeMessage({
             content: ctx.prettyResponse('error', 'dataVender.poor', { var: 'demônios' }),
             ephemeral: true,
@@ -401,7 +401,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
           content: ctx.prettyResponse('success', 'dataVender.success-demon', {
             value: valor,
             cost: valor * valorDemonio,
-            quantity: ctx.data.user.caçados - valor,
+            quantity: ctx.data.user.demons - valor,
             star: ctx.data.user.estrelinhas + valor * valorDemonio,
           }),
           ephemeral: true,
@@ -429,7 +429,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
         });
         break;
       case '3':
-        if (valor > ctx.data.user.anjos) {
+        if (valor > ctx.data.user.angels) {
           ctx.makeMessage({
             content: ctx.prettyResponse('error', 'dataVender.poor', { var: 'anjos' }),
             ephemeral: true,
@@ -443,14 +443,14 @@ export default class ShopInteractionCommand extends InteractionCommand {
           content: ctx.prettyResponse('success', 'dataVender.success-angel', {
             value: valor,
             cost: valor * valorAnjo,
-            quantity: ctx.data.user.anjos - valor,
+            quantity: ctx.data.user.angels - valor,
             star: ctx.data.user.estrelinhas + valor * valorAnjo,
           }),
           ephemeral: true,
         });
         break;
       case '4':
-        if (valor > ctx.data.user.arcanjos) {
+        if (valor > ctx.data.user.archangels) {
           ctx.makeMessage({
             content: ctx.prettyResponse('error', 'dataVender.poor', { var: 'arcanjos' }),
             ephemeral: true,
@@ -464,13 +464,13 @@ export default class ShopInteractionCommand extends InteractionCommand {
           content: ctx.prettyResponse('success', 'dataVender.success-archangel', {
             value: valor,
             cost: valor * valorArch,
-            quantity: ctx.data.user.arcanjos - valor,
+            quantity: ctx.data.user.archangels - valor,
             star: ctx.data.user.estrelinhas + valor * valorArch,
           }),
         });
         break;
       case '5':
-        if (valor > ctx.data.user.semideuses) {
+        if (valor > ctx.data.user.demigods) {
           ctx.makeMessage({
             content: ctx.prettyResponse('error', 'dataVender.poor', { var: 'semideuses' }),
             ephemeral: true,
@@ -484,13 +484,13 @@ export default class ShopInteractionCommand extends InteractionCommand {
           content: ctx.prettyResponse('success', 'dataVender.success-sd', {
             value: valor,
             cost: valor * valorSD,
-            quantity: ctx.data.user.semideuses - valor,
+            quantity: ctx.data.user.demigods - valor,
             star: ctx.data.user.estrelinhas + valor * valorSD,
           }),
         });
         break;
       case '6':
-        if (valor > ctx.data.user.deuses) {
+        if (valor > ctx.data.user.gods) {
           ctx.makeMessage({
             content: ctx.prettyResponse('error', 'dataVender.poor', { var: 'deuses' }),
             ephemeral: true,
@@ -504,7 +504,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
           content: ctx.prettyResponse('success', 'dataVender.success-god', {
             value: valor,
             cost: valor * valorDeus,
-            quantity: ctx.data.user.deuses - valor,
+            quantity: ctx.data.user.gods - valor,
             star: ctx.data.user.estrelinhas + valor * valorDeus,
           }),
         });
@@ -606,7 +606,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
 
     switch (selectedColor) {
       case '1':
-        if (ctx.data.user.cores.some((res) => res.cor === availableColors[0].cor)) {
+        if (ctx.data.user.colors.some((res) => res.cor === availableColors[0].cor)) {
           ctx.makeMessage({
             content: ctx.prettyResponse('yellow_circle', 'buy_colors.has-color'),
             ephemeral: true,
@@ -623,7 +623,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
         choice = 0;
         break;
       case '2':
-        if (ctx.data.user.cores.some((res) => res.cor === availableColors[1].cor)) {
+        if (ctx.data.user.colors.some((res) => res.cor === availableColors[1].cor)) {
           ctx.makeMessage({
             content: ctx.prettyResponse('yellow_circle', 'buy_colors.has-color'),
             ephemeral: true,
@@ -641,7 +641,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
         choice = 1;
         break;
       case '3':
-        if (ctx.data.user.cores.some((res) => res.cor === availableColors[2].cor)) {
+        if (ctx.data.user.colors.some((res) => res.cor === availableColors[2].cor)) {
           ctx.makeMessage({
             content: ctx.prettyResponse('yellow_circle', 'buy_colors.has-color'),
             ephemeral: true,
@@ -658,7 +658,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
         choice = 2;
         break;
       case '4':
-        if (ctx.data.user.cores.some((res) => res.cor === availableColors[3].cor)) {
+        if (ctx.data.user.colors.some((res) => res.cor === availableColors[3].cor)) {
           ctx.makeMessage({
             content: ctx.prettyResponse('yellow_circle', 'buy_colors.has-color'),
             ephemeral: true,
@@ -675,7 +675,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
         choice = 3;
         break;
       case '5':
-        if (ctx.data.user.cores.some((res) => res.cor === availableColors[4].cor)) {
+        if (ctx.data.user.colors.some((res) => res.cor === availableColors[4].cor)) {
           ctx.makeMessage({
             content: ctx.prettyResponse('yellow_circle', 'buy_colors.has-color'),
             ephemeral: true,
@@ -692,7 +692,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
         choice = 4;
         break;
       case '6':
-        if (ctx.data.user.cores.some((res) => res.cor === availableColors[5].cor)) {
+        if (ctx.data.user.colors.some((res) => res.cor === availableColors[5].cor)) {
           ctx.makeMessage({
             content: ctx.prettyResponse('yellow_circle', 'buy_colors.has-color'),
             ephemeral: true,
@@ -733,7 +733,9 @@ export default class ShopInteractionCommand extends InteractionCommand {
         }
 
         if (
-          ctx.data.user.cores.some((a) => `${a.cor}`.replace('#', '') === hexColor.replace('#', ''))
+          ctx.data.user.colors.some(
+            (a) => `${a.cor}`.replace('#', '') === hexColor.replace('#', ''),
+          )
         ) {
           ctx.makeMessage({
             content: ctx.prettyResponse('yellow_circle', 'buy_colors.has-color'),

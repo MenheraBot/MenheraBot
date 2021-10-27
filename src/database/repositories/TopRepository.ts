@@ -1,5 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import { Users } from '@structures/DatabaseCollections';
+import { IUserSchema } from '@utils/Types';
 
 // eslint-disable-next-line no-shadow
 enum TOP_ENUM {
@@ -71,7 +72,7 @@ export default class TopRepository {
 
   async getUserHuntRank(
     userID: string,
-    huntType: string,
+    huntType: keyof IUserSchema,
     ignoredUsers: string[] = [],
   ): Promise<{ rank: number }> {
     return this._getTop(userID, huntType, ignoredUsers);

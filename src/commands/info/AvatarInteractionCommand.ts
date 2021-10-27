@@ -21,6 +21,7 @@ export default class AvatarInteractionCommand extends InteractionCommand {
       ],
       cooldown: 5,
       clientPermissions: ['EMBED_LINKS'],
+      authorDataFields: ['selectedColor'],
     });
   }
 
@@ -35,7 +36,7 @@ export default class AvatarInteractionCommand extends InteractionCommand {
     if (mentionUser && mentionUser.id !== ctx.author.id) {
       try {
         user = await this.client.users.fetch(mentionUser.id);
-        db = await this.client.repositories.userRepository.find(user.id);
+        db = await this.client.repositories.userRepository.find(user.id, ['selectedColor']);
       } catch {
         await ctx.makeMessage({
           content: ctx.prettyResponse('error', 'unknow-user'),
@@ -45,7 +46,7 @@ export default class AvatarInteractionCommand extends InteractionCommand {
       }
     }
 
-    const cor = db?.cor ?? ('#a788ff' as const);
+    const cor = db?.selectedColor ?? ('#a788ff' as const);
 
     const img = user.displayAvatarURL({ dynamic: true, size: 1024 });
 

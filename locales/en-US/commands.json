@@ -683,6 +683,7 @@
     "use": "Use Items",
     "use-footer": "Click the button below to use items",
     "select": "Select an item to use",
+    "banned": "This user is **banned** from using Menhera",
     "choose-item": "Select a Item to use as your main magic item",
     "reset": "Reset Active Items",
     "reseted": "All done! All of your items were moved to inventory",

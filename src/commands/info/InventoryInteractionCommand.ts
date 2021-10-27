@@ -33,13 +33,19 @@ export default class InventoryInteractionCommand extends InteractionCommand {
       ],
       cooldown: 7,
       clientPermissions: ['EMBED_LINKS'],
+      authorDataFields: ['selectedColor', 'inUseItems', 'inventory'],
     });
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const user =
       ctx.options.getUser('user') && ctx.options.getUser('user', true).id !== ctx.author.id
-        ? await this.client.repositories.userRepository.find(ctx.options.getUser('user', true).id)
+        ? await this.client.repositories.userRepository.find(ctx.options.getUser('user', true).id, [
+            'selectedColor',
+            'inUseItems',
+            'inventory',
+            'ban',
+          ])
         : ctx.data.user;
 
     if (!user) {
@@ -50,13 +56,17 @@ export default class InventoryInteractionCommand extends InteractionCommand {
       return;
     }
 
+    if (user.ban) {
+      ctx.makeMessage({ content: ctx.prettyResponse('error', 'banned') });
+    }
+
     const embed = new MessageEmbed()
       .setTitle(
         ctx.translate('title', {
           user: ctx.options.getUser('user')?.username ?? ctx.author.username,
         }),
       )
-      .setColor(user.cor);
+      .setColor(user.selectedColor);
 
     if (user.inventory.length === 0 && user.inUseItems.length === 0) {
       embed.setDescription(ctx.prettyResponse('error', 'no-item'));

@@ -72,37 +72,37 @@ export interface IMagicItem {
 
 export interface IUserSchema {
   readonly id: string;
-  mamadas: number; // Remove
+  // mamadas: number; // Remove
   mamado: number;
   mamou: number;
-  casado: string; // remove
+  // casado: string; // remove
   married: string | null;
-  nota: string; // remove
+  // nota: string; // remove
   info: string;
-  data?: string | null; // remove
+  // data?: string | null; // remove
   marriedData: string | null;
   ban: boolean;
   banReason: string | null;
-  cor: ColorResolvable; // remove
+  // cor: ColorResolvable; // remove
   selectedColor: ColorResolvable;
   colors: Array<IColor>;
-  cores: Array<IColor>; // remove
-  caçados: number; // remove
+  // cores: Array<IColor>; // remove
+  // caçados: number; // remove
   demons: number;
   giants: number;
-  anjos: number; // remove
+  // anjos: number; // remove
   angels: number;
-  arcanjos: number; // remove
+  // arcanjos: number; // remove
   archangels: number;
-  semideuses: number; // remove
+  // semideuses: number; // remove
   demigods: number;
-  deuses: number; // remove
+  // deuses: number; // remove
   gods: number;
-  caçarTime: string; // remove
+  // caçarTime: string; // remove
   huntCooldown: number;
   rolls: number;
   estrelinhas: number;
-  votos: number; // remove
+  // votos: number; // remove
   votes: number;
   badges: Array<IBadge>;
   voteCooldown: number;
@@ -172,7 +172,7 @@ export interface IUserDataToProfile {
   tag: string;
   flagsArray: Array<string>;
   casado: string | User;
-  voteCooldown: string;
+  voteCooldown: number;
   badges: Array<IBadge>;
   username: string;
   data: string;
@@ -246,16 +246,16 @@ export interface ITopResult {
 }
 
 export enum TopRankingTypes {
-  mamadas = 'mamadas',
+  mamadas = 'mamado',
   mamou = 'mamou',
-  demons = 'caçados',
-  archangels = 'arcanjos',
+  demons = 'demons',
+  archangels = 'archangels',
   giants = 'giants',
-  angels = 'anjos',
-  demigods = 'semideuses',
-  gods = 'deuses',
+  angels = 'angels',
+  demigods = 'demigods',
+  gods = 'gods',
   stars = 'estrelinhas',
-  votes = 'votos',
+  votes = 'votes',
 }
 
 export type HuntingTypes = 'demon' | 'giant' | 'angel' | 'archangel' | 'demigod' | 'god';

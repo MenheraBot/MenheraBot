@@ -21,12 +21,13 @@ export default class WalletInteractionCommand extends InteractionCommand {
       clientPermissions: ['EMBED_LINKS'],
       authorDataFields: [
         'estrelinhas',
-        'caçados',
+        'demons',
         'giants',
-        'anjos',
-        'arcanjos',
-        'deuses',
-        'semideuses',
+        'angels',
+        'archangels',
+        'selectedColor',
+        'gods',
+        'demigods',
         'rolls',
       ],
     });
@@ -56,7 +57,7 @@ export default class WalletInteractionCommand extends InteractionCommand {
       return;
     }
 
-    const color = user?.cor ?? ('#a788ff' as const);
+    const color = user?.selectedColor ?? ('#a788ff' as const);
 
     const embed = new MessageEmbed()
       .setTitle(ctx.translate('title', { user: pessoa.tag }))
@@ -74,32 +75,32 @@ export default class WalletInteractionCommand extends InteractionCommand {
         },
         {
           name: `<:DEMON:758765044443381780> | ${ctx.translate('demons')} `,
-          value: `**${user.caçados}**`,
+          value: `**${user.demons}**`,
           inline: true,
         },
         {
           name: `🦍 | ${ctx.translate('giants')}`,
-          value: `**${user.giants || 0}**`,
+          value: `**${user.giants}**`,
           inline: true,
         },
         {
           name: `<:ANGEL:758765044204437535> | ${ctx.translate('angels')}`,
-          value: `**${user.anjos}**`,
+          value: `**${user.angels}**`,
           inline: true,
         },
         {
           name: `👼| ${ctx.translate('archangel')}`,
-          value: `**${user.arcanjos || 0}**`,
+          value: `**${user.archangels}**`,
           inline: true,
         },
         {
           name: `<:SemiGod:758766732235374674> | ${ctx.translate('sd')}`,
-          value: `**${user.semideuses}**`,
+          value: `**${user.demigods}**`,
           inline: true,
         },
         {
           name: `<:God:758474639570894899> | ${ctx.translate('god')}`,
-          value: `**${user.deuses}**`,
+          value: `**${user.gods}**`,
           inline: true,
         },
       ]);

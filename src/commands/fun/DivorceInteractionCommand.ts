@@ -13,14 +13,14 @@ export default class DivorceInteractionCommand extends InteractionCommand {
       category: 'fun',
       cooldown: 8,
       clientPermissions: ['EMBED_LINKS'],
-      authorDataFields: ['casado'],
+      authorDataFields: ['married'],
     });
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const authorData = ctx.data.user;
 
-    if (!authorData.casado || authorData.casado === 'false') {
+    if (!authorData.married) {
       await ctx.makeMessage({
         content: ctx.prettyResponse('warn', 'author-single'),
         ephemeral: true,
@@ -39,7 +39,7 @@ export default class DivorceInteractionCommand extends InteractionCommand {
       .setStyle('DANGER');
 
     ctx.makeMessage({
-      content: `${emojis.question} | ${ctx.translate('confirmation')} <@${authorData.casado}> ?`,
+      content: `${emojis.question} | ${ctx.translate('confirmation')} <@${authorData.married}> ?`,
       components: [{ type: 1, components: [ConfirmButton, CancellButton] }],
     });
 
@@ -71,7 +71,7 @@ export default class DivorceInteractionCommand extends InteractionCommand {
       ctx.makeMessage({
         content: `${emojis.success} | ${ctx.translate('confirmed', {
           author: ctx.author.toString(),
-          mention: `<@${authorData.casado}>`,
+          mention: `<@${authorData.married}>`,
         })}`,
         components: [
           {
@@ -85,7 +85,7 @@ export default class DivorceInteractionCommand extends InteractionCommand {
       });
 
       await this.client.repositories.relationshipRepository.divorce(
-        ctx.data.user.casado,
+        authorData.married,
         ctx.author.id,
       );
     } else {
