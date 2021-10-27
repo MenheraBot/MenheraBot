@@ -27,12 +27,12 @@ const userSchema = new Schema({
   marriedData: { type: String },
   ban: { type: Boolean, default: false },
   banReason: { type: String, default: null },
-  color: { type: String },
+  selectedColor: { type: String },
   cor: { type: String, default: '#a788ff' }, // Rename to color
   cores: { type: Array, default: [{ nome: '0 - Padrão', cor: '#a788ff', preço: 0 }] }, // Rename to colors
   colors: { type: Array },
   caçados: { type: Number, default: 0 }, // Rename to demons
-  demons: { type: Number },
+  demons: { type: Number, default: 0 },
   giants: { type: Number, default: 0 },
   angels: { type: Number },
   anjos: { type: Number, default: 0 }, // Rename to angels
@@ -43,13 +43,13 @@ const userSchema = new Schema({
   gods: { type: Number },
   deuses: { type: Number, default: 0 }, // Rename to gods
   caçarTime: { type: String, default: '000000000000' }, // Rename to huntCooldown
-  huntCooldown: { type: String },
+  huntCooldown: { type: Number, default: 0 },
   rolls: { type: Number, default: 0 },
   estrelinhas: { type: Number, default: 0 },
   votos: { type: Number, default: 0 }, // Rename to votes
   votes: { type: Number },
   badges: { type: Array, default: [] },
-  voteCooldown: { type: String, default: '000000000000' },
+  voteCooldown: { type: Number, default: 0 },
   trisal: { type: Array, default: [] },
   inventory: { type: Array, default: [] },
   inUseItems: { type: Array, default: [] },
