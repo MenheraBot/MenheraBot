@@ -287,3 +287,16 @@ export interface IReturnData<T> {
 }
 
 export type TMagicItemsFile<T extends HuntingTypes> = IProbablyBoostItem<T>;
+
+export enum TopRankingTypes {
+  mamadas = 'mamado',
+  mamou = 'mamou',
+  demons = 'demons',
+  archangels = 'archangels',
+  giants = 'giants',
+  angels = 'angels',
+  demigods = 'demigods',
+  gods = 'gods',
+  stars = 'estrelinhas',
+  votes = 'votes',
+}
