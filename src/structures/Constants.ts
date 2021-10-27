@@ -49,11 +49,11 @@ export const probabilities = {
 export const defaultHuntingProbabilities = {
   demon: [
     { amount: 1, probabilty: 20 },
-    { amount: 2, probabilty: 20 },
-    { amount: 3, probabilty: 22 },
+    { amount: 2, probabilty: 17 },
+    { amount: 3, probabilty: 20 },
     { amount: 0, probabilty: 18 },
     { amount: 4, probabilty: 15 },
-    { amount: 5, probabilty: 2 },
+    { amount: 5, probabilty: 7 },
     { amount: 6, probabilty: 3 },
   ],
   giant: [
