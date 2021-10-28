@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import axios from 'axios';
 
 import {
@@ -343,6 +344,15 @@ export default class HttpRequests {
       return { err: false, data: Buffer.from(data.data) };
     } catch {
       return { err: true };
+    }
+  }
+
+  static async inactiveUsers(users: string[]): Promise<{ user_id: string; date: number } | null> {
+    try {
+      const data = await apiRequest.get('/usages/inactive', { data: users });
+      return data.data;
+    } catch {
+      return null;
     }
   }
 }
