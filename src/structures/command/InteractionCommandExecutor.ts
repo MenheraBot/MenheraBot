@@ -32,6 +32,7 @@ const InteractionCommandExecutor = async (
     const userBannedInfo = await client.repositories.userRepository.getBannedUserInfo(
       interaction.user.id,
     );
+
     await interaction
       .reply({
         content: `<:negacao:759603958317711371> | ${t('permissions:BANNED_INFO', {
@@ -51,6 +52,11 @@ const InteractionCommandExecutor = async (
     return;
   }
 
+  if (command.config.devsOnly && process.env.OWNER !== interaction.user.id) {
+    await interaction.reply({ content: `${t('permissions:ONLY_DEVS')}`, ephemeral: true });
+    return;
+  }
+
   if (
     server.blockedChannels?.includes(interaction.channelId) &&
     !(interaction.member as GuildMember).permissions.has('MANAGE_CHANNELS')
@@ -60,8 +66,6 @@ const InteractionCommandExecutor = async (
       .catch(() => null);
     return;
   }
-
-  const dbCommand = await client.repositories.cacheRepository.fetchCommand(interaction.commandName);
 
   if (server.disabledCommands?.includes(command.config.name)) {
     await interaction
@@ -74,10 +78,8 @@ const InteractionCommandExecutor = async (
       .catch(() => null);
     return;
   }
-  if (command.config.devsOnly && process.env.OWNER !== interaction.user.id) {
-    await interaction.reply({ content: `${t('permissions:ONLY_DEVS')}`, ephemeral: true });
-    return;
-  }
+
+  const dbCommand = await client.repositories.cacheRepository.fetchCommand(interaction.commandName);
 
   if (dbCommand?.maintenance && process.env.OWNER !== interaction.user.id) {
     await interaction
@@ -98,7 +100,7 @@ const InteractionCommandExecutor = async (
   const timestamps = client.cooldowns.get(command.config.name) as Map<string, number>;
   const cooldownAmount = (command.config.cooldown || 3) * 1000;
 
-  // if (now - interaction.createdTimestamp >= 3000) return;
+  if (now - interaction.createdTimestamp >= 3000) return;
 
   if (timestamps.has(interaction.user.id)) {
     const expirationTime = (timestamps.get(interaction.user.id) as number) + cooldownAmount;
