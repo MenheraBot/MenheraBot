@@ -340,7 +340,7 @@
   },
   "cacar": {
     "usage": "",
-    "probabilities": "Probabilidades de caça\n\nDemônios: `[{{demon}}]`\nGigantes: `[{{giant}}]`\nAnjos: `[{{angel}}]`\nArcanjos: `[{{archangel}}]`\nSemideuses: `[{{demi}}]`\nDeuses: `[{{god}}]`",
+    "probabilities": "Probabilidades de caça\n\nDemônios: {{demon}}\nGigantes: {{giant}}\nAnjos: {{angel}}\nArcanjos: {{archangel}}\nSemideuses: {{demi}}\nDeuses: {{god}}",
     "hunt_description": "Você saiu para caçar **{{hunt}}** **{{count}}** vez com o Super Xandão, e voltou para casa com mais **{{value}}** pra conta. Você está em **#{{rank}}** lugar do top {{hunt}}",
     "hunt_description_plural": "Você saiu para caçar **{{hunt}}** **{{count}}** vezes com o Super Xandão, e voltou para casa com mais **{{value}}** pra conta. Você está em **#{{rank}}** lugar do top {{hunt}}",
     "god_hunted_success": "CARACA!!! VOCÊ SE MOSTROU UM HERÓI FRUTO DE UMA VONTADE DIVINA, ASSIM COMO XANDÃO, E CONSEGUIU CAÇAR `{{count}}` DEUS EM **{{toRun}}** TENTATIVAS! APENAS O BÁSICO MEU LINDO, COM ISSO VOCÊ ESTÁ EM **#{{rank}}** LUGAR DO TOP",

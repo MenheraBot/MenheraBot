@@ -77,12 +77,24 @@ export default class HuntInteractionCommand extends InteractionCommand {
     if (selected === 'probabilities') {
       await ctx.makeMessage({
         content: ctx.translate('probabilities', {
-          demon: getUserHuntProbability(ctx.data.user.inUseItems, huntEnum.DEMON),
-          giant: getUserHuntProbability(ctx.data.user.inUseItems, huntEnum.GIANT),
-          angel: getUserHuntProbability(ctx.data.user.inUseItems, huntEnum.ANGEL),
-          archangel: getUserHuntProbability(ctx.data.user.inUseItems, huntEnum.ARCHANGEL),
-          demi: getUserHuntProbability(ctx.data.user.inUseItems, huntEnum.DEMIGOD),
-          god: getUserHuntProbability(ctx.data.user.inUseItems, huntEnum.GOD),
+          demon: getUserHuntProbability(ctx.data.user.inUseItems, huntEnum.DEMON).map(
+            (a) => `\n**${a.amount}** (${a.probabilty})%`,
+          ),
+          giant: getUserHuntProbability(ctx.data.user.inUseItems, huntEnum.GIANT).map(
+            (a) => `\n**${a.amount}** (${a.probabilty})%`,
+          ),
+          angel: getUserHuntProbability(ctx.data.user.inUseItems, huntEnum.ANGEL).map(
+            (a) => `\n**${a.amount}** (${a.probabilty})%`,
+          ),
+          archangel: getUserHuntProbability(ctx.data.user.inUseItems, huntEnum.ARCHANGEL).map(
+            (a) => `\n**${a.amount}** (${a.probabilty})%**`,
+          ),
+          demi: getUserHuntProbability(ctx.data.user.inUseItems, huntEnum.DEMIGOD).map(
+            (a) => `\n**${a.amount}** (${a.probabilty})%`,
+          ),
+          god: getUserHuntProbability(ctx.data.user.inUseItems, huntEnum.GOD).map(
+            (a) => `\n**${a.amount}** (${a.probabilty})%`,
+          ),
         }),
       });
       return;
@@ -120,8 +132,6 @@ export default class HuntInteractionCommand extends InteractionCommand {
       .setThumbnail(avatar)
       .setTitle(ctx.translate(selected));
 
-    const { huntEntity } = this.client.repositories.huntRepository;
-
     const toRun = canHunt && rollsToUse ? rollsToUse + 1 : rollsToUse ?? 1;
 
     const areYouTheHuntOrTheHunter = async (
@@ -139,7 +149,13 @@ export default class HuntInteractionCommand extends InteractionCommand {
         if (taked > 0) success += 1;
       }
 
-      await huntEntity(ctx.author.id, huntType, value, cooldown, rollsToUse || 0);
+      await this.client.repositories.huntRepository.huntEntity(
+        ctx.author.id,
+        huntType,
+        value,
+        cooldown,
+        rollsToUse || 0,
+      );
       return { value, success, tries };
     };
 

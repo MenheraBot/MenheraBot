@@ -16,7 +16,7 @@ export const calculateProbability = (probabilities: HuntProbabiltyProps[]): numb
 
   for (const data of mapedChanges) {
     const [min, max] = data.probabilities;
-    if (chance >= min && max <= chance) {
+    if (chance >= min && chance <= max) {
       return data.amount;
     }
   }
