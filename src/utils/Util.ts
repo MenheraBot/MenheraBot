@@ -140,3 +140,14 @@ export const getMagicItemById = (id: number): { id: number; data: TMagicItemsFil
   Object.entries(MagicItems)
     .filter((a) => Number(a[0]) === id)
     .map((a) => ({ id: Number(a[0]), data: a[1] }))[0];
+
+export const getMillisecondsToTheEndOfDay = (): number => {
+  const date = new Date();
+  const passedMilli =
+    date.getHours() * 3600000 +
+    date.getMinutes() * 60000 +
+    date.getSeconds() * 1000 +
+    date.getMilliseconds();
+
+  return 86400000 - passedMilli;
+};

@@ -32,7 +32,7 @@ const handleRequest = async (ctx: Context, client: MenheraClient) => {
     ?.broadcastEval(
       (c: Client, { data }: { data: unknown }) => {
         if (!c.isReady()) return;
-        // @ts-ignore
+        // @ts-expect-error Client<boolean>.actions is private
         c.actions.InteractionCreate.handle(data);
       },
       {

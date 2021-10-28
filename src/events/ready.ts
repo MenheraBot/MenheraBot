@@ -3,15 +3,15 @@ import HttpRequests from '@utils/HTTPrequests';
 import { IStatusData } from '@utils/Types';
 import HttpServer from '@structures/server/server';
 import DBLWebhook from '@structures/server/controllers/DBLWebhook';
-import PostInteractions from '@structures/server/controllers/PostInteractions';
+// import PostInteractions from '@structures/server/controllers/PostInteractions';
 
 export default class ReadyEvent {
   constructor(private client: MenheraClient) {}
 
   async run(): Promise<void> {
     if (!this.client.user) return;
-    if (this.client.user.id !== process.env.MENHERA_ID) return;
     if (!this.client.shard) return;
+    if (this.client.user.id !== process.env.MENHERA_ID) return;
 
     const isMasterShard = (id: number) => id === (this.client.shard?.count as number) - 1;
 
@@ -26,7 +26,7 @@ export default class ReadyEvent {
 
     if (isMasterShard(shardId)) {
       HttpServer.getInstance().registerRouter('DBL', DBLWebhook(this.client));
-      HttpServer.getInstance().registerRouter('INTERACTIONS', PostInteractions(this.client));
+      // HttpServer.getInstance().registerRouter('INTERACTIONS', PostInteractions(this.client));
 
       const allBannedUsers = await this.client.repositories.userRepository.getAllBannedUsersId();
       await this.client.repositories.blacklistRepository.addBannedUsers(allBannedUsers);
@@ -81,4 +81,9 @@ export default class ReadyEvent {
 
     await HttpRequests.postShardStatus(toSendData);
   }
+
+  /*  static async verifyInactive(client: MenheraClient): Promise<void> {
+    setTimeout(() => {
+    }, getMillisecondsToTheEndOfDay());
+  } */
 }
