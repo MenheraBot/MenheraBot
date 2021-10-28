@@ -16,7 +16,7 @@ export default class UserRepository {
     userId: string,
     query: UpdateQuery<IUserSchema> | UpdateWithAggregationPipeline,
   ): Promise<void> {
-    await this.userModal.updateOne({ id: userId }, query);
+    await this.userModal.updateOne({ id: userId }, { ...query, lastCommandAt: Date.now() });
   }
 
   async findOrCreate(

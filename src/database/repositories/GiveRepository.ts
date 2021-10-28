@@ -11,8 +11,14 @@ export default class GiveRepository {
     toID: string,
     value: number,
   ): Promise<void> {
-    await this.userModal.updateOne({ id: fromID }, { $inc: { [field]: -value } });
-    await this.userModal.updateOne({ id: toID }, { $inc: { [field]: value } });
+    await this.userModal.updateOne(
+      { id: fromID },
+      { $inc: { [field]: -value }, lastCommandAt: Date.now() },
+    );
+    await this.userModal.updateOne(
+      { id: toID },
+      { $inc: { [field]: value }, lastCommandAt: Date.now() },
+    );
   }
 
   async giveStars(fromID: string, toID: string, value: number): Promise<void> {

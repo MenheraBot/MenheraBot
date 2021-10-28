@@ -54,6 +54,7 @@ const userSchema = new Schema({
   inventory: { type: Array, default: [] },
   inUseItems: { type: Array, default: [] },
   itemsLimit: { type: Number, default: 1 },
+  lastCommandAt: { type: Number, default: 0 },
 });
 
 export const Cmds = model<ICmdSchema>('Cmd', cmdSchema);

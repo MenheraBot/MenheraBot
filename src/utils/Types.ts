@@ -110,6 +110,7 @@ export interface IUserSchema {
   inventory: Array<IMagicItem & { amount: number }>;
   inUseItems: Array<IMagicItem>;
   itemsLimit: number;
+  lastCommandAt: number;
 }
 
 export interface IInteractionCommandConfig extends ChatInputApplicationCommandData {

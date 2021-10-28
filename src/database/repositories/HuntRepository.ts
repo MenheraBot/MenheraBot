@@ -13,7 +13,11 @@ export default class HuntRepository {
   ): Promise<void> {
     await this.userModal.updateOne(
       { id: userID },
-      { $inc: { [huntType]: value, rolls: -rolls }, huntCooldown: cooldown },
+      {
+        $inc: { [huntType]: value, rolls: -rolls },
+        huntCooldown: cooldown,
+        lastCommandAt: Date.now(),
+      },
     );
   }
 }
