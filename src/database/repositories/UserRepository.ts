@@ -37,7 +37,7 @@ export default class UserRepository {
     userID: string,
     projection: Array<keyof IUserSchema> = [],
   ): Promise<IUserSchema | null> {
-    return this.userModal.findOne({ id: userID }, projection, { lean: true });
+    return this.userModal.findOne({ id: userID }, projection);
   }
 
   async getBannedUserInfo(userID: string): Promise<IUserSchema | null> {

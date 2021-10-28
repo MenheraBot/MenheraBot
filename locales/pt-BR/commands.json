@@ -677,5 +677,21 @@
     "choose-toggle": "Qual item você quer substituir?",
     "equipped": "Sucesso! O item **{{name}}** foi selecionado como ativo! Você já pode desfrutar de seus poderes!",
     "select-description": "Escolha um dos itens abaixos para ativá-lo. Caso não tenha espaço disponível, tu terá que escolher um dos itens ativos para substituílo"
+  },
+  "carteira": {
+    "description": "Veja a carteira de alguém",
+    "usage": "[usuário]",
+    "no-dbuser": "este usuário não está em minha database",
+    "title": "Carteira de {{user}}",
+    "stars": "Estrelinhas",
+    "rolls": "Rolls",
+    "unknow-user": "usuário não encontrado",
+    "demons": "Demônios",
+    "angels": "Anjos",
+    "giants": "Gigantes",
+    "archangel": "Arcanjos",
+    "sd": "Semideuses",
+    "god": "Deuses",
+    "banned-user": "Este usuário não possui carteira pois está banido da Menhera!"
   }
 }

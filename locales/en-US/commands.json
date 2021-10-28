@@ -670,5 +670,21 @@
     "choose-toggle": "Wich item do you want to replace?",
     "equipped": "Success! The **{{name}}** item has been selected as active! You can now enjoy its powers!",
     "select-description": "Choose one of the items below to activate it. If there is no available space, you will have to choose one of the active items to replace it"
+  },
+  "carteira": {
+    "description": "See someone's wallet",
+    "usage": "[user]",
+    "no-dbuser": "this user is not in my database",
+    "title": "{{user}}'s Wallet",
+    "stars": "Stars",
+    "rolls": "Rolls",
+    "unknow-user": "user not found",
+    "giants": "Giants",
+    "archangel": "Archangels",
+    "demons": "Demons",
+    "angels": "Angels",
+    "sd": "Demigods",
+    "god": "Gods",
+    "banned-user": "This user doesn't have a wallet because they're banned from Menhera!"
   }
 }

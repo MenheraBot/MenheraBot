@@ -22,6 +22,7 @@ export default class EvalSlashInteractionCommand extends InteractionCommand {
       devsOnly: true,
       cooldown: 5,
       clientPermissions: ['EMBED_LINKS'],
+      authorDataFields: ['angels', 'huntCooldown', 'ban', 'trisal', 'estrelinhas'],
     });
   }
 

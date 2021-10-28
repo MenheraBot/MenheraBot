@@ -214,6 +214,7 @@ const InteractionCommandExecutor = async (
 
         if (client.user?.id === '708014856711962654')
           errorWebHook.send({ embeds: [embed] }).catch(() => null);
+        else interaction.followUp({ embeds: [embed], ephemeral: true }).catch(() => null);
       }
     });
   } catch (err) {
@@ -246,6 +247,7 @@ const InteractionCommandExecutor = async (
 
       if (client.user?.id === '708014856711962654')
         errorWebHook.send({ embeds: [embed] }).catch(() => null);
+      else interaction.followUp({ embeds: [embed], ephemeral: true });
     }
   }
 
