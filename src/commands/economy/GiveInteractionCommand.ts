@@ -1,8 +1,9 @@
-import { emojis, EmojiTypes } from '@structures/Constants';
+import { emojis } from '@structures/Constants';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageButton } from 'discord.js-light';
 import Util, { disableComponents, resolveCustomId } from '@utils/Util';
+import { HuntingTypes } from '@utils/Types';
 
 export default class GiveInteractionCommand extends InteractionCommand {
   constructor() {
@@ -23,31 +24,31 @@ export default class GiveInteractionCommand extends InteractionCommand {
           choices: [
             {
               name: '⭐ | Estrelinhas',
-              value: 'star',
+              value: 'estrelinhas',
             },
             {
               name: '😈 | Demônios',
-              value: 'demon',
+              value: 'demons',
             },
             {
               name: '👊 | Gigantes',
-              value: 'giant',
+              value: 'giants',
             },
             {
               name: '👼 | Anjos',
-              value: 'angel',
+              value: 'angels',
             },
             {
               name: '🧚‍♂️ | Arcanjos',
-              value: 'archangel',
+              value: 'archangels',
             },
             {
               name: '🙌 | Semideuses',
-              value: 'semigod',
+              value: 'demigods',
             },
             {
               name: '✝️ | Deuses',
-              value: 'god',
+              value: 'gods',
             },
           ],
           required: true,
@@ -116,7 +117,7 @@ export default class GiveInteractionCommand extends InteractionCommand {
   async run(ctx: InteractionCommandContext): Promise<void> {
     const [toSendUser, selectedOption, input] = [
       ctx.options.getUser('user', true),
-      ctx.options.getString('tipo', true) as EmojiTypes,
+      ctx.options.getString('tipo', true) as HuntingTypes | 'estrelinhas',
       ctx.options.getInteger('valor', true),
     ];
 
@@ -191,84 +192,16 @@ export default class GiveInteractionCommand extends InteractionCommand {
       return;
     }
 
-    await ctx.client.repositories.userRepository.findOrCreate(toSendUser.id);
+    if (input > ctx.data.user[selectedOption])
+      return GiveInteractionCommand.replyNotEnoughtError(ctx, selectedOption);
 
-    const authorData = ctx.data.user;
+    ctx.client.repositories.giveRepository.executeGive(
+      selectedOption,
+      ctx.author.id,
+      toSendUser.id,
+      input,
+    );
 
-    switch (selectedOption) {
-      case 'star':
-        if (input > authorData.estrelinhas)
-          return GiveInteractionCommand.replyNotEnoughtError(ctx, 'stars');
-
-        await ctx.client.repositories.giveRepository.giveStars(ctx.author.id, toSendUser.id, input);
-        return GiveInteractionCommand.replySuccess(ctx, input, emojis.star, toSendUser.toString());
-      case 'demon':
-        if (input > authorData.demons)
-          return GiveInteractionCommand.replyNotEnoughtError(ctx, 'demons');
-        await ctx.client.repositories.giveRepository.giveDemons(
-          ctx.author.id,
-          toSendUser.id,
-          input,
-        );
-        return GiveInteractionCommand.replySuccess(ctx, input, emojis.demon, toSendUser.toString());
-        break;
-      case 'giant':
-        if (input > authorData.giants)
-          return GiveInteractionCommand.replyNotEnoughtError(ctx, 'giants');
-        await ctx.client.repositories.giveRepository.giveGiants(
-          ctx.author.id,
-          toSendUser.id,
-          input,
-        );
-        return GiveInteractionCommand.replySuccess(ctx, input, emojis.giant, toSendUser.toString());
-      case 'angel':
-        if (input > authorData.angels)
-          return GiveInteractionCommand.replyNotEnoughtError(ctx, 'angels');
-
-        await ctx.client.repositories.giveRepository.giveAngels(
-          ctx.author.id,
-          toSendUser.id,
-          input,
-        );
-
-        return GiveInteractionCommand.replySuccess(ctx, input, emojis.angel, toSendUser.toString());
-      case 'archangel':
-        if (input > authorData.archangels)
-          return GiveInteractionCommand.replyNotEnoughtError(ctx, 'archangel');
-        await ctx.client.repositories.giveRepository.giveArchangel(
-          ctx.author.id,
-          toSendUser.id,
-          input,
-        );
-        return GiveInteractionCommand.replySuccess(
-          ctx,
-          input,
-          emojis.archangel,
-          toSendUser.toString(),
-        );
-      case 'semigod':
-        if (input > authorData.demigods)
-          return GiveInteractionCommand.replyNotEnoughtError(ctx, 'semigods');
-
-        await ctx.client.repositories.giveRepository.giveDemigods(
-          ctx.author.id,
-          toSendUser.id,
-          input,
-        );
-
-        return GiveInteractionCommand.replySuccess(
-          ctx,
-          input,
-          emojis.semigod,
-          toSendUser.toString(),
-        );
-      case 'god':
-        if (input > authorData.gods)
-          return GiveInteractionCommand.replyNotEnoughtError(ctx, 'gods');
-
-        await ctx.client.repositories.giveRepository.giveGods(ctx.author.id, toSendUser.id, input);
-
-        return GiveInteractionCommand.replySuccess(ctx, input, emojis.god, toSendUser.toString());
-    }
+    GiveInteractionCommand.replySuccess(ctx, input, emojis[selectedOption], toSendUser.toString());
   }
 }
