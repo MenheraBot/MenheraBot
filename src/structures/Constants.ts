@@ -11,13 +11,13 @@ export const shopEconomy = {
     your_choice: 700000,
   },
   hunts: {
-    roll: 7000,
-    demon: 600,
-    giant: 1900,
-    angel: 3200,
-    archangel: 5900,
-    demigod: 8000,
-    god: 19000,
+    roll: 15000,
+    demon: 1200,
+    giant: 1500,
+    angel: 2600,
+    archangel: 3200,
+    demigod: 6000,
+    god: 25000,
   },
 };
 
@@ -28,8 +28,7 @@ export const defaultHuntingProbabilities = {
     { amount: 2, probabilty: 18 },
     { amount: 4, probabilty: 15 },
     { amount: 3, probabilty: 12 },
-    { amount: 5, probabilty: 7 },
-    { amount: 6, probabilty: 2 },
+    { amount: 5, probabilty: 9 },
   ],
   giants: [
     { amount: 0, probabilty: 33 },

@@ -3,7 +3,10 @@ import HttpRequests from '@utils/HTTPrequests';
 import { IStatusData } from '@utils/Types';
 import HttpServer from '@structures/server/server';
 import DBLWebhook from '@structures/server/controllers/DBLWebhook';
+import { getMillisecondsToTheEndOfDay } from '@utils/Util';
 // import PostInteractions from '@structures/server/controllers/PostInteractions';
+
+let inactiveTimeout: NodeJS.Timeout;
 
 export default class ReadyEvent {
   async run(client: MenheraClient): Promise<void> {
@@ -25,6 +28,8 @@ export default class ReadyEvent {
     if (isMasterShard(shardId)) {
       HttpServer.getInstance().registerRouter('DBL', DBLWebhook(client));
       // HttpServer.getInstance().registerRouter('INTERACTIONS', PostInteractions(this.client));
+
+      ReadyEvent.verifyInactive(client);
 
       const allBannedUsers = await client.repositories.userRepository.getAllBannedUsersId();
       await client.repositories.blacklistRepository.addBannedUsers(allBannedUsers);
@@ -80,8 +85,40 @@ export default class ReadyEvent {
     await HttpRequests.postShardStatus(toSendData);
   }
 
-  /*  static async verifyInactive(client: MenheraClient): Promise<void> {
-    setTimeout(() => {
+  static async verifyInactive(client: MenheraClient): Promise<void> {
+    clearTimeout(inactiveTimeout);
+    inactiveTimeout = setTimeout(async () => {
+      /*   const inactiveUsers = await client.database.Users.find(
+        {
+          lastCommandAt: { $lte: Date.now() - 604800000 },
+          $or: [
+            { estrelinhas: { $gte: 250000 } },
+            { demons: { $gte: 60 } },
+            { giants: { $gte: 50 } },
+            { angels: { $gte: 40 } },
+            { archangels: { $gte: 30 } },
+            { demigods: { $gte: 20 } },
+            { gods: { $gte: 5 } },
+          ],
+        },
+        [
+          'estrelinhas',
+          'id',
+          'lastCommandAt',
+          'demons',
+          'giants',
+          'angels',
+          'archangels',
+          'demigods',
+          'gods',
+        ],
+      );
+
+        const ids = inactiveUsers.map((a) => a.id);
+
+      const updatedData = inactiveUsers.map((a) => {
+
+      }); */
     }, getMillisecondsToTheEndOfDay());
-  } */
+  }
 }
