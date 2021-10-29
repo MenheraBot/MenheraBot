@@ -1,5 +1,4 @@
 import { IInteractionCommandConfig, IUserSchema } from '@utils/Types';
-import MenheraClient from 'MenheraClient';
 import InteractionCommandContext from './InteractionContext';
 
 export default abstract class InteractionCommand {
@@ -7,7 +6,7 @@ export default abstract class InteractionCommand {
 
   public config: IInteractionCommandConfig & { authorDataFields: Array<keyof IUserSchema> };
 
-  constructor(public client: MenheraClient, config: IInteractionCommandConfig) {
+  constructor(config: IInteractionCommandConfig) {
     this.config = { ...config, authorDataFields: config.authorDataFields ?? [] };
   }
 

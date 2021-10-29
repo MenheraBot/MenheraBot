@@ -1,4 +1,3 @@
-import MenheraClient from 'MenheraClient';
 import { COLORS } from '@structures/Constants';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
@@ -6,8 +5,8 @@ import { MessageEmbed } from 'discord.js-light';
 import HttpRequests from '@utils/HTTPrequests';
 
 export default class KissInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'beijar',
       description: '「😘」・De uma beijoquita em alguém que tu goste',
       category: 'actions',

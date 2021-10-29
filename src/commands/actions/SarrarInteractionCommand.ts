@@ -1,4 +1,3 @@
-import MenheraClient from 'MenheraClient';
 import { COLORS } from '@structures/Constants';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
@@ -7,8 +6,8 @@ import Util from '@utils/Util';
 import HttpRequests from '@utils/HTTPrequests';
 
 export default class SarrarInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'sarrar',
       description: '「🦧」・Invoca o poder dos irmãos Berti para fazer a lendária sarrada',
       options: [
@@ -82,7 +81,7 @@ export default class SarrarInteractionCommand extends InteractionCommand {
       if (int.customId !== ctx.interaction.id) return false;
       if (int.user.id === ctx.author.id) return false;
 
-      const isUserbanned = await this.client.repositories.blacklistRepository.isUserBanned(
+      const isUserbanned = await ctx.client.repositories.blacklistRepository.isUserBanned(
         int.user.id,
       );
 

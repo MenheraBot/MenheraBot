@@ -1,4 +1,3 @@
-import MenheraClient from 'MenheraClient';
 import { COLORS } from '@structures/Constants';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
@@ -6,8 +5,8 @@ import { MessageEmbed } from 'discord.js-light';
 import HttpRequests from '@utils/HTTPrequests';
 
 export default class MamarInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'mamar',
       description:
         '「🧉」・Principal comando da Menhera. De uma mamada de Qualidade monstra em alguém',
@@ -46,7 +45,7 @@ export default class MamarInteractionCommand extends InteractionCommand {
       return;
     }
 
-    if (await this.client.repositories.blacklistRepository.isUserBanned(mention.id)) {
+    if (await ctx.client.repositories.blacklistRepository.isUserBanned(mention.id)) {
       await ctx.makeMessage({
         content: ctx.prettyResponse('error', 'user-banned'),
         ephemeral: true,
