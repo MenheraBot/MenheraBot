@@ -1,11 +1,10 @@
-import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageEmbed } from 'discord.js-light';
 
 export default class SupportInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'suporte',
       description: '「🙋」・Precisa de ajuda? Entre no meu servidor de suporte',
       category: 'util',

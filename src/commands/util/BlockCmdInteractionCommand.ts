@@ -1,10 +1,9 @@
-import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 
 export default class BlockCmdInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'blockcomando',
       description: '「🚫」・Muda as permissões de uso de comandos meus nesse servidor!',
       category: 'util',
@@ -23,7 +22,7 @@ export default class BlockCmdInteractionCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    const cmd = this.client.slashCommands.get(ctx.options.getString('comando', true));
+    const cmd = ctx.client.slashCommands.get(ctx.options.getString('comando', true));
 
     if (!cmd) {
       await ctx.makeMessage({ content: ctx.prettyResponse('error', 'no-cmd') });
@@ -44,7 +43,7 @@ export default class BlockCmdInteractionCommand extends InteractionCommand {
       const index = ctx.data.server.disabledCommands.indexOf(cmd.config.name);
 
       ctx.data.server.disabledCommands.splice(index, 1);
-      await this.client.repositories.cacheRepository.updateGuild(
+      await ctx.client.repositories.cacheRepository.updateGuild(
         ctx.interaction.guild?.id as string,
         ctx.data.server,
       );
@@ -54,7 +53,7 @@ export default class BlockCmdInteractionCommand extends InteractionCommand {
       return;
     }
     ctx.data.server.disabledCommands.push(cmd.config.name);
-    await this.client.repositories.cacheRepository.updateGuild(
+    await ctx.client.repositories.cacheRepository.updateGuild(
       ctx.interaction.guild?.id as string,
       ctx.data.server,
     );

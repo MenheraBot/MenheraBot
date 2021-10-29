@@ -1,4 +1,3 @@
-import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageSelectMenu, SelectMenuInteraction } from 'discord.js-light';
@@ -6,8 +5,8 @@ import { emojis } from '@structures/Constants';
 import Util from '@utils/Util';
 
 export default class LanguageInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'idioma',
       description: '「🌐」・Mude o idioma em que eu falo neste servidor!',
       category: 'util',
@@ -43,7 +42,7 @@ export default class LanguageInteractionCommand extends InteractionCommand {
       components: [{ type: 'ACTION_ROW', components: [selector] }],
     });
 
-    const collectInteracion = await Util.collectComponentInteractionWithId(
+    const collectInteracion = await Util.collectComponentInteractionWithId<SelectMenuInteraction>(
       ctx.channel,
       ctx.author.id,
       ctx.interaction.id,
@@ -62,12 +61,12 @@ export default class LanguageInteractionCommand extends InteractionCommand {
       return;
     }
 
-    this.editLang(ctx, (collectInteracion as SelectMenuInteraction).values[0]);
+    LanguageInteractionCommand.editLang(ctx, collectInteracion.values[0]);
   }
 
-  async editLang(ctx: InteractionCommandContext, lang: string): Promise<void> {
+  static async editLang(ctx: InteractionCommandContext, lang: string): Promise<void> {
     ctx.data.server.lang = lang;
-    await this.client.repositories.cacheRepository.updateGuild(
+    await ctx.client.repositories.cacheRepository.updateGuild(
       ctx.interaction.guild?.id as string,
       ctx.data.server,
     );

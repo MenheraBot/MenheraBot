@@ -1,4 +1,3 @@
-import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageButton } from 'discord.js-light';
@@ -6,8 +5,8 @@ import { emojis } from '@structures/Constants';
 import Util from '@utils/Util';
 
 export default class BlockChannelInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'blockcanal',
       description: '「🚫」・Mude as permissões de comandos nos canais',
       category: 'util',
@@ -73,7 +72,7 @@ export default class BlockChannelInteractionCommand extends InteractionCommand {
         const index = ctx.data.server.blockedChannels.indexOf(selectedChannel.id);
 
         ctx.data.server.blockedChannels.splice(index, 1);
-        await this.client.repositories.cacheRepository.updateGuild(
+        await ctx.client.repositories.cacheRepository.updateGuild(
           ctx.interaction.guild?.id as string,
           ctx.data.server,
         );
@@ -85,7 +84,7 @@ export default class BlockChannelInteractionCommand extends InteractionCommand {
         return;
       }
       ctx.data.server.blockedChannels.push(selectedChannel.id);
-      await this.client.repositories.cacheRepository.updateGuild(
+      await ctx.client.repositories.cacheRepository.updateGuild(
         ctx.interaction.guild?.id as string,
         ctx.data.server,
       );
@@ -133,7 +132,7 @@ export default class BlockChannelInteractionCommand extends InteractionCommand {
         );
 
         if (confirmed && ctx.interaction.guild) {
-          this.client.repositories.guildRepository.update(ctx.interaction.guild.id, {
+          ctx.client.repositories.guildRepository.update(ctx.interaction.guild.id, {
             blockedChannels: [],
           });
           ctx.makeMessage({ components: [], content: ctx.prettyResponse('yes', 'done') });

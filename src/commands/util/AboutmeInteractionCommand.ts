@@ -1,10 +1,9 @@
-import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 
 export default class AboutmeInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'sobremim',
       description: '「💬」・Mude o seu sobremim (A mensagem que aparece em seu perfil)',
       category: 'util',

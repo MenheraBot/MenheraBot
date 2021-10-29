@@ -1,11 +1,10 @@
-import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageEmbed } from 'discord.js-light';
 
 export default class VoteInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'votar',
       description: '「🆙」・Veja o link para votar em mim. Vote e receba prêmios UwU',
       category: 'util',
