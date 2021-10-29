@@ -61,7 +61,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
       category: 'fun',
       cooldown: 7,
       clientPermissions: ['EMBED_LINKS'],
-      authorDataFields: ['rolls', 'huntCooldown', 'inUseItems'],
+      authorDataFields: ['rolls', 'huntCooldown', 'inUseItems', 'selectedColor'],
     });
   }
 
@@ -74,27 +74,86 @@ export default class HuntInteractionCommand extends InteractionCommand {
     }
 
     if (selected === 'probabilities') {
+      const embed = new MessageEmbed()
+        .setTitle(ctx.translate('probabilities'))
+        .setColor(ctx.data.user.selectedColor)
+        .addFields([
+          {
+            name: ctx.prettyResponse(huntEnum.DEMON, huntEnum.DEMON),
+            value: `${getUserHuntProbability(ctx.data.user.inUseItems, huntEnum.DEMON)
+              .map((a) =>
+                ctx.translate('chances', {
+                  count: a.amount,
+                  percentage: a.probabilty,
+                }),
+              )
+              .join('\n')}`,
+            inline: true,
+          },
+          {
+            name: ctx.prettyResponse(huntEnum.GIANT, huntEnum.GIANT),
+            value: `${getUserHuntProbability(ctx.data.user.inUseItems, huntEnum.GIANT)
+              .map((a) =>
+                ctx.translate('chances', {
+                  count: a.amount,
+                  percentage: a.probabilty,
+                }),
+              )
+              .join('\n')}`,
+            inline: true,
+          },
+          {
+            name: ctx.prettyResponse(huntEnum.ANGEL, huntEnum.ANGEL),
+            value: `${getUserHuntProbability(ctx.data.user.inUseItems, huntEnum.ANGEL)
+              .map((a) =>
+                ctx.translate('chances', {
+                  count: a.amount,
+                  percentage: a.probabilty,
+                }),
+              )
+              .join('\n')}`,
+            inline: true,
+          },
+          {
+            name: ctx.prettyResponse(huntEnum.ARCHANGEL, huntEnum.ARCHANGEL),
+            value: `${getUserHuntProbability(ctx.data.user.inUseItems, huntEnum.ARCHANGEL)
+              .map((a) =>
+                ctx.translate('chances', {
+                  count: a.amount,
+                  percentage: a.probabilty,
+                }),
+              )
+              .join('\n')}`,
+            inline: true,
+          },
+          {
+            name: ctx.prettyResponse(huntEnum.DEMIGOD, huntEnum.DEMIGOD),
+            value: `${getUserHuntProbability(ctx.data.user.inUseItems, huntEnum.DEMIGOD)
+              .map((a) =>
+                ctx.translate('chances', {
+                  count: a.amount,
+                  percentage: a.probabilty,
+                }),
+              )
+              .join('\n')}`,
+            inline: true,
+          },
+          {
+            name: ctx.prettyResponse(huntEnum.GOD, huntEnum.GOD),
+            value: `${getUserHuntProbability(ctx.data.user.inUseItems, huntEnum.GOD)
+              .map((a) =>
+                ctx.translate('chances', {
+                  count: a.amount,
+                  percentage: a.probabilty,
+                }),
+              )
+              .join('\n')}`,
+            inline: true,
+          },
+        ]);
+
       await ctx.makeMessage({
-        content: ctx.translate('probabilities', {
-          demon: getUserHuntProbability(ctx.data.user.inUseItems, huntEnum.DEMON).map(
-            (a) => `\n**${a.amount}** (${a.probabilty})%`,
-          ),
-          giant: getUserHuntProbability(ctx.data.user.inUseItems, huntEnum.GIANT).map(
-            (a) => `\n**${a.amount}** (${a.probabilty})%`,
-          ),
-          angel: getUserHuntProbability(ctx.data.user.inUseItems, huntEnum.ANGEL).map(
-            (a) => `\n**${a.amount}** (${a.probabilty})%`,
-          ),
-          archangel: getUserHuntProbability(ctx.data.user.inUseItems, huntEnum.ARCHANGEL).map(
-            (a) => `\n**${a.amount}** (${a.probabilty})%**`,
-          ),
-          demi: getUserHuntProbability(ctx.data.user.inUseItems, huntEnum.DEMIGOD).map(
-            (a) => `\n**${a.amount}** (${a.probabilty})%`,
-          ),
-          god: getUserHuntProbability(ctx.data.user.inUseItems, huntEnum.GOD).map(
-            (a) => `\n**${a.amount}** (${a.probabilty})%`,
-          ),
-        }),
+        embeds: [embed],
       });
       return;
     }

@@ -334,7 +334,8 @@
     "description": "Send it when someone makes that joke joke"
   },
   "cacar": {
-    "probabilities": "Hunt probabilities\n\nDemons: {{demon}}\nGiants: {{giant}}\nAngels: {{angel}}\nArchangels: {{archangel}}\nDemigods: {{demi}}\nGods: {{god}}`",
+    "probabilities": "Your Hunt probabilities",
+    "chances": "**{{count}}** ({{percentage}}%)",
     "hunt_description": "You went hunting **{{hunt}}** **{{count}}** time with Super Xandão, and you returned home with more **{{value}}** to count. You are in **#{{rank}}** on the {{hunt}} top",
     "hunt_description_plural": "You went hunting **{{hunt}}** **{{count}}** times with Super Xandão, and you returned home with more **{{value}}** to count. You are in **#{{rank}}** on the {{hunt}} top",
     "god_hunted_success": "HOLLY MOLLY!!! YOU BECOME A HERO FRUIT OF A DIVINE FORCE, AS WELL AS XANDÃO, AND GOT ​​HUNTING `{{count}}` GOD IN **{{toRun}}** TRIES! WITH THAT SAID, YOU ARE IN **#{{rank}}** ON GOD MENHERA'S TOP",
