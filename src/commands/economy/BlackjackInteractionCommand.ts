@@ -9,38 +9,15 @@ import Util, { resolveCustomId } from '@utils/Util';
 
 const CalculateHandValue = (cards: Array<number>): Array<IBlackjackCards> =>
   cards.reduce((p: Array<IBlackjackCards>, c: number) => {
-    if (c <= 13) {
-      p.push({
-        value: c > 10 ? 10 : c,
-        isAce: c === 1,
-        id: c,
-      });
-    }
+    const multiplier = Math.floor(c / 13);
+    const newC = c - multiplier * 13;
 
-    if (c > 13 && c <= 26) {
-      const newC = c - 13;
-      p.push({
-        value: newC > 10 ? 10 : newC,
-        isAce: newC === 1,
-        id: c,
-      });
-    }
-    if (c > 26 && c <= 39) {
-      const newC = c - 26;
-      p.push({
-        value: newC > 10 ? 10 : newC,
-        isAce: newC === 1,
-        id: c,
-      });
-    }
-    if (c > 39 && c <= 52) {
-      const newC = c - 39;
-      p.push({
-        value: newC > 10 ? 10 : newC,
-        isAce: newC === 1,
-        id: c,
-      });
-    }
+    p.push({
+      value: newC > 10 ? 10 : newC,
+      isAce: newC === 1,
+      id: c,
+    });
+
     return p;
   }, []);
 
