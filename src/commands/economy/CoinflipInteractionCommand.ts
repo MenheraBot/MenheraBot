@@ -1,13 +1,12 @@
 import { MessageButton } from 'discord.js-light';
-import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import HttpRequests from '@utils/HTTPrequests';
 import Util from '@utils/Util';
 
 export default class CoinflipInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'coinflip',
       description: '「💶」・Disputa num jogo de Cara e Coroa com um amigo',
       options: [
@@ -76,7 +75,7 @@ export default class CoinflipInteractionCommand extends InteractionCommand {
     }
 
     const db1 = ctx.data.user;
-    const db2 = await this.client.repositories.userRepository.find(user2.id);
+    const db2 = await ctx.client.repositories.userRepository.find(user2.id);
 
     if (!db1 || !db2) {
       await ctx.makeMessage({
@@ -173,7 +172,7 @@ export default class CoinflipInteractionCommand extends InteractionCommand {
       });
     }
 
-    await this.client.repositories.coinflipRepository.coinflip(winner, loser, input);
+    await ctx.client.repositories.coinflipRepository.coinflip(winner, loser, input);
     await HttpRequests.postCoinflipGame(winner, loser, input, Date.now());
   }
 }

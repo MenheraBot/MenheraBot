@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-expressions */
 import { MessageAttachment, MessageButton, MessageEmbed } from 'discord.js-light';
-import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import http from '@utils/HTTPrequests';
@@ -46,8 +45,8 @@ const CalculateHandValue = (cards: Array<number>): Array<IBlackjackCards> =>
   }, []);
 
 export default class BlackjackInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'blackjack',
       description: '「🃏」・Disputa num jogo de BlackJack contra a Menhera',
       options: [
@@ -532,8 +531,8 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
     const dealerCards = matchCards.splice(0, 2);
     const playerCards = matchCards.splice(0, 2);
 
-    const res = this.client.picassoWs.isAlive
-      ? await this.client.picassoWs.makeRequest({
+    const res = ctx.client.picassoWs.isAlive
+      ? await ctx.client.picassoWs.makeRequest({
           id: ctx.interaction.id,
           type: 'blackjack',
           data: {

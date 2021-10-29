@@ -1,4 +1,3 @@
-import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 
@@ -6,8 +5,8 @@ import { shopEconomy } from '@structures/Constants';
 import { MessageEmbed } from 'discord.js-light';
 
 export default class ShopInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'loja',
       description: '「💴」・Abre o brechó da Menhera',
       options: [
@@ -207,19 +206,19 @@ export default class ShopInteractionCommand extends InteractionCommand {
     const type = ctx.options.getSubcommandGroup(false);
 
     if (!type) {
-      return this.sellHunts(ctx);
+      return ShopInteractionCommand.sellHunts(ctx);
     }
 
     if (type === 'comprar') {
       const option = ctx.options.getSubcommand();
       if (option === 'cores') {
-        return this.buyColor(ctx);
+        return ShopInteractionCommand.buyColor(ctx);
       }
       if (option === 'rolls') {
-        return this.buyRolls(ctx);
+        return ShopInteractionCommand.buyRolls(ctx);
       }
       if (option === 'itens') {
-        return this.buyItems(ctx);
+        return ShopInteractionCommand.buyItems(ctx);
       }
     }
 
@@ -235,9 +234,9 @@ export default class ShopInteractionCommand extends InteractionCommand {
     }
   }
 
-  async buyItems(ctx: InteractionCommandContext): Promise<void> {
+  static async buyItems(ctx: InteractionCommandContext): Promise<void> {
     const embed = new MessageEmbed().setTitle('comprar');
-    this.client.repositories.userRepository.update(ctx.author.id, {
+    ctx.client.repositories.userRepository.update(ctx.author.id, {
       inventory: [{ id: 1, amount: 1 }],
     });
     ctx.makeMessage({ embeds: [embed] });
@@ -366,7 +365,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
     }
   }
 
-  async sellHunts(ctx: InteractionCommandContext): Promise<void> {
+  static async sellHunts(ctx: InteractionCommandContext): Promise<void> {
     const valorDemonio = shopEconomy.hunts.demon;
     const valorGigante = shopEconomy.hunts.giant;
     const valorAnjo = shopEconomy.hunts.angel;
@@ -394,7 +393,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
           });
           return;
         }
-        this.client.repositories.userRepository.update(ctx.author.id, {
+        ctx.client.repositories.userRepository.update(ctx.author.id, {
           $inc: { caçados: -valor, estrelinhas: valor * valorDemonio },
         });
         ctx.makeMessage({
@@ -415,7 +414,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
           });
           return;
         }
-        this.client.repositories.userRepository.update(ctx.author.id, {
+        ctx.client.repositories.userRepository.update(ctx.author.id, {
           $inc: { giants: -valor, estrelinhas: valor * valorGigante },
         });
         ctx.makeMessage({
@@ -436,7 +435,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
           });
           return;
         }
-        this.client.repositories.userRepository.update(ctx.author.id, {
+        ctx.client.repositories.userRepository.update(ctx.author.id, {
           $inc: { anjos: -valor, estrelinhas: valor * valorAnjo },
         });
         ctx.makeMessage({
@@ -457,7 +456,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
           });
           return;
         }
-        this.client.repositories.userRepository.update(ctx.author.id, {
+        ctx.client.repositories.userRepository.update(ctx.author.id, {
           $inc: { arcanjos: -valor, estrelinhas: valor * valorArch },
         });
         ctx.makeMessage({
@@ -477,7 +476,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
           });
           return;
         }
-        this.client.repositories.userRepository.update(ctx.author.id, {
+        ctx.client.repositories.userRepository.update(ctx.author.id, {
           $inc: { semideuses: -valor, estrelinhas: valor * valorSD },
         });
         ctx.makeMessage({
@@ -497,7 +496,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
           });
           return;
         }
-        this.client.repositories.userRepository.update(ctx.author.id, {
+        ctx.client.repositories.userRepository.update(ctx.author.id, {
           $inc: { deuses: -valor, estrelinhas: valor * valorDeus },
         });
         ctx.makeMessage({
@@ -517,7 +516,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
     }
   }
 
-  async buyRolls(ctx: InteractionCommandContext): Promise<void> {
+  static async buyRolls(ctx: InteractionCommandContext): Promise<void> {
     const valorRoll = shopEconomy.hunts.roll;
 
     const valor = ctx.options.getInteger('quantidade', true);
@@ -547,7 +546,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
 
     const valueToPay = valor * valorRoll;
 
-    this.client.repositories.userRepository.update(ctx.author.id, {
+    ctx.client.repositories.userRepository.update(ctx.author.id, {
       $inc: { rolls: valor, estrelinhas: -valueToPay },
     });
 
@@ -561,7 +560,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
     });
   }
 
-  async buyColor(ctx: InteractionCommandContext): Promise<void> {
+  static async buyColor(ctx: InteractionCommandContext): Promise<void> {
     const availableColors = [
       {
         cor: '#6308c0',
@@ -752,7 +751,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
             cor: `#${hexColor.replace('#', '')}`,
             price: shopEconomy.colors.your_choice,
           };
-          this.client.repositories.userRepository.update(ctx.author.id, {
+          ctx.client.repositories.userRepository.update(ctx.author.id, {
             $inc: { estrelinhas: -availableColors[6].price },
             $push: { cores: toPush },
           });
@@ -772,7 +771,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
       }
     }
     if (choice !== 6) {
-      await this.client.repositories.userRepository.update(ctx.author.id, {
+      await ctx.client.repositories.userRepository.update(ctx.author.id, {
         $inc: { estrelinhas: -availableColors[choice].price },
         $push: { cores: availableColors[choice] },
       });

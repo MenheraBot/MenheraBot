@@ -1,11 +1,10 @@
 import { MessageEmbed } from 'discord.js-light';
-import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 
 export default class WalletInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'carteira',
       description: '「💳」・Mostra a carteira de alguém',
       options: [
@@ -39,7 +38,7 @@ export default class WalletInteractionCommand extends InteractionCommand {
     const user =
       pessoa.id === ctx.author.id
         ? ctx.data.user
-        : await this.client.repositories.userRepository.find(pessoa.id);
+        : await ctx.client.repositories.userRepository.find(pessoa.id);
 
     if (!user) {
       await ctx.makeMessage({
