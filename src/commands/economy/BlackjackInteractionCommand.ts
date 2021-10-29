@@ -190,7 +190,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
     const baseSum = cards.reduce((p, a) => a.value + p, 0);
 
     if (cards.some((a) => a.isAce) && baseSum <= 11) {
-      total = cards.reduce((p, a) => (a.isAce ? 11 : a.value) + p, 0);
+      total = cards.reduce((p, a) => (a.isAce && p <= 10 ? 11 : a.value) + p, 0);
     } else total = baseSum;
 
     return total;

@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Fixed
 
 - O blackjack responde caso tu não clique em nenhum botão
+- Os A'ses do Blackjack funcionam corretamente, permitindo acontecer Blackjacks, e a contagem correta das cartas quando há mais de um As na mão
 
 ### Removed
 
