@@ -187,9 +187,9 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
   static checkHandFinalValue(cards: Array<IBlackjackCards>): number {
     let total: number;
 
-    const baseSum = cards.reduce((p: number, a: IBlackjackCards) => a.value + p, 0);
+    const baseSum = cards.reduce((p, a) => a.value + p, 0);
 
-    if (cards.some((a) => a.isAce) && baseSum < 10) {
+    if (cards.some((a) => a.isAce) && baseSum <= 11) {
       total = cards.reduce((p, a) => (a.isAce ? 11 : a.value) + p, 0);
     } else total = baseSum;
 
