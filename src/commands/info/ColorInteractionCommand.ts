@@ -4,14 +4,13 @@ import {
   MessageEmbed,
   MessageSelectMenu,
 } from 'discord.js-light';
-import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { COLORS, emojis } from '@structures/Constants';
 
 export default class ColorInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'cor',
       description: '「🌈」・Muda a cor básica da sua conta',
       category: 'info',
@@ -41,7 +40,7 @@ export default class ColorInteractionCommand extends InteractionCommand {
     const haspadrao = authorData.colors.some((pc) => pc.cor === '#a788ff');
 
     if (!haspadrao) {
-      await this.client.repositories.userRepository.update(ctx.author.id, {
+      await ctx.client.repositories.userRepository.update(ctx.author.id, {
         $push: { cores: { nome: '0 - Padrão', cor: '#a788ff', price: 0 } },
       });
     }
@@ -112,7 +111,7 @@ export default class ColorInteractionCommand extends InteractionCommand {
       },
     };
 
-    await this.client.repositories.userRepository.update(ctx.author.id, {
+    await ctx.client.repositories.userRepository.update(ctx.author.id, {
       cor: selected,
     });
 

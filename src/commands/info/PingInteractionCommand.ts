@@ -1,15 +1,14 @@
 import { MessageEmbed } from 'discord.js-light';
 import moment from 'moment';
 import 'moment-duration-format';
-import MenheraClient from 'MenheraClient';
 import { Console } from 'node:console';
 import { Transform } from 'node:stream';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 
 export default class PingInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'ping',
       description: '「📡」・Mostra o ping do bot',
       options: [
@@ -27,11 +26,11 @@ export default class PingInteractionCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    if (!this.client.shard) return;
+    if (!ctx.client.shard) return;
     const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     if (ctx.options.getString('shards')) {
-      if (!(await this.client.isShardingProcessEnded())) {
+      if (!(await ctx.client.isShardingProcessEnded())) {
         ctx.makeMessage({
           content: ctx.prettyResponseLocale('error', 'common:sharding_in_progress'),
         });
@@ -39,11 +38,11 @@ export default class PingInteractionCommand extends InteractionCommand {
       }
 
       const promises = [
-        this.client.shard.fetchClientValues('ws.ping'),
-        this.client.shard.fetchClientValues('ws.status'),
-        this.client.shard.fetchClientValues('ws.client.uptime'),
-        this.client.shard.fetchClientValues('guilds.cache.size'),
-        this.client.shard.broadcastEval(() => process.memoryUsage().heapUsed),
+        ctx.client.shard.fetchClientValues('ws.ping'),
+        ctx.client.shard.fetchClientValues('ws.status'),
+        ctx.client.shard.fetchClientValues('ws.client.uptime'),
+        ctx.client.shard.fetchClientValues('guilds.cache.size'),
+        ctx.client.shard.broadcastEval(() => process.memoryUsage().heapUsed),
       ];
 
       const [
@@ -89,7 +88,7 @@ export default class PingInteractionCommand extends InteractionCommand {
         [],
       );
 
-      const shardCount = this.client.shard.count;
+      const shardCount = ctx.client.shard.count;
 
       const getAverage = (arr: number[]) => arr.reduce((p, c) => p + c, 0) / shardCount;
 
@@ -128,8 +127,8 @@ export default class PingInteractionCommand extends InteractionCommand {
         `📡 | ${ctx.translate('api')} **${
           Date.now() - ctx.interaction.createdTimestamp
         }ms**\n📡 | ${ctx.translate('latency')} **${Math.round(
-          this.client.ws.ping,
-        )}ms**\n🖲️ | Shard: **${this.client.shard.ids}** / **${this.client.shard.count - 1}**`,
+          ctx.client.ws.ping,
+        )}ms**\n🖲️ | Shard: **${ctx.client.shard.ids}** / **${ctx.client.shard.count - 1}**`,
       )
       .setFooter(ctx.author.tag, avatar)
       .setTimestamp()

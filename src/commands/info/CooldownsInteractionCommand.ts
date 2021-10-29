@@ -2,13 +2,12 @@
 import { MessageEmbed } from 'discord.js-light';
 import moment from 'moment';
 import 'moment-duration-format';
-import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 
 export default class CooldownsInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'cooldowns',
       description: '「⌛」・Mostra todos os seus tempos de recarga',
       category: 'info',

@@ -1,4 +1,3 @@
-import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { IUserDataToProfile, IUserSchema } from '@utils/Types';
@@ -6,8 +5,8 @@ import HttpRequests from '@utils/HTTPrequests';
 import { MessageAttachment, User } from 'discord.js-light';
 
 export default class ProfileInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'perfil',
       description: '「✨」・Mostra o perfil de algúem',
       options: [
@@ -45,7 +44,7 @@ export default class ProfileInteractionCommand extends InteractionCommand {
         await ctx.makeMessage({ content: ctx.prettyResponse('error', 'bot'), ephemeral: true });
         return;
       }
-      user = await this.client.repositories.userRepository.find(member.id, [
+      user = await ctx.client.repositories.userRepository.find(member.id, [
         'married',
         'selectedColor',
         'votes',
@@ -73,7 +72,7 @@ export default class ProfileInteractionCommand extends InteractionCommand {
       return;
     }
 
-    if (user?.married) marry = await this.client.users.fetch(user.married);
+    if (user?.married) marry = await ctx.client.users.fetch(user.married);
 
     await ctx.defer();
 
@@ -106,8 +105,8 @@ export default class ProfileInteractionCommand extends InteractionCommand {
       tres: ctx.translate('tres'),
     };
 
-    const res = this.client.picassoWs.isAlive
-      ? await this.client.picassoWs.makeRequest({
+    const res = ctx.client.picassoWs.isAlive
+      ? await ctx.client.picassoWs.makeRequest({
           id: ctx.interaction.id,
           type: 'profile',
           data: { user: userSendData, marry, usageCommands, i18n: i18nData },

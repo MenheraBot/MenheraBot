@@ -1,5 +1,4 @@
 /* eslint-disable no-await-in-loop */
-import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageEmbed, ColorResolvable } from 'discord.js-light';
@@ -9,8 +8,8 @@ import { COLORS, emojis } from '@structures/Constants';
 import { TopRankingTypes as TOP } from '@utils/Types';
 
 export default class TopInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'top',
       description: '「💹」・Veja o top de usuários da Menhera',
       category: 'util',
@@ -130,7 +129,7 @@ export default class TopInteractionCommand extends InteractionCommand {
 
     switch (type) {
       case 'mamadores':
-        this.executeUserDataRelatedRanking(
+        TopInteractionCommand.executeUserDataRelatedRanking(
           ctx,
           TOP.mamou,
           emojis.crown,
@@ -141,7 +140,7 @@ export default class TopInteractionCommand extends InteractionCommand {
         );
         return;
       case 'mamados':
-        this.executeUserDataRelatedRanking(
+        TopInteractionCommand.executeUserDataRelatedRanking(
           ctx,
           TOP.mamadas,
           emojis.lick,
@@ -152,7 +151,7 @@ export default class TopInteractionCommand extends InteractionCommand {
         );
         return;
       case 'estrelinhas':
-        this.executeUserDataRelatedRanking(
+        TopInteractionCommand.executeUserDataRelatedRanking(
           ctx,
           TOP.stars,
           emojis.star,
@@ -163,7 +162,7 @@ export default class TopInteractionCommand extends InteractionCommand {
         );
         return;
       case 'demonios':
-        this.executeUserDataRelatedRanking(
+        TopInteractionCommand.executeUserDataRelatedRanking(
           ctx,
           TOP.demons,
           emojis.demon,
@@ -174,7 +173,7 @@ export default class TopInteractionCommand extends InteractionCommand {
         );
         return;
       case 'gigantes':
-        this.executeUserDataRelatedRanking(
+        TopInteractionCommand.executeUserDataRelatedRanking(
           ctx,
           TOP.giants,
           emojis.giant,
@@ -185,7 +184,7 @@ export default class TopInteractionCommand extends InteractionCommand {
         );
         return;
       case 'anjos':
-        this.executeUserDataRelatedRanking(
+        TopInteractionCommand.executeUserDataRelatedRanking(
           ctx,
           TOP.angels,
           emojis.angel,
@@ -196,7 +195,7 @@ export default class TopInteractionCommand extends InteractionCommand {
         );
         return;
       case 'arcanjos':
-        this.executeUserDataRelatedRanking(
+        TopInteractionCommand.executeUserDataRelatedRanking(
           ctx,
           TOP.archangels,
           emojis.archangel,
@@ -207,7 +206,7 @@ export default class TopInteractionCommand extends InteractionCommand {
         );
         return;
       case 'semideuses':
-        this.executeUserDataRelatedRanking(
+        TopInteractionCommand.executeUserDataRelatedRanking(
           ctx,
           TOP.demigods,
           emojis.semigod,
@@ -218,7 +217,7 @@ export default class TopInteractionCommand extends InteractionCommand {
         );
         return;
       case 'deuses':
-        this.executeUserDataRelatedRanking(
+        TopInteractionCommand.executeUserDataRelatedRanking(
           ctx,
           TOP.gods,
           emojis.god,
@@ -229,7 +228,7 @@ export default class TopInteractionCommand extends InteractionCommand {
         );
         return;
       case 'votos':
-        this.executeUserDataRelatedRanking(
+        TopInteractionCommand.executeUserDataRelatedRanking(
           ctx,
           TOP.votes,
           emojis.ok,
@@ -243,14 +242,14 @@ export default class TopInteractionCommand extends InteractionCommand {
         TopInteractionCommand.topCommands(ctx);
         return;
       case 'users':
-        this.topUsers(ctx);
+        TopInteractionCommand.topUsers(ctx);
         return;
       case 'user':
         TopInteractionCommand.topUser(ctx);
     }
   }
 
-  async executeUserDataRelatedRanking(
+  static async executeUserDataRelatedRanking(
     ctx: InteractionCommandContext,
     labelType: TOP,
     emoji: string,
@@ -261,10 +260,10 @@ export default class TopInteractionCommand extends InteractionCommand {
   ): Promise<void> {
     const skip = TopInteractionCommand.calculateSkipCount(page, 1000);
 
-    const res = await this.client.repositories.userRepository.getTopRanking(
+    const res = await ctx.client.repositories.userRepository.getTopRanking(
       labelType,
       skip,
-      await this.client.repositories.cacheRepository.getDeletedAccounts(),
+      await ctx.client.repositories.cacheRepository.getDeletedAccounts(),
     );
 
     const embed = new MessageEmbed()
@@ -272,11 +271,11 @@ export default class TopInteractionCommand extends InteractionCommand {
       .setColor(color);
 
     for (let i = 0; i < res.length; i++) {
-      const member = await this.client.users.fetch(res[i].id).catch(() => null);
+      const member = await ctx.client.users.fetch(res[i].id).catch(() => null);
       const memberName = member?.username ?? res[i].id;
 
       if (memberName.startsWith('Deleted User'))
-        this.client.repositories.cacheRepository.addDeletedAccount(res[i].id);
+        ctx.client.repositories.cacheRepository.addDeletedAccount(res[i].id);
 
       embed.addField(`**${skip + 1 + i} -** ${memberName}`, `${actor}: **${res[i].value}**`, false);
     }
@@ -284,7 +283,7 @@ export default class TopInteractionCommand extends InteractionCommand {
     ctx.defer({ embeds: [embed] });
   }
 
-  async topUsers(ctx: InteractionCommandContext): Promise<void> {
+  static async topUsers(ctx: InteractionCommandContext): Promise<void> {
     const res = await HttpRequests.getTopUsers();
     if (!res) {
       ctx.defer({ content: `${emojis.error} |  ${ctx.locale('commands:http-error')}` });
@@ -296,7 +295,7 @@ export default class TopInteractionCommand extends InteractionCommand {
       .setColor('#f47fff');
 
     for (let i = 0; i < res.length; i++) {
-      const member = await this.client.users.fetch(res[i].id).catch();
+      const member = await ctx.client.users.fetch(res[i].id).catch();
       embed.addField(
         `**${i + 1} -** ${Util.capitalize(member.username)} `,
         `${ctx.translate('use')} **${res[i].uses}** ${ctx.translate('times')}`,

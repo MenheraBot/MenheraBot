@@ -1,13 +1,12 @@
 /* eslint-disable no-unused-expressions */
 import { MessageEmbed } from 'discord.js-light';
-import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { IUserSchema } from '@utils/Types';
 
 export default class AvatarInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'avatar',
       description: '「📸」・Mostra a foto de perfil de alguém',
       category: 'info',
@@ -35,8 +34,8 @@ export default class AvatarInteractionCommand extends InteractionCommand {
 
     if (mentionUser && mentionUser.id !== ctx.author.id) {
       try {
-        user = await this.client.users.fetch(mentionUser.id);
-        db = await this.client.repositories.userRepository.find(user.id, ['selectedColor']);
+        user = await ctx.client.users.fetch(mentionUser.id);
+        db = await ctx.client.repositories.userRepository.find(user.id, ['selectedColor']);
       } catch {
         await ctx.makeMessage({
           content: ctx.prettyResponse('error', 'unknow-user'),
@@ -56,7 +55,7 @@ export default class AvatarInteractionCommand extends InteractionCommand {
       .setColor(cor)
       .setFooter(ctx.translate('footer'));
 
-    if (user.id === this.client.user?.id) {
+    if (user.id === ctx.client.user?.id) {
       embed.setTitle(ctx.translate('client_title', { user: user.username }));
       embed.setColor('#f276f3');
       embed.setFooter(ctx.translate('client_footer', { user: user.username }));

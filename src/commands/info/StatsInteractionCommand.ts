@@ -1,4 +1,3 @@
-import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import HttpRequests from '@utils/HTTPrequests';
@@ -7,8 +6,8 @@ import { MessageEmbed } from 'discord.js-light';
 import { COLORS, emojis } from '@structures/Constants';
 
 export default class StatsInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'status',
       description: '「📊」・Veja os status de algo',
       options: [
@@ -75,7 +74,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
       case 'blackjack':
         return StatsInteractionCommand.blackjack(ctx);
       case 'menhera':
-        return this.menhera(ctx);
+        return StatsInteractionCommand.menhera(ctx);
     }
   }
 
@@ -183,14 +182,14 @@ export default class StatsInteractionCommand extends InteractionCommand {
     await ctx.makeMessage({ embeds: [embed] });
   }
 
-  async menhera(ctx: InteractionCommandContext): Promise<void> {
-    const owner = await this.client.users.fetch(process.env.OWNER as string);
+  static async menhera(ctx: InteractionCommandContext): Promise<void> {
+    const owner = await ctx.client.users.fetch(process.env.OWNER as string);
     if (ctx.data.server.lang === 'pt-BR') {
       moment.locale('pt-br');
     } else moment.locale('en-us');
-    if (!this.client.shard) return;
+    if (!ctx.client.shard) return;
 
-    if (!(await this.client.isShardingProcessEnded())) {
+    if (!(await ctx.client.isShardingProcessEnded())) {
       ctx.makeMessage({
         content: ctx.prettyResponseLocale('error', 'common:sharding_in_progress'),
       });
@@ -198,8 +197,8 @@ export default class StatsInteractionCommand extends InteractionCommand {
     }
 
     const promises = [
-      this.client.shard.fetchClientValues('guilds.cache.size'),
-      this.client.shard.broadcastEval(() => process.memoryUsage().heapUsed),
+      ctx.client.shard.fetchClientValues('guilds.cache.size'),
+      ctx.client.shard.broadcastEval(() => process.memoryUsage().heapUsed),
     ];
 
     const getReduced = (arr: number[]) => arr.reduce((p, c) => p + c, 0);
@@ -211,13 +210,13 @@ export default class StatsInteractionCommand extends InteractionCommand {
       .setThumbnail('https://i.imgur.com/b5y0nd4.png')
       .setDescription(
         ctx.translate('botinfo.embed_description', {
-          name: this.client.user?.username,
-          createdAt: moment.utc(this.client.user?.createdAt).format('LLLL'),
+          name: ctx.client.user?.username,
+          createdAt: moment.utc(ctx.client.user?.createdAt).format('LLLL'),
           joinedAt: moment.utc(ctx.interaction?.guild?.me?.joinedAt).format('LLLL'),
         }),
       )
       .setFooter(
-        `${this.client.user?.username} ${ctx.translate('botinfo.embed_footer')} ${owner.tag}`,
+        `${ctx.client.user?.username} ${ctx.translate('botinfo.embed_footer')} ${owner.tag}`,
         owner.displayAvatarURL({
           format: 'png',
           dynamic: true,
@@ -232,7 +231,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
         {
           name: '⏳ | Uptime | ⏳',
           value: `\`\`\`${moment
-            .duration(this.client.uptime)
+            .duration(ctx.client.uptime)
             .format('D[d], H[h], m[m], s[s]')}\`\`\``,
           inline: true,
         },

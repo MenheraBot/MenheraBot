@@ -1,4 +1,3 @@
-import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import {
@@ -18,8 +17,8 @@ import Util, {
 } from '@utils/Util';
 
 export default class InventoryInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'inventario',
       description: '「📂」・Abre o inventário de alguém',
       category: 'info',
@@ -40,7 +39,7 @@ export default class InventoryInteractionCommand extends InteractionCommand {
   async run(ctx: InteractionCommandContext): Promise<void> {
     const user =
       ctx.options.getUser('user') && ctx.options.getUser('user', true).id !== ctx.author.id
-        ? await this.client.repositories.userRepository.find(ctx.options.getUser('user', true).id, [
+        ? await ctx.client.repositories.userRepository.find(ctx.options.getUser('user', true).id, [
             'selectedColor',
             'inUseItems',
             'inventory',
@@ -171,7 +170,7 @@ export default class InventoryInteractionCommand extends InteractionCommand {
         content: ctx.prettyResponse('success', 'reseted'),
       });
 
-      this.client.repositories.userRepository.update(ctx.author.id, {
+      ctx.client.repositories.userRepository.update(ctx.author.id, {
         inventory: user.inventory,
         inUseItems: user.inUseItems,
       });
@@ -290,7 +289,7 @@ export default class InventoryInteractionCommand extends InteractionCommand {
       }),
     });
 
-    this.client.repositories.userRepository.update(ctx.author.id, {
+    ctx.client.repositories.userRepository.update(ctx.author.id, {
       inventory: user.inventory,
       inUseItems: user.inUseItems,
     });
