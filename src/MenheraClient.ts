@@ -120,7 +120,7 @@ export default class MenheraClient extends Client {
 
   loadEvents(directory: string): void {
     FileUtil.readDirectory(directory, (EventFile: typeof Event, filepath: string) => {
-      this.events.add(FileUtil.filename(filepath) as keyof ClientEvents, new EventFile(this));
+      this.events.add(FileUtil.filename(filepath) as keyof ClientEvents, new EventFile());
     });
   }
 }
