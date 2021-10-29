@@ -58,8 +58,8 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
 
     const matchCards = deckCards;
 
-    const newCard = matchCards.splice(0, 1);
-    const playerCards = [...usrCards, ...newCard];
+    const newCard = matchCards.shift() as number;
+    const playerCards = [...usrCards, newCard];
 
     const userCards = CalculateHandValue(playerCards);
     const userTotal = BlackjackInteractionCommand.checkHandFinalValue(userCards);
@@ -143,7 +143,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
             files: [attachment],
             components: [{ type: 1, components: [BuyButton, StopButton] }],
           })
-        : await ctx.makeMessage({
+        : await ctx.send({
             embeds: [embed],
             files: [attachment],
             components: [{ type: 1, components: [BuyButton, StopButton] }],
@@ -154,7 +154,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
             embeds: [embed],
             components: [{ type: 1, components: [BuyButton, StopButton] }],
           })
-        : await ctx.makeMessage({
+        : await ctx.send({
             embeds: [embed],
             components: [{ type: 1, components: [BuyButton, StopButton] }],
           });
@@ -163,7 +163,11 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
     const collected = await Util.collectComponentInteraction(ctx.channel, ctx.author.id, 10000);
 
     if (!collected) {
-      ctx.makeMessage({ content: ctx.prettyResponse('error', 'timeout') });
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'timeout'),
+        embeds: [],
+        components: [],
+      });
       ctx.client.repositories.starRepository.remove(ctx.author.id, valor);
       return;
     }
@@ -257,11 +261,11 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
       if (attc) {
         message
           ? await message.edit({ embeds: [embed], files: [attc], components: [] })
-          : ctx.makeMessage({ embeds: [embed], files: [attc], components: [] });
+          : ctx.send({ embeds: [embed], files: [attc], components: [] });
       } else {
         message
           ? await message.edit({ embeds: [embed], components: [] })
-          : ctx.makeMessage({ embeds: [embed], components: [] });
+          : ctx.send({ embeds: [embed], components: [] });
       }
       await http.postBlackJack(ctx.author.id, true, valor * 2);
       return;
@@ -274,11 +278,11 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
       if (attc) {
         message
           ? await message.edit({ embeds: [embed], files: [attc], components: [] })
-          : ctx.makeMessage({ embeds: [embed], files: [attc], components: [] });
+          : ctx.send({ embeds: [embed], files: [attc], components: [] });
       } else {
         message
           ? await message.edit({ embeds: [embed], components: [] })
-          : ctx.makeMessage({ embeds: [embed], components: [] });
+          : ctx.send({ embeds: [embed], components: [] });
       }
       await http.postBlackJack(ctx.author.id, false, valor * 2);
       return;
@@ -292,22 +296,22 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
       if (attc) {
         message
           ? await message.edit({ embeds: [embed], files: [attc], components: [] })
-          : ctx.makeMessage({ embeds: [embed], files: [attc], components: [] });
+          : ctx.send({ embeds: [embed], files: [attc], components: [] });
       } else {
         message
           ? await message.edit({ embeds: [embed], components: [] })
-          : ctx.makeMessage({ embeds: [embed], components: [] });
+          : ctx.send({ embeds: [embed], components: [] });
       }
       await http.postBlackJack(ctx.author.id, false, valor * 2);
       return;
     }
 
-    if (menheraTotal < 17 || menheraTotal < userTotal) {
+    if (menheraTotal <= 17 || menheraTotal < userTotal) {
       do {
         const newCards = CalculateHandValue(matchCards.splice(0, 1));
         dealerCards.push(...newCards);
         menheraTotal = BlackjackInteractionCommand.checkHandFinalValue(dealerCards);
-      } while (menheraTotal < 17 && menheraTotal < userTotal);
+      } while (menheraTotal <= 17 && menheraTotal < userTotal);
     }
 
     embed = new MessageEmbed()
@@ -358,11 +362,11 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
       if (attc) {
         message
           ? await message.edit({ embeds: [embed], files: [attc], components: [] })
-          : ctx.makeMessage({ embeds: [embed], files: [attc], components: [] });
+          : ctx.send({ embeds: [embed], files: [attc], components: [] });
       } else {
         message
           ? await message.edit({ embeds: [embed], components: [] })
-          : ctx.makeMessage({ embeds: [embed], components: [] });
+          : ctx.send({ embeds: [embed], components: [] });
       }
       await http.postBlackJack(ctx.author.id, false, valor * 2);
       return;
@@ -374,11 +378,11 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
       if (attc) {
         message
           ? await message.edit({ embeds: [embed], files: [attc], components: [] })
-          : ctx.makeMessage({ embeds: [embed], files: [attc], components: [] });
+          : ctx.send({ embeds: [embed], files: [attc], components: [] });
       } else {
         message
           ? await message.edit({ embeds: [embed], components: [] })
-          : ctx.makeMessage({ embeds: [embed], components: [] });
+          : ctx.send({ embeds: [embed], components: [] });
       }
       await http.postBlackJack(ctx.author.id, true, valor * 2);
       return;
@@ -390,11 +394,11 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
       if (attc) {
         message
           ? await message.edit({ embeds: [embed], files: [attc], components: [] })
-          : ctx.makeMessage({ embeds: [embed], files: [attc], components: [] });
+          : ctx.send({ embeds: [embed], files: [attc], components: [] });
       } else {
         message
           ? await message.edit({ embeds: [embed], components: [] })
-          : ctx.makeMessage({ embeds: [embed], components: [] });
+          : ctx.send({ embeds: [embed], components: [] });
       }
       await http.postBlackJack(ctx.author.id, true, valor * 2);
       return;
@@ -405,11 +409,11 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
       if (attc) {
         message
           ? await message.edit({ embeds: [embed], files: [attc], components: [] })
-          : ctx.makeMessage({ embeds: [embed], files: [attc], components: [] });
+          : ctx.send({ embeds: [embed], files: [attc], components: [] });
       } else {
         message
           ? await message.edit({ embeds: [embed], components: [] })
-          : ctx.makeMessage({ embeds: [embed], components: [] });
+          : ctx.send({ embeds: [embed], components: [] });
       }
       return;
     }
@@ -420,11 +424,11 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
       if (attc) {
         message
           ? await message.edit({ embeds: [embed], files: [attc], components: [] })
-          : ctx.makeMessage({ embeds: [embed], files: [attc], components: [] });
+          : ctx.send({ embeds: [embed], files: [attc], components: [] });
       } else {
         message
           ? await message.edit({ embeds: [embed], components: [] })
-          : ctx.makeMessage({ embeds: [embed], components: [] });
+          : ctx.send({ embeds: [embed], components: [] });
       }
       await http.postBlackJack(ctx.author.id, false, valor * 2);
       return;
@@ -436,11 +440,11 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
       if (attc) {
         message
           ? await message.edit({ embeds: [embed], files: [attc], components: [] })
-          : ctx.makeMessage({ embeds: [embed], files: [attc], components: [] });
+          : ctx.send({ embeds: [embed], files: [attc], components: [] });
       } else {
         message
           ? await message.edit({ embeds: [embed], components: [] })
-          : ctx.makeMessage({ embeds: [embed], components: [] });
+          : ctx.send({ embeds: [embed], components: [] });
       }
       await http.postBlackJack(ctx.author.id, false, valor * 2);
       return;
@@ -452,11 +456,11 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
       if (attc) {
         message
           ? await message.edit({ embeds: [embed], files: [attc], components: [] })
-          : ctx.makeMessage({ embeds: [embed], files: [attc], components: [] });
+          : ctx.send({ embeds: [embed], files: [attc], components: [] });
       } else {
         message
           ? await message.edit({ embeds: [embed], components: [] })
-          : ctx.makeMessage({ embeds: [embed], components: [] });
+          : ctx.send({ embeds: [embed], components: [] });
       }
       await http.postBlackJack(ctx.author.id, false, valor * 2);
       return;
@@ -467,11 +471,11 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
     if (attc) {
       message
         ? await message.edit({ embeds: [embed], files: [attc], components: [] })
-        : ctx.makeMessage({ embeds: [embed], files: [attc], components: [] });
+        : ctx.send({ embeds: [embed], files: [attc], components: [] });
     } else {
       message
         ? await message.edit({ embeds: [embed], components: [] })
-        : ctx.makeMessage({ embeds: [embed], components: [] });
+        : ctx.send({ embeds: [embed], components: [] });
     }
     await http.postBlackJack(ctx.author.id, true, valor * 2);
   }

@@ -20,6 +20,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 - Fields do banco de dados: `mamadas`, `casado`,`nota`,`data`, `cor`, `cores`, `caçados`, `anjos`, `arcanjos`, `semideuses`, `deuses`, `caçarTime`, `votos`. Estes foram mudados para nomes em inglẽs
 
+### Fixed
+
+- O blackjack responde caso tu não clique em nenhum botão
+
 ### Removed
 
 - O campo shipValue foi removido do banco de dados!
