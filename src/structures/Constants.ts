@@ -2,22 +2,22 @@ import { T8BallAnswerTypes } from '@utils/Types';
 
 export const shopEconomy = {
   colors: {
-    purple: 50000,
-    red: 100000,
-    cian: 150000,
-    green: 300000,
-    pink: 500000,
-    yellow: 400000,
-    your_choice: 700000,
+    purple: 30_000,
+    red: 40_000,
+    cian: 50_000,
+    green: 60_000,
+    pink: 70_000,
+    yellow: 80_000,
+    your_choice: 100_000,
   },
   hunts: {
-    roll: 15000,
-    demon: 1200,
-    giant: 1500,
-    angel: 2600,
-    archangel: 3200,
-    demigod: 6000,
-    god: 25000,
+    roll: 15_000,
+    demon: 1_200,
+    giant: 1_500,
+    angel: 2_600,
+    archangel: 3_200,
+    demigod: 6_000,
+    god: 25_000,
   },
 };
 
@@ -60,12 +60,12 @@ export const defaultHuntingProbabilities = {
   ],
 };
 
-export const defaultHuntCooldown = 3600000;
+export const defaultHuntCooldown = 3_600_000;
 
 export const votes = {
   rollQuantity: 1,
-  maxStarValue: 3600,
-  minStarValue: 1200,
+  maxStarValue: 3_600,
+  minStarValue: 1_200,
   rollWeekendMultiplier: 2,
   starWeekendMultiplier: 2,
   roll20Multiplier: 4,

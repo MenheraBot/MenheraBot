@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - O comando de caçar calcula as caças em porcentagens agora!
 - O preço das caças foi alterado! Demônio 600 -> 120, Gigante 1900 -> 1500, Anjo 3200 -> 2600, Arcanjo 5900 -> 2300, Semideus 8000 -> 6000, Deus 19000 -> 25000.
 - O preço do roll foi alterado! 7000 -> 15000
+- O preço das cores foi ajustado! Roxo 50000 -> 30000, Vermelho 100000 -> 40000, Ciano 150000 -> 50000, Verde 300000 -> 60000, Rosa 500000 -> 70000, Amarelo 40000 -> 80000, Sua Escolha 700000 -> 100000
 
 ### Deprecated
 
