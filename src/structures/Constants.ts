@@ -225,11 +225,7 @@ export const COLORS = {
   UltraPink: '#ff29ae' as const,
 };
 
-export const BLACKJACK_CARDS = [
-  1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,
-  28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51,
-  52,
-];
+export const BLACKJACK_CARDS = Array.from({ length: 52 }, (_, i) => i + 1);
 
 export const clientUnreadyString =
   '🇧🇷 | A Menhera ainda não se conectou 100%! Aguarde um pouquinho antes de tentar novamente!\n🇺🇸 | Menhera is not yet 100% connected! Wait a while before trying again!';
