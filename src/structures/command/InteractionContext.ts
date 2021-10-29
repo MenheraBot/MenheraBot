@@ -66,7 +66,7 @@ export default class InteractionCommandContext {
   }
 
   async makeMessage(options: InteractionReplyOptions): Promise<Message | null> {
-    if (this.interaction.replied)
+    if (this.interaction.replied || this.interaction.deferred)
       return this.resolveMessage(await this.interaction.editReply(options).catch(() => null));
 
     return this.resolveMessage(
