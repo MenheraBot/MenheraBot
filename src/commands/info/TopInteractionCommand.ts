@@ -154,7 +154,7 @@ export default class TopInteractionCommand extends InteractionCommand {
         TopInteractionCommand.executeUserDataRelatedRanking(
           ctx,
           TOP.stars,
-          emojis.star,
+          emojis.estrelinhas,
           ctx.translate('starsTitle'),
           ctx.translate('stars'),
           page,
@@ -165,7 +165,7 @@ export default class TopInteractionCommand extends InteractionCommand {
         TopInteractionCommand.executeUserDataRelatedRanking(
           ctx,
           TOP.demons,
-          emojis.demon,
+          emojis.demons,
           ctx.translate('demonTitle'),
           ctx.translate('demons'),
           page,
@@ -176,7 +176,7 @@ export default class TopInteractionCommand extends InteractionCommand {
         TopInteractionCommand.executeUserDataRelatedRanking(
           ctx,
           TOP.giants,
-          emojis.giant,
+          emojis.giants,
           ctx.translate('giantTitle'),
           ctx.translate('giants'),
           page,
@@ -187,7 +187,7 @@ export default class TopInteractionCommand extends InteractionCommand {
         TopInteractionCommand.executeUserDataRelatedRanking(
           ctx,
           TOP.angels,
-          emojis.angel,
+          emojis.angels,
           ctx.translate('angelTitle'),
           ctx.translate('angels'),
           page,
@@ -198,7 +198,7 @@ export default class TopInteractionCommand extends InteractionCommand {
         TopInteractionCommand.executeUserDataRelatedRanking(
           ctx,
           TOP.archangels,
-          emojis.archangel,
+          emojis.archangels,
           ctx.translate('archangelTitle'),
           ctx.translate('archangels'),
           page,
@@ -209,7 +209,7 @@ export default class TopInteractionCommand extends InteractionCommand {
         TopInteractionCommand.executeUserDataRelatedRanking(
           ctx,
           TOP.demigods,
-          emojis.semigod,
+          emojis.demigods,
           ctx.translate('sdTitle'),
           ctx.translate('demigods'),
           page,
@@ -220,7 +220,7 @@ export default class TopInteractionCommand extends InteractionCommand {
         TopInteractionCommand.executeUserDataRelatedRanking(
           ctx,
           TOP.gods,
-          emojis.god,
+          emojis.gods,
           ctx.translate('godTitle'),
           ctx.translate('gods'),
           page,

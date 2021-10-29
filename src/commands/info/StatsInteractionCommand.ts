@@ -104,7 +104,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
       .setColor(ctx.data.user.selectedColor)
       .addFields([
         {
-          name: `${emojis.demon} | ${ctx.translate('hunt.demon')}`,
+          name: `${emojis.demons} | ${ctx.translate('hunt.demon')}`,
           value: `${ctx.translate('hunt.display-data', {
             tries: data.demon_tries,
             success:
@@ -116,7 +116,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
           inline: true,
         },
         {
-          name: `${emojis.giant} | ${ctx.translate('hunt.giant')}`,
+          name: `${emojis.giants} | ${ctx.translate('hunt.giant')}`,
           value: `${ctx.translate('hunt.display-data', {
             tries: data.giant_tries,
             success:
@@ -128,7 +128,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
           inline: true,
         },
         {
-          name: `${emojis.angel} | ${ctx.translate('hunt.angel')}`,
+          name: `${emojis.angels} | ${ctx.translate('hunt.angel')}`,
           value: `${ctx.translate('hunt.display-data', {
             tries: data.angel_tries,
             success:
@@ -140,7 +140,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
           inline: true,
         },
         {
-          name: `${emojis.archangel} | ${ctx.translate('hunt.archangel')}`,
+          name: `${emojis.archangels} | ${ctx.translate('hunt.archangel')}`,
           value: `${ctx.translate('hunt.display-data', {
             tries: data.archangel_tries,
             success:
@@ -154,7 +154,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
           inline: true,
         },
         {
-          name: `${emojis.semigod} | ${ctx.translate('hunt.demigod')}`,
+          name: `${emojis.demigods} | ${ctx.translate('hunt.demigod')}`,
           value: `${ctx.translate('hunt.display-data', {
             tries: data.demigod_tries,
             success:
@@ -166,7 +166,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
           inline: true,
         },
         {
-          name: `${emojis.god} | ${ctx.translate('hunt.god')}`,
+          name: `${emojis.gods} | ${ctx.translate('hunt.god')}`,
           value: `${ctx.translate('hunt.display-data', {
             tries: data.god_tries,
             success:
