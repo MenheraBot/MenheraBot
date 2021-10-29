@@ -6,67 +6,65 @@ import DBLWebhook from '@structures/server/controllers/DBLWebhook';
 // import PostInteractions from '@structures/server/controllers/PostInteractions';
 
 export default class ReadyEvent {
-  constructor(private client: MenheraClient) {}
+  async run(client: MenheraClient): Promise<void> {
+    if (!client.user) return;
+    if (!client.shard) return;
+    if (client.user.id !== process.env.MENHERA_ID) return;
 
-  async run(): Promise<void> {
-    if (!this.client.user) return;
-    if (!this.client.shard) return;
-    if (this.client.user.id !== process.env.MENHERA_ID) return;
-
-    const isMasterShard = (id: number) => id === (this.client.shard?.count as number) - 1;
+    const isMasterShard = (id: number) => id === (client.shard?.count as number) - 1;
 
     const updateActivity = async (shard: number) =>
-      this.client.user?.setActivity(await HttpRequests.getActivity(shard));
+      client.user?.setActivity(await HttpRequests.getActivity(shard));
 
-    const shardId = this.client.shard.ids[0];
+    const shardId = client.shard.ids[0];
 
     setInterval(() => {
       updateActivity(shardId);
     }, 1000 * 60);
 
     if (isMasterShard(shardId)) {
-      HttpServer.getInstance().registerRouter('DBL', DBLWebhook(this.client));
+      HttpServer.getInstance().registerRouter('DBL', DBLWebhook(client));
       // HttpServer.getInstance().registerRouter('INTERACTIONS', PostInteractions(this.client));
 
-      const allBannedUsers = await this.client.repositories.userRepository.getAllBannedUsersId();
-      await this.client.repositories.blacklistRepository.addBannedUsers(allBannedUsers);
+      const allBannedUsers = await client.repositories.userRepository.getAllBannedUsersId();
+      await client.repositories.blacklistRepository.addBannedUsers(allBannedUsers);
       await HttpRequests.resetCommandsUses();
 
       setInterval(() => {
-        this.postShardStatus();
+        ReadyEvent.postShardStatus(client);
       }, 15 * 1000);
 
       setInterval(async () => {
-        if (!this.client.shard) return;
-        if (!this.client.user) return;
-        const info = (await this.client.shard.fetchClientValues('guilds.cache.size')) as number[];
-        await HttpRequests.postBotStatus(this.client.user.id, info);
+        if (!client.shard) return;
+        if (!client.user) return;
+        const info = (await client.shard.fetchClientValues('guilds.cache.size')) as number[];
+        await HttpRequests.postBotStatus(client.user.id, info);
       }, 1800000);
     }
 
     console.log('[READY] Menhera se conectou com o Discord!');
   }
 
-  async postShardStatus(): Promise<void> {
-    const ShardingEnded = await this.client.isShardingProcessEnded();
+  static async postShardStatus(client: MenheraClient): Promise<void> {
+    const ShardingEnded = await client.isShardingProcessEnded();
     if (!ShardingEnded) return;
 
     const results = (await Promise.all([
-      this.client.shard?.broadcastEval(() => process.memoryUsage().heapUsed),
-      this.client.shard?.broadcastEval((c) => c.uptime),
-      this.client.shard?.fetchClientValues('guilds.cache.size'),
-      this.client.shard?.broadcastEval((c) =>
+      client.shard?.broadcastEval(() => process.memoryUsage().heapUsed),
+      client.shard?.broadcastEval((c) => c.uptime),
+      client.shard?.fetchClientValues('guilds.cache.size'),
+      client.shard?.broadcastEval((c) =>
         c.guilds.cache.reduce((p, b) => (b.available ? p : p + 1), 0),
       ),
-      this.client.shard?.broadcastEval((c) => c.ws.ping),
+      client.shard?.broadcastEval((c) => c.ws.ping),
 
-      this.client.shard?.broadcastEval((c) =>
+      client.shard?.broadcastEval((c) =>
         c.guilds.cache.reduce((p, b) => (b.available ? p + b.memberCount : p), 0),
       ),
-      this.client.shard?.broadcastEval((c) => c.shard?.ids[0]),
+      client.shard?.broadcastEval((c) => c.shard?.ids[0]),
     ])) as number[][];
 
-    const toSendData: IStatusData[] = Array(this.client.shard?.count)
+    const toSendData: IStatusData[] = Array(client.shard?.count)
       .fill('a')
       .map((_, i) => ({
         memoryUsed: results[0][i],
