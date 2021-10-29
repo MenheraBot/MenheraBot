@@ -15,7 +15,8 @@ import InteractionCommandContext from './InteractionContext';
 
 const InteractionCommandExecutor = async (
   client: MenheraClient,
-  interaction: BaseGuildCommandInteraction<'present'> & CommandInteraction,
+  interaction: BaseGuildCommandInteraction<'present'> &
+    CommandInteraction & { client: MenheraClient },
 ): Promise<void> => {
   const server = await client.repositories.cacheRepository.fetchGuild(
     interaction.guildId,
@@ -177,7 +178,6 @@ const InteractionCommandExecutor = async (
       : null;
 
   const ctx = new InteractionCommandContext(
-    client,
     interaction,
     t,
     // @ts-expect-error

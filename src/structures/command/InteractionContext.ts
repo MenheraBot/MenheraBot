@@ -16,12 +16,15 @@ import { APIMessage } from 'discord-api-types';
 
 export default class InteractionCommandContext {
   constructor(
-    public client: MenheraClient,
-    public interaction: CommandInteraction,
+    public interaction: CommandInteraction & { client: MenheraClient },
     public i18n: TFunction,
     public data: IContextData,
     private commandName: string,
   ) {}
+
+  get client(): MenheraClient {
+    return this.interaction.client;
+  }
 
   get options(): CommandInteractionOptionResolver {
     return this.interaction.options;
