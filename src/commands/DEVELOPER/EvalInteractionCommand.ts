@@ -1,12 +1,11 @@
-import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import util from 'node:util';
 import { MessageEmbed } from 'discord.js-light';
 
 export default class EvalSlashInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'eval',
       description: 'Evaleda algo em js ae',
       category: 'dev',
@@ -31,7 +30,7 @@ export default class EvalSlashInteractionCommand extends InteractionCommand {
       // eslint-disable-next-line no-eval
       let evaled = await eval(ctx.options.getString('script', true));
       evaled = util.inspect(evaled, { depth: 1 });
-      evaled = evaled.replace(new RegExp(`${this.client.token}`, 'g'), undefined);
+      evaled = evaled.replace(new RegExp(`${ctx.client.token}`, 'g'), undefined);
 
       if (evaled.length > 1800) evaled = `${evaled.slice(0, 1800)}...`;
       await ctx.makeMessage({ content: `\`\`\`js\n ${evaled}\`\`\`` });

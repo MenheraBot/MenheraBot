@@ -1,11 +1,10 @@
-import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import HttpRequests from '@utils/HTTPrequests';
 
 export default class MaintenanceSlashInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'manutencao',
       description: 'Coloca ou tira um comando da manutencao',
       category: 'dev',
@@ -31,13 +30,13 @@ export default class MaintenanceSlashInteractionCommand extends InteractionComma
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    const cmd = this.client.slashCommands.get(ctx.options.getString('comando', true));
+    const cmd = ctx.client.slashCommands.get(ctx.options.getString('comando', true));
     if (!cmd) {
       await ctx.makeMessage({ content: 'este comando não existe' });
       return;
     }
 
-    const command = await this.client.repositories.cacheRepository.fetchCommand(cmd.config.name);
+    const command = await ctx.client.repositories.cacheRepository.fetchCommand(cmd.config.name);
 
     if (!command) {
       await ctx.makeMessage({ content: 'este comando não existe' });
@@ -45,8 +44,8 @@ export default class MaintenanceSlashInteractionCommand extends InteractionComma
     }
 
     if (command.maintenance) {
-      await this.client.repositories.maintenanceRepository.removeMaintenance(cmd.config.name);
-      await this.client.repositories.cacheRepository.updateCommand(cmd.config.name, {
+      await ctx.client.repositories.maintenanceRepository.removeMaintenance(cmd.config.name);
+      await ctx.client.repositories.cacheRepository.updateCommand(cmd.config.name, {
         maintenance: false,
         maintenanceReason: null,
       });
@@ -58,8 +57,8 @@ export default class MaintenanceSlashInteractionCommand extends InteractionComma
       return;
     }
     const reason = ctx.options.getString('motivo') ?? 'Sem motivo informado';
-    await this.client.repositories.maintenanceRepository.addMaintenance(cmd.config.name, reason);
-    await this.client.repositories.cacheRepository.updateCommand(cmd.config.name, {
+    await ctx.client.repositories.maintenanceRepository.addMaintenance(cmd.config.name, reason);
+    await ctx.client.repositories.cacheRepository.updateCommand(cmd.config.name, {
       maintenance: true,
       maintenanceReason: reason,
     });
