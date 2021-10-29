@@ -1,4 +1,3 @@
-import MenheraClient from 'MenheraClient';
 import { COLORS, EightBallAnswers, emojis } from '@structures/Constants';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
@@ -6,8 +5,8 @@ import { MessageEmbed, MessageAttachment } from 'discord.js-light';
 import HttpRequests from '@utils/HTTPrequests';
 
 export default class EightballInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: '8ball',
       description: '「🎱」・Faça uma pergunta de resposta Sim/Não para a Menhera',
       options: [
@@ -29,8 +28,8 @@ export default class EightballInteractionCommand extends InteractionCommand {
 
     const randomAnswer = EightBallAnswers[Math.floor(Math.random() * EightBallAnswers.length)];
 
-    const res = this.client.picassoWs.isAlive
-      ? await this.client.picassoWs.makeRequest({
+    const res = ctx.client.picassoWs.isAlive
+      ? await ctx.client.picassoWs.makeRequest({
           type: '8ball',
           id: ctx.interaction.id,
           data: {

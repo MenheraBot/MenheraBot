@@ -1,11 +1,10 @@
-import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { User } from 'discord.js-light';
 
 export default class XandaoInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'xandao',
       description: '「💪」・Sem pressão aqui é Xandão! Receba uma frase iluminada do Xandão.',
       options: [
@@ -79,7 +78,7 @@ export default class XandaoInteractionCommand extends InteractionCommand {
     try {
       const webhooks = await ctx.channel.fetchWebhooks();
 
-      const clientUser = this.client.user;
+      const clientUser = ctx.client.user;
       if (!clientUser) return;
       const ownWebhook = webhooks
         .filter((hook) => (hook.owner as User).id === clientUser.id)

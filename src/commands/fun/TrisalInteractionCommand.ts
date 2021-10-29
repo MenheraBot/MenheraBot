@@ -1,4 +1,3 @@
-import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import {
@@ -11,8 +10,8 @@ import HttpRequests from '@utils/HTTPrequests';
 import { emojis } from '@structures/Constants';
 
 export default class TrisalInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'trisal',
       description:
         '「💘」・Inicie um trisal com mais dois amigos ou veja a metadinha de seu trisal',
@@ -45,8 +44,8 @@ export default class TrisalInteractionCommand extends InteractionCommand {
     }
 
     if (authorData.trisal?.length > 0) {
-      const marryTwo = await this.client.users.fetch(authorData.trisal[0]);
-      const marryThree = await this.client.users.fetch(authorData.trisal[1]);
+      const marryTwo = await ctx.client.users.fetch(authorData.trisal[0]);
+      const marryThree = await ctx.client.users.fetch(authorData.trisal[1]);
 
       if (!marryTwo || !marryThree) {
         await ctx.makeMessage({
@@ -116,8 +115,8 @@ export default class TrisalInteractionCommand extends InteractionCommand {
     }
 
     const user1 = authorData;
-    const user2 = await this.client.repositories.userRepository.find(mencionado1.id);
-    const user3 = await this.client.repositories.userRepository.find(mencionado2.id);
+    const user2 = await ctx.client.repositories.userRepository.find(mencionado1.id);
+    const user3 = await ctx.client.repositories.userRepository.find(mencionado2.id);
 
     if (!user1 || !user2 || !user3) {
       await ctx.makeMessage({ content: ctx.prettyResponse('error', 'no-db'), ephemeral: true });
@@ -178,7 +177,7 @@ export default class TrisalInteractionCommand extends InteractionCommand {
             },
           ],
         });
-        await this.client.repositories.relationshipRepository.trisal(user1.id, user2.id, user3.id);
+        await ctx.client.repositories.relationshipRepository.trisal(user1.id, user2.id, user3.id);
       }
     });
 

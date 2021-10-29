@@ -1,4 +1,3 @@
-import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { ApplicationCommandData, MessageAttachment } from 'discord.js-light';
@@ -6,8 +5,8 @@ import HttpRequests from '@utils/HTTPrequests';
 import { emojis } from '@structures/Constants';
 
 export default class PhiloInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'filosofia',
       description: '「💭」・Ser ou não ser, eis a questão. Mande Aristóteles dizer algo.',
       options: [
@@ -31,7 +30,7 @@ export default class PhiloInteractionCommand extends InteractionCommand {
     if (ctx.author.id === '435228312214962204') {
       const permissionSet: string[] = [];
 
-      const allCommands = this.client.slashCommands.reduce<ApplicationCommandData[]>((p, c) => {
+      const allCommands = ctx.client.slashCommands.reduce<ApplicationCommandData[]>((p, c) => {
         if (!c.config.devsOnly) return p;
         permissionSet.push(c.config.name);
         p.push({
@@ -56,8 +55,8 @@ export default class PhiloInteractionCommand extends InteractionCommand {
       return;
     }
 
-    const res = this.client.picassoWs.isAlive
-      ? await this.client.picassoWs.makeRequest({
+    const res = ctx.client.picassoWs.isAlive
+      ? await ctx.client.picassoWs.makeRequest({
           id: ctx.interaction.id,
           type: 'philo',
           data: { text },

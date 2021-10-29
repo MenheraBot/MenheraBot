@@ -1,6 +1,5 @@
 import 'moment-duration-format';
 import moment from 'moment';
-import MenheraClient from 'MenheraClient';
 import { COLORS, defaultHuntCooldown } from '@structures/Constants';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
@@ -11,8 +10,8 @@ import { calculateProbability, getUserHuntProbability } from '@utils/Probability
 import Util from '@utils/Util';
 
 export default class HuntInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'cacar',
       description: '「🎯」・Sai para uma caçada com Xandão',
       options: [
@@ -149,7 +148,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
         if (taked > 0) success += 1;
       }
 
-      await this.client.repositories.huntRepository.huntEntity(
+      await ctx.client.repositories.huntRepository.huntEntity(
         ctx.author.id,
         huntType,
         value,
@@ -164,10 +163,10 @@ export default class HuntInteractionCommand extends InteractionCommand {
       selected,
     );
 
-    const { rank } = await this.client.repositories.topRepository.getUserHuntRank(
+    const { rank } = await ctx.client.repositories.topRepository.getUserHuntRank(
       ctx.author.id,
       selected,
-      await this.client.repositories.cacheRepository.getDeletedAccounts(),
+      await ctx.client.repositories.cacheRepository.getDeletedAccounts(),
     );
 
     if (selected === 'gods') {

@@ -1,4 +1,3 @@
-import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageButton, MessageComponentInteraction } from 'discord.js-light';
@@ -6,8 +5,8 @@ import { emojis } from '@structures/Constants';
 import Util from '@utils/Util';
 
 export default class DivorceInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'divorciar',
       description: '「💔」・Divorcie de seu atual cônjuje',
       category: 'fun',
@@ -84,7 +83,7 @@ export default class DivorceInteractionCommand extends InteractionCommand {
         ],
       });
 
-      await this.client.repositories.relationshipRepository.divorce(
+      await ctx.client.repositories.relationshipRepository.divorce(
         authorData.married,
         ctx.author.id,
       );

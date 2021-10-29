@@ -1,12 +1,11 @@
-import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageEmbed } from 'discord.js-light';
 import HttpRequests from '@utils/HTTPrequests';
 
 export default class FodaseInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'fodase',
       description: '「🖕」・Lançe um famoso "Foda-se" no chat',
       category: 'fun',

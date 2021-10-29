@@ -1,4 +1,3 @@
-import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageButton, MessageComponentInteraction } from 'discord.js-light';
@@ -7,8 +6,8 @@ import Util from '@utils/Util';
 import moment from 'moment';
 
 export default class MarryInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'casar',
       description: '「💍」・Case com o amor de sua vida',
       options: [
@@ -47,7 +46,7 @@ export default class MarryInteractionCommand extends InteractionCommand {
       return;
     }
 
-    const user2 = await this.client.repositories.userRepository.find(mencionado.id, [
+    const user2 = await ctx.client.repositories.userRepository.find(mencionado.id, [
       'married',
       'ban',
     ]);
@@ -154,7 +153,7 @@ export default class MarryInteractionCommand extends InteractionCommand {
 
     const dataFormated = moment(Date.now()).format('l LTS');
 
-    await this.client.repositories.relationshipRepository.marry(
+    await ctx.client.repositories.relationshipRepository.marry(
       ctx.author.id,
       mencionado.id,
       dataFormated,

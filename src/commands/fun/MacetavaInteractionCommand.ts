@@ -1,4 +1,3 @@
-import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageAttachment } from 'discord.js-light';
@@ -6,8 +5,8 @@ import HttpRequests from '@utils/HTTPrequests';
 import { emojis } from '@structures/Constants';
 
 export default class MacetavaInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'macetava',
       description: '「🤠」・Sabe o meme do macetava do casas bahia? É exatamente isso',
       options: [
@@ -31,8 +30,8 @@ export default class MacetavaInteractionCommand extends InteractionCommand {
     });
     await ctx.defer();
 
-    const res = this.client.picassoWs.isAlive
-      ? await this.client.picassoWs.makeRequest({
+    const res = ctx.client.picassoWs.isAlive
+      ? await ctx.client.picassoWs.makeRequest({
           id: ctx.interaction.id,
           type: 'macetava',
           data: {

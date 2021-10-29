@@ -1,12 +1,11 @@
-import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageAttachment, MessageEmbed } from 'discord.js-light';
 import HttpRequests from '@utils/HTTPrequests';
 
 export default class ShipInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'ship',
       description: '「❤️」・Mostra o valor do ship de um casal',
       options: [
@@ -50,8 +49,8 @@ export default class ShipInteractionCommand extends InteractionCommand {
     }
 
     if (
-      (await this.client.repositories.blacklistRepository.isUserBanned(user1.id)) === true ||
-      (await this.client.repositories.blacklistRepository.isUserBanned(user2.id)) === true
+      (await ctx.client.repositories.blacklistRepository.isUserBanned(user1.id)) === true ||
+      (await ctx.client.repositories.blacklistRepository.isUserBanned(user2.id)) === true
     ) {
       ctx.makeMessage({ content: ctx.prettyResponse('error', 'banned-user'), ephemeral: true });
       return;
@@ -60,7 +59,7 @@ export default class ShipInteractionCommand extends InteractionCommand {
     const isUserMarried =
       user1.id === ctx.author.id
         ? ctx.data.user
-        : await this.client.repositories.userRepository.find(user1.id, ['married']);
+        : await ctx.client.repositories.userRepository.find(user1.id, ['married']);
 
     let value = (Number(user1.id) % 51) + (Number(user2.id) % 51);
     if (value > 100) value = 100;
@@ -70,8 +69,8 @@ export default class ShipInteractionCommand extends InteractionCommand {
     const avatarLinkOne = user1.displayAvatarURL({ format: 'png', size: 256 });
     const avatarLinkTwo = user2.displayAvatarURL({ format: 'png', size: 256 });
 
-    const bufferedShipImage = this.client.picassoWs.isAlive
-      ? await this.client.picassoWs.makeRequest({
+    const bufferedShipImage = ctx.client.picassoWs.isAlive
+      ? await ctx.client.picassoWs.makeRequest({
           id: ctx.interaction.id,
           type: 'ship',
           data: { linkOne: avatarLinkOne, linkTwo: avatarLinkTwo, shipValue: value },
@@ -79,7 +78,7 @@ export default class ShipInteractionCommand extends InteractionCommand {
       : await HttpRequests.shipRequest(avatarLinkOne, avatarLinkTwo, value);
 
     const guild =
-      ctx.interaction.guild ?? (await this.client.guilds.fetch(ctx.interaction.guildId ?? ''));
+      ctx.interaction.guild ?? (await ctx.client.guilds.fetch(ctx.interaction.guildId ?? ''));
 
     const member1 = await guild.members.fetch(user1.id).catch(() => null);
     const member2 = await guild.members.fetch(user2.id).catch(() => null);

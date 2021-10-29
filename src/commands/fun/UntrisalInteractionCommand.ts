@@ -1,12 +1,11 @@
-import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageButton } from 'discord.js-light';
 import Util from '@utils/Util';
 
 export default class UntrisalInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'untrisal',
       description: '「🛑」・Termina o seu trisal',
       category: 'fun',
@@ -51,7 +50,7 @@ export default class UntrisalInteractionCommand extends InteractionCommand {
       return;
     }
 
-    await this.client.repositories.relationshipRepository.untrisal(
+    await ctx.client.repositories.relationshipRepository.untrisal(
       ctx.author.id,
       ctx.data.user.trisal[0],
       ctx.data.user.trisal[1],
