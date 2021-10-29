@@ -80,7 +80,7 @@ export interface IUserSchema {
   // nota: string; // remove
   info: string;
   // data?: string | null; // remove
-  marriedData: string | null;
+  marriedDate: string | null;
   ban: boolean;
   banReason: string | null;
   // cor: ColorResolvable; // remove

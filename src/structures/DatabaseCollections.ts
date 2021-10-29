@@ -23,12 +23,12 @@ const userSchema = new Schema({
   married: { type: String, default: null },
   info: { type: String, default: '' },
   nota: { type: String, default: 'Eu amo a Menhera >.<\nUse /sobremim!' }, // Rename to info
-  data: { type: String, default: undefined }, // Rename to marriedData
-  marriedData: { type: String, default: null },
+  data: { type: String, default: undefined }, // Rename to marriedDate
+  marriedDate: { type: String, default: null },
   ban: { type: Boolean, default: false },
   banReason: { type: String, default: null },
   selectedColor: { type: String, default: '#a788ff' },
-  cor: { type: String, default: '#a788ff' }, // Rename to color
+  cor: { type: String, default: '#a788ff' }, // Rename to selectedColors
   cores: { type: Array, default: [{ nome: '0 - Padrão', cor: '#a788ff', preço: 0 }] }, // Rename to colors
   colors: { type: Array, default: [] },
   caçados: { type: Number, default: 0 }, // Rename to demons

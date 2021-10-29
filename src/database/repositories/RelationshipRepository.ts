@@ -6,12 +6,12 @@ export default class RelationshipRepository {
   async marry(userOneID: string, userTwoID: string, data: string): Promise<void> {
     await this.userRepository.update(userOneID, {
       married: userTwoID,
-      marriedData: data,
+      marriedDate: data,
       lastCommandAt: Date.now(),
     });
     await this.userRepository.update(userTwoID, {
       married: userOneID,
-      marriedData: data,
+      marriedDate: data,
       lastCommandAt: Date.now(),
     });
   }
@@ -19,12 +19,12 @@ export default class RelationshipRepository {
   async divorce(userOneID: string, userTwoID: string): Promise<void> {
     await this.userRepository.update(userOneID, {
       married: null,
-      marriedData: null,
+      marriedDate: null,
       lastCommandAt: Date.now(),
     });
     await this.userRepository.update(userTwoID, {
       married: null,
-      marriedData: null,
+      marriedDate: null,
       lastCommandAt: Date.now(),
     });
   }
