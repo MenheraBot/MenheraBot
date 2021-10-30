@@ -399,7 +399,7 @@
     "client_footer": "I'm very beautiful, right?"
   },
   "cor": {
-    "footer": "Page {{page}}/{{max_pages}}",
+    "footer": "Page {{page}}/{{maxPages}}",
     "description": "Change the color of your profile",
     "usage": "[color]",
     "embed_title": "Your Colors",

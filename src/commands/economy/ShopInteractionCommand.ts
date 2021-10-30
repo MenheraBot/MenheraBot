@@ -753,7 +753,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
           };
           ctx.client.repositories.userRepository.update(ctx.author.id, {
             $inc: { estrelinhas: -availableColors[6].price },
-            $push: { cores: toPush },
+            $push: { colors: toPush },
           });
           ctx.makeMessage({
             content: ctx.prettyResponse('success', 'buy_colors.yc-confirm', {
@@ -773,7 +773,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
     if (choice !== 6) {
       await ctx.client.repositories.userRepository.update(ctx.author.id, {
         $inc: { estrelinhas: -availableColors[choice].price },
-        $push: { cores: availableColors[choice] },
+        $push: { colors: availableColors[choice] },
       });
       ctx.makeMessage({
         content: ctx.prettyResponse('success', 'buy_colors.buy-success', {

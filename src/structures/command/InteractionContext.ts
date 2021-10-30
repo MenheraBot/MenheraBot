@@ -70,7 +70,10 @@ export default class InteractionCommandContext {
       return this.resolveMessage(await this.interaction.editReply(options).catch(() => null));
 
     return this.resolveMessage(
-      await this.interaction.reply({ ...options, fetchReply: true }).catch(() => null),
+      await this.interaction.reply({ ...options, fetchReply: true }).catch((a) => {
+        console.log(a);
+        return null;
+      }),
     );
   }
 

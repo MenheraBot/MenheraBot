@@ -62,22 +62,21 @@ export default class ColorInteractionCommand extends InteractionCommand {
       .setMaxValues(1)
       .setPlaceholder(`${emojis.rainbow} ${ctx.translate('choose')}`);
 
-    const pages = Math.floor(ctx.data.user.colors.length / 25) + 1;
+    const pages = Math.floor(ctx.data.user.colors.length / 10) + 1;
+
+    for (let i = 0; i < ctx.data.user.colors.length && i < 10; i++) {
+      embed.addField(`${ctx.data.user.colors[i].nome}`, `${ctx.data.user.colors[i].cor}`, true);
+      selector.addOptions({
+        label: ctx.data.user.colors[i].nome.replaceAll('*', ''),
+        value: `${ctx.data.user.colors[i].cor}`,
+        description: `${ctx.data.user.colors[i].cor}`,
+        emoji: ColorInteractionCommand.getEmojiFromColorName(
+          ctx.data.user.colors[i].nome.replace(/\D/g, ''),
+        ),
+      });
+    }
 
     const componentsToSend = [actionRow([selector])];
-
-    for (let i = 0; i < ctx.data.user.colors.length && i < 25; i++) {
-      if (ctx.data.user.colors[i].cor !== ctx.data.user.selectedColor) {
-        embed.addField(`${ctx.data.user.colors[i].nome}`, `${ctx.data.user.colors[i].cor}`);
-        selector.addOptions({
-          label: ctx.data.user.colors[i].nome.replaceAll('*', ''),
-          value: `${ctx.data.user.colors[i].cor}`,
-          emoji: ColorInteractionCommand.getEmojiFromColorName(
-            ctx.data.user.colors[i].nome.replace(/\D/g, ''),
-          ),
-        });
-      }
-    }
 
     if (pages > 1) {
       const nextPageButton = new MessageButton()
@@ -107,7 +106,7 @@ export default class ColorInteractionCommand extends InteractionCommand {
       int.customId.startsWith(ctx.interaction.id) && int.user.id === ctx.author.id;
 
     const collector = ctx.channel.createMessageComponentCollector({
-      time: 7000,
+      time: 30000,
       maxComponents: 8,
       filter,
     });
@@ -119,6 +118,7 @@ export default class ColorInteractionCommand extends InteractionCommand {
     let selectedPage = 0;
 
     collector.on('collect', async (int) => {
+      int.deferUpdate();
       const type = resolveCustomId(int.customId);
 
       const changePage = (toSum: number) => {
@@ -130,25 +130,27 @@ export default class ColorInteractionCommand extends InteractionCommand {
         currentMenu.spliceOptions(0, currentMenu.options.length);
         embed.spliceFields(0, embed.fields.length);
 
-        for (let i = 24 * selectedPage; currentMenu.options.length < 25; i++) {
-          if (i > ctx.data.user.colors.length) break;
-          if (ctx.data.user.colors[i].cor !== ctx.data.user.selectedColor) {
-            embed.addField(`${ctx.data.user.colors[i].nome}`, `${ctx.data.user.colors[i].cor}`);
-            selector.addOptions({
-              label: ctx.data.user.colors[i].nome.replaceAll('*', ''),
-              value: `${ctx.data.user.colors[i].cor}`,
-              emoji: ColorInteractionCommand.getEmojiFromColorName(
-                ctx.data.user.colors[i].nome.replace(/\D/g, ''),
-              ),
-            });
-          }
+        for (let i = 10 * selectedPage; currentMenu.options.length < 10; i++) {
+          if (i > ctx.data.user.colors.length || typeof ctx.data.user.colors[i] === 'undefined')
+            break;
+          embed.addField(`${ctx.data.user.colors[i].nome}`, `${ctx.data.user.colors[i].cor}`, true);
+          currentMenu.addOptions({
+            label: ctx.data.user.colors[i].nome.replaceAll('*', ''),
+            value: `${ctx.data.user.colors[i].cor}`,
+            description: `${ctx.data.user.colors[i].cor}`,
+            emoji: ColorInteractionCommand.getEmojiFromColorName(
+              ctx.data.user.colors[i].nome.replace(/\D/g, ''),
+            ),
+          });
         }
+
+        embed.setFooter(ctx.translate('footer', { page: selectedPage + 1, maxPages: pages }));
 
         if (selectedPage > 0) componentsToSend[1].components[0].setDisabled(false);
         else componentsToSend[1].components[0].setDisabled(true);
 
-        if (selectedPage === pages - 1) componentsToSend[1].components[1].setDisabled(false);
-        else componentsToSend[1].components[1].setDisabled(true);
+        if (selectedPage + 1 === pages) componentsToSend[1].components[1].setDisabled(true);
+        else componentsToSend[1].components[1].setDisabled(false);
       };
 
       switch (type) {
