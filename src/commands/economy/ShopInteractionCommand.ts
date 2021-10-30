@@ -721,7 +721,8 @@ export default class ShopInteractionCommand extends InteractionCommand {
         const hexColor = ctx.options.getString('hex');
 
         const name =
-          ctx.options.getString('nome')?.slice(0, 20) ?? ctx.translate('buy_colors.no-name');
+          ctx.options.getString('nome')?.slice(0, 20) ??
+          ctx.translate('buy_colors.no-name', { number: ctx.data.user.colors.length });
 
         if (!hexColor) {
           ctx.makeMessage({
