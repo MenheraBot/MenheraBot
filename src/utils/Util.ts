@@ -153,6 +153,6 @@ export const getMillisecondsToTheEndOfDay = (): number => {
 };
 
 export const debugError = (err: Error): null => {
-  if (process.env.NODE_ENV === 'dev') console.error(err.message);
+  if (process.env.NODE_ENV === 'development') console.error(err.message);
   return null;
 };

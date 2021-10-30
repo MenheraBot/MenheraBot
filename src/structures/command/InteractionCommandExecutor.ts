@@ -47,14 +47,15 @@ const InteractionCommandExecutor = async (
   }
 
   if (
-    process.env.NODE_ENV === 'dev' &&
+    process.env.NODE_ENV === 'development' &&
     !(interaction.member as GuildMember).roles.cache.has('852196704211042336')
   ) {
     interaction.reply({
       content:
-        '<:negacao:759603958317711371> |VOCÊ NÃO POSSUI ACESSO AO BETA!\n Use `..beta` para receber acesso!',
+        '<:negacao:759603958317711371> | VOCÊ NÃO POSSUI ACESSO AO BETA!\n Use `..beta` para receber acesso!',
       ephemeral: true,
     });
+    return;
   }
 
   const command = client.slashCommands.get(interaction.commandName);
@@ -219,9 +220,12 @@ const InteractionCommandExecutor = async (
         const embed = new MessageEmbed();
         embed.setColor('#fd0000');
         embed.setTitle(
-          `${process.env.NODE_ENV === 'dev' ? '[BETA]' : ''} ${t('events:error_embed.title', {
-            cmd: command.config.name,
-          })}`,
+          `${process.env.NODE_ENV === 'development' ? '[BETA]' : ''} ${t(
+            'events:error_embed.title',
+            {
+              cmd: command.config.name,
+            },
+          )}`,
         );
         embed.setDescription(`\`\`\`js\n${errorMessage}\`\`\``);
         embed.addField(
@@ -254,7 +258,7 @@ const InteractionCommandExecutor = async (
       const embed = new MessageEmbed();
       embed.setColor('#fd0000');
       embed.setTitle(
-        `${process.env.NODE_ENV === 'dev' ? '[BETA]' : ''} ${t('events:error_embed.title', {
+        `${process.env.NODE_ENV === 'development' ? '[BETA]' : ''} ${t('events:error_embed.title', {
           cmd: command.config.name,
         })}`,
       );
@@ -270,7 +274,7 @@ const InteractionCommandExecutor = async (
     }
   }
 
-  if (!interaction.guild) return;
+  if (!interaction.guild || process.env.NODE_ENV === 'development') return;
   const data: ICommandUsedData = {
     authorId: interaction.user.id,
     guildId: interaction.guild.id,
