@@ -151,3 +151,8 @@ export const getMillisecondsToTheEndOfDay = (): number => {
 
   return 86400000 - passedMilli;
 };
+
+export const debugError = (err: Error): null => {
+  if (process.env.NODE_ENV === 'dev') console.error(err.message);
+  return null;
+};

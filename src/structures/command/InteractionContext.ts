@@ -13,6 +13,7 @@ import MenheraClient from 'MenheraClient';
 import { emojis, EmojiTypes } from '@structures/Constants';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { APIMessage } from 'discord-api-types';
+import { debugError } from '@utils/Util';
 
 export default class InteractionCommandContext {
   constructor(
@@ -47,7 +48,7 @@ export default class InteractionCommandContext {
       return;
     }
 
-    await this.interaction.deferReply({ ephemeral }).catch(() => null);
+    await this.interaction.deferReply({ ephemeral }).catch(debugError);
   }
 
   prettyResponseLocale(emoji: EmojiTypes, text: string, translateOptions = {}): string {
@@ -67,22 +68,19 @@ export default class InteractionCommandContext {
 
   async makeMessage(options: InteractionReplyOptions): Promise<Message | null> {
     if (this.interaction.replied || this.interaction.deferred)
-      return this.resolveMessage(await this.interaction.editReply(options).catch(() => null));
+      return this.resolveMessage(await this.interaction.editReply(options).catch(debugError));
 
     return this.resolveMessage(
-      await this.interaction.reply({ ...options, fetchReply: true }).catch((a) => {
-        console.log(a);
-        return null;
-      }),
+      await this.interaction.reply({ ...options, fetchReply: true }).catch(debugError),
     );
   }
 
   async send(options: MessagePayload | InteractionReplyOptions): Promise<Message | null> {
-    return this.resolveMessage(await this.interaction.followUp(options).catch(() => null));
+    return this.resolveMessage(await this.interaction.followUp(options).catch(debugError));
   }
 
-  async deleteReply(): Promise<void> {
-    return this.interaction.deleteReply().catch(() => undefined);
+  async deleteReply(): Promise<void | null> {
+    return this.interaction.deleteReply().catch(debugError);
   }
 
   locale(text: string, translateVars = {}): string {

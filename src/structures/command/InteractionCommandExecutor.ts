@@ -2,6 +2,7 @@
 import { languageByLocale } from '@structures/Constants';
 import HttpRequests from '@utils/HTTPrequests';
 import { ICommandUsedData } from '@utils/Types';
+import { debugError } from '@utils/Util';
 import {
   CommandInteraction,
   BaseGuildCommandInteraction,
@@ -41,7 +42,7 @@ const InteractionCommandExecutor = async (
         })}`,
         ephemeral: true,
       })
-      .catch(() => null);
+      .catch(debugError);
     return;
   }
 
@@ -49,7 +50,7 @@ const InteractionCommandExecutor = async (
   if (!command) {
     interaction
       .reply({ content: t('permissions:UNKNOWN_SLASH'), ephemeral: true })
-      .catch(() => null);
+      .catch(debugError);
     return;
   }
 
@@ -64,7 +65,7 @@ const InteractionCommandExecutor = async (
   ) {
     interaction
       .reply({ content: `🔒 | ${t('events:blocked-channel')}`, ephemeral: true })
-      .catch(() => null);
+      .catch(debugError);
     return;
   }
 
@@ -76,7 +77,7 @@ const InteractionCommandExecutor = async (
         })}`,
         ephemeral: true,
       })
-      .catch(() => null);
+      .catch(debugError);
     return;
   }
 
@@ -90,7 +91,7 @@ const InteractionCommandExecutor = async (
         })}`,
         ephemeral: true,
       })
-      .catch(() => null);
+      .catch(debugError);
     return;
   }
 
@@ -116,7 +117,7 @@ const InteractionCommandExecutor = async (
           })}`,
           ephemeral: true,
         })
-        .catch(() => null);
+        .catch(debugError);
       return;
     }
   }
@@ -143,7 +144,7 @@ const InteractionCommandExecutor = async (
           })}`,
           ephemeral: true,
         })
-        .catch(() => null);
+        .catch(debugError);
       return;
     }
   }
@@ -164,7 +165,7 @@ const InteractionCommandExecutor = async (
           })}`,
           ephemeral: true,
         })
-        .catch(() => null);
+        .catch(debugError);
       return;
     }
   }
@@ -195,11 +196,11 @@ const InteractionCommandExecutor = async (
       if (interaction.deferred) {
         interaction.webhook
           .send({ content: t('events:error_embed.title'), ephemeral: true })
-          .catch(() => null);
+          .catch(debugError);
       } else
         interaction
           .reply({ content: t('events:error_embed.title'), ephemeral: true })
-          .catch(() => null);
+          .catch(debugError);
 
       if (err instanceof Error && err.stack) {
         const errorMessage = err.stack.length > 1800 ? `${err.stack.slice(0, 1800)}...` : err.stack;
@@ -215,8 +216,8 @@ const InteractionCommandExecutor = async (
         embed.addField(t('events:error_embed.report_title'), t('events:error_embed.report_value'));
 
         if (client.user?.id === '708014856711962654')
-          errorWebHook.send({ embeds: [embed] }).catch(() => null);
-        else interaction.followUp({ embeds: [embed], ephemeral: true }).catch(() => null);
+          errorWebHook.send({ embeds: [embed] }).catch(debugError);
+        else interaction.followUp({ embeds: [embed], ephemeral: true }).catch(debugError);
       }
     });
   } catch (err) {
@@ -228,11 +229,11 @@ const InteractionCommandExecutor = async (
     if (interaction.deferred) {
       interaction.webhook
         .send({ content: t('events:error_embed.title'), ephemeral: true })
-        .catch(() => null);
+        .catch(debugError);
     } else
       interaction
         .reply({ content: t('events:error_embed.title'), ephemeral: true })
-        .catch(() => null);
+        .catch(debugError);
 
     if (err instanceof Error && err.stack) {
       const errorMessage = err.stack.length > 1800 ? `${err.stack.slice(0, 1800)}...` : err.stack;
@@ -248,7 +249,7 @@ const InteractionCommandExecutor = async (
       embed.addField(t('events:error_embed.report_title'), t('events:error_embed.report_value'));
 
       if (client.user?.id === '708014856711962654')
-        errorWebHook.send({ embeds: [embed] }).catch(() => null);
+        errorWebHook.send({ embeds: [embed] }).catch(debugError);
       else interaction.followUp({ embeds: [embed], ephemeral: true });
     }
   }

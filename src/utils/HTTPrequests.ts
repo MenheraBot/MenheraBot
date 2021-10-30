@@ -14,6 +14,7 @@ import {
 } from '@utils/Types';
 import { User } from 'discord.js-light';
 import type { ActivityType } from 'discord.js';
+import { debugError } from './Util';
 
 const request = axios.create({
   baseURL: `${process.env.API_URL}/picasso`,
@@ -64,15 +65,15 @@ export default class HttpRequests {
   }
 
   static async postCommandStatus(commands: ICommandsData[]): Promise<void> {
-    await StatusRequest.post('/commands', { data: { commands } }).catch(() => null);
+    await StatusRequest.post('/commands', { data: { commands } }).catch(debugError);
   }
 
   static async postShardStatus(shards: IStatusData[]): Promise<void> {
-    await StatusRequest.put('/shards', { data: { shards } }).catch(() => null);
+    await StatusRequest.put('/shards', { data: { shards } }).catch(debugError);
   }
 
   static async resetCommandsUses(): Promise<void> {
-    await StatusRequest.delete('/commands/uses').catch(() => null);
+    await StatusRequest.delete('/commands/uses').catch(debugError);
   }
 
   static async updateCommandStatusMaintenance(
@@ -81,7 +82,7 @@ export default class HttpRequests {
   ): Promise<void> {
     await StatusRequest.patch(`/commands/${commandName}`, {
       data: { disabled: maintenance },
-    }).catch(() => null);
+    }).catch(debugError);
   }
 
   static async getProfileCommands(
@@ -110,7 +111,7 @@ export default class HttpRequests {
   static async postBotStatus(botId: string, serverCount: number[]): Promise<void> {
     await topggRequest
       .post(`/bots/${botId}/stats`, { server_count: serverCount })
-      .catch(() => null);
+      .catch(debugError);
   }
 
   static async getTopUsers(): Promise<false | { id: string; uses: number }[]> {
@@ -145,7 +146,7 @@ export default class HttpRequests {
         args: info.args,
         shardId: info.shardId,
       })
-      .catch(() => null);
+      .catch(debugError);
   }
 
   static async getActivity(
@@ -172,7 +173,7 @@ export default class HttpRequests {
   }
 
   static async postBlackJack(userId: string, didWin: boolean, betValue: number): Promise<void> {
-    await apiRequest.post('/blackjack', { userId, didWin, betValue }).catch(() => null);
+    await apiRequest.post('/blackjack', { userId, didWin, betValue }).catch(debugError);
   }
 
   static async postCoinflipGame(
@@ -181,7 +182,7 @@ export default class HttpRequests {
     betValue: number,
     date: number,
   ): Promise<void> {
-    await apiRequest.post('/coinflip', { winnerId, loserId, betValue, date }).catch(() => null);
+    await apiRequest.post('/coinflip', { winnerId, loserId, betValue, date }).catch(debugError);
   }
 
   static async postHuntCommand(
@@ -189,7 +190,7 @@ export default class HttpRequests {
     huntType: string,
     { value, success, tries }: { value: number; success: number; tries: number },
   ): Promise<void> {
-    await apiRequest.post('/hunt', { userId, huntType, value, success, tries }).catch(() => null);
+    await apiRequest.post('/hunt', { userId, huntType, value, success, tries }).catch(debugError);
   }
 
   static async getHuntUserStats(id: string): Promise<IRESTHuntStats | { error: true }> {

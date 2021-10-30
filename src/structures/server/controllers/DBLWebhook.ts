@@ -3,6 +3,7 @@ import MenheraClient from 'MenheraClient';
 
 import { votes as constants } from '@structures/Constants';
 import { MessageEmbed } from 'discord.js-light';
+import { debugError } from '@utils/Util';
 
 const runVote = async (
   client: MenheraClient,
@@ -64,10 +65,10 @@ const runVote = async (
 
   const sendMessageToUser = async (id: string, embedToSend: MessageEmbed) => {
     const userInShard = client.users.forge(id);
-    await userInShard.send({ embeds: [embedToSend] }).catch(() => null);
+    await userInShard.send({ embeds: [embedToSend] }).catch(debugError);
   };
 
-  sendMessageToUser(userId, embed).catch(() => null);
+  sendMessageToUser(userId, embed).catch(debugError);
 };
 
 export default (client: MenheraClient): Router => {
