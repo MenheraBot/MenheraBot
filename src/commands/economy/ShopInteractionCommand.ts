@@ -750,7 +750,6 @@ export default class ShopInteractionCommand extends InteractionCommand {
           const toPush = {
             nome: name,
             cor: `#${hexColor.replace('#', '')}`,
-            price: shopEconomy.colors.your_choice,
           };
           ctx.client.repositories.userRepository.update(ctx.author.id, {
             $inc: { estrelinhas: -availableColors[6].price },

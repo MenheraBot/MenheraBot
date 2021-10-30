@@ -51,7 +51,6 @@ export interface IBlackjackCards {
 interface IColor {
   nome: string;
   cor: ColorResolvable;
-  price: number;
 }
 
 interface IBadge {
