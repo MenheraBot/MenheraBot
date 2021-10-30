@@ -72,7 +72,8 @@ export default class ProfileInteractionCommand extends InteractionCommand {
       return;
     }
 
-    if (user?.married) marry = await ctx.client.users.fetch(user.married);
+    if (user?.married && user.married !== 'false')
+      marry = await ctx.client.users.fetch(user.married);
 
     await ctx.defer();
 
