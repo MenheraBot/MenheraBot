@@ -95,6 +95,7 @@ export const emojis = {
   heart: '❤️',
   lick: '👅',
   sword: '⚔️',
+  gay_flag: '🏳️‍🌈',
   rainbow: '🌈',
   giants: '🦍',
   archangels: '👼',
@@ -208,6 +209,7 @@ export const EightBallAnswers: { id: number; type: T8BallAnswerTypes }[] = [
 export type EmojiTypes = keyof typeof emojis;
 
 export const COLORS = {
+  Default: '#a788ff' as const,
   HuntDefault: '#df93fd' as const,
   HuntDemons: '#df1b1b' as const,
   HuntAngels: '#efe9e9' as const,
