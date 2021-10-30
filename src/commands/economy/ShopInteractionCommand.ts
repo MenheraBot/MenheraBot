@@ -733,7 +733,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
 
         if (
           ctx.data.user.colors.some(
-            (a) => `${a.cor}`.replace('#', '') === hexColor.replace('#', ''),
+            (a) => `${a.cor}`.replace('#', '') === hexColor.replace('#', '') || a.nome === name,
           )
         ) {
           ctx.makeMessage({

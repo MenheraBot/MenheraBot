@@ -404,6 +404,7 @@
   },
   "cor": {
     "description": "Mude a cor de seu perfil",
+    "footer": "Página {{page}}/{{max_pages}}",
     "usage": "[cor]",
     "embed_title": "Suas Cores",
     "embed_description": "Escolha abaixo qual a cor que quer usar! Você tem 30 segundos",

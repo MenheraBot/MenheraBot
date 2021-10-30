@@ -8,5 +8,7 @@
   "english": "English",
   "name": "Name",
   "description": "Description",
-  "amount": "Amount"
+  "amount": "Amount",
+  "next": "Next",
+  "back": "Back"
 }

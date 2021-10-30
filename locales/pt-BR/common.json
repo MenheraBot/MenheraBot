@@ -8,5 +8,7 @@
   "negate": "Negar",
   "name": "Nome",
   "description": "Descrição",
-  "amount": "Quantidade"
+  "amount": "Quantidade",
+  "next": "Próxima",
+  "back": "Anterior"
 }
