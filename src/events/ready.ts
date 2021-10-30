@@ -12,7 +12,7 @@ export default class ReadyEvent {
   async run(client: MenheraClient): Promise<void> {
     if (!client.user) return;
     if (!client.shard) return;
-    if (client.user.id !== process.env.MENHERA_ID) return;
+    if (process.env.NODE_ENV === 'development') return;
 
     const isMasterShard = (id: number) => id === (client.shard?.count as number) - 1;
 
