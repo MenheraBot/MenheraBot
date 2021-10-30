@@ -42,7 +42,7 @@ export default class ColorInteractionCommand extends InteractionCommand {
 
     if (!haspadrao) {
       await ctx.client.repositories.userRepository.update(ctx.author.id, {
-        $push: { cores: { nome: '0 - Padrão', cor: '#a788ff' } },
+        $push: { colors: { nome: '0 - Padrão', cor: '#a788ff' } },
       });
     }
 
