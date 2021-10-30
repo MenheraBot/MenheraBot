@@ -46,6 +46,17 @@ const InteractionCommandExecutor = async (
     return;
   }
 
+  if (
+    process.env.NODE_ENV === 'dev' &&
+    !(interaction.member as GuildMember).roles.cache.has('852196704211042336')
+  ) {
+    interaction.reply({
+      content:
+        '<:negacao:759603958317711371> |VOCÊ NÃO POSSUI ACESSO AO BETA!\n Use `..beta` para receber acesso!',
+      ephemeral: true,
+    });
+  }
+
   const command = client.slashCommands.get(interaction.commandName);
   if (!command) {
     interaction
