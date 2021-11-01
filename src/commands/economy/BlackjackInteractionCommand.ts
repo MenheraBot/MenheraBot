@@ -10,7 +10,7 @@ import Util, { resolveCustomId } from '@utils/Util';
 const CalculateHandValue = (cards: Array<number>): Array<IBlackjackCards> =>
   cards.reduce((p: Array<IBlackjackCards>, c: number) => {
     const multiplier = Math.floor(c / 13);
-    const newC = c - multiplier * 13;
+    const newC = c - (multiplier * 13 - 1);
 
     p.push({
       value: newC > 10 ? 10 : newC,
@@ -600,7 +600,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
     const collected = await Util.collectComponentInteraction(ctx.channel, ctx.author.id, 10000);
 
     if (!collected) {
-      ctx.defer({ content: `${emojis.error} ${ctx.translate('timeout')}` });
+      ctx.interaction.editReply({ content: `${emojis.error} ${ctx.translate('timeout')}` });
       ctx.client.repositories.starRepository.remove(ctx.author.id, valor);
       return;
     }

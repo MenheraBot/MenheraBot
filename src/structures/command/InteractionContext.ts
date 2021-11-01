@@ -79,6 +79,10 @@ export default class InteractionCommandContext {
     return this.resolveMessage(await this.interaction.followUp(options).catch(debugError));
   }
 
+  async fetchReply(): Promise<Message | null> {
+    return this.resolveMessage(await this.interaction.fetchReply().catch(debugError));
+  }
+
   async deleteReply(): Promise<void | null> {
     return this.interaction.deleteReply().catch(debugError);
   }
