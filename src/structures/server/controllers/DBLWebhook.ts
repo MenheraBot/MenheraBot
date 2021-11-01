@@ -15,48 +15,40 @@ const runVote = async (
   user.votos += 1;
 
   let { rollQuantity } = constants;
-  let caçadosQuantity = 5;
   let starQuantity =
     Math.floor(Math.random() * (constants.maxStarValue - constants.minStarValue + 1)) +
     constants.minStarValue;
-  let embedTitle = '🍬 | É bom votar mesmo | 🍬';
-  let embedDescription = `É bom votar em mim... O dia das bruxas está chegando. Não esqueça que a noite de lua cheia está próxima\nPegue isso e suma! **${rollQuantity}**🔑, **${starQuantity}**⭐ **${caçadosQuantity}** <:Demon:758765044443381780>!\n\nSabia que a cada 20 votos você ganha um prêmio especial? E que você ja votou **${user.votos}** vezes em mim? Acho bom mesmo <:halloween:900565922836783105>`;
+  let embedTitle = '🥰 | Obrigada por Votar amor | 🥰';
+  let embedDescription = `Yahoiiii, brigada por votar em mim meu benzinho, como agradecimento, toma esse agradinho **${rollQuantity}**🔑, **${starQuantity}**⭐!\n\nSabia que a cada 20 votos você ganha um prêmio especial? E que você ja votou **${user.votos}** vezes em mim? Obrigada meu benzinho`;
 
   if (isWeekend) {
     rollQuantity *= constants.rollWeekendMultiplier;
     starQuantity *= constants.starWeekendMultiplier;
-    caçadosQuantity *= 2;
-    embedTitle = '🧙‍♀️ | O FIM ESTÁ PRÓXIMO | 🧙‍♀️';
-    embedDescription = `Vote... VOttee... VOOOTEEEEEEEE! O FEITIÇO ESTÁ QUASE PRONTO\nContinue votando para que o ritual se complete\n\nSuas recompensas pelos seus sacrifícios: **${rollQuantity}**🔑, **${starQuantity}**⭐, **${caçadosQuantity}** <:Demon:758765044443381780>`;
+    embedTitle = '💖 | Final de Semana | 💖';
+    embedDescription = `UOOO, tu votou em mim no final de semana, eu te agradeço muuuito por tirar um tempinho do seu final de semana para me ajudar. Vou até dar um prêmio especial pra ti por isso: **${rollQuantity}**🔑, **${starQuantity}**⭐`;
   }
 
   if (user.votos % 20 === 0) {
     rollQuantity *= constants.roll20Multiplier;
     starQuantity *= constants.star20Multiplier;
-    caçadosQuantity *= 2;
-    embedTitle =
-      '<:halloween:900565922836783105> | Eu Já Sinto o Poder Emanando do Meu Corpo | <:halloween:900565922836783105>';
-    embedDescription = `Continue para terminarmos o ritual, e eu ter todo o poder das Linhas Ley ❤️\n\nVocê votou ${user.votos} vezes em mim, e por isso, ganhou o **QUADRUPLO** de prêmios! Toma-te ${starQuantity}⭐, **${rollQuantity}**🔑, **${caçadosQuantity}** <:Demon:758765044443381780> \n\nVote em mim novamente em 12 horas <a:MenheraChibiTableSlam:768621225143697459>`;
+    embedTitle = '🎉 | Prêmio Especial | 🎉';
+    embedDescription = `Yyyayyyyy, você atingiu a meta do prêmio especial de 20 votos! Eu agradeço demais por você se dedicar tanto à me ajudar, você vai ganhar muuuito mais hoje. Obrigada novamente por me ajudar, e não se esqueça que a cada 12 horas você pode me ajudar mais\n\nVocê votou ${user.votos} vezes em mim, e por isso, ganhou o **QUADRUPLO** de prêmios! Toma-te ${starQuantity}⭐, **${rollQuantity}**🔑\n\nVote em mim novamente em 12 horas 🎊`;
   }
 
   if (user.votos % 20 === 0 && isWeekend) {
-    caçadosQuantity *= 2;
-    client.repositories.badgeRepository.addBadge(user.id, 12);
-    embedTitle = '<:Demon:758765044443381780> | ESTÁ TUDO PRONTO | <:Demon:758765044443381780>';
-    embedDescription = `É ISSO! VOCÊ CONSEGUIU! MEU PODER ESTÁ COMPLETO!\nGraças a sua ajuda eu consegui atingir o poder máximo! Obrigada! Agora eu posso finalmente começar com minha vingança....\nVocê recebeu **${starQuantity}** :star: , **${rollQuantity}** 🔑, **${caçadosQuantity}** <:Demon:758765044443381780> e um emblema`;
+    embedTitle = '💜 | CARAAAA, TU COSNEGUIU O MÁXIMO DE PRÊMIOS | 💜';
+    embedDescription = `É ISSO! VOCÊ CONSEGUIU! Além de dar um tempinho do seu final de semana para me ajudar, você atingiu a meta de 20 votos! Isso significa o que? Exatamente, MUUUUITOS PRÊMIOS.\nVocê recebeu **${starQuantity}** :star: , **${rollQuantity}** 🔑.\nVocê pode votar a cada 12 horas, e além de me ajudar, tu ganha prêmios por isso. Obrigada de verdade por tudo amorzinho`;
   }
 
   const embed = new MessageEmbed()
     .setTitle(embedTitle)
-    .setColor('#F2B672')
-    .setImage('https://i.imgur.com/CZdfuLN.png')
-    // .setThumbnail('https://i.imgur.com/b5y0nd4.png')
-    .setThumbnail('https://i.imgur.com/O2wdphz.jpg')
+    .setColor('#7e40e9')
+    .setImage('https://i.imgur.com/5XaGRDu.jpg')
+    .setThumbnail('https://i.imgur.com/qtM9T9C.jpg')
     .setDescription(embedDescription);
 
   user.rolls += rollQuantity;
   user.estrelinhas += starQuantity;
-  user.caçados += caçadosQuantity;
   user.voteCooldown = `${Date.now() + 43200000}`;
   await user.save();
 
