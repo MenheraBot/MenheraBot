@@ -277,7 +277,7 @@
       "main": {
         "fields": {
           "name": "Valor das Caças",
-          "value": "<:DEMON:758765044443381780> Demônios - **{{demon}}**⭐\n👨 Gigantes - **{{giant}}**⭐ \n<:ANGEL:758765044204437535> Anjos - **{{angel}}**⭐\n👼 Arcanjos - **{{archangel}}**⭐\n<:SEMIGOD:758766732235374674> SemiDeuses - **{{demi}}**⭐\n<:God:758474639570894899> Deuses - **{{god}}**⭐"
+          "value": "<:DEMON:758765044443381780> Demônios - **{{demon}}**⭐\n🦍 Gigantes - **{{giant}}**⭐ \n<:ANGEL:758765044204437535> Anjos - **{{angel}}**⭐\n👼 Arcanjos - **{{archangel}}**⭐\n<:SEMIGOD:758766732235374674> SemiDeuses - **{{demi}}**⭐\n<:God:758474639570894899> Deuses - **{{god}}**⭐"
         }
       },
       "invalid-args": "este valor não é um número válido! Você deve passar a opção e a quantidade",
@@ -285,7 +285,7 @@
       "success-demon": "você vendeu **{{value}}** <:DEMON:758765044443381780> demônios e recebeu **{{cost}}** ⭐ estrelinhas!\nAgora você tem **{{quantity}}** <:DEMON:758765044443381780> e **{{star}}**⭐",
       "success-angel": "você vendeu **{{value}}** <:Angel:758765044204437535> anjos e recebeu **{{cost}}** ⭐ estrelinhas!\nAgora você tem **{{quantity}}** <:Angel:758765044204437535> e **{{star}}**⭐",
       "success-archangel": "você vendeu **{{value}}** 👼 arcanjos e recebeu **{{cost}}** ⭐ estrelinhas!\nAgora você tem **{{quantity}}** 👼 e **{{star}}**⭐",
-      "success-giant": "você vendeu **{{value}}** 👨 gigantes e recebeu **{{cost}}** ⭐ estrelinhas!\nAgora você tem **{{quantity}}** 👨 e **{{star}}**⭐",
+      "success-giant": "você vendeu **{{value}}** 🦍 gigantes e recebeu **{{cost}}** ⭐ estrelinhas!\nAgora você tem **{{quantity}}** 🦍 e **{{star}}**⭐",
       "success-sd": "você vendeu **{{value}}** <:SEMIGOD:758766732235374674> semideuses e recebeu **{{cost}}** ⭐ estrelinhas!\nAgora você tem **{{quantity}}** <:SEMIGOD:758766732235374674> e **{{star}}**⭐",
       "success-god": "você vendeu **{{value}}** <:God:758474639570894899> deuses e recebeu **{{cost}}** ⭐ estrelinhas!\nAgora você tem **{{quantity}}** <:God:758474639570894899> e **{{star}}**⭐"
     }
