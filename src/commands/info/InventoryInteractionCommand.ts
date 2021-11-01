@@ -32,7 +32,7 @@ export default class InventoryInteractionCommand extends InteractionCommand {
       ],
       cooldown: 7,
       clientPermissions: ['EMBED_LINKS'],
-      authorDataFields: ['selectedColor', 'inUseItems', 'inventory'],
+      authorDataFields: ['selectedColor', 'inUseItems', 'inventory', 'id'],
     });
   }
 
@@ -44,6 +44,7 @@ export default class InventoryInteractionCommand extends InteractionCommand {
             'inUseItems',
             'inventory',
             'ban',
+            'id',
           ])
         : ctx.data.user;
 
