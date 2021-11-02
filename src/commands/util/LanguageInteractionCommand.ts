@@ -21,24 +21,24 @@ export default class LanguageInteractionCommand extends InteractionCommand {
       .setCustomId(ctx.interaction.id)
       .setMinValues(1)
       .setMaxValues(1)
-      .setPlaceholder(ctx.translate('select'))
+      .setPlaceholder(ctx.locale('commands:idioma.select'))
       .addOptions([
         {
           label: ctx.locale('common:english'),
-          description: ctx.translate('english'),
+          description: ctx.locale('commands:idioma.english'),
           value: 'en-US',
           emoji: emojis.us,
         },
         {
           label: ctx.locale('common:portuguese'),
-          description: ctx.translate('portuguese'),
+          description: ctx.locale('commands:idioma.portuguese'),
           value: 'pt-BR',
           emoji: emojis.br,
         },
       ]);
 
     await ctx.makeMessage({
-      content: ctx.prettyResponse('question', 'question'),
+      content: ctx.prettyResponse('question', 'commands:idioma.question'),
       components: [{ type: 'ACTION_ROW', components: [selector] }],
     });
 

@@ -29,7 +29,7 @@ export default class MamarInteractionCommand extends InteractionCommand {
 
     if (mention.bot) {
       await ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'bot', {
+        content: ctx.prettyResponse('error', 'commands:mamar.bot', {
           author: ctx.author.toString(),
           mention: mention.toString(),
         }),
@@ -39,7 +39,7 @@ export default class MamarInteractionCommand extends InteractionCommand {
 
     if (mention.id === ctx.author.id) {
       await ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'self-mention'),
+        content: ctx.prettyResponse('error', 'commands:mamar.self-mention'),
         ephemeral: true,
       });
       return;
@@ -47,7 +47,7 @@ export default class MamarInteractionCommand extends InteractionCommand {
 
     if (await ctx.client.repositories.blacklistRepository.isUserBanned(mention.id)) {
       await ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'user-banned'),
+        content: ctx.prettyResponse('error', 'commands:mamar.user-banned'),
         ephemeral: true,
       });
       return;
@@ -56,10 +56,10 @@ export default class MamarInteractionCommand extends InteractionCommand {
     const selectedImage = await HttpRequests.getAssetImageUrl('mamar');
     const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
     const embed = new MessageEmbed()
-      .setTitle(ctx.translate('embed_title'))
+      .setTitle(ctx.locale('commands:mamar.embed_title'))
       .setColor(COLORS.ACTIONS)
       .setDescription(
-        ctx.translate('embed_description', {
+        ctx.locale('commands:mamar.embed_description', {
           author: ctx.author.toString(),
           mention: mention.toString(),
         }),

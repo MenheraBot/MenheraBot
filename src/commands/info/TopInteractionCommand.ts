@@ -108,13 +108,15 @@ export default class TopInteractionCommand extends InteractionCommand {
     }
     const embed = new MessageEmbed()
 
-      .setTitle(`:robot: |  ${ctx.translate('commands')}`)
+      .setTitle(`:robot: |  ${ctx.locale('commands:top.commands')}`)
       .setColor('#f47fff');
 
     for (let i = 0; i < res.length; i++) {
       embed.addField(
         `**${i + 1} -** ${Util.capitalize(res[i].name)} `,
-        `${ctx.translate('used')} **${res[i].usages}** ${ctx.translate('times')}`,
+        `${ctx.locale('commands:top.used')} **${res[i].usages}** ${ctx.locale(
+          'commands:top.times',
+        )}`,
         false,
       );
     }
@@ -133,8 +135,8 @@ export default class TopInteractionCommand extends InteractionCommand {
           ctx,
           TOP.mamou,
           emojis.crown,
-          ctx.translate('mamadoresTitle'),
-          ctx.translate('suck'),
+          ctx.locale('commands:top.mamadoresTitle'),
+          ctx.locale('commands:top.suck'),
           page,
           COLORS.Pinkie,
         );
@@ -144,8 +146,8 @@ export default class TopInteractionCommand extends InteractionCommand {
           ctx,
           TOP.mamadas,
           emojis.lick,
-          ctx.translate('mamouTitle'),
-          ctx.translate('suckled'),
+          ctx.locale('commands:top.mamouTitle'),
+          ctx.locale('commands:top.suckled'),
           page,
           COLORS.Pinkie,
         );
@@ -155,8 +157,8 @@ export default class TopInteractionCommand extends InteractionCommand {
           ctx,
           TOP.stars,
           emojis.estrelinhas,
-          ctx.translate('starsTitle'),
-          ctx.translate('stars'),
+          ctx.locale('commands:top.starsTitle'),
+          ctx.locale('commands:top.stars'),
           page,
           COLORS.Pear,
         );
@@ -166,8 +168,8 @@ export default class TopInteractionCommand extends InteractionCommand {
           ctx,
           TOP.demons,
           emojis.demons,
-          ctx.translate('demonTitle'),
-          ctx.translate('demons'),
+          ctx.locale('commands:top.demonTitle'),
+          ctx.locale('commands:top.demons'),
           page,
           COLORS.HuntDemons,
         );
@@ -177,8 +179,8 @@ export default class TopInteractionCommand extends InteractionCommand {
           ctx,
           TOP.giants,
           emojis.giants,
-          ctx.translate('giantTitle'),
-          ctx.translate('giants'),
+          ctx.locale('commands:top.giantTitle'),
+          ctx.locale('commands:top.giants'),
           page,
           COLORS.HuntGiants,
         );
@@ -188,8 +190,8 @@ export default class TopInteractionCommand extends InteractionCommand {
           ctx,
           TOP.angels,
           emojis.angels,
-          ctx.translate('angelTitle'),
-          ctx.translate('angels'),
+          ctx.locale('commands:top.angelTitle'),
+          ctx.locale('commands:top.angels'),
           page,
           COLORS.HuntAngels,
         );
@@ -199,8 +201,8 @@ export default class TopInteractionCommand extends InteractionCommand {
           ctx,
           TOP.archangels,
           emojis.archangels,
-          ctx.translate('archangelTitle'),
-          ctx.translate('archangels'),
+          ctx.locale('commands:top.archangelTitle'),
+          ctx.locale('commands:top.archangels'),
           page,
           COLORS.HuntArchangels,
         );
@@ -210,8 +212,8 @@ export default class TopInteractionCommand extends InteractionCommand {
           ctx,
           TOP.demigods,
           emojis.demigods,
-          ctx.translate('sdTitle'),
-          ctx.translate('demigods'),
+          ctx.locale('commands:top.sdTitle'),
+          ctx.locale('commands:top.demigods'),
           page,
           COLORS.HuntDemigods,
         );
@@ -221,8 +223,8 @@ export default class TopInteractionCommand extends InteractionCommand {
           ctx,
           TOP.gods,
           emojis.gods,
-          ctx.translate('godTitle'),
-          ctx.translate('gods'),
+          ctx.locale('commands:top.godTitle'),
+          ctx.locale('commands:top.gods'),
           page,
           COLORS.HuntGods,
         );
@@ -232,8 +234,8 @@ export default class TopInteractionCommand extends InteractionCommand {
           ctx,
           TOP.votes,
           emojis.ok,
-          ctx.translate('voteTitle'),
-          ctx.translate('votes'),
+          ctx.locale('commands:top.voteTitle'),
+          ctx.locale('commands:top.votes'),
           page,
           COLORS.UltraPink,
         );
@@ -291,14 +293,14 @@ export default class TopInteractionCommand extends InteractionCommand {
     }
     const embed = new MessageEmbed()
 
-      .setTitle(`<:MenheraSmile2:767210250364780554> |  ${ctx.translate('users')}`)
+      .setTitle(`<:MenheraSmile2:767210250364780554> |  ${ctx.locale('commands:top.users')}`)
       .setColor('#f47fff');
 
     for (let i = 0; i < res.length; i++) {
       const member = await ctx.client.users.fetch(res[i].id).catch();
       embed.addField(
         `**${i + 1} -** ${Util.capitalize(member.username)} `,
-        `${ctx.translate('use')} **${res[i].uses}** ${ctx.translate('times')}`,
+        `${ctx.locale('commands:top.use')} **${res[i].uses}** ${ctx.locale('commands:top.times')}`,
         false,
       );
     }
@@ -309,7 +311,7 @@ export default class TopInteractionCommand extends InteractionCommand {
     const user = ctx.options.getUser('user') ?? ctx.author;
 
     if (!user) {
-      ctx.defer({ content: `${emojis.error} | ${ctx.translate('not-user')}` });
+      ctx.defer({ content: `${emojis.error} | ${ctx.locale('commands:top.not-user')}` });
       return;
     }
 
@@ -317,14 +319,14 @@ export default class TopInteractionCommand extends InteractionCommand {
     const embed = new MessageEmbed()
 
       .setTitle(
-        `<:MenheraSmile2:767210250364780554> |  ${ctx.translate('user', {
+        `<:MenheraSmile2:767210250364780554> |  ${ctx.locale('commands:top.user', {
           user: user.username,
         })}`,
       )
       .setColor('#f47fff');
 
     if (!res || res.cmds.count === 0) {
-      ctx.defer({ content: `${emojis.error} | ${ctx.translate('not-user')}` });
+      ctx.defer({ content: `${emojis.error} | ${ctx.locale('commands:top.not-user')}` });
       return;
     }
 
@@ -332,7 +334,9 @@ export default class TopInteractionCommand extends InteractionCommand {
       if (i > 10) break;
       embed.addField(
         `**${i + 1} -** ${Util.capitalize(res.array[i].name)} `,
-        `${ctx.translate('use')} **${res.array[i].count}** ${ctx.translate('times')}`,
+        `${ctx.locale('commands:top.use')} **${res.array[i].count}** ${ctx.locale(
+          'commands:top.times',
+        )}`,
         false,
       );
     }

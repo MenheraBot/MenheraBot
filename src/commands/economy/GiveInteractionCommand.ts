@@ -76,29 +76,34 @@ export default class GiveInteractionCommand extends InteractionCommand {
 
   static replyForYourselfError(ctx: InteractionCommandContext): void {
     ctx.makeMessage({
-      content: ctx.prettyResponse('error', 'self-mention'),
+      content: ctx.prettyResponse('error', 'commands:give.self-mention'),
       ephemeral: true,
     });
   }
 
   static replyInvalidValueError(ctx: InteractionCommandContext): void {
     ctx.makeMessage({
-      content: ctx.prettyResponse('error', 'invalid-value'),
+      content: ctx.prettyResponse('error', 'commands:give.invalid-value'),
       ephemeral: true,
     });
   }
 
   static replyNoAccountError(ctx: InteractionCommandContext): void {
     ctx.makeMessage({
-      content: ctx.prettyResponse('error', 'no-dbuser'),
+      content: ctx.prettyResponse('error', 'commands:give.no-dbuser'),
       ephemeral: true,
     });
   }
 
-  static replyNotEnoughtError(ctx: InteractionCommandContext, localeField: string): void {
+  static replyNotEnoughtError(
+    ctx: InteractionCommandContext,
+    localeField: HuntingTypes | 'estrelinhas',
+  ): void {
     ctx.deleteReply();
     ctx.send({
-      content: ctx.prettyResponse('error', 'poor', { field: ctx.translate(localeField) }),
+      content: ctx.prettyResponse('error', 'commands:give.poor', {
+        field: ctx.locale(`commands:give.${localeField}`),
+      }),
     });
   }
 
@@ -110,7 +115,11 @@ export default class GiveInteractionCommand extends InteractionCommand {
   ): void {
     ctx.makeMessage({
       components: [],
-      content: ctx.prettyResponse('success', 'transfered', { value, emoji, user: mentionString }),
+      content: ctx.prettyResponse('success', 'commands:give.transfered', {
+        value,
+        emoji,
+        user: mentionString,
+      }),
     });
   }
 
@@ -129,7 +138,7 @@ export default class GiveInteractionCommand extends InteractionCommand {
 
     if (await ctx.client.repositories.blacklistRepository.isUserBanned(toSendUser.id)) {
       await ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'banned-user'),
+        content: ctx.prettyResponse('error', 'commands:give.banned-user'),
         ephemeral: true,
       });
       return;
@@ -146,7 +155,7 @@ export default class GiveInteractionCommand extends InteractionCommand {
       .setLabel(ctx.locale('common:negate'));
 
     await ctx.makeMessage({
-      content: ctx.prettyResponse('question', 'confirm', {
+      content: ctx.prettyResponse('question', 'commands:give.confirm', {
         user: toSendUser.toString(),
         author: ctx.author.toString(),
         count: input,
@@ -178,7 +187,7 @@ export default class GiveInteractionCommand extends InteractionCommand {
 
     if (resolveCustomId(selectedButton.customId) === 'NEGATE') {
       ctx.makeMessage({
-        content: ctx.translate('negated', { user: toSendUser.toString() }),
+        content: ctx.locale('commands:give.negated', { user: toSendUser.toString() }),
         components: [
           {
             type: 'ACTION_ROW',

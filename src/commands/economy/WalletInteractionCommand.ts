@@ -42,7 +42,7 @@ export default class WalletInteractionCommand extends InteractionCommand {
 
     if (!user) {
       await ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'no-dbuser'),
+        content: ctx.prettyResponse('error', 'commands:carteira.no-dbuser'),
         ephemeral: true,
       });
       return;
@@ -50,7 +50,7 @@ export default class WalletInteractionCommand extends InteractionCommand {
 
     if (user.ban === true) {
       await ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'banned-user'),
+        content: ctx.prettyResponse('error', 'commands:carteira.banned-user'),
         ephemeral: true,
       });
       return;
@@ -59,46 +59,46 @@ export default class WalletInteractionCommand extends InteractionCommand {
     const color = user?.selectedColor ?? ('#a788ff' as const);
 
     const embed = new MessageEmbed()
-      .setTitle(ctx.translate('title', { user: pessoa.tag }))
+      .setTitle(ctx.locale('commands:carteira.title', { user: pessoa.tag }))
       .setColor(color)
       .addFields([
         {
-          name: `⭐ | ${ctx.translate('stars')}`,
+          name: `⭐ | ${ctx.locale('commands:carteira.stars')}`,
           value: `**${user.estrelinhas}**`,
           inline: true,
         },
         {
-          name: `🔑 | ${ctx.translate('rolls')}`,
+          name: `🔑 | ${ctx.locale('commands:carteira.rolls')}`,
           value: `**${user.rolls}**`,
           inline: true,
         },
         {
-          name: `<:DEMON:758765044443381780> | ${ctx.translate('demons')} `,
+          name: `<:DEMON:758765044443381780> | ${ctx.locale('commands:carteira.demons')} `,
           value: `**${user.demons}**`,
           inline: true,
         },
         {
-          name: `🦍 | ${ctx.translate('giants')}`,
+          name: `🦍 | ${ctx.locale('commands:carteira.giants')}`,
           value: `**${user.giants}**`,
           inline: true,
         },
         {
-          name: `<:ANGEL:758765044204437535> | ${ctx.translate('angels')}`,
+          name: `<:ANGEL:758765044204437535> | ${ctx.locale('commands:carteira.angels')}`,
           value: `**${user.angels}**`,
           inline: true,
         },
         {
-          name: `👼| ${ctx.translate('archangel')}`,
+          name: `👼| ${ctx.locale('commands:carteira.archangel')}`,
           value: `**${user.archangels}**`,
           inline: true,
         },
         {
-          name: `<:SemiGod:758766732235374674> | ${ctx.translate('sd')}`,
+          name: `<:SemiGod:758766732235374674> | ${ctx.locale('commands:carteira.sd')}`,
           value: `**${user.demigods}**`,
           inline: true,
         },
         {
-          name: `<:God:758474639570894899> | ${ctx.translate('god')}`,
+          name: `<:God:758474639570894899> | ${ctx.locale('commands:carteira.god')}`,
           value: `**${user.gods}**`,
           inline: true,
         },

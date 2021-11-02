@@ -81,8 +81,8 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
               CalculateHandValue([dealerCards[0]]),
             ),
             i18n: {
-              yourHand: ctx.translate('your-hand'),
-              dealerHand: ctx.translate('dealer-hand'),
+              yourHand: ctx.locale('commands:blackjack.your-hand'),
+              dealerHand: ctx.locale('commands:blackjack.dealer-hand'),
             },
             aposta: valor,
           },
@@ -95,37 +95,39 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
           BlackjackInteractionCommand.checkHandFinalValue(CalculateHandValue([dealerCards[0]])),
           false,
           {
-            yourHand: ctx.translate('your-hand'),
-            dealerHand: ctx.translate('dealer-hand'),
+            yourHand: ctx.locale('commands:blackjack.your-hand'),
+            dealerHand: ctx.locale('commands:blackjack.dealer-hand'),
           },
         );
 
     const embed = new MessageEmbed()
       .setTitle('⭐ | BlackJack')
       .setDescription(
-        `${ctx.translate('your-hand')}: **${CalculateHandValue(playerCards)
+        `${ctx.locale('commands:blackjack.your-hand')}: **${CalculateHandValue(playerCards)
           .map((a) => `${a.value}`)
           .join(', ')}** -> \`${BlackjackInteractionCommand.checkHandFinalValue(
           CalculateHandValue(playerCards),
-        )}\`\n${ctx.translate('dealer-hand')}: **${CalculateHandValue([dealerCards[0]])
+        )}\`\n${ctx.locale('commands:blackjack.dealer-hand')}: **${CalculateHandValue([
+          dealerCards[0],
+        ])
           .map((a) => `${a.value}`)
           .join(', ')}** -> \`${BlackjackInteractionCommand.checkHandFinalValue(
           CalculateHandValue([dealerCards[0]]),
         )}\``,
       )
-      .setFooter(ctx.translate('footer'))
+      .setFooter(ctx.locale('commands:blackjack.footer'))
       .setColor(ctx.data.user.selectedColor)
       .setThumbnail(ctx.author.displayAvatarURL({ format: 'png', dynamic: true }));
 
     const BuyButton = new MessageButton()
       .setCustomId(`${ctx.interaction.id} | BUY`)
       .setStyle('PRIMARY')
-      .setLabel(ctx.translate('buy'));
+      .setLabel(ctx.locale('commands:blackjack.buy'));
 
     const StopButton = new MessageButton()
       .setCustomId(`${ctx.interaction.id} | STOP`)
       .setStyle('DANGER')
-      .setLabel(ctx.translate('stop'));
+      .setLabel(ctx.locale('commands:blackjack.stop'));
 
     const message = await ctx.channel.messages
       .fetch((await ctx.interaction.fetchReply()).id)
@@ -164,7 +166,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
 
     if (!collected) {
       ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'timeout'),
+        content: ctx.prettyResponse('error', 'commands:blackjack.timeout'),
         embeds: [],
         components: [],
       });
@@ -212,11 +214,11 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
     let embed = new MessageEmbed()
       .setTitle('⭐ | BlackJack')
       .setDescription(
-        `${ctx.translate('your-hand')}: **${userCards
+        `${ctx.locale('commands:blackjack.your-hand')}: **${userCards
           .map((a) => `${a.value}`)
-          .join(', ')}** -> \`${userTotal}\`\n${ctx.translate('dealer-hand')}: **${dealerCards
-          .map((a) => `${a.value}`)
-          .join(', ')}** -> \`${menheraTotal}\``,
+          .join(', ')}** -> \`${userTotal}\`\n${ctx.locale(
+          'commands:blackjack.dealer-hand',
+        )}: **${dealerCards.map((a) => `${a.value}`).join(', ')}** -> \`${menheraTotal}\``,
       )
       .setColor(ctx.data.user.selectedColor)
       .setThumbnail(ctx.author.displayAvatarURL({ format: 'png', dynamic: true }));
@@ -231,15 +233,15 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
             userTotal,
             menheraTotal,
             i18n: {
-              yourHand: ctx.translate('your-hand'),
-              dealerHand: ctx.translate('dealer-hand'),
+              yourHand: ctx.locale('commands:blackjack.your-hand'),
+              dealerHand: ctx.locale('commands:blackjack.dealer-hand'),
             },
             aposta: valor,
           },
         })
       : await http.blackjackRequest(valor, userCards, dealerCards, userTotal, menheraTotal, true, {
-          yourHand: ctx.translate('your-hand'),
-          dealerHand: ctx.translate('dealer-hand'),
+          yourHand: ctx.locale('commands:blackjack.your-hand'),
+          dealerHand: ctx.locale('commands:blackjack.dealer-hand'),
         });
 
     let attc: MessageAttachment | null = null;
@@ -256,7 +258,10 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
     }
 
     if (userTotal === 21 && playerCards.length === 2) {
-      embed.addField(ctx.translate('result'), ctx.translate('blackjack', { value: valor * 4 }));
+      embed.addField(
+        ctx.locale('commands:blackjack.result'),
+        ctx.locale('commands:blackjack.blackjack', { value: valor * 4 }),
+      );
       await ctx.client.repositories.starRepository.add(ctx.author.id, valor * 2);
       if (attc) {
         message
@@ -273,7 +278,10 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
 
     // Estourou
     if (userTotal > 21) {
-      embed.addField(ctx.translate('result'), ctx.translate('explode'));
+      embed.addField(
+        ctx.locale('commands:blackjack.result'),
+        ctx.locale('commands:blackjack.explode'),
+      );
       await ctx.client.repositories.starRepository.remove(ctx.author.id, valor);
       if (attc) {
         message
@@ -291,7 +299,10 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
     // Continua
 
     if (menheraTotal === 21 && userTotal !== 21) {
-      embed.addField(ctx.translate('result'), ctx.translate('menhera-bj'));
+      embed.addField(
+        ctx.locale('commands:blackjack.result'),
+        ctx.locale('commands:blackjack.menhera-bj'),
+      );
       await ctx.client.repositories.starRepository.remove(ctx.author.id, valor);
       if (attc) {
         message
@@ -317,11 +328,11 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
     embed = new MessageEmbed()
       .setTitle('⭐ | BlackJack')
       .setDescription(
-        `${ctx.translate('your-hand')}: **${userCards
+        `${ctx.locale('commands:blackjack.your-hand')}: **${userCards
           .map((a) => `${a.value}`)
-          .join(', ')}** -> \`${userTotal}\`\n${ctx.translate('dealer-hand')}: **${dealerCards
-          .map((a) => `${a.value}`)
-          .join(', ')}** -> \`${menheraTotal}\``,
+          .join(', ')}** -> \`${userTotal}\`\n${ctx.locale(
+          'commands:blackjack.dealer-hand',
+        )}: **${dealerCards.map((a) => `${a.value}`).join(', ')}** -> \`${menheraTotal}\``,
       )
       .setColor(ctx.data.user.selectedColor)
       .setThumbnail(ctx.author.displayAvatarURL({ format: 'png', dynamic: true }));
@@ -336,15 +347,15 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
             userTotal,
             menheraTotal,
             i18n: {
-              yourHand: ctx.translate('your-hand'),
-              dealerHand: ctx.translate('dealer-hand'),
+              yourHand: ctx.locale('commands:blackjack.your-hand'),
+              dealerHand: ctx.locale('commands:blackjack.dealer-hand'),
             },
             aposta: valor,
           },
         })
       : await http.blackjackRequest(valor, userCards, dealerCards, userTotal, menheraTotal, true, {
-          yourHand: ctx.translate('your-hand'),
-          dealerHand: ctx.translate('dealer-hand'),
+          yourHand: ctx.locale('commands:blackjack.your-hand'),
+          dealerHand: ctx.locale('commands:blackjack.dealer-hand'),
         });
 
     if (!newRes.err) {
@@ -357,7 +368,10 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
     }
 
     if (menheraTotal === 21 && userTotal !== 21) {
-      embed.addField(ctx.translate('result'), ctx.translate('menhera-21'));
+      embed.addField(
+        ctx.locale('commands:blackjack.result'),
+        ctx.locale('commands:blackjack.menhera-21'),
+      );
       await ctx.client.repositories.starRepository.remove(ctx.author.id, valor);
       if (attc) {
         message
@@ -373,7 +387,10 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
     }
 
     if (userTotal === 21 && menheraTotal !== 21) {
-      embed.addField(ctx.translate('result'), ctx.translate('user-21', { value: valor * 2 }));
+      embed.addField(
+        ctx.locale('commands:blackjack.result'),
+        ctx.locale('commands:blackjack.user-21', { value: valor * 2 }),
+      );
       await ctx.client.repositories.starRepository.add(ctx.author.id, valor);
       if (attc) {
         message
@@ -389,7 +406,10 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
     }
 
     if (menheraTotal > 21 && userTotal <= 21) {
-      embed.addField(ctx.translate('result'), ctx.translate('menhera-bust', { value: valor * 2 }));
+      embed.addField(
+        ctx.locale('commands:blackjack.result'),
+        ctx.locale('commands:blackjack.menhera-bust', { value: valor * 2 }),
+      );
       await ctx.client.repositories.starRepository.add(ctx.author.id, valor);
       if (attc) {
         message
@@ -405,7 +425,10 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
     }
 
     if (menheraTotal > 21 && userTotal > 21) {
-      embed.addField(ctx.translate('result'), ctx.translate('draw'));
+      embed.addField(
+        ctx.locale('commands:blackjack.result'),
+        ctx.locale('commands:blackjack.draw'),
+      );
       if (attc) {
         message
           ? await message.edit({ embeds: [embed], files: [attc], components: [] })
@@ -419,7 +442,10 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
     }
 
     if (menheraTotal === 21 && userTotal === 21) {
-      embed.addField(ctx.translate('result'), ctx.translate('both-21'));
+      embed.addField(
+        ctx.locale('commands:blackjack.result'),
+        ctx.locale('commands:blackjack.both-21'),
+      );
       await ctx.client.repositories.starRepository.remove(ctx.author.id, valor);
       if (attc) {
         message
@@ -435,7 +461,10 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
     }
 
     if (menheraTotal === userTotal) {
-      embed.addField(ctx.translate('result'), ctx.translate('equal'));
+      embed.addField(
+        ctx.locale('commands:blackjack.result'),
+        ctx.locale('commands:blackjack.equal'),
+      );
       await ctx.client.repositories.starRepository.remove(ctx.author.id, valor);
       if (attc) {
         message
@@ -451,7 +480,10 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
     }
 
     if (menheraTotal > userTotal) {
-      embed.addField(ctx.translate('result'), ctx.translate('menhera-bigger'));
+      embed.addField(
+        ctx.locale('commands:blackjack.result'),
+        ctx.locale('commands:blackjack.menhera-bigger'),
+      );
       await ctx.client.repositories.starRepository.remove(ctx.author.id, valor);
       if (attc) {
         message
@@ -466,7 +498,10 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
       return;
     }
 
-    embed.addField(ctx.translate('result'), ctx.translate('user-bigger', { value: valor * 2 }));
+    embed.addField(
+      ctx.locale('commands:blackjack.result'),
+      ctx.locale('commands:blackjack.user-bigger', { value: valor * 2 }),
+    );
     await ctx.client.repositories.starRepository.add(ctx.author.id, valor);
     if (attc) {
       message
@@ -484,14 +519,14 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
     const valor = ctx.options.getInteger('aposta', true);
     if (!valor) {
       await ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'bad-usage'),
+        content: ctx.prettyResponse('error', 'commands:blackjack.bad-usage'),
         ephemeral: true,
       });
       return;
     }
     if (!valor || valor > 50000 || valor < 1000) {
       await ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'invalid-value'),
+        content: ctx.prettyResponse('error', 'commands:blackjack.invalid-value'),
         ephemeral: true,
       });
       return;
@@ -499,7 +534,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
 
     if (ctx.data.user.estrelinhas < valor) {
       await ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'poor'),
+        content: ctx.prettyResponse('error', 'commands:blackjack.poor'),
         ephemeral: true,
       });
       return;
@@ -531,8 +566,8 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
               CalculateHandValue([dealerCards[0]]),
             ),
             i18n: {
-              yourHand: ctx.translate('your-hand'),
-              dealerHand: ctx.translate('dealer-hand'),
+              yourHand: ctx.locale('commands:blackjack.your-hand'),
+              dealerHand: ctx.locale('commands:blackjack.dealer-hand'),
             },
             aposta: valor,
           },
@@ -545,25 +580,27 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
           BlackjackInteractionCommand.checkHandFinalValue(CalculateHandValue([dealerCards[0]])),
           false,
           {
-            yourHand: ctx.translate('your-hand'),
-            dealerHand: ctx.translate('dealer-hand'),
+            yourHand: ctx.locale('commands:blackjack.your-hand'),
+            dealerHand: ctx.locale('commands:blackjack.dealer-hand'),
           },
         );
 
     const embed = new MessageEmbed()
       .setTitle('⭐ | BlackJack')
       .setDescription(
-        `${ctx.translate('your-hand')}: **${CalculateHandValue(playerCards)
+        `${ctx.locale('commands:blackjack.your-hand')}: **${CalculateHandValue(playerCards)
           .map((a) => `${a.value}`)
           .join(', ')}** -> \`${BlackjackInteractionCommand.checkHandFinalValue(
           CalculateHandValue(playerCards),
-        )}\`\n${ctx.translate('dealer-hand')}: **${CalculateHandValue([dealerCards[0]])
+        )}\`\n${ctx.locale('commands:blackjack.dealer-hand')}: **${CalculateHandValue([
+          dealerCards[0],
+        ])
           .map((a) => `${a.value}`)
           .join(', ')}** -> \`${BlackjackInteractionCommand.checkHandFinalValue(
           CalculateHandValue([dealerCards[0]]),
         )}\``,
       )
-      .setFooter(ctx.translate('footer'))
+      .setFooter(ctx.locale('commands:blackjack.footer'))
       .setColor(ctx.data.user.selectedColor)
       .setThumbnail(ctx.author.displayAvatarURL({ format: 'png', dynamic: true }));
 
@@ -577,12 +614,12 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
     const BuyButton = new MessageButton()
       .setCustomId(`${ctx.interaction.id}|BUY`)
       .setStyle('PRIMARY')
-      .setLabel(ctx.translate('buy'));
+      .setLabel(ctx.locale('commands:blackjack.buy'));
 
     const StopButton = new MessageButton()
       .setCustomId(`${ctx.interaction.id}|STOP`)
       .setStyle('DANGER')
-      .setLabel(ctx.translate('stop'));
+      .setLabel(ctx.locale('commands:blackjack.stop'));
 
     if (attc) {
       await ctx.defer({
@@ -600,7 +637,9 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
     const collected = await Util.collectComponentInteraction(ctx.channel, ctx.author.id, 10000);
 
     if (!collected) {
-      ctx.interaction.editReply({ content: `${emojis.error} ${ctx.translate('timeout')}` });
+      ctx.interaction.editReply({
+        content: `${emojis.error} ${ctx.locale('commands:blackjack.timeout')}`,
+      });
       ctx.client.repositories.starRepository.remove(ctx.author.id, valor);
       return;
     }

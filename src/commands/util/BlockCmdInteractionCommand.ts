@@ -25,17 +25,21 @@ export default class BlockCmdInteractionCommand extends InteractionCommand {
     const cmd = ctx.client.slashCommands.get(ctx.options.getString('comando', true));
 
     if (!cmd) {
-      await ctx.makeMessage({ content: ctx.prettyResponse('error', 'no-cmd') });
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:blockcomando.no-cmd'),
+      });
       return;
     }
 
     if (cmd.config.devsOnly) {
-      await ctx.makeMessage({ content: ctx.prettyResponse('error', 'dev-cmd') });
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:blockcomando.dev-cmd'),
+      });
       return;
     }
 
     if (cmd.config.name === this.config.name) {
-      await ctx.makeMessage({ content: ctx.prettyResponse('error', 'foda') });
+      await ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:blockcomando.foda') });
       return;
     }
 
@@ -48,7 +52,9 @@ export default class BlockCmdInteractionCommand extends InteractionCommand {
         ctx.data.server,
       );
       await ctx.makeMessage({
-        content: ctx.prettyResponse('success', 'unblock', { cmd: cmd.config.name }),
+        content: ctx.prettyResponse('success', 'commands:blockcomando.unblock', {
+          cmd: cmd.config.name,
+        }),
       });
       return;
     }

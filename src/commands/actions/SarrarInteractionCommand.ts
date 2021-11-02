@@ -30,10 +30,10 @@ export default class SarrarInteractionCommand extends InteractionCommand {
     const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     const embed = new MessageEmbed()
-      .setTitle(ctx.translate('embed_title'))
+      .setTitle(ctx.locale('commands:sarrar.embed_title'))
       .setColor(COLORS.ACTIONS)
       .setDescription(
-        ctx.translate('embed_description', {
+        ctx.locale('commands:sarrar.embed_description', {
           author: ctx.author.toString(),
           mention: user.toString(),
         }),
@@ -55,20 +55,20 @@ export default class SarrarInteractionCommand extends InteractionCommand {
 
     const randSozinho = await HttpRequests.getAssetImageUrl('sarrar_sozinho');
     const embed = new MessageEmbed()
-      .setTitle(ctx.translate('no-mention.embed_title'))
+      .setTitle(ctx.locale('commands:sarrar.no-mention.embed_title'))
       .setColor(COLORS.ACTIONS)
       .setDescription(
-        ctx.translate('no-mention.embed_description', {
+        ctx.locale('commands:sarrar.no-mention.embed_description', {
           author: ctx.author.toString(),
         }),
       )
       .setImage(randSozinho)
       .setThumbnail(ctx.author.displayAvatarURL())
-      .setFooter(ctx.translate('no-mention.embed_footer'));
+      .setFooter(ctx.locale('commands:sarrar.no-mention.embed_footer'));
 
     const Button = new MessageButton()
       .setCustomId(ctx.interaction.id)
-      .setLabel(ctx.translate('sarrar'))
+      .setLabel(ctx.locale('commands:sarrar.sarrar'))
       .setStyle('PRIMARY');
 
     ctx.makeMessage({

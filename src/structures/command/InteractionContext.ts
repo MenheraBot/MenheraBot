@@ -15,12 +15,13 @@ import { emojis, EmojiTypes } from '@structures/Constants';
 import { APIMessage } from 'discord-api-types';
 import { debugError } from '@utils/Util';
 
+import { Translation } from '../../types/i18next';
+
 export default class InteractionCommandContext {
   constructor(
     public interaction: CommandInteraction & { client: MenheraClient },
     public i18n: TFunction,
     public data: IContextData,
-    private commandName: string,
   ) {}
 
   get client(): MenheraClient {
@@ -51,12 +52,12 @@ export default class InteractionCommandContext {
     await this.interaction.deferReply({ ephemeral }).catch(debugError);
   }
 
-  prettyResponseLocale(emoji: EmojiTypes, text: string, translateOptions = {}): string {
+  prettyResponseLocale(emoji: EmojiTypes, text: Translation, translateOptions = {}): string {
     return `${emojis[emoji] || '🐛'} **|** ${this.locale(text, translateOptions)}`;
   }
 
-  prettyResponse(emoji: EmojiTypes, text: string, translateOptions = {}): string {
-    return `${emojis[emoji] || '🐛'} **|** ${this.translate(text, translateOptions)}`;
+  prettyResponse(emoji: EmojiTypes, text: Translation, translateOptions = {}): string {
+    return `${emojis[emoji] || '🐛'} **|** ${this.locale(text, translateOptions)}`;
   }
 
   private resolveMessage(message: Message | APIMessage | null): Message | null {
@@ -87,11 +88,7 @@ export default class InteractionCommandContext {
     return this.interaction.deleteReply().catch(debugError);
   }
 
-  locale(text: string, translateVars = {}): string {
+  locale(text: Translation, translateVars = {}): string {
     return this.i18n(text, translateVars);
-  }
-
-  translate(text: string, translateVars = {}): string {
-    return this.i18n(`commands:${this.commandName}.${text}`, translateVars);
   }
 }

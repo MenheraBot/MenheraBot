@@ -41,7 +41,10 @@ export default class ProfileInteractionCommand extends InteractionCommand {
 
     if (member.id !== ctx.author.id) {
       if (member.bot) {
-        await ctx.makeMessage({ content: ctx.prettyResponse('error', 'bot'), ephemeral: true });
+        await ctx.makeMessage({
+          content: ctx.prettyResponse('error', 'commands:perfil.bot'),
+          ephemeral: true,
+        });
         return;
       }
       user = await ctx.client.repositories.userRepository.find(member.id, [
@@ -60,13 +63,16 @@ export default class ProfileInteractionCommand extends InteractionCommand {
     }
 
     if (!user) {
-      await ctx.makeMessage({ content: ctx.prettyResponse('error', 'no-dbuser'), ephemeral: true });
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:perfil.no-dbuser'),
+        ephemeral: true,
+      });
       return;
     }
 
     if (user.ban && ctx.author.id !== process.env.OWNER) {
       await ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'banned', { reason: user.banReason }),
+        content: ctx.prettyResponse('error', 'commands:perfil.banned', { reason: user.banReason }),
         ephemeral: true,
       });
       return;
@@ -97,13 +103,13 @@ export default class ProfileInteractionCommand extends InteractionCommand {
     };
 
     const i18nData = {
-      aboutme: ctx.translate('about-me'),
-      mamado: ctx.translate('mamado'),
-      mamou: ctx.translate('mamou'),
-      zero: ctx.translate('zero'),
-      um: ctx.translate('um'),
-      dois: ctx.translate('dois'),
-      tres: ctx.translate('tres'),
+      aboutme: ctx.locale('commands:perfil.about-me'),
+      mamado: ctx.locale('commands:perfil.mamado'),
+      mamou: ctx.locale('commands:perfil.mamou'),
+      zero: ctx.locale('commands:perfil.zero'),
+      um: ctx.locale('commands:perfil.um'),
+      dois: ctx.locale('commands:perfil.dois'),
+      tres: ctx.locale('commands:perfil.tres'),
     };
 
     const res = ctx.client.picassoWs.isAlive

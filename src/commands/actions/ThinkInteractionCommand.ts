@@ -28,7 +28,7 @@ export default class ThinkInteractionCommand extends InteractionCommand {
 
     if (user?.bot) {
       await ctx.makeMessage({
-        content: ctx.prettyResponse('success', 'bot'),
+        content: ctx.prettyResponse('success', 'commands:pensar.bot'),
       });
       return;
     }
@@ -37,10 +37,10 @@ export default class ThinkInteractionCommand extends InteractionCommand {
     const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
     if (!user || user.id === ctx.author.id) {
       const embed = new MessageEmbed()
-        .setTitle(ctx.translate('no-mention.embed_title'))
+        .setTitle(ctx.locale('commands:pensar.no-mention.embed_title'))
         .setColor(COLORS.ACTIONS)
         .setDescription(
-          ctx.translate('no-mention.embed_description', {
+          ctx.locale('commands:pensar.no-mention.embed_description', {
             author: ctx.author.toString(),
           }),
         )
@@ -52,10 +52,10 @@ export default class ThinkInteractionCommand extends InteractionCommand {
     }
 
     const embed = new MessageEmbed()
-      .setTitle(ctx.translate('embed_title'))
+      .setTitle(ctx.locale('commands:pensar.embed_title'))
       .setColor(COLORS.ACTIONS)
       .setDescription(
-        ctx.translate('embed_description', {
+        ctx.locale('commands:pensar.embed_description', {
           author: ctx.author.toString(),
           mention: user.toString(),
         }),

@@ -30,19 +30,25 @@ export default class MarryInteractionCommand extends InteractionCommand {
     const mencionado = ctx.options.getUser('user', true);
 
     if (mencionado.bot) {
-      await ctx.makeMessage({ content: ctx.prettyResponse('error', 'bot'), ephemeral: true });
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:casar.bot'),
+        ephemeral: true,
+      });
       return;
     }
     if (mencionado.id === ctx.author.id) {
       await ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'self-mention'),
+        content: ctx.prettyResponse('error', 'commands:casar.self-mention'),
         ephemeral: true,
       });
       return;
     }
 
     if (authorData.married) {
-      await ctx.makeMessage({ content: ctx.prettyResponse('error', 'married'), ephemeral: true });
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:casar.married'),
+        ephemeral: true,
+      });
       return;
     }
 
@@ -52,13 +58,16 @@ export default class MarryInteractionCommand extends InteractionCommand {
     ]);
 
     if (!user2) {
-      await ctx.makeMessage({ content: ctx.prettyResponse('warn', 'no-dbuser'), ephemeral: true });
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('warn', 'commands:casar.no-dbuser'),
+        ephemeral: true,
+      });
       return;
     }
 
     if (user2.ban === true) {
       await ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'banned-user'),
+        content: ctx.prettyResponse('error', 'commands:casar.banned-user'),
         ephemeral: true,
       });
       return;
@@ -66,7 +75,7 @@ export default class MarryInteractionCommand extends InteractionCommand {
 
     if (user2.married) {
       await ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'mention-married'),
+        content: ctx.prettyResponse('error', 'commands:casar.mention-married'),
         ephemeral: true,
       });
       return;
@@ -74,16 +83,16 @@ export default class MarryInteractionCommand extends InteractionCommand {
 
     const ConfirmButton = new MessageButton()
       .setCustomId(`${ctx.interaction.id} CONFIRM`)
-      .setLabel(ctx.translate('accept'))
+      .setLabel(ctx.locale('commands:casar.accept'))
       .setStyle('SUCCESS');
 
     const CancellButton = new MessageButton()
       .setCustomId(`${ctx.interaction.id} CANCEL`)
-      .setLabel(ctx.translate('deny'))
+      .setLabel(ctx.locale('commands:casar.deny'))
       .setStyle('DANGER');
 
     ctx.makeMessage({
-      content: ctx.translate('first-text', {
+      content: ctx.locale('commands:casar.first-text', {
         author: ctx.author.toString(),
         toMarry: mencionado.toString(),
       }),
@@ -116,7 +125,7 @@ export default class MarryInteractionCommand extends InteractionCommand {
 
     if (collected.customId.endsWith('CANCEL')) {
       ctx.makeMessage({
-        content: `${emojis.error} | ${ctx.translate('negated', {
+        content: `${emojis.error} | ${ctx.locale('commands:casar.negated', {
           toMarry: mencionado.toString(),
           author: ctx.author.toString(),
         })}`,
@@ -134,7 +143,7 @@ export default class MarryInteractionCommand extends InteractionCommand {
     }
 
     ctx.makeMessage({
-      content: `${emojis.ring} | ${ctx.translate('accepted', {
+      content: `${emojis.ring} | ${ctx.locale('commands:casar.accepted', {
         toMarry: mencionado.toString(),
         author: ctx.author.toString(),
       })}`,

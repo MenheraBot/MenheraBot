@@ -34,30 +34,32 @@ export default class EightballInteractionCommand extends InteractionCommand {
           id: ctx.interaction.id,
           data: {
             question: ctx.options.getString('pergunta', true),
-            answer: ctx.translate(`answers.${randomAnswer.id}`),
+            answer: ctx.locale(`commands:8ball.answers.${randomAnswer.id as 1}`),
             type: randomAnswer.type,
             username: ctx.author.username,
           },
         })
       : await HttpRequests.EightballRequest({
-          answer: ctx.translate(`answers.${randomAnswer.id}`),
+          answer: ctx.locale(`commands:8ball.answers.${randomAnswer.id as 1}`),
           question: ctx.options.getString('pergunta', true),
           type: randomAnswer.type,
           username: ctx.author.username,
         });
 
-    const embed = new MessageEmbed().setTitle(`${emojis.question} | ${ctx.translate('ask')}`);
+    const embed = new MessageEmbed().setTitle(
+      `${emojis.question} | ${ctx.locale('commands:8ball.ask')}`,
+    );
 
     if (res.err) {
       embed
         .addFields([
           {
-            name: ctx.translate('question'),
+            name: ctx.locale('commands:8ball.question'),
             value: `${ctx.options.getString('pergunta', true)}`,
           },
           {
-            name: ctx.translate('answer'),
-            value: ctx.translate(`answers.${randomAnswer.id}`),
+            name: ctx.locale('commands:8ball.answer'),
+            value: ctx.locale(`commands:8ball.answers.${randomAnswer.id as 1}`),
           },
         ])
         .setColor(COLORS.Aqua);

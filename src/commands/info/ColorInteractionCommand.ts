@@ -47,20 +47,23 @@ export default class ColorInteractionCommand extends InteractionCommand {
     }
 
     if (ctx.data.user.colors.length < 2) {
-      ctx.makeMessage({ content: ctx.prettyResponse('error', 'min-color'), ephemeral: true });
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:cor.min-color'),
+        ephemeral: true,
+      });
       return;
     }
 
     const embed = new MessageEmbed()
-      .setTitle(ctx.prettyResponse('gay_flag', 'embed_title'))
+      .setTitle(ctx.prettyResponse('gay_flag', 'commands:cor.embed_title'))
       .setColor(COLORS.Purple)
-      .setDescription(ctx.translate('embed_description'));
+      .setDescription(ctx.locale('commands:cor.embed_description'));
 
     const selector = new MessageSelectMenu()
       .setCustomId(`${ctx.interaction.id} | SELECT`)
       .setMinValues(1)
       .setMaxValues(1)
-      .setPlaceholder(`${emojis.rainbow} ${ctx.translate('choose')}`);
+      .setPlaceholder(`${emojis.rainbow} ${ctx.locale('commands:cor.choose')}`);
 
     const pages = Math.floor(ctx.data.user.colors.length / 10) + 1;
 
@@ -92,7 +95,7 @@ export default class ColorInteractionCommand extends InteractionCommand {
 
       componentsToSend.push(actionRow([backPageButton, nextPageButton]));
 
-      embed.setFooter(ctx.translate('footer', { page: 1, maxPages: pages }));
+      embed.setFooter(ctx.locale('commands:cor.footer', { page: 1, maxPages: pages }));
     }
 
     // É o cara do arroz
@@ -144,7 +147,9 @@ export default class ColorInteractionCommand extends InteractionCommand {
           });
         }
 
-        embed.setFooter(ctx.translate('footer', { page: selectedPage + 1, maxPages: pages }));
+        embed.setFooter(
+          ctx.locale('commands:cor.footer', { page: selectedPage + 1, maxPages: pages }),
+        );
 
         if (selectedPage > 0) componentsToSend[1].components[0].setDisabled(false);
         else componentsToSend[1].components[0].setDisabled(true);
@@ -158,8 +163,8 @@ export default class ColorInteractionCommand extends InteractionCommand {
           const selected = (int as SelectMenuInteraction).values[0] as ColorResolvable;
 
           const dataChoose = {
-            title: ctx.translate('dataChoose.title'),
-            description: ctx.translate('dataChoose.title'),
+            title: ctx.locale('commands:cor.dataChoose.title'),
+            description: ctx.locale('commands:cor.dataChoose.title'),
             color: selected,
             thumbnail: {
               url: 'https://i.imgur.com/t94XkgG.png',

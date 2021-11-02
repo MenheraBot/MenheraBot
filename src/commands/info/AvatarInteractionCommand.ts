@@ -38,7 +38,7 @@ export default class AvatarInteractionCommand extends InteractionCommand {
         db = await ctx.client.repositories.userRepository.find(user.id, ['selectedColor']);
       } catch {
         await ctx.makeMessage({
-          content: ctx.prettyResponse('error', 'unknow-user'),
+          content: ctx.prettyResponse('error', 'commands:avatar.unknow-user'),
           ephemeral: true,
         });
         return;
@@ -50,15 +50,15 @@ export default class AvatarInteractionCommand extends InteractionCommand {
     const img = user.displayAvatarURL({ dynamic: true, size: 1024 });
 
     const embed = new MessageEmbed()
-      .setTitle(ctx.translate('title', { user: user.username }))
+      .setTitle(ctx.locale('commands:avatar.title', { user: user.username }))
       .setImage(img)
       .setColor(cor)
-      .setFooter(ctx.translate('footer'));
+      .setFooter(ctx.locale('commands:avatar.footer'));
 
     if (user.id === ctx.client.user?.id) {
-      embed.setTitle(ctx.translate('client_title', { user: user.username }));
+      embed.setTitle(ctx.locale('commands:avatar.client_title', { user: user.username }));
       embed.setColor('#f276f3');
-      embed.setFooter(ctx.translate('client_footer', { user: user.username }));
+      embed.setFooter(ctx.locale('commands:avatar.footer', { user: user.username }));
     }
     await ctx.makeMessage({ embeds: [embed] });
   }

@@ -25,7 +25,7 @@ export default class AboutmeInteractionCommand extends InteractionCommand {
 
     if (info.length > 200) {
       await ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'args-limit'),
+        content: ctx.prettyResponse('error', 'commands:sobremim.args-limit'),
         ephemeral: true,
       });
       return;
@@ -33,6 +33,6 @@ export default class AboutmeInteractionCommand extends InteractionCommand {
 
     await ctx.client.repositories.userRepository.update(ctx.author.id, { info });
 
-    await ctx.makeMessage({ content: ctx.prettyResponse('success', 'success') });
+    await ctx.makeMessage({ content: ctx.prettyResponse('success', 'commands:sobremim.success') });
   }
 }

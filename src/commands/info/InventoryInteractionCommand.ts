@@ -50,59 +50,60 @@ export default class InventoryInteractionCommand extends InteractionCommand {
 
     if (!user) {
       ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'no-user'),
+        content: ctx.prettyResponse('error', 'commands:inventario.no-user'),
         ephemeral: true,
       });
       return;
     }
 
     if (user.ban) {
-      ctx.makeMessage({ content: ctx.prettyResponse('error', 'banned') });
+      ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:inventario.banned') });
     }
 
     const embed = new MessageEmbed()
       .setTitle(
-        ctx.translate('title', {
+        ctx.locale('commands:inventario.title', {
           user: ctx.options.getUser('user')?.username ?? ctx.author.username,
         }),
       )
       .setColor(user.selectedColor);
 
     if (user.inventory.length === 0 && user.inUseItems.length === 0) {
-      embed.setDescription(ctx.prettyResponse('error', 'no-item'));
+      embed.setDescription(ctx.prettyResponse('error', 'commands:inventario.no-item'));
       ctx.makeMessage({ embeds: [embed] });
       return;
     }
 
     embed.addField(
-      ctx.translate('items'),
+      ctx.locale('commands:inventario.items'),
       user.inventory.length > 0
         ? user.inventory.reduce(
             (p, c) =>
               `${p}**${ctx.locale('common:name')}:** ${ctx.locale(
-                `data:magic-items.${c.id}.name`,
+                `data:magic-items.${c.id as 1}.name`,
+                // ` data:magic-items.${c.id}.name`,
               )}\n**${ctx.locale('common:description')}**: ${ctx.locale(
-                `data:magic-items.${c.id}.description`,
+                `data:magic-items.${c.id as 1}.description`,
               )}\n**${ctx.locale('common:amount')}**: ${c.amount}\n`,
             '',
           )
-        : ctx.translate('no-item'),
+        : ctx.locale('commands:inventario.no-item'),
       true,
     );
 
     embed.addField(
-      ctx.translate('active'),
+      ctx.locale('commands:inventario.active'),
       user.inUseItems.length > 0
         ? user.inUseItems.reduce(
             (p, c) =>
               `${p}**${ctx.locale('common:name')}:** ${ctx.locale(
-                `data:magic-items.${c.id}.name`,
+                `data:magic-items.${c.id as 1}.name`,
               )}\n**${ctx.locale('common:description')}**: ${ctx.locale(
-                `data:magic-items.${c.id}.description`,
+                `data:magic-items.${c.id as 1}.description`,
               )}\n`,
             '',
           )
-        : ctx.translate('no-item'),
+        : ctx.locale('commands:inventario.no-item'),
       true,
     );
 
@@ -113,12 +114,12 @@ export default class InventoryInteractionCommand extends InteractionCommand {
 
     const useItemButton = new MessageButton()
       .setCustomId(`${ctx.interaction.id} | USE`)
-      .setLabel(ctx.translate('use'))
+      .setLabel(ctx.locale('commands:inventario.use'))
       .setStyle('PRIMARY');
 
     const resetItemsButton = new MessageButton()
       .setCustomId(`${ctx.interaction.id} | RESET`)
-      .setLabel(ctx.translate('reset'))
+      .setLabel(ctx.locale('commands:inventario.reset'))
       .setStyle('DANGER');
 
     const canUseItems = !(
@@ -132,7 +133,7 @@ export default class InventoryInteractionCommand extends InteractionCommand {
     if (!canResetItems) resetItemsButton.setDisabled(true);
 
     await ctx.makeMessage({
-      embeds: [embed.setFooter(ctx.translate('use-footer'))],
+      embeds: [embed.setFooter(ctx.locale('commands:inventario.use-footer'))],
       components: [actionRow([useItemButton, resetItemsButton])],
     });
 
@@ -168,7 +169,7 @@ export default class InventoryInteractionCommand extends InteractionCommand {
       ctx.makeMessage({
         components: [],
         embeds: [],
-        content: ctx.prettyResponse('success', 'reseted'),
+        content: ctx.prettyResponse('success', 'commands:inventario.reseted'),
       });
 
       ctx.client.repositories.userRepository.update(ctx.author.id, {
@@ -180,7 +181,7 @@ export default class InventoryInteractionCommand extends InteractionCommand {
 
     const availableItems = new MessageSelectMenu()
       .setCustomId(`${ctx.interaction.id} | USE`)
-      .setPlaceholder(ctx.translate('select'))
+      .setPlaceholder(ctx.locale('commands:inventario.select'))
       .setMinValues(1)
       .setMaxValues(1)
       .setOptions(
@@ -188,15 +189,15 @@ export default class InventoryInteractionCommand extends InteractionCommand {
           if (user.inUseItems.some((a) => a.id === c.id)) return p;
 
           p.push({
-            label: ctx.locale(`data:magic-items.${c.id}.name`),
-            description: ctx.locale(`data:magic-items.${c.id}.description`),
+            label: ctx.locale(`data:magic-items.${c.id as 1}.name`),
+            description: ctx.locale(`data:magic-items.${c.id as 1}.description`),
             value: `${c.id}`,
           });
           return p;
         }, []),
       );
 
-    embed.setDescription(ctx.translate('choose-item'));
+    embed.setDescription(ctx.locale('commands:inventario.choose-item'));
 
     ctx.makeMessage({ embeds: [embed], components: [actionRow([availableItems])] });
 
@@ -226,12 +227,12 @@ export default class InventoryInteractionCommand extends InteractionCommand {
         .setCustomId(`${ctx.interaction.id} | TOGGLE`)
         .setMaxValues(1)
         .setMinValues(1)
-        .setPlaceholder(ctx.translate('select'))
+        .setPlaceholder(ctx.locale('commands:inventario.select'))
         .setOptions(
           user.inUseItems.reduce<MessageSelectOptionData[]>((p, c, i) => {
             p.push({
-              label: ctx.locale(`data:magic-items.${c.id}.name`),
-              description: ctx.locale(`data:magic-items.${c.id}.description`),
+              label: ctx.locale(`data:magic-items.${c.id as 1}.name`),
+              description: ctx.locale(`data:magic-items.${c.id as 1}.description`),
               value: `${c.id} | ${i}`,
             });
             return p;
@@ -285,8 +286,8 @@ export default class InventoryInteractionCommand extends InteractionCommand {
     ctx.makeMessage({
       components: [],
       embeds: [],
-      content: ctx.prettyResponse('success', 'equipped', {
-        name: ctx.locale(`data:magic-items.${itemId}.name`),
+      content: ctx.prettyResponse('success', 'commands:inventario.equipped', {
+        name: ctx.locale(`data:magic-items.${Number(itemId) as 1}.name`),
       }),
     });
 

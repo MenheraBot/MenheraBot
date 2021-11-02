@@ -124,9 +124,9 @@ export default class PingInteractionCommand extends InteractionCommand {
     const embed = new MessageEmbed()
       .setTitle('🏓 | Pong!')
       .setDescription(
-        `📡 | ${ctx.translate('api')} **${
+        `📡 | ${ctx.locale('commands:ping.api')} **${
           Date.now() - ctx.interaction.createdTimestamp
-        }ms**\n📡 | ${ctx.translate('latency')} **${Math.round(
+        }ms**\n📡 | ${ctx.locale('commands:ping.latency')} **${Math.round(
           ctx.client.ws.ping,
         )}ms**\n🖲️ | Shard: **${ctx.client.shard.ids}** / **${ctx.client.shard.count - 1}**`,
       )

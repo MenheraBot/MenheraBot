@@ -21,10 +21,10 @@ export default class GrumbleInteractionCommand extends InteractionCommand {
     const selectedImage = await HttpRequests.getAssetImageUrl('grumble');
 
     const embed = new MessageEmbed()
-      .setTitle(ctx.translate('embed_title'))
+      .setTitle(ctx.locale('commands:resmungar.embed_title'))
       .setColor(COLORS.ACTIONS)
       .setDescription(
-        ctx.translate('embed_description', {
+        ctx.locale('commands:resmungar.embed_description', {
           author: ctx.author.toString(),
         }),
       )

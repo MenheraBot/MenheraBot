@@ -28,7 +28,7 @@ export default class AngryInteractionCommand extends InteractionCommand {
 
     if (user?.bot) {
       await ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'bot'),
+        content: ctx.prettyResponse('error', 'commands:raiva.bot'),
       });
       return;
     }
@@ -38,10 +38,10 @@ export default class AngryInteractionCommand extends InteractionCommand {
 
     if (!user || user.id === ctx.author.id) {
       const embed = new MessageEmbed()
-        .setTitle(ctx.translate('no-mention.embed_title'))
+        .setTitle(ctx.locale('commands:raiva.no-mention.embed_title'))
         .setColor(COLORS.ACTIONS)
         .setDescription(
-          ctx.translate('no-mention.embed_description', {
+          ctx.locale('commands:raiva.no-mention.embed_description', {
             author: ctx.author.toString(),
           }),
         )
@@ -56,7 +56,7 @@ export default class AngryInteractionCommand extends InteractionCommand {
       .setTitle('Sniff Sniff')
       .setColor(COLORS.ACTIONS)
       .setDescription(
-        ctx.translate('embed_description', {
+        ctx.locale('commands:raiva.embed_description', {
           author: ctx.author.toString(),
           mention: user.toString(),
         }),
