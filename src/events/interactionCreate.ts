@@ -1,15 +1,25 @@
-import { Interaction, Collection, ThreadChannel, GuildChannel } from 'discord.js-light';
+import {
+  Interaction,
+  Collection,
+  ThreadChannel,
+  GuildChannel,
+  TextChannel,
+} from 'discord.js-light';
 import MenheraClient from 'MenheraClient';
 import InteractionCommandExecutor from '@structures/command/InteractionCommandExecutor';
 import { clientUnreadyString } from '@structures/Constants';
 
 export default class InteractionCreate {
-  async run(interaction: Interaction & { client: MenheraClient }): Promise<void> {
+  async run(
+    interaction: Interaction & { client: MenheraClient; channel: TextChannel },
+  ): Promise<void> {
     if (!interaction.isCommand() || !interaction.inGuild()) return;
     if (!interaction.client.isReady())
       return interaction
         .reply({ content: clientUnreadyString, ephemeral: true })
         .catch(() => undefined);
+
+    if (!interaction.channel?.isText()) return;
 
     if (!interaction.client.channels.cache.has(interaction.channelId)) {
       const channel = await interaction.client.channels

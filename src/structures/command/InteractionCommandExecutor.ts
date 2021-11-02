@@ -5,8 +5,8 @@ import { ICommandUsedData } from '@utils/Types';
 import { debugError } from '@utils/Util';
 import {
   CommandInteraction,
-  BaseGuildCommandInteraction,
   GuildMember,
+  TextChannel,
   MessageEmbed,
   Collection,
 } from 'discord.js-light';
@@ -16,8 +16,7 @@ import InteractionCommandContext from './InteractionContext';
 
 const InteractionCommandExecutor = async (
   client: MenheraClient,
-  interaction: BaseGuildCommandInteraction<'present'> &
-    CommandInteraction & { client: MenheraClient },
+  interaction: CommandInteraction<'present'> & { client: MenheraClient; channel: TextChannel },
 ): Promise<void> => {
   const server = await client.repositories.cacheRepository.fetchGuild(
     interaction.guildId,

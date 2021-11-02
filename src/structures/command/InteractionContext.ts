@@ -27,7 +27,7 @@ export default class InteractionCommandContext {
     return this.interaction.client;
   }
 
-  get options(): CommandInteractionOptionResolver {
+  get options(): Omit<CommandInteractionOptionResolver<'cached'>, 'getMessage' | 'getFocused'> {
     return this.interaction.options;
   }
 
