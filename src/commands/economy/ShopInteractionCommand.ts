@@ -3,7 +3,13 @@ import InteractionCommandContext from '@structures/command/InteractionContext';
 
 import { emojis, shopEconomy } from '@structures/Constants';
 import { HuntingTypes } from '@utils/Types';
-import { MessageEmbed } from 'discord.js-light';
+import Util, { actionRow } from '@utils/Util';
+import {
+  MessageEmbed,
+  MessageSelectMenu,
+  MessageSelectOptionData,
+  SelectMenuInteraction,
+} from 'discord.js-light';
 
 export default class ShopInteractionCommand extends InteractionCommand {
   constructor() {
@@ -439,194 +445,120 @@ export default class ShopInteractionCommand extends InteractionCommand {
         nome: `**${ctx.translate('colors.yellow')}**`,
       },
       {
-        cor: 'SUA ESCOLHA',
+        cor: ctx.translate('colors.your_choice').replace('7 - ', ''),
         price: shopEconomy.colors.your_choice,
         nome: `**${ctx.translate('colors.your_choice')}**`,
       },
     ];
 
-    const selectedColor = ctx.options.getString('cor');
+    const selector = new MessageSelectMenu()
+      .setCustomId(`${ctx.interaction.id} | SELECT`)
+      .setMinValues(1)
+      .setMaxValues(1)
+      .setOptions(
+        availableColors.reduce<MessageSelectOptionData[]>((p, c) => {
+          if (ctx.data.user.colors.some((a) => a.cor === c.cor)) return p;
 
-    let choice = 0;
+          p.push({
+            label: c.nome,
+            description: `${c.cor} | ${c.price} ${emojis.estrelinhas}`,
+            value: c.cor,
+          });
+          return p;
+        }, []),
+      );
 
-    switch (selectedColor) {
-      case '1':
-        if (ctx.data.user.colors.some((res) => res.cor === availableColors[0].cor)) {
-          ctx.makeMessage({
-            content: ctx.prettyResponse('yellow_circle', 'buy_colors.has-color'),
-            ephemeral: true,
-          });
-          return;
-        }
-        if (ctx.data.user.estrelinhas < availableColors[0].price) {
-          ctx.makeMessage({
-            content: ctx.prettyResponse('error', 'buy_colors.poor'),
-            ephemeral: true,
-          });
-          return;
-        }
-        choice = 0;
-        break;
-      case '2':
-        if (ctx.data.user.colors.some((res) => res.cor === availableColors[1].cor)) {
-          ctx.makeMessage({
-            content: ctx.prettyResponse('yellow_circle', 'buy_colors.has-color'),
-            ephemeral: true,
-          });
-          return;
-        }
-        if (ctx.data.user.estrelinhas < availableColors[1].price) {
-          ctx.makeMessage({
-            content: ctx.prettyResponse('error', 'buy_colors.poor'),
-            ephemeral: true,
-          });
-          return;
-        }
+    ctx.makeMessage({
+      content: ctx.prettyResponse('question', ctx.translate('buy_colors.buy-text')),
+      components: [actionRow([selector])],
+    });
 
-        choice = 1;
-        break;
-      case '3':
-        if (ctx.data.user.colors.some((res) => res.cor === availableColors[2].cor)) {
-          ctx.makeMessage({
-            content: ctx.prettyResponse('yellow_circle', 'buy_colors.has-color'),
-            ephemeral: true,
-          });
-          return;
-        }
-        if (ctx.data.user.estrelinhas < availableColors[2].price) {
-          ctx.makeMessage({
-            content: ctx.prettyResponse('error', 'buy_colors.poor'),
-            ephemeral: true,
-          });
-          return;
-        }
-        choice = 2;
-        break;
-      case '4':
-        if (ctx.data.user.colors.some((res) => res.cor === availableColors[3].cor)) {
-          ctx.makeMessage({
-            content: ctx.prettyResponse('yellow_circle', 'buy_colors.has-color'),
-            ephemeral: true,
-          });
-          return;
-        }
-        if (ctx.data.user.estrelinhas < availableColors[3].price) {
-          ctx.makeMessage({
-            content: ctx.prettyResponse('error', 'buy_colors.poor'),
-            ephemeral: true,
-          });
-          return;
-        }
-        choice = 3;
-        break;
-      case '5':
-        if (ctx.data.user.colors.some((res) => res.cor === availableColors[4].cor)) {
-          ctx.makeMessage({
-            content: ctx.prettyResponse('yellow_circle', 'buy_colors.has-color'),
-            ephemeral: true,
-          });
-          return;
-        }
-        if (ctx.data.user.estrelinhas < availableColors[4].price) {
-          ctx.makeMessage({
-            content: ctx.prettyResponse('error', 'buy_colors.poor'),
-            ephemeral: true,
-          });
-          return;
-        }
-        choice = 4;
-        break;
-      case '6':
-        if (ctx.data.user.colors.some((res) => res.cor === availableColors[5].cor)) {
-          ctx.makeMessage({
-            content: ctx.prettyResponse('yellow_circle', 'buy_colors.has-color'),
-            ephemeral: true,
-          });
-          return;
-        }
-        if (ctx.data.user.estrelinhas < availableColors[5].price) {
-          ctx.makeMessage({
-            content: ctx.prettyResponse('error', 'buy_colors.poor'),
-            ephemeral: true,
-          });
-          return;
-        }
-        choice = 5;
-        break;
+    const selected = await Util.collectComponentInteractionWithStartingId<SelectMenuInteraction>(
+      ctx.channel,
+      ctx.author.id,
+      ctx.interaction.id,
+      10_000,
+    );
 
-      case '7': {
-        if (ctx.data.user.estrelinhas < availableColors[6].price) {
-          ctx.makeMessage({
-            content: ctx.prettyResponse('error', 'buy_colors.poor'),
-            ephemeral: true,
-          });
-          return;
-        }
-        choice = 6;
-
-        const hexColor = ctx.options.getString('hex');
-
-        const name =
-          ctx.options.getString('nome')?.slice(0, 20) ??
-          ctx.translate('buy_colors.no-name', { number: ctx.data.user.colors.length });
-
-        if (!hexColor) {
-          ctx.makeMessage({
-            content: ctx.prettyResponse('error', 'buy_colors.invalid-color'),
-            ephemeral: true,
-          });
-          return;
-        }
-
-        if (
-          ctx.data.user.colors.some(
-            (a) => `${a.cor}`.replace('#', '') === hexColor.replace('#', '') || a.nome === name,
-          )
-        ) {
-          ctx.makeMessage({
-            content: ctx.prettyResponse('yellow_circle', 'buy_colors.has-color'),
-            ephemeral: true,
-          });
-          return;
-        }
-
-        const isHexColor = (hex: string) => hex.length === 6 && !Number.isNaN(Number(`0x${hex}`));
-
-        if (isHexColor(hexColor.replace('#', ''))) {
-          const toPush = {
-            nome: name,
-            cor: `#${hexColor.replace('#', '')}`,
-          };
-          ctx.client.repositories.userRepository.update(ctx.author.id, {
-            $inc: { estrelinhas: -availableColors[6].price },
-            $push: { colors: toPush },
-          });
-          ctx.makeMessage({
-            content: ctx.prettyResponse('success', 'buy_colors.yc-confirm', {
-              color: hexColor,
-              price: availableColors[6].price,
-              stars: ctx.data.user.estrelinhas - availableColors[6].price,
-            }),
-          });
-        } else {
-          ctx.makeMessage({
-            content: ctx.prettyResponse('error', 'buy_colors.invalid-color'),
-            ephemeral: true,
-          });
-        }
-      }
+    if (!selected) {
+      ctx.deleteReply();
+      return;
     }
-    if (choice !== 6) {
-      await ctx.client.repositories.userRepository.update(ctx.author.id, {
-        $inc: { estrelinhas: -availableColors[choice].price },
-        $push: { colors: availableColors[choice] },
+
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const chosenColor = availableColors.find(
+      (a) => a.cor === selected.values[0].replace('7 - ', ''),
+    )!;
+
+    if (ctx.data.user.estrelinhas < chosenColor.price) {
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'buy_colors.poor'),
+        components: [],
       });
+      return;
+    }
+
+    if (chosenColor.cor.startsWith('#')) {
+      await ctx.client.repositories.userRepository.update(ctx.author.id, {
+        $inc: { estrelinhas: -chosenColor.price },
+        $push: { colors: { nome: chosenColor.nome, cor: chosenColor.cor } },
+      });
+
       ctx.makeMessage({
         content: ctx.prettyResponse('success', 'buy_colors.buy-success', {
-          name: availableColors[choice].nome,
-          price: availableColors[choice].price,
-          stars: ctx.data.user.estrelinhas - availableColors[choice].price,
+          name: chosenColor.nome,
+          price: chosenColor.price,
+          stars: ctx.data.user.estrelinhas - chosenColor.price,
         }),
+      });
+      return;
+    }
+
+    const hexColor = ctx.options.getString('hex');
+
+    const name =
+      ctx.options.getString('nome')?.slice(0, 20) ??
+      ctx.translate('buy_colors.no-name', { number: ctx.data.user.colors.length });
+
+    if (!hexColor) {
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'buy_colors.invalid-color'),
+      });
+      return;
+    }
+
+    if (
+      ctx.data.user.colors.some(
+        (a) => `${a.cor}`.replace('#', '') === hexColor.replace('#', '') || a.nome === name,
+      )
+    ) {
+      ctx.makeMessage({
+        content: ctx.prettyResponse('yellow_circle', 'buy_colors.has-color'),
+      });
+      return;
+    }
+
+    const isHexColor = (hex: string) => hex.length === 6 && !Number.isNaN(Number(`0x${hex}`));
+
+    if (isHexColor(hexColor.replace('#', ''))) {
+      const toPush = {
+        nome: name,
+        cor: `#${hexColor.replace('#', '')}`,
+      };
+      ctx.client.repositories.userRepository.update(ctx.author.id, {
+        $inc: { estrelinhas: -chosenColor.price },
+        $push: { colors: toPush },
+      });
+      ctx.makeMessage({
+        content: ctx.prettyResponse('success', 'buy_colors.yc-confirm', {
+          color: hexColor,
+          price: chosenColor.price,
+          stars: ctx.data.user.estrelinhas - chosenColor.price,
+        }),
+      });
+    } else {
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'buy_colors.invalid-color'),
       });
     }
   }

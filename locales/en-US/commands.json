@@ -255,7 +255,8 @@
       "yc-message": "Submit a hex color code **WITHOUT A HASHTAG** (Example: AABBCC) of your choice to add to your profile",
       "yc-confirm": "WOOOOW !!! YOU'VE JUST BOUGHT A COLOR OF YOUR CHOICE !!! \nYour current choice is **#{{color}}** \nYou spent **{{price}}** ⭐ and got **{{stars}}** ⭐ stars",
       "invalid-color": "this color is not a valid color!",
-      "no-name": "No name passed ({{numberno-name}})"
+      "no-name": "No name passed ({{numberno-name}})",
+      "buy-text": "Choose down below what color do you want to buy"
     },
     "dataRolls_fields": {
       "title": "Buy Rolls",

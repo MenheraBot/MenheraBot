@@ -259,7 +259,8 @@
       "yc-message": "Envie um código de hexcolor **SEM A HASHTAG** (Exemplo: AABBCC) de sua escolha para adicionar em seu perfil",
       "yc-confirm": "UUUAUUUU!!! VOCÊ ACABOU DE COMPRAR UMA COR DE SUA ESCOLHA!!!\nSua cor comprada foi **#{{color}}**\nVocê gastou **{{price}}** ⭐ e ficou com **{{stars}}** ⭐ estrelinhas",
       "invalid-color": "esta cor não é uma cor válida!",
-      "no-name": "Sem nome especificado ({{number}})"
+      "no-name": "Sem nome especificado ({{number}})",
+      "buy-text": "Escolha abaixo qual é a cor que deseja comprar!"
     },
     "dataRolls_fields": {
       "title": "Comprar Rolls",
