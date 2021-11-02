@@ -1,7 +1,8 @@
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 
-import { shopEconomy } from '@structures/Constants';
+import { emojis, shopEconomy } from '@structures/Constants';
+import { HuntingTypes } from '@utils/Types';
 import { MessageEmbed } from 'discord.js-light';
 
 export default class ShopInteractionCommand extends InteractionCommand {
@@ -26,50 +27,14 @@ export default class ShopInteractionCommand extends InteractionCommand {
               type: 'SUB_COMMAND',
               options: [
                 {
-                  name: 'cor',
-                  description: 'Cor para comprar',
-                  type: 'STRING',
-                  required: true,
-                  choices: [
-                    {
-                      name: 'Roxo Escuro',
-                      value: '1',
-                    },
-                    {
-                      name: 'Vermelho',
-                      value: '2',
-                    },
-                    {
-                      name: 'Ciano',
-                      value: '3',
-                    },
-                    {
-                      name: 'Verde Neon',
-                      value: '4',
-                    },
-                    {
-                      name: 'Rosa Choque',
-                      value: '5',
-                    },
-                    {
-                      name: 'Amarelo',
-                      value: '6',
-                    },
-                    {
-                      name: 'Sua Escolha',
-                      value: '7',
-                    },
-                  ],
-                },
-                {
                   name: 'hex',
-                  description: 'Código da cor ao comprar a opção 7',
+                  description: 'Código da cor caso você vá comprar uma cor personalizada',
                   type: 'STRING',
                   required: false,
                 },
                 {
                   name: 'nome',
-                  description: 'Nome da cor para a identificar. Máximo 20 caracteres',
+                  description: 'Nome da cor personalizada para a identificar. Máximo 20 caracteres',
                   type: 'STRING',
                   required: false,
                 },
@@ -102,28 +67,28 @@ export default class ShopInteractionCommand extends InteractionCommand {
               required: true,
               choices: [
                 {
-                  name: 'Demônios',
-                  value: '1',
+                  name: '😈 | Demônios',
+                  value: 'demons',
                 },
                 {
-                  name: 'Gigantes',
-                  value: '2',
+                  name: '👊 | Gigantes',
+                  value: 'giants',
                 },
                 {
-                  name: 'Anjos',
-                  value: '3',
+                  name: '👼 | Anjos',
+                  value: 'angels',
                 },
                 {
-                  name: 'Arcanjos',
-                  value: '4',
+                  name: '🧚‍♂️ | Arcanjos',
+                  value: 'archangels',
                 },
                 {
-                  name: 'Semideuses',
-                  value: '5',
+                  name: '🙌 | Semideuses',
+                  value: 'demigods',
                 },
                 {
-                  name: 'Deuses',
-                  value: '6',
+                  name: '✝️ | Deuses',
+                  value: 'gods',
                 },
               ],
             },
@@ -333,13 +298,6 @@ export default class ShopInteractionCommand extends InteractionCommand {
     const type = ctx.options.getString('tipo', true);
 
     if (type === '1') {
-      const valorDemonio = shopEconomy.hunts.demon;
-      const valorGigante = shopEconomy.hunts.giant;
-      const valorAnjo = shopEconomy.hunts.angel;
-      const valorArch = shopEconomy.hunts.archangel;
-      const valorSD = shopEconomy.hunts.demigod;
-      const valorDeus = shopEconomy.hunts.god;
-
       const dataVender = {
         title: ctx.translate('embed_title'),
         color: '#e77fa1' as const,
@@ -350,12 +308,12 @@ export default class ShopInteractionCommand extends InteractionCommand {
           {
             name: ctx.translate('dataVender.main.fields.name'),
             value: ctx.translate('dataVender.main.fields.value', {
-              demon: valorDemonio,
-              giant: valorGigante,
-              angel: valorAnjo,
-              archangel: valorArch,
-              demi: valorSD,
-              god: valorDeus,
+              demon: shopEconomy.hunts.demons,
+              giant: shopEconomy.hunts.giants,
+              angel: shopEconomy.hunts.angels,
+              archangel: shopEconomy.hunts.archangels,
+              demi: shopEconomy.hunts.demigods,
+              god: shopEconomy.hunts.gods,
             }),
             inline: false,
           },
@@ -366,14 +324,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
   }
 
   static async sellHunts(ctx: InteractionCommandContext): Promise<void> {
-    const valorDemonio = shopEconomy.hunts.demon;
-    const valorGigante = shopEconomy.hunts.giant;
-    const valorAnjo = shopEconomy.hunts.angel;
-    const valorArch = shopEconomy.hunts.archangel;
-    const valorSD = shopEconomy.hunts.demigod;
-    const valorDeus = shopEconomy.hunts.god;
-
-    const type = ctx.options.getString('tipo', true);
+    const type = ctx.options.getString('tipo', true) as HuntingTypes;
     const valor = ctx.options.getInteger('quantidade', true);
 
     if (Number.isNaN(valor) || valor < 1) {
@@ -384,136 +335,31 @@ export default class ShopInteractionCommand extends InteractionCommand {
       return;
     }
 
-    switch (type) {
-      case '1':
-        if (valor > ctx.data.user.demons) {
-          ctx.makeMessage({
-            content: ctx.prettyResponse('error', 'dataVender.poor', { var: 'demônios' }),
-            ephemeral: true,
-          });
-          return;
-        }
-        ctx.client.repositories.userRepository.update(ctx.author.id, {
-          $inc: { caçados: -valor, estrelinhas: valor * valorDemonio },
-        });
-        ctx.makeMessage({
-          content: ctx.prettyResponse('success', 'dataVender.success-demon', {
-            value: valor,
-            cost: valor * valorDemonio,
-            quantity: ctx.data.user.demons - valor,
-            star: ctx.data.user.estrelinhas + valor * valorDemonio,
-          }),
-          ephemeral: true,
-        });
-        break;
-      case '2':
-        if (valor > ctx.data.user.giants) {
-          ctx.makeMessage({
-            content: ctx.prettyResponse('error', 'dataVender.poor', { var: 'gigantes' }),
-            ephemeral: true,
-          });
-          return;
-        }
-        ctx.client.repositories.userRepository.update(ctx.author.id, {
-          $inc: { giants: -valor, estrelinhas: valor * valorGigante },
-        });
-        ctx.makeMessage({
-          content: ctx.prettyResponse('success', 'dataVender.success-giant', {
-            value: valor,
-            cost: valor * valorGigante,
-            quantity: ctx.data.user.giants - valor,
-            star: ctx.data.user.estrelinhas + valor * valorGigante,
-          }),
-          ephemeral: true,
-        });
-        break;
-      case '3':
-        if (valor > ctx.data.user.angels) {
-          ctx.makeMessage({
-            content: ctx.prettyResponse('error', 'dataVender.poor', { var: 'anjos' }),
-            ephemeral: true,
-          });
-          return;
-        }
-        ctx.client.repositories.userRepository.update(ctx.author.id, {
-          $inc: { anjos: -valor, estrelinhas: valor * valorAnjo },
-        });
-        ctx.makeMessage({
-          content: ctx.prettyResponse('success', 'dataVender.success-angel', {
-            value: valor,
-            cost: valor * valorAnjo,
-            quantity: ctx.data.user.angels - valor,
-            star: ctx.data.user.estrelinhas + valor * valorAnjo,
-          }),
-          ephemeral: true,
-        });
-        break;
-      case '4':
-        if (valor > ctx.data.user.archangels) {
-          ctx.makeMessage({
-            content: ctx.prettyResponse('error', 'dataVender.poor', { var: 'arcanjos' }),
-            ephemeral: true,
-          });
-          return;
-        }
-        ctx.client.repositories.userRepository.update(ctx.author.id, {
-          $inc: { arcanjos: -valor, estrelinhas: valor * valorArch },
-        });
-        ctx.makeMessage({
-          content: ctx.prettyResponse('success', 'dataVender.success-archangel', {
-            value: valor,
-            cost: valor * valorArch,
-            quantity: ctx.data.user.archangels - valor,
-            star: ctx.data.user.estrelinhas + valor * valorArch,
-          }),
-        });
-        break;
-      case '5':
-        if (valor > ctx.data.user.demigods) {
-          ctx.makeMessage({
-            content: ctx.prettyResponse('error', 'dataVender.poor', { var: 'semideuses' }),
-            ephemeral: true,
-          });
-          return;
-        }
-        ctx.client.repositories.userRepository.update(ctx.author.id, {
-          $inc: { semideuses: -valor, estrelinhas: valor * valorSD },
-        });
-        ctx.makeMessage({
-          content: ctx.prettyResponse('success', 'dataVender.success-sd', {
-            value: valor,
-            cost: valor * valorSD,
-            quantity: ctx.data.user.demigods - valor,
-            star: ctx.data.user.estrelinhas + valor * valorSD,
-          }),
-        });
-        break;
-      case '6':
-        if (valor > ctx.data.user.gods) {
-          ctx.makeMessage({
-            content: ctx.prettyResponse('error', 'dataVender.poor', { var: 'deuses' }),
-            ephemeral: true,
-          });
-          return;
-        }
-        ctx.client.repositories.userRepository.update(ctx.author.id, {
-          $inc: { deuses: -valor, estrelinhas: valor * valorDeus },
-        });
-        ctx.makeMessage({
-          content: ctx.prettyResponse('success', 'dataVender.success-god', {
-            value: valor,
-            cost: valor * valorDeus,
-            quantity: ctx.data.user.gods - valor,
-            star: ctx.data.user.estrelinhas + valor * valorDeus,
-          }),
-        });
-        break;
-      default:
-        ctx.makeMessage({
-          content: ctx.prettyResponse('error', 'dataVender.invalid-args'),
-          ephemeral: true,
-        });
+    if (valor > ctx.data.user[type]) {
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'dataVender.poor', {
+          var: ctx.locale(`common:${type}`),
+        }),
+        ephemeral: true,
+      });
+      return;
     }
+
+    ctx.client.repositories.userRepository.update(ctx.author.id, {
+      $inc: { [type]: -valor, estrelinhas: valor * shopEconomy.hunts[type] },
+    });
+
+    ctx.makeMessage({
+      content: ctx.prettyResponse('success', 'dataVender.success', {
+        value: valor,
+        cost: valor * shopEconomy.hunts[type],
+        quantity: ctx.data.user[type] - valor,
+        hunt: ctx.locale(`common:${type}`),
+        emoji: emojis[type],
+        star: ctx.data.user.estrelinhas + valor * shopEconomy.hunts[type],
+      }),
+      ephemeral: true,
+    });
   }
 
   static async buyRolls(ctx: InteractionCommandContext): Promise<void> {

@@ -278,12 +278,7 @@
       },
       "invalid-args": "this value is not a valid number! You must say the option and the quantity",
       "poor": "you don't have all these {{var}}!",
-      "success-demon": "you sold **{{value}}** <:DEMON:758765044443381780> demons and received ** {{cost}} ** ⭐ star! \nNow you have ** {{quantity}} ** <:DEMON:758765044443381780> and **{{star}}** ⭐ ",
-      "success-angel": "you sold ** {{value}} ** <:Angel:758765044204437535> angels and received ** {{cost}} ** ⭐ star! \nNow you have ** {{quantity}} ** <:Angel:758765044204437535> and ** {{star}} ** ⭐ ",
-      "success-giant": "you sold ** {{value}} ** 🦍 giants and received ** {{cost}} ** ⭐ star! \nNow you have ** {{quantity}} ** 🦍  and ** {{star}} ** ⭐ ",
-      "success-sd": "you sold ** {{value}} ** <:SEMIGOD:758766732235374674> demigods and received ** {{cost}} ** ⭐ star! \nNow you have ** {{quantity}} ** <:SEMIGOD:758766732235374674> and ** {{star}} ** ⭐ ",
-      "success-archangel": "you sold ** {{value}} ** 👼 archangel and received ** {{cost}} ** ⭐ star! \nNow you have ** {{quantity}} ** 👼 and ** {{star}} ** ⭐ ",
-      "success-god": "you sold ** {{value}} ** <:God:758474639570894899> gods and received ** {{cost}} ** ⭐ star! \nNow you have ** {{quantity}} ** <:God:758474639570894899> and ** {{star}} ** ⭐ "
+      "success": "you sold **{{value}}** {{emoji}} {{hunt}} and received **{{cost}}** ⭐ star! \nNow you have ** {{quantity}} ** {{emoji}} and **{{star}}** ⭐ "
     }
   },
   "8ball": {

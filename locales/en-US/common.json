@@ -10,5 +10,11 @@
   "description": "Description",
   "amount": "Amount",
   "next": "Next",
-  "back": "Back"
+  "back": "Back",
+  "demons": "Demons",
+  "giants": "Giants",
+  "archangels": "Archangels",
+  "angels": "Angels",
+  "demigods": "Demigods",
+  "gods": "Gods"
 }

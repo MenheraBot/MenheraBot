@@ -10,5 +10,11 @@
   "description": "Descrição",
   "amount": "Quantidade",
   "next": "Próxima",
-  "back": "Anterior"
+  "back": "Anterior",
+  "demons": "Demônios",
+  "angels": "Anjos",
+  "demigods": "Semideuses",
+  "giants": "Gigantes",
+  "archangels": "Arcanjos",
+  "gods": "Deuses"
 }

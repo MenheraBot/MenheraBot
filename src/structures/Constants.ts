@@ -12,12 +12,12 @@ export const shopEconomy = {
   },
   hunts: {
     roll: 15_000,
-    demon: 1_200,
-    giant: 1_500,
-    angel: 2_600,
-    archangel: 3_200,
-    demigod: 6_000,
-    god: 25_000,
+    demons: 1_200,
+    giants: 1_500,
+    angels: 2_600,
+    archangels: 3_200,
+    demigods: 6_000,
+    gods: 25_000,
   },
 };
 
