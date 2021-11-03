@@ -99,7 +99,7 @@ export default class TrisalInteractionCommand extends InteractionCommand {
 
     if (!mencionado1 || !mencionado2) {
       await ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'commands:trisal.no-mention'),
+        content: ctx.prettyResponse('error', 'commands:trisal.no-args'),
         ephemeral: true,
       });
       return;

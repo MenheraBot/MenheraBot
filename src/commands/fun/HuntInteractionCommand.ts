@@ -9,6 +9,37 @@ import { huntEnum, HuntingTypes, HuntProbabiltyProps } from '@utils/Types';
 import { calculateProbability, getUserHuntProbability } from '@utils/ProbabilityUtils';
 import Util from '@utils/Util';
 
+type ChoiceTypes = HuntingTypes | 'probabilities';
+const choices: { name: string; value: ChoiceTypes }[] = [
+  {
+    name: '😈 | Demônios',
+    value: 'demons',
+  },
+  {
+    name: '👊 | Gigantes',
+    value: 'giants',
+  },
+  {
+    name: '👼 | Anjos',
+    value: 'angels',
+  },
+  {
+    name: '🧚‍♂️ | Arcanjos',
+    value: 'archangels',
+  },
+  {
+    name: '🙌 | Semideuses',
+    value: 'demigods',
+  },
+  {
+    name: '✝️ | Deuses',
+    value: 'gods',
+  },
+  {
+    name: '📊 | Probabilidades',
+    value: 'probabilities',
+  },
+];
 export default class HuntInteractionCommand extends InteractionCommand {
   constructor() {
     super({
@@ -20,36 +51,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
           type: 'STRING',
           description: 'Tipo da caça',
           required: true,
-          choices: [
-            {
-              name: '😈 | Demônios',
-              value: 'demons',
-            },
-            {
-              name: '👊 | Gigantes',
-              value: 'giants',
-            },
-            {
-              name: '👼 | Anjos',
-              value: 'angels',
-            },
-            {
-              name: '🧚‍♂️ | Arcanjos',
-              value: 'archangels',
-            },
-            {
-              name: '🙌 | Semideuses',
-              value: 'demigods',
-            },
-            {
-              name: '✝️ | Deuses',
-              value: 'gods',
-            },
-            {
-              name: '📊 | Probabilidades',
-              value: 'probabilities',
-            },
-          ],
+          choices,
         },
         {
           name: 'rolls',
@@ -66,15 +68,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    const selected = ctx.options.getString('tipo', true) as HuntingTypes | 'probabilities';
-
-    if (!selected) {
-      await ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'commands:cacar.no-args'),
-        ephemeral: true,
-      });
-      return;
-    }
+    const selected = ctx.options.getString('tipo', true) as ChoiceTypes;
 
     if (selected === 'probabilities') {
       const embed = new MessageEmbed()

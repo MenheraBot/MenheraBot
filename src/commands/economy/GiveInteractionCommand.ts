@@ -5,6 +5,37 @@ import { MessageButton } from 'discord.js-light';
 import Util, { disableComponents, resolveCustomId } from '@utils/Util';
 import { HuntingTypes } from '@utils/Types';
 
+type ChoiceTypes = HuntingTypes | 'estrelinhas';
+const choices: { name: string; value: ChoiceTypes }[] = [
+  {
+    name: '⭐ | Estrelinhas',
+    value: 'estrelinhas',
+  },
+  {
+    name: '😈 | Demônios',
+    value: 'demons',
+  },
+  {
+    name: '👊 | Gigantes',
+    value: 'giants',
+  },
+  {
+    name: '👼 | Anjos',
+    value: 'angels',
+  },
+  {
+    name: '🧚‍♂️ | Arcanjos',
+    value: 'archangels',
+  },
+  {
+    name: '🙌 | Semideuses',
+    value: 'demigods',
+  },
+  {
+    name: '✝️ | Deuses',
+    value: 'gods',
+  },
+];
 export default class GiveInteractionCommand extends InteractionCommand {
   constructor() {
     super({
@@ -21,36 +52,7 @@ export default class GiveInteractionCommand extends InteractionCommand {
           name: 'tipo',
           description: 'O tipo de item que quer transferir',
           type: 'STRING',
-          choices: [
-            {
-              name: '⭐ | Estrelinhas',
-              value: 'estrelinhas',
-            },
-            {
-              name: '😈 | Demônios',
-              value: 'demons',
-            },
-            {
-              name: '👊 | Gigantes',
-              value: 'giants',
-            },
-            {
-              name: '👼 | Anjos',
-              value: 'angels',
-            },
-            {
-              name: '🧚‍♂️ | Arcanjos',
-              value: 'archangels',
-            },
-            {
-              name: '🙌 | Semideuses',
-              value: 'demigods',
-            },
-            {
-              name: '✝️ | Deuses',
-              value: 'gods',
-            },
-          ],
+          choices,
           required: true,
         },
         {
@@ -95,14 +97,11 @@ export default class GiveInteractionCommand extends InteractionCommand {
     });
   }
 
-  static replyNotEnoughtError(
-    ctx: InteractionCommandContext,
-    localeField: HuntingTypes | 'estrelinhas',
-  ): void {
+  static replyNotEnoughtError(ctx: InteractionCommandContext, localeField: ChoiceTypes): void {
     ctx.deleteReply();
     ctx.send({
       content: ctx.prettyResponse('error', 'commands:give.poor', {
-        field: ctx.locale(`commands:give.${localeField}`),
+        field: ctx.locale(`common:${localeField}`),
       }),
     });
   }
@@ -126,7 +125,7 @@ export default class GiveInteractionCommand extends InteractionCommand {
   async run(ctx: InteractionCommandContext): Promise<void> {
     const [toSendUser, selectedOption, input] = [
       ctx.options.getUser('user', true),
-      ctx.options.getString('tipo', true) as HuntingTypes | 'estrelinhas',
+      ctx.options.getString('tipo', true) as ChoiceTypes,
       ctx.options.getInteger('valor', true),
     ];
 

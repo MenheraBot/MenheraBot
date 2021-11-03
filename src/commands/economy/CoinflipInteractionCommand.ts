@@ -43,14 +43,6 @@ export default class CoinflipInteractionCommand extends InteractionCommand {
       return;
     }
 
-    if (!user2) {
-      await ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'commands:coinflip.no-mention'),
-        ephemeral: true,
-      });
-      return;
-    }
-
     if (user2.bot) {
       await ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:coinflip.bot'),

@@ -459,6 +459,7 @@
     "use": "Usou",
     "user": "Comandos mais usados de {{user}}",
     "times": "vezes",
+    "votes": "Votos",
     "not-user": "este usuário não usou nenhum comando meu"
   },
   "blockcanal": {
