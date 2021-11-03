@@ -85,7 +85,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
 
     if (data.error) {
       await ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'coinflip.error'),
+        content: ctx.prettyResponse('error', 'commands:status.coinflip.error'),
         ephemeral: true,
       });
       return;
@@ -93,19 +93,19 @@ export default class StatsInteractionCommand extends InteractionCommand {
 
     if (!data.user_id) {
       await ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'hunt.no-data'),
+        content: ctx.prettyResponse('error', 'commands:status.hunt.no-data'),
         ephemeral: true,
       });
       return;
     }
 
     const embed = new MessageEmbed()
-      .setTitle(ctx.translate('hunt.embed-title', { user: user.tag }))
+      .setTitle(ctx.locale('commands:status.hunt.embed-title', { user: user.tag }))
       .setColor(ctx.data.user.selectedColor)
       .addFields([
         {
-          name: `${emojis.demons} | ${ctx.translate('hunt.demon')}`,
-          value: `${ctx.translate('hunt.display-data', {
+          name: `${emojis.demons} | ${ctx.locale('commands:status.hunt.demon')}`,
+          value: `${ctx.locale('commands:status.hunt.display-data', {
             tries: data.demon_tries,
             success:
               data.demon_success === 0
@@ -116,8 +116,8 @@ export default class StatsInteractionCommand extends InteractionCommand {
           inline: true,
         },
         {
-          name: `${emojis.giants} | ${ctx.translate('hunt.giant')}`,
-          value: `${ctx.translate('hunt.display-data', {
+          name: `${emojis.giants} | ${ctx.locale('commands:status.hunt.giant')}`,
+          value: `${ctx.locale('commands:status.hunt.display-data', {
             tries: data.giant_tries,
             success:
               data.giant_success === 0
@@ -128,8 +128,8 @@ export default class StatsInteractionCommand extends InteractionCommand {
           inline: true,
         },
         {
-          name: `${emojis.angels} | ${ctx.translate('hunt.angel')}`,
-          value: `${ctx.translate('hunt.display-data', {
+          name: `${emojis.angels} | ${ctx.locale('commands:status.hunt.angel')}`,
+          value: `${ctx.locale('commands:status.hunt.display-data', {
             tries: data.angel_tries,
             success:
               data.angel_success === 0
@@ -140,8 +140,8 @@ export default class StatsInteractionCommand extends InteractionCommand {
           inline: true,
         },
         {
-          name: `${emojis.archangels} | ${ctx.translate('hunt.archangel')}`,
-          value: `${ctx.translate('hunt.display-data', {
+          name: `${emojis.archangels} | ${ctx.locale('commands:status.hunt.archangel')}`,
+          value: `${ctx.locale('commands:status.hunt.display-data', {
             tries: data.archangel_tries,
             success:
               data.archangel_success === 0
@@ -154,8 +154,8 @@ export default class StatsInteractionCommand extends InteractionCommand {
           inline: true,
         },
         {
-          name: `${emojis.demigods} | ${ctx.translate('hunt.demigod')}`,
-          value: `${ctx.translate('hunt.display-data', {
+          name: `${emojis.demigods} | ${ctx.locale('commands:status.hunt.demigod')}`,
+          value: `${ctx.locale('commands:status.hunt.display-data', {
             tries: data.demigod_tries,
             success:
               data.demigod_success === 0
@@ -166,8 +166,8 @@ export default class StatsInteractionCommand extends InteractionCommand {
           inline: true,
         },
         {
-          name: `${emojis.gods} | ${ctx.translate('hunt.god')}`,
-          value: `${ctx.translate('hunt.display-data', {
+          name: `${emojis.gods} | ${ctx.locale('commands:status.hunt.god')}`,
+          value: `${ctx.locale('commands:status.hunt.display-data', {
             tries: data.god_tries,
             success:
               data.god_success === 0
@@ -209,14 +209,16 @@ export default class StatsInteractionCommand extends InteractionCommand {
       .setColor('#fa8dd7')
       .setThumbnail('https://i.imgur.com/b5y0nd4.png')
       .setDescription(
-        ctx.translate('botinfo.embed_description', {
+        ctx.locale('commands:status.botinfo.embed_description', {
           name: ctx.client.user?.username,
           createdAt: moment.utc(ctx.client.user?.createdAt).format('LLLL'),
           joinedAt: moment.utc(ctx.interaction?.guild?.me?.joinedAt).format('LLLL'),
         }),
       )
       .setFooter(
-        `${ctx.client.user?.username} ${ctx.translate('botinfo.embed_footer')} ${owner.tag}`,
+        `${ctx.client.user?.username} ${ctx.locale('commands:status.botinfo.embed_footer')} ${
+          owner.tag
+        }`,
         owner.displayAvatarURL({
           format: 'png',
           dynamic: true,
@@ -236,8 +238,8 @@ export default class StatsInteractionCommand extends InteractionCommand {
           inline: true,
         },
         {
-          name: `<:memoryram:762817135394553876> | ${ctx.translate(
-            'botinfo.memory',
+          name: `<:memoryram:762817135394553876> | ${ctx.locale(
+            'commands:status.botinfo.memory',
           )} | <:memoryram:762817135394553876>`,
           value: `\`\`\`${(getReduced(AllMemoryUsed) / 1024 / 1024).toFixed(2)}MB\`\`\``,
           inline: true,
@@ -253,7 +255,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
 
     if (data.error) {
       await ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'coinflip.error'),
+        content: ctx.prettyResponse('error', 'commands:status.coinflip.error'),
         ephemeral: true,
       });
       return;
@@ -261,7 +263,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
 
     if (!data.playedGames) {
       await ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'blackjack.no-data'),
+        content: ctx.prettyResponse('error', 'commands:status.blackjack.no-data'),
         ephemeral: true,
       });
       return;
@@ -270,32 +272,32 @@ export default class StatsInteractionCommand extends InteractionCommand {
     const totalMoney = data.winMoney - data.lostMoney;
 
     const embed = new MessageEmbed()
-      .setTitle(ctx.translate('blackjack.embed-title', { user: user.tag }))
+      .setTitle(ctx.locale('commands:status.blackjack.embed-title', { user: user.tag }))
       .setColor(COLORS.Purple)
-      .setFooter(ctx.translate('coinflip.embed-footer'))
+      .setFooter(ctx.locale('commands:status.coinflip.embed-footer'))
       .addFields([
         {
-          name: `🎰 | ${ctx.translate('coinflip.played')}`,
+          name: `🎰 | ${ctx.locale('commands:status.coinflip.played')}`,
           value: `**${data.playedGames}**`,
           inline: true,
         },
         {
-          name: `🏆 | ${ctx.translate('coinflip.wins')}`,
+          name: `🏆 | ${ctx.locale('commands:status.coinflip.wins')}`,
           value: `**${data.winGames}** | (${data.winPorcentage}) **%**`,
           inline: true,
         },
         {
-          name: `🦧 | ${ctx.translate('coinflip.loses')}`,
+          name: `🦧 | ${ctx.locale('commands:status.coinflip.loses')}`,
           value: `**${data.lostGames}** | (${data.lostPorcentage}) **%**`,
           inline: true,
         },
         {
-          name: `📥 | ${ctx.translate('coinflip.earnMoney')}`,
+          name: `📥 | ${ctx.locale('commands:status.coinflip.earnMoney')}`,
           value: `**${data.winMoney}** :star:`,
           inline: true,
         },
         {
-          name: `📤 | ${ctx.translate('coinflip.lostMoney')}`,
+          name: `📤 | ${ctx.locale('commands:status.coinflip.lostMoney')}`,
           value: `**${data.lostMoney}** :star:`,
           inline: true,
         },
@@ -303,12 +305,12 @@ export default class StatsInteractionCommand extends InteractionCommand {
     // eslint-disable-next-line no-unused-expressions
     totalMoney > 0
       ? embed.addField(
-          `${emojis.yes} | ${ctx.translate('coinflip.profit')}`,
+          `${emojis.yes} | ${ctx.locale('commands:status.coinflip.profit')}`,
           `**${totalMoney}** :star:`,
           true,
         )
       : embed.addField(
-          `${emojis.no} | ${ctx.translate('coinflip.loss')}`,
+          `${emojis.no} | ${ctx.locale('commands:status.coinflip.loss')}`,
           `**${totalMoney}** :star:`,
           true,
         );
@@ -322,44 +324,48 @@ export default class StatsInteractionCommand extends InteractionCommand {
     const data = await HttpRequests.getCoinflipUserStats(user.id);
 
     if (data.error) {
-      await ctx.makeMessage({ content: ctx.prettyResponse('error', 'coinflip.error') });
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:status.coinflip.error'),
+      });
       return;
     }
 
     if (!data.playedGames) {
-      await ctx.makeMessage({ content: ctx.prettyResponse('error', 'coinflip.no-data') });
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:status.coinflip.no-data'),
+      });
       return;
     }
 
     const totalMoney = data.winMoney - data.lostMoney;
 
     const embed = new MessageEmbed()
-      .setTitle(ctx.translate('coinflip.embed-title', { user: user.tag }))
+      .setTitle(ctx.locale('commands:status.coinflip.embed-title', { user: user.tag }))
       .setColor(COLORS.Purple)
-      .setFooter(ctx.translate('coinflip.embed-footer'))
+      .setFooter(ctx.locale('commands:status.coinflip.embed-footer'))
       .addFields([
         {
-          name: `🎰 | ${ctx.translate('coinflip.played')}`,
+          name: `🎰 | ${ctx.locale('commands:status.coinflip.played')}`,
           value: `**${data.playedGames}**`,
           inline: true,
         },
         {
-          name: `🏆 | ${ctx.translate('coinflip.wins')}`,
+          name: `🏆 | ${ctx.locale('commands:status.coinflip.wins')}`,
           value: `**${data.winGames}** | (${data.winPorcentage}) **%**`,
           inline: true,
         },
         {
-          name: `🦧 | ${ctx.translate('coinflip.loses')}`,
+          name: `🦧 | ${ctx.locale('commands:status.coinflip.loses')}`,
           value: `**${data.lostGames}** | (${data.lostPorcentage}) **%**`,
           inline: true,
         },
         {
-          name: `📥 | ${ctx.translate('coinflip.earnMoney')}`,
+          name: `📥 | ${ctx.locale('commands:status.coinflip.earnMoney')}`,
           value: `**${data.winMoney}** :star:`,
           inline: true,
         },
         {
-          name: `📤 | ${ctx.translate('coinflip.lostMoney')}`,
+          name: `📤 | ${ctx.locale('commands:status.coinflip.lostMoney')}`,
           value: `**${data.lostMoney}** :star:`,
           inline: true,
         },
@@ -367,12 +373,12 @@ export default class StatsInteractionCommand extends InteractionCommand {
     // eslint-disable-next-line no-unused-expressions
     totalMoney > 0
       ? embed.addField(
-          `${emojis.yes} | ${ctx.translate('coinflip.profit')}`,
+          `${emojis.yes} | ${ctx.locale('commands:status.coinflip.profit')}`,
           `**${totalMoney}** :star:`,
           true,
         )
       : embed.addField(
-          `${emojis.no} | ${ctx.translate('coinflip.loss')}`,
+          `${emojis.no} | ${ctx.locale('commands:status.coinflip.loss')}`,
           `**${totalMoney}** :star:`,
           true,
         );

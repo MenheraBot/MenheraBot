@@ -17,17 +17,20 @@ export default class UntrisalInteractionCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     if (ctx.data.user.trisal?.length === 0) {
-      await ctx.makeMessage({ content: ctx.prettyResponse('error', 'error'), ephemeral: true });
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:untrisal.error'),
+        ephemeral: true,
+      });
       return;
     }
 
     const button = new MessageButton()
       .setStyle('SUCCESS')
       .setCustomId(ctx.interaction.id)
-      .setLabel(ctx.translate('confirm'));
+      .setLabel(ctx.locale('commands:untrisal.confirm'));
 
     await ctx.makeMessage({
-      content: ctx.prettyResponse('question', 'sure'),
+      content: ctx.prettyResponse('question', 'commands:untrisal.sure'),
       components: [{ type: 'ACTION_ROW', components: [button] }],
     });
 
@@ -56,7 +59,7 @@ export default class UntrisalInteractionCommand extends InteractionCommand {
       ctx.data.user.trisal[1],
     );
     ctx.makeMessage({
-      content: ctx.prettyResponse('success', 'done'),
+      content: ctx.prettyResponse('success', 'commands:untrisal.done'),
       components: [
         { type: 'ACTION_ROW', components: [button.setDisabled(true).setStyle('PRIMARY')] },
       ],

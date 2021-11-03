@@ -18,7 +18,7 @@ export default class DeleteInteractionCommand extends InteractionCommand {
   async run(ctx: InteractionCommandContext): Promise<void> {
     const FirstButton = new MessageButton()
       .setCustomId(ctx.interaction.id)
-      .setLabel(ctx.translate('btn_confirm'))
+      .setLabel(ctx.locale('commands:delete.btn_confirm'))
       .setStyle('DANGER');
 
     const usages = await HttpRequests.getUserDeleteUsages(ctx.author.id);
@@ -28,12 +28,15 @@ export default class DeleteInteractionCommand extends InteractionCommand {
         ctx.author.id,
         '[PERMABAN] Tentou burlar o cooldown da Menhera excluindo a conta diversas vezes',
       );
-      ctx.makeMessage({ content: ctx.prettyResponse('warn', 'ban'), ephemeral: true });
+      ctx.makeMessage({
+        content: ctx.prettyResponse('warn', 'commands:delete.ban'),
+        ephemeral: true,
+      });
       return;
     }
 
     ctx.makeMessage({
-      content: ctx.prettyResponse('warn', 'confirm'),
+      content: ctx.prettyResponse('warn', 'commands:delete.confirm'),
       components: [{ type: 'ACTION_ROW', components: [FirstButton] }],
     });
 
@@ -49,14 +52,14 @@ export default class DeleteInteractionCommand extends InteractionCommand {
         components: [
           {
             type: 'ACTION_ROW',
-            components: [FirstButton.setDisabled(true).setLabel(ctx.locale('common.timesup'))],
+            components: [FirstButton.setDisabled(true).setLabel(ctx.locale('common:timesup'))],
           },
         ],
       });
     }
     await ctx.client.repositories.userRepository.delete(ctx.author.id);
     ctx.makeMessage({
-      content: ctx.prettyResponse('success', 'acepted'),
+      content: ctx.prettyResponse('success', 'commands:delete.acepted'),
       components: [],
     });
   }

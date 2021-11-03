@@ -28,14 +28,14 @@ export default class BiteInteractionCommand extends InteractionCommand {
 
     if (user.bot) {
       await ctx.makeMessage({
-        content: ctx.prettyResponse('warn', 'bot'),
+        content: ctx.prettyResponse('warn', 'commands:morder.bot'),
       });
       return;
     }
 
     if (user.id === ctx.author.id) {
       await ctx.makeMessage({
-        content: ctx.prettyResponse('warn', 'self-mention'),
+        content: ctx.prettyResponse('warn', 'commands:morder.self-mention'),
         ephemeral: true,
       });
       return;
@@ -45,10 +45,10 @@ export default class BiteInteractionCommand extends InteractionCommand {
     const selectedImage = await HttpRequests.getAssetImageUrl('bite');
 
     const embed = new MessageEmbed()
-      .setTitle(ctx.translate('embed_title'))
+      .setTitle(ctx.locale('commands:morder.embed_title'))
       .setColor(COLORS.ACTIONS)
       .setDescription(
-        ctx.translate('embed_description', {
+        ctx.locale('commands:morder.embed_description', {
           author: ctx.author.toString(),
           mention: user.toString(),
         }),

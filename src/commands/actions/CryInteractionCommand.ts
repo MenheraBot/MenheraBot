@@ -28,7 +28,7 @@ export default class CryInteractionCommand extends InteractionCommand {
 
     if (user?.bot) {
       await ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'bot'),
+        content: ctx.prettyResponse('error', 'commands:chorar.bot'),
       });
       return;
     }
@@ -38,10 +38,10 @@ export default class CryInteractionCommand extends InteractionCommand {
 
     if (!user || user.id === ctx.author.id) {
       const embed = new MessageEmbed()
-        .setTitle(ctx.translate('no-mention.embed_title'))
+        .setTitle(ctx.locale('commands:chorar.no-mention.embed_title'))
         .setColor(COLORS.ACTIONS)
         .setDescription(
-          ctx.translate('no-mention.embed_description', {
+          ctx.locale('commands:chorar.no-mention.embed_description', {
             author: ctx.author.toString(),
           }),
         )
@@ -53,10 +53,10 @@ export default class CryInteractionCommand extends InteractionCommand {
     }
 
     const embed = new MessageEmbed()
-      .setTitle(ctx.translate('embed_title'))
+      .setTitle(ctx.locale('commands:chorar.embed_title'))
       .setColor(COLORS.ACTIONS)
       .setDescription(
-        ctx.translate('embed_description', {
+        ctx.locale('commands:chorar.embed_description', {
           author: ctx.author.toString(),
           mention: user.toString(),
         }),

@@ -25,24 +25,30 @@ export default class CooldownsInteractionCommand extends InteractionCommand {
 
     txt +=
       huntCooldownInMilis < 0
-        ? `\`${ctx.translate('hunt')}\` | ${ctx.translate('no-cooldown')}\n`
-        : `\`${ctx.translate('hunt')}\` | **${moment
+        ? `\`${ctx.locale('commands:cooldowns.hunt')}\` | ${ctx.locale(
+            'commands:cooldowns.no-cooldown',
+          )}\n`
+        : `\`${ctx.locale('commands:cooldowns.hunt')}\` | **${moment
             .utc(huntCooldownInMilis)
-            .format('mm:ss')}** ${ctx.translate('minutes')}\n`;
+            .format('mm:ss')}** ${ctx.locale('commands:cooldowns.minutes')}\n`;
 
     txt +=
       voteCooldownInMilis < 0
-        ? `\`${ctx.translate('vote')}\` | ${ctx.translate('no-cooldown')}`
-        : `\`${ctx.translate('vote')}\` | ${
+        ? `\`${ctx.locale('commands:cooldowns.vote')}\` | ${ctx.locale(
+            'commands:cooldowns.no-cooldown',
+          )}`
+        : `\`${ctx.locale('commands:cooldowns.vote')}\` | ${
             voteCooldownInMilis > 3600000
-              ? `**${moment.utc(voteCooldownInMilis).format('HH:mm:ss')}** ${ctx.translate(
-                  'hours',
+              ? `**${moment.utc(voteCooldownInMilis).format('HH:mm:ss')}** ${ctx.locale(
+                  'commands:cooldowns.hours',
                 )}`
-              : `**${moment.utc(voteCooldownInMilis).format('mm:ss')}** ${ctx.translate('minutes')}`
+              : `**${moment.utc(voteCooldownInMilis).format('mm:ss')}** ${ctx.locale(
+                  'commands:cooldowns.minutes',
+                )}`
           }`;
 
     const embed = new MessageEmbed()
-      .setTitle(ctx.translate('title'))
+      .setTitle(ctx.locale('commands:cooldowns.title'))
       .setColor('#6597df')
       .setDescription(txt);
 

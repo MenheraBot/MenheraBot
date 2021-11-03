@@ -194,7 +194,6 @@ const InteractionCommandExecutor = async (
     t,
     // @ts-expect-error
     { server, user: authorData },
-    command.config.name,
   );
 
   try {

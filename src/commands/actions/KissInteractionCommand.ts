@@ -38,14 +38,14 @@ export default class KissInteractionCommand extends InteractionCommand {
 
     if (user.bot) {
       await ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'bot'),
+        content: ctx.prettyResponse('error', 'commands:beijar.bot'),
       });
       return;
     }
 
     if (user.id === ctx.author.id) {
       await ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'self-mention'),
+        content: ctx.prettyResponse('error', 'commands:beijar.self-mention'),
         ephemeral: true,
       });
       return;
@@ -58,10 +58,10 @@ export default class KissInteractionCommand extends InteractionCommand {
     const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     const embed = new MessageEmbed()
-      .setTitle(ctx.translate('embed_title'))
+      .setTitle(ctx.locale('commands:rir.embed_title'))
       .setColor(COLORS.ACTIONS)
       .setDescription(
-        ctx.translate(`embed_description_${ctx.options.getString('local')}`, {
+        ctx.locale(`commands:beijar.embed_description_${ctx.options.getString('local') as '1'}`, {
           author: ctx.author.toString(),
           mention: user.toString(),
         }),

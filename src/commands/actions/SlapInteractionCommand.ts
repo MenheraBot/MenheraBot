@@ -28,14 +28,14 @@ export default class SlapInteractionCommand extends InteractionCommand {
 
     if (user.bot) {
       await ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'bot'),
+        content: ctx.prettyResponse('error', 'commands:tapa.bot'),
       });
       return;
     }
 
     if (user.id === ctx.author.id) {
       await ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'self-mention'),
+        content: ctx.prettyResponse('error', 'commands:tapa.self-mention'),
         ephemeral: true,
       });
       return;
@@ -45,10 +45,10 @@ export default class SlapInteractionCommand extends InteractionCommand {
     const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     const embed = new MessageEmbed()
-      .setTitle(ctx.translate('embed_title'))
+      .setTitle(ctx.locale('commands:tapa.embed_title'))
       .setColor(COLORS.ACTIONS)
       .setDescription(
-        ctx.translate('embed_description', {
+        ctx.locale('commands:tapa.embed_description', {
           author: ctx.author.toString(),
           mention: user.toString(),
         }),

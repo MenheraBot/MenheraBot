@@ -32,7 +32,7 @@ export default class FodaseInteractionCommand extends InteractionCommand {
 
     const embed = new MessageEmbed()
       .setImage(selectedImage)
-      .setFooter(ctx.translate('author', { author: ctx.author.username }))
+      .setFooter(ctx.locale('commands:fodase.author', { author: ctx.author.username }))
       .setTitle(frasesUsada);
 
     await ctx.makeMessage({ embeds: [embed] });

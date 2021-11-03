@@ -28,7 +28,7 @@ export default class PatInteractionCommand extends InteractionCommand {
 
     if (user.id === ctx.author.id) {
       await ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'self-mention'),
+        content: ctx.prettyResponse('error', 'commands:carinho.self-mention'),
         ephemeral: true,
       });
       return;
@@ -38,10 +38,10 @@ export default class PatInteractionCommand extends InteractionCommand {
     const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     const embed = new MessageEmbed()
-      .setTitle(ctx.translate('embed_title'))
+      .setTitle(ctx.locale('commands:carinho.embed_title'))
       .setColor(COLORS.ACTIONS)
       .setDescription(
-        ctx.translate('embed_description', {
+        ctx.locale('commands:carinho.embed_description', {
           autor: ctx.author.toString(),
           mention: user.toString(),
         }),

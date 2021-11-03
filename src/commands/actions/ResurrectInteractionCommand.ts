@@ -28,7 +28,7 @@ export default class ResurrectInteractionCommand extends InteractionCommand {
 
     if (user.id === ctx.author.id) {
       await ctx.makeMessage({
-        content: ctx.prettyResponse('question', 'self-mention'),
+        content: ctx.prettyResponse('question', 'commands:ressuscitar.self-mention'),
         ephemeral: true,
       });
       return;
@@ -36,7 +36,7 @@ export default class ResurrectInteractionCommand extends InteractionCommand {
 
     if (user.bot) {
       await ctx.makeMessage({
-        content: ctx.prettyResponse('success', 'bot'),
+        content: ctx.prettyResponse('success', 'commands:ressuscitar.bot'),
       });
       return;
     }
@@ -45,10 +45,10 @@ export default class ResurrectInteractionCommand extends InteractionCommand {
     const selectedImage = await HttpRequests.getAssetImageUrl('resurrect');
 
     const embed = new MessageEmbed()
-      .setTitle(ctx.translate('embed_title'))
+      .setTitle(ctx.locale('commands:ressuscitar.embed_title'))
       .setColor(COLORS.ACTIONS)
       .setDescription(
-        ctx.translate('embed_description', {
+        ctx.locale('commands:ressuscitar.embed_description', {
           author: ctx.author.toString(),
           mention: user.toString(),
         }),

@@ -9,6 +9,37 @@ import { huntEnum, HuntingTypes, HuntProbabiltyProps } from '@utils/Types';
 import { calculateProbability, getUserHuntProbability } from '@utils/ProbabilityUtils';
 import Util from '@utils/Util';
 
+type ChoiceTypes = HuntingTypes | 'probabilities';
+const choices: { name: string; value: ChoiceTypes }[] = [
+  {
+    name: '😈 | Demônios',
+    value: 'demons',
+  },
+  {
+    name: '👊 | Gigantes',
+    value: 'giants',
+  },
+  {
+    name: '👼 | Anjos',
+    value: 'angels',
+  },
+  {
+    name: '🧚‍♂️ | Arcanjos',
+    value: 'archangels',
+  },
+  {
+    name: '🙌 | Semideuses',
+    value: 'demigods',
+  },
+  {
+    name: '✝️ | Deuses',
+    value: 'gods',
+  },
+  {
+    name: '📊 | Probabilidades',
+    value: 'probabilities',
+  },
+];
 export default class HuntInteractionCommand extends InteractionCommand {
   constructor() {
     super({
@@ -20,36 +51,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
           type: 'STRING',
           description: 'Tipo da caça',
           required: true,
-          choices: [
-            {
-              name: '😈 | Demônios',
-              value: 'demons',
-            },
-            {
-              name: '👊 | Gigantes',
-              value: 'giants',
-            },
-            {
-              name: '👼 | Anjos',
-              value: 'angels',
-            },
-            {
-              name: '🧚‍♂️ | Arcanjos',
-              value: 'archangels',
-            },
-            {
-              name: '🙌 | Semideuses',
-              value: 'demigods',
-            },
-            {
-              name: '✝️ | Deuses',
-              value: 'gods',
-            },
-            {
-              name: '📊 | Probabilidades',
-              value: 'probabilities',
-            },
-          ],
+          choices,
         },
         {
           name: 'rolls',
@@ -66,23 +68,18 @@ export default class HuntInteractionCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    const selected = ctx.options.getString('tipo', true) as HuntingTypes | 'probabilities';
-
-    if (!selected) {
-      await ctx.makeMessage({ content: ctx.prettyResponse('error', 'no-args'), ephemeral: true });
-      return;
-    }
+    const selected = ctx.options.getString('tipo', true) as ChoiceTypes;
 
     if (selected === 'probabilities') {
       const embed = new MessageEmbed()
-        .setTitle(ctx.translate('probabilities'))
+        .setTitle(ctx.locale('commands:cacar.probabilities'))
         .setColor(ctx.data.user.selectedColor)
         .addFields([
           {
-            name: ctx.prettyResponse(huntEnum.DEMON, huntEnum.DEMON),
+            name: ctx.prettyResponse(huntEnum.DEMON, `commands:cacar.${huntEnum.DEMON}`),
             value: `${getUserHuntProbability(ctx.data.user.inUseItems, huntEnum.DEMON)
               .map((a) =>
-                ctx.translate('chances', {
+                ctx.locale('commands:cacar.chances', {
                   count: a.amount,
                   percentage: a.probabilty,
                 }),
@@ -91,10 +88,10 @@ export default class HuntInteractionCommand extends InteractionCommand {
             inline: true,
           },
           {
-            name: ctx.prettyResponse(huntEnum.GIANT, huntEnum.GIANT),
+            name: ctx.prettyResponse(huntEnum.GIANT, `commands:cacar.${huntEnum.GIANT}`),
             value: `${getUserHuntProbability(ctx.data.user.inUseItems, huntEnum.GIANT)
               .map((a) =>
-                ctx.translate('chances', {
+                ctx.locale('commands:cacar.chances', {
                   count: a.amount,
                   percentage: a.probabilty,
                 }),
@@ -103,10 +100,10 @@ export default class HuntInteractionCommand extends InteractionCommand {
             inline: true,
           },
           {
-            name: ctx.prettyResponse(huntEnum.ANGEL, huntEnum.ANGEL),
+            name: ctx.prettyResponse(huntEnum.ANGEL, `commands:cacar.${huntEnum.ANGEL}`),
             value: `${getUserHuntProbability(ctx.data.user.inUseItems, huntEnum.ANGEL)
               .map((a) =>
-                ctx.translate('chances', {
+                ctx.locale('commands:cacar.chances', {
                   count: a.amount,
                   percentage: a.probabilty,
                 }),
@@ -115,10 +112,10 @@ export default class HuntInteractionCommand extends InteractionCommand {
             inline: true,
           },
           {
-            name: ctx.prettyResponse(huntEnum.ARCHANGEL, huntEnum.ARCHANGEL),
+            name: ctx.prettyResponse(huntEnum.ARCHANGEL, `commands:cacar.${huntEnum.ARCHANGEL}`),
             value: `${getUserHuntProbability(ctx.data.user.inUseItems, huntEnum.ARCHANGEL)
               .map((a) =>
-                ctx.translate('chances', {
+                ctx.locale('commands:cacar.chances', {
                   count: a.amount,
                   percentage: a.probabilty,
                 }),
@@ -127,10 +124,10 @@ export default class HuntInteractionCommand extends InteractionCommand {
             inline: true,
           },
           {
-            name: ctx.prettyResponse(huntEnum.DEMIGOD, huntEnum.DEMIGOD),
+            name: ctx.prettyResponse(huntEnum.DEMIGOD, `commands:cacar.${huntEnum.DEMIGOD}`),
             value: `${getUserHuntProbability(ctx.data.user.inUseItems, huntEnum.DEMIGOD)
               .map((a) =>
-                ctx.translate('chances', {
+                ctx.locale('commands:cacar.chances', {
                   count: a.amount,
                   percentage: a.probabilty,
                 }),
@@ -139,10 +136,10 @@ export default class HuntInteractionCommand extends InteractionCommand {
             inline: true,
           },
           {
-            name: ctx.prettyResponse(huntEnum.GOD, huntEnum.GOD),
+            name: ctx.prettyResponse(huntEnum.GOD, `commands:cacar.${huntEnum.GOD}`),
             value: `${getUserHuntProbability(ctx.data.user.inUseItems, huntEnum.GOD)
               .map((a) =>
-                ctx.translate('chances', {
+                ctx.locale('commands:cacar.chances', {
                   count: a.amount,
                   percentage: a.probabilty,
                 }),
@@ -162,11 +159,17 @@ export default class HuntInteractionCommand extends InteractionCommand {
 
     if (rollsToUse) {
       if (rollsToUse < 1) {
-        ctx.makeMessage({ content: ctx.prettyResponse('error', 'invalid-rolls'), ephemeral: true });
+        ctx.makeMessage({
+          content: ctx.prettyResponse('error', 'commands:cacar.invalid-rolls'),
+          ephemeral: true,
+        });
         return;
       }
       if (rollsToUse > ctx.data.user.rolls) {
-        ctx.makeMessage({ content: ctx.prettyResponse('error', 'rolls-poor'), ephemeral: true });
+        ctx.makeMessage({
+          content: ctx.prettyResponse('error', 'commands:cacar.rolls-poor'),
+          ephemeral: true,
+        });
         return;
       }
     }
@@ -175,7 +178,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
 
     if (!canHunt && !rollsToUse) {
       ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'cooldown', {
+        content: ctx.prettyResponse('error', 'commands:cacar.cooldown', {
           time: moment.utc(ctx.data.user.huntCooldown - Date.now()).format('mm:ss'),
         }),
         ephemeral: true,
@@ -188,7 +191,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
     const embed = new MessageEmbed()
       .setColor(COLORS.HuntDefault)
       .setThumbnail(avatar)
-      .setTitle(ctx.translate(selected));
+      .setTitle(ctx.locale(`commands:cacar.${selected}`));
 
     const toRun = canHunt && rollsToUse ? rollsToUse + 1 : rollsToUse ?? 1;
 
@@ -231,20 +234,20 @@ export default class HuntInteractionCommand extends InteractionCommand {
     if (selected === 'gods') {
       embed.setDescription(
         result.value > 0
-          ? ctx.translate('god_hunted_success', {
+          ? ctx.locale('commands:cacar.god_hunted_success', {
               count: result.value,
-              hunt: ctx.translate(selected),
+              hunt: ctx.locale(`commands:cacar.gods`),
               rank: rank + 1,
               toRun,
             })
-          : ctx.translate('god_hunted_fail', { rank: rank + 1, count: toRun }),
+          : ctx.locale('commands:cacar.god_hunted_fail', { rank: rank + 1, count: toRun }),
       );
       if (result.value > 0) embed.setThumbnail('https://i.imgur.com/053khaH.gif');
     } else
       embed.setDescription(
-        ctx.translate('hunt_description', {
+        ctx.locale('commands:cacar.hunt_description', {
           value: result.value,
-          hunt: ctx.translate(selected),
+          hunt: ctx.locale(`commands:cacar.${selected}`),
           rank: rank + 1,
           count: toRun,
         }),

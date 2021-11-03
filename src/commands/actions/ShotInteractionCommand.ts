@@ -28,7 +28,7 @@ export default class ShotInteractionCommand extends InteractionCommand {
 
     if (user.id === ctx.author.id) {
       await ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'self-mention'),
+        content: ctx.prettyResponse('error', 'commands:atirar.self-mention'),
         ephemeral: true,
       });
       return;
@@ -38,10 +38,10 @@ export default class ShotInteractionCommand extends InteractionCommand {
     const selectedImage = await HttpRequests.getAssetImageUrl('shot');
 
     const embed = new MessageEmbed()
-      .setTitle(ctx.translate('embed_title'))
+      .setTitle(ctx.locale('commands:atirar.embed_title'))
       .setColor(COLORS.ACTIONS)
       .setDescription(
-        ctx.translate('embed_description', {
+        ctx.locale('commands:atirar.embed_description', {
           author: ctx.author.toString(),
           mention: user.toString(),
         }),
