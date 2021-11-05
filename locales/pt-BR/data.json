@@ -3,6 +3,26 @@
     "1": {
       "name": "O Colt",
       "description": "Qualquer demônio que for atingido por uma de suas 13 balas morrerá!"
+    },
+    "2": {
+      "name": "Jaula Gigante",
+      "description": "Uma imensa jaula feita especialmente para aprisionar gigantes"
+    },
+    "3": {
+      "name": "Gume de Caim",
+      "description": "A primeira lâmina feita para caçar anjos"
+    },
+    "4": {
+      "name": "Lâmina Prateada",
+      "description": "Uma lâmina de dois gumes com especialidade na morte de Arcanjos"
+    },
+    "5": {
+      "name": "Necare Hêmítheos",
+      "description": "Nem sempre armas físicas são eficases, para os semideuses é necessário runas greco-latinas para os derrubar"
+    },
+    "6": {
+      "name": "Deicídio",
+      "description": "O conhecimento para matar um Deus só pode ser alcançado a partir de auxílios externos"
     }
   }
 }
