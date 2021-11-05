@@ -6,7 +6,7 @@ export default class ShopRepository {
   constructor(private userModal: typeof Users) {}
 
   async buyItem(userID: string, itemID: number, price: number): Promise<void> {
-    this.userModal.updateOne(
+    await this.userModal.updateOne(
       { id: userID },
       {
         $inc: { estrelinhas: negate(price) },
@@ -16,7 +16,7 @@ export default class ShopRepository {
   }
 
   async buyRoll(userID: string, amount: number, price: number): Promise<void> {
-    this.userModal.updateOne(
+    await this.userModal.updateOne(
       { id: userID },
       {
         $inc: { rolls: amount, estrelinhas: negate(price) },
@@ -25,7 +25,7 @@ export default class ShopRepository {
   }
 
   async buyColor(userID: string, price: number, color: IColor): Promise<void> {
-    this.userModal.updateOne(
+    await this.userModal.updateOne(
       { id: userID },
       {
         $inc: { estrelinhas: negate(price) },
@@ -40,7 +40,7 @@ export default class ShopRepository {
     amount: number,
     profit: number,
   ): Promise<void> {
-    this.userModal.updateOne(
+    await this.userModal.updateOne(
       { id: userID },
       {
         $inc: { [huntType]: negate(amount), estrelinhas: profit },

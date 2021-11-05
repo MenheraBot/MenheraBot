@@ -163,7 +163,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
         },
       ],
       category: 'economy',
-      cooldown: 5,
+      cooldown: 10,
       clientPermissions: ['EMBED_LINKS'],
       authorDataFields: [
         'estrelinhas',
@@ -208,6 +208,8 @@ export default class ShopInteractionCommand extends InteractionCommand {
   static async buyItems(ctx: InteractionCommandContext): Promise<void> {
     const embed = new MessageEmbed()
       .setTitle(ctx.locale('commands:loja.buy_item.title'))
+      .setColor(COLORS.Pinkie)
+      .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true }))
       .setDescription(ctx.locale('commands:loja.buy_item.description'));
 
     const selectMenu = new MessageSelectMenu()
@@ -217,7 +219,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
 
     for (let i = 1; i <= 6; i++) {
       if (
-        !ctx.data.user.inventory.some((a) => a.id === i) ||
+        !ctx.data.user.inventory.some((a) => a.id === i) &&
         !ctx.data.user.inUseItems.some((a) => a.id === i)
       ) {
         selectMenu.addOptions({
@@ -239,7 +241,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
       ctx.channel,
       ctx.author.id,
       ctx.interaction.id,
-      15000,
+      10000,
     );
 
     if (!choice) {
@@ -251,13 +253,13 @@ export default class ShopInteractionCommand extends InteractionCommand {
       return;
     }
 
-    const selectedItem = Number(choice.values);
+    const selectedItem = Number(choice.values[0]);
 
     if (MagicItems[selectedItem].cost > ctx.data.user.estrelinhas) {
       ctx.makeMessage({
         embeds: [],
         components: [],
-        content: ctx.prettyResponse('error', 'commands:loja.dataVender.poor'),
+        content: ctx.prettyResponse('error', 'commands:loja.buy_item.poor'),
       });
       return;
     }
