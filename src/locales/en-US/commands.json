@@ -233,6 +233,10 @@
   "loja": {
     "description": "Access the Menhera's thrift store",
     "embed_title": "Menhera's Thrift store",
+    "dataItems": {
+      "title": "🔮 | IMagic Items",
+      "description": "**Cost**: {{cost}} :star:\n**About:** {{description}}"
+    },
     "colors": {
       "purple": "1 - Dark purple",
       "red": "2 - Red",

@@ -1,9 +1,9 @@
 // import default language
-import type commands from '../../locales/pt-BR/commands.json';
-import type common from '../../locales/pt-BR/common.json';
-import type data from '../../locales/pt-BR/data.json';
-import type events from '../../locales/pt-BR/events.json';
-import type permissions from '../../locales/pt-BR/permissions.json';
+import type commands from '../locales/pt-BR/commands.json';
+import type common from '../locales/pt-BR/common.json';
+import type data from '../locales/pt-BR/data.json';
+import type events from '../locales/pt-BR/events.json';
+import type permissions from '../locales/pt-BR/permissions.json';
 
 export type Resources = {
   commands: typeof commands;

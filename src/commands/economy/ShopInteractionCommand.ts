@@ -1,7 +1,8 @@
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 
-import { emojis, shopEconomy } from '@structures/Constants';
+import { COLORS, emojis, shopEconomy } from '@structures/Constants';
+import MagicItems from '@structures/MagicItems';
 import { HuntingTypes } from '@utils/Types';
 import Util, { actionRow } from '@utils/Util';
 import {
@@ -297,11 +298,24 @@ export default class ShopInteractionCommand extends InteractionCommand {
       ctx.makeMessage({ embeds: [dataRolls] });
     }
 
-    // TODO: Make buyable items value
+    if (type === 'items') {
+      const ItemsEmbed = new MessageEmbed()
+        .setTitle(ctx.locale('commands:loja.dataItems.title'))
+        .setColor(COLORS.Pinkie);
 
-    /*   if(type === 'items') {
-      const ItemsEmbed = new MessageEmbed().setTitle(ctx.locale)
-    } */
+      for (let i = 1; i <= 6; i++) {
+        ItemsEmbed.addField(
+          ctx.locale(`data:magic-items.${i as 1}.name`),
+          ctx.locale('commands:loja.dataItems.description', {
+            description: ctx.locale(`data:magic-items.${i as 1}.description`),
+            cost: MagicItems[i].cost,
+          }),
+          true,
+        );
+      }
+
+      ctx.makeMessage({ embeds: [ItemsEmbed] });
+    }
   }
 
   static async sellInfo(ctx: InteractionCommandContext): Promise<void> {

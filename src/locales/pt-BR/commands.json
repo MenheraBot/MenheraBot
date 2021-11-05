@@ -237,6 +237,10 @@
     "embed_title": "Brechó da Menhera",
     "embed_footer": "Digite no chat a opção de sua escolha",
     "invalid-option": "Essa escolha é inválida",
+    "dataItems": {
+      "title": "🔮 | Itens Mágicos",
+      "description": "**Custo**: {{cost}} :star:\n**Sobre:** {{description}}"
+    },
     "colors": {
       "purple": "1 - Roxo Escuro",
       "red": "2 - Vermelho",
@@ -263,15 +267,15 @@
       "buy-text": "Escolha abaixo qual é a cor que deseja comprar!"
     },
     "dataRolls_fields": {
-      "title": "Comprar Rolls",
+      "title": "🔑 | Comprar Rolls",
       "fields": {
         "name": "Tabela de Preços",
         "value": "1 Roll = **{{price}}** ⭐"
       },
       "buy_rolls": {
-        "invalid-number": "este valor não é um número válido!",
-        "poor": "você não possui estrelas suficientes para comprar esta quantidade de rolls!",
-        "success": "você comprou **{{quantity}}** 🔑 rolls por {{value}} ⭐ estrelinhas! \nAgora você tem **{{rolls}}** 🔑 e **{{stars}}**⭐"
+        "invalid-number": "Este valor não é um número válido!",
+        "poor": "Você não possui estrelas suficientes para comprar esta quantidade de rolls!",
+        "success": "Você comprou **{{quantity}}** 🔑 rolls por {{value}} ⭐ estrelinhas! \nAgora você tem **{{rolls}}** 🔑 e **{{stars}}**⭐"
       }
     },
     "dataVender": {
