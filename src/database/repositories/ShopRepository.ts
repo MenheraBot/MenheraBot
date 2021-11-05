@@ -5,6 +5,16 @@ import { negate } from '@utils/Util';
 export default class ShopRepository {
   constructor(private userModal: typeof Users) {}
 
+  async buyItem(userID: string, itemID: number, price: number): Promise<void> {
+    this.userModal.updateOne(
+      { id: userID },
+      {
+        $inc: { estrelinhas: negate(price) },
+        $push: { inventory: { id: itemID } },
+      },
+    );
+  }
+
   async buyRoll(userID: string, amount: number, price: number): Promise<void> {
     this.userModal.updateOne(
       { id: userID },

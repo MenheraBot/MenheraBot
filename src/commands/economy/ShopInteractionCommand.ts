@@ -175,6 +175,8 @@ export default class ShopInteractionCommand extends InteractionCommand {
         'demigods',
         'colors',
         'rolls',
+        'inUseItems',
+        'inventory',
       ],
     });
   }
@@ -204,11 +206,75 @@ export default class ShopInteractionCommand extends InteractionCommand {
   }
 
   static async buyItems(ctx: InteractionCommandContext): Promise<void> {
-    const embed = new MessageEmbed().setTitle('comprar');
-    ctx.client.repositories.userRepository.update(ctx.author.id, {
-      inventory: [{ id: 1, amount: 1 }],
+    const embed = new MessageEmbed()
+      .setTitle(ctx.locale('commands:loja.buy_item.title'))
+      .setDescription(ctx.locale('commands:loja.buy_item.description'));
+
+    const selectMenu = new MessageSelectMenu()
+      .setCustomId(`${ctx.interaction.id} | BUY`)
+      .setMinValues(1)
+      .setMaxValues(1);
+
+    for (let i = 1; i <= 6; i++) {
+      if (
+        !ctx.data.user.inventory.some((a) => a.id === i) ||
+        !ctx.data.user.inUseItems.some((a) => a.id === i)
+      ) {
+        selectMenu.addOptions({
+          label: ctx.locale(`data:magic-items.${i as 1}.name`),
+          value: `${i}`,
+          description: `${MagicItems[i].cost} ${emojis.estrelinhas}`,
+        });
+      }
+    }
+
+    if (selectMenu.options.length === 0) {
+      ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:loja.buy_item.hasAll') });
+      return;
+    }
+
+    ctx.makeMessage({ embeds: [embed], components: [actionRow([selectMenu])] });
+
+    const choice = await Util.collectComponentInteractionWithStartingId<SelectMenuInteraction>(
+      ctx.channel,
+      ctx.author.id,
+      ctx.interaction.id,
+      15000,
+    );
+
+    if (!choice) {
+      ctx.makeMessage({
+        components: [
+          actionRow([selectMenu.setDisabled(true).setPlaceholder(ctx.locale('common:timesup'))]),
+        ],
+      });
+      return;
+    }
+
+    const selectedItem = Number(choice.values);
+
+    if (MagicItems[selectedItem].cost > ctx.data.user.estrelinhas) {
+      ctx.makeMessage({
+        embeds: [],
+        components: [],
+        content: ctx.prettyResponse('error', 'commands:loja.dataVender.poor'),
+      });
+      return;
+    }
+
+    ctx.client.repositories.shopRepository.buyItem(
+      ctx.author.id,
+      selectedItem,
+      MagicItems[selectedItem].cost,
+    );
+
+    ctx.makeMessage({
+      embeds: [],
+      components: [],
+      content: ctx.prettyResponse('success', 'commands:loja.buy_item.success', {
+        item: ctx.locale(`data:magic-items.${selectedItem as 1}.name`),
+      }),
     });
-    ctx.makeMessage({ embeds: [embed] });
   }
 
   static async buyInfo(ctx: InteractionCommandContext): Promise<void> {
@@ -301,7 +367,8 @@ export default class ShopInteractionCommand extends InteractionCommand {
     if (type === 'items') {
       const ItemsEmbed = new MessageEmbed()
         .setTitle(ctx.locale('commands:loja.dataItems.title'))
-        .setColor(COLORS.Pinkie);
+        .setColor(COLORS.Pinkie)
+        .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true }));
 
       for (let i = 1; i <= 6; i++) {
         ItemsEmbed.addField(

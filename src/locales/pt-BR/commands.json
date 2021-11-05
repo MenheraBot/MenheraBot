@@ -237,6 +237,13 @@
     "embed_title": "Brechó da Menhera",
     "embed_footer": "Digite no chat a opção de sua escolha",
     "invalid-option": "Essa escolha é inválida",
+    "buy_item": {
+      "title": "🔮 | Itens Mágicos",
+      "description": "Selectione abaixo qual item você deseja comprar",
+      "hasAll": "Você já possui todos os itens mágicos disponíveis",
+      "poor": "Você não possui estrelas suficientes para comprar este item!",
+      "success": "Você comprou **{{item}}** com sucesso! Só dale nas caças agora. Use /inventario para usar o item"
+    },
     "dataItems": {
       "title": "🔮 | Itens Mágicos",
       "description": "**Custo**: {{cost}} :star:\n**Sobre:** {{description}}"

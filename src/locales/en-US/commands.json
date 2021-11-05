@@ -233,9 +233,16 @@
   "loja": {
     "description": "Access the Menhera's thrift store",
     "embed_title": "Menhera's Thrift store",
+    "buy_item": {
+      "title": "🔮 | Magic Items",
+      "description": "Select down below the item that you want to buy",
+      "hasAll": "You already have all magic items available"
+    },
     "dataItems": {
-      "title": "🔮 | IMagic Items",
-      "description": "**Cost**: {{cost}} :star:\n**About:** {{description}}"
+      "title": "🔮 | Magic Items",
+      "description": "**Cost**: {{cost}} :star:\n**About:** {{description}}",
+      "poor": "You don't have enough stars to buy this item!",
+      "success": "You bought **{{item}}** successfully"
     },
     "colors": {
       "purple": "1 - Dark purple",

@@ -84,7 +84,7 @@ export default class InventoryInteractionCommand extends InteractionCommand {
                 // ` data:magic-items.${c.id}.name`,
               )}\n**${ctx.locale('common:description')}**: ${ctx.locale(
                 `data:magic-items.${c.id as 1}.description`,
-              )}\n**${ctx.locale('common:amount')}**: ${c.amount}\n`,
+              )}`,
             '',
           )
         : ctx.locale('commands:inventario.no-item'),
@@ -155,13 +155,9 @@ export default class InventoryInteractionCommand extends InteractionCommand {
 
     if (resolveCustomId(collected.customId) === 'RESET') {
       user.inUseItems.forEach((a) => {
-        const toPutItem = user.inventory.find((b) => a.id === b.id);
-        if (!toPutItem)
-          user.inventory.push({
-            amount: 1,
-            id: a.id,
-          });
-        else toPutItem.amount += 1;
+        user.inventory.push({
+          id: a.id,
+        });
       });
 
       user.inUseItems = [];
@@ -262,15 +258,9 @@ export default class InventoryInteractionCommand extends InteractionCommand {
       const [replaceItemId] = resolveSeparatedStrings(choosedReplace.values[0]);
 
       user.inUseItems.splice(user.inUseItems.findIndex((a) => a.id === Number(replaceItemId), 1));
-
-      const toPutItem = user.inventory.find((a) => a.id === Number(replaceItem));
-
-      if (!toPutItem)
-        user.inventory.push({
-          amount: 1,
-          id: Number(replaceItemId),
-        });
-      else toPutItem.amount += 1;
+      user.inventory.push({
+        id: Number(replaceItemId),
+      });
     }
 
     findedItem.amount -= 1;

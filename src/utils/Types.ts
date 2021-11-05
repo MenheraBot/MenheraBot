@@ -107,7 +107,7 @@ export interface IUserSchema {
   badges: Array<IBadge>;
   voteCooldown: number;
   trisal: Array<string>;
-  inventory: Array<IMagicItem & { amount: number }>;
+  inventory: Array<IMagicItem>;
   inUseItems: Array<IMagicItem>;
   itemsLimit: number;
   lastCommandAt: number;
