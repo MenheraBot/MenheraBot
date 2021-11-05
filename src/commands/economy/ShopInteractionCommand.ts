@@ -9,6 +9,7 @@ import {
   MessageSelectMenu,
   MessageSelectOptionData,
   SelectMenuInteraction,
+  ColorResolvable,
 } from 'discord.js-light';
 
 export default class ShopInteractionCommand extends InteractionCommand {
@@ -123,12 +124,16 @@ export default class ShopInteractionCommand extends InteractionCommand {
                   required: true,
                   choices: [
                     {
-                      name: 'Cores',
-                      value: '1',
+                      name: '🌈 | Cores',
+                      value: 'colors',
                     },
                     {
-                      name: 'Rolls',
-                      value: '2',
+                      name: '🔑 | Rolls',
+                      value: 'rolls',
+                    },
+                    {
+                      name: '🔮 | Itens Mágicos',
+                      value: 'items',
                     },
                   ],
                 },
@@ -146,8 +151,8 @@ export default class ShopInteractionCommand extends InteractionCommand {
                   required: true,
                   choices: [
                     {
-                      name: 'Caças',
-                      value: '1',
+                      name: '🐾 | Caças',
+                      value: 'hunts',
                     },
                   ],
                 },
@@ -176,32 +181,24 @@ export default class ShopInteractionCommand extends InteractionCommand {
   async run(ctx: InteractionCommandContext): Promise<void> {
     const type = ctx.options.getSubcommandGroup(false);
 
-    if (!type) {
-      return ShopInteractionCommand.sellHunts(ctx);
-    }
+    if (!type) return ShopInteractionCommand.sellHunts(ctx);
 
     if (type === 'comprar') {
       const option = ctx.options.getSubcommand();
-      if (option === 'cores') {
-        return ShopInteractionCommand.buyColor(ctx);
-      }
-      if (option === 'rolls') {
-        return ShopInteractionCommand.buyRolls(ctx);
-      }
-      if (option === 'itens') {
-        return ShopInteractionCommand.buyItems(ctx);
-      }
+
+      if (option === 'cores') return ShopInteractionCommand.buyColor(ctx);
+
+      if (option === 'rolls') return ShopInteractionCommand.buyRolls(ctx);
+
+      if (option === 'itens') return ShopInteractionCommand.buyItems(ctx);
     }
 
     if (type === 'info') {
       const option = ctx.options.getSubcommand();
-      if (option === 'comprar') {
-        return ShopInteractionCommand.buyInfo(ctx);
-      }
 
-      if (option === 'vender') {
-        return ShopInteractionCommand.sellInfo(ctx);
-      }
+      if (option === 'comprar') return ShopInteractionCommand.buyInfo(ctx);
+
+      if (option === 'vender') return ShopInteractionCommand.sellInfo(ctx);
     }
   }
 
@@ -216,7 +213,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
   static async buyInfo(ctx: InteractionCommandContext): Promise<void> {
     const type = ctx.options.getString('tipo', true);
 
-    if (type === '1') {
+    if (type === 'colors') {
       const availableColors = [
         {
           cor: '#6308c0',
@@ -280,30 +277,37 @@ export default class ShopInteractionCommand extends InteractionCommand {
       return;
     }
 
-    const valorRoll = shopEconomy.hunts.roll;
-    const dataRolls = {
-      title: ctx.locale('commands:loja.dataRolls_fields.title'),
-      color: '#b66642' as const,
-      thumbnail: {
-        url: 'https://i.imgur.com/t94XkgG.png',
-      },
-      fields: [
-        {
-          name: ctx.locale('commands:loja.dataRolls_fields.fields.name'),
-          value: ctx.locale('commands:loja.dataRolls_fields.fields.value', {
-            price: valorRoll,
-          }),
-          inline: false,
+    if (type === 'rolls') {
+      const dataRolls = {
+        title: ctx.locale('commands:loja.dataRolls_fields.title'),
+        color: '#b66642' as const,
+        thumbnail: {
+          url: 'https://i.imgur.com/t94XkgG.png',
         },
-      ],
-    };
-    ctx.makeMessage({ embeds: [dataRolls] });
+        fields: [
+          {
+            name: ctx.locale('commands:loja.dataRolls_fields.fields.name'),
+            value: ctx.locale('commands:loja.dataRolls_fields.fields.value', {
+              price: shopEconomy.hunts.roll,
+            }),
+            inline: false,
+          },
+        ],
+      };
+      ctx.makeMessage({ embeds: [dataRolls] });
+    }
+
+    // TODO: Make buyable items value
+
+    /*   if(type === 'items') {
+      const ItemsEmbed = new MessageEmbed().setTitle(ctx.locale)
+    } */
   }
 
   static async sellInfo(ctx: InteractionCommandContext): Promise<void> {
     const type = ctx.options.getString('tipo', true);
 
-    if (type === '1') {
+    if (type === 'hunts') {
       const dataVender = {
         title: ctx.locale('commands:loja.embed_title'),
         color: '#e77fa1' as const,
@@ -330,10 +334,10 @@ export default class ShopInteractionCommand extends InteractionCommand {
   }
 
   static async sellHunts(ctx: InteractionCommandContext): Promise<void> {
-    const type = ctx.options.getString('tipo', true) as HuntingTypes;
-    const valor = ctx.options.getInteger('quantidade', true);
+    const huntType = ctx.options.getString('tipo', true) as HuntingTypes;
+    const amount = ctx.options.getInteger('quantidade', true);
 
-    if (Number.isNaN(valor) || valor < 1) {
+    if (amount < 1) {
       ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:loja.dataVender.invalid-args'),
         ephemeral: true,
@@ -341,49 +345,40 @@ export default class ShopInteractionCommand extends InteractionCommand {
       return;
     }
 
-    if (valor > ctx.data.user[type]) {
+    if (amount > ctx.data.user[huntType]) {
       ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:loja.dataVender.poor', {
-          var: ctx.locale(`common:${type}`),
+          var: ctx.locale(`common:${huntType}`),
         }),
         ephemeral: true,
       });
       return;
     }
 
-    ctx.client.repositories.userRepository.update(ctx.author.id, {
-      $inc: { [type]: -valor, estrelinhas: valor * shopEconomy.hunts[type] },
-    });
+    ctx.client.repositories.shopRepository.sellHunt(
+      ctx.author.id,
+      huntType,
+      amount,
+      amount * shopEconomy.hunts[huntType],
+    );
 
     ctx.makeMessage({
       content: ctx.prettyResponse('success', 'commands:loja.dataVender.success', {
-        value: valor,
-        cost: valor * shopEconomy.hunts[type],
-        quantity: ctx.data.user[type] - valor,
-        hunt: ctx.locale(`common:${type}`),
-        emoji: emojis[type],
-        star: ctx.data.user.estrelinhas + valor * shopEconomy.hunts[type],
+        value: amount,
+        cost: amount * shopEconomy.hunts[huntType],
+        quantity: ctx.data.user[huntType] - amount,
+        hunt: ctx.locale(`common:${huntType}`),
+        emoji: emojis[huntType],
+        star: ctx.data.user.estrelinhas + amount * shopEconomy.hunts[huntType],
       }),
       ephemeral: true,
     });
   }
 
   static async buyRolls(ctx: InteractionCommandContext): Promise<void> {
-    const valorRoll = shopEconomy.hunts.roll;
+    const amount = ctx.options.getInteger('quantidade', true);
 
-    const valor = ctx.options.getInteger('quantidade', true);
-
-    if (!valor) {
-      ctx.makeMessage({
-        content: ctx.prettyResponse(
-          'error',
-          'commands:loja.dataRolls_fields.buy_rolls.invalid-number',
-        ),
-        ephemeral: true,
-      });
-      return;
-    }
-    if (Number.isNaN(valor) || valor < 1) {
+    if (amount < 1) {
       ctx.makeMessage({
         content: ctx.prettyResponse(
           'error',
@@ -394,7 +389,9 @@ export default class ShopInteractionCommand extends InteractionCommand {
       return;
     }
 
-    if (valor * valorRoll > ctx.data.user.estrelinhas) {
+    const totalCost = amount * shopEconomy.hunts.roll;
+
+    if (totalCost > ctx.data.user.estrelinhas) {
       ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:loja.dataRolls_fields.buy_rolls.poor'),
         ephemeral: true,
@@ -402,18 +399,14 @@ export default class ShopInteractionCommand extends InteractionCommand {
       return;
     }
 
-    const valueToPay = valor * valorRoll;
-
-    ctx.client.repositories.userRepository.update(ctx.author.id, {
-      $inc: { rolls: valor, estrelinhas: -valueToPay },
-    });
+    ctx.client.repositories.shopRepository.buyRoll(ctx.author.id, amount, totalCost);
 
     ctx.makeMessage({
       content: ctx.prettyResponse('success', 'commands:loja.dataRolls_fields.buy_rolls.success', {
-        quantity: valor,
-        value: valueToPay,
-        rolls: ctx.data.user.rolls + valor,
-        stars: ctx.data.user.estrelinhas - valueToPay,
+        quantity: amount,
+        value: totalCost,
+        rolls: ctx.data.user.rolls + amount,
+        stars: ctx.data.user.estrelinhas - totalCost,
       }),
     });
   }
@@ -505,9 +498,9 @@ export default class ShopInteractionCommand extends InteractionCommand {
     }
 
     if (chosenColor.cor.startsWith('#')) {
-      await ctx.client.repositories.userRepository.update(ctx.author.id, {
-        $inc: { estrelinhas: -chosenColor.price },
-        $push: { colors: { nome: chosenColor.nome, cor: chosenColor.cor } },
+      await ctx.client.repositories.shopRepository.buyColor(ctx.author.id, chosenColor.price, {
+        nome: chosenColor.nome,
+        cor: chosenColor.cor as ColorResolvable,
       });
 
       ctx.makeMessage({
@@ -522,7 +515,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
 
     const hexColor = ctx.options.getString('hex');
 
-    const name =
+    const name: string =
       ctx.options.getString('nome')?.slice(0, 20) ??
       ctx.locale('commands:loja.buy_colors.no-name', {
         number: ctx.data.user.colors.length,
@@ -551,12 +544,8 @@ export default class ShopInteractionCommand extends InteractionCommand {
     if (isHexColor(hexColor.replace('#', ''))) {
       const toPush = {
         nome: name,
-        cor: `#${hexColor.replace('#', '')}`,
+        cor: `#${hexColor.replace('#', '')}` as const,
       };
-      ctx.client.repositories.userRepository.update(ctx.author.id, {
-        $inc: { estrelinhas: -chosenColor.price },
-        $push: { colors: toPush },
-      });
       ctx.makeMessage({
         content: ctx.prettyResponse('success', 'commands:loja.buy_colors.yc-confirm', {
           color: hexColor,
@@ -564,6 +553,8 @@ export default class ShopInteractionCommand extends InteractionCommand {
           stars: ctx.data.user.estrelinhas - chosenColor.price,
         }),
       });
+
+      ctx.client.repositories.shopRepository.buyColor(ctx.author.id, chosenColor.price, toPush);
     } else {
       ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:loja.buy_colors.invalid-color'),

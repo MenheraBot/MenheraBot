@@ -156,3 +156,5 @@ export const debugError = (err: Error): null => {
   if (process.env.NODE_ENV === 'development') console.error(err.message);
   return null;
 };
+
+export const negate = (value: number): number => value * -1;

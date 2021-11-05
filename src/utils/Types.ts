@@ -12,6 +12,7 @@ import MamarRepository from '@database/repositories/MamarRepository';
 import RelationshipRepository from '@database/repositories/RelationshipRepository';
 import StarRepository from '@database/repositories/StarRepository';
 import TopRepository from '@database/repositories/TopRepository';
+import ShopRepository from '@database/repositories/ShopRepository';
 
 import UserRepository from '@database/repositories/UserRepository';
 import {
@@ -48,7 +49,7 @@ export interface IBlackjackCards {
   hidden?: boolean;
 }
 
-interface IColor {
+export interface IColor {
   nome: string;
   cor: ColorResolvable;
 }
@@ -230,6 +231,7 @@ export interface IDatabaseRepositories {
   topRepository: TopRepository;
   giveRepository: GiveRepository;
   coinflipRepository: CoinflipRepository;
+  shopRepository: ShopRepository;
 }
 
 export type TShardStatus = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
