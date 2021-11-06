@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ### Changed
 
+- Opções de Comandos - Os comandos que utilizam opções de escolha foram melhorados para ficarem mais bonitinhos
 - O modo que o ship é calculado foi alterado
 - O comando de caçar calcula as caças em porcentagens agora! Use `/cacar tipo:probabilities` para mais informações
 - O preço das caças foi alterado! Demônio 600 -> 1200, Gigante 1900 -> 1500, Anjo 3200 -> 2600, Arcanjo 5900 -> 2300, Semideus 8000 -> 6000, Deus 19000 -> 25000.
