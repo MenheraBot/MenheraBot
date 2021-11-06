@@ -43,6 +43,7 @@ export default class InventoryInteractionCommand extends InteractionCommand {
             'selectedColor',
             'inUseItems',
             'inventory',
+            'itemsLimit',
             'ban',
             'id',
           ])
@@ -84,7 +85,7 @@ export default class InventoryInteractionCommand extends InteractionCommand {
                 // ` data:magic-items.${c.id}.name`,
               )}\n**${ctx.locale('common:description')}**: ${ctx.locale(
                 `data:magic-items.${c.id as 1}.description`,
-              )}`,
+              )}\n`,
             '',
           )
         : ctx.locale('commands:inventario.no-item'),
