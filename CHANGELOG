@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Added
 
 - NOVO COMANDO! `/inventario`
-- NOVO SISTEMA! **ITEMS MÁGICOS\***
+- NOVO SISTEMA! **ITEMS MÁGICOS** - Com itens mágicos, usuários podem aumentar suas chances de caça, trazendo alguns tipos de caças para sempre obterem sucesso
 - Usuários banidos não podem ser mamados
 - **Punição por inatividade:** Usuários que não usarem comandos por mais de 2 semanas vão perder itens da carteira! A punição se aplica a usuários que tem no mínimo uma dessas características: 60 demônios, 50 gigantes, 40 anjos, 30 arcanjos, 20 semideuses, 7 deuses ou 250000 estrelinhas. A punição depende de quantas semanas tu ta offline e a quantidade de itens que tu tens. O calculo é feito por a sua quantidade dividida por 8 ( ou 4 dependendo da quantidade que tens) vezes o numero de semanas que tu ficou fora. Lembrando que a cada dia acima de 2 semanas teus itens diminuem!. A Punição por Inatividade só começará a contar a partir de dezembro.
 - Caso você tenha mais de 10 cores, a escolha de cores irá mudar para uma escolha de páginas

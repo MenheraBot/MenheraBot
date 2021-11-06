@@ -108,7 +108,7 @@ export default class DeploySlashInteractionCommand extends InteractionCommand {
         });
         return p;
       }, []);
-      ctx.makeMessage({ content: 'Iniciando deploy' });
+      await ctx.makeMessage({ content: 'Iniciando deploy' });
 
       const disabledCommands =
         await ctx.client.repositories.cmdRepository.getAllCommandsInMaintenance();
@@ -147,7 +147,7 @@ export default class DeploySlashInteractionCommand extends InteractionCommand {
         return p;
       }, []);
 
-      ctx.makeMessage({ content: 'Iniciando deploy' });
+      await ctx.makeMessage({ content: 'Iniciando deploy' });
       const res = await ctx.interaction.guild?.commands.set(allCommands);
 
       res?.forEach((a) => {
@@ -174,7 +174,7 @@ export default class DeploySlashInteractionCommand extends InteractionCommand {
       return p;
     }, []);
 
-    ctx.makeMessage({ content: 'Iniciando deploy' });
+    await ctx.makeMessage({ content: 'Iniciando deploy' });
     const res = await ctx.interaction.guild?.commands.set(allCommands);
 
     res?.forEach((a) => {
