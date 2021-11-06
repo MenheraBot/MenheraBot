@@ -24,25 +24,24 @@ export default class ReloadSlashInteractionCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    if (ctx.options.getString('comando', true).toLowerCase() === 'locales') {
+    const opcao = ctx.options.getString('opcao', true).toLowerCase();
+    if (opcao === 'locales') {
       // @ts-expect-error Reload command doesnt exist in client<boolean>
       await ctx.client.shard?.broadcastEval((c) => c.reloadLocales());
       ctx.makeMessage({ content: 'Locales Recarregados' });
       return;
     }
 
-    const command = ctx.options.getString('comando', true).toLowerCase();
-
-    if (!ctx.client.slashCommands.get(command)) {
+    if (!ctx.client.slashCommands.get(opcao)) {
       ctx.makeMessage({ content: 'NAO TEM NENHUM COMANDO COM, ESE NOME' });
       return;
     }
 
     // @ts-expect-error Reload command doesnt exist in client<boolean>
     await ctx.client.shard?.broadcastEval((c, { a }) => c.reloadCommand(a), {
-      context: { a: command },
+      context: { a: opcao },
     });
 
-    await ctx.makeMessage({ content: `${command} recarregado com sucesso!` });
+    await ctx.makeMessage({ content: `${opcao} recarregado com sucesso!` });
   }
 }
