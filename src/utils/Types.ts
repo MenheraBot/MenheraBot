@@ -260,6 +260,10 @@ export enum TopRankingTypes {
   votes = 'votes',
 }
 
+export interface IReturnData<T> {
+  id: number;
+  data: T;
+}
 export type HuntingTypes = 'demons' | 'giants' | 'angels' | 'archangels' | 'demigods' | 'gods';
 
 export interface HuntProbabiltyProps {
@@ -276,19 +280,23 @@ export interface HuntProbability {
   gods: HuntProbabiltyProps[];
 }
 
-export interface IProbablyBoostItem<T extends HuntingTypes> {
+export interface IProbablyBoostItem<HuntType extends HuntingTypes> {
   type: 'PROBABILITY_BOOST';
-  huntType: T;
-  probabilities: HuntProbability[T];
+  huntType: HuntType;
+  probabilities: HuntProbability[HuntType];
   cost: number;
 }
 
-export interface IReturnData<T> {
-  id: number;
-  data: T;
+export interface IHuntCooldownBoostItem<HuntType extends HuntingTypes> {
+  type: 'COOLDOWN_REDUCTION';
+  huntType: HuntType;
+  huntCooldown: number;
+  dropChance: number;
 }
 
-export type TMagicItemsFile<T extends HuntingTypes> = IProbablyBoostItem<T>;
+export type THuntMagicItemsFile<HuntType extends HuntingTypes> =
+  | IProbablyBoostItem<HuntType>
+  | IHuntCooldownBoostItem<HuntType>;
 
 export enum huntEnum {
   DEMON = 'demons',

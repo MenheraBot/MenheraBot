@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import { HuntingTypes, TMagicItemsFile } from '@utils/Types';
+import { HuntingTypes, THuntMagicItemsFile } from '@utils/Types';
 
-const MagicItems: { [id: number]: TMagicItemsFile<HuntingTypes> } & Object = {
+const HuntMagicItems: { [id: number]: THuntMagicItemsFile<HuntingTypes> } & Object = {
   1: {
     type: 'PROBABILITY_BOOST',
     huntType: 'demons',
@@ -67,6 +67,12 @@ const MagicItems: { [id: number]: TMagicItemsFile<HuntingTypes> } & Object = {
     ],
     cost: 1_500_000,
   },
+  7: {
+    type: 'COOLDOWN_REDUCTION',
+    dropChance: 0.682,
+    huntType: 'demons',
+    huntCooldown: 2700000,
+  },
 };
 
-export default MagicItems;
+export default HuntMagicItems;
