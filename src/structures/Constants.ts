@@ -17,7 +17,7 @@ export const shopEconomy = {
     angels: 2_600,
     archangels: 3_200,
     demigods: 6_000,
-    gods: 25_000,
+    gods: 16_000,
   },
 };
 

@@ -21,7 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - Opções de Comandos - Os comandos que utilizam opções de escolha foram melhorados para ficarem mais bonitinhos
 - O modo que o ship é calculado foi alterado
 - O comando de caçar calcula as caças em porcentagens agora! Use `/cacar tipo:probabilities` para mais informações
-- O preço das caças foi alterado! Demônio 600 -> 1200, Gigante 1900 -> 1500, Anjo 3200 -> 2600, Arcanjo 5900 -> 2300, Semideus 8000 -> 6000, Deus 19000 -> 25000.
+- O preço das caças foi alterado! Demônio 600 -> 1200, Gigante 1900 -> 1500, Anjo 3200 -> 2600, Arcanjo 5900 -> 2300, Semideus 8000 -> 6000, Deus 19000 -> 16000.
 - O preço do roll foi alterado! 7000 -> 15000
 - O preço das cores foi ajustado! Roxo 50000 -> 30000, Vermelho 100000 -> 40000, Ciano 150000 -> 50000, Verde 300000 -> 60000, Rosa 500000 -> 70000, Amarelo 40000 -> 80000, Sua Escolha 700000 -> 100000
 - Mudanças internas: Reduzido a quantidade de queries para o banco de dados -> Isso deve reduzir drasticamente o tempo de resposta de comandos. Reduzido a quantidade de clientes instnaciados -> Isso deve reduzir a memoria usada!
