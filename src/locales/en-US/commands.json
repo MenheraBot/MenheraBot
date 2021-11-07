@@ -342,7 +342,7 @@
   },
   "cacar": {
     "probabilities": "Your Hunt probabilities",
-    "drop": "LESSS GOOO. You dropped a hunting item! Do you realize how rare this is? For you to be aware, the item you gained, the **{{name}}** has a drop percentage of `{{chance}}%`, Congratulations!",
+    "drop": "LESSS GOOO {{author}}. You dropped a hunting item! Do you realize how rare this is? For you to be aware, the item you gained, the **{{name}}** has a drop percentage of `{{chance}}%`, Congratulations!",
     "chances": "**{{count}}** ({{percentage}}%)**Amount**: {{count}}\n**Probability**: {{percentage}}",
     "hunt_description": "You went hunting **{{hunt}}** **{{count}}** time with Super Xandão, and you returned home with more **{{value}}** to count. You are in **#{{rank}}** on the {{hunt}} top",
     "hunt_description_plural": "You went hunting **{{hunt}}** **{{count}}** times with Super Xandão, and you returned home with more **{{value}}** to count. You are in **#{{rank}}** on the {{hunt}} top",

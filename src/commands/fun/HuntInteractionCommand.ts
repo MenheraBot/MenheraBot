@@ -278,13 +278,14 @@ export default class HuntInteractionCommand extends InteractionCommand {
     const droppedItem = dropItem(ctx.data.user.inventory, ctx.data.user.inUseItems, selected);
     if (!droppedItem) return;
 
-    await ctx.client.repositories.userRepository.update(ctx.author.id, {
-      $push: { inventory: { id: dropItem } },
+    ctx.client.repositories.userRepository.update(ctx.author.id, {
+      $push: { inventory: { id: droppedItem } },
     });
 
     ctx.send({
       content: ctx.prettyResponse('wink', 'commands:cacar.drop', {
         name: ctx.locale(`data:magic-items.${droppedItem as 1}.name`),
+        author: ctx.author.toString(),
         chance:
           getMagicItemById<IHuntCooldownBoostItem<typeof selected>>(droppedItem).data.dropChance,
       }),

@@ -23,6 +23,10 @@
     "6": {
       "name": "Deicídio",
       "description": "O conhecimento para matar um Deus só pode ser alcançado a partir de auxílios externos"
+    },
+    "7": {
+      "name": "Acelerador Demoníaco",
+      "description": "Uma máquina que acelera o tempo entre caçar de demônios"
     }
   }
 }

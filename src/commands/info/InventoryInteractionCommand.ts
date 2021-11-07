@@ -8,7 +8,6 @@ import {
   MessageSelectMenu,
   MessageSelectOptionData,
 } from 'discord.js-light';
-import { IMagicItem } from '@utils/Types';
 import Util, {
   actionRow,
   disableComponents,
@@ -32,7 +31,7 @@ export default class InventoryInteractionCommand extends InteractionCommand {
       ],
       cooldown: 7,
       clientPermissions: ['EMBED_LINKS'],
-      authorDataFields: ['selectedColor', 'inUseItems', 'inventory', 'id'],
+      authorDataFields: ['selectedColor', 'inUseItems', 'inventory', 'id', 'itemsLimit'],
     });
   }
 
@@ -82,10 +81,9 @@ export default class InventoryInteractionCommand extends InteractionCommand {
             (p, c) =>
               `${p}**${ctx.locale('common:name')}:** ${ctx.locale(
                 `data:magic-items.${c.id as 1}.name`,
-                // ` data:magic-items.${c.id}.name`,
               )}\n**${ctx.locale('common:description')}**: ${ctx.locale(
                 `data:magic-items.${c.id as 1}.description`,
-              )}\n`,
+              )}\n\n`,
             '',
           )
         : ctx.locale('commands:inventario.no-item'),
@@ -101,7 +99,7 @@ export default class InventoryInteractionCommand extends InteractionCommand {
                 `data:magic-items.${c.id as 1}.name`,
               )}\n**${ctx.locale('common:description')}**: ${ctx.locale(
                 `data:magic-items.${c.id as 1}.description`,
-              )}\n`,
+              )}\n\n`,
             '',
           )
         : ctx.locale('commands:inventario.no-item'),
@@ -215,10 +213,6 @@ export default class InventoryInteractionCommand extends InteractionCommand {
 
     const [itemId] = resolveSeparatedStrings(selectedItem.values[0]);
 
-    const findedItem = user.inventory.find((a) => a.id === Number(itemId)) as IMagicItem & {
-      amount: number;
-    };
-
     if (user.inUseItems.length >= user.itemsLimit) {
       const replaceItem = new MessageSelectMenu()
         .setCustomId(`${ctx.interaction.id} | TOGGLE`)
@@ -264,15 +258,12 @@ export default class InventoryInteractionCommand extends InteractionCommand {
       });
     }
 
-    findedItem.amount -= 1;
-
     user.inUseItems.push({ id: Number(itemId) });
 
-    if (findedItem.amount === 0)
-      user.inventory.splice(
-        user.inventory.findIndex((a) => a.id === Number(itemId)),
-        1,
-      );
+    user.inventory.splice(
+      user.inventory.findIndex((a) => a.id === Number(itemId)),
+      1,
+    );
 
     ctx.makeMessage({
       components: [],

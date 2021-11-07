@@ -67,6 +67,8 @@ export const dropItem = (
     (a) => a[1].type === 'COOLDOWN_REDUCTION' && a[1].huntType === huntType,
   ) as IReturnData<IHuntCooldownBoostItem<typeof huntType>>;
 
+  if (!itemToDrop) return null;
+
   if (
     userInventory.some((a) => a.id === itemToDrop.id) ||
     inUseItems.some((a) => a.id === itemToDrop.id)

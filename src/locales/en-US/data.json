@@ -23,6 +23,10 @@
     "6": {
       "name": "Deicide",
       "description": "The knowledge to kill a god can only be gained from external aids"
+    },
+    "7": {
+      "name": "Demonic Accelerator",
+      "description": "A machine that speeds up the time between hunting demons"
     }
   }
 }
