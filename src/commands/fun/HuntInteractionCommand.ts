@@ -6,7 +6,7 @@ import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageEmbed } from 'discord.js-light';
 import HttpRequests from '@utils/HTTPrequests';
 import { huntEnum, HuntingTypes, HuntProbabiltyProps } from '@utils/Types';
-import { calculateProbability, getUserHuntProbability } from '@utils/ProbabilityUtils';
+import { calculateProbability, getUserHuntProbability } from '@utils/HuntUtils';
 import Util from '@utils/Util';
 
 type ChoiceTypes = HuntingTypes | 'probabilities';
@@ -187,7 +187,9 @@ export default class HuntInteractionCommand extends InteractionCommand {
     }
 
     const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
+
     const cooldown = defaultHuntCooldown + Date.now();
+
     const embed = new MessageEmbed()
       .setColor(COLORS.HuntDefault)
       .setThumbnail(avatar)

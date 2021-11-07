@@ -1,6 +1,6 @@
 /* eslint-disable no-restricted-syntax */
 import { defaultHuntingProbabilities } from '@structures/Constants';
-import { HuntingTypes, HuntProbabiltyProps, IMagicItem } from './Types';
+import { HuntingTypes, HuntProbabiltyProps, IMagicItem, IProbablyBoostItem } from './Types';
 import { getMagicItemById } from './Util';
 
 export const calculateProbability = (probabilities: HuntProbabiltyProps[]): number => {
@@ -31,7 +31,7 @@ export const getUserHuntProbability = (
     .map((a) => getMagicItemById(a.id))
     .find((a) => a.data.type === 'PROBABILITY_BOOST' && a.data.huntType === huntType);
 
-  if (findedItem) return findedItem.data.probabilities;
+  if (findedItem) return (findedItem.data as IProbablyBoostItem<typeof huntType>).probabilities;
 
   return defaultHuntingProbabilities[huntType];
 };
