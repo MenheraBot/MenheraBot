@@ -9,7 +9,7 @@ import {
   MessageActionRowComponentResolvable,
   TextBasedChannels,
 } from 'discord.js-light';
-import { HuntingTypes, THuntMagicItemsFile } from './Types';
+import { HuntingTypes, IReturnData, THuntMagicItemsFile } from './Types';
 
 const MENTION_REGEX = /^(?:<@!?)?(\d{16,18})(?:>)?$/;
 export default class Util {
@@ -136,11 +136,18 @@ export const disableComponents = <T extends MessageButton | MessageSelectMenu>(
 export const actionRow = (components: MessageActionRowComponentResolvable[]): MessageActionRow =>
   new MessageActionRow({ components });
 
-export const getMagicItemById = (
+export const getMagicItemById = <T extends THuntMagicItemsFile<HuntingTypes> | null>(
   id: number,
-): { id: number; data: THuntMagicItemsFile<HuntingTypes> } =>
+): T extends null ? IReturnData<THuntMagicItemsFile<HuntingTypes>> : IReturnData<T> =>
   Object.entries(MagicItems)
     .filter((a) => Number(a[0]) === id)
+    .map((a) => ({ id: Number(a[0]), data: a[1] }))[0];
+
+export const getMagicItemByCustomFilter = <T extends HuntingTypes>(
+  filter: (item: [string, THuntMagicItemsFile<HuntingTypes>]) => boolean,
+): IReturnData<THuntMagicItemsFile<T>> =>
+  Object.entries(MagicItems)
+    .filter(filter)
     .map((a) => ({ id: Number(a[0]), data: a[1] }))[0];
 
 export const getMillisecondsToTheEndOfDay = (): number => {

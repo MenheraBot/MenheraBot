@@ -5,13 +5,14 @@ import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageEmbed } from 'discord.js-light';
 import HttpRequests from '@utils/HTTPrequests';
-import { huntEnum, HuntingTypes, HuntProbabiltyProps } from '@utils/Types';
+import { huntEnum, HuntingTypes, HuntProbabiltyProps, IHuntCooldownBoostItem } from '@utils/Types';
 import {
   calculateProbability,
+  dropItem,
   getUserHuntCooldown,
   getUserHuntProbability,
 } from '@utils/HuntUtils';
-import Util from '@utils/Util';
+import Util, { getMagicItemById } from '@utils/Util';
 
 type ChoiceTypes = HuntingTypes | 'probabilities';
 const choices: { name: string; value: ChoiceTypes }[] = [
@@ -67,7 +68,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
       category: 'fun',
       cooldown: 7,
       clientPermissions: ['EMBED_LINKS'],
-      authorDataFields: ['rolls', 'huntCooldown', 'inUseItems', 'selectedColor'],
+      authorDataFields: ['rolls', 'huntCooldown', 'inUseItems', 'selectedColor', 'inventory'],
     });
   }
 
@@ -273,5 +274,20 @@ export default class HuntInteractionCommand extends InteractionCommand {
     HttpRequests.postHuntCommand(ctx.author.id, APIHuntTypes[selected], result);
 
     await ctx.makeMessage({ embeds: [embed] });
+
+    const droppedItem = dropItem(ctx.data.user.inventory, ctx.data.user.inUseItems, selected);
+    if (!droppedItem) return;
+
+    await ctx.client.repositories.userRepository.update(ctx.author.id, {
+      $push: { inventory: { id: dropItem } },
+    });
+
+    ctx.send({
+      content: ctx.prettyResponse('wink', 'commands:cacar.drop', {
+        name: ctx.locale(`data:magic-items.${droppedItem as 1}.name`),
+        chance:
+          getMagicItemById<IHuntCooldownBoostItem<typeof selected>>(droppedItem).data.dropChance,
+      }),
+    });
   }
 }

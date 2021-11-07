@@ -287,11 +287,14 @@ export interface IProbablyBoostItem<HuntType extends HuntingTypes> {
   cost: number;
 }
 
+export type TMagicItemRarity = 'common' | 'rare' | 'epic' | 'legendary' | 'mythical' | 'divine';
+
 export interface IHuntCooldownBoostItem<HuntType extends HuntingTypes> {
   type: 'COOLDOWN_REDUCTION';
   huntType: HuntType;
   huntCooldown: number;
   dropChance: number;
+  rarity: TMagicItemRarity;
 }
 
 export type THuntMagicItemsFile<HuntType extends HuntingTypes> =

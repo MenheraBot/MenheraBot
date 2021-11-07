@@ -6,8 +6,9 @@ import {
   IHuntCooldownBoostItem,
   IMagicItem,
   IProbablyBoostItem,
+  IReturnData,
 } from './Types';
-import { getMagicItemById } from './Util';
+import { getMagicItemByCustomFilter, getMagicItemById } from './Util';
 
 export const calculateProbability = (probabilities: HuntProbabiltyProps[]): number => {
   const chance = Math.floor(Math.random() * 100);
@@ -53,4 +54,25 @@ export const getUserHuntCooldown = (
   if (findedItem) return (findedItem.data as IHuntCooldownBoostItem<typeof huntType>).huntCooldown;
 
   return defaultHuntCooldown;
+};
+
+export const dropItem = (
+  userInventory: IMagicItem[],
+  inUseItems: IMagicItem[],
+  huntType: HuntingTypes,
+): number | null => {
+  const didDrop = Math.random() * 100;
+
+  const itemToDrop = getMagicItemByCustomFilter(
+    (a) => a[1].type === 'COOLDOWN_REDUCTION' && a[1].huntType === huntType,
+  ) as IReturnData<IHuntCooldownBoostItem<typeof huntType>>;
+
+  if (
+    userInventory.some((a) => a.id === itemToDrop.id) ||
+    inUseItems.some((a) => a.id === itemToDrop.id)
+  )
+    return null;
+
+  if (didDrop <= itemToDrop.data.dropChance) return itemToDrop.id;
+  return null;
 };

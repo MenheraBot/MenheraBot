@@ -72,6 +72,7 @@ const HuntMagicItems: { [id: number]: THuntMagicItemsFile<HuntingTypes> } & Obje
     dropChance: 0.682,
     huntType: 'demons',
     huntCooldown: 2700000,
+    rarity: 'epic',
   },
 };
 
