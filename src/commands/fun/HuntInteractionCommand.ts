@@ -1,12 +1,16 @@
 import 'moment-duration-format';
 import moment from 'moment';
-import { COLORS, defaultHuntCooldown } from '@structures/Constants';
+import { COLORS } from '@structures/Constants';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageEmbed } from 'discord.js-light';
 import HttpRequests from '@utils/HTTPrequests';
 import { huntEnum, HuntingTypes, HuntProbabiltyProps } from '@utils/Types';
-import { calculateProbability, getUserHuntProbability } from '@utils/HuntUtils';
+import {
+  calculateProbability,
+  getUserHuntCooldown,
+  getUserHuntProbability,
+} from '@utils/HuntUtils';
 import Util from '@utils/Util';
 
 type ChoiceTypes = HuntingTypes | 'probabilities';
@@ -188,7 +192,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
 
     const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
 
-    const cooldown = defaultHuntCooldown + Date.now();
+    const cooldown = getUserHuntCooldown(ctx.data.user.inUseItems, selected) + Date.now();
 
     const embed = new MessageEmbed()
       .setColor(COLORS.HuntDefault)

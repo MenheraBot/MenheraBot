@@ -1,6 +1,12 @@
 /* eslint-disable no-restricted-syntax */
-import { defaultHuntingProbabilities } from '@structures/Constants';
-import { HuntingTypes, HuntProbabiltyProps, IMagicItem, IProbablyBoostItem } from './Types';
+import { defaultHuntCooldown, defaultHuntingProbabilities } from '@structures/Constants';
+import {
+  HuntingTypes,
+  HuntProbabiltyProps,
+  IHuntCooldownBoostItem,
+  IMagicItem,
+  IProbablyBoostItem,
+} from './Types';
 import { getMagicItemById } from './Util';
 
 export const calculateProbability = (probabilities: HuntProbabiltyProps[]): number => {
@@ -34,4 +40,17 @@ export const getUserHuntProbability = (
   if (findedItem) return (findedItem.data as IProbablyBoostItem<typeof huntType>).probabilities;
 
   return defaultHuntingProbabilities[huntType];
+};
+
+export const getUserHuntCooldown = (
+  userInventory: IMagicItem[],
+  huntType: HuntingTypes,
+): number => {
+  const findedItem = userInventory
+    .map((a) => getMagicItemById(a.id))
+    .find((a) => a.data.type === 'COOLDOWN_REDUCTION' && a.data.huntType === huntType);
+
+  if (findedItem) return (findedItem.data as IHuntCooldownBoostItem<typeof huntType>).huntCooldown;
+
+  return defaultHuntCooldown;
 };
