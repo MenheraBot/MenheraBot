@@ -3,7 +3,7 @@ import InteractionCommandContext from '@structures/command/InteractionContext';
 
 import { COLORS, emojis, shopEconomy } from '@structures/Constants';
 import MagicItems from '@structures/HuntMagicItems';
-import { HuntingTypes } from '@utils/Types';
+import { HuntingTypes, IProbablyBoostItem } from '@utils/Types';
 import Util, { actionRow } from '@utils/Util';
 import {
   MessageEmbed,
@@ -225,7 +225,9 @@ export default class ShopInteractionCommand extends InteractionCommand {
         selectMenu.addOptions({
           label: ctx.locale(`data:magic-items.${i as 1}.name`),
           value: `${i}`,
-          description: `${MagicItems[i].cost} ${emojis.estrelinhas}`,
+          description: `${(MagicItems[i] as IProbablyBoostItem<HuntingTypes>).cost} ${
+            emojis.estrelinhas
+          }`,
         });
       }
     }
@@ -255,7 +257,10 @@ export default class ShopInteractionCommand extends InteractionCommand {
 
     const selectedItem = Number(choice.values[0]);
 
-    if (MagicItems[selectedItem].cost > ctx.data.user.estrelinhas) {
+    if (
+      (MagicItems[selectedItem] as IProbablyBoostItem<HuntingTypes>).cost >
+      ctx.data.user.estrelinhas
+    ) {
       ctx.makeMessage({
         embeds: [],
         components: [],
@@ -267,7 +272,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
     ctx.client.repositories.shopRepository.buyItem(
       ctx.author.id,
       selectedItem,
-      MagicItems[selectedItem].cost,
+      (MagicItems[selectedItem] as IProbablyBoostItem<HuntingTypes>).cost,
     );
 
     ctx.makeMessage({
@@ -377,7 +382,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
           ctx.locale(`data:magic-items.${i as 1}.name`),
           ctx.locale('commands:loja.dataItems.description', {
             description: ctx.locale(`data:magic-items.${i as 1}.description`),
-            cost: MagicItems[i].cost,
+            cost: (MagicItems[i] as IProbablyBoostItem<HuntingTypes>).cost,
           }),
           true,
         );
