@@ -72,37 +72,24 @@ export interface IMagicItem {
 
 export interface IUserSchema {
   readonly id: string;
-  // mamadas: number; // Remove
   mamado: number;
   mamou: number;
-  // casado: string; // remove
   married: string | null;
-  // nota: string; // remove
   info: string;
-  // data?: string | null; // remove
   marriedDate: string | null;
   ban: boolean;
   banReason: string | null;
-  // cor: ColorResolvable; // remove
   selectedColor: ColorResolvable;
   colors: Array<IColor>;
-  // cores: Array<IColor>; // remove
-  // caçados: number; // remove
   demons: number;
   giants: number;
-  // anjos: number; // remove
   angels: number;
-  // arcanjos: number; // remove
   archangels: number;
-  // semideuses: number; // remove
   demigods: number;
-  // deuses: number; // remove
   gods: number;
-  // caçarTime: string; // remove
   huntCooldown: number;
   rolls: number;
   estrelinhas: number;
-  // votos: number; // remove
   votes: number;
   badges: Array<IBadge>;
   voteCooldown: number;
