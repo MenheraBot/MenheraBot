@@ -4,7 +4,8 @@ import { Context } from 'koa';
 import Router from 'koa-router';
 import MenheraClient from 'MenheraClient';
 import { Client } from 'discord.js-light';
-import { commandsInGuild } from '@structures/MenheraConstants';
+import { commandsInGuild } from '@structures/Constants';
+import { debugError } from '@utils/Util';
 import authenticateDiscordRequests from '../middlewares/authenticateDiscordRequests';
 
 const handleRequest = async (ctx: Context, client: MenheraClient) => {
@@ -32,7 +33,7 @@ const handleRequest = async (ctx: Context, client: MenheraClient) => {
     ?.broadcastEval(
       (c: Client, { data }: { data: unknown }) => {
         if (!c.isReady()) return;
-        // @ts-ignore
+        // @ts-expect-error Client<boolean>.actions is private
         c.actions.InteractionCreate.handle(data);
       },
       {
@@ -40,7 +41,7 @@ const handleRequest = async (ctx: Context, client: MenheraClient) => {
         context: { data: ctx.request.body },
       },
     )
-    .catch(() => null);
+    .catch(debugError);
   ctx.respond = false;
 };
 

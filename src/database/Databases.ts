@@ -15,6 +15,8 @@ import RelationshipRepository from './repositories/RelationshipRepository';
 import BlacklistRepository from './repositories/BlacklistRepository';
 import TopRepository from './repositories/TopRepository';
 import GiveRepository from './repositories/GiveRepository';
+import CoinflipRepository from './repositories/CoinflipRepository';
+import ShopRepository from './repositories/ShopRepository';
 
 export default class Databases {
   public Cmds: typeof Cmds;
@@ -41,6 +43,8 @@ export default class Databases {
 
   private readonly cacheRepository: CacheRepository;
 
+  private readonly coinflipRepository: CoinflipRepository;
+
   private readonly huntRepository: HuntRepository;
 
   private readonly relationshipRepository: RelationshipRepository;
@@ -50,6 +54,8 @@ export default class Databases {
   private readonly topRepository: TopRepository;
 
   private readonly giveRepository: GiveRepository;
+
+  private readonly shopRepository: ShopRepository;
 
   constructor(public uri: string, withRedisCache: boolean) {
     this.Cmds = Cmds;
@@ -68,6 +74,7 @@ export default class Databases {
       this.guildRepository,
       this.cmdRepository,
     );
+    this.coinflipRepository = new CoinflipRepository(this.starRepository);
     this.badgeRepository = new BadgeRepository(this.userRepository);
     this.maintenanceRepository = new MaintenanceRepository(this.cmdRepository);
     this.huntRepository = new HuntRepository(this.Users);
@@ -75,6 +82,7 @@ export default class Databases {
     this.blacklistRepository = new BlacklistRepository(this.userRepository, this.redisClient);
     this.topRepository = new TopRepository(this.Users);
     this.giveRepository = new GiveRepository(this.Users);
+    this.shopRepository = new ShopRepository(this.Users);
   }
 
   get repositories(): IDatabaseRepositories {
@@ -92,14 +100,21 @@ export default class Databases {
       blacklistRepository: this.blacklistRepository,
       topRepository: this.topRepository,
       giveRepository: this.giveRepository,
+      coinflipRepository: this.coinflipRepository,
+      shopRepository: this.shopRepository,
     };
   }
 
   createRedisConnection(): void {
     try {
       this.redisClient = new Redis({ db: process.env.NODE_ENV === 'development' ? 1 : 0 });
+
       this.redisClient.once('connect', () => {
         console.log('[REDIS] Connected to redis database');
+      });
+
+      this.redisClient.on('end', () => {
+        this.redisClient = null;
       });
     } catch (err) {
       console.log(`[REDIS] Error connecting to redis ${err}`);

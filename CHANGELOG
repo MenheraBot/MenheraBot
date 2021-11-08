@@ -5,6 +5,40 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [3.4.0] 2021-11-08
+
+### Added
+
+- NOVO COMANDO! `/inventario`
+- NOVO SISTEMA! **ITEMS MÁGICOS** - Com itens mágicos, usuários podem aumentar suas chances de caça, trazendo alguns tipos de caças para sempre obterem sucesso
+- Tempo de Cooldown de caças: O tempo base da caça é de uma hora, mas esse tempo pode ser reduzido a partir de itens mágicos que reduzem o cooldown de caça. Esses itens possuem uma porcentagem de drop ao caçar
+- Usuários banidos não podem ser mamados
+- **Punição por inatividade:** Usuários que não usarem comandos por mais de 2 semanas vão perder itens da carteira! A punição se aplica a usuários que tem no mínimo uma dessas características: 60 demônios, 50 gigantes, 40 anjos, 30 arcanjos, 20 semideuses, 7 deuses ou 250000 estrelinhas. A punição depende de quantas semanas tu ta offline e a quantidade de itens que tu tens. O calculo é feito por a sua quantidade dividida por 8 ( ou 4 dependendo da quantidade que tens) vezes o numero de semanas que tu ficou fora. Lembrando que a cada dia acima de 2 semanas teus itens diminuem!. A Punição por Inatividade só começará a contar a partir de dezembro.
+- Caso você tenha mais de 10 cores, a escolha de cores irá mudar para uma escolha de páginas
+
+### Changed
+
+- Opções de Comandos - Os comandos que utilizam opções de escolha foram melhorados para ficarem mais bonitinhos
+- O modo que o ship é calculado foi alterado
+- O comando de caçar calcula as caças em porcentagens agora! Use `/cacar tipo:probabilities` para mais informações
+- O preço das caças foi alterado! Demônio 600 -> 1200, Gigante 1900 -> 1500, Anjo 3200 -> 2600, Arcanjo 5900 -> 2300, Semideus 8000 -> 6000, Deus 19000 -> 16000.
+- O preço do roll foi alterado! 7000 -> 15000
+- O preço das cores foi ajustado! Roxo 50000 -> 30000, Vermelho 100000 -> 40000, Ciano 150000 -> 50000, Verde 300000 -> 60000, Rosa 500000 -> 70000, Amarelo 40000 -> 80000, Sua Escolha 700000 -> 100000
+- Mudanças internas: Reduzido a quantidade de queries para o banco de dados -> Isso deve reduzir drasticamente o tempo de resposta de comandos. Reduzido a quantidade de clientes instnaciados -> Isso deve reduzir a memoria usada!
+
+### Deprecated
+
+- Fields do banco de dados: `mamadas`, `casado`,`nota`,`data`, `cor`, `cores`, `caçados`, `anjos`, `arcanjos`, `semideuses`, `deuses`, `caçarTime`, `votos`. Estes foram mudados para nomes em inglẽs
+
+### Fixed
+
+- O blackjack responde caso tu não clique em nenhum botão
+- Os A'ses do Blackjack funcionam corretamente, permitindo acontecer Blackjacks, e a contagem correta das cartas quando há mais de um As na mão
+
+### Removed
+
+- O campo shipValue foi removido do banco de dados!
+
 ## [3.3.14] 2021-11-01
 
 ### Removed

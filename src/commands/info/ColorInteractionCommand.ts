@@ -2,21 +2,24 @@ import {
   ColorResolvable,
   MessageComponentInteraction,
   MessageEmbed,
+  MessageButton,
+  SelectMenuInteraction,
   MessageSelectMenu,
 } from 'discord.js-light';
-import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { COLORS, emojis } from '@structures/MenheraConstants';
+import { COLORS, emojis } from '@structures/Constants';
+import { actionRow, resolveCustomId } from '@utils/Util';
 
 export default class ColorInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'cor',
       description: '「🌈」・Muda a cor básica da sua conta',
       category: 'info',
       cooldown: 5,
       clientPermissions: ['EMBED_LINKS'],
+      authorDataFields: ['selectedColor', 'colors'],
     });
   }
 
@@ -35,86 +38,167 @@ export default class ColorInteractionCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    const authorData = ctx.data.user;
-
-    const haspadrao = authorData.cores.some((pc) => pc.cor === '#a788ff');
+    const haspadrao = ctx.data.user.colors.some((pc) => pc.cor === COLORS.Default);
 
     if (!haspadrao) {
-      await this.client.repositories.userRepository.update(ctx.author.id, {
-        $push: { cores: { nome: '0 - Padrão', cor: '#a788ff', price: 0 } },
+      await ctx.client.repositories.userRepository.update(ctx.author.id, {
+        $push: { colors: { nome: '0 - Padrão', cor: '#a788ff' } },
       });
     }
-    const embed = new MessageEmbed()
-      .setTitle(`🏳️‍🌈 | ${ctx.translate('embed_title')}`)
-      .setColor(COLORS.Purple)
-      .setDescription(ctx.translate('embed_description'));
 
-    const selector = new MessageSelectMenu()
-      .setCustomId(ctx.interaction.id)
-      .setMinValues(1)
-      .setMaxValues(1)
-      .setPlaceholder(`${emojis.rainbow} ${ctx.translate('choose')}`);
-
-    if (authorData.cores.length < 2) {
-      ctx.replyT('error', 'min-color', {}, true);
+    if (ctx.data.user.colors.length < 2) {
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:cor.min-color'),
+        ephemeral: true,
+      });
       return;
     }
 
-    for (let i = 0; i < authorData.cores.length; i++) {
-      if (authorData.cores[i].cor !== authorData.cor) {
-        embed.addField(`${authorData.cores[i].nome}`, `${authorData.cores[i].cor}`);
-        selector.addOptions({
-          label: authorData.cores[i].nome.replaceAll('*', ''),
-          value: `${authorData.cores[i].cor}`,
-          emoji: ColorInteractionCommand.getEmojiFromColorName(
-            authorData.cores[i].nome.replace(/\D/g, ''),
-          ),
-        });
-      }
+    const embed = new MessageEmbed()
+      .setTitle(ctx.prettyResponse('gay_flag', 'commands:cor.embed_title'))
+      .setColor(COLORS.Purple)
+      .setDescription(ctx.locale('commands:cor.embed_description'));
+
+    const selector = new MessageSelectMenu()
+      .setCustomId(`${ctx.interaction.id} | SELECT`)
+      .setMinValues(1)
+      .setMaxValues(1)
+      .setPlaceholder(`${emojis.rainbow} ${ctx.locale('commands:cor.choose')}`);
+
+    const pages = Math.floor(ctx.data.user.colors.length / 10) + 1;
+
+    for (let i = 0; i < ctx.data.user.colors.length && i < 10; i++) {
+      embed.addField(`${ctx.data.user.colors[i].nome}`, `${ctx.data.user.colors[i].cor}`, true);
+      selector.addOptions({
+        label: ctx.data.user.colors[i].nome.replaceAll('*', ''),
+        value: `${ctx.data.user.colors[i].cor}`,
+        description: `${ctx.data.user.colors[i].cor}`,
+        emoji: ColorInteractionCommand.getEmojiFromColorName(
+          ctx.data.user.colors[i].nome.replace(/\D/g, ''),
+        ),
+      });
     }
 
-    await ctx.reply({
+    const componentsToSend = [actionRow([selector])];
+
+    if (pages > 1) {
+      const nextPageButton = new MessageButton()
+        .setCustomId(`${ctx.interaction.id} | NEXT`)
+        .setLabel(ctx.locale('common:next'))
+        .setStyle('PRIMARY');
+
+      const backPageButton = new MessageButton()
+        .setCustomId(`${ctx.interaction.id} | BACK`)
+        .setLabel(ctx.locale('common:back'))
+        .setStyle('PRIMARY')
+        .setDisabled(true);
+
+      componentsToSend.push(actionRow([backPageButton, nextPageButton]));
+
+      embed.setFooter(ctx.locale('commands:cor.footer', { page: 1, maxPages: pages }));
+    }
+
+    // É o cara do arroz
+
+    await ctx.makeMessage({
       embeds: [embed],
-      components: [{ type: 'ACTION_ROW', components: [selector] }],
+      components: componentsToSend,
     });
 
     const filter = (int: MessageComponentInteraction) =>
-      int.user.id === ctx.author.id && int.customId === ctx.interaction.id;
+      int.customId.startsWith(ctx.interaction.id) && int.user.id === ctx.author.id;
 
-    const collect = await ctx.channel
-      .awaitMessageComponent({ componentType: 'SELECT_MENU', time: 15000, filter })
-      .catch(() => null);
-
-    if (!collect || !collect.isSelectMenu()) {
-      ctx.editReply({
-        embeds: [embed],
-        components: [
-          {
-            type: 'ACTION_ROW',
-            components: [
-              selector.setDisabled(true).setPlaceholder(`⌛ | ${ctx.locale('common:timesup')}`),
-            ],
-          },
-        ],
-      });
-      return;
-    }
-
-    const selected = collect.values[0] as ColorResolvable;
-
-    const dataChoose = {
-      title: ctx.translate('dataChoose.title'),
-      description: ctx.translate('dataChoose.title'),
-      color: selected,
-      thumbnail: {
-        url: 'https://i.imgur.com/t94XkgG.png',
-      },
-    };
-
-    await this.client.repositories.userRepository.update(ctx.author.id, {
-      cor: selected,
+    const collector = ctx.channel.createMessageComponentCollector({
+      time: 30000,
+      maxComponents: 8,
+      filter,
     });
 
-    ctx.editReply({ embeds: [dataChoose], components: [] });
+    collector.on('end', (_, reason) => {
+      if (reason !== 'selected') ctx.deleteReply();
+    });
+
+    let selectedPage = 0;
+
+    collector.on('collect', async (int) => {
+      int.deferUpdate();
+      const type = resolveCustomId(int.customId);
+
+      const changePage = (toSum: number) => {
+        selectedPage += toSum;
+        collector.resetTimer();
+
+        const currentMenu = componentsToSend[0].components[0] as MessageSelectMenu;
+
+        currentMenu.spliceOptions(0, currentMenu.options.length);
+        embed.spliceFields(0, embed.fields.length);
+
+        for (let i = 10 * selectedPage; currentMenu.options.length < 10; i++) {
+          if (i > ctx.data.user.colors.length || typeof ctx.data.user.colors[i] === 'undefined')
+            break;
+          embed.addField(`${ctx.data.user.colors[i].nome}`, `${ctx.data.user.colors[i].cor}`, true);
+          currentMenu.addOptions({
+            label: ctx.data.user.colors[i].nome.replaceAll('*', ''),
+            value: `${ctx.data.user.colors[i].cor}`,
+            description: `${ctx.data.user.colors[i].cor}`,
+            emoji: ColorInteractionCommand.getEmojiFromColorName(
+              ctx.data.user.colors[i].nome.replace(/\D/g, ''),
+            ),
+          });
+        }
+
+        embed.setFooter(
+          ctx.locale('commands:cor.footer', { page: selectedPage + 1, maxPages: pages }),
+        );
+
+        if (selectedPage > 0) componentsToSend[1].components[0].setDisabled(false);
+        else componentsToSend[1].components[0].setDisabled(true);
+
+        if (selectedPage + 1 === pages) componentsToSend[1].components[1].setDisabled(true);
+        else componentsToSend[1].components[1].setDisabled(false);
+      };
+
+      switch (type) {
+        case 'SELECT': {
+          const selected = (int as SelectMenuInteraction).values[0] as ColorResolvable;
+
+          const dataChoose = {
+            title: ctx.locale('commands:cor.dataChoose.title'),
+            description: ctx.locale('commands:cor.dataChoose.title'),
+            color: selected,
+            thumbnail: {
+              url: 'https://i.imgur.com/t94XkgG.png',
+            },
+          };
+
+          await ctx.client.repositories.userRepository.update(ctx.author.id, {
+            selectedColor: selected,
+          });
+
+          ctx.makeMessage({ embeds: [dataChoose], components: [] });
+          collector.removeAllListeners();
+          collector.stop('selected');
+          break;
+        }
+        case 'NEXT': {
+          changePage(1);
+
+          await ctx.makeMessage({
+            embeds: [embed],
+            components: componentsToSend,
+          });
+          break;
+        }
+        case 'BACK': {
+          changePage(-1);
+
+          await ctx.makeMessage({
+            embeds: [embed],
+            components: componentsToSend,
+          });
+          break;
+        }
+      }
+    });
   }
 }

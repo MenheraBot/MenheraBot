@@ -1,16 +1,15 @@
 /* eslint-disable no-await-in-loop */
-import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageEmbed, ColorResolvable } from 'discord.js-light';
 import HttpRequests from '@utils/HTTPrequests';
 import Util from '@utils/Util';
-import { COLORS, emojis } from '@structures/MenheraConstants';
+import { COLORS, emojis } from '@structures/Constants';
 import { TopRankingTypes as TOP } from '@utils/Types';
 
 export default class TopInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'top',
       description: '「💹」・Veja o top de usuários da Menhera',
       category: 'util',
@@ -104,22 +103,24 @@ export default class TopInteractionCommand extends InteractionCommand {
   static async topCommands(ctx: InteractionCommandContext): Promise<void> {
     const res = await HttpRequests.getTopCommands();
     if (!res) {
-      ctx.editReply({ content: `${emojis.error} | ${ctx.locale('commands:http-error')}` });
+      ctx.makeMessage({ content: ctx.prettyResponseLocale('error', 'commands:http-error') });
       return;
     }
     const embed = new MessageEmbed()
 
-      .setTitle(`:robot: |  ${ctx.translate('commands')}`)
+      .setTitle(`:robot: |  ${ctx.locale('commands:top.commands')}`)
       .setColor('#f47fff');
 
     for (let i = 0; i < res.length; i++) {
       embed.addField(
-        `**${i + 1} -** ${Util.captalize(res[i].name)} `,
-        `${ctx.translate('used')} **${res[i].usages}** ${ctx.translate('times')}`,
+        `**${i + 1} -** ${Util.capitalize(res[i].name)} `,
+        `${ctx.locale('commands:top.used')} **${res[i].usages}** ${ctx.locale(
+          'commands:top.times',
+        )}`,
         false,
       );
     }
-    ctx.editReply({ embeds: [embed] });
+    ctx.makeMessage({ embeds: [embed] });
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
@@ -130,111 +131,111 @@ export default class TopInteractionCommand extends InteractionCommand {
 
     switch (type) {
       case 'mamadores':
-        this.executeUserDataRelatedRanking(
+        TopInteractionCommand.executeUserDataRelatedRanking(
           ctx,
           TOP.mamou,
           emojis.crown,
-          ctx.translate('mamadoresTitle'),
-          ctx.translate('suck'),
+          ctx.locale('commands:top.mamadoresTitle'),
+          ctx.locale('commands:top.suck'),
           page,
           COLORS.Pinkie,
         );
         return;
       case 'mamados':
-        this.executeUserDataRelatedRanking(
+        TopInteractionCommand.executeUserDataRelatedRanking(
           ctx,
           TOP.mamadas,
           emojis.lick,
-          ctx.translate('mamouTitle'),
-          ctx.translate('suckled'),
+          ctx.locale('commands:top.mamouTitle'),
+          ctx.locale('commands:top.suckled'),
           page,
           COLORS.Pinkie,
         );
         return;
       case 'estrelinhas':
-        this.executeUserDataRelatedRanking(
+        TopInteractionCommand.executeUserDataRelatedRanking(
           ctx,
           TOP.stars,
-          emojis.star,
-          ctx.translate('starsTitle'),
-          ctx.translate('stars'),
+          emojis.estrelinhas,
+          ctx.locale('commands:top.starsTitle'),
+          ctx.locale('commands:top.stars'),
           page,
           COLORS.Pear,
         );
         return;
       case 'demonios':
-        this.executeUserDataRelatedRanking(
+        TopInteractionCommand.executeUserDataRelatedRanking(
           ctx,
           TOP.demons,
-          emojis.demon,
-          ctx.translate('demonTitle'),
-          ctx.translate('demons'),
+          emojis.demons,
+          ctx.locale('commands:top.demonTitle'),
+          ctx.locale('commands:top.demons'),
           page,
-          COLORS.HuntDemon,
+          COLORS.HuntDemons,
         );
         return;
       case 'gigantes':
-        this.executeUserDataRelatedRanking(
+        TopInteractionCommand.executeUserDataRelatedRanking(
           ctx,
           TOP.giants,
-          emojis.giant,
-          ctx.translate('giantTitle'),
-          ctx.translate('giants'),
+          emojis.giants,
+          ctx.locale('commands:top.giantTitle'),
+          ctx.locale('commands:top.giants'),
           page,
-          COLORS.HuntGiant,
+          COLORS.HuntGiants,
         );
         return;
       case 'anjos':
-        this.executeUserDataRelatedRanking(
+        TopInteractionCommand.executeUserDataRelatedRanking(
           ctx,
           TOP.angels,
-          emojis.angel,
-          ctx.translate('angelTitle'),
-          ctx.translate('angels'),
+          emojis.angels,
+          ctx.locale('commands:top.angelTitle'),
+          ctx.locale('commands:top.angels'),
           page,
-          COLORS.HuntAngel,
+          COLORS.HuntAngels,
         );
         return;
       case 'arcanjos':
-        this.executeUserDataRelatedRanking(
+        TopInteractionCommand.executeUserDataRelatedRanking(
           ctx,
           TOP.archangels,
-          emojis.archangel,
-          ctx.translate('archangelTitle'),
-          ctx.translate('archangels'),
+          emojis.archangels,
+          ctx.locale('commands:top.archangelTitle'),
+          ctx.locale('commands:top.archangels'),
           page,
-          COLORS.HuntArchangel,
+          COLORS.HuntArchangels,
         );
         return;
       case 'semideuses':
-        this.executeUserDataRelatedRanking(
+        TopInteractionCommand.executeUserDataRelatedRanking(
           ctx,
           TOP.demigods,
-          emojis.semigod,
-          ctx.translate('sdTitle'),
-          ctx.translate('demigods'),
+          emojis.demigods,
+          ctx.locale('commands:top.sdTitle'),
+          ctx.locale('commands:top.demigods'),
           page,
-          COLORS.HuntSD,
+          COLORS.HuntDemigods,
         );
         return;
       case 'deuses':
-        this.executeUserDataRelatedRanking(
+        TopInteractionCommand.executeUserDataRelatedRanking(
           ctx,
           TOP.gods,
-          emojis.god,
-          ctx.translate('godTitle'),
-          ctx.translate('gods'),
+          emojis.gods,
+          ctx.locale('commands:top.godTitle'),
+          ctx.locale('commands:top.gods'),
           page,
-          COLORS.HuntGod,
+          COLORS.HuntGods,
         );
         return;
       case 'votos':
-        this.executeUserDataRelatedRanking(
+        TopInteractionCommand.executeUserDataRelatedRanking(
           ctx,
           TOP.votes,
           emojis.ok,
-          ctx.translate('voteTitle'),
-          ctx.translate('votes'),
+          ctx.locale('commands:top.voteTitle'),
+          ctx.locale('commands:top.votes'),
           page,
           COLORS.UltraPink,
         );
@@ -243,14 +244,14 @@ export default class TopInteractionCommand extends InteractionCommand {
         TopInteractionCommand.topCommands(ctx);
         return;
       case 'users':
-        this.topUsers(ctx);
+        TopInteractionCommand.topUsers(ctx);
         return;
       case 'user':
         TopInteractionCommand.topUser(ctx);
     }
   }
 
-  async executeUserDataRelatedRanking(
+  static async executeUserDataRelatedRanking(
     ctx: InteractionCommandContext,
     labelType: TOP,
     emoji: string,
@@ -261,10 +262,10 @@ export default class TopInteractionCommand extends InteractionCommand {
   ): Promise<void> {
     const skip = TopInteractionCommand.calculateSkipCount(page, 1000);
 
-    const res = await this.client.repositories.userRepository.getTopRanking(
+    const res = await ctx.client.repositories.userRepository.getTopRanking(
       labelType,
       skip,
-      await this.client.repositories.cacheRepository.getDeletedAccounts(),
+      await ctx.client.repositories.cacheRepository.getDeletedAccounts(),
     );
 
     const embed = new MessageEmbed()
@@ -272,11 +273,11 @@ export default class TopInteractionCommand extends InteractionCommand {
       .setColor(color);
 
     for (let i = 0; i < res.length; i++) {
-      const member = await this.client.users.fetch(res[i].id).catch(() => null);
+      const member = await ctx.client.users.fetch(res[i].id).catch(() => null);
       const memberName = member?.username ?? res[i].id;
 
       if (memberName.startsWith('Deleted User'))
-        this.client.repositories.cacheRepository.addDeletedAccount(res[i].id);
+        ctx.client.repositories.cacheRepository.addDeletedAccount(res[i].id);
 
       embed.addField(`**${skip + 1 + i} -** ${memberName}`, `${actor}: **${res[i].value}**`, false);
     }
@@ -284,7 +285,7 @@ export default class TopInteractionCommand extends InteractionCommand {
     ctx.defer({ embeds: [embed] });
   }
 
-  async topUsers(ctx: InteractionCommandContext): Promise<void> {
+  static async topUsers(ctx: InteractionCommandContext): Promise<void> {
     const res = await HttpRequests.getTopUsers();
     if (!res) {
       ctx.defer({ content: `${emojis.error} |  ${ctx.locale('commands:http-error')}` });
@@ -292,14 +293,14 @@ export default class TopInteractionCommand extends InteractionCommand {
     }
     const embed = new MessageEmbed()
 
-      .setTitle(`<:MenheraSmile2:767210250364780554> |  ${ctx.translate('users')}`)
+      .setTitle(`<:MenheraSmile2:767210250364780554> |  ${ctx.locale('commands:top.users')}`)
       .setColor('#f47fff');
 
     for (let i = 0; i < res.length; i++) {
-      const member = await this.client.users.fetch(res[i].id).catch();
+      const member = await ctx.client.users.fetch(res[i].id).catch();
       embed.addField(
-        `**${i + 1} -** ${Util.captalize(member.username)} `,
-        `${ctx.translate('use')} **${res[i].uses}** ${ctx.translate('times')}`,
+        `**${i + 1} -** ${Util.capitalize(member.username)} `,
+        `${ctx.locale('commands:top.use')} **${res[i].uses}** ${ctx.locale('commands:top.times')}`,
         false,
       );
     }
@@ -310,7 +311,7 @@ export default class TopInteractionCommand extends InteractionCommand {
     const user = ctx.options.getUser('user') ?? ctx.author;
 
     if (!user) {
-      ctx.defer({ content: `${emojis.error} | ${ctx.translate('not-user')}` });
+      ctx.defer({ content: `${emojis.error} | ${ctx.locale('commands:top.not-user')}` });
       return;
     }
 
@@ -318,22 +319,24 @@ export default class TopInteractionCommand extends InteractionCommand {
     const embed = new MessageEmbed()
 
       .setTitle(
-        `<:MenheraSmile2:767210250364780554> |  ${ctx.translate('user', {
+        `<:MenheraSmile2:767210250364780554> |  ${ctx.locale('commands:top.user', {
           user: user.username,
         })}`,
       )
       .setColor('#f47fff');
 
     if (!res || res.cmds.count === 0) {
-      ctx.defer({ content: `${emojis.error} | ${ctx.translate('not-user')}` });
+      ctx.defer({ content: `${emojis.error} | ${ctx.locale('commands:top.not-user')}` });
       return;
     }
 
     for (let i = 0; i < res.array.length; i++) {
       if (i > 10) break;
       embed.addField(
-        `**${i + 1} -** ${Util.captalize(res.array[i].name)} `,
-        `${ctx.translate('use')} **${res.array[i].count}** ${ctx.translate('times')}`,
+        `**${i + 1} -** ${Util.capitalize(res.array[i].name)} `,
+        `${ctx.locale('commands:top.use')} **${res.array[i].count}** ${ctx.locale(
+          'commands:top.times',
+        )}`,
         false,
       );
     }

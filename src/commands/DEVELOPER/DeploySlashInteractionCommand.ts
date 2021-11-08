@@ -1,4 +1,3 @@
-import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { ApplicationCommandData } from 'discord.js-light';
@@ -6,8 +5,8 @@ import HttpRequests from '@utils/HTTPrequests';
 import { ICommandsData } from '@utils/Types';
 
 export default class DeploySlashInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'deploy',
       description: 'da deploy nos slash',
       category: 'dev',
@@ -55,10 +54,10 @@ export default class DeploySlashInteractionCommand extends InteractionCommand {
       const toAPIData = new Map<string, ICommandsData>();
 
       const disabledCommands =
-        await this.client.repositories.cmdRepository.getAllCommandsInMaintenance();
+        await ctx.client.repositories.cmdRepository.getAllCommandsInMaintenance();
 
       await Promise.all(
-        this.client.slashCommands.map(async (c) => {
+        ctx.client.slashCommands.map(async (c) => {
           if (c.config.category === 'dev') return;
           const found = disabledCommands.find((a) => a._id?.toString() === c.config.name);
 
@@ -77,13 +76,13 @@ export default class DeploySlashInteractionCommand extends InteractionCommand {
       );
 
       await HttpRequests.postCommandStatus(Array.from(toAPIData.values()));
-      ctx.reply('Commandos deployados');
+      ctx.makeMessage({ content: 'Commandos deployados' });
       return;
     }
 
     if (ctx.options.getString('option', true) === 'global') {
       if (!ctx.options.getString('senha') || ctx.options.getString('senha') !== 'MACACO PREGO') {
-        ctx.reply({
+        ctx.makeMessage({
           content: 'SENHA ERRADA ANIMAL. CASO QUERIA DAR DEPLOY GLOBAL, A SENHA É "MACACO PREGO"',
           ephemeral: true,
         });
@@ -92,7 +91,7 @@ export default class DeploySlashInteractionCommand extends InteractionCommand {
 
       const toAPIData = new Map();
 
-      const allCommands = this.client.slashCommands.reduce<ApplicationCommandData[]>((p, c) => {
+      const allCommands = ctx.client.slashCommands.reduce<ApplicationCommandData[]>((p, c) => {
         if (c.config.devsOnly) return p;
         toAPIData.set(c.config.name, {
           name: c.config.name,
@@ -109,10 +108,10 @@ export default class DeploySlashInteractionCommand extends InteractionCommand {
         });
         return p;
       }, []);
-      ctx.reply('Iniciando deploy');
+      await ctx.makeMessage({ content: 'Iniciando deploy' });
 
       const disabledCommands =
-        await this.client.repositories.cmdRepository.getAllCommandsInMaintenance();
+        await ctx.client.repositories.cmdRepository.getAllCommandsInMaintenance();
 
       disabledCommands.map((a) => {
         const data = toAPIData.get(a._id);
@@ -126,8 +125,8 @@ export default class DeploySlashInteractionCommand extends InteractionCommand {
 
       await HttpRequests.postCommandStatus(Array.from(toAPIData.values()));
 
-      await this.client.application?.commands.set(allCommands);
-      ctx.editReply({
+      await ctx.client.application?.commands.set(allCommands);
+      ctx.makeMessage({
         content: 'Todos comandos foram settados! Temos até 1 hora para tudo atualizar',
       });
       return;
@@ -136,7 +135,7 @@ export default class DeploySlashInteractionCommand extends InteractionCommand {
     if (ctx.options.getString('option', true) === 'developer') {
       const permissionSet: string[] = [];
 
-      const allCommands = this.client.slashCommands.reduce<ApplicationCommandData[]>((p, c) => {
+      const allCommands = ctx.client.slashCommands.reduce<ApplicationCommandData[]>((p, c) => {
         if (!c.config.devsOnly) return p;
         permissionSet.push(c.config.name);
         p.push({
@@ -148,7 +147,7 @@ export default class DeploySlashInteractionCommand extends InteractionCommand {
         return p;
       }, []);
 
-      ctx.reply('Iniciando deploy');
+      await ctx.makeMessage({ content: 'Iniciando deploy' });
       const res = await ctx.interaction.guild?.commands.set(allCommands);
 
       res?.forEach((a) => {
@@ -158,12 +157,13 @@ export default class DeploySlashInteractionCommand extends InteractionCommand {
           });
         }
       });
+      ctx.makeMessage({ content: 'Comandos deployados no servidor' });
       return;
     }
 
     const permissionSet: string[] = [];
 
-    const allCommands = this.client.slashCommands.reduce<ApplicationCommandData[]>((p, c) => {
+    const allCommands = ctx.client.slashCommands.reduce<ApplicationCommandData[]>((p, c) => {
       if (c.config.devsOnly) permissionSet.push(c.config.name);
       p.push({
         name: c.config.name,
@@ -174,7 +174,7 @@ export default class DeploySlashInteractionCommand extends InteractionCommand {
       return p;
     }, []);
 
-    ctx.reply('Iniciando deploy');
+    await ctx.makeMessage({ content: 'Iniciando deploy' });
     const res = await ctx.interaction.guild?.commands.set(allCommands);
 
     res?.forEach((a) => {
@@ -185,6 +185,8 @@ export default class DeploySlashInteractionCommand extends InteractionCommand {
       }
     });
 
-    ctx.editReply({ content: `No total, ${res?.size} comandos foram adicionados neste servidor!` });
+    ctx.makeMessage({
+      content: `No total, ${res?.size} comandos foram adicionados neste servidor!`,
+    });
   }
 }

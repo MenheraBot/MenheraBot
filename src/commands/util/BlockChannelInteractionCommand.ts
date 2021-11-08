@@ -1,13 +1,12 @@
-import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageButton } from 'discord.js-light';
-import { emojis } from '@structures/MenheraConstants';
+import { emojis } from '@structures/Constants';
 import Util from '@utils/Util';
 
 export default class BlockChannelInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'blockcanal',
       description: '「🚫」・Mude as permissões de comandos nos canais',
       category: 'util',
@@ -62,7 +61,10 @@ export default class BlockChannelInteractionCommand extends InteractionCommand {
       const selectedChannel = ctx.options.getChannel('canal', true);
 
       if (selectedChannel?.type !== 'GUILD_TEXT') {
-        ctx.replyT('error', 'invalid-channel', {}, true);
+        ctx.makeMessage({
+          content: ctx.prettyResponse('error', 'commands:blockcanal.invalid-channel'),
+          ephemeral: true,
+        });
         return;
       }
 
@@ -70,22 +72,26 @@ export default class BlockChannelInteractionCommand extends InteractionCommand {
         const index = ctx.data.server.blockedChannels.indexOf(selectedChannel.id);
 
         ctx.data.server.blockedChannels.splice(index, 1);
-        await this.client.repositories.cacheRepository.updateGuild(
+        await ctx.client.repositories.cacheRepository.updateGuild(
           ctx.interaction.guild?.id as string,
           ctx.data.server,
         );
-        await ctx.replyT('success', 'unblock', {
-          channel: selectedChannel.toString(),
+        await ctx.makeMessage({
+          content: ctx.prettyResponse('success', 'commands:blockcanal.unblock', {
+            channel: selectedChannel.toString(),
+          }),
         });
         return;
       }
       ctx.data.server.blockedChannels.push(selectedChannel.id);
-      await this.client.repositories.cacheRepository.updateGuild(
+      await ctx.client.repositories.cacheRepository.updateGuild(
         ctx.interaction.guild?.id as string,
         ctx.data.server,
       );
-      await ctx.replyT('success', 'block', {
-        channel: selectedChannel.toString(),
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('success', 'commands:blockcanal.block', {
+          channel: selectedChannel.toString(),
+        }),
       });
       return;
     }
@@ -94,17 +100,17 @@ export default class BlockChannelInteractionCommand extends InteractionCommand {
 
     switch (option) {
       case 'view':
-        ctx.reply({
-          content: `${emojis.list} | ${ctx.translate('blocked-channels')}\n\n${
+        ctx.makeMessage({
+          content: `${emojis.list} | ${ctx.locale('commands:blockcanal.blocked-channels')}\n\n${
             ctx.data.server.blockedChannels.length === 0
-              ? ctx.translate('zero-value')
+              ? ctx.locale('commands:blockcanal.zero-value')
               : ctx.data.server.blockedChannels.map((a) => `• <#${a}>`).join('\n')
           }`,
         });
         break;
       case 'delete': {
-        ctx.reply({
-          content: ctx.translate('sure'),
+        ctx.makeMessage({
+          content: ctx.locale('commands:blockcanal.sure'),
           components: [
             {
               type: 'ACTION_ROW',
@@ -126,10 +132,13 @@ export default class BlockChannelInteractionCommand extends InteractionCommand {
         );
 
         if (confirmed && ctx.interaction.guild) {
-          this.client.repositories.guildRepository.update(ctx.interaction.guild.id, {
+          ctx.client.repositories.guildRepository.update(ctx.interaction.guild.id, {
             blockedChannels: [],
           });
-          ctx.editReply({ components: [], content: `${emojis.yes} | ${ctx.translate('done')}` });
+          ctx.makeMessage({
+            components: [],
+            content: ctx.prettyResponse('yes', 'commands:blockcanal.done'),
+          });
           return;
         }
 

@@ -1,13 +1,12 @@
-import MenheraClient from 'MenheraClient';
-import { COLORS } from '@structures/MenheraConstants';
+import { COLORS } from '@structures/Constants';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageEmbed } from 'discord.js-light';
 import HttpRequests from '@utils/HTTPrequests';
 
 export default class GrumbleInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'resmungar',
       description: '「😖」・Mostre para todos que tu ta resmungando. Humpf',
       category: 'actions',
@@ -22,16 +21,16 @@ export default class GrumbleInteractionCommand extends InteractionCommand {
     const selectedImage = await HttpRequests.getAssetImageUrl('grumble');
 
     const embed = new MessageEmbed()
-      .setTitle(ctx.translate('embed_title'))
+      .setTitle(ctx.locale('commands:resmungar.embed_title'))
       .setColor(COLORS.ACTIONS)
       .setDescription(
-        ctx.translate('embed_description', {
+        ctx.locale('commands:resmungar.embed_description', {
           author: ctx.author.toString(),
         }),
       )
       .setThumbnail(avatar)
       .setImage(selectedImage);
 
-    await ctx.reply({ embeds: [embed] });
+    await ctx.makeMessage({ embeds: [embed] });
   }
 }

@@ -1,13 +1,12 @@
-import MenheraClient from 'MenheraClient';
-import { COLORS } from '@structures/MenheraConstants';
+import { COLORS } from '@structures/Constants';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageEmbed } from 'discord.js-light';
 import HttpRequests from '@utils/HTTPrequests';
 
 export default class KissInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'beijar',
       description: '「😘」・De uma beijoquita em alguém que tu goste',
       category: 'actions',
@@ -38,12 +37,17 @@ export default class KissInteractionCommand extends InteractionCommand {
     const user = ctx.options.getUser('user', true);
 
     if (user.bot) {
-      await ctx.replyT('error', 'bot');
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:beijar.bot'),
+      });
       return;
     }
 
     if (user.id === ctx.author.id) {
-      await ctx.replyT('error', 'self-mention', {}, true);
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:beijar.self-mention'),
+        ephemeral: true,
+      });
       return;
     }
 
@@ -54,10 +58,10 @@ export default class KissInteractionCommand extends InteractionCommand {
     const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     const embed = new MessageEmbed()
-      .setTitle(ctx.translate('embed_title'))
+      .setTitle(ctx.locale('commands:rir.embed_title'))
       .setColor(COLORS.ACTIONS)
       .setDescription(
-        ctx.translate(`embed_description_${ctx.options.getString('local')}`, {
+        ctx.locale(`commands:beijar.embed_description_${ctx.options.getString('local') as '1'}`, {
           author: ctx.author.toString(),
           mention: user.toString(),
         }),
@@ -65,6 +69,6 @@ export default class KissInteractionCommand extends InteractionCommand {
       .setImage(selectedImage)
       .setThumbnail(avatar);
 
-    await ctx.reply({ embeds: [embed] });
+    await ctx.makeMessage({ embeds: [embed] });
   }
 }

@@ -9,13 +9,13 @@ export default class LocaleStructure {
   public languages: Array<string>;
 
   constructor() {
-    this.ns = ['common', 'commands', 'events', 'permissions'];
+    this.ns = ['common', 'commands', 'data', 'events', 'permissions'];
     this.languages = ['pt-BR', 'en-US'];
   }
 
   async load(): Promise<void> {
     try {
-      const filepath = path.resolve(__dirname, '..', '..', 'locales');
+      const filepath = path.resolve(__dirname, '..', 'locales');
       await i18next.use(translationBackend).init({
         ns: this.ns,
         preload: readdirSync(filepath),

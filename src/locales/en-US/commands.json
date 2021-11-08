@@ -106,6 +106,7 @@
     "bot": "{{author}} just got his mouth wet with oil sucking the bot {{mention}}",
     "self-mention": "Don't try to deceive me, I know you can't suckle yourself! Appoint another person to suck",
     "embed_title": "Suck",
+    "user-banned": "You cannot suck this user because he is banned",
     "embed_description": "{{author}} **suckled** {{mention}}"
   },
   "carinho": {
@@ -232,6 +233,17 @@
   "loja": {
     "description": "Access the Menhera's thrift store",
     "embed_title": "Menhera's Thrift store",
+    "buy_item": {
+      "title": "🔮 | Magic Items",
+      "description": "Select down below the item that you want to buy",
+      "hasAll": "You already have all magic items available"
+    },
+    "dataItems": {
+      "title": "🔮 | Magic Items",
+      "description": "**Cost**: {{cost}} :star:\n**About:** {{description}}",
+      "poor": "You don't have enough stars to buy this item!",
+      "success": "You bought **{{item}}** successfully"
+    },
     "colors": {
       "purple": "1 - Dark purple",
       "red": "2 - Red",
@@ -254,7 +266,8 @@
       "yc-message": "Submit a hex color code **WITHOUT A HASHTAG** (Example: AABBCC) of your choice to add to your profile",
       "yc-confirm": "WOOOOW !!! YOU'VE JUST BOUGHT A COLOR OF YOUR CHOICE !!! \nYour current choice is **#{{color}}** \nYou spent **{{price}}** ⭐ and got **{{stars}}** ⭐ stars",
       "invalid-color": "this color is not a valid color!",
-      "no-name": "No name passed"
+      "no-name": "No name passed ({{numberno-name}})",
+      "buy-text": "Choose down below what color do you want to buy"
     },
     "dataRolls_fields": {
       "title": "Buy Rolls",
@@ -272,34 +285,13 @@
       "main": {
         "fields": {
           "name": "Sales Options",
-          "value": "<:DEMON:758765044443381780> Demons - **{{demon}}**⭐ \n👨 Giants - **{{giant}}**⭐\n<:ANGEL:758765044204437535> Angels - **{{angel}}**⭐\n👼 Archangels - **{{archangel}}**⭐\n<:SEMIGOD:758766732235374674> Demigods - **{{demi}}**⭐\n<:God:758474639570894899> Gods - **{{god}}**⭐"
+          "value": "<:DEMON:758765044443381780> Demons - **{{demon}}**⭐ \n🦍 Giants - **{{giant}}**⭐\n<:ANGEL:758765044204437535> Angels - **{{angel}}**⭐\n👼 Archangels - **{{archangel}}**⭐\n<:SEMIGOD:758766732235374674> Demigods - **{{demi}}**⭐\n<:God:758474639570894899> Gods - **{{god}}**⭐"
         }
       },
       "invalid-args": "this value is not a valid number! You must say the option and the quantity",
       "poor": "you don't have all these {{var}}!",
-      "success-demon": "you sold **{{value}}** <:DEMON:758765044443381780> demons and received ** {{cost}} ** ⭐ star! \nNow you have ** {{quantity}} ** <:DEMON:758765044443381780> and **{{star}}** ⭐ ",
-      "success-angel": "you sold ** {{value}} ** <:Angel:758765044204437535> angels and received ** {{cost}} ** ⭐ star! \nNow you have ** {{quantity}} ** <:Angel:758765044204437535> and ** {{star}} ** ⭐ ",
-      "success-giant": "you sold ** {{value}} ** 👨 giants and received ** {{cost}} ** ⭐ star! \nNow you have ** {{quantity}} ** 👨 and ** {{star}} ** ⭐ ",
-      "success-sd": "you sold ** {{value}} ** <:SEMIGOD:758766732235374674> demigods and received ** {{cost}} ** ⭐ star! \nNow you have ** {{quantity}} ** <:SEMIGOD:758766732235374674> and ** {{star}} ** ⭐ ",
-      "success-archangel": "you sold ** {{value}} ** 👼 archangel and received ** {{cost}} ** ⭐ star! \nNow you have ** {{quantity}} ** 👼 and ** {{star}} ** ⭐ ",
-      "success-god": "you sold ** {{value}} ** <:God:758474639570894899> gods and received ** {{cost}} ** ⭐ star! \nNow you have ** {{quantity}} ** <:God:758474639570894899> and ** {{star}} ** ⭐ "
+      "success": "you sold **{{value}}** {{emoji}} {{hunt}} and received **{{cost}}** ⭐ star! \nNow you have ** {{quantity}} ** {{emoji}} and **{{star}}** ⭐ "
     }
-  },
-  "carteira": {
-    "description": "See someone's wallet",
-    "usage": "[user]",
-    "no-dbuser": "this user is not in my database",
-    "title": "{{user}}'s Wallet",
-    "stars": "Stars",
-    "rolls": "Rolls",
-    "unknow-user": "user not found",
-    "giants": "Giants",
-    "archangel": "Archangels",
-    "demons": "Demons",
-    "angels": "Angels",
-    "sd": "Demigods",
-    "god": "Gods",
-    "banned-user": "This user doesn't have a wallet because they're banned from Menhera!"
   },
   "8ball": {
     "description": "Ask me something",
@@ -349,26 +341,24 @@
     "description": "Send it when someone makes that joke joke"
   },
   "cacar": {
-    "description": "Hunt demons like XANDÃO",
-    "probabilities": "Hunt probabilities\n\nDemons: `[{{demon}}]`\nGiants: `[{{giant}}]`\nAngels: `[{{angel}}]`\nArchangels: `[{{archangel}}]`\nDemigods: `[{{demi}}]`\nGods: `[{{god}}]`",
-    "no-args": "you must choose between hunting demons, angels, demigods and gods",
-    "help": "** HOW DOES HUNTING WORK? ** \nYou can hunt every hour, and you can choose from 4 hunts: `demons`, `angels`,` demigods` and `gods` \nThe farther to the right, the more valuable, but also, more difficult to hunt, and less chance of success \nOn my support server, the chances of hunting are greater!",
-    "footer": "Did you know that on my support server, your chances of success are greater?",
-    "description_start": "You went hunting **{{hunt}}** **{{count}}** time with Super Xandão, and you returned home with more **{{value}}** to count. You are in **#{{rank}}** on the {{hunt}} top",
-    "description_start_plural": "You went hunting **{{hunt}}** **{{count}}** times with Super Xandão, and you returned home with more **{{value}}** to count. You are in **#{{rank}}** on the {{hunt}} top",
+    "probabilities": "Your Hunt probabilities",
+    "drop": "LESSS GOOO {{author}}. You dropped a hunting item! Do you realize how rare this is? For you to be aware, the item you gained, the **{{name}}** has a drop percentage of `{{chance}}%`, Congratulations!",
+    "chances": "**{{count}}** ({{percentage}}%)**Amount**: {{count}}\n**Probability**: {{percentage}}",
+    "hunt_description": "You went hunting **{{hunt}}** **{{count}}** time with Super Xandão, and you returned home with more **{{value}}** to count. You are in **#{{rank}}** on the {{hunt}} top",
+    "hunt_description_plural": "You went hunting **{{hunt}}** **{{count}}** times with Super Xandão, and you returned home with more **{{value}}** to count. You are in **#{{rank}}** on the {{hunt}} top",
     "god_hunted_success": "HOLLY MOLLY!!! YOU BECOME A HERO FRUIT OF A DIVINE FORCE, AS WELL AS XANDÃO, AND GOT ​​HUNTING `{{count}}` GOD IN **{{toRun}}** TRIES! WITH THAT SAID, YOU ARE IN **#{{rank}}** ON GOD MENHERA'S TOP",
     "god_hunted_success_plural": "HOLLY MOLLY!!! YOU BECOME A HERO FRUIT OF A DIVINE FORCE, AS WELL AS XANDÃO, AND GOT ​​HUNTING `{{count}}` GODS IN **{{toRun}}** TRIES! WITH THAT SAID, YOU ARE IN **#{{rank}}** ON GOD MENHERA'S TOP",
     "god_hunted_fail": "Hunting Gods is an extremely difficult mission, and in **{{count}}** try you have not been successful. But rest assured, hero, you can still do it! You are in **{{rank}}** on god's top",
     "god_hunted_fail_plural": "Hunting Gods is an extremely difficult mission, and in **{{count}}** tries you have not been successful. But rest assured, hero, you can still do it! You are in **{{rank}}** on god's top",
     "demons": "Demons",
     "giants": "Giants",
-    "archangel": "Archangels",
+    "archangels": "Archangels",
     "angels": "Angels",
-    "sd": "Demigods",
+    "demigods": "Demigods",
     "gods": "Gods",
-    "invalid-rolls": "this amount of rolls is invalid!",
-    "rolls-poor": "you dont have all this rolls!",
-    "cooldown": "rest champion, you've already gone on your hunt. Try again in ** {{time}} ** minutes \n <:attention:759603958418767922> | ** TIP: ** Did you know that on my support server, the chances of hunting are greater? m!support"
+    "invalid-rolls": "This amount of rolls is invalid!",
+    "rolls-poor": "You dont have all this rolls!",
+    "cooldown": "Rest champion, you've already gone on your hunt. Try again in ** {{time}} ** minutes or use a roll in your next hunt"
   },
   "casar": {
     "description": "Marry with the love of your life",
@@ -417,6 +407,7 @@
     "client_footer": "I'm very beautiful, right?"
   },
   "cor": {
+    "footer": "Page {{page}}/{{maxPages}}",
     "description": "Change the color of your profile",
     "usage": "[color]",
     "embed_title": "Your Colors",
@@ -672,5 +663,38 @@
     "equal": "Both you and Menhera hit the same amount. Menhera Wins UwU",
     "menhera-bigger": "Menhera is closer to 21, she wins!",
     "user-bigger": "You're closer to 21, you won **{{value}}** :star:"
+  },
+  "inventario": {
+    "no-user": "This user does't have an inventory",
+    "title": "{{user}}'s Inventory",
+    "no-item": "This user's inventory is empty!",
+    "active": "Active Items",
+    "items": "Inventory Item",
+    "use": "Use Items",
+    "use-footer": "Click the button below to use items",
+    "select": "Select an item to use",
+    "banned": "This user is **banned** from using Menhera",
+    "choose-item": "Select a Item to use as your main magic item",
+    "reset": "Reset Active Items",
+    "reseted": "All done! All of your items were moved to inventory",
+    "choose-toggle": "Wich item do you want to replace?",
+    "equipped": "Success! The **{{name}}** item has been selected as active! You can now enjoy its powers!",
+    "select-description": "Choose one of the items below to activate it. If there is no available space, you will have to choose one of the active items to replace it"
+  },
+  "carteira": {
+    "description": "See someone's wallet",
+    "usage": "[user]",
+    "no-dbuser": "this user is not in my database",
+    "title": "{{user}}'s Wallet",
+    "stars": "Stars",
+    "rolls": "Rolls",
+    "unknow-user": "user not found",
+    "giants": "Giants",
+    "archangel": "Archangels",
+    "demons": "Demons",
+    "angels": "Angels",
+    "sd": "Demigods",
+    "god": "Gods",
+    "banned-user": "This user doesn't have a wallet because they're banned from Menhera!"
   }
 }

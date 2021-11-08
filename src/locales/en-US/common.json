@@ -1,0 +1,20 @@
+{
+  "sharding_in_progress": "Menhera is still waking up! Try again later",
+  "timesup": "Time's Up",
+  "accept": "Accept",
+  "confirm": "Confirm",
+  "negate": "Negate",
+  "portuguese": "Portuguese",
+  "english": "English",
+  "name": "Name",
+  "description": "Description",
+  "amount": "Amount",
+  "next": "Next",
+  "back": "Back",
+  "demons": "Demons",
+  "giants": "Giants",
+  "archangels": "Archangels",
+  "angels": "Angels",
+  "demigods": "Demigods",
+  "gods": "Gods"
+}

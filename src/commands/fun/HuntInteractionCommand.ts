@@ -1,15 +1,53 @@
 import 'moment-duration-format';
 import moment from 'moment';
-import MenheraClient from 'MenheraClient';
-import { COLORS, probabilities } from '@structures/MenheraConstants';
+import { COLORS } from '@structures/Constants';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageEmbed } from 'discord.js-light';
 import HttpRequests from '@utils/HTTPrequests';
+import { huntEnum, HuntingTypes, HuntProbabiltyProps, IHuntCooldownBoostItem } from '@utils/Types';
+import {
+  calculateProbability,
+  dropItem,
+  getUserHuntCooldown,
+  getUserHuntProbability,
+} from '@utils/HuntUtils';
+import Util, { getMagicItemById } from '@utils/Util';
 
+type ChoiceTypes = HuntingTypes | 'probabilities';
+const choices: { name: string; value: ChoiceTypes }[] = [
+  {
+    name: '😈 | Demônios',
+    value: 'demons',
+  },
+  {
+    name: '👊 | Gigantes',
+    value: 'giants',
+  },
+  {
+    name: '👼 | Anjos',
+    value: 'angels',
+  },
+  {
+    name: '🧚‍♂️ | Arcanjos',
+    value: 'archangels',
+  },
+  {
+    name: '🙌 | Semideuses',
+    value: 'demigods',
+  },
+  {
+    name: '✝️ | Deuses',
+    value: 'gods',
+  },
+  {
+    name: '📊 | Probabilidades',
+    value: 'probabilities',
+  },
+];
 export default class HuntInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'cacar',
       description: '「🎯」・Sai para uma caçada com Xandão',
       options: [
@@ -18,36 +56,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
           type: 'STRING',
           description: 'Tipo da caça',
           required: true,
-          choices: [
-            {
-              name: '😈 | Demônios',
-              value: 'demônio',
-            },
-            {
-              name: '👊 | Gigantes',
-              value: 'gigantes',
-            },
-            {
-              name: '👼 | Anjos',
-              value: 'anjos',
-            },
-            {
-              name: '🧚‍♂️ | Arcanjos',
-              value: 'arcanjos',
-            },
-            {
-              name: '🙌 | Semideuses',
-              value: 'semideuses',
-            },
-            {
-              name: '✝️ | Deuses',
-              value: 'deus',
-            },
-            {
-              name: '📊 | Probabilidades',
-              value: 'probabilidades',
-            },
-          ],
+          choices,
         },
         {
           name: 'rolls',
@@ -57,38 +66,97 @@ export default class HuntInteractionCommand extends InteractionCommand {
         },
       ],
       category: 'fun',
-      cooldown: 5,
+      cooldown: 7,
       clientPermissions: ['EMBED_LINKS'],
+      authorDataFields: ['rolls', 'huntCooldown', 'inUseItems', 'selectedColor', 'inventory'],
     });
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    const authorData = ctx.data.user;
-    if (!ctx.interaction.guild) return;
+    const selected = ctx.options.getString('tipo', true) as ChoiceTypes;
 
-    const selected = ctx.options.getString('tipo', true);
+    if (selected === 'probabilities') {
+      const embed = new MessageEmbed()
+        .setTitle(ctx.locale('commands:cacar.probabilities'))
+        .setColor(ctx.data.user.selectedColor)
+        .addFields([
+          {
+            name: ctx.prettyResponse(huntEnum.DEMON, `commands:cacar.${huntEnum.DEMON}`),
+            value: `${getUserHuntProbability(ctx.data.user.inUseItems, huntEnum.DEMON)
+              .map((a) =>
+                ctx.locale('commands:cacar.chances', {
+                  count: a.amount,
+                  percentage: a.probabilty,
+                }),
+              )
+              .join('\n')}`,
+            inline: true,
+          },
+          {
+            name: ctx.prettyResponse(huntEnum.GIANT, `commands:cacar.${huntEnum.GIANT}`),
+            value: `${getUserHuntProbability(ctx.data.user.inUseItems, huntEnum.GIANT)
+              .map((a) =>
+                ctx.locale('commands:cacar.chances', {
+                  count: a.amount,
+                  percentage: a.probabilty,
+                }),
+              )
+              .join('\n')}`,
+            inline: true,
+          },
+          {
+            name: ctx.prettyResponse(huntEnum.ANGEL, `commands:cacar.${huntEnum.ANGEL}`),
+            value: `${getUserHuntProbability(ctx.data.user.inUseItems, huntEnum.ANGEL)
+              .map((a) =>
+                ctx.locale('commands:cacar.chances', {
+                  count: a.amount,
+                  percentage: a.probabilty,
+                }),
+              )
+              .join('\n')}`,
+            inline: true,
+          },
+          {
+            name: ctx.prettyResponse(huntEnum.ARCHANGEL, `commands:cacar.${huntEnum.ARCHANGEL}`),
+            value: `${getUserHuntProbability(ctx.data.user.inUseItems, huntEnum.ARCHANGEL)
+              .map((a) =>
+                ctx.locale('commands:cacar.chances', {
+                  count: a.amount,
+                  percentage: a.probabilty,
+                }),
+              )
+              .join('\n')}`,
+            inline: true,
+          },
+          {
+            name: ctx.prettyResponse(huntEnum.DEMIGOD, `commands:cacar.${huntEnum.DEMIGOD}`),
+            value: `${getUserHuntProbability(ctx.data.user.inUseItems, huntEnum.DEMIGOD)
+              .map((a) =>
+                ctx.locale('commands:cacar.chances', {
+                  count: a.amount,
+                  percentage: a.probabilty,
+                }),
+              )
+              .join('\n')}`,
+            inline: true,
+          },
+          {
+            name: ctx.prettyResponse(huntEnum.GOD, `commands:cacar.${huntEnum.GOD}`),
+            value: `${getUserHuntProbability(ctx.data.user.inUseItems, huntEnum.GOD)
+              .map((a) =>
+                ctx.locale('commands:cacar.chances', {
+                  count: a.amount,
+                  percentage: a.probabilty,
+                }),
+              )
+              .join('\n')}`,
+            inline: true,
+          },
+        ]);
 
-    if (!selected) {
-      await ctx.replyT('error', 'no-args', {}, true);
-      return;
-    }
-
-    const Probabilities =
-      ctx.interaction.guild.id === '717061688460967988'
-        ? probabilities.support
-        : probabilities.normal;
-
-    if (selected === 'probabilidades') {
-      await ctx.reply(
-        ctx.translate('probabilities', {
-          demon: Probabilities.demon,
-          giant: Probabilities.giant,
-          angel: Probabilities.angel,
-          archangel: Probabilities.archangel,
-          demi: Probabilities.demigod,
-          god: Probabilities.god,
-        }),
-      );
+      await ctx.makeMessage({
+        embeds: [embed],
+      });
       return;
     }
 
@@ -96,206 +164,131 @@ export default class HuntInteractionCommand extends InteractionCommand {
 
     if (rollsToUse) {
       if (rollsToUse < 1) {
-        ctx.replyT('error', 'invalid-rolls', {}, true);
+        ctx.makeMessage({
+          content: ctx.prettyResponse('error', 'commands:cacar.invalid-rolls'),
+          ephemeral: true,
+        });
         return;
       }
       if (rollsToUse > ctx.data.user.rolls) {
-        ctx.replyT('error', 'rolls-poor', {}, true);
+        ctx.makeMessage({
+          content: ctx.prettyResponse('error', 'commands:cacar.rolls-poor'),
+          ephemeral: true,
+        });
         return;
       }
     }
 
-    const canHunt = parseInt(authorData.caçarTime) < Date.now();
+    const canHunt = ctx.data.user.huntCooldown < Date.now();
 
     if (!canHunt && !rollsToUse) {
-      ctx.replyT(
-        'error',
-        'cooldown',
-        {
-          time: moment.utc(parseInt(authorData.caçarTime) - Date.now()).format('mm:ss'),
-        },
-        true,
-      );
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:cacar.cooldown', {
+          time: moment.utc(ctx.data.user.huntCooldown - Date.now()).format('mm:ss'),
+        }),
+        ephemeral: true,
+      });
       return;
     }
 
     const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
-    const cooldown = probabilities.defaultTime + Date.now();
-    const embed = new MessageEmbed().setColor(COLORS.HuntDefault).setThumbnail(avatar);
-    if (ctx.interaction.guild.id !== '717061688460967988') embed.setFooter(ctx.translate('footer'));
 
-    const { huntDemon, huntGiant, huntAngel, huntArchangel, huntDemigod, huntGod } =
-      this.client.repositories.huntRepository;
+    const cooldown = getUserHuntCooldown(ctx.data.user.inUseItems, selected) + Date.now();
+
+    const embed = new MessageEmbed()
+      .setColor(COLORS.HuntDefault)
+      .setThumbnail(avatar)
+      .setTitle(ctx.locale(`commands:cacar.${selected}`));
 
     const toRun = canHunt && rollsToUse ? rollsToUse + 1 : rollsToUse ?? 1;
 
     const areYouTheHuntOrTheHunter = async (
-      probability: Array<number>,
-      saveFn: typeof huntDemon,
+      probability: Array<HuntProbabiltyProps>,
+      huntType: HuntingTypes,
     ) => {
       let value = 0;
       let tries = 0;
       let success = 0;
 
       for (let i = toRun; i > 0; i--) {
-        const taked = probability[Math.floor(Math.random() * probability.length)];
+        const taked = calculateProbability(probability);
         value += taked;
         tries += 1;
         if (taked > 0) success += 1;
       }
 
-      await saveFn.call(
-        this.client.repositories.huntRepository,
+      await ctx.client.repositories.huntRepository.huntEntity(
         ctx.author.id,
+        huntType,
         value,
-        cooldown.toString(),
+        cooldown,
         rollsToUse || 0,
       );
       return { value, success, tries };
     };
 
-    // eslint-disable-next-line no-shadow
-    enum huntEnum {
-      DEMON = 'caçados',
-      ANGEL = 'anjos',
-      DEMIGOD = 'semideuses',
-      GIANT = 'giants',
-      ARCHANGEL = 'arcanjos',
-      GOD = 'deuses',
-    }
+    const result = await areYouTheHuntOrTheHunter(
+      getUserHuntProbability(ctx.data.user.inUseItems, selected),
+      selected,
+    );
 
-    switch (selected) {
-      case 'demônio': {
-        const result = await areYouTheHuntOrTheHunter(Probabilities.demon, huntDemon);
-        const { rank } = await this.client.repositories.topRepository.getUserHuntRank(
-          ctx.author.id,
-          huntEnum.DEMON,
-          await this.client.repositories.cacheRepository.getDeletedAccounts(),
-        );
-        embed
-          .setTitle(ctx.translate('demons'))
-          .setColor(COLORS.HuntDemon)
-          .setDescription(
-            ctx.translate('description_start', {
-              value: result.value,
-              hunt: ctx.translate('demons'),
+    const { rank } = await ctx.client.repositories.topRepository.getUserHuntRank(
+      ctx.author.id,
+      selected,
+      await ctx.client.repositories.cacheRepository.getDeletedAccounts(),
+    );
+
+    if (selected === 'gods') {
+      embed.setDescription(
+        result.value > 0
+          ? ctx.locale('commands:cacar.god_hunted_success', {
+              count: result.value,
+              hunt: ctx.locale(`commands:cacar.gods`),
               rank: rank + 1,
-              count: toRun,
-            }),
-          );
-        HttpRequests.postHuntCommand(ctx.author.id, 'demon', result);
-        break;
-      }
-      case 'gigantes': {
-        const result = await areYouTheHuntOrTheHunter(Probabilities.giant, huntGiant);
-        const { rank } = await this.client.repositories.topRepository.getUserHuntRank(
-          ctx.author.id,
-          huntEnum.GIANT,
-          await this.client.repositories.cacheRepository.getDeletedAccounts(),
-        );
-        embed
-          .setTitle(ctx.translate('giants'))
-          .setColor(COLORS.HuntGiant)
-          .setDescription(
-            ctx.translate('description_start', {
-              value: result.value,
-              hunt: ctx.translate('giants'),
-              rank: rank + 1,
-              count: toRun,
-            }),
-          );
-        HttpRequests.postHuntCommand(ctx.author.id, 'giant', result);
-        break;
-      }
-      case 'anjos': {
-        const result = await areYouTheHuntOrTheHunter(Probabilities.angel, huntAngel);
-        const { rank } = await this.client.repositories.topRepository.getUserHuntRank(
-          ctx.author.id,
-          huntEnum.ANGEL,
-          await this.client.repositories.cacheRepository.getDeletedAccounts(),
-        );
-        embed
-          .setTitle(ctx.translate('angels'))
-          .setColor(COLORS.HuntAngel)
-          .setDescription(
-            ctx.translate('description_start', {
-              value: result.value,
-              hunt: ctx.translate('angels'),
-              rank: rank + 1,
-              count: toRun,
-            }),
-          );
-        HttpRequests.postHuntCommand(ctx.author.id, 'angel', result);
-        break;
-      }
-      case 'arcanjos': {
-        const result = await areYouTheHuntOrTheHunter(Probabilities.archangel, huntArchangel);
-        const { rank } = await this.client.repositories.topRepository.getUserHuntRank(
-          ctx.author.id,
-          huntEnum.ARCHANGEL,
-          await this.client.repositories.cacheRepository.getDeletedAccounts(),
-        );
-        embed
-          .setTitle(ctx.translate('archangel'))
-          .setColor(COLORS.HuntArchangel)
-          .setDescription(
-            ctx.translate('description_start', {
-              value: result.value,
-              hunt: ctx.translate('archangel'),
-              rank: rank + 1,
-              count: toRun,
-            }),
-          );
-        HttpRequests.postHuntCommand(ctx.author.id, 'archangel', result);
-        break;
-      }
-      case 'semideuses': {
-        const result = await areYouTheHuntOrTheHunter(Probabilities.demigod, huntDemigod);
-        const { rank } = await this.client.repositories.topRepository.getUserHuntRank(
-          ctx.author.id,
-          huntEnum.DEMIGOD,
-          await this.client.repositories.cacheRepository.getDeletedAccounts(),
-        );
-        embed
-          .setTitle(ctx.translate('sd'))
-          .setColor(COLORS.HuntSD)
-          .setDescription(
-            ctx.translate('description_start', {
-              value: result.value,
-              hunt: ctx.translate('sd'),
-              rank: rank + 1,
-              count: toRun,
-            }),
-          );
-        HttpRequests.postHuntCommand(ctx.author.id, 'demigod', result);
-        break;
-      }
-      case 'deus': {
-        const result = await areYouTheHuntOrTheHunter(Probabilities.god, huntGod);
-        const { rank } = await this.client.repositories.topRepository.getUserHuntRank(
-          ctx.author.id,
-          huntEnum.GOD,
-          await this.client.repositories.cacheRepository.getDeletedAccounts(),
-        );
-        embed
-          .setColor(COLORS.HuntGod)
-          .setTitle(ctx.translate('gods'))
-          .setDescription(
-            result.value > 0
-              ? ctx.translate('god_hunted_success', {
-                  count: result.value,
-                  hunt: ctx.translate('gods'),
-                  rank: rank + 1,
-                  toRun,
-                })
-              : ctx.translate('god_hunted_fail', { rank: rank + 1, count: toRun }),
-          );
-        if (result.value > 0)
-          embed.setColor(COLORS.HuntGod).setThumbnail('https://i.imgur.com/053khaH.gif');
-        HttpRequests.postHuntCommand(ctx.author.id, 'god', result);
-        break;
-      }
-    }
-    await ctx.reply({ embeds: [embed] });
+              toRun,
+            })
+          : ctx.locale('commands:cacar.god_hunted_fail', { rank: rank + 1, count: toRun }),
+      );
+      if (result.value > 0) embed.setThumbnail('https://i.imgur.com/053khaH.gif');
+    } else
+      embed.setDescription(
+        ctx.locale('commands:cacar.hunt_description', {
+          value: result.value,
+          hunt: ctx.locale(`commands:cacar.${selected}`),
+          rank: rank + 1,
+          count: toRun,
+        }),
+      );
+    // @ts-expect-error HuntString is actually HuntHUNTYPE
+    embed.setColor(COLORS[`Hunt${Util.capitalize(selected)}`]);
+
+    const APIHuntTypes = {
+      demons: 'demon',
+      giants: 'giant',
+      angels: 'angel',
+      archangels: 'archangel',
+      demigods: 'demigod',
+      gods: 'god',
+    };
+
+    HttpRequests.postHuntCommand(ctx.author.id, APIHuntTypes[selected], result);
+
+    await ctx.makeMessage({ embeds: [embed] });
+
+    const droppedItem = dropItem(ctx.data.user.inventory, ctx.data.user.inUseItems, selected);
+    if (!droppedItem) return;
+
+    ctx.client.repositories.userRepository.update(ctx.author.id, {
+      $push: { inventory: { id: droppedItem } },
+    });
+
+    ctx.send({
+      content: ctx.prettyResponse('wink', 'commands:cacar.drop', {
+        name: ctx.locale(`data:magic-items.${droppedItem as 1}.name`),
+        author: ctx.author.toString(),
+        chance:
+          getMagicItemById<IHuntCooldownBoostItem<typeof selected>>(droppedItem).data.dropChance,
+      }),
+    });
   }
 }

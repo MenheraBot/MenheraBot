@@ -1,11 +1,10 @@
-import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { User } from 'discord.js-light';
 
 export default class XandaoInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'xandao',
       description: '「💪」・Sem pressão aqui é Xandão! Receba uma frase iluminada do Xandão.',
       options: [
@@ -24,7 +23,10 @@ export default class XandaoInteractionCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     if (ctx.channel.type === 'DM' || ctx.channel.isThread()) {
-      ctx.replyT('error', 'only-text', {}, true);
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:xandao.only-text'),
+        ephemeral: true,
+      });
       return;
     }
 
@@ -79,7 +81,7 @@ export default class XandaoInteractionCommand extends InteractionCommand {
     try {
       const webhooks = await ctx.channel.fetchWebhooks();
 
-      const clientUser = this.client.user;
+      const clientUser = ctx.client.user;
       if (!clientUser) return;
       const ownWebhook = webhooks
         .filter((hook) => (hook.owner as User).id === clientUser.id)
@@ -107,7 +109,7 @@ export default class XandaoInteractionCommand extends InteractionCommand {
         ctx.deleteReply();
       }
     } catch (err) {
-      await ctx.editReply({ content: `${ctx.translate('err_message')}` });
+      await ctx.makeMessage({ content: `${ctx.locale('commands:xandao.err_message')}` });
     }
   }
 }

@@ -2,54 +2,70 @@ import { T8BallAnswerTypes } from '@utils/Types';
 
 export const shopEconomy = {
   colors: {
-    purple: 50000,
-    red: 100000,
-    cian: 150000,
-    green: 300000,
-    pink: 500000,
-    yellow: 400000,
-    your_choice: 700000,
+    purple: 30_000,
+    red: 40_000,
+    cian: 50_000,
+    green: 60_000,
+    pink: 70_000,
+    yellow: 80_000,
+    your_choice: 100_000,
   },
   hunts: {
-    roll: 7000,
-    demon: 600,
-    giant: 1900,
-    angel: 3200,
-    archangel: 5900,
-    demigod: 8000,
-    god: 19000,
+    roll: 15_000,
+    demons: 1_200,
+    giants: 1_500,
+    angels: 2_600,
+    archangels: 3_200,
+    demigods: 6_000,
+    gods: 16_000,
   },
 };
 
-export const probabilities = {
-  support: {
-    demon: [
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 4, 5, 6,
-    ],
-    giant: [0, 0, 0, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 3, 5],
-    angel: [0, 0, 0, 1, 1, 1, 2, 3],
-    archangel: [0, 0, 0, 0, 0, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2],
-    demigod: [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2],
-    god: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-  },
-  normal: {
-    demon: [
-      0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2,
-      2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 4, 5,
-    ],
-    giant: [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 3, 4],
-    angel: [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3],
-    archangel: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2],
-    demigod: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2],
-    god: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-  },
-  defaultTime: 3600000,
+export const defaultHuntingProbabilities = {
+  demons: [
+    { amount: 0, probabilty: 25 },
+    { amount: 1, probabilty: 21 },
+    { amount: 2, probabilty: 18 },
+    { amount: 4, probabilty: 15 },
+    { amount: 3, probabilty: 12 },
+    { amount: 5, probabilty: 9 },
+  ],
+  giants: [
+    { amount: 0, probabilty: 33 },
+    { amount: 1, probabilty: 23 },
+    { amount: 2, probabilty: 19 },
+    { amount: 4, probabilty: 18 },
+    { amount: 3, probabilty: 7 },
+  ],
+  angels: [
+    { amount: 0, probabilty: 50 },
+    { amount: 1, probabilty: 30 },
+    { amount: 2, probabilty: 15 },
+    { amount: 3, probabilty: 5 },
+  ],
+  archangels: [
+    { amount: 0, probabilty: 54 },
+    { amount: 1, probabilty: 27 },
+    { amount: 2, probabilty: 15 },
+    { amount: 3, probabilty: 4 },
+  ],
+  demigods: [
+    { amount: 0, probabilty: 70 },
+    { amount: 1, probabilty: 27 },
+    { amount: 2, probabilty: 3 },
+  ],
+  gods: [
+    { amount: 0, probabilty: 92 },
+    { amount: 1, probabilty: 8 },
+  ],
 };
+
+export const defaultHuntCooldown = 3_600_000;
 
 export const votes = {
   rollQuantity: 1,
-  maxStarValue: 3600,
-  minStarValue: 1200,
+  maxStarValue: 3_600,
+  minStarValue: 1_200,
   rollWeekendMultiplier: 2,
   starWeekendMultiplier: 2,
   roll20Multiplier: 4,
@@ -62,12 +78,14 @@ export const emojis = {
   warn: '<:atencao:759603958418767922>',
   notify: '<:notify:759607330597502976>',
   wink: '<:MenheraWink:767210250637279252>',
-  devil: '<:MenheraDevil:768621225420652595>',
-  demon: '<:Demon:758765044443381780>',
-  angel: '<:Angel:758765044204437535>',
-  semigod: '<:SemiGod:758766732235374674>',
-  god: '<:God:758474639570894899>',
   ok: '<:ok:727975974125436959>',
+  devil: '<:MenheraDevil:768621225420652595>',
+  demons: '<:Demon:758765044443381780>',
+  angels: '<:Angel:758765044204437535>',
+  demigods: '<:SemiGod:758766732235374674>',
+  gods: '<:God:758474639570894899>',
+  giants: '🦍',
+  archangels: '👼',
   us: '🇺🇸',
   br: '🇧🇷',
   ring: '💍',
@@ -79,14 +97,13 @@ export const emojis = {
   heart: '❤️',
   lick: '👅',
   sword: '⚔️',
+  gay_flag: '🏳️‍🌈',
   rainbow: '🌈',
-  giant: '🦍',
-  archangel: '👼',
   crown: '👑',
   scape: '🐥',
   lock: '🔒',
   list: '📜',
-  star: '⭐',
+  estrelinhas: '⭐',
 };
 
 export const languageByLocale = {
@@ -192,13 +209,14 @@ export const EightBallAnswers: { id: number; type: T8BallAnswerTypes }[] = [
 export type EmojiTypes = keyof typeof emojis;
 
 export const COLORS = {
+  Default: '#a788ff' as const,
   HuntDefault: '#df93fd' as const,
-  HuntDemon: '#df1b1b' as const,
-  HuntAngel: '#efe9e9' as const,
-  HuntSD: '#3cb5f0' as const,
-  HuntGod: '#b115bf' as const,
-  HuntGiant: '#fa611f' as const,
-  HuntArchangel: '#a2f29e' as const,
+  HuntDemons: '#df1b1b' as const,
+  HuntAngels: '#efe9e9' as const,
+  HuntDemigods: '#3cb5f0' as const,
+  HuntGods: '#b115bf' as const,
+  HuntGiants: '#fa611f' as const,
+  HuntArchangels: '#a2f29e' as const,
   Aqua: '#03f3ff' as const,
   Purple: '#7f28c4' as const,
   ACTIONS: '#fa8cc5' as const,
@@ -208,21 +226,10 @@ export const COLORS = {
   UltraPink: '#ff29ae' as const,
 };
 
-export const BLACKJACK_CARDS = [
-  1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,
-  28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51,
-  52,
-];
+export const BLACKJACK_CARDS = Array.from({ length: 52 }, (_, i) => i + 1);
 
 export const clientUnreadyString =
   '🇧🇷 | A Menhera ainda não se conectou 100%! Aguarde um pouquinho antes de tentar novamente!\n🇺🇸 | Menhera is not yet 100% connected! Wait a while before trying again!';
 
 export const commandsInGuild =
   '🇧🇷 | Você só pode usar comandos em servidores\n🇺🇸 | You can only uses commands in guilds';
-
-Object.freeze(BLACKJACK_CARDS);
-Object.freeze(COLORS);
-Object.freeze(emojis);
-Object.freeze(shopEconomy);
-Object.freeze(probabilities);
-Object.freeze(votes);

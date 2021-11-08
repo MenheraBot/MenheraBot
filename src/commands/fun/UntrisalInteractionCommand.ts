@@ -1,34 +1,36 @@
-import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageButton } from 'discord.js-light';
-import { emojis } from '@structures/MenheraConstants';
 import Util from '@utils/Util';
 
 export default class UntrisalInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'untrisal',
       description: '「🛑」・Termina o seu trisal',
       category: 'fun',
       cooldown: 5,
       clientPermissions: ['EMBED_LINKS'],
+      authorDataFields: ['trisal'],
     });
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     if (ctx.data.user.trisal?.length === 0) {
-      await ctx.replyT('error', 'error', {}, true);
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:untrisal.error'),
+        ephemeral: true,
+      });
       return;
     }
 
     const button = new MessageButton()
       .setStyle('SUCCESS')
       .setCustomId(ctx.interaction.id)
-      .setLabel(ctx.translate('confirm'));
+      .setLabel(ctx.locale('commands:untrisal.confirm'));
 
-    await ctx.reply({
-      content: `${emojis.question} | ${ctx.translate('sure')}`,
+    await ctx.makeMessage({
+      content: ctx.prettyResponse('question', 'commands:untrisal.sure'),
       components: [{ type: 'ACTION_ROW', components: [button] }],
     });
 
@@ -40,7 +42,7 @@ export default class UntrisalInteractionCommand extends InteractionCommand {
     );
 
     if (!confirmed) {
-      ctx.editReply({
+      ctx.makeMessage({
         components: [
           {
             type: 1,
@@ -51,13 +53,13 @@ export default class UntrisalInteractionCommand extends InteractionCommand {
       return;
     }
 
-    await this.client.repositories.relationshipRepository.untrisal(
+    await ctx.client.repositories.relationshipRepository.untrisal(
       ctx.author.id,
       ctx.data.user.trisal[0],
       ctx.data.user.trisal[1],
     );
-    ctx.editReply({
-      content: `${emojis.success} | ${ctx.translate('done')}`,
+    ctx.makeMessage({
+      content: ctx.prettyResponse('success', 'commands:untrisal.done'),
       components: [
         { type: 'ACTION_ROW', components: [button.setDisabled(true).setStyle('PRIMARY')] },
       ],

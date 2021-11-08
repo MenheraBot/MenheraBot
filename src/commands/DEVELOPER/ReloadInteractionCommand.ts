@@ -1,18 +1,17 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 
 export default class ReloadSlashInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'reload',
       description: 'Recarrega algum comando',
       category: 'dev',
       options: [
         {
           type: 'STRING',
-          name: 'comando',
+          name: 'opcao',
           description: 'Comando pra mete em maintenance',
           required: true,
         },
@@ -25,25 +24,24 @@ export default class ReloadSlashInteractionCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    if (ctx.options.getString('comando', true).toLowerCase() === 'locales') {
-      // @ts-ignore
-      await this.client.shard?.broadcastEval((c) => c.reloadLocales());
-      ctx.reply('Locales REcarregados');
+    const opcao = ctx.options.getString('opcao', true).toLowerCase();
+    if (opcao === 'locales') {
+      // @ts-expect-error Reload command doesnt exist in client<boolean>
+      await ctx.client.shard?.broadcastEval((c) => c.reloadLocales());
+      ctx.makeMessage({ content: 'Locales Recarregados' });
       return;
     }
 
-    const command = ctx.options.getString('comando', true).toLowerCase();
-
-    if (!this.client.slashCommands.get(command)) {
-      ctx.replyE('error', 'NAO TEM NENHUM COMANDO COM, ESE NOME');
+    if (!ctx.client.slashCommands.get(opcao)) {
+      ctx.makeMessage({ content: 'NAO TEM NENHUM COMANDO COM, ESE NOME' });
       return;
     }
 
-    // @ts-ignore
-    await this.client.shard?.broadcastEval((c, { a }) => c.reloadCommand(a), {
-      context: { a: command },
+    // @ts-expect-error Reload command doesnt exist in client<boolean>
+    await ctx.client.shard?.broadcastEval((c, { a }) => c.reloadCommand(a), {
+      context: { a: opcao },
     });
 
-    await ctx.replyE('success', `${command} recarregado com sucesso!`);
+    await ctx.makeMessage({ content: `${opcao} recarregado com sucesso!` });
   }
 }

@@ -1,13 +1,12 @@
-import MenheraClient from 'MenheraClient';
-import { COLORS } from '@structures/MenheraConstants';
+import { COLORS } from '@structures/Constants';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageEmbed } from 'discord.js-light';
 import HttpRequests from '@utils/HTTPrequests';
 
 export default class MamarInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'mamar',
       description:
         '「🧉」・Principal comando da Menhera. De uma mamada de Qualidade monstra em alguém',
@@ -29,25 +28,38 @@ export default class MamarInteractionCommand extends InteractionCommand {
     const mention = ctx.options.getUser('user', true);
 
     if (mention.bot) {
-      await ctx.replyT('warn', 'bot', {
-        author: ctx.author.toString(),
-        mention: mention.toString(),
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:mamar.bot', {
+          author: ctx.author.toString(),
+          mention: mention.toString(),
+        }),
       });
       return;
     }
 
     if (mention.id === ctx.author.id) {
-      await ctx.replyT('error', 'self-mention', {}, true);
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:mamar.self-mention'),
+        ephemeral: true,
+      });
+      return;
+    }
+
+    if (await ctx.client.repositories.blacklistRepository.isUserBanned(mention.id)) {
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:mamar.user-banned'),
+        ephemeral: true,
+      });
       return;
     }
 
     const selectedImage = await HttpRequests.getAssetImageUrl('mamar');
     const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
     const embed = new MessageEmbed()
-      .setTitle(ctx.translate('embed_title'))
+      .setTitle(ctx.locale('commands:mamar.embed_title'))
       .setColor(COLORS.ACTIONS)
       .setDescription(
-        ctx.translate('embed_description', {
+        ctx.locale('commands:mamar.embed_description', {
           author: ctx.author.toString(),
           mention: mention.toString(),
         }),
@@ -55,7 +67,7 @@ export default class MamarInteractionCommand extends InteractionCommand {
       .setImage(selectedImage)
       .setThumbnail(avatar);
 
-    await ctx.reply({ embeds: [embed] });
+    await ctx.makeMessage({ embeds: [embed] });
     await ctx.client.repositories.mamarRepository.mamar(ctx.author.id, mention.id);
   }
 }

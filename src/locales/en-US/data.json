@@ -1,0 +1,32 @@
+{
+  "magic-items": {
+    "1": {
+      "name": "The Colt",
+      "description": "Any demon that gets hit by one of your 13 bullets will die!"
+    },
+    "2": {
+      "name": "Giant Cage",
+      "description": "A huge cage made especially to trap giants"
+    },
+    "3": {
+      "name": "Edge of Cain",
+      "description": "The first blade made for hunting angels"
+    },
+    "4": {
+      "name": "Silver Blade",
+      "description": "A double-edged blade specializing in the killing of Archangels"
+    },
+    "5": {
+      "name": "Necare Hêmítheos",
+      "description": "Physical weapons are not always effective, for the demigods it takes Greco-Latin runes to bring them down"
+    },
+    "6": {
+      "name": "Deicide",
+      "description": "The knowledge to kill a god can only be gained from external aids"
+    },
+    "7": {
+      "name": "Demonic Accelerator",
+      "description": "A machine that speeds up the time between hunting demons"
+    }
+  }
+}

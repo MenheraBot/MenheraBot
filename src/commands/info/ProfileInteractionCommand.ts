@@ -1,4 +1,3 @@
-import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { IUserDataToProfile, IUserSchema } from '@utils/Types';
@@ -6,8 +5,8 @@ import HttpRequests from '@utils/HTTPrequests';
 import { MessageAttachment, User } from 'discord.js-light';
 
 export default class ProfileInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'perfil',
       description: '「✨」・Mostra o perfil de algúem',
       options: [
@@ -21,6 +20,17 @@ export default class ProfileInteractionCommand extends InteractionCommand {
       category: 'info',
       cooldown: 5,
       clientPermissions: ['EMBED_LINKS'],
+      authorDataFields: [
+        'married',
+        'selectedColor',
+        'votes',
+        'info',
+        'voteCooldown',
+        'badges',
+        'marriedDate',
+        'mamado',
+        'mamou',
+      ],
     });
   }
 
@@ -31,24 +41,45 @@ export default class ProfileInteractionCommand extends InteractionCommand {
 
     if (member.id !== ctx.author.id) {
       if (member.bot) {
-        await ctx.replyT('error', 'bot', {}, true);
+        await ctx.makeMessage({
+          content: ctx.prettyResponse('error', 'commands:perfil.bot'),
+          ephemeral: true,
+        });
         return;
       }
-      user = await this.client.repositories.userRepository.find(member.id);
+      user = await ctx.client.repositories.userRepository.find(member.id, [
+        'married',
+        'selectedColor',
+        'votes',
+        'info',
+        'voteCooldown',
+        'badges',
+        'marriedDate',
+        'mamado',
+        'mamou',
+        'ban',
+        'banReason',
+      ]);
     }
 
     if (!user) {
-      await ctx.replyT('error', 'no-dbuser', {}, true);
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:perfil.no-dbuser'),
+        ephemeral: true,
+      });
       return;
     }
 
     if (user.ban && ctx.author.id !== process.env.OWNER) {
-      await ctx.replyT('error', 'banned', { reason: user.banReason }, true);
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:perfil.banned', { reason: user.banReason }),
+        ephemeral: true,
+      });
       return;
     }
 
-    if (user?.casado !== 'false' && user?.casado)
-      marry = await this.client.users.fetch(user.casado);
+    if (user?.married && user.married !== 'false')
+      marry = await ctx.client.users.fetch(user.married);
 
     await ctx.defer();
 
@@ -56,33 +87,33 @@ export default class ProfileInteractionCommand extends InteractionCommand {
     const usageCommands = await HttpRequests.getProfileCommands(member.id);
 
     const userSendData: IUserDataToProfile = {
-      cor: user.cor,
+      cor: user.selectedColor,
       avatar,
-      votos: user.votos,
-      nota: user.nota,
+      votos: user.votes,
+      nota: user.info,
       tag: member.tag,
       flagsArray: member.flags?.toArray() ?? ['NONE'],
-      casado: user.casado,
-      voteCooldown: user.voteCooldown,
+      casado: user.married as string,
+      voteCooldown: user.voteCooldown as number,
       badges: user.badges,
       username: member.username,
-      data: user.data as string,
-      mamadas: user.mamadas,
+      data: user.marriedDate as string,
+      mamadas: user.mamado,
       mamou: user.mamou,
     };
 
     const i18nData = {
-      aboutme: ctx.translate('about-me'),
-      mamado: ctx.translate('mamado'),
-      mamou: ctx.translate('mamou'),
-      zero: ctx.translate('zero'),
-      um: ctx.translate('um'),
-      dois: ctx.translate('dois'),
-      tres: ctx.translate('tres'),
+      aboutme: ctx.locale('commands:perfil.about-me'),
+      mamado: ctx.locale('commands:perfil.mamado'),
+      mamou: ctx.locale('commands:perfil.mamou'),
+      zero: ctx.locale('commands:perfil.zero'),
+      um: ctx.locale('commands:perfil.um'),
+      dois: ctx.locale('commands:perfil.dois'),
+      tres: ctx.locale('commands:perfil.tres'),
     };
 
-    const res = this.client.picassoWs.isAlive
-      ? await this.client.picassoWs.makeRequest({
+    const res = ctx.client.picassoWs.isAlive
+      ? await ctx.client.picassoWs.makeRequest({
           id: ctx.interaction.id,
           type: 'profile',
           data: { user: userSendData, marry, usageCommands, i18n: i18nData },
@@ -90,11 +121,11 @@ export default class ProfileInteractionCommand extends InteractionCommand {
       : await HttpRequests.profileRequest(userSendData, marry, usageCommands, i18nData);
 
     if (res.err) {
-      await ctx.deferedReplyL('error', 'commands:http-error');
+      await ctx.makeMessage({ content: ctx.prettyResponseLocale('error', 'commands:http-error') });
       return;
     }
 
-    await ctx.editReply({
+    await ctx.makeMessage({
       files: [new MessageAttachment(res.data, 'profile.png')],
     });
   }

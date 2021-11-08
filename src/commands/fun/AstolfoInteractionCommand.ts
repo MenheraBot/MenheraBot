@@ -1,13 +1,12 @@
-import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageAttachment } from 'discord.js-light';
 import HttpRequests from '@utils/HTTPrequests';
-import { emojis } from '@structures/MenheraConstants';
+import { emojis } from '@structures/Constants';
 
 export default class AstolfoInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'astolfo',
       description: '「🍆」・É grande, né? Disse o asolfo para aquilo que você o disse',
       options: [
@@ -28,8 +27,8 @@ export default class AstolfoInteractionCommand extends InteractionCommand {
     const text = ctx.options.getString('frase', true);
     await ctx.defer();
 
-    const res = this.client.picassoWs.isAlive
-      ? await this.client.picassoWs.makeRequest({
+    const res = ctx.client.picassoWs.isAlive
+      ? await ctx.client.picassoWs.makeRequest({
           id: ctx.interaction.id,
           type: 'astolfo',
           data: { text },

@@ -1,10 +1,9 @@
-import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 
 export default class GiveBadgeSlashInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'givebadge',
       description: 'da badge',
       category: 'dev',
@@ -30,11 +29,32 @@ export default class GiveBadgeSlashInteractionCommand extends InteractionCommand
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    await this.client.repositories.badgeRepository.addBadge(
+    ctx.client.database.Users.updateMany(
+      {},
+      {
+        $rename: {
+          mamadas: 'mamado',
+          casado: 'married',
+          data: 'marriedDate',
+          cor: 'selectedColor',
+          cores: 'colors',
+          caçados: 'demons',
+          anjos: 'angels',
+          semideuses: 'demigods',
+          deuses: 'gods',
+          caçarTime: 'huntCooldown',
+          votos: 'votes',
+        },
+      },
+    ).then(console.log);
+
+    return;
+
+    await ctx.client.repositories.badgeRepository.addBadge(
       ctx.options.getUser('user', true).id,
       ctx.options.getInteger('badgeid', true),
     );
 
-    await ctx.reply('Concluido');
+    await ctx.makeMessage({ content: 'Concluido' });
   }
 }

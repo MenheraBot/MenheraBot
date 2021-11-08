@@ -1,3 +1,4 @@
+import { debugError } from '@utils/Util';
 import { Redis } from 'ioredis';
 import UserRepository from './UserRepository';
 
@@ -16,22 +17,27 @@ export default class BlacklistRepository {
 
   async addBannedUsers(user: string[] | string): Promise<void> {
     if (!this.redisClient) return;
-    await this.redisClient.sadd('banned_users', user);
+    await this.redisClient.sadd('banned_users', user).catch(debugError);
   }
 
   async removeBannedUser(user: string): Promise<void> {
     if (!this.redisClient) return;
-    await this.redisClient.srem('banned_users', user);
+    await this.redisClient.srem('banned_users', user).catch(debugError);
   }
 
   async isUserBanned(user: string): Promise<boolean> {
-    if (this.redisClient) {
-      const isBan = await this.redisClient.sismember('banned_users', user);
-      return isBan !== 0;
-    }
+    const query = async () => {
+      const isBanned = await this.userRepository.getBannedUserInfo(user);
+      if (!isBanned) return false;
+      return isBanned.ban ?? false;
+    };
 
-    const isBanned = await this.userRepository.getBannedUserInfo(user);
-    if (!isBanned) return false;
-    return isBanned.ban ?? false;
+    if (this.redisClient)
+      return this.redisClient
+        .sismember('banned_users', user)
+        .then((res) => res !== 0)
+        .catch(() => query());
+
+    return query();
   }
 }

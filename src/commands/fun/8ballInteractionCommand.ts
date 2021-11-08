@@ -1,13 +1,12 @@
-import MenheraClient from 'MenheraClient';
-import { COLORS, EightBallAnswers, emojis } from '@structures/MenheraConstants';
+import { COLORS, EightBallAnswers, emojis } from '@structures/Constants';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageEmbed, MessageAttachment } from 'discord.js-light';
 import HttpRequests from '@utils/HTTPrequests';
 
 export default class EightballInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: '8ball',
       description: '「🎱」・Faça uma pergunta de resposta Sim/Não para a Menhera',
       options: [
@@ -29,36 +28,38 @@ export default class EightballInteractionCommand extends InteractionCommand {
 
     const randomAnswer = EightBallAnswers[Math.floor(Math.random() * EightBallAnswers.length)];
 
-    const res = this.client.picassoWs.isAlive
-      ? await this.client.picassoWs.makeRequest({
+    const res = ctx.client.picassoWs.isAlive
+      ? await ctx.client.picassoWs.makeRequest({
           type: '8ball',
           id: ctx.interaction.id,
           data: {
             question: ctx.options.getString('pergunta', true),
-            answer: ctx.translate(`answers.${randomAnswer.id}`),
+            answer: ctx.locale(`commands:8ball.answers.${randomAnswer.id as 1}`),
             type: randomAnswer.type,
             username: ctx.author.username,
           },
         })
       : await HttpRequests.EightballRequest({
-          answer: ctx.translate(`answers.${randomAnswer.id}`),
+          answer: ctx.locale(`commands:8ball.answers.${randomAnswer.id as 1}`),
           question: ctx.options.getString('pergunta', true),
           type: randomAnswer.type,
           username: ctx.author.username,
         });
 
-    const embed = new MessageEmbed().setTitle(`${emojis.question} | ${ctx.translate('ask')}`);
+    const embed = new MessageEmbed().setTitle(
+      `${emojis.question} | ${ctx.locale('commands:8ball.ask')}`,
+    );
 
     if (res.err) {
       embed
         .addFields([
           {
-            name: ctx.translate('question'),
+            name: ctx.locale('commands:8ball.question'),
             value: `${ctx.options.getString('pergunta', true)}`,
           },
           {
-            name: ctx.translate('answer'),
-            value: ctx.translate(`answers.${randomAnswer.id}`),
+            name: ctx.locale('commands:8ball.answer'),
+            value: ctx.locale(`commands:8ball.answers.${randomAnswer.id as 1}`),
           },
         ])
         .setColor(COLORS.Aqua);

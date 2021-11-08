@@ -1,41 +1,46 @@
-import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageButton, MessageComponentInteraction } from 'discord.js-light';
-import { emojis } from '@structures/MenheraConstants';
+import { emojis } from '@structures/Constants';
 import Util from '@utils/Util';
 
 export default class DivorceInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'divorciar',
       description: '「💔」・Divorcie de seu atual cônjuje',
       category: 'fun',
       cooldown: 8,
       clientPermissions: ['EMBED_LINKS'],
+      authorDataFields: ['married'],
     });
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const authorData = ctx.data.user;
 
-    if (!authorData.casado || authorData.casado === 'false') {
-      await ctx.replyT('warn', 'author-single', {}, true);
+    if (!authorData.married) {
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('warn', 'commands:divorciar.author-single'),
+        ephemeral: true,
+      });
       return;
     }
 
     const ConfirmButton = new MessageButton()
       .setCustomId(`${ctx.interaction.id} CONFIRM`)
-      .setLabel(ctx.translate('divorce'))
+      .setLabel(ctx.locale('commands:divorciar.divorce'))
       .setStyle('SUCCESS');
 
     const CancellButton = new MessageButton()
       .setCustomId(`${ctx.interaction.id} CANCEL`)
-      .setLabel(ctx.translate('cancel'))
+      .setLabel(ctx.locale('commands:divorciar.cancel'))
       .setStyle('DANGER');
 
-    ctx.reply({
-      content: `${emojis.question} | ${ctx.translate('confirmation')} <@${authorData.casado}> ?`,
+    ctx.makeMessage({
+      content: `${emojis.question} | ${ctx.locale('commands:divorciar.confirmation')} <@${
+        authorData.married
+      }> ?`,
       components: [{ type: 1, components: [ConfirmButton, CancellButton] }],
     });
 
@@ -49,7 +54,7 @@ export default class DivorceInteractionCommand extends InteractionCommand {
     );
 
     if (!collected) {
-      ctx.editReply({
+      ctx.makeMessage({
         components: [
           {
             type: 1,
@@ -64,10 +69,10 @@ export default class DivorceInteractionCommand extends InteractionCommand {
     }
 
     if (collected.customId.endsWith('CONFIRM')) {
-      ctx.editReply({
-        content: `${emojis.success} | ${ctx.translate('confirmed', {
+      ctx.makeMessage({
+        content: `${emojis.success} | ${ctx.locale('commands:divorciar.confirmed', {
           author: ctx.author.toString(),
-          mention: `<@${authorData.casado}>`,
+          mention: `<@${authorData.married}>`,
         })}`,
         components: [
           {
@@ -80,13 +85,13 @@ export default class DivorceInteractionCommand extends InteractionCommand {
         ],
       });
 
-      await this.client.repositories.relationshipRepository.divorce(
-        ctx.data.user.casado,
+      await ctx.client.repositories.relationshipRepository.divorce(
+        authorData.married,
         ctx.author.id,
       );
     } else {
-      ctx.editReply({
-        content: `${emojis.error} | ${ctx.translate('canceled')}`,
+      ctx.makeMessage({
+        content: `${emojis.error} | ${ctx.locale('commands:divorciar.canceled')}`,
         components: [
           {
             type: 1,

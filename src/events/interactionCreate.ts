@@ -1,31 +1,40 @@
-import { Interaction, Collection, ThreadChannel, GuildChannel } from 'discord.js-light';
+import {
+  Interaction,
+  Collection,
+  ThreadChannel,
+  GuildChannel,
+  TextChannel,
+} from 'discord.js-light';
 import MenheraClient from 'MenheraClient';
 import InteractionCommandExecutor from '@structures/command/InteractionCommandExecutor';
-import { clientUnreadyString } from '@structures/MenheraConstants';
+import { clientUnreadyString } from '@structures/Constants';
 
 export default class InteractionCreate {
-  constructor(private client: MenheraClient) {}
-
-  async run(interaction: Interaction): Promise<void> {
+  async run(
+    interaction: Interaction & { client: MenheraClient; channel: TextChannel },
+  ): Promise<void> {
     if (!interaction.isCommand() || !interaction.inGuild()) return;
-    if (!this.client.isReady())
+    if (!interaction.client.isReady())
       return interaction
         .reply({ content: clientUnreadyString, ephemeral: true })
         .catch(() => undefined);
 
-    if (!this.client.channels.cache.has(interaction.channelId)) {
-      const channel = await this.client.channels.fetch(interaction.channelId).catch(() => null);
+    if (!interaction.channel?.isText()) return;
+
+    if (!interaction.client.channels.cache.has(interaction.channelId)) {
+      const channel = await interaction.client.channels
+        .fetch(interaction.channelId)
+        .catch(() => null);
       if (channel) {
-        (this.client.channels.cache as Collection<string, ThreadChannel | GuildChannel>).forceSet(
-          interaction.channelId,
-          channel,
-        );
+        (
+          interaction.client.channels.cache as Collection<string, ThreadChannel | GuildChannel>
+        ).forceSet(interaction.channelId, channel);
         (
           interaction.guild?.channels.cache as Collection<string, ThreadChannel | GuildChannel>
         ).forceSet(interaction.channelId, channel);
       }
     }
 
-    InteractionCommandExecutor(this.client, interaction);
+    InteractionCommandExecutor(interaction.client, interaction);
   }
 }

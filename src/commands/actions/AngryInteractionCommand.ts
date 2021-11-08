@@ -1,13 +1,12 @@
-import MenheraClient from 'MenheraClient';
-import { COLORS } from '@structures/MenheraConstants';
+import { COLORS } from '@structures/Constants';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageEmbed } from 'discord.js-light';
 import HttpRequests from '@utils/HTTPrequests';
 
 export default class AngryInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'raiva',
       description: '「😡」・Mostre a todos que está com raiva',
       options: [
@@ -28,7 +27,9 @@ export default class AngryInteractionCommand extends InteractionCommand {
     const user = ctx.options.getUser('user', false);
 
     if (user?.bot) {
-      await ctx.replyL('error', 'commands:angry.bot');
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:raiva.bot'),
+      });
       return;
     }
 
@@ -37,17 +38,17 @@ export default class AngryInteractionCommand extends InteractionCommand {
 
     if (!user || user.id === ctx.author.id) {
       const embed = new MessageEmbed()
-        .setTitle(ctx.translate('no-mention.embed_title'))
+        .setTitle(ctx.locale('commands:raiva.no-mention.embed_title'))
         .setColor(COLORS.ACTIONS)
         .setDescription(
-          ctx.translate('no-mention.embed_description', {
+          ctx.locale('commands:raiva.no-mention.embed_description', {
             author: ctx.author.toString(),
           }),
         )
         .setThumbnail(avatar)
         .setImage(selectedImage);
 
-      await ctx.reply({ embeds: [embed] });
+      await ctx.makeMessage({ embeds: [embed] });
       return;
     }
 
@@ -55,7 +56,7 @@ export default class AngryInteractionCommand extends InteractionCommand {
       .setTitle('Sniff Sniff')
       .setColor(COLORS.ACTIONS)
       .setDescription(
-        ctx.translate('embed_description', {
+        ctx.locale('commands:raiva.embed_description', {
           author: ctx.author.toString(),
           mention: user.toString(),
         }),
@@ -63,6 +64,6 @@ export default class AngryInteractionCommand extends InteractionCommand {
       .setImage(selectedImage)
       .setThumbnail(avatar);
 
-    await ctx.reply({ embeds: [embed] });
+    await ctx.makeMessage({ embeds: [embed] });
   }
 }

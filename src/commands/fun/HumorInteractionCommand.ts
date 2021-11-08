@@ -1,12 +1,11 @@
-import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageEmbed } from 'discord.js-light';
 import HttpRequests from '@utils/HTTPrequests';
 
 export default class HumorInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'humor',
       description: '「🤣」・KK tumor e piadas',
       category: 'fun',
@@ -20,6 +19,6 @@ export default class HumorInteractionCommand extends InteractionCommand {
 
     const embed = new MessageEmbed().setImage(selectedImage).setColor('RANDOM');
 
-    await ctx.reply({ embeds: [embed] });
+    await ctx.makeMessage({ embeds: [embed] });
   }
 }

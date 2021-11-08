@@ -1,5 +1,4 @@
-import MenheraClient from 'MenheraClient';
-import { COLORS } from '@structures/MenheraConstants';
+import { COLORS } from '@structures/Constants';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageButton, MessageComponentInteraction, MessageEmbed, User } from 'discord.js-light';
@@ -7,8 +6,8 @@ import Util from '@utils/Util';
 import HttpRequests from '@utils/HTTPrequests';
 
 export default class SarrarInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'sarrar',
       description: '「🦧」・Invoca o poder dos irmãos Berti para fazer a lendária sarrada',
       options: [
@@ -31,10 +30,10 @@ export default class SarrarInteractionCommand extends InteractionCommand {
     const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     const embed = new MessageEmbed()
-      .setTitle(ctx.translate('embed_title'))
+      .setTitle(ctx.locale('commands:sarrar.embed_title'))
       .setColor(COLORS.ACTIONS)
       .setDescription(
-        ctx.translate('embed_description', {
+        ctx.locale('commands:sarrar.embed_description', {
           author: ctx.author.toString(),
           mention: user.toString(),
         }),
@@ -42,8 +41,8 @@ export default class SarrarInteractionCommand extends InteractionCommand {
       .setImage(selectedImage)
       .setThumbnail(avatar);
 
-    if (ctx.interaction.replied) ctx.editReply({ embeds: [embed], components: [] });
-    else ctx.reply({ embeds: [embed], components: [] });
+    if (ctx.interaction.replied) ctx.makeMessage({ embeds: [embed], components: [] });
+    else ctx.makeMessage({ embeds: [embed], components: [] });
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
@@ -56,23 +55,23 @@ export default class SarrarInteractionCommand extends InteractionCommand {
 
     const randSozinho = await HttpRequests.getAssetImageUrl('sarrar_sozinho');
     const embed = new MessageEmbed()
-      .setTitle(ctx.translate('no-mention.embed_title'))
+      .setTitle(ctx.locale('commands:sarrar.no-mention.embed_title'))
       .setColor(COLORS.ACTIONS)
       .setDescription(
-        ctx.translate('no-mention.embed_description', {
+        ctx.locale('commands:sarrar.no-mention.embed_description', {
           author: ctx.author.toString(),
         }),
       )
       .setImage(randSozinho)
       .setThumbnail(ctx.author.displayAvatarURL())
-      .setFooter(ctx.translate('no-mention.embed_footer'));
+      .setFooter(ctx.locale('commands:sarrar.no-mention.embed_footer'));
 
     const Button = new MessageButton()
       .setCustomId(ctx.interaction.id)
-      .setLabel(ctx.translate('sarrar'))
+      .setLabel(ctx.locale('commands:sarrar.sarrar'))
       .setStyle('PRIMARY');
 
-    ctx.reply({
+    ctx.makeMessage({
       embeds: [embed],
       components: [{ type: 'ACTION_ROW', components: [Button] }],
     });
@@ -82,7 +81,7 @@ export default class SarrarInteractionCommand extends InteractionCommand {
       if (int.customId !== ctx.interaction.id) return false;
       if (int.user.id === ctx.author.id) return false;
 
-      const isUserbanned = await this.client.repositories.blacklistRepository.isUserBanned(
+      const isUserbanned = await ctx.client.repositories.blacklistRepository.isUserBanned(
         int.user.id,
       );
 
@@ -96,7 +95,7 @@ export default class SarrarInteractionCommand extends InteractionCommand {
     ).catch(() => null);
 
     if (!collected) {
-      ctx.editReply({
+      ctx.makeMessage({
         embeds: [embed],
         components: [
           {

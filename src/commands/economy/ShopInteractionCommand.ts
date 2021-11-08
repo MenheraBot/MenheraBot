@@ -1,12 +1,21 @@
-import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 
-import { shopEconomy } from '@structures/MenheraConstants';
+import { COLORS, emojis, shopEconomy } from '@structures/Constants';
+import MagicItems from '@structures/HuntMagicItems';
+import { HuntingTypes, IProbablyBoostItem } from '@utils/Types';
+import Util, { actionRow } from '@utils/Util';
+import {
+  MessageEmbed,
+  MessageSelectMenu,
+  MessageSelectOptionData,
+  SelectMenuInteraction,
+  ColorResolvable,
+} from 'discord.js-light';
 
 export default class ShopInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'loja',
       description: '「💴」・Abre o brechó da Menhera',
       options: [
@@ -16,55 +25,24 @@ export default class ShopInteractionCommand extends InteractionCommand {
           type: 'SUB_COMMAND_GROUP',
           options: [
             {
+              name: 'itens',
+              description: '「🔮」・ Compre itens mágicos para melhorar suas habilidades',
+              type: 'SUB_COMMAND',
+            },
+            {
               name: 'cores',
               description: '「🌈」・Compre cores para dar um UP em seu perfil!',
               type: 'SUB_COMMAND',
               options: [
                 {
-                  name: 'cor',
-                  description: 'Cor para comprar',
-                  type: 'STRING',
-                  required: true,
-                  choices: [
-                    {
-                      name: 'Roxo Escuro',
-                      value: '1',
-                    },
-                    {
-                      name: 'Vermelho',
-                      value: '2',
-                    },
-                    {
-                      name: 'Ciano',
-                      value: '3',
-                    },
-                    {
-                      name: 'Verde Neon',
-                      value: '4',
-                    },
-                    {
-                      name: 'Rosa Choque',
-                      value: '5',
-                    },
-                    {
-                      name: 'Amarelo',
-                      value: '6',
-                    },
-                    {
-                      name: 'Sua Escolha',
-                      value: '7',
-                    },
-                  ],
-                },
-                {
                   name: 'hex',
-                  description: 'Código da cor ao comprar a opção 7',
+                  description: 'Código da cor caso você vá comprar uma cor personalizada',
                   type: 'STRING',
                   required: false,
                 },
                 {
                   name: 'nome',
-                  description: 'Nome da cor para a identificar. Máximo 20 caracteres',
+                  description: 'Nome da cor personalizada para a identificar. Máximo 20 caracteres',
                   type: 'STRING',
                   required: false,
                 },
@@ -97,28 +75,28 @@ export default class ShopInteractionCommand extends InteractionCommand {
               required: true,
               choices: [
                 {
-                  name: 'Demônios',
-                  value: '1',
+                  name: '😈 | Demônios',
+                  value: 'demons',
                 },
                 {
-                  name: 'Gigantes',
-                  value: '2',
+                  name: '👊 | Gigantes',
+                  value: 'giants',
                 },
                 {
-                  name: 'Anjos',
-                  value: '3',
+                  name: '👼 | Anjos',
+                  value: 'angels',
                 },
                 {
-                  name: 'Arcanjos',
-                  value: '4',
+                  name: '🧚‍♂️ | Arcanjos',
+                  value: 'archangels',
                 },
                 {
-                  name: 'Semideuses',
-                  value: '5',
+                  name: '🙌 | Semideuses',
+                  value: 'demigods',
                 },
                 {
-                  name: 'Deuses',
-                  value: '6',
+                  name: '✝️ | Deuses',
+                  value: 'gods',
                 },
               ],
             },
@@ -147,12 +125,16 @@ export default class ShopInteractionCommand extends InteractionCommand {
                   required: true,
                   choices: [
                     {
-                      name: 'Cores',
-                      value: '1',
+                      name: '🌈 | Cores',
+                      value: 'colors',
                     },
                     {
-                      name: 'Rolls',
-                      value: '2',
+                      name: '🔑 | Rolls',
+                      value: 'rolls',
+                    },
+                    {
+                      name: '🔮 | Itens Mágicos',
+                      value: 'items',
                     },
                   ],
                 },
@@ -170,8 +152,8 @@ export default class ShopInteractionCommand extends InteractionCommand {
                   required: true,
                   choices: [
                     {
-                      name: 'Caças',
-                      value: '1',
+                      name: '🐾 | Caças',
+                      value: 'hunts',
                     },
                   ],
                 },
@@ -181,475 +163,489 @@ export default class ShopInteractionCommand extends InteractionCommand {
         },
       ],
       category: 'economy',
-      cooldown: 5,
+      cooldown: 10,
       clientPermissions: ['EMBED_LINKS'],
+      authorDataFields: [
+        'estrelinhas',
+        'demons',
+        'giants',
+        'angels',
+        'archangels',
+        'gods',
+        'demigods',
+        'colors',
+        'rolls',
+        'inUseItems',
+        'inventory',
+      ],
     });
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const type = ctx.options.getSubcommandGroup(false);
 
-    if (!type) {
-      return this.sellHunts(ctx);
-    }
+    if (!type) return ShopInteractionCommand.sellHunts(ctx);
 
     if (type === 'comprar') {
       const option = ctx.options.getSubcommand();
-      if (option === 'cores') {
-        return this.buyColor(ctx);
-      }
-      if (option === 'rolls') {
-        return this.buyRolls(ctx);
-      }
+
+      if (option === 'cores') return ShopInteractionCommand.buyColor(ctx);
+
+      if (option === 'rolls') return ShopInteractionCommand.buyRolls(ctx);
+
+      if (option === 'itens') return ShopInteractionCommand.buyItems(ctx);
     }
 
     if (type === 'info') {
       const option = ctx.options.getSubcommand();
-      if (option === 'comprar') {
-        return ShopInteractionCommand.buyInfo(ctx);
-      }
 
-      if (option === 'vender') {
-        return ShopInteractionCommand.sellInfo(ctx);
+      if (option === 'comprar') return ShopInteractionCommand.buyInfo(ctx);
+
+      if (option === 'vender') return ShopInteractionCommand.sellInfo(ctx);
+    }
+  }
+
+  static async buyItems(ctx: InteractionCommandContext): Promise<void> {
+    const embed = new MessageEmbed()
+      .setTitle(ctx.locale('commands:loja.buy_item.title'))
+      .setColor(COLORS.Pinkie)
+      .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true }))
+      .setDescription(ctx.locale('commands:loja.buy_item.description'));
+
+    const selectMenu = new MessageSelectMenu()
+      .setCustomId(`${ctx.interaction.id} | BUY`)
+      .setMinValues(1)
+      .setMaxValues(1);
+
+    for (let i = 1; i <= 6; i++) {
+      if (
+        !ctx.data.user.inventory.some((a) => a.id === i) &&
+        !ctx.data.user.inUseItems.some((a) => a.id === i)
+      ) {
+        selectMenu.addOptions({
+          label: ctx.locale(`data:magic-items.${i as 1}.name`),
+          value: `${i}`,
+          description: `${(MagicItems[i] as IProbablyBoostItem<HuntingTypes>).cost} ${
+            emojis.estrelinhas
+          }`,
+        });
       }
     }
+
+    if (selectMenu.options.length === 0) {
+      ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:loja.buy_item.hasAll') });
+      return;
+    }
+
+    ctx.makeMessage({ embeds: [embed], components: [actionRow([selectMenu])] });
+
+    const choice = await Util.collectComponentInteractionWithStartingId<SelectMenuInteraction>(
+      ctx.channel,
+      ctx.author.id,
+      ctx.interaction.id,
+      10000,
+    );
+
+    if (!choice) {
+      ctx.makeMessage({
+        components: [
+          actionRow([selectMenu.setDisabled(true).setPlaceholder(ctx.locale('common:timesup'))]),
+        ],
+      });
+      return;
+    }
+
+    const selectedItem = Number(choice.values[0]);
+
+    if (
+      (MagicItems[selectedItem] as IProbablyBoostItem<HuntingTypes>).cost >
+      ctx.data.user.estrelinhas
+    ) {
+      ctx.makeMessage({
+        embeds: [],
+        components: [],
+        content: ctx.prettyResponse('error', 'commands:loja.buy_item.poor'),
+      });
+      return;
+    }
+
+    ctx.client.repositories.shopRepository.buyItem(
+      ctx.author.id,
+      selectedItem,
+      (MagicItems[selectedItem] as IProbablyBoostItem<HuntingTypes>).cost,
+    );
+
+    ctx.makeMessage({
+      embeds: [],
+      components: [],
+      content: ctx.prettyResponse('success', 'commands:loja.buy_item.success', {
+        item: ctx.locale(`data:magic-items.${selectedItem as 1}.name`),
+      }),
+    });
   }
 
   static async buyInfo(ctx: InteractionCommandContext): Promise<void> {
     const type = ctx.options.getString('tipo', true);
 
-    if (type === '1') {
+    if (type === 'colors') {
       const availableColors = [
         {
           cor: '#6308c0',
           price: shopEconomy.colors.purple,
-          nome: `**${ctx.translate('colors.purple')}**`,
+          nome: `**${ctx.locale('commands:loja.colors.purple')}**`,
         },
         {
           cor: '#df0509',
           price: shopEconomy.colors.red,
-          nome: `**${ctx.translate('colors.red')}**`,
+          nome: `**${ctx.locale('commands:loja.colors.red')}**`,
         },
         {
           cor: '#55e0f7',
           price: shopEconomy.colors.cian,
-          nome: `**${ctx.translate('colors.cian')}**`,
+          nome: `**${ctx.locale('commands:loja.colors.cian')}**`,
         },
         {
           cor: '#03fd1c',
           price: shopEconomy.colors.green,
-          nome: `**${ctx.translate('colors.green')}**`,
+          nome: `**${ctx.locale('commands:loja.colors.green')}**`,
         },
         {
           cor: '#fd03c9',
           price: shopEconomy.colors.pink,
-          nome: `**${ctx.translate('colors.pink')}**`,
+          nome: `**${ctx.locale('commands:loja.colors.pink')}**`,
         },
         {
           cor: '#e2ff08',
           price: shopEconomy.colors.yellow,
-          nome: `**${ctx.translate('colors.yellow')}**`,
+          nome: `**${ctx.locale('commands:loja.colors.yellow')}**`,
         },
         {
           cor: 'SUA ESCOLHA',
           price: shopEconomy.colors.your_choice,
-          nome: `**${ctx.translate('colors.your_choice')}**`,
+          nome: `**${ctx.locale('commands:loja.colors.your_choice')}**`,
         },
       ];
 
       const dataCores = {
-        title: ctx.translate('dataCores_fields.title'),
+        title: ctx.locale('commands:loja.dataCores_fields.title'),
         color: '#6cbe50' as const,
         thumbnail: {
           url: 'https://i.imgur.com/t94XkgG.png',
         },
         fields: [
           {
-            name: ctx.translate('dataCores_fields.field_name'),
+            name: ctx.locale('commands:loja.dataCores_fields.field_name'),
             value: availableColors
               .map(
                 (c) =>
-                  `${c.nome} | ${ctx.translate('dataCores_fields.color_code')} \`${
+                  `${c.nome} | ${ctx.locale('commands:loja.dataCores_fields.color_code')} \`${
                     c.cor
-                  }\` | ${ctx.translate('dataCores_fields.price')} **${c.price}**⭐`,
+                  }\` | ${ctx.locale('commands:loja.dataCores_fields.price')} **${c.price}**⭐`,
               )
               .join('\n'),
             inline: false,
           },
         ],
       };
-      ctx.reply({ embeds: [dataCores] });
+      ctx.makeMessage({ embeds: [dataCores] });
       return;
     }
 
-    const valorRoll = shopEconomy.hunts.roll;
-    const dataRolls = {
-      title: ctx.translate('dataRolls_fields.title'),
-      color: '#b66642' as const,
-      thumbnail: {
-        url: 'https://i.imgur.com/t94XkgG.png',
-      },
-      fields: [
-        {
-          name: ctx.translate('dataRolls_fields.fields.name'),
-          value: ctx.translate('dataRolls_fields.fields.value', {
-            price: valorRoll,
-          }),
-          inline: false,
+    if (type === 'rolls') {
+      const dataRolls = {
+        title: ctx.locale('commands:loja.dataRolls_fields.title'),
+        color: '#b66642' as const,
+        thumbnail: {
+          url: 'https://i.imgur.com/t94XkgG.png',
         },
-      ],
-    };
-    ctx.reply({ embeds: [dataRolls] });
+        fields: [
+          {
+            name: ctx.locale('commands:loja.dataRolls_fields.fields.name'),
+            value: ctx.locale('commands:loja.dataRolls_fields.fields.value', {
+              price: shopEconomy.hunts.roll,
+            }),
+            inline: false,
+          },
+        ],
+      };
+      ctx.makeMessage({ embeds: [dataRolls] });
+    }
+
+    if (type === 'items') {
+      const ItemsEmbed = new MessageEmbed()
+        .setTitle(ctx.locale('commands:loja.dataItems.title'))
+        .setColor(COLORS.Pinkie)
+        .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true }));
+
+      for (let i = 1; i <= 6; i++) {
+        ItemsEmbed.addField(
+          ctx.locale(`data:magic-items.${i as 1}.name`),
+          ctx.locale('commands:loja.dataItems.description', {
+            description: ctx.locale(`data:magic-items.${i as 1}.description`),
+            cost: (MagicItems[i] as IProbablyBoostItem<HuntingTypes>).cost,
+          }),
+          true,
+        );
+      }
+
+      ctx.makeMessage({ embeds: [ItemsEmbed] });
+    }
   }
 
   static async sellInfo(ctx: InteractionCommandContext): Promise<void> {
     const type = ctx.options.getString('tipo', true);
 
-    if (type === '1') {
-      const valorDemonio = shopEconomy.hunts.demon;
-      const valorGigante = shopEconomy.hunts.giant;
-      const valorAnjo = shopEconomy.hunts.angel;
-      const valorArch = shopEconomy.hunts.archangel;
-      const valorSD = shopEconomy.hunts.demigod;
-      const valorDeus = shopEconomy.hunts.god;
-
+    if (type === 'hunts') {
       const dataVender = {
-        title: ctx.translate('embed_title'),
+        title: ctx.locale('commands:loja.embed_title'),
         color: '#e77fa1' as const,
         thumbnail: {
           url: 'https://i.imgur.com/t94XkgG.png',
         },
         fields: [
           {
-            name: ctx.translate('dataVender.main.fields.name'),
-            value: ctx.translate('dataVender.main.fields.value', {
-              demon: valorDemonio,
-              giant: valorGigante,
-              angel: valorAnjo,
-              archangel: valorArch,
-              demi: valorSD,
-              god: valorDeus,
+            name: ctx.locale('commands:loja.dataVender.main.fields.name'),
+            value: ctx.locale('commands:loja.dataVender.main.fields.value', {
+              demon: shopEconomy.hunts.demons,
+              giant: shopEconomy.hunts.giants,
+              angel: shopEconomy.hunts.angels,
+              archangel: shopEconomy.hunts.archangels,
+              demi: shopEconomy.hunts.demigods,
+              god: shopEconomy.hunts.gods,
             }),
             inline: false,
           },
         ],
       };
-      ctx.reply({ embeds: [dataVender] });
+      ctx.makeMessage({ embeds: [dataVender] });
     }
   }
 
-  async sellHunts(ctx: InteractionCommandContext): Promise<void> {
-    const valorDemonio = shopEconomy.hunts.demon;
-    const valorGigante = shopEconomy.hunts.giant;
-    const valorAnjo = shopEconomy.hunts.angel;
-    const valorArch = shopEconomy.hunts.archangel;
-    const valorSD = shopEconomy.hunts.demigod;
-    const valorDeus = shopEconomy.hunts.god;
+  static async sellHunts(ctx: InteractionCommandContext): Promise<void> {
+    const huntType = ctx.options.getString('tipo', true) as HuntingTypes;
+    const amount = ctx.options.getInteger('quantidade', true);
 
-    const type = ctx.options.getString('tipo', true);
-    const valor = ctx.options.getInteger('quantidade', true);
-
-    if (Number.isNaN(valor) || valor < 1) {
-      ctx.replyT('error', 'dataVender.invalid-args', {}, true);
+    if (amount < 1) {
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:loja.dataVender.invalid-args'),
+        ephemeral: true,
+      });
       return;
     }
 
-    switch (type) {
-      case '1':
-        if (valor > ctx.data.user.caçados) {
-          ctx.replyT('error', 'dataVender.poor', { var: 'demônios' }, true);
-          return;
-        }
-        this.client.repositories.userRepository.update(ctx.author.id, {
-          $inc: { caçados: -valor, estrelinhas: valor * valorDemonio },
-        });
-        ctx.replyT('success', 'dataVender.success-demon', {
-          value: valor,
-          cost: valor * valorDemonio,
-          quantity: ctx.data.user.caçados - valor,
-          star: ctx.data.user.estrelinhas + valor * valorDemonio,
-        });
-        break;
-      case '2':
-        if (valor > ctx.data.user.giants) {
-          ctx.replyT('error', 'dataVender.poor', { var: 'gigantes' }, true);
-          return;
-        }
-        this.client.repositories.userRepository.update(ctx.author.id, {
-          $inc: { giants: -valor, estrelinhas: valor * valorGigante },
-        });
-        ctx.replyT('success', 'dataVender.success-giant', {
-          value: valor,
-          cost: valor * valorGigante,
-          quantity: ctx.data.user.giants - valor,
-          star: ctx.data.user.estrelinhas + valor * valorGigante,
-        });
-        break;
-      case '3':
-        if (valor > ctx.data.user.anjos) {
-          ctx.replyT('error', 'dataVender.poor', { var: 'anjos' }, true);
-          return;
-        }
-        this.client.repositories.userRepository.update(ctx.author.id, {
-          $inc: { anjos: -valor, estrelinhas: valor * valorAnjo },
-        });
-        ctx.replyT('success', 'dataVender.success-angel', {
-          value: valor,
-          cost: valor * valorAnjo,
-          quantity: ctx.data.user.anjos - valor,
-          star: ctx.data.user.estrelinhas + valor * valorAnjo,
-        });
-        break;
-      case '4':
-        if (valor > ctx.data.user.arcanjos) {
-          ctx.replyT('error', 'dataVender.poor', { var: 'arcanjos' }, true);
-          return;
-        }
-        this.client.repositories.userRepository.update(ctx.author.id, {
-          $inc: { arcanjos: -valor, estrelinhas: valor * valorArch },
-        });
-        ctx.replyT('success', 'dataVender.success-archangel', {
-          value: valor,
-          cost: valor * valorArch,
-          quantity: ctx.data.user.arcanjos - valor,
-          star: ctx.data.user.estrelinhas + valor * valorArch,
-        });
-        break;
-      case '5':
-        if (valor > ctx.data.user.semideuses) {
-          ctx.replyT('error', 'dataVender.poor', { var: 'semideuses' }, true);
-          return;
-        }
-        this.client.repositories.userRepository.update(ctx.author.id, {
-          $inc: { semideuses: -valor, estrelinhas: valor * valorSD },
-        });
-        ctx.replyT('success', 'dataVender.success-sd', {
-          value: valor,
-          cost: valor * valorSD,
-          quantity: ctx.data.user.semideuses - valor,
-          star: ctx.data.user.estrelinhas + valor * valorSD,
-        });
-        break;
-      case '6':
-        if (valor > ctx.data.user.deuses) {
-          ctx.replyT('error', 'dataVender.poor', { var: 'deuses' }, true);
-          return;
-        }
-        this.client.repositories.userRepository.update(ctx.author.id, {
-          $inc: { deuses: -valor, estrelinhas: valor * valorDeus },
-        });
-        ctx.replyT('success', 'dataVender.success-god', {
-          value: valor,
-          cost: valor * valorDeus,
-          quantity: ctx.data.user.deuses - valor,
-          star: ctx.data.user.estrelinhas + valor * valorDeus,
-        });
-        break;
-      default:
-        ctx.replyT('error', 'dataVender.invalid-args', {}, true);
-    }
-  }
-
-  async buyRolls(ctx: InteractionCommandContext): Promise<void> {
-    const valorRoll = shopEconomy.hunts.roll;
-
-    const valor = ctx.options.getInteger('quantidade', true);
-
-    if (!valor) {
-      ctx.replyT('error', 'dataRolls_fields.buy_rolls.invalid-number', {}, true);
-      return;
-    }
-    if (Number.isNaN(valor) || valor < 1) {
-      ctx.replyT('error', 'dataRolls_fields.buy_rolls.invalid-number', {}, true);
+    if (amount > ctx.data.user[huntType]) {
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:loja.dataVender.poor', {
+          var: ctx.locale(`common:${huntType}`),
+        }),
+        ephemeral: true,
+      });
       return;
     }
 
-    if (valor * valorRoll > ctx.data.user.estrelinhas) {
-      ctx.replyT('error', 'dataRolls_fields.buy_rolls.poor', {}, true);
-      return;
-    }
+    ctx.client.repositories.shopRepository.sellHunt(
+      ctx.author.id,
+      huntType,
+      amount,
+      amount * shopEconomy.hunts[huntType],
+    );
 
-    const valueToPay = valor * valorRoll;
-
-    this.client.repositories.userRepository.update(ctx.author.id, {
-      $inc: { rolls: valor, estrelinhas: -valueToPay },
-    });
-
-    ctx.replyT('success', 'dataRolls_fields.buy_rolls.success', {
-      quantity: valor,
-      value: valueToPay,
-      rolls: ctx.data.user.rolls + valor,
-      stars: ctx.data.user.estrelinhas - valueToPay,
+    ctx.makeMessage({
+      content: ctx.prettyResponse('success', 'commands:loja.dataVender.success', {
+        value: amount,
+        cost: amount * shopEconomy.hunts[huntType],
+        quantity: ctx.data.user[huntType] - amount,
+        hunt: ctx.locale(`common:${huntType}`),
+        emoji: emojis[huntType],
+        star: ctx.data.user.estrelinhas + amount * shopEconomy.hunts[huntType],
+      }),
+      ephemeral: true,
     });
   }
 
-  async buyColor(ctx: InteractionCommandContext): Promise<void> {
+  static async buyRolls(ctx: InteractionCommandContext): Promise<void> {
+    const amount = ctx.options.getInteger('quantidade', true);
+
+    if (amount < 1) {
+      ctx.makeMessage({
+        content: ctx.prettyResponse(
+          'error',
+          'commands:loja.dataRolls_fields.buy_rolls.invalid-number',
+        ),
+        ephemeral: true,
+      });
+      return;
+    }
+
+    const totalCost = amount * shopEconomy.hunts.roll;
+
+    if (totalCost > ctx.data.user.estrelinhas) {
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:loja.dataRolls_fields.buy_rolls.poor'),
+        ephemeral: true,
+      });
+      return;
+    }
+
+    ctx.client.repositories.shopRepository.buyRoll(ctx.author.id, amount, totalCost);
+
+    ctx.makeMessage({
+      content: ctx.prettyResponse('success', 'commands:loja.dataRolls_fields.buy_rolls.success', {
+        quantity: amount,
+        value: totalCost,
+        rolls: ctx.data.user.rolls + amount,
+        stars: ctx.data.user.estrelinhas - totalCost,
+      }),
+    });
+  }
+
+  static async buyColor(ctx: InteractionCommandContext): Promise<void> {
     const availableColors = [
       {
         cor: '#6308c0',
         price: shopEconomy.colors.purple,
-        nome: `**${ctx.translate('colors.purple')}**`,
+        nome: `**${ctx.locale('commands:loja.colors.purple')}**`,
       },
       {
         cor: '#df0509',
         price: shopEconomy.colors.red,
-        nome: `**${ctx.translate('colors.red')}**`,
+        nome: `**${ctx.locale('commands:loja.colors.red')}**`,
       },
       {
         cor: '#55e0f7',
         price: shopEconomy.colors.cian,
-        nome: `**${ctx.translate('colors.cian')}**`,
+        nome: `**${ctx.locale('commands:loja.colors.cian')}**`,
       },
       {
         cor: '#03fd1c',
         price: shopEconomy.colors.green,
-        nome: `**${ctx.translate('colors.green')}**`,
+        nome: `**${ctx.locale('commands:loja.colors.green')}**`,
       },
       {
         cor: '#fd03c9',
         price: shopEconomy.colors.pink,
-        nome: `**${ctx.translate('colors.pink')}**`,
+        nome: `**${ctx.locale('commands:loja.colors.pink')}**`,
       },
       {
         cor: '#e2ff08',
         price: shopEconomy.colors.yellow,
-        nome: `**${ctx.translate('colors.yellow')}**`,
+        nome: `**${ctx.locale('commands:loja.colors.yellow')}**`,
       },
       {
-        cor: 'SUA ESCOLHA',
+        cor: ctx.locale('commands:loja.colors.your_choice').replace('7 - ', ''),
         price: shopEconomy.colors.your_choice,
-        nome: `**${ctx.translate('colors.your_choice')}**`,
+        nome: `**${ctx.locale('commands:loja.colors.your_choice')}**`,
       },
     ];
 
-    const selectedColor = ctx.options.getString('cor');
+    const selector = new MessageSelectMenu()
+      .setCustomId(`${ctx.interaction.id} | SELECT`)
+      .setMinValues(1)
+      .setMaxValues(1)
+      .setOptions(
+        availableColors.reduce<MessageSelectOptionData[]>((p, c) => {
+          if (ctx.data.user.colors.some((a) => a.cor === c.cor)) return p;
 
-    let choice = 0;
-
-    switch (selectedColor) {
-      case '1':
-        if (ctx.data.user.cores.some((res) => res.cor === availableColors[0].cor)) {
-          ctx.replyT('yellow_circle', 'buy_colors.has-color', {}, true);
-          return;
-        }
-        if (ctx.data.user.estrelinhas < availableColors[0].price) {
-          ctx.replyT('error', 'buy_colors.poor', {}, true);
-          return;
-        }
-        choice = 0;
-        break;
-      case '2':
-        if (ctx.data.user.cores.some((res) => res.cor === availableColors[1].cor)) {
-          ctx.replyT('yellow_circle', 'buy_colors.has-color', {}, true);
-          return;
-        }
-        if (ctx.data.user.estrelinhas < availableColors[1].price) {
-          ctx.replyT('error', 'buy_colors.poor', {}, true);
-          return;
-        }
-
-        choice = 1;
-        break;
-      case '3':
-        if (ctx.data.user.cores.some((res) => res.cor === availableColors[2].cor)) {
-          ctx.replyT('yellow_circle', 'buy_colors.has-color', {}, true);
-          return;
-        }
-        if (ctx.data.user.estrelinhas < availableColors[2].price) {
-          ctx.replyT('error', 'buy_colors.poor', {}, true);
-          return;
-        }
-        choice = 2;
-        break;
-      case '4':
-        if (ctx.data.user.cores.some((res) => res.cor === availableColors[3].cor)) {
-          ctx.replyT('yellow_circle', 'buy_colors.has-color', {}, true);
-          return;
-        }
-        if (ctx.data.user.estrelinhas < availableColors[3].price) {
-          ctx.replyT('error', 'buy_colors.poor', {}, true);
-          return;
-        }
-        choice = 3;
-        break;
-      case '5':
-        if (ctx.data.user.cores.some((res) => res.cor === availableColors[4].cor)) {
-          ctx.replyT('yellow_circle', 'buy_colors.has-color', {}, true);
-          return;
-        }
-        if (ctx.data.user.estrelinhas < availableColors[4].price) {
-          ctx.replyT('error', 'buy_colors.poor', {}, true);
-          return;
-        }
-        choice = 4;
-        break;
-      case '6':
-        if (ctx.data.user.cores.some((res) => res.cor === availableColors[5].cor)) {
-          ctx.replyT('yellow_circle', 'buy_colors.has-color', {}, true);
-          return;
-        }
-        if (ctx.data.user.estrelinhas < availableColors[5].price) {
-          ctx.replyT('error', 'buy_colors.poor', {}, true);
-          return;
-        }
-        choice = 5;
-        break;
-
-      case '7': {
-        if (ctx.data.user.estrelinhas < availableColors[6].price) {
-          ctx.replyT('error', 'buy_colors.poor', {}, true);
-          return;
-        }
-        choice = 6;
-
-        const hexColor = ctx.options.getString('hex');
-
-        const name =
-          ctx.options.getString('nome')?.slice(0, 20) ?? ctx.translate('buy_colors.no-name');
-
-        if (!hexColor) {
-          ctx.replyT('error', 'buy_colors.invalid-color', {}, true);
-          return;
-        }
-
-        if (
-          ctx.data.user.cores.some((a) => `${a.cor}`.replace('#', '') === hexColor.replace('#', ''))
-        ) {
-          ctx.replyT('yellow_circle', 'buy_colors.has-color', {}, true);
-          return;
-        }
-
-        const isHexColor = (hex: string) => hex.length === 6 && !Number.isNaN(Number(`0x${hex}`));
-
-        if (isHexColor(hexColor.replace('#', ''))) {
-          const toPush = {
-            nome: name,
-            cor: `#${hexColor.replace('#', '')}`,
-            price: shopEconomy.colors.your_choice,
-          };
-          this.client.repositories.userRepository.update(ctx.author.id, {
-            $inc: { estrelinhas: -availableColors[6].price },
-            $push: { cores: toPush },
+          p.push({
+            label: c.nome,
+            description: `${c.cor} | ${c.price} ${emojis.estrelinhas}`,
+            value: c.cor,
           });
-          ctx.replyT('success', 'buy_colors.yc-confirm', {
-            color: hexColor,
-            price: availableColors[6].price,
-            stars: ctx.data.user.estrelinhas - availableColors[6].price,
-          });
-        } else {
-          ctx.replyT('error', 'buy_colors.invalid-color', {}, true);
-        }
-      }
+          return p;
+        }, []),
+      );
+
+    ctx.makeMessage({
+      content: ctx.prettyResponse('question', 'commands:loja.buy_colors.buy-text'),
+      components: [actionRow([selector])],
+    });
+
+    const selected = await Util.collectComponentInteractionWithStartingId<SelectMenuInteraction>(
+      ctx.channel,
+      ctx.author.id,
+      ctx.interaction.id,
+      10_000,
+    );
+
+    if (!selected) {
+      ctx.deleteReply();
+      return;
     }
-    if (choice !== 6) {
-      await this.client.repositories.userRepository.update(ctx.author.id, {
-        $inc: { estrelinhas: -availableColors[choice].price },
-        $push: { cores: availableColors[choice] },
+
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const chosenColor = availableColors.find(
+      (a) => a.cor === selected.values[0].replace('7 - ', ''),
+    )!;
+
+    if (ctx.data.user.estrelinhas < chosenColor.price) {
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:loja.buy_colors.poor'),
+        components: [],
       });
-      ctx.replyT('success', 'buy_colors.buy-success', {
-        name: availableColors[choice].nome,
-        price: availableColors[choice].price,
-        stars: ctx.data.user.estrelinhas - availableColors[choice].price,
+      return;
+    }
+
+    if (chosenColor.cor.startsWith('#')) {
+      await ctx.client.repositories.shopRepository.buyColor(ctx.author.id, chosenColor.price, {
+        nome: chosenColor.nome,
+        cor: chosenColor.cor as ColorResolvable,
+      });
+
+      ctx.makeMessage({
+        content: ctx.prettyResponse('success', 'commands:loja.buy_colors.buy-success', {
+          name: chosenColor.nome,
+          price: chosenColor.price,
+          stars: ctx.data.user.estrelinhas - chosenColor.price,
+        }),
+      });
+      return;
+    }
+
+    const hexColor = ctx.options.getString('hex');
+
+    const name: string =
+      ctx.options.getString('nome')?.slice(0, 20) ??
+      ctx.locale('commands:loja.buy_colors.no-name', {
+        number: ctx.data.user.colors.length,
+      });
+
+    if (!hexColor) {
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:loja.buy_colors.invalid-color'),
+      });
+      return;
+    }
+
+    if (
+      ctx.data.user.colors.some(
+        (a) => `${a.cor}`.replace('#', '') === hexColor.replace('#', '') || a.nome === name,
+      )
+    ) {
+      ctx.makeMessage({
+        content: ctx.prettyResponse('yellow_circle', 'commands:loja.buy_colors.has-color'),
+      });
+      return;
+    }
+
+    const isHexColor = (hex: string) => hex.length === 6 && !Number.isNaN(Number(`0x${hex}`));
+
+    if (isHexColor(hexColor.replace('#', ''))) {
+      const toPush = {
+        nome: name,
+        cor: `#${hexColor.replace('#', '')}` as const,
+      };
+      ctx.makeMessage({
+        content: ctx.prettyResponse('success', 'commands:loja.buy_colors.yc-confirm', {
+          color: hexColor,
+          price: chosenColor.price,
+          stars: ctx.data.user.estrelinhas - chosenColor.price,
+        }),
+      });
+
+      ctx.client.repositories.shopRepository.buyColor(ctx.author.id, chosenColor.price, toPush);
+    } else {
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:loja.buy_colors.invalid-color'),
       });
     }
   }

@@ -1,11 +1,10 @@
 import { MessageEmbed } from 'discord.js-light';
-import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 
 export default class WalletInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'carteira',
       description: '「💳」・Mostra a carteira de alguém',
       options: [
@@ -19,75 +18,92 @@ export default class WalletInteractionCommand extends InteractionCommand {
       category: 'economy',
       cooldown: 5,
       clientPermissions: ['EMBED_LINKS'],
+      authorDataFields: [
+        'estrelinhas',
+        'demons',
+        'giants',
+        'angels',
+        'archangels',
+        'selectedColor',
+        'gods',
+        'demigods',
+        'rolls',
+      ],
     });
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const pessoa = ctx.options.getUser('user') ?? ctx.author;
 
-    const user = await this.client.repositories.userRepository.find(pessoa.id);
+    const user =
+      pessoa.id === ctx.author.id
+        ? ctx.data.user
+        : await ctx.client.repositories.userRepository.find(pessoa.id);
+
     if (!user) {
-      await ctx.replyT('error', 'no-dbuser', {}, true);
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:carteira.no-dbuser'),
+        ephemeral: true,
+      });
       return;
     }
 
     if (user.ban === true) {
-      ctx.replyT('error', 'banned-user', {}, true);
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:carteira.banned-user'),
+        ephemeral: true,
+      });
       return;
     }
 
-    let cor;
-
-    if (user.cor) {
-      cor = user.cor;
-    } else cor = '#a788ff' as const;
+    const color = user?.selectedColor ?? ('#a788ff' as const);
 
     const embed = new MessageEmbed()
-      .setTitle(ctx.translate('title', { user: pessoa.tag }))
-      .setColor(cor)
+      .setTitle(ctx.locale('commands:carteira.title', { user: pessoa.tag }))
+      .setColor(color)
       .addFields([
         {
-          name: `⭐ | ${ctx.translate('stars')}`,
+          name: `⭐ | ${ctx.locale('commands:carteira.stars')}`,
           value: `**${user.estrelinhas}**`,
           inline: true,
         },
         {
-          name: `🔑 | ${ctx.translate('rolls')}`,
+          name: `🔑 | ${ctx.locale('commands:carteira.rolls')}`,
           value: `**${user.rolls}**`,
           inline: true,
         },
         {
-          name: `<:DEMON:758765044443381780> | ${ctx.translate('demons')} `,
-          value: `**${user.caçados}**`,
+          name: `<:DEMON:758765044443381780> | ${ctx.locale('commands:carteira.demons')} `,
+          value: `**${user.demons}**`,
           inline: true,
         },
         {
-          name: `🦍 | ${ctx.translate('giants')}`,
-          value: `**${user.giants || 0}**`,
+          name: `🦍 | ${ctx.locale('commands:carteira.giants')}`,
+          value: `**${user.giants}**`,
           inline: true,
         },
         {
-          name: `<:ANGEL:758765044204437535> | ${ctx.translate('angels')}`,
-          value: `**${user.anjos}**`,
+          name: `<:ANGEL:758765044204437535> | ${ctx.locale('commands:carteira.angels')}`,
+          value: `**${user.angels}**`,
           inline: true,
         },
         {
-          name: `👼| ${ctx.translate('archangel')}`,
-          value: `**${user.arcanjos || 0}**`,
+          name: `👼| ${ctx.locale('commands:carteira.archangel')}`,
+          value: `**${user.archangels}**`,
           inline: true,
         },
         {
-          name: `<:SemiGod:758766732235374674> | ${ctx.translate('sd')}`,
-          value: `**${user.semideuses}**`,
+          name: `<:SemiGod:758766732235374674> | ${ctx.locale('commands:carteira.sd')}`,
+          value: `**${user.demigods}**`,
           inline: true,
         },
         {
-          name: `<:God:758474639570894899> | ${ctx.translate('god')}`,
-          value: `**${user.deuses}**`,
+          name: `<:God:758474639570894899> | ${ctx.locale('commands:carteira.god')}`,
+          value: `**${user.gods}**`,
           inline: true,
         },
       ]);
 
-    await ctx.reply({ embeds: [embed] });
+    await ctx.makeMessage({ embeds: [embed] });
   }
 }

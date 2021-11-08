@@ -107,6 +107,7 @@
     "bot": "{{author}} acabou de sujar a boca de óleo lansando o mamadão no bot {{mention}}",
     "self-mention": "Não tenta me enganar, eu sei que tu não consegue mamar a si mesmo! Marque outra pessoa para mamar",
     "embed_title": "Mamar",
+    "user-banned": "Tu não pode mamar esse usuário por que ele ta banido!",
     "embed_description": "{{author}} lansou o mamadão, o famoso bereguedjonson, a linguada, a mamadela, a lambidinha em {{mention}}"
   },
   "carinho": {
@@ -236,6 +237,17 @@
     "embed_title": "Brechó da Menhera",
     "embed_footer": "Digite no chat a opção de sua escolha",
     "invalid-option": "Essa escolha é inválida",
+    "buy_item": {
+      "title": "🔮 | Itens Mágicos",
+      "description": "Selectione abaixo qual item você deseja comprar",
+      "hasAll": "Você já possui todos os itens mágicos disponíveis",
+      "poor": "Você não possui estrelas suficientes para comprar este item!",
+      "success": "Você comprou **{{item}}** com sucesso! Só dale nas caças agora. Use /inventario para usar o item"
+    },
+    "dataItems": {
+      "title": "🔮 | Itens Mágicos",
+      "description": "**Custo**: {{cost}} :star:\n**Sobre:** {{description}}"
+    },
     "colors": {
       "purple": "1 - Roxo Escuro",
       "red": "2 - Vermelho",
@@ -258,52 +270,32 @@
       "yc-message": "Envie um código de hexcolor **SEM A HASHTAG** (Exemplo: AABBCC) de sua escolha para adicionar em seu perfil",
       "yc-confirm": "UUUAUUUU!!! VOCÊ ACABOU DE COMPRAR UMA COR DE SUA ESCOLHA!!!\nSua cor comprada foi **#{{color}}**\nVocê gastou **{{price}}** ⭐ e ficou com **{{stars}}** ⭐ estrelinhas",
       "invalid-color": "esta cor não é uma cor válida!",
-      "no-name": "Sem nome especificado"
+      "no-name": "Sem nome especificado ({{number}})",
+      "buy-text": "Escolha abaixo qual é a cor que deseja comprar!"
     },
     "dataRolls_fields": {
-      "title": "Comprar Rolls",
+      "title": "🔑 | Comprar Rolls",
       "fields": {
         "name": "Tabela de Preços",
         "value": "1 Roll = **{{price}}** ⭐"
       },
       "buy_rolls": {
-        "invalid-number": "este valor não é um número válido!",
-        "poor": "você não possui estrelas suficientes para comprar esta quantidade de rolls!",
-        "success": "você comprou **{{quantity}}** 🔑 rolls por {{value}} ⭐ estrelinhas! \nAgora você tem **{{rolls}}** 🔑 e **{{stars}}**⭐"
+        "invalid-number": "Este valor não é um número válido!",
+        "poor": "Você não possui estrelas suficientes para comprar esta quantidade de rolls!",
+        "success": "Você comprou **{{quantity}}** 🔑 rolls por {{value}} ⭐ estrelinhas! \nAgora você tem **{{rolls}}** 🔑 e **{{stars}}**⭐"
       }
     },
     "dataVender": {
       "main": {
         "fields": {
           "name": "Valor das Caças",
-          "value": "<:DEMON:758765044443381780> Demônios - **{{demon}}**⭐\n👨 Gigantes - **{{giant}}**⭐ \n<:ANGEL:758765044204437535> Anjos - **{{angel}}**⭐\n👼 Arcanjos - **{{archangel}}**⭐\n<:SEMIGOD:758766732235374674> SemiDeuses - **{{demi}}**⭐\n<:God:758474639570894899> Deuses - **{{god}}**⭐"
+          "value": "<:DEMON:758765044443381780> Demônios - **{{demon}}**⭐\n🦍 Gigantes - **{{giant}}**⭐ \n<:ANGEL:758765044204437535> Anjos - **{{angel}}**⭐\n👼 Arcanjos - **{{archangel}}**⭐\n<:SEMIGOD:758766732235374674> SemiDeuses - **{{demi}}**⭐\n<:God:758474639570894899> Deuses - **{{god}}**⭐"
         }
       },
       "invalid-args": "este valor não é um número válido! Você deve passar a opção e a quantidade",
       "poor": "você não possui todos estes {{var}}!",
-      "success-demon": "você vendeu **{{value}}** <:DEMON:758765044443381780> demônios e recebeu **{{cost}}** ⭐ estrelinhas!\nAgora você tem **{{quantity}}** <:DEMON:758765044443381780> e **{{star}}**⭐",
-      "success-angel": "você vendeu **{{value}}** <:Angel:758765044204437535> anjos e recebeu **{{cost}}** ⭐ estrelinhas!\nAgora você tem **{{quantity}}** <:Angel:758765044204437535> e **{{star}}**⭐",
-      "success-archangel": "você vendeu **{{value}}** 👼 arcanjos e recebeu **{{cost}}** ⭐ estrelinhas!\nAgora você tem **{{quantity}}** 👼 e **{{star}}**⭐",
-      "success-giant": "você vendeu **{{value}}** 👨 gigantes e recebeu **{{cost}}** ⭐ estrelinhas!\nAgora você tem **{{quantity}}** 👨 e **{{star}}**⭐",
-      "success-sd": "você vendeu **{{value}}** <:SEMIGOD:758766732235374674> semideuses e recebeu **{{cost}}** ⭐ estrelinhas!\nAgora você tem **{{quantity}}** <:SEMIGOD:758766732235374674> e **{{star}}**⭐",
-      "success-god": "você vendeu **{{value}}** <:God:758474639570894899> deuses e recebeu **{{cost}}** ⭐ estrelinhas!\nAgora você tem **{{quantity}}** <:God:758474639570894899> e **{{star}}**⭐"
+      "success": "você vendeu **{{value}}** {{emoji}} {{hunt}} e recebeu **{{cost}}** ⭐ estrelinhas!\nAgora você tem **{{quantity}}** {{emoji}} e **{{star}}**⭐"
     }
-  },
-  "carteira": {
-    "description": "Veja a carteira de alguém",
-    "usage": "[usuário]",
-    "no-dbuser": "este usuário não está em minha database",
-    "title": "Carteira de {{user}}",
-    "stars": "Estrelinhas",
-    "rolls": "Rolls",
-    "unknow-user": "usuário não encontrado",
-    "demons": "Demônios",
-    "angels": "Anjos",
-    "giants": "Gigantes",
-    "archangel": "Arcanjos",
-    "sd": "Semideuses",
-    "god": "Deuses",
-    "banned-user": "Este usuário não possui carteira pois está banido da Menhera!"
   },
   "8ball": {
     "description": "Pergunte algo para mim",
@@ -354,25 +346,25 @@
     "usage": ""
   },
   "cacar": {
-    "description": "Caçe demônios como XANDÃO",
     "usage": "",
-    "probabilities": "Probabilidades de caça\n\nDemônios: `[{{demon}}]`\nGigantes: `[{{giant}}]`\nAnjos: `[{{angel}}]`\nArcanjos: `[{{archangel}}]`\nSemideuses: `[{{demi}}]`\nDeuses: `[{{god}}]`",
-    "footer": "Sabia que em meu servidor de suporte, suas chances de sucesso são maiores?",
-    "description_start": "Você saiu para caçar **{{hunt}}** **{{count}}** vez com o Super Xandão, e voltou para casa com mais **{{value}}** pra conta. Você está em **#{{rank}}** lugar do top {{hunt}}",
-    "description_start_plural": "Você saiu para caçar **{{hunt}}** **{{count}}** vezes com o Super Xandão, e voltou para casa com mais **{{value}}** pra conta. Você está em **#{{rank}}** lugar do top {{hunt}}",
+    "drop": "CARALHOOOO {{author}}, Tu dropou um item de caça! Tu tem noção do quão raro isso é? Pra ti ter noção, o item que tu ganhou, o **{{name}}** tem uma porcentagem de drop de `{{chance}}%`, Parabéns!",
+    "probabilities": "Suas Probabilidades de Caça",
+    "chances": "**{{count}}** ({{percentage}}%)",
+    "hunt_description": "Você saiu para caçar **{{hunt}}** **{{count}}** vez com o Super Xandão, e voltou para casa com mais **{{value}}** pra conta. Você está em **#{{rank}}** lugar do top {{hunt}}",
+    "hunt_description_plural": "Você saiu para caçar **{{hunt}}** **{{count}}** vezes com o Super Xandão, e voltou para casa com mais **{{value}}** pra conta. Você está em **#{{rank}}** lugar do top {{hunt}}",
     "god_hunted_success": "CARACA!!! VOCÊ SE MOSTROU UM HERÓI FRUTO DE UMA VONTADE DIVINA, ASSIM COMO XANDÃO, E CONSEGUIU CAÇAR `{{count}}` DEUS EM **{{toRun}}** TENTATIVAS! APENAS O BÁSICO MEU LINDO, COM ISSO VOCÊ ESTÁ EM **#{{rank}}** LUGAR DO TOP",
     "god_hunted_success_plural": "CARACA!!! VOCÊ SE MOSTROU UM HERÓI FRUTO DE UMA VONTADE DIVINA, ASSIM COMO XANDÃO, E CONSEGUIU CAÇAR `{{count}}` DEUSES EM **{{toRun}}** TENTATIVAS! APENAS O BÁSICO MEU LINDO, COM ISSO VOCÊ ESTÁ EM **#{{rank}}** LUGAR DO TOP",
     "god_hunted_fail": "Caçar Deuses é uma missão extremamente difícil, e com **{{count}}** tentativa você não obteve sucesso. Mas fique tranquilo, herói, você ainda conseguirá! Você está em **#{{rank}}** lugar do top deus",
     "god_hunted_fail_plural": "Caçar Deuses é uma missão extremamente difícil, e com **{{count}}** tentativas você não obteve sucesso. Mas fique tranquilo, herói, você ainda conseguirá! Você está em **#{{rank}}** lugar do top deus",
     "demons": "Demônios",
     "angels": "Anjos",
-    "sd": "Semideuses",
+    "demigods": "Semideuses",
     "giants": "Gigantes",
-    "archangel": "Arcanjos",
+    "archangels": "Arcanjos",
     "gods": "Deuses",
-    "invalid-rolls": "este número de rolls é invalido!",
-    "rolls-poor": "você não tem essa quantidade de rolls",
-    "cooldown": "descanse campeão, você já saiu na sua caçada. Tente novamente em **{{time}}** minutos\n<:atencao:759603958418767922> | **DICA:** Sabia que em meu servidor de suporte, as chances de caça são maiores? m!suporte"
+    "invalid-rolls": "Este número de rolls é invalido!",
+    "rolls-poor": "Você não tem essa quantidade de rolls",
+    "cooldown": "Descanse campeão, você já saiu na sua caçada. Tente novamente em **{{time}}** minutos ou use um `roll` em sua próxima caça"
   },
   "casar": {
     "description": "Casa com o amor de sua vida",
@@ -420,6 +412,7 @@
   },
   "cor": {
     "description": "Mude a cor de seu perfil",
+    "footer": "Página {{page}}/{{maxPages}}",
     "usage": "[cor]",
     "embed_title": "Suas Cores",
     "embed_description": "Escolha abaixo qual a cor que quer usar! Você tem 30 segundos",
@@ -478,6 +471,7 @@
     "use": "Usou",
     "user": "Comandos mais usados de {{user}}",
     "times": "vezes",
+    "votes": "Votos",
     "not-user": "este usuário não usou nenhum comando meu"
   },
   "blockcanal": {
@@ -677,5 +671,38 @@
     "equal": "Tanto você quanto a menhera fizeram o mesmo valor. Menhera ganha",
     "menhera-bigger": "A Menhera está mais proxima de 21, ela ganhou!",
     "user-bigger": "Você está mais próximo de 21, você ganhou **{{value}}** :star:"
+  },
+  "inventario": {
+    "no-user": "Este usuário não possui inventário",
+    "title": "Inventário de {{user}}",
+    "no-item": "O inventário deste usuário está vazio!",
+    "active": "Itens Ativos",
+    "items": "Itens no Inventário",
+    "banned": "Este usuário está **banido** de usar a Menhera",
+    "use": "Usar Itens",
+    "use-footer": "Clique no botão abaixo para usar itens",
+    "select": "Escolha um item para usar",
+    "choose-item": "Selecione um item para usar como seu item mágico principal",
+    "reset": "Remover Itens Ativos",
+    "reseted": "Feitoria! Todos seus itens ativos foram movidos para o inventário",
+    "choose-toggle": "Qual item você quer substituir?",
+    "equipped": "Sucesso! O item **{{name}}** foi selecionado como ativo! Você já pode desfrutar de seus poderes!",
+    "select-description": "Escolha um dos itens abaixos para ativá-lo. Caso não tenha espaço disponível, tu terá que escolher um dos itens ativos para substituílo"
+  },
+  "carteira": {
+    "description": "Veja a carteira de alguém",
+    "usage": "[usuário]",
+    "no-dbuser": "este usuário não está em minha database",
+    "title": "Carteira de {{user}}",
+    "stars": "Estrelinhas",
+    "rolls": "Rolls",
+    "unknow-user": "usuário não encontrado",
+    "demons": "Demônios",
+    "angels": "Anjos",
+    "giants": "Gigantes",
+    "archangel": "Arcanjos",
+    "sd": "Semideuses",
+    "god": "Deuses",
+    "banned-user": "Este usuário não possui carteira pois está banido da Menhera!"
   }
 }

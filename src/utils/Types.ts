@@ -3,6 +3,7 @@ import BadgeRepository from '@database/repositories/BadgeRepository';
 import BlacklistRepository from '@database/repositories/BlacklistRepository';
 import CacheRepository from '@database/repositories/CacheRepository';
 import CmdRepository from '@database/repositories/CmdsRepository';
+import CoinflipRepository from '@database/repositories/CoinflipRepository';
 import GiveRepository from '@database/repositories/GiveRepository';
 import GuildsRepository from '@database/repositories/GuildsRepository';
 import HuntRepository from '@database/repositories/HuntRepository';
@@ -11,6 +12,7 @@ import MamarRepository from '@database/repositories/MamarRepository';
 import RelationshipRepository from '@database/repositories/RelationshipRepository';
 import StarRepository from '@database/repositories/StarRepository';
 import TopRepository from '@database/repositories/TopRepository';
+import ShopRepository from '@database/repositories/ShopRepository';
 
 import UserRepository from '@database/repositories/UserRepository';
 import {
@@ -21,19 +23,10 @@ import {
   PermissionResolvable,
   User,
 } from 'discord.js-light';
-import { Document } from 'mongoose';
 
 export interface IClientConfigs {
   interactionsDirectory: string;
   eventsDirectory: string;
-}
-
-export interface IInteractionCommandConfig extends ChatInputApplicationCommandData {
-  devsOnly?: boolean;
-  category: string;
-  cooldown?: number;
-  userPermissions?: PermissionResolvable[];
-  clientPermissions?: PermissionResolvable[];
 }
 
 export type T8BallAnswerTypes = 'negative' | 'positive' | 'neutral';
@@ -56,10 +49,9 @@ export interface IBlackjackCards {
   hidden?: boolean;
 }
 
-interface IColor {
+export interface IColor {
   nome: string;
   cor: ColorResolvable;
-  price: number;
 }
 
 interface IBadge {
@@ -74,31 +66,60 @@ export interface IGuildSchema {
   lang: string;
 }
 
+export interface IMagicItem {
+  id: number;
+}
+
 export interface IUserSchema {
   readonly id: string;
-  mamadas: number;
+  // mamadas: number; // Remove
+  mamado: number;
   mamou: number;
-  casado: string;
-  nota: string;
-  data?: string | null;
-  shipValue?: string;
-  ban?: boolean;
-  banReason?: string | null;
-  cor: ColorResolvable;
-  cores: Array<IColor>;
-  caçados: number;
+  // casado: string; // remove
+  married: string | null;
+  // nota: string; // remove
+  info: string;
+  // data?: string | null; // remove
+  marriedDate: string | null;
+  ban: boolean;
+  banReason: string | null;
+  // cor: ColorResolvable; // remove
+  selectedColor: ColorResolvable;
+  colors: Array<IColor>;
+  // cores: Array<IColor>; // remove
+  // caçados: number; // remove
+  demons: number;
   giants: number;
-  anjos: number;
-  arcanjos: number;
-  semideuses: number;
-  deuses: number;
-  caçarTime: string;
+  // anjos: number; // remove
+  angels: number;
+  // arcanjos: number; // remove
+  archangels: number;
+  // semideuses: number; // remove
+  demigods: number;
+  // deuses: number; // remove
+  gods: number;
+  // caçarTime: string; // remove
+  huntCooldown: number;
   rolls: number;
   estrelinhas: number;
-  votos: number;
+  // votos: number; // remove
+  votes: number;
   badges: Array<IBadge>;
-  voteCooldown: string;
+  voteCooldown: number;
   trisal: Array<string>;
+  inventory: Array<IMagicItem>;
+  inUseItems: Array<IMagicItem>;
+  itemsLimit: number;
+  lastCommandAt: number;
+}
+
+export interface IInteractionCommandConfig extends ChatInputApplicationCommandData {
+  devsOnly?: boolean;
+  category: string;
+  cooldown?: number;
+  userPermissions?: PermissionResolvable[];
+  clientPermissions?: PermissionResolvable[];
+  authorDataFields?: Array<keyof IUserSchema>;
 }
 
 export interface ICommandUsedData {
@@ -152,7 +173,7 @@ export interface IUserDataToProfile {
   tag: string;
   flagsArray: Array<string>;
   casado: string | User;
-  voteCooldown: string;
+  voteCooldown: number;
   badges: Array<IBadge>;
   username: string;
   data: string;
@@ -160,8 +181,8 @@ export interface IUserDataToProfile {
   mamou: number;
 }
 export interface IContextData {
-  user: IUserSchema & Document;
-  server: IGuildSchema | (IGuildSchema & Document);
+  user: IUserSchema;
+  server: IGuildSchema;
 }
 
 export interface IDisabled {
@@ -209,6 +230,8 @@ export interface IDatabaseRepositories {
   blacklistRepository: BlacklistRepository;
   topRepository: TopRepository;
   giveRepository: GiveRepository;
+  coinflipRepository: CoinflipRepository;
+  shopRepository: ShopRepository;
 }
 
 export type TShardStatus = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
@@ -225,14 +248,64 @@ export interface ITopResult {
 }
 
 export enum TopRankingTypes {
-  mamadas = 'mamadas',
+  mamadas = 'mamado',
   mamou = 'mamou',
-  demons = 'caçados',
-  archangels = 'arcanjos',
+  demons = 'demons',
+  archangels = 'archangels',
   giants = 'giants',
-  angels = 'anjos',
-  demigods = 'semideuses',
-  gods = 'deuses',
+  angels = 'angels',
+  demigods = 'demigods',
+  gods = 'gods',
   stars = 'estrelinhas',
-  votes = 'votos',
+  votes = 'votes',
+}
+
+export interface IReturnData<T> {
+  id: number;
+  data: T;
+}
+export type HuntingTypes = 'demons' | 'giants' | 'angels' | 'archangels' | 'demigods' | 'gods';
+
+export interface HuntProbabiltyProps {
+  amount: number;
+  probabilty: number;
+}
+
+export interface HuntProbability {
+  demons: HuntProbabiltyProps[];
+  giants: HuntProbabiltyProps[];
+  angels: HuntProbabiltyProps[];
+  archangels: HuntProbabiltyProps[];
+  demigods: HuntProbabiltyProps[];
+  gods: HuntProbabiltyProps[];
+}
+
+export interface IProbablyBoostItem<HuntType extends HuntingTypes> {
+  type: 'PROBABILITY_BOOST';
+  huntType: HuntType;
+  probabilities: HuntProbability[HuntType];
+  cost: number;
+}
+
+export type TMagicItemRarity = 'common' | 'rare' | 'epic' | 'legendary' | 'mythical' | 'divine';
+
+export interface IHuntCooldownBoostItem<HuntType extends HuntingTypes> {
+  type: 'COOLDOWN_REDUCTION';
+  huntType: HuntType;
+  huntCooldown: number;
+  dropChance: number;
+  rarity: TMagicItemRarity;
+}
+
+export type THuntMagicItemsFile<HuntType extends HuntingTypes> =
+  | IProbablyBoostItem<HuntType>
+  | IHuntCooldownBoostItem<HuntType>;
+
+export enum huntEnum {
+  DEMON = 'demons',
+  ANGEL = 'angels',
+  DEMIGOD = 'demigods',
+  GIANT = 'giants',
+  ARCHANGEL = 'archangels',
+  GOD = 'gods',
 }

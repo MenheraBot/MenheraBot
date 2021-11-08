@@ -1,13 +1,12 @@
-import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageSelectMenu, SelectMenuInteraction } from 'discord.js-light';
-import { emojis } from '@structures/MenheraConstants';
+import { emojis } from '@structures/Constants';
 import Util from '@utils/Util';
 
 export default class LanguageInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'idioma',
       description: '「🌐」・Mude o idioma em que eu falo neste servidor!',
       category: 'util',
@@ -22,28 +21,28 @@ export default class LanguageInteractionCommand extends InteractionCommand {
       .setCustomId(ctx.interaction.id)
       .setMinValues(1)
       .setMaxValues(1)
-      .setPlaceholder(ctx.translate('select'))
+      .setPlaceholder(ctx.locale('commands:idioma.select'))
       .addOptions([
         {
           label: ctx.locale('common:english'),
-          description: ctx.translate('english'),
+          description: ctx.locale('commands:idioma.english'),
           value: 'en-US',
           emoji: emojis.us,
         },
         {
           label: ctx.locale('common:portuguese'),
-          description: ctx.translate('portuguese'),
+          description: ctx.locale('commands:idioma.portuguese'),
           value: 'pt-BR',
           emoji: emojis.br,
         },
       ]);
 
-    await ctx.reply({
-      content: `${emojis.question} | ${ctx.translate('question')}`,
+    await ctx.makeMessage({
+      content: ctx.prettyResponse('question', 'commands:idioma.question'),
       components: [{ type: 'ACTION_ROW', components: [selector] }],
     });
 
-    const collectInteracion = await Util.collectComponentInteractionWithId(
+    const collectInteracion = await Util.collectComponentInteractionWithId<SelectMenuInteraction>(
       ctx.channel,
       ctx.author.id,
       ctx.interaction.id,
@@ -51,7 +50,7 @@ export default class LanguageInteractionCommand extends InteractionCommand {
     ).catch(() => null);
 
     if (!collectInteracion) {
-      ctx.editReply({
+      ctx.makeMessage({
         components: [
           {
             type: 'ACTION_ROW',
@@ -62,25 +61,25 @@ export default class LanguageInteractionCommand extends InteractionCommand {
       return;
     }
 
-    this.editLang(ctx, (collectInteracion as SelectMenuInteraction).values[0]);
+    LanguageInteractionCommand.editLang(ctx, collectInteracion.values[0]);
   }
 
-  async editLang(ctx: InteractionCommandContext, lang: string): Promise<void> {
+  static async editLang(ctx: InteractionCommandContext, lang: string): Promise<void> {
     ctx.data.server.lang = lang;
-    await this.client.repositories.cacheRepository.updateGuild(
+    await ctx.client.repositories.cacheRepository.updateGuild(
       ctx.interaction.guild?.id as string,
       ctx.data.server,
     );
 
     switch (lang) {
       case 'en-US':
-        ctx.editReply({
+        ctx.makeMessage({
           components: [],
           content: 'A you wish, I will speak english on this server',
         });
         break;
       case 'pt-BR':
-        ctx.editReply({
+        ctx.makeMessage({
           components: [],
           content: 'Perfeito, vou falar português nesse servidor',
         });

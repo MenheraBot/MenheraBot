@@ -1,13 +1,12 @@
-import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageAttachment } from 'discord.js-light';
 import HttpRequests from '@utils/HTTPrequests';
-import { emojis } from '@structures/MenheraConstants';
+import { emojis } from '@structures/Constants';
 
 export default class GadoInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'gado',
       description:
         '「🐂」・MUUUUu gado demais. Use esse comando naquele seu amigo que baba por egirl',
@@ -32,8 +31,8 @@ export default class GadoInteractionCommand extends InteractionCommand {
     });
     await ctx.defer();
 
-    const res = this.client.picassoWs.isAlive
-      ? await this.client.picassoWs.makeRequest({
+    const res = ctx.client.picassoWs.isAlive
+      ? await ctx.client.picassoWs.makeRequest({
           id: ctx.interaction.id,
           type: 'gado',
           data: { image: link },

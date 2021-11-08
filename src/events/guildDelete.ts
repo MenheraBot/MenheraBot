@@ -2,11 +2,9 @@ import { Guild } from 'discord.js-light';
 import MenheraClient from 'MenheraClient';
 
 export default class GuildDelete {
-  constructor(private client: MenheraClient) {}
-
-  async run(guild: Guild): Promise<void> {
+  async run(guild: Guild & { client: MenheraClient }): Promise<void> {
     if (!guild || !guild.id) return;
 
-    await this.client.repositories.guildRepository.delete(guild.id);
+    await guild.client.repositories.guildRepository.delete(guild.id);
   }
 }

@@ -1,14 +1,13 @@
-import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageButton, MessageComponentInteraction } from 'discord.js-light';
-import { emojis } from '@structures/MenheraConstants';
+import { emojis } from '@structures/Constants';
 import Util from '@utils/Util';
 import moment from 'moment';
 
 export default class MarryInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'casar',
       description: '「💍」・Case com o amor de sua vida',
       options: [
@@ -21,6 +20,7 @@ export default class MarryInteractionCommand extends InteractionCommand {
       ],
       category: 'fun',
       cooldown: 8,
+      authorDataFields: ['married'],
     });
   }
 
@@ -30,48 +30,69 @@ export default class MarryInteractionCommand extends InteractionCommand {
     const mencionado = ctx.options.getUser('user', true);
 
     if (mencionado.bot) {
-      await ctx.replyT('error', 'bot', {}, true);
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:casar.bot'),
+        ephemeral: true,
+      });
       return;
     }
     if (mencionado.id === ctx.author.id) {
-      await ctx.replyT('error', 'self-mention', {}, true);
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:casar.self-mention'),
+        ephemeral: true,
+      });
       return;
     }
 
-    if (authorData.casado && authorData.casado !== 'false') {
-      await ctx.replyT('error', 'married', {}, true);
+    if (authorData.married) {
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:casar.married'),
+        ephemeral: true,
+      });
       return;
     }
 
-    const user2 = await this.client.repositories.userRepository.find(mencionado.id);
+    const user2 = await ctx.client.repositories.userRepository.find(mencionado.id, [
+      'married',
+      'ban',
+    ]);
 
     if (!user2) {
-      await ctx.replyT('warn', 'no-dbuser', {}, true);
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('warn', 'commands:casar.no-dbuser'),
+        ephemeral: true,
+      });
       return;
     }
 
     if (user2.ban === true) {
-      await ctx.replyT('error', 'banned-user', {}, true);
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:casar.banned-user'),
+        ephemeral: true,
+      });
       return;
     }
 
-    if (user2.casado && user2.casado !== 'false') {
-      await ctx.replyT('error', 'mention-married', {}, true);
+    if (user2.married) {
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:casar.mention-married'),
+        ephemeral: true,
+      });
       return;
     }
 
     const ConfirmButton = new MessageButton()
       .setCustomId(`${ctx.interaction.id} CONFIRM`)
-      .setLabel(ctx.translate('accept'))
+      .setLabel(ctx.locale('commands:casar.accept'))
       .setStyle('SUCCESS');
 
     const CancellButton = new MessageButton()
       .setCustomId(`${ctx.interaction.id} CANCEL`)
-      .setLabel(ctx.translate('deny'))
+      .setLabel(ctx.locale('commands:casar.deny'))
       .setStyle('DANGER');
 
-    ctx.reply({
-      content: ctx.translate('first-text', {
+    ctx.makeMessage({
+      content: ctx.locale('commands:casar.first-text', {
         author: ctx.author.toString(),
         toMarry: mencionado.toString(),
       }),
@@ -88,7 +109,7 @@ export default class MarryInteractionCommand extends InteractionCommand {
     );
 
     if (!collected) {
-      ctx.editReply({
+      ctx.makeMessage({
         components: [
           {
             type: 1,
@@ -103,8 +124,8 @@ export default class MarryInteractionCommand extends InteractionCommand {
     }
 
     if (collected.customId.endsWith('CANCEL')) {
-      ctx.editReply({
-        content: `${emojis.error} | ${ctx.translate('negated', {
+      ctx.makeMessage({
+        content: `${emojis.error} | ${ctx.locale('commands:casar.negated', {
           toMarry: mencionado.toString(),
           author: ctx.author.toString(),
         })}`,
@@ -121,8 +142,8 @@ export default class MarryInteractionCommand extends InteractionCommand {
       return;
     }
 
-    ctx.editReply({
-      content: `${emojis.ring} | ${ctx.translate('accepted', {
+    ctx.makeMessage({
+      content: `${emojis.ring} | ${ctx.locale('commands:casar.accepted', {
         toMarry: mencionado.toString(),
         author: ctx.author.toString(),
       })}`,
@@ -141,7 +162,7 @@ export default class MarryInteractionCommand extends InteractionCommand {
 
     const dataFormated = moment(Date.now()).format('l LTS');
 
-    await this.client.repositories.relationshipRepository.marry(
+    await ctx.client.repositories.relationshipRepository.marry(
       ctx.author.id,
       mencionado.id,
       dataFormated,

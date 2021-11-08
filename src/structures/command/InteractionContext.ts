@@ -10,20 +10,25 @@ import {
 } from 'discord.js-light';
 import { TFunction } from 'i18next';
 import MenheraClient from 'MenheraClient';
-import { emojis, EmojiTypes } from '@structures/MenheraConstants';
+import { emojis, EmojiTypes } from '@structures/Constants';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { APIMessage } from 'discord-api-types';
+import { debugError } from '@utils/Util';
+
+import { Translation } from '../../types/i18next';
 
 export default class InteractionCommandContext {
   constructor(
-    public client: MenheraClient,
-    public interaction: CommandInteraction,
-    public data: IContextData,
+    public interaction: CommandInteraction & { client: MenheraClient },
     public i18n: TFunction,
-    private commandName: string,
+    public data: IContextData,
   ) {}
 
-  get options(): CommandInteractionOptionResolver {
+  get client(): MenheraClient {
+    return this.interaction.client;
+  }
+
+  get options(): Omit<CommandInteractionOptionResolver<'cached'>, 'getMessage' | 'getFocused'> {
     return this.interaction.options;
   }
 
@@ -44,78 +49,15 @@ export default class InteractionCommandContext {
       return;
     }
 
-    await this.interaction.deferReply({ ephemeral }).catch(() => null);
+    await this.interaction.deferReply({ ephemeral }).catch(debugError);
   }
 
-  async reply(
-    options: string | MessagePayload | InteractionReplyOptions,
-    ephemeral = false,
-  ): Promise<Message | void> {
-    if (typeof options === 'string')
-      return this.interaction
-        .reply({
-          content: options,
-          ephemeral,
-        })
-        .catch(() => undefined);
-
-    return this.interaction.reply(options).catch(() => undefined);
+  prettyResponseLocale(emoji: EmojiTypes, text: Translation, translateOptions = {}): string {
+    return `${emojis[emoji] || '🐛'} **|** ${this.locale(text, translateOptions)}`;
   }
 
-  async replyE(
-    emoji: EmojiTypes,
-    options: string | MessagePayload | InteractionReplyOptions,
-    ephemeral = false,
-  ): Promise<Message | void> {
-    if (typeof options === 'string')
-      return this.interaction
-        .reply({
-          content: `${emojis[emoji] || '🐛'} **|** ${options}`,
-          ephemeral,
-        })
-        .catch(() => undefined);
-
-    return this.interaction.reply(options).catch(() => undefined);
-  }
-
-  async deferedReplyL(emoji: EmojiTypes, text: string, translateOptions = {}): Promise<void> {
-    await this.interaction
-      .editReply({
-        content: `${emojis[emoji] || '🐛'} **|** ${this.i18n(text, translateOptions)}`,
-      })
-      .catch(() => undefined);
-  }
-
-  async replyL(
-    emoji: EmojiTypes,
-    text: string,
-    translateOptions = {},
-    ephemeral = false,
-  ): Promise<Message | void> {
-    return this.interaction
-      .reply({
-        content: `${emojis[emoji] || '🐛'} **|** ${this.i18n(text, translateOptions)}`,
-        ephemeral,
-      })
-      .catch(() => undefined);
-  }
-
-  async replyT(
-    emoji: EmojiTypes,
-    text: string,
-    translateOptions = {},
-    ephemeral = false,
-  ): Promise<Message | void> {
-    return this.interaction
-      .reply({
-        content: `${emojis[emoji] || '🐛'} **|** ${this.translate(text, translateOptions)}`,
-        ephemeral,
-      })
-      .catch(() => undefined);
-  }
-
-  prettyResponse(emoji: EmojiTypes, text: string, translateOptions = {}): string {
-    return `${emojis[emoji] || '🐛'} **|** ${this.translate(text, translateOptions)}`;
+  prettyResponse(emoji: EmojiTypes, text: Translation, translateOptions = {}): string {
+    return `${emojis[emoji] || '🐛'} **|** ${this.locale(text, translateOptions)}`;
   }
 
   private resolveMessage(message: Message | APIMessage | null): Message | null {
@@ -126,31 +68,27 @@ export default class InteractionCommandContext {
   }
 
   async makeMessage(options: InteractionReplyOptions): Promise<Message | null> {
-    if (this.interaction.replied)
-      return this.resolveMessage(await this.interaction.editReply(options).catch(() => null));
+    if (this.interaction.replied || this.interaction.deferred)
+      return this.resolveMessage(await this.interaction.editReply(options).catch(debugError));
 
     return this.resolveMessage(
-      await this.interaction.reply({ ...options, fetchReply: true }).catch(() => null),
+      await this.interaction.reply({ ...options, fetchReply: true }).catch(debugError),
     );
   }
 
-  async send(options: MessagePayload | InteractionReplyOptions): Promise<void> {
-    await this.interaction.followUp(options).catch(() => undefined);
+  async send(options: MessagePayload | InteractionReplyOptions): Promise<Message | null> {
+    return this.resolveMessage(await this.interaction.followUp(options).catch(debugError));
   }
 
-  async deleteReply(): Promise<void> {
-    return this.interaction.deleteReply().catch(() => undefined);
+  async fetchReply(): Promise<Message | null> {
+    return this.resolveMessage(await this.interaction.fetchReply().catch(debugError));
   }
 
-  async editReply(options: MessagePayload | InteractionReplyOptions): Promise<void> {
-    await this.interaction.editReply(options).catch(() => undefined);
+  async deleteReply(): Promise<void | null> {
+    return this.interaction.deleteReply().catch(debugError);
   }
 
-  locale(text: string, translateVars = {}): string {
+  locale(text: Translation, translateVars = {}): string {
     return this.i18n(text, translateVars);
-  }
-
-  translate(text: string, translateVars = {}): string {
-    return this.i18n(`commands:${this.commandName}.${text}`, translateVars);
   }
 }

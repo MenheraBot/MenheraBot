@@ -1,11 +1,10 @@
-import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageEmbed } from 'discord.js-light';
 
 export default class SupportInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'suporte',
       description: '「🙋」・Precisa de ajuda? Entre no meu servidor de suporte',
       category: 'util',
@@ -16,11 +15,11 @@ export default class SupportInteractionCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const embed = new MessageEmbed()
-      .setTitle(ctx.translate('embed_title'))
+      .setTitle(ctx.locale('commands:suporte.embed_title'))
       .setURL('https://discord.gg/fZMdQbA')
       .setColor('#970045')
       .setImage('https://i.imgur.com/ZsKuh8W.png')
       .setTimestamp();
-    await ctx.reply({ embeds: [embed], ephemeral: true });
+    await ctx.makeMessage({ embeds: [embed], ephemeral: true });
   }
 }

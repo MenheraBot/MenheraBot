@@ -1,13 +1,12 @@
-import MenheraClient from 'MenheraClient';
-import { COLORS } from '@structures/MenheraConstants';
+import { COLORS } from '@structures/Constants';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageEmbed } from 'discord.js-light';
 import HttpRequests from '@utils/HTTPrequests';
 
 export default class ResurrectInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'ressuscitar',
       description: '「✝️」・Usa uma ult da sage em alguém',
       options: [
@@ -28,12 +27,17 @@ export default class ResurrectInteractionCommand extends InteractionCommand {
     const user = ctx.options.getUser('user', true);
 
     if (user.id === ctx.author.id) {
-      await ctx.replyT('question', 'self-mention', {}, true);
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('question', 'commands:ressuscitar.self-mention'),
+        ephemeral: true,
+      });
       return;
     }
 
     if (user.bot) {
-      await ctx.replyT('success', 'bot');
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('success', 'commands:ressuscitar.bot'),
+      });
       return;
     }
 
@@ -41,10 +45,10 @@ export default class ResurrectInteractionCommand extends InteractionCommand {
     const selectedImage = await HttpRequests.getAssetImageUrl('resurrect');
 
     const embed = new MessageEmbed()
-      .setTitle(ctx.translate('embed_title'))
+      .setTitle(ctx.locale('commands:ressuscitar.embed_title'))
       .setColor(COLORS.ACTIONS)
       .setDescription(
-        ctx.translate('embed_description', {
+        ctx.locale('commands:ressuscitar.embed_description', {
           author: ctx.author.toString(),
           mention: user.toString(),
         }),
@@ -52,6 +56,6 @@ export default class ResurrectInteractionCommand extends InteractionCommand {
       .setImage(selectedImage)
       .setThumbnail(avatar);
 
-    await ctx.reply({ embeds: [embed] });
+    await ctx.makeMessage({ embeds: [embed] });
   }
 }

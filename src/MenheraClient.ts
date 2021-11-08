@@ -14,6 +14,7 @@ import InteractionCommand from '@structures/command/InteractionCommand';
 
 import LocaleStructure from '@structures/LocaleStructure';
 import PicassoWebSocket from '@structures/PicassoWebSocket';
+import { debugError } from '@utils/Util';
 
 export default class MenheraClient extends Client {
   public database: Database;
@@ -71,7 +72,7 @@ export default class MenheraClient extends Client {
     await this.database.createConnection();
     this.loadSlashCommands(this.config.interactionsDirectory);
     this.loadEvents(this.config.eventsDirectory);
-    this.picassoWs.connect().catch(() => null);
+    this.picassoWs.connect().catch(debugError);
     return true;
   }
 
@@ -120,7 +121,7 @@ export default class MenheraClient extends Client {
 
   loadEvents(directory: string): void {
     FileUtil.readDirectory(directory, (EventFile: typeof Event, filepath: string) => {
-      this.events.add(FileUtil.filename(filepath) as keyof ClientEvents, new EventFile(this));
+      this.events.add(FileUtil.filename(filepath) as keyof ClientEvents, new EventFile());
     });
   }
 }

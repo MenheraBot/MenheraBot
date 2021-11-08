@@ -6,7 +6,7 @@ export default class GuildsRepository {
   constructor(private guildModal: typeof Guilds) {}
 
   async find(guildID: string): Promise<IGuildSchema | null> {
-    return this.guildModal.findOne({ id: guildID });
+    return this.guildModal.findOne({ id: guildID }, null, { lean: true });
   }
 
   async update(

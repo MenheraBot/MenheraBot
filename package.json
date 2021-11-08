@@ -1,10 +1,10 @@
 {
   "name": "menhera-bot",
-  "version": "3.3.14",
+  "version": "3.4.0",
   "engines": {
     "node": ">=16.6.0"
   },
-  "description": "Uma bot brasileira de RPG para o Discord",
+  "description": "A Brazilian Discord Bot foccused in Fun and RPG",
   "main": "dist/shard.js",
   "scripts": {
     "prepare": "husky install",
@@ -31,7 +31,7 @@
     "@sentry/tracing": "^6.13.1",
     "axios": "^0.21.4",
     "bufferutil": "^4.0.3",
-    "discord.js-light": "^4.2.1",
+    "discord.js-light": "^4.3.0",
     "dotenv": "^10.0.0",
     "i18next": "^21.0.0",
     "i18next-fs-backend": "^1.1.1",

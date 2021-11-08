@@ -1,10 +1,9 @@
-import MenheraClient from 'MenheraClient';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 
 export default class ManageStartSlashInteractionCommand extends InteractionCommand {
-  constructor(client: MenheraClient) {
-    super(client, {
+  constructor() {
+    super({
       name: 'managestar',
       description: 'MANAGEIA AS STAR',
       category: 'dev',
@@ -45,16 +44,20 @@ export default class ManageStartSlashInteractionCommand extends InteractionComma
     const value = ctx.options.getInteger('value', true);
     switch (ctx.options.getString('option', true)) {
       case 'add':
-        await this.client.repositories.starRepository.add(id, value);
+        await ctx.client.repositories.starRepository.add(id, value);
         break;
       case 'remove':
-        await this.client.repositories.starRepository.remove(id, value);
+        await ctx.client.repositories.starRepository.remove(id, value);
         break;
       case 'set':
-        await this.client.repositories.starRepository.set(id, value);
+        await ctx.client.repositories.starRepository.set(id, value);
         break;
     }
 
-    await ctx.replyE('success', `Estrelinhas de ${id} alteradas com sucesso :star:`);
+    await ctx.makeMessage({
+      content: `Estrelinhas de <@${id}> alteradas com sucesso :star:\n**Operação**: ${ctx.options.getString(
+        'option',
+      )}\n**Valor**: ${value}`,
+    });
   }
 }

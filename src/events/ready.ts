@@ -3,70 +3,73 @@ import HttpRequests from '@utils/HTTPrequests';
 import { IStatusData } from '@utils/Types';
 import HttpServer from '@structures/server/server';
 import DBLWebhook from '@structures/server/controllers/DBLWebhook';
-import PostInteractions from '@structures/server/controllers/PostInteractions';
+import { getMillisecondsToTheEndOfDay } from '@utils/Util';
+// import PostInteractions from '@structures/server/controllers/PostInteractions';
+
+let inactiveTimeout: NodeJS.Timeout;
 
 export default class ReadyEvent {
-  constructor(private client: MenheraClient) {}
+  async run(client: MenheraClient): Promise<void> {
+    if (!client.user) return;
+    if (!client.shard) return;
+    if (process.env.NODE_ENV === 'development') return;
 
-  async run(): Promise<void> {
-    if (!this.client.user) return;
-    if (this.client.user.id !== process.env.MENHERA_ID) return;
-    if (!this.client.shard) return;
-
-    const isMasterShard = (id: number) => id === (this.client.shard?.count as number) - 1;
+    const isMasterShard = (id: number) => id === (client.shard?.count as number) - 1;
 
     const updateActivity = async (shard: number) =>
-      this.client.user?.setActivity(await HttpRequests.getActivity(shard));
+      client.user?.setActivity(await HttpRequests.getActivity(shard));
 
-    const shardId = this.client.shard.ids[0];
+    const shardId = client.shard.ids[0];
 
     setInterval(() => {
       updateActivity(shardId);
     }, 1000 * 60);
 
     if (isMasterShard(shardId)) {
-      HttpServer.getInstance().registerRouter('DBL', DBLWebhook(this.client));
-      HttpServer.getInstance().registerRouter('INTERACTIONS', PostInteractions(this.client));
+      HttpServer.getInstance().registerRouter('DBL', DBLWebhook(client));
+      // HttpServer.getInstance().registerRouter('INTERACTIONS', PostInteractions(this.client));
 
-      const allBannedUsers = await this.client.repositories.userRepository.getAllBannedUsersId();
-      await this.client.repositories.blacklistRepository.addBannedUsers(allBannedUsers);
+      // ReadyEvent.verifyInactive(client); ONLY START IN DEZEMBER
+
+      const allBannedUsers = await client.repositories.userRepository.getAllBannedUsersId();
+      await client.repositories.blacklistRepository.addBannedUsers(allBannedUsers);
       await HttpRequests.resetCommandsUses();
 
       setInterval(() => {
-        this.postShardStatus();
+        ReadyEvent.postShardStatus(client);
       }, 15 * 1000);
 
       setInterval(async () => {
-        if (!this.client.shard) return;
-        if (!this.client.user) return;
-        const info = (await this.client.shard.fetchClientValues('guilds.cache.size')) as number[];
-        await HttpRequests.postBotStatus(this.client.user.id, info);
+        if (!client.shard) return;
+        if (!client.user) return;
+        const info = (await client.shard.fetchClientValues('guilds.cache.size')) as number[];
+        await HttpRequests.postBotStatus(client.user.id, info);
       }, 1800000);
     }
 
     console.log('[READY] Menhera se conectou com o Discord!');
   }
 
-  async postShardStatus(): Promise<void> {
-    const ShardingEnded = await this.client.isShardingProcessEnded();
+  static async postShardStatus(client: MenheraClient): Promise<void> {
+    const ShardingEnded = await client.isShardingProcessEnded();
     if (!ShardingEnded) return;
 
     const results = (await Promise.all([
-      this.client.shard?.broadcastEval(() => process.memoryUsage().heapUsed),
-      this.client.shard?.broadcastEval((c) => c.uptime),
-      this.client.shard?.fetchClientValues('guilds.cache.size'),
-      this.client.shard?.broadcastEval((c) =>
+      client.shard?.broadcastEval(() => process.memoryUsage().heapUsed),
+      client.shard?.broadcastEval((c) => c.uptime),
+      client.shard?.fetchClientValues('guilds.cache.size'),
+      client.shard?.broadcastEval((c) =>
         c.guilds.cache.reduce((p, b) => (b.available ? p : p + 1), 0),
       ),
-      this.client.shard?.broadcastEval((c) => c.ws.ping),
+      client.shard?.broadcastEval((c) => c.ws.ping),
 
-      this.client.shard?.broadcastEval((c) =>
+      client.shard?.broadcastEval((c) =>
         c.guilds.cache.reduce((p, b) => (b.available ? p + b.memberCount : p), 0),
       ),
-      this.client.shard?.broadcastEval((c) => c.shard?.ids[0]),
+      client.shard?.broadcastEval((c) => c.shard?.ids[0]),
     ])) as number[][];
 
-    const toSendData: IStatusData[] = Array(this.client.shard?.count)
+    const toSendData: IStatusData[] = Array(client.shard?.count)
       .fill('a')
       .map((_, i) => ({
         memoryUsed: results[0][i],
@@ -80,5 +83,97 @@ export default class ReadyEvent {
       }));
 
     await HttpRequests.postShardStatus(toSendData);
+  }
+
+  static async verifyInactive(client: MenheraClient): Promise<void> {
+    clearTimeout(inactiveTimeout);
+    inactiveTimeout = setTimeout(async () => {
+      const inactiveUsers = await client.database.Users.find(
+        {
+          lastCommandAt: { $lte: Date.now() - 1_209_600_000 },
+          $or: [
+            { estrelinhas: { $gte: 250_000 } },
+            { demons: { $gte: 60 } },
+            { giants: { $gte: 50 } },
+            { angels: { $gte: 40 } },
+            { archangels: { $gte: 30 } },
+            { demigods: { $gte: 20 } },
+            { gods: { $gte: 7 } },
+          ],
+        },
+        [
+          'estrelinhas',
+          'id',
+          'lastCommandAt',
+          'demons',
+          'giants',
+          'angels',
+          'archangels',
+          'demigods',
+          'gods',
+        ],
+      );
+
+      const ids = inactiveUsers.map((a) => a.id);
+
+      const updatedData = inactiveUsers.map((a) => {
+        const weeks = parseFloat((Date.now() - a.lastCommandAt / 1_209_600_000).toFixed(1));
+
+        let estrelinhas =
+          (Math.floor(a.estrelinhas / 250_000) >= 4
+            ? Math.floor((a.estrelinhas / 4) * weeks)
+            : Math.floor(a.estrelinhas / 8) * weeks) * -1;
+        let demons =
+          (Math.floor(a.demons / 60) >= 4
+            ? Math.floor((a.demons / 4) * weeks)
+            : Math.floor(a.demons / 8) * weeks) * -1;
+        let giants =
+          (Math.floor(a.giants / 50) >= 4
+            ? Math.floor((a.giants / 4) * weeks)
+            : Math.floor(a.giants / 8) * weeks) * -1;
+        let angels =
+          (Math.floor(a.angels / 40) >= 4
+            ? Math.floor((a.angels / 4) * weeks)
+            : Math.floor(a.angels / 8) * weeks) * -1;
+        let archangels =
+          (Math.floor(a.archangels / 10) >= 4
+            ? Math.floor((a.archangels / 4) * weeks)
+            : Math.floor(a.archangels / 8) * weeks) * -1;
+        let demigods =
+          (Math.floor(a.demigods / 5) >= 4
+            ? Math.floor((a.demigods / 4) * weeks)
+            : Math.floor(a.demigods / 8) * weeks) * -1;
+        let gods =
+          (Math.floor(a.gods / 2) >= 4
+            ? Math.floor((a.gods / 4) * weeks)
+            : Math.floor(a.gods / 8) * weeks) * -1;
+
+        if (a.estrelinhas - estrelinhas < 0) estrelinhas = 0;
+        if (a.demons - demons < 0) demons = 0;
+        if (a.giants - giants < 0) giants = 0;
+        if (a.angels - angels < 0) angels = 0;
+        if (a.archangels - archangels < 0) archangels = 0;
+        if (a.demigods - demigods < 0) demigods = 0;
+        if (a.gods - gods < 0) gods = 0;
+
+        return { $inc: { estrelinhas, demons, giants, angels, archangels, demigods, gods } };
+      });
+      const bulkUpdate = client.database.Users.collection.initializeUnorderedBulkOp();
+
+      ids.forEach((id, index) => {
+        bulkUpdate.find({ id }).updateOne(updatedData[index]);
+      });
+
+      const startTime = Date.now();
+      const result = await bulkUpdate.execute();
+      if (result)
+        console.log(
+          `[DATABASE BULK] - Inactive users executed in ${Date.now() - startTime}ms: `,
+          result,
+        );
+      else console.log('[DATABASE BULK] - Error when bulking');
+
+      this.verifyInactive(client);
+    }, getMillisecondsToTheEndOfDay());
   }
 }

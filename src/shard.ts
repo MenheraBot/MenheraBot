@@ -20,4 +20,6 @@ shards.on('shardCreate', (shard) => {
   console.warn(`[SHARDING MANAGER] Launching shard ${shard.id}`);
 });
 
-shards.spawn().then(() => console.log('[SHARDING MANAGER] All shards have been spawned'));
+shards.spawn().then(() => {
+  console.log('[SHARDING MANAGER] All shards have been spawned');
+});
