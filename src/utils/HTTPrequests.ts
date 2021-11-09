@@ -260,7 +260,7 @@ export default class HttpRequests {
 
   static async profileRequest(
     user: IUserDataToProfile,
-    marry: string | User,
+    marry: User | null,
     usageCommands:
       | boolean
       | { cmds: { count: number }; array: Array<{ name: string; count: number }> },
