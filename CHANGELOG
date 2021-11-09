@@ -5,13 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
-## [Unreleased]
+## [3.4.3] 2021-11-09
 
 ### Added
 
 - Novo comando de imagem `/vasco`
+
+### Fix
+
 - Resolvido o comando inventário não funcionar caso o usuário tenha o item `Necare Hêmítheos`
 - Resolvido problema do trisal quando nao encontrava usuarios
+- Resolvido erro ao usuários caçarem pela primeira vez
 
 ## [3.4.2] 2021-11-09
 
