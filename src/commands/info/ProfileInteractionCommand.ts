@@ -2,7 +2,7 @@ import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { IUserDataToProfile, IUserSchema } from '@utils/Types';
 import HttpRequests from '@utils/HTTPrequests';
-import { MessageAttachment, User } from 'discord.js-light';
+import { MessageAttachment } from 'discord.js-light';
 
 export default class ProfileInteractionCommand extends InteractionCommand {
   constructor() {
@@ -37,7 +37,6 @@ export default class ProfileInteractionCommand extends InteractionCommand {
   async run(ctx: InteractionCommandContext): Promise<void> {
     let { user }: { user: IUserSchema | null } = ctx.data;
     const member = ctx.options.getUser('user') ?? ctx.author;
-    let marry: string | User = 'false';
 
     if (member.id !== ctx.author.id) {
       if (member.bot) {
@@ -78,7 +77,7 @@ export default class ProfileInteractionCommand extends InteractionCommand {
       return;
     }
 
-    if (user.married) marry = await ctx.client.users.fetch(user.married);
+    const marry = user.married ? await ctx.client.users.fetch(user.married) : null;
 
     await ctx.defer();
 
@@ -92,7 +91,7 @@ export default class ProfileInteractionCommand extends InteractionCommand {
       nota: user.info,
       tag: member.tag,
       flagsArray: member.flags?.toArray() ?? ['NONE'],
-      casado: user.married as string,
+      casado: user.married,
       voteCooldown: user.voteCooldown as number,
       badges: user.badges,
       username: member.username,

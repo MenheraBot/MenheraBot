@@ -159,7 +159,7 @@ export interface IUserDataToProfile {
   nota: string;
   tag: string;
   flagsArray: Array<string>;
-  casado: string | User;
+  casado: string | User | null;
   voteCooldown: number;
   badges: Array<IBadge>;
   username: string;
