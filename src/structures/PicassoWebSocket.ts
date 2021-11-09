@@ -21,6 +21,8 @@ export default class PicassoWebSocket {
       console.log(`[WEBSOCKET] Client ${this.shardId} is trying to connect`);
     } catch (err) {
       if (err instanceof Error) console.log(`[WEBSOCKET] Error when connecting: ${err.message}`);
+      this.ws = null;
+      this.isAlive = false;
     }
   }
 
@@ -60,6 +62,7 @@ export default class PicassoWebSocket {
 
   private onClose(): void {
     this.isAlive = false;
+    console.log(`[WEBSOCKET] Client ${this.shardId} Has been Closed`);
     if (this.ruuningError) return;
     if (this.ws) this.ws.terminate();
     if (this.pingTimeout) clearTimeout(this.pingTimeout);

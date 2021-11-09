@@ -704,5 +704,18 @@
     "sd": "Semideuses",
     "god": "Deuses",
     "banned-user": "Este usuário não possui carteira pois está banido da Menhera!"
+  },
+  "vasco": {
+    "positions": {
+      "0": "Goleiro",
+      "1": "Zagueiro",
+      "2": "Líbero",
+      "3": "Volante",
+      "4": "Ala Direita",
+      "5": "Meio Campo",
+      "6": "Ponta",
+      "7": "Centroavante",
+      "8": "Falso 9"
+    }
   }
 }

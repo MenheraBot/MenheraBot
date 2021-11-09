@@ -43,15 +43,29 @@ export default class VascoInteractionCommand extends InteractionCommand {
     const user = ctx.options.getUser('user', true);
     const quality = ctx.options.getString('qualidade') ?? 'normal';
 
+    const randomPosition = `${Math.floor(Math.random() * 9)}`;
+
+    const position = ctx.locale(`commands:vasco.positions.${randomPosition as '1'}`);
+
     await ctx.defer();
 
     const res = ctx.client.picassoWs.isAlive
       ? await ctx.client.picassoWs.makeRequest({
           id: ctx.interaction.id,
           type: 'vasco',
-          data: { user: user.displayAvatarURL(), quality, username: user.username },
+          data: {
+            user: user.displayAvatarURL({ format: 'png', size: quality === 'normal' ? 512 : 56 }),
+            quality,
+            username: user.username,
+            position,
+          },
         })
-      : await HttpRequests.vascoRequest(user.displayAvatarURL(), quality, user.username);
+      : await HttpRequests.vascoRequest(
+          user.displayAvatarURL({ format: 'png', size: quality === 'normal' ? 512 : 56 }),
+          quality,
+          user.username,
+          position,
+        );
 
     if (res.err) {
       await ctx.defer({ content: `${emojis.error} | ${ctx.locale('commands:http-error')}` });

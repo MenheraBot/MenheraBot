@@ -696,5 +696,18 @@
     "sd": "Demigods",
     "god": "Gods",
     "banned-user": "This user doesn't have a wallet because they're banned from Menhera!"
+  },
+  "vasco": {
+    "positions": {
+      "0": "Goalkeeper",
+      "1": "Defencer",
+      "2": "Libero",
+      "3": "Steering wheel",
+      "4": "Right Wing",
+      "5": "Midfield",
+      "6": "Tip",
+      "7": "Centerforward",
+      "8": "False 9"
+    }
   }
 }

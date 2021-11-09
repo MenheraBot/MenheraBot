@@ -218,9 +218,10 @@ export default class HttpRequests {
     user: string,
     quality: string,
     username: string,
+    position: string,
   ): Promise<IPicassoReturnData> {
     try {
-      const data = await request.get('/vasco', { data: { user, quality, username } });
+      const data = await request.get('/vasco', { data: { user, quality, username, position } });
       return { err: false, data: Buffer.from(data.data) };
     } catch {
       return { err: true };
