@@ -46,7 +46,7 @@ const runVote = async (
     .setThumbnail('https://i.imgur.com/qtM9T9C.jpg')
     .setDescription(embedDescription);
 
-  client.repositories.userRepository.update(user.id, {
+  client.repositories.userRepository.update(userId, {
     $inc: {
       votes: 1,
       rolls: rollQuantity,
