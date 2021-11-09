@@ -3,6 +3,7 @@ import InteractionCommandContext from '@structures/command/InteractionContext';
 import { IUserDataToProfile, IUserSchema } from '@utils/Types';
 import HttpRequests from '@utils/HTTPrequests';
 import { MessageAttachment } from 'discord.js-light';
+import { debugError } from '@utils/Util';
 
 export default class ProfileInteractionCommand extends InteractionCommand {
   constructor() {
@@ -77,7 +78,9 @@ export default class ProfileInteractionCommand extends InteractionCommand {
       return;
     }
 
-    const marry = user.married ? await ctx.client.users.fetch(user.married) : null;
+    const marry = user.married
+      ? await ctx.client.users.fetch(user.married).catch(debugError)
+      : null;
 
     await ctx.defer();
 

@@ -8,6 +8,7 @@ import {
 import MenheraClient from 'MenheraClient';
 import InteractionCommandExecutor from '@structures/command/InteractionCommandExecutor';
 import { clientUnreadyString } from '@structures/Constants';
+import { debugError } from '@utils/Util';
 
 export default class InteractionCreate {
   async run(
@@ -24,7 +25,7 @@ export default class InteractionCreate {
     if (!interaction.client.channels.cache.has(interaction.channelId)) {
       const channel = await interaction.client.channels
         .fetch(interaction.channelId)
-        .catch(() => null);
+        .catch(debugError);
       if (channel) {
         (
           interaction.client.channels.cache as Collection<string, ThreadChannel | GuildChannel>

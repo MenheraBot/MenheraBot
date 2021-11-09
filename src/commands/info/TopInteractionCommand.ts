@@ -3,7 +3,7 @@ import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageEmbed, ColorResolvable } from 'discord.js-light';
 import HttpRequests from '@utils/HTTPrequests';
-import Util from '@utils/Util';
+import Util, { debugError } from '@utils/Util';
 import { COLORS, emojis } from '@structures/Constants';
 import { TopRankingTypes as TOP } from '@utils/Types';
 
@@ -273,7 +273,7 @@ export default class TopInteractionCommand extends InteractionCommand {
       .setColor(color);
 
     for (let i = 0; i < res.length; i++) {
-      const member = await ctx.client.users.fetch(res[i].id).catch(() => null);
+      const member = await ctx.client.users.fetch(res[i].id).catch(debugError);
       const memberName = member?.username ?? res[i].id;
 
       if (memberName.startsWith('Deleted User'))
@@ -297,9 +297,9 @@ export default class TopInteractionCommand extends InteractionCommand {
       .setColor('#f47fff');
 
     for (let i = 0; i < res.length; i++) {
-      const member = await ctx.client.users.fetch(res[i].id).catch();
+      const member = await ctx.client.users.fetch(res[i].id).catch(debugError);
       embed.addField(
-        `**${i + 1} -** ${Util.capitalize(member.username)} `,
+        `**${i + 1} -** ${Util.capitalize(member?.username ?? '404')} `,
         `${ctx.locale('commands:top.use')} **${res[i].uses}** ${ctx.locale('commands:top.times')}`,
         false,
       );

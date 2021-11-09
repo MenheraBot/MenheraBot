@@ -8,6 +8,7 @@ import {
 } from 'discord.js-light';
 import HttpRequests from '@utils/HTTPrequests';
 import { emojis } from '@structures/Constants';
+import { debugError } from '@utils/Util';
 
 export default class TrisalInteractionCommand extends InteractionCommand {
   constructor() {
@@ -47,8 +48,8 @@ export default class TrisalInteractionCommand extends InteractionCommand {
     }
 
     if (authorData.trisal?.length > 0) {
-      const marryTwo = await ctx.client.users.fetch(authorData.trisal[0]);
-      const marryThree = await ctx.client.users.fetch(authorData.trisal[1]);
+      const marryTwo = await ctx.client.users.fetch(authorData.trisal[0]).catch(debugError);
+      const marryThree = await ctx.client.users.fetch(authorData.trisal[1]).catch(debugError);
 
       if (!marryTwo || !marryThree) {
         await ctx.makeMessage({
