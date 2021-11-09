@@ -211,7 +211,7 @@ export default class InventoryInteractionCommand extends InteractionCommand {
       return;
     }
 
-    const [itemId] = resolveSeparatedStrings(selectedItem.values[0]);
+    const itemId = selectedItem.values[0];
 
     if (user.inUseItems.length >= user.itemsLimit) {
       const replaceItem = new MessageSelectMenu()
