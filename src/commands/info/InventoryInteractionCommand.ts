@@ -186,7 +186,7 @@ export default class InventoryInteractionCommand extends InteractionCommand {
 
           p.push({
             label: ctx.locale(`data:magic-items.${c.id as 1}.name`),
-            description: ctx.locale(`data:magic-items.${c.id as 1}.description`),
+            description: ctx.locale(`data:magic-items.${c.id as 1}.description`).substring(0, 100),
             value: `${c.id}`,
           });
           return p;
