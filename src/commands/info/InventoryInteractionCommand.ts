@@ -175,7 +175,7 @@ export default class InventoryInteractionCommand extends InteractionCommand {
     }
 
     const availableItems = new MessageSelectMenu()
-      .setCustomId(`${ctx.interaction.id} | USE`)
+      .setCustomId(`${ctx.interaction.id} | SELECT`)
       .setPlaceholder(ctx.locale('commands:inventario.select'))
       .setMinValues(1)
       .setMaxValues(1)
