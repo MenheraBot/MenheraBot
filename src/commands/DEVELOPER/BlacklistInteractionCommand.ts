@@ -59,7 +59,7 @@ export default class BlacklistInteractionCommand extends InteractionCommand {
           });
           return;
         }
-        const reason = ctx.options.getString('motivo', true);
+        const reason = ctx.options.getString('motivo') ?? 'Nenhum motivo informado';
 
         await ctx.client.repositories.blacklistRepository.ban(user.id, reason);
 
