@@ -214,6 +214,19 @@ export default class HttpRequests {
     }
   }
 
+  static async vascoRequest(
+    user: string,
+    quality: string,
+    username: string,
+  ): Promise<IPicassoReturnData> {
+    try {
+      const data = await request.get('/vasco', { data: { user, quality, username } });
+      return { err: false, data: Buffer.from(data.data) };
+    } catch {
+      return { err: true };
+    }
+  }
+
   static async EightballRequest<T>(sendData: T): Promise<IPicassoReturnData> {
     try {
       const data = await request.get('/8ball', { data: sendData });
