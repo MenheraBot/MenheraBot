@@ -58,6 +58,7 @@ export default class InventoryInteractionCommand extends InteractionCommand {
 
     if (user.ban) {
       ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:inventario.banned') });
+      return;
     }
 
     const embed = new MessageEmbed()
