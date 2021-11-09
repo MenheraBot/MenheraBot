@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Added
 
 - Novo comando de imagem `/vasco`
+- Resolvido o comando inventário não funcionar caso o usuário tenha o item `Necare Hêmítheos`
 
 ## [3.4.2] 2021-11-09
 
