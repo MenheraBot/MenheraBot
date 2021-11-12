@@ -7,6 +7,7 @@ import { getMillisecondsToTheEndOfDay } from '@utils/Util';
 // import PostInteractions from '@structures/server/controllers/PostInteractions';
 
 let inactiveTimeout: NodeJS.Timeout;
+let dailyLoopTimeout: NodeJS.Timeout;
 
 export default class ReadyEvent {
   async run(client: MenheraClient): Promise<void> {
@@ -31,8 +32,8 @@ export default class ReadyEvent {
 
       // ReadyEvent.verifyInactive(client); ONLY START IN DEZEMBER
 
-      const allBannedUsers = await client.repositories.userRepository.getAllBannedUsersId();
-      await client.repositories.blacklistRepository.addBannedUsers(allBannedUsers);
+      ReadyEvent.dailyLoop(client);
+
       await HttpRequests.resetCommandsUses();
 
       setInterval(() => {
@@ -83,6 +84,19 @@ export default class ReadyEvent {
       }));
 
     await HttpRequests.postShardStatus(toSendData);
+  }
+
+  static async dailyLoop(client: MenheraClient): Promise<void> {
+    const toLoop = async (c: MenheraClient) => {
+      const allBannedUsers = await c.repositories.userRepository.getAllBannedUsersId();
+      await c.repositories.blacklistRepository.addBannedUsers(allBannedUsers);
+    };
+
+    toLoop(client);
+    clearTimeout(dailyLoopTimeout);
+    dailyLoopTimeout = setTimeout(async () => {
+      toLoop(client);
+    }, getMillisecondsToTheEndOfDay());
   }
 
   static async verifyInactive(client: MenheraClient): Promise<void> {
@@ -173,7 +187,7 @@ export default class ReadyEvent {
         );
       else console.log('[DATABASE BULK] - Error when bulking');
 
-      this.verifyInactive(client);
+      ReadyEvent.verifyInactive(client);
     }, getMillisecondsToTheEndOfDay());
   }
 }

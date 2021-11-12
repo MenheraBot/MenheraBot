@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ## [Unreleased]
 
+### Added
+
+- Create daily loop event to make thinks every 24 hours
+
 ### Fix
 
 - Resolvido problema ao ver o banimento de um usuário
