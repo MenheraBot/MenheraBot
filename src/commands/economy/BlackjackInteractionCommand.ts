@@ -169,6 +169,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
         content: ctx.prettyResponse('error', 'commands:blackjack.timeout'),
         embeds: [],
         components: [],
+        attachments: [],
       });
       ctx.client.repositories.starRepository.remove(ctx.author.id, valor);
       return;
@@ -639,6 +640,8 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
     if (!collected) {
       ctx.interaction.editReply({
         content: `${emojis.error} ${ctx.locale('commands:blackjack.timeout')}`,
+        embeds: [],
+        attachments: [],
       });
       ctx.client.repositories.starRepository.remove(ctx.author.id, valor);
       return;
