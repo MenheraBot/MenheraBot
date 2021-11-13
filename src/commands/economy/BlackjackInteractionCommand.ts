@@ -642,6 +642,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
         content: `${emojis.error} ${ctx.locale('commands:blackjack.timeout')}`,
         embeds: [],
         attachments: [],
+        components: [],
       });
       ctx.client.repositories.starRepository.remove(ctx.author.id, valor);
       return;
