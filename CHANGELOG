@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 - Criado um loop de evento que é executado sempre à meia noite para funções internas
 - Usuários não podem usar mais de um comando de economia ao mesmo tempo!
+- Usuários no meio de comandos de economia não podem mais ser escolhidos em outros comandos
 
 ### Fix
 

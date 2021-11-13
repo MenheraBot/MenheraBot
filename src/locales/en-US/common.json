@@ -1,5 +1,6 @@
 {
   "sharding_in_progress": "Menhera is still waking up! Try again later",
+  "economy_usage": "This user is in the middle of a command! Wait for it to finish and try again!",
   "timesup": "Time's Up",
   "accept": "Accept",
   "confirm": "Confirm",
