@@ -4,6 +4,7 @@ import { IStatusData } from '@utils/Types';
 import HttpServer from '@structures/server/server';
 import DBLWebhook from '@structures/server/controllers/DBLWebhook';
 import { getMillisecondsToTheEndOfDay } from '@utils/Util';
+import { Client } from 'discord.js-light';
 // import PostInteractions from '@structures/server/controllers/PostInteractions';
 
 let inactiveTimeout: NodeJS.Timeout;
@@ -55,31 +56,25 @@ export default class ReadyEvent {
     const ShardingEnded = await client.isShardingProcessEnded();
     if (!ShardingEnded) return;
 
-    const results = (await Promise.all([
-      client.shard?.broadcastEval(() => process.memoryUsage().heapUsed),
-      client.shard?.broadcastEval((c) => c.uptime),
-      client.shard?.fetchClientValues('guilds.cache.size'),
-      client.shard?.broadcastEval((c) =>
-        c.guilds.cache.reduce((p, b) => (b.available ? p : p + 1), 0),
-      ),
-      client.shard?.broadcastEval((c) => c.ws.ping),
+    const getShardsInfo = (c: Client<true>) => {
+      const memoryUsed = process.memoryUsage().heapUsed;
+      const { uptime } = c;
+      const guilds = c.guilds.cache.size;
+      const unavailable = c.guilds.cache.reduce((p, b) => (b.available ? p : p + 1), 0);
+      const { ping } = c.ws;
+      const members = c.guilds.cache.reduce((p, b) => (b.available ? p + b.memberCount : p), 0);
+      const id = c.shard?.ids[0] ?? 0;
 
-      client.shard?.broadcastEval((c) =>
-        c.guilds.cache.reduce((p, b) => (b.available ? p + b.memberCount : p), 0),
-      ),
-      client.shard?.broadcastEval((c) => c.shard?.ids[0]),
-    ])) as number[][];
+      return { memoryUsed, uptime, guilds, unavailable, ping, members, id };
+    };
+
+    const results = await client.shard?.broadcastEval(getShardsInfo);
+    if (!results) return;
 
     const toSendData: IStatusData[] = Array(client.shard?.count)
       .fill('a')
       .map((_, i) => ({
-        memoryUsed: results[0][i],
-        uptime: results[1][i],
-        guilds: results[2][i],
-        unavailable: results[3][i],
-        ping: results[4][i],
-        members: results[5][i],
-        id: results[6][i],
+        ...results[i],
         lastPingAt: Date.now(),
       }));
 
