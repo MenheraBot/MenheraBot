@@ -31,9 +31,8 @@ export default class ReadyEvent {
       HttpServer.getInstance().registerRouter('DBL', DBLWebhook(client));
       // HttpServer.getInstance().registerRouter('INTERACTIONS', PostInteractions(this.client));
 
-      // ReadyEvent.verifyInactive(client); ONLY START IN DEZEMBER
-
       ReadyEvent.dailyLoop(client);
+      ReadyEvent.verifyInactive(client);
 
       await HttpRequests.resetCommandsUses();
 
@@ -126,62 +125,74 @@ export default class ReadyEvent {
       const ids = inactiveUsers.map((a) => a.id);
 
       const updatedData = inactiveUsers.map((a) => {
-        const weeks = parseFloat((Date.now() - a.lastCommandAt / 1_209_600_000).toFixed(1));
+        const weeks = parseFloat(((Date.now() - a.lastCommandAt) / 1_209_600_000).toFixed(1));
 
         let estrelinhas =
-          (Math.floor(a.estrelinhas / 250_000) >= 4
+          Math.floor(a.estrelinhas / 250_000) >= 4
             ? Math.floor((a.estrelinhas / 4) * weeks)
-            : Math.floor(a.estrelinhas / 8) * weeks) * -1;
+            : Math.floor((a.estrelinhas / 8) * weeks);
         let demons =
-          (Math.floor(a.demons / 60) >= 4
+          Math.floor(a.demons / 60) >= 4
             ? Math.floor((a.demons / 4) * weeks)
-            : Math.floor(a.demons / 8) * weeks) * -1;
+            : Math.floor((a.demons / 8) * weeks);
         let giants =
-          (Math.floor(a.giants / 50) >= 4
+          Math.floor(a.giants / 50) >= 4
             ? Math.floor((a.giants / 4) * weeks)
-            : Math.floor(a.giants / 8) * weeks) * -1;
+            : Math.floor((a.giants / 8) * weeks);
         let angels =
-          (Math.floor(a.angels / 40) >= 4
+          Math.floor(a.angels / 40) >= 4
             ? Math.floor((a.angels / 4) * weeks)
-            : Math.floor(a.angels / 8) * weeks) * -1;
+            : Math.floor((a.angels / 8) * weeks);
         let archangels =
-          (Math.floor(a.archangels / 10) >= 4
+          Math.floor(a.archangels / 10) >= 4
             ? Math.floor((a.archangels / 4) * weeks)
-            : Math.floor(a.archangels / 8) * weeks) * -1;
+            : Math.floor((a.archangels / 8) * weeks);
         let demigods =
-          (Math.floor(a.demigods / 5) >= 4
+          Math.floor(a.demigods / 5) >= 4
             ? Math.floor((a.demigods / 4) * weeks)
-            : Math.floor(a.demigods / 8) * weeks) * -1;
+            : Math.floor((a.demigods / 8) * weeks);
         let gods =
-          (Math.floor(a.gods / 2) >= 4
+          Math.floor(a.gods / 2) >= 4
             ? Math.floor((a.gods / 4) * weeks)
-            : Math.floor(a.gods / 8) * weeks) * -1;
+            : Math.floor((a.gods / 8) * weeks);
 
-        if (a.estrelinhas - estrelinhas < 0) estrelinhas = 0;
-        if (a.demons - demons < 0) demons = 0;
-        if (a.giants - giants < 0) giants = 0;
-        if (a.angels - angels < 0) angels = 0;
-        if (a.archangels - archangels < 0) archangels = 0;
-        if (a.demigods - demigods < 0) demigods = 0;
-        if (a.gods - gods < 0) gods = 0;
+        if (a.estrelinhas < estrelinhas) estrelinhas = a.estrelinhas;
+        if (a.demons < demons) demons = a.demons;
+        if (a.giants < giants) giants = a.giants;
+        if (a.angels < angels) angels = a.angels;
+        if (a.archangels < archangels) archangels = a.archangels;
+        if (a.demigods < demigods) demigods = a.demigods;
+        if (a.gods < gods) gods = a.gods;
+
+        estrelinhas *= -1;
+        demons *= -1;
+        giants *= -1;
+        angels *= -1;
+        archangels *= -1;
+        demigods *= -1;
+        gods *= -1;
 
         return { $inc: { estrelinhas, demons, giants, angels, archangels, demigods, gods } };
       });
-      const bulkUpdate = client.database.Users.collection.initializeUnorderedBulkOp();
 
-      ids.forEach((id, index) => {
-        bulkUpdate.find({ id }).updateOne(updatedData[index]);
-      });
+      if (inactiveUsers.length > 0) {
+        const bulkUpdate = client.database.Users.collection.initializeUnorderedBulkOp();
 
-      const startTime = Date.now();
-      const result = await bulkUpdate.execute();
-      if (result)
-        console.log(
-          `[DATABASE BULK] - Inactive users executed in ${Date.now() - startTime}ms: `,
-          result,
-        );
-      else console.log('[DATABASE BULK] - Error when bulking');
+        ids.forEach((id, index) => {
+          bulkUpdate.find({ id }).updateOne(updatedData[index]);
+        });
 
+        const startTime = Date.now();
+        const result = await bulkUpdate.execute();
+        if (result)
+          console.log(
+            `[DATABASE BULK] - Inactive users executed in ${Date.now() - startTime}ms: `,
+            result,
+          );
+        else console.log('[DATABASE BULK] - Error when bulking');
+
+        console.log(result);
+      }
       ReadyEvent.verifyInactive(client);
     }, getMillisecondsToTheEndOfDay());
   }
