@@ -9,7 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ### Added
 
-- Create daily loop event to make thinks every 24 hours
+- Criado um loop de evento que é executado sempre à meia noite para funções internas
+- Usuários não podem usar mais de um comando de economia ao mesmo tempo!
 
 ### Fix
 
