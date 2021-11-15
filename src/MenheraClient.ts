@@ -29,6 +29,8 @@ export default class MenheraClient extends Client {
 
   public cooldowns: Collection<string, Collection<string, number>>;
 
+  public economyExecutions: Set<string>;
+
   constructor(options: ClientOptions, public config: IClientConfigs) {
     super(options);
 
@@ -41,6 +43,7 @@ export default class MenheraClient extends Client {
     this.slashCommands = new Collection();
     this.aliases = new Collection();
     this.cooldowns = new Collection();
+    this.economyExecutions = new Set();
     this.events = new EventManager(this);
     this.config = config;
     this.picassoWs = new PicassoWebSocket(this.shard?.ids[0] ?? 0);

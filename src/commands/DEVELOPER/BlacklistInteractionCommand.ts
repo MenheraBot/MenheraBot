@@ -72,7 +72,7 @@ export default class BlacklistInteractionCommand extends InteractionCommand {
         await ctx.makeMessage({ content: 'usuário desbanido' });
         return;
       }
-      case 'find': {
+      case 'view': {
         if (!user) {
           await ctx.makeMessage({ content: 'user not found' });
           return;
