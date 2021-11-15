@@ -202,8 +202,6 @@ export default class ReadyEvent {
             result,
           );
         else console.log('[DATABASE BULK] - Error when bulking');
-
-        console.log(result);
       }
       ReadyEvent.verifyInactive(client);
     }, getMillisecondsToTheEndOfDay());
