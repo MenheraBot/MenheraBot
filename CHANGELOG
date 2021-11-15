@@ -5,11 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
-## [Unreleased]
+## [3.5.0] 2021-11-15
 
 ### Added
 
-- Create daily loop event to make thinks every 24 hours
+- Criado um loop de evento que é executado sempre à meia noite para funções internas
+- Usuários não podem usar mais de um comando de economia ao mesmo tempo!
+- Usuários no meio de comandos de economia não podem mais ser escolhidos em outros comandos
+- Sistema de punição de usuários inativos começou!
 
 ### Fix
 

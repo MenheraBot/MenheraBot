@@ -31,8 +31,8 @@ export default class CoinflipInteractionCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    const user1 = ctx.author;
-    const user2 = ctx.options.getUser('user', true);
+    const { author } = ctx;
+    const user = ctx.options.getUser('user', true);
     const input = ctx.options.getInteger('aposta', true);
 
     if (!input) {
@@ -43,19 +43,26 @@ export default class CoinflipInteractionCommand extends InteractionCommand {
       return;
     }
 
-    if (user2.bot) {
+    if (user.bot) {
       await ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:coinflip.bot'),
         ephemeral: true,
       });
       return;
     }
-    if (user2.id === user1.id) {
+    if (user.id === author.id) {
       await ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:coinflip.self-mention'),
         ephemeral: true,
       });
       return;
+    }
+
+    if (ctx.client.economyExecutions.has(user.id)) {
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'common:economy_usage'),
+        ephemeral: true,
+      });
     }
 
     if (input < 1) {
@@ -67,7 +74,7 @@ export default class CoinflipInteractionCommand extends InteractionCommand {
     }
 
     const db1 = ctx.data.user;
-    const db2 = await ctx.client.repositories.userRepository.find(user2.id);
+    const db2 = await ctx.client.repositories.userRepository.find(user.id);
 
     if (!db1 || !db2) {
       await ctx.makeMessage({
@@ -87,7 +94,7 @@ export default class CoinflipInteractionCommand extends InteractionCommand {
 
     if (input > db1.estrelinhas) {
       await ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'commands:coinflip.poor', { user: user1.toString() }),
+        content: ctx.prettyResponse('error', 'commands:coinflip.poor', { user: author.toString() }),
         ephemeral: true,
       });
       return;
@@ -95,11 +102,13 @@ export default class CoinflipInteractionCommand extends InteractionCommand {
 
     if (input > db2.estrelinhas) {
       await ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'commands:coinflip.poor', { user: user2.toString() }),
+        content: ctx.prettyResponse('error', 'commands:coinflip.poor', { user: user.toString() }),
         ephemeral: true,
       });
       return;
     }
+
+    ctx.client.economyExecutions.add(user.id);
 
     const ConfirmButton = new MessageButton()
       .setCustomId(ctx.interaction.id)
@@ -110,17 +119,19 @@ export default class CoinflipInteractionCommand extends InteractionCommand {
       content: ctx.locale('commands:coinflip.confirm', {
         value: input,
         author: ctx.author.toString(),
-        mention: user2.toString(),
+        mention: user.toString(),
       }),
       components: [{ type: 1, components: [ConfirmButton] }],
     });
 
     const coletor = await Util.collectComponentInteractionWithId(
       ctx.channel,
-      user2.id,
+      user.id,
       ctx.interaction.id,
       7000,
     );
+
+    ctx.client.economyExecutions.delete(user.id);
 
     if (!coletor) {
       ctx.makeMessage({
@@ -141,8 +152,8 @@ export default class CoinflipInteractionCommand extends InteractionCommand {
     const shirleyTeresinha = ['Cara', 'Coroa'];
     const choice = shirleyTeresinha[Math.floor(Math.random() * shirleyTeresinha.length)];
 
-    let winner = user1.id;
-    let loser = user2.id;
+    let winner = author.id;
+    let loser = user.id;
 
     if (choice === 'Cara') {
       await ctx.makeMessage({
@@ -150,22 +161,22 @@ export default class CoinflipInteractionCommand extends InteractionCommand {
           'commands:coinflip.cara-texto',
           {
             value: input,
-            author: user1.toString(),
-            mention: user2.toString(),
+            author: author.toString(),
+            mention: user.toString(),
           },
         )}`,
         components: [],
       });
     } else {
-      winner = user2.id;
-      loser = user1.id;
+      winner = user.id;
+      loser = author.id;
       await ctx.makeMessage({
         content: `${ctx.locale('commands:coinflip.coroa')}\n${ctx.locale(
           'commands:coinflip.coroa-texto',
           {
             value: input,
-            author: user1.toString(),
-            mention: user2.toString(),
+            author: author.toString(),
+            mention: user.toString(),
           },
         )}`,
         components: [],

@@ -23,18 +23,6 @@ export default class DeleteInteractionCommand extends InteractionCommand {
 
     const usages = await HttpRequests.getUserDeleteUsages(ctx.author.id);
 
-    if (!usages.err && usages.count && usages.count >= 5) {
-      await ctx.client.repositories.blacklistRepository.ban(
-        ctx.author.id,
-        '[PERMABAN] Tentou burlar o cooldown da Menhera excluindo a conta diversas vezes',
-      );
-      ctx.makeMessage({
-        content: ctx.prettyResponse('warn', 'commands:delete.ban'),
-        ephemeral: true,
-      });
-      return;
-    }
-
     ctx.makeMessage({
       content: ctx.prettyResponse('warn', 'commands:delete.confirm'),
       components: [{ type: 'ACTION_ROW', components: [FirstButton] }],
@@ -62,5 +50,16 @@ export default class DeleteInteractionCommand extends InteractionCommand {
       content: ctx.prettyResponse('success', 'commands:delete.acepted'),
       components: [],
     });
+
+    if (!usages.err && usages.count && usages.count >= 5) {
+      await ctx.client.repositories.blacklistRepository.ban(
+        ctx.author.id,
+        '[PERMABAN] Tentou burlar o cooldown da Menhera excluindo a conta diversas vezes',
+      );
+      ctx.makeMessage({
+        content: ctx.prettyResponse('warn', 'commands:delete.ban'),
+        ephemeral: true,
+      });
+    }
   }
 }
