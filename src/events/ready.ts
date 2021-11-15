@@ -98,15 +98,24 @@ export default class ReadyEvent {
     inactiveTimeout = setTimeout(async () => {
       const inactiveUsers = await client.database.Users.find(
         {
-          lastCommandAt: { $lte: Date.now() - 1_209_600_000 },
-          $or: [
-            { estrelinhas: { $gte: 250_000 } },
-            { demons: { $gte: 60 } },
-            { giants: { $gte: 50 } },
-            { angels: { $gte: 40 } },
-            { archangels: { $gte: 30 } },
-            { demigods: { $gte: 20 } },
-            { gods: { $gte: 7 } },
+          $and: [
+            {
+              $or: [
+                { lastCommandAt: { $lte: Date.now() - 1_209_600_000 } },
+                { lastCommandAt: { $exists: false } },
+              ],
+            },
+            {
+              $or: [
+                { estrelinhas: { $gte: 250_000 } },
+                { demons: { $gte: 60 } },
+                { giants: { $gte: 50 } },
+                { angels: { $gte: 40 } },
+                { archangels: { $gte: 30 } },
+                { demigods: { $gte: 20 } },
+                { gods: { $gte: 7 } },
+              ],
+            },
           ],
         },
         [
@@ -125,7 +134,10 @@ export default class ReadyEvent {
       const ids = inactiveUsers.map((a) => a.id);
 
       const updatedData = inactiveUsers.map((a) => {
-        const weeks = parseFloat(((Date.now() - a.lastCommandAt) / 1_209_600_000).toFixed(1));
+        const weeks =
+          !a.lastCommandAt || a.lastCommandAt === 0
+            ? 10
+            : parseFloat(((Date.now() - a.lastCommandAt) / 1_209_600_000).toFixed(1));
 
         let estrelinhas =
           Math.floor(a.estrelinhas / 250_000) >= 4
