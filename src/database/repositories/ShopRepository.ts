@@ -11,6 +11,7 @@ export default class ShopRepository {
       {
         $inc: { estrelinhas: negate(price) },
         $push: { inventory: { id: itemID } },
+        lastCommandAt: Date.now(),
       },
     );
   }
@@ -20,6 +21,7 @@ export default class ShopRepository {
       { id: userID },
       {
         $inc: { rolls: amount, estrelinhas: negate(price) },
+        lastCommandAt: Date.now(),
       },
     );
   }
@@ -30,6 +32,7 @@ export default class ShopRepository {
       {
         $inc: { estrelinhas: negate(price) },
         $push: { colors: color },
+        lastCommandAt: Date.now(),
       },
     );
   }
@@ -44,6 +47,7 @@ export default class ShopRepository {
       { id: userID },
       {
         $inc: { [huntType]: negate(amount), estrelinhas: profit },
+        lastCommandAt: Date.now(),
       },
     );
   }
