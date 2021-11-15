@@ -459,7 +459,6 @@ export default class ShopInteractionCommand extends InteractionCommand {
         emoji: emojis[huntType],
         star: ctx.data.user.estrelinhas + amount * shopEconomy.hunts[huntType],
       }),
-      ephemeral: true,
     });
   }
 
