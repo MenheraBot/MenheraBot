@@ -233,7 +233,7 @@ export default class InventoryInteractionCommand extends InteractionCommand {
 
       ctx.makeMessage({
         components: [actionRow([replaceItem])],
-        embeds: [embed.setDescription('choose-toggle')],
+        embeds: [embed.setDescription(ctx.locale('commands:inventario.choose-toggle'))],
       });
 
       const choosedReplace =
