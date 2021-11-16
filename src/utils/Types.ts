@@ -87,12 +87,13 @@ export interface IUserSchema {
   archangels: number;
   demigods: number;
   gods: number;
-  huntCooldown: number;
   rolls: number;
   estrelinhas: number;
   votes: number;
   badges: Array<IBadge>;
+  huntCooldown: number;
   voteCooldown: number;
+  stealCooldown: number;
   trisal: Array<string>;
   inventory: Array<IMagicItem>;
   inUseItems: Array<IMagicItem>;
@@ -268,7 +269,7 @@ export interface HuntProbability {
 }
 
 export interface IProbablyBoostItem<HuntType extends HuntingTypes> {
-  type: 'PROBABILITY_BOOST';
+  type: 'HUNT_PROBABILITY_BOOST';
   huntType: HuntType;
   probabilities: HuntProbability[HuntType];
   cost: number;
@@ -277,7 +278,7 @@ export interface IProbablyBoostItem<HuntType extends HuntingTypes> {
 export type TMagicItemRarity = 'common' | 'rare' | 'epic' | 'legendary' | 'mythical' | 'divine';
 
 export interface IHuntCooldownBoostItem<HuntType extends HuntingTypes> {
-  type: 'COOLDOWN_REDUCTION';
+  type: 'HUNT_COOLDOWN_REDUCTION';
   huntType: HuntType;
   huntCooldown: number;
   dropChance: number;

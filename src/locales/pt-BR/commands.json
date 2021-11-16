@@ -717,5 +717,9 @@
       "7": "Centroavante",
       "8": "Falso 9"
     }
+  },
+  "roubar": {
+    "title": "Tentativa de Roubo à {{user}}",
+    "cooldown": "Calma lá ladrão! Você ainda está cansado de seu ultimo assalto! Tente novamente em **{{time}}** minutos"
   }
 }
