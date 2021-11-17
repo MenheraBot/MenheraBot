@@ -5,7 +5,7 @@ import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageEmbed } from 'discord.js-light';
 import { HuntingTypes } from '@utils/Types';
-import { getUserHuntCooldown } from '@utils/HuntUtils';
+import { getUserStealCooldown } from '@utils/HuntUtils';
 import Util from '@utils/Util';
 
 const choices: { name: string; value: HuntingTypes }[] = [
@@ -70,7 +70,7 @@ export default class StealInteractionCommand extends InteractionCommand {
     if (!canSteal) {
       ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:roubar.cooldown', {
-          time: moment.utc(ctx.data.user.stealCooldown - Date.now()).format('mm:ss'),
+          time: moment.utc(ctx.data.user.stealCooldown - Date.now()).format('HH:mm:ss'),
         }),
         ephemeral: true,
       });
@@ -79,8 +79,7 @@ export default class StealInteractionCommand extends InteractionCommand {
 
     const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
 
-    // TODO: Change to stealCooldown
-    const cooldown = getUserHuntCooldown(ctx.data.user.inUseItems, huntType) + Date.now();
+    const cooldown = getUserStealCooldown(ctx.data.user.inUseItems, huntType) + Date.now();
 
     const embed = new MessageEmbed()
       .setColor(COLORS.HuntDefault)

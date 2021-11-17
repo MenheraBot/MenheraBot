@@ -291,8 +291,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
       content: ctx.prettyResponse('wink', 'commands:cacar.drop', {
         name: ctx.locale(`data:magic-items.${droppedItem as 1}.name`),
         author: ctx.author.toString(),
-        chance:
-          getMagicItemById<IHuntCooldownBoostItem<typeof selected>>(droppedItem).data.dropChance,
+        chance: getMagicItemById<IHuntCooldownBoostItem>(droppedItem).data.dropChance,
       }),
     });
   }

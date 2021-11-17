@@ -4,7 +4,7 @@ import WebSocket from 'ws';
 export default class PicassoWebSocket {
   public isAlive = false;
 
-  private pingTimeout: ReturnType<typeof setTimeout> | undefined;
+  private pingTimeout?: NodeJS.Timeout;
 
   private ws: WebSocket | null = null;
 

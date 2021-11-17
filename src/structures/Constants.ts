@@ -61,6 +61,7 @@ export const defaultHuntingProbabilities = {
 };
 
 export const defaultHuntCooldown = 3_600_000;
+export const defaultStealCooldown = 14_400_000;
 
 export const votes = {
   rollQuantity: 1,
@@ -227,9 +228,3 @@ export const COLORS = {
 };
 
 export const BLACKJACK_CARDS = Array.from({ length: 52 }, (_, i) => i + 1);
-
-export const clientUnreadyString =
-  '🇧🇷 | A Menhera ainda não se conectou 100%! Aguarde um pouquinho antes de tentar novamente!\n🇺🇸 | Menhera is not yet 100% connected! Wait a while before trying again!';
-
-export const commandsInGuild =
-  '🇧🇷 | Você só pode usar comandos em servidores\n🇺🇸 | You can only uses commands in guilds';

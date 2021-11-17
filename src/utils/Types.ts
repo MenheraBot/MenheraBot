@@ -268,26 +268,34 @@ export interface HuntProbability {
   gods: HuntProbabiltyProps[];
 }
 
-export interface IProbablyBoostItem<HuntType extends HuntingTypes> {
+export interface IHuntProbablyBoostItem {
   type: 'HUNT_PROBABILITY_BOOST';
-  huntType: HuntType;
-  probabilities: HuntProbability[HuntType];
+  huntType: HuntingTypes;
+  probabilities: HuntProbability[HuntingTypes];
   cost: number;
 }
 
 export type TMagicItemRarity = 'common' | 'rare' | 'epic' | 'legendary' | 'mythical' | 'divine';
 
-export interface IHuntCooldownBoostItem<HuntType extends HuntingTypes> {
+export interface IHuntCooldownBoostItem {
   type: 'HUNT_COOLDOWN_REDUCTION';
-  huntType: HuntType;
+  huntType: HuntingTypes;
   huntCooldown: number;
   dropChance: number;
   rarity: TMagicItemRarity;
 }
 
-export type THuntMagicItemsFile<HuntType extends HuntingTypes> =
-  | IProbablyBoostItem<HuntType>
-  | IHuntCooldownBoostItem<HuntType>;
+export interface IStealCooldownBoostItem {
+  type: 'STEAL_COOLDOWN_REDUCTION';
+  huntType: HuntingTypes;
+  stealCooldown: number;
+  rarity: TMagicItemRarity;
+}
+
+export type TMagicItemsFile =
+  | IHuntProbablyBoostItem
+  | IHuntCooldownBoostItem
+  | IStealCooldownBoostItem;
 
 export enum huntEnum {
   DEMON = 'demons',

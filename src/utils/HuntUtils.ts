@@ -1,11 +1,16 @@
 /* eslint-disable no-restricted-syntax */
-import { defaultHuntCooldown, defaultHuntingProbabilities } from '@structures/Constants';
+import {
+  defaultHuntCooldown,
+  defaultHuntingProbabilities,
+  defaultStealCooldown,
+} from '@structures/Constants';
 import {
   HuntingTypes,
   HuntProbabiltyProps,
+  IStealCooldownBoostItem,
   IHuntCooldownBoostItem,
   IMagicItem,
-  IProbablyBoostItem,
+  IHuntProbablyBoostItem,
   IReturnData,
 } from './Types';
 import { getMagicItemByCustomFilter, getMagicItemById } from './Util';
@@ -38,7 +43,7 @@ export const getUserHuntProbability = (
     .map((a) => getMagicItemById(a.id))
     .find((a) => a.data.type === 'HUNT_PROBABILITY_BOOST' && a.data.huntType === huntType);
 
-  if (findedItem) return (findedItem.data as IProbablyBoostItem<typeof huntType>).probabilities;
+  if (findedItem) return (findedItem.data as IHuntProbablyBoostItem).probabilities;
 
   return defaultHuntingProbabilities[huntType];
 };
@@ -51,9 +56,22 @@ export const getUserHuntCooldown = (
     .map((a) => getMagicItemById(a.id))
     .find((a) => a.data.type === 'HUNT_COOLDOWN_REDUCTION' && a.data.huntType === huntType);
 
-  if (findedItem) return (findedItem.data as IHuntCooldownBoostItem<typeof huntType>).huntCooldown;
+  if (findedItem) return (findedItem.data as IHuntCooldownBoostItem).huntCooldown;
 
   return defaultHuntCooldown;
+};
+
+export const getUserStealCooldown = (
+  userInventory: IMagicItem[],
+  huntType: HuntingTypes,
+): number => {
+  const findedItem = userInventory
+    .map((a) => getMagicItemById(a.id))
+    .find((a) => a.data.type === 'STEAL_COOLDOWN_REDUCTION' && a.data.huntType === huntType);
+
+  if (findedItem) return (findedItem.data as IStealCooldownBoostItem).stealCooldown;
+
+  return defaultStealCooldown;
 };
 
 export const dropItem = (
@@ -65,7 +83,7 @@ export const dropItem = (
 
   const itemToDrop = getMagicItemByCustomFilter(
     (a) => a[1].type === 'HUNT_COOLDOWN_REDUCTION' && a[1].huntType === huntType,
-  ) as IReturnData<IHuntCooldownBoostItem<typeof huntType>>;
+  ) as IReturnData<IHuntCooldownBoostItem>;
 
   if (!itemToDrop) return null;
 

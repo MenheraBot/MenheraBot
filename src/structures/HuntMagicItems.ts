@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import { HuntingTypes, THuntMagicItemsFile } from '@utils/Types';
+import { TMagicItemsFile } from '@utils/Types';
 
-const HuntMagicItems: { [id: number]: THuntMagicItemsFile<HuntingTypes> } & Object = {
+const HuntMagicItems: { [id: number]: TMagicItemsFile } & Object = {
   1: {
     type: 'HUNT_PROBABILITY_BOOST',
     huntType: 'demons',
