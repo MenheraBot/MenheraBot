@@ -160,3 +160,6 @@ export const debugError = (err: Error): null => {
 };
 
 export const negate = (value: number): number => value * -1;
+
+// eslint-disable-next-line no-control-regex
+export const toWritableUTF = (str: string): string => str.replace(/[^\x00-\xFF]/g, '');

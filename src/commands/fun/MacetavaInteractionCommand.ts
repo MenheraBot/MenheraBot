@@ -3,6 +3,7 @@ import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageAttachment } from 'discord.js-light';
 import HttpRequests from '@utils/HTTPrequests';
 import { emojis } from '@structures/Constants';
+import { toWritableUTF } from '@utils/Util';
 
 export default class MacetavaInteractionCommand extends InteractionCommand {
   constructor() {
@@ -35,14 +36,14 @@ export default class MacetavaInteractionCommand extends InteractionCommand {
           type: 'macetava',
           data: {
             image: link,
-            authorName: ctx.author.username,
+            authorName: toWritableUTF(ctx.author.username),
             authorDiscriminator: ctx.author.discriminator,
             authorImage: ctx.author.displayAvatarURL({ format: 'png', size: 512 }),
           },
         })
       : await HttpRequests.macetavaRequest(
           link,
-          ctx.author.username,
+          toWritableUTF(ctx.author.username),
           ctx.author.discriminator,
           ctx.author.displayAvatarURL({ format: 'png', size: 512 }),
         );

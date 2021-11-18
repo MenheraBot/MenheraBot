@@ -1,5 +1,6 @@
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
+import { toWritableUTF } from '@utils/Util';
 
 export default class AboutmeInteractionCommand extends InteractionCommand {
   constructor() {
@@ -30,7 +31,9 @@ export default class AboutmeInteractionCommand extends InteractionCommand {
       return;
     }
 
-    await ctx.client.repositories.userRepository.update(ctx.author.id, { info });
+    await ctx.client.repositories.userRepository.update(ctx.author.id, {
+      info: toWritableUTF(info),
+    });
 
     await ctx.makeMessage({ content: ctx.prettyResponse('success', 'commands:sobremim.success') });
   }

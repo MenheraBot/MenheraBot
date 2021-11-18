@@ -3,7 +3,7 @@ import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageEmbed, ColorResolvable } from 'discord.js-light';
 import HttpRequests from '@utils/HTTPrequests';
-import Util, { debugError } from '@utils/Util';
+import Util, { debugError, toWritableUTF } from '@utils/Util';
 import { COLORS, emojis } from '@structures/Constants';
 import { TopRankingTypes as TOP } from '@utils/Types';
 
@@ -112,7 +112,7 @@ export default class TopInteractionCommand extends InteractionCommand {
 
     for (let i = 0; i < res.length; i++) {
       embed.addField(
-        `**${i + 1} -** ${Util.capitalize(res[i].name)} `,
+        `**${i + 1} -** ${Util.capitalize(toWritableUTF(res[i].name))} `,
         `${ctx.locale('commands:top.used')} **${res[i].usages}** ${ctx.locale(
           'commands:top.times',
         )}`,

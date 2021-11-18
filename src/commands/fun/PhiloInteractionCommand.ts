@@ -3,6 +3,7 @@ import InteractionCommandContext from '@structures/command/InteractionContext';
 import { ApplicationCommandData, MessageAttachment } from 'discord.js-light';
 import HttpRequests from '@utils/HTTPrequests';
 import { emojis } from '@structures/Constants';
+import { toWritableUTF } from '@utils/Util';
 
 export default class PhiloInteractionCommand extends InteractionCommand {
   constructor() {
@@ -58,9 +59,9 @@ export default class PhiloInteractionCommand extends InteractionCommand {
       ? await ctx.client.picassoWs.makeRequest({
           id: ctx.interaction.id,
           type: 'philo',
-          data: { text },
+          data: { text: toWritableUTF(text) },
         })
-      : await HttpRequests.philoRequest(text);
+      : await HttpRequests.philoRequest(toWritableUTF(text));
 
     if (res.err) {
       await ctx.defer({ content: `${emojis.error} | ${ctx.locale('commands:http-error')}` });

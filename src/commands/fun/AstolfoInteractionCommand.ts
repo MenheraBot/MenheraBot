@@ -3,6 +3,7 @@ import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageAttachment } from 'discord.js-light';
 import HttpRequests from '@utils/HTTPrequests';
 import { emojis } from '@structures/Constants';
+import { toWritableUTF } from '@utils/Util';
 
 export default class AstolfoInteractionCommand extends InteractionCommand {
   constructor() {
@@ -30,9 +31,9 @@ export default class AstolfoInteractionCommand extends InteractionCommand {
       ? await ctx.client.picassoWs.makeRequest({
           id: ctx.interaction.id,
           type: 'astolfo',
-          data: { text },
+          data: { text: toWritableUTF(text) },
         })
-      : await HttpRequests.astolfoRequest(text);
+      : await HttpRequests.astolfoRequest(toWritableUTF(text));
 
     if (res.err) {
       await ctx.defer({ content: `${emojis.error} | ${ctx.locale('commands:http-error')}` });

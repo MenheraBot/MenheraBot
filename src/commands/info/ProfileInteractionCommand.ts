@@ -3,7 +3,7 @@ import InteractionCommandContext from '@structures/command/InteractionContext';
 import { IUserDataToProfile } from '@utils/Types';
 import HttpRequests from '@utils/HTTPrequests';
 import { MessageAttachment } from 'discord.js-light';
-import { debugError } from '@utils/Util';
+import { debugError, toWritableUTF } from '@utils/Util';
 
 export default class ProfileInteractionCommand extends InteractionCommand {
   constructor() {
@@ -73,6 +73,8 @@ export default class ProfileInteractionCommand extends InteractionCommand {
       ? await ctx.client.users.fetch(user.married).catch(debugError)
       : null;
 
+    if (marry) marry.username = toWritableUTF(marry?.username);
+
     await ctx.defer();
 
     const avatar = member.displayAvatarURL({ format: 'png' });
@@ -88,7 +90,7 @@ export default class ProfileInteractionCommand extends InteractionCommand {
       casado: user.married,
       voteCooldown: user.voteCooldown as number,
       badges: user.badges,
-      username: member.username,
+      username: toWritableUTF(member.username),
       data: user.marriedDate as string,
       mamadas: user.mamado,
       mamou: user.mamou,

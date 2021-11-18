@@ -3,6 +3,7 @@ import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageAttachment } from 'discord.js-light';
 import HttpRequests from '@utils/HTTPrequests';
 import { emojis } from '@structures/Constants';
+import { toWritableUTF } from '@utils/Util';
 
 export default class VascoInteractionCommand extends InteractionCommand {
   constructor() {
@@ -55,14 +56,14 @@ export default class VascoInteractionCommand extends InteractionCommand {
           data: {
             user: user.displayAvatarURL({ format: 'png', size: quality === 'normal' ? 512 : 56 }),
             quality,
-            username: user.username,
+            username: toWritableUTF(user.username),
             position,
           },
         })
       : await HttpRequests.vascoRequest(
           user.displayAvatarURL({ format: 'png', size: quality === 'normal' ? 512 : 56 }),
           quality,
-          user.username,
+          toWritableUTF(user.username),
           position,
         );
 
