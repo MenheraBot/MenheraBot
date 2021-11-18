@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - As permissões necessárias para a Menhera funcionar foram revistas! Agora a Menhera só precisa ter permissão de MANAGE_WEBHOOKS (Somente para o comando /xandao) para funcionar!
 - Os comandos de imagem agora ignoram nomes com caracteres tortos. Então caso tu queria mostrar teu nome normal, seja uma pessoa não do ente e use um username padrao, seu estranho.
 - Os comandos `/humor` e `/fodase` foram movidos para dentro de `/meme`
+- Os comandos `/cor` e `/sobremim` foram movidos para dentro de `/personalizar`
 
 ## [3.5.0] 2021-11-15
 
