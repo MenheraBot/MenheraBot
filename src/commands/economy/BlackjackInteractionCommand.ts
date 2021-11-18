@@ -3,7 +3,7 @@ import { MessageAttachment, MessageButton, MessageEmbed } from 'discord.js-light
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import http from '@utils/HTTPrequests';
-import { IBlackjackCards } from '@utils/Types';
+import { IBlackjackCards } from 'types/Types';
 import { BLACKJACK_CARDS, emojis } from '@structures/Constants';
 import Util, { resolveCustomId } from '@utils/Util';
 

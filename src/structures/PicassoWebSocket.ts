@@ -1,4 +1,4 @@
-import { IPicassoReturnData, IPicassoWebsocketRequest } from '@utils/Types';
+import { IPicassoReturnData, IPicassoWebsocketRequest } from 'types/Types';
 import WebSocket from 'ws';
 
 export default class PicassoWebSocket {

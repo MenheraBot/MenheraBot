@@ -5,7 +5,7 @@ import { MessageEmbed, ColorResolvable, LimitedCollection, User } from 'discord.
 import HttpRequests from '@utils/HTTPrequests';
 import Util, { debugError } from '@utils/Util';
 import { COLORS, emojis } from '@structures/Constants';
-import { TopRankingTypes as TOP } from '@utils/Types';
+import { TopRankingTypes as TOP } from 'types/Types';
 
 export default class TopInteractionCommand extends InteractionCommand {
   constructor() {

@@ -1,4 +1,4 @@
-import { ICmdSchema, IGuildSchema, IUserSchema } from '@utils/Types';
+import { ICmdSchema, IGuildSchema, IUserSchema } from 'types/Types';
 import { Schema, model } from 'mongoose';
 
 const cmdSchema = new Schema({

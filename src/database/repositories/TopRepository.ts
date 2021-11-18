@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import { Users } from '@structures/DatabaseCollections';
-import { HuntingTypes, IUserSchema } from '@utils/Types';
+import { HuntingTypes, IUserSchema } from 'types/Types';
 
 // eslint-disable-next-line no-shadow
 enum TOP_ENUM {

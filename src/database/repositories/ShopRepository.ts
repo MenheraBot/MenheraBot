@@ -1,5 +1,5 @@
 import { Users } from '@structures/DatabaseCollections';
-import { HuntingTypes, IColor } from '@utils/Types';
+import { HuntingTypes, IColor } from 'types/Types';
 import { negate } from '@utils/Util';
 
 export default class ShopRepository {

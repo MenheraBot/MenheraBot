@@ -1,5 +1,5 @@
 import { Guilds } from '@structures/DatabaseCollections';
-import { IGuildSchema } from '@utils/Types';
+import { IGuildSchema } from 'types/Types';
 import { UpdateQuery, UpdateWithAggregationPipeline } from 'mongoose';
 
 export default class GuildsRepository {

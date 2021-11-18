@@ -2,7 +2,7 @@
 import { MessageEmbed } from 'discord.js-light';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { IUserSchema } from '@utils/Types';
+import { IUserSchema } from 'types/Types';
 
 export default class AvatarInteractionCommand extends InteractionCommand {
   constructor() {

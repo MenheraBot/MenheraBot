@@ -7,7 +7,7 @@ import {
   IMagicItem,
   IHuntProbablyBoostItem,
   IReturnData,
-} from './Types';
+} from '../types/Types';
 import { getMagicItemByCustomFilter, getMagicItemById } from './Util';
 
 export const calculateProbability = (probabilities: HuntProbabiltyProps[]): number => {

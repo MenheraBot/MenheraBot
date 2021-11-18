@@ -1,6 +1,6 @@
 import MenheraClient from 'MenheraClient';
 import HttpRequests from '@utils/HTTPrequests';
-import { IStatusData } from '@utils/Types';
+import { IStatusData } from 'types/Types';
 import HttpServer from '@structures/server/server';
 import DBLWebhook from '@structures/server/controllers/DBLWebhook';
 import { getMillisecondsToTheEndOfDay } from '@utils/Util';

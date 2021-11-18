@@ -1,5 +1,5 @@
 import { Users } from '@structures/DatabaseCollections';
-import { HuntingTypes } from '@utils/Types';
+import { HuntingTypes } from 'types/Types';
 
 export default class HuntRepository {
   constructor(private userModal: typeof Users) {}
