@@ -9,7 +9,6 @@ export default class SupportInteractionCommand extends InteractionCommand {
       description: '「🙋」・Precisa de ajuda? Entre no meu servidor de suporte',
       category: 'util',
       cooldown: 5,
-      clientPermissions: ['EMBED_LINKS'],
     });
   }
 

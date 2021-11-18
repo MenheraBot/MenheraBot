@@ -9,7 +9,6 @@ export default class VoteInteractionCommand extends InteractionCommand {
       description: '「🆙」・Veja o link para votar em mim. Vote e receba prêmios UwU',
       category: 'util',
       cooldown: 5,
-      clientPermissions: ['EMBED_LINKS'],
     });
   }
 

@@ -19,7 +19,6 @@ export default class PhiloInteractionCommand extends InteractionCommand {
       ],
       category: 'fun',
       cooldown: 5,
-      clientPermissions: ['EMBED_LINKS'],
     });
   }
 

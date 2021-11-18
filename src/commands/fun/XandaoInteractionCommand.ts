@@ -17,7 +17,7 @@ export default class XandaoInteractionCommand extends InteractionCommand {
       ],
       category: 'fun',
       cooldown: 5,
-      clientPermissions: ['MANAGE_WEBHOOKS', 'MANAGE_CHANNELS'],
+      clientPermissions: ['MANAGE_WEBHOOKS'],
     });
   }
 

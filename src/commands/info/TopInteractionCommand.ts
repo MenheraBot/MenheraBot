@@ -88,7 +88,6 @@ export default class TopInteractionCommand extends InteractionCommand {
         },
       ],
       cooldown: 5,
-      clientPermissions: ['EMBED_LINKS'],
     });
   }
 

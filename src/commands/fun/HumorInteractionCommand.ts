@@ -10,7 +10,6 @@ export default class HumorInteractionCommand extends InteractionCommand {
       description: '「🤣」・KK tumor e piadas',
       category: 'fun',
       cooldown: 5,
-      clientPermissions: ['EMBED_LINKS'],
     });
   }
 

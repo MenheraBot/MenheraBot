@@ -24,7 +24,6 @@ export default class ShipInteractionCommand extends InteractionCommand {
       ],
       category: 'fun',
       cooldown: 5,
-      clientPermissions: ['EMBED_LINKS'],
     });
   }
 

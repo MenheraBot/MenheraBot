@@ -16,7 +16,6 @@ export default class AboutmeInteractionCommand extends InteractionCommand {
         },
       ],
       cooldown: 5,
-      clientPermissions: ['EMBED_LINKS'],
     });
   }
 

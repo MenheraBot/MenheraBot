@@ -19,7 +19,6 @@ export default class MacetavaInteractionCommand extends InteractionCommand {
       ],
       category: 'fun',
       cooldown: 5,
-      clientPermissions: ['ATTACH_FILES'],
     });
   }
 

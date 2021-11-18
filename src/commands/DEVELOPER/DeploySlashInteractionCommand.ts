@@ -45,7 +45,6 @@ export default class DeploySlashInteractionCommand extends InteractionCommand {
       defaultPermission: false,
       devsOnly: true,
       cooldown: 5,
-      clientPermissions: ['EMBED_LINKS'],
     });
   }
 

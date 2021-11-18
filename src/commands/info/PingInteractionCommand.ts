@@ -21,7 +21,6 @@ export default class PingInteractionCommand extends InteractionCommand {
       ],
       category: 'info',
       cooldown: 5,
-      clientPermissions: ['EMBED_LINKS'],
     });
   }
 

@@ -19,7 +19,6 @@ export default class AvatarInteractionCommand extends InteractionCommand {
         },
       ],
       cooldown: 5,
-      clientPermissions: ['EMBED_LINKS'],
       authorDataFields: ['selectedColor'],
     });
   }

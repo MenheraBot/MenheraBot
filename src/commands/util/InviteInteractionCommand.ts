@@ -9,7 +9,6 @@ export default class InviteInteractionCommand extends InteractionCommand {
       description: '「🥳」・Veja o link de convite para me adicionar em algum servidor',
       category: 'util',
       cooldown: 5,
-      clientPermissions: ['EMBED_LINKS'],
     });
   }
 

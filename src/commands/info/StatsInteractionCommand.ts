@@ -58,7 +58,6 @@ export default class StatsInteractionCommand extends InteractionCommand {
       ],
       category: 'info',
       cooldown: 7,
-      clientPermissions: ['EMBED_LINKS'],
       authorDataFields: ['selectedColor'],
     });
   }

@@ -35,7 +35,6 @@ export default class VascoInteractionCommand extends InteractionCommand {
       ],
       category: 'fun',
       cooldown: 8,
-      clientPermissions: ['EMBED_LINKS'],
     });
   }
 

@@ -17,7 +17,6 @@ export default class WalletInteractionCommand extends InteractionCommand {
       ],
       category: 'economy',
       cooldown: 5,
-      clientPermissions: ['EMBED_LINKS'],
       authorDataFields: [
         'estrelinhas',
         'demons',

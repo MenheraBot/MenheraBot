@@ -67,7 +67,6 @@ export default class HuntInteractionCommand extends InteractionCommand {
       ],
       category: 'fun',
       cooldown: 7,
-      clientPermissions: ['EMBED_LINKS'],
       authorDataFields: ['rolls', 'huntCooldown', 'inUseItems', 'selectedColor', 'inventory'],
     });
   }

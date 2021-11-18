@@ -50,7 +50,7 @@ export default class BlockChannelInteractionCommand extends InteractionCommand {
         },
       ],
       cooldown: 7,
-      userPermissions: ['MANAGE_CHANNELS'],
+      userPermissions: ['MANAGE_GUILD'],
     });
   }
 

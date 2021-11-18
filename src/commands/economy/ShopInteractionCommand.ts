@@ -164,7 +164,6 @@ export default class ShopInteractionCommand extends InteractionCommand {
       ],
       category: 'economy',
       cooldown: 10,
-      clientPermissions: ['EMBED_LINKS'],
       authorDataFields: [
         'estrelinhas',
         'demons',

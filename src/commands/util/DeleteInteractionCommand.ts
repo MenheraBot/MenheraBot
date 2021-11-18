@@ -11,7 +11,6 @@ export default class DeleteInteractionCommand extends InteractionCommand {
       description: '「☢️」・Quer deletar suas informações de meu banco de dados? Use este comando',
       category: 'util',
       cooldown: 30,
-      clientPermissions: ['EMBED_LINKS'],
     });
   }
 

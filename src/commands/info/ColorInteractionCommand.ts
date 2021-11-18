@@ -18,7 +18,6 @@ export default class ColorInteractionCommand extends InteractionCommand {
       description: '「🌈」・Muda a cor básica da sua conta',
       category: 'info',
       cooldown: 5,
-      clientPermissions: ['EMBED_LINKS'],
       authorDataFields: ['selectedColor', 'colors'],
     });
   }

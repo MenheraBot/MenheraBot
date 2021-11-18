@@ -12,7 +12,6 @@ export default class LanguageInteractionCommand extends InteractionCommand {
       category: 'util',
       cooldown: 15,
       userPermissions: ['MANAGE_GUILD'],
-      clientPermissions: ['EMBED_LINKS'],
     });
   }
 

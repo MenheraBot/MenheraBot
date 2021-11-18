@@ -56,7 +56,6 @@ export default class StealInteractionCommand extends InteractionCommand {
       ],
       category: 'fun',
       cooldown: 7,
-      clientPermissions: ['EMBED_LINKS'],
       authorDataFields: ['stealCooldown', 'inUseItems', 'selectedColor'],
     });
   }

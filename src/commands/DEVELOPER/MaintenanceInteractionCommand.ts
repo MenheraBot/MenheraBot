@@ -25,7 +25,6 @@ export default class MaintenanceSlashInteractionCommand extends InteractionComma
       defaultPermission: false,
       devsOnly: true,
       cooldown: 5,
-      clientPermissions: ['EMBED_LINKS'],
     });
   }
 

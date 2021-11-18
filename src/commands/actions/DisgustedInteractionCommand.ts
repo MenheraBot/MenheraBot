@@ -19,7 +19,6 @@ export default class DisgustedInteractionCommand extends InteractionCommand {
       ],
       category: 'actions',
       cooldown: 5,
-      clientPermissions: ['EMBED_LINKS'],
     });
   }
 

@@ -20,7 +20,6 @@ export default class ProfileInteractionCommand extends InteractionCommand {
       ],
       category: 'info',
       cooldown: 5,
-      clientPermissions: ['EMBED_LINKS'],
       authorDataFields: [
         'married',
         'selectedColor',

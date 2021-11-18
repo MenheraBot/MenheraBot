@@ -1,4 +1,4 @@
-import { Options, SnowflakeUtil, Channel } from 'discord.js-light';
+import { Options, SnowflakeUtil, Channel, Role } from 'discord.js-light';
 import { resolve } from 'node:path';
 import MenheraClient from './MenheraClient';
 
@@ -7,11 +7,17 @@ const channelFilter = (channel: Channel) =>
   !channel.lastMessageId ||
   SnowflakeUtil.deconstruct(channel.lastMessageId).timestamp < Date.now() - 3600000;
 
+const permissionFilter = (role: Role) => !role.permissions.any(['MANAGE_WEBHOOKS', 'MANAGE_GUILD']);
+
 const client = new MenheraClient(
   {
     makeCache: Options.cacheWithLimits({
       GuildManager: Infinity,
-      RoleManager: Infinity,
+      RoleManager: {
+        maxSize: Infinity,
+        sweepFilter: () => permissionFilter,
+        sweepInterval: 3600,
+      },
       PermissionOverwriteManager: Infinity,
       ChannelManager: {
         maxSize: 0,

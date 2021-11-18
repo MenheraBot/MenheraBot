@@ -12,7 +12,6 @@ export default class CooldownsInteractionCommand extends InteractionCommand {
       description: '「⌛」・Mostra todos os seus tempos de recarga',
       category: 'info',
       cooldown: 5,
-      clientPermissions: ['EMBED_LINKS'],
       authorDataFields: ['huntCooldown', 'voteCooldown'],
     });
   }

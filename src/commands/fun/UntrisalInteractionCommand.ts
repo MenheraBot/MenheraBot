@@ -10,7 +10,6 @@ export default class UntrisalInteractionCommand extends InteractionCommand {
       description: '「🛑」・Termina o seu trisal',
       category: 'fun',
       cooldown: 5,
-      clientPermissions: ['EMBED_LINKS'],
       authorDataFields: ['trisal'],
     });
   }
