@@ -5,7 +5,7 @@ import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageEmbed } from 'discord.js-light';
 import { HuntingTypes } from '@utils/Types';
-// import { getUserStealCooldown } from '@utils/HuntUtils';
+import { getUserStealCooldown } from '@utils/HuntUtils';
 import Util from '@utils/Util';
 
 const choices: { name: string; value: HuntingTypes }[] = [
@@ -61,7 +61,7 @@ export default class StealInteractionCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    //   const huntType = ctx.options.getString('tipo', true) as HuntingTypes;
+    const huntType = ctx.options.getString('tipo', true) as HuntingTypes;
     const user = ctx.options.getUser('user', true);
 
     const canSteal = ctx.data.user.stealCooldown < Date.now();
@@ -78,7 +78,7 @@ export default class StealInteractionCommand extends InteractionCommand {
 
     const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
 
-    // const cooldown = getUserStealCooldown(ctx.data.user.inUseItems, huntType) + Date.now();
+    const cooldown = getUserStealCooldown(ctx.data.user.inUseItems, huntType) + Date.now();
 
     const embed = new MessageEmbed()
       .setColor(COLORS.HuntDefault)

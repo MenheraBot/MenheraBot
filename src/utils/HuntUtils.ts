@@ -96,3 +96,10 @@ export const dropItem = (
   if (didDrop <= itemToDrop.data.dropChance) return itemToDrop.id;
   return null;
 };
+/* 
+export const executeSteal = (
+  chance
+): number => {
+  const userProbability
+};
+ */
