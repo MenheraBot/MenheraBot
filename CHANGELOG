@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 - O comando `/deletar` foi _deletado_. Para fazer um pedido de deleção de conta, envie um email para `support@menherabot.xyz`
 - O comando `/adicionar` foi removido. Você poder adicionar a Menhera diretamente do perfil dela agora!
+- O comando `/suporte` foi removido. Para entrar no servidor de suporte, basta clicar no link do comando `/status menhera`
 
 ## [3.5.0] 2021-11-15
 

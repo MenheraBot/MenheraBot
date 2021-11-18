@@ -207,6 +207,8 @@ export default class StatsInteractionCommand extends InteractionCommand {
     const embed = new MessageEmbed()
       .setColor('#fa8dd7')
       .setThumbnail('https://i.imgur.com/b5y0nd4.png')
+      .setTitle(ctx.locale('commands:suporte.embed_title'))
+      .setURL('https://discord.gg/fZMdQbA')
       .setDescription(
         ctx.locale('commands:status.botinfo.embed_description', {
           name: ctx.client.user?.username,
