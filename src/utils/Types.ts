@@ -98,6 +98,7 @@ export interface IUserSchema {
   inUseItems: Array<IMagicItem>;
   itemsLimit: number;
   lastCommandAt: number;
+  isBot: boolean;
 }
 
 export interface IInteractionCommandConfig extends ChatInputApplicationCommandData {

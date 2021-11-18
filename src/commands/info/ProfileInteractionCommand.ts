@@ -1,6 +1,6 @@
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { IUserDataToProfile, IUserSchema } from '@utils/Types';
+import { IUserDataToProfile } from '@utils/Types';
 import HttpRequests from '@utils/HTTPrequests';
 import { MessageAttachment } from 'discord.js-light';
 import { debugError } from '@utils/Util';
@@ -35,31 +35,23 @@ export default class ProfileInteractionCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    let { user }: { user: IUserSchema | null } = ctx.data;
     const member = ctx.options.getUser('user') ?? ctx.author;
-
-    if (member.id !== ctx.author.id) {
-      if (member.bot) {
-        await ctx.makeMessage({
-          content: ctx.prettyResponse('error', 'commands:perfil.bot'),
-          ephemeral: true,
-        });
-        return;
-      }
-      user = await ctx.client.repositories.userRepository.find(member.id, [
-        'married',
-        'selectedColor',
-        'votes',
-        'info',
-        'voteCooldown',
-        'badges',
-        'marriedDate',
-        'mamado',
-        'mamou',
-        'ban',
-        'banReason',
-      ]);
-    }
+    const user =
+      member.id !== ctx.author.id
+        ? await ctx.client.repositories.userRepository.find(member.id, [
+            'married',
+            'selectedColor',
+            'votes',
+            'info',
+            'voteCooldown',
+            'badges',
+            'marriedDate',
+            'mamado',
+            'mamou',
+            'ban',
+            'banReason',
+          ])
+        : ctx.data.user;
 
     if (!user) {
       await ctx.makeMessage({
@@ -126,6 +118,10 @@ export default class ProfileInteractionCommand extends InteractionCommand {
     }
 
     await ctx.makeMessage({
+      content:
+        ctx.author.id !== process.env.OWNER
+          ? ''
+          : ctx.prettyResponse('error', 'commands:perfil.banned', { reason: user.banReason }),
       files: [new MessageAttachment(res.data, 'profile.png')],
     });
   }

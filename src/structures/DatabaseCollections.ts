@@ -42,6 +42,7 @@ const userSchema = new Schema({
   inUseItems: { type: Array, default: [] },
   itemsLimit: { type: Number, default: 1 },
   lastCommandAt: { type: Number, default: 0 },
+  isBot: { type: Boolean, default: false },
 });
 
 export const Cmds = model<ICmdSchema>('Cmd', cmdSchema);
