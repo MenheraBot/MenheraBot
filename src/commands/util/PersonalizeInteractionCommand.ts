@@ -38,6 +38,7 @@ export default class PersonalizeInteractionCommand extends InteractionCommand {
       ],
       category: 'util',
       cooldown: 7,
+      authorDataFields: ['selectedColor', 'colors', 'info'],
     });
   }
 

@@ -21,7 +21,7 @@ export default class MemeInteractionCommand extends InteractionCommand {
         },
       ],
       category: 'fun',
-      cooldown: 7,
+      cooldown: 5,
     });
   }
 
