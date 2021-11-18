@@ -10,6 +10,9 @@ const InactivityPunishment = async (client: MenheraClient): Promise<void> => {
       {
         $and: [
           {
+            isBot: { $ne: true },
+          },
+          {
             $or: [
               { lastCommandAt: { $lte: Date.now() - 1_209_600_000 } },
               { lastCommandAt: { $exists: false } },
