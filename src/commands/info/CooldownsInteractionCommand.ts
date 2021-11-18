@@ -1,9 +1,10 @@
 /* eslint-disable no-unused-expressions */
-import { MessageEmbed } from 'discord.js-light';
+import { MessageEmbed, MessageButton, MessageActionRow } from 'discord.js-light';
 import moment from 'moment';
 import 'moment-duration-format';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
+import { actionRow } from '@utils/Util';
 
 export default class CooldownsInteractionCommand extends InteractionCommand {
   constructor() {
@@ -51,6 +52,17 @@ export default class CooldownsInteractionCommand extends InteractionCommand {
       .setColor('#6597df')
       .setDescription(txt);
 
-    await ctx.makeMessage({ embeds: [embed] });
+    const components: MessageActionRow[] = [];
+
+    if (voteCooldownInMilis < 0) {
+      const voteButton = new MessageButton()
+        .setStyle('LINK')
+        .setURL('https://top.gg/bot/708014856711962654/vote')
+        .setLabel(ctx.locale('commands:cooldowns.click-to-vote'));
+
+      components.push(actionRow([voteButton]));
+    }
+
+    await ctx.makeMessage({ embeds: [embed], components });
   }
 }

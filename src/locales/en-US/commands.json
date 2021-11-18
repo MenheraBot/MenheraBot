@@ -593,7 +593,8 @@
     "hotel": "You will stay at the hotel for another",
     "minutes": "minutes",
     "hours": "hours",
-    "error": "you don't have cooldowns yet! Create a profile first!"
+    "error": "you don't have cooldowns yet! Create a profile first!",
+    "click-to-vote": "Click to Vote"
   },
   "astolfo": {
     "description": "It's big, isn't it? Astolfo said",
