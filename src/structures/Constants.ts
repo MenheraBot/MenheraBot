@@ -61,7 +61,6 @@ export const defaultHuntingProbabilities = {
 };
 
 export const defaultHuntCooldown = 3_600_000;
-export const defaultStealCooldown = 14_400_000;
 
 export const votes = {
   rollQuantity: 1,

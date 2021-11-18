@@ -93,7 +93,6 @@ export interface IUserSchema {
   badges: Array<IBadge>;
   huntCooldown: number;
   voteCooldown: number;
-  stealCooldown: number;
   trisal: Array<string>;
   inventory: Array<IMagicItem>;
   inUseItems: Array<IMagicItem>;
@@ -285,17 +284,7 @@ export interface IHuntCooldownBoostItem {
   rarity: TMagicItemRarity;
 }
 
-export interface IStealCooldownBoostItem {
-  type: 'STEAL_COOLDOWN_REDUCTION';
-  huntType: HuntingTypes;
-  stealCooldown: number;
-  rarity: TMagicItemRarity;
-}
-
-export type TMagicItemsFile =
-  | IHuntProbablyBoostItem
-  | IHuntCooldownBoostItem
-  | IStealCooldownBoostItem;
+export type TMagicItemsFile = IHuntProbablyBoostItem | IHuntCooldownBoostItem;
 
 export enum huntEnum {
   DEMON = 'demons',

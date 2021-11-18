@@ -32,7 +32,6 @@ const userSchema = new Schema({
   archangels: { type: Number, default: 0 },
   gods: { type: Number, default: 0 },
   huntCooldown: { type: Number, default: 0 },
-  stealCooldown: { type: Number, default: 0 },
   rolls: { type: Number, default: 0 },
   estrelinhas: { type: Number, default: 0 },
   votes: { type: Number, default: 0 },

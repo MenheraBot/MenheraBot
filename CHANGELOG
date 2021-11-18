@@ -7,10 +7,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ## [Unreleased]
 
-### Added
-
-- Estrutura para o sistema de roubos
-
 ### Changed
 
 - As permissões necessárias para a Menhera funcionar foram revistas! Agora a Menhera só precisa ter permissão de MANAGE_WEBHOOKS (Somente para o comando /xandao) para funcionar!

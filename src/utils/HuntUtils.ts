@@ -1,13 +1,8 @@
 /* eslint-disable no-restricted-syntax */
-import {
-  defaultHuntCooldown,
-  defaultHuntingProbabilities,
-  defaultStealCooldown,
-} from '@structures/Constants';
+import { defaultHuntCooldown, defaultHuntingProbabilities } from '@structures/Constants';
 import {
   HuntingTypes,
   HuntProbabiltyProps,
-  IStealCooldownBoostItem,
   IHuntCooldownBoostItem,
   IMagicItem,
   IHuntProbablyBoostItem,
@@ -61,19 +56,6 @@ export const getUserHuntCooldown = (
   return defaultHuntCooldown;
 };
 
-export const getUserStealCooldown = (
-  userInventory: IMagicItem[],
-  huntType: HuntingTypes,
-): number => {
-  const findedItem = userInventory
-    .map((a) => getMagicItemById(a.id))
-    .find((a) => a.data.type === 'STEAL_COOLDOWN_REDUCTION' && a.data.huntType === huntType);
-
-  if (findedItem) return (findedItem.data as IStealCooldownBoostItem).stealCooldown;
-
-  return defaultStealCooldown;
-};
-
 export const dropItem = (
   userInventory: IMagicItem[],
   inUseItems: IMagicItem[],
@@ -96,10 +78,3 @@ export const dropItem = (
   if (didDrop <= itemToDrop.data.dropChance) return itemToDrop.id;
   return null;
 };
-/* 
-export const executeSteal = (
-  chance
-): number => {
-  const userProbability
-};
- */
