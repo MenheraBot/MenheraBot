@@ -18,6 +18,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - Os comandos `/humor` e `/fodase` foram movidos para dentro de `/meme`
 - Os comandos `/cor` e `/sobremim` foram movidos para dentro de `/personalizar`
 
+### Removed
+
+- O comando `/deletar` foi _deletado_. Para fazer um pedido de deleção de conta, envie um email para `support@menherabot.xyz`
+
 ## [3.5.0] 2021-11-15
 
 ### Added
