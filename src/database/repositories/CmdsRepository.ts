@@ -1,5 +1,5 @@
 import { Cmds } from '@structures/DatabaseCollections';
-import { ICmdSchema } from 'types/Types';
+import { ICmdSchema } from '@utils/Types';
 
 export default class CmdRepository {
   constructor(private cmdModal: typeof Cmds) {}

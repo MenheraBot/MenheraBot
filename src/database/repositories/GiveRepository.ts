@@ -1,5 +1,5 @@
 import { Users } from '@structures/DatabaseCollections';
-import { IUserSchema } from 'types/Types';
+import { IUserSchema } from '@utils/Types';
 
 export default class GiveRepository {
   constructor(private userModal: typeof Users) {}

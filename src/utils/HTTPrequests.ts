@@ -11,7 +11,7 @@ import {
   IRESTHuntStats,
   IStatusData,
   IUserDataToProfile,
-} from 'types/Types';
+} from '@utils/Types';
 import { User } from 'discord.js-light';
 import type { ActivityType } from 'discord.js';
 import { debugError } from './Util';

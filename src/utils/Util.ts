@@ -1,5 +1,5 @@
 /* eslint-disable no-restricted-syntax */
-import MagicItems from 'data/HuntMagicItems';
+import MagicItems from '@data/HuntMagicItems';
 import {
   CollectorFilter,
   MessageComponentInteraction,
@@ -9,7 +9,7 @@ import {
   MessageActionRowComponentResolvable,
   TextBasedChannels,
 } from 'discord.js-light';
-import { IReturnData, TMagicItemsFile } from '../types/Types';
+import { IReturnData, TMagicItemsFile } from '@utils/Types';
 
 export default class Util {
   static capitalize(str: string): string {

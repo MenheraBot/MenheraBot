@@ -2,8 +2,8 @@ import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 
 import { COLORS, emojis, shopEconomy } from '@structures/Constants';
-import MagicItems from 'data/HuntMagicItems';
-import { HuntingTypes, IHuntProbablyBoostItem } from 'types/Types';
+import MagicItems from '@data/HuntMagicItems';
+import { HuntingTypes, IHuntProbablyBoostItem } from '@utils/Types';
 import Util, { actionRow } from '@utils/Util';
 import {
   MessageEmbed,

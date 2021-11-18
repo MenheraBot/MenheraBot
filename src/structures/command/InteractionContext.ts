@@ -1,4 +1,4 @@
-import { IContextData } from 'types/Types';
+import { IContextData } from '@utils/Types';
 import {
   CommandInteraction,
   CommandInteractionOptionResolver,

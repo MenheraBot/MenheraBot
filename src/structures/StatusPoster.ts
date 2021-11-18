@@ -1,7 +1,7 @@
 import HttpRequests from '@utils/HTTPrequests';
 import { Client } from 'discord.js-light';
 import MenheraClient from 'MenheraClient';
-import { IStatusData } from 'types/Types';
+import { IStatusData } from '@utils/Types';
 
 export const postBotStatus = (client: MenheraClient): void => {
   setInterval(async () => {

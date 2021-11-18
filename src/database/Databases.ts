@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import Redis from 'ioredis';
 import { Cmds, Guilds, Users } from '@structures/DatabaseCollections';
-import { IDatabaseRepositories } from 'types/Types';
+import { IDatabaseRepositories } from '@utils/Types';
 import CacheRepository from './repositories/CacheRepository';
 import CmdRepository from './repositories/CmdsRepository';
 import StarRepository from './repositories/StarRepository';

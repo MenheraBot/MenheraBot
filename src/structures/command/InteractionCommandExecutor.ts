@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { languageByLocale } from '@structures/Constants';
 import HttpRequests from '@utils/HTTPrequests';
-import { ICommandUsedData } from 'types/Types';
+import { ICommandUsedData } from '@utils/Types';
 import { debugError } from '@utils/Util';
 import {
   CommandInteraction,

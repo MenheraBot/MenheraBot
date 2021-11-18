@@ -2,7 +2,7 @@ import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { ApplicationCommandData } from 'discord.js-light';
 import HttpRequests from '@utils/HTTPrequests';
-import { ICommandsData } from 'types/Types';
+import { ICommandsData } from '@utils/Types';
 
 export default class DeploySlashInteractionCommand extends InteractionCommand {
   constructor() {

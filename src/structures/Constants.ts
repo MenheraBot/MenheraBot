@@ -1,4 +1,4 @@
-import { T8BallAnswerTypes } from 'types/Types';
+import { T8BallAnswerTypes } from '@utils/Types';
 
 export const shopEconomy = {
   colors: {

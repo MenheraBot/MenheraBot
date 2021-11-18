@@ -1,4 +1,4 @@
-import { IInteractionCommandConfig, IUserSchema } from 'types/Types';
+import { IInteractionCommandConfig, IUserSchema } from '@utils/Types';
 import InteractionCommandContext from './InteractionContext';
 
 export default abstract class InteractionCommand {

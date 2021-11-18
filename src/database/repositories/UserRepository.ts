@@ -1,6 +1,6 @@
 import { Users } from '@structures/DatabaseCollections';
 import { Document, UpdateQuery, UpdateWithAggregationPipeline } from 'mongoose';
-import { ITopResult, IUserSchema, TopRankingTypes } from 'types/Types';
+import { ITopResult, IUserSchema, TopRankingTypes } from '@utils/Types';
 
 export default class UserRepository {
   constructor(private userModal: typeof Users) {}

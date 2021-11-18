@@ -1,6 +1,6 @@
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { IUserDataToProfile } from 'types/Types';
+import { IUserDataToProfile } from '@utils/Types';
 import HttpRequests from '@utils/HTTPrequests';
 import { MessageAttachment } from 'discord.js-light';
 import { debugError, toWritableUTF } from '@utils/Util';
