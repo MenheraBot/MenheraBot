@@ -17,6 +17,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - Os comandos de imagem agora ignoram nomes com caracteres tortos. Então caso tu queria mostrar teu nome normal, seja uma pessoa não do ente e use um username padrao, seu estranho.
 - Os comandos `/humor` e `/fodase` foram movidos para dentro de `/meme`
 - Os comandos `/cor` e `/sobremim` foram movidos para dentro de `/personalizar`
+- Os comandos `idioma`, `blockcmd` e `blockcanal` foram movidos para dentro de `/config`
+
+### Fixed
+
+- O idioma `ingles` voltou a funcionar
 
 ### Removed
 
