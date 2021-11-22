@@ -12,6 +12,7 @@ const guildSchema = new Schema({
   blockedChannels: { type: Array, default: [] },
   disabledCommands: { type: Array, default: [] },
   lang: { type: String, default: 'pt-BR' },
+  censored: { type: Boolean, default: false },
 });
 
 const userSchema = new Schema({

@@ -73,6 +73,11 @@ export default class ConfigInteractionCommand extends InteractionCommand {
           description: '「🌐」・Mude o idioma em que eu falo neste servidor!',
           type: 'SUB_COMMAND',
         },
+        {
+          name: 'censura',
+          description: '🤬 | Ativa ou desativa a censura de palavrões',
+          type: 'SUB_COMMAND',
+        },
       ],
       cooldown: 7,
       userPermissions: ['MANAGE_GUILD'],
@@ -89,6 +94,35 @@ export default class ConfigInteractionCommand extends InteractionCommand {
     if (command === 'idioma') ConfigInteractionCommand.LanguageInteractionCommand(ctx);
 
     if (command === 'blockcomando') this.BlockCmdInteractionCommand(ctx);
+
+    if (command === 'censura') ConfigInteractionCommand.CensorInteractionCommand(ctx);
+  }
+
+  static async CensorInteractionCommand(ctx: InteractionCommandContext): Promise<void> {
+    if (ctx.data.server.censored) {
+      ctx.data.server.censored = false;
+
+      await ctx.client.repositories.cacheRepository.updateGuild(
+        ctx.interaction.guild?.id as string,
+        ctx.data.server,
+      );
+
+      ctx.makeMessage({
+        content: ctx.prettyResponse('success', 'commands:censura.uncensored'),
+      });
+      return;
+    }
+
+    ctx.data.server.censored = true;
+
+    await ctx.client.repositories.cacheRepository.updateGuild(
+      ctx.interaction.guild?.id as string,
+      ctx.data.server,
+    );
+
+    await ctx.makeMessage({
+      content: ctx.prettyResponse('success', 'commands:censura.censored'),
+    });
   }
 
   static async LanguageInteractionCommand(ctx: InteractionCommandContext): Promise<void> {

@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Added
 
 - Bots agora podem ter contas na Menhera! Para um bot ter uma conta, a Lux precisa fazê-lo manualmente, então caso queira um bot, só pedir pra ela. Os bots só podem ser mamados e receber presentes.
+- **Censura**: Moderadores podem ativar a censura de palavrões, fazendo com que a Menhera não fale nenhum tipo de palavrão. Para ativar, use `/config censura`
 
 ### Changed
 

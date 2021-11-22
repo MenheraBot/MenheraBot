@@ -720,8 +720,8 @@
       "8": "Falso 9"
     }
   },
-  "roubar": {
-    "title": "Tentativa de Roubo à {{user}}",
-    "cooldown": "Calma lá ladrão! Você ainda está cansado de seu ultimo assalto! Tente novamente em **{{time}}** minutos"
+  "censura": {
+    "uncensored": "A censura foi desabilitada! Estou finalmente livre para falar bosta!",
+    "censored": "A censura de palavrões foi ativada, vou ser a menina mais santa desse servidor, tu vai ver"
   }
 }

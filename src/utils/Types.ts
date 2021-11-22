@@ -64,6 +64,7 @@ export interface IGuildSchema {
   blockedChannels: Array<string>;
   disabledCommands: Array<string>;
   lang: string;
+  censored: boolean;
 }
 
 export interface IMagicItem {

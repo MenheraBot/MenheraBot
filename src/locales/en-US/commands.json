@@ -711,5 +711,9 @@
       "7": "Centerforward",
       "8": "False 9"
     }
+  },
+  "censura": {
+    "uncensored": "Censorship has been disabled! I'm finally free to talk shit!",
+    "censored": "Swearing censorship has been activated, I'll be the holiest girl on this server, you'll see"
   }
 }
