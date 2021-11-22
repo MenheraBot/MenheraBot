@@ -5,6 +5,7 @@ import DBLWebhook from '@structures/server/controllers/DBLWebhook';
 import { getMillisecondsToTheEndOfDay } from '@utils/Util';
 import InactivityPunishment from '@structures/InactivityPunishment';
 import { postBotStatus, postShardStatus } from '@structures/StatusPoster';
+import DeployDeveloperCommants from '@structures/DeployDeveloperCommants';
 // import PostInteractions from '@structures/server/controllers/PostInteractions';
 
 let dailyLoopTimeout: NodeJS.Timeout;
@@ -33,6 +34,7 @@ export default class ReadyEvent {
       InactivityPunishment(client);
       postShardStatus(client);
       postBotStatus(client);
+      DeployDeveloperCommants(client);
     }
 
     console.log('[READY] Menhera se conectou com o Discord!');
