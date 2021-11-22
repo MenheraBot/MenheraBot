@@ -496,20 +496,12 @@
     "foda": "Are you happy? If you disable this command you will no longer be able to use it, stop"
   },
   "cooldowns": {
-    "description": "See your cooldowns",
-    "usage": "",
     "title": "⌛ | Your cooldown times",
     "no-cooldown": "You can already do that!",
     "hunt": "Hunt",
-    "dungeon": "Dungeon/Boss",
-    "job": "Work",
     "vote": "Vote for Me",
-    "death": "You are dead for anothe",
-    "hotel": "You will stay at the hotel for another",
-    "minutes": "minutes",
-    "hours": "hours",
-    "error": "you don't have cooldowns yet! Create a profile first!",
-    "click-to-vote": "Click to Vote"
+    "click-to-vote": "Click to Vote",
+    "time": "**{{time}}** {{subtime}}"
   },
   "trisal": {
     "no-args": "You're not on any trisals! Mention people to join in a polyamory >.<",

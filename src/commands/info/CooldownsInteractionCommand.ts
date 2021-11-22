@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-expressions */
-import { MessageEmbed, MessageButton, MessageActionRow } from 'discord.js-light';
+import { MessageEmbed, MessageButton, MessageActionRow, EmbedFieldData } from 'discord.js-light';
 import moment from 'moment';
 import 'moment-duration-format';
 import InteractionCommand from '@structures/command/InteractionCommand';
@@ -13,48 +13,38 @@ export default class CooldownsInteractionCommand extends InteractionCommand {
       description: '「⌛」・Mostra todos os seus tempos de recarga',
       category: 'info',
       cooldown: 5,
-      authorDataFields: ['huntCooldown', 'voteCooldown'],
+      authorDataFields: ['huntCooldown', 'voteCooldown', 'selectedColor'],
     });
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    const huntCooldownInMilis = ctx.data.user.huntCooldown - Date.now();
-    const voteCooldownInMilis = ctx.data.user.voteCooldown - Date.now();
+    const canDo = (value: number): boolean => value < 0;
+    const moreThanAnHour = (time: number): boolean => time >= 3600000;
 
-    let txt = '';
+    const createField = (type: string, cooldown: number): EmbedFieldData => ({
+      name: ctx.locale(`commands:cooldowns.${type as 'vote'}`),
+      value: ctx.locale(
+        canDo(cooldown) ? 'commands:cooldowns.no-cooldown' : 'commands:cooldowns.time',
+        {
+          time: moment.utc(cooldown).format(moreThanAnHour(cooldown) ? 'HH:mm:ss' : 'mm:ss'),
+          subtime: ctx.locale(moreThanAnHour(cooldown) ? 'common:hours' : 'common:minutes'),
+          unix: Math.floor((cooldown + Date.now()) / 1000),
+        },
+      ),
+      inline: false,
+    });
 
-    txt +=
-      huntCooldownInMilis < 0
-        ? `\`${ctx.locale('commands:cooldowns.hunt')}\` | ${ctx.locale(
-            'commands:cooldowns.no-cooldown',
-          )}\n`
-        : `\`${ctx.locale('commands:cooldowns.hunt')}\` | **${moment
-            .utc(huntCooldownInMilis)
-            .format('mm:ss')}** ${ctx.locale('commands:cooldowns.minutes')}\n`;
-
-    txt +=
-      voteCooldownInMilis < 0
-        ? `\`${ctx.locale('commands:cooldowns.vote')}\` | ${ctx.locale(
-            'commands:cooldowns.no-cooldown',
-          )}`
-        : `\`${ctx.locale('commands:cooldowns.vote')}\` | ${
-            voteCooldownInMilis > 3600000
-              ? `**${moment.utc(voteCooldownInMilis).format('HH:mm:ss')}** ${ctx.locale(
-                  'commands:cooldowns.hours',
-                )}`
-              : `**${moment.utc(voteCooldownInMilis).format('mm:ss')}** ${ctx.locale(
-                  'commands:cooldowns.minutes',
-                )}`
-          }`;
+    const huntCooldown = ctx.data.user.huntCooldown - Date.now();
+    const voteCooldown = ctx.data.user.voteCooldown - Date.now();
 
     const embed = new MessageEmbed()
       .setTitle(ctx.locale('commands:cooldowns.title'))
-      .setColor('#6597df')
-      .setDescription(txt);
+      .setColor(ctx.data.user.selectedColor)
+      .addFields([createField('vote', voteCooldown), createField('hunt', huntCooldown)]);
 
     const components: MessageActionRow[] = [];
 
-    if (voteCooldownInMilis < 0) {
+    if (voteCooldown < 0) {
       const voteButton = new MessageButton()
         .setStyle('LINK')
         .setURL('https://top.gg/bot/708014856711962654/vote')
