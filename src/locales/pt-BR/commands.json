@@ -1,13 +1,13 @@
 {
   "raiva": {
-    "description": "",
-    "usage": "[usuário]",
     "bot": "Ah para né vei, nenhum bot te deixaria com raiva (a não ser que ele esteja full lagado hehe)",
     "no-mention": {
       "embed_title": "Raiva",
-      "embed_description": "{{author}} Está P. da vida"
+      "embed_description": "{{author}} Está P. da vida",
+      "embed_description_censor": "{{author}} Está com Raiva"
     },
-    "embed_description": "{{author}} esta puto da cara com {{mention}}, deve ter feito merda né só pode"
+    "embed_description": "{{author}} esta puto da cara com {{mention}}, deve ter feito merda né só pode",
+    "embed_description_censor": "{{author}} esta com raiva de {{mention}}, o que será que {{mention}} fez..."
   },
   "bicuda": {
     "description": "Da uma bicuda em alguem",

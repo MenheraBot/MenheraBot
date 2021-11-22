@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Fixed
 
 - O idioma `inglês` voltou a funcionar
+- O título do comando `/raiva` foi arrumado!
 
 ### Removed
 

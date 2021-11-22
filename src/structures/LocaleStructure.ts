@@ -17,6 +17,7 @@ export default class LocaleStructure {
     try {
       const filepath = path.resolve(__dirname, '..', '..', 'src', 'locales');
       await i18next.use(translationBackend).init({
+        debug: true,
         ns: this.ns,
         preload: readdirSync(filepath),
         fallbackLng: 'pt-BR',
