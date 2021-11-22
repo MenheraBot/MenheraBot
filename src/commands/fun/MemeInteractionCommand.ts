@@ -42,26 +42,18 @@ export default class MemeInteractionCommand extends InteractionCommand {
   }
 
   static async FodaseInteractionCommand(ctx: InteractionCommandContext): Promise<void> {
-    const frases =
-      ctx.data.server.lang === 'pt-BR'
-        ? [
-            `${ctx.author.username} disse que fodase`,
-            'Inteligente, pena que fodase',
-            'Ta, e o fodase?',
-          ]
-        : [
-            `${ctx.author.username} said it dont care`,
-            'Nice, but fuck it',
-            "Cool, but i don't care",
-          ];
+    const randomPhrase = `${Math.floor(Math.random() * 3)}`;
 
-    const frasesUsada = frases[Math.floor(Math.random() * frases.length)];
+    const phrase = ctx.locale(`commands:fodase.${randomPhrase as '1'}`, {
+      author: ctx.author.toString(),
+    });
+
     const selectedImage = await HttpRequests.getAssetImageUrl('fodase');
 
     const embed = new MessageEmbed()
       .setImage(selectedImage)
       .setFooter(ctx.locale('commands:fodase.author', { author: ctx.author.username }))
-      .setTitle(frasesUsada);
+      .setTitle(phrase);
 
     await ctx.makeMessage({ embeds: [embed] });
   }

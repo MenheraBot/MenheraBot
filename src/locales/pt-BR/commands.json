@@ -10,24 +10,20 @@
     "embed_description_censor": "{{author}} esta com raiva de {{mention}}, o que será que {{mention}} fez..."
   },
   "bicuda": {
-    "description": "Da uma bicuda em alguem",
-    "usage": "<@menção>",
     "bot": "Você chutou um robô, se pa que quebrou a perna. Só se pa... assim...",
     "self-mention": "Wtf véi isso nem é possível, não tem como se autochutar. Mencione outro usuário por favor",
+    "self-mention_censor": "Mano, isso nem é possível, não tem como se autochutar. Mencione outro usuário por favor",
     "embed_title": "Bicuda",
     "embed_description": "{{author}} meteu o bicudão em {{mention}}"
   },
   "morder": {
-    "description": "Morde alguem X3 Moidi :3",
-    "usage": "<@menção>",
     "bot": "Você mordeu um robô... -5 dentes na boca",
     "self-mention": "Ala o masoquista, faça isso agora mesmo, não precisa de comando",
+    "self-mention_censor": "IIi alá, se tu quer se morder, faça isso agora mesmo, não precisa de comando",
     "embed_title": "Morder",
     "embed_description": "{{author}} moideu {{mention}}"
   },
   "chorar": {
-    "description": "Mostre a todos que você está chorando, vai que assim tu ganha atenção",
-    "usage": "[@menção]",
     "bot": "Naaaah não, nem vem que nenhum bot faz alguem chorar, eles são amigáveis e divertidos. Assim como eu UwU",
     "no-mention": {
       "embed_title": "Chorando :(",
@@ -48,8 +44,6 @@
     "embed_description": "{{author}} está com nojo de {{mention}}"
   },
   "medo": {
-    "description": "ESTÁS COM MEDO?????",
-    "usage": "[@menção]",
     "no-mention": {
       "embed_title": "MEDO",
       "embed_description": "{{author}} está com medo"
@@ -58,33 +52,27 @@
     "embed_description": "{{author}} esta com medo de {{mention}}"
   },
   "resmungar": {
-    "description": "Resmungue humpf",
-    "usage": "",
     "embed_title": "Humpf",
     "embed_description": "{{author}} está resmungando"
   },
   "abracar": {
-    "description": "Abraça alguém",
-    "usage": "<@menção>",
     "bot": "Você foi abraçar um robô, mas acabou tocando onde não devia, e tomou uma descarga elétrica de 220V e 10mA, sorte que a corrente usada no bot é baixa...",
     "self-mention": "Tu não é a mulher elástico pra se abraçar, por favor, mencione quem você quer abraçar",
     "embed_title": "Abraçar",
     "embed_description": "{{author}} deu um abraço quentinho em {{mention}}"
   },
   "matar": {
-    "description": "Mate aquele que você não suporta mais",
-    "usage": "<@menção>",
-    "self-mention": "Eu não gosto de suicídio...",
+    "self-mention": "Não faça isso, a vida é uma montanha russa, um dia tu ta bem, no outro ta tudo horrível. Mas não se preocupa, isso vai passar, sempre passa. Minha mãe (a Lux) também passou por problemas, mas hoje em dia ta tudo bem, por que sempre vai passar. Caso tu esteja mal, converse com alguém, isso ajuda demais. Caso não tenha ninguém pra conversar, ligue para o CVV (Centro de Valorização à Vida): 188, é grátis, funciona 24/7, e sempre tem alguém a tua disposição. Viva bem neném. Beijos de Luz da Lux, e beijos meus, UwU",
     "bot": {
       "embed_title": "Desligar",
       "embed_description": "*Robôs não podem ser mortos, mas podem ser desligados...*\n{{author}} desligou o bot {{mention}}"
     },
     "embed_title": "Matar",
-    "embed_description": "{{author}} **M A T O U** {{mention}}"
+    "embed_title_censor": "Pelos Ares",
+    "embed_description": "{{author}} **M A T O U** {{mention}}",
+    "embed_description_censor": "{{author}} jogou {{mention}} pelos ares"
   },
   "beijar": {
-    "description": "Beija aquela pessoa amada",
-    "usage": "<@menção>",
     "bot": "Você beijou um robô, e acabou tocando em um fio descascado. Sorte que ele estava com chinelo nos pés. A ligação com a Terra foi cortado, nenhum circuito se fechou. Dessa vez foi safe.",
     "self-mention": "Sim, eu sei que amor próprio é tudo, mas por favor, beije alguém que não seja si mesmo, vai que assim vocês não avançam pra um `/casar`",
     "embed_title": "Beijar",
@@ -92,8 +80,6 @@
     "embed_description_1": "{{author}} deu um beijinho na bochecha de {{mention}}"
   },
   "rir": {
-    "description": "Mostre a todos que estás rindo",
-    "usage": "[@menção]",
     "no-mention": {
       "embed_title": "KKLKLKLK PARABENS ZÉ",
       "embed_description": "{{author}} está se mijando de rir"
@@ -102,47 +88,41 @@
     "embed_description": "{{mention}} fez {{author}} cair no chão de tanto rir, namoral {{mention}}, muito bom mesmo!"
   },
   "mamar": {
-    "description": "Da aquela mamada de qualidade monstra",
-    "usage": "<@menção>",
     "bot": "{{author}} acabou de sujar a boca de óleo lansando o mamadão no bot {{mention}}",
+    "bot_censor": "{{author}} acabou de sujar a boca de óleo lambendo no bot {{mention}}",
     "self-mention": "Não tenta me enganar, eu sei que tu não consegue mamar a si mesmo! Marque outra pessoa para mamar",
+    "self-mention_censor": "Não tenta me enganar, eu sei que tu não consegue lamber a si mesmo! Marque outra pessoa para lamber",
     "embed_title": "Mamar",
-    "user-banned": "Tu não pode mamar esse usuário por que ele ta banido!",
-    "embed_description": "{{author}} lansou o mamadão, o famoso bereguedjonson, a linguada, a mamadela, a lambidinha em {{mention}}"
+    "embed_title_censor": "Lambida",
+    "user-banned": "Tu não pode mamar esse usuário por que ele tá banido!",
+    "user-banned_censor": "Tu não pode lamber esse usuário por que ele tá banido!",
+    "embed_description": "{{author}} lansou o mamadão, o famoso bereguedjonson, a linguada, a mamadela, a lambidinha em {{mention}}",
+    "embed_description_censor": "{{author}} lambeu {{mention}}. Mlem"
   },
   "carinho": {
-    "description": "Faça carinho em alguem",
-    "usage": "<@menção>",
     "self-mention": "Olha cara, se tu quiser tu pode fazer carinho em si mesmo agora. Utilize meu comando somente para fazer carinho em outras pessoas",
     "embed_title": "Carinho",
     "embed_description": "{{author}} fez carinho em {{mention}}"
   },
   "cutucar": {
-    "description": "Cutuque alguem",
-    "usage": "<@menção>",
     "self-mention": "Cutucar a si mesmo não tem graça! Mencione quem tu quer cutucar",
     "embed_title": "Cutucar",
     "embed_description": "{{author}} cutucou {{mention}}"
   },
   "socar": {
-    "description": "Soca alguem na porrada",
-    "usage": "<@menção>",
     "bot": "DIGA NÃO A AGRESSÃO À ROBÔS",
+    "self-mention_censor": "VEM DE CHICOTE, ALGEMAS, CORDA DE ALPINISTA. AI QUE EU PERCEBI QUE O CARA É ***! Eu não vou fazer tu se bater, mencione outra pessoa",
     "self-mention": "VEM DE CHICOTE, ALGEMAS, CORDA DE ALPINISTA. AI QUE EU PERCEBI QUE O CARA É SADOMASOQUISTA! Eu não vou fazer tu se bater, mencione outra pessoa",
     "embed_title": "Toma soco leve 🤜",
     "embed_description": "{{author}} meteu o soquinho leve em {{mention}}"
   },
   "ressuscitar": {
-    "description": "Ressuscite alguém morto",
-    "usage": "<@menção>",
     "self-mention": "Uai, se tu ta morto, como tu ta digitando?",
     "bot": "Um robô foi religado UwU >.<",
     "embed_title": "Ressuscitar",
     "embed_description": "**VOCÊ NÃO MATARÁ MEUS ALIADOS**\n{{author}} ressuscitou {{mention}}"
   },
   "sarrar": {
-    "description": "Sarra comigo?",
-    "usage": "[@menção]",
     "no-mention": {
       "embed_title": "Sarra Comigo?",
       "embed_description": "Alguém quer sarrar com {{author}}?",
@@ -153,33 +133,26 @@
     "sarrar": "Aceitar a Sarrada"
   },
   "atirar": {
-    "description": "Atire em alguém",
-    "usage": "<@menção>",
-    "self-mention": "EU NÃO GOSTO DE SUICÍDIO MAS BAH VEI JA FALEI NO `/matar`!!!",
+    "self-mention": "Não faça isso, a vida é uma montanha russa, um dia tu ta bem, no outro ta tudo horrível. Mas não se preocupa, isso vai passar, sempre passa. Minha mãe (a Lux) também passou por problemas, mas hoje em dia ta tudo bem, por que sempre vai passar. Caso tu esteja mal, converse com alguém, isso ajuda demais. Caso não tenha ninguém pra conversar, ligue para o CVV (Centro de Valorização à Vida): 188, é grátis, funciona 24/7, e sempre tem alguém a tua disposição. Viva bem neném. Beijos de Luz da Lux, e beijos meus, UwU",
     "embed_title": "Atirar",
-    "embed_description": "{{author}} meteu bala em {{mention}}"
+    "embed_description": "{{author}} meteu bala em {{mention}}",
+    "embed_description_censor": "{{author}} deu tirinho em {{mention}}"
   },
   "vergonha": {
-    "description": "oto com vergonha",
-    "usage": "[@menção]",
     "no-mention": {
       "embed_title": "Vergonhinha 👉👈",
       "embed_description": "{{author}} está com vergonha >.<"
     },
     "embed_title": "Vergonhinha 👉👈",
-    "embed_description": "{{mention}} deixou {{author}} com vergonha >.<"
+    "embed_description": "{{mention}} deixou {{author}} com vergonha >...<"
   },
   "tapa": {
-    "description": "Tapeia alguem",
-    "usage": "<@menção>",
     "bot": "DIGA NÃO A AGRESSÃO À ROBÔS",
     "self-mention": "Eu não vou fazer tu se bater, mencione outra pessoa",
     "embed_title": "TAPÃO",
     "embed_description": "{{author}} meteu o tapão em {{mention}}"
   },
   "cheirar": {
-    "description": "hmmmmm cheirin bão",
-    "usage": "[usuário]",
     "bot": "Olha, algo me diz que esse bot só tem cheiro de metal",
     "no-mention": {
       "embed_title": "Hmmmm Cheirin Bão",
@@ -188,8 +161,6 @@
     "embed_description": "{{author}} fez sabe o que? Colocou o nariz em {{mention}} e cheirou. Pois é full estranho, mas é isso"
   },
   "pensar": {
-    "description": "Gabriel o pensador apenas",
-    "usage": "[@menção]",
     "bot": "Awnnn que coisa mais linda, você está pensando num bot >.<. Obrigada babe",
     "no-mention": {
       "embed_title": "Pensar",
@@ -199,8 +170,6 @@
     "embed_description": "{{author}} está pensando em {{mention}}. Que coisa mais fofa, ja pensaram em `/casar`?"
   },
   "coinflip": {
-    "description": "Aposte estrelinhas num cara ou coroa com alguem",
-    "usage": "<@menção> <valor>",
     "bet": "Apostar",
     "timeout": "Tempo Esgotado",
     "invalid-value": "este valor não é válido",
@@ -264,12 +233,12 @@
       "price": "Preço:"
     },
     "buy_colors": {
-      "has-color": "eu agradeço sua empolgação para comprar em meu brechó, mas você já possui esta cor!",
-      "poor": "você não tem estrelinhas o suficiente para comprar esta cor!",
-      "buy-success": "certo! Você comprou a cor **{{name}}** por **{{price}}** ⭐! Você ficou com **{{stars}}** ⭐ estrelinhas",
+      "has-color": "Eu agradeço sua empolgação para comprar em meu brechó, mas você já possui esta cor!",
+      "poor": "Você não tem estrelinhas o suficiente para comprar esta cor!",
+      "buy-success": "Certo! Você comprou a cor **{{name}}** por **{{price}}** ⭐! Você ficou com **{{stars}}** ⭐ estrelinhas",
       "yc-message": "Envie um código de hexcolor **SEM A HASHTAG** (Exemplo: AABBCC) de sua escolha para adicionar em seu perfil",
-      "yc-confirm": "UUUAUUUU!!! VOCÊ ACABOU DE COMPRAR UMA COR DE SUA ESCOLHA!!!\nSua cor comprada foi **#{{color}}**\nVocê gastou **{{price}}** ⭐ e ficou com **{{stars}}** ⭐ estrelinhas",
-      "invalid-color": "esta cor não é uma cor válida!",
+      "yc-confirm": "Você gosta de algo mais personalizado, e comprou uma corzinha especial!\nSua cor comprada foi **#{{color}}**\nVocê gastou **{{price}}** ⭐ e ficou com **{{stars}}** ⭐ estrelinhas",
+      "invalid-color": "Esta cor não é uma cor válida!",
       "no-name": "Sem nome especificado ({{number}})",
       "buy-text": "Escolha abaixo qual é a cor que deseja comprar!"
     },
@@ -292,17 +261,15 @@
           "value": "<:DEMON:758765044443381780> Demônios - **{{demon}}**⭐\n🦍 Gigantes - **{{giant}}**⭐ \n<:ANGEL:758765044204437535> Anjos - **{{angel}}**⭐\n👼 Arcanjos - **{{archangel}}**⭐\n<:SEMIGOD:758766732235374674> SemiDeuses - **{{demi}}**⭐\n<:God:758474639570894899> Deuses - **{{god}}**⭐"
         }
       },
-      "invalid-args": "este valor não é um número válido! Você deve passar a opção e a quantidade",
-      "poor": "você não possui todos estes {{var}}!",
-      "success": "você vendeu **{{value}}** {{emoji}} {{hunt}} e recebeu **{{cost}}** ⭐ estrelinhas!\nAgora você tem **{{quantity}}** {{emoji}} e **{{star}}**⭐"
+      "invalid-args": "Este valor não é um número válido! Você deve passar a opção e a quantidade",
+      "poor": "Você não possui todos estes {{var}}!",
+      "success": "Você vendeu **{{value}}** {{emoji}} {{hunt}} e recebeu **{{cost}}** ⭐ estrelinhas!\nAgora você tem **{{quantity}}** {{emoji}} e **{{star}}**⭐"
     }
   },
   "8ball": {
-    "description": "Pergunte algo para mim",
-    "usage": "<pergunta>",
     "question": "Sua Pergunta",
     "answer": "Respota",
-    "no-args": "você deve enviar uma pergunta para eu responder",
+    "no-args": "Você deve enviar uma pergunta para eu responder",
     "ask": "Pergunte à Menhera",
     "answers": {
       "0": "É certo",
@@ -328,8 +295,6 @@
     }
   },
   "divorciar": {
-    "description": "Não quer mais ficar casado com aquele corno? Divorcie com este comando",
-    "usage": "",
     "divorce": "Divorciar",
     "cancel": "Cancelar",
     "author-single": "Você não está casado com ninguém",
@@ -338,16 +303,18 @@
     "confirmed": "{{author}} acaba de se divorciar de {{mention}}.\nEu sinto muito por ter acabado tudo... Mas ta tudo bem, todos relacionamentos são apenas experiências, tu ainda tem muita vida pela frente, e ainda vai encontrar pessoas que te fazem tão bem quanto tu merece"
   },
   "fodase": {
-    "description": "Alguem mandou algo que ninguem perguntou? Taque o fodase",
-    "author": "Autor: {{author}}"
-  },
-  "humor": {
-    "description": "Mande quando alguem fizer aquela piadoca do joca",
-    "usage": ""
+    "author": "Autor: {{author}}",
+    "0": "{{author}} disse que fodase",
+    "0_censor": "{{author}} disse que não se importa",
+    "1": "Inteligente, pena que fodase",
+    "1_censor": "Inteligente, pena que ninguém liga",
+    "2": "Ta, e o fodase?",
+    "2_censor": "Bacana, mas e aí?"
   },
   "cacar": {
     "usage": "",
     "drop": "CARALHOOOO {{author}}, Tu dropou um item de caça! Tu tem noção do quão raro isso é? Pra ti ter noção, o item que tu ganhou, o **{{name}}** tem uma porcentagem de drop de `{{chance}}%`, Parabéns!",
+    "drop_censor": "Uoouu {{author}}, Tu dropou um item de caça! Tu tem noção do quão raro isso é? Pra ti ter noção, o item que tu ganhou, o **{{name}}** tem uma porcentagem de drop de `{{chance}}%`, Parabéns!",
     "probabilities": "Suas Probabilidades de Caça",
     "chances": "**{{count}}** ({{percentage}}%)",
     "hunt_description": "Você saiu para caçar **{{hunt}}** **{{count}}** vez com o Super Xandão, e voltou para casa com mais **{{value}}** pra conta. Você está em **#{{rank}}** lugar do top {{hunt}}",
@@ -367,14 +334,14 @@
     "cooldown": "Descanse campeão, você já saiu na sua caçada. Tente novamente em **{{time}}** minutos ou use um `roll` em sua próxima caça"
   },
   "casar": {
-    "description": "Casa com o amor de sua vida",
-    "usage": "<@menção>",
-    "bot": "voce não pode se casar com bots",
-    "self-mention": "você não pode se casar consigo mesmo :(",
-    "married": "você já está casado!!",
-    "no-dbuser": "mame este usuário para adicioná-lo ao meu banco de dados",
-    "mention-married": "calma lá comedor de casadas, este usuário já está casado!",
+    "bot": "Tu não pode se casar com bots",
+    "self-mention": "Tu não pode se casar consigo mesmo :(",
+    "married": "Tu já está casado!!",
+    "no-dbuser": "Mame este usuário para adicioná-lo ao meu banco de dados",
+    "mention-married": "Calma lá comedor de casadas, este usuário já está casado!",
+    "mention-married_censor": "Calma la colega, este usuário já está casado!",
     "accepted": "{{toMarry}} aceitou o pedido de casamento de {{author}}. Que os pombinhos aproveitem a noite de núpcias hihi",
+    "accepted_censor": "{{toMarry}} aceitou o pedido de casamento de {{author}}. Que os pombinhos aproveitem a vida juntos",
     "negated": "{{toMarry}} negou o pedido de casamento de {{author}}",
     "first-text": "{{toMarry}}, você recebeu um pedido de casamento de {{author}}\n\n{{toMarry}}, você aceita {{author}} como sua legítima esposa (ou legítimo marido), prometendo ser fiel,\nAmá-la(o) e respeitá-la(o)\nNa alegria e na tristeza,\nNa saúde e na doença,\nNa riqueza e na pobreza,\nPor todos os dias das suas vidas, até que a morte os separe (ou o `/divorciar`)?",
     "accept": "Aceito",
@@ -382,10 +349,8 @@
     "banned-user": "Este usuário não pode se casar pois está banido da Menhera!"
   },
   "ship": {
-    "description": "Será que vocês dariam um bom casal?",
-    "usage": "<usuário1> [usuário2]",
     "value": "Valor do ship:",
-    "unknow-user": "usuário não encontrado",
+    "unknow-user": "Usuário não encontrado",
     "message-start": "Será que os dois pombinhos dariam um bom casal?",
     "default": "Talvez o bot que seja quebrado, ou vocês não darão certo mesmo :(",
     "low": "É, nada é impossível né k k k",
@@ -396,42 +361,36 @@
     "banned-user": "Você não pode shipar esse usuário pois está banido da Menhera!"
   },
   "xandao": {
-    "description": "SEM PRESSÃO",
-    "usage": "[texto]",
     "only-text": "Este comando não está disponível em threads",
     "err_message": "Para que eu possa executar este comando, peça para que os administradores me concedam a permissão `Gerenciar Webhooks`"
   },
   "avatar": {
-    "description": "Mostra o avatar de alguem",
-    "usage": "[usuário]",
     "title": "Avatar de {{user}}",
     "footer": "Que imagem linda omodeuso",
-    "unknow-user": "usuário não encontrado",
+    "unknow-user": "Usuário não encontrado",
     "client_title": "Meu avatar ({{user}})",
     "client_footer": "Eu sou muito linda né vei tem como não"
   },
   "cor": {
-    "description": "Mude a cor de seu perfil",
     "footer": "Página {{page}}/{{maxPages}}",
     "usage": "[cor]",
     "embed_title": "Suas Cores",
-    "embed_description": "Escolha abaixo qual a cor que quer usar! Você tem 30 segundos",
+    "embed_description": "Escolha abaixo qual a cor que quer usar! Tu tem 30 segundos",
     "dataChoose": {
       "title": "Sua cor foi alterada com sucesso",
       "description": "Você ja pode ver seu perfil com sua nova cor!"
     },
     "choose": "Escolha sua cor",
-    "min-color": "você precisa ter no mínimo 2 cores para usar este comando!"
+    "min-color": "Tu precisa ter no mínimo 2 cores para usar este comando!"
   },
   "perfil": {
-    "description": "Veja o seu perfil, ou o de alguem",
-    "usage": "[usuário]",
-    "bot": "Que? KKK fodase os bots, robôs não tem perfil",
-    "no-dbuser": "este usuário não possui perfil!",
-    "banned": "este usuário está **banido** de usar a Menhera\n**Motivo:** `{{reason}}`",
+    "no-dbuser": "Este usuário não possui perfil!",
+    "banned": "Este usuário está **banido** de usar a Menhera\n**Motivo:** `{{reason}}`",
     "mamou": "Mamou",
-    "unknow-user": "usuário não encontrado",
+    "mamou_censor": "Lambeu",
+    "unknow-user": "Usuário não encontrado",
     "mamado": "Mamado",
+    "mamado_censor": "Lambido",
     "married-with": "Casado com",
     "married-in": "Casados em",
     "about-me": "Sobre Mim",
@@ -443,10 +402,10 @@
     "commands-usage": "{{user}} usou meus comandos {{usedCount}} vezes. Seu comando mais usado foi {{mostUsedCommandName}}, usou {{mostUsedCommandCount}} vezes"
   },
   "top": {
-    "description": "Veja o top de meus usuários",
-    "usage": "<opção> [página | usuário]",
     "mamadoresTitle": "Placar de Mamadores",
+    "mamadoresTitle_censor": "Placar de Lambedores",
     "mamouTitle": "Placar de Mamados",
+    "mamouTitle+_censor": "Placar de Lambidos",
     "demonTitle": "Placar de Demônios",
     "angelTitle": "Placar de Anjos",
     "sdTitle": "Placar de Semideuses",
@@ -472,11 +431,9 @@
     "user": "Comandos mais usados de {{user}}",
     "times": "vezes",
     "votes": "Votos",
-    "not-user": "este usuário não usou nenhum comando meu"
+    "not-user": "Este usuário não usou nenhum comando meu"
   },
   "blockcanal": {
-    "description": "Bloqueie ou Desbloqueie o canal atual de usar meus comandos",
-    "usage": "",
     "block": "Meus comandos foram **Bloqueados** no canal {{channel}}! Use `/blockcanal` para desbloqueá-los",
     "unblock": "Meus comandos foram **Liberados** no canal {{channel}}!",
     "invalid-channel": "Este comando só pode ser executado em canais de texto!",
@@ -486,35 +443,14 @@
     "done": "Meus comandos foram liberados em todos os canais do servidor! Yayyy"
   },
   "idioma": {
-    "description": "Troque a língua com que eu falo neste servidor",
-    "usage": "",
     "question": "Qual língua você quer que eu fale?",
     "select": "Escolha a língua clicando aqui!",
     "english": "Inglês Americano",
     "portuguese": "Português Brasileiro"
   },
   "sobremim": {
-    "description": "Mude seu Sobre Mim",
-    "usage": "<texto>",
-    "no-args": "Você não me disse o que queres colocar em seu 'Sobre Mim'",
     "args-limit": "Seu sobremim não pode ser maior que 200 caracteres",
     "success": "Seu 'Sobre Mim' foi alterado com sucesso! Você pode ver as mudanças com `/perfil`"
-  },
-  "delete": {
-    "description": "Exclua seu perfil do banco de dados",
-    "usage": "",
-    "confirm": "Você tem certeza que deseja excluir sua conta da database do servidor?\nVocê tem 5 segundos para decidir",
-    "negated": "Perfeito!! Seu perfil **não** foi excluído",
-    "acepted": "Seu perfil foi deletado da minha database :(",
-    "btn_confirm": "Deletar",
-    "ban": "Você foi banido de usar a Menhera! Caso pense que isso foi um erro, venha para meu servidor de suporte"
-  },
-  "convidar": {
-    "description": "Adicione o bot em algum servidor",
-    "usage": "",
-    "embed_title": "Clique para me adicionar em algum servidor",
-    "embed_footer": "Comando executado por {{user}}",
-    "embed_description": "Este link te levará direto para a página do discord para adicionar o bot em algum servidor que você administre"
   },
   "ping": {
     "description": "Mostra o ping do bot e de sua API",
@@ -523,24 +459,12 @@
     "api": "Latência da API:"
   },
   "suporte": {
-    "description": "Link de convite para o servidor de suporte do Bot",
-    "usage": "",
-    "embed_title": "Clique aqui para entrar no servidor de suporte da Menhera",
-    "embed_footer": "Comando executado por"
-  },
-  "votar": {
-    "description": "Vote no bot (pfv vote, isso ajuda muito X3 >.<)",
-    "usage": "",
-    "embed_title": "Clique para votar em mim",
-    "embed_footer": "Comando executado por {{author}}",
-    "embed_description": "Votos ajudam na divulgação do bot, e isso é extremamente importante"
+    "embed_title": "Clique aqui para entrar no servidor de suporte da Menhera"
   },
   "status": {
     "coinflip": {
-      "description": "Mostre dados algum jogador de jogos do coinflip",
-      "usage": "[usuário]",
       "embed-title": "Status do coinflip de {{user}}",
-      "no-data": "você nunca jogou uma partida de coinflip!",
+      "no-data": "Este usuário nunca jogou uma partida de coinflip!",
       "embed-footer": "Tu é tri vei",
       "played": "Partidas Jogadas",
       "wins": "Vitórias",
@@ -552,8 +476,6 @@
       "error": "Ocorreu um erro ao checar as estatísticas deste usuário. Provavelmente ele nunca usou o comando"
     },
     "botinfo": {
-      "description": "Mostra as informações atuais do bot",
-      "usage": "",
       "title": "🎉 HOJE É MEU ANIVERSÁRIO🎉",
       "embed_description": "Oi, meu nome é **{{name}}**, e eu sou uma Bot Brasileira para Discord com foco em diversão e RPG! Fui criada em **{{createdAt}}** e entrei nesse servidor **{{joinedAt}}**.\n\nUm pouco sobre mim: Meu nome é Menhera, tenho 16 anos e AMO, mas tipo AMO usar essas carinhas: (>...<). Para saber mais, entre em meu [twitter](https://twitter.com/__MenheraBot), em meu [servidor de suporte](https://discord.gg/fZMdQbA) e em meu [WEBSITE](https://menherabot.xyz/).",
       "embed_footer": "foi criada por",
@@ -565,10 +487,10 @@
       "usage": "[usuário]",
       "description": "Veja os status de BlackJack de alguém",
       "embed-title": "Status do blackjack de {{user}}",
-      "no-data": "você nunca jogou uma partida de blackjack!"
+      "no-data": "Este usuário nunca jogou uma partida de blackjack!"
     },
     "hunt": {
-      "no-data": "você nunca caçou",
+      "no-data": "Este usuário nunca caçou",
       "embed-title": "Status de caçada de {{user}}",
       "display-data": "**Tentativas:** {{tries}}\n**Aproveitamento:** {{success}}%\n**Total Caçados:** {{hunted}}",
       "demon": "Demônios",
@@ -579,24 +501,16 @@
       "god": "Deuses"
     }
   },
-  "filosofia": {
-    "description": "Ser ou não ser, eis a questão",
-    "usage": "<texto>",
-    "no-args": "você não me disse nenhum argumento! E caso não saiba o que é um argumento, um argumento pode ser definido como uma afirmação acompanhada de justificativa (argumento retórico) ou como uma justaposição de duas afirmações opostas, argumento e contra-argumento "
-  },
   "blockcomando": {
-    "description": "Desabilite um comando neste servidor",
-    "usage": "<comando>",
-    "no-args": "você não citou nenhum comando!",
-    "no-cmd": "este comando não existe!",
-    "dev-cmd": "você não tem acesso à este comando!",
-    "unblock": "o comando `/{{cmd}}` foi reabilitado neste servidor!",
-    "block": "o comando `/{{cmd}}` foi desabilitado neste servidor!",
-    "foda": "Tu é feliz né? Se tu desabilita esse comando n vai poder mais usar ele o cabaço, te liga vei"
+    "no-args": "Tu não citou nenhum comando!",
+    "no-cmd": "Este comando não existe!",
+    "dev-cmd": "Tu não tem acesso à este comando!",
+    "unblock": "O comando `/{{cmd}}` foi reabilitado neste servidor!",
+    "block": "O comando `/{{cmd}}` foi desabilitado neste servidor!",
+    "foda": "Tu é feliz né? Se tu desabilita esse comando n vai poder mais usar ele o cabaço, te liga vei",
+    "foda_censor": "Tu não pode desabilitar o comando que desabilita, engraçadinho"
   },
   "cooldowns": {
-    "description": "Mostra seus tempos de recarga",
-    "usage": "",
     "title": "⌛ | Seus tempos de Recarga",
     "no-cooldown": "Você já pode fazer isso!",
     "hunt": "Caçar",
@@ -605,60 +519,42 @@
     "hours": "horas",
     "click-to-vote": "Clique Para Votar"
   },
-  "astolfo": {
-    "description": "É grande né? Disse o Astolfo",
-    "usage": "<texto>",
-    "no-args": "o que é grande? Me diga?"
-  },
   "trisal": {
-    "description": "Forme um trisal e veja suas metadinhas",
     "no-args": "Você não está em nenhum trisal! Mencione pessoas para juntar-se em um poliamor >.<",
-    "usage": "[@menção1 & @menção2]",
     "banned-user": "Este trisal não pode acontecer pois possui usuários banidos da Menhera!",
     "marry-not-found": "um usuário de seu trisal não foi encontrado",
     "no-owner": "utilize o comando mamar para que eu crie uma conta pra você antes de tudo >.<",
     "embed": {
       "description": "Por mais que não seja algo sério, estes 3 estão juntinhos: "
     },
-    "self-mention": "você não pode fazer um casal consigo memso",
-    "same-mention": "você n pode mencionar o mesmo usuário 2 vezes",
-    "bot-mention": "você não pode formar um trisal com um bot. Na verdade isso é até esquisito... Sinto pena de ti por ter tentado ficar com um bot.",
-    "no-db": "um dos integrantes do trisal não foi encontrado no banco de dados! O melhor agora é desfazer este trisal e começar um outro",
+    "self-mention": "Tu não pode fazer um casal consigo memso",
+    "same-mention": "Tu n pode mencionar o mesmo usuário 2 vezes",
+    "bot-mention": "Tu não pode formar um trisal com um bot. Na verdade isso é até esquisito... Sinto pena de ti por ter tentado ficar com um bot.",
+    "no-db": "Um dos integrantes do trisal não foi encontrado no banco de dados! O melhor agora é desfazer este trisal e começar um outro",
     "comedor-de-casadas": "UOUOUOU calma lá comedor de casadas, um dos usuários que você mencionou ja está em um trisal",
+    "comedor-de-casadas_censor": "UOUOUOU calma lá colega, um dos usuários que você mencionou ja está em um trisal",
     "accept-message": ":heart: | Vocês aceitam formar um trisal? Os três devem clicar no botão em até 15 segundos",
-    "done": "parabéns, vocês três formaram um trisal lindo! Utilize este comando novamente para ver suas fotinhas juntas",
-    "error": "os 3 não reagiram à mensagem a tempo! Tente novamente, talvez com alguem que queira, quem sabe"
+    "done": "Parabéns, vocês três formaram um trisal lindo! Utilize este comando novamente para ver suas fotinhas juntas",
+    "error": "Os 3 não reagiram à mensagem a tempo! Tente novamente, talvez com alguem que queira, quem sabe"
   },
   "untrisal": {
-    "description": "Acabe com o trisal que você não quer mais participar",
-    "usage": "",
-    "error": "você não está em nenhum trisal!",
-    "sure": "você tem certeza que quer terminar o trisal? Tens 15 segundos para confirmar",
+    "error": "Tu não está em nenhum trisal!",
+    "sure": "Tu tem certeza que quer terminar o trisal? Tens 15 segundos para confirmar",
     "confirm": "Terminar",
     "done": "O seu trisal acabou! Não tem mais jeito. Acabou...."
   },
-  "http-error": "hmmm... Algum erro aconteceu ao processar a imagem... Talvez o servidor de processamento de imagens esteja fora do ar... Tente novamente mais tarde!",
-  "gado": {
-    "description": "Ala o Gado ó",
-    "usage": "[@menção || imagem || responder à uma mensagem com uma imagem]"
-  },
-  "macetava": {
-    "description": "Ja viu o meme do macetava do casas bahia? É exatamente isso",
-    "usage": "[@menção || imagem || responder à uma mensagem com uma imagem]"
-  },
+  "http-error": "Hmmm... Algum erro aconteceu ao processar a imagem... Talvez o servidor de processamento de imagens esteja fora do ar... Tente novamente mais tarde!",
   "blackjack": {
-    "description": "Aposte contra a Menhera no Blackjack (ou 21)",
-    "usage": "<aposta>",
-    "bad-usage": "você não fez sua aposta",
-    "invalid-value": "o valor da aposta deve ser maior que 1000 e menor que 50000",
+    "bad-usage": "Tu não fez sua aposta",
+    "invalid-value": "O valor da aposta deve ser maior que 1000 e menor que 50000",
     "available-options": "Opções Disponíveis",
     "initial-options": "**[1] Começar** - Começe o jogo\n **[2] Desistir** - Desista deste jogo (e perca sua aposta)",
     "options": "**[1] Comprar** - Compre mais uma carta\n**[2] Parar** - Pare por aqui sua aposta",
-    "footer": "Você tem 10 segundos",
-    "poor": "você não possui todas essas estrelinhas para apostar!",
+    "footer": "Tu tem 10 segundos",
+    "poor": "Tu não possui todas essas estrelinhas para apostar!",
     "your-hand": "Sua Mão",
     "dealer-hand": "Mão da Menhera",
-    "timeout": "você demorou muito para jogar. A Menhera ficou sem paciência, você perdeu tudo!",
+    "timeout": "Tu demorou muito para jogar. A Menhera ficou sem paciência, você perdeu tudo!",
     "result": "👑 | Resultado",
     "blackjack": "Você fez um BlalcJack!!! Você recebeu o dobro do prêmio! **{{value}}** :star:",
     "buy": "Comprar",
@@ -692,13 +588,11 @@
     "select-description": "Escolha um dos itens abaixos para ativá-lo. Caso não tenha espaço disponível, tu terá que escolher um dos itens ativos para substituílo"
   },
   "carteira": {
-    "description": "Veja a carteira de alguém",
-    "usage": "[usuário]",
-    "no-dbuser": "este usuário não está em minha database",
+    "no-dbuser": "Este usuário não está em minha database",
     "title": "Carteira de {{user}}",
     "stars": "Estrelinhas",
     "rolls": "Rolls",
-    "unknow-user": "usuário não encontrado",
+    "unknow-user": "Usuário não encontrado",
     "demons": "Demônios",
     "angels": "Anjos",
     "giants": "Gigantes",
