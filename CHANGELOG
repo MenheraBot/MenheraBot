@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - Os comandos `/cor` e `/sobremim` foram movidos para dentro de `/personalizar`
 - Os comandos `idioma`, `blockcmd` e `blockcanal` foram movidos para dentro de `/config`
 - O comando `/cooldown` foi repaginado, e adicionado tempo relativo para ajudar a saber o tempo exato do próximo reset
+- O comando trisal foi levemente melhorado
 
 ### Fixed
 

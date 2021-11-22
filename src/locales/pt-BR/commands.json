@@ -519,13 +519,11 @@
     "click-to-vote": "Clique Para Votar"
   },
   "trisal": {
+    "title": "❤️ Trisal ❤️",
     "no-args": "Você não está em nenhum trisal! Mencione pessoas para juntar-se em um poliamor >.<",
     "banned-user": "Este trisal não pode acontecer pois possui usuários banidos da Menhera!",
     "marry-not-found": "um usuário de seu trisal não foi encontrado",
     "no-owner": "utilize o comando mamar para que eu crie uma conta pra você antes de tudo >.<",
-    "embed": {
-      "description": "Por mais que não seja algo sério, estes 3 estão juntinhos: "
-    },
     "self-mention": "Tu não pode fazer um casal consigo memso",
     "same-mention": "Tu n pode mencionar o mesmo usuário 2 vezes",
     "bot-mention": "Tu não pode formar um trisal com um bot. Na verdade isso é até esquisito... Sinto pena de ti por ter tentado ficar com um bot.",

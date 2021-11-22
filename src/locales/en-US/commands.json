@@ -504,6 +504,7 @@
     "time": "**{{time}}** {{subtime}}"
   },
   "trisal": {
+    "title": "❤️ Polyamory ❤️",
     "no-args": "You're not on any trisals! Mention people to join in a polyamory >.<",
     "description": "Form a trisal and see your metadinhas",
     "usage": "[@mention1 & @mention2]",
