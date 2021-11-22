@@ -21,7 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ### Fixed
 
-- O idioma `ingles` voltou a funcionar
+- O idioma `inglês` voltou a funcionar
 
 ### Removed
 
@@ -29,6 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - O comando `/adicionar` foi removido. Você poder adicionar a Menhera diretamente do perfil dela agora!
 - O comando `/suporte` foi removido. Para entrar no servidor de suporte, basta clicar no link do comando `/status menhera`
 - O comando `/votar` foi removido. O link para votar aparecerá no comando `/cooldowns` quando você puder votar.
+- O comando `/ping` foi deletado. Para as informações de ping, utilize `/status menhera`
 
 ## [3.5.0] 2021-11-15
 
