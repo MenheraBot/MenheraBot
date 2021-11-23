@@ -30,6 +30,8 @@ export default class ProfileInteractionCommand extends InteractionCommand {
         'marriedDate',
         'mamado',
         'mamou',
+        'ban',
+        'banReason',
       ],
     });
   }
