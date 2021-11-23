@@ -89,6 +89,9 @@ export default class InteractionCommandContext {
   }
 
   locale(text: Translation, translateVars = {}): string {
-    return this.i18n(text, translateVars);
+    return this.i18n(text, {
+      ...translateVars,
+      context: this.data.server.censored ? 'censor' : null,
+    });
   }
 }

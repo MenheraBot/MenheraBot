@@ -19,7 +19,6 @@ export default class EightballInteractionCommand extends InteractionCommand {
       ],
       category: 'fun',
       cooldown: 5,
-      clientPermissions: ['EMBED_LINKS'],
     });
   }
 

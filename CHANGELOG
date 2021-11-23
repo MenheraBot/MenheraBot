@@ -5,6 +5,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [3.5.1] 2021-11-22
+
+### Added
+
+- Bots agora podem ter contas na Menhera! Para um bot ter uma conta, a Lux precisa fazê-lo manualmente, então caso queira um bot, só pedir pra ela. Os bots só podem ser mamados e receber presentes.
+- **Censura**: Moderadores podem ativar a censura de palavrões, fazendo com que a Menhera não fale nenhum tipo de palavrão. Para ativar, use `/config censura`
+
+### Changed
+
+- As permissões necessárias para a Menhera funcionar foram revistas! Agora a Menhera só precisa ter permissão de MANAGE_WEBHOOKS (Somente para o comando /xandao) para funcionar!
+- Os comandos de imagem agora ignoram nomes com caracteres tortos. Então caso tu queria mostrar teu nome normal, seja uma pessoa não do ente e use um username padrao, seu estranho.
+- Os comandos `/humor` e `/fodase` foram movidos para dentro de `/meme`
+- Os comandos `/cor` e `/sobremim` foram movidos para dentro de `/personalizar`
+- Os comandos `idioma`, `blockcmd` e `blockcanal` foram movidos para dentro de `/config`
+- O comando `/cooldown` foi repaginado, e adicionado tempo relativo para ajudar a saber o tempo exato do próximo reset
+- O comando trisal foi levemente melhorado
+
+### Fixed
+
+- O idioma `inglês` voltou a funcionar
+- O título do comando `/raiva` foi arrumado!
+
+### Removed
+
+- O comando `/deletar` foi _deletado_. Para fazer um pedido de deleção de conta, envie um email para `support@menherabot.xyz`
+- O comando `/adicionar` foi removido. Você poder adicionar a Menhera diretamente do perfil dela agora!
+- O comando `/suporte` foi removido. Para entrar no servidor de suporte, basta clicar no link do comando `/status menhera`
+- O comando `/votar` foi removido. O link para votar aparecerá no comando `/cooldowns` quando você puder votar.
+- O comando `/ping` foi deletado. Para as informações de ping, utilize `/status menhera`
+
 ## [3.5.0] 2021-11-15
 
 ### Added

@@ -5,9 +5,9 @@ import {
   HuntProbabiltyProps,
   IHuntCooldownBoostItem,
   IMagicItem,
-  IProbablyBoostItem,
+  IHuntProbablyBoostItem,
   IReturnData,
-} from './Types';
+} from '@utils/Types';
 import { getMagicItemByCustomFilter, getMagicItemById } from './Util';
 
 export const calculateProbability = (probabilities: HuntProbabiltyProps[]): number => {
@@ -36,9 +36,9 @@ export const getUserHuntProbability = (
 ): HuntProbabiltyProps[] => {
   const findedItem = userInventory
     .map((a) => getMagicItemById(a.id))
-    .find((a) => a.data.type === 'PROBABILITY_BOOST' && a.data.huntType === huntType);
+    .find((a) => a.data.type === 'HUNT_PROBABILITY_BOOST' && a.data.huntType === huntType);
 
-  if (findedItem) return (findedItem.data as IProbablyBoostItem<typeof huntType>).probabilities;
+  if (findedItem) return (findedItem.data as IHuntProbablyBoostItem).probabilities;
 
   return defaultHuntingProbabilities[huntType];
 };
@@ -49,9 +49,9 @@ export const getUserHuntCooldown = (
 ): number => {
   const findedItem = userInventory
     .map((a) => getMagicItemById(a.id))
-    .find((a) => a.data.type === 'COOLDOWN_REDUCTION' && a.data.huntType === huntType);
+    .find((a) => a.data.type === 'HUNT_COOLDOWN_REDUCTION' && a.data.huntType === huntType);
 
-  if (findedItem) return (findedItem.data as IHuntCooldownBoostItem<typeof huntType>).huntCooldown;
+  if (findedItem) return (findedItem.data as IHuntCooldownBoostItem).huntCooldown;
 
   return defaultHuntCooldown;
 };
@@ -64,8 +64,8 @@ export const dropItem = (
   const didDrop = Math.random() * 100;
 
   const itemToDrop = getMagicItemByCustomFilter(
-    (a) => a[1].type === 'COOLDOWN_REDUCTION' && a[1].huntType === huntType,
-  ) as IReturnData<IHuntCooldownBoostItem<typeof huntType>>;
+    (a) => a[1].type === 'HUNT_COOLDOWN_REDUCTION' && a[1].huntType === huntType,
+  ) as IReturnData<IHuntCooldownBoostItem>;
 
   if (!itemToDrop) return null;
 

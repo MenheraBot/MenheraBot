@@ -15,7 +15,7 @@ export default class LocaleStructure {
 
   async load(): Promise<void> {
     try {
-      const filepath = path.resolve(__dirname, '..', 'locales');
+      const filepath = path.resolve(__dirname, '..', '..', 'src', 'locales');
       await i18next.use(translationBackend).init({
         ns: this.ns,
         preload: readdirSync(filepath),

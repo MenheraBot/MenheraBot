@@ -19,7 +19,6 @@ export default class AngryInteractionCommand extends InteractionCommand {
       ],
       category: 'actions',
       cooldown: 5,
-      clientPermissions: ['EMBED_LINKS'],
     });
   }
 
@@ -53,7 +52,7 @@ export default class AngryInteractionCommand extends InteractionCommand {
     }
 
     const embed = new MessageEmbed()
-      .setTitle('Sniff Sniff')
+      .setTitle(ctx.locale('commands:raiva.no-mention.embed_title'))
       .setColor(COLORS.ACTIONS)
       .setDescription(
         ctx.locale('commands:raiva.embed_description', {

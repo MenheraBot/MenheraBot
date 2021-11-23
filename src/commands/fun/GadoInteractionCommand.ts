@@ -20,7 +20,6 @@ export default class GadoInteractionCommand extends InteractionCommand {
       ],
       category: 'fun',
       cooldown: 5,
-      clientPermissions: ['ATTACH_FILES'],
     });
   }
 

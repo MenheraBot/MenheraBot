@@ -11,7 +11,6 @@ export default class GrumbleInteractionCommand extends InteractionCommand {
       description: '「😖」・Mostre para todos que tu ta resmungando. Humpf',
       category: 'actions',
       cooldown: 5,
-      clientPermissions: ['EMBED_LINKS'],
     });
   }
 

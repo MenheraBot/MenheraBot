@@ -1,5 +1,5 @@
 /* eslint-disable no-restricted-syntax */
-import MagicItems from '@structures/HuntMagicItems';
+import MagicItems from '@data/HuntMagicItems';
 import {
   CollectorFilter,
   MessageComponentInteraction,
@@ -9,16 +9,9 @@ import {
   MessageActionRowComponentResolvable,
   TextBasedChannels,
 } from 'discord.js-light';
-import { HuntingTypes, IReturnData, THuntMagicItemsFile } from './Types';
+import { IReturnData, TMagicItemsFile } from '@utils/Types';
 
-const MENTION_REGEX = /^(?:<@!?)?(\d{16,18})(?:>)?$/;
 export default class Util {
-  static getIdByMention(mention: string): string | null {
-    if (!mention) return null;
-    const regexResult = MENTION_REGEX.exec(mention);
-    return regexResult?.[1] ?? null;
-  }
-
   static capitalize(str: string): string {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
@@ -136,16 +129,16 @@ export const disableComponents = <T extends MessageButton | MessageSelectMenu>(
 export const actionRow = (components: MessageActionRowComponentResolvable[]): MessageActionRow =>
   new MessageActionRow({ components });
 
-export const getMagicItemById = <T extends THuntMagicItemsFile<HuntingTypes> | null>(
+export const getMagicItemById = <T extends TMagicItemsFile = TMagicItemsFile>(
   id: number,
-): T extends null ? IReturnData<THuntMagicItemsFile<HuntingTypes>> : IReturnData<T> =>
+): IReturnData<T> =>
   Object.entries(MagicItems)
     .filter((a) => Number(a[0]) === id)
     .map((a) => ({ id: Number(a[0]), data: a[1] }))[0];
 
-export const getMagicItemByCustomFilter = <T extends HuntingTypes>(
-  filter: (item: [string, THuntMagicItemsFile<HuntingTypes>]) => boolean,
-): IReturnData<THuntMagicItemsFile<T>> =>
+export const getMagicItemByCustomFilter = (
+  filter: (item: [string, TMagicItemsFile]) => boolean,
+): IReturnData<TMagicItemsFile> =>
   Object.entries(MagicItems)
     .filter(filter)
     .map((a) => ({ id: Number(a[0]), data: a[1] }))[0];
@@ -167,3 +160,6 @@ export const debugError = (err: Error): null => {
 };
 
 export const negate = (value: number): number => value * -1;
+
+// eslint-disable-next-line no-control-regex
+export const toWritableUTF = (str: string): string => str.replace(/[^\x00-\xFF]/g, '');

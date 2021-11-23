@@ -12,6 +12,7 @@ const guildSchema = new Schema({
   blockedChannels: { type: Array, default: [] },
   disabledCommands: { type: Array, default: [] },
   lang: { type: String, default: 'pt-BR' },
+  censored: { type: Boolean, default: false },
 });
 
 const userSchema = new Schema({
@@ -42,6 +43,7 @@ const userSchema = new Schema({
   inUseItems: { type: Array, default: [] },
   itemsLimit: { type: Number, default: 1 },
   lastCommandAt: { type: Number, default: 0 },
+  isBot: { type: Boolean, default: false },
 });
 
 export const Cmds = model<ICmdSchema>('Cmd', cmdSchema);

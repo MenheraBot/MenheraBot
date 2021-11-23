@@ -7,7 +7,6 @@ import {
 } from 'discord.js-light';
 import MenheraClient from 'MenheraClient';
 import InteractionCommandExecutor from '@structures/command/InteractionCommandExecutor';
-import { clientUnreadyString } from '@structures/Constants';
 import { debugError } from '@utils/Util';
 
 export default class InteractionCreate {
@@ -15,10 +14,6 @@ export default class InteractionCreate {
     interaction: Interaction & { client: MenheraClient; channel: TextChannel },
   ): Promise<void> {
     if (!interaction.isCommand() || !interaction.inGuild()) return;
-    if (!interaction.client.isReady())
-      return interaction
-        .reply({ content: clientUnreadyString, ephemeral: true })
-        .catch(() => undefined);
 
     if (!interaction.channel?.isText()) return;
 

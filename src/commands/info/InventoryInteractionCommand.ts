@@ -30,7 +30,6 @@ export default class InventoryInteractionCommand extends InteractionCommand {
         },
       ],
       cooldown: 7,
-      clientPermissions: ['EMBED_LINKS'],
       authorDataFields: ['selectedColor', 'inUseItems', 'inventory', 'id', 'itemsLimit'],
     });
   }

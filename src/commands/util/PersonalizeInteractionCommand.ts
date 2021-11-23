@@ -1,45 +1,71 @@
-import {
-  ColorResolvable,
-  MessageComponentInteraction,
-  MessageEmbed,
-  MessageButton,
-  SelectMenuInteraction,
-  MessageSelectMenu,
-} from 'discord.js-light';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { COLORS, emojis } from '@structures/Constants';
-import { actionRow, resolveCustomId } from '@utils/Util';
+import { actionRow, resolveCustomId, toWritableUTF } from '@utils/Util';
+import {
+  ColorResolvable,
+  MessageButton,
+  MessageComponentInteraction,
+  MessageEmbed,
+  MessageSelectMenu,
+  SelectMenuInteraction,
+} from 'discord.js-light';
 
-export default class ColorInteractionCommand extends InteractionCommand {
+export default class PersonalizeInteractionCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'cor',
-      description: '「🌈」・Muda a cor básica da sua conta',
-      category: 'info',
-      cooldown: 5,
-      clientPermissions: ['EMBED_LINKS'],
-      authorDataFields: ['selectedColor', 'colors'],
+      name: 'personalizar',
+      description: '「🎨」・Personalize o seu perfil para ficar a coisa mais linda do mundo!',
+      options: [
+        {
+          name: 'info',
+          description: '「💬」・Mude o seu sobremim (A mensagem que aparece em seu perfil)',
+          type: 'SUB_COMMAND',
+          options: [
+            {
+              type: 'STRING',
+              name: 'frase',
+              description: 'Frase para colocar em seu sobre mim. No máximo 200 caracteres',
+              required: true,
+            },
+          ],
+        },
+        {
+          name: 'cor',
+          description: '「🌈」・Muda a cor básica da sua conta',
+          type: 'SUB_COMMAND',
+        },
+      ],
+      category: 'util',
+      cooldown: 7,
+      authorDataFields: ['selectedColor', 'colors', 'info'],
     });
   }
 
-  static getEmojiFromColorName(color: string): string {
-    const colors: { [key: string]: string } = {
-      '0': '🇧🇷',
-      '1': '💜',
-      '2': '🔴',
-      '3': '🔵',
-      '4': '🟢',
-      '5': '💗',
-      '6': '🟡',
-    };
+  async run(ctx: InteractionCommandContext): Promise<void> {
+    const command = ctx.options.getSubcommand(true);
 
-    return colors[color] ?? '🌈';
+    if (command === 'info') PersonalizeInteractionCommand.AboutmeInteractionCommand(ctx);
+
+    if (command === 'cor') PersonalizeInteractionCommand.ColorInteractionCommand(ctx);
   }
 
-  async run(ctx: InteractionCommandContext): Promise<void> {
+  static async ColorInteractionCommand(ctx: InteractionCommandContext): Promise<void> {
     const haspadrao = ctx.data.user.colors.some((pc) => pc.cor === COLORS.Default);
 
+    const getEmojiFromColorName = (color: string): string => {
+      const colors: { [key: string]: string } = {
+        '0': '🇧🇷',
+        '1': '💜',
+        '2': '🔴',
+        '3': '🔵',
+        '4': '🟢',
+        '5': '💗',
+        '6': '🟡',
+      };
+
+      return colors[color] ?? '🌈';
+    };
     if (!haspadrao) {
       await ctx.client.repositories.userRepository.update(ctx.author.id, {
         $push: { colors: { nome: '0 - Padrão', cor: '#a788ff' } },
@@ -73,9 +99,7 @@ export default class ColorInteractionCommand extends InteractionCommand {
         label: ctx.data.user.colors[i].nome.replaceAll('*', ''),
         value: `${ctx.data.user.colors[i].cor}`,
         description: `${ctx.data.user.colors[i].cor}`,
-        emoji: ColorInteractionCommand.getEmojiFromColorName(
-          ctx.data.user.colors[i].nome.replace(/\D/g, ''),
-        ),
+        emoji: getEmojiFromColorName(ctx.data.user.colors[i].nome.replace(/\D/g, '')),
       });
     }
 
@@ -141,9 +165,7 @@ export default class ColorInteractionCommand extends InteractionCommand {
             label: ctx.data.user.colors[i].nome.replaceAll('*', ''),
             value: `${ctx.data.user.colors[i].cor}`,
             description: `${ctx.data.user.colors[i].cor}`,
-            emoji: ColorInteractionCommand.getEmojiFromColorName(
-              ctx.data.user.colors[i].nome.replace(/\D/g, ''),
-            ),
+            emoji: getEmojiFromColorName(ctx.data.user.colors[i].nome.replace(/\D/g, '')),
           });
         }
 
@@ -200,5 +222,23 @@ export default class ColorInteractionCommand extends InteractionCommand {
         }
       }
     });
+  }
+
+  static async AboutmeInteractionCommand(ctx: InteractionCommandContext): Promise<void> {
+    const info = ctx.options.getString('frase', true);
+
+    if (info.length > 200) {
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:sobremim.args-limit'),
+        ephemeral: true,
+      });
+      return;
+    }
+
+    await ctx.client.repositories.userRepository.update(ctx.author.id, {
+      info: toWritableUTF(info),
+    });
+
+    await ctx.makeMessage({ content: ctx.prettyResponse('success', 'commands:sobremim.success') });
   }
 }

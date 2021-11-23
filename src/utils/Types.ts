@@ -64,6 +64,7 @@ export interface IGuildSchema {
   blockedChannels: Array<string>;
   disabledCommands: Array<string>;
   lang: string;
+  censored: boolean;
 }
 
 export interface IMagicItem {
@@ -87,17 +88,18 @@ export interface IUserSchema {
   archangels: number;
   demigods: number;
   gods: number;
-  huntCooldown: number;
   rolls: number;
   estrelinhas: number;
   votes: number;
   badges: Array<IBadge>;
+  huntCooldown: number;
   voteCooldown: number;
   trisal: Array<string>;
   inventory: Array<IMagicItem>;
   inUseItems: Array<IMagicItem>;
   itemsLimit: number;
   lastCommandAt: number;
+  isBot: boolean;
 }
 
 export interface IInteractionCommandConfig extends ChatInputApplicationCommandData {
@@ -267,26 +269,24 @@ export interface HuntProbability {
   gods: HuntProbabiltyProps[];
 }
 
-export interface IProbablyBoostItem<HuntType extends HuntingTypes> {
-  type: 'PROBABILITY_BOOST';
-  huntType: HuntType;
-  probabilities: HuntProbability[HuntType];
+export interface IHuntProbablyBoostItem {
+  type: 'HUNT_PROBABILITY_BOOST';
+  huntType: HuntingTypes;
+  probabilities: HuntProbability[HuntingTypes];
   cost: number;
 }
 
 export type TMagicItemRarity = 'common' | 'rare' | 'epic' | 'legendary' | 'mythical' | 'divine';
 
-export interface IHuntCooldownBoostItem<HuntType extends HuntingTypes> {
-  type: 'COOLDOWN_REDUCTION';
-  huntType: HuntType;
+export interface IHuntCooldownBoostItem {
+  type: 'HUNT_COOLDOWN_REDUCTION';
+  huntType: HuntingTypes;
   huntCooldown: number;
   dropChance: number;
   rarity: TMagicItemRarity;
 }
 
-export type THuntMagicItemsFile<HuntType extends HuntingTypes> =
-  | IProbablyBoostItem<HuntType>
-  | IHuntCooldownBoostItem<HuntType>;
+export type TMagicItemsFile = IHuntProbablyBoostItem | IHuntCooldownBoostItem;
 
 export enum huntEnum {
   DEMON = 'demons',

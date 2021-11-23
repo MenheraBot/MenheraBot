@@ -29,7 +29,6 @@ export default class KissInteractionCommand extends InteractionCommand {
         },
       ],
       cooldown: 5,
-      clientPermissions: ['EMBED_LINKS'],
     });
   }
 

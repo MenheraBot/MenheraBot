@@ -129,8 +129,6 @@ export default class GiveInteractionCommand extends InteractionCommand {
       ctx.options.getInteger('valor', true),
     ];
 
-    if (toSendUser.bot) return GiveInteractionCommand.replyNoAccountError(ctx);
-
     if (toSendUser.id === ctx.author.id) return GiveInteractionCommand.replyForYourselfError(ctx);
 
     if (input < 1) return GiveInteractionCommand.replyInvalidValueError(ctx);
@@ -151,65 +149,67 @@ export default class GiveInteractionCommand extends InteractionCommand {
       return;
     }
 
-    const confirmButton = new MessageButton()
-      .setCustomId(`${ctx.interaction.id} | ACCEPT`)
-      .setStyle('SUCCESS')
-      .setLabel(ctx.locale('common:accept'));
+    if (!toSendUser.bot) {
+      const confirmButton = new MessageButton()
+        .setCustomId(`${ctx.interaction.id} | ACCEPT`)
+        .setStyle('SUCCESS')
+        .setLabel(ctx.locale('common:accept'));
 
-    const negateButton = new MessageButton()
-      .setCustomId(`${ctx.interaction.id} | NEGATE`)
-      .setStyle('DANGER')
-      .setLabel(ctx.locale('common:negate'));
+      const negateButton = new MessageButton()
+        .setCustomId(`${ctx.interaction.id} | NEGATE`)
+        .setStyle('DANGER')
+        .setLabel(ctx.locale('common:negate'));
 
-    ctx.client.economyExecutions.add(toSendUser.id);
+      ctx.client.economyExecutions.add(toSendUser.id);
 
-    await ctx.makeMessage({
-      content: ctx.prettyResponse('question', 'commands:give.confirm', {
-        user: toSendUser.toString(),
-        author: ctx.author.toString(),
-        count: input,
-        emoji: emojis[selectedOption],
-      }),
-      components: [{ type: 'ACTION_ROW', components: [confirmButton, negateButton] }],
-    });
-
-    const selectedButton = await Util.collectComponentInteractionWithStartingId(
-      ctx.channel,
-      toSendUser.id,
-      ctx.interaction.id,
-    );
-
-    ctx.client.economyExecutions.delete(toSendUser.id);
-
-    if (!selectedButton) {
-      ctx.makeMessage({
-        components: [
-          {
-            type: 'ACTION_ROW',
-            components: disableComponents(ctx.locale('common:timesup'), [
-              confirmButton,
-              negateButton,
-            ]),
-          },
-        ],
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('question', 'commands:give.confirm', {
+          user: toSendUser.toString(),
+          author: ctx.author.toString(),
+          count: input,
+          emoji: emojis[selectedOption],
+        }),
+        components: [{ type: 'ACTION_ROW', components: [confirmButton, negateButton] }],
       });
-      return;
-    }
 
-    if (resolveCustomId(selectedButton.customId) === 'NEGATE') {
-      ctx.makeMessage({
-        content: ctx.locale('commands:give.negated', { user: toSendUser.toString() }),
-        components: [
-          {
-            type: 'ACTION_ROW',
-            components: [
-              confirmButton.setDisabled(true).setStyle('SECONDARY'),
-              negateButton.setDisabled(true),
-            ],
-          },
-        ],
-      });
-      return;
+      const selectedButton = await Util.collectComponentInteractionWithStartingId(
+        ctx.channel,
+        toSendUser.id,
+        ctx.interaction.id,
+      );
+
+      ctx.client.economyExecutions.delete(toSendUser.id);
+
+      if (!selectedButton) {
+        ctx.makeMessage({
+          components: [
+            {
+              type: 'ACTION_ROW',
+              components: disableComponents(ctx.locale('common:timesup'), [
+                confirmButton,
+                negateButton,
+              ]),
+            },
+          ],
+        });
+        return;
+      }
+
+      if (resolveCustomId(selectedButton.customId) === 'NEGATE') {
+        ctx.makeMessage({
+          content: ctx.locale('commands:give.negated', { user: toSendUser.toString() }),
+          components: [
+            {
+              type: 'ACTION_ROW',
+              components: [
+                confirmButton.setDisabled(true).setStyle('SECONDARY'),
+                negateButton.setDisabled(true),
+              ],
+            },
+          ],
+        });
+        return;
+      }
     }
 
     if (input > ctx.data.user[selectedOption])

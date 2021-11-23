@@ -11,7 +11,6 @@ export default class DivorceInteractionCommand extends InteractionCommand {
       description: '「💔」・Divorcie de seu atual cônjuje',
       category: 'fun',
       cooldown: 8,
-      clientPermissions: ['EMBED_LINKS'],
       authorDataFields: ['married'],
     });
   }

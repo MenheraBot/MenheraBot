@@ -32,8 +32,7 @@ export default class TrisalInteractionCommand extends InteractionCommand {
       ],
       category: 'fun',
       cooldown: 5,
-      clientPermissions: ['EMBED_LINKS'],
-      authorDataFields: ['trisal'],
+      authorDataFields: ['trisal', 'selectedColor'],
     });
   }
 
@@ -84,11 +83,10 @@ export default class TrisalInteractionCommand extends InteractionCommand {
 
       const embed = new MessageEmbed()
         .setDescription(
-          `${ctx.locale('commands:trisal.embed.description')} ${
-            ctx.author
-          }, ${marryTwo}, ${marryThree}`,
+          `${ctx.author.toString()}, ${marryTwo.toString()}, ${marryThree.toString()}`,
         )
-        .setColor('#ac76f9')
+        .setTitle(ctx.locale('commands:trisal.title'))
+        .setColor(ctx.data.user.selectedColor)
         .setImage('attachment://trisal.png');
 
       await ctx.makeMessage({ embeds: [embed], files: [attachment] });

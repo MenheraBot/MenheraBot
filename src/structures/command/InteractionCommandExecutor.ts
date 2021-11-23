@@ -45,18 +45,6 @@ const InteractionCommandExecutor = async (
     return;
   }
 
-  if (
-    process.env.NODE_ENV === 'development' &&
-    !(interaction.member as GuildMember).roles.cache.has('852196704211042336')
-  ) {
-    interaction.reply({
-      content:
-        '<:negacao:759603958317711371> | VOCÊ NÃO POSSUI ACESSO AO BETA!\n Use `..beta` para receber acesso!',
-      ephemeral: true,
-    });
-    return;
-  }
-
   const command = client.slashCommands.get(interaction.commandName);
   if (!command) {
     interaction
@@ -110,10 +98,12 @@ const InteractionCommandExecutor = async (
     client.cooldowns.set(command.config.name, new Collection());
 
   const now = Date.now();
-  const timestamps = client.cooldowns.get(command.config.name) as Map<string, number>;
-  const cooldownAmount = (command.config.cooldown || 3) * 1000;
 
   if (now - interaction.createdTimestamp >= 3000) return;
+
+  const timestamps = client.cooldowns.get(command.config.name) as Map<string, number>;
+
+  const cooldownAmount = (command.config.cooldown || 3) * 1000;
 
   if (timestamps.has(interaction.user.id)) {
     const expirationTime = (timestamps.get(interaction.user.id) as number) + cooldownAmount;
@@ -134,6 +124,7 @@ const InteractionCommandExecutor = async (
   }
 
   timestamps.set(interaction.user.id, now);
+
   setTimeout(() => {
     timestamps.delete(interaction.user.id);
   }, cooldownAmount);
@@ -143,11 +134,14 @@ const InteractionCommandExecutor = async (
       interaction.member instanceof GuildMember
         ? interaction.member
         : await (await client.guilds.fetch(interaction.guildId)).members.fetch(interaction.user.id);
+
     const missing = interaction.channel
       ?.permissionsFor(member)
       ?.missing(command.config.userPermissions);
+
     if (missing?.length) {
       const perm = missing.map((value) => t(`permissions:${value}`)).join(', ');
+
       await interaction
         .reply({
           content: `<:negacao:759603958317711371> | ${t('permissions:USER_MISSING_PERMISSION', {
@@ -164,9 +158,11 @@ const InteractionCommandExecutor = async (
     const clientMember = interaction.guild?.members.cache.get(
       client.user?.id as string,
     ) as GuildMember;
+
     const missing = interaction.channel
       ?.permissionsFor(clientMember)
       ?.missing(command.config.clientPermissions);
+
     if (missing?.length) {
       const perm = missing.map((value) => t(`permissions:${value}`)).join(', ');
       await interaction
@@ -255,6 +251,7 @@ const InteractionCommandExecutor = async (
     });
 
   if (!interaction.guild || process.env.NODE_ENV === 'development') return;
+
   const data: ICommandUsedData = {
     authorId: interaction.user.id,
     guildId: interaction.guild.id,

@@ -2,8 +2,11 @@ import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import HttpRequests from '@utils/HTTPrequests';
 import moment from 'moment';
-import { MessageEmbed } from 'discord.js-light';
+import { MessageEmbed, Client, MessageButton } from 'discord.js-light';
 import { COLORS, emojis } from '@structures/Constants';
+import Util, { actionRow, disableComponents } from '@utils/Util';
+import { Console } from 'node:console';
+import { Transform } from 'node:stream';
 
 export default class StatsInteractionCommand extends InteractionCommand {
   constructor() {
@@ -58,27 +61,26 @@ export default class StatsInteractionCommand extends InteractionCommand {
       ],
       category: 'info',
       cooldown: 7,
-      clientPermissions: ['EMBED_LINKS'],
       authorDataFields: ['selectedColor'],
     });
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    const type = ctx.options.getSubcommand();
+    const command = ctx.options.getSubcommand();
 
-    switch (type) {
+    switch (command) {
       case 'cacar':
-        return StatsInteractionCommand.hunt(ctx);
+        return StatsInteractionCommand.HuntStatus(ctx);
       case 'coinflip':
-        return StatsInteractionCommand.coinflip(ctx);
+        return StatsInteractionCommand.CoinflipStatus(ctx);
       case 'blackjack':
-        return StatsInteractionCommand.blackjack(ctx);
+        return StatsInteractionCommand.BlackjackStatus(ctx);
       case 'menhera':
-        return StatsInteractionCommand.menhera(ctx);
+        return StatsInteractionCommand.MenheraStatus(ctx);
     }
   }
 
-  static async hunt(ctx: InteractionCommandContext): Promise<void> {
+  static async HuntStatus(ctx: InteractionCommandContext): Promise<void> {
     const user = ctx.options.getUser('user') ?? ctx.author;
 
     const data = await HttpRequests.getHuntUserStats(user.id);
@@ -99,6 +101,9 @@ export default class StatsInteractionCommand extends InteractionCommand {
       return;
     }
 
+    const calculateSuccess = (sucesses: number, tries: number): string =>
+      sucesses === 0 ? '0' : ((sucesses / tries) * 100).toFixed(1).replace('.0', '');
+
     const embed = new MessageEmbed()
       .setTitle(ctx.locale('commands:status.hunt.embed-title', { user: user.tag }))
       .setColor(ctx.data.user.selectedColor)
@@ -107,10 +112,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
           name: `${emojis.demons} | ${ctx.locale('commands:status.hunt.demon')}`,
           value: `${ctx.locale('commands:status.hunt.display-data', {
             tries: data.demon_tries,
-            success:
-              data.demon_success === 0
-                ? '0'
-                : ((data.demon_success / data.demon_tries) * 100).toFixed(1).replace('.0', ''),
+            success: calculateSuccess(data.demon_success, data.demon_tries),
             hunted: data.demon_hunted,
           })}`,
           inline: true,
@@ -119,10 +121,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
           name: `${emojis.giants} | ${ctx.locale('commands:status.hunt.giant')}`,
           value: `${ctx.locale('commands:status.hunt.display-data', {
             tries: data.giant_tries,
-            success:
-              data.giant_success === 0
-                ? '0'
-                : ((data.giant_success / data.giant_tries) * 100).toFixed(1).replace('.0', ''),
+            success: calculateSuccess(data.giant_success, data.giant_tries),
             hunted: data.giant_hunted,
           })}`,
           inline: true,
@@ -131,11 +130,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
           name: `${emojis.angels} | ${ctx.locale('commands:status.hunt.angel')}`,
           value: `${ctx.locale('commands:status.hunt.display-data', {
             tries: data.angel_tries,
-            success:
-              data.angel_success === 0
-                ? '0'
-                : ((data.angel_success / data.angel_tries) * 100).toFixed(1).replace('.0', ''),
-            hunted: data.angel_hunted,
+            success: calculateSuccess(data.angel_success, data.angel_tries),
           })}`,
           inline: true,
         },
@@ -143,12 +138,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
           name: `${emojis.archangels} | ${ctx.locale('commands:status.hunt.archangel')}`,
           value: `${ctx.locale('commands:status.hunt.display-data', {
             tries: data.archangel_tries,
-            success:
-              data.archangel_success === 0
-                ? '0'
-                : ((data.archangel_success / data.archangel_tries) * 100)
-                    .toFixed(1)
-                    .replace('.0', ''),
+            success: calculateSuccess(data.archangel_success, data.archangel_tries),
             hunted: data.archangel_hunted,
           })}`,
           inline: true,
@@ -157,10 +147,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
           name: `${emojis.demigods} | ${ctx.locale('commands:status.hunt.demigod')}`,
           value: `${ctx.locale('commands:status.hunt.display-data', {
             tries: data.demigod_tries,
-            success:
-              data.demigod_success === 0
-                ? '0'
-                : ((data.demigod_success / data.demigod_tries) * 100).toFixed(1).replace('.0', ''),
+            success: calculateSuccess(data.demigod_success, data.demigod_tries),
             hunted: data.demigod_hunted,
           })}`,
           inline: true,
@@ -169,10 +156,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
           name: `${emojis.gods} | ${ctx.locale('commands:status.hunt.god')}`,
           value: `${ctx.locale('commands:status.hunt.display-data', {
             tries: data.god_tries,
-            success:
-              data.god_success === 0
-                ? '0'
-                : ((data.god_success / data.god_tries) * 100).toFixed(1).replace('.0', ''),
+            success: calculateSuccess(data.god_success, data.god_tries),
             hunted: data.god_hunted,
           })}`,
           inline: true,
@@ -182,12 +166,11 @@ export default class StatsInteractionCommand extends InteractionCommand {
     await ctx.makeMessage({ embeds: [embed] });
   }
 
-  static async menhera(ctx: InteractionCommandContext): Promise<void> {
-    const owner = await ctx.client.users.fetch(process.env.OWNER as string);
-    if (ctx.data.server.lang === 'pt-BR') {
-      moment.locale('pt-br');
-    } else moment.locale('en-us');
+  static async MenheraStatus(ctx: InteractionCommandContext): Promise<void> {
     if (!ctx.client.shard) return;
+    const owner = await ctx.client.users.fetch(process.env.OWNER as string);
+
+    moment.locale(ctx.data.server.lang.toLowerCase());
 
     if (!(await ctx.client.isShardingProcessEnded())) {
       ctx.makeMessage({
@@ -196,18 +179,30 @@ export default class StatsInteractionCommand extends InteractionCommand {
       return;
     }
 
-    const promises = [
-      ctx.client.shard.fetchClientValues('guilds.cache.size'),
-      ctx.client.shard.broadcastEval(() => process.memoryUsage().heapUsed),
-    ];
+    const results = await ctx.client.shard
+      .broadcastEval((c: Client<true>) => {
+        const guilds = c.guilds.cache.size;
+        const memoryUsed = process.memoryUsage().heapUsed;
 
-    const getReduced = (arr: number[]) => arr.reduce((p, c) => p + c, 0);
+        return { guilds, memoryUsed };
+      })
+      .then((res) =>
+        res.reduce(
+          (p, c) => {
+            p.guilds += c.guilds;
+            p.memoryUsed += c.memoryUsed;
 
-    const [AllGuilds, AllMemoryUsed] = (await Promise.all(promises)) as number[][];
+            return p;
+          },
+          { guilds: 0, memoryUsed: 0 },
+        ),
+      );
 
     const embed = new MessageEmbed()
       .setColor('#fa8dd7')
       .setThumbnail('https://i.imgur.com/b5y0nd4.png')
+      .setTitle(ctx.locale('commands:suporte.embed_title'))
+      .setURL('https://discord.gg/fZMdQbA')
       .setDescription(
         ctx.locale('commands:status.botinfo.embed_description', {
           name: ctx.client.user?.username,
@@ -227,7 +222,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
       .addFields([
         {
           name: '🌐 | Servers | 🌐',
-          value: `\`\`\`${getReduced(AllGuilds)}\`\`\``,
+          value: `\`\`\`${results.guilds}\`\`\``,
           inline: true,
         },
         {
@@ -241,14 +236,113 @@ export default class StatsInteractionCommand extends InteractionCommand {
           name: `<:memoryram:762817135394553876> | ${ctx.locale(
             'commands:status.botinfo.memory',
           )} | <:memoryram:762817135394553876>`,
-          value: `\`\`\`${(getReduced(AllMemoryUsed) / 1024 / 1024).toFixed(2)}MB\`\`\``,
+          value: `\`\`\`${(results.memoryUsed / 1024 / 1024).toFixed(2)}MB\`\`\``,
           inline: true,
         },
+        {
+          name: `🇧🇷 | ${ctx.locale('commands:status.botinfo.version')} | 🇧🇷`,
+          value: `\`\`\`${process.env.VERSION as string}\`\`\``,
+          inline: true,
+        },
+        {
+          name: '🏓 | Ping | 🏓',
+          value: `📡 | ${ctx.locale('commands:ping.api')} **${
+            Date.now() - ctx.interaction.createdTimestamp
+          }ms**\n📡 | ${ctx.locale('commands:ping.latency')} **${Math.round(
+            ctx.client.ws.ping,
+          )}ms**\n🖲️ | Shard: **${ctx.client.shard.ids}** / **${ctx.client.shard.count - 1}**`,
+          inline: false,
+        },
       ]);
-    await ctx.makeMessage({ embeds: [embed] });
+
+    const button = new MessageButton()
+      .setCustomId(`${ctx.interaction.id} | EXTENDED`)
+      .setStyle('SECONDARY')
+      .setLabel(ctx.locale('commands:status.botinfo.extended'));
+
+    await ctx.makeMessage({ embeds: [embed], components: [actionRow([button])] });
+
+    const clicked = await Util.collectComponentInteractionWithStartingId(
+      ctx.channel,
+      ctx.author.id,
+      ctx.interaction.id,
+      15000,
+    );
+
+    if (!clicked) {
+      ctx.makeMessage({
+        components: [actionRow(disableComponents(ctx.locale('common:timesup'), [button]))],
+      });
+      return;
+    }
+
+    const extendedShardsInfo = await ctx.client.shard.broadcastEval((c: Client<true>) => {
+      const { ping, status } = c.ws;
+      const { uptime } = c.ws.client;
+      const guilds = c.guilds.cache.size;
+      const memoryUsed = process.memoryUsage().heapUsed;
+
+      return { ping, status, uptime, guilds, memoryUsed };
+    });
+
+    const tabled = extendedShardsInfo.reduce(
+      (
+        p: Array<{
+          Ping: string;
+          Status: string;
+          Uptime: string;
+          Ram: string;
+          Guilds: number;
+        }>,
+        c,
+      ) => {
+        const conninfo = {
+          0: 'READY',
+          1: 'CONNECTING',
+          2: 'RECONNECTING',
+          3: 'IDLE',
+          4: 'NEARLY',
+          5: 'DISCONNECTED',
+          6: 'WAITING_FOR_GUILDS',
+          7: 'IDENTIFYING',
+          8: 'RESUMING',
+        };
+        p.push({
+          Ping: `${c.ping}ms`,
+          Status: conninfo[c.status as keyof typeof conninfo],
+          Uptime: moment.duration(c.uptime).format('D[d], H[h], m[m], s[s]'),
+          Ram: `${(c.memoryUsed / 1024 / 1024).toFixed(2)} MB`,
+          Guilds: c.guilds,
+        });
+        return p;
+      },
+      [],
+    );
+
+    const ts = new Transform({
+      transform(chunk, _, cb) {
+        cb(null, chunk);
+      },
+    });
+    const logger = new Console({ stdout: ts });
+
+    const getTable = (data: typeof tabled) => {
+      logger.table(data);
+      return (ts.read() || '').toString();
+    };
+
+    const stringTable = getTable(tabled);
+    await ctx.makeMessage({
+      content: `\`\`\`${stringTable
+        .replace('(index)', ' Shard ')
+        .replace(/'/g, ' ')
+        .slice(0, 1992)}\`\`\``,
+      embeds: [],
+      components: [],
+    });
   }
 
-  static async blackjack(ctx: InteractionCommandContext): Promise<void> {
+  static async BlackjackStatus(ctx: InteractionCommandContext): Promise<void> {
     const user = ctx.options.getUser('user') ?? ctx.author;
 
     const data = await HttpRequests.getBlackJackStats(user.id);
@@ -318,7 +412,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
     await ctx.makeMessage({ embeds: [embed] });
   }
 
-  static async coinflip(ctx: InteractionCommandContext): Promise<void> {
+  static async CoinflipStatus(ctx: InteractionCommandContext): Promise<void> {
     const user = ctx.options.getUser('user') ?? ctx.author;
 
     const data = await HttpRequests.getCoinflipUserStats(user.id);

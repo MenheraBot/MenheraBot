@@ -35,7 +35,6 @@ export default class ManageStartSlashInteractionCommand extends InteractionComma
       defaultPermission: false,
       devsOnly: true,
       cooldown: 5,
-      clientPermissions: ['EMBED_LINKS'],
     });
   }
 

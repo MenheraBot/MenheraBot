@@ -20,22 +20,11 @@ export default class MamarInteractionCommand extends InteractionCommand {
         },
       ],
       cooldown: 5,
-      clientPermissions: ['EMBED_LINKS'],
     });
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const mention = ctx.options.getUser('user', true);
-
-    if (mention.bot) {
-      await ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'commands:mamar.bot', {
-          author: ctx.author.toString(),
-          mention: mention.toString(),
-        }),
-      });
-      return;
-    }
 
     if (mention.id === ctx.author.id) {
       await ctx.makeMessage({

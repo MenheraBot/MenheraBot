@@ -1,7 +1,7 @@
 /* eslint-disable no-await-in-loop */
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { MessageEmbed, ColorResolvable } from 'discord.js-light';
+import { MessageEmbed, ColorResolvable, LimitedCollection, User } from 'discord.js-light';
 import HttpRequests from '@utils/HTTPrequests';
 import Util, { debugError } from '@utils/Util';
 import { COLORS, emojis } from '@structures/Constants';
@@ -88,7 +88,6 @@ export default class TopInteractionCommand extends InteractionCommand {
         },
       ],
       cooldown: 5,
-      clientPermissions: ['EMBED_LINKS'],
     });
   }
 
@@ -276,6 +275,9 @@ export default class TopInteractionCommand extends InteractionCommand {
       const member = await ctx.client.users.fetch(res[i].id).catch(debugError);
       const memberName = member?.username ?? res[i].id;
 
+      if (member)
+        (ctx.client.users.cache as LimitedCollection<string, User>).forceSet(member.id, member);
+
       if (memberName.startsWith('Deleted User'))
         ctx.client.repositories.cacheRepository.addDeletedAccount(res[i].id);
 
@@ -287,10 +289,12 @@ export default class TopInteractionCommand extends InteractionCommand {
 
   static async topUsers(ctx: InteractionCommandContext): Promise<void> {
     const res = await HttpRequests.getTopUsers();
+
     if (!res) {
       ctx.defer({ content: `${emojis.error} |  ${ctx.locale('commands:http-error')}` });
       return;
     }
+
     const embed = new MessageEmbed()
 
       .setTitle(`<:MenheraSmile2:767210250364780554> |  ${ctx.locale('commands:top.users')}`)
@@ -298,6 +302,10 @@ export default class TopInteractionCommand extends InteractionCommand {
 
     for (let i = 0; i < res.length; i++) {
       const member = await ctx.client.users.fetch(res[i].id).catch(debugError);
+
+      if (member)
+        (ctx.client.users.cache as LimitedCollection<string, User>).forceSet(member.id, member);
+
       embed.addField(
         `**${i + 1} -** ${Util.capitalize(member?.username ?? '404')} `,
         `${ctx.locale('commands:top.use')} **${res[i].uses}** ${ctx.locale('commands:top.times')}`,

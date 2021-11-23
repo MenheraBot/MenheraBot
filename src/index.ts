@@ -1,4 +1,4 @@
-import { Options, SnowflakeUtil, Channel } from 'discord.js-light';
+import { Options, SnowflakeUtil, Channel, Role, User } from 'discord.js-light';
 import { resolve } from 'node:path';
 import MenheraClient from './MenheraClient';
 
@@ -7,12 +7,19 @@ const channelFilter = (channel: Channel) =>
   !channel.lastMessageId ||
   SnowflakeUtil.deconstruct(channel.lastMessageId).timestamp < Date.now() - 3600000;
 
+const permissionFilter = (role: Role) => !role.permissions.any(['MANAGE_WEBHOOKS', 'MANAGE_GUILD']);
+
+const userFilter = (user: User) => user.id !== user.client.user?.id;
+
 const client = new MenheraClient(
   {
     makeCache: Options.cacheWithLimits({
       GuildManager: Infinity,
-      RoleManager: Infinity,
-      PermissionOverwriteManager: Infinity,
+      RoleManager: {
+        maxSize: Infinity,
+        sweepFilter: () => permissionFilter,
+        sweepInterval: 3600,
+      },
       ChannelManager: {
         maxSize: 0,
         sweepFilter: () => channelFilter,
@@ -23,6 +30,12 @@ const client = new MenheraClient(
         sweepFilter: () => channelFilter,
         sweepInterval: 3600,
       },
+      UserManager: {
+        maxSize: 0,
+        sweepFilter: () => userFilter,
+        sweepInterval: 3600,
+      },
+      PermissionOverwriteManager: Infinity,
       ApplicationCommandManager: 0,
       BaseGuildEmojiManager: 0,
       GuildBanManager: 0,
@@ -36,7 +49,6 @@ const client = new MenheraClient(
       StageInstanceManager: 0,
       ThreadManager: 0,
       ThreadMemberManager: 0,
-      UserManager: 0,
       VoiceStateManager: 0,
     }),
     failIfNotExists: false,
