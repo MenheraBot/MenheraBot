@@ -1,6 +1,6 @@
 {
   "name": "menhera-bot",
-  "version": "3.5.1-HOTFIX-a",
+  "version": "3.5.1-HOTFIX-b",
   "engines": {
     "node": ">=16.6.0"
   },

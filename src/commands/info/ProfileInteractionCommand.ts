@@ -30,8 +30,6 @@ export default class ProfileInteractionCommand extends InteractionCommand {
         'marriedDate',
         'mamado',
         'mamou',
-        'ban',
-        'banReason',
       ],
     });
   }
@@ -122,10 +120,6 @@ export default class ProfileInteractionCommand extends InteractionCommand {
     }
 
     await ctx.makeMessage({
-      content:
-        user.ban && ctx.author.id === process.env.OWNER
-          ? ctx.prettyResponse('error', 'commands:perfil.banned', { reason: user.banReason })
-          : '',
       files: [new MessageAttachment(res.data, 'profile.png')],
     });
   }
