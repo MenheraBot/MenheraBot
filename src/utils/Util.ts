@@ -10,6 +10,7 @@ import {
   TextBasedChannels,
 } from 'discord.js-light';
 import { IReturnData, TMagicItemsFile } from '@utils/Types';
+import * as Sentry from '@sentry/node';
 
 export default class Util {
   static capitalize(str: string): string {
@@ -156,6 +157,7 @@ export const getMillisecondsToTheEndOfDay = (): number => {
 
 export const debugError = (err: Error): null => {
   if (process.env.NODE_ENV === 'development') console.error(err.message);
+  Sentry.captureException(err);
   return null;
 };
 
