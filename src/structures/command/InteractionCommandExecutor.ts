@@ -130,14 +130,7 @@ const InteractionCommandExecutor = async (
   }, cooldownAmount);
 
   if (command.config.userPermissions) {
-    const member =
-      interaction.member instanceof GuildMember
-        ? interaction.member
-        : await client.guilds.forge(interaction.guildId).members.fetch(interaction.user.id);
-
-    const missing = interaction.channel
-      ?.permissionsFor(member)
-      ?.missing(command.config.userPermissions);
+    const missing = interaction.memberPermissions?.missing(command.config.userPermissions);
 
     if (missing?.length) {
       const perm = missing.map((value) => t(`permissions:${value}`)).join(', ');
@@ -145,29 +138,6 @@ const InteractionCommandExecutor = async (
       await interaction
         .reply({
           content: `<:negacao:759603958317711371> | ${t('permissions:USER_MISSING_PERMISSION', {
-            perm,
-          })}`,
-          ephemeral: true,
-        })
-        .catch(debugError);
-      return;
-    }
-  }
-
-  if (command.config.clientPermissions) {
-    const clientMember = interaction.guild?.members.cache.get(
-      client.user?.id as string,
-    ) as GuildMember;
-
-    const missing = interaction.channel
-      ?.permissionsFor(clientMember)
-      ?.missing(command.config.clientPermissions);
-
-    if (missing?.length) {
-      const perm = missing.map((value) => t(`permissions:${value}`)).join(', ');
-      await interaction
-        .reply({
-          content: `<:negacao:759603958317711371> | ${t('permissions:CLIENT_MISSING_PERMISSION', {
             perm,
           })}`,
           ephemeral: true,
