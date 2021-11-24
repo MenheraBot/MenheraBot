@@ -13,7 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ### Fixed
 
-- Casais fecham 100% no ship
+- Casais não davam 100% no ship
+- Cartas do BlackJack não estavam sendo renderizadas corretamente
 
 ## [3.5.1] 2021-11-22
 
