@@ -174,8 +174,6 @@ export default class ConfigInteractionCommand extends InteractionCommand {
 
     ctx.data.server.lang = lang;
 
-    console.log(lang, ctx.data.server, ctx.data.server.lang);
-
     await ctx.client.repositories.cacheRepository.updateGuild(
       ctx.interaction.guild?.id as string,
       ctx.data.server,
