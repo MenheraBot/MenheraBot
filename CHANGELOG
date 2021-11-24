@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 - Fetches desnecessários foram mudados para forge para fazer requests à API
 
+### Fixed
+
+- Casais fecham 100% no ship
+
 ## [3.5.1] 2021-11-22
 
 ### Added
