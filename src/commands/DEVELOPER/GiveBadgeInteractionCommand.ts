@@ -23,7 +23,7 @@ export default class GiveBadgeSlashInteractionCommand extends InteractionCommand
       ],
       defaultPermission: false,
       devsOnly: true,
-      cooldown: 5,
+      cooldown: 1,
     });
   }
 

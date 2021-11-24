@@ -22,6 +22,7 @@ export default class ShipInteractionCommand extends InteractionCommand {
           required: false,
         },
       ],
+      authorDataFields: ['married'],
       category: 'fun',
       cooldown: 5,
     });
@@ -79,14 +80,14 @@ export default class ShipInteractionCommand extends InteractionCommand {
         })
       : await HttpRequests.shipRequest(avatarLinkOne, avatarLinkTwo, value);
 
-    const guild =
-      ctx.interaction.guild ?? (await ctx.client.guilds.fetch(ctx.interaction.guildId ?? ''));
+    const guild = ctx.interaction.guild ?? ctx.client.guilds.forge(ctx.interaction.guildId);
 
     const member1 = await guild.members.fetch(user1.id).catch(() => null);
     const member2 = await guild.members.fetch(user2.id).catch(() => null);
 
     const name1 = member1?.nickname ?? user1.username;
     const name2 = member2?.nickname ?? user2.username;
+
     const mix = `${
       name1.substring(0, name1.length / 2) + name2.substring(name2.length / 2, name2.length)
     }`.replace(' ', '');
@@ -114,6 +115,7 @@ export default class ShipInteractionCommand extends InteractionCommand {
             'commands:ship.low',
           )}`,
         );
+
     if (value >= 50)
       embed
         .setColor('#d8937b')
@@ -122,6 +124,7 @@ export default class ShipInteractionCommand extends InteractionCommand {
             'commands:ship.ok',
           )}`,
         );
+
     if (value >= 75)
       embed
         .setColor('#f34a4a')
@@ -130,6 +133,7 @@ export default class ShipInteractionCommand extends InteractionCommand {
             'commands:ship.medium',
           )}`,
         );
+
     if (value >= 99)
       embed
         .setColor('#ec2c2c')
@@ -138,6 +142,7 @@ export default class ShipInteractionCommand extends InteractionCommand {
             'commands:ship.high',
           )}`,
         );
+
     if (value === 100)
       embed
         .setColor('#ff00df')

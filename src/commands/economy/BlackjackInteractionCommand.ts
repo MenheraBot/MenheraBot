@@ -9,8 +9,8 @@ import Util, { resolveCustomId } from '@utils/Util';
 
 const CalculateHandValue = (cards: Array<number>): Array<IBlackjackCards> =>
   cards.reduce((p: Array<IBlackjackCards>, c: number) => {
-    const multiplier = Math.floor(c / 13);
-    const newC = c - (multiplier * 13 - 1);
+    const multiplier = Math.floor(c / 14);
+    const newC = c - multiplier * 13;
 
     p.push({
       value: newC > 10 ? 10 : newC,
@@ -47,6 +47,8 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
     usrCards: Array<number>,
     deckCards: Array<number>,
   ): Promise<void> {
+    console.log(usrCards, dealerCards);
+
     if (usrCards.length === 2) {
       const oldUserCards = CalculateHandValue(usrCards);
       const oldUserTotal = BlackjackInteractionCommand.checkHandFinalValue(oldUserCards);

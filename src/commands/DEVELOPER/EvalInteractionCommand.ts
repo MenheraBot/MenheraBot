@@ -19,7 +19,7 @@ export default class EvalSlashInteractionCommand extends InteractionCommand {
       ],
       defaultPermission: false,
       devsOnly: true,
-      cooldown: 5,
+      cooldown: 1,
     });
   }
 

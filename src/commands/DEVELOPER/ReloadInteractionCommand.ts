@@ -18,7 +18,7 @@ export default class ReloadSlashInteractionCommand extends InteractionCommand {
       ],
       defaultPermission: false,
       devsOnly: true,
-      cooldown: 5,
+      cooldown: 1,
     });
   }
 
