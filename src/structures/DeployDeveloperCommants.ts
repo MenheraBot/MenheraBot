@@ -16,9 +16,7 @@ export default async (client: MenheraClient): Promise<void> => {
     return p;
   }, []);
 
-  const res = await client.guilds
-    .fetch('717061688460967988')
-    .then((guild) => guild.commands.set(allCommands));
+  const res = await client.guilds.forge('717061688460967988').commands.set(allCommands);
 
   res.forEach((a) => {
     if (permissionSet.includes(a.name)) {

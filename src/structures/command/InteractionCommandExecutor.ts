@@ -133,7 +133,7 @@ const InteractionCommandExecutor = async (
     const member =
       interaction.member instanceof GuildMember
         ? interaction.member
-        : await (await client.guilds.fetch(interaction.guildId)).members.fetch(interaction.user.id);
+        : await client.guilds.forge(interaction.guildId).members.fetch(interaction.user.id);
 
     const missing = interaction.channel
       ?.permissionsFor(member)
