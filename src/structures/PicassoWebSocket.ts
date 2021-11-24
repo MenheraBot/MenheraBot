@@ -29,7 +29,7 @@ export default class PicassoWebSocket {
   private onError(err: Error): void {
     this.ruuningError = true;
     this.isAlive = false;
-    if (this.retries >= 5) {
+    if (this.retries >= 2) {
       console.log(`[WEBSOCKET] Client ${this.shardId} stopped... it won't reconnect anymore`);
       if (this.ws) this.ws.removeAllListeners();
       return;
