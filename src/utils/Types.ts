@@ -299,22 +299,27 @@ export interface IHuntProbablyBoostItem {
 
 export type TItemRarity = 'common' | 'rare' | 'epic' | 'legendary' | 'mythical' | 'divine';
 
-export interface IThemeFileBase<ThemeType extends AvailableThemeTypes = AvailableThemeTypes> {
+export interface IBaseTheme {
   price: number;
   rarity: TItemRarity;
   isBuyable: boolean;
-  type: ThemeType;
-  theme: ThemeType extends 'profile'
-    ? AvailableProfilesThemes
-    : ThemeType extends 'cards'
-    ? AvailableCardThemes
-    : AvailableTableThemes;
 }
 
-export type ThemeFiles =
-  | IThemeFileBase<'profile'>
-  | IThemeFileBase<'cards'>
-  | IThemeFileBase<'table'>;
+export interface IProfileTheme extends IBaseTheme {
+  type: 'profile';
+  theme: AvailableProfilesThemes;
+}
+
+export interface ICardsTheme extends IBaseTheme {
+  type: 'cards';
+  theme: AvailableCardThemes;
+}
+export interface ITableTheme extends IBaseTheme {
+  type: 'table';
+  theme: AvailableTableThemes;
+}
+
+export type ThemeFiles = IProfileTheme | ICardsTheme | ITableTheme;
 
 export interface IHuntCooldownBoostItem {
   type: 'HUNT_COOLDOWN_REDUCTION';

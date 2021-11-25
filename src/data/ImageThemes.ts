@@ -5,8 +5,8 @@ const ImageThemes: { [id: number]: ThemeFiles } = {
     isBuyable: true,
     price: 350_000,
     rarity: 'common',
-    theme: 'blue',
     type: 'table',
+    theme: 'blue',
   },
 };
 
