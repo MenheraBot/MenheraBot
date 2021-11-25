@@ -38,6 +38,7 @@ export default class ProfileInteractionCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const member = ctx.options.getUser('user') ?? ctx.author;
+
     const user =
       member.id !== ctx.author.id
         ? await ctx.client.repositories.userRepository.find(member.id, [
@@ -87,8 +88,8 @@ export default class ProfileInteractionCommand extends InteractionCommand {
       avatar,
       votos: user.votes,
       nota: user.info,
-      tag: member.tag,
-      flagsArray: member.flags?.toArray() ?? ['NONE'],
+      tag: toWritableUTF(member.tag),
+      flagsArray: member.flags?.toArray() ?? [],
       casado: user.married,
       voteCooldown: user.voteCooldown as number,
       badges: user.badges,

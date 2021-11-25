@@ -3,13 +3,7 @@ import { languageByLocale } from '@structures/Constants';
 import HttpRequests from '@utils/HTTPrequests';
 import { ICommandUsedData } from '@utils/Types';
 import { debugError } from '@utils/Util';
-import {
-  CommandInteraction,
-  GuildMember,
-  TextChannel,
-  MessageEmbed,
-  Collection,
-} from 'discord.js-light';
+import { CommandInteraction, TextChannel, MessageEmbed, Collection } from 'discord.js-light';
 import i18next from 'i18next';
 import MenheraClient from 'MenheraClient';
 import InteractionCommandContext from './InteractionContext';
@@ -60,7 +54,7 @@ const InteractionCommandExecutor = async (
 
   if (
     server.blockedChannels?.includes(interaction.channelId) &&
-    !(interaction.member as GuildMember).permissions.has('MANAGE_CHANNELS')
+    !interaction.memberPermissions?.has('MANAGE_CHANNELS')
   ) {
     interaction
       .reply({ content: `🔒 | ${t('events:blocked-channel')}`, ephemeral: true })
