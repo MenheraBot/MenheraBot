@@ -47,8 +47,6 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
     usrCards: Array<number>,
     deckCards: Array<number>,
   ): Promise<void> {
-    console.log(usrCards, dealerCards);
-
     if (usrCards.length === 2) {
       const oldUserCards = CalculateHandValue(usrCards);
       const oldUserTotal = BlackjackInteractionCommand.checkHandFinalValue(oldUserCards);

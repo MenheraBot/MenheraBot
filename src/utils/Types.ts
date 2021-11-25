@@ -106,14 +106,19 @@ export type AvailableCardThemes = 'default';
 export type AvailableTableThemes = 'green' | 'blue';
 export type AvailableProfiles = 'default' | 'upsidedown';
 
+export interface IUserBuyableData {
+  id: number;
+  buyAt: number;
+}
+
 export interface IUserPreferencesSchema {
   readonly id: string;
-  cardsThemes: Array<AvailableCardThemes>;
-  tableThemes: Array<AvailableTableThemes>;
-  profileTheme: Array<AvailableProfiles>;
-  selectedCardTheme: AvailableCardThemes;
-  selectedTableTheme: AvailableTableThemes;
-  selectedProfileTheme: AvailableProfiles;
+  cardsThemes: Array<IUserBuyableData>;
+  tableThemes: Array<IUserBuyableData>;
+  profileTheme: Array<IUserBuyableData>;
+  selectedCardTheme: number;
+  selectedTableTheme: number;
+  selectedProfileTheme: number;
 }
 
 export interface IInteractionCommandConfig extends ChatInputApplicationCommandData {
