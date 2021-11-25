@@ -57,7 +57,7 @@ export default class KissInteractionCommand extends InteractionCommand {
     const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     const embed = new MessageEmbed()
-      .setTitle(ctx.locale('commands:rir.embed_title'))
+      .setTitle(ctx.locale('commands:beijar.embed_title'))
       .setColor(COLORS.ACTIONS)
       .setDescription(
         ctx.locale(`commands:beijar.embed_description_${ctx.options.getString('local') as '1'}`, {
