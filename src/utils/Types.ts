@@ -104,7 +104,9 @@ export interface IUserSchema {
 
 export type AvailableCardThemes = 'default';
 export type AvailableTableThemes = 'green' | 'blue';
-export type AvailableProfiles = 'default' | 'upsidedown';
+export type AvailableProfilesThemes = 'default' | 'upsidedown';
+
+export type AvailableThemeTypes = 'profile' | 'cards' | 'table';
 
 export interface IUserBuyableData {
   id: number;
@@ -295,14 +297,31 @@ export interface IHuntProbablyBoostItem {
   cost: number;
 }
 
-export type TMagicItemRarity = 'common' | 'rare' | 'epic' | 'legendary' | 'mythical' | 'divine';
+export type TItemRarity = 'common' | 'rare' | 'epic' | 'legendary' | 'mythical' | 'divine';
+
+export interface IThemeFileBase<ThemeType extends AvailableThemeTypes = AvailableThemeTypes> {
+  price: number;
+  rarity: TItemRarity;
+  isBuyable: boolean;
+  type: ThemeType;
+  theme: ThemeType extends 'profile'
+    ? AvailableProfilesThemes
+    : ThemeType extends 'cards'
+    ? AvailableCardThemes
+    : AvailableTableThemes;
+}
+
+export type ThemeFiles =
+  | IThemeFileBase<'profile'>
+  | IThemeFileBase<'cards'>
+  | IThemeFileBase<'table'>;
 
 export interface IHuntCooldownBoostItem {
   type: 'HUNT_COOLDOWN_REDUCTION';
   huntType: HuntingTypes;
   huntCooldown: number;
   dropChance: number;
-  rarity: TMagicItemRarity;
+  rarity: TItemRarity;
 }
 
 export type TMagicItemsFile = IHuntProbablyBoostItem | IHuntCooldownBoostItem;
