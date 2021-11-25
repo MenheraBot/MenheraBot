@@ -102,6 +102,20 @@ export interface IUserSchema {
   isBot: boolean;
 }
 
+export type AvailableCardThemes = 'default';
+export type AvailableTableThemes = 'green' | 'blue';
+export type AvailableProfiles = 'default' | 'upsidedown';
+
+export interface IUserPreferencesSchema {
+  readonly id: string;
+  cardsThemes: Array<AvailableCardThemes>;
+  tableThemes: Array<AvailableTableThemes>;
+  profileTheme: Array<AvailableProfiles>;
+  selectedCardTheme: AvailableCardThemes;
+  selectedTableTheme: AvailableTableThemes;
+  selectedProfileTheme: AvailableProfiles;
+}
+
 export interface IInteractionCommandConfig extends ChatInputApplicationCommandData {
   devsOnly?: boolean;
   category: string;

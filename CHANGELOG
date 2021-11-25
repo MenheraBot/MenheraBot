@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ## [Unreleased]
 
+### Added
+
+- Agora é possível alterar o layout de perfil, cartas da Menhera (Blackjack e o futuro Poker) e a cor da mesa das cartas
+
 ### Changed
 
 - Fetches desnecessários foram mudados para forge para fazer requests à API
