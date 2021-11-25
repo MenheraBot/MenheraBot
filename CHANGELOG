@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Changed
 
 - Fetches desnecessários foram mudados para forge para fazer requests à API
+- O BlackJack está de cara nova!
 
 ### Fixed
 
