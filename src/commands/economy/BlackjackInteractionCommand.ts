@@ -3,7 +3,7 @@ import { MessageAttachment, MessageButton, MessageEmbed } from 'discord.js-light
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import http from '@utils/HTTPrequests';
-import { IBlackjackCards } from '@utils/Types';
+import { AvailableCardThemes, AvailableTableThemes, IBlackjackCards } from '@utils/Types';
 import { BLACKJACK_CARDS, emojis } from '@structures/Constants';
 import Util, { resolveCustomId } from '@utils/Util';
 
@@ -46,13 +46,23 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
     dealerCards: Array<number>,
     usrCards: Array<number>,
     deckCards: Array<number>,
+    cardTheme: AvailableCardThemes,
+    tableTheme: AvailableTableThemes,
   ): Promise<void> {
     if (usrCards.length === 2) {
       const oldUserCards = CalculateHandValue(usrCards);
       const oldUserTotal = BlackjackInteractionCommand.checkHandFinalValue(oldUserCards);
 
       if (oldUserTotal >= 21)
-        return BlackjackInteractionCommand.finishGame(ctx, valor, dealerCards, usrCards, deckCards);
+        return BlackjackInteractionCommand.finishGame(
+          ctx,
+          valor,
+          dealerCards,
+          usrCards,
+          deckCards,
+          cardTheme,
+          tableTheme,
+        );
     }
 
     const matchCards = deckCards;
@@ -84,6 +94,8 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
               dealerHand: ctx.locale('commands:blackjack.dealer-hand'),
             },
             aposta: valor,
+            cardTheme,
+            tableTheme,
           },
         })
       : await http.blackjackRequest(
@@ -97,6 +109,8 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
             yourHand: ctx.locale('commands:blackjack.your-hand'),
             dealerHand: ctx.locale('commands:blackjack.dealer-hand'),
           },
+          cardTheme,
+          tableTheme,
         );
 
     const embed = new MessageEmbed()
@@ -176,14 +190,38 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
 
     if (resolveCustomId(collected.customId) === 'BUY') {
       if (userTotal >= 21) {
-        BlackjackInteractionCommand.finishGame(ctx, valor, dealerCards, playerCards, matchCards);
+        BlackjackInteractionCommand.finishGame(
+          ctx,
+          valor,
+          dealerCards,
+          playerCards,
+          matchCards,
+          cardTheme,
+          tableTheme,
+        );
         return;
       }
-      BlackjackInteractionCommand.continueFromBuy(ctx, valor, dealerCards, playerCards, matchCards);
+      BlackjackInteractionCommand.continueFromBuy(
+        ctx,
+        valor,
+        dealerCards,
+        playerCards,
+        matchCards,
+        cardTheme,
+        tableTheme,
+      );
       return;
     }
 
-    BlackjackInteractionCommand.finishGame(ctx, valor, dealerCards, playerCards, matchCards);
+    BlackjackInteractionCommand.finishGame(
+      ctx,
+      valor,
+      dealerCards,
+      playerCards,
+      matchCards,
+      cardTheme,
+      tableTheme,
+    );
   }
 
   static checkHandFinalValue(cards: Array<IBlackjackCards>): number {
@@ -204,6 +242,8 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
     menheraCards: number[],
     playerCards: number[],
     matchCards: number[],
+    cardTheme: AvailableCardThemes,
+    tableTheme: AvailableTableThemes,
   ): Promise<void> {
     const userCards = CalculateHandValue(playerCards);
     const dealerCards = CalculateHandValue(menheraCards);
@@ -237,12 +277,24 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
               dealerHand: ctx.locale('commands:blackjack.dealer-hand'),
             },
             aposta: valor,
+            cardTheme,
+            tableTheme,
           },
         })
-      : await http.blackjackRequest(valor, userCards, dealerCards, userTotal, menheraTotal, true, {
-          yourHand: ctx.locale('commands:blackjack.your-hand'),
-          dealerHand: ctx.locale('commands:blackjack.dealer-hand'),
-        });
+      : await http.blackjackRequest(
+          valor,
+          userCards,
+          dealerCards,
+          userTotal,
+          menheraTotal,
+          true,
+          {
+            yourHand: ctx.locale('commands:blackjack.your-hand'),
+            dealerHand: ctx.locale('commands:blackjack.dealer-hand'),
+          },
+          cardTheme,
+          tableTheme,
+        );
 
     let attc: MessageAttachment | null = null;
 
@@ -351,12 +403,24 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
               dealerHand: ctx.locale('commands:blackjack.dealer-hand'),
             },
             aposta: valor,
+            cardTheme,
+            tableTheme,
           },
         })
-      : await http.blackjackRequest(valor, userCards, dealerCards, userTotal, menheraTotal, true, {
-          yourHand: ctx.locale('commands:blackjack.your-hand'),
-          dealerHand: ctx.locale('commands:blackjack.dealer-hand'),
-        });
+      : await http.blackjackRequest(
+          valor,
+          userCards,
+          dealerCards,
+          userTotal,
+          menheraTotal,
+          true,
+          {
+            yourHand: ctx.locale('commands:blackjack.your-hand'),
+            dealerHand: ctx.locale('commands:blackjack.dealer-hand'),
+          },
+          cardTheme,
+          tableTheme,
+        );
 
     if (!newRes.err) {
       const timestamp = Date.now();
@@ -547,6 +611,9 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
     const dealerCards = matchCards.splice(0, 2);
     const playerCards = matchCards.splice(0, 2);
 
+    const tableTheme = await ctx.client.repositories.themeRepository.getTableTheme(ctx.author.id);
+    const cardTheme = await ctx.client.repositories.themeRepository.getCardTheme(ctx.author.id);
+
     const res = ctx.client.picassoWs.isAlive
       ? await ctx.client.picassoWs.makeRequest({
           id: ctx.interaction.id,
@@ -570,6 +637,8 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
               dealerHand: ctx.locale('commands:blackjack.dealer-hand'),
             },
             aposta: valor,
+            cardTheme,
+            tableTheme,
           },
         })
       : await http.blackjackRequest(
@@ -583,6 +652,8 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
             yourHand: ctx.locale('commands:blackjack.your-hand'),
             dealerHand: ctx.locale('commands:blackjack.dealer-hand'),
           },
+          cardTheme,
+          tableTheme,
         );
 
     const embed = new MessageEmbed()
@@ -648,12 +719,28 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
     }
 
     if (collected.customId === `${ctx.interaction.id}|BUY`) {
-      BlackjackInteractionCommand.continueFromBuy(ctx, valor, dealerCards, playerCards, matchCards);
+      BlackjackInteractionCommand.continueFromBuy(
+        ctx,
+        valor,
+        dealerCards,
+        playerCards,
+        matchCards,
+        cardTheme,
+        tableTheme,
+      );
       return;
     }
 
     if (collected.customId === `${ctx.interaction.id}|STOP`) {
-      BlackjackInteractionCommand.finishGame(ctx, valor, dealerCards, playerCards, matchCards);
+      BlackjackInteractionCommand.finishGame(
+        ctx,
+        valor,
+        dealerCards,
+        playerCards,
+        matchCards,
+        cardTheme,
+        tableTheme,
+      );
     }
   }
 }

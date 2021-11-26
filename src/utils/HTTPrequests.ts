@@ -2,7 +2,9 @@
 import axios from 'axios';
 
 import {
+  AvailableCardThemes,
   AvailableProfilesThemes,
+  AvailableTableThemes,
   IBlackjackCards,
   ICommandsData,
   ICommandUsedData,
@@ -346,6 +348,8 @@ export default class HttpRequests {
     menheraTotal: number,
     isEnd: boolean,
     i18n: unknown,
+    cardTheme: AvailableCardThemes,
+    tableTheme: AvailableTableThemes,
   ): Promise<IPicassoReturnData> {
     try {
       if (!isEnd) menheraCards[1].hidden = true;
@@ -357,6 +361,8 @@ export default class HttpRequests {
           menheraTotal,
           i18n,
           aposta,
+          cardTheme,
+          tableTheme,
         },
       });
       return { err: false, data: Buffer.from(data.data) };
