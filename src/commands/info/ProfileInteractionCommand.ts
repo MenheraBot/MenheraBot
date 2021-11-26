@@ -109,13 +109,21 @@ export default class ProfileInteractionCommand extends InteractionCommand {
       tres: ctx.locale('commands:perfil.tres'),
     };
 
+    const profileTheme = await ctx.client.repositories.themeRepository.getProfileTheme(member.id);
+
     const res = ctx.client.picassoWs.isAlive
       ? await ctx.client.picassoWs.makeRequest({
           id: ctx.interaction.id,
           type: 'profile',
-          data: { user: userSendData, marry, usageCommands, i18n: i18nData },
+          data: { user: userSendData, marry, usageCommands, i18n: i18nData, type: profileTheme },
         })
-      : await HttpRequests.profileRequest(userSendData, marry, usageCommands, i18nData);
+      : await HttpRequests.profileRequest(
+          userSendData,
+          marry,
+          usageCommands,
+          i18nData,
+          profileTheme,
+        );
 
     if (res.err) {
       await ctx.makeMessage({ content: ctx.prettyResponseLocale('error', 'commands:http-error') });

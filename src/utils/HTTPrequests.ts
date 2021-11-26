@@ -2,6 +2,7 @@
 import axios from 'axios';
 
 import {
+  AvailableProfilesThemes,
   IBlackjackCards,
   ICommandsData,
   ICommandUsedData,
@@ -279,6 +280,7 @@ export default class HttpRequests {
       | boolean
       | { cmds: { count: number }; array: Array<{ name: string; count: number }> },
     i18n: unknown,
+    type: AvailableProfilesThemes,
   ): Promise<IPicassoReturnData> {
     try {
       const data = await request.get('/profile', {
@@ -287,6 +289,7 @@ export default class HttpRequests {
           marry,
           usageCommands,
           i18n,
+          type,
         },
       });
       return { err: false, data: Buffer.from(data.data) };
