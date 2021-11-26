@@ -35,6 +35,25 @@ export default class PersonalizeInteractionCommand extends InteractionCommand {
           description: '「🌈」・Muda a cor básica da sua conta',
           type: 'SUB_COMMAND',
         },
+        {
+          name: 'temas',
+          description: '「🎊」・Personalize os temas da sua conta!',
+          type: 'SUB_COMMAND',
+          options: [
+            {
+              name: 'tipo',
+              description: 'O tipo de tema que você quer alterar',
+              type: 'STRING',
+              required: true,
+              choices: [
+                { name: '✨ | Perfil', value: 'profile' },
+                { name: '🃏 | Estilo de Carta', value: 'card' },
+                { name: '🖼️ | Mesa de Cartas', value: 'table' },
+                { name: '🎴 | Fundo de Carta', value: 'card_background' },
+              ],
+            },
+          ],
+        },
       ],
       category: 'util',
       cooldown: 7,
