@@ -15,7 +15,9 @@ export default class CacheRepository {
 
   async fetchCommand(commandName: string): Promise<ICmdSchema | (ICmdSchema & Document) | null> {
     if (this.redisClient) {
-      const commandData = await this.redisClient.get(`command:${commandName}`).catch(debugError);
+      const commandData = await this.redisClient
+        .get(`command:${commandName}`)
+        .catch((e) => debugError(e, true));
       if (commandData) return JSON.parse(commandData);
     }
 
@@ -32,7 +34,7 @@ export default class CacheRepository {
             maintenanceReason: commandDataFromMongo.maintenanceReason,
           }),
         )
-        .catch(debugError);
+        .catch((e) => debugError(e, true));
 
     return commandDataFromMongo;
   }
@@ -42,7 +44,9 @@ export default class CacheRepository {
     preferredLocale: string,
   ): Promise<IGuildSchema | (IGuildSchema & Document)> {
     if (this.redisClient) {
-      const guildData = await this.redisClient.get(`guild:${guildID}`).catch(debugError);
+      const guildData = await this.redisClient
+        .get(`guild:${guildID}`)
+        .catch((e) => debugError(e, true));
       if (guildData) return JSON.parse(guildData);
     }
 
@@ -60,7 +64,7 @@ export default class CacheRepository {
             censored: guildDataFromMongo.censored,
           }),
         )
-        .catch(debugError);
+        .catch((e) => debugError(e, true));
 
     return guildDataFromMongo;
   }
@@ -68,7 +72,9 @@ export default class CacheRepository {
   async updateGuild(guildID: string, update: IGuildSchema): Promise<void> {
     if (this.redisClient) {
       const stringedObject = JSON.stringify(update);
-      await this.redisClient.setex(`guild:${guildID}`, 3600, stringedObject).catch(debugError);
+      await this.redisClient
+        .setex(`guild:${guildID}`, 3600, stringedObject)
+        .catch((e) => debugError(e, true));
     }
     await this.guildRepository.update(guildID, update);
   }
@@ -78,19 +84,19 @@ export default class CacheRepository {
       const stringedObject = JSON.stringify(update);
       await this.redisClient
         .setex(`command:${commandName}`, 3600, stringedObject)
-        .catch(debugError);
+        .catch((e) => debugError(e, true));
     }
   }
 
   async addDeletedAccount(user: string[] | string): Promise<void> {
     if (!this.redisClient) return;
-    await this.redisClient.sadd('deleted_accounts', user).catch(debugError);
+    await this.redisClient.sadd('deleted_accounts', user).catch((e) => debugError(e, true));
   }
 
   async getDeletedAccounts(): Promise<string[]> {
     if (!this.redisClient) return [];
     return this.redisClient.smembers('deleted_accounts').catch((err) => {
-      debugError(err);
+      debugError(err, true);
       return [];
     });
   }

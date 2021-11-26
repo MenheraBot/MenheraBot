@@ -237,7 +237,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
         selected,
         await ctx.client.repositories.cacheRepository.getDeletedAccounts(),
       )
-      .catch(debugError);
+      .catch((e) => debugError(e, true));
 
     if (selected === 'gods') {
       embed.setDescription(

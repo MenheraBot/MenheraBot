@@ -17,12 +17,12 @@ export default class BlacklistRepository {
 
   async addBannedUsers(user: string[] | string): Promise<void> {
     if (!this.redisClient) return;
-    await this.redisClient.sadd('banned_users', user).catch(debugError);
+    await this.redisClient.sadd('banned_users', user).catch((e) => debugError(e, true));
   }
 
   async removeBannedUser(user: string): Promise<void> {
     if (!this.redisClient) return;
-    await this.redisClient.srem('banned_users', user).catch(debugError);
+    await this.redisClient.srem('banned_users', user).catch((e) => debugError(e, true));
   }
 
   async isUserBanned(user: string): Promise<boolean> {

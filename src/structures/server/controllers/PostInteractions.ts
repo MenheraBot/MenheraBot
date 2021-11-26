@@ -40,7 +40,7 @@ const handleRequest = async (ctx: Context, client: MenheraClient) => {
         context: { data: ctx.request.body },
       },
     )
-    .catch(debugError);
+    .catch((e) => debugError(e, true));
   ctx.respond = false;
 };
 
