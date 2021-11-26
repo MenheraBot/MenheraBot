@@ -25,7 +25,7 @@ export default class InteractionCreate {
       if (!channel) {
         interaction.reply({
           content:
-            "> :X: Eu não tenho a permissão `Ver Canais` para executar esse comando! Peça a um administrador para me dar esta permissão!\n> :X: I don't have `View Channels` permission to run this command! Ask an administrator to give me this permission!",
+            "> ❌ Eu não tenho a permissão `Ver Canais` para executar esse comando! Peça a um administrador para me dar esta permissão!\n> ❌ I don't have `View Channels` permission to run this command! Ask an administrator to give me this permission!",
           ephemeral: true,
         });
         return;
