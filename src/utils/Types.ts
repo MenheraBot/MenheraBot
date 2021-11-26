@@ -110,7 +110,7 @@ export type AvailableThemeTypes = 'profile' | 'cards' | 'table';
 
 export interface IUserBuyableData {
   id: number;
-  buyAt: number;
+  aquiredAt: number;
 }
 
 export interface IUserPreferencesSchema {

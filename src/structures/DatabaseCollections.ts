@@ -17,9 +17,9 @@ const guildSchema = new Schema({
 
 const userPreferences = new Schema({
   id: { type: String, unique: true, index: true },
-  cardsThemes: { type: Array, default: [] },
-  tableThemes: { type: Array, default: [] },
-  profileTheme: { type: Array, default: [] },
+  cardsThemes: { type: Array, default: [{ id: 4, aquiredAt: 0 }] },
+  tableThemes: { type: Array, default: [{ id: 5, aquiredAt: 0 }] },
+  profileTheme: { type: Array, default: [{ id: 3, aquiredAt: 0 }] },
   selectedCardTheme: { type: String, default: 'default' },
   selectedProfileTheme: { type: String, default: 'default' },
   selectedTableTheme: { type: String, default: 'green' },

@@ -8,6 +8,34 @@ const ImageThemes: { [id: number]: ThemeFiles } = {
     type: 'table',
     theme: 'blue',
   },
+  2: {
+    isBuyable: true,
+    price: 700_000,
+    rarity: 'rare',
+    theme: 'upsidedown',
+    type: 'profile',
+  },
+  3: {
+    isBuyable: false,
+    price: 0,
+    rarity: 'common',
+    theme: 'default',
+    type: 'profile',
+  },
+  4: {
+    isBuyable: false,
+    price: 0,
+    rarity: 'common',
+    theme: 'default',
+    type: 'cards',
+  },
+  5: {
+    isBuyable: false,
+    price: 0,
+    rarity: 'common',
+    theme: 'green',
+    type: 'table',
+  },
 };
 
 export default ImageThemes;
