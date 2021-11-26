@@ -607,5 +607,13 @@
   "censura": {
     "uncensored": "Censorship has been disabled! I'm finally free to talk shit!",
     "censored": "Swearing censorship has been activated, I'll be the holiest girl on this server, you'll see"
+  },
+  "temas": {
+    "profile": "Profile Styles",
+    "card": "Card Styles",
+    "table": "Card Table Styles",
+    "card_background": "Card Background Styles",
+    "no-themes": "You don't have any such themes to change!",
+    "selected": "Your theme was successfully changed!"
   }
 }

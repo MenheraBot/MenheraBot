@@ -28,5 +28,31 @@
       "name": "Demonic Accelerator",
       "description": "A machine that speeds up the time between hunting demons"
     }
+  },
+  "themes": {
+    "1": {
+      "name": "Blue Table",
+      "description": "The name is pretty self-explanatory. Just a blue table..."
+    },
+    "2": {
+      "name": "UpsideDown",
+      "description": "Stranger Things happened here..."
+    },
+    "3": {
+      "name": "Legacy Profile",
+      "description": "The default style of Menhera's profile"
+    },
+    "4": {
+      "name": "Normal Cards",
+      "description": "The default style of cards of Menhera"
+    },
+    "5": {
+      "name": "Green Table",
+      "description": "A green card table, very standard"
+    },
+    "6": {
+      "name": "Red Card",
+      "description": "A red card background, very standard"
+    }
   }
 }

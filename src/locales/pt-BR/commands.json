@@ -614,5 +614,13 @@
   "censura": {
     "uncensored": "A censura foi desabilitada! Estou finalmente livre para falar bosta!",
     "censored": "A censura de palavrões foi ativada, vou ser a menina mais santa desse servidor, tu vai ver"
+  },
+  "temas": {
+    "profile": "Estilos de Perfil",
+    "card": "Estilos de Carta",
+    "table": "Estilos de Mesa de Cartas",
+    "card_background": "Estilos de Fundo de Carta",
+    "no-themes": "Você não tem nenhum tema deste tipo para alterar!",
+    "selected": "Seu tema foi alterado com sucesso!"
   }
 }

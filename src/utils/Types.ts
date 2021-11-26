@@ -117,8 +117,8 @@ export interface IUserPreferencesSchema {
   readonly id: string;
   cardsThemes: Array<IUserBuyableData>;
   tableThemes: Array<IUserBuyableData>;
-  profileTheme: Array<IUserBuyableData>;
-  cardsBackgroundTheme: Array<IUserBuyableData>;
+  profileThemes: Array<IUserBuyableData>;
+  cardsBackgroundThemes: Array<IUserBuyableData>;
   selectedCardTheme: number;
   selectedTableTheme: number;
   selectedProfileTheme: number;

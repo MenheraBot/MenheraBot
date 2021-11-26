@@ -28,5 +28,31 @@
       "name": "Acelerador Demoníaco",
       "description": "Uma máquina que acelera o tempo entre caçar de demônios"
     }
+  },
+  "themes": {
+    "1": {
+      "name": "Mesa Azul",
+      "description": "O nome é bem auto-explicativo. Simplesmente uma mesa azul..."
+    },
+    "2": {
+      "name": "Mundo Invertido",
+      "description": "Coisas Estranhas aconteceram por aqui..."
+    },
+    "3": {
+      "name": "Perfil Legado",
+      "description": "O estilo padrão do perfil da Menhera"
+    },
+    "4": {
+      "name": "Cartas Normais",
+      "description": "O estilo padrão de cartas da Menhera"
+    },
+    "5": {
+      "name": "Mesa Verde",
+      "description": "Uma mesa de cartas verde, bem padrãozinho"
+    },
+    "6": {
+      "name": "Carta Vermelha",
+      "description": "Um fundo de cartas vermelho, bem padrãozinho"
+    }
   }
 }

@@ -7,6 +7,8 @@ import {
   ICardsTheme,
   AvailableTableThemes,
   ITableTheme,
+  AvailableCardBackgroundThemes,
+  ICardBackgroudTheme,
 } from '@utils/Types';
 import { getThemeById } from '@utils/Util';
 import { Redis } from 'ioredis';
@@ -23,6 +25,34 @@ export default class ThemeRepository {
     if (!result) return this.preferencesModal.create({ id: userId });
 
     return result;
+  }
+
+  async setTableTheme(userId: string, tableId: number): Promise<void> {
+    await this.preferencesModal.updateOne({ id: userId, selectedTableTheme: tableId });
+
+    if (this.redisClient) this.redisClient.setex(`table_theme:${userId}`, 3600, tableId);
+  }
+
+  async setCardTheme(userId: string, cardId: number): Promise<void> {
+    await this.preferencesModal.updateOne({ id: userId, selectedCardTheme: cardId });
+
+    if (this.redisClient) this.redisClient.setex(`card_theme:${userId}`, 3600, cardId);
+  }
+
+  async setCardBackgroundTheme(userId: string, cardBackgroundId: number): Promise<void> {
+    await this.preferencesModal.updateOne({
+      id: userId,
+      selectedCardBackgroundTheme: cardBackgroundId,
+    });
+
+    if (this.redisClient)
+      this.redisClient.setex(`card_background_theme:${userId}`, 3600, cardBackgroundId);
+  }
+
+  async setProfileTheme(userId: string, profileId: number): Promise<void> {
+    await this.preferencesModal.updateOne({ id: userId, selectedProfileTheme: profileId });
+
+    if (this.redisClient) this.redisClient.setex(`profile_theme:${userId}`, 3600, profileId);
   }
 
   async getTableTheme(userId: string): Promise<AvailableTableThemes> {
@@ -65,5 +95,19 @@ export default class ThemeRepository {
       this.redisClient.setex(`profile_theme:${userId}`, 3600, theme.selectedProfileTheme);
 
     return getThemeById<IProfileTheme>(theme.selectedProfileTheme).data.theme;
+  }
+
+  async getCardBackgroundTheme(userId: string): Promise<AvailableCardBackgroundThemes> {
+    if (this.redisClient) {
+      const theme = await this.redisClient.get(`card_background_theme:${userId}`);
+      if (theme) return theme as AvailableCardBackgroundThemes;
+    }
+
+    const theme = await this.findOrCreate(userId, ['selectedCardBackgroundTheme']);
+
+    if (this.redisClient)
+      this.redisClient.setex(`profile_theme:${userId}`, 3600, theme.selectedCardBackgroundTheme);
+
+    return getThemeById<ICardBackgroudTheme>(theme.selectedCardBackgroundTheme).data.theme;
   }
 }

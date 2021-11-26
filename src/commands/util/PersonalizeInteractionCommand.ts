@@ -1,7 +1,8 @@
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { COLORS, emojis } from '@structures/Constants';
-import { actionRow, resolveCustomId, toWritableUTF } from '@utils/Util';
+import { IReturnData, ThemeFiles } from '@utils/Types';
+import Util, { actionRow, getThemeById, resolveCustomId, toWritableUTF } from '@utils/Util';
 import {
   ColorResolvable,
   MessageButton,
@@ -67,6 +68,105 @@ export default class PersonalizeInteractionCommand extends InteractionCommand {
     if (command === 'info') PersonalizeInteractionCommand.AboutmeInteractionCommand(ctx);
 
     if (command === 'cor') PersonalizeInteractionCommand.ColorInteractionCommand(ctx);
+
+    if (command === 'temas') PersonalizeInteractionCommand.ThemesInteractionCommand(ctx);
+  }
+
+  static async ThemesInteractionCommand(ctx: InteractionCommandContext): Promise<void> {
+    const themeType = ctx.options.getString('tipo', true) as
+      | 'profile'
+      | 'card'
+      | 'table'
+      | 'card_background';
+
+    const userThemes = await ctx.client.repositories.themeRepository.findOrCreate(ctx.author.id);
+    const embed = new MessageEmbed().setColor(ctx.data.user.selectedColor);
+
+    embed.setTitle(ctx.locale(`commands:temas.${themeType}`));
+
+    const selectMenu = new MessageSelectMenu()
+      .setCustomId(`${ctx.interaction.id} | SELECT`)
+      .setMinValues(1)
+      .setMaxValues(1);
+
+    const availableProfiles = userThemes.profileThemes.reduce<IReturnData<ThemeFiles>[]>((p, c) => {
+      if (
+        c.id === userThemes.selectedCardBackgroundTheme ||
+        c.id === userThemes.selectedCardTheme ||
+        c.id === userThemes.selectedProfileTheme ||
+        c.id === userThemes.selectedTableTheme
+      )
+        return p;
+
+      const theme = getThemeById(c.id);
+
+      if (theme.data.type !== themeType) return p;
+
+      p.push(theme);
+
+      selectMenu.addOptions({
+        label: ctx.locale(`data:themes.${c.id as 1}.name`),
+        value: `${c.id}`,
+        description: ctx.locale(`data:themes.${c.id as 1}.description`),
+      });
+      return p;
+    }, []);
+
+    if (availableProfiles.length === 0) {
+      embed.setDescription(ctx.locale('commands:temas.no-themes'));
+      ctx.makeMessage({ embeds: [embed] });
+      return;
+    }
+
+    ctx.makeMessage({ components: [actionRow([selectMenu])], embeds: [embed] });
+
+    const collected = await Util.collectComponentInteractionWithStartingId<SelectMenuInteraction>(
+      ctx.channel,
+      ctx.author.id,
+      ctx.interaction.id,
+      10000,
+    );
+
+    if (!collected) {
+      ctx.makeMessage({
+        components: [],
+        content: ctx.prettyResponse('error', 'common:timesup'),
+      });
+      return;
+    }
+
+    switch (themeType) {
+      case 'card':
+        ctx.client.repositories.themeRepository.setCardTheme(
+          ctx.author.id,
+          Number(collected.values[0]),
+        );
+        break;
+      case 'card_background':
+        ctx.client.repositories.themeRepository.setCardBackgroundTheme(
+          ctx.author.id,
+          Number(collected.values[0]),
+        );
+        break;
+      case 'profile':
+        ctx.client.repositories.themeRepository.setProfileTheme(
+          ctx.author.id,
+          Number(collected.values[0]),
+        );
+        break;
+      case 'table':
+        ctx.client.repositories.themeRepository.setTableTheme(
+          ctx.author.id,
+          Number(collected.values[0]),
+        );
+        break;
+    }
+
+    ctx.makeMessage({
+      components: [],
+      embeds: [],
+      content: ctx.prettyResponse('success', 'commands:temas.selected'),
+    });
   }
 
   static async ColorInteractionCommand(ctx: InteractionCommandContext): Promise<void> {
