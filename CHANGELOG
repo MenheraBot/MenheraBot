@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 - Agora é possível alterar o layout de perfil, cartas da Menhera (Blackjack e o futuro Poker), o fundo destas e a cor da mesa das cartas
 - Comando `/personalizar temas` para escolher os temas de sua conta
+- Agora é possivel comprar `alguns` temas pela loja `/loja comprar temas`
 
 ### Changed
 
@@ -20,7 +21,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Fixed
 
 - Casais não davam 100% no ship
-- Cartas do BlackJack não estavam sendo renderizadas corretamente
 
 ## [3.5.1] 2021-11-22
 
