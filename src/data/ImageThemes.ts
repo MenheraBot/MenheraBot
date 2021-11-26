@@ -37,6 +37,13 @@ const ImageThemes: { [id: number]: ThemeFiles } & Object = {
     theme: 'green',
     type: 'table',
   },
+  6: {
+    isBuyable: false,
+    price: 0,
+    rarity: 'common',
+    theme: 'red',
+    type: 'card_background',
+  },
 };
 
 export default ImageThemes;

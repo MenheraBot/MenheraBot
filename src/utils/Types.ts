@@ -104,10 +104,9 @@ export interface IUserSchema {
 }
 
 export type AvailableCardThemes = 'default';
+export type AvailableCardBackgroundThemes = 'red';
 export type AvailableTableThemes = 'green' | 'blue';
 export type AvailableProfilesThemes = 'default' | 'upsidedown';
-
-export type AvailableThemeTypes = 'profile' | 'cards' | 'table';
 
 export interface IUserBuyableData {
   id: number;
@@ -119,9 +118,11 @@ export interface IUserPreferencesSchema {
   cardsThemes: Array<IUserBuyableData>;
   tableThemes: Array<IUserBuyableData>;
   profileTheme: Array<IUserBuyableData>;
+  cardsBackgroundTheme: Array<IUserBuyableData>;
   selectedCardTheme: number;
   selectedTableTheme: number;
   selectedProfileTheme: number;
+  selectedCardBackgroundTheme: number;
 }
 
 export interface IInteractionCommandConfig extends ChatInputApplicationCommandData {
@@ -307,6 +308,11 @@ export interface IBaseTheme {
   isBuyable: boolean;
 }
 
+export interface ICardBackgroudTheme extends IBaseTheme {
+  type: 'card_background';
+  theme: AvailableCardBackgroundThemes;
+}
+
 export interface IProfileTheme extends IBaseTheme {
   type: 'profile';
   theme: AvailableProfilesThemes;
@@ -321,7 +327,7 @@ export interface ITableTheme extends IBaseTheme {
   theme: AvailableTableThemes;
 }
 
-export type ThemeFiles = IProfileTheme | ICardsTheme | ITableTheme;
+export type ThemeFiles = IProfileTheme | ICardsTheme | ITableTheme | ICardBackgroudTheme;
 
 export interface IHuntCooldownBoostItem {
   type: 'HUNT_COOLDOWN_REDUCTION';

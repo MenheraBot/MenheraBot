@@ -20,9 +20,11 @@ const userPreferences = new Schema({
   cardsThemes: { type: Array, default: [{ id: 4, aquiredAt: 0 }] },
   tableThemes: { type: Array, default: [{ id: 5, aquiredAt: 0 }] },
   profileTheme: { type: Array, default: [{ id: 3, aquiredAt: 0 }] },
-  selectedCardTheme: { type: String, default: 'default' },
-  selectedProfileTheme: { type: String, default: 'default' },
-  selectedTableTheme: { type: String, default: 'green' },
+  cardsBackgroundTheme: { type: Array, default: [{ id: 6, aquiredAt: 0 }] },
+  selectedCardTheme: { type: Number, default: 4 },
+  selectedProfileTheme: { type: Number, default: 3 },
+  selectedTableTheme: { type: Number, default: 5 },
+  selectedCardBackgroundTheme: { type: Number, default: 6 },
 });
 
 const userSchema = new Schema({
