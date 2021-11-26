@@ -2,6 +2,7 @@
 import axios from 'axios';
 
 import {
+  AvailableCardBackgroundThemes,
   AvailableCardThemes,
   AvailableProfilesThemes,
   AvailableTableThemes,
@@ -350,6 +351,7 @@ export default class HttpRequests {
     i18n: unknown,
     cardTheme: AvailableCardThemes,
     tableTheme: AvailableTableThemes,
+    backgroundCardTheme: AvailableCardBackgroundThemes,
   ): Promise<IPicassoReturnData> {
     try {
       if (!isEnd) menheraCards[1].hidden = true;
@@ -363,6 +365,7 @@ export default class HttpRequests {
           aposta,
           cardTheme,
           tableTheme,
+          backgroundCardTheme,
         },
       });
       return { err: false, data: Buffer.from(data.data) };

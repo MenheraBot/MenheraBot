@@ -3,7 +3,12 @@ import { MessageAttachment, MessageButton, MessageEmbed } from 'discord.js-light
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import http from '@utils/HTTPrequests';
-import { AvailableCardThemes, AvailableTableThemes, IBlackjackCards } from '@utils/Types';
+import {
+  AvailableCardBackgroundThemes,
+  AvailableCardThemes,
+  AvailableTableThemes,
+  IBlackjackCards,
+} from '@utils/Types';
 import { BLACKJACK_CARDS, emojis } from '@structures/Constants';
 import Util, { resolveCustomId } from '@utils/Util';
 
@@ -48,6 +53,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
     deckCards: Array<number>,
     cardTheme: AvailableCardThemes,
     tableTheme: AvailableTableThemes,
+    backgroundCardTheme: AvailableCardBackgroundThemes,
   ): Promise<void> {
     if (usrCards.length === 2) {
       const oldUserCards = CalculateHandValue(usrCards);
@@ -62,6 +68,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
           deckCards,
           cardTheme,
           tableTheme,
+          backgroundCardTheme,
         );
     }
 
@@ -96,6 +103,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
             aposta: valor,
             cardTheme,
             tableTheme,
+            backgroundCardTheme,
           },
         })
       : await http.blackjackRequest(
@@ -111,6 +119,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
           },
           cardTheme,
           tableTheme,
+          backgroundCardTheme,
         );
 
     const embed = new MessageEmbed()
@@ -198,6 +207,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
           matchCards,
           cardTheme,
           tableTheme,
+          backgroundCardTheme,
         );
         return;
       }
@@ -209,6 +219,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
         matchCards,
         cardTheme,
         tableTheme,
+        backgroundCardTheme,
       );
       return;
     }
@@ -221,6 +232,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
       matchCards,
       cardTheme,
       tableTheme,
+      backgroundCardTheme,
     );
   }
 
@@ -244,6 +256,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
     matchCards: number[],
     cardTheme: AvailableCardThemes,
     tableTheme: AvailableTableThemes,
+    backgroundCardTheme: AvailableCardBackgroundThemes,
   ): Promise<void> {
     const userCards = CalculateHandValue(playerCards);
     const dealerCards = CalculateHandValue(menheraCards);
@@ -279,6 +292,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
             aposta: valor,
             cardTheme,
             tableTheme,
+            backgroundCardTheme,
           },
         })
       : await http.blackjackRequest(
@@ -294,6 +308,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
           },
           cardTheme,
           tableTheme,
+          backgroundCardTheme,
         );
 
     let attc: MessageAttachment | null = null;
@@ -405,6 +420,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
             aposta: valor,
             cardTheme,
             tableTheme,
+            backgroundCardTheme,
           },
         })
       : await http.blackjackRequest(
@@ -420,6 +436,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
           },
           cardTheme,
           tableTheme,
+          backgroundCardTheme,
         );
 
     if (!newRes.err) {
@@ -613,6 +630,8 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
 
     const tableTheme = await ctx.client.repositories.themeRepository.getTableTheme(ctx.author.id);
     const cardTheme = await ctx.client.repositories.themeRepository.getCardTheme(ctx.author.id);
+    const backgroundCardTheme =
+      await ctx.client.repositories.themeRepository.getCardBackgroundTheme(ctx.author.id);
 
     const res = ctx.client.picassoWs.isAlive
       ? await ctx.client.picassoWs.makeRequest({
@@ -639,6 +658,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
             aposta: valor,
             cardTheme,
             tableTheme,
+            backgroundCardTheme,
           },
         })
       : await http.blackjackRequest(
@@ -654,6 +674,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
           },
           cardTheme,
           tableTheme,
+          backgroundCardTheme,
         );
 
     const embed = new MessageEmbed()
@@ -727,6 +748,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
         matchCards,
         cardTheme,
         tableTheme,
+        backgroundCardTheme,
       );
       return;
     }
@@ -740,6 +762,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
         matchCards,
         cardTheme,
         tableTheme,
+        backgroundCardTheme,
       );
     }
   }
