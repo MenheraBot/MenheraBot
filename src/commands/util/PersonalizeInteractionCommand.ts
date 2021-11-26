@@ -73,6 +73,13 @@ export default class PersonalizeInteractionCommand extends InteractionCommand {
   }
 
   static async ThemesInteractionCommand(ctx: InteractionCommandContext): Promise<void> {
+    const databaseFieldBaseOnThemeType = {
+      profile: 'profileThemes' as const,
+      card: 'cardsThemes' as const,
+      card_background: 'cardsBackgroundThemes' as const,
+      table: 'tableThemes' as const,
+    };
+
     const themeType = ctx.options.getString('tipo', true) as
       | 'profile'
       | 'card'
@@ -80,16 +87,19 @@ export default class PersonalizeInteractionCommand extends InteractionCommand {
       | 'card_background';
 
     const userThemes = await ctx.client.repositories.themeRepository.findOrCreate(ctx.author.id);
-    const embed = new MessageEmbed().setColor(ctx.data.user.selectedColor);
-
-    embed.setTitle(ctx.locale(`commands:temas.${themeType}`));
+    const embed = new MessageEmbed()
+      .setColor(ctx.data.user.selectedColor)
+      .setTitle(ctx.locale(`commands:temas.${themeType}`))
+      .setDescription(ctx.locale('commands:temas.choose'));
 
     const selectMenu = new MessageSelectMenu()
       .setCustomId(`${ctx.interaction.id} | SELECT`)
       .setMinValues(1)
       .setMaxValues(1);
 
-    const availableProfiles = userThemes.profileThemes.reduce<IReturnData<ThemeFiles>[]>((p, c) => {
+    const availableProfiles = userThemes[databaseFieldBaseOnThemeType[themeType]].reduce<
+      IReturnData<ThemeFiles>[]
+    >((p, c) => {
       if (
         c.id === userThemes.selectedCardBackgroundTheme ||
         c.id === userThemes.selectedCardTheme ||
@@ -109,6 +119,12 @@ export default class PersonalizeInteractionCommand extends InteractionCommand {
         value: `${c.id}`,
         description: ctx.locale(`data:themes.${c.id as 1}.description`),
       });
+
+      embed.addField(
+        ctx.locale(`data:themes.${c.id as 1}.name`),
+        ctx.locale(`data:themes.${c.id as 1}.description`),
+        true,
+      );
       return p;
     }, []);
 

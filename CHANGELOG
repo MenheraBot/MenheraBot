@@ -9,7 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ### Added
 
-- Agora é possível alterar o layout de perfil, cartas da Menhera (Blackjack e o futuro Poker) e a cor da mesa das cartas
+- Agora é possível alterar o layout de perfil, cartas da Menhera (Blackjack e o futuro Poker), o fundo destas e a cor da mesa das cartas
+- Comando `/personalizar temas` para escolher os temas de sua conta
 
 ### Changed
 

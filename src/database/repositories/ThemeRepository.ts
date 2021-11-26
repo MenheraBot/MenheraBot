@@ -1,7 +1,7 @@
-import { Preferences } from '@structures/DatabaseCollections';
+import { Themes } from '@structures/DatabaseCollections';
 import {
   AvailableProfilesThemes,
-  IUserPreferencesSchema,
+  IUserThemesSchema,
   IProfileTheme,
   AvailableCardThemes,
   ICardsTheme,
@@ -14,33 +14,33 @@ import { getThemeById } from '@utils/Util';
 import { Redis } from 'ioredis';
 
 export default class ThemeRepository {
-  constructor(private preferencesModal: typeof Preferences, private redisClient: Redis | null) {}
+  constructor(private themesModal: typeof Themes, private redisClient: Redis | null) {}
 
   async findOrCreate(
     userId: string,
-    projection: Array<keyof IUserPreferencesSchema> = [],
-  ): Promise<IUserPreferencesSchema> {
-    const result = await this.preferencesModal.findOne({ id: userId }, projection);
+    projection: Array<keyof IUserThemesSchema> = [],
+  ): Promise<IUserThemesSchema> {
+    const result = await this.themesModal.findOne({ id: userId }, projection);
 
-    if (!result) return this.preferencesModal.create({ id: userId });
+    if (!result) return this.themesModal.create({ id: userId });
 
     return result;
   }
 
   async setTableTheme(userId: string, tableId: number): Promise<void> {
-    await this.preferencesModal.updateOne({ id: userId, selectedTableTheme: tableId });
+    await this.themesModal.updateOne({ id: userId, selectedTableTheme: tableId });
 
     if (this.redisClient) this.redisClient.setex(`table_theme:${userId}`, 3600, tableId);
   }
 
   async setCardTheme(userId: string, cardId: number): Promise<void> {
-    await this.preferencesModal.updateOne({ id: userId, selectedCardTheme: cardId });
+    await this.themesModal.updateOne({ id: userId, selectedCardTheme: cardId });
 
     if (this.redisClient) this.redisClient.setex(`card_theme:${userId}`, 3600, cardId);
   }
 
   async setCardBackgroundTheme(userId: string, cardBackgroundId: number): Promise<void> {
-    await this.preferencesModal.updateOne({
+    await this.themesModal.updateOne({
       id: userId,
       selectedCardBackgroundTheme: cardBackgroundId,
     });
@@ -50,7 +50,7 @@ export default class ThemeRepository {
   }
 
   async setProfileTheme(userId: string, profileId: number): Promise<void> {
-    await this.preferencesModal.updateOne({ id: userId, selectedProfileTheme: profileId });
+    await this.themesModal.updateOne({ id: userId, selectedProfileTheme: profileId });
 
     if (this.redisClient) this.redisClient.setex(`profile_theme:${userId}`, 3600, profileId);
   }

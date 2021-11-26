@@ -113,7 +113,7 @@ export interface IUserBuyableData {
   aquiredAt: number;
 }
 
-export interface IUserPreferencesSchema {
+export interface IUserThemesSchema {
   readonly id: string;
   cardsThemes: Array<IUserBuyableData>;
   tableThemes: Array<IUserBuyableData>;

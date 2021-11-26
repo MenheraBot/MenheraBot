@@ -1,4 +1,4 @@
-import { ICmdSchema, IGuildSchema, IUserPreferencesSchema, IUserSchema } from '@utils/Types';
+import { ICmdSchema, IGuildSchema, IUserThemesSchema, IUserSchema } from '@utils/Types';
 import { Schema, model } from 'mongoose';
 
 const cmdSchema = new Schema({
@@ -15,7 +15,7 @@ const guildSchema = new Schema({
   censored: { type: Boolean, default: false },
 });
 
-const userPreferences = new Schema({
+const userThemes = new Schema({
   id: { type: String, unique: true, index: true },
   cardsThemes: { type: Array, default: [{ id: 4, aquiredAt: 0 }] },
   tableThemes: { type: Array, default: [{ id: 5, aquiredAt: 0 }] },
@@ -61,4 +61,4 @@ const userSchema = new Schema({
 export const Cmds = model<ICmdSchema>('Cmd', cmdSchema);
 export const Guilds = model<IGuildSchema>('guild', guildSchema);
 export const Users = model<IUserSchema>('usersdb', userSchema);
-export const Preferences = model<IUserPreferencesSchema>('userPrefs', userPreferences);
+export const Themes = model<IUserThemesSchema>('themes', userThemes);

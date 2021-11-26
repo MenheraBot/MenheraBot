@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import Redis from 'ioredis';
-import { Cmds, Guilds, Users, Preferences } from '@structures/DatabaseCollections';
+import { Cmds, Guilds, Users, Themes } from '@structures/DatabaseCollections';
 import { IDatabaseRepositories } from '@utils/Types';
 import CacheRepository from './repositories/CacheRepository';
 import CmdRepository from './repositories/CmdsRepository';
@@ -28,7 +28,7 @@ export default class Databases {
 
   public readonly Users: typeof Users;
 
-  public readonly Preferences: typeof Preferences;
+  public readonly Themes: typeof Themes;
 
   private readonly userRepository: UserRepository;
 
@@ -66,7 +66,7 @@ export default class Databases {
     this.Cmds = Cmds;
     this.Guilds = Guilds;
     this.Users = Users;
-    this.Preferences = Preferences;
+    this.Themes = Themes;
 
     if (withRedisCache) this.createRedisConnection();
 
@@ -89,7 +89,7 @@ export default class Databases {
     this.topRepository = new TopRepository(this.Users);
     this.giveRepository = new GiveRepository(this.Users);
     this.shopRepository = new ShopRepository(this.Users);
-    this.themeRepository = new ThemeRepository(this.Preferences, this.redisClient);
+    this.themeRepository = new ThemeRepository(this.Themes, this.redisClient);
   }
 
   get repositories(): IDatabaseRepositories {
