@@ -53,6 +53,34 @@
     "6": {
       "name": "Carta Vermelha",
       "description": "Um fundo de cartas vermelho, bem padrãozinho"
+    },
+    "7": {
+      "name": "Morte Concreta",
+      "description": "Cartas impregnadas com a Morte itself"
+    },
+    "8": {
+      "name": "Cartinha Azul",
+      "description": "Um fundo azul para as cartinhas"
+    },
+    "9": {
+      "name": "Menhera Fofa",
+      "description": "Uma Menhera super fofinha pras suas cartas"
+    },
+    "10": {
+      "name": "Carta Premium",
+      "description": "Um fundo premium super luxuoso para mostrar seu poder"
+    },
+    "11": {
+      "name": "Mesa Vermelha",
+      "description": "Uma mesa simples vermelha"
+    },
+    "12": {
+      "name": "Mesa Rosa",
+      "description": "Uma mesa rosa, bem fofa que combina com a Menhera"
+    },
+    "13": {
+      "name": "Mesa Redonda",
+      "description": "Um layout diferente de Mesas. Ela não se encaixa perfeitamente, mas ela é redonda"
     }
   }
 }

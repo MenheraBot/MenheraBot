@@ -53,6 +53,34 @@
     "6": {
       "name": "Red Card",
       "description": "A red card background, very standard"
+    },
+    "7": {
+      "name": "Concrete Death",
+      "description": "Letters impregnated with Death itself"
+    },
+    "8": {
+      "name": "Blue Card",
+      "description": "A blue background for the cards"
+    },
+    "9": {
+      "name": "Cute Girl",
+      "description": "A super cute Menhera for your cards"
+    },
+    "10": {
+      "name": "Premium Card",
+      "description": "A super luxurious premium fund to show your power"
+    },
+    "11": {
+      "name": "Red Table",
+      "description": "A simple red table"
+    },
+    "12": {
+      "name": "Pink Table",
+      "description": "A pink table, very cute that suits Menhera"
+    },
+    "13": {
+      "name": "Round Table",
+      "description": "A different Table layout. It doesn't fit perfectly, but it's round"
     }
   }
 }

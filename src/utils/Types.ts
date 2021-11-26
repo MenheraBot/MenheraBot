@@ -103,9 +103,9 @@ export interface IUserSchema {
   isBot: boolean;
 }
 
-export type AvailableCardThemes = 'default';
-export type AvailableCardBackgroundThemes = 'red';
-export type AvailableTableThemes = 'green' | 'blue';
+export type AvailableCardThemes = 'default' | 'death';
+export type AvailableCardBackgroundThemes = 'red' | 'blue' | 'cute_menhera' | 'premium';
+export type AvailableTableThemes = 'green' | 'blue' | 'red' | 'pink' | 'rounded';
 export type AvailableProfilesThemes = 'default' | 'upsidedown';
 export type AvailableThemeTypes = 'profile' | 'cards' | 'card_background' | 'table';
 

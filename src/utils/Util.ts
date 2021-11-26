@@ -156,9 +156,9 @@ export const getMillisecondsToTheEndOfDay = (): number => {
   return 86400000 - passedMilli;
 };
 
-export const debugError = (err: Error): null => {
+export const debugError = (err: Error, toSentry = false): null => {
   if (process.env.NODE_ENV === 'development') console.error(err.message);
-  Sentry.captureException(err);
+  if (toSentry) Sentry.captureException(err);
   return null;
 };
 

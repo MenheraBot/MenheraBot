@@ -213,12 +213,13 @@ export default class ShopInteractionCommand extends InteractionCommand {
   }
 
   static async buyThemes(ctx: InteractionCommandContext): Promise<void> {
-    const availableToBuyIds = [1, 2];
+    const availableToBuyIds = [1, 2, 7, 8, 9, 10, 11, 12, 13];
 
     const embed = new MessageEmbed()
       .setTitle(ctx.locale('commands:loja.buy_themes.title'))
       .setDescription(ctx.locale('commands:loja.buy_themes.description'))
       .setColor(ctx.data.user.selectedColor);
+
     const selector = new MessageSelectMenu()
       .setCustomId(`${ctx.interaction.id} | SELECT`)
       .setMinValues(1)
@@ -257,6 +258,8 @@ export default class ShopInteractionCommand extends InteractionCommand {
       ctx.makeMessage({ embeds: [embed] });
       return;
     }
+
+    ctx.makeMessage({ embeds: [embed], components: [actionRow([selector])] });
 
     const collected = await Util.collectComponentInteractionWithStartingId<SelectMenuInteraction>(
       ctx.channel,
@@ -699,6 +702,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
     if (!hexColor) {
       ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:loja.buy_colors.invalid-color'),
+        components: [],
       });
       return;
     }
@@ -710,6 +714,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
     ) {
       ctx.makeMessage({
         content: ctx.prettyResponse('yellow_circle', 'commands:loja.buy_colors.has-color'),
+        components: [],
       });
       return;
     }
@@ -727,12 +732,14 @@ export default class ShopInteractionCommand extends InteractionCommand {
           price: chosenColor.price,
           stars: ctx.data.user.estrelinhas - chosenColor.price,
         }),
+        components: [],
       });
 
       ctx.client.repositories.shopRepository.buyColor(ctx.author.id, chosenColor.price, toPush);
     } else {
       ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:loja.buy_colors.invalid-color'),
+        components: [],
       });
     }
   }
