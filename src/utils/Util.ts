@@ -9,8 +9,9 @@ import {
   MessageActionRowComponentResolvable,
   TextBasedChannels,
 } from 'discord.js-light';
-import { IReturnData, TMagicItemsFile } from '@utils/Types';
+import { IReturnData, ThemeFiles, TMagicItemsFile } from '@utils/Types';
 import * as Sentry from '@sentry/node';
+import ImageThemes from '@data/ImageThemes';
 
 export default class Util {
   static capitalize(str: string): string {
@@ -165,3 +166,8 @@ export const negate = (value: number): number => value * -1;
 
 // eslint-disable-next-line no-control-regex
 export const toWritableUTF = (str: string): string => str.replace(/[^\x00-\xFF]/g, '');
+
+export const getThemeById = <T extends ThemeFiles = ThemeFiles>(id: number): IReturnData<T> =>
+  Object.entries(ImageThemes)
+    .filter((a) => Number(a[0]) === id)
+    .map((a) => ({ id: Number(a[0]), data: a[1] }))[0];

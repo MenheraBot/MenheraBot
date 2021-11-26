@@ -13,6 +13,7 @@ import RelationshipRepository from '@database/repositories/RelationshipRepositor
 import StarRepository from '@database/repositories/StarRepository';
 import TopRepository from '@database/repositories/TopRepository';
 import ShopRepository from '@database/repositories/ShopRepository';
+import ThemeRepository from '@database/repositories/ThemeRepository';
 
 import UserRepository from '@database/repositories/UserRepository';
 import {
@@ -242,6 +243,7 @@ export interface IDatabaseRepositories {
   giveRepository: GiveRepository;
   coinflipRepository: CoinflipRepository;
   shopRepository: ShopRepository;
+  themeRepository: ThemeRepository;
 }
 
 export type TShardStatus = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;

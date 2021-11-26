@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import { ThemeFiles } from '@utils/Types';
 
-const ImageThemes: { [id: number]: ThemeFiles } = {
+const ImageThemes: { [id: number]: ThemeFiles } & Object = {
   1: {
     isBuyable: true,
     price: 350_000,

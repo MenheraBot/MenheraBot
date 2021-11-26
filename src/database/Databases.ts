@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import Redis from 'ioredis';
-import { Cmds, Guilds, Users } from '@structures/DatabaseCollections';
+import { Cmds, Guilds, Users, Preferences } from '@structures/DatabaseCollections';
 import { IDatabaseRepositories } from '@utils/Types';
 import CacheRepository from './repositories/CacheRepository';
 import CmdRepository from './repositories/CmdsRepository';
@@ -17,15 +17,18 @@ import TopRepository from './repositories/TopRepository';
 import GiveRepository from './repositories/GiveRepository';
 import CoinflipRepository from './repositories/CoinflipRepository';
 import ShopRepository from './repositories/ShopRepository';
+import ThemeRepository from './repositories/ThemeRepository';
 
 export default class Databases {
-  public Cmds: typeof Cmds;
-
-  public Guilds: typeof Guilds;
-
-  public Users: typeof Users;
-
   public redisClient: Redis.Redis | null = null;
+
+  public readonly Cmds: typeof Cmds;
+
+  public readonly Guilds: typeof Guilds;
+
+  public readonly Users: typeof Users;
+
+  public readonly Preferences: typeof Preferences;
 
   private readonly userRepository: UserRepository;
 
@@ -57,10 +60,13 @@ export default class Databases {
 
   private readonly shopRepository: ShopRepository;
 
+  private readonly themeRepository: ThemeRepository;
+
   constructor(public uri: string, withRedisCache: boolean) {
     this.Cmds = Cmds;
     this.Guilds = Guilds;
     this.Users = Users;
+    this.Preferences = Preferences;
 
     if (withRedisCache) this.createRedisConnection();
 
@@ -83,6 +89,7 @@ export default class Databases {
     this.topRepository = new TopRepository(this.Users);
     this.giveRepository = new GiveRepository(this.Users);
     this.shopRepository = new ShopRepository(this.Users);
+    this.themeRepository = new ThemeRepository(this.Preferences);
   }
 
   get repositories(): IDatabaseRepositories {
@@ -102,6 +109,7 @@ export default class Databases {
       giveRepository: this.giveRepository,
       coinflipRepository: this.coinflipRepository,
       shopRepository: this.shopRepository,
+      themeRepository: this.themeRepository,
     };
   }
 
