@@ -232,6 +232,13 @@
       "color_code": "Código da cor:",
       "price": "Preço:"
     },
+    "buy_themes": {
+      "title": "🎊 | Comprar Temas",
+      "description": "Abaixo estão alguns temas que você pode comprar imediatamente",
+      "poor": "Tu não possui todas essas estrelinhas para comprar isso!",
+      "success": "**Compra efetuada com sucesso!** Você já pode habilitá-la no `/personalizar temas`",
+      "data": "**{{description}}**\n**Preço**: {{price}} :star:\n**Raridade**: $t(common:rarities.{{rarity}})\n**Tipo**: $t(common:theme_types.{{type}})"
+    },
     "buy_colors": {
       "has-color": "Eu agradeço sua empolgação para comprar em meu brechó, mas você já possui esta cor!",
       "poor": "Você não tem estrelinhas o suficiente para comprar esta cor!",

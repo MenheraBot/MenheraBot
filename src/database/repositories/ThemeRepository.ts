@@ -27,30 +27,64 @@ export default class ThemeRepository {
     return result;
   }
 
+  async addTableTheme(userId: string, tableId: number): Promise<void> {
+    await this.themesModal.updateOne(
+      { id: userId },
+      { $push: { tableThemes: { id: tableId, aquiredAt: Date.now() } } },
+    );
+  }
+
+  async addCardsTheme(userId: string, cardId: number): Promise<void> {
+    await this.themesModal.updateOne(
+      { id: userId },
+      { $push: { cardsTheme: { id: cardId, aquiredAt: Date.now() } } },
+    );
+  }
+
+  async addCardBackgroundTheme(userId: string, cardBackgroundId: number): Promise<void> {
+    await this.themesModal.updateOne(
+      {
+        id: userId,
+      },
+      { $push: { cardsBackgroundThemes: { id: cardBackgroundId, aquiredAt: Date.now() } } },
+    );
+  }
+
+  async addProfileTheme(userId: string, profileId: number): Promise<void> {
+    await this.themesModal.updateOne(
+      { id: userId },
+      { $push: { profileThemes: { id: profileId, aquiredAt: Date.now() } } },
+    );
+  }
+
   async setTableTheme(userId: string, tableId: number): Promise<void> {
-    await this.themesModal.updateOne({ id: userId, selectedTableTheme: tableId });
+    await this.themesModal.updateOne({ id: userId }, { selectedTableTheme: tableId });
 
     if (this.redisClient) this.redisClient.setex(`table_theme:${userId}`, 3600, tableId);
   }
 
-  async setCardTheme(userId: string, cardId: number): Promise<void> {
-    await this.themesModal.updateOne({ id: userId, selectedCardTheme: cardId });
+  async setCardsTheme(userId: string, cardId: number): Promise<void> {
+    await this.themesModal.updateOne({ id: userId }, { selectedCardTheme: cardId });
 
     if (this.redisClient) this.redisClient.setex(`card_theme:${userId}`, 3600, cardId);
   }
 
   async setCardBackgroundTheme(userId: string, cardBackgroundId: number): Promise<void> {
-    await this.themesModal.updateOne({
-      id: userId,
-      selectedCardBackgroundTheme: cardBackgroundId,
-    });
+    await this.themesModal.updateOne(
+      {
+        id: userId,
+      },
+      {
+        selectedCardBackgroundTheme: cardBackgroundId,
+      },
+    );
 
     if (this.redisClient)
       this.redisClient.setex(`card_background_theme:${userId}`, 3600, cardBackgroundId);
   }
 
   async setProfileTheme(userId: string, profileId: number): Promise<void> {
-    await this.themesModal.updateOne({ id: userId, selectedProfileTheme: profileId });
+    await this.themesModal.updateOne({ id: userId }, { selectedProfileTheme: profileId });
 
     if (this.redisClient) this.redisClient.setex(`profile_theme:${userId}`, 3600, profileId);
   }
@@ -69,7 +103,7 @@ export default class ThemeRepository {
     return getThemeById<ITableTheme>(theme.selectedTableTheme).data.theme;
   }
 
-  async getCardTheme(userId: string): Promise<AvailableCardThemes> {
+  async getCardsTheme(userId: string): Promise<AvailableCardThemes> {
     if (this.redisClient) {
       const theme = await this.redisClient.get(`card_theme:${userId}`);
       if (theme) return theme as AvailableCardThemes;

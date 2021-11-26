@@ -9,7 +9,7 @@ import {
   MessageActionRowComponentResolvable,
   TextBasedChannels,
 } from 'discord.js-light';
-import { IReturnData, ThemeFiles, TMagicItemsFile } from '@utils/Types';
+import { IReturnData, IUserThemesSchema, ThemeFiles, TMagicItemsFile } from '@utils/Types';
 import * as Sentry from '@sentry/node';
 import ImageThemes from '@data/ImageThemes';
 
@@ -120,7 +120,7 @@ export const resolveSeparatedStrings = (string: string): string[] => string.spli
 export const disableComponents = <T extends MessageButton | MessageSelectMenu>(
   label: string,
   components: T[],
-): T[] =>
+): MessageActionRowComponentResolvable[] =>
   components.map((c) => {
     c.setDisabled(true);
     if (c instanceof MessageSelectMenu) c.setPlaceholder(label);
@@ -171,3 +171,27 @@ export const getThemeById = <T extends ThemeFiles = ThemeFiles>(id: number): IRe
   Object.entries(ImageThemes)
     .filter((a) => Number(a[0]) === id)
     .map((a) => ({ id: Number(a[0]), data: a[1] }))[0];
+
+export const getAllThemeUserIds = (
+  user: IUserThemesSchema,
+): Array<{ id: number; inUse: boolean }> => {
+  const allIds: { id: number; inUse: boolean }[] = [];
+
+  user.cardsBackgroundThemes.forEach((a) =>
+    allIds.push({ id: a.id, inUse: user.selectedCardBackgroundTheme === a.id }),
+  );
+
+  user.cardsThemes.forEach((a) =>
+    allIds.push({ id: a.id, inUse: user.selectedCardTheme === a.id }),
+  );
+
+  user.profileThemes.forEach((a) =>
+    allIds.push({ id: a.id, inUse: user.selectedProfileTheme === a.id }),
+  );
+
+  user.tableThemes.forEach((a) =>
+    allIds.push({ id: a.id, inUse: user.selectedTableTheme === a.id }),
+  );
+
+  return allIds;
+};

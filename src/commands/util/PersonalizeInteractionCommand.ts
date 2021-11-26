@@ -2,7 +2,14 @@ import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { COLORS, emojis } from '@structures/Constants';
 import { IReturnData, ThemeFiles } from '@utils/Types';
-import Util, { actionRow, getThemeById, resolveCustomId, toWritableUTF } from '@utils/Util';
+import Util, {
+  actionRow,
+  disableComponents,
+  getAllThemeUserIds,
+  getThemeById,
+  resolveCustomId,
+  toWritableUTF,
+} from '@utils/Util';
 import {
   ColorResolvable,
   MessageButton,
@@ -73,13 +80,6 @@ export default class PersonalizeInteractionCommand extends InteractionCommand {
   }
 
   static async ThemesInteractionCommand(ctx: InteractionCommandContext): Promise<void> {
-    const databaseFieldBaseOnThemeType = {
-      profile: 'profileThemes' as const,
-      card: 'cardsThemes' as const,
-      card_background: 'cardsBackgroundThemes' as const,
-      table: 'tableThemes' as const,
-    };
-
     const themeType = ctx.options.getString('tipo', true) as
       | 'profile'
       | 'card'
@@ -89,44 +89,40 @@ export default class PersonalizeInteractionCommand extends InteractionCommand {
     const userThemes = await ctx.client.repositories.themeRepository.findOrCreate(ctx.author.id);
     const embed = new MessageEmbed()
       .setColor(ctx.data.user.selectedColor)
-      .setTitle(ctx.locale(`commands:temas.${themeType}`))
-      .setDescription(ctx.locale('commands:temas.choose'));
+      .setTitle(ctx.locale(`commands:temas.${themeType}`));
 
     const selectMenu = new MessageSelectMenu()
       .setCustomId(`${ctx.interaction.id} | SELECT`)
       .setMinValues(1)
       .setMaxValues(1);
 
-    const availableProfiles = userThemes[databaseFieldBaseOnThemeType[themeType]].reduce<
-      IReturnData<ThemeFiles>[]
-    >((p, c) => {
-      if (
-        c.id === userThemes.selectedCardBackgroundTheme ||
-        c.id === userThemes.selectedCardTheme ||
-        c.id === userThemes.selectedProfileTheme ||
-        c.id === userThemes.selectedTableTheme
-      )
+    const availableProfiles = getAllThemeUserIds(userThemes).reduce<IReturnData<ThemeFiles>[]>(
+      (p, c) => {
+        if (c.inUse) return p;
+
+        const theme = getThemeById(c.id);
+
+        if (theme.data.type !== themeType) return p;
+
+        p.push(theme);
+
+        selectMenu.addOptions({
+          label: ctx.locale(`data:themes.${c.id as 1}.name`),
+          value: `${c.id}`,
+          description: ctx.locale(`data:themes.${c.id as 1}.description`),
+        });
+
+        embed.addField(
+          ctx.locale(`data:themes.${c.id as 1}.name`),
+          `${ctx.locale(`data:themes.${c.id as 1}.description`)}\n**${ctx.locale(
+            'common:rarity',
+          )}**: ${ctx.locale(`common:rarities.${theme.data.rarity}`)}`,
+          true,
+        );
         return p;
-
-      const theme = getThemeById(c.id);
-
-      if (theme.data.type !== themeType) return p;
-
-      p.push(theme);
-
-      selectMenu.addOptions({
-        label: ctx.locale(`data:themes.${c.id as 1}.name`),
-        value: `${c.id}`,
-        description: ctx.locale(`data:themes.${c.id as 1}.description`),
-      });
-
-      embed.addField(
-        ctx.locale(`data:themes.${c.id as 1}.name`),
-        ctx.locale(`data:themes.${c.id as 1}.description`),
-        true,
-      );
-      return p;
-    }, []);
+      },
+      [],
+    );
 
     if (availableProfiles.length === 0) {
       embed.setDescription(ctx.locale('commands:temas.no-themes'));
@@ -145,15 +141,14 @@ export default class PersonalizeInteractionCommand extends InteractionCommand {
 
     if (!collected) {
       ctx.makeMessage({
-        components: [],
-        content: ctx.prettyResponse('error', 'common:timesup'),
+        components: [actionRow(disableComponents(ctx.locale('common:timesup'), [selectMenu]))],
       });
       return;
     }
 
     switch (themeType) {
       case 'card':
-        ctx.client.repositories.themeRepository.setCardTheme(
+        ctx.client.repositories.themeRepository.setCardsTheme(
           ctx.author.id,
           Number(collected.values[0]),
         );

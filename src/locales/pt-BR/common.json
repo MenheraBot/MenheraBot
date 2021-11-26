@@ -20,5 +20,20 @@
   "estrelinhas": "Estrelinhas",
   "gods": "Deuses",
   "hours": "Horas",
-  "minutes": "Minutos"
+  "minutes": "Minutos",
+  "rarity": "Raridade",
+  "rarities": {
+    "common": "Comum",
+    "rare": "Raro",
+    "epic": "Épico",
+    "legendary": "Lendário",
+    "mythical": "Mítico",
+    "divine": "Divino"
+  },
+  "theme_types": {
+    "profile": "Perfil",
+    "cards": "Cartas",
+    "table": "Mesa",
+    "card_background": "Fundo da Carta"
+  }
 }

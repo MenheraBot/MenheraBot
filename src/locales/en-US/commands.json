@@ -222,6 +222,13 @@
       "color_code": "Color code:",
       "price": "Price:"
     },
+    "buy_themes": {
+      "title": "🎊 | Buy Themes",
+      "data": "**{{description}}**\n**Price**: {{price}} :star:\n**Rarity**: $t(common:rarities.{{rarity}})\n**Type**: $t(common:theme_types.{{type}})",
+      "description": "Below are some themes you can buy right away.",
+      "success": "**Purchase successfully made!** You can now enable it on `/personalizar temas`",
+      "poor": "You don't have all these stars to buy this!"
+    },
     "buy_colors": {
       "has-color": "I appreciate your excitement to buy at my thrift store, but you already have this color!",
       "poor": "you don't have enough stars to buy this color!",

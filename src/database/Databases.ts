@@ -88,8 +88,8 @@ export default class Databases {
     this.blacklistRepository = new BlacklistRepository(this.userRepository, this.redisClient);
     this.topRepository = new TopRepository(this.Users);
     this.giveRepository = new GiveRepository(this.Users);
-    this.shopRepository = new ShopRepository(this.Users);
     this.themeRepository = new ThemeRepository(this.Themes, this.redisClient);
+    this.shopRepository = new ShopRepository(this.Users, this.themeRepository);
   }
 
   get repositories(): IDatabaseRepositories {

@@ -1,9 +1,40 @@
 import { Users } from '@structures/DatabaseCollections';
-import { HuntingTypes, IColor } from '@utils/Types';
+import { AvailableThemeTypes, HuntingTypes, IColor } from '@utils/Types';
 import { negate } from '@utils/Util';
+import ThemeRepository from './ThemeRepository';
 
 export default class ShopRepository {
-  constructor(private userModal: typeof Users) {}
+  constructor(private userModal: typeof Users, private themeRepository: ThemeRepository) {}
+
+  async buyTheme(
+    userID: string,
+    themeID: number,
+    price: number,
+    themeType: AvailableThemeTypes,
+  ): Promise<void> {
+    await this.userModal.updateOne(
+      { id: userID },
+      { $inc: { estrelinhas: negate(price) }, lastCommandAt: Date.now() },
+    );
+
+    switch (themeType) {
+      case 'profile':
+        await this.themeRepository.addProfileTheme(userID, themeID);
+        break;
+
+      case 'cards':
+        await this.themeRepository.addCardsTheme(userID, themeID);
+        break;
+
+      case 'card_background':
+        await this.themeRepository.addCardBackgroundTheme(userID, themeID);
+        break;
+
+      case 'table':
+        await this.themeRepository.addTableTheme(userID, themeID);
+        break;
+    }
+  }
 
   async buyItem(userID: string, itemID: number, price: number): Promise<void> {
     await this.userModal.updateOne(

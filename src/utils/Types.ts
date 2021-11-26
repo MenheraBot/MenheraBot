@@ -107,6 +107,7 @@ export type AvailableCardThemes = 'default';
 export type AvailableCardBackgroundThemes = 'red';
 export type AvailableTableThemes = 'green' | 'blue';
 export type AvailableProfilesThemes = 'default' | 'upsidedown';
+export type AvailableThemeTypes = 'profile' | 'cards' | 'card_background' | 'table';
 
 export interface IUserBuyableData {
   id: number;

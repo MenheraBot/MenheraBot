@@ -4,7 +4,7 @@ import InteractionCommandContext from '@structures/command/InteractionContext';
 import { COLORS, emojis, shopEconomy } from '@structures/Constants';
 import MagicItems from '@data/HuntMagicItems';
 import { HuntingTypes, IHuntProbablyBoostItem } from '@utils/Types';
-import Util, { actionRow } from '@utils/Util';
+import Util, { actionRow, disableComponents, getAllThemeUserIds, getThemeById } from '@utils/Util';
 import {
   MessageEmbed,
   MessageSelectMenu,
@@ -60,6 +60,11 @@ export default class ShopInteractionCommand extends InteractionCommand {
                   required: true,
                 },
               ],
+            },
+            {
+              name: 'temas',
+              description: '「🎊」・Compre temas para a sua conta',
+              type: 'SUB_COMMAND',
             },
           ],
         },
@@ -176,6 +181,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
         'rolls',
         'inUseItems',
         'inventory',
+        'selectedColor',
       ],
     });
   }
@@ -193,6 +199,8 @@ export default class ShopInteractionCommand extends InteractionCommand {
       if (option === 'rolls') return ShopInteractionCommand.buyRolls(ctx);
 
       if (option === 'itens') return ShopInteractionCommand.buyItems(ctx);
+
+      if (option === 'temas') return ShopInteractionCommand.buyThemes(ctx);
     }
 
     if (type === 'info') {
@@ -202,6 +210,92 @@ export default class ShopInteractionCommand extends InteractionCommand {
 
       if (option === 'vender') return ShopInteractionCommand.sellInfo(ctx);
     }
+  }
+
+  static async buyThemes(ctx: InteractionCommandContext): Promise<void> {
+    const availableToBuyIds = [1, 2];
+
+    const embed = new MessageEmbed()
+      .setTitle(ctx.locale('commands:loja.buy_themes.title'))
+      .setDescription(ctx.locale('commands:loja.buy_themes.description'))
+      .setColor(ctx.data.user.selectedColor);
+    const selector = new MessageSelectMenu()
+      .setCustomId(`${ctx.interaction.id} | SELECT`)
+      .setMinValues(1)
+      .setMaxValues(1);
+
+    const userThemes = await ctx.client.repositories.themeRepository.findOrCreate(ctx.author.id);
+
+    const haveUserThemes = getAllThemeUserIds(userThemes);
+
+    availableToBuyIds.forEach((a) => {
+      const inInventory = haveUserThemes.find((b) => b.id === a);
+      const theme = getThemeById(a);
+
+      embed.addField(
+        `${inInventory ? '~~' : ''}${ctx.locale(`data:themes.${a as 1}.name`)}${
+          inInventory ? '~~' : ''
+        }`,
+        ctx.locale('commands:loja.buy_themes.data', {
+          description: ctx.locale(`data:themes.${a as 1}.description`),
+          price: theme.data.price,
+          rarity: theme.data.rarity,
+          type: theme.data.type,
+        }),
+        true,
+      );
+
+      if (!inInventory)
+        selector.addOptions({
+          label: ctx.locale(`data:themes.${a as 1}.name`),
+          description: ctx.locale(`data:themes.${a as 1}.description`),
+          value: `${a}`,
+        });
+    });
+
+    if (selector.options.length === 0) {
+      ctx.makeMessage({ embeds: [embed] });
+      return;
+    }
+
+    const collected = await Util.collectComponentInteractionWithStartingId<SelectMenuInteraction>(
+      ctx.channel,
+      ctx.author.id,
+      ctx.interaction.id,
+      10000,
+    );
+
+    if (!collected) {
+      ctx.makeMessage({
+        embeds: [embed],
+        components: [actionRow(disableComponents(ctx.locale('common:timesup'), [selector]))],
+      });
+      return;
+    }
+
+    const selectedItem = getThemeById(Number(collected.values[0]));
+
+    if (ctx.data.user.estrelinhas < selectedItem.data.price) {
+      ctx.makeMessage({
+        components: [],
+        embeds: [],
+        content: ctx.prettyResponse('error', 'commands:loja.buy_themes.poor'),
+      });
+      return;
+    }
+
+    await ctx.client.repositories.shopRepository.buyTheme(
+      ctx.author.id,
+      selectedItem.id,
+      selectedItem.data.price,
+      selectedItem.data.type,
+    );
+
+    ctx.makeMessage({
+      components: [],
+      embeds: [],
+      content: ctx.prettyResponse('success', 'commands:loja.buy_themes.success'),
+    });
   }
 
   static async buyItems(ctx: InteractionCommandContext): Promise<void> {

@@ -19,5 +19,20 @@
   "demigods": "Demigods",
   "gods": "Gods",
   "hours": "Hours",
-  "minutes": "Minutes"
+  "minutes": "Minutes",
+  "rarity": "Raridade",
+  "rarities": {
+    "common": "Common",
+    "rare": "Rare",
+    "epic": "Epic",
+    "legendary": "Legendary",
+    "mythical": "Mythical",
+    "divine": "Divine"
+  },
+  "theme_types": {
+    "profile": "Profile",
+    "cards": "Cards",
+    "table": "Table",
+    "card_background": "Card Background"
+  }
 }

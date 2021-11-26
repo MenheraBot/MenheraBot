@@ -629,7 +629,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
     const playerCards = matchCards.splice(0, 2);
 
     const tableTheme = await ctx.client.repositories.themeRepository.getTableTheme(ctx.author.id);
-    const cardTheme = await ctx.client.repositories.themeRepository.getCardTheme(ctx.author.id);
+    const cardTheme = await ctx.client.repositories.themeRepository.getCardsTheme(ctx.author.id);
     const backgroundCardTheme =
       await ctx.client.repositories.themeRepository.getCardBackgroundTheme(ctx.author.id);
 
