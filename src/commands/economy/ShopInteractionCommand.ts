@@ -230,7 +230,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
     const haveUserThemes = getAllThemeUserIds(userThemes);
 
     availableToBuyIds.forEach((a) => {
-      const inInventory = haveUserThemes.find((b) => b.id === a);
+      const inInventory = haveUserThemes.some((b) => b.id === a);
       const theme = getThemeById(a);
 
       embed.addField(
