@@ -37,7 +37,7 @@ export default class ThemeRepository {
   async addCardsTheme(userId: string, cardId: number): Promise<void> {
     await this.themesModal.updateOne(
       { id: userId },
-      { $push: { cardsTheme: { id: cardId, aquiredAt: Date.now() } } },
+      { $push: { cardsThemes: { id: cardId, aquiredAt: Date.now() } } },
     );
   }
 
