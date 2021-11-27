@@ -634,6 +634,8 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
     const backgroundCardTheme =
       await ctx.client.repositories.themeRepository.getCardBackgroundTheme(ctx.author.id);
 
+    console.log(tableTheme, cardTheme, backgroundCardTheme);
+
     const res = ctx.client.picassoWs.isAlive
       ? await ctx.client.picassoWs.makeRequest({
           id: ctx.interaction.id,
