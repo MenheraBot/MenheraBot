@@ -92,7 +92,7 @@ export default class ThemeRepository {
   async getTableTheme(userId: string): Promise<AvailableTableThemes> {
     if (this.redisClient) {
       const theme = await this.redisClient.get(`table_theme:${userId}`);
-      if (theme) return theme as AvailableTableThemes;
+      if (theme) return getThemeById<ITableTheme>(Number(theme)).data.theme;
     }
 
     const theme = await this.findOrCreate(userId, ['selectedTableTheme']);
@@ -106,7 +106,7 @@ export default class ThemeRepository {
   async getCardsTheme(userId: string): Promise<AvailableCardThemes> {
     if (this.redisClient) {
       const theme = await this.redisClient.get(`card_theme:${userId}`);
-      if (theme) return theme as AvailableCardThemes;
+      if (theme) return getThemeById<ICardsTheme>(Number(theme)).data.theme;
     }
 
     const theme = await this.findOrCreate(userId, ['selectedCardTheme']);
@@ -120,7 +120,7 @@ export default class ThemeRepository {
   async getProfileTheme(userId: string): Promise<AvailableProfilesThemes> {
     if (this.redisClient) {
       const theme = await this.redisClient.get(`profile_theme:${userId}`);
-      if (theme) return theme as AvailableProfilesThemes;
+      if (theme) return getThemeById<IProfileTheme>(Number(theme)).data.theme;
     }
 
     const theme = await this.findOrCreate(userId, ['selectedProfileTheme']);
@@ -134,7 +134,7 @@ export default class ThemeRepository {
   async getCardBackgroundTheme(userId: string): Promise<AvailableCardBackgroundThemes> {
     if (this.redisClient) {
       const theme = await this.redisClient.get(`card_background_theme:${userId}`);
-      if (theme) return theme as AvailableCardBackgroundThemes;
+      if (theme) return getThemeById<ICardBackgroudTheme>(Number(theme)).data.theme;
     }
 
     const theme = await this.findOrCreate(userId, ['selectedCardBackgroundTheme']);
