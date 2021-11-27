@@ -617,7 +617,7 @@
   },
   "temas": {
     "profile": "Profile Styles",
-    "card": "Card Styles",
+    "cards": "Card Styles",
     "table": "Card Table Styles",
     "card_background": "Card Background Styles",
     "no-themes": "You don't have any such themes to change!",

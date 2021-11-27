@@ -1,7 +1,7 @@
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { COLORS, emojis } from '@structures/Constants';
-import { IReturnData, ThemeFiles } from '@utils/Types';
+import { AvailableThemeTypes, IReturnData, ThemeFiles } from '@utils/Types';
 import Util, {
   actionRow,
   disableComponents,
@@ -80,11 +80,7 @@ export default class PersonalizeInteractionCommand extends InteractionCommand {
   }
 
   static async ThemesInteractionCommand(ctx: InteractionCommandContext): Promise<void> {
-    const themeType = ctx.options.getString('tipo', true) as
-      | 'profile'
-      | 'card'
-      | 'table'
-      | 'card_background';
+    const themeType = ctx.options.getString('tipo', true) as AvailableThemeTypes;
 
     const userThemes = await ctx.client.repositories.themeRepository.findOrCreate(ctx.author.id);
     const embed = new MessageEmbed()
@@ -147,7 +143,7 @@ export default class PersonalizeInteractionCommand extends InteractionCommand {
     }
 
     switch (themeType) {
-      case 'card':
+      case 'cards':
         ctx.client.repositories.themeRepository.setCardsTheme(
           ctx.author.id,
           Number(collected.values[0]),
