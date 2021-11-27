@@ -55,7 +55,7 @@ export default class PersonalizeInteractionCommand extends InteractionCommand {
               required: true,
               choices: [
                 { name: '✨ | Perfil', value: 'profile' },
-                { name: '🃏 | Estilo de Carta', value: 'card' },
+                { name: '🃏 | Estilo de Carta', value: 'cards' },
                 { name: '🖼️ | Mesa de Cartas', value: 'table' },
                 { name: '🎴 | Fundo de Carta', value: 'card_background' },
               ],
