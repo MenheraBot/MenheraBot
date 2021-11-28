@@ -58,7 +58,6 @@
     "@types/koa-router": "^7.4.4",
     "@types/koa__cors": "^3.0.3",
     "@types/moment-duration-format": "^2.2.3",
-    "@types/mongoose": "^5.11.97",
     "@typescript-eslint/eslint-plugin": "^4.31.2",
     "@typescript-eslint/parser": "^4.31.2",
     "eslint": "^7.32.0",
