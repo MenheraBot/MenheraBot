@@ -1,5 +1,6 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable no-unused-expressions */
-import { MessageAttachment, MessageButton, MessageEmbed } from 'discord.js-light';
+import { MessageAttachment, MessageButton, MessageEmbed, Message } from 'discord.js-light';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import http from '@utils/HTTPrequests';
@@ -10,7 +11,7 @@ import {
   IBlackjackCards,
 } from '@utils/Types';
 import { BLACKJACK_CARDS, emojis } from '@structures/Constants';
-import Util, { resolveCustomId, actionRow } from '@utils/Util';
+import Util, { resolveCustomId, actionRow, MayNotExists } from '@utils/Util';
 
 const CalculateHandValue = (cards: Array<number>): Array<IBlackjackCards> =>
   cards.reduce((p: Array<IBlackjackCards>, c: number) => {
@@ -54,6 +55,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
     cardTheme: AvailableCardThemes,
     tableTheme: AvailableTableThemes,
     backgroundCardTheme: AvailableCardBackgroundThemes,
+    gameMessage: MayNotExists<Message>,
   ): Promise<void> {
     if (usrCards.length === 2) {
       const oldUserCards = CalculateHandValue(usrCards);
@@ -69,6 +71,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
           cardTheme,
           tableTheme,
           backgroundCardTheme,
+          gameMessage,
         );
     }
 
@@ -154,11 +157,21 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
     const timestamp = Date.now();
     if (!res.err) embed.setImage(`attachment://blackjack-${timestamp}.png`);
 
-    await ctx.makeMessage({
-      embeds: [embed],
-      attachments: res.err ? [] : [new MessageAttachment(res.data, `blackjack-${timestamp}.png`)],
-      components: [{ type: 1, components: [BuyButton, StopButton] }],
-    });
+    gameMessage = gameMessage
+      ? await gameMessage.edit({
+          embeds: [embed],
+          attachments: res.err
+            ? []
+            : [new MessageAttachment(res.data, `blackjack-${timestamp}.png`)],
+          components: [actionRow([BuyButton, StopButton])],
+        })
+      : await ctx.send({
+          embeds: [embed],
+          attachments: res.err
+            ? []
+            : [new MessageAttachment(res.data, `blackjack-${timestamp}.png`)],
+          components: [actionRow([BuyButton, StopButton])],
+        });
 
     const collected = await Util.collectComponentInteraction(ctx.channel, ctx.author.id, 10000);
 
@@ -184,6 +197,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
           cardTheme,
           tableTheme,
           backgroundCardTheme,
+          gameMessage,
         );
         return;
       }
@@ -196,6 +210,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
         cardTheme,
         tableTheme,
         backgroundCardTheme,
+        gameMessage,
       );
       return;
     }
@@ -209,6 +224,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
       cardTheme,
       tableTheme,
       backgroundCardTheme,
+      gameMessage,
     );
   }
 
@@ -233,7 +249,9 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
     cardTheme: AvailableCardThemes,
     tableTheme: AvailableTableThemes,
     backgroundCardTheme: AvailableCardBackgroundThemes,
+    gameMessage: MayNotExists<Message>,
   ): Promise<void> {
+    console.log(gameMessage);
     const userCards = CalculateHandValue(playerCards);
     const dealerCards = CalculateHandValue(menheraCards);
 
@@ -682,7 +700,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
       .setStyle('DANGER')
       .setLabel(ctx.locale('commands:blackjack.stop'));
 
-    await ctx.defer({
+    const gameMessage = await ctx.makeMessage({
       files: attc ? [attc] : [],
       embeds: [embed],
       components: [actionRow([BuyButton, StopButton])],
@@ -691,7 +709,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
     const collected = await Util.collectComponentInteraction(ctx.channel, ctx.author.id, 10000);
 
     if (!collected) {
-      ctx.interaction.editReply({
+      ctx.makeMessage({
         content: `${emojis.error} ${ctx.locale('commands:blackjack.timeout')}`,
         embeds: [],
         attachments: [],
@@ -711,6 +729,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
         cardTheme,
         tableTheme,
         backgroundCardTheme,
+        gameMessage,
       );
       return;
     }
@@ -725,6 +744,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
         cardTheme,
         tableTheme,
         backgroundCardTheme,
+        gameMessage,
       );
     }
   }
