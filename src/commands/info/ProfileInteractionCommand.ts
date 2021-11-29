@@ -80,7 +80,7 @@ export default class ProfileInteractionCommand extends InteractionCommand {
 
     await ctx.defer();
 
-    const avatar = member.displayAvatarURL({ format: 'png' });
+    const avatar = member.displayAvatarURL({ format: 'png', size: 512 });
     const usageCommands = await HttpRequests.getProfileCommands(member.id);
 
     const userSendData: IUserDataToProfile = {
