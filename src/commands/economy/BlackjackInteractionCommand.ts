@@ -10,7 +10,7 @@ import {
   IBlackjackCards,
 } from '@utils/Types';
 import { BLACKJACK_CARDS, emojis } from '@structures/Constants';
-import Util, { resolveCustomId } from '@utils/Util';
+import Util, { resolveCustomId, actionRow } from '@utils/Util';
 
 const CalculateHandValue = (cards: Array<number>): Array<IBlackjackCards> =>
   cards.reduce((p: Array<IBlackjackCards>, c: number) => {
@@ -151,38 +151,14 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
       .setStyle('DANGER')
       .setLabel(ctx.locale('commands:blackjack.stop'));
 
-    const message = await ctx.channel.messages
-      .fetch((await ctx.interaction.fetchReply()).id)
-      .catch(() => null);
-    if (message) message.removeAttachments();
+    const timestamp = Date.now();
+    if (!res.err) embed.setImage(`attachment://blackjack-${timestamp}.png`);
 
-    if (!res.err) {
-      const timestamp = Date.now();
-      const attachment = new MessageAttachment(res.data, `blackjack-${timestamp}.png`);
-      embed.setImage(`attachment://blackjack-${timestamp}.png`);
-
-      message
-        ? await message.edit({
-            embeds: [embed],
-            files: [attachment],
-            components: [{ type: 1, components: [BuyButton, StopButton] }],
-          })
-        : await ctx.send({
-            embeds: [embed],
-            files: [attachment],
-            components: [{ type: 1, components: [BuyButton, StopButton] }],
-          });
-    } else {
-      message
-        ? await message.edit({
-            embeds: [embed],
-            components: [{ type: 1, components: [BuyButton, StopButton] }],
-          })
-        : await ctx.send({
-            embeds: [embed],
-            components: [{ type: 1, components: [BuyButton, StopButton] }],
-          });
-    }
+    await ctx.makeMessage({
+      embeds: [embed],
+      attachments: res.err ? [] : [new MessageAttachment(res.data, `blackjack-${timestamp}.png`)],
+      components: [{ type: 1, components: [BuyButton, StopButton] }],
+    });
 
     const collected = await Util.collectComponentInteraction(ctx.channel, ctx.author.id, 10000);
 
@@ -599,14 +575,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
   async run(ctx: InteractionCommandContext): Promise<void> {
     const valor = ctx.options.getInteger('aposta', true);
 
-    if (!valor) {
-      await ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'commands:blackjack.bad-usage'),
-        ephemeral: true,
-      });
-      return;
-    }
-    if (!valor || valor > 50000 || valor < 1000) {
+    if (valor > 50000 || valor < 1000) {
       await ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:blackjack.invalid-value'),
         ephemeral: true,
@@ -641,9 +610,8 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
           data: {
             userCards: CalculateHandValue(playerCards),
             menheraCards: CalculateHandValue(dealerCards).map((a, i) => {
-              if (i === 1) {
-                a.hidden = true;
-              }
+              if (i === 1) a.hidden = true;
+
               return a;
             }),
             userTotal: BlackjackInteractionCommand.checkHandFinalValue(
@@ -705,27 +673,20 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
     }
 
     const BuyButton = new MessageButton()
-      .setCustomId(`${ctx.interaction.id}|BUY`)
+      .setCustomId(`${ctx.interaction.id} | BUY`)
       .setStyle('PRIMARY')
       .setLabel(ctx.locale('commands:blackjack.buy'));
 
     const StopButton = new MessageButton()
-      .setCustomId(`${ctx.interaction.id}|STOP`)
+      .setCustomId(`${ctx.interaction.id} | STOP`)
       .setStyle('DANGER')
       .setLabel(ctx.locale('commands:blackjack.stop'));
 
-    if (attc) {
-      await ctx.defer({
-        embeds: [embed],
-        files: [attc],
-        components: [{ type: 1, components: [BuyButton, StopButton] }],
-      });
-    } else {
-      await ctx.defer({
-        embeds: [embed],
-        components: [{ type: 1, components: [BuyButton, StopButton] }],
-      });
-    }
+    await ctx.defer({
+      files: attc ? [attc] : [],
+      embeds: [embed],
+      components: [actionRow([BuyButton, StopButton])],
+    });
 
     const collected = await Util.collectComponentInteraction(ctx.channel, ctx.author.id, 10000);
 
@@ -740,7 +701,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
       return;
     }
 
-    if (collected.customId === `${ctx.interaction.id}|BUY`) {
+    if (resolveCustomId(collected.customId) === 'BUY') {
       BlackjackInteractionCommand.continueFromBuy(
         ctx,
         valor,
@@ -754,7 +715,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
       return;
     }
 
-    if (collected.customId === `${ctx.interaction.id}|STOP`) {
+    if (resolveCustomId(collected.customId) === 'STOP') {
       BlackjackInteractionCommand.finishGame(
         ctx,
         valor,
