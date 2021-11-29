@@ -77,8 +77,9 @@ export interface IUserSchema {
   mamado: number;
   mamou: number;
   married: string | null;
-  info: string;
   marriedDate: string | null;
+  marriedAt: number | null;
+  info: string;
   ban: boolean;
   banReason: string | null;
   selectedColor: ColorResolvable;
