@@ -95,7 +95,7 @@ const ImageThemes: { [id: number]: ThemeFiles } & Object = {
   },
   14: {
     isBuyable: true,
-    price: 500_000,
+    price: 500_000, // 70% Discount at 24-25 december
     rarity: 'rare',
     type: 'profile',
     theme: 'christmas_2021',

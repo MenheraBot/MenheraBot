@@ -182,6 +182,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
         'inUseItems',
         'inventory',
         'selectedColor',
+        'badges',
       ],
     });
   }
@@ -291,6 +292,13 @@ export default class ShopInteractionCommand extends InteractionCommand {
       selectedItem.data.price,
       selectedItem.data.type,
     );
+
+    // TODO: Remove event in 30/12/2021
+
+    if (selectedItem.id === 14 && !ctx.data.user.badges.some((a) => a.id === 13)) {
+      ctx.client.repositories.badgeRepository.addBadge(ctx.author.id, 13);
+      ctx.send({ content: ctx.prettyResponse('wink', 'events:christmas') });
+    }
 
     ctx.makeMessage({
       components: [],
