@@ -1,7 +1,7 @@
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 
-import { BUYABLE_ITEMS, COLORS, emojis, shopEconomy } from '@structures/Constants';
+import { BUYABLE_THEMES, COLORS, emojis, shopEconomy } from '@structures/Constants';
 import MagicItems from '@data/HuntMagicItems';
 import { HuntingTypes, IHuntProbablyBoostItem } from '@utils/Types';
 import Util, { actionRow, disableComponents, getAllThemeUserIds, getThemeById } from '@utils/Util';
@@ -228,7 +228,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
 
     const haveUserThemes = getAllThemeUserIds(userThemes);
 
-    BUYABLE_ITEMS.forEach((a) => {
+    BUYABLE_THEMES.forEach((a) => {
       const inInventory = haveUserThemes.some((b) => b.id === a);
       const theme = getThemeById(a);
 

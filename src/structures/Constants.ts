@@ -228,4 +228,4 @@ export const COLORS = {
 
 export const BLACKJACK_CARDS = Array.from({ length: 52 }, (_, i) => i + 1);
 
-export const BUYABLE_ITEMS = [1, 2, 7, 8, 9, 10, 11, 12, 13, 14];
+export const BUYABLE_THEMES = [1, 2, 7, 8, 9, 10, 11, 12, 13, 14];
