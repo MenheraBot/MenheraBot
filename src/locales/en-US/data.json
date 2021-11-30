@@ -27,6 +27,26 @@
     "7": {
       "name": "Demonic Accelerator",
       "description": "A machine that speeds up the time between hunting demons"
+    },
+    "8": {
+      "name": "Giant Hourglass",
+      "description": "A huge hourglass capable of knowing the time when the giants will be in hunting dungeons!"
+    },
+    "9": {
+      "name": "Heavenly Harp",
+      "description": "Nothing better to attract angels than your own music"
+    },
+    "10": {
+      "name": "Trumpets of Heaven",
+      "description": "The legend says that when blowing the trumpets of heaven, the archangels will descend to Earth for revenge"
+    },
+    "11": {
+      "name": "Key to Camp Half Blood",
+      "description": "A key to enter the camp of the demigods"
+    },
+    "12": {
+      "name": "Head of Medusa",
+      "description": "All Gods fear it, so they band together to try to eliminate it, bringing an abundance of Gods to the dungeon"
     }
   },
   "themes": {

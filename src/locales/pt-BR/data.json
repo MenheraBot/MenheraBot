@@ -27,6 +27,26 @@
     "7": {
       "name": "Acelerador Demoníaco",
       "description": "Uma máquina que acelera o tempo entre caçar de demônios"
+    },
+    "8": {
+      "name": "Ampulheta Gigante",
+      "description": "Uma imensa ampulheta capaz de saber o tempo em que os gigantes estarão nas dungeons de caça!"
+    },
+    "9": {
+      "name": "Harpa Celestial",
+      "description": "Nada melhor para atrair anjos do que sua própria música"
+    },
+    "10": {
+      "name": "Trombetas dos Céus",
+      "description": "A lenda conta que ao tocar as trombetas dos céus, os arcanjos descerão à Terra para vingança"
+    },
+    "11": {
+      "name": "Chave do Acampamento dos Meio Sangue",
+      "description": "Uma chave para entrar no acampamento dos semideuses"
+    },
+    "12": {
+      "name": "Cabeça de Medusa",
+      "description": "Todos Deuses a temem, por isso, se agrupam para tentar eliminá-la, trazendo abundância de Deuses à dungeon"
     }
   },
   "themes": {
