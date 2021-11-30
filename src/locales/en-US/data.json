@@ -81,6 +81,10 @@
     "13": {
       "name": "Round Table",
       "description": "A different Table layout. It doesn't fit perfectly, but it's round"
+    },
+    "14": {
+      "name": "Christmas Weather",
+      "description": "It's Christmas, It's Christmas! Come celebrate Christmas with the First Next Generation Profile Layout"
     }
   }
 }

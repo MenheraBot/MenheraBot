@@ -81,6 +81,10 @@
     "13": {
       "name": "Mesa Redonda",
       "description": "Um layout diferente de Mesas. Ela não se encaixa perfeitamente, mas ela é redonda"
+    },
+    "14": {
+      "name": "Clima Natalino",
+      "description": "É natal, é natal! Venha comemorar o natal com o Primeiro Layout de Perfil da Nova Geração"
     }
   }
 }

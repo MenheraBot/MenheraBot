@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- Novo layout de perfil! Clima Natalino!
+- O evento de Natal Começou! Compre o perfil Clima Natalino durante dezembro e ganhe uma badge exclusiva!
+- Novas Badges: Natal 2021 e Bot (Apenas para bots verificados)
+
+### Fixed
+
+- Blackjack enviava varias mensagens ao inves de editar
+
 ## [3.5.2] 2021-11-26
 
 ### Added

@@ -105,7 +105,7 @@ export default class PersonalizeInteractionCommand extends InteractionCommand {
         selectMenu.addOptions({
           label: ctx.locale(`data:themes.${c.id as 1}.name`),
           value: `${c.id}`,
-          description: ctx.locale(`data:themes.${c.id as 1}.description`),
+          description: ctx.locale(`data:themes.${c.id as 1}.description`).substring(0, 100),
         });
 
         embed.addField(

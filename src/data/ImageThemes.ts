@@ -93,6 +93,13 @@ const ImageThemes: { [id: number]: ThemeFiles } & Object = {
     theme: 'rounded',
     type: 'table',
   },
+  14: {
+    isBuyable: true,
+    price: 500_000,
+    rarity: 'rare',
+    type: 'profile',
+    theme: 'christmas_2021',
+  },
 };
 
 export default ImageThemes;

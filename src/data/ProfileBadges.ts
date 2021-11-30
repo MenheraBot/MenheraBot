@@ -112,6 +112,23 @@ const Badges = {
       'Dado aos jogadores que ajudaram a Menhera a atingir o seu ápice do poder, iniciando seu plano de vingança...',
     link: 'https://media.discordapp.net/attachments/793669360857907200/900569702680633344/halloween.png',
   },
+  13: {
+    name: 'Evento de Natal de 2021',
+    availabeStartAt: '01/12/2021',
+    availabeStoptAt: '30/12/2021',
+    rarityLevel: 5,
+    description:
+      'Esta Badge foi liberada para usuários que compraram o perfil de natal durante o evento',
+    link: 'https://media.discordapp.net/attachments/793669360857907200/915072294810968094/natal2021.png',
+  },
+  14: {
+    name: 'Bot Verificado',
+    availabeStartAt: '-----',
+    availabeStoptAt: '-----',
+    rarityLevel: 0,
+    description: 'Apenas bots verificados possuem esta badge. Simples',
+    link: 'https://media.discordapp.net/attachments/793669360857907200/915072406203285594/bot.png',
+  },
 };
 
 export default Badges;

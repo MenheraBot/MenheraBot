@@ -1,7 +1,7 @@
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 
-import { COLORS, emojis, shopEconomy } from '@structures/Constants';
+import { BUYABLE_ITEMS, COLORS, emojis, shopEconomy } from '@structures/Constants';
 import MagicItems from '@data/HuntMagicItems';
 import { HuntingTypes, IHuntProbablyBoostItem } from '@utils/Types';
 import Util, { actionRow, disableComponents, getAllThemeUserIds, getThemeById } from '@utils/Util';
@@ -213,8 +213,6 @@ export default class ShopInteractionCommand extends InteractionCommand {
   }
 
   static async buyThemes(ctx: InteractionCommandContext): Promise<void> {
-    const availableToBuyIds = [1, 2, 7, 8, 9, 10, 11, 12, 13];
-
     const embed = new MessageEmbed()
       .setTitle(ctx.locale('commands:loja.buy_themes.title'))
       .setDescription(ctx.locale('commands:loja.buy_themes.description'))
@@ -229,7 +227,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
 
     const haveUserThemes = getAllThemeUserIds(userThemes);
 
-    availableToBuyIds.forEach((a) => {
+    BUYABLE_ITEMS.forEach((a) => {
       const inInventory = haveUserThemes.some((b) => b.id === a);
       const theme = getThemeById(a);
 
@@ -249,7 +247,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
       if (!inInventory)
         selector.addOptions({
           label: ctx.locale(`data:themes.${a as 1}.name`),
-          description: ctx.locale(`data:themes.${a as 1}.description`),
+          description: ctx.locale(`data:themes.${a as 1}.description`).substring(0, 100),
           value: `${a}`,
         });
     });
