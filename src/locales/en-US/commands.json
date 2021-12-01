@@ -226,6 +226,7 @@
       "title": "🎊 | Buy Themes",
       "data": "**{{description}}**\n**Price**: {{price}} :star:\n**Rarity**: $t(common:rarities.{{rarity}})\n**Type**: $t(common:theme_types.{{type}})",
       "description": "Below are some themes you can buy right away.",
+      "owned": "(Owned)",
       "success": "**Purchase successfully made!** You can now enable it on `/personalizar temas`",
       "poor": "You don't have all these stars to buy this!"
     },

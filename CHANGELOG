@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Changed
 
 - Probabilidade de alguns itens de caça foram mudadas! **O Colt**: 1: `46%` -> `38%` | 2: `18%` -> `24%` | 5: `9%` -> `11%`. **Deicídio**: 0: `75%` -> `82%` | 1: `25%` -> `18%`
+- O comando `/loja comprar temas` foi melhorado para facilitar o uso
 
 ## [3.5.3] 2021-11-30
 

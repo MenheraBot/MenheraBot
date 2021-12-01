@@ -236,6 +236,7 @@
       "title": "🎊 | Comprar Temas",
       "description": "Abaixo estão alguns temas que você pode comprar imediatamente",
       "poor": "Tu não possui todas essas estrelinhas para comprar isso!",
+      "owned": "(Possui)",
       "success": "**Compra efetuada com sucesso!** Você já pode habilitá-la no `/personalizar temas`",
       "data": "**{{description}}**\n**Preço**: {{price}} :star:\n**Raridade**: $t(common:rarities.{{rarity}})\n**Tipo**: $t(common:theme_types.{{type}})"
     },

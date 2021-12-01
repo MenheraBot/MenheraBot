@@ -3,13 +3,16 @@ import InteractionCommandContext from '@structures/command/InteractionContext';
 
 import { BUYABLE_THEMES, COLORS, emojis, shopEconomy } from '@structures/Constants';
 import MagicItems from '@data/HuntMagicItems';
-import { HuntingTypes, IHuntProbablyBoostItem } from '@utils/Types';
-import Util, { actionRow, disableComponents, getAllThemeUserIds, getThemeById } from '@utils/Util';
+import { AvailableThemeTypes, HuntingTypes, IHuntProbablyBoostItem } from '@utils/Types';
+import Util, { actionRow, getAllThemeUserIds, getThemeById, resolveCustomId } from '@utils/Util';
 import {
   MessageEmbed,
   MessageSelectMenu,
   MessageSelectOptionData,
   SelectMenuInteraction,
+  MessageComponentInteraction,
+  MessageButton,
+  MessageActionRow,
   ColorResolvable,
 } from 'discord.js-light';
 
@@ -224,86 +227,148 @@ export default class ShopInteractionCommand extends InteractionCommand {
       .setMinValues(1)
       .setMaxValues(1);
 
-    const userThemes = await ctx.client.repositories.themeRepository.findOrCreate(ctx.author.id);
+    const profileButton = new MessageButton()
+      .setCustomId(`${ctx.interaction.id} | PROFILE`)
+      .setStyle('PRIMARY')
+      .setDisabled(true)
+      .setLabel(ctx.locale('common:theme_types.profile'));
 
+    const cardsButton = new MessageButton()
+      .setCustomId(`${ctx.interaction.id} | CARDS`)
+      .setStyle('PRIMARY')
+      .setLabel(ctx.locale('common:theme_types.cards'));
+
+    const backgroundButton = new MessageButton()
+      .setCustomId(`${ctx.interaction.id} | BACKGROUND`)
+      .setStyle('PRIMARY')
+      .setLabel(ctx.locale('common:theme_types.card_background'));
+
+    const tableButton = new MessageButton()
+      .setCustomId(`${ctx.interaction.id} | TABLE`)
+      .setStyle('PRIMARY')
+      .setLabel(ctx.locale('common:theme_types.table'));
+
+    const userThemes = await ctx.client.repositories.themeRepository.findOrCreate(ctx.author.id);
     const haveUserThemes = getAllThemeUserIds(userThemes);
 
-    BUYABLE_THEMES.forEach((a) => {
-      const inInventory = haveUserThemes.some((b) => b.id === a);
-      const theme = getThemeById(a);
+    const components: MessageActionRow[] = [
+      actionRow([profileButton, cardsButton, backgroundButton, tableButton]),
+    ];
 
-      embed.addField(
-        `${inInventory ? '~~' : ''}${ctx.locale(`data:themes.${a as 1}.name`)}${
-          inInventory ? '~~' : ''
-        }`,
-        ctx.locale('commands:loja.buy_themes.data', {
-          description: ctx.locale(`data:themes.${a as 1}.description`),
-          price: theme.data.price,
-          rarity: theme.data.rarity,
-          type: theme.data.type,
-        }),
-        true,
-      );
+    // themeIndex is the index of components array
+    const changeThemeType = (themeIndex: number): void => {
+      components[0].components.map((a, i) => a.setDisabled(i === themeIndex));
 
-      if (!inInventory)
-        selector.addOptions({
-          label: ctx.locale(`data:themes.${a as 1}.name`),
-          description: ctx.locale(`data:themes.${a as 1}.description`).substring(0, 100),
-          value: `${a}`,
-        });
+      const themeByIndex: { [key: number]: AvailableThemeTypes } = {
+        0: 'profile',
+        1: 'cards',
+        2: 'card_background',
+        3: 'table',
+      };
+
+      embed.setFields([]);
+      selector.setOptions([]);
+
+      BUYABLE_THEMES.forEach((a) => {
+        const inInventory = haveUserThemes.some((b) => b.id === a);
+        const theme = getThemeById(a);
+
+        if (theme.data.type !== themeByIndex[themeIndex]) return;
+
+        embed.addField(
+          `${ctx.locale(`data:themes.${a as 1}.name`)} ${
+            inInventory ? `__${ctx.locale('commands:loja.buy_themes.owned')}__` : ''
+          }`,
+          ctx.locale('commands:loja.buy_themes.data', {
+            description: ctx.locale(`data:themes.${a as 1}.description`),
+            price: theme.data.price,
+            rarity: theme.data.rarity,
+            type: theme.data.type,
+          }),
+          true,
+        );
+
+        if (!inInventory)
+          selector.addOptions({
+            label: ctx.locale(`data:themes.${a as 1}.name`),
+            description: ctx.locale(`data:themes.${a as 1}.description`).substring(0, 100),
+            value: `${a}`,
+          });
+      });
+
+      if (selector.options.length > 0) components[1] = actionRow([selector]);
+      else if (typeof components[1] !== 'undefined') components.pop();
+      ctx.makeMessage({ embeds: [embed], components });
+    };
+
+    const filter = (int: MessageComponentInteraction) =>
+      int.customId.startsWith(ctx.interaction.id) && int.user.id === ctx.author.id;
+
+    changeThemeType(0);
+
+    const collector = ctx.channel.createMessageComponentCollector({
+      time: 12000,
+      maxComponents: 6,
+      filter,
     });
 
-    if (selector.options.length === 0) {
-      ctx.makeMessage({ embeds: [embed] });
-      return;
-    }
+    collector.on('end', (_, reason) => {
+      if (reason !== 'selected') ctx.deleteReply();
+    });
 
-    ctx.makeMessage({ embeds: [embed], components: [actionRow([selector])] });
+    collector.on('collect', async (int) => {
+      int.deferUpdate();
+      collector.resetTimer();
+      const type = resolveCustomId(int.customId);
 
-    const collected = await Util.collectComponentInteractionWithStartingId<SelectMenuInteraction>(
-      ctx.channel,
-      ctx.author.id,
-      ctx.interaction.id,
-      10000,
-    );
+      switch (type) {
+        case 'SELECT': {
+          const selectedItem = getThemeById(Number((int as SelectMenuInteraction).values[0]));
+          collector.stop('selected');
 
-    if (!collected) {
-      ctx.makeMessage({
-        embeds: [embed],
-        components: [actionRow(disableComponents(ctx.locale('common:timesup'), [selector]))],
-      });
-      return;
-    }
+          if (ctx.data.user.estrelinhas < selectedItem.data.price) {
+            ctx.makeMessage({
+              components: [],
+              embeds: [],
+              content: ctx.prettyResponse('error', 'commands:loja.buy_themes.poor'),
+            });
+            return;
+          }
 
-    const selectedItem = getThemeById(Number(collected.values[0]));
+          await ctx.client.repositories.shopRepository.buyTheme(
+            ctx.author.id,
+            selectedItem.id,
+            selectedItem.data.price,
+            selectedItem.data.type,
+          );
 
-    if (ctx.data.user.estrelinhas < selectedItem.data.price) {
-      ctx.makeMessage({
-        components: [],
-        embeds: [],
-        content: ctx.prettyResponse('error', 'commands:loja.buy_themes.poor'),
-      });
-      return;
-    }
+          // TODO: Remove event in 30/12/2021
 
-    await ctx.client.repositories.shopRepository.buyTheme(
-      ctx.author.id,
-      selectedItem.id,
-      selectedItem.data.price,
-      selectedItem.data.type,
-    );
+          if (selectedItem.id === 14 && !ctx.data.user.badges.some((a) => a.id === 13)) {
+            ctx.client.repositories.badgeRepository.addBadge(ctx.author.id, 13);
+            ctx.send({ content: ctx.prettyResponse('wink', 'events:christmas') });
+          }
 
-    // TODO: Remove event in 30/12/2021
-
-    if (selectedItem.id === 14 && !ctx.data.user.badges.some((a) => a.id === 13)) {
-      ctx.client.repositories.badgeRepository.addBadge(ctx.author.id, 13);
-      ctx.send({ content: ctx.prettyResponse('wink', 'events:christmas') });
-    }
-
-    ctx.makeMessage({
-      components: [],
-      embeds: [],
-      content: ctx.prettyResponse('success', 'commands:loja.buy_themes.success'),
+          ctx.makeMessage({
+            components: [],
+            embeds: [],
+            content: ctx.prettyResponse('success', 'commands:loja.buy_themes.success'),
+          });
+          break;
+        }
+        case 'PROFILE':
+          changeThemeType(0);
+          break;
+        case 'CARDS':
+          changeThemeType(1);
+          break;
+        case 'BACKGROUND':
+          changeThemeType(2);
+          break;
+        case 'TABLE':
+          changeThemeType(3);
+          break;
+      }
     });
   }
 
