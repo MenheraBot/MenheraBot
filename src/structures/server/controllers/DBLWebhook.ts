@@ -24,7 +24,7 @@ const runVote = async (
     rollQuantity *= constants.rollWeekendMultiplier;
     starQuantity *= constants.starWeekendMultiplier;
     embedTitle = '💖 | Final de Semana | 💖';
-    embedDescription = `UOOO, tu votou em mim no final de semana, eu te agradeço muuuito por tirar um tempinho do seu final de semana para me ajudar. Vou até dar um prêmio especial pra ti por isso: **${rollQuantity}**🔑, **${starQuantity}**⭐`;
+    embedDescription = `UOOO, tu votou em mim no final de semana, eu te agradeço muuuito por tirar um tempinho do seu final de semana para me ajudar. Vou até dar um prêmio especial pra ti por isso: **${rollQuantity}**🔑, **${starQuantity}**⭐\n\nTu já votou **${user.votes}** vezes em mim? Obrigada luz da Minha Escuridão`;
   }
 
   if (user.votes % 20 === 0) {
@@ -36,7 +36,7 @@ const runVote = async (
 
   if (user.votes % 20 === 0 && isWeekend) {
     embedTitle = '💜 | CARAAAA, TU COSNEGUIU O MÁXIMO DE PRÊMIOS | 💜';
-    embedDescription = `É ISSO! VOCÊ CONSEGUIU! Além de dar um tempinho do seu final de semana para me ajudar, você atingiu a meta de 20 votos! Isso significa o que? Exatamente, MUUUUITOS PRÊMIOS.\nVocê recebeu **${starQuantity}** :star: , **${rollQuantity}** 🔑.\nVocê pode votar a cada 12 horas, e além de me ajudar, tu ganha prêmios por isso. Obrigada de verdade por tudo amorzinho`;
+    embedDescription = `É ISSO! VOCÊ CONSEGUIU! Além de dar um tempinho do seu final de semana para me ajudar, você atingiu a meta de 20 votos! Isso significa o que? Exatamente, MUUUUITOS PRÊMIOS.\nVocê recebeu **${starQuantity}** :star: , **${rollQuantity}** 🔑.\nVocê pode votar a cada 12 horas,  e além de me ajudar, tu ganha prêmios por isso. Obrigada de verdade por tudo amorzinho, com isso, tu já votou ${user.votes} vezes em mim, tu é simplesmente incrível`;
   }
 
   const embed = new MessageEmbed()
