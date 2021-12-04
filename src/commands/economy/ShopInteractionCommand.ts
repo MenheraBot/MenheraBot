@@ -272,14 +272,18 @@ export default class ShopInteractionCommand extends InteractionCommand {
       embed.setFields([]);
       selector.setOptions([]);
 
+      console.time('atntes');
       for (let a = 1; a <= Object.keys(ImageThemes).length; a++) {
         if (CANNOT_BUY_THEMES.includes(a)) continue;
         const inInventory = haveUserThemes.some((b) => b.id === a);
         const theme = getThemeById(a);
 
         if (theme.data.type !== themeByIndex[themeIndex]) return;
+        console.log('Antes de um loop');
+        console.time(`${a}`);
         // eslint-disable-next-line no-await-in-loop
         const credits = await ctx.client.repositories.creditsRepository.getThemeInfo(a);
+        console.timeEnd(`${a}`);
 
         embed.addField(
           `${ctx.locale(`data:themes.${a as 1}.name`)} ${
@@ -301,6 +305,8 @@ export default class ShopInteractionCommand extends InteractionCommand {
             value: `${a}`,
           });
       }
+
+      console.timeEnd('atntes');
 
       if (selector.options.length > 0) components[1] = actionRow([selector]);
       else if (typeof components[1] !== 'undefined') components.pop();
