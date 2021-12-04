@@ -35,7 +35,7 @@ const runVote = async (
   }
 
   if (user.votes % 20 === 0 && isWeekend) {
-    embedTitle = '💜 | CARAAAA, TU COSNEGUIU O MÁXIMO DE PRÊMIOS | 💜';
+    embedTitle = '💜 | CARAAAA, TU CONSEGUIU O MÁXIMO DE PRÊMIOS | 💜';
     embedDescription = `É ISSO! VOCÊ CONSEGUIU! Além de dar um tempinho do seu final de semana para me ajudar, você atingiu a meta de 20 votos! Isso significa o que? Exatamente, MUUUUITOS PRÊMIOS.\nVocê recebeu **${starQuantity}** :star: , **${rollQuantity}** 🔑.\nVocê pode votar a cada 12 horas,  e além de me ajudar, tu ganha prêmios por isso. Obrigada de verdade por tudo amorzinho, com isso, tu já votou ${user.votes} vezes em mim, tu é simplesmente incrível`;
   }
 

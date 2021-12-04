@@ -457,6 +457,11 @@
     "embed_title": "Click here to enter Menhera's support server"
   },
   "status": {
+    "designer": {
+      "no-designer": "This user does't own any designs",
+      "title": "{{user}}'s Designs",
+      "description": "**Type:** $t(common:theme_types.{{type}}) ($t(common:rarities.{{rarity}}))\n**Royalty:**: {{royalty}}%\n**Profit:** {{profit}} :star:\n**Sold:** {{sold}}\nRegistered at `{{registered}}`"
+    },
     "coinflip": {
       "description": "Show your coinflip game data",
       "usage": "[user]",

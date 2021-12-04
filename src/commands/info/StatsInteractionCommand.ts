@@ -2,9 +2,9 @@ import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import HttpRequests from '@utils/HTTPrequests';
 import moment from 'moment';
-import { MessageEmbed, Client, MessageButton } from 'discord.js-light';
+import { MessageEmbed, Client, MessageButton, EmbedFieldData } from 'discord.js-light';
 import { COLORS, emojis } from '@structures/Constants';
-import Util, { actionRow, disableComponents } from '@utils/Util';
+import Util, { actionRow, disableComponents, getThemeById } from '@utils/Util';
 import { Console } from 'node:console';
 import { Transform } from 'node:stream';
 
@@ -58,6 +58,19 @@ export default class StatsInteractionCommand extends InteractionCommand {
           description: '「🧉」・Veja os status atuais da Menhera',
           type: 'SUB_COMMAND',
         },
+        {
+          name: 'design',
+          description: '「🖌️」・Veja os status de design de algum designer',
+          options: [
+            {
+              name: 'user',
+              description: 'Designer que quer ver as informações',
+              type: 'USER',
+              required: false,
+            },
+          ],
+          type: 'SUB_COMMAND',
+        },
       ],
       category: 'info',
       cooldown: 7,
@@ -69,6 +82,8 @@ export default class StatsInteractionCommand extends InteractionCommand {
     const command = ctx.options.getSubcommand();
 
     switch (command) {
+      case 'design':
+        return StatsInteractionCommand.DesignerStatus(ctx);
       case 'cacar':
         return StatsInteractionCommand.HuntStatus(ctx);
       case 'coinflip':
@@ -78,6 +93,43 @@ export default class StatsInteractionCommand extends InteractionCommand {
       case 'menhera':
         return StatsInteractionCommand.MenheraStatus(ctx);
     }
+  }
+
+  static async DesignerStatus(ctx: InteractionCommandContext): Promise<void> {
+    const user = ctx.options.getUser('user') ?? ctx.author;
+
+    const userDesigns = await ctx.client.repositories.creditsRepository.getDesignerThemes(user.id);
+
+    if (userDesigns.length === 0) {
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:status.designer.no-designer'),
+        ephemeral: true,
+      });
+      return;
+    }
+
+    const embed = new MessageEmbed()
+      .setTitle(ctx.locale('commands:status.designer.title', { user: user.tag }))
+      .setColor(ctx.data.user.selectedColor)
+      .addFields(
+        userDesigns.reduce<EmbedFieldData[]>((fields, design) => {
+          const theme = getThemeById(design.themeId);
+          const fieldName = ctx.locale(`data:themes.${design.themeId as 1}.name`);
+          const fieldDescription = ctx.locale('commands:status.designer.description', {
+            sold: design.timesSold,
+            profit: design.totalEarned,
+            registered: moment(design.registeredAt).format('L'),
+            royalty: design.royalty,
+            type: theme.data.type,
+            rarity: theme.data.rarity,
+          });
+
+          fields.push({ name: fieldName, value: fieldDescription, inline: true });
+          return fields;
+        }, []),
+      );
+
+    ctx.makeMessage({ embeds: [embed] });
   }
 
   static async HuntStatus(ctx: InteractionCommandContext): Promise<void> {

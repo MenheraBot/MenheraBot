@@ -470,6 +470,11 @@
     "embed_title": "Clique aqui para entrar no servidor de suporte da Menhera"
   },
   "status": {
+    "designer": {
+      "no-designer": "Este usuário não possui nenhum design em seu nome!",
+      "title": "Designs de {{user}}",
+      "description": "**Tipo:** $t(common:theme_types.{{type}}) ($t(common:rarities.{{rarity}}))\n**Royalty:**: {{royalty}}%\n**Lucro:** {{profit}} :star:\n**Vendidos:** {{sold}}\nRegistrado em `{{registered}}`"
+    },
     "coinflip": {
       "embed-title": "Status do coinflip de {{user}}",
       "no-data": "Este usuário nunca jogou uma partida de coinflip!",

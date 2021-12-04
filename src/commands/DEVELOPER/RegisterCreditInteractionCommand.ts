@@ -36,7 +36,7 @@ export default class RegisterCreditSlashInteractionCommand extends InteractionCo
   async run(ctx: InteractionCommandContext): Promise<void> {
     const userId = ctx.options.getUser('owner', true).id;
     const themeId = ctx.options.getInteger('theme', true);
-    const royalty = ctx.options.getInteger('royalty') ?? 15;
+    const royalty = ctx.options.getInteger('royalty') ?? 3;
 
     await ctx.client.repositories.creditsRepository.registerTheme(themeId, userId, royalty);
 

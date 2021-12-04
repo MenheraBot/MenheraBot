@@ -68,8 +68,9 @@ const userSchema = new Schema({
 const themeCredits = new Schema({
   themeId: { type: Number, unique: true, index: true },
   ownerId: { type: String },
-  royalty: { type: Number, default: 6 },
+  royalty: { type: Number, default: 3 },
   totalEarned: { type: Number, default: 0 },
+  timesSold: { type: Number, default: 0 },
   registeredAt: { type: Number, default: Date.now() },
 });
 

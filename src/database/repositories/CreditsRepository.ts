@@ -25,10 +25,14 @@ export default class CreditsRepository {
     return this.creditsModel.findOne({ themeId });
   }
 
+  async getDesignerThemes(userId: string): Promise<CreditsSchema[]> {
+    return this.creditsModel.find({ ownerId: userId });
+  }
+
   async addParticipation(themeId: number, value: number): Promise<void> {
     const owner = (await this.creditsModel.findOneAndUpdate(
       { themeId },
-      { $inc: { totalEarned: value } },
+      { $inc: { totalEarned: value, timesSold: 1 } },
     )) as CreditsSchema;
     await this.startRepository.add(owner.ownerId, value);
   }

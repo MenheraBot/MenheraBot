@@ -111,6 +111,7 @@ export interface CreditsSchema {
   royalty: number;
   totalEarned: number;
   registeredAt: number;
+  timesSold: number;
 }
 
 export type AvailableCardThemes = 'default' | 'death';

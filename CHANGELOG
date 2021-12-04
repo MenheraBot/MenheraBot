@@ -10,6 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Added
 
 - Usuários podem criar temas! Etes usuários recebem uma participação de lucros dos seus temas vendidos!
+- Novo Comando! `/status design`. Com este comando é possivel ver as informações de algum designer, como a quantidade de vendas e o lucro!
+
+### Fixed
+
+- Título do embed de máximo de prêmios ao votar
 
 ## [3.5.5] 11-30-2021
 
