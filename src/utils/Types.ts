@@ -104,6 +104,14 @@ export interface IUserSchema {
   isBot: boolean;
 }
 
+export interface CreditsSchema {
+  themeId: number;
+  ownerId: string;
+  royalty: number;
+  totalEarned: number;
+  registeredAt: number;
+}
+
 export type AvailableCardThemes = 'default' | 'death';
 export type AvailableCardBackgroundThemes = 'red' | 'blue' | 'cute_menhera' | 'premium';
 export type AvailableTableThemes = 'green' | 'blue' | 'red' | 'pink' | 'rounded';

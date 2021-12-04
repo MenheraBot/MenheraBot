@@ -1,4 +1,10 @@
-import { ICmdSchema, IGuildSchema, IUserThemesSchema, IUserSchema } from '@utils/Types';
+import {
+  ICmdSchema,
+  IGuildSchema,
+  IUserThemesSchema,
+  IUserSchema,
+  CreditsSchema,
+} from '@utils/Types';
 import { Schema, model } from 'mongoose';
 
 const cmdSchema = new Schema({
@@ -59,7 +65,16 @@ const userSchema = new Schema({
   isBot: { type: Boolean, default: false },
 });
 
+const themeCredits = new Schema({
+  themeId: { type: Number, unique: true, index: true },
+  ownerId: { type: String },
+  royalty: { type: Number, default: 6 },
+  totalEarned: { type: Number, default: 0 },
+  registeredAt: { type: Number, default: Date.now() },
+});
+
 export const Cmds = model<ICmdSchema>('Cmd', cmdSchema);
 export const Guilds = model<IGuildSchema>('guild', guildSchema);
 export const Users = model<IUserSchema>('usersdb', userSchema);
 export const Themes = model<IUserThemesSchema>('themes', userThemes);
+export const Credits = model<CreditsSchema>('credits', themeCredits);
