@@ -1,7 +1,9 @@
+/* eslint-disable no-continue */
+/* eslint-disable no-restricted-syntax */
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 
-import { BUYABLE_THEMES, COLORS, emojis, shopEconomy } from '@structures/Constants';
+import { CANNOT_BUY_THEMES, COLORS, emojis, shopEconomy } from '@structures/Constants';
 import MagicItems from '@data/HuntMagicItems';
 import { AvailableThemeTypes, HuntingTypes, IHuntProbablyBoostItem } from '@utils/Types';
 import Util, { actionRow, getAllThemeUserIds, getThemeById, resolveCustomId } from '@utils/Util';
@@ -15,6 +17,7 @@ import {
   MessageActionRow,
   ColorResolvable,
 } from 'discord.js-light';
+import ImageThemes from '@data/ImageThemes';
 
 export default class ShopInteractionCommand extends InteractionCommand {
   constructor() {
@@ -256,7 +259,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
     ];
 
     // themeIndex is the index of components array
-    const changeThemeType = (themeIndex: number): void => {
+    const changeThemeType = async (themeIndex: number): Promise<void> => {
       components[0].components.map((a, i) => a.setDisabled(i === themeIndex));
 
       const themeByIndex: { [key: number]: AvailableThemeTypes } = {
@@ -269,11 +272,14 @@ export default class ShopInteractionCommand extends InteractionCommand {
       embed.setFields([]);
       selector.setOptions([]);
 
-      BUYABLE_THEMES.forEach((a) => {
+      for (let a = 1; a <= Object.keys(ImageThemes).length; a++) {
+        if (CANNOT_BUY_THEMES.includes(a)) continue;
         const inInventory = haveUserThemes.some((b) => b.id === a);
         const theme = getThemeById(a);
 
         if (theme.data.type !== themeByIndex[themeIndex]) return;
+        // eslint-disable-next-line no-await-in-loop
+        const credits = await ctx.client.repositories.creditsRepository.getThemeInfo(a);
 
         embed.addField(
           `${ctx.locale(`data:themes.${a as 1}.name`)} ${
@@ -283,7 +289,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
             description: ctx.locale(`data:themes.${a as 1}.description`),
             price: theme.data.price,
             rarity: theme.data.rarity,
-            type: theme.data.type,
+            author: credits?.ownerId,
           }),
           true,
         );
@@ -294,7 +300,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
             description: ctx.locale(`data:themes.${a as 1}.description`).substring(0, 100),
             value: `${a}`,
           });
-      });
+      }
 
       if (selector.options.length > 0) components[1] = actionRow([selector]);
       else if (typeof components[1] !== 'undefined') components.pop();
@@ -335,11 +341,16 @@ export default class ShopInteractionCommand extends InteractionCommand {
             return;
           }
 
+          const credits = await ctx.client.repositories.creditsRepository.getThemeInfo(
+            selectedItem.id,
+          );
+
           await ctx.client.repositories.shopRepository.buyTheme(
             ctx.author.id,
             selectedItem.id,
             selectedItem.data.price,
             selectedItem.data.type,
+            credits.royalty,
           );
 
           // TODO: Remove event in 30/12/2021

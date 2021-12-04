@@ -95,8 +95,12 @@ export default class Databases {
     this.topRepository = new TopRepository(this.Users);
     this.giveRepository = new GiveRepository(this.Users);
     this.themeRepository = new ThemeRepository(this.Themes, this.redisClient);
-    this.shopRepository = new ShopRepository(this.Users, this.themeRepository);
-    this.creditsRepository = new CreditsRepository(this.Credits);
+    this.creditsRepository = new CreditsRepository(this.Credits, this.redisClient);
+    this.shopRepository = new ShopRepository(
+      this.Users,
+      this.themeRepository,
+      this.creditsRepository,
+    );
   }
 
   get repositories(): IDatabaseRepositories {

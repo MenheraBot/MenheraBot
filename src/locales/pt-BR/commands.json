@@ -238,7 +238,7 @@
       "poor": "Tu não possui todas essas estrelinhas para comprar isso!",
       "owned": "(Possui)",
       "success": "**Compra efetuada com sucesso!** Você já pode habilitá-la no `/personalizar temas`",
-      "data": "**{{description}}**\n**Preço**: {{price}} :star:\n**Raridade**: $t(common:rarities.{{rarity}})\n**Tipo**: $t(common:theme_types.{{type}})"
+      "data": "**{{description}}**\n**Preço**: {{price}} :star:\n**Raridade**: $t(common:rarities.{{rarity}})\n**Autor**: <@{{author}}>"
     },
     "buy_colors": {
       "has-color": "Eu agradeço sua empolgação para comprar em meu brechó, mas você já possui esta cor!",

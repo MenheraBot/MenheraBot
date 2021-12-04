@@ -2,20 +2,28 @@ import { Users } from '@structures/DatabaseCollections';
 import { AvailableThemeTypes, HuntingTypes, IColor } from '@utils/Types';
 import { negate } from '@utils/Util';
 import ThemeRepository from './ThemeRepository';
+import CreditsRepository from './CreditsRepository';
 
 export default class ShopRepository {
-  constructor(private userModal: typeof Users, private themeRepository: ThemeRepository) {}
+  constructor(
+    private userModal: typeof Users,
+    private themeRepository: ThemeRepository,
+    private creditsRepository: CreditsRepository,
+  ) {}
 
   async buyTheme(
     userID: string,
     themeID: number,
     price: number,
     themeType: AvailableThemeTypes,
+    royalty: number,
   ): Promise<void> {
     await this.userModal.updateOne(
       { id: userID },
       { $inc: { estrelinhas: negate(price) }, lastCommandAt: Date.now() },
     );
+
+    await this.creditsRepository.addParticipation(themeID, (royalty / 100) * price);
 
     switch (themeType) {
       case 'profile':
