@@ -24,6 +24,7 @@ import {
   PermissionResolvable,
   User,
 } from 'discord.js-light';
+import CreditsRepository from '@database/repositories/CreditsRepository';
 
 export interface IClientConfigs {
   interactionsDirectory: string;
@@ -255,6 +256,7 @@ export interface IDatabaseRepositories {
   coinflipRepository: CoinflipRepository;
   shopRepository: ShopRepository;
   themeRepository: ThemeRepository;
+  creditsRepository: CreditsRepository;
 }
 
 export type TShardStatus = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;

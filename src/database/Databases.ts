@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import Redis from 'ioredis';
-import { Cmds, Guilds, Users, Themes } from '@structures/DatabaseCollections';
+import { Cmds, Guilds, Users, Themes, Credits } from '@structures/DatabaseCollections';
 import { IDatabaseRepositories } from '@utils/Types';
 import CacheRepository from './repositories/CacheRepository';
 import CmdRepository from './repositories/CmdsRepository';
@@ -18,6 +18,7 @@ import GiveRepository from './repositories/GiveRepository';
 import CoinflipRepository from './repositories/CoinflipRepository';
 import ShopRepository from './repositories/ShopRepository';
 import ThemeRepository from './repositories/ThemeRepository';
+import CreditsRepository from './repositories/CreditsRepository';
 
 export default class Databases {
   public redisClient: Redis.Redis | null = null;
@@ -29,6 +30,8 @@ export default class Databases {
   public readonly Users: typeof Users;
 
   public readonly Themes: typeof Themes;
+
+  public readonly Credits: typeof Credits;
 
   private readonly userRepository: UserRepository;
 
@@ -62,11 +65,14 @@ export default class Databases {
 
   private readonly themeRepository: ThemeRepository;
 
+  private readonly creditsRepository: CreditsRepository;
+
   constructor(public uri: string, withRedisCache: boolean) {
     this.Cmds = Cmds;
     this.Guilds = Guilds;
     this.Users = Users;
     this.Themes = Themes;
+    this.Credits = Credits;
 
     if (withRedisCache) this.createRedisConnection();
 
@@ -90,6 +96,7 @@ export default class Databases {
     this.giveRepository = new GiveRepository(this.Users);
     this.themeRepository = new ThemeRepository(this.Themes, this.redisClient);
     this.shopRepository = new ShopRepository(this.Users, this.themeRepository);
+    this.creditsRepository = new CreditsRepository(this.Credits);
   }
 
   get repositories(): IDatabaseRepositories {
@@ -110,6 +117,7 @@ export default class Databases {
       coinflipRepository: this.coinflipRepository,
       shopRepository: this.shopRepository,
       themeRepository: this.themeRepository,
+      creditsRepository: this.creditsRepository,
     };
   }
 
