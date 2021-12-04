@@ -102,7 +102,7 @@ export default class TopInteractionCommand extends InteractionCommand {
   static async topCommands(ctx: InteractionCommandContext): Promise<void> {
     const res = await HttpRequests.getTopCommands();
     if (!res) {
-      ctx.makeMessage({ content: ctx.prettyResponseLocale('error', 'commands:http-error') });
+      ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:http-error') });
       return;
     }
     const embed = new MessageEmbed()

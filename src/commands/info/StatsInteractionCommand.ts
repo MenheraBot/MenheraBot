@@ -174,7 +174,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
 
     if (!(await ctx.client.isShardingProcessEnded())) {
       ctx.makeMessage({
-        content: ctx.prettyResponseLocale('error', 'common:sharding_in_progress'),
+        content: ctx.prettyResponse('error', 'common:sharding_in_progress'),
       });
       return;
     }

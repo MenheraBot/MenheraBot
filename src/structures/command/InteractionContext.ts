@@ -52,8 +52,9 @@ export default class InteractionCommandContext {
     await this.interaction.deferReply({ ephemeral }).catch(debugError);
   }
 
-  prettyResponseLocale(emoji: EmojiTypes, text: Translation, translateOptions = {}): string {
-    return `${emojis[emoji] || '🐛'} **|** ${this.locale(text, translateOptions)}`;
+  // eslint-disable-next-line class-methods-use-this
+  prettyResponseText(emoji: EmojiTypes, text: string): string {
+    return `${emojis[emoji] || '🐛'} **|** ${text}`;
   }
 
   prettyResponse(emoji: EmojiTypes, text: Translation, translateOptions = {}): string {

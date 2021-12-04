@@ -3,7 +3,7 @@ import { Credits } from '@structures/DatabaseCollections';
 export default class CreditsRepository {
   constructor(private creditsModel: typeof Credits) {}
 
-  async registerTheme(themeId: number, ownerId: number, royalty: number): Promise<void> {
+  async registerTheme(themeId: number, ownerId: string, royalty: number): Promise<void> {
     await this.creditsModel.create({
       ownerId,
       themeId,

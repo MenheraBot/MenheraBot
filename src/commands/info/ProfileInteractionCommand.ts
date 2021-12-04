@@ -126,7 +126,7 @@ export default class ProfileInteractionCommand extends InteractionCommand {
         );
 
     if (res.err) {
-      await ctx.makeMessage({ content: ctx.prettyResponseLocale('error', 'commands:http-error') });
+      await ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:http-error') });
       return;
     }
 
