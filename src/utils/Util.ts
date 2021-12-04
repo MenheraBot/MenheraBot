@@ -9,7 +9,13 @@ import {
   MessageActionRowComponentResolvable,
   TextBasedChannels,
 } from 'discord.js-light';
-import { IReturnData, IUserThemesSchema, ThemeFiles, TMagicItemsFile } from '@utils/Types';
+import {
+  AvailableThemeTypes,
+  IReturnData,
+  IUserThemesSchema,
+  ThemeFiles,
+  TMagicItemsFile,
+} from '@utils/Types';
 import * as Sentry from '@sentry/node';
 import ImageThemes from '@data/ImageThemes';
 
@@ -171,6 +177,13 @@ export const getThemeById = <T extends ThemeFiles = ThemeFiles>(id: number): IRe
   Object.entries(ImageThemes)
     .filter((a) => Number(a[0]) === id)
     .map((a) => ({ id: Number(a[0]), data: a[1] }))[0];
+
+export const getThemesByType = <T extends ThemeFiles = ThemeFiles>(
+  themeType: AvailableThemeTypes,
+): IReturnData<T>[] =>
+  Object.entries(ImageThemes)
+    .filter((a) => a[1].type === themeType)
+    .map((a) => ({ id: Number(a[0]), data: a[1] }));
 
 export const getAllThemeUserIds = (
   user: IUserThemesSchema,

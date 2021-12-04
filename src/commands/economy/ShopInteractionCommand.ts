@@ -6,7 +6,13 @@ import InteractionCommandContext from '@structures/command/InteractionContext';
 import { CANNOT_BUY_THEMES, COLORS, emojis, shopEconomy } from '@structures/Constants';
 import MagicItems from '@data/HuntMagicItems';
 import { AvailableThemeTypes, HuntingTypes, IHuntProbablyBoostItem } from '@utils/Types';
-import Util, { actionRow, getAllThemeUserIds, getThemeById, resolveCustomId } from '@utils/Util';
+import Util, {
+  actionRow,
+  getAllThemeUserIds,
+  getThemeById,
+  getThemesByType,
+  resolveCustomId,
+} from '@utils/Util';
 import {
   MessageEmbed,
   MessageSelectMenu,
@@ -17,7 +23,6 @@ import {
   MessageActionRow,
   ColorResolvable,
 } from 'discord.js-light';
-import ImageThemes from '@data/ImageThemes';
 
 export default class ShopInteractionCommand extends InteractionCommand {
   constructor() {
@@ -272,41 +277,38 @@ export default class ShopInteractionCommand extends InteractionCommand {
       embed.setFields([]);
       selector.setOptions([]);
 
-      console.time('atntes');
-      for (let a = 1; a <= Object.keys(ImageThemes).length; a++) {
-        if (CANNOT_BUY_THEMES.includes(a)) continue;
-        const inInventory = haveUserThemes.some((b) => b.id === a);
-        const theme = getThemeById(a);
+      const themes = getThemesByType(themeByIndex[themeIndex]);
+
+      const credits = await ctx.client.repositories.creditsRepository.getThemesOwnerId(
+        themes.map((a) => a.id),
+      );
+
+      for (const theme of themes) {
+        if (CANNOT_BUY_THEMES.includes(theme.id)) continue;
+        const inInventory = haveUserThemes.some((b) => b.id === theme.id);
 
         if (theme.data.type !== themeByIndex[themeIndex]) return;
-        console.log('Antes de um loop');
-        console.time(`${a}`);
-        // eslint-disable-next-line no-await-in-loop
-        const credits = await ctx.client.repositories.creditsRepository.getThemeInfo(a);
-        console.timeEnd(`${a}`);
 
         embed.addField(
-          `${ctx.locale(`data:themes.${a as 1}.name`)} ${
+          `${ctx.locale(`data:themes.${theme.id as 1}.name`)} ${
             inInventory ? `__${ctx.locale('commands:loja.buy_themes.owned')}__` : ''
           }`,
           ctx.locale('commands:loja.buy_themes.data', {
-            description: ctx.locale(`data:themes.${a as 1}.description`),
+            description: ctx.locale(`data:themes.${theme.id as 1}.description`),
             price: theme.data.price,
             rarity: theme.data.rarity,
-            author: credits?.ownerId,
+            author: credits.find((b) => b.themeId === theme.id)?.ownerId,
           }),
           true,
         );
 
         if (!inInventory)
           selector.addOptions({
-            label: ctx.locale(`data:themes.${a as 1}.name`),
-            description: ctx.locale(`data:themes.${a as 1}.description`).substring(0, 100),
-            value: `${a}`,
+            label: ctx.locale(`data:themes.${theme.id as 1}.name`),
+            description: ctx.locale(`data:themes.${theme.id as 1}.description`).substring(0, 100),
+            value: `${theme.id}`,
           });
       }
-
-      console.timeEnd('atntes');
 
       if (selector.options.length > 0) components[1] = actionRow([selector]);
       else if (typeof components[1] !== 'undefined') components.pop();

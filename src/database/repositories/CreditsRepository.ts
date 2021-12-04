@@ -33,6 +33,12 @@ export default class CreditsRepository {
     await this.startRepository.add(owner.ownerId, value);
   }
 
+  async getThemesOwnerId(themeIds: number[]): Promise<{ themeId: number; ownerId: string }[]> {
+    return this.creditsModel
+      .find({ themeId: { $in: themeIds } }, ['ownerId', 'themeId'])
+      .then((res) => res.map((a) => ({ themeId: a.themeId, ownerId: a.ownerId })));
+  }
+
   async getThemeInfo(themeId: number): Promise<CreditsSchema> {
     if (this.redisClient) {
       const result = await this.redisClient.get(`credits:${themeId}`);
