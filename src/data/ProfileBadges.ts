@@ -129,6 +129,14 @@ const Badges = {
     description: 'Apenas bots verificados possuem esta badge. Simples',
     link: 'https://media.discordapp.net/attachments/793669360857907200/915072406203285594/bot.png',
   },
+  15: {
+    name: 'Designer Oficial',
+    availabeStartAt: '04/12/2021',
+    availabeStoptAt: '-----',
+    rarityLevel: 4,
+    description: 'Badge dada àqueles que tem um design dentro da Menhera!',
+    link: 'https://media.discordapp.net/attachments/793669360857907200/916723467498434590/pencil.png',
+  },
 };
 
 export default Badges;
