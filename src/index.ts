@@ -12,8 +12,7 @@ const userFilter = (user: User) => user.id !== user.client.user?.id;
 const client = new MenheraClient(
   {
     makeCache: Options.cacheWithLimits({
-      GuildManager: 0,
-      RoleManager: 0,
+      GuildManager: Infinity,
       ChannelManager: {
         maxSize: 0,
         sweepFilter: () => channelFilter,
@@ -30,6 +29,7 @@ const client = new MenheraClient(
         sweepInterval: 3600,
       },
       PermissionOverwriteManager: 0,
+      RoleManager: 0,
       ApplicationCommandManager: 0,
       BaseGuildEmojiManager: 0,
       GuildBanManager: 0,
@@ -46,7 +46,7 @@ const client = new MenheraClient(
       VoiceStateManager: 0,
     }),
     failIfNotExists: false,
-    intents: [],
+    intents: ['GUILDS'],
   },
   {
     interactionsDirectory: resolve(__dirname, 'commands'),
