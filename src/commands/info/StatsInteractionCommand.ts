@@ -108,6 +108,8 @@ export default class StatsInteractionCommand extends InteractionCommand {
       return;
     }
 
+    moment.locale(ctx.data.server.lang.toLowerCase());
+
     const embed = new MessageEmbed()
       .setTitle(ctx.locale('commands:status.designer.title', { user: user.tag }))
       .setColor(ctx.data.user.selectedColor)
