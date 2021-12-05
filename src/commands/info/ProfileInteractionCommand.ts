@@ -72,9 +72,10 @@ export default class ProfileInteractionCommand extends InteractionCommand {
       return;
     }
 
-    const marry = user.married
-      ? await ctx.client.users.fetch(user.married).catch(debugError)
-      : null;
+    const marry =
+      user.married && user.married !== 'false'
+        ? await ctx.client.users.fetch(user.married).catch(debugError)
+        : null;
 
     if (marry) marry.username = toWritableUTF(marry?.username);
 

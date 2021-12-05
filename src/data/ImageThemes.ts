@@ -100,6 +100,13 @@ const ImageThemes: { [id: number]: ThemeFiles } & Object = {
     type: 'profile',
     theme: 'christmas_2021',
   },
+  15: {
+    isBuyable: true,
+    price: 500_000,
+    rarity: 'rare',
+    type: 'profile',
+    theme: 'warrior',
+  },
 };
 
 export default ImageThemes;
