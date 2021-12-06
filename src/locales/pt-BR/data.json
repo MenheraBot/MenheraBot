@@ -113,6 +113,10 @@
     "16": {
       "name": "Fortificação",
       "description": "Um perfil mais resistente para ti se sentir mais seguro"
+    },
+    "17": {
+      "name": "Kawaii Theme",
+      "description": "Um tema fofo para os amantes de rosa."
     }
   }
 }

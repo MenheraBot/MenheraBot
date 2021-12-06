@@ -120,6 +120,7 @@ export type AvailableTableThemes = 'green' | 'blue' | 'red' | 'pink' | 'rounded'
 export type AvailableProfilesThemes =
   | 'default'
   | 'upsidedown'
+  | 'kawaii'
   | 'christmas_2021'
   | 'warrior'
   | 'fortification';
