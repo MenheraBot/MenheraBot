@@ -107,6 +107,13 @@ const ImageThemes: { [id: number]: ThemeFiles } & Object = {
     type: 'profile',
     theme: 'warrior',
   },
+  16: {
+    isBuyable: true,
+    price: 450_000,
+    rarity: 'rare',
+    type: 'profile',
+    theme: 'fortification',
+  },
 };
 
 export default ImageThemes;

@@ -117,7 +117,12 @@ export interface CreditsSchema {
 export type AvailableCardThemes = 'default' | 'death';
 export type AvailableCardBackgroundThemes = 'red' | 'blue' | 'cute_menhera' | 'premium';
 export type AvailableTableThemes = 'green' | 'blue' | 'red' | 'pink' | 'rounded';
-export type AvailableProfilesThemes = 'default' | 'upsidedown' | 'christmas_2021' | 'warrior';
+export type AvailableProfilesThemes =
+  | 'default'
+  | 'upsidedown'
+  | 'christmas_2021'
+  | 'warrior'
+  | 'fortification';
 export type AvailableThemeTypes = 'profile' | 'cards' | 'card_background' | 'table';
 
 export interface IUserBuyableData {

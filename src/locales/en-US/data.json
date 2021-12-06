@@ -109,6 +109,10 @@
     "15": {
       "name": "Retired Warrior",
       "description": "You did it. You may rest now."
+    },
+    "16": {
+      "name": "Fortification",
+      "description": "A stronger profile for you to feel more secure"
     }
   }
 }
