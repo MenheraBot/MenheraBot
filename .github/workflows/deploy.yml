@@ -18,6 +18,7 @@ jobs:
             cd ${{ secrets.PROJECT_PATH }}
             git stash
             git pull origin master
+            npm install -g yarn
             yarn install
             yarn build
             echo Everything went ok!
@@ -35,6 +36,7 @@ jobs:
             cd ${{ secrets.PROJECT_PATH_DEV }}
             git stash
             git pull origin dev
+            npm install -g yarn
             yarn install
             yarn build
             echo Everything went ok!
