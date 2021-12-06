@@ -52,13 +52,15 @@ export default class CreditsRepository {
     const info = (await this.findCreditsInfo(themeId)) as CreditsSchema;
 
     if (this.redisClient)
-      this.redisClient.set(`credits:${themeId}`, {
-        // @ts-expect-error sla vei
-        themeId: info.themeId,
-        ownerId: info.ownerId,
-        registeredAt: info.registeredAt,
-        totalEarned: info.totalEarned,
-      });
+      this.redisClient.set(
+        `credits:${themeId}`,
+        JSON.stringify({
+          themeId: info.themeId,
+          ownerId: info.ownerId,
+          registeredAt: info.registeredAt,
+          totalEarned: info.totalEarned,
+        }),
+      );
 
     return info;
   }
