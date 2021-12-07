@@ -93,7 +93,7 @@ const InteractionCommandExecutor = async (
 
   const now = Date.now();
 
-  //  if (now - interaction.createdTimestamp >= 3000) return;
+  if (now - interaction.createdTimestamp >= 3000) return;
 
   const timestamps = client.cooldowns.get(command.config.name) as Map<string, number>;
 
