@@ -121,6 +121,13 @@ const ImageThemes: { [id: number]: ThemeFiles } & Object = {
     type: 'profile',
     theme: 'kawaii',
   },
+  18: {
+    isBuyable: true,
+    price: 110_000,
+    rarity: 'rare',
+    theme: 'kawaii',
+    type: 'card_background',
+  },
 };
 
 export default ImageThemes;
