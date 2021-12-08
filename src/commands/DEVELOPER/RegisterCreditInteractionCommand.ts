@@ -27,7 +27,7 @@ export default class RegisterCreditSlashInteractionCommand extends InteractionCo
           required: false,
         },
         {
-          name: 'themeType',
+          name: 'type',
           description: 'Tipo do tema',
           type: 'STRING',
           choices: [
@@ -49,7 +49,7 @@ export default class RegisterCreditSlashInteractionCommand extends InteractionCo
     const userId = ctx.options.getUser('owner', true).id;
     const themeId = ctx.options.getInteger('theme', true);
     const royalty = ctx.options.getInteger('royalty') ?? 1;
-    const themeType = ctx.options.getString('themeType', true) as
+    const themeType = ctx.options.getString('type', true) as
       | 'addCardBackgroundTheme'
       | 'addCardsTheme'
       | 'addProfileTheme'
