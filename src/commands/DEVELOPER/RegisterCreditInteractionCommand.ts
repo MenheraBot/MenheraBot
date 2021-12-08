@@ -20,7 +20,6 @@ export default class RegisterCreditSlashInteractionCommand extends InteractionCo
           type: 'INTEGER',
           required: true,
         },
-
         {
           name: 'type',
           description: 'Tipo do tema',
