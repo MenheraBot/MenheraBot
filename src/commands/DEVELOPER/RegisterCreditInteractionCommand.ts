@@ -26,6 +26,18 @@ export default class RegisterCreditSlashInteractionCommand extends InteractionCo
           type: 'INTEGER',
           required: false,
         },
+        {
+          name: 'themeType',
+          description: 'Tipo do tema',
+          type: 'STRING',
+          choices: [
+            { name: 'card_background', value: 'addCardBackgroundTheme' },
+            { name: 'cards', value: 'addCardsTheme' },
+            { name: 'profile', value: 'addProfileTheme' },
+            { name: 'table', value: 'addTableTheme' },
+          ],
+          required: true,
+        },
       ],
       defaultPermission: false,
       devsOnly: true,
@@ -36,14 +48,20 @@ export default class RegisterCreditSlashInteractionCommand extends InteractionCo
   async run(ctx: InteractionCommandContext): Promise<void> {
     const userId = ctx.options.getUser('owner', true).id;
     const themeId = ctx.options.getInteger('theme', true);
-    const royalty = ctx.options.getInteger('royalty') ?? 3;
+    const royalty = ctx.options.getInteger('royalty') ?? 1;
+    const themeType = ctx.options.getString('themeType', true) as
+      | 'addCardBackgroundTheme'
+      | 'addCardsTheme'
+      | 'addProfileTheme'
+      | 'addTableTheme';
 
     await ctx.client.repositories.creditsRepository.registerTheme(themeId, userId, royalty);
+    await ctx.client.repositories.themeRepository[themeType](userId, themeId);
 
     ctx.makeMessage({
       content: ctx.prettyResponseText(
         'success',
-        `Tema \`${themeId}\` registrado com sucesso! Dono: <@${userId}> (${userId}) `,
+        `Tema \`${themeId}\` registrado com sucesso! Dono: <@${userId}> (${userId})\nEle já recebeu o tema, basta dar a recompensa em estrelinhas`,
       ),
     });
   }
