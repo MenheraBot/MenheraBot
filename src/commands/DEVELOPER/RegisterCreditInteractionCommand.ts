@@ -20,12 +20,7 @@ export default class RegisterCreditSlashInteractionCommand extends InteractionCo
           type: 'INTEGER',
           required: true,
         },
-        {
-          name: 'royalty',
-          description: 'Porcentagem de participação do usuário sob este tema',
-          type: 'INTEGER',
-          required: false,
-        },
+
         {
           name: 'type',
           description: 'Tipo do tema',
@@ -37,6 +32,12 @@ export default class RegisterCreditSlashInteractionCommand extends InteractionCo
             { name: 'table', value: 'addTableTheme' },
           ],
           required: true,
+        },
+        {
+          name: 'royalty',
+          description: 'Porcentagem de participação do usuário sob este tema',
+          type: 'INTEGER',
+          required: false,
         },
       ],
       defaultPermission: false,
