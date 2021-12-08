@@ -13,6 +13,7 @@
     "start": "VERSION=$npm_package_version NODE_ENV=production node .",
     "dev": "VERSION=$npm_package_version NODE_ENV=development node .",
     "run:dev": "npm run build && npm run dev",
+    "deploy": "pm2 start \"npm run start\" --name MenheraBot ",
     "lint:fix": "eslint --fix .",
     "lint:test": "eslint .",
     "typecheck": "tsc --noEmit",
