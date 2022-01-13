@@ -7,7 +7,7 @@ import {
   MessageSelectMenu,
   MessageActionRow,
   MessageActionRowComponentResolvable,
-  TextBasedChannels,
+  TextBasedChannel,
 } from 'discord.js-light';
 import {
   AvailableThemeTypes,
@@ -25,14 +25,14 @@ export default class Util {
   }
 
   static async collectComponentInteractionWithId<T extends MessageComponentInteraction>(
-    channel: TextBasedChannels,
+    channel: TextBasedChannel,
     authorID: string,
     customId: string,
     time?: number,
   ): Promise<null | T>;
 
   static async collectComponentInteractionWithId(
-    channel: TextBasedChannels,
+    channel: TextBasedChannel,
     authorID: string,
     customId: string,
     time = 7000,
@@ -50,13 +50,13 @@ export default class Util {
   }
 
   static async collectComponentInteractionWithCustomFilter<T extends MessageComponentInteraction>(
-    channel: TextBasedChannels,
+    channel: TextBasedChannel,
     filter: CollectorFilter<[T]>,
     time?: number,
   ): Promise<null | T>;
 
   static async collectComponentInteractionWithCustomFilter(
-    channel: TextBasedChannels,
+    channel: TextBasedChannel,
     filter: CollectorFilter<[MessageComponentInteraction]>,
     time = 7000,
   ): Promise<null | MessageComponentInteraction> {
@@ -70,13 +70,13 @@ export default class Util {
   }
 
   static async collectComponentInteraction<T extends MessageComponentInteraction>(
-    channel: TextBasedChannels,
+    channel: TextBasedChannel,
     authorID: string,
     time?: number,
   ): Promise<null | T>;
 
   static async collectComponentInteraction(
-    channel: TextBasedChannels,
+    channel: TextBasedChannel,
     authorID: string,
     time = 7000,
   ): Promise<null | MessageComponentInteraction> {
@@ -90,14 +90,14 @@ export default class Util {
   }
 
   static async collectComponentInteractionWithStartingId<T extends MessageComponentInteraction>(
-    channel: TextBasedChannels,
+    channel: TextBasedChannel,
     authorID: string,
     customId: string,
     time?: number,
   ): Promise<null | T>;
 
   static async collectComponentInteractionWithStartingId(
-    channel: TextBasedChannels,
+    channel: TextBasedChannel,
     authorID: string,
     customId: string,
     time = 7000,

@@ -5,7 +5,7 @@ import {
   InteractionReplyOptions,
   Message,
   MessagePayload,
-  TextBasedChannels,
+  TextBasedChannel,
   User,
 } from 'discord.js-light';
 import { TFunction } from 'i18next';
@@ -32,8 +32,8 @@ export default class InteractionCommandContext {
     return this.interaction.options;
   }
 
-  get channel(): TextBasedChannels {
-    return this.interaction.channel as TextBasedChannels;
+  get channel(): TextBasedChannel {
+    return this.interaction.channel as TextBasedChannel;
   }
 
   get author(): User {

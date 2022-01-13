@@ -21,6 +21,7 @@ export default class CoinflipInteractionCommand extends InteractionCommand {
           description: 'Valor da aposta',
           type: 'INTEGER',
           required: true,
+          minValue: 1,
         },
       ],
       category: 'economy',

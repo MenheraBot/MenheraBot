@@ -40,6 +40,7 @@ export default class InteractionCreate {
       ).forceSet(interaction.channelId, channel);
     }
 
+    // @ts-expect-error Interaction is not as type expected, BUT IT IS
     InteractionCommandExecutor(interaction.client, interaction);
   }
 }

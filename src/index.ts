@@ -1,8 +1,8 @@
-import { Options, SnowflakeUtil, Channel, User } from 'discord.js-light';
+import { Options, SnowflakeUtil, User, AnyChannel } from 'discord.js-light';
 import { resolve } from 'node:path';
 import MenheraClient from './MenheraClient';
 
-const channelFilter = (channel: Channel) =>
+const channelFilter = (channel: AnyChannel) =>
   !channel.isText() ||
   !channel.lastMessageId ||
   SnowflakeUtil.deconstruct(channel.lastMessageId).timestamp < Date.now() - 3600000;

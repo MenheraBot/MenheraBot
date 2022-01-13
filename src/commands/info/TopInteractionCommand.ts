@@ -79,6 +79,8 @@ export default class TopInteractionCommand extends InteractionCommand {
           name: 'pagina',
           description: 'Página do top que tu quer ver',
           required: false,
+          minValue: 2,
+          maxValue: 100,
         },
         {
           type: 'USER',

@@ -16,16 +16,6 @@ import Util, {
 } from '@utils/Util';
 import { IMagicItem } from '@utils/Types';
 
-const hasDuplicata = (inv: IMagicItem[]): [boolean, IMagicItem[]] => {
-  const result = inv.reduce<IMagicItem[]>((p, c) => {
-    if (p.some((b) => b.id === c.id)) return p;
-    p.push(c);
-    return p;
-  }, []);
-
-  return [result.length !== inv.length, result];
-};
-
 export default class InventoryInteractionCommand extends InteractionCommand {
   constructor() {
     super({
@@ -40,7 +30,7 @@ export default class InventoryInteractionCommand extends InteractionCommand {
           required: false,
         },
       ],
-      cooldown: 7,
+      cooldown: 10,
       authorDataFields: ['selectedColor', 'inUseItems', 'inventory', 'id', 'itemsLimit'],
     });
   }
@@ -71,6 +61,20 @@ export default class InventoryInteractionCommand extends InteractionCommand {
       return;
     }
 
+    // ========================= UNDO THE BUG =======================================
+
+    // TODO: Remove this in the future with the duplicata bug
+
+    const hasDuplicata = (inv: IMagicItem[]): [boolean, IMagicItem[]] => {
+      const result = inv.reduce<IMagicItem[]>((p, c) => {
+        if (p.some((b) => b.id === c.id)) return p;
+        p.push(c);
+        return p;
+      }, []);
+
+      return [result.length !== inv.length, result];
+    };
+
     const [[hasInventoryDuplicated, newInventory], [hasInUseDuplicated, newInUse]] = [
       hasDuplicata(user.inventory),
       hasDuplicata(user.inUseItems),
@@ -78,6 +82,8 @@ export default class InventoryInteractionCommand extends InteractionCommand {
 
     if (hasInventoryDuplicated) user.inventory = newInventory;
     if (hasInUseDuplicated) user.inUseItems = newInUse;
+
+    // ========================= FINISHED UNDO THE BUG =======================================
 
     const embed = new MessageEmbed()
       .setTitle(
@@ -87,16 +93,20 @@ export default class InventoryInteractionCommand extends InteractionCommand {
       )
       .setColor(user.selectedColor);
 
-    if (user.inventory.length === 0 && user.inUseItems.length === 0) {
+    if (user.inventory.length === 0) {
       embed.setDescription(ctx.prettyResponse('error', 'commands:inventario.no-item'));
       ctx.makeMessage({ embeds: [embed] });
       return;
     }
 
+    const inventoryWithoutUsingItems = user.inventory.filter(
+      (a) => !user.inUseItems.some((b) => a.id === b.id),
+    );
+
     embed.addField(
       ctx.locale('commands:inventario.items'),
-      user.inventory.length > 0
-        ? user.inventory.reduce(
+      inventoryWithoutUsingItems.length > 0
+        ? inventoryWithoutUsingItems.reduce(
             (p, c) =>
               `${p}**${ctx.locale('common:name')}:** ${ctx.locale(
                 `data:magic-items.${c.id as 1}.name`,
@@ -140,22 +150,17 @@ export default class InventoryInteractionCommand extends InteractionCommand {
       .setLabel(ctx.locale('commands:inventario.reset'))
       .setStyle('DANGER');
 
-    const canUseItems = !(
-      user.inventory.length === 0 ||
-      user.inventory.every((a) => user.inUseItems.some((b) => b.id === a.id))
-    );
-
-    const canResetItems = user.inUseItems.length > 0;
+    const canUseItems = !(user.inventory.length === 0 || inventoryWithoutUsingItems.length === 0);
 
     if (!canUseItems) useItemButton.setDisabled(true);
-    if (!canResetItems) resetItemsButton.setDisabled(true);
+    if (inventoryWithoutUsingItems.length === 0) resetItemsButton.setDisabled(true);
 
     await ctx.makeMessage({
-      embeds: [embed.setFooter(ctx.locale('commands:inventario.use-footer'))],
+      embeds: [embed.setFooter({ text: ctx.locale('commands:inventario.use-footer') })],
       components: [actionRow([useItemButton, resetItemsButton])],
     });
 
-    if (!canUseItems && !canResetItems) return;
+    if (!canUseItems && inventoryWithoutUsingItems.length === 0) return;
 
     const collected = await Util.collectComponentInteractionWithStartingId<ButtonInteraction>(
       ctx.channel,
@@ -172,12 +177,6 @@ export default class InventoryInteractionCommand extends InteractionCommand {
     }
 
     if (resolveCustomId(collected.customId) === 'RESET') {
-      user.inUseItems.forEach((a) => {
-        user.inventory.push({
-          id: a.id,
-        });
-      });
-
       user.inUseItems = [];
 
       ctx.makeMessage({
@@ -187,7 +186,7 @@ export default class InventoryInteractionCommand extends InteractionCommand {
       });
 
       ctx.client.repositories.userRepository.update(ctx.author.id, {
-        inventory: user.inventory,
+        inventory: user.inventory, // TODO: Remove this in the future with the duplicata bug
         inUseItems: user.inUseItems,
       });
       return;
@@ -197,19 +196,15 @@ export default class InventoryInteractionCommand extends InteractionCommand {
       .setCustomId(`${ctx.interaction.id} | SELECT`)
       .setPlaceholder(ctx.locale('commands:inventario.select'))
       .setMinValues(1)
-      .setMaxValues(1)
-      .setOptions(
-        user.inventory.reduce<MessageSelectOptionData[]>((p, c) => {
-          if (user.inUseItems.some((a) => a.id === c.id)) return p;
+      .setMaxValues(1);
 
-          p.push({
-            label: ctx.locale(`data:magic-items.${c.id as 1}.name`),
-            description: ctx.locale(`data:magic-items.${c.id as 1}.description`).substring(0, 100),
-            value: `${c.id}`,
-          });
-          return p;
-        }, []),
-      );
+    inventoryWithoutUsingItems.forEach((item) =>
+      availableItems.addOptions({
+        label: ctx.locale(`data:magic-items.${item.id as 1}.name`),
+        description: ctx.locale(`data:magic-items.${item.id as 1}.description`).substring(0, 100),
+        value: `${item.id}`,
+      }),
+    );
 
     embed.setDescription(ctx.locale('commands:inventario.choose-item'));
 
@@ -242,7 +237,9 @@ export default class InventoryInteractionCommand extends InteractionCommand {
           user.inUseItems.reduce<MessageSelectOptionData[]>((p, c, i) => {
             p.push({
               label: ctx.locale(`data:magic-items.${c.id as 1}.name`),
-              description: ctx.locale(`data:magic-items.${c.id as 1}.description`),
+              description: ctx
+                .locale(`data:magic-items.${c.id as 1}.description`)
+                .substring(0, 100),
               value: `${c.id} | ${i}`,
             });
             return p;
@@ -271,18 +268,9 @@ export default class InventoryInteractionCommand extends InteractionCommand {
 
       const [replaceItemId] = resolveSeparatedStrings(choosedReplace.values[0]);
 
-      user.inUseItems.splice(user.inUseItems.findIndex((a) => a.id === Number(replaceItemId), 1));
-      user.inventory.push({
-        id: Number(replaceItemId),
-      });
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      user.inUseItems.find((a) => a.id === Number(replaceItemId))!.id = Number(itemId);
     }
-
-    user.inUseItems.push({ id: Number(itemId) });
-
-    user.inventory.splice(
-      user.inventory.findIndex((a) => a.id === Number(itemId)),
-      1,
-    );
 
     ctx.makeMessage({
       components: [],

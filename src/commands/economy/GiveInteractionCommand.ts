@@ -60,6 +60,7 @@ export default class GiveInteractionCommand extends InteractionCommand {
           description: 'A quantidade para transferir',
           type: 'INTEGER',
           required: true,
+          minValue: 1,
         },
       ],
       cooldown: 5,

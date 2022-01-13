@@ -39,6 +39,8 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
           description: 'Valor da aposta. Mínimo 1000. Máximo 50000',
           type: 'INTEGER',
           required: true,
+          minValue: 1000,
+          maxValue: 50000,
         },
       ],
       category: 'economy',

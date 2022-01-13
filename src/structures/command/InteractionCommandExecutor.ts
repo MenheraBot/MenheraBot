@@ -10,7 +10,7 @@ import InteractionCommandContext from './InteractionContext';
 
 const InteractionCommandExecutor = async (
   client: MenheraClient,
-  interaction: CommandInteraction<'present'> & { client: MenheraClient; channel: TextChannel },
+  interaction: CommandInteraction<'cached'> & { client: MenheraClient; channel: TextChannel },
 ): Promise<void> => {
   const server = await client.repositories.cacheRepository.fetchGuild(
     interaction.guildId,

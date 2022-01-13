@@ -80,7 +80,8 @@ export default class ShipInteractionCommand extends InteractionCommand {
         })
       : await HttpRequests.shipRequest(avatarLinkOne, avatarLinkTwo, value);
 
-    const guild = ctx.interaction.guild ?? ctx.client.guilds.forge(ctx.interaction.guildId);
+    const guild =
+      ctx.interaction.guild ?? ctx.client.guilds.forge(ctx.interaction.guildId as string);
 
     const member1 = await guild.members.fetch(user1.id).catch(() => null);
     const member2 = await guild.members.fetch(user2.id).catch(() => null);
