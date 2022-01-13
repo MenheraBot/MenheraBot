@@ -116,7 +116,7 @@ export interface CreditsSchema {
 
 export type AvailableCardThemes = 'default' | 'death';
 export type AvailableCardBackgroundThemes = 'red' | 'blue' | 'cute_menhera' | 'premium' | 'kawaii';
-export type AvailableTableThemes = 'green' | 'blue' | 'red' | 'pink' | 'rounded';
+export type AvailableTableThemes = 'green' | 'blue' | 'red' | 'pink' | 'rounded' | 'gauderios';
 export type AvailableProfilesThemes =
   | 'default'
   | 'upsidedown'

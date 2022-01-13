@@ -128,6 +128,13 @@ const ImageThemes: { [id: number]: ThemeFiles } & Object = {
     theme: 'kawaii',
     type: 'card_background',
   },
+  19: {
+    isBuyable: true,
+    price: 300_000,
+    rarity: 'rare',
+    type: 'table',
+    theme: 'gauderios',
+  },
 };
 
 export default ImageThemes;
