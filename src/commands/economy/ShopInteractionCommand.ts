@@ -363,13 +363,6 @@ export default class ShopInteractionCommand extends InteractionCommand {
             credits.royalty,
           );
 
-          // TODO: Remove event in 30/12/2021
-
-          if (selectedItem.id === 14 && !ctx.data.user.badges.some((a) => a.id === 13)) {
-            ctx.client.repositories.badgeRepository.addBadge(ctx.author.id, 13);
-            ctx.send({ content: ctx.prettyResponse('wink', 'events:christmas') });
-          }
-
           ctx.makeMessage({
             components: [],
             embeds: [],

@@ -153,14 +153,14 @@ export default class InventoryInteractionCommand extends InteractionCommand {
     const canUseItems = !(user.inventory.length === 0 || inventoryWithoutUsingItems.length === 0);
 
     if (!canUseItems) useItemButton.setDisabled(true);
-    if (inventoryWithoutUsingItems.length === 0) resetItemsButton.setDisabled(true);
+    if (user.inUseItems.length === 0) resetItemsButton.setDisabled(true);
 
     await ctx.makeMessage({
       embeds: [embed.setFooter({ text: ctx.locale('commands:inventario.use-footer') })],
       components: [actionRow([useItemButton, resetItemsButton])],
     });
 
-    if (!canUseItems && inventoryWithoutUsingItems.length === 0) return;
+    if (!canUseItems && user.inUseItems.length === 0) return;
 
     const collected = await Util.collectComponentInteractionWithStartingId<ButtonInteraction>(
       ctx.channel,
@@ -177,6 +177,11 @@ export default class InventoryInteractionCommand extends InteractionCommand {
     }
 
     if (resolveCustomId(collected.customId) === 'RESET') {
+      // TODO: Remove this in the future with the duplicata bug
+      user.inUseItems.forEach((a) => {
+        if (!user.inventory.some((b) => b.id === a.id)) user.inventory.push({ id: a.id });
+      });
+
       user.inUseItems = [];
 
       ctx.makeMessage({
@@ -185,7 +190,7 @@ export default class InventoryInteractionCommand extends InteractionCommand {
         content: ctx.prettyResponse('success', 'commands:inventario.reseted'),
       });
 
-      ctx.client.repositories.userRepository.update(ctx.author.id, {
+      await ctx.client.repositories.userRepository.update(ctx.author.id, {
         inventory: user.inventory, // TODO: Remove this in the future with the duplicata bug
         inUseItems: user.inUseItems,
       });
@@ -279,6 +284,8 @@ export default class InventoryInteractionCommand extends InteractionCommand {
         name: ctx.locale(`data:magic-items.${Number(itemId) as 1}.name`),
       }),
     });
+
+    user.inUseItems.push({ id: Number(itemId) });
 
     ctx.client.repositories.userRepository.update(ctx.author.id, {
       inventory: user.inventory,
