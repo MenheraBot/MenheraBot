@@ -14,6 +14,17 @@ import Util, {
   resolveCustomId,
   resolveSeparatedStrings,
 } from '@utils/Util';
+import { IMagicItem } from '@utils/Types';
+
+const hasDuplicata = (inv: IMagicItem[]): [boolean, IMagicItem[]] => {
+  const result = inv.reduce<IMagicItem[]>((p, c) => {
+    if (p.some((b) => b.id === c.id)) return p;
+    p.push(c);
+    return p;
+  }, []);
+
+  return [result.length !== inv.length, result];
+};
 
 export default class InventoryInteractionCommand extends InteractionCommand {
   constructor() {
@@ -59,6 +70,14 @@ export default class InventoryInteractionCommand extends InteractionCommand {
       ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:inventario.banned') });
       return;
     }
+
+    const [[hasInventoryDuplicated, newInventory], [hasInUseDuplicated, newInUse]] = [
+      hasDuplicata(user.inventory),
+      hasDuplicata(user.inUseItems),
+    ];
+
+    if (hasInventoryDuplicated) user.inventory = newInventory;
+    if (hasInUseDuplicated) user.inUseItems = newInUse;
 
     const embed = new MessageEmbed()
       .setTitle(
