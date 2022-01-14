@@ -185,6 +185,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
           value: `${ctx.locale('commands:status.hunt.display-data', {
             tries: data.angel_tries,
             success: calculateSuccess(data.angel_success, data.angel_tries),
+            hunted: data.angel_hunted,
           })}`,
           inline: true,
         },
