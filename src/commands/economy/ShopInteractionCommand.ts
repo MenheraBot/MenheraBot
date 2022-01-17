@@ -472,12 +472,20 @@ export default class ShopInteractionCommand extends InteractionCommand {
         case 'TABLE':
           changeThemeType(3);
           break;
-        case 'PREVIEW':
+        case 'PREVIEW': {
           previewMode = !previewMode;
           (components[0].components[4] as MessageButton).setStyle(
             previewMode ? 'DANGER' : 'SUCCESS',
           );
-          changeThemeType(0);
+          const indexByTheme: { [key: string]: number } = {
+            profile: 0,
+            cards: 1,
+            card_background: 2,
+            table: 3,
+          };
+          changeThemeType(indexByTheme[currentThemeType]);
+          break;
+        }
       }
     });
   }
