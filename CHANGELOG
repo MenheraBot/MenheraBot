@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ## [UNRELEASED]
 
+### Added
+
+- PreviewMode: Usuários podem ter uma preview de temas antes de os comprar no `/loja comprar temas`
+
 ### Fixed
 
 - Total anjos caçados aparece no `/status cacar`
