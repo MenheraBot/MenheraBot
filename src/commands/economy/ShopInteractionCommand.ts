@@ -22,7 +22,10 @@ import {
   MessageButton,
   MessageActionRow,
   ColorResolvable,
+  MessageAttachment,
 } from 'discord.js-light';
+import ProfilePreview from '@utils/ThemePreviewTemplates';
+import HttpRequests from '@utils/HTTPrequests';
 
 export default class ShopInteractionCommand extends InteractionCommand {
   constructor() {
@@ -258,23 +261,33 @@ export default class ShopInteractionCommand extends InteractionCommand {
       .setStyle('PRIMARY')
       .setLabel(ctx.locale('common:theme_types.table'));
 
+    const previewButton = new MessageButton()
+      .setCustomId(`${ctx.interaction.id} | PREVIEW`)
+      .setStyle('SUCCESS')
+      .setLabel(ctx.locale('commands:loja.buy_themes.preview-mode'));
+
     const userThemes = await ctx.client.repositories.themeRepository.findOrCreate(ctx.author.id);
     const haveUserThemes = getAllThemeUserIds(userThemes);
 
     const components: MessageActionRow[] = [
-      actionRow([profileButton, cardsButton, backgroundButton, tableButton]),
+      actionRow([profileButton, cardsButton, backgroundButton, tableButton, previewButton]),
     ];
+
+    let previewMode = false;
+    let currentThemeType: AvailableThemeTypes;
 
     // themeIndex is the index of components array
     const changeThemeType = async (themeIndex: number): Promise<void> => {
-      components[0].components.map((a, i) => a.setDisabled(i === themeIndex));
-
       const themeByIndex: { [key: number]: AvailableThemeTypes } = {
         0: 'profile',
         1: 'cards',
         2: 'card_background',
         3: 'table',
       };
+
+      currentThemeType = themeByIndex[themeIndex];
+
+      components[0].components.map((a, i) => a.setDisabled(i === themeIndex));
 
       embed.setFields([]);
       selector.setOptions([]);
@@ -324,7 +337,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
 
     const collector = ctx.channel.createMessageComponentCollector({
       time: 12000,
-      maxComponents: 6,
+      maxComponents: 8,
       filter,
     });
 
@@ -340,6 +353,62 @@ export default class ShopInteractionCommand extends InteractionCommand {
       switch (type) {
         case 'SELECT': {
           const selectedItem = getThemeById(Number((int as SelectMenuInteraction).values[0]));
+
+          if (previewMode) {
+            switch (currentThemeType) {
+              case 'profile': {
+                const res = ctx.client.picassoWs.isAlive
+                  ? await ctx.client.picassoWs.makeRequest({
+                      id: ctx.interaction.id,
+                      type: 'profile',
+                      data: {
+                        user: ProfilePreview.user,
+                        marry: ProfilePreview.marry,
+                        usageCommands: ProfilePreview.usageCommands,
+                        i18n: {
+                          aboutme: ctx.locale('commands:perfil.about-me'),
+                          mamado: ctx.locale('commands:perfil.mamado'),
+                          mamou: ctx.locale('commands:perfil.mamou'),
+                          zero: ctx.locale('commands:perfil.zero'),
+                          um: ctx.locale('commands:perfil.um'),
+                          dois: ctx.locale('commands:perfil.dois'),
+                          tres: ctx.locale('commands:perfil.tres'),
+                        },
+                        type: selectedItem.data.theme,
+                      },
+                    })
+                  : await HttpRequests.profileRequest(
+                      ProfilePreview.user,
+                      // @ts-expect-error Falso mock
+                      ProfilePreview.marry,
+                      ProfilePreview.usageCommands,
+                      {
+                        aboutme: ctx.locale('commands:perfil.about-me'),
+                        mamado: ctx.locale('commands:perfil.mamado'),
+                        mamou: ctx.locale('commands:perfil.mamou'),
+                        zero: ctx.locale('commands:perfil.zero'),
+                        um: ctx.locale('commands:perfil.um'),
+                        dois: ctx.locale('commands:perfil.dois'),
+                        tres: ctx.locale('commands:perfil.tres'),
+                      },
+                      selectedItem.data.theme,
+                    );
+
+                if (res.err) {
+                  await ctx.send({
+                    content: ctx.prettyResponse('error', 'commands:http-error'),
+                  });
+                  return;
+                }
+
+                await ctx.send({
+                  files: [new MessageAttachment(res.data, 'profile-preview.png')],
+                });
+              }
+            }
+            return;
+          }
+
           collector.stop('selected');
 
           if (ctx.data.user.estrelinhas < selectedItem.data.price) {
@@ -382,6 +451,12 @@ export default class ShopInteractionCommand extends InteractionCommand {
         case 'TABLE':
           changeThemeType(3);
           break;
+        case 'PREVIEW':
+          previewMode = !previewMode;
+          (components[0].components[4] as MessageButton).setStyle(
+            previewMode ? 'DANGER' : 'SUCCESS',
+          );
+          changeThemeType(0);
       }
     });
   }
