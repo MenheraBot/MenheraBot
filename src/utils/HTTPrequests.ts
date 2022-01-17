@@ -6,6 +6,7 @@ import {
   AvailableCardThemes,
   AvailableProfilesThemes,
   AvailableTableThemes,
+  AvailableThemeTypes,
   IBlackjackCards,
   ICommandsData,
   ICommandUsedData,
@@ -15,6 +16,7 @@ import {
   IRESTHuntStats,
   IStatusData,
   IUserDataToProfile,
+  ThemeFiles,
 } from '@utils/Types';
 import { User } from 'discord.js-light';
 import type { ActivityType } from 'discord.js';
@@ -226,6 +228,18 @@ export default class HttpRequests {
   ): Promise<IPicassoReturnData> {
     try {
       const data = await request.get('/vasco', { data: { user, quality, username, position } });
+      return { err: false, data: Buffer.from(data.data) };
+    } catch {
+      return { err: true };
+    }
+  }
+
+  static async previewRequest(
+    theme: ThemeFiles['theme'],
+    previewType: AvailableThemeTypes,
+  ): Promise<IPicassoReturnData> {
+    try {
+      const data = await request.get('/preview', { data: { theme, previewType } });
       return { err: false, data: Buffer.from(data.data) };
     } catch {
       return { err: true };

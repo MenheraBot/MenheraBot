@@ -355,34 +355,16 @@ export default class ShopInteractionCommand extends InteractionCommand {
           const selectedItem = getThemeById(Number((int as SelectMenuInteraction).values[0]));
 
           if (previewMode) {
-            switch (currentThemeType) {
-              case 'profile': {
-                const res = ctx.client.picassoWs.isAlive
-                  ? await ctx.client.picassoWs.makeRequest({
-                      id: ctx.interaction.id,
-                      type: 'profile',
-                      data: {
-                        user: ProfilePreview.user,
-                        marry: ProfilePreview.marry,
-                        usageCommands: ProfilePreview.usageCommands,
-                        i18n: {
-                          aboutme: ctx.locale('commands:perfil.about-me'),
-                          mamado: ctx.locale('commands:perfil.mamado'),
-                          mamou: ctx.locale('commands:perfil.mamou'),
-                          zero: ctx.locale('commands:perfil.zero'),
-                          um: ctx.locale('commands:perfil.um'),
-                          dois: ctx.locale('commands:perfil.dois'),
-                          tres: ctx.locale('commands:perfil.tres'),
-                        },
-                        type: selectedItem.data.theme,
-                      },
-                    })
-                  : await HttpRequests.profileRequest(
-                      ProfilePreview.user,
-                      // @ts-expect-error Falso mock
-                      ProfilePreview.marry,
-                      ProfilePreview.usageCommands,
-                      {
+            if (currentThemeType === 'profile') {
+              const res = ctx.client.picassoWs.isAlive
+                ? await ctx.client.picassoWs.makeRequest({
+                    id: ctx.interaction.id,
+                    type: 'profile',
+                    data: {
+                      user: ProfilePreview.user,
+                      marry: ProfilePreview.marry,
+                      usageCommands: ProfilePreview.usageCommands,
+                      i18n: {
                         aboutme: ctx.locale('commands:perfil.about-me'),
                         mamado: ctx.locale('commands:perfil.mamado'),
                         mamou: ctx.locale('commands:perfil.mamou'),
@@ -391,21 +373,60 @@ export default class ShopInteractionCommand extends InteractionCommand {
                         dois: ctx.locale('commands:perfil.dois'),
                         tres: ctx.locale('commands:perfil.tres'),
                       },
-                      selectedItem.data.theme,
-                    );
+                      type: selectedItem.data.theme,
+                    },
+                  })
+                : await HttpRequests.profileRequest(
+                    ProfilePreview.user,
+                    // @ts-expect-error Falso mock
+                    ProfilePreview.marry,
+                    ProfilePreview.usageCommands,
+                    {
+                      aboutme: ctx.locale('commands:perfil.about-me'),
+                      mamado: ctx.locale('commands:perfil.mamado'),
+                      mamou: ctx.locale('commands:perfil.mamou'),
+                      zero: ctx.locale('commands:perfil.zero'),
+                      um: ctx.locale('commands:perfil.um'),
+                      dois: ctx.locale('commands:perfil.dois'),
+                      tres: ctx.locale('commands:perfil.tres'),
+                    },
+                    selectedItem.data.theme,
+                  );
 
-                if (res.err) {
-                  await ctx.send({
-                    content: ctx.prettyResponse('error', 'commands:http-error'),
-                  });
-                  return;
-                }
-
+              if (res.err) {
                 await ctx.send({
-                  files: [new MessageAttachment(res.data, 'profile-preview.png')],
+                  content: ctx.prettyResponse('error', 'commands:http-error'),
                 });
+                return;
               }
+
+              await ctx.send({
+                files: [new MessageAttachment(res.data, 'profile-preview.png')],
+              });
+              return;
             }
+
+            const res = ctx.client.picassoWs.isAlive
+              ? await ctx.client.picassoWs.makeRequest({
+                  id: ctx.interaction.id,
+                  type: 'preview',
+                  data: {
+                    theme: selectedItem.data.theme,
+                    previewType: currentThemeType,
+                  },
+                })
+              : await HttpRequests.previewRequest(selectedItem.data.theme, currentThemeType);
+
+            if (res.err) {
+              await ctx.send({
+                content: ctx.prettyResponse('error', 'commands:http-error'),
+              });
+              return;
+            }
+
+            await ctx.send({
+              files: [new MessageAttachment(res.data, 'theme-preview.png')],
+            });
             return;
           }
 
