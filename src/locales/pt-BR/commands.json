@@ -641,15 +641,16 @@
   "roleta": {
     "poor": "Você não tem estrelinhas o suficiente para apostar!",
     "lose-title": "Perdeu Tudo!",
-    "win": "Você ganhou **{{profit}}** :star:! Parabéns\n\n**Valor Sorteado:** {{number.value}}\n**Cor:** {{number.color}}",
+    "win": "Você ganhou **{{profit}}** :star:! Parabéns\n\n**Valor Sorteado:** {{number.value}}\n**Cor:** $t(commands:roleta.{{number.color}})\n**Dúzia:** $t(commands:roleta.{{number.dozen}})\n\n**Sua escolha**: $t(commands:roleta.{{operation}})\n**Seleção:** {{selection}}",
+    "description": "Bem-Vindo ao jogo da roleta, aqui você pode ganhar TUDO ou perder TUDO, escolha abaixo o estilo de sua aposta, em seguida especifique o que quer apostar\n\n**TIPOS DE APOSTA:**",
     "win-title": "Wooo, você venceu!",
-    "lose": "Infelizmente você perdeu a aposta! Foram-se **{{bet}}** :star: embora\n\nValor Sorteado: {{number.value}}\nCor: $t(commands:roleta.{{number.color}})",
+    "lose": "Infelizmente você perdeu a aposta! Foram-se **{{bet}}** :star: embora\n\n**Valor Sorteado:** {{number.value}}\n**Cor:** $t(commands:roleta.{{number.color}})\n**Dúzia:** $t(commands:roleta.{{number.dozen}}) \n\n**Sua escolha:** $t(commands:roleta.{{operation}})\n**Seleção:** {{selection}}",
     "title": "Roleta",
     "odd": "Ímpar",
     "main-number": "Escolha o Número Primário da Aposta",
-    "first-dozen": "Primeira Dúzia",
-    "second-dozen": "Segunda Dúzia",
-    "third-dozen": "Terceira Dúzia",
+    "first": "Primeira Dúzia",
+    "second": "Segunda Dúzia",
+    "third": "Terceira Dúzia",
     "low": "Mais Baixos",
     "high": "Mais Altos",
     "even": "Par",
@@ -671,6 +672,11 @@
     "split-value": "Você pode apostar em números adjascentes\nLUCRO BASE: **17:1**\nSEU LUCRO MÁXIMO: **{{profit}}** :star:",
     "straight-up-title": "Aposta em um número",
     "straight-up-value": "Você pode apostar em um único número\nLUCRO BASE: **35:1**\nSEU LUCRO MÁXIMO: **{{profit}}** :star:",
-    "description": "Bem-Vindo ao jogo da roleta, aqui você pode ganhar TUDO ou perder TUDO, escolha abaixo o estilo de sua aposta, em seguida especifique o que quer apostar\n\n**TIPOS DE APOSTA:**"
+    "STRAIGHT": "Número Único",
+    "SPLIT": "Dupla de Números",
+    "DOZENS": "Uma Dúzia",
+    "LOWHIGH": "Numéro mais Alto ou Baixo",
+    "ODDEVEN": "Par ou Ímpar",
+    "COLOR": "Vermelho ou Preto"
   }
 }

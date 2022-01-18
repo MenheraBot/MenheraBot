@@ -234,8 +234,8 @@ interface RouletteNumber {
   dozen: 'first' | 'second' | 'third';
 }
 
-export const ROULETTE_NUMBERS: Array<RouletteNumber | { value: 0; color: 'green' }> = [
-  { value: 0, color: 'green' },
+export const ROULETTE_NUMBERS: Array<RouletteNumber | { value: 0; color: 'green'; dozen: '?' }> = [
+  { value: 0, color: 'green', dozen: '?' },
   { value: 1, color: 'red', parity: 'odd', size: 'low', dozen: 'first' },
   { value: 2, color: 'black', parity: 'even', size: 'low', dozen: 'first' },
   { value: 3, color: 'red', parity: 'odd', size: 'low', dozen: 'first' },

@@ -23,7 +23,7 @@ export default class RouletteInteractionCommand extends InteractionCommand {
           type: 'INTEGER',
           required: true,
           minValue: 1,
-          maxValue: 30000,
+          maxValue: 15000,
         },
       ],
       category: 'economy',
@@ -225,9 +225,9 @@ export default class RouletteInteractionCommand extends InteractionCommand {
           .setCustomId(`${ctx.interaction.id} | BET`)
           .setPlaceholder(ctx.locale('commands:roleta.make-bet'))
           .setOptions([
-            { label: ctx.locale('commands:roleta.first-dozen'), value: 'first' },
-            { label: ctx.locale('commands:roleta.second-dozen'), value: 'second' },
-            { label: ctx.locale('commands:roleta.third-dozen'), value: 'third' },
+            { label: ctx.locale('commands:roleta.first'), value: 'first' },
+            { label: ctx.locale('commands:roleta.second'), value: 'second' },
+            { label: ctx.locale('commands:roleta.third'), value: 'third' },
           ]);
 
         toSendComponents.push(actionRow([selectMenu]));
@@ -244,13 +244,23 @@ export default class RouletteInteractionCommand extends InteractionCommand {
 
     const randomValue = ROULETTE_NUMBERS[Math.floor(Math.random() * 36)];
 
-    const didWin = (profit: number) => {
+    const didWin = (profit: number, selection: string) => {
       collector.stop();
 
       const winEmbed = new MessageEmbed()
         .setColor(ctx.data.user.selectedColor)
         .setTitle(ctx.locale('commands:roleta.win-title'))
-        .setDescription(ctx.locale('commands:roleta.win', { profit, number: randomValue }));
+        .setDescription(
+          ctx.locale('commands:roleta.win', {
+            profit,
+            number: randomValue,
+            operation,
+            selection:
+              operation === 'STRAIGHT' || operation === 'SPLIT'
+                ? selection
+                : ctx.locale(`commands:roleta.${selection as 'first'}`),
+          }),
+        );
 
       ctx.client.repositories.starRepository.add(ctx.author.id, profit);
 
@@ -260,13 +270,23 @@ export default class RouletteInteractionCommand extends InteractionCommand {
       });
     };
 
-    const didLose = () => {
+    const didLose = (selection: string) => {
       collector.stop();
 
       const loseEmbed = new MessageEmbed()
         .setColor(ctx.data.user.selectedColor)
         .setTitle(ctx.locale('commands:roleta.lose-title'))
-        .setDescription(ctx.locale('commands:roleta.lose', { bet, number: randomValue }));
+        .setDescription(
+          ctx.locale('commands:roleta.lose', {
+            bet,
+            number: randomValue,
+            operation,
+            selection:
+              operation === 'STRAIGHT' || operation === 'SPLIT'
+                ? selection
+                : ctx.locale(`commands:roleta.${selection as 'first'}`),
+          }),
+        );
 
       ctx.client.repositories.starRepository.remove(ctx.author.id, bet);
 
@@ -276,7 +296,8 @@ export default class RouletteInteractionCommand extends InteractionCommand {
       });
     };
 
-    collector.on('collect', (int: SelectMenuInteraction) => {
+    collector.on('collect', async (int: SelectMenuInteraction) => {
+      await int.deferUpdate();
       const resolvedId = resolveCustomId(int.customId);
 
       if (operation === 'SPLIT' && resolvedId !== 'BET') {
@@ -331,33 +352,33 @@ export default class RouletteInteractionCommand extends InteractionCommand {
 
       switch (operation) {
         case 'STRAIGHT': {
-          if (Number(int.values[0]) !== randomValue.value) return didLose();
-          return didWin(bet + bet * 35);
+          if (Number(int.values[0]) !== randomValue.value) return didLose(int.values[0]);
+          return didWin(bet + bet * 35, int.values[0]);
         }
         case 'SPLIT': {
           if (!resolveSeparatedStrings(int.values[0]).includes(`${randomValue.value}`))
-            return didLose();
-          return didWin(bet + bet * 17);
+            return didLose(int.values[0]);
+          return didWin(bet + bet * 17, int.values[0]);
         }
         case 'ODDEVEN': {
-          if (randomValue.color === 'green') return didLose();
-          if (int.values[0] !== randomValue.parity) return didLose();
-          return didWin(bet * 2);
+          if (randomValue.color === 'green') return didLose(int.values[0]);
+          if (int.values[0] !== randomValue.parity) return didLose(int.values[0]);
+          return didWin(bet * 2, int.values[0]);
         }
         case 'COLOR': {
-          if (randomValue.color === 'green') return didLose();
-          if (int.values[0] !== randomValue.color) return didLose();
-          return didWin(bet * 2);
+          if (randomValue.color === 'green') return didLose(int.values[0]);
+          if (int.values[0] !== randomValue.color) return didLose(int.values[0]);
+          return didWin(bet * 2, int.values[0]);
         }
         case 'LOWHIGH': {
-          if (randomValue.color === 'green') return didLose();
-          if (int.values[0] !== randomValue.size) return didLose();
-          return didWin(bet * 2);
+          if (randomValue.color === 'green') return didLose(int.values[0]);
+          if (int.values[0] !== randomValue.size) return didLose(int.values[0]);
+          return didWin(bet * 2, int.values[0]);
         }
         case 'DOZENS': {
-          if (randomValue.color === 'green') return didLose();
-          if (int.values[0] !== randomValue.dozen) return didLose();
-          return didWin(bet + bet * 2);
+          if (randomValue.color === 'green') return didLose(int.values[0]);
+          if (int.values[0] !== randomValue.dozen) return didLose(int.values[0]);
+          return didWin(bet + bet * 2, int.values[0]);
         }
       }
     });
