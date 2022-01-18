@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [3.5.9] - 18-01-2022
+
+- ROLETA!! Sabe o jogo de azar da roleta? A Menhera agora tem ele! Teste agora mesmo com `/roleta`
+
 ## [3.5.8] - 17-01-2022
 
 ### Added
