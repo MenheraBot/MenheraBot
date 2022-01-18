@@ -98,7 +98,7 @@ export default class Databases {
     this.topRepository = new TopRepository(this.Users);
     this.giveRepository = new GiveRepository(this.Users);
     this.themeRepository = new ThemeRepository(this.Themes, this.redisClient);
-    this.bichoRepository = new BichoRepository(this.redisClient);
+    this.bichoRepository = new BichoRepository(this.redisClient, this.starRepository);
     this.creditsRepository = new CreditsRepository(
       this.Credits,
       this.redisClient,

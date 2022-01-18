@@ -685,18 +685,19 @@
     "no-register": "Sem Registro",
     "poor": "Tu não tem estrelinhas o suficiente para apostar! Tente outro valor!",
     "bet-title": "Aposte no Bicho",
-    "bet-description": "Escolha uma forma de apostas! Você pode apostar em um bicho, uma unidade, uma dezena, uma centena, um milhar, uma sequência, quadra de animais ou quina de animais. Escolha abaixo sua categoria, e após isso, selecione a aposta em si",
+    "bet-description": "Escolha uma forma de apostas! Você pode apostar em um bicho, uma unidade, uma dezena, uma centena, um milhar, uma sequência ou quina de animais. Escolha abaixo sua categoria, e após isso, selecione a aposta em si",
     "close": "As apostas estão fechadas! Aguarde o anúncio de vencedores, e aposte novamente",
     "unity": "Unidade",
     "ten": "Dezena",
     "hundred": "Centena",
     "thousand": "Milhar",
     "sequence": "Sequência",
-    "square": "Quadra",
     "corner": "Quina",
     "select": "Selecione a {{option}}",
     "animal": "Selecione seu {{option}} Animal",
     "first": "primeiro",
-    "second": "segundo"
+    "second": "segundo",
+    "third": "terceiro",
+    "success": "Sua aposta foi feita com sucesso! Fique ligado nos resultados para saber se ganhou algo. Mas não se preocupe, o crédito vai ser debitado automaticamente em sua conta!"
   }
 }
