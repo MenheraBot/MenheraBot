@@ -25,6 +25,7 @@ import {
   User,
 } from 'discord.js-light';
 import CreditsRepository from '@database/repositories/CreditsRepository';
+import BichoRepository from '@database/repositories/BichoRepository';
 
 export interface IClientConfigs {
   interactionsDirectory: string;
@@ -252,6 +253,7 @@ export interface IDatabaseRepositories {
   cmdRepository: CmdRepository;
   starRepository: StarRepository;
   mamarRepository: MamarRepository;
+  bichoRepository: BichoRepository;
   guildRepository: GuildsRepository;
   badgeRepository: BadgeRepository;
   maintenanceRepository: MaintenanceRepository;

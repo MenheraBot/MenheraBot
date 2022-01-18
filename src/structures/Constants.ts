@@ -274,6 +274,34 @@ export const ROULETTE_NUMBERS: Array<RouletteNumber | { value: 0; color: 'green'
   { value: 36, color: 'red', parity: 'even', size: 'high', dozen: 'third' },
 ];
 
+export const JOGO_DO_BICHO = [
+  'avestruz',
+  'ágia',
+  'burro',
+  'borboleta',
+  'cachorro',
+  'cabra',
+  'carneiro',
+  'camelo',
+  'cobra',
+  'coelho',
+  'cavalo',
+  'elefante',
+  'galo',
+  'gato',
+  'jacaré',
+  'leão',
+  'macaco',
+  'porco',
+  'pavão',
+  'peru',
+  'touro',
+  'tigre',
+  'urso',
+  'veado',
+  'vaca',
+];
+
 export const BLACKJACK_CARDS = Array.from({ length: 52 }, (_, i) => i + 1);
 
 export const CANNOT_BUY_THEMES = [3, 5, 4, 6];
