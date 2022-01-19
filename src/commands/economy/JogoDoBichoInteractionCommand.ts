@@ -1,6 +1,7 @@
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { JOGO_DO_BICHO } from '@structures/Constants';
+import { BICHO_BET_MULTIPLIER, JOGO_DO_BICHO } from '@structures/Constants';
+import JogoDoBixoManager from '@structures/JogoDoBichoManager';
 import Util, { actionRow, disableComponents, resolveCustomId } from '@utils/Util';
 import {
   MessageActionRow,
@@ -8,6 +9,7 @@ import {
   MessageSelectMenu,
   SelectMenuInteraction,
 } from 'discord.js-light';
+import moment from 'moment';
 
 export default class JogoDoBichoInteractionCommand extends InteractionCommand {
   constructor() {
@@ -33,35 +35,50 @@ export default class JogoDoBichoInteractionCommand extends InteractionCommand {
     const bet = ctx.options.getInteger('aposta');
 
     if (!bet) {
-      const [lastRaffle, nextRaffle] = await Promise.all([
-        ctx.client.repositories.bichoRepository.getLastRaffle(),
-        ctx.client.repositories.bichoRepository.getNextRaffleDate(),
-      ]);
+      const lastRaffle = JogoDoBixoManager.getInstance(
+        ctx.client.repositories.starRepository,
+      ).lastGame;
+      const nextRaffle = JogoDoBixoManager.getInstance(
+        ctx.client.repositories.starRepository,
+      ).currentGameStatus;
 
       const embed = new MessageEmbed()
         .setColor(ctx.data.user.selectedColor)
         .setTitle(ctx.locale('commands:bicho.sorted-title'))
         .setDescription(
           ctx.locale('commands:bicho.sorted-description', {
-            nextDate: nextRaffle?.date ?? ctx.locale('commands:bicho.no-register'),
-            lastDate: lastRaffle?.date ?? ctx.locale('commands:bicho.no-register'),
-            value: nextRaffle?.totalBet ?? ctx.locale('commands:bicho.no-register'),
+            nextDate: nextRaffle?.dueDate
+              ? moment.utc(nextRaffle.dueDate).format('HH:mm')
+              : ctx.locale('commands:bicho.no-register'),
+            lastDate: lastRaffle?.dueDate
+              ? moment.utc(lastRaffle.dueDate).format('HH:mm')
+              : ctx.locale('commands:bicho.no-register'),
+            value:
+              nextRaffle?.bets.reduce((p, c) => p + c.bet, 0) ??
+              ctx.locale('commands:bicho.no-register'),
             first: lastRaffle
-              ? lastRaffle.sortedNumbers[0].join('-')
+              ? lastRaffle.results[0].join(', ')
               : ctx.locale('commands:bicho.no-register'),
             second: lastRaffle
-              ? lastRaffle.sortedNumbers[1].join('-')
+              ? lastRaffle.results[1].join(', ')
               : ctx.locale('commands:bicho.no-register'),
             third: lastRaffle
-              ? lastRaffle.sortedNumbers[2].join('-')
+              ? lastRaffle.results[2].join(', ')
               : ctx.locale('commands:bicho.no-register'),
             fourth: lastRaffle
-              ? lastRaffle.sortedNumbers[3].join('-')
+              ? lastRaffle.results[3].join(', ')
               : ctx.locale('commands:bicho.no-register'),
             fifth: lastRaffle
-              ? lastRaffle.sortedNumbers[4].join('-')
+              ? lastRaffle.results[4].join(', ')
               : ctx.locale('commands:bicho.no-register'),
+            biggestProfit: lastRaffle?.biggestProfit ?? 0,
           }),
+        );
+
+      if (nextRaffle?.bets.some((a) => a.id === ctx.author.id))
+        embed.addField(
+          ctx.locale('commands:bicho.in'),
+          ctx.locale('commands:bicho.in-description'),
         );
 
       ctx.makeMessage({ embeds: [embed] });
@@ -73,17 +90,28 @@ export default class JogoDoBichoInteractionCommand extends InteractionCommand {
       return;
     }
 
-    const nextRaffle = await ctx.client.repositories.bichoRepository.getNextRaffleDate();
+    const nextRaffle = JogoDoBixoManager.getInstance(
+      ctx.client.repositories.starRepository,
+    ).currentGameStatus;
 
-    if (!nextRaffle || nextRaffle.date <= Date.now()) {
+    if (!nextRaffle || nextRaffle.dueDate <= Date.now()) {
       ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:bicho.close') });
+      return;
+    }
+
+    if (
+      !JogoDoBixoManager.getInstance(ctx.client.repositories.starRepository).canRegister(
+        ctx.author.id,
+      )
+    ) {
+      ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:bicho.already') });
       return;
     }
 
     const embed = new MessageEmbed()
       .setTitle(ctx.locale('commands:bicho.bet-title'))
       .setColor(ctx.data.user.selectedColor)
-      .setDescription(ctx.locale('commands:bicho.bet-description'));
+      .setDescription(ctx.locale('commands:bicho.bet-description', BICHO_BET_MULTIPLIER));
 
     const firstmenu = new MessageSelectMenu()
       .setCustomId(`${ctx.interaction.id} | SELECT`)
@@ -92,6 +120,7 @@ export default class JogoDoBichoInteractionCommand extends InteractionCommand {
         { label: ctx.locale('commands:bicho.ten'), value: 'ten' },
         { label: ctx.locale('commands:bicho.hundred'), value: 'hundred' },
         { label: ctx.locale('commands:bicho.thousand'), value: 'thousand' },
+        { label: ctx.locale('commands:bicho.one-animal'), value: 'animal' },
         { label: ctx.locale('commands:bicho.sequence'), value: 'sequence' },
         { label: ctx.locale('commands:bicho.corner'), value: 'corner' },
       ]);
@@ -136,10 +165,15 @@ export default class JogoDoBichoInteractionCommand extends InteractionCommand {
         componentsToSend.push(actionRow([selectMenu]));
         break;
       }
+      case 'animal':
       case 'sequence':
       case 'corner': {
         const selectMenu = new MessageSelectMenu()
-          .setCustomId(`${ctx.interaction.id} | ${selection.values[0].toUpperCase()}`)
+          .setCustomId(
+            `${ctx.interaction.id} | ${
+              selection.values[0] !== 'animal' ? selection.values[0].toUpperCase() : 'UNITY'
+            }`,
+          )
           .setPlaceholder(
             ctx.locale('commands:bicho.animal', { option: ctx.locale('commands:bicho.first') }),
           );
@@ -219,7 +253,9 @@ export default class JogoDoBichoInteractionCommand extends InteractionCommand {
             components: [],
             content: ctx.prettyResponse('success', 'commands:bicho.success'),
           });
-          await ctx.client.repositories.bichoRepository.createBet(
+
+          await ctx.client.repositories.starRepository.remove(ctx.author.id, bet);
+          JogoDoBixoManager.getInstance(ctx.client.repositories.starRepository).addBet(
             ctx.author.id,
             bet,
             int.values[0],

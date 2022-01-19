@@ -302,6 +302,16 @@ export const JOGO_DO_BICHO = [
   'vaca',
 ];
 
+export const BICHO_BET_MULTIPLIER = {
+  unity: 2,
+  ten: 5,
+  hundred: 20,
+  thousand: 500,
+  animal: 3,
+  sequence: 19,
+  corner: 1000,
+};
+
 export const BLACKJACK_CARDS = Array.from({ length: 52 }, (_, i) => i + 1);
 
 export const CANNOT_BUY_THEMES = [3, 5, 4, 6];

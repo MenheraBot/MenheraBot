@@ -681,11 +681,11 @@
   },
   "bicho": {
     "sorted-title": "Números Sorteados",
-    "sorted-description": "**Último Sorteio:** `{{lastDate}}`\nNúmeros Sorteados:\n1º - `{{first}}`\n2º - `{{second}}`\n3º - `{{third}}`\n4º - `{{fourth}}`\n5º - `{{fifth}}`\n\nPróximo Sorteio Às `{{nextDate}}`\n**Valor Acumulado:** {{value}} :star:",
+    "sorted-description": "**Último Sorteio:** `{{lastDate}}`\nNúmeros Sorteados:\n1º - `{{first}}`\n2º - `{{second}}`\n3º - `{{third}}`\n4º - `{{fourth}}`\n5º - `{{fifth}}`\nMaior Lucro: **{{biggestProfit}}** :star:\n\nPróximo Sorteio Às `{{nextDate}}`\n**Valor Acumulado:** {{value}} :star:",
     "no-register": "Sem Registro",
     "poor": "Tu não tem estrelinhas o suficiente para apostar! Tente outro valor!",
     "bet-title": "Aposte no Bicho",
-    "bet-description": "Escolha uma forma de apostas! Você pode apostar em um bicho, uma unidade, uma dezena, uma centena, um milhar, uma sequência ou quina de animais. Escolha abaixo sua categoria, e após isso, selecione a aposta em si",
+    "bet-description": "Escolha uma forma de apostas! Você pode apostar em um bicho, uma unidade, uma dezena, uma centena, um milhar, um animal, uma sequência ou quina de animais. Escolha abaixo sua categoria, e após isso, selecione a aposta em si\n\n**MULTIPLICADOR POR ESCOLHAS:**\n**Unidade:** {{unity}}x :star:\n**Dezena:** {{ten}}x :star:\n**Centena:** {{hundred}}x :star:\n**Milhar:** {{thousand}}x :star:\n**Animal:** {{animal}}x :star:\n**Sequência:** {{sequence}}x :star:\n**Quina:** {{corner}}x :star:",
     "close": "As apostas estão fechadas! Aguarde o anúncio de vencedores, e aposte novamente",
     "unity": "Unidade",
     "ten": "Dezena",
@@ -693,11 +693,15 @@
     "thousand": "Milhar",
     "sequence": "Sequência",
     "corner": "Quina",
+    "one-animal": "Animal",
     "select": "Selecione a {{option}}",
     "animal": "Selecione seu {{option}} Animal",
     "first": "primeiro",
     "second": "segundo",
     "third": "terceiro",
+    "in": "Você está Dentro!",
+    "in-description": "Você está participando desta aposta!",
+    "already": "Você já apostou neste Jogo do Bicho! Espere o próximo começar",
     "success": "Sua aposta foi feita com sucesso! Fique ligado nos resultados para saber se ganhou algo. Mas não se preocupe, o crédito vai ser debitado automaticamente em sua conta!"
   }
 }

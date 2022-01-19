@@ -19,7 +19,6 @@ import CoinflipRepository from './repositories/CoinflipRepository';
 import ShopRepository from './repositories/ShopRepository';
 import ThemeRepository from './repositories/ThemeRepository';
 import CreditsRepository from './repositories/CreditsRepository';
-import BichoRepository from './repositories/BichoRepository';
 
 export default class Databases {
   public redisClient: Redis.Redis | null = null;
@@ -64,8 +63,6 @@ export default class Databases {
 
   private readonly shopRepository: ShopRepository;
 
-  private readonly bichoRepository: BichoRepository;
-
   private readonly themeRepository: ThemeRepository;
 
   private readonly creditsRepository: CreditsRepository;
@@ -98,7 +95,6 @@ export default class Databases {
     this.topRepository = new TopRepository(this.Users);
     this.giveRepository = new GiveRepository(this.Users);
     this.themeRepository = new ThemeRepository(this.Themes, this.redisClient);
-    this.bichoRepository = new BichoRepository(this.redisClient, this.starRepository);
     this.creditsRepository = new CreditsRepository(
       this.Credits,
       this.redisClient,
@@ -122,7 +118,6 @@ export default class Databases {
       badgeRepository: this.badgeRepository,
       maintenanceRepository: this.maintenanceRepository,
       huntRepository: this.huntRepository,
-      bichoRepository: this.bichoRepository,
       relationshipRepository: this.relationshipRepository,
       blacklistRepository: this.blacklistRepository,
       topRepository: this.topRepository,

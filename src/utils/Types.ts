@@ -25,7 +25,6 @@ import {
   User,
 } from 'discord.js-light';
 import CreditsRepository from '@database/repositories/CreditsRepository';
-import BichoRepository from '@database/repositories/BichoRepository';
 
 export interface IClientConfigs {
   interactionsDirectory: string;
@@ -253,7 +252,6 @@ export interface IDatabaseRepositories {
   cmdRepository: CmdRepository;
   starRepository: StarRepository;
   mamarRepository: MamarRepository;
-  bichoRepository: BichoRepository;
   guildRepository: GuildsRepository;
   badgeRepository: BadgeRepository;
   maintenanceRepository: MaintenanceRepository;
@@ -367,4 +365,32 @@ export enum huntEnum {
   GIANT = 'giants',
   ARCHANGEL = 'archangels',
   GOD = 'gods',
+}
+
+export interface BetPlayer {
+  id: string;
+  bet: number;
+  option: string;
+}
+
+export type BichoBetType =
+  | 'unity'
+  | 'ten'
+  | 'hundred'
+  | 'thousand'
+  | 'animal'
+  | 'sequence'
+  | 'corner';
+
+export interface BichoWinner {
+  id: string;
+  value: number;
+  didWin: boolean;
+}
+
+export interface JogoDoBichoGame {
+  dueDate: number;
+  results: number[][];
+  bets: Array<BetPlayer>;
+  biggestProfit: number;
 }
