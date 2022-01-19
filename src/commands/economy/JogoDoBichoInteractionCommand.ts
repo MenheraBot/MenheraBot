@@ -48,10 +48,10 @@ export default class JogoDoBichoInteractionCommand extends InteractionCommand {
         .setDescription(
           ctx.locale('commands:bicho.sorted-description', {
             nextDate: nextRaffle?.dueDate
-              ? moment.utc(nextRaffle.dueDate).format('HH:mm')
+              ? moment.utc(nextRaffle.dueDate).local().format('HH:mm')
               : ctx.locale('commands:bicho.no-register'),
             lastDate: lastRaffle?.dueDate
-              ? moment.utc(lastRaffle.dueDate).format('HH:mm')
+              ? moment.utc(lastRaffle.dueDate).local().format('HH:mm')
               : ctx.locale('commands:bicho.no-register'),
             value:
               nextRaffle?.bets.reduce((p, c) => p + c.bet, 0) ??
