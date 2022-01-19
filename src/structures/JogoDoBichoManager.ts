@@ -2,6 +2,8 @@ import StarRepository from '@database/repositories/StarRepository';
 import { BichoBetType, BichoWinner, JogoDoBichoGame } from '@utils/Types';
 import { BICHO_BET_MULTIPLIER, JOGO_DO_BICHO } from './Constants';
 
+const GAME_DURATION = 1000 * 60 * 3; /* * 60 * 5 */
+
 const getResults = (): number[] => {
   const results = [];
 
@@ -15,18 +17,23 @@ export default class JogoDoBixoManager {
 
   private static instance?: JogoDoBixoManager;
 
+  public gameLoop: NodeJS.Timer;
+
+  private starRepository: StarRepository;
+
   public lastGame?: JogoDoBichoGame;
 
   constructor(starRepository: StarRepository) {
+    this.starRepository = starRepository;
     this.ongoingGame = {
-      dueDate: Date.now() + 1000 * 60 * 60 * 5,
+      dueDate: Date.now() + GAME_DURATION,
       bets: [],
       results: [],
       biggestProfit: 0,
     };
-    setInterval(() => {
-      JogoDoBixoManager.getInstance(starRepository).finishGame(starRepository);
-    }, 1000 * 60 * 60 * 5);
+    this.gameLoop = setInterval(() => {
+      JogoDoBixoManager.getInstance(starRepository).finishGame();
+    }, GAME_DURATION);
   }
 
   static makeWinners(game: JogoDoBichoGame): BichoWinner[] {
@@ -95,13 +102,13 @@ export default class JogoDoBixoManager {
     }));
   }
 
-  finishGame(starRepository: StarRepository): void {
+  finishGame(): void {
     const results = [getResults(), getResults(), getResults(), getResults(), getResults()];
 
     this.ongoingGame.results = results;
     this.lastGame = this.ongoingGame;
     this.ongoingGame = {
-      dueDate: Date.now() + 1000 * 60 * 60 * 5,
+      dueDate: Date.now() + GAME_DURATION,
       bets: [],
       results: [],
       biggestProfit: 0,
@@ -111,7 +118,7 @@ export default class JogoDoBixoManager {
     winners
       .filter((a) => a.didWin)
       .forEach((a) => {
-        starRepository.add(a.id, a.value);
+        this.starRepository.add(a.id, a.value);
         if (this.lastGame && a.value > this.lastGame?.biggestProfit)
           this.lastGame.biggestProfit = a.value;
       });
@@ -129,6 +136,33 @@ export default class JogoDoBixoManager {
 
   get currentGameStatus(): JogoDoBichoGame {
     return this.ongoingGame;
+  }
+
+  stopGameLoop(): void {
+    clearInterval(this.gameLoop);
+
+    this.ongoingGame.bets.forEach((a) => {
+      this.starRepository.add(a.id, a.bet);
+    });
+
+    this.ongoingGame = {
+      dueDate: 0,
+      bets: [],
+      results: [],
+      biggestProfit: 0,
+    };
+  }
+
+  restartGameLoop(): void {
+    this.ongoingGame = {
+      dueDate: Date.now() + GAME_DURATION,
+      bets: [],
+      results: [],
+      biggestProfit: 0,
+    };
+    this.gameLoop = setInterval(() => {
+      JogoDoBixoManager.getInstance(this.starRepository).finishGame();
+    }, GAME_DURATION);
   }
 
   static getInstance(starRepository: StarRepository): JogoDoBixoManager {
