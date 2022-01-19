@@ -681,7 +681,7 @@
   },
   "bicho": {
     "sorted-title": "Números Sorteados",
-    "sorted-description": "**Último Sorteio:** `{{lastDate}}`\nNúmeros Sorteados:\n1º - `{{first}}`\n2º - `{{second}}`\n3º - `{{third}}`\n4º - `{{fourth}}`\n5º - `{{fifth}}`\nMaior Lucro: **{{biggestProfit}}** :star:\n\nPróximo Sorteio Às `{{nextDate}}`\n**Valor Acumulado:** {{value}} :star:",
+    "sorted-description": "**Último Sorteio:** `{{lastDate}}`\nNúmeros Sorteados:\n1º - `{{first}}`\n2º - `{{second}}`\n3º - `{{third}}`\n4º - `{{fourth}}`\n5º - `{{fifth}}`\nMaior Lucro: **{{biggestProfit}}** :star:\n\nPróximo Sorteio Em `{{nextDate}}`\n**Valor Acumulado:** {{value}} :star:",
     "no-register": "Sem Registro",
     "poor": "Tu não tem estrelinhas o suficiente para apostar! Tente outro valor!",
     "bet-title": "Aposte no Bicho",

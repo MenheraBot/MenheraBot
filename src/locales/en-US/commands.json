@@ -673,7 +673,7 @@
   },
   "bicho": {
     "sorted-title": "Drawn Numbers",
-    "sorted-description": "**Last Draw:** `{{lastDate}}`\nNumbers Drawn:\n1st - `{{first}}`\n2nd - `{{second}}`\n3rd - `{{third}}`\n4th - `{{fourth}}`\n5th - `{{fifth}}`\nBiggest Profit: **{{biggestProfit}}** :star:\n\nNext Draw At `{{nextDate}}`\n* *Accumulated Value:** {{value}} :star:",
+    "sorted-description": "**Last Draw:** `{{lastDate}}`\nNumbers Drawn:\n1st - `{{first}}`\n2nd - `{{second}}`\n3rd - `{{third}}`\n4th - `{{fourth}}`\n5th - `{{fifth}}`\nBiggest Profit: **{{biggestProfit}}** :star:\n\nNext Draw In `{{nextDate}}`\n* *Accumulated Value:** {{value}} :star:",
     "no-register": "No registry",
     "poor": "You don't have enough stars to bet on! Try another value!",
     "bet-title": "Bet on an Animal",
