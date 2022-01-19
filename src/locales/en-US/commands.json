@@ -670,5 +670,30 @@
     "LOWHIGH": "Higher or Lower Number",
     "ODDEVEN": "Odd or Even",
     "COLOR": "Black or Red"
+  },
+  "bicho": {
+    "sorted-title": "Drawn Numbers",
+    "sorted-description": "**Last Draw:** `{{lastDate}}`\nNumbers Drawn:\n1st - `{{first}}`\n2nd - `{{second}}`\n3rd - `{{third}}`\n4th - `{{fourth}}`\n5th - `{{fifth}}`\nBiggest Profit: **{{biggestProfit}}** :star:\n\nNext Draw At `{{nextDate}}`\n* *Accumulated Value:** {{value}} :star:",
+    "no-register": "No registry",
+    "poor": "You don't have enough stars to bet on! Try another value!",
+    "bet-title": "Bet on an Animal",
+    "bet-description": "Choose a way of betting! You can bet on an animal, a unit, a dozen, a hundred, a thousand, an animal, a sequence or corner of animals. Choose your category below, and after that, select the bet itself\n\n**MULTIPLIER BY CHOICE:**\n**Unit:** {{unity}}x :star:\n**Tens:* * {{ten}}x :star:\n**Hundred:** {{hundred}}x :star:\n**Thousands:** {{thousand}}x :star:\n**Animal: ** {{animal}}x :star:\n**Sequence:** {{sequence}}x :star:\n**Quina:** {{corner}}x :star:",
+    "close": "Bets are off! Wait for the announcement of winners, and bet again",
+    "unity": "Unity",
+    "ten": "Ten",
+    "hundred": "Hundred",
+    "thousand": "Thousand",
+    "sequence": "Sequence",
+    "corner": "Conrer",
+    "one-animal": "Animal",
+    "select": "Select an {{option}}",
+    "animal": "Select your {{option}} Animal",
+    "first": "first",
+    "second": "second",
+    "third": "third",
+    "in": "You're In!",
+    "in-description": "You are participating in this bet!",
+    "already": "You have already bet on the Animal Game! wait for the next one to start",
+    "success": "Your bet has been successfully placed! Stay tuned to the results to see if you've won anything. But don't worry, the credit will be automatically debited from your account!"
   }
 }
