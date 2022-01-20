@@ -227,7 +227,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
 
     moment.locale(ctx.data.server.lang.toLowerCase());
 
-    if (!(await ctx.client.isShardingProcessEnded())) {
+    if (!ctx.client.shardProcessEnded) {
       ctx.makeMessage({
         content: ctx.prettyResponse('error', 'common:sharding_in_progress'),
       });

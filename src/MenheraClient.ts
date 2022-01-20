@@ -19,6 +19,8 @@ import { debugError } from '@utils/Util';
 export default class MenheraClient extends Client {
   public database: Database;
 
+  public shardProcessEnded: boolean;
+
   public slashCommands: Collection<string, InteractionCommand>;
 
   public aliases: Collection<string, string>;
@@ -47,23 +49,11 @@ export default class MenheraClient extends Client {
     this.events = new EventManager(this);
     this.config = config;
     this.picassoWs = new PicassoWebSocket(this.shard?.ids[0] ?? 0);
+    this.shardProcessEnded = false;
   }
 
   get repositories(): IDatabaseRepositories {
     return this.database.repositories;
-  }
-
-  async isShardingProcessEnded(): Promise<boolean> {
-    if (!this.shard) return false;
-
-    try {
-      return this.shard
-        .broadcastEval((c) => c.isReady())
-        .catch(() => false)
-        .then(() => true);
-    } catch {
-      return false;
-    }
   }
 
   async init(): Promise<true> {

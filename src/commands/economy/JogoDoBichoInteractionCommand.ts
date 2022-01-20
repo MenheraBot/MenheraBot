@@ -51,7 +51,7 @@ export default class JogoDoBichoInteractionCommand extends InteractionCommand {
               ? moment.utc(nextRaffle.dueDate - Date.now()).format('HH:mm:ss')
               : ctx.locale('commands:bicho.no-register'),
             lastDate: lastRaffle?.dueDate
-              ? moment.utc(lastRaffle.dueDate - Date.now()).format('HH:mm:ss')
+              ? moment.utc(Date.now() - lastRaffle.dueDate).format('HH:mm:ss')
               : ctx.locale('commands:bicho.no-register'),
             value:
               nextRaffle?.bets.reduce((p, c) => p + c.bet, 0) ??

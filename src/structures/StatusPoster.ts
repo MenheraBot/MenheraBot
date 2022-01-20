@@ -13,8 +13,7 @@ export const postBotStatus = (client: MenheraClient): void => {
 };
 export const postShardStatus = (client: MenheraClient): void => {
   setInterval(async () => {
-    const ShardingEnded = await client.isShardingProcessEnded();
-    if (!ShardingEnded) return;
+    if (!client.shardProcessEnded) return;
 
     const getShardsInfo = (c: Client<true>) => {
       const memoryUsed = process.memoryUsage().heapUsed;
