@@ -52,7 +52,7 @@ export default class MemeInteractionCommand extends InteractionCommand {
 
     const embed = new MessageEmbed()
       .setImage(selectedImage)
-      .setFooter(ctx.locale('commands:fodase.author', { author: ctx.author.username }))
+      .setFooter({ text: ctx.locale('commands:fodase.author', { author: ctx.author.username }) })
       .setTitle(phrase);
 
     await ctx.makeMessage({ embeds: [embed] });

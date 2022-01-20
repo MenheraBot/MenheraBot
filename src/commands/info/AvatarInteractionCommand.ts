@@ -52,12 +52,12 @@ export default class AvatarInteractionCommand extends InteractionCommand {
       .setTitle(ctx.locale('commands:avatar.title', { user: user.username }))
       .setImage(img)
       .setColor(cor)
-      .setFooter(ctx.locale('commands:avatar.footer'));
+      .setFooter({ text: ctx.locale('commands:avatar.footer') });
 
     if (user.id === ctx.client.user?.id) {
       embed.setTitle(ctx.locale('commands:avatar.client_title', { user: user.username }));
       embed.setColor('#f276f3');
-      embed.setFooter(ctx.locale('commands:avatar.footer', { user: user.username }));
+      embed.setFooter({ text: ctx.locale('commands:avatar.footer', { user: user.username }) });
     }
     await ctx.makeMessage({ embeds: [embed] });
   }

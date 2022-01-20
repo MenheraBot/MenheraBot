@@ -143,7 +143,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
           CalculateHandValue([dealerCards[0]]),
         )}\``,
       )
-      .setFooter(ctx.locale('commands:blackjack.footer'))
+      .setFooter({ text: ctx.locale('commands:blackjack.footer') })
       .setColor(ctx.data.user.selectedColor)
       .setThumbnail(ctx.author.displayAvatarURL({ format: 'png', dynamic: true }));
 
@@ -597,7 +597,7 @@ export default class BlackjackInteractionCommand extends InteractionCommand {
           CalculateHandValue([dealerCards[0]]),
         )}\``,
       )
-      .setFooter(ctx.locale('commands:blackjack.footer'))
+      .setFooter({ text: ctx.locale('commands:blackjack.footer') })
       .setColor(ctx.data.user.selectedColor)
       .setThumbnail(ctx.author.displayAvatarURL({ format: 'png', dynamic: true }));
 

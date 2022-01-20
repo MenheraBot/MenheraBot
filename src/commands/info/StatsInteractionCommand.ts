@@ -265,15 +265,15 @@ export default class StatsInteractionCommand extends InteractionCommand {
           joinedAt: moment.utc(ctx.interaction?.guild?.me?.joinedAt).format('LLLL'),
         }),
       )
-      .setFooter(
-        `${ctx.client.user?.username} ${ctx.locale('commands:status.botinfo.embed_footer')} ${
+      .setFooter({
+        text: `${ctx.client.user?.username} ${ctx.locale('commands:status.botinfo.embed_footer')} ${
           owner.tag
         }`,
-        owner.displayAvatarURL({
+        iconURL: owner.displayAvatarURL({
           format: 'png',
           dynamic: true,
         }),
-      )
+      })
       .addFields([
         {
           name: '🌐 | Servers | 🌐',
@@ -423,7 +423,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
     const embed = new MessageEmbed()
       .setTitle(ctx.locale('commands:status.blackjack.embed-title', { user: user.tag }))
       .setColor(COLORS.Purple)
-      .setFooter(ctx.locale('commands:status.coinflip.embed-footer'))
+      .setFooter({ text: ctx.locale('commands:status.coinflip.embed-footer') })
       .addFields([
         {
           name: `🎰 | ${ctx.locale('commands:status.coinflip.played')}`,
@@ -491,7 +491,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
     const embed = new MessageEmbed()
       .setTitle(ctx.locale('commands:status.coinflip.embed-title', { user: user.tag }))
       .setColor(COLORS.Purple)
-      .setFooter(ctx.locale('commands:status.coinflip.embed-footer'))
+      .setFooter({ text: ctx.locale('commands:status.coinflip.embed-footer') })
       .addFields([
         {
           name: `🎰 | ${ctx.locale('commands:status.coinflip.played')}`,

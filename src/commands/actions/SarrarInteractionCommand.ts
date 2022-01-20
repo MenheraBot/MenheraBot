@@ -63,7 +63,7 @@ export default class SarrarInteractionCommand extends InteractionCommand {
       )
       .setImage(randSozinho)
       .setThumbnail(ctx.author.displayAvatarURL())
-      .setFooter(ctx.locale('commands:sarrar.no-mention.embed_footer'));
+      .setFooter({ text: ctx.locale('commands:sarrar.no-mention.embed_footer') });
 
     const Button = new MessageButton()
       .setCustomId(ctx.interaction.id)

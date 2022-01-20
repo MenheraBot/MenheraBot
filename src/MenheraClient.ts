@@ -55,10 +55,15 @@ export default class MenheraClient extends Client {
 
   async isShardingProcessEnded(): Promise<boolean> {
     if (!this.shard) return false;
-    return this.shard
-      .broadcastEval((c) => c.isReady())
-      .catch(() => false)
-      .then(() => true);
+
+    try {
+      return this.shard
+        .broadcastEval((c) => c.isReady())
+        .catch(() => false)
+        .then(() => true);
+    } catch {
+      return false;
+    }
   }
 
   async init(): Promise<true> {

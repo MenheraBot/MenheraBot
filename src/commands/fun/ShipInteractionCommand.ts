@@ -106,7 +106,7 @@ export default class ShipInteractionCommand extends InteractionCommand {
     if (!bufferedShipImage.err) {
       attc = new MessageAttachment(Buffer.from(bufferedShipImage.data as Buffer), 'ship.png');
       embed.setImage('attachment://ship.png');
-    } else embed.setFooter(ctx.locale('commands:http-error'));
+    } else embed.setFooter({ text: ctx.locale('commands:http-error') });
 
     if (value >= 25)
       embed

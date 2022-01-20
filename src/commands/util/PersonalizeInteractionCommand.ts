@@ -245,7 +245,7 @@ export default class PersonalizeInteractionCommand extends InteractionCommand {
 
       componentsToSend.push(actionRow([backPageButton, nextPageButton]));
 
-      embed.setFooter(ctx.locale('commands:cor.footer', { page: 1, maxPages: pages }));
+      embed.setFooter({ text: ctx.locale('commands:cor.footer', { page: 1, maxPages: pages }) });
     }
 
     // É o cara do arroz
@@ -295,9 +295,9 @@ export default class PersonalizeInteractionCommand extends InteractionCommand {
           });
         }
 
-        embed.setFooter(
-          ctx.locale('commands:cor.footer', { page: selectedPage + 1, maxPages: pages }),
-        );
+        embed.setFooter({
+          text: ctx.locale('commands:cor.footer', { page: selectedPage + 1, maxPages: pages }),
+        });
 
         if (selectedPage > 0) componentsToSend[1].components[0].setDisabled(false);
         else componentsToSend[1].components[0].setDisabled(true);
