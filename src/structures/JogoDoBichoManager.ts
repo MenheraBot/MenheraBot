@@ -4,7 +4,7 @@ import { MayNotExists } from '@utils/Util';
 import MenheraClient from 'MenheraClient';
 import { BICHO_BET_MULTIPLIER, JOGO_DO_BICHO } from './Constants';
 
-const GAME_DURATION = 1000 * 60; // * 60 * 5;
+const GAME_DURATION = 1000 * 60 * 60 * 5;
 
 const getResults = (): number[] => {
   const results = [];
