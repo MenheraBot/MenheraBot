@@ -17,7 +17,7 @@ const InteractionCommandExecutor = async (
     interaction.guild?.preferredLocale ?? languageByLocale.brazil,
   );
 
-  const t = i18next.getFixedT(server.lang ?? 'pt-BR');
+  const t = i18next.getFixedT(server.lang ?? interaction.guildLocale);
 
   const isUserBanned = await client.repositories.blacklistRepository.isUserBanned(
     interaction.user.id,

@@ -12,10 +12,6 @@ let dailyLoopTimeout: NodeJS.Timeout;
 
 export default class ReadyEvent {
   async run(client: MenheraClient): Promise<void> {
-    // @ts-expect-error Reload command doesnt exist in client<boolean>
-    await client.shard.broadcastEval((c: MenheraClient) => {
-      c.shardProcessEnded = true;
-    });
     if (!client.user) return;
     if (!client.shard) return;
     if (process.env.NODE_ENV === 'development') return;

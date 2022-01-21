@@ -36,13 +36,13 @@ export default class JogoDoBichoInteractionCommand extends InteractionCommand {
       return;
     }
 
-    moment.locale(ctx.interaction.locale);
-
     const bet = ctx.options.getInteger('aposta');
 
     if (!bet) {
       const lastRaffle = await ctx.client.jogoDoBichoManager.lastGameStatus();
       const nextRaffle = await ctx.client.jogoDoBichoManager.currentGameStatus();
+
+      moment.locale(ctx.data.server.lang);
 
       const embed = new MessageEmbed()
         .setColor(ctx.data.user.selectedColor)
