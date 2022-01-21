@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Client, ClientEvents, ClientOptions, Collection } from 'discord.js-light';
 
 import * as Sentry from '@sentry/node';
@@ -15,6 +16,7 @@ import InteractionCommand from '@structures/command/InteractionCommand';
 import LocaleStructure from '@structures/LocaleStructure';
 import PicassoWebSocket from '@structures/PicassoWebSocket';
 import { debugError } from '@utils/Util';
+import JogoDoBixoManager from '@structures/JogoDoBichoManager';
 
 export default class MenheraClient extends Client {
   public database: Database;
@@ -33,6 +35,8 @@ export default class MenheraClient extends Client {
 
   public economyExecutions: Set<string>;
 
+  public jogoDoBichoManager: JogoDoBixoManager;
+
   constructor(options: ClientOptions, public config: IClientConfigs) {
     super(options);
 
@@ -50,6 +54,7 @@ export default class MenheraClient extends Client {
     this.config = config;
     this.picassoWs = new PicassoWebSocket(this.shard?.ids[0] ?? 0);
     this.shardProcessEnded = false;
+    this.jogoDoBichoManager = new JogoDoBixoManager(this);
   }
 
   get repositories(): IDatabaseRepositories {

@@ -1,8 +1,10 @@
-import StarRepository from '@database/repositories/StarRepository';
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { BichoBetType, BichoWinner, JogoDoBichoGame } from '@utils/Types';
+import { MayNotExists } from '@utils/Util';
+import MenheraClient from 'MenheraClient';
 import { BICHO_BET_MULTIPLIER, JOGO_DO_BICHO } from './Constants';
 
-const GAME_DURATION = 1000 * 60 * 60 * 5;
+const GAME_DURATION = 1000 * 60; // * 60 * 5;
 
 const getResults = (): number[] => {
   const results = [];
@@ -13,27 +15,28 @@ const getResults = (): number[] => {
 };
 
 export default class JogoDoBixoManager {
-  private ongoingGame: JogoDoBichoGame;
+  private ongoingGame!: JogoDoBichoGame;
 
-  private static instance?: JogoDoBixoManager;
+  public gameLoop!: NodeJS.Timer;
 
-  public gameLoop: NodeJS.Timer;
-
-  private starRepository: StarRepository;
+  private clientInstance: MenheraClient;
 
   public lastGame?: JogoDoBichoGame;
 
-  constructor(starRepository: StarRepository) {
-    this.starRepository = starRepository;
-    this.ongoingGame = {
-      dueDate: Date.now() + GAME_DURATION,
-      bets: [],
-      results: [],
-      biggestProfit: 0,
-    };
-    this.gameLoop = setInterval(() => {
-      JogoDoBixoManager.getInstance(starRepository).finishGame();
-    }, GAME_DURATION);
+  constructor(client: MenheraClient) {
+    this.clientInstance = client;
+
+    if (this.clientInstance.shard!.ids[0] === 0) {
+      this.ongoingGame = {
+        dueDate: Date.now() + GAME_DURATION,
+        bets: [],
+        results: [],
+        biggestProfit: 0,
+      };
+      this.gameLoop = setInterval(() => {
+        this.finishGame();
+      }, GAME_DURATION);
+    }
   }
 
   static makeWinners(game: JogoDoBichoGame): BichoWinner[] {
@@ -103,73 +106,130 @@ export default class JogoDoBixoManager {
   }
 
   finishGame(): void {
-    const results = [getResults(), getResults(), getResults(), getResults(), getResults()];
+    if (this.clientInstance.shard!.ids[0] === 0) {
+      const results = [getResults(), getResults(), getResults(), getResults(), getResults()];
 
-    this.ongoingGame.results = results;
-    this.lastGame = this.ongoingGame;
-    this.ongoingGame = {
-      dueDate: Date.now() + GAME_DURATION,
-      bets: [],
-      results: [],
-      biggestProfit: 0,
-    };
+      this.ongoingGame.results = results;
+      this.lastGame = this.ongoingGame;
+      this.ongoingGame = {
+        dueDate: Date.now() + GAME_DURATION,
+        bets: [],
+        results: [],
+        biggestProfit: 0,
+      };
 
-    const winners = JogoDoBixoManager.makeWinners(this.lastGame);
-    winners
-      .filter((a) => a.didWin)
-      .forEach((a) => {
-        this.starRepository.add(a.id, a.value);
-        if (this.lastGame && a.value > this.lastGame?.biggestProfit)
-          this.lastGame.biggestProfit = a.value;
-      });
+      const winners = JogoDoBixoManager.makeWinners(this.lastGame);
+      winners
+        .filter((a) => a.didWin)
+        .forEach((a) => {
+          this.clientInstance.repositories.starRepository.add(a.id, a.value);
+          if (this.lastGame && a.value > this.lastGame?.biggestProfit)
+            this.lastGame.biggestProfit = a.value;
+        });
+    } else {
+      this.clientInstance.shard!.broadcastEval(
+        // @ts-expect-error Client n é coiso
+        (c: MenheraClient) => {
+          c.jogoDoBichoManager.finishGame();
+        },
+        { shard: 0 },
+      );
+    }
   }
 
-  canRegister(userId: string): boolean {
-    if (this.ongoingGame.dueDate < Date.now()) return false;
-    if (this.ongoingGame.bets.some((plr) => plr.id === userId)) return false;
-    return true;
+  async canRegister(userId: string): Promise<boolean> {
+    if (this.clientInstance.shard!.ids[0] === 0) {
+      if (this.ongoingGame.dueDate < Date.now()) return false;
+      if (this.ongoingGame.bets.some((plr) => plr.id === userId)) return false;
+      return true;
+    }
+    return this.clientInstance.shard!.broadcastEval(
+      // @ts-expect-error Client n é coiso
+      (c: MenheraClient) => c.jogoDoBichoManager.canRegister(userId),
+      { shard: 0 },
+    );
   }
 
   addBet(userId: string, bet: number, option: string): void {
-    this.ongoingGame.bets.push({ id: userId, bet, option });
+    if (this.clientInstance.shard!.ids[0] === 0) {
+      this.ongoingGame.bets.push({ id: userId, bet, option });
+    } else {
+      this.clientInstance.shard!.broadcastEval(
+        // @ts-expect-error Client n é coiso
+        (c: MenheraClient) => {
+          c.jogoDoBichoManager.addBet(userId, bet, option);
+        },
+        { shard: 0 },
+      );
+    }
   }
 
-  get currentGameStatus(): JogoDoBichoGame {
-    return this.ongoingGame;
+  async lastGameStatus(): Promise<MayNotExists<JogoDoBichoGame>> {
+    if (this.clientInstance.shard!.ids[0] === 0) {
+      return this.lastGame;
+    }
+    return this.clientInstance.shard!.broadcastEval(
+      // @ts-expect-error Client n é coiso
+      (c: MenheraClient) => c.jogoDoBichoManager.lastGame,
+      { shard: 0 },
+    );
+  }
+
+  async currentGameStatus(): Promise<JogoDoBichoGame> {
+    if (this.clientInstance.shard!.ids[0] === 0) {
+      return this.ongoingGame;
+    }
+    return this.clientInstance.shard!.broadcastEval(
+      // @ts-expect-error Client n é coiso
+      (c: MenheraClient) => c.jogoDoBichoManager.ongoingGame,
+      { shard: 0 },
+    );
   }
 
   stopGameLoop(): void {
-    clearInterval(this.gameLoop);
+    if (this.clientInstance.shard!.ids[0] === 0) {
+      clearInterval(this.gameLoop);
 
-    this.ongoingGame.bets.forEach((a) => {
-      this.starRepository.add(a.id, a.bet);
-    });
+      this.ongoingGame.bets.forEach((a) => {
+        this.clientInstance.repositories.starRepository.add(a.id, a.bet);
+      });
 
-    this.ongoingGame = {
-      dueDate: 0,
-      bets: [],
-      results: [],
-      biggestProfit: 0,
-    };
+      this.ongoingGame = {
+        dueDate: 0,
+        bets: [],
+        results: [],
+        biggestProfit: 0,
+      };
+    } else {
+      this.clientInstance.shard!.broadcastEval(
+        // @ts-expect-error Client n é coiso
+        (c: MenheraClient) => {
+          c.jogoDoBichoManager.stopGameLoop();
+        },
+        { shard: 0 },
+      );
+    }
   }
 
   restartGameLoop(): void {
-    this.ongoingGame = {
-      dueDate: Date.now() + GAME_DURATION,
-      bets: [],
-      results: [],
-      biggestProfit: 0,
-    };
-    this.gameLoop = setInterval(() => {
-      JogoDoBixoManager.getInstance(this.starRepository).finishGame();
-    }, GAME_DURATION);
-  }
-
-  static getInstance(starRepository: StarRepository): JogoDoBixoManager {
-    if (!this.instance) {
-      this.instance = new JogoDoBixoManager(starRepository);
+    if (this.clientInstance.shard!.ids[0] === 0) {
+      this.ongoingGame = {
+        dueDate: Date.now() + GAME_DURATION,
+        bets: [],
+        results: [],
+        biggestProfit: 0,
+      };
+      this.gameLoop = setInterval(() => {
+        this.finishGame();
+      }, GAME_DURATION);
+    } else {
+      this.clientInstance.shard!.broadcastEval(
+        // @ts-expect-error Client n é coiso
+        (c: MenheraClient) => {
+          c.jogoDoBichoManager.restartGameLoop();
+        },
+        { shard: 0 },
+      );
     }
-
-    return this.instance;
   }
 }

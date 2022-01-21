@@ -209,4 +209,4 @@ export const getAllThemeUserIds = (
   return allIds;
 };
 
-export type MayNotExists<T> = T | null;
+export type MayNotExists<T> = T | null | undefined;

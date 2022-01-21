@@ -1,7 +1,6 @@
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { BICHO_BET_MULTIPLIER, JOGO_DO_BICHO } from '@structures/Constants';
-import JogoDoBixoManager from '@structures/JogoDoBichoManager';
 import Util, { actionRow, disableComponents, resolveCustomId } from '@utils/Util';
 import {
   MessageActionRow,
@@ -32,15 +31,18 @@ export default class JogoDoBichoInteractionCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
+    if (!ctx.client.shardProcessEnded) {
+      ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:bicho.close') });
+      return;
+    }
+
+    moment.locale(ctx.interaction.locale);
+
     const bet = ctx.options.getInteger('aposta');
 
     if (!bet) {
-      const lastRaffle = JogoDoBixoManager.getInstance(
-        ctx.client.repositories.starRepository,
-      ).lastGame;
-      const nextRaffle = JogoDoBixoManager.getInstance(
-        ctx.client.repositories.starRepository,
-      ).currentGameStatus;
+      const lastRaffle = await ctx.client.jogoDoBichoManager.lastGameStatus();
+      const nextRaffle = await ctx.client.jogoDoBichoManager.currentGameStatus();
 
       const embed = new MessageEmbed()
         .setColor(ctx.data.user.selectedColor)
@@ -51,7 +53,7 @@ export default class JogoDoBichoInteractionCommand extends InteractionCommand {
               ? moment.utc(nextRaffle.dueDate - Date.now()).format('HH:mm:ss')
               : ctx.locale('commands:bicho.no-register'),
             lastDate: lastRaffle?.dueDate
-              ? moment.utc(Date.now() - lastRaffle.dueDate).format('HH:mm:ss')
+              ? moment(lastRaffle.dueDate).fromNow()
               : ctx.locale('commands:bicho.no-register'),
             value:
               nextRaffle?.bets.reduce((p, c) => p + c.bet, 0) ??
@@ -90,20 +92,14 @@ export default class JogoDoBichoInteractionCommand extends InteractionCommand {
       return;
     }
 
-    const nextRaffle = JogoDoBixoManager.getInstance(
-      ctx.client.repositories.starRepository,
-    ).currentGameStatus;
+    const nextRaffle = await ctx.client.jogoDoBichoManager.currentGameStatus();
 
     if (!nextRaffle || nextRaffle.dueDate <= Date.now()) {
       ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:bicho.close') });
       return;
     }
 
-    if (
-      !JogoDoBixoManager.getInstance(ctx.client.repositories.starRepository).canRegister(
-        ctx.author.id,
-      )
-    ) {
+    if (!(await ctx.client.jogoDoBichoManager.canRegister(ctx.author.id))) {
       ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:bicho.already') });
       return;
     }
@@ -255,11 +251,7 @@ export default class JogoDoBichoInteractionCommand extends InteractionCommand {
           });
 
           await ctx.client.repositories.starRepository.remove(ctx.author.id, bet);
-          JogoDoBixoManager.getInstance(ctx.client.repositories.starRepository).addBet(
-            ctx.author.id,
-            bet,
-            int.values[0],
-          );
+          ctx.client.jogoDoBichoManager.addBet(ctx.author.id, bet, int.values[0]);
           break;
         }
         case 'SEQUENCE': {
