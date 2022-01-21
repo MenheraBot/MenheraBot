@@ -145,21 +145,21 @@ export default class JogoDoBixoManager {
     }
     return this.clientInstance.shard!.broadcastEval(
       // @ts-expect-error Client n é coiso
-      (c: MenheraClient) => c.jogoDoBichoManager.canRegister(userId),
-      { shard: 0 },
+      (c: MenheraClient, { id }: { id: string }) => c.jogoDoBichoManager.canRegister(id),
+      { shard: 0, context: { id: userId } },
     );
   }
 
-  addBet(userId: string, bet: number, option: string): void {
+  addBet(userId: string, betValue: number, optionSelected: string): void {
     if (this.clientInstance.shard!.ids[0] === 0) {
-      this.ongoingGame.bets.push({ id: userId, bet, option });
+      this.ongoingGame.bets.push({ id: userId, bet: betValue, option: optionSelected });
     } else {
       this.clientInstance.shard!.broadcastEval(
         // @ts-expect-error Client n é coiso
-        (c: MenheraClient) => {
-          c.jogoDoBichoManager.addBet(userId, bet, option);
+        (c: MenheraClient, { id, bet, option }: { id: string; bet: number; option: string }) => {
+          c.jogoDoBichoManager.addBet(id, bet, option);
         },
-        { shard: 0 },
+        { shard: 0, context: { id: userId, bet: betValue, option: optionSelected } },
       );
     }
   }
