@@ -6,6 +6,7 @@ import {
   CreditsSchema,
 } from '@utils/Types';
 import { Schema, model } from 'mongoose';
+import { RoleplayUserSchema } from 'roleplay/types';
 
 const cmdSchema = new Schema({
   _id: { type: String },
@@ -74,8 +75,27 @@ const themeCredits = new Schema({
   registeredAt: { type: Number, default: Date.now() },
 });
 
+const rpgSchema = new Schema({
+  id: { type: String, unique: true, index: true },
+  classId: { type: Number },
+  life: { type: Number },
+  mana: { type: Number },
+  abilityPower: { type: Number, default: 0 },
+  level: { type: Number, default: 0 },
+  experience: { type: Number, default: 0 },
+  abilities: { type: Array, default: [] },
+  uniquePower: { type: Object },
+  inventory: { type: Array, default: [] },
+  money: { type: Number, default: 0 },
+  adventureCooldown: { type: Number, default: 0 },
+  weapon: { type: Object },
+  protection: { type: Object },
+  backpack: { type: Object },
+});
+
 export const Cmds = model<ICmdSchema>('Cmd', cmdSchema);
 export const Guilds = model<IGuildSchema>('guild', guildSchema);
 export const Users = model<IUserSchema>('usersdb', userSchema);
 export const Themes = model<IUserThemesSchema>('themes', userThemes);
 export const Credits = model<CreditsSchema>('credits', themeCredits);
+export const Rpgs = model<RoleplayUserSchema>('roleplay', rpgSchema);
