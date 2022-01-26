@@ -1,6 +1,14 @@
+import { InventoryItem } from './Types';
+
+interface CountedItems {
+  name: string;
+  amount: number;
+  value: number;
+}
+
 export default class RPGUtil {
-  static countItems(items) {
-    return items.reduce((p, v) => {
+  static countItems(items: InventoryItem[]): CountedItems[] {
+    return items.reduce<CountedItems[]>((p, v) => {
       const exists = p.findIndex((x) => x.name === v.name);
       if (exists !== -1) {
         p[exists].amount++;
@@ -12,7 +20,6 @@ export default class RPGUtil {
           name: v.name,
           amount: 1,
           value: v.value,
-          job_id: v.job_id || 0,
         },
       ];
     }, []);

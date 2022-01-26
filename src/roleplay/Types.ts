@@ -17,6 +17,24 @@ export interface UniquePower {
   type: string;
 }
 
+export type ItemType = 'Arma';
+
+export interface InventoryItem {
+  type: ItemType;
+  name: string;
+  value: number;
+}
+export interface Weapon {
+  damage: number;
+  name: string;
+  type: string;
+}
+
+export interface Armor {
+  armor: number;
+  name: string;
+}
+
 export interface RoleplayUserSchema {
   id: string;
   class: string;
@@ -33,13 +51,13 @@ export interface RoleplayUserSchema {
   abilities: Array<NormalAbility | UniquePower>;
   abilitiesCooldown: Array<unknown>;
   uniquePower: UniquePower;
-  loots: Array<unknown>;
-  inventory: Array<unknown>;
+  loots: Array<Exclude<InventoryItem, InventoryItem['type']>>;
+  inventory: Array<InventoryItem>;
   money: number;
   dungeonCooldown: number;
   death: number;
-  weapon: { damage: number; name: string; type: string };
-  protection: { armor: number };
+  weapon: Weapon;
+  protection: Armor;
   hotelTime: number;
   inBattle: boolean;
   backpack: unknown;
