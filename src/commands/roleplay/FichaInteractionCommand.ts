@@ -10,9 +10,8 @@ import {
   User,
 } from 'discord.js-light';
 import Util, { actionRow, disableComponents, resolveCustomId } from '@utils/Util';
-import { getClassById } from '@roleplay/Utils';
-import Classes from '@roleplay/data';
 import { emojis } from '@structures/Constants';
+import Handler from '@roleplay/Handler';
 
 export default class FichaInteractionCommand extends InteractionCommand {
   constructor() {
@@ -83,16 +82,20 @@ export default class FichaInteractionCommand extends InteractionCommand {
 
     const selector = new MessageSelectMenu().setCustomId(`${ctx.interaction.id} | SELECT`);
 
-    for (let i = 1; i <= Object.keys(Classes).length; i++) {
+    for (let i = 0; i <= Object.keys(Handler.abilities).length; i++) {
       selector.addOptions({
-        label: ctx.locale(`roleplay:classes.${i as 1}.name`),
-        value: `${i}`,
+        label: ctx.locale(
+          `roleplay:register-classes.${Object.keys(Handler.abilities)[i] as 'assassin'}`,
+        ),
+        value: ctx.locale(
+          `roleplay:register-classes.${Object.keys(Handler.abilities)[i] as 'assassin'}`,
+        ),
       });
 
-      embed.addField(
-        ctx.locale(`roleplay:classes.${i as 1}.name`),
-        ctx.locale(`roleplay:classes.${i as 1}.description`),
-        true,
+      embed.setDescription(
+        (embed.description += `\n${ctx.locale(
+          `roleplay:register-classes.${Object.keys(Handler.abilities)[i] as 'assassin'}`,
+        )}`),
       );
     }
 
@@ -113,13 +116,11 @@ export default class FichaInteractionCommand extends InteractionCommand {
       return;
     }
 
-    const resolvedSelectedClass = getClassById(Number(selectedClass.values[0]));
-
     embed
       .setTitle(ctx.locale('commands:ficha.register.confirm-title'))
       .setDescription(
         ctx.locale('commands:ficha.register.confirm-description', {
-          class: ctx.locale(`roleplay:classes.${resolvedSelectedClass.id as 1}.name`),
+          class: ctx.locale(`roleplay:register-classes.${selectedClass.values[0] as 'assassin'}`),
         }),
       )
       .setFields([]);
@@ -161,11 +162,10 @@ export default class FichaInteractionCommand extends InteractionCommand {
       return;
     }
 
-    await ctx.client.repositories.roleplayRepository.registerUser(ctx.author.id, {
-      class: resolvedSelectedClass.id,
-      life: resolvedSelectedClass.data.baseMaxLife,
-      mana: resolvedSelectedClass.data.baseMaxMana,
-    });
+    await ctx.client.repositories.roleplayRepository.registerUser(
+      ctx.author.id,
+      selectedClass.values[0],
+    );
 
     ctx.makeMessage({
       content: ctx.prettyResponse('success', 'commands:ficha.register.success'),

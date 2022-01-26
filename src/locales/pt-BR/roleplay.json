@@ -99,6 +99,16 @@
   "registred": "você foi registrado com sucesso! Use `m!status` para ver seus status",
   "backpack-full": "você ganha um loot, mas sua mochila está cheia, e você precisa deixá-lo para trás",
   "evolve": "você atinge seu nível de proficiência, e se torna um **{{class}}**",
+  "register-classes": {
+    "assassin": "Assassino",
+    "barbarian": "Bárbaro",
+    "clerigo": "Clérigo",
+    "druida": "Druida",
+    "espadachim": "Espadachim",
+    "feiticeiro": "Feiticeiro",
+    "monge": "Monge",
+    "necromante": "Necromante"
+  },
   "neo-classes": {
     "Assassino": "Assassino",
     "Bárbaro": "Bárbaro",

@@ -3,21 +3,15 @@ import { Rpgs } from '@structures/DatabaseCollections';
 import { MayNotExists } from '@utils/Util';
 import { UpdateQuery, UpdateWithAggregationPipeline } from 'mongoose';
 
-interface UserData {
-  class: number;
-  life: number;
-  mana: number;
-}
-
 export default class RoleplayRepository {
   constructor(private roleplayModal: typeof Rpgs) {}
 
-  async registerUser(userId: string, data: UserData): Promise<void> {
+  async registerUser(userId: string, classe: string): Promise<void> {
     this.roleplayModal.create({
       id: userId,
       level: 1,
       experience: 0,
-      ...data,
+      class: classe,
     });
   }
 

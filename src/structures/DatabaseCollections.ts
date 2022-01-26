@@ -77,7 +77,7 @@ const themeCredits = new Schema({
 
 const rpgSchema = new Schema({
   id: { type: String },
-  class: { type: Number },
+  class: { type: String },
   life: { type: Number, default: 100 },
   armor: { type: Number, default: 0 },
   damage: { type: Number, default: 0 },
