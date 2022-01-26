@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import Redis from 'ioredis';
-import { Cmds, Guilds, Users, Themes, Credits } from '@structures/DatabaseCollections';
+import { Cmds, Guilds, Users, Themes, Credits, Rpgs } from '@structures/DatabaseCollections';
 import { IDatabaseRepositories } from '@utils/Types';
 import CacheRepository from './repositories/CacheRepository';
 import CmdRepository from './repositories/CmdsRepository';
@@ -19,6 +19,7 @@ import CoinflipRepository from './repositories/CoinflipRepository';
 import ShopRepository from './repositories/ShopRepository';
 import ThemeRepository from './repositories/ThemeRepository';
 import CreditsRepository from './repositories/CreditsRepository';
+import RoleplayRepository from './repositories/RoleplayRepository';
 
 export default class Databases {
   public redisClient: Redis.Redis | null = null;
@@ -30,6 +31,8 @@ export default class Databases {
   public readonly Users: typeof Users;
 
   public readonly Themes: typeof Themes;
+
+  public readonly Rpgs: typeof Rpgs;
 
   public readonly Credits: typeof Credits;
 
@@ -63,6 +66,8 @@ export default class Databases {
 
   private readonly shopRepository: ShopRepository;
 
+  private readonly roleplayRepository: RoleplayRepository;
+
   private readonly themeRepository: ThemeRepository;
 
   private readonly creditsRepository: CreditsRepository;
@@ -71,6 +76,7 @@ export default class Databases {
     this.Cmds = Cmds;
     this.Guilds = Guilds;
     this.Users = Users;
+    this.Rpgs = Rpgs;
     this.Themes = Themes;
     this.Credits = Credits;
 
@@ -105,6 +111,7 @@ export default class Databases {
       this.themeRepository,
       this.creditsRepository,
     );
+    this.roleplayRepository = new RoleplayRepository(this.Rpgs);
   }
 
   get repositories(): IDatabaseRepositories {
@@ -125,6 +132,7 @@ export default class Databases {
       coinflipRepository: this.coinflipRepository,
       shopRepository: this.shopRepository,
       themeRepository: this.themeRepository,
+      roleplayRepository: this.roleplayRepository,
       creditsRepository: this.creditsRepository,
     };
   }

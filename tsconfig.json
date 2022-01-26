@@ -31,7 +31,8 @@
       "@database/*": ["database/*"],
       "@utils/*": ["utils/*"],
       "@interfaces/*": ["interfaces/*"],
-      "@data/*": ["data/*"]
+      "@data/*": ["data/*"],
+      "@roleplay/*": ["roleplay/*"]
     }
   },
   "include": ["src"]

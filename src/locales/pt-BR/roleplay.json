@@ -1,0 +1,149 @@
+{
+  "classes": {
+    "1": {
+      "name": "Mago",
+      "description": "Magos são seres que utilizam os 4 elementos naturais - Fogo Terra Água e Ar, além de serem bons com magias brancas. Eles não possuem nada de especial no sangue, por isso, aprendem habilidades lendo livros"
+    },
+    "2": {
+      "name": "Feiticeiro",
+      "description": "Diferente dos magos, feiticeiros usam magia proveniente de seu corpo, desgastando-se mais, e dependendo do tipo de magia, podendo ficar insano. São especialistas em magia negra, e descobrem habilidades a partir do uso de seu corpo para adquirir poder"
+    },
+    "3": {
+      "name": "Ilusionista",
+      "description": "Ilusionistas vivem de contratos demoníacos com seres superiores. Suas habilidades são descobertas de acordo com seus contratos, eles se baseiam em usar o poder do contrato, e usar a luta corpo a corpo"
+    },
+    "4": {
+      "name": "Arquimago",
+      "description": "A magia foi se desenvolvendo com o tempo. Pessoas foram evoluindo, e antigas tribos foram deixadas para trás. A magia foi se desenvolvendo para ser mais fácil e rápida, ainda sim, a magia arcaica não foi extinta. Os arquimagos estudam as magias do passado, quando ainda se usavam círculos mágicos e rituais para as invocá-las e conhecê-las"
+    },
+    "5": {
+      "name": "Necromante",
+      "description": "Usuários da magia da ressurreição, batalham utilizando mortos. Como esta magia é muito perigosa e desgastante, os necromantes focam em passar seus poderes para sua arma, assim, eles não se desgastam em uma batalha, já que usam uma mana já armazenada. Como nunca sabem se sua mana armazenada durará uma batalha inteira, devem estudar combate físico também"
+    },
+    "6": {
+      "name": "Assassino",
+      "description": "Seres ágeis, batalham corpo a corpo com habilidades de fortificação, ou que os ajudarão de alguma forma na batalha. Nunca confie em um assassino, uma vez que ele pode se voltar contra ti, e te matar para roubar seus itens"
+    },
+    "7": {
+      "name": "Bárbaro",
+      "description": "Seres que se isolaram para treinar para a guerra acima de tudo. Por esse motivo, podem ser um pouco sem modos, mas acredite, o coração deles é sem igual. Adoram usar armaduras pesadas e armas pequenas. Não são muito bons com habilidades, mas o que eles sabem é habilidades de fortalecimento"
+    },
+    "8": {
+      "name": "Arqueiro",
+      "description": "Profissionais do ataque à distância. Por mais que tenham uma mira impecável, por algum motivo se mantém utilizando apenas arco e flecha. Claro que sempre tem o diferente que usa outra coisa, mas no geral, essa arma satisfaz tudo que precisam, distância e velocidade"
+    },
+    "9": {
+      "name": "Paladino",
+      "description": "Possuem alta fé nos Grandes Antigos, e por esse motivo, são abençoados com poderes divinos, como cura e habilidades de Luz. Sempre estão em missões santas, andando em conjunto com magos santos em busca da santidade. Gostam do balanceamento de poderes"
+    },
+    "10": {
+      "name": "Domador",
+      "description": "Diferentes dos ilusionistas, os domadores fazem contratos com animais da selva. Já que não precisam de muita mana para os controlar, podem fazer contratos com diversos seres ao mesmo tempo. Não conseguem fazer contratos sobrenaturais, se abstendo somente de seres vivos"
+    }
+  },
+  "races": {
+    "1": {
+      "name": "Elfos",
+      "description": "Nascem na floresta. Crescem ao lado da natureza, conhecendo muito bem suas forças, e recebendo ajuda dela. Seres muito inteligentes"
+    },
+    "2": {
+      "name": "Humanos",
+      "description": "Nascem na cidade. Evoluiram mais que qualquer outra classe. Aprenderam a controlar o fogo, e por isso, possuem uma alta afinidade com o dano. Seres muito fortes"
+    },
+    "3": {
+      "name": "Orcs",
+      "description": "Nascem no Mundo Sombrio. Sofrem um pouco de preconceito por parte dos humanos por serem parecidos com porcos, por isso se isolaram no mundo sombrio. Isso não significa que não podem vivem junto com humanos. Seres duros na queda"
+    },
+    "4": {
+      "name": "Meio-Demônios",
+      "description": "Nascem nos arredores do Mundo Sombrio. São vistos como seres quase que além dessa realidade. Muito respeitados por conta de suas lendas. Seres que dividem em igualdade a inteligência e a força"
+    },
+    "5": {
+      "name": "Demi-Humanos",
+      "description": "Os famosos Meio-Animais. Vivem entre os humanos, porém sofrem um pouco de preconceito por conta de suas orelhas e rabos. Sua força e sua stamina são divididas igualmente"
+    },
+    "6": {
+      "name": "Fera",
+      "description": "Nascem na selva. São animais que possuem cognição, e claro, estão em busca de sua bela. Possuem alta stamina"
+    }
+  },
+  "battle": {
+    "no-mana": "Você tenta usar **{{name}}**, mas não tem mana o suficiente para isso! O inimigo revida!",
+    "attack": "Você ataca **{{enemy}}** com **{{choice}}**, e causa **{{damage}}** de dano",
+    "footer": "Digite no chat a opção de sua escolha",
+    "new-tatic": "Você tentou uma técnica nova, mas não obteve sucesso! O inimigo ataca",
+    "timeout": "Você demorou para tomar uma atitude, e foi atacado!",
+    "text": "**{{enemy}}** te ataca com **{{attack}}**, e causa **{{dmg}}**, atualização dos status:\n\n**SEUS STATUS**\n❤️ | Vida: **{{life}}**\n💧 | Mana: **{{mana}}**\n⚔️ | Dano: **{{damage}}**\n🛡️ | Defesa: **{{armor}}**\n\n**STATUS DO INIMIGO**\n❤️ | Vida: **{{elife}}**\n⚔️ | Dano: **{{edmg}}**\n🛡️ | Defesa: **{{earmor}}**\n\nO que você faz?\n\n**OPÇÕES:**\n"
+  },
+  "death": "Essa não, você morreu! Para se recuperar dos danos, você retornou para a guilda, e ficará de repouso por 12 horas!",
+  "basic-attack": "Ataque Básico",
+  "new-ability": "Você atingiu o nível **{{level}}** e liberou uma nova habilidade! **{{ability}}**",
+  "family": "Você desbloqueou as famílias! Use `m!família` para entrar em uma família",
+  "boss": "você atinge o nível 20, e se torna um MESTRE da dungeon!\nA partir de agora, você pode usar o m!boss, para batalhar contra bosses quando quiser",
+  "result": {
+    "title": "Resultados da Batalha",
+    "description": "**Esse dano é o suficiente para matar {{enemy}}!**\n\n**Loots:**",
+    "loots": "Espólios de Batalha"
+  },
+  "initial": {
+    "no-life": "Sem Vida",
+    "in-battle": "Em batalha",
+    "in-battle-text": "Você ja está no meio de uma batalha! Acha que é um bug? Vá para meu servidor de suporte",
+    "no-life-text": "Você está sem vida, e precisa descansar por mais **{{time}}** horas",
+    "tired": "Cansaço",
+    "tired-text": "Você já visitou a dungeon e precisa descansar por mais **{{time}}**",
+    "hotel-text": "Você está descansando no hotel da vila, e não pode ir para a dungeon até que sua estadia acabe, em **{{time}}**",
+    "cant-go": "Você não pode visitar a dungeon pelos seguintes motivos:"
+  },
+  "scape": "você arregou da batalha, e conseguiu fuigir, mas terá que ficar descansando por 2 horas!",
+  "registred": "você foi registrado com sucesso! Use `m!status` para ver seus status",
+  "backpack-full": "você ganha um loot, mas sua mochila está cheia, e você precisa deixá-lo para trás",
+  "evolve": "você atinge seu nível de proficiência, e se torna um **{{class}}**",
+  "neo-classes": {
+    "Assassino": "Assassino",
+    "Bárbaro": "Bárbaro",
+    "Clérigo": "Clérigo",
+    "Druida": "Druida",
+    "Espadachim": "Espadachim",
+    "Feiticeiro": "Feiticeiro",
+    "Monge": "Monge",
+    "Necromante": "Necromante",
+    "Senhor das Sombras": "Senhor das Sombras",
+    "Berserker": "Berserker",
+    "Arcanjo": "Arcanjo",
+    "Guardião da Natureza": "Guardião da Natureza",
+    "Mestre das Armas": "Mestre das Armas",
+    "Senhor das Galáxias": "Senhor das Galáxias",
+    "Mestre dos Elementos": "Mestre dos Elementos",
+    "Conjurador Demoníaco": "Conjurador Demoníaco",
+    "Sacerdote": "Sacerdote",
+    "Senhor das Trevas": "Senhor das Trevas"
+  },
+  "job": {
+    "1": {
+      "name": "Fazendeiro",
+      "item_one": "Trigo"
+    },
+    "2": {
+      "name": "Ferreiro",
+      "item_one": "Barra de Ferro",
+      "item_two": "Espada de Ferro"
+    },
+    "3": {
+      "name": "Barista",
+      "item_one": "Copo de Hidromel"
+    },
+    "4": {
+      "name": "Mercador",
+      "item_one": "Caixa de Materiais"
+    }
+  },
+  "familiar": {
+    "1": "Dragão terrestre",
+    "2": "Espírito das Sombras",
+    "3": "Fada dos 4 Elementos",
+    "boost_armor": "🛡️ | Bônus de Armadura",
+    "boost_damage": "🗡️ | Bônus de Dano",
+    "boost_ap": "🔮 | Bônus de Poder Mágico"
+  }
+}

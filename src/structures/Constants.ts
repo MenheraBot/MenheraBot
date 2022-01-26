@@ -104,6 +104,12 @@ export const emojis = {
   lock: '🔒',
   list: '📜',
   estrelinhas: '⭐',
+  // EMOJIS DO RPG
+  blood: '🩸',
+  mana: '💧',
+  stamina: '⚡',
+  sanity: '🎭',
+  level: '⚜️',
 };
 
 export const languageByLocale = {
@@ -121,6 +127,13 @@ export const languageByLocale = {
   'us-east': 'en-US',
   'us-south': 'en-US',
   'us-west': 'en-US',
+};
+
+export const ROLEPLAY_CONSTANTS = {
+  bossCooldown: 3600000,
+  dungeonCooldown: 3600000,
+  scapeCooldown: 7200000,
+  deathCooldown: 43200000,
 };
 
 export const EightBallAnswers: { id: number; type: T8BallAnswerTypes }[] = [

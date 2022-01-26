@@ -36,5 +36,12 @@
     "cards": "Cartas",
     "table": "Mesa",
     "card_background": "Fundo da Carta"
+  },
+  "roleplay": {
+    "life": "Vida",
+    "mana": "Mana",
+    "stamina": "Preseverança",
+    "sanity": "Sanidade",
+    "level": "Nível"
   }
 }

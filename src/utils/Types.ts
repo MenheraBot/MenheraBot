@@ -25,6 +25,7 @@ import {
   User,
 } from 'discord.js-light';
 import CreditsRepository from '@database/repositories/CreditsRepository';
+import RoleplayRepository from '@database/repositories/RoleplayRepository';
 
 export interface IClientConfigs {
   interactionsDirectory: string;
@@ -258,6 +259,7 @@ export interface IDatabaseRepositories {
   huntRepository: HuntRepository;
   relationshipRepository: RelationshipRepository;
   blacklistRepository: BlacklistRepository;
+  roleplayRepository: RoleplayRepository;
   topRepository: TopRepository;
   giveRepository: GiveRepository;
   coinflipRepository: CoinflipRepository;

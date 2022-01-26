@@ -4,6 +4,7 @@ import type common from '../locales/pt-BR/common.json';
 import type data from '../locales/pt-BR/data.json';
 import type events from '../locales/pt-BR/events.json';
 import type permissions from '../locales/pt-BR/permissions.json';
+import type roleplay from '../locales/pt-BR/roleplay.json';
 
 export type Resources = {
   commands: typeof commands;
@@ -11,6 +12,7 @@ export type Resources = {
   data: typeof data;
   events: typeof events;
   permissions: typeof permissions;
+  roleplay: typeof roleplay;
 };
 
 export type Langueges = 'en-US' | 'pt-BR';
