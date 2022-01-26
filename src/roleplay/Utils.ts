@@ -1,4 +1,5 @@
-import { InventoryItem } from './Types';
+import Handler from './Handler';
+import { Backpack, InventoryItem, RoleplayUserSchema } from './Types';
 
 interface CountedItems {
   name: string;
@@ -25,31 +26,25 @@ export default class RPGUtil {
     }, []);
   }
 
-  static getBackpack(userRpgData) {
+  static getBackpack(userRpgData: RoleplayUserSchema): Backpack & { value: number } {
     const backpackId = userRpgData?.backpack.name;
-    if (!backpackId) {
-      throw new Error(`${userRpgData.id} not has a backpack.`);
-    }
 
-    const backpack = ferreiro.find(
+    const backpack = Handler.items.ferreiro.find(
       (item) => item.category === 'backpack' && item.id === backpackId,
-    );
-    if (!backpack) {
-      throw new Error(`${userRpgData.id} has a fake backpack. (${backpackId})`);
-    }
+    ) ?? { id: 'Mochila de Pele de Lobo', capacity: 15 };
 
     return {
       name: backpack.id,
-      capacity: backpack.capacity,
+      capacity: backpack.capacity ?? 15,
       value: userRpgData.loots.length + userRpgData.inventory.length,
     };
   }
 
-  static addItemInInventory(user, item, amount = 1) {
+  static addItemInInventory(user: RoleplayUserSchema, item: InventoryItem, amount = 1): void {
     user.inventory.push(...new Array(amount).fill(item));
   }
 
-  static removeItemInLoots(user, itemName, amount = 1) {
+  static removeItemInLoots(user: RoleplayUserSchema, itemName: string, amount = 1): void {
     for (let i = 0; i < amount; i++) {
       user.loots.splice(
         user.loots.findIndex((loot) => loot.name === itemName),

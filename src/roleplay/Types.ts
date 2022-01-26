@@ -35,6 +35,11 @@ export interface Armor {
   name: string;
 }
 
+export interface Backpack {
+  name: string;
+  capacity: number;
+}
+
 export interface RoleplayUserSchema {
   id: string;
   class: string;
@@ -53,14 +58,14 @@ export interface RoleplayUserSchema {
   uniquePower: UniquePower;
   loots: Array<Exclude<InventoryItem, InventoryItem['type']>>;
   inventory: Array<InventoryItem>;
+  weapon: Weapon;
+  protection: Armor;
+  backpack: Backpack;
   money: number;
   dungeonCooldown: number;
   death: number;
-  weapon: Weapon;
-  protection: Armor;
   hotelTime: number;
   inBattle: boolean;
-  backpack: unknown;
 }
 
 export interface Mob {
