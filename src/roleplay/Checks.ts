@@ -1,6 +1,7 @@
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { emojis, ROLEPLAY_CONSTANTS } from '@structures/Constants';
-import { MessageEmbed } from 'discord.js-light';
+import Util from '@utils/Util';
+import { MessageEmbed, MessageSelectMenu, SelectMenuInteraction } from 'discord.js-light';
 import moment from 'moment';
 import Handler from './Handler';
 import { Mob, NormalAbility, RoleplayUserSchema, UniquePower } from './Types';
@@ -88,13 +89,14 @@ interface AttackChoice {
 
 const battle = async (
   ctx: InteractionCommandContext,
-  escolha: AttackChoice,
+  escolha: AttackChoice | UniquePower | NormalAbility,
   user: RoleplayUserSchema,
   inimigo: Mob,
   type: Choice,
 ): Promise<void> => {
   let danoUser;
-  if (escolha.scape) {
+
+  if (escolha.name === ctx.locale('commands:dungeon.scape')) {
     ctx.makeMessage({ content: ctx.prettyResponse('scape', 'roleplay:scape') });
     ctx.client.repositories.roleplayRepository.updateUser(user.id, {
       life: user.life,
@@ -104,7 +106,7 @@ const battle = async (
     return;
   }
   if (escolha.name === 'Ataque Básico' || escolha.name === 'Basic Attack') {
-    danoUser = escolha.damage;
+    danoUser = Number(escolha.damage);
   } else {
     if (user.mana < (escolha?.cost ?? 0))
       return enemyShot(
@@ -118,8 +120,8 @@ const battle = async (
       user.life += escolha.heal;
       if (user.life > user.maxLife) user.life = user.maxLife;
     }
-    danoUser = user.abilityPower * escolha.damage;
-    user.mana -= escolha?.cost ?? 0;
+    danoUser = user.abilityPower * Number(escolha.damage);
+    user.mana -= Number(escolha?.cost) ?? 0;
   }
 
   const enemyArmor = inimigo.armor;
@@ -246,13 +248,16 @@ const continueBattle = async (
     earmor: inimigo.armor,
   });
 
-  const escolhas: number[] = [];
+  const action = new MessageSelectMenu()
+    .setCustomId(`${ctx.interaction.id} | ATTACK`)
+    .setMinValues(1)
+    .setMaxValues(1);
 
   for (let i = 0; i < options.length; i += 1) {
     texto += `\n**${i}** - ${options[i].name} | **${options[i].cost || 0}**💧, **${
       options[i].damage
     }**🗡️`;
-    escolhas.push(i);
+    action.addOptions({ label: options[i].name, value: `${i}` });
   }
 
   const embed = new MessageEmbed()
@@ -261,29 +266,17 @@ const continueBattle = async (
     .setDescription(texto);
   await ctx.makeMessage({ content: toSay, embeds: [embed] });
 
-  const collector = ctx.message.channel.createMessageCollector(filter, {
-    max: 1,
-    time: 7000,
-    errors: ['time'],
-  });
+  const selected = await Util.collectComponentInteractionWithStartingId<SelectMenuInteraction>(
+    ctx.channel,
+    ctx.author.id,
+    ctx.interaction.id,
+    7500,
+  );
 
-  let time = false;
+  if (!selected)
+    return enemyShot(ctx, user, inimigo, type, `⚔️ | ${ctx.locale('roleplay:battle.timeout')}`);
 
-  collector.on('collect', (m) => {
-    time = true;
-    const choice = Number(m.content);
-    if (escolhas.includes(choice)) {
-      return battle(ctx, options[choice], user, inimigo, type); // Mandar os dados de ataque, e defesa do inimigo, para fazer o calculo lá
-    }
-    return enemyShot(ctx, user, inimigo, type, `⚔️ |  ${ctx.locale('roleplay:battle.new-tatic')}`);
-  });
-
-  setTimeout(() => {
-    if (!time) {
-      collector.stop();
-      return enemyShot(ctx, user, inimigo, type, `⚔️ | ${ctx.locale('roleplay:battle.timeout')}`);
-    }
-  }, 7000);
+  battle(ctx, options[Number(selected.values[0])], user, inimigo, type);
 };
 
 const finalChecks = async (
