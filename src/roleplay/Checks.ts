@@ -1,21 +1,27 @@
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { emojis, ROLEPLAY_CONSTANTS } from '@structures/Constants';
-import Util from '@utils/Util';
+import Util, { actionRow } from '@utils/Util';
 import { MessageEmbed, MessageSelectMenu, SelectMenuInteraction } from 'discord.js-light';
 import moment from 'moment';
 import Handler from './Handler';
-import { Mob, NormalAbility, RoleplayUserSchema, UniquePower } from './Types';
+import {
+  AttackChoice,
+  BattleChoice,
+  IncomingAttackChoice,
+  Mob,
+  NormalAbility,
+  RoleplayUserSchema,
+  UniquePower,
+} from './Types';
 import RPGUtil from './Utils';
-
-type Choice = 'boss' | 'dungeon';
 
 const RandomFromArray = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
 
 const getEnemyByUserLevel = (
   user: RoleplayUserSchema,
-  type: Choice,
-  dungeonLevel: 1 | 2 | 3 | 4 | 5,
-  ctx: InteractionCommandContext,
+  type: BattleChoice,
+  dungeonLevel?: 1 | 2 | 3 | 4 | 5,
+  ctx?: InteractionCommandContext,
 ): string | boolean | Mob => {
   if (type === 'boss') {
     if (user.level > 24 && user.level < 30) {
@@ -57,6 +63,8 @@ const getEnemyByUserLevel = (
 
   if (!dungeonLevel) return false;
 
+  if (!ctx) return false;
+
   if (!validLevels[dungeonLevel]) return false;
 
   if (user.level < validLevels[dungeonLevel].minUserLevel) {
@@ -79,20 +87,12 @@ const getEnemyByUserLevel = (
   return validLevels[dungeonLevel].mob;
 };
 
-interface AttackChoice {
-  name: string;
-  damage: number;
-  cost?: number;
-  scape?: boolean;
-  heal?: number;
-}
-
 const battle = async (
   ctx: InteractionCommandContext,
-  escolha: AttackChoice | UniquePower | NormalAbility,
+  escolha: IncomingAttackChoice,
   user: RoleplayUserSchema,
   inimigo: Mob,
-  type: Choice,
+  type: BattleChoice,
 ): Promise<void> => {
   let danoUser;
 
@@ -170,7 +170,7 @@ const enemyShot = async (
   ctx: InteractionCommandContext,
   user: RoleplayUserSchema,
   inimigo: Mob,
-  type: Choice,
+  type: BattleChoice,
   toSay: string,
 ): Promise<void> => {
   const habilidades = getAbilities(user);
@@ -200,11 +200,11 @@ const continueBattle = async (
   inimigo: Mob,
   habilidades: Array<NormalAbility | UniquePower>,
   user: RoleplayUserSchema,
-  type: Choice,
+  type: BattleChoice,
   ataque: AttackChoice,
   toSay: string,
 ): Promise<void> => {
-  const options: Array<NormalAbility | UniquePower | AttackChoice> = [
+  const options: Array<IncomingAttackChoice> = [
     {
       name: ctx.locale('commands:dungeon.scape'),
       damage: 0,
@@ -264,7 +264,8 @@ const continueBattle = async (
     .setFooter({ text: ctx.locale('roleplay:battle.footer') })
     .setColor('#f04682')
     .setDescription(texto);
-  await ctx.makeMessage({ content: toSay, embeds: [embed] });
+
+  await ctx.makeMessage({ content: toSay, embeds: [embed], components: [actionRow([action])] });
 
   const selected = await Util.collectComponentInteractionWithStartingId<SelectMenuInteraction>(
     ctx.channel,

@@ -1,8 +1,24 @@
+import Checks from '@roleplay/Checks';
+import {
+  BattleChoice,
+  IncomingAttackChoice,
+  Mob,
+  NormalAbility,
+  RoleplayUserSchema,
+  UniquePower,
+} from '@roleplay/Types';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { MessageEmbed } from 'discord.js-light';
+import { ROLEPLAY_CONSTANTS } from '@structures/Constants';
+import Util, { actionRow, resolveCustomId } from '@utils/Util';
+import {
+  MessageButton,
+  MessageEmbed,
+  MessageSelectMenu,
+  SelectMenuInteraction,
+} from 'discord.js-light';
 
-export default class BossInteractionCommand extends InteractionCommand {
+export default class DungeonInteractionCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'boss',
@@ -14,9 +30,10 @@ export default class BossInteractionCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const user = await ctx.client.repositories.roleplayRepository.findUser(ctx.author.id);
-
     if (!user) {
-      ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:boss.non-aventure') });
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:boss.non-aventure'),
+      });
       return;
     }
 
@@ -25,27 +42,15 @@ export default class BossInteractionCommand extends InteractionCommand {
       return;
     }
 
-    const inimigo = .getEnemyByUserLevel(user, 'boss');
-    const canGo = await this.client.rpgChecks.initialChecks(user, ctx);
+    const inimigo = Checks.getEnemyByUserLevel(user, 'boss') as Mob;
+    const canGo = await Checks.initialChecks(user, ctx);
 
     if (!canGo) return;
 
-    const dmgView =
-      user?.familiar?.id && user.familiar.type === 'damage'
-        ? user.damage +
-          user.weapon.damage +
-          (familiarsFile[user.familiar.id].boost.value +
-            (user.familiar.level - 1) * familiarsFile[user.familiar.id].boost.value)
-        : user.damage + user.weapon.damage;
-    const ptcView =
-      user?.familiar?.id && user.familiar.type === 'armor'
-        ? user.armor +
-          user.protection.armor +
-          (familiarsFile[user.familiar.id].boost.value +
-            (user.familiar.level - 1) * familiarsFile[user.familiar.id].boost.value)
-        : user.armor + user.protection.armor;
+    const dmgView = user.damage + user.weapon.damage;
+    const ptcView = user.armor + user.protection.armor;
 
-    const habilidades = await this.client.rpgChecks.getAbilities(user);
+    const habilidades = Checks.getAbilities(user);
 
     if (user.uniquePower.name === 'Morte Instantânea') {
       habilidades.splice(
@@ -58,7 +63,7 @@ export default class BossInteractionCommand extends InteractionCommand {
       .setTitle(`⌛ | ${ctx.locale('commands:boss.preparation.title')}`)
       .setDescription(ctx.locale('commands:boss.preparation.description'))
       .setColor('#e3beff')
-      .setFooter(ctx.locale('commands:boss.preparation.footer'))
+      .setFooter({ text: ctx.locale('commands:boss.preparation.footer') })
       .addField(
         ctx.locale('commands:boss.preparation.stats'),
         `🩸 | **${ctx.locale('commands:boss.life')}:** ${user.life}/${
@@ -68,11 +73,7 @@ export default class BossInteractionCommand extends InteractionCommand {
         }\n🗡️ | **${ctx.locale('commands:boss.dmg')}:** ${dmgView}\n🛡️ | **${ctx.locale(
           'commands:boss.armor',
         )}:** ${ptcView}\n🔮 | **${ctx.locale('commands:boss.ap')}:** ${
-          user?.familiar?.id && user.familiar.type === 'abilityPower'
-            ? user.abilityPower +
-              (familiarsFile[user.familiar.id].boost.value +
-                (user.familiar.level - 1) * familiarsFile[user.familiar.id].boost.value)
-            : user.abilityPower
+          user.abilityPower
         }\n\n${ctx.locale('commands:boss.preparation.description_end')}`,
       );
     habilidades.forEach((hab) => {
@@ -83,44 +84,61 @@ export default class BossInteractionCommand extends InteractionCommand {
         )}** ${hab.cost}`,
       );
     });
-    await ctx.send(embed);
 
-    const filter = (m) => m.author.id === ctx.message.author.id;
-    const collector = ctx.message.channel.createMessageCollector(filter, {
-      max: 1,
-      time: 30000,
-      errors: ['time'],
-    });
+    const accept = new MessageButton()
+      .setCustomId(`${ctx.interaction.id} | YES`)
+      .setStyle('SUCCESS')
+      .setLabel(ctx.locale('common:accept'));
 
-    collector.on('collect', (m) => {
-      if (m.content.toLowerCase() === 'sim' || m.content.toLowerCase() === 'yes') {
-        this.battle(ctx, inimigo, habilidades, user, 'boss');
-      } else return ctx.replyT('error', 'commands:boss.amarelou');
-    });
+    const negate = new MessageButton()
+      .setCustomId(`${ctx.interaction.id} | NO`)
+      .setStyle('DANGER')
+      .setLabel(ctx.locale('common:negate'));
+
+    await ctx.makeMessage({ embeds: [embed], components: [actionRow([accept, negate])] });
+
+    const selected = await Util.collectComponentInteractionWithStartingId(
+      ctx.channel,
+      ctx.author.id,
+      ctx.interaction.id,
+      30000,
+    );
+
+    if (!selected || resolveCustomId(selected.customId) === 'NO') {
+      ctx.makeMessage({
+        components: [],
+        embeds: [],
+        content: ctx.prettyResponse('error', 'commands:boss.amarelou'),
+      });
+      return;
+    }
+
+    DungeonInteractionCommand.battle(ctx, inimigo, habilidades, user, 'boss');
   }
 
-  async battle(ctx, inimigo, habilidades, user, type) {
-    user.dungeonCooldown = this.client.constants.rpg.bossCooldown + Date.now();
-    user.inBattle = true;
-    await user.save();
+  static async battle(
+    ctx: InteractionCommandContext,
+    inimigo: Mob,
+    habilidades: Array<UniquePower | NormalAbility>,
+    user: RoleplayUserSchema,
+    type: BattleChoice,
+  ): Promise<void> {
+    await ctx.client.repositories.roleplayRepository.updateUser(ctx.author.id, {
+      inBattle: true,
+      dungeonCooldown: ROLEPLAY_CONSTANTS.bossCooldown + Date.now(),
+    });
 
-    const options = [
+    const options: IncomingAttackChoice[] = [
       {
         name: ctx.locale('commands:dungeon.scape'),
-        damage: '🐥',
+        damage: 0,
         scape: true,
       },
     ];
 
     options.push({
       name: ctx.locale('commands:boss.battle.basic'),
-      damage:
-        user?.familiar?.id && user.familiar.type === 'damage'
-          ? user.damage +
-            user.weapon.damage +
-            (familiarsFile[user.familiar.id].boost.value +
-              (user.familiar.level - 1) * familiarsFile[user.familiar.id].boost.value)
-          : user.damage + user.weapon.damage,
+      damage: user.damage + user.weapon.damage,
     });
 
     habilidades.forEach((hab) => {
@@ -135,56 +153,42 @@ export default class BossInteractionCommand extends InteractionCommand {
       inimigo.armor
     }**\n\n${ctx.locale('commands:boss.battle.end')}`;
 
-    const escolhas = [];
+    const action = new MessageSelectMenu()
+      .setCustomId(`${ctx.interaction.id} | ATTACK`)
+      .setMinValues(1)
+      .setMaxValues(1);
 
     for (let i = 0; i < options.length; i++) {
       texto += `\n**${i}** - ${options[i].name} | **${options[i].cost || 0}**💧, **${
         options[i].damage
       }**🗡️`;
-      escolhas.push(i);
+      action.addOptions({ label: options[i].name, value: `${i}` });
     }
 
     const embed = new MessageEmbed()
-      .setFooter(ctx.locale('commands:boss.battle.footer'))
+      .setFooter({ text: ctx.locale('commands:boss.battle.footer') })
       .setTitle(`BossBattle: ${inimigo.name}`)
       .setColor('#f04682')
       .setDescription(texto);
-    ctx.sendC(ctx.message.author, embed);
 
-    const filter = (m) => m.author.id === ctx.message.author.id;
-    const collector = ctx.message.channel.createMessageCollector(filter, {
-      max: 1,
-      time: 15000,
-      errors: ['time'],
-    });
+    ctx.makeMessage({ embeds: [embed], components: [actionRow([action])] });
 
-    let time = false;
+    const selected = await Util.collectComponentInteractionWithStartingId<SelectMenuInteraction>(
+      ctx.channel,
+      ctx.author.id,
+      ctx.interaction.id,
+      7500,
+    );
 
-    collector.on('collect', (m) => {
-      time = true;
-      const choice = Number(m.content);
-      if (escolhas.includes(choice)) {
-        return this.client.rpgChecks.battle(ctx, options[choice], user, inimigo, type);
-      }
-      return this.client.rpgChecks.enemyShot(
+    if (!selected)
+      return Checks.enemyShot(
         ctx,
         user,
         inimigo,
         type,
-        `⚔️ |  ${ctx.locale('commands:boss.battle.newTecnique')}`,
+        `⚔️ | ${ctx.locale('roleplay:battle.timeout')}`,
       );
-    });
 
-    setTimeout(() => {
-      if (!time) {
-        return this.client.rpgChecks.enemyShot(
-          ctx,
-          user,
-          inimigo,
-          type,
-          `⚔️ |  ${ctx.locale('commands:boss.battle.timeout')}`,
-        );
-      }
-    }, 15000);
+    Checks.battle(ctx, options[Number(selected.values[0])], user, inimigo, type);
   }
 }

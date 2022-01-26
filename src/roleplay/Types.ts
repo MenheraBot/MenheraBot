@@ -61,3 +61,17 @@ export interface Mob {
   armor: number;
   xp: number;
 }
+
+export interface AttackChoice {
+  name: string;
+  damage: number;
+  cost?: number;
+  scape?: boolean;
+  heal?: number;
+}
+
+export type BattleChoice = 'boss' | 'dungeon';
+
+export type IncomingAttackChoice = AttackChoice | UniquePower | NormalAbility;
+
+export type UserAbilities = Array<UniquePower | NormalAbility>;
