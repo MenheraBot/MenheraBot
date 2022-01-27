@@ -3,6 +3,7 @@ import InteractionCommandContext from '@structures/command/InteractionContext';
 import { RoleplayUserSchema } from '@roleplay/Types';
 import {
   ButtonInteraction,
+  MessageAttachment,
   MessageButton,
   MessageEmbed,
   MessageSelectMenu,
@@ -10,8 +11,8 @@ import {
   User,
 } from 'discord.js-light';
 import Util, { actionRow, disableComponents, resolveCustomId } from '@utils/Util';
-import { emojis } from '@structures/Constants';
 import Handler from '@roleplay/Handler';
+import HttpRequests from '@utils/HTTPrequests';
 
 export default class FichaInteractionCommand extends InteractionCommand {
   constructor() {
@@ -52,26 +53,46 @@ export default class FichaInteractionCommand extends InteractionCommand {
   static async showFicha(
     ctx: InteractionCommandContext,
     user: RoleplayUserSchema,
-    optionUser: User,
+    mentioned: User,
   ): Promise<void> {
-    const embed = new MessageEmbed()
-      .setTitle(ctx.locale('commands:ficha.show.title', { user: optionUser.username }))
-      .setColor(ctx.data.user.selectedColor)
-      .addFields([
-        {
-          name: ctx.prettyResponse('list', 'commands:ficha.show.base'),
-          value: `${emojis.blood} | **${ctx.locale('common:roleplay.life')}**: ${user.life}\n${
-            emojis.mana
-          } | **${ctx.locale('common:roleplay.mana')}**: ${user.mana}`,
-        },
-        {
-          name: ctx.prettyResponse('crown', 'commands:ficha.show.player'),
-          value: `${emojis.level} | **${ctx.locale('common:roleplay.level')}**: ${user.level}`,
-          inline: true,
-        },
-      ]);
+    ctx.defer();
+    const userAvatarLink = mentioned.displayAvatarURL({ format: 'png' });
+    const dmg = user.damage + user?.weapon?.damage;
+    const ptr = user.armor + user?.protection?.armor;
+    const ap = user.abilityPower;
 
-    ctx.makeMessage({ embeds: [embed] });
+    const UserDataToSend = {
+      life: user.life,
+      maxLife: user.maxLife,
+      mana: user.mana,
+      maxMana: user.maxMana,
+      xp: user.xp,
+      level: user.level,
+      nextLevelXp: user.nextLevelXp,
+      damage: dmg,
+      armor: ptr,
+      abilityPower: ap,
+      tag: mentioned.tag,
+      money: user.money,
+    };
+
+    const i18nData = {
+      damage: ctx.locale('commands:ficha.show.dmg'),
+      armor: ctx.locale('commands:ficha.show.armor'),
+      ap: ctx.locale('commands:ficha.show.ap'),
+      money: ctx.locale('commands:ficha.show.money'),
+      userClass: ctx.locale(`roleplay:neo-classes.${user.class as 'Assassino'}`),
+    };
+
+    const res = await HttpRequests.statusRequest(UserDataToSend, userAvatarLink, i18nData);
+
+    if (res.err) {
+      ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:http-error') });
+      return;
+    }
+    await ctx.defer({
+      files: [new MessageAttachment(res.data, 'status.png')],
+    });
   }
 
   static async registerUser(ctx: InteractionCommandContext): Promise<void> {

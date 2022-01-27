@@ -735,9 +735,17 @@
       "description": "Você acaba de morrer na Terra, e os Deuses de Boleham te dão uma chance para reencarnar (SIM, UM ISEKAI). Agora a escolha é sua!\n\n**Escolha abaixo sua classe**"
     },
     "show": {
-      "title": "Ficha de {{user}}",
-      "base": "Status Base",
-      "player": "Status de Personagem"
+      "not-found": "este usuário não está registrado como um aventureiro",
+      "title": "Status de {{name}}",
+      "life": "Vida",
+      "class": "Classe",
+      "armor": "Armadura",
+      "dmg": "Dano",
+      "mana": "Mana",
+      "ap": "Poder Mágico",
+      "money": "Pedras Mágicas",
+      "ability": "Habilidade Única",
+      "family": "Família"
     }
   },
   "dungeon": {

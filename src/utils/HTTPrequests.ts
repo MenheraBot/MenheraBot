@@ -220,6 +220,19 @@ export default class HttpRequests {
     }
   }
 
+  static async statusRequest(
+    user: unknown,
+    userAvatarLink: string,
+    i18n: unknown,
+  ): Promise<IPicassoReturnData> {
+    try {
+      const data = await request.get('/status', { data: { user, userAvatarLink, i18n } });
+      return { err: false, data: Buffer.from(data.data) };
+    } catch {
+      return { err: true };
+    }
+  }
+
   static async vascoRequest(
     user: string,
     quality: string,
