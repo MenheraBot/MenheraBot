@@ -98,3 +98,5 @@ export type BattleChoice = 'boss' | 'dungeon';
 export type IncomingAttackChoice = AttackChoice | UniquePower | NormalAbility;
 
 export type UserAbilities = Array<UniquePower | NormalAbility>;
+
+export type DungeonLevels = 1 | 2 | 3 | 4 | 5;

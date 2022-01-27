@@ -7,6 +7,7 @@ import Handler from './Handler';
 import {
   AttackChoice,
   BattleChoice,
+  DungeonLevels,
   IncomingAttackChoice,
   Mob,
   NormalAbility,
@@ -20,7 +21,7 @@ const RandomFromArray = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.l
 const getEnemyByUserLevel = (
   user: RoleplayUserSchema,
   type: BattleChoice,
-  dungeonLevel?: 1 | 2 | 3 | 4 | 5,
+  dungeonLevel?: DungeonLevels,
   ctx?: InteractionCommandContext,
 ): string | boolean | Mob => {
   if (type === 'boss') {

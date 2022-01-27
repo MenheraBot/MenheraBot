@@ -18,7 +18,7 @@ import {
   SelectMenuInteraction,
 } from 'discord.js-light';
 
-export default class DungeonInteractionCommand extends InteractionCommand {
+export default class BossInteractionCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'boss',
@@ -113,7 +113,7 @@ export default class DungeonInteractionCommand extends InteractionCommand {
       return;
     }
 
-    DungeonInteractionCommand.battle(ctx, inimigo, habilidades, user, 'boss');
+    BossInteractionCommand.battle(ctx, inimigo, habilidades, user, 'boss');
   }
 
   static async battle(
