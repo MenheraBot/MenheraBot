@@ -22,6 +22,7 @@ export type ItemType = 'Arma';
 export interface InventoryItem {
   type: ItemType;
   name: string;
+  damage?: number;
   value: number;
 }
 export interface Weapon {

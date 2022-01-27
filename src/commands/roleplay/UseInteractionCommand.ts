@@ -1,31 +1,41 @@
+import { InventoryItem } from '@roleplay/Types';
+import RPGUtil from '@roleplay/Utils';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { MessageEmbed } from 'discord.js-light';
+import Util, { actionRow } from '@utils/Util';
+import { MessageEmbed, MessageSelectMenu, SelectMenuInteraction } from 'discord.js-light';
 
 export default class UseInteractionCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'usar',
-      description: '【ＲＰＧ】Usa os negocio',
+      description: '【ＲＰＧ】Use algum item de seu inventário',
       category: 'roleplay',
       cooldown: 7,
-      authorDataFields: ['selectedColor'],
     });
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    const user = await this.client.database.Rpg.findById(ctx.message.author.id);
-    if (!user) return ctx.replyT('error', 'commands:use.non-aventure');
+    const user = await ctx.client.repositories.roleplayRepository.findUser(ctx.author.id);
+    if (!user) {
+      ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:usar.non-aventure') });
+      return;
+    }
 
-    if (user.inBattle) return ctx.replyT('error', 'commands:use.in-battle');
-    if (parseInt(user.death) > Date.now()) return ctx.replyT('error', 'commands:use.dead');
+    if (user.inBattle) {
+      ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:usar.in-battle') });
+      return;
+    }
+    if (user.death > Date.now()) {
+      ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:usar.dead') });
+      return;
+    }
 
     const embed = new MessageEmbed()
-      .setTitle(`💊 | ${ctx.locale('commands:use.title')}`)
+      .setTitle(`💊 | ${ctx.locale('commands:usar.title')}`)
       .setColor('#ae98d8')
       .setDescription(
-        ctx.locale('commands:use.embed_description', {
-          prefix: ctx.data.server.prefix,
+        ctx.locale('commands:usar.embed_description', {
           life: user.life,
           maxLife: user.maxLife,
           mana: user.mana,
@@ -34,81 +44,117 @@ export default class UseInteractionCommand extends InteractionCommand {
       );
 
     let itemText = '';
-    const items = [];
-
-    let number = 0;
-    const option = [];
+    const items: InventoryItem[] = [];
 
     user.inventory.forEach((inv) => {
-      if (inv.type !== 'Arma') items.push(inv.name);
+      if (inv.type !== 'Arma') items.push(inv);
     });
 
-    const juntos = countItems(items);
+    const juntos = RPGUtil.countItems(items);
 
-    juntos.forEach((count) => {
-      number++;
-      option.push(number.toString());
-      itemText += `------------**[ ${number} ]**------------\n**${count.name}** ( ${count.amount} )\n`;
+    const selector = new MessageSelectMenu().setCustomId(`${ctx.interaction.id} | USE`);
+
+    juntos.forEach((count, i) => {
+      selector.addOptions({ label: count.name, value: `${i}` });
+      itemText += `------------**[ ${i + 1} ]**------------\n**${count.name}** ( ${
+        count.amount
+      } )\n`;
     });
 
     if (items.length > 0) {
-      embed.addField(`💊 | ${ctx.locale('commands:use.field_title')}`, itemText);
+      embed.addField(`💊 | ${ctx.locale('commands:usar.field_title')}`, itemText);
     } else {
-      embed.setDescription(ctx.locale('commands:use.out'));
+      embed.setDescription(ctx.locale('commands:usar.out'));
       embed.setColor('#e53910');
+      selector.setDisabled(true);
     }
 
-    if (!ctx.args[0]) return ctx.sendC(ctx.message.author, embed);
+    ctx.makeMessage({ embeds: [embed], components: [actionRow([selector])] });
 
-    if (!option.includes(ctx.args[0])) return ctx.replyT('error', 'commands:use.invalid-option');
+    const selected = await Util.collectComponentInteractionWithStartingId<SelectMenuInteraction>(
+      ctx.channel,
+      ctx.author.id,
+      ctx.interaction.id,
+      10000,
+    );
+
+    if (!selected) {
+      ctx.makeMessage({ components: [actionRow([selector.setDisabled(true)])] });
+      return;
+    }
 
     const choice = user.inventory.filter(
       (f) =>
         f.name ===
-        user.inventory[user.inventory.findIndex((i) => i.name === juntos[ctx.args[0] - 1].name)]
-          .name,
+        user.inventory[
+          user.inventory.findIndex((i) => i.name === juntos[Number(selected.values[0])].name)
+        ].name,
     );
 
-    const input = ctx.args[1];
-    let quantidade;
+    selector.setOptions([]);
 
-    if (!input) {
-      quantidade = 1;
-    } else quantidade = parseInt(input.replace(/\D+/g, ''));
+    for (let i = 1; i < juntos[Number(selected.values[0])].amount && i < 25; i += 1)
+      selector.addOptions({ value: `${i}`, label: `${i}` });
 
-    if (Number.isNaN(quantidade)) quantidade = 1;
+    ctx.makeMessage({ components: [actionRow([selector])] });
 
-    if (quantidade < 1) return ctx.replyT('error', 'commands:use.invalid-option');
+    const selectAmount =
+      await Util.collectComponentInteractionWithStartingId<SelectMenuInteraction>(
+        ctx.channel,
+        ctx.author.id,
+        ctx.interaction.id,
+        8000,
+      );
 
-    if (quantidade > juntos[ctx.args[0] - 1].amount)
-      return ctx.replyT('error', 'commands:use.bigger');
+    const amount = selectAmount ? Number(selectAmount.values[0]) : 1;
+
+    if (amount > juntos[Number(selected.values[0])].amount) {
+      ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:usar.bigger') });
+      return;
+    }
 
     if (choice[0].name.indexOf('💧') > -1) {
-      if (user.mana === user.maxMana) return ctx.replyT('error', 'commands:use.full-mana');
-      user.mana += choice[0].damage * quantidade;
+      if (user.mana === user.maxMana) {
+        ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:usar.full-mana') });
+        return;
+      }
+
+      user.mana += (choice[0]?.damage ?? 1) * amount;
       if (user.mana > user.maxMana) user.mana = user.maxMana;
     } else if (choice[0].name.indexOf('🩸') > -1) {
-      if (user.life === user.maxLife) return ctx.replyT('error', 'commands:use.full-life');
-      user.life += choice[0].damage * quantidade;
+      if (user.life === user.maxLife) {
+        ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:usar.full-life') });
+        return;
+      }
+      user.life += (choice[0]?.damage ?? 1) * amount;
       if (user.life > user.maxLife) user.life = user.maxLife;
-    } else return ctx.replyT('error', 'commands:use.error');
+    } else {
+      ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:usar.error') });
+      return;
+    }
 
-    for (let i = 0; i < quantidade; i++) {
+    for (let i = 0; i < amount; i++) {
       user.inventory.splice(
-        user.inventory.findIndex((item) => item.name === juntos[ctx.args[0] - 1].name),
+        user.inventory.findIndex((item) => item.name === juntos[Number(selected.values[0])].name),
         1,
       );
     }
 
-    await user.save();
-
-    ctx.replyT('success', 'commands:use.used', {
-      quantidade,
-      choice: choice[0].name,
+    ctx.client.repositories.roleplayRepository.updateUser(ctx.author.id, {
       life: user.life,
       mana: user.mana,
-      maxLife: user.maxLife,
-      maxMana: user.maxMana,
+      inventory: user.inventory,
+    });
+
+    ctx.makeMessage({
+      content: ctx.prettyResponse('success', 'commands:usar.used', {
+        amount,
+        choice: choice[0].name,
+        life: user.life,
+        mana: user.mana,
+        maxLife: user.maxLife,
+        maxMana: user.maxMana,
+      }),
     });
   }
 }
