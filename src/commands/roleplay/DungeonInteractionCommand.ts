@@ -61,8 +61,8 @@ export default class DungeonInteractionCommand extends InteractionCommand {
 
     if (!canGo) return;
 
-    const dmgView = user.damage + user.weapon.damage;
-    const ptcView = user.armor + user.protection.armor;
+    const dmgView = user.damage + (user.weapon?.damage ?? 0);
+    const ptcView = user.armor + (user.protection?.armor ?? 0);
 
     const habilidades = Checks.getAbilities(user);
 

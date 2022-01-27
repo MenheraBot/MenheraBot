@@ -3,7 +3,6 @@ import InteractionCommandContext from '@structures/command/InteractionContext';
 import { RoleplayUserSchema } from '@roleplay/Types';
 import {
   ButtonInteraction,
-  MessageAttachment,
   MessageButton,
   MessageEmbed,
   MessageSelectMenu,
@@ -11,8 +10,7 @@ import {
   User,
 } from 'discord.js-light';
 import Util, { actionRow, disableComponents, resolveCustomId } from '@utils/Util';
-import Handler from '@roleplay/Handler';
-import HttpRequests from '@utils/HTTPrequests';
+import { getClassById, getClasses, getRaces } from '@roleplay/utils/ClassUtils';
 
 export default class FichaInteractionCommand extends InteractionCommand {
   constructor() {
@@ -56,10 +54,10 @@ export default class FichaInteractionCommand extends InteractionCommand {
     mentioned: User,
   ): Promise<void> {
     ctx.defer();
-    const userAvatarLink = mentioned.displayAvatarURL({ format: 'png' });
+    /*   const userAvatarLink = mentioned.displayAvatarURL({ format: 'png' });
     const dmg = user.damage + user?.weapon?.damage;
-    const ptr = user.armor + user?.protection?.armor;
-    const ap = user.abilityPower;
+    const ptr = user.armor + user?.protection?.armor; */
+    /*   const ap = user.abilityPower;
 
     const UserDataToSend = {
       life: user.life,
@@ -89,9 +87,9 @@ export default class FichaInteractionCommand extends InteractionCommand {
     if (res.err) {
       ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:http-error') });
       return;
-    }
+    } */
     await ctx.defer({
-      files: [new MessageAttachment(res.data, 'status.png')],
+      content: `${user}, ${mentioned}`,
     });
   }
 
@@ -103,20 +101,16 @@ export default class FichaInteractionCommand extends InteractionCommand {
 
     const selector = new MessageSelectMenu().setCustomId(`${ctx.interaction.id} | SELECT`);
 
-    for (let i = 0; i <= Object.keys(Handler.abilities).length; i++) {
+    for (let i = 1; i <= getClasses().length; i++) {
       selector.addOptions({
-        label: ctx.locale(
-          `roleplay:register-classes.${Object.keys(Handler.abilities)[i] as 'assassin'}`,
-        ),
-        value: ctx.locale(
-          `roleplay:register-classes.${Object.keys(Handler.abilities)[i] as 'assassin'}`,
-        ),
+        label: ctx.locale(`roleplay:classes.${i as 1}.name`),
+        value: `${i}`,
       });
 
-      embed.setDescription(
-        (embed.description += `\n${ctx.locale(
-          `roleplay:register-classes.${Object.keys(Handler.abilities)[i] as 'assassin'}`,
-        )}`),
+      embed.addField(
+        ctx.locale(`roleplay:classes.${i as 1}.name`),
+        ctx.locale(`roleplay:classes.${i as 1}.description`),
+        false,
       );
     }
 
@@ -137,11 +131,45 @@ export default class FichaInteractionCommand extends InteractionCommand {
       return;
     }
 
+    selector.setOptions([]);
+    embed.setFields([]);
+
+    for (let i = 1; i <= getRaces().length; i++) {
+      selector.addOptions({
+        label: ctx.locale(`roleplay:races.${i as 1}.name`),
+        value: `${i}`,
+      });
+
+      embed.addField(
+        ctx.locale(`roleplay:races.${i as 1}.name`),
+        ctx.locale(`roleplay:races.${i as 1}.description`),
+        false,
+      );
+    }
+
+    ctx.makeMessage({ embeds: [embed], components: [actionRow([selector])] });
+
+    const selectedRace =
+      await Util.collectComponentInteractionWithStartingId<SelectMenuInteraction>(
+        ctx.channel,
+        ctx.author.id,
+        ctx.interaction.id,
+        45_000,
+      );
+
+    if (!selectedRace) {
+      ctx.makeMessage({
+        components: [actionRow(disableComponents(ctx.locale('common:timesup'), [selector]))],
+      });
+      return;
+    }
+
     embed
       .setTitle(ctx.locale('commands:ficha.register.confirm-title'))
       .setDescription(
         ctx.locale('commands:ficha.register.confirm-description', {
-          class: ctx.locale(`roleplay:register-classes.${selectedClass.values[0] as 'assassin'}`),
+          class: ctx.locale(`roleplay:classes.${selectedClass.values[0] as '1'}.name`),
+          race: ctx.locale(`roleplay:races.${selectedRace.values[0] as '1'}.name`),
         }),
       )
       .setFields([]);
@@ -183,9 +211,23 @@ export default class FichaInteractionCommand extends InteractionCommand {
       return;
     }
 
-    await ctx.client.repositories.roleplayRepository.registerUser(
+    const resolvedClass = getClassById(Number(selectedClass.values[0]));
+
+    const registerStatus = {
+      class: Number(selectedClass.values[0]),
+      race: Number(selectedRace.values[0]),
+      armor: resolvedClass.data.baseArmor,
+      damage: resolvedClass.data.baseDamage,
+      intelligence: resolvedClass.data.baseIntelligence,
+      maxLife: resolvedClass.data.baseMaxLife,
+      maxMana: resolvedClass.data.baseMaxMana,
+      life: resolvedClass.data.baseMaxLife,
+      mana: resolvedClass.data.baseMaxMana,
+    };
+
+    /*  const user =  */ await ctx.client.repositories.roleplayRepository.registerUser(
       ctx.author.id,
-      selectedClass.values[0],
+      registerStatus,
     );
 
     ctx.makeMessage({

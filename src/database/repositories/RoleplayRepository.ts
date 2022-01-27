@@ -6,12 +6,15 @@ import { UpdateQuery, UpdateWithAggregationPipeline } from 'mongoose';
 export default class RoleplayRepository {
   constructor(private roleplayModal: typeof Rpgs) {}
 
-  async registerUser(userId: string, classe: string): Promise<void> {
-    this.roleplayModal.create({
+  async registerUser(
+    userId: string,
+    data: Partial<RoleplayUserSchema>,
+  ): Promise<RoleplayUserSchema> {
+    return this.roleplayModal.create({
       id: userId,
       level: 1,
       experience: 0,
-      class: classe,
+      ...data,
     });
   }
 

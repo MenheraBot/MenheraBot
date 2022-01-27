@@ -43,19 +43,18 @@ export interface Backpack {
 
 export interface RoleplayUserSchema {
   id: string;
-  class: string;
+  class: number;
+  race: number;
   life: number;
-  armor: number;
-  damage: number;
   mana: number;
   maxLife: number;
   maxMana: number;
-  abilityPower: number;
+  intelligence: number;
+  armor: number;
+  damage: number;
   level: number;
   xp: number;
-  nextLevelXp: number;
   abilities: Array<NormalAbility | UniquePower>;
-  abilitiesCooldown: Array<unknown>;
   uniquePower: UniquePower;
   loots: Array<Exclude<InventoryItem, InventoryItem['type']>>;
   inventory: Array<InventoryItem>;
@@ -101,3 +100,73 @@ export type IncomingAttackChoice = AttackChoice | UniquePower | NormalAbility;
 export type UserAbilities = Array<UniquePower | NormalAbility>;
 
 export type DungeonLevels = 1 | 2 | 3 | 4 | 5;
+
+interface BaseAttributesPerLevel {
+  maxLife: number;
+  maxMana: number;
+  baseArmor: number;
+  baseDamage: number;
+  maxStamina: number;
+  baseIntelligence: number;
+  holyBlessings: number;
+}
+
+interface UnlockAbility<FromItem extends boolean = false> {
+  availableLevel: number;
+  maxEvolve: number;
+  itemId: FromItem extends true ? number : undefined;
+}
+
+export type ClassesNameDefinition =
+  | 'assassin'
+  | 'mage'
+  | 'sorcerer'
+  | 'illusionist'
+  | 'archmage'
+  | 'necromancer'
+  | 'barbarian'
+  | 'archer'
+  | 'paladin'
+  | 'tamer';
+
+export type RacesNameDefinition = 'elf' | 'human' | 'orc' | 'half-demon' | 'demi-human' | 'fear';
+
+export type AvailableStatuses = Exclude<keyof BaseAttributesPerLevel, 'holyBlessings'>;
+
+export interface ClassesFile {
+  name: ClassesNameDefinition;
+  attributesPerLevel: BaseAttributesPerLevel;
+  baseMaxMana: number;
+  baseMaxLife: number;
+  baseArmor: number;
+  baseDamage: number;
+  baseIntelligence: number;
+  baseMaxStamina: number;
+  availableAbilities: UnlockAbility[];
+  starterHolyBlessings: number;
+}
+
+export interface FacilityType {
+  facility: AvailableStatuses;
+  boostPerLevel: number;
+}
+
+export interface RacesFile {
+  name: RacesNameDefinition;
+  facilities: FacilityType[];
+}
+
+interface PerLevelBoost {
+  damage: number;
+  heal: number;
+  cost: number;
+}
+
+export interface AbilitiesFile {
+  DevDesc: string;
+  parentId: number;
+  damage: number;
+  heal: number;
+  cost: number;
+  boostPerLevel: PerLevelBoost;
+}

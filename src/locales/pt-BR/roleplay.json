@@ -43,23 +43,23 @@
   },
   "races": {
     "1": {
-      "name": "Elfos",
+      "name": "Elfo",
       "description": "Nascem na floresta. Crescem ao lado da natureza, conhecendo muito bem suas forças, e recebendo ajuda dela. Seres muito inteligentes"
     },
     "2": {
-      "name": "Humanos",
+      "name": "Humano",
       "description": "Nascem na cidade. Evoluiram mais que qualquer outra classe. Aprenderam a controlar o fogo, e por isso, possuem uma alta afinidade com o dano. Seres muito fortes"
     },
     "3": {
-      "name": "Orcs",
+      "name": "Orc",
       "description": "Nascem no Mundo Sombrio. Sofrem um pouco de preconceito por parte dos humanos por serem parecidos com porcos, por isso se isolaram no mundo sombrio. Isso não significa que não podem vivem junto com humanos. Seres duros na queda"
     },
     "4": {
-      "name": "Meio-Demônios",
+      "name": "Meio-Demônio",
       "description": "Nascem nos arredores do Mundo Sombrio. São vistos como seres quase que além dessa realidade. Muito respeitados por conta de suas lendas. Seres que dividem em igualdade a inteligência e a força"
     },
     "5": {
-      "name": "Demi-Humanos",
+      "name": "Demi-Humano",
       "description": "Os famosos Meio-Animais. Vivem entre os humanos, porém sofrem um pouco de preconceito por conta de suas orelhas e rabos. Sua força e sua stamina são divididas igualmente"
     },
     "6": {

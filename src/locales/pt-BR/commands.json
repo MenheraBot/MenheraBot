@@ -730,12 +730,12 @@
       "title": "Ritual de Invocação",
       "confirm-title": "Cheque Suas Informações",
       "success": "Bem Vindo ao mundo de Boleham! Sua ficha foi registrada com sucesso, e tu já pode usar os comandos de RPG!\nEstá com dificuldade para saber o que fazer agora? Veja um tutorial do RPG no meu site!",
-      "negate": "Você negou o seu registro. Use o comando novamente para começar do 0",
-      "confirm-description": "Após aceitar, não será possível retornar!\n\n**Classe:** {{class}}",
-      "description": "Você acaba de morrer na Terra, e os Deuses de Boleham te dão uma chance para reencarnar (SIM, UM ISEKAI). Agora a escolha é sua!\n\n**Escolha abaixo sua classe**"
+      "negate": "Você negou o seu registro. Use o comando novamente para se registrar",
+      "confirm-description": "Cheque suas informações! Após aceitar, não será possível retornar!\n\n**Sua Classe:** {{class}}\n**Sua Raça**: {{race}}",
+      "description": "Você acaba de morrer na Terra, e os Deuses de Boleham te dão uma chance para reencarnar (SIM, UM ISEKAI). Agora a escolha é sua!\n\n**Escolha abaixo sua classe e depois, escolha sua raça**"
     },
     "show": {
-      "not-found": "este usuário não está registrado como um aventureiro",
+      "not-found": "Este usuário não está registrado como um aventureiro",
       "title": "Status de {{name}}",
       "life": "Vida",
       "class": "Classe",
@@ -744,8 +744,7 @@
       "mana": "Mana",
       "ap": "Poder Mágico",
       "money": "Pedras Mágicas",
-      "ability": "Habilidade Única",
-      "family": "Família"
+      "ability": "Habilidade Única"
     }
   },
   "dungeon": {
