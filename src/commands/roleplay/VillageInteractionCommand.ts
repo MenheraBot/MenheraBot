@@ -1,4 +1,5 @@
-import InteractionCommand from '@structures/command/InteractionCommand';
+export {};
+/* import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageEmbed } from 'discord.js-light';
 
@@ -418,3 +419,4 @@ export default class VillageInteractionCommand extends InteractionCommand {
     return PagesCollector.continue();
   }
 }
+ */
