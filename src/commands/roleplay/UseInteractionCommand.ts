@@ -1,5 +1,6 @@
 import { InventoryItem } from '@roleplay/Types';
 import RPGUtil from '@roleplay/Utils';
+import { getUserMaxLife, getUserMaxMana } from '@roleplay/utils/Calculations';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import Util, { actionRow } from '@utils/Util';
@@ -37,9 +38,9 @@ export default class UseInteractionCommand extends InteractionCommand {
       .setDescription(
         ctx.locale('commands:usar.embed_description', {
           life: user.life,
-          maxLife: user.maxLife,
+          maxLife: getUserMaxLife(user),
           mana: user.mana,
-          maxMana: user.maxMana,
+          maxMana: getUserMaxMana(user),
         }),
       );
 
@@ -114,20 +115,20 @@ export default class UseInteractionCommand extends InteractionCommand {
     }
 
     if (choice[0].name.indexOf('💧') > -1) {
-      if (user.mana === user.maxMana) {
+      if (user.mana === getUserMaxMana(user)) {
         ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:usar.full-mana') });
         return;
       }
 
       user.mana += (choice[0]?.damage ?? 1) * amount;
-      if (user.mana > user.maxMana) user.mana = user.maxMana;
+      if (user.mana > getUserMaxMana(user)) user.mana = getUserMaxMana(user);
     } else if (choice[0].name.indexOf('🩸') > -1) {
-      if (user.life === user.maxLife) {
+      if (user.life === getUserMaxLife(user)) {
         ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:usar.full-life') });
         return;
       }
       user.life += (choice[0]?.damage ?? 1) * amount;
-      if (user.life > user.maxLife) user.life = user.maxLife;
+      if (user.life > getUserMaxLife(user)) user.life = getUserMaxLife(user);
     } else {
       ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:usar.error') });
       return;
@@ -152,8 +153,8 @@ export default class UseInteractionCommand extends InteractionCommand {
         choice: choice[0].name,
         life: user.life,
         mana: user.mana,
-        maxLife: user.maxLife,
-        maxMana: user.maxMana,
+        maxLife: getUserMaxLife(user),
+        maxMana: getUserMaxMana(user),
       }),
     });
   }

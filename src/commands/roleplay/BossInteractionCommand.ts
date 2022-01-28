@@ -1,5 +1,6 @@
 import Checks from '@roleplay/Checks';
 import { BattleChoice, IncomingAttackChoice, Mob, RoleplayUserSchema } from '@roleplay/Types';
+import { getUserMaxLife, getUserMaxMana } from '@roleplay/utils/Calculations';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { ROLEPLAY_CONSTANTS } from '@structures/Constants';
@@ -59,11 +60,11 @@ export default class BossInteractionCommand extends InteractionCommand {
       .setFooter({ text: ctx.locale('commands:boss.preparation.footer') })
       .addField(
         ctx.locale('commands:boss.preparation.stats'),
-        `🩸 | **${ctx.locale('commands:boss.life')}:** ${user.life}/${
-          user.maxLife
-        }\n💧 | **${ctx.locale('commands:boss.mana')}:** ${user.mana}/${
-          user.maxMana
-        }\n🗡️ | **${ctx.locale('commands:boss.dmg')}:** ${dmgView}\n🛡️ | **${ctx.locale(
+        `🩸 | **${ctx.locale('commands:boss.life')}:** ${user.life}/${getUserMaxLife(
+          user,
+        )}\n💧 | **${ctx.locale('commands:boss.mana')}:** ${user.mana}/${getUserMaxMana(
+          user,
+        )}\n🗡️ | **${ctx.locale('commands:boss.dmg')}:** ${dmgView}\n🛡️ | **${ctx.locale(
           'commands:boss.armor',
         )}:** ${ptcView}\n🔮 | **${ctx.locale('commands:boss.ap')}:** ${
           1 // user.abilityPower

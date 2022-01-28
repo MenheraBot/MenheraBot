@@ -757,7 +757,12 @@
       "abilities": {
         "upgrade": "Melhorar Habilidades",
         "unlock": "Desbloquear Habilidades",
-        "title": "Habilidades de {{name}}"
+        "title": "Habilidades de {{name}}",
+        "success": "Você Abençoou sua abilidade com Sucesso!",
+        "no-blesses": "Você não possui Bênçãos Santíssimas para melhorar suas Habilidades!",
+        "unlock-description": "Abaixo estão as habilidades que você pode desbloquear! Lembrando que desbloquear habilidades é caro, e é preciso o número exato de bênçãos para isso!\n**Você tem {{points}} Bênçãos Santíssimas**",
+        "upgrade-description": "Abaixo estão as habilidades que você pode melhorar! Para mais informações de números, cheque meu WebSite!\n**Você tem {{points}} Bênçãos Santíssimas para usar!**",
+        "cost": "Custo de Desbloqueio"
       }
     }
   },

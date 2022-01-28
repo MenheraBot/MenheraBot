@@ -13,6 +13,7 @@ import {
   RoleplayUserSchema,
 } from './Types';
 import RPGUtil from './Utils';
+import { getUserMaxLife, getUserMaxMana } from './utils/Calculations';
 
 const RandomFromArray = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
 
@@ -117,7 +118,7 @@ const battle = async (
       );
     if (escolha.heal && escolha.heal > 0) {
       user.life += escolha.heal;
-      if (user.life > user.maxLife) user.life = user.maxLife;
+      if (user.life > getUserMaxLife(user)) user.life = getUserMaxLife(user);
     }
     danoUser = /* user.abilityPower */ 1 * Number(escolha.damage);
     user.mana -= Number(escolha?.cost) ?? 0;
@@ -292,8 +293,8 @@ const finalChecks = async (
         xp: 0,
         level: user.level + 1,
         nextLevelXp: /* user.nextLevelXp */ 1 * 2,
-        maxLife: user.maxLife + 10,
-        maxMana: user.maxMana + 10,
+        maxLife: getUserMaxLife(user) + 10,
+        maxMana: getUserMaxMana(user) + 10,
         damage: user.damage + 3,
         armor: user.armor + 2,
       });
@@ -306,8 +307,8 @@ const finalChecks = async (
         xp: 0,
         level: user.level + 1,
         nextLevelXp: /* user.nextLevelXp */ 1 * 2,
-        maxLife: user.maxLife + 20,
-        maxMana: user.maxMana + 15,
+        maxLife: getUserMaxLife(user) + 20,
+        maxMana: getUserMaxMana(user) + 15,
         damage: user.damage + 5,
         armor: user.armor + 3,
       });
@@ -319,8 +320,8 @@ const finalChecks = async (
       ctx.client.repositories.roleplayRepository.updateUser(user.id, {
         level: user.level + 1,
         nextLevelXp: /* user.nextLevelXp */ 1 * 2,
-        maxLife: user.maxLife + 50,
-        maxMana: user.maxMana + 20,
+        maxLife: /* user.maxLife + */ 50,
+        maxMana: /* user.maxMana +  */ 20,
         damage: user.damage + 7,
         armor: user.armor + 5,
       });
@@ -333,8 +334,8 @@ const finalChecks = async (
         xp: 0,
         level: user.level + 1,
         nextLevelXp: /* user.nextLevelXp */ 1 * 2,
-        maxLife: user.maxLife + 50,
-        maxMana: user.maxMana + 50,
+        maxLife: getUserMaxLife(user) + 50,
+        maxMana: getUserMaxMana(user) + 50,
         damage: user.damage + 10,
         armor: user.armor + 2,
       });
@@ -478,8 +479,8 @@ const initialChecks = async (
 
   if (user.life < 1) {
     if (Date.now() > user.death) {
-      user.life = user.maxLife;
-      user.mana = user.maxMana;
+      user.life = /* user.maxLife; */ 1;
+      user.mana = /* user.maxMana; */ 1;
     }
   }
   if (user.life < 1) {
@@ -537,8 +538,8 @@ const initialChecks = async (
   }
 
   await ctx.client.repositories.roleplayRepository.updateUser(user.id, {
-    life: user.maxLife,
-    mana: user.maxMana,
+    life: /* user.maxLife */ 1,
+    mana: /* user.maxMana */ 1,
   });
 
   return pass;

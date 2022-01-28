@@ -6,6 +6,7 @@ import {
   Mob,
   RoleplayUserSchema,
 } from '@roleplay/Types';
+import { getUserMaxLife, getUserMaxMana } from '@roleplay/utils/Calculations';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { ROLEPLAY_CONSTANTS } from '@structures/Constants';
@@ -71,11 +72,11 @@ export default class DungeonInteractionCommand extends InteractionCommand {
       .setFooter({ text: ctx.locale('commands:dungeon.preparation.footer') })
       .addField(
         ctx.locale('commands:dungeon.preparation.stats'),
-        `🩸 | **${ctx.locale('commands:dungeon.life')}:** ${user.life}/${
-          user.maxLife
-        }\n💧 | **${ctx.locale('commands:dungeon.mana')}:** ${user.mana}/${
-          user.maxMana
-        }\n🗡️ | **${ctx.locale('commands:dungeon.dmg')}:** ${dmgView}\n🛡️ | **${ctx.locale(
+        `🩸 | **${ctx.locale('commands:dungeon.life')}:** ${user.life}/${getUserMaxLife(
+          user,
+        )}\n💧 | **${ctx.locale('commands:dungeon.mana')}:** ${user.mana}/${getUserMaxMana(
+          user,
+        )}\n🗡️ | **${ctx.locale('commands:dungeon.dmg')}:** ${dmgView}\n🛡️ | **${ctx.locale(
           'commands:dungeon.armor',
         )}:** ${ptcView}\n🔮 | **${ctx.locale('commands:dungeon.ap')}:** ${
           1 //  user.abilityPower

@@ -185,5 +185,6 @@ export interface AbilitiesFile {
   damage: number;
   heal: number;
   cost: number;
+  unlockCost: number;
   boostPerLevel: PerLevelBoost;
 }

@@ -7,6 +7,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     damage: 17,
     heal: 0,
     parentId: 0,
+    unlockCost: 0,
     boostPerLevel: {
       cost: 5,
       damage: 30,
@@ -19,6 +20,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     damage: 18,
     heal: 0,
     parentId: 1,
+    unlockCost: 20,
     boostPerLevel: {
       cost: 5,
       damage: 40,
@@ -31,6 +33,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     damage: 17,
     heal: 0,
     parentId: 1,
+    unlockCost: 20,
     boostPerLevel: {
       cost: 10,
       damage: 50,
@@ -43,6 +46,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     damage: 17,
     heal: 130,
     parentId: 3,
+    unlockCost: 60,
     boostPerLevel: {
       cost: 5,
       damage: 20,
@@ -55,6 +59,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     damage: 15,
     heal: 0,
     parentId: 2,
+    unlockCost: 60,
     boostPerLevel: {
       cost: 10,
       damage: 60,
@@ -67,6 +72,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     damage: 10,
     heal: 30,
     parentId: 0,
+    unlockCost: 0,
     boostPerLevel: {
       cost: 5,
       damage: 10,
@@ -79,6 +85,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     damage: 35,
     heal: 0,
     parentId: 6,
+    unlockCost: 20,
     boostPerLevel: {
       cost: 10,
       damage: 70,
@@ -90,6 +97,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     cost: 80,
     damage: 35,
     heal: 0,
+    unlockCost: 60,
     parentId: 7,
     boostPerLevel: {
       cost: 10,
@@ -103,6 +111,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     damage: 35,
     heal: 5,
     parentId: 6,
+    unlockCost: 20,
     boostPerLevel: {
       cost: 10,
       damage: 50,
@@ -115,6 +124,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     damage: 80,
     heal: 0,
     parentId: 9,
+    unlockCost: 60,
     boostPerLevel: {
       cost: 20,
       damage: 90,
@@ -127,6 +137,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     damage: 16,
     heal: 0,
     parentId: 0,
+    unlockCost: 0,
     boostPerLevel: {
       cost: 10,
       damage: 34,
@@ -139,6 +150,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     damage: 40,
     heal: 0,
     parentId: 11,
+    unlockCost: 20,
     boostPerLevel: {
       cost: 20,
       damage: 110,
@@ -150,6 +162,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     cost: 130,
     damage: 120,
     heal: 0,
+    unlockCost: 60,
     parentId: 12,
     boostPerLevel: {
       cost: 30,
@@ -162,6 +175,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     cost: 50,
     damage: 34,
     heal: 0,
+    unlockCost: 20,
     parentId: 11,
     boostPerLevel: {
       cost: 10,
@@ -174,6 +188,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     cost: 110,
     damage: 130,
     heal: 0,
+    unlockCost: 60,
     parentId: 14,
     boostPerLevel: {
       cost: 25,
@@ -187,6 +202,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     damage: 10,
     heal: 60,
     parentId: 0,
+    unlockCost: 0,
     boostPerLevel: {
       cost: 50,
       damage: 60,
@@ -198,6 +214,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     cost: 60,
     damage: 60,
     heal: 0,
+    unlockCost: 20,
     parentId: 16,
     boostPerLevel: {
       cost: 20,
@@ -210,6 +227,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     cost: 80,
     damage: 120,
     heal: 50,
+    unlockCost: 60,
     parentId: 17,
     boostPerLevel: {
       cost: 30,
@@ -222,6 +240,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     cost: 60,
     damage: 25,
     heal: 0,
+    unlockCost: 20,
     parentId: 16,
     boostPerLevel: {
       cost: 10,
@@ -235,6 +254,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     damage: 100,
     heal: 150,
     parentId: 19,
+    unlockCost: 60,
     boostPerLevel: {
       cost: 30,
       damage: 100,
