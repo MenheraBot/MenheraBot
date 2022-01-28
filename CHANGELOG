@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- O rpg voltou
+
+### Fixed
+
+- Resolvido problema que os plurais não estavam funcionando
+
 ## [3.5.10] - 21-01-2022
 
 ### Fixed

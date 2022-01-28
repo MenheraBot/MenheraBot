@@ -396,3 +396,5 @@ export interface JogoDoBichoGame {
   bets: Array<BetPlayer>;
   biggestProfit: number;
 }
+
+export type ToBLess = 'mana' | 'life' | 'damage' | 'armor' | 'intelligence';

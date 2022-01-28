@@ -3,6 +3,7 @@ import InteractionCommandContext from '@structures/command/InteractionContext';
 import { RoleplayUserSchema } from '@roleplay/Types';
 import {
   ButtonInteraction,
+  MessageActionRow,
   MessageButton,
   MessageEmbed,
   MessageSelectMenu,
@@ -11,7 +12,8 @@ import {
 } from 'discord.js-light';
 import Util, { actionRow, disableComponents, resolveCustomId } from '@utils/Util';
 import { getClassById, getClasses, getRaces } from '@roleplay/utils/ClassUtils';
-import { getUserNextLevelXp } from '@roleplay/utils/Calculations';
+import { getUserNextLevelXp, makeBlessingStatusUpgrade } from '@roleplay/utils/Calculations';
+import { ToBLess } from '@utils/Types';
 
 export default class FichaInteractionCommand extends InteractionCommand {
   constructor() {
@@ -114,12 +116,190 @@ export default class FichaInteractionCommand extends InteractionCommand {
     }
 
     if (resolveCustomId(selectedOption.customId) === 'STATUS') {
-      embed.setDescription(`${user.life} ${user.mana} ${user.level}`);
+      if (user.holyBlessings.battle === 0 && user.holyBlessings.vitality === 0) {
+        ctx.makeMessage({
+          components: [],
+          embeds: [],
+          content: ctx.prettyResponse('error', 'commands:ficha.show.no-blesses'),
+        });
+        return;
+      }
 
-      if (user.holyBlessings.battle > 0 || user.holyBlessings.vitality > 0)
-        embed.addField('PONTOS', 'VOCÊ TEM PONTOS PRA USAR');
+      embed
+        .setDescription(
+          ctx.locale('commands:ficha.show.blessings', {
+            vitality: user.holyBlessings.vitality,
+            battle: user.holyBlessings.battle,
+          }),
+        )
+        .addFields([
+          {
+            name: ctx.locale('commands:ficha.show.vitality'),
+            value: `${ctx.prettyResponse('blood', 'common:roleplay.life')}: **${
+              user.maxLife
+            }**\n${ctx.prettyResponse('mana', 'common:roleplay.mana')}: **${user.maxMana}**`,
+            inline: true,
+          },
+          {
+            name: ctx.locale('commands:ficha.show.battle'),
+            value: `${ctx.prettyResponse('damage', 'common:roleplay.damage')}: **${
+              user.damage
+            }**\n${ctx.prettyResponse('armor', 'common:roleplay.armor')}: **${
+              user.armor
+            }**\n${ctx.prettyResponse('intelligence', 'common:roleplay.intelligence')}: **${
+              user.intelligence
+            }**`,
+            inline: true,
+          },
+        ]);
 
-      ctx.makeMessage({ embeds: [embed] });
+      const vitalityButton = new MessageButton()
+        .setCustomId(`${ctx.interaction.id} | VITALITY`)
+        .setStyle('PRIMARY')
+        .setLabel(ctx.locale('commands:ficha.show.vitality'));
+
+      const battleButton = new MessageButton()
+        .setCustomId(`${ctx.interaction.id} | BATTLE`)
+        .setStyle('PRIMARY')
+        .setLabel(ctx.locale('commands:ficha.show.battle'));
+
+      if (user.holyBlessings.vitality === 0) vitalityButton.setDisabled(true);
+      if (user.holyBlessings.battle === 0) battleButton.setDisabled(true);
+
+      ctx.makeMessage({ embeds: [embed], components: [actionRow([vitalityButton, battleButton])] });
+
+      const buttonSelected = await Util.collectComponentInteractionWithStartingId(
+        ctx.channel,
+        ctx.author.id,
+        ctx.interaction.id,
+        15000,
+      );
+
+      if (!buttonSelected) {
+        ctx.makeMessage({
+          components: [
+            actionRow(
+              disableComponents(ctx.locale('common:timesup'), [vitalityButton, battleButton]),
+            ),
+          ],
+        });
+        return;
+      }
+
+      const pointsToUse =
+        resolveCustomId(buttonSelected.customId) === 'VITALITY'
+          ? user.holyBlessings.vitality
+          : user.holyBlessings.battle;
+
+      const selectAmount = new MessageSelectMenu()
+        .setCustomId(`${ctx.interaction.id} | AMOUNT`)
+        .setMinValues(1)
+        .setMaxValues(1)
+        .setPlaceholder(ctx.locale('commands:ficha.show.select-amount'));
+
+      for (let i = 1; i <= pointsToUse && i <= 25; i++)
+        selectAmount.addOptions({ label: `${i}`, value: `${i}` });
+
+      ctx.makeMessage({ components: [actionRow([selectAmount])] });
+
+      const selectedAmount =
+        await Util.collectComponentInteractionWithStartingId<SelectMenuInteraction>(
+          ctx.channel,
+          ctx.author.id,
+          ctx.interaction.id,
+        );
+
+      if (!selectedAmount) {
+        ctx.makeMessage({
+          components: [actionRow(disableComponents(ctx.locale('common:timesup'), [selectAmount]))],
+        });
+        return;
+      }
+
+      const points = Number(selectedAmount.values[0]);
+
+      embed.setFooter({ text: ctx.locale('commands:ficha.show.select-type', { count: points }) });
+
+      const toSendComponents: MessageActionRow[] = [];
+
+      if (resolveCustomId(buttonSelected.customId) === 'VITALITY') {
+        const lifeButton = new MessageButton()
+          .setCustomId(`${ctx.interaction.id} | LIFE`)
+          .setStyle('DANGER')
+          .setLabel(ctx.locale('common:roleplay.life'));
+
+        const manaButton = new MessageButton()
+          .setCustomId(`${ctx.interaction.id} | MANA`)
+          .setStyle('PRIMARY')
+          .setLabel(ctx.locale('common:roleplay.mana'));
+
+        toSendComponents.push(actionRow([lifeButton, manaButton]));
+      } else {
+        const damageButton = new MessageButton()
+          .setCustomId(`${ctx.interaction.id} | DAMAGE`)
+          .setStyle('PRIMARY')
+          .setLabel(ctx.locale('common:roleplay.damage'));
+
+        const armorButton = new MessageButton()
+          .setCustomId(`${ctx.interaction.id} | ARMOR`)
+          .setStyle('PRIMARY')
+          .setLabel(ctx.locale('common:roleplay.armor'));
+
+        const intelligenceButton = new MessageButton()
+          .setCustomId(`${ctx.interaction.id} | INTELLIGENCE`)
+          .setStyle('PRIMARY')
+          .setLabel(ctx.locale('common:roleplay.intelligence'));
+
+        toSendComponents.push(actionRow([damageButton, armorButton, intelligenceButton]));
+      }
+
+      ctx.makeMessage({ embeds: [embed], components: toSendComponents });
+
+      const statusSelected = await Util.collectComponentInteractionWithStartingId(
+        ctx.channel,
+        ctx.author.id,
+        ctx.interaction.id,
+      );
+
+      if (!statusSelected) {
+        ctx.makeMessage({
+          components: [],
+          embeds: [],
+          content: ctx.prettyResponse('error', 'common:timesup'),
+        });
+        return;
+      }
+
+      const newStatus = makeBlessingStatusUpgrade(
+        resolveCustomId(statusSelected.customId).toLowerCase() as ToBLess,
+        points,
+      );
+
+      const databaseField =
+        resolveCustomId(statusSelected.customId).toLowerCase() === 'mana' ||
+        resolveCustomId(statusSelected.customId).toLowerCase() === 'life'
+          ? `max${Util.capitalize(resolveCustomId(statusSelected.customId).toLowerCase())}`
+          : resolveCustomId(statusSelected.customId).toLowerCase();
+
+      const blessingField = resolveCustomId(buttonSelected.customId).toLowerCase() as
+        | 'vitality'
+        | 'battle';
+
+      const oldHolyBlessings = user.holyBlessings;
+
+      oldHolyBlessings[blessingField] -= points;
+
+      await ctx.client.repositories.roleplayRepository.updateUser(ctx.author.id, {
+        $inc: { [databaseField]: newStatus },
+        holyBlessings: oldHolyBlessings,
+      });
+
+      ctx.makeMessage({
+        embeds: [],
+        components: [],
+        content: ctx.prettyResponse('success', 'commands:ficha.show.status-success'),
+      });
+
       return;
     }
 
