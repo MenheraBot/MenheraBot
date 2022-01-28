@@ -107,9 +107,11 @@ export const emojis = {
   // EMOJIS DO RPG
   blood: '🩸',
   mana: '💧',
-  stamina: '⚡',
-  sanity: '🎭',
+  armor: '🛡️',
+  damage: '🗡️',
   level: '⚜️',
+  experience: '🔰',
+  intelligence: '🧠',
 };
 
 export const languageByLocale = {

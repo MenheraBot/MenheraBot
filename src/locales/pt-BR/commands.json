@@ -729,7 +729,7 @@
     "register": {
       "title": "Ritual de Invocação",
       "confirm-title": "Cheque Suas Informações",
-      "success": "Bem Vindo ao mundo de Boleham! Sua ficha foi registrada com sucesso, e tu já pode usar os comandos de RPG!\nEstá com dificuldade para saber o que fazer agora? Veja um tutorial do RPG no meu site!",
+      "success": "Bem Vindo ao mundo de Boleham! Sua ficha foi registrada com sucesso. Antes de começar, selecione uma habilidade para desbloquear.",
       "negate": "Você negou o seu registro. Use o comando novamente para se registrar",
       "confirm-description": "Cheque suas informações! Após aceitar, não será possível retornar!\n\n**Sua Classe:** {{class}}\n**Sua Raça**: {{race}}",
       "description": "Você acaba de morrer na Terra, e os Deuses de Boleham te dão uma chance para reencarnar (SIM, UM ISEKAI). Agora a escolha é sua!\n\n**Escolha abaixo sua classe e depois, escolha sua raça**"
@@ -739,12 +739,17 @@
       "title": "Status de {{name}}",
       "life": "Vida",
       "class": "Classe",
+      "race": "Raça",
+      "level": "Nível",
+      "experience": "Experiência",
       "armor": "Armadura",
       "dmg": "Dano",
       "mana": "Mana",
       "ap": "Poder Mágico",
       "money": "Pedras Mágicas",
-      "ability": "Habilidade Única"
+      "ability": "Habilidade Única",
+      "abilitiesButton": "Árvore de Habilidades",
+      "statsButton": "Árvore de Status"
     }
   },
   "dungeon": {

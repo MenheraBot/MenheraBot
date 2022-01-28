@@ -6,7 +6,7 @@ import {
   CreditsSchema,
 } from '@utils/Types';
 import { Schema, model } from 'mongoose';
-import { RoleplayUserSchema } from 'roleplay/Types';
+import { RoleplayUserSchema } from '@roleplay/Types';
 
 const cmdSchema = new Schema({
   _id: { type: String },
@@ -85,11 +85,11 @@ const rpgSchema = new Schema({
   maxMana: { type: Number },
   intelligence: { type: Number },
   level: { type: Number },
-  xp: { type: Number },
+  experience: { type: Number, default: 0 },
   armor: { type: Number, default: 0 },
   damage: { type: Number, default: 0 },
   abilities: { type: Array, default: [] },
-  uniquePower: { type: Object },
+  holyBlessings: { type: Object, default: { ability: 0, vitality: 0, battle: 0 } },
   loots: { type: Array, default: [] },
   inventory: { type: Array, default: [] },
   money: { type: Number, default: 0 },

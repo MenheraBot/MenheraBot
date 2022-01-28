@@ -40,8 +40,9 @@
   "roleplay": {
     "life": "Vida",
     "mana": "Mana",
-    "stamina": "Preseverança",
-    "sanity": "Sanidade",
+    "damage": "Dano",
+    "intelligence": "Inteligência",
+    "armor": "Defesa",
     "level": "Nível"
   }
 }

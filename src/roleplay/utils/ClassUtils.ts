@@ -1,5 +1,6 @@
 import { IReturnData } from '@utils/Types';
-import { ClassesFile, RacesFile } from '@roleplay/Types';
+import { AbilitiesFile, ClassesFile, RacesFile } from '@roleplay/Types';
+import Abilities from '@roleplay/data/Abilities';
 import { Classes, Races } from '../data';
 
 export const getClasses = (): IReturnData<ClassesFile>[] =>
@@ -16,4 +17,9 @@ export const getRaces = (): IReturnData<RacesFile>[] =>
 export const getRaceById = (raceId: number): IReturnData<RacesFile> =>
   Object.entries(Races)
     .filter((c) => Number(c[0]) === raceId)
+    .map((c) => ({ id: Number(c[0]), data: c[1] }))[0];
+
+export const getAbilityById = (abilityId: number): IReturnData<AbilitiesFile> =>
+  Object.entries(Abilities)
+    .filter((c) => Number(c[0]) === abilityId)
     .map((c) => ({ id: Number(c[0]), data: c[1] }))[0];

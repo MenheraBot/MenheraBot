@@ -141,10 +141,13 @@ const InteractionCommandExecutor = async (
     }
   }
 
-  if (command.config.category === 'economy' && client.economyExecutions.has(interaction.user.id)) {
+  if (
+    (command.config.category === 'economy' || command.config.category === 'roleplay') &&
+    client.commandExecutions.has(interaction.user.id)
+  ) {
     await interaction
       .reply({
-        content: `<:negacao:759603958317711371> | ${t('permissions:ECONOMY_COMMAND_EXECUTION')}`,
+        content: `<:negacao:759603958317711371> | ${t('permissions:IN_COMMAND_EXECUTION')}`,
         ephemeral: true,
       })
       .catch(debugError);
@@ -168,7 +171,8 @@ const InteractionCommandExecutor = async (
 
   if (!command.run) return;
 
-  if (command.config.category === 'economy') client.economyExecutions.add(ctx.author.id);
+  if (command.config.category === 'economy' || command.config.category === 'roleplay')
+    client.commandExecutions.add(ctx.author.id);
 
   await command
     .run(ctx)
@@ -211,7 +215,8 @@ const InteractionCommandExecutor = async (
       }
     })
     .finally(() => {
-      if (command.config.category === 'economy') client.economyExecutions.delete(ctx.author.id);
+      if (command.config.category === 'economy' || command.config.category === 'roleplay')
+        client.commandExecutions.delete(ctx.author.id);
     });
 
   if (!interaction.guild || process.env.NODE_ENV === 'development') return;

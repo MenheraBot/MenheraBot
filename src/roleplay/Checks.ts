@@ -10,9 +10,7 @@ import {
   DungeonLevels,
   IncomingAttackChoice,
   Mob,
-  NormalAbility,
   RoleplayUserSchema,
-  UniquePower,
 } from './Types';
 import RPGUtil from './Utils';
 
@@ -121,7 +119,7 @@ const battle = async (
       user.life += escolha.heal;
       if (user.life > user.maxLife) user.life = user.maxLife;
     }
-    danoUser = user.abilityPower * Number(escolha.damage);
+    danoUser = /* user.abilityPower */ 1 * Number(escolha.damage);
     user.mana -= Number(escolha?.cost) ?? 0;
   }
 
@@ -174,7 +172,7 @@ const enemyShot = async (
   type: BattleChoice,
   toSay: string,
 ): Promise<void> => {
-  const habilidades = getAbilities(user);
+  const habilidades = 'a'; // getAbilities(user);
 
   let danoRecebido;
   const armadura = user.armor + user.protection.armor;
@@ -199,7 +197,7 @@ const enemyShot = async (
 const continueBattle = async (
   ctx: InteractionCommandContext,
   inimigo: Mob,
-  habilidades: Array<NormalAbility | UniquePower>,
+  habilidades: 'a', // Array<NormalAbility | UniquePower>,
   user: RoleplayUserSchema,
   type: BattleChoice,
   ataque: AttackChoice,
@@ -219,16 +217,16 @@ const continueBattle = async (
   });
 
   if (type === 'boss') {
-    if (user.uniquePower.name === 'Morte Instantânea') {
+    /*   if (user.uniquePower.name === 'Morte Instantânea') {
       habilidades.splice(
         habilidades.findIndex((i) => i.name === 'Morte Instantânea'),
         1,
       );
-    }
+    } */
   }
-  habilidades.forEach((hab) => {
+  /*   habilidades.forEach((hab) => {
     options.push(hab);
-  });
+  }); */
 
   const dmgView = user.damage + user.weapon.damage;
   const ptcView = user.armor + user.protection.armor;
@@ -288,495 +286,62 @@ const finalChecks = async (
   let texto = '';
 
   if (user.level < 5) {
-    if (user.xp >= user.nextLevelXp) {
+    if (user.experience >= /* user.nextLevelXp */ 1) {
       texto += '**<a:LevelUp:760954035779272755> LEVEL UP <a:LevelUp:760954035779272755>**';
       ctx.client.repositories.roleplayRepository.updateUser(user.id, {
         xp: 0,
         level: user.level + 1,
-        nextLevelXp: user.nextLevelXp * 2,
+        nextLevelXp: /* user.nextLevelXp */ 1 * 2,
         maxLife: user.maxLife + 10,
         maxMana: user.maxMana + 10,
         damage: user.damage + 3,
         armor: user.armor + 2,
       });
       ctx.makeMessage({ content: texto });
-      newAbilities(ctx, user);
     }
   } else if (user.level > 4 && user.level < 10) {
-    if (user.xp >= user.nextLevelXp) {
+    if (user.experience >= /* user.nextLevelXp */ 1) {
       texto += '**<a:LevelUp:760954035779272755> LEVEL UP <a:LevelUp:760954035779272755>**';
       ctx.client.repositories.roleplayRepository.updateUser(user.id, {
         xp: 0,
         level: user.level + 1,
-        nextLevelXp: user.nextLevelXp * 2,
+        nextLevelXp: /* user.nextLevelXp */ 1 * 2,
         maxLife: user.maxLife + 20,
         maxMana: user.maxMana + 15,
         damage: user.damage + 5,
         armor: user.armor + 3,
       });
       ctx.makeMessage({ content: texto });
-      newAbilities(ctx, user);
     }
   } else if (user.level > 9 && user.level < 29) {
-    if (user.xp >= user.nextLevelXp) {
+    if (user.experience >= /* user.nextLevelXp */ 1) {
       texto += '**<a:LevelUp:760954035779272755> LEVEL UP <a:LevelUp:760954035779272755>**';
       ctx.client.repositories.roleplayRepository.updateUser(user.id, {
         level: user.level + 1,
-        nextLevelXp: user.nextLevelXp * 2,
+        nextLevelXp: /* user.nextLevelXp */ 1 * 2,
         maxLife: user.maxLife + 50,
         maxMana: user.maxMana + 20,
         damage: user.damage + 7,
         armor: user.armor + 5,
       });
       ctx.makeMessage({ content: texto });
-      newAbilities(ctx, user);
     }
   } else if (user.level >= 29) {
-    if (user.xp >= user.nextLevelXp) {
+    if (user.experience >= /* user.nextLevelXp */ 1) {
       texto += '**<a:LevelUp:760954035779272755> LEVEL UP <a:LevelUp:760954035779272755>**';
       ctx.client.repositories.roleplayRepository.updateUser(user.id, {
         xp: 0,
         level: user.level + 1,
-        nextLevelXp: user.nextLevelXp * 2,
+        nextLevelXp: /* user.nextLevelXp */ 1 * 2,
         maxLife: user.maxLife + 50,
         maxMana: user.maxMana + 50,
         damage: user.damage + 10,
         armor: user.armor + 2,
       });
       ctx.makeMessage({ content: texto });
-      newAbilities(ctx, user);
     }
   }
 };
-
-const newAbilities = async (
-  ctx: InteractionCommandContext,
-  user: RoleplayUserSchema,
-): Promise<void> => {
-  if (user.level === 5) {
-    switch (user.class) {
-      case 'Assassino':
-        ctx.makeMessage({
-          content: ctx.prettyResponse('level', 'roleplay:new-ability', {
-            level: user.level,
-            ability: Handler.abilities.assassin.normalAbilities[1],
-          }),
-        });
-        ctx.client.repositories.roleplayRepository.updateUser(user.id, {
-          maxMana: user.maxMana + 20,
-          abilityPower: user.abilityPower + 1,
-          $push: { abilities: Handler.abilities.assassin.normalAbilities[1] },
-        });
-        break;
-      case 'Bárbaro':
-        ctx.makeMessage({
-          content: ctx.prettyResponse('level', 'roleplay:new-ability', {
-            level: user.level,
-            ability: Handler.abilities.barbarian.normalAbilities[1],
-          }),
-        });
-        ctx.client.repositories.roleplayRepository.updateUser(user.id, {
-          maxMana: user.maxMana + 20,
-          abilityPower: user.abilityPower + 1,
-          $push: { abilities: Handler.abilities.barbarian.normalAbilities[1] },
-        });
-        break;
-      case 'Clérigo':
-        ctx.makeMessage({
-          content: ctx.prettyResponse('level', 'roleplay:new-ability', {
-            level: user.level,
-            ability: Handler.abilities.clerigo.normalAbilities[1],
-          }),
-        });
-        ctx.client.repositories.roleplayRepository.updateUser(user.id, {
-          maxMana: user.maxMana + 20,
-          abilityPower: user.abilityPower + 1,
-          $push: { abilities: Handler.abilities.clerigo.normalAbilities[1] },
-        });
-        break;
-      case 'Druida':
-        ctx.makeMessage({
-          content: ctx.prettyResponse('level', 'roleplay:new-ability', {
-            level: user.level,
-            ability: Handler.abilities.druida.normalAbilities[1],
-          }),
-        });
-        ctx.client.repositories.roleplayRepository.updateUser(user.id, {
-          abilityPower: user.abilityPower + 1,
-          $push: { abilities: Handler.abilities.druida.normalAbilities[1] },
-        });
-        break;
-      case 'Espadachim':
-        ctx.makeMessage({
-          content: ctx.prettyResponse('level', 'roleplay:new-ability', {
-            level: user.level,
-            ability: Handler.abilities.espadachim.normalAbilities[1],
-          }),
-        });
-        ctx.client.repositories.roleplayRepository.updateUser(user.id, {
-          abilityPower: user.abilityPower + 2,
-          $push: { abilities: Handler.abilities.espadachim.normalAbilities[1] },
-        });
-        break;
-      case 'Feiticeiro':
-        if (user.uniquePower.name === 'Linhagem: Mística') {
-          ctx.makeMessage({
-            content: ctx.prettyResponse('level', 'roleplay:new-ability', {
-              level: user.level,
-              ability: Handler.abilities.feiticeiro.normalAbilities[1],
-            }),
-          });
-          ctx.client.repositories.roleplayRepository.updateUser(user.id, {
-            maxMana: user.maxMana + 20,
-            abilityPower: user.abilityPower + 1,
-            $push: { abilities: Handler.abilities.feiticeiro.normalAbilities[1] },
-          });
-        }
-        if (user.uniquePower.name === 'Linhagem: Dracônica') {
-          ctx.makeMessage({
-            content: ctx.prettyResponse('level', 'roleplay:new-ability', {
-              level: user.level,
-              ability: Handler.abilities.feiticeiro.normalAbilities[2],
-            }),
-          });
-          ctx.client.repositories.roleplayRepository.updateUser(user.id, {
-            maxMana: user.maxMana + 20,
-            abilityPower: user.abilityPower + 1,
-            $push: { abilities: Handler.abilities.feiticeiro.normalAbilities[2] },
-          });
-        }
-        if (user.uniquePower.name === 'Linhagem: Demoníaca') {
-          ctx.makeMessage({
-            content: ctx.prettyResponse('level', 'roleplay:new-ability', {
-              level: user.level,
-              ability: Handler.abilities.feiticeiro.normalAbilities[3],
-            }),
-          });
-          ctx.client.repositories.roleplayRepository.updateUser(user.id, {
-            maxMana: user.maxMana + 20,
-            abilityPower: user.abilityPower + 1,
-            $push: { abilities: Handler.abilities.feiticeiro.normalAbilities[3] },
-          });
-        }
-        break;
-      case 'Monge':
-        ctx.makeMessage({
-          content: ctx.prettyResponse('level', 'roleplay:new-ability', {
-            level: user.level,
-            ability: Handler.abilities.monge.normalAbilities[1],
-          }),
-        });
-        ctx.client.repositories.roleplayRepository.updateUser(user.id, {
-          abilityPower: user.abilityPower + 1,
-          $push: { abilities: Handler.abilities.monge.normalAbilities[1] },
-        });
-        break;
-      case 'Necromante':
-        ctx.makeMessage({
-          content: ctx.prettyResponse('level', 'roleplay:new-ability', {
-            level: user.level,
-            ability: Handler.abilities.necromante.normalAbilities[1],
-          }),
-        });
-        ctx.client.repositories.roleplayRepository.updateUser(user.id, {
-          maxMana: user.maxMana + 20,
-          abilityPower: user.abilityPower + 1,
-          $push: { abilities: Handler.abilities.necromante.normalAbilities[1] },
-        });
-        break;
-    }
-  } else if (user.level === 10) {
-    switch (user.class) {
-      case 'Assassino':
-        ctx.makeMessage({
-          content: ctx.prettyResponse('level', 'roleplay:new-ability', {
-            level: user.level,
-            ability: Handler.abilities.assassin.normalAbilities[2],
-          }),
-        });
-        ctx.client.repositories.roleplayRepository.updateUser(user.id, {
-          abilityPower: user.abilityPower + 1,
-          $push: { abilities: Handler.abilities.assassin.normalAbilities[1] },
-        });
-        break;
-      case 'Bárbaro':
-        ctx.makeMessage({
-          content: ctx.prettyResponse('level', 'roleplay:new-ability', {
-            level: user.level,
-            ability: Handler.abilities.barbarian.normalAbilities[2],
-          }),
-        });
-        ctx.client.repositories.roleplayRepository.updateUser(user.id, {
-          abilityPower: user.abilityPower + 1,
-          maxLife: user.maxLife + 50,
-          $push: { abilities: Handler.abilities.barbarian.normalAbilities[2] },
-        });
-        break;
-      case 'Clérigo':
-        ctx.makeMessage({
-          content: ctx.prettyResponse('level', 'roleplay:new-ability', {
-            level: user.level,
-            ability: Handler.abilities.clerigo.normalAbilities[2],
-          }),
-        });
-        ctx.client.repositories.roleplayRepository.updateUser(user.id, {
-          abilityPower: user.abilityPower + 1,
-          maxMana: user.maxMana + 50,
-          $push: { abilities: Handler.abilities.clerigo.normalAbilities[2] },
-        });
-        break;
-      case 'Druida':
-        ctx.makeMessage({
-          content: ctx.prettyResponse('level', 'roleplay:new-ability', {
-            level: user.level,
-            ability: Handler.abilities.druida.normalAbilities[2],
-          }),
-        });
-        ctx.client.repositories.roleplayRepository.updateUser(user.id, {
-          abilityPower: user.abilityPower + 1,
-          $push: { abilities: Handler.abilities.druida.normalAbilities[2] },
-        });
-        break;
-      case 'Espadachim':
-        ctx.makeMessage({
-          content: ctx.prettyResponse('level', 'roleplay:new-ability', {
-            level: user.level,
-            ability: Handler.abilities.espadachim.normalAbilities[2],
-          }),
-        });
-        ctx.client.repositories.roleplayRepository.updateUser(user.id, {
-          abilityPower: user.abilityPower + 1,
-          $push: { abilities: Handler.abilities.espadachim.normalAbilities[2] },
-        });
-        break;
-      case 'Feiticeiro':
-        if (user.uniquePower.name === 'Linhagem: Mística') {
-          ctx.makeMessage({
-            content: ctx.prettyResponse('level', 'roleplay:new-ability', {
-              level: user.level,
-              ability: Handler.abilities.feiticeiro.normalAbilities[4],
-            }),
-          });
-          ctx.client.repositories.roleplayRepository.updateUser(user.id, {
-            abilityPower: user.abilityPower + 1,
-            maxMana: user.maxLife + 25,
-            $push: { abilities: Handler.abilities.feiticeiro.normalAbilities[4] },
-          });
-        }
-        if (user.uniquePower.name === 'Linhagem: Dracônica') {
-          ctx.makeMessage({
-            content: ctx.prettyResponse('level', 'roleplay:new-ability', {
-              level: user.level,
-              ability: Handler.abilities.feiticeiro.normalAbilities[5],
-            }),
-          });
-          ctx.client.repositories.roleplayRepository.updateUser(user.id, {
-            abilityPower: user.abilityPower + 1,
-            maxMana: user.maxLife + 25,
-            $push: { abilities: Handler.abilities.feiticeiro.normalAbilities[5] },
-          });
-        }
-        if (user.uniquePower.name === 'Linhagem: Demoníaca') {
-          ctx.makeMessage({
-            content: ctx.prettyResponse('level', 'roleplay:new-ability', {
-              level: user.level,
-              ability: Handler.abilities.feiticeiro.normalAbilities[6],
-            }),
-          });
-          ctx.client.repositories.roleplayRepository.updateUser(user.id, {
-            abilityPower: user.abilityPower + 1,
-            maxMana: user.maxLife + 25,
-            $push: { abilities: Handler.abilities.feiticeiro.normalAbilities[6] },
-          });
-        }
-        break;
-      case 'Monge':
-        ctx.makeMessage({
-          content: ctx.prettyResponse('level', 'roleplay:new-ability', {
-            level: user.level,
-            ability: Handler.abilities.monge.normalAbilities[2],
-          }),
-        });
-        ctx.client.repositories.roleplayRepository.updateUser(user.id, {
-          abilityPower: user.abilityPower + 1,
-          $push: { abilities: Handler.abilities.monge.normalAbilities[2] },
-        });
-        break;
-      case 'Necromante':
-        ctx.makeMessage({
-          content: ctx.prettyResponse('level', 'roleplay:new-ability', {
-            level: user.level,
-            ability: Handler.abilities.necromante.normalAbilities[2],
-          }),
-        });
-        ctx.client.repositories.roleplayRepository.updateUser(user.id, {
-          abilityPower: user.abilityPower + 1,
-          maxMana: user.maxLife + 25,
-          $push: { abilities: Handler.abilities.necromante.normalAbilities[2] },
-        });
-        break;
-    }
-  } else if (user.level === 14) {
-    switch (user.class) {
-      case 'Assassino':
-        ctx.makeMessage({
-          content: ctx.prettyResponse('level', 'roleplay:new-ability', {
-            level: user.level,
-            ability: Handler.abilities.feiticeiro.normalAbilities[3],
-          }),
-        });
-        ctx.client.repositories.roleplayRepository.updateUser(user.id, {
-          abilityPower: user.abilityPower + 1,
-          damage: user.damage + 10,
-          $push: { abilities: Handler.abilities.assassin.normalAbilities[3] },
-        });
-        break;
-      case 'Bárbaro':
-        ctx.makeMessage({
-          content: ctx.prettyResponse('level', 'roleplay:new-ability', {
-            level: user.level,
-            ability: Handler.abilities.barbarian.normalAbilities[3],
-          }),
-        });
-        ctx.client.repositories.roleplayRepository.updateUser(user.id, {
-          abilityPower: user.abilityPower + 1,
-          maxLife: user.maxLife + 50,
-          $push: { abilities: Handler.abilities.barbarian.normalAbilities[3] },
-        });
-        break;
-      case 'Clérigo':
-        ctx.makeMessage({
-          content: ctx.prettyResponse('level', 'roleplay:new-ability', {
-            level: user.level,
-            ability: Handler.abilities.clerigo.normalAbilities[3],
-          }),
-        });
-        ctx.client.repositories.roleplayRepository.updateUser(user.id, {
-          abilityPower: user.abilityPower + 1,
-          maxMana: user.maxMana + 40,
-          $push: { abilities: Handler.abilities.clerigo.normalAbilities[3] },
-        });
-        break;
-      case 'Druida':
-        ctx.makeMessage({
-          content: ctx.prettyResponse('level', 'roleplay:new-ability', {
-            level: user.level,
-            ability: Handler.abilities.druida.normalAbilities[3],
-          }),
-        });
-        ctx.client.repositories.roleplayRepository.updateUser(user.id, {
-          abilityPower: user.abilityPower + 1,
-          maxMana: user.maxMana + 30,
-          $push: { abilities: Handler.abilities.druida.normalAbilities[3] },
-        });
-        break;
-      case 'Espadachim':
-        ctx.makeMessage({
-          content: ctx.prettyResponse('level', 'roleplay:new-ability', {
-            level: user.level,
-            ability: Handler.abilities.espadachim.normalAbilities[3],
-          }),
-        });
-        ctx.client.repositories.roleplayRepository.updateUser(user.id, {
-          abilityPower: user.abilityPower + 1,
-          damage: user.damage + 10,
-          $push: { abilities: Handler.abilities.espadachim.normalAbilities[3] },
-        });
-        break;
-      case 'Feiticeiro':
-        if (user.uniquePower.name === 'Linhagem: Mística') {
-          ctx.makeMessage({
-            content: ctx.prettyResponse('level', 'roleplay:new-ability', {
-              level: user.level,
-              ability: Handler.abilities.feiticeiro.normalAbilities[7],
-            }),
-          });
-          ctx.client.repositories.roleplayRepository.updateUser(user.id, {
-            abilityPower: user.abilityPower + 1,
-            maxMana: user.maxMana + 40,
-            $push: { abilities: Handler.abilities.feiticeiro.normalAbilities[7] },
-          });
-        }
-        if (user.uniquePower.name === 'Linhagem: Dracônica') {
-          ctx.makeMessage({
-            content: ctx.prettyResponse('level', 'roleplay:new-ability', {
-              level: user.level,
-              ability: Handler.abilities.feiticeiro.normalAbilities[8],
-            }),
-          });
-          ctx.client.repositories.roleplayRepository.updateUser(user.id, {
-            abilityPower: user.abilityPower + 1,
-            maxMana: user.maxMana + 40,
-            $push: { abilities: Handler.abilities.feiticeiro.normalAbilities[8] },
-          });
-        }
-        if (user.uniquePower.name === 'Linhagem: Demoníaca') {
-          ctx.makeMessage({
-            content: ctx.prettyResponse('level', 'roleplay:new-ability', {
-              level: user.level,
-              ability: Handler.abilities.feiticeiro.normalAbilities[9],
-            }),
-          });
-          ctx.client.repositories.roleplayRepository.updateUser(user.id, {
-            abilityPower: user.abilityPower + 1,
-            maxMana: user.maxMana + 40,
-            $push: { abilities: Handler.abilities.feiticeiro.normalAbilities[9] },
-          });
-        }
-        break;
-      case 'Monge':
-        ctx.makeMessage({
-          content: ctx.prettyResponse('level', 'roleplay:new-ability', {
-            level: user.level,
-            ability: Handler.abilities.monge.normalAbilities[3],
-          }),
-        });
-        ctx.client.repositories.roleplayRepository.updateUser(user.id, {
-          abilityPower: user.abilityPower + 2,
-          $push: { abilities: Handler.abilities.monge.normalAbilities[3] },
-        });
-        break;
-      case 'Necromante':
-        ctx.makeMessage({
-          content: ctx.prettyResponse('level', 'roleplay:new-ability', {
-            level: user.level,
-            ability: Handler.abilities.necromante.normalAbilities[3],
-          }),
-        });
-        ctx.client.repositories.roleplayRepository.updateUser(user.id, {
-          abilityPower: user.abilityPower + 1,
-          maxMana: user.maxMana + 40,
-          $push: { abilities: Handler.abilities.necromante.normalAbilities[3] },
-        });
-        break;
-    }
-  } else if (user.level === 16) {
-    ctx.client.repositories.roleplayRepository.updateUser(user.id, {
-      xp: 0,
-      nextLevelXp: 100000,
-    });
-  } else if (user.level === 20) {
-    ctx.client.repositories.roleplayRepository.updateUser(user.id, {
-      xp: 0,
-      nextLevelXp: 1000000,
-    });
-    ctx.makeMessage({ content: ctx.prettyResponse('warn', 'roleplay:boss') });
-  } else if (user.level === 25) {
-    ctx.client.repositories.roleplayRepository.updateUser(user.id, {
-      xp: 0,
-      nextLevelXp: 3000000,
-    });
-  } else if (user.level === 30) {
-    ctx.client.repositories.roleplayRepository.updateUser(user.id, {
-      xp: 0,
-      nextLevelXp: 5000000,
-      abilityPower: user.abilityPower + 1,
-    });
-
-    evolve(user, ctx);
-  }
-};
-
 const resultBattle = async (
   ctx: InteractionCommandContext,
   user: RoleplayUserSchema,
@@ -821,7 +386,7 @@ const resultBattle = async (
 
   return finalChecks(ctx, user);
 };
-
+/* 
 const getAbilities = (user: RoleplayUserSchema): Array<NormalAbility | UniquePower> => {
   const abilities = [];
 
@@ -903,7 +468,7 @@ const getAbilities = (user: RoleplayUserSchema): Array<NormalAbility | UniquePow
 
   return abilities;
 };
-
+ */
 const initialChecks = async (
   user: RoleplayUserSchema,
   ctx: InteractionCommandContext,
@@ -979,268 +544,13 @@ const initialChecks = async (
   return pass;
 };
 
-const confirmRegister = (user: RoleplayUserSchema, ctx: InteractionCommandContext): void => {
-  switch (user.class) {
-    case 'Assassino': {
-      ctx.client.repositories.roleplayRepository.updateUser(user.id, {
-        armor: 5,
-        damage: 25,
-        mana: 20,
-        maxMana: 20,
-        abilityPower: 1,
-        abilities: [Handler.abilities.assassin.normalAbilities[0]],
-        weapon: { name: 'Adaga', damage: 5, type: 'Arma' },
-        uniquePower: RandomFromArray(Handler.abilities.assassin.uniquePowers),
-      });
-      ctx.makeMessage({ content: ctx.prettyResponse('success', 'roleplay:registred') });
-      break;
-    }
-    case 'Bárbaro': {
-      ctx.client.repositories.roleplayRepository.updateUser(user.id, {
-        armor: 20,
-        damage: 15,
-        mana: 20,
-        maxMana: 20,
-        abilityPower: 1,
-        abilities: [Handler.abilities.barbarian.normalAbilities[0]],
-        weapon: { name: 'Machado de dois Gumes', damage: 10, type: 'Arma' },
-        uniquePower: RandomFromArray(Handler.abilities.barbarian.uniquePowers),
-      });
-      ctx.makeMessage({ content: ctx.prettyResponse('success', 'roleplay:registred') });
-      break;
-    }
-    case 'Druida': {
-      ctx.client.repositories.roleplayRepository.updateUser(user.id, {
-        armor: 10,
-        damage: 7,
-        mana: 50,
-        maxMana: 50,
-        abilityPower: 3,
-        abilities: [Handler.abilities.druida.normalAbilities[0]],
-        weapon: { name: 'Anel da Transformação', damage: 0, type: 'Arma' },
-        uniquePower: RandomFromArray(Handler.abilities.druida.uniquePowers),
-      });
-      ctx.makeMessage({ content: ctx.prettyResponse('success', 'roleplay:registred') });
-      break;
-    }
-    case 'Espadachim': {
-      ctx.client.repositories.roleplayRepository.updateUser(user.id, {
-        armor: 17,
-        damage: 18,
-        mana: 20,
-        maxMana: 20,
-        abilityPower: 1,
-        abilities: [Handler.abilities.espadachim.normalAbilities[0]],
-        weapon: { name: 'Sabre', damage: 7, type: 'Arma' },
-        uniquePower: RandomFromArray(Handler.abilities.espadachim.uniquePowers),
-      });
-      ctx.makeMessage({ content: ctx.prettyResponse('success', 'roleplay:registred') });
-      break;
-    }
-    case 'Feiticeiro': {
-      ctx.client.repositories.roleplayRepository.updateUser(user.id, {
-        armor: 7,
-        damage: 5,
-        mana: 60,
-        maxMana: 60,
-        abilityPower: 4,
-        abilities: [Handler.abilities.feiticeiro.normalAbilities[0]],
-        weapon: { name: 'Cajado', damage: 5, type: 'Arma' },
-        uniquePower: RandomFromArray(Handler.abilities.feiticeiro.uniquePowers),
-      });
-      ctx.makeMessage({ content: ctx.prettyResponse('success', 'roleplay:registred') });
-      break;
-    }
-    case 'Clérigo': {
-      ctx.client.repositories.roleplayRepository.updateUser(user.id, {
-        armor: 10,
-        damage: 4,
-        mana: 60,
-        maxMana: 60,
-        abilityPower: 4,
-        abilities: [Handler.abilities.clerigo.normalAbilities[0]],
-        weapon: { name: 'Tomo Sagrado', damage: 5, type: 'Arma' },
-        uniquePower: RandomFromArray(Handler.abilities.clerigo.uniquePowers),
-      });
-      ctx.makeMessage({ content: ctx.prettyResponse('success', 'roleplay:registred') });
-      break;
-    }
-    case 'Monge': {
-      ctx.client.repositories.roleplayRepository.updateUser(user.id, {
-        armor: 18,
-        damage: 14,
-        mana: 20,
-        maxMana: 20,
-        abilityPower: 2,
-        abilities: [Handler.abilities.monge.normalAbilities[0]],
-        weapon: { name: 'Punhos', damage: 1, type: 'Arma' },
-        uniquePower: RandomFromArray(Handler.abilities.monge.uniquePowers),
-      });
-      ctx.makeMessage({ content: ctx.prettyResponse('success', 'roleplay:registred') });
-      break;
-    }
-    case 'Necromante': {
-      ctx.client.repositories.roleplayRepository.updateUser(user.id, {
-        armor: 7,
-        damage: 5,
-        mana: 60,
-        maxMana: 60,
-        abilityPower: 4,
-        abilities: [Handler.abilities.necromante.normalAbilities[0]],
-        weapon: { name: 'Foice', damage: 5, type: 'Arma' },
-        uniquePower: RandomFromArray(Handler.abilities.necromante.uniquePowers),
-      });
-      ctx.makeMessage({ content: ctx.prettyResponse('success', 'roleplay:registred') });
-      break;
-    }
-  }
-};
-
-const evolve = (user: RoleplayUserSchema, ctx: InteractionCommandContext): void => {
-  switch (user.class) {
-    case 'Assassino': {
-      ctx.client.repositories.roleplayRepository.updateUser(user.id, {
-        $inc: { damage: 10 },
-        $push: { abilities: Handler.abilities.assassin.normalAbilities[4] },
-        class: 'Senhor das Sombras',
-      });
-      ctx.makeMessage({
-        content: ctx.prettyResponse('warn', 'roleplay:evolve', {
-          class: ctx.locale(`roleplay:neo-classes.${user.class as 'Assassino'}`),
-        }),
-      });
-      break;
-    }
-    case 'Bárbaro': {
-      ctx.client.repositories.roleplayRepository.updateUser(user.id, {
-        $inc: { maxLife: 50 },
-        $push: { abilities: Handler.abilities.barbarian.normalAbilities[4] },
-        class: 'Berserker',
-      });
-      ctx.makeMessage({
-        content: ctx.prettyResponse('warn', 'roleplay:evolve', {
-          class: ctx.locale(`roleplay:neo-classes.${user.class as 'Assassino'}`),
-        }),
-      });
-      break;
-    }
-    case 'Clérigo': {
-      ctx.client.repositories.roleplayRepository.updateUser(user.id, {
-        $inc: { maxMana: 40 },
-        $push: { abilities: Handler.abilities.clerigo.normalAbilities[4] },
-        class: 'Arcanjo',
-      });
-      ctx.makeMessage({
-        content: ctx.prettyResponse('warn', 'roleplay:evolve', {
-          class: ctx.locale(`roleplay:neo-classes.${user.class as 'Assassino'}`),
-        }),
-      });
-      break;
-    }
-    case 'Druida': {
-      ctx.client.repositories.roleplayRepository.updateUser(user.id, {
-        $inc: { maxMana: 30 },
-        $push: { abilities: Handler.abilities.druida.normalAbilities[4] },
-        class: 'Guardião da Natureza',
-      });
-      ctx.makeMessage({
-        content: ctx.prettyResponse('warn', 'roleplay:evolve', {
-          class: ctx.locale(`roleplay:neo-classes.${user.class as 'Assassino'}`),
-        }),
-      });
-      break;
-    }
-    case 'Espadachim': {
-      ctx.client.repositories.roleplayRepository.updateUser(user.id, {
-        $inc: { damage: 10 },
-        $push: { abilities: Handler.abilities.espadachim.normalAbilities[4] },
-        class: 'Mestre das Armas',
-      });
-      ctx.makeMessage({
-        content: ctx.prettyResponse('warn', 'roleplay:evolve', {
-          class: ctx.locale(`roleplay:neo-classes.${user.class as 'Assassino'}`),
-        }),
-      });
-      break;
-    }
-    case 'Feiticeiro': {
-      if (user.uniquePower.name === 'Linhagem: Mística') {
-        ctx.client.repositories.roleplayRepository.updateUser(user.id, {
-          $inc: { maxMana: 40 },
-          $push: { abilities: Handler.abilities.feiticeiro.normalAbilities[10] },
-          class: 'Senhor das Galáxias',
-        });
-        ctx.makeMessage({
-          content: ctx.prettyResponse('warn', 'roleplay:evolve', {
-            class: ctx.locale(`roleplay:neo-classes.${user.class as 'Assassino'}`),
-          }),
-        });
-      }
-      if (user.uniquePower.name === 'Linhagem: Dracônica') {
-        ctx.client.repositories.roleplayRepository.updateUser(user.id, {
-          $inc: { maxMana: 40 },
-          $push: { abilities: Handler.abilities.feiticeiro.normalAbilities[11] },
-          class: 'Mestre dos Elementos',
-        });
-        ctx.makeMessage({
-          content: ctx.prettyResponse('warn', 'roleplay:evolve', {
-            class: ctx.locale(`roleplay:neo-classes.${user.class as 'Assassino'}`),
-          }),
-        });
-      }
-      if (user.uniquePower.name === 'Linhagem: Demoníaca') {
-        ctx.client.repositories.roleplayRepository.updateUser(user.id, {
-          $inc: { maxMana: 40 },
-          $push: { abilities: Handler.abilities.feiticeiro.normalAbilities[12] },
-          class: 'Conjurador Demoníaco',
-        });
-        ctx.makeMessage({
-          content: ctx.prettyResponse('warn', 'roleplay:evolve', {
-            class: ctx.locale(`roleplay:neo-classes.${user.class as 'Assassino'}`),
-          }),
-        });
-      }
-      break;
-    }
-    case 'Monge': {
-      ctx.client.repositories.roleplayRepository.updateUser(user.id, {
-        $push: { abilities: Handler.abilities.monge.normalAbilities[4] },
-        class: 'Sacerdote',
-      });
-      ctx.makeMessage({
-        content: ctx.prettyResponse('warn', 'roleplay:evolve', {
-          class: ctx.locale(`roleplay:neo-classes.${user.class as 'Assassino'}`),
-        }),
-      });
-      break;
-    }
-    case 'Necromante': {
-      ctx.client.repositories.roleplayRepository.updateUser(user.id, {
-        $inc: { maxMana: 40 },
-        $push: { abilities: Handler.abilities.necromante.normalAbilities[4] },
-        class: 'Senhor das Trevas',
-      });
-      ctx.makeMessage({
-        content: ctx.prettyResponse('warn', 'roleplay:evolve', {
-          class: ctx.locale(`roleplay:neo-classes.${user.class as 'Assassino'}`),
-        }),
-      });
-      break;
-    }
-  }
-};
-
 export default {
   battle,
-  confirmRegister,
   continueBattle,
   enemyShot,
-  evolve,
   finalChecks,
-  getAbilities,
   getEnemyByUserLevel,
   initialChecks,
   morte,
-  newAbilities,
   RandomFromArray,
 };

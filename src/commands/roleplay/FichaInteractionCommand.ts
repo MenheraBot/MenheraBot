@@ -11,6 +11,7 @@ import {
 } from 'discord.js-light';
 import Util, { actionRow, disableComponents, resolveCustomId } from '@utils/Util';
 import { getClassById, getClasses, getRaces } from '@roleplay/utils/ClassUtils';
+import { getUserNextLevelXp } from '@roleplay/utils/Calculations';
 
 export default class FichaInteractionCommand extends InteractionCommand {
   constructor() {
@@ -53,44 +54,78 @@ export default class FichaInteractionCommand extends InteractionCommand {
     user: RoleplayUserSchema,
     mentioned: User,
   ): Promise<void> {
-    ctx.defer();
-    /*   const userAvatarLink = mentioned.displayAvatarURL({ format: 'png' });
-    const dmg = user.damage + user?.weapon?.damage;
-    const ptr = user.armor + user?.protection?.armor; */
-    /*   const ap = user.abilityPower;
+    const embed = new MessageEmbed()
+      .setTitle(ctx.locale('commands:ficha.show.title', { name: mentioned.username }))
+      .setDescription(
+        `${ctx.prettyResponse('heart', 'commands:ficha.show.race')}: **${ctx.locale(
+          `roleplay:races.${user.race as 1}.name`,
+        )}**\n${ctx.prettyResponse('crown', 'commands:ficha.show.class')}: **${ctx.locale(
+          `roleplay:classes.${user.class as 1}.name`,
+        )}**\n${ctx.prettyResponse('blood', 'common:roleplay.life')}: **${user.life} / ${
+          user.maxLife
+        }**\n${ctx.prettyResponse('mana', 'common:roleplay.mana')}: **${user.mana} / ${
+          user.maxMana
+        }**\n${ctx.prettyResponse('damage', 'common:roleplay.damage')}: **${
+          user.damage
+        }**\n${ctx.prettyResponse('armor', 'common:roleplay.armor')}: **${
+          user.armor
+        }**\n${ctx.prettyResponse('intelligence', 'common:roleplay.intelligence')}: **${
+          user.intelligence
+        }**\n${ctx.prettyResponse('level', 'commands:ficha.show.level')}: **${
+          user.level
+        }**\n${ctx.prettyResponse('experience', 'commands:ficha.show.experience')}: **${
+          user.experience
+        } / ${getUserNextLevelXp(user.level)}**`,
+      )
+      .setColor(ctx.data.user.selectedColor);
 
-    const UserDataToSend = {
-      life: user.life,
-      maxLife: user.maxLife,
-      mana: user.mana,
-      maxMana: user.maxMana,
-      xp: user.xp,
-      level: user.level,
-      nextLevelXp: user.nextLevelXp,
-      damage: dmg,
-      armor: ptr,
-      abilityPower: ap,
-      tag: mentioned.tag,
-      money: user.money,
-    };
+    const abilityTreeButton = new MessageButton()
+      .setCustomId(`${ctx.interaction.id} | ABILITY`)
+      .setStyle('PRIMARY')
+      .setLabel(ctx.locale('commands:ficha.show.abilitiesButton'));
 
-    const i18nData = {
-      damage: ctx.locale('commands:ficha.show.dmg'),
-      armor: ctx.locale('commands:ficha.show.armor'),
-      ap: ctx.locale('commands:ficha.show.ap'),
-      money: ctx.locale('commands:ficha.show.money'),
-      userClass: ctx.locale(`roleplay:neo-classes.${user.class as 'Assassino'}`),
-    };
+    const statusTreeButton = new MessageButton()
+      .setCustomId(`${ctx.interaction.id} | STATUS`)
+      .setStyle('PRIMARY')
+      .setLabel(ctx.locale('commands:ficha.show.statsButton'));
 
-    const res = await HttpRequests.statusRequest(UserDataToSend, userAvatarLink, i18nData);
+    if (ctx.author.id !== user.id) statusTreeButton.setDisabled(true);
 
-    if (res.err) {
-      ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:http-error') });
-      return;
-    } */
-    await ctx.defer({
-      content: `${user}, ${mentioned}`,
+    await ctx.makeMessage({
+      embeds: [embed],
+      components: [actionRow([abilityTreeButton, statusTreeButton])],
     });
+
+    const selectedOption = await Util.collectComponentInteractionWithStartingId(
+      ctx.channel,
+      ctx.author.id,
+      ctx.interaction.id,
+    );
+
+    if (!selectedOption) {
+      ctx.makeMessage({
+        components: [
+          actionRow(
+            disableComponents(ctx.locale('common:timesup'), [abilityTreeButton, statusTreeButton]),
+          ),
+        ],
+      });
+      return;
+    }
+
+    if (resolveCustomId(selectedOption.customId) === 'STATUS') {
+      embed.setDescription(`${user.life} ${user.mana} ${user.level}`);
+
+      if (user.holyBlessings.battle > 0 || user.holyBlessings.vitality > 0)
+        embed.addField('PONTOS', 'VOCÊ TEM PONTOS PRA USAR');
+
+      ctx.makeMessage({ embeds: [embed] });
+      return;
+    }
+
+    if (user.holyBlessings.ability > 0) embed.addField('PONTOS', 'VOCÊ TEM PONTOS PRA USAR');
+
+    console.log('a');
   }
 
   static async registerUser(ctx: InteractionCommandContext): Promise<void> {
@@ -110,7 +145,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
       embed.addField(
         ctx.locale(`roleplay:classes.${i as 1}.name`),
         ctx.locale(`roleplay:classes.${i as 1}.description`),
-        false,
+        true,
       );
     }
 
@@ -143,7 +178,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
       embed.addField(
         ctx.locale(`roleplay:races.${i as 1}.name`),
         ctx.locale(`roleplay:races.${i as 1}.description`),
-        false,
+        true,
       );
     }
 
@@ -223,12 +258,11 @@ export default class FichaInteractionCommand extends InteractionCommand {
       maxMana: resolvedClass.data.baseMaxMana,
       life: resolvedClass.data.baseMaxLife,
       mana: resolvedClass.data.baseMaxMana,
+      abilities: [{ id: resolvedClass.data.abilityTree, level: 0, blesses: 0 }],
+      holyBlessings: { ability: 0, vitality: 0, battle: 0 },
     };
 
-    /*  const user =  */ await ctx.client.repositories.roleplayRepository.registerUser(
-      ctx.author.id,
-      registerStatus,
-    );
+    await ctx.client.repositories.roleplayRepository.registerUser(ctx.author.id, registerStatus);
 
     ctx.makeMessage({
       content: ctx.prettyResponse('success', 'commands:ficha.register.success'),

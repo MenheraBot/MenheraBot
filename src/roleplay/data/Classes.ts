@@ -18,8 +18,8 @@ const Classes: { [id: number]: ClassesFile } = {
       maxStamina: 1,
       holyBlessings: 10,
     },
-    starterHolyBlessings: 10,
     availableAbilities: [],
+    abilityTree: 6,
   },
   2: {
     name: 'sorcerer',
@@ -39,7 +39,7 @@ const Classes: { [id: number]: ClassesFile } = {
       holyBlessings: 10,
     },
     availableAbilities: [],
-    starterHolyBlessings: 10,
+    abilityTree: 6,
   },
   3: {
     name: 'illusionist',
@@ -59,7 +59,7 @@ const Classes: { [id: number]: ClassesFile } = {
       holyBlessings: 10,
     },
     availableAbilities: [],
-    starterHolyBlessings: 10,
+    abilityTree: 11,
   },
   4: {
     name: 'archmage',
@@ -79,7 +79,7 @@ const Classes: { [id: number]: ClassesFile } = {
       holyBlessings: 10,
     },
     availableAbilities: [],
-    starterHolyBlessings: 10,
+    abilityTree: 6,
   },
   5: {
     name: 'necromancer',
@@ -99,7 +99,7 @@ const Classes: { [id: number]: ClassesFile } = {
       holyBlessings: 10,
     },
     availableAbilities: [],
-    starterHolyBlessings: 10,
+    abilityTree: 11,
   },
   6: {
     name: 'assassin',
@@ -119,7 +119,7 @@ const Classes: { [id: number]: ClassesFile } = {
       holyBlessings: 5,
     },
     availableAbilities: [],
-    starterHolyBlessings: 10,
+    abilityTree: 1,
   },
   7: {
     name: 'barbarian',
@@ -139,7 +139,7 @@ const Classes: { [id: number]: ClassesFile } = {
       holyBlessings: 5,
     },
     availableAbilities: [],
-    starterHolyBlessings: 10,
+    abilityTree: 16,
   },
   8: {
     name: 'archer',
@@ -159,7 +159,7 @@ const Classes: { [id: number]: ClassesFile } = {
       holyBlessings: 5,
     },
     availableAbilities: [],
-    starterHolyBlessings: 10,
+    abilityTree: 1,
   },
   9: {
     name: 'paladin',
@@ -179,7 +179,7 @@ const Classes: { [id: number]: ClassesFile } = {
       holyBlessings: 8,
     },
     availableAbilities: [],
-    starterHolyBlessings: 10,
+    abilityTree: 16,
   },
   10: {
     name: 'tamer',
@@ -199,7 +199,7 @@ const Classes: { [id: number]: ClassesFile } = {
       holyBlessings: 9,
     },
     availableAbilities: [],
-    starterHolyBlessings: 10,
+    abilityTree: 11,
   },
 };
 

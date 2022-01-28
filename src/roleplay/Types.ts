@@ -7,6 +7,12 @@ export interface NormalAbility {
   cost: number | string;
 }
 
+export interface UserAbility {
+  id: number;
+  level: number;
+  blesses: number;
+}
+
 export interface UniquePower {
   name: string;
   description: string;
@@ -41,6 +47,12 @@ export interface Backpack {
   capacity: number;
 }
 
+export interface HolyBlessings {
+  ability: number;
+  vitality: number;
+  battle: number;
+}
+
 export interface RoleplayUserSchema {
   id: string;
   class: number;
@@ -53,9 +65,9 @@ export interface RoleplayUserSchema {
   armor: number;
   damage: number;
   level: number;
-  xp: number;
-  abilities: Array<NormalAbility | UniquePower>;
-  uniquePower: UniquePower;
+  experience: number;
+  holyBlessings: HolyBlessings;
+  abilities: Array<UserAbility>;
   loots: Array<Exclude<InventoryItem, InventoryItem['type']>>;
   inventory: Array<InventoryItem>;
   weapon: Weapon;
@@ -96,8 +108,6 @@ export interface AttackChoice {
 export type BattleChoice = 'boss' | 'dungeon';
 
 export type IncomingAttackChoice = AttackChoice | UniquePower | NormalAbility;
-
-export type UserAbilities = Array<UniquePower | NormalAbility>;
 
 export type DungeonLevels = 1 | 2 | 3 | 4 | 5;
 
@@ -143,7 +153,7 @@ export interface ClassesFile {
   baseIntelligence: number;
   baseMaxStamina: number;
   availableAbilities: UnlockAbility[];
-  starterHolyBlessings: number;
+  abilityTree: number;
 }
 
 export interface FacilityType {

@@ -33,7 +33,7 @@ export default class MenheraClient extends Client {
 
   public cooldowns: Collection<string, Collection<string, number>>;
 
-  public economyExecutions: Set<string>;
+  public commandExecutions: Set<string>;
 
   public jogoDoBichoManager: JogoDoBixoManager;
 
@@ -49,7 +49,7 @@ export default class MenheraClient extends Client {
     this.slashCommands = new Collection();
     this.aliases = new Collection();
     this.cooldowns = new Collection();
-    this.economyExecutions = new Set();
+    this.commandExecutions = new Set();
     this.events = new EventManager(this);
     this.config = config;
     this.picassoWs = new PicassoWebSocket(this.shard?.ids[0] ?? 0);

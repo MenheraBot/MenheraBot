@@ -1,12 +1,5 @@
 import Checks from '@roleplay/Checks';
-import {
-  BattleChoice,
-  IncomingAttackChoice,
-  Mob,
-  NormalAbility,
-  RoleplayUserSchema,
-  UniquePower,
-} from '@roleplay/Types';
+import { BattleChoice, IncomingAttackChoice, Mob, RoleplayUserSchema } from '@roleplay/Types';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { ROLEPLAY_CONSTANTS } from '@structures/Constants';
@@ -50,14 +43,14 @@ export default class BossInteractionCommand extends InteractionCommand {
     const dmgView = user.damage + user.weapon.damage;
     const ptcView = user.armor + user.protection.armor;
 
-    const habilidades = Checks.getAbilities(user);
+    const habilidades = 'a'; // Checks.getAbilities(user);
 
-    if (user.uniquePower.name === 'Morte Instantânea') {
+    /*   if (user.uniquePower.name === 'Morte Instantânea') {
       habilidades.splice(
         habilidades.findIndex((i) => i.name === 'Morte Instantânea'),
         1,
       );
-    }
+    } */
 
     const embed = new MessageEmbed()
       .setTitle(`⌛ | ${ctx.locale('commands:boss.preparation.title')}`)
@@ -73,17 +66,17 @@ export default class BossInteractionCommand extends InteractionCommand {
         }\n🗡️ | **${ctx.locale('commands:boss.dmg')}:** ${dmgView}\n🛡️ | **${ctx.locale(
           'commands:boss.armor',
         )}:** ${ptcView}\n🔮 | **${ctx.locale('commands:boss.ap')}:** ${
-          user.abilityPower
+          1 // user.abilityPower
         }\n\n${ctx.locale('commands:boss.preparation.description_end')}`,
       );
-    habilidades.forEach((hab) => {
+    /*  habilidades.forEach((hab) => {
       embed.addField(
         hab.name,
         `🔮 | **${ctx.locale('commands:boss.damage')}:** ${hab.damage}\n💧 | **${ctx.locale(
           'commands:boss.cost',
         )}** ${hab.cost}`,
       );
-    });
+    }); */
 
     const accept = new MessageButton()
       .setCustomId(`${ctx.interaction.id} | YES`)
@@ -119,7 +112,7 @@ export default class BossInteractionCommand extends InteractionCommand {
   static async battle(
     ctx: InteractionCommandContext,
     inimigo: Mob,
-    habilidades: Array<UniquePower | NormalAbility>,
+    habilidades: 'a', // Array<UniquePower | NormalAbility>,
     user: RoleplayUserSchema,
     type: BattleChoice,
   ): Promise<void> {
@@ -141,9 +134,9 @@ export default class BossInteractionCommand extends InteractionCommand {
       damage: user.damage + user.weapon.damage,
     });
 
-    habilidades.forEach((hab) => {
+    /*    habilidades.forEach((hab) => {
       options.push(hab);
-    });
+    }); */
 
     let texto = `${ctx.locale('commands:boss.battle.enter', {
       enemy: inimigo.name,

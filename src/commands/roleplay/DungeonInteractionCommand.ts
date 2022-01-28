@@ -4,9 +4,7 @@ import {
   DungeonLevels,
   IncomingAttackChoice,
   Mob,
-  NormalAbility,
   RoleplayUserSchema,
-  UniquePower,
 } from '@roleplay/Types';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
@@ -64,7 +62,7 @@ export default class DungeonInteractionCommand extends InteractionCommand {
     const dmgView = user.damage + (user.weapon?.damage ?? 0);
     const ptcView = user.armor + (user.protection?.armor ?? 0);
 
-    const habilidades = Checks.getAbilities(user);
+    const habilidades = 'a'; // Checks.getAbilities(user);
 
     const embed = new MessageEmbed()
       .setTitle(`⌛ | ${ctx.locale('commands:dungeon.preparation.title')}`)
@@ -80,17 +78,17 @@ export default class DungeonInteractionCommand extends InteractionCommand {
         }\n🗡️ | **${ctx.locale('commands:dungeon.dmg')}:** ${dmgView}\n🛡️ | **${ctx.locale(
           'commands:dungeon.armor',
         )}:** ${ptcView}\n🔮 | **${ctx.locale('commands:dungeon.ap')}:** ${
-          user.abilityPower
+          1 //  user.abilityPower
         }\n\n${ctx.locale('commands:dungeon.preparation.description_end')}`,
       );
-    habilidades.forEach((hab) => {
+    /*   habilidades.forEach((hab) => {
       embed.addField(
         hab.name,
         `🔮 | **${ctx.locale('commands:dungeon.damage')}:** ${hab.damage}\n💧 | **${ctx.locale(
           'commands:dungeon.cost',
         )}** ${hab.cost}`,
       );
-    });
+    }); */
 
     const accept = new MessageButton()
       .setCustomId(`${ctx.interaction.id} | YES`)
@@ -126,7 +124,7 @@ export default class DungeonInteractionCommand extends InteractionCommand {
   static async battle(
     ctx: InteractionCommandContext,
     inimigo: Mob,
-    habilidades: Array<UniquePower | NormalAbility>,
+    habilidades: 'a', // Array<UniquePower | NormalAbility>,
     user: RoleplayUserSchema,
     type: BattleChoice,
   ): Promise<void> {
@@ -147,10 +145,10 @@ export default class DungeonInteractionCommand extends InteractionCommand {
       name: ctx.locale('commands:dungeon.battle.basic'),
       damage: user.damage + user.weapon.damage,
     });
-
+    /* 
     habilidades.forEach((hab) => {
       options.push(hab);
-    });
+    }); */
 
     let texto = `${ctx.locale('commands:dungeon.battle.enter', {
       enemy: inimigo.name,

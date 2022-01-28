@@ -34,5 +34,5 @@
   "CLIENT_MISSING_PERMISSION": "Eu não tenho permissão de `{{perm}}` para poder executar este comando.",
   "BANNED_INFO": "Você está banido de utilizar a Menhera!\n\nMotivo: `{{banReason}}`",
   "DISABLED_COMMAND": "Este comando está desabilitado neste servidor! Use `/blockcommand {{cmd}}` para reabilitá-lo",
-  "ECONOMY_COMMAND_EXECUTION": "Você não pode utilizar este comando pois ainda está usando outro comando de economia! Termine a execução daquele comando e tente novamente\n\n**ACHA QUE É UM BUG?** Venha ao servidor de suporte da Menhera `/suporte` e peça ajuda"
+  "IN_COMMAND_EXECUTION": "Você não pode utilizar este comando pois está no meio de outro! Termine a execução daquele comando e tente novamente\n\n**ACHA QUE É UM BUG?** Venha ao servidor de suporte da Menhera `/suporte` e peça ajuda"
 }
