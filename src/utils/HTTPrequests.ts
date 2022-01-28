@@ -7,6 +7,7 @@ import {
   AvailableProfilesThemes,
   AvailableTableThemes,
   AvailableThemeTypes,
+  BichoBetType,
   IBlackjackCards,
   ICommandsData,
   ICommandUsedData,
@@ -20,7 +21,7 @@ import {
 } from '@utils/Types';
 import { User } from 'discord.js-light';
 import type { ActivityType } from 'discord.js';
-import { debugError } from './Util';
+import { debugError, MayNotExists } from './Util';
 
 const request = axios.create({
   baseURL: `${process.env.API_URL}/picasso`,
@@ -189,6 +190,22 @@ export default class HttpRequests {
     date: number,
   ): Promise<void> {
     await apiRequest.post('/coinflip', { winnerId, loserId, betValue, date }).catch(debugError);
+  }
+
+  static async postBichoGame(
+    userId: string,
+    value: number,
+    betType: BichoBetType,
+    betSelection: string,
+  ): Promise<MayNotExists<number>> {
+    return apiRequest
+      .post('/bicho/bet', { userId, value, betType, betSelection })
+      .catch(debugError)
+      .then((a) => a?.data);
+  }
+
+  static async userWinBicho(gameId: number): Promise<void> {
+    await apiRequest.patch('/bicho/win', { gameId });
   }
 
   static async postHuntCommand(

@@ -17,6 +17,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ## [3.5.10] - 21-01-2022
 
+### Added
+
+- Os dados de jogos agora são armazenados para um futuro top
+
 ### Fixed
 
 - Jogo do bicho possuia uma instância por shard
