@@ -14,10 +14,13 @@ import Util, { actionRow, disableComponents, resolveCustomId } from '@utils/Util
 import { getClassById, getClasses, getRaces } from '@roleplay/utils/ClassUtils';
 import {
   getAbilityNextLevelBlessings,
+  getUserArmor,
+  getUserDamage,
+  getUserIntelligence,
+  getUserMaxLife,
+  getUserMaxMana,
   getUserNextLevelXp,
-  makeBlessingStatusUpgrade,
 } from '@roleplay/utils/Calculations';
-import { ToBLess } from '@utils/Types';
 
 export default class FichaInteractionCommand extends InteractionCommand {
   constructor() {
@@ -67,21 +70,26 @@ export default class FichaInteractionCommand extends InteractionCommand {
           `roleplay:races.${user.race as 1}.name`,
         )}**\n${ctx.prettyResponse('crown', 'commands:ficha.show.class')}: **${ctx.locale(
           `roleplay:classes.${user.class as 1}.name`,
-        )}**\n${ctx.prettyResponse('blood', 'common:roleplay.life')}: **${user.life} / ${
-          user.maxLife
-        }**\n${ctx.prettyResponse('mana', 'common:roleplay.mana')}: **${user.mana} / ${
-          user.maxMana
-        }**\n${ctx.prettyResponse('damage', 'common:roleplay.damage')}: **${
-          user.damage
-        }**\n${ctx.prettyResponse('armor', 'common:roleplay.armor')}: **${
-          user.armor
-        }**\n${ctx.prettyResponse('intelligence', 'common:roleplay.intelligence')}: **${
-          user.intelligence
-        }**\n${ctx.prettyResponse('level', 'commands:ficha.show.level')}: **${
-          user.level
-        }**\n${ctx.prettyResponse('experience', 'commands:ficha.show.experience')}: **${
-          user.experience
-        } / ${getUserNextLevelXp(user.level)}**`,
+        )}**\n${ctx.prettyResponse('blood', 'common:roleplay.life')}: **${
+          user.life
+        } / ${getUserMaxLife(user)}**\n${ctx.prettyResponse('mana', 'common:roleplay.mana')}: **${
+          user.mana
+        } / ${getUserMaxMana(user)}**\n${ctx.prettyResponse(
+          'damage',
+          'common:roleplay.damage',
+        )}: **${getUserDamage(user)}**\n${ctx.prettyResponse(
+          'armor',
+          'common:roleplay.armor',
+        )}: **${getUserArmor(user)}**\n${ctx.prettyResponse(
+          'intelligence',
+          'common:roleplay.intelligence',
+        )}: **${getUserIntelligence(user)}**\n${ctx.prettyResponse(
+          'level',
+          'commands:ficha.show.level',
+        )}: **${user.level}**\n${ctx.prettyResponse(
+          'experience',
+          'commands:ficha.show.experience',
+        )}: **${user.experience} / ${getUserNextLevelXp(user.level)}**`,
       )
       .setColor(ctx.data.user.selectedColor);
 
@@ -139,20 +147,23 @@ export default class FichaInteractionCommand extends InteractionCommand {
         .addFields([
           {
             name: ctx.locale('commands:ficha.show.vitality'),
-            value: `${ctx.prettyResponse('blood', 'common:roleplay.life')}: **${
-              user.maxLife
-            }**\n${ctx.prettyResponse('mana', 'common:roleplay.mana')}: **${user.maxMana}**`,
+            value: `${ctx.prettyResponse('blood', 'common:roleplay.life')}: **${getUserMaxLife(
+              user,
+            )}**\n${ctx.prettyResponse('mana', 'common:roleplay.mana')}: **${getUserMaxMana(
+              user,
+            )}**`,
             inline: true,
           },
           {
             name: ctx.locale('commands:ficha.show.battle'),
-            value: `${ctx.prettyResponse('damage', 'common:roleplay.damage')}: **${
-              user.damage
-            }**\n${ctx.prettyResponse('armor', 'common:roleplay.armor')}: **${
-              user.armor
-            }**\n${ctx.prettyResponse('intelligence', 'common:roleplay.intelligence')}: **${
-              user.intelligence
-            }**`,
+            value: `${ctx.prettyResponse('damage', 'common:roleplay.damage')}: **${getUserDamage(
+              user,
+            )}**\n${ctx.prettyResponse('armor', 'common:roleplay.armor')}: **${getUserArmor(
+              user,
+            )}**\n${ctx.prettyResponse(
+              'intelligence',
+              'common:roleplay.intelligence',
+            )}: **${getUserIntelligence(user)}**`,
             inline: true,
           },
         ]);
@@ -274,28 +285,35 @@ export default class FichaInteractionCommand extends InteractionCommand {
         return;
       }
 
-      const newStatus = makeBlessingStatusUpgrade(
+      /* const newStatus = makeBlessingStatusUpgrade(
         resolveCustomId(statusSelected.customId).toLowerCase() as ToBLess,
         points,
-      );
+      ); */
 
       const databaseField =
         resolveCustomId(statusSelected.customId).toLowerCase() === 'mana' ||
         resolveCustomId(statusSelected.customId).toLowerCase() === 'life'
-          ? `max${Util.capitalize(resolveCustomId(statusSelected.customId).toLowerCase())}`
-          : resolveCustomId(statusSelected.customId).toLowerCase();
+          ? (`max${Util.capitalize(resolveCustomId(statusSelected.customId).toLowerCase())}` as
+              | 'maxMana'
+              | 'maxLife')
+          : (resolveCustomId(statusSelected.customId).toLowerCase() as
+              | 'damage'
+              | 'armor'
+              | 'intelligence');
 
       const blessingField = resolveCustomId(buttonSelected.customId).toLowerCase() as
         | 'vitality'
         | 'battle';
 
-      const oldHolyBlessings = user.holyBlessings;
+      const userHolyBlessings = user.holyBlessings;
+      const userBlesses = user.blesses;
 
-      oldHolyBlessings[blessingField] -= points;
+      userHolyBlessings[blessingField] -= points;
+      userBlesses[databaseField] += points;
 
       await ctx.client.repositories.roleplayRepository.updateUser(ctx.author.id, {
-        $inc: { [databaseField]: newStatus },
-        holyBlessings: oldHolyBlessings,
+        holyBlessings: userHolyBlessings,
+        blesses: userBlesses,
       });
 
       ctx.makeMessage({
@@ -307,7 +325,9 @@ export default class FichaInteractionCommand extends InteractionCommand {
       return;
     }
 
-    embed.setDescription('');
+    embed
+      .setDescription('')
+      .setTitle(ctx.locale('commands:ficha.show.abilities.title', { name: mentioned.username }));
 
     user.abilities.forEach((a) => {
       embed.addField(
@@ -320,7 +340,17 @@ export default class FichaInteractionCommand extends InteractionCommand {
       );
     });
 
-    ctx.makeMessage({ embeds: [embed], components: [] });
+    const upgradeButton = new MessageButton()
+      .setCustomId(`${ctx.interaction.id} | UPGRADE`)
+      .setStyle('PRIMARY')
+      .setLabel(ctx.locale('commands:ficha.show.abilities.upgrade'));
+
+    const unlockButton = new MessageButton()
+      .setCustomId(`${ctx.interaction.id} | UNLOCK`)
+      .setStyle('PRIMARY')
+      .setLabel(ctx.locale('commands:ficha.show.abilities.unlock'));
+
+    ctx.makeMessage({ embeds: [embed], components: [actionRow([upgradeButton, unlockButton])] });
   }
 
   static async registerUser(ctx: InteractionCommandContext): Promise<void> {

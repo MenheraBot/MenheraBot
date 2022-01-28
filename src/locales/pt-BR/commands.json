@@ -753,7 +753,12 @@
       "money": "Pedras Mágicas",
       "ability": "Habilidade Única",
       "abilitiesButton": "Árvore de Habilidades",
-      "statsButton": "Árvore de Status"
+      "statsButton": "Árvore de Status",
+      "abilities": {
+        "upgrade": "Melhorar Habilidades",
+        "unlock": "Desbloquear Habilidades",
+        "title": "Habilidades de {{name}}"
+      }
     }
   },
   "dungeon": {

@@ -53,20 +53,27 @@ export interface HolyBlessings {
   battle: number;
 }
 
+export interface Blesses {
+  maxLife: number;
+  maxMana: number;
+  armor: number;
+  damage: number;
+  intelligence: number;
+}
+
 export interface RoleplayUserSchema {
   id: string;
   class: number;
   race: number;
   life: number;
   mana: number;
-  maxLife: number;
-  maxMana: number;
   intelligence: number;
   armor: number;
   damage: number;
   level: number;
   experience: number;
   holyBlessings: HolyBlessings;
+  blesses: Blesses;
   abilities: Array<UserAbility>;
   loots: Array<Exclude<InventoryItem, InventoryItem['type']>>;
   inventory: Array<InventoryItem>;
