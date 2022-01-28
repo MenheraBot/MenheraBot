@@ -16,3 +16,5 @@ export const makeBlessingStatusUpgrade = (toBless: ToBLess, points: number): num
       return points * 3;
   }
 };
+
+export const getAbilityNextLevelBlessings = (abilityLevel: number): number => abilityLevel * 20;

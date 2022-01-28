@@ -12,7 +12,11 @@ import {
 } from 'discord.js-light';
 import Util, { actionRow, disableComponents, resolveCustomId } from '@utils/Util';
 import { getClassById, getClasses, getRaces } from '@roleplay/utils/ClassUtils';
-import { getUserNextLevelXp, makeBlessingStatusUpgrade } from '@roleplay/utils/Calculations';
+import {
+  getAbilityNextLevelBlessings,
+  getUserNextLevelXp,
+  makeBlessingStatusUpgrade,
+} from '@roleplay/utils/Calculations';
 import { ToBLess } from '@utils/Types';
 
 export default class FichaInteractionCommand extends InteractionCommand {
@@ -303,9 +307,20 @@ export default class FichaInteractionCommand extends InteractionCommand {
       return;
     }
 
-    if (user.holyBlessings.ability > 0) embed.addField('PONTOS', 'VOCÊ TEM PONTOS PRA USAR');
+    embed.setDescription('');
 
-    console.log('a');
+    user.abilities.forEach((a) => {
+      embed.addField(
+        ctx.locale(`roleplay:abilities.${a.id as 1}.name`),
+        `${ctx.prettyResponse('level', 'common:roleplay.level')}: **${
+          a.level
+        }**\n${ctx.prettyResponse('experience', 'common:roleplay.blesses')}: **${
+          a.blesses
+        } / ${getAbilityNextLevelBlessings(a.level)}**`,
+      );
+    });
+
+    ctx.makeMessage({ embeds: [embed], components: [] });
   }
 
   static async registerUser(ctx: InteractionCommandContext): Promise<void> {

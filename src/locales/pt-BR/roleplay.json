@@ -67,6 +67,12 @@
       "description": "Nascem na selva. São animais que possuem cognição, e claro, estão em busca de sua bela. Possuem alta stamina"
     }
   },
+  "abilities": {
+    "1": {
+      "name": "A loucura dos guri",
+      "description": "Mata tudo e todos"
+    }
+  },
   "battle": {
     "no-mana": "Você tenta usar **{{name}}**, mas não tem mana o suficiente para isso! O inimigo revida!",
     "attack": "Você ataca **{{enemy}}** com **{{choice}}**, e causa **{{damage}}** de dano",

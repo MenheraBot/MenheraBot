@@ -43,6 +43,7 @@
     "damage": "Dano",
     "intelligence": "Inteligência",
     "armor": "Defesa",
-    "level": "Nível"
+    "level": "Nível",
+    "blesses": "Bençãos"
   }
 }
