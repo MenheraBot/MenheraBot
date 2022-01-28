@@ -371,6 +371,7 @@ export interface BetPlayer {
   id: string;
   bet: number;
   option: string;
+  gameId?: number;
 }
 
 export type BichoBetType =
@@ -386,6 +387,7 @@ export interface BichoWinner {
   id: string;
   value: number;
   didWin: boolean;
+  gameId?: number;
 }
 
 export interface JogoDoBichoGame {
