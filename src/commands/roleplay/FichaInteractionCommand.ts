@@ -12,6 +12,7 @@ import {
 } from 'discord.js-light';
 import Util, { actionRow, disableComponents, resolveCustomId } from '@utils/Util';
 import {
+  getAbilityById,
   getClassById,
   getClasses,
   getRaces,
@@ -255,6 +256,30 @@ export default class FichaInteractionCommand extends InteractionCommand {
         ctx.interaction.id,
         12000,
       );
+
+    if (!selectedAbility) {
+      ctx.deleteReply();
+      return;
+    }
+
+    const userHolyBlessings = user.holyBlessings;
+
+    userHolyBlessings.ability -= getAbilityById(Number(selectedAbility.values[0])).data.unlockCost;
+
+    user.abilities.push({ id: Number(selectedAbility.values[0]), blesses: 0, level: 1 });
+
+    await ctx.client.repositories.roleplayRepository.updateUser(ctx.author.id, {
+      holyBlessings: userHolyBlessings,
+      abilities: user.abilities,
+    });
+
+    ctx.makeMessage({
+      embeds: [],
+      components: [],
+      content: ctx.prettyResponse('success', 'commands:ficha.show.abilities.unlock-success', {
+        name: ctx.locale(`roleplay:abilities.${selectedAbility.values[0] as '1'}.name`),
+      }),
+    });
   }
 
   static async statusBlessing(
