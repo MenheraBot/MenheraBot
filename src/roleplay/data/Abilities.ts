@@ -1,7 +1,7 @@
 import { AbilitiesFile } from '../Types';
 
 const Abilities: { [id: number]: AbilitiesFile } = {
-  1: {
+  100: {
     DevDesc: 'Lamina Envenenada (assassino)',
     cost: 50,
     damage: 17,
@@ -14,7 +14,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
       heal: 0,
     },
   },
-  2: {
+  101: {
     DevDesc: 'Golpes Destemidos (assassino)',
     cost: 60,
     damage: 18,
@@ -27,7 +27,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
       heal: 0,
     },
   },
-  3: {
+  102: {
     DevDesc: 'Atras de Você! (Assassino)',
     cost: 80,
     damage: 17,
@@ -40,7 +40,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
       heal: 0,
     },
   },
-  4: {
+  103: {
     DevDesc: 'Golpe Desleal (assassino)',
     cost: 80,
     damage: 17,
@@ -53,7 +53,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
       heal: 200,
     },
   },
-  5: {
+  104: {
     DevDesc: 'Frenesi (assassino)',
     cost: 80,
     damage: 15,
@@ -66,7 +66,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
       heal: 0,
     },
   },
-  6: {
+  200: {
     DevDesc: 'Benção Elemental (mago branco)',
     cost: 50,
     damage: 10,
@@ -79,7 +79,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
       heal: 150,
     },
   },
-  7: {
+  201: {
     DevDesc: 'Raio de Luz Solar (mago branco)',
     cost: 80,
     damage: 35,
@@ -92,7 +92,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
       heal: 0,
     },
   },
-  8: {
+  202: {
     DevDesc: 'Rosario (mago branco)',
     cost: 80,
     damage: 35,
@@ -105,7 +105,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
       heal: 60,
     },
   },
-  9: {
+  203: {
     DevDesc: 'Ascenção Espiritual (mago branco)',
     cost: 80,
     damage: 35,
@@ -118,7 +118,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
       heal: 0,
     },
   },
-  10: {
+  204: {
     DevDesc: 'Manipulação Éterea (mago branco)',
     cost: 100,
     damage: 80,
@@ -131,7 +131,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
       heal: 0,
     },
   },
-  11: {
+  300: {
     DevDesc: 'Castigo Eterno (Contratados)',
     cost: 25,
     damage: 16,
@@ -144,7 +144,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
       heal: 0,
     },
   },
-  12: {
+  301: {
     DevDesc: 'Dama de Ferro (contratados)',
     cost: 90,
     damage: 40,
@@ -157,7 +157,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
       heal: 0,
     },
   },
-  13: {
+  302: {
     DevDesc: 'Invocar Bahamut (contratados)',
     cost: 130,
     damage: 120,
@@ -170,7 +170,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
       heal: 0,
     },
   },
-  14: {
+  303: {
     DevDesc: 'Caça Voraz (contratados)',
     cost: 50,
     damage: 34,
@@ -183,7 +183,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
       heal: 0,
     },
   },
-  15: {
+  304: {
     DevDesc: 'Perseguição Incontrolável (contratados)',
     cost: 110,
     damage: 130,
@@ -196,7 +196,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
       heal: 0,
     },
   },
-  16: {
+  400: {
     DevDesc: 'Avanço com Escudo (tanks)',
     cost: 20,
     damage: 10,
@@ -209,7 +209,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
       heal: 160,
     },
   },
-  17: {
+  401: {
     DevDesc: 'Estande de Defesa (tanks)',
     cost: 60,
     damage: 60,
@@ -222,7 +222,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
       heal: 0,
     },
   },
-  18: {
+  402: {
     DevDesc: 'Parede de Aço (tank)',
     cost: 80,
     damage: 120,
@@ -235,7 +235,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
       heal: 50,
     },
   },
-  19: {
+  403: {
     DevDesc: 'Proteção Corporal (tank)',
     cost: 60,
     damage: 25,
@@ -248,7 +248,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
       heal: 0,
     },
   },
-  20: {
+  404: {
     DevDesc: 'Nada Passará! (ank)',
     cost: 80,
     damage: 100,
