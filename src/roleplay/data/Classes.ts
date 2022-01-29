@@ -19,7 +19,7 @@ const Classes: { [id: number]: ClassesFile } = {
       holyBlessings: 10,
     },
     availableAbilities: [],
-    abilityTree: 6,
+    abilityTree: 200,
   },
   2: {
     name: 'sorcerer',
@@ -39,7 +39,7 @@ const Classes: { [id: number]: ClassesFile } = {
       holyBlessings: 10,
     },
     availableAbilities: [],
-    abilityTree: 6,
+    abilityTree: 200,
   },
   3: {
     name: 'illusionist',
@@ -59,7 +59,7 @@ const Classes: { [id: number]: ClassesFile } = {
       holyBlessings: 10,
     },
     availableAbilities: [],
-    abilityTree: 11,
+    abilityTree: 300,
   },
   4: {
     name: 'archmage',
@@ -79,7 +79,7 @@ const Classes: { [id: number]: ClassesFile } = {
       holyBlessings: 10,
     },
     availableAbilities: [],
-    abilityTree: 6,
+    abilityTree: 200,
   },
   5: {
     name: 'necromancer',
@@ -99,7 +99,7 @@ const Classes: { [id: number]: ClassesFile } = {
       holyBlessings: 10,
     },
     availableAbilities: [],
-    abilityTree: 11,
+    abilityTree: 300,
   },
   6: {
     name: 'assassin',
@@ -119,7 +119,7 @@ const Classes: { [id: number]: ClassesFile } = {
       holyBlessings: 5,
     },
     availableAbilities: [],
-    abilityTree: 1,
+    abilityTree: 100,
   },
   7: {
     name: 'barbarian',
@@ -139,7 +139,7 @@ const Classes: { [id: number]: ClassesFile } = {
       holyBlessings: 5,
     },
     availableAbilities: [],
-    abilityTree: 16,
+    abilityTree: 400,
   },
   8: {
     name: 'archer',
@@ -159,7 +159,7 @@ const Classes: { [id: number]: ClassesFile } = {
       holyBlessings: 5,
     },
     availableAbilities: [],
-    abilityTree: 1,
+    abilityTree: 100,
   },
   9: {
     name: 'paladin',
@@ -179,7 +179,7 @@ const Classes: { [id: number]: ClassesFile } = {
       holyBlessings: 8,
     },
     availableAbilities: [],
-    abilityTree: 16,
+    abilityTree: 400,
   },
   10: {
     name: 'tamer',
@@ -199,7 +199,7 @@ const Classes: { [id: number]: ClassesFile } = {
       holyBlessings: 9,
     },
     availableAbilities: [],
-    abilityTree: 11,
+    abilityTree: 300,
   },
 };
 
