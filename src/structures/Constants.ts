@@ -98,6 +98,7 @@ export const emojis = {
   lick: '👅',
   sword: '⚔️',
   gay_flag: '🏳️‍🌈',
+  hourglass: '⌛',
   rainbow: '🌈',
   crown: '👑',
   scape: '🐥',

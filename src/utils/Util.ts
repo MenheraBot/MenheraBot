@@ -210,3 +210,5 @@ export const getAllThemeUserIds = (
 };
 
 export type MayNotExists<T> = T | null | undefined;
+
+export const moreThanAnHour = (time: number): boolean => time - Date.now() > 3600000;

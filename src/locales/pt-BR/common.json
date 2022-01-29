@@ -45,5 +45,6 @@
     "armor": "Defesa",
     "level": "Nível",
     "blesses": "Bençãos"
-  }
+  },
+  "unregistered": "Tu ainda não reencarnou no Mundo de Boleham! Registre-se primeiro e tente novamente!"
 }

@@ -68,19 +68,14 @@ const getEnemyByUserLevel = (
   if (!validLevels[dungeonLevel]) return false;
 
   if (user.level < validLevels[dungeonLevel].minUserLevel) {
-    const MaxMinLevel = Object.values(validLevels).reduce(
-      (maxLevel, obj) =>
-        user.level >= obj.minUserLevel && obj.level > maxLevel ? obj.level : maxLevel,
-      0,
-    );
-
-    ctx.makeMessage({
+    /*   ctx.makeMessage({
       content: ctx.prettyResponse('error', 'commands:dungeon.min-level-warn', {
         level: MaxMinLevel,
         toGo: validLevels[dungeonLevel].minUserLevel,
         wantLevel: dungeonLevel,
-      }),
-    });
+      }), 
+    }); 
+    */
     return 'LOW-LEVEL';
   }
 

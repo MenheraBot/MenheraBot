@@ -93,11 +93,9 @@ const rpgSchema = new Schema({
   loots: { type: Array, default: [] },
   inventory: { type: Array, default: [] },
   money: { type: Number, default: 0 },
-  dungeonCooldown: { type: Number, default: 0 },
-  death: { type: Number, default: 0 },
+  cooldowns: { type: Array, default: []  },
   weapon: { type: Object },
   protection: { type: Object },
-  hotelTime: { type: Number, default: 0 },
   inBattle: { type: Boolean, default: false },
   backpack: { type: Object },
 });

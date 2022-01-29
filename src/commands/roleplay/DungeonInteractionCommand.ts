@@ -1,12 +1,13 @@
 import Checks from '@roleplay/Checks';
+import { BattleChoice, IncomingAttackChoice, Mob, RoleplayUserSchema } from '@roleplay/Types';
+import { canGoToDungeon } from '@roleplay/utils/AdventureUtils';
 import {
-  BattleChoice,
-  DungeonLevels,
-  IncomingAttackChoice,
-  Mob,
-  RoleplayUserSchema,
-} from '@roleplay/Types';
-import { getUserMaxLife, getUserMaxMana } from '@roleplay/utils/Calculations';
+  getUserArmor,
+  getUserDamage,
+  getUserIntelligence,
+  getUserMaxLife,
+  getUserMaxMana,
+} from '@roleplay/utils/Calculations';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { ROLEPLAY_CONSTANTS } from '@structures/Constants';
@@ -22,84 +23,62 @@ export default class DungeonInteractionCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'dungeon',
-      description: '【ＲＰＧ】Vá para uma aventura na Dungeon',
+      description: '【ＲＰＧ】Vá em uma aventura na Dungeon',
       category: 'roleplay',
-      options: [
-        {
-          name: 'nivel',
-          type: 'INTEGER',
-          description: 'Nível da dungeon que desejas ir',
-          choices: [
-            { name: '1', value: 1 },
-            { name: '2', value: 2 },
-            { name: '3', value: 3 },
-            { name: '4', value: 4 },
-            { name: '5', value: 5 },
-          ],
-          required: true,
-        },
-      ],
       cooldown: 7,
     });
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const user = await ctx.client.repositories.roleplayRepository.findUser(ctx.author.id);
-    const level = ctx.options.getInteger('nivel', true) as DungeonLevels;
 
     if (!user) {
-      ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:dungeon.non-aventure') });
+      ctx.makeMessage({ content: ctx.prettyResponse('error', 'common:unregistered') });
       return;
     }
 
-    const inimigo = Checks.getEnemyByUserLevel(user, 'dungeon', level, ctx);
+    const mayNotGo = canGoToDungeon(user, ctx);
 
-    if (inimigo === 'LOW-LEVEL') return;
-
-    const canGo = await Checks.initialChecks(user, ctx);
-
-    if (!canGo) return;
-
-    const dmgView = user.damage + (user.weapon?.damage ?? 0);
-    const ptcView = user.armor + (user.protection?.armor ?? 0);
-
-    const habilidades = 'a'; // Checks.getAbilities(user);
+    if (!mayNotGo.canGo) {
+      const embed = new MessageEmbed()
+        .setColor('DARK_RED')
+        .setFields(mayNotGo.reason)
+        .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true }));
+      ctx.makeMessage({ embeds: [embed] });
+      return;
+    }
 
     const embed = new MessageEmbed()
-      .setTitle(`⌛ | ${ctx.locale('commands:dungeon.preparation.title')}`)
-      .setDescription(ctx.locale('commands:dungeon.preparation.description'))
-      .setColor('#e3beff')
+      .setTitle(ctx.prettyResponse('hourglass', 'commands:dungeon.preparation.title'))
       .setFooter({ text: ctx.locale('commands:dungeon.preparation.footer') })
+      .setColor('#e3beff')
       .addField(
         ctx.locale('commands:dungeon.preparation.stats'),
-        `🩸 | **${ctx.locale('commands:dungeon.life')}:** ${user.life}/${getUserMaxLife(
+        `${ctx.prettyResponse('blood', 'common:roleplay.life')}: **${user.life} / ${getUserMaxLife(
           user,
-        )}\n💧 | **${ctx.locale('commands:dungeon.mana')}:** ${user.mana}/${getUserMaxMana(
-          user,
-        )}\n🗡️ | **${ctx.locale('commands:dungeon.dmg')}:** ${dmgView}\n🛡️ | **${ctx.locale(
-          'commands:dungeon.armor',
-        )}:** ${ptcView}\n🔮 | **${ctx.locale('commands:dungeon.ap')}:** ${
-          1 //  user.abilityPower
-        }\n\n${ctx.locale('commands:dungeon.preparation.description_end')}`,
+        )}**\n${ctx.prettyResponse('mana', 'common:roleplay.mana')}: **${
+          user.mana
+        } / ${getUserMaxMana(user)}**\n${ctx.prettyResponse(
+          'armor',
+          'common:roleplay.armor',
+        )}: **${getUserArmor(user)}**\n${ctx.prettyResponse(
+          'damage',
+          'common:roleplay.damage',
+        )}: **${getUserDamage(user)}**\n${ctx.prettyResponse(
+          'intelligence',
+          'common:roleplay.intelligence',
+        )}: **${getUserIntelligence(user)}**`,
       );
-    /*   habilidades.forEach((hab) => {
-      embed.addField(
-        hab.name,
-        `🔮 | **${ctx.locale('commands:dungeon.damage')}:** ${hab.damage}\n💧 | **${ctx.locale(
-          'commands:dungeon.cost',
-        )}** ${hab.cost}`,
-      );
-    }); */
 
     const accept = new MessageButton()
       .setCustomId(`${ctx.interaction.id} | YES`)
       .setStyle('SUCCESS')
-      .setLabel(ctx.locale('common:accept'));
+      .setLabel(ctx.locale('commands:dungeon.preparation.enter'));
 
     const negate = new MessageButton()
       .setCustomId(`${ctx.interaction.id} | NO`)
       .setStyle('DANGER')
-      .setLabel(ctx.locale('common:negate'));
+      .setLabel(ctx.locale('commands:dungeon.preparation.no'));
 
     await ctx.makeMessage({ embeds: [embed], components: [actionRow([accept, negate])] });
 
@@ -119,6 +98,7 @@ export default class DungeonInteractionCommand extends InteractionCommand {
       return;
     }
 
+    // @ts-expect-error nyaaa
     DungeonInteractionCommand.battle(ctx, inimigo as Mob, habilidades, user, 'dungeon');
   }
 
@@ -153,11 +133,7 @@ export default class DungeonInteractionCommand extends InteractionCommand {
 
     let texto = `${ctx.locale('commands:dungeon.battle.enter', {
       enemy: inimigo.name,
-    })}\n\n❤️ | ${ctx.locale('commands:dungeon.life')}: **${inimigo.life}**\n⚔️ | ${ctx.locale(
-      'commands:dungeon.damage',
-    )}: **${inimigo.damage}**\n🛡️ | ${ctx.locale('commands:dungeon.armor')}: **${
-      inimigo.armor
-    }**\n\n${ctx.locale('commands:dungeon.battle.end')}`;
+    })}`;
 
     const action = new MessageSelectMenu()
       .setCustomId(`${ctx.interaction.id} | ATTACK`)

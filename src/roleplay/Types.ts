@@ -61,6 +61,13 @@ export interface Blesses {
   intelligence: number;
 }
 
+export type CooldownReason = 'dungeon' | 'death';
+
+export interface UserCooldown {
+  reason: CooldownReason;
+  until: number;
+}
+
 export interface RoleplayUserSchema {
   id: string;
   class: number;
@@ -77,13 +84,14 @@ export interface RoleplayUserSchema {
   abilities: Array<UserAbility>;
   loots: Array<Exclude<InventoryItem, InventoryItem['type']>>;
   inventory: Array<InventoryItem>;
+  cooldowns: UserCooldown[];
+  death: number; // TODO: REMOVE
+  dungeonCooldown: number; // TODO:  REMOVE
+  hotelTime: number; // TODO: REMOVE
   weapon: Weapon;
   protection: Armor;
   backpack: Backpack;
   money: number;
-  dungeonCooldown: number;
-  death: number;
-  hotelTime: number;
   inBattle: boolean;
 }
 

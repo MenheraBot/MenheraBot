@@ -104,62 +104,8 @@
   "scape": "você arregou da batalha, e conseguiu fuigir, mas terá que ficar descansando por 2 horas!",
   "registred": "você foi registrado com sucesso! Use `m!status` para ver seus status",
   "backpack-full": "você ganha um loot, mas sua mochila está cheia, e você precisa deixá-lo para trás",
-  "evolve": "você atinge seu nível de proficiência, e se torna um **{{class}}**",
-  "register-classes": {
-    "assassin": "Assassino",
-    "barbarian": "Bárbaro",
-    "clerigo": "Clérigo",
-    "druida": "Druida",
-    "espadachim": "Espadachim",
-    "feiticeiro": "Feiticeiro",
-    "monge": "Monge",
-    "necromante": "Necromante"
-  },
-  "neo-classes": {
-    "Assassino": "Assassino",
-    "Bárbaro": "Bárbaro",
-    "Clérigo": "Clérigo",
-    "Druida": "Druida",
-    "Espadachim": "Espadachim",
-    "Feiticeiro": "Feiticeiro",
-    "Monge": "Monge",
-    "Necromante": "Necromante",
-    "Senhor das Sombras": "Senhor das Sombras",
-    "Berserker": "Berserker",
-    "Arcanjo": "Arcanjo",
-    "Guardião da Natureza": "Guardião da Natureza",
-    "Mestre das Armas": "Mestre das Armas",
-    "Senhor das Galáxias": "Senhor das Galáxias",
-    "Mestre dos Elementos": "Mestre dos Elementos",
-    "Conjurador Demoníaco": "Conjurador Demoníaco",
-    "Sacerdote": "Sacerdote",
-    "Senhor das Trevas": "Senhor das Trevas"
-  },
-  "job": {
-    "1": {
-      "name": "Fazendeiro",
-      "item_one": "Trigo"
-    },
-    "2": {
-      "name": "Ferreiro",
-      "item_one": "Barra de Ferro",
-      "item_two": "Espada de Ferro"
-    },
-    "3": {
-      "name": "Barista",
-      "item_one": "Copo de Hidromel"
-    },
-    "4": {
-      "name": "Mercador",
-      "item_one": "Caixa de Materiais"
-    }
-  },
-  "familiar": {
-    "1": "Dragão terrestre",
-    "2": "Espírito das Sombras",
-    "3": "Fada dos 4 Elementos",
-    "boost_armor": "🛡️ | Bônus de Armadura",
-    "boost_damage": "🗡️ | Bônus de Dano",
-    "boost_ap": "🔮 | Bônus de Poder Mágico"
+  "cooldowns": {
+    "death": "Você Está Morto!",
+    "death-description": "Tu morreu em uma das tuas aventuras, e foi teletransportado para a Igreja para se recuperar. Descanse por mais **{{time}}** {{subtime}}"
   }
 }
