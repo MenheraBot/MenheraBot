@@ -30,4 +30,8 @@ export const getAbilities = (): IReturnData<AbilitiesFile>[] =>
 export const getUserAvailableAbilities = (
   userAbilities: UserAbility[],
 ): IReturnData<AbilitiesFile>[] =>
-  getAbilities().filter((a) => userAbilities.some((b) => b.id === a.data.parentId));
+  getAbilities().filter(
+    (a) =>
+      userAbilities.some((b) => b.id === a.data.parentId) &&
+      userAbilities.every((b) => a.id !== b.id),
+  );
