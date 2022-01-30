@@ -1,7 +1,7 @@
 import { Mob, RoleplayUserSchema } from '@roleplay/Types';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { COLORS } from '@structures/Constants';
-import Util, { actionRow, resolveSeparatedStrings } from '@utils/Util';
+import Util, { actionRow, RandomFromArray, resolveSeparatedStrings } from '@utils/Util';
 import { MessageEmbed, MessageSelectMenu, SelectMenuInteraction } from 'discord.js-light';
 import {
   calculateEffectiveDamage,
@@ -19,17 +19,41 @@ export const battleLoop = async (
   user: RoleplayUserSchema,
   enemy: Mob,
   ctx: InteractionCommandContext,
+  text: string,
 ): Promise<void> => {
-  const [needStop, newUser, newEnemy] = await userAttack(user, enemy, ctx);
+  const [needStop, newUser, newEnemy, newText] = await userAttack(user, enemy, ctx, text);
 
-  if (!needStop) return battleLoop(newUser, newEnemy, ctx);
+  if (!needStop) {
+    const [enemyStop, enemyUser, enemyEnemy, enemyText] = enemyAttack(
+      newUser,
+      newEnemy,
+      ctx,
+      newText,
+    );
+    if (!enemyStop) battleLoop(enemyUser, enemyEnemy, ctx, enemyText);
+  }
+};
+
+export const enemyAttack = (
+  user: RoleplayUserSchema,
+  enemy: Mob,
+  ctx: InteractionCommandContext,
+  text: string,
+): [boolean, RoleplayUserSchema, Mob, string] => {
+  const attack = RandomFromArray(enemy.ataques);
+
+  user.life -= attack.damage;
+
+  if (user.life < 0) return [true, user, enemy, text];
+  return [false, user, enemy, ctx.locale('roleplay:battle.attack')];
 };
 
 export const userAttack = async (
   user: RoleplayUserSchema,
   enemy: Mob,
   ctx: InteractionCommandContext,
-): Promise<[boolean, RoleplayUserSchema, Mob]> => {
+  text: string,
+): Promise<[boolean, RoleplayUserSchema, Mob, string]> => {
   const embed = new MessageEmbed()
     .setTitle(
       ctx.prettyResponse('sword', 'roleplay:battle.title', {
@@ -40,13 +64,7 @@ export const userAttack = async (
     .setFooter({ text: ctx.locale('roleplay:battle.footer', { time: TIME_TO_SELECT }) })
     .setDescription(
       ctx.locale('roleplay:battle.description', {
-        user: {
-          life: user.life,
-          mana: user.mana,
-          damage: getUserDamage(user),
-          armor: getUserArmor(user),
-        },
-        enemy: { life: enemy.life, damage: enemy.damage, armor: enemy.armor },
+        action: text,
       }),
     )
     .addFields([
@@ -118,21 +136,21 @@ export const userAttack = async (
       TIME_TO_SELECT,
     );
 
-  if (!selectedOptions) return [false, user, enemy];
+  if (!selectedOptions) return [false, user, enemy, ctx.locale('roleplay:battle.attack')];
 
   switch (resolveSeparatedStrings(selectedOptions.values[0])[0]) {
     case 'HANDATTACK': {
       enemy.life -= calculateEffectiveDamage(user, enemy);
-      if (enemy.life <= 0) return [true, user, enemy];
-      return [false, user, enemy];
+      if (enemy.life <= 0) return [true, user, enemy, ctx.locale('roleplay:battle.attack')];
+      return [false, user, enemy, ctx.locale('roleplay:battle.attack')];
     }
     case 'ABILITY': {
       enemy.life -= getAbilityById(
         Number(resolveSeparatedStrings(selectedOptions.values[0])[1]),
       ).data.damage;
-      if (enemy.life <= 0) return [true, user, enemy];
-      return [false, user, enemy];
+      if (enemy.life <= 0) return [true, user, enemy, ctx.locale('roleplay:battle.attack')];
+      return [false, user, enemy, ctx.locale('roleplay:battle.attack')];
     }
   }
-  return [false, user, enemy];
+  return [false, user, enemy, ctx.locale('roleplay:battle.attack')];
 };

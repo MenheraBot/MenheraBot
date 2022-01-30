@@ -212,3 +212,5 @@ export const getAllThemeUserIds = (
 export type MayNotExists<T> = T | null | undefined;
 
 export const moreThanAnHour = (time: number): boolean => time - Date.now() > 3600000;
+
+export const RandomFromArray = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
