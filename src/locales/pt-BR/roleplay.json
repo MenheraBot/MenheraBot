@@ -74,12 +74,25 @@
     }
   },
   "battle": {
-    "no-mana": "Você tenta usar **{{name}}**, mas não tem mana o suficiente para isso! O inimigo revida!",
+    "no-mana": "| Mana Insuficiente!",
+    "your-stats": "Seus Status",
+    "your-stats-info": "❤️ | Vida: **{{life}}**\n💧 | Mana: **{{mana}}**\n⚔️ | Dano: **{{damage}}**\n🛡️ | Defesa: **{{armor}}**\n🧠 | Inteligência: **{{intelligence}}**",
+    "enemy-stats": "Status do Inimigo",
+    "enemy-stats-info": "❤️ | Vida: **{{life}}**\n⚔️ | Dano: **{{damage}}**\n🛡️ | Defesa: **{{armor}}**",
     "attack": "Você ataca **{{enemy}}** com **{{choice}}**, e causa **{{damage}}** de dano",
-    "footer": "Digite no chat a opção de sua escolha",
+    "footer": "Faça uma ação em {{time}} segundos",
+    "select": "Selecione uma Ação",
+    "title": "Batalha Contra {{name}}",
+    "description": "**Última Ação:**\n{{action}}",
     "new-tatic": "Você tentou uma técnica nova, mas não obteve sucesso! O inimigo ataca",
+    "text": "**{{enemy}}** te ataca com **{{attack}}**, e causa **{{dmg}}**, atualização dos status:\n\n**SEUS STATUS**\n❤️ | Vida: **{{life}}**\n💧 | Mana: **{{mana}}**\n⚔️ | Dano: **{{damage}}**\n🛡️ | Defesa: **{{armor}}**\n\n**STATUS DO INIMIGO**\n❤️ | Vida: **{{elife}}**\n⚔️ | Dano: **{{edmg}}**\n🛡️ | Defesa: **{{earmor}}**\n\nO que você faz?\n\n**OPÇÕES:**\n",
     "timeout": "Você demorou para tomar uma atitude, e foi atacado!",
-    "text": "**{{enemy}}** te ataca com **{{attack}}**, e causa **{{dmg}}**, atualização dos status:\n\n**SEUS STATUS**\n❤️ | Vida: **{{life}}**\n💧 | Mana: **{{mana}}**\n⚔️ | Dano: **{{damage}}**\n🛡️ | Defesa: **{{armor}}**\n\n**STATUS DO INIMIGO**\n❤️ | Vida: **{{elife}}**\n⚔️ | Dano: **{{edmg}}**\n🛡️ | Defesa: **{{earmor}}**\n\nO que você faz?\n\n**OPÇÕES:**\n"
+    "options": {
+      "hand-attack": "Ataque Básico",
+      "hand-attack-description": "Dê um ataque com sua arma primária",
+      "info": "⚔️ | Dano: **{{damage}}**\n💧 | Custo: **{{cost}}** {{no-mana}}",
+      "title": "Opções Disponíveis"
+    }
   },
   "death": "Essa não, você morreu! Para se recuperar dos danos, você retornou para a guilda, e ficará de repouso por 12 horas!",
   "basic-attack": "Ataque Básico",

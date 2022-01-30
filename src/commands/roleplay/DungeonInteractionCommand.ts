@@ -1,6 +1,7 @@
 import Checks from '@roleplay/Checks';
 import { BattleChoice, IncomingAttackChoice, Mob, RoleplayUserSchema } from '@roleplay/Types';
 import { canGoToDungeon } from '@roleplay/utils/AdventureUtils';
+import { battleLoop } from '@roleplay/utils/BattleUtils';
 import {
   getUserArmor,
   getUserDamage,
@@ -98,8 +99,10 @@ export default class DungeonInteractionCommand extends InteractionCommand {
       return;
     }
 
-    // @ts-expect-error nyaaa
-    DungeonInteractionCommand.battle(ctx, inimigo as Mob, habilidades, user, 'dungeon');
+    const enemy = Checks.getEnemyByUserLevel(user, 'dungeon', 1, ctx) as Mob;
+
+    battleLoop(user, enemy, ctx);
+    // DungeonInteractionCommand.battle(ctx, inimigo as Mob, habilidades, user, 'dungeon');
   }
 
   static async battle(

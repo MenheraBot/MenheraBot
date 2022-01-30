@@ -240,6 +240,7 @@ export const COLORS = {
   Pinkie: '#eab3fa' as const,
   Pear: '#74bd63' as const,
   UltraPink: '#ff29ae' as const,
+  Battle: '#e3beff' as const,
 };
 
 interface RouletteNumber {
