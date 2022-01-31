@@ -1,6 +1,5 @@
-import Checks from '@roleplay/Checks';
-import { BattleChoice, IncomingAttackChoice, Mob, RoleplayUserSchema } from '@roleplay/Types';
-import { canGoToDungeon } from '@roleplay/utils/AdventureUtils';
+import { RoleplayUserSchema } from '@roleplay/Types';
+import { canGoToDungeon, getDungeonEnemy } from '@roleplay/utils/AdventureUtils';
 import { battleLoop } from '@roleplay/utils/BattleUtils';
 import {
   getUserArmor,
@@ -11,14 +10,8 @@ import {
 } from '@roleplay/utils/Calculations';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { ROLEPLAY_CONSTANTS } from '@structures/Constants';
 import Util, { actionRow, resolveCustomId } from '@utils/Util';
-import {
-  MessageButton,
-  MessageEmbed,
-  MessageSelectMenu,
-  SelectMenuInteraction,
-} from 'discord.js-light';
+import { MessageButton, MessageEmbed } from 'discord.js-light';
 
 export default class DungeonInteractionCommand extends InteractionCommand {
   constructor() {
@@ -99,81 +92,24 @@ export default class DungeonInteractionCommand extends InteractionCommand {
       return;
     }
 
-    const enemy = Checks.getEnemyByUserLevel(user, 'dungeon', 1, ctx) as Mob;
-
-    battleLoop(user, enemy, ctx);
-    // DungeonInteractionCommand.battle(ctx, inimigo as Mob, habilidades, user, 'dungeon');
+    return DungeonInteractionCommand.DungeonLoop(ctx, user);
   }
 
-  static async battle(
+  static async DungeonLoop(
     ctx: InteractionCommandContext,
-    inimigo: Mob,
-    habilidades: 'a', // Array<UniquePower | NormalAbility>,
     user: RoleplayUserSchema,
-    type: BattleChoice,
   ): Promise<void> {
-    await ctx.client.repositories.roleplayRepository.updateUser(ctx.author.id, {
-      inBattle: true,
-      dungeonCooldown: ROLEPLAY_CONSTANTS.bossCooldown + Date.now(),
-    });
-
-    const options: IncomingAttackChoice[] = [
-      {
-        name: ctx.locale('commands:dungeon.scape'),
-        damage: 0,
-        scape: true,
-      },
-    ];
-
-    options.push({
-      name: ctx.locale('commands:dungeon.battle.basic'),
-      damage: user.damage + user.weapon.damage,
-    });
-    /* 
-    habilidades.forEach((hab) => {
-      options.push(hab);
-    }); */
-
-    let texto = `${ctx.locale('commands:dungeon.battle.enter', {
-      enemy: inimigo.name,
-    })}`;
-
-    const action = new MessageSelectMenu()
-      .setCustomId(`${ctx.interaction.id} | ATTACK`)
-      .setMinValues(1)
-      .setMaxValues(1);
-
-    for (let i = 0; i < options.length; i++) {
-      texto += `\n**${i}** - ${options[i].name} | **${options[i].cost || 0}**💧, **${
-        options[i].damage
-      }**🗡️`;
-      action.addOptions({ label: options[i].name, value: `${i}` });
-    }
-
-    const embed = new MessageEmbed()
-      .setFooter({ text: ctx.locale('commands:dungeon.battle.footer') })
-      .setTitle(`${ctx.locale('commands:dungeon.battle.title')}${inimigo.name}`)
-      .setColor('#f04682')
-      .setDescription(texto);
-
-    ctx.makeMessage({ embeds: [embed], components: [actionRow([action])] });
-
-    const selected = await Util.collectComponentInteractionWithStartingId<SelectMenuInteraction>(
-      ctx.channel,
-      ctx.author.id,
-      ctx.interaction.id,
-      7500,
+    const enemy = getDungeonEnemy(1, user.level);
+    console.log(enemy);
+    await battleLoop(
+      user,
+      enemy,
+      ctx,
+      ctx.locale('roleplay:battle.find', {
+        enemy: ctx.locale(`enemies:${enemy.id as 1}.name`),
+      }),
     );
 
-    if (!selected)
-      return Checks.enemyShot(
-        ctx,
-        user,
-        inimigo,
-        type,
-        `⚔️ | ${ctx.locale('roleplay:battle.timeout')}`,
-      );
-
-    Checks.battle(ctx, options[Number(selected.values[0])], user, inimigo, type);
+    ctx.makeMessage({ content: 'Quer continuar ou meter o pe?', components: [], embeds: [] });
   }
 }

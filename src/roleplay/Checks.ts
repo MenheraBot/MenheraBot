@@ -1,4 +1,5 @@
-import InteractionCommandContext from '@structures/command/InteractionContext';
+export {};
+/* import InteractionCommandContext from '@structures/command/InteractionContext';
 import { emojis, ROLEPLAY_CONSTANTS } from '@structures/Constants';
 import Util, { actionRow } from '@utils/Util';
 import { MessageEmbed, MessageSelectMenu, SelectMenuInteraction } from 'discord.js-light';
@@ -75,7 +76,7 @@ const getEnemyByUserLevel = (
         wantLevel: dungeonLevel,
       }), 
     }); 
-    */
+    
     return 'LOW-LEVEL';
   }
 
@@ -115,7 +116,7 @@ const battle = async (
       user.life += escolha.heal;
       if (user.life > getUserMaxLife(user)) user.life = getUserMaxLife(user);
     }
-    danoUser = /* user.abilityPower */ 1 * Number(escolha.damage);
+    danoUser = /* user.abilityPower  1 * Number(escolha.damage);
     user.mana -= Number(escolha?.cost) ?? 0;
   }
 
@@ -218,11 +219,11 @@ const continueBattle = async (
         habilidades.findIndex((i) => i.name === 'Morte Instantânea'),
         1,
       );
-    } */
+    } 
   }
   /*   habilidades.forEach((hab) => {
     options.push(hab);
-  }); */
+  }); 
 
   const dmgView = user.damage + user.weapon.damage;
   const ptcView = user.armor + user.protection.armor;
@@ -282,12 +283,12 @@ const finalChecks = async (
   let texto = '';
 
   if (user.level < 5) {
-    if (user.experience >= /* user.nextLevelXp */ 1) {
+    if (user.experience >= /* user.nextLevelXp 1) {
       texto += '**<a:LevelUp:760954035779272755> LEVEL UP <a:LevelUp:760954035779272755>**';
       ctx.client.repositories.roleplayRepository.updateUser(user.id, {
         xp: 0,
         level: user.level + 1,
-        nextLevelXp: /* user.nextLevelXp */ 1 * 2,
+        nextLevelXp: /* user.nextLevelXp 1 * 2,
         maxLife: getUserMaxLife(user) + 10,
         maxMana: getUserMaxMana(user) + 10,
         damage: user.damage + 3,
@@ -296,12 +297,12 @@ const finalChecks = async (
       ctx.makeMessage({ content: texto });
     }
   } else if (user.level > 4 && user.level < 10) {
-    if (user.experience >= /* user.nextLevelXp */ 1) {
+    if (user.experience >= /* user.nextLevelXp  1) {
       texto += '**<a:LevelUp:760954035779272755> LEVEL UP <a:LevelUp:760954035779272755>**';
       ctx.client.repositories.roleplayRepository.updateUser(user.id, {
         xp: 0,
         level: user.level + 1,
-        nextLevelXp: /* user.nextLevelXp */ 1 * 2,
+        nextLevelXp: /* user.nextLevelXp  1 * 2,
         maxLife: getUserMaxLife(user) + 20,
         maxMana: getUserMaxMana(user) + 15,
         damage: user.damage + 5,
@@ -310,25 +311,25 @@ const finalChecks = async (
       ctx.makeMessage({ content: texto });
     }
   } else if (user.level > 9 && user.level < 29) {
-    if (user.experience >= /* user.nextLevelXp */ 1) {
+    if (user.experience >= /* user.nextLevelXp  1) {
       texto += '**<a:LevelUp:760954035779272755> LEVEL UP <a:LevelUp:760954035779272755>**';
       ctx.client.repositories.roleplayRepository.updateUser(user.id, {
         level: user.level + 1,
-        nextLevelXp: /* user.nextLevelXp */ 1 * 2,
-        maxLife: /* user.maxLife + */ 50,
-        maxMana: /* user.maxMana +  */ 20,
+        nextLevelXp: /* user.nextLevelXp  1 * 2,
+        maxLife: /* user.maxLife +  50,
+        maxMana: /* user.maxMana +   20,
         damage: user.damage + 7,
         armor: user.armor + 5,
       });
       ctx.makeMessage({ content: texto });
     }
   } else if (user.level >= 29) {
-    if (user.experience >= /* user.nextLevelXp */ 1) {
+    if (user.experience >= /* user.nextLevelXp  1) {
       texto += '**<a:LevelUp:760954035779272755> LEVEL UP <a:LevelUp:760954035779272755>**';
       ctx.client.repositories.roleplayRepository.updateUser(user.id, {
         xp: 0,
         level: user.level + 1,
-        nextLevelXp: /* user.nextLevelXp */ 1 * 2,
+        nextLevelXp: /* user.nextLevelXp  1 * 2,
         maxLife: getUserMaxLife(user) + 50,
         maxMana: getUserMaxMana(user) + 50,
         damage: user.damage + 10,
@@ -464,7 +465,7 @@ const getAbilities = (user: RoleplayUserSchema): Array<NormalAbility | UniquePow
 
   return abilities;
 };
- */
+ 
 const initialChecks = async (
   user: RoleplayUserSchema,
   ctx: InteractionCommandContext,
@@ -474,8 +475,8 @@ const initialChecks = async (
 
   if (user.life < 1) {
     if (Date.now() > user.death) {
-      user.life = /* user.maxLife; */ 1;
-      user.mana = /* user.maxMana; */ 1;
+      user.life = /* user.maxLife;  1;
+      user.mana = /* user.maxMana;  1;
     }
   }
   if (user.life < 1) {
@@ -533,8 +534,8 @@ const initialChecks = async (
   }
 
   await ctx.client.repositories.roleplayRepository.updateUser(user.id, {
-    life: /* user.maxLife */ 1,
-    mana: /* user.maxMana */ 1,
+    life: /* user.maxLife * 1,
+    mana: /* user.maxMana * 1,
   });
 
   return pass;
@@ -550,3 +551,4 @@ export default {
   morte,
   RandomFromArray,
 };
+*/

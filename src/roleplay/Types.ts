@@ -196,3 +196,42 @@ export interface AbilitiesFile {
   unlockCost: number;
   boostPerLevel: PerLevelBoost;
 }
+
+interface EnemyBoostPerLevel {
+  baseDamage: number;
+  baseLife: number;
+  baseArmor: number;
+  experience: number;
+}
+
+export interface EnemyAttack {
+  id: number;
+  baseDamage: number;
+  perLevelDamage: number;
+}
+
+export interface EnemyLoot {
+  id: number;
+}
+
+export interface EnemiesFile {
+  baseDamage: number;
+  baseLife: number;
+  baseArmor: number;
+  experience: number;
+  perLevel: EnemyBoostPerLevel;
+  dungeonLevels: number[];
+  attacks: EnemyAttack[];
+  loots: EnemyLoot[];
+}
+
+export interface ReadyToBattleEnemy {
+  id: number;
+  life: number;
+  damage: number;
+  armor: number;
+  experience: number;
+  level: number;
+  loots: EnemyLoot[];
+  attacks: { id: number; damage: number }[];
+}

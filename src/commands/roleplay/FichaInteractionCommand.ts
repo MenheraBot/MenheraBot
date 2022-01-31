@@ -17,7 +17,7 @@ import {
   getClasses,
   getRaces,
   getUserAvailableAbilities,
-} from '@roleplay/utils/ClassUtils';
+} from '@roleplay/utils/DataUtils';
 import {
   getAbilityNextLevelBlessings,
   getUserArmor,
@@ -79,7 +79,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
 
     user.abilities.forEach((a) => {
       embed.addField(
-        ctx.locale(`roleplay:abilities.${a.id as 1}.name`),
+        ctx.locale(`roleplay:abilities.${a.id as 100}.name`),
         `${ctx.prettyResponse('level', 'common:roleplay.level')}: **${
           a.level
         }**\n${ctx.prettyResponse('experience', 'common:roleplay.blesses')}: **${
@@ -137,11 +137,11 @@ export default class FichaInteractionCommand extends InteractionCommand {
 
       user.abilities.forEach((a) => {
         abilities.addOptions({
-          label: ctx.locale(`roleplay:abilities.${a.id as 1}.name`),
+          label: ctx.locale(`roleplay:abilities.${a.id as 100}.name`),
           value: `${a.id}`,
         });
         upgradeEmbed.addField(
-          ctx.locale(`roleplay:abilities.${a.id as 1}.name`),
+          ctx.locale(`roleplay:abilities.${a.id as 100}.name`),
           `${ctx.prettyResponse('level', 'common:roleplay.level')}: **${
             a.level
           }**\n${ctx.prettyResponse('experience', 'common:roleplay.blesses')}: **${
@@ -228,8 +228,8 @@ export default class FichaInteractionCommand extends InteractionCommand {
 
     availableAbilities.forEach((a) => {
       unlockEmbed.addField(
-        ctx.locale(`roleplay:abilities.${a.id as 1}.name`),
-        `${ctx.locale(`roleplay:abilities.${a.id as 1}.description`)}\n${ctx.prettyResponse(
+        ctx.locale(`roleplay:abilities.${a.id as 100}.name`),
+        `${ctx.locale(`roleplay:abilities.${a.id as 100}.description`)}\n${ctx.prettyResponse(
           'lock',
           'commands:ficha.show.abilities.cost',
         )}: **${a.data.unlockCost}** ${ctx.locale('common:roleplay.blesses')}`,
@@ -237,7 +237,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
 
       if (user.holyBlessings.ability >= a.data.unlockCost)
         unlockAbilityMenu.addOptions({
-          label: ctx.locale(`roleplay:abilities.${a.id as 1}.name`),
+          label: ctx.locale(`roleplay:abilities.${a.id as 100}.name`),
           value: `${a.id}`,
         });
     });
@@ -277,7 +277,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
       embeds: [],
       components: [],
       content: ctx.prettyResponse('success', 'commands:ficha.show.abilities.unlock-success', {
-        name: ctx.locale(`roleplay:abilities.${selectedAbility.values[0] as '1'}.name`),
+        name: ctx.locale(`roleplay:abilities.${selectedAbility.values[0] as '100'}.name`),
       }),
     });
   }

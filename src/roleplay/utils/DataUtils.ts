@@ -1,7 +1,7 @@
 import { IReturnData } from '@utils/Types';
-import { AbilitiesFile, ClassesFile, RacesFile, UserAbility } from '@roleplay/Types';
+import { AbilitiesFile, ClassesFile, EnemiesFile, RacesFile, UserAbility } from '@roleplay/Types';
 import Abilities from '@roleplay/data/Abilities';
-import { Classes, Races } from '../data';
+import { Classes, Enemies, Races } from '../data';
 
 export const getClasses = (): IReturnData<ClassesFile>[] =>
   Object.entries(Classes).map((c) => ({ id: Number(c[0]), data: c[1] }));
@@ -35,3 +35,11 @@ export const getUserAvailableAbilities = (
       userAbilities.some((b) => b.id === a.data.parentId) &&
       userAbilities.every((b) => a.id !== b.id),
   );
+
+export const getEnemies = (): IReturnData<EnemiesFile>[] =>
+  Object.entries(Enemies).map((a) => ({ id: Number(a[0]), data: a[1] }));
+
+export const getEnemyById = (enemyId: number): IReturnData<EnemiesFile> =>
+  Object.entries(Enemies)
+    .filter((c) => Number(c[0]) === enemyId)
+    .map((c) => ({ id: Number(c[0]), data: c[1] }))[0];

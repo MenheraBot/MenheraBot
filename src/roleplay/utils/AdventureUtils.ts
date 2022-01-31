@@ -1,10 +1,9 @@
-import { RoleplayUserSchema } from '@roleplay/Types';
+import { ReadyToBattleEnemy, RoleplayUserSchema } from '@roleplay/Types';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { moreThanAnHour } from '@utils/Util';
+import { moreThanAnHour, RandomFromArray } from '@utils/Util';
 import { EmbedFieldData } from 'discord.js-light';
 import moment from 'moment';
-
-export const a = 'a';
+import { getEnemies } from './DataUtils';
 
 export const canGoToDungeon = (
   user: RoleplayUserSchema,
@@ -27,4 +26,28 @@ export const canGoToDungeon = (
   });
 
   return { canGo, reason };
+};
+
+export const getDungeonEnemy = (dungeonLevel: number, userLevel: number): ReadyToBattleEnemy => {
+  const availableEnemies = getEnemies().filter((a) => a.data.dungeonLevels.includes(dungeonLevel));
+
+  const enemy = RandomFromArray(availableEnemies);
+
+  const enemyLevel = userLevel * (Math.floor(Math.random() * 10) + 1);
+
+  const enemyData: ReadyToBattleEnemy = {
+    id: enemy.id,
+    life: enemy.data.baseLife + enemy.data.perLevel.baseLife * enemyLevel,
+    armor: enemy.data.baseArmor + enemy.data.perLevel.baseArmor * enemyLevel,
+    damage: enemy.data.baseDamage + enemy.data.perLevel.baseDamage * enemyLevel,
+    attacks: enemy.data.attacks.map((b) => ({
+      id: b.id,
+      damage: b.baseDamage + b.perLevelDamage * enemyLevel,
+    })),
+    experience: enemy.data.experience + enemy.data.perLevel.experience * enemyLevel,
+    level: enemyLevel,
+    loots: enemy.data.loots,
+  };
+
+  return enemyData;
 };

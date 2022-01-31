@@ -1,4 +1,4 @@
-import { Mob, RoleplayUserSchema } from '@roleplay/Types';
+import { ReadyToBattleEnemy, RoleplayUserSchema } from '@roleplay/Types';
 import { ToBLess } from '@utils/Types';
 
 export const getUserNextLevelXp = (level: number): number => level * 2000;
@@ -13,8 +13,10 @@ export const getUserArmor = (user: RoleplayUserSchema): number => user.level * 2
 
 export const getUserIntelligence = (user: RoleplayUserSchema): number => user.level * 20;
 
-export const calculateEffectiveDamage = (user: RoleplayUserSchema, enemy: Mob): number =>
-  user.damage - enemy.armor;
+export const calculateEffectiveDamage = (
+  user: RoleplayUserSchema,
+  enemy: ReadyToBattleEnemy,
+): number => user.damage * 2 - enemy.armor;
 
 export const makeBlessingStatusUpgrade = (toBless: ToBLess, points: number): number => {
   switch (toBless) {
