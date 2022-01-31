@@ -31,4 +31,8 @@ export default class RoleplayRepository {
   ): Promise<void> {
     await this.roleplayModal.updateOne({ id: userId }, toUpdate);
   }
+
+  async postBattle(userId: string, updatedUserState: RoleplayUserSchema): Promise<void> {
+    await this.roleplayModal.updateOne({ id: userId }, updatedUserState);
+  }
 }

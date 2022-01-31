@@ -14,7 +14,7 @@ const Enemies: { [id: number]: EnemiesFile } = {
     },
     experience: 10,
     loots: [],
-    attacks: [{ id: 1, baseDamage: 2, perLevelDamage: 5 }],
+    attacks: [{ id: 1, baseDamage: 20, perLevelDamage: 5 }],
   },
 };
 

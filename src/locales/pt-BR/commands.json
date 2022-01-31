@@ -769,6 +769,10 @@
   },
   "dungeon": {
     "scape": "Fugir",
+    "back": "Voltar à Superficie",
+    "continue": "Continuar no Nível {{level}}",
+    "next": "Descer para o Nível {{level}}",
+    "final-question": "Você triunfou em sua batalha, e agora deve seguir seu rumo, escolha o que desejas fazer?\nVocê está com **{{life}} / {{maxLife}}** vida e **{{mana}} / {{maxMana}}** mana.",
     "preparation": {
       "title": "Preparação pra batalha",
       "footer": "Quer entrar mesmo assim?",
@@ -777,16 +781,7 @@
       "no": "Arregar",
       "no_censored": "Fugir"
     },
-    "arregou": "Você pensou melhor, e acabou desistindo de entrar na dungeon",
-    "battle": {
-      "basic": "Ataque Básico",
-      "enter": "Você entra na Dungeon, e se depara com um monstro {{type}}: {{name}}, Seus status são:",
-      "end": "O que você faz?\n\n**OPÇÕES:**\n",
-      "footer": "Digite no chat a opção de sua escolha",
-      "title": "Inimigo Encontrado:",
-      "newTecnique": "Você tentou uma técnica nova, mas não obteve sucesso! O inimigo ataca",
-      "timeout": "Você demorou para tomar uma atitude, e foi atacado!"
-    }
+    "arregou": "Você pensou melhor, e acabou desistindo de entrar na dungeon"
   },
   "boss": {
     "description": "Luta contra um BOSS",

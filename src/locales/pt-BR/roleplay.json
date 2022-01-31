@@ -81,7 +81,7 @@
     "enemy-stats-info": "❤️ | Vida: **{{life}}**\n⚔️ | Dano: **{{damage}}**\n🛡️ | Defesa: **{{armor}}**",
     "no-action": "Você demorou demais para tomar uma atitude e foi atacado!",
     "enemy-death": "Você mata **{{name}}** com sucesso!",
-    "user-death": "**VOCÊ FOI MORTO!**",
+    "user-death": "⚰️ | Você morreu!\nVocê morreu e foi teletransportado para a Igreja. Fique descansando por um tempo para se recuperar.",
     "footer": "Faça uma ação em {{time}} segundos",
     "deffend-text": "🛡️ | **{{enemy}}** te ataca com **{{attack}}** e te causa **{{damage}}** de dano",
     "attack-text": "⚔️ | Você ataca com **{{attack}}** e causa **{{damage}}** de dano",
@@ -117,8 +117,10 @@
   },
   "scape": "você arregou da batalha, e conseguiu fuigir, mas terá que ficar descansando por 2 horas!",
   "registred": "você foi registrado com sucesso! Use `m!status` para ver seus status",
-  "backpack-full": "você ganha um loot, mas sua mochila está cheia, e você precisa deixá-lo para trás",
+  "backpack-full": "Seu inventário está cheio! Volte para a capital para esvaziar sua mochila!",
   "cooldowns": {
+    "dungeon": "Você Está Cansado!",
+    "dungeon-description": "Você já foi para a dungeon recenemente, e precisa descansar por mais **{{time}}** {{subtime}}",
     "death": "Você Está Morto!",
     "death-description": "Tu morreu em uma das tuas aventuras, e foi teletransportado para a Igreja para se recuperar. Descanse por mais **{{time}}** {{subtime}}"
   }

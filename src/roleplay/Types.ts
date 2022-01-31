@@ -13,23 +13,12 @@ export interface UserAbility {
   blesses: number;
 }
 
-export interface UniquePower {
-  name: string;
-  description: string;
-  cooldown: number;
-  damage: number | string;
-  heal: number;
-  cost: string | number;
-  type: string;
-}
-
 export type ItemType = 'Arma';
 
 export interface InventoryItem {
-  type: ItemType;
-  name: string;
-  damage?: number;
-  value: number;
+  id: number;
+  level: number;
+  amount: number;
 }
 export interface Weapon {
   damage: number;
@@ -42,9 +31,9 @@ export interface Armor {
   name: string;
 }
 
-export interface Backpack {
-  name: string;
-  capacity: number;
+export interface LeveledItem {
+  id: number;
+  level: number;
 }
 
 export interface HolyBlessings {
@@ -82,17 +71,12 @@ export interface RoleplayUserSchema {
   holyBlessings: HolyBlessings;
   blesses: Blesses;
   abilities: Array<UserAbility>;
-  loots: Array<Exclude<InventoryItem, InventoryItem['type']>>;
   inventory: Array<InventoryItem>;
   cooldowns: UserCooldown[];
-  death: number; // TODO: REMOVE
-  dungeonCooldown: number; // TODO:  REMOVE
-  hotelTime: number; // TODO: REMOVE
-  weapon: Weapon;
-  protection: Armor;
-  backpack: Backpack;
+  weapon: LeveledItem;
+  protection: LeveledItem;
+  backpack: LeveledItem;
   money: number;
-  inBattle: boolean;
 }
 
 export interface Mob {
@@ -111,20 +95,6 @@ export interface Mob {
   armor: number;
   xp: number;
 }
-
-export interface AttackChoice {
-  name: string;
-  damage: number;
-  cost?: number;
-  scape?: boolean;
-  heal?: number;
-}
-
-export type BattleChoice = 'boss' | 'dungeon';
-
-export type IncomingAttackChoice = AttackChoice | UniquePower | NormalAbility;
-
-export type DungeonLevels = 1 | 2 | 3 | 4 | 5;
 
 interface BaseAttributesPerLevel {
   maxLife: number;
@@ -212,6 +182,7 @@ export interface EnemyAttack {
 
 export interface EnemyLoot {
   id: number;
+  level: number;
 }
 
 export interface EnemiesFile {
@@ -222,7 +193,7 @@ export interface EnemiesFile {
   perLevel: EnemyBoostPerLevel;
   dungeonLevels: number[];
   attacks: EnemyAttack[];
-  loots: EnemyLoot[];
+  loots: EnemyLoot[][];
 }
 
 export interface ReadyToBattleEnemy {
@@ -232,6 +203,6 @@ export interface ReadyToBattleEnemy {
   armor: number;
   experience: number;
   level: number;
-  loots: EnemyLoot[];
+  loots: EnemyLoot[][];
   attacks: { id: number; damage: number }[];
 }

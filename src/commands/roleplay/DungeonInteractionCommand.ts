@@ -1,5 +1,12 @@
 import { RoleplayUserSchema } from '@roleplay/Types';
-import { canGoToDungeon, getDungeonEnemy } from '@roleplay/utils/AdventureUtils';
+import {
+  addToInventory,
+  canGoToDungeon,
+  getDungeonEnemy,
+  isDead,
+  isInventoryFull,
+  makeCooldown,
+} from '@roleplay/utils/AdventureUtils';
 import { battleLoop } from '@roleplay/utils/BattleUtils';
 import {
   getUserArmor,
@@ -7,10 +14,12 @@ import {
   getUserIntelligence,
   getUserMaxLife,
   getUserMaxMana,
+  getUserNextLevelXp,
 } from '@roleplay/utils/Calculations';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import Util, { actionRow, resolveCustomId } from '@utils/Util';
+import { ROLEPLAY_CONSTANTS } from '@structures/Constants';
+import Util, { actionRow, RandomFromArray, resolveCustomId } from '@utils/Util';
 import { MessageButton, MessageEmbed } from 'discord.js-light';
 
 export default class DungeonInteractionCommand extends InteractionCommand {
@@ -92,16 +101,17 @@ export default class DungeonInteractionCommand extends InteractionCommand {
       return;
     }
 
-    return DungeonInteractionCommand.DungeonLoop(ctx, user);
+    return DungeonInteractionCommand.DungeonLoop(ctx, user, 1);
   }
 
   static async DungeonLoop(
     ctx: InteractionCommandContext,
     user: RoleplayUserSchema,
+    dungeonLevel: number,
   ): Promise<void> {
-    const enemy = getDungeonEnemy(1, user.level);
-    console.log(enemy);
-    await battleLoop(
+    const enemy = getDungeonEnemy(dungeonLevel, user.level);
+
+    const battleResults = await battleLoop(
       user,
       enemy,
       ctx,
@@ -110,6 +120,68 @@ export default class DungeonInteractionCommand extends InteractionCommand {
       }),
     );
 
-    ctx.makeMessage({ content: 'Quer continuar ou meter o pe?', components: [], embeds: [] });
+    if (isDead(user)) {
+      ctx.makeMessage({
+        embeds: [],
+        components: [],
+        content: ctx.locale('roleplay:battle.user-death'),
+      });
+
+      user.cooldowns = makeCooldown(user.cooldowns, {
+        reason: 'death',
+        until: ROLEPLAY_CONSTANTS.deathCooldown + Date.now(),
+      });
+
+      await ctx.client.repositories.roleplayRepository.postBattle(ctx.author.id, user);
+      return;
+    }
+
+    const lootEarned = RandomFromArray(enemy.loots);
+
+    if (isInventoryFull(user)) {
+      ctx.send({ content: ctx.prettyResponse('error', 'roleplay:backpack-full'), ephemeral: true });
+    } else if (lootEarned && lootEarned.length > 0)
+      user.inventory = addToInventory(lootEarned, user.inventory);
+
+    user.experience += battleResults.enemy.experience;
+
+    if (user.experience >= getUserNextLevelXp(user.level)) user.level += 1;
+
+    user.cooldowns = makeCooldown(user.cooldowns, {
+      reason: 'dungeon',
+      until: ROLEPLAY_CONSTANTS.dungeonCooldown + Date.now(),
+    });
+
+    await ctx.client.repositories.roleplayRepository.postBattle(ctx.author.id, user);
+
+    const runawayButton = new MessageButton()
+      .setCustomId(`${ctx.interaction.id} | BACK`)
+      .setLabel(ctx.locale('commands:dungeon.back'))
+      .setStyle('PRIMARY');
+
+    const continueButton = new MessageButton()
+      .setCustomId(`${ctx.interaction.id} | CONTINUE`)
+      .setLabel(ctx.locale('commands:dungeon.continue', { level: dungeonLevel }))
+      .setStyle('PRIMARY');
+
+    const nextButton = new MessageButton()
+      .setCustomId(`${ctx.interaction.id} | NEXT`)
+      .setLabel(ctx.locale('commands:dungeon.next', { level: dungeonLevel + 1 }))
+      .setStyle('PRIMARY');
+
+    ctx.makeMessage({
+      content: ctx.prettyResponse('question', 'commands:dungeon.final-question', {
+        life: user.life,
+        mana: user.mana,
+        maxLife: getUserMaxLife(user),
+        maxMana: getUserMaxMana(user),
+      }),
+      components: [
+        actionRow([runawayButton]),
+        actionRow([continueButton]),
+        actionRow([nextButton]),
+      ],
+      embeds: [],
+    });
   }
 }

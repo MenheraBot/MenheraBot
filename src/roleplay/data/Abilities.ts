@@ -3,8 +3,8 @@ import { AbilitiesFile } from '../Types';
 const Abilities: { [id: number]: AbilitiesFile } = {
   100: {
     DevDesc: 'Lamina Envenenada (assassino)',
-    cost: 50,
-    damage: 17,
+    cost: 0,
+    damage: 1700,
     heal: 0,
     parentId: 0,
     unlockCost: 0,

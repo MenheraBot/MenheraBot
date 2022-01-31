@@ -18,7 +18,7 @@ export const battleLoop = async (
   enemy: ReadyToBattleEnemy,
   ctx: InteractionCommandContext,
   text: string,
-): Promise<void> => {
+): Promise<{ user: RoleplayUserSchema; enemy: ReadyToBattleEnemy; lastText: string }> => {
   const [needStop, newUser, newEnemy, newText] = await userAttack(user, enemy, ctx, text);
 
   if (!needStop) {
@@ -30,6 +30,8 @@ export const battleLoop = async (
     );
     if (!enemyStop) return battleLoop(enemyUser, enemyEnemy, ctx, enemyText);
   }
+
+  return { user, enemy, lastText: text };
 };
 
 export const enemyAttack = (
@@ -165,10 +167,14 @@ export const userAttack = async (
       ];
     }
     case 'ABILITY': {
-      const damageDealt = getAbilityById(
+      const usedAbility = getAbilityById(
         Number(resolveSeparatedStrings(selectedOptions.values[0])[1]),
-      ).data.damage;
+      );
+
+      const damageDealt = usedAbility.data.damage;
       enemy.life -= damageDealt;
+      user.mana -= usedAbility.data.cost;
+
       if (enemy.life <= 0) return [true, user, enemy, ctx.locale('roleplay:battle.enemy-death')];
       return [
         false,

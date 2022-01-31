@@ -1,4 +1,4 @@
-import { ReadyToBattleEnemy, RoleplayUserSchema } from '@roleplay/Types';
+import { LeveledItem, ReadyToBattleEnemy, RoleplayUserSchema, UserCooldown } from '@roleplay/Types';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { moreThanAnHour, RandomFromArray } from '@utils/Util';
 import { EmbedFieldData } from 'discord.js-light';
@@ -50,4 +50,37 @@ export const getDungeonEnemy = (dungeonLevel: number, userLevel: number): ReadyT
   };
 
   return enemyData;
+};
+
+export const isDead = (entity: unknown & { life: number }): boolean => entity.life <= 0;
+
+export const isInventoryFull = (user: RoleplayUserSchema): boolean => {
+  const userBackPack = { capacity: 20 };
+
+  if (user.inventory.reduce((p, c) => p + c.amount, 0) >= userBackPack.capacity) return true;
+  return false;
+};
+
+export const addToInventory = (
+  items: LeveledItem[],
+  inventory: RoleplayUserSchema['inventory'],
+): RoleplayUserSchema['inventory'] => {
+  items.forEach((a) => {
+    const inInventory = inventory.find((b) => b.id === a.id && b.level === a.level);
+    if (inInventory) inInventory.amount += 1;
+    else inventory.push({ amount: 1, ...a });
+  });
+
+  return inventory;
+};
+
+export const makeCooldown = (
+  cooldowns: UserCooldown[],
+  newCooldown: UserCooldown,
+): RoleplayUserSchema['cooldowns'] => {
+  const finded = cooldowns.find((a) => a.reason === newCooldown.reason);
+
+  if (finded) finded.until = newCooldown.until;
+  else cooldowns.push(newCooldown);
+  return cooldowns;
 };
