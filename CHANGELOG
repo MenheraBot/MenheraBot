@@ -11,9 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 - O rpg voltou
 
-### Fixed
+### Removed
 
-- Resolvido problema que os plurais não estavam funcionando
+- Plurais foram removidos (Não tava conseguindo arrumar ai tirei, é us guri)
 
 ## [3.5.10] - 21-01-2022
 

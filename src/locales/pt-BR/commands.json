@@ -772,7 +772,6 @@
     "back": "Voltar à Superficie",
     "continue": "Continuar no Nível {{level}}",
     "next": "Descer para o Nível {{level}}",
-    "final-question": "Você triunfou em sua batalha, e agora deve seguir seu rumo, escolha o que desejas fazer?\nVocê está com **{{life}} / {{maxLife}}** vida e **{{mana}} / {{maxMana}}** mana.",
     "preparation": {
       "title": "Preparação pra batalha",
       "footer": "Quer entrar mesmo assim?",
@@ -780,6 +779,16 @@
       "enter": "Entrar",
       "no": "Arregar",
       "no_censored": "Fugir"
+    },
+    "results": {
+      "title": "Resultados da Batalha",
+      "item-title": "Espólios de Batalha",
+      "backpack-full": "Você não tem espaço suficiente para pegar os itens dropados!",
+      "grab": "Selecione os itens que você quer",
+      "back": "Você retornou para a cidade, descanse um pouco antes de ir para outra aventura!",
+      "footer": "Caso queira algum item, faça-o antes de ir para outro lugar",
+      "loots": "Itens Disponíveis (Você tem espaço para pegar **{{amount}}**)\n{{itemText}}",
+      "description": "**Seus Status:**\n❤️ | Vida: **{{life}} / {{maxLife}}**\n💧 | Mana: **{{mana}} / {{maxMana}}**\n\nVocê triunfou em sua batalha, e agora deve seguir seu rumo, escolha o que desejas fazer"
     },
     "arregou": "Você pensou melhor, e acabou desistindo de entrar na dungeon"
   },

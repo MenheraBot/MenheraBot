@@ -18,7 +18,9 @@ export const canGoToDungeon = (
       reason.push({
         name: ctx.locale(`roleplay:cooldowns.${cd.reason as 'death'}`),
         value: ctx.locale(`roleplay:cooldowns.${cd.reason as 'death'}-description`, {
-          time: moment.utc(cd.until).format(moreThanAnHour(cd.until) ? 'HH:mm:ss' : 'mm:ss'),
+          time: moment
+            .utc(cd.until - Date.now())
+            .format(moreThanAnHour(cd.until - Date.now()) ? 'HH:mm:ss' : 'mm:ss'),
           subtime: ctx.locale(`common:${moreThanAnHour(cd.until) ? 'hours' : 'minutes'}`),
         }),
       });
@@ -55,10 +57,18 @@ export const getDungeonEnemy = (dungeonLevel: number, userLevel: number): ReadyT
 export const isDead = (entity: unknown & { life: number }): boolean => entity.life <= 0;
 
 export const isInventoryFull = (user: RoleplayUserSchema): boolean => {
-  const userBackPack = { capacity: 20 };
+  const userBackPack = { capacity: 3 };
 
   if (user.inventory.reduce((p, c) => p + c.amount, 0) >= userBackPack.capacity) return true;
   return false;
+};
+
+export const getFreeInventorySpace = (user: RoleplayUserSchema): number => {
+  const userBackPack = { capacity: 3 };
+
+  const usedSpace = user.inventory.reduce((p, c) => p + c.amount, 0);
+
+  return userBackPack.capacity - usedSpace;
 };
 
 export const addToInventory = (

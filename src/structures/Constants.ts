@@ -112,6 +112,7 @@ export const emojis = {
   damage: '🗡️',
   level: '⚜️',
   experience: '🔰',
+  chest: '<:Chest:760957557538947133>',
   intelligence: '🧠',
 };
 
@@ -133,8 +134,8 @@ export const languageByLocale = {
 };
 
 export const ROLEPLAY_CONSTANTS = {
-  bossCooldown: 3600000,
-  dungeonCooldown: 3600000,
+  bossCooldown: 3_600_000,
+  dungeonCooldown: 3_600_000,
   scapeCooldown: 7200000,
   deathCooldown: 43200000,
 };

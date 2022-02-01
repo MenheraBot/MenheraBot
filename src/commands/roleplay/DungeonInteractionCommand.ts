@@ -3,6 +3,7 @@ import {
   addToInventory,
   canGoToDungeon,
   getDungeonEnemy,
+  getFreeInventorySpace,
   isDead,
   isInventoryFull,
   makeCooldown,
@@ -18,9 +19,20 @@ import {
 } from '@roleplay/utils/Calculations';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { ROLEPLAY_CONSTANTS } from '@structures/Constants';
-import Util, { actionRow, RandomFromArray, resolveCustomId } from '@utils/Util';
-import { MessageButton, MessageEmbed } from 'discord.js-light';
+import { COLORS, ROLEPLAY_CONSTANTS } from '@structures/Constants';
+import Util, {
+  actionRow,
+  RandomFromArray,
+  resolveCustomId,
+  resolveSeparatedStrings,
+} from '@utils/Util';
+import {
+  MessageActionRow,
+  MessageButton,
+  MessageEmbed,
+  MessageSelectMenu,
+  SelectMenuInteraction,
+} from 'discord.js-light';
 
 export default class DungeonInteractionCommand extends InteractionCommand {
   constructor() {
@@ -138,11 +150,6 @@ export default class DungeonInteractionCommand extends InteractionCommand {
 
     const lootEarned = RandomFromArray(enemy.loots);
 
-    if (isInventoryFull(user)) {
-      ctx.send({ content: ctx.prettyResponse('error', 'roleplay:backpack-full'), ephemeral: true });
-    } else if (lootEarned && lootEarned.length > 0)
-      user.inventory = addToInventory(lootEarned, user.inventory);
-
     user.experience += battleResults.enemy.experience;
 
     if (user.experience >= getUserNextLevelXp(user.level)) user.level += 1;
@@ -152,7 +159,17 @@ export default class DungeonInteractionCommand extends InteractionCommand {
       until: ROLEPLAY_CONSTANTS.dungeonCooldown + Date.now(),
     });
 
-    await ctx.client.repositories.roleplayRepository.postBattle(ctx.author.id, user);
+    const embed = new MessageEmbed()
+      .setTitle(ctx.prettyResponse('crown', 'commands:dungeon.results.title'))
+      .setColor(COLORS.Purple)
+      .setDescription(
+        ctx.locale('commands:dungeon.results.description', {
+          life: user.life,
+          mana: user.mana,
+          maxLife: getUserMaxLife(user),
+          maxMana: getUserMaxMana(user),
+        }),
+      );
 
     const runawayButton = new MessageButton()
       .setCustomId(`${ctx.interaction.id} | BACK`)
@@ -169,19 +186,111 @@ export default class DungeonInteractionCommand extends InteractionCommand {
       .setLabel(ctx.locale('commands:dungeon.next', { level: dungeonLevel + 1 }))
       .setStyle('PRIMARY');
 
+    const toSendComponents: MessageActionRow[] = [
+      actionRow([nextButton]),
+      actionRow([continueButton]),
+      actionRow([runawayButton]),
+    ];
+
+    if (isInventoryFull(user)) {
+      embed.addField(
+        ctx.prettyResponse('chest', 'commands:dungeon.results.item-title'),
+        ctx.locale('commands:dungeon.results.backpack-full'),
+      );
+    } else if (lootEarned && lootEarned.length > 0) {
+      const selectItems = new MessageSelectMenu()
+        .setCustomId(`${ctx.interaction.id} | ITEM`)
+        .setMinValues(1)
+        .setPlaceholder(ctx.locale('commands:dungeon.results.grab'));
+
+      let itemText = '';
+
+      lootEarned.forEach((a, i) => {
+        itemText += `**${ctx.locale(`items:${a.id as 1}.name`)}** - ${ctx.locale(
+          'common:roleplay.level',
+        )} ${a.level}\n`;
+
+        selectItems.addOptions({
+          label: `• ${ctx.locale(`items:${a.id as 1}.name`)} | ${ctx.locale(
+            'common:roleplay.level',
+          )} ${a.level}`,
+          value: `${a.id} | ${a.level} | ${i}`,
+        });
+      });
+
+      const freeInventorySpace = getFreeInventorySpace(user);
+
+      selectItems.setMaxValues(
+        selectItems.options.length > freeInventorySpace
+          ? freeInventorySpace
+          : selectItems.options.length,
+      );
+
+      embed
+        .addField(
+          ctx.prettyResponse('chest', 'commands:dungeon.results.item-title'),
+          ctx.locale('commands:dungeon.results.loots', {
+            itemText,
+            amount: freeInventorySpace,
+          }),
+        )
+        .setFooter({ text: ctx.locale('commands:dungeon.results.footer') });
+
+      toSendComponents.push(actionRow([selectItems]));
+    }
+
     ctx.makeMessage({
-      content: ctx.prettyResponse('question', 'commands:dungeon.final-question', {
-        life: user.life,
-        mana: user.mana,
-        maxLife: getUserMaxLife(user),
-        maxMana: getUserMaxMana(user),
-      }),
-      components: [
-        actionRow([runawayButton]),
-        actionRow([continueButton]),
-        actionRow([nextButton]),
-      ],
-      embeds: [],
+      components: toSendComponents.reverse(),
+      embeds: [embed],
     });
+
+    let hasSaved = false;
+
+    const selectButton = async () => {
+      const selectedItem = await Util.collectComponentInteractionWithStartingId(
+        ctx.channel,
+        ctx.author.id,
+        ctx.interaction.id,
+        12000,
+      );
+
+      if (!selectedItem) {
+        if (!hasSaved)
+          await ctx.client.repositories.roleplayRepository.postBattle(ctx.author.id, user);
+        return;
+      }
+
+      if (resolveCustomId(selectedItem.customId) === 'ITEM') {
+        const resolvedItems = (selectedItem as SelectMenuInteraction).values.map((a) => {
+          const [id, level] = resolveSeparatedStrings(a);
+          return { id: Number(id), level: Number(level) };
+        });
+
+        user.inventory = addToInventory(resolvedItems, user.inventory);
+        await ctx.client.repositories.roleplayRepository.postBattle(ctx.author.id, user);
+        hasSaved = true;
+
+        ctx.makeMessage({ components: toSendComponents.splice(1, 3) });
+        selectButton();
+      } else {
+        switch (resolveCustomId(selectedItem.customId)) {
+          case 'BACK': {
+            ctx.makeMessage({
+              content: ctx.prettyResponse('success', 'commands:dungeon.results.back'),
+              components: [],
+              embeds: [],
+            });
+            break;
+          }
+          case 'NEXT': {
+            return DungeonInteractionCommand.DungeonLoop(ctx, user, dungeonLevel + 1);
+          }
+          case 'CONTINUE': {
+            return DungeonInteractionCommand.DungeonLoop(ctx, user, dungeonLevel);
+          }
+        }
+      }
+    };
+    selectButton();
   }
 }

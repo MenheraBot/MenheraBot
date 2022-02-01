@@ -9,7 +9,9 @@ export default class LocaleStructure {
   public languages: Array<string>;
 
   constructor() {
-    this.ns = ['common', 'commands', 'data', 'events', 'permissions', 'roleplay', 'enemies'];
+    this.ns = readdirSync(path.resolve(__dirname, '..', '..', 'src', 'locales', 'pt-BR')).map((a) =>
+      a.replace('.json', ''),
+    );
     this.languages = ['pt-BR', 'en-US'];
   }
 
