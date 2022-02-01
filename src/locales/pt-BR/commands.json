@@ -578,7 +578,7 @@
     "menhera-bigger": "A Menhera está mais proxima de 21, ela ganhou!",
     "user-bigger": "Você está mais próximo de 21, você ganhou **{{value}}** :star:"
   },
-  "inventario": {
+  "itens": {
     "no-user": "Este usuário não possui inventário",
     "title": "Inventário de {{user}}",
     "no-item": "O inventário deste usuário está vazio!",
@@ -743,7 +743,7 @@
       "dmg": "Dano",
       "mana": "Mana",
       "poor-title": "Bônus de Bênçãos",
-      "poor-description": "Você está sem Bênçãos no momento, mas fique com os status atuais de suas bênçãos enquanto isso\n\n❤️ | **Vida Extra:** {{life}}\n💧 | **Mana Extra:** {{mana}}\n⚔️ | **Dano Extra:** {{damage}}\n🛡️ | **Armadura Extra:** {{armor}}\n🧠 | **Inteligência Extra:** {{intelligence}}"  ,
+      "poor-description": "Você está sem Bênçãos no momento, mas fique com os status atuais de suas bênçãos enquanto isso\n\n❤️ | **Vida Extra:** {{life}}\n💧 | **Mana Extra:** {{mana}}\n⚔️ | **Dano Extra:** {{damage}}\n🛡️ | **Armadura Extra:** {{armor}}\n🧠 | **Inteligência Extra:** {{intelligence}}",
       "no-blesses": "Você não possui Bênçãos Santíssimas para melhorar seus Status!",
       "blessings": "Você possui **{{vitality}}** Bençãos Santíssimas de Vitalidade e **{{battle}}** de Batalha, use os botões abaixo para melhorar seus status",
       "vitality": "Pontos de Vitalidade",
@@ -962,11 +962,9 @@
     "error": "nheee, ocorreu um erro ao usar a poção! Chame minha dona em meu servidor de suporte para ver isso",
     "used": "prontinho! Você usou `{{quantidade}}` **{{choice}}**\n🩸 | Vida: **{{life}} / {{maxLife}}**\n💧 | Mana: **{{mana}} / {{maxMana}}**"
   },
-  "rpg_inventario": {
-    "description": "Veja seu inventário",
-    "usage": "",
-    "non-aventure": "você não é um aventureiro. Use m!register para começar",
-    "title": "Seu inventário",
+  "inventario": {
+    "title": "Inventário de {{user}}",
+    "no-items": "**Seu inventário está vazio!**",
     "weapon": "Arma",
     "armor": "Armadura",
     "backpack": "Mochila",

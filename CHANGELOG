@@ -9,7 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ### Added
 
-- O rpg voltou
+- O Mundo de Boleham está de Volta!
+
+### Changed
+
+- O comando `inventário` foi renomeado para `itens`
 
 ### Removed
 

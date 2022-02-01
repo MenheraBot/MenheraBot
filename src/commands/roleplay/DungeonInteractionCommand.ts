@@ -20,7 +20,7 @@ import {
 } from '@roleplay/utils/Calculations';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { COLORS, ROLEPLAY_CONSTANTS } from '@structures/Constants';
+import { COLORS, LAST_DUNGEON_LEVEL, ROLEPLAY_CONSTANTS } from '@structures/Constants';
 import Util, { actionRow, resolveCustomId, resolveSeparatedStrings } from '@utils/Util';
 import {
   MessageActionRow,
@@ -185,6 +185,9 @@ export default class DungeonInteractionCommand extends InteractionCommand {
       .setCustomId(`${ctx.interaction.id} | NEXT`)
       .setLabel(ctx.locale('commands:dungeon.next', { level: dungeonLevel + 1 }))
       .setStyle('PRIMARY');
+
+    if (dungeonLevel === LAST_DUNGEON_LEVEL)
+      nextButton.setDisabled(true).setLabel(ctx.locale('common:soon')).setEmoji('🛑');
 
     const toSendComponents: MessageActionRow[] = [
       actionRow([nextButton]),

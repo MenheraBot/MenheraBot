@@ -206,4 +206,10 @@ export interface WeaponItem {
   perLevel: number;
 }
 
-export type ItemsFile = BackPackItem | WeaponItem;
+export interface DropItem {
+  type: 'enemy_drop';
+  marketValue: number;
+  perLevel: number;
+}
+
+export type ItemsFile = BackPackItem | WeaponItem | DropItem;

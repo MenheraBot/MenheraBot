@@ -1,6 +1,8 @@
 import { HolyBlessings } from '@roleplay/Types';
 import { T8BallAnswerTypes } from '@utils/Types';
 
+export const LAST_DUNGEON_LEVEL = 5;
+
 export const shopEconomy = {
   colors: {
     purple: 30_000,

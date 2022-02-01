@@ -1,8 +1,26 @@
 {
   "1": {
-    "name": "Chaolin Matador de Porco",
-    "attacks": {
-      "1": "É o passa facas"
-    }
+    "name": "Maloph"
+  },
+  "2": {
+    "name": "Wigfez"
+  },
+  "3": {
+    "name": "Pripty"
+  },
+  "4": {
+    "name": "Steeg"
+  },
+  "5": {
+    "name": "Behefot"
+  },
+  "6": {
+    "name": "Moloran"
+  },
+  "7": {
+    "name": "Seleratus"
+  },
+  "8": {
+    "name": "Moraglia"
   }
 }

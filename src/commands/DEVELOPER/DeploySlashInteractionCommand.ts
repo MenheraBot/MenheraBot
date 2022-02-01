@@ -21,7 +21,7 @@ export default class DeploySlashInteractionCommand extends InteractionCommand {
               value: 'global',
             },
             {
-              name: 'Site',
+              name: 'WEBSITE',
               value: 'site',
             },
             {
