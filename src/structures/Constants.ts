@@ -277,10 +277,8 @@ export const languageByLocale = {
 };
 
 export const ROLEPLAY_CONSTANTS = {
-  bossCooldown: 3_600_000,
   dungeonCooldown: 3_600_000,
-  scapeCooldown: 7200000,
-  deathCooldown: 43200000,
+  deathCooldown: 10_800_000,
 };
 
 export const EightBallAnswers: { id: number; type: T8BallAnswerTypes }[] = [
