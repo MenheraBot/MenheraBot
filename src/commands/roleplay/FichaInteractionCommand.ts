@@ -158,7 +158,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
           ctx.channel,
           ctx.author.id,
           ctx.interaction.id,
-          15000,
+          15_000,
         );
 
       if (!selectedAbility) {
@@ -533,6 +533,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
       ctx.channel,
       ctx.author.id,
       ctx.interaction.id,
+      10000,
     );
 
     if (!selectedOption) {

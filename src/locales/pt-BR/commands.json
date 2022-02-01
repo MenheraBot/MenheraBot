@@ -774,6 +774,10 @@
     "no-items": "**Seu inventário está vazio!**"
   },
   "guilda": {
-    "title": "Guilda de Aventureiros"
+    "title": "Guilda de Aventureiros",
+    "sell": {
+      "no-items": "Você não possui nenhum item para vender",
+      "success": "Você vendeus seus itens com sucesso!"
+    }
   }
 }

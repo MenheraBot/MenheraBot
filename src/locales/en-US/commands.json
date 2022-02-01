@@ -769,6 +769,10 @@
     "no-items": "**Your inventory is empty!**"
   },
   "guilda": {
-    "title": "Adventurer's Guild"
+    "title": "Adventurer's Guild",
+    "sell": {
+      "no-items": "You don't have any items to sell!",
+      "success": "You sold your items successfully"
+    }
   }
 }

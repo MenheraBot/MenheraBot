@@ -97,6 +97,25 @@ export const addToInventory = (
   return inventory;
 };
 
+export const removeFromInventory = (
+  items: LeveledItem[],
+  inventory: RoleplayUserSchema['inventory'],
+): RoleplayUserSchema['inventory'] => {
+  items.forEach((a) => {
+    const inInventory = inventory.find((b) => b.id === a.id && b.level === a.level);
+    if (inInventory) {
+      inInventory.amount -= 1;
+      if (inInventory.amount <= 0)
+        inventory.splice(
+          inventory.findIndex((b) => b.id === a.id && b.level === a.level),
+          1,
+        );
+    }
+  });
+
+  return inventory;
+};
+
 export const makeCooldown = (
   cooldowns: UserCooldown[],
   newCooldown: UserCooldown,
