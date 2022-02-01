@@ -103,6 +103,7 @@ export const makeBlessingStatusUpgrade = (toBless: ToBLess, points: number): num
 
 export const getAbilityNextLevelBlessings = (abilityLevel: number): number => {
   const toNext: { [level: number]: number } = {
+    0: 1,
     1: 5,
     2: 15,
     3: 30,
