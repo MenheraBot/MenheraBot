@@ -1,6 +1,68 @@
 {
   "100": {
-    "name": "A loucura dos guri",
-    "description": "Mata tudo e todos"
+    "name": "Imbuir Em Veneno",
+    "description": "Imbui sua arma em veneno, causando dano ao seus inimigos"
+  },
+  "101": {
+    "name": "Golpes Destemidos",
+    "description": "Desfere uma série de golpes contra seu inimigo"
+  },
+  "102": {
+    "name": "Atrás de Você!",
+    "description": "Teletransporta para as costas do inimigo, atingindo-o de forma covarde"
+  },
+  "103": {
+    "name": "Golpe Desleal",
+    "description": "Nada pior que um ataque nas partes baixas... Então, ataque-as"
+  },
+  "104": {
+    "name": "Frenesi",
+    "description": "Entra em frenesi, atacando múltiplas vezes"
+  },
+  "200": {
+    "name": "Bênção Elemental"
+  },
+  "201": {
+    "name": "Raio de Luz Solar"
+  },
+  "202": {
+    "name": "Rosário"
+  },
+  "203": {
+    "name": "Ascenção Espiritual"
+  },
+  "204": {
+    "name": "Manipulação Étera",
+    "description": "Manipulação Etera, suas origens vem do prisioneiro Ricardo Eletro, mais conhecido como, Ricardo Ereto."
+  },
+  "300": {
+    "name": "Castigo Eterno"
+  },
+  "301": {
+    "name": "Dama de Ferro"
+  },
+  "302": {
+    "name": "Invocar Bahamut"
+  },
+  "303": {
+    "name": "Caça Voraz"
+  },
+  "304": {
+    "name": "Perseguição Incontrolável"
+  },
+  "400": {
+    "name": "Avanço com Escudo"
+  },
+  "401": {
+    "name": "Estande de Defesa"
+  },
+  "402": {
+    "name": "Parede de Aço"
+  },
+  "403": {
+    "name": "Proteção Corpórea"
+  },
+  "404": {
+    "name": "Nada Passará!"
   }
 }
