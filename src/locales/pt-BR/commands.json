@@ -742,6 +742,8 @@
       "armor": "Armadura",
       "dmg": "Dano",
       "mana": "Mana",
+      "poor-title": "Bônus de Bênçãos",
+      "poor-description": "Você está sem Bênçãos no momento, mas fique com os status atuais de suas bênçãos enquanto isso\n\n❤️ | **Vida Extra:** {{life}}\n💧 | **Mana Extra:** {{mana}}\n⚔️ | **Dano Extra:** {{damage}}\n🛡️ | **Armadura Extra:** {{armor}}\n🧠 | **Inteligência Extra:** {{intelligence}}"  ,
       "no-blesses": "Você não possui Bênçãos Santíssimas para melhorar seus Status!",
       "blessings": "Você possui **{{vitality}}** Bençãos Santíssimas de Vitalidade e **{{battle}}** de Batalha, use os botões abaixo para melhorar seus status",
       "vitality": "Pontos de Vitalidade",

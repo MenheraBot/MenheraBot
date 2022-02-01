@@ -251,12 +251,13 @@ export default class DungeonInteractionCommand extends InteractionCommand {
         ctx.channel,
         ctx.author.id,
         ctx.interaction.id,
-        12000,
+        15000,
       );
 
       if (!selectedItem) {
         if (!hasSaved)
           await ctx.client.repositories.roleplayRepository.postBattle(ctx.author.id, user);
+        ctx.makeMessage({ components: [] });
         return;
       }
 

@@ -25,6 +25,7 @@ import {
   getUserIntelligence,
   getUserMaxLife,
   getUserMaxMana,
+  makeBlessingStatusUpgrade,
 } from '@roleplay/utils/Calculations';
 import { LEVEL_UP_EXPERIENCE } from '@structures/Constants';
 
@@ -157,7 +158,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
           ctx.channel,
           ctx.author.id,
           ctx.interaction.id,
-          12000,
+          15000,
         );
 
       if (!selectedAbility) {
@@ -170,7 +171,19 @@ export default class FichaInteractionCommand extends InteractionCommand {
       abilities.setOptions([]);
       abilities.setPlaceholder(ctx.locale('commands:ficha.show.select-amount'));
 
-      for (let i = 1; i <= user.holyBlessings.ability && i <= 25; i++)
+      for (
+        let i = 1;
+        i <= user.holyBlessings.ability &&
+        i <= 25 &&
+        i <=
+          getAbilityNextLevelBlessings(
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            user.abilities.find((a) => a.id === Number(selectedAbility.values[0]))!.level,
+          ) -
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            user.abilities.find((a) => a.id === Number(selectedAbility.values[0]))!.blesses;
+        i++
+      )
         abilities.addOptions({ label: `${i}`, value: `${i}` });
 
       ctx.makeMessage({ components: [actionRow([abilities])] });
@@ -180,7 +193,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
           ctx.channel,
           ctx.author.id,
           ctx.interaction.id,
-          12000,
+          15000,
         );
 
       if (!selectedAmount) {
@@ -254,7 +267,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
         ctx.channel,
         ctx.author.id,
         ctx.interaction.id,
-        12000,
+        15000,
       );
 
     if (!selectedAbility) {
@@ -537,9 +550,21 @@ export default class FichaInteractionCommand extends InteractionCommand {
 
     if (resolveCustomId(selectedOption.customId) === 'STATUS') {
       if (user.holyBlessings.battle === 0 && user.holyBlessings.vitality === 0) {
+        const statusEmbed = new MessageEmbed()
+          .setTitle(ctx.locale('commands:ficha.show.poor-title'))
+          .setColor(ctx.data.user.selectedColor)
+          .setDescription(
+            ctx.locale('commands:ficha.show.poor-description', {
+              life: makeBlessingStatusUpgrade('life', user.blesses.maxLife),
+              mana: makeBlessingStatusUpgrade('mana', user.blesses.maxMana),
+              damage: makeBlessingStatusUpgrade('damage', user.blesses.damage),
+              armor: makeBlessingStatusUpgrade('armor', user.blesses.armor),
+              intelligence: makeBlessingStatusUpgrade('intelligence', user.blesses.intelligence),
+            }),
+          );
         ctx.makeMessage({
           components: [],
-          embeds: [],
+          embeds: [statusEmbed],
           content: ctx.prettyResponse('error', 'commands:ficha.show.no-blesses'),
         });
         return;
