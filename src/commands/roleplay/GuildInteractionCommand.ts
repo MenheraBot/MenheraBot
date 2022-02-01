@@ -33,6 +33,13 @@ export default class InventoryInteractionCommand extends InteractionCommand {
       return;
     }
 
+    const option = ctx.options.getString('cômodo', true);
+
+    if (option === 'quest') {
+      ctx.makeMessage({ content: ctx.prettyResponse('wink', 'common:soon') });
+      return;
+    }
+
     const embed = new MessageEmbed().setTitle(ctx.locale('commands:guilda.title'));
 
     ctx.makeMessage({ embeds: [embed] });

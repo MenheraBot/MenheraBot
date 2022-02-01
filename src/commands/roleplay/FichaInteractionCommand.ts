@@ -102,12 +102,12 @@ export default class FichaInteractionCommand extends InteractionCommand {
     ctx.makeMessage({
       embeds: [embed],
       components:
-        user.id !== mentioned.id || user.holyBlessings.ability === 0
+        user.id !== ctx.author.id || user.holyBlessings.ability === 0
           ? []
           : [actionRow([upgradeButton, unlockButton])],
     });
 
-    if (user.id !== mentioned.id || user.holyBlessings.ability === 0) return;
+    if (user.id !== ctx.author.id || user.holyBlessings.ability === 0) return;
 
     const buttonClicked = await Util.collectComponentInteractionWithStartingId(
       ctx.channel,
@@ -524,8 +524,6 @@ export default class FichaInteractionCommand extends InteractionCommand {
       .setStyle('PRIMARY')
       .setLabel(ctx.locale('commands:ficha.show.statsButton'));
 
-    if (ctx.author.id !== user.id) statusTreeButton.setDisabled(true);
-
     await ctx.makeMessage({
       embeds: [embed],
       components: [actionRow([abilityTreeButton, statusTreeButton])],
@@ -549,7 +547,10 @@ export default class FichaInteractionCommand extends InteractionCommand {
     }
 
     if (resolveCustomId(selectedOption.customId) === 'STATUS') {
-      if (user.holyBlessings.battle === 0 && user.holyBlessings.vitality === 0) {
+      if (
+        user.id !== ctx.author.id ||
+        (user.holyBlessings.battle === 0 && user.holyBlessings.vitality === 0)
+      ) {
         const statusEmbed = new MessageEmbed()
           .setTitle(ctx.locale('commands:ficha.show.poor-title'))
           .setColor(ctx.data.user.selectedColor)
@@ -565,7 +566,10 @@ export default class FichaInteractionCommand extends InteractionCommand {
         ctx.makeMessage({
           components: [],
           embeds: [statusEmbed],
-          content: ctx.prettyResponse('error', 'commands:ficha.show.no-blesses'),
+          content:
+            user.id !== ctx.author.id
+              ? ''
+              : ctx.prettyResponse('error', 'commands:ficha.show.no-blesses'),
         });
         return;
       }
