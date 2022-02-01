@@ -140,6 +140,9 @@ export default class DungeonInteractionCommand extends InteractionCommand {
         until: ROLEPLAY_CONSTANTS.deathCooldown + Date.now(),
       });
 
+      user.life = getUserMaxLife(user);
+      user.mana = getUserMaxMana(user);
+
       await ctx.client.repositories.roleplayRepository.postBattle(ctx.author.id, user);
       return;
     }
@@ -150,9 +153,16 @@ export default class DungeonInteractionCommand extends InteractionCommand {
 
     const { level, experience, holyBlessings } = makeLevelUp(user);
 
+    const oldUserLevel = user.level;
+
     user.level = level;
     user.experience = experience;
     user.holyBlessings = holyBlessings;
+
+    if (user.level > oldUserLevel) {
+      user.life = getUserMaxLife(user);
+      user.mana = getUserMaxMana(user);
+    }
 
     user.cooldowns = makeCooldown(user.cooldowns, {
       reason: 'dungeon',
