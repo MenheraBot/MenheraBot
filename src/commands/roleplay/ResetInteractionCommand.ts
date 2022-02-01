@@ -36,7 +36,7 @@ export default class ResetInteractionCommand extends InteractionCommand {
 
     switch (option) {
       case '2': {
-        ctx.client.database.Rpgs.deleteOne({ id: ctx.author.id });
+        await ctx.client.database.Rpgs.deleteOne({ id: ctx.author.id });
         break;
       }
       case '1': {
