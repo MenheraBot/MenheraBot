@@ -52,7 +52,7 @@ export const getEnemyById = (enemyId: number): IReturnData<EnemiesFile> =>
     .filter((c) => Number(c[0]) === enemyId)
     .map((c) => ({ id: Number(c[0]), data: c[1] }))[0];
 
-export const getItemById = (itemId: number): IReturnData<ItemsFile> =>
+export const getItemById = <T extends ItemsFile>(itemId: number): IReturnData<T> =>
   Object.entries(Items)
     .filter((c) => Number(c[0]) === itemId)
-    .map((c) => ({ id: Number(c[0]), data: c[1] }))[0];
+    .map((c) => ({ id: Number(c[0]), data: c[1] }))[0] as unknown as IReturnData<T>;

@@ -13,11 +13,11 @@ import { getMagicItemByCustomFilter, getMagicItemById } from './Util';
 export const calculateProbability = (probabilities: HuntProbabiltyProps[]): number => {
   const chance = Math.floor(Math.random() * 100);
 
-  let accumulator = probabilities.reduce((p, c) => p + c.probabilty, 0);
+  let accumulator = probabilities.reduce((p, c) => p + c.probability, 0);
 
   const mapedChanges: { amount: number; probabilities: number[] }[] = probabilities.map((a) => {
-    const toReturn = [accumulator - a.probabilty, accumulator];
-    accumulator -= a.probabilty;
+    const toReturn = [accumulator - a.probability, accumulator];
+    accumulator -= a.probability;
     return { amount: a.amount, probabilities: toReturn };
   });
 

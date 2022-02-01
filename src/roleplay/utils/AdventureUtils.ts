@@ -1,5 +1,7 @@
 import {
   BackPackItem,
+  EnemyDrops,
+  EnemyLoot,
   LeveledItem,
   ReadyToBattleEnemy,
   RoleplayUserSchema,
@@ -28,7 +30,9 @@ export const canGoToDungeon = (
           time: moment
             .utc(cd.until - Date.now())
             .format(moreThanAnHour(cd.until - Date.now()) ? 'HH:mm:ss' : 'mm:ss'),
-          subtime: ctx.locale(`common:${moreThanAnHour(cd.until) ? 'hours' : 'minutes'}`),
+          subtime: ctx.locale(
+            `common:${moreThanAnHour(cd.until - Date.now()) ? 'hours' : 'minutes'}`,
+          ),
         }),
       });
     }
@@ -42,7 +46,9 @@ export const getDungeonEnemy = (dungeonLevel: number, userLevel: number): ReadyT
 
   const enemy = RandomFromArray(availableEnemies);
 
-  const enemyLevel = (userLevel % 5) * 10 + Math.floor(Math.random() * 10) + 1;
+  const enemyLevel = Math.floor(userLevel / 10 + 1) + Math.floor(Math.random() * 10);
+
+  console.log(enemyLevel);
 
   const enemyData: ReadyToBattleEnemy = {
     id: enemy.id,
@@ -60,7 +66,7 @@ export const getDungeonEnemy = (dungeonLevel: number, userLevel: number): ReadyT
 export const isDead = (entity: unknown & { life: number }): boolean => entity.life <= 0;
 
 export const isInventoryFull = (user: RoleplayUserSchema): boolean => {
-  const userBackPack = getItemById(user.backpack.id) as IReturnData<BackPackItem>;
+  const userBackPack = getItemById<BackPackItem>(user.backpack.id);
 
   if (
     user.inventory.reduce((p, c) => p + c.amount, 0) >=
@@ -100,4 +106,25 @@ export const makeCooldown = (
   if (finded) finded.until = newCooldown.until;
   else cooldowns.push(newCooldown);
   return cooldowns;
+};
+
+export const getEnemyLoot = (loots: EnemyDrops[]): EnemyDrops['loots'] => {
+  const chance = Math.floor(Math.random() * 100);
+
+  let accumulator = loots.reduce((p, c) => p + c.probability, 0);
+
+  const mapedChanges: { loots: EnemyLoot[]; probabilities: number[] }[] = loots.map((a) => {
+    const toReturn = [accumulator - a.probability, accumulator];
+    accumulator -= a.probability;
+    return { loots: a.loots, probabilities: toReturn };
+  });
+
+  // eslint-disable-next-line no-restricted-syntax
+  for (const data of mapedChanges) {
+    const [min, max] = data.probabilities;
+    if (chance >= min && chance <= max) {
+      return data.loots;
+    }
+  }
+  return [];
 };

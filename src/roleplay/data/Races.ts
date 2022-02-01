@@ -6,7 +6,11 @@ const Races: { [id: number]: RacesFile } = {
     facilities: [
       {
         facility: 'baseIntelligence',
-        boostPerLevel: 8,
+        boostPerLevel: 6,
+      },
+      {
+        facility: 'maxMana',
+        boostPerLevel: 15,
       },
     ],
   },
@@ -25,6 +29,10 @@ const Races: { [id: number]: RacesFile } = {
       {
         boostPerLevel: 4,
         facility: 'baseArmor',
+      },
+      {
+        boostPerLevel: 4,
+        facility: 'maxLife',
       },
     ],
   },
@@ -60,6 +68,10 @@ const Races: { [id: number]: RacesFile } = {
       {
         boostPerLevel: 5,
         facility: 'baseArmor',
+      },
+      {
+        boostPerLevel: 6,
+        facility: 'maxLife',
       },
     ],
   },

@@ -7,6 +7,7 @@ import type permissions from '../locales/pt-BR/permissions.json';
 import type roleplay from '../locales/pt-BR/roleplay.json';
 import type enemies from '../locales/pt-BR/enemies.json';
 import type items from '../locales/pt-BR/items.json';
+import type abilities from '../locales/pt-BR/abilities.json';
 
 export type Resources = {
   commands: typeof commands;
@@ -17,6 +18,7 @@ export type Resources = {
   roleplay: typeof roleplay;
   enemies: typeof enemies;
   items: typeof items;
+  abilities: typeof abilities;
 };
 
 export type Langueges = 'en-US' | 'pt-BR';

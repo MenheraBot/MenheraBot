@@ -67,6 +67,13 @@
       "description": "Nascem na selva. São animais que possuem cognição, e claro, estão em busca de sua bela. Possuem alta defesa"
     }
   },
+  "attacks": {
+    "1": "na perna",
+    "1.3": "no braço",
+    "1.6": "nas costas",
+    "1.8": "no peito",
+    "2": "na cabeça"
+  },
   "battle": {
     "no-mana": "| Mana Insuficiente!",
     "your-stats": "Seus Status",
@@ -77,7 +84,7 @@
     "enemy-death": "Você mata **{{name}}** com sucesso!",
     "user-death": "⚰️ | Você morreu!\nVocê morreu e foi teletransportado para a Igreja. Fique descansando por um tempo para se recuperar.",
     "footer": "Faça uma ação em {{time}} segundos",
-    "deffend-text": "🛡️ | **{{enemy}}** te ataca com **{{attack}}** e te causa **{{damage}}** de dano",
+    "deffend-text": "🛡️ | **{{enemy}}** te acerta **{{attack}}** e te causa **{{damage}}** de dano",
     "attack-text": "⚔️ | Você ataca com **{{attack}}** e causa **{{damage}}** de dano",
     "select": "Selecione uma Ação",
     "title": "Batalha Contra {{name}}",
@@ -85,7 +92,7 @@
     "options": {
       "hand-attack": "Ataque Básico",
       "hand-attack-description": "Dê um ataque com sua arma primária",
-      "info": "⚔️ | Dano: **{{damage}}**\n💧 | Custo: **{{cost}}** {{no-mana}}",
+      "info": "⚔️ | Dano: **{{damage}}**\n🧪 | Cura: **{{heal}}**\n💧 | Custo: **{{cost}}** {{no-mana}}",
       "available": "Opções Disponíveis"
     }
   },

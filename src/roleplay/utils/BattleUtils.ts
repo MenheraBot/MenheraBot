@@ -1,15 +1,18 @@
 import { ReadyToBattleEnemy, RoleplayUserSchema } from '@roleplay/Types';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { COLORS } from '@structures/Constants';
-import Util, { actionRow, RandomFromArray, resolveSeparatedStrings } from '@utils/Util';
+import { COLORS, ENEMY_ATTACK_MULTIPLIER_CHANCE } from '@structures/Constants';
+import { calculateProbability } from '@utils/HuntUtils';
+import Util, { actionRow, resolveSeparatedStrings } from '@utils/Util';
 import { MessageEmbed, MessageSelectMenu, SelectMenuInteraction } from 'discord.js-light';
 import {
   calculateEffectiveDamage,
+  getAbilityCost,
+  getAbilityDamage,
+  getAbilityHeal,
   getUserArmor,
   getUserDamage,
   getUserIntelligence,
 } from './Calculations';
-import { getAbilityById } from './DataUtils';
 
 const TIME_TO_SELECT = 8000;
 
@@ -40,9 +43,8 @@ export const enemyAttack = (
   ctx: InteractionCommandContext,
   text: string,
 ): [boolean, RoleplayUserSchema, ReadyToBattleEnemy, string] => {
-  const attack = RandomFromArray(enemy.attacks);
-
-  const effectiveDamage = attack.damage;
+  const multiplier = calculateProbability(ENEMY_ATTACK_MULTIPLIER_CHANCE);
+  const effectiveDamage = calculateEffectiveDamage(enemy.damage * multiplier, getUserArmor(user));
 
   user.life -= effectiveDamage;
 
@@ -54,7 +56,7 @@ export const enemyAttack = (
     `${text}\n${ctx.locale('roleplay:battle.deffend-text', {
       enemy: ctx.locale(`enemies:${enemy.id as 1}.name`),
       damage: effectiveDamage,
-      attack: ctx.locale(`enemies:${enemy.id as 1}.attacks.${attack.id as 1}`),
+      attack: ctx.locale(`roleplay:attacks.${multiplier as 1}`),
     })}`,
   ];
 };
@@ -113,27 +115,25 @@ export const userAttack = async (
 
   embed.addField(
     ctx.locale('roleplay:battle.options.hand-attack'),
-    ctx.locale('roleplay:battle.options.info', { damage: user.damage, cost: 0 }),
+    ctx.locale('roleplay:battle.options.info', { damage: getUserDamage(user), cost: 0, heal: 0 }),
     true,
   );
 
   user.abilities.forEach((ability) => {
-    // TODO: Make damage and cost scale with level
-    const resolvedAbility = getAbilityById(ability.id);
     embed.addField(
-      ctx.locale(`roleplay:abilities.${ability.id as 100}.name`),
+      ctx.locale(`abilities:${ability.id as 100}.name`),
       ctx.locale('roleplay:battle.options.info', {
-        damage: resolvedAbility.data.damage,
-        cost: resolvedAbility.data.cost,
-        'no-mana':
-          user.mana < resolvedAbility.data.cost ? ctx.locale('roleplay:battle.no-mana') : '',
+        damage: getAbilityDamage(ability, getUserIntelligence(user)),
+        heal: getAbilityHeal(ability, getUserIntelligence(user)),
+        cost: getAbilityCost(ability),
+        'no-mana': user.mana < getAbilityCost(ability) ? ctx.locale('roleplay:battle.no-mana') : '',
       }),
       true,
     );
 
-    if (user.mana >= resolvedAbility.data.cost) {
+    if (user.mana >= getAbilityCost(ability)) {
       options.addOptions({
-        label: ctx.locale(`roleplay:abilities.${ability.id as 100}.name`),
+        label: ctx.locale(`abilities:${ability.id as 100}.name`),
         value: `ABILITY | ${ability.id}`,
       });
     }
@@ -153,7 +153,7 @@ export const userAttack = async (
 
   switch (resolveSeparatedStrings(selectedOptions.values[0])[0]) {
     case 'HANDATTACK': {
-      const damageDealt = calculateEffectiveDamage(user, enemy);
+      const damageDealt = calculateEffectiveDamage(getUserDamage(user), enemy.armor);
       enemy.life -= damageDealt;
       if (enemy.life <= 0) return [true, user, enemy, ctx.locale('roleplay:battle.enemy-death')];
       return [
@@ -167,13 +167,14 @@ export const userAttack = async (
       ];
     }
     case 'ABILITY': {
-      const usedAbility = getAbilityById(
-        Number(resolveSeparatedStrings(selectedOptions.values[0])[1]),
-      );
+      const abilityId = Number(resolveSeparatedStrings(selectedOptions.values[0])[1]);
 
-      const damageDealt = usedAbility.data.damage;
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const usedAbility = user.abilities.find((a) => a.id === abilityId)!;
+
+      const damageDealt = getAbilityDamage(usedAbility, getUserIntelligence(user));
       enemy.life -= damageDealt;
-      user.mana -= usedAbility.data.cost;
+      user.mana -= getAbilityCost(usedAbility);
 
       if (enemy.life <= 0) return [true, user, enemy, ctx.locale('roleplay:battle.enemy-death')];
       return [
@@ -182,9 +183,7 @@ export const userAttack = async (
         enemy,
         ctx.locale('roleplay:battle.attack-text', {
           attack: ctx.locale(
-            `roleplay:abilities.${
-              resolveSeparatedStrings(selectedOptions.values[0])[1] as '100'
-            }.name`,
+            `abilities:${resolveSeparatedStrings(selectedOptions.values[0])[1] as '100'}.name`,
           ),
           damage: damageDealt,
         }),

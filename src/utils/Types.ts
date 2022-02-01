@@ -302,7 +302,7 @@ export type HuntingTypes = 'demons' | 'giants' | 'angels' | 'archangels' | 'demi
 
 export interface HuntProbabiltyProps {
   amount: number;
-  probabilty: number;
+  probability: number;
 }
 
 export interface HuntProbability {

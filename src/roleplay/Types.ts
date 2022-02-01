@@ -61,9 +61,6 @@ export interface RoleplayUserSchema {
   race: number;
   life: number;
   mana: number;
-  intelligence: number;
-  armor: number;
-  damage: number;
   level: number;
   experience: number;
   holyBlessings: HolyBlessings;
@@ -209,4 +206,4 @@ export interface WeaponItem {
   perLevel: number;
 }
 
-export type ItemsFile = BackPackItem | ;
+export type ItemsFile = BackPackItem | WeaponItem;

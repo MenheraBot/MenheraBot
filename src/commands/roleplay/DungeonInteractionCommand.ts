@@ -3,6 +3,7 @@ import {
   addToInventory,
   canGoToDungeon,
   getDungeonEnemy,
+  getEnemyLoot,
   getFreeInventorySpace,
   isDead,
   isInventoryFull,
@@ -15,17 +16,11 @@ import {
   getUserIntelligence,
   getUserMaxLife,
   getUserMaxMana,
-  getUserNextLevelXp,
 } from '@roleplay/utils/Calculations';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { COLORS, ROLEPLAY_CONSTANTS } from '@structures/Constants';
-import Util, {
-  actionRow,
-  RandomFromArray,
-  resolveCustomId,
-  resolveSeparatedStrings,
-} from '@utils/Util';
+import Util, { actionRow, resolveCustomId, resolveSeparatedStrings } from '@utils/Util';
 import {
   MessageActionRow,
   MessageButton,
@@ -148,11 +143,11 @@ export default class DungeonInteractionCommand extends InteractionCommand {
       return;
     }
 
-    const lootEarned = RandomFromArray(enemy.loots);
+    const lootEarned = getEnemyLoot(enemy.loots);
 
     user.experience += battleResults.enemy.experience;
 
-    if (user.experience >= getUserNextLevelXp(user.level)) user.level += 1;
+    // if (user.experience >= getUserNextLevelXp(user.level)) user.level += 1;
 
     user.cooldowns = makeCooldown(user.cooldowns, {
       reason: 'dungeon',

@@ -3,13 +3,13 @@ import { ClassesFile } from '@roleplay/Types';
 const Classes: { [id: number]: ClassesFile } = {
   1: {
     name: 'mage',
-    baseArmor: 7,
+    baseArmor: 10,
     baseDamage: 20,
     baseIntelligence: 30,
     baseMaxLife: 100,
     baseMaxMana: 50,
     attributesPerLevel: {
-      baseArmor: 1,
+      baseArmor: 3,
       baseDamage: 3,
       maxLife: 30,
       maxMana: 10,
@@ -19,13 +19,13 @@ const Classes: { [id: number]: ClassesFile } = {
   },
   2: {
     name: 'sorcerer',
-    baseArmor: 7,
+    baseArmor: 10,
     baseDamage: 20,
     baseIntelligence: 30,
     baseMaxLife: 100,
     baseMaxMana: 50,
     attributesPerLevel: {
-      baseArmor: 1,
+      baseArmor: 3,
       baseDamage: 3,
       maxLife: 30,
       maxMana: 10,
@@ -35,7 +35,7 @@ const Classes: { [id: number]: ClassesFile } = {
   },
   3: {
     name: 'illusionist',
-    baseArmor: 6,
+    baseArmor: 9,
     baseDamage: 19,
     baseIntelligence: 29,
     baseMaxLife: 100,
@@ -51,7 +51,7 @@ const Classes: { [id: number]: ClassesFile } = {
   },
   4: {
     name: 'archmage',
-    baseArmor: 7,
+    baseArmor: 10,
     baseDamage: 20,
     baseIntelligence: 30,
     baseMaxLife: 100,
@@ -67,7 +67,7 @@ const Classes: { [id: number]: ClassesFile } = {
   },
   5: {
     name: 'necromancer',
-    baseArmor: 6,
+    baseArmor: 10,
     baseDamage: 19,
     baseIntelligence: 29,
     baseMaxLife: 100,
@@ -83,7 +83,7 @@ const Classes: { [id: number]: ClassesFile } = {
   },
   6: {
     name: 'assassin',
-    baseArmor: 6,
+    baseArmor: 9,
     baseDamage: 25,
     baseIntelligence: 15,
     baseMaxLife: 100,
@@ -99,7 +99,7 @@ const Classes: { [id: number]: ClassesFile } = {
   },
   7: {
     name: 'barbarian',
-    baseArmor: 10,
+    baseArmor: 15,
     baseDamage: 15,
     baseIntelligence: 10,
     baseMaxLife: 100,
@@ -115,13 +115,13 @@ const Classes: { [id: number]: ClassesFile } = {
   },
   8: {
     name: 'archer',
-    baseArmor: 7,
+    baseArmor: 11,
     baseDamage: 22,
     baseIntelligence: 15,
     baseMaxLife: 100,
     baseMaxMana: 50,
     attributesPerLevel: {
-      baseArmor: 4,
+      baseArmor: 3,
       baseDamage: 13,
       maxLife: 40,
       maxMana: 5,
@@ -131,7 +131,7 @@ const Classes: { [id: number]: ClassesFile } = {
   },
   9: {
     name: 'paladin',
-    baseArmor: 11,
+    baseArmor: 16,
     baseDamage: 14,
     baseIntelligence: 12,
     baseMaxLife: 100,
@@ -147,13 +147,13 @@ const Classes: { [id: number]: ClassesFile } = {
   },
   10: {
     name: 'tamer',
-    baseArmor: 6,
+    baseArmor: 10,
     baseDamage: 19,
     baseIntelligence: 29,
     baseMaxLife: 100,
     baseMaxMana: 50,
     attributesPerLevel: {
-      baseArmor: 3,
+      baseArmor: 4,
       baseDamage: 9,
       maxLife: 50,
       maxMana: 10,

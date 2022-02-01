@@ -85,7 +85,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
               .map((a) =>
                 ctx.locale('commands:cacar.chances', {
                   count: a.amount,
-                  percentage: a.probabilty,
+                  percentage: a.probability,
                 }),
               )
               .join('\n')}`,
@@ -97,7 +97,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
               .map((a) =>
                 ctx.locale('commands:cacar.chances', {
                   count: a.amount,
-                  percentage: a.probabilty,
+                  percentage: a.probability,
                 }),
               )
               .join('\n')}`,
@@ -109,7 +109,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
               .map((a) =>
                 ctx.locale('commands:cacar.chances', {
                   count: a.amount,
-                  percentage: a.probabilty,
+                  percentage: a.probability,
                 }),
               )
               .join('\n')}`,
@@ -121,7 +121,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
               .map((a) =>
                 ctx.locale('commands:cacar.chances', {
                   count: a.amount,
-                  percentage: a.probabilty,
+                  percentage: a.probability,
                 }),
               )
               .join('\n')}`,
@@ -133,7 +133,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
               .map((a) =>
                 ctx.locale('commands:cacar.chances', {
                   count: a.amount,
-                  percentage: a.probabilty,
+                  percentage: a.probability,
                 }),
               )
               .join('\n')}`,
@@ -145,7 +145,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
               .map((a) =>
                 ctx.locale('commands:cacar.chances', {
                   count: a.amount,
-                  percentage: a.probabilty,
+                  percentage: a.probability,
                 }),
               )
               .join('\n')}`,

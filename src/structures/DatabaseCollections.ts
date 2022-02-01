@@ -81,13 +81,8 @@ const rpgSchema = new Schema({
   race: { type: Number },
   life: { type: Number },
   mana: { type: Number },
-  maxLife: { type: Number },
-  maxMana: { type: Number },
-  intelligence: { type: Number },
   level: { type: Number },
   experience: { type: Number, default: 0 },
-  armor: { type: Number, default: 0 },
-  damage: { type: Number, default: 0 },
   abilities: { type: Array, default: [] },
   holyBlessings: { type: Object, default: { ability: 0, vitality: 0, battle: 0 } },
   loots: { type: Array, default: [] },
@@ -96,7 +91,6 @@ const rpgSchema = new Schema({
   cooldowns: { type: Array, default: [] },
   weapon: { type: Object },
   protection: { type: Object },
-  inBattle: { type: Boolean, default: false },
   backpack: { type: Object, default: { id: 100, level: 1 } },
 });
 

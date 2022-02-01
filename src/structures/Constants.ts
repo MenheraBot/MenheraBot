@@ -21,42 +21,50 @@ export const shopEconomy = {
   },
 };
 
+export const ENEMY_ATTACK_MULTIPLIER_CHANCE = [
+  { amount: 1, probability: 85 },
+  { amount: 1.3, probability: 5 },
+  { amount: 1.6, probability: 4 },
+  { amount: 1.8, probability: 5 },
+  { amount: 2, probability: 1 },
+];
+
 export const defaultHuntingProbabilities = {
   demons: [
-    { amount: 0, probabilty: 25 },
-    { amount: 1, probabilty: 21 },
-    { amount: 2, probabilty: 18 },
-    { amount: 4, probabilty: 15 },
-    { amount: 3, probabilty: 12 },
-    { amount: 5, probabilty: 9 },
+    { amount: 0, probability: 25 },
+    { amount: 1, probability: 21 },
+    { amount: 2, probability: 18 },
+    { amount: 4, probability: 15 },
+    { amount: 3, probability: 12 },
+    { amount: 5, probability: 9 },
   ],
   giants: [
-    { amount: 0, probabilty: 33 },
-    { amount: 1, probabilty: 23 },
-    { amount: 2, probabilty: 19 },
-    { amount: 4, probabilty: 18 },
-    { amount: 3, probabilty: 7 },
+    { amount: 0, probability: 33 },
+    { amount: 1, probability: 23 },
+    { amount: 2, probability: 19 },
+    { amount: 4, probability: 18 },
+    { amount: 3, probability: 7 },
   ],
   angels: [
-    { amount: 0, probabilty: 50 },
-    { amount: 1, probabilty: 30 },
-    { amount: 2, probabilty: 15 },
-    { amount: 3, probabilty: 5 },
+    { amount: 0, probability: 50 },
+    { amount: 1, probability: 30 },
+    { amount: 2, probability: 15 },
+    { amount: 3, probability: 5 },
   ],
   archangels: [
-    { amount: 0, probabilty: 54 },
-    { amount: 1, probabilty: 27 },
-    { amount: 2, probabilty: 15 },
-    { amount: 3, probabilty: 4 },
+    { amount: 0, probability: 54 },
+    { amount: 1, probability: 27 },
+    { amount: 2, probability: 15 },
+    { amount: 3, probability: 4 },
   ],
   demigods: [
-    { amount: 0, probabilty: 70 },
-    { amount: 1, probabilty: 27 },
-    { amount: 2, probabilty: 3 },
+    { amount: 0, probability: 70 },
+    { amount: 1, probability: 27 },
+    { amount: 2, probability: 3 },
   ],
   gods: [
-    { amount: 0, probabilty: 92 },
-    { amount: 1, probabilty: 8 },
+    { amount: 0, probability: 92 },
+    { amount: 1, probability: 8 },
   ],
 };
 

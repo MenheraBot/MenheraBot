@@ -79,7 +79,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
 
     user.abilities.forEach((a) => {
       embed.addField(
-        ctx.locale(`roleplay:abilities.${a.id as 100}.name`),
+        ctx.locale(`abilities:${a.id as 100}.name`),
         `${ctx.prettyResponse('level', 'common:roleplay.level')}: **${
           a.level
         }**\n${ctx.prettyResponse('experience', 'common:roleplay.blesses')}: **${
@@ -137,11 +137,11 @@ export default class FichaInteractionCommand extends InteractionCommand {
 
       user.abilities.forEach((a) => {
         abilities.addOptions({
-          label: ctx.locale(`roleplay:abilities.${a.id as 100}.name`),
+          label: ctx.locale(`abilities:${a.id as 100}.name`),
           value: `${a.id}`,
         });
         upgradeEmbed.addField(
-          ctx.locale(`roleplay:abilities.${a.id as 100}.name`),
+          ctx.locale(`abilities:${a.id as 100}.name`),
           `${ctx.prettyResponse('level', 'common:roleplay.level')}: **${
             a.level
           }**\n${ctx.prettyResponse('experience', 'common:roleplay.blesses')}: **${
@@ -228,8 +228,8 @@ export default class FichaInteractionCommand extends InteractionCommand {
 
     availableAbilities.forEach((a) => {
       unlockEmbed.addField(
-        ctx.locale(`roleplay:abilities.${a.id as 100}.name`),
-        `${ctx.locale(`roleplay:abilities.${a.id as 100}.description`)}\n${ctx.prettyResponse(
+        ctx.locale(`abilities:${a.id as 100}.name`),
+        `${ctx.locale(`abilities:${a.id as 100}.description`)}\n${ctx.prettyResponse(
           'lock',
           'commands:ficha.show.abilities.cost',
         )}: **${a.data.unlockCost}** ${ctx.locale('common:roleplay.blesses')}`,
@@ -237,7 +237,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
 
       if (user.holyBlessings.ability >= a.data.unlockCost)
         unlockAbilityMenu.addOptions({
-          label: ctx.locale(`roleplay:abilities.${a.id as 100}.name`),
+          label: ctx.locale(`abilities:${a.id as 100}.name`),
           value: `${a.id}`,
         });
     });
@@ -277,7 +277,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
       embeds: [],
       components: [],
       content: ctx.prettyResponse('success', 'commands:ficha.show.abilities.unlock-success', {
-        name: ctx.locale(`roleplay:abilities.${selectedAbility.values[0] as '100'}.name`),
+        name: ctx.locale(`abilities:${selectedAbility.values[0] as '100'}.name`),
       }),
     });
   }
@@ -674,13 +674,8 @@ export default class FichaInteractionCommand extends InteractionCommand {
     const registerStatus = {
       class: Number(selectedClass.values[0]),
       race: Number(selectedRace.values[0]),
-      armor: resolvedClass.data.baseArmor,
-      damage: resolvedClass.data.baseDamage,
-      intelligence: resolvedClass.data.baseIntelligence,
-      maxLife: resolvedClass.data.baseMaxLife,
-      maxMana: resolvedClass.data.baseMaxMana,
-      life: resolvedClass.data.baseMaxLife,
-      mana: resolvedClass.data.baseMaxMana,
+      life: resolvedClass.data.baseMaxLife + resolvedClass.data.attributesPerLevel.maxLife,
+      mana: resolvedClass.data.baseMaxMana + resolvedClass.data.attributesPerLevel.maxMana,
       abilities: [{ id: resolvedClass.data.abilityTree, level: 0, blesses: 0 }],
       holyBlessings: { ability: 0, vitality: 0, battle: 0 },
     };
