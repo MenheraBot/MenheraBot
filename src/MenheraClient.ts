@@ -25,8 +25,6 @@ export default class MenheraClient extends Client {
 
   public slashCommands: Collection<string, InteractionCommand>;
 
-  public aliases: Collection<string, string>;
-
   public events: EventManager;
 
   public picassoWs: PicassoWebSocket;
@@ -47,7 +45,6 @@ export default class MenheraClient extends Client {
       process.env.NODE_ENV !== 'development',
     );
     this.slashCommands = new Collection();
-    this.aliases = new Collection();
     this.cooldowns = new Collection();
     this.commandExecutions = new Set();
     this.events = new EventManager(this);

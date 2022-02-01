@@ -6,7 +6,7 @@ const Races: { [id: number]: RacesFile } = {
     facilities: [
       {
         facility: 'baseIntelligence',
-        boostPerLevel: 3,
+        boostPerLevel: 8,
       },
     ],
   },
@@ -32,7 +32,7 @@ const Races: { [id: number]: RacesFile } = {
     name: 'half-demon',
     facilities: [
       {
-        boostPerLevel: 2,
+        boostPerLevel: 4,
         facility: 'baseIntelligence',
       },
       {
@@ -49,8 +49,8 @@ const Races: { [id: number]: RacesFile } = {
         facility: 'baseDamage',
       },
       {
-        boostPerLevel: 2,
-        facility: 'maxStamina',
+        boostPerLevel: 3,
+        facility: 'baseArmor',
       },
     ],
   },
@@ -59,7 +59,7 @@ const Races: { [id: number]: RacesFile } = {
     facilities: [
       {
         boostPerLevel: 5,
-        facility: 'maxStamina',
+        facility: 'baseArmor',
       },
     ],
   },

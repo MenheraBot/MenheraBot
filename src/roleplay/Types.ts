@@ -101,15 +101,7 @@ interface BaseAttributesPerLevel {
   maxMana: number;
   baseArmor: number;
   baseDamage: number;
-  maxStamina: number;
   baseIntelligence: number;
-  holyBlessings: number;
-}
-
-interface UnlockAbility<FromItem extends boolean = false> {
-  availableLevel: number;
-  maxEvolve: number;
-  itemId: FromItem extends true ? number : undefined;
 }
 
 export type ClassesNameDefinition =
@@ -136,8 +128,6 @@ export interface ClassesFile {
   baseArmor: number;
   baseDamage: number;
   baseIntelligence: number;
-  baseMaxStamina: number;
-  availableAbilities: UnlockAbility[];
   abilityTree: number;
 }
 
@@ -157,11 +147,16 @@ interface PerLevelBoost {
   cost: number;
 }
 
+export interface ScalableWithInteligence {
+  readonly scale: number;
+  base: number;
+}
+
 export interface AbilitiesFile {
   DevDesc: string;
   parentId: number;
-  damage: number;
-  heal: number;
+  damage: ScalableWithInteligence;
+  heal: ScalableWithInteligence;
   cost: number;
   unlockCost: number;
   boostPerLevel: PerLevelBoost;

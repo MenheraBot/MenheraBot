@@ -4,8 +4,14 @@ const Abilities: { [id: number]: AbilitiesFile } = {
   100: {
     DevDesc: 'Lamina Envenenada (assassino)',
     cost: 0,
-    damage: 1700,
-    heal: 0,
+    damage: {
+      base: 20,
+      scale: 50,
+    },
+    heal: {
+      base: 0,
+      scale: 0,
+    },
     parentId: 0,
     unlockCost: 0,
     boostPerLevel: {
@@ -17,8 +23,14 @@ const Abilities: { [id: number]: AbilitiesFile } = {
   101: {
     DevDesc: 'Golpes Destemidos (assassino)',
     cost: 60,
-    damage: 18,
-    heal: 0,
+    damage: {
+      base: 18,
+      scale: 50,
+    },
+    heal: {
+      base: 0,
+      scale: 0,
+    },
     parentId: 1,
     unlockCost: 20,
     boostPerLevel: {
@@ -30,8 +42,14 @@ const Abilities: { [id: number]: AbilitiesFile } = {
   102: {
     DevDesc: 'Atras de Você! (Assassino)',
     cost: 80,
-    damage: 17,
-    heal: 0,
+    damage: {
+      base: 17,
+      scale: 50,
+    },
+    heal: {
+      base: 0,
+      scale: 0,
+    },
     parentId: 1,
     unlockCost: 20,
     boostPerLevel: {
@@ -43,8 +61,14 @@ const Abilities: { [id: number]: AbilitiesFile } = {
   103: {
     DevDesc: 'Golpe Desleal (assassino)',
     cost: 80,
-    damage: 17,
-    heal: 130,
+    damage: {
+      base: 17,
+      scale: 50,
+    },
+    heal: {
+      base: 130,
+      scale: 60,
+    },
     parentId: 3,
     unlockCost: 60,
     boostPerLevel: {
@@ -56,8 +80,14 @@ const Abilities: { [id: number]: AbilitiesFile } = {
   104: {
     DevDesc: 'Frenesi (assassino)',
     cost: 80,
-    damage: 15,
-    heal: 0,
+    damage: {
+      base: 15,
+      scale: 0,
+    },
+    heal: {
+      base: 0,
+      scale: 0,
+    },
     parentId: 2,
     unlockCost: 60,
     boostPerLevel: {
@@ -69,21 +99,33 @@ const Abilities: { [id: number]: AbilitiesFile } = {
   200: {
     DevDesc: 'Benção Elemental (mago branco)',
     cost: 50,
-    damage: 10,
-    heal: 30,
+    damage: {
+      base: 10,
+      scale: 80,
+    },
+    heal: {
+      base: 30,
+      scale: 40,
+    },
     parentId: 0,
     unlockCost: 0,
     boostPerLevel: {
       cost: 5,
-      damage: 10,
-      heal: 150,
+      damage: 60,
+      heal: 60,
     },
   },
   201: {
     DevDesc: 'Raio de Luz Solar (mago branco)',
     cost: 80,
-    damage: 35,
-    heal: 0,
+    damage: {
+      base: 35,
+      scale: 85,
+    },
+    heal: {
+      base: 0,
+      scale: 0,
+    },
     parentId: 6,
     unlockCost: 20,
     boostPerLevel: {
@@ -95,8 +137,14 @@ const Abilities: { [id: number]: AbilitiesFile } = {
   202: {
     DevDesc: 'Rosario (mago branco)',
     cost: 80,
-    damage: 35,
-    heal: 0,
+    damage: {
+      base: 35,
+      scale: 90,
+    },
+    heal: {
+      base: 0,
+      scale: 0,
+    },
     unlockCost: 60,
     parentId: 7,
     boostPerLevel: {
@@ -108,21 +156,33 @@ const Abilities: { [id: number]: AbilitiesFile } = {
   203: {
     DevDesc: 'Ascenção Espiritual (mago branco)',
     cost: 80,
-    damage: 35,
-    heal: 5,
+    damage: {
+      base: 35,
+      scale: 80,
+    },
+    heal: {
+      base: 10,
+      scale: 60,
+    },
     parentId: 6,
     unlockCost: 20,
     boostPerLevel: {
       cost: 10,
       damage: 50,
-      heal: 0,
+      heal: 10,
     },
   },
   204: {
     DevDesc: 'Manipulação Éterea (mago branco)',
     cost: 100,
-    damage: 80,
-    heal: 0,
+    damage: {
+      base: 80,
+      scale: 80,
+    },
+    heal: {
+      base: 0,
+      scale: 0,
+    },
     parentId: 9,
     unlockCost: 60,
     boostPerLevel: {
@@ -134,8 +194,14 @@ const Abilities: { [id: number]: AbilitiesFile } = {
   300: {
     DevDesc: 'Castigo Eterno (Contratados)',
     cost: 25,
-    damage: 16,
-    heal: 0,
+    damage: {
+      base: 16,
+      scale: 70,
+    },
+    heal: {
+      base: 0,
+      scale: 0,
+    },
     parentId: 0,
     unlockCost: 0,
     boostPerLevel: {
@@ -147,8 +213,14 @@ const Abilities: { [id: number]: AbilitiesFile } = {
   301: {
     DevDesc: 'Dama de Ferro (contratados)',
     cost: 90,
-    damage: 40,
-    heal: 0,
+    damage: {
+      base: 40,
+      scale: 85,
+    },
+    heal: {
+      base: 0,
+      scale: 0,
+    },
     parentId: 11,
     unlockCost: 20,
     boostPerLevel: {
@@ -160,8 +232,14 @@ const Abilities: { [id: number]: AbilitiesFile } = {
   302: {
     DevDesc: 'Invocar Bahamut (contratados)',
     cost: 130,
-    damage: 120,
-    heal: 0,
+    damage: {
+      base: 120,
+      scale: 100,
+    },
+    heal: {
+      base: 0,
+      scale: 0,
+    },
     unlockCost: 60,
     parentId: 12,
     boostPerLevel: {
@@ -173,8 +251,14 @@ const Abilities: { [id: number]: AbilitiesFile } = {
   303: {
     DevDesc: 'Caça Voraz (contratados)',
     cost: 50,
-    damage: 34,
-    heal: 0,
+    damage: {
+      base: 34,
+      scale: 80,
+    },
+    heal: {
+      base: 0,
+      scale: 0,
+    },
     unlockCost: 20,
     parentId: 11,
     boostPerLevel: {
@@ -186,8 +270,14 @@ const Abilities: { [id: number]: AbilitiesFile } = {
   304: {
     DevDesc: 'Perseguição Incontrolável (contratados)',
     cost: 110,
-    damage: 130,
-    heal: 0,
+    damage: {
+      base: 130,
+      scale: 95,
+    },
+    heal: {
+      base: 0,
+      scale: 0,
+    },
     unlockCost: 60,
     parentId: 14,
     boostPerLevel: {
@@ -199,8 +289,14 @@ const Abilities: { [id: number]: AbilitiesFile } = {
   400: {
     DevDesc: 'Avanço com Escudo (tanks)',
     cost: 20,
-    damage: 10,
-    heal: 60,
+    damage: {
+      base: 10,
+      scale: 60,
+    },
+    heal: {
+      base: 60,
+      scale: 80,
+    },
     parentId: 0,
     unlockCost: 0,
     boostPerLevel: {
@@ -212,8 +308,14 @@ const Abilities: { [id: number]: AbilitiesFile } = {
   401: {
     DevDesc: 'Estande de Defesa (tanks)',
     cost: 60,
-    damage: 60,
-    heal: 0,
+    damage: {
+      base: 60,
+      scale: 50,
+    },
+    heal: {
+      base: 0,
+      scale: 0,
+    },
     unlockCost: 20,
     parentId: 16,
     boostPerLevel: {
@@ -225,8 +327,14 @@ const Abilities: { [id: number]: AbilitiesFile } = {
   402: {
     DevDesc: 'Parede de Aço (tank)',
     cost: 80,
-    damage: 120,
-    heal: 50,
+    damage: {
+      base: 120,
+      scale: 40,
+    },
+    heal: {
+      base: 50,
+      scale: 80,
+    },
     unlockCost: 60,
     parentId: 17,
     boostPerLevel: {
@@ -238,21 +346,33 @@ const Abilities: { [id: number]: AbilitiesFile } = {
   403: {
     DevDesc: 'Proteção Corporal (tank)',
     cost: 60,
-    damage: 25,
-    heal: 0,
+    damage: {
+      base: 12,
+      scale: 120,
+    },
+    heal: {
+      base: 0,
+      scale: 0,
+    },
     unlockCost: 20,
     parentId: 16,
     boostPerLevel: {
       cost: 10,
-      damage: 60,
+      damage: 40,
       heal: 0,
     },
   },
   404: {
     DevDesc: 'Nada Passará! (ank)',
     cost: 80,
-    damage: 100,
-    heal: 150,
+    damage: {
+      base: 100,
+      scale: 50,
+    },
+    heal: {
+      base: 150,
+      scale: 40,
+    },
     parentId: 19,
     unlockCost: 60,
     boostPerLevel: {

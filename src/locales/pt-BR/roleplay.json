@@ -60,17 +60,11 @@
     },
     "5": {
       "name": "Demi-Humano",
-      "description": "Os famosos Meio-Animais. Vivem entre os humanos, porém sofrem um pouco de preconceito por conta de suas orelhas e rabos. Sua força e sua stamina são divididas igualmente"
+      "description": "Os famosos Meio-Animais. Vivem entre os humanos, porém sofrem um pouco de preconceito por conta de suas orelhas e rabos. Sua força e sua armadura são divididas igualmente"
     },
     "6": {
       "name": "Fera",
-      "description": "Nascem na selva. São animais que possuem cognição, e claro, estão em busca de sua bela. Possuem alta stamina"
-    }
-  },
-  "abilities": {
-    "100": {
-      "name": "A loucura dos guri",
-      "description": "Mata tudo e todos"
+      "description": "Nascem na selva. São animais que possuem cognição, e claro, estão em busca de sua bela. Possuem alta defesa"
     }
   },
   "battle": {
