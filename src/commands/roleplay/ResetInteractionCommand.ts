@@ -15,7 +15,7 @@ export default class ResetInteractionCommand extends InteractionCommand {
           description: 'Você deseja deletar a conta ou só resetar mana e vida?',
           required: true,
           choices: [
-            { name: 'Resetar Mana e Vida', value: '1' },
+            { name: 'Resetar Mana, Vida e Cooldowns', value: '1' },
             { name: 'Resetar Conta Pra pegar Outra Classe', value: '2' },
             { name: 'Pegar Bençãos Pra upar habilidade', value: '3' },
           ],
@@ -43,6 +43,7 @@ export default class ResetInteractionCommand extends InteractionCommand {
         ctx.client.repositories.roleplayRepository.updateUser(ctx.author.id, {
           life: getUserMaxLife(user),
           mana: getUserMaxMana(user),
+          cooldowns: [],
         });
         break;
       }
