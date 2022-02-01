@@ -96,28 +96,6 @@
       "available": "Opções Disponíveis"
     }
   },
-  "death": "Essa não, você morreu! Para se recuperar dos danos, você retornou para a guilda, e ficará de repouso por 12 horas!",
-  "basic-attack": "Ataque Básico",
-  "new-ability": "Você atingiu o nível **{{level}}** e liberou uma nova habilidade! **{{ability}}**",
-  "family": "Você desbloqueou as famílias! Use `m!família` para entrar em uma família",
-  "boss": "você atinge o nível 20, e se torna um MESTRE da dungeon!\nA partir de agora, você pode usar o m!boss, para batalhar contra bosses quando quiser",
-  "result": {
-    "title": "Resultados da Batalha",
-    "description": "**Esse dano é o suficiente para matar {{enemy}}!**\n\n**Loots:**",
-    "loots": "Espólios de Batalha"
-  },
-  "initial": {
-    "no-life": "Sem Vida",
-    "in-battle": "Em batalha",
-    "in-battle-text": "Você ja está no meio de uma batalha! Acha que é um bug? Vá para meu servidor de suporte",
-    "no-life-text": "Você está sem vida, e precisa descansar por mais **{{time}}** horas",
-    "tired": "Cansaço",
-    "tired-text": "Você já visitou a dungeon e precisa descansar por mais **{{time}}**",
-    "hotel-text": "Você está descansando no hotel da vila, e não pode ir para a dungeon até que sua estadia acabe, em **{{time}}**",
-    "cant-go": "Você não pode visitar a dungeon pelos seguintes motivos:"
-  },
-  "scape": "você arregou da batalha, e conseguiu fuigir, mas terá que ficar descansando por 2 horas!",
-  "registred": "você foi registrado com sucesso! Use `m!status` para ver seus status",
   "backpack-full": "Seu inventário está cheio! Volte para a capital para esvaziar sua mochila!",
   "cooldowns": {
     "dungeon": "Você Está Cansado!",

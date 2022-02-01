@@ -68,7 +68,7 @@ export default class VascoInteractionCommand extends InteractionCommand {
         );
 
     if (res.err) {
-      await ctx.defer({ content: `${emojis.error} | ${ctx.locale('commands:http-error')}` });
+      await ctx.defer({ content: `${emojis.error} | ${ctx.locale('common:http-error')}` });
       return;
     }
 

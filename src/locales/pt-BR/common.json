@@ -47,5 +47,6 @@
     "level": "Nível",
     "blesses": "Bençãos"
   },
-  "unregistered": "Tu ainda não reencarnou no Mundo de Boleham! Registre-se primeiro e tente novamente!"
+  "unregistered": "Tu ainda não reencarnou no Mundo de Boleham! Registre-se primeiro e tente novamente!",
+  "http-error": "Hmmm... Algum erro aconteceu ao processar a imagem... Talvez o servidor de processamento de imagens esteja fora do ar... Tente novamente mais tarde!"
 }

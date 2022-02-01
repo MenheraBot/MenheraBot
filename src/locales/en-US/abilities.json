@@ -1,0 +1,68 @@
+{
+  "100": {
+    "name": "Imbue In Poison",
+    "description": "Imbues your weapon with poison, dealing damage to your enemies"
+  },
+  "101": {
+    "name": "Fearless Strikes",
+    "description": "Land a series of blows against your enemy."
+  },
+  "102": {
+    "name": "Behind You!",
+    "description": "Teleports to the enemy's back, hitting them in a cowardly way"
+  },
+  "103": {
+    "name": "Unfair Blow",
+    "description": "Nothing worse than an attack on the lower parts... So attack them"
+  },
+  "104": {
+    "name": "Frenzy",
+    "description": "Go into a frenzy, attacking multiple times"
+  },
+  "200": {
+    "name": "Elemental Blessing"
+  },
+  "201": {
+    "name": "Solar Bean"
+  },
+  "202": {
+    "name": "Rosary"
+  },
+  "203": {
+    "name": "Spiritual Ascension"
+  },
+  "204": {
+    "name": "Ether Manipulation",
+    "description": "Ether manipulation, its origins come from the prisoner Ricardo Eletro, better known as, Ricardo Ereto."
+  },
+  "300": {
+    "name": "Eternal Punishment"
+  },
+  "301": {
+    "name": "The Iron Maiden"
+  },
+  "302": {
+    "name": "Summon Bahamut"
+  },
+  "303": {
+    "name": "Voracious Hunt"
+  },
+  "304": {
+    "name": "Uncontrollable Persecution"
+  },
+  "400": {
+    "name": "Advance with Shield"
+  },
+  "401": {
+    "name": "Defense Stand"
+  },
+  "402": {
+    "name": "Steel Wall"
+  },
+  "403": {
+    "name": "Body Protection"
+  },
+  "404": {
+    "name": "Nothing Will Pass!"
+  }
+}

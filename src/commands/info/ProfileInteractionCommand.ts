@@ -127,7 +127,7 @@ export default class ProfileInteractionCommand extends InteractionCommand {
         );
 
     if (res.err) {
-      await ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:http-error') });
+      await ctx.makeMessage({ content: ctx.prettyResponse('error', 'common:http-error') });
       return;
     }
 

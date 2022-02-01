@@ -104,7 +104,7 @@ export default class TopInteractionCommand extends InteractionCommand {
   static async topCommands(ctx: InteractionCommandContext): Promise<void> {
     const res = await HttpRequests.getTopCommands();
     if (!res) {
-      ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:http-error') });
+      ctx.makeMessage({ content: ctx.prettyResponse('error', 'common:http-error') });
       return;
     }
     const embed = new MessageEmbed()
@@ -293,7 +293,7 @@ export default class TopInteractionCommand extends InteractionCommand {
     const res = await HttpRequests.getTopUsers();
 
     if (!res) {
-      ctx.defer({ content: `${emojis.error} |  ${ctx.locale('commands:http-error')}` });
+      ctx.defer({ content: `${emojis.error} |  ${ctx.locale('common:http-error')}` });
       return;
     }
 

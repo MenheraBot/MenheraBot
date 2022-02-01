@@ -73,7 +73,7 @@ export default class TrisalInteractionCommand extends InteractionCommand {
       const res = await HttpRequests.trisalRequest(userOneAvatar, userTwoAvatar, userThreeAvatar);
       if (res.err) {
         await ctx.makeMessage({
-          content: ctx.prettyResponse('error', 'commands:http-error'),
+          content: ctx.prettyResponse('error', 'common:http-error'),
           ephemeral: true,
         });
         return;

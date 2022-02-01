@@ -395,7 +395,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
 
               if (res.err) {
                 await ctx.send({
-                  content: ctx.prettyResponse('error', 'commands:http-error'),
+                  content: ctx.prettyResponse('error', 'common:http-error'),
                 });
                 return;
               }
@@ -419,7 +419,7 @@ export default class ShopInteractionCommand extends InteractionCommand {
 
             if (res.err) {
               await ctx.send({
-                content: ctx.prettyResponse('error', 'commands:http-error'),
+                content: ctx.prettyResponse('error', 'common:http-error'),
               });
               return;
             }

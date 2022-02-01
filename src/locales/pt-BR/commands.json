@@ -551,7 +551,6 @@
     "confirm": "Terminar",
     "done": "O seu trisal acabou! Não tem mais jeito. Acabou...."
   },
-  "http-error": "Hmmm... Algum erro aconteceu ao processar a imagem... Talvez o servidor de processamento de imagens esteja fora do ar... Tente novamente mais tarde!",
   "blackjack": {
     "bad-usage": "Tu não fez sua aposta",
     "invalid-value": "O valor da aposta deve ser maior que 1000 e menor que 50000",
@@ -701,32 +700,12 @@
     "already": "Você já apostou neste Jogo do Bicho! Espere o próximo começar",
     "success": "Sua aposta foi feita com sucesso! Fique ligado nos resultados para saber se ganhou algo. Mas não se preocupe, o crédito vai ser debitado automaticamente em sua conta!"
   },
-  "registrar": {
-    "description": "Registre-se um aventureiro",
-    "usage": "",
-    "already": "Você já é um aventureiro, {{name}}-sama",
-    "text": "Bem-vindo!\nVocê deseja ser um aventureiro?\nQual classe você deseja ser?\n",
-    "title": "Guilda de Aventureiros",
-    "footer": "Digite no chat a opção de sua escolha",
-    "invalid-input": "esta opção não é uma classe válida!",
-    "confirm": "você realmente deseja ser um `{{option}}`? Você nunca mais poderá trocar isso!\n\nEnvie 'sim' no chat para confirmar sua escolha",
-    "confirmed": "Bem-vindo ao mundo de **Boleham**! Sua classe é **{{option}}**, agora você já pode usar meus comandos de RPG",
-    "canceled": "você cancelou a confirmação",
-    "Assassino": "Assassino",
-    "Bárbaro": "Bárbaro",
-    "Clérigo": "Clérigo",
-    "Druida": "Druida",
-    "Espadachim": "Espadachim",
-    "Feiticeiro": "Feiticeiro",
-    "Monge": "Monge",
-    "Necromante": "Necromante"
-  },
   "ficha": {
     "no-user": "Este usuário não está registrado no RPG!",
     "register": {
       "title": "Ritual de Invocação",
       "confirm-title": "Cheque Suas Informações",
-      "success": "Bem Vindo ao mundo de Boleham! Sua ficha foi registrada com sucesso. Antes de começar, selecione uma habilidade para desbloquear.",
+      "success": "Bem Vindo ao mundo de Boleham! Sua ficha foi registrada com sucesso.",
       "negate": "Você negou o seu registro. Use o comando novamente para se registrar",
       "confirm-description": "Cheque suas informações! Após aceitar, não será possível retornar!\n\n**Sua Classe:** {{class}}\n**Sua Raça**: {{race}}",
       "description": "Você acaba de morrer na Terra, e os Deuses de Boleham te dão uma chance para reencarnar (SIM, UM ISEKAI). Agora a escolha é sua!\n\n**Escolha abaixo sua classe e depois, escolha sua raça**"
@@ -751,9 +730,6 @@
       "select-amount": "Selecione a Quantidade que queres usar",
       "select-type": "Selecione qual status você quer adicionar {{count}} pontos",
       "status-success": "Seus Status foram Abençoados!",
-      "ap": "Poder Mágico",
-      "money": "Pedras Mágicas",
-      "ability": "Habilidade Única",
       "abilitiesButton": "Árvore de Habilidades",
       "statsButton": "Árvore de Status",
       "abilities": {
@@ -770,7 +746,6 @@
     }
   },
   "dungeon": {
-    "scape": "Fugir",
     "back": "Voltar à Superficie",
     "continue": "Continuar no Nível {{level}}",
     "next": "Descer para o Nível {{level}}",
@@ -794,185 +769,11 @@
     },
     "arregou": "Você pensou melhor, e acabou desistindo de entrar na dungeon"
   },
-  "boss": {
-    "description": "Luta contra um BOSS",
-    "usage": "",
-    "non-aventure": "você não é um aventureiro. Use m!register para começar",
-    "min-level": "Você precisa estar nível **20** para lutar contra bosses",
-    "amarelou": "você pensou melhor, e acabou desistindo de batalhar contra bosses",
-    "preparation": {
-      "title": "Preparação pra batalha",
-      "description": "Envie um **SIM** para batalhar contra um boss",
-      "footer": "Estas habilidades estão disponíveis para o uso",
-      "stats": "Seus status atuais são",
-      "description_end": "------HABILIDADES DISPONÍVEIS------"
-    },
-    "life": "Vida",
-    "mana": "Mana",
-    "dmg": "Dano Físico",
-    "damage": "Dano",
-    "armor": "Armadura",
-    "cost": "Custo",
-    "ap": "Poder Mágico",
-    "battle": {
-      "basic": "Ataque Básico",
-      "enter": "Você entra na batalha contra Boss, e seu inimigo é: **{{enemy}}**, Seus status são:",
-      "end": "O que você faz?\n\n**OPÇÕES:**\n",
-      "footer": "Digite no chat a opção de sua escolha",
-      "newTecnique": "Você tentou uma técnica nova, mas não obteve sucesso! O inimigo ataca",
-      "timeout": "Você demorou para tomar uma atitude, e foi atacado!"
-    }
-  },
-  "pvp": {
-    "description": "Lute com um amigo numa batalha PvP amistosa ou valendo :gem:",
-    "usage": "<menção> [aposta]",
-    "no-life": "para participar de batalhas competitivas, ambos os jogadores precisam estar vivos",
-    "no-args": "você não mencionou seu oponente",
-    "bot": "naaah, nem tenta, esse bot daria um pau em ti, dois tapão tu ta no chão já cpx",
-    "self-mention": "te firma campeão! Nada de machucar a si memso",
-    "no-user": "este usuário não é um aventureiro!",
-    "accept-battle": "⚔️ | `{{user}}` te desafiou para uma batalha",
-    "your-status": "Seus status atuais são:",
-    "negated": "`{{user}}` arregou na batalha contra você",
-    "enemy-status": "Status de `{{user}}`:",
-    "in-battle-one": "você já está em uma batalha",
-    "in-battle-two": "este usuário já está em batalha",
-    "send-to-accept": "Envie **Sim** para iniciar a batalha",
-    "not-competitive": "Esta é uma batalha amistosa, ninguém perderá ou ganhará nada nela",
-    "you-poor": "você não tem pedras preciosa o suficiente para apostar",
-    "his-poor": "`{{user}}` não possui pedras preciosas o suficiente para apostar",
-    "invalid-value": "errrr, esse valor não é um número válido",
-    "is-competitive": "Esta é uma batalha valendo {{aposta}} pedras preciosas",
-    "enough": "**Este dano é o suficiente para matar {{user}}**",
-    "aposta": "💎 | Aposta",
-    "aposta-description": "Esta batalha valia {{aposta}} :gem:, parabéns ao `{{winner}}` por vencer esta batalha!",
-    "not-aposta": "Esta era uma batalha amistosa, nenhum usuário perdeu ou ganhou status!",
-    "battle": {
-      "win": "👑 | Vitória de `{{user}}`",
-      "title": "⚔️ | Hora de `{{user}}` atacar",
-      "newTecnique": "`{{user}}` tentou uma técnica que não tem domínio! **-50** pontos de vida",
-      "timeout": "`{{user}}` violou as regras de Boleham demorando para tomar uma atitude. **-50** pontos de vida!",
-      "enter": "`{{user1}}` entra na arena contra `{{user2}}`. Seus status são:",
-      "end": "O que você faz?\n\n**OPÇÕES:**\n",
-      "enemy": "Estes são os status do Inimigo:\n",
-      "attack": "`{{user}}` ataca `{{enemy}}` com **{{choice}}**, e causa **{{damage}}** de dano. `{{enemy}}` contra-ataca",
-      "no-mana": "{{user}} tenta usar {{name}}, mas não tem mana o suficiente, {{user2}} contra-ataca",
-      "insta-kill": "{{user}} quebrou as regras sagradas tentando desferir um golpe proibído pelas leis do um contra um do mundo de Boleham, {{user2}} contra-ataca"
-    }
-  },
-  "vila": {
-    "description": "Vá para a vila de Boleham",
-    "usage": "",
-    "non-aventure": "você não é um aventureiro. Use m!register para começar",
-    "number-error": "houve um erro desconhecido! Informe isso no meu servidor de suporte!",
-    "backpack-full": "sua mochila não tem espaço para comprar esses produtos",
-    "cost": "Custo",
-    "desc": "Descrição",
-    "invalid-option": "Esta opção não é válida!",
-    "invalid-quantity": "esta quantidade não é válida",
-    "invalid-value": "este valor não é válido",
-    "poor": "você não possui pedras mágicas suficientes",
-    "index": {
-      "title": "Bem-Vindo(a) a vila de Boleham!",
-      "description": "Vá para a casa da feiticeira para comprar poções\nVá para o ferreiro para comprar armas\nVá para o hotel para descansar\nVá para a guilda para vender loots e conseguir missões",
-      "field_name": "Opções",
-      "field_value": "1 - **Casa da Velha Feiticeira**\n2 - **Ferreiro**\n3 - **Hotel**\n4 - **Guilda**",
-      "footer": "Digite no chat para onde desejas ir"
-    },
-    "bruxa": {
-      "title": "Casa da Velha Feiticeira",
-      "footer": "Mande no chat a sua escolha e a quantidade, exemplo: 1 3",
-      "description": "Você pode usar suas poções com m!usar\n\nSuas pedras mágicas: **{{money}}** 💎",
-      "bought": "você comprou **{{quantidade}} {{name}}** por **{{valor}}** 💎"
-    },
-    "ferreiro": {
-      "low-level": "o ferreiro é um ambiente de gigantes, e só é liberado a partir do nível **{{level}}**!",
-      "title": "Ferreiro",
-      "description": "Escolha o que desejas fabricar",
-      "field_name": "Opções",
-      "categories": {
-        "sword": "Armas",
-        "armor": "Armaduras",
-        "backpack": "Mochilas"
-      },
-      "footer": "Digite no chat sua escolha",
-      "itens-needed": "Itens Necessários",
-      "damage": "Dano",
-      "protection": "Proteção",
-      "capacity": "Capacidade",
-      "cost": "Custo",
-      "sword": {
-        "description": "Sua arma sera substituída pela sua escolha, então cuidado!\n\nEscolha o que desejas fabricar",
-        "poor": "você não possui os itens necessários: `{{items}}`",
-        "change": "Você trocou sua arma para `{{equip}}`"
-      },
-      "armor": {
-        "description": "Sua armadura sera substituída pela sua escolha, então cuidado!\n\nEscolha o que desejas fabricar",
-        "poor": "você não possui os itens necessários: `{{items}}`",
-        "change": "você trocou sua armadura para `{{equip}}`"
-      },
-      "backpack": {
-        "description": "Sua mochila sera substituída pela sua escolha, então cuidado!\n\nEscolha o que desejas fabricar",
-        "poor": "você não possui os itens necessários: `{{items}}`",
-        "change": "você trocou sua mochila para `{{equip}}`"
-      }
-    },
-    "hotel": {
-      "title": "Hotel de Boleham",
-      "description": "Bem vindo ao hotel de Boleham! Desejas passar um tempo aqui para descansar? Escolha uma das opções abaixo de sua escolha, e descanse gratuitamente para regenerar sua vida e sua mana!",
-      "footer": "Envie no chat sua escolha",
-      "already": "você já está descansando no hotel!",
-      "dead": "você morreu em uma aventura na dungeon, e por isso, já está descansando para recuperar suas energias!",
-      "done": "você foi para o hotel, e ficará descansando até o fim de seu horário",
-      "fields": {
-        "name_one": "Soninho do Almoço",
-        "name_two": "Sono da Vida",
-        "name_three": "Sono da Mana",
-        "name_four": "Hibernação",
-        "value": "**Tempo**: {{time}}\n🩸 | **Vida**: {{life}}\n💧 | **Mana**: {{mana}}"
-      }
-    },
-    "guilda": {
-      "title": "Guilda",
-      "footer": "Mande no chat a sua escolha e a quantidade, exemplo: 1 3",
-      "money": "Suas pedras mágicas **{{money}}** 💎\n\n",
-      "sell-all": "---------------**[ 0 ]**---------------\n<:Chest:760957557538947133> | **VENDER TUDO**\n",
-      "sold-all": "Você vendeu **{{amount}}** loots por **{{value}}** 💎",
-      "value": "Valor",
-      "no-loots": "**VOCÊ NÃO POSSUI LOOTS EM SEU INVENTÁRIO**",
-      "poor": "você não tem",
-      "unespected-error": "ocorreu um erro inexperado! O valor de venda é `NaN`",
-      "sold": "você vendeu **{{quantity}}** **{{name}}** e recebeu **{{value}}** 💎"
-    }
-  },
-  "usar": {
-    "description": "Use um item de seu inventário",
-    "usage": " [item] [quantidade]",
-    "non-aventure": "você não é um aventureiro. Use m!register para começar",
-    "in-battle": "você não pode usar poções no meio de uma batalha!",
-    "dead": "você não pode usar poções enquanto estiver morto!",
-    "title": "Poções",
-    "embed_description": "Use {{prefix}}usar [opção] [quantidade] para usar uma poção\n\nSeus Status:\n🩸 | Vida: **{{life}}/{{maxLife}}**\n💧 | Mana: **{{mana}}/{{maxMana}}**",
-    "field_title": "Itens",
-    "out": "**Você não possui poções! Compre poções na Casa da Velha Feiticeira na Vila**",
-    "invalid-option": "esta opção não é válida",
-    "bigger": "esta quantidade é maior da que você tem!",
-    "full-mana": "sua mana já está cheia!",
-    "full-life": "sua vida já está cheia!",
-    "error": "nheee, ocorreu um erro ao usar a poção! Chame minha dona em meu servidor de suporte para ver isso",
-    "used": "prontinho! Você usou `{{quantidade}}` **{{choice}}**\n🩸 | Vida: **{{life}} / {{maxLife}}**\n💧 | Mana: **{{mana}} / {{maxMana}}**"
-  },
   "inventario": {
     "title": "Inventário de {{user}}",
-    "no-items": "**Seu inventário está vazio!**",
-    "weapon": "Arma",
-    "armor": "Armadura",
-    "backpack": "Mochila",
-    "backpack-value": "**{{name}}:** **{{value}}** / **{{max}}**",
-    "dmg": "Dano",
-    "prt": "Proteção",
-    "battle": "Batalha",
-    "items": "Itens",
-    "loots": "Baú"
+    "no-items": "**Seu inventário está vazio!**"
+  },
+  "guilda": {
+    "title": "Guilda de Aventureiros"
   }
 }

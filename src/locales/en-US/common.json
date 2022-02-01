@@ -35,5 +35,17 @@
     "cards": "Cards",
     "table": "Table",
     "card_background": "Card Background"
-  }
+  },
+  "http-error": "Hmmm... Some error happened while receiving the image... Maybe the image generator server is out... Please try again later",
+  "estrelinhas": "Estrelinhas",
+  "roleplay": {
+    "life": "Life",
+    "mana": "Mana",
+    "damage": "Damage",
+    "intelligence": "Intelligence",
+    "armor": "Armor",
+    "level": "Level",
+    "blesses": "Blesses"
+  },
+  "unregistered": "You still haven't reincarnated in the Bulletin World! Register first and try again!"
 }

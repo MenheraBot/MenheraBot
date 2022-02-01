@@ -542,7 +542,6 @@
     "cofnrim": "Breakup",
     "done": "Your trisal is over! There's no way. He finished...."
   },
-  "http-error": "hmmm... Some error happened while receiving the image... Maybe the image generator server is out... Please try again later",
   "blackjack": {
     "description": "Bet against Menhera in Blackjack (or 21)",
     "usage": "<bet>",
@@ -571,7 +570,7 @@
     "menhera-bigger": "Menhera is closer to 21, she wins!",
     "user-bigger": "You're closer to 21, you won **{{value}}** :star:"
   },
-  "inventario": {
+  "itens": {
     "no-user": "This user does't have an inventory",
     "title": "{{user}}'s Inventory",
     "no-item": "This user's inventory is empty!",
@@ -695,5 +694,81 @@
     "in-description": "You are participating in this bet!",
     "already": "You have already bet on the Animal Game! wait for the next one to start",
     "success": "Your bet has been successfully placed! Stay tuned to the results to see if you've won anything. But don't worry, the credit will be automatically debited from your account!"
+  },
+  "ficha": {
+    "no-user": "This user is not registered in RPG!",
+    "register": {
+      "title": "Summoning Ritual",
+      "confirm-title": "Check Your Information",
+      "success": "Welcome to the world of Boreham! Your record has been successfully registered.",
+      "negate": "You have denied your registration. Use the command again to register",
+      "confirm-description": "Check your information! After accepting, you cannot return!\n\n**Your Class:** {{class}}\n**Your Race**: {{race}}",
+      "description": "You have just died on Earth, and the Gods of Boleham give you a chance to reincarnate (YES, AN ISEKAI). Now the choice is yours!\n\n**Choose your class below and then choose your race**"
+    },
+    "show": {
+      "not-found": "This user is not registered as an adventurer",
+      "title": "{{name}}' Statuses",
+      "life": "lifLife",
+      "class": "Class",
+      "race": "Race",
+      "level": "Level",
+      "experience": "Experience",
+      "armor": "Armor",
+      "dmg": "Damage",
+      "mana": "Mana",
+      "poor-title": "Blessings Bonus",
+      "poor-description": "You are currently out of Blessings, but keep your current Blessings status in the meantime\n\n❤️ | **Extra Life:** {{life}}\n💧 | **Extra Mana:** {{mana}}\n⚔️ | **Extra Damage:** {{damage}}\n🛡️ | **Extra Armor:** {{armor}}\n🧠 | **Extra Intelligence:** {{intelligence}}",
+      "no-blesses": "You don't have Holy Blessings to improve your Status!",
+      "blessings": "You have **{{vitality}}** Holy Blessings of Vitality and **{{battle}}** of Battle, use the buttons below to improve your stats",
+      "vitality": "Vitality Points",
+      "battle": "Battle Points",
+      "select-amount": "Select the Quantity you want to use",
+      "select-type": "Select which status you want to add {{count}} points",
+      "status-success": "Your Status Has Been Blessed!",
+      "abilitiesButton": "Skill Tree",
+      "statsButton": "Status Tree",
+      "abilities": {
+        "upgrade": "Upgrade Skills",
+        "unlock": "Unlock Skills",
+        "title": "{{name}}'s Abilities",
+        "success": "You have blessed your skill with Success!",
+        "no-blesses": "You don't have Holy Blessings to improve your Skills!",
+        "unlock-description": "Below are the skills you can unlock! Remembering that unlocking skills is expensive, and it takes the exact number of blessings to do so!\n**You have {{points}} Holy Blessings**",
+        "upgrade-description": "Below are the skills you can improve! For more numbers information, check my website!\n**You have {{points}} Holy Blessings to use!**",
+        "cost": "Unlock Cost",
+        "unlock-success": "You've just learned the skill **{{name}}**! Study it and perfect it to reach divine ascension!"
+      }
+    }
+  },
+  "dungeon": {
+    "back": "Back to Surface",
+    "continue": "Continue on Level {{level}}",
+    "next": "Go Down to Level {{level}}",
+    "preparation": {
+      "title": "Preparation for battle",
+      "footer": "Do you want to go in anyway?",
+      "stats": "Check your status first",
+      "enter": "Join",
+      "no": "Chicken Out",
+      "no_censored": "Runaway"
+    },
+    "results": {
+      "title": "Battle Results",
+      "item-title": "Battle Spoils",
+      "backpack-full": "You don't have enough space to pick up the dropped items!",
+      "grab": "Select the items you want",
+      "back": "You've returned to the city, get some rest before going on another adventure!",
+      "footer": "If you want an item, please do so before going elsewhere.",
+      "loots": "Available Items (You have space to get **{{amount}}**)\n{{itemText}}",
+      "description": "**Your Status:**\n❤️ | Life: **{{life}} / {{maxLife}}**\n💧 | Mana: **{{mana}} / {{maxMana}}**\n\nYou have triumphed in your battle, and now you must go your way, choose what you want to do"
+    },
+    "arregou": "You thought better of it, and ended up giving up on entering the dungeon"
+  },
+  "inventario": {
+    "title": "{{user}}' Inventory",
+    "no-items": "**Your inventory is empty!**"
+  },
+  "guilda": {
+    "title": "Adventurer's Guild"
   }
 }

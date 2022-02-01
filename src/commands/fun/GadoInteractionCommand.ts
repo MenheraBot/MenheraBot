@@ -40,7 +40,7 @@ export default class GadoInteractionCommand extends InteractionCommand {
     if (res.err) {
       await ctx.defer({
         ephemeral: false,
-        content: `${emojis.error} |  ${ctx.locale('commands:http-error')}`,
+        content: `${emojis.error} |  ${ctx.locale('common:http-error')}`,
       });
       return;
     }

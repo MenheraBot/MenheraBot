@@ -1,0 +1,108 @@
+{
+  "classes": {
+    "classes": {
+      "1": {
+        "name": "Mage",
+        "description": "Mages are beings that use the 4 natural elements - Fire Earth Water and Air, in addition to being good with white spells. They have nothing special in their blood, so they learn skills by reading books."
+      },
+      "2": {
+        "name": "Sorcerer",
+        "description": "Unlike mages, sorcerers use magic coming from their body, wearing out more, and depending on the type of magic, can go insane. They are experts in black magic, and discover abilities through the use of their body to acquire power"
+      },
+      "3": {
+        "name": "Illusionist",
+        "description": "Illusionists live in demonic contracts with superior beings. Your abilities are discovered according to your contracts, they are based on using the power of the contract, and using melee fighting."
+      },
+      "4": {
+        "name": "Archmage",
+        "description": "The magic developed over time. People evolved, and ancient tribes were left behind. The magic was developed to be easier and faster, yet the archaic magic was not extinguished. Archmages study the spells of the past, when magic circles and rituals were still used to invoke them and learn about them"
+      },
+      "5": {
+        "name": "Necromancer",
+        "description": "Users of resurrection magic, battle using the dead. As this spell is very dangerous and exhausting, necromancers focus on passing their powers to their weapon, so they don't wear out in battle, as they use up already stored mana. Since they never know if their stored mana will last an entire battle, they should study physical combat as well."
+      },
+      "6": {
+        "name": "Assassin",
+        "description": "Agile beings, battle hand to hand with fortification skills, or that will help them in some way in battle. Never trust an assassin, as he may turn on you, and kill you to steal your items."
+      },
+      "7": {
+        "name": "Barbarian",
+        "description": "Beings who isolated themselves to train for war above all. For that reason, they may be a little uncool, but believe me, their hearts are unique. They love to wear heavy armor and small weapons. They're not very good at skills, but what they know is empowerment skills."
+      },
+      "8": {
+        "name": "Archer",
+        "description": "Ranged professionals. As much as they have an impeccable aim, for some reason they keep using only bow and arrow. Of course there's always the difference that uses something else, but overall, this weapon satisfies everything you need, distance and speed"
+      },
+      "9": {
+        "name": "Paladin",
+        "description": "They have high faith in the Great Ancients, and for that reason, they are blessed with divine powers, such as healing and abilities of Light. They are always on holy missions, walking together with holy magicians in search of holiness. They like the balance of powers"
+      },
+      "10": {
+        "name": "Tamer",
+        "description": "Unlike illusionists, tamers make contracts with wild animals. Since they don't need a lot of mana to control them, they can contract with several beings at the same time. They cannot make supernatural contracts, abstaining only from living beings"
+      }
+    },
+    "races": {
+      "1": {
+        "name": "Elves",
+        "description": "They are born in the forest. They grow up alongside nature, knowing its strengths very well, and receiving help from it. Have a lot of intelligence"
+      },
+      "2": {
+        "name": "Humans",
+        "description": "They are born in the city. They evolved more than any other class. They learned to control fire, and because of that, they have a high affinity for damage. Very strong beings"
+      },
+      "3": {
+        "name": "Orcs",
+        "description": "They are born in the Dark World. They suffer a bit of prejudice from humans for being like pigs, so they isolated themselves in the dark world. That doesn't mean they can't live together with humans. Hard beings in the fall"
+      },
+      "4": {
+        "name": "Half-Demons",
+        "description": "They are born on the outskirts of the Dark World. They are seen as beings almost beyond this reality. Much respected because of their legends. Beings that share intelligence and strength equally"
+      },
+      "5": {
+        "name": "Demi-Humans",
+        "description": "The famous Half-Animals. They live among humans, but suffer a bit of prejudice because of their ears and tails. Your strength and stamina are divided equally"
+      },
+      "6": {
+        "name": "Beast",
+        "description": "They are born in the wild. They are animals that have cognition, and of course, they are looking for their beauty. Have high stamina"
+      }
+    },
+    "attacks": {
+      "1": "on the leg",
+      "1.3": "on the arm",
+      "1.6": "on the back",
+      "1.8": "on the chest",
+      "2": "on the head"
+    },
+    "battle": {
+      "no-mana": "| Insufficient Mana!",
+      "your-stats": "Your Stats",
+      "your-stats-info": "❤️ | Life: **{{life}}**\n💧 | Mana: **{{mana}}**\n⚔️ | Damage: **{{damage}}**\n🛡️ | Armor: **{{armor}}**\n🧠 | intelligence: **{{intelligence}}**",
+      "enemy-stats": "Enemy Statuses",
+      "enemy-stats-info": "❤️ | Life: **{{life}}**\n⚔️ | Damage: **{{damage}}**\n🛡️ | Armor: **{{armor}}**",
+      "no-action": "You took too long to take action and were attacked!",
+      "enemy-death": "You successfully kill **{{name}}**!",
+      "user-death": "⚰️ | You died!\nYou died and were teleported to the Church. Rest for a while to recover.",
+      "footer": "Do an action in {{time}} seconds",
+      "deffend-text": "🛡️ | **{{enemy}}** hits you **{{attack}}** and deal **{{damage}}** damage",
+      "attack-text": "⚔️ | You attack with **{{attack}}** and deal **{{damage}}** damage",
+      "select": "Select an Action",
+      "title": "Battle Against {{name}}",
+      "find": "You meet an enemy! **{{enemy}}** is just ahead!",
+      "options": {
+        "hand-attack": "Basic Attack",
+        "hand-attack-description": "Make an attack with your primary weapon",
+        "info": "⚔️ | Damage: **{{damage}}**\n🧪 | Heal: **{{heal}}**\n💧 | Cost: **{{cost}}** {{no-mana}}",
+        "available": "Available Options"
+      }
+    },
+    "backpack-full": "Your inventory is full! Return to the capital to empty your backpack!",
+    "cooldowns": {
+      "dungeon": "You Are Tired!",
+      "dungeon-description": "You've been to the dungeon recently, and you need to rest for more **{{time}}** {{subtime}}",
+      "death": "You Are Dead!",
+      "death-description": "You died on one of your adventures, and were teleported to the Church to recover. rest for more **{{time}}** {{subtime}}"
+    }
+  }
+}
