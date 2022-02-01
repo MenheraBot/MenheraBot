@@ -4,6 +4,7 @@ import { COLORS, ENEMY_ATTACK_MULTIPLIER_CHANCE } from '@structures/Constants';
 import { calculateProbability } from '@utils/HuntUtils';
 import Util, { actionRow, resolveSeparatedStrings } from '@utils/Util';
 import { MessageEmbed, MessageSelectMenu, SelectMenuInteraction } from 'discord.js-light';
+import { isDead } from './AdventureUtils';
 import {
   calculateEffectiveDamage,
   getAbilityCost,
@@ -48,7 +49,7 @@ export const enemyAttack = (
 
   user.life -= effectiveDamage;
 
-  if (user.life < 0) return [true, user, enemy, ctx.locale('roleplay:battle.user-death')];
+  if (isDead(user)) return [true, user, enemy, ctx.locale('roleplay:battle.user-death')];
   return [
     false,
     user,
@@ -155,7 +156,7 @@ export const userAttack = async (
     case 'HANDATTACK': {
       const damageDealt = calculateEffectiveDamage(getUserDamage(user), enemy.armor);
       enemy.life -= damageDealt;
-      if (enemy.life <= 0) return [true, user, enemy, ctx.locale('roleplay:battle.enemy-death')];
+      if (isDead(enemy)) return [true, user, enemy, ctx.locale('roleplay:battle.enemy-death')];
       return [
         false,
         user,
@@ -175,8 +176,9 @@ export const userAttack = async (
       const damageDealt = getAbilityDamage(usedAbility, getUserIntelligence(user));
       enemy.life -= damageDealt;
       user.mana -= getAbilityCost(usedAbility);
+      user.life += getAbilityHeal(usedAbility, getUserIntelligence(user));
 
-      if (enemy.life <= 0) return [true, user, enemy, ctx.locale('roleplay:battle.enemy-death')];
+      if (isDead(enemy)) return [true, user, enemy, ctx.locale('roleplay:battle.enemy-death')];
       return [
         false,
         user,

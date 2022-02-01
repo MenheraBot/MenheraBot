@@ -85,6 +85,16 @@ const rpgSchema = new Schema({
   experience: { type: Number, default: 0 },
   abilities: { type: Array, default: [] },
   holyBlessings: { type: Object, default: { ability: 0, vitality: 0, battle: 0 } },
+  blesses: {
+    type: Object,
+    default: {
+      maxLife: 0,
+      maxMana: 0,
+      armor: 0,
+      damage: 0,
+      intelligence: 0,
+    },
+  },
   loots: { type: Array, default: [] },
   inventory: { type: Array, default: [] },
   money: { type: Number, default: 0 },

@@ -25,8 +25,8 @@ import {
   getUserIntelligence,
   getUserMaxLife,
   getUserMaxMana,
-  getUserNextLevelXp,
 } from '@roleplay/utils/Calculations';
+import { LEVEL_UP_EXPERIENCE } from '@structures/Constants';
 
 export default class FichaInteractionCommand extends InteractionCommand {
   constructor() {
@@ -61,7 +61,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
       return;
     }
 
-    FichaInteractionCommand.showFicha(ctx, user, optionUser);
+    return FichaInteractionCommand.showFicha(ctx, user, optionUser);
   }
 
   static async abilityBlessing(
@@ -497,7 +497,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
         )}: **${user.level}**\n${ctx.prettyResponse(
           'experience',
           'commands:ficha.show.experience',
-        )}: **${user.experience} / ${getUserNextLevelXp(user.level)}**`,
+        )}: **${user.experience} / ${LEVEL_UP_EXPERIENCE[user.level]}**`,
       )
       .setColor(ctx.data.user.selectedColor);
 
@@ -678,6 +678,13 @@ export default class FichaInteractionCommand extends InteractionCommand {
       mana: resolvedClass.data.baseMaxMana + resolvedClass.data.attributesPerLevel.maxMana,
       abilities: [{ id: resolvedClass.data.abilityTree, level: 0, blesses: 0 }],
       holyBlessings: { ability: 0, vitality: 0, battle: 0 },
+      blesses: {
+        maxLife: 0,
+        maxMana: 0,
+        armor: 0,
+        damage: 0,
+        intelligence: 0,
+      },
     };
 
     await ctx.client.repositories.roleplayRepository.registerUser(ctx.author.id, registerStatus);

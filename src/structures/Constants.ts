@@ -1,3 +1,4 @@
+import { HolyBlessings } from '@roleplay/Types';
 import { T8BallAnswerTypes } from '@utils/Types';
 
 export const shopEconomy = {
@@ -18,6 +19,138 @@ export const shopEconomy = {
     archangels: 3_200,
     demigods: 6_000,
     gods: 16_000,
+  },
+};
+
+export const LEVEL_UP_EXPERIENCE: { [level: number]: number } = {
+  1: 10,
+  2: 100,
+  3: 400,
+  4: 800,
+  5: 1500,
+  6: 3000,
+  7: 5500,
+  8: 8000,
+  9: 10_000,
+  10: 15_000,
+  11: 21_000,
+  12: 25_000,
+  13: 30_000,
+  14: 38_000,
+  15: 46_000,
+  16: 60_000,
+  17: 76_000,
+  18: 82_000,
+  19: 100_000,
+  20: 130_00,
+  21: 175_000,
+};
+
+export const LEVEL_UP_BLESSES: { [level: number]: HolyBlessings } = {
+  1: {
+    ability: 1,
+    battle: 1,
+    vitality: 5,
+  },
+  2: {
+    ability: 1,
+    battle: 2,
+    vitality: 5,
+  },
+  3: {
+    ability: 1,
+    battle: 3,
+    vitality: 5,
+  },
+  4: {
+    ability: 5,
+    battle: 5,
+    vitality: 10,
+  },
+  5: {
+    ability: 3,
+    battle: 3,
+    vitality: 10,
+  },
+  6: {
+    ability: 5,
+    battle: 10,
+    vitality: 10,
+  },
+  7: {
+    ability: 5,
+    battle: 5,
+    vitality: 5,
+  },
+  8: {
+    ability: 3,
+    battle: 6,
+    vitality: 4,
+  },
+  9: {
+    ability: 10,
+    battle: 10,
+    vitality: 10,
+  },
+  10: {
+    ability: 10,
+    battle: 5,
+    vitality: 5,
+  },
+  11: {
+    ability: 3,
+    battle: 10,
+    vitality: 5,
+  },
+  12: {
+    ability: 3,
+    battle: 6,
+    vitality: 5,
+  },
+  13: {
+    ability: 1,
+    battle: 5,
+    vitality: 5,
+  },
+  14: {
+    ability: 10,
+    battle: 20,
+    vitality: 20,
+  },
+  15: {
+    ability: 5,
+    battle: 7,
+    vitality: 8,
+  },
+  16: {
+    ability: 10,
+    battle: 10,
+    vitality: 10,
+  },
+  17: {
+    ability: 5,
+    battle: 10,
+    vitality: 5,
+  },
+  18: {
+    ability: 3,
+    battle: 8,
+    vitality: 4,
+  },
+  19: {
+    ability: 20,
+    battle: 5,
+    vitality: 5,
+  },
+  20: {
+    ability: 3,
+    battle: 6,
+    vitality: 7,
+  },
+  21: {
+    ability: 6,
+    battle: 1,
+    vitality: 4,
   },
 };
 

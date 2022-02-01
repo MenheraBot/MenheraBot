@@ -11,7 +11,7 @@ const Enemies: { [id: number]: EnemiesFile } = {
       baseDamage: 4,
       baseLife: 6,
       baseArmor: 2,
-      experience: 10,
+      experience: 2,
     },
     loots: [
       {
@@ -47,7 +47,7 @@ const Enemies: { [id: number]: EnemiesFile } = {
       baseDamage: 5,
       baseLife: 9,
       baseArmor: 3,
-      experience: 15,
+      experience: 6,
     },
     loots: [
       {
@@ -77,13 +77,13 @@ const Enemies: { [id: number]: EnemiesFile } = {
     dungeonLevels: [3, 4, 5, 6, 7, 8, 9, 10],
     baseDamage: 50,
     baseLife: 150,
-    experience: 300,
+    experience: 40,
     baseArmor: 10,
     perLevel: {
       baseDamage: 10,
       baseLife: 20,
       baseArmor: 2,
-      experience: 100,
+      experience: 6,
     },
     loots: [
       {

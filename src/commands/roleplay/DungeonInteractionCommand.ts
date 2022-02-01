@@ -8,6 +8,7 @@ import {
   isDead,
   isInventoryFull,
   makeCooldown,
+  makeLevelUp,
 } from '@roleplay/utils/AdventureUtils';
 import { battleLoop } from '@roleplay/utils/BattleUtils';
 import {
@@ -147,7 +148,11 @@ export default class DungeonInteractionCommand extends InteractionCommand {
 
     user.experience += battleResults.enemy.experience;
 
-    // if (user.experience >= getUserNextLevelXp(user.level)) user.level += 1;
+    const { level, experience, holyBlessings } = makeLevelUp(user);
+
+    user.level = level;
+    user.experience = experience;
+    user.holyBlessings = holyBlessings;
 
     user.cooldowns = makeCooldown(user.cooldowns, {
       reason: 'dungeon',
@@ -257,8 +262,8 @@ export default class DungeonInteractionCommand extends InteractionCommand {
 
       if (resolveCustomId(selectedItem.customId) === 'ITEM') {
         const resolvedItems = (selectedItem as SelectMenuInteraction).values.map((a) => {
-          const [id, level] = resolveSeparatedStrings(a);
-          return { id: Number(id), level: Number(level) };
+          const [id, itemLevel] = resolveSeparatedStrings(a);
+          return { id: Number(id), level: Number(itemLevel) };
         });
 
         user.inventory = addToInventory(resolvedItems, user.inventory);

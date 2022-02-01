@@ -2,11 +2,10 @@ import { RoleplayUserSchema, UserAbility } from '@roleplay/Types';
 import { ToBLess } from '@utils/Types';
 import { getAbilityById, getClassById, getRaceById } from './DataUtils';
 
-export const getUserNextLevelXp = (level: number): number => level * 10 + 2 ** (level % 4);
-
 export const getUserMaxLife = (user: RoleplayUserSchema): number => {
   const userClass = getClassById(user.class);
   const userRace = getRaceById(user.race);
+  const userBlesses = makeBlessingStatusUpgrade('life', user.blesses.maxLife);
 
   const classLife =
     userClass.data.baseMaxLife + userClass.data.attributesPerLevel.maxLife * user.level;
@@ -16,12 +15,13 @@ export const getUserMaxLife = (user: RoleplayUserSchema): number => {
     0,
   );
 
-  return classLife + raceLife;
+  return classLife + raceLife + userBlesses;
 };
 
 export const getUserMaxMana = (user: RoleplayUserSchema): number => {
   const userClass = getClassById(user.class);
   const userRace = getRaceById(user.race);
+  const userBlesses = makeBlessingStatusUpgrade('mana', user.blesses.maxMana);
 
   const classMana =
     userClass.data.baseMaxMana + userClass.data.attributesPerLevel.maxMana * user.level;
@@ -31,12 +31,13 @@ export const getUserMaxMana = (user: RoleplayUserSchema): number => {
     0,
   );
 
-  return classMana + raceMana;
+  return classMana + raceMana + userBlesses;
 };
 
 export const getUserDamage = (user: RoleplayUserSchema): number => {
   const userClass = getClassById(user.class);
   const userRace = getRaceById(user.race);
+  const userBlesses = makeBlessingStatusUpgrade('damage', user.blesses.damage);
 
   const classDamage =
     userClass.data.baseDamage + userClass.data.attributesPerLevel.baseDamage * user.level;
@@ -46,12 +47,13 @@ export const getUserDamage = (user: RoleplayUserSchema): number => {
     0,
   );
 
-  return classDamage + raceDamage;
+  return classDamage + raceDamage + userBlesses;
 };
 
 export const getUserArmor = (user: RoleplayUserSchema): number => {
   const userClass = getClassById(user.class);
   const userRace = getRaceById(user.race);
+  const userBlesses = makeBlessingStatusUpgrade('armor', user.blesses.armor);
 
   const classArmor =
     userClass.data.baseArmor + userClass.data.attributesPerLevel.baseArmor * user.level;
@@ -61,12 +63,13 @@ export const getUserArmor = (user: RoleplayUserSchema): number => {
     0,
   );
 
-  return classArmor + raceArmor;
+  return classArmor + raceArmor + userBlesses;
 };
 
 export const getUserIntelligence = (user: RoleplayUserSchema): number => {
   const userClass = getClassById(user.class);
   const userRace = getRaceById(user.race);
+  const userBlesses = makeBlessingStatusUpgrade('intelligence', user.blesses.intelligence);
 
   const classIntelligence =
     userClass.data.baseIntelligence +
@@ -77,7 +80,7 @@ export const getUserIntelligence = (user: RoleplayUserSchema): number => {
     0,
   );
 
-  return classIntelligence + raceIntellience;
+  return classIntelligence + raceIntellience + userBlesses;
 };
 
 export const calculateEffectiveDamage = (totalDamage: number, enemyArmor: number): number =>
@@ -98,7 +101,17 @@ export const makeBlessingStatusUpgrade = (toBless: ToBLess, points: number): num
   }
 };
 
-export const getAbilityNextLevelBlessings = (abilityLevel: number): number => abilityLevel ** 2;
+export const getAbilityNextLevelBlessings = (abilityLevel: number): number => {
+  const toNext: { [level: number]: number } = {
+    1: 5,
+    2: 15,
+    3: 30,
+    4: 60,
+    5: 100,
+  };
+
+  return toNext[abilityLevel];
+};
 
 export const getAbilityDamage = (ability: UserAbility, userIntelligence: number): number => {
   const resolvedAbility = getAbilityById(ability.id);
@@ -112,6 +125,8 @@ export const getAbilityDamage = (ability: UserAbility, userIntelligence: number)
 
 export const getAbilityHeal = (ability: UserAbility, userIntelligence: number): number => {
   const resolvedAbility = getAbilityById(ability.id);
+
+  if (resolvedAbility.data.heal.base === 0) return 0;
 
   const baseHeal =
     resolvedAbility.data.heal.base + resolvedAbility.data.boostPerLevel.heal * ability.level;

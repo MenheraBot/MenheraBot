@@ -2,12 +2,14 @@ import {
   BackPackItem,
   EnemyDrops,
   EnemyLoot,
+  HolyBlessings,
   LeveledItem,
   ReadyToBattleEnemy,
   RoleplayUserSchema,
   UserCooldown,
 } from '@roleplay/Types';
 import InteractionCommandContext from '@structures/command/InteractionContext';
+import { LEVEL_UP_BLESSES, LEVEL_UP_EXPERIENCE } from '@structures/Constants';
 import { IReturnData } from '@utils/Types';
 import { moreThanAnHour, RandomFromArray } from '@utils/Util';
 import { EmbedFieldData } from 'discord.js-light';
@@ -46,9 +48,7 @@ export const getDungeonEnemy = (dungeonLevel: number, userLevel: number): ReadyT
 
   const enemy = RandomFromArray(availableEnemies);
 
-  const enemyLevel = Math.floor(userLevel / 10 + 1) + Math.floor(Math.random() * 10);
-
-  console.log(enemyLevel);
+  const enemyLevel = Math.floor(userLevel / 10 + 1) + Math.floor(Math.random() * 6);
 
   const enemyData: ReadyToBattleEnemy = {
     id: enemy.id,
@@ -127,4 +127,17 @@ export const getEnemyLoot = (loots: EnemyDrops[]): EnemyDrops['loots'] => {
     }
   }
   return [];
+};
+
+export const makeLevelUp = (
+  user: RoleplayUserSchema,
+): { level: number; experience: number; holyBlessings: HolyBlessings } => {
+  if (user.experience >= LEVEL_UP_EXPERIENCE[user.level]) {
+    user.holyBlessings.ability = LEVEL_UP_BLESSES[user.level].ability;
+    user.holyBlessings.battle = LEVEL_UP_BLESSES[user.level].battle;
+    user.holyBlessings.vitality = LEVEL_UP_BLESSES[user.level].vitality;
+    user.level += 1;
+  }
+
+  return { level: user.level, experience: user.experience, holyBlessings: user.holyBlessings };
 };
