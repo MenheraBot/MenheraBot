@@ -36,6 +36,20 @@ const Items: { [id: number]: ItemsFile } = {
     marketValue: 12,
     perLevel: 7,
   },
+  7: {
+    type: 'consumable',
+    marketValue: 15,
+    baseBoost: 40,
+    boostType: 'life',
+    perLevel: 20,
+  },
+  8: {
+    type: 'consumable',
+    marketValue: 15,
+    baseBoost: 30,
+    boostType: 'mana',
+    perLevel: 20,
+  },
 };
 
 export default Items;

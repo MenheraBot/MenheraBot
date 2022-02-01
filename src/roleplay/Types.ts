@@ -212,4 +212,12 @@ export interface DropItem {
   perLevel: number;
 }
 
-export type ItemsFile = BackPackItem | WeaponItem | DropItem;
+export interface ConsumableItem {
+  type: 'consumable';
+  boostType: 'life' | 'mana';
+  marketValue: number;
+  baseBoost: number;
+  perLevel: number;
+}
+
+export type ItemsFile = BackPackItem | WeaponItem | DropItem | ConsumableItem;
