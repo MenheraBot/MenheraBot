@@ -22,8 +22,20 @@ export const battleLoop = async (
   enemy: ReadyToBattleEnemy,
   ctx: InteractionCommandContext,
   text: string,
-): Promise<{ user: RoleplayUserSchema; enemy: ReadyToBattleEnemy; lastText: string }> => {
-  const [needStop, newUser, newEnemy, newText] = await userAttack(user, enemy, ctx, text);
+  missedAttacks = 0,
+): Promise<{
+  user: RoleplayUserSchema;
+  enemy: ReadyToBattleEnemy;
+  lastText: string;
+  missedAttacks: number;
+}> => {
+  const [needStop, newUser, newEnemy, newText] = await userAttack(
+    user,
+    enemy,
+    ctx,
+    text,
+    missedAttacks,
+  );
 
   if (!needStop) {
     const [enemyStop, enemyUser, enemyEnemy, enemyText] = enemyAttack(
@@ -31,11 +43,12 @@ export const battleLoop = async (
       newEnemy,
       ctx,
       newText,
+      missedAttacks,
     );
-    if (!enemyStop) return battleLoop(enemyUser, enemyEnemy, ctx, enemyText);
+    if (!enemyStop) return battleLoop(enemyUser, enemyEnemy, ctx, enemyText, missedAttacks);
   }
 
-  return { user, enemy, lastText: text };
+  return { user, enemy, lastText: text, missedAttacks };
 };
 
 export const enemyAttack = (
@@ -43,13 +56,15 @@ export const enemyAttack = (
   enemy: ReadyToBattleEnemy,
   ctx: InteractionCommandContext,
   text: string,
-): [boolean, RoleplayUserSchema, ReadyToBattleEnemy, string] => {
+  missedAttacks: number,
+): [boolean, RoleplayUserSchema, ReadyToBattleEnemy, string, number] => {
   const multiplier = calculateProbability(ENEMY_ATTACK_MULTIPLIER_CHANCE);
   const effectiveDamage = calculateEffectiveDamage(enemy.damage * multiplier, getUserArmor(user));
 
   user.life -= effectiveDamage;
 
-  if (isDead(user)) return [true, user, enemy, ctx.locale('roleplay:battle.user-death')];
+  if (isDead(user))
+    return [true, user, enemy, ctx.locale('roleplay:battle.user-death'), missedAttacks];
   return [
     false,
     user,
@@ -59,6 +74,7 @@ export const enemyAttack = (
       damage: effectiveDamage,
       attack: ctx.locale(`roleplay:attacks.${multiplier as 1}`),
     })}`,
+    missedAttacks,
   ];
 };
 
@@ -67,7 +83,13 @@ export const userAttack = async (
   enemy: ReadyToBattleEnemy,
   ctx: InteractionCommandContext,
   text: string,
-): Promise<[boolean, RoleplayUserSchema, ReadyToBattleEnemy, string]> => {
+  missedAttacks: number,
+): Promise<[boolean, RoleplayUserSchema, ReadyToBattleEnemy, string, number]> => {
+  if (missedAttacks >= 4) {
+    user.life = 0;
+    return [true, user, enemy, ctx.locale('roleplay:battle.user-death'), missedAttacks];
+  }
+
   const embed = new MessageEmbed()
     .setTitle(
       ctx.prettyResponse('sword', 'roleplay:battle.title', {
@@ -150,13 +172,15 @@ export const userAttack = async (
       TIME_TO_SELECT,
     );
 
-  if (!selectedOptions) return [false, user, enemy, ctx.locale('roleplay:battle.no-action')];
+  if (!selectedOptions)
+    return [false, user, enemy, ctx.locale('roleplay:battle.no-action'), missedAttacks + 1];
 
   switch (resolveSeparatedStrings(selectedOptions.values[0])[0]) {
     case 'HANDATTACK': {
       const damageDealt = calculateEffectiveDamage(getUserDamage(user), enemy.armor);
       enemy.life -= damageDealt;
-      if (isDead(enemy)) return [true, user, enemy, ctx.locale('roleplay:battle.enemy-death')];
+      if (isDead(enemy))
+        return [true, user, enemy, ctx.locale('roleplay:battle.enemy-death'), missedAttacks];
       return [
         false,
         user,
@@ -165,6 +189,7 @@ export const userAttack = async (
           attack: ctx.locale(`roleplay:battle.options.hand-attack`),
           damage: damageDealt,
         }),
+        missedAttacks,
       ];
     }
     case 'ABILITY': {
@@ -178,7 +203,8 @@ export const userAttack = async (
       user.mana -= getAbilityCost(usedAbility);
       user.life += getAbilityHeal(usedAbility, getUserIntelligence(user));
 
-      if (isDead(enemy)) return [true, user, enemy, ctx.locale('roleplay:battle.enemy-death')];
+      if (isDead(enemy))
+        return [true, user, enemy, ctx.locale('roleplay:battle.enemy-death'), missedAttacks];
       return [
         false,
         user,
@@ -189,8 +215,9 @@ export const userAttack = async (
           ),
           damage: damageDealt,
         }),
+        missedAttacks,
       ];
     }
   }
-  return [false, user, enemy, ctx.locale('roleplay:battle.no-action')];
+  return [false, user, enemy, ctx.locale('roleplay:battle.no-action'), missedAttacks + 1];
 };

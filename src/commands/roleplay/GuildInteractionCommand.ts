@@ -40,6 +40,10 @@ export default class InventoryInteractionCommand extends InteractionCommand {
       return;
     }
 
+    if (option === 'sell') return InventoryInteractionCommand.sellItems(ctx);
+  }
+
+  static async sellItems(ctx: InteractionCommandContext): Promise<void> {
     const embed = new MessageEmbed().setTitle(ctx.locale('commands:guilda.title'));
 
     ctx.makeMessage({ embeds: [embed] });
