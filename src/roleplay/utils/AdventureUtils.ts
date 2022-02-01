@@ -1,9 +1,16 @@
-import { LeveledItem, ReadyToBattleEnemy, RoleplayUserSchema, UserCooldown } from '@roleplay/Types';
+import {
+  BackPackItem,
+  LeveledItem,
+  ReadyToBattleEnemy,
+  RoleplayUserSchema,
+  UserCooldown,
+} from '@roleplay/Types';
 import InteractionCommandContext from '@structures/command/InteractionContext';
+import { IReturnData } from '@utils/Types';
 import { moreThanAnHour, RandomFromArray } from '@utils/Util';
 import { EmbedFieldData } from 'discord.js-light';
 import moment from 'moment';
-import { getEnemies } from './DataUtils';
+import { getEnemies, getItemById } from './DataUtils';
 
 export const canGoToDungeon = (
   user: RoleplayUserSchema,
@@ -35,17 +42,13 @@ export const getDungeonEnemy = (dungeonLevel: number, userLevel: number): ReadyT
 
   const enemy = RandomFromArray(availableEnemies);
 
-  const enemyLevel = userLevel * (Math.floor(Math.random() * 10) + 1);
+  const enemyLevel = (userLevel % 5) * 10 + Math.floor(Math.random() * 10) + 1;
 
   const enemyData: ReadyToBattleEnemy = {
     id: enemy.id,
     life: enemy.data.baseLife + enemy.data.perLevel.baseLife * enemyLevel,
     armor: enemy.data.baseArmor + enemy.data.perLevel.baseArmor * enemyLevel,
     damage: enemy.data.baseDamage + enemy.data.perLevel.baseDamage * enemyLevel,
-    attacks: enemy.data.attacks.map((b) => ({
-      id: b.id,
-      damage: b.baseDamage + b.perLevelDamage * enemyLevel,
-    })),
     experience: enemy.data.experience + enemy.data.perLevel.experience * enemyLevel,
     level: enemyLevel,
     loots: enemy.data.loots,
@@ -57,18 +60,22 @@ export const getDungeonEnemy = (dungeonLevel: number, userLevel: number): ReadyT
 export const isDead = (entity: unknown & { life: number }): boolean => entity.life <= 0;
 
 export const isInventoryFull = (user: RoleplayUserSchema): boolean => {
-  const userBackPack = { capacity: 3 };
+  const userBackPack = getItemById(user.backpack.id) as IReturnData<BackPackItem>;
 
-  if (user.inventory.reduce((p, c) => p + c.amount, 0) >= userBackPack.capacity) return true;
+  if (
+    user.inventory.reduce((p, c) => p + c.amount, 0) >=
+    userBackPack.data.capacity + userBackPack.data.perLevel * user.backpack.level
+  )
+    return true;
   return false;
 };
 
 export const getFreeInventorySpace = (user: RoleplayUserSchema): number => {
-  const userBackPack = { capacity: 3 };
+  const userBackPack = getItemById(user.backpack.id) as IReturnData<BackPackItem>;
 
   const usedSpace = user.inventory.reduce((p, c) => p + c.amount, 0);
 
-  return userBackPack.capacity - usedSpace;
+  return userBackPack.data.capacity + userBackPack.data.perLevel * user.backpack.level - usedSpace;
 };
 
 export const addToInventory = (

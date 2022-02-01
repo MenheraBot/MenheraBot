@@ -1,6 +1,14 @@
 import { IReturnData } from '@utils/Types';
-import { AbilitiesFile, ClassesFile, EnemiesFile, RacesFile, UserAbility } from '@roleplay/Types';
+import {
+  AbilitiesFile,
+  ClassesFile,
+  EnemiesFile,
+  ItemsFile,
+  RacesFile,
+  UserAbility,
+} from '@roleplay/Types';
 import Abilities from '@roleplay/data/Abilities';
+import Items from '@roleplay/data/Items';
 import { Classes, Enemies, Races } from '../data';
 
 export const getClasses = (): IReturnData<ClassesFile>[] =>
@@ -42,4 +50,9 @@ export const getEnemies = (): IReturnData<EnemiesFile>[] =>
 export const getEnemyById = (enemyId: number): IReturnData<EnemiesFile> =>
   Object.entries(Enemies)
     .filter((c) => Number(c[0]) === enemyId)
+    .map((c) => ({ id: Number(c[0]), data: c[1] }))[0];
+
+export const getItemById = (itemId: number): IReturnData<ItemsFile> =>
+  Object.entries(Items)
+    .filter((c) => Number(c[0]) === itemId)
     .map((c) => ({ id: Number(c[0]), data: c[1] }))[0];

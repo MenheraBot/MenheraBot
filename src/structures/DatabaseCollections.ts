@@ -97,7 +97,7 @@ const rpgSchema = new Schema({
   weapon: { type: Object },
   protection: { type: Object },
   inBattle: { type: Boolean, default: false },
-  backpack: { type: Object },
+  backpack: { type: Object, default: { id: 100, level: 1 } },
 });
 
 export const Cmds = model<ICmdSchema>('Cmd', cmdSchema);

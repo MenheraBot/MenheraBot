@@ -13,8 +13,6 @@ export interface UserAbility {
   blesses: number;
 }
 
-export type ItemType = 'Arma';
-
 export interface InventoryItem {
   id: number;
   level: number;
@@ -169,15 +167,14 @@ interface EnemyBoostPerLevel {
   experience: number;
 }
 
-export interface EnemyAttack {
-  id: number;
-  baseDamage: number;
-  perLevelDamage: number;
-}
-
 export interface EnemyLoot {
   id: number;
   level: number;
+}
+
+export interface EnemyDrops {
+  probability: number;
+  loots: EnemyLoot[];
 }
 
 export interface EnemiesFile {
@@ -187,8 +184,7 @@ export interface EnemiesFile {
   experience: number;
   perLevel: EnemyBoostPerLevel;
   dungeonLevels: number[];
-  attacks: EnemyAttack[];
-  loots: EnemyLoot[][];
+  loots: EnemyDrops[];
 }
 
 export interface ReadyToBattleEnemy {
@@ -198,6 +194,19 @@ export interface ReadyToBattleEnemy {
   armor: number;
   experience: number;
   level: number;
-  loots: EnemyLoot[][];
-  attacks: { id: number; damage: number }[];
+  loots: EnemyDrops[];
 }
+
+export interface BackPackItem {
+  type: 'backpack';
+  capacity: number;
+  perLevel: number;
+}
+
+export interface WeaponItem {
+  type: 'weapon';
+  damage: number;
+  perLevel: number;
+}
+
+export type ItemsFile = BackPackItem | ;
