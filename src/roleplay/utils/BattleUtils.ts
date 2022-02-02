@@ -13,6 +13,7 @@ import {
   getUserArmor,
   getUserDamage,
   getUserIntelligence,
+  getUserMaxLife,
 } from './Calculations';
 
 const TIME_TO_SELECT = 8000;
@@ -202,6 +203,8 @@ export const userAttack = async (
       enemy.life -= damageDealt;
       user.mana -= getAbilityCost(usedAbility);
       user.life += getAbilityHeal(usedAbility, getUserIntelligence(user));
+
+      if (user.life > getUserMaxLife(user)) user.life = getUserMaxLife(user);
 
       if (isDead(enemy))
         return [true, user, enemy, ctx.locale('roleplay:battle.enemy-death'), missedAttacks];
