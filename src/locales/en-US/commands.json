@@ -772,7 +772,7 @@
     "title": "Adventurer's Guild",
     "sell": {
       "no-items": "You don't have any items to sell!",
-      "success": "You sold your items successfully"
+      "success": "You sold your items successfully. Total: **{{value}}** Real Coins"
     }
   }
 }

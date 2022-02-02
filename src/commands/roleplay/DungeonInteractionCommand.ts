@@ -125,6 +125,7 @@ export default class DungeonInteractionCommand extends InteractionCommand {
       ctx,
       ctx.locale('roleplay:battle.find', {
         enemy: ctx.locale(`enemies:${enemy.id as 1}.name`),
+        level: enemy.level,
       }),
     );
 
@@ -168,6 +169,8 @@ export default class DungeonInteractionCommand extends InteractionCommand {
       reason: 'dungeon',
       until: ROLEPLAY_CONSTANTS.dungeonCooldown + Date.now(),
     });
+
+    await ctx.client.repositories.roleplayRepository.postBattle(ctx.author.id, user);
 
     const embed = new MessageEmbed()
       .setTitle(ctx.prettyResponse('crown', 'commands:dungeon.results.title'))
@@ -257,8 +260,6 @@ export default class DungeonInteractionCommand extends InteractionCommand {
       embeds: [embed],
     });
 
-    let hasSaved = false;
-
     const selectButton = async () => {
       const selectedItem = await Util.collectComponentInteractionWithStartingId(
         ctx.channel,
@@ -268,8 +269,6 @@ export default class DungeonInteractionCommand extends InteractionCommand {
       );
 
       if (!selectedItem) {
-        if (!hasSaved)
-          await ctx.client.repositories.roleplayRepository.postBattle(ctx.author.id, user);
         ctx.makeMessage({ components: [] });
         return;
       }
@@ -281,8 +280,9 @@ export default class DungeonInteractionCommand extends InteractionCommand {
         });
 
         user.inventory = addToInventory(resolvedItems, user.inventory);
-        await ctx.client.repositories.roleplayRepository.postBattle(ctx.author.id, user);
-        hasSaved = true;
+        await ctx.client.repositories.roleplayRepository.updateUser(ctx.author.id, {
+          inventory: user.inventory,
+        });
 
         ctx.makeMessage({ components: toSendComponents.splice(1, 3) });
         selectButton();

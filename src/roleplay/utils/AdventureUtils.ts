@@ -1,7 +1,6 @@
 import {
   BackPackItem,
   EnemyDrops,
-  EnemyLoot,
   HolyBlessings,
   LeveledItem,
   ReadyToBattleEnemy,
@@ -132,7 +131,7 @@ export const getEnemyLoot = (loots: EnemyDrops[]): EnemyDrops['loots'] => {
 
   let accumulator = loots.reduce((p, c) => p + c.probability, 0);
 
-  const mapedChanges: { loots: EnemyLoot[]; probabilities: number[] }[] = loots.map((a) => {
+  const mapedChanges: { loots: LeveledItem[]; probabilities: number[] }[] = loots.map((a) => {
     const toReturn = [accumulator - a.probability, accumulator];
     accumulator -= a.probability;
     return { loots: a.loots, probabilities: toReturn };

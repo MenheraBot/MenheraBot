@@ -95,7 +95,6 @@ const rpgSchema = new Schema({
       intelligence: 0,
     },
   },
-  loots: { type: Array, default: [] },
   inventory: { type: Array, default: [] },
   money: { type: Number, default: 0 },
   cooldowns: { type: Array, default: [] },

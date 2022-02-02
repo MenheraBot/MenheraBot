@@ -6,7 +6,7 @@ import InteractionCommandContext from '@structures/command/InteractionContext';
 import Util, { actionRow, disableComponents, resolveSeparatedStrings } from '@utils/Util';
 import { MessageEmbed, MessageSelectMenu, SelectMenuInteraction } from 'discord.js-light';
 
-export default class InventoryInteractionCommand extends InteractionCommand {
+export default class GuildaInteractionCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'guilda',
@@ -49,7 +49,7 @@ export default class InventoryInteractionCommand extends InteractionCommand {
       return;
     }
 
-    if (option === 'sell') return InventoryInteractionCommand.sellItems(ctx, user);
+    if (option === 'sell') return GuildaInteractionCommand.sellItems(ctx, user);
   }
 
   static async sellItems(ctx: InteractionCommandContext, user: RoleplayUserSchema): Promise<void> {
@@ -74,15 +74,18 @@ export default class InventoryInteractionCommand extends InteractionCommand {
       .setTitle(ctx.locale('commands:guilda.title'))
       .setColor(ctx.data.user.selectedColor);
 
-    let text = '';
-
     sellableItems.forEach((a, i) => {
       const resolvedItem = getItemById<DropItem>(a.id);
-      text += `**${ctx.locale(`items:${a.id as 1}.name`)}**\n${ctx.locale(
-        'common:roleplay.level',
-      )} **${a.level}**\n${ctx.locale('common:amount')}: **${a.amount}**\n${ctx.locale(
-        'common:value',
-      )}: **${resolvedItem.data.marketValue + resolvedItem.data.perLevel * a.level}**\n\n`;
+      if (embed.fields.length >= 25) return;
+      embed.addField(
+        ctx.locale(`items:${a.id as 1}.name`),
+        `${ctx.locale('common:roleplay.level')} **${a.level}**\n${ctx.locale('common:amount')}: **${
+          a.amount
+        }**\n${ctx.locale('common:value')}: **${
+          resolvedItem.data.marketValue + resolvedItem.data.perLevel * a.level
+        }**`,
+        true,
+      );
 
       for (let j = 0; j < a.amount; j++) {
         if (selectMenu.options.length >= 25) break;
@@ -98,7 +101,6 @@ export default class InventoryInteractionCommand extends InteractionCommand {
     });
 
     selectMenu.setMaxValues(selectMenu.options.length).setMinValues(1);
-    embed.setDescription(text);
 
     ctx.makeMessage({ embeds: [embed], components: [actionRow([selectMenu])] });
 
@@ -123,7 +125,9 @@ export default class InventoryInteractionCommand extends InteractionCommand {
       level: Number(resolveSeparatedStrings(a)[1]),
     }));
 
-    user.money += itemsSelected.reduce((p, c) => p + c.value, 0);
+    const itemValues = itemsSelected.reduce((p, c) => p + c.value, 0);
+
+    user.money += itemValues;
     user.inventory = removeFromInventory(
       itemsSelected.map((a) => ({ id: a.item.id, level: a.level })),
       user.inventory,
@@ -134,6 +138,10 @@ export default class InventoryInteractionCommand extends InteractionCommand {
       inventory: user.inventory,
     });
 
-    ctx.makeMessage({ content: ctx.prettyResponse('success', 'commands:guilda.sell.success') });
+    ctx.makeMessage({
+      content: ctx.prettyResponse('success', 'commands:guilda.sell.success', { value: itemValues }),
+      components: [],
+      embeds: [],
+    });
   }
 }

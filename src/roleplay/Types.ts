@@ -1,12 +1,3 @@
-export interface NormalAbility {
-  name: string;
-  description: string;
-  cooldown: number;
-  damage: number;
-  heal: number;
-  cost: number | string;
-}
-
 export interface UserAbility {
   id: number;
   level: number;
@@ -17,16 +8,6 @@ export interface InventoryItem {
   id: number;
   level: number;
   amount: number;
-}
-export interface Weapon {
-  damage: number;
-  name: string;
-  type: string;
-}
-
-export interface Armor {
-  armor: number;
-  name: string;
 }
 
 export interface LeveledItem {
@@ -74,23 +55,6 @@ export interface RoleplayUserSchema {
   money: number;
 }
 
-export interface Mob {
-  loots: {
-    name: string;
-    value: number;
-  }[];
-  ataques: {
-    name: string;
-    damage: number;
-  }[];
-  type: string;
-  name: string;
-  life: number;
-  damage: string;
-  armor: number;
-  xp: number;
-}
-
 interface BaseAttributesPerLevel {
   maxLife: number;
   maxMana: number;
@@ -99,24 +63,8 @@ interface BaseAttributesPerLevel {
   baseIntelligence: number;
 }
 
-export type ClassesNameDefinition =
-  | 'assassin'
-  | 'mage'
-  | 'sorcerer'
-  | 'illusionist'
-  | 'archmage'
-  | 'necromancer'
-  | 'barbarian'
-  | 'archer'
-  | 'paladin'
-  | 'tamer';
-
-export type RacesNameDefinition = 'elf' | 'human' | 'orc' | 'half-demon' | 'demi-human' | 'fear';
-
-export type AvailableStatuses = Exclude<keyof BaseAttributesPerLevel, 'holyBlessings'>;
-
 export interface ClassesFile {
-  name: ClassesNameDefinition;
+  name: string;
   attributesPerLevel: BaseAttributesPerLevel;
   baseMaxMana: number;
   baseMaxLife: number;
@@ -127,12 +75,12 @@ export interface ClassesFile {
 }
 
 export interface FacilityType {
-  facility: AvailableStatuses;
+  facility: keyof BaseAttributesPerLevel;
   boostPerLevel: number;
 }
 
 export interface RacesFile {
-  name: RacesNameDefinition;
+  name: string;
   facilities: FacilityType[];
 }
 
@@ -164,14 +112,9 @@ interface EnemyBoostPerLevel {
   experience: number;
 }
 
-export interface EnemyLoot {
-  id: number;
-  level: number;
-}
-
 export interface EnemyDrops {
   probability: number;
-  loots: EnemyLoot[];
+  loots: LeveledItem[];
 }
 
 export interface EnemiesFile {

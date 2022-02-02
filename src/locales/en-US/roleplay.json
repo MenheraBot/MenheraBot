@@ -89,7 +89,7 @@
       "attack-text": "⚔️ | You attack with **{{attack}}** and deal **{{damage}}** damage",
       "select": "Select an Action",
       "title": "Battle Against {{name}}",
-      "find": "You meet an enemy! **{{enemy}}** is just ahead!",
+      "find": "You meet an enemy! **{{enemy}}** level **{{level}}** is just ahead!",
       "options": {
         "hand-attack": "Basic Attack",
         "hand-attack-description": "Make an attack with your primary weapon",
