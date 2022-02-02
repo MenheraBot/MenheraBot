@@ -779,5 +779,8 @@
       "no-items": "Você não possui nenhum item para vender",
       "success": "Você vendeus seus itens por **{{value}}** Moedas Reais com sucesso!"
     }
+  },
+  "igreja": {
+    "title": "Igreja de Boleham"
   }
 }

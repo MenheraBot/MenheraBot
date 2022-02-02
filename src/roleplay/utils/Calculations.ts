@@ -91,7 +91,7 @@ export const makeBlessingStatusUpgrade = (toBless: ToBLess, points: number): num
     case 'life':
       return points * 30;
     case 'mana':
-      return points * 5;
+      return points * 10;
     case 'intelligence':
       return points * 8;
     case 'armor':

@@ -774,5 +774,8 @@
       "no-items": "You don't have any items to sell!",
       "success": "You sold your items successfully. Total: **{{value}}** Real Coins"
     }
+  },
+  "igreja": {
+    "title": "Boleham's Church"
   }
 }

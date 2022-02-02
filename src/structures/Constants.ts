@@ -257,6 +257,7 @@ export const emojis = {
   experience: '🔰',
   chest: '<:Chest:760957557538947133>',
   intelligence: '🧠',
+  church: '⛪',
 };
 
 export const languageByLocale = {
