@@ -3,6 +3,11 @@ import { T8BallAnswerTypes } from '@utils/Types';
 
 export const LAST_DUNGEON_LEVEL = 5;
 
+export const ROLEPLAY_COOLDOWNS = {
+  dungeonCooldown: 3_600_000,
+  deathCooldown: 10_800_000,
+};
+
 export const shopEconomy = {
   colors: {
     purple: 30_000,
@@ -275,11 +280,6 @@ export const languageByLocale = {
   'us-east': 'en-US',
   'us-south': 'en-US',
   'us-west': 'en-US',
-};
-
-export const ROLEPLAY_CONSTANTS = {
-  dungeonCooldown: 3_600_000,
-  deathCooldown: 10_800_000,
 };
 
 export const EightBallAnswers: { id: number; type: T8BallAnswerTypes }[] = [

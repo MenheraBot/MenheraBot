@@ -781,6 +781,8 @@
     }
   },
   "igreja": {
-    "title": "Igreja de Boleham"
+    "title": "Igreja de Boleham",
+    "description": "Bem-Vindo à igreja de Boleham! Aqui você pode rezar para que o poder do Dragão Ancião Elemental da Luz te cure! Escolha o que fazer!\nVocê curará **{{life}}** ❤️ e **{{mana}}** 💧 por cada **{{cooldown}}** {{subtime}} rezados. Você pode parar de rezar a qualquer momento, e deve esperar 30 minutos para rezar novamente.\nPara se curar totalmente, você deve ficar rezando por **{{untilCooldown}}** {{untilSubtime}}",
+    "pray": "Rezar"
   }
 }

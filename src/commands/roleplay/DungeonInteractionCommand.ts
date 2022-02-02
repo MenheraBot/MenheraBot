@@ -20,7 +20,7 @@ import {
 } from '@roleplay/utils/Calculations';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { COLORS, LAST_DUNGEON_LEVEL, ROLEPLAY_CONSTANTS } from '@structures/Constants';
+import { COLORS, LAST_DUNGEON_LEVEL, ROLEPLAY_COOLDOWNS } from '@structures/Constants';
 import Util, { actionRow, resolveCustomId, resolveSeparatedStrings } from '@utils/Util';
 import {
   MessageActionRow,
@@ -138,7 +138,7 @@ export default class DungeonInteractionCommand extends InteractionCommand {
 
       user.cooldowns = makeCooldown(user.cooldowns, {
         reason: 'death',
-        until: ROLEPLAY_CONSTANTS.deathCooldown + Date.now(),
+        until: ROLEPLAY_COOLDOWNS.deathCooldown + Date.now(),
       });
 
       user.life = getUserMaxLife(user);
@@ -167,7 +167,7 @@ export default class DungeonInteractionCommand extends InteractionCommand {
 
     user.cooldowns = makeCooldown(user.cooldowns, {
       reason: 'dungeon',
-      until: ROLEPLAY_CONSTANTS.dungeonCooldown + Date.now(),
+      until: ROLEPLAY_COOLDOWNS.dungeonCooldown + Date.now(),
     });
 
     await ctx.client.repositories.roleplayRepository.postBattle(ctx.author.id, user);
