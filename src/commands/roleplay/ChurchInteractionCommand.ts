@@ -120,12 +120,10 @@ export default class ChurchInteractionCommand extends InteractionCommand {
 
     if (inChurch && inChurch.data !== 'COOLDOWN') {
       const inChurchFor = Date.now() - (inChurch.data as number);
-      const life =
-        Math.floor((inChurchFor / (CICLE_DURATION_IN_MINUTES * 60000)) * lifePerCicle) + user.life;
-      const prayedLife = Math.min(life, userMaxLife);
-      const mana =
-        Math.floor((inChurchFor / (CICLE_DURATION_IN_MINUTES * 60000)) * manaPerCicle) + user.mana;
-      const prayedMana = Math.min(mana, userMaxMana);
+      const life = Math.floor((inChurchFor / (CICLE_DURATION_IN_MINUTES * 60000)) * lifePerCicle);
+      const prayedLife = Math.min(life + user.life, userMaxLife);
+      const mana = Math.floor((inChurchFor / (CICLE_DURATION_IN_MINUTES * 60000)) * manaPerCicle);
+      const prayedMana = Math.min(mana + user.mana, userMaxMana);
 
       user.cooldowns = makeCooldown(user.cooldowns, {
         reason: 'church',
@@ -134,8 +132,8 @@ export default class ChurchInteractionCommand extends InteractionCommand {
       });
 
       await ctx.client.repositories.roleplayRepository.updateUser(ctx.author.id, {
-        life: prayedLife,
-        mana: prayedMana,
+        life,
+        mana,
         cooldowns: user.cooldowns,
       });
 

@@ -99,6 +99,8 @@
   "backpack-full": "Seu inventário está cheio! Volte para a capital para esvaziar sua mochila!",
   "cooldowns": {
     "dungeon": "Você Está Cansado!",
+    "church": "Você Está Rezando!",
+    "church-description": "Atualmente você está rezando! Cheque novamente a Igreja de Boleham e veja se já não está na hora de parar.",
     "dungeon-description": "Você já foi para a dungeon recenemente, e precisa descansar por mais **{{time}}** {{subtime}}",
     "death": "Você Está Morto!",
     "death-description": "Tu morreu em uma das tuas aventuras, e foi teletransportado para a Igreja para se recuperar. Descanse por mais **{{time}}** {{subtime}}"

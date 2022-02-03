@@ -24,6 +24,7 @@ export const canGoToDungeon = (
 
   user.cooldowns.forEach((cd) => {
     if (cd.until > Date.now()) {
+      if (cd.reason === 'church' && cd.data === 'COOLDOWN') return;
       canGo = false;
       reason.push({
         name: ctx.locale(`roleplay:cooldowns.${cd.reason as 'death'}`),

@@ -21,8 +21,6 @@ export type Resources = {
   abilities: typeof abilities;
 };
 
-export type Langueges = 'en-US' | 'pt-BR';
-
 type TokenTranslation<Namespaces, R extends boolean = false> = Extract<
   keyof {
     [Key in Extract<keyof Namespaces, string> as Namespaces[Key] extends string | number

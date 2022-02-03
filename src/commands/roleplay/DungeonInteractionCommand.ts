@@ -150,7 +150,7 @@ export default class DungeonInteractionCommand extends InteractionCommand {
 
     const lootEarned = getEnemyLoot(enemy.loots);
 
-    user.experience += battleResults.enemy.experience;
+    user.experience += Math.floor(battleResults.enemy.experience);
 
     const { level, experience, holyBlessings } = makeLevelUp(user);
 
