@@ -785,6 +785,8 @@
     "description": "Bem-Vindo à igreja de Boleham! Aqui você pode rezar para que o poder do Dragão Ancião Elemental da Luz te cure! Escolha o que fazer!\nVocê curará **{{life}}** ❤️ e **{{mana}}** 💧 por cada **{{cooldown}}** {{subtime}} rezados. Você pode parar de rezar a qualquer momento, e deve esperar **{{rechurch}}** minutos para rezar novamente.\nPara se curar totalmente, você deve ficar rezando por **{{untilCooldown}}** {{untilSubtime}}",
     "pray": "Rezar",
     "praying": "Rezando",
+    "death": "Você foi encontrado morto em uma aventura, e agora está descansando na Igreja. Para se recuperar totalmente, você deve descansar por mais **{{time}}** {{subtime}}",
+    "back-from-death": "Você acaba de se recuperar de uma morte! Bem-Vindo de volta **{{user}}-sama** ao mundo de Boleham!",
     "cooldown": "Você pediu poderes para o Dragão Ancião Elemental da Luz a pouco tempo! Espere mais um pouco para que ele não perca a paciência contigo! Tempo Restante: **{{time}}** minutos",
     "enter-pray": "Você começou a rezar! Utilize o comando novamente quando quiser parar de rezar!",
     "healthy": "Você está saudável! O Dragão Ancião Elemental da Luz não vai te abençoar por tão pouco assim! Volte quando estiver em maus bocados!",

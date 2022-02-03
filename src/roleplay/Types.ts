@@ -29,7 +29,7 @@ export interface Blesses {
   intelligence: number;
 }
 
-export type CooldownReason = 'dungeon' | 'death' | 'church';
+export type CooldownReason = 'dungeon' | 'church';
 
 export interface UserCooldown {
   reason: CooldownReason;

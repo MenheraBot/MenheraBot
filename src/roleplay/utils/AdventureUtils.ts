@@ -27,15 +27,22 @@ export const canGoToDungeon = (
       if (cd.reason === 'church' && cd.data === 'COOLDOWN') return;
       canGo = false;
       reason.push({
-        name: ctx.locale(`roleplay:cooldowns.${cd.reason as 'death'}`),
-        value: ctx.locale(`roleplay:cooldowns.${cd.reason as 'death'}-description`, {
-          time: moment
-            .utc(cd.until - Date.now())
-            .format(moreThanAnHour(cd.until - Date.now()) ? 'HH:mm:ss' : 'mm:ss'),
-          subtime: ctx.locale(
-            `common:${moreThanAnHour(cd.until - Date.now()) ? 'hours' : 'minutes'}`,
-          ),
-        }),
+        name: ctx.locale(
+          `roleplay:cooldowns.${cd?.data === 'DEATH' ? 'death' : (cd.reason as 'death')}`,
+        ),
+        value: ctx.locale(
+          `roleplay:cooldowns.${
+            cd?.data === 'DEATH' ? 'death' : (cd.reason as 'death')
+          }-description`,
+          {
+            time: moment
+              .utc(cd.until - Date.now())
+              .format(moreThanAnHour(cd.until - Date.now()) ? 'HH:mm:ss' : 'mm:ss'),
+            subtime: ctx.locale(
+              `common:${moreThanAnHour(cd.until - Date.now()) ? 'hours' : 'minutes'}`,
+            ),
+          },
+        ),
       });
     }
   });

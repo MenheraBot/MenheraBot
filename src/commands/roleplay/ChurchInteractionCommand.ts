@@ -2,7 +2,7 @@ import { makeCooldown } from '@roleplay/utils/AdventureUtils';
 import { getUserMaxLife, getUserMaxMana } from '@roleplay/utils/Calculations';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import Util, { actionRow, disableComponents } from '@utils/Util';
+import Util, { actionRow, disableComponents, moreThanAnHour } from '@utils/Util';
 import { MessageButton, MessageEmbed } from 'discord.js-light';
 import moment from 'moment';
 
@@ -35,6 +35,38 @@ export default class ChurchInteractionCommand extends InteractionCommand {
       ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:igreja.cooldown', {
           time: moment.utc(inChurch.until - Date.now()).format('mm:ss'),
+        }),
+      });
+      return;
+    }
+
+    if (inChurch && inChurch.data === 'DEATH' && inChurch.until > Date.now()) {
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:igreja.death', {
+          time: moment
+            .utc(inChurch.until - Date.now())
+            .format(moreThanAnHour(inChurch.until) ? 'HH:mm:ss' : 'mm:ss'),
+          subtime: ctx.locale(moreThanAnHour(inChurch.until) ? 'common:hours' : 'common:minutes'),
+        }),
+      });
+      return;
+    }
+
+    if (inChurch && inChurch.data === 'DEATH' && inChurch.until <= Date.now()) {
+      user.cooldowns.splice(
+        user.cooldowns.findIndex((a) => a.reason === 'church' && a.data === 'DEATH'),
+        1,
+      );
+
+      await ctx.client.repositories.roleplayRepository.updateUser(ctx.author.id, {
+        cooldowns: user.cooldowns,
+        life: getUserMaxLife(user),
+        mana: getUserMaxMana(user),
+      });
+
+      ctx.makeMessage({
+        content: ctx.prettyResponse('success', 'commands:igreja.back-from-death', {
+          user: ctx.author.username,
         }),
       });
       return;

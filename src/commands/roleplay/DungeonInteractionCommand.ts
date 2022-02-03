@@ -137,8 +137,9 @@ export default class DungeonInteractionCommand extends InteractionCommand {
       });
 
       user.cooldowns = makeCooldown(user.cooldowns, {
-        reason: 'death',
+        reason: 'church',
         until: ROLEPLAY_COOLDOWNS.deathCooldown + Date.now(),
+        data: 'DEATH',
       });
 
       user.life = getUserMaxLife(user);

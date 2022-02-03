@@ -784,12 +784,14 @@
     "title": "Boleham's Church",
     "description": "Welcome to Boleham Church! Here you can pray for the power of the Elder Elemental Dragon of Light to heal you! Choose what to do!\nYou will heal **{{life}}** ❤️ and **{{mana}}** 💧 for every **{{cooldown}}** {{subtime}} prayed. You can stop praying at any time, and you must wait **{{rechurch}}** minutes to pray again.\nTo fully heal, you must keep praying for **{{untilCooldown}}** {{untilSubtime}}",
     "pray": "Pray",
+    "death": "You were found dead in an adventure and now is at the Church resting. You need to rest for more **{{time}}** {{subtime}}.",
     "praying": "Praying",
     "cooldown": "You asked the Light Elemental Elder Dragon for powers not long ago! Wait a little longer so he doesn't lose patience with you! Time Remaining: **{{time}}** minutes",
     "enter-pray": "You started praying! Use the command again when you want to stop praying!",
     "healthy": "You are healthy! The Elemental Elder Dragon of Light won't bless you for so little! Come back when you're in trouble!",
     "prayed": "You got out of your prayer! May the Dragon's blessing be with you! Blessing Received: **{{life}}** ❤️, **{{mana}}** 💧",
     "stop": "Stop Praying",
+    "back-from-death": "You have just recovered from a death! Welcome back **{{user}}-sama** to the world of Boleham!",
     "praying-description": "You're already praying for **{{cooldown}}** {{subtime}}. In this time he has recovered **{{life}}** ❤️ and **{{mana}}** 💧"
   }
 }
