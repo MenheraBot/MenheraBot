@@ -121,8 +121,10 @@ export const makeCooldown = (
 ): RoleplayUserSchema['cooldowns'] => {
   const finded = cooldowns.find((a) => a.reason === newCooldown.reason);
 
-  if (finded) finded.until = newCooldown.until;
-  else cooldowns.push(newCooldown);
+  if (finded) {
+    finded.until = newCooldown.until;
+    if (newCooldown.data) finded.data = newCooldown.data;
+  } else cooldowns.push(newCooldown);
   return cooldowns;
 };
 

@@ -29,11 +29,12 @@ export interface Blesses {
   intelligence: number;
 }
 
-export type CooldownReason = 'dungeon' | 'death';
+export type CooldownReason = 'dungeon' | 'death' | 'church';
 
 export interface UserCooldown {
   reason: CooldownReason;
   until: number;
+  data?: unknown;
 }
 
 export interface RoleplayUserSchema {
