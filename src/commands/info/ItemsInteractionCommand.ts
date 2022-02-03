@@ -16,7 +16,7 @@ import Util, {
 } from '@utils/Util';
 import { IMagicItem } from '@utils/Types';
 
-export default class InventoryInteractionCommand extends InteractionCommand {
+export default class ItemsInteractionCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'itens',

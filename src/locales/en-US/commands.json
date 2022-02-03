@@ -198,6 +198,8 @@
     "embed_title": "Menhera's Thrift store",
     "buy_item": {
       "title": "🔮 | Magic Items",
+      "poor": "You don't have enough estrelinhas to buy this item",
+      "success": "You have successfully purchased **{{item}}**! Just give it to the hunts now. Use /itens to use the item",
       "description": "Select down below the item that you want to buy",
       "hasAll": "You already have all magic items available"
     },
@@ -227,6 +229,7 @@
       "data": "**{{description}}**\n**Price**: {{price}} :star:\n**Rarity**: $t(common:rarities.{{rarity}})\n**Author**: <@{{author}}>",
       "description": "Below are some themes you can buy right away.",
       "owned": "(Owned)",
+      "preview-mode": "Preview Mode",
       "success": "**Purchase successfully made!** You can now enable it on `/personalizar temas`",
       "poor": "You don't have all these stars to buy this!"
     },
@@ -296,6 +299,7 @@
     "author-single": "you are not married to anyone",
     "divorce": "Divorce",
     "cancel": "Cancel",
+    "confirmed": "Do you really wanna divorce from",
     "confirmation": "Do you really want to divorce from",
     "canceled": "I think it’s good that you're still married, but if you thought about breaking up once, maybe you’ll think more often ... If the relationship doesn’t make you feel good, there’s no point in continuing…",
     "confirmed_start": "just got divorced from",
@@ -418,8 +422,9 @@
     "demons": "Demons",
     "angels": "Angels",
     "demigods": "Demigods",
-    "arcangels": "Archangels",
+    "archangels": "Archangels",
     "giants": "Giants",
+    "votes": "Votes",
     "gods": "Gods",
     "stars": "Stars",
     "members": "Members",
@@ -539,7 +544,7 @@
   "untrisal": {
     "error": "you are not in any trisal!",
     "sure": "are you sure you want to break up with your trisal? You have 15 seconds to confirm",
-    "cofnrim": "Breakup",
+    "confirm": "Breakup",
     "done": "Your trisal is over! There's no way. He finished...."
   },
   "blackjack": {
@@ -776,6 +781,15 @@
     }
   },
   "igreja": {
-    "title": "Boleham's Church"
+    "title": "Boleham's Church",
+    "description": "Welcome to Boleham Church! Here you can pray for the power of the Elder Elemental Dragon of Light to heal you! Choose what to do!\nYou will heal **{{life}}** ❤️ and **{{mana}}** 💧 for every **{{cooldown}}** {{subtime}} prayed. You can stop praying at any time, and you must wait **{{rechurch}}** minutes to pray again.\nTo fully heal, you must keep praying for **{{untilCooldown}}** {{untilSubtime}}",
+    "pray": "Pray",
+    "praying": "Praying",
+    "cooldown": "You asked the Light Elemental Elder Dragon for powers not long ago! Wait a little longer so he doesn't lose patience with you! Time Remaining: **{{time}}** minutes",
+    "enter-pray": "You started praying! Use the command again when you want to stop praying!",
+    "healthy": "You are healthy! The Elemental Elder Dragon of Light won't bless you for so little! Come back when you're in trouble!",
+    "prayed": "You got out of your prayer! May the Dragon's blessing be with you! Blessing Received: **{{life}}** ❤️, **{{mana}}** 💧",
+    "stop": "Stop Praying",
+    "praying-description": "You're already praying for **{{cooldown}}** {{subtime}}. In this time he has recovered **{{life}}** ❤️ and **{{mana}}** 💧"
   }
 }
