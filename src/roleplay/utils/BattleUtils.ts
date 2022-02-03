@@ -73,7 +73,7 @@ export const enemyAttack = (
     `${text}\n${ctx.locale('roleplay:battle.deffend-text', {
       enemy: ctx.locale(`enemies:${enemy.id as 1}.name`),
       damage: effectiveDamage,
-      attack: ctx.locale(`roleplay:attacks.${multiplier as 1}`),
+      attack: ctx.locale(`roleplay:attacks.${multiplier.toString().replace('.', '-') as '1'}`),
     })}`,
     missedAttacks,
   ];

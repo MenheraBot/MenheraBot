@@ -159,7 +159,7 @@ export const getEnemyLoot = (loots: EnemyDrops[]): EnemyDrops['loots'] => {
 
 export const makeLevelUp = (
   user: RoleplayUserSchema,
-): { level: number; experience: number; holyBlessings: HolyBlessings } => {
+): { level: number; holyBlessings: HolyBlessings } => {
   if (user.experience >= LEVEL_UP_EXPERIENCE[user.level]) {
     user.holyBlessings.ability = LEVEL_UP_BLESSES[user.level].ability;
     user.holyBlessings.battle = LEVEL_UP_BLESSES[user.level].battle;
@@ -167,5 +167,5 @@ export const makeLevelUp = (
     user.level += 1;
   }
 
-  return { level: user.level, experience: user.experience, holyBlessings: user.holyBlessings };
+  return { level: user.level, holyBlessings: user.holyBlessings };
 };

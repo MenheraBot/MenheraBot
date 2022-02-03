@@ -157,7 +157,7 @@ export default class ChurchInteractionCommand extends InteractionCommand {
       const mana = Math.floor((inChurchFor / (CICLE_DURATION_IN_MINUTES * 60000)) * manaPerCicle);
       const prayedMana = Math.min(mana + user.mana, userMaxMana);
 
-      user.cooldowns = makeCooldown(user.cooldowns, {
+      makeCooldown(user.cooldowns, {
         reason: 'church',
         data: 'COOLDOWN',
         until: Date.now() + 1000 * 60 * MINUTES_COOLDOWN_TO_RECHURCH,

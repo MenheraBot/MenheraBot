@@ -210,14 +210,14 @@ const Enemies: { [id: number]: EnemiesFile } = {
   },
   7: {
     dungeonLevels: [4, 5],
-    baseDamage: 10,
+    baseDamage: 70,
     baseLife: 800,
     experience: 60,
     baseArmor: 40,
     perLevel: {
       baseDamage: 2,
-      baseLife: 10,
-      baseArmor: 2,
+      baseLife: 30,
+      baseArmor: 6,
       experience: 10,
     },
     loots: [
@@ -248,14 +248,14 @@ const Enemies: { [id: number]: EnemiesFile } = {
   },
   8: {
     dungeonLevels: [5],
-    baseDamage: 60,
-    baseLife: 100,
+    baseDamage: 80,
+    baseLife: 500,
     experience: 10,
     baseArmor: 40,
     perLevel: {
-      baseDamage: 7,
-      baseLife: 10,
-      baseArmor: 7,
+      baseDamage: 10,
+      baseLife: 12,
+      baseArmor: 10,
       experience: 11,
     },
     loots: [

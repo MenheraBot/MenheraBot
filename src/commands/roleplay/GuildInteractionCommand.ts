@@ -128,7 +128,7 @@ export default class GuildaInteractionCommand extends InteractionCommand {
     const itemValues = itemsSelected.reduce((p, c) => p + c.value, 0);
 
     user.money += itemValues;
-    user.inventory = removeFromInventory(
+    removeFromInventory(
       itemsSelected.map((a) => ({ id: a.item.id, level: a.level })),
       user.inventory,
     );

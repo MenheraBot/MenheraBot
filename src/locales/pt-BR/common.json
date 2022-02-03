@@ -46,6 +46,7 @@
     "intelligence": "Inteligência",
     "armor": "Defesa",
     "level": "Nível",
+    "level-up": "Whoooaaa, você evoluiu para o nível **{{level}}**. Niceee, cheque seus status para ver novidades...",
     "blesses": "Bençãos"
   },
   "unregistered": "Tu ainda não reencarnou no Mundo de Boleham! Registre-se primeiro e tente novamente!",

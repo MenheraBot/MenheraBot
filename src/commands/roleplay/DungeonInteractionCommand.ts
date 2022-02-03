@@ -136,7 +136,7 @@ export default class DungeonInteractionCommand extends InteractionCommand {
         content: ctx.locale('roleplay:battle.user-death'),
       });
 
-      user.cooldowns = makeCooldown(user.cooldowns, {
+      makeCooldown(user.cooldowns, {
         reason: 'church',
         until: ROLEPLAY_COOLDOWNS.deathCooldown + Date.now(),
         data: 'DEATH',
@@ -153,20 +153,19 @@ export default class DungeonInteractionCommand extends InteractionCommand {
 
     user.experience += Math.floor(battleResults.enemy.experience);
 
-    const { level, experience, holyBlessings } = makeLevelUp(user);
-
     const oldUserLevel = user.level;
 
-    user.level = level;
-    user.experience = experience;
-    user.holyBlessings = holyBlessings;
+    makeLevelUp(user);
 
     if (user.level > oldUserLevel) {
       user.life = getUserMaxLife(user);
       user.mana = getUserMaxMana(user);
+      ctx.send({
+        content: ctx.prettyResponse('level', 'common:roleplay.level-up', { level: user.level }),
+      });
     }
 
-    user.cooldowns = makeCooldown(user.cooldowns, {
+    makeCooldown(user.cooldowns, {
       reason: 'dungeon',
       until: ROLEPLAY_COOLDOWNS.dungeonCooldown + Date.now(),
     });
@@ -280,7 +279,7 @@ export default class DungeonInteractionCommand extends InteractionCommand {
           return { id: Number(id), level: Number(itemLevel) };
         });
 
-        user.inventory = addToInventory(resolvedItems, user.inventory);
+        addToInventory(resolvedItems, user.inventory);
         await ctx.client.repositories.roleplayRepository.updateUser(ctx.author.id, {
           inventory: user.inventory,
         });

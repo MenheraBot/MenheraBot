@@ -31,13 +31,13 @@ export const shopEconomy = {
 
 export const LEVEL_UP_EXPERIENCE: { [level: number]: number } = {
   1: 10,
-  2: 100,
-  3: 400,
-  4: 800,
-  5: 1500,
-  6: 3000,
-  7: 5500,
-  8: 8000,
+  2: 200,
+  3: 800,
+  4: 1300,
+  5: 2000,
+  6: 4000,
+  7: 6800,
+  8: 9000,
   9: 10_000,
   10: 15_000,
   11: 21_000,
@@ -50,7 +50,8 @@ export const LEVEL_UP_EXPERIENCE: { [level: number]: number } = {
   18: 82_000,
   19: 100_000,
   20: 130_00,
-  21: 175_000,
+  21: 500_000,
+  22: Infinity,
 };
 
 export const LEVEL_UP_BLESSES: { [level: number]: HolyBlessings } = {
@@ -75,8 +76,8 @@ export const LEVEL_UP_BLESSES: { [level: number]: HolyBlessings } = {
     vitality: 10,
   },
   5: {
-    ability: 3,
-    battle: 3,
+    ability: 10,
+    battle: 5,
     vitality: 10,
   },
   6: {
@@ -100,7 +101,7 @@ export const LEVEL_UP_BLESSES: { [level: number]: HolyBlessings } = {
     vitality: 10,
   },
   10: {
-    ability: 10,
+    ability: 5,
     battle: 5,
     vitality: 5,
   },
@@ -120,12 +121,12 @@ export const LEVEL_UP_BLESSES: { [level: number]: HolyBlessings } = {
     vitality: 5,
   },
   14: {
-    ability: 10,
+    ability: 15,
     battle: 20,
     vitality: 20,
   },
   15: {
-    ability: 5,
+    ability: 2,
     battle: 7,
     vitality: 8,
   },
@@ -162,11 +163,11 @@ export const LEVEL_UP_BLESSES: { [level: number]: HolyBlessings } = {
 };
 
 export const ENEMY_ATTACK_MULTIPLIER_CHANCE = [
-  { amount: 1, probability: 85 },
-  { amount: 1.3, probability: 5 },
-  { amount: 1.6, probability: 4 },
-  { amount: 1.8, probability: 5 },
-  { amount: 2, probability: 1 },
+  { amount: 1, probability: 70 },
+  { amount: 1.3, probability: 11 },
+  { amount: 1.6, probability: 9 },
+  { amount: 1.8, probability: 7 },
+  { amount: 2, probability: 3 },
 ];
 
 export const defaultHuntingProbabilities = {
@@ -264,6 +265,8 @@ export const emojis = {
   intelligence: '🧠',
   church: '⛪',
 };
+
+export type EmojiTypes = keyof typeof emojis;
 
 export const languageByLocale = {
   brazil: 'pt-BR',
@@ -364,8 +367,6 @@ export const EightBallAnswers: { id: number; type: T8BallAnswerTypes }[] = [
     type: 'neutral',
   },
 ];
-
-export type EmojiTypes = keyof typeof emojis;
 
 export const COLORS = {
   Default: '#a788ff' as const,
