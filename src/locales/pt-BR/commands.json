@@ -721,6 +721,7 @@
       "armor": "Armadura",
       "dmg": "Dano",
       "mana": "Mana",
+      "money": "Moedas Reais",
       "poor-title": "Bônus de Bênçãos",
       "poor-description": "Você está sem Bênçãos no momento, mas fique com os status atuais de suas bênçãos enquanto isso\n\n❤️ | **Vida Extra:** {{life}}\n💧 | **Mana Extra:** {{mana}}\n⚔️ | **Dano Extra:** {{damage}}\n🛡️ | **Armadura Extra:** {{armor}}\n🧠 | **Inteligência Extra:** {{intelligence}}",
       "no-blesses": "Você não possui Bênçãos Santíssimas para melhorar seus Status!",
@@ -773,11 +774,16 @@
     "title": "Inventário de {{user}}",
     "no-items": "**Seu inventário está vazio!**"
   },
-  "guilda": {
-    "title": "Guilda de Aventureiros",
+  "centro": {
+    "buy": {
+      "title": "Mercado de Boleham | Comprar",
+      "select": "Selecione os itens à comprar",
+      "consumable-desc": "Custo: **{{cost}}** {{coinEmoji}}\nRegeneração: **{{boostValue}}** {{boostEmoji}}"
+    },
     "sell": {
+      "title": "Mercado de Boleham | Vender",
       "no-items": "Você não possui nenhum item para vender",
-      "success": "Você vendeus seus itens por **{{value}}** Moedas Reais com sucesso!"
+      "success": "Você vendeus seus itens por **{{value}}** {{coinEmoji}} Moedas Reais com sucesso!"
     }
   },
   "igreja": {

@@ -1,27 +1,46 @@
-import { DropItem, RoleplayUserSchema } from '@roleplay/Types';
+import { ConsumableItem, DropItem, RoleplayUserSchema } from '@roleplay/Types';
 import { removeFromInventory } from '@roleplay/utils/AdventureUtils';
 import { getItemById } from '@roleplay/utils/DataUtils';
+import { availableToBuyItems } from '@roleplay/utils/ItemsUtil';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
+import { emojis } from '@structures/Constants';
 import Util, { actionRow, disableComponents, resolveSeparatedStrings } from '@utils/Util';
 import { MessageEmbed, MessageSelectMenu, SelectMenuInteraction } from 'discord.js-light';
 
-export default class GuildaInteractionCommand extends InteractionCommand {
+export default class DowntownInteractionCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'guilda',
-      description: '【ＲＰＧ】Entre na guilda de Boleham',
+      name: 'centro',
+      description: '【ＲＰＧ】Centro de Boleham, aqui tu encontra de tudo',
       category: 'roleplay',
       options: [
         {
-          name: 'cômodo',
-          description: 'Para que vieste à guilda?',
-          type: 'STRING',
-          required: true,
-          choices: [
-            { name: 'Venda de Itens', value: 'sell' },
-            { name: 'Compra de Ferramentas', value: 'buy' },
-            { name: 'Mural de Quests', value: 'quest' },
+          name: 'guilda',
+          description: '【ＲＰＧ】Guilda de Aventureiros - Retire quests e reclame-as',
+          type: 'SUB_COMMAND',
+        },
+        {
+          name: 'ferreiro',
+          description: '【ＲＰＧ】Ferreiro - Compre e faça itens de batalha',
+          type: 'SUB_COMMAND',
+        },
+        {
+          name: 'mercado',
+          description: '【ＲＰＧ】Mercado - Compre e venda itens',
+          type: 'SUB_COMMAND_GROUP',
+          options: [
+            {
+              name: 'comprar',
+              description: '【ＲＰＧ】Mercado - Compre itens para lhe ajudar nas batalhas',
+              type: 'SUB_COMMAND',
+            },
+            {
+              name: 'vender',
+              description:
+                '【ＲＰＧ】Mercado - Venda espólios de batalha para conseguir Moedas Reais',
+              type: 'SUB_COMMAND',
+            },
           ],
         },
       ],
@@ -37,24 +56,58 @@ export default class GuildaInteractionCommand extends InteractionCommand {
       return;
     }
 
-    const option = ctx.options.getString('cômodo', true);
+    const option = ctx.options.getSubcommand();
 
-    if (option === 'quest') {
+    if (option === 'vender') return DowntownInteractionCommand.sellItems(ctx, user);
+
+    if (option === 'comprar') return DowntownInteractionCommand.buyItems(ctx, user);
+
+    if (option === 'guilda') {
       ctx.makeMessage({ content: ctx.prettyResponse('wink', 'common:soon'), ephemeral: true });
       return;
     }
 
-    if (option === 'buy') {
+    if (option === 'ferreiro') {
       ctx.makeMessage({ content: ctx.prettyResponse('wink', 'common:soon'), ephemeral: true });
-      return;
     }
+  }
 
-    if (option === 'sell') return GuildaInteractionCommand.sellItems(ctx, user);
+  static async buyItems(ctx: InteractionCommandContext, user: RoleplayUserSchema): Promise<void> {
+    const embed = new MessageEmbed()
+      .setColor(ctx.data.user.selectedColor)
+      .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true }))
+      .setTitle(ctx.locale('commands:centro.buy.title'));
+
+    const selector = new MessageSelectMenu()
+      .setCustomId(`${ctx.interaction.id} | BUY`)
+      .setMinValues(1)
+      .setPlaceholder(ctx.locale('commands:centro.buy.select'));
+
+    const availableItems = availableToBuyItems(user.level);
+
+    availableItems.forEach((a) => {
+      const item = getItemById<ConsumableItem>(a.id);
+      selector.addOptions({
+        label: ctx.locale(`items:${a.id as 1}.name`),
+        value: `${a.id} | ${a.level}`,
+      });
+      embed.addField(
+        ctx.locale(`items:${a.id as 1}.name`),
+        ctx.locale('commands:centro.buy.consumable-desc', {
+          cost: Math.ceil(item.data.marketValue * a.level),
+          coinEmoji: emojis.coin,
+          boostValue: Math.floor(item.data.baseBoost + item.data.perLevel * a.level),
+          boostEmoji: item.data.boostType === 'life' ? emojis.blood : emojis.mana,
+        }),
+      );
+    });
+
+    ctx.makeMessage({ embeds: [embed], components: [actionRow([selector])] });
   }
 
   static async sellItems(ctx: InteractionCommandContext, user: RoleplayUserSchema): Promise<void> {
     if (user.inventory.length === 0) {
-      ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:guilda.sell.no-items') });
+      ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:centro.sell.no-items') });
       return;
     }
 
@@ -63,7 +116,7 @@ export default class GuildaInteractionCommand extends InteractionCommand {
     );
 
     if (sellableItems.length === 0) {
-      ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:guilda.sell.no-items') });
+      ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:centro.sell.no-items') });
       return;
     }
 
@@ -71,7 +124,7 @@ export default class GuildaInteractionCommand extends InteractionCommand {
 
     const embed = new MessageEmbed()
       .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true }))
-      .setTitle(ctx.locale('commands:guilda.title'))
+      .setTitle(ctx.locale('commands:centro.sell.title'))
       .setColor(ctx.data.user.selectedColor);
 
     sellableItems.forEach((a, i) => {
@@ -83,7 +136,7 @@ export default class GuildaInteractionCommand extends InteractionCommand {
           a.amount
         }**\n${ctx.locale('common:value')}: **${
           resolvedItem.data.marketValue + resolvedItem.data.perLevel * a.level
-        }**`,
+        }** ${emojis.coin}`,
         true,
       );
 
@@ -139,7 +192,7 @@ export default class GuildaInteractionCommand extends InteractionCommand {
     });
 
     ctx.makeMessage({
-      content: ctx.prettyResponse('success', 'commands:guilda.sell.success', { value: itemValues }),
+      content: ctx.prettyResponse('success', 'commands:centro.sell.success', { value: itemValues }),
       components: [],
       embeds: [],
     });

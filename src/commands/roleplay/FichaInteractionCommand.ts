@@ -505,12 +505,13 @@ export default class FichaInteractionCommand extends InteractionCommand {
           'intelligence',
           'common:roleplay.intelligence',
         )}: **${getUserIntelligence(user)}**\n${ctx.prettyResponse(
-          'level',
-          'commands:ficha.show.level',
-        )}: **${user.level}**\n${ctx.prettyResponse(
-          'experience',
-          'commands:ficha.show.experience',
-        )}: **${user.experience} / ${LEVEL_UP_EXPERIENCE[user.level]}**`,
+          'coin',
+          'commands:ficha.show.money',
+        )}: **${user.money}**\n${ctx.prettyResponse('level', 'commands:ficha.show.level')}: **${
+          user.level
+        }**\n${ctx.prettyResponse('experience', 'commands:ficha.show.experience')}: **${
+          user.experience
+        } / ${LEVEL_UP_EXPERIENCE[user.level]}**`,
       )
       .setColor(ctx.data.user.selectedColor);
 

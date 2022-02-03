@@ -721,6 +721,7 @@
       "armor": "Armor",
       "dmg": "Damage",
       "mana": "Mana",
+      "money": "Real Coins",
       "poor-title": "Blessings Bonus",
       "poor-description": "You are currently out of Blessings, but keep your current Blessings status in the meantime\n\n❤️ | **Extra Life:** {{life}}\n💧 | **Extra Mana:** {{mana}}\n⚔️ | **Extra Damage:** {{damage}}\n🛡️ | **Extra Armor:** {{armor}}\n🧠 | **Extra Intelligence:** {{intelligence}}",
       "no-blesses": "You don't have Holy Blessings to improve your Status!",
@@ -773,10 +774,10 @@
     "title": "{{user}}' Inventory",
     "no-items": "**Your inventory is empty!**"
   },
-  "guilda": {
-    "title": "Adventurer's Guild",
+  "centro": {
     "sell": {
       "no-items": "You don't have any items to sell!",
+      "title": "Boleham's Market | Sell",
       "success": "You sold your items successfully. Total: **{{value}}** Real Coins"
     }
   },

@@ -138,30 +138,36 @@ export interface ReadyToBattleEnemy {
   loots: EnemyDrops[];
 }
 
+export type ItemFlag = 'droppable' | 'sellable' | 'buyable' | 'consumable';
+
 export interface BackPackItem {
   type: 'backpack';
   capacity: number;
   perLevel: number;
+  flags: ItemFlag[];
 }
 
 export interface WeaponItem {
   type: 'weapon';
   damage: number;
   perLevel: number;
+  flags: ItemFlag[];
 }
 
 export interface DropItem {
   type: 'enemy_drop';
   marketValue: number;
   perLevel: number;
+  flags: ItemFlag[];
 }
 
 export interface ConsumableItem {
-  type: 'consumable';
+  type: 'potion';
   boostType: 'life' | 'mana';
   marketValue: number;
   baseBoost: number;
   perLevel: number;
+  flags: ItemFlag[];
 }
 
 export type ItemsFile = BackPackItem | WeaponItem | DropItem | ConsumableItem;

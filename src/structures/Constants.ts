@@ -264,6 +264,7 @@ export const emojis = {
   chest: '<:Chest:760957557538947133>',
   intelligence: '🧠',
   church: '⛪',
+  coin: '<:gold:878054145796472922>',
 };
 
 export type EmojiTypes = keyof typeof emojis;
