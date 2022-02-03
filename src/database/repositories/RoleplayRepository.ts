@@ -1,6 +1,6 @@
 import { RoleplayUserSchema } from '@roleplay/Types';
 import { Rpgs } from '@structures/DatabaseCollections';
-import { MayNotExists } from '@utils/Util';
+import { debugError, MayNotExists } from '@utils/Util';
 import { Redis } from 'ioredis';
 import { UpdateQuery, UpdateWithAggregationPipeline } from 'mongoose';
 
@@ -19,21 +19,41 @@ export default class RoleplayRepository {
     });
   }
 
-  async findUser(
-    userId: string,
-    projections: Array<keyof RoleplayUserSchema> = [],
-  ): Promise<MayNotExists<RoleplayUserSchema>> {
-    return this.roleplayModal.findOne({ id: userId }, projections);
+  async findUser(userId: string): Promise<MayNotExists<RoleplayUserSchema>> {
+    if (this.redisClient) {
+      const userData = await this.redisClient
+        .get(`roleplay:${userId}`)
+        .catch((e) => debugError(e, true));
+      if (userData) return JSON.parse(userData);
+    }
+
+    const fromDatabase = await this.roleplayModal.findOne({ id: userId });
+
+    if (fromDatabase && this.redisClient) {
+      await this.redisClient.setex(`roleplay:${userId}`, 3600, JSON.stringify(fromDatabase));
+    }
+
+    return fromDatabase;
   }
 
   async updateUser(
     userId: string,
     toUpdate: UpdateQuery<RoleplayUserSchema> | UpdateWithAggregationPipeline,
   ): Promise<void> {
-    await this.roleplayModal.updateOne({ id: userId }, toUpdate);
+    const updated = await this.roleplayModal.updateOne({ id: userId }, toUpdate, {
+      returnOriginal: false,
+    });
+
+    if (this.redisClient)
+      await this.redisClient.setex(`roleplay:${userId}`, 3600, JSON.stringify(updated));
   }
 
   async postBattle(userId: string, updatedUserState: RoleplayUserSchema): Promise<void> {
-    await this.roleplayModal.updateOne({ id: userId }, updatedUserState);
+    const updated = await this.roleplayModal.updateOne({ id: userId }, updatedUserState, {
+      returnOriginal: false,
+    });
+
+    if (this.redisClient)
+      await this.redisClient.setex(`roleplay:${userId}`, 3600, JSON.stringify(updated));
   }
 }
