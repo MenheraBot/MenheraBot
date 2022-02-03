@@ -1,6 +1,6 @@
 /* eslint-disable no-shadow */
 import { ICmdSchema, IGuildSchema } from '@utils/Types';
-import { debugError } from '@utils/Util';
+import { debugError, MayNotExists } from '@utils/Util';
 import { Redis } from 'ioredis';
 import { Document } from 'mongoose';
 import CmdRepository from './CmdsRepository';
@@ -8,7 +8,7 @@ import GuildsRepository from './GuildsRepository';
 
 export default class CacheRepository {
   constructor(
-    private redisClient: Redis | null,
+    private redisClient: MayNotExists<Redis>,
     private guildRepository: GuildsRepository,
     private cmdRepository: CmdRepository,
   ) {}

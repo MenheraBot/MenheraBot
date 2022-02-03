@@ -1,10 +1,11 @@
 import { RoleplayUserSchema } from '@roleplay/Types';
 import { Rpgs } from '@structures/DatabaseCollections';
 import { MayNotExists } from '@utils/Util';
+import { Redis } from 'ioredis';
 import { UpdateQuery, UpdateWithAggregationPipeline } from 'mongoose';
 
 export default class RoleplayRepository {
-  constructor(private roleplayModal: typeof Rpgs) {}
+  constructor(private roleplayModal: typeof Rpgs, private redisClient: MayNotExists<Redis>) {}
 
   async registerUser(
     userId: string,

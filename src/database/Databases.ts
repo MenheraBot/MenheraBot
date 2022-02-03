@@ -111,7 +111,7 @@ export default class Databases {
       this.themeRepository,
       this.creditsRepository,
     );
-    this.roleplayRepository = new RoleplayRepository(this.Rpgs);
+    this.roleplayRepository = new RoleplayRepository(this.Rpgs, this.redisClient);
   }
 
   get repositories(): IDatabaseRepositories {

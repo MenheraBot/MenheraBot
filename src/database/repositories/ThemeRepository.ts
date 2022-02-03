@@ -10,11 +10,11 @@ import {
   AvailableCardBackgroundThemes,
   ICardBackgroudTheme,
 } from '@utils/Types';
-import { getThemeById } from '@utils/Util';
+import { getThemeById, MayNotExists } from '@utils/Util';
 import { Redis } from 'ioredis';
 
 export default class ThemeRepository {
-  constructor(private themesModal: typeof Themes, private redisClient: Redis | null) {}
+  constructor(private themesModal: typeof Themes, private redisClient: MayNotExists<Redis>) {}
 
   async findOrCreate(
     userId: string,

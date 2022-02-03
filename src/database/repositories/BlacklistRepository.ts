@@ -1,9 +1,9 @@
-import { debugError } from '@utils/Util';
+import { debugError, MayNotExists } from '@utils/Util';
 import { Redis } from 'ioredis';
 import UserRepository from './UserRepository';
 
 export default class BlacklistRepository {
-  constructor(private userRepository: UserRepository, private redisClient: Redis | null) {}
+  constructor(private userRepository: UserRepository, private redisClient: MayNotExists<Redis>) {}
 
   async ban(userID: string, reason: string): Promise<void> {
     await this.userRepository.update(userID, { ban: true, banReason: reason });
