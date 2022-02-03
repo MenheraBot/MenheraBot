@@ -90,6 +90,7 @@ export default class ChurchInteractionCommand extends InteractionCommand {
 
     const embed = new MessageEmbed()
       .setColor(ctx.data.user.selectedColor)
+      .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true }))
       .setTitle(ctx.prettyResponse('church', 'commands:igreja.title'))
       .setDescription(
         ctx.locale('commands:igreja.description', {
