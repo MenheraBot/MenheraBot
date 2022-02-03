@@ -64,6 +64,7 @@ const userSchema = new Schema({
   itemsLimit: { type: Number, default: 1 },
   lastCommandAt: { type: Number, default: 0 },
   isBot: { type: Boolean, default: false },
+  createdAt: { type: Number, default: Date.now() },
 });
 
 const themeCredits = new Schema({
@@ -101,6 +102,7 @@ const rpgSchema = new Schema({
   weapon: { type: Object },
   protection: { type: Object },
   backpack: { type: Object, default: { id: 100, level: 1 } },
+  createdAt: { type: Number, default: Date.now() },
 });
 
 export const Cmds = model<ICmdSchema>('Cmd', cmdSchema);

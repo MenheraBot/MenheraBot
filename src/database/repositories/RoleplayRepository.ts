@@ -15,6 +15,7 @@ export default class RoleplayRepository {
       id: userId,
       level: 1,
       experience: 0,
+      createdAt: Date.now(),
       ...data,
     });
   }

@@ -1,11 +1,15 @@
-import { ConsumableItem, DropItem, RoleplayUserSchema } from '@roleplay/Types';
-import { removeFromInventory } from '@roleplay/utils/AdventureUtils';
+import { ConsumableItem, DropItem, LeveledItem, RoleplayUserSchema } from '@roleplay/Types';
+import {
+  addToInventory,
+  getFreeInventorySpace,
+  removeFromInventory,
+} from '@roleplay/utils/AdventureUtils';
 import { getItemById } from '@roleplay/utils/DataUtils';
 import { availableToBuyItems } from '@roleplay/utils/ItemsUtil';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { emojis } from '@structures/Constants';
-import Util, { actionRow, disableComponents, resolveSeparatedStrings } from '@utils/Util';
+import Util, { actionRow, disableComponents, negate, resolveSeparatedStrings } from '@utils/Util';
 import { MessageEmbed, MessageSelectMenu, SelectMenuInteraction } from 'discord.js-light';
 
 export default class DowntownInteractionCommand extends InteractionCommand {
@@ -81,6 +85,7 @@ export default class DowntownInteractionCommand extends InteractionCommand {
     const selector = new MessageSelectMenu()
       .setCustomId(`${ctx.interaction.id} | BUY`)
       .setMinValues(1)
+      .setMaxValues(1)
       .setPlaceholder(ctx.locale('commands:centro.buy.select'));
 
     const availableItems = availableToBuyItems(user.level);
@@ -103,6 +108,94 @@ export default class DowntownInteractionCommand extends InteractionCommand {
     });
 
     ctx.makeMessage({ embeds: [embed], components: [actionRow([selector])] });
+
+    const selectedItem =
+      await Util.collectComponentInteractionWithStartingId<SelectMenuInteraction>(
+        ctx.channel,
+        ctx.author.id,
+        ctx.interaction.id,
+        9000,
+      );
+
+    if (!selectedItem) {
+      ctx.makeMessage({
+        components: [actionRow(disableComponents(ctx.locale('common:timesup'), [selector]))],
+      });
+      return;
+    }
+
+    selector.setOptions([]).setPlaceholder(ctx.locale('commands:centro.buy.select-amount'));
+
+    for (let i = 1; i <= 25; i++) selector.addOptions({ label: `${i}`, value: `${i}` });
+
+    ctx.makeMessage({ components: [actionRow([selector])] });
+
+    const selectedAmount =
+      await Util.collectComponentInteractionWithStartingId<SelectMenuInteraction>(
+        ctx.channel,
+        ctx.author.id,
+        ctx.interaction.id,
+        8000,
+      );
+
+    if (!selectedAmount) {
+      ctx.makeMessage({
+        components: [actionRow(disableComponents(ctx.locale('common:timesup'), [selector]))],
+      });
+      return;
+    }
+
+    const toBuyAmount = Number(selectedAmount.values[0]);
+    const [toBuyItemId, toBuyItemLevel] = resolveSeparatedStrings(selectedItem.values[0]).map((a) =>
+      Number(a),
+    );
+
+    const resolvedItem = getItemById<ConsumableItem>(toBuyItemId);
+    const totalCost = Math.ceil(resolvedItem.data.marketValue * toBuyItemLevel) * toBuyAmount;
+
+    if (totalCost > user.money) {
+      ctx.makeMessage({
+        embeds: [],
+        components: [],
+        content: ctx.prettyResponse('error', 'commands:centro.buy.poor', {
+          coinEmoji: emojis.coin,
+          amount: totalCost,
+        }),
+      });
+      return;
+    }
+
+    if (getFreeInventorySpace(user) < toBuyAmount) {
+      ctx.makeMessage({
+        embeds: [],
+        components: [],
+        content: ctx.prettyResponse('error', 'commands:centro.buy.inventory-full'),
+      });
+      return;
+    }
+
+    const toAddInventory: LeveledItem[] = [];
+
+    for (let i = 0; i < toBuyAmount; i++)
+      toAddInventory.push({ id: toBuyItemId, level: toBuyItemLevel });
+
+    addToInventory(toAddInventory, user.inventory);
+
+    await ctx.client.repositories.roleplayRepository.updateUser(ctx.author.id, {
+      inventory: user.inventory,
+      $inc: { money: negate(totalCost) },
+    });
+
+    ctx.makeMessage({
+      components: [],
+      embeds: [],
+      content: ctx.prettyResponse('success', 'commands:centro.buy.success', {
+        totalCost,
+        itemName: ctx.locale(`items:${toBuyItemId as 1}.name`),
+        amount: toBuyAmount,
+        emojiCoin: emojis.coin,
+      }),
+    });
   }
 
   static async sellItems(ctx: InteractionCommandContext, user: RoleplayUserSchema): Promise<void> {

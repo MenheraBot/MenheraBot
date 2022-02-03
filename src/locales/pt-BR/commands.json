@@ -778,6 +778,10 @@
     "buy": {
       "title": "Mercado de Boleham | Comprar",
       "select": "Selecione os itens à comprar",
+      "select-amount": "Selecione a Quantidade que queres comprar",
+      "poor": "Tu não possui **{{amount}}** {{coinEmoji}} para comprar tudo isso!",
+      "success": "Tu compraste **{{amount}} {{itemName}}** por **{{totalCost}}** {{emojiCoin}}",
+      "inventory-full": "Tu não tens espaço o suficiente para armazenar todos esses itens! Melhore sua mochila pobrinho!",
       "consumable-desc": "Custo: **{{cost}}** {{coinEmoji}}\nRegeneração: **{{boostValue}}** {{boostEmoji}}"
     },
     "sell": {

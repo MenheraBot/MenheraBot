@@ -6,7 +6,7 @@ export const a = 'a';
 export const availableToBuyItems = (userLevel: number): Array<LeveledItem> => {
   const potions = getItemsByFlags<ConsumableItem>(['buyable', 'consumable']);
 
-  const potionLevel = userLevel / 4 + 1;
+  const potionLevel = Math.floor(userLevel / 4 + 1);
 
   return potions.map((item) => ({
     id: item.id,

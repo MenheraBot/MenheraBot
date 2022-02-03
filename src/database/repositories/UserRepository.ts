@@ -26,7 +26,7 @@ export default class UserRepository {
     const result = await this.find(userID, projection);
     if (result) return result;
 
-    return this.userModal.create({ id: userID });
+    return this.userModal.create({ id: userID, createdAt: Date.now() });
   }
 
   async delete(userID: string): Promise<void> {
