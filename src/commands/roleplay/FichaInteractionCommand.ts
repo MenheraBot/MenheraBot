@@ -724,5 +724,6 @@ export default class FichaInteractionCommand extends InteractionCommand {
       embeds: [],
       components: [],
     });
+    ctx.send({ content: ctx.locale('common:rpg-beta', { user: ctx.author.toString() }) });
   }
 }
