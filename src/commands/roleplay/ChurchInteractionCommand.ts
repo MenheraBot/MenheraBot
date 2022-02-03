@@ -100,7 +100,7 @@ export default class ChurchInteractionCommand extends InteractionCommand {
           rechurch: MINUTES_COOLDOWN_TO_RECHURCH,
           untilCooldown: moment
             .utc(Math.floor(prayToMaximize * 60000))
-            .format(prayToMaximize > 60 ? 'HH:mm:ss' : 'mm:ss'),
+            .format(prayToMaximize >= 60 ? 'HH:mm:ss' : 'mm:ss'),
           untilSubtime: ctx.locale(prayToMaximize > 60 ? 'common:hours' : 'common:minutes'),
         }),
       );
