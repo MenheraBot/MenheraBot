@@ -16,5 +16,20 @@
   },
   "6": {
     "name": "Cursed Gold"
+  },
+  "7": {
+    "name": "Potion of Life"
+  },
+  "8": {
+    "name": "Mana Potion"
+  },
+  "100": {
+    "name": "Skin Bag"
+  },
+  "101": {
+    "name": "Leather Breastplate"
+  },
+  "102": {
+    "name": "Wooden Sword"
   }
 }

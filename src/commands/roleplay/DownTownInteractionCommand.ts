@@ -18,7 +18,12 @@ import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { emojis } from '@structures/Constants';
 import Util, { actionRow, disableComponents, negate, resolveSeparatedStrings } from '@utils/Util';
-import { MessageEmbed, MessageSelectMenu, SelectMenuInteraction } from 'discord.js-light';
+import {
+  MessageButton,
+  MessageEmbed,
+  MessageSelectMenu,
+  SelectMenuInteraction,
+} from 'discord.js-light';
 
 export default class DowntownInteractionCommand extends InteractionCommand {
   constructor() {
@@ -125,8 +130,28 @@ export default class DowntownInteractionCommand extends InteractionCommand {
           inline: true,
         },
       ]);
+    const backpackButton = new MessageButton()
+      .setCustomId(`${ctx.interaction.id} | ARMOR`)
+      .setLabel(`${ctx.locale('common:roleplay.backpack')} | ${ctx.locale('common:soon')}`)
+      .setStyle('PRIMARY')
+      .setDisabled(true);
 
-    ctx.makeMessage({ embeds: [embed] });
+    const protectionButton = new MessageButton()
+      .setCustomId(`${ctx.interaction.id} | PROTECTION`)
+      .setLabel(`${ctx.locale('common:roleplay.protection')} | ${ctx.locale('common:soon')}`)
+      .setStyle('PRIMARY')
+      .setDisabled(true);
+
+    const weaponButton = new MessageButton()
+      .setCustomId(`${ctx.interaction.id} | WEAPON`)
+      .setLabel(`${ctx.locale('common:roleplay.weapon')} | ${ctx.locale('common:soon')}`)
+      .setStyle('PRIMARY')
+      .setDisabled(true);
+
+    ctx.makeMessage({
+      embeds: [embed],
+      components: [actionRow([backpackButton, protectionButton, weaponButton])],
+    });
   }
 
   static async buyItems(ctx: InteractionCommandContext, user: RoleplayUserSchema): Promise<void> {

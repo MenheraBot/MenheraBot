@@ -22,5 +22,14 @@
   },
   "8": {
     "name": "Poção de Mana"
+  },
+  "100": {
+    "name": "Bolsa de Pele"
+  },
+  "101": {
+    "name": "Peitoral de Couro"
+  },
+  "102": {
+    "name": "Espada de Madeira"
   }
 }
