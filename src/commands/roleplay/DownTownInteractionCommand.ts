@@ -66,14 +66,16 @@ export default class DowntownInteractionCommand extends InteractionCommand {
 
     if (option === 'comprar') return DowntownInteractionCommand.buyItems(ctx, user);
 
-    if (option === 'guilda') {
-      ctx.makeMessage({ content: ctx.prettyResponse('wink', 'common:soon'), ephemeral: true });
-      return;
-    }
+    if (option === 'ferreiro') return DowntownInteractionCommand.blacksmith(ctx, user);
 
-    if (option === 'ferreiro') {
+    if (option === 'guilda')
       ctx.makeMessage({ content: ctx.prettyResponse('wink', 'common:soon'), ephemeral: true });
-    }
+  }
+
+  static async blacksmith(ctx: InteractionCommandContext, user: RoleplayUserSchema): Promise<void> {
+    const embed = new MessageEmbed()
+      .setColor(ctx.data.user.selectedColor)
+      .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true }));
   }
 
   static async buyItems(ctx: InteractionCommandContext, user: RoleplayUserSchema): Promise<void> {
