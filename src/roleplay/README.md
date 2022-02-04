@@ -25,6 +25,11 @@ Até o momento pensei nas seguintes coisas:
 - Os itens terão suas raridades. Cada mob terá um certo drop, que dependendo da proficiência de sorte do usuário (em outras palavras, quanto mais cagado ele for, melhor) pode dropar mais de um item, e com raridades diferentes
 - Na loja, os itens terão custo dependendo da raridade
 
+• Títulos
+- Usuarios recebem títulos de acordo de como agem no mundo. Por exemplo, um minerador que só minera pedras preciosas receberia o Titulo "My Precious" onde ele teria 10% a mais de chance de encontrar minerios raros, e desbloquearia uma mina especial, com cooldown maior e premios melhores.
+- Outro titulo seria por exemplo, "Monster Killer" que pessoas que vão praticamente e unicamente para a dungeon recebem esse titulo onde dão mais dano contra monstros e liberam locais unicos da dungeon (como se ele conhecesse mais da área)
+-  Titulos de Eventos: Para animar a gurizadinha, eventos poderiam dar titulos, como o "Ruina Mortal" (MessiasTrick Esteve Aqui), onde o vencedor do evento, com historia e tudo mais receberia esse titulo, que meio que "mudaria" como o personagem dele funcona, dando mais dano, sendo mais forte POREM só poderia usar um tipo de item como arma "Soco Ingles" que seria extremamente fodido de conseguir, mas forte quando upado
+
 • Party
 
 - A dungeon agora terá parties, que podem ser de até 3 jogadores
