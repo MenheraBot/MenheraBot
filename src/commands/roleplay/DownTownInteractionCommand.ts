@@ -184,7 +184,8 @@ export default class DowntownInteractionCommand extends InteractionCommand {
     if (resolveCustomId(selected.customId) === 'PROTECTION') {
       const costToEvolve =
         userProtection.data.toUpgrade.cost +
-        userProtection.data.toUpgrade.costPerLevel * (user.protection.level - 1);
+        userProtection.data.toUpgrade.costPerLevel *
+          (user.protection.level === 1 ? 0 : 2 ** (user.protection.level - 1));
 
       embed.setFields([]).setDescription(
         ctx.locale('commands:centro.blacksmith.evolve-description', {
@@ -205,7 +206,8 @@ export default class DowntownInteractionCommand extends InteractionCommand {
     if (resolveCustomId(selected.customId) === 'WEAPON') {
       const costToEvolve =
         userWeapon.data.toUpgrade.cost +
-        userWeapon.data.toUpgrade.costPerLevel * (user.weapon.level - 1);
+        userWeapon.data.toUpgrade.costPerLevel *
+          (user.weapon.level === 1 ? 0 : 2 ** (user.weapon.level - 1));
 
       embed.setFields([]).setDescription(
         ctx.locale('commands:centro.blacksmith.evolve-description', {
@@ -226,7 +228,8 @@ export default class DowntownInteractionCommand extends InteractionCommand {
     if (resolveCustomId(selected.customId) === 'BACKPACK') {
       const costToEvolve =
         userBackpack.data.toUpgrade.cost +
-        userBackpack.data.toUpgrade.costPerLevel * (user.backpack.level - 1);
+        userBackpack.data.toUpgrade.costPerLevel *
+          (user.backpack.level === 1 ? 0 : 2 ** (user.backpack.level - 1));
 
       embed.setFields([]).setDescription(
         ctx.locale('commands:centro.blacksmith.evolve-description', {
