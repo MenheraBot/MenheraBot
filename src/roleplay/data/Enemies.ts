@@ -105,7 +105,7 @@ const Enemies: { [id: number]: EnemiesFile } = {
   4: {
     dungeonLevels: [3],
     baseDamage: 30,
-    baseLife: 200,
+    baseLife: 250,
     experience: 50,
     baseArmor: 10,
     perLevel: {
@@ -143,12 +143,12 @@ const Enemies: { [id: number]: EnemiesFile } = {
   5: {
     dungeonLevels: [3, 4],
     baseDamage: 40,
-    baseLife: 130,
+    baseLife: 340,
     experience: 52,
     baseArmor: 10,
     perLevel: {
       baseDamage: 6,
-      baseLife: 10,
+      baseLife: 30,
       baseArmor: 10,
       experience: 7,
     },
@@ -249,13 +249,13 @@ const Enemies: { [id: number]: EnemiesFile } = {
   8: {
     dungeonLevels: [5],
     baseDamage: 80,
-    baseLife: 500,
+    baseLife: 600,
     experience: 10,
-    baseArmor: 40,
+    baseArmor: 50,
     perLevel: {
-      baseDamage: 10,
+      baseDamage: 20,
       baseLife: 12,
-      baseArmor: 10,
+      baseArmor: 13,
       experience: 11,
     },
     loots: [
@@ -280,6 +280,74 @@ const Enemies: { [id: number]: EnemiesFile } = {
           { id: 1, level: 1 },
           { id: 1, level: 1 },
           { id: 1, level: 1 },
+        ],
+      },
+    ],
+  },
+  9: {
+    dungeonLevels: [2],
+    baseDamage: 30,
+    baseLife: 300,
+    experience: 40,
+    baseArmor: 40,
+    perLevel: {
+      baseDamage: 13,
+      baseLife: 10,
+      baseArmor: 5,
+      experience: 3,
+    },
+    loots: [
+      {
+        probability: 80,
+        loots: [
+          { id: 2, level: 1 },
+          { id: 4, level: 1 },
+        ],
+      },
+      {
+        probability: 20,
+        loots: [
+          { id: 1, level: 1 },
+          { id: 1, level: 1 },
+          { id: 2, level: 1 },
+        ],
+      },
+    ],
+  },
+  10: {
+    dungeonLevels: [3],
+    baseDamage: 40,
+    baseLife: 430,
+    experience: 52,
+    baseArmor: 30,
+    perLevel: {
+      baseDamage: 10,
+      baseLife: 10,
+      baseArmor: 7,
+      experience: 8,
+    },
+    loots: [
+      {
+        probability: 50,
+        loots: [
+          { id: 4, level: 1 },
+          { id: 3, level: 2 },
+        ],
+      },
+      {
+        probability: 45,
+        loots: [
+          { id: 3, level: 1 },
+          { id: 4, level: 1 },
+          { id: 4, level: 1 },
+        ],
+      },
+      {
+        probability: 5,
+        loots: [
+          { id: 5, level: 1 },
+          { id: 5, level: 1 },
+          { id: 2, level: 2 },
         ],
       },
     ],
