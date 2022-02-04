@@ -5,7 +5,7 @@ export const LAST_DUNGEON_LEVEL = 5;
 
 export const ROLEPLAY_COOLDOWNS = {
   dungeonCooldown: 3_600_000,
-  deathCooldown: 10_800_000,
+  deathCooldown: 14_400_000,
 };
 
 export const shopEconomy = {

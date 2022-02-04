@@ -40,7 +40,7 @@ export default class DowntownInteractionCommand extends InteractionCommand {
       options: [
         {
           name: 'guilda',
-          description: '【ＲＰＧ】🏠 | Retire quests e reclame-as',
+          description: '【ＲＰＧ】🏠 | Retire quests e reivindique-as',
           type: 'SUB_COMMAND',
         },
         {
