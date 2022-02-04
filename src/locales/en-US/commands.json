@@ -776,6 +776,10 @@
   },
   "centro": {
     "blacksmith": {
+      "evolve": "Evolve",
+      "poor": "Insufficient Money",
+      "success": "Evolution Completed Successfully!",
+      "evolve-description": "**Upgrade {{name}}**\n\nUpgrade Cost: **{{cost}}** {{coinEmoji}}\nUpgrade Bonus: **{{bonus}}** {{bonusEmoji}} \nUpgrade Level: **{{level}}**",
       "title": "Blacksmith",
       "backpack-description": "**{{name}}**\nCapacity: **{{capacity}}**\nLevel: **{{level}}**",
       "weapon-description": "**{{name}}**\nDamage: **{{damage}}**\nLevel: **{{level}}**",

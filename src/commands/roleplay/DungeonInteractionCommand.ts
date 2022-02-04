@@ -162,6 +162,7 @@ export default class DungeonInteractionCommand extends InteractionCommand {
       user.mana = getUserMaxMana(user);
       ctx.send({
         content: ctx.prettyResponse('level', 'common:roleplay.level-up', { level: user.level }),
+        ephemeral: true,
       });
     }
 

@@ -177,6 +177,10 @@ export default class DowntownInteractionCommand extends InteractionCommand {
       return;
     }
 
+    const evolveButton = new MessageButton()
+      .setStyle('SUCCESS')
+      .setLabel(ctx.locale('commands:centro.blacksmith.evolve'));
+
     if (resolveCustomId(selected.customId) === 'PROTECTION') {
       const costToEvolve =
         userProtection.data.toUpgrade.cost +
@@ -193,8 +197,9 @@ export default class DowntownInteractionCommand extends InteractionCommand {
         }),
       );
 
-      ctx.makeMessage({ components: [], embeds: [embed] });
-      return;
+      evolveButton.setCustomId(`${ctx.interaction.id} | ${costToEvolve}`);
+      if (costToEvolve > user.money)
+        evolveButton.setDisabled(true).setLabel(ctx.locale('commands:centro.blacksmith.poor'));
     }
 
     if (resolveCustomId(selected.customId) === 'WEAPON') {
@@ -213,8 +218,9 @@ export default class DowntownInteractionCommand extends InteractionCommand {
         }),
       );
 
-      ctx.makeMessage({ components: [], embeds: [embed] });
-      return;
+      evolveButton.setCustomId(`${ctx.interaction.id} | ${costToEvolve}`);
+      if (costToEvolve > user.money)
+        evolveButton.setDisabled(true).setLabel(ctx.locale('commands:centro.blacksmith.poor'));
     }
 
     if (resolveCustomId(selected.customId) === 'BACKPACK') {
@@ -233,8 +239,44 @@ export default class DowntownInteractionCommand extends InteractionCommand {
         }),
       );
 
-      ctx.makeMessage({ components: [], embeds: [embed] });
+      evolveButton.setCustomId(`${ctx.interaction.id} | ${costToEvolve}`);
+      if (costToEvolve > user.money)
+        evolveButton.setDisabled(true).setLabel(ctx.locale('commands:centro.blacksmith.poor'));
     }
+
+    ctx.makeMessage({ components: [actionRow([evolveButton])], embeds: [embed] });
+    if (evolveButton.disabled) return;
+
+    const wannaEvolve = await Util.collectComponentInteractionWithStartingId(
+      ctx.channel,
+      ctx.author.id,
+      ctx.interaction.id,
+      7_000,
+    );
+
+    if (!wannaEvolve) {
+      ctx.makeMessage({
+        components: [actionRow(disableComponents(ctx.locale('common:timesup'), [evolveButton]))],
+      });
+      return;
+    }
+
+    const costToEvolve = Number(resolveCustomId(wannaEvolve.customId));
+
+    const field = resolveCustomId(selected.customId).toLowerCase() as 'backpack';
+
+    user[field].level += 1;
+
+    await ctx.client.repositories.roleplayRepository.updateUser(ctx.author.id, {
+      $inc: { money: negate(costToEvolve) },
+      [field]: user[field],
+    });
+
+    ctx.makeMessage({
+      components: [],
+      embeds: [],
+      content: ctx.prettyResponse('success', 'commands:centro.blacksmith.success'),
+    });
   }
 
   static async buyItems(ctx: InteractionCommandContext, user: RoleplayUserSchema): Promise<void> {

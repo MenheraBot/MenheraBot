@@ -534,7 +534,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
       ctx.channel,
       ctx.author.id,
       ctx.interaction.id,
-      10000,
+      7_000,
     );
 
     if (!selectedOption) {
@@ -610,7 +610,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
         ctx.channel,
         ctx.author.id,
         ctx.interaction.id,
-        45_000,
+        15_000,
       );
 
     if (!selectedClass) {
@@ -643,7 +643,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
         ctx.channel,
         ctx.author.id,
         ctx.interaction.id,
-        45_000,
+        15_000,
       );
 
     if (!selectedRace) {
@@ -679,7 +679,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
       ctx.channel,
       ctx.author.id,
       ctx.interaction.id,
-      25_000,
+      15_000,
     );
 
     if (!confirmRegister) {
