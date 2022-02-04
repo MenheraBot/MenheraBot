@@ -88,7 +88,9 @@ export const getFreeInventorySpace = (user: RoleplayUserSchema): number => {
 
   const usedSpace = user.inventory.reduce((p, c) => p + c.amount, 0);
 
-  return userBackPack.data.capacity + userBackPack.data.perLevel * user.backpack.level - usedSpace;
+  return Math.floor(
+    userBackPack.data.capacity + userBackPack.data.perLevel * user.backpack.level - usedSpace,
+  );
 };
 
 export const addToInventory = (

@@ -1,6 +1,6 @@
-import { RoleplayUserSchema, UserAbility } from '@roleplay/Types';
+import { ProtectionItem, RoleplayUserSchema, UserAbility, WeaponItem } from '@roleplay/Types';
 import { ToBLess } from '@utils/Types';
-import { getAbilityById, getClassById, getRaceById } from './DataUtils';
+import { getAbilityById, getClassById, getItemById, getRaceById } from './DataUtils';
 
 export const getUserMaxLife = (user: RoleplayUserSchema): number => {
   const userClass = getClassById(user.class);
@@ -15,7 +15,7 @@ export const getUserMaxLife = (user: RoleplayUserSchema): number => {
     0,
   );
 
-  return classLife + raceLife + userBlesses;
+  return Math.floor(classLife + raceLife + userBlesses);
 };
 
 export const getUserMaxMana = (user: RoleplayUserSchema): number => {
@@ -31,13 +31,14 @@ export const getUserMaxMana = (user: RoleplayUserSchema): number => {
     0,
   );
 
-  return classMana + raceMana + userBlesses;
+  return Math.floor(classMana + raceMana + userBlesses);
 };
 
 export const getUserDamage = (user: RoleplayUserSchema): number => {
   const userClass = getClassById(user.class);
   const userRace = getRaceById(user.race);
   const userBlesses = makeBlessingStatusUpgrade('damage', user.blesses.damage);
+  const userWeapon = getItemById<WeaponItem>(user.weapon.id);
 
   const classDamage =
     userClass.data.baseDamage + userClass.data.attributesPerLevel.baseDamage * user.level;
@@ -47,13 +48,16 @@ export const getUserDamage = (user: RoleplayUserSchema): number => {
     0,
   );
 
-  return classDamage + raceDamage + userBlesses;
+  const weaponDamage = userWeapon.data.damage + userWeapon.data.perLevel * user.weapon.level;
+
+  return Math.floor(classDamage + raceDamage + userBlesses + weaponDamage);
 };
 
 export const getUserArmor = (user: RoleplayUserSchema): number => {
   const userClass = getClassById(user.class);
   const userRace = getRaceById(user.race);
   const userBlesses = makeBlessingStatusUpgrade('armor', user.blesses.armor);
+  const userProtection = getItemById<ProtectionItem>(user.protection.id);
 
   const classArmor =
     userClass.data.baseArmor + userClass.data.attributesPerLevel.baseArmor * user.level;
@@ -63,7 +67,10 @@ export const getUserArmor = (user: RoleplayUserSchema): number => {
     0,
   );
 
-  return classArmor + raceArmor + userBlesses;
+  const protectionArmor =
+    userProtection.data.armor + userProtection.data.perLevel * user.protection.level;
+
+  return Math.floor(classArmor + raceArmor + userBlesses + protectionArmor);
 };
 
 export const getUserIntelligence = (user: RoleplayUserSchema): number => {
@@ -80,7 +87,7 @@ export const getUserIntelligence = (user: RoleplayUserSchema): number => {
     0,
   );
 
-  return classIntelligence + raceIntellience + userBlesses;
+  return Math.floor(classIntelligence + raceIntellience + userBlesses);
 };
 
 export const calculateEffectiveDamage = (totalDamage: number, enemyArmor: number): number =>
