@@ -7,6 +7,18 @@ const Items: { [id: number]: ItemsFile } = {
     perLevel: 5,
     flags: [],
   },
+  101: {
+    type: 'protection',
+    armor: 10,
+    perLevel: 5,
+    flags: [],
+  },
+  102: {
+    type: 'weapon',
+    damage: 10,
+    perLevel: 10,
+    flags: [],
+  },
   1: {
     type: 'enemy_drop',
     marketValue: 1,

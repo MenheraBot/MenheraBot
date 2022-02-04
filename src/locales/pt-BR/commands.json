@@ -775,6 +775,13 @@
     "no-items": "**Seu inventário está vazio!**"
   },
   "centro": {
+    "blacksmith": {
+      "title": "Ferreiro",
+      "backpack-description": "**{{name}}**\nCapacidade: **{{capacity}}**\nNível: **{{level}}**",
+      "weapon-description": "**{{name}}**\nDano: **{{damage}}**\nNível: **{{level}}**",
+      "protection-description": "**{{name}}**\nDefesa: **{{armor}}**\nNível: **{{level}}**",
+      "description": "Bem-Vindo ao Ferreiro de Boleham, aqui você pode melhorar seus ítens como Mochila, Arma e Armadura. Selecione abaixo o que desejas fazer"
+    },
     "buy": {
       "title": "Mercado de Boleham | Comprar",
       "select": "Selecione os itens à comprar",

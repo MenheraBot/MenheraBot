@@ -48,7 +48,10 @@
     "armor": "Defesa",
     "level": "Nível",
     "level-up": "Whoooaaa, você evoluiu para o nível **{{level}}**. Niceee, cheque seus status para ver novidades...",
-    "blesses": "Bençãos"
+    "blesses": "Bençãos",
+    "backpack": "Mochila",
+    "weapon": "Arma",
+    "protection": "Armadura"
   },
   "unregistered": "Tu ainda não reencarnou no Mundo de Boleham! Registre-se primeiro e tente novamente!",
   "http-error": "Hmmm... Algum erro aconteceu ao processar a imagem... Talvez o servidor de processamento de imagens esteja fora do ar... Tente novamente mais tarde!"

@@ -99,8 +99,8 @@ const rpgSchema = new Schema({
   inventory: { type: Array, default: [] },
   money: { type: Number, default: 0 },
   cooldowns: { type: Array, default: [] },
-  weapon: { type: Object },
-  protection: { type: Object },
+  weapon: { type: Object, default: { id: 102, level: 1 } },
+  protection: { type: Object, default: { id: 101, level: 1 } },
   backpack: { type: Object, default: { id: 100, level: 1 } },
   createdAt: { type: Number, default: Date.now() },
 });

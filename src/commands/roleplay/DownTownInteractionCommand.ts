@@ -1,4 +1,12 @@
-import { ConsumableItem, DropItem, LeveledItem, RoleplayUserSchema } from '@roleplay/Types';
+import {
+  BackPackItem,
+  ConsumableItem,
+  DropItem,
+  LeveledItem,
+  ProtectionItem,
+  RoleplayUserSchema,
+  WeaponItem,
+} from '@roleplay/Types';
 import {
   addToInventory,
   getFreeInventorySpace,
@@ -73,9 +81,52 @@ export default class DowntownInteractionCommand extends InteractionCommand {
   }
 
   static async blacksmith(ctx: InteractionCommandContext, user: RoleplayUserSchema): Promise<void> {
+    const userBackpack = getItemById<BackPackItem>(user.backpack.id);
+    const userWeapon = getItemById<WeaponItem>(user.weapon.id);
+    const userProtection = getItemById<ProtectionItem>(user.protection.id);
+
     const embed = new MessageEmbed()
       .setColor(ctx.data.user.selectedColor)
-      .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true }));
+      .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true }))
+      .setTitle(ctx.prettyResponse('blacksmith', 'commands:centro.blacksmith.title'))
+      .setDescription(ctx.locale('commands:centro.blacksmith.description'))
+      .addFields([
+        {
+          name: ctx.prettyResponse('chest', 'common:roleplay.backpack'),
+          value: ctx.locale('commands:centro.blacksmith.backpack-description', {
+            name: ctx.locale(`items:${user.backpack.id as 1}.name`),
+            level: user.backpack.level,
+            capacity: Math.floor(
+              userBackpack.data.capacity + userBackpack.data.perLevel * user.backpack.level,
+            ),
+          }),
+          inline: true,
+        },
+        {
+          name: ctx.prettyResponse('damage', 'common:roleplay.weapon'),
+          value: ctx.locale('commands:centro.blacksmith.weapon-description', {
+            name: ctx.locale(`items:${user.weapon.id as 1}.name`),
+            level: user.weapon.level,
+            damage: Math.floor(
+              userWeapon.data.damage + userWeapon.data.perLevel * user.weapon.level,
+            ),
+          }),
+          inline: true,
+        },
+        {
+          name: ctx.prettyResponse('armor', 'common:roleplay.protection'),
+          value: ctx.locale('commands:centro.blacksmith.protection-description', {
+            name: ctx.locale(`items:${user.protection.id as 1}.name`),
+            level: user.protection.level,
+            armor: Math.floor(
+              userProtection.data.armor + userProtection.data.perLevel * user.protection.level,
+            ),
+          }),
+          inline: true,
+        },
+      ]);
+
+    ctx.makeMessage({ embeds: [embed] });
   }
 
   static async buyItems(ctx: InteractionCommandContext, user: RoleplayUserSchema): Promise<void> {

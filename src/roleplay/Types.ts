@@ -154,6 +154,13 @@ export interface WeaponItem {
   flags: ItemFlag[];
 }
 
+export interface ProtectionItem {
+  type: 'protection';
+  armor: number;
+  perLevel: number;
+  flags: ItemFlag[];
+}
+
 export interface DropItem {
   type: 'enemy_drop';
   marketValue: number;
@@ -170,4 +177,4 @@ export interface ConsumableItem {
   flags: ItemFlag[];
 }
 
-export type ItemsFile = BackPackItem | WeaponItem | DropItem | ConsumableItem;
+export type ItemsFile = BackPackItem | WeaponItem | DropItem | ConsumableItem | ProtectionItem;
