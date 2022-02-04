@@ -5,7 +5,7 @@ export default class BadgeRepository {
 
   async addBadge(userID: string, badgeID: number): Promise<void> {
     await this.userRepository.update(userID, {
-      $push: { badges: { id: badgeID, obtainAt: Date.now() } },
+      $addToSet: { badges: { id: badgeID, obtainAt: Date.now() } },
     });
   }
 }

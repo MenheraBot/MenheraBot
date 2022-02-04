@@ -719,6 +719,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
     };
 
     await ctx.client.repositories.roleplayRepository.registerUser(ctx.author.id, registerStatus);
+    await ctx.client.repositories.badgeRepository.addBadge(ctx.author.id, 16);
 
     ctx.makeMessage({
       content: ctx.prettyResponse('success', 'commands:ficha.register.success'),

@@ -137,6 +137,14 @@ const Badges = {
     description: 'Badge dada àqueles que tem um design dentro da Menhera!',
     link: 'https://media.discordapp.net/attachments/793669360857907200/916723467498434590/pencil.png',
   },
+  16: {
+    name: 'Boleham V2 Beta',
+    availabeStartAt: '04/02/2022',
+    availabeStoptAt: '20/02/2022',
+    rarityLevel: 5,
+    description: 'Badge dada à todos que participaram do Beta da Versão 2 do Rpg da Menhera',
+    link: 'https://media.discordapp.net/attachments/793669360857907200/939245622039556166/beta.png',
+  },
 };
 
 export default Badges;
