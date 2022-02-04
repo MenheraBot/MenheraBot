@@ -775,6 +775,22 @@
     "no-items": "**Your inventory is empty!**"
   },
   "centro": {
+    "blacksmith": {
+      "title": "Blacksmith",
+      "backpack-description": "**{{name}}**\nCapacity: **{{capacity}}**\nLevel: **{{level}}**",
+      "weapon-description": "**{{name}}**\nDamage: **{{damage}}**\nLevel: **{{level}}**",
+      "protection-description": "**{{name}}**\nArmor: **{{armor}}**\nLevel: **{{level}}**",
+      "description": "Welcome to Boleham Blacksmith, here you can upgrade your items like Backpack, Weapon and Armor. Select below what you want to do"
+    },
+    "buy": {
+      "title": "Boleham's Market | Buy",
+      "select": "Select the items to buy",
+      "select-amount": "Select the amount that you want",
+      "poor": "You don't have **{{amount}}** {{coinEmoji}} to buy all this!",
+      "success": "You bought **{{amount}} {{itemName}}** for **{{totalCost}}** {{emojiCoin}}",
+      "inventory-full": "You don't have enough space to store all these items! Upgrade your poor little backpack!",
+      "consumable-desc": "Cost: **{{cost}}** {{coinEmoji}}\nRegeneration: **{{boostValue}}** {{boostEmoji}}"
+    },
     "sell": {
       "no-items": "You don't have any items to sell!",
       "title": "Boleham's Market | Sell",

@@ -138,12 +138,19 @@ export interface ReadyToBattleEnemy {
   loots: EnemyDrops[];
 }
 
-export type ItemFlag = 'droppable' | 'sellable' | 'buyable' | 'consumable';
+export type ItemFlag = 'droppable' | 'sellable' | 'buyable' | 'consumable' | 'upgradable';
+
+export interface ToUpgrade {
+  cost: number;
+  costPerLevel: number;
+  boostPerUpgrade: number;
+}
 
 export interface BackPackItem {
   type: 'backpack';
   capacity: number;
   perLevel: number;
+  toUpgrade: ToUpgrade;
   flags: ItemFlag[];
 }
 
@@ -151,6 +158,7 @@ export interface WeaponItem {
   type: 'weapon';
   damage: number;
   perLevel: number;
+  toUpgrade: ToUpgrade;
   flags: ItemFlag[];
 }
 
@@ -158,6 +166,7 @@ export interface ProtectionItem {
   type: 'protection';
   armor: number;
   perLevel: number;
+  toUpgrade: ToUpgrade;
   flags: ItemFlag[];
 }
 

@@ -34,7 +34,7 @@ export default class DungeonInteractionCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'dungeon',
-      description: '【ＲＰＧ】Vá em uma aventura na Dungeon',
+      description: '【ＲＰＧ】🦇 | Vá em uma aventura na Dungeon',
       category: 'roleplay',
       cooldown: 7,
     });

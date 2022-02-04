@@ -17,7 +17,13 @@ import { availableToBuyItems } from '@roleplay/utils/ItemsUtil';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { emojis } from '@structures/Constants';
-import Util, { actionRow, disableComponents, negate, resolveSeparatedStrings } from '@utils/Util';
+import Util, {
+  actionRow,
+  disableComponents,
+  negate,
+  resolveCustomId,
+  resolveSeparatedStrings,
+} from '@utils/Util';
 import {
   MessageButton,
   MessageEmbed,
@@ -29,33 +35,32 @@ export default class DowntownInteractionCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'centro',
-      description: '【ＲＰＧ】Centro de Boleham, aqui tu encontra de tudo',
+      description: '【ＲＰＧ】🏛️ | Centro de Boleham, aqui tu encontra de tudo',
       category: 'roleplay',
       options: [
         {
           name: 'guilda',
-          description: '【ＲＰＧ】Guilda de Aventureiros - Retire quests e reclame-as',
+          description: '【ＲＰＧ】🏠 | Retire quests e reclame-as',
           type: 'SUB_COMMAND',
         },
         {
           name: 'ferreiro',
-          description: '【ＲＰＧ】Ferreiro - Compre e faça itens de batalha',
+          description: '【ＲＰＧ】⚒️ | Compre e faça itens de batalha',
           type: 'SUB_COMMAND',
         },
         {
           name: 'mercado',
-          description: '【ＲＰＧ】Mercado - Compre e venda itens',
+          description: '【ＲＰＧ】🛒 | Compre e venda itens',
           type: 'SUB_COMMAND_GROUP',
           options: [
             {
               name: 'comprar',
-              description: '【ＲＰＧ】Mercado - Compre itens para lhe ajudar nas batalhas',
+              description: '【ＲＰＧ】🛒 | Compre itens para lhe ajudar nas batalhas',
               type: 'SUB_COMMAND',
             },
             {
               name: 'vender',
-              description:
-                '【ＲＰＧ】Mercado - Venda espólios de batalha para conseguir Moedas Reais',
+              description: '【ＲＰＧ】🛒 | Venda espólios de batalha para conseguir Moedas Reais',
               type: 'SUB_COMMAND',
             },
           ],
@@ -131,27 +136,105 @@ export default class DowntownInteractionCommand extends InteractionCommand {
         },
       ]);
     const backpackButton = new MessageButton()
-      .setCustomId(`${ctx.interaction.id} | ARMOR`)
-      .setLabel(`${ctx.locale('common:roleplay.backpack')} | ${ctx.locale('common:soon')}`)
-      .setStyle('PRIMARY')
-      .setDisabled(true);
+      .setCustomId(`${ctx.interaction.id} | BACKPACK`)
+      .setLabel(ctx.locale('common:roleplay.backpack'))
+      .setStyle('PRIMARY');
 
     const protectionButton = new MessageButton()
       .setCustomId(`${ctx.interaction.id} | PROTECTION`)
-      .setLabel(`${ctx.locale('common:roleplay.protection')} | ${ctx.locale('common:soon')}`)
-      .setStyle('PRIMARY')
-      .setDisabled(true);
+      .setLabel(ctx.locale('common:roleplay.protection'))
+      .setStyle('PRIMARY');
 
     const weaponButton = new MessageButton()
       .setCustomId(`${ctx.interaction.id} | WEAPON`)
-      .setLabel(`${ctx.locale('common:roleplay.weapon')} | ${ctx.locale('common:soon')}`)
-      .setStyle('PRIMARY')
-      .setDisabled(true);
+      .setLabel(ctx.locale('common:roleplay.weapon'))
+      .setStyle('PRIMARY');
 
     ctx.makeMessage({
       embeds: [embed],
       components: [actionRow([backpackButton, protectionButton, weaponButton])],
     });
+
+    const selected = await Util.collectComponentInteractionWithStartingId(
+      ctx.channel,
+      ctx.author.id,
+      ctx.interaction.id,
+      9000,
+    );
+
+    if (!selected) {
+      ctx.makeMessage({
+        components: [
+          actionRow(
+            disableComponents(ctx.locale('common:timesup'), [
+              backpackButton,
+              protectionButton,
+              weaponButton,
+            ]),
+          ),
+        ],
+      });
+      return;
+    }
+
+    if (resolveCustomId(selected.customId) === 'PROTECTION') {
+      const costToEvolve =
+        userProtection.data.toUpgrade.cost +
+        userProtection.data.toUpgrade.costPerLevel * (user.protection.level - 1);
+
+      embed.setFields([]).setDescription(
+        ctx.locale('commands:centro.blacksmith.evolve-description', {
+          cost: costToEvolve,
+          name: ctx.locale(`items:${user.protection.id as 1}.name`),
+          level: user.protection.level + 1,
+          bonus: userProtection.data.toUpgrade.boostPerUpgrade,
+          bonusEmoji: emojis.armor,
+          coinEmoji: emojis.coin,
+        }),
+      );
+
+      ctx.makeMessage({ components: [], embeds: [embed] });
+      return;
+    }
+
+    if (resolveCustomId(selected.customId) === 'WEAPON') {
+      const costToEvolve =
+        userWeapon.data.toUpgrade.cost +
+        userWeapon.data.toUpgrade.costPerLevel * (user.weapon.level - 1);
+
+      embed.setFields([]).setDescription(
+        ctx.locale('commands:centro.blacksmith.evolve-description', {
+          cost: costToEvolve,
+          name: ctx.locale(`items:${user.weapon.id as 1}.name`),
+          level: user.weapon.level + 1,
+          bonus: userWeapon.data.toUpgrade.boostPerUpgrade,
+          bonusEmoji: emojis.damage,
+          coinEmoji: emojis.coin,
+        }),
+      );
+
+      ctx.makeMessage({ components: [], embeds: [embed] });
+      return;
+    }
+
+    if (resolveCustomId(selected.customId) === 'BACKPACK') {
+      const costToEvolve =
+        userBackpack.data.toUpgrade.cost +
+        userBackpack.data.toUpgrade.costPerLevel * (user.backpack.level - 1);
+
+      embed.setFields([]).setDescription(
+        ctx.locale('commands:centro.blacksmith.evolve-description', {
+          cost: costToEvolve,
+          name: ctx.locale(`items:${user.backpack.id as 1}.name`),
+          level: user.backpack.level + 1,
+          bonus: userBackpack.data.toUpgrade.boostPerUpgrade,
+          bonusEmoji: emojis.chest,
+          coinEmoji: emojis.coin,
+        }),
+      );
+
+      ctx.makeMessage({ components: [], embeds: [embed] });
+    }
   }
 
   static async buyItems(ctx: InteractionCommandContext, user: RoleplayUserSchema): Promise<void> {

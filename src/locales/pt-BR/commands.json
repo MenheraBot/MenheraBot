@@ -780,6 +780,7 @@
       "backpack-description": "**{{name}}**\nCapacidade: **{{capacity}}**\nNível: **{{level}}**",
       "weapon-description": "**{{name}}**\nDano: **{{damage}}**\nNível: **{{level}}**",
       "protection-description": "**{{name}}**\nDefesa: **{{armor}}**\nNível: **{{level}}**",
+      "evolve-description": "**Melhorar {{name}}**\n\nCusto de Melhoria: **{{cost}}** {{coinEmoji}}\nBônus da Melhoria: **{{bonus}}** {{bonusEmoji}}\nNível da Melhoria: **{{level}}**",
       "description": "Bem-Vindo ao Ferreiro de Boleham, aqui você pode melhorar seus ítens como Mochila, Arma e Armadura. Selecione abaixo o que desejas fazer"
     },
     "buy": {

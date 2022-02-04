@@ -6,7 +6,7 @@ export default class InventoryInteractionCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'inventario',
-      description: '【ＲＰＧ】Abra o inventário de alguém',
+      description: '【ＲＰＧ】📦 | Abra o inventário de alguém',
       category: 'roleplay',
       options: [
         {

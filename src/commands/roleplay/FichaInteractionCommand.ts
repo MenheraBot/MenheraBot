@@ -33,7 +33,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'ficha',
-      description: '【ＲＰＧ】Mostra a ficha de um personagem ou cria a sua própria',
+      description: '【ＲＰＧ】📜 | Mostra a ficha de um personagem ou cria a sua própria',
       category: 'roleplay',
       options: [
         {

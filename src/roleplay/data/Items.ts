@@ -5,19 +5,34 @@ const Items: { [id: number]: ItemsFile } = {
     type: 'backpack',
     capacity: 5,
     perLevel: 5,
-    flags: [],
+    toUpgrade: {
+      cost: 30,
+      costPerLevel: 60,
+      boostPerUpgrade: 5,
+    },
+    flags: ['upgradable'],
   },
   101: {
     type: 'protection',
     armor: 10,
     perLevel: 5,
-    flags: [],
+    toUpgrade: {
+      cost: 30,
+      costPerLevel: 60,
+      boostPerUpgrade: 4,
+    },
+    flags: ['upgradable'],
   },
   102: {
     type: 'weapon',
     damage: 10,
     perLevel: 10,
-    flags: [],
+    toUpgrade: {
+      cost: 30,
+      costPerLevel: 60,
+      boostPerUpgrade: 7,
+    },
+    flags: ['upgradable'],
   },
   1: {
     type: 'enemy_drop',

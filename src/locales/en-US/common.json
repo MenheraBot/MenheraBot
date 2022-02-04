@@ -49,7 +49,10 @@
     "level-up": "Whoooaaa, ​​you've evolved to level **{{level}}**. Niceee, check your status for updates...",
     "armor": "Armor",
     "level": "Level",
-    "blesses": "Blesses"
+    "blesses": "Blesses",
+    "backpack": "Backpack",
+    "weapon": "Weapon",
+    "protection": "Protection"
   },
   "unregistered": "You still haven't reincarnated in the Bulletin World! Register first and try again!"
 }

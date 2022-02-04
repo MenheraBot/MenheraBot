@@ -1,9 +1,28 @@
 import { AbilitiesFile } from '../Types';
 
 const Abilities: { [id: number]: AbilitiesFile } = {
+  666: {
+    DevDesc: 'Lamina Envenenada (assassino)',
+    cost: 30,
+    damage: {
+      base: 50,
+      scale: 80,
+    },
+    heal: {
+      base: 10,
+      scale: 30,
+    },
+    parentId: 0,
+    unlockCost: 0,
+    boostPerLevel: {
+      cost: 10,
+      damage: 40,
+      heal: 10,
+    },
+  },
   100: {
     DevDesc: 'Lamina Envenenada (assassino)',
-    cost: 0,
+    cost: 20,
     damage: {
       base: 20,
       scale: 50,
