@@ -15,6 +15,7 @@ import {
   getAbilityById,
   getClassById,
   getClasses,
+  getRaceById,
   getRaces,
   getUserAvailableAbilities,
 } from '@roleplay/utils/DataUtils';
@@ -701,12 +702,28 @@ export default class FichaInteractionCommand extends InteractionCommand {
     }
 
     const resolvedClass = getClassById(Number(selectedClass.values[0]));
+    const resolvedRace = getRaceById(Number(selectedRace.values[0]));
+
+    const life =
+      resolvedClass.data.baseMaxLife +
+      resolvedClass.data.attributesPerLevel.maxLife +
+      resolvedRace.data.facilities.reduce(
+        (p, c) => (c.facility === 'maxLife' ? p + c.boostPerLevel : 0),
+        0,
+      );
+    const mana =
+      resolvedClass.data.baseMaxMana +
+      resolvedClass.data.attributesPerLevel.maxMana +
+      resolvedRace.data.facilities.reduce(
+        (p, c) => (c.facility === 'maxMana' ? p + c.boostPerLevel : 0),
+        0,
+      );
 
     const registerStatus = {
       class: Number(selectedClass.values[0]),
       race: Number(selectedRace.values[0]),
-      life: resolvedClass.data.baseMaxLife + resolvedClass.data.attributesPerLevel.maxLife,
-      mana: resolvedClass.data.baseMaxMana + resolvedClass.data.attributesPerLevel.maxMana,
+      life,
+      mana,
       abilities: [{ id: resolvedClass.data.abilityTree, level: 0, blesses: 0 }],
       holyBlessings: { ability: 0, vitality: 0, battle: 0 },
       blesses: {
