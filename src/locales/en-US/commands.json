@@ -772,7 +772,10 @@
   },
   "inventario": {
     "title": "{{user}}' Inventory",
-    "no-items": "**Your inventory is empty!**"
+    "no-items": "**Your inventory is empty!**",
+    "use": "Use Potions",
+    "use-success": "You used your potions successfully!",
+    "use-description": "Level: **{{level}}**\nRegeneration: **{{regeneration}}**"
   },
   "centro": {
     "blacksmith": {

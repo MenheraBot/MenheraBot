@@ -23,7 +23,15 @@ export const canGoToDungeon = (
   const reason: EmbedFieldData[] = [];
 
   user.cooldowns.forEach((cd) => {
-    if (cd.until > Date.now() || cd?.data === 'DEATH') {
+    if (cd?.data === 'DEATH') {
+      canGo = false;
+      reason.push({
+        name: ctx.locale('roleplay:cooldowns.death'),
+        value: ctx.locale('roleplay:cooldowns.death-description'),
+      });
+      return;
+    }
+    if (cd.until > Date.now()) {
       if (cd.reason === 'church' && cd.data === 'COOLDOWN') return;
       canGo = false;
       reason.push({

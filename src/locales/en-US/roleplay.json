@@ -103,6 +103,6 @@
     "church-description": "You are praying at the Church. See if you really want to continue praying there.",
     "dungeon-description": "You've been to the dungeon recently, and you need to rest for more **{{time}}** {{subtime}}",
     "death": "You Are Dead!",
-    "death-description": "You died on one of your adventures, and were teleported to the Church to recover. rest for more **{{time}}** {{subtime}}"
+    "death-description": "You are in the Church resting from a recent death! Use the Church command to better see this..."
   }
 }

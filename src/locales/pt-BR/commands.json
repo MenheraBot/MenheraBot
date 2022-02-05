@@ -772,7 +772,10 @@
   },
   "inventario": {
     "title": "Inventário de {{user}}",
-    "no-items": "**Seu inventário está vazio!**"
+    "no-items": "**Seu inventário está vazio!**",
+    "use": "Usar Poções",
+    "use-success": "Você usou suas poções com sucesso!",
+    "use-description": "Nível: **{{level}}**\nRegeneração: **{{regeneration}}**"
   },
   "centro": {
     "blacksmith": {
