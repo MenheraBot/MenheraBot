@@ -763,6 +763,7 @@
       "item-title": "Espólios de Batalha",
       "backpack-full": "Você não tem espaço suficiente para pegar os itens dropados!",
       "grab": "Selecione os itens que você quer",
+      "use-potion": "Selecione as poções que queres usar",
       "back": "Você retornou para a cidade, descanse um pouco antes de ir para outra aventura!",
       "footer": "Caso queira algum item, faça-o antes de ir para outro lugar",
       "loots": "Itens Disponíveis (Você tem espaço para pegar **{{amount}}**)\n{{itemText}}",

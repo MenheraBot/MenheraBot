@@ -763,6 +763,7 @@
       "item-title": "Battle Spoils",
       "backpack-full": "You don't have enough space to pick up the dropped items!",
       "grab": "Select the items you want",
+      "use-potion": "Select the potions that you want to use",
       "back": "You've returned to the city, get some rest before going on another adventure!",
       "footer": "If you want an item, please do so before going elsewhere.",
       "loots": "Available Items (You have space to get **{{amount}}**)\n{{itemText}}",

@@ -1,4 +1,4 @@
-import { RoleplayUserSchema } from '@roleplay/Types';
+import { ConsumableItem, RoleplayUserSchema } from '@roleplay/Types';
 import {
   addToInventory,
   canGoToDungeon,
@@ -9,6 +9,7 @@ import {
   isInventoryFull,
   makeCooldown,
   makeLevelUp,
+  removeFromInventory,
 } from '@roleplay/utils/AdventureUtils';
 import { battleLoop } from '@roleplay/utils/BattleUtils';
 import {
@@ -18,6 +19,7 @@ import {
   getUserMaxLife,
   getUserMaxMana,
 } from '@roleplay/utils/Calculations';
+import { getItemById } from '@roleplay/utils/DataUtils';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { COLORS, LAST_DUNGEON_LEVEL, ROLEPLAY_COOLDOWNS } from '@structures/Constants';
@@ -209,6 +211,30 @@ export default class DungeonInteractionCommand extends InteractionCommand {
       actionRow([runawayButton]),
     ];
 
+    if (user.inventory.some((a) => getItemById(a.id).data.type === 'potion')) {
+      const selectPotions = new MessageSelectMenu()
+        .setCustomId(`${ctx.interaction.id} | POTION`)
+        .setMinValues(1)
+        .setPlaceholder(ctx.locale('commands:dungeon.results.use-potion'));
+
+      user.inventory.forEach((c) => {
+        const item = getItemById(c.id);
+        if (item.data.type === 'potion') {
+          if (selectPotions.options.length < 25) {
+            for (let i = 0; i < c.amount; i++) {
+              selectPotions.addOptions({
+                label: ctx.locale(`items:${c.id as 1}.name`),
+                value: `${c.id} | ${c.level} | ${i}`,
+              });
+            }
+          }
+        }
+      });
+
+      selectPotions.setMaxValues(selectPotions.options.length);
+      toSendComponents.push(actionRow([selectPotions]));
+    }
+
     if (isInventoryFull(user)) {
       embed.addField(
         ctx.prettyResponse('chest', 'commands:dungeon.results.item-title'),
@@ -261,7 +287,7 @@ export default class DungeonInteractionCommand extends InteractionCommand {
       embeds: [embed],
     });
 
-    const selectButton = async () => {
+    const selectButton = async (): Promise<void> => {
       const selectedItem = await Util.collectComponentInteractionWithStartingId(
         ctx.channel,
         ctx.author.id,
@@ -285,24 +311,79 @@ export default class DungeonInteractionCommand extends InteractionCommand {
           inventory: user.inventory,
         });
 
-        ctx.makeMessage({ components: toSendComponents.splice(1, 3) });
-        selectButton();
-      } else {
-        switch (resolveCustomId(selectedItem.customId)) {
-          case 'BACK': {
-            ctx.makeMessage({
-              content: ctx.prettyResponse('success', 'commands:dungeon.results.back'),
-              components: [],
-              embeds: [],
-            });
-            break;
-          }
-          case 'NEXT': {
-            return DungeonInteractionCommand.DungeonLoop(ctx, user, dungeonLevel + 1);
-          }
-          case 'CONTINUE': {
-            return DungeonInteractionCommand.DungeonLoop(ctx, user, dungeonLevel);
-          }
+        toSendComponents.splice(
+          toSendComponents.findIndex((a) =>
+            a.components.some((b) => b.customId === `${ctx.interaction.id} | ITEM`),
+          ),
+          1,
+        );
+
+        ctx.makeMessage({
+          components: toSendComponents,
+        });
+        return selectButton();
+      }
+
+      if (resolveCustomId(selectedItem.customId) === 'POTION') {
+        (selectedItem as SelectMenuInteraction).values.forEach((a) => {
+          const [itemId, itemLevel] = resolveSeparatedStrings(a);
+          const item = getItemById<ConsumableItem>(Number(itemId));
+
+          const toRegenValue = Math.floor(
+            item.data.baseBoost + item.data.perLevel * Number(itemLevel),
+          );
+          const toRegenType = item.data.boostType;
+
+          user[toRegenType] += toRegenValue;
+          removeFromInventory([{ id: Number(itemId), level: Number(itemLevel) }], user.inventory);
+        });
+
+        if (user.life > getUserMaxLife(user)) user.life = getUserMaxLife(user);
+        if (user.mana > getUserMaxMana(user)) user.mana = getUserMaxMana(user);
+
+        await ctx.client.repositories.roleplayRepository.updateUser(ctx.author.id, {
+          mana: user.mana,
+          life: user.life,
+          inventory: user.inventory,
+        });
+
+        embed.setDescription(
+          ctx.locale('commands:dungeon.results.description', {
+            life: user.life,
+            mana: user.mana,
+            maxLife: getUserMaxLife(user),
+            maxMana: getUserMaxMana(user),
+          }),
+        );
+
+        toSendComponents.splice(
+          toSendComponents.findIndex((a) =>
+            a.components.some((b) => b.customId === `${ctx.interaction.id} | POTION`),
+          ),
+          1,
+        );
+
+        ctx.makeMessage({
+          embeds: [embed],
+          components: toSendComponents,
+        });
+        return selectButton();
+      }
+
+      switch (resolveCustomId(selectedItem.customId)) {
+        case 'BACK': {
+          ctx.makeMessage({
+            content: ctx.prettyResponse('success', 'commands:dungeon.results.back'),
+            components: [],
+            embeds: [],
+          });
+          break;
+        }
+        case 'NEXT': {
+          return DungeonInteractionCommand.DungeonLoop(ctx, user, dungeonLevel + 1);
+        }
+        case 'CONTINUE': {
+          return DungeonInteractionCommand.DungeonLoop(ctx, user, dungeonLevel);
         }
       }
     };
