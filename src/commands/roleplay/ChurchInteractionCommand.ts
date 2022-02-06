@@ -165,8 +165,8 @@ export default class ChurchInteractionCommand extends InteractionCommand {
       });
 
       await ctx.client.repositories.roleplayRepository.updateUser(ctx.author.id, {
-        life,
-        mana,
+        life: prayedLife,
+        mana: prayedMana,
         cooldowns: user.cooldowns,
       });
 

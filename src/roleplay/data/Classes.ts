@@ -7,7 +7,7 @@ const Classes: { [id: number]: ClassesFile } = {
     baseDamage: 20,
     baseIntelligence: 30,
     baseMaxLife: 100,
-    baseMaxMana: 50,
+    baseMaxMana: 60,
     attributesPerLevel: {
       baseArmor: 3,
       baseDamage: 3,
@@ -23,7 +23,7 @@ const Classes: { [id: number]: ClassesFile } = {
     baseDamage: 20,
     baseIntelligence: 30,
     baseMaxLife: 100,
-    baseMaxMana: 50,
+    baseMaxMana: 60,
     attributesPerLevel: {
       baseArmor: 3,
       baseDamage: 3,
@@ -39,7 +39,7 @@ const Classes: { [id: number]: ClassesFile } = {
     baseDamage: 19,
     baseIntelligence: 29,
     baseMaxLife: 100,
-    baseMaxMana: 50,
+    baseMaxMana: 60,
     attributesPerLevel: {
       baseArmor: 3,
       baseDamage: 8,
@@ -55,7 +55,7 @@ const Classes: { [id: number]: ClassesFile } = {
     baseDamage: 20,
     baseIntelligence: 30,
     baseMaxLife: 100,
-    baseMaxMana: 50,
+    baseMaxMana: 60,
     attributesPerLevel: {
       baseArmor: 4,
       baseDamage: 4,
@@ -71,7 +71,7 @@ const Classes: { [id: number]: ClassesFile } = {
     baseDamage: 19,
     baseIntelligence: 29,
     baseMaxLife: 100,
-    baseMaxMana: 50,
+    baseMaxMana: 60,
     attributesPerLevel: {
       baseArmor: 3,
       baseDamage: 8,
@@ -151,7 +151,7 @@ const Classes: { [id: number]: ClassesFile } = {
     baseDamage: 19,
     baseIntelligence: 29,
     baseMaxLife: 100,
-    baseMaxMana: 50,
+    baseMaxMana: 60,
     attributesPerLevel: {
       baseArmor: 4,
       baseDamage: 9,

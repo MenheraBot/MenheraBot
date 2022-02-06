@@ -96,11 +96,11 @@ export const calculateEffectiveDamage = (totalDamage: number, enemyArmor: number
 export const makeBlessingStatusUpgrade = (toBless: ToBLess, points: number): number => {
   switch (toBless) {
     case 'life':
-      return points * 30;
+      return points * 20;
     case 'mana':
       return points * 10;
     case 'intelligence':
-      return points * 8;
+      return points * 7;
     case 'armor':
       return points * 5;
     case 'damage':

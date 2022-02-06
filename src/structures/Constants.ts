@@ -63,22 +63,22 @@ export const LEVEL_UP_BLESSES: { [level: number]: HolyBlessings } = {
   2: {
     ability: 1,
     battle: 2,
-    vitality: 5,
+    vitality: 3,
   },
   3: {
     ability: 1,
     battle: 3,
-    vitality: 5,
+    vitality: 2,
   },
   4: {
     ability: 5,
     battle: 5,
-    vitality: 10,
+    vitality: 5,
   },
   5: {
     ability: 10,
     battle: 5,
-    vitality: 10,
+    vitality: 4,
   },
   6: {
     ability: 5,
@@ -123,7 +123,7 @@ export const LEVEL_UP_BLESSES: { [level: number]: HolyBlessings } = {
   14: {
     ability: 15,
     battle: 20,
-    vitality: 20,
+    vitality: 10,
   },
   15: {
     ability: 2,

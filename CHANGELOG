@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Changed
 
 - Mana por nível das classes `Mago` e `Arquimago` foi aumentado de `10` para `15`
+- Mana Base das classes `Mago`, `Arquimago`, `Domador`, `Necromante`, `Feiticeiro` e `Ilusionista` foi aumentada de `50` para `60`
 - Mana por nível da classe `Ilusionista` foii amentada de `8` para `10`
 - **Habilidades:**
   - *Imbuir em Veveno*: Dano base `20` -> `40`. Escala com Inteligencia `50%` -> `80%`. Dano por Nível `30` -> `60`
@@ -22,10 +23,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
   - *Parede De Aço*: Custo `80` -> `45`. Escala com Inteligencia `40%` -> `70%`. Custo por Nível `30` -> `20`. Dano por Nível `130` -> `150`. Cura Por Nível `50` -> `60`
   - *Proteção Corporal*: Custo `60` -> `40`. Dano base `12` -> `50`. Dano por Nível `40` -> `60`
   - *Nada Passará*: Custo `80` -> `65`. Escala com Inteligencia `50%` -> `70%`. Custo por nível `30` -> `20`
+- **Bonus por Benção**: Inteligência/Ponto `8` -> `7`. Vida / Ponto: `30` -> `20` 
 
 ### Fixed
 
 - Racas que dão bônus de vida e mana começam com sua vida e mana no máximo
+- A Igreja poderia te dar Vida e Mana acima de seu máximo
 
 ## [4.0.0-BETA] - 04-02-2022
 
