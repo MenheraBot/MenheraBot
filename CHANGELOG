@@ -34,6 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - O cálculo de nível dos mobs foi atualizado. `nivelDaDungeon * 5 + nivelDoUsuario`
 - Ao passar de nível, seu XP total é zerado.
 - **Limite de Bênçãos:** Você não pode ter uma bênçãos com mais do que 15 pontos do que a outra
+- O Cálculo de dano efetivo foi alterado. `danoTotal * (100 / (70 + armaduraInimigo))`
 
 ### Fixed
 

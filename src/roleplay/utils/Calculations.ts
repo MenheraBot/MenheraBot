@@ -91,7 +91,7 @@ export const getUserIntelligence = (user: RoleplayUserSchema): number => {
 };
 
 export const calculateEffectiveDamage = (totalDamage: number, enemyArmor: number): number =>
-  Math.floor(totalDamage * (100 / (100 + enemyArmor)));
+  Math.floor(totalDamage * (100 / (70 + enemyArmor)));
 
 export const makeBlessingStatusUpgrade = (toBless: ToBLess, points: number): number => {
   switch (toBless) {
