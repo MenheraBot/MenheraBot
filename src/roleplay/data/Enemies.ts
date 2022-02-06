@@ -76,13 +76,13 @@ const Enemies: { [id: number]: EnemiesFile } = {
   3: {
     dungeonLevels: [1],
     baseDamage: 6,
-    baseLife: 150,
+    baseLife: 60,
     experience: 40,
     baseArmor: 9,
     perLevel: {
       baseDamage: 4,
-      baseLife: 2,
-      baseArmor: 23,
+      baseLife: 7,
+      baseArmor: 3,
       experience: 6,
     },
     loots: [
@@ -188,7 +188,7 @@ const Enemies: { [id: number]: EnemiesFile } = {
       baseDamage: 3,
       baseLife: 4,
       baseArmor: 1,
-      experience: 3.5,
+      experience: 4,
     },
     loots: [
       {

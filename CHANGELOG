@@ -28,6 +28,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
   - *Proteção Corporal*: Custo `60` -> `40`. Dano base `12` -> `50`. Dano por Nível `40` -> `60`
   - *Nada Passará*: Custo `80` -> `65`. Escala com Inteligencia `50%` -> `70%`. Custo por nível `30` -> `20`
 - **Bonus por Benção**: Inteligência/Ponto `8` -> `7`. Vida / Ponto: `30` -> `20` 
+- Tempo para resposta na Dungeon `8s` -> `12s`
+- Ao encontrar um inimigo na Dungeon, ele que desfere o Primeiro Ataque!
+- O tempo Morto se baseia no tempo rezando até se curar 100%
+- O cálculo de nível dos mobs foi atualizado. `nivelDaDungeon * 5 + nivelDoUsuario`
+- Ao passar de nível, seu XP total é zerado.
 
 ### Fixed
 

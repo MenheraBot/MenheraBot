@@ -31,6 +31,11 @@ import {
   MessageSelectMenu,
   SelectMenuInteraction,
 } from 'discord.js-light';
+import {
+  BASE_LIFE_PER_CICLE,
+  BASE_MANA_PER_CICLE,
+  CICLE_DURATION_IN_MINUTES,
+} from './ChurchInteractionCommand';
 
 export default class DungeonInteractionCommand extends InteractionCommand {
   constructor() {
@@ -132,6 +137,18 @@ export default class DungeonInteractionCommand extends InteractionCommand {
     );
 
     if (isDead(user)) {
+      const userMaxLife = getUserMaxLife(user);
+      const userMaxMana = getUserMaxMana(user);
+      const lifePerCicle =
+        BASE_LIFE_PER_CICLE + Math.floor(userMaxLife / 1000) * BASE_LIFE_PER_CICLE;
+
+      const manaPerCicle =
+        BASE_MANA_PER_CICLE + Math.floor(userMaxMana / 700) * BASE_MANA_PER_CICLE;
+
+      const prayToMaxLife = (userMaxLife * CICLE_DURATION_IN_MINUTES) / lifePerCicle;
+      const prayToMaxMana = (userMaxMana * CICLE_DURATION_IN_MINUTES) / manaPerCicle;
+
+      const prayToMaximize = Math.max(prayToMaxLife, prayToMaxMana);
       ctx.makeMessage({
         embeds: [],
         components: [],
@@ -140,7 +157,7 @@ export default class DungeonInteractionCommand extends InteractionCommand {
 
       makeCooldown(user.cooldowns, {
         reason: 'church',
-        until: ROLEPLAY_COOLDOWNS.deathCooldown + Date.now(),
+        until: prayToMaximize * 60000 + Date.now(),
         data: 'DEATH',
       });
 

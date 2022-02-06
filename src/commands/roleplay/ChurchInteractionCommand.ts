@@ -6,9 +6,9 @@ import Util, { actionRow, disableComponents, moreThanAnHour } from '@utils/Util'
 import { MessageButton, MessageEmbed } from 'discord.js-light';
 import moment from 'moment';
 
-const BASE_LIFE_PER_CICLE = 167;
-const BASE_MANA_PER_CICLE = 100;
-const CICLE_DURATION_IN_MINUTES = 60;
+export const BASE_LIFE_PER_CICLE = 167;
+export const BASE_MANA_PER_CICLE = 100;
+export const CICLE_DURATION_IN_MINUTES = 60;
 const MINUTES_COOLDOWN_TO_RECHURCH = 45;
 
 export default class ChurchInteractionCommand extends InteractionCommand {

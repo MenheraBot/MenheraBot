@@ -16,7 +16,7 @@ import {
   getUserMaxLife,
 } from './Calculations';
 
-const TIME_TO_SELECT = 8000;
+const TIME_TO_SELECT = 12_000;
 
 export const battleLoop = async (
   user: RoleplayUserSchema,
@@ -30,23 +30,17 @@ export const battleLoop = async (
   lastText: string;
   missedAttacks: number;
 }> => {
-  const [needStop, newUser, newEnemy, newText] = await userAttack(
-    user,
-    enemy,
-    ctx,
-    text,
-    missedAttacks,
-  );
+  const [needStop, newUser, newEnemy, newText] = enemyAttack(user, enemy, ctx, text, missedAttacks);
 
   if (!needStop) {
-    const [enemyStop, enemyUser, enemyEnemy, enemyText] = enemyAttack(
+    const [enemyStop, enemyUser, enemyEnemy, enemyText, newMissedAttacks] = await userAttack(
       newUser,
       newEnemy,
       ctx,
       newText,
       missedAttacks,
     );
-    if (!enemyStop) return battleLoop(enemyUser, enemyEnemy, ctx, enemyText, missedAttacks);
+    if (!enemyStop) return battleLoop(enemyUser, enemyEnemy, ctx, enemyText, newMissedAttacks);
   }
 
   return { user, enemy, lastText: text, missedAttacks };

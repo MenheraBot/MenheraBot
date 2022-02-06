@@ -63,7 +63,7 @@ export const getDungeonEnemy = (dungeonLevel: number, userLevel: number): ReadyT
 
   const enemy = RandomFromArray(availableEnemies);
 
-  const enemyLevel = Math.floor(userLevel / 10 + 1) + Math.floor(Math.random() * 6);
+  const enemyLevel = dungeonLevel * 5 + userLevel;
 
   const enemyData: ReadyToBattleEnemy = {
     id: enemy.id,
@@ -175,6 +175,7 @@ export const makeLevelUp = (
     user.holyBlessings.battle = LEVEL_UP_BLESSES[user.level].battle;
     user.holyBlessings.vitality = LEVEL_UP_BLESSES[user.level].vitality;
     user.level += 1;
+    user.experience = 0;
   }
 
   return { level: user.level, holyBlessings: user.holyBlessings };

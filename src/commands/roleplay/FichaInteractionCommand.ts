@@ -551,7 +551,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
 
     if (resolveCustomId(selectedOption.customId) === 'STATUS') {
       if (
-        user.id !== ctx.author.id ||
+        mentioned.id !== ctx.author.id ||
         (user.holyBlessings.battle === 0 && user.holyBlessings.vitality === 0)
       ) {
         const statusEmbed = new MessageEmbed()
