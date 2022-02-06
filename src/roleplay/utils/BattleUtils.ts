@@ -1,6 +1,7 @@
+import { ENEMY_ATTACK_MULTIPLIER_CHANCE } from '@roleplay/Constants';
 import { ReadyToBattleEnemy, RoleplayUserSchema } from '@roleplay/Types';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { COLORS, ENEMY_ATTACK_MULTIPLIER_CHANCE } from '@structures/Constants';
+import { COLORS } from '@structures/Constants';
 import { calculateProbability } from '@utils/HuntUtils';
 import Util, { actionRow, resolveSeparatedStrings } from '@utils/Util';
 import { MessageEmbed, MessageSelectMenu, SelectMenuInteraction } from 'discord.js-light';

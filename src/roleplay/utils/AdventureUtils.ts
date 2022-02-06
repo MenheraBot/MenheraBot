@@ -8,7 +8,7 @@ import {
   UserCooldown,
 } from '@roleplay/Types';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { LEVEL_UP_BLESSES, LEVEL_UP_EXPERIENCE } from '@structures/Constants';
+import { LEVEL_UP_BLESSES, LEVEL_UP_EXPERIENCE } from '@roleplay/Constants';
 import { IReturnData } from '@utils/Types';
 import { moreThanAnHour, RandomFromArray } from '@utils/Util';
 import { EmbedFieldData } from 'discord.js-light';

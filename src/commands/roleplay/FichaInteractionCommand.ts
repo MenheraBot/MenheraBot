@@ -29,7 +29,7 @@ import {
   getUserMaxMana,
   makeBlessingStatusUpgrade,
 } from '@roleplay/utils/Calculations';
-import { BLESSES_DIFFERENCE_LIMIT, LEVEL_UP_EXPERIENCE } from '@structures/Constants';
+import { BLESSES_DIFFERENCE_LIMIT, LEVEL_UP_EXPERIENCE } from '@roleplay/Constants';
 
 export default class FichaInteractionCommand extends InteractionCommand {
   constructor() {

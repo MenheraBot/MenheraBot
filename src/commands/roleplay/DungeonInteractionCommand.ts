@@ -1,3 +1,4 @@
+import { LAST_DUNGEON_LEVEL, ROLEPLAY_COOLDOWNS } from '@roleplay/Constants';
 import { ConsumableItem, RoleplayUserSchema } from '@roleplay/Types';
 import {
   addToInventory,
@@ -22,7 +23,7 @@ import {
 import { getItemById } from '@roleplay/utils/DataUtils';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { COLORS, LAST_DUNGEON_LEVEL, ROLEPLAY_COOLDOWNS } from '@structures/Constants';
+import { COLORS } from '@structures/Constants';
 import Util, { actionRow, resolveCustomId, resolveSeparatedStrings } from '@utils/Util';
 import {
   MessageActionRow,
