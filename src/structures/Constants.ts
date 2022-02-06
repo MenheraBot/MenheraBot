@@ -3,6 +3,8 @@ import { T8BallAnswerTypes } from '@utils/Types';
 
 export const LAST_DUNGEON_LEVEL = 5;
 
+export const BLESSES_DIFFERENCE_LIMIT = 15;
+
 export const ROLEPLAY_COOLDOWNS = {
   dungeonCooldown: 3_600_000,
   deathCooldown: 14_400_000,
@@ -72,27 +74,27 @@ export const LEVEL_UP_BLESSES: { [level: number]: HolyBlessings } = {
   },
   4: {
     ability: 5,
-    battle: 5,
-    vitality: 5,
+    battle: 3,
+    vitality: 2,
   },
   5: {
-    ability: 10,
-    battle: 5,
+    ability: 3,
+    battle: 3,
     vitality: 4,
   },
   6: {
-    ability: 5,
-    battle: 10,
-    vitality: 10,
+    ability: 2,
+    battle: 4,
+    vitality: 6,
   },
   7: {
-    ability: 5,
-    battle: 5,
+    ability: 2,
+    battle: 3,
     vitality: 5,
   },
   8: {
     ability: 3,
-    battle: 6,
+    battle: 4,
     vitality: 4,
   },
   9: {
@@ -101,43 +103,43 @@ export const LEVEL_UP_BLESSES: { [level: number]: HolyBlessings } = {
     vitality: 10,
   },
   10: {
-    ability: 5,
-    battle: 5,
-    vitality: 5,
+    ability: 3,
+    battle: 4,
+    vitality: 4,
   },
   11: {
-    ability: 3,
-    battle: 10,
-    vitality: 5,
+    ability: 2,
+    battle: 2,
+    vitality: 3,
   },
   12: {
     ability: 3,
-    battle: 6,
+    battle: 3,
     vitality: 5,
   },
   13: {
     ability: 1,
-    battle: 5,
-    vitality: 5,
+    battle: 3,
+    vitality: 4,
   },
   14: {
     ability: 15,
-    battle: 20,
-    vitality: 10,
+    battle: 8,
+    vitality: 6,
   },
   15: {
     ability: 2,
-    battle: 7,
-    vitality: 8,
+    battle: 5,
+    vitality: 10,
   },
   16: {
-    ability: 10,
-    battle: 10,
-    vitality: 10,
+    ability: 6,
+    battle: 3,
+    vitality: 5,
   },
   17: {
     ability: 5,
-    battle: 10,
+    battle: 5,
     vitality: 5,
   },
   18: {
@@ -152,8 +154,8 @@ export const LEVEL_UP_BLESSES: { [level: number]: HolyBlessings } = {
   },
   20: {
     ability: 3,
-    battle: 6,
-    vitality: 7,
+    battle: 3,
+    vitality: 3,
   },
   21: {
     ability: 6,

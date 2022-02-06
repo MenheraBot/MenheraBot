@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { RoleplayUserSchema } from '@roleplay/Types';
@@ -28,7 +29,7 @@ import {
   getUserMaxMana,
   makeBlessingStatusUpgrade,
 } from '@roleplay/utils/Calculations';
-import { LEVEL_UP_EXPERIENCE } from '@structures/Constants';
+import { BLESSES_DIFFERENCE_LIMIT, LEVEL_UP_EXPERIENCE } from '@structures/Constants';
 
 export default class FichaInteractionCommand extends InteractionCommand {
   constructor() {
@@ -306,6 +307,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
         ctx.locale('commands:ficha.show.blessings', {
           vitality: user.holyBlessings.vitality,
           battle: user.holyBlessings.battle,
+          limit: BLESSES_DIFFERENCE_LIMIT,
         }),
       )
       .addFields([
@@ -462,6 +464,50 @@ export default class FichaInteractionCommand extends InteractionCommand {
       | 'vitality'
       | 'battle';
 
+    if (blessingField === 'vitality') {
+      const antiBlessing = databaseField === 'maxMana' ? 'maxLife' : 'maxMana';
+      if (
+        Math.abs(user.blesses[databaseField] + points - user.blesses[antiBlessing]) >
+        BLESSES_DIFFERENCE_LIMIT
+      ) {
+        ctx.makeMessage({
+          content: ctx.prettyResponse('error', 'commands:ficha.show.limit-bless', {
+            limit: BLESSES_DIFFERENCE_LIMIT,
+          }),
+          embeds: [],
+          components: [],
+        });
+        return;
+      }
+    } else {
+      const antiBlessingLimit =
+        databaseField === 'armor'
+          ? Math.abs(
+              Math.max(user.blesses.damage, user.blesses.intelligence) -
+                (user.blesses.armor + points),
+            )
+          : databaseField === 'damage'
+          ? Math.abs(
+              Math.max(user.blesses.armor, user.blesses.intelligence) -
+                (user.blesses.damage + points),
+            )
+          : Math.abs(
+              Math.max(user.blesses.armor, user.blesses.damage) -
+                (user.blesses.intelligence + points),
+            );
+
+      if (antiBlessingLimit > BLESSES_DIFFERENCE_LIMIT) {
+        ctx.makeMessage({
+          content: ctx.prettyResponse('error', 'commands:ficha.show.limit-bless', {
+            limit: BLESSES_DIFFERENCE_LIMIT,
+          }),
+          embeds: [],
+          components: [],
+        });
+        return;
+      }
+    }
+
     const userHolyBlessings = user.holyBlessings;
     const userBlesses = user.blesses;
 
@@ -564,6 +610,11 @@ export default class FichaInteractionCommand extends InteractionCommand {
               damage: makeBlessingStatusUpgrade('damage', user.blesses.damage),
               armor: makeBlessingStatusUpgrade('armor', user.blesses.armor),
               intelligence: makeBlessingStatusUpgrade('intelligence', user.blesses.intelligence),
+              lifePoints: user.blesses.maxLife,
+              manaPoints: user.blesses.maxMana,
+              damagePoints: user.blesses.damage,
+              armorPoints: user.blesses.armor,
+              intelligencePoints: user.blesses.intelligence,
             }),
           );
         ctx.makeMessage({
