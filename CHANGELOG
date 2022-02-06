@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ## [Unreleased]
 
+### Added
+
+- Nome para os Inimigos `9` e `10`
+
 ### Changed
 
 - Mana por nível das classes `Mago` e `Arquimago` foi aumentado de `10` para `15`
