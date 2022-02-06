@@ -101,7 +101,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     cost: 80,
     damage: {
       base: 90,
-      scale: 110,
+      scale: 80,
     },
     heal: {
       base: 0,
@@ -329,7 +329,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     cost: 20,
     damage: {
       base: 60,
-      scale: 90,
+      scale: 70,
     },
     heal: {
       base: 0,
