@@ -313,15 +313,15 @@ const Abilities: { [id: number]: AbilitiesFile } = {
       scale: 60,
     },
     heal: {
-      base: 80,
-      scale: 120,
+      base: 70,
+      scale: 50,
     },
     parentId: 0,
     unlockCost: 0,
     boostPerLevel: {
-      cost: 10,
+      cost: 15,
       damage: 60,
-      heal: 120,
+      heal: 70,
     },
   },
   401: {

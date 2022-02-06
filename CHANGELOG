@@ -22,7 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
   - *Atrás de Você*: Dano base `17` -> `90`. Escala com Inteligência `50%` -> `80%`. Dano por Nível `50` -> `30`
   - *Golpe Desleal*: Dano Base `17` -> `50`. Escala com Inteligência `50%` -> `65%`. Cura por Nível `200` -> `100`
   - *Frenesi*: Dano Base `15` -> `90`, Escala com Inteligencia: `0%` -> `80%`
-  - *Avanço com Escudo*: Dano base `10` -> `50`. Cura Base `60` -> `80`. Cura escala com inteligencia `80%` -> `120%`. Custo por nível `50` -> `10`. Cura por Nível `160` -> `120`
+  - *Avanço com Escudo*: Dano base `10` -> `50`. Cura Base `60` -> `70`. Cura escala com inteligencia `80%` -> `70%`. Custo por nível `50` -> `15`. Cura por Nível `160` -> `70`
   - *Estande de Defesa*: Custo `60` -> `20`. Escala com Inteligencia `50%` -> `70%`. Custo por nível `20` -> `15`. Dano por Nível `67` -> `90`
   - *Parede De Aço*: Custo `80` -> `45`. Escala com Inteligencia `40%` -> `70%`. Custo por Nível `30` -> `20`. Dano por Nível `130` -> `150`. Cura Por Nível `50` -> `60`
   - *Proteção Corporal*: Custo `60` -> `40`. Dano base `12` -> `50`. Dano por Nível `40` -> `60`
