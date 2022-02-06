@@ -171,9 +171,9 @@ export const makeLevelUp = (
   user: RoleplayUserSchema,
 ): { level: number; holyBlessings: HolyBlessings } => {
   if (user.experience >= LEVEL_UP_EXPERIENCE[user.level]) {
-    user.holyBlessings.ability = LEVEL_UP_BLESSES[user.level].ability;
-    user.holyBlessings.battle = LEVEL_UP_BLESSES[user.level].battle;
-    user.holyBlessings.vitality = LEVEL_UP_BLESSES[user.level].vitality;
+    user.holyBlessings.ability += LEVEL_UP_BLESSES[user.level].ability;
+    user.holyBlessings.battle += LEVEL_UP_BLESSES[user.level].battle;
+    user.holyBlessings.vitality += LEVEL_UP_BLESSES[user.level].vitality;
     user.level += 1;
     user.experience = 0;
   }

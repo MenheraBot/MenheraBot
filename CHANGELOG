@@ -40,6 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 - Racas que dão bônus de vida e mana começam com sua vida e mana no máximo
 - A Igreja poderia te dar Vida e Mana acima de seu máximo
+- Ao subir de nível, as Bênçãos santissimas são SOMADAS às suas antigas.
 
 ## [4.0.0-BETA] - 04-02-2022
 
