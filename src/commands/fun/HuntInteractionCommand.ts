@@ -12,7 +12,7 @@ import {
   getUserHuntCooldown,
   getUserHuntProbability,
 } from '@utils/HuntUtils';
-import Util, { debugError, getMagicItemById } from '@utils/Util';
+import Util, { getMagicItemById } from '@utils/Util';
 
 type ChoiceTypes = HuntingTypes | 'probabilities';
 const choices: { name: string; value: ChoiceTypes }[] = [
@@ -231,13 +231,13 @@ export default class HuntInteractionCommand extends InteractionCommand {
       selected,
     );
 
-    const rankinkg = await ctx.client.repositories.topRepository
+    /* const rankinkg await ctx.client.repositories.topRepository
       .getUserHuntRank(
         ctx.author.id,
         selected,
         await ctx.client.repositories.cacheRepository.getDeletedAccounts(),
       )
-      .catch((e) => debugError(e, true));
+      .catch((e) => debugError(e, true)); */
 
     if (selected === 'gods') {
       embed.setDescription(
@@ -245,11 +245,11 @@ export default class HuntInteractionCommand extends InteractionCommand {
           ? ctx.locale('commands:cacar.god_hunted_success', {
               count: result.value,
               hunt: ctx.locale(`commands:cacar.gods`),
-              rank: rankinkg ? rankinkg.rank + 1 : '`??`',
+              rank: /* rankinkg ? rankinkg.rank + 1 : */ '`??`',
               toRun,
             })
           : ctx.locale('commands:cacar.god_hunted_fail', {
-              rank: rankinkg ? rankinkg.rank + 1 : '`??`',
+              rank: /* rankinkg ? rankinkg.rank + 1 :  */ '`??`',
               count: toRun,
             }),
       );
@@ -259,7 +259,7 @@ export default class HuntInteractionCommand extends InteractionCommand {
         ctx.locale('commands:cacar.hunt_description', {
           value: result.value,
           hunt: ctx.locale(`commands:cacar.${selected}`),
-          rank: rankinkg ? rankinkg.rank + 1 : '`??`',
+          rank: /* rankinkg ? rankinkg.rank + 1 : */ '`??`',
           count: toRun,
         }),
       );
