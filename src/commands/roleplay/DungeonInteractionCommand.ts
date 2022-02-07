@@ -1,4 +1,8 @@
-import { LAST_DUNGEON_LEVEL, ROLEPLAY_COOLDOWNS } from '@roleplay/Constants';
+import {
+  LAST_DUNGEON_LEVEL,
+  MOB_LIMIT_PER_DUNGEON_LEVEL,
+  ROLEPLAY_COOLDOWNS,
+} from '@roleplay/Constants';
 import { ConsumableItem, RoleplayUserSchema } from '@roleplay/Types';
 import {
   addToInventory,
@@ -117,13 +121,14 @@ export default class DungeonInteractionCommand extends InteractionCommand {
       return;
     }
 
-    return DungeonInteractionCommand.DungeonLoop(ctx, user, 1);
+    return DungeonInteractionCommand.DungeonLoop(ctx, user, 1, 0);
   }
 
   static async DungeonLoop(
     ctx: InteractionCommandContext,
     user: RoleplayUserSchema,
     dungeonLevel: number,
+    killedMobs: number,
   ): Promise<void> {
     const enemy = getDungeonEnemy(dungeonLevel, user.level);
 
@@ -135,6 +140,7 @@ export default class DungeonInteractionCommand extends InteractionCommand {
         enemy: ctx.locale(`enemies:${enemy.id as 1}.name`),
         level: enemy.level,
       }),
+      killedMobs,
     );
 
     if (isDead(user)) {
@@ -223,6 +229,8 @@ export default class DungeonInteractionCommand extends InteractionCommand {
     if (dungeonLevel === LAST_DUNGEON_LEVEL)
       nextButton.setDisabled(true).setLabel(ctx.locale('common:soon')).setEmoji('🛑');
 
+    if (killedMobs + 1 >= MOB_LIMIT_PER_DUNGEON_LEVEL) continueButton.setDisabled(true);
+
     const toSendComponents: MessageActionRow[] = [
       actionRow([nextButton]),
       actionRow([continueButton]),
@@ -310,7 +318,7 @@ export default class DungeonInteractionCommand extends InteractionCommand {
         ctx.channel,
         ctx.author.id,
         ctx.interaction.id,
-        15000,
+        25_000,
       );
 
       if (!selectedItem) {
@@ -398,10 +406,10 @@ export default class DungeonInteractionCommand extends InteractionCommand {
           break;
         }
         case 'NEXT': {
-          return DungeonInteractionCommand.DungeonLoop(ctx, user, dungeonLevel + 1);
+          return DungeonInteractionCommand.DungeonLoop(ctx, user, dungeonLevel + 1, killedMobs + 1);
         }
         case 'CONTINUE': {
-          return DungeonInteractionCommand.DungeonLoop(ctx, user, dungeonLevel);
+          return DungeonInteractionCommand.DungeonLoop(ctx, user, dungeonLevel, killedMobs + 1);
         }
       }
     };

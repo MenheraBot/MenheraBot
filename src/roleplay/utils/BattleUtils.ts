@@ -24,12 +24,14 @@ export const battleLoop = async (
   enemy: ReadyToBattleEnemy,
   ctx: InteractionCommandContext,
   text: string,
+  killedMobs: number,
   missedAttacks = 0,
 ): Promise<{
   user: RoleplayUserSchema;
   enemy: ReadyToBattleEnemy;
   lastText: string;
   missedAttacks: number;
+  killedMobs: number;
 }> => {
   const [needStop, newUser, newEnemy, newText] = enemyAttack(user, enemy, ctx, text, missedAttacks);
 
@@ -41,10 +43,11 @@ export const battleLoop = async (
       newText,
       missedAttacks,
     );
-    if (!enemyStop) return battleLoop(enemyUser, enemyEnemy, ctx, enemyText, newMissedAttacks);
+    if (!enemyStop)
+      return battleLoop(enemyUser, enemyEnemy, ctx, enemyText, newMissedAttacks, killedMobs);
   }
 
-  return { user, enemy, lastText: text, missedAttacks };
+  return { user, enemy, lastText: text, missedAttacks, killedMobs };
 };
 
 export const enemyAttack = (
