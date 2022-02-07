@@ -197,7 +197,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - Usuários no meio de comandos de economia não podem mais ser escolhidos em outros comandos
 - Sistema de punição de usuários inativos começou!
 
-### Fix
+### Fixed
 
 - Resolvido problema ao ver o banimento de um usuário
 - Resolvido problema do blackjack de mandar imagem quando não se responde
@@ -208,7 +208,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 - Novo comando de imagem `/vasco`
 
-### Fix
+### Fixed
 
 - Resolvido o comando inventário não funcionar caso o usuário tenha o item `Necare Hêmítheos`
 - Resolvido problema do trisal quando nao encontrava usuarios
@@ -216,14 +216,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ## [3.4.2] - 2021-11-09
 
-### Fix
+### Fixed
 
 - Problema no comando inventário
 - Badges de usuário casado mostrando mesmo se o usuário não estiver casado
 
 ## [3.4.1] - 2021-11-09
 
-### Fix
+### Fixed
 
 - Resolvido problema que o sistema de votos não salvava os dados
 
@@ -279,7 +279,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - O código do `/give` foi reescrito
 - Contas banidas e/ou deletadas não aparecerão na contagem do top
 
-### Fix
+### Fixed
 
 - Titulo do embed do top arcanjos
 - Votos no evendo do Halloween dão demônios como prêmio
