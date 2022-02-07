@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
   - *2*: Dano base `16` -> `8`. Experiência Base `16` -> `10`. Experiência por nível `6` -> `5`
   - *3*: Experiência base `40` -> `10`. Experiência por Nível `6` -> `3`.
   - *9*: Armarudra Base `40` -> `16`. Dano por Nível `13` -> `8`. Armadura por nível `5` -> `6`
+- **Mudança em Custo de Items**
+  - *4*: Valor `7` -> `6`
+  - *5*: Valor `10` -> `9`. Valor Por nível `10` -> `6`
+  - *6*: Valor `12` -> `11`. Valor por nível `7` -> `5`
 ## [4.0.A-BETA] - 2022-02-06
 
 ### Added

@@ -54,20 +54,20 @@ const Items: { [id: number]: ItemsFile } = {
   },
   4: {
     type: 'enemy_drop',
-    marketValue: 7,
+    marketValue: 6,
     perLevel: 3,
     flags: ['droppable', 'sellable'],
   },
   5: {
     type: 'enemy_drop',
-    marketValue: 10,
-    perLevel: 10,
+    marketValue: 9,
+    perLevel: 6,
     flags: ['droppable', 'sellable'],
   },
   6: {
     type: 'enemy_drop',
-    marketValue: 12,
-    perLevel: 7,
+    marketValue: 11,
+    perLevel: 5,
     flags: ['droppable', 'sellable'],
   },
   7: {
