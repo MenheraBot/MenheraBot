@@ -28,6 +28,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
   - _400_: Cura base `70` -> `40`
   - _404_: Cura base `150` -> `100`
 
+### Fixed
+
+- A dúzia do `0` na roleta aparecia como `?`
+
 ## [4.0.A-BETA] - 2022-02-06
 
 ### Added

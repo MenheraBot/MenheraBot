@@ -647,6 +647,7 @@
     "first": "First Dozen",
     "second": "Second Dozen",
     "third": "Third Dozen",
+    "?": "**The 0 doesn't have a Dozen**",
     "low": "Lower",
     "high": "Higher",
     "even": "Even",
