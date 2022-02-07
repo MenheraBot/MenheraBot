@@ -4,7 +4,7 @@ export const LAST_DUNGEON_LEVEL = 5;
 
 export const BLESSES_DIFFERENCE_LIMIT = 15;
 
-export const MOB_LIMIT_PER_DUNGEON_LEVEL = 3;
+export const MOB_LIMIT_PER_DUNGEON_LEVEL = 5;
 
 export const ROLEPLAY_COOLDOWNS = {
   dungeonCooldown: 3_600_000,

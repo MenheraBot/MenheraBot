@@ -85,7 +85,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
       scale: 65,
     },
     heal: {
-      base: 130,
+      base: 90,
       scale: 60,
     },
     parentId: 102,
@@ -313,7 +313,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
       scale: 60,
     },
     heal: {
-      base: 70,
+      base: 40,
       scale: 50,
     },
     parentId: 0,
@@ -389,7 +389,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
       scale: 70,
     },
     heal: {
-      base: 150,
+      base: 100,
       scale: 40,
     },
     parentId: 403,

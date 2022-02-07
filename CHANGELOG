@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ### Added
 
-- **Limite de Mobs da Dungeon:** Cada nível tem um limite de `3` mobs a serem mortos
+- **Limite de Mobs da Dungeon:** Cada nível tem um limite de `5` mobs a serem mortos
 
 ### Changed
 
@@ -23,6 +23,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
   - _5_: Valor `10` -> `9`. Valor Por nível `10` -> `6`
   - _6_: Valor `12` -> `11`. Valor por nível `7` -> `5`
 - Tempo de Resposta ao final da Dungeon foi de `15s` -> `25s`
+- **Cura de Habilidades**
+  - _103_: Cura base `130` -> `90`
+  - _400_: Cura base `70` -> `40`
+  - _404_: Cura base `150` -> `100`
 
 ## [4.0.A-BETA] - 2022-02-06
 
