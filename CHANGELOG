@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
-## [4.0.A-BETA] - 06-02-2022
+## [4.0.A-BETA] - 2022-02-06
 
 ### Added
 
@@ -42,7 +42,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - A Igreja poderia te dar Vida e Mana acima de seu máximo
 - Ao subir de nível, as Bênçãos santissimas são SOMADAS às suas antigas.
 
-## [4.0.0-BETA] - 04-02-2022
+## [4.0.0-BETA] - 2022-02-04
 
 ### Added
 
@@ -68,7 +68,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 - Plurais foram removidos (Não tava conseguindo arrumar ai tirei, é us guri)
 
-## [3.5.10] - 21-01-2022
+## [3.5.10] - 2022-01-21
 
 ### Added
 
@@ -78,14 +78,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 - Jogo do bicho possuia uma instância por shard
 
-## [3.5.9] - 19-01-2022
+## [3.5.9] - 2022-01-19
 
 ### Added
 
 - ROLETA!! Sabe o jogo de azar da roleta? A Menhera agora tem ele! Teste agora mesmo com `/roleta`
 - JOGO DO BICHO!! Vocês devem conhecer o jogo do bicho, né? Na Menhera, a cada 5 horas será sorteado um novo jogo do bicho! Usuários podem se juntar à essa aposta usando `/bicho`
 
-## [3.5.8] - 17-01-2022
+## [3.5.8] - 2022-01-17
 
 ### Added
 
@@ -95,7 +95,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 - Total anjos caçados aparece no `/status cacar`
 
-## [3.5.7] - 13-01-2022
+## [3.5.7] - 2022-01-13
 
 ### Added
 
@@ -105,7 +105,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 - O comando `/inventário` voltou a funcionar
 
-## [3.5.6] - 12-04-2021
+## [3.5.6] - 2021-12-04
 
 ### Added
 
@@ -117,7 +117,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 - Título do embed de máximo de prêmios ao votar
 
-## [3.5.5] 11-30-2021
+## [3.5.5] - 2021-11-30
 
 ### Added
 
@@ -129,7 +129,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - O comando `/loja comprar temas` foi melhorado para facilitar o uso
 - Votos especiais mostram os upvotes novamente
 
-## [3.5.3] 2021-11-30
+## [3.5.3] - 2021-11-30
 
 ### Added
 
@@ -141,7 +141,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 - Blackjack enviava varias mensagens ao inves de editar
 
-## [3.5.2] 2021-11-26
+## [3.5.2] - 2021-11-26
 
 ### Added
 
@@ -158,7 +158,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 - Casais não davam 100% no ship
 
-## [3.5.1] 2021-11-22
+## [3.5.1] - 2021-11-22
 
 ### Added
 
@@ -188,7 +188,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - O comando `/votar` foi removido. O link para votar aparecerá no comando `/cooldowns` quando você puder votar.
 - O comando `/ping` foi deletado. Para as informações de ping, utilize `/status menhera`
 
-## [3.5.0] 2021-11-15
+## [3.5.0] - 2021-11-15
 
 ### Added
 
@@ -202,7 +202,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - Resolvido problema ao ver o banimento de um usuário
 - Resolvido problema do blackjack de mandar imagem quando não se responde
 
-## [3.4.3] 2021-11-09
+## [3.4.3] - 2021-11-09
 
 ### Added
 
@@ -214,20 +214,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - Resolvido problema do trisal quando nao encontrava usuarios
 - Resolvido erro ao usuários caçarem pela primeira vez
 
-## [3.4.2] 2021-11-09
+## [3.4.2] - 2021-11-09
 
 ### Fix
 
 - Problema no comando inventário
 - Badges de usuário casado mostrando mesmo se o usuário não estiver casado
 
-## [3.4.1] 2021-11-09
+## [3.4.1] - 2021-11-09
 
 ### Fix
 
 - Resolvido problema que o sistema de votos não salvava os dados
 
-## [3.4.0] 2021-11-08
+## [3.4.0] - 2021-11-08
 
 ### Added
 
@@ -261,13 +261,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 - O campo shipValue foi removido do banco de dados!
 
-## [3.3.14] 2021-11-01
+## [3.3.14] - 2021-11-01
 
 ### Removed
 
 - O evento de Haloween acabou
 
-## [3.3.13-hall] 2021-10-23
+## [3.3.13-hall] - 2021-10-23
 
 ### Added
 
