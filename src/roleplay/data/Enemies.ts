@@ -3,12 +3,12 @@ import { EnemiesFile } from '@roleplay/Types';
 const Enemies: { [id: number]: EnemiesFile } = {
   1: {
     dungeonLevels: [1],
-    baseDamage: 12,
+    baseDamage: 7,
     baseLife: 50,
     experience: 10,
     baseArmor: 10,
     perLevel: {
-      baseDamage: 4,
+      baseDamage: 3,
       baseLife: 6,
       baseArmor: 2,
       experience: 2,
@@ -39,15 +39,15 @@ const Enemies: { [id: number]: EnemiesFile } = {
   },
   2: {
     dungeonLevels: [1, 2],
-    baseDamage: 16,
+    baseDamage: 8,
     baseLife: 60,
-    experience: 16,
+    experience: 10,
     baseArmor: 11,
     perLevel: {
       baseDamage: 5,
       baseLife: 9,
       baseArmor: 3,
-      experience: 6,
+      experience: 5,
     },
     loots: [
       {
@@ -77,13 +77,13 @@ const Enemies: { [id: number]: EnemiesFile } = {
     dungeonLevels: [1],
     baseDamage: 6,
     baseLife: 60,
-    experience: 40,
+    experience: 10,
     baseArmor: 9,
     perLevel: {
       baseDamage: 4,
       baseLife: 7,
       baseArmor: 3,
-      experience: 6,
+      experience: 3,
     },
     loots: [
       {
@@ -289,11 +289,11 @@ const Enemies: { [id: number]: EnemiesFile } = {
     baseDamage: 30,
     baseLife: 300,
     experience: 40,
-    baseArmor: 40,
+    baseArmor: 16,
     perLevel: {
-      baseDamage: 13,
+      baseDamage: 8,
       baseLife: 10,
-      baseArmor: 5,
+      baseArmor: 6,
       experience: 3,
     },
     loots: [

@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+
+- **Mudança em Monstros** de nível baixo
+  - *1*: Dano base `12` -> `7`. Dano por Nível `4` -> `3`
+  - *2*: Dano base `16` -> `8`. Experiência Base `16` -> `10`. Experiência por nível `6` -> `5`
+  - *3*: Experiência base `40` -> `10`. Experiência por Nível `6` -> `3`.
+  - *9*: Armarudra Base `40` -> `16`. Dano por Nível `13` -> `8`. Armadura por nível `5` -> `6`
 ## [4.0.A-BETA] - 2022-02-06
 
 ### Added
