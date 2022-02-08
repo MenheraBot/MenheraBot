@@ -10,7 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Changed
 
 - O cálculo de dano foi alterado! `DANO = seuDano - (seuDano * armaduraInimigo * (1 - suaPenetração / 100)) ^ 1 / 1.33 `
-- Ao entrar na Dungeon, o não desfere mais o Primeiro Ataque
+- Ao entrar na Dungeon, o inimigo não desfere mais o Primeiro Ataque
+- O cálculo para subir de nível foi alterado! `XpParaPróximoNivel = B * seuNivel ^ C` onde B é o XP base, 10 e C é a dificuldade por nível, `1.6` (atualmente)
 
 ## [4.0.B-BETA] - 2022-02-07
 

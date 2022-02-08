@@ -8,12 +8,13 @@ import {
   UserCooldown,
 } from '@roleplay/Types';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { LEVEL_UP_BLESSES, LEVEL_UP_EXPERIENCE } from '@roleplay/Constants';
+import { LEVEL_UP_BLESSES } from '@roleplay/Constants';
 import { IReturnData } from '@utils/Types';
 import { moreThanAnHour, RandomFromArray } from '@utils/Util';
 import { EmbedFieldData } from 'discord.js-light';
 import moment from 'moment';
 import { getEnemies, getItemById } from './DataUtils';
+import { nextLevelXp } from './Calculations';
 
 export const canGoToDungeon = (
   user: RoleplayUserSchema,
@@ -170,7 +171,7 @@ export const getEnemyLoot = (loots: EnemyDrops[]): EnemyDrops['loots'] => {
 export const makeLevelUp = (
   user: RoleplayUserSchema,
 ): { level: number; holyBlessings: HolyBlessings } => {
-  if (user.experience >= LEVEL_UP_EXPERIENCE[user.level]) {
+  if (user.experience >= nextLevelXp(user.level)) {
     user.holyBlessings.ability += LEVEL_UP_BLESSES[user.level].ability;
     user.holyBlessings.battle += LEVEL_UP_BLESSES[user.level].battle;
     user.holyBlessings.vitality += LEVEL_UP_BLESSES[user.level].vitality;

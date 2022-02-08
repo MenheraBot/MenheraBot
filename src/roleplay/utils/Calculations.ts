@@ -1,3 +1,4 @@
+import { BASE_XP, DIFFICULT_TO_LEVEL_UP } from '@roleplay/Constants';
 import { ProtectionItem, RoleplayUserSchema, UserAbility, WeaponItem } from '@roleplay/Types';
 import { ToBLess } from '@utils/Types';
 import { getAbilityById, getClassById, getItemById, getRaceById } from './DataUtils';
@@ -129,6 +130,9 @@ export const getAbilityNextLevelBlessings = (abilityLevel: number): number => {
 
   return toNext[abilityLevel];
 };
+
+export const nextLevelXp = (userLevel: number): number =>
+  Math.floor(BASE_XP * userLevel ** DIFFICULT_TO_LEVEL_UP);
 
 export const getAbilityDamage = (ability: UserAbility, userIntelligence: number): number => {
   const resolvedAbility = getAbilityById(ability.id);
