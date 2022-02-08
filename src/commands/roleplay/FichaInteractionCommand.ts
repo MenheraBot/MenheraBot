@@ -28,8 +28,9 @@ import {
   getUserMaxLife,
   getUserMaxMana,
   makeBlessingStatusUpgrade,
+  nextLevelXp,
 } from '@roleplay/utils/Calculations';
-import { BLESSES_DIFFERENCE_LIMIT, LEVEL_UP_EXPERIENCE } from '@roleplay/Constants';
+import { BLESSES_DIFFERENCE_LIMIT } from '@roleplay/Constants';
 
 export default class FichaInteractionCommand extends InteractionCommand {
   constructor() {
@@ -46,7 +47,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
         },
       ],
       cooldown: 7,
-      authorDataFields: ['selectedColor'],
+      authorDataFields: ['selectedColor', 'badges'],
     });
   }
 
@@ -558,7 +559,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
           user.level
         }**\n${ctx.prettyResponse('experience', 'commands:ficha.show.experience')}: **${
           user.experience
-        } / ${LEVEL_UP_EXPERIENCE[user.level]}**`,
+        } / ${nextLevelXp(user.level)}**`,
       )
       .setColor(ctx.data.user.selectedColor);
 
@@ -787,7 +788,8 @@ export default class FichaInteractionCommand extends InteractionCommand {
     };
 
     await ctx.client.repositories.roleplayRepository.registerUser(ctx.author.id, registerStatus);
-    await ctx.client.repositories.badgeRepository.addBadge(ctx.author.id, 16);
+    if (!ctx.data.user.badges.some((a) => a.id === 16))
+      await ctx.client.repositories.badgeRepository.addBadge(ctx.author.id, 16);
 
     ctx.makeMessage({
       content: ctx.prettyResponse('success', 'commands:ficha.register.success'),
