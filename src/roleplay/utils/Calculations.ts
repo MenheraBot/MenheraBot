@@ -90,8 +90,17 @@ export const getUserIntelligence = (user: RoleplayUserSchema): number => {
   return Math.floor(classIntelligence + raceIntellience + userBlesses);
 };
 
-export const calculateEffectiveDamage = (totalDamage: number, enemyArmor: number): number =>
-  Math.floor(totalDamage * (100 / (70 + enemyArmor)));
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const calculateUserPenetration = (user: RoleplayUserSchema): number => 0;
+
+export const calculateEffectiveDamage = (
+  attackerDamage: number,
+  attackerPenetration: number,
+  defenderArmor: number,
+): number =>
+  // Reference: https://www.reddit.com/r/gamedesign/comments/2dyd99/question_armor_calculation_for_rpgs/
+  attackerDamage -
+  attackerDamage * Math.max(defenderArmor * (1 - attackerPenetration / 100), 0) ** (1 / 1.33);
 
 export const makeBlessingStatusUpgrade = (toBless: ToBLess, points: number): number => {
   switch (toBless) {

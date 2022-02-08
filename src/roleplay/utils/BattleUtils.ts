@@ -8,6 +8,7 @@ import { MessageEmbed, MessageSelectMenu, SelectMenuInteraction } from 'discord.
 import { isDead } from './AdventureUtils';
 import {
   calculateEffectiveDamage,
+  calculateUserPenetration,
   getAbilityCost,
   getAbilityDamage,
   getAbilityHeal,
@@ -64,7 +65,11 @@ export const enemyAttack = (
   missedAttacks: number,
 ): [boolean, RoleplayUserSchema, ReadyToBattleEnemy, string, number] => {
   const multiplier = calculateProbability(ENEMY_ATTACK_MULTIPLIER_CHANCE);
-  const effectiveDamage = calculateEffectiveDamage(enemy.damage * multiplier, getUserArmor(user));
+  const effectiveDamage = calculateEffectiveDamage(
+    enemy.damage * multiplier,
+    calculateUserPenetration(user),
+    getUserArmor(user),
+  );
 
   user.life -= effectiveDamage;
 
@@ -182,7 +187,11 @@ export const userAttack = async (
 
   switch (resolveSeparatedStrings(selectedOptions.values[0])[0]) {
     case 'HANDATTACK': {
-      const damageDealt = calculateEffectiveDamage(getUserDamage(user), enemy.armor);
+      const damageDealt = calculateEffectiveDamage(
+        getUserDamage(user),
+        calculateUserPenetration(user),
+        enemy.armor,
+      );
       enemy.life -= damageDealt;
       if (isDead(enemy))
         return [true, user, enemy, ctx.locale('roleplay:battle.enemy-death'), missedAttacks];

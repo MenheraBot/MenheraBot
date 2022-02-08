@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ### Changed
 
+- O cálculo de dano foi alterado! `DANO = seuDano - (seuDano * armaduraInimigo * (1 - suaPenetração / 100)) ^ 1 / 1.33 `
 - Ao entrar na Dungeon, o não desfere mais o Primeiro Ataque
 
 ## [4.0.B-BETA] - 2022-02-07
