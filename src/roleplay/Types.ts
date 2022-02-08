@@ -123,7 +123,7 @@ export interface EnemiesFile {
   baseLife: number;
   baseArmor: number;
   experience: number;
-  perLevel: EnemyBoostPerLevel;
+  statsPerPhase: EnemyBoostPerLevel;
   dungeonLevels: number[];
   loots: EnemyDrops[];
 }

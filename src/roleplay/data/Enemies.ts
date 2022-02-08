@@ -3,15 +3,15 @@ import { EnemiesFile } from '@roleplay/Types';
 const Enemies: { [id: number]: EnemiesFile } = {
   1: {
     dungeonLevels: [1],
-    baseDamage: 7,
+    baseDamage: 15,
     baseLife: 50,
     experience: 10,
     baseArmor: 10,
-    perLevel: {
-      baseDamage: 3,
-      baseLife: 6,
-      baseArmor: 2,
-      experience: 2,
+    statsPerPhase: {
+      baseDamage: 13,
+      baseLife: 10,
+      baseArmor: 8,
+      experience: 10,
     },
     loots: [
       {
@@ -39,15 +39,15 @@ const Enemies: { [id: number]: EnemiesFile } = {
   },
   2: {
     dungeonLevels: [1, 2],
-    baseDamage: 8,
+    baseDamage: 13,
     baseLife: 60,
     experience: 10,
     baseArmor: 11,
-    perLevel: {
-      baseDamage: 5,
-      baseLife: 9,
-      baseArmor: 3,
-      experience: 5,
+    statsPerPhase: {
+      baseDamage: 20,
+      baseLife: 40,
+      baseArmor: 8,
+      experience: 15,
     },
     loots: [
       {
@@ -75,14 +75,14 @@ const Enemies: { [id: number]: EnemiesFile } = {
   },
   3: {
     dungeonLevels: [1],
-    baseDamage: 6,
+    baseDamage: 13,
     baseLife: 60,
     experience: 10,
     baseArmor: 9,
-    perLevel: {
-      baseDamage: 4,
-      baseLife: 7,
-      baseArmor: 3,
+    statsPerPhase: {
+      baseDamage: 10,
+      baseLife: 20,
+      baseArmor: 8,
       experience: 3,
     },
     loots: [
@@ -108,11 +108,11 @@ const Enemies: { [id: number]: EnemiesFile } = {
     baseLife: 250,
     experience: 50,
     baseArmor: 10,
-    perLevel: {
-      baseDamage: 4,
-      baseLife: 30,
-      baseArmor: 6,
-      experience: 6,
+    statsPerPhase: {
+      baseDamage: 40,
+      baseLife: 100,
+      baseArmor: 10,
+      experience: 20,
     },
     loots: [
       {
@@ -146,11 +146,11 @@ const Enemies: { [id: number]: EnemiesFile } = {
     baseLife: 340,
     experience: 52,
     baseArmor: 10,
-    perLevel: {
-      baseDamage: 6,
-      baseLife: 30,
-      baseArmor: 10,
-      experience: 7,
+    statsPerPhase: {
+      baseDamage: 20,
+      baseLife: 130,
+      baseArmor: 15,
+      experience: 22,
     },
     loots: [
       {
@@ -184,11 +184,11 @@ const Enemies: { [id: number]: EnemiesFile } = {
     baseLife: 300,
     experience: 100,
     baseArmor: 30,
-    perLevel: {
-      baseDamage: 3,
-      baseLife: 4,
-      baseArmor: 1,
-      experience: 4,
+    statsPerPhase: {
+      baseDamage: 46,
+      baseLife: 80,
+      baseArmor: 16,
+      experience: 40,
     },
     loots: [
       {
@@ -210,15 +210,15 @@ const Enemies: { [id: number]: EnemiesFile } = {
   },
   7: {
     dungeonLevels: [4, 5],
-    baseDamage: 70,
+    baseDamage: 60,
     baseLife: 800,
     experience: 60,
     baseArmor: 40,
-    perLevel: {
-      baseDamage: 2,
+    statsPerPhase: {
+      baseDamage: 13,
       baseLife: 30,
       baseArmor: 6,
-      experience: 10,
+      experience: 20,
     },
     loots: [
       {
@@ -252,11 +252,11 @@ const Enemies: { [id: number]: EnemiesFile } = {
     baseLife: 600,
     experience: 10,
     baseArmor: 50,
-    perLevel: {
-      baseDamage: 20,
-      baseLife: 12,
-      baseArmor: 13,
-      experience: 11,
+    statsPerPhase: {
+      baseDamage: 30,
+      baseLife: 40,
+      baseArmor: 10,
+      experience: 30,
     },
     loots: [
       {
@@ -287,14 +287,14 @@ const Enemies: { [id: number]: EnemiesFile } = {
   9: {
     dungeonLevels: [2],
     baseDamage: 30,
-    baseLife: 300,
+    baseLife: 250,
     experience: 40,
     baseArmor: 16,
-    perLevel: {
-      baseDamage: 8,
-      baseLife: 10,
+    statsPerPhase: {
+      baseDamage: 12,
+      baseLife: 30,
       baseArmor: 6,
-      experience: 3,
+      experience: 14,
     },
     loots: [
       {
@@ -320,11 +320,11 @@ const Enemies: { [id: number]: EnemiesFile } = {
     baseLife: 430,
     experience: 52,
     baseArmor: 30,
-    perLevel: {
-      baseDamage: 10,
-      baseLife: 10,
+    statsPerPhase: {
+      baseDamage: 16,
+      baseLife: 40,
       baseArmor: 7,
-      experience: 8,
+      experience: 23,
     },
     loots: [
       {

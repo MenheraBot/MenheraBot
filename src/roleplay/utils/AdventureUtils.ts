@@ -64,15 +64,15 @@ export const getDungeonEnemy = (dungeonLevel: number, userLevel: number): ReadyT
 
   const enemy = RandomFromArray(availableEnemies);
 
-  const enemyLevel = dungeonLevel * 5 + userLevel;
+  const enemyPhase = dungeonLevel - 1 + Math.floor(userLevel / 4);
 
   const enemyData: ReadyToBattleEnemy = {
     id: enemy.id,
-    life: enemy.data.baseLife + enemy.data.perLevel.baseLife * enemyLevel,
-    armor: enemy.data.baseArmor + enemy.data.perLevel.baseArmor * enemyLevel,
-    damage: enemy.data.baseDamage + enemy.data.perLevel.baseDamage * enemyLevel,
-    experience: enemy.data.experience + enemy.data.perLevel.experience * enemyLevel,
-    level: enemyLevel,
+    life: enemy.data.baseLife + enemy.data.statsPerPhase.baseLife * enemyPhase,
+    armor: enemy.data.baseArmor + enemy.data.statsPerPhase.baseArmor * enemyPhase,
+    damage: enemy.data.baseDamage + enemy.data.statsPerPhase.baseDamage * enemyPhase,
+    experience: enemy.data.experience + enemy.data.statsPerPhase.experience * enemyPhase,
+    level: enemyPhase * 5,
     loots: enemy.data.loots,
   };
 
