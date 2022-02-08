@@ -33,10 +33,16 @@ export const battleLoop = async (
   missedAttacks: number;
   killedMobs: number;
 }> => {
-  const [needStop, newUser, newEnemy, newText] = enemyAttack(user, enemy, ctx, text, missedAttacks);
+  const [needStop, newUser, newEnemy, newText] = await userAttack(
+    user,
+    enemy,
+    ctx,
+    text,
+    missedAttacks,
+  );
 
   if (!needStop) {
-    const [enemyStop, enemyUser, enemyEnemy, enemyText, newMissedAttacks] = await userAttack(
+    const [enemyStop, enemyUser, enemyEnemy, enemyText, newMissedAttacks] = enemyAttack(
       newUser,
       newEnemy,
       ctx,
