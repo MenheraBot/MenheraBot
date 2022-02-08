@@ -406,7 +406,7 @@ export default class DungeonInteractionCommand extends InteractionCommand {
           break;
         }
         case 'NEXT': {
-          return DungeonInteractionCommand.DungeonLoop(ctx, user, dungeonLevel + 1, killedMobs + 1);
+          return DungeonInteractionCommand.DungeonLoop(ctx, user, dungeonLevel + 1, 0);
         }
         case 'CONTINUE': {
           return DungeonInteractionCommand.DungeonLoop(ctx, user, dungeonLevel, killedMobs + 1);

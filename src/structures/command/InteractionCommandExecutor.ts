@@ -47,6 +47,19 @@ const InteractionCommandExecutor = async (
     return;
   }
 
+  if (
+    (command.config.category === 'economy' || command.config.category === 'roleplay') &&
+    client.commandExecutions.has(interaction.user.id)
+  ) {
+    await interaction
+      .reply({
+        content: `<:negacao:759603958317711371> | ${t('permissions:IN_COMMAND_EXECUTION')}`,
+        ephemeral: true,
+      })
+      .catch(debugError);
+    return;
+  }
+
   if (command.config.devsOnly && process.env.OWNER !== interaction.user.id) {
     await interaction.reply({ content: `${t('permissions:ONLY_DEVS')}`, ephemeral: true });
     return;
@@ -139,19 +152,6 @@ const InteractionCommandExecutor = async (
         .catch(debugError);
       return;
     }
-  }
-
-  if (
-    (command.config.category === 'economy' || command.config.category === 'roleplay') &&
-    client.commandExecutions.has(interaction.user.id)
-  ) {
-    await interaction
-      .reply({
-        content: `<:negacao:759603958317711371> | ${t('permissions:IN_COMMAND_EXECUTION')}`,
-        ephemeral: true,
-      })
-      .catch(debugError);
-    return;
   }
 
   const authorData =
