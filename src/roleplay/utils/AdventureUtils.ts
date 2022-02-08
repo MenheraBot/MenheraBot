@@ -68,11 +68,13 @@ export const getDungeonEnemy = (dungeonLevel: number, userLevel: number): ReadyT
 
   const enemyData: ReadyToBattleEnemy = {
     id: enemy.id,
-    life: enemy.data.baseLife + enemy.data.statsPerPhase.baseLife * enemyPhase,
-    armor: enemy.data.baseArmor + enemy.data.statsPerPhase.baseArmor * enemyPhase,
-    damage: enemy.data.baseDamage + enemy.data.statsPerPhase.baseDamage * enemyPhase,
-    experience: enemy.data.experience + enemy.data.statsPerPhase.experience * enemyPhase,
-    level: enemyPhase * 5,
+    life: Math.floor(enemy.data.baseLife + enemy.data.statsPerPhase.baseLife * enemyPhase),
+    armor: Math.floor(enemy.data.baseArmor + enemy.data.statsPerPhase.baseArmor * enemyPhase),
+    damage: Math.floor(enemy.data.baseDamage + enemy.data.statsPerPhase.baseDamage * enemyPhase),
+    experience: Math.floor(
+      enemy.data.experience + enemy.data.statsPerPhase.experience * enemyPhase,
+    ),
+    level: Math.floor(enemyPhase * 5),
     loots: enemy.data.loots,
   };
 
