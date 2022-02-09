@@ -137,6 +137,15 @@ export default class Databases {
     };
   }
 
+  async closeConnections(): Promise<void> {
+    if (this.redisClient) {
+      await this.redisClient.flushdb();
+      await this.redisClient.disconnect(false);
+    }
+
+    await mongoose.disconnect();
+  }
+
   createRedisConnection(): void {
     try {
       this.redisClient = new Redis({ db: process.env.NODE_ENV === 'development' ? 1 : 0 });

@@ -5,7 +5,7 @@ export default class BlacklistInteractionCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'blacklist',
-      description: 'BAN ALGUEM',
+      description: '[DEV] Manipula os bans da Menhera',
       category: 'dev',
       options: [
         {

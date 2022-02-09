@@ -5,7 +5,7 @@ export default class GiveBadgeSlashInteractionCommand extends InteractionCommand
   constructor() {
     super({
       name: 'givebadge',
-      description: 'da badge',
+      description: '[DEV] Dá uma Badge pra alguém',
       category: 'dev',
       options: [
         {

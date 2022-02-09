@@ -5,7 +5,7 @@ export default class RegisterCreditSlashInteractionCommand extends InteractionCo
   constructor() {
     super({
       name: 'registercredit',
-      description: 'Registra um credito de tema',
+      description: '[DEV] Registra um crédito de algum tema',
       category: 'dev',
       options: [
         {

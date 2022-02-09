@@ -35,6 +35,10 @@ export default class MenheraClient extends Client {
 
   public jogoDoBichoManager: JogoDoBixoManager;
 
+  public shuttingDown: boolean;
+
+  public shardManagerPID!: number;
+
   constructor(options: ClientOptions, public config: IClientConfigs) {
     super(options);
 
@@ -51,6 +55,7 @@ export default class MenheraClient extends Client {
     this.config = config;
     this.picassoWs = new PicassoWebSocket(this.shard?.ids[0] ?? 0);
     this.shardProcessEnded = false;
+    this.shuttingDown = false;
     this.jogoDoBichoManager = new JogoDoBixoManager(this);
   }
 

@@ -205,12 +205,20 @@ export default class JogoDoBixoManager {
     );
   }
 
-  stopGameLoop(): void {
+  async stopGameLoop(): Promise<void> {
     if (this.clientInstance.shard!.ids[0] === 0) {
       clearInterval(this.gameLoop);
 
-      this.ongoingGame.bets.forEach((a) => {
-        this.clientInstance.repositories.starRepository.add(a.id, a.bet);
+      let totalBets = [...this.ongoingGame.bets.keys()].length;
+
+      await new Promise<void>((resolve) => {
+        if (totalBets <= 0) resolve();
+        this.ongoingGame.bets.forEach((a) => {
+          this.clientInstance.repositories.starRepository.add(a.id, a.bet).then(() => {
+            totalBets -= 1;
+            if (totalBets <= 0) resolve();
+          });
+        });
       });
 
       this.ongoingGame = {
@@ -220,11 +228,9 @@ export default class JogoDoBixoManager {
         biggestProfit: 0,
       };
     } else {
-      this.clientInstance.shard!.broadcastEval(
+      await this.clientInstance.shard!.broadcastEval(
         // @ts-expect-error Client n é coiso
-        (c: MenheraClient) => {
-          c.jogoDoBichoManager.stopGameLoop();
-        },
+        async (c: MenheraClient) => c.jogoDoBichoManager.stopGameLoop(),
         { shard: 0 },
       );
     }

@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 - Vida máxima para a conta de `Vida Por 1 Hora` na igreja foi reduzido de `1000` para `800`
 
+### Fixed
+
+- Usuários rezando/descansando na igreja não podem mais usar poções
+
 ## [4.0.C-BETA] - 2022-02-08
 
 ### Added

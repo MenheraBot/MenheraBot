@@ -8,7 +8,7 @@ export default class DeploySlashInteractionCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'deploy',
-      description: 'da deploy nos slash',
+      description: '[DEV] Faz o deploy dos comandos em Slash',
       category: 'dev',
       options: [
         {

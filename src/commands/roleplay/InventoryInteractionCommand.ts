@@ -72,6 +72,9 @@ export default class InventoryInteractionCommand extends InteractionCommand {
     )
       usePotion.setDisabled(false);
 
+    if (user.cooldowns.some((a) => a.reason === 'church' && a.data !== 'COOLDOWN'))
+      usePotion.setDisabled(true);
+
     ctx.makeMessage({ embeds: [embed], components: [actionRow([usePotion])] });
 
     if (usePotion.disabled) return;

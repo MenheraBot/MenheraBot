@@ -6,13 +6,13 @@ export default class ReloadSlashInteractionCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'reload',
-      description: 'Recarrega algum comando',
+      description: '[DEV] Recarrega algum sistema da Menhera',
       category: 'dev',
       options: [
         {
           type: 'STRING',
           name: 'opcao',
-          description: 'Comando pra mete em maintenance',
+          description: 'Sistema para recarregar (comando ou locale [locales])',
           required: true,
         },
       ],

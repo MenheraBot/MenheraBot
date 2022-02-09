@@ -6,7 +6,7 @@ export default class MaintenanceSlashInteractionCommand extends InteractionComma
   constructor() {
     super({
       name: 'manutencao',
-      description: 'Coloca ou tira um comando da manutencao',
+      description: '[DEV] Manipula o estado de manutenção dos comandos',
       category: 'dev',
       options: [
         {

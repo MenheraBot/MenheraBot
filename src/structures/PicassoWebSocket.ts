@@ -72,6 +72,12 @@ export default class PicassoWebSocket {
     }, 5000);
   }
 
+  public killConnection(): void {
+    if (!this.ws) return;
+    this.ws.removeAllListeners();
+    this.ws.close();
+  }
+
   private prepareListeners(): void {
     if (!this.ws) return;
 

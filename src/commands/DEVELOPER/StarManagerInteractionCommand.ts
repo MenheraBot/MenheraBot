@@ -5,7 +5,7 @@ export default class ManageStartSlashInteractionCommand extends InteractionComma
   constructor() {
     super({
       name: 'managestar',
-      description: 'MANAGEIA AS STAR',
+      description: '[DEV] Manipula as estrelinhas de alguém',
       category: 'dev',
       options: [
         {

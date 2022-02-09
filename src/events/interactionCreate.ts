@@ -17,6 +17,15 @@ export default class InteractionCreate {
 
     if (!interaction.channel?.isText()) return;
 
+    if (interaction.client.shuttingDown) {
+      interaction.reply({
+        content:
+          'A Menhera está em processo de desligamento! Comandos estão desativados!\n\nMenhera is in the process of shutting down! Commands are disabled!',
+        ephemeral: true,
+      });
+      return;
+    }
+
     if (!interaction.client.channels.cache.has(interaction.channelId)) {
       const channel = await interaction.client.channels
         .fetch(interaction.channelId)

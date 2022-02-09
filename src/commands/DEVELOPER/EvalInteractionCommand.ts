@@ -7,7 +7,7 @@ export default class EvalSlashInteractionCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'eval',
-      description: 'Evaleda algo em js ae',
+      description: '[DEV] Roda um código JavaScript diretamente do Discord',
       category: 'dev',
       options: [
         {
