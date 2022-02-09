@@ -40,6 +40,8 @@ import {
   BASE_LIFE_PER_CICLE,
   BASE_MANA_PER_CICLE,
   CICLE_DURATION_IN_MINUTES,
+  MAX_USER_LIFE_TO_MULTIPLY,
+  MAX_USER_MANA_TO_MULTIPLY,
 } from './ChurchInteractionCommand';
 
 export default class DungeonInteractionCommand extends InteractionCommand {
@@ -147,10 +149,12 @@ export default class DungeonInteractionCommand extends InteractionCommand {
       const userMaxLife = getUserMaxLife(user);
       const userMaxMana = getUserMaxMana(user);
       const lifePerCicle =
-        BASE_LIFE_PER_CICLE + Math.floor(userMaxLife / 1000) * BASE_LIFE_PER_CICLE;
+        BASE_LIFE_PER_CICLE +
+        Math.floor(userMaxLife / MAX_USER_LIFE_TO_MULTIPLY) * BASE_LIFE_PER_CICLE;
 
       const manaPerCicle =
-        BASE_MANA_PER_CICLE + Math.floor(userMaxMana / 700) * BASE_MANA_PER_CICLE;
+        BASE_MANA_PER_CICLE +
+        Math.floor(userMaxMana / MAX_USER_MANA_TO_MULTIPLY) * BASE_MANA_PER_CICLE;
 
       const prayToMaxLife = (userMaxLife * CICLE_DURATION_IN_MINUTES) / lifePerCicle;
       const prayToMaxMana = (userMaxMana * CICLE_DURATION_IN_MINUTES) / manaPerCicle;

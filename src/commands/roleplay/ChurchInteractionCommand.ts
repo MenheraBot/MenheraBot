@@ -7,7 +7,9 @@ import { MessageButton, MessageEmbed } from 'discord.js-light';
 import moment from 'moment';
 
 export const BASE_LIFE_PER_CICLE = 167;
+export const MAX_USER_LIFE_TO_MULTIPLY = 800;
 export const BASE_MANA_PER_CICLE = 100;
+export const MAX_USER_MANA_TO_MULTIPLY = 600;
 export const CICLE_DURATION_IN_MINUTES = 60;
 const MINUTES_COOLDOWN_TO_RECHURCH = 45;
 
@@ -74,9 +76,13 @@ export default class ChurchInteractionCommand extends InteractionCommand {
 
     const userMaxLife = getUserMaxLife(user);
     const userMaxMana = getUserMaxMana(user);
-    const lifePerCicle = BASE_LIFE_PER_CICLE + Math.floor(userMaxLife / 1000) * BASE_LIFE_PER_CICLE;
+    const lifePerCicle =
+      BASE_LIFE_PER_CICLE +
+      Math.floor(userMaxLife / MAX_USER_LIFE_TO_MULTIPLY) * BASE_LIFE_PER_CICLE;
 
-    const manaPerCicle = BASE_MANA_PER_CICLE + Math.floor(userMaxMana / 700) * BASE_MANA_PER_CICLE;
+    const manaPerCicle =
+      BASE_MANA_PER_CICLE +
+      Math.floor(userMaxMana / MAX_USER_MANA_TO_MULTIPLY) * BASE_MANA_PER_CICLE;
 
     const prayToMaxLife = ((userMaxLife - user.life) * CICLE_DURATION_IN_MINUTES) / lifePerCicle;
     const prayToMaxMana = ((userMaxMana - user.mana) * CICLE_DURATION_IN_MINUTES) / manaPerCicle;
