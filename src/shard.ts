@@ -3,7 +3,6 @@ import 'dotenv/config';
 import { ShardingManager } from 'discord.js-light';
 import { join } from 'node:path';
 import mongoose from 'mongoose';
-import MenheraClient from 'MenheraClient';
 
 console.log('[APP] Initiating application...');
 
@@ -22,17 +21,8 @@ ShardManager.on('shardCreate', (shard) => {
   console.warn(`[SHARDING MANAGER] Launching shard ${shard.id}`);
 });
 
-ShardManager.spawn({ timeout: 120_000 }).then((a) => {
+ShardManager.spawn({ timeout: 120_000 }).then(() => {
   console.log('[SHARDING MANAGER] All shards have been spawned');
-  [...a.values()].forEach((b) =>
-    b.eval(
-      // @ts-expect-error Client n é o sexo
-      (c: MenheraClient, { manager }: { manager: number }) => {
-        c.shardManagerPID = manager;
-      },
-      { manager: process.pid },
-    ),
-  );
 });
 
 process.on('SIGINT', () => () => {

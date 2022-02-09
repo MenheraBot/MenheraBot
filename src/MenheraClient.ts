@@ -37,8 +37,6 @@ export default class MenheraClient extends Client {
 
   public shuttingDown: boolean;
 
-  public shardManagerPID!: number;
-
   constructor(options: ClientOptions, public config: IClientConfigs) {
     super(options);
 
