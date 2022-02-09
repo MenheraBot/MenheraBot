@@ -42,6 +42,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 - Vida máxima para a conta de `Vida Por 1 Hora` na igreja foi reduzido de `1000` para `800`
 - O Primeiro Ataque da Dungeon é daquele que tiver maior `agilidade`
+- A experiência base necesária para subir de nivel foi aumentada de `10` para `100`
 
 ### Fixed
 
