@@ -574,10 +574,10 @@ export default class FichaInteractionCommand extends InteractionCommand {
         )}: **${getUserArmor(user)}**\n${ctx.prettyResponse(
           'intelligence',
           'common:roleplay.intelligence',
-        )}: **${getUserIntelligence(user)}**\n**${ctx.prettyResponse(
+        )}: **${getUserIntelligence(user)}**\n${ctx.prettyResponse(
           'agility',
           'common:roleplay.agility',
-        )}:** ${getUserAgility(user)}\n${ctx.prettyResponse(
+        )}: **${getUserAgility(user)}**\n${ctx.prettyResponse(
           'coin',
           'commands:ficha.show.money',
         )}: **${user.money}**\n${ctx.prettyResponse('level', 'commands:ficha.show.level')}: **${
