@@ -18,6 +18,7 @@ import {
 } from '@roleplay/utils/AdventureUtils';
 import { battleLoop } from '@roleplay/utils/BattleUtils';
 import {
+  getUserAgility,
   getUserArmor,
   getUserDamage,
   getUserIntelligence,
@@ -92,7 +93,10 @@ export default class DungeonInteractionCommand extends InteractionCommand {
         )}: **${getUserDamage(user)}**\n${ctx.prettyResponse(
           'intelligence',
           'common:roleplay.intelligence',
-        )}: **${getUserIntelligence(user)}**`,
+        )}: **${getUserIntelligence(user)}**\n${ctx.prettyResponse(
+          'agility',
+          'common:roleplay.agility',
+        )}: **${getUserAgility(user)}**`,
       );
 
     const accept = new MessageButton()

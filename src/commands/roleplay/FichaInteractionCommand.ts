@@ -22,6 +22,7 @@ import {
 } from '@roleplay/utils/DataUtils';
 import {
   getAbilityNextLevelBlessings,
+  getUserAgility,
   getUserArmor,
   getUserDamage,
   getUserIntelligence,
@@ -316,7 +317,11 @@ export default class FichaInteractionCommand extends InteractionCommand {
           name: ctx.locale('commands:ficha.show.vitality'),
           value: `${ctx.prettyResponse('blood', 'common:roleplay.life')}: **${getUserMaxLife(
             user,
-          )}**\n${ctx.prettyResponse('mana', 'common:roleplay.mana')}: **${getUserMaxMana(user)}**`,
+          )}**\n${ctx.prettyResponse('mana', 'common:roleplay.mana')}: **${getUserMaxMana(
+            user,
+          )}**\n**${ctx.prettyResponse('agility', 'common:roleplay.agility')}:** ${getUserAgility(
+            user,
+          )}`,
           inline: true,
         },
         {
@@ -413,7 +418,12 @@ export default class FichaInteractionCommand extends InteractionCommand {
         .setStyle('PRIMARY')
         .setLabel(ctx.locale('common:roleplay.mana'));
 
-      toSendComponents.push(actionRow([lifeButton, manaButton]));
+      const agilityButton = new MessageButton()
+        .setCustomId(`${ctx.interaction.id} | AGILITY`)
+        .setStyle('SECONDARY')
+        .setLabel(ctx.locale('common:roleplay.agility'));
+
+      toSendComponents.push(actionRow([lifeButton, manaButton, agilityButton]));
     } else {
       const damageButton = new MessageButton()
         .setCustomId(`${ctx.interaction.id} | DAMAGE`)
@@ -459,18 +469,30 @@ export default class FichaInteractionCommand extends InteractionCommand {
         : (resolveCustomId(statusSelected.customId).toLowerCase() as
             | 'damage'
             | 'armor'
-            | 'intelligence');
+            | 'intelligence'
+            | 'agility');
 
     const blessingField = resolveCustomId(buttonSelected.customId).toLowerCase() as
       | 'vitality'
       | 'battle';
 
     if (blessingField === 'vitality') {
-      const antiBlessing = databaseField === 'maxMana' ? 'maxLife' : 'maxMana';
-      if (
-        Math.abs(user.blesses[databaseField] + points - user.blesses[antiBlessing]) >
-        BLESSES_DIFFERENCE_LIMIT
-      ) {
+      const antiBlessingLimit =
+        databaseField === 'agility'
+          ? Math.abs(
+              Math.max(user.blesses.maxLife, user.blesses.maxMana) -
+                (user.blesses.agility + points),
+            )
+          : databaseField === 'maxLife'
+          ? Math.abs(
+              Math.max(user.blesses.agility, user.blesses.maxMana) -
+                (user.blesses.maxLife + points),
+            )
+          : Math.abs(
+              Math.max(user.blesses.maxLife, user.blesses.agility) -
+                (user.blesses.maxMana + points),
+            );
+      if (antiBlessingLimit > BLESSES_DIFFERENCE_LIMIT) {
         ctx.makeMessage({
           content: ctx.prettyResponse('error', 'commands:ficha.show.limit-bless', {
             limit: BLESSES_DIFFERENCE_LIMIT,
@@ -552,7 +574,10 @@ export default class FichaInteractionCommand extends InteractionCommand {
         )}: **${getUserArmor(user)}**\n${ctx.prettyResponse(
           'intelligence',
           'common:roleplay.intelligence',
-        )}: **${getUserIntelligence(user)}**\n${ctx.prettyResponse(
+        )}: **${getUserIntelligence(user)}**\n**${ctx.prettyResponse(
+          'agility',
+          'common:roleplay.agility',
+        )}:** ${getUserAgility(user)}\n${ctx.prettyResponse(
           'coin',
           'commands:ficha.show.money',
         )}: **${user.money}**\n${ctx.prettyResponse('level', 'commands:ficha.show.level')}: **${
@@ -611,11 +636,13 @@ export default class FichaInteractionCommand extends InteractionCommand {
               damage: makeBlessingStatusUpgrade('damage', user.blesses.damage),
               armor: makeBlessingStatusUpgrade('armor', user.blesses.armor),
               intelligence: makeBlessingStatusUpgrade('intelligence', user.blesses.intelligence),
+              agility: makeBlessingStatusUpgrade('agility', user.blesses.agility),
               lifePoints: user.blesses.maxLife,
               manaPoints: user.blesses.maxMana,
               damagePoints: user.blesses.damage,
               armorPoints: user.blesses.armor,
               intelligencePoints: user.blesses.intelligence,
+              agilityPoints: user.blesses.agility,
             }),
           );
         ctx.makeMessage({

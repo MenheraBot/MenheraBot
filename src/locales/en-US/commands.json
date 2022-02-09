@@ -724,7 +724,7 @@
       "mana": "Mana",
       "money": "Real Coins",
       "poor-title": "Blessings Bonus",
-      "poor-description": "You are currently out of Blessings, but keep your current Blessings status in the meantime\n\n❤️ | **Extra Life:** {{life}} | {{lifePoints}}\n💧 | **Extra Mana:** {{mana}} | {{manaPoints}}\n⚔️ | **Extra Damage:** {{damage}} | {{damagePoints}}\n🛡️ | **Extra Armor:** {{armor}} | {{armorPoints}}\n🧠 | **Extra Intelligence:** {{intelligence}} | {{intelligencePoints}}",
+      "poor-description": "You are currently out of Blessings, but keep your current Blessings status in the meantime\n\n❤️ | **Extra Life:** {{life}} | {{lifePoints}}\n💧 | **Extra Mana:** {{mana}} | {{manaPoints}}\n👢 | **Extra Agility** {{agility}} | {{agilityPoints}}\n⚔️ | **Extra Damage:** {{damage}} | {{damagePoints}}\n🛡️ | **Extra Armor:** {{armor}} | {{armorPoints}}\n🧠 | **Extra Intelligence:** {{intelligence}} | {{intelligencePoints}}",
       "no-blesses": "You don't have Holy Blessings to improve your Status!",
       "blessings": "You have **{{vitality}}** Holy Blessings of Vitality and **{{battle}}** of Battle, use the buttons below to improve your stats. You cannot have a blessed status difference of more than **{{limit}}** blessings",
       "vitality": "Vitality Points",

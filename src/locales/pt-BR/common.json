@@ -40,7 +40,6 @@
     "table": "Mesa",
     "card_background": "Fundo da Carta"
   },
-
   "roleplay": {
     "life": "Vida",
     "mana": "Mana",
@@ -48,6 +47,7 @@
     "intelligence": "Inteligência",
     "armor": "Defesa",
     "level": "Nível",
+    "agility": "Agilidade",
     "level-up": "Whoooaaa, você evoluiu para o nível **{{level}}**. Niceee, cheque seus status para ver novidades...",
     "blesses": "Bençãos",
     "backpack": "Mochila",

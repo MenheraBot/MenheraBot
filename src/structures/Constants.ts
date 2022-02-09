@@ -117,6 +117,7 @@ export const emojis = {
   church: '⛪',
   coin: '<:gold:878054145796472922>',
   blacksmith: '⚒️',
+  agility: '👢',
 };
 
 export type EmojiTypes = keyof typeof emojis;

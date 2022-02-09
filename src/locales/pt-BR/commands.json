@@ -724,7 +724,7 @@
       "mana": "Mana",
       "money": "Moedas Reais",
       "poor-title": "Bônus de Bênçãos",
-      "poor-description": "Você está sem Bênçãos no momento, mas fique com os status atuais de suas bênçãos enquanto isso\n\n❤️ | **Vida Extra:** {{life}} | {{lifePoints}}\n💧 | **Mana Extra:** {{mana}} | {{manaPoints}}\n⚔️ | **Dano Extra:** {{damage}} | {{damagePoints}}\n🛡️ | **Armadura Extra:** {{armor}} | {{armorPoints}}\n🧠 | **Inteligência Extra:** {{intelligence}} | {{intelligencePoints}}",
+      "poor-description": "Você está sem Bênçãos no momento, mas fique com os status atuais de suas bênçãos enquanto isso\n\n❤️ | **Vida Extra:** {{life}} | {{lifePoints}}\n💧 | **Mana Extra:** {{mana}} | {{manaPoints}}\n👢 | **Agilidade Extra:** {{agility}} | {{agilityPoints}}\n⚔️ | **Dano Extra:** {{damage}} | {{damagePoints}}\n🛡️ | **Armadura Extra:** {{armor}} | {{armorPoints}}\n🧠 | **Inteligência Extra:** {{intelligence}} | {{intelligencePoints}}",
       "no-blesses": "Você não possui Bênçãos Santíssimas para melhorar seus Status!",
       "blessings": "Você possui **{{vitality}}** Bençãos Santíssimas de Vitalidade e **{{battle}}** de Batalha, use os botões abaixo para melhorar seus status. Você não pode ter uma diferença de status abençoados de mais de **{{limit}}** bênçãos",
       "vitality": "Pontos de Vitalidade",

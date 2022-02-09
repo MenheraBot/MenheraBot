@@ -45,6 +45,7 @@
     "life": "Life",
     "mana": "Mana",
     "damage": "Damage",
+    "agility": "Agility",
     "intelligence": "Intelligence",
     "level-up": "Whoooaaa, ​​you've evolved to level **{{level}}**. Niceee, check your status for updates...",
     "armor": "Armor",

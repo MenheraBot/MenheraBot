@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ### Added
 
-- **Agilidade**. Usuários possuem Agilidade, que decidem a taxa de acerto de ataques e habilidades em inimigos, e decidem a taxa de **desvio de ataques** de inimigos. No futuro (quando houver localizações), este atributo dirá o quão rápido você viajará.
+- **Agilidade**. Usuários possuem Agilidade, que decidem a taxa de acerto de ataques e habilidades em inimigos, e decidem a taxa de **desvio de ataques** de inimigos. No futuro (quando houver localizações), este atributo dirá o quão rápido você viajará. A agilidade pode ser evoluída com pontos de _Vitalidade_
 - **Agilidade Nas Classes:** (Agilidade Base, Agilidade Por Nível)
   - _Mago:_ `10`. `3`
   - _Feiticeiro:_ `10`, `3`
