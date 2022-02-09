@@ -44,7 +44,6 @@ export interface RoleplayUserSchema {
   race: number;
   life: number;
   mana: number;
-  agility: number;
   level: number;
   experience: number;
   holyBlessings: HolyBlessings;
