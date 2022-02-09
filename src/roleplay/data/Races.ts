@@ -21,6 +21,10 @@ const Races: { [id: number]: RacesFile } = {
         facility: 'baseDamage',
         boostPerLevel: 5,
       },
+      {
+        facility: 'baseAgility',
+        boostPerLevel: 1,
+      },
     ],
   },
   3: {
@@ -72,6 +76,10 @@ const Races: { [id: number]: RacesFile } = {
       {
         boostPerLevel: 6,
         facility: 'maxLife',
+      },
+      {
+        boostPerLevel: 2,
+        facility: 'baseAgility',
       },
     ],
   },

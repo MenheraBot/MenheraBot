@@ -7,6 +7,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ## [Unreleased]
 
+### Added
+
+- **Agilidade**. Usuários possuem Agilidade, que decidem a taxa de acerto de ataques e habilidades em inimigos, e decidem a taxa de **desvio de ataques** de inimigos. No futuro (quando houver localizações), este atributo dirá o quão rápido você viajará.
+- **Agilidade Nas Classes:** (Agilidade Base, Agilidade Por Nível)
+  - _Mago:_ `10`. `3`
+  - _Feiticeiro:_ `10`, `3`
+  - _Ilusionista:_ `9`, `3`
+  - _Arquimago:_ `10`, `3`
+  - _Necromante:_ `9`, `3`
+  - _Assassino:_ `14`, `5`
+  - _Bárbaro:_ `11`, `4`
+  - _Arqueiro:_ `13`, `4`
+  - _Paladino:_ `8`, `3`
+  - _Domador:_ `8`, `6`
+- **Agilidade Nas Racas:** (Agilidade Por Nível)
+  - _Humano:_ `1`
+  - _Fera:_ `2`
+- **Agilidade Nos Inimigos:** (Agilidade Base, Agilidade por Fase)
+  - _1:_ `7`, `11`
+  - _2:_ `8`, `10`
+  - _3:_ `7`, `12`
+  - _4:_ `13`, `15`
+  - _5:_ `26`, `13`
+  - _6:_ `30`, `14`
+  - _7:_ `34`, `11`
+  - _8:_ `46`, `18`
+  - _9:_ `19`, `8`
+  - _10:_ `21`, `9`
+
 ### Changed
 
 - Vida máxima para a conta de `Vida Por 1 Hora` na igreja foi reduzido de `1000` para `800`

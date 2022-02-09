@@ -24,6 +24,7 @@ export interface HolyBlessings {
 export interface Blesses {
   maxLife: number;
   maxMana: number;
+  agility: number;
   armor: number;
   damage: number;
   intelligence: number;
@@ -43,6 +44,7 @@ export interface RoleplayUserSchema {
   race: number;
   life: number;
   mana: number;
+  agility: number;
   level: number;
   experience: number;
   holyBlessings: HolyBlessings;
@@ -59,21 +61,17 @@ export interface RoleplayUserSchema {
 interface BaseAttributesPerLevel {
   maxLife: number;
   maxMana: number;
+  baseAgility: number;
   baseArmor: number;
   baseDamage: number;
   baseIntelligence: number;
 }
 
-export interface ClassesFile {
+export type ClassesFile = {
   name: string;
   attributesPerLevel: BaseAttributesPerLevel;
-  baseMaxMana: number;
-  baseMaxLife: number;
-  baseArmor: number;
-  baseDamage: number;
-  baseIntelligence: number;
   abilityTree: number;
-}
+} & BaseAttributesPerLevel;
 
 export interface FacilityType {
   facility: keyof BaseAttributesPerLevel;
@@ -106,27 +104,24 @@ export interface AbilitiesFile {
   boostPerLevel: PerLevelBoost;
 }
 
-interface EnemyBoostPerLevel {
-  baseDamage: number;
-  baseLife: number;
-  baseArmor: number;
-  experience: number;
-}
-
 export interface EnemyDrops {
   probability: number;
   loots: LeveledItem[];
 }
 
-export interface EnemiesFile {
+interface EnemyBoostPerLevel {
   baseDamage: number;
   baseLife: number;
   baseArmor: number;
+  baseAgility: number;
   experience: number;
+}
+
+export type EnemiesFile = {
   statsPerPhase: EnemyBoostPerLevel;
   dungeonLevels: number[];
   loots: EnemyDrops[];
-}
+} & EnemyBoostPerLevel;
 
 export interface ReadyToBattleEnemy {
   id: number;

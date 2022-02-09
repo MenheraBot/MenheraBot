@@ -8,8 +8,7 @@ export const getUserMaxLife = (user: RoleplayUserSchema): number => {
   const userRace = getRaceById(user.race);
   const userBlesses = makeBlessingStatusUpgrade('life', user.blesses.maxLife);
 
-  const classLife =
-    userClass.data.baseMaxLife + userClass.data.attributesPerLevel.maxLife * user.level;
+  const classLife = userClass.data.maxLife + userClass.data.attributesPerLevel.maxLife * user.level;
 
   const raceLife = userRace.data.facilities.reduce(
     (p, c) => (c.facility === 'maxLife' ? p + c.boostPerLevel * user.level : 0),
@@ -24,8 +23,7 @@ export const getUserMaxMana = (user: RoleplayUserSchema): number => {
   const userRace = getRaceById(user.race);
   const userBlesses = makeBlessingStatusUpgrade('mana', user.blesses.maxMana);
 
-  const classMana =
-    userClass.data.baseMaxMana + userClass.data.attributesPerLevel.maxMana * user.level;
+  const classMana = userClass.data.maxMana + userClass.data.attributesPerLevel.maxMana * user.level;
 
   const raceMana = userRace.data.facilities.reduce(
     (p, c) => (c.facility === 'maxMana' ? p + c.boostPerLevel * user.level : 0),

@@ -82,6 +82,7 @@ const rpgSchema = new Schema({
   race: { type: Number },
   life: { type: Number },
   mana: { type: Number },
+  agility: { type: Number },
   level: { type: Number },
   experience: { type: Number, default: 0 },
   abilities: { type: Array, default: [] },
@@ -91,6 +92,7 @@ const rpgSchema = new Schema({
     default: {
       maxLife: 0,
       maxMana: 0,
+      agility: 0,
       armor: 0,
       damage: 0,
       intelligence: 0,
