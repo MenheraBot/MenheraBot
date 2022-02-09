@@ -1,7 +1,7 @@
 import { AbilitiesFile } from '../Types';
 
 const Abilities: { [id: number]: AbilitiesFile } = {
-  666: {
+  6666: {
     DevDesc: 'DEV HABILITY',
     cost: 30,
     damage: {
@@ -116,7 +116,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     },
   },
   200: {
-    DevDesc: 'Benção Elemental (mago branco)',
+    DevDesc: 'Benção Elemental (Mago)',
     cost: 50,
     damage: {
       base: 10,
@@ -135,7 +135,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     },
   },
   201: {
-    DevDesc: 'Raio de Luz Solar (mago branco)',
+    DevDesc: 'Raio de Luz Solar (Mago)',
     cost: 80,
     damage: {
       base: 35,
@@ -154,7 +154,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     },
   },
   202: {
-    DevDesc: 'Rosario (mago branco)',
+    DevDesc: 'Rosario (Mago)',
     cost: 80,
     damage: {
       base: 35,
@@ -173,7 +173,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     },
   },
   203: {
-    DevDesc: 'Ascenção Espiritual (mago branco)',
+    DevDesc: 'Ascenção Espiritual (mago)',
     cost: 80,
     damage: {
       base: 35,
@@ -192,7 +192,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     },
   },
   204: {
-    DevDesc: 'Manipulação Éterea (mago branco)',
+    DevDesc: 'Manipulação Éterea (Mago)',
     cost: 100,
     damage: {
       base: 80,
@@ -211,7 +211,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     },
   },
   300: {
-    DevDesc: 'Castigo Eterno (Contratados)',
+    DevDesc: 'Castigo Eterno (Ilusionista)',
     cost: 25,
     damage: {
       base: 16,
@@ -230,7 +230,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     },
   },
   301: {
-    DevDesc: 'Dama de Ferro (contratados)',
+    DevDesc: 'Dama de Ferro (Ilusionista)',
     cost: 90,
     damage: {
       base: 40,
@@ -249,7 +249,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     },
   },
   302: {
-    DevDesc: 'Invocar Bahamut (contratados)',
+    DevDesc: 'Invocar Bahamut (Ilusionista)',
     cost: 130,
     damage: {
       base: 120,
@@ -268,7 +268,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     },
   },
   303: {
-    DevDesc: 'Caça Voraz (contratados)',
+    DevDesc: 'Distorção Mental (Ilusionista)',
     cost: 50,
     damage: {
       base: 34,
@@ -287,7 +287,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     },
   },
   304: {
-    DevDesc: 'Perseguição Incontrolável (contratados)',
+    DevDesc: 'Merlyer (Ilusionista)',
     cost: 110,
     damage: {
       base: 130,
@@ -306,7 +306,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     },
   },
   400: {
-    DevDesc: 'Avanço com Escudo (tanks)',
+    DevDesc: 'Avanço com Escudo (Paladino)',
     cost: 20,
     damage: {
       base: 50,
@@ -325,7 +325,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     },
   },
   401: {
-    DevDesc: 'Estande de Defesa (tanks)',
+    DevDesc: 'Proteção Divina (Paladino)',
     cost: 20,
     damage: {
       base: 60,
@@ -344,7 +344,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     },
   },
   402: {
-    DevDesc: 'Parede de Aço (tank)',
+    DevDesc: 'Valkyria dos Céus (Paladino)',
     cost: 45,
     damage: {
       base: 120,
@@ -363,7 +363,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     },
   },
   403: {
-    DevDesc: 'Proteção Corporal (tank)',
+    DevDesc: 'Santíssima Trindade (Paladino)',
     cost: 40,
     damage: {
       base: 50,
@@ -382,7 +382,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     },
   },
   404: {
-    DevDesc: 'Nada Passará! (ank)',
+    DevDesc: 'D.A.E.L. (Paladino) [dragão anciao elemental da luz]',
     cost: 65,
     damage: {
       base: 100,

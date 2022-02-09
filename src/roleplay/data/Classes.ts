@@ -9,6 +9,7 @@ const Classes: { [id: number]: ClassesFile } = {
     baseDamage: 20,
     baseIntelligence: 30,
     baseAgility: 10,
+    elementSinergy: 'WATER',
     attributesPerLevel: {
       baseArmor: 3,
       baseDamage: 3,
@@ -17,7 +18,7 @@ const Classes: { [id: number]: ClassesFile } = {
       maxMana: 15,
       baseIntelligence: 9,
     },
-    abilityTree: 200,
+    abilityTree: 100,
   },
   2: {
     name: 'sorcerer',
@@ -25,6 +26,7 @@ const Classes: { [id: number]: ClassesFile } = {
     maxMana: 60,
     baseArmor: 10,
     baseDamage: 20,
+    elementSinergy: 'FIRE',
     baseIntelligence: 30,
     baseAgility: 10,
     attributesPerLevel: {
@@ -43,6 +45,7 @@ const Classes: { [id: number]: ClassesFile } = {
     maxMana: 60,
     baseArmor: 9,
     baseDamage: 19,
+    elementSinergy: 'DARK',
     baseAgility: 9,
     baseIntelligence: 29,
     attributesPerLevel: {
@@ -62,6 +65,7 @@ const Classes: { [id: number]: ClassesFile } = {
     baseArmor: 10,
     baseDamage: 20,
     baseAgility: 10,
+    elementSinergy: 'NATURE',
     baseIntelligence: 30,
     attributesPerLevel: {
       baseArmor: 4,
@@ -80,6 +84,7 @@ const Classes: { [id: number]: ClassesFile } = {
     baseArmor: 10,
     baseDamage: 19,
     baseAgility: 9,
+    elementSinergy: 'DARK',
     baseIntelligence: 29,
     attributesPerLevel: {
       baseArmor: 3,
@@ -98,6 +103,7 @@ const Classes: { [id: number]: ClassesFile } = {
     baseArmor: 9,
     baseDamage: 25,
     baseAgility: 14,
+    elementSinergy: 'AIR',
     baseIntelligence: 15,
     attributesPerLevel: {
       baseArmor: 4,
@@ -115,6 +121,7 @@ const Classes: { [id: number]: ClassesFile } = {
     maxMana: 50,
     baseArmor: 15,
     baseDamage: 15,
+    elementSinergy: 'FIRE',
     baseAgility: 11,
     baseIntelligence: 10,
     attributesPerLevel: {
@@ -133,6 +140,7 @@ const Classes: { [id: number]: ClassesFile } = {
     maxMana: 50,
     baseArmor: 11,
     baseDamage: 22,
+    elementSinergy: 'AIR',
     baseAgility: 13,
     baseIntelligence: 15,
     attributesPerLevel: {
@@ -151,6 +159,7 @@ const Classes: { [id: number]: ClassesFile } = {
     maxMana: 50,
     baseArmor: 16,
     baseDamage: 14,
+    elementSinergy: 'LIGHT',
     baseAgility: 8,
     baseIntelligence: 12,
     attributesPerLevel: {
@@ -169,6 +178,7 @@ const Classes: { [id: number]: ClassesFile } = {
     maxMana: 60,
     baseArmor: 10,
     baseDamage: 19,
+    elementSinergy: 'NATURE',
     baseAgility: 8,
     baseIntelligence: 29,
     attributesPerLevel: {

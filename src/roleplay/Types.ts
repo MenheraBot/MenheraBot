@@ -66,9 +66,12 @@ interface BaseAttributesPerLevel {
   baseIntelligence: number;
 }
 
+export type Elements = 'FIRE' | 'WATER' | 'NATURE' | 'AIR' | 'LIGHT' | 'DARK' | 'NEUTRAL';
+
 export type ClassesFile = {
   name: string;
   attributesPerLevel: BaseAttributesPerLevel;
+  elementSinergy: Elements;
   abilityTree: number;
 } & BaseAttributesPerLevel;
 

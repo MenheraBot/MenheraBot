@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- Sistema de elementos! Habilidades dão dano aumentado baseado em elementos.
+- Classes possuem sinergia de Elementos! Cada classe ter sinergia com um elemento, que aumenta o dano com estes elementos.
+
+### Removed
+
+- Sistema de caminho de habilidades
+
 ## [4.0.D-BETA] - 2022-02-09
 
 ### Added
