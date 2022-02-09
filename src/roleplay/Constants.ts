@@ -6,9 +6,11 @@ export const BLESSES_DIFFERENCE_LIMIT = 15;
 
 export const MOB_LIMIT_PER_DUNGEON_LEVEL = 5;
 
-export const BASE_XP = 10;
+export const MAXIMUM_CONNECT_HIT_REDUCTION = 30;
 
-export const DIFFICULT_TO_LEVEL_UP = 1.6;
+export const BASE_XP = 200;
+
+export const DIFFICULT_TO_LEVEL_UP = 1.67;
 
 export const ROLEPLAY_COOLDOWNS = {
   dungeonCooldown: 3_600_000,

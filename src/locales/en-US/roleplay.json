@@ -88,7 +88,9 @@
     "attack-text": "⚔️ | You attack with **{{attack}}** and deal **{{damage}}** damage",
     "select": "Select an Action",
     "title": "Battle Against {{name}}",
-    "find": "You meet an enemy! **{{enemy}}** level **{{level}}** is just ahead!",
+    "miss-attack": "**You missed!**",
+    "dodged": "**You Dodged!**",
+    "find": "You meet an enemy! **{{enemy}}** in phase **{{level}}** is just ahead!",
     "options": {
       "hand-attack": "Basic Attack",
       "hand-attack-description": "Make an attack with your primary weapon",

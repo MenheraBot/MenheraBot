@@ -7,11 +7,16 @@ import Util, { actionRow, resolveSeparatedStrings } from '@utils/Util';
 import { MessageEmbed, MessageSelectMenu, SelectMenuInteraction } from 'discord.js-light';
 import { isDead } from './AdventureUtils';
 import {
+  calculateAttackSuccess,
+  calculateDodge,
   calculateEffectiveDamage,
   calculateUserPenetration,
+  didUserDodged,
+  didUserHit,
   getAbilityCost,
   getAbilityDamage,
   getAbilityHeal,
+  getUserAgility,
   getUserArmor,
   getUserDamage,
   getUserIntelligence,
@@ -34,22 +39,15 @@ export const battleLoop = async (
   missedAttacks: number;
   killedMobs: number;
 }> => {
-  const [needStop, newUser, newEnemy, newText] = await userAttack(
-    user,
-    enemy,
-    ctx,
-    text,
-    missedAttacks,
-  );
+  const willEnemyStart = enemy.agility > getUserAgility(user);
+  const [needStop, newUser, newEnemy, newText] = willEnemyStart
+    ? enemyAttack(user, enemy, ctx, text, missedAttacks)
+    : await userAttack(user, enemy, ctx, text, missedAttacks);
 
   if (!needStop) {
-    const [enemyStop, enemyUser, enemyEnemy, enemyText, newMissedAttacks] = enemyAttack(
-      newUser,
-      newEnemy,
-      ctx,
-      newText,
-      missedAttacks,
-    );
+    const [enemyStop, enemyUser, enemyEnemy, enemyText, newMissedAttacks] = willEnemyStart
+      ? await userAttack(newUser, newEnemy, ctx, newText, missedAttacks)
+      : enemyAttack(newUser, newEnemy, ctx, newText, missedAttacks);
     if (!enemyStop)
       return battleLoop(enemyUser, enemyEnemy, ctx, enemyText, newMissedAttacks, killedMobs);
   }
@@ -71,7 +69,9 @@ export const enemyAttack = (
     getUserArmor(user),
   );
 
-  user.life -= effectiveDamage;
+  const didDodged = didUserDodged(calculateDodge(getUserAgility(user), enemy.agility));
+
+  if (!didDodged) user.life -= effectiveDamage;
 
   if (isDead(user))
     return [true, user, enemy, ctx.locale('roleplay:battle.user-death'), missedAttacks];
@@ -81,7 +81,7 @@ export const enemyAttack = (
     enemy,
     `${text}\n${ctx.locale('roleplay:battle.deffend-text', {
       enemy: ctx.locale(`enemies:${enemy.id as 1}.name`),
-      damage: effectiveDamage,
+      damage: didDodged ? ctx.locale('roleplay:battle.dodged') : effectiveDamage,
       attack: ctx.locale(`roleplay:attacks.${multiplier.toString().replace('.', '-') as '1'}`),
     })}`,
     missedAttacks,
@@ -192,7 +192,10 @@ export const userAttack = async (
         calculateUserPenetration(user),
         enemy.armor,
       );
-      enemy.life -= damageDealt;
+      const didConnect = didUserHit(calculateAttackSuccess(getUserAgility(user), enemy.agility));
+
+      if (didConnect) enemy.life -= damageDealt;
+
       if (isDead(enemy))
         return [true, user, enemy, ctx.locale('roleplay:battle.enemy-death'), missedAttacks];
       return [
@@ -201,19 +204,20 @@ export const userAttack = async (
         enemy,
         ctx.locale('roleplay:battle.attack-text', {
           attack: ctx.locale(`roleplay:battle.options.hand-attack`),
-          damage: damageDealt,
+          damage: didConnect ? damageDealt : ctx.locale('roleplay:battle.miss-attack'),
         }),
         missedAttacks,
       ];
     }
     case 'ABILITY': {
       const abilityId = Number(resolveSeparatedStrings(selectedOptions.values[0])[1]);
+      const didConnect = didUserHit(calculateAttackSuccess(getUserAgility(user), enemy.agility));
 
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const usedAbility = user.abilities.find((a) => a.id === abilityId)!;
 
       const damageDealt = getAbilityDamage(usedAbility, getUserIntelligence(user));
-      enemy.life -= damageDealt;
+      if (didConnect) enemy.life -= damageDealt;
       user.mana -= getAbilityCost(usedAbility);
       user.life += getAbilityHeal(usedAbility, getUserIntelligence(user));
 
@@ -229,7 +233,7 @@ export const userAttack = async (
           attack: ctx.locale(
             `abilities:${resolveSeparatedStrings(selectedOptions.values[0])[1] as '100'}.name`,
           ),
-          damage: damageDealt,
+          damage: didConnect ? damageDealt : ctx.locale('roleplay:battle.miss-attack'),
         }),
         missedAttacks,
       ];

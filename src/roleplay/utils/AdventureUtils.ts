@@ -74,6 +74,7 @@ export const getDungeonEnemy = (dungeonLevel: number, userLevel: number): ReadyT
     experience: Math.floor(
       enemy.data.experience + enemy.data.statsPerPhase.experience * enemyPhase,
     ),
+    agility: Math.floor(enemy.data.baseAgility + enemy.data.statsPerPhase.baseAgility * enemyPhase),
     level: Math.floor(enemyPhase * 5),
     loots: enemy.data.loots,
   };

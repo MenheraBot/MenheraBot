@@ -757,14 +757,14 @@ export default class FichaInteractionCommand extends InteractionCommand {
     const resolvedRace = getRaceById(Number(selectedRace.values[0]));
 
     const life =
-      resolvedClass.data.baseMaxLife +
+      resolvedClass.data.maxLife +
       resolvedClass.data.attributesPerLevel.maxLife +
       resolvedRace.data.facilities.reduce(
         (p, c) => (c.facility === 'maxLife' ? p + c.boostPerLevel : 0),
         0,
       );
     const mana =
-      resolvedClass.data.baseMaxMana +
+      resolvedClass.data.maxMana +
       resolvedClass.data.attributesPerLevel.maxMana +
       resolvedRace.data.facilities.reduce(
         (p, c) => (c.facility === 'maxMana' ? p + c.boostPerLevel : 0),
@@ -783,6 +783,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
         maxMana: 0,
         armor: 0,
         damage: 0,
+        agility: 0,
         intelligence: 0,
       },
     };

@@ -89,8 +89,49 @@ export const getUserIntelligence = (user: RoleplayUserSchema): number => {
   return Math.floor(classIntelligence + raceIntellience + userBlesses);
 };
 
+export const getUserAgility = (user: RoleplayUserSchema): number => {
+  const userClass = getClassById(user.class);
+  const userRace = getRaceById(user.race);
+  const userBlesses = makeBlessingStatusUpgrade('agility', user.blesses.agility);
+  const classAgility =
+    userClass.data.baseAgility + userClass.data.attributesPerLevel.baseAgility * user.level;
+
+  const raceAgility = userRace.data.facilities.reduce(
+    (p, c) => (c.facility === 'baseAgility' ? p + c.boostPerLevel * user.level : 0),
+    0,
+  );
+
+  return Math.floor(classAgility + raceAgility + userBlesses);
+};
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const calculateUserPenetration = (user: RoleplayUserSchema): number => 0;
+
+export const calculateDodge = (userAgility: number, enemyAgility: number): number => {
+  const agilityDiff = Math.max((userAgility - enemyAgility) / 100, 0);
+  const sigmoid = 20 / (1 + Math.E ** -agilityDiff);
+
+  return sigmoid;
+};
+
+export const didUserDodged = (chance: number): boolean => {
+  const randomValue = Math.random() * 100;
+
+  return randomValue < chance;
+};
+
+export const calculateAttackSuccess = (userAgility: number, enemyAgility: number): number => {
+  const agilityDiff = Math.max((userAgility - enemyAgility) / 100, 0);
+  const sigmoid = 30 / (1 + Math.E ** -agilityDiff);
+
+  return sigmoid;
+};
+
+export const didUserHit = (chance: number): boolean => {
+  const randomValue = Math.random() * 100;
+
+  return randomValue > chance;
+};
 
 export const calculateEffectiveDamage = (
   attackerDamage: number,
@@ -117,6 +158,8 @@ export const makeBlessingStatusUpgrade = (toBless: ToBLess, points: number): num
       return points * 5;
     case 'damage':
       return points * 6;
+    case 'agility':
+      return points * 5;
   }
 };
 

@@ -2,7 +2,6 @@ import 'dotenv/config';
 
 import { ShardingManager } from 'discord.js-light';
 import { join } from 'node:path';
-import mongoose from 'mongoose';
 
 console.log('[APP] Initiating application...');
 
@@ -23,10 +22,4 @@ ShardManager.on('shardCreate', (shard) => {
 
 ShardManager.spawn({ timeout: 120_000 }).then(() => {
   console.log('[SHARDING MANAGER] All shards have been spawned');
-});
-
-process.on('SIGINT', () => () => {
-  mongoose.disconnect(() => {
-    process.exit(0);
-  });
 });

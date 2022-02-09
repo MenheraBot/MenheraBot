@@ -140,7 +140,7 @@ export default class DungeonInteractionCommand extends InteractionCommand {
       ctx,
       ctx.locale('roleplay:battle.find', {
         enemy: ctx.locale(`enemies:${enemy.id as 1}.name`),
-        level: enemy.level,
+        level: enemy.level + 1,
       }),
       killedMobs,
     );

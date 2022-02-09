@@ -125,6 +125,7 @@ export type EnemiesFile = {
 export interface ReadyToBattleEnemy {
   id: number;
   life: number;
+  agility: number;
   damage: number;
   armor: number;
   experience: number;

@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
-## [Unreleased]
+## [4.0.D-BETA] - 2022-02-09
 
 ### Added
 
@@ -35,14 +35,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
   - _8:_ `46`, `18`
   - _9:_ `19`, `8`
   - _10:_ `21`, `9`
+- **Taxa de Acerto:** Seus ataques possuem uma taxa de acerto que é calculada baseada em sua agilidade. O cálculo de acerto é `30 / 1 + Euler ^ - D` onde D é a diferença de agilidade entre você e o inimigo e Euler é a Constande De Euler.
+- **Taxa de Esquiva:** Ataques inimigos possuem uma taxa de esquiva, que é calculada também com sua agilidade. O cálculo é `20 / 1 + Euler ^ - D` onde D é a diferença de agilidade entre você e o inimgo e Euler é a Constande De Euler.
 
 ### Changed
 
 - Vida máxima para a conta de `Vida Por 1 Hora` na igreja foi reduzido de `1000` para `800`
+- O Primeiro Ataque da Dungeon é daquele que tiver maior `agilidade`
 
 ### Fixed
 
 - Usuários rezando/descansando na igreja não podem mais usar poções
+- Ao matar 5 mobs na Dungeon, o usuário não morre mais
 
 ## [4.0.C-BETA] - 2022-02-08
 

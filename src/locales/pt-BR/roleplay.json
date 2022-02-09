@@ -87,8 +87,10 @@
     "deffend-text": "🛡️ | **{{enemy}}** te acerta **{{attack}}** e te causa **{{damage}}** de dano",
     "attack-text": "⚔️ | Você ataca com **{{attack}}** e causa **{{damage}}** de dano",
     "select": "Selecione uma Ação",
+    "miss-attack": "**Você errou o ataque!**",
+    "dodged": "**Você desviou do ataque!**",
     "title": "Batalha Contra {{name}}",
-    "find": "Você encontra um inimigo! **{{enemy}}** nível **{{level}}** está logo a frente!",
+    "find": "Você encontra um inimigo! **{{enemy}}** em fase **{{level}}** está logo a frente!",
     "options": {
       "hand-attack": "Ataque Básico",
       "hand-attack-description": "Dê um ataque com sua arma primária",

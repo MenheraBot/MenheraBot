@@ -399,4 +399,4 @@ export interface JogoDoBichoGame {
   biggestProfit: number;
 }
 
-export type ToBLess = 'mana' | 'life' | 'damage' | 'armor' | 'intelligence';
+export type ToBLess = 'mana' | 'life' | 'damage' | 'armor' | 'intelligence' | 'agility';
