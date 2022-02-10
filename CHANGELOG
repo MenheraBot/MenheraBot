@@ -16,10 +16,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 - Dificuldade para subir de nivel `1.67` -> `1.54`
 - A XP base foi diminuida `200` -> `160`
+- O Xp dos mobs iniciais foi aumentado, junto com sua vida e sua armadura!
 
 ### Fixed
 
 - O cálculo de agilidade foi ajustado para AUMENTAR as chances de acerto, ao inves de o contrário
+- O USUÁRIO FINALMENTE NÃO MORRE AO MATAR 5 MOBS!!!!
 
 ### Removed
 

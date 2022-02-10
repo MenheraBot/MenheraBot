@@ -72,7 +72,7 @@ export type ClassesFile = {
   name: string;
   attributesPerLevel: BaseAttributesPerLevel;
   elementSinergy: Elements;
-  abilityTree: number;
+  starterAbility: number;
 } & BaseAttributesPerLevel;
 
 export interface FacilityType {

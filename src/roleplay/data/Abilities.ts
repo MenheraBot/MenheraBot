@@ -2,7 +2,7 @@ import { AbilitiesFile } from '../Types';
 
 const Abilities: { [id: number]: AbilitiesFile } = {
   6666: {
-    DevDesc: 'DEV HABILITY',
+    DevDesc: 'Raízes do Mundo [BETA]',
     cost: 30,
     damage: {
       base: 80,

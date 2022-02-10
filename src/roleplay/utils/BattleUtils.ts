@@ -30,14 +30,12 @@ export const battleLoop = async (
   enemy: ReadyToBattleEnemy,
   ctx: InteractionCommandContext,
   text: string,
-  killedMobs: number,
   missedAttacks = 0,
 ): Promise<{
   user: RoleplayUserSchema;
   enemy: ReadyToBattleEnemy;
   lastText: string;
   missedAttacks: number;
-  killedMobs: number;
 }> => {
   const willEnemyStart = enemy.agility > getUserAgility(user);
   const [needStop, newUser, newEnemy, newText] = willEnemyStart
@@ -48,11 +46,10 @@ export const battleLoop = async (
     const [enemyStop, enemyUser, enemyEnemy, enemyText, newMissedAttacks] = willEnemyStart
       ? await userAttack(newUser, newEnemy, ctx, newText, missedAttacks)
       : enemyAttack(newUser, newEnemy, ctx, newText, missedAttacks);
-    if (!enemyStop)
-      return battleLoop(enemyUser, enemyEnemy, ctx, enemyText, newMissedAttacks, killedMobs);
+    if (!enemyStop) return battleLoop(enemyUser, enemyEnemy, ctx, enemyText, newMissedAttacks);
   }
 
-  return { user, enemy, lastText: text, missedAttacks, killedMobs };
+  return { user, enemy, lastText: text, missedAttacks };
 };
 
 export const enemyAttack = (
