@@ -85,25 +85,44 @@ export interface RacesFile {
   facilities: FacilityType[];
 }
 
-interface PerLevelBoost {
-  damage: number;
-  heal: number;
-  cost: number;
-}
-
 export interface ScalableWithInteligence {
   readonly scale: number;
   base: number;
 }
 
+export type BattleTarget = 'self' | 'enemy';
+
+export type EffectType =
+  | 'damage'
+  | 'heal'
+  | 'poison'
+  | 'damage_buff'
+  | 'agility_buff'
+  | 'armor_debuff';
+
+export type EffectValueModifier = 'plain' | 'percentage';
+
+export type EffectValueRefflection = 'plain' | 'maxLife' | 'armor' | 'damage';
+
+export interface AbilityEffect {
+  target: BattleTarget;
+  durationInTurns: number;
+  element: Elements;
+  effectType: EffectType;
+  effectValue: number;
+  effectValueByIntelligence: number;
+  effectValueModifier: EffectValueModifier;
+  effectValueRefflection: EffectValueRefflection;
+  effectValuePerLevel: number;
+}
+
 export interface AbilitiesFile {
   DevDesc: string;
   parentId: number;
-  damage: ScalableWithInteligence;
-  heal: ScalableWithInteligence;
   cost: number;
+  costPerLevel: number;
   unlockCost: number;
-  boostPerLevel: PerLevelBoost;
+  effects: AbilityEffect[];
 }
 
 export interface EnemyDrops {

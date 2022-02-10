@@ -265,6 +265,7 @@ export default class DowntownInteractionCommand extends InteractionCommand {
     }
 
     const costToEvolve = Number(resolveCustomId(wannaEvolve.customId));
+    if (Number.isNaN(costToEvolve)) return;
 
     const field = resolveCustomId(selected.customId).toLowerCase() as 'backpack';
 

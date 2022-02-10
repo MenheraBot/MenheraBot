@@ -803,7 +803,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
       race: Number(selectedRace.values[0]),
       life,
       mana,
-      abilities: [{ id: resolvedClass.data.abilityTree, level: 0, blesses: 0 }],
+      abilities: [{ id: resolvedClass.data.starterAbility, level: 0, blesses: 0 }],
       holyBlessings: { ability: 0, vitality: 0, battle: 0 },
       blesses: {
         maxLife: 0,

@@ -77,7 +77,7 @@
   "battle": {
     "no-mana": "| Mana Insuficiente!",
     "your-stats": "Seus Status",
-    "your-stats-info": "❤️ | Vida: **{{life}}**\n💧 | Mana: **{{mana}}**\n⚔️ | Dano: **{{damage}}**\n🛡️ | Defesa: **{{armor}}**\n🧠 | Inteligência: **{{intelligence}}**",
+    "your-stats-info": "❤️ | Vida: **{{life}}**\n💧 | Mana: **{{mana}}**\n⚔️ | Dano: **{{damage}}** | Precisão: **{{chanceToConnect}}%**\n🛡️ | Defesa: **{{armor}}** | Esquiva: **{{chanceToDodge}}%**\n🧠 | Inteligência: **{{intelligence}}**\n👢 | Agilidade: **{{agility}}**",
     "enemy-stats": "Status do Inimigo",
     "enemy-stats-info": "❤️ | Vida: **{{life}}**\n⚔️ | Dano: **{{damage}}**\n🛡️ | Defesa: **{{armor}}**",
     "no-action": "Você demorou demais para tomar uma atitude e foi atacado!",

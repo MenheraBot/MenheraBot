@@ -115,6 +115,11 @@ export const userAttack = async (
           damage: getUserDamage(user),
           armor: getUserArmor(user),
           intelligence: getUserIntelligence(user),
+          agility: getUserAgility(user),
+          chanceToConnect: (
+            100 - calculateAttackSuccess(getUserAgility(user), enemy.agility)
+          ).toFixed(2),
+          chanceToDodge: calculateDodge(getUserAgility(user), enemy.agility).toFixed(2),
         }),
         inline: true,
       },
