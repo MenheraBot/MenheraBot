@@ -81,11 +81,14 @@ export default class Util {
     time = 7000,
   ): Promise<null | MessageComponentInteraction> {
     return channel
-      .awaitMessageComponent({ filter: (m) => m.user.id === authorID, time })
-      .then((interaction) => {
-        interaction.deferUpdate().catch(() => null);
-        return interaction;
+      .awaitMessageComponent({
+        filter: (m) => {
+          m.deferUpdate().catch(() => null);
+          return m.user.id === authorID;
+        },
+        time,
       })
+      .then((interaction) => interaction)
       .catch(() => null);
   }
 
@@ -104,13 +107,13 @@ export default class Util {
   ): Promise<null | MessageComponentInteraction> {
     return channel
       .awaitMessageComponent({
-        filter: (m) => m.user.id === authorID && m.customId.startsWith(customId),
+        filter: (m) => {
+          m.deferUpdate().catch(() => null);
+          return m.user.id === authorID && m.customId.startsWith(customId);
+        },
         time,
       })
-      .then((interaction) => {
-        interaction.deferUpdate();
-        return interaction;
-      })
+      .then((interaction) => interaction)
       .catch(() => null);
   }
 }
