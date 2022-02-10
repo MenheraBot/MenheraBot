@@ -96,13 +96,10 @@ export type EffectType =
   | 'damage'
   | 'heal'
   | 'poison'
-  | 'damage_buff'
-  | 'agility_buff'
-  | 'armor_debuff';
+  | `${Exclude<keyof Blesses, 'maxLife' | 'maxMana'>}_buff`
+  | `${Exclude<keyof Blesses, 'maxLife' | 'maxMana'>}_debuff`;
 
-export type EffectValueModifier = 'plain' | 'percentage';
-
-export type EffectValueRefflection = 'plain' | 'maxLife' | 'armor' | 'damage';
+export type EffectValueRefflection = 'plain' | keyof Blesses;
 
 export interface AbilityEffect {
   target: BattleTarget;
@@ -111,7 +108,7 @@ export interface AbilityEffect {
   effectType: EffectType;
   effectValue: number;
   effectValueByIntelligence: number;
-  effectValueModifier: EffectValueModifier;
+  effectValueModifier: 'plain' | 'percentage';
   effectValueRefflection: EffectValueRefflection;
   effectValuePerLevel: number;
 }
