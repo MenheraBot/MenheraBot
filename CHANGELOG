@@ -12,6 +12,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - Sistema de elementos! Habilidades dão dano aumentado baseado em elementos.
 - Classes possuem sinergia de Elementos! Cada classe ter sinergia com um elemento, que aumenta o dano com estes elementos.
 
+### Changed
+
+- Dificuldade para subir de nivel `1.67` -> `1.54`
+- A XP base foi diminuida `200` -> `160`
+
+### Fixed
+
+- O cálculo de agilidade foi ajustado para AUMENTAR as chances de acerto, ao inves de o contrário
+
 ### Removed
 
 - Sistema de caminho de habilidades

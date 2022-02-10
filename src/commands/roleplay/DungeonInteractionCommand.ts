@@ -237,7 +237,8 @@ export default class DungeonInteractionCommand extends InteractionCommand {
     if (dungeonLevel === LAST_DUNGEON_LEVEL)
       nextButton.setDisabled(true).setLabel(ctx.locale('common:soon')).setEmoji('🛑');
 
-    if (killedMobs + 1 >= MOB_LIMIT_PER_DUNGEON_LEVEL) continueButton.setDisabled(true);
+    if (battleResults.killedMobs + 1 >= MOB_LIMIT_PER_DUNGEON_LEVEL)
+      continueButton.setDisabled(true);
 
     const toSendComponents: MessageActionRow[] = [
       actionRow([nextButton]),
@@ -417,7 +418,12 @@ export default class DungeonInteractionCommand extends InteractionCommand {
           return DungeonInteractionCommand.DungeonLoop(ctx, user, dungeonLevel + 1, 0);
         }
         case 'CONTINUE': {
-          return DungeonInteractionCommand.DungeonLoop(ctx, user, dungeonLevel, killedMobs + 1);
+          return DungeonInteractionCommand.DungeonLoop(
+            ctx,
+            user,
+            dungeonLevel,
+            battleResults.killedMobs + 1,
+          );
         }
       }
     };

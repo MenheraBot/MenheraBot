@@ -4,16 +4,16 @@ const Enemies: { [id: number]: EnemiesFile } = {
   1: {
     dungeonLevels: [1],
     baseDamage: 15,
-    baseLife: 50,
-    experience: 10,
-    baseArmor: 10,
+    baseLife: 70,
+    experience: 25,
+    baseArmor: 31,
     baseAgility: 7,
     statsPerPhase: {
       baseAgility: 11,
       baseDamage: 13,
       baseLife: 10,
       baseArmor: 8,
-      experience: 10,
+      experience: 19,
     },
     loots: [
       {
@@ -42,16 +42,16 @@ const Enemies: { [id: number]: EnemiesFile } = {
   2: {
     dungeonLevels: [1, 2],
     baseDamage: 13,
-    baseLife: 60,
-    experience: 10,
-    baseArmor: 11,
+    baseLife: 90,
+    experience: 26,
+    baseArmor: 26,
     baseAgility: 8,
     statsPerPhase: {
       baseDamage: 20,
       baseLife: 40,
       baseAgility: 10,
       baseArmor: 8,
-      experience: 15,
+      experience: 21,
     },
     loots: [
       {
@@ -80,16 +80,16 @@ const Enemies: { [id: number]: EnemiesFile } = {
   3: {
     dungeonLevels: [1],
     baseDamage: 13,
-    baseLife: 60,
-    experience: 10,
+    baseLife: 80,
+    experience: 24,
     baseAgility: 7,
-    baseArmor: 9,
+    baseArmor: 31,
     statsPerPhase: {
       baseDamage: 10,
       baseLife: 20,
       baseAgility: 12,
       baseArmor: 8,
-      experience: 3,
+      experience: 12,
     },
     loots: [
       {
@@ -112,7 +112,7 @@ const Enemies: { [id: number]: EnemiesFile } = {
     dungeonLevels: [3],
     baseDamage: 30,
     baseLife: 250,
-    experience: 50,
+    experience: 61,
     baseArmor: 10,
     baseAgility: 13,
     statsPerPhase: {
@@ -120,7 +120,7 @@ const Enemies: { [id: number]: EnemiesFile } = {
       baseAgility: 15,
       baseLife: 100,
       baseArmor: 10,
-      experience: 20,
+      experience: 34,
     },
     loots: [
       {
@@ -152,7 +152,7 @@ const Enemies: { [id: number]: EnemiesFile } = {
     dungeonLevels: [3, 4],
     baseDamage: 40,
     baseLife: 340,
-    experience: 52,
+    experience: 61,
     baseAgility: 26,
     baseArmor: 10,
     statsPerPhase: {

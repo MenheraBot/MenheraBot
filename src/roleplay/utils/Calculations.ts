@@ -121,7 +121,7 @@ export const didUserDodged = (chance: number): boolean => {
 };
 
 export const calculateAttackSuccess = (userAgility: number, enemyAgility: number): number => {
-  const agilityDiff = Math.max((userAgility - enemyAgility) / 100, 0);
+  const agilityDiff = Math.max((enemyAgility - userAgility) / 100, 0);
   const sigmoid = 30 / (1 + Math.E ** -agilityDiff);
 
   return sigmoid;
