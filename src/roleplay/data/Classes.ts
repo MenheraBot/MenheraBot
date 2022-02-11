@@ -21,7 +21,7 @@ const Classes: { [id: number]: ClassesFile } = {
     starterAbility: 100,
   },
   2: {
-    name: 'mage',
+    name: 'bard',
     maxLife: 100,
     maxMana: 60,
     baseArmor: 10,

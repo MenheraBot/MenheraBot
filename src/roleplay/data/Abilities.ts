@@ -1118,6 +1118,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     parentId: 803,
     unlockCost: 25,
   },
+  900: {},
 };
 
 export default Abilities;
