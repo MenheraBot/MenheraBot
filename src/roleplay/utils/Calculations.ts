@@ -179,32 +179,8 @@ export const getAbilityNextLevelBlessings = (abilityLevel: number): number => {
 export const nextLevelXp = (userLevel: number): number =>
   Math.floor(BASE_XP * userLevel ** DIFFICULT_TO_LEVEL_UP);
 
-export const getAbilityDamage = (ability: UserAbility, userIntelligence: number): number => {
-  const resolvedAbility = getAbilityById(ability.id);
-
-  const baseDamage =
-    resolvedAbility.data.damage.base + resolvedAbility.data.boostPerLevel.damage * ability.level;
-  const scaleDamage = (resolvedAbility.data.damage.scale / 100) * userIntelligence;
-
-  return Math.floor(baseDamage + scaleDamage);
-};
-
-export const getAbilityHeal = (ability: UserAbility, userIntelligence: number): number => {
-  const resolvedAbility = getAbilityById(ability.id);
-
-  if (resolvedAbility.data.heal.base === 0) return 0;
-
-  const baseHeal =
-    resolvedAbility.data.heal.base + resolvedAbility.data.boostPerLevel.heal * ability.level;
-  const scaleHeal = (resolvedAbility.data.heal.scale / 100) * userIntelligence;
-
-  return Math.floor(baseHeal + scaleHeal);
-};
-
 export const getAbilityCost = (ability: UserAbility): number => {
   const resolvedAbility = getAbilityById(ability.id);
 
-  return Math.floor(
-    resolvedAbility.data.cost + resolvedAbility.data.boostPerLevel.cost * ability.level,
-  );
+  return Math.floor(resolvedAbility.data.cost + resolvedAbility.data.costPerLevel * ability.level);
 };

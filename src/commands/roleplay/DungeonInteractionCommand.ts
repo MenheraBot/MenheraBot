@@ -16,7 +16,6 @@ import {
   makeLevelUp,
   removeFromInventory,
 } from '@roleplay/utils/AdventureUtils';
-import { battleLoop } from '@roleplay/utils/BattleUtils';
 import {
   getUserAgility,
   getUserArmor,
@@ -26,6 +25,7 @@ import {
   getUserMaxMana,
 } from '@roleplay/utils/Calculations';
 import { getItemById } from '@roleplay/utils/DataUtils';
+import RoleplayBattle from '@roleplay/utils/RoleplayBattle';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { COLORS } from '@structures/Constants';
@@ -138,7 +138,7 @@ export default class DungeonInteractionCommand extends InteractionCommand {
   ): Promise<void> {
     const enemy = getDungeonEnemy(dungeonLevel, user.level);
 
-    const battleResults = await battleLoop(
+    const battleResults = await new RoleplayBattle(
       user,
       enemy,
       ctx,
@@ -146,7 +146,7 @@ export default class DungeonInteractionCommand extends InteractionCommand {
         enemy: ctx.locale(`enemies:${enemy.id as 1}.name`),
         level: enemy.level + 1,
       }),
-    );
+    ).battleLoop();
 
     if (isDead(user)) {
       const userMaxLife = getUserMaxLife(user);
