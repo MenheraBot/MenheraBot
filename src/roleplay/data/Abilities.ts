@@ -166,7 +166,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     unlockCost: 25,
   },
   200: {
-    DevDesc: 'Benção Elemental (Mago)',
+    DevDesc: 'Benção Elemental (Bardo)',
     cost: 50,
     costPerLevel: 5,
     effects: [
@@ -197,7 +197,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     unlockCost: 0,
   },
   201: {
-    DevDesc: 'Raio de Luz Solar (Mago)',
+    DevDesc: 'Canção de Luz (Bardo)',
     cost: 80,
     costPerLevel: 10,
     effects: [
@@ -217,7 +217,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     unlockCost: 10,
   },
   202: {
-    DevDesc: 'Rosário (Mago)',
+    DevDesc: 'Rosário (Bardo)',
     cost: 80,
     costPerLevel: 10,
     effects: [
@@ -248,7 +248,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     parentId: 201,
   },
   203: {
-    DevDesc: 'Ascenção Espiritual (mago)',
+    DevDesc: 'Notas Agudas (Bardo)',
     cost: 80,
     costPerLevel: 10,
     effects: [
@@ -279,14 +279,14 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     unlockCost: 10,
   },
   204: {
-    DevDesc: 'Manipulação Éterea (Mago)',
+    DevDesc: 'Toca Raul! (Mago)',
     cost: 100,
     costPerLevel: 20,
     effects: [
       {
         durationInTurns: -1,
         effectType: 'damage',
-        effectValue: 20,
+        effectValue: 10,
         effectValueByIntelligence: 0,
         effectValueModifier: 'percentage',
         effectValuePerLevel: 3,
