@@ -8,7 +8,7 @@ export const MOB_LIMIT_PER_DUNGEON_LEVEL = 5;
 
 export const MAXIMUM_CONNECT_HIT_REDUCTION = 30;
 
-export const BASE_XP = 160;
+export const BASE_XP = 120;
 
 export const DIFFICULT_TO_LEVEL_UP = 1.54;
 

@@ -5,18 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
-## [Unreleased]
+## [4.0.E-BETA] - 2022-02-17
 
 ### Added
 
-- Sistema de elementos! Habilidades dão dano aumentado baseado em elementos.
+- Sistema de elementos! Habilidades dão dano aumentado em `5%` baseado em elementos.
 - Classes possuem sinergia de Elementos! Cada classe ter sinergia com um elemento, que aumenta o dano com estes elementos.
+- Criado nome e descrições para as habilidades
+- Criada novas 3 classes, `Bardo`, `Lanceiro` e `Monge`
+- Sistema de Efeitos! As habilidades agora aplicam efeitos aos inimigos ou a si mesmos. Elas podem melhorar seus status de batalha por alguns turnos.
+- Nova Raça! Anão. Facilidade com agilidade e vida maxima
 
 ### Changed
 
 - Dificuldade para subir de nivel `1.67` -> `1.54`
-- A XP base foi diminuida `200` -> `160`
+- A XP base foi diminuida `200` -> `120`
 - O Xp dos mobs iniciais foi aumentado, junto com sua vida e sua armadura!
+- O Custo para desbloquear a 1 habilidade foi diminuido para `10` e a segunda para `25`
 
 ### Fixed
 
@@ -26,6 +31,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Removed
 
 - Sistema de caminho de habilidades
+- Classe `mago` foi removida
+- O dano e cura das habilidades foi removido das informações de batalha!
 
 ## [4.0.D-BETA] - 2022-02-09
 
