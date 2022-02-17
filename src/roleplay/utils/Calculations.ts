@@ -1,5 +1,15 @@
-import { BASE_XP, DIFFICULT_TO_LEVEL_UP } from '@roleplay/Constants';
-import { ProtectionItem, RoleplayUserSchema, UserAbility, WeaponItem } from '@roleplay/Types';
+import {
+  BASE_XP,
+  DIFFICULT_TO_LEVEL_UP,
+  ELEMENT_SINERGY_BONUS_IN_PERCENTAGE,
+} from '@roleplay/Constants';
+import {
+  ProtectionItem,
+  RoleplayUserSchema,
+  UserAbility,
+  UserBattleEntity,
+  WeaponItem,
+} from '@roleplay/Types';
 import { ToBLess } from '@utils/Types';
 import { getAbilityById, getClassById, getItemById, getRaceById } from './DataUtils';
 
@@ -33,7 +43,7 @@ export const getUserMaxMana = (user: RoleplayUserSchema): number => {
   return Math.floor(classMana + raceMana + userBlesses);
 };
 
-export const getUserDamage = (user: RoleplayUserSchema): number => {
+export const getUserDamage = (user: UserBattleEntity): number => {
   const userClass = getClassById(user.class);
   const userRace = getRaceById(user.race);
   const userBlesses = makeBlessingStatusUpgrade('damage', user.blesses.damage);
@@ -49,10 +59,30 @@ export const getUserDamage = (user: RoleplayUserSchema): number => {
 
   const weaponDamage = userWeapon.data.damage + userWeapon.data.perLevel * user.weapon.level;
 
-  return Math.floor(classDamage + raceDamage + userBlesses + weaponDamage);
+  const baseDamage = classDamage + raceDamage + userBlesses + weaponDamage;
+
+  const userEffects = user.effects.reduce((p, c) => {
+    if (c.target !== 'self') return p;
+    if (c.effectType !== 'damage_buff' && c.effectType !== 'damage_debuff') return p;
+
+    let effectValue =
+      c.effectValue +
+      getUserIntelligence(user) * (c.effectValueByIntelligence / 100) +
+      c.effectValuePerLevel * c.level;
+
+    if (c.element === userClass.data.elementSinergy)
+      effectValue += effectValue * (ELEMENT_SINERGY_BONUS_IN_PERCENTAGE / 100);
+
+    if (c.effectValueModifier === 'percentage') effectValue = baseDamage * (effectValue / 100);
+
+    if (c.effectType === 'damage_debuff') return p - effectValue;
+    return p + effectValue;
+  }, 0);
+
+  return Math.floor(baseDamage + userEffects);
 };
 
-export const getUserArmor = (user: RoleplayUserSchema): number => {
+export const getUserArmor = (user: UserBattleEntity): number => {
   const userClass = getClassById(user.class);
   const userRace = getRaceById(user.race);
   const userBlesses = makeBlessingStatusUpgrade('armor', user.blesses.armor);
@@ -72,7 +102,7 @@ export const getUserArmor = (user: RoleplayUserSchema): number => {
   return Math.floor(classArmor + raceArmor + userBlesses + protectionArmor);
 };
 
-export const getUserIntelligence = (user: RoleplayUserSchema): number => {
+export const getUserIntelligence = (user: UserBattleEntity): number => {
   const userClass = getClassById(user.class);
   const userRace = getRaceById(user.race);
   const userBlesses = makeBlessingStatusUpgrade('intelligence', user.blesses.intelligence);
@@ -89,7 +119,7 @@ export const getUserIntelligence = (user: RoleplayUserSchema): number => {
   return Math.floor(classIntelligence + raceIntellience + userBlesses);
 };
 
-export const getUserAgility = (user: RoleplayUserSchema): number => {
+export const getUserAgility = (user: UserBattleEntity): number => {
   const userClass = getClassById(user.class);
   const userRace = getRaceById(user.race);
   const userBlesses = makeBlessingStatusUpgrade('agility', user.blesses.agility);
@@ -105,7 +135,7 @@ export const getUserAgility = (user: RoleplayUserSchema): number => {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const calculateUserPenetration = (user: RoleplayUserSchema): number => 0;
+export const calculateUserPenetration = (user: UserBattleEntity): number => 0;
 
 export const calculateDodge = (userAgility: number, enemyAgility: number): number => {
   const agilityDiff = Math.max((userAgility - enemyAgility) / 100, 0);

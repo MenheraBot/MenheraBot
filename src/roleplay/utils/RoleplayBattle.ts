@@ -1,5 +1,5 @@
 import { ENEMY_ATTACK_MULTIPLIER_CHANCE } from '@roleplay/Constants';
-import { ReadyToBattleEnemy, RoleplayUserSchema } from '@roleplay/Types';
+import { ReadyToBattleEnemy, UserBattleEntity } from '@roleplay/Types';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { COLORS } from '@structures/Constants';
 import { calculateProbability } from '@utils/HuntUtils';
@@ -18,8 +18,8 @@ import {
   getUserArmor,
   getUserDamage,
   getUserIntelligence,
-  getUserMaxLife,
 } from './Calculations';
+import { getAbilityById } from './DataUtils';
 
 export default class RoleplayBattle {
   public missedAttacks = 0;
@@ -27,7 +27,7 @@ export default class RoleplayBattle {
   private readonly TIME_TO_SELECT = 12_000;
 
   constructor(
-    public user: RoleplayUserSchema,
+    public user: UserBattleEntity,
     public enemy: ReadyToBattleEnemy,
     private ctx: InteractionCommandContext,
     public lastText: string,
@@ -39,10 +39,23 @@ export default class RoleplayBattle {
 
     if (!needStop) {
       const enemyStop = willEnemyStart ? await this.userAttack() : this.enemyAttack();
+      this.clearEffects();
       if (!enemyStop) return this.battleLoop();
     }
 
     return this;
+  }
+
+  private clearEffects(): void {
+    this.user.effects.forEach((a, i) => {
+      a.durationInTurns -= 1;
+      if (a.durationInTurns <= 0) this.user.effects.splice(i, 1);
+    });
+
+    this.enemy.effects.forEach((a, i) => {
+      a.durationInTurns -= 1;
+      if (a.durationInTurns <= 0) this.user.effects.splice(i, 1);
+    });
   }
 
   private enemyAttack(): boolean {
@@ -204,19 +217,28 @@ export default class RoleplayBattle {
       }
       case 'ABILITY': {
         const abilityId = Number(resolveSeparatedStrings(selectedOptions.values[0])[1]);
-        const didConnect = didUserHit(
-          calculateAttackSuccess(getUserAgility(this.user), this.enemy.agility),
-        );
-
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const usedAbility = this.user.abilities.find((a) => a.id === abilityId)!;
+        const parsedAbility = getAbilityById(usedAbility.id);
 
-        const damageDealt = 0;
-        if (didConnect) this.enemy.life -= damageDealt;
+        const didConnect = calculateAttackSuccess(getUserAgility(this.user), this.enemy.agility);
+        let damageDealt = 0;
+
+        parsedAbility.data.effects.forEach((a) => {
+          if (a.effectType === 'damage') {
+            const abilityDamage =
+              a.effectValue +
+              getUserIntelligence(this.user) * (a.effectValueByIntelligence / 100) +
+              a.effectValuePerLevel * usedAbility.level;
+
+            damageDealt = abilityDamage;
+
+            if (didConnect)
+              this.enemy.life -= calculateEffectiveDamage(abilityDamage, 0, this.enemy.armor);
+          } else this.user.effects.push({ ...a, level: usedAbility.level });
+        });
+
         this.user.mana -= getAbilityCost(usedAbility);
-        this.user.life += 0;
-
-        if (this.user.life > getUserMaxLife(this.user)) this.user.life = getUserMaxLife(this.user);
 
         if (isDead(this.enemy)) {
           this.lastText = this.ctx.locale('roleplay:battle.enemy-death');

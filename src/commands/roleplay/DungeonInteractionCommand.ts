@@ -3,7 +3,7 @@ import {
   MOB_LIMIT_PER_DUNGEON_LEVEL,
   ROLEPLAY_COOLDOWNS,
 } from '@roleplay/Constants';
-import { ConsumableItem, RoleplayUserSchema } from '@roleplay/Types';
+import { ConsumableItem, UserBattleEntity } from '@roleplay/Types';
 import {
   addToInventory,
   canGoToDungeon,
@@ -14,6 +14,7 @@ import {
   isInventoryFull,
   makeCooldown,
   makeLevelUp,
+  prepareUserForDungeon,
   removeFromInventory,
 } from '@roleplay/utils/AdventureUtils';
 import {
@@ -127,12 +128,12 @@ export default class DungeonInteractionCommand extends InteractionCommand {
       return;
     }
 
-    return DungeonInteractionCommand.DungeonLoop(ctx, user, 1, 0);
+    return DungeonInteractionCommand.DungeonLoop(ctx, prepareUserForDungeon(user), 1, 0);
   }
 
   static async DungeonLoop(
     ctx: InteractionCommandContext,
-    user: RoleplayUserSchema,
+    user: UserBattleEntity,
     dungeonLevel: number,
     killedMobs: number,
   ): Promise<void> {

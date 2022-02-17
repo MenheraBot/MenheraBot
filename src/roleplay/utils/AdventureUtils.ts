@@ -5,6 +5,7 @@ import {
   LeveledItem,
   ReadyToBattleEnemy,
   RoleplayUserSchema,
+  UserBattleEntity,
   UserCooldown,
 } from '@roleplay/Types';
 import InteractionCommandContext from '@structures/command/InteractionContext';
@@ -15,6 +16,12 @@ import { EmbedFieldData } from 'discord.js-light';
 import moment from 'moment';
 import { getEnemies, getItemById } from './DataUtils';
 import { nextLevelXp } from './Calculations';
+
+export const prepareUserForDungeon = (user: RoleplayUserSchema): UserBattleEntity => {
+  // @ts-expect-error nyaa
+  user.effects = [];
+  return user as UserBattleEntity;
+};
 
 export const canGoToDungeon = (
   user: RoleplayUserSchema,
@@ -74,6 +81,7 @@ export const getDungeonEnemy = (dungeonLevel: number, userLevel: number): ReadyT
     experience: Math.floor(
       enemy.data.experience + enemy.data.statsPerPhase.experience * enemyPhase,
     ),
+    effects: [],
     agility: Math.floor(enemy.data.baseAgility + enemy.data.statsPerPhase.baseAgility * enemyPhase),
     level: Math.floor(enemyPhase * 5),
     loots: enemy.data.loots,

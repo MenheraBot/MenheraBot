@@ -12,6 +12,8 @@ export const BASE_XP = 160;
 
 export const DIFFICULT_TO_LEVEL_UP = 1.54;
 
+export const ELEMENT_SINERGY_BONUS_IN_PERCENTAGE = 5;
+
 export const ROLEPLAY_COOLDOWNS = {
   dungeonCooldown: 3_600_000,
   deathCooldown: 14_400_000,

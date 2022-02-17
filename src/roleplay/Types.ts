@@ -149,6 +149,7 @@ export interface ReadyToBattleEnemy {
   armor: number;
   experience: number;
   level: number;
+  effects: AbilityEffect[];
   loots: EnemyDrops[];
 }
 
@@ -201,3 +202,7 @@ export interface ConsumableItem {
 }
 
 export type ItemsFile = BackPackItem | WeaponItem | DropItem | ConsumableItem | ProtectionItem;
+
+export type UserBattleEntity = RoleplayUserSchema & {
+  effects: Array<AbilityEffect & { level: number }>;
+};
