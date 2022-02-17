@@ -1,6 +1,6 @@
 {
-  "666": {
-    "name": "🔮 Raíz do Mundo",
+  "6666": {
+    "name": "🔮 Raízes do Mundo",
     "description": "Eu conheço esse mundo desde o seu início...\nEsta habilidade só está disponível para os testadores BETA do RPG."
   },
   "100": {
@@ -24,13 +24,16 @@
     "description": "Entra em frenesi, atacando múltiplas vezes"
   },
   "200": {
-    "name": "Bênção Elemental"
+    "name": "Bênção Elemental",
+    "description": "Toca uma canção especial, que da dano aos inimigos enquanto cura a si mesmo."
   },
   "201": {
-    "name": "Raio de Luz Solar"
+    "name": "Canção de Luz",
+    "description": "Apresenta aos seus inimigos o poder do Dragão Ancião Elemental da Luz a partir de notas santas"
   },
   "202": {
-    "name": "Rosário"
+    "name": "Rosário",
+    "description": "Invoca o ódio dos Deuses para aniquilar seus inimigos."
   },
   "203": {
     "name": "Ascensão Espiritual"

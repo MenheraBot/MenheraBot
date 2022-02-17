@@ -1,28 +1,28 @@
 {
   "classes": {
     "1": {
-      "name": "Mago",
-      "description": "Magos são seres que utilizam os 4 elementos naturais - Fogo Terra Água e Ar, além de serem bons com magias brancas. Eles não possuem nada de especial no sangue, por isso, aprendem habilidades lendo livros"
+      "name": "Assassino",
+      "description": "Seres ágeis, batalham corpo a corpo com habilidades de fortificação, ou que os ajudarão de alguma forma na batalha. Nunca confie em um assassino, uma vez que ele pode se voltar contra ti, e te matar para roubar seus itens"
     },
     "2": {
-      "name": "Feiticeiro",
-      "description": "Diferente dos magos, feiticeiros usam magia proveniente de seu corpo, desgastando-se mais, e dependendo do tipo de magia, podendo ficar insano. São especialistas em magia negra, e descobrem habilidades a partir do uso de seu corpo para adquirir poder"
+      "name": "Bardo",
+      "description": "Amantes da música, os bardos buscam ajudar a todos com o poder musical. Desde pequenos, os bardos já percebem sua vocação, não é qualquer bebê que consegue tocar uma harpa em seus primeiros meses de vida."
     },
     "3": {
       "name": "Ilusionista",
       "description": "Ilusionistas vivem de contratos demoníacos com seres superiores. Suas habilidades são descobertas de acordo com seus contratos, eles se baseiam em usar o poder do contrato, e usar a luta corpo a corpo"
     },
     "4": {
-      "name": "Arquimago",
-      "description": "A magia foi se desenvolvendo com o tempo. Pessoas foram evoluindo, e antigas tribos foram deixadas para trás. A magia foi se desenvolvendo para ser mais fácil e rápida, ainda sim, a magia arcaica não foi extinta. Os arquimagos estudam as magias do passado, quando ainda se usavam círculos mágicos e rituais para as invocá-las e conhecê-las"
+      "name": "Paladino",
+      "description": "Possuem alta fé nos Grandes Antigos, e por esse motivo, são abençoados com poderes divinos, como cura e habilidades de Luz. Sempre estão em missões santas, andando em conjunto com magos santos em busca da santidade. Gostam do balanceamento de poderes"
     },
     "5": {
       "name": "Necromante",
       "description": "Usuários da magia da ressurreição, batalham utilizando mortos. Como esta magia é muito perigosa e desgastante, os necromantes focam em passar seus poderes para sua arma, assim, eles não se desgastam em uma batalha, já que usam uma mana já armazenada. Como nunca sabem se sua mana armazenada durará uma batalha inteira, devem estudar combate físico também"
     },
     "6": {
-      "name": "Assassino",
-      "description": "Seres ágeis, batalham corpo a corpo com habilidades de fortificação, ou que os ajudarão de alguma forma na batalha. Nunca confie em um assassino, uma vez que ele pode se voltar contra ti, e te matar para roubar seus itens"
+      "name": "Arquimago",
+      "description": "A magia foi se desenvolvendo com o tempo. Pessoas foram evoluindo, e antigas tribos foram deixadas para trás. A magia foi se desenvolvendo para ser mais fácil e rápida, ainda sim, a magia arcaica não foi extinta. Os arquimagos estudam as magias do passado, quando ainda se usavam círculos mágicos e rituais para as invocá-las e conhecê-las"
     },
     "7": {
       "name": "Bárbaro",
@@ -33,12 +33,20 @@
       "description": "Profissionais do ataque à distância. Por mais que tenham uma mira impecável, por algum motivo se mantém utilizando apenas arco e flecha. Claro que sempre tem o diferente que usa outra coisa, mas no geral, essa arma satisfaz tudo que precisam, distância e velocidade"
     },
     "9": {
-      "name": "Paladino",
-      "description": "Possuem alta fé nos Grandes Antigos, e por esse motivo, são abençoados com poderes divinos, como cura e habilidades de Luz. Sempre estão em missões santas, andando em conjunto com magos santos em busca da santidade. Gostam do balanceamento de poderes"
+      "name": "Feiticeiro",
+      "description": "Diferente dos magos, feiticeiros usam magia proveniente de seu corpo, desgastando-se mais, e dependendo do tipo de magia, podendo ficar insano. São especialistas em magia negra, e descobrem habilidades a partir do uso de seu corpo para adquirir poder"
     },
     "10": {
       "name": "Domador",
       "description": "Diferentes dos ilusionistas, os domadores fazem contratos com animais da selva. Já que não precisam de muita mana para os controlar, podem fazer contratos com diversos seres ao mesmo tempo. Não conseguem fazer contratos sobrenaturais, se abstendo somente de seres vivos"
+    },
+    "11": {
+      "name": "Monge",
+      "description": "Se isolar da sociedade não significa se isolar do mundo, por mais que vivam sozinhos em silêncio nas montanhas, os monges sofrem com os problemas do mundo assim como todos. Não mexa com quem está quieto no canto, esses são os mais perigosos. Lutam com a força de espírito. Não adoram nenhum Dragão Ancião Elemental, mas sabem também que estes não podem ser ignorados."
+    },
+    "12": {
+      "name": "Lanceiro",
+      "description": "Nada está acima da honra destes lutadores de lança. Eles sabem que a agilidade e a distância devem estar em conjunto para uma batalha perfeita. Protetores do reino e das leis, os lanceiros são perfeitos para lutas desiguais de número. Não interessa se estão entre 30 conta 3, ninguém para os guerreiros da realeza."
     }
   },
   "races": {
@@ -65,6 +73,10 @@
     "6": {
       "name": "Fera",
       "description": "Nascem na selva. São animais que possuem cognição, e claro, estão em busca de sua bela. Possuem alta defesa"
+    },
+    "7": {
+      "name": "Anão",
+      "description": "Pequenos mas habilidosos, os anões são uma espécie muito parecida com os humanos. Amantes da amizade, os anões estão sempre bebendo com seus amigos para esquecer dos problemas do mundo. São rápidos e seus corações poderosos."
     }
   },
   "attacks": {
