@@ -16,6 +16,7 @@ import {
   didUserDodged,
   didUserHit,
   getAbilityCost,
+  getEnemyStatusWithEffects,
   getUserAgility,
   getUserArmor,
   getUserDamage,
@@ -77,12 +78,17 @@ export default class RoleplayBattle {
   private enemyAttack(): boolean {
     const multiplier = calculateProbability(ENEMY_ATTACK_MULTIPLIER_CHANCE);
     const effectiveDamage = calculateEffectiveDamage(
-      this.enemy.damage * multiplier,
+      getEnemyStatusWithEffects(this.enemy, 'damage', this.user) * multiplier,
       calculateUserPenetration(this.user),
       getUserArmor(this.user),
     );
 
-    const didDodged = didUserDodged(calculateDodge(getUserAgility(this.user), this.enemy.agility));
+    const didDodged = didUserDodged(
+      calculateDodge(
+        getUserAgility(this.user),
+        getEnemyStatusWithEffects(this.enemy, 'agility', this.user),
+      ),
+    );
 
     if (!didDodged) this.user.life -= effectiveDamage;
 
@@ -136,9 +142,9 @@ export default class RoleplayBattle {
           name: this.ctx.locale('roleplay:battle.enemy-stats'),
           value: this.ctx.locale('roleplay:battle.enemy-stats-info', {
             life: this.enemy.life,
-            damage: this.enemy.damage,
-            armor: this.enemy.armor,
-            agility: this.enemy.agility,
+            damage: getEnemyStatusWithEffects(this.enemy, 'damage', this.user),
+            armor: getEnemyStatusWithEffects(this.enemy, 'armor', this.user),
+            agility: getEnemyStatusWithEffects(this.enemy, 'agility', this.user),
           }),
           inline: true,
         },
@@ -212,7 +218,7 @@ export default class RoleplayBattle {
         const damageDealt = calculateEffectiveDamage(
           getUserDamage(this.user),
           calculateUserPenetration(this.user),
-          this.enemy.armor,
+          getEnemyStatusWithEffects(this.enemy, 'armor', this.user),
         );
         const didConnect = didUserHit(
           calculateAttackSuccess(getUserAgility(this.user), this.enemy.agility),
@@ -249,7 +255,11 @@ export default class RoleplayBattle {
             damageDealt = abilityDamage;
 
             if (didConnect)
-              this.enemy.life -= calculateEffectiveDamage(abilityDamage, 0, this.enemy.armor);
+              this.enemy.life -= calculateEffectiveDamage(
+                abilityDamage,
+                0,
+                getEnemyStatusWithEffects(this.enemy, 'armor', this.user),
+              );
           } else if (a.effectType === 'heal' && a.durationInTurns === -1) {
             this.user.life = Math.min(
               getUserMaxLife(this.user),

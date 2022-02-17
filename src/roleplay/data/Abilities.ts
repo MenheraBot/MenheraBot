@@ -1195,7 +1195,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     costPerLevel: 20,
     effects: [
       {
-        durationInTurns: -1,
+        durationInTurns: 3,
         effectType: 'agility_buff',
         effectValue: 20,
         effectValueByIntelligence: 10,

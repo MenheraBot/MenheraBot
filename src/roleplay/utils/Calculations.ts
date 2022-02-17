@@ -6,6 +6,7 @@ import {
 import {
   AbilityEffect,
   ProtectionItem,
+  ReadyToBattleEnemy,
   RoleplayUserSchema,
   UserAbility,
   UserBattleEntity,
@@ -13,6 +14,33 @@ import {
 } from '@roleplay/Types';
 import { ToBLess } from '@utils/Types';
 import { getAbilityById, getClassById, getItemById, getRaceById } from './DataUtils';
+
+export const getEnemyStatusWithEffects = (
+  enemy: ReadyToBattleEnemy,
+  wannedStatus: 'agility' | 'armor' | 'damage',
+  user: UserBattleEntity,
+): number => {
+  const userClass = getClassById(user.class);
+  const baseStatus = enemy[wannedStatus];
+
+  const effects = enemy.effects.reduce((p, c) => {
+    if (!c.effectType.startsWith(wannedStatus)) return p;
+    let effectValue =
+      c.effectValue +
+      getUserIntelligence(user) * (c.effectValueByIntelligence / 100) +
+      c.effectValuePerLevel * c.level;
+
+    if (c.element === userClass.data.elementSinergy)
+      effectValue += effectValue * (ELEMENT_SINERGY_BONUS_IN_PERCENTAGE / 100);
+
+    if (c.effectValueModifier === 'percentage') effectValue = baseStatus * (effectValue / 100);
+
+    if (c.effectType.endsWith('debuff')) return p - effectValue;
+    return p + effectValue;
+  }, 0);
+
+  return Math.floor(baseStatus + effects);
+};
 
 export const getUserMaxLife = (user: RoleplayUserSchema): number => {
   const userClass = getClassById(user.class);

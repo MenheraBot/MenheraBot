@@ -1,11 +1,11 @@
 {
   "6666": {
     "name": "🔮 Raízes do Mundo",
-    "description": "Eu conheço esse mundo desde o seu início...\nEsta habilidade só está disponível para os testadores BETA do RPG."
+    "description": "Eu conheço esse mundo desde o seu início...\nEsta habilidade só está disponível para os testadores BETA do RPG.\n Dá dano aos inimigos enquanto se cura"
   },
   "100": {
     "name": "Imbuir Em Veneno",
-    "description": "Imbui sua arma em veneno, causando dano ao seus inimigos"
+    "description": "Imbui sua arma em veneno, e ao atingir o inimigo, o envenena"
   },
   "101": {
     "name": "Golpes Destemidos",
@@ -13,15 +13,15 @@
   },
   "102": {
     "name": "Atrás de Você!",
-    "description": "Teletransporta para as costas do inimigo, atingindo-o de forma covarde"
+    "description": "Teletransporta para as costas do inimigo, atingindo-o de forma covarde. Após atingir o inimigo, recebe um bonus de agilidade"
   },
   "103": {
     "name": "Golpe Desleal",
-    "description": "Nada pior que um ataque nas partes baixas... Então, ataque-as"
+    "description": "Nada pior que um ataque nas partes baixas... Aplica um debuff de armadura no inimigo, e o atinge logo em seguida"
   },
   "104": {
     "name": "Frenesi",
-    "description": "Entra em frenesi, atacando múltiplas vezes"
+    "description": "Entra em frenesi, dando dano ao inimigo e recebendo um buff de dano"
   },
   "200": {
     "name": "Bênção Elemental",
@@ -33,43 +33,214 @@
   },
   "202": {
     "name": "Rosário",
-    "description": "Invoca o ódio dos Deuses para aniquilar seus inimigos."
+    "description": "Invoca o ódio dos Deuses para aniquilar seus inimigos. Além de dano aos inimigos, cura a si mesmo"
   },
   "203": {
-    "name": "Ascensão Espiritual"
+    "name": "Notas Agudas",
+    "description": "Atinge o mental de seus inimigos com notas agudas de sua harpa. Além de dano aos inimigos, cura a si mesmo"
   },
   "204": {
-    "name": "Manipulação Étera",
-    "description": "Manipulação Etera, suas origens vem do prisioneiro Ricardo Eletro, mais conhecido como, Ricardo Ereto."
+    "name": "Toca Raul!",
+    "description": "O famoso pedido real. Toca Raul! Toca para acabar com todos os seus inimigos"
   },
   "300": {
-    "name": "Castigo Eterno"
+    "name": "Castigo Eterno",
+    "description": "Inflinge um castigo em seu inimigo, dando um debuff de armaruda e aplicando veneno por um breve periodo"
   },
   "301": {
-    "name": "Dama de Ferro"
+    "name": "Dama de Ferro",
+    "description": "Tortura seus inimigos com a lendária Dama de Ferro. Dano Severo!!"
   },
   "302": {
-    "name": "Invocar Bahamut"
+    "name": "Invocar Bahamut",
+    "description": "Invoca os poderes de Bahamut, que ataca seu inimigo sme dó"
   },
   "303": {
-    "name": "Caça Voraz"
+    "name": "Distorção Mental",
+    "description": "Distorce a mente de seu inimigo, danificando o princípio de sua alma"
   },
   "304": {
-    "name": "Perseguição Incontrolável"
+    "name": "Merlyer",
+    "description": "Coloca um Merlyer para brigar com seu inimigo"
   },
   "400": {
-    "name": "Avanço com Escudo"
+    "name": "Avanço com Escudo",
+    "description": "Utiliza seu escudo para um ataque ofenso-defensivo, dando dano ao inimigo, e curando a si mesmo, alem de ativar um buff de armadura"
   },
   "401": {
-    "name": "Estande de Defesa"
+    "name": "Proteção Divina",
+    "description": "Invoca os poderes santissimos, dando dano aos inimigos enquanto melhora sua armadura"
   },
   "402": {
-    "name": "Parede de Aço"
+    "name": "Valkyria dos Céus",
+    "description": "Evoca os poderes da Deusa da Guerra, dando dano aos inimigos e curando a si mesmo"
   },
   "403": {
-    "name": "Proteção Corpórea"
+    "name": "Santíssima Trindade",
+    "description": "Recebe a bênção tripla do Dragão Ancião Elemental da Luz, recebendo um buff de agilidade, armadura e dano"
   },
   "404": {
-    "name": "Nada Passará!"
+    "name": "D.A.E.L.",
+    "description": "Literalmente chama o Dragão Ancião Elementa da Luz para a batalha, dando dano aos inimigos enquanto cura a si mesmo"
+  },
+  "500": {
+    "name": "Festa dos Mortos Vivos",
+    "description": "Traz um exército de mortos para a batalha, dando dano aos inimigos"
+  },
+  "501": {
+    "name": "Possessão Total",
+    "description": "Possessa o inimigo em todos os sentidos, diminuindo sua armadura e seu dano"
+  },
+  "502": {
+    "name": "Nekros Manteia",
+    "description": "Utiliza do poder eterno dos necromantes, desferindo alto dano aos inimigos"
+  },
+  "503": {
+    "name": "Transfusão Post Mortem",
+    "description": "Transfere poderes do inimigo para si mesmo, recebendo agilidade e reduzindo a agilidade do inimigo, alem de dar dano"
+  },
+  "504": {
+    "name": "Surge Luciferum",
+    "description": "Evoca Lucifer para a batalha, exterminando com seus inimigos"
+  },
+  "600": {
+    "name": "Esfera Prismática",
+    "description": "Cria uma esfera no meio do campo de batalha, danificando todos que ficarem proximos"
+  },
+  "601": {
+    "name": "Lança de Gelo",
+    "description": "Cria uma esfera de gelo que ao atingir o inimigo, inflinge dano e uma redução de agilidade"
+  },
+  "602": {
+    "name": "Electrolyn",
+    "description": "Transfere a energia dos céus diretamente para seu inimigo, desferindo alto dano"
+  },
+  "603": {
+    "name": "Cápsula de Mytril",
+    "description": "Se envolve numa cápsula feita de Mytril, dando dano aos inimigos enquanto fortalece sua armadura"
+  },
+  "604": {
+    "name": "Linhas Ley de Boleham",
+    "description": "Se conecta com as linhas ley de Boleham, utilizando de todos os verdadeiros poderes do mundo para derrotar seu inimigo"
+  },
+  "700": {
+    "name": "Espírito de Guerra",
+    "description": "Recebe o verdadeiro espírito de guerra, se fortalecendo em dano e armadura enquanto reduz o dano do inimigo"
+  },
+  "701": {
+    "name": "Fúria do Berserker",
+    "description": "Recebe a Fúria do Berserker Real, dando dano altissimo a seus inimigos"
+  },
+  "702": {
+    "name": "Morte Imparável",
+    "description": "Desfere um golpe que rouba a vida dos inimigos"
+  },
+  "703": {
+    "name": "Graal",
+    "description": "Invoca o poder do Santo Graal, recebendo um buff de armadura, agilidade e inteligência"
+  },
+  "704": {
+    "name": "Guilhotina Humana",
+    "description": "Envolve o inimigo em uma guilhotina feita por seus braços, executando-o"
+  },
+  "800": {
+    "name": "HeadShot",
+    "description": "Dá um tiro perfeito na cabeça do inimigo"
+  },
+  "801": {
+    "name": "Rajada Metálica",
+    "description": "Junta o aço de suas flechas para desferir um ataque aéreo de metal, aumentando tambem a sua agilidade"
+  },
+  "802": {
+    "name": "Balestra",
+    "description": "Invoca uma balestra ao campo de batalha, atirando em cheio em seu inimigo"
+  },
+  "803": {
+    "name": "Flechas Envenenadas",
+    "description": "Atira flechas envenenadas em seus inimigos, os envenenando"
+  },
+  "804": {
+    "name": "Esquiva Ágil",
+    "description": "Esquivo, Esquivo, leio os seus poderes, não tens é um monstro, leio os meus, melhor sou um arqueiro, desapareço! Recebe agilidade e reduz a do inimigo"
+  },
+  "900": {
+    "name": "Contrato Demoníaco",
+    "description": "Faz um contrato com um demonio, aumentando sua inteligência e seu dano"
+  },
+  "901": {
+    "name": "Fëanor",
+    "description": "Chama o Demonio Fëanor para a batalha, danificando seus inimigos"
+  },
+  "902": {
+    "name": "Curva Gravitacional",
+    "description": "Cria uma curva no espaço tempo, esmagando seus inimigos com o poder da física"
+  },
+  "903": {
+    "name": "Contrato: Abezethibou",
+    "description": "Faz um contrato com o Demônio Superior Abezethibou, recebendo um buff de agilidade, se curando e danificando os inimigos"
+  },
+  "904": {
+    "name": "Astaroth",
+    "description": "Recebe uma pequena visita de Astaroth na batalha, executando seus inimigos"
+  },
+  "1000": {
+    "name": "Domar",
+    "description": "Doma um animal selvagem para ser seu transporte, aumentando sua agilidade e seu dano"
+  },
+  "1001": {
+    "name": "Garras Temporais",
+    "description": "Manda o Rei Dos Animais e Do Espaço Tempo arranhar seu inimigo, além dos limites do tempo"
+  },
+  "1002": {
+    "name": "Domar: Tigre",
+    "description": "Doma um tigre para aumetnar drasticamente seus status. Recebendo um buff de dano, agilidade e armadura"
+  },
+  "1003": {
+    "name": "Lança Espectral",
+    "description": "Envia uma lança diretamente da selva para atingir seu inimigo, envenenando-o"
+  },
+  "1004": {
+    "name": "Domar: Boitatá",
+    "description": "Doma o Boitatá, aumentando seu dano, agilidade, armadura e inteligência"
+  },
+  "1100": {
+    "name": "Punhos Divinos",
+    "description": "Invoca dois punhos que desferem um ataque potentíssimo ao seu inimigo"
+  },
+  "1101": {
+    "name": "O Grande Silêncio",
+    "description": "Inicia o seu silêncio lendário, focando na batalha, recebendo um buff de dano"
+  },
+  "1102": {
+    "name": "Palma de Buda",
+    "description": "Buda está na parada, e da umas palmadinhas em seu inimigo"
+  },
+  "1103": {
+    "name": "Toque da Morte",
+    "description": "Da um pequenino peteleco em seu inimigo, desferindo um dano mortal ao inimigo"
+  },
+  "1104": {
+    "name": "Meditação",
+    "description": "Inicia sua meditação, recebendo um buff de agilidade e inteligência"
+  },
+  "1200": {
+    "name": "Lança a Lança",
+    "description": "Lança sua lança no inimigo, dando daninho"
+  },
+  "1201": {
+    "name": "Avanço com Lança",
+    "description": "Avança com sua lança, recebendo um buff de agilidade"
+  },
+  "1202": {
+    "name": "Dança Mortal",
+    "description": "Inicia os movimentos dançarinos mortais, dando dano aos inimigos"
+  },
+  "1203": {
+    "name": "Redemoinho de Vento",
+    "description": "Começa a girar sem parar até criar um redemoinho, recebendo agilidade e dando dano aos inimigos"
+  },
+  "1204": {
+    "name": "Cravada no Peito",
+    "description": "Crava sua lança no peito de seu inimigo, causando um dano mortal"
   }
 }
