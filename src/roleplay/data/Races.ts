@@ -74,12 +74,25 @@ const Races: { [id: number]: RacesFile } = {
         facility: 'baseArmor',
       },
       {
-        boostPerLevel: 6,
+        boostPerLevel: 20,
         facility: 'maxLife',
       },
       {
         boostPerLevel: 2,
         facility: 'baseAgility',
+      },
+    ],
+  },
+  7: {
+    name: 'dwarf',
+    facilities: [
+      {
+        boostPerLevel: 3,
+        facility: 'baseAgility',
+      },
+      {
+        boostPerLevel: 12,
+        facility: 'maxLife',
       },
     ],
   },
