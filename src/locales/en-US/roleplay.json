@@ -77,9 +77,9 @@
   "battle": {
     "no-mana": "| Insufficient Mana!",
     "your-stats": "Your Stats",
-    "your-stats-info": "❤️ | Life: **{{life}}**\n💧 | Mana: **{{mana}}**\n⚔️ | Damage: **{{damage}}**\n🛡️ | Armor: **{{armor}}**\n🧠 | intelligence: **{{intelligence}}**",
+    "your-stats-info": "❤️ | Life: **{{life}}**\n💧 | Mana: **{{mana}}**\n⚔️ | Damage: **{{damage}}** | Precision: **{{chanceToConnect}}**\n🛡️ | Armor: **{{armor}}** | Dodge: **{{chanceToDodge}}**\n🧠 | intelligence: **{{intelligence}}**",
     "enemy-stats": "Enemy Statuses",
-    "enemy-stats-info": "❤️ | Life: **{{life}}**\n⚔️ | Damage: **{{damage}}**\n🛡️ | Armor: **{{armor}}**",
+    "enemy-stats-info": "❤️ | Life: **{{life}}**\n⚔️ | Damage: **{{damage}}**\n🛡️ | Armor: **{{armor}}**👢 | Agility: **{{agility}}**",
     "no-action": "You took too long to take action and were attacked!",
     "enemy-death": "You successfully kill **{{name}}**!",
     "user-death": "⚰️ | You died!\nYou died and were teleported to the Church. Rest for a while to recover.",

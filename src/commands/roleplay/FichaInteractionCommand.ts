@@ -32,6 +32,7 @@ import {
   nextLevelXp,
 } from '@roleplay/utils/Calculations';
 import { BLESSES_DIFFERENCE_LIMIT } from '@roleplay/Constants';
+import { prepareUserForDungeon } from '@roleplay/utils/AdventureUtils';
 
 export default class FichaInteractionCommand extends InteractionCommand {
   constructor() {
@@ -320,20 +321,20 @@ export default class FichaInteractionCommand extends InteractionCommand {
           )}**\n${ctx.prettyResponse('mana', 'common:roleplay.mana')}: **${getUserMaxMana(
             user,
           )}**\n**${ctx.prettyResponse('agility', 'common:roleplay.agility')}:** ${getUserAgility(
-            user,
+            prepareUserForDungeon(user),
           )}`,
           inline: true,
         },
         {
           name: ctx.locale('commands:ficha.show.battle'),
           value: `${ctx.prettyResponse('damage', 'common:roleplay.damage')}: **${getUserDamage(
-            user,
+            prepareUserForDungeon(user),
           )}**\n${ctx.prettyResponse('armor', 'common:roleplay.armor')}: **${getUserArmor(
-            user,
+            prepareUserForDungeon(user),
           )}**\n${ctx.prettyResponse(
             'intelligence',
             'common:roleplay.intelligence',
-          )}: **${getUserIntelligence(user)}**`,
+          )}: **${getUserIntelligence(prepareUserForDungeon(user))}**`,
           inline: true,
         },
       ]);
@@ -568,16 +569,16 @@ export default class FichaInteractionCommand extends InteractionCommand {
         } / ${getUserMaxMana(user)}**\n${ctx.prettyResponse(
           'damage',
           'common:roleplay.damage',
-        )}: **${getUserDamage(user)}**\n${ctx.prettyResponse(
+        )}: **${getUserDamage(prepareUserForDungeon(user))}**\n${ctx.prettyResponse(
           'armor',
           'common:roleplay.armor',
-        )}: **${getUserArmor(user)}**\n${ctx.prettyResponse(
+        )}: **${getUserArmor(prepareUserForDungeon(user))}**\n${ctx.prettyResponse(
           'intelligence',
           'common:roleplay.intelligence',
-        )}: **${getUserIntelligence(user)}**\n${ctx.prettyResponse(
+        )}: **${getUserIntelligence(prepareUserForDungeon(user))}**\n${ctx.prettyResponse(
           'agility',
           'common:roleplay.agility',
-        )}: **${getUserAgility(user)}**\n${ctx.prettyResponse(
+        )}: **${getUserAgility(prepareUserForDungeon(user))}**\n${ctx.prettyResponse(
           'coin',
           'commands:ficha.show.money',
         )}: **${user.money}**\n${ctx.prettyResponse('level', 'commands:ficha.show.level')}: **${

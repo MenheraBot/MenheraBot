@@ -79,7 +79,7 @@
     "your-stats": "Seus Status",
     "your-stats-info": "❤️ | Vida: **{{life}}**\n💧 | Mana: **{{mana}}**\n⚔️ | Dano: **{{damage}}** | Precisão: **{{chanceToConnect}}%**\n🛡️ | Defesa: **{{armor}}** | Esquiva: **{{chanceToDodge}}%**\n🧠 | Inteligência: **{{intelligence}}**\n👢 | Agilidade: **{{agility}}**",
     "enemy-stats": "Status do Inimigo",
-    "enemy-stats-info": "❤️ | Vida: **{{life}}**\n⚔️ | Dano: **{{damage}}**\n🛡️ | Defesa: **{{armor}}**",
+    "enemy-stats-info": "❤️ | Vida: **{{life}}**\n⚔️ | Dano: **{{damage}}**\n🛡️ | Defesa: **{{armor}}**\n👢 | Agilidade: **{{agility}}**",
     "no-action": "Você demorou demais para tomar uma atitude e foi atacado!",
     "enemy-death": "Você mata **{{name}}** com sucesso!",
     "user-death": "⚰️ | Você morreu!\nVocê morreu e foi teletransportado para a Igreja. Fique descansando por um tempo para se recuperar.",
@@ -94,7 +94,7 @@
     "options": {
       "hand-attack": "Ataque Básico",
       "hand-attack-description": "Dê um ataque com sua arma primária",
-      "info": "⚔️ | Dano: **{{damage}}**\n🧪 | Cura: **{{heal}}**\n💧 | Custo: **{{cost}}** {{no-mana}}",
+      "info": "⚔️ | Dano: **{{damage}}**\n💧 | Custo: **{{cost}}** {{no-mana}}",
       "available": "Opções Disponíveis"
     }
   },

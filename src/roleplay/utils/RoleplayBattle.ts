@@ -10,6 +10,8 @@ import {
   calculateAttackSuccess,
   calculateDodge,
   calculateEffectiveDamage,
+  calculateHeal,
+  calculatePoison,
   calculateUserPenetration,
   didUserDodged,
   didUserHit,
@@ -18,6 +20,7 @@ import {
   getUserArmor,
   getUserDamage,
   getUserIntelligence,
+  getUserMaxLife,
 } from './Calculations';
 import { getAbilityById } from './DataUtils';
 
@@ -37,6 +40,8 @@ export default class RoleplayBattle {
     const willEnemyStart = this.enemy.agility > getUserAgility(this.user);
     const needStop = willEnemyStart ? this.enemyAttack() : await this.userAttack();
 
+    console.log(this.user.effects, this.enemy.effects);
+
     if (!needStop) {
       const enemyStop = willEnemyStart ? await this.userAttack() : this.enemyAttack();
       this.clearEffects();
@@ -48,11 +53,22 @@ export default class RoleplayBattle {
 
   private clearEffects(): void {
     this.user.effects.forEach((a, i) => {
+      switch (a.effectType) {
+        case 'heal':
+          this.user.life = Math.min(getUserMaxLife(this.user), calculateHeal(this.user, a));
+          break;
+      }
+
       a.durationInTurns -= 1;
       if (a.durationInTurns <= 0) this.user.effects.splice(i, 1);
     });
 
     this.enemy.effects.forEach((a, i) => {
+      switch (a.effectType) {
+        case 'poison':
+          this.enemy.life -= calculatePoison(this.user, a, this.enemy.life);
+          break;
+      }
       a.durationInTurns -= 1;
       if (a.durationInTurns <= 0) this.user.effects.splice(i, 1);
     });
@@ -122,6 +138,7 @@ export default class RoleplayBattle {
             life: this.enemy.life,
             damage: this.enemy.damage,
             armor: this.enemy.armor,
+            agility: this.enemy.agility,
           }),
           inline: true,
         },
@@ -148,7 +165,6 @@ export default class RoleplayBattle {
       this.ctx.locale('roleplay:battle.options.info', {
         damage: getUserDamage(this.user),
         cost: 0,
-        heal: 0,
       }),
       true,
     );
@@ -157,8 +173,7 @@ export default class RoleplayBattle {
       embed.addField(
         this.ctx.locale(`abilities:${ability.id as 100}.name`),
         this.ctx.locale('roleplay:battle.options.info', {
-          damage: '??',
-          heal: '??',
+          damage: '`??`',
           cost: getAbilityCost(ability),
           'no-mana':
             this.user.mana < getAbilityCost(ability)
@@ -235,7 +250,15 @@ export default class RoleplayBattle {
 
             if (didConnect)
               this.enemy.life -= calculateEffectiveDamage(abilityDamage, 0, this.enemy.armor);
-          } else this.user.effects.push({ ...a, level: usedAbility.level });
+          } else if (a.effectType === 'heal' && a.durationInTurns === -1) {
+            this.user.life = Math.min(
+              getUserMaxLife(this.user),
+              calculateHeal(this.user, { ...a, level: usedAbility.level }),
+            );
+          } else if (a.target === 'self')
+            this.user.effects.push({ ...a, level: usedAbility.level });
+          else if (a.target === 'enemy')
+            this.enemy.effects.push({ ...a, level: usedAbility.level });
         });
 
         this.user.mana -= getAbilityCost(usedAbility);

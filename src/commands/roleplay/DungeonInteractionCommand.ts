@@ -88,16 +88,16 @@ export default class DungeonInteractionCommand extends InteractionCommand {
         } / ${getUserMaxMana(user)}**\n${ctx.prettyResponse(
           'armor',
           'common:roleplay.armor',
-        )}: **${getUserArmor(user)}**\n${ctx.prettyResponse(
+        )}: **${getUserArmor(prepareUserForDungeon(user))}**\n${ctx.prettyResponse(
           'damage',
           'common:roleplay.damage',
-        )}: **${getUserDamage(user)}**\n${ctx.prettyResponse(
+        )}: **${getUserDamage(prepareUserForDungeon(user))}**\n${ctx.prettyResponse(
           'intelligence',
           'common:roleplay.intelligence',
-        )}: **${getUserIntelligence(user)}**\n${ctx.prettyResponse(
+        )}: **${getUserIntelligence(prepareUserForDungeon(user))}**\n${ctx.prettyResponse(
           'agility',
           'common:roleplay.agility',
-        )}: **${getUserAgility(user)}**`,
+        )}: **${getUserAgility(prepareUserForDungeon(user))}**`,
       );
 
     const accept = new MessageButton()

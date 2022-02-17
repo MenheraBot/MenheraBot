@@ -4,6 +4,7 @@ import {
   ELEMENT_SINERGY_BONUS_IN_PERCENTAGE,
 } from '@roleplay/Constants';
 import {
+  AbilityEffect,
   ProtectionItem,
   RoleplayUserSchema,
   UserAbility,
@@ -144,7 +145,7 @@ export const getUserIntelligence = (user: UserBattleEntity): number => {
 
     let effectValue =
       c.effectValue +
-      getUserIntelligence(user) * (c.effectValueByIntelligence / 100) +
+      baseIntelligence * (c.effectValueByIntelligence / 100) +
       c.effectValuePerLevel * c.level;
 
     if (c.element === userClass.data.elementSinergy)
@@ -193,6 +194,45 @@ export const getUserAgility = (user: UserBattleEntity): number => {
   }, 0);
 
   return Math.floor(baseAgility + userEffects);
+};
+
+export const calculateHeal = (
+  user: UserBattleEntity,
+  healEffect: AbilityEffect & { level: number },
+): number => {
+  const userClass = getClassById(user.class);
+  let effectValue =
+    healEffect.effectValue +
+    getUserIntelligence(user) * (healEffect.effectValueByIntelligence / 100) +
+    healEffect.effectValuePerLevel * healEffect.level;
+
+  if (healEffect.element === userClass.data.elementSinergy)
+    effectValue += effectValue * (ELEMENT_SINERGY_BONUS_IN_PERCENTAGE / 100);
+
+  if (healEffect.effectValueModifier === 'percentage')
+    effectValue = getUserMaxLife(user) * (effectValue / 100);
+
+  return Math.floor(effectValue);
+};
+
+export const calculatePoison = (
+  user: UserBattleEntity,
+  posionEffect: AbilityEffect & { level: number },
+  enemyLife: number,
+): number => {
+  const userClass = getClassById(user.class);
+  let effectValue =
+    posionEffect.effectValue +
+    getUserIntelligence(user) * (posionEffect.effectValueByIntelligence / 100) +
+    posionEffect.effectValuePerLevel * posionEffect.level;
+
+  if (posionEffect.element === userClass.data.elementSinergy)
+    effectValue += effectValue * (ELEMENT_SINERGY_BONUS_IN_PERCENTAGE / 100);
+
+  if (posionEffect.effectValueModifier === 'percentage')
+    effectValue = enemyLife * (effectValue / 100);
+
+  return Math.floor(effectValue);
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

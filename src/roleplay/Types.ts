@@ -149,7 +149,7 @@ export interface ReadyToBattleEnemy {
   armor: number;
   experience: number;
   level: number;
-  effects: AbilityEffect[];
+  effects: Array<AbilityEffect & { level: number }>;
   loots: EnemyDrops[];
 }
 
