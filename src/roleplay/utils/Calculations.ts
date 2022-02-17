@@ -75,7 +75,7 @@ export const getUserDamage = (user: UserBattleEntity): number => {
 
     if (c.effectValueModifier === 'percentage') effectValue = baseDamage * (effectValue / 100);
 
-    if (c.effectType === 'damage_debuff') return p - effectValue;
+    if (c.effectType.endsWith('debuff')) return p - effectValue;
     return p + effectValue;
   }, 0);
 
@@ -99,7 +99,27 @@ export const getUserArmor = (user: UserBattleEntity): number => {
   const protectionArmor =
     userProtection.data.armor + userProtection.data.perLevel * user.protection.level;
 
-  return Math.floor(classArmor + raceArmor + userBlesses + protectionArmor);
+  const baseArmor = classArmor + raceArmor + userBlesses + protectionArmor;
+
+  const userEffects = user.effects.reduce((p, c) => {
+    if (c.target !== 'self') return p;
+    if (c.effectType !== 'armor_buff' && c.effectType !== 'armor_debuff') return p;
+
+    let effectValue =
+      c.effectValue +
+      getUserIntelligence(user) * (c.effectValueByIntelligence / 100) +
+      c.effectValuePerLevel * c.level;
+
+    if (c.element === userClass.data.elementSinergy)
+      effectValue += effectValue * (ELEMENT_SINERGY_BONUS_IN_PERCENTAGE / 100);
+
+    if (c.effectValueModifier === 'percentage') effectValue = baseArmor * (effectValue / 100);
+
+    if (c.effectType.endsWith('debuff')) return p - effectValue;
+    return p + effectValue;
+  }, 0);
+
+  return Math.floor(baseArmor + userEffects);
 };
 
 export const getUserIntelligence = (user: UserBattleEntity): number => {
@@ -116,7 +136,28 @@ export const getUserIntelligence = (user: UserBattleEntity): number => {
     0,
   );
 
-  return Math.floor(classIntelligence + raceIntellience + userBlesses);
+  const baseIntelligence = classIntelligence + raceIntellience + userBlesses;
+
+  const userEffects = user.effects.reduce((p, c) => {
+    if (c.target !== 'self') return p;
+    if (c.effectType !== 'intelligence_buff' && c.effectType !== 'intelligence_debuff') return p;
+
+    let effectValue =
+      c.effectValue +
+      getUserIntelligence(user) * (c.effectValueByIntelligence / 100) +
+      c.effectValuePerLevel * c.level;
+
+    if (c.element === userClass.data.elementSinergy)
+      effectValue += effectValue * (ELEMENT_SINERGY_BONUS_IN_PERCENTAGE / 100);
+
+    if (c.effectValueModifier === 'percentage')
+      effectValue = baseIntelligence * (effectValue / 100);
+
+    if (c.effectType.endsWith('debuff')) return p - effectValue;
+    return p + effectValue;
+  }, 0);
+
+  return Math.floor(baseIntelligence + userEffects);
 };
 
 export const getUserAgility = (user: UserBattleEntity): number => {
@@ -131,7 +172,27 @@ export const getUserAgility = (user: UserBattleEntity): number => {
     0,
   );
 
-  return Math.floor(classAgility + raceAgility + userBlesses);
+  const baseAgility = classAgility + raceAgility + userBlesses;
+
+  const userEffects = user.effects.reduce((p, c) => {
+    if (c.target !== 'self') return p;
+    if (c.effectType !== 'agility_buff' && c.effectType !== 'agility_debuff') return p;
+
+    let effectValue =
+      c.effectValue +
+      getUserIntelligence(user) * (c.effectValueByIntelligence / 100) +
+      c.effectValuePerLevel * c.level;
+
+    if (c.element === userClass.data.elementSinergy)
+      effectValue += effectValue * (ELEMENT_SINERGY_BONUS_IN_PERCENTAGE / 100);
+
+    if (c.effectValueModifier === 'percentage') effectValue = baseAgility * (effectValue / 100);
+
+    if (c.effectType.endsWith('debuff')) return p - effectValue;
+    return p + effectValue;
+  }, 0);
+
+  return Math.floor(baseAgility + userEffects);
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
