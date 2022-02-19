@@ -152,7 +152,13 @@ export default class FichaInteractionCommand extends InteractionCommand {
             a.level
           }**\n${ctx.prettyResponse('experience', 'common:roleplay.blesses')}: **${
             a.blesses
-          } / ${getAbilityNextLevelBlessings(a.level)}**`,
+          } / ${getAbilityNextLevelBlessings(a.level)}**\n${ctx.prettyResponse(
+            'mana',
+            'commands:ficha.show.abilities.nextCost',
+          )}: **${(() => {
+            const ability = getAbilityById(a.id);
+            return ability.data.cost + ability.data.costPerLevel * (a.level + 1);
+          })()}**`,
         );
       });
 

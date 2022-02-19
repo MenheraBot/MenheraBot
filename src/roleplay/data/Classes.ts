@@ -208,7 +208,7 @@ const Classes: { [id: number]: ClassesFile } = {
       maxMana: 8,
       baseIntelligence: 5,
     },
-    starterAbility: 1200,
+    starterAbility: 1100,
   },
   12: {
     name: 'lancer',
@@ -227,7 +227,7 @@ const Classes: { [id: number]: ClassesFile } = {
       maxMana: 5,
       baseIntelligence: 3,
     },
-    starterAbility: 1100,
+    starterAbility: 1200,
   },
 };
 

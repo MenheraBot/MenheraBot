@@ -41,8 +41,6 @@ export default class RoleplayBattle {
     const willEnemyStart = this.enemy.agility > getUserAgility(this.user);
     const needStop = willEnemyStart ? this.enemyAttack() : await this.userAttack();
 
-    console.log(this.user.effects, this.enemy.effects);
-
     if (!needStop) {
       const enemyStop = willEnemyStart ? await this.userAttack() : this.enemyAttack();
       this.clearEffects();
@@ -94,7 +92,9 @@ export default class RoleplayBattle {
 
     if (isDead(this.user)) {
       this.lastText = this.ctx.locale('roleplay:battle.user-death');
+      return true;
     }
+
     this.lastText = `${this.lastText}\n${this.ctx.locale('roleplay:battle.deffend-text', {
       enemy: this.ctx.locale(`enemies:${this.enemy.id as 1}.name`),
       damage: didDodged ? this.ctx.locale('roleplay:battle.dodged') : effectiveDamage,
@@ -247,10 +247,11 @@ export default class RoleplayBattle {
 
         parsedAbility.data.effects.forEach((a) => {
           if (a.effectType === 'damage') {
-            const abilityDamage =
+            const abilityDamage = Math.floor(
               a.effectValue +
-              getUserIntelligence(this.user) * (a.effectValueByIntelligence / 100) +
-              a.effectValuePerLevel * usedAbility.level;
+                getUserIntelligence(this.user) * (a.effectValueByIntelligence / 100) +
+                a.effectValuePerLevel * usedAbility.level,
+            );
 
             damageDealt = abilityDamage;
 
