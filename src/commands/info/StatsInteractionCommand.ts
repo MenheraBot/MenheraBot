@@ -382,7 +382,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
           });
         return p;
       },
-      [],
+      [[]],
     );
 
     const ts = new Transform({
