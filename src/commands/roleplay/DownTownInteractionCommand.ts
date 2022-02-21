@@ -39,6 +39,29 @@ export default class DowntownInteractionCommand extends InteractionCommand {
       category: 'roleplay',
       options: [
         {
+          name: 'biblioteca',
+          description: '【ＲＰＧ】📖 | Veja informações sobre o Mundo de Boleham',
+          type: 'SUB_COMMAND',
+          options: [
+            {
+              name: 'sessao',
+              description: 'Tu tá procurando informações sobre o que?',
+              type: 'STRING',
+              required: true,
+              choices: [
+                { name: 'habilidades', value: 'abilities' },
+                { name: 'itens', value: 'items' },
+              ],
+            },
+            {
+              name: 'id',
+              description: 'ID do objeto que você está procurando',
+              type: 'INTEGER',
+              required: true,
+            },
+          ],
+        },
+        {
           name: 'guilda',
           description: '【ＲＰＧ】🏠 | Retire quests e reivindique-as',
           type: 'SUB_COMMAND',
@@ -86,8 +109,48 @@ export default class DowntownInteractionCommand extends InteractionCommand {
 
     if (option === 'ferreiro') return DowntownInteractionCommand.blacksmith(ctx, user);
 
+    if (option === 'biblioteca') return DowntownInteractionCommand.library(ctx, user);
+
     if (option === 'guilda')
       ctx.makeMessage({ content: ctx.prettyResponse('wink', 'common:soon'), ephemeral: true });
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  static async library(ctx: InteractionCommandContext, user: RoleplayUserSchema): Promise<void> {
+    ctx.makeMessage({ content: ctx.prettyResponse('wink', 'common:soon'), ephemeral: true });
+
+    /* const bookId = ctx.options.getNumber('id', true);
+    const selectedOption = ctx.options.getString('sessao', true);
+
+    const embed = new MessageEmbed()
+      .setTitle(
+        ctx.locale('commands:centro.library.title', {
+          session: ctx.locale(`commands:centro.library.${selectedOption as 'items'}.title`),
+        }),
+      )
+      .setColor(ctx.data.user.selectedColor);
+
+    switch (selectedOption) {
+      case 'items': {
+        const item = getItemById(bookId);
+
+        if (item.data === null) {
+          ctx.makeMessage({
+            content: ctx.prettyResponse('error', 'commands:centro.library.items.not-found'),
+          });
+          return;
+        }
+
+        embed.setDescription(
+          `**${ctx.locale('commands:centro.library.items.name')}**: ${ctx.locale(
+            `items:${bookId as 1}.name`,
+          )}`,
+        );
+        ctx.makeMessage({ embeds: [embed] });
+        return;
+      }
+    }
+    console.log(user.life); */
   }
 
   static async blacksmith(ctx: InteractionCommandContext, user: RoleplayUserSchema): Promise<void> {
@@ -400,7 +463,7 @@ export default class DowntownInteractionCommand extends InteractionCommand {
         totalCost,
         itemName: ctx.locale(`items:${toBuyItemId as 1}.name`),
         amount: toBuyAmount,
-        emojiCoin: emojis.coin,
+        coinEmoji: emojis.coin,
       }),
     });
   }
@@ -492,7 +555,10 @@ export default class DowntownInteractionCommand extends InteractionCommand {
     });
 
     ctx.makeMessage({
-      content: ctx.prettyResponse('success', 'commands:centro.sell.success', { value: itemValues }),
+      content: ctx.prettyResponse('success', 'commands:centro.sell.success', {
+        value: itemValues,
+        coinEmoji: emojis.coin,
+      }),
       components: [],
       embeds: [],
     });

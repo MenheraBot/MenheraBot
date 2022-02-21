@@ -782,6 +782,19 @@
     "use-description": "Nível: **{{level}}**\nRegeneração: **{{regeneration}}**"
   },
   "centro": {
+    "library": {
+      "title": "📖 | Biblioteca de Boleham | {{session}}",
+      "abilities": "Habilidades",
+      "items": {
+        "not-found": "Este item não existe!",
+        "title": "Items",
+        "name": "Nome",
+        "buy-cost": "Custo de Mercado",
+        "sell-cost": "Custo de Venda",
+        "type": "Tipo",
+        "flags": "Flags"
+      }
+    },
     "blacksmith": {
       "title": "Ferreiro",
       "backpack-description": "**{{name}}**\nCapacidade: **{{capacity}}**\nNível: **{{level}}**",
@@ -798,7 +811,7 @@
       "select": "Selecione os itens à comprar",
       "select-amount": "Selecione a Quantidade que queres comprar",
       "poor": "Tu não possui **{{amount}}** {{coinEmoji}} para comprar tudo isso!",
-      "success": "Tu compraste **{{amount}} {{itemName}}** por **{{totalCost}}** {{emojiCoin}}",
+      "success": "Tu compraste **{{amount}} {{itemName}}** por **{{totalCost}}** {{coinEmoji}}",
       "inventory-full": "Tu não tens espaço o suficiente para armazenar todos esses itens! Melhore sua mochila pobrinho!",
       "consumable-desc": "Custo: **{{cost}}** {{coinEmoji}}\nRegeneração: **{{boostValue}}** {{boostEmoji}}"
     },

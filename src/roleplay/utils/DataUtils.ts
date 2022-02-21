@@ -78,7 +78,10 @@ export const getItemsByFlagsAndType = <T extends ItemsFile>(
     )
     .map((c) => ({ id: Number(c[0]), data: c[1] })) as unknown as IReturnData<T>[];
 
-export const getItemById = <T extends ItemsFile>(itemId: number): IReturnData<T> =>
-  Object.entries(Items)
-    .filter((c) => Number(c[0]) === itemId)
-    .map((c) => ({ id: Number(c[0]), data: c[1] }))[0] as unknown as IReturnData<T>;
+export const getItemById = <T extends ItemsFile>(itemId: number): IReturnData<T> => {
+  const foundItem = Object.entries(Items).filter((c) => Number(c[0]) === itemId);
+
+  if (foundItem.length === 0) return { id: itemId, data: null as unknown as T };
+
+  return foundItem.map((c) => ({ id: Number(c[0]), data: c[1] }))[0] as unknown as IReturnData<T>;
+};
