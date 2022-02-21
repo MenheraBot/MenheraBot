@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
-## [Unreleased]
+## [4.0.F-BETA]
 
 ### Added
 
@@ -13,8 +13,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ### Fixed
 
-- O dano das habilidads está sendo arredondado
+- O dano das habilidades está sendo arredondado
 - Usuários param de batalhar ao morrer
+- Comando de status de shard foi remodelado para caber todos os shards
 
 ## [4.0.E-BETA] - 2022-02-17
 

@@ -340,7 +340,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
       return { ping, status, uptime, guilds, memoryUsed };
     });
 
-    const tabled = extendedShardsInfo.reduce(
+    const shardsData = extendedShardsInfo.reduce(
       (
         p: Array<{
           Ping: string;
@@ -348,7 +348,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
           Uptime: string;
           Ram: string;
           Guilds: number;
-        }>,
+        }>[],
         c,
       ) => {
         const conninfo = {
@@ -362,13 +362,24 @@ export default class StatsInteractionCommand extends InteractionCommand {
           7: 'IDENTIFYING',
           8: 'RESUMING',
         };
-        p.push({
-          Ping: `${c.ping}ms`,
-          Status: conninfo[c.status as keyof typeof conninfo],
-          Uptime: moment.duration(c.uptime).format('D[d], H[h], m[m], s[s]'),
-          Ram: `${(c.memoryUsed / 1024 / 1024).toFixed(2)} MB`,
-          Guilds: c.guilds,
-        });
+        if (p[p.length - 1].length >= 15)
+          p.push([
+            {
+              Ping: `${c.ping}ms`,
+              Status: conninfo[c.status as keyof typeof conninfo],
+              Uptime: moment.duration(c.uptime).format('D[d], H[h], m[m], s[s]'),
+              Ram: `${(c.memoryUsed / 1024 / 1024).toFixed(2)} MB`,
+              Guilds: c.guilds,
+            },
+          ]);
+        else
+          p[p.length - 1].push({
+            Ping: `${c.ping}ms`,
+            Status: conninfo[c.status as keyof typeof conninfo],
+            Uptime: moment.duration(c.uptime).format('D[d], H[h], m[m], s[s]'),
+            Ram: `${(c.memoryUsed / 1024 / 1024).toFixed(2)} MB`,
+            Guilds: c.guilds,
+          });
         return p;
       },
       [],
@@ -381,19 +392,21 @@ export default class StatsInteractionCommand extends InteractionCommand {
     });
     const logger = new Console({ stdout: ts });
 
-    const getTable = (data: typeof tabled) => {
+    const getTable = (data: typeof shardsData[0]) => {
       logger.table(data);
       return (ts.read() || '').toString();
     };
 
-    const stringTable = getTable(tabled);
-    await ctx.makeMessage({
-      content: `\`\`\`${stringTable
-        .replace('(index)', ' Shard ')
-        .replace(/'/g, ' ')
-        .slice(0, 1992)}\`\`\``,
-      embeds: [],
-      components: [],
+    shardsData.forEach((a) => {
+      const stringTable = getTable(a);
+      ctx.makeMessage({
+        content: `\`\`\`${stringTable
+          .replace('(index)', ' Shard ')
+          .replace(/'/g, ' ')
+          .slice(0, 1992)}\`\`\``,
+        embeds: [],
+        components: [],
+      });
     });
   }
 
