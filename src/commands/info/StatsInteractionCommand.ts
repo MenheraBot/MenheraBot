@@ -336,54 +336,81 @@ export default class StatsInteractionCommand extends InteractionCommand {
       const { uptime } = c.ws.client;
       const guilds = c.guilds.cache.size;
       const memoryUsed = process.memoryUsage().heapUsed;
+      const shardId = c.shard?.ids[0] ?? 0;
 
-      return { ping, status, uptime, guilds, memoryUsed };
+      return { ping, status, uptime, guilds, memoryUsed, shardId };
     });
 
-    const shardsData = extendedShardsInfo.reduce(
-      (
-        p: Array<{
-          Ping: string;
-          Status: string;
-          Uptime: string;
-          Ram: string;
-          Guilds: number;
-        }>[],
-        c,
-      ) => {
-        const conninfo = {
-          0: 'READY',
-          1: 'CONNECTING',
-          2: 'RECONNECTING',
-          3: 'IDLE',
-          4: 'NEARLY',
-          5: 'DISCONNECTED',
-          6: 'WAITING_FOR_GUILDS',
-          7: 'IDENTIFYING',
-          8: 'RESUMING',
-        };
-        if (p[p.length - 1].length >= 15)
-          p.push([
-            {
+    const shardsData: {
+      [id: number]: {
+        Ping: string;
+        Status: string;
+        Uptime: string;
+        Ram: string;
+        Guilds: number;
+      };
+    }[] = extendedShardsInfo
+      .reduce(
+        (
+          p: Array<{
+            Ping: string;
+            ShardId: number;
+            Status: string;
+            Uptime: string;
+            Ram: string;
+            Guilds: number;
+          }>[],
+          c,
+        ) => {
+          const conninfo = {
+            0: 'READY',
+            1: 'CONNECTING',
+            2: 'RECONNECTING',
+            3: 'IDLE',
+            4: 'NEARLY',
+            5: 'DISCONNECTED',
+            6: 'WAITING_FOR_GUILDS',
+            7: 'IDENTIFYING',
+            8: 'RESUMING',
+          };
+          if (p[p.length - 1].length >= 15)
+            p.push([
+              {
+                Ping: `${c.ping}ms`,
+                Status: conninfo[c.status as keyof typeof conninfo],
+                Uptime: moment.duration(c.uptime).format('D[d], H[h], m[m], s[s]'),
+                Ram: `${(c.memoryUsed / 1024 / 1024).toFixed(2)} MB`,
+                Guilds: c.guilds,
+                ShardId: c.shardId,
+              },
+            ]);
+          else
+            p[p.length - 1].push({
+              ShardId: c.shardId,
               Ping: `${c.ping}ms`,
               Status: conninfo[c.status as keyof typeof conninfo],
               Uptime: moment.duration(c.uptime).format('D[d], H[h], m[m], s[s]'),
               Ram: `${(c.memoryUsed / 1024 / 1024).toFixed(2)} MB`,
               Guilds: c.guilds,
-            },
-          ]);
-        else
-          p[p.length - 1].push({
-            Ping: `${c.ping}ms`,
-            Status: conninfo[c.status as keyof typeof conninfo],
-            Uptime: moment.duration(c.uptime).format('D[d], H[h], m[m], s[s]'),
-            Ram: `${(c.memoryUsed / 1024 / 1024).toFixed(2)} MB`,
-            Guilds: c.guilds,
-          });
-        return p;
-      },
-      [[]],
-    );
+            });
+          return p;
+        },
+        [[]],
+      )
+      .map((a) =>
+        a.reduce<{
+          [id: number]: {
+            Ping: string;
+            Status: string;
+            Uptime: string;
+            Ram: string;
+            Guilds: number;
+          };
+        }>((acc, { ShardId, ...x }) => {
+          acc[ShardId] = x;
+          return acc;
+        }, {}),
+      );
 
     const ts = new Transform({
       transform(chunk, _, cb) {
@@ -399,7 +426,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
 
     shardsData.forEach((a) => {
       const stringTable = getTable(a);
-      ctx.makeMessage({
+      ctx.send({
         content: `\`\`\`${stringTable
           .replace('(index)', ' Shard ')
           .replace(/'/g, ' ')
