@@ -424,16 +424,24 @@ export default class StatsInteractionCommand extends InteractionCommand {
       return (ts.read() || '').toString();
     };
 
-    shardsData.forEach((a) => {
+    shardsData.forEach((a, i) => {
       const stringTable = getTable(a);
-      ctx.send({
-        content: `\`\`\`${stringTable
-          .replace('(index)', ' Shard ')
-          .replace(/'/g, ' ')
-          .slice(0, 1992)}\`\`\``,
-        embeds: [],
-        components: [],
-      });
+      if (i === 0)
+        ctx.makeMessage({
+          content: `\`\`\`${stringTable
+            .replace('(index)', ' Shard ')
+            .replace(/'/g, ' ')
+            .slice(0, 1992)}\`\`\``,
+          embeds: [],
+          components: [],
+        });
+      else
+        ctx.send({
+          content: `\`\`\`${stringTable
+            .replace('(index)', ' Shard ')
+            .replace(/'/g, ' ')
+            .slice(0, 1992)}\`\`\``,
+        });
     });
   }
 
