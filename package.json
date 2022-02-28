@@ -1,6 +1,6 @@
 {
   "name": "menhera-bot",
-  "version": "4.0.F-BETA",
+  "version": "4.0.G-BETA",
   "engines": {
     "node": ">=16.6.0"
   },
