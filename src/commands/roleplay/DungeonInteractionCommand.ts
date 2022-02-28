@@ -354,7 +354,7 @@ export default class DungeonInteractionCommand extends InteractionCommand {
 
       if (resolveCustomId(selectedItem.customId) === 'ITEM') {
         if ((selectedItem as SelectMenuInteraction).values.includes('ALL'))
-          addToInventory(lootEarned, user.inventory);
+          addToInventory(lootEarned, battleResults.user.inventory);
         else {
           const resolvedItems = (selectedItem as SelectMenuInteraction).values.map((a) => {
             const [id, itemLevel] = resolveSeparatedStrings(a);
@@ -391,7 +391,7 @@ export default class DungeonInteractionCommand extends InteractionCommand {
           );
           const toRegenType = item.data.boostType;
 
-          user[toRegenType] += toRegenValue;
+          battleResults.user[toRegenType] += toRegenValue;
           removeFromInventory(
             [{ id: Number(itemId), level: Number(itemLevel) }],
             battleResults.user.inventory,
