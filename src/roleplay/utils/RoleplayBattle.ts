@@ -28,7 +28,7 @@ import { getAbilityById } from './DataUtils';
 export default class RoleplayBattle {
   public missedAttacks = 0;
 
-  private readonly TIME_TO_SELECT = 12_000;
+  private readonly TIME_TO_SELECT = 15_000;
 
   constructor(
     public user: UserBattleEntity,
