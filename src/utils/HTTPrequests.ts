@@ -205,6 +205,7 @@ export default class HttpRequests {
   }
 
   static async userWinBicho(gameId: number): Promise<void> {
+    if (!gameId) return;
     await apiRequest.patch('/bicho/win', { gameId });
   }
 
