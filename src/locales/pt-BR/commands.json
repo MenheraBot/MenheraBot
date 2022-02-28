@@ -766,6 +766,7 @@
       "item-title": "Espólios de Batalha",
       "backpack-full": "Você não tem espaço suficiente para pegar os itens dropados!",
       "grab": "Selecione os itens que você quer",
+      "get-all-items": "Pegar Todos Itens",
       "use-potion": "Selecione as poções que queres usar",
       "back": "Você retornou para a cidade, descanse um pouco antes de ir para outra aventura!",
       "footer": "Caso queira algum item, faça-o antes de ir para outro lugar",
@@ -818,6 +819,7 @@
     "sell": {
       "title": "Mercado de Boleham | Vender",
       "no-items": "Você não possui nenhum item para vender",
+      "sell-all": "Vender Todos Itens",
       "success": "Você vendeus seus itens por **{{value}}** {{coinEmoji}} Moedas Reais com sucesso!"
     }
   },

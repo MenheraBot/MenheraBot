@@ -16,7 +16,7 @@ export const ELEMENT_SINERGY_BONUS_IN_PERCENTAGE = 5;
 
 export const ROLEPLAY_COOLDOWNS = {
   dungeonCooldown: 3_600_000,
-  deathCooldown: 14_400_000,
+  deathPunishment: 3_600_000,
 };
 
 export const LEVEL_UP_BLESSES: { [level: number]: HolyBlessings } = {

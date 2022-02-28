@@ -483,7 +483,9 @@ export default class DowntownInteractionCommand extends InteractionCommand {
       return;
     }
 
-    const selectMenu = new MessageSelectMenu().setCustomId(`${ctx.interaction.id} | SELL`);
+    const selectMenu = new MessageSelectMenu()
+      .setCustomId(`${ctx.interaction.id} | SELL`)
+      .addOptions({ label: ctx.locale('commands:centro.sell.sell-all'), value: 'ALL' });
 
     const embed = new MessageEmbed()
       .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true }))
@@ -532,6 +534,28 @@ export default class DowntownInteractionCommand extends InteractionCommand {
       ctx.makeMessage({
         components: [actionRow(disableComponents(ctx.locale('common:timesup'), [selectMenu]))],
       });
+      return;
+    }
+
+    if (selectedItems.values.includes('ALL')) {
+      const totalMoney = sellableItems.reduce((p, c) => {
+        const resolvedItem = getItemById<DropItem>(c.id);
+        const itemValue =
+          (resolvedItem.data.marketValue + resolvedItem.data.perLevel * c.level) * c.amount;
+        user.money += itemValue;
+        removeFromInventory(Array(c.amount).fill({ id: c.id, level: c.level }), user.inventory);
+        return p + itemValue;
+      }, 0);
+
+      ctx.makeMessage({
+        content: ctx.prettyResponse('success', 'commands:centro.sell.success', {
+          value: totalMoney,
+          coinEmoji: emojis.coin,
+        }),
+        embeds: [],
+        components: [],
+      });
+
       return;
     }
 

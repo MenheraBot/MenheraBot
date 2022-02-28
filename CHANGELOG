@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ## [Unreleased]
 
+### Added
+
+- Adicionado a opção de selecionar todos itens no final da batalha da dungeon e ao vender os loots no centro
+
+### Changed
+
+- O tempo de morte foi aumentado em `Tempo da Igreja + 1 hora`
+
 ### Fixed
 
 - Arrumado problema da API ficar caindo por conta do jogo do bihco.

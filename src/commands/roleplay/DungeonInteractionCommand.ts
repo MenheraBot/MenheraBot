@@ -172,7 +172,7 @@ export default class DungeonInteractionCommand extends InteractionCommand {
 
       makeCooldown(user.cooldowns, {
         reason: 'church',
-        until: prayToMaximize * 60000 + Date.now(),
+        until: prayToMaximize * 60000 + Date.now() + ROLEPLAY_COOLDOWNS.deathPunishment,
         data: 'DEATH',
       });
 
@@ -278,7 +278,8 @@ export default class DungeonInteractionCommand extends InteractionCommand {
       const selectItems = new MessageSelectMenu()
         .setCustomId(`${ctx.interaction.id} | ITEM`)
         .setMinValues(1)
-        .setPlaceholder(ctx.locale('commands:dungeon.results.grab'));
+        .setPlaceholder(ctx.locale('commands:dungeon.results.grab'))
+        .addOptions({ label: ctx.locale('commands:dungeon.results.get-all-items'), value: 'ALL' });
 
       let itemText = '';
 
@@ -335,12 +336,17 @@ export default class DungeonInteractionCommand extends InteractionCommand {
       }
 
       if (resolveCustomId(selectedItem.customId) === 'ITEM') {
-        const resolvedItems = (selectedItem as SelectMenuInteraction).values.map((a) => {
-          const [id, itemLevel] = resolveSeparatedStrings(a);
-          return { id: Number(id), level: Number(itemLevel) };
-        });
+        if ((selectedItem as SelectMenuInteraction).values.includes('ALL'))
+          addToInventory(lootEarned, user.inventory);
+        else {
+          const resolvedItems = (selectedItem as SelectMenuInteraction).values.map((a) => {
+            const [id, itemLevel] = resolveSeparatedStrings(a);
+            return { id: Number(id), level: Number(itemLevel) };
+          });
 
-        addToInventory(resolvedItems, user.inventory);
+          addToInventory(resolvedItems, user.inventory);
+        }
+
         await ctx.client.repositories.roleplayRepository.updateUser(ctx.author.id, {
           inventory: user.inventory,
         });
