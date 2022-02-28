@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ### Added
 
+- Usuários podem tentar fugir de uma batalha a qualquer momento.
 - Adicionado a opção de selecionar todos itens no final da batalha da dungeon e ao vender os loots no centro
 
 ### Changed
@@ -19,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Fixed
 
 - Arrumado problema da API ficar caindo por conta do jogo do bihco.
+- Creio que MUITOS bugs podem ter sido resolvidos pois percebi que um sistema no comando de Dungeon estava pegando o usuário antes da batalha para fazer os cálculos.
 - A cura de efeitos de habilidades settava a vida ao invés de somar.
 
 ## [4.0.F-BETA] - 2022-02-21

@@ -149,9 +149,9 @@ export default class DungeonInteractionCommand extends InteractionCommand {
       }),
     ).battleLoop();
 
-    if (isDead(user)) {
-      const userMaxLife = getUserMaxLife(user);
-      const userMaxMana = getUserMaxMana(user);
+    if (isDead(battleResults.user)) {
+      const userMaxLife = getUserMaxLife(battleResults.user);
+      const userMaxMana = getUserMaxMana(battleResults.user);
       const lifePerCicle =
         BASE_LIFE_PER_CICLE +
         Math.floor(userMaxLife / MAX_USER_LIFE_TO_MULTIPLY) * BASE_LIFE_PER_CICLE;
@@ -170,32 +170,45 @@ export default class DungeonInteractionCommand extends InteractionCommand {
         content: ctx.locale('roleplay:battle.user-death'),
       });
 
-      makeCooldown(user.cooldowns, {
+      makeCooldown(battleResults.user.cooldowns, {
         reason: 'church',
         until: prayToMaximize * 60000 + Date.now() + ROLEPLAY_COOLDOWNS.deathPunishment,
         data: 'DEATH',
       });
 
-      user.life = getUserMaxLife(user);
-      user.mana = getUserMaxMana(user);
+      battleResults.user.life = getUserMaxLife(battleResults.user);
+      battleResults.user.mana = getUserMaxMana(battleResults.user);
 
-      await ctx.client.repositories.roleplayRepository.postBattle(ctx.author.id, user);
+      await ctx.client.repositories.roleplayRepository.postBattle(
+        ctx.author.id,
+        battleResults.user,
+      );
+      return;
+    }
+
+    if (battleResults.didRunaway) {
+      await ctx.client.repositories.roleplayRepository.postBattle(
+        ctx.author.id,
+        battleResults.user,
+      );
       return;
     }
 
     const lootEarned = getEnemyLoot(enemy.loots);
 
-    user.experience += Math.floor(battleResults.enemy.experience);
+    battleResults.user.experience += Math.floor(battleResults.enemy.experience);
 
-    const oldUserLevel = user.level;
+    const oldUserLevel = battleResults.user.level;
 
-    makeLevelUp(user);
+    makeLevelUp(battleResults.user);
 
-    if (user.level > oldUserLevel) {
-      user.life = getUserMaxLife(user);
-      user.mana = getUserMaxMana(user);
+    if (battleResults.user.level > oldUserLevel) {
+      battleResults.user.life = getUserMaxLife(battleResults.user);
+      battleResults.user.mana = getUserMaxMana(battleResults.user);
       ctx.send({
-        content: ctx.prettyResponse('level', 'common:roleplay.level-up', { level: user.level }),
+        content: ctx.prettyResponse('level', 'common:roleplay.level-up', {
+          level: battleResults.user.level,
+        }),
         ephemeral: true,
       });
     }
@@ -205,17 +218,17 @@ export default class DungeonInteractionCommand extends InteractionCommand {
       until: ROLEPLAY_COOLDOWNS.dungeonCooldown + Date.now(),
     });
 
-    await ctx.client.repositories.roleplayRepository.postBattle(ctx.author.id, user);
+    await ctx.client.repositories.roleplayRepository.postBattle(ctx.author.id, battleResults.user);
 
     const embed = new MessageEmbed()
       .setTitle(ctx.prettyResponse('crown', 'commands:dungeon.results.title'))
       .setColor(COLORS.Purple)
       .setDescription(
         ctx.locale('commands:dungeon.results.description', {
-          life: user.life,
-          mana: user.mana,
-          maxLife: getUserMaxLife(user),
-          maxMana: getUserMaxMana(user),
+          life: battleResults.user.life,
+          mana: battleResults.user.mana,
+          maxLife: getUserMaxLife(battleResults.user),
+          maxMana: getUserMaxMana(battleResults.user),
         }),
       );
 
@@ -245,13 +258,13 @@ export default class DungeonInteractionCommand extends InteractionCommand {
       actionRow([runawayButton]),
     ];
 
-    if (user.inventory.some((a) => getItemById(a.id).data.type === 'potion')) {
+    if (battleResults.user.inventory.some((a) => getItemById(a.id).data.type === 'potion')) {
       const selectPotions = new MessageSelectMenu()
         .setCustomId(`${ctx.interaction.id} | POTION`)
         .setMinValues(1)
         .setPlaceholder(ctx.locale('commands:dungeon.results.use-potion'));
 
-      user.inventory.forEach((c) => {
+      battleResults.user.inventory.forEach((c) => {
         const item = getItemById(c.id);
         if (item.data.type === 'potion') {
           if (selectPotions.options.length < 25) {
@@ -269,7 +282,7 @@ export default class DungeonInteractionCommand extends InteractionCommand {
       toSendComponents.push(actionRow([selectPotions]));
     }
 
-    if (isInventoryFull(user)) {
+    if (isInventoryFull(battleResults.user)) {
       embed.addField(
         ctx.prettyResponse('chest', 'commands:dungeon.results.item-title'),
         ctx.locale('commands:dungeon.results.backpack-full'),
@@ -296,7 +309,7 @@ export default class DungeonInteractionCommand extends InteractionCommand {
         });
       });
 
-      const freeInventorySpace = getFreeInventorySpace(user);
+      const freeInventorySpace = getFreeInventorySpace(battleResults.user);
 
       selectItems.setMaxValues(
         selectItems.options.length > freeInventorySpace
@@ -344,11 +357,11 @@ export default class DungeonInteractionCommand extends InteractionCommand {
             return { id: Number(id), level: Number(itemLevel) };
           });
 
-          addToInventory(resolvedItems, user.inventory);
+          addToInventory(resolvedItems, battleResults.user.inventory);
         }
 
         await ctx.client.repositories.roleplayRepository.updateUser(ctx.author.id, {
-          inventory: user.inventory,
+          inventory: battleResults.user.inventory,
         });
 
         toSendComponents.splice(
@@ -375,24 +388,29 @@ export default class DungeonInteractionCommand extends InteractionCommand {
           const toRegenType = item.data.boostType;
 
           user[toRegenType] += toRegenValue;
-          removeFromInventory([{ id: Number(itemId), level: Number(itemLevel) }], user.inventory);
+          removeFromInventory(
+            [{ id: Number(itemId), level: Number(itemLevel) }],
+            battleResults.user.inventory,
+          );
         });
 
-        if (user.life > getUserMaxLife(user)) user.life = getUserMaxLife(user);
-        if (user.mana > getUserMaxMana(user)) user.mana = getUserMaxMana(user);
+        if (battleResults.user.life > getUserMaxLife(battleResults.user))
+          battleResults.user.life = getUserMaxLife(battleResults.user);
+        if (battleResults.user.mana > getUserMaxMana(battleResults.user))
+          battleResults.user.mana = getUserMaxMana(battleResults.user);
 
         await ctx.client.repositories.roleplayRepository.updateUser(ctx.author.id, {
-          mana: user.mana,
-          life: user.life,
-          inventory: user.inventory,
+          mana: battleResults.user.mana,
+          life: battleResults.user.life,
+          inventory: battleResults.user.inventory,
         });
 
         embed.setDescription(
           ctx.locale('commands:dungeon.results.description', {
-            life: user.life,
-            mana: user.mana,
-            maxLife: getUserMaxLife(user),
-            maxMana: getUserMaxMana(user),
+            life: battleResults.user.life,
+            mana: battleResults.user.mana,
+            maxLife: getUserMaxLife(battleResults.user),
+            maxMana: getUserMaxMana(battleResults.user),
           }),
         );
 
@@ -420,10 +438,20 @@ export default class DungeonInteractionCommand extends InteractionCommand {
           break;
         }
         case 'NEXT': {
-          return DungeonInteractionCommand.DungeonLoop(ctx, user, dungeonLevel + 1, 0);
+          return DungeonInteractionCommand.DungeonLoop(
+            ctx,
+            battleResults.user,
+            dungeonLevel + 1,
+            0,
+          );
         }
         case 'CONTINUE': {
-          return DungeonInteractionCommand.DungeonLoop(ctx, user, dungeonLevel, killedMobs + 1);
+          return DungeonInteractionCommand.DungeonLoop(
+            ctx,
+            battleResults.user,
+            dungeonLevel,
+            killedMobs + 1,
+          );
         }
       }
     };

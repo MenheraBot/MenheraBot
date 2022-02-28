@@ -266,6 +266,13 @@ export const calculatePoison = (
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const calculateUserPenetration = (user: UserBattleEntity): number => 0;
 
+export const calculateRunawaySuccess = (userAgility: number, enemyAgility: number): number => {
+  const agilityDiff = Math.max((enemyAgility - userAgility) / 100, 0);
+  const sigmoid = 60 / (1 + Math.E ** -agilityDiff);
+
+  return sigmoid;
+};
+
 export const calculateDodge = (userAgility: number, enemyAgility: number): number => {
   const agilityDiff = Math.max((userAgility - enemyAgility) / 100, 0);
   const sigmoid = 20 / (1 + Math.E ** -agilityDiff);

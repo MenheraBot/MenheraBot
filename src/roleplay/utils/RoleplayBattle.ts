@@ -12,6 +12,7 @@ import {
   calculateEffectiveDamage,
   calculateHeal,
   calculatePoison,
+  calculateRunawaySuccess,
   calculateUserPenetration,
   didUserDodged,
   didUserHit,
@@ -27,6 +28,8 @@ import { getAbilityById } from './DataUtils';
 
 export default class RoleplayBattle {
   public missedAttacks = 0;
+
+  public didRunaway = false;
 
   private readonly TIME_TO_SELECT = 15_000;
 
@@ -158,27 +161,47 @@ export default class RoleplayBattle {
     const options = new MessageSelectMenu()
       .setCustomId(`${this.ctx.interaction.id} | SELECT`)
       .setPlaceholder(this.ctx.locale('roleplay:battle.select'))
-      .addOptions({
-        label: this.ctx.locale('roleplay:battle.options.hand-attack'),
-        value: 'HANDATTACK',
-        description: this.ctx
-          .locale('roleplay:battle.options.hand-attack-description')
-          .substring(0, 100),
-      });
+      .addOptions(
+        {
+          label: this.ctx.locale('roleplay:battle.options.hand-attack'),
+          value: 'HANDATTACK',
+          description: this.ctx
+            .locale('roleplay:battle.options.hand-attack-description')
+            .substring(0, 100),
+        },
+        {
+          label: this.ctx.locale('roleplay:battle.options.runaway'),
+          value: 'RUNAWAY',
+          description: this.ctx.locale('roleplay:battle.options.runaway-description'),
+        },
+      );
 
-    embed.addField(
-      this.ctx.locale('roleplay:battle.options.hand-attack'),
-      this.ctx.locale('roleplay:battle.options.info', {
-        damage: getUserDamage(this.user),
-        cost: 0,
-      }),
-      true,
-    );
+    embed.addFields([
+      {
+        name: this.ctx.locale('roleplay:battle.options.hand-attack'),
+        value: this.ctx.locale('roleplay:battle.options.attack-info', {
+          damage: getUserDamage(this.user),
+          chanceToConnect: (
+            100 - calculateAttackSuccess(getUserAgility(this.user), this.enemy.agility)
+          ).toFixed(2),
+        }),
+        inline: true,
+      },
+      {
+        name: this.ctx.locale('roleplay:battle.options.runaway'),
+        value: this.ctx.locale('roleplay:battle.options.runaway-info', {
+          chance: (
+            100 - calculateRunawaySuccess(getUserAgility(this.user), this.enemy.agility)
+          ).toFixed(2),
+        }),
+        inline: true,
+      },
+    ]);
 
     this.user.abilities.forEach((ability) => {
       embed.addField(
         this.ctx.locale(`abilities:${ability.id as 100}.name`),
-        this.ctx.locale('roleplay:battle.options.info', {
+        this.ctx.locale('roleplay:battle.options.ability-info', {
           damage: '`??`',
           cost: getAbilityCost(ability),
           'no-mana':
@@ -234,6 +257,20 @@ export default class RoleplayBattle {
           attack: this.ctx.locale(`roleplay:battle.options.hand-attack`),
           damage: didConnect ? damageDealt : this.ctx.locale('roleplay:battle.miss-attack'),
         });
+        return false;
+      }
+      case 'RUNAWAY': {
+        const didRunaway = didUserHit(
+          calculateRunawaySuccess(getUserAgility(this.user), this.enemy.agility),
+        );
+
+        if (didRunaway) {
+          this.lastText = this.ctx.locale('roleplay:battle.runaway-success');
+          this.didRunaway = true;
+          return true;
+        }
+
+        this.lastText = this.ctx.locale('roleplay:battle.runaway-fail');
         return false;
       }
       case 'ABILITY': {

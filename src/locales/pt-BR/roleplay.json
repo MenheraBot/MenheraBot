@@ -103,10 +103,16 @@
     "dodged": "**Você desviou do ataque!**",
     "title": "Batalha Contra {{name}}",
     "find": "Você encontra um inimigo! **{{enemy}}** em fase **{{level}}** está logo a frente!",
+    "runaway-success": "Você consegue fugir da batalha com sucesso!",
+    "runaway-fail": "Você não consegue fugir da batalha!",
     "options": {
       "hand-attack": "Ataque Básico",
+      "runaway": "Fugir",
+      "runaway-description": "Sai correndo na esperança de fugir dessa batalha",
       "hand-attack-description": "Dê um ataque com sua arma primária",
-      "info": "⚔️ | Dano: **{{damage}}**\n💧 | Custo: **{{cost}}** {{no-mana}}",
+      "ability-info": "⚔️ | Dano: **{{damage}}**\n💧 | Custo: **{{cost}}** {{no-mana}}",
+      "attack-info": "⚔️ | Dano: **{{damage}}**\n🎯 | Precisão: **{{chanceToConnect}}%**",
+      "runaway-info": "🐥 | Chance de Fuga: **{{chance}}%**",
       "available": "Opções Disponíveis"
     }
   },
