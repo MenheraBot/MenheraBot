@@ -54,7 +54,7 @@ export default class RoleplayBattle {
     this.user.effects.forEach((a, i) => {
       switch (a.effectType) {
         case 'heal':
-          this.user.life = Math.min(getUserMaxLife(this.user), calculateHeal(this.user, a));
+          this.user.life += Math.min(getUserMaxLife(this.user), calculateHeal(this.user, a));
           break;
       }
 
@@ -262,7 +262,7 @@ export default class RoleplayBattle {
                 getEnemyStatusWithEffects(this.enemy, 'armor', this.user),
               );
           } else if (a.effectType === 'heal' && a.durationInTurns === -1) {
-            this.user.life = Math.min(
+            this.user.life += Math.min(
               getUserMaxLife(this.user),
               calculateHeal(this.user, { ...a, level: usedAbility.level }),
             );
