@@ -542,10 +542,14 @@ export default class DowntownInteractionCommand extends InteractionCommand {
         const resolvedItem = getItemById<DropItem>(c.id);
         const itemValue =
           (resolvedItem.data.marketValue + resolvedItem.data.perLevel * c.level) * c.amount;
-        user.money += itemValue;
         removeFromInventory(Array(c.amount).fill({ id: c.id, level: c.level }), user.inventory);
         return p + itemValue;
       }, 0);
+
+      await ctx.client.repositories.roleplayRepository.updateUser(ctx.author.id, {
+        $inc: { money: totalMoney },
+        inventory: user.inventory,
+      });
 
       ctx.makeMessage({
         content: ctx.prettyResponse('success', 'commands:centro.sell.success', {
