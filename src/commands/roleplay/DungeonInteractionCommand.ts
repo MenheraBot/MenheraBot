@@ -187,6 +187,10 @@ export default class DungeonInteractionCommand extends InteractionCommand {
     }
 
     if (battleResults.didRunaway) {
+      makeCooldown(user.cooldowns, {
+        reason: 'dungeon',
+        until: ROLEPLAY_COOLDOWNS.dungeonCooldown + Date.now(),
+      });
       await ctx.client.repositories.roleplayRepository.postBattle(
         ctx.author.id,
         battleResults.user,
