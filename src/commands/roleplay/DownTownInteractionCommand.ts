@@ -465,7 +465,7 @@ export default class DowntownInteractionCommand extends InteractionCommand {
 
     for (let i = 1; i <= 25; i++) selector.addOptions({ label: `${i}`, value: `${i}` });
 
-    ctx.makeMessage({ components: [actionRow([selector, exitButton])] });
+    ctx.makeMessage({ components: [actionRow([exitButton]), actionRow([selector])] });
 
     const selectedAmount =
       await Util.collectComponentInteractionWithStartingId<SelectMenuInteraction>(
