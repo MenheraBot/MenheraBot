@@ -58,6 +58,7 @@ export default class DowntownInteractionCommand extends InteractionCommand {
               name: 'id',
               description: 'ID do objeto que você está procurando',
               type: 'INTEGER',
+              autocomplete: true,
               required: true,
             },
           ],

@@ -8,14 +8,22 @@ import {
 import MenheraClient from 'MenheraClient';
 import InteractionCommandExecutor from '@structures/command/InteractionCommandExecutor';
 import { debugError } from '@utils/Util';
+import ExecuteAutocompleteInteractions from '@structures/command/InteractionCommandAutocomplete';
 
 export default class InteractionCreate {
   async run(
     interaction: Interaction & { client: MenheraClient; channel: TextChannel },
   ): Promise<void> {
-    if (!interaction.isCommand() || !interaction.inGuild()) return;
+    if (!interaction.inGuild()) return;
 
     if (!interaction.channel?.isText()) return;
+
+    if (interaction.isAutocomplete()) {
+      ExecuteAutocompleteInteractions(interaction);
+      return;
+    }
+
+    if (!interaction.isCommand()) return;
 
     if (interaction.client.shuttingDown) {
       interaction.reply({

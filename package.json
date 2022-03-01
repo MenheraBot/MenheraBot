@@ -1,6 +1,6 @@
 {
   "name": "menhera-bot",
-  "version": "4.0.G-BETA",
+  "version": "4.0.H-BETA",
   "engines": {
     "node": ">=16.6.0"
   },
@@ -43,6 +43,7 @@
     "moment": "^2.29.1",
     "moment-duration-format": "^2.3.2",
     "mongoose": "^6.0.7",
+    "string-similarity": "^4.0.4",
     "tweetnacl": "^1.0.3",
     "ws": "^8.2.2"
   },
@@ -59,6 +60,7 @@
     "@types/koa-router": "^7.4.4",
     "@types/koa__cors": "^3.0.3",
     "@types/moment-duration-format": "^2.2.3",
+    "@types/string-similarity": "^4.0.0",
     "@typescript-eslint/eslint-plugin": "^4.31.2",
     "@typescript-eslint/parser": "^4.31.2",
     "eslint": "^7.32.0",
