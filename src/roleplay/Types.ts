@@ -113,6 +113,8 @@ export interface AbilityEffect {
   effectValuePerLevel: number;
 }
 
+export type ExistingEffectValueField = keyof AbilityEffect;
+
 export interface AbilitiesFile {
   DevDesc: string;
   parentId: number;

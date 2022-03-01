@@ -10,6 +10,7 @@ import {
 } from '@roleplay/Types';
 import Abilities from '@roleplay/data/Abilities';
 import Items from '@roleplay/data/Items';
+import { MayNotExists } from '@utils/Util';
 import { Classes, Enemies, Races } from '../data';
 
 export const getClasses = (): IReturnData<ClassesFile>[] =>
@@ -84,4 +85,14 @@ export const getItemById = <T extends ItemsFile>(itemId: number): IReturnData<T>
   if (foundItem.length === 0) return { id: itemId, data: null as unknown as T };
 
   return foundItem.map((c) => ({ id: Number(c[0]), data: c[1] }))[0] as unknown as IReturnData<T>;
+};
+
+export const checkAbilityByUnknownId = (
+  abilityId: number,
+): MayNotExists<IReturnData<AbilitiesFile>> => {
+  const foundAbility = Object.entries(Abilities).filter((c) => Number(c[0]) === abilityId);
+
+  if (foundAbility.length === 0) return null;
+
+  return foundAbility.map((c) => ({ id: Number(c[0]), data: c[1] }))[0];
 };

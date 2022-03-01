@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Added
 
 - Os comandos do RPG agora tem um botão extra para terminar o comando na hora para não ter que esperar o tempo de execução para utilizar outro comando
+- Adicionado a **Biblioteca de Boleham** dentro do comando `/centro`. Lá é possível acessar as enciclopédias do mundo para ter informações sobre objetos do RPG. Atualmente é possivel ver informações das habildiades lá.
 
 ### Fixed
 

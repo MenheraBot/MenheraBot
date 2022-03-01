@@ -13,7 +13,7 @@ import {
   makeCloseCommandButton,
   removeFromInventory,
 } from '@roleplay/utils/AdventureUtils';
-import { getItemById } from '@roleplay/utils/DataUtils';
+import { checkAbilityByUnknownId, getItemById } from '@roleplay/utils/DataUtils';
 import { availableToBuyItems } from '@roleplay/utils/ItemsUtil';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
@@ -51,7 +51,7 @@ export default class DowntownInteractionCommand extends InteractionCommand {
               required: true,
               choices: [
                 { name: 'habilidades', value: 'abilities' },
-                { name: 'itens', value: 'items' },
+                // { name: 'itens', value: 'items' },
               ],
             },
             {
@@ -118,9 +118,7 @@ export default class DowntownInteractionCommand extends InteractionCommand {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   static async library(ctx: InteractionCommandContext, user: RoleplayUserSchema): Promise<void> {
-    ctx.makeMessage({ content: ctx.prettyResponse('wink', 'common:soon'), ephemeral: true });
-
-    /* const bookId = ctx.options.getNumber('id', true);
+    const bookId = ctx.options.getInteger('id', true);
     const selectedOption = ctx.options.getString('sessao', true);
 
     const embed = new MessageEmbed()
@@ -148,10 +146,55 @@ export default class DowntownInteractionCommand extends InteractionCommand {
           )}`,
         );
         ctx.makeMessage({ embeds: [embed] });
-        return;
+        break;
+      }
+      case 'abilities': {
+        const ability = checkAbilityByUnknownId(bookId);
+
+        if (!ability) {
+          ctx.makeMessage({
+            content: ctx.prettyResponse('error', 'commands:centro.library.abilities.not-found'),
+          });
+          return;
+        }
+
+        embed
+          .setDescription(
+            ctx.locale('commands:centro.library.abilities.description', {
+              name: ctx.locale(`abilities:${ability.id as 100}.name`),
+              description: ctx.locale(`abilities:${ability.id as 100}.description`),
+              cost: ability.data.cost,
+              costPerLevel: ability.data.costPerLevel,
+              unlockCost: ability.data.unlockCost,
+            }),
+          )
+          .addField('\u200b', ctx.locale('commands:centro.library.abilities.effects'), false);
+
+        ability.data.effects.forEach((effect) => {
+          embed.addField(
+            '\u200b',
+            ctx.locale('commands:centro.library.abilities.effect-description', {
+              duration: effect.durationInTurns,
+              type: ctx.locale(`commands:centro.library.abilities.${effect.effectType}`),
+              value: effect.effectValue,
+              inIntelligence: effect.effectValueByIntelligence,
+              modifier: ctx.locale(
+                `commands:centro.library.abilities.${effect.effectValueModifier}`,
+              ),
+              valuePerLevel: effect.effectValuePerLevel,
+              element: ctx.locale(`common:roleplay.elements.${effect.element}`),
+              reflection: ctx.locale(
+                `commands:centro.library.abilities.${effect.effectValueRefflection}`,
+              ),
+              target: ctx.locale(`commands:centro.library.abilities.${effect.target}`),
+            }),
+            true,
+          );
+        });
+
+        ctx.makeMessage({ embeds: [embed] });
       }
     }
-    console.log(user.life); */
   }
 
   static async blacksmith(ctx: InteractionCommandContext, user: RoleplayUserSchema): Promise<void> {
