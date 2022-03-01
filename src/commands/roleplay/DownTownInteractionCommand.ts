@@ -10,6 +10,7 @@ import {
 import {
   addToInventory,
   getFreeInventorySpace,
+  makeCloseCommandButton,
   removeFromInventory,
 } from '@roleplay/utils/AdventureUtils';
 import { getItemById } from '@roleplay/utils/DataUtils';
@@ -213,9 +214,11 @@ export default class DowntownInteractionCommand extends InteractionCommand {
       .setLabel(ctx.locale('common:roleplay.weapon'))
       .setStyle('PRIMARY');
 
+    const exitButton = makeCloseCommandButton(ctx.interaction.id);
+
     ctx.makeMessage({
       embeds: [embed],
-      components: [actionRow([backpackButton, protectionButton, weaponButton])],
+      components: [actionRow([backpackButton, protectionButton, weaponButton, exitButton])],
     });
 
     const selected = await Util.collectComponentInteractionWithStartingId(
@@ -237,6 +240,11 @@ export default class DowntownInteractionCommand extends InteractionCommand {
           ),
         ],
       });
+      return;
+    }
+
+    if (resolveCustomId(selected.customId) === 'CLOSE_COMMAND') {
+      ctx.deleteReply();
       return;
     }
 
@@ -310,7 +318,7 @@ export default class DowntownInteractionCommand extends InteractionCommand {
         evolveButton.setDisabled(true).setLabel(ctx.locale('commands:centro.blacksmith.poor'));
     }
 
-    ctx.makeMessage({ components: [actionRow([evolveButton])], embeds: [embed] });
+    ctx.makeMessage({ components: [actionRow([evolveButton, exitButton])], embeds: [embed] });
     if (evolveButton.disabled) return;
 
     const wannaEvolve = await Util.collectComponentInteractionWithStartingId(
@@ -324,6 +332,11 @@ export default class DowntownInteractionCommand extends InteractionCommand {
       ctx.makeMessage({
         components: [actionRow(disableComponents(ctx.locale('common:timesup'), [evolveButton]))],
       });
+      return;
+    }
+
+    if (resolveCustomId(wannaEvolve.customId) === 'CLOSE_COMMAND') {
+      ctx.deleteReply();
       return;
     }
 
@@ -358,6 +371,8 @@ export default class DowntownInteractionCommand extends InteractionCommand {
       .setMaxValues(1)
       .setPlaceholder(ctx.locale('commands:centro.buy.select'));
 
+    const exitButton = makeCloseCommandButton(ctx.interaction.id);
+
     const availableItems = availableToBuyItems(user.level);
 
     availableItems.forEach((a) => {
@@ -377,7 +392,10 @@ export default class DowntownInteractionCommand extends InteractionCommand {
       );
     });
 
-    ctx.makeMessage({ embeds: [embed], components: [actionRow([selector])] });
+    ctx.makeMessage({
+      embeds: [embed],
+      components: [actionRow([exitButton]), actionRow([selector])],
+    });
 
     const selectedItem =
       await Util.collectComponentInteractionWithStartingId<SelectMenuInteraction>(
@@ -394,11 +412,16 @@ export default class DowntownInteractionCommand extends InteractionCommand {
       return;
     }
 
+    if (resolveCustomId(selectedItem.customId) === 'CLOSE_COMMAND') {
+      ctx.deleteReply();
+      return;
+    }
+
     selector.setOptions([]).setPlaceholder(ctx.locale('commands:centro.buy.select-amount'));
 
     for (let i = 1; i <= 25; i++) selector.addOptions({ label: `${i}`, value: `${i}` });
 
-    ctx.makeMessage({ components: [actionRow([selector])] });
+    ctx.makeMessage({ components: [actionRow([selector, exitButton])] });
 
     const selectedAmount =
       await Util.collectComponentInteractionWithStartingId<SelectMenuInteraction>(
@@ -412,6 +435,11 @@ export default class DowntownInteractionCommand extends InteractionCommand {
       ctx.makeMessage({
         components: [actionRow(disableComponents(ctx.locale('common:timesup'), [selector]))],
       });
+      return;
+    }
+
+    if (resolveCustomId(selectedItem.customId) === 'CLOSE_COMMAND') {
+      ctx.deleteReply();
       return;
     }
 
@@ -520,7 +548,12 @@ export default class DowntownInteractionCommand extends InteractionCommand {
 
     selectMenu.setMaxValues(selectMenu.options.length).setMinValues(1);
 
-    ctx.makeMessage({ embeds: [embed], components: [actionRow([selectMenu])] });
+    const closeCommand = makeCloseCommandButton(ctx.interaction.id);
+
+    ctx.makeMessage({
+      embeds: [embed],
+      components: [actionRow([closeCommand]), actionRow([selectMenu])],
+    });
 
     const selectedItems =
       await Util.collectComponentInteractionWithStartingId<SelectMenuInteraction>(
@@ -534,6 +567,11 @@ export default class DowntownInteractionCommand extends InteractionCommand {
       ctx.makeMessage({
         components: [actionRow(disableComponents(ctx.locale('common:timesup'), [selectMenu]))],
       });
+      return;
+    }
+
+    if (resolveCustomId(selectedItems.customId) === 'CLOSE_COMMAND') {
+      ctx.deleteReply();
       return;
     }
 

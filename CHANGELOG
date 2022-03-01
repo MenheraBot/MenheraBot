@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ## [Unreleased]
 
+### Added
+
+- Os comandos do RPG agora tem um botão extra para terminar o comando na hora para não ter que esperar o tempo de execução para utilizar outro comando
+
 ### Fixed
 
 - Ao fugir da Dungeon, você recebe o cooldown da Dungeon

@@ -1,11 +1,16 @@
 import { ConsumableItem, ItemsFile } from '@roleplay/Types';
-import { removeFromInventory } from '@roleplay/utils/AdventureUtils';
+import { makeCloseCommandButton, removeFromInventory } from '@roleplay/utils/AdventureUtils';
 import { getUserMaxLife, getUserMaxMana } from '@roleplay/utils/Calculations';
 import { getItemById } from '@roleplay/utils/DataUtils';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { IReturnData } from '@utils/Types';
-import Util, { actionRow, disableComponents, resolveSeparatedStrings } from '@utils/Util';
+import Util, {
+  actionRow,
+  disableComponents,
+  resolveCustomId,
+  resolveSeparatedStrings,
+} from '@utils/Util';
 import {
   MessageButton,
   MessageEmbed,
@@ -129,7 +134,12 @@ export default class InventoryInteractionCommand extends InteractionCommand {
 
     selectMenu.setMaxValues(selectMenu.options.length);
 
-    ctx.makeMessage({ embeds: [embed], components: [actionRow([selectMenu])] });
+    const exitButton = makeCloseCommandButton(ctx.interaction.id);
+
+    ctx.makeMessage({
+      embeds: [embed],
+      components: [actionRow([exitButton]), actionRow([selectMenu])],
+    });
 
     const selectedItems =
       await Util.collectComponentInteractionWithStartingId<SelectMenuInteraction>(
@@ -143,6 +153,11 @@ export default class InventoryInteractionCommand extends InteractionCommand {
       ctx.makeMessage({
         components: [actionRow(disableComponents(ctx.locale('common:timesup'), [selectMenu]))],
       });
+      return;
+    }
+
+    if (resolveCustomId(selectedItems.customId) === 'CLOSE_COMMAND') {
+      ctx.deleteReply();
       return;
     }
 

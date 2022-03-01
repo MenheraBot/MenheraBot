@@ -32,7 +32,7 @@ import {
   nextLevelXp,
 } from '@roleplay/utils/Calculations';
 import { BLESSES_DIFFERENCE_LIMIT } from '@roleplay/Constants';
-import { prepareUserForDungeon } from '@roleplay/utils/AdventureUtils';
+import { makeCloseCommandButton, prepareUserForDungeon } from '@roleplay/utils/AdventureUtils';
 
 export default class FichaInteractionCommand extends InteractionCommand {
   constructor() {
@@ -104,12 +104,14 @@ export default class FichaInteractionCommand extends InteractionCommand {
       .setStyle('PRIMARY')
       .setLabel(ctx.locale('commands:ficha.show.abilities.unlock'));
 
+    const exitButton = makeCloseCommandButton(ctx.interaction.id);
+
     ctx.makeMessage({
       embeds: [embed],
       components:
         user.id !== ctx.author.id || user.holyBlessings.ability === 0
           ? []
-          : [actionRow([upgradeButton, unlockButton])],
+          : [actionRow([upgradeButton, unlockButton, exitButton])],
     });
 
     if (user.id !== ctx.author.id || user.holyBlessings.ability === 0) return;
@@ -126,6 +128,11 @@ export default class FichaInteractionCommand extends InteractionCommand {
           actionRow(disableComponents(ctx.locale('common:timesup'), [upgradeButton, unlockButton])),
         ],
       });
+      return;
+    }
+
+    if (resolveCustomId(buttonClicked.customId) === 'CLOSE_COMMAND') {
+      ctx.deleteReply();
       return;
     }
 
@@ -162,7 +169,10 @@ export default class FichaInteractionCommand extends InteractionCommand {
         );
       });
 
-      ctx.makeMessage({ components: [actionRow([abilities])], embeds: [upgradeEmbed] });
+      ctx.makeMessage({
+        components: [actionRow([exitButton]), actionRow([abilities])],
+        embeds: [upgradeEmbed],
+      });
 
       const selectedAbility =
         await Util.collectComponentInteractionWithStartingId<SelectMenuInteraction>(
@@ -176,6 +186,10 @@ export default class FichaInteractionCommand extends InteractionCommand {
         ctx.makeMessage({
           components: [actionRow(disableComponents(ctx.locale('common:timesup'), [abilities]))],
         });
+        return;
+      }
+      if (resolveCustomId(selectedAbility.customId) === 'CLOSE_COMMAND') {
+        ctx.deleteReply();
         return;
       }
 
@@ -197,7 +211,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
       )
         abilities.addOptions({ label: `${i}`, value: `${i}` });
 
-      ctx.makeMessage({ components: [actionRow([abilities])] });
+      ctx.makeMessage({ components: [actionRow([exitButton]), actionRow([abilities])] });
 
       const selectedAmount =
         await Util.collectComponentInteractionWithStartingId<SelectMenuInteraction>(
@@ -208,6 +222,11 @@ export default class FichaInteractionCommand extends InteractionCommand {
         );
 
       if (!selectedAmount) {
+        ctx.deleteReply();
+        return;
+      }
+
+      if (resolveCustomId(selectedAmount.customId) === 'CLOSE_COMMAND') {
         ctx.deleteReply();
         return;
       }
@@ -268,7 +287,10 @@ export default class FichaInteractionCommand extends InteractionCommand {
 
     ctx.makeMessage({
       embeds: [unlockEmbed],
-      components: unlockAbilityMenu.options.length > 0 ? [actionRow([unlockAbilityMenu])] : [],
+      components:
+        unlockAbilityMenu.options.length > 0
+          ? [actionRow([exitButton]), actionRow([unlockAbilityMenu])]
+          : [],
     });
 
     if (unlockAbilityMenu.options.length === 0) return;
@@ -282,6 +304,11 @@ export default class FichaInteractionCommand extends InteractionCommand {
       );
 
     if (!selectedAbility) {
+      ctx.deleteReply();
+      return;
+    }
+
+    if (resolveCustomId(selectedAbility.customId) === 'CLOSE_COMMAND') {
       ctx.deleteReply();
       return;
     }
@@ -355,10 +382,15 @@ export default class FichaInteractionCommand extends InteractionCommand {
       .setStyle('PRIMARY')
       .setLabel(ctx.locale('commands:ficha.show.battle'));
 
+    const exitButton = makeCloseCommandButton(ctx.interaction.id);
+
     if (user.holyBlessings.vitality === 0) vitalityButton.setDisabled(true);
     if (user.holyBlessings.battle === 0) battleButton.setDisabled(true);
 
-    ctx.makeMessage({ embeds: [embed], components: [actionRow([vitalityButton, battleButton])] });
+    ctx.makeMessage({
+      embeds: [embed],
+      components: [actionRow([vitalityButton, battleButton, exitButton])],
+    });
 
     const buttonSelected = await Util.collectComponentInteractionWithStartingId(
       ctx.channel,
@@ -378,6 +410,11 @@ export default class FichaInteractionCommand extends InteractionCommand {
       return;
     }
 
+    if (resolveCustomId(buttonSelected.customId) === 'CLOSE_COMMAND') {
+      ctx.deleteReply();
+      return;
+    }
+
     const pointsToUse =
       resolveCustomId(buttonSelected.customId) === 'VITALITY'
         ? user.holyBlessings.vitality
@@ -392,7 +429,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
     for (let i = 1; i <= pointsToUse && i <= 25; i++)
       selectAmount.addOptions({ label: `${i}`, value: `${i}` });
 
-    ctx.makeMessage({ components: [actionRow([selectAmount])] });
+    ctx.makeMessage({ components: [actionRow([exitButton]), actionRow([selectAmount])] });
 
     const selectedAmount =
       await Util.collectComponentInteractionWithStartingId<SelectMenuInteraction>(
@@ -403,8 +440,15 @@ export default class FichaInteractionCommand extends InteractionCommand {
 
     if (!selectedAmount) {
       ctx.makeMessage({
-        components: [actionRow(disableComponents(ctx.locale('common:timesup'), [selectAmount]))],
+        components: [
+          actionRow(disableComponents(ctx.locale('common:timesup'), [selectAmount, exitButton])),
+        ],
       });
+      return;
+    }
+
+    if (resolveCustomId(selectedAmount.customId) === 'CLOSE_COMMAND') {
+      ctx.deleteReply();
       return;
     }
 
@@ -430,7 +474,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
         .setStyle('SECONDARY')
         .setLabel(ctx.locale('common:roleplay.agility'));
 
-      toSendComponents.push(actionRow([lifeButton, manaButton, agilityButton]));
+      toSendComponents.push(actionRow([lifeButton, manaButton, agilityButton, exitButton]));
     } else {
       const damageButton = new MessageButton()
         .setCustomId(`${ctx.interaction.id} | DAMAGE`)
@@ -447,7 +491,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
         .setStyle('PRIMARY')
         .setLabel(ctx.locale('common:roleplay.intelligence'));
 
-      toSendComponents.push(actionRow([damageButton, armorButton, intelligenceButton]));
+      toSendComponents.push(actionRow([damageButton, armorButton, intelligenceButton, exitButton]));
     }
 
     ctx.makeMessage({ embeds: [embed], components: toSendComponents });
@@ -464,6 +508,11 @@ export default class FichaInteractionCommand extends InteractionCommand {
         embeds: [],
         content: ctx.prettyResponse('error', 'common:timesup'),
       });
+      return;
+    }
+
+    if (resolveCustomId(statusSelected.customId) === 'CLOSE_COMMAND') {
+      ctx.deleteReply();
       return;
     }
 
@@ -605,9 +654,11 @@ export default class FichaInteractionCommand extends InteractionCommand {
       .setStyle('PRIMARY')
       .setLabel(ctx.locale('commands:ficha.show.statsButton'));
 
+    const exitButton = makeCloseCommandButton(ctx.interaction.id);
+
     await ctx.makeMessage({
       embeds: [embed],
-      components: [actionRow([abilityTreeButton, statusTreeButton])],
+      components: [actionRow([abilityTreeButton, statusTreeButton, exitButton])],
     });
 
     const selectedOption = await Util.collectComponentInteractionWithStartingId(
@@ -625,6 +676,11 @@ export default class FichaInteractionCommand extends InteractionCommand {
           ),
         ],
       });
+      return;
+    }
+
+    if (resolveCustomId(selectedOption.customId) === 'CLOSE_COMMAND') {
+      ctx.deleteReply();
       return;
     }
 

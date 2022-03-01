@@ -12,7 +12,7 @@ import InteractionCommandContext from '@structures/command/InteractionContext';
 import { LEVEL_UP_BLESSES } from '@roleplay/Constants';
 import { IReturnData } from '@utils/Types';
 import { moreThanAnHour, RandomFromArray } from '@utils/Util';
-import { EmbedFieldData } from 'discord.js-light';
+import { EmbedFieldData, MessageButton } from 'discord.js-light';
 import moment from 'moment';
 import { getEnemies, getItemById } from './DataUtils';
 import { nextLevelXp } from './Calculations';
@@ -22,6 +22,12 @@ export const prepareUserForDungeon = (user: RoleplayUserSchema): UserBattleEntit
   user.effects = [];
   return user as UserBattleEntity;
 };
+
+export const makeCloseCommandButton = (interactionId: string): MessageButton =>
+  new MessageButton()
+    .setCustomId(`${interactionId} | CLOSE_COMMAND`)
+    .setStyle('DANGER')
+    .setEmoji('🛑');
 
 export const canGoToDungeon = (
   user: RoleplayUserSchema,

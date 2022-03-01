@@ -1,8 +1,8 @@
-import { makeCooldown } from '@roleplay/utils/AdventureUtils';
+import { makeCloseCommandButton, makeCooldown } from '@roleplay/utils/AdventureUtils';
 import { getUserMaxLife, getUserMaxMana } from '@roleplay/utils/Calculations';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import Util, { actionRow, disableComponents, moreThanAnHour } from '@utils/Util';
+import Util, { actionRow, disableComponents, moreThanAnHour, resolveCustomId } from '@utils/Util';
 import { MessageButton, MessageEmbed } from 'discord.js-light';
 import moment from 'moment';
 
@@ -117,6 +117,8 @@ export default class ChurchInteractionCommand extends InteractionCommand {
       .setStyle('PRIMARY')
       .setLabel(ctx.locale('commands:igreja.pray'));
 
+    const exitButton = makeCloseCommandButton(ctx.interaction.id);
+
     const GratherThanAnHour = (time: number): boolean => time >= 3600000;
 
     if (inChurch && inChurch.data !== 'COOLDOWN') {
@@ -141,7 +143,7 @@ export default class ChurchInteractionCommand extends InteractionCommand {
       prayButton.setLabel(ctx.locale('commands:igreja.stop')).setStyle('DANGER');
     }
 
-    ctx.makeMessage({ embeds: [embed], components: [actionRow([prayButton])] });
+    ctx.makeMessage({ embeds: [embed], components: [actionRow([prayButton, exitButton])] });
 
     const selected = await Util.collectComponentInteractionWithStartingId(
       ctx.channel,
@@ -154,6 +156,11 @@ export default class ChurchInteractionCommand extends InteractionCommand {
       ctx.makeMessage({
         components: [actionRow(disableComponents(ctx.locale('common:timesup'), [prayButton]))],
       });
+      return;
+    }
+
+    if (resolveCustomId(selected.customId) === 'CLOSE_COMMAND') {
+      ctx.deleteReply();
       return;
     }
 
