@@ -197,7 +197,7 @@ export default class HttpRequests {
     value: number,
     betType: BichoBetType,
     betSelection: string,
-  ): Promise<MayNotExists<number>> {
+  ): Promise<MayNotExists<{ gameId: number }>> {
     return apiRequest
       .post('/bicho/bet', { userId, value, betType, betSelection })
       .catch(debugError)

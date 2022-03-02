@@ -165,7 +165,7 @@ export default class JogoDoBixoManager {
 
     const bet = this.ongoingGame.bets.find((a) => a.id === userId);
 
-    if (bet) bet.gameId = gameId;
+    if (bet) bet.gameId = gameId.gameId;
   }
 
   addBet(userId: string, betValue: number, optionSelected: string): void {
