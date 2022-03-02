@@ -67,7 +67,7 @@ export default class HttpRequests {
       const data = await apiRequest.get(`/assets/${type}`);
       return data.data.url;
     } catch {
-      return 'https://i.imgur.com/DHVUlFf.png';
+      return 'https://i.imgur.com/HftTDov.png';
     }
   }
 
