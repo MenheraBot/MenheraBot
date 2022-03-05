@@ -23,7 +23,7 @@ export default class ReadyEvent {
 
     const shardId = client.shard.ids[0];
 
-    setInterval(() => updateActivity(shardId), 1000 * 60 * 5);
+    setInterval(() => updateActivity(shardId), 1000 * 60 * 10);
 
     if (isMasterShard(shardId)) {
       HttpServer.getInstance().registerRouter('DBL', DBLWebhook(client));
@@ -49,7 +49,6 @@ export default class ReadyEvent {
     const toLoop = async (c: MenheraClient) => {
       const allBannedUsers = await c.repositories.userRepository.getAllBannedUsersId();
       await c.repositories.blacklistRepository.addBannedUsers(allBannedUsers);
-      await HttpRequests.resetCommandsUses();
     };
 
     toLoop(client);
