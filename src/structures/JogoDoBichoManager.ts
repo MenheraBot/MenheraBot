@@ -43,7 +43,7 @@ export default class JogoDoBixoManager {
   constructor(client: MenheraClient) {
     this.clientInstance = client;
 
-    if (this.clientInstance.cluster.ids[0] === 0) {
+    if (this.clientInstance.cluster.id === 0) {
       this.ongoingGame = {
         dueDate: Date.now() + GAME_DURATION,
         bets: [],
@@ -108,7 +108,7 @@ export default class JogoDoBixoManager {
   }
 
   finishGame(): void {
-    if (this.clientInstance.cluster!.ids[0] === 0) {
+    if (this.clientInstance.cluster.id === 0) {
       const results = [getResults(), getResults(), getResults(), getResults(), getResults()];
 
       this.ongoingGame.results = results;
@@ -141,7 +141,7 @@ export default class JogoDoBixoManager {
   }
 
   async canRegister(userId: string): Promise<boolean> {
-    if (this.clientInstance.cluster!.ids[0] === 0) {
+    if (this.clientInstance.cluster.id === 0) {
       if (this.ongoingGame.dueDate < Date.now()) return false;
       if (this.ongoingGame.bets.some((plr) => plr.id === userId)) return false;
       return true;
@@ -169,7 +169,7 @@ export default class JogoDoBixoManager {
   }
 
   addBet(userId: string, betValue: number, optionSelected: string): void {
-    if (this.clientInstance.cluster!.ids[0] === 0) {
+    if (this.clientInstance.cluster.id === 0) {
       this.ongoingGame.bets.push({ id: userId, bet: betValue, option: optionSelected });
       this.apiRegisterGame(userId, betValue, betType(optionSelected), optionSelected);
     } else {
@@ -184,7 +184,7 @@ export default class JogoDoBixoManager {
   }
 
   async lastGameStatus(): Promise<MayNotExists<JogoDoBichoGame>> {
-    if (this.clientInstance.cluster!.ids[0] === 0) {
+    if (this.clientInstance.cluster.id === 0) {
       return this.lastGame;
     }
     return this.clientInstance.cluster!.broadcastEval(
@@ -195,7 +195,7 @@ export default class JogoDoBixoManager {
   }
 
   async currentGameStatus(): Promise<JogoDoBichoGame> {
-    if (this.clientInstance.cluster!.ids[0] === 0) {
+    if (this.clientInstance.cluster.id === 0) {
       return this.ongoingGame;
     }
     return this.clientInstance.cluster!.broadcastEval(
@@ -206,7 +206,7 @@ export default class JogoDoBixoManager {
   }
 
   async stopGameLoop(): Promise<void> {
-    if (this.clientInstance.cluster!.ids[0] === 0) {
+    if (this.clientInstance.cluster.id === 0) {
       clearInterval(this.gameLoop);
 
       let totalBets = [...this.ongoingGame.bets.keys()].length;
@@ -237,7 +237,7 @@ export default class JogoDoBixoManager {
   }
 
   restartGameLoop(): void {
-    if (this.clientInstance.cluster!.ids[0] === 0) {
+    if (this.clientInstance.cluster.id === 0) {
       this.ongoingGame = {
         dueDate: Date.now() + GAME_DURATION,
         bets: [],

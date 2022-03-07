@@ -55,7 +55,7 @@ export default class MenheraClient extends Client {
     this.config = config;
     this.shardProcessEnded = false;
     this.shuttingDown = false;
-    //  this.jogoDoBichoManager = new JogoDoBixoManager(this);
+    this.jogoDoBichoManager = new JogoDoBixoManager(this);
   }
 
   get repositories(): IDatabaseRepositories {

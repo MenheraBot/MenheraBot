@@ -15,19 +15,19 @@ export const postShardStatus = (client: MenheraClient): void => {
     if (!client.shardProcessEnded) return;
 
     const getShardsInfo = (c: MenheraClient) => {
-      const memoryUsed = process.memoryUsage().heapUsed;
+      const memoryUsed = process.memoryUsage().rss;
       const { uptime } = c;
       const guilds = c.guilds.cache.size;
       const unavailable = c.guilds.cache.reduce((p, b) => (b.available ? p : p + 1), 0);
       const { ping } = c.ws;
       const members = c.guilds.cache.reduce((p, b) => (b.available ? p + b.memberCount : p), 0);
-      const id = c.cluster?.ids[0] ?? 0;
+      const id = c.cluster.id ?? 0;
 
       return { memoryUsed, uptime, guilds, unavailable, ping, members, id };
     };
 
     // @ts-expect-error Client n é sexual
-    const results = await client.cluster?.broadcastEval(getShardsInfo);
+    const results = await client.cluster.broadcastEval(getShardsInfo);
     if (!results) return;
 
     const toSendData: IStatusData[] = Array(client.cluster?.count)

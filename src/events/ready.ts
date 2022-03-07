@@ -1,8 +1,11 @@
 import MenheraClient from 'MenheraClient';
 import HttpRequests from '@utils/HTTPrequests';
 import { getMillisecondsToTheEndOfDay } from '@utils/Util';
-import { postShardStatus } from '@structures/StatusPoster';
+import { postBotStatus, postShardStatus } from '@structures/StatusPoster';
 import DeployDeveloperCommants from '@structures/DeployDeveloperCommants';
+import HttpServer from '@structures/server/server';
+import DBLWebhook from '@structures/server/controllers/DBLWebhook';
+import InactivityPunishment from '@structures/InactivityPunishment';
 // import PostInteractions from '@structures/server/controllers/PostInteractions';
 
 let dailyLoopTimeout: NodeJS.Timeout;
@@ -12,24 +15,24 @@ export default class ReadyEvent {
     if (!client.user) return;
     if (process.env.NODE_ENV === 'development') return;
 
-    const isMasterShard = (id: number) => id === (client.cluster.count as number) - 1;
+    const isMasterShard = (id: number) => id === client.cluster.count - 1;
 
-    const updateActivity = async (shard: number) =>
-      client.user?.setActivity(await HttpRequests.getActivity(shard));
+    const updateActivity = async (cluster: number) =>
+      client.user?.setActivity(await HttpRequests.getActivity(cluster));
 
     const clusterId = client.cluster.id;
 
     setInterval(() => updateActivity(clusterId), 1000 * 60 * 10);
 
     if (isMasterShard(clusterId)) {
-      // HttpServer.getInstance().registerRouter('DBL', DBLWebhook(client));
+      HttpServer.getInstance().registerRouter('DBL', DBLWebhook(client));
       // HttpServer.getInstance().registerRouter('INTERACTIONS', PostInteractions(this.client));
 
       ReadyEvent.dailyLoop(client);
 
-      // InactivityPunishment(client);
+      InactivityPunishment(client);
       postShardStatus(client);
-      // postBotStatus(client);
+      postBotStatus(client);
       DeployDeveloperCommants(client);
 
       // @ts-expect-error Reload command doesnt exist in client<boolean>

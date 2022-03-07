@@ -12,13 +12,13 @@ export default class PicassoWebSocket {
 
   private ruuningError = false;
 
-  constructor(private shardId: number) {}
+  constructor(private clusterId: number) {}
 
   async connect(): Promise<void> {
     try {
-      this.ws = new WebSocket(`${process.env.PICASSO_WEBSOCKET}?id=${this.shardId}`);
+      this.ws = new WebSocket(`${process.env.PICASSO_WEBSOCKET}?id=${this.clusterId}`);
       this.prepareListeners();
-      console.log(`[WEBSOCKET] Client ${this.shardId} is trying to connect`);
+      console.log(`[WEBSOCKET] Client ${this.clusterId} is trying to connect`);
     } catch (err) {
       if (err instanceof Error) console.log(`[WEBSOCKET] Error when connecting: ${err.message}`);
       this.ws = null;
@@ -30,7 +30,7 @@ export default class PicassoWebSocket {
     this.ruuningError = true;
     this.isAlive = false;
     if (this.retries >= 2) {
-      console.log(`[WEBSOCKET] Client ${this.shardId} stopped... it won't reconnect anymore`);
+      console.log(`[WEBSOCKET] Client ${this.clusterId} stopped... it won't reconnect anymore`);
       if (this.ws) this.ws.removeAllListeners();
       return;
     }
@@ -62,7 +62,7 @@ export default class PicassoWebSocket {
 
   private onClose(): void {
     this.isAlive = false;
-    console.log(`[WEBSOCKET] Client ${this.shardId} Has been Closed`);
+    console.log(`[WEBSOCKET] Client ${this.clusterId} Has been Closed`);
     if (this.ruuningError) return;
     if (this.ws) this.ws.terminate();
     if (this.pingTimeout) clearTimeout(this.pingTimeout);
@@ -83,7 +83,7 @@ export default class PicassoWebSocket {
 
     this.ws
       .on('open', () => {
-        console.log(`[WEBSOCKET] Client ${this.shardId} Connected Successfully`);
+        console.log(`[WEBSOCKET] Client ${this.clusterId} Connected Successfully`);
         this.retries = 0;
         this.heartbeat();
       })
