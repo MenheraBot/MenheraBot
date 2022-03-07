@@ -1,6 +1,6 @@
 import { Options, SnowflakeUtil, User, AnyChannel } from 'discord.js-light';
 import { resolve } from 'node:path';
-import { Client as ClusterClient } from 'discord-hybrid-sharding';
+import Cluster, { Client as ClusterClient } from 'discord-hybrid-sharding';
 import MenheraClient from './MenheraClient';
 
 const channelFilter = (channel: AnyChannel) =>
@@ -12,6 +12,8 @@ const userFilter = (user: User) => user.id !== user.client.user?.id;
 
 const client = new MenheraClient(
   {
+    shards: Cluster.data.SHARD_LIST,
+    shardCount: Cluster.data.TOTAL_SHARDS,
     makeCache: Options.cacheWithLimits({
       GuildManager: Infinity,
       ChannelManager: {
