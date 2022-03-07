@@ -30,7 +30,7 @@ export default class MenheraClient extends Client {
 
   public events: EventManager;
 
-  public picassoWs: PicassoWebSocket;
+  public picassoWs!: PicassoWebSocket;
 
   public cooldowns: Collection<string, Collection<string, number>>;
 
@@ -53,7 +53,6 @@ export default class MenheraClient extends Client {
     this.commandExecutions = new Set();
     this.events = new EventManager(this);
     this.config = config;
-    this.picassoWs = new PicassoWebSocket(this.cluster.id ?? 0);
     this.shardProcessEnded = false;
     this.shuttingDown = false;
     //  this.jogoDoBichoManager = new JogoDoBixoManager(this);
@@ -75,6 +74,7 @@ export default class MenheraClient extends Client {
 
     await locales.load();
     await this.database.createConnection();
+    this.picassoWs = new PicassoWebSocket(this.cluster.id ?? 0);
     this.loadSlashCommands(this.config.interactionsDirectory);
     this.loadEvents(this.config.eventsDirectory);
     this.picassoWs.connect().catch(debugError);
