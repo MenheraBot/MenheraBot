@@ -55,7 +55,6 @@ export default class MenheraClient extends Client {
     this.config = config;
     this.shardProcessEnded = false;
     this.shuttingDown = false;
-    this.jogoDoBichoManager = new JogoDoBixoManager(this);
   }
 
   get repositories(): IDatabaseRepositories {
@@ -75,6 +74,7 @@ export default class MenheraClient extends Client {
     await locales.load();
     await this.database.createConnection();
     this.picassoWs = new PicassoWebSocket(this.cluster.id ?? 0);
+    this.jogoDoBichoManager = new JogoDoBixoManager(this);
     this.loadSlashCommands(this.config.interactionsDirectory);
     this.loadEvents(this.config.eventsDirectory);
     this.picassoWs.connect().catch(debugError);

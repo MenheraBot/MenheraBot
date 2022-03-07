@@ -388,7 +388,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
           else
             p[p.length - 1].push({
               ClusterId: c.clusterId,
-              Ping: `${c.ping}ms`,
+              Ping: `${Math.floor(c.ping)}ms`,
               Status: conninfo[c.status as keyof typeof conninfo],
               Uptime: moment.duration(c.uptime).format('D[d], H[h], m[m], s[s]'),
               Ram: `${(c.memoryUsed / 1024 / 1024).toFixed(2)} MB`,
@@ -430,7 +430,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
       if (i === 0)
         ctx.makeMessage({
           content: `\`\`\`${stringTable
-            .replace('(index)', ' Cluster ')
+            .replace('(index)', 'Cluster')
             .replace(/'/g, ' ')
             .slice(0, 1992)}\`\`\``,
           embeds: [],
@@ -439,7 +439,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
       else
         ctx.send({
           content: `\`\`\`${stringTable
-            .replace('(index)', ' Cluster ')
+            .replace('(index)', 'Cluster')
             .replace(/'/g, ' ')
             .slice(0, 1992)}\`\`\``,
         });
