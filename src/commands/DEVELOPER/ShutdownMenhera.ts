@@ -19,7 +19,7 @@ export default class ShutdownSlashInteractionCommand extends InteractionCommand 
 
     ctx.makeMessage({ content: 'A MENHERA VAI DESLIGAAAR' });
     // @ts-expect-error Client é fucker
-    await ctx.client.cluster?.broadcastEval((c: MenheraClient) => {
+    await ctx.client.cluster.broadcastEval((c: MenheraClient) => {
       c.shuttingDown = true;
     });
     console.log('[SHTUDOWN] - Todas instâncias postas em ShutDown');
