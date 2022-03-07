@@ -43,7 +43,7 @@ export default class JogoDoBixoManager {
   constructor(client: MenheraClient) {
     this.clientInstance = client;
 
-    if (this.clientInstance.shard!.ids[0] === 0) {
+    if (this.clientInstance.cluster.ids[0] === 0) {
       this.ongoingGame = {
         dueDate: Date.now() + GAME_DURATION,
         bets: [],
@@ -108,7 +108,7 @@ export default class JogoDoBixoManager {
   }
 
   finishGame(): void {
-    if (this.clientInstance.shard!.ids[0] === 0) {
+    if (this.clientInstance.cluster!.ids[0] === 0) {
       const results = [getResults(), getResults(), getResults(), getResults(), getResults()];
 
       this.ongoingGame.results = results;
@@ -130,26 +130,26 @@ export default class JogoDoBixoManager {
             this.lastGame.biggestProfit = a.value;
         });
     } else {
-      this.clientInstance.shard!.broadcastEval(
+      this.clientInstance.cluster.broadcastEval(
         // @ts-expect-error Client n é coiso
         (c: MenheraClient) => {
           c.jogoDoBichoManager.finishGame();
         },
-        { shard: 0 },
+        { cluster: 0 },
       );
     }
   }
 
   async canRegister(userId: string): Promise<boolean> {
-    if (this.clientInstance.shard!.ids[0] === 0) {
+    if (this.clientInstance.cluster!.ids[0] === 0) {
       if (this.ongoingGame.dueDate < Date.now()) return false;
       if (this.ongoingGame.bets.some((plr) => plr.id === userId)) return false;
       return true;
     }
-    return this.clientInstance.shard!.broadcastEval(
+    return this.clientInstance.cluster.broadcastEval(
       // @ts-expect-error Client n é coiso
       (c: MenheraClient, { id }: { id: string }) => c.jogoDoBichoManager.canRegister(id),
-      { shard: 0, context: { id: userId } },
+      { cluster: 0, context: { id: userId } },
     );
   }
 
@@ -169,44 +169,44 @@ export default class JogoDoBixoManager {
   }
 
   addBet(userId: string, betValue: number, optionSelected: string): void {
-    if (this.clientInstance.shard!.ids[0] === 0) {
+    if (this.clientInstance.cluster!.ids[0] === 0) {
       this.ongoingGame.bets.push({ id: userId, bet: betValue, option: optionSelected });
       this.apiRegisterGame(userId, betValue, betType(optionSelected), optionSelected);
     } else {
-      this.clientInstance.shard!.broadcastEval(
+      this.clientInstance.cluster.broadcastEval(
         // @ts-expect-error Client n é coiso
         (c: MenheraClient, { id, bet, option }: { id: string; bet: number; option: string }) => {
           c.jogoDoBichoManager.addBet(id, bet, option);
         },
-        { shard: 0, context: { id: userId, bet: betValue, option: optionSelected } },
+        { cluster: 0, context: { id: userId, bet: betValue, option: optionSelected } },
       );
     }
   }
 
   async lastGameStatus(): Promise<MayNotExists<JogoDoBichoGame>> {
-    if (this.clientInstance.shard!.ids[0] === 0) {
+    if (this.clientInstance.cluster!.ids[0] === 0) {
       return this.lastGame;
     }
-    return this.clientInstance.shard!.broadcastEval(
+    return this.clientInstance.cluster!.broadcastEval(
       // @ts-expect-error Client n é coiso
       (c: MenheraClient) => c.jogoDoBichoManager.lastGame,
-      { shard: 0 },
+      { cluster: 0 },
     );
   }
 
   async currentGameStatus(): Promise<JogoDoBichoGame> {
-    if (this.clientInstance.shard!.ids[0] === 0) {
+    if (this.clientInstance.cluster!.ids[0] === 0) {
       return this.ongoingGame;
     }
-    return this.clientInstance.shard!.broadcastEval(
+    return this.clientInstance.cluster!.broadcastEval(
       // @ts-expect-error Client n é coiso
       (c: MenheraClient) => c.jogoDoBichoManager.ongoingGame,
-      { shard: 0 },
+      { cluster: 0 },
     );
   }
 
   async stopGameLoop(): Promise<void> {
-    if (this.clientInstance.shard!.ids[0] === 0) {
+    if (this.clientInstance.cluster!.ids[0] === 0) {
       clearInterval(this.gameLoop);
 
       let totalBets = [...this.ongoingGame.bets.keys()].length;
@@ -228,16 +228,16 @@ export default class JogoDoBixoManager {
         biggestProfit: 0,
       };
     } else {
-      await this.clientInstance.shard!.broadcastEval(
+      await this.clientInstance.cluster.broadcastEval(
         // @ts-expect-error Client n é coiso
         async (c: MenheraClient) => c.jogoDoBichoManager.stopGameLoop(),
-        { shard: 0 },
+        { cluster: 0 },
       );
     }
   }
 
   restartGameLoop(): void {
-    if (this.clientInstance.shard!.ids[0] === 0) {
+    if (this.clientInstance.cluster!.ids[0] === 0) {
       this.ongoingGame = {
         dueDate: Date.now() + GAME_DURATION,
         bets: [],
@@ -248,12 +248,12 @@ export default class JogoDoBixoManager {
         this.finishGame();
       }, GAME_DURATION);
     } else {
-      this.clientInstance.shard!.broadcastEval(
+      this.clientInstance.cluster!.broadcastEval(
         // @ts-expect-error Client n é coiso
         (c: MenheraClient) => {
           c.jogoDoBichoManager.restartGameLoop();
         },
-        { shard: 0 },
+        { cluster: 0 },
       );
     }
   }

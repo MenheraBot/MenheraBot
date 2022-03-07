@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Client, ClientEvents, ClientOptions, Collection } from 'discord.js-light';
+import { Client as ClusterClient } from 'discord-hybrid-sharding';
 
 import * as Sentry from '@sentry/node';
 
@@ -19,6 +20,8 @@ import { debugError } from '@utils/Util';
 import JogoDoBixoManager from '@structures/JogoDoBichoManager';
 
 export default class MenheraClient extends Client {
+  public cluster!: ClusterClient;
+
   public database: Database;
 
   public shardProcessEnded: boolean;
@@ -33,13 +36,12 @@ export default class MenheraClient extends Client {
 
   public commandExecutions: Set<string>;
 
-  public jogoDoBichoManager: JogoDoBixoManager;
+  public jogoDoBichoManager!: JogoDoBixoManager;
 
   public shuttingDown: boolean;
 
   constructor(options: ClientOptions, public config: IClientConfigs) {
     super(options);
-
     this.database = new Database(
       process.env.NODE_ENV === 'development'
         ? (process.env.DEV_DATABASE_URI as string)
@@ -51,10 +53,10 @@ export default class MenheraClient extends Client {
     this.commandExecutions = new Set();
     this.events = new EventManager(this);
     this.config = config;
-    this.picassoWs = new PicassoWebSocket(this.shard?.ids[0] ?? 0);
+    this.picassoWs = new PicassoWebSocket(this.cluster.id ?? 0);
     this.shardProcessEnded = false;
     this.shuttingDown = false;
-    this.jogoDoBichoManager = new JogoDoBixoManager(this);
+    //  this.jogoDoBichoManager = new JogoDoBixoManager(this);
   }
 
   get repositories(): IDatabaseRepositories {

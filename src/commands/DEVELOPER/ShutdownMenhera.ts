@@ -19,7 +19,7 @@ export default class ShutdownSlashInteractionCommand extends InteractionCommand 
 
     ctx.makeMessage({ content: 'A MENHERA VAI DESLIGAAAR' });
     // @ts-expect-error Client é fucker
-    await ctx.client.shard?.broadcastEval((c: MenheraClient) => {
+    await ctx.client.cluster?.broadcastEval((c: MenheraClient) => {
       c.shuttingDown = true;
     });
     console.log('[SHTUDOWN] - Todas instâncias postas em ShutDown');
@@ -27,13 +27,13 @@ export default class ShutdownSlashInteractionCommand extends InteractionCommand 
     await ctx.client.jogoDoBichoManager.stopGameLoop();
     console.log('[SHTUDOWN] - Estrelinhas do jogo do Bicho Devolvidas!');
     // @ts-expect-error Client é fucker
-    await ctx.client.shard?.broadcastEval((c: MenheraClient) => c.picassoWs.killConnection());
+    await ctx.client.cluster?.broadcastEval((c: MenheraClient) => c.picassoWs.killConnection());
     console.log('[SHTUDOWN] - Conexões Websockets Picasso fechados');
 
     console.log('[SHTUDOWN] - Aguardando finalização de comandos');
     await new Promise<void>((resolve) => {
       const interval = setInterval(async () => {
-        const cooldowns = (await ctx.client.shard?.fetchClientValues(
+        const cooldowns = (await ctx.client.cluster?.fetchClientValues(
           'commandExecutions.size',
         )) as number[];
 
@@ -48,7 +48,7 @@ export default class ShutdownSlashInteractionCommand extends InteractionCommand 
     console.log('[SHTUDOWN] - Fechando conexões com o banco de dados');
 
     // @ts-expect-error Client é fucker
-    await ctx.client.shard?.broadcastEval((c: MenheraClient) => c.database.closeConnections());
+    await ctx.client.cluster?.broadcastEval((c: MenheraClient) => c.database.closeConnections());
     console.log('[SHTUDOWN] - Todas conexões fechadas!');
 
     console.log(

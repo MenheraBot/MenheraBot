@@ -1,5 +1,6 @@
 import { Options, SnowflakeUtil, User, AnyChannel } from 'discord.js-light';
 import { resolve } from 'node:path';
+import { Client as ClusterClient } from 'discord-hybrid-sharding';
 import MenheraClient from './MenheraClient';
 
 const channelFilter = (channel: AnyChannel) =>
@@ -55,6 +56,7 @@ const client = new MenheraClient(
 );
 
 (async () => {
+  client.cluster = new ClusterClient(client);
   await client.init();
 
   client

@@ -5,7 +5,7 @@
     "node": ">=16.6.0"
   },
   "description": "A Brazilian Discord Bot foccused in Fun and RPG",
-  "main": "dist/shard.js",
+  "main": "dist/cluster.js",
   "scripts": {
     "prepare": "husky install",
     "postinstall": "husky install",
@@ -32,6 +32,7 @@
     "@sentry/tracing": "^6.13.1",
     "axios": "^0.21.4",
     "bufferutil": "^4.0.3",
+    "discord-hybrid-sharding": "^1.4.6",
     "discord.js-light": "^4.6.0",
     "dotenv": "^10.0.0",
     "i18next": "^21.0.0",

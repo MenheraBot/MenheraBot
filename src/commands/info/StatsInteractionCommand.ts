@@ -7,6 +7,7 @@ import { COLORS, emojis } from '@structures/Constants';
 import Util, { actionRow, disableComponents, getThemeById } from '@utils/Util';
 import { Console } from 'node:console';
 import { Transform } from 'node:stream';
+import MenheraClient from 'MenheraClient';
 
 export default class StatsInteractionCommand extends InteractionCommand {
   constructor() {
@@ -222,7 +223,6 @@ export default class StatsInteractionCommand extends InteractionCommand {
   }
 
   static async MenheraStatus(ctx: InteractionCommandContext): Promise<void> {
-    if (!ctx.client.shard) return;
     const owner = await ctx.client.users.fetch(process.env.OWNER as string);
 
     moment.locale(ctx.data.server.lang.toLowerCase());
@@ -234,7 +234,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
       return;
     }
 
-    const results = await ctx.client.shard
+    const results = await ctx.client.cluster
       .broadcastEval((c: Client<true>) => {
         const guilds = c.guilds.cache.size;
         const memoryUsed = process.memoryUsage().heapUsed;
@@ -305,7 +305,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
             Date.now() - ctx.interaction.createdTimestamp
           }ms**\n📡 | ${ctx.locale('commands:ping.latency')} **${Math.round(
             ctx.client.ws.ping,
-          )}ms**\n🖲️ | Shard: **${ctx.client.shard.ids}** / **${ctx.client.shard.count - 1}**`,
+          )}ms**\n🖲️ | Shard: **${ctx.client.cluster.id}** / **${ctx.client.cluster.count - 1}**`,
           inline: false,
         },
       ]);
@@ -331,14 +331,15 @@ export default class StatsInteractionCommand extends InteractionCommand {
       return;
     }
 
-    const extendedShardsInfo = await ctx.client.shard.broadcastEval((c: Client<true>) => {
+    // @ts-expect-error Client n é sexual
+    const extendedShardsInfo = await ctx.client.cluster.broadcastEval((c: MenheraClient) => {
       const { ping, status } = c.ws;
       const { uptime } = c.ws.client;
       const guilds = c.guilds.cache.size;
       const memoryUsed = process.memoryUsage().heapUsed;
-      const shardId = c.shard?.ids[0] ?? 0;
+      const clusterId = c.cluster.id ?? 0;
 
-      return { ping, status, uptime, guilds, memoryUsed, shardId };
+      return { ping, status, uptime, guilds, memoryUsed, clusterId };
     });
 
     const shardsData: {
@@ -354,7 +355,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
         (
           p: Array<{
             Ping: string;
-            ShardId: number;
+            ClusterId: number;
             Status: string;
             Uptime: string;
             Ram: string;
@@ -381,12 +382,12 @@ export default class StatsInteractionCommand extends InteractionCommand {
                 Uptime: moment.duration(c.uptime).format('D[d], H[h], m[m], s[s]'),
                 Ram: `${(c.memoryUsed / 1024 / 1024).toFixed(2)} MB`,
                 Guilds: c.guilds,
-                ShardId: c.shardId,
+                ClusterId: c.clusterId,
               },
             ]);
           else
             p[p.length - 1].push({
-              ShardId: c.shardId,
+              ClusterId: c.clusterId,
               Ping: `${c.ping}ms`,
               Status: conninfo[c.status as keyof typeof conninfo],
               Uptime: moment.duration(c.uptime).format('D[d], H[h], m[m], s[s]'),
@@ -406,8 +407,8 @@ export default class StatsInteractionCommand extends InteractionCommand {
             Ram: string;
             Guilds: number;
           };
-        }>((acc, { ShardId, ...x }) => {
-          acc[ShardId] = x;
+        }>((acc, { ClusterId, ...x }) => {
+          acc[ClusterId] = x;
           return acc;
         }, {}),
       );
@@ -429,7 +430,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
       if (i === 0)
         ctx.makeMessage({
           content: `\`\`\`${stringTable
-            .replace('(index)', ' Shard ')
+            .replace('(index)', ' Cluster ')
             .replace(/'/g, ' ')
             .slice(0, 1992)}\`\`\``,
           embeds: [],
@@ -438,7 +439,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
       else
         ctx.send({
           content: `\`\`\`${stringTable
-            .replace('(index)', ' Shard ')
+            .replace('(index)', ' Cluster ')
             .replace(/'/g, ' ')
             .slice(0, 1992)}\`\`\``,
         });

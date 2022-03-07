@@ -27,8 +27,8 @@ const handleRequest = async (ctx: Context, client: MenheraClient) => {
   }
 
   const shardToExecute =
-    (Number(ctx.request.body.guild_id) >> 22) % (client.shard?.count as number);
-  await client.shard
+    (Number(ctx.request.body.guild_id) >> 22) % (client.cluster?.count as number);
+  await client.cluster
     ?.broadcastEval(
       (c: Client, { data }: { data: unknown }) => {
         if (!c.isReady()) return;
@@ -36,7 +36,7 @@ const handleRequest = async (ctx: Context, client: MenheraClient) => {
         c.actions.InteractionCreate.handle(data);
       },
       {
-        shard: shardToExecute,
+        cluster: shardToExecute,
         context: { data: ctx.request.body },
       },
     )

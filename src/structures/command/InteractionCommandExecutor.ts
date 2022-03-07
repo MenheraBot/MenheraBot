@@ -227,7 +227,7 @@ const InteractionCommandExecutor = async (
     commandName: command.config.name,
     data: Date.now(),
     args: interaction.options.data,
-    shardId: client.shard?.ids[0] ?? 0,
+    shardId: client.cluster?.id ?? 0,
   };
 
   await HttpRequests.postCommand(data);

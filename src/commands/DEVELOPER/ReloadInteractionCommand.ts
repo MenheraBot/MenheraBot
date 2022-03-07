@@ -26,7 +26,7 @@ export default class ReloadSlashInteractionCommand extends InteractionCommand {
     const opcao = ctx.options.getString('opcao', true).toLowerCase();
     if (opcao === 'locales') {
       // @ts-expect-error Reload command doesnt exist in client<boolean>
-      await ctx.client.shard?.broadcastEval((c) => c.reloadLocales());
+      await ctx.client.cluster.broadcastEval((c) => c.reloadLocales());
       ctx.makeMessage({ content: 'Locales Recarregados' });
       return;
     }
@@ -37,7 +37,7 @@ export default class ReloadSlashInteractionCommand extends InteractionCommand {
     }
 
     // @ts-expect-error Reload command doesnt exist in client<boolean>
-    await ctx.client.shard?.broadcastEval((c, { a }) => c.reloadCommand(a), {
+    await ctx.client.cluster?.broadcastEval((c, { a }) => c.reloadCommand(a), {
       context: { a: opcao },
     });
 

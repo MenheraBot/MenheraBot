@@ -1,6 +1,6 @@
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { BICHO_BET_MULTIPLIER, JOGO_DO_BICHO } from '@structures/Constants';
+/* import { BICHO_BET_MULTIPLIER, JOGO_DO_BICHO } from '@structures/Constants';
 import Util, { actionRow, disableComponents, resolveCustomId } from '@utils/Util';
 import {
   MessageActionRow,
@@ -8,7 +8,7 @@ import {
   MessageSelectMenu,
   SelectMenuInteraction,
 } from 'discord.js-light';
-import moment from 'moment';
+import moment from 'moment'; */
 
 export default class JogoDoBichoInteractionCommand extends InteractionCommand {
   constructor() {
@@ -31,7 +31,9 @@ export default class JogoDoBichoInteractionCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    if (!ctx.client.shardProcessEnded) {
+    ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:bicho.close') });
+
+    /*  if (!ctx.client.shardProcessEnded) {
       ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:bicho.close') });
       return;
     }
@@ -298,6 +300,6 @@ export default class JogoDoBichoInteractionCommand extends InteractionCommand {
           break;
         }
       }
-    });
+    }); */
   }
 }

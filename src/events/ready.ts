@@ -13,19 +13,18 @@ let dailyLoopTimeout: NodeJS.Timeout;
 export default class ReadyEvent {
   async run(client: MenheraClient): Promise<void> {
     if (!client.user) return;
-    if (!client.shard) return;
     if (process.env.NODE_ENV === 'development') return;
 
-    const isMasterShard = (id: number) => id === (client.shard?.count as number) - 1;
+    const isMasterShard = (id: number) => id === (client.cluster.count as number) - 1;
 
     const updateActivity = async (shard: number) =>
       client.user?.setActivity(await HttpRequests.getActivity(shard));
 
-    const shardId = client.shard.ids[0];
+    const clusterId = client.cluster.id;
 
-    setInterval(() => updateActivity(shardId), 1000 * 60 * 10);
+    setInterval(() => updateActivity(clusterId), 1000 * 60 * 10);
 
-    if (isMasterShard(shardId)) {
+    if (isMasterShard(clusterId)) {
       HttpServer.getInstance().registerRouter('DBL', DBLWebhook(client));
       // HttpServer.getInstance().registerRouter('INTERACTIONS', PostInteractions(this.client));
 
@@ -37,7 +36,7 @@ export default class ReadyEvent {
       DeployDeveloperCommants(client);
 
       // @ts-expect-error Reload command doesnt exist in client<boolean>
-      await client.shard.broadcastEval((c: MenheraClient) => {
+      await client.cluster.broadcastEval((c: MenheraClient) => {
         c.shardProcessEnded = true;
       });
     }

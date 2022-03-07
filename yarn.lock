@@ -1906,6 +1906,13 @@ discord-api-types@^0.26.0:
   resolved "https://registry.yarnpkg.com/discord-api-types/-/discord-api-types-0.26.1.tgz#726f766ddc37d60da95740991d22cb6ef2ed787b"
   integrity sha512-T5PdMQ+Y1MEECYMV5wmyi9VEYPagEDEi4S0amgsszpWY0VB9JJ/hEvM6BgLhbdnKky4gfmZEXtEEtojN8ZKJQQ==
 
+discord-hybrid-sharding@^1.4.6:
+  version "1.4.6"
+  resolved "https://registry.yarnpkg.com/discord-hybrid-sharding/-/discord-hybrid-sharding-1.4.6.tgz#5b8c2a075f10f837a8df146aca06b163d16286ce"
+  integrity sha512-oQzkZsrFQDw1uUOgWExWk2jAsNroBI1nF4a0V7d+wuEg2Um9jm2nY7VvmNLsuosopSCftX+3EnicjOMQKzcXdQ==
+  dependencies:
+    node-fetch "^2.6.1"
+
 discord.js-light@^4.6.0:
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/discord.js-light/-/discord.js-light-4.6.0.tgz#bcb86d43ed547c9d0473e10c1c0d0e7a74cc329f"
