@@ -1,10 +1,7 @@
 import MenheraClient from 'MenheraClient';
 import HttpRequests from '@utils/HTTPrequests';
-import HttpServer from '@structures/server/server';
-import DBLWebhook from '@structures/server/controllers/DBLWebhook';
 import { getMillisecondsToTheEndOfDay } from '@utils/Util';
-import InactivityPunishment from '@structures/InactivityPunishment';
-import { postBotStatus, postShardStatus } from '@structures/StatusPoster';
+import { postShardStatus } from '@structures/StatusPoster';
 import DeployDeveloperCommants from '@structures/DeployDeveloperCommants';
 // import PostInteractions from '@structures/server/controllers/PostInteractions';
 
@@ -25,14 +22,14 @@ export default class ReadyEvent {
     setInterval(() => updateActivity(clusterId), 1000 * 60 * 10);
 
     if (isMasterShard(clusterId)) {
-      HttpServer.getInstance().registerRouter('DBL', DBLWebhook(client));
+      // HttpServer.getInstance().registerRouter('DBL', DBLWebhook(client));
       // HttpServer.getInstance().registerRouter('INTERACTIONS', PostInteractions(this.client));
 
       ReadyEvent.dailyLoop(client);
 
-      InactivityPunishment(client);
+      // InactivityPunishment(client);
       postShardStatus(client);
-      postBotStatus(client);
+      // postBotStatus(client);
       DeployDeveloperCommants(client);
 
       // @ts-expect-error Reload command doesnt exist in client<boolean>
