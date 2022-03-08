@@ -111,9 +111,13 @@ export default class HttpRequests {
     return false;
   }
 
-  static async postBotStatus(botId: string, serverCount: number[]): Promise<void> {
+  static async postBotStatus(
+    botId: string,
+    serverCount: number,
+    shardCount: number,
+  ): Promise<void> {
     await topggRequest
-      .post(`/bots/${botId}/stats`, { server_count: serverCount })
+      .post(`/bots/${botId}/stats`, { server_count: serverCount, shard_count: shardCount })
       .catch(debugError);
   }
 

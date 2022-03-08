@@ -6,8 +6,11 @@ export const postBotStatus = (client: MenheraClient): void => {
   setInterval(async () => {
     if (!client.cluster) return;
     if (!client.user) return;
-    const info = (await client.cluster.fetchClientValues('guilds.cache.size')) as number[];
-    await HttpRequests.postBotStatus(client.user.id, info);
+    const info = await client.cluster
+      .fetchClientValues('guilds.cache.size')
+      .then((a) => a.reduce((p, c) => p + c, 0));
+
+    await HttpRequests.postBotStatus(client.user.id, info, client.options.shardCount ?? 0);
   }, 1800000);
 };
 export const postShardStatus = (client: MenheraClient): void => {
