@@ -24,6 +24,7 @@ export const postShardStatus = (client: MenheraClient): void => {
         let unavailable = 0;
 
         c.guilds.cache.forEach((a) => {
+          if (a.shardId !== id) return;
           if (!a.available) {
             unavailable += 1;
             return;
@@ -32,7 +33,7 @@ export const postShardStatus = (client: MenheraClient): void => {
           members += a.memberCount;
         });
 
-        acc.push({ id, ping, guilds, members, unavailable, uptime: connectedAt });
+        acc.push({ id, ping, guilds, members, unavailable, uptime: Date.now() - connectedAt });
         return acc;
       }, []);
 
