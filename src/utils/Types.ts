@@ -244,6 +244,7 @@ export interface IStatusData {
   unavailable: number;
   ping: number;
   lastPingAt: number;
+  clusterId: number;
   members: number;
 }
 
@@ -400,3 +401,12 @@ export interface JogoDoBichoGame {
 }
 
 export type ToBLess = 'mana' | 'life' | 'damage' | 'armor' | 'intelligence' | 'agility';
+
+export interface ShardsDataReturn {
+  id: number;
+  ping: number;
+  guilds: number;
+  members: number;
+  unavailable: number;
+  uptime: number;
+}

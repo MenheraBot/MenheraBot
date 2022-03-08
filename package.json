@@ -31,10 +31,11 @@
     "@sentry/node": "^6.13.1",
     "@sentry/tracing": "^6.13.1",
     "axios": "^0.21.4",
-    "bufferutil": "^4.0.3",
+    "bufferutil": "^4.0.6",
     "discord-hybrid-sharding": "^1.4.6",
     "discord.js-light": "^4.6.0",
     "dotenv": "^10.0.0",
+    "erlpack": "discord/erlpack",
     "i18next": "^21.0.0",
     "i18next-fs-backend": "^1.1.1",
     "ioredis": "^4.27.9",
@@ -46,7 +47,9 @@
     "mongoose": "^6.0.7",
     "string-similarity": "^4.0.4",
     "tweetnacl": "^1.0.3",
-    "ws": "^8.2.2"
+    "utf-8-validate": "^5.0.8",
+    "ws": "^8.2.2",
+    "zlib-sync": "^0.1.7"
   },
   "repository": {
     "type": "git",
@@ -79,7 +82,5 @@
     "tslib": "^2.3.1",
     "typescript": "^4.4.3"
   },
-  "optionalDependencies": {
-    "erlpack": "github:discord/erlpack"
-  }
+  "optionalDependencies": {}
 }

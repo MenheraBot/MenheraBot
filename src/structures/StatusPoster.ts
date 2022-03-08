@@ -1,6 +1,6 @@
 import HttpRequests from '@utils/HTTPrequests';
 import MenheraClient from 'MenheraClient';
-import { IStatusData } from '@utils/Types';
+import { IStatusData, ShardsDataReturn } from '@utils/Types';
 
 export const postBotStatus = (client: MenheraClient): void => {
   setInterval(async () => {
@@ -16,26 +16,55 @@ export const postShardStatus = (client: MenheraClient): void => {
 
     const getShardsInfo = (c: MenheraClient) => {
       const memoryUsed = process.memoryUsage().rss;
-      const { uptime } = c;
-      const guilds = c.guilds.cache.size;
-      const unavailable = c.guilds.cache.reduce((p, b) => (b.available ? p : p + 1), 0);
-      const { ping } = c.ws;
-      const members = c.guilds.cache.reduce((p, b) => (b.available ? p + b.memberCount : p), 0);
-      const id = c.cluster.id ?? 0;
+      const shardsInfo = c.ws.shards.reduce<ShardsDataReturn[]>((acc, shard) => {
+        // @ts-expect-error connectedAt is private
+        const { id, ping, connectedAt } = shard;
+        let guilds = 0;
+        let members = 0;
+        let unavailable = 0;
 
-      return { memoryUsed, uptime, guilds, unavailable, ping, members, id };
+        c.guilds.cache.forEach((a) => {
+          if (!a.available) {
+            unavailable += 1;
+            return;
+          }
+          guilds += 1;
+          members += a.memberCount;
+        });
+
+        acc.push({ id, ping, guilds, members, unavailable, uptime: connectedAt });
+        return acc;
+      }, []);
+
+      return { memoryUsed, shards: shardsInfo, clusterId: c.cluster.id };
     };
 
     // @ts-expect-error Client n é sexual
-    const results = await client.cluster.broadcastEval(getShardsInfo);
+    const results = (await client.cluster.broadcastEval(getShardsInfo)) as {
+      memoryUsed: number;
+      clusterId: number;
+      shards: ShardsDataReturn[];
+    }[];
     if (!results) return;
 
-    const toSendData: IStatusData[] = Array(client.cluster?.count)
+    const toSendData: IStatusData[] = Array(client.options.shardCount)
       .fill('a')
-      .map((_, i) => ({
-        ...results[i],
-        lastPingAt: Date.now(),
-      }));
+      .map((_, i) => {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const clusterData = results.find((a) => a.shards.some((b) => b.id === i))!;
+        const shardData = clusterData.shards.filter((a) => a.id === i)[0];
+        return {
+          clusterId: clusterData.clusterId,
+          guilds: shardData.guilds,
+          id: shardData.id,
+          lastPingAt: Date.now(),
+          members: shardData.members,
+          memoryUsed: clusterData.memoryUsed,
+          ping: shardData.ping,
+          unavailable: shardData.unavailable,
+          uptime: shardData.uptime,
+        };
+      });
 
     await HttpRequests.postShardStatus(toSendData);
   }, 15 * 1000);
