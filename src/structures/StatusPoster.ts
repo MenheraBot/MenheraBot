@@ -33,7 +33,15 @@ export const postShardStatus = (client: MenheraClient): void => {
           members += a.memberCount;
         });
 
-        acc.push({ id, ping, guilds, members, unavailable, uptime: Date.now() - connectedAt });
+        acc.push({
+          id,
+          ping,
+          guilds,
+          members,
+          unavailable,
+          uptime: c.uptime ?? 0,
+          connected: Date.now() - connectedAt,
+        });
         return acc;
       }, []);
 
@@ -64,6 +72,7 @@ export const postShardStatus = (client: MenheraClient): void => {
           ping: shardData.ping,
           unavailable: shardData.unavailable,
           uptime: shardData.uptime,
+          connected: shardData.connected,
         };
       });
 

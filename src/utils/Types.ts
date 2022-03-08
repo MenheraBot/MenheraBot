@@ -409,4 +409,5 @@ export interface ShardsDataReturn {
   members: number;
   unavailable: number;
   uptime: number;
+  connected: number;
 }
