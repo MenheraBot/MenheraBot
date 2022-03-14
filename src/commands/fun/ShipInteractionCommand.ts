@@ -18,7 +18,7 @@ export default class ShipInteractionCommand extends InteractionCommand {
         {
           name: 'user_dois',
           type: 'USER',
-          description: 'Segundo usuário. Caso não seja passado, o ship será feio com você',
+          description: 'Segundo usuário. Caso não seja passado, o ship será feito com você',
           required: false,
         },
       ],
