@@ -140,7 +140,7 @@ export default class Databases {
   async closeConnections(): Promise<void> {
     if (this.redisClient) {
       await this.redisClient.flushdb();
-      await this.redisClient.disconnect(false);
+      this.redisClient.disconnect(false);
     }
 
     await mongoose.disconnect();
@@ -156,6 +156,7 @@ export default class Databases {
 
       this.redisClient.on('end', () => {
         this.redisClient = null;
+        console.log('[REDIS] Redis database has been disconnected');
       });
     } catch (err) {
       console.log(`[REDIS] Error connecting to redis ${err}`);
@@ -168,12 +169,12 @@ export default class Databases {
     return new Promise((resolve, reject) => {
       mongoose.connect(this.uri, (err) => {
         if (err) {
-          console.error(`(x) Error to connecting to database \n${err}`);
+          console.error(`[DATABASE] ERROR! When connecting to database \n${err}`);
 
           return reject(err);
         }
 
-        console.log('[DATABASE] Conectado com sucesso à database');
+        console.log('[DATABASE] Database connected successfully');
         return resolve();
       });
     });

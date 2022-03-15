@@ -1,11 +1,12 @@
-import { RoleplayUserSchema } from '@roleplay/Types';
+import { RoleplayUserSchema, UserBattleConfig } from '@roleplay/Types';
 import { Rpgs } from '@structures/DatabaseCollections';
+import HttpRequests from '@utils/HTTPrequests';
 import { MayNotExists } from '@utils/Util';
 import { Redis } from 'ioredis';
 import { UpdateQuery, UpdateWithAggregationPipeline } from 'mongoose';
 
 export default class RoleplayRepository {
-  constructor(private roleplayModal: typeof Rpgs, public redisClient: MayNotExists<Redis>) {}
+  constructor(private roleplayModal: typeof Rpgs, private redisClient: MayNotExists<Redis>) {}
 
   async registerUser(
     userId: string,
@@ -56,5 +57,27 @@ export default class RoleplayRepository {
 
     /*   if (this.redisClient)
       await this.redisClient.setex(`roleplay:${userId}`, 3600, JSON.stringify(updated)); */
+  }
+
+  async getConfigurationBattle(userId: string): Promise<MayNotExists<UserBattleConfig>> {
+    if (this.redisClient) {
+      const result = await this.redisClient.get(`battle_config:${userId}`);
+      if (result) return JSON.parse(result);
+    }
+
+    const apiConfig = await HttpRequests.getUserBattleConfig(userId);
+    if (apiConfig.error) return null;
+
+    if (this.redisClient)
+      await this.redisClient.set(`battle_config:${userId}`, JSON.stringify(apiConfig.config));
+
+    return apiConfig.config;
+  }
+
+  async setUserConfigurationBattle(userId: string, config: UserBattleConfig): Promise<void> {
+    if (this.redisClient)
+      await this.redisClient.set(`battle_config:${userId}`, JSON.stringify(config));
+
+    await HttpRequests.updateUserBattleConfig(userId, config);
   }
 }

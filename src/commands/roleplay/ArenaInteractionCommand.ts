@@ -1,14 +1,31 @@
-import { ABILITY_BATTLE_LEVEL, USER_BATTLE_LEVEL } from '@roleplay/Constants';
+/* eslint-disable no-nested-ternary */
+import {
+  ABILITY_BATTLE_LEVEL,
+  BLESSES_DIFFERENCE_LIMIT,
+  LEVEL_UP_BLESSES,
+  USER_BATTLE_LEVEL,
+} from '@roleplay/Constants';
+import { UserBattleConfig } from '@roleplay/Types';
 import { makeCloseCommandButton } from '@roleplay/utils/AdventureUtils';
+import {
+  getUserAgility,
+  getUserArmor,
+  getUserDamage,
+  getUserIntelligence,
+  getUserMaxLife,
+  getUserMaxMana,
+} from '@roleplay/utils/Calculations';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { COLORS } from '@structures/Constants';
-import { actionRow, makeCustomId, resolveCustomId } from '@utils/Util';
+import Util, { actionRow, disableComponents, makeCustomId, resolveCustomId } from '@utils/Util';
 import {
-  InteractionCollector,
+  MessageActionRow,
   MessageButton,
   MessageComponentInteraction,
   MessageEmbed,
+  MessageSelectMenu,
+  SelectMenuInteraction,
 } from 'discord.js-light';
 
 export default class ArenaInteractionCommand extends InteractionCommand {
@@ -33,11 +50,331 @@ export default class ArenaInteractionCommand extends InteractionCommand {
         },
       ],
       cooldown: 7,
+      authorDataFields: ['selectedColor'],
     });
   }
 
-  static async configurate(): Promise<void> {
-    console.log('a');
+  static async configurate(ctx: InteractionCommandContext): Promise<void> {
+    const user = await ctx.client.repositories.roleplayRepository.findUser(ctx.author.id);
+
+    if (!user) {
+      ctx.makeMessage({ content: ctx.prettyResponse('error', 'common:unregistered') });
+      return;
+    }
+
+    const userConfig: UserBattleConfig =
+      (await ctx.client.repositories.roleplayRepository.getConfigurationBattle(ctx.author.id)) ?? {
+        agility: 0,
+        armor: 0,
+        damage: 0,
+        intelligence: 0,
+        maxLife: 0,
+        maxMana: 0,
+      };
+
+    let totalBattlePointsToUse = 0;
+    let totalVitalityPointsToUse = 0;
+
+    for (let i = 1; i < USER_BATTLE_LEVEL; i++) {
+      totalBattlePointsToUse += LEVEL_UP_BLESSES[i].battle;
+      totalVitalityPointsToUse += LEVEL_UP_BLESSES[i].vitality;
+    }
+
+    const userAvailableBattlePoints =
+      totalBattlePointsToUse - (userConfig.armor + userConfig.damage + userConfig.intelligence);
+
+    const userAvailableVitalityPoints =
+      totalVitalityPointsToUse - (userConfig.maxMana + userConfig.maxLife + userConfig.agility);
+
+    const pvpUser = {
+      level: USER_BATTLE_LEVEL,
+      class: user.class,
+      blesses: userConfig,
+      race: user.race,
+      weapon: user.weapon,
+      protection: user.protection,
+      effects: [],
+    };
+
+    const embed = new MessageEmbed()
+      .setTitle(ctx.locale('commands:arena.configurate.title'))
+      .setColor(ctx.data.user.selectedColor)
+      .setDescription(
+        ctx.locale('commands:arena.configurate.description', {
+          battle: userAvailableBattlePoints,
+          vitality: userAvailableVitalityPoints,
+        }),
+      )
+      .addFields([
+        {
+          name: ctx.locale('commands:ficha.show.vitality'),
+          value: `${ctx.prettyResponse('blood', 'common:roleplay.life')}: **${getUserMaxLife(
+            pvpUser,
+          )}**\n${ctx.prettyResponse('mana', 'common:roleplay.mana')}: **${getUserMaxMana(
+            pvpUser,
+          )}**\n${ctx.prettyResponse('agility', 'common:roleplay.agility')}: **${getUserAgility(
+            pvpUser,
+          )}**`,
+          inline: true,
+        },
+        {
+          name: ctx.locale('commands:ficha.show.battle'),
+          value: `${ctx.prettyResponse('damage', 'common:roleplay.damage')}: **${getUserDamage(
+            pvpUser,
+          )}**\n${ctx.prettyResponse('armor', 'common:roleplay.armor')}: **${getUserArmor(
+            pvpUser,
+          )}**\n${ctx.prettyResponse(
+            'intelligence',
+            'common:roleplay.intelligence',
+          )}: **${getUserIntelligence(pvpUser)}**`,
+          inline: true,
+        },
+      ]);
+
+    const [resetPointsCustomId, baseId] = makeCustomId('RESET');
+    const [vitalityCustomId] = makeCustomId('VITALITY', baseId);
+    const [battleCustomId] = makeCustomId('BATTLE', baseId);
+    const closeCommandButton = makeCloseCommandButton(baseId);
+
+    const resetPointsButton = new MessageButton()
+      .setCustomId(resetPointsCustomId)
+      .setStyle('SECONDARY')
+      .setLabel(ctx.locale('commands:arena.configurate.reset-points'));
+
+    const vitalityButton = new MessageButton()
+      .setCustomId(vitalityCustomId)
+      .setStyle('PRIMARY')
+      .setLabel(ctx.locale('commands:ficha.show.vitality'));
+
+    const battleButton = new MessageButton()
+      .setCustomId(battleCustomId)
+      .setStyle('PRIMARY')
+      .setLabel(ctx.locale('commands:ficha.show.battle'));
+
+    if (userAvailableVitalityPoints === 0) vitalityButton.setDisabled(true);
+    if (userAvailableBattlePoints === 0) battleButton.setDisabled(true);
+
+    ctx.makeMessage({
+      embeds: [embed],
+      components: [
+        actionRow([vitalityButton, battleButton, resetPointsButton, closeCommandButton]),
+      ],
+    });
+
+    const selectedOption = await Util.collectComponentInteractionWithStartingId(
+      ctx.channel,
+      ctx.author.id,
+      baseId,
+      15000,
+    );
+
+    if (!selectedOption) {
+      ctx.makeMessage({
+        components: [
+          actionRow(
+            disableComponents(ctx.locale('common:timesup'), [
+              vitalityButton,
+              battleButton,
+              resetPointsButton,
+              closeCommandButton,
+            ]),
+          ),
+        ],
+      });
+      return;
+    }
+
+    if (resolveCustomId(selectedOption.customId) === 'CLOSE_COMMAND') {
+      ctx.deleteReply();
+      return;
+    }
+
+    const pointsToUse =
+      resolveCustomId(selectedOption.customId) === 'VITALITY'
+        ? userAvailableVitalityPoints
+        : userAvailableBattlePoints;
+
+    const [amountCustomId, nextBase] = makeCustomId('AMOUNT');
+    closeCommandButton.setCustomId(makeCustomId('CLOSE_COMMAND', nextBase)[0]);
+
+    const selectAmount = new MessageSelectMenu()
+      .setCustomId(amountCustomId)
+      .setMinValues(1)
+      .setMaxValues(1)
+      .setPlaceholder(ctx.locale('commands:ficha.show.select-amount'));
+
+    for (let i = 1; i <= pointsToUse && i <= 25; i++)
+      selectAmount.addOptions({ label: `${i}`, value: `${i}` });
+
+    ctx.makeMessage({ components: [actionRow([closeCommandButton]), actionRow([selectAmount])] });
+
+    const selectedAmount =
+      await Util.collectComponentInteractionWithStartingId<SelectMenuInteraction>(
+        ctx.channel,
+        ctx.author.id,
+        nextBase,
+      );
+
+    if (!selectedAmount) {
+      ctx.makeMessage({
+        components: [actionRow(disableComponents(ctx.locale('common:timesup'), [selectAmount]))],
+      });
+      return;
+    }
+
+    if (resolveCustomId(selectedAmount.customId) === 'CLOSE_COMMAND') {
+      ctx.deleteReply();
+      return;
+    }
+
+    const points = Number(selectedAmount.values[0]);
+
+    embed.setFooter({ text: ctx.locale('commands:ficha.show.select-type', { count: points }) });
+
+    const toSendComponents: MessageActionRow[] = [];
+
+    const [lifeCustomId, lastId] = makeCustomId('LIFE');
+    closeCommandButton.setCustomId(makeCustomId('CLOSE_COMMAND', lastId)[0]);
+
+    if (resolveCustomId(selectedOption.customId) === 'VITALITY') {
+      const lifeButton = new MessageButton()
+        .setCustomId(lifeCustomId)
+        .setStyle('DANGER')
+        .setLabel(ctx.locale('common:roleplay.life'));
+
+      const manaButton = new MessageButton()
+        .setCustomId(`${lastId} | MANA`)
+        .setStyle('PRIMARY')
+        .setLabel(ctx.locale('common:roleplay.mana'));
+
+      const agilityButton = new MessageButton()
+        .setCustomId(`${lastId} | AGILITY`)
+        .setStyle('SECONDARY')
+        .setLabel(ctx.locale('common:roleplay.agility'));
+
+      toSendComponents.push(actionRow([lifeButton, manaButton, agilityButton, closeCommandButton]));
+    } else {
+      const damageButton = new MessageButton()
+        .setCustomId(`${lastId} | DAMAGE`)
+        .setStyle('PRIMARY')
+        .setLabel(ctx.locale('common:roleplay.damage'));
+
+      const armorButton = new MessageButton()
+        .setCustomId(`${lastId} | ARMOR`)
+        .setStyle('PRIMARY')
+        .setLabel(ctx.locale('common:roleplay.armor'));
+
+      const intelligenceButton = new MessageButton()
+        .setCustomId(`${lastId} | INTELLIGENCE`)
+        .setStyle('PRIMARY')
+        .setLabel(ctx.locale('common:roleplay.intelligence'));
+
+      toSendComponents.push(
+        actionRow([damageButton, armorButton, intelligenceButton, closeCommandButton]),
+      );
+    }
+
+    ctx.makeMessage({ embeds: [embed], components: toSendComponents });
+
+    const statusSelected = await Util.collectComponentInteractionWithStartingId(
+      ctx.channel,
+      ctx.author.id,
+      lastId,
+    );
+
+    if (!statusSelected) {
+      ctx.makeMessage({
+        components: [],
+        embeds: [],
+        content: ctx.prettyResponse('error', 'common:timesup'),
+      });
+      return;
+    }
+
+    if (resolveCustomId(statusSelected.customId) === 'CLOSE_COMMAND') {
+      ctx.deleteReply();
+      return;
+    }
+
+    const databaseField =
+      resolveCustomId(statusSelected.customId).toLowerCase() === 'mana' ||
+      resolveCustomId(statusSelected.customId).toLowerCase() === 'life'
+        ? (`max${Util.capitalize(resolveCustomId(statusSelected.customId).toLowerCase())}` as
+            | 'maxMana'
+            | 'maxLife')
+        : (resolveCustomId(statusSelected.customId).toLowerCase() as
+            | 'damage'
+            | 'armor'
+            | 'intelligence'
+            | 'agility');
+
+    const blessingField = resolveCustomId(selectedOption.customId).toLowerCase() as
+      | 'vitality'
+      | 'battle';
+
+    if (blessingField === 'vitality') {
+      const antiBlessingLimit =
+        databaseField === 'agility'
+          ? Math.abs(
+              Math.max(userConfig.maxLife, userConfig.maxMana) - (userConfig.agility + points),
+            )
+          : databaseField === 'maxLife'
+          ? Math.abs(
+              Math.max(userConfig.agility, userConfig.maxMana) - (userConfig.maxLife + points),
+            )
+          : Math.abs(
+              Math.max(userConfig.maxLife, userConfig.agility) - (userConfig.maxMana + points),
+            );
+      if (antiBlessingLimit > BLESSES_DIFFERENCE_LIMIT) {
+        ctx.makeMessage({
+          content: ctx.prettyResponse('error', 'commands:ficha.show.limit-bless', {
+            limit: BLESSES_DIFFERENCE_LIMIT,
+          }),
+          embeds: [],
+          components: [],
+        });
+        return;
+      }
+    } else {
+      const antiBlessingLimit =
+        databaseField === 'armor'
+          ? Math.abs(
+              Math.max(userConfig.damage, userConfig.intelligence) - (userConfig.armor + points),
+            )
+          : databaseField === 'damage'
+          ? Math.abs(
+              Math.max(userConfig.armor, userConfig.intelligence) - (userConfig.damage + points),
+            )
+          : Math.abs(
+              Math.max(userConfig.armor, userConfig.damage) - (userConfig.intelligence + points),
+            );
+
+      if (antiBlessingLimit > BLESSES_DIFFERENCE_LIMIT) {
+        ctx.makeMessage({
+          content: ctx.prettyResponse('error', 'commands:ficha.show.limit-bless', {
+            limit: BLESSES_DIFFERENCE_LIMIT,
+          }),
+          embeds: [],
+          components: [],
+        });
+        return;
+      }
+    }
+
+    const userBlesses = userConfig;
+
+    userBlesses[databaseField] += points;
+
+    await ctx.client.repositories.roleplayRepository.setUserConfigurationBattle(
+      ctx.author.id,
+      userConfig,
+    );
+
+    ctx.makeMessage({
+      embeds: [],
+      components: [],
+      content: ctx.prettyResponse('success', 'commands:arena.configurate.success-points'),
+    });
   }
 
   static async pvpLoop(): Promise<void> {
@@ -47,7 +384,7 @@ export default class ArenaInteractionCommand extends InteractionCommand {
   async run(ctx: InteractionCommandContext): Promise<void> {
     const selectedCommand = ctx.options.getSubcommand(true);
 
-    if (selectedCommand === 'configurar') return ArenaInteractionCommand.configurate();
+    if (selectedCommand === 'configurar') return ArenaInteractionCommand.configurate(ctx);
 
     const mentioned = ctx.options.getUser('user', true);
 

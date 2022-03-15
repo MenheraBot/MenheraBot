@@ -41,7 +41,7 @@ export default class ReadyEvent {
       });
     }
 
-    console.log('[READY] Menhera se conectou com o Discord!');
+    console.log(`[READY] Menhera Client ${client.cluster.id} its ready to receive events!`);
   }
 
   static async dailyLoop(client: MenheraClient): Promise<void> {

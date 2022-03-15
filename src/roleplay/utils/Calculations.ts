@@ -7,7 +7,6 @@ import {
   AbilityEffect,
   ProtectionItem,
   ReadyToBattleEnemy,
-  RoleplayUserSchema,
   UserAbility,
   UserBattleEntity,
   WeaponItem,
@@ -42,7 +41,9 @@ export const getEnemyStatusWithEffects = (
   return Math.floor(baseStatus + effects);
 };
 
-export const getUserMaxLife = (user: RoleplayUserSchema): number => {
+export const getUserMaxLife = (
+  user: Pick<UserBattleEntity, 'class' | 'race' | 'blesses' | 'level'>,
+): number => {
   const userClass = getClassById(user.class);
   const userRace = getRaceById(user.race);
   const userBlesses = makeBlessingStatusUpgrade('life', user.blesses.maxLife);
@@ -57,7 +58,9 @@ export const getUserMaxLife = (user: RoleplayUserSchema): number => {
   return Math.floor(classLife + raceLife + userBlesses);
 };
 
-export const getUserMaxMana = (user: RoleplayUserSchema): number => {
+export const getUserMaxMana = (
+  user: Pick<UserBattleEntity, 'class' | 'race' | 'blesses' | 'level'>,
+): number => {
   const userClass = getClassById(user.class);
   const userRace = getRaceById(user.race);
   const userBlesses = makeBlessingStatusUpgrade('mana', user.blesses.maxMana);
@@ -72,7 +75,9 @@ export const getUserMaxMana = (user: RoleplayUserSchema): number => {
   return Math.floor(classMana + raceMana + userBlesses);
 };
 
-export const getUserDamage = (user: UserBattleEntity): number => {
+export const getUserDamage = (
+  user: Pick<UserBattleEntity, 'class' | 'race' | 'blesses' | 'level' | 'effects' | 'weapon'>,
+): number => {
   const userClass = getClassById(user.class);
   const userRace = getRaceById(user.race);
   const userBlesses = makeBlessingStatusUpgrade('damage', user.blesses.damage);
@@ -111,7 +116,9 @@ export const getUserDamage = (user: UserBattleEntity): number => {
   return Math.floor(baseDamage + userEffects);
 };
 
-export const getUserArmor = (user: UserBattleEntity): number => {
+export const getUserArmor = (
+  user: Pick<UserBattleEntity, 'class' | 'race' | 'blesses' | 'level' | 'effects' | 'protection'>,
+): number => {
   const userClass = getClassById(user.class);
   const userRace = getRaceById(user.race);
   const userBlesses = makeBlessingStatusUpgrade('armor', user.blesses.armor);
@@ -151,7 +158,9 @@ export const getUserArmor = (user: UserBattleEntity): number => {
   return Math.floor(baseArmor + userEffects);
 };
 
-export const getUserIntelligence = (user: UserBattleEntity): number => {
+export const getUserIntelligence = (
+  user: Pick<UserBattleEntity, 'class' | 'race' | 'blesses' | 'level' | 'effects'>,
+): number => {
   const userClass = getClassById(user.class);
   const userRace = getRaceById(user.race);
   const userBlesses = makeBlessingStatusUpgrade('intelligence', user.blesses.intelligence);
@@ -189,7 +198,9 @@ export const getUserIntelligence = (user: UserBattleEntity): number => {
   return Math.floor(baseIntelligence + userEffects);
 };
 
-export const getUserAgility = (user: UserBattleEntity): number => {
+export const getUserAgility = (
+  user: Pick<UserBattleEntity, 'class' | 'race' | 'blesses' | 'level' | 'effects'>,
+): number => {
   const userClass = getClassById(user.class);
   const userRace = getRaceById(user.race);
   const userBlesses = makeBlessingStatusUpgrade('agility', user.blesses.agility);

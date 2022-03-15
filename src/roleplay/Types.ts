@@ -208,3 +208,5 @@ export type ItemsFile = BackPackItem | WeaponItem | DropItem | ConsumableItem | 
 export type UserBattleEntity = RoleplayUserSchema & {
   effects: Array<AbilityEffect & { level: number }>;
 };
+
+export type UserBattleConfig = Blesses;

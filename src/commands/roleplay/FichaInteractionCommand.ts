@@ -366,9 +366,9 @@ export default class FichaInteractionCommand extends InteractionCommand {
             user,
           )}**\n${ctx.prettyResponse('mana', 'common:roleplay.mana')}: **${getUserMaxMana(
             user,
-          )}**\n**${ctx.prettyResponse('agility', 'common:roleplay.agility')}:** ${getUserAgility(
+          )}**\n${ctx.prettyResponse('agility', 'common:roleplay.agility')}: **${getUserAgility(
             prepareUserForDungeon(user),
-          )}`,
+          )}**`,
           inline: true,
         },
         {
@@ -459,9 +459,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
 
     if (!selectedAmount) {
       ctx.makeMessage({
-        components: [
-          actionRow(disableComponents(ctx.locale('common:timesup'), [selectAmount, exitButton])),
-        ],
+        components: [actionRow(disableComponents(ctx.locale('common:timesup'), [selectAmount]))],
       });
       return;
     }

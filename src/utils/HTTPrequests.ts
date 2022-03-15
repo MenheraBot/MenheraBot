@@ -21,6 +21,7 @@ import {
 } from '@utils/Types';
 import { User } from 'discord.js-light';
 import type { ActivityType } from 'discord.js';
+import { UserBattleConfig } from '@roleplay/Types';
 import { debugError, MayNotExists } from './Util';
 
 const PicassoRequest = axios.create({
@@ -69,6 +70,22 @@ export default class HttpRequests {
     } catch {
       return 'https://i.imgur.com/HftTDov.png';
     }
+  }
+
+  static async getUserBattleConfig(
+    userId: string,
+  ): Promise<{ error: false; config: UserBattleConfig } | { error: true }> {
+    const result = await apiRequest.get(`/roleplay/battleconf?userId=${userId}`).catch(debugError);
+
+    if (!result || result.status !== 200) return { error: true };
+
+    return { error: false, config: result.data };
+  }
+
+  static async updateUserBattleConfig(userId: string, config: UserBattleConfig): Promise<void> {
+    await apiRequest
+      .patch(`/roleplay/battleconf?userId=${userId}`, { data: { config } })
+      .catch(debugError);
   }
 
   static async postCommandStatus(commands: ICommandsData[]): Promise<void> {
