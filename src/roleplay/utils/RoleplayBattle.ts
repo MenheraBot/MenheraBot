@@ -3,7 +3,7 @@ import { ReadyToBattleEnemy, UserBattleEntity } from '@roleplay/Types';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { COLORS } from '@structures/Constants';
 import { calculateProbability } from '@utils/HuntUtils';
-import Util, { actionRow, resolveSeparatedStrings } from '@utils/Util';
+import Util, { actionRow, makeCustomId, resolveSeparatedStrings } from '@utils/Util';
 import { MessageEmbed, MessageSelectMenu, SelectMenuInteraction } from 'discord.js-light';
 import { isDead } from './AdventureUtils';
 import {
@@ -158,8 +158,10 @@ export default class RoleplayBattle {
         },
       ]);
 
+    const [selectCustomId, battleId] = makeCustomId('SELECT');
+
     const options = new MessageSelectMenu()
-      .setCustomId(`${this.ctx.interaction.id} | SELECT`)
+      .setCustomId(selectCustomId)
       .setPlaceholder(this.ctx.locale('roleplay:battle.select'))
       .addOptions(
         {
@@ -226,7 +228,7 @@ export default class RoleplayBattle {
       await Util.collectComponentInteractionWithStartingId<SelectMenuInteraction>(
         this.ctx.channel,
         this.ctx.author.id,
-        this.ctx.interaction.id,
+        battleId,
         this.TIME_TO_SELECT,
       );
 

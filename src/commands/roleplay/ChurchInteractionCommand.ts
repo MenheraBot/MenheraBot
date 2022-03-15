@@ -2,7 +2,13 @@ import { makeCloseCommandButton, makeCooldown } from '@roleplay/utils/AdventureU
 import { getUserMaxLife, getUserMaxMana } from '@roleplay/utils/Calculations';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import Util, { actionRow, disableComponents, moreThanAnHour, resolveCustomId } from '@utils/Util';
+import Util, {
+  actionRow,
+  disableComponents,
+  makeCustomId,
+  moreThanAnHour,
+  resolveCustomId,
+} from '@utils/Util';
 import { MessageButton, MessageEmbed } from 'discord.js-light';
 import moment from 'moment';
 
@@ -112,12 +118,14 @@ export default class ChurchInteractionCommand extends InteractionCommand {
         }),
       );
 
+    const [prayCustomId, customIdBase] = makeCustomId('BUTTON');
+
     const prayButton = new MessageButton()
-      .setCustomId(`${ctx.interaction.id} | BUTTON`)
+      .setCustomId(prayCustomId)
       .setStyle('PRIMARY')
       .setLabel(ctx.locale('commands:igreja.pray'));
 
-    const exitButton = makeCloseCommandButton(ctx.interaction.id);
+    const exitButton = makeCloseCommandButton(customIdBase);
 
     const GratherThanAnHour = (time: number): boolean => time >= 3600000;
 
@@ -148,7 +156,7 @@ export default class ChurchInteractionCommand extends InteractionCommand {
     const selected = await Util.collectComponentInteractionWithStartingId(
       ctx.channel,
       ctx.author.id,
-      ctx.interaction.id,
+      customIdBase,
       12000,
     );
 

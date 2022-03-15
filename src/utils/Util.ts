@@ -95,21 +95,21 @@ export default class Util {
   static async collectComponentInteractionWithStartingId<T extends MessageComponentInteraction>(
     channel: TextBasedChannel,
     authorID: string,
-    customId: string,
+    customId: string | number,
     time?: number,
   ): Promise<null | T>;
 
   static async collectComponentInteractionWithStartingId(
     channel: TextBasedChannel,
     authorID: string,
-    customId: string,
+    customId: string | number,
     time = 7000,
   ): Promise<null | MessageComponentInteraction> {
     return channel
       .awaitMessageComponent({
         filter: (m) => {
           m.deferUpdate().catch(() => null);
-          return m.user.id === authorID && m.customId.startsWith(customId);
+          return m.user.id === authorID && m.customId.startsWith(`${customId}`);
         },
         time,
       })
@@ -217,3 +217,11 @@ export type MayNotExists<T> = T | null | undefined;
 export const moreThanAnHour = (time: number): boolean => time - Date.now() > 3600000;
 
 export const RandomFromArray = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
+
+export const makeCustomId = (
+  customIdentifier: string,
+  baseId?: number,
+): [`${number} | ${string}`, number] => {
+  const randomNumber = baseId ?? Date.now() + Math.random() * 100;
+  return [`${randomNumber} | ${customIdentifier}`, randomNumber];
+};

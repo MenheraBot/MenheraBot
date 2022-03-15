@@ -8,6 +8,7 @@ import { IReturnData } from '@utils/Types';
 import Util, {
   actionRow,
   disableComponents,
+  makeCustomId,
   resolveCustomId,
   resolveSeparatedStrings,
 } from '@utils/Util';
@@ -64,8 +65,10 @@ export default class InventoryInteractionCommand extends InteractionCommand {
       text.length > 0 ? text.join('\n') : ctx.locale('commands:inventario.no-items'),
     );
 
+    const [useCustomId, baseId] = makeCustomId('USE');
+
     const usePotion = new MessageButton()
-      .setCustomId(`${ctx.interaction.id} | USE`)
+      .setCustomId(useCustomId)
       .setLabel(ctx.locale('commands:inventario.use'))
       .setStyle('PRIMARY')
       .setDisabled(true);
@@ -87,7 +90,7 @@ export default class InventoryInteractionCommand extends InteractionCommand {
     const selected = await Util.collectComponentInteractionWithStartingId(
       ctx.channel,
       ctx.author.id,
-      ctx.interaction.id,
+      baseId,
       7000,
     );
 
@@ -132,9 +135,11 @@ export default class InventoryInteractionCommand extends InteractionCommand {
       );
     });
 
-    selectMenu.setMaxValues(selectMenu.options.length);
+    const [itemsCustomId, newBase] = makeCustomId('USE');
 
-    const exitButton = makeCloseCommandButton(ctx.interaction.id);
+    selectMenu.setMaxValues(selectMenu.options.length).setCustomId(itemsCustomId);
+
+    const exitButton = makeCloseCommandButton(newBase);
 
     ctx.makeMessage({
       embeds: [embed],
@@ -145,7 +150,7 @@ export default class InventoryInteractionCommand extends InteractionCommand {
       await Util.collectComponentInteractionWithStartingId<SelectMenuInteraction>(
         ctx.channel,
         ctx.author.id,
-        ctx.interaction.id,
+        newBase,
         7000,
       );
 

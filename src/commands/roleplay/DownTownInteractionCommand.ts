@@ -21,6 +21,7 @@ import { emojis } from '@structures/Constants';
 import Util, {
   actionRow,
   disableComponents,
+  makeCustomId,
   negate,
   resolveCustomId,
   resolveSeparatedStrings,
@@ -243,22 +244,25 @@ export default class DowntownInteractionCommand extends InteractionCommand {
           inline: true,
         },
       ]);
+
+    const [backpackId, baseId] = makeCustomId('BACKPACK');
+
     const backpackButton = new MessageButton()
-      .setCustomId(`${ctx.interaction.id} | BACKPACK`)
+      .setCustomId(backpackId)
       .setLabel(ctx.locale('common:roleplay.backpack'))
       .setStyle('PRIMARY');
 
     const protectionButton = new MessageButton()
-      .setCustomId(`${ctx.interaction.id} | PROTECTION`)
+      .setCustomId(makeCustomId('PROTECTION', baseId)[0])
       .setLabel(ctx.locale('common:roleplay.protection'))
       .setStyle('PRIMARY');
 
     const weaponButton = new MessageButton()
-      .setCustomId(`${ctx.interaction.id} | WEAPON`)
+      .setCustomId(makeCustomId('WEAPON', baseId)[0])
       .setLabel(ctx.locale('common:roleplay.weapon'))
       .setStyle('PRIMARY');
 
-    const exitButton = makeCloseCommandButton(ctx.interaction.id);
+    const exitButton = makeCloseCommandButton(baseId);
 
     ctx.makeMessage({
       embeds: [embed],
@@ -268,7 +272,7 @@ export default class DowntownInteractionCommand extends InteractionCommand {
     const selected = await Util.collectComponentInteractionWithStartingId(
       ctx.channel,
       ctx.author.id,
-      ctx.interaction.id,
+      baseId,
       9000,
     );
 
@@ -292,6 +296,8 @@ export default class DowntownInteractionCommand extends InteractionCommand {
       return;
     }
 
+    const [, evolveId] = makeCustomId('');
+
     const evolveButton = new MessageButton()
       .setStyle('SUCCESS')
       .setLabel(ctx.locale('commands:centro.blacksmith.evolve'));
@@ -313,7 +319,7 @@ export default class DowntownInteractionCommand extends InteractionCommand {
         }),
       );
 
-      evolveButton.setCustomId(`${ctx.interaction.id} | ${costToEvolve}`);
+      evolveButton.setCustomId(`${evolveId} | ${costToEvolve}`);
       if (costToEvolve > user.money)
         evolveButton.setDisabled(true).setLabel(ctx.locale('commands:centro.blacksmith.poor'));
     }
@@ -335,7 +341,7 @@ export default class DowntownInteractionCommand extends InteractionCommand {
         }),
       );
 
-      evolveButton.setCustomId(`${ctx.interaction.id} | ${costToEvolve}`);
+      evolveButton.setCustomId(`${evolveId} | ${costToEvolve}`);
       if (costToEvolve > user.money)
         evolveButton.setDisabled(true).setLabel(ctx.locale('commands:centro.blacksmith.poor'));
     }
@@ -357,19 +363,27 @@ export default class DowntownInteractionCommand extends InteractionCommand {
         }),
       );
 
-      evolveButton.setCustomId(`${ctx.interaction.id} | ${costToEvolve}`);
+      evolveButton.setCustomId(`${evolveId} | ${costToEvolve}`);
       if (costToEvolve > user.money)
         evolveButton.setDisabled(true).setLabel(ctx.locale('commands:centro.blacksmith.poor'));
     }
 
-    ctx.makeMessage({ components: [actionRow([evolveButton, exitButton])], embeds: [embed] });
+    ctx.makeMessage({
+      components: [
+        actionRow([
+          evolveButton,
+          exitButton.setCustomId(makeCustomId('CLOSE_COMMAND', evolveId)[0]),
+        ]),
+      ],
+      embeds: [embed],
+    });
     if (evolveButton.disabled) return;
 
     const wannaEvolve = await Util.collectComponentInteractionWithStartingId(
       ctx.channel,
       ctx.author.id,
-      ctx.interaction.id,
-      7_000,
+      evolveId,
+      8_000,
     );
 
     if (!wannaEvolve) {
@@ -409,13 +423,15 @@ export default class DowntownInteractionCommand extends InteractionCommand {
       .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true }))
       .setTitle(ctx.locale('commands:centro.buy.title'));
 
+    const [selectorId, baseId] = makeCustomId('BUY');
+
     const selector = new MessageSelectMenu()
-      .setCustomId(`${ctx.interaction.id} | BUY`)
+      .setCustomId(selectorId)
       .setMinValues(1)
       .setMaxValues(1)
       .setPlaceholder(ctx.locale('commands:centro.buy.select'));
 
-    const exitButton = makeCloseCommandButton(ctx.interaction.id);
+    const exitButton = makeCloseCommandButton(baseId);
 
     const availableItems = availableToBuyItems(user.level);
 
@@ -445,7 +461,7 @@ export default class DowntownInteractionCommand extends InteractionCommand {
       await Util.collectComponentInteractionWithStartingId<SelectMenuInteraction>(
         ctx.channel,
         ctx.author.id,
-        ctx.interaction.id,
+        baseId,
         9000,
       );
 
@@ -461,17 +477,27 @@ export default class DowntownInteractionCommand extends InteractionCommand {
       return;
     }
 
-    selector.setOptions([]).setPlaceholder(ctx.locale('commands:centro.buy.select-amount'));
+    const [newSelectorId, newId] = makeCustomId('BUY');
+
+    selector
+      .setOptions([])
+      .setPlaceholder(ctx.locale('commands:centro.buy.select-amount'))
+      .setCustomId(newSelectorId);
 
     for (let i = 1; i <= 25; i++) selector.addOptions({ label: `${i}`, value: `${i}` });
 
-    ctx.makeMessage({ components: [actionRow([exitButton]), actionRow([selector])] });
+    ctx.makeMessage({
+      components: [
+        actionRow([exitButton.setCustomId(makeCustomId('CLOSE_BUTTON', newId)[0])]),
+        actionRow([selector]),
+      ],
+    });
 
     const selectedAmount =
       await Util.collectComponentInteractionWithStartingId<SelectMenuInteraction>(
         ctx.channel,
         ctx.author.id,
-        ctx.interaction.id,
+        newId,
         8000,
       );
 
@@ -555,8 +581,10 @@ export default class DowntownInteractionCommand extends InteractionCommand {
       return;
     }
 
+    const [sellCustomId, baseId] = makeCustomId('SELL');
+
     const selectMenu = new MessageSelectMenu()
-      .setCustomId(`${ctx.interaction.id} | SELL`)
+      .setCustomId(sellCustomId)
       .addOptions({ label: ctx.locale('commands:centro.sell.sell-all'), value: 'ALL' });
 
     const embed = new MessageEmbed()
@@ -592,7 +620,7 @@ export default class DowntownInteractionCommand extends InteractionCommand {
 
     selectMenu.setMaxValues(selectMenu.options.length).setMinValues(1);
 
-    const closeCommand = makeCloseCommandButton(ctx.interaction.id);
+    const closeCommand = makeCloseCommandButton(baseId);
 
     ctx.makeMessage({
       embeds: [embed],
@@ -603,7 +631,7 @@ export default class DowntownInteractionCommand extends InteractionCommand {
       await Util.collectComponentInteractionWithStartingId<SelectMenuInteraction>(
         ctx.channel,
         ctx.author.id,
-        ctx.interaction.id,
+        baseId,
         15000,
       );
 

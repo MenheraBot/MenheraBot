@@ -11,7 +11,7 @@ import {
   SelectMenuInteraction,
   User,
 } from 'discord.js-light';
-import Util, { actionRow, disableComponents, resolveCustomId } from '@utils/Util';
+import Util, { actionRow, disableComponents, makeCustomId, resolveCustomId } from '@utils/Util';
 import {
   getAbilityById,
   getClassById,
@@ -94,17 +94,20 @@ export default class FichaInteractionCommand extends InteractionCommand {
       );
     });
 
+    const [upgradeCustomId, baseId] = makeCustomId('UPGRADE');
+    const [unlockCustomId] = makeCustomId('UNLOCK', baseId);
+
     const upgradeButton = new MessageButton()
-      .setCustomId(`${ctx.interaction.id} | UPGRADE`)
+      .setCustomId(upgradeCustomId)
       .setStyle('PRIMARY')
       .setLabel(ctx.locale('commands:ficha.show.abilities.upgrade'));
 
     const unlockButton = new MessageButton()
-      .setCustomId(`${ctx.interaction.id} | UNLOCK`)
+      .setCustomId(unlockCustomId)
       .setStyle('PRIMARY')
       .setLabel(ctx.locale('commands:ficha.show.abilities.unlock'));
 
-    const exitButton = makeCloseCommandButton(ctx.interaction.id);
+    const exitButton = makeCloseCommandButton(baseId);
 
     ctx.makeMessage({
       embeds: [embed],
@@ -119,7 +122,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
     const buttonClicked = await Util.collectComponentInteractionWithStartingId(
       ctx.channel,
       ctx.author.id,
-      ctx.interaction.id,
+      baseId,
     );
 
     if (!buttonClicked) {
@@ -136,6 +139,9 @@ export default class FichaInteractionCommand extends InteractionCommand {
       return;
     }
 
+    const [abilityCustomId, nextBase] = makeCustomId('ABILITY');
+    exitButton.setCustomId(makeCustomId('CLOSE_COMMAND', nextBase)[0]);
+
     if (resolveCustomId(buttonClicked.customId) === 'UPGRADE') {
       const upgradeEmbed = new MessageEmbed()
         .setTitle(ctx.locale('commands:ficha.show.abilities.upgrade'))
@@ -146,7 +152,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
           }),
         );
 
-      const abilities = new MessageSelectMenu().setCustomId(`${ctx.interaction.id} | ABILITY`);
+      const abilities = new MessageSelectMenu().setCustomId(abilityCustomId);
 
       user.abilities.forEach((a) => {
         abilities.addOptions({
@@ -178,7 +184,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
         await Util.collectComponentInteractionWithStartingId<SelectMenuInteraction>(
           ctx.channel,
           ctx.author.id,
-          ctx.interaction.id,
+          nextBase,
           15_000,
         );
 
@@ -188,13 +194,20 @@ export default class FichaInteractionCommand extends InteractionCommand {
         });
         return;
       }
+
       if (resolveCustomId(selectedAbility.customId) === 'CLOSE_COMMAND') {
         ctx.deleteReply();
         return;
       }
 
-      abilities.setOptions([]);
-      abilities.setPlaceholder(ctx.locale('commands:ficha.show.select-amount'));
+      const [newAbilityCustomId, lastBase] = makeCustomId('ABILITY');
+
+      exitButton.setCustomId(makeCustomId('CLOSE_COMMAND', lastBase)[0]);
+
+      abilities
+        .setOptions([])
+        .setPlaceholder(ctx.locale('commands:ficha.show.select-amount'))
+        .setCustomId(newAbilityCustomId);
 
       for (
         let i = 1;
@@ -217,7 +230,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
         await Util.collectComponentInteractionWithStartingId<SelectMenuInteraction>(
           ctx.channel,
           ctx.author.id,
-          ctx.interaction.id,
+          lastBase,
           15000,
         );
 
@@ -267,7 +280,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
         }),
       );
 
-    const unlockAbilityMenu = new MessageSelectMenu().setCustomId(`${ctx.interaction.id} | UNLOCK`);
+    const unlockAbilityMenu = new MessageSelectMenu().setCustomId(`${nextBase} | UNLOCK`);
 
     availableAbilities.forEach((a) => {
       unlockEmbed.addField(
@@ -299,7 +312,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
       await Util.collectComponentInteractionWithStartingId<SelectMenuInteraction>(
         ctx.channel,
         ctx.author.id,
-        ctx.interaction.id,
+        nextBase,
         15000,
       );
 
@@ -372,17 +385,20 @@ export default class FichaInteractionCommand extends InteractionCommand {
         },
       ]);
 
+    const [vitalityCustomId, baseId] = makeCustomId('VITALITY');
+    const [battleCustomId] = makeCustomId('BATTLE', baseId);
+
     const vitalityButton = new MessageButton()
-      .setCustomId(`${ctx.interaction.id} | VITALITY`)
+      .setCustomId(vitalityCustomId)
       .setStyle('PRIMARY')
       .setLabel(ctx.locale('commands:ficha.show.vitality'));
 
     const battleButton = new MessageButton()
-      .setCustomId(`${ctx.interaction.id} | BATTLE`)
+      .setCustomId(battleCustomId)
       .setStyle('PRIMARY')
       .setLabel(ctx.locale('commands:ficha.show.battle'));
 
-    const exitButton = makeCloseCommandButton(ctx.interaction.id);
+    const exitButton = makeCloseCommandButton(baseId);
 
     if (user.holyBlessings.vitality === 0) vitalityButton.setDisabled(true);
     if (user.holyBlessings.battle === 0) battleButton.setDisabled(true);
@@ -395,7 +411,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
     const buttonSelected = await Util.collectComponentInteractionWithStartingId(
       ctx.channel,
       ctx.author.id,
-      ctx.interaction.id,
+      baseId,
       15000,
     );
 
@@ -420,8 +436,11 @@ export default class FichaInteractionCommand extends InteractionCommand {
         ? user.holyBlessings.vitality
         : user.holyBlessings.battle;
 
+    const [amountCustomId, nextBase] = makeCustomId('AMOUNT');
+    exitButton.setCustomId(makeCustomId('CLOSE_COMMAND', nextBase)[0]);
+
     const selectAmount = new MessageSelectMenu()
-      .setCustomId(`${ctx.interaction.id} | AMOUNT`)
+      .setCustomId(amountCustomId)
       .setMinValues(1)
       .setMaxValues(1)
       .setPlaceholder(ctx.locale('commands:ficha.show.select-amount'));
@@ -435,7 +454,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
       await Util.collectComponentInteractionWithStartingId<SelectMenuInteraction>(
         ctx.channel,
         ctx.author.id,
-        ctx.interaction.id,
+        nextBase,
       );
 
     if (!selectedAmount) {
@@ -458,36 +477,39 @@ export default class FichaInteractionCommand extends InteractionCommand {
 
     const toSendComponents: MessageActionRow[] = [];
 
+    const [lifeCustomId, lastId] = makeCustomId('LIFE');
+    exitButton.setCustomId(makeCustomId('CLOSE_COMMAND', lastId)[0]);
+
     if (resolveCustomId(buttonSelected.customId) === 'VITALITY') {
       const lifeButton = new MessageButton()
-        .setCustomId(`${ctx.interaction.id} | LIFE`)
+        .setCustomId(lifeCustomId)
         .setStyle('DANGER')
         .setLabel(ctx.locale('common:roleplay.life'));
 
       const manaButton = new MessageButton()
-        .setCustomId(`${ctx.interaction.id} | MANA`)
+        .setCustomId(`${lastId} | MANA`)
         .setStyle('PRIMARY')
         .setLabel(ctx.locale('common:roleplay.mana'));
 
       const agilityButton = new MessageButton()
-        .setCustomId(`${ctx.interaction.id} | AGILITY`)
+        .setCustomId(`${lastId} | AGILITY`)
         .setStyle('SECONDARY')
         .setLabel(ctx.locale('common:roleplay.agility'));
 
       toSendComponents.push(actionRow([lifeButton, manaButton, agilityButton, exitButton]));
     } else {
       const damageButton = new MessageButton()
-        .setCustomId(`${ctx.interaction.id} | DAMAGE`)
+        .setCustomId(`${lastId} | DAMAGE`)
         .setStyle('PRIMARY')
         .setLabel(ctx.locale('common:roleplay.damage'));
 
       const armorButton = new MessageButton()
-        .setCustomId(`${ctx.interaction.id} | ARMOR`)
+        .setCustomId(`${lastId} | ARMOR`)
         .setStyle('PRIMARY')
         .setLabel(ctx.locale('common:roleplay.armor'));
 
       const intelligenceButton = new MessageButton()
-        .setCustomId(`${ctx.interaction.id} | INTELLIGENCE`)
+        .setCustomId(`${lastId} | INTELLIGENCE`)
         .setStyle('PRIMARY')
         .setLabel(ctx.locale('common:roleplay.intelligence'));
 
@@ -499,7 +521,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
     const statusSelected = await Util.collectComponentInteractionWithStartingId(
       ctx.channel,
       ctx.author.id,
-      ctx.interaction.id,
+      lastId,
     );
 
     if (!statusSelected) {
@@ -644,17 +666,20 @@ export default class FichaInteractionCommand extends InteractionCommand {
       )
       .setColor(ctx.data.user.selectedColor);
 
+    const [abilityCustomId, baseId] = makeCustomId('ABILITY');
+    const [statusCustomId] = makeCustomId('STATUS', baseId);
+
     const abilityTreeButton = new MessageButton()
-      .setCustomId(`${ctx.interaction.id} | ABILITY`)
+      .setCustomId(abilityCustomId)
       .setStyle('PRIMARY')
       .setLabel(ctx.locale('commands:ficha.show.abilitiesButton'));
 
     const statusTreeButton = new MessageButton()
-      .setCustomId(`${ctx.interaction.id} | STATUS`)
+      .setCustomId(statusCustomId)
       .setStyle('PRIMARY')
       .setLabel(ctx.locale('commands:ficha.show.statsButton'));
 
-    const exitButton = makeCloseCommandButton(ctx.interaction.id);
+    const exitButton = makeCloseCommandButton(baseId);
 
     await ctx.makeMessage({
       embeds: [embed],
@@ -664,7 +689,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
     const selectedOption = await Util.collectComponentInteractionWithStartingId(
       ctx.channel,
       ctx.author.id,
-      ctx.interaction.id,
+      baseId,
       7_000,
     );
 
@@ -731,7 +756,9 @@ export default class FichaInteractionCommand extends InteractionCommand {
       .setTitle(ctx.locale('commands:ficha.register.title'))
       .setDescription(ctx.locale('commands:ficha.register.description'));
 
-    const selector = new MessageSelectMenu().setCustomId(`${ctx.interaction.id} | SELECT`);
+    const [selectorCustomId, baseId] = makeCustomId('SELECT');
+
+    const selector = new MessageSelectMenu().setCustomId(selectorCustomId);
 
     for (let i = 1; i <= getClasses().length; i++) {
       selector.addOptions({
@@ -752,7 +779,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
       await Util.collectComponentInteractionWithStartingId<SelectMenuInteraction>(
         ctx.channel,
         ctx.author.id,
-        ctx.interaction.id,
+        baseId,
         15_000,
       );
 
@@ -785,7 +812,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
       await Util.collectComponentInteractionWithStartingId<SelectMenuInteraction>(
         ctx.channel,
         ctx.author.id,
-        ctx.interaction.id,
+        baseId,
         15_000,
       );
 
@@ -821,7 +848,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
     const confirmRegister = await Util.collectComponentInteractionWithStartingId<ButtonInteraction>(
       ctx.channel,
       ctx.author.id,
-      ctx.interaction.id,
+      baseId,
       15_000,
     );
 

@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Fixed
 
 - Erros de português no comando `/ship`
+- Erros do RPG: Muitos erros aconteciam como 'Cannot read [0] of undefined'. Isso foi resolvido com um novo sistema de interações que, eu creio, que vão arrumar o problema, que era causado por lags entre a Menhera e o Discord
 
 ## [4.0.H-BETA] - 2022-03-01
 

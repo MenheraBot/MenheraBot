@@ -30,7 +30,12 @@ import RoleplayBattle from '@roleplay/utils/RoleplayBattle';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { COLORS } from '@structures/Constants';
-import Util, { actionRow, resolveCustomId, resolveSeparatedStrings } from '@utils/Util';
+import Util, {
+  actionRow,
+  makeCustomId,
+  resolveCustomId,
+  resolveSeparatedStrings,
+} from '@utils/Util';
 import {
   MessageActionRow,
   MessageButton,
@@ -100,13 +105,16 @@ export default class DungeonInteractionCommand extends InteractionCommand {
         )}: **${getUserAgility(prepareUserForDungeon(user))}**`,
       );
 
+    const [acceptCustomId, baseId] = makeCustomId('YES');
+    const [negateCustomId] = makeCustomId('NO', baseId);
+
     const accept = new MessageButton()
-      .setCustomId(`${ctx.interaction.id} | YES`)
+      .setCustomId(acceptCustomId)
       .setStyle('SUCCESS')
       .setLabel(ctx.locale('commands:dungeon.preparation.enter'));
 
     const negate = new MessageButton()
-      .setCustomId(`${ctx.interaction.id} | NO`)
+      .setCustomId(negateCustomId)
       .setStyle('DANGER')
       .setLabel(ctx.locale('commands:dungeon.preparation.no'));
 
@@ -115,8 +123,8 @@ export default class DungeonInteractionCommand extends InteractionCommand {
     const selected = await Util.collectComponentInteractionWithStartingId(
       ctx.channel,
       ctx.author.id,
-      ctx.interaction.id,
-      30000,
+      baseId,
+      15_000,
     );
 
     if (!selected || resolveCustomId(selected.customId) === 'NO') {
@@ -236,18 +244,22 @@ export default class DungeonInteractionCommand extends InteractionCommand {
         }),
       );
 
+    const [backCustomId, baseId] = makeCustomId('BACK');
+    const [continueCustomId] = makeCustomId('CONTINUE', baseId);
+    const [nextCustomId] = makeCustomId('NEXT', baseId);
+
     const runawayButton = new MessageButton()
-      .setCustomId(`${ctx.interaction.id} | BACK`)
+      .setCustomId(backCustomId)
       .setLabel(ctx.locale('commands:dungeon.back'))
       .setStyle('PRIMARY');
 
     const continueButton = new MessageButton()
-      .setCustomId(`${ctx.interaction.id} | CONTINUE`)
+      .setCustomId(continueCustomId)
       .setLabel(ctx.locale('commands:dungeon.continue', { level: dungeonLevel }))
       .setStyle('PRIMARY');
 
     const nextButton = new MessageButton()
-      .setCustomId(`${ctx.interaction.id} | NEXT`)
+      .setCustomId(nextCustomId)
       .setLabel(ctx.locale('commands:dungeon.next', { level: dungeonLevel + 1 }))
       .setStyle('PRIMARY');
 
@@ -264,7 +276,7 @@ export default class DungeonInteractionCommand extends InteractionCommand {
 
     if (battleResults.user.inventory.some((a) => getItemById(a.id).data.type === 'potion')) {
       const selectPotions = new MessageSelectMenu()
-        .setCustomId(`${ctx.interaction.id} | POTION`)
+        .setCustomId(`${baseId} | POTION`)
         .setMinValues(1)
         .setPlaceholder(ctx.locale('commands:dungeon.results.use-potion'));
 
@@ -293,7 +305,7 @@ export default class DungeonInteractionCommand extends InteractionCommand {
       );
     } else if (lootEarned && lootEarned.length > 0) {
       const selectItems = new MessageSelectMenu()
-        .setCustomId(`${ctx.interaction.id} | ITEM`)
+        .setCustomId(`${baseId} | ITEM`)
         .setMinValues(1)
         .setPlaceholder(ctx.locale('commands:dungeon.results.grab'))
         .addOptions({ label: ctx.locale('commands:dungeon.results.get-all-items'), value: 'ALL' });
@@ -343,7 +355,7 @@ export default class DungeonInteractionCommand extends InteractionCommand {
       const selectedItem = await Util.collectComponentInteractionWithStartingId(
         ctx.channel,
         ctx.author.id,
-        ctx.interaction.id,
+        baseId,
         25_000,
       );
 

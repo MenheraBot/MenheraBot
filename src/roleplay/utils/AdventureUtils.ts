@@ -23,11 +23,8 @@ export const prepareUserForDungeon = (user: RoleplayUserSchema): UserBattleEntit
   return user as UserBattleEntity;
 };
 
-export const makeCloseCommandButton = (interactionId: string): MessageButton =>
-  new MessageButton()
-    .setCustomId(`${interactionId} | CLOSE_COMMAND`)
-    .setStyle('DANGER')
-    .setEmoji('🛑');
+export const makeCloseCommandButton = (baseId: number): MessageButton =>
+  new MessageButton().setCustomId(`${baseId} | CLOSE_COMMAND`).setStyle('DANGER').setEmoji('🛑');
 
 export const canGoToDungeon = (
   user: RoleplayUserSchema,
