@@ -14,6 +14,10 @@ export const DIFFICULT_TO_LEVEL_UP = 1.54;
 
 export const ELEMENT_SINERGY_BONUS_IN_PERCENTAGE = 5;
 
+export const USER_BATTLE_LEVEL = 10;
+
+export const ABILITY_BATTLE_LEVEL = 3;
+
 export const ROLEPLAY_COOLDOWNS = {
   dungeonCooldown: 3_600_000,
   deathPunishment: 3_600_000,

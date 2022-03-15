@@ -862,5 +862,16 @@
     "prayed": "Você saiu de sua reza! Que a bênção do Dragão esteja contigo! Bênção Recebida: **{{life}}** ❤️, **{{mana}}** 💧",
     "stop": "Parar de Rezar",
     "praying-description": "Você ja está rezando por **{{cooldown}}** {{subtime}}. Neste tempo já recuperou **{{life}}** ❤️ e **{{mana}}** 💧"
+  },
+  "arena": {
+    "enemy-unregistered": "Seu inimigo ainda não reencarnou no mundo de Boleham! Escolha outro inimigo OU convença-o de reencarnar.",
+    "title": "Arena de Boleham",
+    "ready": "Estou Pronto!",
+    "leveled-battle": "Batalha Justa",
+    "default-battle": "Batalha Atual",
+    "ready-users": "Usuários prontos: {{ready}} / 2",
+    "same-user": "KKKK cara podre querendo batalhar contra si mesmo, marca outra pessoa ai namoral",
+    "user-not-configurated": "{{user}} não possui todas as bênçãos configuradas para batalha! Use `/arena configurar` para settar suas bênçãos",
+    "description": "Bem-Vindos à arena {{author}}, {{enemy}}!\n\nVocês serão colocados de frente em uma batalha amistosa! Ninguém irá sofrer penalidades de morte ou mesmo de status. No início da batalha, ambos terão o máximo de vida e mana, e este valor não será alterado em sua ficha de aventureiro.\n\n**{{author}}** pode selecionar abaixo se a batalha será com os níveis atuais de vocês, ou se ela será justa ao **nível de batalha**. A batalha só iniciará quando ambos clicarem em PRONTO. Vocês tem 20 segundos para se decidir\n\n**Nivel de Batalha:** Todos jogadores estão nível **{{level}}** com **TODAS** habilidades da classe no nível **{{abilityLevel}}**. As bênçãos são distribuidas de acordo com a configuração do usuário\n\nNível de {{author}}: **{{authorLevel}}**\nNível de {{enemy}}: **{{enemyLevel}}**"
   }
 }

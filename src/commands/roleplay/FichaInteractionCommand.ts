@@ -848,7 +848,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
     const confirmRegister = await Util.collectComponentInteractionWithStartingId<ButtonInteraction>(
       ctx.channel,
       ctx.author.id,
-      baseId,
+      ctx.interaction.id,
       15_000,
     );
 
@@ -906,14 +906,11 @@ export default class FichaInteractionCommand extends InteractionCommand {
     };
 
     await ctx.client.repositories.roleplayRepository.registerUser(ctx.author.id, registerStatus);
-    if (!ctx.data.user.badges.some((a) => a.id === 16))
-      await ctx.client.repositories.badgeRepository.addBadge(ctx.author.id, 16);
 
     ctx.makeMessage({
       content: ctx.prettyResponse('success', 'commands:ficha.register.success'),
       embeds: [],
       components: [],
     });
-    ctx.send({ content: ctx.locale('common:rpg-beta', { user: ctx.author.toString() }) });
   }
 }
