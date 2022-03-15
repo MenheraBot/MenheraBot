@@ -336,7 +336,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
       const { ping, status } = c.ws;
       const { uptime } = c.ws.client;
       const guilds = c.guilds.cache.size;
-      const memoryUsed = process.memoryUsage().heapUsed;
+      const memoryUsed = process.memoryUsage().rss;
       const clusterId = c.cluster.id ?? 0;
 
       return { ping, status, uptime, guilds, memoryUsed, clusterId };
