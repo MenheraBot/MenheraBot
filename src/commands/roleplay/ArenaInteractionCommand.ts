@@ -86,6 +86,8 @@ export default class ArenaInteractionCommand extends InteractionCommand {
     const userAvailableVitalityPoints =
       totalVitalityPointsToUse - (userConfig.maxMana + userConfig.maxLife + userConfig.agility);
 
+    // TODO: Add abilities and custom weapon to batle
+
     const pvpUser = {
       level: USER_BATTLE_LEVEL,
       class: user.class,
