@@ -75,7 +75,7 @@ export default class HttpRequests {
   static async getUserBattleConfig(
     userId: string,
   ): Promise<{ error: false; config: UserBattleConfig } | { error: true }> {
-    const result = await apiRequest.get(`/roleplay/battleconf?userId=${userId}`).catch(debugError);
+    const result = await apiRequest.get(`/roleplay/battleconf/?userId=${userId}`).catch(debugError);
 
     if (!result || result.status !== 200) return { error: true };
 
@@ -84,7 +84,7 @@ export default class HttpRequests {
 
   static async updateUserBattleConfig(userId: string, config: UserBattleConfig): Promise<void> {
     await apiRequest
-      .patch(`/roleplay/battleconf?userId=${userId}`, { data: { config } })
+      .patch(`/roleplay/battleconf/?userId=${userId}`, { data: { config } })
       .catch(debugError);
   }
 

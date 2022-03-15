@@ -87,6 +87,9 @@ export default class ArenaInteractionCommand extends InteractionCommand {
       totalVitalityPointsToUse - (userConfig.maxMana + userConfig.maxLife + userConfig.agility);
 
     // TODO: Add abilities and custom weapon to batle
+    // TODO: Make reset button work
+    // TODO: Vitality button is showing battle buttons
+    // TODO: Fix api that takes for ever to get config
 
     const pvpUser = {
       level: USER_BATTLE_LEVEL,
@@ -190,6 +193,8 @@ export default class ArenaInteractionCommand extends InteractionCommand {
       ctx.deleteReply();
       return;
     }
+
+    console.log(resolveCustomId(selectedOption.customId));
 
     const pointsToUse =
       resolveCustomId(selectedOption.customId) === 'VITALITY'
