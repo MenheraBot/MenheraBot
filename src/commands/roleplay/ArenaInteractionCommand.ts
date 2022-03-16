@@ -63,18 +63,10 @@ export default class ArenaInteractionCommand extends InteractionCommand {
     });
   }
 
-  static async configurate(ctx: InteractionCommandContext): Promise<void> {
-    const user = await ctx.client.repositories.roleplayRepository.findUser(ctx.author.id);
-
-    if (!user) {
-      ctx.makeMessage({ content: ctx.prettyResponse('error', 'common:unregistered') });
-      return;
-    }
-
-    const userConfig: UserBattleConfig =
-      (await ctx.client.repositories.roleplayRepository.getConfigurationBattle(ctx.author.id)) ??
-      defaultBlessesConfiguration();
-
+  static getBlessesAvailable(userConfig: UserBattleConfig): {
+    vitality: number;
+    battle: number;
+  } {
     let totalBattlePointsToUse = 0;
     let totalVitalityPointsToUse = 0;
 
@@ -89,6 +81,23 @@ export default class ArenaInteractionCommand extends InteractionCommand {
     const userAvailableVitalityPoints =
       totalVitalityPointsToUse - (userConfig.maxMana + userConfig.maxLife + userConfig.agility);
 
+    return { vitality: userAvailableVitalityPoints, battle: userAvailableBattlePoints };
+  }
+
+  static async configurate(ctx: InteractionCommandContext): Promise<void> {
+    const user = await ctx.client.repositories.roleplayRepository.findUser(ctx.author.id);
+
+    if (!user) {
+      ctx.makeMessage({ content: ctx.prettyResponse('error', 'common:unregistered') });
+      return;
+    }
+
+    const userConfig: UserBattleConfig =
+      (await ctx.client.repositories.roleplayRepository.getConfigurationBattle(ctx.author.id)) ??
+      defaultBlessesConfiguration();
+
+    const { battle: userAvailableBattlePoints, vitality: userAvailableVitalityPoints } =
+      ArenaInteractionCommand.getBlessesAvailable(userConfig);
     // TODO: Add abilities and custom weapon to batle
     // TODO: Make reset button work
 
@@ -434,6 +443,44 @@ export default class ArenaInteractionCommand extends InteractionCommand {
     if (!enemy) {
       ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:arena.enemy-unregistered'),
+      });
+      return;
+    }
+
+    const authorBlesses = await ctx.client.repositories.roleplayRepository.getConfigurationBattle(
+      ctx.author.id,
+    );
+
+    const enemyBlesses = await ctx.client.repositories.roleplayRepository.getConfigurationBattle(
+      mentioned.id,
+    );
+
+    if (!authorBlesses || !enemyBlesses) {
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:arena.user-not-configurated', {
+          user: !authorBlesses ? ctx.author.username : mentioned.username,
+        }),
+      });
+      return;
+    }
+
+    const canUseAuthor = ArenaInteractionCommand.getBlessesAvailable(authorBlesses);
+    const canUseEnemy = ArenaInteractionCommand.getBlessesAvailable(authorBlesses);
+
+    if (canUseAuthor.battle !== 0 || canUseAuthor.vitality !== 0) {
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:arena.user-not-configurated', {
+          user: ctx.author.username,
+        }),
+      });
+      return;
+    }
+
+    if (canUseEnemy.battle !== 0 || canUseEnemy.vitality !== 0) {
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:arena.user-not-configurated', {
+          user: mentioned.username,
+        }),
       });
       return;
     }
