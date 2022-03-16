@@ -69,9 +69,9 @@ export default class RoleplayRepository {
     if (apiConfig.error) return null;
 
     if (this.redisClient)
-      await this.redisClient.set(`battle_config:${userId}`, JSON.stringify(apiConfig.config));
+      await this.redisClient.set(`battle_config:${userId}`, JSON.stringify(apiConfig.data.config));
 
-    return apiConfig.config;
+    return apiConfig.data.config;
   }
 
   async setUserConfigurationBattle(userId: string, config: UserBattleConfig): Promise<void> {

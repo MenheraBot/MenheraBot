@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ## [4.0.1] - 2022-03-14
 
+### Changed
+- Dificuldade de subir de nível foi aumentado para `1.62`
+- Tempo de resposta da Dungeon foi aumentado para `20s`
+
 ### Fixed
 
 - Erros de português no comando `/ship`

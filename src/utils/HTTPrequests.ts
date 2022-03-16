@@ -74,18 +74,16 @@ export default class HttpRequests {
 
   static async getUserBattleConfig(
     userId: string,
-  ): Promise<{ error: false; config: UserBattleConfig } | { error: true }> {
+  ): Promise<{ error: false; data: { config: UserBattleConfig } } | { error: true }> {
     const result = await apiRequest.get(`/roleplay/battleconf/?userId=${userId}`).catch(debugError);
 
     if (!result || result.status !== 200) return { error: true };
 
-    return { error: false, config: result.data };
+    return { error: false, data: result.data };
   }
 
   static async updateUserBattleConfig(userId: string, config: UserBattleConfig): Promise<void> {
-    await apiRequest
-      .patch(`/roleplay/battleconf/?userId=${userId}`, { data: { config } })
-      .catch(debugError);
+    await apiRequest.patch(`/roleplay/battleconf/?userId=${userId}`, { config }).catch(debugError);
   }
 
   static async postCommandStatus(commands: ICommandsData[]): Promise<void> {
@@ -174,13 +172,13 @@ export default class HttpRequests {
   }
 
   static async getActivity(
-    shard: number,
+    clusterId: number,
   ): Promise<{ name: string; type: Exclude<ActivityType, 'CUSTOM'> }> {
     /*  try {
       const data = await apiRequest.get('/activity', { data: { shard: shard || 0 } });
       return data.data;
     } catch { */
-    return { name: `❤️ | Menhera foi criada pela Lux | Shard ${shard}`, type: 'PLAYING' };
+    return { name: `❤️ | Menhera foi criada pela Lux | Cluster ${clusterId}`, type: 'PLAYING' };
     // }
   }
 

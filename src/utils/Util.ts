@@ -222,6 +222,6 @@ export const makeCustomId = (
   customIdentifier: string,
   baseId?: number,
 ): [`${number} | ${string}`, number] => {
-  const randomNumber = baseId ?? Date.now() + Math.random() * 100;
+  const randomNumber = baseId ?? Math.floor(Date.now() + Math.random() * 100);
   return [`${randomNumber} | ${customIdentifier}`, randomNumber];
 };

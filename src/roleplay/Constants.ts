@@ -10,7 +10,7 @@ export const MAXIMUM_CONNECT_HIT_REDUCTION = 30;
 
 export const BASE_XP = 120;
 
-export const DIFFICULT_TO_LEVEL_UP = 1.54;
+export const DIFFICULT_TO_LEVEL_UP = 1.62;
 
 export const ELEMENT_SINERGY_BONUS_IN_PERCENTAGE = 5;
 

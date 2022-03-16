@@ -28,6 +28,15 @@ import {
   SelectMenuInteraction,
 } from 'discord.js-light';
 
+const defaultBlessesConfiguration = (): UserBattleConfig => ({
+  agility: 0,
+  armor: 0,
+  damage: 0,
+  intelligence: 0,
+  maxLife: 0,
+  maxMana: 0,
+});
+
 export default class ArenaInteractionCommand extends InteractionCommand {
   constructor() {
     super({
@@ -63,14 +72,8 @@ export default class ArenaInteractionCommand extends InteractionCommand {
     }
 
     const userConfig: UserBattleConfig =
-      (await ctx.client.repositories.roleplayRepository.getConfigurationBattle(ctx.author.id)) ?? {
-        agility: 0,
-        armor: 0,
-        damage: 0,
-        intelligence: 0,
-        maxLife: 0,
-        maxMana: 0,
-      };
+      (await ctx.client.repositories.roleplayRepository.getConfigurationBattle(ctx.author.id)) ??
+      defaultBlessesConfiguration();
 
     let totalBattlePointsToUse = 0;
     let totalVitalityPointsToUse = 0;
@@ -88,8 +91,6 @@ export default class ArenaInteractionCommand extends InteractionCommand {
 
     // TODO: Add abilities and custom weapon to batle
     // TODO: Make reset button work
-    // TODO: Vitality button is showing battle buttons
-    // TODO: Fix api that takes for ever to get config
 
     const pvpUser = {
       level: USER_BATTLE_LEVEL,
@@ -194,7 +195,19 @@ export default class ArenaInteractionCommand extends InteractionCommand {
       return;
     }
 
-    console.log(resolveCustomId(selectedOption.customId));
+    if (resolveCustomId(selectedOption.customId) === 'RESET') {
+      await ctx.client.repositories.roleplayRepository.setUserConfigurationBattle(
+        ctx.author.id,
+        defaultBlessesConfiguration(),
+      );
+
+      ctx.makeMessage({
+        embeds: [],
+        components: [],
+        content: ctx.prettyResponse('success', 'commands:arena.configurate.success-points'),
+      });
+      return;
+    }
 
     const pointsToUse =
       resolveCustomId(selectedOption.customId) === 'VITALITY'

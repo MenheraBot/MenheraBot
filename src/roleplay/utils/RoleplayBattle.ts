@@ -31,7 +31,7 @@ export default class RoleplayBattle {
 
   public didRunaway = false;
 
-  private readonly TIME_TO_SELECT = 15_000;
+  private readonly TIME_TO_SELECT = 20_000;
 
   constructor(
     public user: UserBattleEntity,

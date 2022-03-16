@@ -1,6 +1,7 @@
 import { Options, SnowflakeUtil, User, AnyChannel } from 'discord.js-light';
 import { resolve } from 'node:path';
 import Cluster, { Client as ClusterClient } from 'discord-hybrid-sharding';
+import HttpRequests from '@utils/HTTPrequests';
 import MenheraClient from './MenheraClient';
 
 const channelFilter = (channel: AnyChannel) =>
@@ -59,6 +60,7 @@ const client = new MenheraClient(
 
 (async () => {
   client.cluster = new ClusterClient(client);
+  client.options.presence = { activities: [await HttpRequests.getActivity(client.cluster.id)] };
   await client.init();
 
   client

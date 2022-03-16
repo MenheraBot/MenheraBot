@@ -1,5 +1,4 @@
 import MenheraClient from 'MenheraClient';
-import HttpRequests from '@utils/HTTPrequests';
 import { getMillisecondsToTheEndOfDay } from '@utils/Util';
 import { postBotStatus, postShardStatus } from '@structures/StatusPoster';
 import DeployDeveloperCommants from '@structures/DeployDeveloperCommants';
@@ -17,12 +16,12 @@ export default class ReadyEvent {
 
     const isMasterShard = (id: number) => id === client.cluster.count - 1;
 
-    const updateActivity = async (cluster: number) =>
-      client.user?.setActivity(await HttpRequests.getActivity(cluster));
+    /*  const updateActivity = async (cluster: number) =>
+      client.user?.setActivity(await HttpRequests.getActivity(cluster)); 
+      setInterval(() => updateActivity(clusterId), 1000 * 60 * 10);
+    */
 
     const clusterId = client.cluster.id;
-
-    setInterval(() => updateActivity(clusterId), 1000 * 60 * 10);
 
     if (isMasterShard(clusterId)) {
       HttpServer.getInstance().registerRouter('DBL', DBLWebhook(client));
