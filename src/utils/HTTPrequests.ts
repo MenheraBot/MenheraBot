@@ -20,7 +20,7 @@ import {
   ThemeFiles,
 } from '@utils/Types';
 import { User } from 'discord.js-light';
-import type { ActivityType } from 'discord.js';
+import type { ActivityType } from 'discord.js-light';
 import { UserBattleConfig } from '@roleplay/Types';
 import { debugError, MayNotExists } from './Util';
 
