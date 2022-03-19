@@ -563,7 +563,7 @@
     "dealer-hand": "Mão da Menhera",
     "timeout": "Tu demorou muito para jogar. A Menhera ficou sem paciência, você perdeu tudo!",
     "result": "👑 | Resultado",
-    "blackjack": "Você fez um BlalcJack!!! Você recebeu o dobro do prêmio! **{{value}}** :star:",
+    "blackjack": "Você fez um Blackjack!!! Você recebeu o dobro do prêmio! **{{value}}** :star:",
     "buy": "Comprar",
     "stop": "Parar",
     "explode": "Você estourou! Por isso, perdeu tudo :(",
@@ -672,7 +672,7 @@
     "STRAIGHT": "Número Único",
     "SPLIT": "Dupla de Números",
     "DOZENS": "Uma Dúzia",
-    "LOWHIGH": "Numéro mais Alto ou Baixo",
+    "LOWHIGH": "Número mais Alto ou Baixo",
     "ODDEVEN": "Par ou Ímpar",
     "COLOR": "Vermelho ou Preto"
   },

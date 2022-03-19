@@ -1,6 +1,7 @@
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { ROULETTE_NUMBERS } from '@structures/Constants';
+import HttpRequests from '@utils/HTTPrequests';
 import Util, { actionRow, resolveCustomId, resolveSeparatedStrings } from '@utils/Util';
 import {
   MessageActionRow,
@@ -270,7 +271,7 @@ export default class RouletteInteractionCommand extends InteractionCommand {
       });
     };
 
-    const didLose = (selection: string) => {
+    const didLose = (profit: number, selection: string) => {
       collector.stop();
 
       const loseEmbed = new MessageEmbed()
@@ -289,6 +290,8 @@ export default class RouletteInteractionCommand extends InteractionCommand {
         );
 
       ctx.client.repositories.starRepository.remove(ctx.author.id, bet);
+
+      HttpRequests.postRouletteGame(ctx.author.id, bet, operation, profit, false, selection);
 
       ctx.makeMessage({
         embeds: [loseEmbed],
@@ -352,33 +355,33 @@ export default class RouletteInteractionCommand extends InteractionCommand {
 
       switch (operation) {
         case 'STRAIGHT': {
-          if (Number(int.values[0]) !== randomValue.value) return didLose(int.values[0]);
-          return didWin(bet + bet * 35, int.values[0]);
+          if (Number(int.values[0]) !== randomValue.value) return didLose(bet * 35, int.values[0]);
+          return didWin(bet * 35, int.values[0]);
         }
         case 'SPLIT': {
           if (!resolveSeparatedStrings(int.values[0]).includes(`${randomValue.value}`))
-            return didLose(int.values[0]);
-          return didWin(bet + bet * 17, int.values[0]);
+            return didLose(bet * 17, int.values[0]);
+          return didWin(bet * 17, int.values[0]);
         }
         case 'ODDEVEN': {
-          if (randomValue.color === 'green') return didLose(int.values[0]);
-          if (int.values[0] !== randomValue.parity) return didLose(int.values[0]);
-          return didWin(bet * 2, int.values[0]);
+          if (randomValue.color === 'green') return didLose(bet, int.values[0]);
+          if (int.values[0] !== randomValue.parity) return didLose(bet, int.values[0]);
+          return didWin(bet, int.values[0]);
         }
         case 'COLOR': {
-          if (randomValue.color === 'green') return didLose(int.values[0]);
-          if (int.values[0] !== randomValue.color) return didLose(int.values[0]);
-          return didWin(bet * 2, int.values[0]);
+          if (randomValue.color === 'green') return didLose(bet, int.values[0]);
+          if (int.values[0] !== randomValue.color) return didLose(bet, int.values[0]);
+          return didWin(bet, int.values[0]);
         }
         case 'LOWHIGH': {
-          if (randomValue.color === 'green') return didLose(int.values[0]);
-          if (int.values[0] !== randomValue.size) return didLose(int.values[0]);
-          return didWin(bet * 2, int.values[0]);
+          if (randomValue.color === 'green') return didLose(bet, int.values[0]);
+          if (int.values[0] !== randomValue.size) return didLose(bet, int.values[0]);
+          return didWin(bet, int.values[0]);
         }
         case 'DOZENS': {
-          if (randomValue.color === 'green') return didLose(int.values[0]);
-          if (int.values[0] !== randomValue.dozen) return didLose(int.values[0]);
-          return didWin(bet + bet * 2, int.values[0]);
+          if (randomValue.color === 'green') return didLose(bet * 2, int.values[0]);
+          if (int.values[0] !== randomValue.dozen) return didLose(bet * 2, int.values[0]);
+          return didWin(bet * 2, int.values[0]);
         }
       }
     });

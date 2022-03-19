@@ -158,6 +158,31 @@ export default class HttpRequests {
     return { error: true };
   }
 
+  static async getRouletteUserStats(id: string): Promise<IRESTGameStats | { error: true }> {
+    try {
+      const data = await apiRequest.get('/statistics/roulette', { data: { userId: id } });
+      if (data.status === 400) return { error: true };
+      if (!data.data.error) return data.data;
+    } catch {
+      return { error: true };
+    }
+
+    return { error: true };
+  }
+
+  static async postRouletteGame(
+    userId: string,
+    betValue: number,
+    betType: string,
+    profit: number,
+    didWin: boolean,
+    selectedValues: string,
+  ): Promise<void> {
+    await apiRequest
+      .post('/statistics/roulette', { userId, betValue, profit, didWin, betType, selectedValues })
+      .catch(debugError);
+  }
+
   static async postCommand(info: ICommandUsedData): Promise<void> {
     await apiRequest
       .post('/usages/commands', {
