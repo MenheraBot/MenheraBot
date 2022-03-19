@@ -1,7 +1,7 @@
 import { RoleplayUserSchema, UserBattleConfig } from '@roleplay/Types';
 import { Rpgs } from '@structures/DatabaseCollections';
 import HttpRequests from '@utils/HTTPrequests';
-import { MayNotExists } from '@utils/Util';
+import { debugError, MayNotExists } from '@utils/Util';
 import { Redis } from 'ioredis';
 import { UpdateQuery, UpdateWithAggregationPipeline } from 'mongoose';
 
@@ -16,25 +16,23 @@ export default class RoleplayRepository {
       id: userId,
       level: 1,
       experience: 0,
-      createdAt: Date.now(),
       ...data,
     });
   }
 
   async findUser(userId: string): Promise<MayNotExists<RoleplayUserSchema>> {
-    /*   if (this.redisClient) {
+    if (this.redisClient) {
       const userData = await this.redisClient
         .get(`roleplay:${userId}`)
         .catch((e) => debugError(e, true));
       if (userData) return JSON.parse(userData);
     }
- */
+
     const fromDatabase = await this.roleplayModal.findOne({ id: userId });
 
-    /*  if (fromDatabase && this.redisClient) {
+    if (fromDatabase && this.redisClient)
       await this.redisClient.setex(`roleplay:${userId}`, 3600, JSON.stringify(fromDatabase));
-    }
- */
+
     return fromDatabase;
   }
 
@@ -42,21 +40,21 @@ export default class RoleplayRepository {
     userId: string,
     toUpdate: UpdateQuery<RoleplayUserSchema> | UpdateWithAggregationPipeline,
   ): Promise<void> {
-    /*  const updated = */ await this.roleplayModal.updateOne({ id: userId }, toUpdate, {
-      returnOriginal: false,
+    const updated = await this.roleplayModal.findOneAndUpdate({ id: userId }, toUpdate, {
+      new: true,
     });
 
-    /*   if (this.redisClient)
-      await this.redisClient.setex(`roleplay:${userId}`, 3600, JSON.stringify(updated)); */
+    if (this.redisClient)
+      await this.redisClient.setex(`roleplay:${userId}`, 3600, JSON.stringify(updated));
   }
 
   async postBattle(userId: string, updatedUserState: RoleplayUserSchema): Promise<void> {
-    /*   const updated =  */ await this.roleplayModal.updateOne({ id: userId }, updatedUserState, {
-      returnOriginal: false,
+    const updated = await this.roleplayModal.findOneAndUpdate({ id: userId }, updatedUserState, {
+      new: true,
     });
 
-    /*   if (this.redisClient)
-      await this.redisClient.setex(`roleplay:${userId}`, 3600, JSON.stringify(updated)); */
+    if (this.redisClient)
+      await this.redisClient.setex(`roleplay:${userId}`, 3600, JSON.stringify(updated));
   }
 
   async getConfigurationBattle(userId: string): Promise<MayNotExists<UserBattleConfig>> {

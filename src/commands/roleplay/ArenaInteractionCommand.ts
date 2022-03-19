@@ -99,7 +99,6 @@ export default class ArenaInteractionCommand extends InteractionCommand {
     const { battle: userAvailableBattlePoints, vitality: userAvailableVitalityPoints } =
       ArenaInteractionCommand.getBlessesAvailable(userConfig);
     // TODO: Add abilities and custom weapon to batle
-    // TODO: Make reset button work
 
     const pvpUser = {
       level: USER_BATTLE_LEVEL,
