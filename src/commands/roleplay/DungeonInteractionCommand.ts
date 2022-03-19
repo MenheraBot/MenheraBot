@@ -241,6 +241,7 @@ export default class DungeonInteractionCommand extends InteractionCommand {
           mana: battleResults.user.mana,
           maxLife: getUserMaxLife(battleResults.user),
           maxMana: getUserMaxMana(battleResults.user),
+          experience: battleResults.enemy.experience,
         }),
       );
 

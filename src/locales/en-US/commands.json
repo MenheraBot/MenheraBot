@@ -773,7 +773,7 @@
       "back": "You've returned to the city, get some rest before going on another adventure!",
       "footer": "If you want an item, please do so before going elsewhere.",
       "loots": "Available Items (You have space to get **{{amount}}**)\n{{itemText}}",
-      "description": "**Your Status:**\n❤️ | Life: **{{life}} / {{maxLife}}**\n💧 | Mana: **{{mana}} / {{maxMana}}**\n\nYou have triumphed in your battle, and now you must go your way, choose what you want to do"
+      "description": "**Your Status:**\n❤️ | Life: **{{life}} / {{maxLife}}**\n💧 | Mana: **{{mana}} / {{maxMana}}**\n🔰 | Earned Experience: **{{experience}}**\n\nYou have triumphed in your battle, and now you must go your way, choose what you want to do"
     },
     "arregou": "You thought better of it, and ended up giving up on entering the dungeon"
   },
