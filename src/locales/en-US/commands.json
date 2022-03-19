@@ -490,12 +490,16 @@
       "version": "Version",
       "extended": "Shards Info"
     },
+    "roleta": {
+      "embed-title": "{{user}}'s Roulette Status",
+      "no-data": "This user have never played a roulette game!"
+    },
     "blackjack": {
       "embed-title": "{{user}}'s Blackjack Status",
-      "no-data": "you never played a blackjack game!"
+      "no-data": "This user have never played a blackjack game!"
     },
     "hunt": {
-      "no-data": "You never hunted",
+      "no-data": "This user have never hunted",
       "embed-title": "{{user}}'s Hunt Status",
       "display-data": "**Attempts:** {{tries}}\n**Rating:** {{success}}%\n**Total Hunted:** {{hunted}}",
       "demon": "Demons",

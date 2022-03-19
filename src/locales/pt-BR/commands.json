@@ -494,6 +494,10 @@
       "version": "Versão",
       "extended": "Informações dos Shards"
     },
+    "roleta": {
+      "embed-title": "Status de roleta de {{user}}",
+      "no-data": "Este usuário nunca jogou uma partida de roleta francesa!"
+    },
     "blackjack": {
       "usage": "[usuário]",
       "description": "Veja os status de BlackJack de alguém",

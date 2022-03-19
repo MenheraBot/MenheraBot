@@ -29,6 +29,19 @@ export default class StatsInteractionCommand extends InteractionCommand {
           ],
         },
         {
+          name: 'roleta',
+          type: 'SUB_COMMAND',
+          description: '「🎡」・Veja os status de roleta de alguém',
+          options: [
+            {
+              name: 'user',
+              description: 'Usuário para ver os status',
+              type: 'USER',
+              required: false,
+            },
+          ],
+        },
+        {
           name: 'coinflip',
           description: '「💸」・Veja os status de coinflip de alguém',
           type: 'SUB_COMMAND',
@@ -93,7 +106,77 @@ export default class StatsInteractionCommand extends InteractionCommand {
         return StatsInteractionCommand.BlackjackStatus(ctx);
       case 'menhera':
         return StatsInteractionCommand.MenheraStatus(ctx);
+      case 'roleta':
+        return StatsInteractionCommand.RouletteStatus(ctx);
     }
+  }
+
+  static async RouletteStatus(ctx: InteractionCommandContext): Promise<void> {
+    const user = ctx.options.getUser('user') ?? ctx.author;
+
+    const data = await HttpRequests.getRouletteUserStats(user.id);
+
+    if (data.error) {
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:status.coinflip.error'),
+      });
+      return;
+    }
+
+    if (!data.playedGames) {
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:status.roleta.no-data'),
+      });
+      return;
+    }
+
+    const totalMoney = data.winMoney - data.lostMoney;
+
+    const embed = new MessageEmbed()
+      .setTitle(ctx.locale('commands:status.roleta.embed-title', { user: user.tag }))
+      .setColor(COLORS.Purple)
+      .setFooter({ text: ctx.locale('commands:status.coinflip.embed-footer') })
+      .addFields([
+        {
+          name: `🎰 | ${ctx.locale('commands:status.coinflip.played')}`,
+          value: `**${data.playedGames}**`,
+          inline: true,
+        },
+        {
+          name: `🏆 | ${ctx.locale('commands:status.coinflip.wins')}`,
+          value: `**${data.winGames}** | (${data.winPorcentage}) **%**`,
+          inline: true,
+        },
+        {
+          name: `🦧 | ${ctx.locale('commands:status.coinflip.loses')}`,
+          value: `**${data.lostGames}** | (${data.lostPorcentage}) **%**`,
+          inline: true,
+        },
+        {
+          name: `📥 | ${ctx.locale('commands:status.coinflip.earnMoney')}`,
+          value: `**${data.winMoney}** :star:`,
+          inline: true,
+        },
+        {
+          name: `📤 | ${ctx.locale('commands:status.coinflip.lostMoney')}`,
+          value: `**${data.lostMoney}** :star:`,
+          inline: true,
+        },
+      ]);
+    // eslint-disable-next-line no-unused-expressions
+    totalMoney > 0
+      ? embed.addField(
+          `${emojis.yes} | ${ctx.locale('commands:status.coinflip.profit')}`,
+          `**${totalMoney}** :star:`,
+          true,
+        )
+      : embed.addField(
+          `${emojis.no} | ${ctx.locale('commands:status.coinflip.loss')}`,
+          `**${totalMoney}** :star:`,
+          true,
+        );
+
+    await ctx.makeMessage({ embeds: [embed] });
   }
 
   static async DesignerStatus(ctx: InteractionCommandContext): Promise<void> {
