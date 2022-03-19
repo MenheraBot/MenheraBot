@@ -321,14 +321,13 @@
     "2_censor": "Bacana, mas e aí?"
   },
   "cacar": {
-    "usage": "",
     "drop": "CARALHOOOO {{author}}, Tu dropou um item de caça! Tu tem noção do quão raro isso é? Pra ti ter noção, o item que tu ganhou, o **{{name}}** tem uma porcentagem de drop de `{{chance}}%`, Parabéns!",
     "drop_censor": "Uoouu {{author}}, Tu dropou um item de caça! Tu tem noção do quão raro isso é? Pra ti ter noção, o item que tu ganhou, o **{{name}}** tem uma porcentagem de drop de `{{chance}}%`, Parabéns!",
     "probabilities": "Suas Probabilidades de Caça",
     "chances": "**{{count}}** ({{percentage}}%)",
-    "hunt_description": "Você saiu para caçar **{{hunt}}** **{{count}}** vezes com o Super Xandão, e voltou para casa com mais **{{value}}** pra conta. Você está em **#{{rank}}** lugar do top {{hunt}}",
-    "god_hunted_success": "CARACA!!! VOCÊ SE MOSTROU UM HERÓI FRUTO DE UMA VONTADE DIVINA, ASSIM COMO XANDÃO, E CONSEGUIU CAÇAR `{{count}}` DEUSES EM **{{toRun}}** TENTATIVAS! APENAS O BÁSICO MEU LINDO, COM ISSO VOCÊ ESTÁ EM **#{{rank}}** LUGAR DO TOP",
-    "god_hunted_fail": "Caçar Deuses é uma missão extremamente difícil, e com **{{count}}** tentativas você não obteve sucesso. Mas fique tranquilo, herói, você ainda conseguirá! Você está em **#{{rank}}** lugar do top deus",
+    "hunt_description": "Você saiu para caçar **{{hunt}}** **{{count}}** vezes com o Super Xandão, e voltou para casa com mais **{{value}}** pra conta.",
+    "god_hunted_success": "CARACA!!! VOCÊ SE MOSTROU UM HERÓI FRUTO DE UMA VONTADE DIVINA, ASSIM COMO XANDÃO, E CONSEGUIU CAÇAR `{{count}}` DEUSES EM **{{toRun}}** TENTATIVAS! APENAS O BÁSICO MEU LINDO",
+    "god_hunted_fail": "Caçar Deuses é uma missão extremamente difícil, e com **{{count}}** tentativas você não obteve sucesso. Mas fique tranquilo, herói, você ainda conseguirá!",
     "demons": "Demônios",
     "angels": "Anjos",
     "demigods": "Semideuses",

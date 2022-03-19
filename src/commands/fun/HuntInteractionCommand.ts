@@ -231,25 +231,15 @@ export default class HuntInteractionCommand extends InteractionCommand {
       selected,
     );
 
-    /* const rankinkg await ctx.client.repositories.topRepository
-      .getUserHuntRank(
-        ctx.author.id,
-        selected,
-        await ctx.client.repositories.cacheRepository.getDeletedAccounts(),
-      )
-      .catch((e) => debugError(e, true)); */
-
     if (selected === 'gods') {
       embed.setDescription(
         result.value > 0
           ? ctx.locale('commands:cacar.god_hunted_success', {
               count: result.value,
               hunt: ctx.locale(`commands:cacar.gods`),
-              rank: /* rankinkg ? rankinkg.rank + 1 : */ '`??`',
               toRun,
             })
           : ctx.locale('commands:cacar.god_hunted_fail', {
-              rank: /* rankinkg ? rankinkg.rank + 1 :  */ '`??`',
               count: toRun,
             }),
       );
@@ -259,12 +249,10 @@ export default class HuntInteractionCommand extends InteractionCommand {
         ctx.locale('commands:cacar.hunt_description', {
           value: result.value,
           hunt: ctx.locale(`commands:cacar.${selected}`),
-          rank: /* rankinkg ? rankinkg.rank + 1 : */ '`??`',
           count: toRun,
         }),
       );
-    // @ts-expect-error HuntString is actually HuntHUNTYPE
-    embed.setColor(COLORS[`Hunt${Util.capitalize(selected)}`]);
+    embed.setColor(COLORS[`Hunt${Util.capitalize(selected) as 'Default'}`]);
 
     const APIHuntTypes = {
       demons: 'demon',
