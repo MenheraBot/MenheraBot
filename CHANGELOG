@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ### Fixed
 
+- Árvore de Habilidades do Assassino estava com uma ordem errada
 - Opção de abençõar status com pontos maior que 15, bloqueando o usuário de usar mais bênçãos
 - Erros de português no comando `/ship`
 - O valor de lucro da roleta foi ajustado para todas apostas que duplicava o valor real.

@@ -871,7 +871,7 @@
     "title": "Arena de Boleham",
     "ready": "Estou Pronto!",
     "leveled-battle": "Batalha Justa",
-    "default-battle": "Batalha Atual",
+    "default-battle": "Batalha Agora",
     "ready-users": "Usuários prontos: {{ready}} / 2",
     "same-user": "KKKK cara podre querendo batalhar contra si mesmo, marca outra pessoa ai namoral",
     "user-not-configurated": "{{user}} não possui todas as bênçãos configuradas para batalha! Use `/arena configurar` para settar suas bênçãos",

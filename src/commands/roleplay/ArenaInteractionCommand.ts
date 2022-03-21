@@ -5,8 +5,8 @@ import {
   LEVEL_UP_BLESSES,
   USER_BATTLE_LEVEL,
 } from '@roleplay/Constants';
-import { UserBattleConfig } from '@roleplay/Types';
-import { makeCloseCommandButton } from '@roleplay/utils/AdventureUtils';
+import { RoleplayUserSchema, UserBattleConfig } from '@roleplay/Types';
+import { makeCloseCommandButton, prepareUserForDungeon } from '@roleplay/utils/AdventureUtils';
 import {
   getUserAgility,
   getUserArmor,
@@ -405,8 +405,12 @@ export default class ArenaInteractionCommand extends InteractionCommand {
     });
   }
 
-  static async pvpLoop(): Promise<void> {
-    console.log('n');
+  static async pvpLoop(
+    ctx: InteractionCommandContext,
+    attacker: RoleplayUserSchema,
+    defender: RoleplayUserSchema,
+  ): Promise<void> {
+    console.log(ctx, attacker, defender);
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
@@ -570,7 +574,11 @@ export default class ArenaInteractionCommand extends InteractionCommand {
 
           if (!isLeveledBattle) {
             collector.stop();
-            return ArenaInteractionCommand.pvpLoop();
+            return ArenaInteractionCommand.pvpLoop(
+              ctx,
+              prepareUserForDungeon(author),
+              prepareUserForDungeon(enemy),
+            );
           }
         }
       }

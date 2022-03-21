@@ -107,7 +107,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'Golpe Desleal (assassino)',
     cost: 80,
     costPerLevel: 5,
-    parentId: 102,
+    parentId: 100,
     unlockCost: 25,
     effects: [
       {
@@ -162,7 +162,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         target: 'self',
       },
     ],
-    parentId: 101,
+    parentId: 103,
     unlockCost: 25,
   },
   200: {
