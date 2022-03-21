@@ -148,7 +148,7 @@ export default class ArenaInteractionCommand extends InteractionCommand {
     const [resetPointsCustomId, baseId] = makeCustomId('RESET');
     const [vitalityCustomId] = makeCustomId('VITALITY', baseId);
     const [battleCustomId] = makeCustomId('BATTLE', baseId);
-    const closeCommandButton = makeCloseCommandButton(baseId);
+    const closeCommandButton = makeCloseCommandButton(baseId, ctx.i18n);
 
     const resetPointsButton = new MessageButton()
       .setCustomId(resetPointsCustomId)
@@ -502,7 +502,7 @@ export default class ArenaInteractionCommand extends InteractionCommand {
 
     const [battleTypeCustomId, baseId] = makeCustomId('TYPE');
     const [readyCustomId] = makeCustomId('READY', baseId);
-    const closeCommandButton = makeCloseCommandButton(baseId);
+    const closeCommandButton = makeCloseCommandButton(baseId, ctx.i18n);
 
     let isLeveledBattle = true;
 

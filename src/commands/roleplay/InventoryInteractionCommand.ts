@@ -139,7 +139,7 @@ export default class InventoryInteractionCommand extends InteractionCommand {
 
     selectMenu.setMaxValues(selectMenu.options.length).setCustomId(itemsCustomId);
 
-    const exitButton = makeCloseCommandButton(newBase);
+    const exitButton = makeCloseCommandButton(newBase, ctx.i18n);
 
     ctx.makeMessage({
       embeds: [embed],

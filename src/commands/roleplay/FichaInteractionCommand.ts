@@ -107,7 +107,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
       .setStyle('PRIMARY')
       .setLabel(ctx.locale('commands:ficha.show.abilities.unlock'));
 
-    const exitButton = makeCloseCommandButton(baseId);
+    const exitButton = makeCloseCommandButton(baseId, ctx.i18n);
 
     ctx.makeMessage({
       embeds: [embed],
@@ -398,7 +398,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
       .setStyle('PRIMARY')
       .setLabel(ctx.locale('commands:ficha.show.battle'));
 
-    const exitButton = makeCloseCommandButton(baseId);
+    const exitButton = makeCloseCommandButton(baseId, ctx.i18n);
 
     if (user.holyBlessings.vitality === 0) vitalityButton.setDisabled(true);
     if (user.holyBlessings.battle === 0) battleButton.setDisabled(true);
@@ -677,7 +677,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
       .setStyle('PRIMARY')
       .setLabel(ctx.locale('commands:ficha.show.statsButton'));
 
-    const exitButton = makeCloseCommandButton(baseId);
+    const exitButton = makeCloseCommandButton(baseId, ctx.i18n);
 
     await ctx.makeMessage({
       embeds: [embed],

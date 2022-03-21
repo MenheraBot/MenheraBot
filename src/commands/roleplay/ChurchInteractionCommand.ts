@@ -125,7 +125,7 @@ export default class ChurchInteractionCommand extends InteractionCommand {
       .setStyle('PRIMARY')
       .setLabel(ctx.locale('commands:igreja.pray'));
 
-    const exitButton = makeCloseCommandButton(customIdBase);
+    const exitButton = makeCloseCommandButton(customIdBase, ctx.i18n);
 
     const GratherThanAnHour = (time: number): boolean => time >= 3600000;
 

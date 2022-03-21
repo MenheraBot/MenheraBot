@@ -262,7 +262,7 @@ export default class DowntownInteractionCommand extends InteractionCommand {
       .setLabel(ctx.locale('common:roleplay.weapon'))
       .setStyle('PRIMARY');
 
-    const exitButton = makeCloseCommandButton(baseId);
+    const exitButton = makeCloseCommandButton(baseId, ctx.i18n);
 
     ctx.makeMessage({
       embeds: [embed],
@@ -431,7 +431,7 @@ export default class DowntownInteractionCommand extends InteractionCommand {
       .setMaxValues(1)
       .setPlaceholder(ctx.locale('commands:centro.buy.select'));
 
-    const exitButton = makeCloseCommandButton(baseId);
+    const exitButton = makeCloseCommandButton(baseId, ctx.i18n);
 
     const availableItems = availableToBuyItems(user.level);
 
@@ -620,7 +620,7 @@ export default class DowntownInteractionCommand extends InteractionCommand {
 
     selectMenu.setMaxValues(selectMenu.options.length).setMinValues(1);
 
-    const closeCommand = makeCloseCommandButton(baseId);
+    const closeCommand = makeCloseCommandButton(baseId, ctx.i18n);
 
     ctx.makeMessage({
       embeds: [embed],

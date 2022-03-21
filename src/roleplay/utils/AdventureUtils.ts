@@ -14,6 +14,7 @@ import { IReturnData } from '@utils/Types';
 import { moreThanAnHour, RandomFromArray } from '@utils/Util';
 import { EmbedFieldData, MessageButton } from 'discord.js-light';
 import moment from 'moment';
+import { TFunction } from 'i18next';
 import { getEnemies, getItemById } from './DataUtils';
 import { nextLevelXp } from './Calculations';
 
@@ -23,8 +24,11 @@ export const prepareUserForDungeon = (user: RoleplayUserSchema): UserBattleEntit
   return user as UserBattleEntity;
 };
 
-export const makeCloseCommandButton = (baseId: number): MessageButton =>
-  new MessageButton().setCustomId(`${baseId} | CLOSE_COMMAND`).setStyle('DANGER').setEmoji('🛑');
+export const makeCloseCommandButton = (baseId: number, translate: TFunction): MessageButton =>
+  new MessageButton()
+    .setCustomId(`${baseId} | CLOSE_COMMAND`)
+    .setStyle('DANGER')
+    .setLabel(translate('common:exit-command'));
 
 export const canGoToDungeon = (
   user: RoleplayUserSchema,

@@ -55,5 +55,6 @@
     "weapon": "Weapon",
     "protection": "Protection"
   },
+  "exit-command": "Finish Command",
   "unregistered": "You still haven't reincarnated in the Bulletin World! Register first and try again!"
 }
