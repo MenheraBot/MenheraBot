@@ -3,28 +3,27 @@ import { languageByLocale } from '@structures/Constants';
 import HttpRequests from '@utils/HTTPrequests';
 import { ICommandUsedData } from '@utils/Types';
 import { debugError } from '@utils/Util';
-import { CommandInteraction, TextChannel, MessageEmbed, Collection } from 'discord.js-light';
+import { CommandInteraction, MessageEmbed, Collection } from 'discord.js-light';
 import i18next from 'i18next';
 import MenheraClient from 'MenheraClient';
 import InteractionCommandContext from './InteractionContext';
 
 const InteractionCommandExecutor = async (
-  client: MenheraClient,
-  interaction: CommandInteraction<'cached'> & { client: MenheraClient; channel: TextChannel },
+  interaction: CommandInteraction<'cached'> & { client: MenheraClient },
 ): Promise<void> => {
-  const server = await client.repositories.cacheRepository.fetchGuild(
+  const server = await interaction.client.repositories.cacheRepository.fetchGuild(
     interaction.guildId,
     interaction.guild?.preferredLocale ?? languageByLocale.brazil,
   );
 
   const t = i18next.getFixedT(server.lang ?? interaction.guildLocale);
 
-  const isUserBanned = await client.repositories.blacklistRepository.isUserBanned(
+  const isUserBanned = await interaction.client.repositories.blacklistRepository.isUserBanned(
     interaction.user.id,
   );
 
   if (isUserBanned) {
-    const userBannedInfo = await client.repositories.userRepository.getBannedUserInfo(
+    const userBannedInfo = await interaction.client.repositories.userRepository.getBannedUserInfo(
       interaction.user.id,
     );
 
@@ -39,7 +38,7 @@ const InteractionCommandExecutor = async (
     return;
   }
 
-  const command = client.slashCommands.get(interaction.commandName);
+  const command = interaction.client.slashCommands.get(interaction.commandName);
   if (!command) {
     interaction
       .reply({ content: t('permissions:UNKNOWN_SLASH'), ephemeral: true })
@@ -49,7 +48,7 @@ const InteractionCommandExecutor = async (
 
   if (
     (command.config.category === 'economy' || command.config.category === 'roleplay') &&
-    client.commandExecutions.has(interaction.user.id)
+    interaction.client.commandExecutions.has(interaction.user.id)
   ) {
     await interaction
       .reply({
@@ -87,7 +86,9 @@ const InteractionCommandExecutor = async (
     return;
   }
 
-  const dbCommand = await client.repositories.cacheRepository.fetchCommand(interaction.commandName);
+  const dbCommand = await interaction.client.repositories.cacheRepository.fetchCommand(
+    interaction.commandName,
+  );
 
   if (dbCommand?.maintenance && process.env.OWNER !== interaction.user.id) {
     await interaction
@@ -101,16 +102,19 @@ const InteractionCommandExecutor = async (
     return;
   }
 
-  if (!client.cooldowns.has(command.config.name))
-    client.cooldowns.set(command.config.name, new Collection());
+  if (!interaction.client.cooldowns.has(command.config.name))
+    interaction.client.cooldowns.set(command.config.name, new Collection());
 
   const now = Date.now();
 
   if (now - interaction.createdTimestamp >= 3000) return;
 
-  const timestamps = client.cooldowns.get(command.config.name) as Map<string, number>;
+  const timestamps = interaction.client.cooldowns.get(command.config.name) as Collection<
+    string,
+    number
+  >;
 
-  const cooldownAmount = (command.config.cooldown || 3) * 1000;
+  const cooldownAmount = (command.config.cooldown ?? 3) * 1000;
 
   if (timestamps.has(interaction.user.id)) {
     const expirationTime = (timestamps.get(interaction.user.id) as number) + cooldownAmount;
@@ -156,7 +160,7 @@ const InteractionCommandExecutor = async (
 
   const authorData =
     command.config.authorDataFields.length > 0
-      ? await client.repositories.userRepository.findOrCreate(
+      ? await interaction.client.repositories.userRepository.findOrCreate(
           interaction.user.id,
           command.config.authorDataFields,
         )
@@ -172,12 +176,12 @@ const InteractionCommandExecutor = async (
   if (!command.run) return;
 
   if (command.config.category === 'economy' || command.config.category === 'roleplay')
-    client.commandExecutions.add(ctx.author.id);
+    interaction.client.commandExecutions.add(ctx.author.id);
 
   await command
     .run(ctx)
     .catch(async (err) => {
-      const errorWebHook = await client.fetchWebhook(
+      const errorWebHook = await interaction.client.fetchWebhook(
         process.env.BUG_HOOK_ID as string,
         process.env.BUG_HOOK_TOKEN as string,
       );
@@ -216,7 +220,7 @@ const InteractionCommandExecutor = async (
     })
     .finally(() => {
       if (command.config.category === 'economy' || command.config.category === 'roleplay')
-        client.commandExecutions.delete(ctx.author.id);
+        interaction.client.commandExecutions.delete(ctx.author.id);
     });
 
   if (!interaction.guild || process.env.NODE_ENV === 'development') return;
@@ -227,7 +231,7 @@ const InteractionCommandExecutor = async (
     commandName: command.config.name,
     data: Date.now(),
     args: interaction.options.data,
-    shardId: client.cluster?.id ?? 0,
+    shardId: interaction.client.cluster?.id ?? 0,
   };
 
   await HttpRequests.postCommand(data);

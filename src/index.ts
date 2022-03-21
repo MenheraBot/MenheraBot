@@ -1,13 +1,8 @@
-import { Options, SnowflakeUtil, User, AnyChannel } from 'discord.js-light';
+import { Options, User } from 'discord.js-light';
 import { resolve } from 'node:path';
 import Cluster, { Client as ClusterClient } from 'discord-hybrid-sharding';
 import HttpRequests from '@utils/HTTPrequests';
 import MenheraClient from './MenheraClient';
-
-const channelFilter = (channel: AnyChannel) =>
-  !channel.isText() ||
-  !channel.lastMessageId ||
-  SnowflakeUtil.deconstruct(channel.lastMessageId).timestamp < Date.now() - 3600000;
 
 const userFilter = (user: User) => user.id !== user.client.user?.id;
 
@@ -17,16 +12,8 @@ const client = new MenheraClient(
     shardCount: Cluster.data.TOTAL_SHARDS,
     makeCache: Options.cacheWithLimits({
       GuildManager: Infinity,
-      ChannelManager: {
-        maxSize: 0,
-        sweepFilter: () => channelFilter,
-        sweepInterval: 3600,
-      },
-      GuildChannelManager: {
-        maxSize: 0,
-        sweepFilter: () => channelFilter,
-        sweepInterval: 3600,
-      },
+      ChannelManager: 0,
+      GuildChannelManager: 0,
       UserManager: {
         maxSize: 0,
         sweepFilter: () => userFilter,
