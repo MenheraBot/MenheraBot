@@ -5,7 +5,7 @@ import DeployDeveloperCommants from '@structures/DeployDeveloperCommants';
 import HttpServer from '@structures/server/server';
 import DBLWebhook from '@structures/server/controllers/DBLWebhook';
 import InactivityPunishment from '@structures/InactivityPunishment';
-// import PostInteractions from '@structures/server/controllers/PostInteractions';
+import PostInteractions from '@structures/server/controllers/PostInteractions';
 
 let dailyLoopTimeout: NodeJS.Timeout;
 
@@ -25,7 +25,6 @@ export default class ReadyEvent {
 
     if (isMasterShard(clusterId)) {
       HttpServer.getInstance().registerRouter('DBL', DBLWebhook(client));
-      // HttpServer.getInstance().registerRouter('INTERACTIONS', PostInteractions(this.client));
 
       ReadyEvent.dailyLoop(client);
 
@@ -39,6 +38,9 @@ export default class ReadyEvent {
         c.shardProcessEnded = true;
       });
     }
+
+    if (clusterId === 0)
+      HttpServer.getInstance().registerRouter('INTERACTIONS', PostInteractions(client));
 
     console.log(`[READY] Menhera Client ${client.cluster.id} its ready to receive events!`);
   }
