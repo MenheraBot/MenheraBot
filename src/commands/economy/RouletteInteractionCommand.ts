@@ -300,7 +300,6 @@ export default class RouletteInteractionCommand extends InteractionCommand {
     };
 
     collector.on('collect', async (int: SelectMenuInteraction) => {
-      await int.deferUpdate();
       const resolvedId = resolveCustomId(int.customId);
 
       if (operation === 'SPLIT' && resolvedId !== 'BET') {
