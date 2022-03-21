@@ -568,7 +568,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
               Math.max(user.blesses.maxLife, user.blesses.agility) -
                 (user.blesses.maxMana + points),
             );
-      if (antiBlessingLimit > BLESSES_DIFFERENCE_LIMIT) {
+      if (antiBlessingLimit >= BLESSES_DIFFERENCE_LIMIT) {
         ctx.makeMessage({
           content: ctx.prettyResponse('error', 'commands:ficha.show.limit-bless', {
             limit: BLESSES_DIFFERENCE_LIMIT,
@@ -595,7 +595,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
                 (user.blesses.intelligence + points),
             );
 
-      if (antiBlessingLimit > BLESSES_DIFFERENCE_LIMIT) {
+      if (antiBlessingLimit >= BLESSES_DIFFERENCE_LIMIT) {
         ctx.makeMessage({
           content: ctx.prettyResponse('error', 'commands:ficha.show.limit-bless', {
             limit: BLESSES_DIFFERENCE_LIMIT,

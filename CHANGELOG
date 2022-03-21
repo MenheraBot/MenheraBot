@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ### Fixed
 
+- Opção de abençõar status com pontos maior que 15, bloqueando o usuário de usar mais bênçãos
 - Erros de português no comando `/ship`
 - O valor de lucro da roleta foi ajustado para todas apostas que duplicava o valor real.
 - Erros do RPG: Muitos erros aconteciam como 'Cannot read [0] of undefined'. Isso foi resolvido com um novo sistema de interações que, eu creio, que vão arrumar o problema, que era causado por lags entre a Menhera e o Discord
