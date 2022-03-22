@@ -18,6 +18,7 @@ import {
 } from '@utils/Types';
 import * as Sentry from '@sentry/node';
 import ImageThemes from '@data/ImageThemes';
+import i18next from 'i18next';
 
 export default class Util {
   static capitalize(str: string): string {
@@ -83,7 +84,12 @@ export default class Util {
     return channel
       .awaitMessageComponent({
         filter: (m) => {
-          m.deferUpdate().catch(() => null);
+          if (m.user.id !== authorID)
+            m.reply({
+              ephemeral: true,
+              content: i18next.getFixedT(m.locale)('common:not-your-interaction'),
+            }).catch(() => null);
+          else m.deferUpdate().catch(() => null);
           return m.user.id === authorID;
         },
         time,
@@ -108,7 +114,12 @@ export default class Util {
     return channel
       .awaitMessageComponent({
         filter: (m) => {
-          m.deferUpdate().catch(() => null);
+          if (m.user.id !== authorID)
+            m.reply({
+              ephemeral: true,
+              content: i18next.getFixedT(m.locale)('common:not-your-interaction'),
+            }).catch(() => null);
+          else m.deferUpdate().catch(() => null);
           return m.user.id === authorID && m.customId.startsWith(`${customId}`);
         },
         time,

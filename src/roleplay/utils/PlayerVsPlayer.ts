@@ -3,7 +3,7 @@ import { BattleUserTurn, UserBattleEntity } from '@roleplay/Types';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { COLORS } from '@structures/Constants';
 import Util, { actionRow, makeCustomId, resolveSeparatedStrings } from '@utils/Util';
-import { MessageEmbed, MessageSelectMenu, SelectMenuInteraction } from 'discord.js-light';
+import { MessageEmbed, MessageSelectMenu, SelectMenuInteraction, User } from 'discord.js-light';
 import { invertBattleTurn, isDead } from './AdventureUtils';
 import {
   calculateAttackSuccess,
@@ -45,6 +45,8 @@ export default class PlayerVsPlayer {
     private ctx: InteractionCommandContext,
     public attacker: UserBattleEntity,
     public defender: UserBattleEntity,
+    public attackerDiscordUser: User,
+    public defenderDiscordUser: User,
     public lastText: string,
   ) {}
 
@@ -93,6 +95,8 @@ export default class PlayerVsPlayer {
 
     const toAttack = this[user];
     const toDefend = this[invertBattleTurn(user)];
+    const toAttackUser = this[`${user}DiscordUser`];
+    // const toDefendUser = this[`${invertBattleTurn(user)}DiscordUser`];
 
     const attackerDamage = getUserDamage(toAttack);
     const attackerArmor = getUserArmor(toAttack);
@@ -111,7 +115,7 @@ export default class PlayerVsPlayer {
     const embed = new MessageEmbed()
       .setTitle(
         this.ctx.prettyResponse('sword', 'roleplay:battle.title', {
-          name: `<@${toAttack.id as '1'}>`,
+          name: toAttackUser.username,
         }),
       )
       .setColor(COLORS.Battle)
@@ -218,7 +222,7 @@ export default class PlayerVsPlayer {
     const selectedOptions =
       await Util.collectComponentInteractionWithStartingId<SelectMenuInteraction>(
         this.ctx.channel,
-        this.ctx.author.id,
+        toAttackUser.id,
         battleId,
         PVP_USER_RESPONSE_TIME_LIMIT,
       );

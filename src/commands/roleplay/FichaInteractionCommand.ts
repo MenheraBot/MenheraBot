@@ -445,7 +445,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
       .setMaxValues(1)
       .setPlaceholder(ctx.locale('commands:ficha.show.select-amount'));
 
-    for (let i = 1; i <= pointsToUse && i <= 25; i++)
+    for (let i = 1; i <= pointsToUse && i <= BLESSES_DIFFERENCE_LIMIT; i++)
       selectAmount.addOptions({ label: `${i}`, value: `${i}` });
 
     ctx.makeMessage({ components: [actionRow([exitButton]), actionRow([selectAmount])] });

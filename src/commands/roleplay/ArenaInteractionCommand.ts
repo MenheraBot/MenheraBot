@@ -15,6 +15,7 @@ import {
   getUserMaxLife,
   getUserMaxMana,
 } from '@roleplay/utils/Calculations';
+import PlayerVsPlayer from '@roleplay/utils/PlayerVsPlayer';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { COLORS } from '@structures/Constants';
@@ -26,6 +27,7 @@ import {
   MessageEmbed,
   MessageSelectMenu,
   SelectMenuInteraction,
+  User,
 } from 'discord.js-light';
 
 const defaultBlessesConfiguration = (): UserBattleConfig => ({
@@ -231,7 +233,7 @@ export default class ArenaInteractionCommand extends InteractionCommand {
       .setMaxValues(1)
       .setPlaceholder(ctx.locale('commands:ficha.show.select-amount'));
 
-    for (let i = 1; i <= pointsToUse && i <= 25; i++)
+    for (let i = 1; i <= pointsToUse && i <= BLESSES_DIFFERENCE_LIMIT; i++)
       selectAmount.addOptions({ label: `${i}`, value: `${i}` });
 
     ctx.makeMessage({ components: [actionRow([closeCommandButton]), actionRow([selectAmount])] });
@@ -409,8 +411,22 @@ export default class ArenaInteractionCommand extends InteractionCommand {
     ctx: InteractionCommandContext,
     attacker: RoleplayUserSchema,
     defender: RoleplayUserSchema,
+    attackerDiscordUser: User,
+    defenderDiscordUser: User,
   ): Promise<void> {
-    console.log(ctx, attacker, defender);
+    const battleResults = await new PlayerVsPlayer(
+      ctx,
+      prepareUserForDungeon(attacker),
+      prepareUserForDungeon(defender),
+      attackerDiscordUser,
+      defenderDiscordUser,
+      ctx.locale('roleplay:battle.find', {
+        enemy: defenderDiscordUser.username,
+        level: defender.level,
+      }),
+    ).battleLoop();
+
+    console.log(battleResults);
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
@@ -502,16 +518,29 @@ export default class ArenaInteractionCommand extends InteractionCommand {
       switch (resolveCustomId(int.customId)) {
         case 'CLOSE_COMMAND': {
           collector.stop();
-          ctx.deleteReply();
+          int.deferUpdate();
+          ctx.makeMessage({
+            content: ctx.locale('commands:arena.closed-command', { author: int.user.toString() }),
+            embeds: [],
+            components: [],
+          });
           break;
         }
         case 'TYPE': {
+          if (int.user.id !== ctx.author.id)
+            return int.reply({
+              content: ctx.locale('commands:arena.ask-change-battle-type', {
+                user: mentioned.username,
+                author: ctx.author.toString(),
+              }),
+            });
+          int.deferUpdate();
           collector.resetTimer();
           battleTypeButton
             .setLabel(
               ctx.locale(`commands:arena.${isLeveledBattle ? 'default-battle' : 'leveled-battle'}`),
             )
-            .setStyle('SECONDARY');
+            .setStyle(isLeveledBattle ? 'SECONDARY' : 'PRIMARY');
           isLeveledBattle = !isLeveledBattle;
 
           ctx.makeMessage({
@@ -522,6 +551,7 @@ export default class ArenaInteractionCommand extends InteractionCommand {
         }
         case 'READY': {
           collector.resetTimer();
+          int.deferUpdate();
           if (!readyPlayers.includes(int.user.id)) readyPlayers.push(int.user.id);
 
           if (readyPlayers.length === 1) {
@@ -540,6 +570,8 @@ export default class ArenaInteractionCommand extends InteractionCommand {
               ctx,
               prepareUserForDungeon(author),
               prepareUserForDungeon(enemy),
+              ctx.author,
+              mentioned,
             );
           }
 
@@ -557,18 +589,22 @@ export default class ArenaInteractionCommand extends InteractionCommand {
                 content: ctx.prettyResponse('error', 'commands:arena.user-not-configurated', {
                   user: !authorBlesses ? ctx.author.username : mentioned.username,
                 }),
+                embeds: [],
+                components: [],
               });
               return;
             }
 
             const canUseAuthor = ArenaInteractionCommand.getBlessesAvailable(authorBlesses);
-            const canUseEnemy = ArenaInteractionCommand.getBlessesAvailable(authorBlesses);
+            const canUseEnemy = ArenaInteractionCommand.getBlessesAvailable(enemyBlesses);
 
             if (canUseAuthor.battle !== 0 || canUseAuthor.vitality !== 0) {
               ctx.makeMessage({
                 content: ctx.prettyResponse('error', 'commands:arena.user-not-configurated', {
                   user: ctx.author.username,
                 }),
+                embeds: [],
+                components: [],
               });
               return;
             }
@@ -578,6 +614,8 @@ export default class ArenaInteractionCommand extends InteractionCommand {
                 content: ctx.prettyResponse('error', 'commands:arena.user-not-configurated', {
                   user: mentioned.username,
                 }),
+                embeds: [],
+                components: [],
               });
               return;
             }
@@ -586,6 +624,8 @@ export default class ArenaInteractionCommand extends InteractionCommand {
               ctx,
               prepareUserForDungeon(author),
               prepareUserForDungeon(enemy),
+              ctx.author,
+              mentioned,
             );
           }
         }

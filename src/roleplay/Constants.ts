@@ -16,7 +16,7 @@ export const ELEMENT_SINERGY_BONUS_IN_PERCENTAGE = 5;
 
 export const USER_BATTLE_LEVEL = 10;
 
-export const ABILITY_BATTLE_LEVEL = 3;
+export const ABILITY_BATTLE_LEVEL = 2;
 
 export const PVE_USER_RESPONSE_TIME_LIMIT = 20_000;
 
