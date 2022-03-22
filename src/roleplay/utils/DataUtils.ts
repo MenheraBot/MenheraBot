@@ -37,6 +37,25 @@ export const getAbilityById = (abilityId: number): IReturnData<AbilitiesFile> =>
 export const getAbilities = (): IReturnData<AbilitiesFile>[] =>
   Object.entries(Abilities).map((c) => ({ id: Number(c[0]), data: c[1] }));
 
+export const getClassAbilities = (classId: number): IReturnData<AbilitiesFile>[] => {
+  const allAbilities = Object.entries(Abilities).filter((a) => {
+    const classString = `${classId}`;
+    const abilityString = a[0];
+
+    if (classString.length === 1 && abilityString.length === 4) return false;
+    if (classString.length === 2 && abilityString.length === 3) return false;
+
+    if (classString.length === 1) return abilityString.charAt(0) === classString;
+
+    if (classString.length === 2)
+      return `${abilityString.charAt(0)}${abilityString.charAt(1)}` === classString;
+
+    return false;
+  });
+
+  return allAbilities.map((c) => ({ id: Number(c[0]), data: c[1] }));
+};
+
 export const getUserAvailableAbilities = (
   userAbilities: UserAbility[],
 ): IReturnData<AbilitiesFile>[] =>

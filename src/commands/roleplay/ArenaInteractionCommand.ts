@@ -5,7 +5,7 @@ import {
   LEVEL_UP_BLESSES,
   USER_BATTLE_LEVEL,
 } from '@roleplay/Constants';
-import { RoleplayUserSchema, UserBattleConfig } from '@roleplay/Types';
+import { RoleplayUserSchema, UserBattleConfig, UserBattleEntity } from '@roleplay/Types';
 import { makeCloseCommandButton, prepareUserForDungeon } from '@roleplay/utils/AdventureUtils';
 import {
   getUserAgility,
@@ -15,6 +15,7 @@ import {
   getUserMaxLife,
   getUserMaxMana,
 } from '@roleplay/utils/Calculations';
+import { getClassAbilities } from '@roleplay/utils/DataUtils';
 import PlayerVsPlayer from '@roleplay/utils/PlayerVsPlayer';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
@@ -84,6 +85,47 @@ export default class ArenaInteractionCommand extends InteractionCommand {
       totalVitalityPointsToUse - (userConfig.maxMana + userConfig.maxLife + userConfig.agility);
 
     return { vitality: userAvailableVitalityPoints, battle: userAvailableBattlePoints };
+  }
+
+  static prepareUserForPvP(
+    user: RoleplayUserSchema,
+    needToLevel: boolean,
+    battleConfig: UserBattleConfig,
+  ): UserBattleEntity {
+    if (!needToLevel) {
+      return {
+        ...user,
+        life: getUserMaxLife(user),
+        mana: getUserMaxMana(user),
+        effects: [],
+      };
+    }
+
+    const baseUserStructure = {
+      class: user.class,
+      race: user.race,
+      level: USER_BATTLE_LEVEL,
+      blesses: battleConfig,
+    };
+
+    const userMaxLife = getUserMaxLife(baseUserStructure);
+    const userMaxMana = getUserMaxMana(baseUserStructure);
+
+    const userAbilities = getClassAbilities(user.class).map((a) => ({
+      level: ABILITY_BATTLE_LEVEL,
+      id: a.id,
+      blesses: 0,
+    }));
+
+    return {
+      ...user,
+      effects: [],
+      abilities: userAbilities,
+      life: userMaxLife,
+      mana: userMaxMana,
+      blesses: battleConfig,
+      level: USER_BATTLE_LEVEL,
+    };
   }
 
   static async configurate(ctx: InteractionCommandContext): Promise<void> {
@@ -568,8 +610,16 @@ export default class ArenaInteractionCommand extends InteractionCommand {
           if (!isLeveledBattle) {
             return ArenaInteractionCommand.pvpLoop(
               ctx,
-              prepareUserForDungeon(author),
-              prepareUserForDungeon(enemy),
+              ArenaInteractionCommand.prepareUserForPvP(
+                author,
+                false,
+                defaultBlessesConfiguration(),
+              ),
+              ArenaInteractionCommand.prepareUserForPvP(
+                author,
+                false,
+                defaultBlessesConfiguration(),
+              ),
               ctx.author,
               mentioned,
             );
@@ -587,7 +637,7 @@ export default class ArenaInteractionCommand extends InteractionCommand {
             if (!authorBlesses || !enemyBlesses) {
               ctx.makeMessage({
                 content: ctx.prettyResponse('error', 'commands:arena.user-not-configurated', {
-                  user: !authorBlesses ? ctx.author.username : mentioned.username,
+                  user: !authorBlesses ? ctx.author.toString() : mentioned.toString(),
                 }),
                 embeds: [],
                 components: [],
@@ -601,7 +651,7 @@ export default class ArenaInteractionCommand extends InteractionCommand {
             if (canUseAuthor.battle !== 0 || canUseAuthor.vitality !== 0) {
               ctx.makeMessage({
                 content: ctx.prettyResponse('error', 'commands:arena.user-not-configurated', {
-                  user: ctx.author.username,
+                  user: ctx.author.toString(),
                 }),
                 embeds: [],
                 components: [],
@@ -612,7 +662,7 @@ export default class ArenaInteractionCommand extends InteractionCommand {
             if (canUseEnemy.battle !== 0 || canUseEnemy.vitality !== 0) {
               ctx.makeMessage({
                 content: ctx.prettyResponse('error', 'commands:arena.user-not-configurated', {
-                  user: mentioned.username,
+                  user: mentioned.toString(),
                 }),
                 embeds: [],
                 components: [],
@@ -622,8 +672,8 @@ export default class ArenaInteractionCommand extends InteractionCommand {
             // TODO: Send config if is a leveled battle
             return ArenaInteractionCommand.pvpLoop(
               ctx,
-              prepareUserForDungeon(author),
-              prepareUserForDungeon(enemy),
+              ArenaInteractionCommand.prepareUserForPvP(author, true, authorBlesses),
+              ArenaInteractionCommand.prepareUserForPvP(enemy, true, enemyBlesses),
               ctx.author,
               mentioned,
             );
