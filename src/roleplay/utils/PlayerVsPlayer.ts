@@ -21,9 +21,9 @@ import {
   getUserIntelligence,
   getUserMaxLife,
 } from './Calculations';
-import { getAbilityById } from './DataUtils';
+import { getAbilityById, getClassById } from './DataUtils';
 
-// TODO: Make get status with debuff too
+// TODO: Make new localizations for PvP
 
 interface PvpUserInfoStructure {
   missedAttacks: number;
@@ -68,9 +68,9 @@ export default class PlayerVsPlayer {
       this[toEffect].effects.forEach((a, i) => {
         switch (a.effectType) {
           case 'heal':
-            this[toEffect].life += Math.min(
-              getUserMaxLife(this.attacker),
-              calculateHeal(this.attacker, a),
+            this[toEffect].life = Math.min(
+              getUserMaxLife(this[toEffect]),
+              this[toEffect].life + calculateHeal(this[toEffect], a),
             );
             break;
           case 'poison':
@@ -91,10 +91,27 @@ export default class PlayerVsPlayer {
       return true;
     }
 
+    const toAttack = this[user];
+    const toDefend = this[invertBattleTurn(user)];
+
+    const attackerDamage = getUserDamage(toAttack);
+    const attackerArmor = getUserArmor(toAttack);
+    const attackerAgility = getUserAgility(toAttack);
+    const attackerIntelligence = getUserIntelligence(toAttack);
+    const attackerPenetration = calculateUserPenetration(toAttack);
+
+    const defenderDamage = getUserDamage(toDefend);
+    const defenderArmor = getUserArmor(toDefend);
+    const defenderAgility = getUserAgility(toDefend);
+
+    const attackerDodge = calculateDodge(attackerAgility, defenderAgility);
+    const attackerAttackSuccess = calculateAttackSuccess(attackerAgility, defenderAgility);
+    const attackerRunaway = calculateRunawaySuccess(attackerAgility, defenderAgility);
+
     const embed = new MessageEmbed()
       .setTitle(
         this.ctx.prettyResponse('sword', 'roleplay:battle.title', {
-          name: `<@${this[invertBattleTurn(user)].id as '1'}>`,
+          name: `<@${toAttack.id as '1'}>`,
         }),
       )
       .setColor(COLORS.Battle)
@@ -108,33 +125,24 @@ export default class PlayerVsPlayer {
         {
           name: this.ctx.locale('roleplay:battle.your-stats'),
           value: this.ctx.locale('roleplay:battle.your-stats-info', {
-            life: this[user].life,
-            mana: this[user].mana,
-            damage: getUserDamage(this[user]),
-            armor: getUserArmor(this[user]),
-            intelligence: getUserIntelligence(this[user]),
-            agility: getUserAgility(this[user]),
-            chanceToConnect: (
-              100 -
-              calculateAttackSuccess(
-                getUserAgility(this[user]),
-                getUserAgility(this[invertBattleTurn(user)]),
-              )
-            ).toFixed(2),
-            chanceToDodge: calculateDodge(
-              getUserAgility(this[user]),
-              getUserAgility(this[invertBattleTurn(user)]),
-            ).toFixed(2),
+            life: toAttack.life,
+            mana: toAttack.mana,
+            damage: attackerDamage,
+            armor: attackerArmor,
+            intelligence: attackerIntelligence,
+            agility: attackerAgility,
+            chanceToConnect: (100 - attackerAttackSuccess).toFixed(2),
+            chanceToDodge: attackerDodge.toFixed(2),
           }),
           inline: true,
         },
         {
           name: this.ctx.locale('roleplay:battle.enemy-stats'),
           value: this.ctx.locale('roleplay:battle.enemy-stats-info', {
-            life: this[user].life,
-            damage: getUserDamage(this[invertBattleTurn(user)]),
-            armor: getUserArmor(this[invertBattleTurn(user)]),
-            agility: getUserAgility(this[invertBattleTurn(user)]),
+            life: toDefend.life,
+            damage: defenderDamage,
+            armor: defenderArmor,
+            agility: defenderAgility,
           }),
           inline: true,
         },
@@ -169,47 +177,35 @@ export default class PlayerVsPlayer {
       {
         name: this.ctx.locale('roleplay:battle.options.hand-attack'),
         value: this.ctx.locale('roleplay:battle.options.attack-info', {
-          damage: getUserDamage(this[user]),
-          chanceToConnect: (
-            100 -
-            calculateAttackSuccess(
-              getUserAgility(this[user]),
-              getUserAgility(this[invertBattleTurn(user)]),
-            )
-          ).toFixed(2),
+          damage: attackerDamage,
+          chanceToConnect: (100 - attackerAttackSuccess).toFixed(2),
         }),
         inline: true,
       },
       {
         name: this.ctx.locale('roleplay:battle.options.runaway'),
         value: this.ctx.locale('roleplay:battle.options.runaway-info', {
-          chance: (
-            100 -
-            calculateRunawaySuccess(
-              getUserAgility(this[user]),
-              getUserAgility(this[invertBattleTurn(user)]),
-            )
-          ).toFixed(2),
+          chance: (100 - attackerRunaway).toFixed(2),
         }),
         inline: true,
       },
     ]);
 
-    this[user].abilities.forEach((ability) => {
+    toAttack.abilities.forEach((ability) => {
       embed.addField(
         this.ctx.locale(`abilities:${ability.id as 100}.name`),
         this.ctx.locale('roleplay:battle.options.ability-info', {
           damage: '`??`',
           cost: getAbilityCost(ability),
           'no-mana':
-            this[user].mana < getAbilityCost(ability)
+            toAttack.mana < getAbilityCost(ability)
               ? this.ctx.locale('roleplay:battle.no-mana')
               : '',
         }),
         true,
       );
 
-      if (this[user].mana >= getAbilityCost(ability)) {
+      if (toAttack.mana >= getAbilityCost(ability)) {
         options.addOptions({
           label: this.ctx.locale(`abilities:${ability.id as 100}.name`),
           value: `ABILITY | ${ability.id}`,
@@ -236,20 +232,15 @@ export default class PlayerVsPlayer {
     switch (resolveSeparatedStrings(selectedOptions.values[0])[0]) {
       case 'HANDATTACK': {
         const damageDealt = calculateEffectiveDamage(
-          getUserDamage(this[user]),
-          calculateUserPenetration(this[user]),
-          getUserArmor(this[invertBattleTurn(user)]),
+          attackerDamage,
+          attackerPenetration,
+          defenderArmor,
         );
-        const didConnect = didUserHit(
-          calculateAttackSuccess(
-            getUserAgility(this[user]),
-            getUserAgility(this[invertBattleTurn(user)]),
-          ),
-        );
+        const didConnect = didUserHit(attackerAttackSuccess);
 
-        if (didConnect) this[invertBattleTurn(user)].life -= damageDealt;
+        if (didConnect) toDefend.life -= damageDealt;
 
-        if (isDead(this[invertBattleTurn(user)])) {
+        if (isDead(toDefend)) {
           this.lastText = this.ctx.locale('roleplay:battle.enemy-death');
           return true;
         }
@@ -260,12 +251,7 @@ export default class PlayerVsPlayer {
         return false;
       }
       case 'RUNAWAY': {
-        const didRunaway = didUserHit(
-          calculateRunawaySuccess(
-            getUserAgility(this[user]),
-            getUserAgility(this[invertBattleTurn(user)]),
-          ),
-        );
+        const didRunaway = didUserHit(attackerRunaway);
 
         if (didRunaway) {
           this.lastText = this.ctx.locale('roleplay:battle.runaway-success');
@@ -282,42 +268,56 @@ export default class PlayerVsPlayer {
         const usedAbility = this[user].abilities.find((a) => a.id === abilityId)!;
         const parsedAbility = getAbilityById(usedAbility.id);
 
-        const didConnect = calculateAttackSuccess(
-          getUserAgility(this[user]),
-          getUserAgility(this[invertBattleTurn(user)]),
-        );
+        const didConnect = didUserHit(attackerAttackSuccess);
         let damageDealt = 0;
 
         parsedAbility.data.effects.forEach((a) => {
           if (a.effectType === 'damage') {
             const abilityDamage = Math.floor(
               a.effectValue +
-                getUserIntelligence(this[user]) * (a.effectValueByIntelligence / 100) +
+                attackerIntelligence * (a.effectValueByIntelligence / 100) +
                 a.effectValuePerLevel * usedAbility.level,
             );
 
             damageDealt = abilityDamage;
 
             if (didConnect)
-              this[invertBattleTurn(user)].life -= calculateEffectiveDamage(
-                abilityDamage,
-                0,
-                getUserArmor(this[invertBattleTurn(user)]),
-              );
+              toDefend.life -= calculateEffectiveDamage(abilityDamage, 0, defenderArmor);
           } else if (a.effectType === 'heal' && a.durationInTurns === -1) {
-            this[user].life += Math.min(
-              getUserMaxLife(this[user]),
-              calculateHeal(this[user], { ...a, level: usedAbility.level }),
+            toAttack.life = Math.min(
+              getUserMaxLife(toAttack),
+              calculateHeal(toAttack, {
+                ...a,
+                level: usedAbility.level,
+                author: {
+                  totalIntelligence: attackerIntelligence,
+                  elementSinergy: getClassById(toAttack.class).data.elementSinergy,
+                },
+              }),
             );
           } else if (a.target === 'self')
-            this[user].effects.push({ ...a, level: usedAbility.level });
+            toAttack.effects.push({
+              ...a,
+              level: usedAbility.level,
+              author: {
+                totalIntelligence: attackerIntelligence,
+                elementSinergy: getClassById(toAttack.class).data.elementSinergy,
+              },
+            });
           else if (a.target === 'enemy')
-            this[invertBattleTurn(user)].effects.push({ ...a, level: usedAbility.level });
+            toDefend.effects.push({
+              ...a,
+              level: usedAbility.level,
+              author: {
+                totalIntelligence: attackerIntelligence,
+                elementSinergy: getClassById(toAttack.class).data.elementSinergy,
+              },
+            });
         });
 
-        this[user].mana -= getAbilityCost(usedAbility);
+        toAttack.mana -= getAbilityCost(usedAbility);
 
-        if (isDead(this[invertBattleTurn(user)])) {
+        if (isDead(toDefend)) {
           this.lastText = this.ctx.locale('roleplay:battle.enemy-death');
           return true;
         }

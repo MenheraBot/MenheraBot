@@ -151,7 +151,7 @@ export default class RoleplayBattle {
             armor: userArmor,
             intelligence: userIntelligence,
             agility: userAgility,
-            chanceToConnect: userAttackSuccess.toFixed(2),
+            chanceToConnect: (100 - userAttackSuccess).toFixed(2),
             chanceToDodge: userDodge.toFixed(2),
           }),
           inline: true,
