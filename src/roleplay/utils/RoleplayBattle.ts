@@ -111,6 +111,20 @@ export default class RoleplayBattle {
       return true;
     }
 
+    const userDamage = getUserDamage(this.user);
+    const userArmor = getUserArmor(this.user);
+    const userAgility = getUserAgility(this.user);
+    const userIntelligence = getUserIntelligence(this.user);
+    const userAttackSuccess = calculateAttackSuccess(userAgility, this.enemy.agility);
+    const userDodge = calculateDodge(userAgility, this.enemy.agility);
+    const userPenetration = calculateUserPenetration(this.user);
+
+    const enemyDamage = getEnemyStatusWithEffects(this.enemy, 'damage', this.user);
+    const enemyArmor = getEnemyStatusWithEffects(this.enemy, 'armor', this.user);
+    const enemyAgility = getEnemyStatusWithEffects(this.enemy, 'agility', this.user);
+
+    const userRunaway = calculateRunawaySuccess(userAgility, enemyAgility);
+
     const embed = new MessageEmbed()
       .setTitle(
         this.ctx.prettyResponse('sword', 'roleplay:battle.title', {
@@ -130,14 +144,12 @@ export default class RoleplayBattle {
           value: this.ctx.locale('roleplay:battle.your-stats-info', {
             life: this.user.life,
             mana: this.user.mana,
-            damage: getUserDamage(this.user),
-            armor: getUserArmor(this.user),
-            intelligence: getUserIntelligence(this.user),
-            agility: getUserAgility(this.user),
-            chanceToConnect: (
-              100 - calculateAttackSuccess(getUserAgility(this.user), this.enemy.agility)
-            ).toFixed(2),
-            chanceToDodge: calculateDodge(getUserAgility(this.user), this.enemy.agility).toFixed(2),
+            damage: userDamage,
+            armor: userArmor,
+            intelligence: userIntelligence,
+            agility: userAgility,
+            chanceToConnect: userAttackSuccess.toFixed(2),
+            chanceToDodge: userDodge.toFixed(2),
           }),
           inline: true,
         },
@@ -145,9 +157,9 @@ export default class RoleplayBattle {
           name: this.ctx.locale('roleplay:battle.enemy-stats'),
           value: this.ctx.locale('roleplay:battle.enemy-stats-info', {
             life: this.enemy.life,
-            damage: getEnemyStatusWithEffects(this.enemy, 'damage', this.user),
-            armor: getEnemyStatusWithEffects(this.enemy, 'armor', this.user),
-            agility: getEnemyStatusWithEffects(this.enemy, 'agility', this.user),
+            damage: enemyDamage,
+            armor: enemyArmor,
+            agility: enemyAgility,
           }),
           inline: true,
         },
@@ -182,19 +194,15 @@ export default class RoleplayBattle {
       {
         name: this.ctx.locale('roleplay:battle.options.hand-attack'),
         value: this.ctx.locale('roleplay:battle.options.attack-info', {
-          damage: getUserDamage(this.user),
-          chanceToConnect: (
-            100 - calculateAttackSuccess(getUserAgility(this.user), this.enemy.agility)
-          ).toFixed(2),
+          damage: userDamage,
+          chanceToConnect: (100 - userAttackSuccess).toFixed(2),
         }),
         inline: true,
       },
       {
         name: this.ctx.locale('roleplay:battle.options.runaway'),
         value: this.ctx.locale('roleplay:battle.options.runaway-info', {
-          chance: (
-            100 - calculateRunawaySuccess(getUserAgility(this.user), this.enemy.agility)
-          ).toFixed(2),
+          chance: (100 - userRunaway).toFixed(2),
         }),
         inline: true,
       },
@@ -240,14 +248,8 @@ export default class RoleplayBattle {
 
     switch (resolveSeparatedStrings(selectedOptions.values[0])[0]) {
       case 'HANDATTACK': {
-        const damageDealt = calculateEffectiveDamage(
-          getUserDamage(this.user),
-          calculateUserPenetration(this.user),
-          getEnemyStatusWithEffects(this.enemy, 'armor', this.user),
-        );
-        const didConnect = didUserHit(
-          calculateAttackSuccess(getUserAgility(this.user), this.enemy.agility),
-        );
+        const damageDealt = calculateEffectiveDamage(userDamage, userPenetration, enemyArmor);
+        const didConnect = didUserHit(userAttackSuccess);
 
         if (didConnect) this.enemy.life -= damageDealt;
 
@@ -262,9 +264,7 @@ export default class RoleplayBattle {
         return false;
       }
       case 'RUNAWAY': {
-        const didRunaway = didUserHit(
-          calculateRunawaySuccess(getUserAgility(this.user), this.enemy.agility),
-        );
+        const didRunaway = didUserHit(userRunaway);
 
         if (didRunaway) {
           this.lastText = this.ctx.locale('roleplay:battle.runaway-success');
@@ -281,25 +281,21 @@ export default class RoleplayBattle {
         const usedAbility = this.user.abilities.find((a) => a.id === abilityId)!;
         const parsedAbility = getAbilityById(usedAbility.id);
 
-        const didConnect = calculateAttackSuccess(getUserAgility(this.user), this.enemy.agility);
+        const didConnect = didUserHit(userAttackSuccess);
         let damageDealt = 0;
 
         parsedAbility.data.effects.forEach((a) => {
           if (a.effectType === 'damage') {
             const abilityDamage = Math.floor(
               a.effectValue +
-                getUserIntelligence(this.user) * (a.effectValueByIntelligence / 100) +
+                userIntelligence * (a.effectValueByIntelligence / 100) +
                 a.effectValuePerLevel * usedAbility.level,
             );
 
             damageDealt = abilityDamage;
 
             if (didConnect)
-              this.enemy.life -= calculateEffectiveDamage(
-                abilityDamage,
-                0,
-                getEnemyStatusWithEffects(this.enemy, 'armor', this.user),
-              );
+              this.enemy.life -= calculateEffectiveDamage(abilityDamage, 0, enemyArmor);
           } else if (a.effectType === 'heal' && a.durationInTurns === -1) {
             this.user.life += Math.min(
               getUserMaxLife(this.user),
