@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Added
 
 - Status de Roleta `/status roleta`
+- **Sistema de PvP:** Usuários podem batalhar em uma batalha justa, ou desnivelada, depende do invocador do comando. NOVOS COMANDOS:
+  - `/arena configurar` - Configura suas bênçãos para uma batalha justa. (Você pode resetar os pontos a qualquer momento)
+  - `/arena batalhar` - Chama um jogador para 1x1. Nada vale aqui, os valores de vida e mana serão todos resetados, e ninguém perderá vida fora da Arena.
 
 ### Changed
 

@@ -41,12 +41,12 @@ export default class ArenaInteractionCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'arena',
-      description: '【ＲＰＧ】🏟️ | Entre na Arena PVP de Boleham',
+      description: '【ＲＰＧ】🏟️ | Entre na Arena PvP de Boleham',
       category: 'roleplay',
       options: [
         {
           name: 'batalhar',
-          description: '【ＲＰＧ】🏟️ | Entre na Arena PVP de Boleham',
+          description: '【ＲＰＧ】🏟️ | Entre na Arena PvP de Boleham',
           type: 'SUB_COMMAND',
           options: [
             { name: 'user', description: 'Inimigo de Batalha', type: 'USER', required: true },
@@ -450,44 +450,6 @@ export default class ArenaInteractionCommand extends InteractionCommand {
       return;
     }
 
-    const authorBlesses = await ctx.client.repositories.roleplayRepository.getConfigurationBattle(
-      ctx.author.id,
-    );
-
-    const enemyBlesses = await ctx.client.repositories.roleplayRepository.getConfigurationBattle(
-      mentioned.id,
-    );
-
-    if (!authorBlesses || !enemyBlesses) {
-      ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'commands:arena.user-not-configurated', {
-          user: !authorBlesses ? ctx.author.username : mentioned.username,
-        }),
-      });
-      return;
-    }
-
-    const canUseAuthor = ArenaInteractionCommand.getBlessesAvailable(authorBlesses);
-    const canUseEnemy = ArenaInteractionCommand.getBlessesAvailable(authorBlesses);
-
-    if (canUseAuthor.battle !== 0 || canUseAuthor.vitality !== 0) {
-      ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'commands:arena.user-not-configurated', {
-          user: ctx.author.username,
-        }),
-      });
-      return;
-    }
-
-    if (canUseEnemy.battle !== 0 || canUseEnemy.vitality !== 0) {
-      ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'commands:arena.user-not-configurated', {
-          user: mentioned.username,
-        }),
-      });
-      return;
-    }
-
     const embed = new MessageEmbed()
       .setThumbnail(mentioned.displayAvatarURL({ dynamic: true }))
       .setTitle(ctx.locale('commands:arena.title', { user: mentioned.username }))
@@ -572,8 +534,54 @@ export default class ArenaInteractionCommand extends InteractionCommand {
             break;
           }
 
+          collector.stop();
           if (!isLeveledBattle) {
-            collector.stop();
+            return ArenaInteractionCommand.pvpLoop(
+              ctx,
+              prepareUserForDungeon(author),
+              prepareUserForDungeon(enemy),
+            );
+          }
+
+          if (isLeveledBattle) {
+            const authorBlesses =
+              await ctx.client.repositories.roleplayRepository.getConfigurationBattle(
+                ctx.author.id,
+              );
+
+            const enemyBlesses =
+              await ctx.client.repositories.roleplayRepository.getConfigurationBattle(mentioned.id);
+
+            if (!authorBlesses || !enemyBlesses) {
+              ctx.makeMessage({
+                content: ctx.prettyResponse('error', 'commands:arena.user-not-configurated', {
+                  user: !authorBlesses ? ctx.author.username : mentioned.username,
+                }),
+              });
+              return;
+            }
+
+            const canUseAuthor = ArenaInteractionCommand.getBlessesAvailable(authorBlesses);
+            const canUseEnemy = ArenaInteractionCommand.getBlessesAvailable(authorBlesses);
+
+            if (canUseAuthor.battle !== 0 || canUseAuthor.vitality !== 0) {
+              ctx.makeMessage({
+                content: ctx.prettyResponse('error', 'commands:arena.user-not-configurated', {
+                  user: ctx.author.username,
+                }),
+              });
+              return;
+            }
+
+            if (canUseEnemy.battle !== 0 || canUseEnemy.vitality !== 0) {
+              ctx.makeMessage({
+                content: ctx.prettyResponse('error', 'commands:arena.user-not-configurated', {
+                  user: mentioned.username,
+                }),
+              });
+              return;
+            }
+            // TODO: Send config if is a leveled battle
             return ArenaInteractionCommand.pvpLoop(
               ctx,
               prepareUserForDungeon(author),

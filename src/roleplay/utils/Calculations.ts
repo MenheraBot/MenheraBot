@@ -158,12 +158,12 @@ export const getUserIntelligence = (
     userClass.data.baseIntelligence +
     userClass.data.attributesPerLevel.baseIntelligence * user.level;
 
-  const raceIntellience = userRace.data.facilities.reduce(
+  const raceIntelligence = userRace.data.facilities.reduce(
     (p, c) => (c.facility === 'baseIntelligence' ? p + c.boostPerLevel * user.level : 0),
     0,
   );
 
-  const baseIntelligence = classIntelligence + raceIntellience + userBlesses;
+  const baseIntelligence = classIntelligence + raceIntelligence + userBlesses;
 
   const userEffects = resolveEffects(user.effects, baseIntelligence, 'intelligence');
 
