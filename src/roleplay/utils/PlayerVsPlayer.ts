@@ -24,7 +24,6 @@ import {
 import { getAbilityById } from './DataUtils';
 
 // TODO: Make get status with debuff too
-// TODO: Create constants here and in {RoleplayBattle} to not call status functions every time PERF!!!
 
 interface PvpUserInfoStructure {
   missedAttacks: number;

@@ -113,8 +113,6 @@ export interface AbilityEffect {
   effectValuePerLevel: number;
 }
 
-export type ExistingEffectValueField = keyof AbilityEffect;
-
 export interface AbilitiesFile {
   DevDesc: string;
   parentId: number;
@@ -143,6 +141,11 @@ export type EnemiesFile = {
   loots: EnemyDrops[];
 } & EnemyBoostPerLevel;
 
+export interface EffectAuthor {
+  totalIntelligence: number;
+  elementSinergy: Elements;
+}
+
 export interface ReadyToBattleEnemy {
   id: number;
   life: number;
@@ -151,7 +154,7 @@ export interface ReadyToBattleEnemy {
   armor: number;
   experience: number;
   level: number;
-  effects: Array<AbilityEffect & { level: number }>;
+  effects: Array<AbilityEffect & { level: number; author: EffectAuthor }>;
   loots: EnemyDrops[];
 }
 
@@ -206,7 +209,7 @@ export interface ConsumableItem {
 export type ItemsFile = BackPackItem | WeaponItem | DropItem | ConsumableItem | ProtectionItem;
 
 export type UserBattleEntity = RoleplayUserSchema & {
-  effects: Array<AbilityEffect & { level: number }>;
+  effects: Array<AbilityEffect & { level: number; author: EffectAuthor }>;
 };
 
 export type UserBattleConfig = Blesses;

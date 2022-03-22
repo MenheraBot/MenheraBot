@@ -24,7 +24,7 @@ import {
   getUserIntelligence,
   getUserMaxLife,
 } from './Calculations';
-import { getAbilityById } from './DataUtils';
+import { getAbilityById, getClassById } from './DataUtils';
 
 export default class RoleplayBattle {
   public missedAttacks = 0;
@@ -66,7 +66,7 @@ export default class RoleplayBattle {
     this.enemy.effects.forEach((a, i) => {
       switch (a.effectType) {
         case 'poison':
-          this.enemy.life -= calculatePoison(this.user, a, this.enemy.life);
+          this.enemy.life -= calculatePoison(a, this.enemy.life);
           break;
       }
       a.durationInTurns -= 1;
@@ -299,12 +299,33 @@ export default class RoleplayBattle {
           } else if (a.effectType === 'heal' && a.durationInTurns === -1) {
             this.user.life += Math.min(
               getUserMaxLife(this.user),
-              calculateHeal(this.user, { ...a, level: usedAbility.level }),
+              calculateHeal(this.user, {
+                ...a,
+                level: usedAbility.level,
+                author: {
+                  totalIntelligence: userIntelligence,
+                  elementSinergy: getClassById(this.user.class).data.elementSinergy,
+                },
+              }),
             );
           } else if (a.target === 'self')
-            this.user.effects.push({ ...a, level: usedAbility.level });
+            this.user.effects.push({
+              ...a,
+              level: usedAbility.level,
+              author: {
+                totalIntelligence: userIntelligence,
+                elementSinergy: getClassById(this.user.class).data.elementSinergy,
+              },
+            });
           else if (a.target === 'enemy')
-            this.enemy.effects.push({ ...a, level: usedAbility.level });
+            this.enemy.effects.push({
+              ...a,
+              level: usedAbility.level,
+              author: {
+                totalIntelligence: userIntelligence,
+                elementSinergy: getClassById(this.user.class).data.elementSinergy,
+              },
+            });
         });
 
         this.user.mana -= getAbilityCost(usedAbility);

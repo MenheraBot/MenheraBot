@@ -4,7 +4,6 @@ import {
   ELEMENT_SINERGY_BONUS_IN_PERCENTAGE,
 } from '@roleplay/Constants';
 import {
-  AbilityEffect,
   ProtectionItem,
   ReadyToBattleEnemy,
   UserAbility,
@@ -75,6 +74,28 @@ export const getUserMaxMana = (
   return Math.floor(classMana + raceMana + userBlesses);
 };
 
+const resolveEffects = (
+  effects: UserBattleEntity['effects'],
+  baseValue: number,
+  wannedStatus: 'intelligence' | 'damage' | 'agility' | 'armor',
+): number =>
+  effects.reduce((p, c) => {
+    if (!c.effectType.startsWith(wannedStatus)) return p;
+
+    let effectValue =
+      c.effectValue +
+      c.author.totalIntelligence * (c.effectValueByIntelligence / 100) +
+      c.effectValuePerLevel * c.level;
+
+    if (c.element === c.author.elementSinergy)
+      effectValue += effectValue * (ELEMENT_SINERGY_BONUS_IN_PERCENTAGE / 100);
+
+    if (c.effectValueModifier === 'percentage') effectValue = baseValue * (effectValue / 100);
+
+    if (c.effectType.endsWith('debuff')) return p - effectValue;
+    return p + effectValue;
+  }, 0);
+
 export const getUserDamage = (
   user: Pick<UserBattleEntity, 'class' | 'race' | 'blesses' | 'level' | 'effects' | 'weapon'>,
 ): number => {
@@ -95,23 +116,7 @@ export const getUserDamage = (
 
   const baseDamage = classDamage + raceDamage + userBlesses + weaponDamage;
 
-  const userEffects = user.effects.reduce((p, c) => {
-    if (c.target !== 'self') return p;
-    if (c.effectType !== 'damage_buff' && c.effectType !== 'damage_debuff') return p;
-
-    let effectValue =
-      c.effectValue +
-      getUserIntelligence(user) * (c.effectValueByIntelligence / 100) +
-      c.effectValuePerLevel * c.level;
-
-    if (c.element === userClass.data.elementSinergy)
-      effectValue += effectValue * (ELEMENT_SINERGY_BONUS_IN_PERCENTAGE / 100);
-
-    if (c.effectValueModifier === 'percentage') effectValue = baseDamage * (effectValue / 100);
-
-    if (c.effectType.endsWith('debuff')) return p - effectValue;
-    return p + effectValue;
-  }, 0);
+  const userEffects = resolveEffects(user.effects, baseDamage, 'damage');
 
   return Math.floor(baseDamage + userEffects);
 };
@@ -137,23 +142,7 @@ export const getUserArmor = (
 
   const baseArmor = classArmor + raceArmor + userBlesses + protectionArmor;
 
-  const userEffects = user.effects.reduce((p, c) => {
-    if (c.target !== 'self') return p;
-    if (c.effectType !== 'armor_buff' && c.effectType !== 'armor_debuff') return p;
-
-    let effectValue =
-      c.effectValue +
-      getUserIntelligence(user) * (c.effectValueByIntelligence / 100) +
-      c.effectValuePerLevel * c.level;
-
-    if (c.element === userClass.data.elementSinergy)
-      effectValue += effectValue * (ELEMENT_SINERGY_BONUS_IN_PERCENTAGE / 100);
-
-    if (c.effectValueModifier === 'percentage') effectValue = baseArmor * (effectValue / 100);
-
-    if (c.effectType.endsWith('debuff')) return p - effectValue;
-    return p + effectValue;
-  }, 0);
+  const userEffects = resolveEffects(user.effects, baseArmor, 'armor');
 
   return Math.floor(baseArmor + userEffects);
 };
@@ -176,24 +165,7 @@ export const getUserIntelligence = (
 
   const baseIntelligence = classIntelligence + raceIntellience + userBlesses;
 
-  const userEffects = user.effects.reduce((p, c) => {
-    if (c.target !== 'self') return p;
-    if (c.effectType !== 'intelligence_buff' && c.effectType !== 'intelligence_debuff') return p;
-
-    let effectValue =
-      c.effectValue +
-      baseIntelligence * (c.effectValueByIntelligence / 100) +
-      c.effectValuePerLevel * c.level;
-
-    if (c.element === userClass.data.elementSinergy)
-      effectValue += effectValue * (ELEMENT_SINERGY_BONUS_IN_PERCENTAGE / 100);
-
-    if (c.effectValueModifier === 'percentage')
-      effectValue = baseIntelligence * (effectValue / 100);
-
-    if (c.effectType.endsWith('debuff')) return p - effectValue;
-    return p + effectValue;
-  }, 0);
+  const userEffects = resolveEffects(user.effects, baseIntelligence, 'intelligence');
 
   return Math.floor(baseIntelligence + userEffects);
 };
@@ -214,38 +186,21 @@ export const getUserAgility = (
 
   const baseAgility = classAgility + raceAgility + userBlesses;
 
-  const userEffects = user.effects.reduce((p, c) => {
-    if (c.target !== 'self') return p;
-    if (c.effectType !== 'agility_buff' && c.effectType !== 'agility_debuff') return p;
-
-    let effectValue =
-      c.effectValue +
-      getUserIntelligence(user) * (c.effectValueByIntelligence / 100) +
-      c.effectValuePerLevel * c.level;
-
-    if (c.element === userClass.data.elementSinergy)
-      effectValue += effectValue * (ELEMENT_SINERGY_BONUS_IN_PERCENTAGE / 100);
-
-    if (c.effectValueModifier === 'percentage') effectValue = baseAgility * (effectValue / 100);
-
-    if (c.effectType.endsWith('debuff')) return p - effectValue;
-    return p + effectValue;
-  }, 0);
+  const userEffects = resolveEffects(user.effects, baseAgility, 'agility');
 
   return Math.floor(baseAgility + userEffects);
 };
 
 export const calculateHeal = (
   user: UserBattleEntity,
-  healEffect: AbilityEffect & { level: number },
+  healEffect: UserBattleEntity['effects'][number],
 ): number => {
-  const userClass = getClassById(user.class);
   let effectValue =
     healEffect.effectValue +
-    getUserIntelligence(user) * (healEffect.effectValueByIntelligence / 100) +
+    healEffect.author.totalIntelligence * (healEffect.effectValueByIntelligence / 100) +
     healEffect.effectValuePerLevel * healEffect.level;
 
-  if (healEffect.element === userClass.data.elementSinergy)
+  if (healEffect.element === healEffect.author.elementSinergy)
     effectValue += effectValue * (ELEMENT_SINERGY_BONUS_IN_PERCENTAGE / 100);
 
   if (healEffect.effectValueModifier === 'percentage')
@@ -255,20 +210,18 @@ export const calculateHeal = (
 };
 
 export const calculatePoison = (
-  user: UserBattleEntity,
-  posionEffect: AbilityEffect & { level: number },
+  poisonEffect: UserBattleEntity['effects'][number],
   enemyLife: number,
 ): number => {
-  const userClass = getClassById(user.class);
   let effectValue =
-    posionEffect.effectValue +
-    getUserIntelligence(user) * (posionEffect.effectValueByIntelligence / 100) +
-    posionEffect.effectValuePerLevel * posionEffect.level;
+    poisonEffect.effectValue +
+    poisonEffect.author.totalIntelligence * (poisonEffect.effectValueByIntelligence / 100) +
+    poisonEffect.effectValuePerLevel * poisonEffect.level;
 
-  if (posionEffect.element === userClass.data.elementSinergy)
+  if (poisonEffect.element === poisonEffect.author.elementSinergy)
     effectValue += effectValue * (ELEMENT_SINERGY_BONUS_IN_PERCENTAGE / 100);
 
-  if (posionEffect.effectValueModifier === 'percentage')
+  if (poisonEffect.effectValueModifier === 'percentage')
     effectValue = enemyLife * (effectValue / 100);
 
   return Math.floor(effectValue);
