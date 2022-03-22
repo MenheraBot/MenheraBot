@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - Agora o botão de fechar comando possui um texto para ser mais claro
 - Dificuldade de subir de nível foi aumentado para `1.62`
 - Tempo de resposta da Dungeon foi aumentado para `20s`
+- Chance de critico de inimigos foi alterada. **1x**: `70%` -> `75%`. **1.3x:** `16%` -> `11%`
 
 ### Fixed
 

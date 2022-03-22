@@ -1,5 +1,6 @@
 import {
   BackPackItem,
+  BattleUserTurn,
   EnemyDrops,
   HolyBlessings,
   LeveledItem,
@@ -199,3 +200,6 @@ export const makeLevelUp = (
 
   return { level: user.level, holyBlessings: user.holyBlessings };
 };
+
+export const invertBattleTurn = (lastTurn: BattleUserTurn): BattleUserTurn =>
+  lastTurn === 'attacker' ? 'defender' : 'attacker';

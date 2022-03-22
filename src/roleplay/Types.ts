@@ -213,3 +213,5 @@ export type UserBattleEntity = RoleplayUserSchema & {
 };
 
 export type UserBattleConfig = Blesses;
+
+export type BattleUserTurn = 'attacker' | 'defender';

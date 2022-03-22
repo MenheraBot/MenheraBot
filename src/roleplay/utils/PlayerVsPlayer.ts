@@ -1,10 +1,10 @@
 import { PVP_USER_RESPONSE_TIME_LIMIT } from '@roleplay/Constants';
-import { UserBattleEntity } from '@roleplay/Types';
+import { BattleUserTurn, UserBattleEntity } from '@roleplay/Types';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { COLORS } from '@structures/Constants';
 import Util, { actionRow, makeCustomId, resolveSeparatedStrings } from '@utils/Util';
 import { MessageEmbed, MessageSelectMenu, SelectMenuInteraction } from 'discord.js-light';
-import { isDead } from './AdventureUtils';
+import { invertBattleTurn, isDead } from './AdventureUtils';
 import {
   calculateAttackSuccess,
   calculateDodge,
@@ -30,8 +30,6 @@ interface PvpUserInfoStructure {
   didRunaway: boolean;
 }
 
-type UserTurn = 'attacker' | 'defender';
-
 export default class PlayerVsPlayer {
   public attackerInfo: PvpUserInfoStructure = {
     didRunaway: false,
@@ -50,11 +48,6 @@ export default class PlayerVsPlayer {
     public lastText: string,
   ) {}
 
-  static invertTurn(lastTurn: UserTurn): UserTurn {
-    if (lastTurn === 'attacker') return 'defender';
-    return 'attacker';
-  }
-
   public async battleLoop(): Promise<PlayerVsPlayer> {
     const whoWillStart =
       getUserAgility(this.defender) > getUserAgility(this.attacker) ? 'defender' : 'attacker';
@@ -62,7 +55,7 @@ export default class PlayerVsPlayer {
     const needStop = await this.userAttack(whoWillStart);
 
     if (!needStop) {
-      const enemyStop = await this.userAttack(PlayerVsPlayer.invertTurn(whoWillStart));
+      const enemyStop = await this.userAttack(invertBattleTurn(whoWillStart));
       this.clearEffects();
       if (!enemyStop) return this.battleLoop();
     }
@@ -71,41 +64,27 @@ export default class PlayerVsPlayer {
   }
 
   private clearEffects(): void {
-    this.attacker.effects.forEach((a, i) => {
-      switch (a.effectType) {
-        case 'heal':
-          this.attacker.life += Math.min(
-            getUserMaxLife(this.attacker),
-            calculateHeal(this.attacker, a),
-          );
-          break;
-        case 'poison':
-          this.attacker.life -= calculatePoison(this.defender, a, this.attacker.life);
-          break;
-      }
+    (['attacker', 'defender'] as const).forEach((toEffect) => {
+      this[toEffect].effects.forEach((a, i) => {
+        switch (a.effectType) {
+          case 'heal':
+            this[toEffect].life += Math.min(
+              getUserMaxLife(this.attacker),
+              calculateHeal(this.attacker, a),
+            );
+            break;
+          case 'poison':
+            this[toEffect].life -= calculatePoison(a, this[toEffect].life);
+            break;
+        }
 
-      a.durationInTurns -= 1;
-      if (a.durationInTurns <= 0) this.attacker.effects.splice(i, 1);
-    });
-
-    this.defender.effects.forEach((a, i) => {
-      switch (a.effectType) {
-        case 'heal':
-          this.defender.life += Math.min(
-            getUserMaxLife(this.defender),
-            calculateHeal(this.defender, a),
-          );
-          break;
-        case 'poison':
-          this.defender.life -= calculatePoison(this.defender, a, this.defender.life);
-          break;
-      }
-      a.durationInTurns -= 1;
-      if (a.durationInTurns <= 0) this.defender.effects.splice(i, 1);
+        a.durationInTurns -= 1;
+        if (a.durationInTurns <= 0) this.attacker.effects.splice(i, 1);
+      });
     });
   }
 
-  private async userAttack(user: UserTurn): Promise<boolean> {
+  private async userAttack(user: BattleUserTurn): Promise<boolean> {
     if (this[`${user}Info`].missedAttacks >= 4) {
       this[user].life = 0;
       this.lastText = this.ctx.locale('roleplay:battle.user-death');
@@ -115,7 +94,7 @@ export default class PlayerVsPlayer {
     const embed = new MessageEmbed()
       .setTitle(
         this.ctx.prettyResponse('sword', 'roleplay:battle.title', {
-          name: `<@${this[PlayerVsPlayer.invertTurn(user)].id as '1'}>`,
+          name: `<@${this[invertBattleTurn(user)].id as '1'}>`,
         }),
       )
       .setColor(COLORS.Battle)
@@ -139,12 +118,12 @@ export default class PlayerVsPlayer {
               100 -
               calculateAttackSuccess(
                 getUserAgility(this[user]),
-                getUserAgility(this[PlayerVsPlayer.invertTurn(user)]),
+                getUserAgility(this[invertBattleTurn(user)]),
               )
             ).toFixed(2),
             chanceToDodge: calculateDodge(
               getUserAgility(this[user]),
-              getUserAgility(this[PlayerVsPlayer.invertTurn(user)]),
+              getUserAgility(this[invertBattleTurn(user)]),
             ).toFixed(2),
           }),
           inline: true,
@@ -153,9 +132,9 @@ export default class PlayerVsPlayer {
           name: this.ctx.locale('roleplay:battle.enemy-stats'),
           value: this.ctx.locale('roleplay:battle.enemy-stats-info', {
             life: this[user].life,
-            damage: getUserDamage(this[PlayerVsPlayer.invertTurn(user)]),
-            armor: getUserArmor(this[PlayerVsPlayer.invertTurn(user)]),
-            agility: getUserAgility(this[PlayerVsPlayer.invertTurn(user)]),
+            damage: getUserDamage(this[invertBattleTurn(user)]),
+            armor: getUserArmor(this[invertBattleTurn(user)]),
+            agility: getUserAgility(this[invertBattleTurn(user)]),
           }),
           inline: true,
         },
@@ -195,7 +174,7 @@ export default class PlayerVsPlayer {
             100 -
             calculateAttackSuccess(
               getUserAgility(this[user]),
-              getUserAgility(this[PlayerVsPlayer.invertTurn(user)]),
+              getUserAgility(this[invertBattleTurn(user)]),
             )
           ).toFixed(2),
         }),
@@ -208,7 +187,7 @@ export default class PlayerVsPlayer {
             100 -
             calculateRunawaySuccess(
               getUserAgility(this[user]),
-              getUserAgility(this[PlayerVsPlayer.invertTurn(user)]),
+              getUserAgility(this[invertBattleTurn(user)]),
             )
           ).toFixed(2),
         }),
@@ -259,18 +238,18 @@ export default class PlayerVsPlayer {
         const damageDealt = calculateEffectiveDamage(
           getUserDamage(this[user]),
           calculateUserPenetration(this[user]),
-          getUserArmor(this[PlayerVsPlayer.invertTurn(user)]),
+          getUserArmor(this[invertBattleTurn(user)]),
         );
         const didConnect = didUserHit(
           calculateAttackSuccess(
             getUserAgility(this[user]),
-            getUserAgility(this[PlayerVsPlayer.invertTurn(user)]),
+            getUserAgility(this[invertBattleTurn(user)]),
           ),
         );
 
-        if (didConnect) this[PlayerVsPlayer.invertTurn(user)].life -= damageDealt;
+        if (didConnect) this[invertBattleTurn(user)].life -= damageDealt;
 
-        if (isDead(this[PlayerVsPlayer.invertTurn(user)])) {
+        if (isDead(this[invertBattleTurn(user)])) {
           this.lastText = this.ctx.locale('roleplay:battle.enemy-death');
           return true;
         }
@@ -284,7 +263,7 @@ export default class PlayerVsPlayer {
         const didRunaway = didUserHit(
           calculateRunawaySuccess(
             getUserAgility(this[user]),
-            getUserAgility(this[PlayerVsPlayer.invertTurn(user)]),
+            getUserAgility(this[invertBattleTurn(user)]),
           ),
         );
 
@@ -305,7 +284,7 @@ export default class PlayerVsPlayer {
 
         const didConnect = calculateAttackSuccess(
           getUserAgility(this[user]),
-          getUserAgility(this[PlayerVsPlayer.invertTurn(user)]),
+          getUserAgility(this[invertBattleTurn(user)]),
         );
         let damageDealt = 0;
 
@@ -320,10 +299,10 @@ export default class PlayerVsPlayer {
             damageDealt = abilityDamage;
 
             if (didConnect)
-              this[PlayerVsPlayer.invertTurn(user)].life -= calculateEffectiveDamage(
+              this[invertBattleTurn(user)].life -= calculateEffectiveDamage(
                 abilityDamage,
                 0,
-                getUserArmor(this[PlayerVsPlayer.invertTurn(user)]),
+                getUserArmor(this[invertBattleTurn(user)]),
               );
           } else if (a.effectType === 'heal' && a.durationInTurns === -1) {
             this[user].life += Math.min(
@@ -333,12 +312,12 @@ export default class PlayerVsPlayer {
           } else if (a.target === 'self')
             this[user].effects.push({ ...a, level: usedAbility.level });
           else if (a.target === 'enemy')
-            this[PlayerVsPlayer.invertTurn(user)].effects.push({ ...a, level: usedAbility.level });
+            this[invertBattleTurn(user)].effects.push({ ...a, level: usedAbility.level });
         });
 
         this[user].mana -= getAbilityCost(usedAbility);
 
-        if (isDead(this[PlayerVsPlayer.invertTurn(user)])) {
+        if (isDead(this[invertBattleTurn(user)])) {
           this.lastText = this.ctx.locale('roleplay:battle.enemy-death');
           return true;
         }

@@ -135,8 +135,8 @@ export const LEVEL_UP_BLESSES: { [level: number]: HolyBlessings } = {
   },
 };
 export const ENEMY_ATTACK_MULTIPLIER_CHANCE = [
-  { amount: 1, probability: 70 },
-  { amount: 1.3, probability: 16 },
+  { amount: 1, probability: 75 },
+  { amount: 1.3, probability: 11 },
   { amount: 1.6, probability: 8 },
   { amount: 1.8, probability: 5 },
   { amount: 2, probability: 1 },
