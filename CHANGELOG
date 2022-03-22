@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - O valor de lucro da roleta foi ajustado para todas apostas que duplicava o valor real.
 - Erros do RPG: Muitos erros aconteciam como 'Cannot read [0] of undefined'. Isso foi resolvido com um novo sistema de interações que, eu creio, que vão arrumar o problema, que era causado por lags entre a Menhera e o Discord
 - Habilidades ignoravam a chance de acerto, fazendo com que sempre acertassem, mesmo que o usuário a errasse
+- Habiliades de cura não ultrapassam mais o limite de vida
 
 ### Removed
 

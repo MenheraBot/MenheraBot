@@ -55,7 +55,10 @@ export default class RoleplayBattle {
     this.user.effects.forEach((a, i) => {
       switch (a.effectType) {
         case 'heal':
-          this.user.life += Math.min(getUserMaxLife(this.user), calculateHeal(this.user, a));
+          this.user.life = Math.min(
+            getUserMaxLife(this.user),
+            this.user.life + calculateHeal(this.user, a),
+          );
           break;
       }
 
@@ -297,16 +300,17 @@ export default class RoleplayBattle {
             if (didConnect)
               this.enemy.life -= calculateEffectiveDamage(abilityDamage, 0, enemyArmor);
           } else if (a.effectType === 'heal' && a.durationInTurns === -1) {
-            this.user.life += Math.min(
+            this.user.life = Math.min(
               getUserMaxLife(this.user),
-              calculateHeal(this.user, {
-                ...a,
-                level: usedAbility.level,
-                author: {
-                  totalIntelligence: userIntelligence,
-                  elementSinergy: getClassById(this.user.class).data.elementSinergy,
-                },
-              }),
+              this.user.life +
+                calculateHeal(this.user, {
+                  ...a,
+                  level: usedAbility.level,
+                  author: {
+                    totalIntelligence: userIntelligence,
+                    elementSinergy: getClassById(this.user.class).data.elementSinergy,
+                  },
+                }),
             );
           } else if (a.target === 'self')
             this.user.effects.push({
