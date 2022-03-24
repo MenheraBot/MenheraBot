@@ -2,7 +2,13 @@ import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import HttpRequests from '@utils/HTTPrequests';
 import moment from 'moment';
-import { MessageEmbed, Client, MessageButton, EmbedFieldData } from 'discord.js-light';
+import {
+  MessageEmbed,
+  Client,
+  MessageButton,
+  EmbedFieldData,
+  ShardClientUtil,
+} from 'discord.js-light';
 import { COLORS, emojis } from '@structures/Constants';
 import Util, { actionRow, disableComponents, getThemeById } from '@utils/Util';
 import { Console } from 'node:console';
@@ -320,7 +326,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
     const results = await ctx.client.cluster
       .broadcastEval((c: Client<true>) => {
         const guilds = c.guilds.cache.size;
-        const memoryUsed = process.memoryUsage().heapUsed;
+        const memoryUsed = process.memoryUsage().rss;
 
         return { guilds, memoryUsed };
       })
@@ -388,7 +394,12 @@ export default class StatsInteractionCommand extends InteractionCommand {
             Date.now() - ctx.interaction.createdTimestamp
           }ms**\n📡 | ${ctx.locale('commands:ping.latency')} **${Math.round(
             ctx.client.ws.ping,
-          )}ms**\n🖲️ | Shard: **${ctx.client.cluster.id}** / **${ctx.client.cluster.count - 1}**`,
+          )}ms**\n🗄️ | Cluster: **${ctx.client.cluster.id}** / **${
+            ctx.client.cluster.count - 1
+          }**\n🖲️ | Shard: **${ShardClientUtil.shardIdForGuildId(
+            ctx.interaction.guildId ?? '0',
+            ctx.client.options.shardCount ?? 0,
+          )}** / **${ctx.client.options.shardCount}**`,
           inline: false,
         },
       ]);
