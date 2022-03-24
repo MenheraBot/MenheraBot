@@ -1,10 +1,10 @@
-import { PVP_USER_RESPONSE_TIME_LIMIT } from '@roleplay/Constants';
-import { BattleUserTurn, UserBattleEntity } from '@roleplay/Types';
+import { ENEMY_ATTACK_MULTIPLIER_CHANCE, PVE_USER_RESPONSE_TIME_LIMIT } from '@roleplay/Constants';
+import { ReadyToBattleEnemy, UserBattleEntity } from '@roleplay/Types';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { COLORS } from '@structures/Constants';
+import { calculateProbability } from '@utils/HuntUtils';
 import Util, { actionRow, makeCustomId, resolveSeparatedStrings } from '@utils/Util';
-import { MessageEmbed, MessageSelectMenu, SelectMenuInteraction, User } from 'discord.js-light';
-import { invertBattleTurn, isDead } from './AdventureUtils';
+import { MessageEmbed, MessageSelectMenu, SelectMenuInteraction } from 'discord.js-light';
 import {
   calculateAttackSuccess,
   calculateDodge,
@@ -13,51 +13,37 @@ import {
   calculatePoison,
   calculateRunawaySuccess,
   calculateUserPenetration,
+  didUserDodged,
   didUserHit,
   getAbilityCost,
+  getEnemyStatusWithEffects,
   getUserAgility,
   getUserArmor,
   getUserDamage,
   getUserIntelligence,
   getUserMaxLife,
-} from './Calculations';
-import { getAbilityById, getClassById } from './DataUtils';
+} from '@roleplay/utils/Calculations';
+import { getAbilityById, getClassById } from '@roleplay/utils/DataUtils';
+import { isDead } from '@roleplay/utils/AdventureUtils';
 
-// TODO: Make new localizations for PvP
+export default class RoleplayBattle {
+  public missedAttacks = 0;
 
-interface PvpUserInfoStructure {
-  missedAttacks: number;
-  didRunaway: boolean;
-}
-
-export default class PlayerVsPlayer {
-  public attackerInfo: PvpUserInfoStructure = {
-    didRunaway: false,
-    missedAttacks: 0,
-  };
-
-  public defenderInfo: PvpUserInfoStructure = {
-    didRunaway: false,
-    missedAttacks: 0,
-  };
+  public didRunaway = false;
 
   constructor(
+    public user: UserBattleEntity,
+    public enemy: ReadyToBattleEnemy,
     private ctx: InteractionCommandContext,
-    public attacker: UserBattleEntity,
-    public defender: UserBattleEntity,
-    public attackerDiscordUser: User,
-    public defenderDiscordUser: User,
     public lastText: string,
   ) {}
 
-  public async battleLoop(): Promise<PlayerVsPlayer> {
-    const whoWillStart =
-      getUserAgility(this.defender) > getUserAgility(this.attacker) ? 'defender' : 'attacker';
-
-    const needStop = await this.userAttack(whoWillStart);
+  public async battleLoop(): Promise<RoleplayBattle> {
+    const willEnemyStart = this.enemy.agility > getUserAgility(this.user);
+    const needStop = willEnemyStart ? this.enemyAttack() : await this.userAttack();
 
     if (!needStop) {
-      const enemyStop = await this.userAttack(invertBattleTurn(whoWillStart));
+      const enemyStop = willEnemyStart ? await this.userAttack() : this.enemyAttack();
       this.clearEffects();
       if (!enemyStop) return this.battleLoop();
     }
@@ -66,62 +52,92 @@ export default class PlayerVsPlayer {
   }
 
   private clearEffects(): void {
-    (['attacker', 'defender'] as const).forEach((toEffect) => {
-      this[toEffect].effects.forEach((a, i) => {
-        switch (a.effectType) {
-          case 'heal':
-            this[toEffect].life = Math.min(
-              getUserMaxLife(this[toEffect]),
-              this[toEffect].life + calculateHeal(this[toEffect], a),
-            );
-            break;
-          case 'poison':
-            this[toEffect].life -= calculatePoison(a, this[toEffect].life);
-            break;
-        }
+    this.user.effects.forEach((a, i) => {
+      switch (a.effectType) {
+        case 'heal':
+          this.user.life = Math.min(
+            getUserMaxLife(this.user),
+            this.user.life + calculateHeal(this.user, a),
+          );
+          break;
+      }
 
-        a.durationInTurns -= 1;
-        if (a.durationInTurns <= 0) this.attacker.effects.splice(i, 1);
-      });
+      a.durationInTurns -= 1;
+      if (a.durationInTurns <= 0) this.user.effects.splice(i, 1);
+    });
+
+    this.enemy.effects.forEach((a, i) => {
+      switch (a.effectType) {
+        case 'poison':
+          this.enemy.life -= calculatePoison(a, this.enemy.life);
+          break;
+      }
+      a.durationInTurns -= 1;
+      if (a.durationInTurns <= 0) this.user.effects.splice(i, 1);
     });
   }
 
-  private async userAttack(user: BattleUserTurn): Promise<boolean> {
-    if (this[`${user}Info`].missedAttacks >= 4) {
-      this[user].life = 0;
+  private enemyAttack(): boolean {
+    const multiplier = calculateProbability(ENEMY_ATTACK_MULTIPLIER_CHANCE);
+    const effectiveDamage = calculateEffectiveDamage(
+      getEnemyStatusWithEffects(this.enemy, 'damage', this.user) * multiplier,
+      calculateUserPenetration(this.user),
+      getUserArmor(this.user),
+    );
+
+    const didDodged = didUserDodged(
+      calculateDodge(
+        getUserAgility(this.user),
+        getEnemyStatusWithEffects(this.enemy, 'agility', this.user),
+      ),
+    );
+
+    if (!didDodged) this.user.life -= effectiveDamage;
+
+    if (isDead(this.user)) {
       this.lastText = this.ctx.locale('roleplay:battle.user-death');
       return true;
     }
 
-    const toAttack = this[user];
-    const toDefend = this[invertBattleTurn(user)];
-    const toAttackUser = this[`${user}DiscordUser`];
-    // const toDefendUser = this[`${invertBattleTurn(user)}DiscordUser`];
+    this.lastText = `${this.lastText}\n${this.ctx.locale('roleplay:battle.deffend-text', {
+      enemy: this.ctx.locale(`enemies:${this.enemy.id as 1}.name`),
+      damage: didDodged ? this.ctx.locale('roleplay:battle.dodged') : effectiveDamage,
+      attack: this.ctx.locale(`roleplay:attacks.${multiplier.toString().replace('.', '-') as '1'}`),
+    })}`;
+    return false;
+  }
 
-    const attackerDamage = getUserDamage(toAttack);
-    const attackerArmor = getUserArmor(toAttack);
-    const attackerAgility = getUserAgility(toAttack);
-    const attackerIntelligence = getUserIntelligence(toAttack);
-    const attackerPenetration = calculateUserPenetration(toAttack);
+  private async userAttack(): Promise<boolean> {
+    if (this.missedAttacks >= 4) {
+      this.user.life = 0;
+      this.lastText = this.ctx.locale('roleplay:battle.user-death');
+      return true;
+    }
 
-    const defenderDamage = getUserDamage(toDefend);
-    const defenderArmor = getUserArmor(toDefend);
-    const defenderAgility = getUserAgility(toDefend);
+    const userDamage = getUserDamage(this.user);
+    const userArmor = getUserArmor(this.user);
+    const userAgility = getUserAgility(this.user);
+    const userIntelligence = getUserIntelligence(this.user);
+    const userAttackSuccess = calculateAttackSuccess(userAgility, this.enemy.agility);
+    const userDodge = calculateDodge(userAgility, this.enemy.agility);
+    const userPenetration = calculateUserPenetration(this.user);
 
-    const attackerDodge = calculateDodge(attackerAgility, defenderAgility);
-    const attackerAttackSuccess = calculateAttackSuccess(attackerAgility, defenderAgility);
-    const attackerRunaway = calculateRunawaySuccess(attackerAgility, defenderAgility);
+    const enemyDamage = getEnemyStatusWithEffects(this.enemy, 'damage', this.user);
+    const enemyArmor = getEnemyStatusWithEffects(this.enemy, 'armor', this.user);
+    const enemyAgility = getEnemyStatusWithEffects(this.enemy, 'agility', this.user);
+
+    const userRunaway = calculateRunawaySuccess(userAgility, enemyAgility);
 
     const embed = new MessageEmbed()
       .setTitle(
         this.ctx.prettyResponse('sword', 'roleplay:battle.title', {
-          name: toAttackUser.username,
+          name: this.ctx.locale(`enemies:${this.enemy.id as 1}.name`),
         }),
       )
       .setColor(COLORS.Battle)
       .setFooter({
         text: this.ctx.locale('roleplay:battle.footer', {
-          time: PVP_USER_RESPONSE_TIME_LIMIT / 1000,
+          time: PVE_USER_RESPONSE_TIME_LIMIT / 1000,
         }),
       })
       .setDescription(this.lastText)
@@ -129,24 +145,24 @@ export default class PlayerVsPlayer {
         {
           name: this.ctx.locale('roleplay:battle.your-stats'),
           value: this.ctx.locale('roleplay:battle.your-stats-info', {
-            life: toAttack.life,
-            mana: toAttack.mana,
-            damage: attackerDamage,
-            armor: attackerArmor,
-            intelligence: attackerIntelligence,
-            agility: attackerAgility,
-            chanceToConnect: (100 - attackerAttackSuccess).toFixed(2),
-            chanceToDodge: attackerDodge.toFixed(2),
+            life: this.user.life,
+            mana: this.user.mana,
+            damage: userDamage,
+            armor: userArmor,
+            intelligence: userIntelligence,
+            agility: userAgility,
+            chanceToConnect: (100 - userAttackSuccess).toFixed(2),
+            chanceToDodge: userDodge.toFixed(2),
           }),
           inline: true,
         },
         {
           name: this.ctx.locale('roleplay:battle.enemy-stats'),
           value: this.ctx.locale('roleplay:battle.enemy-stats-info', {
-            life: toDefend.life,
-            damage: defenderDamage,
-            armor: defenderArmor,
-            agility: defenderAgility,
+            life: this.enemy.life,
+            damage: enemyDamage,
+            armor: enemyArmor,
+            agility: enemyAgility,
           }),
           inline: true,
         },
@@ -181,35 +197,35 @@ export default class PlayerVsPlayer {
       {
         name: this.ctx.locale('roleplay:battle.options.hand-attack'),
         value: this.ctx.locale('roleplay:battle.options.attack-info', {
-          damage: attackerDamage,
-          chanceToConnect: (100 - attackerAttackSuccess).toFixed(2),
+          damage: userDamage,
+          chanceToConnect: (100 - userAttackSuccess).toFixed(2),
         }),
         inline: true,
       },
       {
         name: this.ctx.locale('roleplay:battle.options.runaway'),
         value: this.ctx.locale('roleplay:battle.options.runaway-info', {
-          chance: (100 - attackerRunaway).toFixed(2),
+          chance: (100 - userRunaway).toFixed(2),
         }),
         inline: true,
       },
     ]);
 
-    toAttack.abilities.forEach((ability) => {
+    this.user.abilities.forEach((ability) => {
       embed.addField(
         this.ctx.locale(`abilities:${ability.id as 100}.name`),
         this.ctx.locale('roleplay:battle.options.ability-info', {
           damage: '`??`',
           cost: getAbilityCost(ability),
           'no-mana':
-            toAttack.mana < getAbilityCost(ability)
+            this.user.mana < getAbilityCost(ability)
               ? this.ctx.locale('roleplay:battle.no-mana')
               : '',
         }),
         true,
       );
 
-      if (toAttack.mana >= getAbilityCost(ability)) {
+      if (this.user.mana >= getAbilityCost(ability)) {
         options.addOptions({
           label: this.ctx.locale(`abilities:${ability.id as 100}.name`),
           value: `ABILITY | ${ability.id}`,
@@ -222,29 +238,25 @@ export default class PlayerVsPlayer {
     const selectedOptions =
       await Util.collectComponentInteractionWithStartingId<SelectMenuInteraction>(
         this.ctx.channel,
-        toAttackUser.id,
+        this.ctx.author.id,
         battleId,
-        PVP_USER_RESPONSE_TIME_LIMIT,
+        PVE_USER_RESPONSE_TIME_LIMIT,
       );
 
     if (!selectedOptions) {
-      this[`${user}Info`].missedAttacks += 1;
+      this.missedAttacks += 1;
       this.lastText = this.ctx.locale('roleplay:battle.no-action');
       return false;
     }
 
     switch (resolveSeparatedStrings(selectedOptions.values[0])[0]) {
       case 'HANDATTACK': {
-        const damageDealt = calculateEffectiveDamage(
-          attackerDamage,
-          attackerPenetration,
-          defenderArmor,
-        );
-        const didConnect = didUserHit(attackerAttackSuccess);
+        const damageDealt = calculateEffectiveDamage(userDamage, userPenetration, enemyArmor);
+        const didConnect = didUserHit(userAttackSuccess);
 
-        if (didConnect) toDefend.life -= damageDealt;
+        if (didConnect) this.enemy.life -= damageDealt;
 
-        if (isDead(toDefend)) {
+        if (isDead(this.enemy)) {
           this.lastText = this.ctx.locale('roleplay:battle.enemy-death');
           return true;
         }
@@ -255,11 +267,11 @@ export default class PlayerVsPlayer {
         return false;
       }
       case 'RUNAWAY': {
-        const didRunaway = didUserHit(attackerRunaway);
+        const didRunaway = didUserHit(userRunaway);
 
         if (didRunaway) {
           this.lastText = this.ctx.locale('roleplay:battle.runaway-success');
-          this[`${user}Info`].didRunaway = true;
+          this.didRunaway = true;
           return true;
         }
 
@@ -269,59 +281,60 @@ export default class PlayerVsPlayer {
       case 'ABILITY': {
         const abilityId = Number(resolveSeparatedStrings(selectedOptions.values[0])[1]);
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const usedAbility = this[user].abilities.find((a) => a.id === abilityId)!;
+        const usedAbility = this.user.abilities.find((a) => a.id === abilityId)!;
         const parsedAbility = getAbilityById(usedAbility.id);
 
-        const didConnect = didUserHit(attackerAttackSuccess);
+        const didConnect = didUserHit(userAttackSuccess);
         let damageDealt = 0;
 
         parsedAbility.data.effects.forEach((a) => {
           if (a.effectType === 'damage') {
             const abilityDamage = Math.floor(
               a.effectValue +
-                attackerIntelligence * (a.effectValueByIntelligence / 100) +
+                userIntelligence * (a.effectValueByIntelligence / 100) +
                 a.effectValuePerLevel * usedAbility.level,
             );
 
             damageDealt = abilityDamage;
 
             if (didConnect)
-              toDefend.life -= calculateEffectiveDamage(abilityDamage, 0, defenderArmor);
+              this.enemy.life -= calculateEffectiveDamage(abilityDamage, 0, enemyArmor);
           } else if (a.effectType === 'heal' && a.durationInTurns === -1) {
-            toAttack.life = Math.min(
-              getUserMaxLife(toAttack),
-              calculateHeal(toAttack, {
-                ...a,
-                level: usedAbility.level,
-                author: {
-                  totalIntelligence: attackerIntelligence,
-                  elementSinergy: getClassById(toAttack.class).data.elementSinergy,
-                },
-              }),
+            this.user.life = Math.min(
+              getUserMaxLife(this.user),
+              this.user.life +
+                calculateHeal(this.user, {
+                  ...a,
+                  level: usedAbility.level,
+                  author: {
+                    totalIntelligence: userIntelligence,
+                    elementSinergy: getClassById(this.user.class).data.elementSinergy,
+                  },
+                }),
             );
           } else if (a.target === 'self')
-            toAttack.effects.push({
+            this.user.effects.push({
               ...a,
               level: usedAbility.level,
               author: {
-                totalIntelligence: attackerIntelligence,
-                elementSinergy: getClassById(toAttack.class).data.elementSinergy,
+                totalIntelligence: userIntelligence,
+                elementSinergy: getClassById(this.user.class).data.elementSinergy,
               },
             });
           else if (a.target === 'enemy')
-            toDefend.effects.push({
+            this.enemy.effects.push({
               ...a,
               level: usedAbility.level,
               author: {
-                totalIntelligence: attackerIntelligence,
-                elementSinergy: getClassById(toAttack.class).data.elementSinergy,
+                totalIntelligence: userIntelligence,
+                elementSinergy: getClassById(this.user.class).data.elementSinergy,
               },
             });
         });
 
-        toAttack.mana -= getAbilityCost(usedAbility);
+        this.user.mana -= getAbilityCost(usedAbility);
 
-        if (isDead(toDefend)) {
+        if (isDead(this.enemy)) {
           this.lastText = this.ctx.locale('roleplay:battle.enemy-death');
           return true;
         }

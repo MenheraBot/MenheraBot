@@ -16,7 +16,7 @@ import {
   getUserMaxMana,
 } from '@roleplay/utils/Calculations';
 import { getClassAbilities } from '@roleplay/utils/DataUtils';
-import PlayerVsPlayer from '@roleplay/utils/PlayerVsPlayer';
+import PlayerVsPlayer from '@roleplay/structures/PlayerVsPlayer';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { COLORS } from '@structures/Constants';
@@ -94,9 +94,22 @@ export default class ArenaInteractionCommand extends InteractionCommand {
   ): UserBattleEntity {
     if (!needToLevel) {
       return {
-        ...user,
+        id: user.id,
+        class: user.class,
+        race: user.race,
         life: getUserMaxLife(user),
         mana: getUserMaxMana(user),
+        level: user.level,
+        experience: user.experience,
+        holyBlessings: user.holyBlessings,
+        blesses: user.blesses,
+        abilities: user.abilities,
+        inventory: user.inventory,
+        cooldowns: user.cooldowns,
+        weapon: user.weapon,
+        protection: user.protection,
+        backpack: user.backpack,
+        money: user.money,
         effects: [],
       };
     }
@@ -118,13 +131,23 @@ export default class ArenaInteractionCommand extends InteractionCommand {
     }));
 
     return {
-      ...user,
-      effects: [],
+      id: user.id,
+      class: user.class,
+      race: user.race,
       abilities: userAbilities,
       life: userMaxLife,
       mana: userMaxMana,
       blesses: battleConfig,
       level: USER_BATTLE_LEVEL,
+      experience: user.experience,
+      holyBlessings: user.holyBlessings,
+      inventory: user.inventory,
+      cooldowns: user.cooldowns,
+      weapon: user.weapon,
+      protection: user.protection,
+      backpack: user.backpack,
+      money: user.money,
+      effects: [],
     };
   }
 

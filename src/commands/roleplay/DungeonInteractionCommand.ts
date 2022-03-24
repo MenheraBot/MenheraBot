@@ -26,7 +26,7 @@ import {
   getUserMaxMana,
 } from '@roleplay/utils/Calculations';
 import { getItemById } from '@roleplay/utils/DataUtils';
-import RoleplayBattle from '@roleplay/utils/RoleplayBattle';
+import RoleplayBattle from '@roleplay/structures/RoleplayBattle';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { COLORS } from '@structures/Constants';
