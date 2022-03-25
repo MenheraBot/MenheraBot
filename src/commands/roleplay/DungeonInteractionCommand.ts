@@ -386,9 +386,7 @@ export default class DungeonInteractionCommand extends InteractionCommand {
         });
 
         toSendComponents.splice(
-          toSendComponents.findIndex((a) =>
-            a.components.some((b) => b.customId === `${ctx.interaction.id} | ITEM`),
-          ),
+          toSendComponents.findIndex((a) => a.components.some((b) => b.customId?.endsWith('ITEM'))),
           1,
         );
 
@@ -436,7 +434,7 @@ export default class DungeonInteractionCommand extends InteractionCommand {
 
         toSendComponents.splice(
           toSendComponents.findIndex((a) =>
-            a.components.some((b) => b.customId === `${ctx.interaction.id} | POTION`),
+            a.components.some((b) => b.customId?.endsWith('POTION')),
           ),
           1,
         );
