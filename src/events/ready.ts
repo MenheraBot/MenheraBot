@@ -12,6 +12,9 @@ let dailyLoopTimeout: NodeJS.Timeout;
 export default class ReadyEvent {
   async run(client: MenheraClient): Promise<void> {
     if (!client.user) return;
+    if (client.cluster.id === 0)
+      HttpServer.getInstance().registerRouter('INTERACTIONS', PostInteractions(client));
+
     if (process.env.NODE_ENV === 'development') return;
 
     const isMasterShard = (id: number) => id === client.cluster.count - 1;
@@ -38,9 +41,6 @@ export default class ReadyEvent {
         c.shardProcessEnded = true;
       });
     }
-
-    if (clusterId === 0)
-      HttpServer.getInstance().registerRouter('INTERACTIONS', PostInteractions(client));
 
     console.log(`[READY] Menhera Client ${client.cluster.id} its ready to receive events!`);
   }
