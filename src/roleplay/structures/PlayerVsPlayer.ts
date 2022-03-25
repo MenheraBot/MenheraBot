@@ -329,6 +329,8 @@ export default class PlayerVsPlayer {
           return true;
         }
         this.lastText = this.ctx.locale('roleplay:pvp.attack-text', {
+          attacker: toAttackUser.username,
+          defender: toDefendUser.username,
           attack: this.ctx.locale(
             `abilities:${resolveSeparatedStrings(selectedOptions.values[0])[1] as '100'}.name`,
           ),

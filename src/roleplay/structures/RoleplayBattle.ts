@@ -24,7 +24,7 @@ import {
   getUserMaxLife,
 } from '@roleplay/utils/Calculations';
 import { getAbilityById, getClassById } from '@roleplay/utils/DataUtils';
-import { isDead } from '@roleplay/utils/AdventureUtils';
+import { getAbilityDamageFromEffects, isDead } from '@roleplay/utils/AdventureUtils';
 
 export default class RoleplayBattle {
   public missedAttacks = 0;
@@ -212,22 +212,30 @@ export default class RoleplayBattle {
     ]);
 
     this.user.abilities.forEach((ability) => {
+      const abilityName = this.ctx.locale(`abilities:${ability.id as 100}.name`);
+      const abilityCost = getAbilityCost(ability);
+      const canUseAbility = this.user.mana >= abilityCost;
+
       embed.addField(
-        this.ctx.locale(`abilities:${ability.id as 100}.name`),
+        abilityName,
         this.ctx.locale('roleplay:battle.options.ability-info', {
-          damage: '`??`',
-          cost: getAbilityCost(ability),
-          'no-mana':
-            this.user.mana < getAbilityCost(ability)
-              ? this.ctx.locale('roleplay:battle.no-mana')
-              : '',
+          damage: getAbilityDamageFromEffects(
+            getAbilityById(ability.id).data.effects,
+            userIntelligence,
+            ability.level,
+          ),
+          cost: abilityCost,
+          'no-mana': !canUseAbility ? this.ctx.locale('roleplay:battle.no-mana') : '',
         }),
         true,
       );
 
-      if (this.user.mana >= getAbilityCost(ability)) {
+      if (canUseAbility) {
         options.addOptions({
-          label: this.ctx.locale(`abilities:${ability.id as 100}.name`),
+          label: abilityName,
+          description: this.ctx
+            .locale(`abilities:${ability.id as 100}.description`)
+            .substring(0, 100),
           value: `ABILITY | ${ability.id}`,
         });
       }
