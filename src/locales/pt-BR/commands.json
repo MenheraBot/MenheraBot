@@ -851,25 +851,25 @@
     "praying-description": "Você ja está rezando por **{{cooldown}}** {{subtime}}. Neste tempo já recuperou **{{life}}** ❤️ e **{{mana}}** 💧"
   },
   "arena": {
-    "enemy-unregistered": "Seu inimigo ainda não reencarnou no mundo de Boleham! Escolha outro inimigo OU convença-o de reencarnar.",
-    "title": "Arena de Boleham",
-    "ready": "Estou Pronto!",
-    "leveled-battle": "Batalha Justa",
-    "default-battle": "Batalha Desnivelada",
-    "ready-users": "Usuários prontos: {{ready}} / 2",
-    "same-user": "KKKK cara podre querendo batalhar contra si mesmo, marca outra pessoa ai namoral",
-    "user-not-configurated": "{{user}} não possui todas as bênçãos configuradas para batalha! Use `/arena configurar` para settar suas bênçãos",
-    "description": "Bem-Vindos à arena **{{author}}** e **{{enemy}}**!\n\nVocês serão colocados de frente em uma batalha amistosa! Ninguém irá sofrer penalidades de morte ou mesmo de status. No início da batalha, ambos terão o máximo de vida e mana, e este valor não será alterado em sua ficha de aventureiro.\n\n**{{author}}** pode selecionar abaixo se a batalha será com os níveis atuais de vocês, ou se ela será justa ao **nível de batalha**. A batalha só iniciará quando ambos clicarem em PRONTO. Vocês tem 20 segundos para se decidir\n\n**Nivel de Batalha:** Todos jogadores estão nível **{{level}}** com **TODAS** habilidades da classe no nível **{{abilityLevel}}**. As bênçãos são distribuidas de acordo com a configuração do usuário\n\nNível de {{author}}: **{{authorLevel}}**\nNível de {{enemy}}: **{{enemyLevel}}**",
-    "ask-change-battle-type": "Ei {{author}}, **{{user}}** pediu para trocar o modo da batalha!",
-    "closed-command": "{{author}} finalizou o comando!",
+    "enemy-unregistered": "Your enemy has not yet reincarnated in the world of Boleham! Choose another enemy OR convince him to reincarnate.",
+    "title": "Boleham Arena",
+    "ready": "I'm Ready!",
+    "leveled-battle": "Fair Battle",
+    "default-battle": "Unlevel Battle",
+    "ready-users": "Ready users: {{ready}} / 2",
+    "same-user": "KKKK rotten guy wanting to battle himself, tag someone else there namoral",
+    "user-not-configurated": "{{user}} doesn't have all blessings configured for battle! Use `/arena configure` to set your blessings",
+    "description": "Welcome to the arena **{{author}}** and **{{enemy}}**!\n\nYou will be pitted against each other in a friendly battle! No one will suffer death penalties or At the start of the battle, both will have maximum health and mana, and this value will not change on your adventurer sheet.\n\n**{{author}}** you can select below if the battle will be with your current levels, or if it will be fair to the **battle level**. The battle will only start when you both click READY. You have 20 seconds to decide\n\n**Battle Level:** All players are level **{{level}}** with **ALL** class skills at level **{{abilityLevel}}** Blessings are distributed according to user configuration\n\nLevel of {{author}}: **{{authorLevel}}**\n{{enemy}}Level: **{{enemyLevel}}**",
+    "ask-change-battle-type": "Hey {{author}}, **{{user}}** asked to change battle mode!",
+    "closed-command": "{{author}} has finished the command!",
     "configurate": {
-      "reset-points": "Resetar Pontos",
-      "success-points": "Suas configurações de batalha foram ajustadas!",
-      "title": "Configurações de Batalha Amistosa",
-      "description": "**Configurações para Batalhas Amistosas**\n\nPrepare-se para uma batalha amistosa arrumando seu status. Você tem no total **{{vitality}}** bênçãos de vitalidade e **{{battle}}** bênçãos de batalha para usar. Lembrando que estas bênçãos só são validas para batalhas amistosas em **Nível de Batalha**\n\nSelecione abaixo seus pontos"
+      "reset-points": "Reset Points",
+      "success-points": "Your battle settings have been adjusted!",
+      "title": "Friendly Battle Settings",
+      "description": "**Settings for Friendly Battles**\n\nPrepare for a friendly battle by fixing your status. You have in total **{{vitality}}** vitality blessings and **{{battle} }** battle blessings to use. Remembering that these blessings are only valid for friendly battles at **Battle Level**\n\nSelect your points below"
     },
     "results": {
-      "title": "Fim de Batalha"
+      "title": "End of Battle"
     }
   }
 }

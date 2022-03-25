@@ -73,11 +73,11 @@ export default class ConfigInteractionCommand extends InteractionCommand {
           description: '「🌐」・Mude o idioma em que eu falo neste servidor!',
           type: 'SUB_COMMAND',
         },
-        {
+        /*  {
           name: 'censura',
           description: '🤬 | Ativa ou desativa a censura de palavrões',
           type: 'SUB_COMMAND',
-        },
+        }, */
       ],
       cooldown: 7,
       userPermissions: ['MANAGE_GUILD'],
@@ -95,9 +95,10 @@ export default class ConfigInteractionCommand extends InteractionCommand {
 
     if (command === 'blockcomando') this.BlockCmdInteractionCommand(ctx);
 
-    if (command === 'censura') ConfigInteractionCommand.CensorInteractionCommand(ctx);
+    // if (command === 'censura') ConfigInteractionCommand.CensorInteractionCommand(ctx);
   }
 
+  /*  --------------- OLD CENSOR CONFIGURATION, MAYBE CHANGE TO UNCENSORED FOR THE FUTURE
   static async CensorInteractionCommand(ctx: InteractionCommandContext): Promise<void> {
     if (ctx.data.server.censored) {
       ctx.data.server.censored = false;
@@ -124,7 +125,7 @@ export default class ConfigInteractionCommand extends InteractionCommand {
       content: ctx.prettyResponse('success', 'commands:censura.censored'),
     });
   }
-
+ */
   static async LanguageInteractionCommand(ctx: InteractionCommandContext): Promise<void> {
     const selector = new MessageSelectMenu()
       .setCustomId(ctx.interaction.id)

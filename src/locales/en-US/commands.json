@@ -448,8 +448,6 @@
       "description": "**Type:** $t(common:theme_types.{{type}}) ($t(common:rarities.{{rarity}}))\n**Royalty:**: {{royalty}}%\n**Profit:** {{profit}} :star:\n**Sold:** {{sold}}\nRegistered at `{{registered}}`"
     },
     "coinflip": {
-      "description": "Show your coinflip game data",
-      "usage": "[user]",
       "embed-title": "Coinflip stats for {{user}}",
       "no-data": "you never played a coinflip game!",
       "embed-footer": "You are amazing",
@@ -715,6 +713,7 @@
       "abilities": {
         "upgrade": "Upgrade Skills",
         "unlock": "Unlock Skills",
+        "nextCost": "Next Cost",
         "title": "{{name}}'s Abilities",
         "success": "You have blessed your skill with Success!",
         "no-blesses": "You don't have Holy Blessings to improve your Skills!",
@@ -742,6 +741,7 @@
       "item-title": "Battle Spoils",
       "backpack-full": "You don't have enough space to pick up the dropped items!",
       "grab": "Select the items you want",
+      "get-all-items": "Grab All Items",
       "use-potion": "Select the potions that you want to use",
       "back": "You've returned to the city, get some rest before going on another adventure!",
       "footer": "If you want an item, please do so before going elsewhere.",
@@ -820,6 +820,7 @@
     "sell": {
       "no-items": "You don't have any items to sell!",
       "title": "Boleham's Market | Sell",
+      "sell-all": "Sell All Itens",
       "success": "You sold your items successfully. Total: **{{value}}** Real Coins"
     }
   },
@@ -845,11 +846,11 @@
     "default-battle": "Unlevel Battle",
     "ready-users": "Ready users: {{ready}} / 2",
     "same-user": "HAHAHA look at that guy wanting to battle himself, tag someone else there namoral",
-    "user-not-configured": "{{user}} doesn't have all blessings configured for battle! Use `/arena configure` to set your blessings",
+    "user-not-configurated": "{{user}} doesn't have all blessings configured for battle! Use `/arena configure` to set your blessings",
     "description": "Welcome to the arena **{{author}}** and **{{enemy}}**!\n\nYou will be pitted against each other in a friendly battle! No one will suffer death penalties or At the start of the battle, both will have maximum health and mana, and this value will not change on your adventurer sheet.\n\n**{{author}}** you can select below if the battle will be with your current levels, or if it will be fair to the **battle level**. The battle will only start when you both click READY. You have 20 seconds to decide\n\n**Battle Level:** All players are level **{{level}}** with **ALL** class skills at level **{{abilityLevel}}** Blessings are distributed according to user configuration\n\nLevel of {{author}}: **{{authorLevel}}**\n{{enemy}}Level: **{{enemyLevel}}**",
     "ask-change-battle-type": "Hey {{author}}, **{{user}}** asked to change battle mode!",
     "closed-command": "{{author}} has finished the command!",
-    "configure": {
+    "configurate": {
       "reset-points": "Reset Points",
       "success-points": "Your battle settings have been adjusted!",
       "title": "Friendly Battle Settings",

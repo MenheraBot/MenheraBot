@@ -92,7 +92,7 @@ export default class InteractionCommandContext {
   locale(text: Translation, translateVars = {}): string {
     return this.i18n(text, {
       ...translateVars,
-      context: this.data.server.censored ? 'censor' : null,
+      // context: this.data.server.uncensored ? 'uncensored' : null, -- THIS IS FOR UNCENSORED FUTURE OPTION
     });
   }
 }

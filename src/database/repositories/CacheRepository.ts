@@ -61,7 +61,6 @@ export default class CacheRepository {
             lang: guildDataFromMongo.lang,
             blockedChannels: guildDataFromMongo.blockedChannels,
             disabledCommands: guildDataFromMongo.disabledCommands,
-            censored: guildDataFromMongo.censored,
           }),
         )
         .catch((e) => debugError(e, true));

@@ -37,7 +37,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 - Colocação do usuário no top ao caçar
 - Comando `xandao`
-- **Palavrões:** O Discord quer ser uma referência de um local seguro, por este motivo, a Menhera não pode falar palavrões :( 
+- **Palavrões:** O Discord quer ser uma referência de um local seguro, por este motivo, a Menhera não pode falar palavrões :(
+- Subcomando `/config censura`
 
 ## [4.0.H-BETA] - 2022-03-01
 
