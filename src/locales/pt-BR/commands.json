@@ -3,23 +3,23 @@
     "bot": "Ah para né vei, nenhum bot te deixaria com raiva (a não ser que ele esteja full lagado hehe)",
     "no-mention": {
       "embed_title": "Raiva",
-      "embed_description": "{{author}} Está P. da vida",
-      "embed_description_censor": "{{author}} Está com Raiva"
+      "embed_description": "{{author}} Está Com Raiva",
+      "embed_description_uncensored": "{{author}} Está P. da Vida"
     },
     "embed_description": "{{author}} esta puto da cara com {{mention}}, deve ter feito merda né só pode",
-    "embed_description_censor": "{{author}} esta com raiva de {{mention}}, o que será que {{mention}} fez..."
+    "embed_description_uncensored": "{{author}} esta com raiva de {{mention}}, o que será que {{mention}} fez..."
   },
   "bicuda": {
     "bot": "Você chutou um robô, se pa que quebrou a perna. Só se pa... assim...",
-    "self-mention": "Wtf véi isso nem é possível, não tem como se autochutar. Mencione outro usuário por favor",
-    "self-mention_censor": "Mano, isso nem é possível, não tem como se autochutar. Mencione outro usuário por favor",
+    "self-mention_uncensored": "Wtf véi isso nem é possível, não tem como se autochutar. Mencione outro usuário por favor",
+    "self-mention": "Mano, isso nem é possível, não tem como se autochutar. Mencione outro usuário por favor",
     "embed_title": "Bicuda",
     "embed_description": "{{author}} meteu o bicudão em {{mention}}"
   },
   "morder": {
     "bot": "Você mordeu um robô... -5 dentes na boca",
-    "self-mention": "Ala o masoquista, faça isso agora mesmo, não precisa de comando",
-    "self-mention_censor": "IIi alá, se tu quer se morder, faça isso agora mesmo, não precisa de comando",
+    "self-mention_uncensored": "Ala o masoquista, faça isso agora mesmo, não precisa de comando",
+    "self-mention": "IIi alá, se tu quer se morder, faça isso agora mesmo, não precisa de comando",
     "embed_title": "Morder",
     "embed_description": "{{author}} moideu {{mention}}"
   },
@@ -33,8 +33,6 @@
     "embed_description": "{{mention}} fez {{author}} chorar"
   },
   "nojo": {
-    "description": "Eca que nojo",
-    "usage": "<@menção>",
     "bot": "Iiii ala tu tem nojinho de bot ui ui ui",
     "no-mention": {
       "embed_title": "Nojo",
@@ -68,9 +66,7 @@
       "embed_description": "*Robôs não podem ser mortos, mas podem ser desligados...*\n{{author}} desligou o bot {{mention}}"
     },
     "embed_title": "Matar",
-    "embed_title_censor": "Pelos Ares",
-    "embed_description": "{{author}} **M A T O U** {{mention}}",
-    "embed_description_censor": "{{author}} jogou {{mention}} pelos ares"
+    "embed_description": "{{author}} **M A T O U** {{mention}}"
   },
   "beijar": {
     "bot": "Você beijou um robô, e acabou tocando em um fio descascado. Sorte que ele estava com chinelo nos pés. A ligação com a Terra foi cortado, nenhum circuito se fechou. Dessa vez foi safe.",
@@ -88,16 +84,16 @@
     "embed_description": "{{mention}} fez {{author}} cair no chão de tanto rir, namoral {{mention}}, muito bom mesmo!"
   },
   "mamar": {
-    "bot": "{{author}} acabou de sujar a boca de óleo lansando o mamadão no bot {{mention}}",
-    "bot_censor": "{{author}} acabou de sujar a boca de óleo lambendo no bot {{mention}}",
-    "self-mention": "Não tenta me enganar, eu sei que tu não consegue mamar a si mesmo! Marque outra pessoa para mamar",
-    "self-mention_censor": "Não tenta me enganar, eu sei que tu não consegue lamber a si mesmo! Marque outra pessoa para lamber",
-    "embed_title": "Mamar",
-    "embed_title_censor": "Lambida",
-    "user-banned": "Tu não pode mamar esse usuário por que ele tá banido!",
-    "user-banned_censor": "Tu não pode lamber esse usuário por que ele tá banido!",
-    "embed_description": "{{author}} lansou o mamadão, o famoso bereguedjonson, a linguada, a mamadela, a lambidinha em {{mention}}",
-    "embed_description_censor": "{{author}} lambeu {{mention}}. Mlem"
+    "bot_uncensored": "{{author}} acabou de sujar a boca de óleo lansando o mamadão no bot {{mention}}",
+    "bot": "{{author}} acabou de sujar a boca de óleo lambendo no bot {{mention}}",
+    "self-mention_uncensored": "Não tenta me enganar, eu sei que tu não consegue mamar a si mesmo! Marque outra pessoa para mamar",
+    "self-mention": "Não tenta me enganar, eu sei que tu não consegue lamber a si mesmo! Marque outra pessoa para lamber",
+    "embed_title_uncensored": "Mamar",
+    "embed_title": "Lambida",
+    "user-banned_uncensored": "Tu não pode mamar esse usuário por que ele tá banido!",
+    "user-banned": "Tu não pode lamber esse usuário por que ele tá banido!",
+    "embed_description_uncensored": "{{author}} lansou o mamadão, o famoso bereguedjonson, a linguada, a mamadela, a lambidinha em {{mention}}",
+    "embed_description": "{{author}} lambeu {{mention}}. Mlem"
   },
   "carinho": {
     "self-mention": "Olha cara, se tu quiser tu pode fazer carinho em si mesmo agora. Utilize meu comando somente para fazer carinho em outras pessoas",
@@ -111,8 +107,8 @@
   },
   "socar": {
     "bot": "DIGA NÃO A AGRESSÃO À ROBÔS",
-    "self-mention_censor": "VEM DE CHICOTE, ALGEMAS, CORDA DE ALPINISTA. AI QUE EU PERCEBI QUE O CARA É ***! Eu não vou fazer tu se bater, mencione outra pessoa",
-    "self-mention": "VEM DE CHICOTE, ALGEMAS, CORDA DE ALPINISTA. AI QUE EU PERCEBI QUE O CARA É SADOMASOQUISTA! Eu não vou fazer tu se bater, mencione outra pessoa",
+    "self-mention": "VEM DE CHICOTE, ALGEMAS, CORDA DE ALPINISTA. AI QUE EU PERCEBI QUE O CARA É ***! Eu não vou fazer tu se bater, mencione outra pessoa",
+    "self-mention_uncensored": "VEM DE CHICOTE, ALGEMAS, CORDA DE ALPINISTA. AI QUE EU PERCEBI QUE O CARA É SADOMASOQUISTA! Eu não vou fazer tu se bater, mencione outra pessoa",
     "embed_title": "Toma soco leve 🤜",
     "embed_description": "{{author}} meteu o soquinho leve em {{mention}}"
   },
@@ -135,8 +131,8 @@
   "atirar": {
     "self-mention": "Não faça isso, a vida é uma montanha russa, um dia tu ta bem, no outro ta tudo horrível. Mas não se preocupa, isso vai passar, sempre passa. Minha mãe (a Lux) também passou por problemas, mas hoje em dia ta tudo bem, por que sempre vai passar. Caso tu esteja mal, converse com alguém, isso ajuda demais. Caso não tenha ninguém pra conversar, ligue para o CVV (Centro de Valorização à Vida): 188, é grátis, funciona 24/7, e sempre tem alguém a tua disposição. Viva bem neném. Beijos de Luz da Lux, e beijos meus, UwU",
     "embed_title": "Atirar",
-    "embed_description": "{{author}} meteu bala em {{mention}}",
-    "embed_description_censor": "{{author}} deu tirinho em {{mention}}"
+    "embed_description_uncensored": "{{author}} meteu bala em {{mention}}",
+    "embed_description": "{{author}} deu tirinho em {{mention}}"
   },
   "vergonha": {
     "no-mention": {
@@ -184,7 +180,7 @@
     "cara-texto": "{{author}} ganhou {{value}} :star: apostando com {{mention}}. Sinto muito {{mention}}, nem sempre saimos vitoriosos.",
     "coroa-texto": "{{mention}} ganhou a aposta valendo {{value}} :star: contra {{author}}"
   },
-  "give": {
+  "presentear": {
     "confirm": "Seguinte {{user}}, {{author}} quer te enviar **{{count}}** {{emoji}}, você aceita?",
     "negated": "{{user}} recusou o presente!",
     "banned-user": "Este usuário não aceita presentes pois está banido da Menhera!",
@@ -278,7 +274,6 @@
   "8ball": {
     "question": "Sua Pergunta",
     "answer": "Respota",
-    "no-args": "Você deve enviar uma pergunta para eu responder",
     "ask": "Pergunte à Menhera",
     "answers": {
       "0": "É certo",
@@ -313,16 +308,16 @@
   },
   "fodase": {
     "author": "Autor: {{author}}",
-    "0": "{{author}} disse que fodase",
-    "0_censor": "{{author}} disse que não se importa",
-    "1": "Inteligente, pena que fodase",
-    "1_censor": "Inteligente, pena que ninguém liga",
-    "2": "Ta, e o fodase?",
-    "2_censor": "Bacana, mas e aí?"
+    "0_uncensored": "{{author}} disse que fodase",
+    "0": "{{author}} disse que não se importa",
+    "1_uncensored": "Inteligente, pena que fodase",
+    "1": "Inteligente, pena que ninguém liga",
+    "2_uncensored": "Ta, e o fodase?",
+    "2": "Bacana, mas e aí?"
   },
   "cacar": {
-    "drop": "CARALHOOOO {{author}}, Tu dropou um item de caça! Tu tem noção do quão raro isso é? Pra ti ter noção, o item que tu ganhou, o **{{name}}** tem uma porcentagem de drop de `{{chance}}%`, Parabéns!",
-    "drop_censor": "Uoouu {{author}}, Tu dropou um item de caça! Tu tem noção do quão raro isso é? Pra ti ter noção, o item que tu ganhou, o **{{name}}** tem uma porcentagem de drop de `{{chance}}%`, Parabéns!",
+    "drop_uncensored": "CARALHOOOO {{author}}, Tu dropou um item de caça! Tu tem noção do quão raro isso é? Pra ti ter noção, o item que tu ganhou, o **{{name}}** tem uma porcentagem de drop de `{{chance}}%`, Parabéns!",
+    "drop": "Uoouu {{author}}, Tu dropou um item de caça! Tu tem noção do quão raro isso é? Pra ti ter noção, o item que tu ganhou, o **{{name}}** tem uma porcentagem de drop de `{{chance}}%`, Parabéns!",
     "probabilities": "Suas Probabilidades de Caça",
     "chances": "**{{count}}** ({{percentage}}%)",
     "hunt_description": "Você saiu para caçar **{{hunt}}** **{{count}}** vezes com o Super Xandão, e voltou para casa com mais **{{value}}** pra conta.",
@@ -343,8 +338,8 @@
     "self-mention": "Tu não pode se casar consigo mesmo :(",
     "married": "Tu já está casado!!",
     "no-dbuser": "Mame este usuário para adicioná-lo ao meu banco de dados",
-    "mention-married": "Calma lá comedor de casadas, este usuário já está casado!",
-    "mention-married_censor": "Calma la colega, este usuário já está casado!",
+    "mention-married_uncensored": "Calma lá comedor de casadas, este usuário já está casado!",
+    "mention-married": "Calma la colega, este usuário já está casado!",
     "accepted": "{{toMarry}} aceitou o pedido de casamento de {{author}}. Que os pombinhos aproveitem a noite de núpcias hihi",
     "accepted_censor": "{{toMarry}} aceitou o pedido de casamento de {{author}}. Que os pombinhos aproveitem a vida juntos",
     "negated": "{{toMarry}} negou o pedido de casamento de {{author}}",
@@ -364,10 +359,6 @@
     "high": "Que casal magnífico véi, perfeitos apenas",
     "perfect": "MEEEU AMIGO, OS CARA SÃO FEITOS UM PRO OUTRO",
     "banned-user": "Você não pode shipar esse usuário pois está banido da Menhera!"
-  },
-  "xandao": {
-    "only-text": "Este comando não está disponível em threads",
-    "err_message": "Para que eu possa executar este comando, peça para que os administradores me concedam a permissão `Gerenciar Webhooks`"
   },
   "avatar": {
     "title": "Avatar de {{user}}",
@@ -394,8 +385,8 @@
     "mamou": "Mamou",
     "mamou_censor": "Lambeu",
     "unknow-user": "Usuário não encontrado",
-    "mamado": "Mamado",
-    "mamado_censor": "Lambido",
+    "mamado_uncensored": "Mamado",
+    "mamado": "Lambido",
     "married-with": "Casado com",
     "married-in": "Casados em",
     "about-me": "Sobre Mim",
@@ -407,10 +398,10 @@
     "commands-usage": "{{user}} usou meus comandos {{usedCount}} vezes. Seu comando mais usado foi {{mostUsedCommandName}}, usou {{mostUsedCommandCount}} vezes"
   },
   "top": {
-    "mamadoresTitle": "Placar de Mamadores",
-    "mamadoresTitle_censor": "Placar de Lambedores",
-    "mamouTitle": "Placar de Mamados",
-    "mamouTitle+_censor": "Placar de Lambidos",
+    "mamadoresTitle_uncensored": "Placar de Mamadores",
+    "mamadoresTitle": "Placar de Lambedores",
+    "mamouTitle_uncensored": "Placar de Mamados",
+    "mamouTitle": "Placar de Lambidos",
     "demonTitle": "Placar de Demônios",
     "angelTitle": "Placar de Anjos",
     "sdTitle": "Placar de Semideuses",
@@ -458,13 +449,8 @@
     "success": "Seu 'Sobre Mim' foi alterado com sucesso! Você pode ver as mudanças com `/perfil`"
   },
   "ping": {
-    "description": "Mostra o ping do bot e de sua API",
-    "usage": "",
     "latency": "Latência:",
     "api": "Latência da API:"
-  },
-  "suporte": {
-    "embed_title": "Clique aqui para entrar no servidor de suporte da Menhera"
   },
   "status": {
     "designer": {
@@ -498,8 +484,6 @@
       "no-data": "Este usuário nunca jogou uma partida de roleta francesa!"
     },
     "blackjack": {
-      "usage": "[usuário]",
-      "description": "Veja os status de BlackJack de alguém",
       "embed-title": "Status do blackjack de {{user}}",
       "no-data": "Este usuário nunca jogou uma partida de blackjack!"
     },
@@ -521,8 +505,8 @@
     "dev-cmd": "Tu não tem acesso à este comando!",
     "unblock": "O comando `/{{cmd}}` foi reabilitado neste servidor!",
     "block": "O comando `/{{cmd}}` foi desabilitado neste servidor!",
-    "foda": "Tu é feliz né? Se tu desabilita esse comando n vai poder mais usar ele o cabaço, te liga vei",
-    "foda_censor": "Tu não pode desabilitar o comando que desabilita, engraçadinho"
+    "foda_uncensored": "Tu é feliz né? Se tu desabilita esse comando não vai poder mais usar ele o cabaço, te liga vei",
+    "foda": "Tu não pode desabilitar o comando que desabilita, engraçadinho"
   },
   "cooldowns": {
     "title": "⌛ | Seus tempos de Recarga",
@@ -542,8 +526,8 @@
     "same-mention": "Tu n pode mencionar o mesmo usuário 2 vezes",
     "bot-mention": "Tu não pode formar um trisal com um bot. Na verdade isso é até esquisito... Sinto pena de ti por ter tentado ficar com um bot.",
     "no-db": "Um dos integrantes do trisal não foi encontrado no banco de dados! O melhor agora é desfazer este trisal e começar um outro",
-    "comedor-de-casadas": "UOUOUOU calma lá comedor de casadas, um dos usuários que você mencionou ja está em um trisal",
-    "comedor-de-casadas_censor": "UOUOUOU calma lá colega, um dos usuários que você mencionou ja está em um trisal",
+    "comedor-de-casadas_uncensored": "UOUOUOU calma lá comedor de casadas, um dos usuários que você mencionou ja está em um trisal",
+    "comedor-de-casadas": "UOUOUOU calma lá colega, um dos usuários que você mencionou ja está em um trisal",
     "accept-message": ":heart: | Vocês aceitam formar um trisal? Os três devem clicar no botão em até 15 segundos",
     "done": "Parabéns, vocês três formaram um trisal lindo! Utilize este comando novamente para ver suas fotinhas juntas",
     "error": "Os 3 não reagiram à mensagem a tempo! Tente novamente, talvez com alguem que queira, quem sabe"
@@ -761,8 +745,8 @@
       "footer": "Quer entrar mesmo assim?",
       "stats": "Cheque seus status antes de tudo",
       "enter": "Entrar",
-      "no": "Arregar",
-      "no_censored": "Fugir"
+      "no_uncensored": "Arregar",
+      "no": "Fugir"
     },
     "results": {
       "title": "Resultados da Batalha",

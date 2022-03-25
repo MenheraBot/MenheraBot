@@ -39,25 +39,25 @@ const choices: { name: string; value: ChoiceTypes }[] = [
 export default class GiveInteractionCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'give',
-      description: '「🎁」・Transfira algo de seu inventário para alguém',
+      name: 'presentear',
+      description: '「🎁」・Dê um presente de seu inventário para outra pessoa',
       options: [
         {
           name: 'user',
-          description: 'Usuário para transferir',
+          description: 'Usuário para presentear',
           type: 'USER',
           required: true,
         },
         {
           name: 'tipo',
-          description: 'O tipo de item que quer transferir',
+          description: 'O tipo de item que quer presentear',
           type: 'STRING',
           choices,
           required: true,
         },
         {
           name: 'valor',
-          description: 'A quantidade para transferir',
+          description: 'A quantidade para presentear',
           type: 'INTEGER',
           required: true,
           minValue: 1,
@@ -79,21 +79,21 @@ export default class GiveInteractionCommand extends InteractionCommand {
 
   static replyForYourselfError(ctx: InteractionCommandContext): void {
     ctx.makeMessage({
-      content: ctx.prettyResponse('error', 'commands:give.self-mention'),
+      content: ctx.prettyResponse('error', 'commands:presentear.self-mention'),
       ephemeral: true,
     });
   }
 
   static replyInvalidValueError(ctx: InteractionCommandContext): void {
     ctx.makeMessage({
-      content: ctx.prettyResponse('error', 'commands:give.invalid-value'),
+      content: ctx.prettyResponse('error', 'commands:presentear.invalid-value'),
       ephemeral: true,
     });
   }
 
   static replyNoAccountError(ctx: InteractionCommandContext): void {
     ctx.makeMessage({
-      content: ctx.prettyResponse('error', 'commands:give.no-dbuser'),
+      content: ctx.prettyResponse('error', 'commands:presentear.no-dbuser'),
       ephemeral: true,
     });
   }
@@ -101,7 +101,7 @@ export default class GiveInteractionCommand extends InteractionCommand {
   static replyNotEnoughtError(ctx: InteractionCommandContext, localeField: ChoiceTypes): void {
     ctx.deleteReply();
     ctx.send({
-      content: ctx.prettyResponse('error', 'commands:give.poor', {
+      content: ctx.prettyResponse('error', 'commands:presentear.poor', {
         field: ctx.locale(`common:${localeField}`),
       }),
     });
@@ -115,7 +115,7 @@ export default class GiveInteractionCommand extends InteractionCommand {
   ): void {
     ctx.makeMessage({
       components: [],
-      content: ctx.prettyResponse('success', 'commands:give.transfered', {
+      content: ctx.prettyResponse('success', 'commands:presentear.transfered', {
         value,
         emoji,
         user: mentionString,
@@ -144,7 +144,7 @@ export default class GiveInteractionCommand extends InteractionCommand {
 
     if (await ctx.client.repositories.blacklistRepository.isUserBanned(toSendUser.id)) {
       await ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'commands:give.banned-user'),
+        content: ctx.prettyResponse('error', 'commands:presentear.banned-user'),
         ephemeral: true,
       });
       return;
@@ -164,7 +164,7 @@ export default class GiveInteractionCommand extends InteractionCommand {
       ctx.client.commandExecutions.add(toSendUser.id);
 
       await ctx.makeMessage({
-        content: ctx.prettyResponse('question', 'commands:give.confirm', {
+        content: ctx.prettyResponse('question', 'commands:presentear.confirm', {
           user: toSendUser.toString(),
           author: ctx.author.toString(),
           count: input,
@@ -198,7 +198,7 @@ export default class GiveInteractionCommand extends InteractionCommand {
 
       if (resolveCustomId(selectedButton.customId) === 'NEGATE') {
         ctx.makeMessage({
-          content: ctx.locale('commands:give.negated', { user: toSendUser.toString() }),
+          content: ctx.locale('commands:presentear.negated', { user: toSendUser.toString() }),
           components: [
             {
               type: 'ACTION_ROW',

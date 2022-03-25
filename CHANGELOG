@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - Tempo de resposta da Dungeon foi aumentado para `20s`
 - Chance de critico de inimigos foi alterada. **1x**: `70%` -> `75%`. **1.3x:** `16%` -> `11%`
 - A seleção de bênçãos no componente foi limitada para 15, já que não faz sentido ter 25 pois nem da pra selecionar algo maior que 15
+- O Comando `/give` foi renomeado para `/presentear`
 
 ### Fixed
 
@@ -35,6 +36,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Removed
 
 - Colocação do usuário no top ao caçar
+- Comando `xandao`
+- **Palavrões:** O Discord quer ser uma referência de um local seguro, por este motivo, a Menhera não pode falar palavrões :( 
 
 ## [4.0.H-BETA] - 2022-03-01
 

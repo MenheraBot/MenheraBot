@@ -1,70 +1,82 @@
 {
   "classes": {
     "1": {
-      "name": "Mage",
-      "description": "Mages are beings that use the 4 natural elements - Fire Earth Water and Air, in addition to being good with white spells. They have nothing special in their blood, so they learn skills by reading books."
+      "name": "Assassin",
+      "description": "Agile beings, battle melee with fortification abilities, or that will help them in some way in battle. Never trust an assassin, as he can turn on you, and kill you to steal your items. "
     },
-    "2": {
-      "name": "Sorcerer",
-      "description": "Unlike mages, sorcerers use magic coming from their body, wearing out more, and depending on the type of magic, can go insane. They are experts in black magic, and discover abilities through the use of their body to acquire power"
+    "two": {
+      "name": "Bard",
+      "description": "Music lovers, bards seek to help everyone with musical power. From a young age, bards already realize their vocation, not just any baby can play a harp in their first months of life."
     },
     "3": {
       "name": "Illusionist",
-      "description": "Illusionists live in demonic contracts with superior beings. Your abilities are discovered according to your contracts, they are based on using the power of the contract, and using melee fighting."
+      "description": "Illusionists live by demonic contracts with higher beings. Their abilities are discovered according to their contracts, they are based on using the contract's power, and using melee combat"
     },
     "4": {
-      "name": "Archmage",
-      "description": "The magic developed over time. People evolved, and ancient tribes were left behind. The magic was developed to be easier and faster, yet the archaic magic was not extinguished. Archmages study the spells of the past, when magic circles and rituals were still used to invoke them and learn about them"
+      "name": "Paladin",
+      "description": "They have high faith in the Great Old Ones, and for that reason, they are blessed with divine powers such as healing and Light abilities. They are always on holy quests, walking together with holy mages in pursuit of holiness. They like balance. of powers"
     },
     "5": {
       "name": "Necromancer",
-      "description": "Users of resurrection magic, battle using the dead. As this spell is very dangerous and exhausting, necromancers focus on passing their powers to their weapon, so they don't wear out in battle, as they use up already stored mana. Since they never know if their stored mana will last an entire battle, they should study physical combat as well."
+      "description": "Users of resurrection magic, battle using dead. As this magic is very dangerous and exhausting, necromancers focus on passing their powers to their weapon, so they don't wear out in battle, as they use a mana already stored. Since you never know if your stored mana will last an entire battle, you should study physical combat as well"
     },
     "6": {
-      "name": "Assassin",
-      "description": "Agile beings, battle hand to hand with fortification skills, or that will help them in some way in battle. Never trust an assassin, as he may turn on you, and kill you to steal your items."
+      "name": "Archmage",
+      "description": "Magic has developed over time. People have evolved, and ancient tribes have been left behind. Magic has developed to be easier and faster, yet archaic magic has not been extinguished. The archmages study the magics of the past, when magic circles and rituals were still used to invoke and know them"
     },
     "7": {
       "name": "Barbarian",
-      "description": "Beings who isolated themselves to train for war above all. For that reason, they may be a little uncool, but believe me, their hearts are unique. They love to wear heavy armor and small weapons. They're not very good at skills, but what they know is empowerment skills."
+      "description": "Beings who have isolated themselves to train for war above all else. For this reason, they can be a little immodest, but believe me, their hearts are unique. They love to use heavy armor and small weapons. good with skills, but what they know is empowerment skills"
     },
     "8": {
       "name": "Archer",
-      "description": "Ranged professionals. As much as they have an impeccable aim, for some reason they keep using only bow and arrow. Of course there's always the difference that uses something else, but overall, this weapon satisfies everything you need, distance and speed"
+      "description": "Professionals of ranged attack. As much as they have an impeccable aim, for some reason they keep using only bow and arrow. Of course, there's always something different that uses something else, but overall, this weapon satisfies everything you need. need, distance and speed"
     },
     "9": {
-      "name": "Paladin",
-      "description": "They have high faith in the Great Ancients, and for that reason, they are blessed with divine powers, such as healing and abilities of Light. They are always on holy missions, walking together with holy magicians in search of holiness. They like the balance of powers"
+      "name": "Sorcerer",
+      "description": "Unlike mages, sorcerers use magic that comes from their body, wearing out more, and depending on the type of magic, they can go insane. They are specialists in dark magic, and discover abilities from the use of their body to acquire power"
     },
     "10": {
       "name": "Tamer",
-      "description": "Unlike illusionists, tamers make contracts with wild animals. Since they don't need a lot of mana to control them, they can contract with several beings at the same time. They cannot make supernatural contracts, abstaining only from living beings"
+      "description": "Unlike illusionists, tamers make contracts with wild animals. Since they don't need a lot of mana to control them, they can make contracts with several beings at the same time. They cannot make supernatural contracts, abstaining only from beings alive"
+    },
+    "11": {
+      "name": "Monk",
+      "description": "Isolating yourself from society does not mean isolating yourself from the world, as much as they live alone in silence in the mountains, monks suffer from the problems of the world just like everyone else. Don't mess with those who are quiet in the corner, those are the most dangerous. They fight with strength of spirit. They do not worship any Elder Elemental Dragons, but they also know that these cannot be ignored."
+    },
+    "12": {
+      "name": "Lancer",
+      "description": "Nothing is above the honor of these Lancers fighters. They know that agility and distance must come together for a perfect battle. Protectors of the realm and the law, spearmen are perfect for unequal fights of numbers. No It doesn't matter if it's between 30 and 3, none for royal warriors."
     }
   },
   "races": {
     "1": {
-      "name": "Elves",
-      "description": "They are born in the forest. They grow up alongside nature, knowing its strengths very well, and receiving help from it. Have a lot of intelligence"
+      "name": "Elf",
+      "description": "Born in the forest. They grow up alongside nature, knowing its strengths very well, and receiving help from it. Very intelligent beings"
     },
-    "2": {
-      "name": "Humans",
-      "description": "They are born in the city. They evolved more than any other class. They learned to control fire, and because of that, they have a high affinity for damage. Very strong beings"
+    "two": {
+      "name": "Human",
+      "description": "They are born in the city. They have evolved more than any other class. They have learned to control fire, and therefore, have a high affinity for damage. Very strong beings"
     },
     "3": {
-      "name": "Orcs",
-      "description": "They are born in the Dark World. They suffer a bit of prejudice from humans for being like pigs, so they isolated themselves in the dark world. That doesn't mean they can't live together with humans. Hard beings in the fall"
+      "name": "Orc",
+      "description": "Born in the Dark World. They suffer a little prejudice from humans because they look like pigs, so they isolated themselves in the dark world. That doesn't mean they can't live together with humans. Beings tough in the fall."
     },
     "4": {
-      "name": "Half-Demons",
+      "name": "Half-Demon",
       "description": "They are born on the outskirts of the Dark World. They are seen as beings almost beyond this reality. Much respected because of their legends. Beings that share intelligence and strength equally"
     },
     "5": {
-      "name": "Demi-Humans",
-      "description": "The famous Half-Animals. They live among humans, but suffer a bit of prejudice because of their ears and tails. Your strength and stamina are divided equally"
+      "name": "Demi-Human",
+      "description": "The famous Half-Animals. They live among humans, but suffer a bit of prejudice because of their ears and tails. Their strength and armor are equally divided."
     },
     "6": {
       "name": "Beast",
-      "description": "They are born in the wild. They are animals that have cognition, and of course, they are looking for their beauty. Have high stamina"
+      "description": "They are born in the wild. They are animals that have cognition, and of course, they are in search of their beauty. They have high defense"
+    },
+    "7": {
+      "name": "Dwarf",
+      "description": "Small but skilled, dwarves are a species very similar to humans. Lovers of friendship, dwarves are always drinking with their friends to forget about the troubles of the world. They are quick and their hearts are powerful."
     }
   },
   "attacks": {
@@ -76,25 +88,31 @@
   },
   "battle": {
     "no-mana": "| Insufficient Mana!",
-    "your-stats": "Your Stats",
-    "your-stats-info": "❤️ | Life: **{{life}}**\n💧 | Mana: **{{mana}}**\n⚔️ | Damage: **{{damage}}** | Precision: **{{chanceToConnect}}**\n🛡️ | Armor: **{{armor}}** | Dodge: **{{chanceToDodge}}**\n🧠 | intelligence: **{{intelligence}}**",
-    "enemy-stats": "Enemy Statuses",
-    "enemy-stats-info": "❤️ | Life: **{{life}}**\n⚔️ | Damage: **{{damage}}**\n🛡️ | Armor: **{{armor}}**👢 | Agility: **{{agility}}**",
-    "no-action": "You took too long to take action and were attacked!",
-    "enemy-death": "You successfully kill **{{name}}**!",
+    "your-stats": "Your Status",
+    "your-stats-info": "❤️ | Health: **{{life}}**\n💧 | Mana: **{{mana}}**\n⚔️ | Damage: **{{damage}} ** | Accuracy: **{{chanceToConnect}}%**\n🛡️ | Defense: **{{armor}}** | Dodge: **{{chanceToDodge}}%**\n🧠 | Intelligence: * *{{intelligence}}**\n👢 | Agility: **{{agility}}**",
+    "enemy-stats": "Enemy Status",
+    "enemy-stats-info": "❤️ | Health: **{{life}}**\n⚔️ | Damage: **{{damage}}**\n🛡️ | Defense: **{{armor}} **\n👢 | Agility: **{{agility}}**",
+    "no-action": "You took too long to take action and got attacked!",
+    "enemy-death": "You kill **{{name}}** successfully!",
     "user-death": "⚰️ | You died!\nYou died and were teleported to the Church. Rest for a while to recover.",
     "footer": "Do an action in {{time}} seconds",
-    "deffend-text": "🛡️ | **{{enemy}}** hits you **{{attack}}** and deal **{{damage}}** damage",
+    "deffend-text": "🛡️ | **{{enemy}}** hits you **{{attack}}** and deals you **{{damage}}** damage",
     "attack-text": "⚔️ | You attack with **{{attack}}** and deal **{{damage}}** damage",
     "select": "Select an Action",
+    "miss-attack": "0 for missing attack",
+    "dodged": "**You dodged the attack!**",
     "title": "Battle Against {{name}}",
-    "miss-attack": "**You missed!**",
-    "dodged": "**You Dodged!**",
-    "find": "You meet an enemy! **{{enemy}}** in phase **{{level}}** is just ahead!",
+    "find": "You find an enemy! **{{enemy}}** phased **{{level}}** is just ahead!",
+    "runaway-success": "You successfully run away from the battle!",
+    "runaway-fail": "You can't run away from battle!",
     "options": {
       "hand-attack": "Basic Attack",
-      "hand-attack-description": "Make an attack with your primary weapon",
-      "info": "⚔️ | Damage: **{{damage}}**\n🧪 | Heal: **{{heal}}**\n💧 | Cost: **{{cost}}** {{no-mana}}",
+      "runaway": "Run away",
+      "runaway-description": "Runs away in hopes of running away from this battle",
+      "hand-attack-description": "Strike with your primary weapon",
+      "ability-info": "⚔️ | Damage: **{{damage}}**\n💧 | Cost: **{{cost}}** {{no-mana}}",
+      "attack-info": "⚔️ | Damage: **{{damage}}**\n🎯 | Accuracy: **{{chanceToConnect}}%**",
+      "runaway-info": "🐥 | Chance of Escape: **{{chance}}%**",
       "available": "Available Options"
     }
   },
@@ -106,5 +124,19 @@
     "dungeon-description": "You've been to the dungeon recently, and you need to rest for more **{{time}}** {{subtime}}",
     "death": "You Are Dead!",
     "death-description": "You are in the Church resting from a recent death! Use the Church command to better see this..."
+  },
+  "pvp": {
+    "start-text": "Welcome to the Boleham PvP arena. An ancient spell prevents you from taking damage outside of here\n**{{author}}** is battling with **{{mentioned}}* *. Good luck!",
+    "title": "Shift of {{user}}",
+    "pvp-finished": "**THE BATTLE IS OVER!!** **{{winner}}** win over **{{loser}}.** {{loser}} {{reason}}",
+    "user-stats": "{{user}}'s Statuses",
+    "user-no-action": "{{user}} took no action in time",
+    "attack-text": "**{{attacker}}** attacks **{{defend}}** with {{attack}} and deals `{{damage}}` damage",
+    "miss-attack": "0 for missing attack",
+    "user-stats-info": "❤️ | Health: **{{life}}**\n💧 | Mana: **{{mana}}**\n⚔️ | Damage: **{{damage}}** | Accuracy: **{{chanceToConnect}}%**\n🛡️ | Defense: **{{armor}}** | Dodge: **{{chanceToDodge}}%**\n🧠 | Intelligence: **{{intelligence}}**\n👢 | Agility: **{{agility}}**",
+    "reasons": {
+      "miss-attack": "missed more than 4 attacks",
+      "user-death": "died in battle"
+    }
   }
 }

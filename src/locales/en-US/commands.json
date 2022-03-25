@@ -14,9 +14,7 @@
     "embed_description": "{{author}} kicked {{mention}}"
   },
   "morder": {
-    "description": "Bite someone :3",
-    "usage": "<@mention>",
-    "bot": "You bit a robot ... -5 teeth in the mouth",
+    "bot": "You bit a robot ... lost 5 teeth in the mouth",
     "self-mention": "Ooo look at the masochist, do it right now, no command needed",
     "self-mention_censor": "Yoo don't do that with yourself",
     "embed_title": "Bites",
@@ -84,14 +82,14 @@
   },
   "mamar": {
     "bot": "{{author}} just got his mouth wet with oil sucking the bot {{mention}}",
-    "self-mention": "Don't try to deceive me, I know you can't suckle yourself! Appoint another person to suck",
-    "self-mention_censor": "Don't try to deceive me, I know you can't lick yourself! Appoint another person to lick",
-    "embed_title": "Suck",
-    "embed_title_censor": "Lick",
-    "user-banned": "You cannot suck this user because he is banned",
-    "user-banned_censor": "You cannot lick this user because he is banned",
-    "embed_description": "{{author}} **suckled** {{mention}}",
-    "embed_description_censor": "{{author}} **licked** {{mention}}"
+    "self-mention_uncensored": "Don't try to deceive me, I know you can't suckle yourself! Appoint another person to suck",
+    "self-mention": "Don't try to deceive me, I know you can't lick yourself! Appoint another person to lick",
+    "embed_title_uncensored": "Suck",
+    "embed_title": "Lick",
+    "user-banned_uncensored": "You cannot suck this user because he is banned",
+    "user-banned": "You cannot lick this user because he is banned",
+    "embed_description_uncensored": "{{author}} **suckled** {{mention}}",
+    "embed_description": "{{author}} **licked** {{mention}}"
   },
   "carinho": {
     "self-mention": "If you want you can cuddle yourself now. Use my command only to cuddle others",
@@ -99,8 +97,6 @@
     "embed_description": "{{author}} just cuddle {{mention}}"
   },
   "cutucar": {
-    "description": "Poke Someone",
-    "usage": "<@mention>",
     "self-mention": "Poking yourself is no fun! Mention who you want to poke",
     "embed_title": "Poke",
     "embed_description": "{{author}} poked {{mention}}"
@@ -112,7 +108,6 @@
     "embed_description": "{{author}} punched {{mention}}"
   },
   "ressuscitar": {
-    "no-mention": "How to resurrect the nothing, which never died?",
     "self-mention": "Wait wut?? If you're dead, how are you typing?",
     "bot": "A robot has been restarted UwU >. <",
     "embed_title": "Resurrect",
@@ -179,7 +174,7 @@
     "cara-texto": "{{author}} won {{value}} :star: betting with {{mention}}. I'm sorry {{mention}}, we are not always victorious",
     "coroa-texto": "{{mention}} won {{value}} :star: betting against {{author}}"
   },
-  "give": {
+  "presentear": {
     "self-mention": "You cannot mention yourself!",
     "banned-user": "This user cannot accept gifts because they're banned from Menhera!",
     "no-dbuser": "This user does not have a Menhera's Bank account!",
@@ -270,7 +265,6 @@
   "8ball": {
     "question": "Your Question",
     "answer": "Answer",
-    "no-args": "you must send a question for me to answer",
     "ask": "Ask Menhera",
     "answers": {
       "0": "It is certain",
@@ -299,11 +293,9 @@
     "author-single": "you are not married to anyone",
     "divorce": "Divorce",
     "cancel": "Cancel",
-    "confirmed": "Do you really wanna divorce from",
     "confirmation": "Do you really want to divorce from",
     "canceled": "I think it’s good that you're still married, but if you thought about breaking up once, maybe you’ll think more often ... If the relationship doesn’t make you feel good, there’s no point in continuing…",
-    "confirmed_start": "just got divorced from",
-    "confirmed_end": "I'm sorry for having finished everything ... But it's okay, all relationships are just experiences, you still have a lot of life ahead of you, and you will still find people who do you as well as you deserve"
+    "confirmed": "{{author}} just got divorced from {{mention}}\nI'm sorry for having finished everything ... But it's okay, all relationships are just experiences, you still have a lot of life ahead of you, and you will still find people who do you as well as you deserve"
   },
   "fodase": {
     "0": "{{author}} said it dont care",
@@ -345,9 +337,7 @@
     "banned-user": "This user cannot be married because it is banned from Menhera!"
   },
   "ship": {
-    "missing-args": "you didn't mention an user",
-    "no-dbuser": "user not found in database",
-    "unknow-user": "user not found",
+    "unknow-user": "User not found",
     "value": "Ship value:",
     "message-start": "Would the two lovebirds make a good couple?",
     "default": "Maybe the bot that is broken, or you will not work at all :(",
@@ -358,13 +348,7 @@
     "perfect": "MY FRIEND, THOSE GUYS ARE MADE TO ANOTHER PRO",
     "banned-user": "You cannot ship this user because it is banned from Menhera!"
   },
-  "xandao": {
-    "only-text": "This command isn't available on threads",
-    "err_message": "In order for me to run this command, ask administrators to grant me `Manage Webhooks` permission"
-  },
   "avatar": {
-    "description": "Shows someone's avatar",
-    "usage": "[user]",
     "title": "{{user}}'s avatar",
     "footer": "What a beautiful image uwuwu",
     "unknow-user": "user not found",
@@ -387,11 +371,11 @@
   "perfil": {
     "no-dbuser": "this user does not have a profile!",
     "banned": "this user is **banned** from using Menhera \n **Reason:** `{{reason}}`",
-    "mamou": "Suck",
-    "mamou_censor": "Lick",
+    "mamou_uncensored": "Suck",
+    "mamou": "Lick",
     "unknow-user": "user not found",
-    "mamado": "Suckled",
-    "mamad0o_censor": "Licked",
+    "mamado_uncensored": "Suckled",
+    "mamado": "Licked",
     "married-with": "Married with",
     "married-in": "Married in",
     "about-me": "About Me",
@@ -403,10 +387,10 @@
     "commands-usage": "{{user}} used my commands {{usedCount}} times. His most used command was {{mostUsedCommandName}}, used {{mostUsedCommandCount}} times"
   },
   "top": {
-    "mamadoresTitle": "Suckers Leaderboard",
-    "mamadoresTitle_censor": "Lickers Leaderboard",
-    "mamouTitle": "Suckled Leaderboard",
-    "mamouTitle_censor": "Licked Leaderboard",
+    "mamadoresTitle_uncensored": "Suckers Leaderboard",
+    "mamadoresTitle": "Lickers Leaderboard",
+    "mamouTitle_uncensored": "Suckled Leaderboard",
+    "mamouTitle": "Licked Leaderboard",
     "demonTitle": "Demons Leaderboard",
     "angelTitle": "Angels Leaderboard",
     "sdTitle": "Demigods Leaderboard",
@@ -450,16 +434,12 @@
     "portuguese": "Brazilian Portuguese"
   },
   "sobremim": {
-    "args-limit": "your sobremim cannot be longer than 200 characters",
-    "success": "your 'About Me' has been successfully changed! Use m!Profile >.<"
+    "args-limit": "Your sobremim cannot be longer than 200 characters",
+    "success": "Your 'About Me' has been successfully changed! Use m!Profile >.<"
   },
   "ping": {
-    "description": "Shows the ping of the bot and its API",
     "latency": "Latency:",
     "api": "API Latency:"
-  },
-  "suporte": {
-    "embed_title": "Click here to enter Menhera's support server"
   },
   "status": {
     "designer": {
@@ -528,14 +508,9 @@
   "trisal": {
     "title": "❤️ Polyamory ❤️",
     "no-args": "You're not on any trisals! Mention people to join in a polyamory >.<",
-    "description": "Form a trisal and see your metadinhas",
-    "usage": "[@mention1 & @mention2]",
     "marry-not-found": "a user of your trisal was not found",
     "banned-user": "This trisal cannot be made because it is banned from Menhera!",
     "no-owner": "you need to use the 'suck' command to create an account first >.<",
-    "embed": {
-      "description": "As much as it is not something serious, these 3 are together: "
-    },
     "self-mention": "you can't make a couple with yourself",
     "same-mention": "you can't mention the same user 2 times",
     "bot-mention": "you cannot form a trisal with a bot. In fact this is even weird ... I feel sorry for you for trying to get a bot.",
@@ -597,8 +572,6 @@
     "select-description": "Choose one of the items below to activate it. If there is no available space, you will have to choose one of the active items to replace it"
   },
   "carteira": {
-    "description": "See someone's wallet",
-    "usage": "[user]",
     "no-dbuser": "this user is not in my database",
     "title": "{{user}}'s Wallet",
     "stars": "Stars",
@@ -761,8 +734,8 @@
       "footer": "Do you want to go in anyway?",
       "stats": "Check your status first",
       "enter": "Join",
-      "no": "Chicken Out",
-      "no_censored": "Runaway"
+      "no_uncensored": "Chicken Out",
+      "no": "Runaway"
     },
     "results": {
       "title": "Battle Results",
@@ -785,6 +758,45 @@
     "use-description": "Level: **{{level}}**\nRegeneration: **{{regeneration}}**"
   },
   "centro": {
+    "library": {
+      "title": "📖 | Boleham Library | {{session}}",
+      "abilities": {
+        "title": "Skills",
+        "not-found": "This skill does not exist!",
+        "effects": "**EFFECTS:**",
+        "damage": "Damage",
+        "heal": "Heal",
+        "poison": "Poison",
+        "agility_buff": "Agility Boost",
+        "agility_debuff": "Agility Debuff",
+        "armor_buff": "Armor Boost",
+        "armor_debuff": "Armor Reduction",
+        "damage_buff": "Damage Increase",
+        "damage_debuff": "Damage Reduction",
+        "intelligence_buff": "Intelligence Boost",
+        "intelligence_debuff": "Intelligence Debuff",
+        "plain": "Gross Value",
+        "maxLife": "Maximum Life",
+        "maxMana": "Maximum Mana",
+        "agility": "Agility",
+        "armor": "Armor",
+        "intelligence": "Intelligence",
+        "percentage": "Percentage",
+        "self": "Itself",
+        "enemy": "enemy",
+        "effect-description": "**Type:** {{type}}\n**Duration in Shifts:** {{duration}}\n**Value**: {{value}}\n** Value Reflection:** {{reflection}}\n**Intelligence Influence:** {{inIntelligence}}%\n**Value Type**: {{modifier}}\n**Value per Level: ** {{valuePerLevel}}\n**Element:** {{element}}\n**Target:** {{target}}",
+        "description": "**Name:** {{name}}\n**Description:** {{description}}\n**Mana Cost:** {{cost}}\n**Cost of Mana per Level:** {{costPerLevel}}\n**Unlock Cost:** {{unlockCost}}"
+      },
+      "items": {
+        "not-found": "This item does not exist!",
+        "title": "Items",
+        "name": "Name",
+        "buy-cost": "Market Cost",
+        "sell-cost": "Sell Cost",
+        "type": "Type",
+        "flags": "Flags"
+      }
+    },
     "blacksmith": {
       "evolve": "Evolve",
       "poor": "Insufficient Money",
@@ -824,5 +836,27 @@
     "stop": "Stop Praying",
     "back-from-death": "You have just recovered from a death! Welcome back **{{user}}-sama** to the world of Boleham!",
     "praying-description": "You're already praying for **{{cooldown}}** {{subtime}}. In this time he has recovered **{{life}}** ❤️ and **{{mana}}** 💧"
+  },
+  "arena": {
+    "enemy-unregistered": "Your enemy has not yet reincarnated in the world of Boleham! Choose another enemy OR convince him to reincarnate.",
+    "title": "Boleham's Arena",
+    "ready": "I'm Ready!",
+    "leveled-battle": "Fair Battle",
+    "default-battle": "Unlevel Battle",
+    "ready-users": "Ready users: {{ready}} / 2",
+    "same-user": "HAHAHA look at that guy wanting to battle himself, tag someone else there namoral",
+    "user-not-configured": "{{user}} doesn't have all blessings configured for battle! Use `/arena configure` to set your blessings",
+    "description": "Welcome to the arena **{{author}}** and **{{enemy}}**!\n\nYou will be pitted against each other in a friendly battle! No one will suffer death penalties or At the start of the battle, both will have maximum health and mana, and this value will not change on your adventurer sheet.\n\n**{{author}}** you can select below if the battle will be with your current levels, or if it will be fair to the **battle level**. The battle will only start when you both click READY. You have 20 seconds to decide\n\n**Battle Level:** All players are level **{{level}}** with **ALL** class skills at level **{{abilityLevel}}** Blessings are distributed according to user configuration\n\nLevel of {{author}}: **{{authorLevel}}**\n{{enemy}}Level: **{{enemyLevel}}**",
+    "ask-change-battle-type": "Hey {{author}}, **{{user}}** asked to change battle mode!",
+    "closed-command": "{{author}} has finished the command!",
+    "configure": {
+      "reset-points": "Reset Points",
+      "success-points": "Your battle settings have been adjusted!",
+      "title": "Friendly Battle Settings",
+      "description": "**Settings for Friendly Battles**\n\nPrepare for a friendly battle by fixing your status. You have in total **{{vitality}}** vitality blessings and **{{battle} }** battle blessings to use. Remembering that these blessings are only valid for friendly battles at **Battle Level**\n\nSelect your points below"
+    },
+    "results": {
+      "title": "End of Battle"
+    }
   }
 }

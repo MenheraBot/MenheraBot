@@ -5,68 +5,242 @@
   },
   "100": {
     "name": "Imbue In Poison",
-    "description": "Imbues your weapon with poison, dealing damage to your enemies"
+    "description": "Imbues your weapon with poison, and when it hits the enemy, it poisons them"
   },
   "101": {
     "name": "Fearless Strikes",
-    "description": "Land a series of blows against your enemy."
+    "description": "Deliver a series of blows against your enemy"
   },
   "102": {
     "name": "Behind You!",
-    "description": "Teleports to the enemy's back, hitting them in a cowardly way"
+    "description": "Teleports to the enemy's back, hitting them in a cowardly way. After hitting the enemy, receive a bonus agility"
   },
   "103": {
     "name": "Unfair Blow",
-    "description": "Nothing worse than an attack on the lower parts... So attack them"
+    "description": "Nothing worse than an attack on the lower parts... Applies an armor debuff to the enemy, and then hits them right away"
   },
   "104": {
     "name": "Frenzy",
-    "description": "Go into a frenzy, attacking multiple times"
+    "description": "Enter a frenzy, dealing damage to the enemy and receiving a damage buff"
   },
   "200": {
-    "name": "Elemental Blessing"
+    "name": "Elemental Blessing",
+    "description": "Plays a special song, which damages enemies while healing itself."
   },
   "201": {
-    "name": "Solar Bean"
+    "name": "Song of Light",
+    "description": "Introduce your enemies to the power of the Elder Elemental Dragon of Light from holy notes"
   },
   "202": {
-    "name": "Rosary"
+    "name": "Rosary",
+    "description": "Invokes the hatred of the Gods to annihilate your enemies. In addition to damaging enemies, heals yourself"
   },
   "203": {
-    "name": "Spiritual Ascension"
+    "name": "Acute Notes",
+    "description": "Strikes your enemies' minds with high notes from your harp. In addition to damaging enemies, heals yourself"
   },
   "204": {
-    "name": "Ether Manipulation",
-    "description": "Ether manipulation, its origins come from the prisoner Ricardo Eletro, better known as, Ricardo Ereto."
+    "name": "Play Raul!",
+    "description": "The famous royal request. Play Raul! Play to finish off all your enemies"
   },
   "300": {
-    "name": "Eternal Punishment"
+    "name": "Eternal Punishment",
+    "description": "Inflicts a punishment on your enemy, giving an armaruda debuff and applying poison for a short time"
   },
   "301": {
-    "name": "The Iron Maiden"
+    "name": "Iron Lady",
+    "description": "Torture your enemies with the legendary Iron Lady. Severe damage!!"
   },
   "302": {
-    "name": "Summon Bahamut"
+    "name": "Summon Bahamut",
+    "description": "Invokes the powers of Bahamut, who attacks his enemy sme do"
   },
   "303": {
-    "name": "Voracious Hunt"
+    "name": "Mind Warp",
+    "description": "Twirls your enemy's mind, damaging his soul principle"
   },
   "304": {
-    "name": "Uncontrollable Persecution"
+    "name": "Merlyer",
+    "description": "Puts a Merlyer to fight your enemy"
   },
   "400": {
-    "name": "Advance with Shield"
+    "name": "Shield Advance",
+    "description": "Uses your shield for an offense-defensive attack, dealing damage to the enemy, and healing yourself, in addition to activating an armor buff"
   },
   "401": {
-    "name": "Defense Stand"
+    "name": "Divine Protection",
+    "description": "Invokes the holy powers, dealing damage to enemies while improving their armor"
   },
   "402": {
-    "name": "Steel Wall"
+    "name": "Valkyria of the Heavens",
+    "description": "Summons the powers of the Goddess of War, dealing damage to enemies and healing itself"
   },
   "403": {
-    "name": "Body Protection"
+    "name": "Holy Trinity",
+    "description": "Received the Triple Blessing of the Elder Dragon Elemental of Light, receiving a buff to agility, armor and damage"
   },
   "404": {
-    "name": "Nothing Will Pass!"
+    "name": "D.A.E.L.",
+    "description": "Literally calls the Elder Dragon Element of Light into battle, dealing damage to enemies while healing itself"
+  },
+  "500": {
+    "name": "Feast of the Living Dead",
+    "description": "Brings an army of the dead into battle, dealing damage to enemies"
+  },
+  "501": {
+    "name": "Full Possession",
+    "description": "Possess the enemy in every way, decreasing their armor and their damage"
+  },
+  "502": {
+    "name": "Nekros Manteia",
+    "description": "Uses the eternal power of necromancers, dealing high damage to enemies"
+  },
+  "503": {
+    "name": "Post Mortem Transfusion",
+    "description": "Transfers powers from the enemy to itself, gaining agility and reducing the enemy's agility, in addition to dealing damage"
+  },
+  "504": {
+    "name": "Luciferum Emerges",
+    "description": "Summons Lucifer into battle, slaying his enemies"
+  },
+  "600": {
+    "name": "Prismatic Sphere",
+    "description": "Creates a sphere in the middle of the battlefield, damaging everyone who gets close"
+  },
+  "601": {
+    "name": "Ice Spear",
+    "description": "Creates a sphere of ice that, upon hitting the enemy, inflicts damage and a reduction in agility"
+  },
+  "602": {
+    "name": "Electrolyn",
+    "description": "Transfers energy from the skies directly to your enemy, dealing high damage"
+  },
+  "603": {
+    "name": "Mytril Capsule",
+    "description": "Wraps around in a capsule made of Mytril, dealing damage to enemies while strengthening their armor"
+  },
+  "604": {
+    "name": "Boleham Ley Lines",
+    "description": "Connects with Boleham's ley lines, utilizing all the true powers in the world to defeat your enemy"
+  },
+  "700": {
+    "name": "War Spirit",
+    "description": "Gives the true spirit of war, strengthening in damage and armor while reducing enemy damage"
+  },
+  "701": {
+    "name": "Berserker's Fury",
+    "description": "Gives the Fury of the Royal Berserker, dealing massive damage to your enemies"
+  },
+  "702": {
+    "name": "Unstoppable Death",
+    "description": "Deliver a blow that steals the life of enemies"
+  },
+  "703": {
+    "name": "Grail",
+    "description": "Summons the power of the Holy Grail, gaining a buff to armor, agility and intelligence"
+  },
+  "704": {
+    "name": "Human Guillotine",
+    "description": "Envelops the enemy in a guillotine made by your arms, executing him"
+  },
+  "800": {
+    "name": "HeadShot",
+    "description": "Shoots the enemy perfectly in the head"
+  },
+  "801": {
+    "name": "Metallic Blast",
+    "description": "Gathers the steel of your arrows to deliver a metal aerial attack, also increasing your agility"
+  },
+  "802": {
+    "name": "crossbow",
+    "description": "Summons a crossbow to the battlefield, firing squarely at your enemy"
+  },
+  "803": {
+    "name": "Poisoned Arrows",
+    "description": "Shoots poison arrows at your enemies, poisoning them"
+  },
+  "804": {
+    "name": "Agile Dodge",
+    "description": "Dodge, Dodge, I read your powers, you're not a monster, I read mine, I'm better an archer, I disappear! Gain agility and reduce the enemy's"
+  },
+  "900": {
+    "name": "Demonic Contract",
+    "description": "Make a contract with a demon, increasing its intelligence and damage"
+  },
+  "901": {
+    "name": "Fëanor",
+    "description": "Calls the Demon Fëanor into battle, damaging his enemies"
+  },
+  "902": {
+    "name": "Gravity Curve",
+    "description": "Creates a curve in space-time, crushing your enemies with the power of physics"
+  },
+  "903": {
+    "name": "Contract: Abezethibou",
+    "description": "Contracts with Superior Demon Abezethibou, receiving an agility buff, healing himself and damaging enemies"
+  },
+  "904": {
+    "name": "Astaroth",
+    "description": "Gives a short visit from Astaroth in battle, executing his enemies"
+  },
+  "1000": {
+    "name": "Tame",
+    "description": "Tames a wild animal to transport, increasing its agility and damage"
+  },
+  "1001": {
+    "name": "Temporal Claws",
+    "description": "Send the King of Beasts and Space Time to scratch his enemy, beyond the limits of time"
+  },
+  "1002": {
+    "name": "Tame: Tiger",
+    "description": "Tames a tiger to drastically increase its stats. Gaining a buff to damage, agility and armor"
+  },
+  "1003": {
+    "name": "Spectral Spear",
+    "description": "Sends a spear directly from the jungle to strike your enemy, poisoning them"
+  },
+  "1004": {
+    "name": "Taming: Boitatá",
+    "description": "Tames the Boitatá, increasing its damage, agility, armor and intelligence"
+  },
+  "1100": {
+    "name": "Divine Fists",
+    "description": "Summons two fists that deliver a powerful attack to your enemy"
+  },
+  "1101": {
+    "name": "The Great Silence",
+    "description": "Starts your legendary silence, focusing on battle, receiving a damage buff"
+  },
+  "1102": {
+    "name": "Buddha Palm",
+    "description": "Buddha is on parade, and pats his enemy"
+  },
+  "1103": {
+    "name": "Touch of Death",
+    "description": "Gives your enemy a tiny flick, dealing deadly damage to the enemy"
+  },
+  "1104": {
+    "name": "Meditation",
+    "description": "Starts your meditation, receiving an agility and intelligence buff"
+  },
+  "1200": {
+    "name": "Spear the Spear",
+    "description": "Throws his spear at the enemy, causing damage"
+  },
+  "1201": {
+    "name": "Spear Advance",
+    "description": "Advances with his spear, receiving an agility buff"
+  },
+  "1202": {
+    "name": "Death Dance",
+    "description": "Initiates deadly dancing moves, dealing damage to enemies"
+  },
+  "1203": {
+    "name": "Whirlwind",
+    "description": "Starts spinning nonstop until it creates a whirlpool, gaining agility and dealing damage to enemies"
+  },
+  "1204": {
+    "name": "Placed in the Chest",
+    "description": "Spears your spear into your enemy's chest, dealing mortal damage"
   }
 }
