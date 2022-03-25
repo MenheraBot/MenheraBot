@@ -41,7 +41,7 @@ export default class PatInteractionCommand extends InteractionCommand {
       .setColor(COLORS.ACTIONS)
       .setDescription(
         ctx.locale('commands:carinho.embed_description', {
-          autor: ctx.author.toString(),
+          author: ctx.author.toString(),
           mention: user.toString(),
         }),
       )
