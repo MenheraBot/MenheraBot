@@ -49,7 +49,15 @@ export default class InteractionCommandContext {
       return;
     }
 
-    await this.interaction.deferReply({ ephemeral }).catch(debugError);
+    await this.interaction
+      .deferReply({ ephemeral })
+      .then(() => {
+        this.client.interactionStatistics.success += 1;
+      })
+      .catch((e) => {
+        this.client.interactionStatistics.catchedErrors += 1;
+        debugError(e);
+      });
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -70,23 +78,73 @@ export default class InteractionCommandContext {
 
   async makeMessage(options: InteractionReplyOptions): Promise<Message | null> {
     if (this.interaction.replied || this.interaction.deferred)
-      return this.resolveMessage(await this.interaction.editReply(options).catch(debugError));
+      return this.resolveMessage(
+        await this.interaction
+          .editReply(options)
+          .then((a) => {
+            this.client.interactionStatistics.success += 1;
+            return a;
+          })
+          .catch((e) => {
+            this.client.interactionStatistics.catchedErrors += 1;
+            return debugError(e);
+          }),
+      );
 
     return this.resolveMessage(
-      await this.interaction.reply({ ...options, fetchReply: true }).catch(debugError),
+      await this.interaction
+        .reply({ ...options, fetchReply: true })
+        .then((a) => {
+          this.client.interactionStatistics.success += 1;
+          return a;
+        })
+        .catch((e) => {
+          this.client.interactionStatistics.catchedErrors += 1;
+          return debugError(e);
+        }),
     );
   }
 
   async send(options: MessagePayload | InteractionReplyOptions): Promise<Message | null> {
-    return this.resolveMessage(await this.interaction.followUp(options).catch(debugError));
+    return this.resolveMessage(
+      await this.interaction
+        .followUp(options)
+        .then((a) => {
+          this.client.interactionStatistics.success += 1;
+          return a;
+        })
+        .catch((e) => {
+          this.client.interactionStatistics.catchedErrors += 1;
+          return debugError(e);
+        }),
+    );
   }
 
   async fetchReply(): Promise<Message | null> {
-    return this.resolveMessage(await this.interaction.fetchReply().catch(debugError));
+    return this.resolveMessage(
+      await this.interaction
+        .fetchReply()
+        .then((a) => {
+          this.client.interactionStatistics.success += 1;
+          return a;
+        })
+        .catch((e) => {
+          this.client.interactionStatistics.catchedErrors += 1;
+          return debugError(e);
+        }),
+    );
   }
 
   async deleteReply(): Promise<void | null> {
-    return this.interaction.deleteReply().catch(debugError);
+    return this.interaction
+      .deleteReply()
+      .then(() => {
+        this.client.interactionStatistics.success += 1;
+      })
+      .catch((e) => {
+        this.client.interactionStatistics.catchedErrors += 1;
+        debugError(e);
+      });
   }
 
   locale(text: Translation, translateVars = {}): string {

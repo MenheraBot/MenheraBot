@@ -1,6 +1,7 @@
 import { Abilities } from '@roleplay/data';
 import { ApplicationCommandOptionChoice, AutocompleteInteraction } from 'discord.js-light';
 import i18next from 'i18next';
+import MenheraClient from 'MenheraClient';
 import { findBestMatch } from 'string-similarity';
 
 const availableAbilities: { name: string; id: number }[] = [];
@@ -23,7 +24,7 @@ const populateTranslations = () => {
 };
 
 const ExecuteAutocompleteInteractions = async (
-  interaction: AutocompleteInteraction,
+  interaction: AutocompleteInteraction & { client: MenheraClient },
 ): Promise<void> => {
   if (availableAbilities.length === 0) populateTranslations();
   if (interaction.commandName !== 'centro') return;
@@ -53,6 +54,8 @@ const ExecuteAutocompleteInteractions = async (
   });
 
   if (abilities.length > 0) interaction.respond(abilities);
+
+  interaction.client.interactionStatistics.success += 1;
 };
 
 export default ExecuteAutocompleteInteractions;

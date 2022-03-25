@@ -9,6 +9,8 @@ export default class InteractionCreate {
 
     if (!interaction.channel?.isText()) return;
 
+    interaction.client.interactionStatistics.received += 1;
+
     if (interaction.isAutocomplete()) {
       ExecuteAutocompleteInteractions(interaction);
       return;

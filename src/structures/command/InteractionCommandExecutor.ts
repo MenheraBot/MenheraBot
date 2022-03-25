@@ -107,7 +107,10 @@ const InteractionCommandExecutor = async (
 
   const now = Date.now();
 
-  if (now - interaction.createdTimestamp >= 3000) return;
+  if (now - interaction.createdTimestamp >= 3000) {
+    interaction.client.interactionStatistics.failed += 1;
+    return;
+  }
 
   const timestamps = interaction.client.cooldowns.get(command.config.name) as Collection<
     string,

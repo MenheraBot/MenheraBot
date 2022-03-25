@@ -40,6 +40,13 @@ export default class MenheraClient extends Client {
 
   public shuttingDown: boolean;
 
+  public interactionStatistics = {
+    success: 0,
+    failed: 0,
+    catchedErrors: 0,
+    received: 0,
+  };
+
   constructor(options: ClientOptions, public config: IClientConfigs) {
     super(options);
     this.database = new Database(
@@ -79,6 +86,16 @@ export default class MenheraClient extends Client {
     this.loadEvents(this.config.eventsDirectory);
     this.picassoWs.connect().catch(debugError);
     return true;
+  }
+
+  async getInteractionStatistics(): Promise<this['interactionStatistics']> {
+    if (this.cluster.id === 0) {
+      return this.interactionStatistics;
+    }
+    // @ts-expect-error client n é sexual
+    return this.cluster.broadcastEval((c: MenheraClient) => c.interactionStatistics, {
+      cluster: 0,
+    });
   }
 
   async reloadCommand(commandName: string): Promise<void | false> {
