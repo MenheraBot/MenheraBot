@@ -265,6 +265,8 @@ export default class RouletteInteractionCommand extends InteractionCommand {
 
       ctx.client.repositories.starRepository.add(ctx.author.id, profit);
 
+      HttpRequests.postRouletteGame(ctx.author.id, bet, operation, profit, true, selection);
+
       ctx.makeMessage({
         embeds: [winEmbed],
         components: [],
