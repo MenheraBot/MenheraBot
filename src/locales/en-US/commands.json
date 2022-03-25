@@ -857,7 +857,8 @@
       "description": "**Settings for Friendly Battles**\n\nPrepare for a friendly battle by fixing your status. You have in total **{{vitality}}** vitality blessings and **{{battle} }** battle blessings to use. Remembering that these blessings are only valid for friendly battles at **Battle Level**\n\nSelect your points below"
     },
     "results": {
-      "title": "End of Battle"
+      "title": "End of Battle",
+      "description": "{{text}}\n\n**Winner:** {{winnerName}}\n**Looser**: {{loserName}}"
     }
   }
 }

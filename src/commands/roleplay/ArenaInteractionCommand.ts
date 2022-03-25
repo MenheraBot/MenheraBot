@@ -6,7 +6,11 @@ import {
   USER_BATTLE_LEVEL,
 } from '@roleplay/Constants';
 import { RoleplayUserSchema, UserBattleConfig, UserBattleEntity } from '@roleplay/Types';
-import { makeCloseCommandButton, prepareUserForDungeon } from '@roleplay/utils/AdventureUtils';
+import {
+  isDead,
+  makeCloseCommandButton,
+  prepareUserForDungeon,
+} from '@roleplay/utils/AdventureUtils';
 import {
   getUserAgility,
   getUserArmor,
@@ -491,7 +495,27 @@ export default class ArenaInteractionCommand extends InteractionCommand {
       }),
     ).battleLoop();
 
-    console.log(battleResults);
+    const winner = isDead(battleResults.defender)
+      ? { winner: battleResults.attacker, winnerDiscordUser: battleResults.attackerDiscordUser }
+      : { winner: battleResults.defender, winnerDiscordUser: battleResults.defenderDiscordUser };
+
+    const loser = isDead(battleResults.attacker)
+      ? { loser: battleResults.attacker, loserDiscordUser: battleResults.attackerDiscordUser }
+      : { loser: battleResults.defender, loserDiscordUser: battleResults.defenderDiscordUser };
+
+    const embed = new MessageEmbed()
+      .setColor(COLORS.ACTIONS)
+      .setTitle(ctx.locale('commands:arena.results.title'))
+      .setDescription(
+        ctx.locale('commands:arena.results.description', {
+          text: battleResults.lastText,
+          winnerName: winner.winnerDiscordUser.username,
+          loserName: loser.loserDiscordUser.username,
+        }),
+      )
+      .setThumbnail(winner.winnerDiscordUser.displayAvatarURL({ dynamic: true }));
+
+    ctx.makeMessage({ embeds: [embed], content: null, components: [] });
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
@@ -692,7 +716,7 @@ export default class ArenaInteractionCommand extends InteractionCommand {
               });
               return;
             }
-            // TODO: Send config if is a leveled battle
+
             return ArenaInteractionCommand.pvpLoop(
               ctx,
               ArenaInteractionCommand.prepareUserForPvP(author, true, authorBlesses),

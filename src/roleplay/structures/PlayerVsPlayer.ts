@@ -22,8 +22,6 @@ import {
 } from '../utils/Calculations';
 import { getAbilityById, getClassById } from '../utils/DataUtils';
 
-// TODO: Make new localizations for PvP
-
 interface PvpUserInfoStructure {
   missedAttacks: number;
   didRunaway: boolean;
