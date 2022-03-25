@@ -45,7 +45,7 @@ export default class MemeInteractionCommand extends InteractionCommand {
     const randomPhrase = `${Math.floor(Math.random() * 3)}`;
 
     const phrase = ctx.locale(`commands:fodase.${randomPhrase as '1'}`, {
-      author: ctx.author.toString(),
+      author: ctx.author.username,
     });
 
     const selectedImage = await HttpRequests.getAssetImageUrl('fodase');
