@@ -29,8 +29,8 @@ const PicassoRequest = axios.create({
   timeout: 5000,
   headers: {
     'Content-Type': 'application/json',
-    'User-Agent': process.env.MENHERA_AGENT,
-    Authorization: process.env.API_TOKEN,
+    'User-Agent': process.env.MENHERA_AGENT as string,
+    Authorization: process.env.API_TOKEN as string,
   },
 });
 
@@ -38,7 +38,7 @@ const topggRequest = axios.create({
   baseURL: `https://top.gg/api`,
   headers: {
     'Content-Type': 'application/json',
-    Authorization: process.env.DBL_TOKEN,
+    Authorization: process.env.DBL_TOKEN as string,
   },
 });
 
@@ -47,8 +47,8 @@ const apiRequest = axios.create({
   timeout: 5000,
   headers: {
     'Content-Type': 'application/json',
-    'User-Agent': process.env.MENHERA_AGENT,
-    Authorization: process.env.API_TOKEN,
+    'User-Agent': process.env.MENHERA_AGENT as string,
+    Authorization: process.env.API_TOKEN as string,
   },
 });
 
@@ -57,8 +57,8 @@ const StatusRequest = axios.create({
   timeout: 5000,
   headers: {
     'Content-Type': 'application/json',
-    'User-Agent': process.env.MENHERA_AGENT,
-    Authorization: process.env.API_TOKEN,
+    'User-Agent': process.env.MENHERA_AGENT as string,
+    Authorization: process.env.API_TOKEN as string,
   },
 });
 
