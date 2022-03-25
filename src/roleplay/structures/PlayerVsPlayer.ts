@@ -115,6 +115,39 @@ export default class PlayerVsPlayer {
     const attackerDodge = calculateDodge(attackerAgility, defenderAgility);
     const attackerAttackSuccess = calculateAttackSuccess(attackerAgility, defenderAgility);
 
+    const baseFields = [
+      {
+        name: this.ctx.locale('roleplay:pvp.user-stats', { user: toAttackUser.username }),
+        value: this.ctx.locale('roleplay:pvp.user-stats-info', {
+          life: toAttack.life,
+          mana: toAttack.mana,
+          damage: attackerDamage,
+          armor: attackerArmor,
+          intelligence: attackerIntelligence,
+          agility: attackerAgility,
+          chanceToConnect: (100 - attackerAttackSuccess).toFixed(2),
+          chanceToDodge: attackerDodge.toFixed(2),
+        }),
+        inline: true,
+      },
+      {
+        name: this.ctx.locale('roleplay:pvp.user-stats', { user: toDefendUser.username }),
+        value: this.ctx.locale('roleplay:pvp.user-stats-info', {
+          life: toDefend.life,
+          mana: toDefend.mana,
+          damage: defenderDamage,
+          armor: defenderArmor,
+          intelligence: defenderIntelligence,
+          agility: defenderAgility,
+          chanceToConnect: (100 - defenderAttackSuccess).toFixed(2),
+          chanceToDodge: defenderDodge.toFixed(2),
+        }),
+        inline: true,
+      },
+    ];
+
+    if (toAttackUser.id !== this.attackerDiscordUser.id) baseFields.reverse();
+
     const embed = new MessageEmbed()
       .setTitle(
         this.ctx.prettyResponse('sword', 'roleplay:pvp.title', {
@@ -129,34 +162,7 @@ export default class PlayerVsPlayer {
       })
       .setDescription(this.lastText)
       .addFields([
-        {
-          name: this.ctx.locale('roleplay:pvp.user-stats', { user: toAttackUser.username }),
-          value: this.ctx.locale('roleplay:pvp.user-stats-info', {
-            life: toAttack.life,
-            mana: toAttack.mana,
-            damage: attackerDamage,
-            armor: attackerArmor,
-            intelligence: attackerIntelligence,
-            agility: attackerAgility,
-            chanceToConnect: (100 - attackerAttackSuccess).toFixed(2),
-            chanceToDodge: attackerDodge.toFixed(2),
-          }),
-          inline: true,
-        },
-        {
-          name: this.ctx.locale('roleplay:pvp.user-stats', { user: toDefendUser.username }),
-          value: this.ctx.locale('roleplay:battle.enemy-stats-info', {
-            life: toDefend.life,
-            mana: toDefend.mana,
-            damage: defenderDamage,
-            armor: defenderArmor,
-            intelligence: defenderIntelligence,
-            agility: defenderAgility,
-            chanceToConnect: (100 - defenderAttackSuccess).toFixed(2),
-            chanceToDodge: defenderDodge.toFixed(2),
-          }),
-          inline: true,
-        },
+        ...baseFields,
         {
           name: this.ctx.locale('roleplay:battle.options.available'),
           value: '\u200b',
