@@ -35,7 +35,7 @@ const ExecuteAutocompleteInteractions = async (
   if (`${texted}`.length < 5) return interaction.respond([]);
 
   const ratings =
-    interaction.locale === 'en-US'
+    interaction.guildLocale === 'en-US'
       ? findBestMatch(`${texted}`, locales['en-US'])
       : findBestMatch(`${texted}`, locales['pt-BR']);
 
