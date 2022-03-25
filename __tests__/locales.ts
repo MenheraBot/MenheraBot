@@ -9,25 +9,22 @@ describe('Check if all locales files are ok', () => {
     const portuguese = Object.entries(PtAbilities);
     const english = Object.entries(EnAbilities);
 
-    const allPt: string[] = [];
-    const allEn: string[] = [];
-
+    let allIdsOk = true;
     let hasNameAndDescPT = true;
     let hasNameAndDescEN = true;
 
     portuguese.forEach((a) => {
-      allPt.push(a[0]);
+      if (!english.some((b) => b[0] === a[0])) allIdsOk = false;
 
       if (!('name' in a[1]) || !('description' in a[1])) hasNameAndDescPT = false;
     });
     english.forEach((a) => {
-      allEn.push(a[0]);
       if (!('name' in a[1]) || !('description' in a[1])) hasNameAndDescEN = false;
     });
 
     expect(hasNameAndDescEN).toBe(true);
     expect(hasNameAndDescPT).toBe(true);
-    expect(allPt).toContainEqual(allEn);
+    expect(allIdsOk).toBe(true);
   });
 
   test('permissions file are ok', () => {
