@@ -4,24 +4,21 @@ import i18next from 'i18next';
 import { findBestMatch } from 'string-similarity';
 
 const availableAbilities: { name: string; id: number }[] = [];
-const allNames: string[] = [];
+const locales: { 'pt-BR': string[]; 'en-US': string[] } = { 'pt-BR': [], 'en-US': [] };
 
 const populateTranslations = () => {
   const toPortuguese = i18next.getFixedT('pt-BR');
   const toEnglish = i18next.getFixedT('en-US');
 
   Object.keys(Abilities).forEach((id) => {
-    allNames.push(toPortuguese(`abilities:${id}.name`));
-    availableAbilities.push({
-      name: toPortuguese(`abilities:${id}.name`),
-      id: Number(id),
-    });
+    const pt = toPortuguese(`abilities:${id}.name`);
+    const en = toEnglish(`abilities:${id}.name`);
 
-    allNames.push(toEnglish(`abilities:${id}.name`));
-    availableAbilities.push({
-      name: toEnglish(`abilities:${id}.name`),
-      id: Number(id),
-    });
+    locales['pt-BR'].push(pt);
+    locales['en-US'].push(en);
+
+    availableAbilities.push({ name: pt, id: Number(id) });
+    availableAbilities.push({ name: en, id: Number(id) });
   });
 };
 
@@ -36,7 +33,10 @@ const ExecuteAutocompleteInteractions = async (
 
   if (`${texted}`.length < 5) return interaction.respond([]);
 
-  const ratings = findBestMatch(`${texted}`, allNames);
+  const ratings =
+    interaction.locale === 'en-US'
+      ? findBestMatch(`${texted}`, locales['en-US'])
+      : findBestMatch(`${texted}`, locales['pt-BR']);
 
   const toSendOptions = ratings.ratings.filter((a) => a.rating >= 0.35);
   if (toSendOptions.length === 0) return interaction.respond([]);

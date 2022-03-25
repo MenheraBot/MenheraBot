@@ -4,14 +4,13 @@ import InteractionCommandContext from '@structures/command/InteractionContext';
 import { COLORS } from '@structures/Constants';
 import Util, { actionRow, makeCustomId, resolveSeparatedStrings } from '@utils/Util';
 import { MessageEmbed, MessageSelectMenu, SelectMenuInteraction, User } from 'discord.js-light';
-import { invertBattleTurn, isDead } from '../utils/AdventureUtils';
+import { getAbilityDamageFromEffects, invertBattleTurn, isDead } from '../utils/AdventureUtils';
 import {
   calculateAttackSuccess,
   calculateDodge,
   calculateEffectiveDamage,
   calculateHeal,
   calculatePoison,
-  calculateRunawaySuccess,
   calculateUserPenetration,
   didUserHit,
   getAbilityCost,
@@ -57,9 +56,9 @@ export default class PlayerVsPlayer {
     const needStop = await this.userAttack(whoWillStart);
 
     if (!needStop) {
-      const enemyStop = await this.userAttack(invertBattleTurn(whoWillStart));
+      const nextStop = await this.userAttack(invertBattleTurn(whoWillStart));
       this.clearEffects();
-      if (!enemyStop) return this.battleLoop();
+      if (!nextStop) return this.battleLoop();
     }
 
     return this;
@@ -87,16 +86,20 @@ export default class PlayerVsPlayer {
   }
 
   private async userAttack(user: BattleUserTurn): Promise<boolean> {
-    if (this[`${user}Info`].missedAttacks >= 4) {
-      this[user].life = 0;
-      this.lastText = this.ctx.locale('roleplay:battle.user-death');
-      return true;
-    }
-
     const toAttack = this[user];
     const toDefend = this[invertBattleTurn(user)];
     const toAttackUser = this[`${user}DiscordUser`];
-    // const toDefendUser = this[`${invertBattleTurn(user)}DiscordUser`];
+    const toDefendUser = this[`${invertBattleTurn(user)}DiscordUser`];
+
+    if (this[`${user}Info`].missedAttacks >= 4) {
+      this[user].life = 0;
+      this.lastText = this.ctx.locale('roleplay:pvp.pvp-finished', {
+        winner: toDefendUser.username,
+        loser: toAttackUser.username,
+        reason: this.ctx.locale('roleplay:pvp.reasons.miss-attack'),
+      });
+      return true;
+    }
 
     const attackerDamage = getUserDamage(toAttack);
     const attackerArmor = getUserArmor(toAttack);
@@ -107,15 +110,17 @@ export default class PlayerVsPlayer {
     const defenderDamage = getUserDamage(toDefend);
     const defenderArmor = getUserArmor(toDefend);
     const defenderAgility = getUserAgility(toDefend);
+    const defenderIntelligence = getUserAgility(toDefend);
+    const defenderDodge = calculateDodge(defenderAgility, attackerAgility);
+    const defenderAttackSuccess = calculateAttackSuccess(defenderAgility, attackerAgility);
 
     const attackerDodge = calculateDodge(attackerAgility, defenderAgility);
     const attackerAttackSuccess = calculateAttackSuccess(attackerAgility, defenderAgility);
-    const attackerRunaway = calculateRunawaySuccess(attackerAgility, defenderAgility);
 
     const embed = new MessageEmbed()
       .setTitle(
-        this.ctx.prettyResponse('sword', 'roleplay:battle.title', {
-          name: toAttackUser.username,
+        this.ctx.prettyResponse('sword', 'roleplay:pvp.title', {
+          user: toAttackUser.username,
         }),
       )
       .setColor(COLORS.Battle)
@@ -127,8 +132,8 @@ export default class PlayerVsPlayer {
       .setDescription(this.lastText)
       .addFields([
         {
-          name: this.ctx.locale('roleplay:battle.your-stats'),
-          value: this.ctx.locale('roleplay:battle.your-stats-info', {
+          name: this.ctx.locale('roleplay:pvp.user-stats', { user: toAttackUser.username }),
+          value: this.ctx.locale('roleplay:pvp.user-stats-info', {
             life: toAttack.life,
             mana: toAttack.mana,
             damage: attackerDamage,
@@ -141,12 +146,16 @@ export default class PlayerVsPlayer {
           inline: true,
         },
         {
-          name: this.ctx.locale('roleplay:battle.enemy-stats'),
+          name: this.ctx.locale('roleplay:pvp.user-stats', { user: toDefendUser.username }),
           value: this.ctx.locale('roleplay:battle.enemy-stats-info', {
             life: toDefend.life,
+            mana: toDefend.mana,
             damage: defenderDamage,
             armor: defenderArmor,
+            intelligence: defenderIntelligence,
             agility: defenderAgility,
+            chanceToConnect: (100 - defenderAttackSuccess).toFixed(2),
+            chanceToDodge: defenderDodge.toFixed(2),
           }),
           inline: true,
         },
@@ -162,20 +171,13 @@ export default class PlayerVsPlayer {
     const options = new MessageSelectMenu()
       .setCustomId(selectCustomId)
       .setPlaceholder(this.ctx.locale('roleplay:battle.select'))
-      .addOptions(
-        {
-          label: this.ctx.locale('roleplay:battle.options.hand-attack'),
-          value: 'HANDATTACK',
-          description: this.ctx
-            .locale('roleplay:battle.options.hand-attack-description')
-            .substring(0, 100),
-        },
-        {
-          label: this.ctx.locale('roleplay:battle.options.runaway'),
-          value: 'RUNAWAY',
-          description: this.ctx.locale('roleplay:battle.options.runaway-description'),
-        },
-      );
+      .addOptions({
+        label: this.ctx.locale('roleplay:battle.options.hand-attack'),
+        value: 'HANDATTACK',
+        description: this.ctx
+          .locale('roleplay:battle.options.hand-attack-description')
+          .substring(0, 100),
+      });
 
     embed.addFields([
       {
@@ -186,32 +188,33 @@ export default class PlayerVsPlayer {
         }),
         inline: true,
       },
-      {
-        name: this.ctx.locale('roleplay:battle.options.runaway'),
-        value: this.ctx.locale('roleplay:battle.options.runaway-info', {
-          chance: (100 - attackerRunaway).toFixed(2),
-        }),
-        inline: true,
-      },
     ]);
 
     toAttack.abilities.forEach((ability) => {
+      const abilityName = this.ctx.locale(`abilities:${ability.id as 100}.name`);
+      const abilityCost = getAbilityCost(ability);
+      const canUseAbility = toAttack.mana >= abilityCost;
+
       embed.addField(
-        this.ctx.locale(`abilities:${ability.id as 100}.name`),
+        abilityName,
         this.ctx.locale('roleplay:battle.options.ability-info', {
-          damage: '`??`',
-          cost: getAbilityCost(ability),
-          'no-mana':
-            toAttack.mana < getAbilityCost(ability)
-              ? this.ctx.locale('roleplay:battle.no-mana')
-              : '',
+          damage: getAbilityDamageFromEffects(
+            getAbilityById(ability.id).data.effects,
+            attackerIntelligence,
+            ability.level,
+          ),
+          cost: abilityCost,
+          'no-mana': !canUseAbility ? this.ctx.locale('roleplay:battle.no-mana') : '',
         }),
         true,
       );
 
-      if (toAttack.mana >= getAbilityCost(ability)) {
+      if (canUseAbility) {
         options.addOptions({
-          label: this.ctx.locale(`abilities:${ability.id as 100}.name`),
+          label: abilityName,
+          description: this.ctx
+            .locale(`abilities:${ability.id as 100}.description`)
+            .substring(0, 100),
           value: `ABILITY | ${ability.id}`,
         });
       }
@@ -229,7 +232,9 @@ export default class PlayerVsPlayer {
 
     if (!selectedOptions) {
       this[`${user}Info`].missedAttacks += 1;
-      this.lastText = this.ctx.locale('roleplay:battle.no-action');
+      this.lastText = this.ctx.locale('roleplay:pvp.user-no-action', {
+        user: toAttackUser.username,
+      });
       return false;
     }
 
@@ -245,25 +250,19 @@ export default class PlayerVsPlayer {
         if (didConnect) toDefend.life -= damageDealt;
 
         if (isDead(toDefend)) {
-          this.lastText = this.ctx.locale('roleplay:battle.enemy-death');
+          this.lastText = this.ctx.locale('roleplay:pvp.pvp-finished', {
+            winner: toAttackUser.username,
+            loser: toDefendUser.username,
+            reason: this.ctx.locale('roleplay:pvp.reasons.user-death'),
+          });
           return true;
         }
-        this.lastText = this.ctx.locale('roleplay:battle.attack-text', {
+        this.lastText = this.ctx.locale('roleplay:pvp.attack-text', {
+          attacker: toAttackUser.username,
+          defender: toDefendUser.username,
           attack: this.ctx.locale(`roleplay:battle.options.hand-attack`),
-          damage: didConnect ? damageDealt : this.ctx.locale('roleplay:battle.miss-attack'),
+          damage: didConnect ? damageDealt : this.ctx.locale('roleplay:pvp.miss-attack'),
         });
-        return false;
-      }
-      case 'RUNAWAY': {
-        const didRunaway = didUserHit(attackerRunaway);
-
-        if (didRunaway) {
-          this.lastText = this.ctx.locale('roleplay:battle.runaway-success');
-          this[`${user}Info`].didRunaway = true;
-          return true;
-        }
-
-        this.lastText = this.ctx.locale('roleplay:battle.runaway-fail');
         return false;
       }
       case 'ABILITY': {
@@ -322,19 +321,23 @@ export default class PlayerVsPlayer {
         toAttack.mana -= getAbilityCost(usedAbility);
 
         if (isDead(toDefend)) {
-          this.lastText = this.ctx.locale('roleplay:battle.enemy-death');
+          this.lastText = this.ctx.locale('roleplay:pvp.pvp-finished', {
+            winner: toAttackUser.username,
+            loser: toDefendUser.username,
+            reason: this.ctx.locale('roleplay:pvp.reasons.user-death'),
+          });
           return true;
         }
-        this.lastText = this.ctx.locale('roleplay:battle.attack-text', {
+        this.lastText = this.ctx.locale('roleplay:pvp.attack-text', {
           attack: this.ctx.locale(
             `abilities:${resolveSeparatedStrings(selectedOptions.values[0])[1] as '100'}.name`,
           ),
-          damage: didConnect ? damageDealt : this.ctx.locale('roleplay:battle.miss-attack'),
+          damage: didConnect ? damageDealt : this.ctx.locale('roleplay:pvp.miss-attack'),
         });
         return false;
       }
     }
-    this.lastText = this.ctx.locale('roleplay:battle.no-action');
+    this.lastText = this.ctx.locale('roleplay:pvp.user-no-action', { user: toAttackUser.username });
     return false;
   }
 }

@@ -124,5 +124,19 @@
     "dungeon-description": "Você já foi para a dungeon recentemente, e precisa descansar por mais **{{time}}** {{subtime}}",
     "death": "Você Está Morto!",
     "death-description": "Você está na Igreja descansando de uma morte recente! Use o comando da Igreja para ver melhor isso..."
+  },
+  "pvp": {
+    "start-text": "Bem-Vindos à arena PvP de Boleham. Um feitiço antigo faz com que vocês não sofram danos fora daqui\n**{{author}}** está batalhando contra **{{mentioned}}**. Boa Sorte!",
+    "title": "Turno de {{user}}",
+    "pvp-finished": "**A BATALHA ACABOU!!** Vitória de **{{winner}}** sobre **{{loser}}.** {{loser}} {{reason}}",
+    "user-stats": "Status de {{user}}",
+    "user-no-action": "{{user}} não tomou nenhuma ação no tempo",
+    "attack-text": "**{{attacker}}** ataca **{{defender}}** com {{attack}} e causa `{{damage}}` dano",
+    "miss-attack": "0 por ter errado o ataque, de",
+    "user-stats-info": "❤️ | Vida: **{{life}}**\n💧 | Mana: **{{mana}}**\n⚔️ | Dano: **{{damage}}** | Precisão: **{{chanceToConnect}}%**\n🛡️ | Defesa: **{{armor}}** | Esquiva: **{{chanceToDodge}}%**\n🧠 | Inteligência: **{{intelligence}}**\n👢 | Agilidade: **{{agility}}**",
+    "reasons": {
+      "miss-attack": "errou mais de 4 ataques",
+      "user-death": "morreu em batalha"
+    }
   }
 }

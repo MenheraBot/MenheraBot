@@ -1,4 +1,5 @@
 import {
+  AbilityEffect,
   BackPackItem,
   BattleUserTurn,
   EnemyDrops,
@@ -203,3 +204,22 @@ export const makeLevelUp = (
 
 export const invertBattleTurn = (lastTurn: BattleUserTurn): BattleUserTurn =>
   lastTurn === 'attacker' ? 'defender' : 'attacker';
+
+export const getAbilityDamageFromEffects = (
+  effects: AbilityEffect[],
+  userIntelligence: number,
+  abilityLevel: number,
+): number =>
+  effects.reduce((p, c) => {
+    if (c.effectType === 'damage') {
+      const abilityDamage = Math.floor(
+        c.effectValue +
+          userIntelligence * (c.effectValueByIntelligence / 100) +
+          c.effectValuePerLevel * abilityLevel,
+      );
+
+      return p + abilityDamage;
+    }
+
+    return p;
+  }, 0);

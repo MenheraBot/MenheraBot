@@ -485,9 +485,9 @@ export default class ArenaInteractionCommand extends InteractionCommand {
       prepareUserForDungeon(defender),
       attackerDiscordUser,
       defenderDiscordUser,
-      ctx.locale('roleplay:battle.find', {
-        enemy: defenderDiscordUser.username,
-        level: defender.level,
+      ctx.locale('roleplay:pvp.start-text', {
+        author: attackerDiscordUser.username,
+        mentioned: defenderDiscordUser.username,
       }),
     ).battleLoop();
 
