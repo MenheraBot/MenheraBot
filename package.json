@@ -17,12 +17,8 @@
     "lint:fix": "eslint --fix .",
     "lint:test": "eslint .",
     "typecheck": "tsc --noEmit",
-    "docker:build": "docker build -t menhera .",
-    "docker:run": "docker run -d --name MenheraBot menhera",
-    "test": "jest --passWithNoTests --runInBand --no-cache",
-    "test:staged": "npm test -- --findRelatedTests",
-    "test:ci": "npm test -- --coverage",
-    "test:coveralls": "npm run test:ci && coveralls < coverage/lcov.info"
+    "test": "jest --passWithNoTests --no-cache",
+    "test:debug": "jest --passWithNoTests --runInBand --no-cache"
   },
   "keywords": [],
   "author": "Luxanna Crownguard (ySnoopyDogy)",
