@@ -22,8 +22,11 @@ const handleRequest = async (ctx: Context, client: MenheraClient) => {
     return;
   }
 
-  /* 
-  client.actions.InteractionCreate.handle(ctx.request.body); */
+  if (!client.shardProcessEnded) {
+    // @ts-expect-error actions is private
+    client.actions.InteractionCreate.handle(ctx.request.body);
+    return;
+  }
 
   client.cluster.evalOnCluster(
     // @ts-expect-error Context in this package is weird
