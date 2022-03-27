@@ -293,14 +293,15 @@ export default class PlayerVsPlayer {
           } else if (a.effectType === 'heal' && a.durationInTurns === -1) {
             toAttack.life = Math.min(
               getUserMaxLife(toAttack),
-              calculateHeal(toAttack, {
-                ...a,
-                level: usedAbility.level,
-                author: {
-                  totalIntelligence: attackerIntelligence,
-                  elementSinergy: getClassById(toAttack.class).data.elementSinergy,
-                },
-              }),
+              toAttack.life +
+                calculateHeal(toAttack, {
+                  ...a,
+                  level: usedAbility.level,
+                  author: {
+                    totalIntelligence: attackerIntelligence,
+                    elementSinergy: getClassById(toAttack.class).data.elementSinergy,
+                  },
+                }),
             );
           } else if (a.target === 'self')
             toAttack.effects.push({
