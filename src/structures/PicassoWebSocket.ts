@@ -99,7 +99,10 @@ export default class PicassoWebSocket {
     this.ws.send(JSON.stringify(toSend));
 
     return new Promise((res) => {
-      if (!this.ws) return res({ err: true });
+      if (!this.ws) {
+        res({ err: true });
+        return;
+      }
       const timeout = setTimeout(() => {
         res({ err: true });
       }, 5000);

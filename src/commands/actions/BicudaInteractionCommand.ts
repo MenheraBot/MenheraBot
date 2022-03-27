@@ -16,6 +16,12 @@ export default class BicudaInteractionCommand extends InteractionCommand {
           description: 'Usuário para chutar',
           required: true,
         },
+        {
+          name: 'motivo',
+          type: 'STRING',
+          description: 'Por que você quer chutar?',
+          required: false,
+        },
       ],
       category: 'actions',
       cooldown: 5,
@@ -24,6 +30,7 @@ export default class BicudaInteractionCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const user = ctx.options.getUser('user', true);
+    const reason = ctx.options.getString('motivo');
 
     if (user.bot) {
       await ctx.makeMessage({
@@ -54,6 +61,8 @@ export default class BicudaInteractionCommand extends InteractionCommand {
       )
       .setImage(selectedImage)
       .setThumbnail(avatar);
+
+    if (reason) embed.setDescription(`${embed.description}\n\n_"${reason}"_`);
 
     await ctx.makeMessage({ embeds: [embed] });
   }

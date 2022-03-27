@@ -16,6 +16,12 @@ export default class SniffInteractionCommand extends InteractionCommand {
           description: 'Usuário pra mete a narigada sugadora ultradimensional',
           required: false,
         },
+        {
+          name: 'motivo',
+          type: 'STRING',
+          description: 'Por que tu quer dar a talda cheirada?',
+          required: false,
+        },
       ],
       category: 'actions',
       cooldown: 5,
@@ -24,6 +30,7 @@ export default class SniffInteractionCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const user = ctx.options.getUser('user');
+    const reason = ctx.options.getString('motivo');
 
     if (user?.bot) {
       await ctx.makeMessage({
@@ -47,6 +54,8 @@ export default class SniffInteractionCommand extends InteractionCommand {
         .setThumbnail(avatar)
         .setImage(selectedImage);
 
+      if (reason) embed.setDescription(`${embed.description}\n\n_"${reason}"_`);
+
       await ctx.makeMessage({ embeds: [embed] });
       return;
     }
@@ -62,6 +71,8 @@ export default class SniffInteractionCommand extends InteractionCommand {
       )
       .setImage(selectedImage)
       .setThumbnail(avatar);
+
+    if (reason) embed.setDescription(`${embed.description}\n\n_"${reason}"_`);
 
     await ctx.makeMessage({ embeds: [embed] });
   }

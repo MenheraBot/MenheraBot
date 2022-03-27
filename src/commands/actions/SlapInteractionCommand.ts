@@ -16,6 +16,12 @@ export default class SlapInteractionCommand extends InteractionCommand {
           description: 'Usuário pra mete o tapa',
           required: true,
         },
+        {
+          name: 'motivo',
+          type: 'STRING',
+          description: 'Por que tu quer fazer isso?',
+          required: false,
+        },
       ],
       category: 'actions',
       cooldown: 5,
@@ -24,6 +30,7 @@ export default class SlapInteractionCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const user = ctx.options.getUser('user', true);
+    const reason = ctx.options.getString('motivo');
 
     if (user.bot) {
       await ctx.makeMessage({
@@ -54,6 +61,8 @@ export default class SlapInteractionCommand extends InteractionCommand {
       )
       .setImage(selectedImage)
       .setThumbnail(avatar);
+
+    if (reason) embed.setDescription(`${embed.description}\n\n_"${reason}"_`);
 
     await ctx.makeMessage({ embeds: [embed] });
   }

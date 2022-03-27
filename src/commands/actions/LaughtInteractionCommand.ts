@@ -17,6 +17,12 @@ export default class LaughtInteractionCommand extends InteractionCommand {
           description: 'Usuário que te fez rir',
           required: false,
         },
+        {
+          type: 'STRING',
+          name: 'motivo',
+          description: 'Por que tu ta rindo?',
+          required: false,
+        },
       ],
       cooldown: 5,
     });
@@ -27,6 +33,7 @@ export default class LaughtInteractionCommand extends InteractionCommand {
 
     const selectedImage = await HttpRequests.getAssetImageUrl('laugh');
     const user = ctx.options.getUser('user');
+    const reason = ctx.options.getString('motivo');
 
     if (!user || user.id === ctx.author.id) {
       const embed = new MessageEmbed()
@@ -39,6 +46,8 @@ export default class LaughtInteractionCommand extends InteractionCommand {
         )
         .setThumbnail(avatar)
         .setImage(selectedImage);
+
+      if (reason) embed.setDescription(`${embed.description}\n\n_"${reason}"_`);
 
       await ctx.makeMessage({ embeds: [embed] });
       return;
@@ -55,6 +64,8 @@ export default class LaughtInteractionCommand extends InteractionCommand {
       )
       .setImage(selectedImage)
       .setThumbnail(avatar);
+
+    if (reason) embed.setDescription(`${embed.description}\n\n_"${reason}"_`);
 
     await ctx.makeMessage({ embeds: [embed] });
   }

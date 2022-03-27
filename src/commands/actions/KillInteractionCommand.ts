@@ -17,6 +17,12 @@ export default class KillInteractionCommand extends InteractionCommand {
           description: 'Usuário que você quer matar',
           required: true,
         },
+        {
+          type: 'STRING',
+          name: 'motivo',
+          description: 'Por que tu quer fazer isso?',
+          required: false,
+        },
       ],
       cooldown: 5,
     });
@@ -24,6 +30,7 @@ export default class KillInteractionCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const user = ctx.options.getUser('user', true);
+    const reason = ctx.options.getString('motivo');
 
     if (user.id === ctx.author.id) {
       await ctx.makeMessage({
@@ -56,6 +63,8 @@ export default class KillInteractionCommand extends InteractionCommand {
         .setImage(selectedImage)
         .setThumbnail(avatar);
 
+      if (reason) embed.setDescription(`${embed.description}\n\n_"${reason}"_`);
+
       await ctx.makeMessage({ embeds: [embed] });
       return;
     }
@@ -72,6 +81,8 @@ export default class KillInteractionCommand extends InteractionCommand {
       )
       .setImage(selectedImage)
       .setThumbnail(avatar);
+
+    if (reason) embed.setDescription(`${embed.description}\n\n_"${reason}"_`);
 
     await ctx.makeMessage({ embeds: [embed] });
   }

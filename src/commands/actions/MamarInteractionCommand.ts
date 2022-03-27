@@ -18,6 +18,12 @@ export default class MamarInteractionCommand extends InteractionCommand {
           description: 'Usuário que você quer mamar',
           required: true,
         },
+        {
+          type: 'STRING',
+          name: 'motivo',
+          description: 'Por que tu quer mamar?',
+          required: false,
+        },
       ],
       cooldown: 5,
     });
@@ -25,6 +31,7 @@ export default class MamarInteractionCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const mention = ctx.options.getUser('user', true);
+    const reason = ctx.options.getString('motivo');
 
     if (mention.id === ctx.author.id) {
       await ctx.makeMessage({
@@ -55,6 +62,8 @@ export default class MamarInteractionCommand extends InteractionCommand {
       )
       .setImage(selectedImage)
       .setThumbnail(avatar);
+
+    if (reason) embed.setDescription(`${embed.description}\n\n_"${reason}"_`);
 
     await ctx.makeMessage({ embeds: [embed] });
     await ctx.client.repositories.mamarRepository.mamar(ctx.author.id, mention.id);

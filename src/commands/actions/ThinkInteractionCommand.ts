@@ -16,6 +16,12 @@ export default class ThinkInteractionCommand extends InteractionCommand {
           description: 'Usuário em que você está pensando',
           required: false,
         },
+        {
+          name: 'motivo',
+          type: 'STRING',
+          description: 'Por que tu ta pensando?',
+          required: false,
+        },
       ],
       category: 'actions',
       cooldown: 5,
@@ -24,6 +30,7 @@ export default class ThinkInteractionCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const user = ctx.options.getUser('user');
+    const reason = ctx.options.getString('motivo');
 
     if (user?.bot) {
       await ctx.makeMessage({
@@ -46,6 +53,8 @@ export default class ThinkInteractionCommand extends InteractionCommand {
         .setThumbnail(avatar)
         .setImage(selectedImage);
 
+      if (reason) embed.setDescription(`${embed.description}\n\n_"${reason}"_`);
+
       await ctx.makeMessage({ embeds: [embed] });
       return;
     }
@@ -61,6 +70,8 @@ export default class ThinkInteractionCommand extends InteractionCommand {
       )
       .setImage(selectedImage)
       .setThumbnail(avatar);
+
+    if (reason) embed.setDescription(`${embed.description}\n\n_"${reason}"_`);
 
     await ctx.makeMessage({ embeds: [embed] });
   }

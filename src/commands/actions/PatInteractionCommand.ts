@@ -16,6 +16,12 @@ export default class PatInteractionCommand extends InteractionCommand {
           description: 'Usuário que você quer fazer carinho',
           required: true,
         },
+        {
+          name: 'motivo',
+          type: 'STRING',
+          description: 'Por que tu quer fazer carinho?',
+          required: false,
+        },
       ],
       category: 'actions',
       cooldown: 5,
@@ -24,6 +30,7 @@ export default class PatInteractionCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const user = ctx.options.getUser('user', true);
+    const reason = ctx.options.getString('motivo');
 
     if (user.id === ctx.author.id) {
       await ctx.makeMessage({
@@ -47,6 +54,8 @@ export default class PatInteractionCommand extends InteractionCommand {
       )
       .setImage(selectedImage)
       .setThumbnail(avatar);
+
+    if (reason) embed.setDescription(`${embed.description}\n\n_"${reason}"_`);
 
     await ctx.makeMessage({ embeds: [embed] });
   }

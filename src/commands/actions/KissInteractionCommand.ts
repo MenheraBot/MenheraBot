@@ -27,6 +27,12 @@ export default class KissInteractionCommand extends InteractionCommand {
             { name: '🌸 | Bochecha', value: '1' },
           ],
         },
+        {
+          type: 'STRING',
+          name: 'motivo',
+          description: 'Por que voce quer beijar?',
+          required: false,
+        },
       ],
       cooldown: 5,
     });
@@ -34,6 +40,7 @@ export default class KissInteractionCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const user = ctx.options.getUser('user', true);
+    const reason = ctx.options.getString('motivo');
 
     if (user.bot) {
       await ctx.makeMessage({
@@ -67,6 +74,8 @@ export default class KissInteractionCommand extends InteractionCommand {
       )
       .setImage(selectedImage)
       .setThumbnail(avatar);
+
+    if (reason) embed.setDescription(`${embed.description}\n\n_"${reason}"_`);
 
     await ctx.makeMessage({ embeds: [embed] });
   }

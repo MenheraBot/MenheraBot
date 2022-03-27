@@ -13,7 +13,13 @@ export default class AngryInteractionCommand extends InteractionCommand {
         {
           name: 'user',
           type: 'USER',
-          description: 'Usuário que te deixou putasso',
+          description: 'Usuário que te deixou com raiva',
+          required: false,
+        },
+        {
+          name: 'motivo',
+          type: 'STRING',
+          description: 'Por que você está com raiva?',
           required: false,
         },
       ],
@@ -24,6 +30,7 @@ export default class AngryInteractionCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const user = ctx.options.getUser('user', false);
+    const reason = ctx.options.getString('motivo', false);
 
     if (user?.bot) {
       await ctx.makeMessage({
@@ -47,6 +54,8 @@ export default class AngryInteractionCommand extends InteractionCommand {
         .setThumbnail(avatar)
         .setImage(selectedImage);
 
+      if (reason) embed.setDescription(`${embed.description}\n\n_"${reason}"_`);
+
       await ctx.makeMessage({ embeds: [embed] });
       return;
     }
@@ -62,6 +71,8 @@ export default class AngryInteractionCommand extends InteractionCommand {
       )
       .setImage(selectedImage)
       .setThumbnail(avatar);
+
+    if (reason) embed.setDescription(`${embed.description}\n\n_"${reason}"_`);
 
     await ctx.makeMessage({ embeds: [embed] });
   }

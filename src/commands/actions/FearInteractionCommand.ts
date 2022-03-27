@@ -16,6 +16,12 @@ export default class FearInteractionCommand extends InteractionCommand {
           description: 'Usuário que te deixou com medo',
           required: false,
         },
+        {
+          name: 'motivo',
+          type: 'STRING',
+          description: 'Por que tu ta com medo?',
+          required: false,
+        },
       ],
       category: 'actions',
       cooldown: 5,
@@ -27,6 +33,7 @@ export default class FearInteractionCommand extends InteractionCommand {
 
     const selectedImage = await HttpRequests.getAssetImageUrl('fear');
     const user = ctx.options.getUser('user');
+    const reason = ctx.options.getString('motivo');
 
     if (!user || user.id === ctx.author.id) {
       const embed = new MessageEmbed()
@@ -39,6 +46,8 @@ export default class FearInteractionCommand extends InteractionCommand {
         )
         .setThumbnail(avatar)
         .setImage(selectedImage);
+
+      if (reason) embed.setDescription(`${embed.description}\n\n_"${reason}"_`);
 
       await ctx.makeMessage({ embeds: [embed] });
       return;
@@ -55,6 +64,8 @@ export default class FearInteractionCommand extends InteractionCommand {
       )
       .setImage(selectedImage)
       .setThumbnail(avatar);
+
+    if (reason) embed.setDescription(`${embed.description}\n\n_"${reason}"_`);
 
     await ctx.makeMessage({ embeds: [embed] });
   }
