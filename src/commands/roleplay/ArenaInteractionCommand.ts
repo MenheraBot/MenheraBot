@@ -598,7 +598,7 @@ export default class ArenaInteractionCommand extends InteractionCommand {
     const collector = ctx.channel.createMessageComponentCollector({
       componentType: 'BUTTON',
       filter,
-      time: 20_000,
+      time: 25_000,
     });
 
     const readyPlayers: string[] = [];
@@ -624,7 +624,6 @@ export default class ArenaInteractionCommand extends InteractionCommand {
               }),
             });
           int.deferUpdate();
-          collector.resetTimer();
           battleTypeButton
             .setLabel(
               ctx.locale(`commands:arena.${isLeveledBattle ? 'default-battle' : 'leveled-battle'}`),
@@ -639,7 +638,6 @@ export default class ArenaInteractionCommand extends InteractionCommand {
           break;
         }
         case 'READY': {
-          collector.resetTimer();
           int.deferUpdate();
           if (!readyPlayers.includes(int.user.id)) readyPlayers.push(int.user.id);
 
