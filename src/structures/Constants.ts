@@ -330,3 +330,5 @@ export const BICHO_BET_MULTIPLIER = {
 export const BLACKJACK_CARDS = Array.from({ length: 52 }, (_, i) => i + 1);
 
 export const CANNOT_BUY_THEMES = [3, 5, 4, 6];
+
+export const TODAYS_YEAR = new Date().getFullYear();

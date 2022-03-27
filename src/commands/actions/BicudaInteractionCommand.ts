@@ -1,8 +1,9 @@
-import { COLORS } from '@structures/Constants';
+import { COLORS, TODAYS_YEAR } from '@structures/Constants';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageEmbed } from 'discord.js-light';
 import HttpRequests from '@utils/HTTPrequests';
+import { capitalize } from '@utils/Util';
 
 export default class BicudaInteractionCommand extends InteractionCommand {
   constructor() {
@@ -62,7 +63,12 @@ export default class BicudaInteractionCommand extends InteractionCommand {
       .setImage(selectedImage)
       .setThumbnail(avatar);
 
-    if (reason) embed.setDescription(`${embed.description}\n\n_"${reason}"_`);
+    if (reason)
+      embed.setDescription(
+        `${embed.description}\n\n_"${capitalize(
+          reason,
+        )}"_ - ${ctx.author.username.toUpperCase()}, ${TODAYS_YEAR}`,
+      );
 
     await ctx.makeMessage({ embeds: [embed] });
   }

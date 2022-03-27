@@ -236,3 +236,5 @@ export const makeCustomId = (
   const randomNumber = baseId ?? Math.floor(Date.now() + Math.random() * 100);
   return [`${randomNumber} | ${customIdentifier}`, randomNumber];
 };
+
+export const capitalize = (str: string): string => str.charAt(0).toUpperCase() + str.slice(1);
