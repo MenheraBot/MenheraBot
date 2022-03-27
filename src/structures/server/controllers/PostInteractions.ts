@@ -23,11 +23,10 @@ const handleRequest = async (ctx: Context, client: MenheraClient) => {
   }
 
   client.cluster.evalOnCluster(
-    (c) => {
-      // @ts-expect-error Actions is private
-      c.actions.InteractionCreate.handle({ ...ctx.request.body });
+    `this.actions.InteractionCreate.handle(${{ ...ctx.request.body }})`,
+    {
+      guildId: ctx.request.body.guild_id,
     },
-    { guildId: ctx.request.body.guild_id },
   );
 
   ctx.respond = false;
