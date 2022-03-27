@@ -22,18 +22,16 @@ const handleRequest = async (ctx: Context, client: MenheraClient) => {
     return;
   }
 
-  // @ts-expect-error Actions is private
-  client.actions.InteractionCreate.handle(ctx.request.body);
-
   /* 
-  ARRUMAR UM JEITO DE ENVIAR CONTEXT
+  client.actions.InteractionCreate.handle(ctx.request.body); */
+
   client.cluster.evalOnCluster(
-    (c) => {
-      // @ts-expect-error Actions is private
-      c.actions.InteractionCreate.handle({ ...ctx.request.body });
+    // @ts-expect-error Context in this package is weird
+    (c, { body }) => {
+      c.actions.InteractionCreate.handle(body);
     },
-    { guildId: ctx.request.body.guild_id },
-  ); */
+    { guildId: ctx.request.body.guild_id, context: { body: ctx.request.body } },
+  );
 
   ctx.respond = false;
 };
