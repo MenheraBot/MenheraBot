@@ -25,7 +25,7 @@ const handleRequest = async (ctx: Context, client: MenheraClient) => {
   client.cluster.evalOnCluster(
     (c) => {
       // @ts-expect-error Actions is private
-      c.actions.InteractionCreate.handle(ctx.request.body);
+      c.actions.InteractionCreate.handle({ ...ctx.request.body });
     },
     { guildId: ctx.request.body.guild_id },
   );
