@@ -22,6 +22,8 @@ const handleRequest = async (ctx: Context, client: MenheraClient) => {
     return;
   }
 
+  ctx.respond = false;
+
   if (!client.shardProcessEnded) {
     // @ts-expect-error actions is private
     client.actions.InteractionCreate.handle(ctx.request.body);
@@ -35,8 +37,6 @@ const handleRequest = async (ctx: Context, client: MenheraClient) => {
     },
     { guildId: ctx.request.body.guild_id, context: { body: ctx.request.body } },
   );
-
-  ctx.respond = false;
 };
 
 export default (client: MenheraClient): Router => {
