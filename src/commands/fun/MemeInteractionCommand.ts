@@ -10,8 +10,8 @@ export default class MemeInteractionCommand extends InteractionCommand {
       description: '「🤣」・Atumalaca KKKK. Apenas os melhores memes',
       options: [
         {
-          name: 'fodase',
-          description: '「🖕」・Lançe um famoso "Foda-se" no chat',
+          name: 'fds',
+          description: '「🤫」・Lançe o Bruno Henrique no chat',
           type: 'SUB_COMMAND',
         },
         {
@@ -28,7 +28,7 @@ export default class MemeInteractionCommand extends InteractionCommand {
   async run(ctx: InteractionCommandContext): Promise<void> {
     const command = ctx.options.getSubcommand(true);
 
-    if (command === 'fodase') MemeInteractionCommand.FodaseInteractionCommand(ctx);
+    if (command === 'fds') MemeInteractionCommand.FodaseInteractionCommand(ctx);
 
     if (command === 'humor') MemeInteractionCommand.HumorInteractionCommand(ctx);
   }

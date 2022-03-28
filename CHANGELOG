@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - Chance de critico de inimigos foi alterada. **1x**: `70%` -> `75%`. **1.3x:** `16%` -> `11%`
 - A seleção de bênçãos no componente foi limitada para 15, já que não faz sentido ter 25 pois nem da pra selecionar algo maior que 15
 - O Comando `/give` foi renomeado para `/presentear`
+- O Comando `/meme fodase` foi renomeado para `/meme fds`
 
 ### Fixed
 
