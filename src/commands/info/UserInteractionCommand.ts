@@ -80,16 +80,20 @@ export default class UserInteractionCommand extends InteractionCommand {
   static async showBanner(ctx: InteractionCommandContext): Promise<void> {
     const user = ctx.options.getUser('user') ?? ctx.author;
 
-    const img = user.bannerURL({ dynamic: true, size: 1024 });
+    const bannerHash = user.banner;
 
-    if (!img) {
+    if (!bannerHash) {
       ctx.makeMessage({ content: ctx.locale('commands:user.banner.no-banner'), ephemeral: true });
       return;
     }
 
     const embed = new MessageEmbed()
       .setTitle(ctx.locale('commands:user.banner.title', { user: user.username }))
-      .setImage(img)
+      .setImage(
+        `https://cdn.discordapp.com/banners/${user.id}/${bannerHash}.${
+          bannerHash.startsWith('a_') ? 'gif' : 'png'
+        }?size=1024`,
+      )
       .setColor(ctx.data.user.selectedColor)
       .setFooter({ text: ctx.locale('commands:user.banner.footer') });
 
