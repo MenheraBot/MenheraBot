@@ -1,0 +1,33 @@
+name: Bug Report
+description: Create a report to help us improve
+title: "[Bug]: "
+labels: ["\U0001F41B Bug", "❓ Help Wanted"]
+assignees:
+  - ySnoopyDogy
+body:
+  - type: textarea
+    id: describe
+    attributes:
+      label: Describe the Bug
+      description: A clear and concise description of what the bug is.
+      placeholder: I was going to click on that button, and then the bot exploded
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: To Reproduce
+      description: Steps to reproduce the behavior
+      value: |
+      1.
+      2.
+      3.
+      ...
+    render: bash
+    validations:
+      required: true
+  - type: textarea
+    id: prints
+    attributes:
+      label: Screenshots/Videos
+      description: If applicable, add screenshots to help explain your problem.
