@@ -364,23 +364,30 @@ export default class FichaInteractionCommand extends InteractionCommand {
           name: ctx.locale('commands:ficha.show.vitality'),
           value: `${ctx.prettyResponse('blood', 'common:roleplay.life')}: **${getUserMaxLife(
             user,
-          )}**\n${ctx.prettyResponse('mana', 'common:roleplay.mana')}: **${getUserMaxMana(
-            user,
-          )}**\n${ctx.prettyResponse('agility', 'common:roleplay.agility')}: **${getUserAgility(
-            prepareUserForDungeon(user),
-          )}**`,
+          )}** | ${user.blesses.maxLife}\n${ctx.prettyResponse(
+            'mana',
+            'common:roleplay.mana',
+          )}: **${getUserMaxMana(user)}** | ${user.blesses.maxMana}\n${ctx.prettyResponse(
+            'agility',
+            'common:roleplay.agility',
+          )}: **${getUserAgility(prepareUserForDungeon(user))}** | ${user.blesses.agility}`,
           inline: true,
         },
         {
           name: ctx.locale('commands:ficha.show.battle'),
           value: `${ctx.prettyResponse('damage', 'common:roleplay.damage')}: **${getUserDamage(
             prepareUserForDungeon(user),
-          )}**\n${ctx.prettyResponse('armor', 'common:roleplay.armor')}: **${getUserArmor(
-            prepareUserForDungeon(user),
-          )}**\n${ctx.prettyResponse(
+          )}** | ${user.blesses.damage}\n${ctx.prettyResponse(
+            'armor',
+            'common:roleplay.armor',
+          )}: **${getUserArmor(prepareUserForDungeon(user))}** | ${
+            user.blesses.armor
+          }\n${ctx.prettyResponse(
             'intelligence',
             'common:roleplay.intelligence',
-          )}: **${getUserIntelligence(prepareUserForDungeon(user))}**`,
+          )}: **${getUserIntelligence(prepareUserForDungeon(user))}** | ${
+            user.blesses.intelligence
+          }`,
           inline: true,
         },
       ]);

@@ -195,23 +195,26 @@ export default class ArenaInteractionCommand extends InteractionCommand {
           name: ctx.locale('commands:ficha.show.vitality'),
           value: `${ctx.prettyResponse('blood', 'common:roleplay.life')}: **${getUserMaxLife(
             pvpUser,
-          )}**\n${ctx.prettyResponse('mana', 'common:roleplay.mana')}: **${getUserMaxMana(
-            pvpUser,
-          )}**\n${ctx.prettyResponse('agility', 'common:roleplay.agility')}: **${getUserAgility(
-            pvpUser,
-          )}**`,
+          )}** | ${pvpUser.blesses.maxLife}\n${ctx.prettyResponse(
+            'mana',
+            'common:roleplay.mana',
+          )}: **${getUserMaxMana(pvpUser)}** | ${pvpUser.blesses.maxMana}\n${ctx.prettyResponse(
+            'agility',
+            'common:roleplay.agility',
+          )}: **${getUserAgility(pvpUser)}** | ${pvpUser.blesses.agility}`,
           inline: true,
         },
         {
           name: ctx.locale('commands:ficha.show.battle'),
           value: `${ctx.prettyResponse('damage', 'common:roleplay.damage')}: **${getUserDamage(
             pvpUser,
-          )}**\n${ctx.prettyResponse('armor', 'common:roleplay.armor')}: **${getUserArmor(
-            pvpUser,
-          )}**\n${ctx.prettyResponse(
+          )}** | ${pvpUser.blesses.damage}\n${ctx.prettyResponse(
+            'armor',
+            'common:roleplay.armor',
+          )}: **${getUserArmor(pvpUser)}** | ${pvpUser.blesses.armor}\n${ctx.prettyResponse(
             'intelligence',
             'common:roleplay.intelligence',
-          )}: **${getUserIntelligence(pvpUser)}**`,
+          )}: **${getUserIntelligence(pvpUser)}** | ${pvpUser.blesses.intelligence}`,
           inline: true,
         },
       ]);
