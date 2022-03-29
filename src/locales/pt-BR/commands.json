@@ -630,7 +630,7 @@
   "roleta": {
     "poor": "Você não tem estrelinhas o suficiente para apostar!",
     "lose-title": "Perdeu Tudo!",
-    "win": "Você ganhou **{{profit}}** :star:! Parabéns\n\n**Valor Sorteado:** {{number.value}}\n**Cor:** $t(commands:roleta.{{number.color}})\n**Dúzia:** $t(commands:roleta.{{number.dozen}})\n\n**Sua escolha**: $t(commands:roleta.{{operation}})\n**Seleção:** {{selection}}",
+    "win": "Você ganhou **{{profit}}** ({{tax}}% de imposto) :star:! Parabéns\n\n**Valor Sorteado:** {{number.value}}\n**Cor:** $t(commands:roleta.{{number.color}})\n**Dúzia:** $t(commands:roleta.{{number.dozen}})\n\n**Sua escolha**: $t(commands:roleta.{{operation}})\n**Seleção:** {{selection}}",
     "description": "Bem-Vindo ao jogo da roleta, aqui você pode ganhar TUDO ou perder TUDO, escolha abaixo o estilo de sua aposta, em seguida especifique o que quer apostar\n\n**TIPOS DE APOSTA:**",
     "win-title": "Wooo, você venceu!",
     "lose": "Infelizmente você perdeu a aposta! Foram-se **{{bet}}** :star: embora\n\n**Valor Sorteado:** {{number.value}}\n**Cor:** $t(commands:roleta.{{number.color}})\n**Dúzia:** $t(commands:roleta.{{number.dozen}}) \n\n**Sua escolha:** $t(commands:roleta.{{operation}})\n**Seleção:** {{selection}}",
@@ -667,7 +667,8 @@
     "DOZENS": "Uma Dúzia",
     "LOWHIGH": "Número mais Alto ou Baixo",
     "ODDEVEN": "Par ou Ímpar",
-    "COLOR": "Vermelho ou Preto"
+    "COLOR": "Vermelho ou Preto",
+    "hourly_limit": "Você excedeu seu limite horário de altas apostas (São consideiradas apostas altas, apostas maiores que 10,000 estrelinhas feitas em Dupla de Números ou Número Único)!"
   },
   "bicho": {
     "sorted-title": "Números Sorteados",

@@ -618,7 +618,7 @@
   "roleta": {
     "poor": "You don't have enough stars to bet!",
     "lose-title": "Lost everything!",
-    "win": "You won **{{profit}}** :star:! Congratulations\n\n**Rated Value:** {{number.value}}\n**Color:** $t(commands:roulette.{{number.color}})\n**Dozen:** $t(commands:roulette.{{number.dozen}})\n\n**Your choice**: $t(commands:roulette.{{operation}})\n**Selection:** {{selection}}",
+    "win": "You won **{{profit}}** ({{taxes}}% of tax) :star:! Congratulations\n\n**Rated Value:** {{number.value}}\n**Color:** $t(commands:roulette.{{number.color}})\n**Dozen:** $t(commands:roulette.{{number.dozen}})\n\n**Your choice**: $t(commands:roulette.{{operation}})\n**Selection:** {{selection}}",
     "description": "Welcome to the game of roulette, here you can win or lose EVERYTHING, choose your bet style below, then specify what you want to bet\n\n**BET TYPES:**",
     "win-title": "Wooo, you won!",
     "lose": "Unfortunately you lost the bet! Gone are **{{bet}}** :star: although\n\n**Amount Drawn:** {{number.value}}\n**Cor:** $t(commands:roulette.{{number.color}})\n**Dozen:** $t(commands:roulette.{{number.dozen}}) \n\n**Your choice:** $t(commands:roulette.{{operation}})\n**Selection:** {{selection}}",
@@ -655,7 +655,8 @@
     "DOZENS": "A Dozen",
     "LOWHIGH": "Higher or Lower Number",
     "ODDEVEN": "Odd or Even",
-    "COLOR": "Black or Red"
+    "COLOR": "Black or Red",
+    "hourly_limit": "You have exceeded your hourly high stakes limit (High stakes are considered, stakes greater than 10.000 stars placed in Double Numbers or Single Number)!"
   },
   "bicho": {
     "sorted-title": "Drawn Numbers",

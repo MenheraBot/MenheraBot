@@ -86,7 +86,10 @@ export default class UserInteractionCommand extends InteractionCommand {
     const bannerUrl = userBanner?.bannerURL({ dynamic: true, size: 1024 });
 
     if (!userBanner || !bannerUrl) {
-      ctx.makeMessage({ content: ctx.locale('commands:user.banner.no-banner'), ephemeral: true });
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:user.banner.no-banner'),
+        ephemeral: true,
+      });
       return;
     }
 

@@ -332,3 +332,5 @@ export const BLACKJACK_CARDS = Array.from({ length: 52 }, (_, i) => i + 1);
 export const CANNOT_BUY_THEMES = [3, 5, 4, 6];
 
 export const TODAYS_YEAR = new Date().getFullYear();
+
+export const HOURLY_ROULETTE_HIGH_VALUE_BET_LIMIT = 5;

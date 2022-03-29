@@ -1,8 +1,13 @@
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { ROULETTE_NUMBERS } from '@structures/Constants';
+import { HOURLY_ROULETTE_HIGH_VALUE_BET_LIMIT, ROULETTE_NUMBERS } from '@structures/Constants';
 import HttpRequests from '@utils/HTTPrequests';
-import Util, { actionRow, resolveCustomId, resolveSeparatedStrings } from '@utils/Util';
+import Util, {
+  actionRow,
+  RandomFromArray,
+  resolveCustomId,
+  resolveSeparatedStrings,
+} from '@utils/Util';
 import {
   MessageActionRow,
   MessageButton,
@@ -24,7 +29,7 @@ export default class RouletteInteractionCommand extends InteractionCommand {
           type: 'INTEGER',
           required: true,
           minValue: 1,
-          maxValue: 15000,
+          maxValue: 100_000,
         },
       ],
       category: 'economy',
@@ -48,12 +53,12 @@ export default class RouletteInteractionCommand extends InteractionCommand {
       .addFields([
         {
           name: ctx.locale('commands:roleta.straight-up-title'),
-          value: ctx.locale('commands:roleta.straight-up-value', { profit: bet + bet * 17 }),
+          value: ctx.locale('commands:roleta.straight-up-value', { profit: bet + bet * 35 }),
           inline: true,
         },
         {
           name: ctx.locale('commands:roleta.split-title'),
-          value: ctx.locale('commands:roleta.split-value', { profit: bet + bet * 8 }),
+          value: ctx.locale('commands:roleta.split-value', { profit: bet + bet * 17 }),
           inline: true,
         },
         {
@@ -107,6 +112,15 @@ export default class RouletteInteractionCommand extends InteractionCommand {
       .setCustomId(`${ctx.interaction.id} | LOWHIGH`)
       .setStyle('PRIMARY')
       .setLabel(ctx.locale('commands:roleta.lowhigh-title'));
+
+    const highValuesUsages = await ctx.client.repositories.cacheRepository.getRouletteUsages(
+      ctx.author.id,
+    );
+
+    if (highValuesUsages >= HOURLY_ROULETTE_HIGH_VALUE_BET_LIMIT && bet >= 10_000) {
+      straightButton.setDisabled(true);
+      splitButton.setDisabled(true);
+    }
 
     ctx.makeMessage({
       embeds: [embed],
@@ -243,17 +257,27 @@ export default class RouletteInteractionCommand extends InteractionCommand {
 
     const collector = ctx.channel.createMessageComponentCollector({ filter, time: 14000 });
 
-    const randomValue = ROULETTE_NUMBERS[Math.floor(Math.random() * 36)];
+    const randomValue = RandomFromArray(ROULETTE_NUMBERS);
+
+    const highValueBet = (operation === 'STRAIGHT' || operation === 'SPLIT') && bet >= 10_000;
 
     const didWin = (profit: number, selection: string) => {
       collector.stop();
+
+      if (highValueBet)
+        ctx.client.repositories.cacheRepository.incrementRouletteHourlyUsage(ctx.author.id);
+
+      const taxes = profit < 50000 ? 15.2 / 100 : 30.8 / 100;
+
+      const profitWithTaxes = Math.floor(profit - profit * taxes);
 
       const winEmbed = new MessageEmbed()
         .setColor(ctx.data.user.selectedColor)
         .setTitle(ctx.locale('commands:roleta.win-title'))
         .setDescription(
           ctx.locale('commands:roleta.win', {
-            profit,
+            profit: profitWithTaxes,
+            taxes,
             number: randomValue,
             operation,
             selection:
@@ -263,9 +287,16 @@ export default class RouletteInteractionCommand extends InteractionCommand {
           }),
         );
 
-      ctx.client.repositories.starRepository.add(ctx.author.id, profit);
+      ctx.client.repositories.starRepository.add(ctx.author.id, profitWithTaxes);
 
-      HttpRequests.postRouletteGame(ctx.author.id, bet, operation, profit, true, selection);
+      HttpRequests.postRouletteGame(
+        ctx.author.id,
+        bet,
+        operation,
+        profitWithTaxes,
+        true,
+        selection,
+      );
 
       ctx.makeMessage({
         embeds: [winEmbed],
@@ -275,6 +306,9 @@ export default class RouletteInteractionCommand extends InteractionCommand {
 
     const didLose = (profit: number, selection: string) => {
       collector.stop();
+
+      if (highValueBet)
+        ctx.client.repositories.cacheRepository.incrementRouletteHourlyUsage(ctx.author.id);
 
       const loseEmbed = new MessageEmbed()
         .setColor(ctx.data.user.selectedColor)
@@ -364,6 +398,11 @@ export default class RouletteInteractionCommand extends InteractionCommand {
             return didLose(bet * 17, int.values[0]);
           return didWin(bet * 17, int.values[0]);
         }
+        case 'DOZENS': {
+          if (randomValue.color === 'green') return didLose(bet * 2, int.values[0]);
+          if (int.values[0] !== randomValue.dozen) return didLose(bet * 2, int.values[0]);
+          return didWin(bet * 2, int.values[0]);
+        }
         case 'ODDEVEN': {
           if (randomValue.color === 'green') return didLose(bet, int.values[0]);
           if (int.values[0] !== randomValue.parity) return didLose(bet, int.values[0]);
@@ -378,11 +417,6 @@ export default class RouletteInteractionCommand extends InteractionCommand {
           if (randomValue.color === 'green') return didLose(bet, int.values[0]);
           if (int.values[0] !== randomValue.size) return didLose(bet, int.values[0]);
           return didWin(bet, int.values[0]);
-        }
-        case 'DOZENS': {
-          if (randomValue.color === 'green') return didLose(bet * 2, int.values[0]);
-          if (int.values[0] !== randomValue.dozen) return didLose(bet * 2, int.values[0]);
-          return didWin(bet * 2, int.values[0]);
         }
       }
     });
