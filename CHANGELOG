@@ -15,6 +15,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
   - `/arena batalhar` - Chama um jogador para 1x1. Nada vale aqui, os valores de vida e mana serão todos resetados, e ninguém perderá vida fora da Arena.
 - Comandos de ação agora aceitam motivos. Diga para a Menhera o porquê de tu estar tomando aquela ação, e ela mostrará pra todos isso
 - O cooldown da dungeon agora aparece no `/cooldowns`
+- Novos comandos para imagens de usuários: 
+  - `/user banner` Mostra o banner de um usuário (se ele tiver)
+  - `/user avatar` Mostra o avatar de um usuário (pode ser o avatar customizado de servidor)
 
 ### Changed
 
@@ -39,9 +42,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Removed
 
 - Colocação do usuário no top ao caçar
-- Comando `xandao`
+- Comando `/xandao`
 - **Palavrões:** O Discord quer ser uma referência de um local seguro, por este motivo, a Menhera não pode falar palavrões :(
 - Subcomando `/config censura`
+- Comando `/avatar`
 
 ## [4.0.H-BETA] - 2022-03-01
 

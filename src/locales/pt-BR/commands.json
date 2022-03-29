@@ -360,10 +360,14 @@
     "perfect": "MEEEU AMIGO, OS CARA SÃO FEITOS UM PRO OUTRO",
     "banned-user": "Você não pode shipar esse usuário pois está banido da Menhera!"
   },
-  "avatar": {
+  "user": {
+    "banner": {
+      "no-banner": "Este usuário não tem nenhum banner!",
+      "title": "Banner de {{user}}",
+      "footer": "Mai que banner lindo vei"
+    },
     "title": "Avatar de {{user}}",
     "footer": "Que imagem linda omodeuso",
-    "unknow-user": "Usuário não encontrado",
     "client_title": "Meu avatar ({{user}})",
     "client_footer": "Eu sou muito linda né vei tem como não"
   },
