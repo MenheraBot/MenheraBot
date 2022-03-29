@@ -880,5 +880,16 @@
       "title": "Fim de Batalha",
       "description": "{{text}}\n\n**Vencedor:** {{winnerName}}\n**Perdedor**: {{loserName}}"
     }
+  },
+  "resetar": {
+    "ficha": {
+      "title": "Deletar Conta?",
+      "yes": "Sim, resetar minha ficha",
+      "level": "Tu deve ser no mínimo nível 5 antes de querer resetar tua conta!",
+      "success": "Sua conta foi resetada com sucesso! Tu pode criar um novo personagem se preferir",
+      "negated": "Sua conta se mantém viva. Mas quando quiser, so brotar aqui de novo",
+      "no": "NÃO!!! QUERO MANTER",
+      "description": "**ATENÇÃO**\n\nAo clicar no botão abaixo, tu vai apagar TODOS os teus dados **DO RPG**\nSua conta da Menhera existirá ainda, somente seus dados em relação ao RPG serão perdidos\n\nIsso só fará com que o teu personagem seja deletado. Tu vai poder criar outro personagem quando quiser.\n\nEstatísticas como vitórias em PvP continuarão vinculadas a sua conta.\n\nVocê tem certeza que quer fazer isso?"
+    }
   }
 }

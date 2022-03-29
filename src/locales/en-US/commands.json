@@ -867,6 +867,17 @@
     "results": {
       "title": "End of Battle",
       "description": "{{text}}\n\n**Winner:** {{winnerName}}\n**Looser**: {{loserName}}"
+    },
+    "resetar": {
+      "ficha": {
+        "title": "Delete Account?",
+        "yes": "Yes, reset my character",
+        "success": "Your account has been deleted. You may create a new character when you want to",
+        "negated": "Your account still alive. When you want to delete it, just come here again",
+        "no": "NO!!! I CLICKED ON THE COMMAND JUST TO SEE",
+        "level": "You need to be at least level 5 to reset your character",
+        "description": "**ATTENTION**\n\nBy clicking the button below, you will erase ALL your **RPG data**\nYour Menhera account will still exist, only your data regarding the RPG will be lost\n\nThis will only cause your character to be deleted. You will be able to create another character whenever you want.\n\nStats such as PvP wins will still be linked to your account.\n\nAre you sure you want to do this?"
+      }
     }
   }
 }

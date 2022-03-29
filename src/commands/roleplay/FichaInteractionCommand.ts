@@ -49,7 +49,7 @@ export default class FichaInteractionCommand extends InteractionCommand {
         },
       ],
       cooldown: 7,
-      authorDataFields: ['selectedColor', 'badges'],
+      authorDataFields: ['selectedColor'],
     });
   }
 

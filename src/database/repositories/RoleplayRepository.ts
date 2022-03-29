@@ -20,6 +20,12 @@ export default class RoleplayRepository {
     });
   }
 
+  async deleteUser(userId: string): Promise<void> {
+    await this.roleplayModal.deleteOne({ id: userId });
+    if (this.redisClient)
+      this.redisClient.multi().del(`roleplay:${userId}`).del(`battle_config:${userId}`).exec();
+  }
+
   async findUser(userId: string): Promise<MayNotExists<RoleplayUserSchema>> {
     if (this.redisClient) {
       const userData = await this.redisClient

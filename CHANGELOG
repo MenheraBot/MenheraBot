@@ -22,6 +22,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - Os retornos das apostas agora são reduzidos por impostos. Quanto maior seu retorno, maiores os impostos (governo é ladrão, fazer o que).
 - Link para o servidor de suporte nos componentes de `/status menhera`
 - Adicionado a quantidade de bênçãos à ficha no início do comando
+- Novos comandos de reset:
+  - `/resetar bencaos` - Reseta suas bênçãos por um certo custo
+  - `/resetar ficha` - Reseta sua conta do RPG. Tu pode criar outra a qualquer moment
 
 ### Changed
 
@@ -32,6 +35,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - A seleção de bênçãos no componente foi limitada para 15, já que não faz sentido ter 25 pois nem da pra selecionar algo maior que 15
 - O Comando `/give` foi renomeado para `/presentear`
 - O Comando `/meme fodase` foi renomeado para `/meme fds`s
+- Nível de Batalha foi aumentado para `20`
 
 ### Fixed
 
