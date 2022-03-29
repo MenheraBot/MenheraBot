@@ -514,7 +514,9 @@
     "hunt": "Caçar",
     "vote": "Votar em Mim",
     "time": "**{{time}}** {{subtime}} | **<t:{{unix}}:T>**",
-    "click-to-vote": "Clique Para Votar"
+    "click-to-vote": "Clique Para Votar",
+    "dungeon": "Dungeon",
+    "no-dungeon": "Você ainda não reencarnou no Mundo de Boleham. Use `/ficha`!"
   },
   "trisal": {
     "title": "❤️ Trisal ❤️",

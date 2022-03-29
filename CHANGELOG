@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
   - `/arena configurar` - Configura suas bênçãos para uma batalha justa. (Você pode resetar os pontos a qualquer momento)
   - `/arena batalhar` - Chama um jogador para 1x1. Nada vale aqui, os valores de vida e mana serão todos resetados, e ninguém perderá vida fora da Arena.
 - Comandos de ação agora aceitam motivos. Diga para a Menhera o porquê de tu estar tomando aquela ação, e ela mostrará pra todos isso
+- O cooldown da dungeon agora aparece no `/cooldowns`
 
 ### Changed
 

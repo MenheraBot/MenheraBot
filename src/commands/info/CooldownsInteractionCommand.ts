@@ -18,7 +18,7 @@ export default class CooldownsInteractionCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    const canDo = (value: number): boolean => value < 0;
+    const canDo = (value: number): boolean => value <= 0;
     const moreThanAnHour = (time: number): boolean => time >= 3600000;
 
     const createField = (type: string, cooldown: number): EmbedFieldData => ({
@@ -34,13 +34,26 @@ export default class CooldownsInteractionCommand extends InteractionCommand {
       inline: false,
     });
 
+    const rpgUser = await ctx.client.repositories.roleplayRepository.findUser(ctx.author.id);
+
     const huntCooldown = ctx.data.user.huntCooldown - Date.now();
     const voteCooldown = ctx.data.user.voteCooldown - Date.now();
+    const dungeonCooldown = rpgUser
+      ? (rpgUser.cooldowns.find((a) => a.reason === 'dungeon')?.until ?? 0) - Date.now()
+      : 0;
 
     const embed = new MessageEmbed()
       .setTitle(ctx.locale('commands:cooldowns.title'))
       .setColor(ctx.data.user.selectedColor)
       .addFields([createField('vote', voteCooldown), createField('hunt', huntCooldown)]);
+
+    if (!rpgUser) {
+      embed.addField(
+        ctx.locale('commands:cooldowns.dungeon'),
+        ctx.locale('commands:cooldowns.no-dungeon'),
+        false,
+      );
+    } else embed.addFields(createField('dungeon', dungeonCooldown));
 
     const components: MessageActionRow[] = [];
 

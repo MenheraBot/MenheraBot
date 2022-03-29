@@ -501,7 +501,9 @@
     "hunt": "Hunt",
     "vote": "Vote for Me",
     "click-to-vote": "Click to Vote",
-    "time": "**{{time}}** {{subtime}}"
+    "time": "**{{time}}** {{subtime}} | **<t:{{unix}}:T>**",
+    "dungeon": "Dungeon",
+    "no-dungeon": "You have not yet reincarnated in Boleham's World. Use `/ficha`!"
   },
   "trisal": {
     "title": "❤️ Polyamory ❤️",
