@@ -48,7 +48,7 @@ const InteractionCommandExecutor = async (
 
   if (
     (command.config.category === 'economy' || command.config.category === 'roleplay') &&
-    interaction.client.commandExecutions.has(interaction.user.id)
+    interaction.client.economyUsages.has(interaction.user.id)
   ) {
     await interaction
       .reply({
@@ -178,8 +178,7 @@ const InteractionCommandExecutor = async (
 
   if (!command.run) return;
 
-  if (command.config.category === 'economy' || command.config.category === 'roleplay')
-    interaction.client.commandExecutions.add(ctx.author.id);
+  if (command.config.category === 'economy') interaction.client.economyUsages.add(ctx.author.id);
 
   await command
     .run(ctx)
@@ -222,8 +221,8 @@ const InteractionCommandExecutor = async (
       }
     })
     .finally(() => {
-      if (command.config.category === 'economy' || command.config.category === 'roleplay')
-        interaction.client.commandExecutions.delete(ctx.author.id);
+      if (command.config.category === 'economy')
+        interaction.client.economyUsages.delete(ctx.author.id);
     });
 
   if (!interaction.guild || process.env.NODE_ENV === 'development') return;

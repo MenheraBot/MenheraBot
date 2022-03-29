@@ -34,7 +34,9 @@ export default class MenheraClient extends Client {
 
   public cooldowns: Collection<string, Collection<string, number>>;
 
-  public commandExecutions: Set<string>;
+  public economyUsages: Set<string>;
+
+  public roleplayUsages: Collection<string, number>;
 
   public jogoDoBichoManager!: JogoDoBixoManager;
 
@@ -57,7 +59,8 @@ export default class MenheraClient extends Client {
     );
     this.slashCommands = new Collection();
     this.cooldowns = new Collection();
-    this.commandExecutions = new Set();
+    this.roleplayUsages = new Collection();
+    this.economyUsages = new Set();
     this.events = new EventManager(this);
     this.config = config;
     this.shardProcessEnded = false;

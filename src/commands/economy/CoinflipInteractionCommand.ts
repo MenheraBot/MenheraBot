@@ -58,7 +58,7 @@ export default class CoinflipInteractionCommand extends InteractionCommand {
       return;
     }
 
-    if (ctx.client.commandExecutions.has(user.id)) {
+    if (ctx.client.economyUsages.has(user.id)) {
       ctx.makeMessage({
         content: ctx.prettyResponse('error', 'common:economy_usage'),
         ephemeral: true,
@@ -108,7 +108,7 @@ export default class CoinflipInteractionCommand extends InteractionCommand {
       return;
     }
 
-    ctx.client.commandExecutions.add(user.id);
+    ctx.client.economyUsages.add(user.id);
 
     const ConfirmButton = new MessageButton()
       .setCustomId(ctx.interaction.id)
@@ -131,7 +131,7 @@ export default class CoinflipInteractionCommand extends InteractionCommand {
       7000,
     );
 
-    ctx.client.commandExecutions.delete(user.id);
+    ctx.client.economyUsages.delete(user.id);
 
     if (!coletor) {
       ctx.makeMessage({

@@ -134,7 +134,7 @@ export default class GiveInteractionCommand extends InteractionCommand {
 
     if (input < 1) return GiveInteractionCommand.replyInvalidValueError(ctx);
 
-    if (ctx.client.commandExecutions.has(toSendUser.id)) {
+    if (ctx.client.economyUsages.has(toSendUser.id)) {
       await ctx.makeMessage({
         content: ctx.prettyResponse('error', 'common:economy_usage'),
         ephemeral: true,
@@ -161,7 +161,7 @@ export default class GiveInteractionCommand extends InteractionCommand {
         .setStyle('DANGER')
         .setLabel(ctx.locale('common:negate'));
 
-      ctx.client.commandExecutions.add(toSendUser.id);
+      ctx.client.economyUsages.add(toSendUser.id);
 
       await ctx.makeMessage({
         content: ctx.prettyResponse('question', 'commands:presentear.confirm', {
@@ -179,7 +179,7 @@ export default class GiveInteractionCommand extends InteractionCommand {
         ctx.interaction.id,
       );
 
-      ctx.client.commandExecutions.delete(toSendUser.id);
+      ctx.client.economyUsages.delete(toSendUser.id);
 
       if (!selectedButton) {
         ctx.makeMessage({
