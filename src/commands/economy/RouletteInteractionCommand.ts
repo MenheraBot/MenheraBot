@@ -29,7 +29,7 @@ export default class RouletteInteractionCommand extends InteractionCommand {
           type: 'INTEGER',
           required: true,
           minValue: 1,
-          maxValue: 100_000,
+          maxValue: 15_000,
         },
       ],
       category: 'economy',
