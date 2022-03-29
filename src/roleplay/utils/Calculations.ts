@@ -50,7 +50,7 @@ export const getUserMaxLife = (
   const classLife = userClass.data.maxLife + userClass.data.attributesPerLevel.maxLife * user.level;
 
   const raceLife = userRace.data.facilities.reduce(
-    (p, c) => (c.facility === 'maxLife' ? p + c.boostPerLevel * user.level : 0),
+    (p, c) => (c.facility === 'maxLife' ? p + c.boostPerLevel * user.level : p),
     0,
   );
 
@@ -67,7 +67,7 @@ export const getUserMaxMana = (
   const classMana = userClass.data.maxMana + userClass.data.attributesPerLevel.maxMana * user.level;
 
   const raceMana = userRace.data.facilities.reduce(
-    (p, c) => (c.facility === 'maxMana' ? p + c.boostPerLevel * user.level : 0),
+    (p, c) => (c.facility === 'maxMana' ? p + c.boostPerLevel * user.level : p),
     0,
   );
 
@@ -108,7 +108,7 @@ export const getUserDamage = (
     userClass.data.baseDamage + userClass.data.attributesPerLevel.baseDamage * user.level;
 
   const raceDamage = userRace.data.facilities.reduce(
-    (p, c) => (c.facility === 'baseDamage' ? p + c.boostPerLevel * user.level : 0),
+    (p, c) => (c.facility === 'baseDamage' ? p + c.boostPerLevel * user.level : p),
     0,
   );
 
@@ -133,7 +133,7 @@ export const getUserArmor = (
     userClass.data.baseArmor + userClass.data.attributesPerLevel.baseArmor * user.level;
 
   const raceArmor = userRace.data.facilities.reduce(
-    (p, c) => (c.facility === 'baseArmor' ? p + c.boostPerLevel * user.level : 0),
+    (p, c) => (c.facility === 'baseArmor' ? p + c.boostPerLevel * user.level : p),
     0,
   );
 
@@ -159,7 +159,7 @@ export const getUserIntelligence = (
     userClass.data.attributesPerLevel.baseIntelligence * user.level;
 
   const raceIntelligence = userRace.data.facilities.reduce(
-    (p, c) => (c.facility === 'baseIntelligence' ? p + c.boostPerLevel * user.level : 0),
+    (p, c) => (c.facility === 'baseIntelligence' ? p + c.boostPerLevel * user.level : p),
     0,
   );
 
@@ -180,7 +180,7 @@ export const getUserAgility = (
     userClass.data.baseAgility + userClass.data.attributesPerLevel.baseAgility * user.level;
 
   const raceAgility = userRace.data.facilities.reduce(
-    (p, c) => (c.facility === 'baseAgility' ? p + c.boostPerLevel * user.level : 0),
+    (p, c) => (c.facility === 'baseAgility' ? p + c.boostPerLevel * user.level : p),
     0,
   );
 
