@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
   - `/user avatar` Mostra o avatar de um usuário (pode ser o avatar customizado de servidor)
 - A Roleta agora tem um limite de apostas altas. Você só pode fazer 5 apostas altas em `Número Único` e `Dupla de Números` por hora. São consideiradas apostas altas àquelas maiores de 10000 estrelinhas.
 - Os retornos das apostas agora são reduzidos por impostos. Quanto maior seu retorno, maiores os impostos (governo é ladrão, fazer o que).
+- Link para o servidor de suporte nos componentes de `/status menhera`
 
 ### Changed
 

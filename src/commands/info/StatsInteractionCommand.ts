@@ -408,7 +408,12 @@ export default class StatsInteractionCommand extends InteractionCommand {
       .setStyle('SECONDARY')
       .setLabel(ctx.locale('commands:status.botinfo.extended'));
 
-    await ctx.makeMessage({ embeds: [embed], components: [actionRow([button])] });
+    const link = new MessageButton()
+      .setCustomId(`${ctx.interaction.id} | LINK`)
+      .setStyle('LINK')
+      .setLabel(ctx.locale('commands:status.botinfo.support'));
+
+    await ctx.makeMessage({ embeds: [embed], components: [actionRow([button, link])] });
 
     const clicked = await Util.collectComponentInteractionWithStartingId(
       ctx.channel,
@@ -419,7 +424,9 @@ export default class StatsInteractionCommand extends InteractionCommand {
 
     if (!clicked) {
       ctx.makeMessage({
-        components: [actionRow(disableComponents(ctx.locale('common:timesup'), [button]))],
+        components: [
+          actionRow([...disableComponents(ctx.locale('common:timesup'), [button]), link]),
+        ],
       });
       return;
     }
@@ -527,7 +534,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
             .replace(/'/g, ' ')
             .slice(0, 1992)}\`\`\``,
           embeds: [],
-          components: [],
+          components: [actionRow([link])],
         });
       else
         ctx.send({
