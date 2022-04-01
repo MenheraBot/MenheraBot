@@ -135,7 +135,7 @@
     "miss-attack": "0 por ter errado o ataque, de",
     "user-stats-info": "❤️ | Vida: **{{life}}**\n💧 | Mana: **{{mana}}**\n⚔️ | Dano: **{{damage}}** | Precisão: **{{chanceToConnect}}%**\n🛡️ | Defesa: **{{armor}}** | Esquiva: **{{chanceToDodge}}%**\n🧠 | Inteligência: **{{intelligence}}**\n👢 | Agilidade: **{{agility}}**",
     "reasons": {
-      "miss-attack": "errou mais de 4 ataques",
+      "miss-attack": "não fez nada por 4 turnos",
       "user-death": "morreu em batalha"
     }
   }

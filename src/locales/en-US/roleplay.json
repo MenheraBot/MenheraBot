@@ -135,7 +135,7 @@
     "miss-attack": "0 for missing attack",
     "user-stats-info": "❤️ | Health: **{{life}}**\n💧 | Mana: **{{mana}}**\n⚔️ | Damage: **{{damage}}** | Accuracy: **{{chanceToConnect}}%**\n🛡️ | Defense: **{{armor}}** | Dodge: **{{chanceToDodge}}%**\n🧠 | Intelligence: **{{intelligence}}**\n👢 | Agility: **{{agility}}**",
     "reasons": {
-      "miss-attack": "missed more than 4 attacks",
+      "miss-attack": "didn't take any action in 4 turns",
       "user-death": "died in battle"
     }
   }
