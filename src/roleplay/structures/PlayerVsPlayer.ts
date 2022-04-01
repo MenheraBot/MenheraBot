@@ -73,12 +73,16 @@ export default class PlayerVsPlayer {
             );
             break;
           case 'poison':
-            this[toEffect].life -= calculatePoison(a, this[toEffect].life);
+            this[toEffect].life -= calculateEffectiveDamage(
+              calculatePoison(a, this[toEffect].life),
+              0,
+              getUserArmor(this[invertBattleTurn(toEffect)]),
+            );
             break;
         }
 
         a.durationInTurns -= 1;
-        if (a.durationInTurns <= 0) this.attacker.effects.splice(i, 1);
+        if (a.durationInTurns <= 0) this[toEffect].effects.splice(i, 1);
       });
     });
   }

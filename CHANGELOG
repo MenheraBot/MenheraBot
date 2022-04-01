@@ -47,6 +47,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - Habilidades ignoravam a chance de acerto, fazendo com que sempre acertassem, mesmo que o usuário a errasse
 - Habiliades de cura não ultrapassam mais o limite de vida
 - Buffs de raças que não eram contabilizados
+- Efeitos do **DEFENSOR** Não são mais infinitas
+- Resolvido problema do veneno que ignorava armaduras
 
 ### Removed
 
