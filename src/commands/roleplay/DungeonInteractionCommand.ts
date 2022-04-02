@@ -204,7 +204,7 @@ export default class DungeonInteractionCommand extends InteractionCommand {
 
     const oldUserLevel = battleResults.user.level;
 
-    makeLevelUp(battleResults.user);
+    if (oldUserLevel < 22) makeLevelUp(battleResults.user);
 
     if (battleResults.user.level > oldUserLevel) {
       battleResults.user.life = getUserMaxLife(battleResults.user);
