@@ -368,6 +368,8 @@ export default class DowntownInteractionCommand extends InteractionCommand {
         evolveButton.setDisabled(true).setLabel(ctx.locale('commands:centro.blacksmith.poor'));
     }
 
+    if (evolveButton.disabled) exitButton.setDisabled(true);
+
     ctx.makeMessage({
       components: [
         actionRow([
@@ -377,6 +379,7 @@ export default class DowntownInteractionCommand extends InteractionCommand {
       ],
       embeds: [embed],
     });
+
     if (evolveButton.disabled) return;
 
     const wannaEvolve = await Util.collectComponentInteractionWithStartingId(
