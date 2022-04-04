@@ -21,7 +21,6 @@ import {
   ChatInputApplicationCommandData,
   ColorResolvable,
   CommandInteractionOption,
-  PermissionResolvable,
   User,
 } from 'discord.js-light';
 import CreditsRepository from '@database/repositories/CreditsRepository';
@@ -147,8 +146,6 @@ export interface IInteractionCommandConfig extends ChatInputApplicationCommandDa
   devsOnly?: boolean;
   category: string;
   cooldown?: number;
-  userPermissions?: PermissionResolvable[];
-  clientPermissions?: PermissionResolvable[];
   authorDataFields?: Array<keyof IUserSchema>;
 }
 

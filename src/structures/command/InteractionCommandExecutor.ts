@@ -143,24 +143,6 @@ const InteractionCommandExecutor = async (
     timestamps.delete(interaction.user.id);
   }, cooldownAmount);
 
-  if (command.config.userPermissions) {
-    const missing = interaction.memberPermissions?.missing(command.config.userPermissions);
-
-    if (missing?.length) {
-      const perm = missing.map((value) => t(`permissions:${value}`)).join(', ');
-
-      await interaction
-        .reply({
-          content: `<:negacao:759603958317711371> | ${t('permissions:USER_MISSING_PERMISSION', {
-            perm,
-          })}`,
-          ephemeral: true,
-        })
-        .catch(debugError);
-      return;
-    }
-  }
-
   const authorData =
     command.config.authorDataFields.length > 0
       ? await interaction.client.repositories.userRepository.findOrCreate(

@@ -80,11 +80,19 @@ export default class ConfigInteractionCommand extends InteractionCommand {
         }, */
       ],
       cooldown: 7,
-      userPermissions: ['MANAGE_GUILD'],
     });
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
+    if (ctx.interaction.memberPermissions?.missing('MANAGE_GUILD')) {
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'permissions:USER_MISSING_PERMISSION', {
+          perm: ctx.locale('permissions:MANAGE_GUILD'),
+        }),
+      });
+      return;
+    }
+
     const command = ctx.options.getSubcommand();
 
     if (command === 'block') ConfigInteractionCommand.BlockChannelInteractionCommand(ctx);

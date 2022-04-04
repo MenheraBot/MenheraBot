@@ -38,7 +38,11 @@ export default class ResetInteractionCommand extends InteractionCommand {
     }
 
     if (user.level < 5) {
-      ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:resetar.ficha.level') });
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:resetar.ficha.level'),
+        components: [],
+        embeds: [],
+      });
       return;
     }
 
@@ -83,7 +87,11 @@ export default class ResetInteractionCommand extends InteractionCommand {
       return;
     }
 
-    ctx.makeMessage({ content: ctx.prettyResponse('success', 'commands:resetar.ficha.success') });
+    ctx.makeMessage({
+      content: ctx.prettyResponse('success', 'commands:resetar.ficha.success'),
+      components: [],
+      embeds: [],
+    });
 
     await ctx.client.repositories.roleplayRepository.deleteUser(ctx.author.id);
   }
