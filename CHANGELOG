@@ -37,6 +37,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - O Comando `/give` foi renomeado para `/presentear`
 - O Comando `/meme fodase` foi renomeado para `/meme fds`s
 - Nível de Batalha foi aumentado para `20`
+- Os prêmios da roleta foram reajustados
 
 ### Fixed
 

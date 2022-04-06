@@ -53,12 +53,12 @@ export default class RouletteInteractionCommand extends InteractionCommand {
       .addFields([
         {
           name: ctx.locale('commands:roleta.straight-up-title'),
-          value: ctx.locale('commands:roleta.straight-up-value', { profit: bet + bet * 35 }),
+          value: ctx.locale('commands:roleta.straight-up-value', { profit: bet + bet * 9 }),
           inline: true,
         },
         {
           name: ctx.locale('commands:roleta.split-title'),
-          value: ctx.locale('commands:roleta.split-value', { profit: bet + bet * 17 }),
+          value: ctx.locale('commands:roleta.split-value', { profit: bet + bet * 5 }),
           inline: true,
         },
         {
@@ -390,13 +390,13 @@ export default class RouletteInteractionCommand extends InteractionCommand {
 
       switch (operation) {
         case 'STRAIGHT': {
-          if (Number(int.values[0]) !== randomValue.value) return didLose(bet * 35, int.values[0]);
-          return didWin(bet * 35, int.values[0]);
+          if (Number(int.values[0]) !== randomValue.value) return didLose(bet * 9, int.values[0]);
+          return didWin(bet * 9, int.values[0]);
         }
         case 'SPLIT': {
           if (!resolveSeparatedStrings(int.values[0]).includes(`${randomValue.value}`))
-            return didLose(bet * 17, int.values[0]);
-          return didWin(bet * 17, int.values[0]);
+            return didLose(bet * 5, int.values[0]);
+          return didWin(bet * 5, int.values[0]);
         }
         case 'DOZENS': {
           if (randomValue.color === 'green') return didLose(bet * 2, int.values[0]);
