@@ -100,7 +100,7 @@ export default class ProfileInteractionCommand extends InteractionCommand {
       data: user.marriedDate as string,
       mamadas: user.mamado,
       mamou: user.mamou,
-      hiddingBades: user.hiddingBadges,
+      hiddingBadges: user.hiddingBadges,
     };
 
     const i18nData = {

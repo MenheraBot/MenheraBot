@@ -9,7 +9,7 @@ const ProfilePreview = {
     casado: '435228312214962204',
     voteCooldown: 0,
     badges: [{ id: 6, obtainAt: '0' }],
-    hiddingBades: [],
+    hiddingBadges: [],
     username: 'PreviewMode',
     data: '16/02/2004 às 22:23',
     mamadas: 23,

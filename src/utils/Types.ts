@@ -203,7 +203,7 @@ export interface IUserDataToProfile {
   casado: string | User | null;
   voteCooldown: number;
   badges: Array<IBadge>;
-  hiddingBades: Array<number>;
+  hiddingBadges: Array<number>;
   username: string;
   data: string;
   mamadas: number;
