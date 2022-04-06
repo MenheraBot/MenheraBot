@@ -1,6 +1,7 @@
+import Badges from '@data/ProfileBadges';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { COLORS, emojis } from '@structures/Constants';
+import { COLORS, DiscordFlagsToMenheraBadges, emojis, EmojiTypes } from '@structures/Constants';
 import { AvailableThemeTypes, IReturnData, ThemeFiles } from '@utils/Types';
 import Util, {
   actionRow,
@@ -62,10 +63,15 @@ export default class PersonalizeInteractionCommand extends InteractionCommand {
             },
           ],
         },
+        {
+          name: 'badges',
+          description: '「🧧」・Escolha quais badges devem aparecer em seu perfil',
+          type: 'SUB_COMMAND',
+        },
       ],
       category: 'util',
       cooldown: 7,
-      authorDataFields: ['selectedColor', 'colors', 'info'],
+      authorDataFields: ['selectedColor', 'colors', 'info', 'badges', 'hiddingBadges'],
     });
   }
 
@@ -77,6 +83,103 @@ export default class PersonalizeInteractionCommand extends InteractionCommand {
     if (command === 'cor') PersonalizeInteractionCommand.ColorInteractionCommand(ctx);
 
     if (command === 'temas') PersonalizeInteractionCommand.ThemesInteractionCommand(ctx);
+
+    if (command === 'badges') PersonalizeInteractionCommand.BadgesInteractionCommand(ctx);
+  }
+
+  static async BadgesInteractionCommand(ctx: InteractionCommandContext): Promise<void> {
+    const embed = new MessageEmbed()
+      .setAuthor({
+        name: ctx.locale('commands:badges.title'),
+        iconURL: ctx.author.displayAvatarURL(),
+      })
+      .setFooter({ text: ctx.locale('commands:badges.footer') })
+      .setColor(ctx.data.user.selectedColor);
+
+    const flags = ctx.author.flags?.toArray() ?? [];
+
+    flags.forEach((a) => {
+      if (typeof DiscordFlagsToMenheraBadges[a] === 'undefined') return;
+      ctx.data.user.badges.push({
+        id: DiscordFlagsToMenheraBadges[a],
+        obtainAt: `${ctx.author.createdTimestamp}`,
+      });
+    });
+
+    const selectMenu = new MessageSelectMenu()
+      .setCustomId(`${ctx.interaction.id} | SELECT`)
+      .setMinValues(1)
+      .setMaxValues(ctx.data.user.badges.length + 2)
+      .addOptions(
+        {
+          label: ctx.locale('commands:badges.select-all'),
+          value: 'ALL',
+          emoji: '⭐',
+        },
+        {
+          label: ctx.locale('commands:badges.diselect-all'),
+          value: 'NONE',
+          emoji: '⭕',
+        },
+      );
+
+    ctx.data.user.badges.forEach((a) => {
+      const isSelected = ctx.data.user.hiddingBadges.includes(a.id);
+
+      selectMenu.addOptions({
+        label: Badges[a.id as 1].name,
+        value: `${a.id}`,
+        default: isSelected,
+        emoji: emojis[`badge_${a.id}` as EmojiTypes],
+      });
+
+      embed.addField(
+        `${emojis[`badge_${a.id}` as EmojiTypes]} | ${Badges[a.id as 1].name}`,
+        ctx.locale('commands:badges.badge-info', {
+          unix: Math.floor(Number(a.obtainAt) / 1000),
+          description: Badges[a.id as 1].description,
+          rarity: Badges[a.id as 1].rarityLevel,
+          id: a.id,
+        }),
+        true,
+      );
+    });
+
+    ctx.makeMessage({ embeds: [embed], components: [actionRow([selectMenu])] });
+
+    const didSelect = await Util.collectComponentInteractionWithStartingId<SelectMenuInteraction>(
+      ctx.channel,
+      ctx.author.id,
+      ctx.interaction.id,
+      7500,
+    );
+
+    if (!didSelect) {
+      ctx.makeMessage({
+        components: [actionRow(disableComponents(ctx.locale('common:timesup'), [selectMenu]))],
+      });
+      return;
+    }
+
+    let toUpdate: number[] = [];
+
+    didSelect.values.forEach((a) => {
+      if (a.length <= 2) toUpdate.push(Number(a));
+    });
+
+    if (didSelect.values.includes('ALL')) toUpdate = ctx.data.user.badges.map((a) => a.id);
+
+    if (didSelect.values.includes('NONE')) toUpdate = [];
+
+    await ctx.client.repositories.userRepository.update(ctx.author.id, {
+      hiddingBadges: toUpdate,
+    });
+
+    ctx.makeMessage({
+      content: ctx.locale('commands:badges.success'),
+      embeds: [],
+      components: [],
+    });
   }
 
   static async ThemesInteractionCommand(ctx: InteractionCommandContext): Promise<void> {

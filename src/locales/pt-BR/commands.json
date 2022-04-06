@@ -891,5 +891,13 @@
       "no": "NÃO!!! QUERO MANTER",
       "description": "**ATENÇÃO**\n\nAo clicar no botão abaixo, tu vai apagar TODOS os teus dados **DO RPG**\nSua conta da Menhera existirá ainda, somente seus dados em relação ao RPG serão perdidos\n\nIsso só fará com que o teu personagem seja deletado. Tu vai poder criar outro personagem quando quiser.\n\nEstatísticas como vitórias em PvP continuarão vinculadas a sua conta.\n\nVocê tem certeza que quer fazer isso?"
     }
+  },
+  "badges": {
+    "title": "Suas Badges",
+    "footer": "Selecione as Badges que você quer que NÃO apareça em seu perfil",
+    "select-all": "Selecionar Todas",
+    "diselect-all": "Remover Todas Seleções",
+    "success": "Suas escolhas foram salvas!",
+    "badge-info": "_{{description}}_\n**Adquirida em**: <t:{{unix}}:d>\n**ID da badge**: {{id}}\n**Raridade:** {{rarity}}"
   }
 }

@@ -56,6 +56,7 @@ const userSchema = new Schema({
   estrelinhas: { type: Number, default: 0 },
   votes: { type: Number, default: 0 },
   badges: { type: Array, default: [] },
+  hiddingBadges: { type: Array, default: [] },
   voteCooldown: { type: Number, default: 0 },
   trisal: { type: Array, default: [] },
   inventory: { type: Array, default: [] },

@@ -105,6 +105,22 @@ export const emojis = {
   lock: '🔒',
   list: '📜',
   estrelinhas: '⭐',
+  // EMOJIS DE BADHES
+  badge_1: '<:badge_1:960660998002462730>',
+  badge_2: '<:badge_2:960660997914394654>',
+  badge_3: '<:badge_3:960660998015037460>',
+  badge_4: '<:badge_4:960660998400921600>',
+  badge_5: '<:badge_5:960660998098944020>',
+  badge_6: '<:badge_6:960660998912630784>',
+  badge_7: ':badge_7:960660999386566747>',
+  badge_8: '<:badge_8:960661002968518656>',
+  badge_9: '<:badge_9:960660998350602310>',
+  badge_10: '<:badge_10:960661746048204810>',
+  badge_11: '<:badge_11:960661745599414282>',
+  badge_12: '<:badge_12:960660998849712178>',
+  badge_13: '<:badge_13:960661002360336384>',
+  badge_15: '<:badge_15:960661000284151858>',
+  badge_16: '<:badge_16:960661002570055750>',
   // EMOJIS DO RPG
   blood: '🩸',
   mana: '💧',
@@ -115,7 +131,7 @@ export const emojis = {
   chest: '<:Chest:760957557538947133>',
   intelligence: '🧠',
   church: '⛪',
-  coin: '<:gold:878054145796472922>',
+  coin: '<:gold:960654694244573204>',
   blacksmith: '⚒️',
   agility: '👢',
 };
@@ -334,3 +350,10 @@ export const CANNOT_BUY_THEMES = [3, 5, 4, 6];
 export const TODAYS_YEAR = new Date().getFullYear();
 
 export const HOURLY_ROULETTE_HIGH_VALUE_BET_LIMIT = 5;
+
+export const DiscordFlagsToMenheraBadges: { [badge: string]: number } = {
+  EARLY_VERIFIED_BOT_DEVELOPER: 5,
+  HOUSE_BALANCE: 2,
+  HOUSE_BRILLIANCE: 3,
+  HOUSE_BRAVERY: 4,
+};

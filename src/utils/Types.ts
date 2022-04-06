@@ -94,6 +94,7 @@ export interface IUserSchema {
   estrelinhas: number;
   votes: number;
   badges: Array<IBadge>;
+  hiddingBadges: Array<IBadge['id']>;
   huntCooldown: number;
   voteCooldown: number;
   trisal: Array<string>;
@@ -202,6 +203,7 @@ export interface IUserDataToProfile {
   casado: string | User | null;
   voteCooldown: number;
   badges: Array<IBadge>;
+  hiddingBades: Array<number>;
   username: string;
   data: string;
   mamadas: number;

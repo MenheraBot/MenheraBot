@@ -53,7 +53,7 @@ export default class MenheraClient extends Client {
       process.env.NODE_ENV === 'development'
         ? (process.env.DEV_DATABASE_URI as string)
         : (process.env.DATABASE_URI as string),
-      true /* process.env.NODE_ENV !== 'development' */,
+      process.env?.TESTING !== 'true',
     );
     this.slashCommands = new Collection();
     this.cooldowns = new Collection();

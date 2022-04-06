@@ -32,6 +32,7 @@ export default class ProfileInteractionCommand extends InteractionCommand {
         'mamou',
         'ban',
         'banReason',
+        'hiddingBadges',
       ],
     });
   }
@@ -52,6 +53,7 @@ export default class ProfileInteractionCommand extends InteractionCommand {
             'mamado',
             'mamou',
             'ban',
+            'hiddingBadges',
             'banReason',
           ])
         : ctx.data.user;
@@ -98,6 +100,7 @@ export default class ProfileInteractionCommand extends InteractionCommand {
       data: user.marriedDate as string,
       mamadas: user.mamado,
       mamou: user.mamou,
+      hiddingBades: user.hiddingBadges,
     };
 
     const i18nData = {

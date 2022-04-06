@@ -24,7 +24,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - Adicionado a quantidade de bênçãos à ficha no início do comando
 - Novos comandos de reset:
   - `/resetar bencaos` - Reseta suas bênçãos por um certo custo
-  - `/resetar ficha` - Reseta sua conta do RPG. Tu pode criar outra a qualquer moment
+  - `/resetar ficha` - Reseta sua conta do RPG. Tu pode criar outra a qualquer momento
+- Novo comando de personalizalização: `/personalizar badges`. Com esse comando você pode ver as informações de suas badges, como também escolher quais badges NÃO devem aparecer em seu perfil.
 
 ### Changed
 
