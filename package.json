@@ -39,7 +39,7 @@
     "koa": "^2.13.4",
     "koa-body": "^4.2.0",
     "koa-router": "^10.1.1",
-    "moment": "^2.29.1",
+    "moment": "^2.29.2",
     "moment-duration-format": "^2.3.2",
     "mongoose": "^6.2.8",
     "string-similarity": "^4.0.4",
