@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ### Added
 
+- Três novos designs do Relkhin (853341889016365097). Perfis `iD03` e `Um Propósito Sem Alma`, e fundo de carta `Lamenta Caelorum`.
 - Status de Roleta `/status roleta`
 - **Sistema de PvP:** Usuários podem batalhar em uma batalha justa, ou desnivelada, depende do invocador do comando. Batalhas justas são alinhadas com TODOS os jogadores nível **10**, com todas habilidades da classe desbloqueadas no nível 2. NOVOS COMANDOS:
   - `/arena configurar` - Configura suas bênçãos para uma batalha justa. (Você pode resetar os pontos a qualquer momento)

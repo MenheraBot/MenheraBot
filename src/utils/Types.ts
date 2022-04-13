@@ -115,7 +115,13 @@ export interface CreditsSchema {
 }
 
 export type AvailableCardThemes = 'default' | 'death';
-export type AvailableCardBackgroundThemes = 'red' | 'blue' | 'cute_menhera' | 'premium' | 'kawaii';
+export type AvailableCardBackgroundThemes =
+  | 'red'
+  | 'blue'
+  | 'cute_menhera'
+  | 'premium'
+  | 'kawaii'
+  | 'lamenta_caelorum';
 export type AvailableTableThemes = 'green' | 'blue' | 'red' | 'pink' | 'rounded' | 'gauderios';
 export type AvailableProfilesThemes =
   | 'default'
@@ -123,7 +129,9 @@ export type AvailableProfilesThemes =
   | 'kawaii'
   | 'christmas_2021'
   | 'warrior'
-  | 'fortification';
+  | 'fortification'
+  | 'without_soul'
+  | 'id03';
 export type AvailableThemeTypes = 'profile' | 'cards' | 'card_background' | 'table';
 
 export interface IUserBuyableData {

@@ -135,6 +135,27 @@ const ImageThemes: { [id: number]: ThemeFiles } & Object = {
     type: 'table',
     theme: 'gauderios',
   },
+  20: {
+    isBuyable: true,
+    price: 250_000,
+    rarity: 'epic',
+    type: 'card_background',
+    theme: 'lamenta_caelorum',
+  },
+  21: {
+    isBuyable: true,
+    price: 720_000,
+    rarity: 'epic',
+    theme: 'without_soul',
+    type: 'profile',
+  },
+  22: {
+    isBuyable: true,
+    price: 630_000,
+    rarity: 'rare',
+    theme: 'id03',
+    type: 'profile',
+  },
 };
 
 export default ImageThemes;
