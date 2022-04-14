@@ -1,5 +1,6 @@
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
+import { debugError } from '@utils/Util';
 
 export default class RegisterCreditSlashInteractionCommand extends InteractionCommand {
   constructor() {
@@ -46,23 +47,31 @@ export default class RegisterCreditSlashInteractionCommand extends InteractionCo
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    const userId = ctx.options.getUser('owner', true).id;
+    const user = ctx.options.getUser('owner', true);
     const themeId = ctx.options.getInteger('theme', true);
-    const royalty = ctx.options.getInteger('royalty') ?? 1;
+    const royalty = ctx.options.getInteger('royalty') ?? 5;
     const themeType = ctx.options.getString('type', true) as
       | 'addCardBackgroundTheme'
       | 'addCardsTheme'
       | 'addProfileTheme'
       | 'addTableTheme';
 
-    await ctx.client.repositories.creditsRepository.registerTheme(themeId, userId, royalty);
-    await ctx.client.repositories.themeRepository[themeType](userId, themeId);
+    await ctx.client.repositories.creditsRepository.registerTheme(themeId, user.id, royalty);
+    await ctx.client.repositories.themeRepository[themeType](user.id, themeId);
 
     ctx.makeMessage({
       content: ctx.prettyResponseText(
         'success',
-        `Tema \`${themeId}\` registrado com sucesso! Dono: <@${userId}> (${userId})\nEle já recebeu o tema, basta dar a recompensa em estrelinhas`,
+        `Tema \`${themeId}\` registrado com sucesso! Dono: <@${user.id}> (${user.id})\nEle já recebeu o tema, basta dar a recompensa em estrelinhas`,
       ),
     });
+
+    user
+      .send({
+        content: `:sparkles: **OBRIGADA POR CRIAR UM TEMA! **:sparkles:\n\nSeu tema ${ctx.locale(
+          `data:themes.${themeId as 1}.name`,
+        )} foi registrado pela minha dona.\nEle já está em seu perfil (até por que tu que fez, é teu por direito >.<). Divulge bastante teu tema, que tu ganha uma parte em estrelinhas pelas compras de seu tema!`,
+      })
+      .catch(debugError);
   }
 }
