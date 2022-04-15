@@ -41,6 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - Os prêmios da roleta foram reajustados
 - Gigantesca mudança no valor dos temas e cores.
 - Grande mudança no valor das caças e seus rolls
+- Nova formula de cálculo de dano efetivo
 
 ### Fixed
 
@@ -54,6 +55,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - Buffs de raças que não eram contabilizados
 - Efeitos do **DEFENSOR** Não são mais infinitas
 - Resolvido problema do veneno que ignorava armaduras
+- Resolvido problema que baixos danos e altas armaduras resultavam em cura, ao invés de dano
 
 ### Removed
 

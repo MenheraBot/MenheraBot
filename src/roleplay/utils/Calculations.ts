@@ -267,14 +267,13 @@ export const calculateEffectiveDamage = (
   attackerDamage: number,
   attackerPenetration: number,
   defenderArmor: number,
-): number =>
-  // Reference: https://www.reddit.com/r/gamedesign/comments/2dyd99/question_armor_calculation_for_rpgs/
-  Math.floor(
-    attackerDamage -
-      (attackerDamage *
-        Math.max(defenderArmor * (1 - attackerPenetration / 100), 0) ** (1 / 1.33)) /
-        100,
-  );
+): number => {
+  const effectiveArmor = defenderArmor - attackerPenetration;
+
+  if (effectiveArmor >= 0) return Math.floor(attackerDamage * (100 / (100 + effectiveArmor)));
+
+  return Math.floor(attackerDamage * (2 - 100 / (100 - effectiveArmor)));
+};
 
 export const makeBlessingStatusUpgrade = (toBless: ToBLess, points: number): number => {
   switch (toBless) {
