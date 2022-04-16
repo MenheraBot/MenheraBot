@@ -108,6 +108,8 @@
     "options": {
       "hand-attack": "Ataque Básico",
       "runaway": "Fugir",
+      "giveup": "Desistir",
+      "giveup_description": "Desiste desta batalha, dando a vitória para seu inimigo",
       "runaway-description": "Sai correndo na esperança de fugir dessa batalha",
       "hand-attack-description": "Dê um ataque com sua arma primária",
       "ability-info": "⚔️ | Dano: **{{damage}}**\n💧 | Custo: **{{cost}}** {{no-mana}}",
@@ -136,7 +138,8 @@
     "user-stats-info": "❤️ | Vida: **{{life}}**\n💧 | Mana: **{{mana}}**\n⚔️ | Dano: **{{damage}}** | Precisão: **{{chanceToConnect}}%**\n🛡️ | Defesa: **{{armor}}** | Esquiva: **{{chanceToDodge}}%**\n🧠 | Inteligência: **{{intelligence}}**\n👢 | Agilidade: **{{agility}}**",
     "reasons": {
       "miss-attack": "não fez nada por 4 turnos",
-      "user-death": "morreu em batalha"
+      "user-death": "morreu em batalha",
+      "user-giveup": "desistiu"
     }
   }
 }

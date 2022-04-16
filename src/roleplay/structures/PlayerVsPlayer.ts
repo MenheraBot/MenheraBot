@@ -179,13 +179,22 @@ export default class PlayerVsPlayer {
     const options = new MessageSelectMenu()
       .setCustomId(selectCustomId)
       .setPlaceholder(this.ctx.locale('roleplay:battle.select'))
-      .addOptions({
-        label: this.ctx.locale('roleplay:battle.options.hand-attack'),
-        value: 'HANDATTACK',
-        description: this.ctx
-          .locale('roleplay:battle.options.hand-attack-description')
-          .substring(0, 100),
-      });
+      .addOptions(
+        {
+          label: this.ctx.locale('roleplay:battle.options.hand-attack'),
+          value: 'HANDATTACK',
+          description: this.ctx
+            .locale('roleplay:battle.options.hand-attack-description')
+            .substring(0, 100),
+        },
+        {
+          label: this.ctx.locale('roleplay:battle.options.giveup'),
+          value: 'GIVEUP',
+          description: this.ctx
+            .locale('roleplay:battle.options.hand-attack-description')
+            .substring(0, 100),
+        },
+      );
 
     embed.addFields([
       {
@@ -247,6 +256,14 @@ export default class PlayerVsPlayer {
     }
 
     switch (resolveSeparatedStrings(selectedOptions.values[0])[0]) {
+      case 'GIVEUP': {
+        this.lastText = this.ctx.locale('roleplay:pvp.pvp-finished', {
+          winner: toDefendUser.username,
+          loser: toAttackUser.username,
+          reason: this.ctx.locale('roleplay:pvp.reasons.user-giveup'),
+        });
+        return true;
+      }
       case 'HANDATTACK': {
         const damageDealt = calculateEffectiveDamage(
           attackerDamage,
