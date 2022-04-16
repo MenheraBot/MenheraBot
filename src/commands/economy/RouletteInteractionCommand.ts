@@ -267,7 +267,7 @@ export default class RouletteInteractionCommand extends InteractionCommand {
       if (highValueBet)
         ctx.client.repositories.cacheRepository.incrementRouletteHourlyUsage(ctx.author.id);
 
-      const taxes = profit < 50000 ? 11.2 / 100 : 26.7 / 100;
+      const taxes = profit < 50000 ? 9.8 / 100 : 25.7 / 100;
 
       const profitWithTaxes = Math.floor(profit - profit * taxes);
 
