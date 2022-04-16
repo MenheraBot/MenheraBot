@@ -42,6 +42,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - Gigantesca mudança no valor dos temas e cores.
 - Grande mudança no valor das caças e seus rolls
 - Nova formula de cálculo de dano efetivo
+- Diminuido a quantidade de demônios, gigantes e anjos mínimos no perfil para começar a ser afetado pela inatividade
 
 ### Fixed
 
@@ -56,6 +57,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - Efeitos do **DEFENSOR** Não são mais infinitas
 - Resolvido problema do veneno que ignorava armaduras
 - Resolvido problema que baixos danos e altas armaduras resultavam em cura, ao invés de dano
+- Fugir da Dungeon mostra uma mensagem, ao invés de só travar o comando
 
 ### Removed
 
