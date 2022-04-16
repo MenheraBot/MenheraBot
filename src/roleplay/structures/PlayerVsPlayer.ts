@@ -93,6 +93,24 @@ export default class PlayerVsPlayer {
     const toAttackUser = this[`${user}DiscordUser`];
     const toDefendUser = this[`${invertBattleTurn(user)}DiscordUser`];
 
+    if (isDead(toDefend)) {
+      this.lastText = this.ctx.locale('roleplay:pvp.pvp-finished', {
+        winner: toAttackUser.username,
+        loser: toDefendUser.username,
+        reason: this.ctx.locale('roleplay:pvp.reasons.user-death'),
+      });
+      return true;
+    }
+
+    if (isDead(toAttack)) {
+      this.lastText = this.ctx.locale('roleplay:pvp.pvp-finished', {
+        loser: toAttackUser.username,
+        winner: toDefendUser.username,
+        reason: this.ctx.locale('roleplay:pvp.reasons.user-death'),
+      });
+      return true;
+    }
+
     if (this[`${user}Info`].missedAttacks >= 4) {
       this[user].life = 0;
       this.lastText = this.ctx.locale('roleplay:pvp.pvp-finished', {
@@ -258,6 +276,7 @@ export default class PlayerVsPlayer {
     switch (resolveSeparatedStrings(selectedOptions.values[0])[0]) {
       case 'GIVEUP': {
         toAttack.life = 0;
+
         this.lastText = this.ctx.locale('roleplay:pvp.pvp-finished', {
           winner: toDefendUser.username,
           loser: toAttackUser.username,
@@ -265,6 +284,7 @@ export default class PlayerVsPlayer {
         });
         return true;
       }
+
       case 'HANDATTACK': {
         const damageDealt = calculateEffectiveDamage(
           attackerDamage,
@@ -291,6 +311,7 @@ export default class PlayerVsPlayer {
         });
         return false;
       }
+
       case 'ABILITY': {
         const abilityId = Number(resolveSeparatedStrings(selectedOptions.values[0])[1]);
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

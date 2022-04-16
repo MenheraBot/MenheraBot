@@ -427,7 +427,7 @@ export default class ArenaInteractionCommand extends InteractionCommand {
           : Math.abs(
               Math.max(userConfig.maxLife, userConfig.agility) - (userConfig.maxMana + points),
             );
-      if (antiBlessingLimit >= BLESSES_DIFFERENCE_LIMIT) {
+      if (antiBlessingLimit > BLESSES_DIFFERENCE_LIMIT) {
         ctx.makeMessage({
           content: ctx.prettyResponse('error', 'commands:ficha.show.limit-bless', {
             limit: BLESSES_DIFFERENCE_LIMIT,
@@ -451,7 +451,7 @@ export default class ArenaInteractionCommand extends InteractionCommand {
               Math.max(userConfig.armor, userConfig.damage) - (userConfig.intelligence + points),
             );
 
-      if (antiBlessingLimit >= BLESSES_DIFFERENCE_LIMIT) {
+      if (antiBlessingLimit > BLESSES_DIFFERENCE_LIMIT) {
         ctx.makeMessage({
           content: ctx.prettyResponse('error', 'commands:ficha.show.limit-bless', {
             limit: BLESSES_DIFFERENCE_LIMIT,
