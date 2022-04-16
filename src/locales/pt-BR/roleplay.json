@@ -109,7 +109,7 @@
       "hand-attack": "Ataque Básico",
       "runaway": "Fugir",
       "giveup": "Desistir",
-      "giveup_description": "Desiste desta batalha, dando a vitória para seu inimigo",
+      "giveup-description": "Desiste desta batalha, dando a vitória para seu inimigo",
       "runaway-description": "Sai correndo na esperança de fugir dessa batalha",
       "hand-attack-description": "Dê um ataque com sua arma primária",
       "ability-info": "⚔️ | Dano: **{{damage}}**\n💧 | Custo: **{{cost}}** {{no-mana}}",

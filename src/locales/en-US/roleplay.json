@@ -111,7 +111,7 @@
       "runaway-description": "Runs away in hopes of running away from this battle",
       "hand-attack-description": "Strike with your primary weapon",
       "giveup": "Give Up",
-      "giveup_description": "Give Up from the battle, giving the win for your opponent",
+      "giveup-description": "Give Up from the battle, giving the win for your opponent",
       "ability-info": "⚔️ | Damage: **{{damage}}**\n💧 | Cost: **{{cost}}** {{no-mana}}",
       "attack-info": "⚔️ | Damage: **{{damage}}**\n🎯 | Accuracy: **{{chanceToConnect}}%**",
       "runaway-info": "🐥 | Chance of Escape: **{{chance}}%**",

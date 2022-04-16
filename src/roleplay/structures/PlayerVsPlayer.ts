@@ -191,7 +191,7 @@ export default class PlayerVsPlayer {
           label: this.ctx.locale('roleplay:battle.options.giveup'),
           value: 'GIVEUP',
           description: this.ctx
-            .locale('roleplay:battle.options.hand-attack-description')
+            .locale('roleplay:battle.options.giveup-description')
             .substring(0, 100),
         },
       );
@@ -257,6 +257,7 @@ export default class PlayerVsPlayer {
 
     switch (resolveSeparatedStrings(selectedOptions.values[0])[0]) {
       case 'GIVEUP': {
+        toAttack.life = 0;
         this.lastText = this.ctx.locale('roleplay:pvp.pvp-finished', {
           winner: toDefendUser.username,
           loser: toAttackUser.username,
