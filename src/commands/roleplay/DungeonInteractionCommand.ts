@@ -200,10 +200,18 @@ export default class DungeonInteractionCommand extends InteractionCommand {
         reason: 'dungeon',
         until: ROLEPLAY_COOLDOWNS.dungeonCooldown + Date.now(),
       });
+
       await ctx.client.repositories.roleplayRepository.postBattle(
         ctx.author.id,
         battleResults.user,
       );
+
+      ctx.makeMessage({
+        content: ctx.prettyResponse('success', 'commands:dungeon.results.runaway'),
+        components: [],
+        embeds: [],
+      });
+
       return;
     }
 

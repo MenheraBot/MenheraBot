@@ -761,6 +761,7 @@
       "use-potion": "Selecione as poções que queres usar",
       "back": "Você retornou para a cidade, descanse um pouco antes de ir para outra aventura!",
       "footer": "Caso queira algum item, faça-o antes de ir para outro lugar",
+      "runaway": "Você fugiu da batalha com sucesso",
       "loots": "Itens Disponíveis (Você tem espaço para pegar **{{amount}}**)\n{{itemText}}",
       "description": "**Seus Status:**\n❤️ | Vida: **{{life}} / {{maxLife}}**\n💧 | Mana: **{{mana}} / {{maxMana}}**\n🔰 | Experiência Ganha: **{{experience}}**\n\nVocê triunfou em sua batalha, e agora deve seguir seu rumo, escolha o que desejas fazer"
     },
