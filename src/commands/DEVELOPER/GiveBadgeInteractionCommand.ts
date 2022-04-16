@@ -9,15 +9,16 @@ export default class GiveBadgeSlashInteractionCommand extends InteractionCommand
       category: 'dev',
       options: [
         {
-          type: 'USER',
           name: 'user',
           description: 'User pra da badge',
+          type: 'USER',
           required: true,
         },
         {
           name: 'badgeid',
           description: 'id da badge',
           type: 'INTEGER',
+          autocomplete: true,
           required: true,
         },
       ],
@@ -28,11 +29,29 @@ export default class GiveBadgeSlashInteractionCommand extends InteractionCommand
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    await ctx.client.repositories.badgeRepository.addBadge(
-      ctx.options.getUser('user', true).id,
-      ctx.options.getInteger('badgeid', true),
-    );
+    const { id: userId } = ctx.options.getUser('user', true);
+    const badgeId = ctx.options.getInteger('badgeid', true);
 
-    await ctx.makeMessage({ content: 'Concluido' });
+    const userBadges = await ctx.client.repositories.badgeRepository.getBadges(userId);
+
+    if (!userBadges) {
+      ctx.makeMessage({
+        content: ctx.prettyResponseText('error', 'Este usuário não possui uma conta na Menher'),
+      });
+      return;
+    }
+
+    if (userBadges.badges.some((a) => a.id === badgeId)) {
+      ctx.makeMessage({
+        content: ctx.prettyResponseText('error', 'Este usuário já possui esta badge!'),
+      });
+      return;
+    }
+
+    await ctx.client.repositories.badgeRepository.addBadge(userId, badgeId);
+
+    await ctx.makeMessage({
+      content: ctx.prettyResponseText('success', 'Badge Adicionada ao usuário'),
+    });
   }
 }
