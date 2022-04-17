@@ -49,7 +49,7 @@ export default class RegisterCreditSlashInteractionCommand extends InteractionCo
   async run(ctx: InteractionCommandContext): Promise<void> {
     const user = ctx.options.getUser('owner', true);
     const themeId = ctx.options.getInteger('theme', true);
-    const royalty = ctx.options.getInteger('royalty') ?? 5;
+    const royalty = ctx.options.getInteger('royalty') ?? 7;
     const themeType = ctx.options.getString('type', true) as
       | 'addCardBackgroundTheme'
       | 'addCardsTheme'
@@ -68,10 +68,18 @@ export default class RegisterCreditSlashInteractionCommand extends InteractionCo
 
     user
       .send({
-        content: `:sparkles: **OBRIGADA POR CRIAR UM TEMA! **:sparkles:\n\nSeu tema ${ctx.locale(
+        content: `:sparkles: **OBRIGADA POR CRIAR UM TEMA! **:sparkles:\n\nSeu tema \`${ctx.locale(
           `data:themes.${themeId as 1}.name`,
-        )} foi registrado pela minha dona.\nEle já está em seu perfil (até por que tu que fez, é teu por direito >.<). Divulge bastante teu tema, que tu ganha uma parte em estrelinhas pelas compras de seu tema!`,
+        )}\` foi registrado pela minha dona.\nEle já está em seu perfil (até por que tu que fez, é teu por direito >.<). Divulge bastante teu tema, que tu ganha uma parte em estrelinhas pelas compras de seu tema!`,
       })
       .catch(debugError);
+
+    const userBadges = await ctx.client.repositories.badgeRepository.getBadges(user.id);
+
+    if (!userBadges) return;
+
+    if (userBadges.badges.some((a) => a.id === 15)) return;
+
+    await ctx.client.repositories.badgeRepository.addBadge(user.id, 15);
   }
 }

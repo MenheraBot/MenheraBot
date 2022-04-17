@@ -137,6 +137,10 @@
     "22": {
       "name": "iD03",
       "description": "401 Acesso Nescessário"
+    },
+    "23": {
+      "name": "Partida Atemporal",
+      "description": "Regras? Quais?"
     }
   }
 }

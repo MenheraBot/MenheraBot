@@ -156,6 +156,13 @@ const ImageThemes: { [id: number]: ThemeFiles } & Object = {
     theme: 'id03',
     type: 'profile',
   },
+  23: {
+    isBuyable: true,
+    price: 200_000,
+    rarity: 'epic',
+    theme: 'atemporal',
+    type: 'table',
+  },
 };
 
 export default ImageThemes;
