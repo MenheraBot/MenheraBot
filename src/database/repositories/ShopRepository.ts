@@ -23,7 +23,7 @@ export default class ShopRepository {
       { $inc: { estrelinhas: negate(price) }, lastCommandAt: Date.now() },
     );
 
-    await this.creditsRepository.addParticipation(themeID, (royalty / 100) * price);
+    await this.creditsRepository.addParticipation(themeID, Math.floor((royalty / 100) * price));
 
     switch (themeType) {
       case 'profile':

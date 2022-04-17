@@ -473,13 +473,13 @@ export default class ShopInteractionCommand extends InteractionCommand {
                   ctx.author.username
                 } (${ctx.author.id})\n**Tema Comprado:** ${ctx.locale(
                   `data:themes.${selectedItem.id as 1}.name`,
-                )}\n**Seu Lucro:** ${
-                  (credits.royalty / 100) * selectedItem.data.price
-                } :star:\n**Este tema foi comprado:** ${
+                )}\n**Seu Lucro:** ${Math.floor(
+                  (credits.royalty / 100) * selectedItem.data.price,
+                )} :star:\n**Este tema foi comprado:** ${
                   credits.timesSold + 1
-                } vezes\n**Você já ganhou:** ${
-                  credits.totalEarned + (credits.royalty / 100) * selectedItem.data.price
-                } :star: somente com ele\n\n\`Você pode desativar esta notificação de compra de temas no comando '/status designer'\``,
+                } vezes\n**Você já ganhou:** ${Math.floor(
+                  credits.totalEarned + (credits.royalty / 100) * selectedItem.data.price,
+                )} :star: somente com ele\n\n\`Você pode desativar esta notificação de compra de temas no comando '/status designer'\``,
               })
               .catch(debugError);
 
