@@ -160,6 +160,7 @@ export interface IUserThemesSchema {
   selectedTableTheme: number;
   selectedProfileTheme: number;
   selectedCardBackgroundTheme: number;
+  notifyPurchase: boolean;
 }
 
 export interface IInteractionCommandConfig extends ChatInputApplicationCommandData {

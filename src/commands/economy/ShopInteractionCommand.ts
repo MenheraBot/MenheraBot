@@ -8,6 +8,7 @@ import MagicItems from '@data/HuntMagicItems';
 import { AvailableThemeTypes, HuntingTypes, IHuntProbablyBoostItem } from '@utils/Types';
 import Util, {
   actionRow,
+  debugError,
   getAllThemeUserIds,
   getThemeById,
   getThemesByType,
@@ -458,6 +459,30 @@ export default class ShopInteractionCommand extends InteractionCommand {
             embeds: [],
             content: ctx.prettyResponse('success', 'commands:loja.buy_themes.success'),
           });
+
+          const { notifyPurchase } = await ctx.client.repositories.themeRepository.findOrCreate(
+            credits.ownerId,
+            ['notifyPurchase'],
+          );
+
+          if (notifyPurchase)
+            await ctx.client.users
+              .forge(credits.ownerId)
+              .send({
+                content: `:sparkles: **UM TEMA SEU FOI COMPRADO!** :sparkles:\n\n**Comprador:** ${
+                  ctx.author.username
+                } (${ctx.author.id})\n**Tema Comprado:** ${ctx.locale(
+                  `data:themes.${selectedItem.id as 1}.name`,
+                )}\n**Seu Lucro:** ${
+                  (credits.royalty / 100) * selectedItem.data.price
+                } :star:\n**Este tema foi comprado:** ${
+                  credits.timesSold + 1
+                } vezes\n**Você já ganhou:** ${
+                  credits.totalEarned + (credits.royalty / 100) * selectedItem.data.price
+                } :star: somente com ele\n\n\`Você pode desativar esta notificação de compra de temas no comando '/status designer'\``,
+              })
+              .catch(debugError);
+
           break;
         }
         case 'PROFILE':

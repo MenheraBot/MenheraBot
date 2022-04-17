@@ -31,6 +31,7 @@ const userThemes = new Schema({
   selectedProfileTheme: { type: Number, default: 3 },
   selectedTableTheme: { type: Number, default: 5 },
   selectedCardBackgroundTheme: { type: Number, default: 6 },
+  notifyPurchase: { type: Boolean, default: true },
 });
 
 const userSchema = new Schema({

@@ -456,6 +456,10 @@
     "designer": {
       "no-designer": "Este usuário não possui nenhum design em seu nome!",
       "title": "Designs de {{user}}",
+      "notify": "Notificar Compras",
+      "dont-notify": "Não Notificar Compras",
+      "success": "Suas configurações de notificação de compras foram alteradas!",
+      "notify-footer": "Com notificar compras ativo, toda vez que um usuário comprar um design seu, a Menhera tentará enviar uma mensagem em sua DM mostrando isso",
       "description": "**Tipo:** $t(common:theme_types.{{type}}) ($t(common:rarities.{{rarity}}))\n**Royalty:**: {{royalty}}%\n**Lucro:** {{profit}} :star:\n**Vendidos:** {{sold}}\nRegistrado em `{{registered}}`"
     },
     "coinflip": {

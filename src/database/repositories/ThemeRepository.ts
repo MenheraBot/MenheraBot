@@ -27,6 +27,10 @@ export default class ThemeRepository {
     return result;
   }
 
+  async makeNofity(userId: string, notify: boolean): Promise<void> {
+    await this.themesModal.updateOne({ id: userId }, { notifyPurchase: notify });
+  }
+
   async addTableTheme(userId: string, tableId: number): Promise<void> {
     await this.themesModal.updateOne(
       { id: userId },

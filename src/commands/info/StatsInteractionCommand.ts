@@ -221,7 +221,48 @@ export default class StatsInteractionCommand extends InteractionCommand {
         }, []),
       );
 
-    ctx.makeMessage({ embeds: [embed] });
+    if (ctx.author.id !== user.id) {
+      ctx.makeMessage({ embeds: [embed] });
+      return;
+    }
+
+    const { notifyPurchase } = await ctx.client.repositories.themeRepository.findOrCreate(user.id, [
+      'notifyPurchase',
+    ]);
+
+    embed.setFooter({ text: ctx.locale('commands:status.designer.notify-footer') });
+
+    const notifyButton = new MessageButton()
+      .setCustomId(`${ctx.interaction.id} | NOTIFY`)
+      .setEmoji('<:notify:759607330597502976>')
+      .setStyle(notifyPurchase ? 'PRIMARY' : 'SECONDARY')
+      .setLabel(
+        ctx.locale(`commands:status.designer.${notifyPurchase ? 'notify' : 'dont-notify'}`),
+      );
+
+    ctx.makeMessage({ embeds: [embed], components: [actionRow([notifyButton])] });
+
+    const selected = await Util.collectComponentInteractionWithStartingId(
+      ctx.channel,
+      ctx.author.id,
+      ctx.interaction.id,
+      7500,
+    );
+
+    if (!selected) {
+      ctx.makeMessage({
+        components: [actionRow(disableComponents(ctx.locale('common:timesup'), [notifyButton]))],
+      });
+      return;
+    }
+
+    await ctx.client.repositories.themeRepository.makeNofity(ctx.author.id, !notifyPurchase);
+
+    ctx.makeMessage({
+      components: [],
+      embeds: [],
+      content: ctx.prettyResponse('success', 'commands:status.designer.success'),
+    });
   }
 
   static async HuntStatus(ctx: InteractionCommandContext): Promise<void> {
