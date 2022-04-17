@@ -79,7 +79,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
           type: 'SUB_COMMAND',
         },
         {
-          name: 'design',
+          name: 'designer',
           description: '「🖌️」・Veja os status de design de algum designer',
           options: [
             {
@@ -102,7 +102,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
     const command = ctx.options.getSubcommand();
 
     switch (command) {
-      case 'design':
+      case 'designer':
         return StatsInteractionCommand.DesignerStatus(ctx);
       case 'cacar':
         return StatsInteractionCommand.HuntStatus(ctx);
@@ -203,6 +203,7 @@ export default class StatsInteractionCommand extends InteractionCommand {
     const embed = new MessageEmbed()
       .setTitle(ctx.locale('commands:status.designer.title', { user: user.tag }))
       .setColor(ctx.data.user.selectedColor)
+      .setThumbnail(user.displayAvatarURL({ dynamic: true }))
       .addFields(
         userDesigns.reduce<EmbedFieldData[]>((fields, design) => {
           const theme = getThemeById(design.themeId);
