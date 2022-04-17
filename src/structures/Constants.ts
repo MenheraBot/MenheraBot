@@ -134,6 +134,10 @@ export const emojis = {
   coin: '<:gold:960654694244573204>',
   blacksmith: '⚒️',
   agility: '👢',
+  buff: '<:buff:964812397888016394>',
+  debuff: '<:debuff:964812397825110026>',
+  poison: '🧪',
+  heal: '💊',
 };
 
 export type EmojiTypes = keyof typeof emojis;

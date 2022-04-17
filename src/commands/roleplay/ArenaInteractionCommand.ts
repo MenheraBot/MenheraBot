@@ -664,7 +664,7 @@ export default class ArenaInteractionCommand extends InteractionCommand {
                 defaultBlessesConfiguration(),
               ),
               ArenaInteractionCommand.prepareUserForPvP(
-                author,
+                enemy,
                 false,
                 defaultBlessesConfiguration(),
               ),

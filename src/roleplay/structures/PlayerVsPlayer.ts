@@ -1,8 +1,8 @@
 import { PVP_USER_RESPONSE_TIME_LIMIT } from '@roleplay/Constants';
 import { BattleUserTurn, UserBattleEntity } from '@roleplay/Types';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { COLORS } from '@structures/Constants';
-import Util, { actionRow, makeCustomId, resolveSeparatedStrings } from '@utils/Util';
+import { COLORS, emojis, EmojiTypes } from '@structures/Constants';
+import Util, { actionRow, capitalize, makeCustomId, resolveSeparatedStrings } from '@utils/Util';
 import { MessageEmbed, MessageSelectMenu, SelectMenuInteraction, User } from 'discord.js-light';
 import { getAbilityDamageFromEffects, invertBattleTurn, isDead } from '../utils/AdventureUtils';
 import {
@@ -64,27 +64,55 @@ export default class PlayerVsPlayer {
 
   private clearEffects(): void {
     (['attacker', 'defender'] as const).forEach((toEffect) => {
-      this[toEffect].effects.forEach((a, i) => {
-        switch (a.effectType) {
-          case 'heal':
-            this[toEffect].life = Math.min(
-              getUserMaxLife(this[toEffect]),
-              this[toEffect].life + calculateHeal(this[toEffect], a),
-            );
-            break;
-          case 'poison':
-            this[toEffect].life -= calculateEffectiveDamage(
-              calculatePoison(a, this[toEffect].life),
-              0,
-              getUserArmor(this[invertBattleTurn(toEffect)]),
-            );
-            break;
+      this[toEffect].effects.forEach((a) => {
+        if (a.effectType === 'heal') {
+          this[toEffect].life = Math.min(
+            getUserMaxLife(this[toEffect]),
+            this[toEffect].life + calculateHeal(this[toEffect], a),
+          );
+        }
+
+        if (a.effectType === 'poison') {
+          this[toEffect].life -= calculateEffectiveDamage(
+            calculatePoison(a, this[toEffect].life),
+            0,
+            getUserArmor(this[invertBattleTurn(toEffect)]),
+          );
         }
 
         a.durationInTurns -= 1;
-        if (a.durationInTurns <= 0) this[toEffect].effects.splice(i, 1);
+        if (a.durationInTurns <= 0)
+          this[toEffect].effects.splice(
+            this[toEffect].effects.findIndex((b) => a === b),
+            1,
+          );
       });
     });
+  }
+
+  private static getEffectsDisplayText(
+    effects: UserBattleEntity['effects'],
+    wanned: 'buff' | 'debuff',
+  ): string {
+    const toUseEffects = effects.reduce<UserBattleEntity['effects']>((p, c) => {
+      if (
+        c.effectType.endsWith(`_${wanned}`) ||
+        c.effectType === (wanned === 'buff' ? 'heal' : 'poison')
+      ) {
+        const found = p.find((a) => a.effectType === c.effectType);
+
+        if (found) {
+          found.durationInTurns = Math.max(c.durationInTurns, found.durationInTurns);
+        } else p.push(c);
+      }
+      return p;
+    }, []);
+
+    if (toUseEffects.length === 0) return '';
+
+    return `${emojis[wanned]} | ${capitalize(wanned)}s: ${toUseEffects
+      .map((a) => `**${a.durationInTurns}**${emojis[a.effectType.split('_')[0] as EmojiTypes]}`)
+      .join('  ')}\n`;
   }
 
   private async userAttack(user: BattleUserTurn): Promise<boolean> {
@@ -140,7 +168,7 @@ export default class PlayerVsPlayer {
     const baseFields = [
       {
         name: this.ctx.locale('roleplay:pvp.user-stats', { user: toAttackUser.username }),
-        value: this.ctx.locale('roleplay:pvp.user-stats-info', {
+        value: `${this.ctx.locale('roleplay:pvp.user-stats-info', {
           life: toAttack.life,
           mana: toAttack.mana,
           damage: attackerDamage,
@@ -149,12 +177,15 @@ export default class PlayerVsPlayer {
           agility: attackerAgility,
           chanceToConnect: (100 - attackerAttackSuccess).toFixed(2),
           chanceToDodge: attackerDodge.toFixed(2),
-        }),
+        })}\n${PlayerVsPlayer.getEffectsDisplayText(
+          toAttack.effects,
+          'buff',
+        )}${PlayerVsPlayer.getEffectsDisplayText(toAttack.effects, 'debuff')}`,
         inline: true,
       },
       {
         name: this.ctx.locale('roleplay:pvp.user-stats', { user: toDefendUser.username }),
-        value: this.ctx.locale('roleplay:pvp.user-stats-info', {
+        value: `${this.ctx.locale('roleplay:pvp.user-stats-info', {
           life: toDefend.life,
           mana: toDefend.mana,
           damage: defenderDamage,
@@ -163,7 +194,10 @@ export default class PlayerVsPlayer {
           agility: defenderAgility,
           chanceToConnect: (100 - defenderAttackSuccess).toFixed(2),
           chanceToDodge: defenderDodge.toFixed(2),
-        }),
+        })}\n${PlayerVsPlayer.getEffectsDisplayText(
+          toDefend.effects,
+          'buff',
+        )}${PlayerVsPlayer.getEffectsDisplayText(toDefend.effects, 'debuff')}`,
         inline: true,
       },
     ];
