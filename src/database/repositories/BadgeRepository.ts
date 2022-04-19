@@ -1,4 +1,4 @@
-import { IUserSchema } from '@utils/Types';
+import type { IUserSchema } from '@custom_types/Menhera';
 import { MayNotExists } from '@utils/Util';
 import UserRepository from './UserRepository';
 

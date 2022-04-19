@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import { ThemeFiles } from '@utils/Types';
+import { ThemeFiles } from '@custom_types/Menhera';
 
 const ImageThemes: { [id: number]: ThemeFiles } & Object = {
   1: {

@@ -9,7 +9,7 @@ import {
   ITableTheme,
   AvailableCardBackgroundThemes,
   ICardBackgroudTheme,
-} from '@utils/Types';
+} from '@custom_types/Menhera';
 import { getThemeById, MayNotExists } from '@utils/Util';
 import { Redis } from 'ioredis';
 

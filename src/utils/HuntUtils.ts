@@ -7,7 +7,7 @@ import {
   IMagicItem,
   IHuntProbablyBoostItem,
   IReturnData,
-} from '@utils/Types';
+} from '@custom_types/Menhera';
 import { getMagicItemByCustomFilter, getMagicItemById } from './Util';
 
 export const calculateProbability = (probabilities: HuntProbabiltyProps[]): number => {

@@ -4,7 +4,7 @@ import { getUserMaxLife, getUserMaxMana } from '@roleplay/utils/Calculations';
 import { getItemById } from '@roleplay/utils/DataUtils';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { IReturnData } from '@utils/Types';
+import { IReturnData } from '@custom_types/Menhera';
 import Util, {
   actionRow,
   disableComponents,

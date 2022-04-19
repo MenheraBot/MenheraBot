@@ -5,7 +5,12 @@ import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageEmbed } from 'discord.js-light';
 import HttpRequests from '@utils/HTTPrequests';
-import { huntEnum, HuntingTypes, HuntProbabiltyProps, IHuntCooldownBoostItem } from '@utils/Types';
+import {
+  huntEnum,
+  HuntingTypes,
+  HuntProbabiltyProps,
+  IHuntCooldownBoostItem,
+} from '@custom_types/Menhera';
 import {
   calculateProbability,
   dropItem,

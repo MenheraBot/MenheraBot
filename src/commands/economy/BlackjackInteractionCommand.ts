@@ -10,7 +10,7 @@ import {
   AvailableTableThemes,
   IBlackjackCards,
   IPicassoReturnData,
-} from '@utils/Types';
+} from '@custom_types/Menhera';
 import { BLACKJACK_CARDS, emojis } from '@structures/Constants';
 import Util, { resolveCustomId, actionRow, MayNotExists } from '@utils/Util';
 

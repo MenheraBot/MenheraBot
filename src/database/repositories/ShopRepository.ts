@@ -1,5 +1,5 @@
 import { Users } from '@structures/DatabaseCollections';
-import { AvailableThemeTypes, HuntingTypes, IColor } from '@utils/Types';
+import { AvailableThemeTypes, HuntingTypes, IColor } from '@custom_types/Menhera';
 import { negate } from '@utils/Util';
 import ThemeRepository from './ThemeRepository';
 import CreditsRepository from './CreditsRepository';

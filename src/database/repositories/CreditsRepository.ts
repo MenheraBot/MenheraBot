@@ -1,5 +1,5 @@
 import { Credits } from '@structures/DatabaseCollections';
-import { CreditsSchema } from '@utils/Types';
+import { CreditsSchema } from '@custom_types/Menhera';
 import { MayNotExists } from '@utils/Util';
 import { Redis } from 'ioredis';
 import StarRepository from './StarRepository';

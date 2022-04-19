@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import { TMagicItemsFile } from '@utils/Types';
+import { TMagicItemsFile } from '@custom_types/Menhera';
 
 const HuntMagicItems: { [id: number]: TMagicItemsFile } & Object = {
   1: {

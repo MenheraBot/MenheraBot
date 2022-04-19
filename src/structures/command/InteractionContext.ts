@@ -1,4 +1,4 @@
-import { IContextData } from '@utils/Types';
+import { IContextData } from '@custom_types/Menhera';
 import {
   CommandInteraction,
   CommandInteractionOptionResolver,

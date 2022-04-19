@@ -12,7 +12,7 @@ import {
 } from '@roleplay/Types';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { LEVEL_UP_BLESSES } from '@roleplay/Constants';
-import { IReturnData } from '@utils/Types';
+import { IReturnData } from '@custom_types/Menhera';
 import { moreThanAnHour, RandomFromArray } from '@utils/Util';
 import { EmbedFieldData, MessageButton } from 'discord.js-light';
 import moment from 'moment';

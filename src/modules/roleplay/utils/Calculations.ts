@@ -10,7 +10,7 @@ import {
   UserBattleEntity,
   WeaponItem,
 } from '@roleplay/Types';
-import { ToBLess } from '@utils/Types';
+import { ToBLess } from '@custom_types/Menhera';
 import { getAbilityById, getClassById, getItemById, getRaceById } from './DataUtils';
 
 export const getEnemyStatusWithEffects = (

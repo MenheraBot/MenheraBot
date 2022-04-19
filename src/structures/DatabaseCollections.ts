@@ -4,7 +4,7 @@ import {
   IUserThemesSchema,
   IUserSchema,
   CreditsSchema,
-} from '@utils/Types';
+} from '@custom_types/Menhera';
 import { Schema, model } from 'mongoose';
 import { RoleplayUserSchema } from '@roleplay/Types';
 

@@ -1,6 +1,6 @@
 import HttpRequests from '@utils/HTTPrequests';
 import MenheraClient from 'MenheraClient';
-import { IStatusData, ShardsDataReturn } from '@utils/Types';
+import { IStatusData, ShardsDataReturn } from '@custom_types/Menhera';
 
 export const postBotStatus = (client: MenheraClient): void => {
   setInterval(async () => {

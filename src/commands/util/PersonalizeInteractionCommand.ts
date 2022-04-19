@@ -1,8 +1,8 @@
-import Badges from '@data/ProfileBadges';
+import Badges from 'modules/staticData/ProfileBadges';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { COLORS, DiscordFlagsToMenheraBadges, emojis, EmojiTypes } from '@structures/Constants';
-import { AvailableThemeTypes, IReturnData, ThemeFiles } from '@utils/Types';
+import { AvailableThemeTypes, IReturnData, ThemeFiles } from '@custom_types/Menhera';
 import Util, {
   actionRow,
   disableComponents,

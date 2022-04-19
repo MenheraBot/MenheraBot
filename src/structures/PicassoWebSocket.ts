@@ -1,4 +1,4 @@
-import { IPicassoReturnData, IPicassoWebsocketRequest } from '@utils/Types';
+import { IPicassoReturnData, IPicassoWebsocketRequest } from '@custom_types/Menhera';
 import WebSocket from 'ws';
 
 export default class PicassoWebSocket {

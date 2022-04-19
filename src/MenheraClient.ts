@@ -6,7 +6,7 @@ import * as Sentry from '@sentry/node';
 
 import '@sentry/tracing';
 
-import { IClientConfigs, IDatabaseRepositories } from '@utils/Types';
+import { IClientConfigs, IDatabaseRepositories } from '@custom_types/Menhera';
 import FileUtil from '@utils/FileUtil';
 import Event from '@structures/Event';
 import Database from '@database/Databases';

@@ -18,7 +18,7 @@ import {
   IStatusData,
   IUserDataToProfile,
   ThemeFiles,
-} from '@utils/Types';
+} from '@custom_types/Menhera';
 import { User } from 'discord.js-light';
 import type { ActivityType } from 'discord.js-light';
 import { UserBattleConfig } from '@roleplay/Types';

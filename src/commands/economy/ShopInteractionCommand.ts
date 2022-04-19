@@ -4,8 +4,8 @@ import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 
 import { CANNOT_BUY_THEMES, COLORS, emojis, shopEconomy } from '@structures/Constants';
-import MagicItems from '@data/HuntMagicItems';
-import { AvailableThemeTypes, HuntingTypes, IHuntProbablyBoostItem } from '@utils/Types';
+import MagicItems from 'modules/staticData/HuntMagicItems';
+import { AvailableThemeTypes, HuntingTypes, IHuntProbablyBoostItem } from '@custom_types/Menhera';
 import Util, {
   actionRow,
   debugError,

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { languageByLocale } from '@structures/Constants';
 import HttpRequests from '@utils/HTTPrequests';
-import { ICommandUsedData } from '@utils/Types';
+import { ICommandUsedData } from '@custom_types/Menhera';
 import { debugError } from '@utils/Util';
 import { CommandInteraction, MessageEmbed, Collection } from 'discord.js-light';
 import i18next from 'i18next';

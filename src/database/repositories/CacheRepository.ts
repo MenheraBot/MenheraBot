@@ -1,5 +1,5 @@
 /* eslint-disable no-shadow */
-import { ICmdSchema, IGuildSchema } from '@utils/Types';
+import { ICmdSchema, IGuildSchema } from '@custom_types/Menhera';
 import { debugError, MayNotExists } from '@utils/Util';
 import { Redis } from 'ioredis';
 import { Document } from 'mongoose';

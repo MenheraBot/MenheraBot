@@ -1,6 +1,6 @@
 import { Users } from '@structures/DatabaseCollections';
 import { Document, UpdateQuery, UpdateWithAggregationPipeline } from 'mongoose';
-import { ITopResult, IUserSchema, TopRankingTypes } from '@utils/Types';
+import { ITopResult, IUserSchema, TopRankingTypes } from '@custom_types/Menhera';
 
 export default class UserRepository {
   constructor(private userModal: typeof Users) {}

@@ -3,7 +3,7 @@ import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageButton } from 'discord.js-light';
 import Util, { disableComponents, resolveCustomId } from '@utils/Util';
-import { HuntingTypes } from '@utils/Types';
+import { HuntingTypes } from '@custom_types/Menhera';
 
 type ChoiceTypes = HuntingTypes | 'estrelinhas';
 const choices: { name: string; value: ChoiceTypes }[] = [

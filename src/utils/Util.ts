@@ -1,5 +1,5 @@
 /* eslint-disable no-restricted-syntax */
-import MagicItems from '@data/HuntMagicItems';
+import MagicItems from 'modules/staticData/HuntMagicItems';
 import {
   CollectorFilter,
   MessageComponentInteraction,
@@ -15,9 +15,9 @@ import {
   IUserThemesSchema,
   ThemeFiles,
   TMagicItemsFile,
-} from '@utils/Types';
+} from '@custom_types/Menhera';
 import * as Sentry from '@sentry/node';
-import ImageThemes from '@data/ImageThemes';
+import ImageThemes from 'modules/staticData/ImageThemes';
 import i18next from 'i18next';
 
 export default class Util {

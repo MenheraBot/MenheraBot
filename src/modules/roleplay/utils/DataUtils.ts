@@ -1,4 +1,4 @@
-import { IReturnData } from '@utils/Types';
+import { IReturnData } from '@custom_types/Menhera';
 import {
   AbilitiesFile,
   ClassesFile,

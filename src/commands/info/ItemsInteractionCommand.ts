@@ -14,7 +14,7 @@ import Util, {
   resolveCustomId,
   resolveSeparatedStrings,
 } from '@utils/Util';
-import { IMagicItem } from '@utils/Types';
+import { IMagicItem } from '@custom_types/Menhera';
 
 export default class ItemsInteractionCommand extends InteractionCommand {
   constructor() {

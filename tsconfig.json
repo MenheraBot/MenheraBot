@@ -31,8 +31,9 @@
       "@database/*": ["database/*"],
       "@utils/*": ["utils/*"],
       "@interfaces/*": ["interfaces/*"],
-      "@data/*": ["data/*"],
-      "@roleplay/*": ["roleplay/*"]
+      "@data/*": ["modules/staticData/*"],
+      "@roleplay/*": ["modules/roleplay/*"],
+      "@custom_types/*": ["types/*"]
     }
   },
   "include": ["src"]

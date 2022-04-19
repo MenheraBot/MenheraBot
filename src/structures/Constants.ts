@@ -1,4 +1,4 @@
-import { T8BallAnswerTypes } from '@utils/Types';
+import { T8BallAnswerTypes } from '@custom_types/Menhera';
 
 export const shopEconomy = {
   colors: {

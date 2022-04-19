@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import HttpRequests from '@utils/HTTPrequests';
-import { BichoBetType, BichoWinner, JogoDoBichoGame } from '@utils/Types';
+import { BichoBetType, BichoWinner, JogoDoBichoGame } from '@custom_types/Menhera';
 import { MayNotExists } from '@utils/Util';
 import MenheraClient from 'MenheraClient';
 import { BICHO_BET_MULTIPLIER, JOGO_DO_BICHO } from './Constants';
