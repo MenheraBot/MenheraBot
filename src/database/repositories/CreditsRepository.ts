@@ -1,4 +1,4 @@
-import { Credits } from '@structures/DatabaseCollections';
+import { Credits } from '@database/Collections';
 import { CreditsSchema } from '@custom_types/Menhera';
 import { MayNotExists } from '@utils/Util';
 import { Redis } from 'ioredis';

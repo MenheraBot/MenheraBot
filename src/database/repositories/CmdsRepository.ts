@@ -1,4 +1,4 @@
-import { Cmds } from '@structures/DatabaseCollections';
+import { Cmds } from '@database/Collections';
 import { ICmdSchema } from '@custom_types/Menhera';
 
 export default class CmdRepository {

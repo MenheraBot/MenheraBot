@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import Redis from 'ioredis';
-import { Cmds, Guilds, Users, Themes, Credits, Rpgs } from '@structures/DatabaseCollections';
+import { Cmds, Guilds, Users, Themes, Credits, Rpgs } from '@database/Collections';
 import { IDatabaseRepositories } from '@custom_types/Menhera';
 import CacheRepository from './repositories/CacheRepository';
 import CmdRepository from './repositories/CmdsRepository';

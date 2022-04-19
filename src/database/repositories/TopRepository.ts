@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import { Users } from '@structures/DatabaseCollections';
+import { Users } from '@database/Collections';
 import { HuntingTypes, IUserSchema } from '@custom_types/Menhera';
 
 // eslint-disable-next-line no-shadow

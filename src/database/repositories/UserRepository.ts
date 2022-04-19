@@ -1,4 +1,4 @@
-import { Users } from '@structures/DatabaseCollections';
+import { Users } from '@database/Collections';
 import { Document, UpdateQuery, UpdateWithAggregationPipeline } from 'mongoose';
 import { ITopResult, IUserSchema, TopRankingTypes } from '@custom_types/Menhera';
 

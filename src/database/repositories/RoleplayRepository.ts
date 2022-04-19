@@ -1,5 +1,5 @@
 import { RoleplayUserSchema, UserBattleConfig } from '@roleplay/Types';
-import { Rpgs } from '@structures/DatabaseCollections';
+import { Rpgs } from '@database/Collections';
 import HttpRequests from '@utils/HTTPrequests';
 import { debugError, MayNotExists } from '@utils/Util';
 import { Redis } from 'ioredis';

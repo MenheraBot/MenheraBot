@@ -1,4 +1,4 @@
-import { Themes } from '@structures/DatabaseCollections';
+import { Themes } from '@database/Collections';
 import {
   AvailableProfilesThemes,
   IUserThemesSchema,

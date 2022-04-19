@@ -1,4 +1,4 @@
-import { Users } from '@structures/DatabaseCollections';
+import { Users } from '@database/Collections';
 import { IUserSchema } from '@custom_types/Menhera';
 
 export default class GiveRepository {
