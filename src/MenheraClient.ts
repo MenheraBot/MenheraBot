@@ -89,13 +89,25 @@ export default class MenheraClient extends Client {
   }
 
   async getInteractionStatistics(): Promise<this['interactionStatistics']> {
-    if (this.cluster.id === 0) {
-      return this.interactionStatistics;
-    }
-    // @ts-expect-error client n é sexual
-    return this.cluster.broadcastEval((c: MenheraClient) => c.interactionStatistics, {
-      cluster: 0,
-    });
+    return (
+      this.cluster
+        // @ts-expect-error client n é sexual
+        .broadcastEval((c: MenheraClient) => c.interactionStatistics, {
+          cluster: 0,
+        })
+        .then((a: this['interactionStatistics'][]) =>
+          a.reduce(
+            (p, c) => {
+              p.catchedErrors += c.catchedErrors;
+              p.failed += c.failed;
+              p.received += c.received;
+              p.success += c.success;
+              return p;
+            },
+            { catchedErrors: 0, failed: 0, received: 0, success: 0 },
+          ),
+        )
+    );
   }
 
   async reloadCommand(commandName: string): Promise<void | false> {
