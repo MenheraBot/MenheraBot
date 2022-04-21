@@ -19,7 +19,7 @@ import PicassoWebSocket from '@structures/PicassoWebSocket';
 import { debugError } from '@utils/Util';
 import JogoDoBixoManager from '@structures/JogoDoBichoManager';
 
-export default class MenheraClient extends Client {
+export default class MenheraClient extends Client<true> {
   public cluster!: ClusterClient;
 
   public database: Database;

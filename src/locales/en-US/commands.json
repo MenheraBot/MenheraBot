@@ -441,10 +441,6 @@
     "args-limit": "Your sobremim cannot be longer than 200 characters",
     "success": "Your 'About Me' has been successfully changed! Use m!Profile >.<"
   },
-  "ping": {
-    "latency": "Latency:",
-    "api": "API Latency:"
-  },
   "status": {
     "designer": {
       "no-designer": "This user does't own any designs",
@@ -467,15 +463,6 @@
       "profit": "Total Profit",
       "loss": "Total Loss",
       "error": "an error occurred while checking this user's statistics"
-    },
-    "botinfo": {
-      "title": "🎉 TODAY IS MY BIRTHDAY 🎉",
-      "embed_description": "Hi my name is **{{name}}**, and I'm a Brazilian Bot for Discord with a focus on fun and RPG! I was created in **{{createdAt}}** and joined this server in **{{joinedAt}}**.\n\nA little bit about me: My name is Menhera, I am 16 years old and I LOVE, I mean, I LOOOOVE to use these faces: (>...<). To learn more, go to my [twitter](https://twitter.com/__MenheraBot), my [support server](https://discord.gg/fZMdQbA) and my [WEBSITE](https://menherabot.xyz).",
-      "embed_footer": "was created by",
-      "memory": "Memory",
-      "version": "Version",
-      "support": "Support Server",
-      "extended": "Shards Info"
     },
     "roleta": {
       "embed-title": "{{user}}'s Roulette Status",
@@ -892,5 +879,16 @@
     "diselect-all": "Remove All Options",
     "success": "Your choices has been selected",
     "badge-info": "_{{description}}_\n**Acquired in**: <t:{{unix}}:d>\n**Badge ID**: {{id}}\n**Rarity:** {{rarity}}"
+  },
+  "menhera": {
+    "estatisticas": {
+      "aniversary-title": "🎉 TODAY IS MY BIRTHDAY 🎉",
+      "embed_description": "Hi my name is **{{name}}**, and I'm a Brazilian Bot for Discord with a focus on fun and RPG! I was created in **{{createdAt}}** and joined this server in **{{joinedAt}}**.\n\nA little bit about me: My name is Menhera, I am 16 years old and I LOVE, I mean, I LOOOOVE to use these faces: (>...<). To learn more, go to my [twitter](https://twitter.com/__MenheraBot), my [support server](https://discord.gg/fZMdQbA) and my [WEBSITE](https://menherabot.xyz).",
+      "embed_footer": "{{menhera}} was created by {{owner}}",
+      "version": "Version",
+      "support": "Support Server",
+      "extended": "Shards Info",
+      "ping": "Response Time: **{{api}}ms**\nWebsocket Latency: **{{ws}}ms**\nShard: **{{shard}}/{{totalShard}}**\nCluster: **{{cluster}}/{{totalCluster}}**"
+    }
   }
 }

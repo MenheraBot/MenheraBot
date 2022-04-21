@@ -448,10 +448,6 @@
     "args-limit": "Seu sobremim não pode ser maior que 200 caracteres",
     "success": "Seu 'Sobre Mim' foi alterado com sucesso! Você pode ver as mudanças com `/perfil`"
   },
-  "ping": {
-    "latency": "Latência:",
-    "api": "Latência da API:"
-  },
   "status": {
     "designer": {
       "no-designer": "Este usuário não possui nenhum design em seu nome!",
@@ -474,15 +470,6 @@
       "profit": "Lucro Total",
       "loss": "Prejuízo Total",
       "error": "Ocorreu um erro ao checar as estatísticas deste usuário. Provavelmente ele nunca usou o comando"
-    },
-    "botinfo": {
-      "title": "🎉 HOJE É MEU ANIVERSÁRIO🎉",
-      "embed_description": "Oi, meu nome é **{{name}}**, e eu sou uma Bot Brasileira para Discord com foco em diversão e RPG! Fui criada em **{{createdAt}}** e entrei nesse servidor **{{joinedAt}}**.\n\nUm pouco sobre mim: Meu nome é Menhera, tenho 16 anos e AMO, mas tipo AMO usar essas carinhas: (>...<). Para saber mais, entre em meu [twitter](https://twitter.com/__MenheraBot), em meu [servidor de suporte](https://discord.gg/fZMdQbA) e em meu [WEBSITE](https://menherabot.xyz/).",
-      "embed_footer": "foi criada por",
-      "memory": "Memória",
-      "version": "Versão",
-      "support": "Servidor de Suporte",
-      "extended": "Informações dos Shards"
     },
     "roleta": {
       "embed-title": "Status de roleta de {{user}}",
@@ -900,5 +887,16 @@
     "diselect-all": "Remover Todas Seleções",
     "success": "Suas escolhas foram salvas!",
     "badge-info": "_{{description}}_\n**Adquirida em**: <t:{{unix}}:d>\n**ID da badge**: {{id}}\n**Raridade:** {{rarity}}"
+  },
+  "menhera": {
+    "estatisticas": {
+      "aniversary-title": "🎉 HOJE É MEU ANIVERSÁRIO🎉",
+      "embed_description": "Oi, meu nome é **{{name}}**, e eu sou uma Bot Brasileira para Discord com foco em diversão e RPG! Fui criada em **{{createdAt}}** e entrei nesse servidor **{{joinedAt}}**.\n\nUm pouco sobre mim: Meu nome é Menhera, tenho 16 anos e AMO, mas tipo AMO usar essas carinhas: (>...<). Para saber mais, entre em meu [twitter](https://twitter.com/__MenheraBot), em meu [servidor de suporte](https://discord.gg/fZMdQbA) e em meu [WEBSITE](https://menherabot.xyz/).",
+      "embed_footer": "{{menhera}} foi criada por {{owner}}",
+      "version": "Versão",
+      "support": "Servidor de Suporte",
+      "extended": "Informações dos Clusters",
+      "ping": "Tempo de Resposta: **{{api}}ms**\nLatência do Websocket: **{{ws}}ms**\nShard: **{{shard}}/{{totalShard}}**\nCluster: **{{cluster}}/{{totalCluster}}**"
+    }
   }
 }

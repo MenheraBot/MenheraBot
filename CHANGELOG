@@ -45,6 +45,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - Grande mudança no valor das caças e seus rolls
 - Nova formula de cálculo de dano efetivo
 - Diminuido a quantidade de demônios, gigantes e anjos mínimos no perfil para começar a ser afetado pela inatividade
+- O comando `/status menhera` foi movido para `/menhera estatisticas`
 
 ### Fixed
 

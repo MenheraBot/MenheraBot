@@ -2,18 +2,9 @@ import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import HttpRequests from '@utils/HTTPrequests';
 import moment from 'moment';
-import {
-  MessageEmbed,
-  Client,
-  MessageButton,
-  EmbedFieldData,
-  ShardClientUtil,
-} from 'discord.js-light';
+import { MessageEmbed, MessageButton, EmbedFieldData } from 'discord.js-light';
 import { COLORS, emojis } from '@structures/Constants';
 import Util, { actionRow, disableComponents, getThemeById } from '@utils/Util';
-import { Console } from 'node:console';
-import { Transform } from 'node:stream';
-import MenheraClient from 'MenheraClient';
 
 export default class StatsCommand extends InteractionCommand {
   constructor() {
@@ -74,11 +65,6 @@ export default class StatsCommand extends InteractionCommand {
           ],
         },
         {
-          name: 'menhera',
-          description: '「🧉」・Veja os status atuais da Menhera',
-          type: 'SUB_COMMAND',
-        },
-        {
           name: 'designer',
           description: '「🖌️」・Veja os status de design de algum designer',
           options: [
@@ -110,8 +96,6 @@ export default class StatsCommand extends InteractionCommand {
         return StatsCommand.CoinflipStatus(ctx);
       case 'blackjack':
         return StatsCommand.BlackjackStatus(ctx);
-      case 'menhera':
-        return StatsCommand.MenheraStatus(ctx);
       case 'roleta':
         return StatsCommand.RouletteStatus(ctx);
     }
@@ -351,246 +335,6 @@ export default class StatsCommand extends InteractionCommand {
       ]);
 
     await ctx.makeMessage({ embeds: [embed] });
-  }
-
-  static async MenheraStatus(ctx: InteractionCommandContext): Promise<void> {
-    const owner = await ctx.client.users.fetch(process.env.OWNER as string);
-
-    moment.locale(ctx.data.server.lang.toLowerCase());
-
-    if (!ctx.client.shardProcessEnded) {
-      ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'common:sharding_in_progress'),
-      });
-      return;
-    }
-
-    const results = await ctx.client.cluster
-      .broadcastEval((c: Client<true>) => {
-        const guilds = c.guilds.cache.size;
-        const memoryUsed = process.memoryUsage().rss;
-
-        return { guilds, memoryUsed };
-      })
-      .then((res) =>
-        res.reduce(
-          (p, c) => {
-            p.guilds += c.guilds;
-            p.memoryUsed += c.memoryUsed;
-
-            return p;
-          },
-          { guilds: 0, memoryUsed: 0 },
-        ),
-      );
-
-    const embed = new MessageEmbed()
-      .setColor('#fa8dd7')
-      .setThumbnail('https://i.imgur.com/b5y0nd4.png')
-      .setURL('https://discord.gg/fZMdQbA')
-      .setDescription(
-        ctx.locale('commands:status.botinfo.embed_description', {
-          name: ctx.client.user?.username,
-          createdAt: moment.utc(ctx.client.user?.createdAt).format('LLLL'),
-          joinedAt: moment.utc(ctx.interaction?.guild?.me?.joinedAt).format('LLLL'),
-        }),
-      )
-      .setFooter({
-        text: `${ctx.client.user?.username} ${ctx.locale('commands:status.botinfo.embed_footer')} ${
-          owner.tag
-        }`,
-        iconURL: owner.displayAvatarURL({
-          format: 'png',
-          dynamic: true,
-        }),
-      })
-      .addFields([
-        {
-          name: '🌐 | Servers | 🌐',
-          value: `\`\`\`${results.guilds}\`\`\``,
-          inline: true,
-        },
-        {
-          name: '⏳ | Uptime | ⏳',
-          value: `\`\`\`${moment
-            .duration(ctx.client.uptime)
-            .format('D[d], H[h], m[m], s[s]')}\`\`\``,
-          inline: true,
-        },
-        {
-          name: `<:memoryram:762817135394553876> | ${ctx.locale(
-            'commands:status.botinfo.memory',
-          )} | <:memoryram:762817135394553876>`,
-          value: `\`\`\`${(results.memoryUsed / 1024 / 1024).toFixed(2)}MB\`\`\``,
-          inline: true,
-        },
-        {
-          name: `🇧🇷 | ${ctx.locale('commands:status.botinfo.version')} | 🇧🇷`,
-          value: `\`\`\`${process.env.VERSION as string}\`\`\``,
-          inline: true,
-        },
-        {
-          name: '🏓 | Ping | 🏓',
-          value: `📡 | ${ctx.locale('commands:ping.api')} **${
-            Date.now() - ctx.interaction.createdTimestamp
-          }ms**\n📡 | ${ctx.locale('commands:ping.latency')} **${Math.round(
-            ctx.client.ws.ping,
-          )}ms**\n🗄️ | Cluster: **${ctx.client.cluster.id}** / **${
-            ctx.client.cluster.count - 1
-          }**\n🖲️ | Shard: **${ShardClientUtil.shardIdForGuildId(
-            ctx.interaction.guildId ?? '0',
-            ctx.client.options.shardCount ?? 0,
-          )}** / **${ctx.client.options.shardCount}**`,
-          inline: false,
-        },
-      ]);
-
-    const button = new MessageButton()
-      .setCustomId(`${ctx.interaction.id} | EXTENDED`)
-      .setStyle('SECONDARY')
-      .setLabel(ctx.locale('commands:status.botinfo.extended'));
-
-    const support = new MessageButton()
-      .setCustomId(`${ctx.interaction.id} | LINK`)
-      .setStyle('LINK')
-      .setLabel(ctx.locale('commands:status.botinfo.support'));
-
-    const site = new MessageButton()
-      .setCustomId(`${ctx.interaction.id} | LINK2`)
-      .setStyle('LINK')
-      .setLabel('WebSite');
-
-    await ctx.makeMessage({ embeds: [embed], components: [actionRow([button, support, site])] });
-
-    const clicked = await Util.collectComponentInteractionWithStartingId(
-      ctx.channel,
-      ctx.author.id,
-      ctx.interaction.id,
-      15000,
-    );
-
-    if (!clicked) {
-      ctx.makeMessage({
-        components: [
-          actionRow([...disableComponents(ctx.locale('common:timesup'), [button]), support, site]),
-        ],
-      });
-      return;
-    }
-
-    // @ts-expect-error Client n é sexual
-    const extendedShardsInfo = await ctx.client.cluster.broadcastEval((c: MenheraClient) => {
-      const { ping, status } = c.ws;
-      const { uptime } = c.ws.client;
-      const guilds = c.guilds.cache.size;
-      const memoryUsed = process.memoryUsage().rss;
-      const clusterId = c.cluster.id ?? 0;
-
-      return { ping, status, uptime, guilds, memoryUsed, clusterId };
-    });
-
-    const shardsData: {
-      [id: number]: {
-        Ping: string;
-        Status: string;
-        Uptime: string;
-        Ram: string;
-        Guilds: number;
-      };
-    }[] = extendedShardsInfo
-      .reduce(
-        (
-          p: Array<{
-            Ping: string;
-            ClusterId: number;
-            Status: string;
-            Uptime: string;
-            Ram: string;
-            Guilds: number;
-          }>[],
-          c,
-        ) => {
-          const conninfo = {
-            0: 'READY',
-            1: 'CONNECTING',
-            2: 'RECONNECTING',
-            3: 'IDLE',
-            4: 'NEARLY',
-            5: 'DISCONNECTED',
-            6: 'WAITING_FOR_GUILDS',
-            7: 'IDENTIFYING',
-            8: 'RESUMING',
-          };
-          if (p[p.length - 1].length >= 15)
-            p.push([
-              {
-                Ping: `${c.ping}ms`,
-                Status: conninfo[c.status as keyof typeof conninfo],
-                Uptime: moment.duration(c.uptime).format('D[d], H[h], m[m], s[s]'),
-                Ram: `${(c.memoryUsed / 1024 / 1024).toFixed(2)} MB`,
-                Guilds: c.guilds,
-                ClusterId: c.clusterId,
-              },
-            ]);
-          else
-            p[p.length - 1].push({
-              ClusterId: c.clusterId,
-              Ping: `${Math.floor(c.ping)}ms`,
-              Status: conninfo[c.status as keyof typeof conninfo],
-              Uptime: moment.duration(c.uptime).format('D[d], H[h], m[m], s[s]'),
-              Ram: `${(c.memoryUsed / 1024 / 1024).toFixed(2)} MB`,
-              Guilds: c.guilds,
-            });
-          return p;
-        },
-        [[]],
-      )
-      .map((a) =>
-        a.reduce<{
-          [id: number]: {
-            Ping: string;
-            Status: string;
-            Uptime: string;
-            Ram: string;
-            Guilds: number;
-          };
-        }>((acc, { ClusterId, ...x }) => {
-          acc[ClusterId] = x;
-          return acc;
-        }, {}),
-      );
-
-    const ts = new Transform({
-      transform(chunk, _, cb) {
-        cb(null, chunk);
-      },
-    });
-    const logger = new Console({ stdout: ts });
-
-    const getTable = (data: typeof shardsData[0]) => {
-      logger.table(data);
-      return (ts.read() || '').toString();
-    };
-
-    shardsData.forEach((a, i) => {
-      const stringTable = getTable(a);
-      if (i === 0)
-        ctx.makeMessage({
-          content: `\`\`\`${stringTable
-            .replace('(index)', 'Cluster')
-            .replace(/'/g, ' ')
-            .slice(0, 1992)}\`\`\``,
-          embeds: [],
-          components: [actionRow([support, site])],
-        });
-      else
-        ctx.send({
-          content: `\`\`\`${stringTable
-            .replace('(index)', 'Cluster')
-            .replace(/'/g, ' ')
-            .slice(0, 1992)}\`\`\``,
-        });
-    });
   }
 
   static async BlackjackStatus(ctx: InteractionCommandContext): Promise<void> {
