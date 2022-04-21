@@ -10,12 +10,12 @@
 
 > Menhera is animating more than 7000 servers with her functionalities
 
-MenheraBot is an open source Discord bot made in JavaScript with [Discord.js](https://discord.js.org) by [Luxanna](https://github.com/ySnoopyDogy)
+MenheraBot is an open source Discord bot made in TypeScript with [Discord.js-light](https://www.npmjs.com/package/discord.js-light) by [Luxanna](https://github.com/ySnoopyDogy)
 Feel free to add a star ⭐ to the repository to promote the project!
 
 ## Contributing
 
-Pull requests are always welcome. You can make PRs and Issues. When creating pr's, the branch of the pr needs to be `dev`.
+Pull requests are always welcome. You can make PRs and Issues. When creating pr's, the branch of the pr needs to be `dev (canary?)`.
 
 ## Features
 
