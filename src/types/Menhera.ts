@@ -429,3 +429,9 @@ export interface ShardsDataReturn {
   uptime: number;
   connected: number;
 }
+
+export interface FluffetySchema {
+  readonly id: string;
+  fluffetyName: string;
+  healthyAt: number;
+}

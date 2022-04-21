@@ -27,6 +27,7 @@ The folder structure may be a little confusing, so here is a little schema of ho
  ┃ ┣ 📂DEVELOPER # Only available for the owner
  ┃ ┣ 📂actions # Commands where a user take and action, like hug or kiss
  ┃ ┣ 📂economy # Every command involving the usage of Estrelinhas (Menhera's currency system)
+ ┃ ┣ 📂fluffety # Every command that interacts with Fluffetys
  ┃ ┣ 📂fun # Just some random commands to users have fun
  ┃ ┣ 📂info # Commands that shows some informations about various things
  ┃ ┣ 📂roleplay # Every command that interacts with the World of Boleham. The Roleplay Gaming system.
@@ -42,7 +43,7 @@ The folder structure may be a little confusing, so here is a little schema of ho
  ┣ 📂locales # Localization files to translate commands
  ┃
  ┣ 📂modules # Modules is why i call the systems of Menhera that has a big structure
- ┃ ┣ 📂flufetty # A funny system to have a little buddy to care on Discord
+ ┃ ┣ 📂fluffety # A funny system to have a little buddy to care on Discord
  ┃ ┣ 📂roleplay # The Roleplay System
  ┃ ┃ ┣ 📂data # The static data of the RPG
  ┃ ┃ ┣ 📂structures # Just some classes that handle things to the RPG

@@ -2,7 +2,7 @@ import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import MenheraClient from 'MenheraClient';
 
-export default class ShutdownSlashInteractionCommand extends InteractionCommand {
+export default class ShutdownSlashCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'shutdown',

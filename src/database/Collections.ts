@@ -4,6 +4,7 @@ import {
   IUserThemesSchema,
   IUserSchema,
   CreditsSchema,
+  FluffetySchema,
 } from '@custom_types/Menhera';
 import { Schema, model } from 'mongoose';
 import { RoleplayUserSchema } from '@roleplay/Types';
@@ -105,9 +106,16 @@ const rpgSchema = new Schema({
   backpack: { type: Object, default: { id: 100, level: 1 } },
 });
 
+const fluffetySchema = new Schema({
+  id: { type: String },
+  fluffetyName: { type: String },
+  healthyAt: { type: Number, default: 0 },
+});
+
 export const Cmds = model<ICmdSchema>('Cmd', cmdSchema);
 export const Guilds = model<IGuildSchema>('guild', guildSchema);
 export const Users = model<IUserSchema>('usersdb', userSchema);
 export const Themes = model<IUserThemesSchema>('themes', userThemes);
 export const Credits = model<CreditsSchema>('credits', themeCredits);
 export const Rpgs = model<RoleplayUserSchema>('roleplay', rpgSchema);
+export const Fluffetys = model<FluffetySchema>('fluffety', fluffetySchema);
