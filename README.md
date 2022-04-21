@@ -71,7 +71,7 @@ Menhera can be used in brazilian portuguese or english
 
 ### 🕹 | Roleplay Gaming (RPG)
 
-- I own a parallel world, the _Boleham's World_. You can reincarnate in this world as a class among 12 different classes, with more than 4 unique abilities each, and a race among 8 unique races with specific bonuses.
+- Menhera owns a parallel world, the _Boleham's World_. You can reincarnate in this world as a class among 12 different classes, with more than 4 unique abilities each, and a race among 8 unique races with specific bonuses.
 - **Battle System:** A differentiator of my RPG is its turn-based battle system, where the user participates in the battle from the beginning to the end, deciding which skill should be used at that moment to end your enemy
 
 <img style="border-radius: 40px;" width="360" src="https://i.imgur.com/BWxcHdR.png" alt="Sistema de Batalha"></img>
@@ -90,7 +90,7 @@ Menhera can be used in brazilian portuguese or english
 
 ## 🙋‍♀️ | Support
 
-You can enter my [support server](https://discord.gg/fZMdQbA) to help further. And don't forget to help me by voting for me
+You can enter Menhera's [support server](https://discord.gg/fZMdQbA) to help further. And don't forget to help by voting for Menhera
 <br></br>
 ![MenheraWidget](https://top.gg/api/widget/708014856711962654.svg?usernamecolor=FFFFFF&topcolor=000000)
 
