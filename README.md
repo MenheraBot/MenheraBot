@@ -36,21 +36,30 @@ The folder structure may be a little confusing, so here is a little schema of ho
  ┃ ┣ 📂repositories # Every repository of repository pattern to talk with the database
  ┃ ┣ 📜Collections.ts # MongoDB collections
  ┃ ┗ 📜Databases.ts # Main class that connect to the databases
+ ┃
  ┣ 📂events # Discord gateway events
+ ┃
  ┣ 📂locales # Localization files to translate commands
+ ┃
  ┣ 📂modules # Modules is why i call the systems of Menhera that has a big structure
  ┃ ┣ 📂flufetty # A funny system to have a little buddy to care on Discord
  ┃ ┣ 📂roleplay # The Roleplay System
  ┃ ┃ ┣ 📂data # The static data of the RPG
  ┃ ┃ ┣ 📂structures # Just some classes that handle things to the RPG
  ┃ ┃ ┣ 📂utils # Some utils
+ ┃ ┃
  ┃ ┗ 📂staticData # Static Data is the static info of Menhera's Economy System or user personalization
+ ┃
  ┣ 📂structures # Classes that makes Menhera works
  ┃ ┣ 📂command # Base classes that envolves the commands creation
  ┃ ┃ ┣ 📂autocomplete # Discord Autocomplete interactions
+ ┃ ┃
  ┃ ┣ 📂server # HTTP server to talk to the outside world
+ ┃
  ┣ 📂types # Typings
+ ┃
  ┣ 📂utils # Small (or they was suposed to be) files to make little things
+ ┃
  ┣ 📜MenheraClient.ts # The folder who makes everything works
 ```
 
