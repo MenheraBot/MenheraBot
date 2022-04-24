@@ -25,6 +25,7 @@ import {
 } from 'discord.js-light';
 import CreditsRepository from '@database/repositories/CreditsRepository';
 import RoleplayRepository from '@database/repositories/RoleplayRepository';
+import FluffetyRepository from '@database/repositories/FluffetyRepository';
 
 export interface IClientConfigs {
   interactionsDirectory: string;
@@ -285,6 +286,7 @@ export interface IDatabaseRepositories {
   shopRepository: ShopRepository;
   themeRepository: ThemeRepository;
   creditsRepository: CreditsRepository;
+  fluffetyRepository: FluffetyRepository;
 }
 
 export type TShardStatus = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
