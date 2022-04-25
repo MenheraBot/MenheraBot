@@ -8,6 +8,11 @@ import {
   AvailableTableThemes,
   AvailableThemeTypes,
   BichoBetType,
+  BichoTop,
+  BlackjackTop,
+  CoinflipTop,
+  HuntTop,
+  HuntTypes,
   IBlackjackCards,
   ICommandsData,
   ICommandUsedData,
@@ -18,6 +23,7 @@ import {
   IRESTHuntStats,
   IStatusData,
   IUserDataToProfile,
+  RouletteTop,
   ThemeFiles,
 } from '@custom_types/Menhera';
 import { User } from 'discord.js-light';
@@ -272,6 +278,108 @@ export default class HttpRequests {
     await apiRequest
       .post('/statistics/hunt', { userId, huntType, value, success, tries })
       .catch(debugError);
+  }
+
+  static async postBichoUserStats(
+    userId: string,
+    betValue: number,
+    profit: number,
+    didWin: boolean,
+  ): Promise<void> {
+    await apiRequest
+      .put('/statistics/bicho', { userId, betValue, profit, didWin })
+      .catch(debugError);
+  }
+
+  static async getTopBlackjack(
+    skip: number,
+    bannedUsers: string[],
+    type: 'wins' | 'money',
+  ): Promise<BlackjackTop | { error: true }> {
+    try {
+      const data = await apiRequest.get('/statistics/blackjack/top', {
+        data: { skip, bannedUsers, type },
+      });
+      if (data.status === 400) return { error: true };
+      if (!data.data.error) return data.data;
+    } catch {
+      return { error: true };
+    }
+
+    return { error: true };
+  }
+
+  static async getTopCoinflip(
+    skip: number,
+    bannedUsers: string[],
+    type: 'wins' | 'money',
+  ): Promise<CoinflipTop | { error: true }> {
+    try {
+      const data = await apiRequest.get('/statistics/coinflip/top', {
+        data: { skip, bannedUsers, type },
+      });
+      if (data.status === 400) return { error: true };
+      if (!data.data.error) return data.data;
+    } catch {
+      return { error: true };
+    }
+
+    return { error: true };
+  }
+
+  static async getTopRoulette(
+    skip: number,
+    bannedUsers: string[],
+    type: 'wins' | 'money',
+  ): Promise<RouletteTop | { error: true }> {
+    try {
+      const data = await apiRequest.get('/statistics/roulette/top', {
+        data: { skip, bannedUsers, type },
+      });
+      if (data.status === 400) return { error: true };
+      if (!data.data.error) return data.data;
+    } catch {
+      return { error: true };
+    }
+
+    return { error: true };
+  }
+
+  static async getTopBicho(
+    skip: number,
+    bannedUsers: string[],
+    type: 'wins' | 'money',
+  ): Promise<BichoTop | { error: true }> {
+    try {
+      const data = await apiRequest.get('/statistics/bicho/top', {
+        data: { skip, bannedUsers, type },
+      });
+      if (data.status === 400) return { error: true };
+      if (!data.data.error) return data.data;
+    } catch {
+      return { error: true };
+    }
+
+    return { error: true };
+  }
+
+  static async getTopHunts<HuntType extends HuntTypes>(
+    skip: number,
+    bannedUsers: string[],
+    huntType: HuntTypes,
+    type: 'success' | 'tries' | 'hunted',
+  ): Promise<HuntTop<HuntType> | { error: true }> {
+    try {
+      const data = await apiRequest.get('/statistics/hunt/top', {
+        data: { skip, bannedUsers, type, huntType },
+      });
+      if (data.status === 400) return { error: true };
+      if (!data.data.error) return data.data;
+    } catch {
+      return { error: true };
+    }
+
+    return { error: true };
   }
 
   static async getHuntUserStats(id: string): Promise<IRESTHuntStats | { error: true }> {

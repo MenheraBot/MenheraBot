@@ -331,6 +331,8 @@ export interface IReturnData<T> {
 }
 export type HuntingTypes = 'demons' | 'giants' | 'angels' | 'archangels' | 'demigods' | 'gods';
 
+export type HuntTypes = 'demon' | 'giant' | 'angel' | 'archangel' | 'demigod' | 'god';
+
 export interface HuntProbabiltyProps {
   amount: number;
   probability: number;
@@ -447,3 +449,37 @@ export interface FluffetySchema {
   fluffetyName: string;
   healthyAt: number;
 }
+
+export interface BlackjackTop {
+  id: string;
+  bj_wins: number;
+  bj_win_money: number;
+  bj_loses: number;
+  bj_lose_money: number;
+  error?: boolean;
+}
+
+export interface CoinflipTop {
+  id: string;
+  cf_wins: number;
+  cf_win_money: number;
+  cf_loses: number;
+  cf_lose_money: number;
+  error?: boolean;
+}
+
+export interface RouletteTop {
+  user_id: string;
+  earn_money: true;
+  lost_games: true;
+  lost_money: true;
+  won_games: true;
+  error?: boolean;
+}
+
+export type BichoTop = RouletteTop;
+
+export type HuntTop<Hunt extends HuntTypes> = {
+  user_id: string;
+  error?: boolean;
+} & Pick<IRESTHuntStats, `${Hunt}_success` | `${Hunt}_hunted` | `${Hunt}_tries`>;
