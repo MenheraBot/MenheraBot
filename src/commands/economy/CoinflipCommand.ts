@@ -8,7 +8,7 @@ export default class CoinflipCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'coinflip',
-      description: '「💶」・Disputa num jogo de Cara e Coroa com um amigo',
+      description: '「📀」・Disputa num jogo de Cara e Coroa com um amigo',
       options: [
         {
           name: 'user',

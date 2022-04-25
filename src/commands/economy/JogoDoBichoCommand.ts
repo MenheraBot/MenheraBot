@@ -14,7 +14,7 @@ export default class JogoDoBichoCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'bicho',
-      description: '「💶」・Aposte no famoso Jogo do Bicho',
+      description: '「🦌」・Aposte no famoso Jogo do Bicho',
       options: [
         {
           name: 'aposta',

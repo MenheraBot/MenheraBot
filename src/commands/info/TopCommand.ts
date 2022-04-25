@@ -15,78 +15,238 @@ export default class TopCommand extends InteractionCommand {
       category: 'util',
       options: [
         {
-          type: 'STRING',
-          name: 'tipo',
-          description: 'Tipo do top que você quer ver',
-          required: true,
-          choices: [
+          name: 'cacas',
+          type: 'SUB_COMMAND',
+          description: '「🎯」・Veja o top caçadores atuais da Menhera',
+          options: [
             {
-              name: '💋 | Mamadores',
-              value: 'mamadores',
+              type: 'STRING',
+              name: 'caca',
+              description: 'O tipo da caça que você quer ver',
+              required: true,
+              choices: [
+                {
+                  name: '😈 | Demônios',
+                  value: 'demons',
+                },
+                {
+                  name: '👊 | Gigantes',
+                  value: 'giants',
+                },
+                {
+                  name: '👼 | Anjos',
+                  value: 'angels',
+                },
+                {
+                  name: '🧚‍♂️ | Arcanjos',
+                  value: 'archangels',
+                },
+                {
+                  name: '🙌 | Semideuses',
+                  value: 'demigods',
+                },
+                {
+                  name: '✝️ | Deuses',
+                  value: 'gods',
+                },
+              ],
             },
             {
-              name: '👅 | Mamados',
-              value: 'mamados',
-            },
-            {
-              name: '⭐ | Estrelinhas',
-              value: 'estrelinhas',
-            },
-            {
-              name: '😈 | Demônios',
-              value: 'demonios',
-            },
-            {
-              name: '👊 | Gigantes',
-              value: 'gigantes',
-            },
-            {
-              name: '👼 | Anjos',
-              value: 'anjos',
-            },
-            {
-              name: '🧚‍♂️ | Arcanjos',
-              value: 'arcanjos',
-            },
-            {
-              name: '🙌 | Semideuses',
-              value: 'semideuses',
-            },
-            {
-              name: '✝️ | Deuses',
-              value: 'deuses',
-            },
-            {
-              name: '🆙 | Votos',
-              value: 'votos',
-            },
-            {
-              name: '📟 | Comandos',
-              value: 'comandos',
-            },
-            {
-              name: '👥 | Usuários',
-              value: 'users',
-            },
-            {
-              name: '👤 | Usuário',
-              value: 'user',
+              type: 'INTEGER',
+              name: 'pagina',
+              description: 'Página do top que tu quer ver',
+              required: false,
+              minValue: 2,
+              maxValue: 100,
             },
           ],
         },
         {
-          type: 'INTEGER',
-          name: 'pagina',
-          description: 'Página do top que tu quer ver',
-          required: false,
-          minValue: 2,
-          maxValue: 100,
+          name: 'economia',
+          type: 'SUB_COMMAND',
+          description: '「⭐」・Veja os melhores usuários da Menhera',
+          options: [
+            {
+              type: 'STRING',
+              name: 'caca',
+              description: 'O tipo da caça que você quer ver',
+              required: true,
+              choices: [
+                {
+                  name: '💋 | Mamadores',
+                  value: 'mamou',
+                },
+                {
+                  name: '👅 | Mamados',
+                  value: 'mamado',
+                },
+                {
+                  name: '⭐ | Estrelinhas',
+                  value: 'estrelinhas',
+                },
+
+                {
+                  name: '🆙 | Votos',
+                  value: 'votes',
+                },
+              ],
+            },
+            {
+              type: 'INTEGER',
+              name: 'pagina',
+              description: 'Página do top que tu quer ver',
+              required: false,
+              minValue: 2,
+              maxValue: 100,
+            },
+          ],
         },
         {
-          type: 'USER',
-          name: 'user',
-          description: 'Caso queira ver o top users, diga qual vai ser o usuário',
-          required: false,
+          type: 'SUB_COMMAND',
+          name: 'comandos',
+          description: '「📟」・Veja os melhores sobre os comandos',
+          options: [
+            {
+              type: 'STRING',
+              name: 'tipo',
+              description: 'O tipo de informação que queres ver',
+              required: true,
+              choices: [
+                {
+                  name: 'Comandos mais usados',
+                  value: 'commands',
+                },
+                {
+                  name: 'Usuários que mais usaram comandos',
+                  value: 'users',
+                },
+                {
+                  name: 'Comandos mais usados de um usuário',
+                  value: 'user',
+                },
+              ],
+            },
+            {
+              type: 'USER',
+              name: 'user',
+              description: 'Usuário para ver os comandos mais usados',
+              required: false,
+            },
+          ],
+        },
+        {
+          type: 'SUB_COMMAND_GROUP',
+          name: 'estatisticas',
+          description: '「📊」・Veja os melhores em termos de estatísticas',
+          options: [
+            {
+              name: 'apostas',
+              description: '「📊」・Veja os melhores apostadores',
+              type: 'SUB_COMMAND',
+              options: [
+                {
+                  name: 'jogo',
+                  description: 'Jogo de apostas que você quer ver',
+                  type: 'STRING',
+                  choices: [
+                    {
+                      name: '🃏 | Blackjack',
+                      value: 'blackjack',
+                    },
+                    {
+                      name: '📀 | Coinflip',
+                      value: 'coinflip',
+                    },
+                    {
+                      name: '🎡 | Roleta',
+                      value: 'roulette',
+                    },
+                    {
+                      name: '🦌 | Jogo do Bicho',
+                      value: 'bicho',
+                    },
+                  ],
+                  required: true,
+                },
+                {
+                  type: 'STRING',
+                  name: 'modo',
+                  description: 'Modo que você quer ver o top',
+                  choices: [
+                    { name: '⭐ | Lucro Total', value: 'money' },
+                    { name: '👑 | Mais Vitórias', value: 'wins' },
+                  ],
+                  required: true,
+                },
+                {
+                  type: 'INTEGER',
+                  name: 'pagina',
+                  description: 'Página do top que tu quer ver',
+                  required: false,
+                  minValue: 2,
+                  maxValue: 100,
+                },
+              ],
+            },
+            {
+              name: 'cacar',
+              description: '「🎯」・Veja os melhores caçadores de todos os tempos',
+              type: 'SUB_COMMAND',
+              options: [
+                {
+                  type: 'STRING',
+                  name: 'caca',
+                  description: 'O tipo da caça que você quer ver',
+                  required: true,
+                  choices: [
+                    {
+                      name: '😈 | Demônios',
+                      value: 'demon',
+                    },
+                    {
+                      name: '👊 | Gigantes',
+                      value: 'giant',
+                    },
+                    {
+                      name: '👼 | Anjos',
+                      value: 'angel',
+                    },
+                    {
+                      name: '🧚‍♂️ | Arcanjos',
+                      value: 'archangel',
+                    },
+                    {
+                      name: '🙌 | Semideuses',
+                      value: 'demigod',
+                    },
+                    {
+                      name: '✝️ | Deuses',
+                      value: 'god',
+                    },
+                  ],
+                },
+                {
+                  type: 'STRING',
+                  name: 'modo',
+                  description: 'Modo que você quer ver o top',
+                  choices: [
+                    { name: '👑 | Caças bem-sucedidas', value: 'success' },
+                    { name: '🏅 | Vezes que caçou', value: 'tries' },
+                    { name: '🍀 | Quantidade de caças', value: 'hunted' },
+                  ],
+                  required: true,
+                },
+                {
+                  type: 'INTEGER',
+                  name: 'pagina',
+                  description: 'Página do top que tu quer ver',
+                  required: false,
+                  minValue: 2,
+                  maxValue: 100,
+                },
+              ],
+            },
+          ],
         },
       ],
       cooldown: 5,
