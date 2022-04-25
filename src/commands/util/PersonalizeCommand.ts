@@ -1,4 +1,4 @@
-import Badges from 'modules/staticData/ProfileBadges';
+import Badges from '@data/ProfileBadges';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { COLORS, DiscordFlagsToMenheraBadges, emojis, EmojiTypes } from '@structures/Constants';

@@ -464,6 +464,10 @@
       "loss": "Total Loss",
       "error": "an error occurred while checking this user's statistics"
     },
+    "bicho": {
+      "embed-title": "{{user}}'s Bicho Status",
+      "no-data": "This user have never played a Jogo do Bicho game!"
+    },
     "roleta": {
       "embed-title": "{{user}}'s Roulette Status",
       "no-data": "This user have never played a roulette game!"

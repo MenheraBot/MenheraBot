@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ### Added
 
+- Novo Comando de Estatísticas! `/status bicho` - Mostra as estatísticas do jogo do bicho de alguém
 - Desgigners agora recebem uma DM da Menhera quando um design de sua autoria é comprado. Isso pode ser desativado no comando `/status designer`
 - Quatro novos designs do Relkhin (853341889016365097). Perfis `iD03` e `Um Propósito Sem Alma`, fundo de carta `Lamenta Caelorum` e Mesa de Cartas `Partida Atemporal`.
 - Status de Roleta `/status roleta`

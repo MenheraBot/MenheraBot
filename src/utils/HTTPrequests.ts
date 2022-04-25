@@ -13,6 +13,7 @@ import {
   ICommandUsedData,
   IDisabled,
   IPicassoReturnData,
+  IRESTBichoStats,
   IRESTGameStats,
   IRESTHuntStats,
   IStatusData,
@@ -149,6 +150,18 @@ export default class HttpRequests {
   static async getCoinflipUserStats(id: string): Promise<IRESTGameStats | { error: true }> {
     try {
       const data = await apiRequest.get('/statistics/coinflip', { data: { userId: id } });
+      if (data.status === 400) return { error: true };
+      if (!data.data.error) return data.data;
+    } catch {
+      return { error: true };
+    }
+
+    return { error: true };
+  }
+
+  static async getBichoUserStats(id: string): Promise<IRESTBichoStats | { error: true }> {
+    try {
+      const data = await apiRequest.get('/statistics/bicho', { data: { userId: id } });
       if (data.status === 400) return { error: true };
       if (!data.data.error) return data.data;
     } catch {

@@ -471,6 +471,10 @@
       "loss": "Prejuízo Total",
       "error": "Ocorreu um erro ao checar as estatísticas deste usuário. Provavelmente ele nunca usou o comando"
     },
+    "bicho": {
+      "embed-title": "Status do Jodo do Bicho de {{user}}",
+      "no-data": "Este usuário nunca apostou no jogo do bicho!"
+    },
     "roleta": {
       "embed-title": "Status de roleta de {{user}}",
       "no-data": "Este usuário nunca jogou uma partida de roleta francesa!"

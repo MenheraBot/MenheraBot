@@ -5,7 +5,7 @@ import { MayNotExists } from '@utils/Util';
 import MenheraClient from 'MenheraClient';
 import { BICHO_BET_MULTIPLIER, JOGO_DO_BICHO } from './Constants';
 
-const betType = (option: string): BichoBetType => {
+export const betType = (option: string): BichoBetType => {
   if (/^(?=.*\d)[\d ]+$/.test(option)) {
     const withoutBlank = option.replace(/\s/g, '');
     if (withoutBlank.length === 4) return 'thousand';

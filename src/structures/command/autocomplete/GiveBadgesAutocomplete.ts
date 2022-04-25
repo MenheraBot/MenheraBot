@@ -1,4 +1,4 @@
-import Badges from 'modules/staticData/ProfileBadges';
+import Badges from '@data/ProfileBadges';
 import { ApplicationCommandOptionChoice, AutocompleteInteraction } from 'discord.js-light';
 import MenheraClient from 'MenheraClient';
 import { findBestMatch } from 'string-similarity';

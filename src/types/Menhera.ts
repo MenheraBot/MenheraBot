@@ -191,6 +191,16 @@ export interface IRESTGameStats {
   error?: boolean;
 }
 
+export interface IRESTBichoStats {
+  playedGames: number;
+  lostGames: number;
+  winGames: number;
+  wonGames: Array<{ value: number; bet_type: string }>;
+  loseGames: Array<{ value: number; bet_type: string }>;
+  winPorcentage: string;
+  lostPorcentage: string;
+  error?: boolean;
+}
 export interface IRESTHuntStats {
   user_id: string;
   demon_tries: number;
