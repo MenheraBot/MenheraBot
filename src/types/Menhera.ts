@@ -407,7 +407,8 @@ export type BichoBetType =
 
 export interface BichoWinner {
   id: string;
-  value: number;
+  profit: number;
+  bet: number;
   didWin: boolean;
   gameId?: number;
 }
