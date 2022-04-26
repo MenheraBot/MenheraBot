@@ -295,72 +295,72 @@ export default class HttpRequests {
     skip: number,
     bannedUsers: string[],
     type: 'wins' | 'money',
-  ): Promise<BlackjackTop | { error: true }> {
+  ): Promise<BlackjackTop[] | null> {
     try {
       const data = await apiRequest.get('/statistics/blackjack/top', {
         data: { skip, bannedUsers, type },
       });
-      if (data.status === 400) return { error: true };
+      if (data.status === 400) return null;
       if (!data.data.error) return data.data;
     } catch {
-      return { error: true };
+      return null;
     }
 
-    return { error: true };
+    return null;
   }
 
   static async getTopCoinflip(
     skip: number,
     bannedUsers: string[],
     type: 'wins' | 'money',
-  ): Promise<CoinflipTop | { error: true }> {
+  ): Promise<CoinflipTop[] | null> {
     try {
       const data = await apiRequest.get('/statistics/coinflip/top', {
         data: { skip, bannedUsers, type },
       });
-      if (data.status === 400) return { error: true };
+      if (data.status === 400) return null;
       if (!data.data.error) return data.data;
     } catch {
-      return { error: true };
+      return null;
     }
 
-    return { error: true };
+    return null;
   }
 
   static async getTopRoulette(
     skip: number,
     bannedUsers: string[],
     type: 'wins' | 'money',
-  ): Promise<RouletteTop | { error: true }> {
+  ): Promise<RouletteTop[] | null> {
     try {
       const data = await apiRequest.get('/statistics/roulette/top', {
         data: { skip, bannedUsers, type },
       });
-      if (data.status === 400) return { error: true };
+      if (data.status === 400) return null;
       if (!data.data.error) return data.data;
     } catch {
-      return { error: true };
+      return null;
     }
 
-    return { error: true };
+    return null;
   }
 
   static async getTopBicho(
     skip: number,
     bannedUsers: string[],
     type: 'wins' | 'money',
-  ): Promise<BichoTop | { error: true }> {
+  ): Promise<BichoTop[] | null> {
     try {
       const data = await apiRequest.get('/statistics/bicho/top', {
         data: { skip, bannedUsers, type },
       });
-      if (data.status === 400) return { error: true };
+      if (data.status === 400) return null;
       if (!data.data.error) return data.data;
     } catch {
-      return { error: true };
+      return null;
     }
 
-    return { error: true };
+    return null;
   }
 
   static async getTopHunts<HuntType extends HuntTypes>(
@@ -368,18 +368,18 @@ export default class HttpRequests {
     bannedUsers: string[],
     huntType: HuntTypes,
     type: 'success' | 'tries' | 'hunted',
-  ): Promise<HuntTop<HuntType> | { error: true }> {
+  ): Promise<HuntTop<HuntType>[] | null> {
     try {
       const data = await apiRequest.get('/statistics/hunt/top', {
         data: { skip, bannedUsers, type, huntType },
       });
-      if (data.status === 400) return { error: true };
+      if (data.status === 400) return null;
       if (!data.data.error) return data.data;
     } catch {
-      return { error: true };
+      return null;
     }
 
-    return { error: true };
+    return null;
   }
 
   static async getHuntUserStats(id: string): Promise<IRESTHuntStats | { error: true }> {

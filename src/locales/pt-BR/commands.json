@@ -400,33 +400,64 @@
     "commands-usage": "{{user}} usou meus comandos {{usedCount}} vezes. Seu comando mais usado foi {{mostUsedCommandName}}, usou {{mostUsedCommandCount}} vezes"
   },
   "top": {
-    "mamadoresTitle": "Placar de Mamadores",
-    "mamouTitle": "Placar de Mamados",
-    "demonTitle": "Placar de Demônios",
-    "angelTitle": "Placar de Anjos",
-    "sdTitle": "Placar de Semideuses",
-    "godTitle": "Placar de Deuses",
-    "giantTitle": "Placar de Gigantes",
-    "archangelTitle": "Placar de Arcanjos",
-    "starsTitle": "Placar de Estrelinhas",
-    "voteTitle": "Placar de Upvotes",
+    "economia": {
+      "mamou-title": "Placar de Mamados",
+      "mamado-title": "Placar de Mamadores",
+      "demons-title": "Placar de Demônios",
+      "giants-title": "Placar de Gigantes",
+      "angels-title": "Placar de Anjos",
+      "archangels-title": "Placar de Arcanjos",
+      "demigods-title": "Placar de Semideuses",
+      "gods-title": "Placar de Deuses",
+      "estrelinhas-title": "Placar de Estrelinhas",
+      "votes-title": "Placar de Upvotes",
+      "estrelinhas": "Estrelinhas",
+      "mamou": "Mamou",
+      "votes": "Votos",
+      "mamado": "Mamado",
+      "demons": "Demônios",
+      "angels": "Anjos",
+      "archangels": "Arcanjos",
+      "giants": "Gigantes",
+      "demigods": "Semideuses",
+      "gods": "Deuses"
+    },
+    "estatisticas": {
+      "cacar": {
+        "title": "{{emoji}} | Melhores Caçadores de {{type}} {{page}}º",
+        "demon": "Demônios",
+        "giant": "Gigantes",
+        "angel": "Anjos",
+        "archangel": "Arcanjos",
+        "demigod": "Semideuses",
+        "god": "Deuses",
+        "description": {
+          "success": "Ordenado por **caças bem-sucedidas**",
+          "tries": "Ordenado por **quem mais caçou**",
+          "hunted": "Ordenado por **quantidade caçadas**",
+          "text": "**Total Caçados:** {{hunted}}\n**Caças Feitas**: {{tries}}\n**Caças Bem-Sucedidas:** {{success}}"
+        }
+      },
+      "apostas": {
+        "title": "{{emoji}} | Melhores Apostadores de {{type}} {{page}}º",
+        "bicho": "Jogo do Bicho",
+        "blackjack": "Blackjack",
+        "coinflip": "Coniflip",
+        "roulette": "Roleta",
+        "description": {
+          "money": "Ordenado por **Estrelinhas Ganhas**",
+          "wins": "Ordenado por **Mais Vitórias**",
+          "text": "Estrelinhas Ganhas: **{{earnMoney}}** :star:\nEstrelinhas Perdidas: **{{lostMoney}}** :star:\nPartidas Vencidas: **{{wonGames}}** `({{winPercentage}}%)`\nPartidas Perdidas: **{{lostGames}}** (`{{lostPercentage}}%`)"
+        }
+      }
+    },
     "commands": "Comandos Mais Usados",
     "users": "Usuários Que Mais Usaram Comandos",
-    "suckled": "Mamado",
-    "suck": "Mamou",
-    "demons": "Demônios",
-    "angels": "Anjos",
-    "archangels": "Arcanjos",
-    "giants": "Gigantes",
-    "demigods": "Semideuses",
-    "gods": "Deuses",
-    "stars": "Estrelinhas",
     "members": "Membros",
     "used": "Usado",
     "use": "Usou",
     "user": "Comandos mais usados de {{user}}",
     "times": "vezes",
-    "votes": "Votos",
     "not-user": "Este usuário não usou nenhum comando meu"
   },
   "blockcanal": {
@@ -465,8 +496,8 @@
       "played": "Partidas Jogadas",
       "wins": "Vitórias",
       "loses": "Derrotas",
-      "earnMoney": "Dinheiro Ganho",
-      "lostMoney": "Dinheiro Perdido",
+      "earnMoney": "Estrelinhas Ganhas",
+      "lostMoney": "Estrelinhas Perdidas",
       "profit": "Lucro Total",
       "loss": "Prejuízo Total",
       "error": "Ocorreu um erro ao checar as estatísticas deste usuário. Provavelmente ele nunca usou o comando"

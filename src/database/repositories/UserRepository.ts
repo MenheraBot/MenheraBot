@@ -1,9 +1,9 @@
 import { Users } from '@database/Collections';
 import { Document, UpdateQuery, UpdateWithAggregationPipeline } from 'mongoose';
-import { ITopResult, IUserSchema, TopRankingTypes } from '@custom_types/Menhera';
+import { ITopResult, IUserSchema } from '@custom_types/Menhera';
 
 export default class UserRepository {
-  constructor(private userModal: typeof Users) {}
+  constructor(public userModal: typeof Users) {}
 
   async multiUpdate(
     IDs: Array<string>,
@@ -48,13 +48,8 @@ export default class UserRepository {
     return this.userModal.create({ id: userID });
   }
 
-  async getAllBannedUsersId(): Promise<string[]> {
-    const bannedUsers = await this.userModal.find({ ban: true }, ['id'], { lean: true });
-    return bannedUsers.map((a) => a.id);
-  }
-
   async getTopRanking(
-    field: TopRankingTypes,
+    field: keyof IUserSchema,
     skip: number,
     ignoreUsers: string[] = [],
     limit = 10,

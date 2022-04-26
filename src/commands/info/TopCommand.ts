@@ -3,9 +3,26 @@ import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageEmbed, ColorResolvable, LimitedCollection, User } from 'discord.js-light';
 import HttpRequests from '@utils/HTTPrequests';
-import Util, { debugError } from '@utils/Util';
+import Util, { capitalize, debugError } from '@utils/Util';
 import { COLORS, emojis } from '@structures/Constants';
-import { TopRankingTypes as TOP } from '@custom_types/Menhera';
+import { CoinflipTop, HuntTypes, IUserSchema } from '@custom_types/Menhera';
+
+const TopEmojis: { [key: string]: string } = {
+  mamou: emojis.crown,
+  mamado: emojis.lick,
+  estrelinhas: emojis.estrelinhas,
+  demons: emojis.demons,
+  giants: emojis.giants,
+  angels: emojis.angels,
+  archangels: emojis.archangels,
+  demigods: emojis.demigods,
+  gods: emojis.gods,
+  votes: emojis.ok,
+  blackjack: '🃏',
+  coinflip: '📀',
+  roulette: '🎡',
+  bicho: '🦌',
+};
 
 export default class TopCommand extends InteractionCommand {
   constructor() {
@@ -68,8 +85,8 @@ export default class TopCommand extends InteractionCommand {
           options: [
             {
               type: 'STRING',
-              name: 'caca',
-              description: 'O tipo da caça que você quer ver',
+              name: 'tipo',
+              description: 'O tipo de top que tu queres ver',
               required: true,
               choices: [
                 {
@@ -84,7 +101,6 @@ export default class TopCommand extends InteractionCommand {
                   name: '⭐ | Estrelinhas',
                   value: 'estrelinhas',
                 },
-
                 {
                   name: '🆙 | Votos',
                   value: 'votes',
@@ -170,10 +186,10 @@ export default class TopCommand extends InteractionCommand {
                 },
                 {
                   type: 'STRING',
-                  name: 'modo',
-                  description: 'Modo que você quer ver o top',
+                  name: 'ordenar',
+                  description: 'Modo que você quer ordenar o Top',
                   choices: [
-                    { name: '⭐ | Lucro Total', value: 'money' },
+                    { name: '⭐ | Estrelinhas Ganhas', value: 'money' },
                     { name: '👑 | Mais Vitórias', value: 'wins' },
                   ],
                   required: true,
@@ -227,7 +243,7 @@ export default class TopCommand extends InteractionCommand {
                 },
                 {
                   type: 'STRING',
-                  name: 'modo',
+                  name: 'ordenar',
                   description: 'Modo que você quer ver o top',
                   choices: [
                     { name: '👑 | Caças bem-sucedidas', value: 'success' },
@@ -253,7 +269,7 @@ export default class TopCommand extends InteractionCommand {
     });
   }
 
-  static calculateSkipCount(page: number, documents: number): number {
+  static calculateSkipCount(page: number, documents = 1000): number {
     if (!Number.isNaN(page) && page > 0) {
       if (page >= documents / 10) return documents / 10;
       return (page - 1) * 10;
@@ -261,14 +277,257 @@ export default class TopCommand extends InteractionCommand {
     return 0;
   }
 
+  async run(ctx: InteractionCommandContext): Promise<void> {
+    const command = ctx.options.getSubcommand(true);
+    ctx.defer();
+    ctx.interaction.deferred = true;
+
+    switch (command) {
+      case 'cacas':
+      case 'economia': {
+        const type = ctx.options.getString(
+          command === 'cacas' ? 'caca' : 'tipo',
+          true,
+        ) as keyof IUserSchema;
+        const page = ctx.options.getInteger('pagina') ?? 0;
+
+        return TopCommand.executeUserDataRelatedRanking(
+          ctx,
+          type,
+          TopEmojis[type],
+          ctx.locale(`commands:top.economia.${type as 'mamou'}-title`),
+          ctx.locale(`commands:top.economia.${type as 'mamou'}`),
+          page,
+          COLORS.Purple,
+        );
+      }
+      case 'comandos': {
+        const type = ctx.options.getString('tipo', true) as 'commands' | 'users' | 'user';
+
+        if (type === 'commands') return TopCommand.topCommands(ctx);
+        if (type === 'users') return TopCommand.topUsers(ctx);
+        return TopCommand.topUser(ctx);
+      }
+
+      case 'cacar':
+        return TopCommand.topStatisticsHunt(ctx);
+
+      case 'apostas': {
+        const gameMode = ctx.options.getString('jogo', true);
+
+        if (gameMode === 'roulette' || gameMode === 'bicho')
+          return TopCommand.topUserResponseBasedBets(ctx);
+
+        return TopCommand.topAccountResponseBets(ctx);
+      }
+    }
+  }
+
+  static async topAccountResponseBets(ctx: InteractionCommandContext): Promise<void> {
+    const gameMode = ctx.options.getString('jogo', true) as 'blackjack' | 'coinflip';
+    const topMode = ctx.options.getString('ordenar', true) as 'money';
+    const page = ctx.options.getInteger('pagina') ?? 0;
+    const skip = TopCommand.calculateSkipCount(page);
+
+    const bannedUsers = ctx.client.repositories.blacklistRepository.getAllBannedUsersId();
+    const deletedAccounts = ctx.client.repositories.cacheRepository.getDeletedAccounts();
+
+    const usersToIgnore = await Promise.all([bannedUsers, deletedAccounts]).then((a) =>
+      a[0].concat(a[1]),
+    );
+
+    const result = (await HttpRequests[
+      `getTop${capitalize(gameMode) as Capitalize<typeof gameMode>}`
+    ](skip, usersToIgnore, topMode)) as CoinflipTop[] | null;
+
+    if (!result) {
+      ctx.makeMessage({ content: ctx.prettyResponse('error', 'common:http-error') });
+      return;
+    }
+
+    const embed = new MessageEmbed()
+      .setTitle(
+        ctx.locale('commands:top.estatisticas.apostas.title', {
+          type: ctx.locale(`commands:top.estatisticas.apostas.${gameMode}`),
+          page: page > 1 ? page : 1,
+          emoji: TopEmojis[gameMode],
+        }),
+      )
+      .setDescription(ctx.locale(`commands:top.estatisticas.apostas.description.${topMode}`))
+      .setColor(COLORS.Pinkie);
+
+    for (let i = 0; i < result.length; i++) {
+      const member = await ctx.client.users.fetch(result[i].id).catch(debugError);
+
+      if (member) {
+        (ctx.client.users.cache as LimitedCollection<string, User>).forceSet(member.id, member);
+        if (i === 0) embed.setThumbnail(member.displayAvatarURL({ dynamic: true }));
+      }
+
+      const userData = result[i];
+
+      const baseField = (gameMode === 'blackjack' ? 'bj' : 'cf') as 'cf';
+
+      embed.addField(
+        `**${skip + i + 1} -** ${Util.capitalize(member?.username ?? '404')}`,
+        ctx.locale('commands:top.estatisticas.apostas.description.text', {
+          earnMoney: userData[`${baseField}_win_money`].toLocaleString(ctx.interaction.locale),
+          lostMoney: userData[`${baseField}_lose_money`].toLocaleString(ctx.interaction.locale),
+          lostGames: userData[`${baseField}_loses`],
+          wonGames: userData[`${baseField}_wins`],
+          winPercentage:
+            (
+              ((userData[`${baseField}_wins`] ?? 0) /
+                (userData[`${baseField}_wins`] + userData[`${baseField}_loses`])) *
+              100
+            ).toFixed(2) || 0,
+          lostPercentage:
+            (
+              ((userData[`${baseField}_loses`] ?? 0) /
+                (userData[`${baseField}_wins`] + userData[`${baseField}_loses`])) *
+              100
+            ).toFixed(2) || 0,
+        }),
+        false,
+      );
+    }
+
+    ctx.makeMessage({ embeds: [embed] });
+  }
+
+  static async topUserResponseBasedBets(ctx: InteractionCommandContext): Promise<void> {
+    const gameMode = ctx.options.getString('jogo', true) as 'bicho' | 'roulette';
+    const topMode = ctx.options.getString('ordenar', true) as 'money';
+    const page = ctx.options.getInteger('pagina') ?? 0;
+    const skip = TopCommand.calculateSkipCount(page);
+
+    const bannedUsers = ctx.client.repositories.blacklistRepository.getAllBannedUsersId();
+    const deletedAccounts = ctx.client.repositories.cacheRepository.getDeletedAccounts();
+
+    const usersToIgnore = await Promise.all([bannedUsers, deletedAccounts]).then((a) =>
+      a[0].concat(a[1]),
+    );
+
+    const result = await HttpRequests[
+      `getTop${capitalize(gameMode) as Capitalize<typeof gameMode>}`
+    ](skip, usersToIgnore, topMode);
+
+    if (!result) {
+      ctx.makeMessage({ content: ctx.prettyResponse('error', 'common:http-error') });
+      return;
+    }
+
+    const embed = new MessageEmbed()
+      .setTitle(
+        ctx.locale('commands:top.estatisticas.apostas.title', {
+          type: ctx.locale(`commands:top.estatisticas.apostas.${gameMode}`),
+          page: page > 1 ? page : 1,
+          emoji: TopEmojis[gameMode],
+        }),
+      )
+      .setDescription(ctx.locale(`commands:top.estatisticas.apostas.description.${topMode}`))
+      .setColor(COLORS.Pinkie);
+
+    for (let i = 0; i < result.length; i++) {
+      const member = await ctx.client.users.fetch(result[i].user_id).catch(debugError);
+
+      if (member) {
+        (ctx.client.users.cache as LimitedCollection<string, User>).forceSet(member.id, member);
+        if (i === 0) embed.setThumbnail(member.displayAvatarURL({ dynamic: true }));
+      }
+
+      const userData = result[i];
+      console.log(userData.user_id);
+
+      embed.addField(
+        `**${skip + i + 1} -** ${Util.capitalize(member?.username ?? '404')}`,
+        ctx.locale('commands:top.estatisticas.apostas.description.text', {
+          earnMoney: userData.earn_money.toLocaleString(ctx.interaction.locale),
+          lostMoney: userData.lost_money.toLocaleString(ctx.interaction.locale),
+          lostGames: userData.lost_games,
+          wonGames: userData.won_games,
+          winPercentage:
+            (
+              ((userData.won_games ?? 0) / (userData.won_games + userData.lost_games)) *
+              100
+            ).toFixed(2) || 0,
+          lostPercentage:
+            (
+              ((userData.lost_games ?? 0) / (userData.won_games + userData.lost_games)) *
+              100
+            ).toFixed(2) || 0,
+        }),
+        false,
+      );
+    }
+
+    ctx.makeMessage({ embeds: [embed] });
+  }
+
+  static async topStatisticsHunt(ctx: InteractionCommandContext): Promise<void> {
+    const huntType = ctx.options.getString('caca', true) as HuntTypes;
+    const topMode = ctx.options.getString('ordenar', true) as 'success';
+    const page = ctx.options.getInteger('pagina') ?? 0;
+    const skip = TopCommand.calculateSkipCount(page);
+
+    const bannedUsers = ctx.client.repositories.blacklistRepository.getAllBannedUsersId();
+    const deletedAccounts = ctx.client.repositories.cacheRepository.getDeletedAccounts();
+
+    const usersToIgnore = await Promise.all([bannedUsers, deletedAccounts]).then((a) =>
+      a[0].concat(a[1]),
+    );
+
+    const result = await HttpRequests.getTopHunts(skip, usersToIgnore, huntType, topMode);
+
+    if (!result) {
+      ctx.makeMessage({ content: ctx.prettyResponse('error', 'common:http-error') });
+      return;
+    }
+
+    const embed = new MessageEmbed()
+      .setTitle(
+        ctx.locale('commands:top.estatisticas.cacar.title', {
+          type: ctx.locale(`commands:top.estatisticas.cacar.${huntType}`),
+          page: page > 1 ? page : 1,
+          emoji: TopEmojis[`${huntType}s`],
+        }),
+      )
+      .setDescription(ctx.locale(`commands:top.estatisticas.cacar.description.${topMode}`))
+      .setColor(COLORS.Pinkie);
+
+    for (let i = 0; i < result.length; i++) {
+      const member = await ctx.client.users.fetch(result[i].user_id).catch(debugError);
+
+      if (member) {
+        (ctx.client.users.cache as LimitedCollection<string, User>).forceSet(member.id, member);
+        if (i === 0) embed.setThumbnail(member.displayAvatarURL({ dynamic: true }));
+      }
+
+      const userData = result[i];
+
+      embed.addField(
+        `**${skip + i + 1} -** ${Util.capitalize(member?.username ?? '404')}`,
+        ctx.locale('commands:top.estatisticas.cacar.description.text', {
+          hunted: userData[`${huntType}_hunted`],
+          success: userData[`${huntType}_success`],
+          tries: userData[`${huntType}_tries`],
+        }),
+        true,
+      );
+    }
+
+    ctx.makeMessage({ embeds: [embed] });
+  }
+
   static async topCommands(ctx: InteractionCommandContext): Promise<void> {
     const res = await HttpRequests.getTopCommands();
+
     if (!res) {
       ctx.makeMessage({ content: ctx.prettyResponse('error', 'common:http-error') });
       return;
     }
-    const embed = new MessageEmbed()
 
+    const embed = new MessageEmbed()
       .setTitle(`:robot: |  ${ctx.locale('commands:top.commands')}`)
       .setColor('#f47fff');
 
@@ -284,144 +543,16 @@ export default class TopCommand extends InteractionCommand {
     ctx.makeMessage({ embeds: [embed] });
   }
 
-  async run(ctx: InteractionCommandContext): Promise<void> {
-    const type = ctx.options.getString('tipo', true);
-    const page = ctx.options.getInteger('pagina') ?? 1;
-
-    await ctx.defer();
-
-    switch (type) {
-      case 'mamadores':
-        TopCommand.executeUserDataRelatedRanking(
-          ctx,
-          TOP.mamou,
-          emojis.crown,
-          ctx.locale('commands:top.mamadoresTitle'),
-          ctx.locale('commands:top.suck'),
-          page,
-          COLORS.Pinkie,
-        );
-        return;
-      case 'mamados':
-        TopCommand.executeUserDataRelatedRanking(
-          ctx,
-          TOP.mamadas,
-          emojis.lick,
-          ctx.locale('commands:top.mamouTitle'),
-          ctx.locale('commands:top.suckled'),
-          page,
-          COLORS.Pinkie,
-        );
-        return;
-      case 'estrelinhas':
-        TopCommand.executeUserDataRelatedRanking(
-          ctx,
-          TOP.stars,
-          emojis.estrelinhas,
-          ctx.locale('commands:top.starsTitle'),
-          ctx.locale('commands:top.stars'),
-          page,
-          COLORS.Pear,
-        );
-        return;
-      case 'demonios':
-        TopCommand.executeUserDataRelatedRanking(
-          ctx,
-          TOP.demons,
-          emojis.demons,
-          ctx.locale('commands:top.demonTitle'),
-          ctx.locale('commands:top.demons'),
-          page,
-          COLORS.HuntDemons,
-        );
-        return;
-      case 'gigantes':
-        TopCommand.executeUserDataRelatedRanking(
-          ctx,
-          TOP.giants,
-          emojis.giants,
-          ctx.locale('commands:top.giantTitle'),
-          ctx.locale('commands:top.giants'),
-          page,
-          COLORS.HuntGiants,
-        );
-        return;
-      case 'anjos':
-        TopCommand.executeUserDataRelatedRanking(
-          ctx,
-          TOP.angels,
-          emojis.angels,
-          ctx.locale('commands:top.angelTitle'),
-          ctx.locale('commands:top.angels'),
-          page,
-          COLORS.HuntAngels,
-        );
-        return;
-      case 'arcanjos':
-        TopCommand.executeUserDataRelatedRanking(
-          ctx,
-          TOP.archangels,
-          emojis.archangels,
-          ctx.locale('commands:top.archangelTitle'),
-          ctx.locale('commands:top.archangels'),
-          page,
-          COLORS.HuntArchangels,
-        );
-        return;
-      case 'semideuses':
-        TopCommand.executeUserDataRelatedRanking(
-          ctx,
-          TOP.demigods,
-          emojis.demigods,
-          ctx.locale('commands:top.sdTitle'),
-          ctx.locale('commands:top.demigods'),
-          page,
-          COLORS.HuntDemigods,
-        );
-        return;
-      case 'deuses':
-        TopCommand.executeUserDataRelatedRanking(
-          ctx,
-          TOP.gods,
-          emojis.gods,
-          ctx.locale('commands:top.godTitle'),
-          ctx.locale('commands:top.gods'),
-          page,
-          COLORS.HuntGods,
-        );
-        return;
-      case 'votos':
-        TopCommand.executeUserDataRelatedRanking(
-          ctx,
-          TOP.votes,
-          emojis.ok,
-          ctx.locale('commands:top.voteTitle'),
-          ctx.locale('commands:top.votes'),
-          page,
-          COLORS.UltraPink,
-        );
-        return;
-      case 'comandos':
-        TopCommand.topCommands(ctx);
-        return;
-      case 'users':
-        TopCommand.topUsers(ctx);
-        return;
-      case 'user':
-        TopCommand.topUser(ctx);
-    }
-  }
-
   static async executeUserDataRelatedRanking(
     ctx: InteractionCommandContext,
-    labelType: TOP,
+    labelType: keyof IUserSchema,
     emoji: string,
     embedTitle: string,
     actor: string,
     page: number,
     color: ColorResolvable,
   ): Promise<void> {
-    const skip = TopCommand.calculateSkipCount(page, 1000);
+    const skip = TopCommand.calculateSkipCount(page);
 
     const res = await ctx.client.repositories.userRepository.getTopRanking(
       labelType,
@@ -437,8 +568,10 @@ export default class TopCommand extends InteractionCommand {
       const member = await ctx.client.users.fetch(res[i].id).catch(debugError);
       const memberName = member?.username ?? res[i].id;
 
-      if (member)
+      if (member) {
         (ctx.client.users.cache as LimitedCollection<string, User>).forceSet(member.id, member);
+        if (i === 0) embed.setThumbnail(member.displayAvatarURL({ dynamic: true }));
+      }
 
       if (memberName.startsWith('Deleted User'))
         ctx.client.repositories.cacheRepository.addDeletedAccount(res[i].id);
@@ -446,7 +579,7 @@ export default class TopCommand extends InteractionCommand {
       embed.addField(`**${skip + 1 + i} -** ${memberName}`, `${actor}: **${res[i].value}**`, false);
     }
 
-    ctx.defer({ embeds: [embed] });
+    ctx.makeMessage({ embeds: [embed] });
   }
 
   static async topUsers(ctx: InteractionCommandContext): Promise<void> {
@@ -458,15 +591,16 @@ export default class TopCommand extends InteractionCommand {
     }
 
     const embed = new MessageEmbed()
-
       .setTitle(`<:MenheraSmile2:767210250364780554> |  ${ctx.locale('commands:top.users')}`)
       .setColor('#f47fff');
 
     for (let i = 0; i < res.length; i++) {
       const member = await ctx.client.users.fetch(res[i].id).catch(debugError);
 
-      if (member)
+      if (member) {
         (ctx.client.users.cache as LimitedCollection<string, User>).forceSet(member.id, member);
+        if (i === 0) embed.setThumbnail(member.displayAvatarURL({ dynamic: true }));
+      }
 
       embed.addField(
         `**${i + 1} -** ${Util.capitalize(member?.username ?? '404')} `,

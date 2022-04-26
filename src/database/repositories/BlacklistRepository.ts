@@ -25,6 +25,14 @@ export default class BlacklistRepository {
     await this.redisClient.srem('banned_users', user).catch((e) => debugError(e, true));
   }
 
+  async getAllBannedUsersId(): Promise<string[]> {
+    const bannedUsers = await this.userRepository.userModal.find({ ban: true }, ['id'], {
+      lean: true,
+    });
+
+    return bannedUsers.map((a) => a.id);
+  }
+
   async isUserBanned(user: string): Promise<boolean> {
     const query = async () => {
       const isBanned = await this.userRepository.getBannedUserInfo(user);

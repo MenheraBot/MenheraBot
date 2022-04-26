@@ -312,19 +312,6 @@ export interface ITopResult {
   value: number;
 }
 
-export enum TopRankingTypes {
-  mamadas = 'mamado',
-  mamou = 'mamou',
-  demons = 'demons',
-  archangels = 'archangels',
-  giants = 'giants',
-  angels = 'angels',
-  demigods = 'demigods',
-  gods = 'gods',
-  stars = 'estrelinhas',
-  votes = 'votes',
-}
-
 export interface IReturnData<T> {
   id: number;
   data: T;
@@ -456,7 +443,6 @@ export interface BlackjackTop {
   bj_win_money: number;
   bj_loses: number;
   bj_lose_money: number;
-  error?: boolean;
 }
 
 export interface CoinflipTop {
@@ -465,21 +451,18 @@ export interface CoinflipTop {
   cf_win_money: number;
   cf_loses: number;
   cf_lose_money: number;
-  error?: boolean;
 }
 
 export interface RouletteTop {
   user_id: string;
-  earn_money: true;
-  lost_games: true;
-  lost_money: true;
-  won_games: true;
-  error?: boolean;
+  earn_money: number;
+  lost_games: number;
+  lost_money: number;
+  won_games: number;
 }
 
 export type BichoTop = RouletteTop;
 
 export type HuntTop<Hunt extends HuntTypes> = {
   user_id: string;
-  error?: boolean;
 } & Pick<IRESTHuntStats, `${Hunt}_success` | `${Hunt}_hunted` | `${Hunt}_tries`>;

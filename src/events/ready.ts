@@ -47,7 +47,7 @@ export default class ReadyEvent {
 
   static async dailyLoop(client: MenheraClient): Promise<void> {
     const toLoop = async (c: MenheraClient) => {
-      const allBannedUsers = await c.repositories.userRepository.getAllBannedUsersId();
+      const allBannedUsers = await c.repositories.blacklistRepository.getAllBannedUsersId();
       await c.repositories.blacklistRepository.addBannedUsers(allBannedUsers);
     };
 
