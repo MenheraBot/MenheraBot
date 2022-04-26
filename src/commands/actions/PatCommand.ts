@@ -9,7 +9,7 @@ export default class PatCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'carinho',
-      description: '「🥰」・Oti meudeus, faz carinho em alguém',
+      description: '「😊」・Oti meudeus, faz carinho em alguém',
       options: [
         {
           name: 'user',

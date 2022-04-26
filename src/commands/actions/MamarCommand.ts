@@ -9,8 +9,7 @@ export default class MamarCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'mamar',
-      description:
-        '「🧉」・Principal comando da Menhera. De uma mamada de Qualidade monstra em alguém',
+      description: '「😝」・De uma mamada de Qualidade monstra em alguém',
       category: 'actions',
       options: [
         {

@@ -9,7 +9,7 @@ export default class SarrarCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'sarrar',
-      description: '「🦧」・Invoca o poder dos irmãos Berti para fazer a lendária sarrada',
+      description: '「🔥」・Invoca o poder dos irmãos Berti para fazer a lendária sarrada',
       options: [
         {
           name: 'user',

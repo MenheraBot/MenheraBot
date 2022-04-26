@@ -9,7 +9,7 @@ export default class BicudaCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'bicuda',
-      description: '「🦵」・Da uma bicudassa em alguém',
+      description: '「🦶」・Da uma bicudassa em alguém',
       options: [
         {
           name: 'user',

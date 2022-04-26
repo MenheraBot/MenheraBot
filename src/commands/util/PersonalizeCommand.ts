@@ -65,7 +65,7 @@ export default class PersonalizeCommand extends InteractionCommand {
         },
         {
           name: 'badges',
-          description: '「🧧」・Escolha quais badges devem aparecer em seu perfil',
+          description: '「📌」・Escolha quais badges devem aparecer em seu perfil',
           type: 'SUB_COMMAND',
         },
       ],
