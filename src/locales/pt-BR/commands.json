@@ -568,9 +568,9 @@
     "done": "O seu trisal acabou! Não tem mais jeito. Acabou...."
   },
   "blackjack": {
-    "bad-usage": "Tu não fez sua aposta",
-    "invalid-value": "O valor da aposta deve ser maior que 1000 e menor que 50000",
     "available-options": "Opções Disponíveis",
+    "title": "BlackJack",
+    "description": "Sua Mão: **{{userHand}}** -> `{{userTotal}}`\nMão da Menhera: **{{dealerCards}}** -> `{{dealerTotal}}`",
     "initial-options": "**[1] Começar** - Começe o jogo\n **[2] Desistir** - Desista deste jogo (e perca sua aposta)",
     "options": "**[1] Comprar** - Compre mais uma carta\n**[2] Parar** - Pare por aqui sua aposta",
     "footer": "Tu tem 10 segundos",
@@ -578,8 +578,8 @@
     "your-hand": "Sua Mão",
     "dealer-hand": "Mão da Menhera",
     "timeout": "Tu demorou muito para jogar. A Menhera ficou sem paciência, você perdeu tudo!",
-    "result": "👑 | Resultado",
-    "blackjack": "Você fez um Blackjack!!! Você recebeu o dobro do prêmio! **{{value}}** :star:",
+    "result": "Resultado",
+    "init_blackjack": "**{{winner}}** começou um jogo com um BlackJack! Que Sorte!\n**Seu Lucro no Jogo:** {{prize}} :star:",
     "buy": "Comprar",
     "stop": "Parar",
     "explode": "Você estourou! Por isso, perdeu tudo :(",

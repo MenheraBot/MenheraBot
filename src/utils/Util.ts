@@ -70,34 +70,6 @@ export default class Util {
       .catch(() => null);
   }
 
-  static async collectComponentInteraction<T extends MessageComponentInteraction>(
-    channel: TextBasedChannel,
-    authorID: string,
-    time?: number,
-  ): Promise<null | T>;
-
-  static async collectComponentInteraction(
-    channel: TextBasedChannel,
-    authorID: string,
-    time = 7000,
-  ): Promise<null | MessageComponentInteraction> {
-    return channel
-      .awaitMessageComponent({
-        filter: (m) => {
-          if (m.user.id !== authorID)
-            m.reply({
-              ephemeral: true,
-              content: i18next.getFixedT(m.locale)('common:not-your-interaction'),
-            }).catch(() => null);
-          else m.deferUpdate().catch(() => null);
-          return m.user.id === authorID;
-        },
-        time,
-      })
-      .then((interaction) => interaction)
-      .catch(() => null);
-  }
-
   static async collectComponentInteractionWithStartingId<T extends MessageComponentInteraction>(
     channel: TextBasedChannel,
     authorID: string,

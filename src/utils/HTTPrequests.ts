@@ -559,14 +559,12 @@ export default class HttpRequests {
     menheraCards: Array<IBlackjackCards>,
     userTotal: number,
     menheraTotal: number,
-    isEnd: boolean,
     i18n: unknown,
     cardTheme: AvailableCardThemes,
     tableTheme: AvailableTableThemes,
     backgroundCardTheme: AvailableCardBackgroundThemes,
   ): Promise<IPicassoReturnData> {
     try {
-      if (!isEnd) menheraCards[1].hidden = true;
       const data = await PicassoRequest.get('/blackjack', {
         data: {
           userCards,

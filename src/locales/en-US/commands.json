@@ -556,12 +556,10 @@
     "done": "Your trisal is over! There's no way. He finished...."
   },
   "blackjack": {
-    "description": "Bet against Menhera in Blackjack (or 21)",
-    "usage": "<bet>",
+    "title": "BlackJack",
+    "description": "Your Hand: **{{userHand}}** -> `{{userTotal}}`\nMenhera's Hand: **{{dealerCards}}** -> `{{dealerTotal}}`",
     "buy": "Draw",
     "stop": "Stop",
-    "bad-usage": "you didn't place your bet",
-    "invalid-value": "the bet amount must be greater than 1000 and less than 50000",
     "available-options": "Available Options",
     "initial-options": "**[1] Start** - Start the game\n**[2] Surrender** - Surrender from the game (and losses the bet)",
     "options": "**[1] Buy** - Draw one more card\n**[2] Stop** - Stop your bet here",

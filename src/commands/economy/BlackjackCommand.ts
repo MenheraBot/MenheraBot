@@ -1,6 +1,12 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-unused-expressions */
-import { MessageAttachment, MessageButton, MessageEmbed, Message } from 'discord.js-light';
+import {
+  MessageAttachment,
+  MessageButton,
+  MessageEmbed,
+  Message,
+  MessageActionRow,
+} from 'discord.js-light';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import http from '@utils/HTTPrequests';
@@ -8,13 +14,14 @@ import {
   AvailableCardBackgroundThemes,
   AvailableCardThemes,
   AvailableTableThemes,
+  BlackjackFinishGameReason,
   IBlackjackCards,
   IPicassoReturnData,
 } from '@custom_types/Menhera';
-import { BLACKJACK_CARDS, emojis } from '@structures/Constants';
-import Util, { resolveCustomId, actionRow, MayNotExists } from '@utils/Util';
+import { BLACKJACK_CARDS, BLACKJACK_PRIZE_MULTIPLIERS } from '@structures/Constants';
+import Util, { resolveCustomId, actionRow, MayNotExists, negate } from '@utils/Util';
 
-const CalculateHandValue = (cards: Array<number>): Array<IBlackjackCards> =>
+const getBlackjackCards = (cards: Array<number>): Array<IBlackjackCards> =>
   cards.reduce((p: Array<IBlackjackCards>, c: number) => {
     const multiplier = Math.floor(c / 14);
     const newC = c - multiplier * 13;
@@ -27,6 +34,33 @@ const CalculateHandValue = (cards: Array<number>): Array<IBlackjackCards> =>
 
     return p;
   }, []);
+
+const hideMenheraCard = (cards: IBlackjackCards[]): IBlackjackCards[] =>
+  cards.map((a, i) => {
+    if (i === 1) a.hidden === true;
+    return a;
+  });
+
+const makeBlackjackEmbed = (
+  ctx: InteractionCommandContext,
+  playerCards: IBlackjackCards[],
+  dealerCards: IBlackjackCards[],
+  playerTotal: number,
+  dealerTotal: number,
+): MessageEmbed =>
+  new MessageEmbed()
+    .setTitle(ctx.prettyResponse('estrelinhas', 'commands:blackjack.title'))
+    .setDescription(
+      ctx.locale('commands:blackjack.description', {
+        userHand: playerCards.map((a) => a.value).join(', '),
+        userTotal: playerTotal,
+        dealerCards: dealerCards.map((a) => a.value).join(', '),
+        dealerTotal,
+      }),
+    )
+    .setFooter({ text: ctx.locale('commands:blackjack.footer') })
+    .setColor(ctx.data.user.selectedColor)
+    .setThumbnail(ctx.author.displayAvatarURL({ format: 'png', dynamic: true }));
 
 export default class BlackjackCommand extends InteractionCommand {
   constructor() {
@@ -49,6 +83,243 @@ export default class BlackjackCommand extends InteractionCommand {
     });
   }
 
+  async run(ctx: InteractionCommandContext): Promise<void> {
+    const bet = ctx.options.getInteger('aposta', true);
+
+    if (ctx.data.user.estrelinhas < bet) {
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:blackjack.poor'),
+        ephemeral: true,
+      });
+      return;
+    }
+
+    await ctx.defer();
+
+    const matchCards = [...BLACKJACK_CARDS].sort(() => Math.random() - 0.5);
+
+    const dealerCards = matchCards.splice(0, 2);
+    const playerCards = matchCards.splice(0, 2);
+
+    const tableTheme = await ctx.client.repositories.themeRepository.getTableTheme(ctx.author.id);
+    const cardTheme = await ctx.client.repositories.themeRepository.getCardsTheme(ctx.author.id);
+    const backgroundCardTheme =
+      await ctx.client.repositories.themeRepository.getCardBackgroundTheme(ctx.author.id);
+
+    const bjPlayerCards = getBlackjackCards(playerCards);
+    const bjDealerCards = getBlackjackCards(dealerCards);
+    const userTotal = BlackjackCommand.checkHandFinalValue(bjPlayerCards);
+    const dealerTotal = BlackjackCommand.checkHandFinalValue([bjDealerCards[0]]);
+
+    if (userTotal === 21)
+      return BlackjackCommand.finishMatch(
+        ctx,
+        bet,
+        hideMenheraCard(bjDealerCards),
+        bjPlayerCards,
+        userTotal,
+        dealerTotal,
+        cardTheme,
+        tableTheme,
+        backgroundCardTheme,
+        'init_blackjack',
+        true,
+        BLACKJACK_PRIZE_MULTIPLIERS.init_blackjack,
+        null,
+      );
+
+    if (BlackjackCommand.checkHandFinalValue(bjDealerCards) === 21)
+      return BlackjackCommand.finishMatch(
+        ctx,
+        bet,
+        bjDealerCards,
+        bjPlayerCards,
+        userTotal,
+        21,
+        cardTheme,
+        tableTheme,
+        backgroundCardTheme,
+        'init_blackjack',
+        false,
+        BLACKJACK_PRIZE_MULTIPLIERS.init_blackjack,
+        null,
+      );
+
+    const res = await BlackjackCommand.makePicassoRequest(
+      ctx,
+      bet,
+      bjPlayerCards,
+      hideMenheraCard(bjDealerCards),
+      userTotal,
+      dealerTotal,
+      cardTheme,
+      tableTheme,
+      backgroundCardTheme,
+    );
+
+    const embed = makeBlackjackEmbed(
+      ctx,
+      bjPlayerCards,
+      [bjDealerCards[0]],
+      userTotal,
+      dealerTotal,
+    );
+
+    const BuyButton = new MessageButton()
+      .setCustomId(`${ctx.interaction.id} | BUY`)
+      .setStyle('PRIMARY')
+      .setLabel(ctx.locale('commands:blackjack.buy'));
+
+    const StopButton = new MessageButton()
+      .setCustomId(`${ctx.interaction.id} | STOP`)
+      .setStyle('DANGER')
+      .setLabel(ctx.locale('commands:blackjack.stop'));
+
+    const gameMessage = await BlackjackCommand.sendGameMessage(
+      ctx,
+      null,
+      embed,
+      res,
+      actionRow([BuyButton, StopButton]),
+    );
+
+    const collected = await Util.collectComponentInteractionWithStartingId(
+      ctx.channel,
+      ctx.author.id,
+      ctx.interaction.id,
+      10_000,
+    );
+
+    if (!collected) {
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:blackjack.timeout'),
+        embeds: [],
+        attachments: [],
+        components: [],
+      });
+
+      ctx.client.repositories.starRepository.remove(ctx.author.id, bet);
+      return;
+    }
+
+    if (resolveCustomId(collected.customId) === 'BUY')
+      return BlackjackCommand.continueFromBuy(
+        ctx,
+        bet,
+        dealerCards,
+        playerCards,
+        matchCards,
+        cardTheme,
+        tableTheme,
+        backgroundCardTheme,
+        gameMessage,
+      );
+
+    return BlackjackCommand.finishGame(
+      ctx,
+      bet,
+      dealerCards,
+      playerCards,
+      matchCards,
+      cardTheme,
+      tableTheme,
+      backgroundCardTheme,
+      gameMessage,
+    );
+  }
+
+  static async makePicassoRequest(
+    ctx: InteractionCommandContext,
+    bet: number,
+    dealerCards: Array<IBlackjackCards>,
+    playerCards: Array<IBlackjackCards>,
+    userTotal: number,
+    menheraTotal: number,
+    cardTheme: AvailableCardThemes,
+    tableTheme: AvailableTableThemes,
+    backgroundCardTheme: AvailableCardBackgroundThemes,
+  ): Promise<IPicassoReturnData> {
+    return ctx.client.picassoWs.isAlive
+      ? ctx.client.picassoWs.makeRequest({
+          id: ctx.interaction.id,
+          type: 'blackjack',
+          data: {
+            userCards: playerCards,
+            menheraCards: dealerCards,
+            userTotal,
+            menheraTotal,
+            i18n: {
+              yourHand: ctx.locale('commands:blackjack.your-hand'),
+              dealerHand: ctx.locale('commands:blackjack.dealer-hand'),
+            },
+            aposta: bet,
+            cardTheme,
+            tableTheme,
+            backgroundCardTheme,
+          },
+        })
+      : http.blackjackRequest(
+          bet,
+          playerCards,
+          dealerCards,
+          userTotal,
+          menheraTotal,
+          {
+            yourHand: ctx.locale('commands:blackjack.your-hand'),
+            dealerHand: ctx.locale('commands:blackjack.dealer-hand'),
+          },
+          cardTheme,
+          tableTheme,
+          backgroundCardTheme,
+        );
+  }
+
+  static async finishMatch(
+    ctx: InteractionCommandContext,
+    bet: number,
+    dealerCards: Array<IBlackjackCards>,
+    playerCards: Array<IBlackjackCards>,
+    userTotal: number,
+    menheraTotal: number,
+    cardTheme: AvailableCardThemes,
+    tableTheme: AvailableTableThemes,
+    backgroundCardTheme: AvailableCardBackgroundThemes,
+    finishReason: BlackjackFinishGameReason,
+    didUserWin: boolean,
+    prizeMultiplier: number,
+    gameMessage: MayNotExists<Message<boolean>>,
+  ): Promise<void> {
+    const winner = didUserWin ? ctx.author.username : ctx.client.user.username;
+    const prize = didUserWin ? Math.floor(bet * prizeMultiplier) : bet;
+
+    if (didUserWin) ctx.client.repositories.starRepository.add(ctx.author.id, prize);
+    else ctx.client.repositories.starRepository.remove(ctx.author.id, prize);
+
+    const image = await BlackjackCommand.makePicassoRequest(
+      ctx,
+      bet,
+      dealerCards,
+      playerCards,
+      userTotal,
+      menheraTotal,
+      cardTheme,
+      tableTheme,
+      backgroundCardTheme,
+    );
+
+    const embed = makeBlackjackEmbed(ctx, playerCards, dealerCards, userTotal, menheraTotal);
+
+    embed.addField(
+      ctx.prettyResponse(didUserWin ? 'crown' : 'no', 'commands:blackjack.result'),
+      ctx.locale(`commands:blackjack.${finishReason}`, {
+        winner,
+        prize: didUserWin ? prize : negate(prize),
+      }),
+    );
+
+    BlackjackCommand.sendGameMessage(ctx, gameMessage, embed, image, []);
+  }
+
   static async continueFromBuy(
     ctx: InteractionCommandContext,
     valor: number,
@@ -61,7 +332,7 @@ export default class BlackjackCommand extends InteractionCommand {
     gameMessage: MayNotExists<Message>,
   ): Promise<void> {
     if (usrCards.length === 2) {
-      const oldUserCards = CalculateHandValue(usrCards);
+      const oldUserCards = getBlackjackCards(usrCards);
       const oldUserTotal = BlackjackCommand.checkHandFinalValue(oldUserCards);
 
       if (oldUserTotal >= 21)
@@ -83,7 +354,7 @@ export default class BlackjackCommand extends InteractionCommand {
     const newCard = matchCards.shift() as number;
     const playerCards = [...usrCards, newCard];
 
-    const userCards = CalculateHandValue(playerCards);
+    const userCards = getBlackjackCards(playerCards);
     const userTotal = BlackjackCommand.checkHandFinalValue(userCards);
 
     const res = ctx.client.picassoWs.isAlive
@@ -92,16 +363,14 @@ export default class BlackjackCommand extends InteractionCommand {
           type: 'blackjack',
           data: {
             userCards,
-            menheraCards: CalculateHandValue(dealerCards).map((a, i) => {
+            menheraCards: getBlackjackCards(dealerCards).map((a, i) => {
               if (i === 1) {
                 a.hidden = true;
               }
               return a;
             }),
             userTotal,
-            menheraTotal: BlackjackCommand.checkHandFinalValue(
-              CalculateHandValue([dealerCards[0]]),
-            ),
+            menheraTotal: BlackjackCommand.checkHandFinalValue(getBlackjackCards([dealerCards[0]])),
             i18n: {
               yourHand: ctx.locale('commands:blackjack.your-hand'),
               dealerHand: ctx.locale('commands:blackjack.dealer-hand'),
@@ -115,9 +384,9 @@ export default class BlackjackCommand extends InteractionCommand {
       : await http.blackjackRequest(
           valor,
           userCards,
-          CalculateHandValue(dealerCards),
+          getBlackjackCards(dealerCards),
           userTotal,
-          BlackjackCommand.checkHandFinalValue(CalculateHandValue([dealerCards[0]])),
+          BlackjackCommand.checkHandFinalValue(getBlackjackCards([dealerCards[0]])),
           false,
           {
             yourHand: ctx.locale('commands:blackjack.your-hand'),
@@ -131,16 +400,16 @@ export default class BlackjackCommand extends InteractionCommand {
     const embed = new MessageEmbed()
       .setTitle('⭐ | BlackJack')
       .setDescription(
-        `${ctx.locale('commands:blackjack.your-hand')}: **${CalculateHandValue(playerCards)
+        `${ctx.locale('commands:blackjack.your-hand')}: **${getBlackjackCards(playerCards)
           .map((a) => `${a.value}`)
           .join(', ')}** -> \`${BlackjackCommand.checkHandFinalValue(
-          CalculateHandValue(playerCards),
-        )}\`\n${ctx.locale('commands:blackjack.dealer-hand')}: **${CalculateHandValue([
+          getBlackjackCards(playerCards),
+        )}\`\n${ctx.locale('commands:blackjack.dealer-hand')}: **${getBlackjackCards([
           dealerCards[0],
         ])
           .map((a) => `${a.value}`)
           .join(', ')}** -> \`${BlackjackCommand.checkHandFinalValue(
-          CalculateHandValue([dealerCards[0]]),
+          getBlackjackCards([dealerCards[0]]),
         )}\``,
       )
       .setFooter({ text: ctx.locale('commands:blackjack.footer') })
@@ -241,28 +510,29 @@ export default class BlackjackCommand extends InteractionCommand {
     return total;
   }
 
-  static async sendGameResult(
+  static async sendGameMessage(
     ctx: InteractionCommandContext,
     gameMessage: MayNotExists<Message>,
     embed: MessageEmbed,
     res: IPicassoReturnData,
-  ): Promise<void> {
+    componentsRow: MessageActionRow,
+  ): Promise<MayNotExists<Message<boolean>>> {
     const timestamp = Date.now();
 
     if (!res.err) embed.setImage(`attachment://blackjack-${timestamp}.png`);
 
-    gameMessage
-      ? await gameMessage.edit({
+    return gameMessage
+      ? gameMessage.edit({
           attachments: [],
           embeds: [embed],
           files: res.err ? [] : [new MessageAttachment(res.data, `blackjack-${timestamp}.png`)],
-          components: [],
+          components: [componentsRow],
         })
-      : await ctx.send({
+      : ctx.send({
           embeds: [embed],
           attachments: [],
           files: res.err ? [] : [new MessageAttachment(res.data, `blackjack-${timestamp}.png`)],
-          components: [],
+          components: [componentsRow],
         });
   }
 
@@ -277,8 +547,8 @@ export default class BlackjackCommand extends InteractionCommand {
     backgroundCardTheme: AvailableCardBackgroundThemes,
     gameMessage: MayNotExists<Message>,
   ): Promise<void> {
-    const userCards = CalculateHandValue(playerCards);
-    const dealerCards = CalculateHandValue(menheraCards);
+    const userCards = getBlackjackCards(playerCards);
+    const dealerCards = getBlackjackCards(menheraCards);
 
     const userTotal = BlackjackCommand.checkHandFinalValue(userCards);
     let menheraTotal = BlackjackCommand.checkHandFinalValue(dealerCards);
@@ -369,13 +639,12 @@ export default class BlackjackCommand extends InteractionCommand {
       return;
     }
 
-    if (menheraTotal <= 17 || menheraTotal < userTotal) {
+    if (menheraTotal < 17)
       do {
-        const newCards = CalculateHandValue(matchCards.splice(0, 1));
+        const newCards = getBlackjackCards(matchCards.splice(0, 1));
         dealerCards.push(...newCards);
         menheraTotal = BlackjackCommand.checkHandFinalValue(dealerCards);
-      } while (menheraTotal <= 17 && menheraTotal < userTotal);
-    }
+      } while (menheraTotal < 17);
 
     embed = new MessageEmbed()
       .setTitle('⭐ | BlackJack')
@@ -506,157 +775,5 @@ export default class BlackjackCommand extends InteractionCommand {
     await ctx.client.repositories.starRepository.add(ctx.author.id, valor);
     BlackjackCommand.sendGameResult(ctx, gameMessage, embed, newRes);
     await http.postBlackJack(ctx.author.id, true, valor * 2);
-  }
-
-  async run(ctx: InteractionCommandContext): Promise<void> {
-    const valor = ctx.options.getInteger('aposta', true);
-
-    if (valor > 50000 || valor < 1000) {
-      await ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'commands:blackjack.invalid-value'),
-        ephemeral: true,
-      });
-      return;
-    }
-
-    if (ctx.data.user.estrelinhas < valor) {
-      await ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'commands:blackjack.poor'),
-        ephemeral: true,
-      });
-      return;
-    }
-
-    await ctx.defer();
-
-    const matchCards = [...BLACKJACK_CARDS].sort(() => Math.random() - 0.5);
-
-    const dealerCards = matchCards.splice(0, 2);
-    const playerCards = matchCards.splice(0, 2);
-
-    const tableTheme = await ctx.client.repositories.themeRepository.getTableTheme(ctx.author.id);
-    const cardTheme = await ctx.client.repositories.themeRepository.getCardsTheme(ctx.author.id);
-    const backgroundCardTheme =
-      await ctx.client.repositories.themeRepository.getCardBackgroundTheme(ctx.author.id);
-
-    const res = ctx.client.picassoWs.isAlive
-      ? await ctx.client.picassoWs.makeRequest({
-          id: ctx.interaction.id,
-          type: 'blackjack',
-          data: {
-            userCards: CalculateHandValue(playerCards),
-            menheraCards: CalculateHandValue(dealerCards).map((a, i) => {
-              if (i === 1) a.hidden = true;
-
-              return a;
-            }),
-            userTotal: BlackjackCommand.checkHandFinalValue(CalculateHandValue(playerCards)),
-            menheraTotal: BlackjackCommand.checkHandFinalValue(
-              CalculateHandValue([dealerCards[0]]),
-            ),
-            i18n: {
-              yourHand: ctx.locale('commands:blackjack.your-hand'),
-              dealerHand: ctx.locale('commands:blackjack.dealer-hand'),
-            },
-            aposta: valor,
-            cardTheme,
-            tableTheme,
-            backgroundCardTheme,
-          },
-        })
-      : await http.blackjackRequest(
-          valor,
-          CalculateHandValue(playerCards),
-          CalculateHandValue(dealerCards),
-          BlackjackCommand.checkHandFinalValue(CalculateHandValue(playerCards)),
-          BlackjackCommand.checkHandFinalValue(CalculateHandValue([dealerCards[0]])),
-          false,
-          {
-            yourHand: ctx.locale('commands:blackjack.your-hand'),
-            dealerHand: ctx.locale('commands:blackjack.dealer-hand'),
-          },
-          cardTheme,
-          tableTheme,
-          backgroundCardTheme,
-        );
-
-    const embed = new MessageEmbed()
-      .setTitle('⭐ | BlackJack')
-      .setDescription(
-        `${ctx.locale('commands:blackjack.your-hand')}: **${CalculateHandValue(playerCards)
-          .map((a) => `${a.value}`)
-          .join(', ')}** -> \`${BlackjackCommand.checkHandFinalValue(
-          CalculateHandValue(playerCards),
-        )}\`\n${ctx.locale('commands:blackjack.dealer-hand')}: **${CalculateHandValue([
-          dealerCards[0],
-        ])
-          .map((a) => `${a.value}`)
-          .join(', ')}** -> \`${BlackjackCommand.checkHandFinalValue(
-          CalculateHandValue([dealerCards[0]]),
-        )}\``,
-      )
-      .setFooter({ text: ctx.locale('commands:blackjack.footer') })
-      .setColor(ctx.data.user.selectedColor)
-      .setThumbnail(ctx.author.displayAvatarURL({ format: 'png', dynamic: true }));
-
-    if (!res.err) embed.setImage('attachment://blackjack.png');
-
-    const BuyButton = new MessageButton()
-      .setCustomId(`${ctx.interaction.id} | BUY`)
-      .setStyle('PRIMARY')
-      .setLabel(ctx.locale('commands:blackjack.buy'));
-
-    const StopButton = new MessageButton()
-      .setCustomId(`${ctx.interaction.id} | STOP`)
-      .setStyle('DANGER')
-      .setLabel(ctx.locale('commands:blackjack.stop'));
-
-    const gameMessage = await ctx.makeMessage({
-      files: res.err ? [] : [new MessageAttachment(res.data, 'blackjack.png')],
-      embeds: [embed],
-      components: [actionRow([BuyButton, StopButton])],
-    });
-
-    const collected = await Util.collectComponentInteraction(ctx.channel, ctx.author.id, 10000);
-
-    if (!collected) {
-      ctx.makeMessage({
-        content: `${emojis.error} ${ctx.locale('commands:blackjack.timeout')}`,
-        embeds: [],
-        attachments: [],
-        components: [],
-      });
-      ctx.client.repositories.starRepository.remove(ctx.author.id, valor);
-      return;
-    }
-
-    if (resolveCustomId(collected.customId) === 'BUY') {
-      BlackjackCommand.continueFromBuy(
-        ctx,
-        valor,
-        dealerCards,
-        playerCards,
-        matchCards,
-        cardTheme,
-        tableTheme,
-        backgroundCardTheme,
-        gameMessage,
-      );
-      return;
-    }
-
-    if (resolveCustomId(collected.customId) === 'STOP') {
-      BlackjackCommand.finishGame(
-        ctx,
-        valor,
-        dealerCards,
-        playerCards,
-        matchCards,
-        cardTheme,
-        tableTheme,
-        backgroundCardTheme,
-        gameMessage,
-      );
-    }
   }
 }

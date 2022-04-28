@@ -361,3 +361,7 @@ export const DiscordFlagsToMenheraBadges: { [badge: string]: number } = {
   HOUSE_BRILLIANCE: 3,
   HOUSE_BRAVERY: 4,
 };
+
+export const BLACKJACK_PRIZE_MULTIPLIERS = {
+  init_blackjack: 1.5,
+};
