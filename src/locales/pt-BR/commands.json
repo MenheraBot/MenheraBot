@@ -581,7 +581,7 @@
     "result": "Resultado",
     "init_blackjack": "**{{winner}}** começou um jogo com um BlackJack! Que Sorte!\n**Seu {{text}}:** {{prize}} :star:",
     "blackjack": "**{{winner}}** fez um BlackJack! Na mosca!\n**Seu {{text}}:** {{prize}} :star:",
-    "busted": "**{{winner}}** estourou! Mais sorte da próxima vez!\n**Seu {{text}}:** {{prize}} :star:",
+    "busted": "**{{loser}}** estourou! Mais sorte da próxima vez!\n**Seu {{text}}:** {{prize}} :star:",
     "draw": "Os jogadores empataram, mas infelizmente, pela lei N°12.158/2021 do Mundo de Boleham, a Menhera leva tudo hehehe. Sim é injusto, mas é a vida!\n**Seu {{text}}:** {{prize}} :star:",
     "biggest": "**{{winner}}** ganhou por possuir mais pontos!\n**Seu {{text}}:** {{prize}} :star:",
     "profit": "Lucro",

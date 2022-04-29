@@ -570,7 +570,7 @@
     "timeout": "you took too long to play. Menhera ran out of patience, you lost everything!",
     "result": "👑 | Results",
     "init_blackjack": "**{{winner}}** started a game with a BlackJack! How Lucky!\n**Your {{text}}:** {{prize}} :star:",
-    "busted": "**{{winner}}** busted! Better luck next time!\n**Your {{text}}:** {{prize}} :star:",
+    "busted": "**{{loser}}** busted! Better luck next time!\n**Your {{text}}:** {{prize}} :star:",
     "draw": "The players drew, but unfortunately, by the law N°12.158/2021 of the Boleham World, Menhera takes it all hehehe. Yes it's unfair, but that's life!\n**Your {{text}}:** {{prize}} :star:",
     "biggest": "**{{winner}}** won for having more points!\n**Your {{text}}:** {{prize}} :star:",
     "profit": "Profit",

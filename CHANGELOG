@@ -33,6 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ### Changed
 
+- Blackjack: Caso o usuário inicie com um blackjack em mãos, a partida terminará, e o jogador receberá o dobro do prêmio
 - Comando `/status design` foi renomeado para `/status designer`
 - Agora o botão de fechar comando possui um texto para ser mais claro
 - Dificuldade de subir de nível foi aumentado para `1.62`
@@ -51,6 +52,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ### Fixed
 
+- CORRIGIDO FINALMENTE! O Blackjack não interpreta mais os A's de naipes diferentes de Espada como uma carta de valor 10
 - Árvore de Habilidades do Assassino estava com uma ordem errada
 - Opção de abençõar status com pontos maior que 15, bloqueando o usuário de usar mais bênçãos
 - Erros de português no comando `/ship`

@@ -22,7 +22,7 @@ import Util, { resolveCustomId, actionRow, MayNotExists, negate, debugError } fr
 
 const getBlackjackCards = (cards: Array<number>): Array<IBlackjackCards> =>
   cards.reduce((p: Array<IBlackjackCards>, c: number) => {
-    const multiplier = Math.floor(c / 14);
+    const multiplier = Math.ceil(c / 13) - 1;
     const newC = c - multiplier * 13;
 
     p.push({
@@ -53,7 +53,10 @@ const makeBlackjackEmbed = (
       ctx.locale('commands:blackjack.description', {
         userHand: playerCards.map((a) => a.value).join(', '),
         userTotal: playerTotal,
-        dealerCards: dealerCards.map((a) => a.value).join(', '),
+        dealerCards: dealerCards
+          .filter((a) => !a.hidden)
+          .map((a) => a.value)
+          .join(', '),
         dealerTotal,
       }),
     )
@@ -147,8 +150,8 @@ export default class BlackjackCommand extends InteractionCommand {
     const res = await BlackjackCommand.makePicassoRequest(
       ctx,
       bet,
-      bjPlayerCards,
       hideMenheraCard(bjDealerCards),
+      bjPlayerCards,
       userTotal,
       dealerTotal,
       cardTheme,
@@ -285,6 +288,7 @@ export default class BlackjackCommand extends InteractionCommand {
     gameMessage: MayNotExists<Message<boolean>>,
   ): Promise<void> {
     const winner = didUserWin ? ctx.author.username : ctx.client.user.username;
+    const loser = !didUserWin ? ctx.author.username : ctx.client.user.username;
     const prize = didUserWin ? Math.floor(bet * prizeMultiplier) : bet;
 
     if (didUserWin) ctx.client.repositories.starRepository.add(ctx.author.id, prize);
@@ -304,14 +308,17 @@ export default class BlackjackCommand extends InteractionCommand {
 
     const embed = makeBlackjackEmbed(ctx, playerCards, dealerCards, userTotal, menheraTotal);
 
-    embed.addField(
-      ctx.prettyResponse(didUserWin ? 'crown' : 'no', 'commands:blackjack.result'),
-      ctx.locale(`commands:blackjack.${finishReason}`, {
-        winner,
-        prize: didUserWin ? prize : negate(prize),
-        text: ctx.locale(`commands:blackjack.${didUserWin ? 'profit' : 'loss'}`),
-      }),
-    );
+    embed
+      .addField(
+        ctx.prettyResponse(didUserWin ? 'crown' : 'no', 'commands:blackjack.result'),
+        ctx.locale(`commands:blackjack.${finishReason}`, {
+          winner,
+          loser,
+          prize: didUserWin ? prize : negate(prize),
+          text: ctx.locale(`commands:blackjack.${didUserWin ? 'profit' : 'loss'}`),
+        }),
+      )
+      .setFooter({ text: '' });
 
     BlackjackCommand.sendGameMessage(ctx, gameMessage, embed, image, []);
     http.postBlackJack(ctx.author.id, didUserWin, prize);
@@ -339,8 +346,8 @@ export default class BlackjackCommand extends InteractionCommand {
     const res = await BlackjackCommand.makePicassoRequest(
       ctx,
       bet,
-      userCards,
       hideMenheraCard(menheraCards),
+      userCards,
       userTotal,
       menheraTotal,
       cardTheme,
