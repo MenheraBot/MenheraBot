@@ -460,15 +460,6 @@
     "times": "vezes",
     "not-user": "Este usuário não usou nenhum comando meu"
   },
-  "blockcanal": {
-    "block": "Meus comandos foram **Bloqueados** no canal {{channel}}! Use `/blockcanal` para desbloqueá-los",
-    "unblock": "Meus comandos foram **Liberados** no canal {{channel}}!",
-    "invalid-channel": "Este comando só pode ser executado em canais de texto!",
-    "blocked-channels": "Lista de Canais Bloqueados",
-    "zero-value": "Nenhum canal bloqueado!",
-    "sure": "Você tem certeza que quer deletar todos os canais da lista?",
-    "done": "Meus comandos foram liberados em todos os canais do servidor! Yayyy"
-  },
   "idioma": {
     "question": "Qual língua você quer que eu fale?",
     "select": "Escolha a língua clicando aqui!",
@@ -525,15 +516,6 @@
       "archangel": "Arcanjos",
       "god": "Deuses"
     }
-  },
-  "blockcomando": {
-    "no-args": "Tu não citou nenhum comando!",
-    "no-cmd": "Este comando não existe!",
-    "dev-cmd": "Tu não tem acesso à este comando!",
-    "unblock": "O comando `/{{cmd}}` foi reabilitado neste servidor!",
-    "block": "O comando `/{{cmd}}` foi desabilitado neste servidor!",
-    "foda_uncensored": "Tu é feliz né? Se tu desabilita esse comando não vai poder mais usar ele o cabaço, te liga vei",
-    "foda": "Tu não pode desabilitar o comando que desabilita, engraçadinho"
   },
   "cooldowns": {
     "title": "⌛ | Seus tempos de Recarga",

@@ -451,15 +451,6 @@
     "times": "times",
     "not-user": "this user didn't use any commands"
   },
-  "blockcanal": {
-    "block": "My commands were **Blocked** on channel {{channel}}! Use `/blockcanal` to unlock them",
-    "unblock": "My commands were **Unblocked** on channel {{channel}}",
-    "invalid-channel": "This command can only be run on text channels!",
-    "blocked-channels": "Blocked Channels List",
-    "zero-value": "No channel blocked!",
-    "sure": "Are you sure you want to delete all channels from the list?",
-    "done": "My commands have been released on all server channels! Yayyy"
-  },
   "idioma": {
     "question": "What language do you want me to speak?",
     "select": "Select the language clicking here",
@@ -516,13 +507,6 @@
       "archangel": "Archangels",
       "god": "Gods"
     }
-  },
-  "blockcomando": {
-    "no-cmd": "this command does not exist!",
-    "dev-cmd": "you do not have access to this command!",
-    "unblock": "the command `/{{cmd}}` has been re-enabled on this server!",
-    "block": "the command `/{{cmd}}` has been disabled on this server!",
-    "foda": "Are you happy? If you disable this command you will no longer be able to use it, stop"
   },
   "cooldowns": {
     "title": "⌛ | Your cooldown times",

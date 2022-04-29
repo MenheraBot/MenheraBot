@@ -73,6 +73,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - **Palavrões:** O Discord quer ser uma referência de um local seguro, por este motivo, a Menhera não pode falar palavrões :(
 - Subcomando `/config censura`
 - Comando `/avatar`
+- Comandos `/config blockcomando` e `/config blockcanal` foram removidos! Use as novas permissões de comandos no lugar. https://discord.com/blog/slash-commands-permissions-discord-apps-bots
 
 ## [4.0.H-BETA] - 2022-03-01
 

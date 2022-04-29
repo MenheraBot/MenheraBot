@@ -59,8 +59,6 @@ export default class CacheRepository {
           3600,
           JSON.stringify({
             lang: guildDataFromMongo.lang,
-            blockedChannels: guildDataFromMongo.blockedChannels,
-            disabledCommands: guildDataFromMongo.disabledCommands,
           }),
         )
         .catch((e) => debugError(e, true));

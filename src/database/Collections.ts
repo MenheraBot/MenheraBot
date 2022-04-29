@@ -17,8 +17,6 @@ const cmdSchema = new Schema({
 
 const guildSchema = new Schema({
   id: { type: String, unique: true, index: true },
-  blockedChannels: { type: Array, default: [] },
-  disabledCommands: { type: Array, default: [] },
   lang: { type: String, default: 'pt-BR' },
 });
 

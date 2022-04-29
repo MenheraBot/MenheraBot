@@ -64,28 +64,6 @@ const InteractionCommandExecutor = async (
     return;
   }
 
-  if (
-    server.blockedChannels?.includes(interaction.channelId) &&
-    !interaction.memberPermissions?.has('MANAGE_CHANNELS')
-  ) {
-    interaction
-      .reply({ content: `🔒 | ${t('events:blocked-channel')}`, ephemeral: true })
-      .catch(debugError);
-    return;
-  }
-
-  if (server.disabledCommands?.includes(command.config.name)) {
-    await interaction
-      .reply({
-        content: `🔒 | ${t('permissions:DISABLED_COMMAND', {
-          cmd: command.config.name,
-        })}`,
-        ephemeral: true,
-      })
-      .catch(debugError);
-    return;
-  }
-
   const dbCommand = await interaction.client.repositories.cacheRepository.fetchCommand(
     interaction.commandName,
   );

@@ -5,7 +5,7 @@ export default class FluffetyCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'fluffety',
-      description: '「🐰」・Nada melhor que cuidar de seu bichinho de estimação',
+      description: '「🐰」・Cuide da sua fofura de estimação',
       category: 'fluffety',
       cooldown: 5,
     });

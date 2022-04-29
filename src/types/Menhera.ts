@@ -64,8 +64,6 @@ interface IBadge {
 
 export interface IGuildSchema {
   readonly id?: string;
-  blockedChannels: Array<string>;
-  disabledCommands: Array<string>;
   lang: string;
 }
 
@@ -436,6 +434,9 @@ export interface FluffetySchema {
   readonly id: string;
   fluffetyName: string;
   healthyAt: number;
+  foodyAt: number;
+  happyAt: number;
+  willingAt: number;
 }
 
 export interface BlackjackTop {
