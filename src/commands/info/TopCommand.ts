@@ -362,6 +362,8 @@ export default class TopCommand extends InteractionCommand {
       if (member) {
         (ctx.client.users.cache as LimitedCollection<string, User>).forceSet(member.id, member);
         if (i === 0) embed.setThumbnail(member.displayAvatarURL({ dynamic: true }));
+        if (member.username.startsWith('Deleted User'))
+          ctx.client.repositories.cacheRepository.addDeletedAccount([member.id]);
       }
 
       const userData = result[i];
@@ -434,10 +436,11 @@ export default class TopCommand extends InteractionCommand {
       if (member) {
         (ctx.client.users.cache as LimitedCollection<string, User>).forceSet(member.id, member);
         if (i === 0) embed.setThumbnail(member.displayAvatarURL({ dynamic: true }));
+        if (member.username.startsWith('Deleted User'))
+          ctx.client.repositories.cacheRepository.addDeletedAccount([member.id]);
       }
 
       const userData = result[i];
-      console.log(userData.user_id);
 
       embed.addField(
         `**${skip + i + 1} -** ${Util.capitalize(member?.username ?? '404')}`,
@@ -501,6 +504,8 @@ export default class TopCommand extends InteractionCommand {
       if (member) {
         (ctx.client.users.cache as LimitedCollection<string, User>).forceSet(member.id, member);
         if (i === 0) embed.setThumbnail(member.displayAvatarURL({ dynamic: true }));
+        if (member.username.startsWith('Deleted User'))
+          ctx.client.repositories.cacheRepository.addDeletedAccount([member.id]);
       }
 
       const userData = result[i];
@@ -571,10 +576,9 @@ export default class TopCommand extends InteractionCommand {
       if (member) {
         (ctx.client.users.cache as LimitedCollection<string, User>).forceSet(member.id, member);
         if (i === 0) embed.setThumbnail(member.displayAvatarURL({ dynamic: true }));
+        if (member.username.startsWith('Deleted User'))
+          ctx.client.repositories.cacheRepository.addDeletedAccount([res[i].id]);
       }
-
-      if (memberName.startsWith('Deleted User'))
-        ctx.client.repositories.cacheRepository.addDeletedAccount(res[i].id);
 
       embed.addField(`**${skip + 1 + i} -** ${memberName}`, `${actor}: **${res[i].value}**`, false);
     }
@@ -600,6 +604,8 @@ export default class TopCommand extends InteractionCommand {
       if (member) {
         (ctx.client.users.cache as LimitedCollection<string, User>).forceSet(member.id, member);
         if (i === 0) embed.setThumbnail(member.displayAvatarURL({ dynamic: true }));
+        if (member.username.startsWith('Deleted User'))
+          ctx.client.repositories.cacheRepository.addDeletedAccount([res[i].id]);
       }
 
       embed.addField(

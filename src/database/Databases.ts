@@ -23,7 +23,7 @@ import RoleplayRepository from './repositories/RoleplayRepository';
 import FluffetyRepository from './repositories/FluffetyRepository';
 
 export default class Databases {
-  public redisClient: Redis.Redis | null = null;
+  public redisClient: Redis | null = null;
 
   public readonly Cmds: typeof Cmds;
 

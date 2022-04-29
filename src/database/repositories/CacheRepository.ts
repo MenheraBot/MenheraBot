@@ -87,7 +87,7 @@ export default class CacheRepository {
     }
   }
 
-  async addDeletedAccount(user: string[] | string): Promise<void> {
+  async addDeletedAccount(user: string[]): Promise<void> {
     if (!this.redisClient) return;
     await this.redisClient.sadd('deleted_accounts', user).catch((e) => debugError(e, true));
   }

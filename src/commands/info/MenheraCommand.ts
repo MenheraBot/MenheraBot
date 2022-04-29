@@ -147,8 +147,8 @@ export default class MenheraCommand extends InteractionCommand {
     const menheraAniversary = ctx.client.user.createdAt;
 
     if (
-      today.getDate === menheraAniversary.getDate &&
-      today.getMonth === menheraAniversary.getMonth
+      today.getDate() === menheraAniversary.getDate() &&
+      today.getMonth() === menheraAniversary.getMonth()
     )
       embed.setTitle(ctx.locale('commands:menhera.estatisticas.aniversary-title'));
 
@@ -158,13 +158,13 @@ export default class MenheraCommand extends InteractionCommand {
       .setLabel(ctx.locale('commands:menhera.estatisticas.extended'));
 
     const support = new MessageButton()
-      .setCustomId(`${ctx.interaction.id} | LINK`)
       .setStyle('LINK')
+      .setURL('https://discord.gg/fZMdQbA')
       .setLabel(ctx.locale('commands:menhera.estatisticas.support'));
 
     const site = new MessageButton()
-      .setCustomId(`${ctx.interaction.id} | LINK2`)
       .setStyle('LINK')
+      .setURL('https://menherabot.xyz')
       .setLabel('WebSite');
 
     await ctx.makeMessage({ embeds: [embed], components: [actionRow([button, support, site])] });
