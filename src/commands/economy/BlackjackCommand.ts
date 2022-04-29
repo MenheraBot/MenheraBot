@@ -1,5 +1,4 @@
 /* eslint-disable no-param-reassign */
-/* eslint-disable no-unused-expressions */
 import {
   MessageAttachment,
   MessageButton,
@@ -19,7 +18,7 @@ import {
   IPicassoReturnData,
 } from '@custom_types/Menhera';
 import { BLACKJACK_CARDS, BLACKJACK_PRIZE_MULTIPLIERS } from '@structures/Constants';
-import Util, { resolveCustomId, actionRow, MayNotExists, negate } from '@utils/Util';
+import Util, { resolveCustomId, actionRow, MayNotExists, negate, debugError } from '@utils/Util';
 
 const getBlackjackCards = (cards: Array<number>): Array<IBlackjackCards> =>
   cards.reduce((p: Array<IBlackjackCards>, c: number) => {
@@ -37,7 +36,7 @@ const getBlackjackCards = (cards: Array<number>): Array<IBlackjackCards> =>
 
 const hideMenheraCard = (cards: IBlackjackCards[]): IBlackjackCards[] =>
   cards.map((a, i) => {
-    if (i === 1) a.hidden === true;
+    if (i === 1) a.hidden = true;
     return a;
   });
 
@@ -175,13 +174,9 @@ export default class BlackjackCommand extends InteractionCommand {
       .setStyle('DANGER')
       .setLabel(ctx.locale('commands:blackjack.stop'));
 
-    const gameMessage = await BlackjackCommand.sendGameMessage(
-      ctx,
-      null,
-      embed,
-      res,
+    const gameMessage = await BlackjackCommand.sendGameMessage(ctx, null, embed, res, [
       actionRow([BuyButton, StopButton]),
-    );
+    ]);
 
     const collected = await Util.collectComponentInteractionWithStartingId(
       ctx.channel,
@@ -215,7 +210,7 @@ export default class BlackjackCommand extends InteractionCommand {
         gameMessage,
       );
 
-    return BlackjackCommand.finishGame(
+    return BlackjackCommand.startDealerPlay(
       ctx,
       bet,
       dealerCards,
@@ -314,107 +309,52 @@ export default class BlackjackCommand extends InteractionCommand {
       ctx.locale(`commands:blackjack.${finishReason}`, {
         winner,
         prize: didUserWin ? prize : negate(prize),
+        text: ctx.locale(`commands:blackjack.${didUserWin ? 'profit' : 'loss'}`),
       }),
     );
 
     BlackjackCommand.sendGameMessage(ctx, gameMessage, embed, image, []);
+    http.postBlackJack(ctx.author.id, didUserWin, prize);
   }
 
   static async continueFromBuy(
     ctx: InteractionCommandContext,
-    valor: number,
+    bet: number,
     dealerCards: Array<number>,
     usrCards: Array<number>,
-    deckCards: Array<number>,
+    matchCards: Array<number>,
     cardTheme: AvailableCardThemes,
     tableTheme: AvailableTableThemes,
     backgroundCardTheme: AvailableCardBackgroundThemes,
     gameMessage: MayNotExists<Message>,
   ): Promise<void> {
-    if (usrCards.length === 2) {
-      const oldUserCards = getBlackjackCards(usrCards);
-      const oldUserTotal = BlackjackCommand.checkHandFinalValue(oldUserCards);
-
-      if (oldUserTotal >= 21)
-        return BlackjackCommand.finishGame(
-          ctx,
-          valor,
-          dealerCards,
-          usrCards,
-          deckCards,
-          cardTheme,
-          tableTheme,
-          backgroundCardTheme,
-          gameMessage,
-        );
-    }
-
-    const matchCards = deckCards;
-
     const newCard = matchCards.shift() as number;
     const playerCards = [...usrCards, newCard];
 
+    const menheraCards = getBlackjackCards(dealerCards);
+    const menheraTotal = BlackjackCommand.checkHandFinalValue([menheraCards[0]]);
+
     const userCards = getBlackjackCards(playerCards);
     const userTotal = BlackjackCommand.checkHandFinalValue(userCards);
+    const res = await BlackjackCommand.makePicassoRequest(
+      ctx,
+      bet,
+      userCards,
+      hideMenheraCard(menheraCards),
+      userTotal,
+      menheraTotal,
+      cardTheme,
+      tableTheme,
+      backgroundCardTheme,
+    );
 
-    const res = ctx.client.picassoWs.isAlive
-      ? await ctx.client.picassoWs.makeRequest({
-          id: ctx.interaction.id,
-          type: 'blackjack',
-          data: {
-            userCards,
-            menheraCards: getBlackjackCards(dealerCards).map((a, i) => {
-              if (i === 1) {
-                a.hidden = true;
-              }
-              return a;
-            }),
-            userTotal,
-            menheraTotal: BlackjackCommand.checkHandFinalValue(getBlackjackCards([dealerCards[0]])),
-            i18n: {
-              yourHand: ctx.locale('commands:blackjack.your-hand'),
-              dealerHand: ctx.locale('commands:blackjack.dealer-hand'),
-            },
-            aposta: valor,
-            cardTheme,
-            tableTheme,
-            backgroundCardTheme,
-          },
-        })
-      : await http.blackjackRequest(
-          valor,
-          userCards,
-          getBlackjackCards(dealerCards),
-          userTotal,
-          BlackjackCommand.checkHandFinalValue(getBlackjackCards([dealerCards[0]])),
-          false,
-          {
-            yourHand: ctx.locale('commands:blackjack.your-hand'),
-            dealerHand: ctx.locale('commands:blackjack.dealer-hand'),
-          },
-          cardTheme,
-          tableTheme,
-          backgroundCardTheme,
-        );
-
-    const embed = new MessageEmbed()
-      .setTitle('⭐ | BlackJack')
-      .setDescription(
-        `${ctx.locale('commands:blackjack.your-hand')}: **${getBlackjackCards(playerCards)
-          .map((a) => `${a.value}`)
-          .join(', ')}** -> \`${BlackjackCommand.checkHandFinalValue(
-          getBlackjackCards(playerCards),
-        )}\`\n${ctx.locale('commands:blackjack.dealer-hand')}: **${getBlackjackCards([
-          dealerCards[0],
-        ])
-          .map((a) => `${a.value}`)
-          .join(', ')}** -> \`${BlackjackCommand.checkHandFinalValue(
-          getBlackjackCards([dealerCards[0]]),
-        )}\``,
-      )
-      .setFooter({ text: ctx.locale('commands:blackjack.footer') })
-      .setColor(ctx.data.user.selectedColor)
-      .setThumbnail(ctx.author.displayAvatarURL({ format: 'png', dynamic: true }));
+    const embed = makeBlackjackEmbed(
+      ctx,
+      userCards,
+      hideMenheraCard(menheraCards),
+      userTotal,
+      menheraTotal,
+    );
 
     const BuyButton = new MessageButton()
       .setCustomId(`${ctx.interaction.id} | BUY`)
@@ -426,54 +366,56 @@ export default class BlackjackCommand extends InteractionCommand {
       .setStyle('DANGER')
       .setLabel(ctx.locale('commands:blackjack.stop'));
 
-    const timestamp = Date.now();
-    if (!res.err) embed.setImage(`attachment://blackjack-${timestamp}.png`);
+    gameMessage = await BlackjackCommand.sendGameMessage(ctx, gameMessage, embed, res, [
+      actionRow([BuyButton, StopButton]),
+    ]);
 
-    gameMessage = gameMessage
-      ? await gameMessage.edit({
-          attachments: [],
-          embeds: [embed],
-          files: res.err ? [] : [new MessageAttachment(res.data, `blackjack-${timestamp}.png`)],
-          components: [actionRow([BuyButton, StopButton])],
-        })
-      : await ctx.send({
-          embeds: [embed],
-          attachments: [],
-          files: res.err ? [] : [new MessageAttachment(res.data, `blackjack-${timestamp}.png`)],
-          components: [actionRow([BuyButton, StopButton])],
-        });
-
-    const collected = await Util.collectComponentInteraction(ctx.channel, ctx.author.id, 10000);
+    const collected = await Util.collectComponentInteractionWithStartingId(
+      ctx.channel,
+      ctx.author.id,
+      ctx.interaction.id,
+      10_000,
+    );
 
     if (!collected) {
       ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:blackjack.timeout'),
         embeds: [],
-        components: [],
         attachments: [],
+        components: [],
       });
-      ctx.client.repositories.starRepository.remove(ctx.author.id, valor);
+
+      ctx.client.repositories.starRepository.remove(ctx.author.id, bet);
       return;
     }
 
     if (resolveCustomId(collected.customId) === 'BUY') {
-      if (userTotal >= 21) {
-        BlackjackCommand.finishGame(
+      const expectedNextCard = matchCards[0];
+      const expectedNextUserCards = [...playerCards, expectedNextCard];
+      const expectedNextUserBlackjackCards = getBlackjackCards(expectedNextUserCards);
+      const expectedUserTotal = BlackjackCommand.checkHandFinalValue(
+        expectedNextUserBlackjackCards,
+      );
+      if (expectedUserTotal > 21)
+        return BlackjackCommand.finishMatch(
           ctx,
-          valor,
-          dealerCards,
-          playerCards,
-          matchCards,
+          bet,
+          hideMenheraCard(menheraCards),
+          expectedNextUserBlackjackCards,
+          expectedUserTotal,
+          menheraTotal,
           cardTheme,
           tableTheme,
           backgroundCardTheme,
+          'busted',
+          false,
+          0,
           gameMessage,
         );
-        return;
-      }
-      BlackjackCommand.continueFromBuy(
+
+      return BlackjackCommand.continueFromBuy(
         ctx,
-        valor,
+        bet,
         dealerCards,
         playerCards,
         matchCards,
@@ -482,12 +424,45 @@ export default class BlackjackCommand extends InteractionCommand {
         backgroundCardTheme,
         gameMessage,
       );
-      return;
     }
 
-    BlackjackCommand.finishGame(
+    if (userTotal === 21)
+      return BlackjackCommand.finishMatch(
+        ctx,
+        bet,
+        hideMenheraCard(menheraCards),
+        userCards,
+        userTotal,
+        menheraTotal,
+        cardTheme,
+        tableTheme,
+        backgroundCardTheme,
+        'blackjack',
+        true,
+        BLACKJACK_PRIZE_MULTIPLIERS.blackjack,
+        gameMessage,
+      );
+
+    if (userTotal > 21)
+      return BlackjackCommand.finishMatch(
+        ctx,
+        bet,
+        hideMenheraCard(menheraCards),
+        userCards,
+        userTotal,
+        menheraTotal,
+        cardTheme,
+        tableTheme,
+        backgroundCardTheme,
+        'busted',
+        false,
+        BLACKJACK_PRIZE_MULTIPLIERS.base,
+        gameMessage,
+      );
+
+    return BlackjackCommand.startDealerPlay(
       ctx,
-      valor,
+      bet,
       dealerCards,
       playerCards,
       matchCards,
@@ -515,30 +490,43 @@ export default class BlackjackCommand extends InteractionCommand {
     gameMessage: MayNotExists<Message>,
     embed: MessageEmbed,
     res: IPicassoReturnData,
-    componentsRow: MessageActionRow,
+    components: MessageActionRow[],
   ): Promise<MayNotExists<Message<boolean>>> {
     const timestamp = Date.now();
 
     if (!res.err) embed.setImage(`attachment://blackjack-${timestamp}.png`);
 
     return gameMessage
-      ? gameMessage.edit({
-          attachments: [],
-          embeds: [embed],
-          files: res.err ? [] : [new MessageAttachment(res.data, `blackjack-${timestamp}.png`)],
-          components: [componentsRow],
-        })
+      ? gameMessage
+          .edit({
+            attachments: [],
+            embeds: [embed],
+            files: res.err ? [] : [new MessageAttachment(res.data, `blackjack-${timestamp}.png`)],
+            components,
+          })
+          .catch(() =>
+            ctx
+              .send({
+                embeds: [embed],
+                attachments: [],
+                files: res.err
+                  ? []
+                  : [new MessageAttachment(res.data, `blackjack-${timestamp}.png`)],
+                components,
+              })
+              .catch(debugError),
+          )
       : ctx.send({
           embeds: [embed],
           attachments: [],
           files: res.err ? [] : [new MessageAttachment(res.data, `blackjack-${timestamp}.png`)],
-          components: [componentsRow],
+          components,
         });
   }
 
-  static async finishGame(
+  static async startDealerPlay(
     ctx: InteractionCommandContext,
-    valor: number,
+    bet: number,
     menheraCards: number[],
     playerCards: number[],
     matchCards: number[],
@@ -548,232 +536,99 @@ export default class BlackjackCommand extends InteractionCommand {
     gameMessage: MayNotExists<Message>,
   ): Promise<void> {
     const userCards = getBlackjackCards(playerCards);
-    const dealerCards = getBlackjackCards(menheraCards);
-
     const userTotal = BlackjackCommand.checkHandFinalValue(userCards);
+
+    const dealerCards = getBlackjackCards(menheraCards);
     let menheraTotal = BlackjackCommand.checkHandFinalValue(dealerCards);
 
-    let embed = new MessageEmbed()
-      .setTitle('⭐ | BlackJack')
-      .setDescription(
-        `${ctx.locale('commands:blackjack.your-hand')}: **${userCards
-          .map((a) => `${a.value}`)
-          .join(', ')}** -> \`${userTotal}\`\n${ctx.locale(
-          'commands:blackjack.dealer-hand',
-        )}: **${dealerCards.map((a) => `${a.value}`).join(', ')}** -> \`${menheraTotal}\``,
-      )
-      .setColor(ctx.data.user.selectedColor)
-      .setThumbnail(ctx.author.displayAvatarURL({ format: 'png', dynamic: true }));
-
-    const res = ctx.client.picassoWs.isAlive
-      ? await ctx.client.picassoWs.makeRequest({
-          id: ctx.interaction.id,
-          type: 'blackjack',
-          data: {
-            userCards,
-            menheraCards: dealerCards,
-            userTotal,
-            menheraTotal,
-            i18n: {
-              yourHand: ctx.locale('commands:blackjack.your-hand'),
-              dealerHand: ctx.locale('commands:blackjack.dealer-hand'),
-            },
-            aposta: valor,
-            cardTheme,
-            tableTheme,
-            backgroundCardTheme,
-          },
-        })
-      : await http.blackjackRequest(
-          valor,
-          userCards,
-          dealerCards,
-          userTotal,
-          menheraTotal,
-          true,
-          {
-            yourHand: ctx.locale('commands:blackjack.your-hand'),
-            dealerHand: ctx.locale('commands:blackjack.dealer-hand'),
-          },
-          cardTheme,
-          tableTheme,
-          backgroundCardTheme,
-        );
-
-    if (userTotal === 21 && playerCards.length === 2) {
-      embed.addField(
-        ctx.locale('commands:blackjack.result'),
-        ctx.locale('commands:blackjack.blackjack', { value: valor * 4 }),
-      );
-
-      await ctx.client.repositories.starRepository.add(ctx.author.id, valor * 2);
-      BlackjackCommand.sendGameResult(ctx, gameMessage, embed, res);
-      await http.postBlackJack(ctx.author.id, true, valor * 2);
-      return;
+    while (menheraTotal < 17) {
+      const newCards = getBlackjackCards(matchCards.splice(0, 1));
+      dealerCards.push(...newCards);
+      menheraTotal = BlackjackCommand.checkHandFinalValue(dealerCards);
     }
 
-    // Estourou
-    if (userTotal > 21) {
-      embed.addField(
-        ctx.locale('commands:blackjack.result'),
-        ctx.locale('commands:blackjack.explode'),
-      );
-      await ctx.client.repositories.starRepository.remove(ctx.author.id, valor);
-
-      BlackjackCommand.sendGameResult(ctx, gameMessage, embed, res);
-      await http.postBlackJack(ctx.author.id, false, valor * 2);
-      return;
-    }
-
-    // Continua
-
-    if (menheraTotal === 21 && userTotal !== 21) {
-      embed.addField(
-        ctx.locale('commands:blackjack.result'),
-        ctx.locale('commands:blackjack.menhera-bj'),
+    if (menheraTotal === 21)
+      return BlackjackCommand.finishMatch(
+        ctx,
+        bet,
+        dealerCards,
+        userCards,
+        userTotal,
+        menheraTotal,
+        cardTheme,
+        tableTheme,
+        backgroundCardTheme,
+        'blackjack',
+        false,
+        BLACKJACK_PRIZE_MULTIPLIERS.blackjack,
+        gameMessage,
       );
 
-      await ctx.client.repositories.starRepository.remove(ctx.author.id, valor);
-      BlackjackCommand.sendGameResult(ctx, gameMessage, embed, res);
-      await http.postBlackJack(ctx.author.id, false, valor * 2);
-      return;
-    }
-
-    if (menheraTotal < 17)
-      do {
-        const newCards = getBlackjackCards(matchCards.splice(0, 1));
-        dealerCards.push(...newCards);
-        menheraTotal = BlackjackCommand.checkHandFinalValue(dealerCards);
-      } while (menheraTotal < 17);
-
-    embed = new MessageEmbed()
-      .setTitle('⭐ | BlackJack')
-      .setDescription(
-        `${ctx.locale('commands:blackjack.your-hand')}: **${userCards
-          .map((a) => `${a.value}`)
-          .join(', ')}** -> \`${userTotal}\`\n${ctx.locale(
-          'commands:blackjack.dealer-hand',
-        )}: **${dealerCards.map((a) => `${a.value}`).join(', ')}** -> \`${menheraTotal}\``,
-      )
-      .setColor(ctx.data.user.selectedColor)
-      .setThumbnail(ctx.author.displayAvatarURL({ format: 'png', dynamic: true }));
-
-    const newRes = ctx.client.picassoWs.isAlive
-      ? await ctx.client.picassoWs.makeRequest({
-          id: ctx.interaction.id,
-          type: 'blackjack',
-          data: {
-            userCards,
-            menheraCards: dealerCards,
-            userTotal,
-            menheraTotal,
-            i18n: {
-              yourHand: ctx.locale('commands:blackjack.your-hand'),
-              dealerHand: ctx.locale('commands:blackjack.dealer-hand'),
-            },
-            aposta: valor,
-            cardTheme,
-            tableTheme,
-            backgroundCardTheme,
-          },
-        })
-      : await http.blackjackRequest(
-          valor,
-          userCards,
-          dealerCards,
-          userTotal,
-          menheraTotal,
-          true,
-          {
-            yourHand: ctx.locale('commands:blackjack.your-hand'),
-            dealerHand: ctx.locale('commands:blackjack.dealer-hand'),
-          },
-          cardTheme,
-          tableTheme,
-          backgroundCardTheme,
-        );
-
-    if (menheraTotal === 21 && userTotal !== 21) {
-      embed.addField(
-        ctx.locale('commands:blackjack.result'),
-        ctx.locale('commands:blackjack.menhera-21'),
+    if (menheraTotal > 21)
+      return BlackjackCommand.finishMatch(
+        ctx,
+        bet,
+        dealerCards,
+        userCards,
+        userTotal,
+        menheraTotal,
+        cardTheme,
+        tableTheme,
+        backgroundCardTheme,
+        'busted',
+        true,
+        BLACKJACK_PRIZE_MULTIPLIERS.base,
+        gameMessage,
       );
-      await ctx.client.repositories.starRepository.remove(ctx.author.id, valor);
-      BlackjackCommand.sendGameResult(ctx, gameMessage, embed, newRes);
-      await http.postBlackJack(ctx.author.id, false, valor * 2);
-      return;
-    }
 
-    if (userTotal === 21 && menheraTotal !== 21) {
-      embed.addField(
-        ctx.locale('commands:blackjack.result'),
-        ctx.locale('commands:blackjack.user-21', { value: valor * 2 }),
+    if (userTotal === menheraTotal)
+      return BlackjackCommand.finishMatch(
+        ctx,
+        bet,
+        dealerCards,
+        userCards,
+        userTotal,
+        menheraTotal,
+        cardTheme,
+        tableTheme,
+        backgroundCardTheme,
+        'draw',
+        false,
+        BLACKJACK_PRIZE_MULTIPLIERS.base,
+        gameMessage,
       );
-      await ctx.client.repositories.starRepository.add(ctx.author.id, valor);
-      BlackjackCommand.sendGameResult(ctx, gameMessage, embed, newRes);
-      await http.postBlackJack(ctx.author.id, true, valor * 2);
-      return;
-    }
 
-    if (menheraTotal > 21 && userTotal <= 21) {
-      embed.addField(
-        ctx.locale('commands:blackjack.result'),
-        ctx.locale('commands:blackjack.menhera-bust', { value: valor * 2 }),
+    if (menheraTotal > userTotal)
+      return BlackjackCommand.finishMatch(
+        ctx,
+        bet,
+        dealerCards,
+        userCards,
+        userTotal,
+        menheraTotal,
+        cardTheme,
+        tableTheme,
+        backgroundCardTheme,
+        'biggest',
+        false,
+        BLACKJACK_PRIZE_MULTIPLIERS.base,
+        gameMessage,
       );
-      await ctx.client.repositories.starRepository.add(ctx.author.id, valor);
-      BlackjackCommand.sendGameResult(ctx, gameMessage, embed, newRes);
-      await http.postBlackJack(ctx.author.id, true, valor * 2);
-      return;
-    }
 
-    if (menheraTotal > 21 && userTotal > 21) {
-      embed.addField(
-        ctx.locale('commands:blackjack.result'),
-        ctx.locale('commands:blackjack.draw'),
-      );
-      BlackjackCommand.sendGameResult(ctx, gameMessage, embed, newRes);
-      return;
-    }
-
-    if (menheraTotal === 21 && userTotal === 21) {
-      embed.addField(
-        ctx.locale('commands:blackjack.result'),
-        ctx.locale('commands:blackjack.both-21'),
-      );
-      await ctx.client.repositories.starRepository.remove(ctx.author.id, valor);
-      BlackjackCommand.sendGameResult(ctx, gameMessage, embed, newRes);
-      await http.postBlackJack(ctx.author.id, false, valor * 2);
-      return;
-    }
-
-    if (menheraTotal === userTotal) {
-      embed.addField(
-        ctx.locale('commands:blackjack.result'),
-        ctx.locale('commands:blackjack.equal'),
-      );
-      await ctx.client.repositories.starRepository.remove(ctx.author.id, valor);
-      BlackjackCommand.sendGameResult(ctx, gameMessage, embed, newRes);
-      await http.postBlackJack(ctx.author.id, false, valor * 2);
-      return;
-    }
-
-    if (menheraTotal > userTotal) {
-      embed.addField(
-        ctx.locale('commands:blackjack.result'),
-        ctx.locale('commands:blackjack.menhera-bigger'),
-      );
-      await ctx.client.repositories.starRepository.remove(ctx.author.id, valor);
-      BlackjackCommand.sendGameResult(ctx, gameMessage, embed, newRes);
-      await http.postBlackJack(ctx.author.id, false, valor * 2);
-      return;
-    }
-
-    embed.addField(
-      ctx.locale('commands:blackjack.result'),
-      ctx.locale('commands:blackjack.user-bigger', { value: valor * 2 }),
+    return BlackjackCommand.finishMatch(
+      ctx,
+      bet,
+      dealerCards,
+      userCards,
+      userTotal,
+      menheraTotal,
+      cardTheme,
+      tableTheme,
+      backgroundCardTheme,
+      'biggest',
+      true,
+      BLACKJACK_PRIZE_MULTIPLIERS.base,
+      gameMessage,
     );
-    await ctx.client.repositories.starRepository.add(ctx.author.id, valor);
-    BlackjackCommand.sendGameResult(ctx, gameMessage, embed, newRes);
-    await http.postBlackJack(ctx.author.id, true, valor * 2);
   }
 }

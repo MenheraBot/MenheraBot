@@ -468,4 +468,9 @@ export type HuntTop<Hunt extends HuntTypes> = {
   user_id: string;
 } & Pick<IRESTHuntStats, `${Hunt}_success` | `${Hunt}_hunted` | `${Hunt}_tries`>;
 
-export type BlackjackFinishGameReason = 'init_blackjack';
+export type BlackjackFinishGameReason =
+  | 'init_blackjack'
+  | 'busted'
+  | 'blackjack'
+  | 'draw'
+  | 'biggest';
