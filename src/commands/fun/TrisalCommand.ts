@@ -116,6 +116,7 @@ export default class TrisalCommand extends InteractionCommand {
     await ctx.makeMessage({
       content: ctx.prettyResponse('question', 'commands:trisal.untrisal.sure'),
       components: [actionRow([sureButton])],
+      embeds: [],
     });
 
     const confirmed = await Util.collectComponentInteractionWithStartingId(
