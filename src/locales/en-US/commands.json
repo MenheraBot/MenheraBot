@@ -529,15 +529,14 @@
     "bot-mention": "you cannot form a trisal with a bot. In fact this is even weird ... I feel sorry for you for trying to get a bot.",
     "no-db": "one of the members of trisal was not found in the database! The best thing now is to undo this trisal and start another one",
     "comedor-de-casadas": "UOUOUOU calm there married eater, one of the users you mentioned is already in a trisal",
-    "accept-message": ":heart: | Do you accept to form a trisal? You 3 must react to this message in 14 seconds!",
+    "accept-message": ":heart: | Do you accept to form a trisal? You 3 must click the button in 15 seconds!\n{{author}}, {{first}} e {{second}}",
     "done": "congratulations, you three formed a beautiful trisal! Use this command again to see your pictures together",
-    "error": "the 3 did not react to the message in time! Try again, maybe with someone who wants to, who knows"
-  },
-  "untrisal": {
-    "error": "you are not in any trisal!",
-    "sure": "are you sure you want to break up with your trisal? You have 15 seconds to confirm",
-    "confirm": "Breakup",
-    "done": "Your trisal is over! There's no way. He finished...."
+    "error": "the 3 did not react to the message in time! Try again, maybe with someone who wants to, who knows",
+    "untrisal": {
+      "sure": "are you sure you want to break up with your trisal? You have 15 seconds to confirm",
+      "done": "Your trisal is over! There's no way. He finished....",
+      "breakup": "Breakup"
+    }
   },
   "blackjack": {
     "title": "BlackJack",

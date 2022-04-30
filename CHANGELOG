@@ -33,6 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ### Changed
 
+- O comando trisal agora mostra um botão de terminar, e é por lá que alguém do casal poderá encerrar a relação
 - Blackjack: Caso o usuário inicie com um blackjack em mãos, a partida terminará, e o jogador receberá o dobro do prêmio
 - Comando `/status design` foi renomeado para `/status designer`
 - Agora o botão de fechar comando possui um texto para ser mais claro
@@ -68,6 +69,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ### Removed
 
+- Comando `/untrisal`. Para terminar, use o botão no comando `/trisal`
 - Colocação do usuário no top ao caçar
 - Comando `/xandao`
 - **Palavrões:** O Discord quer ser uma referência de um local seguro, por este motivo, a Menhera não pode falar palavrões :(

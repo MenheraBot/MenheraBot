@@ -147,15 +147,8 @@ export default class DeploySlashCommand extends InteractionCommand {
       }, []);
 
       await ctx.makeMessage({ content: 'Iniciando deploy' });
-      const res = await ctx.interaction.guild?.commands.set(allCommands);
+      await ctx.interaction.guild?.commands.set(allCommands);
 
-      res?.forEach((a) => {
-        if (permissionSet.includes(a.name)) {
-          a.permissions.add({
-            permissions: [{ id: ctx.author.id, permission: true, type: 'USER' }],
-          });
-        }
-      });
       ctx.makeMessage({ content: 'Comandos deployados no servidor' });
       return;
     }

@@ -8,7 +8,7 @@ import {
 } from 'discord.js-light';
 import HttpRequests from '@utils/HTTPrequests';
 import { emojis } from '@structures/Constants';
-import { debugError } from '@utils/Util';
+import Util, { actionRow, debugError, disableComponents } from '@utils/Util';
 
 export default class TrisalCommand extends InteractionCommand {
   constructor() {
@@ -36,9 +36,129 @@ export default class TrisalCommand extends InteractionCommand {
     });
   }
 
+  static async displayTrisal(ctx: InteractionCommandContext): Promise<void> {
+    const marryTwo = await ctx.client.users.fetch(ctx.data.user.trisal[0]).catch(debugError);
+    const marryThree = await ctx.client.users.fetch(ctx.data.user.trisal[1]).catch(debugError);
+
+    if (!marryTwo || !marryThree) {
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:trisal.marry-not-found'),
+        ephemeral: true,
+      });
+      return;
+    }
+
+    const userOneAvatar = ctx.author.displayAvatarURL({ dynamic: false, size: 512, format: 'png' });
+    const userTwoAvatar = marryTwo.displayAvatarURL({ dynamic: false, size: 512, format: 'png' });
+    const userThreeAvatar = marryThree.displayAvatarURL({
+      dynamic: false,
+      size: 512,
+      format: 'png',
+    });
+
+    const res = ctx.client.picassoWs.isAlive
+      ? await ctx.client.picassoWs.makeRequest({
+          id: ctx.interaction.id,
+          type: 'trisal',
+          data: { userOne: userOneAvatar, userTwo: userTwoAvatar, userThree: userThreeAvatar },
+        })
+      : await HttpRequests.trisalRequest(userOneAvatar, userTwoAvatar, userThreeAvatar);
+
+    if (res.err) {
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'common:http-error'),
+        ephemeral: true,
+      });
+      return;
+    }
+
+    const attachment = new MessageAttachment(res.data, 'trisal.png');
+
+    const embed = new MessageEmbed()
+      .setDescription(`${ctx.author.toString()}, ${marryTwo.toString()}, ${marryThree.toString()}`)
+      .setTitle(ctx.locale('commands:trisal.title'))
+      .setColor(ctx.data.user.selectedColor)
+      .setImage('attachment://trisal.png');
+
+    const untrisalButton = new MessageButton()
+      .setCustomId(`${ctx.interaction.id} | UNTRISAL`)
+      .setLabel(ctx.locale('commands:trisal.untrisal.breakup'))
+      .setStyle('DANGER');
+
+    await ctx.makeMessage({
+      embeds: [embed],
+      files: [attachment],
+      components: [actionRow([untrisalButton])],
+    });
+
+    const filter = (int: MessageComponentInteraction) =>
+      int.customId.startsWith(ctx.interaction.id) &&
+      [ctx.author.id, ...ctx.data.user.trisal].includes(int.user.id);
+
+    const didBreakup = await Util.collectComponentInteractionWithCustomFilter(
+      ctx.channel,
+      filter,
+      15000,
+    );
+
+    if (!didBreakup) {
+      ctx.makeMessage({
+        components: [actionRow(disableComponents(ctx.locale('common:timesup'), [untrisalButton]))],
+      });
+      return;
+    }
+
+    const sureButton = new MessageButton()
+      .setStyle('DANGER')
+      .setCustomId(ctx.interaction.id)
+      .setLabel(ctx.locale('commands:trisal.untrisal.breakup'));
+
+    await ctx.makeMessage({
+      content: ctx.prettyResponse('question', 'commands:trisal.untrisal.sure'),
+      components: [actionRow([sureButton])],
+    });
+
+    const confirmed = await Util.collectComponentInteractionWithStartingId(
+      ctx.channel,
+      ctx.author.id,
+      ctx.interaction.id,
+      15000,
+    );
+
+    if (!confirmed) {
+      ctx.makeMessage({
+        components: [actionRow(disableComponents(ctx.locale('common:timesup'), [sureButton]))],
+      });
+      return;
+    }
+
+    ctx.makeMessage({
+      content: ctx.prettyResponse('success', 'commands:trisal.untrisal.done'),
+      components: [],
+    });
+
+    await ctx.client.repositories.relationshipRepository.untrisal(
+      ctx.author.id,
+      ctx.data.user.trisal[0],
+      ctx.data.user.trisal[1],
+    );
+  }
+
   async run(ctx: InteractionCommandContext): Promise<void> {
-    const authorData = ctx.data.user;
-    if (authorData.trisal?.length === 0 && !ctx.options.getUser('user')) {
+    if (ctx.data.user.trisal.length === 0 && !ctx.options.getUser('user')) {
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:trisal.no-args'),
+        ephemeral: true,
+      });
+      return;
+    }
+
+    if (ctx.data.user.trisal.length > 0) return TrisalCommand.displayTrisal(ctx);
+
+    const firstUser = ctx.options.getUser('user');
+    const secondUser = ctx.options.getUser('user_dois');
+
+    if (!firstUser || !secondUser) {
       await ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:trisal.no-args'),
         ephemeral: true,
@@ -46,71 +166,23 @@ export default class TrisalCommand extends InteractionCommand {
       return;
     }
 
-    if (authorData.trisal?.length > 0) {
-      const marryTwo = await ctx.client.users.fetch(authorData.trisal[0]).catch(debugError);
-      const marryThree = await ctx.client.users.fetch(authorData.trisal[1]).catch(debugError);
-
-      if (!marryTwo || !marryThree) {
-        await ctx.makeMessage({
-          content: ctx.prettyResponse('error', 'commands:trisal.marry-not-found'),
-          ephemeral: true,
-        });
-        return;
-      }
-
-      const userOneAvatar = ctx.author.displayAvatarURL({
-        dynamic: false,
-        size: 256,
-        format: 'png',
-      });
-      const userTwoAvatar = marryTwo.displayAvatarURL({ dynamic: false, size: 256, format: 'png' });
-      const userThreeAvatar = marryThree.displayAvatarURL({
-        dynamic: false,
-        size: 256,
-        format: 'png',
-      });
-
-      const res = await HttpRequests.trisalRequest(userOneAvatar, userTwoAvatar, userThreeAvatar);
-      if (res.err) {
-        await ctx.makeMessage({
-          content: ctx.prettyResponse('error', 'common:http-error'),
-          ephemeral: true,
-        });
-        return;
-      }
-
-      const attachment = new MessageAttachment(res.data, 'trisal.png');
-
-      const embed = new MessageEmbed()
-        .setDescription(
-          `${ctx.author.toString()}, ${marryTwo.toString()}, ${marryThree.toString()}`,
-        )
-        .setTitle(ctx.locale('commands:trisal.title'))
-        .setColor(ctx.data.user.selectedColor)
-        .setImage('attachment://trisal.png');
-
-      await ctx.makeMessage({ embeds: [embed], files: [attachment] });
-      return;
-    }
-
-    const mencionado1 = ctx.options.getUser('user');
-    const mencionado2 = ctx.options.getUser('user_dois');
-
-    if (!mencionado1 || !mencionado2) {
+    if (firstUser.bot || secondUser.bot) {
       await ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'commands:trisal.no-args'),
+        content: ctx.prettyResponse('error', 'commands:trisal.bot-mention'),
         ephemeral: true,
       });
       return;
     }
-    if (mencionado1.id === ctx.author.id || mencionado2.id === ctx.author.id) {
+
+    if (firstUser.id === ctx.author.id || secondUser.id === ctx.author.id) {
       await ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:trisal.self-mention'),
         ephemeral: true,
       });
       return;
     }
-    if (mencionado1.id === mencionado2.id) {
+
+    if (firstUser.id === secondUser.id) {
       await ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:trisal.same-mention'),
         ephemeral: true,
@@ -118,11 +190,12 @@ export default class TrisalCommand extends InteractionCommand {
       return;
     }
 
-    const user1 = authorData;
-    const user2 = await ctx.client.repositories.userRepository.find(mencionado1.id);
-    const user3 = await ctx.client.repositories.userRepository.find(mencionado2.id);
+    const [firstUserData, secondUserData] = await Promise.all([
+      ctx.client.repositories.userRepository.find(firstUser.id, ['ban', 'trisal']),
+      ctx.client.repositories.userRepository.find(secondUser.id, ['ban', 'trisal']),
+    ]);
 
-    if (!user1 || !user2 || !user3) {
+    if (!firstUserData || !secondUserData) {
       await ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:trisal.no-db'),
         ephemeral: true,
@@ -130,7 +203,7 @@ export default class TrisalCommand extends InteractionCommand {
       return;
     }
 
-    if (user1.ban === true || user2.ban === true || user3.ban === true) {
+    if (firstUserData.ban || secondUserData.ban) {
       await ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:trisal.banned-user'),
         ephemeral: true,
@@ -138,7 +211,7 @@ export default class TrisalCommand extends InteractionCommand {
       return;
     }
 
-    if (user2.trisal?.length > 0 || user3.trisal?.length > 0) {
+    if (firstUserData.trisal.length > 0 || secondUserData.trisal.length > 0) {
       await ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:trisal.comedor-de-casadas'),
         ephemeral: true,
@@ -146,19 +219,21 @@ export default class TrisalCommand extends InteractionCommand {
       return;
     }
 
-    const ConfirmButton = new MessageButton()
+    const confirmButton = new MessageButton()
       .setCustomId(ctx.interaction.id)
       .setLabel(ctx.locale('common:accept'))
       .setStyle('SUCCESS');
 
-    await ctx.makeMessage({
-      content: `${ctx.locale(
-        'commands:trisal.accept-message',
-      )} ${ctx.author.toString()}, ${mencionado1.toString()}, ${mencionado2.toString()}`,
-      components: [{ type: 'ACTION_ROW', components: [ConfirmButton] }],
+    ctx.makeMessage({
+      content: ctx.locale('commands:trisal.accept-message', {
+        author: ctx.author.toString(),
+        first: firstUser.toString(),
+        second: secondUser.toString(),
+      }),
+      components: [actionRow([confirmButton])],
     });
 
-    const acceptableIds = [ctx.author.id, mencionado1.id, mencionado2.id];
+    const acceptableIds = [ctx.author.id, firstUser.id, secondUser.id];
 
     const filter = (int: MessageComponentInteraction) =>
       acceptableIds.includes(int.user.id) && int.customId === ctx.interaction.id;
@@ -172,19 +247,21 @@ export default class TrisalCommand extends InteractionCommand {
 
     collector.on('collect', async (int) => {
       if (!acceptedIds.includes(int.user.id)) acceptedIds.push(int.user.id);
-      int.deferUpdate().catch(() => null);
+      int.deferUpdate().catch(debugError);
 
       if (acceptedIds.length === 3) {
-        await ctx.makeMessage({
+        ctx.makeMessage({
           content: ctx.prettyResponse('success', 'commands:trisal.done'),
           components: [
-            {
-              type: 'ACTION_ROW',
-              components: [ConfirmButton.setDisabled(true).setEmoji(emojis.ring)],
-            },
+            actionRow([confirmButton.setDisabled(true).setEmoji(emojis.ring).setLabel('')]),
           ],
         });
-        await ctx.client.repositories.relationshipRepository.trisal(user1.id, user2.id, user3.id);
+
+        await ctx.client.repositories.relationshipRepository.trisal(
+          ctx.author.id,
+          firstUser.id,
+          secondUser.id,
+        );
       }
     });
 
@@ -192,16 +269,7 @@ export default class TrisalCommand extends InteractionCommand {
       if (acceptedIds.length !== 3)
         ctx.makeMessage({
           content: ctx.prettyResponse('error', 'commands:trisal.error'),
-          components: [
-            {
-              type: 'ACTION_ROW',
-              components: [
-                ConfirmButton.setDisabled(true)
-                  .setLabel(ctx.locale('common:timesup'))
-                  .setStyle('SECONDARY'),
-              ],
-            },
-          ],
+          components: [actionRow(disableComponents(ctx.locale('common:timesup'), [confirmButton]))],
         });
     });
   }
