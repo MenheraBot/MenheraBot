@@ -908,5 +908,13 @@
       "extended": "Shards Info",
       "ping": "Response Time: **{{api}}ms**\nWebsocket Latency: **{{ws}}ms**\nShard: **{{shard}}/{{totalShard}}**\nCluster: **{{cluster}}/{{totalCluster}}**"
     }
+  },
+  "fluffety": {
+    "adopt": {
+      "title": "Adopt a Fluffety",
+      "description": "Fluffetys are adorable creatures that need affection and friends to be happy. Don't leave them alone, they are very sensitive to loneliness, so they should always be with someone.\n\nWhen you have a Fluffety, you You must be responsible for constantly caring for him. There is no worse torture for a Flufetty than loneliness, and so if you abandon him, or don't pay enough attention, he can get sick, and even die.",
+      "types-title": "Types Of Fluffety",
+      "types-description": "There are 3 different types of Fluffetys, the **Hamsin**, **Pingus** and **Chikys**\nChoose below which type of fluffety you want to adopt"
+    }
   }
 }

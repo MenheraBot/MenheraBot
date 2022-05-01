@@ -105,6 +105,7 @@ export const emojis = {
   lock: '🔒',
   list: '📜',
   estrelinhas: '⭐',
+  lhama: '🦙',
   // EMOJIS DE BADHES
   badge_1: '<:badge_1:960660998002462730>',
   badge_2: '<:badge_2:960660997914394654>',

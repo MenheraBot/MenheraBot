@@ -1,5 +1,7 @@
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
+import { COLORS } from '@structures/Constants';
+import { MessageEmbed } from 'discord.js-light';
 
 export default class FluffetyCommand extends InteractionCommand {
   constructor() {
@@ -29,6 +31,33 @@ export default class FluffetyCommand extends InteractionCommand {
   }
 
   static async adoptFlufetty(ctx: InteractionCommandContext): Promise<void> {
-    console.log(ctx);
+    const embed = new MessageEmbed()
+      .setTitle(ctx.prettyResponse('lhama', 'commands:fluffety.adopt.title'))
+      .setDescription(ctx.locale('commands:fluffety.adopt.description'))
+      .addField(
+        ctx.locale('commands:fluffety.adopt.types-title'),
+        ctx.locale('commands:fluffety.adopt.types-description'),
+      )
+      .addFields(
+        {
+          name: ctx.locale('data:fluffety.hamsin.name'),
+          value: ctx.locale('data:fluffety.hamsin.description'),
+          inline: true,
+        },
+        {
+          name: ctx.locale('data:fluffety.pingus.name'),
+          value: ctx.locale('data:fluffety.pingus.description'),
+          inline: true,
+        },
+        {
+          name: ctx.locale('data:fluffety.chikys.name'),
+          value: ctx.locale('data:fluffety.chikys.description'),
+          inline: true,
+        },
+      )
+      .setImage('https://i.imgur.com/HelM8YT.png')
+      .setColor(COLORS.UltraPink);
+
+    ctx.makeMessage({ embeds: [embed] });
   }
 }

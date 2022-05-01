@@ -142,5 +142,19 @@
       "name": "Timeless Departure",
       "description": "Rules? Which are?"
     }
+  },
+  "fluffety": {
+    "hamsin": {
+      "name": "Hamsin",
+      "description": "A tiny rodent, their soul is that of a hamster. They are small and love to eat. Their favorite food is nuts, they certainly couldn't go more than a week without eating them."
+    },
+    "pingus": {
+      "name": "Pingus",
+      "description": "Cold and fluffy, the penguins have the soul of a penguin. All they want is a cool little house to rest in peace eating their danoninho popsicle."
+    },
+    "chikys": {
+      "name": "Chikys",
+      "description": "With their bodies filled with feathers, chikys love to roam around large green fields. They may look small, but don't doubt their energy."
+    }
   }
 }
