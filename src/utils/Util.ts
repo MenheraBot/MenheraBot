@@ -21,10 +21,6 @@ import ImageThemes from '@data/ImageThemes';
 import i18next from 'i18next';
 
 export default class Util {
-  static capitalize(str: string): string {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  }
-
   static async collectComponentInteractionWithCustomFilter<T extends MessageComponentInteraction>(
     channel: TextBasedChannel,
     filter: CollectorFilter<[T]>,

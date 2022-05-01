@@ -17,7 +17,7 @@ import {
   getUserHuntCooldown,
   getUserHuntProbability,
 } from '@utils/HuntUtils';
-import Util, { getMagicItemById } from '@utils/Util';
+import { capitalize, getMagicItemById } from '@utils/Util';
 
 type ChoiceTypes = HuntingTypes | 'probabilities';
 const choices: { name: string; value: ChoiceTypes }[] = [
@@ -257,7 +257,7 @@ export default class HuntCommand extends InteractionCommand {
           count: toRun,
         }),
       );
-    embed.setColor(COLORS[`Hunt${Util.capitalize(selected) as 'Default'}`]);
+    embed.setColor(COLORS[`Hunt${capitalize(selected) as 'Default'}`]);
 
     const APIHuntTypes = {
       demons: 'demon',

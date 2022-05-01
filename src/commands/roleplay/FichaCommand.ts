@@ -11,7 +11,13 @@ import {
   SelectMenuInteraction,
   User,
 } from 'discord.js-light';
-import Util, { actionRow, disableComponents, makeCustomId, resolveCustomId } from '@utils/Util';
+import Util, {
+  actionRow,
+  capitalize,
+  disableComponents,
+  makeCustomId,
+  resolveCustomId,
+} from '@utils/Util';
 import {
   getAbilityById,
   getClassById,
@@ -546,7 +552,7 @@ export default class FichaCommand extends InteractionCommand {
     const databaseField =
       resolveCustomId(statusSelected.customId).toLowerCase() === 'mana' ||
       resolveCustomId(statusSelected.customId).toLowerCase() === 'life'
-        ? (`max${Util.capitalize(resolveCustomId(statusSelected.customId).toLowerCase())}` as
+        ? (`max${capitalize(resolveCustomId(statusSelected.customId).toLowerCase())}` as
             | 'maxMana'
             | 'maxLife')
         : (resolveCustomId(statusSelected.customId).toLowerCase() as

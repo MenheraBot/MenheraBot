@@ -24,7 +24,13 @@ import PlayerVsPlayer from '@roleplay/structures/PlayerVsPlayer';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { COLORS } from '@structures/Constants';
-import Util, { actionRow, disableComponents, makeCustomId, resolveCustomId } from '@utils/Util';
+import Util, {
+  actionRow,
+  capitalize,
+  disableComponents,
+  makeCustomId,
+  resolveCustomId,
+} from '@utils/Util';
 import {
   MessageActionRow,
   MessageButton,
@@ -401,7 +407,7 @@ export default class ArenaCommand extends InteractionCommand {
     const databaseField =
       resolveCustomId(statusSelected.customId).toLowerCase() === 'mana' ||
       resolveCustomId(statusSelected.customId).toLowerCase() === 'life'
-        ? (`max${Util.capitalize(resolveCustomId(statusSelected.customId).toLowerCase())}` as
+        ? (`max${capitalize(resolveCustomId(statusSelected.customId).toLowerCase())}` as
             | 'maxMana'
             | 'maxLife')
         : (resolveCustomId(statusSelected.customId).toLowerCase() as

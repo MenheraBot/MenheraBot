@@ -3,7 +3,7 @@ import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageEmbed, ColorResolvable, LimitedCollection, User } from 'discord.js-light';
 import HttpRequests from '@utils/HTTPrequests';
-import Util, { capitalize, debugError } from '@utils/Util';
+import { capitalize, debugError } from '@utils/Util';
 import { COLORS, emojis } from '@structures/Constants';
 import { CoinflipTop, HuntTypes, IUserSchema } from '@custom_types/Menhera';
 
@@ -371,7 +371,7 @@ export default class TopCommand extends InteractionCommand {
       const baseField = (gameMode === 'blackjack' ? 'bj' : 'cf') as 'cf';
 
       embed.addField(
-        `**${skip + i + 1} -** ${Util.capitalize(member?.username ?? '404')}`,
+        `**${skip + i + 1} -** ${capitalize(member?.username ?? '404')}`,
         ctx.locale('commands:top.estatisticas.apostas.description.text', {
           earnMoney: userData[`${baseField}_win_money`].toLocaleString(ctx.interaction.locale),
           lostMoney: userData[`${baseField}_lose_money`].toLocaleString(ctx.interaction.locale),
@@ -443,7 +443,7 @@ export default class TopCommand extends InteractionCommand {
       const userData = result[i];
 
       embed.addField(
-        `**${skip + i + 1} -** ${Util.capitalize(member?.username ?? '404')}`,
+        `**${skip + i + 1} -** ${capitalize(member?.username ?? '404')}`,
         ctx.locale('commands:top.estatisticas.apostas.description.text', {
           earnMoney: userData.earn_money.toLocaleString(ctx.interaction.locale),
           lostMoney: userData.lost_money.toLocaleString(ctx.interaction.locale),
@@ -511,7 +511,7 @@ export default class TopCommand extends InteractionCommand {
       const userData = result[i];
 
       embed.addField(
-        `**${skip + i + 1} -** ${Util.capitalize(member?.username ?? '404')}`,
+        `**${skip + i + 1} -** ${capitalize(member?.username ?? '404')}`,
         ctx.locale('commands:top.estatisticas.cacar.description.text', {
           hunted: userData[`${huntType}_hunted`],
           success: userData[`${huntType}_success`],
@@ -538,7 +538,7 @@ export default class TopCommand extends InteractionCommand {
 
     for (let i = 0; i < res.length; i++) {
       embed.addField(
-        `**${i + 1} -** ${Util.capitalize(res[i].name)} `,
+        `**${i + 1} -** ${capitalize(res[i].name)} `,
         `${ctx.locale('commands:top.used')} **${res[i].usages}** ${ctx.locale(
           'commands:top.times',
         )}`,
@@ -609,7 +609,7 @@ export default class TopCommand extends InteractionCommand {
       }
 
       embed.addField(
-        `**${i + 1} -** ${Util.capitalize(member?.username ?? '404')} `,
+        `**${i + 1} -** ${capitalize(member?.username ?? '404')} `,
         `${ctx.locale('commands:top.use')} **${res[i].uses}** ${ctx.locale('commands:top.times')}`,
         false,
       );
@@ -643,7 +643,7 @@ export default class TopCommand extends InteractionCommand {
     for (let i = 0; i < res.array.length; i++) {
       if (i > 10) break;
       embed.addField(
-        `**${i + 1} -** ${Util.capitalize(res.array[i].name)} `,
+        `**${i + 1} -** ${capitalize(res.array[i].name)} `,
         `${ctx.locale('commands:top.use')} **${res.array[i].count}** ${ctx.locale(
           'commands:top.times',
         )}`,

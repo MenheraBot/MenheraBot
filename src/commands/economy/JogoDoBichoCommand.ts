@@ -1,7 +1,7 @@
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { BICHO_BET_MULTIPLIER, JOGO_DO_BICHO } from '@structures/Constants';
-import Util, { actionRow, disableComponents, resolveCustomId } from '@utils/Util';
+import Util, { actionRow, capitalize, disableComponents, resolveCustomId } from '@utils/Util';
 import {
   MessageActionRow,
   MessageEmbed,
@@ -176,7 +176,7 @@ export default class JogoDoBichoCommand extends InteractionCommand {
 
         for (let i = 0; i < 25; i++)
           selectMenu.addOptions({
-            label: `${Util.capitalize(JOGO_DO_BICHO[i])}`,
+            label: `${capitalize(JOGO_DO_BICHO[i])}`,
             value: `${JOGO_DO_BICHO[i]}`,
           });
         componentsToSend.push(actionRow([selectMenu]));
@@ -263,7 +263,7 @@ export default class JogoDoBichoCommand extends InteractionCommand {
 
           for (let i = 0; i < 25; i++)
             newSelectMenu.addOptions({
-              label: `${Util.capitalize(JOGO_DO_BICHO[i])}`,
+              label: `${capitalize(JOGO_DO_BICHO[i])}`,
               value: `${int.values[0]} | ${JOGO_DO_BICHO[i]}`,
             });
 
@@ -289,7 +289,7 @@ export default class JogoDoBichoCommand extends InteractionCommand {
 
           for (let i = 0; i < 25; i++)
             newSelectMenu.addOptions({
-              label: `${Util.capitalize(JOGO_DO_BICHO[i])}`,
+              label: `${capitalize(JOGO_DO_BICHO[i])}`,
               value: `${int.values[0]} | ${JOGO_DO_BICHO[i]}`,
             });
 

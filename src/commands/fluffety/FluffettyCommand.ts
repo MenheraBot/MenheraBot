@@ -1,7 +1,7 @@
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { COLORS, emojis } from '@structures/Constants';
-import Util, { actionRow } from '@utils/Util';
+import { actionRow } from '@utils/Util';
 import { MessageEmbed, MessageSelectMenu } from 'discord.js-light';
 
 export default class FluffetyCommand extends InteractionCommand {
@@ -83,7 +83,5 @@ export default class FluffetyCommand extends InteractionCommand {
       );
 
     ctx.makeMessage({ embeds: [embed], components: [actionRow([selectMenu])] });
-
-    const selected = await Util.c;
   }
 }
