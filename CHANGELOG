@@ -53,6 +53,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ### Fixed
 
+- Corrigido um bug do Coinflip onde era possível apostar contra usuários que estavam utilizando outro comando de economia
 - CORRIGIDO FINALMENTE! O Blackjack não interpreta mais os A's de naipes diferentes de Espada como uma carta de valor 10
 - Árvore de Habilidades do Assassino estava com uma ordem errada
 - Opção de abençõar status com pontos maior que 15, bloqueando o usuário de usar mais bênçãos

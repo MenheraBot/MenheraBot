@@ -1,7 +1,8 @@
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { COLORS } from '@structures/Constants';
-import { MessageEmbed } from 'discord.js-light';
+import { COLORS, emojis } from '@structures/Constants';
+import Util, { actionRow } from '@utils/Util';
+import { MessageEmbed, MessageSelectMenu } from 'discord.js-light';
 
 export default class FluffetyCommand extends InteractionCommand {
   constructor() {
@@ -58,6 +59,31 @@ export default class FluffetyCommand extends InteractionCommand {
       .setImage('https://i.imgur.com/HelM8YT.png')
       .setColor(COLORS.UltraPink);
 
-    ctx.makeMessage({ embeds: [embed] });
+    const selectMenu = new MessageSelectMenu()
+      .setCustomId(`${ctx.interaction.id} | SELECT`)
+      .setPlaceholder(ctx.locale('commands:fluffety.adopt.select'))
+      .setMinValues(1)
+      .setMaxValues(1)
+      .setOptions(
+        {
+          label: ctx.locale('data:fluffety.hamsin.name'),
+          value: 'hamsin',
+          emoji: emojis.hamsin,
+        },
+        {
+          label: ctx.locale('data:fluffety.pingus.name'),
+          value: 'pingus',
+          emoji: emojis.pingus,
+        },
+        {
+          label: ctx.locale('data:fluffety.chikys.name'),
+          value: 'chikys',
+          emoji: emojis.chikys,
+        },
+      );
+
+    ctx.makeMessage({ embeds: [embed], components: [actionRow([selectMenu])] });
+
+    const selected = await Util.c;
   }
 }

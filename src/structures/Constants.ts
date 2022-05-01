@@ -106,6 +106,10 @@ export const emojis = {
   list: '📜',
   estrelinhas: '⭐',
   lhama: '🦙',
+  // EMOJIS DE FLUFFETYS
+  pingus: '<:pingus:970443928241340466>',
+  hamsin: '<:hamsin:970443928467828837>',
+  chikys: '<:chikys:970443927402475550>',
   // EMOJIS DE BADHES
   badge_1: '<:badge_1:960660998002462730>',
   badge_2: '<:badge_2:960660997914394654>',

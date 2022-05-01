@@ -69,12 +69,13 @@ export default class ConfigCommand extends InteractionCommand {
       components: [{ type: 'ACTION_ROW', components: [selector] }],
     });
 
-    const collectInteracion = await Util.collectComponentInteractionWithId<SelectMenuInteraction>(
-      ctx.channel,
-      ctx.author.id,
-      ctx.interaction.id,
-      10000,
-    ).catch(() => null);
+    const collectInteracion =
+      await Util.collectComponentInteractionWithStartingId<SelectMenuInteraction>(
+        ctx.channel,
+        ctx.author.id,
+        ctx.interaction.id,
+        10000,
+      ).catch(() => null);
 
     if (!collectInteracion) {
       ctx.makeMessage({

@@ -167,18 +167,15 @@
   },
   "coinflip": {
     "bet": "Apostar",
-    "timeout": "Tempo Esgotado",
-    "invalid-value": "este valor não é válido",
     "bot": "bots não podem apostar e.e",
     "self-mention": "você não pode apostar contra si mesmo",
     "no-dbuser": "este usuário não possui uma conta no Menhera's Bank!",
     "poor": "{{user}} não possui todas essas estrelinhas para apostar!",
     "confirm": "{{author}} te desafiou para uma aposta de Cara ou Coroa valendo **{{value}}** :star:. Caso caia Cara, {{author}} vence, caso caia coroa, {{mention}} vence.\nVocê aceita? Tens **7** Segundos",
-    "cara": "**CARA**",
-    "coroa": "**COROA**",
+    "cara": "CARA",
+    "coroa": "COROA",
     "banned-user": "Este usuário não pode apostar pois está banido da Menhera!",
-    "cara-texto": "{{author}} ganhou {{value}} :star: apostando com {{mention}}. Sinto muito {{mention}}, nem sempre saimos vitoriosos.",
-    "coroa-texto": "{{mention}} ganhou a aposta valendo {{value}} :star: contra {{author}}"
+    "text": ":coin: | **{{choice}}**\n\n{{winner}} ganhou a aposta valendo **{{value}}** :star: contra {{loser}}"
   },
   "presentear": {
     "confirm": "Seguinte {{user}}, {{author}} quer te enviar **{{count}}** {{emoji}}, você aceita?",
@@ -924,7 +921,8 @@
       "title": "Adote um Fluffety",
       "description": "Fluffetys são criaturas adoráveis, que precisam de carinho e amigos para serem felizes. Não os deixe sozinhos, eles são muito sensíveis à solidão, por isso, sempre devem estar com alguém.\n\nAo ter um Fluffety, tu deve se responsabilizar por cuidar constantemente dele. Não existe tortura pior para um Flufetty do que a solidão, e por isso, caso você o abandone, ou não dê atenção o suficiente, ele pode ficar doente, e até mesmo morrer",
       "types-title": "Tipos De Fluffety",
-      "types-description": "Existem 3 tipos diferentes de Fluffetys, os **Hamsin**, **Pingus** e **Chikys**\nEscolha abaixo qual tipo de fluffety tu quer adotar"
+      "types-description": "Existem 3 tipos diferentes de Fluffetys, os **Hamsin**, **Pingus** e **Chikys**\nEscolha abaixo qual tipo de fluffety tu quer adotar",
+      "select": "Selecione seu flufetty"
     }
   }
 }

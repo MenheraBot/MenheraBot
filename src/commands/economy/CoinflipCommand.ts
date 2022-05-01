@@ -2,7 +2,7 @@ import { MessageButton } from 'discord.js-light';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import HttpRequests from '@utils/HTTPrequests';
-import Util from '@utils/Util';
+import Util, { actionRow, disableComponents, RandomFromArray } from '@utils/Util';
 
 export default class CoinflipCommand extends InteractionCommand {
   constructor() {
@@ -35,14 +35,6 @@ export default class CoinflipCommand extends InteractionCommand {
     const user = ctx.options.getUser('user', true);
     const input = ctx.options.getInteger('aposta', true);
 
-    if (!input) {
-      await ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'commands:coinflip.invalid-value'),
-        ephemeral: true,
-      });
-      return;
-    }
-
     if (user.bot) {
       await ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:coinflip.bot'),
@@ -50,6 +42,7 @@ export default class CoinflipCommand extends InteractionCommand {
       });
       return;
     }
+
     if (user.id === author.id) {
       await ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:coinflip.self-mention'),
@@ -58,41 +51,7 @@ export default class CoinflipCommand extends InteractionCommand {
       return;
     }
 
-    if (ctx.client.economyUsages.has(user.id)) {
-      ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'common:economy_usage'),
-        ephemeral: true,
-      });
-    }
-
-    if (input < 1) {
-      await ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'commands:coinflip.invalid-value'),
-        ephemeral: true,
-      });
-      return;
-    }
-
-    const db1 = ctx.data.user;
-    const db2 = await ctx.client.repositories.userRepository.find(user.id);
-
-    if (!db1 || !db2) {
-      await ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'commands:coinflip.no-dbuser'),
-        ephemeral: true,
-      });
-      return;
-    }
-
-    if (db2.ban === true) {
-      await ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'commands:coinflip.banned-user'),
-        ephemeral: true,
-      });
-      return;
-    }
-
-    if (input > db1.estrelinhas) {
+    if (input > ctx.data.user.estrelinhas) {
       await ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:coinflip.poor', { user: author.toString() }),
         ephemeral: true,
@@ -100,7 +59,36 @@ export default class CoinflipCommand extends InteractionCommand {
       return;
     }
 
-    if (input > db2.estrelinhas) {
+    if (ctx.client.economyUsages.has(user.id)) {
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'common:economy_usage'),
+        ephemeral: true,
+      });
+      return;
+    }
+
+    const enemyData = await ctx.client.repositories.userRepository.find(user.id, [
+      'ban',
+      'estrelinhas',
+    ]);
+
+    if (!enemyData) {
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:coinflip.no-dbuser'),
+        ephemeral: true,
+      });
+      return;
+    }
+
+    if (enemyData.ban) {
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:coinflip.banned-user'),
+        ephemeral: true,
+      });
+      return;
+    }
+
+    if (input > enemyData.estrelinhas) {
       await ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:coinflip.poor', { user: user.toString() }),
         ephemeral: true,
@@ -110,7 +98,7 @@ export default class CoinflipCommand extends InteractionCommand {
 
     ctx.client.economyUsages.add(user.id);
 
-    const ConfirmButton = new MessageButton()
+    const confirmButton = new MessageButton()
       .setCustomId(ctx.interaction.id)
       .setLabel(ctx.locale('commands:coinflip.bet'))
       .setStyle('SUCCESS');
@@ -121,10 +109,10 @@ export default class CoinflipCommand extends InteractionCommand {
         author: ctx.author.toString(),
         mention: user.toString(),
       }),
-      components: [{ type: 1, components: [ConfirmButton] }],
+      components: [actionRow([confirmButton])],
     });
 
-    const coletor = await Util.collectComponentInteractionWithId(
+    const coletor = await Util.collectComponentInteractionWithStartingId(
       ctx.channel,
       user.id,
       ctx.interaction.id,
@@ -135,55 +123,28 @@ export default class CoinflipCommand extends InteractionCommand {
 
     if (!coletor) {
       ctx.makeMessage({
-        components: [
-          {
-            type: 1,
-            components: [
-              ConfirmButton.setDisabled(true)
-                .setLabel(ctx.locale('commands:coinflip.timeout'))
-                .setEmoji('⌛'),
-            ],
-          },
-        ],
+        components: [actionRow(disableComponents(ctx.locale('common:timesup'), [confirmButton]))],
       });
       return;
     }
 
-    const shirleyTeresinha = ['Cara', 'Coroa'];
-    const choice = shirleyTeresinha[Math.floor(Math.random() * shirleyTeresinha.length)];
+    const options = ['cara', 'coroa'];
+    const choice = RandomFromArray(options);
 
-    let winner = author.id;
-    let loser = user.id;
+    const winner = choice === 'cara' ? author : user;
+    const loser = choice === 'coroa' ? author : user;
 
-    if (choice === 'Cara') {
-      await ctx.makeMessage({
-        content: `${ctx.locale('commands:coinflip.cara')}\n${ctx.locale(
-          'commands:coinflip.cara-texto',
-          {
-            value: input,
-            author: author.toString(),
-            mention: user.toString(),
-          },
-        )}`,
-        components: [],
-      });
-    } else {
-      winner = user.id;
-      loser = author.id;
-      await ctx.makeMessage({
-        content: `${ctx.locale('commands:coinflip.coroa')}\n${ctx.locale(
-          'commands:coinflip.coroa-texto',
-          {
-            value: input,
-            author: author.toString(),
-            mention: user.toString(),
-          },
-        )}`,
-        components: [],
-      });
-    }
+    await ctx.makeMessage({
+      content: ctx.locale('commands:coinflip.text', {
+        choice: ctx.locale(`commands:coinflip.${choice as 'cara'}`),
+        value: input,
+        winner: winner.toString(),
+        loser: loser.toString(),
+      }),
+      components: [],
+    });
 
-    await ctx.client.repositories.coinflipRepository.coinflip(winner, loser, input);
-    await HttpRequests.postCoinflipGame(winner, loser, input, Date.now());
+    await ctx.client.repositories.coinflipRepository.coinflip(winner.id, loser.id, input);
+    await HttpRequests.postCoinflipGame(winner.id, loser.id, input, Date.now());
   }
 }

@@ -161,18 +161,15 @@
   },
   "coinflip": {
     "bet": "Bet",
-    "timeout": "Time Out",
-    "invalid-value": "this value is not valid",
     "bot": "bots cannot bet e.e",
     "self-mention": "you cannot bet against yourself",
     "no-dbuser": "this user does not have a Menhera's Bank account!",
     "poor": "{{user}} don't have all these stars to bet on!",
     "confirm": "{{author}} challenged you to a heads-up bet worth **{{value}}** ⭐. Heads, {{author}} wins, tails, {{mention}} wins. Do you accept? you got **7** seconds",
-    "cara": "**HEADS**",
+    "cara": "HEADS",
+    "coroa": "TAILS",
     "banned-user": "This user cannot bet because they're banned from Menhera!",
-    "coroa": "**TAILS**",
-    "cara-texto": "{{author}} won {{value}} :star: betting with {{mention}}. I'm sorry {{mention}}, we are not always victorious",
-    "coroa-texto": "{{mention}} won {{value}} :star: betting against {{author}}"
+    "text": ":coin: | **{{choice}}**\n\n{{winner}} won **{{value}}** :star: betting against {{loser}}"
   },
   "presentear": {
     "self-mention": "You cannot mention yourself!",
@@ -914,7 +911,8 @@
       "title": "Adopt a Fluffety",
       "description": "Fluffetys are adorable creatures that need affection and friends to be happy. Don't leave them alone, they are very sensitive to loneliness, so they should always be with someone.\n\nWhen you have a Fluffety, you You must be responsible for constantly caring for him. There is no worse torture for a Flufetty than loneliness, and so if you abandon him, or don't pay enough attention, he can get sick, and even die.",
       "types-title": "Types Of Fluffety",
-      "types-description": "There are 3 different types of Fluffetys, the **Hamsin**, **Pingus** and **Chikys**\nChoose below which type of fluffety you want to adopt"
+      "types-description": "There are 3 different types of Fluffetys, the **Hamsin**, **Pingus** and **Chikys**\nChoose below which type of fluffety you want to adopt",
+      "select": "Select your fluffety"
     }
   }
 }
