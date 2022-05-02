@@ -429,16 +429,6 @@ export interface ShardsDataReturn {
   uptime: number;
   connected: number;
 }
-
-export interface FluffetySchema {
-  readonly id: string;
-  fluffetyName: string;
-  healthyAt: number;
-  foodyAt: number;
-  happyAt: number;
-  willingAt: number;
-}
-
 export interface BlackjackTop {
   id: string;
   bj_wins: number;
@@ -475,3 +465,15 @@ export type BlackjackFinishGameReason =
   | 'blackjack'
   | 'draw'
   | 'biggest';
+
+export type FluffetyRace = 'pingus' | 'chikys' | 'hamsin';
+
+export interface FluffetySchema {
+  readonly ownerId: string;
+  readonly race: FluffetyRace;
+  fluffetyName: string;
+  healthyAt: number;
+  foodyAt: number;
+  happyAt: number;
+  willingAt: number;
+}

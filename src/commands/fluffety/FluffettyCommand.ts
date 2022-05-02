@@ -1,8 +1,9 @@
+import { FluffetyRace } from '@custom_types/Menhera';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { COLORS, emojis } from '@structures/Constants';
-import { actionRow } from '@utils/Util';
-import { MessageEmbed, MessageSelectMenu } from 'discord.js-light';
+import Util, { actionRow, disableComponents } from '@utils/Util';
+import { MessageEmbed, MessageSelectMenu, SelectMenuInteraction } from 'discord.js-light';
 
 export default class FluffetyCommand extends InteractionCommand {
   constructor() {
@@ -83,5 +84,28 @@ export default class FluffetyCommand extends InteractionCommand {
       );
 
     ctx.makeMessage({ embeds: [embed], components: [actionRow([selectMenu])] });
+
+    const selected = await Util.collectComponentInteractionWithStartingId<SelectMenuInteraction>(
+      ctx.channel,
+      ctx.author.id,
+      ctx.interaction.id,
+      15000,
+    );
+
+    if (!selected) {
+      ctx.makeMessage({
+        components: [actionRow(disableComponents(ctx.locale('common:timesup'), [selectMenu]))],
+      });
+      return;
+    }
+
+    const chosenRace = selected.values[0] as FluffetyRace;
+    await ctx.client.repositories.fluffetyRepository.createUserFluffety(ctx.author.id, chosenRace);
+
+    ctx.makeMessage({
+      content: ctx.prettyResponse(chosenRace, 'commands:fluffety.adopt.success', {
+        race: ctx.locale(`data:fluffety.${chosenRace}.name`),
+      }),
+    });
   }
 }
