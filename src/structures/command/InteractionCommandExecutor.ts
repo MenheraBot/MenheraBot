@@ -150,11 +150,21 @@ const InteractionCommandExecutor = async (
 
       if (interaction.deferred) {
         interaction.webhook
-          .send({ content: t('events:error_embed.title'), ephemeral: true })
+          .send({
+            content: t('events:error_embed.title', {
+              cmd: command.config.name,
+            }),
+            ephemeral: true,
+          })
           .catch(debugError);
       } else
         interaction
-          .reply({ content: t('events:error_embed.title'), ephemeral: true })
+          .reply({
+            content: t('events:error_embed.title', {
+              cmd: command.config.name,
+            }),
+            ephemeral: true,
+          })
           .catch(debugError);
 
       if (err instanceof Error && err.stack) {

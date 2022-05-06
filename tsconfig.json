@@ -33,7 +33,8 @@
       "@interfaces/*": ["interfaces/*"],
       "@data/*": ["modules/staticData/*"],
       "@roleplay/*": ["modules/roleplay/*"],
-      "@custom_types/*": ["types/*"]
+      "@custom_types/*": ["types/*"],
+      "@fluffety/*": ["modules/fluffety/*"]
     }
   },
   "include": ["src"]

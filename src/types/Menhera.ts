@@ -475,5 +475,12 @@ export interface FluffetySchema {
   healthyAt: number;
   foodyAt: number;
   happyAt: number;
-  willingAt: number;
+  energyAt: number;
+}
+
+export interface FluffetyStatus {
+  healty: number;
+  foody: number;
+  happy: number;
+  energy: number;
 }
