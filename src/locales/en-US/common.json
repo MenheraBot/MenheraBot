@@ -64,6 +64,13 @@
       "NEUTRAL": "Neutral"
     }
   },
+  "fluffety": {
+    "actions": {
+      "walk": "Walk",
+      "eat": "Eat",
+      "sleep": "Rest"
+    }
+  },
   "not-your-interaction": "This interaction is not for you! Just use components made just for you.",
   "exit-command": "Finish Command",
   "unregistered": "You still haven't reincarnated in the Bulletin World! Register first and try again!",

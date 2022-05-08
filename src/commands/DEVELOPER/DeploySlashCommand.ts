@@ -132,11 +132,8 @@ export default class DeploySlashCommand extends InteractionCommand {
     }
 
     if (ctx.options.getString('option', true) === 'developer') {
-      const permissionSet: string[] = [];
-
       const allCommands = ctx.client.slashCommands.reduce<ApplicationCommandData[]>((p, c) => {
         if (!c.config.devsOnly) return p;
-        permissionSet.push(c.config.name);
         p.push({
           name: c.config.name,
           description: c.config.description,
@@ -168,14 +165,6 @@ export default class DeploySlashCommand extends InteractionCommand {
 
     await ctx.makeMessage({ content: 'Iniciando deploy' });
     const res = await ctx.interaction.guild?.commands.set(allCommands);
-
-    res?.forEach((a) => {
-      if (permissionSet.includes(a.name)) {
-        a.permissions.add({
-          permissions: [{ id: ctx.author.id, permission: true, type: 'USER' }],
-        });
-      }
-    });
 
     ctx.makeMessage({
       content: `No total, ${res?.size} comandos foram adicionados neste servidor!`,

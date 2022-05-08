@@ -3,8 +3,15 @@ import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { emojis } from '@structures/Constants';
 import Util, { actionRow, disableComponents, capitalize } from '@utils/Util';
-import { MessageEmbed, MessageSelectMenu, SelectMenuInteraction, User } from 'discord.js-light';
+import {
+  MessageButton,
+  MessageEmbed,
+  MessageSelectMenu,
+  SelectMenuInteraction,
+  User,
+} from 'discord.js-light';
 import { getFluffetyStats } from '@fluffety/FluffetyUtils';
+import { DISPLAY_FLUFFETY_ORDER as houseOrder } from '@fluffety/Constants';
 
 export default class FluffetyCommand extends InteractionCommand {
   constructor() {
@@ -83,7 +90,58 @@ export default class FluffetyCommand extends InteractionCommand {
         }),
       );
 
-    ctx.makeMessage({ embeds: [embed] });
+    const getCommode = (baseIndex: number, location?: 'next' | 'last') => {
+      if (!location) return houseOrder[baseIndex];
+
+      const arrayLength = houseOrder.length;
+
+      if (location === 'last') return houseOrder[baseIndex === 0 ? arrayLength - 1 : baseIndex - 1];
+
+      return houseOrder[baseIndex === arrayLength - 1 ? 0 : baseIndex + 1];
+    };
+
+    const houseOrderStartIndex = Math.floor(houseOrder.length / 2);
+
+    const startCommode = getCommode(houseOrderStartIndex);
+    const startCommodeNext = getCommode(houseOrderStartIndex, 'next');
+    const startCommondeLast = getCommode(houseOrderStartIndex, 'last');
+
+    const nextButton = new MessageButton()
+      .setCustomId(`${ctx.interaction.id} | NEXT`)
+      .setStyle('SECONDARY')
+      .setLabel(
+        ctx.locale(`data:fluffety.commodes.${startCommodeNext.identifier as 'outside'}.name`),
+      )
+      .setEmoji(startCommodeNext.emoji);
+
+    const mainButton = new MessageButton()
+      .setCustomId(`${ctx.interaction.id} | ${startCommode.identifier.toUpperCase()}`)
+      .setStyle('PRIMARY')
+      .setLabel(ctx.locale(`common:fluffety.actions.${startCommode.action as 'eat'}`))
+      .setEmoji(startCommode.emoji);
+
+    const lastButton = new MessageButton()
+      .setCustomId(`${ctx.interaction.id} | LAST`)
+      .setStyle('SECONDARY')
+      .setLabel(
+        ctx.locale(`data:fluffety.commodes.${startCommondeLast.identifier as 'outside'}.name`),
+      )
+      .setEmoji(startCommondeLast.emoji);
+
+    if (ctx.author.id !== owner.id) mainButton.setDisabled(true);
+
+    const collector = ctx.channel.createMessageComponentCollector({
+      time: 15_000,
+      componentType: 'BUTTON',
+      filter: (int) => int.user.id === ctx.author.id && int.customId.startsWith(ctx.interaction.id),
+    });
+
+    console.log(collector);
+
+    ctx.makeMessage({
+      embeds: [embed],
+      components: [actionRow([lastButton, mainButton, nextButton])],
+    });
   }
 
   static async AdoptFlufetty(ctx: InteractionCommandContext): Promise<void> {

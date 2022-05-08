@@ -144,6 +144,17 @@
     }
   },
   "fluffety": {
+    "commodes": {
+      "bedroom": {
+        "name": "Bedroom"
+      },
+      "outside": {
+        "name": "Outside"
+      },
+      "kitchen": {
+        "name": "Kitchen"
+      }
+    },
     "hamsin": {
       "name": "Hamsin",
       "description": "A tiny rodent, their soul is that of a hamster. They are small and love to eat. Their favorite food is nuts, they certainly couldn't go more than a week without eating them."
