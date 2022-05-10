@@ -1,5 +1,6 @@
 import { FluffetySchema, FluffetyStatus } from '@custom_types/Menhera';
 import {
+  DISPLAY_FLUFFETY_ORDER,
   HOURS_TO_FULL_ENERGY,
   HOURS_TO_FULL_FOOD,
   HOURS_TO_FULL_HAPPY,
@@ -27,4 +28,18 @@ export const getFluffetyStats = (fluffety: FluffetySchema): FluffetyStatus => {
     happy: Math.max(Math.floor(happyPercentage), 0),
     healty: Math.max(Math.floor(healthPercentage), 0),
   };
+};
+
+export const getCommode = (
+  houseOrder: typeof DISPLAY_FLUFFETY_ORDER,
+  baseIndex: number,
+  location?: 'next' | 'last',
+) => {
+  if (!location) return houseOrder[baseIndex];
+
+  const arrayLength = houseOrder.length;
+
+  if (location === 'last') return houseOrder[baseIndex === 0 ? arrayLength - 1 : baseIndex - 1];
+
+  return houseOrder[baseIndex === arrayLength - 1 ? 0 : baseIndex + 1];
 };

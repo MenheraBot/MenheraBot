@@ -2,7 +2,7 @@ import { FluffetyRace, FluffetySchema } from '@custom_types/Menhera';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { emojis } from '@structures/Constants';
-import Util, { actionRow, disableComponents, capitalize } from '@utils/Util';
+import Util, { actionRow, disableComponents, capitalize, resolveCustomId } from '@utils/Util';
 import {
   MessageButton,
   MessageEmbed,
@@ -10,8 +10,9 @@ import {
   SelectMenuInteraction,
   User,
 } from 'discord.js-light';
-import { getFluffetyStats } from '@fluffety/FluffetyUtils';
+import { getCommode, getFluffetyStats } from '@fluffety/FluffetyUtils';
 import { DISPLAY_FLUFFETY_ORDER as houseOrder } from '@fluffety/Constants';
+import { executeBedroom, executeKitchen } from '@fluffety/structures/ExecuteCommodes';
 
 export default class FluffetyCommand extends InteractionCommand {
   constructor() {
@@ -74,15 +75,45 @@ export default class FluffetyCommand extends InteractionCommand {
   ): Promise<void> {
     const percentages = getFluffetyStats(fluffety);
 
+    let mainCommodeIndex = Math.floor(houseOrder.length / 2);
+    let mainCommode = getCommode(houseOrder, mainCommodeIndex);
+    let nextCommode = getCommode(houseOrder, mainCommodeIndex, 'next');
+    let lastCommode = getCommode(houseOrder, mainCommodeIndex, 'last');
+
+    const nextButton = new MessageButton()
+      .setCustomId(`${ctx.interaction.id} | NEXT`)
+      .setStyle('SECONDARY')
+      .setLabel(ctx.locale(`data:fluffety.commodes.${nextCommode.identifier as 'outside'}.name`))
+      .setEmoji(nextCommode.emoji);
+
+    const mainButton = new MessageButton()
+      .setCustomId(`${ctx.interaction.id} | ${mainCommode.identifier.toUpperCase()}`)
+      .setStyle('PRIMARY')
+      .setLabel(ctx.locale(`common:fluffety.actions.${mainCommode.action as 'eat'}`))
+      .setEmoji(mainCommode.emoji);
+
+    const lastButton = new MessageButton()
+      .setCustomId(`${ctx.interaction.id} | LAST`)
+      .setStyle('SECONDARY')
+      .setLabel(ctx.locale(`data:fluffety.commodes.${lastCommode.identifier as 'outside'}.name`))
+      .setEmoji(lastCommode.emoji);
+
     const embed = new MessageEmbed()
-      .setTitle(fluffety.fluffetyName ?? `Um ${capitalize(fluffety.race)} Fofo`)
+      .setTitle(
+        ctx.locale('commands:fluffety.display.title', {
+          name: fluffety.fluffetyName ?? 'Marquinhos',
+          commode: capitalize(
+            ctx.locale(`data:fluffety.commodes.${mainCommode.identifier as 'outside'}.name`),
+          ),
+        }),
+      )
       .setAuthor({
         name: owner.tag,
         iconURL: owner.displayAvatarURL({ size: 512 }),
       })
       .setColor(ctx.data.user.selectedColor)
       .setDescription(
-        ctx.locale('commands:fluffety.description', {
+        ctx.locale('commands:fluffety.display.description', {
           hungry: percentages.foody,
           happy: percentages.happy,
           energy: percentages.energy,
@@ -90,57 +121,93 @@ export default class FluffetyCommand extends InteractionCommand {
         }),
       );
 
-    const getCommode = (baseIndex: number, location?: 'next' | 'last') => {
-      if (!location) return houseOrder[baseIndex];
+    const changeCommodes = (order: 'next' | 'last') => {
+      if (order === 'next') {
+        if (mainCommodeIndex === houseOrder.length - 1) mainCommodeIndex = 0;
+        else mainCommodeIndex += 1;
+      }
 
-      const arrayLength = houseOrder.length;
+      if (order === 'last') {
+        if (mainCommodeIndex === 0) mainCommodeIndex = houseOrder.length - 1;
+        else mainCommodeIndex -= 1;
+      }
 
-      if (location === 'last') return houseOrder[baseIndex === 0 ? arrayLength - 1 : baseIndex - 1];
+      mainCommode = getCommode(houseOrder, mainCommodeIndex);
+      nextCommode = getCommode(houseOrder, mainCommodeIndex, 'next');
+      lastCommode = getCommode(houseOrder, mainCommodeIndex, 'last');
 
-      return houseOrder[baseIndex === arrayLength - 1 ? 0 : baseIndex + 1];
+      mainButton
+        .setCustomId(`${ctx.interaction.id} | ${mainCommode.identifier.toUpperCase()}`)
+        .setLabel(ctx.locale(`common:fluffety.actions.${mainCommode.action as 'eat'}`))
+        .setEmoji(mainCommode.emoji);
+
+      nextButton
+        .setLabel(ctx.locale(`data:fluffety.commodes.${nextCommode.identifier as 'outside'}.name`))
+        .setEmoji(nextCommode.emoji);
+
+      lastButton
+        .setLabel(ctx.locale(`data:fluffety.commodes.${lastCommode.identifier as 'outside'}.name`))
+        .setEmoji(lastCommode.emoji);
+
+      embed.setTitle(
+        ctx.locale('commands:fluffety.display.title', {
+          name: fluffety.fluffetyName ?? 'Marquinhos',
+          commode: capitalize(
+            ctx.locale(`data:fluffety.commodes.${mainCommode.identifier as 'outside'}.name`),
+          ),
+        }),
+      );
+
+      ctx.makeMessage({
+        embeds: [embed],
+        components: [actionRow([lastButton, mainButton, nextButton])],
+      });
     };
-
-    const houseOrderStartIndex = Math.floor(houseOrder.length / 2);
-
-    const startCommode = getCommode(houseOrderStartIndex);
-    const startCommodeNext = getCommode(houseOrderStartIndex, 'next');
-    const startCommondeLast = getCommode(houseOrderStartIndex, 'last');
-
-    const nextButton = new MessageButton()
-      .setCustomId(`${ctx.interaction.id} | NEXT`)
-      .setStyle('SECONDARY')
-      .setLabel(
-        ctx.locale(`data:fluffety.commodes.${startCommodeNext.identifier as 'outside'}.name`),
-      )
-      .setEmoji(startCommodeNext.emoji);
-
-    const mainButton = new MessageButton()
-      .setCustomId(`${ctx.interaction.id} | ${startCommode.identifier.toUpperCase()}`)
-      .setStyle('PRIMARY')
-      .setLabel(ctx.locale(`common:fluffety.actions.${startCommode.action as 'eat'}`))
-      .setEmoji(startCommode.emoji);
-
-    const lastButton = new MessageButton()
-      .setCustomId(`${ctx.interaction.id} | LAST`)
-      .setStyle('SECONDARY')
-      .setLabel(
-        ctx.locale(`data:fluffety.commodes.${startCommondeLast.identifier as 'outside'}.name`),
-      )
-      .setEmoji(startCommondeLast.emoji);
 
     if (ctx.author.id !== owner.id) mainButton.setDisabled(true);
 
     const collector = ctx.channel.createMessageComponentCollector({
-      time: 15_000,
+      idle: 15_000,
       componentType: 'BUTTON',
       filter: (int) => int.user.id === ctx.author.id && int.customId.startsWith(ctx.interaction.id),
     });
 
-    console.log(collector);
-
     ctx.makeMessage({
       embeds: [embed],
       components: [actionRow([lastButton, mainButton, nextButton])],
+    });
+
+    collector.on('end', (_, reason) => {
+      if (reason === 'idle')
+        ctx.makeMessage({
+          components: [
+            actionRow(
+              disableComponents(ctx.locale('common:timesup'), [lastButton, mainButton, nextButton]),
+            ),
+          ],
+        });
+    });
+
+    collector.on('collect', (int) => {
+      switch (resolveCustomId(int.customId)) {
+        case 'NEXT':
+          int.deferUpdate();
+          changeCommodes('next');
+          break;
+        case 'LAST':
+          int.deferUpdate();
+          changeCommodes('last');
+          break;
+        case 'BEDROOM':
+          executeBedroom(ctx);
+          break;
+        case 'KITCHEN':
+          executeKitchen(ctx);
+          break;
+        case 'OUTSIDE':
+          executeKitchen(ctx);
+          break;
+      }
     });
   }
 
