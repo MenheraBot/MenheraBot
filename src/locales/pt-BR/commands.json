@@ -918,6 +918,12 @@
   },
   "fluffety": {
     "unexists": "Este ser humaninho não adotou nenhum Fluffety ainda!",
+    "commodes": {
+      "bedroom": {
+        "start-sleep": "Seu Fluffety está dormindo para restaurar suas energias, boa noite {{name}} ^-^",
+        "fully-energy": "Seu Fluffety não está cansado! Deixe-o aproveitar o dia."
+      }
+    },
     "display": {
       "description": "**Fome:** {{hungry}}%\n**Felicidade:** {{happy}}%\n**Energia:** {{energy}}%\n**Saúde:** {{health}}%",
       "title": "{{commode}} de {{name}}"
