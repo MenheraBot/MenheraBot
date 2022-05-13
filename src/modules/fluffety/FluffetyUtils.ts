@@ -3,6 +3,12 @@ import { DISPLAY_FLUFFETY_ORDER, HOURS_TO_FULL_ENERGY, HOURS_TO_FULL_HAPPY } fro
 
 export const hoursToMilis = (hours: number) => hours * 3600000;
 
+export const getPercentageByTimePassed = (timePassed: number, maxValue: number): number =>
+  Math.min(Math.floor((100 * timePassed) / maxValue), 100);
+
+export const getDateFromPercentage = (percentage: number, timeToFull: number): number =>
+  Math.floor((percentage * timeToFull) / 100);
+
 export const getFluffetyStats = (fluffety: FluffetySchema): FluffetyStatus => {
   const happyPercentage =
     100 - ((Date.now() - fluffety.happyAt) / hoursToMilis(HOURS_TO_FULL_HAPPY)) * 100;

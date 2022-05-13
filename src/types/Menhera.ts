@@ -478,13 +478,13 @@ export type FluffetyRace = 'pingus' | 'chikys' | 'hamsin';
 export interface FluffetyAction {
   identifier: FluffetyActionIdentifier;
   startAt: number;
-  finishAt: MayNotExists<number>;
+  finishAt: number;
 }
 
 export interface FluffetySchema {
   readonly ownerId: string;
   readonly race: FluffetyRace;
-  currentAction?: FluffetyAction;
+  currentAction: FluffetyAction;
   fluffetyName: string;
   /*
   TODO: in the Future

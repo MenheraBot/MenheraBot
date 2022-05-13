@@ -99,7 +99,7 @@ export default class PicassoWebSocket {
         this.retries = 0;
         this.heartbeat();
       })
-      .on('close', this.onClose)
+      .on('close', (code, reason) => this.onClose(code, reason))
       .on('error', (err) => this.onError(err))
       .on('ping', (data) => this.heartbeat(data));
   }

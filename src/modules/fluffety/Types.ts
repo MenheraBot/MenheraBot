@@ -1,6 +1,7 @@
 export const a = 'a';
 
 export enum FluffetyActionIdentifier {
-  Sleeping = 0,
-  Running = 1,
+  Nothing = 0,
+  Sleeping = 1,
+  Running = 2,
 }

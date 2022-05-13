@@ -166,7 +166,7 @@ export default class FluffetyCommand extends InteractionCommand {
         });
     });
 
-    const changeCommodes = async (order: 'next' | 'last') => {
+    const updateCommodes = async (order?: 'next' | 'last') => {
       if (order === 'next') {
         if (mainCommodeIndex === houseOrder.length - 1) mainCommodeIndex = 0;
         else mainCommodeIndex += 1;
@@ -194,14 +194,23 @@ export default class FluffetyCommand extends InteractionCommand {
         .setLabel(ctx.locale(`data:fluffety.commodes.${lastCommode.identifier as 'outside'}.name`))
         .setEmoji(lastCommode.emoji);
 
-      embed.setTitle(
-        ctx.locale('commands:fluffety.display.title', {
-          name: fluffety.fluffetyName ?? 'Marquinhos',
-          commode: capitalize(
-            ctx.locale(`data:fluffety.commodes.${mainCommode.identifier as 'outside'}.name`),
-          ),
-        }),
-      );
+      embed
+        .setTitle(
+          ctx.locale('commands:fluffety.display.title', {
+            name: fluffety.fluffetyName ?? 'Marquinhos',
+            commode: capitalize(
+              ctx.locale(`data:fluffety.commodes.${mainCommode.identifier as 'outside'}.name`),
+            ),
+          }),
+        )
+        .setDescription(
+          ctx.locale('commands:fluffety.display.description', {
+            // hungry: percentages.foody,
+            // health: percentages.healty,
+            happy: percentages.happy,
+            energy: percentages.energy,
+          }),
+        );
 
       const image = await requestPicassoImage(
         PicassoRoutes.Fluffety,
@@ -232,15 +241,17 @@ export default class FluffetyCommand extends InteractionCommand {
       switch (resolveCustomId(int.customId)) {
         case 'NEXT':
           int.deferUpdate();
-          changeCommodes('next');
+          updateCommodes('next');
           break;
         case 'LAST':
           int.deferUpdate();
-          changeCommodes('last');
+          updateCommodes('last');
           break;
         case 'BEDROOM': {
+          int.deferUpdate();
           const didCommandEnd = await executeBedroom(ctx, fluffety, percentages);
           if (didCommandEnd) return collector.stop('finish');
+          updateCommodes();
           break;
         }
         case 'KITCHEN':
