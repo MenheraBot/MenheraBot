@@ -79,92 +79,7 @@ export default class FluffetyCommand extends InteractionCommand {
     fluffety: FluffetySchema,
     owner: User,
   ): Promise<void> {
-    const percentages = getFluffetyStats(fluffety);
-
     let mainCommodeIndex = Math.floor(houseOrder.length / 2);
-    let mainCommode = getCommode(houseOrder, mainCommodeIndex);
-    let nextCommode = getCommode(houseOrder, mainCommodeIndex, 'next');
-    let lastCommode = getCommode(houseOrder, mainCommodeIndex, 'last');
-
-    const nextButton = new MessageButton()
-      .setCustomId(`${ctx.interaction.id} | NEXT`)
-      .setStyle('SECONDARY')
-      .setLabel(ctx.locale(`data:fluffety.commodes.${nextCommode.identifier as 'outside'}.name`))
-      .setEmoji(nextCommode.emoji);
-
-    const mainButton = new MessageButton()
-      .setCustomId(`${ctx.interaction.id} | ${mainCommode.identifier.toUpperCase()}`)
-      .setStyle('PRIMARY')
-      .setLabel(ctx.locale(`common:fluffety.actions.${mainCommode.action as 'eat'}`))
-      .setEmoji(mainCommode.emoji);
-
-    const lastButton = new MessageButton()
-      .setCustomId(`${ctx.interaction.id} | LAST`)
-      .setStyle('SECONDARY')
-      .setLabel(ctx.locale(`data:fluffety.commodes.${lastCommode.identifier as 'outside'}.name`))
-      .setEmoji(lastCommode.emoji);
-
-    const embed = new MessageEmbed()
-      .setTitle(
-        ctx.locale('commands:fluffety.display.title', {
-          name: fluffety.fluffetyName ?? 'Marquinhos',
-          commode: capitalize(
-            ctx.locale(`data:fluffety.commodes.${mainCommode.identifier as 'outside'}.name`),
-          ),
-        }),
-      )
-      .setAuthor({
-        name: owner.tag,
-        iconURL: owner.displayAvatarURL({ size: 512 }),
-      })
-      .setColor(ctx.data.user.selectedColor)
-      .setDescription(
-        ctx.locale('commands:fluffety.display.description', {
-          // hungry: percentages.foody,
-          // health: percentages.healty,
-          happy: percentages.happy,
-          energy: percentages.energy,
-        }),
-      );
-
-    if (ctx.author.id !== owner.id) mainButton.setDisabled(true);
-
-    const collector = ctx.channel.createMessageComponentCollector({
-      idle: 15_000,
-      componentType: 'BUTTON',
-      filter: (int) => int.user.id === ctx.author.id && int.customId.startsWith(ctx.interaction.id),
-    });
-
-    const fluffetyImage = await requestPicassoImage(
-      PicassoRoutes.Fluffety,
-      { commode: mainCommode.identifier, race: fluffety.race },
-      ctx,
-    );
-
-    if (fluffetyImage.err) {
-      embed.setFooter({ text: ctx.locale('common:http-error') });
-      ctx.makeMessage({
-        embeds: [embed],
-        components: [actionRow([lastButton, mainButton, nextButton])],
-      });
-    } else {
-      ctx.makeMessage({
-        embeds: [embed],
-        files: [new MessageAttachment(fluffetyImage.data, 'fluffety.png')],
-        components: [actionRow([lastButton, mainButton, nextButton])],
-      });
-    }
-
-    collector.on('end', (_, reason) => {
-      if (reason === 'idle')
-        ctx.makeMessage({
-          components: [
-            actionRow(
-              disableComponents(ctx.locale('common:timesup'), [lastButton, mainButton, nextButton]),
-            ),
-          ],
-        });
-    });
 
     const updateCommodes = async (order?: 'next' | 'last') => {
       if (order === 'next') {
@@ -177,24 +92,30 @@ export default class FluffetyCommand extends InteractionCommand {
         else mainCommodeIndex -= 1;
       }
 
-      mainCommode = getCommode(houseOrder, mainCommodeIndex);
-      nextCommode = getCommode(houseOrder, mainCommodeIndex, 'next');
-      lastCommode = getCommode(houseOrder, mainCommodeIndex, 'last');
+      const mainCommode = getCommode(houseOrder, mainCommodeIndex);
+      const nextCommode = getCommode(houseOrder, mainCommodeIndex, 'next');
+      const lastCommode = getCommode(houseOrder, mainCommodeIndex, 'last');
+      const percentages = getFluffetyStats(fluffety);
 
-      mainButton
+      const mainButton = new MessageButton()
+        .setStyle('PRIMARY')
         .setCustomId(`${ctx.interaction.id} | ${mainCommode.identifier.toUpperCase()}`)
         .setLabel(ctx.locale(`common:fluffety.actions.${mainCommode.action as 'eat'}`))
         .setEmoji(mainCommode.emoji);
 
-      nextButton
+      const nextButton = new MessageButton()
+        .setCustomId(`${ctx.interaction.id} | NEXT`)
+        .setStyle('SECONDARY')
         .setLabel(ctx.locale(`data:fluffety.commodes.${nextCommode.identifier as 'outside'}.name`))
         .setEmoji(nextCommode.emoji);
 
-      lastButton
+      const lastButton = new MessageButton()
+        .setCustomId(`${ctx.interaction.id} | LAST`)
+        .setStyle('SECONDARY')
         .setLabel(ctx.locale(`data:fluffety.commodes.${lastCommode.identifier as 'outside'}.name`))
         .setEmoji(lastCommode.emoji);
 
-      embed
+      const embed = new MessageEmbed()
         .setTitle(
           ctx.locale('commands:fluffety.display.title', {
             name: fluffety.fluffetyName ?? 'Marquinhos',
@@ -210,7 +131,12 @@ export default class FluffetyCommand extends InteractionCommand {
             happy: percentages.happy,
             energy: percentages.energy,
           }),
-        );
+        )
+        .setAuthor({
+          name: owner.tag,
+          iconURL: owner.displayAvatarURL({ size: 512 }),
+        })
+        .setColor(ctx.data.user.selectedColor);
 
       const image = await requestPicassoImage(
         PicassoRoutes.Fluffety,
@@ -220,6 +146,7 @@ export default class FluffetyCommand extends InteractionCommand {
 
       if (!image.err) {
         embed.setImage('attachment://fluffety.png');
+
         ctx.makeMessage({
           embeds: [embed],
           attachments: [],
@@ -230,12 +157,36 @@ export default class FluffetyCommand extends InteractionCommand {
       }
 
       embed.setFooter({ text: ctx.locale('common:http-error') });
+
       ctx.makeMessage({
         embeds: [embed],
         attachments: [],
         components: [actionRow([lastButton, mainButton, nextButton])],
       });
     };
+
+    updateCommodes();
+
+    const collector = ctx.channel.createMessageComponentCollector({
+      idle: 15_000,
+      componentType: 'BUTTON',
+      filter: (int) => int.user.id === ctx.author.id && int.customId.startsWith(ctx.interaction.id),
+    });
+
+    collector.on('end', (_, reason) => {
+      if (reason === 'idle')
+        ctx.makeMessage({
+          components: [
+            actionRow(
+              disableComponents(ctx.locale('common:timesup'), [
+                new MessageButton().setStyle('SECONDARY').setCustomId('a'),
+                new MessageButton().setStyle('PRIMARY').setCustomId('b'),
+                new MessageButton().setStyle('SECONDARY').setCustomId('c'),
+              ]),
+            ),
+          ],
+        });
+    });
 
     collector.on('collect', async (int) => {
       switch (resolveCustomId(int.customId)) {
@@ -249,7 +200,7 @@ export default class FluffetyCommand extends InteractionCommand {
           break;
         case 'BEDROOM': {
           int.deferUpdate();
-          const didCommandEnd = await executeBedroom(ctx, fluffety, percentages);
+          const didCommandEnd = await executeBedroom(ctx, fluffety, getFluffetyStats(fluffety));
           if (didCommandEnd) return collector.stop('finish');
           updateCommodes();
           break;

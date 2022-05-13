@@ -1,6 +1,6 @@
 import { FluffetySchema, FluffetyStatus } from '@custom_types/Menhera';
-import { HOURS_TO_FULL_ENERGY, SLEEPING_HOURS_TO_FULL_ENERGY } from '@fluffety/Constants';
-import { getPercentageByTimePassed, hoursToMilis } from '@fluffety/FluffetyUtils';
+import { HOURS_TO_FULL_ENERGY } from '@fluffety/Constants';
+import { hoursToMilis } from '@fluffety/FluffetyUtils';
 import { FluffetyActionIdentifier } from '@fluffety/Types';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 
@@ -45,14 +45,7 @@ export const executeBedroom = async (
     return true;
   }
 
-  const percentageGained = getPercentageByTimePassed(
-    Date.now() - fluffety.currentAction.startAt,
-    hoursToMilis(SLEEPING_HOURS_TO_FULL_ENERGY),
-  );
-
-  const newPercentage = Math.min(percentages.energy + percentageGained, 100);
-
-  const newTimeToFull = Math.floor(hoursToMilis((newPercentage * HOURS_TO_FULL_ENERGY) / 100));
+  const newTimeToFull = Math.floor(hoursToMilis((percentages.energy * HOURS_TO_FULL_ENERGY) / 100));
 
   const newDateToFull = Date.now() - hoursToMilis(HOURS_TO_FULL_ENERGY) + newTimeToFull;
 
@@ -64,7 +57,6 @@ export const executeBedroom = async (
   });
 
   fluffety.currentAction = newAction;
-  percentages.energy = newPercentage;
 
   return false;
 };

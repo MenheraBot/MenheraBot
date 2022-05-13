@@ -1,5 +1,10 @@
 import { FluffetySchema, FluffetyStatus } from '@custom_types/Menhera';
-import { DISPLAY_FLUFFETY_ORDER, HOURS_TO_FULL_ENERGY, HOURS_TO_FULL_HAPPY } from './Constants';
+import {
+  DISPLAY_FLUFFETY_ORDER,
+  HOURS_TO_FULL_ENERGY,
+  HOURS_TO_FULL_HAPPY,
+  SLEEPING_HOURS_TO_FULL_ENERGY,
+} from './Constants';
 
 export const hoursToMilis = (hours: number) => hours * 3600000;
 
@@ -8,6 +13,31 @@ export const getPercentageByTimePassed = (timePassed: number, maxValue: number):
 
 export const getDateFromPercentage = (percentage: number, timeToFull: number): number =>
   Math.floor((percentage * timeToFull) / 100);
+
+const getCurrentPercentagesWithAction = (
+  fluffety: FluffetySchema,
+  basePercentages: FluffetyStatus,
+): FluffetyStatus => {
+  // ENERGY
+
+  let { energy } = basePercentages;
+
+  switch (fluffety.currentAction.identifier) {
+    case 1: {
+      const energyGained = getPercentageByTimePassed(
+        Date.now() - fluffety.currentAction.startAt,
+        hoursToMilis(SLEEPING_HOURS_TO_FULL_ENERGY),
+      );
+      energy = Math.min(basePercentages.energy + energyGained, 100);
+      break;
+    }
+  }
+
+  return {
+    happy: basePercentages.happy, // TODO
+    energy,
+  };
+};
 
 export const getFluffetyStats = (fluffety: FluffetySchema): FluffetyStatus => {
   const happyPercentage =
@@ -22,12 +52,15 @@ export const getFluffetyStats = (fluffety: FluffetySchema): FluffetyStatus => {
   const healthPercentage =
     100 - ((Date.now() - fluffety.healthyAt) / hoursToMilis(HOURS_TO_FULL_HEALTH)) * 100;
  */
-  return {
+
+  const basePercentages = {
     energy: Math.max(Math.floor(energyPercentage), 0),
     happy: Math.max(Math.floor(happyPercentage), 0),
     // foody: Math.max(Math.floor(foodPercentage), 0),
     // healty: Math.max(Math.floor(healthPercentage), 0),
   };
+
+  return getCurrentPercentagesWithAction(fluffety, basePercentages);
 };
 
 export const getCommode = (
