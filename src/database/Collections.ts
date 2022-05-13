@@ -108,6 +108,7 @@ const fluffetySchema = new Schema({
   ownerId: { type: String },
   fluffetyName: { type: String },
   race: { type: String },
+  currentAction: { type: Object, default: undefined },
   /*
   TODO: in the Future
   healthyAt: { type: Number, default: 0 },

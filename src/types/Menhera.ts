@@ -26,6 +26,7 @@ import {
 import CreditsRepository from '@database/repositories/CreditsRepository';
 import RoleplayRepository from '@database/repositories/RoleplayRepository';
 import FluffetyRepository from '@database/repositories/FluffetyRepository';
+import { FluffetyActionIdentifier } from '@fluffety/Types';
 import { MayNotExists } from '@utils/Util';
 
 export interface IClientConfigs {
@@ -474,9 +475,16 @@ export type BlackjackFinishGameReason =
 
 export type FluffetyRace = 'pingus' | 'chikys' | 'hamsin';
 
+export interface FluffetyAction {
+  identifier: FluffetyActionIdentifier;
+  startAt: number;
+  finishAt: MayNotExists<number>;
+}
+
 export interface FluffetySchema {
   readonly ownerId: string;
   readonly race: FluffetyRace;
+  currentAction?: FluffetyAction;
   fluffetyName: string;
   /*
   TODO: in the Future

@@ -13,8 +13,12 @@ import {
 } from 'discord.js-light';
 import { getCommode, getFluffetyStats } from '@fluffety/FluffetyUtils';
 import { DISPLAY_FLUFFETY_ORDER as houseOrder } from '@fluffety/Constants';
-import { executeBedroom, executeKitchen } from '@fluffety/structures/ExecuteCommodes';
 import { PicassoRoutes, requestPicassoImage } from '@utils/PicassoRequests';
+import {
+  executeBedroom,
+  executeKitchen,
+  executeOutisde,
+} from '@fluffety/structures/ExecuteCommodes';
 
 export default class FluffetyCommand extends InteractionCommand {
   constructor() {
@@ -224,7 +228,7 @@ export default class FluffetyCommand extends InteractionCommand {
       });
     };
 
-    collector.on('collect', (int) => {
+    collector.on('collect', async (int) => {
       switch (resolveCustomId(int.customId)) {
         case 'NEXT':
           int.deferUpdate();
@@ -234,14 +238,16 @@ export default class FluffetyCommand extends InteractionCommand {
           int.deferUpdate();
           changeCommodes('last');
           break;
-        case 'BEDROOM':
-          executeBedroom(ctx);
+        case 'BEDROOM': {
+          const didCommandEnd = await executeBedroom(ctx, fluffety, percentages);
+          if (didCommandEnd) return collector.stop('finish');
           break;
+        }
         case 'KITCHEN':
-          executeKitchen(ctx);
+          executeKitchen(ctx, fluffety);
           break;
         case 'OUTSIDE':
-          executeKitchen(ctx);
+          executeOutisde(ctx, fluffety);
           break;
       }
     });
