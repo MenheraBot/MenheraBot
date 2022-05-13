@@ -919,7 +919,7 @@
   "fluffety": {
     "unexists": "Este ser humaninho não adotou nenhum Fluffety ainda!",
     "display": {
-      "description": "**Fome:** {{hungry}}%\n**Felicidade:** {{happy}}%\n**Energia:** {{energy}}%\n**Saúde:** {{health}}%",
+      "description": "**Felicidade:** {{happy}}%\n**Energia:** {{energy}}%",
       "title": "{{commode}} de {{name}}"
     },
     "adopt": {

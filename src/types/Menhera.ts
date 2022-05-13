@@ -478,15 +478,18 @@ export interface FluffetySchema {
   readonly ownerId: string;
   readonly race: FluffetyRace;
   fluffetyName: string;
+  /*
+  TODO: in the Future
   healthyAt: number;
   foodyAt: number;
+  */
   happyAt: number;
   energyAt: number;
 }
 
 export interface FluffetyStatus {
-  healty: number;
-  foody: number;
-  happy: number;
   energy: number;
+  happy: number;
+  // foody: number;
+  // healty: number;
 }

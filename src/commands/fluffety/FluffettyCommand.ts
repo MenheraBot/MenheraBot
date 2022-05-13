@@ -116,14 +116,53 @@ export default class FluffetyCommand extends InteractionCommand {
       .setColor(ctx.data.user.selectedColor)
       .setDescription(
         ctx.locale('commands:fluffety.display.description', {
-          hungry: percentages.foody,
+          // hungry: percentages.foody,
+          // health: percentages.healty,
           happy: percentages.happy,
           energy: percentages.energy,
-          health: percentages.healty,
         }),
       );
 
-    const changeCommodes = (order: 'next' | 'last') => {
+    if (ctx.author.id !== owner.id) mainButton.setDisabled(true);
+
+    const collector = ctx.channel.createMessageComponentCollector({
+      idle: 15_000,
+      componentType: 'BUTTON',
+      filter: (int) => int.user.id === ctx.author.id && int.customId.startsWith(ctx.interaction.id),
+    });
+
+    const fluffetyImage = await requestPicassoImage(
+      PicassoRoutes.Fluffety,
+      { commode: mainCommode.identifier, race: fluffety.race },
+      ctx,
+    );
+
+    if (fluffetyImage.err) {
+      embed.setFooter({ text: ctx.locale('common:http-error') });
+      ctx.makeMessage({
+        embeds: [embed],
+        components: [actionRow([lastButton, mainButton, nextButton])],
+      });
+    } else {
+      ctx.makeMessage({
+        embeds: [embed],
+        files: [new MessageAttachment(fluffetyImage.data, 'fluffety.png')],
+        components: [actionRow([lastButton, mainButton, nextButton])],
+      });
+    }
+
+    collector.on('end', (_, reason) => {
+      if (reason === 'idle')
+        ctx.makeMessage({
+          components: [
+            actionRow(
+              disableComponents(ctx.locale('common:timesup'), [lastButton, mainButton, nextButton]),
+            ),
+          ],
+        });
+    });
+
+    const changeCommodes = async (order: 'next' | 'last') => {
       if (order === 'next') {
         if (mainCommodeIndex === houseOrder.length - 1) mainCommodeIndex = 0;
         else mainCommodeIndex += 1;
@@ -160,44 +199,30 @@ export default class FluffetyCommand extends InteractionCommand {
         }),
       );
 
+      const image = await requestPicassoImage(
+        PicassoRoutes.Fluffety,
+        { commode: mainCommode.identifier, race: fluffety.race },
+        ctx,
+      );
+
+      if (!image.err) {
+        embed.setImage('attachment://fluffety.png');
+        ctx.makeMessage({
+          embeds: [embed],
+          attachments: [],
+          files: [new MessageAttachment(image.data, 'fluffety.png')],
+          components: [actionRow([lastButton, mainButton, nextButton])],
+        });
+        return;
+      }
+
+      embed.setFooter({ text: ctx.locale('common:http-error') });
       ctx.makeMessage({
         embeds: [embed],
+        attachments: [],
         components: [actionRow([lastButton, mainButton, nextButton])],
       });
     };
-
-    if (ctx.author.id !== owner.id) mainButton.setDisabled(true);
-
-    const collector = ctx.channel.createMessageComponentCollector({
-      idle: 15_000,
-      componentType: 'BUTTON',
-      filter: (int) => int.user.id === ctx.author.id && int.customId.startsWith(ctx.interaction.id),
-    });
-
-    const picassoData = { commode: mainCommode.identifier, race: fluffety.race };
-
-    const image = await requestPicassoImage(PicassoRoutes.Fluffety, picassoData, ctx);
-
-    if (image.err) return;
-
-    embed.setImage('attachment://owo.png');
-
-    ctx.makeMessage({
-      embeds: [embed],
-      files: [new MessageAttachment(image.data, 'owo.png')],
-      components: [actionRow([lastButton, mainButton, nextButton])],
-    });
-
-    collector.on('end', (_, reason) => {
-      if (reason === 'idle')
-        ctx.makeMessage({
-          components: [
-            actionRow(
-              disableComponents(ctx.locale('common:timesup'), [lastButton, mainButton, nextButton]),
-            ),
-          ],
-        });
-    });
 
     collector.on('collect', (int) => {
       switch (resolveCustomId(int.customId)) {
