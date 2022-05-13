@@ -2,7 +2,7 @@ import { COLORS, EightBallAnswers, emojis } from '@structures/Constants';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageEmbed, MessageAttachment } from 'discord.js-light';
-import HttpRequests from '@utils/HTTPrequests';
+import { PicassoRoutes, requestPicassoImage } from '@utils/PicassoRequests';
 
 export default class EightballCommand extends InteractionCommand {
   constructor() {
@@ -27,23 +27,16 @@ export default class EightballCommand extends InteractionCommand {
 
     const randomAnswer = EightBallAnswers[Math.floor(Math.random() * EightBallAnswers.length)];
 
-    const res = ctx.client.picassoWs.isAlive
-      ? await ctx.client.picassoWs.makeRequest({
-          type: '8ball',
-          id: ctx.interaction.id,
-          data: {
-            question: ctx.options.getString('pergunta', true),
-            answer: ctx.locale(`commands:8ball.answers.${randomAnswer.id as 1}`),
-            type: randomAnswer.type,
-            username: ctx.author.username,
-          },
-        })
-      : await HttpRequests.EightballRequest({
-          answer: ctx.locale(`commands:8ball.answers.${randomAnswer.id as 1}`),
-          question: ctx.options.getString('pergunta', true),
-          type: randomAnswer.type,
-          username: ctx.author.username,
-        });
+    const res = await requestPicassoImage(
+      PicassoRoutes.EightBall,
+      {
+        question: ctx.options.getString('pergunta', true),
+        answer: ctx.locale(`commands:8ball.answers.${randomAnswer.id as 1}`),
+        type: randomAnswer.type,
+        username: ctx.author.username,
+      },
+      ctx,
+    );
 
     const embed = new MessageEmbed().setTitle(
       `${emojis.question} | ${ctx.locale('commands:8ball.ask')}`,
@@ -61,7 +54,8 @@ export default class EightballCommand extends InteractionCommand {
             value: ctx.locale(`commands:8ball.answers.${randomAnswer.id as 1}`),
           },
         ])
-        .setColor(COLORS.Aqua);
+        .setColor(COLORS.Aqua)
+        .setFooter({ text: ctx.locale('common:http-error') });
 
       await ctx.defer({ embeds: [embed] });
       return;

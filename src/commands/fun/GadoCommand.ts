@@ -1,8 +1,8 @@
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageAttachment } from 'discord.js-light';
-import HttpRequests from '@utils/HTTPrequests';
 import { emojis } from '@structures/Constants';
+import { PicassoRoutes, requestPicassoImage } from '@utils/PicassoRequests';
 
 export default class GadoCommand extends InteractionCommand {
   constructor() {
@@ -24,29 +24,23 @@ export default class GadoCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
+    await ctx.defer();
+
     const link = ctx.options.getUser('user', true).displayAvatarURL({
       format: 'png',
       size: 512,
     });
-    await ctx.defer();
 
-    const res = ctx.client.picassoWs.isAlive
-      ? await ctx.client.picassoWs.makeRequest({
-          id: ctx.interaction.id,
-          type: 'gado',
-          data: { image: link },
-        })
-      : await HttpRequests.gadoRequest(link);
+    const res = await requestPicassoImage(PicassoRoutes.Gado, { image: link }, ctx);
+
     if (res.err) {
       await ctx.defer({
-        ephemeral: false,
         content: `${emojis.error} |  ${ctx.locale('common:http-error')}`,
       });
       return;
     }
 
     await ctx.defer({
-      ephemeral: false,
       files: [new MessageAttachment(res.data, 'gado.png')],
     });
   }

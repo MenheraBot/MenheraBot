@@ -1,9 +1,9 @@
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageAttachment } from 'discord.js-light';
-import HttpRequests from '@utils/HTTPrequests';
 import { emojis } from '@structures/Constants';
 import { toWritableUTF } from '@utils/Util';
+import { PicassoRoutes, requestPicassoImage } from '@utils/PicassoRequests';
 
 export default class VascoCommand extends InteractionCommand {
   constructor() {
@@ -49,23 +49,16 @@ export default class VascoCommand extends InteractionCommand {
 
     await ctx.defer();
 
-    const res = ctx.client.picassoWs.isAlive
-      ? await ctx.client.picassoWs.makeRequest({
-          id: ctx.interaction.id,
-          type: 'vasco',
-          data: {
-            user: user.displayAvatarURL({ format: 'png', size: quality === 'normal' ? 512 : 56 }),
-            quality,
-            username: toWritableUTF(user.username),
-            position,
-          },
-        })
-      : await HttpRequests.vascoRequest(
-          user.displayAvatarURL({ format: 'png', size: quality === 'normal' ? 512 : 56 }),
-          quality,
-          toWritableUTF(user.username),
-          position,
-        );
+    const res = await requestPicassoImage(
+      PicassoRoutes.Vasco,
+      {
+        user: user.displayAvatarURL({ format: 'png', size: quality === 'normal' ? 512 : 56 }),
+        quality,
+        username: toWritableUTF(user.username),
+        position,
+      },
+      ctx,
+    );
 
     if (res.err) {
       await ctx.defer({ content: `${emojis.error} | ${ctx.locale('common:http-error')}` });

@@ -4,6 +4,7 @@ import InteractionCommandContext from '@structures/command/InteractionContext';
 import { emojis } from '@structures/Constants';
 import Util, { actionRow, disableComponents, capitalize, resolveCustomId } from '@utils/Util';
 import {
+  MessageAttachment,
   MessageButton,
   MessageEmbed,
   MessageSelectMenu,
@@ -13,6 +14,7 @@ import {
 import { getCommode, getFluffetyStats } from '@fluffety/FluffetyUtils';
 import { DISPLAY_FLUFFETY_ORDER as houseOrder } from '@fluffety/Constants';
 import { executeBedroom, executeKitchen } from '@fluffety/structures/ExecuteCommodes';
+import { PicassoRoutes, requestPicassoImage } from '@utils/PicassoRequests';
 
 export default class FluffetyCommand extends InteractionCommand {
   constructor() {
@@ -172,8 +174,17 @@ export default class FluffetyCommand extends InteractionCommand {
       filter: (int) => int.user.id === ctx.author.id && int.customId.startsWith(ctx.interaction.id),
     });
 
+    const picassoData = { commode: mainCommode.identifier, race: fluffety.race };
+
+    const image = await requestPicassoImage(PicassoRoutes.Fluffety, picassoData, ctx);
+
+    if (image.err) return;
+
+    embed.setImage('attachment://owo.png');
+
     ctx.makeMessage({
       embeds: [embed],
+      files: [new MessageAttachment(image.data, 'owo.png')],
       components: [actionRow([lastButton, mainButton, nextButton])],
     });
 

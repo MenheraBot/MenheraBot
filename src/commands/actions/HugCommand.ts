@@ -62,6 +62,7 @@ export default class HugCommand extends InteractionCommand {
       )
       .setImage(selectedImage)
       .setThumbnail(avatar);
+
     if (reason)
       embed.setDescription(
         `${embed.description}\n\n_"${capitalize(

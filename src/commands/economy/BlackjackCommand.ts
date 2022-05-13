@@ -19,6 +19,7 @@ import {
 } from '@custom_types/Menhera';
 import { BLACKJACK_CARDS, BLACKJACK_PRIZE_MULTIPLIERS } from '@structures/Constants';
 import Util, { resolveCustomId, actionRow, MayNotExists, negate, debugError } from '@utils/Util';
+import { PicassoRoutes, requestPicassoImage } from '@utils/PicassoRequests';
 
 const getBlackjackCards = (cards: Array<number>): Array<IBlackjackCards> =>
   cards.reduce((p: Array<IBlackjackCards>, c: number) => {
@@ -237,39 +238,24 @@ export default class BlackjackCommand extends InteractionCommand {
     tableTheme: AvailableTableThemes,
     backgroundCardTheme: AvailableCardBackgroundThemes,
   ): Promise<IPicassoReturnData> {
-    return ctx.client.picassoWs.isAlive
-      ? ctx.client.picassoWs.makeRequest({
-          id: ctx.interaction.id,
-          type: 'blackjack',
-          data: {
-            userCards: playerCards,
-            menheraCards: dealerCards,
-            userTotal,
-            menheraTotal,
-            i18n: {
-              yourHand: ctx.locale('commands:blackjack.your-hand'),
-              dealerHand: ctx.locale('commands:blackjack.dealer-hand'),
-            },
-            aposta: bet,
-            cardTheme,
-            tableTheme,
-            backgroundCardTheme,
-          },
-        })
-      : http.blackjackRequest(
-          bet,
-          playerCards,
-          dealerCards,
-          userTotal,
-          menheraTotal,
-          {
-            yourHand: ctx.locale('commands:blackjack.your-hand'),
-            dealerHand: ctx.locale('commands:blackjack.dealer-hand'),
-          },
-          cardTheme,
-          tableTheme,
-          backgroundCardTheme,
-        );
+    return requestPicassoImage(
+      PicassoRoutes.Blackjack,
+      {
+        userCards: playerCards,
+        menheraCards: dealerCards,
+        userTotal,
+        menheraTotal,
+        i18n: {
+          yourHand: ctx.locale('commands:blackjack.your-hand'),
+          dealerHand: ctx.locale('commands:blackjack.dealer-hand'),
+        },
+        aposta: bet,
+        cardTheme,
+        tableTheme,
+        backgroundCardTheme,
+      },
+      ctx,
+    );
   }
 
   static async finishMatch(

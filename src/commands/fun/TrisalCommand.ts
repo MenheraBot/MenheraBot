@@ -6,9 +6,9 @@ import {
   MessageComponentInteraction,
   MessageEmbed,
 } from 'discord.js-light';
-import HttpRequests from '@utils/HTTPrequests';
 import { emojis } from '@structures/Constants';
 import Util, { actionRow, debugError, disableComponents } from '@utils/Util';
+import { PicassoRoutes, requestPicassoImage } from '@utils/PicassoRequests';
 
 export default class TrisalCommand extends InteractionCommand {
   constructor() {
@@ -56,13 +56,11 @@ export default class TrisalCommand extends InteractionCommand {
       format: 'png',
     });
 
-    const res = ctx.client.picassoWs.isAlive
-      ? await ctx.client.picassoWs.makeRequest({
-          id: ctx.interaction.id,
-          type: 'trisal',
-          data: { userOne: userOneAvatar, userTwo: userTwoAvatar, userThree: userThreeAvatar },
-        })
-      : await HttpRequests.trisalRequest(userOneAvatar, userTwoAvatar, userThreeAvatar);
+    const res = await requestPicassoImage(
+      PicassoRoutes.Trisal,
+      { userOne: userOneAvatar, userTwo: userTwoAvatar, userThree: userThreeAvatar },
+      ctx,
+    );
 
     if (res.err) {
       await ctx.makeMessage({

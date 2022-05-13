@@ -1,9 +1,9 @@
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageAttachment } from 'discord.js-light';
-import HttpRequests from '@utils/HTTPrequests';
 import { emojis } from '@structures/Constants';
 import { toWritableUTF } from '@utils/Util';
+import { PicassoRoutes, requestPicassoImage } from '@utils/PicassoRequests';
 
 export default class AstolfoCommand extends InteractionCommand {
   constructor() {
@@ -27,13 +27,11 @@ export default class AstolfoCommand extends InteractionCommand {
     const text = ctx.options.getString('frase', true);
     await ctx.defer();
 
-    const res = ctx.client.picassoWs.isAlive
-      ? await ctx.client.picassoWs.makeRequest({
-          id: ctx.interaction.id,
-          type: 'astolfo',
-          data: { text: toWritableUTF(text) },
-        })
-      : await HttpRequests.astolfoRequest(toWritableUTF(text));
+    const res = await requestPicassoImage(
+      PicassoRoutes.Astolfo,
+      { text: toWritableUTF(text) },
+      ctx,
+    );
 
     if (res.err) {
       await ctx.defer({ content: `${emojis.error} | ${ctx.locale('common:http-error')}` });

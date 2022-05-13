@@ -1,45 +1,24 @@
-/* eslint-disable camelcase */
 import axios from 'axios';
 
 import {
-  AvailableCardBackgroundThemes,
-  AvailableCardThemes,
-  AvailableProfilesThemes,
-  AvailableTableThemes,
-  AvailableThemeTypes,
   BichoBetType,
   BichoTop,
   BlackjackTop,
   CoinflipTop,
   HuntTop,
   HuntTypes,
-  IBlackjackCards,
   ICommandsData,
   ICommandUsedData,
   IDisabled,
-  IPicassoReturnData,
   IRESTBichoStats,
   IRESTGameStats,
   IRESTHuntStats,
   IStatusData,
-  IUserDataToProfile,
   RouletteTop,
-  ThemeFiles,
 } from '@custom_types/Menhera';
-import { User } from 'discord.js-light';
 import type { ActivityType } from 'discord.js-light';
 import { UserBattleConfig } from '@roleplay/Types';
 import { debugError, MayNotExists } from './Util';
-
-const PicassoRequest = axios.create({
-  baseURL: `${process.env.API_URL}/picasso`,
-  timeout: 5000,
-  headers: {
-    'Content-Type': 'application/json',
-    'User-Agent': process.env.MENHERA_AGENT as string,
-    Authorization: process.env.API_TOKEN as string,
-  },
-});
 
 const topggRequest = axios.create({
   baseURL: `https://top.gg/api`,
@@ -394,191 +373,11 @@ export default class HttpRequests {
     return { error: true };
   }
 
-  static async astolfoRequest(text: string): Promise<IPicassoReturnData> {
-    try {
-      const data = await PicassoRequest.get('/astolfo', { data: { text } });
-      return { err: false, data: Buffer.from(data.data) };
-    } catch {
-      return { err: true };
-    }
-  }
-
-  static async statusRequest(
-    user: unknown,
-    userAvatarLink: string,
-    i18n: unknown,
-  ): Promise<IPicassoReturnData> {
-    try {
-      const data = await PicassoRequest.get('/status', { data: { user, userAvatarLink, i18n } });
-      return { err: false, data: Buffer.from(data.data) };
-    } catch {
-      return { err: true };
-    }
-  }
-
-  static async vascoRequest(
-    user: string,
-    quality: string,
-    username: string,
-    position: string,
-  ): Promise<IPicassoReturnData> {
-    try {
-      const data = await PicassoRequest.get('/vasco', {
-        data: { user, quality, username, position },
-      });
-      return { err: false, data: Buffer.from(data.data) };
-    } catch {
-      return { err: true };
-    }
-  }
-
-  static async previewRequest(
-    theme: ThemeFiles['theme'],
-    previewType: AvailableThemeTypes,
-  ): Promise<IPicassoReturnData> {
-    try {
-      const data = await PicassoRequest.get('/preview', { data: { theme, previewType } });
-      return { err: false, data: Buffer.from(data.data) };
-    } catch {
-      return { err: true };
-    }
-  }
-
-  static async EightballRequest<T>(sendData: T): Promise<IPicassoReturnData> {
-    try {
-      const data = await PicassoRequest.get('/8ball', { data: sendData });
-      return { err: false, data: Buffer.from(data.data) };
-    } catch {
-      return { err: true };
-    }
-  }
-
-  static async philoRequest(text: string): Promise<IPicassoReturnData> {
-    try {
-      const data = await PicassoRequest.get('/philo', { data: { text } });
-      return { err: false, data: Buffer.from(data.data) };
-    } catch {
-      return { err: true };
-    }
-  }
-
-  static async shipRequest(
-    linkOne: string,
-    linkTwo: string,
-    shipValue: number,
-  ): Promise<IPicassoReturnData> {
-    try {
-      const data = await PicassoRequest.get('/ship', { data: { linkOne, linkTwo, shipValue } });
-      return { err: false, data: Buffer.from(data.data) };
-    } catch {
-      return { err: true };
-    }
-  }
-
-  static async trisalRequest(
-    userOne: string,
-    userTwo: string,
-    userThree: string,
-  ): Promise<IPicassoReturnData> {
-    try {
-      const data = await PicassoRequest.get('/trisal', { data: { userOne, userTwo, userThree } });
-      return { err: false, data: Buffer.from(data.data) };
-    } catch {
-      return { err: true };
-    }
-  }
-
-  static async profileRequest(
-    user: IUserDataToProfile,
-    marry: User | null,
-    usageCommands:
-      | boolean
-      | { cmds: { count: number }; array: Array<{ name: string; count: number }> },
-    i18n: unknown,
-    type: AvailableProfilesThemes,
-  ): Promise<IPicassoReturnData> {
-    try {
-      const data = await PicassoRequest.get('/profile', {
-        data: {
-          user,
-          marry,
-          usageCommands,
-          i18n,
-          type,
-        },
-      });
-      return { err: false, data: Buffer.from(data.data) };
-    } catch {
-      return { err: true };
-    }
-  }
-
-  static async gadoRequest(image: string): Promise<IPicassoReturnData> {
-    try {
-      const data = await PicassoRequest.get('/gado', { data: { image } });
-      return { err: false, data: Buffer.from(data.data) };
-    } catch {
-      return { err: true };
-    }
-  }
-
   static async getUserDeleteUsages(userId: string): Promise<{ count?: number; err: boolean }> {
     try {
       const data = await apiRequest.get('/usages/user/delete', { data: { userId } });
       if (data) return { count: data.data.count, err: false };
       return { err: true };
-    } catch {
-      return { err: true };
-    }
-  }
-
-  static async macetavaRequest(
-    image: string,
-    authorName: string,
-    authorDiscriminator: string,
-    authorImage: string,
-  ): Promise<IPicassoReturnData> {
-    try {
-      const data = await PicassoRequest.get('/macetava', {
-        data: {
-          image,
-          authorName,
-          authorDiscriminator,
-          authorImage,
-        },
-      });
-      return { err: false, data: Buffer.from(data.data) };
-    } catch {
-      return { err: true };
-    }
-  }
-
-  static async blackjackRequest(
-    aposta: number,
-    userCards: Array<IBlackjackCards>,
-    menheraCards: Array<IBlackjackCards>,
-    userTotal: number,
-    menheraTotal: number,
-    i18n: unknown,
-    cardTheme: AvailableCardThemes,
-    tableTheme: AvailableTableThemes,
-    backgroundCardTheme: AvailableCardBackgroundThemes,
-  ): Promise<IPicassoReturnData> {
-    try {
-      const data = await PicassoRequest.get('/blackjack', {
-        data: {
-          userCards,
-          menheraCards,
-          userTotal,
-          menheraTotal,
-          i18n,
-          aposta,
-          cardTheme,
-          tableTheme,
-          backgroundCardTheme,
-        },
-      });
-      return { err: false, data: Buffer.from(data.data) };
     } catch {
       return { err: true };
     }

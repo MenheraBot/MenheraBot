@@ -26,7 +26,7 @@ import {
   MessageAttachment,
 } from 'discord.js-light';
 import ProfilePreview from '@utils/ThemePreviewTemplates';
-import HttpRequests from '@utils/HTTPrequests';
+import { PicassoRoutes, requestPicassoImage } from '@utils/PicassoRequests';
 
 export default class ShopCommand extends InteractionCommand {
   constructor() {
@@ -357,76 +357,61 @@ export default class ShopCommand extends InteractionCommand {
 
           if (previewMode) {
             if (currentThemeType === 'profile') {
-              const res = ctx.client.picassoWs.isAlive
-                ? await ctx.client.picassoWs.makeRequest({
-                    id: ctx.interaction.id,
-                    type: 'profile',
-                    data: {
-                      user: ProfilePreview.user,
-                      marry: ProfilePreview.marry,
-                      usageCommands: ProfilePreview.usageCommands,
-                      i18n: {
-                        aboutme: ctx.locale('commands:perfil.about-me'),
-                        mamado: ctx.locale('commands:perfil.mamado'),
-                        mamou: ctx.locale('commands:perfil.mamou'),
-                        zero: ctx.locale('commands:perfil.zero'),
-                        um: ctx.locale('commands:perfil.um'),
-                        dois: ctx.locale('commands:perfil.dois'),
-                        tres: ctx.locale('commands:perfil.tres'),
-                      },
-                      type: selectedItem.data.theme,
-                    },
-                  })
-                : await HttpRequests.profileRequest(
-                    ProfilePreview.user,
-                    // @ts-expect-error Falso mock
-                    ProfilePreview.marry,
-                    ProfilePreview.usageCommands,
-                    {
-                      aboutme: ctx.locale('commands:perfil.about-me'),
-                      mamado: ctx.locale('commands:perfil.mamado'),
-                      mamou: ctx.locale('commands:perfil.mamou'),
-                      zero: ctx.locale('commands:perfil.zero'),
-                      um: ctx.locale('commands:perfil.um'),
-                      dois: ctx.locale('commands:perfil.dois'),
-                      tres: ctx.locale('commands:perfil.tres'),
-                    },
-                    selectedItem.data.theme,
-                  );
+              const res = await requestPicassoImage(
+                PicassoRoutes.Preview,
+                {
+                  user: ProfilePreview.user,
+                  marry: ProfilePreview.marry,
+                  usageCommands: ProfilePreview.usageCommands,
+                  i18n: {
+                    aboutme: ctx.locale('commands:perfil.about-me'),
+                    mamado: ctx.locale('commands:perfil.mamado'),
+                    mamou: ctx.locale('commands:perfil.mamou'),
+                    zero: ctx.locale('commands:perfil.zero'),
+                    um: ctx.locale('commands:perfil.um'),
+                    dois: ctx.locale('commands:perfil.dois'),
+                    tres: ctx.locale('commands:perfil.tres'),
+                  },
+                  type: selectedItem.data.theme,
+                },
+                ctx,
+              );
 
               if (res.err) {
                 await ctx.send({
                   content: ctx.prettyResponse('error', 'common:http-error'),
+                  ephemeral: true,
                 });
                 return;
               }
 
               await ctx.send({
                 files: [new MessageAttachment(res.data, 'profile-preview.png')],
+                ephemeral: true,
               });
               return;
             }
 
-            const res = ctx.client.picassoWs.isAlive
-              ? await ctx.client.picassoWs.makeRequest({
-                  id: ctx.interaction.id,
-                  type: 'preview',
-                  data: {
-                    theme: selectedItem.data.theme,
-                    previewType: currentThemeType,
-                  },
-                })
-              : await HttpRequests.previewRequest(selectedItem.data.theme, currentThemeType);
+            const res = await requestPicassoImage(
+              PicassoRoutes.Preview,
+              {
+                theme: selectedItem.data.theme,
+                previewType: currentThemeType,
+              },
+              ctx,
+            );
 
             if (res.err) {
               await ctx.send({
                 content: ctx.prettyResponse('error', 'common:http-error'),
+                ephemeral: true,
               });
               return;
             }
 
             await ctx.send({
               files: [new MessageAttachment(res.data, 'theme-preview.png')],
+              ephemeral: true,
             });
             return;
           }

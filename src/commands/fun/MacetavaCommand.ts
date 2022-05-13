@@ -1,9 +1,9 @@
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageAttachment } from 'discord.js-light';
-import HttpRequests from '@utils/HTTPrequests';
 import { emojis } from '@structures/Constants';
 import { toWritableUTF } from '@utils/Util';
+import { PicassoRoutes, requestPicassoImage } from '@utils/PicassoRequests';
 
 export default class MacetavaCommand extends InteractionCommand {
   constructor() {
@@ -30,23 +30,16 @@ export default class MacetavaCommand extends InteractionCommand {
     });
     await ctx.defer();
 
-    const res = ctx.client.picassoWs.isAlive
-      ? await ctx.client.picassoWs.makeRequest({
-          id: ctx.interaction.id,
-          type: 'macetava',
-          data: {
-            image: link,
-            authorName: toWritableUTF(ctx.author.username),
-            authorDiscriminator: ctx.author.discriminator,
-            authorImage: ctx.author.displayAvatarURL({ format: 'png', size: 512 }),
-          },
-        })
-      : await HttpRequests.macetavaRequest(
-          link,
-          toWritableUTF(ctx.author.username),
-          ctx.author.discriminator,
-          ctx.author.displayAvatarURL({ format: 'png', size: 512 }),
-        );
+    const res = await requestPicassoImage(
+      PicassoRoutes.Macetava,
+      {
+        image: link,
+        authorName: toWritableUTF(ctx.author.username),
+        authorDiscriminator: ctx.author.discriminator,
+        authorImage: ctx.author.displayAvatarURL({ format: 'png', size: 512 }),
+      },
+      ctx,
+    );
 
     if (res.err) {
       await ctx.defer({ content: `${emojis.error} | ${ctx.locale('common:http-error')}` });

@@ -4,6 +4,7 @@ import { IUserDataToProfile } from '@custom_types/Menhera';
 import HttpRequests from '@utils/HTTPrequests';
 import { MessageAttachment } from 'discord.js-light';
 import { debugError, toWritableUTF } from '@utils/Util';
+import { PicassoRoutes, requestPicassoImage } from '@utils/PicassoRequests';
 
 export default class ProfileCommand extends InteractionCommand {
   constructor() {
@@ -74,14 +75,12 @@ export default class ProfileCommand extends InteractionCommand {
       return;
     }
 
+    await ctx.defer();
+
     const marry =
       user.married && user.married !== 'false'
         ? await ctx.client.users.fetch(user.married).catch(debugError)
         : null;
-
-    if (marry) marry.username = toWritableUTF(marry?.username);
-
-    await ctx.defer();
 
     const avatar = member.displayAvatarURL({ format: 'png', size: 512 });
     const usageCommands = await HttpRequests.getProfileCommands(member.id);
@@ -101,7 +100,15 @@ export default class ProfileCommand extends InteractionCommand {
       mamadas: user.mamado,
       mamou: user.mamou,
       hiddingBadges: user.hiddingBadges,
+      marry: null,
     };
+
+    if (marry) {
+      userSendData.marry = {
+        username: toWritableUTF(marry.username),
+        tag: `${toWritableUTF(marry.username)}#${marry.discriminator}`,
+      };
+    }
 
     const i18nData = {
       aboutme: ctx.locale('commands:perfil.about-me'),
@@ -115,19 +122,11 @@ export default class ProfileCommand extends InteractionCommand {
 
     const profileTheme = await ctx.client.repositories.themeRepository.getProfileTheme(member.id);
 
-    const res = ctx.client.picassoWs.isAlive
-      ? await ctx.client.picassoWs.makeRequest({
-          id: ctx.interaction.id,
-          type: 'profile',
-          data: { user: userSendData, marry, usageCommands, i18n: i18nData, type: profileTheme },
-        })
-      : await HttpRequests.profileRequest(
-          userSendData,
-          marry,
-          usageCommands,
-          i18nData,
-          profileTheme,
-        );
+    const res = await requestPicassoImage(
+      PicassoRoutes.Profile,
+      { user: userSendData, usageCommands, i18n: i18nData, type: profileTheme },
+      ctx,
+    );
 
     if (res.err) {
       await ctx.makeMessage({ content: ctx.prettyResponse('error', 'common:http-error') });

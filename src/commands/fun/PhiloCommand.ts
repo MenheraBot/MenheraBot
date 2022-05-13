@@ -1,9 +1,9 @@
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageAttachment } from 'discord.js-light';
-import HttpRequests from '@utils/HTTPrequests';
 import { emojis } from '@structures/Constants';
 import { toWritableUTF } from '@utils/Util';
+import { PicassoRoutes, requestPicassoImage } from '@utils/PicassoRequests';
 
 export default class PhiloCommand extends InteractionCommand {
   constructor() {
@@ -27,13 +27,7 @@ export default class PhiloCommand extends InteractionCommand {
     const text = ctx.options.getString('frase', true);
     await ctx.defer();
 
-    const res = ctx.client.picassoWs.isAlive
-      ? await ctx.client.picassoWs.makeRequest({
-          id: ctx.interaction.id,
-          type: 'philo',
-          data: { text: toWritableUTF(text) },
-        })
-      : await HttpRequests.philoRequest(toWritableUTF(text));
+    const res = await requestPicassoImage(PicassoRoutes.Philo, { text: toWritableUTF(text) }, ctx);
 
     if (res.err) {
       await ctx.defer({ content: `${emojis.error} | ${ctx.locale('common:http-error')}` });

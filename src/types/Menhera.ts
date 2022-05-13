@@ -26,6 +26,7 @@ import {
 import CreditsRepository from '@database/repositories/CreditsRepository';
 import RoleplayRepository from '@database/repositories/RoleplayRepository';
 import FluffetyRepository from '@database/repositories/FluffetyRepository';
+import { MayNotExists } from '@utils/Util';
 
 export interface IClientConfigs {
   interactionsDirectory: string;
@@ -237,7 +238,12 @@ export interface IUserDataToProfile {
   data: string;
   mamadas: number;
   mamou: number;
+  marry: MayNotExists<{
+    username: string;
+    tag: string;
+  }>;
 }
+
 export interface IContextData {
   user: IUserSchema;
   server: IGuildSchema;
@@ -299,7 +305,7 @@ export interface IDatabaseRepositories {
 
 export type TShardStatus = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
 
-export interface IPicassoWebsocketRequest<T> {
+export interface PicassoRequestData<T> {
   id: string;
   type: string;
   data: T;
