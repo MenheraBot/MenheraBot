@@ -54,11 +54,13 @@ export const getFluffetyStats = (fluffety: FluffetySchema): FluffetyStatus => {
  */
 
   const basePercentages = {
-    energy: Math.max(Math.floor(energyPercentage), 0),
     happy: Math.max(Math.floor(happyPercentage), 0),
+    energy: Math.max(Math.floor(energyPercentage), 0),
     // foody: Math.max(Math.floor(foodPercentage), 0),
     // healty: Math.max(Math.floor(healthPercentage), 0),
   };
+
+  console.log('base', basePercentages);
 
   return getCurrentPercentagesWithAction(fluffety, basePercentages);
 };

@@ -96,11 +96,24 @@ export default class FluffetyCommand extends InteractionCommand {
       const nextCommode = getCommode(houseOrder, mainCommodeIndex, 'next');
       const lastCommode = getCommode(houseOrder, mainCommodeIndex, 'last');
       const percentages = getFluffetyStats(fluffety);
+      console.log('depois', percentages);
+
+      const lastButton = new MessageButton()
+        .setCustomId(`${ctx.interaction.id} | LAST`)
+        .setStyle('SECONDARY')
+        .setLabel(ctx.locale(`data:fluffety.commodes.${lastCommode.identifier as 'outside'}.name`))
+        .setEmoji(lastCommode.emoji);
 
       const mainButton = new MessageButton()
         .setStyle('PRIMARY')
         .setCustomId(`${ctx.interaction.id} | ${mainCommode.identifier.toUpperCase()}`)
-        .setLabel(ctx.locale(`common:fluffety.actions.${mainCommode.action as 'eat'}`))
+        .setLabel(
+          ctx.locale(
+            `commands:fluffety.actions.${mainCommode.action as 'eat'}${
+              mainCommode.actionIdentifier === fluffety.currentAction.identifier ? '-active' : ''
+            }`,
+          ),
+        )
         .setEmoji(mainCommode.emoji);
 
       const nextButton = new MessageButton()
@@ -108,12 +121,6 @@ export default class FluffetyCommand extends InteractionCommand {
         .setStyle('SECONDARY')
         .setLabel(ctx.locale(`data:fluffety.commodes.${nextCommode.identifier as 'outside'}.name`))
         .setEmoji(nextCommode.emoji);
-
-      const lastButton = new MessageButton()
-        .setCustomId(`${ctx.interaction.id} | LAST`)
-        .setStyle('SECONDARY')
-        .setLabel(ctx.locale(`data:fluffety.commodes.${lastCommode.identifier as 'outside'}.name`))
-        .setEmoji(lastCommode.emoji);
 
       const embed = new MessageEmbed()
         .setTitle(
@@ -130,6 +137,9 @@ export default class FluffetyCommand extends InteractionCommand {
             // health: percentages.healty,
             happy: percentages.happy,
             energy: percentages.energy,
+            action: ctx.locale(
+              `commands:fluffety.actions.current-${fluffety.currentAction.identifier}`,
+            ),
           }),
         )
         .setAuthor({

@@ -57,6 +57,7 @@ export const executeBedroom = async (
   });
 
   fluffety.currentAction = newAction;
+  fluffety.energyAt = newDateToFull;
 
   return false;
 };

@@ -918,6 +918,17 @@
   },
   "fluffety": {
     "unexists": "Este ser humaninho não adotou nenhum Fluffety ainda!",
+    "actions": {
+      "walk": "Passear",
+      "walk-active": "Terminar Passeio",
+      "eat": "Comer",
+      "eat-active": "???",
+      "sleep": "Descansar",
+      "sleep-active": "Acordar",
+      "current-0": "Fazendo Nada",
+      "current-1": "Dormindo",
+      "current-2": "Andando"
+    },
     "commodes": {
       "bedroom": {
         "start-sleep": "Seu Fluffety está dormindo para restaurar suas energias, boa noite {{name}} ^-^",
@@ -925,7 +936,7 @@
       }
     },
     "display": {
-      "description": "**Felicidade:** {{happy}}%\n**Energia:** {{energy}}%",
+      "description": "Estado Atual: **{{action}}**\n\n😆 | **Felicidade:** {{happy}}%\n⚡ | **Energia:** {{energy}}%",
       "title": "{{commode}} de {{name}}"
     },
     "adopt": {
