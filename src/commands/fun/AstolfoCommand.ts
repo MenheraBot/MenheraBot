@@ -9,7 +9,7 @@ export default class AstolfoCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'astolfo',
-      description: '「🍆」・É grande, né? Disse o asolfo para aquilo que você o disse',
+      description: '「🍆」・É grande, né? Disse o astolfo para aquilo que você o disse',
       options: [
         {
           name: 'frase',
