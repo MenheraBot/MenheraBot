@@ -118,6 +118,15 @@ const fluffetySchema = new Schema({
   energyAt: { type: Number, default: 0 },
 });
 
+const fluffetyRelationshipSchema = new Schema({
+  leftOwner: { type: String },
+  rightOwner: { type: String },
+  leftFluffety: { type: Schema.Types.ObjectId },
+  rightFluffety: { type: Schema.Types.ObjectId },
+  relationshipExperience: { type: Number },
+  relationshipLevel: { type: Number },
+});
+
 export const Cmds = model<ICmdSchema>('Cmd', cmdSchema);
 export const Guilds = model<IGuildSchema>('guild', guildSchema);
 export const Users = model<IUserSchema>('usersdb', userSchema);
@@ -125,3 +134,4 @@ export const Themes = model<IUserThemesSchema>('themes', userThemes);
 export const Credits = model<CreditsSchema>('credits', themeCredits);
 export const Rpgs = model<RoleplayUserSchema>('roleplay', rpgSchema);
 export const Fluffetys = model<FluffetySchema>('fluffety', fluffetySchema);
+export const Relations = model<FluffetySchema>('relations', fluffetyRelationshipSchema);

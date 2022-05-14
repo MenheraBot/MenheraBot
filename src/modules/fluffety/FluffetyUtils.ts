@@ -60,8 +60,6 @@ export const getFluffetyStats = (fluffety: FluffetySchema): FluffetyStatus => {
     // healty: Math.max(Math.floor(healthPercentage), 0),
   };
 
-  console.log('base', basePercentages);
-
   return getCurrentPercentagesWithAction(fluffety, basePercentages);
 };
 

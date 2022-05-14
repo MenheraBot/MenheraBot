@@ -40,6 +40,18 @@ export default class FluffetyCommand extends InteractionCommand {
             },
           ],
         },
+        {
+          type: 'SUB_COMMAND_GROUP',
+          name: 'relacionamentos',
+          description: '「✨」・Gerencie suas relações com outros fluffetys',
+          options: [
+            {
+              type: 'SUB_COMMAND',
+              name: 'lista',
+              description: '「📜」・Veja suas relações atuais',
+            },
+          ],
+        },
       ],
       cooldown: 5,
       authorDataFields: ['selectedColor'],
@@ -52,7 +64,13 @@ export default class FluffetyCommand extends InteractionCommand {
     switch (command) {
       case 'info':
         return FluffetyCommand.InfoCommand(ctx);
+      case 'lista':
+        return FluffetyCommand.ListRelationshipsCommand(ctx);
     }
+  }
+
+  static async ListRelationshipsCommand(ctx: InteractionCommandContext): Promise<void> {
+    console.log(ctx);
   }
 
   static async InfoCommand(ctx: InteractionCommandContext): Promise<void> {
@@ -96,7 +114,6 @@ export default class FluffetyCommand extends InteractionCommand {
       const nextCommode = getCommode(houseOrder, mainCommodeIndex, 'next');
       const lastCommode = getCommode(houseOrder, mainCommodeIndex, 'last');
       const percentages = getFluffetyStats(fluffety);
-      console.log('depois', percentages);
 
       const lastButton = new MessageButton()
         .setCustomId(`${ctx.interaction.id} | LAST`)
@@ -150,7 +167,12 @@ export default class FluffetyCommand extends InteractionCommand {
 
       const image = await requestPicassoImage(
         PicassoRoutes.Fluffety,
-        { commode: mainCommode.identifier, race: fluffety.race },
+        {
+          commode: mainCommode.identifier,
+          race: fluffety.race,
+          percentages,
+          action: fluffety.currentAction.identifier,
+        },
         ctx,
       );
 

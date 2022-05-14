@@ -1,6 +1,15 @@
 import mongoose from 'mongoose';
 import Redis from 'ioredis';
-import { Cmds, Guilds, Users, Themes, Credits, Rpgs, Fluffetys } from '@database/Collections';
+import {
+  Cmds,
+  Guilds,
+  Users,
+  Themes,
+  Credits,
+  Rpgs,
+  Fluffetys,
+  Relations,
+} from '@database/Collections';
 import { IDatabaseRepositories } from '@custom_types/Menhera';
 import CacheRepository from './repositories/CacheRepository';
 import CmdRepository from './repositories/CmdsRepository';
@@ -38,6 +47,8 @@ export default class Databases {
   public readonly Credits: typeof Credits;
 
   public readonly Fluffetys: typeof Fluffetys;
+
+  public readonly Relations: typeof Relations;
 
   private readonly userRepository: UserRepository;
 
@@ -85,6 +96,7 @@ export default class Databases {
     this.Themes = Themes;
     this.Credits = Credits;
     this.Fluffetys = Fluffetys;
+    this.Relations = Relations;
 
     if (withRedisCache) this.createRedisConnection();
 
