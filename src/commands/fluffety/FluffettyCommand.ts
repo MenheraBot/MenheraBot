@@ -70,7 +70,43 @@ export default class FluffetyCommand extends InteractionCommand {
   }
 
   static async ListRelationshipsCommand(ctx: InteractionCommandContext): Promise<void> {
-    console.log(ctx);
+    const fluffetyRelations =
+      await ctx.client.repositories.relationshipRepository.getAllFluffetyRelations(ctx.author.id);
+
+    if (fluffetyRelations.length === 0) {
+      ctx.makeMessage({
+        content: ctx.prettyResponse(
+          'error',
+          'commands:fluffety.relacionamentos.lista.no-relations',
+        ),
+      });
+      return;
+    }
+
+    const embed = new MessageEmbed()
+      .setDescription(
+        fluffetyRelations
+          .map((a) =>
+            ctx.locale('commands:fluffety.relacionamentos.lista.display', {
+              owner: a.leftOwner === ctx.author.id ? a.rightOwner : a.leftOwner,
+              name: a.leftOwner === ctx.author.id ? a.rightName : a.leftName,
+              level: a.relationshipLevel,
+            }),
+          )
+          .join('\n'),
+      )
+      .setTitle(
+        ctx.locale('commands:fluffety.relacionamentos.lista.title', {
+          fluffety:
+            fluffetyRelations[0].leftOwner === ctx.author.id
+              ? fluffetyRelations[0].leftName
+              : fluffetyRelations[0].rightName,
+        }),
+      )
+      .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true }))
+      .setColor(ctx.data.user.selectedColor);
+
+    ctx.makeMessage({ embeds: [embed] });
   }
 
   static async InfoCommand(ctx: InteractionCommandContext): Promise<void> {

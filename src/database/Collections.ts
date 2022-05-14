@@ -121,8 +121,8 @@ const fluffetySchema = new Schema({
 const fluffetyRelationshipSchema = new Schema({
   leftOwner: { type: String },
   rightOwner: { type: String },
-  leftFluffety: { type: Schema.Types.ObjectId },
-  rightFluffety: { type: Schema.Types.ObjectId },
+  leftName: { type: String },
+  rightName: { type: String },
   relationshipExperience: { type: Number },
   relationshipLevel: { type: Number },
 });

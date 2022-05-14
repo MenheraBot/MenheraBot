@@ -1,5 +1,3 @@
-import type { Schema } from 'mongoose';
-
 export enum FluffetyActionIdentifier {
   Nothing = 0,
   Sleeping = 1,
@@ -9,8 +7,8 @@ export enum FluffetyActionIdentifier {
 export interface FluffetyRelationshipSchema {
   leftOwner: string;
   rightOwner: string;
-  leftFluffety: Schema.Types.ObjectId;
-  rightFluffety: Schema.Types.ObjectId;
+  leftName: string;
+  rightName: string;
   relationshipExperience: number;
   relationshipLevel: number;
 }

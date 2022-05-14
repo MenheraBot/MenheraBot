@@ -918,6 +918,13 @@
   },
   "fluffety": {
     "unexists": "Este ser humaninho não adotou nenhum Fluffety ainda!",
+    "relacionamentos": {
+      "lista": {
+        "display": "**Fluffety:** {{name}} <@{{owner}}> | **Nível:** {{level}}",
+        "title": "Relacionamentos de {{fluffety}}",
+        "no-relations": "Seu fluffety não possui nenhuma relação ainda! Trate-se de iniciar uma agora memso! Fluffetys não são bons em lidar com a solidão"
+      }
+    },
     "actions": {
       "walk": "Passear",
       "walk-active": "Terminar Passeio",
