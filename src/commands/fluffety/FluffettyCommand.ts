@@ -34,7 +34,7 @@ export default class FluffetyCommand extends InteractionCommand {
           options: [
             {
               type: 'USER',
-              name: 'user',
+              name: 'dono',
               description: 'Dono do flufetty que você quer ver',
               required: false,
             },
@@ -49,6 +49,39 @@ export default class FluffetyCommand extends InteractionCommand {
               type: 'SUB_COMMAND',
               name: 'lista',
               description: '「📜」・Veja suas relações atuais',
+            },
+            {
+              type: 'SUB_COMMAND',
+              name: 'adicionar',
+              description: '「✅」・Crie uma nova relação com um Fluffety',
+              options: [
+                {
+                  type: 'USER',
+                  name: 'dono',
+                  description: 'Dono do flufetty que você quer criar uma relação',
+                  required: true,
+                },
+                {
+                  type: 'STRING',
+                  name: 'tipo',
+                  description: 'Tipo da relação que você quer criar',
+                  required: true,
+                  autocomplete: true,
+                },
+              ],
+            },
+            {
+              type: 'SUB_COMMAND',
+              name: 'remover',
+              description: '「❌」・Corte relações com algum Fluffety',
+              options: [
+                {
+                  type: 'USER',
+                  name: 'dono',
+                  description: 'Dono do Flufetty que você quer cortar relações',
+                  required: true,
+                },
+              ],
             },
           ],
         },
@@ -66,7 +99,69 @@ export default class FluffetyCommand extends InteractionCommand {
         return FluffetyCommand.InfoCommand(ctx);
       case 'lista':
         return FluffetyCommand.ListRelationshipsCommand(ctx);
+      case 'remover':
+        return FluffetyCommand.RemoveRelationshipCommand(ctx);
     }
+  }
+
+  static async RemoveRelationshipCommand(ctx: InteractionCommandContext): Promise<void> {
+    const fluffetyOwner = ctx.options.getUser('dono', true);
+
+    if (fluffetyOwner.id === ctx.author.id) {
+      ctx.makeMessage({
+        content: ctx.prettyResponse(
+          'error',
+          'commands:fluffety.relacionamentos.remover.self-mention',
+        ),
+        ephemeral: true,
+      });
+    }
+
+    const confirmButton = new MessageButton()
+      .setCustomId(`${ctx.interaction.id} | CONFIRM`)
+      .setLabel(ctx.locale('common:confirm'))
+      .setStyle('DANGER');
+
+    const negateButton = new MessageButton()
+      .setCustomId(`${ctx.interaction.id} | NEGATE`)
+      .setLabel(ctx.locale('common:negate'))
+      .setStyle('SECONDARY');
+
+    ctx.makeMessage({
+      content: ctx.prettyResponse('question', 'commands:fluffety.relacionamentos.remover.sure', {
+        mention: fluffetyOwner.username,
+      }),
+      components: [actionRow([confirmButton, negateButton])],
+    });
+
+    const selected = await Util.collectComponentInteractionWithStartingId(
+      ctx.channel,
+      ctx.author.id,
+      ctx.interaction.id,
+      8000,
+    );
+
+    if (!selected || resolveCustomId(selected.customId) === 'NEGATE') {
+      ctx.makeMessage({
+        content: ctx.prettyResponse('heart', 'commands:fluffety.relacionamentos.remover.negate', {
+          mention: fluffetyOwner.username,
+        }),
+        components: [],
+      });
+      return;
+    }
+
+    await ctx.client.repositories.relationshipRepository.deleteFluffetyRelation(
+      ctx.author.id,
+      fluffetyOwner.id,
+    );
+
+    ctx.makeMessage({
+      content: ctx.prettyResponse('success', 'commands:fluffety.relacionamentos.remover.complete', {
+        mention: fluffetyOwner.username,
+      }),
+      components: [],
+    });
   }
 
   static async ListRelationshipsCommand(ctx: InteractionCommandContext): Promise<void> {

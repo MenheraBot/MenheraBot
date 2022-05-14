@@ -919,6 +919,12 @@
   "fluffety": {
     "unexists": "Este ser humaninho não adotou nenhum Fluffety ainda!",
     "relacionamentos": {
+      "remover": {
+        "self-mention": "Tu não pode remover a relação de si mesmo! O Fluffety tem amor próprio!",
+        "negate": "Suas relações com o Fluffety de **{{mention}}** continuam de pé (caso tenham alguma hehe)",
+        "complete": "Qualquer tipo de relação que o seu Fluffety havia com o Fluffety de **{{mention}}** foi cortada :(",
+        "sure": "Tu tem certeza que quer cortar qualquer tipo de relação que tem com o fluffety de **{{mention}}**? Essa ação é irreversível!"
+      },
       "lista": {
         "display": "**Fluffety:** {{name}} <@{{owner}}> | **Nível:** {{level}}",
         "title": "Relacionamentos de {{fluffety}}",
