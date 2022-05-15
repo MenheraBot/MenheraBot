@@ -26,6 +26,9 @@ export default class ReadyEvent {
 
     const clusterId = client.cluster.id;
 
+    //  setInterval(() => updateActivity(clusterId), 1000 * 60 * 10);
+    //  setInterval(() => updateActivity(clusterId), 1000 * 60 * 60);
+
     if (isMasterShard(clusterId)) {
       HttpServer.getInstance().registerRouter('DBL', DBLWebhook(client));
 
