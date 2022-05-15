@@ -967,5 +967,35 @@
       "select": "Selecione seu fluffety",
       "success": "Yayy, tu adotou um {{race}}! Que maravilha! Você pode usar o comando novamente para começar a cuidar e personalizar ele."
     }
+  },
+  "calvo": {
+    "text": "💈 **| Calvice de {{name}}**\n\n> {{user}} possui calvice tipo **{{type}}** e está no estágio **{{stage}}**\n{{description}}\n\n\"___Da calvice nascemos, da calvice morreremos...\" - {{author}}, 2018",
+    "type-0": "A",
+    "type-1": "O",
+    "type-2": "M",
+    "type-3": "O+M",
+    "stage-0": "Normal",
+    "stage-1": "Início",
+    "stage-2": "Segunda Etapa",
+    "stage-3": "Final",
+    "know-more": "Saiba Mais",
+    "descriptions": {
+      "0-0": "No início de tudo, sua vida ainda será problemática para frente, mas não se desespere, a calvice sempre reinará, e dela não devemos temer!",
+      "0-1": "Sua testa começa a ter destaque, já devem ter te chamado de aeroporto de mosquito, mas não se abale, o que é deles está guardado!",
+      "0-2": "Você já se parece mais com um padre de antigamente, já perdeu as esperanças de recuperar aquilo que já lhe foi mais sagrado, e só lhe resta entregar o resto de seu cabelo",
+      "0-3": "O fim, nem um implante deve resolver o problema, a calvice venceu, não lute mais, agora apenas descanse... Descanse e aproveite essa nova vida, a vida de quem viveu, e experenciou!",
+      "1-0": "Você percebe que está começando e sabe que não pode parar, a luta agora vai ser de quanto tempo vai demorar para a calvice te derrotar",
+      "1-1": "Rosquinha! É isso que eles te chamam. Nesse momento tu começa a usar bonés e chapéus para esconder aquilo que você sente vergonha, a calvice está se iniciando",
+      "1-2": "Tu já não usa mais shampoo, única coisa que tu usa é lustra móveis, para deixar a sua linda careca brilhando. Tu já passou por muita coisa, portanto, não se importa com o que os outros falam",
+      "1-3": "Então é isso, o fim chegou. A calvice lhe venceu, nada mais pode ser feito. Mas, não foi uma derrota! Foi uma vitória! Por passar pelo pior tipo de calvice possível, e finalmente chegar ao fim!",
+      "2-0": "É o inicio de uma nova vida. Tu se olha no espelho e percebe o que você não queria. Tu ta ficando calvo, e sabe disso, só não aceitou ainda",
+      "2-1": "Duas entradas laterais aparecem em sua cabeça, você fica aliviado pela sua calvice ser a mais comum de todas, e também a mais charmosa.",
+      "2-2": "Seu cabelo parece mais uma maré recuando pré-tsunami. Tu não se importa com o que acontece com seu cabelo, tu é um aceitador, uma pessoa que aceita a calvice assim como ela é",
+      "2-3": "Esse é o seu fim, o mesmo que todos os outros calvos. Você não queria chegar até esse ponto, a sua calvice era linda, e agora, é só mais um na lista daqueles que agora, já não possuem mais nada",
+      "3-0": "O dia chegou, o dia em que você percebe que está começando a ficar calvo, a única súplica que tu tem é que não seja o tipo **O**. Que seja qualquer coisa, menos o tipo O",
+      "3-1": "Você não acredita em si mesmo. Não poderia ser pior, você percebe que sua calvice se inicia como um tipo O. Pelo menos tu consegue esconder a parte de cima com um chapéu, e se orgulhar do charme que o tipo M traz a sua cabeça",
+      "3-2": "Você não consegue esconder, todos sabem que você é um misto. Mas tu não se deixa abalar, e claro que conta para tudo e todos que tu ta apenas fazendo um corte do Ronaldinho Gaúcho.",
+      "3-3": "O fim dos fins. Você é grato por ter tido essa calvice. Por mais que não confiasse no início, e que tinha medo do que os outros pensariam, você venceu, e chegou até o fim. Parabéns campeão!"
+    }
   }
 }
