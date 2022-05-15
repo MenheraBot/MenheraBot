@@ -969,7 +969,7 @@
     }
   },
   "calvo": {
-    "text": "💈 **| Calvice de {{name}}**\n\n> {{user}} possui calvice tipo **{{type}}** e está no estágio **{{stage}}**\n{{description}}\n\n\"___Da calvice nascemos, da calvice morreremos...\" - {{author}}, 2018",
+    "text": "**Calvice de {{name}}**\n\n> {{user}} possui calvice tipo **{{type}}** e está no estágio **{{stage}}**\n{{description}}\n\n\"___Da calvice nascemos, da calvice morreremos...___\" - {{author}}, 2018",
     "type-0": "A",
     "type-1": "O",
     "type-2": "M",

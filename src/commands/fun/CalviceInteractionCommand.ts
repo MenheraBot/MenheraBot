@@ -33,6 +33,9 @@ const availableAuthors = [
   'James Spader',
   'Mahatma Gandhi',
   'Agostinho Carrara',
+  'Jeff Bezos',
+  'Michael Jordan',
+  'Rick do Trato Feito',
 ];
 
 export default class CalviceInteractionCommand extends InteractionCommand {
