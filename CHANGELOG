@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [4.0.I-BETA] - 22-05-15
+
+### Added
+
+- Adicionado o comando `/calvo`. Descubra o nível de calvice de seus amigos
+
 ## [4.0.H-BETA] - 2022-03-01
 
 ### Added

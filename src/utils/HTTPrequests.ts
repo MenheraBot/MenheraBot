@@ -153,13 +153,13 @@ export default class HttpRequests {
   }
 
   static async getActivity(
-    shard: number,
+    clusterId: number,
   ): Promise<{ name: string; type: Exclude<ActivityType, 'CUSTOM'> }> {
     /*  try {
       const data = await apiRequest.get('/activity', { data: { shard: shard || 0 } });
       return data.data;
     } catch { */
-    return { name: `❤️ | Menhera foi criada pela Lux | Shard ${shard}`, type: 'PLAYING' };
+    return { name: `❤️ | Menhera foi criada pela Lux | Cluster ${clusterId}`, type: 'PLAYING' };
     // }
   }
 

@@ -820,5 +820,35 @@
     "stop": "Stop Praying",
     "back-from-death": "You have just recovered from a death! Welcome back **{{user}}-sama** to the world of Boleham!",
     "praying-description": "You're already praying for **{{cooldown}}** {{subtime}}. In this time he has recovered **{{life}}** ❤️ and **{{mana}}** 💧"
+  },
+  "calvo": {
+    "text": "**{{name}}** baldness\n\n> {{user}} has baldness type **{{type}}** and is in the **{{stage}}**\n{{description}}\n\n\"___We are born from baldness, from baldness we will die...___\" - {{author}}, 2018",
+    "type-0": "A",
+    "type-1": "O",
+    "type-2": "M",
+    "type-3": "O+M",
+    "stage-0": "Normal",
+    "stage-1": "Start",
+    "stage-2": "Second Stage",
+    "stage-3": "Final",
+    "know-more": "Know More",
+    "descriptions": {
+      "0-0": "At the beginning of everything, your life will still be problematic in the future, but don't despair, baldness will always reign, and we shouldn't be afraid of it!",
+      "0-1": "Your forehead starts to stand out, they must have called you a mosquito airport, but don't be shaken, what's theirs is kept!",
+      "0-2": "You already look more like a priest of old, you've lost hope of recovering what was once most sacred to you, and all you have to do is hand over the rest of your hair",
+      "0-3": "The end, not even an implant should solve the problem, baldness won, don't fight anymore, now just rest... Rest and enjoy this new life, the life of those who lived, and experienced it!",
+      "1-0": "Você percebe que está começando e sabe que não pode parar, a luta agora vai ser de quanto tempo vai demorar para a calvice te derrotar",
+      "1-1": "Donut! That's what they call you. At that moment you start wearing caps and hats to hide what you feel ashamed of, baldness is starting",
+      "1-2": "You don't use shampoo anymore, the only thing you use is furniture polish to make your beautiful bald spot shine. You've been through a lot, so you don't care what others say",
+      "1-3": "So that's it, the end has come. The baldness beat you, nothing more can be done. But, it wasn't a defeat! It was a victory! For going through the worst kind of baldness possible, and finally reaching the The end!",
+      "2-0": "It's the beginning of a new life. You look in the mirror and realize what you didn't want. You're going bald, and you know it, you just haven't accepted it yet",
+      "2-1": "Two side entries appear on your head, you are relieved that your baldness is the most common of all, and also the most charming.",
+      "2-2": "Your hair looks more like a pre-tsunami tide receding. You don't care what happens to your hair, you are an acceptor, a person who accepts baldness as it is",
+      "2-3": "This is your end, the same as all the other bald ones. You didn't want to get to this point, your baldness was beautiful, and now, it's just one more on the list of those who now, no longer have nothing else",
+      "3-0": "The day has come, the day you realize you're starting to go bald, the only plea you have is not to be the **O** type. Let it be anything but the **O** type. THE",
+      "3-1": "You don't believe in yourself. It couldn't be worse, you realize that your baldness starts as a type O. At least you can hide your top with a hat, and be proud of the charm that type M brings your head",
+      "3-2": "You can't hide it, everyone knows you're a mix. But you don't let yourself be shaken, and of course it tells everyone and everything that you're just cutting Ronaldinho Gaúcho.",
+      "3-3": "The end of the ends. You are grateful to have had this baldness. As much as you didn't trust it at first, and that you were afraid of what others would think, you won, and made it to the end. Congratulations champion !"
+    }
   }
 }
