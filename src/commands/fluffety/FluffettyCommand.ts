@@ -19,6 +19,7 @@ import {
   executeKitchen,
   executeOutisde,
 } from '@fluffety/structures/ExecuteCommodes';
+import { FluffetyRelationLevels } from '@fluffety/Types';
 
 export default class FluffetyCommand extends InteractionCommand {
   constructor() {
@@ -66,7 +67,7 @@ export default class FluffetyCommand extends InteractionCommand {
                   name: 'tipo',
                   description: 'Tipo da relação que você quer criar',
                   required: true,
-                  autocomplete: true,
+                  choices: [{ name: 'Começar uma Amizade', value: 'friend' }],
                 },
               ],
             },
@@ -101,6 +102,122 @@ export default class FluffetyCommand extends InteractionCommand {
         return FluffetyCommand.ListRelationshipsCommand(ctx);
       case 'remover':
         return FluffetyCommand.RemoveRelationshipCommand(ctx);
+      case 'adicionar':
+        return FluffetyCommand.AddRelationshipCommand(ctx);
+    }
+  }
+
+  static async AddRelationshipCommand(ctx: InteractionCommandContext): Promise<void> {
+    const fluffetyOwner = ctx.options.getUser('dono', true);
+    const relationshipType = ctx.options.getString('tipo', true);
+
+    if (fluffetyOwner.id === ctx.author.id) {
+      ctx.makeMessage({
+        content: ctx.prettyResponse(
+          'error',
+          'commands:fluffety.relacionamentos.adicionar.self-mention',
+        ),
+        ephemeral: true,
+      });
+      return;
+    }
+
+    const authorFluffety = await ctx.client.repositories.fluffetyRepository.findUserFluffety(
+      ctx.author.id,
+    );
+
+    if (!authorFluffety) {
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:fluffety.author-unexists'),
+        ephemeral: true,
+      });
+      return;
+    }
+
+    const targetFluffety = await ctx.client.repositories.fluffetyRepository.findUserFluffety(
+      fluffetyOwner.id,
+    );
+
+    if (!targetFluffety) {
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:fluffety.unexists'),
+        ephemeral: true,
+      });
+      return;
+    }
+
+    const acceptButton = new MessageButton()
+      .setCustomId(`${ctx.interaction.id} | ACCEPT`)
+      .setLabel(ctx.locale('common:accept'))
+      .setStyle('SUCCESS');
+
+    const negateButton = new MessageButton()
+      .setCustomId(`${ctx.interaction.id} | NEGATE`)
+      .setLabel(ctx.locale('common:negate'))
+      .setStyle('DANGER');
+
+    ctx.makeMessage({
+      content: ctx.prettyResponse(
+        'question',
+        `commands:fluffety.relacionamentos.adicionar.${relationshipType as 'friend'}-request`,
+        {
+          mention: fluffetyOwner.toString(),
+          author: authorFluffety.fluffetyName,
+          target: targetFluffety.fluffetyName,
+        },
+      ),
+      components: [actionRow([negateButton, acceptButton])],
+    });
+
+    const response = await Util.collectComponentInteractionWithStartingId(
+      ctx.channel,
+      fluffetyOwner.id,
+      ctx.interaction.id,
+      15000,
+    );
+
+    if (!response || resolveCustomId(response.customId) === 'NEGATE') {
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:fluffety.relacionamentos.adicionar.negate', {
+          mention: fluffetyOwner.toString(),
+          fluffety: authorFluffety.fluffetyName,
+          target: targetFluffety.fluffetyName,
+        }),
+        components: [],
+      });
+      return;
+    }
+
+    if (relationshipType === 'friend') {
+      const existingRelation =
+        await ctx.client.repositories.relationshipRepository.getFluffetyRelationship(
+          ctx.author.id,
+          fluffetyOwner.id,
+        );
+
+      if (!existingRelation) {
+        await ctx.client.repositories.relationshipRepository.createFluffetyRelationship(
+          ctx.author.id,
+          fluffetyOwner.id,
+          authorFluffety.fluffetyName,
+          targetFluffety.fluffetyName,
+          FluffetyRelationLevels.Friends,
+        );
+
+        ctx.makeMessage({
+          content: ctx.locale('commands:fluffety.relacionamentos.adicionar.success', {
+            author: authorFluffety.fluffetyName,
+            target: targetFluffety.fluffetyName,
+            relationLevel: ctx.locale(
+              `data:fluffety.relation-levels.${relationshipType as 'friend'}`,
+            ),
+          }),
+          components: [],
+        });
+        return;
+      }
+
+      console.log('a');
     }
   }
 
@@ -115,6 +232,7 @@ export default class FluffetyCommand extends InteractionCommand {
         ),
         ephemeral: true,
       });
+      return;
     }
 
     const confirmButton = new MessageButton()
@@ -205,7 +323,7 @@ export default class FluffetyCommand extends InteractionCommand {
   }
 
   static async InfoCommand(ctx: InteractionCommandContext): Promise<void> {
-    const fluffetyOwner = ctx.options.getUser('user', false) ?? ctx.author;
+    const fluffetyOwner = ctx.options.getUser('dono', false) ?? ctx.author;
     const fluffety = await ctx.client.repositories.fluffetyRepository.findUserFluffety(
       fluffetyOwner.id,
     );
@@ -273,7 +391,7 @@ export default class FluffetyCommand extends InteractionCommand {
       const embed = new MessageEmbed()
         .setTitle(
           ctx.locale('commands:fluffety.display.title', {
-            name: fluffety.fluffetyName ?? 'Marquinhos',
+            name: fluffety.fluffetyName,
             commode: capitalize(
               ctx.locale(`data:fluffety.commodes.${mainCommode.identifier as 'outside'}.name`),
             ),
@@ -446,7 +564,12 @@ export default class FluffetyCommand extends InteractionCommand {
     }
 
     const chosenRace = selected.values[0] as FluffetyRace;
-    await ctx.client.repositories.fluffetyRepository.createUserFluffety(ctx.author.id, chosenRace);
+    // TODO: PICK FLUFFETY NAME WITH MODAL
+    await ctx.client.repositories.fluffetyRepository.createUserFluffety(
+      ctx.author.id,
+      chosenRace,
+      '',
+    );
 
     ctx.makeMessage({
       content: ctx.prettyResponse(chosenRace, 'commands:fluffety.adopt.success', {

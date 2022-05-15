@@ -4,6 +4,10 @@ export enum FluffetyActionIdentifier {
   Running = 2,
 }
 
+export enum FluffetyRelationLevels {
+  Friends = 0,
+}
+
 export interface FluffetyRelationshipSchema {
   leftOwner: string;
   rightOwner: string;

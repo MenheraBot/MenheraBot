@@ -10,8 +10,18 @@ export default class FluffetyRepository {
     return this.fluffetyModal.findOne({ ownerId: userId });
   }
 
-  public async createUserFluffety(userId: string, race: FluffetyRace): Promise<void> {
-    await this.fluffetyModal.create({ ownerId: userId, race });
+  public async createUserFluffety(
+    userId: string,
+    race: FluffetyRace,
+    fluffetyName: string,
+  ): Promise<void> {
+    await this.fluffetyModal.create({
+      ownerId: userId,
+      race,
+      fluffetyName,
+      energyAt: Date.now(),
+      happyAt: Date.now(),
+    });
   }
 
   public async updateFluffety(

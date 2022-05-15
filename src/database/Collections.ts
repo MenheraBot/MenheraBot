@@ -8,6 +8,7 @@ import {
 } from '@custom_types/Menhera';
 import { Schema, model } from 'mongoose';
 import { RoleplayUserSchema } from '@roleplay/Types';
+import { FluffetyRelationshipSchema } from '@fluffety/Types';
 
 const cmdSchema = new Schema({
   _id: { type: String },
@@ -72,7 +73,7 @@ const themeCredits = new Schema({
   royalty: { type: Number, default: 3 },
   totalEarned: { type: Number, default: 0 },
   timesSold: { type: Number, default: 0 },
-  registeredAt: { type: Number, default: Date.now() },
+  registeredAt: { type: Number, default: Date.now },
 });
 
 const rpgSchema = new Schema({
@@ -114,8 +115,8 @@ const fluffetySchema = new Schema({
   healthyAt: { type: Number, default: 0 },
   foodyAt: { type: Number, default: 0 },
   */
-  happyAt: { type: Number, default: 0 },
-  energyAt: { type: Number, default: 0 },
+  happyAt: { type: Number, default: Date.now },
+  energyAt: { type: Number, default: Date.now },
 });
 
 const fluffetyRelationshipSchema = new Schema({
@@ -134,4 +135,4 @@ export const Themes = model<IUserThemesSchema>('themes', userThemes);
 export const Credits = model<CreditsSchema>('credits', themeCredits);
 export const Rpgs = model<RoleplayUserSchema>('roleplay', rpgSchema);
 export const Fluffetys = model<FluffetySchema>('fluffety', fluffetySchema);
-export const Relations = model<FluffetySchema>('relations', fluffetyRelationshipSchema);
+export const Relations = model<FluffetyRelationshipSchema>('relations', fluffetyRelationshipSchema);

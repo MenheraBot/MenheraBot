@@ -144,6 +144,9 @@
     }
   },
   "fluffety": {
+    "relation-levels": {
+      "friend": "Amigos"
+    },
     "commodes": {
       "bedroom": {
         "name": "Quarto"
