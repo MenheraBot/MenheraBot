@@ -6,6 +6,24 @@ import UserRepository from './UserRepository';
 export default class RelationshipRepository {
   constructor(private userRepository: UserRepository, private relationsModal: typeof Relations) {}
 
+  async updateRelationshipLevel(
+    authorId: string,
+    targetId: string,
+    relationLevel: FluffetyRelationLevels,
+  ): Promise<void> {
+    await this.relationsModal.create(
+      {
+        $or: [
+          { $and: [{ rightOwner: authorId }, { leftOwner: targetId }] },
+          { $and: [{ rightOwner: targetId }, { leftOwner: authorId }] },
+        ],
+      },
+      {
+        relationshipLevel: relationLevel,
+      },
+    );
+  }
+
   async createFluffetyRelationship(
     authorId: string,
     targetId: string,
@@ -13,7 +31,7 @@ export default class RelationshipRepository {
     targetFluffetyName: string,
     relationLevel: FluffetyRelationLevels,
   ): Promise<void> {
-    await this.relationsModal.create({
+    await this.relationsModal.updateOne({
       leftOwner: authorId,
       rightOwner: targetId,
       relationshipExperience: 0,

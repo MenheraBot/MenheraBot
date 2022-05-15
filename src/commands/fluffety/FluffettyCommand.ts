@@ -63,11 +63,11 @@ export default class FluffetyCommand extends InteractionCommand {
                   required: true,
                 },
                 {
-                  type: 'STRING',
+                  type: 'INTEGER',
                   name: 'tipo',
                   description: 'Tipo da relação que você quer criar',
                   required: true,
-                  choices: [{ name: 'Começar uma Amizade', value: 'friend' }],
+                  choices: [{ name: 'Começar uma Amizade', value: 0 }],
                 },
               ],
             },
@@ -107,9 +107,34 @@ export default class FluffetyCommand extends InteractionCommand {
     }
   }
 
+  static async upsertRelationshipLevel(
+    ctx: InteractionCommandContext,
+    authorId: string,
+    targetId: string,
+    relationLevel: FluffetyRelationLevels,
+    relationExists: boolean,
+    authorFluffetyName = '',
+    targetFluffetyName = '',
+  ): Promise<void> {
+    if (!relationExists)
+      await ctx.client.repositories.relationshipRepository.createFluffetyRelationship(
+        authorId,
+        targetId,
+        authorFluffetyName,
+        targetFluffetyName,
+        relationLevel,
+      );
+    else
+      await ctx.client.repositories.relationshipRepository.updateRelationshipLevel(
+        authorId,
+        targetId,
+        relationLevel,
+      );
+  }
+
   static async AddRelationshipCommand(ctx: InteractionCommandContext): Promise<void> {
     const fluffetyOwner = ctx.options.getUser('dono', true);
-    const relationshipType = ctx.options.getString('tipo', true);
+    const relationshipType = ctx.options.getInteger('tipo', true) as FluffetyRelationLevels;
 
     if (fluffetyOwner.id === ctx.author.id) {
       ctx.makeMessage({
@@ -159,7 +184,7 @@ export default class FluffetyCommand extends InteractionCommand {
     ctx.makeMessage({
       content: ctx.prettyResponse(
         'question',
-        `commands:fluffety.relacionamentos.adicionar.${relationshipType as 'friend'}-request`,
+        `commands:fluffety.relacionamentos.adicionar.${relationshipType}-request`,
         {
           mention: fluffetyOwner.toString(),
           author: authorFluffety.fluffetyName,
@@ -188,37 +213,30 @@ export default class FluffetyCommand extends InteractionCommand {
       return;
     }
 
-    if (relationshipType === 'friend') {
-      const existingRelation =
-        await ctx.client.repositories.relationshipRepository.getFluffetyRelationship(
-          ctx.author.id,
-          fluffetyOwner.id,
-        );
+    const existingRelation =
+      await ctx.client.repositories.relationshipRepository.getFluffetyRelationship(
+        ctx.author.id,
+        fluffetyOwner.id,
+      );
 
-      if (!existingRelation) {
-        await ctx.client.repositories.relationshipRepository.createFluffetyRelationship(
-          ctx.author.id,
-          fluffetyOwner.id,
-          authorFluffety.fluffetyName,
-          targetFluffety.fluffetyName,
-          FluffetyRelationLevels.Friends,
-        );
+    FluffetyCommand.upsertRelationshipLevel(
+      ctx,
+      ctx.author.id,
+      fluffetyOwner.id,
+      FluffetyRelationLevels.Friends,
+      !!existingRelation,
+      authorFluffety.fluffetyName,
+      targetFluffety.fluffetyName,
+    );
 
-        ctx.makeMessage({
-          content: ctx.locale('commands:fluffety.relacionamentos.adicionar.success', {
-            author: authorFluffety.fluffetyName,
-            target: targetFluffety.fluffetyName,
-            relationLevel: ctx.locale(
-              `data:fluffety.relation-levels.${relationshipType as 'friend'}`,
-            ),
-          }),
-          components: [],
-        });
-        return;
-      }
-
-      console.log('a');
-    }
+    ctx.makeMessage({
+      content: ctx.locale('commands:fluffety.relacionamentos.adicionar.success', {
+        author: authorFluffety.fluffetyName,
+        target: targetFluffety.fluffetyName,
+        relationLevel: ctx.locale(`data:fluffety.relation-levels.${relationshipType}`),
+      }),
+      components: [],
+    });
   }
 
   static async RemoveRelationshipCommand(ctx: InteractionCommandContext): Promise<void> {

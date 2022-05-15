@@ -923,8 +923,8 @@
       "adicionar": {
         "success": "IIIIRAAAA, {{author}} e {{target}} agora são {{relationLevel}}. Que coisa boa, aproveitem!",
         "negate": "É uma pena, mas {{mention}} negou o relacionamento entre {{fluffety}} e {{target}}",
-        "friend-request": "{{mention}}! {{author}} quer se tornar amigo de {{target}}, você aceita com que eles sejam amigos?",
-        "self-mention": "Sim, o amor próprio é tudo, mas o teu Fluffety já ama a si mesmo, ele não precisar mudar o tipo de relação consigo mesmo!"
+        "self-mention": "Sim, o amor próprio é tudo, mas o teu Fluffety já ama a si mesmo, ele não precisar mudar o tipo de relação consigo mesmo!",
+        "0-request": "{{mention}}! {{author}} quer se tornar amigo de {{target}}, você aceita com que eles sejam amigos?"
       },
       "remover": {
         "self-mention": "Tu não pode remover a relação de si mesmo! O Fluffety tem amor próprio!",
