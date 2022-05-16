@@ -25,7 +25,9 @@ export default class ThinkCommand extends InteractionCommand {
         {
           name: 'motivo',
           type: 'STRING',
+          nameLocalizations: { 'en-US': 'reason' },
           description: 'Por que tu ta pensando?',
+          descriptionLocalizations: { 'en-US': 'Why are you thinking?' },
           required: false,
         },
       ],

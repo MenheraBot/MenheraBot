@@ -23,7 +23,9 @@ export default class SniffCommand extends InteractionCommand {
         {
           name: 'motivo',
           type: 'STRING',
+          nameLocalizations: { 'en-US': 'reason' },
           description: 'Por que tu quer dar a talda cheirada?',
+          descriptionLocalizations: { 'en-US': 'Why do you wanna sniff? (strange question)' },
           required: false,
         },
       ],

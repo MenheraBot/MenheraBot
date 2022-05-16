@@ -23,7 +23,9 @@ export default class ShotCommand extends InteractionCommand {
         {
           name: 'motivo',
           type: 'STRING',
+          nameLocalizations: { 'en-US': 'reason' },
           description: 'Por que tu quer fazer isso?',
+          descriptionLocalizations: { 'en-US': 'Why do you wanna do that?' },
           required: false,
         },
       ],

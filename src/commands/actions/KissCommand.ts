@@ -38,7 +38,9 @@ export default class KissCommand extends InteractionCommand {
         {
           type: 'STRING',
           name: 'motivo',
+          nameLocalizations: { 'en-US': 'reason' },
           description: 'Por que voce quer beijar?',
+          descriptionLocalizations: { 'en-US': 'Why do you wanna kiss?' },
           required: false,
         },
       ],

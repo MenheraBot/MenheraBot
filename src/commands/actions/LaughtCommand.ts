@@ -24,7 +24,9 @@ export default class LaughtCommand extends InteractionCommand {
         {
           type: 'STRING',
           name: 'motivo',
+          nameLocalizations: { 'en-US': 'reason' },
           description: 'Por que tu ta rindo?',
+          descriptionLocalizations: { 'en-US': 'Why are you laughing' },
           required: false,
         },
       ],

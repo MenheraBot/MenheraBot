@@ -23,7 +23,9 @@ export default class PatCommand extends InteractionCommand {
         {
           name: 'motivo',
           type: 'STRING',
+          nameLocalizations: { 'en-US': 'reason' },
           description: 'Por que tu quer fazer carinho?',
+          descriptionLocalizations: { 'en-US': 'Why do you wanna cuddle?' },
           required: false,
         },
       ],

@@ -22,8 +22,10 @@ export default class FearCommand extends InteractionCommand {
         },
         {
           name: 'motivo',
+          nameLocalizations: { 'en-US': 'reason' },
           type: 'STRING',
           description: 'Por que tu ta com medo?',
+          descriptionLocalizations: { 'en-US': 'Why are you afraid?' },
           required: false,
         },
       ],

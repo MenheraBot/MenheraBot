@@ -23,7 +23,9 @@ export default class PunchCommand extends InteractionCommand {
         {
           name: 'motivo',
           type: 'STRING',
+          nameLocalizations: { 'en-US': 'reason' },
           description: 'Por que tu quer socar man?',
+          descriptionLocalizations: { 'en-US': 'Why do you wann punch?' },
           required: false,
         },
       ],

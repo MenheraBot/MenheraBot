@@ -22,8 +22,10 @@ export default class BicudaCommand extends InteractionCommand {
         },
         {
           name: 'motivo',
+          nameLocalizations: { 'en-US': 'reason' },
           type: 'STRING',
           description: 'Por que você quer chutar?',
+          descriptionLocalizations: { 'en-US': 'Why do you wanna kick?' },
           required: false,
         },
       ],

@@ -22,8 +22,10 @@ export default class DisgustedCommand extends InteractionCommand {
         },
         {
           name: 'motivo',
+          nameLocalizations: { 'en-US': 'reason' },
           type: 'STRING',
           description: 'Por que tu ta com nojo?',
+          descriptionLocalizations: { 'en-US': 'Why are you disgusted?' },
           required: false,
         },
       ],

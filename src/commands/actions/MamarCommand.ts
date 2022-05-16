@@ -24,7 +24,9 @@ export default class MamarCommand extends InteractionCommand {
         {
           type: 'STRING',
           name: 'motivo',
+          nameLocalizations: { 'en-US': 'reason' },
           description: 'Por que tu quer mamar?',
+          descriptionLocalizations: { 'en-US': 'Why do you wanna lick?' },
           required: false,
         },
       ],

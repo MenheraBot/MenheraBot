@@ -23,7 +23,9 @@ export default class ShyCommand extends InteractionCommand {
         {
           name: 'motivo',
           type: 'STRING',
+          nameLocalizations: { 'en-US': 'reason' },
           description: 'Por que esse usuário te deixou assim?',
+          descriptionLocalizations: { 'en-US': 'Why did this user leave you like this?' },
           required: false,
         },
       ],

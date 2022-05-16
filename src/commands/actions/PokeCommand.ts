@@ -23,7 +23,9 @@ export default class PokeCommand extends InteractionCommand {
         {
           name: 'motivo',
           type: 'STRING',
+          nameLocalizations: { 'en-US': 'reason' },
           description: 'Por que tu ta cutucando?',
+          descriptionLocalizations: { 'en-US': 'Why are you poking?' },
           required: false,
         },
       ],

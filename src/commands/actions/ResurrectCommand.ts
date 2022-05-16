@@ -22,8 +22,10 @@ export default class ResurrectCommand extends InteractionCommand {
         },
         {
           name: 'motivo',
+          nameLocalizations: { 'en-US': 'reason' },
           type: 'STRING',
           description: 'Por que tu quer fazer isso?',
+          descriptionLocalizations: { 'en-US': 'Why do you wanna do that?' },
           required: false,
         },
       ],

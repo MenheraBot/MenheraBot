@@ -25,7 +25,9 @@ export default class HugCommand extends InteractionCommand {
         {
           type: 'STRING',
           name: 'motivo',
+          nameLocalizations: { 'en-US': 'reason' },
           description: 'Tem um motivo em especial para abraçar?',
+          descriptionLocalizations: { 'en-US': 'Is there any special reasons for this hug?' },
           required: false,
         },
       ],

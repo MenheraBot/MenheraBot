@@ -21,9 +21,11 @@ export default class BiteCommand extends InteractionCommand {
           required: true,
         },
         {
-          name: 'motivo',
           type: 'STRING',
+          name: 'motivo',
+          nameLocalizations: { 'en-US': 'reason' },
           description: 'Por que tu quer morder?',
+          descriptionLocalizations: { 'en-US': 'Why do you wanna bite?' },
           required: false,
         },
       ],
