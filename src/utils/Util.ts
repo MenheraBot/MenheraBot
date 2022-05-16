@@ -138,7 +138,7 @@ export const disableComponents = <T extends MessageButton | MessageSelectMenu>(
   });
 
 export const actionRow = (components: MessageActionRowComponentResolvable[]): MessageActionRow =>
-  new MessageActionRow({ components });
+  new MessageActionRow().setComponents(components);
 
 export const getMagicItemById = <T extends TMagicItemsFile = TMagicItemsFile>(
   id: number,
