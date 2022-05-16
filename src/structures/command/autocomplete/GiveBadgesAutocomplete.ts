@@ -1,5 +1,5 @@
 import Badges from '@data/ProfileBadges';
-import { ApplicationCommandOptionChoice, AutocompleteInteraction } from 'discord.js-light';
+import { ApplicationCommandOptionChoiceData, AutocompleteInteraction } from 'discord.js-light';
 import MenheraClient from 'MenheraClient';
 import { findBestMatch } from 'string-similarity';
 
@@ -28,7 +28,7 @@ const GiveBadgeAutocomplete = async (
 
   if (toSendOptions.length === 0) return interaction.respond([]);
 
-  const toSendBadges: ApplicationCommandOptionChoice[] = [];
+  const toSendBadges: ApplicationCommandOptionChoiceData[] = [];
 
   toSendOptions.forEach((a) => {
     if (toSendBadges.length >= 25) return;

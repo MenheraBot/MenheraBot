@@ -1,5 +1,5 @@
 import { Abilities } from '@roleplay/data';
-import { ApplicationCommandOptionChoice, AutocompleteInteraction } from 'discord.js-light';
+import { AutocompleteInteraction, ApplicationCommandOptionChoiceData } from 'discord.js-light';
 import i18next from 'i18next';
 import MenheraClient from 'MenheraClient';
 import { findBestMatch } from 'string-similarity';
@@ -41,7 +41,7 @@ const LibraryAutocomplete = async (
   const toSendOptions = ratings.ratings.filter((a) => a.rating >= 0.35);
   if (toSendOptions.length === 0) return interaction.respond([]);
 
-  const abilities: ApplicationCommandOptionChoice[] = [];
+  const abilities: ApplicationCommandOptionChoiceData[] = [];
 
   toSendOptions.forEach((a) => {
     if (abilities.length >= 25) return;

@@ -12,7 +12,7 @@ import { TFunction } from 'i18next';
 import MenheraClient from 'MenheraClient';
 import { emojis, EmojiTypes } from '@structures/Constants';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { APIMessage } from 'discord-api-types';
+import { APIMessage } from 'discord-api-types/v10';
 import { debugError } from '@utils/Util';
 
 import { Translation } from '../../types/i18next';
