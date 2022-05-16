@@ -9,7 +9,11 @@ export default class KillCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'matar',
+      nameLocalizations: { 'en-US': 'kill' },
       description: '「☠️」・Mate aquela pessoa que tu não aguenta mais (de mentirinha hihi)',
+      descriptionLocalizations: {
+        'en-US': "「☠️」・Kill that person you can't take anymore (just kidding)",
+      },
       category: 'actions',
       options: [
         {

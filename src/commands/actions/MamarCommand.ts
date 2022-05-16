@@ -9,13 +9,16 @@ export default class MamarCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'mamar',
+      nameLocalizations: { 'en-US': 'lick' },
       description: '「😝」・De uma mamada de Qualidade monstra em alguém',
+      descriptionLocalizations: { 'en-US': '「😝」・Lick someone' },
       category: 'actions',
       options: [
         {
           type: 'USER',
           name: 'user',
           description: 'Usuário que você quer mamar',
+          descriptionLocalizations: { 'en-US': 'User you want to lick' },
           required: true,
         },
         {

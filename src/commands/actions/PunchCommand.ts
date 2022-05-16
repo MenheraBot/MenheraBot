@@ -9,12 +9,15 @@ export default class PunchCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'socar',
+      nameLocalizations: { 'en-US': 'punch' },
       description: '「👊」・Da um socão em alguém',
+      descriptionLocalizations: { 'en-US': '「👊」・Punch someone' },
       options: [
         {
           name: 'user',
           type: 'USER',
           description: 'Usuário que você quer socar',
+          descriptionLocalizations: { 'en-US': 'User you wanna punch' },
           required: true,
         },
         {

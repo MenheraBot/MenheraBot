@@ -9,12 +9,17 @@ export default class HugCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'abracar',
+      nameLocalizations: { 'en-US': 'hug' },
       description: '「🤗」・Abrace um amiguinho oti modeuso fofurica',
+      descriptionLocalizations: {
+        'en-US': '「🤗」・Hug a little friend nhaww mygodness what a cutie',
+      },
       options: [
         {
           type: 'USER',
           name: 'user',
           description: 'Usuário que tu quer abraçar',
+          descriptionLocalizations: { 'en-US': 'User that you want to hug' },
           required: true,
         },
         {

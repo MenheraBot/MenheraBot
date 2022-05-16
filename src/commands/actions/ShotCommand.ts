@@ -9,12 +9,15 @@ export default class ShotCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'atirar',
+      nameLocalizations: { 'en-US': 'shot' },
       description: '「🔫」・Pow! Dê um tiro em alguém',
+      descriptionLocalizations: { 'en-US': '「🔫」・Pow! shoot someone' },
       options: [
         {
           name: 'user',
           type: 'USER',
           description: 'Usuário que você quer dar o tiro',
+          descriptionLocalizations: { 'en-US': 'User you want to shoot' },
           required: true,
         },
         {

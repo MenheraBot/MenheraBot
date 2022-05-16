@@ -9,12 +9,15 @@ export default class PatCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'carinho',
+      nameLocalizations: { 'en-US': 'cuddle' },
       description: '「😊」・Oti meudeus, faz carinho em alguém',
+      descriptionLocalizations: { 'en-US': '「😊」・Cuddle someone' },
       options: [
         {
           name: 'user',
           type: 'USER',
           description: 'Usuário que você quer fazer carinho',
+          descriptionLocalizations: { 'en-US': 'User you want to cuddle' },
           required: true,
         },
         {

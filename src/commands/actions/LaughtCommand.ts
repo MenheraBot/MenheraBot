@@ -9,13 +9,16 @@ export default class LaughtCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'rir',
+      nameLocalizations: { 'en-US': 'laugh' },
       description: '「🤣」・HAHAA, PARABÉNS ZÉ. Ria de algo',
+      descriptionLocalizations: { 'en-US': '「🤣」・Laugh at someone' },
       category: 'actions',
       options: [
         {
           type: 'USER',
           name: 'user',
           description: 'Usuário que te fez rir',
+          descriptionLocalizations: { 'en-US': 'User that made you laugh' },
           required: false,
         },
         {

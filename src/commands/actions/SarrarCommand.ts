@@ -10,11 +10,14 @@ export default class SarrarCommand extends InteractionCommand {
     super({
       name: 'sarrar',
       description: '「🔥」・Invoca o poder dos irmãos Berti para fazer a lendária sarrada',
+      nameLocalizations: { 'en-US': 'dance' },
+      descriptionLocalizations: { 'en-US': '「🔥」・Dance with a friend' },
       options: [
         {
           name: 'user',
           type: 'USER',
           description: 'Convoque alguém para sarrar contigo',
+          descriptionLocalizations: { 'en-US': 'Summon someone to dance with you' },
           required: false,
         },
       ],

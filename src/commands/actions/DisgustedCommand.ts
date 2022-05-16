@@ -9,12 +9,15 @@ export default class DisgustedCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'nojo',
-      description: '「🤮」・Ai que nojo cara, o que aconteceu',
+      nameLocalizations: { 'en-US': 'disgust' },
+      description: '「🤮」・Ai que nojo cara, quem que fez isso?',
+      descriptionLocalizations: { 'en-US': "「🤮」・Oh that's disgusting man, who made this?" },
       options: [
         {
           name: 'user',
           type: 'USER',
           description: 'Usuário que tu ta com nojo',
+          descriptionLocalizations: { 'en-US': 'User you are disgusted' },
           required: false,
         },
         {

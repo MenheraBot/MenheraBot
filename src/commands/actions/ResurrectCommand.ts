@@ -9,12 +9,15 @@ export default class ResurrectCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'ressuscitar',
+      nameLocalizations: { 'en-US': 'resurrect' },
       description: '「✝️」・Usa uma ult da sage em alguém',
+      descriptionLocalizations: { 'en-US': '「✝️」・Use a sage ult on someone' },
       options: [
         {
           name: 'user',
           type: 'USER',
           description: 'Usuário que você quer ressuscitar',
+          descriptionLocalizations: { 'en-US': 'User you want to resurrect' },
           required: true,
         },
         {

@@ -9,12 +9,15 @@ export default class SlapCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'tapa',
+      nameLocalizations: { 'en-US': 'slap' },
       description: '「🖐️」・Da um tapão de arrancar tumor em alguém',
+      descriptionLocalizations: { 'en-US': '「🖐️」・Give someone a tumor-pulling slap' },
       options: [
         {
           name: 'user',
           type: 'USER',
           description: 'Usuário pra mete o tapa',
+          descriptionLocalizations: { 'en-US': 'User to slap' },
           required: true,
         },
         {

@@ -9,11 +9,14 @@ export default class BicudaCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'bicuda',
+      nameLocalizations: { 'en-US': 'kick' },
       description: '「🦶」・Da uma bicudassa em alguém',
+      descriptionLocalizations: { 'en-US': '「🦶」・Give someone a kick' },
       options: [
         {
           name: 'user',
           type: 'USER',
+          descriptionLocalizations: { 'en-US': 'User to kick' },
           description: 'Usuário para chutar',
           required: true,
         },
