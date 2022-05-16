@@ -8,12 +8,15 @@ export default class PokeInteractionCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'cutucar',
+      nameLocalizations: { 'en-US': 'poke' },
       description: '「👉」・Da uma cutucadinha em alguém',
+      descriptionLocalizations: { 'en-US': '「👉」・Give someone a little poke' },
       options: [
         {
           name: 'user',
           type: 'USER',
           description: 'Usuário que você quer cutucar',
+          descriptionLocalizations: { 'en-US': 'User you want to poke' },
           required: true,
         },
       ],

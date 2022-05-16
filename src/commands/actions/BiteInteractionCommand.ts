@@ -8,12 +8,15 @@ export default class BiteInteractionCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'morder',
+      nameLocalizations: { 'en-US': 'bite' },
       description: '「👄」・Nhac. Moide alguém >.<',
+      descriptionLocalizations: { 'en-US': '「👄」・Nhac. Bite someone >.<' },
       options: [
         {
           name: 'user',
           type: 'USER',
           description: 'Usuário para morder :3',
+          descriptionLocalizations: { 'en-US': 'User to bite :3' },
           required: true,
         },
       ],

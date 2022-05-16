@@ -8,7 +8,9 @@ export default class GrumbleInteractionCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'resmungar',
+      nameLocalizations: { 'en-US': 'grumble' },
       description: '「😖」・Mostre para todos que tu ta resmungando. Humpf',
+      descriptionLocalizations: { 'en-US': "「😖」・Show everyone you're mumbling. humpf" },
       category: 'actions',
       cooldown: 5,
     });

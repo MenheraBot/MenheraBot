@@ -8,12 +8,15 @@ export default class FearInteractionCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'medo',
+      nameLocalizations: { 'en-US': 'fear' },
       description: '「😮」・Mostre para todos que tu ta com medo',
+      descriptionLocalizations: { 'en-US': "「😮」・Show everyone you're scared" },
       options: [
         {
           name: 'user',
           type: 'USER',
           description: 'Usuário que te deixou com medo',
+          descriptionLocalizations: { 'en-US': 'User who scared you' },
           required: false,
         },
       ],

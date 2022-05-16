@@ -8,11 +8,14 @@ export default class AngryInteractionCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'raiva',
+      nameLocalizations: { 'en-US': 'angry' },
       description: '「😡」・Mostre a todos que está com raiva',
+      descriptionLocalizations: { 'en-US': '「😡」・Shows to everyone that you are angry' },
       options: [
         {
           name: 'user',
           type: 'USER',
+          descriptionLocalizations: { 'en-US': 'User that made you angry' },
           description: 'Usuário que te deixou putasso',
           required: false,
         },

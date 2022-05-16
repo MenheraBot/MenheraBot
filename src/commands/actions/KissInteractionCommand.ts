@@ -8,23 +8,30 @@ export default class KissInteractionCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'beijar',
+      nameLocalizations: {
+        'en-US': 'kiss',
+      },
       description: '「😘」・De uma beijoquita em alguém que tu goste',
+      descriptionLocalizations: { 'en-US': '「😘」・Give a kiss to someone you like' },
       category: 'actions',
       options: [
         {
           type: 'USER',
           name: 'user',
           description: 'Usuário que você quer beijar',
+          descriptionLocalizations: { 'en-US': 'User that you wanna kiss' },
           required: true,
         },
         {
           type: 'STRING',
           name: 'local',
+          nameLocalizations: { 'en-US': 'place' },
           description: 'Lugar que você quer dar o beijo',
+          descriptionLocalizations: { 'en-US': 'place you want to kiss' },
           required: true,
           choices: [
-            { name: '👄 | Boca', value: '0' },
-            { name: '🌸 | Bochecha', value: '1' },
+            { name: '👄 | Boca', value: '0', nameLocalizations: { 'en-US': '👄 | Mouth' } },
+            { name: '🌸 | Bochecha', value: '1', nameLocalizations: { 'en-US': '🌸 | Cheek' } },
           ],
         },
       ],

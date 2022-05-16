@@ -8,12 +8,15 @@ export default class CryInteractionCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'chorar',
+      nameLocalizations: { 'en-US': 'cry' },
       description: '「😭」・Mostre para os que você está chorando :((',
+      descriptionLocalizations: { 'en-US': "「😭」・Show everyone that you're crying :((" },
       options: [
         {
           name: 'user',
           type: 'USER',
           description: 'Usuário que te fez chorar',
+          descriptionLocalizations: { 'en-US': 'User that made you cry' },
           required: false,
         },
       ],

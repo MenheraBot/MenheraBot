@@ -8,12 +8,15 @@ export default class SniffInteractionCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'cheirar',
+      nameLocalizations: { 'en-US': 'sniff' },
       description: '「👃」・Da uma cheiradinha em alguém hgmmm',
+      descriptionLocalizations: { 'en-US': '「👃」・Give someone a sniff hgmmm' },
       options: [
         {
           name: 'user',
           type: 'USER',
           description: 'Usuário pra mete a narigada sugadora ultradimensional',
+          descriptionLocalizations: { 'en-US': 'User to make the ultradimensional sniffer' },
           required: false,
         },
       ],

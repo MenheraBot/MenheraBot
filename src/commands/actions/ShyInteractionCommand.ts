@@ -8,12 +8,15 @@ export default class ShyInteractionCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'vergonha',
+      nameLocalizations: { 'en-US': 'shy' },
       description: '「👉👈」・E-eto >.<, oto com vergonhinha',
+      descriptionLocalizations: { 'en-US': "「👉👈」・E-eto >.<, i'm with shame nii-chan" },
       options: [
         {
           name: 'user',
           type: 'USER',
           description: 'Usuário que te deixou com vergonha',
+          descriptionLocalizations: { 'en-US': 'User who made you ashamed' },
           required: false,
         },
       ],

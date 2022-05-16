@@ -8,12 +8,17 @@ export default class ThinkInteractionCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'pensar',
+      nameLocalizations: { 'en-US': 'think' },
       description: '「🤔」・Ser ou não ser? Eis a questão. Pense, pense sobre alguém',
+      descriptionLocalizations: {
+        'en-US': '「🤔」・To be or not to be? That is the question. Think, think about someone',
+      },
       options: [
         {
           name: 'user',
           type: 'USER',
           description: 'Usuário em que você está pensando',
+          descriptionLocalizations: { 'en-US': 'User you are thinking of' },
           required: false,
         },
       ],
