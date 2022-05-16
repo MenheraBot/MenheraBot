@@ -8,8 +8,6 @@ const GiveBadgeAutocomplete = async (
 ): Promise<void> => {
   const texted = interaction.options.getInteger('badgeid');
 
-  if (Date.now() - interaction.createdTimestamp >= 3000) return;
-
   const entries = Object.entries(Badges);
 
   const badges: { id: string; name: string }[] = entries.map((a) => ({

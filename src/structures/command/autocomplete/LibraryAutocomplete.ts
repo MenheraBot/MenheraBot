@@ -29,8 +29,6 @@ const LibraryAutocomplete = async (
   if (availableAbilities.length === 0) populateTranslations();
   const texted = interaction.options.getInteger('id');
 
-  if (Date.now() - interaction.createdTimestamp >= 3000) return;
-
   if (`${texted}`.length < 5) return interaction.respond([]);
 
   const ratings =
