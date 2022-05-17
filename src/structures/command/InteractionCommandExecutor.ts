@@ -195,7 +195,10 @@ const InteractionCommandExecutor = async (
   const data: ICommandUsedData = {
     authorId: interaction.user.id,
     guildId: interaction.guild.id,
-    commandName: command.config.name,
+    commandName:
+      command.config?.nameLocalizations && command.config?.nameLocalizations['pt-BR']
+        ? command.config.nameLocalizations['pt-BR']
+        : command.config.name,
     data: Date.now(),
     args: interaction.options.data,
     shardId: interaction.client.cluster?.id ?? 0,

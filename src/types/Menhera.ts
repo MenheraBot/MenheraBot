@@ -28,6 +28,8 @@ import RoleplayRepository from '@database/repositories/RoleplayRepository';
 import FluffetyRepository from '@database/repositories/FluffetyRepository';
 import { FluffetyActionIdentifier } from '@fluffety/Types';
 import { MayNotExists } from '@utils/Util';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { LocalizationMap } from 'discord-api-types/v10';
 
 export interface IClientConfigs {
   interactionsDirectory: string;
@@ -263,9 +265,11 @@ export interface ICmdSchema {
 
 export interface ICommandsData {
   name: string;
+  nameLocalizations?: LocalizationMap;
+  description: string;
+  descriptionLocalizations?: LocalizationMap;
   category: string;
   cooldown: number;
-  description: string;
   options: ApplicationCommandOptionData[];
   disabled: IDisabled;
 }

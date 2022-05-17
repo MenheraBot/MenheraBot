@@ -65,6 +65,8 @@ export default class DeploySlashCommand extends InteractionCommand {
             cooldown: c.config.cooldown ?? 0,
             description: c.config.description,
             options: c.config.options ?? [],
+            descriptionLocalizations: c.config.descriptionLocalizations,
+            nameLocalizations: c.config.nameLocalizations,
             disabled: {
               isDisabled: found?.maintenance ?? false,
               reason: found?.maintenanceReason ?? null,
@@ -141,6 +143,8 @@ export default class DeploySlashCommand extends InteractionCommand {
           name: c.config.name,
           description: c.config.description,
           options: c.config.options,
+          nameLocalizations: c.config.nameLocalizations,
+          descriptionLocalizations: c.config.descriptionLocalizations,
         });
         return p;
       }, []);
