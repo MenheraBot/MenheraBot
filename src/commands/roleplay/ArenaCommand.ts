@@ -55,19 +55,30 @@ export default class ArenaCommand extends InteractionCommand {
     super({
       name: 'arena',
       description: '【ＲＰＧ】🏟️ | Entre na Arena PvP de Boleham',
+      descriptionLocalizations: { 'en-US': '【ＲＰＧ】🏟️ | Enter the Boleham PvP Arena' },
       category: 'roleplay',
       options: [
         {
           name: 'batalhar',
+          nameLocalizations: { 'en-US': 'battle' },
           description: '【ＲＰＧ】🏟️ | Entre na Arena PvP de Boleham',
+          descriptionLocalizations: { 'en-US': "【ＲＰＧ】🏟️ | Enter Boleham's PvP Arena" },
           type: 'SUB_COMMAND',
           options: [
-            { name: 'user', description: 'Inimigo de Batalha', type: 'USER', required: true },
+            {
+              name: 'user',
+              description: 'Inimigo de Batalha',
+              descriptionLocalizations: { 'en-US': 'Battle Enemy' },
+              type: 'USER',
+              required: true,
+            },
           ],
         },
         {
           name: 'configurar',
+          nameLocalizations: { 'en-US': 'configure' },
           description: '【ＲＰＧ】🏟️ | Configure seu perfil de batalha',
+          descriptionLocalizations: { 'en-US': '【ＲＰＧ】🏟️ | Configure your battle profile' },
           type: 'SUB_COMMAND',
         },
       ],

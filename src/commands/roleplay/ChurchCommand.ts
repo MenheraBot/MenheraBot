@@ -23,7 +23,9 @@ export default class ChurchCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'igreja',
+      nameLocalizations: { 'en-US': 'church' },
       description: '【ＲＰＧ】⛪ | Vá para a Igreja da Capital',
+      descriptionLocalizations: { 'en-US': '【ＲＰＧ】⛪ | Go to Capital Church' },
       category: 'roleplay',
       cooldown: 7,
       authorDataFields: ['selectedColor'],

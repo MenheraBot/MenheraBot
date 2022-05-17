@@ -7,17 +7,23 @@ export default class ResetCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'resetar',
+      nameLocalizations: { 'en-US': 'reset' },
       description: '【ＲＰＧ】↪️ | Sistema de Reset do RPG',
+      descriptionLocalizations: { 'en-US': '【ＲＰＧ】↪️ | RPG Reset System' },
       category: 'roleplay',
       options: [
         {
           name: 'bencaos',
+          nameLocalizations: { 'en-US': 'blesses' },
           description: '【ＲＰＧ】↪️ | Reseta as bênçãos do teu personagem',
+          descriptionLocalizations: { 'en-US': "【ＲＰＧ】↪️ | Resets your character's blessings" },
           type: 'SUB_COMMAND',
         },
         {
           name: 'ficha',
+          nameLocalizations: { 'en-US': 'sheet' },
           description: '【ＲＰＧ】↪️ | Reseta tua ficha',
+          descriptionLocalizations: { 'en-US': '【ＲＰＧ】↪️ | Reset Your Sheet' },
           type: 'SUB_COMMAND',
         },
       ],

@@ -44,12 +44,17 @@ export default class FichaCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'ficha',
+      nameLocalizations: { 'en-US': 'sheet' },
       description: '【ＲＰＧ】📜 | Mostra a ficha de um personagem ou cria a sua própria',
+      descriptionLocalizations: {
+        'en-US': '【ＲＰＧ】📜 | Show a character sheet or create your own',
+      },
       category: 'roleplay',
       options: [
         {
           name: 'user',
           description: 'Usuário para ver a ficha',
+          descriptionLocalizations: { 'en-US': 'User to view the sheet' },
           type: 'USER',
           required: false,
         },

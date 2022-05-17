@@ -37,27 +37,42 @@ export default class DowntownCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'centro',
+      nameLocalizations: { 'en-US': 'downtown' },
       description: '【ＲＰＧ】🏛️ | Centro de Boleham, aqui tu encontra de tudo',
+      descriptionLocalizations: {
+        'en-US': '【ＲＰＧ】🏛️ | Boleham Center, here you can find everything',
+      },
       category: 'roleplay',
       options: [
         {
           name: 'biblioteca',
+          nameLocalizations: { 'en-US': 'library' },
           description: '【ＲＰＧ】📖 | Veja informações sobre o Mundo de Boleham',
+          descriptionLocalizations: {
+            'en-US': "【ＲＰＧ】📖 | See information about Boleham's World",
+          },
           type: 'SUB_COMMAND',
           options: [
             {
               name: 'sessao',
+              nameLocalizations: { 'en-US': 'section' },
               description: 'Tu tá procurando informações sobre o que?',
+              descriptionLocalizations: { 'en-US': 'What are you looking for information about?' },
               type: 'STRING',
               required: true,
               choices: [
-                { name: 'habilidades', value: 'abilities' },
+                {
+                  name: 'habilidades',
+                  nameLocalizations: { 'en-US': 'abilities' },
+                  value: 'abilities',
+                },
                 // { name: 'itens', value: 'items' },
               ],
             },
             {
               name: 'id',
               description: 'ID do objeto que você está procurando',
+              descriptionLocalizations: { 'en-US': 'ID of the object you are looking for' },
               type: 'INTEGER',
               autocomplete: true,
               required: true,
@@ -66,27 +81,41 @@ export default class DowntownCommand extends InteractionCommand {
         },
         {
           name: 'guilda',
+          nameLocalizations: { 'en-US': 'guild' },
           description: '【ＲＰＧ】🏠 | Retire quests e reivindique-as',
+          descriptionLocalizations: { 'en-US': '【ＲＰＧ】🏠 | Remove quests and claim them' },
           type: 'SUB_COMMAND',
         },
         {
           name: 'ferreiro',
+          nameLocalizations: { 'en-US': 'blacksmith' },
           description: '【ＲＰＧ】⚒️ | Compre e faça itens de batalha',
+          descriptionLocalizations: { 'en-US': '【ＲＰＧ】⚒️ | Buy and make battle items' },
           type: 'SUB_COMMAND',
         },
         {
           name: 'mercado',
+          nameLocalizations: { 'en-US': 'market' },
           description: '【ＲＰＧ】🛒 | Compre e venda itens',
+          descriptionLocalizations: { 'en-US': '【ＲＰＧ】🛒 | buy and sell items' },
           type: 'SUB_COMMAND_GROUP',
           options: [
             {
               name: 'comprar',
+              nameLocalizations: { 'en-US': 'buy' },
               description: '【ＲＰＧ】🛒 | Compre itens para lhe ajudar nas batalhas',
+              descriptionLocalizations: {
+                'en-US': '【ＲＰＧ】🛒 | Buy items to help you in battles',
+              },
               type: 'SUB_COMMAND',
             },
             {
               name: 'vender',
+              nameLocalizations: { 'en-US': 'sell' },
               description: '【ＲＰＧ】🛒 | Venda espólios de batalha para conseguir Moedas Reais',
+              descriptionLocalizations: {
+                'en-US': '【ＲＰＧ】🛒 | Sell ​​battle loot to get Royal Coins',
+              },
               type: 'SUB_COMMAND',
             },
           ],
