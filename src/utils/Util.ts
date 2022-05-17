@@ -46,6 +46,7 @@ export default class Util {
     authorID: string,
     customId: string | number,
     time?: number,
+    defer?: boolean,
   ): Promise<null | T>;
 
   static async collectComponentInteractionWithStartingId(
@@ -53,6 +54,7 @@ export default class Util {
     authorID: string,
     customId: string | number,
     time = 7000,
+    defer = true,
   ): Promise<null | MessageComponentInteraction> {
     return channel
       .awaitMessageComponent({
@@ -62,7 +64,7 @@ export default class Util {
               ephemeral: true,
               content: i18next.getFixedT(m.locale)('common:not-your-interaction'),
             }).catch(() => null);
-          else m.deferUpdate().catch(() => null);
+          else if (defer) m.deferUpdate().catch(() => null);
           return m.user.id === authorID && m.customId.startsWith(`${customId}`);
         },
         time,

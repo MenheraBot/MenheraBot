@@ -34,6 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ### Changed
 
+- O comando `/loja comprar cores` agora usa formulários ao comprar cores personalizadas! 
 - **TODOS** comandos que possuíam erro de gramática no nome (`/cacar` ou `user`) agora possuem seus devidos acentos e caracteres especiais! `/caçar`, `/estatísticas` (exceção de ítens para não dificultar)
 - O comando `/status` foi renomeado para `/estatísticas`
 - O comando `/personalizar info` foi renomeado para `/personalizar sobre_mim`
@@ -59,6 +60,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ### Fixed
 
+- Menhera falava que você não tinha 2 cores ao usar `/personalizar cores` pela primeira vez
 - Corrigido um bug do Coinflip onde era possível apostar contra usuários que estavam utilizando outro comando de economia
 - CORRIGIDO FINALMENTE! O Blackjack não interpreta mais os A's de naipes diferentes de Espada como uma carta de valor 10
 - Árvore de Habilidades do Assassino estava com uma ordem errada

@@ -332,7 +332,9 @@ export default class PersonalizeCommand extends InteractionCommand {
 
       return colors[color] ?? '🌈';
     };
+
     if (!haspadrao) {
+      ctx.data.user.colors.push({ nome: '0 - Padrão', cor: '#a788ff' });
       await ctx.client.repositories.userRepository.update(ctx.author.id, {
         $push: { colors: { nome: '0 - Padrão', cor: '#a788ff' } },
       });

@@ -5,7 +5,6 @@ import {
   InteractionReplyOptions,
   Message,
   MessagePayload,
-  Modal,
   ModalSubmitInteraction,
   TextBasedChannel,
   User,
@@ -151,10 +150,6 @@ export default class InteractionCommandContext {
           return debugError(e);
         }),
     );
-  }
-
-  async displayModal(modal: Modal): Promise<void> {
-    return this.interaction.showModal(modal);
   }
 
   async deleteReply(): Promise<void | null> {

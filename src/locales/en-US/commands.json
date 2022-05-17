@@ -238,7 +238,8 @@
       "hex_input": "Input your color in Hexadecimal",
       "name_placeholder": "A Cute Pink",
       "name_input": "The name of this color (for your organization)",
-      "timesup": "You didn't submit the form on time!"
+      "timesup": "You didn't submit the form on time!",
+      "waiting": "Waiting Form..."
     },
     "dataRolls_fields": {
       "title": "Buy Rolls",

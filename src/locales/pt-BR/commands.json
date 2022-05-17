@@ -247,7 +247,8 @@
       "hex_input": "Digite sua cor em Hexadecimal",
       "name_placeholder": "Azul Bebê",
       "name_input": "O nome dessa cor (para sua organização)",
-      "timesup": "Você não enviou o formulário a tempo!"
+      "timesup": "Você não enviou o formulário a tempo!",
+      "waiting": "Esperando Formulário..."
     },
     "dataRolls_fields": {
       "title": "🔑 | Comprar Rolls",

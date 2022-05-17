@@ -96,6 +96,7 @@ export const emojis = {
   yellow_circle: '🟡',
   heart: '❤️',
   lick: '👅',
+  time: '⏲️',
   sword: '⚔️',
   gay_flag: '🏳️‍🌈',
   hourglass: '⌛',

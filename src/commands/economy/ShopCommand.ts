@@ -864,7 +864,7 @@ export default class ShopCommand extends InteractionCommand {
           if (ctx.data.user.colors.some((a) => a.cor === c.cor)) return p;
 
           p.push({
-            label: c.nome,
+            label: c.nome.replaceAll('**', ''),
             description: `${c.cor} | ${c.price} ${emojis.estrelinhas}`,
             value: c.cor,
           });
@@ -882,6 +882,7 @@ export default class ShopCommand extends InteractionCommand {
       ctx.author.id,
       ctx.interaction.id,
       10_000,
+      false,
     );
 
     if (!selected) {
@@ -940,7 +941,16 @@ export default class ShopCommand extends InteractionCommand {
       .setLabel(ctx.locale('commands:loja.buy_colors.name_input'))
       .setStyle('SHORT');
 
-    colorModal.addComponents({ type: 1, components: [hexInput, nameInput] });
+    colorModal.addComponents(
+      { type: 1, components: [hexInput] },
+      { type: 1, components: [nameInput] },
+    );
+
+    selected.showModal(colorModal);
+    ctx.makeMessage({
+      content: ctx.prettyResponse('time', 'commands:loja.buy_colors.waiting'),
+      components: [],
+    });
 
     const response = await ctx.awaitModalResponse(35_000);
 
@@ -981,6 +991,7 @@ export default class ShopCommand extends InteractionCommand {
       });
       return;
     }
+
     const toPush = {
       nome: colorName,
       cor: `#${hexColor.replace('#', '')}` as const,
