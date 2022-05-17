@@ -41,7 +41,6 @@ export default class BlacklistCommand extends InteractionCommand {
           required: false,
         },
       ],
-      defaultPermission: false,
       devsOnly: true,
       cooldown: 1,
     });

@@ -266,7 +266,7 @@ export default class ShopCommand extends InteractionCommand {
       if (option === 'temas') return ShopCommand.buyThemes(ctx);
     }
 
-    if (type === 'info') {
+    if (type === 'precos') {
       const option = ctx.options.getSubcommand();
 
       if (option === 'comprar') return ShopCommand.buyInfo(ctx);

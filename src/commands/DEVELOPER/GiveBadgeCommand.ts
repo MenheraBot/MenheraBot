@@ -22,7 +22,6 @@ export default class GiveBadgeSlashCommand extends InteractionCommand {
           required: true,
         },
       ],
-      defaultPermission: false,
       devsOnly: true,
       cooldown: 1,
     });

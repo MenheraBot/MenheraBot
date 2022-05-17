@@ -22,7 +22,6 @@ export default class MaintenanceSlashCommand extends InteractionCommand {
           required: false,
         },
       ],
-      defaultPermission: false,
       devsOnly: true,
       cooldown: 1,
     });

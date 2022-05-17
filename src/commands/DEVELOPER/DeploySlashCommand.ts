@@ -42,7 +42,6 @@ export default class DeploySlashCommand extends InteractionCommand {
           required: false,
         },
       ],
-      defaultPermission: false,
       devsOnly: true,
       cooldown: 1,
     });
@@ -98,15 +97,19 @@ export default class DeploySlashCommand extends InteractionCommand {
           cooldown: c.config.cooldown ?? 0,
           description: c.config.description,
           options: c.config.options ?? [],
+          nameLocalizations: c.config.nameLocalizations,
+          descriptionLocalizations: c.config.descriptionLocalizations,
         });
         p.push({
           name: c.config.name,
           description: c.config.description,
           options: c.config.options,
-          defaultPermission: c.config.defaultPermission,
+          nameLocalizations: c.config.nameLocalizations,
+          descriptionLocalizations: c.config.descriptionLocalizations,
         });
         return p;
       }, []);
+
       await ctx.makeMessage({ content: 'Iniciando deploy' });
 
       const disabledCommands =
@@ -138,7 +141,6 @@ export default class DeploySlashCommand extends InteractionCommand {
           name: c.config.name,
           description: c.config.description,
           options: c.config.options,
-          defaultPermission: c.config.defaultPermission,
         });
         return p;
       }, []);
@@ -150,15 +152,13 @@ export default class DeploySlashCommand extends InteractionCommand {
       return;
     }
 
-    const permissionSet: string[] = [];
-
     const allCommands = ctx.client.slashCommands.reduce<ApplicationCommandData[]>((p, c) => {
-      if (c.config.devsOnly) permissionSet.push(c.config.name);
       p.push({
         name: c.config.name,
         description: c.config.description,
         options: c.config.options,
-        defaultPermission: c.config.defaultPermission,
+        nameLocalizations: c.config.nameLocalizations,
+        descriptionLocalizations: c.config.descriptionLocalizations,
       });
       return p;
     }, []);

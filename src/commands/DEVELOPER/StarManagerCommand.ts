@@ -32,7 +32,6 @@ export default class ManageStartSlashCommand extends InteractionCommand {
           required: true,
         },
       ],
-      defaultPermission: false,
       devsOnly: true,
       cooldown: 1,
     });

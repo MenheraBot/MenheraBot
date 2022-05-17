@@ -17,7 +17,6 @@ export default class EvalSlashCommand extends InteractionCommand {
           required: true,
         },
       ],
-      defaultPermission: false,
       devsOnly: true,
       cooldown: 1,
     });

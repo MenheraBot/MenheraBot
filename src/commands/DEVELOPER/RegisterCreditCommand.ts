@@ -40,7 +40,6 @@ export default class RegisterCreditSlashCommand extends InteractionCommand {
           required: false,
         },
       ],
-      defaultPermission: false,
       devsOnly: true,
       cooldown: 1,
     });

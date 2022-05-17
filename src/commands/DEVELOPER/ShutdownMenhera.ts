@@ -8,7 +8,6 @@ export default class ShutdownSlashCommand extends InteractionCommand {
       name: 'shutdown',
       description: '[DEV] Começa o processo de desligamento da Menhera',
       category: 'dev',
-      defaultPermission: false,
       devsOnly: true,
       cooldown: 1,
     });

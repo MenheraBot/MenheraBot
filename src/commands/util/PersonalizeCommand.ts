@@ -115,7 +115,7 @@ export default class PersonalizeCommand extends InteractionCommand {
   async run(ctx: InteractionCommandContext): Promise<void> {
     const command = ctx.options.getSubcommand(true);
 
-    if (command === 'info') PersonalizeCommand.AboutmeInteractionCommand(ctx);
+    if (command === 'sobre_mim') PersonalizeCommand.AboutmeInteractionCommand(ctx);
 
     if (command === 'cor') PersonalizeCommand.ColorInteractionCommand(ctx);
 
