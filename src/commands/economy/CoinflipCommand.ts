@@ -9,16 +9,20 @@ export default class CoinflipCommand extends InteractionCommand {
     super({
       name: 'coinflip',
       description: '「📀」・Disputa num jogo de Cara e Coroa com um amigo',
+      descriptionLocalizations: { 'en-US': '「📀」・Dispute in a coin toss game with a friend' },
       options: [
         {
           name: 'user',
           description: 'Usuário para disputar',
+          descriptionLocalizations: { 'en-US': 'User to dispute' },
           type: 'USER',
           required: true,
         },
         {
           name: 'aposta',
+          nameLocalizations: { 'en-US': 'bet' },
           description: 'Valor da aposta',
+          descriptionLocalizations: { 'en-US': 'Bet ammount' },
           type: 'INTEGER',
           required: true,
           minValue: 1,

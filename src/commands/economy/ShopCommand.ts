@@ -32,21 +32,31 @@ export default class ShopCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'loja',
+      nameLocalizations: { 'en-US': 'shop' },
       description: '「💴」・Abre o brechó da Menhera',
+      descriptionLocalizations: { 'en-US': "Open Menhera's thrift store" },
       options: [
         {
           name: 'comprar',
+          nameLocalizations: { 'en-US': 'buy' },
           description: '「🛒」・Abre a loja de compras',
+          descriptionLocalizations: { 'en-US': '「🛒」・Opens the shopping store' },
           type: 'SUB_COMMAND_GROUP',
           options: [
             {
               name: 'itens',
+              nameLocalizations: { 'en-US': 'items' },
               description: '「🔮」・ Compre itens mágicos para melhorar suas habilidades',
+              descriptionLocalizations: {
+                'en-US': '「🔮」・Buy magic items to improve your skills',
+              },
               type: 'SUB_COMMAND',
             },
             {
               name: 'cores',
+              nameLocalizations: { 'en-US': 'colors' },
               description: '「🌈」・Compre cores para dar um UP em seu perfil!',
+              descriptionLocalizations: { 'en-US': '「🌈」・Buy colors to upgrade your profile!' },
               type: 'SUB_COMMAND',
               options: [
                 {
@@ -66,11 +76,14 @@ export default class ShopCommand extends InteractionCommand {
             {
               name: 'rolls',
               description: '「🎟️」・Compre rolls para resetar seu tempo de caça',
+              descriptionLocalizations: { 'en-US': '「🎟️」・Buy rolls to reset your hunting time' },
               type: 'SUB_COMMAND',
               options: [
                 {
                   name: 'quantidade',
+                  nameLocalizations: { 'en-US': 'amount' },
                   description: 'Quantidade de rolls que você quer comprar',
+                  descriptionLocalizations: { 'en-US': 'Number of rolls you want to buy' },
                   type: 'INTEGER',
                   required: true,
                   minValue: 1,
@@ -79,51 +92,70 @@ export default class ShopCommand extends InteractionCommand {
             },
             {
               name: 'temas',
+              nameLocalizations: { 'en-US': 'themes' },
               description: '「🎊」・Compre temas para a sua conta',
+              descriptionLocalizations: { 'en-US': '「🎊」・Buy themes for your account' },
               type: 'SUB_COMMAND',
             },
           ],
         },
         {
           name: 'vender',
+          nameLocalizations: { 'en-US': 'sell' },
           description: '「💸」・ Venda suas caças',
+          descriptionLocalizations: { 'en-US': '「💸」・ Sell your fighters' },
           type: 'SUB_COMMAND',
           options: [
             {
               name: 'tipo',
-              description: 'Tipo da caça para vender',
+              nameLocalizations: { 'en-US': 'type' },
+              description: 'Tipo de caça para vender',
+              descriptionLocalizations: { 'en-US': 'Type of hunting to sell' },
               type: 'STRING',
               required: true,
               choices: [
                 {
+                  name: '⭐ | Estrelinhas',
+                  nameLocalizations: { 'en-US': '⭐ | Stars' },
+                  value: 'estrelinhas',
+                },
+                {
                   name: '😈 | Demônios',
+                  nameLocalizations: { 'en-US': '😈 | Demons' },
                   value: 'demons',
                 },
                 {
                   name: '👊 | Gigantes',
+                  nameLocalizations: { 'en-US': '👊 | Giants' },
                   value: 'giants',
                 },
                 {
                   name: '👼 | Anjos',
+                  nameLocalizations: { 'en-US': '👼 | Angels' },
                   value: 'angels',
                 },
                 {
                   name: '🧚‍♂️ | Arcanjos',
+                  nameLocalizations: { 'en-US': '🧚‍♂️ | Atchangels' },
                   value: 'archangels',
                 },
                 {
                   name: '🙌 | Semideuses',
+                  nameLocalizations: { 'en-US': '🙌 | Demigods' },
                   value: 'demigods',
                 },
                 {
                   name: '✝️ | Deuses',
+                  nameLocalizations: { 'en-US': '✝️ | gods' },
                   value: 'gods',
                 },
               ],
             },
             {
               name: 'quantidade',
+              nameLocalizations: { 'en-US': 'amount' },
               description: 'Quantidade de caças para vender',
+              descriptionLocalizations: { 'en-US': 'Number of huntings to sell' },
               type: 'INTEGER',
               required: true,
               minValue: 1,
@@ -131,23 +163,30 @@ export default class ShopCommand extends InteractionCommand {
           ],
         },
         {
-          name: 'info',
+          name: 'precos',
+          nameLocalizations: { 'en-US': 'prices' },
           description: '「📊」・Mostra a tabela de preços da Menhera',
+          descriptionLocalizations: { 'en-US': "「📊」・Show Menhera's price list" },
           type: 'SUB_COMMAND_GROUP',
           options: [
             {
               name: 'comprar',
+              nameLocalizations: { 'en-US': 'buy' },
               description: '「📈」・ Mostra os preços de itens de compras',
+              descriptionLocalizations: { 'en-US': '「📈」・ Shows the prices of shopping items' },
               type: 'SUB_COMMAND',
               options: [
                 {
                   name: 'tipo',
+                  nameLocalizations: { 'en-US': 'type' },
                   description: 'Tipo da compra para precificar',
+                  descriptionLocalizations: { 'en-US': 'Purchase type for pricing' },
                   type: 'STRING',
                   required: true,
                   choices: [
                     {
                       name: '🌈 | Cores',
+                      nameLocalizations: { 'en-US': '🌈 | Colors' },
                       value: 'colors',
                     },
                     {
@@ -156,6 +195,7 @@ export default class ShopCommand extends InteractionCommand {
                     },
                     {
                       name: '🔮 | Itens Mágicos',
+                      nameLocalizations: { 'en-US': '🔮 | Magic Items' },
                       value: 'items',
                     },
                   ],
@@ -164,17 +204,22 @@ export default class ShopCommand extends InteractionCommand {
             },
             {
               name: 'vender',
+              nameLocalizations: { 'en-US': 'sell' },
               description: '「📈」・ Mostra os preços de itens de venda',
+              descriptionLocalizations: { 'en-US': '「📈」・ Shows the prices of sale items' },
               type: 'SUB_COMMAND',
               options: [
                 {
                   name: 'tipo',
+                  nameLocalizations: { 'en-US': 'type' },
                   description: 'Tipo de vendas para precificar',
+                  descriptionLocalizations: { 'en-US': 'Sales type to price' },
                   type: 'STRING',
                   required: true,
                   choices: [
                     {
                       name: '🐾 | Caças',
+                      nameLocalizations: { 'en-US': '🐾 | Hunts' },
                       value: 'hunts',
                     },
                   ],

@@ -1,38 +1,45 @@
 import { emojis } from '@structures/Constants';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { MessageButton } from 'discord.js-light';
+import { MessageButton, ApplicationCommandOptionChoiceData } from 'discord.js-light';
 import Util, { disableComponents, resolveCustomId } from '@utils/Util';
 import { HuntingTypes } from '@custom_types/Menhera';
 
 type ChoiceTypes = HuntingTypes | 'estrelinhas';
-const choices: { name: string; value: ChoiceTypes }[] = [
+const choices: Array<ApplicationCommandOptionChoiceData & { value: ChoiceTypes }> = [
   {
     name: '⭐ | Estrelinhas',
+    nameLocalizations: { 'en-US': '⭐ | Stars' },
     value: 'estrelinhas',
   },
   {
     name: '😈 | Demônios',
+    nameLocalizations: { 'en-US': '😈 | Demons' },
     value: 'demons',
   },
   {
     name: '👊 | Gigantes',
+    nameLocalizations: { 'en-US': '👊 | Giants' },
     value: 'giants',
   },
   {
     name: '👼 | Anjos',
+    nameLocalizations: { 'en-US': '👼 | Angels' },
     value: 'angels',
   },
   {
     name: '🧚‍♂️ | Arcanjos',
+    nameLocalizations: { 'en-US': '🧚‍♂️ | Atchangels' },
     value: 'archangels',
   },
   {
     name: '🙌 | Semideuses',
+    nameLocalizations: { 'en-US': '🙌 | Demigods' },
     value: 'demigods',
   },
   {
     name: '✝️ | Deuses',
+    nameLocalizations: { 'en-US': '✝️ | gods' },
     value: 'gods',
   },
 ];
@@ -40,24 +47,31 @@ export default class GiveCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'presentear',
+      nameLocalizations: { 'en-US': 'gift' },
       description: '「🎁」・Dê um presente de seu inventário para outra pessoa',
+      descriptionLocalizations: { 'en-US': '「🎁」・Give someone else a gift from your inventory' },
       options: [
         {
           name: 'user',
           description: 'Usuário para presentear',
+          descriptionLocalizations: { 'en-US': 'User to gift' },
           type: 'USER',
           required: true,
         },
         {
           name: 'tipo',
+          nameLocalizations: { 'en-US': 'type' },
           description: 'O tipo de item que quer presentear',
+          descriptionLocalizations: { 'en-US': 'The type of item you want to gift' },
           type: 'STRING',
           choices,
           required: true,
         },
         {
           name: 'valor',
+          nameLocalizations: { 'en-US': 'amount' },
           description: 'A quantidade para presentear',
+          descriptionLocalizations: { 'en-US': 'The amount to gift' },
           type: 'INTEGER',
           required: true,
           minValue: 1,

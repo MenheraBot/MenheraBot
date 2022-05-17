@@ -21,11 +21,17 @@ export default class RouletteCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'roleta',
+      nameLocalizations: { 'en-US': 'roulette' },
       description: '「🎡」・O famoso jogo da roleta, aposte em algo e ganhe milhões de estrelinhas',
+      descriptionLocalizations: {
+        'en-US': '「🎡」・The famous Roulette Game, bet on something and win millions of stars',
+      },
       options: [
         {
           name: 'aposta',
+          nameLocalizations: { 'en-US': 'bet' },
           description: 'Valor da aposta',
+          descriptionLocalizations: { 'en-US': 'Bet amount' },
           type: 'INTEGER',
           required: true,
           minValue: 1,

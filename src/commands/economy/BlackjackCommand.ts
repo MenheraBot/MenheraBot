@@ -70,10 +70,13 @@ export default class BlackjackCommand extends InteractionCommand {
     super({
       name: 'blackjack',
       description: '「🃏」・Disputa num jogo de BlackJack contra a Menhera',
+      descriptionLocalizations: { 'en-US': '「🃏」・Dispute in a BlackJack game against Menhera' },
       options: [
         {
           name: 'aposta',
-          description: 'Valor da aposta. Mínimo 1000. Máximo 50000',
+          nameLocalizations: { 'en-US': 'bet' },
+          description: 'Valor da aposta',
+          descriptionLocalizations: { 'en-US': 'Bet ammount' },
           type: 'INTEGER',
           required: true,
           minValue: 1000,

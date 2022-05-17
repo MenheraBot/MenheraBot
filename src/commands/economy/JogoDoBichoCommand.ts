@@ -14,11 +14,15 @@ export default class JogoDoBichoCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'bicho',
+      nameLocalizations: { 'en-US': 'animal' },
       description: '「🦌」・Aposte no famoso Jogo do Bicho',
+      descriptionLocalizations: { 'en-US': '「🦌」・Bet on the Animal Game' },
       options: [
         {
           name: 'aposta',
+          nameLocalizations: { 'en-US': 'bet' },
           description: 'Valor da aposta',
+          descriptionLocalizations: { 'en-US': 'Bet amount' },
           type: 'INTEGER',
           required: false,
           minValue: 1,

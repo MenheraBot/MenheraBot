@@ -6,11 +6,14 @@ export default class WalletCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'carteira',
+      nameLocalizations: { 'en-US': 'wallet' },
       description: '「💳」・Mostra a carteira de alguém',
+      descriptionLocalizations: { 'en-US': "「💳」・Show someone's wallet" },
       options: [
         {
           name: 'user',
           description: 'Usuário para mostrar a carteira',
+          descriptionLocalizations: { 'en-US': 'User to show wallet' },
           type: 'USER',
           required: false,
         },
