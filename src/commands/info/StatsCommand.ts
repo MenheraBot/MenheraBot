@@ -13,16 +13,20 @@ export default class StatsCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'status',
+      nameLocalizations: { 'en-US': 'stats' },
       description: '「📊」・Veja os status de algo',
+      descriptionLocalizations: { 'en-US': '「📊」・See the status of something' },
       options: [
         {
           name: 'blackjack',
           type: 'SUB_COMMAND',
           description: '「🃏」・Veja os status do blackjack de alguém',
+          descriptionLocalizations: { 'en-US': "「🃏」・View someone's blackjack stats" },
           options: [
             {
               name: 'user',
               description: 'Usuário para ver os status',
+              descriptionLocalizations: { 'en-US': 'User to see status' },
               type: 'USER',
               required: false,
             },
@@ -30,12 +34,15 @@ export default class StatsCommand extends InteractionCommand {
         },
         {
           name: 'bicho',
+          nameLocalizations: { 'en-US': 'animal' },
           type: 'SUB_COMMAND',
           description: '「🦌」・Veja os status do jogo do bicho de alguém',
+          descriptionLocalizations: { 'en-US': "「🦌」・View someone's Animal Game stats" },
           options: [
             {
               name: 'user',
               description: 'Usuário para ver os status',
+              descriptionLocalizations: { 'en-US': 'User to see stats' },
               type: 'USER',
               required: false,
             },
@@ -43,12 +50,15 @@ export default class StatsCommand extends InteractionCommand {
         },
         {
           name: 'roleta',
+          nameLocalizations: { 'en-US': 'roulette' },
           type: 'SUB_COMMAND',
           description: '「🎡」・Veja os status de roleta de alguém',
+          descriptionLocalizations: { 'en-US': "「🎡」・View someone's roulette stats" },
           options: [
             {
               name: 'user',
               description: 'Usuário para ver os status',
+              descriptionLocalizations: { 'en-US': 'User to see stats' },
               type: 'USER',
               required: false,
             },
@@ -57,11 +67,13 @@ export default class StatsCommand extends InteractionCommand {
         {
           name: 'coinflip',
           description: '「💸」・Veja os status de coinflip de alguém',
+          descriptionLocalizations: { 'en-US': "「💸」・View someone's coinflip stats" },
           type: 'SUB_COMMAND',
           options: [
             {
               name: 'user',
               description: 'Usuário para ver os status',
+              descriptionLocalizations: { 'en-US': 'User to see stats' },
               type: 'USER',
               required: false,
             },
@@ -69,12 +81,15 @@ export default class StatsCommand extends InteractionCommand {
         },
         {
           name: 'cacar',
-          description: '「🏹」・Veja os status de caças de alguem',
+          nameLocalizations: { 'en-US': 'hunt' },
+          description: '「🏹」・Veja os status de caças de alguém',
+          descriptionLocalizations: { 'en-US': "「🏹」・See someone's fighter stats" },
           type: 'SUB_COMMAND',
           options: [
             {
               name: 'user',
               description: 'Usuário para ver os status',
+              descriptionLocalizations: { 'en-US': 'User to see stats' },
               type: 'USER',
               required: false,
             },
@@ -83,10 +98,12 @@ export default class StatsCommand extends InteractionCommand {
         {
           name: 'designer',
           description: '「🖌️」・Veja os status de design de algum designer',
+          descriptionLocalizations: { 'en-US': "「🖌️」・See some designer's design stats" },
           options: [
             {
               name: 'user',
               description: 'Designer que quer ver as informações',
+              descriptionLocalizations: { 'en-US': 'Designer who wants to see the information' },
               type: 'USER',
               required: false,
             },

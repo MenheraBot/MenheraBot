@@ -10,12 +10,15 @@ export default class ProfileCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'perfil',
+      nameLocalizations: { 'en-US': 'profile' },
       description: '「✨」・Mostra o perfil de algúem',
+      descriptionLocalizations: { 'en-US': "「✨」・Show someone's profile" },
       options: [
         {
           name: 'user',
           type: 'USER',
           description: 'Usuário para mostrar o perfil',
+          descriptionLocalizations: { 'en-US': 'User to show profile' },
           required: false,
         },
       ],

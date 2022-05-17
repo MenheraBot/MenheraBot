@@ -12,11 +12,14 @@ export default class MenheraCommand extends InteractionCommand {
     super({
       name: 'menhera',
       description: '「✨」・Informações referentes à Menhera',
+      descriptionLocalizations: { 'en-US': '「✨」・Information regarding Menhera' },
       category: 'info',
       options: [
         {
           name: 'estatisticas',
+          nameLocalizations: { 'en-US': 'statistics' },
           description: '「🤖」・Veja as estatísticas atuais da Menhera',
+          descriptionLocalizations: { 'en-US': "「🤖」・See Menhera's current stats" },
           type: 'SUB_COMMAND',
         },
       ],

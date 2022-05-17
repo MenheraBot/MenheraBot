@@ -20,13 +20,16 @@ export default class ItemsCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'itens',
+      nameLocalizations: { 'en-US': 'items' },
       description: '「📂」・Abre os itens de alguém',
+      descriptionLocalizations: { 'en-US': "「📂」・Open someone's items" },
       category: 'info',
       options: [
         {
           name: 'user',
           type: 'USER',
           description: 'Usuário para mostrar os itens',
+          descriptionLocalizations: { 'en-US': 'User to show items' },
           required: false,
         },
       ],

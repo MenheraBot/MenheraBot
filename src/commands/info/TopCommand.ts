@@ -29,41 +29,52 @@ export default class TopCommand extends InteractionCommand {
     super({
       name: 'top',
       description: '「💹」・Veja o top de usuários da Menhera',
+      descriptionLocalizations: { 'en-US': "「💹」・See Menhera's top users" },
       category: 'util',
       options: [
         {
           name: 'cacas',
+          nameLocalizations: { 'en-US': 'hunting' },
           type: 'SUB_COMMAND',
           description: '「🎯」・Veja o top caçadores atuais da Menhera',
+          descriptionLocalizations: { 'en-US': "「🎯」・See Menhera's current top hunters" },
           options: [
             {
               type: 'STRING',
               name: 'caca',
+              nameLocalizations: { 'en-US': 'hunt' },
               description: 'O tipo da caça que você quer ver',
+              descriptionLocalizations: { 'en-US': 'The kind of hunt you want to see' },
               required: true,
               choices: [
                 {
                   name: '😈 | Demônios',
+                  nameLocalizations: { 'en-US': '😈 | Demons' },
                   value: 'demons',
                 },
                 {
                   name: '👊 | Gigantes',
+                  nameLocalizations: { 'en-US': '👊 | Giants' },
                   value: 'giants',
                 },
                 {
                   name: '👼 | Anjos',
+                  nameLocalizations: { 'en-US': '👼 | Angels' },
                   value: 'angels',
                 },
                 {
                   name: '🧚‍♂️ | Arcanjos',
+                  nameLocalizations: { 'en-US': '🧚‍♂️ | Atchangels' },
                   value: 'archangels',
                 },
                 {
                   name: '🙌 | Semideuses',
+                  nameLocalizations: { 'en-US': '🙌 | Demigods' },
                   value: 'demigods',
                 },
                 {
                   name: '✝️ | Deuses',
+                  nameLocalizations: { 'en-US': '✝️ | Gods' },
                   value: 'gods',
                 },
               ],
@@ -71,7 +82,9 @@ export default class TopCommand extends InteractionCommand {
             {
               type: 'INTEGER',
               name: 'pagina',
+              nameLocalizations: { 'en-US': 'page' },
               description: 'Página do top que tu quer ver',
+              descriptionLocalizations: { 'en-US': 'Top page you want to see' },
               required: false,
               minValue: 2,
               maxValue: 100,
@@ -80,29 +93,37 @@ export default class TopCommand extends InteractionCommand {
         },
         {
           name: 'economia',
+          nameLocalizations: { 'en-US': 'economy' },
           type: 'SUB_COMMAND',
           description: '「⭐」・Veja os melhores usuários da Menhera',
+          descriptionLocalizations: { 'en-US': "「⭐」・See Menhera's best users" },
           options: [
             {
               type: 'STRING',
               name: 'tipo',
+              nameLocalizations: { 'en-US': 'type' },
               description: 'O tipo de top que tu queres ver',
+              descriptionLocalizations: { 'en-US': 'The type of top you want to see' },
               required: true,
               choices: [
                 {
                   name: '💋 | Mamadores',
+                  nameLocalizations: { 'en-US': '💋 | Lickers' },
                   value: 'mamou',
                 },
                 {
                   name: '👅 | Mamados',
+                  nameLocalizations: { 'en-US': '👅 | Licked' },
                   value: 'mamado',
                 },
                 {
                   name: '⭐ | Estrelinhas',
+                  nameLocalizations: { 'en-US': '⭐ | Stars' },
                   value: 'estrelinhas',
                 },
                 {
                   name: '🆙 | Votos',
+                  nameLocalizations: { 'en-US': '🆙 | Votes' },
                   value: 'votes',
                 },
               ],
@@ -110,7 +131,9 @@ export default class TopCommand extends InteractionCommand {
             {
               type: 'INTEGER',
               name: 'pagina',
+              nameLocalizations: { 'en-US': 'page' },
               description: 'Página do top que tu quer ver',
+              descriptionLocalizations: { 'en-US': 'Top page you want to see' },
               required: false,
               minValue: 2,
               maxValue: 100,
@@ -120,24 +143,31 @@ export default class TopCommand extends InteractionCommand {
         {
           type: 'SUB_COMMAND',
           name: 'comandos',
+          nameLocalizations: { 'en-US': 'commands' },
           description: '「📟」・Veja os melhores sobre os comandos',
+          descriptionLocalizations: { 'en-US': '「📟」・See the best about commands' },
           options: [
             {
               type: 'STRING',
               name: 'tipo',
+              nameLocalizations: { 'en-US': 'type' },
               description: 'O tipo de informação que queres ver',
+              descriptionLocalizations: { 'en-US': 'The type of information you want to see' },
               required: true,
               choices: [
                 {
-                  name: 'Comandos mais usados',
+                  name: 'Comandos Mais Usados',
+                  nameLocalizations: { 'en-US': 'Most Used Commands' },
                   value: 'commands',
                 },
                 {
-                  name: 'Usuários que mais usaram comandos',
+                  name: 'Usuários Que Mais Usaram Comandos',
+                  nameLocalizations: { 'en-US': 'Users Who Used Commands Most' },
                   value: 'users',
                 },
                 {
-                  name: 'Comandos mais usados de um usuário',
+                  name: 'Comandos Mais Usados De Um Usuário',
+                  nameLocalizations: { 'en-US': 'Most Used Commands by A User' },
                   value: 'user',
                 },
               ],
@@ -146,6 +176,7 @@ export default class TopCommand extends InteractionCommand {
               type: 'USER',
               name: 'user',
               description: 'Usuário para ver os comandos mais usados',
+              descriptionLocalizations: { 'en-US': 'User to see most used commands' },
               required: false,
             },
           ],
@@ -153,16 +184,22 @@ export default class TopCommand extends InteractionCommand {
         {
           type: 'SUB_COMMAND_GROUP',
           name: 'estatisticas',
+          nameLocalizations: { 'en-US': 'statistics' },
           description: '「📊」・Veja os melhores em termos de estatísticas',
+          descriptionLocalizations: { 'en-US': '「📊」・See the best in terms of stats' },
           options: [
             {
               name: 'apostas',
+              nameLocalizations: { 'en-US': 'bets' },
               description: '「📊」・Veja os melhores apostadores',
+              descriptionLocalizations: { 'en-US': '「📊」・See the best bettors' },
               type: 'SUB_COMMAND',
               options: [
                 {
                   name: 'jogo',
+                  nameLocalizations: { 'en-US': 'game' },
                   description: 'Jogo de apostas que você quer ver',
+                  descriptionLocalizations: { 'en-US': 'Betting game you want to see' },
                   type: 'STRING',
                   choices: [
                     {
@@ -175,10 +212,12 @@ export default class TopCommand extends InteractionCommand {
                     },
                     {
                       name: '🎡 | Roleta',
+                      nameLocalizations: { 'en-US': '🎡 | Roulette' },
                       value: 'roulette',
                     },
                     {
                       name: '🦌 | Jogo do Bicho',
+                      nameLocalizations: { 'en-US': '🦌 | Animal Game' },
                       value: 'bicho',
                     },
                   ],
@@ -187,17 +226,29 @@ export default class TopCommand extends InteractionCommand {
                 {
                   type: 'STRING',
                   name: 'ordenar',
+                  nameLocalizations: { 'en-US': 'order' },
                   description: 'Modo que você quer ordenar o Top',
+                  descriptionLocalizations: { 'en-US': 'How you want to sort the Top' },
                   choices: [
-                    { name: '⭐ | Estrelinhas Ganhas', value: 'money' },
-                    { name: '👑 | Mais Vitórias', value: 'wins' },
+                    {
+                      name: '⭐ | Estrelinhas Ganhas',
+                      nameLocalizations: { 'en-US': '⭐ | Stars Earned' },
+                      value: 'money',
+                    },
+                    {
+                      name: '👑 | Mais Vitórias',
+                      nameLocalizations: { 'en-US': '👑 | Most Wins' },
+                      value: 'wins',
+                    },
                   ],
                   required: true,
                 },
                 {
                   type: 'INTEGER',
                   name: 'pagina',
+                  nameLocalizations: { 'en-US': 'page' },
                   description: 'Página do top que tu quer ver',
+                  descriptionLocalizations: { 'en-US': 'Top page you want to see' },
                   required: false,
                   minValue: 2,
                   maxValue: 100,
@@ -206,56 +257,82 @@ export default class TopCommand extends InteractionCommand {
             },
             {
               name: 'cacar',
+              nameLocalizations: { 'en-US': 'hunt' },
               description: '「🎯」・Veja os melhores caçadores de todos os tempos',
+              descriptionLocalizations: { 'en-US': '「🎯」・See the best hunters of all time' },
               type: 'SUB_COMMAND',
               options: [
                 {
                   type: 'STRING',
                   name: 'caca',
+                  nameLocalizations: { 'en-US': 'hunt' },
                   description: 'O tipo da caça que você quer ver',
+                  descriptionLocalizations: { 'en-US': 'The kind of hunt you want to see' },
                   required: true,
                   choices: [
                     {
                       name: '😈 | Demônios',
-                      value: 'demon',
+                      nameLocalizations: { 'en-US': '😈 | Demons' },
+                      value: 'demons',
                     },
                     {
                       name: '👊 | Gigantes',
-                      value: 'giant',
+                      nameLocalizations: { 'en-US': '👊 | Giants' },
+                      value: 'giants',
                     },
                     {
                       name: '👼 | Anjos',
-                      value: 'angel',
+                      nameLocalizations: { 'en-US': '👼 | Angels' },
+                      value: 'angels',
                     },
                     {
                       name: '🧚‍♂️ | Arcanjos',
-                      value: 'archangel',
+                      nameLocalizations: { 'en-US': '🧚‍♂️ | Atchangels' },
+                      value: 'archangels',
                     },
                     {
                       name: '🙌 | Semideuses',
-                      value: 'demigod',
+                      nameLocalizations: { 'en-US': '🙌 | Demigods' },
+                      value: 'demigods',
                     },
                     {
                       name: '✝️ | Deuses',
-                      value: 'god',
+                      nameLocalizations: { 'en-US': '✝️ | Gods' },
+                      value: 'gods',
                     },
                   ],
                 },
                 {
                   type: 'STRING',
                   name: 'ordenar',
+                  nameLocalizations: { 'en-US': 'order' },
                   description: 'Modo que você quer ver o top',
+                  descriptionLocalizations: { 'en-US': 'How do you want to see the top' },
                   choices: [
-                    { name: '👑 | Caças bem-sucedidas', value: 'success' },
-                    { name: '🏅 | Vezes que caçou', value: 'tries' },
-                    { name: '🍀 | Quantidade de caças', value: 'hunted' },
+                    {
+                      name: '👑 | Caças bem-sucedidas',
+                      nameLocalizations: { 'en-US': '👑 | Successful Hunts' },
+                      value: 'success',
+                    },
+                    {
+                      name: '🏅 | Vezes que caçou',
+                      nameLocalizations: { 'en-US': '🏅 | Times Hunted' },
+                      value: 'tries',
+                    },
+                    {
+                      name: '🍀 | Quantidade de caças',
+                      nameLocalizations: { 'en-US': '🍀 | Number of Hunts' },
+                      value: 'hunted',
+                    },
                   ],
                   required: true,
                 },
                 {
                   type: 'INTEGER',
                   name: 'pagina',
+                  nameLocalizations: { 'en-US': 'page' },
                   description: 'Página do top que tu quer ver',
+                  descriptionLocalizations: { 'en-US': 'Top page you want to see' },
                   required: false,
                   minValue: 2,
                   maxValue: 100,

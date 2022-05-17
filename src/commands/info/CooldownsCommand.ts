@@ -11,6 +11,7 @@ export default class CooldownsCommand extends InteractionCommand {
     super({
       name: 'cooldowns',
       description: '「⌛」・Mostra todos os seus tempos de recarga',
+      descriptionLocalizations: { 'en-US': '「⌛」・Shows all your cooldowns' },
       category: 'info',
       cooldown: 5,
       authorDataFields: ['huntCooldown', 'voteCooldown', 'selectedColor'],
