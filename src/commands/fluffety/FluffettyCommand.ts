@@ -8,7 +8,9 @@ import {
   MessageButton,
   MessageEmbed,
   MessageSelectMenu,
+  Modal,
   SelectMenuInteraction,
+  TextInputComponent,
   User,
 } from 'discord.js-light';
 import { getCommode, getFluffetyStats } from '@fluffety/FluffetyUtils';
@@ -604,6 +606,7 @@ export default class FluffetyCommand extends InteractionCommand {
       ctx.author.id,
       ctx.interaction.id,
       15000,
+      false,
     );
 
     if (!selected) {
@@ -613,17 +616,65 @@ export default class FluffetyCommand extends InteractionCommand {
       return;
     }
 
+    const modal = new Modal()
+      .setCustomId(`${ctx.interaction.id} | MODAL`)
+      .setTitle(ctx.locale('commands:fluffety.adopt.modal-title'));
+
+    const textInput = new TextInputComponent()
+      .setCustomId('NAME')
+      .setMinLength(1)
+      .setMaxLength(10)
+      .setPlaceholder('Jorge')
+      .setLabel(ctx.locale('commands:fluffety.adopt.modal-label'))
+      .setStyle('SHORT');
+
+    modal.addComponents({ type: 1, components: [textInput] });
+
+    selected.showModal(modal);
+
+    ctx.makeMessage({
+      content: ctx.prettyResponse('time', 'common:waiting-form'),
+      embeds: [],
+      components: [],
+    });
+
+    const result = await ctx.awaitModalResponse();
+
+    if (!result) {
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'common:form-timesup'),
+        components: [],
+        embeds: [],
+      });
+      return;
+    }
+
+    const fluffetyName = capitalize(
+      result.fields
+        .getTextInputValue('NAME')
+        .toLowerCase()
+        .replace(/([^a-z ])/g, ''),
+    );
+
+    if (fluffetyName.length < 2 || fluffetyName.length > 10) {
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:fluffety.adopt.error-name'),
+      });
+      return;
+    }
+
     const chosenRace = selected.values[0] as FluffetyRace;
     // TODO: PICK FLUFFETY NAME WITH MODAL
     await ctx.client.repositories.fluffetyRepository.createUserFluffety(
       ctx.author.id,
       chosenRace,
-      '',
+      fluffetyName,
     );
 
     ctx.makeMessage({
       content: ctx.prettyResponse(chosenRace, 'commands:fluffety.adopt.success', {
         race: ctx.locale(`data:fluffety.${chosenRace}.name`),
+        name: fluffetyName,
       }),
       embeds: [],
       components: [],

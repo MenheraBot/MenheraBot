@@ -948,7 +948,7 @@ export default class ShopCommand extends InteractionCommand {
 
     selected.showModal(colorModal);
     ctx.makeMessage({
-      content: ctx.prettyResponse('time', 'commands:loja.buy_colors.waiting'),
+      content: ctx.prettyResponse('time', 'common:waiting-form'),
       components: [],
     });
 
@@ -956,7 +956,7 @@ export default class ShopCommand extends InteractionCommand {
 
     if (!response) {
       ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'commands:loja.buy_colors.timesup'),
+        content: ctx.prettyResponse('error', 'common:form-timesup'),
         components: [],
         embeds: [],
       });

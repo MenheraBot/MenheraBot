@@ -246,9 +246,7 @@
       "title": "Compre sua Cor",
       "hex_input": "Digite sua cor em Hexadecimal",
       "name_placeholder": "Azul Bebê",
-      "name_input": "O nome dessa cor (para sua organização)",
-      "timesup": "Você não enviou o formulário a tempo!",
-      "waiting": "Esperando Formulário..."
+      "name_input": "O nome dessa cor (para sua organização)"
     },
     "dataRolls_fields": {
       "title": "🔑 | Comprar Rolls",
@@ -973,11 +971,14 @@
     },
     "adopt": {
       "title": "Adote um Fluffety",
+      "modal-title": "Nome de seu Fluffety",
+      "modal-label": "Qual o nome de seu Fluffety?",
       "description": "Fluffetys são criaturas adoráveis, que precisam de carinho e amigos para serem felizes. Não os deixe sozinhos, eles são muito sensíveis à solidão, por isso, sempre devem estar com alguém.\n\nAo ter um Fluffety, tu deve se responsabilizar por cuidar constantemente dele. Não existe tortura pior para um Flufetty do que a solidão, e por isso, caso você o abandone, ou não dê atenção o suficiente, ele pode ficar doente, e até mesmo morrer",
       "types-title": "Tipos De Fluffety",
+      "error-name": "O nome de seu Fluffety é inválido! Ele deve ter apenas letras de a-z minúsculas, espaços, e pode ter entre 2 e 10 caracteres de tamanho",
       "types-description": "Existem 3 tipos diferentes de Fluffetys, os **Hamsin**, **Pingus** e **Chikys**\nEscolha abaixo qual tipo de fluffety tu quer adotar",
       "select": "Selecione seu fluffety",
-      "success": "Yayy, tu adotou um {{race}}! Que maravilha! Você pode usar o comando novamente para começar a cuidar e personalizar ele."
+      "success": "Yayy, tu adotou **{{name}}, o {{race}}**! Que maravilha! Você pode usar o comando novamente para começar a cuidar e personalizar ele."
     }
   },
   "calvo": {
