@@ -13,8 +13,8 @@ import moment from 'moment';
 export default class JogoDoBichoCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'animal_game',
-      nameLocalizations: { 'pt-BR': 'jogo_do_bicho' },
+      name: 'animal',
+      nameLocalizations: { 'pt-BR': 'bicho' },
       description: '「🦌」・Bet on the Animal Game',
       descriptionLocalizations: { 'pt-BR': '「🦌」・Aposte no famoso Jogo do Bicho' },
       options: [
