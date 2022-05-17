@@ -152,7 +152,7 @@ export default class DeploySlashCommand extends InteractionCommand {
       await ctx.makeMessage({ content: 'Iniciando deploy' });
       await ctx.interaction.guild?.commands.set(allCommands);
 
-      ctx.makeMessage({ content: 'Comandos deployados no servidor' });
+      ctx.interaction.editReply({ content: 'Comandos deployados no servidor' });
       return;
     }
 

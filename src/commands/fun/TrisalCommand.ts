@@ -30,7 +30,7 @@ export default class TrisalCommand extends InteractionCommand {
           name: 'second_user',
           nameLocalizations: { 'pt-BR': 'segundo_usuário' },
           type: 'USER',
-          description: '',
+          description: 'Second User',
           descriptionLocalizations: { 'pt-BR': 'Segundo usuário do trisal' },
           required: false,
         },
