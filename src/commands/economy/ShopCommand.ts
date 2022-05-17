@@ -23,7 +23,9 @@ import {
   MessageButton,
   MessageActionRow,
   ColorResolvable,
+  Modal,
   MessageAttachment,
+  TextInputComponent,
 } from 'discord.js-light';
 import ProfilePreview from '@utils/ThemePreviewTemplates';
 import { PicassoRoutes, requestPicassoImage } from '@utils/PicassoRequests';
@@ -60,20 +62,6 @@ export default class ShopCommand extends InteractionCommand {
                 'pt-BR': '「🌈」・Compre cores para dar um UP em seu perfil!',
               },
               type: 'SUB_COMMAND',
-              options: [
-                {
-                  name: 'hex',
-                  description: 'Código da cor caso você vá comprar uma cor personalizada',
-                  type: 'STRING',
-                  required: false,
-                },
-                {
-                  name: 'nome',
-                  description: 'Nome da cor personalizada para a identificar. Máximo 20 caracteres',
-                  type: 'STRING',
-                  required: false,
-                },
-              ],
             },
             {
               name: 'rolls',
@@ -930,25 +918,51 @@ export default class ShopCommand extends InteractionCommand {
       return;
     }
 
-    const hexColor = ctx.options.getString('hex');
+    const colorModal = new Modal()
+      .setCustomId(`${ctx.interaction.id} | MODAL`)
+      .setTitle(ctx.locale('commands:loja.buy_colors.title'));
 
-    const name: string =
-      ctx.options.getString('nome')?.slice(0, 20) ??
-      ctx.locale('commands:loja.buy_colors.no-name', {
-        number: ctx.data.user.colors.length,
-      });
+    const hexInput = new TextInputComponent()
+      .setCustomId('HEX')
+      .setMinLength(6)
+      .setMaxLength(7)
+      .setPlaceholder('#F62B1C')
+      .setRequired(true)
+      .setLabel(ctx.locale('commands:loja.buy_colors.hex_input'))
+      .setStyle('SHORT');
 
-    if (!hexColor) {
+    const nameInput = new TextInputComponent()
+      .setCustomId('NAME')
+      .setMinLength(2)
+      .setMaxLength(20)
+      .setPlaceholder(ctx.locale('commands:loja.buy_colors.name_placeholder'))
+      .setRequired(false)
+      .setLabel(ctx.locale('commands:loja.buy_colors.name_input'))
+      .setStyle('SHORT');
+
+    colorModal.addComponents({ type: 1, components: [hexInput, nameInput] });
+
+    const response = await ctx.awaitModalResponse(35_000);
+
+    if (!response) {
       ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'commands:loja.buy_colors.invalid-color'),
+        content: ctx.prettyResponse('error', 'commands:loja.buy_colors.timesup'),
         components: [],
+        embeds: [],
       });
       return;
     }
 
+    const hexColor = response.fields.getTextInputValue('HEX');
+    const colorName =
+      response.fields.getTextInputValue('NAME') ??
+      ctx.locale('commands:loja.buy_colors.no-name', {
+        number: ctx.data.user.colors.length,
+      });
+
     if (
       ctx.data.user.colors.some(
-        (a) => `${a.cor}`.replace('#', '') === hexColor.replace('#', '') || a.nome === name,
+        (a) => `${a.cor}`.replace('#', '') === hexColor.replace('#', '') || a.nome === colorName,
       )
     ) {
       ctx.makeMessage({
@@ -960,26 +974,27 @@ export default class ShopCommand extends InteractionCommand {
 
     const isHexColor = (hex: string) => hex.length === 6 && !Number.isNaN(Number(`0x${hex}`));
 
-    if (isHexColor(hexColor.replace('#', ''))) {
-      const toPush = {
-        nome: name,
-        cor: `#${hexColor.replace('#', '')}` as const,
-      };
-      ctx.makeMessage({
-        content: ctx.prettyResponse('success', 'commands:loja.buy_colors.yc-confirm', {
-          color: hexColor,
-          price: chosenColor.price,
-          stars: ctx.data.user.estrelinhas - chosenColor.price,
-        }),
-        components: [],
-      });
-
-      ctx.client.repositories.shopRepository.buyColor(ctx.author.id, chosenColor.price, toPush);
-    } else {
+    if (!isHexColor(hexColor.replace('#', ''))) {
       ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:loja.buy_colors.invalid-color'),
         components: [],
       });
+      return;
     }
+    const toPush = {
+      nome: colorName,
+      cor: `#${hexColor.replace('#', '')}` as const,
+    };
+
+    ctx.makeMessage({
+      content: ctx.prettyResponse('success', 'commands:loja.buy_colors.yc-confirm', {
+        color: hexColor,
+        price: chosenColor.price,
+        stars: ctx.data.user.estrelinhas - chosenColor.price,
+      }),
+      components: [],
+    });
+
+    ctx.client.repositories.shopRepository.buyColor(ctx.author.id, chosenColor.price, toPush);
   }
 }

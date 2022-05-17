@@ -14,5 +14,5 @@ export default async (client: MenheraClient): Promise<void> => {
     return p;
   }, []);
 
-  await client.guilds.forge('717061688460967988').commands.set(allCommands);
+  await client.guilds.forge(process.env.SUPPORT_SERVER as string).commands.set(allCommands);
 };

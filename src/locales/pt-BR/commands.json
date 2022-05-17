@@ -242,7 +242,12 @@
       "yc-confirm": "Você gosta de algo mais personalizado, e comprou uma corzinha especial!\nSua cor comprada foi **#{{color}}**\nVocê gastou **{{price}}** ⭐ e ficou com **{{stars}}** ⭐ estrelinhas",
       "invalid-color": "Esta cor não é uma cor válida!",
       "no-name": "Sem nome especificado ({{number}})",
-      "buy-text": "Escolha abaixo qual é a cor que deseja comprar!"
+      "buy-text": "Escolha abaixo qual é a cor que deseja comprar!",
+      "title": "Compre sua Cor",
+      "hex_input": "Digite sua cor em Hexadecimal",
+      "name_placeholder": "Azul Bebê",
+      "name_input": "O nome dessa cor (para sua organização)",
+      "timesup": "Você não enviou o formulário a tempo!"
     },
     "dataRolls_fields": {
       "title": "🔑 | Comprar Rolls",

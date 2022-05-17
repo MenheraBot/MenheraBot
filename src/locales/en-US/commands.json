@@ -233,7 +233,12 @@
       "yc-confirm": "WOOOOW !!! YOU'VE JUST BOUGHT A COLOR OF YOUR CHOICE !!! \nYour current choice is **#{{color}}** \nYou spent **{{price}}** ⭐ and got **{{stars}}** ⭐ stars",
       "invalid-color": "this color is not a valid color!",
       "no-name": "No name passed ({{numberno-name}})",
-      "buy-text": "Choose down below what color do you want to buy"
+      "buy-text": "Choose down below what color do you want to buy",
+      "title": "Buy your Color",
+      "hex_input": "Input your color in Hexadecimal",
+      "name_placeholder": "A Cute Pink",
+      "name_input": "The name of this color (for your organization)",
+      "timesup": "You didn't submit the form on time!"
     },
     "dataRolls_fields": {
       "title": "Buy Rolls",

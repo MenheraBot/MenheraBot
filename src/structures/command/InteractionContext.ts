@@ -5,6 +5,8 @@ import {
   InteractionReplyOptions,
   Message,
   MessagePayload,
+  Modal,
+  ModalSubmitInteraction,
   TextBasedChannel,
   User,
 } from 'discord.js-light';
@@ -13,7 +15,7 @@ import MenheraClient from 'MenheraClient';
 import { emojis, EmojiTypes } from '@structures/Constants';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { APIMessage } from 'discord-api-types/v10';
-import { debugError } from '@utils/Util';
+import { debugError, MayNotExists } from '@utils/Util';
 
 import { Translation } from '../../types/i18next';
 
@@ -38,6 +40,22 @@ export default class InteractionCommandContext {
 
   get author(): User {
     return this.interaction.user;
+  }
+
+  async awaitModalResponse(
+    time = 25_000,
+    defer = true,
+  ): Promise<MayNotExists<ModalSubmitInteraction>> {
+    return this.interaction
+      .awaitModalSubmit({
+        filter: (int) => int.customId.startsWith(this.interaction.id),
+        time,
+      })
+      .then((interaction) => {
+        if (defer) interaction.deferUpdate();
+        return interaction;
+      })
+      .catch(() => null);
   }
 
   async defer(
@@ -133,6 +151,10 @@ export default class InteractionCommandContext {
           return debugError(e);
         }),
     );
+  }
+
+  async displayModal(modal: Modal): Promise<void> {
+    return this.interaction.showModal(modal);
   }
 
   async deleteReply(): Promise<void | null> {
