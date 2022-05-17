@@ -7,13 +7,19 @@ import { emojis } from '@structures/Constants';
 export default class ConfigCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'config',
+      name: 'configurar',
+      nameLocalizations: { 'en-US': 'configurate' },
       description: '「⚙️」・Configure a Menhera no servidor',
+      descriptionLocalizations: { 'en-US': '「⚙️」・Configurate Menhera on the server' },
       category: 'util',
       options: [
         {
           name: 'idioma',
+          nameLocalizations: { 'en-US': 'language' },
           description: '「🌐」・Mude o idioma em que eu falo neste servidor!',
+          descriptionLocalizations: {
+            'en-US': '「🌐」・Change the language I speak on this server!',
+          },
           type: 'SUB_COMMAND',
         },
         /*  {

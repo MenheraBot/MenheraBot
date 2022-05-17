@@ -34,6 +34,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ### Changed
 
+- O comando `/personalizar info` foi renomeado para `/personalizar sobre_mim`
+- O comando `/config` foi renomeado para `/configurar`
 - O comando `/loja info` foi renomeado para `/loja precos`
 - O comando trisal agora mostra um botão de terminar, e é por lá que alguém do casal poderá encerrar a relação
 - Blackjack: Caso o usuário inicie com um blackjack em mãos, a partida terminará, e o jogador receberá o dobro do prêmio

@@ -24,41 +24,75 @@ export default class PersonalizeCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'personalizar',
+      nameLocalizations: { 'en-US': 'personalize' },
       description: '「🎨」・Personalize o seu perfil para ficar a coisa mais linda do mundo!',
+      descriptionLocalizations: {
+        'en-US': '「🎨」・Customize your profile to be the most beautiful thing in the world!',
+      },
       options: [
         {
-          name: 'info',
-          description: '「💬」・Mude o seu sobremim (A mensagem que aparece em seu perfil)',
+          name: 'sobre_mim',
+          nameLocalizations: { 'en-US': 'about_me' },
+          description: '「💬」・Mude o seu "sobre mim" (A mensagem que aparece em seu perfil)',
+          descriptionLocalizations: {
+            'en-US': '「💬」・Change your "about me" (The message that appears on your profile)',
+          },
           type: 'SUB_COMMAND',
           options: [
             {
               type: 'STRING',
               name: 'frase',
+              nameLocalizations: { 'en-US': 'phrase' },
               description: 'Frase para colocar em seu sobre mim. No máximo 200 caracteres',
+              descriptionLocalizations: {
+                'en-US': 'Phrase to put in your about me. Maximum 200 characters',
+              },
               required: true,
             },
           ],
         },
         {
           name: 'cor',
-          description: '「🌈」・Muda a cor básica da sua conta',
+          nameLocalizations: { 'en-US': 'color' },
+          description: '「🌈」・Muda a cor base da sua conta',
+          descriptionLocalizations: { 'en-US': '「🌈」・Change your account base color' },
           type: 'SUB_COMMAND',
         },
         {
           name: 'temas',
+          nameLocalizations: { 'en-US': 'themes' },
           description: '「🎊」・Personalize os temas da sua conta!',
+          descriptionLocalizations: { 'en-US': '「🎊」・Customize your account themes!' },
           type: 'SUB_COMMAND',
           options: [
             {
               name: 'tipo',
+              nameLocalizations: { 'en-US': 'type' },
               description: 'O tipo de tema que você quer alterar',
+              descriptionLocalizations: { 'en-US': 'The type of theme you want to change' },
               type: 'STRING',
               required: true,
               choices: [
-                { name: '✨ | Perfil', value: 'profile' },
-                { name: '🃏 | Estilo de Carta', value: 'cards' },
-                { name: '🖼️ | Mesa de Cartas', value: 'table' },
-                { name: '🎴 | Fundo de Carta', value: 'card_background' },
+                {
+                  name: '✨ | Perfil',
+                  nameLocalizations: { 'en-US': '✨ | Profile' },
+                  value: 'profile',
+                },
+                {
+                  name: '🃏 | Estilo de Carta',
+                  nameLocalizations: { 'en-US': '🃏 | Card Style' },
+                  value: 'cards',
+                },
+                {
+                  name: '🖼️ | Mesa de Cartas',
+                  nameLocalizations: { 'en-US': '🖼️ | Table Cards' },
+                  value: 'table',
+                },
+                {
+                  name: '🎴 | Fundo de Carta',
+                  nameLocalizations: { 'en-US': '🎴 | Card Background' },
+                  value: 'card_background',
+                },
               ],
             },
           ],
@@ -66,6 +100,9 @@ export default class PersonalizeCommand extends InteractionCommand {
         {
           name: 'badges',
           description: '「📌」・Escolha quais badges devem aparecer em seu perfil',
+          descriptionLocalizations: {
+            'en-US': '「📌」・Choose which badges should appear on your profile',
+          },
           type: 'SUB_COMMAND',
         },
       ],
