@@ -14,7 +14,8 @@ export default class PokeCommand extends InteractionCommand {
       descriptionLocalizations: { 'en-US': '「👉」・Give someone a little poke' },
       options: [
         {
-          name: 'user',
+          name: 'usuário',
+          nameLocalizations: { 'en-US': 'user' },
           type: 'USER',
           description: 'Usuário que você quer cutucar',
           descriptionLocalizations: { 'en-US': 'User you want to poke' },

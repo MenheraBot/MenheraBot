@@ -8,7 +8,7 @@ import { capitalize } from '@utils/Util';
 export default class HugCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'abracar',
+      name: 'abraçar',
       nameLocalizations: { 'en-US': 'hug' },
       description: '「🤗」・Abrace um amiguinho oti modeuso fofurica',
       descriptionLocalizations: {
@@ -17,7 +17,8 @@ export default class HugCommand extends InteractionCommand {
       options: [
         {
           type: 'USER',
-          name: 'user',
+          name: 'usuário',
+          nameLocalizations: { 'en-US': 'user' },
           description: 'Usuário que tu quer abraçar',
           descriptionLocalizations: { 'en-US': 'User that you want to hug' },
           required: true,

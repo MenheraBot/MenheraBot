@@ -14,7 +14,8 @@ export default class BiteCommand extends InteractionCommand {
       descriptionLocalizations: { 'en-US': '「👄」・Nhac. Bite someone >.<' },
       options: [
         {
-          name: 'user',
+          name: 'usuário',
+          nameLocalizations: { 'en-US': 'user' },
           type: 'USER',
           description: 'Usuário para morder :3',
           descriptionLocalizations: { 'en-US': 'User to bite :3' },

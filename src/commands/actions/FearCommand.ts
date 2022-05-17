@@ -14,7 +14,8 @@ export default class FearCommand extends InteractionCommand {
       descriptionLocalizations: { 'en-US': "「😮」・Show everyone you're scared" },
       options: [
         {
-          name: 'user',
+          name: 'usuário',
+          nameLocalizations: { 'en-US': 'user' },
           type: 'USER',
           description: 'Usuário que te deixou com medo',
           descriptionLocalizations: { 'en-US': 'User who scared you' },

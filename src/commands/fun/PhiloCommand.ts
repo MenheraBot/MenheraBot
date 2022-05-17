@@ -8,7 +8,7 @@ import { PicassoRoutes, requestPicassoImage } from '@utils/PicassoRequests';
 export default class PhiloCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'filosofia',
+      name: 'filosofía',
       nameLocalizations: { 'en-US': 'philosophy' },
       description: '「💭」・Ser ou não ser, eis a questão. Mande Aristóteles dizer algo.',
       descriptionLocalizations: {

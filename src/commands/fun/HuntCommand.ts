@@ -60,7 +60,7 @@ const choices: Array<ApplicationCommandOptionChoiceData & { value: ChoiceTypes }
 export default class HuntCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'cacar',
+      name: 'caçar',
       nameLocalizations: { 'en-US': 'hunt' },
       description: '「🎯」・Sai para uma caçada com Xandão',
       descriptionLocalizations: { 'en-US': '「🎯」・Go on a hunt' },

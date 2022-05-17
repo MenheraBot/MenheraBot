@@ -14,7 +14,8 @@ export default class ShyCommand extends InteractionCommand {
       descriptionLocalizations: { 'en-US': "「👉👈」・E-eto >.<, i'm with shame nii-chan" },
       options: [
         {
-          name: 'user',
+          name: 'usuário',
+          nameLocalizations: { 'en-US': 'user' },
           type: 'USER',
           description: 'Usuário que te deixou com vergonha',
           descriptionLocalizations: { 'en-US': 'User who made you ashamed' },

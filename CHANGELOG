@@ -34,6 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ### Changed
 
+- **TODOS** comandos que possuíam erro de gramática no nome (`/cacar` ou `user`) agora possuem seus devidos acentos e caracteres especiais! `/caçar`, `/estatísticas`
 - O comando `/personalizar info` foi renomeado para `/personalizar sobre_mim`
 - O comando `/config` foi renomeado para `/configurar`
 - O comando `/loja info` foi renomeado para `/loja precos`

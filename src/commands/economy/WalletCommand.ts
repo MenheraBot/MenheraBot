@@ -11,7 +11,8 @@ export default class WalletCommand extends InteractionCommand {
       descriptionLocalizations: { 'en-US': "「💳」・Show someone's wallet" },
       options: [
         {
-          name: 'user',
+          name: 'usuário',
+          nameLocalizations: { 'en-US': 'user' },
           description: 'Usuário para mostrar a carteira',
           descriptionLocalizations: { 'en-US': 'User to show wallet' },
           type: 'USER',

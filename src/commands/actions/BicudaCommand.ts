@@ -14,7 +14,8 @@ export default class BicudaCommand extends InteractionCommand {
       descriptionLocalizations: { 'en-US': '「🦶」・Give someone a kick' },
       options: [
         {
-          name: 'user',
+          name: 'usuário',
+          nameLocalizations: { 'en-US': 'user' },
           type: 'USER',
           descriptionLocalizations: { 'en-US': 'User to kick' },
           description: 'Usuário para chutar',

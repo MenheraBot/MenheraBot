@@ -15,7 +15,8 @@ export default class MarryCommand extends InteractionCommand {
       options: [
         {
           type: 'USER',
-          name: 'user',
+          name: 'usuário',
+          nameLocalizations: { 'en-US': 'user' },
           description: 'O sortudo que vai casar com você',
           descriptionLocalizations: { 'en-US': 'The lucky one who will marry you' },
           required: true,

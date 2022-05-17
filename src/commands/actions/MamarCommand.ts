@@ -16,7 +16,8 @@ export default class MamarCommand extends InteractionCommand {
       options: [
         {
           type: 'USER',
-          name: 'user',
+          name: 'usuário',
+          nameLocalizations: { 'en-US': 'user' },
           description: 'Usuário que você quer mamar',
           descriptionLocalizations: { 'en-US': 'User you want to lick' },
           required: true,

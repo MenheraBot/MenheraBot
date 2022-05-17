@@ -52,7 +52,8 @@ export default class FichaCommand extends InteractionCommand {
       category: 'roleplay',
       options: [
         {
-          name: 'user',
+          name: 'usuário',
+          nameLocalizations: { 'en-US': 'user' },
           description: 'Usuário para ver a ficha',
           descriptionLocalizations: { 'en-US': 'User to view the sheet' },
           type: 'USER',

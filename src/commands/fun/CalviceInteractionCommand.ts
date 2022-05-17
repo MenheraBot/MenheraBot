@@ -48,7 +48,8 @@ export default class CalviceInteractionCommand extends InteractionCommand {
       descriptionLocalizations: { 'en-US': "「👨‍  」・Find out someone's baldness level" },
       options: [
         {
-          name: 'user',
+          name: 'usuário',
+          nameLocalizations: { 'en-US': 'user' },
           type: 'USER',
           description: 'Usuário para descobrir o nível de calvíce',
           descriptionLocalizations: { 'en-US': 'User to find out baldness level' },

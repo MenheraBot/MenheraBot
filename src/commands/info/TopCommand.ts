@@ -33,7 +33,7 @@ export default class TopCommand extends InteractionCommand {
       category: 'util',
       options: [
         {
-          name: 'cacas',
+          name: 'caças',
           nameLocalizations: { 'en-US': 'hunting' },
           type: 'SUB_COMMAND',
           description: '「🎯」・Veja o top caçadores atuais da Menhera',
@@ -41,7 +41,7 @@ export default class TopCommand extends InteractionCommand {
           options: [
             {
               type: 'STRING',
-              name: 'caca',
+              name: 'caça',
               nameLocalizations: { 'en-US': 'hunt' },
               description: 'O tipo da caça que você quer ver',
               descriptionLocalizations: { 'en-US': 'The kind of hunt you want to see' },
@@ -81,7 +81,7 @@ export default class TopCommand extends InteractionCommand {
             },
             {
               type: 'INTEGER',
-              name: 'pagina',
+              name: 'página',
               nameLocalizations: { 'en-US': 'page' },
               description: 'Página do top que tu quer ver',
               descriptionLocalizations: { 'en-US': 'Top page you want to see' },
@@ -130,7 +130,7 @@ export default class TopCommand extends InteractionCommand {
             },
             {
               type: 'INTEGER',
-              name: 'pagina',
+              name: 'página',
               nameLocalizations: { 'en-US': 'page' },
               description: 'Página do top que tu quer ver',
               descriptionLocalizations: { 'en-US': 'Top page you want to see' },
@@ -183,7 +183,7 @@ export default class TopCommand extends InteractionCommand {
         },
         {
           type: 'SUB_COMMAND_GROUP',
-          name: 'estatisticas',
+          name: 'estatísticas',
           nameLocalizations: { 'en-US': 'statistics' },
           description: '「📊」・Veja os melhores em termos de estatísticas',
           descriptionLocalizations: { 'en-US': '「📊」・See the best in terms of stats' },
@@ -245,7 +245,7 @@ export default class TopCommand extends InteractionCommand {
                 },
                 {
                   type: 'INTEGER',
-                  name: 'pagina',
+                  name: 'página',
                   nameLocalizations: { 'en-US': 'page' },
                   description: 'Página do top que tu quer ver',
                   descriptionLocalizations: { 'en-US': 'Top page you want to see' },
@@ -256,7 +256,7 @@ export default class TopCommand extends InteractionCommand {
               ],
             },
             {
-              name: 'cacar',
+              name: 'caçar',
               nameLocalizations: { 'en-US': 'hunt' },
               description: '「🎯」・Veja os melhores caçadores de todos os tempos',
               descriptionLocalizations: { 'en-US': '「🎯」・See the best hunters of all time' },
@@ -264,7 +264,7 @@ export default class TopCommand extends InteractionCommand {
               options: [
                 {
                   type: 'STRING',
-                  name: 'caca',
+                  name: 'caça',
                   nameLocalizations: { 'en-US': 'hunt' },
                   description: 'O tipo da caça que você quer ver',
                   descriptionLocalizations: { 'en-US': 'The kind of hunt you want to see' },
@@ -329,7 +329,7 @@ export default class TopCommand extends InteractionCommand {
                 },
                 {
                   type: 'INTEGER',
-                  name: 'pagina',
+                  name: 'página',
                   nameLocalizations: { 'en-US': 'page' },
                   description: 'Página do top que tu quer ver',
                   descriptionLocalizations: { 'en-US': 'Top page you want to see' },

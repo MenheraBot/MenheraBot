@@ -14,7 +14,8 @@ export default class PunchCommand extends InteractionCommand {
       descriptionLocalizations: { 'en-US': '「👊」・Punch someone' },
       options: [
         {
-          name: 'user',
+          name: 'usuário',
+          nameLocalizations: { 'en-US': 'user' },
           type: 'USER',
           description: 'Usuário que você quer socar',
           descriptionLocalizations: { 'en-US': 'User you wanna punch' },

@@ -16,7 +16,8 @@ export default class LaughtCommand extends InteractionCommand {
       options: [
         {
           type: 'USER',
-          name: 'user',
+          name: 'usuário',
+          nameLocalizations: { 'en-US': 'user' },
           description: 'Usuário que te fez rir',
           descriptionLocalizations: { 'en-US': 'User that made you laugh' },
           required: false,

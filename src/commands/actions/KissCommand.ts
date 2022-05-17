@@ -18,7 +18,8 @@ export default class KissCommand extends InteractionCommand {
       options: [
         {
           type: 'USER',
-          name: 'user',
+          name: 'usuário',
+          nameLocalizations: { 'en-US': 'user' },
           description: 'Usuário que você quer beijar',
           descriptionLocalizations: { 'en-US': 'User that you wanna kiss' },
           required: true,

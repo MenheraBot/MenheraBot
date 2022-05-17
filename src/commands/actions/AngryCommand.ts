@@ -14,7 +14,8 @@ export default class AngryCommand extends InteractionCommand {
       descriptionLocalizations: { 'en-US': '「😡」・Shows to everyone that you are angry' },
       options: [
         {
-          name: 'user',
+          name: 'usuário',
+          nameLocalizations: { 'en-US': 'user' },
           type: 'USER',
           description: 'Usuário que te deixou com raiva',
           descriptionLocalizations: { 'en-US': 'User that made you angry' },

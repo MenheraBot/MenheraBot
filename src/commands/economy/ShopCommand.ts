@@ -44,7 +44,7 @@ export default class ShopCommand extends InteractionCommand {
           type: 'SUB_COMMAND_GROUP',
           options: [
             {
-              name: 'itens',
+              name: 'ítens',
               nameLocalizations: { 'en-US': 'items' },
               description: '「🔮」・ Compre itens mágicos para melhorar suas habilidades',
               descriptionLocalizations: {
@@ -163,7 +163,7 @@ export default class ShopCommand extends InteractionCommand {
           ],
         },
         {
-          name: 'precos',
+          name: 'preços',
           nameLocalizations: { 'en-US': 'prices' },
           description: '「📊」・Mostra a tabela de preços da Menhera',
           descriptionLocalizations: { 'en-US': "「📊」・Show Menhera's price list" },

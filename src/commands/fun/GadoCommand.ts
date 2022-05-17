@@ -17,7 +17,8 @@ export default class GadoCommand extends InteractionCommand {
       },
       options: [
         {
-          name: 'user',
+          name: 'usuário',
+          nameLocalizations: { 'en-US': 'user' },
           type: 'USER',
           description: 'Usuário para chamar de gado',
           descriptionLocalizations: { 'en-US': 'User to call a simp' },

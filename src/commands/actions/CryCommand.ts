@@ -14,7 +14,8 @@ export default class CryCommand extends InteractionCommand {
       descriptionLocalizations: { 'en-US': "「😭」・Show everyone that you're crying :((" },
       options: [
         {
-          name: 'user',
+          name: 'usuário',
+          nameLocalizations: { 'en-US': 'user' },
           type: 'USER',
           description: 'Usuário que te fez chorar',
           descriptionLocalizations: { 'en-US': 'User that made you cry' },

@@ -16,7 +16,7 @@ export default class MenheraCommand extends InteractionCommand {
       category: 'info',
       options: [
         {
-          name: 'estatisticas',
+          name: 'estatísticas',
           nameLocalizations: { 'en-US': 'statistics' },
           description: '「🤖」・Veja as estatísticas atuais da Menhera',
           descriptionLocalizations: { 'en-US': "「🤖」・See Menhera's current stats" },

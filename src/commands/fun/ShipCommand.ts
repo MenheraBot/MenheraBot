@@ -11,14 +11,15 @@ export default class ShipCommand extends InteractionCommand {
       descriptionLocalizations: { 'en-US': "「❤️」・Shows the value of a couple's ship" },
       options: [
         {
-          name: 'user',
+          name: 'usuário',
+          nameLocalizations: { 'en-US': 'user' },
           type: 'USER',
           description: 'Primeiro Usuário',
           descriptionLocalizations: { 'en-US': 'Fisrt User' },
           required: true,
         },
         {
-          name: 'user_dois',
+          name: 'segundo_usuário',
           nameLocalizations: { 'en-US': 'second_user' },
           type: 'USER',
           description: 'Segundo usuário. Caso não seja passado, o ship será feito com você',

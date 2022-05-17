@@ -15,7 +15,8 @@ export default class ProfileCommand extends InteractionCommand {
       descriptionLocalizations: { 'en-US': "「✨」・Show someone's profile" },
       options: [
         {
-          name: 'user',
+          name: 'usuário',
+          nameLocalizations: { 'en-US': 'user' },
           type: 'USER',
           description: 'Usuário para mostrar o perfil',
           descriptionLocalizations: { 'en-US': 'User to show profile' },

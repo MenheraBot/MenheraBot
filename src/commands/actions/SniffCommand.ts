@@ -14,7 +14,8 @@ export default class SniffCommand extends InteractionCommand {
       descriptionLocalizations: { 'en-US': '「👃」・Give someone a sniff hgmmm' },
       options: [
         {
-          name: 'user',
+          name: 'usuário',
+          nameLocalizations: { 'en-US': 'user' },
           type: 'USER',
           description: 'Usuário pra mete a narigada sugadora ultradimensional',
           descriptionLocalizations: { 'en-US': 'User to make the ultradimensional sniffer' },

@@ -14,7 +14,8 @@ export default class ResurrectCommand extends InteractionCommand {
       descriptionLocalizations: { 'en-US': '「✝️」・Use a sage ult on someone' },
       options: [
         {
-          name: 'user',
+          name: 'usuário',
+          nameLocalizations: { 'en-US': 'user' },
           type: 'USER',
           description: 'Usuário que você quer ressuscitar',
           descriptionLocalizations: { 'en-US': 'User you want to resurrect' },

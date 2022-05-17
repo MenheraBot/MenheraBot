@@ -18,7 +18,8 @@ export default class KillCommand extends InteractionCommand {
       options: [
         {
           type: 'USER',
-          name: 'user',
+          name: 'usuário',
+          nameLocalizations: { 'en-US': 'user' },
           description: 'Usuário que você quer matar',
           descriptionLocalizations: { 'en-US': 'User that you wanna kill' },
           required: true,

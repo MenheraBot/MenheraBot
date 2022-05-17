@@ -14,7 +14,8 @@ export default class ShotCommand extends InteractionCommand {
       descriptionLocalizations: { 'en-US': '「🔫」・Pow! shoot someone' },
       options: [
         {
-          name: 'user',
+          name: 'usuário',
+          nameLocalizations: { 'en-US': 'user' },
           type: 'USER',
           description: 'Usuário que você quer dar o tiro',
           descriptionLocalizations: { 'en-US': 'User you want to shoot' },

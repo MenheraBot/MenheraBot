@@ -16,7 +16,8 @@ export default class ThinkCommand extends InteractionCommand {
       },
       options: [
         {
-          name: 'user',
+          name: 'usuário',
+          nameLocalizations: { 'en-US': 'user' },
           type: 'USER',
           description: 'Usuário em que você está pensando',
           descriptionLocalizations: { 'en-US': 'User you are thinking of' },

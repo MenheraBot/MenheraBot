@@ -15,7 +15,8 @@ export default class VascoCommand extends InteractionCommand {
       },
       options: [
         {
-          name: 'user',
+          name: 'usuário',
+          nameLocalizations: { 'en-US': 'user' },
           type: 'USER',
           description: 'Usuário que entrou pro vasco',
           descriptionLocalizations: { 'en-US': 'User who joined vasco' },

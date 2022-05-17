@@ -12,7 +12,8 @@ export default class CoinflipCommand extends InteractionCommand {
       descriptionLocalizations: { 'en-US': '「📀」・Dispute in a coin toss game with a friend' },
       options: [
         {
-          name: 'user',
+          name: 'usuário',
+          nameLocalizations: { 'en-US': 'user' },
           description: 'Usuário para disputar',
           descriptionLocalizations: { 'en-US': 'User to dispute' },
           type: 'USER',

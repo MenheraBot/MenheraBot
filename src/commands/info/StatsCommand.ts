@@ -24,7 +24,8 @@ export default class StatsCommand extends InteractionCommand {
           descriptionLocalizations: { 'en-US': "「🃏」・View someone's blackjack stats" },
           options: [
             {
-              name: 'user',
+              name: 'usuário',
+              nameLocalizations: { 'en-US': 'user' },
               description: 'Usuário para ver os status',
               descriptionLocalizations: { 'en-US': 'User to see status' },
               type: 'USER',
@@ -80,14 +81,15 @@ export default class StatsCommand extends InteractionCommand {
           ],
         },
         {
-          name: 'cacar',
+          name: 'caçar',
           nameLocalizations: { 'en-US': 'hunt' },
           description: '「🏹」・Veja os status de caças de alguém',
           descriptionLocalizations: { 'en-US': "「🏹」・See someone's fighter stats" },
           type: 'SUB_COMMAND',
           options: [
             {
-              name: 'user',
+              name: 'usuário',
+              nameLocalizations: { 'en-US': 'user' },
               description: 'Usuário para ver os status',
               descriptionLocalizations: { 'en-US': 'User to see stats' },
               type: 'USER',
@@ -101,7 +103,7 @@ export default class StatsCommand extends InteractionCommand {
           descriptionLocalizations: { 'en-US': "「🖌️」・See some designer's design stats" },
           options: [
             {
-              name: 'user',
+              name: 'designer',
               description: 'Designer que quer ver as informações',
               descriptionLocalizations: { 'en-US': 'Designer who wants to see the information' },
               type: 'USER',

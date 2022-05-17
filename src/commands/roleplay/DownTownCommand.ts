@@ -54,7 +54,7 @@ export default class DowntownCommand extends InteractionCommand {
           type: 'SUB_COMMAND',
           options: [
             {
-              name: 'sessao',
+              name: 'sessão',
               nameLocalizations: { 'en-US': 'section' },
               description: 'Tu tá procurando informações sobre o que?',
               descriptionLocalizations: { 'en-US': 'What are you looking for information about?' },

@@ -13,7 +13,7 @@ export default class ResetCommand extends InteractionCommand {
       category: 'roleplay',
       options: [
         {
-          name: 'bencaos',
+          name: 'bençãos',
           nameLocalizations: { 'en-US': 'blesses' },
           description: '【ＲＰＧ】↪️ | Reseta as bênçãos do teu personagem',
           descriptionLocalizations: { 'en-US': "【ＲＰＧ】↪️ | Resets your character's blessings" },

@@ -14,7 +14,8 @@ export default class DisgustedCommand extends InteractionCommand {
       descriptionLocalizations: { 'en-US': "「🤮」・Oh that's disgusting man, who made this?" },
       options: [
         {
-          name: 'user',
+          name: 'usuário',
+          nameLocalizations: { 'en-US': 'user' },
           type: 'USER',
           description: 'Usuário que tu ta com nojo',
           descriptionLocalizations: { 'en-US': 'User you are disgusted' },

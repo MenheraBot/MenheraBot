@@ -8,7 +8,8 @@ import { debugError } from '@utils/Util';
 export default class UserCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'user',
+      name: 'usuário',
+      nameLocalizations: { 'en-US': 'user' },
       description: '「📸」・Mostra as imagens do perfil de alguém',
       descriptionLocalizations: { 'en-US': "「📸」・Show someone's profile pictures" },
       category: 'info',
@@ -21,7 +22,8 @@ export default class UserCommand extends InteractionCommand {
           options: [
             {
               type: 'USER',
-              name: 'user',
+              name: 'usuário',
+              nameLocalizations: { 'en-US': 'user' },
               description: 'Usuário para mostrar a foto de perfil',
               descriptionLocalizations: { 'en-US': 'User to show profile picture' },
               required: false,
@@ -46,7 +48,8 @@ export default class UserCommand extends InteractionCommand {
           options: [
             {
               type: 'USER',
-              name: 'user',
+              name: 'usuário',
+              nameLocalizations: { 'en-US': 'user' },
               description: 'Usuário para mostrar o banner',
               descriptionLocalizations: { 'en-US': 'User to show banner' },
               required: false,

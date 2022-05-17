@@ -14,7 +14,8 @@ export default class PatCommand extends InteractionCommand {
       descriptionLocalizations: { 'en-US': '「😊」・Cuddle someone' },
       options: [
         {
-          name: 'user',
+          name: 'usuário',
+          nameLocalizations: { 'en-US': 'user' },
           type: 'USER',
           description: 'Usuário que você quer fazer carinho',
           descriptionLocalizations: { 'en-US': 'User you want to cuddle' },

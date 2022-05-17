@@ -14,7 +14,8 @@ export default class SarrarCommand extends InteractionCommand {
       descriptionLocalizations: { 'en-US': '「🔥」・Dance with a friend' },
       options: [
         {
-          name: 'user',
+          name: 'usuário',
+          nameLocalizations: { 'en-US': 'user' },
           type: 'USER',
           description: 'Convoque alguém para sarrar contigo',
           descriptionLocalizations: { 'en-US': 'Summon someone to dance with you' },

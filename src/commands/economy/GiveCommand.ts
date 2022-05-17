@@ -52,7 +52,8 @@ export default class GiveCommand extends InteractionCommand {
       descriptionLocalizations: { 'en-US': '「🎁」・Give someone else a gift from your inventory' },
       options: [
         {
-          name: 'user',
+          name: 'usuário',
+          nameLocalizations: { 'en-US': 'user' },
           description: 'Usuário para presentear',
           descriptionLocalizations: { 'en-US': 'User to gift' },
           type: 'USER',

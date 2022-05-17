@@ -22,14 +22,15 @@ import {
 export default class InventoryCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'inventario',
+      name: 'inventário',
       nameLocalizations: { 'en-US': 'inventory' },
       description: '【ＲＰＧ】📦 | Abra o inventário de alguém',
       descriptionLocalizations: { 'en-US': "【ＲＰＧ】📦 | Open someone's inventory" },
       category: 'roleplay',
       options: [
         {
-          name: 'user',
+          name: 'usuário',
+          nameLocalizations: { 'en-US': 'user' },
           description: 'O usuário que queres ver o inventário',
           descriptionLocalizations: { 'en-US': 'O usuário que queres ver o inventário' },
           type: 'USER',

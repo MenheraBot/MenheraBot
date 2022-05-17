@@ -19,14 +19,15 @@ export default class TrisalCommand extends InteractionCommand {
       descriptionLocalizations: { 'en-US': '「💘」・Start a poliamory with your friends' },
       options: [
         {
-          name: 'user',
+          name: 'usuário',
+          nameLocalizations: { 'en-US': 'user' },
           type: 'USER',
           description: 'Primeiro usuário do trisal',
           descriptionLocalizations: { 'en-US': 'First User' },
           required: false,
         },
         {
-          name: 'user_dois',
+          name: 'segundo_usuário',
           nameLocalizations: { 'en-US': 'second_user' },
           type: 'USER',
           description: 'Segundo usuário do trisal',

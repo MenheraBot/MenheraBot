@@ -14,7 +14,8 @@ export default class SlapCommand extends InteractionCommand {
       descriptionLocalizations: { 'en-US': '「🖐️」・Give someone a tumor-pulling slap' },
       options: [
         {
-          name: 'user',
+          name: 'usuário',
+          nameLocalizations: { 'en-US': 'user' },
           type: 'USER',
           description: 'Usuário pra mete o tapa',
           descriptionLocalizations: { 'en-US': 'User to slap' },
