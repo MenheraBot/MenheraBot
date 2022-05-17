@@ -26,17 +26,21 @@ export default class FluffetyCommand extends InteractionCommand {
     super({
       name: 'fluffety',
       description: '「🐰」・Cuide da sua fofura de estimação',
+      descriptionLocalizations: { 'en-US': '「🐰」・Take care of your pet cuteness' },
       category: 'fluffety',
       options: [
         {
           type: 'SUB_COMMAND',
           name: 'info',
           description: '「🐰」・Veja o fluffety de alguém',
+          descriptionLocalizations: { 'en-US': "「🐰」・See someone's fluffety" },
           options: [
             {
               type: 'USER',
               name: 'dono',
+              nameLocalizations: { 'en-US': 'owner' },
               description: 'Dono do flufetty que você quer ver',
+              descriptionLocalizations: { 'en-US': 'Owner of the flufetty you want to see' },
               required: false,
             },
           ],
@@ -44,42 +48,68 @@ export default class FluffetyCommand extends InteractionCommand {
         {
           type: 'SUB_COMMAND_GROUP',
           name: 'relacionamentos',
+          nameLocalizations: { 'en-US': 'relationships' },
           description: '「✨」・Gerencie suas relações com outros fluffetys',
+          descriptionLocalizations: {
+            'en-US': '「✨」・Manage your relationships with other fluffetys',
+          },
           options: [
             {
               type: 'SUB_COMMAND',
               name: 'lista',
+              nameLocalizations: { 'en-US': 'list' },
               description: '「📜」・Veja suas relações atuais',
+              descriptionLocalizations: { 'en-US': '「📜」・View your current relationships' },
             },
             {
               type: 'SUB_COMMAND',
               name: 'adicionar',
+              nameLocalizations: { 'en-US': 'add' },
               description: '「✅」・Crie uma nova relação com um Fluffety',
+              descriptionLocalizations: {
+                'en-US': '「✅」・Build a new relationship with a Fluffety',
+              },
               options: [
                 {
                   type: 'USER',
                   name: 'dono',
+                  nameLocalizations: { 'en-US': 'owner' },
                   description: 'Dono do flufetty que você quer criar uma relação',
+                  descriptionLocalizations: {
+                    'en-US': 'Flufetty owner you want to create a relationship with',
+                  },
                   required: true,
                 },
                 {
                   type: 'INTEGER',
                   name: 'tipo',
+                  nameLocalizations: { 'en-US': 'type' },
                   description: 'Tipo da relação que você quer criar',
+                  descriptionLocalizations: { 'en-US': 'Type of relationship you want to create' },
                   required: true,
-                  choices: [{ name: 'Começar uma Amizade', value: 0 }],
+                  choices: [
+                    {
+                      name: 'Começar uma Amizade',
+                      nameLocalizations: { 'en-US': 'Start a Friendship' },
+                      value: 0,
+                    },
+                  ],
                 },
               ],
             },
             {
               type: 'SUB_COMMAND',
               name: 'remover',
+              nameLocalizations: { 'en-US': 'remove' },
               description: '「❌」・Corte relações com algum Fluffety',
+              descriptionLocalizations: { 'en-US': '「❌」・Cut ties with some Fluffety' },
               options: [
                 {
                   type: 'USER',
                   name: 'dono',
+                  nameLocalizations: { 'en-US': 'owner' },
                   description: 'Dono do Flufetty que você quer cortar relações',
+                  descriptionLocalizations: { 'en-US': 'Flufetty owner you want to cut ties' },
                   required: true,
                 },
               ],
