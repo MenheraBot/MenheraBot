@@ -859,7 +859,7 @@ export default class ShopCommand extends InteractionCommand {
       .setCustomId(`${ctx.interaction.id} | SELECT`)
       .setMinValues(1)
       .setMaxValues(1)
-      .setOptions(
+      .addOptions(
         availableColors.reduce<MessageSelectOptionData[]>((p, c) => {
           if (ctx.data.user.colors.some((a) => a.cor === c.cor)) return p;
 

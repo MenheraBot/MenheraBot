@@ -384,7 +384,13 @@
       "description": "Você ja pode ver seu perfil com sua nova cor!"
     },
     "choose": "Escolha sua cor",
-    "min-color": "Tu precisa ter no mínimo 2 cores para usar este comando!"
+    "min-color": "Tu precisa ter no mínimo 2 cores para usar este comando!",
+    "rename": "Renomear",
+    "select-to-rename": "Escolha Uma Cor para Renomear",
+    "modal-title": "Renomear Cor",
+    "name-input": "Novo nome para '{{name}}'",
+    "same-name": "Uma cor já possui esse nome!",
+    "rename-success": "Você renomeou a cor `{{color}}` para **{{name}}**"
   },
   "perfil": {
     "no-dbuser": "Este usuário não possui perfil!",

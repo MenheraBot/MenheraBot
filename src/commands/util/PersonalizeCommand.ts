@@ -13,11 +13,15 @@ import Util, {
 } from '@utils/Util';
 import {
   ColorResolvable,
+  InteractionCollector,
   MessageButton,
   MessageComponentInteraction,
   MessageEmbed,
   MessageSelectMenu,
+  Modal,
+  ModalSubmitInteraction,
   SelectMenuInteraction,
+  TextInputComponent,
 } from 'discord.js-light';
 
 export default class PersonalizeCommand extends InteractionCommand {
@@ -328,6 +332,9 @@ export default class PersonalizeCommand extends InteractionCommand {
         '4': '🟢',
         '5': '💗',
         '6': '🟡',
+        '7': '⚫',
+        '8': '🟤',
+        '9': '⚪',
       };
 
       return colors[color] ?? '🌈';
@@ -359,9 +366,9 @@ export default class PersonalizeCommand extends InteractionCommand {
       .setMaxValues(1)
       .setPlaceholder(`${emojis.rainbow} ${ctx.locale('commands:cor.choose')}`);
 
-    const pages = Math.floor(ctx.data.user.colors.length / 10) + 1;
+    const pages = Math.floor(ctx.data.user.colors.length / 9) + 1;
 
-    for (let i = 0; i < ctx.data.user.colors.length && i < 10; i++) {
+    for (let i = 0; i < ctx.data.user.colors.length && i < 9; i++) {
       embed.addField(`${ctx.data.user.colors[i].nome}`, `${ctx.data.user.colors[i].cor}`, true);
       selector.addOptions({
         label: ctx.data.user.colors[i].nome.replaceAll('*', ''),
@@ -370,6 +377,11 @@ export default class PersonalizeCommand extends InteractionCommand {
         emoji: getEmojiFromColorName(ctx.data.user.colors[i].nome.replace(/\D/g, '')),
       });
     }
+
+    const renameButton = new MessageButton()
+      .setCustomId(`${ctx.interaction.id} | RENAME`)
+      .setStyle('SECONDARY')
+      .setLabel(ctx.locale('commands:cor.rename'));
 
     const componentsToSend = [actionRow([selector])];
 
@@ -390,6 +402,8 @@ export default class PersonalizeCommand extends InteractionCommand {
       embed.setFooter({ text: ctx.locale('commands:cor.footer', { page: 1, maxPages: pages }) });
     }
 
+    componentsToSend.push(actionRow([renameButton]));
+
     // É o cara do arroz
 
     await ctx.makeMessage({
@@ -400,9 +414,9 @@ export default class PersonalizeCommand extends InteractionCommand {
     const filter = (int: MessageComponentInteraction) =>
       int.customId.startsWith(ctx.interaction.id) && int.user.id === ctx.author.id;
 
-    const collector = ctx.channel.createMessageComponentCollector({
-      time: 30000,
-      maxComponents: 8,
+    const collector = new InteractionCollector(ctx.client, {
+      channel: ctx.channel,
+      idle: 20_000,
       filter,
     });
 
@@ -411,21 +425,20 @@ export default class PersonalizeCommand extends InteractionCommand {
     });
 
     let selectedPage = 0;
+    let toRename = false;
 
     collector.on('collect', async (int) => {
-      int.deferUpdate();
       const type = resolveCustomId(int.customId);
 
-      const changePage = (toSum: number) => {
+      const changePage = (toSum: number, justUpdateEmbed = false) => {
         selectedPage += toSum;
-        collector.resetTimer();
 
         const currentMenu = componentsToSend[0].components[0] as MessageSelectMenu;
 
         currentMenu.spliceOptions(0, currentMenu.options.length);
         embed.spliceFields(0, embed.fields.length);
 
-        for (let i = 10 * selectedPage; currentMenu.options.length < 10; i++) {
+        for (let i = 9 * selectedPage; currentMenu.options.length < 9; i++) {
           if (i > ctx.data.user.colors.length || typeof ctx.data.user.colors[i] === 'undefined')
             break;
           embed.addField(`${ctx.data.user.colors[i].nome}`, `${ctx.data.user.colors[i].cor}`, true);
@@ -441,16 +454,107 @@ export default class PersonalizeCommand extends InteractionCommand {
           text: ctx.locale('commands:cor.footer', { page: selectedPage + 1, maxPages: pages }),
         });
 
-        if (selectedPage > 0) componentsToSend[1].components[0].setDisabled(false);
-        else componentsToSend[1].components[0].setDisabled(true);
+        if (!justUpdateEmbed) {
+          if (selectedPage > 0) componentsToSend[1].components[0].setDisabled(false);
+          else componentsToSend[1].components[0].setDisabled(true);
 
-        if (selectedPage + 1 === pages) componentsToSend[1].components[1].setDisabled(true);
-        else componentsToSend[1].components[1].setDisabled(false);
+          if (selectedPage + 1 === pages) componentsToSend[1].components[1].setDisabled(true);
+          else componentsToSend[1].components[1].setDisabled(false);
+        }
       };
 
       switch (type) {
+        case 'MODAL': {
+          // @ts-expect-error Sim nenem não funciona de certo
+          const component = (int as ModalSubmitInteraction).components[0].components[0];
+          const newName = component.value;
+          const oldColor = component.customId;
+
+          const userColor = ctx.data.user.colors.find((c) => c.cor === oldColor);
+          if (!userColor) break;
+
+          if (ctx.data.user.colors.some((a) => a.nome === newName)) {
+            int.reply({
+              ephemeral: true,
+              content: ctx.prettyResponse('error', 'commands:cor.same-name'),
+            });
+            break;
+          }
+
+          userColor.nome = newName;
+
+          await ctx.client.repositories.userRepository.userModal.updateOne(
+            {
+              id: ctx.author.id,
+              'colors.cor': oldColor,
+            },
+            {
+              $set: {
+                'colors.$.nome': newName,
+              },
+            },
+          );
+
+          int.reply({
+            ephemeral: true,
+            content: ctx.prettyResponse('success', 'commands:cor.rename-success', {
+              color: oldColor,
+              name: newName,
+            }),
+          });
+
+          changePage(0, true);
+
+          await ctx.makeMessage({
+            embeds: [embed],
+            components: componentsToSend,
+          });
+
+          break;
+        }
+        case 'RENAME': {
+          int.deferUpdate();
+          toRename = !toRename;
+
+          (componentsToSend[componentsToSend.length - 1].components[0] as MessageButton).setStyle(
+            toRename ? 'SUCCESS' : 'SECONDARY',
+          );
+
+          embed.setTitle(
+            toRename
+              ? ctx.prettyResponse('question', 'commands:cor.select-to-rename')
+              : ctx.prettyResponse('gay_flag', 'commands:cor.embed_title'),
+          );
+
+          ctx.makeMessage({ components: componentsToSend, embeds: [embed] });
+          break;
+        }
         case 'SELECT': {
           const selected = (int as SelectMenuInteraction).values[0] as ColorResolvable;
+
+          if (toRename) {
+            const modal = new Modal()
+              .setCustomId(`${ctx.interaction.id} | MODAL`)
+              .setTitle(ctx.locale('commands:cor.modal-title'));
+
+            const nameInput = new TextInputComponent()
+              .setCustomId(`${selected}`)
+              .setLabel(
+                ctx.locale('commands:cor.name-input', {
+                  name: ctx.data.user.colors.find((a) => a.cor === selected)?.nome,
+                }),
+              )
+              .setMinLength(2)
+              .setMaxLength(20)
+              .setStyle('SHORT')
+              .setPlaceholder(ctx.locale('commands:loja.buy_colors.name_placeholder'));
+
+            modal.setComponents({ type: 1, components: [nameInput] });
+
+            int.showModal(modal);
+            break;
+          }
+          int.deferUpdate();
 
           const dataChoose = {
             title: ctx.locale('commands:cor.dataChoose.title'),
@@ -466,11 +570,11 @@ export default class PersonalizeCommand extends InteractionCommand {
           });
 
           ctx.makeMessage({ embeds: [dataChoose], components: [] });
-          collector.removeAllListeners();
           collector.stop('selected');
           break;
         }
         case 'NEXT': {
+          int.deferUpdate();
           changePage(1);
 
           await ctx.makeMessage({
@@ -480,6 +584,7 @@ export default class PersonalizeCommand extends InteractionCommand {
           break;
         }
         case 'BACK': {
+          int.deferUpdate();
           changePage(-1);
 
           await ctx.makeMessage({

@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ### Added
 
+- Agora é possivel renomear cores no `/personalizar cores`. Também é possivel settar o emoji da cor entre 10 emojis predefinidos colocando a letra do emoji no nome da cor. A lista é: 0 🇧🇷, 1 💜, 2 🔴, 3 🔵, 4 🟢, 5 💗, 6 🟡, 7 ⚫, 8 🟤, 9 ⚪. O nome deve ter somente 1 destes números.
 - **TRADUÇÕES:** Todos os comandos da Menhera são traduzidos para inglês (os nomes e descrições nos slash commands).
 - O comando TOP foi reescrito! Adicionados novos tipos de top: `estatísticas!`. Veja os melhores jogadores dos jogos de todos os tempos com o novo `/top`
 - Novo Comando de Estatísticas! `/status bicho` - Mostra as estatísticas do jogo do bicho de alguém
@@ -34,7 +35,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ### Changed
 
-- O comando `/loja comprar cores` agora usa formulários ao comprar cores personalizadas! 
+- O comando `/loja comprar cores` agora usa formulários ao comprar cores personalizadas!
 - **TODOS** comandos que possuíam erro de gramática no nome (`/cacar` ou `user`) agora possuem seus devidos acentos e caracteres especiais! `/caçar`, `/estatísticas` (exceção de ítens para não dificultar)
 - O comando `/status` foi renomeado para `/estatísticas`
 - O comando `/personalizar info` foi renomeado para `/personalizar sobre_mim`

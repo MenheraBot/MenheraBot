@@ -373,7 +373,12 @@
       "description": "You can now see your profile with your new color!"
     },
     "choose": "Choose your color",
-    "min-color": "you need to have at least 2 colors to use this command!"
+    "min-color": "you need to have at least 2 colors to use this command!",
+    "rename": "Rename",
+    "select-to-rename": "Choose A Color to Rename",
+    "modal-title": "Rename the Color",
+    "same-name": "A color already has that name!",
+    "rename-success": "You have renamed the color `{{color}}` to **{{name}}**"
   },
   "perfil": {
     "no-dbuser": "this user does not have a profile!",
