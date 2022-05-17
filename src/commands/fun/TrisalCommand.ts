@@ -14,19 +14,23 @@ export default class TrisalCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'trisal',
-      description:
-        '「💘」・Inicie um trisal com mais dois amigos ou veja a metadinha de seu trisal',
+      nameLocalizations: { 'en-US': 'polyamory' },
+      description: '「💘」・Faça um belo trisal com seus amigos',
+      descriptionLocalizations: { 'en-US': '「💘」・Start a poliamory with your friends' },
       options: [
         {
           name: 'user',
           type: 'USER',
           description: 'Primeiro usuário do trisal',
+          descriptionLocalizations: { 'en-US': 'First User' },
           required: false,
         },
         {
           name: 'user_dois',
+          nameLocalizations: { 'en-US': 'second_user' },
           type: 'USER',
           description: 'Segundo usuário do trisal',
+          descriptionLocalizations: { 'en-US': 'Second User' },
           required: false,
         },
       ],

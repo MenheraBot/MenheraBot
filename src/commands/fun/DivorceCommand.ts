@@ -8,7 +8,9 @@ export default class DivorceCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'divorciar',
+      nameLocalizations: { 'en-US': 'divorce' },
       description: '「💔」・Divorcie de seu atual cônjuje',
+      descriptionLocalizations: { 'en-US': '「💔」・Divorce from your current spouse' },
       category: 'fun',
       cooldown: 8,
       authorDataFields: ['married'],

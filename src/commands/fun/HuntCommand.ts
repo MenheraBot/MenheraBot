@@ -3,7 +3,7 @@ import moment from 'moment';
 import { COLORS } from '@structures/Constants';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { MessageEmbed } from 'discord.js-light';
+import { ApplicationCommandOptionChoiceData, MessageEmbed } from 'discord.js-light';
 import HttpRequests from '@utils/HTTPrequests';
 import {
   huntEnum,
@@ -20,33 +20,40 @@ import {
 import { capitalize, getMagicItemById } from '@utils/Util';
 
 type ChoiceTypes = HuntingTypes | 'probabilities';
-const choices: { name: string; value: ChoiceTypes }[] = [
+const choices: Array<ApplicationCommandOptionChoiceData & { value: ChoiceTypes }> = [
   {
     name: '😈 | Demônios',
+    nameLocalizations: { 'en-US': '😈 | Demons' },
     value: 'demons',
   },
   {
     name: '👊 | Gigantes',
+    nameLocalizations: { 'en-US': '👊 | Giants' },
     value: 'giants',
   },
   {
     name: '👼 | Anjos',
+    nameLocalizations: { 'en-US': '👼 | Angels' },
     value: 'angels',
   },
   {
     name: '🧚‍♂️ | Arcanjos',
+    nameLocalizations: { 'en-US': '🧚‍♂️ | Atchangels' },
     value: 'archangels',
   },
   {
     name: '🙌 | Semideuses',
+    nameLocalizations: { 'en-US': '🙌 | Demigods' },
     value: 'demigods',
   },
   {
     name: '✝️ | Deuses',
+    nameLocalizations: { 'en-US': '✝️ | Gods' },
     value: 'gods',
   },
   {
     name: '📊 | Probabilidades',
+    nameLocalizations: { 'en-US': '📊 | Probabilities' },
     value: 'probabilities',
   },
 ];
@@ -54,18 +61,23 @@ export default class HuntCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'cacar',
+      nameLocalizations: { 'en-US': 'hunt' },
       description: '「🎯」・Sai para uma caçada com Xandão',
+      descriptionLocalizations: { 'en-US': '「🎯」・Go on a hunt' },
       options: [
         {
           name: 'tipo',
+          nameLocalizations: { 'en-US': 'type' },
           type: 'STRING',
-          description: 'Tipo da caça',
+          description: 'Tipo da Caça',
+          descriptionLocalizations: { 'en-US': 'Hunting Type' },
           required: true,
           choices,
         },
         {
           name: 'rolls',
           description: 'Quantidade de rolls que você quer usar de uma vez só',
+          descriptionLocalizations: { 'en-US': 'Number of rolls you want to use at once' },
           type: 'INTEGER',
           required: false,
         },

@@ -146,7 +146,7 @@ export default class ShopCommand extends InteractionCommand {
                 },
                 {
                   name: '✝️ | Deuses',
-                  nameLocalizations: { 'en-US': '✝️ | gods' },
+                  nameLocalizations: { 'en-US': '✝️ | Gods' },
                   value: 'gods',
                 },
               ],

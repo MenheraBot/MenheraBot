@@ -10,17 +10,23 @@ export default class VascoCommand extends InteractionCommand {
     super({
       name: 'vasco',
       description: '「🏴」・O Giante Está aqui! Bem Vindo ao time!',
+      descriptionLocalizations: {
+        'en-US': '「🏴」・The Giant Is Here! Brazilian meme about soccer',
+      },
       options: [
         {
           name: 'user',
           type: 'USER',
           description: 'Usuário que entrou pro vasco',
+          descriptionLocalizations: { 'en-US': 'User who joined vasco' },
           required: true,
         },
         {
           name: 'qualidade',
+          nameLocalizations: { 'en-US': 'quality' },
           type: 'STRING',
           description: 'Qualidade da imagem (Boa pros memes lowquality)',
+          descriptionLocalizations: { 'en-US': 'Image quality (Good for low quality memes)' },
           required: false,
           choices: [
             {
@@ -29,6 +35,7 @@ export default class VascoCommand extends InteractionCommand {
             },
             {
               name: '🥶 | Baixa',
+              nameLocalizations: { 'en-US': '🥶 | Low' },
               value: 'low',
             },
           ],

@@ -39,7 +39,7 @@ const choices: Array<ApplicationCommandOptionChoiceData & { value: ChoiceTypes }
   },
   {
     name: '✝️ | Deuses',
-    nameLocalizations: { 'en-US': '✝️ | gods' },
+    nameLocalizations: { 'en-US': '✝️ | Gods' },
     value: 'gods',
   },
 ];

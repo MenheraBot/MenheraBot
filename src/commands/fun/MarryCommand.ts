@@ -9,12 +9,15 @@ export default class MarryCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'casar',
+      nameLocalizations: { 'en-US': 'marry' },
       description: '「💍」・Case com o amor de sua vida',
+      descriptionLocalizations: { 'en-US': '「💍」・Marry the love of your life' },
       options: [
         {
           type: 'USER',
           name: 'user',
           description: 'O sortudo que vai casar com você',
+          descriptionLocalizations: { 'en-US': 'The lucky one who will marry you' },
           required: true,
         },
       ],

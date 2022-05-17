@@ -9,11 +9,14 @@ export default class EightballCommand extends InteractionCommand {
     super({
       name: '8ball',
       description: '「🎱」・Faça uma pergunta de resposta Sim/Não para a Menhera',
+      descriptionLocalizations: { 'en-US': '「🎱」・Ask Menhera a Yes/No answer question' },
       options: [
         {
           name: 'pergunta',
+          nameLocalizations: { 'en-US': 'question' },
           type: 'STRING',
           description: 'Pergunta para ser feita',
+          descriptionLocalizations: { 'en-US': 'Question to be asked' },
           required: true,
         },
       ],

@@ -8,17 +8,23 @@ export default class ShipCommand extends InteractionCommand {
     super({
       name: 'ship',
       description: '「❤️」・Mostra o valor do ship de um casal',
+      descriptionLocalizations: { 'en-US': "「❤️」・Shows the value of a couple's ship" },
       options: [
         {
           name: 'user',
           type: 'USER',
-          description: 'Primeiro usuário',
+          description: 'Primeiro Usuário',
+          descriptionLocalizations: { 'en-US': 'Fisrt User' },
           required: true,
         },
         {
           name: 'user_dois',
+          nameLocalizations: { 'en-US': 'second_user' },
           type: 'USER',
           description: 'Segundo usuário. Caso não seja passado, o ship será feito com você',
+          descriptionLocalizations: {
+            'en-US': 'Second user. If not passed, the ship will be made with you',
+          },
           required: false,
         },
       ],

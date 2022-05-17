@@ -9,12 +9,18 @@ export default class PhiloCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'filosofia',
+      nameLocalizations: { 'en-US': 'philosophy' },
       description: '「💭」・Ser ou não ser, eis a questão. Mande Aristóteles dizer algo.',
+      descriptionLocalizations: {
+        'en-US': '「💭」・To be or not to be, that is the question. Have Aristotle say something.',
+      },
       options: [
         {
           name: 'frase',
+          nameLocalizations: { 'en-US': 'text' },
           type: 'STRING',
           description: 'Frase para enviar ao Aristóteles',
+          descriptionLocalizations: { 'en-US': 'Text to sendo to Aristotle' },
           required: true,
         },
       ],

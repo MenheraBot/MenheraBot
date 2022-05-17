@@ -10,11 +10,16 @@ export default class AstolfoCommand extends InteractionCommand {
     super({
       name: 'astolfo',
       description: '「🍆」・É grande, né? Disse o astolfo para aquilo que você o disse',
+      descriptionLocalizations: {
+        'en-US': "「🍆」・It's big, right? Said the astolfo for what you said",
+      },
       options: [
         {
           name: 'frase',
+          nameLocalizations: { 'en-US': 'phrase' },
           type: 'STRING',
-          description: 'Frase para enviar ao astolfo',
+          description: 'Frase para o Astolfo falar',
+          descriptionLocalizations: { 'en-US': 'Phrase for Astolfo to speak' },
           required: true,
         },
       ],

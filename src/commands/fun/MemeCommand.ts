@@ -8,15 +8,18 @@ export default class MemeCommand extends InteractionCommand {
     super({
       name: 'meme',
       description: '「🤣」・Atumalaca KKKK. Apenas os melhores memes',
+      descriptionLocalizations: { 'en-US': '「🤣」・Atumalaca LOL. Only the best memes' },
       options: [
         {
           name: 'fds',
           description: '「🤫」・Lançe o Bruno Henrique no chat',
+          descriptionLocalizations: { 'en-US': "「🤫」・Show that you don't care" },
           type: 'SUB_COMMAND',
         },
         {
           name: 'humor',
-          description: '「🤣」・KK tumor e piadas',
+          description: '「🤣」・KK Tumor e Piadas',
+          descriptionLocalizations: { 'en-US': '「🤣」・LOL Humor and Jokes' },
           type: 'SUB_COMMAND',
         },
       ],
