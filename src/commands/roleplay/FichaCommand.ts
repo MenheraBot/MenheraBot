@@ -43,19 +43,19 @@ import { makeCloseCommandButton, prepareUserForDungeon } from '@roleplay/utils/A
 export default class FichaCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'ficha',
-      nameLocalizations: { 'en-US': 'sheet' },
-      description: '【ＲＰＧ】📜 | Mostra a ficha de um personagem ou cria a sua própria',
+      name: 'sheet',
+      nameLocalizations: { 'pt-BR': 'ficha' },
+      description: '【ＲＰＧ】📜 | Show a character sheet or create your own',
       descriptionLocalizations: {
-        'en-US': '【ＲＰＧ】📜 | Show a character sheet or create your own',
+        'pt-BR': '【ＲＰＧ】📜 | Mostra a ficha de um personagem ou cria a sua própria',
       },
       category: 'roleplay',
       options: [
         {
-          name: 'usuário',
-          nameLocalizations: { 'en-US': 'user' },
-          description: 'Usuário para ver a ficha',
-          descriptionLocalizations: { 'en-US': 'User to view the sheet' },
+          name: 'user',
+          nameLocalizations: { 'pt-BR': 'usuário' },
+          description: 'User to view the sheet',
+          descriptionLocalizations: { 'pt-BR': 'Usuário para ver a ficha' },
           type: 'USER',
           required: false,
         },

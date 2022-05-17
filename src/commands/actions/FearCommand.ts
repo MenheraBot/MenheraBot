@@ -8,25 +8,25 @@ import { capitalize } from '@utils/Util';
 export default class FearCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'medo',
-      nameLocalizations: { 'en-US': 'fear' },
-      description: '「😮」・Mostre para todos que tu ta com medo',
-      descriptionLocalizations: { 'en-US': "「😮」・Show everyone you're scared" },
+      name: 'fear',
+      nameLocalizations: { 'pt-BR': 'medo' },
+      description: "「😮」・Show everyone you're scared",
+      descriptionLocalizations: { 'pt-BR': '「😮」・Mostre para todos que tu ta com medo' },
       options: [
         {
-          name: 'usuário',
-          nameLocalizations: { 'en-US': 'user' },
+          name: 'user',
+          nameLocalizations: { 'pt-BR': 'usuário' },
           type: 'USER',
-          description: 'Usuário que te deixou com medo',
-          descriptionLocalizations: { 'en-US': 'User who scared you' },
+          description: 'User who scared you',
+          descriptionLocalizations: { 'pt-BR': 'Usuário que te deixou com medo' },
           required: false,
         },
         {
-          name: 'motivo',
-          nameLocalizations: { 'en-US': 'reason' },
+          name: 'reason',
+          nameLocalizations: { 'pt-BR': 'motivo' },
           type: 'STRING',
-          description: 'Por que tu ta com medo?',
-          descriptionLocalizations: { 'en-US': 'Why are you afraid?' },
+          description: 'Why are you afraid?',
+          descriptionLocalizations: { 'pt-BR': 'Por que tu ta com medo?' },
           required: false,
         },
       ],
@@ -40,7 +40,7 @@ export default class FearCommand extends InteractionCommand {
 
     const selectedImage = await HttpRequests.getAssetImageUrl('fear');
     const user = ctx.options.getUser('user');
-    const reason = ctx.options.getString('motivo');
+    const reason = ctx.options.getString('reason');
 
     if (!user || user.id === ctx.author.id) {
       const embed = new MessageEmbed()

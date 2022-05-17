@@ -8,27 +8,27 @@ import { capitalize } from '@utils/Util';
 export default class ThinkCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'pensar',
-      nameLocalizations: { 'en-US': 'think' },
-      description: '「🤔」・Ser ou não ser? Eis a questão. Pense, pense sobre alguém',
+      name: 'think',
+      nameLocalizations: { 'pt-BR': 'pensar' },
+      description: '「🤔」・To be or not to be? That is the question. Think, think about someone',
       descriptionLocalizations: {
-        'en-US': '「🤔」・To be or not to be? That is the question. Think, think about someone',
+        'pt-BR': '「🤔」・Ser ou não ser? Eis a questão. Pense, pense sobre alguém',
       },
       options: [
         {
-          name: 'usuário',
-          nameLocalizations: { 'en-US': 'user' },
+          name: 'user',
+          nameLocalizations: { 'pt-BR': 'usuário' },
           type: 'USER',
-          description: 'Usuário em que você está pensando',
-          descriptionLocalizations: { 'en-US': 'User you are thinking of' },
+          description: 'User you are thinking of',
+          descriptionLocalizations: { 'pt-BR': 'Usuário em que você está pensando' },
           required: false,
         },
         {
-          name: 'motivo',
+          name: 'reason',
           type: 'STRING',
-          nameLocalizations: { 'en-US': 'reason' },
-          description: 'Por que tu ta pensando?',
-          descriptionLocalizations: { 'en-US': 'Why are you thinking?' },
+          nameLocalizations: { 'pt-BR': 'motivo' },
+          description: 'Why are you thinking?',
+          descriptionLocalizations: { 'pt-BR': 'Por que tu ta pensando?' },
           required: false,
         },
       ],
@@ -39,7 +39,7 @@ export default class ThinkCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const user = ctx.options.getUser('user');
-    const reason = ctx.options.getString('motivo');
+    const reason = ctx.options.getString('reason');
 
     if (user?.bot) {
       await ctx.makeMessage({

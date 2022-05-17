@@ -25,72 +25,72 @@ export default class FluffetyCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'fluffety',
-      description: '「🐰」・Cuide da sua fofura de estimação',
-      descriptionLocalizations: { 'en-US': '「🐰」・Take care of your pet cuteness' },
+      description: '「🐰」・Take care of your pet cuteness',
+      descriptionLocalizations: { 'pt-BR': '「🐰」・Cuide da sua fofura de estimação' },
       category: 'fluffety',
       options: [
         {
           type: 'SUB_COMMAND',
           name: 'info',
-          description: '「🐰」・Veja o fluffety de alguém',
-          descriptionLocalizations: { 'en-US': "「🐰」・See someone's fluffety" },
+          description: "「🐰」・See someone's fluffety",
+          descriptionLocalizations: { 'pt-BR': '「🐰」・Veja o fluffety de alguém' },
           options: [
             {
               type: 'USER',
-              name: 'dono',
-              nameLocalizations: { 'en-US': 'owner' },
-              description: 'Dono do flufetty que você quer ver',
-              descriptionLocalizations: { 'en-US': 'Owner of the flufetty you want to see' },
+              name: 'owner',
+              nameLocalizations: { 'pt-BR': 'dono' },
+              description: 'Owner of the flufetty you want to see',
+              descriptionLocalizations: { 'pt-BR': 'Dono do flufetty que você quer ver' },
               required: false,
             },
           ],
         },
         {
           type: 'SUB_COMMAND_GROUP',
-          name: 'relacionamentos',
-          nameLocalizations: { 'en-US': 'relationships' },
-          description: '「✨」・Gerencie suas relações com outros fluffetys',
+          name: 'relationships',
+          nameLocalizations: { 'pt-BR': 'relacionamentos' },
+          description: '「✨」・Manage your relationships with other fluffetys',
           descriptionLocalizations: {
-            'en-US': '「✨」・Manage your relationships with other fluffetys',
+            'pt-BR': '「✨」・Gerencie suas relações com outros fluffetys',
           },
           options: [
             {
               type: 'SUB_COMMAND',
-              name: 'lista',
-              nameLocalizations: { 'en-US': 'list' },
-              description: '「📜」・Veja suas relações atuais',
-              descriptionLocalizations: { 'en-US': '「📜」・View your current relationships' },
+              name: 'list',
+              nameLocalizations: { 'pt-BR': 'lista' },
+              description: '「📜」・View your current relationships',
+              descriptionLocalizations: { 'pt-BR': '「📜」・Veja suas relações atuais' },
             },
             {
               type: 'SUB_COMMAND',
-              name: 'adicionar',
-              nameLocalizations: { 'en-US': 'add' },
-              description: '「✅」・Crie uma nova relação com um Fluffety',
+              name: 'add',
+              nameLocalizations: { 'pt-BR': 'adicionar' },
+              description: '「✅」・Build a new relationship with a Fluffety',
               descriptionLocalizations: {
-                'en-US': '「✅」・Build a new relationship with a Fluffety',
+                'pt-BR': '「✅」・Crie uma nova relação com um Fluffety',
               },
               options: [
                 {
                   type: 'USER',
-                  name: 'dono',
-                  nameLocalizations: { 'en-US': 'owner' },
-                  description: 'Dono do flufetty que você quer criar uma relação',
+                  name: 'owner',
+                  nameLocalizations: { 'pt-BR': 'dono' },
+                  description: 'Flufetty owner you want to create a relationship with',
                   descriptionLocalizations: {
-                    'en-US': 'Flufetty owner you want to create a relationship with',
+                    'pt-BR': 'Dono do flufetty que você quer criar uma relação',
                   },
                   required: true,
                 },
                 {
                   type: 'INTEGER',
-                  name: 'tipo',
-                  nameLocalizations: { 'en-US': 'type' },
-                  description: 'Tipo da relação que você quer criar',
-                  descriptionLocalizations: { 'en-US': 'Type of relationship you want to create' },
+                  name: 'type',
+                  nameLocalizations: { 'pt-BR': 'tipo' },
+                  description: 'Type of relationship you want to create',
+                  descriptionLocalizations: { 'pt-BR': 'Tipo da relação que você quer criar' },
                   required: true,
                   choices: [
                     {
-                      name: 'Começar uma Amizade',
-                      nameLocalizations: { 'en-US': 'Start a Friendship' },
+                      name: 'Start a Friendship',
+                      nameLocalizations: { 'pt-BR': 'Começar uma Amizade' },
                       value: 0,
                     },
                   ],
@@ -99,17 +99,19 @@ export default class FluffetyCommand extends InteractionCommand {
             },
             {
               type: 'SUB_COMMAND',
-              name: 'remover',
-              nameLocalizations: { 'en-US': 'remove' },
-              description: '「❌」・Corte relações com algum Fluffety',
-              descriptionLocalizations: { 'en-US': '「❌」・Cut ties with some Fluffety' },
+              name: 'remove',
+              nameLocalizations: { 'pt-BR': 'remover' },
+              description: '「❌」・Cut ties with some Fluffety',
+              descriptionLocalizations: { 'pt-BR': '「❌」・Corte relações com algum Fluffety' },
               options: [
                 {
                   type: 'USER',
-                  name: 'dono',
-                  nameLocalizations: { 'en-US': 'owner' },
-                  description: 'Dono do Flufetty que você quer cortar relações',
-                  descriptionLocalizations: { 'en-US': 'Flufetty owner you want to cut ties' },
+                  name: 'owner',
+                  nameLocalizations: { 'pt-BR': 'dono' },
+                  description: 'Flufetty owner you want to cut ties',
+                  descriptionLocalizations: {
+                    'pt-BR': 'Dono do Flufetty que você quer cortar relações',
+                  },
                   required: true,
                 },
               ],
@@ -128,11 +130,11 @@ export default class FluffetyCommand extends InteractionCommand {
     switch (command) {
       case 'info':
         return FluffetyCommand.InfoCommand(ctx);
-      case 'lista':
+      case 'list':
         return FluffetyCommand.ListRelationshipsCommand(ctx);
-      case 'remover':
+      case 'remove':
         return FluffetyCommand.RemoveRelationshipCommand(ctx);
-      case 'adicionar':
+      case 'add':
         return FluffetyCommand.AddRelationshipCommand(ctx);
     }
   }
@@ -163,8 +165,8 @@ export default class FluffetyCommand extends InteractionCommand {
   }
 
   static async AddRelationshipCommand(ctx: InteractionCommandContext): Promise<void> {
-    const fluffetyOwner = ctx.options.getUser('dono', true);
-    const relationshipType = ctx.options.getInteger('tipo', true) as FluffetyRelationLevels;
+    const fluffetyOwner = ctx.options.getUser('owner', true);
+    const relationshipType = ctx.options.getInteger('type', true) as FluffetyRelationLevels;
 
     if (fluffetyOwner.id === ctx.author.id) {
       ctx.makeMessage({
@@ -270,7 +272,7 @@ export default class FluffetyCommand extends InteractionCommand {
   }
 
   static async RemoveRelationshipCommand(ctx: InteractionCommandContext): Promise<void> {
-    const fluffetyOwner = ctx.options.getUser('dono', true);
+    const fluffetyOwner = ctx.options.getUser('owner', true);
 
     if (fluffetyOwner.id === ctx.author.id) {
       ctx.makeMessage({
@@ -371,7 +373,7 @@ export default class FluffetyCommand extends InteractionCommand {
   }
 
   static async InfoCommand(ctx: InteractionCommandContext): Promise<void> {
-    const fluffetyOwner = ctx.options.getUser('dono', false) ?? ctx.author;
+    const fluffetyOwner = ctx.options.getUser('owner', false) ?? ctx.author;
     const fluffety = await ctx.client.repositories.fluffetyRepository.findUserFluffety(
       fluffetyOwner.id,
     );

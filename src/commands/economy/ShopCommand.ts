@@ -31,32 +31,34 @@ import { PicassoRoutes, requestPicassoImage } from '@utils/PicassoRequests';
 export default class ShopCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'loja',
-      nameLocalizations: { 'en-US': 'shop' },
-      description: '「💴」・Abre o brechó da Menhera',
-      descriptionLocalizations: { 'en-US': "Open Menhera's thrift store" },
+      name: 'shop',
+      nameLocalizations: { 'pt-BR': 'loja' },
+      description: "「💴」・Open Menhera's thrift store",
+      descriptionLocalizations: { 'pt-BR': 'Abre o brechó da Menhera' },
       options: [
         {
-          name: 'comprar',
-          nameLocalizations: { 'en-US': 'buy' },
-          description: '「🛒」・Abre a loja de compras',
-          descriptionLocalizations: { 'en-US': '「🛒」・Opens the shopping store' },
+          name: 'buy',
+          nameLocalizations: { 'pt-BR': 'comprar' },
+          description: '「🛒」・Opens the shopping store',
+          descriptionLocalizations: { 'pt-BR': '「🛒」・Abre a loja de compras' },
           type: 'SUB_COMMAND_GROUP',
           options: [
             {
-              name: 'ítens',
-              nameLocalizations: { 'en-US': 'items' },
-              description: '「🔮」・ Compre itens mágicos para melhorar suas habilidades',
+              name: 'items',
+              nameLocalizations: { 'pt-BR': 'itens' },
+              description: '「🔮」・ Buy magic items to improve your skills',
               descriptionLocalizations: {
-                'en-US': '「🔮」・Buy magic items to improve your skills',
+                'pt-BR': '「🔮」・Compre itens mágicos para melhorar suas habilidades',
               },
               type: 'SUB_COMMAND',
             },
             {
-              name: 'cores',
-              nameLocalizations: { 'en-US': 'colors' },
-              description: '「🌈」・Compre cores para dar um UP em seu perfil!',
-              descriptionLocalizations: { 'en-US': '「🌈」・Buy colors to upgrade your profile!' },
+              name: 'colors',
+              nameLocalizations: { 'pt-BR': 'cores' },
+              description: '「🌈」・Buy colors to upgrade your profile!',
+              descriptionLocalizations: {
+                'pt-BR': '「🌈」・Compre cores para dar um UP em seu perfil!',
+              },
               type: 'SUB_COMMAND',
               options: [
                 {
@@ -75,15 +77,19 @@ export default class ShopCommand extends InteractionCommand {
             },
             {
               name: 'rolls',
-              description: '「🎟️」・Compre rolls para resetar seu tempo de caça',
-              descriptionLocalizations: { 'en-US': '「🎟️」・Buy rolls to reset your hunting time' },
+              description: '「🎟️」・Buy rolls to reset your hunting time',
+              descriptionLocalizations: {
+                'pt-BR': '「🎟️」・Compre rolls para resetar seu tempo de caça',
+              },
               type: 'SUB_COMMAND',
               options: [
                 {
-                  name: 'quantidade',
-                  nameLocalizations: { 'en-US': 'amount' },
-                  description: 'Quantidade de rolls que você quer comprar',
-                  descriptionLocalizations: { 'en-US': 'Number of rolls you want to buy' },
+                  name: 'amount',
+                  nameLocalizations: { 'pt-BR': 'quantidade' },
+                  description: 'Number of rolls you want to buy',
+                  descriptionLocalizations: {
+                    'pt-BR': 'Quantidade de rolls que você quer comprar',
+                  },
                   type: 'INTEGER',
                   required: true,
                   minValue: 1,
@@ -91,71 +97,71 @@ export default class ShopCommand extends InteractionCommand {
               ],
             },
             {
-              name: 'temas',
-              nameLocalizations: { 'en-US': 'themes' },
-              description: '「🎊」・Compre temas para a sua conta',
-              descriptionLocalizations: { 'en-US': '「🎊」・Buy themes for your account' },
+              name: 'themes',
+              nameLocalizations: { 'pt-BR': 'temas' },
+              description: '「🎊」・Buy themes for your account',
+              descriptionLocalizations: { 'pt-BR': '「🎊」・Compre temas para a sua conta' },
               type: 'SUB_COMMAND',
             },
           ],
         },
         {
-          name: 'vender',
-          nameLocalizations: { 'en-US': 'sell' },
-          description: '「💸」・ Venda suas caças',
-          descriptionLocalizations: { 'en-US': '「💸」・ Sell your fighters' },
+          name: 'sell',
+          nameLocalizations: { 'pt-BR': 'vender' },
+          description: '「💸」・ Sell your fighters',
+          descriptionLocalizations: { 'pt-BR': '「💸」・ Venda suas caças' },
           type: 'SUB_COMMAND',
           options: [
             {
-              name: 'tipo',
-              nameLocalizations: { 'en-US': 'type' },
-              description: 'Tipo de caça para vender',
-              descriptionLocalizations: { 'en-US': 'Type of hunting to sell' },
+              name: 'type',
+              nameLocalizations: { 'pt-BR': 'tipo' },
+              description: 'Type of hunting to sell',
+              descriptionLocalizations: { 'pt-BR': 'Tipo de caça para vender' },
               type: 'STRING',
               required: true,
               choices: [
                 {
-                  name: '⭐ | Estrelinhas',
-                  nameLocalizations: { 'en-US': '⭐ | Stars' },
+                  name: '⭐ | Start',
+                  nameLocalizations: { 'pt-BR': '⭐ | Estrelinhas' },
                   value: 'estrelinhas',
                 },
                 {
-                  name: '😈 | Demônios',
-                  nameLocalizations: { 'en-US': '😈 | Demons' },
+                  name: '😈 | Demons',
+                  nameLocalizations: { 'pt-BR': '😈 | Demônios' },
                   value: 'demons',
                 },
                 {
-                  name: '👊 | Gigantes',
-                  nameLocalizations: { 'en-US': '👊 | Giants' },
+                  name: '👊 | Giants',
+                  nameLocalizations: { 'pt-BR': '👊 | Gigantes' },
                   value: 'giants',
                 },
                 {
-                  name: '👼 | Anjos',
-                  nameLocalizations: { 'en-US': '👼 | Angels' },
+                  name: '👼 | Angels',
+                  nameLocalizations: { 'pt-BR': '👼 | Anjos' },
                   value: 'angels',
                 },
                 {
-                  name: '🧚‍♂️ | Arcanjos',
-                  nameLocalizations: { 'en-US': '🧚‍♂️ | Atchangels' },
+                  name: '🧚‍♂️ | Archangels',
+                  nameLocalizations: { 'pt-BR': '🧚‍♂️ | Arcanjos' },
                   value: 'archangels',
                 },
                 {
-                  name: '🙌 | Semideuses',
-                  nameLocalizations: { 'en-US': '🙌 | Demigods' },
+                  name: '🙌 | Demigods',
+                  nameLocalizations: { 'pt-BR': '🙌 | Semideuses' },
                   value: 'demigods',
                 },
                 {
-                  name: '✝️ | Deuses',
-                  nameLocalizations: { 'en-US': '✝️ | Gods' },
+                  name: '✝️ | Gods',
+                  nameLocalizations: { 'pt-BR': '✝️ | Deuses' },
                   value: 'gods',
                 },
               ],
             },
             {
-              name: 'quantidade',
-              nameLocalizations: { 'en-US': 'amount' },
-              description: 'Quantidade de caças para vender',
-              descriptionLocalizations: { 'en-US': 'Number of huntings to sell' },
+              name: 'amount',
+              nameLocalizations: { 'pt-BR': 'quantidade' },
+              description: 'Number of huntings to sell',
+              descriptionLocalizations: { 'pt-BR': 'Quantidade de caças para vender' },
               type: 'INTEGER',
               required: true,
               minValue: 1,
@@ -163,30 +169,30 @@ export default class ShopCommand extends InteractionCommand {
           ],
         },
         {
-          name: 'preços',
-          nameLocalizations: { 'en-US': 'prices' },
-          description: '「📊」・Mostra a tabela de preços da Menhera',
-          descriptionLocalizations: { 'en-US': "「📊」・Show Menhera's price list" },
+          name: 'prices',
+          nameLocalizations: { 'pt-BR': 'preços' },
+          description: "「📊」・Show Menhera's price list",
+          descriptionLocalizations: { 'pt-BR': '「📊」・Mostra a tabela de preços da Menhera' },
           type: 'SUB_COMMAND_GROUP',
           options: [
             {
-              name: 'comprar',
-              nameLocalizations: { 'en-US': 'buy' },
-              description: '「📈」・ Mostra os preços de itens de compras',
-              descriptionLocalizations: { 'en-US': '「📈」・ Shows the prices of shopping items' },
+              name: 'buy',
+              nameLocalizations: { 'pt-BR': 'comprar' },
+              description: '「📈」・ Shows the prices of shopping items',
+              descriptionLocalizations: { 'pt-BR': '「📈」・Mostra os preços de itens de compras' },
               type: 'SUB_COMMAND',
               options: [
                 {
-                  name: 'tipo',
-                  nameLocalizations: { 'en-US': 'type' },
-                  description: 'Tipo da compra para precificar',
-                  descriptionLocalizations: { 'en-US': 'Purchase type for pricing' },
+                  name: 'type',
+                  nameLocalizations: { 'pt-BR': 'tpio' },
+                  description: 'Purchase type for pricing',
+                  descriptionLocalizations: { 'pt-BR': 'Tipo da compra para precificar' },
                   type: 'STRING',
                   required: true,
                   choices: [
                     {
-                      name: '🌈 | Cores',
-                      nameLocalizations: { 'en-US': '🌈 | Colors' },
+                      name: '🌈 | Colors',
+                      nameLocalizations: { 'pt-BR': '🌈 | Cores' },
                       value: 'colors',
                     },
                     {
@@ -194,8 +200,8 @@ export default class ShopCommand extends InteractionCommand {
                       value: 'rolls',
                     },
                     {
-                      name: '🔮 | Itens Mágicos',
-                      nameLocalizations: { 'en-US': '🔮 | Magic Items' },
+                      name: '🔮 | Magic Items',
+                      nameLocalizations: { 'pt-BR': '🔮 | Itens Mágicos' },
                       value: 'items',
                     },
                   ],
@@ -203,23 +209,23 @@ export default class ShopCommand extends InteractionCommand {
               ],
             },
             {
-              name: 'vender',
-              nameLocalizations: { 'en-US': 'sell' },
-              description: '「📈」・ Mostra os preços de itens de venda',
-              descriptionLocalizations: { 'en-US': '「📈」・ Shows the prices of sale items' },
+              name: 'sell',
+              nameLocalizations: { 'pt-BR': 'vender' },
+              description: '「📈」・Shows the prices of sale items',
+              descriptionLocalizations: { 'pt-BR': '「📈」・ Mostra os preços de itens de venda' },
               type: 'SUB_COMMAND',
               options: [
                 {
-                  name: 'tipo',
-                  nameLocalizations: { 'en-US': 'type' },
-                  description: 'Tipo de vendas para precificar',
-                  descriptionLocalizations: { 'en-US': 'Sales type to price' },
+                  name: 'type',
+                  nameLocalizations: { 'pt-BR': 'tipo' },
+                  description: 'Sales type to price',
+                  descriptionLocalizations: { 'pt-BR': 'Tipo de vendas para precificar' },
                   type: 'STRING',
                   required: true,
                   choices: [
                     {
-                      name: '🐾 | Caças',
-                      nameLocalizations: { 'en-US': '🐾 | Hunts' },
+                      name: '🐾 | Hunts',
+                      nameLocalizations: { 'pt-BR': '🐾 | Caças' },
                       value: 'hunts',
                     },
                   ],
@@ -254,24 +260,24 @@ export default class ShopCommand extends InteractionCommand {
 
     if (!type) return ShopCommand.sellHunts(ctx);
 
-    if (type === 'comprar') {
+    if (type === 'buy') {
       const option = ctx.options.getSubcommand();
 
-      if (option === 'cores') return ShopCommand.buyColor(ctx);
+      if (option === 'colors') return ShopCommand.buyColor(ctx);
 
       if (option === 'rolls') return ShopCommand.buyRolls(ctx);
 
-      if (option === 'itens') return ShopCommand.buyItems(ctx);
+      if (option === 'items') return ShopCommand.buyItems(ctx);
 
-      if (option === 'temas') return ShopCommand.buyThemes(ctx);
+      if (option === 'themes') return ShopCommand.buyThemes(ctx);
     }
 
-    if (type === 'precos') {
+    if (type === 'prices') {
       const option = ctx.options.getSubcommand();
 
-      if (option === 'comprar') return ShopCommand.buyInfo(ctx);
+      if (option === 'buy') return ShopCommand.buyInfo(ctx);
 
-      if (option === 'vender') return ShopCommand.sellInfo(ctx);
+      if (option === 'sell') return ShopCommand.sellInfo(ctx);
     }
   }
 
@@ -620,7 +626,7 @@ export default class ShopCommand extends InteractionCommand {
   }
 
   static async buyInfo(ctx: InteractionCommandContext): Promise<void> {
-    const type = ctx.options.getString('tipo', true);
+    const type = ctx.options.getString('type', true);
 
     if (type === 'colors') {
       const availableColors = [
@@ -706,7 +712,7 @@ export default class ShopCommand extends InteractionCommand {
       ctx.makeMessage({ embeds: [dataRolls] });
     }
 
-    if (type === 'items') {
+    if (type === 'itmes') {
       const ItemsEmbed = new MessageEmbed()
         .setTitle(ctx.locale('commands:loja.dataItems.title'))
         .setColor(COLORS.Pinkie)
@@ -728,7 +734,7 @@ export default class ShopCommand extends InteractionCommand {
   }
 
   static async sellInfo(ctx: InteractionCommandContext): Promise<void> {
-    const type = ctx.options.getString('tipo', true);
+    const type = ctx.options.getString('type', true);
 
     if (type === 'hunts') {
       const dataVender = {
@@ -757,8 +763,8 @@ export default class ShopCommand extends InteractionCommand {
   }
 
   static async sellHunts(ctx: InteractionCommandContext): Promise<void> {
-    const huntType = ctx.options.getString('tipo', true) as HuntingTypes;
-    const amount = ctx.options.getInteger('quantidade', true);
+    const huntType = ctx.options.getString('type', true) as HuntingTypes;
+    const amount = ctx.options.getInteger('amount', true);
 
     if (amount < 1) {
       ctx.makeMessage({
@@ -798,18 +804,7 @@ export default class ShopCommand extends InteractionCommand {
   }
 
   static async buyRolls(ctx: InteractionCommandContext): Promise<void> {
-    const amount = ctx.options.getInteger('quantidade', true);
-
-    if (amount < 1) {
-      ctx.makeMessage({
-        content: ctx.prettyResponse(
-          'error',
-          'commands:loja.dataRolls_fields.buy_rolls.invalid-number',
-        ),
-        ephemeral: true,
-      });
-      return;
-    }
+    const amount = ctx.options.getInteger('amount', true);
 
     const totalCost = amount * shopEconomy.hunts.roll;
 

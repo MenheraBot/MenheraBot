@@ -7,19 +7,20 @@ export default class MemeCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'meme',
-      description: '「🤣」・Atumalaca KKKK. Apenas os melhores memes',
-      descriptionLocalizations: { 'en-US': '「🤣」・Atumalaca LOL. Only the best memes' },
+      description: '「🤣」・Atumalaca LOL. Only the best memes',
+      descriptionLocalizations: { 'pt-BR': '「🤣」・Atumalaca KKKK. Apenas os melhores memes' },
       options: [
         {
-          name: 'fds',
-          description: '「🤫」・Lançe o Bruno Henrique no chat',
-          descriptionLocalizations: { 'en-US': "「🤫」・Show that you don't care" },
+          name: 'idc',
+          nameLocalizations: { 'pt-BR': 'fds' },
+          description: "「🤫」・Show that you don't care in a brazilian way",
+          descriptionLocalizations: { 'pt-BR': '「🤫」・Lançe o Bruno Henrique no chat' },
           type: 'SUB_COMMAND',
         },
         {
           name: 'humor',
-          description: '「🤣」・KK Tumor e Piadas',
-          descriptionLocalizations: { 'en-US': '「🤣」・LOL Humor and Jokes' },
+          description: '「🤣」・LOL Humor and Jokes',
+          descriptionLocalizations: { 'pt-BR': '「🤣」・KK Tumor e Piadas' },
           type: 'SUB_COMMAND',
         },
       ],
@@ -31,7 +32,7 @@ export default class MemeCommand extends InteractionCommand {
   async run(ctx: InteractionCommandContext): Promise<void> {
     const command = ctx.options.getSubcommand(true);
 
-    if (command === 'fds') MemeCommand.FodaseInteractionCommand(ctx);
+    if (command === 'idc') MemeCommand.FodaseInteractionCommand(ctx);
 
     if (command === 'humor') MemeCommand.HumorInteractionCommand(ctx);
   }

@@ -8,25 +8,25 @@ import { capitalize } from '@utils/Util';
 export default class CryCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'chorar',
-      nameLocalizations: { 'en-US': 'cry' },
-      description: '「😭」・Mostre para os que você está chorando :((',
-      descriptionLocalizations: { 'en-US': "「😭」・Show everyone that you're crying :((" },
+      name: 'cry',
+      nameLocalizations: { 'pt-BR': 'chorar' },
+      description: "「😭」・Show everyone that you're crying :((",
+      descriptionLocalizations: { 'pt-BR': '「😭」・Mostre para os que você está chorando :((' },
       options: [
         {
-          name: 'usuário',
-          nameLocalizations: { 'en-US': 'user' },
+          name: 'user',
+          nameLocalizations: { 'pt-BR': 'usuário' },
           type: 'USER',
-          description: 'Usuário que te fez chorar',
-          descriptionLocalizations: { 'en-US': 'User that made you cry' },
+          description: 'User that made you cry',
+          descriptionLocalizations: { 'pt-BR': 'Usuário que te fez chorar' },
           required: false,
         },
         {
-          name: 'motivo',
-          nameLocalizations: { 'en-US': 'reason' },
+          name: 'reason',
+          nameLocalizations: { 'pt-BR': 'motivo' },
           type: 'STRING',
-          description: 'Por que você está chorando?',
-          descriptionLocalizations: { 'en-US': 'Why are you crying?' },
+          description: 'Why are you crying?',
+          descriptionLocalizations: { 'pt-BR': 'Por que você está chorando?' },
           required: false,
         },
       ],
@@ -37,7 +37,7 @@ export default class CryCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const user = ctx.options.getUser('user');
-    const reason = ctx.options.getString('motivo');
+    const reason = ctx.options.getString('reason');
 
     if (user?.bot) {
       await ctx.makeMessage({

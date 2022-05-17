@@ -8,26 +8,26 @@ import { capitalize } from '@utils/Util';
 export default class MamarCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'mamar',
-      nameLocalizations: { 'en-US': 'lick' },
-      description: '「😝」・De uma mamada de Qualidade monstra em alguém',
-      descriptionLocalizations: { 'en-US': '「😝」・Lick someone' },
+      name: 'lick',
+      nameLocalizations: { 'pt-BR': 'mamar' },
+      description: '「😝」・Lick someone',
+      descriptionLocalizations: { 'pt-BR': '「😝」・De uma mamada de Qualidade monstra em alguém' },
       category: 'actions',
       options: [
         {
           type: 'USER',
-          name: 'usuário',
-          nameLocalizations: { 'en-US': 'user' },
-          description: 'Usuário que você quer mamar',
-          descriptionLocalizations: { 'en-US': 'User you want to lick' },
+          name: 'user',
+          nameLocalizations: { 'pt-BR': 'usuário' },
+          description: 'User you want to lick',
+          descriptionLocalizations: { 'pt-BR': 'Usuário que você quer mamar' },
           required: true,
         },
         {
           type: 'STRING',
-          name: 'motivo',
-          nameLocalizations: { 'en-US': 'reason' },
-          description: 'Por que tu quer mamar?',
-          descriptionLocalizations: { 'en-US': 'Why do you wanna lick?' },
+          name: 'reason',
+          nameLocalizations: { 'pt-BR': 'motivo' },
+          description: 'Why do you wanna lick?',
+          descriptionLocalizations: { 'pt-BR': 'Por que tu quer mamar?' },
           required: false,
         },
       ],
@@ -37,7 +37,7 @@ export default class MamarCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const mention = ctx.options.getUser('user', true);
-    const reason = ctx.options.getString('motivo');
+    const reason = ctx.options.getString('reason');
 
     if (mention.id === ctx.author.id) {
       await ctx.makeMessage({

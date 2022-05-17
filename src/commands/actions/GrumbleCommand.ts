@@ -7,10 +7,12 @@ import HttpRequests from '@utils/HTTPrequests';
 export default class GrumbleCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'resmungar',
-      nameLocalizations: { 'en-US': 'grumble' },
-      description: '「😖」・Mostre para todos que tu ta resmungando. Humpf',
-      descriptionLocalizations: { 'en-US': "「😖」・Show everyone you're mumbling. humpf" },
+      name: 'grumble',
+      nameLocalizations: { 'pt-BR': 'resmungar' },
+      description: "「😖」・Show everyone you're mumbling. humpf",
+      descriptionLocalizations: {
+        'pt-BR': '「😖」・Mostre para todos que tu ta resmungando. Humpf',
+      },
       category: 'actions',
       cooldown: 5,
     });

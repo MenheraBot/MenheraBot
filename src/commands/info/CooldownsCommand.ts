@@ -10,8 +10,8 @@ export default class CooldownsCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'cooldowns',
-      description: '「⌛」・Mostra todos os seus tempos de recarga',
-      descriptionLocalizations: { 'en-US': '「⌛」・Shows all your cooldowns' },
+      description: '「⌛」・Shows all your cooldowns',
+      descriptionLocalizations: { 'pt-BR': '「⌛」・Mostra todos os seus tempos de recarga' },
       category: 'info',
       cooldown: 5,
       authorDataFields: ['huntCooldown', 'voteCooldown', 'selectedColor'],

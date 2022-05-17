@@ -8,17 +8,19 @@ import HttpRequests from '@utils/HTTPrequests';
 export default class SarrarCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'sarrar',
-      description: '「🔥」・Invoca o poder dos irmãos Berti para fazer a lendária sarrada',
-      nameLocalizations: { 'en-US': 'dance' },
-      descriptionLocalizations: { 'en-US': '「🔥」・Dance with a friend' },
+      name: 'dance',
+      description: '「🔥」・Dance with a friend',
+      nameLocalizations: { 'pt-BR': 'sarrar' },
+      descriptionLocalizations: {
+        'pt-BR': '「🔥」・Invoca o poder dos irmãos Berti para fazer a lendária sarrada',
+      },
       options: [
         {
-          name: 'usuário',
-          nameLocalizations: { 'en-US': 'user' },
+          name: 'user',
+          nameLocalizations: { 'pt-BR': 'usuário' },
           type: 'USER',
-          description: 'Convoque alguém para sarrar contigo',
-          descriptionLocalizations: { 'en-US': 'Summon someone to dance with you' },
+          description: 'Summon someone to dance with you',
+          descriptionLocalizations: { 'pt-BR': 'Convoque alguém para sarrar contigo' },
           required: false,
         },
       ],

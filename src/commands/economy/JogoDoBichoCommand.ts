@@ -13,16 +13,16 @@ import moment from 'moment';
 export default class JogoDoBichoCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'bicho',
-      nameLocalizations: { 'en-US': 'animal' },
-      description: '「🦌」・Aposte no famoso Jogo do Bicho',
-      descriptionLocalizations: { 'en-US': '「🦌」・Bet on the Animal Game' },
+      name: 'animal_game',
+      nameLocalizations: { 'pt-BR': 'jogo_do_bicho' },
+      description: '「🦌」・Bet on the Animal Game',
+      descriptionLocalizations: { 'pt-BR': '「🦌」・Aposte no famoso Jogo do Bicho' },
       options: [
         {
-          name: 'aposta',
-          nameLocalizations: { 'en-US': 'bet' },
-          description: 'Valor da aposta',
-          descriptionLocalizations: { 'en-US': 'Bet amount' },
+          name: 'bet',
+          nameLocalizations: { 'pt-BR': 'aposta' },
+          description: 'Bet amount',
+          descriptionLocalizations: { 'pt-BR': 'Valor da aposta' },
           type: 'INTEGER',
           required: false,
           minValue: 1,
@@ -40,7 +40,7 @@ export default class JogoDoBichoCommand extends InteractionCommand {
       return;
     }
 
-    const bet = ctx.options.getInteger('aposta');
+    const bet = ctx.options.getInteger('bet');
 
     if (!bet) {
       const lastRaffle = await ctx.client.jogoDoBichoManager.lastGameStatus();

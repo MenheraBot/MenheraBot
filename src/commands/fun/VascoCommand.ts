@@ -9,25 +9,25 @@ export default class VascoCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'vasco',
-      description: '「🏴」・O Giante Está aqui! Bem Vindo ao time!',
+      description: '「🏴」・The Giant Is Here! Brazilian meme about soccer',
       descriptionLocalizations: {
-        'en-US': '「🏴」・The Giant Is Here! Brazilian meme about soccer',
+        'pt-BR': '「🏴」・O Giante Está aqui! Bem Vindo ao time!',
       },
       options: [
         {
-          name: 'usuário',
-          nameLocalizations: { 'en-US': 'user' },
+          name: 'user',
+          nameLocalizations: { 'pt-BR': 'usuário' },
           type: 'USER',
-          description: 'Usuário que entrou pro vasco',
-          descriptionLocalizations: { 'en-US': 'User who joined vasco' },
+          description: 'User who joined vasco',
+          descriptionLocalizations: { 'pt-BR': 'Usuário que entrou pro vasco' },
           required: true,
         },
         {
-          name: 'qualidade',
-          nameLocalizations: { 'en-US': 'quality' },
+          name: 'quality',
+          nameLocalizations: { 'pt-BR': 'qualidade' },
           type: 'STRING',
-          description: 'Qualidade da imagem (Boa pros memes lowquality)',
-          descriptionLocalizations: { 'en-US': 'Image quality (Good for low quality memes)' },
+          description: 'Image quality (Good for low quality memes)',
+          descriptionLocalizations: { 'pt-BR': 'Qualidade da imagem (Boa pros memes lowquality)' },
           required: false,
           choices: [
             {
@@ -35,8 +35,8 @@ export default class VascoCommand extends InteractionCommand {
               value: 'normal',
             },
             {
-              name: '🥶 | Baixa',
-              nameLocalizations: { 'en-US': '🥶 | Low' },
+              name: '🥶 | Low',
+              nameLocalizations: { 'pt-BR': '🥶 | Baixa' },
               value: 'low',
             },
           ],
@@ -49,7 +49,7 @@ export default class VascoCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const user = ctx.options.getUser('user', true);
-    const quality = ctx.options.getString('qualidade') ?? 'normal';
+    const quality = ctx.options.getString('quality') ?? 'normal';
 
     const randomPosition = `${Math.floor(Math.random() * 9)}`;
 

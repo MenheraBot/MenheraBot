@@ -8,25 +8,25 @@ import { capitalize } from '@utils/Util';
 export default class ShotCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'atirar',
-      nameLocalizations: { 'en-US': 'shot' },
-      description: '「🔫」・Pow! Dê um tiro em alguém',
-      descriptionLocalizations: { 'en-US': '「🔫」・Pow! shoot someone' },
+      name: 'shot',
+      nameLocalizations: { 'pt-BR': 'atirar' },
+      description: '「🔫」・Pow! shoot someone',
+      descriptionLocalizations: { 'pt-BR': '「🔫」・Pow! Dê um tiro em alguém' },
       options: [
         {
-          name: 'usuário',
-          nameLocalizations: { 'en-US': 'user' },
+          name: 'user',
+          nameLocalizations: { 'pt-BR': 'usuário' },
           type: 'USER',
-          description: 'Usuário que você quer dar o tiro',
-          descriptionLocalizations: { 'en-US': 'User you want to shoot' },
+          description: 'User you want to shoot',
+          descriptionLocalizations: { 'pt-BR': 'Usuário que você quer dar o tiro' },
           required: true,
         },
         {
-          name: 'motivo',
+          name: 'reason',
           type: 'STRING',
-          nameLocalizations: { 'en-US': 'reason' },
-          description: 'Por que tu quer fazer isso?',
-          descriptionLocalizations: { 'en-US': 'Why do you wanna do that?' },
+          nameLocalizations: { 'pt-BR': 'motivo' },
+          description: 'Why do you wanna do that?',
+          descriptionLocalizations: { 'pt-BR': 'Por que tu quer fazer isso?' },
           required: false,
         },
       ],
@@ -37,7 +37,7 @@ export default class ShotCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const user = ctx.options.getUser('user', true);
-    const reason = ctx.options.getString('motivo');
+    const reason = ctx.options.getString('reason');
 
     if (user.id === ctx.author.id) {
       await ctx.makeMessage({

@@ -36,34 +36,34 @@ import {
 export default class DowntownCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'centro',
-      nameLocalizations: { 'en-US': 'downtown' },
-      description: '【ＲＰＧ】🏛️ | Centro de Boleham, aqui tu encontra de tudo',
+      name: 'downtown',
+      nameLocalizations: { 'pt-BR': 'centro' },
+      description: '【ＲＰＧ】🏛️ | Boleham Center, here you can find everything',
       descriptionLocalizations: {
-        'en-US': '【ＲＰＧ】🏛️ | Boleham Center, here you can find everything',
+        'pt-BR': '【ＲＰＧ】🏛️ | Centro de Boleham, aqui tu encontra de tudo',
       },
       category: 'roleplay',
       options: [
         {
-          name: 'biblioteca',
-          nameLocalizations: { 'en-US': 'library' },
-          description: '【ＲＰＧ】📖 | Veja informações sobre o Mundo de Boleham',
+          name: 'library',
+          nameLocalizations: { 'pt-BR': 'biblioteca' },
+          description: "【ＲＰＧ】📖 | See information about Boleham's World",
           descriptionLocalizations: {
-            'en-US': "【ＲＰＧ】📖 | See information about Boleham's World",
+            'pt-BR': '【ＲＰＧ】📖 | Veja informações sobre o Mundo de Boleham',
           },
           type: 'SUB_COMMAND',
           options: [
             {
-              name: 'sessão',
-              nameLocalizations: { 'en-US': 'section' },
-              description: 'Tu tá procurando informações sobre o que?',
-              descriptionLocalizations: { 'en-US': 'What are you looking for information about?' },
+              name: 'section',
+              nameLocalizations: { 'pt-BR': 'sessão' },
+              description: 'What are you looking for information about?',
+              descriptionLocalizations: { 'pt-BR': 'Tu tá procurando informações sobre o que?' },
               type: 'STRING',
               required: true,
               choices: [
                 {
-                  name: 'habilidades',
-                  nameLocalizations: { 'en-US': 'abilities' },
+                  name: 'abilities',
+                  nameLocalizations: { 'pt-BR': 'habilidades' },
                   value: 'abilities',
                 },
                 // { name: 'itens', value: 'items' },
@@ -71,8 +71,8 @@ export default class DowntownCommand extends InteractionCommand {
             },
             {
               name: 'id',
-              description: 'ID do objeto que você está procurando',
-              descriptionLocalizations: { 'en-US': 'ID of the object you are looking for' },
+              description: 'ID of the object you are looking for',
+              descriptionLocalizations: { 'pt-BR': 'ID do objeto que você está procurando' },
               type: 'INTEGER',
               autocomplete: true,
               required: true,
@@ -80,41 +80,41 @@ export default class DowntownCommand extends InteractionCommand {
           ],
         },
         {
-          name: 'guilda',
-          nameLocalizations: { 'en-US': 'guild' },
-          description: '【ＲＰＧ】🏠 | Retire quests e reivindique-as',
-          descriptionLocalizations: { 'en-US': '【ＲＰＧ】🏠 | Remove quests and claim them' },
+          name: 'guild',
+          nameLocalizations: { 'pt-BR': 'guilda' },
+          description: '【ＲＰＧ】🏠 | Remove quests and claim them',
+          descriptionLocalizations: { 'pt-BR': '【ＲＰＧ】🏠 | Retire quests e reivindique-as' },
           type: 'SUB_COMMAND',
         },
         {
-          name: 'ferreiro',
-          nameLocalizations: { 'en-US': 'blacksmith' },
-          description: '【ＲＰＧ】⚒️ | Compre e faça itens de batalha',
-          descriptionLocalizations: { 'en-US': '【ＲＰＧ】⚒️ | Buy and make battle items' },
+          name: 'blacksmith',
+          nameLocalizations: { 'pt-BR': 'ferreiro' },
+          description: '【ＲＰＧ】⚒️ | Buy and make battle items',
+          descriptionLocalizations: { 'pt-BR': '【ＲＰＧ】⚒️ | Compre e faça itens de batalha' },
           type: 'SUB_COMMAND',
         },
         {
-          name: 'mercado',
-          nameLocalizations: { 'en-US': 'market' },
-          description: '【ＲＰＧ】🛒 | Compre e venda itens',
-          descriptionLocalizations: { 'en-US': '【ＲＰＧ】🛒 | buy and sell items' },
+          name: 'market',
+          nameLocalizations: { 'pt-BR': 'mercado' },
+          description: '【ＲＰＧ】🛒 | buy and sell items',
+          descriptionLocalizations: { 'pt-BR': '【ＲＰＧ】🛒 | Compre e venda itens' },
           type: 'SUB_COMMAND_GROUP',
           options: [
             {
-              name: 'comprar',
-              nameLocalizations: { 'en-US': 'buy' },
-              description: '【ＲＰＧ】🛒 | Compre itens para lhe ajudar nas batalhas',
+              name: 'buy',
+              nameLocalizations: { 'pt-BR': 'comprar' },
+              description: '【ＲＰＧ】🛒 | Buy items to help you in battles',
               descriptionLocalizations: {
-                'en-US': '【ＲＰＧ】🛒 | Buy items to help you in battles',
+                'pt-BR': '【ＲＰＧ】🛒 | Compre itens para lhe ajudar nas batalhas',
               },
               type: 'SUB_COMMAND',
             },
             {
-              name: 'vender',
-              nameLocalizations: { 'en-US': 'sell' },
-              description: '【ＲＰＧ】🛒 | Venda espólios de batalha para conseguir Moedas Reais',
+              name: 'sell',
+              nameLocalizations: { 'pt-BR': 'vender' },
+              description: '【ＲＰＧ】🛒 | Sell ​​battle loot to get Royal Coins',
               descriptionLocalizations: {
-                'en-US': '【ＲＰＧ】🛒 | Sell ​​battle loot to get Royal Coins',
+                'pt-BR': '【ＲＰＧ】🛒 | Venda espólios de batalha para conseguir Moedas Reais',
               },
               type: 'SUB_COMMAND',
             },
@@ -135,22 +135,22 @@ export default class DowntownCommand extends InteractionCommand {
 
     const option = ctx.options.getSubcommand();
 
-    if (option === 'vender') return DowntownCommand.sellItems(ctx, user);
+    if (option === 'sell') return DowntownCommand.sellItems(ctx, user);
 
-    if (option === 'comprar') return DowntownCommand.buyItems(ctx, user);
+    if (option === 'buy') return DowntownCommand.buyItems(ctx, user);
 
-    if (option === 'ferreiro') return DowntownCommand.blacksmith(ctx, user);
+    if (option === 'blacksmith') return DowntownCommand.blacksmith(ctx, user);
 
-    if (option === 'biblioteca') return DowntownCommand.library(ctx, user);
+    if (option === 'library') return DowntownCommand.library(ctx, user);
 
-    if (option === 'guilda')
+    if (option === 'guild')
       ctx.makeMessage({ content: ctx.prettyResponse('wink', 'common:soon'), ephemeral: true });
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   static async library(ctx: InteractionCommandContext, user: RoleplayUserSchema): Promise<void> {
     const bookId = ctx.options.getInteger('id', true);
-    const selectedOption = ctx.options.getString('sessao', true);
+    const selectedOption = ctx.options.getString('section', true);
 
     const embed = new MessageEmbed()
       .setTitle(

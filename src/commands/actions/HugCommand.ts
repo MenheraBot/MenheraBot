@@ -8,27 +8,27 @@ import { capitalize } from '@utils/Util';
 export default class HugCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'abraçar',
-      nameLocalizations: { 'en-US': 'hug' },
-      description: '「🤗」・Abrace um amiguinho oti modeuso fofurica',
+      name: 'hug',
+      nameLocalizations: { 'pt-BR': 'abraçar' },
+      description: '「🤗」・Hug a little friend nhaww mygodness what a cutie',
       descriptionLocalizations: {
-        'en-US': '「🤗」・Hug a little friend nhaww mygodness what a cutie',
+        'pt-BR': '「🤗」・Abrace um amiguinho oti modeuso fofurica',
       },
       options: [
         {
           type: 'USER',
-          name: 'usuário',
-          nameLocalizations: { 'en-US': 'user' },
-          description: 'Usuário que tu quer abraçar',
-          descriptionLocalizations: { 'en-US': 'User that you want to hug' },
+          name: 'user',
+          nameLocalizations: { 'pt-BR': 'usuário' },
+          description: 'User that you want to hug',
+          descriptionLocalizations: { 'pt-BR': 'Usuário que tu quer abraçar' },
           required: true,
         },
         {
           type: 'STRING',
-          name: 'motivo',
-          nameLocalizations: { 'en-US': 'reason' },
-          description: 'Tem um motivo em especial para abraçar?',
-          descriptionLocalizations: { 'en-US': 'Is there any special reasons for this hug?' },
+          name: 'reason',
+          nameLocalizations: { 'pt-BR': 'motivo' },
+          description: 'Is there any special reasons for this hug?',
+          descriptionLocalizations: { 'pt-BR': 'Tem um motivo em especial para abraçar?' },
           required: false,
         },
       ],
@@ -39,7 +39,7 @@ export default class HugCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const user = ctx.options.getUser('user', true);
-    const reason = ctx.options.getString('motivo');
+    const reason = ctx.options.getString('reason');
 
     if (user.bot) {
       await ctx.makeMessage({

@@ -9,15 +9,17 @@ export default class MacetavaCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'macetava',
-      description: '「🤠」・Sabe o meme do macetava do casas bahia? É exatamente isso',
-      descriptionLocalizations: { 'en-US': '「🤠」・Just a brazilian meme for brazilians' },
+      description: '「🤠」・Just a brazilian meme for brazilians',
+      descriptionLocalizations: {
+        'pt-BR': '「🤠」・Sabe o meme do macetava do casas bahia? É exatamente isso',
+      },
       options: [
         {
-          name: 'usuário',
-          nameLocalizations: { 'en-US': 'user' },
+          name: 'user',
+          nameLocalizations: { 'pt-BR': 'usuário' },
           type: 'USER',
-          description: 'Usuário para mostrar na imagem',
-          descriptionLocalizations: { 'en-US': 'User to show in the picture' },
+          description: 'User to show in the picture',
+          descriptionLocalizations: { 'pt-BR': 'Usuário para mostrar na imagem' },
           required: true,
         },
       ],

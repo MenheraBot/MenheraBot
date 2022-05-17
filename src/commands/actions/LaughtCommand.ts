@@ -8,26 +8,26 @@ import { capitalize } from '@utils/Util';
 export default class LaughtCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'rir',
-      nameLocalizations: { 'en-US': 'laugh' },
-      description: '「🤣」・HAHAA, PARABÉNS ZÉ. Ria de algo',
-      descriptionLocalizations: { 'en-US': '「🤣」・Laugh at someone' },
+      name: 'laugh',
+      nameLocalizations: { 'pt-BR': 'rir' },
+      description: '「🤣」・Laugh at someone',
+      descriptionLocalizations: { 'pt-BR': '「🤣」・HAHAA, PARABÉNS ZÉ. Ria de algo' },
       category: 'actions',
       options: [
         {
           type: 'USER',
-          name: 'usuário',
-          nameLocalizations: { 'en-US': 'user' },
-          description: 'Usuário que te fez rir',
-          descriptionLocalizations: { 'en-US': 'User that made you laugh' },
+          name: 'user',
+          nameLocalizations: { 'pt-BR': 'usuário' },
+          description: 'User that made you laugh',
+          descriptionLocalizations: { 'pt-BR': 'Usuário que te fez rir' },
           required: false,
         },
         {
           type: 'STRING',
-          name: 'motivo',
-          nameLocalizations: { 'en-US': 'reason' },
-          description: 'Por que tu ta rindo?',
-          descriptionLocalizations: { 'en-US': 'Why are you laughing' },
+          name: 'reason',
+          nameLocalizations: { 'pt-BR': 'motivo' },
+          description: 'Why are you laughing',
+          descriptionLocalizations: { 'pt-BR': 'Por que tu ta rindo?' },
           required: false,
         },
       ],
@@ -40,7 +40,7 @@ export default class LaughtCommand extends InteractionCommand {
 
     const selectedImage = await HttpRequests.getAssetImageUrl('laugh');
     const user = ctx.options.getUser('user');
-    const reason = ctx.options.getString('motivo');
+    const reason = ctx.options.getString('reason');
 
     if (!user || user.id === ctx.author.id) {
       const embed = new MessageEmbed()

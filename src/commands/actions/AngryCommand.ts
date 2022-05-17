@@ -8,25 +8,25 @@ import { capitalize } from '@utils/Util';
 export default class AngryCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'raiva',
-      nameLocalizations: { 'en-US': 'angry' },
-      description: '「😡」・Mostre a todos que está com raiva',
-      descriptionLocalizations: { 'en-US': '「😡」・Shows to everyone that you are angry' },
+      name: 'angry',
+      nameLocalizations: { 'pt-BR': 'raiva' },
+      description: '「😡」・Shows to everyone that you are angry',
+      descriptionLocalizations: { 'pt-BR': '「😡」・Mostre a todos que está com raiva' },
       options: [
         {
-          name: 'usuário',
-          nameLocalizations: { 'en-US': 'user' },
+          name: 'user',
+          nameLocalizations: { 'pt-BR': 'usuário' },
           type: 'USER',
-          description: 'Usuário que te deixou com raiva',
-          descriptionLocalizations: { 'en-US': 'User that made you angry' },
+          description: 'User that made you angry',
+          descriptionLocalizations: { 'pt-BR': 'Usuário que te deixou com raiva' },
           required: false,
         },
         {
-          name: 'motivo',
-          nameLocalizations: { 'en-US': 'reason' },
+          name: 'reason',
+          nameLocalizations: { 'en-US': 'motivo' },
           type: 'STRING',
-          description: 'Por que você está com raiva?',
-          descriptionLocalizations: { 'en-US': 'Why are you angry?' },
+          description: 'Why are you angry?',
+          descriptionLocalizations: { 'pt-BR': 'Por que você está com raiva?' },
           required: false,
         },
       ],
@@ -37,7 +37,7 @@ export default class AngryCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const user = ctx.options.getUser('user', false);
-    const reason = ctx.options.getString('motivo', false);
+    const reason = ctx.options.getString('reason', false);
 
     if (user?.bot) {
       await ctx.makeMessage({

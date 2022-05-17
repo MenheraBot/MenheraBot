@@ -8,20 +8,19 @@ export default class GadoCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'gado',
-      nameLocalizations: { 'en-US': 'simp' },
-      description:
-        '「🐂」・MUUUUu gado demais. Use esse comando naquele seu amigo que baba por egirl',
+      nameLocalizations: { 'pt-BR': 'gado' },
+      description: '「🐂」・Brazilian meme about someone simping',
       descriptionLocalizations: {
-        'en-US':
-          '「🐂」・Mooo what a simp. Use this command on that friend of yours who drools over egirls',
+        'pt-BR':
+          '「🐂」・MUUUUu gado demais. Use esse comando naquele seu amigo que baba por egirl',
       },
       options: [
         {
-          name: 'usuário',
-          nameLocalizations: { 'en-US': 'user' },
+          name: 'user',
+          nameLocalizations: { 'pt-BR': 'usuário' },
           type: 'USER',
-          description: 'Usuário para chamar de gado',
-          descriptionLocalizations: { 'en-US': 'User to call a simp' },
+          description: 'User to call a simp',
+          descriptionLocalizations: { 'pt-BR': 'Usuário para chamar de gado' },
           required: true,
         },
       ],

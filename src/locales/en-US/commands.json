@@ -469,7 +469,7 @@
       "description": "**Type:** $t(common:theme_types.{{type}}) ($t(common:rarities.{{rarity}}))\n**Royalty:**: {{royalty}}%\n**Profit:** {{profit}} :star:\n**Sold:** {{sold}}\nRegistered at `{{registered}}`"
     },
     "coinflip": {
-      "embed-title": "Coinflip stats for {{user}}",
+      "embed-title": "{{user}}'s Coinflip Statistics",
       "no-data": "you never played a coinflip game!",
       "embed-footer": "You are amazing",
       "played": "Matches Played",
@@ -482,20 +482,20 @@
       "error": "an error occurred while checking this user's statistics"
     },
     "bicho": {
-      "embed-title": "{{user}}'s Bicho Status",
+      "embed-title": "{{user}}'s Bicho Statistics",
       "no-data": "This user have never played a Jogo do Bicho game!"
     },
     "roleta": {
-      "embed-title": "{{user}}'s Roulette Status",
+      "embed-title": "{{user}}'s Roulette Statistics",
       "no-data": "This user have never played a roulette game!"
     },
     "blackjack": {
-      "embed-title": "{{user}}'s Blackjack Status",
+      "embed-title": "{{user}}'s Blackjack Statistics",
       "no-data": "This user have never played a blackjack game!"
     },
     "hunt": {
       "no-data": "This user have never hunted",
-      "embed-title": "{{user}}'s Hunt Status",
+      "embed-title": "{{user}}'s Hunt Statistics",
       "display-data": "**Attempts:** {{tries}}\n**Rating:** {{success}}%\n**Total Hunted:** {{hunted}}",
       "demon": "Demons",
       "angel": "Angels",
@@ -517,21 +517,21 @@
   },
   "trisal": {
     "title": "❤️ Polyamory ❤️",
-    "no-args": "You're not on any trisals! Mention people to join in a polyamory >.<",
-    "marry-not-found": "a user of your trisal was not found",
-    "banned-user": "This trisal cannot be made because it is banned from Menhera!",
+    "no-args": "You're not on any polyamory! Mention people to join in a polyamory >.<",
+    "marry-not-found": "a user of your polyamory was not found",
+    "banned-user": "This polyamory cannot be made because it is banned from Menhera!",
     "no-owner": "you need to use the 'suck' command to create an account first >.<",
     "self-mention": "you can't make a couple with yourself",
     "same-mention": "you can't mention the same user 2 times",
-    "bot-mention": "you cannot form a trisal with a bot. In fact this is even weird ... I feel sorry for you for trying to get a bot.",
-    "no-db": "one of the members of trisal was not found in the database! The best thing now is to undo this trisal and start another one",
-    "comedor-de-casadas": "UOUOUOU calm there married eater, one of the users you mentioned is already in a trisal",
-    "accept-message": ":heart: | Do you accept to form a trisal? You 3 must click the button in 15 seconds!\n{{author}}, {{first}} e {{second}}",
-    "done": "congratulations, you three formed a beautiful trisal! Use this command again to see your pictures together",
+    "bot-mention": "you cannot form a polyamory with a bot. In fact this is even weird ... I feel sorry for you for trying to get a bot.",
+    "no-db": "one of the members of polyamory was not found in the database! The best thing now is to undo this polyamory and start another one",
+    "comedor-de-casadas": "UOUOUOU calm there married eater, one of the users you mentioned is already in a polyamory",
+    "accept-message": ":heart: | Do you accept to form a polyamory? You 3 must click the button in 15 seconds!\n{{author}}, {{first}} e {{second}}",
+    "done": "congratulations, you three formed a beautiful polyamory! Use this command again to see your pictures together",
     "error": "the 3 did not react to the message in time! Try again, maybe with someone who wants to, who knows",
     "untrisal": {
-      "sure": "are you sure you want to break up with your trisal? You have 15 seconds to confirm",
-      "done": "Your trisal is over! There's no way. He finished....",
+      "sure": "are you sure you want to break up with your polyamory? You have 15 seconds to confirm",
+      "done": "Your polyamory is over! There's no way. He finished....",
       "breakup": "Breakup"
     }
   },

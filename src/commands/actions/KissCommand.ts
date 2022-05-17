@@ -8,40 +8,40 @@ import { capitalize } from '@utils/Util';
 export default class KissCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'beijar',
+      name: 'kiss',
       nameLocalizations: {
-        'en-US': 'kiss',
+        'pt-BR': 'beijar',
       },
-      description: '「😘」・De uma beijoquita em alguém que tu goste',
-      descriptionLocalizations: { 'en-US': '「😘」・Give a kiss to someone you like' },
+      description: '「😘」・Give a kiss to someone you like',
+      descriptionLocalizations: { 'pt-BR': '「😘」・De uma beijoquita em alguém que tu goste' },
       category: 'actions',
       options: [
         {
           type: 'USER',
-          name: 'usuário',
-          nameLocalizations: { 'en-US': 'user' },
-          description: 'Usuário que você quer beijar',
-          descriptionLocalizations: { 'en-US': 'User that you wanna kiss' },
+          name: 'user',
+          nameLocalizations: { 'pt-BR': 'usuário' },
+          description: 'User that you wanna kiss',
+          descriptionLocalizations: { 'pt-BR': 'Usuário que você quer beijar' },
           required: true,
         },
         {
           type: 'STRING',
-          name: 'local',
-          nameLocalizations: { 'en-US': 'place' },
-          description: 'Lugar que você quer dar o beijo',
-          descriptionLocalizations: { 'en-US': 'place you want to kiss' },
+          name: 'place',
+          nameLocalizations: { 'pt-BR': 'local' },
+          description: 'Place you want to kiss',
+          descriptionLocalizations: { 'pt-BR': 'Lugar que você quer dar o beijo' },
           required: true,
           choices: [
-            { name: '👄 | Boca', value: '0', nameLocalizations: { 'en-US': '👄 | Mouth' } },
-            { name: '🌸 | Bochecha', value: '1', nameLocalizations: { 'en-US': '🌸 | Cheek' } },
+            { name: '👄 | Mouth', value: '0', nameLocalizations: { 'pt-BR': '👄 | Boca' } },
+            { name: '🌸 | Cheek', value: '1', nameLocalizations: { 'pt-BR': '🌸 | Bochecha' } },
           ],
         },
         {
           type: 'STRING',
-          name: 'motivo',
-          nameLocalizations: { 'en-US': 'reason' },
-          description: 'Por que voce quer beijar?',
-          descriptionLocalizations: { 'en-US': 'Why do you wanna kiss?' },
+          name: 'reason',
+          nameLocalizations: { 'pt-BR': 'motivo' },
+          description: 'Why do you wanna kiss?',
+          descriptionLocalizations: { 'pt-BR': 'Por que voce quer beijar?' },
           required: false,
         },
       ],
@@ -51,7 +51,7 @@ export default class KissCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const user = ctx.options.getUser('user', true);
-    const reason = ctx.options.getString('motivo');
+    const reason = ctx.options.getString('reason');
 
     if (user.bot) {
       await ctx.makeMessage({
@@ -69,7 +69,7 @@ export default class KissCommand extends InteractionCommand {
     }
 
     const selectedImage =
-      ctx.options.getString('local', true) === '0'
+      ctx.options.getString('place', true) === '0'
         ? await HttpRequests.getAssetImageUrl('kiss')
         : await HttpRequests.getAssetImageUrl('cheek');
     const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });

@@ -9,17 +9,17 @@ import { PicassoRoutes, requestPicassoImage } from '@utils/PicassoRequests';
 export default class ProfileCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'perfil',
-      nameLocalizations: { 'en-US': 'profile' },
-      description: '「✨」・Mostra o perfil de algúem',
-      descriptionLocalizations: { 'en-US': "「✨」・Show someone's profile" },
+      name: 'profile',
+      nameLocalizations: { 'pt-BR': 'perfil' },
+      description: "「✨」・Show someone's profile",
+      descriptionLocalizations: { 'pt-BR': '「✨」・Mostra o perfil de algúem' },
       options: [
         {
-          name: 'usuário',
-          nameLocalizations: { 'en-US': 'user' },
+          name: 'user',
+          nameLocalizations: { 'pt-BR': 'usuário' },
           type: 'USER',
-          description: 'Usuário para mostrar o perfil',
-          descriptionLocalizations: { 'en-US': 'User to show profile' },
+          description: 'User to show profile',
+          descriptionLocalizations: { 'pt-BR': 'Usuário para mostrar o perfil' },
           required: false,
         },
       ],

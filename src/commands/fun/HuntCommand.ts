@@ -22,64 +22,67 @@ import { capitalize, getMagicItemById } from '@utils/Util';
 type ChoiceTypes = HuntingTypes | 'probabilities';
 const choices: Array<ApplicationCommandOptionChoiceData & { value: ChoiceTypes }> = [
   {
-    name: '😈 | Demônios',
-    nameLocalizations: { 'en-US': '😈 | Demons' },
+    name: '😈 | Demons',
+    nameLocalizations: { 'pt-BR': '😈 | Demônios' },
     value: 'demons',
   },
   {
-    name: '👊 | Gigantes',
-    nameLocalizations: { 'en-US': '👊 | Giants' },
+    name: '👊 | Giants',
+    nameLocalizations: { 'pt-BR': '👊 | Gigantes' },
     value: 'giants',
   },
   {
-    name: '👼 | Anjos',
-    nameLocalizations: { 'en-US': '👼 | Angels' },
+    name: '👼 | Angels',
+    nameLocalizations: { 'pt-BR': '👼 | Anjos' },
     value: 'angels',
   },
   {
-    name: '🧚‍♂️ | Arcanjos',
-    nameLocalizations: { 'en-US': '🧚‍♂️ | Atchangels' },
+    name: '🧚‍♂️ | Archangels',
+    nameLocalizations: { 'pt-BR': '🧚‍♂️ | Arcanjos' },
     value: 'archangels',
   },
   {
-    name: '🙌 | Semideuses',
-    nameLocalizations: { 'en-US': '🙌 | Demigods' },
+    name: '🙌 | Demigods',
+    nameLocalizations: { 'pt-BR': '🙌 | Semideuses' },
     value: 'demigods',
   },
   {
-    name: '✝️ | Deuses',
-    nameLocalizations: { 'en-US': '✝️ | Gods' },
+    name: '✝️ | Gods',
+    nameLocalizations: { 'pt-BR': '✝️ | Deuses' },
     value: 'gods',
   },
   {
-    name: '📊 | Probabilidades',
-    nameLocalizations: { 'en-US': '📊 | Probabilities' },
+    name: '📊 | Probabilities',
+    nameLocalizations: { 'pt-BR': '📊 | Probabilidades' },
     value: 'probabilities',
   },
 ];
 export default class HuntCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'caçar',
-      nameLocalizations: { 'en-US': 'hunt' },
-      description: '「🎯」・Sai para uma caçada com Xandão',
-      descriptionLocalizations: { 'en-US': '「🎯」・Go on a hunt' },
+      name: 'hunt',
+      nameLocalizations: { 'pt-BR': 'caçar' },
+      description: '「🎯」・Go on a hunt',
+      descriptionLocalizations: { 'pt-BR': '「🎯」・Sai para uma caçada com Xandão' },
       options: [
         {
-          name: 'tipo',
-          nameLocalizations: { 'en-US': 'type' },
+          name: 'type',
+          nameLocalizations: { 'pt-BR': 'tipo' },
           type: 'STRING',
-          description: 'Tipo da Caça',
-          descriptionLocalizations: { 'en-US': 'Hunting Type' },
+          description: 'Hunting Type',
+          descriptionLocalizations: { 'pt-BR': 'Tipo da Caça' },
           required: true,
           choices,
         },
         {
           name: 'rolls',
-          description: 'Quantidade de rolls que você quer usar de uma vez só',
-          descriptionLocalizations: { 'en-US': 'Number of rolls you want to use at once' },
+          description: 'Number of rolls you want to use at once',
+          descriptionLocalizations: {
+            'pt-BR': 'Quantidade de rolls que você quer usar de uma vez só',
+          },
           type: 'INTEGER',
           required: false,
+          minValue: 1,
         },
       ],
       category: 'fun',
@@ -89,7 +92,7 @@ export default class HuntCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    const selected = ctx.options.getString('tipo', true) as ChoiceTypes;
+    const selected = ctx.options.getString('type', true) as ChoiceTypes;
 
     if (selected === 'probabilities') {
       const embed = new MessageEmbed()
@@ -179,13 +182,6 @@ export default class HuntCommand extends InteractionCommand {
     const rollsToUse = ctx.options.getInteger('rolls');
 
     if (rollsToUse) {
-      if (rollsToUse < 1) {
-        ctx.makeMessage({
-          content: ctx.prettyResponse('error', 'commands:cacar.invalid-rolls'),
-          ephemeral: true,
-        });
-        return;
-      }
       if (rollsToUse > ctx.data.user.rolls) {
         ctx.makeMessage({
           content: ctx.prettyResponse('error', 'commands:cacar.rolls-poor'),

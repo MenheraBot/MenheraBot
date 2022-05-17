@@ -7,18 +7,18 @@ import { emojis } from '@structures/Constants';
 export default class ConfigCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'configurar',
-      nameLocalizations: { 'en-US': 'configurate' },
-      description: '「⚙️」・Configure a Menhera no servidor',
-      descriptionLocalizations: { 'en-US': '「⚙️」・Configurate Menhera on the server' },
+      name: 'configure',
+      nameLocalizations: { 'pt-BR': 'configurar' },
+      description: '「⚙️」・Configure Menhera on the server',
+      descriptionLocalizations: { 'pt-BR': '「⚙️」・Configure a Menhera no servidor' },
       category: 'util',
       options: [
         {
-          name: 'idioma',
-          nameLocalizations: { 'en-US': 'language' },
-          description: '「🌐」・Mude o idioma em que eu falo neste servidor!',
+          name: 'language',
+          nameLocalizations: { 'pt-BR': 'idioma' },
+          description: '「🌐」・Change the language I speak on this server!',
           descriptionLocalizations: {
-            'en-US': '「🌐」・Change the language I speak on this server!',
+            'pt-BR': '「🌐」・Mude o idioma em que eu falo neste servidor!',
           },
           type: 'SUB_COMMAND',
         },
@@ -44,7 +44,7 @@ export default class ConfigCommand extends InteractionCommand {
 
     const command = ctx.options.getSubcommand();
 
-    if (command === 'idioma') ConfigCommand.LanguageInteractionCommand(ctx);
+    if (command === 'language') ConfigCommand.LanguageInteractionCommand(ctx);
 
     // if (command === 'censura') ConfigCommand.CensorInteractionCommand(ctx);
   }

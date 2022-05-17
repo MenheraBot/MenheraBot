@@ -8,25 +8,25 @@ import { capitalize } from '@utils/Util';
 export default class PatCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'carinho',
-      nameLocalizations: { 'en-US': 'cuddle' },
-      description: '「😊」・Oti meudeus, faz carinho em alguém',
-      descriptionLocalizations: { 'en-US': '「😊」・Cuddle someone' },
+      name: 'pat',
+      nameLocalizations: { 'pt-BR': 'carinho' },
+      description: '「😊」・Cuddle someone',
+      descriptionLocalizations: { 'pt-BR': '「😊」・Oti meudeus, faz carinho em alguém' },
       options: [
         {
-          name: 'usuário',
-          nameLocalizations: { 'en-US': 'user' },
+          name: 'user',
+          nameLocalizations: { 'pt-BR': 'usuário' },
           type: 'USER',
-          description: 'Usuário que você quer fazer carinho',
-          descriptionLocalizations: { 'en-US': 'User you want to cuddle' },
+          description: 'User you want to cuddle',
+          descriptionLocalizations: { 'pt-BR': 'Usuário que você quer fazer carinho' },
           required: true,
         },
         {
-          name: 'motivo',
+          name: 'reason',
           type: 'STRING',
-          nameLocalizations: { 'en-US': 'reason' },
-          description: 'Por que tu quer fazer carinho?',
-          descriptionLocalizations: { 'en-US': 'Why do you wanna cuddle?' },
+          nameLocalizations: { 'pt-BR': 'motivo' },
+          description: 'Why do you wanna cuddle?',
+          descriptionLocalizations: { 'pt-BR': 'Por que tu quer fazer carinho?' },
           required: false,
         },
       ],
@@ -37,7 +37,7 @@ export default class PatCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const user = ctx.options.getUser('user', true);
-    const reason = ctx.options.getString('motivo');
+    const reason = ctx.options.getString('reason');
 
     if (user.id === ctx.author.id) {
       await ctx.makeMessage({

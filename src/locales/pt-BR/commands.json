@@ -478,7 +478,7 @@
       "description": "**Tipo:** $t(common:theme_types.{{type}}) ($t(common:rarities.{{rarity}}))\n**Royalty:**: {{royalty}}%\n**Lucro:** {{profit}} :star:\n**Vendidos:** {{sold}}\nRegistrado em `{{registered}}`"
     },
     "coinflip": {
-      "embed-title": "Status do coinflip de {{user}}",
+      "embed-title": "Estatísticas do Coinflip de {{user}}",
       "no-data": "Este usuário nunca jogou uma partida de coinflip!",
       "embed-footer": "Tu é tri vei",
       "played": "Partidas Jogadas",
@@ -491,20 +491,20 @@
       "error": "Ocorreu um erro ao checar as estatísticas deste usuário. Provavelmente ele nunca usou o comando"
     },
     "bicho": {
-      "embed-title": "Status do Jodo do Bicho de {{user}}",
+      "embed-title": "Estatísticas do Jodo do Bicho de {{user}}",
       "no-data": "Este usuário nunca apostou no jogo do bicho!"
     },
     "roleta": {
-      "embed-title": "Status de roleta de {{user}}",
+      "embed-title": "Estatísticas de Roleta de {{user}}",
       "no-data": "Este usuário nunca jogou uma partida de roleta francesa!"
     },
     "blackjack": {
-      "embed-title": "Status do blackjack de {{user}}",
+      "embed-title": "Estatísticas do Blackjack de {{user}}",
       "no-data": "Este usuário nunca jogou uma partida de blackjack!"
     },
     "hunt": {
       "no-data": "Este usuário nunca caçou",
-      "embed-title": "Status de caçada de {{user}}",
+      "embed-title": "Estatísticas de Caças de {{user}}",
       "display-data": "**Tentativas:** {{tries}}\n**Aproveitamento:** {{success}}%\n**Total Caçados:** {{hunted}}",
       "demon": "Demônios",
       "angel": "Anjos",

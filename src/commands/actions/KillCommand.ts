@@ -8,28 +8,28 @@ import { capitalize } from '@utils/Util';
 export default class KillCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'matar',
-      nameLocalizations: { 'en-US': 'kill' },
-      description: '「☠️」・Mate aquela pessoa que tu não aguenta mais (de mentirinha hihi)',
+      name: 'kill',
+      nameLocalizations: { 'pt-BR': 'matar' },
+      description: "「☠️」・Kill that person you can't take anymore (just kidding)",
       descriptionLocalizations: {
-        'en-US': "「☠️」・Kill that person you can't take anymore (just kidding)",
+        'pt-BR': '「☠️」・Mate aquela pessoa que tu não aguenta mais (de mentirinha hihi)',
       },
       category: 'actions',
       options: [
         {
           type: 'USER',
-          name: 'usuário',
-          nameLocalizations: { 'en-US': 'user' },
-          description: 'Usuário que você quer matar',
-          descriptionLocalizations: { 'en-US': 'User that you wanna kill' },
+          name: 'user',
+          nameLocalizations: { 'pt-BR': 'usuário' },
+          description: 'User that you wanna kill',
+          descriptionLocalizations: { 'pt-BR': 'Usuário que você quer matar' },
           required: true,
         },
         {
           type: 'STRING',
-          name: 'motivo',
-          nameLocalizations: { 'en-US': 'reason' },
-          description: 'Por que tu quer fazer isso?',
-          descriptionLocalizations: { 'en-US': 'Why do you wanna do that?' },
+          name: 'reason',
+          nameLocalizations: { 'pt-BR': 'motivo' },
+          description: 'Why do you wanna do that?',
+          descriptionLocalizations: { 'pt-BR': 'Por que tu quer fazer isso?' },
           required: false,
         },
       ],
@@ -39,7 +39,7 @@ export default class KillCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const user = ctx.options.getUser('user', true);
-    const reason = ctx.options.getString('motivo');
+    const reason = ctx.options.getString('reason');
 
     if (user.id === ctx.author.id) {
       await ctx.makeMessage({

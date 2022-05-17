@@ -54,31 +54,31 @@ export default class ArenaCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'arena',
-      description: '【ＲＰＧ】🏟️ | Entre na Arena PvP de Boleham',
-      descriptionLocalizations: { 'en-US': '【ＲＰＧ】🏟️ | Enter the Boleham PvP Arena' },
+      description: '【ＲＰＧ】🏟️ | Enter the Boleham PvP Arena',
+      descriptionLocalizations: { 'pt-BR': '【ＲＰＧ】🏟️ | Entre na Arena PvP de Boleham' },
       category: 'roleplay',
       options: [
         {
-          name: 'batalhar',
-          nameLocalizations: { 'en-US': 'battle' },
-          description: '【ＲＰＧ】🏟️ | Entre na Arena PvP de Boleham',
-          descriptionLocalizations: { 'en-US': "【ＲＰＧ】🏟️ | Enter Boleham's PvP Arena" },
+          name: 'battle',
+          nameLocalizations: { 'pt-BR': 'batalhar' },
+          description: "【ＲＰＧ】🏟️ | Enter Boleham's PvP Arena",
+          descriptionLocalizations: { 'pt-BR': '【ＲＰＧ】🏟️ | Entre na Arena PvP de Boleham' },
           type: 'SUB_COMMAND',
           options: [
             {
               name: 'user',
-              description: 'Inimigo de Batalha',
-              descriptionLocalizations: { 'en-US': 'Battle Enemy' },
+              description: 'Battle Enemy',
+              descriptionLocalizations: { 'pt-BR': 'Inimigo de Batalha' },
               type: 'USER',
               required: true,
             },
           ],
         },
         {
-          name: 'configurar',
-          nameLocalizations: { 'en-US': 'configure' },
-          description: '【ＲＰＧ】🏟️ | Configure seu perfil de batalha',
-          descriptionLocalizations: { 'en-US': '【ＲＰＧ】🏟️ | Configure your battle profile' },
+          name: 'configure',
+          nameLocalizations: { 'pt-BR': 'configurar' },
+          description: '【ＲＰＧ】🏟️ | Configure your battle profile',
+          descriptionLocalizations: { 'pt-BR': '【ＲＰＧ】🏟️ | Configure seu perfil de batalha' },
           type: 'SUB_COMMAND',
         },
       ],
@@ -541,7 +541,7 @@ export default class ArenaCommand extends InteractionCommand {
   async run(ctx: InteractionCommandContext): Promise<void> {
     const selectedCommand = ctx.options.getSubcommand(true);
 
-    if (selectedCommand === 'configurar') return ArenaCommand.configurate(ctx);
+    if (selectedCommand === 'configure') return ArenaCommand.configurate(ctx);
 
     const mentioned = ctx.options.getUser('user', true);
 

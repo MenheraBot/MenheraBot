@@ -7,24 +7,24 @@ export default class ShipCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'ship',
-      description: '「❤️」・Mostra o valor do ship de um casal',
-      descriptionLocalizations: { 'en-US': "「❤️」・Shows the value of a couple's ship" },
+      description: "「❤️」・Shows the value of a couple's ship",
+      descriptionLocalizations: { 'pt-BR': '「❤️」・Mostra o valor do ship de um casal' },
       options: [
         {
-          name: 'usuário',
-          nameLocalizations: { 'en-US': 'user' },
+          name: 'user',
+          nameLocalizations: { 'pt-BR': 'usuário' },
           type: 'USER',
-          description: 'Primeiro Usuário',
-          descriptionLocalizations: { 'en-US': 'Fisrt User' },
+          description: 'Fisrt User',
+          descriptionLocalizations: { 'pt-BR': 'Primeiro Usuário' },
           required: true,
         },
         {
-          name: 'segundo_usuário',
-          nameLocalizations: { 'en-US': 'second_user' },
+          name: 'second_user',
+          nameLocalizations: { 'pt-BR': 'segundo_usuário' },
           type: 'USER',
-          description: 'Segundo usuário. Caso não seja passado, o ship será feito com você',
+          description: 'Second user. If not passed, the ship will be made with you',
           descriptionLocalizations: {
-            'en-US': 'Second user. If not passed, the ship will be made with you',
+            'pt-BR': 'Segundo usuário. Caso não seja passado, o ship será feito com você',
           },
           required: false,
         },
@@ -37,7 +37,7 @@ export default class ShipCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const user1 = ctx.options.getUser('user', true);
-    const user2 = ctx.options.getUser('user_dois') ?? ctx.author;
+    const user2 = ctx.options.getUser('second_dois') ?? ctx.author;
 
     if (!user1) {
       await ctx.makeMessage({

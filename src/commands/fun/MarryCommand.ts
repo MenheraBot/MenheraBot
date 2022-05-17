@@ -8,17 +8,17 @@ import moment from 'moment';
 export default class MarryCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'casar',
-      nameLocalizations: { 'en-US': 'marry' },
-      description: '「💍」・Case com o amor de sua vida',
-      descriptionLocalizations: { 'en-US': '「💍」・Marry the love of your life' },
+      name: 'marry',
+      nameLocalizations: { 'pt-BR': 'casar' },
+      description: '「💍」・Marry the love of your life',
+      descriptionLocalizations: { 'pt-BR': '「💍」・Case com o amor de sua vida' },
       options: [
         {
           type: 'USER',
-          name: 'usuário',
-          nameLocalizations: { 'en-US': 'user' },
-          description: 'O sortudo que vai casar com você',
-          descriptionLocalizations: { 'en-US': 'The lucky one who will marry you' },
+          name: 'user',
+          nameLocalizations: { 'pt-BR': 'usuário' },
+          description: 'The lucky one who will marry you',
+          descriptionLocalizations: { 'pt-BR': 'O sortudo que vai casar com você' },
           required: true,
         },
       ],

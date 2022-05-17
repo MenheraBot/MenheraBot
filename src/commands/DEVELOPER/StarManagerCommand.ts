@@ -4,7 +4,7 @@ import InteractionCommandContext from '@structures/command/InteractionContext';
 export default class ManageStartSlashCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'managestar',
+      name: 'manageia_as_estrela_dos_cara',
       description: '[DEV] Manipula as estrelinhas de alguém',
       category: 'dev',
       options: [

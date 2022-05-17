@@ -8,15 +8,17 @@ export default class EightballCommand extends InteractionCommand {
   constructor() {
     super({
       name: '8ball',
-      description: '「🎱」・Faça uma pergunta de resposta Sim/Não para a Menhera',
-      descriptionLocalizations: { 'en-US': '「🎱」・Ask Menhera a Yes/No answer question' },
+      description: '「🎱」・Ask Menhera a Yes/No answer question',
+      descriptionLocalizations: {
+        'pt-BR': '「🎱」・Faça uma pergunta de resposta Sim/Não para a Menhera',
+      },
       options: [
         {
-          name: 'pergunta',
-          nameLocalizations: { 'en-US': 'question' },
+          name: 'question',
+          nameLocalizations: { 'pt-BR': 'pergunta' },
           type: 'STRING',
-          description: 'Pergunta para ser feita',
-          descriptionLocalizations: { 'en-US': 'Question to be asked' },
+          description: 'Question to be asked',
+          descriptionLocalizations: { 'pt-BR': 'Pergunta para ser feita' },
           required: true,
         },
       ],
@@ -33,7 +35,7 @@ export default class EightballCommand extends InteractionCommand {
     const res = await requestPicassoImage(
       PicassoRoutes.EightBall,
       {
-        question: ctx.options.getString('pergunta', true),
+        question: ctx.options.getString('question', true),
         answer: ctx.locale(`commands:8ball.answers.${randomAnswer.id as 1}`),
         type: randomAnswer.type,
         username: ctx.author.username,
@@ -50,7 +52,7 @@ export default class EightballCommand extends InteractionCommand {
         .addFields([
           {
             name: ctx.locale('commands:8ball.question'),
-            value: `${ctx.options.getString('pergunta', true)}`,
+            value: `${ctx.options.getString('question', true)}`,
           },
           {
             name: ctx.locale('commands:8ball.answer'),

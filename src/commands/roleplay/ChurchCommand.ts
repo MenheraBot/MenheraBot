@@ -22,10 +22,10 @@ const MINUTES_COOLDOWN_TO_RECHURCH = 45;
 export default class ChurchCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'igreja',
-      nameLocalizations: { 'en-US': 'church' },
-      description: '【ＲＰＧ】⛪ | Vá para a Igreja da Capital',
-      descriptionLocalizations: { 'en-US': '【ＲＰＧ】⛪ | Go to Capital Church' },
+      name: 'church',
+      nameLocalizations: { 'pt-BR': 'igreja' },
+      description: '【ＲＰＧ】⛪ | Go to Capital Church',
+      descriptionLocalizations: { 'pt-BR': '【ＲＰＧ】⛪ | Vá para a Igreja da Capital' },
       category: 'roleplay',
       cooldown: 7,
       authorDataFields: ['selectedColor'],

@@ -8,25 +8,25 @@ import { capitalize } from '@utils/Util';
 export default class PokeCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'cutucar',
-      nameLocalizations: { 'en-US': 'poke' },
-      description: '「👉」・Da uma cutucadinha em alguém',
-      descriptionLocalizations: { 'en-US': '「👉」・Give someone a little poke' },
+      name: 'poke',
+      nameLocalizations: { 'pt-BR': 'cutucar' },
+      description: '「👉」・Give someone a little poke',
+      descriptionLocalizations: { 'pt-BR': '「👉」・Da uma cutucadinha em alguém' },
       options: [
         {
-          name: 'usuário',
-          nameLocalizations: { 'en-US': 'user' },
+          name: 'user',
+          nameLocalizations: { 'pt-BR': 'usuário' },
           type: 'USER',
-          description: 'Usuário que você quer cutucar',
-          descriptionLocalizations: { 'en-US': 'User you want to poke' },
+          description: 'User you want to poke',
+          descriptionLocalizations: { 'pt-BR': 'Usuário que você quer cutucar' },
           required: true,
         },
         {
-          name: 'motivo',
+          name: 'reason',
           type: 'STRING',
-          nameLocalizations: { 'en-US': 'reason' },
-          description: 'Por que tu ta cutucando?',
-          descriptionLocalizations: { 'en-US': 'Why are you poking?' },
+          nameLocalizations: { 'pt-BR': 'motivo' },
+          description: 'Why are you poking?',
+          descriptionLocalizations: { 'pt-BR': 'Por que tu ta cutucando?' },
           required: false,
         },
       ],
@@ -37,7 +37,7 @@ export default class PokeCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const user = ctx.options.getUser('user', true);
-    const reason = ctx.options.getString('motivo');
+    const reason = ctx.options.getString('reason');
 
     if (user.id === ctx.author.id) {
       await ctx.makeMessage({
