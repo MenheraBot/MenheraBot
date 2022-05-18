@@ -12,8 +12,10 @@ let dailyLoopTimeout: NodeJS.Timeout;
 export default class ReadyEvent {
   async run(client: MenheraClient): Promise<void> {
     if (!client.user) return;
-    if (client.cluster.id === 0)
+    if (client.cluster.id === 0) {
+      HttpServer.getInstance().registerRouter('DBL', DBLWebhook(client));
       HttpServer.getInstance().registerRouter('INTERACTIONS', PostInteractions(client));
+    }
 
     if (process.env.NODE_ENV === 'development') {
       DeployDeveloperCommants(client);
@@ -32,8 +34,6 @@ export default class ReadyEvent {
     //  setInterval(() => updateActivity(clusterId), 1000 * 60 * 10);
 
     if (isMasterShard(clusterId)) {
-      HttpServer.getInstance().registerRouter('DBL', DBLWebhook(client));
-
       ReadyEvent.dailyLoop(client);
 
       InactivityPunishment(client);

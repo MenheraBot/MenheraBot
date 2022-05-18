@@ -277,32 +277,32 @@ export default class TopCommand extends InteractionCommand {
                     {
                       name: '😈 | Demons',
                       nameLocalizations: { 'pt-BR': '😈 | Demônios' },
-                      value: 'demons',
+                      value: 'demon',
                     },
                     {
                       name: '👊 | Giants',
                       nameLocalizations: { 'pt-BR': '👊 | Gigantes' },
-                      value: 'giants',
+                      value: 'giant',
                     },
                     {
                       name: '👼 | Angels',
                       nameLocalizations: { 'pt-BR': '👼 | Anjos' },
-                      value: 'angels',
+                      value: 'angel',
                     },
                     {
                       name: '🧚‍♂️ | Archangels',
                       nameLocalizations: { 'pt-BR': '🧚‍♂️ | Arcanjos' },
-                      value: 'archangels',
+                      value: 'archangel',
                     },
                     {
                       name: '🙌 | Demigods',
                       nameLocalizations: { 'pt-BR': '🙌 | Semideuses' },
-                      value: 'demigods',
+                      value: 'demigod',
                     },
                     {
                       name: '✝️ | Gods',
                       nameLocalizations: { 'pt-BR': '✝️ | Deuses' },
-                      value: 'gods',
+                      value: 'god',
                     },
                   ],
                 },

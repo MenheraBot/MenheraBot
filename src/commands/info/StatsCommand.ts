@@ -300,7 +300,7 @@ export default class StatsCommand extends InteractionCommand {
   }
 
   static async DesignerStatus(ctx: InteractionCommandContext): Promise<void> {
-    const user = ctx.options.getUser('user') ?? ctx.author;
+    const user = ctx.options.getUser('designer') ?? ctx.author;
 
     const userDesigns = await ctx.client.repositories.creditsRepository.getDesignerThemes(user.id);
 
