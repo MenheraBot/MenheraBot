@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
-## [4.0.1] - UNRELEASED
+## [4.0.1] - 2022-05-17
 
 ### Added
 
@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - Desgigners agora recebem uma DM da Menhera quando um design de sua autoria é comprado. Isso pode ser desativado no comando `/status designer`
 - Quatro novos designs do Relkhin (853341889016365097). Perfis `iD03` e `Um Propósito Sem Alma`, fundo de carta `Lamenta Caelorum` e Mesa de Cartas `Partida Atemporal`.
 - Status de Roleta `/status roleta`
-- **Sistema de PvP:** Usuários podem batalhar em uma batalha justa, ou desnivelada, depende do invocador do comando. Batalhas justas são alinhadas com TODOS os jogadores nível **10**, com todas habilidades da classe desbloqueadas no nível 2. NOVOS COMANDOS:
+- **Sistema de PvP:** Usuários podem batalhar em uma batalha justa, ou desnivelada, depende do invocador do comando. Batalhas justas são alinhadas com TODOS os jogadores nível **20**, com todas habilidades da classe desbloqueadas no nível 2. NOVOS COMANDOS:
   - `/arena configurar` - Configura suas bênçãos para uma batalha justa. (Você pode resetar os pontos a qualquer momento)
   - `/arena batalhar` - Chama um jogador para 1x1. Nada vale aqui, os valores de vida e mana serão todos resetados, e ninguém perderá vida fora da Arena.
 - Comandos de ação agora aceitam motivos. Diga para a Menhera o porquê de tu estar tomando aquela ação, e ela mostrará pra todos isso
@@ -43,15 +43,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - O comando `/loja info` foi renomeado para `/loja precos`
 - O comando trisal agora mostra um botão de terminar, e é por lá que alguém do casal poderá encerrar a relação
 - Blackjack: Caso o usuário inicie com um blackjack em mãos, a partida terminará, e o jogador receberá o dobro do prêmio
-- Comando `/status design` foi renomeado para `/status designer`
+- Comando `/status design` foi renomeado para `/estatisticas designer`
 - Agora o botão de fechar comando possui um texto para ser mais claro
 - Dificuldade de subir de nível foi aumentado para `1.62`
 - Tempo de resposta da Dungeon foi aumentado para `20s`
 - Chance de critico de inimigos foi alterada. **1x**: `70%` -> `75%`. **1.3x:** `16%` -> `11%`
 - A seleção de bênçãos no componente foi limitada para 15, já que não faz sentido ter 25 pois nem da pra selecionar algo maior que 15
 - O Comando `/give` foi renomeado para `/presentear`
-- O Comando `/meme fodase` foi renomeado para `/meme fds`s
-- Nível de Batalha foi aumentado para `20`
+- O Comando `/meme fodase` foi renomeado para `/meme fds`
 - Os prêmios da roleta foram reajustados
 - Gigantesca mudança no valor dos temas e cores.
 - Grande mudança no valor das caças e seus rolls
