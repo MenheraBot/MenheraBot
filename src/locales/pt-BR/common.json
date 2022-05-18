@@ -1,5 +1,4 @@
 {
-  "rpg-beta": "⚠️⚠️⚠️⚠️ **AVISO** ⚠️⚠️⚠️⚠️\n\n**O RPG ESTÁ EM BETA!!**\nEsta versão do RPG se encontra em Testes, então fique sabendo que valores podem mudar drasticamente e frequente. Fique sabendo também que a sua conta do RPG (provavelmente) será deletada com o lançamento da versão final (por conta de balanceamentos, preciso ver se o XP está sendo distribuido certo, etc). \n\n**MAS CALMA LÁ!!** Você também não vai se esforar por nada! Ao final do BETA, todos beta testers receberão uma BADGE exclusiva no Perfil, e **PARA OS TESTADORES QUE ENVIAREM UM FEEDBACK OU BUG NO SERVIDOR DE SUPORTE**, uma Habilidade única que ninguém mais poderá ter ao final do BETA!\n\nPeço à todos os testadores que mandem o feedback no servidor de suporte (disponivel no comando `/status menhera` [clicando no titulo]), reporte bugs também, lembrando que quanto antes os bugs forem resolvidos, antes a versão final sairá.\n\nÉ isso, espero que você aproveite esta versão do RPG (lembrando que isso é só o início, há muitas coisas planejadas para o futuro, isso tudo é so um gostinho hihihi...)\n\n{{user}}",
   "sharding_in_progress": "A Menhera ainda está iniciando! Tente novamente mais tarde",
   "economy_usage": "Este usuário está no meio de um comando! Espere ele terminar e tente novamente!",
   "timesup": "Tempo Esgotado",
@@ -63,6 +62,10 @@
       "NEUTRAL": "Neutro"
     }
   },
+  "exit-command": "Finalizar Comando",
+  "not-your-interaction": "Esta interação não é para você! Somente utilize componentes que são feitos para ti.",
   "unregistered": "Tu ainda não reencarnou no Mundo de Boleham! Registre-se primeiro e tente novamente!",
+  "form-timesup": "Você não enviou o formulário a tempo!",
+  "waiting-form": "Esperando Formulário...",
   "http-error": "Hmmm... Algum erro aconteceu ao processar a imagem... Talvez o servidor de processamento de imagens esteja fora do ar... Tente novamente mais tarde!"
 }

@@ -1,10 +1,6 @@
-/* eslint-disable no-bitwise */
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Context } from 'koa';
 import Router from 'koa-router';
 import MenheraClient from 'MenheraClient';
-import { Client } from 'discord.js-light';
-import { debugError } from '@utils/Util';
 import authenticateDiscordRequests from '../middlewares/authenticateDiscordRequests';
 
 const handleRequest = async (ctx: Context, client: MenheraClient) => {
@@ -19,29 +15,28 @@ const handleRequest = async (ctx: Context, client: MenheraClient) => {
     ctx.body = {
       type: 4,
       data: {
-        content: 'COMMAND_IN_SERVER',
-        flags: 1 << 6,
+        content: 'Comandos devem ser usados em servidores!\n\nCommands must be used in servers',
+        flags: 64, // 1 << 6,
       },
     };
     return;
   }
 
-  const shardToExecute =
-    (Number(ctx.request.body.guild_id) >> 22) % (client.cluster?.count as number);
-  await client.cluster
-    ?.broadcastEval(
-      (c: Client, { data }: { data: unknown }) => {
-        if (!c.isReady()) return;
-        // @ts-expect-error Client<boolean>.actions is private
-        c.actions.InteractionCreate.handle(data);
-      },
-      {
-        cluster: shardToExecute,
-        context: { data: ctx.request.body },
-      },
-    )
-    .catch((e) => debugError(e, true));
   ctx.respond = false;
+
+  if (!client.shardProcessEnded) {
+    // @ts-expect-error actions is private
+    client.actions.InteractionCreate.handle(ctx.request.body);
+    return;
+  }
+
+  client.cluster.evalOnCluster(
+    // @ts-expect-error Context in this package is weird
+    (c, { body }) => {
+      c.actions.InteractionCreate.handle(body);
+    },
+    { guildId: ctx.request.body.guild_id, context: { body: ctx.request.body } },
+  );
 };
 
 export default (client: MenheraClient): Router => {

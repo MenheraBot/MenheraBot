@@ -1,4 +1,4 @@
-import { IInteractionCommandConfig, IUserSchema } from '@utils/Types';
+import { IInteractionCommandConfig, IUserSchema } from '@custom_types/Menhera';
 import InteractionCommandContext from './InteractionContext';
 
 export default abstract class InteractionCommand {

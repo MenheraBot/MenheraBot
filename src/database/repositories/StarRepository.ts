@@ -1,4 +1,4 @@
-import { Users } from '@structures/DatabaseCollections';
+import { Users } from '@database/Collections';
 
 export default class StarRepository {
   constructor(private userModal: typeof Users) {}

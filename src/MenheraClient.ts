@@ -6,7 +6,7 @@ import * as Sentry from '@sentry/node';
 
 import '@sentry/tracing';
 
-import { IClientConfigs, IDatabaseRepositories } from '@utils/Types';
+import { IClientConfigs, IDatabaseRepositories } from '@custom_types/Menhera';
 import FileUtil from '@utils/FileUtil';
 import Event from '@structures/Event';
 import Database from '@database/Databases';
@@ -19,7 +19,7 @@ import PicassoWebSocket from '@structures/PicassoWebSocket';
 import { debugError } from '@utils/Util';
 import JogoDoBixoManager from '@structures/JogoDoBichoManager';
 
-export default class MenheraClient extends Client {
+export default class MenheraClient extends Client<true> {
   public cluster!: ClusterClient;
 
   public database: Database;
@@ -34,11 +34,18 @@ export default class MenheraClient extends Client {
 
   public cooldowns: Collection<string, Collection<string, number>>;
 
-  public commandExecutions: Set<string>;
+  public economyUsages: Set<string>;
 
   public jogoDoBichoManager!: JogoDoBixoManager;
 
   public shuttingDown: boolean;
+
+  public interactionStatistics = {
+    success: 0,
+    failed: 0,
+    catchedErrors: 0,
+    received: 0,
+  };
 
   constructor(options: ClientOptions, public config: IClientConfigs) {
     super(options);
@@ -46,11 +53,11 @@ export default class MenheraClient extends Client {
       process.env.NODE_ENV === 'development'
         ? (process.env.DEV_DATABASE_URI as string)
         : (process.env.DATABASE_URI as string),
-      process.env.NODE_ENV !== 'development',
+      process.env?.TESTING !== 'true',
     );
     this.slashCommands = new Collection();
     this.cooldowns = new Collection();
-    this.commandExecutions = new Set();
+    this.economyUsages = new Set();
     this.events = new EventManager(this);
     this.config = config;
     this.shardProcessEnded = false;
@@ -79,6 +86,28 @@ export default class MenheraClient extends Client {
     this.loadEvents(this.config.eventsDirectory);
     this.picassoWs.connect().catch(debugError);
     return true;
+  }
+
+  async getInteractionStatistics(): Promise<this['interactionStatistics']> {
+    return (
+      this.cluster
+        // @ts-expect-error client n é sexual
+        .broadcastEval((c: MenheraClient) => c.interactionStatistics, {
+          cluster: 0,
+        })
+        .then((a: this['interactionStatistics'][]) =>
+          a.reduce(
+            (p, c) => {
+              p.catchedErrors += c.catchedErrors;
+              p.failed += c.failed;
+              p.received += c.received;
+              p.success += c.success;
+              return p;
+            },
+            { catchedErrors: 0, failed: 0, received: 0, success: 0 },
+          ),
+        )
+    );
   }
 
   async reloadCommand(commandName: string): Promise<void | false> {

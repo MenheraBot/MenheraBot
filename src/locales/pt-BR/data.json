@@ -125,6 +125,50 @@
     "19": {
       "name": "Gaudérios",
       "description": "Muito rock e apostas"
+    },
+    "20": {
+      "name": "Lamenta Caelorum",
+      "description": "Aos prantos se fortalece"
+    },
+    "21": {
+      "name": "Um Propósito Sem Alma",
+      "description": "Um trono sem lorde"
+    },
+    "22": {
+      "name": "iD03",
+      "description": "401 Acesso Nescessário"
+    },
+    "23": {
+      "name": "Partida Atemporal",
+      "description": "Regras? Quais?"
+    }
+  },
+  "fluffety": {
+    "relation-levels": {
+      "0": "Amigos"
+    },
+    "commodes": {
+      "bedroom": {
+        "name": "Quarto"
+      },
+      "outside": {
+        "name": "Área Externa"
+      },
+      "kitchen": {
+        "name": "Cozinha"
+      }
+    },
+    "hamsin": {
+      "name": "Hamsin",
+      "description": "Um pequenino roedor, sua alma é a de um hamster. São pequenos e amam comer. Sua comida favorita é nozes, certamente não aguentariam mais de uma semana sem comê-las."
+    },
+    "pingus": {
+      "name": "Pingus",
+      "description": "Gelados e fofinhos, os pingus tem a alma de um pinguim. Tudo o que mais querem é uma casinha fria pra descansarem em paz comendo seu picolé de danoninho."
+    },
+    "chikys": {
+      "name": "Chikys",
+      "description": "Com o corpo preenchido por penas, os chikys adoram passear por grandes campos verdes. Podem parecer baixinhos, mas não duvide da energia deles."
     }
   }
 }

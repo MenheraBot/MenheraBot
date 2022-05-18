@@ -1,4 +1,4 @@
-import { IPicassoReturnData, IPicassoWebsocketRequest } from '@utils/Types';
+import { IPicassoReturnData, PicassoRequestData } from '@custom_types/Menhera';
 import WebSocket from 'ws';
 
 export default class PicassoWebSocket {
@@ -16,9 +16,9 @@ export default class PicassoWebSocket {
 
   async connect(): Promise<void> {
     try {
+      console.log(`[WEBSOCKET] Client ${this.clusterId} is trying to connect`);
       this.ws = new WebSocket(`${process.env.PICASSO_WEBSOCKET}?id=${this.clusterId}`);
       this.prepareListeners();
-      console.log(`[WEBSOCKET] Client ${this.clusterId} is trying to connect`);
     } catch (err) {
       if (err instanceof Error) console.log(`[WEBSOCKET] Error when connecting: ${err.message}`);
       this.ws = null;
@@ -38,10 +38,14 @@ export default class PicassoWebSocket {
     console.log(`[WEBSOCKET] Error: ${err.message}`);
     if (this.pingTimeout) clearTimeout(this.pingTimeout);
 
-    setTimeout(() => {
-      this.retries += 1;
-      this.connect();
-    }, 15000);
+    setTimeout(
+      (Manager) => {
+        Manager.retries += 1;
+        Manager.connect();
+      },
+      8000,
+      this,
+    );
   }
 
   private heartbeat(data?: Buffer): void {
@@ -60,22 +64,30 @@ export default class PicassoWebSocket {
     );
   }
 
-  private onClose(): void {
+  private onClose(code: number, reason: Buffer): void {
     this.isAlive = false;
-    console.log(`[WEBSOCKET] Client ${this.clusterId} Has been Closed`);
+    console.log(
+      `[WEBSOCKET] Client ${this.clusterId} closed with code ${code}. ${
+        reason.length > 0 ? `Reason: ${reason.toString()}` : ''
+      }`,
+    );
     if (this.ruuningError) return;
     if (this.ws) this.ws.terminate();
     if (this.pingTimeout) clearTimeout(this.pingTimeout);
 
-    setTimeout(() => {
-      this.connect();
-    }, 5000);
+    setTimeout(
+      (Manager) => {
+        Manager.connect();
+      },
+      5000,
+      this,
+    );
   }
 
   public killConnection(): void {
     if (!this.ws) return;
     this.ws.removeAllListeners();
-    this.ws.close();
+    this.ws.close(1001, 'Asked Internally');
   }
 
   private prepareListeners(): void {
@@ -87,19 +99,22 @@ export default class PicassoWebSocket {
         this.retries = 0;
         this.heartbeat();
       })
-      .on('close', () => this.onClose())
+      .on('close', (code, reason) => this.onClose(code, reason))
       .on('error', (err) => this.onError(err))
       .on('ping', (data) => this.heartbeat(data));
   }
 
-  public async makeRequest<T>(toSend: IPicassoWebsocketRequest<T>): Promise<IPicassoReturnData> {
+  public async makeRequest<T>(toSend: PicassoRequestData<T>): Promise<IPicassoReturnData> {
     if (!this.isAlive) return { err: true };
     if (!this.ws) return { err: true };
 
     this.ws.send(JSON.stringify(toSend));
 
     return new Promise((res) => {
-      if (!this.ws) return res({ err: true });
+      if (!this.ws) {
+        res({ err: true });
+        return;
+      }
       const timeout = setTimeout(() => {
         res({ err: true });
       }, 5000);

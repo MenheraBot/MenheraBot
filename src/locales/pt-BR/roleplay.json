@@ -97,9 +97,9 @@
     "user-death": "⚰️ | Você morreu!\nVocê morreu e foi teletransportado para a Igreja. Fique descansando por um tempo para se recuperar.",
     "footer": "Faça uma ação em {{time}} segundos",
     "deffend-text": "🛡️ | **{{enemy}}** te acerta **{{attack}}** e te causa **{{damage}}** de dano",
-    "attack-text": "⚔️ | Você ataca com **{{attack}}** e causa **{{damage}}** de dano",
+    "attack-text": "⚔️ | Você ataca com **{{attack}}** e causa **{{damage}}** dano",
     "select": "Selecione uma Ação",
-    "miss-attack": "**Você errou o ataque!**",
+    "miss-attack": "0 por ter errado o ataque, de",
     "dodged": "**Você desviou do ataque!**",
     "title": "Batalha Contra {{name}}",
     "find": "Você encontra um inimigo! **{{enemy}}** em fase **{{level}}** está logo a frente!",
@@ -108,6 +108,8 @@
     "options": {
       "hand-attack": "Ataque Básico",
       "runaway": "Fugir",
+      "giveup": "Desistir",
+      "giveup-description": "Desiste desta batalha, dando a vitória para seu inimigo",
       "runaway-description": "Sai correndo na esperança de fugir dessa batalha",
       "hand-attack-description": "Dê um ataque com sua arma primária",
       "ability-info": "⚔️ | Dano: **{{damage}}**\n💧 | Custo: **{{cost}}** {{no-mana}}",
@@ -124,5 +126,20 @@
     "dungeon-description": "Você já foi para a dungeon recentemente, e precisa descansar por mais **{{time}}** {{subtime}}",
     "death": "Você Está Morto!",
     "death-description": "Você está na Igreja descansando de uma morte recente! Use o comando da Igreja para ver melhor isso..."
+  },
+  "pvp": {
+    "start-text": "Bem-Vindos à arena PvP de Boleham. Um feitiço antigo faz com que vocês não sofram danos fora daqui\n**{{author}}** está batalhando contra **{{mentioned}}**. Boa Sorte!",
+    "title": "Turno de {{user}}",
+    "pvp-finished": "**A BATALHA ACABOU!!** Vitória de **{{winner}}** sobre **{{loser}}.** {{loser}} {{reason}}",
+    "user-stats": "Status de {{user}}",
+    "user-no-action": "{{user}} não tomou nenhuma ação no tempo",
+    "attack-text": "**{{attacker}}** ataca **{{defender}}** com {{attack}} e causa `{{damage}}` dano",
+    "miss-attack": "0 por ter errado o ataque, de",
+    "user-stats-info": "❤️ | Vida: **{{life}}**\n💧 | Mana: **{{mana}}**\n⚔️ | Dano: **{{damage}}** | Precisão: **{{chanceToConnect}}%**\n🛡️ | Defesa: **{{armor}}** | Esquiva: **{{chanceToDodge}}%**\n🧠 | Inteligência: **{{intelligence}}**\n👢 | Agilidade: **{{agility}}**",
+    "reasons": {
+      "miss-attack": "não fez nada por 4 turnos",
+      "user-death": "morreu em batalha",
+      "user-giveup": "desistiu"
+    }
   }
 }

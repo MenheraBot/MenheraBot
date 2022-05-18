@@ -1,5 +1,5 @@
-import { Guilds } from '@structures/DatabaseCollections';
-import { IGuildSchema } from '@utils/Types';
+import { Guilds } from '@database/Collections';
+import { IGuildSchema } from '@custom_types/Menhera';
 import { UpdateQuery, UpdateWithAggregationPipeline } from 'mongoose';
 
 export default class GuildsRepository {

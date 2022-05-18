@@ -1,5 +1,5 @@
-import { Users } from '@structures/DatabaseCollections';
-import { HuntingTypes } from '@utils/Types';
+import { Users } from '@database/Collections';
+import { HuntingTypes } from '@custom_types/Menhera';
 
 export default class HuntRepository {
   constructor(private userModal: typeof Users) {}

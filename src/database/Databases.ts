@@ -1,7 +1,16 @@
 import mongoose from 'mongoose';
 import Redis from 'ioredis';
-import { Cmds, Guilds, Users, Themes, Credits, Rpgs } from '@structures/DatabaseCollections';
-import { IDatabaseRepositories } from '@utils/Types';
+import {
+  Cmds,
+  Guilds,
+  Users,
+  Themes,
+  Credits,
+  Rpgs,
+  Fluffetys,
+  Relations,
+} from '@database/Collections';
+import { IDatabaseRepositories } from '@custom_types/Menhera';
 import CacheRepository from './repositories/CacheRepository';
 import CmdRepository from './repositories/CmdsRepository';
 import StarRepository from './repositories/StarRepository';
@@ -20,9 +29,10 @@ import ShopRepository from './repositories/ShopRepository';
 import ThemeRepository from './repositories/ThemeRepository';
 import CreditsRepository from './repositories/CreditsRepository';
 import RoleplayRepository from './repositories/RoleplayRepository';
+import FluffetyRepository from './repositories/FluffetyRepository';
 
 export default class Databases {
-  public redisClient: Redis.Redis | null = null;
+  public redisClient: Redis | null = null;
 
   public readonly Cmds: typeof Cmds;
 
@@ -35,6 +45,10 @@ export default class Databases {
   public readonly Rpgs: typeof Rpgs;
 
   public readonly Credits: typeof Credits;
+
+  public readonly Fluffetys: typeof Fluffetys;
+
+  public readonly Relations: typeof Relations;
 
   private readonly userRepository: UserRepository;
 
@@ -72,6 +86,8 @@ export default class Databases {
 
   private readonly creditsRepository: CreditsRepository;
 
+  private readonly fluffetyRepository: FluffetyRepository;
+
   constructor(public uri: string, withRedisCache: boolean) {
     this.Cmds = Cmds;
     this.Guilds = Guilds;
@@ -79,6 +95,8 @@ export default class Databases {
     this.Rpgs = Rpgs;
     this.Themes = Themes;
     this.Credits = Credits;
+    this.Fluffetys = Fluffetys;
+    this.Relations = Relations;
 
     if (withRedisCache) this.createRedisConnection();
 
@@ -87,20 +105,23 @@ export default class Databases {
     this.starRepository = new StarRepository(this.Users);
     this.mamarRepository = new MamarRepository(this.userRepository);
     this.guildRepository = new GuildRepository(this.Guilds);
+    this.coinflipRepository = new CoinflipRepository(this.starRepository);
+    this.badgeRepository = new BadgeRepository(this.userRepository);
+    this.maintenanceRepository = new MaintenanceRepository(this.cmdRepository);
+    this.huntRepository = new HuntRepository(this.Users);
+    this.blacklistRepository = new BlacklistRepository(this.userRepository, this.redisClient);
+    this.topRepository = new TopRepository(this.Users);
+    this.giveRepository = new GiveRepository(this.Users);
+    this.themeRepository = new ThemeRepository(this.Themes, this.redisClient);
+    this.roleplayRepository = new RoleplayRepository(this.Rpgs, this.redisClient);
+    this.fluffetyRepository = new FluffetyRepository(this.Fluffetys);
+    this.relationshipRepository = new RelationshipRepository(this.userRepository, this.Relations);
+
     this.cacheRepository = new CacheRepository(
       this.redisClient,
       this.guildRepository,
       this.cmdRepository,
     );
-    this.coinflipRepository = new CoinflipRepository(this.starRepository);
-    this.badgeRepository = new BadgeRepository(this.userRepository);
-    this.maintenanceRepository = new MaintenanceRepository(this.cmdRepository);
-    this.huntRepository = new HuntRepository(this.Users);
-    this.relationshipRepository = new RelationshipRepository(this.userRepository);
-    this.blacklistRepository = new BlacklistRepository(this.userRepository, this.redisClient);
-    this.topRepository = new TopRepository(this.Users);
-    this.giveRepository = new GiveRepository(this.Users);
-    this.themeRepository = new ThemeRepository(this.Themes, this.redisClient);
     this.creditsRepository = new CreditsRepository(
       this.Credits,
       this.redisClient,
@@ -111,7 +132,6 @@ export default class Databases {
       this.themeRepository,
       this.creditsRepository,
     );
-    this.roleplayRepository = new RoleplayRepository(this.Rpgs, this.redisClient);
   }
 
   get repositories(): IDatabaseRepositories {
@@ -134,13 +154,14 @@ export default class Databases {
       themeRepository: this.themeRepository,
       roleplayRepository: this.roleplayRepository,
       creditsRepository: this.creditsRepository,
+      fluffetyRepository: this.fluffetyRepository,
     };
   }
 
   async closeConnections(): Promise<void> {
     if (this.redisClient) {
       await this.redisClient.flushdb();
-      await this.redisClient.disconnect(false);
+      this.redisClient.disconnect(false);
     }
 
     await mongoose.disconnect();
@@ -156,6 +177,7 @@ export default class Databases {
 
       this.redisClient.on('end', () => {
         this.redisClient = null;
+        console.log('[REDIS] Redis database has been disconnected');
       });
     } catch (err) {
       console.log(`[REDIS] Error connecting to redis ${err}`);
@@ -168,12 +190,12 @@ export default class Databases {
     return new Promise((resolve, reject) => {
       mongoose.connect(this.uri, (err) => {
         if (err) {
-          console.error(`(x) Error to connecting to database \n${err}`);
+          console.error(`[DATABASE] ERROR! When connecting to database \n${err}`);
 
           return reject(err);
         }
 
-        console.log('[DATABASE] Conectado com sucesso à database');
+        console.log('[DATABASE] Database connected successfully');
         return resolve();
       });
     });

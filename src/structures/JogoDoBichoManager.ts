@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import HttpRequests from '@utils/HTTPrequests';
-import { BichoBetType, BichoWinner, JogoDoBichoGame } from '@utils/Types';
+import { BichoBetType, BichoWinner, JogoDoBichoGame } from '@custom_types/Menhera';
 import { MayNotExists } from '@utils/Util';
 import MenheraClient from 'MenheraClient';
 import { BICHO_BET_MULTIPLIER, JOGO_DO_BICHO } from './Constants';
 
-const betType = (option: string): BichoBetType => {
+export const betType = (option: string): BichoBetType => {
   if (/^(?=.*\d)[\d ]+$/.test(option)) {
     const withoutBlank = option.replace(/\s/g, '');
     if (withoutBlank.length === 4) return 'thousand';
@@ -56,7 +56,7 @@ export default class JogoDoBixoManager {
     }
   }
 
-  static makeWinners(game: JogoDoBichoGame): BichoWinner[] {
+  static finishBets(game: JogoDoBichoGame): BichoWinner[] {
     const didUserWin = (option: string, bet: BichoBetType): boolean => {
       switch (bet) {
         case 'unity':
@@ -102,7 +102,8 @@ export default class JogoDoBixoManager {
     return game.bets.map<BichoWinner>((player) => ({
       didWin: didUserWin(player.option, betType(player.option)),
       id: player.id,
-      value: player.bet * BICHO_BET_MULTIPLIER[betType(player.option)],
+      profit: player.bet * BICHO_BET_MULTIPLIER[betType(player.option)],
+      bet: player.bet,
       gameId: player.gameId,
     }));
   }
@@ -120,15 +121,17 @@ export default class JogoDoBixoManager {
         biggestProfit: 0,
       };
 
-      const winners = JogoDoBixoManager.makeWinners(this.lastGame);
-      winners
-        .filter((a) => a.didWin)
-        .forEach((a) => {
-          this.clientInstance.repositories.starRepository.add(a.id, a.value);
+      const players = JogoDoBixoManager.finishBets(this.lastGame);
+      players.forEach((a) => {
+        if (a.didWin) {
+          this.clientInstance.repositories.starRepository.add(a.id, a.profit);
           if (a.gameId) HttpRequests.userWinBicho(a.gameId);
-          if (this.lastGame && a.value > this.lastGame?.biggestProfit)
-            this.lastGame.biggestProfit = a.value;
-        });
+          if (this.lastGame && a.profit > this.lastGame?.biggestProfit)
+            this.lastGame.biggestProfit = a.profit;
+        }
+
+        HttpRequests.postBichoUserStats(a.id, a.bet, a.profit, a.didWin);
+      });
     } else {
       this.clientInstance.cluster.broadcastEval(
         // @ts-expect-error Client n é coiso

@@ -1,0 +1,72 @@
+import { COLORS, EightBallAnswers, emojis } from '@structures/Constants';
+import InteractionCommand from '@structures/command/InteractionCommand';
+import InteractionCommandContext from '@structures/command/InteractionContext';
+import { MessageEmbed, MessageAttachment } from 'discord.js-light';
+import { PicassoRoutes, requestPicassoImage } from '@utils/PicassoRequests';
+
+export default class EightballCommand extends InteractionCommand {
+  constructor() {
+    super({
+      name: '8ball',
+      description: '「🎱」・Ask Menhera a Yes/No answer question',
+      descriptionLocalizations: {
+        'pt-BR': '「🎱」・Faça uma pergunta de resposta Sim/Não para a Menhera',
+      },
+      options: [
+        {
+          name: 'question',
+          nameLocalizations: { 'pt-BR': 'pergunta' },
+          type: 'STRING',
+          description: 'Question to be asked',
+          descriptionLocalizations: { 'pt-BR': 'Pergunta para ser feita' },
+          required: true,
+        },
+      ],
+      category: 'fun',
+      cooldown: 5,
+    });
+  }
+
+  async run(ctx: InteractionCommandContext): Promise<void> {
+    await ctx.defer();
+
+    const randomAnswer = EightBallAnswers[Math.floor(Math.random() * EightBallAnswers.length)];
+
+    const res = await requestPicassoImage(
+      PicassoRoutes.EightBall,
+      {
+        question: ctx.options.getString('question', true),
+        answer: ctx.locale(`commands:8ball.answers.${randomAnswer.id as 1}`),
+        type: randomAnswer.type,
+        username: ctx.author.username,
+      },
+      ctx,
+    );
+
+    const embed = new MessageEmbed().setTitle(
+      `${emojis.question} | ${ctx.locale('commands:8ball.ask')}`,
+    );
+
+    if (res.err) {
+      embed
+        .addFields([
+          {
+            name: ctx.locale('commands:8ball.question'),
+            value: `${ctx.options.getString('question', true)}`,
+          },
+          {
+            name: ctx.locale('commands:8ball.answer'),
+            value: ctx.locale(`commands:8ball.answers.${randomAnswer.id as 1}`),
+          },
+        ])
+        .setColor(COLORS.Aqua)
+        .setFooter({ text: ctx.locale('common:http-error') });
+
+      await ctx.defer({ embeds: [embed] });
+      return;
+    }
+
+    embed.setImage('attachment://8ball.png').setColor(COLORS.Purple);
+    await ctx.defer({ embeds: [embed], files: [new MessageAttachment(res.data, '8ball.png')] });
+  }
+}
