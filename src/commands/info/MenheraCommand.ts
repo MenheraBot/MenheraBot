@@ -50,7 +50,7 @@ export default class MenheraCommand extends InteractionCommand {
       const { ping, status } = c.ws;
       const { uptime } = c;
       const guilds = c.guilds.cache.size;
-      const memoryUsed = process.memoryUsage().rss;
+      const memoryUsed = process.memoryUsage().heapUsed;
       const clusterId = c.cluster.id;
 
       const conninfo = {
@@ -107,7 +107,7 @@ export default class MenheraCommand extends InteractionCommand {
       .addFields([
         {
           name: '🌐 | Servers | 🌐',
-          value: `\`\`\`${totalServersAndmemory.uilds}\`\`\``,
+          value: `\`\`\`${totalServersAndmemory.guilds}\`\`\``,
           inline: true,
         },
         {
