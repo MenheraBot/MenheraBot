@@ -25,6 +25,7 @@ export enum PicassoRoutes {
   Gado = 'gado',
   Macetava = 'macetava',
   Blackjack = 'blackjack',
+  BETA = 'beta',
 }
 
 export const requestPicassoImage = async <T>(

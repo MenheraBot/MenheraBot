@@ -2,7 +2,9 @@ import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { ApplicationCommandData } from 'discord.js-light';
 import HttpRequests from '@utils/HTTPrequests';
-import { ICommandsData } from '@custom_types/Menhera';
+import { ICommandsData, IUserDataToProfile } from '@custom_types/Menhera';
+import { debugError, toWritableUTF } from '@utils/Util';
+import { PicassoRoutes, requestPicassoImage } from '@utils/PicassoRequests';
 
 export default class DeploySlashCommand extends InteractionCommand {
   constructor() {
@@ -49,6 +51,81 @@ export default class DeploySlashCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     if (ctx.options.getString('option', true) === 'site') {
+      await ctx.defer();
+
+      const user = await ctx.client.repositories.userRepository.find(ctx.author.id);
+
+      const member = ctx.author;
+
+      if (!user) return;
+
+      const marry =
+        user.married && user.married !== 'false'
+          ? await ctx.client.users.fetch(user.married).catch(debugError)
+          : null;
+
+      const avatar = member.displayAvatarURL({ format: 'png', size: 512 });
+      const usageCommands = await HttpRequests.getProfileCommands(member.id);
+
+      const userSendData: IUserDataToProfile & { id: string } = {
+        id: ctx.author.id,
+        cor: user.selectedColor,
+        avatar,
+        votos: user.votes,
+        nota: user.info,
+        tag: toWritableUTF(member.tag),
+        flagsArray: member.flags?.toArray() ?? [],
+        casado: user.married,
+        voteCooldown: user.voteCooldown as number,
+        badges: user.badges,
+        username: toWritableUTF(member.username),
+        data: user.marriedDate as string,
+        mamadas: user.mamado,
+        mamou: user.mamou,
+        hiddingBadges: user.hiddingBadges,
+        marry: null,
+      };
+
+      if (marry) {
+        userSendData.marry = {
+          username: toWritableUTF(marry.username),
+          tag: `${toWritableUTF(marry.username)}#${marry.discriminator}`,
+        };
+      }
+
+      const i18nData = {
+        aboutme: ctx.locale('commands:perfil.about-me'),
+        mamado: ctx.locale('commands:perfil.mamado'),
+        mamou: ctx.locale('commands:perfil.mamou'),
+        zero: ctx.locale('commands:perfil.zero'),
+        um: ctx.locale('commands:perfil.um'),
+        dois: ctx.locale('commands:perfil.dois'),
+        tres: ctx.locale('commands:perfil.tres'),
+      };
+
+      const profileTheme = await ctx.client.repositories.themeRepository.getProfileTheme(member.id);
+      // AQUI
+      const startTime = Date.now();
+
+      await requestPicassoImage(
+        PicassoRoutes.BETA,
+        { user: userSendData, usageCommands, i18n: i18nData, type: profileTheme },
+        ctx,
+      );
+
+      console.log(`SEM CACHE ${Date.now() - startTime}ms`);
+      const teste = Date.now();
+      await requestPicassoImage(
+        PicassoRoutes.BETA,
+        { user: userSendData, usageCommands, i18n: i18nData, type: profileTheme },
+        ctx,
+      );
+      console.log(`COM CACHE ${Date.now() - teste}ms`);
+
+      return;
+
+      // AQUI
+
       const toAPIData = new Map<string, ICommandsData>();
 
       const disabledCommands =
