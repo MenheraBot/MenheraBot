@@ -1,7 +1,6 @@
 import MenheraClient from 'MenheraClient';
 import { getMillisecondsToTheEndOfDay } from '@utils/Util';
 import { postBotStatus, postShardStatus } from '@structures/StatusPoster';
-import DeployDeveloperCommants from '@structures/DeployDeveloperCommands';
 import HttpServer from '@structures/server/server';
 import DBLWebhook from '@structures/server/controllers/DBLWebhook';
 import InactivityPunishment from '@structures/InactivityPunishment';
@@ -18,7 +17,7 @@ export default class ReadyEvent {
     }
 
     if (process.env.NODE_ENV === 'development') {
-      DeployDeveloperCommants(client);
+      // DeployDeveloperCommants(client);
       return;
     }
 
