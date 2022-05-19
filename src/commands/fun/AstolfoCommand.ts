@@ -11,15 +11,15 @@ export default class AstolfoCommand extends InteractionCommand {
       name: 'astolfo',
       description: "「🍆」・It's big, right? Said the astolfo for what you said",
       descriptionLocalizations: {
-        'en-US': '「🍆」・É grande, né? Disse o astolfo para aquilo que você o disse',
+        'pt-BR': '「🍆」・É grande, né? Disse o astolfo para aquilo que você o disse',
       },
       options: [
         {
           name: 'phrase',
-          nameLocalizations: { 'en-US': 'frase' },
+          nameLocalizations: { 'pt-BR': 'frase' },
           type: 'STRING',
           description: 'Phrase for Astolfo to speak',
-          descriptionLocalizations: { 'en-US': 'Frase para o Astolfo falar' },
+          descriptionLocalizations: { 'pt-BR': 'Frase para o Astolfo falar' },
           required: true,
         },
       ],

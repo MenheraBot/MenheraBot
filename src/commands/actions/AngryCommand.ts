@@ -23,7 +23,7 @@ export default class AngryCommand extends InteractionCommand {
         },
         {
           name: 'reason',
-          nameLocalizations: { 'en-US': 'motivo' },
+          nameLocalizations: { 'pt-BR': 'motivo' },
           type: 'STRING',
           description: 'Why are you angry?',
           descriptionLocalizations: { 'pt-BR': 'Por que você está com raiva?' },
