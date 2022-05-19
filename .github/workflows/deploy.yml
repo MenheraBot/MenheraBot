@@ -4,14 +4,13 @@ on:
   push:
     branches:
       - master
-    #  - canary
 
 jobs:
   Deploy-Production:
     if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
-      - name: [DEPLOY] Production
+      - name: Deploy Menhera to Server
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SERVER_IP }}
