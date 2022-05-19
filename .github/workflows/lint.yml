@@ -9,7 +9,7 @@ on:
   push:
     branches:
       - master
-      - dev
+      - canary
 
 jobs:
   build:
@@ -31,12 +31,12 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-node-v2-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-node-
+            ${{ runner.os }}-node-v2-
 
       - name: Install dependencies
-        run: npm install
+        run: npm install --legacy-peer-deps
       - name: Run tests
         run: npm test
       - name: Run Linter
