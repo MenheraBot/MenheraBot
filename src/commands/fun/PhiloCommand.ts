@@ -9,7 +9,7 @@ export default class PhiloCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'philosophy',
-      nameLocalizations: { 'pt-BR': 'filosofía' },
+      nameLocalizations: { 'pt-BR': 'filosofia' },
       description:
         '「💭」・To be or not to be, that is the question. Have Aristotle say something.',
       descriptionLocalizations: {
