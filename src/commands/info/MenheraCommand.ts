@@ -66,7 +66,7 @@ export default class MenheraCommand extends InteractionCommand {
       };
 
       return {
-        Ping: ping,
+        Ping: Math.floor(ping),
         Status: conninfo[status as keyof typeof conninfo],
         Uptime: uptime,
         Guilds: guilds,
@@ -133,7 +133,7 @@ export default class MenheraCommand extends InteractionCommand {
           name: '🏓 | Ping | 🏓',
           value: ctx.locale('commands:menhera.estatisticas.ping', {
             api: Date.now() - ctx.interaction.createdTimestamp,
-            ws: ctx.client.ws.ping,
+            ws: Math.floor(ctx.client.ws.ping),
             shard: ShardClientUtil.shardIdForGuildId(
               ctx.interaction.guildId ?? '',
               ctx.client.options.shardCount ?? 0,
