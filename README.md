@@ -7,6 +7,7 @@
 [![](https://top.gg/api/widget/owner/708014856711962654.svg)](https://top.gg/bot/708014856711962654)
 [![](https://top.gg/api/widget/servers/708014856711962654.svg)](https://discord.gg/fZMdQbA)
 [![](https://top.gg/api/widget/upvotes/708014856711962654.svg)](https://top.gg/bot/708014856711962654/vote)
+[![Deploy](https://github.com/MenheraBot/MenheraBot/actions/workflows/deploy.yml/badge.svg?branch=master)](https://github.com/MenheraBot/MenheraBot/actions/workflows/deploy.yml)
 
 > Menhera is animating more than 25000 servers with her functionalities
 
