@@ -248,7 +248,7 @@ export default class HttpRequests {
     didWin: boolean,
   ): Promise<void> {
     await apiRequest
-      .put('/statistics/bicho', { userId, betValue, profit, didWin })
+      .post('/statistics/bicho', { userId, betValue, profit, didWin })
       .catch(debugError);
   }
 
