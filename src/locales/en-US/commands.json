@@ -915,27 +915,6 @@
       "ping": "Response Time: **{{api}}ms**\nWebsocket Latency: **{{ws}}ms**\nShard: **{{shard}}/{{totalShard}}**\nCluster: **{{cluster}}/{{totalCluster}}**"
     }
   },
-  "fluffety": {
-    "unexists": "This user don't have a fluffety!",
-    "fluffety": {
-      "actions": {
-        "walk": "Walk",
-        "eat": "Eat",
-        "sleep": "Rest"
-      }
-    },
-    "adopt": {
-      "title": "Adopt a Fluffety",
-      "modal-title": "Your Fluffety Name",
-      "modal-label": "What is your Fluffety's name?",
-      "description": "Fluffetys are adorable creatures that need affection and friends to be happy. Don't leave them alone, they are very sensitive to loneliness, so they should always be with someone.\n\nWhen you have a Fluffety, you You must be responsible for constantly caring for him. There is no worse torture for a Flufetty than loneliness, and so if you abandon him, or don't pay enough attention, he can get sick, and even die.",
-      "types-title": "Types Of Fluffety",
-      "error-name": "Your Fluffety name is invalid! It must contain only lowercase letters a-z, spaces, and can be between 2 and 10 characters long",
-      "types-description": "There are 3 different types of Fluffetys, the **Hamsin**, **Pingus** and **Chikys**\nChoose below which type of fluffety you want to adopt",
-      "select": "Select your fluffety",
-      "success": "yayy, you adopted **{{name}}, the {{race}}**! How wonderful! You can use the command again to start caring and customizing it."
-    }
-  },
   "calvo": {
     "text": "**{{name}}** baldness\n\n> {{user}} has baldness type **{{type}}** and is in the **{{stage}}**\n{{description}}\n\n\"___We are born from baldness, from baldness we will die...___\" - {{author}}, 2018",
     "type-0": "A",

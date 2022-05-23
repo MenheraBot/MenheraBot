@@ -25,8 +25,6 @@ import {
 } from 'discord.js-light';
 import CreditsRepository from '@database/repositories/CreditsRepository';
 import RoleplayRepository from '@database/repositories/RoleplayRepository';
-import FluffetyRepository from '@database/repositories/FluffetyRepository';
-import { FluffetyActionIdentifier } from '@fluffety/Types';
 import { MayNotExists } from '@utils/Util';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { LocalizationMap } from 'discord-api-types/v10';
@@ -305,7 +303,6 @@ export interface IDatabaseRepositories {
   shopRepository: ShopRepository;
   themeRepository: ThemeRepository;
   creditsRepository: CreditsRepository;
-  fluffetyRepository: FluffetyRepository;
 }
 
 export type TShardStatus = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
@@ -476,32 +473,3 @@ export type BlackjackFinishGameReason =
   | 'blackjack'
   | 'draw'
   | 'biggest';
-
-export type FluffetyRace = 'pingus' | 'chikys' | 'hamsin';
-
-export interface FluffetyAction {
-  identifier: FluffetyActionIdentifier;
-  startAt: number;
-  finishAt: number;
-}
-
-export interface FluffetySchema {
-  readonly ownerId: string;
-  readonly race: FluffetyRace;
-  currentAction: FluffetyAction;
-  fluffetyName: string;
-  /*
-  TODO: in the Future
-  healthyAt: number;
-  foodyAt: number;
-  */
-  happyAt: number;
-  energyAt: number;
-}
-
-export interface FluffetyStatus {
-  energy: number;
-  happy: number;
-  // foody: number;
-  // healty: number;
-}

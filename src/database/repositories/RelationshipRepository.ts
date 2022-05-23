@@ -1,70 +1,7 @@
-import { Relations } from '@database/Collections';
-import { FluffetyRelationLevels, FluffetyRelationshipSchema } from '@fluffety/Types';
-import { MayNotExists } from '@utils/Util';
 import UserRepository from './UserRepository';
 
 export default class RelationshipRepository {
-  constructor(private userRepository: UserRepository, private relationsModal: typeof Relations) {}
-
-  async updateRelationshipLevel(
-    authorId: string,
-    targetId: string,
-    relationLevel: FluffetyRelationLevels,
-  ): Promise<void> {
-    await this.relationsModal.create(
-      {
-        $or: [
-          { $and: [{ rightOwner: authorId }, { leftOwner: targetId }] },
-          { $and: [{ rightOwner: targetId }, { leftOwner: authorId }] },
-        ],
-      },
-      {
-        relationshipLevel: relationLevel,
-      },
-    );
-  }
-
-  async createFluffetyRelationship(
-    authorId: string,
-    targetId: string,
-    authorFluffetyName: string,
-    targetFluffetyName: string,
-    relationLevel: FluffetyRelationLevels,
-  ): Promise<void> {
-    await this.relationsModal.updateOne({
-      leftOwner: authorId,
-      rightOwner: targetId,
-      relationshipExperience: 0,
-      leftName: authorFluffetyName,
-      rightName: targetFluffetyName,
-      relationshipLevel: relationLevel,
-    });
-  }
-
-  async getFluffetyRelationship(
-    authorId: string,
-    targetId: string,
-  ): Promise<MayNotExists<FluffetyRelationshipSchema>> {
-    return this.relationsModal.findOne({
-      $or: [
-        { $and: [{ rightOwner: authorId }, { leftOwner: targetId }] },
-        { $and: [{ rightOwner: targetId }, { leftOwner: authorId }] },
-      ],
-    });
-  }
-
-  async getAllFluffetyRelations(ownerId: string): Promise<FluffetyRelationshipSchema[]> {
-    return this.relationsModal.find({ $or: [{ leftOwner: ownerId }, { rightOwner: ownerId }] });
-  }
-
-  async deleteFluffetyRelation(authorId: string, targetId: string): Promise<void> {
-    await this.relationsModal.deleteOne({
-      $or: [
-        { $and: [{ rightOwner: authorId }, { leftOwner: targetId }] },
-        { $and: [{ rightOwner: targetId }, { leftOwner: authorId }] },
-      ],
-    });
-  }
+  constructor(private userRepository: UserRepository) {}
 
   async marry(userOneID: string, userTwoID: string, data: string): Promise<void> {
     const marryTimestamp = Date.now();

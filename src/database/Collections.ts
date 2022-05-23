@@ -4,11 +4,9 @@ import {
   IUserThemesSchema,
   IUserSchema,
   CreditsSchema,
-  FluffetySchema,
 } from '@custom_types/Menhera';
 import { Schema, model } from 'mongoose';
 import { RoleplayUserSchema } from '@roleplay/Types';
-import { FluffetyRelationshipSchema } from '@fluffety/Types';
 
 const cmdSchema = new Schema({
   _id: { type: String },
@@ -105,34 +103,9 @@ const rpgSchema = new Schema({
   backpack: { type: Object, default: { id: 100, level: 1 } },
 });
 
-const fluffetySchema = new Schema({
-  ownerId: { type: String },
-  fluffetyName: { type: String },
-  race: { type: String },
-  currentAction: { type: Object, default: { identifier: 0 } },
-  /*
-  TODO: in the Future
-  healthyAt: { type: Number, default: 0 },
-  foodyAt: { type: Number, default: 0 },
-  */
-  happyAt: { type: Number, default: Date.now },
-  energyAt: { type: Number, default: Date.now },
-});
-
-const fluffetyRelationshipSchema = new Schema({
-  leftOwner: { type: String },
-  rightOwner: { type: String },
-  leftName: { type: String },
-  rightName: { type: String },
-  relationshipExperience: { type: Number },
-  relationshipLevel: { type: Number },
-});
-
 export const Cmds = model<ICmdSchema>('Cmd', cmdSchema);
 export const Guilds = model<IGuildSchema>('guild', guildSchema);
 export const Users = model<IUserSchema>('usersdb', userSchema);
 export const Themes = model<IUserThemesSchema>('themes', userThemes);
 export const Credits = model<CreditsSchema>('credits', themeCredits);
 export const Rpgs = model<RoleplayUserSchema>('roleplay', rpgSchema);
-export const Fluffetys = model<FluffetySchema>('fluffety', fluffetySchema);
-export const Relations = model<FluffetyRelationshipSchema>('relations', fluffetyRelationshipSchema);

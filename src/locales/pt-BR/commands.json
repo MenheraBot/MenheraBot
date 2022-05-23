@@ -926,61 +926,6 @@
       "ping": "Tempo de Resposta: **{{api}}ms**\nLatência do Websocket: **{{ws}}ms**\nShard: **{{shard}}/{{totalShard}}**\nCluster: **{{cluster}}/{{totalCluster}}**"
     }
   },
-  "fluffety": {
-    "unexists": "Este ser humaninho não adotou nenhum Fluffety ainda!",
-    "author-unexists": "Tu ainda não adotou nenhum Fluffety! Adote um IMEDIATAMENTE!!!",
-    "relacionamentos": {
-      "adicionar": {
-        "success": "IIIIRAAAA, {{author}} e {{target}} agora são {{relationLevel}}. Que coisa boa, aproveitem!",
-        "negate": "É uma pena, mas {{mention}} negou o relacionamento entre {{fluffety}} e {{target}}",
-        "self-mention": "Sim, o amor próprio é tudo, mas o teu Fluffety já ama a si mesmo, ele não precisar mudar o tipo de relação consigo mesmo!",
-        "0-request": "{{mention}}! {{author}} quer se tornar amigo de {{target}}, você aceita com que eles sejam amigos?"
-      },
-      "remover": {
-        "self-mention": "Tu não pode remover a relação de si mesmo! O Fluffety tem amor próprio!",
-        "negate": "Suas relações com o Fluffety de **{{mention}}** continuam de pé (caso tenham alguma hehe)",
-        "complete": "Qualquer tipo de relação que o seu Fluffety havia com o Fluffety de **{{mention}}** foi cortada :(",
-        "sure": "Tu tem certeza que quer cortar qualquer tipo de relação que tem com o fluffety de **{{mention}}**? Essa ação é irreversível!"
-      },
-      "lista": {
-        "display": "**Fluffety:** {{name}} <@{{owner}}> | **Nível:** {{level}}",
-        "title": "Relacionamentos de {{fluffety}}",
-        "no-relations": "Seu fluffety não possui nenhuma relação ainda! Trate-se de iniciar uma agora memso! Fluffetys não são bons em lidar com a solidão"
-      }
-    },
-    "actions": {
-      "walk": "Passear",
-      "walk-active": "Terminar Passeio",
-      "eat": "Comer",
-      "eat-active": "???",
-      "sleep": "Descansar",
-      "sleep-active": "Acordar",
-      "current-0": "Fazendo Nada",
-      "current-1": "Dormindo",
-      "current-2": "Andando"
-    },
-    "commodes": {
-      "bedroom": {
-        "start-sleep": "Seu Fluffety está dormindo para restaurar suas energias, boa noite {{name}} ^-^",
-        "fully-energy": "Seu Fluffety não está cansado! Deixe-o aproveitar o dia."
-      }
-    },
-    "display": {
-      "description": "Estado Atual: **{{action}}**\n\n😆 | **Felicidade:** {{happy}}%\n⚡ | **Energia:** {{energy}}%",
-      "title": "{{commode}} de {{name}}"
-    },
-    "adopt": {
-      "title": "Adote um Fluffety",
-      "modal-title": "Nome de seu Fluffety",
-      "modal-label": "Qual o nome de seu Fluffety?",
-      "description": "Fluffetys são criaturas adoráveis, que precisam de carinho e amigos para serem felizes. Não os deixe sozinhos, eles são muito sensíveis à solidão, por isso, sempre devem estar com alguém.\n\nAo ter um Fluffety, tu deve se responsabilizar por cuidar constantemente dele. Não existe tortura pior para um Flufetty do que a solidão, e por isso, caso você o abandone, ou não dê atenção o suficiente, ele pode ficar doente, e até mesmo morrer",
-      "types-title": "Tipos De Fluffety",
-      "error-name": "O nome de seu Fluffety é inválido! Ele deve ter apenas letras de a-z minúsculas, espaços, e pode ter entre 2 e 10 caracteres de tamanho",
-      "types-description": "Existem 3 tipos diferentes de Fluffetys, os **Hamsin**, **Pingus** e **Chikys**\nEscolha abaixo qual tipo de fluffety tu quer adotar",
-      "select": "Selecione seu fluffety",
-      "success": "Yayy, tu adotou **{{name}}, o {{race}}**! Que maravilha! Você pode usar o comando novamente para começar a cuidar e personalizar ele."
-    }
-  },
   "calvo": {
     "text": "**Calvice de {{name}}**\n\n> {{user}} possui calvice tipo **{{type}}** e está no estágio **{{stage}}**\n{{description}}\n\n\"___Da calvice nascemos, da calvice morreremos...___\" - {{author}}, 2018",
     "type-0": "A",

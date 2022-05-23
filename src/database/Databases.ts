@@ -1,15 +1,6 @@
 import mongoose from 'mongoose';
 import Redis from 'ioredis';
-import {
-  Cmds,
-  Guilds,
-  Users,
-  Themes,
-  Credits,
-  Rpgs,
-  Fluffetys,
-  Relations,
-} from '@database/Collections';
+import { Cmds, Guilds, Users, Themes, Credits, Rpgs } from '@database/Collections';
 import { IDatabaseRepositories } from '@custom_types/Menhera';
 import CacheRepository from './repositories/CacheRepository';
 import CmdRepository from './repositories/CmdsRepository';
@@ -20,7 +11,6 @@ import GuildRepository from './repositories/GuildsRepository';
 import BadgeRepository from './repositories/BadgeRepository';
 import MaintenanceRepository from './repositories/MaintenanceRepository';
 import HuntRepository from './repositories/HuntRepository';
-import RelationshipRepository from './repositories/RelationshipRepository';
 import BlacklistRepository from './repositories/BlacklistRepository';
 import TopRepository from './repositories/TopRepository';
 import GiveRepository from './repositories/GiveRepository';
@@ -29,7 +19,7 @@ import ShopRepository from './repositories/ShopRepository';
 import ThemeRepository from './repositories/ThemeRepository';
 import CreditsRepository from './repositories/CreditsRepository';
 import RoleplayRepository from './repositories/RoleplayRepository';
-import FluffetyRepository from './repositories/FluffetyRepository';
+import RelationshipRepository from './repositories/RelationshipRepository';
 
 export default class Databases {
   public redisClient: Redis | null = null;
@@ -45,10 +35,6 @@ export default class Databases {
   public readonly Rpgs: typeof Rpgs;
 
   public readonly Credits: typeof Credits;
-
-  public readonly Fluffetys: typeof Fluffetys;
-
-  public readonly Relations: typeof Relations;
 
   private readonly userRepository: UserRepository;
 
@@ -86,8 +72,6 @@ export default class Databases {
 
   private readonly creditsRepository: CreditsRepository;
 
-  private readonly fluffetyRepository: FluffetyRepository;
-
   constructor(public uri: string, withRedisCache: boolean) {
     this.Cmds = Cmds;
     this.Guilds = Guilds;
@@ -95,8 +79,6 @@ export default class Databases {
     this.Rpgs = Rpgs;
     this.Themes = Themes;
     this.Credits = Credits;
-    this.Fluffetys = Fluffetys;
-    this.Relations = Relations;
 
     if (withRedisCache) this.createRedisConnection();
 
@@ -109,13 +91,12 @@ export default class Databases {
     this.badgeRepository = new BadgeRepository(this.userRepository);
     this.maintenanceRepository = new MaintenanceRepository(this.cmdRepository);
     this.huntRepository = new HuntRepository(this.Users);
+    this.relationshipRepository = new RelationshipRepository(this.userRepository);
     this.blacklistRepository = new BlacklistRepository(this.userRepository, this.redisClient);
     this.topRepository = new TopRepository(this.Users);
     this.giveRepository = new GiveRepository(this.Users);
     this.themeRepository = new ThemeRepository(this.Themes, this.redisClient);
     this.roleplayRepository = new RoleplayRepository(this.Rpgs, this.redisClient);
-    this.fluffetyRepository = new FluffetyRepository(this.Fluffetys);
-    this.relationshipRepository = new RelationshipRepository(this.userRepository, this.Relations);
 
     this.cacheRepository = new CacheRepository(
       this.redisClient,
@@ -154,7 +135,6 @@ export default class Databases {
       themeRepository: this.themeRepository,
       roleplayRepository: this.roleplayRepository,
       creditsRepository: this.creditsRepository,
-      fluffetyRepository: this.fluffetyRepository,
     };
   }
 
