@@ -700,7 +700,7 @@ export default class ShopCommand extends InteractionCommand {
       ctx.makeMessage({ embeds: [dataRolls] });
     }
 
-    if (type === 'itmes') {
+    if (type === 'items') {
       const ItemsEmbed = new MessageEmbed()
         .setTitle(ctx.locale('commands:loja.dataItems.title'))
         .setColor(COLORS.Pinkie)
