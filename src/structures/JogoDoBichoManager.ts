@@ -125,8 +125,7 @@ export default class JogoDoBixoManager {
       players.forEach((a) => {
         if (a.didWin) {
           this.clientInstance.repositories.starRepository.add(a.id, a.profit);
-          if (a.gameId) HttpRequests.userWinBicho(a.gameId);
-          if (this.lastGame && a.profit > this.lastGame?.biggestProfit)
+          if (this.lastGame && a.profit > this.lastGame.biggestProfit)
             this.lastGame.biggestProfit = a.profit;
         }
 
@@ -156,25 +155,9 @@ export default class JogoDoBixoManager {
     );
   }
 
-  async apiRegisterGame(
-    userId: string,
-    value: number,
-    gameBetType: BichoBetType,
-    betSelection: string,
-  ): Promise<void> {
-    const gameId = await HttpRequests.postBichoGame(userId, value, gameBetType, betSelection);
-
-    if (!gameId) return;
-
-    const bet = this.ongoingGame.bets.find((a) => a.id === userId);
-
-    if (bet) bet.gameId = gameId.gameId;
-  }
-
   addBet(userId: string, betValue: number, optionSelected: string): void {
     if (this.clientInstance.cluster.id === 0) {
       this.ongoingGame.bets.push({ id: userId, bet: betValue, option: optionSelected });
-      this.apiRegisterGame(userId, betValue, betType(optionSelected), optionSelected);
     } else {
       this.clientInstance.cluster.broadcastEval(
         // @ts-expect-error Client n é coiso

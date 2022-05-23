@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 import {
-  BichoBetType,
   BichoTop,
   BlackjackTop,
   CoinflipTop,
@@ -18,7 +17,7 @@ import {
 } from '@custom_types/Menhera';
 import type { ActivityType } from 'discord.js-light';
 import { UserBattleConfig } from '@roleplay/Types';
-import { debugError, MayNotExists } from './Util';
+import { debugError } from './Util';
 
 const topggRequest = axios.create({
   baseURL: `https://top.gg/api`,
@@ -230,23 +229,6 @@ export default class HttpRequests {
     await apiRequest
       .post('/statistics/coinflip', { winnerId, loserId, betValue, date })
       .catch(debugError);
-  }
-
-  static async postBichoGame(
-    userId: string,
-    value: number,
-    betType: BichoBetType,
-    betSelection: string,
-  ): Promise<MayNotExists<{ gameId: number }>> {
-    return apiRequest
-      .post('/statistics/bicho', { userId, value, betType, betSelection })
-      .catch(debugError)
-      .then((a) => a?.data);
-  }
-
-  static async userWinBicho(gameId: number): Promise<void> {
-    if (!gameId) return;
-    await apiRequest.patch('/statistics/bicho', { gameId });
   }
 
   static async postHuntCommand(
