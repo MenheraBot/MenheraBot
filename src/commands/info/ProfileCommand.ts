@@ -125,25 +125,6 @@ export default class ProfileCommand extends InteractionCommand {
     };
 
     const profileTheme = await ctx.client.repositories.themeRepository.getProfileTheme(member.id);
-    // AQUI
-    const startTime = Date.now();
-
-    await requestPicassoImage(
-      PicassoRoutes.Profile,
-      { user: userSendData, usageCommands, i18n: i18nData, type: profileTheme },
-      ctx,
-    );
-
-    console.log(`SEM CACHE ${Date.now() - startTime}ms`);
-    const negros = Date.now();
-    await requestPicassoImage(
-      PicassoRoutes.Profile,
-      { user: userSendData, usageCommands, i18n: i18nData, type: profileTheme },
-      ctx,
-    );
-    console.log(`COM CACHE ${Date.now() - negros}ms`);
-
-    // AQUI
 
     const res = await requestPicassoImage(
       PicassoRoutes.Profile,
