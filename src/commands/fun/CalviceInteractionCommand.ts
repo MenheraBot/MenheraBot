@@ -10,7 +10,7 @@ const availableAuthors = [
   'Vin Diesel',
   'Dida',
   'Leando Karnal',
-  'Kayne West',
+  'Kanye West',
   'Marcio Victor',
   'Jason Statham',
   'Bruce Willis',

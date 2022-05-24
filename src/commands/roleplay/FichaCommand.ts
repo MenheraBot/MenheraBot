@@ -450,6 +450,10 @@ export default class FichaCommand extends InteractionCommand {
       return;
     }
 
+    const selectedPoint = resolveCustomId(buttonSelected.customId).toLowerCase();
+
+    // COLOCAR MODAL TO CATCH EVERYTHING, IF DONT HAVE, DONT CHANGE, IF CAVE, RESET POINTS
+
     const pointsToUse =
       resolveCustomId(buttonSelected.customId) === 'VITALITY'
         ? user.holyBlessings.vitality
@@ -707,7 +711,7 @@ export default class FichaCommand extends InteractionCommand {
       ctx.channel,
       ctx.author.id,
       baseId,
-      7_000,
+      15_000,
     );
 
     if (!selectedOption) {
