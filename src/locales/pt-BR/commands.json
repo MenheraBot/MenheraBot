@@ -689,6 +689,8 @@
     "sorted-title": "Números Sorteados",
     "sorted-description": "**Último Sorteio:** `{{lastDate}}`\nNúmeros Sorteados:\n1º - `{{first}}`\n2º - `{{second}}`\n3º - `{{third}}`\n4º - `{{fourth}}`\n5º - `{{fifth}}`\nMaior Lucro: **{{biggestProfit}}** :star:\n\nPróximo Sorteio Em `{{nextDate}}`\n**Valor Acumulado:** {{value}} :star:",
     "no-register": "Sem Registro",
+    "invalid-bet": "Você inseriu uma aposta inválida! Verifique novamente sua seleção",
+    "label": "Digite um número entre {{min}} e {{max}}",
     "poor": "Tu não tem estrelinhas o suficiente para apostar! Tente outro valor!",
     "bet-title": "Aposte no Bicho",
     "bet-description": "Escolha uma forma de apostas! Você pode apostar em um bicho, uma unidade, uma dezena, uma centena, um milhar, um animal, uma sequência ou quina de animais. Escolha abaixo sua categoria, e após isso, selecione a aposta em si\n\n**MULTIPLICADOR POR ESCOLHAS:**\n**Unidade:** {{unity}}x :star:\n**Dezena:** {{ten}}x :star:\n**Centena:** {{hundred}}x :star:\n**Milhar:** {{thousand}}x :star:\n**Animal:** {{animal}}x :star:\n**Sequência:** {{sequence}}x :star:\n**Quina:** {{corner}}x :star:",
