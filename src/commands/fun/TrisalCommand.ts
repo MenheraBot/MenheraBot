@@ -13,25 +13,24 @@ import { PicassoRoutes, requestPicassoImage } from '@utils/PicassoRequests';
 export default class TrisalCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'polyamory',
-      nameLocalizations: { 'pt-BR': 'trisal' },
-      description: '「💘」・Start a poliamory with your friends',
-      descriptionLocalizations: { 'pt-BR': '「💘」・Faça um belo trisal com seus amigos' },
+      name: 'trisal',
+      nameLocalizations: { 'en-US': 'polyamory' },
+      description: '「💘」・Faça um belo trisal com seus amigos',
+      descriptionLocalizations: { 'en-US': '「💘」・Start a poliamory with your friends' },
       options: [
         {
           name: 'user',
-          nameLocalizations: { 'pt-BR': 'usuário' },
           type: 'USER',
-          description: 'First User',
-          descriptionLocalizations: { 'pt-BR': 'Primeiro usuário do trisal' },
+          description: 'Primeiro usuário do trisal',
+          descriptionLocalizations: { 'en-US': 'First User' },
           required: false,
         },
         {
-          name: 'second_user',
-          nameLocalizations: { 'pt-BR': 'segundo_usuário' },
+          name: 'user_dois',
+          nameLocalizations: { 'en-US': 'second_user' },
           type: 'USER',
-          description: 'Second User',
-          descriptionLocalizations: { 'pt-BR': 'Segundo usuário do trisal' },
+          description: 'Segundo usuário do trisal',
+          descriptionLocalizations: { 'en-US': 'Second User' },
           required: false,
         },
       ],
@@ -160,7 +159,7 @@ export default class TrisalCommand extends InteractionCommand {
     if (ctx.data.user.trisal.length > 0) return TrisalCommand.displayTrisal(ctx);
 
     const firstUser = ctx.options.getUser('user');
-    const secondUser = ctx.options.getUser('second_dois');
+    const secondUser = ctx.options.getUser('user_dois');
 
     if (!firstUser || !secondUser) {
       await ctx.makeMessage({

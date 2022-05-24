@@ -7,10 +7,10 @@ import Util from '@utils/Util';
 export default class DivorceCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'divorce',
-      nameLocalizations: { 'pt-BR': 'divorciar' },
-      description: '「💔」・Divorce from your current spouse',
-      descriptionLocalizations: { 'pt-BR': '「💔」・Divorcie de seu atual cônjuje' },
+      name: 'divorciar',
+      nameLocalizations: { 'en-US': 'divorce' },
+      description: '「💔」・Divorcie de seu atual cônjuje',
+      descriptionLocalizations: { 'en-US': '「💔」・Divorce from your current spouse' },
       category: 'fun',
       cooldown: 8,
       authorDataFields: ['married'],

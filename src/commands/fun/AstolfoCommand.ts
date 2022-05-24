@@ -9,17 +9,17 @@ export default class AstolfoCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'astolfo',
-      description: "「🍆」・It's big, right? Said the astolfo for what you said",
+      description: '「🍆」・É grande, né? Disse o astolfo para aquilo que você o disse',
       descriptionLocalizations: {
-        'pt-BR': '「🍆」・É grande, né? Disse o astolfo para aquilo que você o disse',
+        'en-US': "「🍆」・It's big, right? Said the astolfo for what you said",
       },
       options: [
         {
-          name: 'phrase',
-          nameLocalizations: { 'pt-BR': 'frase' },
+          name: 'frase',
+          nameLocalizations: { 'en-US': 'phrase' },
           type: 'STRING',
-          description: 'Phrase for Astolfo to speak',
-          descriptionLocalizations: { 'pt-BR': 'Frase para o Astolfo falar' },
+          description: 'Frase para o Astolfo falar',
+          descriptionLocalizations: { 'en-US': 'Phrase for Astolfo to speak' },
           required: true,
         },
       ],
@@ -29,7 +29,7 @@ export default class AstolfoCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    const text = ctx.options.getString('phrase', true);
+    const text = ctx.options.getString('frase', true);
     await ctx.defer();
 
     const res = await requestPicassoImage(
