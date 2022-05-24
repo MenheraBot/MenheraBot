@@ -8,25 +8,24 @@ import { capitalize } from '@utils/Util';
 export default class ShyCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'shy',
-      nameLocalizations: { 'pt-BR': 'vergonha' },
-      description: "「👉👈」・E-eto >.<, i'm with shame nii-chan",
-      descriptionLocalizations: { 'pt-BR': '「👉👈」・E-eto >.<, oto com vergonhinha nii-chan' },
+      name: 'vergonha',
+      nameLocalizations: { 'en-US': 'shy' },
+      description: '「👉👈」・E-eto >.<, oto com vergonhinha',
+      descriptionLocalizations: { 'en-US': "「👉👈」・E-eto >.<, i'm with shame nii-chan" },
       options: [
         {
           name: 'user',
-          nameLocalizations: { 'pt-BR': 'usuário' },
           type: 'USER',
-          description: 'User who made you ashamed',
-          descriptionLocalizations: { 'pt-BR': 'Usuário que te deixou com vergonha' },
+          description: 'Usuário que te deixou com vergonha',
+          descriptionLocalizations: { 'en-US': 'User who made you ashamed' },
           required: false,
         },
         {
-          name: 'reason',
+          name: 'motivo',
           type: 'STRING',
-          nameLocalizations: { 'pt-BR': 'motivo' },
-          description: 'Why did this user leave you like this?',
-          descriptionLocalizations: { 'pt-BR': 'Por que esse usuário te deixou assim?' },
+          nameLocalizations: { 'en-US': 'reason' },
+          description: 'Por que esse usuário te deixou assim?',
+          descriptionLocalizations: { 'en-US': 'Why did this user leave you like this?' },
           required: false,
         },
       ],
@@ -40,7 +39,7 @@ export default class ShyCommand extends InteractionCommand {
 
     const selectedImage = await HttpRequests.getAssetImageUrl('shy');
     const user = ctx.options.getUser('user');
-    const reason = ctx.options.getString('reason');
+    const reason = ctx.options.getString('motivo');
 
     if (!user || user.id === ctx.author.id) {
       const embed = new MessageEmbed()

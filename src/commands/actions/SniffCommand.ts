@@ -8,27 +8,24 @@ import { capitalize } from '@utils/Util';
 export default class SniffCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'sniff',
-      nameLocalizations: { 'pt-BR': 'cheirar' },
-      description: '「👃」・Give someone a sniff hgmmm',
-      descriptionLocalizations: { 'pt-BR': '「👃」・Da uma cheiradinha em alguém hgmmm' },
+      name: 'cheirar',
+      nameLocalizations: { 'en-US': 'sniff' },
+      description: '「👃」・Da uma cheiradinha em alguém hgmmm',
+      descriptionLocalizations: { 'en-US': '「👃」・Give someone a sniff hgmmm' },
       options: [
         {
           name: 'user',
-          nameLocalizations: { 'pt-BR': 'usuário' },
           type: 'USER',
-          description: 'User to make the ultradimensional sniffer',
-          descriptionLocalizations: {
-            'pt-BR': 'Usuário pra mete a narigada sugadora ultradimensional',
-          },
+          description: 'Usuário pra mete a narigada sugadora ultradimensional',
+          descriptionLocalizations: { 'en-US': 'User to make the ultradimensional sniffer' },
           required: false,
         },
         {
-          name: 'reason',
+          name: 'motivo',
           type: 'STRING',
-          nameLocalizations: { 'pt-BR': 'motivo' },
-          description: 'Why do you wanna sniff? (strange question)',
-          descriptionLocalizations: { 'pt-BR': 'Por que tu quer dar a talda cheirada?' },
+          nameLocalizations: { 'en-US': 'reason' },
+          description: 'Por que tu quer dar a talda cheirada?',
+          descriptionLocalizations: { 'en-US': 'Why do you wanna sniff? (strange question)' },
           required: false,
         },
       ],
@@ -39,7 +36,7 @@ export default class SniffCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const user = ctx.options.getUser('user');
-    const reason = ctx.options.getString('reason');
+    const reason = ctx.options.getString('motivo');
 
     if (user?.bot) {
       await ctx.makeMessage({

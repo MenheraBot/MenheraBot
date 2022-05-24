@@ -8,25 +8,24 @@ import { capitalize } from '@utils/Util';
 export default class SlapCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'slap',
-      nameLocalizations: { 'pt-BR': 'tapa' },
-      description: '「🖐️」・Give someone a tumor-pulling slap',
-      descriptionLocalizations: { 'pt-BR': '「🖐️」・Da um tapão de arrancar tumor em alguém' },
+      name: 'tapa',
+      nameLocalizations: { 'en-US': 'slap' },
+      description: '「🖐️」・Da um tapão de arrancar tumor em alguém',
+      descriptionLocalizations: { 'en-US': '「🖐️」・Give someone a tumor-pulling slap' },
       options: [
         {
           name: 'user',
-          nameLocalizations: { 'pt-BR': 'usuário' },
           type: 'USER',
-          description: 'User to slap',
-          descriptionLocalizations: { 'pt-BR': 'Usuário pra mete o tapa' },
+          description: 'Usuário pra mete o tapa',
+          descriptionLocalizations: { 'en-US': 'User to slap' },
           required: true,
         },
         {
-          name: 'reason',
-          nameLocalizations: { 'pt-BR': 'motivo' },
+          name: 'motivo',
+          nameLocalizations: { 'en-US': 'reason' },
           type: 'STRING',
-          description: 'Why do you wanna do that?',
-          descriptionLocalizations: { 'pt-BR': 'Por que tu quer fazer isso?' },
+          description: 'Por que tu quer fazer isso?',
+          descriptionLocalizations: { 'en-US': 'Why do you wanna do that?' },
           required: false,
         },
       ],
@@ -37,7 +36,7 @@ export default class SlapCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const user = ctx.options.getUser('user', true);
-    const reason = ctx.options.getString('reason');
+    const reason = ctx.options.getString('motivo');
 
     if (user.bot) {
       await ctx.makeMessage({
