@@ -20,18 +20,18 @@ import {
 export default class RouletteCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'roulette',
-      nameLocalizations: { 'pt-BR': 'roleta' },
-      description: '「🎡」・The famous Roulette Game, bet on something and win millions of stars',
+      name: 'roleta',
+      nameLocalizations: { 'en-US': 'roulette' },
+      description: '「🎡」・O famoso jogo da roleta, aposte em algo e ganhe milhões de estrelinhas',
       descriptionLocalizations: {
-        'pt-BR': '「🎡」・O famoso jogo da roleta, aposte em algo e ganhe milhões de estrelinhas',
+        'en-US': '「🎡」・The famous Roulette Game, bet on something and win millions of stars',
       },
       options: [
         {
-          name: 'bet',
-          nameLocalizations: { 'pt-BR': 'aposta' },
-          description: 'Bet amount',
-          descriptionLocalizations: { 'pt-BR': 'Valor da aposta' },
+          name: 'aposta',
+          nameLocalizations: { 'en-US': 'bet' },
+          description: 'Valor da aposta',
+          descriptionLocalizations: { 'en-US': 'Bet amount' },
           type: 'INTEGER',
           required: true,
           minValue: 1,
@@ -45,7 +45,7 @@ export default class RouletteCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    const bet = ctx.options.getInteger('bet', true);
+    const bet = ctx.options.getInteger('aposta', true);
 
     if (ctx.data.user.estrelinhas < bet) {
       ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:roleta.poor') });

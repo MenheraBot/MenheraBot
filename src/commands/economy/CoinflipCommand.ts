@@ -8,24 +8,21 @@ export default class CoinflipCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'coinflip',
-      description: '「📀」・Dispute in a coin toss game with a friend',
-      descriptionLocalizations: {
-        'pt-BR': '「📀」・Disputa num jogo de Cara e Coroa com um amigo',
-      },
+      description: '「📀」・Disputa num jogo de Cara e Coroa com um amigo',
+      descriptionLocalizations: { 'en-US': '「📀」・Dispute in a coin toss game with a friend' },
       options: [
         {
           name: 'user',
-          nameLocalizations: { 'pt-BR': 'usuário' },
-          description: 'User to dispute',
-          descriptionLocalizations: { 'pt-BR': 'Usuário para disputar' },
+          description: 'Usuário para disputar',
+          descriptionLocalizations: { 'en-US': 'User to dispute' },
           type: 'USER',
           required: true,
         },
         {
-          name: 'bet',
-          nameLocalizations: { 'pt-BR': 'aposta' },
-          description: 'Bet ammount',
-          descriptionLocalizations: { 'pt-BR': 'Valor da aposta' },
+          name: 'aposta',
+          nameLocalizations: { 'en-US': 'bet' },
+          description: 'Valor da aposta',
+          descriptionLocalizations: { 'en-US': 'Bet ammount' },
           type: 'INTEGER',
           required: true,
           minValue: 1,
@@ -40,7 +37,7 @@ export default class CoinflipCommand extends InteractionCommand {
   async run(ctx: InteractionCommandContext): Promise<void> {
     const { author } = ctx;
     const user = ctx.options.getUser('user', true);
-    const input = ctx.options.getInteger('bet', true);
+    const input = ctx.options.getInteger('aposta', true);
 
     if (user.bot) {
       await ctx.makeMessage({

@@ -8,73 +8,70 @@ import { HuntingTypes } from '@custom_types/Menhera';
 type ChoiceTypes = HuntingTypes | 'estrelinhas';
 const choices: Array<ApplicationCommandOptionChoiceData & { value: ChoiceTypes }> = [
   {
-    name: '⭐ | Start',
-    nameLocalizations: { 'pt-BR': '⭐ | Estrelinhas' },
+    name: '⭐ | Estrelinhas',
+    nameLocalizations: { 'en-US': '⭐ | Stars' },
     value: 'estrelinhas',
   },
   {
-    name: '😈 | Demons',
-    nameLocalizations: { 'pt-BR': '😈 | Demônios' },
+    name: '😈 | Demônios',
+    nameLocalizations: { 'en-US': '😈 | Demons' },
     value: 'demons',
   },
   {
-    name: '👊 | Giants',
-    nameLocalizations: { 'pt-BR': '👊 | Gigantes' },
+    name: '👊 | Gigantes',
+    nameLocalizations: { 'en-US': '👊 | Giants' },
     value: 'giants',
   },
   {
-    name: '👼 | Angels',
-    nameLocalizations: { 'pt-BR': '👼 | Anjos' },
+    name: '👼 | Anjos',
+    nameLocalizations: { 'en-US': '👼 | Angels' },
     value: 'angels',
   },
   {
-    name: '🧚‍♂️ | Archangels',
-    nameLocalizations: { 'pt-BR': '🧚‍♂️ | Arcanjos' },
+    name: '🧚‍♂️ | Arcanjos',
+    nameLocalizations: { 'en-US': '🧚‍♂️ | Archangels' },
     value: 'archangels',
   },
   {
-    name: '🙌 | Demigods',
-    nameLocalizations: { 'pt-BR': '🙌 | Semideuses' },
+    name: '🙌 | Semideuses',
+    nameLocalizations: { 'en-US': '🙌 | Demigods' },
     value: 'demigods',
   },
   {
-    name: '✝️ | Gods',
-    nameLocalizations: { 'pt-BR': '✝️ | Deuses' },
+    name: '✝️ | Deuses',
+    nameLocalizations: { 'en-US': '✝️ | Gods' },
     value: 'gods',
   },
 ];
 export default class GiveCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'gift',
-      nameLocalizations: { 'pt-BR': 'presentear' },
-      description: '「🎁」・Give someone else a gift from your inventory',
-      descriptionLocalizations: {
-        'pt-BR': '「🎁」・Dê um presente de seu inventário para outra pessoa',
-      },
+      name: 'presentear',
+      nameLocalizations: { 'en-US': 'gift' },
+      description: '「🎁」・Dê um presente de seu inventário para outra pessoa',
+      descriptionLocalizations: { 'en-US': '「🎁」・Give someone else a gift from your inventory' },
       options: [
         {
           name: 'user',
-          nameLocalizations: { 'pt-BR': 'usuário' },
-          description: 'User to gift',
-          descriptionLocalizations: { 'pt-BR': 'Usuário para presentear' },
+          description: 'Usuário para presentear',
+          descriptionLocalizations: { 'en-US': 'User to gift' },
           type: 'USER',
           required: true,
         },
         {
-          name: 'type',
-          nameLocalizations: { 'pt-BR': 'tipo' },
-          description: 'The type of item you want to gift',
-          descriptionLocalizations: { 'pt-BR': 'O tipo de item que quer presentear' },
+          name: 'tipo',
+          nameLocalizations: { 'en-US': 'type' },
+          description: 'O tipo de item que quer presentear',
+          descriptionLocalizations: { 'en-US': 'The type of item you want to gift' },
           type: 'STRING',
           choices,
           required: true,
         },
         {
-          name: 'amount',
-          nameLocalizations: { 'pt-BR': 'quantidade' },
-          description: 'The amount to gift',
-          descriptionLocalizations: { 'pt-BR': 'A quantidade para presentear' },
+          name: 'valor',
+          nameLocalizations: { 'en-US': 'amount' },
+          description: 'A quantidade para presentear',
+          descriptionLocalizations: { 'en-US': 'The amount to gift' },
           type: 'INTEGER',
           required: true,
           minValue: 1,
@@ -143,8 +140,8 @@ export default class GiveCommand extends InteractionCommand {
   async run(ctx: InteractionCommandContext): Promise<void> {
     const [toSendUser, selectedOption, input] = [
       ctx.options.getUser('user', true),
-      ctx.options.getString('type', true) as ChoiceTypes,
-      ctx.options.getInteger('amount', true),
+      ctx.options.getString('tipo', true) as ChoiceTypes,
+      ctx.options.getInteger('valor', true),
     ];
 
     if (toSendUser.id === ctx.author.id) return GiveCommand.replyForYourselfError(ctx);
