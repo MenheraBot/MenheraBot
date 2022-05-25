@@ -378,7 +378,7 @@ export default class TopCommand extends InteractionCommand {
           COLORS.Purple,
         );
       }
-      case 'commands': {
+      case 'comandos': {
         const type = ctx.options.getString('tipo', true) as 'commands' | 'users' | 'user';
 
         if (type === 'commands') return TopCommand.topCommands(ctx);
