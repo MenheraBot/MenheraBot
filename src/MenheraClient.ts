@@ -92,9 +92,7 @@ export default class MenheraClient extends Client<true> {
     return (
       this.cluster
         // @ts-expect-error client n é sexual
-        .broadcastEval((c: MenheraClient) => c.interactionStatistics, {
-          cluster: 0,
-        })
+        .broadcastEval((c: MenheraClient) => c.interactionStatistics)
         .then((a: this['interactionStatistics'][]) =>
           a.reduce(
             (p, c) => {
