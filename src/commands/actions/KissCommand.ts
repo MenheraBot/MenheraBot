@@ -68,7 +68,7 @@ export default class KissCommand extends InteractionCommand {
     }
 
     const selectedImage =
-      ctx.options.getString('lugar', true) === '0'
+      ctx.options.getString('local', true) === '0'
         ? await HttpRequests.getAssetImageUrl('kiss')
         : await HttpRequests.getAssetImageUrl('cheek');
     const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
@@ -77,7 +77,7 @@ export default class KissCommand extends InteractionCommand {
       .setTitle(ctx.locale('commands:beijar.embed_title'))
       .setColor(COLORS.ACTIONS)
       .setDescription(
-        ctx.locale(`commands:beijar.embed_description_${ctx.options.getString('lugar') as '1'}`, {
+        ctx.locale(`commands:beijar.embed_description_${ctx.options.getString('local') as '1'}`, {
           author: ctx.author.toString(),
           mention: user.toString(),
         }),
