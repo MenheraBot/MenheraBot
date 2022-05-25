@@ -33,7 +33,7 @@ export default class ShutdownSlashCommand extends InteractionCommand {
     await new Promise<void>((resolve) => {
       const interval = setInterval(async () => {
         const cooldowns = (await ctx.client.cluster?.fetchClientValues(
-          'commandExecutions.size',
+          'economyUsages.size',
         )) as number[];
 
         if (cooldowns.reduce((p, c) => p + c, 0) === 0) {
