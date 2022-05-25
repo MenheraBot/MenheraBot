@@ -6,26 +6,24 @@ import { MessageButton, MessageEmbed } from 'discord.js-light';
 export default class ResetCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'reset',
-      nameLocalizations: { 'pt-BR': 'resetar' },
-      description: '【ＲＰＧ】↪️ | RPG Reset System',
-      descriptionLocalizations: { 'pt-BR': '【ＲＰＧ】↪️ | Sistema de Reset do RPG' },
+      name: 'resetar',
+      nameLocalizations: { 'en-US': 'reset' },
+      description: '【ＲＰＧ】↪️ | Sistema de Reset do RPG',
+      descriptionLocalizations: { 'en-US': '【ＲＰＧ】↪️ | RPG Reset System' },
       category: 'roleplay',
       options: [
         {
-          name: 'blesses',
-          nameLocalizations: { 'pt-BR': 'bençãos' },
-          description: "【ＲＰＧ】↪️ | Resets your character's blessings",
-          descriptionLocalizations: {
-            'pt-BR': '【ＲＰＧ】↪️ | Reseta as bênçãos do teu personagem',
-          },
+          name: 'bençãos',
+          nameLocalizations: { 'en-US': 'blesses' },
+          description: '【ＲＰＧ】↪️ | Reseta as bênçãos do teu personagem',
+          descriptionLocalizations: { 'en-US': "【ＲＰＧ】↪️ | Resets your character's blessings" },
           type: 'SUB_COMMAND',
         },
         {
-          name: 'sheet',
-          nameLocalizations: { 'pt-BR': 'ficha' },
-          description: '【ＲＰＧ】↪️ | Reset Your Sheet',
-          descriptionLocalizations: { 'pt-BR': '【ＲＰＧ】↪️ | Reseta tua ficha' },
+          name: 'ficha',
+          nameLocalizations: { 'en-US': 'sheet' },
+          description: '【ＲＰＧ】↪️ | Reseta tua ficha',
+          descriptionLocalizations: { 'en-US': '【ＲＰＧ】↪️ | Reset Your Sheet' },
           type: 'SUB_COMMAND',
         },
       ],
@@ -40,7 +38,7 @@ export default class ResetCommand extends InteractionCommand {
       return;
     }
 
-    if (ctx.options.getSubcommand() === 'blesses') {
+    if (ctx.options.getSubcommand() === 'bençãos') {
       ctx.makeMessage({ content: ctx.prettyResponseText('error', 'soon') });
       return;
     }

@@ -62,7 +62,7 @@ export default class HttpRequests {
   ): Promise<{ error: false; data: { config: UserBattleConfig } } | { error: true }> {
     const result = await apiRequest.get(`/roleplay/battleconf/?userId=${userId}`).catch(debugError);
 
-    if (!result || result.status !== 200) return { error: true };
+    if (!result || result.status !== 200 || result.data?.error) return { error: true };
 
     return { error: false, data: result.data };
   }
