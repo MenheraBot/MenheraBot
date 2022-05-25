@@ -416,7 +416,6 @@ export interface BichoWinner {
   profit: number;
   bet: number;
   didWin: boolean;
-  gameId?: number;
 }
 
 export interface JogoDoBichoGame {

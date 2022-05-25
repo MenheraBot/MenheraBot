@@ -2,6 +2,7 @@ import axios from 'axios';
 
 import {
   BichoTop,
+  BichoWinner,
   BlackjackTop,
   CoinflipTop,
   HuntTop,
@@ -241,15 +242,8 @@ export default class HttpRequests {
       .catch(debugError);
   }
 
-  static async postBichoUserStats(
-    userId: string,
-    betValue: number,
-    profit: number,
-    didWin: boolean,
-  ): Promise<void> {
-    await apiRequest
-      .post('/statistics/bicho', { userId, betValue, profit, didWin })
-      .catch(debugError);
+  static async postBichoGame(players: BichoWinner[]): Promise<void> {
+    await apiRequest.post('/statistics/bicho', { players }).catch(debugError);
   }
 
   static async getTopBlackjack(
