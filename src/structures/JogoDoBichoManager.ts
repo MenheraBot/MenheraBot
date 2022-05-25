@@ -122,14 +122,14 @@ export default class JogoDoBixoManager {
       };
 
       const players = JogoDoBixoManager.finishBets(this.lastGame);
+      HttpRequests.postBichoGame(players);
+
       players.forEach((a) => {
         if (a.didWin) {
           this.clientInstance.repositories.starRepository.add(a.id, a.profit);
           if (this.lastGame && a.profit > this.lastGame.biggestProfit)
             this.lastGame.biggestProfit = a.profit;
         }
-
-        HttpRequests.postBichoUserStats(a.id, a.bet, a.profit, a.didWin);
       });
     } else {
       this.clientInstance.cluster.broadcastEval(

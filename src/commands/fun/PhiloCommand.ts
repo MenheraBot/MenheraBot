@@ -8,20 +8,19 @@ import { PicassoRoutes, requestPicassoImage } from '@utils/PicassoRequests';
 export default class PhiloCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'philosophy',
-      nameLocalizations: { 'pt-BR': 'filosofia' },
-      description:
-        '「💭」・To be or not to be, that is the question. Have Aristotle say something.',
+      name: 'filosofia',
+      nameLocalizations: { 'en-US': 'philosophy' },
+      description: '「💭」・Ser ou não ser, eis a questão. Mande Aristóteles dizer algo.',
       descriptionLocalizations: {
-        'pt-BR': '「💭」・Ser ou não ser, eis a questão. Mande Aristóteles dizer algo.',
+        'en-US': '「💭」・To be or not to be, that is the question. Have Aristotle say something.',
       },
       options: [
         {
-          name: 'text',
-          nameLocalizations: { 'pt-BR': 'frase' },
+          name: 'frase',
+          nameLocalizations: { 'en-US': 'text' },
           type: 'STRING',
-          description: 'Text to sendo to Aristotle',
-          descriptionLocalizations: { 'pt-BR': 'Frase para enviar ao Aristóteles' },
+          description: 'Frase para enviar ao Aristóteles',
+          descriptionLocalizations: { 'en-US': 'Text to sendo to Aristotle' },
           required: true,
         },
       ],
@@ -31,7 +30,7 @@ export default class PhiloCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    const text = ctx.options.getString('text', true);
+    const text = ctx.options.getString('frase', true);
     await ctx.defer();
 
     const res = await requestPicassoImage(PicassoRoutes.Philo, { text: toWritableUTF(text) }, ctx);

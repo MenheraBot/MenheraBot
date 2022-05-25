@@ -86,14 +86,13 @@
   "mamar": {
     "bot_uncensored": "{{author}} acabou de sujar a boca de óleo lansando o mamadão no bot {{mention}}",
     "bot": "{{author}} acabou de sujar a boca de óleo lambendo no bot {{mention}}",
-    "self-mention_uncensored": "Não tenta me enganar, eu sei que tu não consegue mamar a si mesmo! Marque outra pessoa para mamar",
-    "self-mention": "Não tenta me enganar, eu sei que tu não consegue lamber a si mesmo! Marque outra pessoa para lamber",
-    "embed_title_uncensored": "Mamar",
-    "embed_title": "Lambida",
-    "user-banned_uncensored": "Tu não pode mamar esse usuário por que ele tá banido!",
-    "user-banned": "Tu não pode lamber esse usuário por que ele tá banido!",
-    "embed_description_uncensored": "{{author}} lansou o mamadão, o famoso bereguedjonson, a linguada, a mamadela, a lambidinha em {{mention}}",
-    "embed_description": "{{author}} lambeu {{mention}}. Mlem"
+    "self-mention_uncensored": "Não tenta me enganar, eu sei que tu não consegue 'LAMBER' mamar a si mesmo! Marque outra pessoa para mamar",
+    "self-mention": "Não tenta me enganar, eu sei que tu não consegue mamar a si mesmo! Marque outra pessoa para mamar",
+    "embed_title_uncensored": "'LAMBER' Mamar",
+    "embed_title": "Mamar",
+    "user-banned_uncensored": "Tu não pode 'LAMBER' esse usuário por que ele tá banido!",
+    "user-banned": "Tu não pode mamar esse usuário por que ele tá banido!",
+    "embed_description": "{{author}} lansou o mamadão, o famoso bereguedjonson, a linguada, a mamadela, a lambidinha em {{mention}}"
   },
   "carinho": {
     "self-mention": "Olha cara, se tu quiser tu pode fazer carinho em si mesmo agora. Utilize meu comando somente para fazer carinho em outras pessoas",

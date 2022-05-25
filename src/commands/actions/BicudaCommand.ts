@@ -8,25 +8,24 @@ import { capitalize } from '@utils/Util';
 export default class BicudaCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'kick',
-      nameLocalizations: { 'pt-BR': 'bicuda' },
-      description: '「🦶」・Give someone a kick',
-      descriptionLocalizations: { 'pt-BR': '「🦶」・Da uma bicudassa em alguém' },
+      name: 'bicuda',
+      description: '「🦵」・Da uma bicudassa em alguém',
+      nameLocalizations: { 'en-US': 'kick' },
+      descriptionLocalizations: { 'en-US': '「🦶」・Give someone a kick' },
       options: [
         {
           name: 'user',
-          nameLocalizations: { 'pt-BR': 'usuário' },
           type: 'USER',
-          descriptionLocalizations: { 'pt-BR': 'Usuário para chutar' },
-          description: 'User to kick',
+          descriptionLocalizations: { 'en-US': 'User to kick' },
+          description: 'Usuário para dar a bicuda',
           required: true,
         },
         {
-          name: 'reason',
-          nameLocalizations: { 'pt-BR': 'motivo' },
+          name: 'motivo',
+          nameLocalizations: { 'en-US': 'reason' },
           type: 'STRING',
-          description: 'Why do you wanna kick?',
-          descriptionLocalizations: { 'pt-BR': 'Por que você quer chutar?' },
+          description: 'Por que você quer chutar?',
+          descriptionLocalizations: { 'en-US': 'Why are you angry?' },
           required: false,
         },
       ],
@@ -37,7 +36,7 @@ export default class BicudaCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const user = ctx.options.getUser('user', true);
-    const reason = ctx.options.getString('reason');
+    const reason = ctx.options.getString('motivo');
 
     if (user.bot) {
       await ctx.makeMessage({

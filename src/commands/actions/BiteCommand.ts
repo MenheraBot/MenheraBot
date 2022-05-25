@@ -8,25 +8,24 @@ import { capitalize } from '@utils/Util';
 export default class BiteCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'bite',
-      nameLocalizations: { 'pt-BR': 'morder' },
-      description: '「👄」・Nhac. Bite someone >.<',
-      descriptionLocalizations: { 'pt-BR': '「👄」・Nhac. Moide alguém >.<' },
+      name: 'morder',
+      nameLocalizations: { 'en-US': 'bite' },
+      description: '「👄」・Nhac. Moide alguém >.<',
+      descriptionLocalizations: { 'en-US': '「👄」・Nhac. Bite someone >.<' },
       options: [
         {
           name: 'user',
-          nameLocalizations: { 'pt-BR': 'usuário' },
           type: 'USER',
-          description: 'User to bite :3',
-          descriptionLocalizations: { 'pt-BR': 'Usuário para morder :3' },
+          descriptionLocalizations: { 'en-US': 'User to bite :3' },
+          description: 'Usuário para morder :3',
           required: true,
         },
         {
           type: 'STRING',
-          name: 'reason',
-          nameLocalizations: { 'pt-BR': 'motivo' },
-          description: 'Why do you wanna bite?',
-          descriptionLocalizations: { 'pt-BR': 'Por que tu quer morder?' },
+          name: 'motivo',
+          nameLocalizations: { 'en-US': 'reason' },
+          description: 'Por que tu quer morder?',
+          descriptionLocalizations: { 'en-US': 'Why do you wanna bite?' },
           required: false,
         },
       ],
@@ -37,7 +36,7 @@ export default class BiteCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const user = ctx.options.getUser('user', true);
-    const reason = ctx.options.getString('reason');
+    const reason = ctx.options.getString('motivo');
 
     if (user.bot) {
       await ctx.makeMessage({

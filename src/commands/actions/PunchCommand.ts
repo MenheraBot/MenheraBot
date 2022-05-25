@@ -8,25 +8,24 @@ import { capitalize } from '@utils/Util';
 export default class PunchCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'punch',
-      nameLocalizations: { 'pt-BR': 'socar' },
-      description: '「👊」・Punch someone',
-      descriptionLocalizations: { 'pt-BR': '「👊」・Da um socão em alguém' },
+      name: 'socar',
+      nameLocalizations: { 'en-US': 'punch' },
+      description: '「👊」・Da um socão em alguém',
+      descriptionLocalizations: { 'en-US': '「👊」・Punch someone' },
       options: [
         {
           name: 'user',
-          nameLocalizations: { 'pt-BR': 'usuário' },
           type: 'USER',
-          description: 'User you wanna punch',
-          descriptionLocalizations: { 'pt-BR': 'Usuário que você quer socar' },
+          description: 'Usuário que você quer socar',
+          descriptionLocalizations: { 'en-US': 'User you wanna punch' },
           required: true,
         },
         {
-          name: 'reason',
+          name: 'motivo',
           type: 'STRING',
-          nameLocalizations: { 'pt-BR': 'motivo' },
-          description: 'Why do you wann punch?',
-          descriptionLocalizations: { 'pt-BR': 'Por que tu quer socar man?' },
+          nameLocalizations: { 'en-US': 'reason' },
+          description: 'Por que tu quer socar man?',
+          descriptionLocalizations: { 'en-US': 'Why do you wann punch?' },
           required: false,
         },
       ],
@@ -37,7 +36,7 @@ export default class PunchCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const user = ctx.options.getUser('user', true);
-    const reason = ctx.options.getString('reason');
+    const reason = ctx.options.getString('motivo');
 
     if (user.bot) {
       await ctx.makeMessage({

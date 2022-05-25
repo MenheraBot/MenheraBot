@@ -42,17 +42,16 @@ const availableAuthors = [
 export default class CalviceInteractionCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'bald',
-      nameLocalizations: { 'pt-BR': 'calvo' },
-      description: "「👨‍🦲」・Find out someone's baldness level",
-      descriptionLocalizations: { 'pt-BR': '「👨‍  」・Descubra o nível de calvíce de alguém' },
+      name: 'calvo',
+      nameLocalizations: { 'en-US': 'bald' },
+      description: '「👨‍🦲」・Descubra o nível de calvíce de alguém',
+      descriptionLocalizations: { 'en-US': "「👨‍  」・Find out someone's baldness level" },
       options: [
         {
           name: 'user',
-          nameLocalizations: { 'pt-BR': 'usuário' },
           type: 'USER',
-          description: 'User to find out baldness level',
-          descriptionLocalizations: { 'pt-BR': 'Usuário para descobrir o nível de calvíce' },
+          description: 'Usuário para descobrir o nível de calvíce',
+          descriptionLocalizations: { 'en-US': 'User to find out baldness level' },
           required: true,
         },
       ],

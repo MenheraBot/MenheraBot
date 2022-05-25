@@ -8,25 +8,24 @@ import { capitalize } from '@utils/Util';
 export default class DisgustedCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'disgust',
-      nameLocalizations: { 'pt-BR': 'nojo' },
-      description: "「🤮」・Oh that's disgusting man, who made this?",
-      descriptionLocalizations: { 'pt-BR': '「🤮」・Ai que nojo cara, quem que fez isso?' },
+      name: 'nojo',
+      nameLocalizations: { 'en-US': 'disgust' },
+      description: '「🤮」・Ai que nojo cara, quem que fez isso?',
+      descriptionLocalizations: { 'en-US': "「🤮」・Oh that's disgusting man, who made this?" },
       options: [
         {
           name: 'user',
-          nameLocalizations: { 'pt-BR': 'usuário' },
+          descriptionLocalizations: { 'en-US': 'User you are disgusted' },
           type: 'USER',
-          description: 'User you are disgusted',
-          descriptionLocalizations: { 'pt-BR': 'Usuário que tu ta com nojo' },
+          description: 'suário que tu ta com nojo',
           required: false,
         },
         {
-          name: 'reason',
-          nameLocalizations: { 'pt-BR': 'motivo' },
+          name: 'motivo',
+          nameLocalizations: { 'en-US': 'reason' },
           type: 'STRING',
-          description: 'Why are you disgusted?',
-          descriptionLocalizations: { 'pt-BR': 'Por que tu ta com nojo?' },
+          description: 'Por que tu ta com nojo?',
+          descriptionLocalizations: { 'en-US': 'Why are you disgusted?' },
           required: false,
         },
       ],
@@ -37,7 +36,7 @@ export default class DisgustedCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const user = ctx.options.getUser('user');
-    const reason = ctx.options.getString('reason');
+    const reason = ctx.options.getString('motivo');
 
     if (user?.bot) {
       await ctx.makeMessage({

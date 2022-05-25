@@ -69,16 +69,14 @@ export default class BlackjackCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'blackjack',
-      description: '「🃏」・Dispute in a BlackJack game against Menhera',
-      descriptionLocalizations: {
-        'pt-BR': '「🃏」・Disputa num jogo de BlackJack contra a Menhera',
-      },
+      description: '「🃏」・Disputa num jogo de BlackJack contra a Menhera',
+      descriptionLocalizations: { 'en-US': '「🃏」・Dispute in a BlackJack game against Menhera' },
       options: [
         {
-          name: 'bet',
-          nameLocalizations: { 'pt-BR': 'aposta' },
-          description: 'Bet ammount',
-          descriptionLocalizations: { 'pt-BR': 'Valor da aposta' },
+          name: 'aposta',
+          nameLocalizations: { 'en-US': 'bet' },
+          description: 'Valor da aposta',
+          descriptionLocalizations: { 'en-US': 'Bet ammount' },
           type: 'INTEGER',
           required: true,
           minValue: 1000,
@@ -92,7 +90,7 @@ export default class BlackjackCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    const bet = ctx.options.getInteger('bet', true);
+    const bet = ctx.options.getInteger('aposta', true);
 
     if (ctx.data.user.estrelinhas < bet) {
       await ctx.makeMessage({

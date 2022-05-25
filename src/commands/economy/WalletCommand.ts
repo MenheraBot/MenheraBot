@@ -5,16 +5,15 @@ import InteractionCommandContext from '@structures/command/InteractionContext';
 export default class WalletCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'wallet',
-      nameLocalizations: { 'pt-BR': 'carteira' },
-      description: "「💳」・Show someone's wallet",
-      descriptionLocalizations: { 'pt-BR': '「💳」・Mostra a carteira de alguém' },
+      name: 'carteira',
+      nameLocalizations: { 'en-US': 'wallet' },
+      description: '「💳」・Mostra a carteira de alguém',
+      descriptionLocalizations: { 'en-US': "「💳」・Show someone's wallet" },
       options: [
         {
           name: 'user',
-          nameLocalizations: { 'pt-BR': 'usuário' },
-          description: 'User to show wallet',
-          descriptionLocalizations: { 'pt-BR': 'Usuário para mostrar a carteira' },
+          description: 'Usuário para mostrar a carteira',
+          descriptionLocalizations: { 'en-US': 'User to show wallet' },
           type: 'USER',
           required: false,
         },

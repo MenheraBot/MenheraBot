@@ -8,27 +8,26 @@ import { capitalize } from '@utils/Util';
 export default class HugCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'hug',
-      nameLocalizations: { 'pt-BR': 'abraçar' },
-      description: '「🤗」・Hug a little friend nhaww mygodness what a cutie',
+      name: 'abraçar',
+      nameLocalizations: { 'en-US': 'hug' },
+      description: '「🤗」・Abraçe um amiguinho oti modeuso fofurica',
       descriptionLocalizations: {
-        'pt-BR': '「🤗」・Abrace um amiguinho oti modeuso fofurica',
+        'en-US': '「🤗」・Hug a little friend nhaww mygodness what a cutie',
       },
       options: [
         {
           type: 'USER',
           name: 'user',
-          nameLocalizations: { 'pt-BR': 'usuário' },
-          description: 'User that you want to hug',
-          descriptionLocalizations: { 'pt-BR': 'Usuário que tu quer abraçar' },
+          description: 'Usuário que tu quer abraçar',
+          descriptionLocalizations: { 'en-US': 'User that you want to hug' },
           required: true,
         },
         {
           type: 'STRING',
-          name: 'reason',
-          nameLocalizations: { 'pt-BR': 'motivo' },
-          description: 'Is there any special reasons for this hug?',
-          descriptionLocalizations: { 'pt-BR': 'Tem um motivo em especial para abraçar?' },
+          name: 'motivo',
+          nameLocalizations: { 'en-US': 'reason' },
+          description: 'Tem um motivo em especial para abraçar?',
+          descriptionLocalizations: { 'en-US': 'Is there any special reasons for this hug?' },
           required: false,
         },
       ],
@@ -39,7 +38,7 @@ export default class HugCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const user = ctx.options.getUser('user', true);
-    const reason = ctx.options.getString('reason');
+    const reason = ctx.options.getString('motivo');
 
     if (user.bot) {
       await ctx.makeMessage({

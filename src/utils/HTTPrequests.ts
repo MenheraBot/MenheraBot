@@ -2,6 +2,7 @@ import axios from 'axios';
 
 import {
   BichoTop,
+  BichoWinner,
   BlackjackTop,
   CoinflipTop,
   HuntTop,
@@ -62,7 +63,7 @@ export default class HttpRequests {
   ): Promise<{ error: false; data: { config: UserBattleConfig } } | { error: true }> {
     const result = await apiRequest.get(`/roleplay/battleconf/?userId=${userId}`).catch(debugError);
 
-    if (!result || result.status !== 200) return { error: true };
+    if (!result || result.status !== 200 || result.data?.error) return { error: true };
 
     return { error: false, data: result.data };
   }
@@ -241,15 +242,8 @@ export default class HttpRequests {
       .catch(debugError);
   }
 
-  static async postBichoUserStats(
-    userId: string,
-    betValue: number,
-    profit: number,
-    didWin: boolean,
-  ): Promise<void> {
-    await apiRequest
-      .post('/statistics/bicho', { userId, betValue, profit, didWin })
-      .catch(debugError);
+  static async postBichoGame(players: BichoWinner[]): Promise<void> {
+    await apiRequest.post('/statistics/bicho', { players }).catch(debugError);
   }
 
   static async getTopBlackjack(

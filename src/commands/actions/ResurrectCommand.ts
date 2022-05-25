@@ -8,25 +8,24 @@ import { capitalize } from '@utils/Util';
 export default class ResurrectCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'resurrect',
-      nameLocalizations: { 'pt-BR': 'ressuscitar' },
-      description: '「✝️」・Use a sage ult on someone',
-      descriptionLocalizations: { 'pt-BR': '「✝️」・Usa uma ult da sage em alguém' },
+      name: 'ressuscitar',
+      nameLocalizations: { 'en-US': 'resurrect' },
+      description: '「✝️」・Usa uma ult da sage em alguém',
+      descriptionLocalizations: { 'en-US': '「✝️」・Use a sage ult on someone' },
       options: [
         {
           name: 'user',
-          nameLocalizations: { 'pt-BR': 'usuário' },
           type: 'USER',
-          description: 'User you want to resurrect',
-          descriptionLocalizations: { 'pt-BR': 'Usuário que você quer ressuscitar' },
+          description: 'Usuário que você quer ressuscitar',
+          descriptionLocalizations: { 'en-US': 'User you want to resurrect' },
           required: true,
         },
         {
-          name: 'reason',
-          nameLocalizations: { 'pt-BR': 'motivo' },
+          name: 'motivo',
+          nameLocalizations: { 'en-US': 'reason' },
           type: 'STRING',
-          description: 'Why do you wanna do that?',
-          descriptionLocalizations: { 'pt-BR': 'Por que tu quer fazer isso?' },
+          description: 'Por que tu quer fazer isso?',
+          descriptionLocalizations: { 'en-US': 'Why do you wanna do that?' },
           required: false,
         },
       ],
@@ -37,7 +36,7 @@ export default class ResurrectCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const user = ctx.options.getUser('user', true);
-    const reason = ctx.options.getString('reason');
+    const reason = ctx.options.getString('motivo');
 
     if (user.id === ctx.author.id) {
       await ctx.makeMessage({

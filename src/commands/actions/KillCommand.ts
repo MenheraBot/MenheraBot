@@ -8,28 +8,27 @@ import { capitalize } from '@utils/Util';
 export default class KillCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'kill',
-      nameLocalizations: { 'pt-BR': 'matar' },
-      description: "「☠️」・Kill that person you can't take anymore (just kidding)",
+      name: 'matar',
+      nameLocalizations: { 'en-US': 'kill' },
+      description: '「☠️」・Mate aquela pessoa que tu não aguenta mais (de mentirinha hihi)',
       descriptionLocalizations: {
-        'pt-BR': '「☠️」・Mate aquela pessoa que tu não aguenta mais (de mentirinha hihi)',
+        'en-US': "「☠️」・Kill that person you can't take anymore (just kidding)",
       },
       category: 'actions',
       options: [
         {
           type: 'USER',
           name: 'user',
-          nameLocalizations: { 'pt-BR': 'usuário' },
-          description: 'User that you wanna kill',
-          descriptionLocalizations: { 'pt-BR': 'Usuário que você quer matar' },
+          description: 'Usuário que você quer matar',
+          descriptionLocalizations: { 'en-US': 'User that you wanna kill' },
           required: true,
         },
         {
           type: 'STRING',
-          name: 'reason',
-          nameLocalizations: { 'pt-BR': 'motivo' },
-          description: 'Why do you wanna do that?',
-          descriptionLocalizations: { 'pt-BR': 'Por que tu quer fazer isso?' },
+          name: 'motivo',
+          nameLocalizations: { 'en-US': 'reason' },
+          description: 'Por que tu quer fazer isso?',
+          descriptionLocalizations: { 'en-US': 'Why do you wanna do that?' },
           required: false,
         },
       ],
@@ -39,7 +38,7 @@ export default class KillCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const user = ctx.options.getUser('user', true);
-    const reason = ctx.options.getString('reason');
+    const reason = ctx.options.getString('motivo');
 
     if (user.id === ctx.author.id) {
       await ctx.makeMessage({

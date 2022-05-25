@@ -27,74 +27,74 @@ import {
 export default class PersonalizeCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'personalize',
-      nameLocalizations: { 'pt-BR': 'personalizar' },
-      description: '「🎨」・Customize your profile to be the most beautiful thing in the world!',
+      name: 'personalizar',
+      nameLocalizations: { 'en-US': 'personalize' },
+      description: '「🎨」・Personalize o seu perfil para ficar a coisa mais linda do mundo!',
       descriptionLocalizations: {
-        'pt-BR': '「🎨」・Personalize o seu perfil para ficar a coisa mais linda do mundo!',
+        'en-US': '「🎨」・Customize your profile to be the most beautiful thing in the world!',
       },
       options: [
         {
-          name: 'about_me',
-          nameLocalizations: { 'pt-BR': 'sobre_mim' },
-          description: '「💬」・Change your "about me" (The message that appears on your profile)',
+          name: 'sobre_mim',
+          nameLocalizations: { 'en-US': 'about_me' },
+          description: '「💬」・Mude o seu "sobre mim" (A mensagem que aparece em seu perfil)',
           descriptionLocalizations: {
-            'pt-BR': '「💬」・Mude o seu "sobre mim" (A mensagem que aparece em seu perfil)',
+            'en-US': '「💬」・Change your "about me" (The message that appears on your profile)',
           },
           type: 'SUB_COMMAND',
           options: [
             {
               type: 'STRING',
-              name: 'phrase',
-              nameLocalizations: { 'pt-BR': 'frase' },
-              description: 'Phrase to put in your about me. Maximum 200 characters',
+              name: 'frase',
+              nameLocalizations: { 'en-US': 'phrase' },
+              description: 'Frase para colocar em seu sobre mim. No máximo 200 caracteres',
               descriptionLocalizations: {
-                'pt-BR': 'Frase para colocar em seu sobre mim. No máximo 200 caracteres',
+                'en-US': 'Phrase to put in your about me. Maximum 200 characters',
               },
               required: true,
             },
           ],
         },
         {
-          name: 'color',
-          nameLocalizations: { 'pt-BR': 'cor' },
-          description: '「🌈」・Change your account base color',
-          descriptionLocalizations: { 'pt-BR': '「🌈」・Muda a cor base da sua conta' },
+          name: 'cor',
+          nameLocalizations: { 'en-US': 'color' },
+          description: '「🌈」・Muda a cor base da sua conta',
+          descriptionLocalizations: { 'en-US': '「🌈」・Change your account base color' },
           type: 'SUB_COMMAND',
         },
         {
-          name: 'themes',
-          nameLocalizations: { 'pt-BR': 'temas' },
-          description: '「🎊」・Customize your account themes!',
-          descriptionLocalizations: { 'pt-BR': '「🎊」・Personalize os temas da sua conta!' },
+          name: 'temas',
+          nameLocalizations: { 'en-US': 'themes' },
+          description: '「🎊」・Personalize os temas da sua conta!',
+          descriptionLocalizations: { 'en-US': '「🎊」・Customize your account themes!' },
           type: 'SUB_COMMAND',
           options: [
             {
-              name: 'type',
-              nameLocalizations: { 'pt-BR': 'tipo' },
-              description: 'The type of theme you want to change',
-              descriptionLocalizations: { 'pt-BR': 'O tipo de tema que você quer alterar' },
+              name: 'tipo',
+              nameLocalizations: { 'en-US': 'type' },
+              description: 'O tipo de tema que você quer alterar',
+              descriptionLocalizations: { 'en-US': 'The type of theme you want to change' },
               type: 'STRING',
               required: true,
               choices: [
                 {
-                  name: '✨ | Profile',
-                  nameLocalizations: { 'pt-BR': '✨ | Perfil' },
+                  name: '✨ | Perfil',
+                  nameLocalizations: { 'en-US': '✨ | Profile' },
                   value: 'profile',
                 },
                 {
-                  name: '🃏 | Card Style',
-                  nameLocalizations: { 'pt-BR': '🃏 | Estilo de Carta' },
+                  name: '🃏 | Estilo de Carta',
+                  nameLocalizations: { 'en-US': '🃏 | Card Style' },
                   value: 'cards',
                 },
                 {
-                  name: '🖼️ | Table Cards',
-                  nameLocalizations: { 'pt-BR': '🖼️ | Mesa de Cartas' },
+                  name: '🖼️ | Mesa de Cartas',
+                  nameLocalizations: { 'en-US': '🖼️ | Table Cards' },
                   value: 'table',
                 },
                 {
-                  name: '🎴 | Card Background',
-                  nameLocalizations: { 'pt-BR': '🎴 | Fundo de Carta' },
+                  name: '🎴 | Fundo de Carta',
+                  nameLocalizations: { 'en-US': '🎴 | Card Background' },
                   value: 'card_background',
                 },
               ],
@@ -103,9 +103,9 @@ export default class PersonalizeCommand extends InteractionCommand {
         },
         {
           name: 'badges',
-          description: '「📌」・Choose which badges should appear on your profile',
+          description: '「📌」・Escolha quais badges devem aparecer em seu perfil',
           descriptionLocalizations: {
-            'pt-BR': '「📌」・Escolha quais badges devem aparecer em seu perfil',
+            'en-US': '「📌」・Choose which badges should appear on your profile',
           },
           type: 'SUB_COMMAND',
         },
@@ -119,11 +119,11 @@ export default class PersonalizeCommand extends InteractionCommand {
   async run(ctx: InteractionCommandContext): Promise<void> {
     const command = ctx.options.getSubcommand(true);
 
-    if (command === 'about_me') PersonalizeCommand.AboutmeInteractionCommand(ctx);
+    if (command === 'sobre_mim') PersonalizeCommand.AboutmeInteractionCommand(ctx);
 
-    if (command === 'color') PersonalizeCommand.ColorInteractionCommand(ctx);
+    if (command === 'cor') PersonalizeCommand.ColorInteractionCommand(ctx);
 
-    if (command === 'themes') PersonalizeCommand.ThemesInteractionCommand(ctx);
+    if (command === 'temas') PersonalizeCommand.ThemesInteractionCommand(ctx);
 
     if (command === 'badges') PersonalizeCommand.BadgesInteractionCommand(ctx);
   }
@@ -224,7 +224,7 @@ export default class PersonalizeCommand extends InteractionCommand {
   }
 
   static async ThemesInteractionCommand(ctx: InteractionCommandContext): Promise<void> {
-    const themeType = ctx.options.getString('type', true) as AvailableThemeTypes;
+    const themeType = ctx.options.getString('tipo', true) as AvailableThemeTypes;
 
     const userThemes = await ctx.client.repositories.themeRepository.findOrCreate(ctx.author.id);
     const embed = new MessageEmbed()
@@ -598,7 +598,7 @@ export default class PersonalizeCommand extends InteractionCommand {
   }
 
   static async AboutmeInteractionCommand(ctx: InteractionCommandContext): Promise<void> {
-    const info = ctx.options.getString('phrase', true);
+    const info = ctx.options.getString('frase', true);
 
     if (info.length > 200) {
       await ctx.makeMessage({

@@ -8,27 +8,26 @@ import { capitalize } from '@utils/Util';
 export default class ThinkCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'think',
-      nameLocalizations: { 'pt-BR': 'pensar' },
-      description: '「🤔」・To be or not to be? That is the question. Think, think about someone',
+      name: 'pensar',
+      nameLocalizations: { 'en-US': 'think' },
+      description: '「🤔」・Ser ou não ser? Eis a questão. Pense, pense sobre alguém',
       descriptionLocalizations: {
-        'pt-BR': '「🤔」・Ser ou não ser? Eis a questão. Pense, pense sobre alguém',
+        'en-US': '「🤔」・To be or not to be? That is the question. Think, think about someone',
       },
       options: [
         {
           name: 'user',
-          nameLocalizations: { 'pt-BR': 'usuário' },
           type: 'USER',
-          description: 'User you are thinking of',
-          descriptionLocalizations: { 'pt-BR': 'Usuário em que você está pensando' },
+          description: 'Usuário em que você está pensando',
+          descriptionLocalizations: { 'en-US': 'User you are thinking of' },
           required: false,
         },
         {
-          name: 'reason',
+          name: 'motivo',
           type: 'STRING',
-          nameLocalizations: { 'pt-BR': 'motivo' },
-          description: 'Why are you thinking?',
-          descriptionLocalizations: { 'pt-BR': 'Por que tu ta pensando?' },
+          nameLocalizations: { 'en-US': 'reason' },
+          description: 'Por que tu ta pensando?',
+          descriptionLocalizations: { 'en-US': 'Why are you thinking?' },
           required: false,
         },
       ],
@@ -39,7 +38,7 @@ export default class ThinkCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const user = ctx.options.getUser('user');
-    const reason = ctx.options.getString('reason');
+    const reason = ctx.options.getString('motivo');
 
     if (user?.bot) {
       await ctx.makeMessage({

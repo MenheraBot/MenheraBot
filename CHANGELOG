@@ -5,11 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
-## [Unreleased]
+## [4.0.2] - 2022-05-24
+
+### Changed
+
+- Os comandos da Menhera voltaram a ser em português. Desculpem a incoveniência
+- O texto do mamar voltou como era antes ehe
 
 ### Fixed
 
+- Jogos do bicho eram adicionados nas estatísticas da roleta
 - Inconsistências no ping do `/menhera estatísticas`
+- Problemas com permissões no comando `/configurar`
 
 ## [4.0.1] - 2022-05-17
 

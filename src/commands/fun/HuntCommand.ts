@@ -22,64 +22,62 @@ import { capitalize, getMagicItemById } from '@utils/Util';
 type ChoiceTypes = HuntingTypes | 'probabilities';
 const choices: Array<ApplicationCommandOptionChoiceData & { value: ChoiceTypes }> = [
   {
-    name: '😈 | Demons',
-    nameLocalizations: { 'pt-BR': '😈 | Demônios' },
+    name: '😈 | Demônios',
+    nameLocalizations: { 'en-US': '😈 | Demons' },
     value: 'demons',
   },
   {
-    name: '👊 | Giants',
-    nameLocalizations: { 'pt-BR': '👊 | Gigantes' },
+    name: '👊 | Gigantes',
+    nameLocalizations: { 'en-US': '👊 | Giants' },
     value: 'giants',
   },
   {
-    name: '👼 | Angels',
-    nameLocalizations: { 'pt-BR': '👼 | Anjos' },
+    name: '👼 | Anjos',
+    nameLocalizations: { 'en-US': '👼 | Angels' },
     value: 'angels',
   },
   {
-    name: '🧚‍♂️ | Archangels',
-    nameLocalizations: { 'pt-BR': '🧚‍♂️ | Arcanjos' },
+    name: '🧚‍♂️ | Arcanjos',
+    nameLocalizations: { 'en-US': '🧚‍♂️ | Atchangels' },
     value: 'archangels',
   },
   {
-    name: '🙌 | Demigods',
-    nameLocalizations: { 'pt-BR': '🙌 | Semideuses' },
+    name: '🙌 | Semideuses',
+    nameLocalizations: { 'en-US': '🙌 | Demigods' },
     value: 'demigods',
   },
   {
-    name: '✝️ | Gods',
-    nameLocalizations: { 'pt-BR': '✝️ | Deuses' },
+    name: '✝️ | Deuses',
+    nameLocalizations: { 'en-US': '✝️ | Gods' },
     value: 'gods',
   },
   {
-    name: '📊 | Probabilities',
-    nameLocalizations: { 'pt-BR': '📊 | Probabilidades' },
+    name: '📊 | Probabilidades',
+    nameLocalizations: { 'en-US': '📊 | Probabilities' },
     value: 'probabilities',
   },
 ];
 export default class HuntCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'hunt',
-      nameLocalizations: { 'pt-BR': 'caçar' },
-      description: '「🎯」・Go on a hunt',
-      descriptionLocalizations: { 'pt-BR': '「🎯」・Sai para uma caçada com Xandão' },
+      name: 'cacar',
+      nameLocalizations: { 'en-US': 'hunt' },
+      description: '「🎯」・Sai para uma caçada com Xandão',
+      descriptionLocalizations: { 'en-US': '「🎯」・Go on a hunt' },
       options: [
         {
-          name: 'type',
-          nameLocalizations: { 'pt-BR': 'tipo' },
+          name: 'tipo',
+          nameLocalizations: { 'en-US': 'type' },
           type: 'STRING',
-          description: 'Hunting Type',
-          descriptionLocalizations: { 'pt-BR': 'Tipo da Caça' },
+          description: 'Tipo da Caça',
+          descriptionLocalizations: { 'en-US': 'Hunting Type' },
           required: true,
           choices,
         },
         {
           name: 'rolls',
-          description: 'Number of rolls you want to use at once',
-          descriptionLocalizations: {
-            'pt-BR': 'Quantidade de rolls que você quer usar de uma vez só',
-          },
+          description: 'Quantidade de rolls que você quer usar de uma vez só',
+          descriptionLocalizations: { 'en-US': 'Number of rolls you want to use at once' },
           type: 'INTEGER',
           required: false,
           minValue: 1,
@@ -92,7 +90,7 @@ export default class HuntCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    const selected = ctx.options.getString('type', true) as ChoiceTypes;
+    const selected = ctx.options.getString('tipo', true) as ChoiceTypes;
 
     if (selected === 'probabilities') {
       const embed = new MessageEmbed()
