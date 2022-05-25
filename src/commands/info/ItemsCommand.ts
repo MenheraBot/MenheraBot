@@ -19,17 +19,17 @@ import { IMagicItem } from '@custom_types/Menhera';
 export default class ItemsCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'items',
-      nameLocalizations: { 'pt-BR': 'itens' },
-      description: "「📂」・Show someone's items",
-      descriptionLocalizations: { 'pt-BR': '「📂」・Mostra os itens de alguém' },
+      name: 'itens',
+      nameLocalizations: { 'en-US': 'items' },
+      description: '「📂」・Abre os itens de alguém',
+      descriptionLocalizations: { 'en-US': "「📂」・Open someone's items" },
       category: 'info',
       options: [
         {
           name: 'user',
           type: 'USER',
-          description: 'User to show items',
-          descriptionLocalizations: { 'pt-BR': 'Usuário para ver os itens' },
+          description: 'Usuário para mostrar os itens',
+          descriptionLocalizations: { 'en-US': 'User to show items' },
           required: false,
         },
       ],

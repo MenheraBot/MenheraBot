@@ -9,32 +9,30 @@ export default class UserCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'user',
-      nameLocalizations: { 'pt-BR': 'usuário' },
-      description: "「📸」・Show someone's profile pictures",
-      descriptionLocalizations: { 'pt-BR': '「📸」・Mostra as imagens do perfil de alguém' },
+      description: '「📸」・Mostra as imagens do perfil de alguém',
+      descriptionLocalizations: { 'en-US': "「📸」・Show someone's profile pictures" },
       category: 'info',
       options: [
         {
           type: 'SUB_COMMAND',
           name: 'avatar',
-          description: "「📸」・Show someone's avatar",
-          descriptionLocalizations: { 'pt-BR': '「📸」・Mostra o avatar de alguém' },
+          description: '「📸」・Mostra o avatar de alguém',
+          descriptionLocalizations: { 'en-US': "「📸」・Show someone's avatar" },
           options: [
             {
               type: 'USER',
               name: 'user',
-              nameLocalizations: { 'pt-BR': 'usuário' },
-              description: 'User to show profile picture',
-              descriptionLocalizations: { 'pt-BR': 'Usuário para mostrar a foto de perfil' },
+              description: 'Usuário para mostrar a foto de perfil',
+              descriptionLocalizations: { 'en-US': 'User to show profile picture' },
               required: false,
             },
             {
               type: 'BOOLEAN',
-              name: 'server',
-              nameLocalizations: { 'pt-BR': 'servidor' },
-              description: 'Do you want to see the user icon on this server?',
+              name: 'servidor',
+              nameLocalizations: { 'en-US': 'server' },
+              description: 'Você quer ver o ícone do usuário neste servidor?',
               descriptionLocalizations: {
-                'pt-BR': 'Você quer ver o ícone do usuário neste servidor?',
+                'en-US': 'Do you want to see the user icon on this server?',
               },
               required: false,
             },
@@ -43,15 +41,14 @@ export default class UserCommand extends InteractionCommand {
         {
           type: 'SUB_COMMAND',
           name: 'banner',
-          description: "「📸」・Show someone's banner",
-          descriptionLocalizations: { 'pt-BR': '「📸」・Mostra o banner de alguém' },
+          description: '「📸」・Mostra o banner de alguém',
+          descriptionLocalizations: { 'en-US': "「📸」・Show someone's banner" },
           options: [
             {
               type: 'USER',
               name: 'user',
-              nameLocalizations: { 'pt-BR': 'usuário' },
-              description: 'User to show banner',
-              descriptionLocalizations: { 'pt-BR': 'Usuário para mostrar o banner' },
+              description: 'Usuário para mostrar o banner',
+              descriptionLocalizations: { 'en-US': 'User to show banner' },
               required: false,
             },
           ],
@@ -67,7 +64,7 @@ export default class UserCommand extends InteractionCommand {
 
     if (imageType === 'banner') return UserCommand.showBanner(ctx);
 
-    const fromServer = ctx.options.getBoolean('server', false);
+    const fromServer = ctx.options.getBoolean('servidor', false);
 
     const user =
       (fromServer ? ctx.options.getMember('user', false) : ctx.options.getUser('user')) ??

@@ -11,15 +11,15 @@ export default class MenheraCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'menhera',
-      description: '「✨」・Information regarding Menhera',
-      descriptionLocalizations: { 'pt-BR': '「✨」・Informações referentes à Menhera' },
+      description: '「✨」・Informações referentes à Menhera',
+      descriptionLocalizations: { 'en-US': '「✨」・Information regarding Menhera' },
       category: 'info',
       options: [
         {
-          name: 'statistics',
-          nameLocalizations: { 'pt-BR': 'estatísticas' },
-          description: "「🤖」・See Menhera's current stats",
-          descriptionLocalizations: { 'pt-BR': '「🤖」・Veja as estatísticas atuais da Menhera' },
+          name: 'estatísticas',
+          nameLocalizations: { 'en-US': 'statistics' },
+          description: '「🤖」・Veja as estatísticas atuais da Menhera',
+          descriptionLocalizations: { 'en-US': "「🤖」・See Menhera's current stats" },
           type: 'SUB_COMMAND',
         },
       ],
@@ -30,7 +30,7 @@ export default class MenheraCommand extends InteractionCommand {
   async run(ctx: InteractionCommandContext): Promise<void> {
     const command = ctx.options.getSubcommand(true);
 
-    if (command === 'statistics') return MenheraCommand.MenheraStatistics(ctx);
+    if (command === 'estatísticas') return MenheraCommand.MenheraStatistics(ctx);
   }
 
   static async MenheraStatistics(ctx: InteractionCommandContext): Promise<void> {

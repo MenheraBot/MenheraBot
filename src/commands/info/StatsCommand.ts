@@ -12,58 +12,53 @@ import { betType } from '@structures/JogoDoBichoManager';
 export default class StatsCommand extends InteractionCommand {
   constructor() {
     super({
-      name: 'statistics',
-      nameLocalizations: { 'pt-BR': 'estatísticas' },
-      description: '「📊」・See the status of something',
-      descriptionLocalizations: { 'pt-BR': '「📊」・Veja as estatísticas de algo' },
+      name: 'estatísticas',
+      nameLocalizations: { 'en-US': 'statistics' },
+      description: '「📊」・Veja as estatísticas de algo',
+      descriptionLocalizations: { 'en-US': '「📊」・See the statistics of something' },
       options: [
         {
           name: 'blackjack',
           type: 'SUB_COMMAND',
-          description: "「🃏」・View someone's blackjack statistics",
-          descriptionLocalizations: {
-            'pt-BR': '「🃏」・Veja as estatísticas do blackjack de alguém',
-          },
+          description: '「🃏」・Veja os status do blackjack de alguém',
+          descriptionLocalizations: { 'en-US': "「🃏」・View someone's blackjack stats" },
           options: [
             {
               name: 'user',
-              nameLocalizations: { 'pt-BR': 'usuário' },
-              description: 'User to see statistics',
-              descriptionLocalizations: { 'pt-BR': 'Usuário para ver as estatísticas' },
+              description: 'Usuário para ver as estatísticas',
+              descriptionLocalizations: { 'en-US': 'User to see statistics' },
               type: 'USER',
               required: false,
             },
           ],
         },
         {
-          name: 'animal_game',
-          nameLocalizations: { 'pt-BR': 'jogo_do_bicho' },
+          name: 'bicho',
+          nameLocalizations: { 'en-US': 'animal' },
           type: 'SUB_COMMAND',
-          description: "「🦌」・View someone's Animal Game statistics",
-          descriptionLocalizations: {
-            'pt-BR': '「🦌」・Veja as estatísticas do jogo do bicho de alguém',
-          },
+          description: '「🦌」・Veja os status do jogo do bicho de alguém',
+          descriptionLocalizations: { 'en-US': "「🦌」・View someone's Animal Game stats" },
           options: [
             {
               name: 'user',
-              description: 'User to see statistics',
-              descriptionLocalizations: { 'pt-BR': 'Usuário para ver as estatísticas' },
+              description: 'Usuário para ver as estatísticas',
+              descriptionLocalizations: { 'en-US': 'User to see statistics' },
               type: 'USER',
               required: false,
             },
           ],
         },
         {
-          name: 'roulette',
-          nameLocalizations: { 'pt-BR': 'roleta' },
+          name: 'roleta',
+          nameLocalizations: { 'en-US': 'roulette' },
           type: 'SUB_COMMAND',
-          description: "「🎡」・View someone's roulette statistics",
-          descriptionLocalizations: { 'pt-BR': '「🎡」・Veja as estatísticas de roleta de alguém' },
+          description: '「🎡」・Veja os status de roleta de alguém',
+          descriptionLocalizations: { 'en-US': "「🎡」・View someone's roulette stats" },
           options: [
             {
               name: 'user',
-              description: 'User to see statistics',
-              descriptionLocalizations: { 'pt-BR': 'Usuário para ver as estatísticas' },
+              description: 'Usuário para ver as estatísticas',
+              descriptionLocalizations: { 'en-US': 'User to see statistics' },
               type: 'USER',
               required: false,
             },
@@ -71,33 +66,30 @@ export default class StatsCommand extends InteractionCommand {
         },
         {
           name: 'coinflip',
-          description: "「📀」・View someone's coinflip statistics",
-          descriptionLocalizations: {
-            'pt-BR': '「📀」・Veja as estatísticas de coinflip de alguém',
-          },
+          description: '「📀」・Veja os status de coinflip de alguém',
+          descriptionLocalizations: { 'en-US': "「📀」・View someone's coinflip stats" },
           type: 'SUB_COMMAND',
           options: [
             {
               name: 'user',
-              description: 'User to see statistics',
-              descriptionLocalizations: { 'pt-BR': 'Usuário para ver as estatísticas' },
+              description: 'Usuário para ver as estatísticas',
+              descriptionLocalizations: { 'en-US': 'User to see statistics' },
               type: 'USER',
               required: false,
             },
           ],
         },
         {
-          name: 'hunt',
-          nameLocalizations: { 'pt-BR': 'caçar' },
-          description: "「🏹」・See someone's hunt statistics",
-          descriptionLocalizations: { 'pt-BR': '「🏹」・Veja as estatísticas de caças de alguém' },
+          name: 'caçar',
+          nameLocalizations: { 'en-US': 'hunt' },
+          description: '「🏹」・Veja os status de caças de alguém',
+          descriptionLocalizations: { 'en-US': "「🏹」・See someone's fighter stats" },
           type: 'SUB_COMMAND',
           options: [
             {
               name: 'user',
-              nameLocalizations: { 'pt-BR': 'usuário' },
-              description: 'User to see statistics',
-              descriptionLocalizations: { 'pt-BR': 'Usuário para ver as estatísticas' },
+              description: 'Usuário para ver as estatísticas',
+              descriptionLocalizations: { 'en-US': 'User to see statistics' },
               type: 'USER',
               required: false,
             },
@@ -105,15 +97,13 @@ export default class StatsCommand extends InteractionCommand {
         },
         {
           name: 'designer',
-          description: "「🖌️」・See some designer's design statistics",
-          descriptionLocalizations: {
-            'pt-BR': '「🖌️」・Veja as estatísticas de design de algum designer',
-          },
+          description: '「🖌️」・Veja os status de design de algum designer',
+          descriptionLocalizations: { 'en-US': "「🖌️」・See some designer's design stats" },
           options: [
             {
               name: 'designer',
-              description: 'Designer who wants to see the information',
-              descriptionLocalizations: { 'pt-BR': 'Designer que quer ver as informações' },
+              description: 'Designer que quer ver as informações',
+              descriptionLocalizations: { 'en-US': 'Designer who wants to see the information' },
               type: 'USER',
               required: false,
             },
@@ -133,15 +123,15 @@ export default class StatsCommand extends InteractionCommand {
     switch (command) {
       case 'designer':
         return StatsCommand.DesignerStatus(ctx);
-      case 'hunt':
+      case 'caçar':
         return StatsCommand.HuntStatus(ctx);
       case 'coinflip':
         return StatsCommand.CoinflipStatus(ctx);
       case 'blackjack':
         return StatsCommand.BlackjackStatus(ctx);
-      case 'roulette':
+      case 'roleta':
         return StatsCommand.RouletteStatus(ctx);
-      case 'animal_game':
+      case 'bicho':
         return StatsCommand.BichoStatus(ctx);
     }
   }
