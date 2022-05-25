@@ -10,7 +10,6 @@ import {
   ICommandsData,
   ICommandUsedData,
   IDisabled,
-  IRESTBichoStats,
   IRESTGameStats,
   IRESTHuntStats,
   IStatusData,
@@ -144,7 +143,7 @@ export default class HttpRequests {
     return { error: true };
   }
 
-  static async getBichoUserStats(id: string): Promise<IRESTBichoStats | { error: true }> {
+  static async getBichoUserStats(id: string): Promise<IRESTGameStats | { error: true }> {
     try {
       const data = await apiRequest.get('/statistics/bicho', { data: { userId: id } });
       if (data.status === 400) return { error: true };

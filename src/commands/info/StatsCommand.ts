@@ -3,11 +3,10 @@ import InteractionCommandContext from '@structures/command/InteractionContext';
 import HttpRequests from '@utils/HTTPrequests';
 import moment from 'moment';
 import { MessageEmbed, MessageButton, EmbedFieldData } from 'discord.js-light';
-import { BICHO_BET_MULTIPLIER, COLORS, emojis } from '@structures/Constants';
+import { COLORS, emojis } from '@structures/Constants';
 import Util, { actionRow, disableComponents, getThemeById } from '@utils/Util';
 import { IRESTGameStats } from '@custom_types/Menhera';
 import { TFunction } from 'i18next';
-import { betType } from '@structures/JogoDoBichoManager';
 
 export default class StatsCommand extends InteractionCommand {
   constructor() {
@@ -205,62 +204,12 @@ export default class StatsCommand extends InteractionCommand {
 
     if (!data.playedGames) {
       await ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'commands:status.roleta.no-data'),
+        content: ctx.prettyResponse('error', 'commands:status.bicho.no-data'),
       });
       return;
     }
 
-    const lostMoney = data.loseGames.reduce((p, c) => p + c.value, 0);
-    const winMoney = data.wonGames.reduce(
-      (p, c) => p + c.value * BICHO_BET_MULTIPLIER[betType(c.bet_type)],
-      0,
-    );
-
-    const totalMoney = winMoney - lostMoney;
-
-    const embed = new MessageEmbed()
-      .setTitle(ctx.locale('commands:status.bicho.embed-title', { user: user.tag }))
-      .setColor(COLORS.Purple)
-      .setFooter({ text: ctx.locale('commands:status.coinflip.embed-footer') })
-      .addFields([
-        {
-          name: `🎰 | ${ctx.locale('commands:status.coinflip.played')}`,
-          value: `**${data.playedGames}**`,
-          inline: true,
-        },
-        {
-          name: `🏆 | ${ctx.locale('commands:status.coinflip.wins')}`,
-          value: `**${data.winGames}** | (${data.winPorcentage}) **%**`,
-          inline: true,
-        },
-        {
-          name: `🦧 | ${ctx.locale('commands:status.coinflip.loses')}`,
-          value: `**${data.lostGames}** | (${data.lostPorcentage}) **%**`,
-          inline: true,
-        },
-        {
-          name: `📥 | ${ctx.locale('commands:status.coinflip.earnMoney')}`,
-          value: `**${winMoney}** :star:`,
-          inline: true,
-        },
-        {
-          name: `📤 | ${ctx.locale('commands:status.coinflip.lostMoney')}`,
-          value: `**${lostMoney}** :star:`,
-          inline: true,
-        },
-      ]);
-    // eslint-disable-next-line no-unused-expressions
-    totalMoney > 0
-      ? embed.addField(
-          `${emojis.yes} | ${ctx.locale('commands:status.coinflip.profit')}`,
-          `**${totalMoney}** :star:`,
-          true,
-        )
-      : embed.addField(
-          `${emojis.no} | ${ctx.locale('commands:status.coinflip.loss')}`,
-          `**${totalMoney}** :star:`,
-          true,
-        );
+    const embed = StatsCommand.makeGameStatisticsEmbed(data, ctx.i18n, 'bicho', user.tag);
 
     await ctx.makeMessage({ embeds: [embed] });
   }

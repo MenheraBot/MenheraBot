@@ -500,7 +500,7 @@
       "error": "Ocorreu um erro ao checar as estatísticas deste usuário. Provavelmente ele nunca usou o comando"
     },
     "bicho": {
-      "embed-title": "Estatísticas do Jodo do Bicho de {{user}}",
+      "embed-title": "Estatísticas do Jogo do Bicho de {{user}}",
       "no-data": "Este usuário nunca apostou no jogo do bicho!"
     },
     "roleta": {
