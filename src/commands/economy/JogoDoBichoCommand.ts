@@ -35,16 +35,16 @@ export default class JogoDoBichoCommand extends InteractionCommand {
         },
       ],
       category: 'economy',
-      cooldown: 8,
+      cooldown: 5,
       authorDataFields: ['estrelinhas', 'selectedColor'],
     });
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    if (!ctx.client.shardProcessEnded) {
+    /*  if (!ctx.client.shardProcessEnded) {
       ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:bicho.close') });
       return;
-    }
+    } */
 
     const bet = ctx.options.getInteger('aposta');
 
@@ -122,10 +122,7 @@ export default class JogoDoBichoCommand extends InteractionCommand {
     const firstmenu = new MessageSelectMenu()
       .setCustomId(`${ctx.interaction.id} | SELECT`)
       .setOptions([
-        { label: ctx.locale('commands:bicho.unity'), value: '1' },
-        { label: ctx.locale('commands:bicho.ten'), value: '2' },
-        { label: ctx.locale('commands:bicho.hundred'), value: '3' },
-        { label: ctx.locale('commands:bicho.thousand'), value: '4' },
+        { label: ctx.locale('commands:bicho.number'), value: 'number' },
         { label: ctx.locale('commands:bicho.one-animal'), value: 'animal' },
         { label: ctx.locale('commands:bicho.sequence'), value: 'sequence' },
         { label: ctx.locale('commands:bicho.corner'), value: 'corner' },
@@ -151,24 +148,20 @@ export default class JogoDoBichoCommand extends InteractionCommand {
     const componentsToSend: MessageActionRow[] = [];
 
     switch (selection.values[0]) {
-      case '4':
-      case '3':
-      case '2':
-      case '1': {
-        const selectedNumber = Number(selection.values[0]);
+      case 'number': {
         const modal = new Modal()
           .setCustomId(`${ctx.interaction.id} | MODAL`)
           .setTitle(ctx.locale('commands:bicho.bet-title'));
         const betInput = new TextInputComponent()
           .setCustomId('BET')
-          .setMinLength(selectedNumber)
-          .setMaxLength(selectedNumber)
+          .setMinLength(1)
+          .setMaxLength(4)
           .setRequired(true)
           .setStyle('SHORT')
           .setLabel(
             ctx.locale('commands:bicho.label', {
-              min: 10 * (selectedNumber - 1),
-              max: selectedNumber * 10 - 1,
+              min: 0,
+              max: 9999,
             }),
           );
         modal.setComponents({ type: 1, components: [betInput] });
@@ -207,7 +200,7 @@ export default class JogoDoBichoCommand extends InteractionCommand {
     const collector = new InteractionCollector(ctx.client, {
       channel: ctx.channel,
       filter,
-      idle: 15000,
+      idle: selection.values[0].length === 1 ? 25_000 : 20_000,
     });
 
     const whereToGoAnimals = {
@@ -217,6 +210,15 @@ export default class JogoDoBichoCommand extends InteractionCommand {
       CORNER: 'THIRD',
     };
 
+    collector.on('end', (_, reason) => {
+      if (reason === 'idle')
+        ctx.makeMessage({
+          content: ctx.prettyResponse('error', 'common:timesup'),
+          components: [],
+          embeds: [],
+        });
+    });
+
     collector.on('collect', async (int) => {
       await int.deferUpdate();
 
@@ -224,6 +226,8 @@ export default class JogoDoBichoCommand extends InteractionCommand {
 
       switch (resolveCustomId(int.customId)) {
         case 'MODAL': {
+          collector.stop();
+
           const userInput = (int as unknown as ModalSubmitInteraction).fields.getTextInputValue(
             'BET',
           );
@@ -235,8 +239,27 @@ export default class JogoDoBichoCommand extends InteractionCommand {
               components: [],
               content: ctx.prettyResponse('error', 'commands:bicho.invalid-bet'),
             });
+            return;
           }
-          break;
+
+          if (polishedNumber < 0 || polishedNumber > 9999) {
+            ctx.makeMessage({
+              embeds: [],
+              components: [],
+              content: ctx.prettyResponse('error', 'commands:bicho.invalid-bet'),
+            });
+            return;
+          }
+
+          ctx.makeMessage({
+            embeds: [],
+            components: [],
+            content: ctx.prettyResponse('success', 'commands:bicho.success'),
+          });
+
+          await ctx.client.repositories.starRepository.remove(ctx.author.id, bet);
+          ctx.client.jogoDoBichoManager.addBet(ctx.author.id, bet, `${polishedNumber}`);
+          return;
         }
         case 'UNITY': {
           collector.stop();
@@ -264,7 +287,7 @@ export default class JogoDoBichoCommand extends InteractionCommand {
           for (let i = 0; i < 25; i++)
             newSelectMenu.addOptions({
               label: `${capitalize(JOGO_DO_BICHO[i])}`,
-              value: `${int.values[0]} | ${JOGO_DO_BICHO[i]}`,
+              value: `${(int as SelectMenuInteraction).values[0]} | ${JOGO_DO_BICHO[i]}`,
             });
 
           newerComponents.push(actionRow([newSelectMenu]));
@@ -290,7 +313,7 @@ export default class JogoDoBichoCommand extends InteractionCommand {
           for (let i = 0; i < 25; i++)
             newSelectMenu.addOptions({
               label: `${capitalize(JOGO_DO_BICHO[i])}`,
-              value: `${int.values[0]} | ${JOGO_DO_BICHO[i]}`,
+              value: `${(int as SelectMenuInteraction).values[0]} | ${JOGO_DO_BICHO[i]}`,
             });
 
           newerComponents.push(actionRow([newSelectMenu]));

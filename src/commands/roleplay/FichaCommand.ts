@@ -449,7 +449,7 @@ export default class FichaCommand extends InteractionCommand {
       return;
     }
 
-    const selectedPoint = resolveCustomId(buttonSelected.customId).toLowerCase();
+    // const selectedPoint = resolveCustomId(buttonSelected.customId).toLowerCase();
 
     // COLOCAR MODAL TO CATCH EVERYTHING, IF DONT HAVE, DONT CHANGE, IF CAVE, RESET POINTS
 
