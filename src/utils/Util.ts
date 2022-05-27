@@ -183,9 +183,3 @@ export const makeCustomId = (
 };
 
 export const capitalize = (str: string): string => str.charAt(0).toUpperCase() + str.slice(1);
-
-export const camelToSnakeCase = (text: string): string =>
-  text
-    .split(/(?=[A-Z])/)
-    .join('_')
-    .toLowerCase();
