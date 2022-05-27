@@ -3,6 +3,7 @@ import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageEmbed, MessageAttachment } from 'discord.js-light';
 import { PicassoRoutes, requestPicassoImage } from '@utils/PicassoRequests';
+import { toWritableUTF } from '@utils/Util';
 
 export default class EightballCommand extends InteractionCommand {
   constructor() {
@@ -36,7 +37,7 @@ export default class EightballCommand extends InteractionCommand {
         question: ctx.options.getString('pergunta', true),
         answer: ctx.locale(`commands:8ball.answers.${randomAnswer.id as 1}`),
         type: randomAnswer.type,
-        username: ctx.author.username,
+        username: toWritableUTF(ctx.author.username),
       },
       ctx,
     );

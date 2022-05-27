@@ -4,18 +4,21 @@ import InteractionCommandContext from '@structures/command/InteractionContext';
 import { RoleplayUserSchema } from '@roleplay/Types';
 import {
   ButtonInteraction,
-  MessageActionRow,
+  // MessageActionRow,
   MessageButton,
   MessageEmbed,
   MessageSelectMenu,
+  Modal,
   SelectMenuInteraction,
+  TextInputComponent,
   User,
 } from 'discord.js-light';
 import Util, {
   actionRow,
-  capitalize,
+  //  capitalize,
   disableComponents,
   makeCustomId,
+  negate,
   resolveCustomId,
 } from '@utils/Util';
 import {
@@ -39,6 +42,7 @@ import {
 } from '@roleplay/utils/Calculations';
 import { BLESSES_DIFFERENCE_LIMIT } from '@roleplay/Constants';
 import { makeCloseCommandButton, prepareUserForDungeon } from '@roleplay/utils/AdventureUtils';
+import { emojis } from '@structures/Constants';
 
 export default class FichaCommand extends InteractionCommand {
   constructor() {
@@ -373,32 +377,29 @@ export default class FichaCommand extends InteractionCommand {
       .addFields([
         {
           name: ctx.locale('commands:ficha.show.vitality'),
-          value: `${ctx.prettyResponse('blood', 'common:roleplay.life')}: **${getUserMaxLife(
-            user,
-          )}** | ${user.blesses.maxLife}\n${ctx.prettyResponse(
-            'mana',
-            'common:roleplay.mana',
-          )}: **${getUserMaxMana(user)}** | ${user.blesses.maxMana}\n${ctx.prettyResponse(
-            'agility',
-            'common:roleplay.agility',
-          )}: **${getUserAgility(prepareUserForDungeon(user))}** | ${user.blesses.agility}`,
+          value: ctx.locale('commands:ficha.show.vitality-description', {
+            emojis,
+            maxLife: getUserMaxLife(user),
+            lifeBlesses: user.blesses.maxLife,
+            maxMana: getUserMaxMana(user),
+            manaBlesses: user.blesses.maxMana,
+            agility: getUserAgility(prepareUserForDungeon(user)),
+            agilityBlesses: user.blesses.agility,
+          }),
+
           inline: true,
         },
         {
           name: ctx.locale('commands:ficha.show.battle'),
-          value: `${ctx.prettyResponse('damage', 'common:roleplay.damage')}: **${getUserDamage(
-            prepareUserForDungeon(user),
-          )}** | ${user.blesses.damage}\n${ctx.prettyResponse(
-            'armor',
-            'common:roleplay.armor',
-          )}: **${getUserArmor(prepareUserForDungeon(user))}** | ${
-            user.blesses.armor
-          }\n${ctx.prettyResponse(
-            'intelligence',
-            'common:roleplay.intelligence',
-          )}: **${getUserIntelligence(prepareUserForDungeon(user))}** | ${
-            user.blesses.intelligence
-          }`,
+          value: ctx.locale('commands:ficha.show.battle-description', {
+            emojis,
+            damage: getUserDamage(prepareUserForDungeon(user)),
+            damageBlesses: user.blesses.damage,
+            armor: getUserArmor(prepareUserForDungeon(user)),
+            armorBlesses: user.blesses.armor,
+            intelligence: getUserIntelligence(prepareUserForDungeon(user)),
+            intelligenceBlesses: user.blesses.intelligence,
+          }),
           inline: true,
         },
       ]);
@@ -431,6 +432,7 @@ export default class FichaCommand extends InteractionCommand {
       ctx.author.id,
       baseId,
       15000,
+      false,
     );
 
     if (!buttonSelected) {
@@ -449,201 +451,138 @@ export default class FichaCommand extends InteractionCommand {
       return;
     }
 
-    // const selectedPoint = resolveCustomId(buttonSelected.customId).toLowerCase();
-
-    // COLOCAR MODAL TO CATCH EVERYTHING, IF DONT HAVE, DONT CHANGE, IF CAVE, RESET POINTS
-
-    const pointsToUse =
-      resolveCustomId(buttonSelected.customId) === 'VITALITY'
-        ? user.holyBlessings.vitality
-        : user.holyBlessings.battle;
-
-    const [amountCustomId, nextBase] = makeCustomId('AMOUNT');
-    exitButton.setCustomId(makeCustomId('CLOSE_COMMAND', nextBase)[0]);
-
-    const selectAmount = new MessageSelectMenu()
-      .setCustomId(amountCustomId)
-      .setMinValues(1)
-      .setMaxValues(1)
-      .setPlaceholder(ctx.locale('commands:ficha.show.select-amount'));
-
-    for (let i = 1; i <= pointsToUse && i <= BLESSES_DIFFERENCE_LIMIT; i++)
-      selectAmount.addOptions({ label: `${i}`, value: `${i}` });
-
-    ctx.makeMessage({ components: [actionRow([exitButton]), actionRow([selectAmount])] });
-
-    const selectedAmount =
-      await Util.collectComponentInteractionWithStartingId<SelectMenuInteraction>(
-        ctx.channel,
-        ctx.author.id,
-        nextBase,
-      );
-
-    if (!selectedAmount) {
-      ctx.makeMessage({
-        components: [actionRow(disableComponents(ctx.locale('common:timesup'), [selectAmount]))],
-      });
-      return;
-    }
-
-    if (resolveCustomId(selectedAmount.customId) === 'CLOSE_COMMAND') {
-      ctx.deleteReply();
-      return;
-    }
-
-    const points = Number(selectedAmount.values[0]);
-
-    embed.setFooter({ text: ctx.locale('commands:ficha.show.select-type', { count: points }) });
-
-    const toSendComponents: MessageActionRow[] = [];
-
-    const [lifeCustomId, lastId] = makeCustomId('LIFE');
-    exitButton.setCustomId(makeCustomId('CLOSE_COMMAND', lastId)[0]);
-
-    if (resolveCustomId(buttonSelected.customId) === 'VITALITY') {
-      const lifeButton = new MessageButton()
-        .setCustomId(lifeCustomId)
-        .setStyle('DANGER')
-        .setLabel(ctx.locale('common:roleplay.life'));
-
-      const manaButton = new MessageButton()
-        .setCustomId(`${lastId} | MANA`)
-        .setStyle('PRIMARY')
-        .setLabel(ctx.locale('common:roleplay.mana'));
-
-      const agilityButton = new MessageButton()
-        .setCustomId(`${lastId} | AGILITY`)
-        .setStyle('SECONDARY')
-        .setLabel(ctx.locale('common:roleplay.agility'));
-
-      toSendComponents.push(actionRow([lifeButton, manaButton, agilityButton, exitButton]));
-    } else {
-      const damageButton = new MessageButton()
-        .setCustomId(`${lastId} | DAMAGE`)
-        .setStyle('PRIMARY')
-        .setLabel(ctx.locale('common:roleplay.damage'));
-
-      const armorButton = new MessageButton()
-        .setCustomId(`${lastId} | ARMOR`)
-        .setStyle('PRIMARY')
-        .setLabel(ctx.locale('common:roleplay.armor'));
-
-      const intelligenceButton = new MessageButton()
-        .setCustomId(`${lastId} | INTELLIGENCE`)
-        .setStyle('PRIMARY')
-        .setLabel(ctx.locale('common:roleplay.intelligence'));
-
-      toSendComponents.push(actionRow([damageButton, armorButton, intelligenceButton, exitButton]));
-    }
-
-    ctx.makeMessage({ embeds: [embed], components: toSendComponents });
-
-    const statusSelected = await Util.collectComponentInteractionWithStartingId(
-      ctx.channel,
-      ctx.author.id,
-      lastId,
-    );
-
-    if (!statusSelected) {
-      ctx.makeMessage({
-        components: [],
-        embeds: [],
-        content: ctx.prettyResponse('error', 'common:timesup'),
-      });
-      return;
-    }
-
-    if (resolveCustomId(statusSelected.customId) === 'CLOSE_COMMAND') {
-      ctx.deleteReply();
-      return;
-    }
-
-    const databaseField =
-      resolveCustomId(statusSelected.customId).toLowerCase() === 'mana' ||
-      resolveCustomId(statusSelected.customId).toLowerCase() === 'life'
-        ? (`max${capitalize(resolveCustomId(statusSelected.customId).toLowerCase())}` as
-            | 'maxMana'
-            | 'maxLife')
-        : (resolveCustomId(statusSelected.customId).toLowerCase() as
-            | 'damage'
-            | 'armor'
-            | 'intelligence'
-            | 'agility');
-
-    const blessingField = resolveCustomId(buttonSelected.customId).toLowerCase() as
+    const selectedPoint = resolveCustomId(buttonSelected.customId).toLowerCase() as
       | 'vitality'
       | 'battle';
 
-    if (blessingField === 'vitality') {
-      const antiBlessingLimit =
-        databaseField === 'agility'
-          ? Math.abs(
-              Math.max(user.blesses.maxLife, user.blesses.maxMana) -
-                (user.blesses.agility + points),
-            )
-          : databaseField === 'maxLife'
-          ? Math.abs(
-              Math.max(user.blesses.agility, user.blesses.maxMana) -
-                (user.blesses.maxLife + points),
-            )
-          : Math.abs(
-              Math.max(user.blesses.maxLife, user.blesses.agility) -
-                (user.blesses.maxMana + points),
-            );
-      if (antiBlessingLimit > BLESSES_DIFFERENCE_LIMIT) {
-        ctx.makeMessage({
-          content: ctx.prettyResponse('error', 'commands:ficha.show.limit-bless', {
-            limit: BLESSES_DIFFERENCE_LIMIT,
-          }),
-          embeds: [],
-          components: [],
-        });
-        return;
-      }
-    } else {
-      const antiBlessingLimit =
-        databaseField === 'armor'
-          ? Math.abs(
-              Math.max(user.blesses.damage, user.blesses.intelligence) -
-                (user.blesses.armor + points),
-            )
-          : databaseField === 'damage'
-          ? Math.abs(
-              Math.max(user.blesses.armor, user.blesses.intelligence) -
-                (user.blesses.damage + points),
-            )
-          : Math.abs(
-              Math.max(user.blesses.armor, user.blesses.damage) -
-                (user.blesses.intelligence + points),
-            );
+    const modal = new Modal()
+      .setCustomId(`${ctx.interaction.id} | MODAL`)
+      .setTitle(ctx.locale('commands:ficha.bless.modal-title'));
 
-      if (antiBlessingLimit > BLESSES_DIFFERENCE_LIMIT) {
-        ctx.makeMessage({
-          content: ctx.prettyResponse('error', 'commands:ficha.show.limit-bless', {
-            limit: BLESSES_DIFFERENCE_LIMIT,
-          }),
-          embeds: [],
-          components: [],
-        });
-        return;
-      }
+    const firstInput = new TextInputComponent()
+      .setCustomId('FIRST')
+      .setStyle('SHORT')
+      .setMaxLength(2)
+      .setRequired(false)
+      .setLabel(ctx.locale(`common:roleplay.${selectedPoint === 'vitality' ? 'life' : 'damage'}`));
+
+    const secondInput = new TextInputComponent()
+      .setCustomId(`SECOND`)
+      .setStyle('SHORT')
+      .setMaxLength(2)
+      .setRequired(false)
+      .setLabel(ctx.locale(`common:roleplay.${selectedPoint === 'vitality' ? 'mana' : 'armor'}`));
+
+    const thirdInput = new TextInputComponent()
+      .setCustomId(`THIRD`)
+      .setStyle('SHORT')
+      .setMaxLength(2)
+      .setRequired(false)
+      .setLabel(
+        ctx.locale(`common:roleplay.${selectedPoint === 'vitality' ? 'agility' : 'intelligence'}`),
+      );
+
+    modal.setComponents(
+      { type: 1, components: [firstInput] },
+      { type: 1, components: [secondInput] },
+      { type: 1, components: [thirdInput] },
+    );
+
+    buttonSelected.showModal(modal);
+
+    const modalResponse = await buttonSelected.awaitModalSubmit({ time: 30000 }).catch(() => null);
+
+    if (!modalResponse) {
+      ctx.deleteReply();
+      return;
     }
 
-    const userHolyBlessings = user.holyBlessings;
-    const userBlesses = user.blesses;
+    modalResponse.deferUpdate();
 
-    userHolyBlessings[blessingField] -= points;
-    userBlesses[databaseField] += points;
+    const parsedFirstSelection = parseInt(modalResponse.fields.getTextInputValue('FIRST'), 10);
+    const parsedSecondSelection = parseInt(modalResponse.fields.getTextInputValue('SECOND'), 10);
+    const parsedThirdSelecion = parseInt(modalResponse.fields.getTextInputValue('THIRD'), 10);
+
+    const toBlessFirst = Number.isNaN(parsedFirstSelection) ? 0 : parsedFirstSelection;
+    const toBlessSecond = Number.isNaN(parsedSecondSelection) ? 0 : parsedSecondSelection;
+    const toBlessThird = Number.isNaN(parsedThirdSelecion) ? 0 : parsedThirdSelecion;
+
+    if (toBlessFirst < 0 || toBlessSecond < 0 || toBlessThird < 0) {
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:ficha.bless.invalid-number'),
+        components: [],
+        embeds: [],
+      });
+      return;
+    }
+
+    if (toBlessFirst === 0 && toBlessSecond === 0 && toBlessThird === 0) {
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:ficha.bless.invalid-number'),
+        components: [],
+        embeds: [],
+      });
+      return;
+    }
+
+    const pointsToUse = user.holyBlessings[selectedPoint];
+
+    if (toBlessFirst + toBlessSecond + toBlessThird > pointsToUse) {
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:ficha.bless.no-points', {
+          points: pointsToUse,
+        }),
+        components: [],
+        embeds: [],
+      });
+      return;
+    }
+
+    const databaseField = {
+      vitality: {
+        FIRST: 'maxLife' as const,
+        SECOND: 'maxMana' as const,
+        THIRD: 'agility' as const,
+      },
+      battle: {
+        FIRST: 'damage' as const,
+        SECOND: 'armor' as const,
+        THIRD: 'intelligence' as const,
+      },
+    }[selectedPoint];
+
+    const firstToUpdate = user.blesses[databaseField.FIRST] + toBlessFirst;
+    const secondToUpdate = user.blesses[databaseField.SECOND] + toBlessSecond;
+    const thirdToUdpate = user.blesses[databaseField.THIRD] + toBlessThird;
+
+    if (
+      Math.abs(firstToUpdate - secondToUpdate) > BLESSES_DIFFERENCE_LIMIT ||
+      Math.abs(firstToUpdate - thirdToUdpate) > BLESSES_DIFFERENCE_LIMIT ||
+      Math.abs(secondToUpdate - thirdToUdpate) > BLESSES_DIFFERENCE_LIMIT
+    ) {
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:ficha.bless.bless-limit', {
+          limit: BLESSES_DIFFERENCE_LIMIT,
+        }),
+        components: [],
+        embeds: [],
+      });
+      return;
+    }
 
     await ctx.client.repositories.roleplayRepository.updateUser(ctx.author.id, {
-      holyBlessings: userHolyBlessings,
-      blesses: userBlesses,
+      $inc: {
+        [`holyBlessings.${selectedPoint}`]: negate(toBlessFirst + toBlessSecond + toBlessThird),
+        [`blesses.${databaseField.FIRST}`]: toBlessFirst,
+        [`blesses.${databaseField.SECOND}`]: toBlessSecond,
+        [`blesses.${databaseField.THIRD}`]: toBlessThird,
+      },
     });
 
     ctx.makeMessage({
       embeds: [],
       components: [],
-      content: ctx.prettyResponse('success', 'commands:ficha.show.status-success'),
+      content: ctx.prettyResponse('success', 'commands:ficha.bless.success'),
     });
   }
 
@@ -655,34 +594,23 @@ export default class FichaCommand extends InteractionCommand {
     const embed = new MessageEmbed()
       .setTitle(ctx.locale('commands:ficha.show.title', { name: mentioned.username }))
       .setDescription(
-        `${ctx.prettyResponse('heart', 'commands:ficha.show.race')}: **${ctx.locale(
-          `roleplay:races.${user.race as 1}.name`,
-        )}**\n${ctx.prettyResponse('crown', 'commands:ficha.show.class')}: **${ctx.locale(
-          `roleplay:classes.${user.class as 1}.name`,
-        )}**\n${ctx.prettyResponse('blood', 'common:roleplay.life')}: **${
-          user.life
-        } / ${getUserMaxLife(user)}**\n${ctx.prettyResponse('mana', 'common:roleplay.mana')}: **${
-          user.mana
-        } / ${getUserMaxMana(user)}**\n${ctx.prettyResponse(
-          'damage',
-          'common:roleplay.damage',
-        )}: **${getUserDamage(prepareUserForDungeon(user))}**\n${ctx.prettyResponse(
-          'armor',
-          'common:roleplay.armor',
-        )}: **${getUserArmor(prepareUserForDungeon(user))}**\n${ctx.prettyResponse(
-          'intelligence',
-          'common:roleplay.intelligence',
-        )}: **${getUserIntelligence(prepareUserForDungeon(user))}**\n${ctx.prettyResponse(
-          'agility',
-          'common:roleplay.agility',
-        )}: **${getUserAgility(prepareUserForDungeon(user))}**\n${ctx.prettyResponse(
-          'coin',
-          'commands:ficha.show.money',
-        )}: **${user.money}**\n${ctx.prettyResponse('level', 'commands:ficha.show.level')}: **${
-          user.level
-        }**\n${ctx.prettyResponse('experience', 'commands:ficha.show.experience')}: **${
-          user.experience
-        } / ${nextLevelXp(user.level)}**`,
+        ctx.locale('commands:ficha.show.description', {
+          emojis,
+          race: ctx.locale(`roleplay:races.${user.race as 1}.name`),
+          class: ctx.locale(`roleplay:classes.${user.class as 1}.name`),
+          life: user.life,
+          maxLife: getUserMaxLife(user),
+          mana: user.mana,
+          maxMana: getUserMaxMana(user),
+          damage: getUserDamage(prepareUserForDungeon(user)),
+          armor: getUserArmor(prepareUserForDungeon(user)),
+          agility: getUserAgility(prepareUserForDungeon(user)),
+          intelligence: getUserIntelligence(prepareUserForDungeon(user)),
+          money: user.money,
+          level: user.level,
+          experience: user.experience,
+          nextLevelXp: nextLevelXp(user.level),
+        }),
       )
       .setColor(ctx.data.user.selectedColor);
 
@@ -756,10 +684,6 @@ export default class FichaCommand extends InteractionCommand {
         ctx.makeMessage({
           components: [],
           embeds: [statusEmbed],
-          content:
-            user.id !== ctx.author.id
-              ? ''
-              : ctx.prettyResponse('error', 'commands:ficha.show.no-blesses'),
         });
         return;
       }

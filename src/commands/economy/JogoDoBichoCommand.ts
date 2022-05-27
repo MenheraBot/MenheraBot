@@ -41,10 +41,10 @@ export default class JogoDoBichoCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    /*  if (!ctx.client.shardProcessEnded) {
+    if (!ctx.client.shardProcessEnded) {
       ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:bicho.close') });
       return;
-    } */
+    }
 
     const bet = ctx.options.getInteger('aposta');
 
@@ -231,7 +231,7 @@ export default class JogoDoBichoCommand extends InteractionCommand {
           const userInput = (int as unknown as ModalSubmitInteraction).fields.getTextInputValue(
             'BET',
           );
-          const polishedNumber = Number(userInput.replace('.', '*'));
+          const polishedNumber = parseInt(userInput, 10);
 
           if (Number.isNaN(polishedNumber)) {
             ctx.makeMessage({
