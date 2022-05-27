@@ -573,16 +573,7 @@
     "profit": "Lucro",
     "loss": "Prejuízo",
     "buy": "Comprar",
-    "stop": "Parar",
-    "explode": "Você estourou! Por isso, perdeu tudo :(",
-    "menhera-bj": "A Menhera tem um Blackjack. Você perdeu tudo, e a Menhera ganhou tudo hehe",
-    "menhera-21": "A Menhera fez 21. Tu foi de ralo",
-    "user-21": "Tu fez 21 meu guri, só dale só dale! Ganhaste **{{value}}** :star:",
-    "menhera-bust": "A Menhera estourou! Os **{{value}}** :star: é teu",
-    "both-21": "Ambos fizeram 21, mas a Menhera tem preferência. Infelizmente é assim que funcionam os cassinos. Você perdeu Tudo",
-    "equal": "Tanto você quanto a menhera fizeram o mesmo valor. Menhera ganha",
-    "menhera-bigger": "A Menhera está mais proxima de 21, ela ganhou!",
-    "user-bigger": "Você está mais próximo de 21, você ganhou **{{value}}** :star:"
+    "stop": "Parar"
   },
   "itens": {
     "no-user": "Este usuário não possui inventário",

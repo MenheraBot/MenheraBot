@@ -375,6 +375,7 @@
     "rename": "Rename",
     "select-to-rename": "Choose A Color to Rename",
     "modal-title": "Rename the Color",
+    "name-input": "New name for '{{name}}'",
     "same-name": "A color already has that name!",
     "rename-success": "You have renamed the color `{{color}}` to **{{name}}**"
   },
@@ -558,21 +559,13 @@
     "dealer-hand": "Menhera's Hand",
     "timeout": "you took too long to play. Menhera ran out of patience, you lost everything!",
     "result": "👑 | Results",
-    "init_blackjack": "**{{winner}}** started a game with a BlackJack! How Lucky!\n**Your {{text}}:** {{prize}} :star:",
+    "init_blackjack": "**{{winner}}** started a game with a BlackJack! How lucky!\n**Your {{text}}:** {{prize}} :star:",
+    "blackjack": "**{{winner}}** made a BlackJack! On the fly!\n**Your {{text}}:** {{prize}} :star:",
     "busted": "**{{loser}}** busted! Better luck next time!\n**Your {{text}}:** {{prize}} :star:",
-    "draw": "The players drew, but unfortunately, by the law N°12.158/2021 of the Boleham World, Menhera takes it all hehehe. Yes it's unfair, but that's life!\n**Your {{text}}:** {{prize}} :star:",
+    "draw": "The players tied, but unfortunately, by law N°12.158/2021 of the Boleham World, Menhera takes it all hehehe. Yes it's unfair, but that's life!\n**Yours {{text}}:** {{prize}} :star:",
     "biggest": "**{{winner}}** won for having more points!\n**Your {{text}}:** {{prize}} :star:",
     "profit": "Profit",
-    "loss": "Loss",
-    "explode": "You bust! That's why you lost everything :(",
-    "menhera-bj": "Menhera has a Blackjack. You lost everything, and Menhera won everything hehe",
-    "menhera-21": "Menhera hits 21, you lololololost 👍",
-    "user-21": "You hit 21, my kid! You won **{{value}}** :star:",
-    "menhera-bust": "Menhera bust! The **{{value}}** :star: it's all yours",
-    "both-21": "Both hit 21, but Menhera has the upper hand. Unfortunately that's how casinos work. You lost everything.",
-    "equal": "Both you and Menhera hit the same amount. Menhera Wins UwU",
-    "menhera-bigger": "Menhera is closer to 21, she wins!",
-    "user-bigger": "You're closer to 21, you won **{{value}}** :star:"
+    "loss": "Loss"
   },
   "itens": {
     "no-user": "This user does't have an inventory",
@@ -683,10 +676,8 @@
     "bet-title": "Bet on an Animal",
     "bet-description": "Choose a way of betting! You can bet on an animal, a unit, a dozen, a hundred, a thousand, an animal, a sequence or corner of animals. Choose your category below, and after that, select the bet itself\n\n**MULTIPLIER BY CHOICE:**\n**Unit:** {{unity}}x :star:\n**Tens:* * {{ten}}x :star:\n**Hundred:** {{hundred}}x :star:\n**Thousands:** {{thousand}}x :star:\n**Animal: ** {{animal}}x :star:\n**Sequence:** {{sequence}}x :star:\n**Quina:** {{corner}}x :star:",
     "close": "Bets are off! Wait for the announcement of winners, and bet again",
-    "unity": "Unity",
-    "ten": "Ten",
-    "hundred": "Hundred",
-    "thousand": "Thousand",
+    "number": "Número",
+    "invalid-bet": "You inserted an invalid bet. Please check your selection and try again",
     "sequence": "Sequence",
     "corner": "Conrer",
     "one-animal": "Animal",
@@ -702,6 +693,13 @@
   },
   "ficha": {
     "no-user": "This user is not registered in RPG!",
+    "bless": {
+      "modal-title": "Bless Status",
+      "success": "Your Status has been Blessed!",
+      "invalid-number": "You have entered an invalid number!",
+      "no-points": "You used more points than you should. Your limit is **{{points}}**!",
+      "bless-limit": "One or more of your blessings has exceeded the blessing limit! A blessing cannot be more than **{{limit}}** points different from another blessing!"
+    },
     "register": {
       "title": "Summoning Ritual",
       "confirm-title": "Check Your Information",
@@ -713,16 +711,10 @@
     "show": {
       "not-found": "This user is not registered as an adventurer",
       "title": "{{name}}' Statuses",
-      "life": "lifLife",
-      "class": "Class",
-      "race": "Race",
-      "level": "Level",
-      "experience": "Experience",
-      "armor": "Armor",
-      "dmg": "Damage",
-      "mana": "Mana",
-      "money": "Real Coins",
       "poor-title": "Blessings Bonus",
+      "description": "{{emojis.heart}} | Race: **{{race}}**\n{{emojis.crown}} | Class: **{{class}}**\n{{emojis.blood}} | Life: **{{life}} / {{maxLife}}**\n{{emojis.mana}} | Mana: **{{mana}} / {{maxMana}}**\n{{emojis.damage}} | Damage: **{{damage}}**\n{{emojis.armor}} | Armor: **{{armor}}**\n{{emojis.intelligence}} | Intelligence: **{{intelligence}}**\n{{emojis.agility}} | Agility: **{{agility}}**\n{{emojis.coin}} | Real Coins: **{{money}}**\n{{emojis.level}} | Level: **{{level}}**\n{{emojis.experience}} | Experience: **{{experience}} / {{nextLevelXp}}**",
+      "vitality-description": "{{emojis.blood}} | Life: **{{maxLife}}** | {{lifeBlesses}}\n{{emojis.mana}} | Mana: **{{maxMana}}** | {{manaBlesses}}\n{{emojis.agility}} | Agility: **{{agility}}** | {{agilityBlesses}}",
+      "battle-description": "{{emojis.damage}} | Damage: **{{damage}}** | {{damageBlesses}}\n{{emojis.armor}} | Mana: **{{armor}}** | {{armorBlesses}}\n{{emojis.intelligence}} | Intelligence: **{{intelligence}}** | {{intelligenceBlesses}}",
       "poor-description": "You are currently out of Blessings, but keep your current Blessings status in the meantime\n\n❤️ | **Extra Life:** {{life}} | {{lifePoints}}\n💧 | **Extra Mana:** {{mana}} | {{manaPoints}}\n👢 | **Extra Agility** {{agility}} | {{agilityPoints}}\n⚔️ | **Extra Damage:** {{damage}} | {{damagePoints}}\n🛡️ | **Extra Armor:** {{armor}} | {{armorPoints}}\n🧠 | **Extra Intelligence:** {{intelligence}} | {{intelligencePoints}}",
       "no-blesses": "You don't have Holy Blessings to improve your Status!",
       "blessings": "You have **{{vitality}}** Holy Blessings of Vitality and **{{battle}}** of Battle, use the buttons below to improve your stats. You cannot have a blessed status difference of more than **{{limit}}** blessings",
@@ -884,17 +876,17 @@
     "results": {
       "title": "End of Battle",
       "description": "{{text}}\n\n**Winner:** {{winnerName}}\n**Looser**: {{loserName}}"
-    },
-    "resetar": {
-      "ficha": {
-        "title": "Delete Account?",
-        "yes": "Yes, reset my character",
-        "success": "Your account has been deleted. You may create a new character when you want to",
-        "negated": "Your account still alive. When you want to delete it, just come here again",
-        "no": "NO!!! I CLICKED ON THE COMMAND JUST TO SEE",
-        "level": "You need to be at least level 5 to reset your character",
-        "description": "**ATTENTION**\n\nBy clicking the button below, you will erase ALL your **RPG data**\nYour Menhera account will still exist, only your data regarding the RPG will be lost\n\nThis will only cause your character to be deleted. You will be able to create another character whenever you want.\n\nStats such as PvP wins will still be linked to your account.\n\nAre you sure you want to do this?"
-      }
+    }
+  },
+  "resetar": {
+    "ficha": {
+      "title": "Delete Account?",
+      "yes": "Yes, reset my character",
+      "success": "Your account has been deleted. You may create a new character when you want to",
+      "negated": "Your account still alive. When you want to delete it, just come here again",
+      "no": "NO!!! I CLICKED ON THE COMMAND JUST TO SEE",
+      "level": "You need to be at least level 5 to reset your character",
+      "description": "**ATTENTION**\n\nBy clicking the button below, you will erase ALL your **RPG data**\nYour Menhera account will still exist, only your data regarding the RPG will be lost\n\nThis will only cause your character to be deleted. You will be able to create another character whenever you want.\n\nStats such as PvP wins will still be linked to your account.\n\nAre you sure you want to do this?"
     }
   },
   "badges": {
