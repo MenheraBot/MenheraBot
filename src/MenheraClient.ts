@@ -18,6 +18,7 @@ import LocaleStructure from '@structures/LocaleStructure';
 import PicassoWebSocket from '@structures/PicassoWebSocket';
 import { debugError } from '@utils/Util';
 import JogoDoBixoManager from '@structures/JogoDoBichoManager';
+import { updateAssets } from '@structures/CdnManager';
 
 export default class MenheraClient extends Client<true> {
   public cluster!: ClusterClient;
@@ -77,15 +78,23 @@ export default class MenheraClient extends Client<true> {
     });
 
     const locales = new LocaleStructure();
+    this.picassoWs = new PicassoWebSocket(this.cluster.id ?? 0);
+    this.jogoDoBichoManager = new JogoDoBixoManager(this);
 
     await locales.load();
     await this.database.createConnection();
-    this.picassoWs = new PicassoWebSocket(this.cluster.id ?? 0);
-    this.jogoDoBichoManager = new JogoDoBixoManager(this);
     this.loadSlashCommands(this.config.interactionsDirectory);
     this.loadEvents(this.config.eventsDirectory);
-    this.picassoWs.connect().catch(debugError);
+    await this.picassoWs.connect().catch(debugError);
+    await MenheraClient.updateCDNAssets();
+
     return true;
+  }
+
+  static async updateCDNAssets(): Promise<void> {
+    console.log('[CDN] Updating assets...');
+    const result = await updateAssets();
+    console.log(`[CDN] ${result}`);
   }
 
   async getInteractionStatistics(): Promise<this['interactionStatistics']> {

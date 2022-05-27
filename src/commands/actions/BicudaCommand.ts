@@ -2,8 +2,8 @@ import { COLORS, TODAYS_YEAR } from '@structures/Constants';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageEmbed } from 'discord.js-light';
-import HttpRequests from '@utils/HTTPrequests';
 import { capitalize } from '@utils/Util';
+import { getAssetLink } from '@structures/CdnManager';
 
 export default class BicudaCommand extends InteractionCommand {
   constructor() {
@@ -53,7 +53,7 @@ export default class BicudaCommand extends InteractionCommand {
       return;
     }
 
-    const selectedImage = await HttpRequests.getAssetImageUrl('bicuda');
+    const selectedImage = getAssetLink('bicuda');
     const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     const embed = new MessageEmbed()

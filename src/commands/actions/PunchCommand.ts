@@ -2,7 +2,7 @@ import { COLORS, TODAYS_YEAR } from '@structures/Constants';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageEmbed } from 'discord.js-light';
-import HttpRequests from '@utils/HTTPrequests';
+import { getAssetLink } from '@structures/CdnManager';
 import { capitalize } from '@utils/Util';
 
 export default class PunchCommand extends InteractionCommand {
@@ -53,7 +53,7 @@ export default class PunchCommand extends InteractionCommand {
       return;
     }
 
-    const selectedImage = await HttpRequests.getAssetImageUrl('punch');
+    const selectedImage = getAssetLink('punch');
     const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     const embed = new MessageEmbed()

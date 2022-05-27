@@ -2,7 +2,7 @@ import { COLORS } from '@structures/Constants';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageEmbed } from 'discord.js-light';
-import HttpRequests from '@utils/HTTPrequests';
+import { getAssetLink } from '@structures/CdnManager';
 
 export default class GrumbleCommand extends InteractionCommand {
   constructor() {
@@ -19,7 +19,7 @@ export default class GrumbleCommand extends InteractionCommand {
   async run(ctx: InteractionCommandContext): Promise<void> {
     const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
 
-    const selectedImage = await HttpRequests.getAssetImageUrl('grumble');
+    const selectedImage = getAssetLink('grumble');
 
     const embed = new MessageEmbed()
       .setTitle(ctx.locale('commands:resmungar.embed_title'))

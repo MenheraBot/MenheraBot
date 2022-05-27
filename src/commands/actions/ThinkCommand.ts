@@ -2,7 +2,7 @@ import { COLORS, TODAYS_YEAR } from '@structures/Constants';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageEmbed } from 'discord.js-light';
-import HttpRequests from '@utils/HTTPrequests';
+import { getAssetLink } from '@structures/CdnManager';
 import { capitalize } from '@utils/Util';
 
 export default class ThinkCommand extends InteractionCommand {
@@ -47,7 +47,7 @@ export default class ThinkCommand extends InteractionCommand {
       return;
     }
 
-    const selectedImage = await HttpRequests.getAssetImageUrl('think');
+    const selectedImage = getAssetLink('think');
     const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
     if (!user || user.id === ctx.author.id) {
       const embed = new MessageEmbed()

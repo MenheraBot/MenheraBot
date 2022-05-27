@@ -2,7 +2,7 @@ import { COLORS, TODAYS_YEAR } from '@structures/Constants';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageEmbed } from 'discord.js-light';
-import HttpRequests from '@utils/HTTPrequests';
+import { getAssetLink } from '@structures/CdnManager';
 import { capitalize } from '@utils/Util';
 
 export default class KissCommand extends InteractionCommand {
@@ -68,9 +68,7 @@ export default class KissCommand extends InteractionCommand {
     }
 
     const selectedImage =
-      ctx.options.getString('local', true) === '0'
-        ? await HttpRequests.getAssetImageUrl('kiss')
-        : await HttpRequests.getAssetImageUrl('cheek');
+      ctx.options.getString('local', true) === '0' ? getAssetLink('kiss') : getAssetLink('cheek');
     const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
 
     const embed = new MessageEmbed()

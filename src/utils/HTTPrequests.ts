@@ -48,15 +48,6 @@ const StatusRequest = axios.create({
 });
 
 export default class HttpRequests {
-  static async getAssetImageUrl(type: string): Promise<string> {
-    try {
-      const data = await apiRequest.get(`/assets/${type}`);
-      return data.data.url;
-    } catch {
-      return 'https://i.imgur.com/HftTDov.png';
-    }
-  }
-
   static async getUserBattleConfig(
     userId: string,
   ): Promise<{ error: false; data: { config: UserBattleConfig } } | { error: true }> {

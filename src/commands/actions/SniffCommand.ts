@@ -2,7 +2,7 @@ import { COLORS, TODAYS_YEAR } from '@structures/Constants';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageEmbed } from 'discord.js-light';
-import HttpRequests from '@utils/HTTPrequests';
+import { getAssetLink } from '@structures/CdnManager';
 import { capitalize } from '@utils/Util';
 
 export default class SniffCommand extends InteractionCommand {
@@ -46,7 +46,7 @@ export default class SniffCommand extends InteractionCommand {
     }
 
     const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
-    const selectedImage = await HttpRequests.getAssetImageUrl('sniff');
+    const selectedImage = getAssetLink('sniff');
 
     if (!user || user.id === ctx.author.id) {
       const embed = new MessageEmbed()

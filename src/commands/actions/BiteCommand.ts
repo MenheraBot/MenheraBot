@@ -2,8 +2,8 @@ import { COLORS } from '@structures/Constants';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageEmbed } from 'discord.js-light';
-import HttpRequests from '@utils/HTTPrequests';
 import { capitalize } from '@utils/Util';
+import { getAssetLink } from '@structures/CdnManager';
 
 export default class BiteCommand extends InteractionCommand {
   constructor() {
@@ -54,7 +54,7 @@ export default class BiteCommand extends InteractionCommand {
     }
 
     const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
-    const selectedImage = await HttpRequests.getAssetImageUrl('bite');
+    const selectedImage = getAssetLink('bite');
 
     const embed = new MessageEmbed()
       .setTitle(ctx.locale('commands:morder.embed_title'))

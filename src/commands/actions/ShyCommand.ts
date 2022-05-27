@@ -2,7 +2,7 @@ import { COLORS, TODAYS_YEAR } from '@structures/Constants';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageEmbed } from 'discord.js-light';
-import HttpRequests from '@utils/HTTPrequests';
+import { getAssetLink } from '@structures/CdnManager';
 import { capitalize } from '@utils/Util';
 
 export default class ShyCommand extends InteractionCommand {
@@ -37,7 +37,7 @@ export default class ShyCommand extends InteractionCommand {
   async run(ctx: InteractionCommandContext): Promise<void> {
     const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
 
-    const selectedImage = await HttpRequests.getAssetImageUrl('shy');
+    const selectedImage = getAssetLink('shy');
     const user = ctx.options.getUser('user');
     const reason = ctx.options.getString('motivo');
 

@@ -1,6 +1,6 @@
+import { getAssetLink } from '@structures/CdnManager';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import HttpRequests from '@utils/HTTPrequests';
 import { MessageEmbed } from 'discord.js-light';
 
 export default class MemeCommand extends InteractionCommand {
@@ -38,7 +38,7 @@ export default class MemeCommand extends InteractionCommand {
   }
 
   static async HumorInteractionCommand(ctx: InteractionCommandContext): Promise<void> {
-    const selectedImage = await HttpRequests.getAssetImageUrl('humor');
+    const selectedImage = getAssetLink('humor');
 
     const embed = new MessageEmbed().setImage(selectedImage).setColor('RANDOM');
 
@@ -52,7 +52,7 @@ export default class MemeCommand extends InteractionCommand {
       author: ctx.author.username,
     });
 
-    const selectedImage = await HttpRequests.getAssetImageUrl('fodase');
+    const selectedImage = getAssetLink('fodase');
 
     const embed = new MessageEmbed()
       .setImage(selectedImage)

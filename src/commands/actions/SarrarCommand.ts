@@ -3,7 +3,7 @@ import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageButton, MessageComponentInteraction, MessageEmbed, User } from 'discord.js-light';
 import Util from '@utils/Util';
-import HttpRequests from '@utils/HTTPrequests';
+import { getAssetLink } from '@structures/CdnManager';
 
 export default class SarrarCommand extends InteractionCommand {
   constructor() {
@@ -27,7 +27,7 @@ export default class SarrarCommand extends InteractionCommand {
   }
 
   static async sarrada(ctx: InteractionCommandContext, user: User): Promise<void> {
-    const selectedImage = await HttpRequests.getAssetImageUrl('sarrar');
+    const selectedImage = getAssetLink('sarrar');
 
     const avatar = ctx.author.displayAvatarURL({ format: 'png', dynamic: true });
 
@@ -55,7 +55,7 @@ export default class SarrarCommand extends InteractionCommand {
       return;
     }
 
-    const randSozinho = await HttpRequests.getAssetImageUrl('sarrar_sozinho');
+    const randSozinho = getAssetLink('sarrar_sozinho');
     const embed = new MessageEmbed()
       .setTitle(ctx.locale('commands:sarrar.no-mention.embed_title'))
       .setColor(COLORS.ACTIONS)
