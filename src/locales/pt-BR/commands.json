@@ -877,7 +877,7 @@
       "reset-points": "Resetar Pontos",
       "success-points": "Suas configurações de batalha foram ajustadas!",
       "title": "Configurações de Batalha Amistosa",
-      "description": "**Configurações para Batalhas Amistosas**\n\nPrepare-se para uma batalha amistosa arrumando seu status. Você tem no total **{{vitality}}** bênçãos de vitalidade e **{{battle}}** bênçãos de batalha para usar. Lembrando que estas bênçãos só são validas para batalhas amistosas em **Nível de Batalha**\n\nSelecione abaixo seus pontos"
+      "description": "Prepare-se para uma batalha amistosa arrumando seu status. Você tem no total **{{vitality}}** bênçãos de vitalidade e **{{battle}}** bênçãos de batalha para usar. Lembrando que estas bênçãos só são validas para batalhas amistosas em **Nível de Batalha**\n\nEscolha abaixo qual status você quer alterar.\n**NOTA:** O número que você colocar será SETTADO, ou seja, a quantidade de bênçãos que você colocar em um status é a que vai ficar. Não digitar nada faz com que aquele status não seja alterado, mantendo o valor de antes de abrir o formulário!"
     },
     "results": {
       "title": "Fim de Batalha",

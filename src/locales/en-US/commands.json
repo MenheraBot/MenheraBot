@@ -871,7 +871,7 @@
       "reset-points": "Reset Points",
       "success-points": "Your battle settings have been adjusted!",
       "title": "Friendly Battle Settings",
-      "description": "**Settings for Friendly Battles**\n\nPrepare for a friendly battle by fixing your status. You have in total **{{vitality}}** vitality blessings and **{{battle}}** battle blessings to use. Remembering that these blessings are only valid for friendly battles at **Battle Level**\n\nSelect your points below"
+      "description": "Prepare for a friendly battle by fixing your status. You have in total **{{vitality}}** vitality blessings and **{{battle}}** battle blessings to use. Remembering that these blessings are only valid for friendly battles at **Battle Level**\n\nChoose below which status you want to change.\n**NOTE:** The number you put will be SET, that is, the amount of blessings you put in a status is what it will stay. Not typing anything makes that status not change, keeping the value before opening the form!"
     },
     "results": {
       "title": "End of Battle",

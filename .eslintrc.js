@@ -28,6 +28,7 @@ module.exports = {
     'no-plusplus': 'off',
     'max-len': 'off',
     'import/no-unresolved': 0,
+    'no-warning-comments': 'warn',
     'no-underscore-dangle': ['error', { allow: ['_id'] }],
     'import/extensions': [0, 'never', { ts: 'never' }],
     'no-use-before-define': ['error', { variables: false }],

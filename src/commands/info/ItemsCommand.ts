@@ -14,7 +14,6 @@ import Util, {
   resolveCustomId,
   resolveSeparatedStrings,
 } from '@utils/Util';
-import { IMagicItem } from '@custom_types/Menhera';
 
 export default class ItemsCommand extends InteractionCommand {
   constructor() {
@@ -63,30 +62,6 @@ export default class ItemsCommand extends InteractionCommand {
       ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:itens.banned') });
       return;
     }
-
-    // ========================= UNDO THE BUG =======================================
-
-    // TODO: Remove this in the future with the duplicata bug
-
-    const hasDuplicata = (inv: IMagicItem[]): [boolean, IMagicItem[]] => {
-      const result = inv.reduce<IMagicItem[]>((p, c) => {
-        if (p.some((b) => b.id === c.id)) return p;
-        p.push(c);
-        return p;
-      }, []);
-
-      return [result.length !== inv.length, result];
-    };
-
-    const [[hasInventoryDuplicated, newInventory], [hasInUseDuplicated, newInUse]] = [
-      hasDuplicata(user.inventory),
-      hasDuplicata(user.inUseItems),
-    ];
-
-    if (hasInventoryDuplicated) user.inventory = newInventory;
-    if (hasInUseDuplicated) user.inUseItems = newInUse;
-
-    // ========================= FINISHED UNDO THE BUG =======================================
 
     const embed = new MessageEmbed()
       .setTitle(
@@ -180,11 +155,6 @@ export default class ItemsCommand extends InteractionCommand {
     }
 
     if (resolveCustomId(collected.customId) === 'RESET') {
-      // TODO: Remove this in the future with the duplicata bug
-      user.inUseItems.forEach((a) => {
-        if (!user.inventory.some((b) => b.id === a.id)) user.inventory.push({ id: a.id });
-      });
-
       user.inUseItems = [];
 
       ctx.makeMessage({
@@ -194,7 +164,6 @@ export default class ItemsCommand extends InteractionCommand {
       });
 
       await ctx.client.repositories.userRepository.update(ctx.author.id, {
-        inventory: user.inventory, // TODO: Remove this in the future with the duplicata bug
         inUseItems: user.inUseItems,
       });
       return;

@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [UNRELEASED]
+
+### Changed
+
+- Ficou mais fácil de abençoar seus pontos em `/ficha` e `/arena configurar`. Na ficha, coloque quantos pontos você quer **adicionar** em cada status. Na arena, coloque o valor que você quer **settar** em cada status. Caso não coloque nada, o valor antigo continuará
+
 ## [4.0.2] - 2022-05-24
 
 ### Changed
