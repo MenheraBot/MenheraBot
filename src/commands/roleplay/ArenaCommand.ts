@@ -362,7 +362,7 @@ export default class ArenaCommand extends InteractionCommand {
     if (availableBlesses[selectedPoint] < 0) {
       ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:ficha.bless.no-points', {
-          points: [selectedPoint],
+          points: availableBlesses[selectedPoint],
         }),
         components: [],
         embeds: [],
