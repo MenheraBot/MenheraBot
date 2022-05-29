@@ -10,7 +10,6 @@ const Items: { [id: number]: ItemsFile } = {
       costPerLevel: 60,
       boostPerUpgrade: 5,
     },
-    flags: ['upgradable'],
   },
   101: {
     type: 'protection',
@@ -21,7 +20,6 @@ const Items: { [id: number]: ItemsFile } = {
       costPerLevel: 60,
       boostPerUpgrade: 4,
     },
-    flags: ['upgradable'],
   },
   102: {
     type: 'weapon',
@@ -32,43 +30,36 @@ const Items: { [id: number]: ItemsFile } = {
       costPerLevel: 60,
       boostPerUpgrade: 7,
     },
-    flags: ['upgradable'],
   },
   1: {
     type: 'enemy_drop',
     marketValue: 1,
     perLevel: 2,
-    flags: ['droppable', 'sellable'],
   },
   2: {
     type: 'enemy_drop',
     marketValue: 1,
     perLevel: 3,
-    flags: ['droppable', 'sellable'],
   },
   3: {
     type: 'enemy_drop',
     marketValue: 2,
     perLevel: 4,
-    flags: ['droppable', 'sellable'],
   },
   4: {
     type: 'enemy_drop',
     marketValue: 6,
     perLevel: 3,
-    flags: ['droppable', 'sellable'],
   },
   5: {
     type: 'enemy_drop',
     marketValue: 9,
     perLevel: 6,
-    flags: ['droppable', 'sellable'],
   },
   6: {
     type: 'enemy_drop',
     marketValue: 11,
     perLevel: 5,
-    flags: ['droppable', 'sellable'],
   },
   7: {
     type: 'potion',
@@ -76,7 +67,6 @@ const Items: { [id: number]: ItemsFile } = {
     baseBoost: 40,
     boostType: 'life',
     perLevel: 20,
-    flags: ['buyable', 'consumable'],
   },
   8: {
     type: 'potion',
@@ -84,7 +74,6 @@ const Items: { [id: number]: ItemsFile } = {
     baseBoost: 30,
     boostType: 'mana',
     perLevel: 20,
-    flags: ['buyable', 'consumable'],
   },
 };
 

@@ -158,8 +158,6 @@ export interface ReadyToBattleEnemy {
   loots: EnemyDrops[];
 }
 
-export type ItemFlag = 'droppable' | 'sellable' | 'buyable' | 'consumable' | 'upgradable';
-
 export interface ToUpgrade {
   cost: number;
   costPerLevel: number;
@@ -171,7 +169,6 @@ export interface BackPackItem {
   capacity: number;
   perLevel: number;
   toUpgrade: ToUpgrade;
-  flags: ItemFlag[];
 }
 
 export interface WeaponItem {
@@ -179,7 +176,6 @@ export interface WeaponItem {
   damage: number;
   perLevel: number;
   toUpgrade: ToUpgrade;
-  flags: ItemFlag[];
 }
 
 export interface ProtectionItem {
@@ -187,14 +183,12 @@ export interface ProtectionItem {
   armor: number;
   perLevel: number;
   toUpgrade: ToUpgrade;
-  flags: ItemFlag[];
 }
 
 export interface DropItem {
   type: 'enemy_drop';
   marketValue: number;
   perLevel: number;
-  flags: ItemFlag[];
 }
 
 export interface ConsumableItem {
@@ -203,7 +197,6 @@ export interface ConsumableItem {
   marketValue: number;
   baseBoost: number;
   perLevel: number;
-  flags: ItemFlag[];
 }
 
 export type ItemsFile = BackPackItem | WeaponItem | DropItem | ConsumableItem | ProtectionItem;

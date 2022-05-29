@@ -78,7 +78,7 @@ export default class InventoryCommand extends InteractionCommand {
 
     if (
       mentioned.id === ctx.author.id &&
-      resolvedItems.some((a) => a.data.flags.includes('consumable')) &&
+      resolvedItems.some((a) => a.data.type === 'potion') &&
       (user.mana < getUserMaxMana(user) || user.life < getUserMaxLife(user))
     )
       usePotion.setDisabled(false);
@@ -106,9 +106,9 @@ export default class InventoryCommand extends InteractionCommand {
 
     embed.setDescription('');
 
-    const availablePotions = resolvedItems.filter((a) =>
-      a.data.flags.includes('consumable'),
-    ) as Array<IReturnData<ConsumableItem> & { level: number; amount: number }>;
+    const availablePotions = resolvedItems.filter((a) => a.data.type === 'potion') as Array<
+      IReturnData<ConsumableItem> & { level: number; amount: number }
+    >;
 
     const selectMenu = new MessageSelectMenu().setCustomId(`${ctx.interaction.id} | SELECT`);
 
