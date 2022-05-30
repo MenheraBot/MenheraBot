@@ -9,6 +9,7 @@ import { AvailableThemeTypes, HuntingTypes, IHuntProbablyBoostItem } from '@cust
 import Util, {
   actionRow,
   debugError,
+  disableComponents,
   getAllThemeUserIds,
   getThemeById,
   getThemesByType,
@@ -370,18 +371,21 @@ export default class ShopCommand extends InteractionCommand {
     changeThemeType(0);
 
     const collector = ctx.channel.createMessageComponentCollector({
-      time: 12000,
-      maxComponents: 8,
+      idle: 12000,
       filter,
     });
 
     collector.on('end', (_, reason) => {
-      if (reason !== 'selected') ctx.deleteReply();
+      if (reason === 'idle') {
+        ctx.makeMessage({
+          components: [
+            actionRow(disableComponents(ctx.locale('common:timesup'), components[0].components)),
+          ],
+        });
+      }
     });
 
     collector.on('collect', async (int) => {
-      int.deferUpdate();
-      collector.resetTimer();
       const type = resolveCustomId(int.customId);
 
       switch (type) {
@@ -389,12 +393,12 @@ export default class ShopCommand extends InteractionCommand {
           const selectedItem = getThemeById(Number((int as SelectMenuInteraction).values[0]));
 
           if (previewMode) {
+            int.deferReply({ ephemeral: true });
             if (currentThemeType === 'profile') {
               const res = await requestPicassoImage(
-                PicassoRoutes.Preview,
+                PicassoRoutes.Profile,
                 {
                   user: ProfilePreview.user,
-                  marry: ProfilePreview.marry,
                   usageCommands: ProfilePreview.usageCommands,
                   i18n: {
                     aboutme: ctx.locale('commands:perfil.about-me'),
@@ -411,17 +415,22 @@ export default class ShopCommand extends InteractionCommand {
               );
 
               if (res.err) {
-                await ctx.send({
-                  content: ctx.prettyResponse('error', 'common:http-error'),
-                  ephemeral: true,
-                });
+                await int
+                  .followUp({
+                    content: ctx.prettyResponse('error', 'common:http-error'),
+                    ephemeral: true,
+                  })
+                  .catch(debugError);
                 return;
               }
 
-              await ctx.send({
-                files: [new MessageAttachment(res.data, 'profile-preview.png')],
-                ephemeral: true,
-              });
+              await int
+                .followUp({
+                  files: [new MessageAttachment(res.data, 'profile-preview.png')],
+                  ephemeral: true,
+                })
+                .catch(debugError);
+
               return;
             }
 
@@ -435,17 +444,21 @@ export default class ShopCommand extends InteractionCommand {
             );
 
             if (res.err) {
-              await ctx.send({
-                content: ctx.prettyResponse('error', 'common:http-error'),
-                ephemeral: true,
-              });
+              await int
+                .followUp({
+                  content: ctx.prettyResponse('error', 'common:http-error'),
+                  ephemeral: true,
+                })
+                .catch(debugError);
               return;
             }
 
-            await ctx.send({
-              files: [new MessageAttachment(res.data, 'theme-preview.png')],
-              ephemeral: true,
-            });
+            await int
+              .followUp({
+                files: [new MessageAttachment(res.data, 'theme-preview.png')],
+                ephemeral: true,
+              })
+              .catch(debugError);
             return;
           }
 
@@ -504,18 +517,23 @@ export default class ShopCommand extends InteractionCommand {
           break;
         }
         case 'PROFILE':
+          int.deferUpdate().catch(debugError);
           changeThemeType(0);
           break;
         case 'CARDS':
+          int.deferUpdate().catch(debugError);
           changeThemeType(1);
           break;
         case 'BACKGROUND':
+          int.deferUpdate().catch(debugError);
           changeThemeType(2);
           break;
         case 'TABLE':
+          int.deferUpdate().catch(debugError);
           changeThemeType(3);
           break;
         case 'PREVIEW': {
+          int.deferUpdate().catch(debugError);
           previewMode = !previewMode;
           (components[0].components[4] as MessageButton).setStyle(
             previewMode ? 'DANGER' : 'SUCCESS',
