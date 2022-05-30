@@ -8,7 +8,8 @@ const Items: { [id: number]: ItemsFile } = {
     toUpgrade: {
       cost: 30,
       costPerLevel: 60,
-      boostPerUpgrade: 5,
+      itemsPerLevel: [],
+      items: [],
     },
   },
   101: {
@@ -18,7 +19,8 @@ const Items: { [id: number]: ItemsFile } = {
     toUpgrade: {
       cost: 30,
       costPerLevel: 60,
-      boostPerUpgrade: 4,
+      itemsPerLevel: [],
+      items: [],
     },
   },
   102: {
@@ -28,7 +30,8 @@ const Items: { [id: number]: ItemsFile } = {
     toUpgrade: {
       cost: 30,
       costPerLevel: 60,
-      boostPerUpgrade: 7,
+      itemsPerLevel: [],
+      items: [],
     },
   },
   1: {
@@ -74,6 +77,17 @@ const Items: { [id: number]: ItemsFile } = {
     baseBoost: 30,
     boostType: 'mana',
     perLevel: 20,
+  },
+  103: {
+    type: 'backpack',
+    capacity: 10,
+    perLevel: 10,
+    toUpgrade: {
+      cost: 30,
+      costPerLevel: 60,
+      itemsPerLevel: [],
+      items: [],
+    },
   },
 };
 

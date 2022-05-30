@@ -161,8 +161,11 @@ export interface ReadyToBattleEnemy {
 export interface ToUpgrade {
   cost: number;
   costPerLevel: number;
-  boostPerUpgrade: number;
+  items: number[];
+  itemsPerLevel: number[];
 }
+
+// export type Ascensions = { [level: number]: {} };
 
 export interface BackPackItem {
   type: 'backpack';
@@ -200,27 +203,6 @@ export interface ConsumableItem {
 }
 
 export type ItemsFile = BackPackItem | WeaponItem | DropItem | ConsumableItem | ProtectionItem;
-
-/* export interface RoleplayUserSchema {
-  id: string;
-  class: number;
-  race: number;
-  life: number;
-  mana: number;
-  level: number;
-  experience: number;
-  holyBlessings: HolyBlessings;
-  blesses: Blesses;
-  abilities: Array<UserAbility>;
-  inventory: Array<InventoryItem>;
-  cooldowns: UserCooldown[];
-  weapon: LeveledItem;
-  protection: LeveledItem;
-  backpack: LeveledItem;
-  money: number;
-}
-
-*/
 
 export type UserBattleEntity = RoleplayUserSchema & {
   effects: Array<AbilityEffect & { level: number; author: EffectAuthor }>;
