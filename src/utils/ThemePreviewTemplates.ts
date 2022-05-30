@@ -14,10 +14,10 @@ const ProfilePreview = {
     data: '16/02/2004 às 22:23',
     mamadas: 23,
     mamou: 22,
-  },
-  marry: {
-    username: 'Luxanna',
-    tag: 'Luxanna#5757',
+    marry: {
+      username: 'Luxanna',
+      tag: 'Luxanna#5757',
+    },
   },
   usageCommands: {
     cmds: {
