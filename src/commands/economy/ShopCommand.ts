@@ -393,8 +393,8 @@ export default class ShopCommand extends InteractionCommand {
           const selectedItem = getThemeById(Number((int as SelectMenuInteraction).values[0]));
 
           if (previewMode) {
-            int.deferReply({ ephemeral: true });
             if (currentThemeType === 'profile') {
+              int.deferReply({ ephemeral: true });
               const res = await requestPicassoImage(
                 PicassoRoutes.Profile,
                 {
@@ -444,8 +444,8 @@ export default class ShopCommand extends InteractionCommand {
             );
 
             if (res.err) {
-              await int
-                .followUp({
+              await ctx
+                .send({
                   content: ctx.prettyResponse('error', 'common:http-error'),
                   ephemeral: true,
                 })
@@ -453,8 +453,8 @@ export default class ShopCommand extends InteractionCommand {
               return;
             }
 
-            await int
-              .followUp({
+            await ctx
+              .send({
                 files: [new MessageAttachment(res.data, 'theme-preview.png')],
                 ephemeral: true,
               })
