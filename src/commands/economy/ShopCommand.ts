@@ -443,6 +443,8 @@ export default class ShopCommand extends InteractionCommand {
               ctx,
             );
 
+            int.deferUpdate();
+
             if (res.err) {
               await ctx
                 .send({
