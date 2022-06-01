@@ -342,7 +342,7 @@ export default class DowntownCommand extends InteractionCommand {
           cost: costToEvolve,
           name: ctx.locale(`items:${user.protection.id as 1}.name`),
           level: user.protection.level + 1,
-          bonus: userProtection.data.toUpgrade.boostPerUpgrade,
+          bonus: userProtection.data.perLevel,
           bonusEmoji: emojis.armor,
           coinEmoji: emojis.coin,
         }),
@@ -364,7 +364,7 @@ export default class DowntownCommand extends InteractionCommand {
           cost: costToEvolve,
           name: ctx.locale(`items:${user.weapon.id as 1}.name`),
           level: user.weapon.level + 1,
-          bonus: userWeapon.data.toUpgrade.boostPerUpgrade,
+          bonus: userWeapon.data.perLevel,
           bonusEmoji: emojis.damage,
           coinEmoji: emojis.coin,
         }),
@@ -386,7 +386,7 @@ export default class DowntownCommand extends InteractionCommand {
           cost: costToEvolve,
           name: ctx.locale(`items:${user.backpack.id as 1}.name`),
           level: user.backpack.level + 1,
-          bonus: userBackpack.data.toUpgrade.boostPerUpgrade,
+          bonus: userBackpack.data.perLevel,
           bonusEmoji: emojis.chest,
           coinEmoji: emojis.coin,
         }),
@@ -533,7 +533,7 @@ export default class DowntownCommand extends InteractionCommand {
         8000,
       );
 
-    if (!selectedAmount) {
+    if (!selectedAmount || !selectedAmount.values) {
       ctx.makeMessage({
         components: [actionRow(disableComponents(ctx.locale('common:timesup'), [selector]))],
       });
