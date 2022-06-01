@@ -158,34 +158,39 @@ export interface ReadyToBattleEnemy {
   loots: EnemyDrops[];
 }
 
-export interface ToUpgrade {
-  cost: number;
-  costPerLevel: number;
-  items: number[];
-  itemsPerLevel: number[];
+interface Upgradable {
+  // COST === 0 AND ITEMS.LENGTH === 0 MEANS CANNOT DO
+  cost: number; // Valor para fazer
+  items: number[]; // Itens usados
 }
 
-// export type Ascensions = { [level: number]: {} };
+export interface ToUpgrade {
+  [level: number]: Upgradable;
+}
 
-export interface BackPackItem {
+export type ToCraft = Upgradable;
+
+export interface UpgradableItem {
+  toUpgrade: ToUpgrade;
+  toCraft: ToCraft;
+}
+
+export interface BackPackItem extends UpgradableItem {
   type: 'backpack';
   capacity: number;
   perLevel: number;
-  toUpgrade: ToUpgrade;
 }
 
-export interface WeaponItem {
+export interface WeaponItem extends UpgradableItem {
   type: 'weapon';
   damage: number;
   perLevel: number;
-  toUpgrade: ToUpgrade;
 }
 
-export interface ProtectionItem {
+export interface ProtectionItem extends UpgradableItem {
   type: 'protection';
   armor: number;
   perLevel: number;
-  toUpgrade: ToUpgrade;
 }
 
 export interface DropItem {

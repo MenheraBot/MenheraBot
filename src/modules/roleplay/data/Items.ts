@@ -3,35 +3,47 @@ import { ItemsFile } from '@roleplay/Types';
 const Items: { [id: number]: ItemsFile } = {
   100: {
     type: 'backpack',
-    capacity: 5,
+    capacity: 10,
     perLevel: 5,
-    toUpgrade: {
-      cost: 30,
-      costPerLevel: 60,
-      itemsPerLevel: [],
+    toCraft: {
+      cost: 0,
       items: [],
+    },
+    toUpgrade: {
+      1: {
+        cost: 60,
+        items: [],
+      },
     },
   },
   101: {
     type: 'protection',
     armor: 10,
     perLevel: 5,
-    toUpgrade: {
-      cost: 30,
-      costPerLevel: 60,
-      itemsPerLevel: [],
+    toCraft: {
+      cost: 0,
       items: [],
+    },
+    toUpgrade: {
+      1: {
+        cost: 60,
+        items: [],
+      },
     },
   },
   102: {
     type: 'weapon',
     damage: 10,
     perLevel: 10,
-    toUpgrade: {
-      cost: 30,
-      costPerLevel: 60,
-      itemsPerLevel: [],
+    toCraft: {
+      cost: 0,
       items: [],
+    },
+    toUpgrade: {
+      1: {
+        cost: 60,
+        items: [],
+      },
     },
   },
   1: {
@@ -80,13 +92,17 @@ const Items: { [id: number]: ItemsFile } = {
   },
   103: {
     type: 'backpack',
-    capacity: 10,
+    capacity: 20,
     perLevel: 10,
+    toCraft: {
+      cost: 100,
+      items: [4, 4, 4, 1, 1, 1],
+    },
     toUpgrade: {
-      cost: 30,
-      costPerLevel: 60,
-      itemsPerLevel: [],
-      items: [],
+      1: {
+        cost: 60,
+        items: [4, 4, 1],
+      },
     },
   },
 };
