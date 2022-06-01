@@ -5,11 +5,11 @@ import itemsFile from './Items';
 describe('Check if all items has localizations', () => {
   const keys = Object.keys(itemsFile).sort();
 
-  it('should be true', () => {
+  it('arrays should be equal', () => {
     expect(keys).toEqual(Object.keys(enItemsLocalizations).sort());
   });
 
-  it('should be true', () => {
+  it('arrays should be equal', () => {
     expect(keys).toEqual(Object.keys(ptItemsLocalizations).sort());
   });
 });
