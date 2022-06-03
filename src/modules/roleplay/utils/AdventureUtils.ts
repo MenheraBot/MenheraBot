@@ -1,6 +1,6 @@
 import {
   AbilityEffect,
-  BackPackItem,
+  EquipmentItem,
   BattleUserTurn,
   EnemyDrops,
   HolyBlessings,
@@ -102,24 +102,22 @@ export const getDungeonEnemy = (dungeonLevel: number, userLevel: number): ReadyT
 export const isDead = (entity: unknown & { life: number }): boolean => entity.life <= 0;
 
 export const isInventoryFull = (user: RoleplayUserSchema): boolean => {
-  const userBackPack = getItemById<BackPackItem>(user.backpack.id);
+  const userBackPack = getItemById<EquipmentItem<'backpack'>>(user.backpack.id);
 
   if (
     user.inventory.reduce((p, c) => p + c.amount, 0) >=
-    userBackPack.data.capacity + userBackPack.data.perLevel * user.backpack.level
+    userBackPack.data.levels[user.backpack.level].value
   )
     return true;
   return false;
 };
 
 export const getFreeInventorySpace = (user: RoleplayUserSchema): number => {
-  const userBackPack = getItemById(user.backpack.id) as IReturnData<BackPackItem>;
+  const userBackPack = getItemById(user.backpack.id) as IReturnData<EquipmentItem<'backpack'>>;
 
   const usedSpace = user.inventory.reduce((p, c) => p + c.amount, 0);
 
-  return Math.floor(
-    userBackPack.data.capacity + userBackPack.data.perLevel * user.backpack.level - usedSpace,
-  );
+  return userBackPack.data.levels[user.backpack.level].value - usedSpace;
 };
 
 export const addToInventory = (
@@ -167,12 +165,13 @@ export const makeCooldown = (
   return cooldowns;
 };
 
+// TODO: new enemy loot system
 export const getEnemyLoot = (loots: EnemyDrops[]): EnemyDrops['loots'] => {
   const chance = Math.floor(Math.random() * 100);
 
   let accumulator = loots.reduce((p, c) => p + c.probability, 0);
 
-  const mapedChanges: { loots: LeveledItem[]; probabilities: number[] }[] = loots.map((a) => {
+  const mapedChanges: { loots: number[]; probabilities: number[] }[] = loots.map((a) => {
     const toReturn = [accumulator - a.probability, accumulator];
     accumulator -= a.probability;
     return { loots: a.loots, probabilities: toReturn };
@@ -223,3 +222,20 @@ export const getAbilityDamageFromEffects = (
 
     return p;
   }, 0);
+
+export const userHasAllDrops = (
+  inventory: RoleplayUserSchema['inventory'],
+  drops: number[],
+): boolean => {
+  const packedItems = drops.reduce<{ [id: number]: number }>((acc, item) => {
+    if (typeof acc[item] === 'undefined') acc[item] = 0;
+    acc[item] += 1;
+    return acc;
+  }, {});
+
+  return Object.entries(packedItems).every(([id, amount]) => {
+    const item = inventory.find((a) => a.id === Number(id));
+    if (item) return item.amount >= amount;
+    return false;
+  });
+};

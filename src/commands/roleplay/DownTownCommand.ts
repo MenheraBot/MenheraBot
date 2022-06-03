@@ -1,17 +1,16 @@
 import {
-  BackPackItem,
+  EquipmentItem,
   ConsumableItem,
   DropItem,
   LeveledItem,
-  ProtectionItem,
   RoleplayUserSchema,
-  WeaponItem,
 } from '@roleplay/Types';
 import {
   addToInventory,
   getFreeInventorySpace,
   makeCloseCommandButton,
   removeFromInventory,
+  userHasAllDrops,
 } from '@roleplay/utils/AdventureUtils';
 import { checkAbilityByUnknownId, getItemById } from '@roleplay/utils/DataUtils';
 import { availableToBuyItems } from '@roleplay/utils/ItemsUtil';
@@ -229,9 +228,17 @@ export default class DowntownCommand extends InteractionCommand {
   }
 
   static async blacksmith(ctx: InteractionCommandContext, user: RoleplayUserSchema): Promise<void> {
-    const userBackpack = getItemById<BackPackItem>(user.backpack.id);
-    const userWeapon = getItemById<WeaponItem>(user.weapon.id);
-    const userProtection = getItemById<ProtectionItem>(user.protection.id);
+    const userBackpack = getItemById<EquipmentItem<'backpack'>>(user.backpack.id);
+    const userWeapon = getItemById<EquipmentItem<'weapon'>>(user.weapon.id);
+    const userProtection = getItemById<EquipmentItem<'protection'>>(user.protection.id);
+
+    const isBackpackAtMaxLevel =
+      typeof userBackpack.data.levels[user.backpack.level + 1] === 'undefined';
+
+    const isWeaponAtMaxLevel = typeof userWeapon.data.levels[user.weapon.level + 1] === 'undefined';
+
+    const isProtectionAtMaxLevel =
+      typeof userProtection.data.levels[user.protection.level + 1] === 'undefined';
 
     const embed = new MessageEmbed()
       .setColor(ctx.data.user.selectedColor)
@@ -244,9 +251,8 @@ export default class DowntownCommand extends InteractionCommand {
           value: ctx.locale('commands:centro.blacksmith.backpack-description', {
             name: ctx.locale(`items:${user.backpack.id as 1}.name`),
             level: user.backpack.level,
-            capacity: Math.floor(
-              userBackpack.data.capacity + userBackpack.data.perLevel * user.backpack.level,
-            ),
+            capacity: userBackpack.data.levels[user.backpack.level].value,
+            max: isBackpackAtMaxLevel ? ctx.locale('commands:centro.blacksmith.max-level') : '',
           }),
           inline: true,
         },
@@ -255,9 +261,8 @@ export default class DowntownCommand extends InteractionCommand {
           value: ctx.locale('commands:centro.blacksmith.weapon-description', {
             name: ctx.locale(`items:${user.weapon.id as 1}.name`),
             level: user.weapon.level,
-            damage: Math.floor(
-              userWeapon.data.damage + userWeapon.data.perLevel * user.weapon.level,
-            ),
+            damage: userWeapon.data.levels[user.weapon.level].value,
+            max: isWeaponAtMaxLevel ? ctx.locale('commands:centro.blacksmith.max-level') : '',
           }),
           inline: true,
         },
@@ -266,43 +271,63 @@ export default class DowntownCommand extends InteractionCommand {
           value: ctx.locale('commands:centro.blacksmith.protection-description', {
             name: ctx.locale(`items:${user.protection.id as 1}.name`),
             level: user.protection.level,
-            armor: Math.floor(
-              userProtection.data.armor + userProtection.data.perLevel * user.protection.level,
-            ),
+            armor: userProtection.data.levels[user.protection.level].value,
+            max: isProtectionAtMaxLevel ? ctx.locale('commands:centro.blacksmith.max-level') : '',
           }),
           inline: true,
         },
       ]);
 
-    const [backpackId, baseId] = makeCustomId('BACKPACK');
+    const [backpackId, baseId] = makeCustomId('UPGRADE_BACKPACK');
 
-    const backpackButton = new MessageButton()
+    const upgradeBackpackButton = new MessageButton()
       .setCustomId(backpackId)
-      .setLabel(ctx.locale('common:roleplay.backpack'))
+      .setLabel(ctx.locale('commands:centro.blacksmith.upgrade-backpack'))
+      .setStyle('PRIMARY')
+      .setDisabled(isBackpackAtMaxLevel);
+
+    const upgradeWeaponButton = new MessageButton()
+      .setCustomId(makeCustomId('UPGRADE_WEAPON', baseId)[0])
+      .setLabel(ctx.locale('commands:centro.blacksmith.upgrade-weapon'))
+      .setStyle('PRIMARY')
+      .setDisabled(isWeaponAtMaxLevel);
+
+    const upgradeProtectionButton = new MessageButton()
+      .setCustomId(makeCustomId('UPGRADE_PROTECTION', baseId)[0])
+      .setLabel(ctx.locale('commands:centro.blacksmith.upgrade-protection'))
+      .setStyle('PRIMARY')
+      .setDisabled(isProtectionAtMaxLevel);
+
+    const forgeBackpackButton = new MessageButton()
+      .setCustomId(makeCustomId('FORGE_BACKPACK', baseId)[0])
+      .setLabel(ctx.locale('commands:centro.blacksmith.forge-backpack'))
       .setStyle('PRIMARY');
 
-    const protectionButton = new MessageButton()
-      .setCustomId(makeCustomId('PROTECTION', baseId)[0])
-      .setLabel(ctx.locale('common:roleplay.protection'))
+    const forgeWeaponButton = new MessageButton()
+      .setCustomId(makeCustomId('FORGE_WEAPON', baseId)[0])
+      .setLabel(ctx.locale('commands:centro.blacksmith.forge-weapon'))
       .setStyle('PRIMARY');
 
-    const weaponButton = new MessageButton()
-      .setCustomId(makeCustomId('WEAPON', baseId)[0])
-      .setLabel(ctx.locale('common:roleplay.weapon'))
+    const forgeProtectionButton = new MessageButton()
+      .setCustomId(makeCustomId('FORGE_PROTECTION', baseId)[0])
+      .setLabel(ctx.locale('commands:centro.blacksmith.forge-protection'))
       .setStyle('PRIMARY');
 
     const exitButton = makeCloseCommandButton(baseId, ctx.i18n);
 
     ctx.makeMessage({
       embeds: [embed],
-      components: [actionRow([backpackButton, protectionButton, weaponButton, exitButton])],
+      components: [
+        actionRow([upgradeBackpackButton, upgradeWeaponButton, upgradeProtectionButton]),
+        actionRow([forgeBackpackButton, forgeWeaponButton, forgeProtectionButton, exitButton]),
+      ],
     });
 
     const selected = await Util.collectComponentInteractionWithStartingId(
       ctx.channel,
       ctx.author.id,
       baseId,
-      9000,
+      13_000,
     );
 
     if (!selected) {
@@ -310,9 +335,17 @@ export default class DowntownCommand extends InteractionCommand {
         components: [
           actionRow(
             disableComponents(ctx.locale('common:timesup'), [
-              backpackButton,
-              protectionButton,
-              weaponButton,
+              upgradeBackpackButton,
+              upgradeWeaponButton,
+              upgradeProtectionButton,
+            ]),
+          ),
+          actionRow(
+            disableComponents(ctx.locale('common:timesup'), [
+              forgeBackpackButton,
+              forgeWeaponButton,
+              forgeProtectionButton,
+              exitButton,
             ]),
           ),
         ],
@@ -322,9 +355,109 @@ export default class DowntownCommand extends InteractionCommand {
 
     if (resolveCustomId(selected.customId) === 'CLOSE_COMMAND') {
       ctx.deleteReply();
-      return;
     }
 
+    const wannaUpgrade = resolveCustomId(selected.customId).startsWith('UPGRADE');
+    const fieldToUse = resolveCustomId(selected.customId).split('_')[1].toLowerCase() as
+      | 'backpack'
+      | 'weapon'
+      | 'protection';
+
+    if (wannaUpgrade) {
+      const [upgradeId, newId] = makeCustomId('UPGRADE');
+
+      const upgradeButton = new MessageButton()
+        .setStyle('SUCCESS')
+        .setCustomId(upgradeId)
+        .setLabel(ctx.locale('commands:centro.blacksmith.upgrade'));
+
+      const toUpgrade = {
+        backpack: userBackpack.data.levels[user.backpack.level + 1],
+        weapon: userWeapon.data.levels[user.weapon.level + 1],
+        protection: userProtection.data.levels[user.protection.level + 1],
+      }[fieldToUse];
+
+      const bonusEmoji =
+        // eslint-disable-next-line no-nested-ternary
+        fieldToUse === 'backpack'
+          ? emojis.chest
+          : fieldToUse === 'weapon'
+          ? emojis.damage
+          : emojis.armor;
+
+      const costToUpgrade = toUpgrade.cost * user[fieldToUse].level;
+      const itensToUpgrade = toUpgrade.items.reduce<{ [id: number]: number }>((acc, item) => {
+        if (typeof acc[item] === 'undefined') acc[item] = 0;
+        acc[item] += 1;
+        return acc;
+      }, {});
+
+      embed.setFields([]).setDescription(
+        ctx.locale('commands:centro.blacksmith.evolve-description', {
+          cost: costToUpgrade,
+          name: ctx.locale(`items:${user[fieldToUse].id as 1}.name`),
+          level: user.protection.level + 1,
+          bonus: toUpgrade.value,
+          bonusEmoji,
+          coinEmoji: emojis.coin,
+          items: Object.entries(itensToUpgrade)
+            .map((a) => `${a[1]}x **${ctx.locale(`items:${a[0] as '1'}.name`)}**`)
+            .join(', '),
+        }),
+      );
+
+      if (costToUpgrade > user.money)
+        upgradeButton.setDisabled(true).setLabel(ctx.locale('commands:centro.blacksmith.poor'));
+
+      if (!userHasAllDrops(user.inventory, toUpgrade.items))
+        upgradeButton
+          .setDisabled(true)
+          .setLabel(ctx.locale('commands:centro.blacksmith.poor-items'));
+
+      if (upgradeButton.disabled) exitButton.setDisabled(true);
+
+      ctx.makeMessage({
+        components: [
+          actionRow([
+            upgradeButton,
+            exitButton.setCustomId(makeCustomId('CLOSE_COMMAND', newId)[0]),
+          ]),
+        ],
+        embeds: [embed],
+      });
+
+      if (upgradeButton.disabled) return;
+
+      const confirmUpgrade = await Util.collectComponentInteractionWithStartingId(
+        ctx.channel,
+        ctx.author.id,
+        newId,
+        12_000,
+      );
+
+      if (!confirmUpgrade) {
+        ctx.makeMessage({
+          components: [actionRow(disableComponents(ctx.locale('common:timesup'), [upgradeButton]))],
+        });
+        return;
+      }
+
+      if (resolveCustomId(confirmUpgrade.customId) === 'CLOSE_COMMAND') {
+        ctx.deleteReply();
+        return;
+      }
+
+      console.log('UwU');
+
+      /* TODO: If user want to upgrade, remove items from inventory and upgrade item levelm
+        Need to finish forge items checking if user has enough money and items
+        Need to translate new updates to english
+        Need to refactor code to remove drop items level (remove from inventory too to reduce memory usage)
+        YES, REMOVE LEVEL FROM ITEM, BUT DONT REMOVE THE TYPING, I WONT USE IT FOR NON LOOT ITEMS
+      */
+    }
+
+    /* 
     const [, evolveId] = makeCustomId('');
 
     const evolveButton = new MessageButton()
@@ -446,7 +579,7 @@ export default class DowntownCommand extends InteractionCommand {
       components: [],
       embeds: [],
       content: ctx.prettyResponse('success', 'commands:centro.blacksmith.success'),
-    });
+    }); */
   }
 
   static async buyItems(ctx: InteractionCommandContext, user: RoleplayUserSchema): Promise<void> {

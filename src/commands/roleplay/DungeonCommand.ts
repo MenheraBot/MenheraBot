@@ -327,15 +327,11 @@ export default class DungeonCommand extends InteractionCommand {
       let itemText = '';
 
       lootEarned.forEach((a, i) => {
-        itemText += `**${ctx.locale(`items:${a.id as 1}.name`)}** - ${ctx.locale(
-          'common:roleplay.level',
-        )} ${a.level}\n`;
+        itemText += `**${ctx.locale(`items:${a as 1}.name`)}**\n`;
 
         selectItems.addOptions({
-          label: `• ${ctx.locale(`items:${a.id as 1}.name`)} | ${ctx.locale(
-            'common:roleplay.level',
-          )} ${a.level}`,
-          value: `${a.id} | ${a.level} | ${i}`,
+          label: `• ${ctx.locale(`items:${a as 1}.name`)}`,
+          value: `${a} | ${i}`,
         });
       });
 
@@ -380,7 +376,10 @@ export default class DungeonCommand extends InteractionCommand {
 
       if (resolveCustomId(selectedItem.customId) === 'ITEM') {
         if ((selectedItem as SelectMenuInteraction).values.includes('ALL'))
-          addToInventory(lootEarned, battleResults.user.inventory);
+          addToInventory(
+            lootEarned.map((a) => ({ id: a, level: 1 })),
+            battleResults.user.inventory,
+          );
         else {
           const resolvedItems = (selectedItem as SelectMenuInteraction).values.map((a) => {
             const [id, itemLevel] = resolveSeparatedStrings(a);

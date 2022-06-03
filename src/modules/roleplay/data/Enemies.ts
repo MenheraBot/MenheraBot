@@ -18,24 +18,15 @@ const Enemies: { [id: number]: EnemiesFile } = {
     loots: [
       {
         probability: 50,
-        loots: [
-          { id: 1, level: 1 },
-          { id: 2, level: 1 },
-        ],
+        loots: [1, 2],
       },
       {
         probability: 40,
-        loots: [
-          { id: 1, level: 1 },
-          { id: 1, level: 1 },
-        ],
+        loots: [1, 1],
       },
       {
         probability: 10,
-        loots: [
-          { id: 2, level: 1 },
-          { id: 2, level: 1 },
-        ],
+        loots: [2, 2],
       },
     ],
   },
@@ -56,24 +47,15 @@ const Enemies: { [id: number]: EnemiesFile } = {
     loots: [
       {
         probability: 40,
-        loots: [
-          { id: 1, level: 1 },
-          { id: 2, level: 1 },
-        ],
+        loots: [1, 2],
       },
       {
         probability: 40,
-        loots: [
-          { id: 1, level: 1 },
-          { id: 3, level: 1 },
-        ],
+        loots: [1, 3],
       },
       {
         probability: 20,
-        loots: [
-          { id: 2, level: 1 },
-          { id: 3, level: 1 },
-        ],
+        loots: [2, 3],
       },
     ],
   },
@@ -94,17 +76,11 @@ const Enemies: { [id: number]: EnemiesFile } = {
     loots: [
       {
         probability: 95,
-        loots: [
-          { id: 2, level: 1 },
-          { id: 3, level: 1 },
-        ],
+        loots: [2, 3],
       },
       {
         probability: 5,
-        loots: [
-          { id: 1, level: 1 },
-          { id: 2, level: 1 },
-        ],
+        loots: [1, 2],
       },
     ],
   },
@@ -125,26 +101,15 @@ const Enemies: { [id: number]: EnemiesFile } = {
     loots: [
       {
         probability: 50,
-        loots: [
-          { id: 5, level: 1 },
-          { id: 2, level: 1 },
-        ],
+        loots: [5, 2],
       },
       {
         probability: 45,
-        loots: [
-          { id: 3, level: 1 },
-          { id: 2, level: 1 },
-          { id: 1, level: 1 },
-        ],
+        loots: [1, 2, 3],
       },
       {
         probability: 5,
-        loots: [
-          { id: 4, level: 1 },
-          { id: 1, level: 1 },
-          { id: 1, level: 1 },
-        ],
+        loots: [4, 1, 1],
       },
     ],
   },
@@ -165,26 +130,15 @@ const Enemies: { [id: number]: EnemiesFile } = {
     loots: [
       {
         probability: 50,
-        loots: [
-          { id: 4, level: 1 },
-          { id: 3, level: 1 },
-        ],
+        loots: [4, 3],
       },
       {
         probability: 45,
-        loots: [
-          { id: 3, level: 1 },
-          { id: 4, level: 1 },
-          { id: 4, level: 1 },
-        ],
+        loots: [3, 4, 4],
       },
       {
         probability: 5,
-        loots: [
-          { id: 5, level: 1 },
-          { id: 5, level: 1 },
-          { id: 2, level: 1 },
-        ],
+        loots: [5, 5, 2],
       },
     ],
   },
@@ -205,18 +159,11 @@ const Enemies: { [id: number]: EnemiesFile } = {
     loots: [
       {
         probability: 99,
-        loots: [
-          { id: 4, level: 1 },
-          { id: 5, level: 1 },
-        ],
+        loots: [4, 5],
       },
       {
         probability: 1,
-        loots: [
-          { id: 5, level: 1 },
-          { id: 5, level: 1 },
-          { id: 5, level: 1 },
-        ],
+        loots: [5, 5, 5],
       },
     ],
   },
@@ -237,26 +184,15 @@ const Enemies: { [id: number]: EnemiesFile } = {
     loots: [
       {
         probability: 50,
-        loots: [
-          { id: 2, level: 1 },
-          { id: 4, level: 1 },
-        ],
+        loots: [2, 4],
       },
       {
         probability: 48,
-        loots: [
-          { id: 5, level: 1 },
-          { id: 3, level: 1 },
-          { id: 1, level: 2 },
-        ],
+        loots: [5, 3, 1],
       },
       {
         probability: 2,
-        loots: [
-          { id: 2, level: 2 },
-          { id: 5, level: 1 },
-          { id: 1, level: 2 },
-        ],
+        loots: [2, 5, 1],
       },
     ],
   },
@@ -277,26 +213,15 @@ const Enemies: { [id: number]: EnemiesFile } = {
     loots: [
       {
         probability: 100,
-        loots: [
-          { id: 6, level: 1 },
-          { id: 3, level: 2 },
-        ],
+        loots: [6, 3],
       },
       {
         probability: 99,
-        loots: [
-          { id: 6, level: 1 },
-          { id: 6, level: 1 },
-          { id: 4, level: 2 },
-        ],
+        loots: [6, 6, 4],
       },
       {
         probability: 1,
-        loots: [
-          { id: 1, level: 1 },
-          { id: 1, level: 1 },
-          { id: 1, level: 1 },
-        ],
+        loots: [1, 1, 1],
       },
     ],
   },
@@ -317,18 +242,11 @@ const Enemies: { [id: number]: EnemiesFile } = {
     loots: [
       {
         probability: 80,
-        loots: [
-          { id: 2, level: 1 },
-          { id: 4, level: 1 },
-        ],
+        loots: [2, 4],
       },
       {
         probability: 20,
-        loots: [
-          { id: 1, level: 1 },
-          { id: 1, level: 1 },
-          { id: 2, level: 1 },
-        ],
+        loots: [1, 1, 2],
       },
     ],
   },
@@ -349,26 +267,15 @@ const Enemies: { [id: number]: EnemiesFile } = {
     loots: [
       {
         probability: 50,
-        loots: [
-          { id: 4, level: 1 },
-          { id: 3, level: 2 },
-        ],
+        loots: [4, 3],
       },
       {
         probability: 45,
-        loots: [
-          { id: 3, level: 1 },
-          { id: 4, level: 1 },
-          { id: 4, level: 1 },
-        ],
+        loots: [3, 4, 4],
       },
       {
         probability: 5,
-        loots: [
-          { id: 5, level: 1 },
-          { id: 5, level: 1 },
-          { id: 2, level: 2 },
-        ],
+        loots: [5, 5, 2],
       },
     ],
   },

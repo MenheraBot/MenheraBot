@@ -124,7 +124,7 @@ export interface AbilitiesFile {
 
 export interface EnemyDrops {
   probability: number;
-  loots: LeveledItem[];
+  loots: number[];
 }
 
 interface EnemyBoostPerLevel {
@@ -158,39 +158,18 @@ export interface ReadyToBattleEnemy {
   loots: EnemyDrops[];
 }
 
-interface Upgradable {
+interface ItemLevel {
   // COST === 0 AND ITEMS.LENGTH === 0 MEANS CANNOT DO
   cost: number; // Valor para fazer
   items: number[]; // Itens usados
+  value: number; // Valor total do item atribuido
 }
 
-export interface ToUpgrade {
-  [level: number]: Upgradable;
-}
+export type EquipmentTypes = 'weapon' | 'protection' | 'backpack';
 
-export type ToCraft = Upgradable;
-
-export interface UpgradableItem {
-  toUpgrade: ToUpgrade;
-  toCraft: ToCraft;
-}
-
-export interface BackPackItem extends UpgradableItem {
-  type: 'backpack';
-  capacity: number;
-  perLevel: number;
-}
-
-export interface WeaponItem extends UpgradableItem {
-  type: 'weapon';
-  damage: number;
-  perLevel: number;
-}
-
-export interface ProtectionItem extends UpgradableItem {
-  type: 'protection';
-  armor: number;
-  perLevel: number;
+export interface EquipmentItem<Equipment extends EquipmentTypes = EquipmentTypes> {
+  type: Equipment;
+  levels: { [level: number]: ItemLevel };
 }
 
 export interface DropItem {
@@ -207,7 +186,7 @@ export interface ConsumableItem {
   perLevel: number;
 }
 
-export type ItemsFile = BackPackItem | WeaponItem | DropItem | ConsumableItem | ProtectionItem;
+export type ItemsFile = EquipmentItem | DropItem | ConsumableItem;
 
 export type UserBattleEntity = RoleplayUserSchema & {
   effects: Array<AbilityEffect & { level: number; author: EffectAuthor }>;

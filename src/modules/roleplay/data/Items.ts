@@ -5,7 +5,7 @@ const Items: { [id: number]: ItemsFile } = {
     type: 'backpack',
     capacity: 10,
     perLevel: 5,
-    toCraft: {
+    toForge: {
       cost: 0,
       items: [],
     },
@@ -20,7 +20,7 @@ const Items: { [id: number]: ItemsFile } = {
     type: 'protection',
     armor: 10,
     perLevel: 5,
-    toCraft: {
+    toForge: {
       cost: 0,
       items: [],
     },
@@ -35,7 +35,7 @@ const Items: { [id: number]: ItemsFile } = {
     type: 'weapon',
     damage: 10,
     perLevel: 10,
-    toCraft: {
+    toForge: {
       cost: 0,
       items: [],
     },
@@ -94,7 +94,7 @@ const Items: { [id: number]: ItemsFile } = {
     type: 'backpack',
     capacity: 20,
     perLevel: 10,
-    toCraft: {
+    toForge: {
       cost: 100,
       items: [4, 4, 4, 1, 1, 1],
     },
