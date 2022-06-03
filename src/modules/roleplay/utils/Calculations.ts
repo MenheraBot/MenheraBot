@@ -3,13 +3,7 @@ import {
   DIFFICULT_TO_LEVEL_UP,
   ELEMENT_SINERGY_BONUS_IN_PERCENTAGE,
 } from '@roleplay/Constants';
-import {
-  ProtectionItem,
-  ReadyToBattleEnemy,
-  UserAbility,
-  UserBattleEntity,
-  WeaponItem,
-} from '@roleplay/Types';
+import { EquipmentItem, ReadyToBattleEnemy, UserAbility, UserBattleEntity } from '@roleplay/Types';
 import { ToBLess } from '@custom_types/Menhera';
 import { getAbilityById, getClassById, getItemById, getRaceById } from './DataUtils';
 
@@ -102,7 +96,7 @@ export const getUserDamage = (
   const userClass = getClassById(user.class);
   const userRace = getRaceById(user.race);
   const userBlesses = makeBlessingStatusUpgrade('damage', user.blesses.damage);
-  const userWeapon = getItemById<WeaponItem>(user.weapon.id);
+  const userWeapon = getItemById<EquipmentItem<'weapon'>>(user.weapon.id);
 
   const classDamage =
     userClass.data.baseDamage + userClass.data.attributesPerLevel.baseDamage * user.level;
@@ -112,7 +106,7 @@ export const getUserDamage = (
     0,
   );
 
-  const weaponDamage = userWeapon.data.damage + userWeapon.data.perLevel * user.weapon.level;
+  const weaponDamage = userWeapon.data.levels[user.weapon.level].value;
 
   const baseDamage = classDamage + raceDamage + userBlesses + weaponDamage;
 
@@ -127,7 +121,7 @@ export const getUserArmor = (
   const userClass = getClassById(user.class);
   const userRace = getRaceById(user.race);
   const userBlesses = makeBlessingStatusUpgrade('armor', user.blesses.armor);
-  const userProtection = getItemById<ProtectionItem>(user.protection.id);
+  const userProtection = getItemById<EquipmentItem<'protection'>>(user.protection.id);
 
   const classArmor =
     userClass.data.baseArmor + userClass.data.attributesPerLevel.baseArmor * user.level;
@@ -137,8 +131,7 @@ export const getUserArmor = (
     0,
   );
 
-  const protectionArmor =
-    userProtection.data.armor + userProtection.data.perLevel * user.protection.level;
+  const protectionArmor = userProtection.data.levels[user.protection.level].value;
 
   const baseArmor = classArmor + raceArmor + userBlesses + protectionArmor;
 

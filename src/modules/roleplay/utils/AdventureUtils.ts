@@ -9,6 +9,7 @@ import {
   RoleplayUserSchema,
   UserBattleEntity,
   UserCooldown,
+  InventoryItem,
 } from '@roleplay/Types';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { LEVEL_UP_BLESSES } from '@roleplay/Constants';
@@ -223,19 +224,28 @@ export const getAbilityDamageFromEffects = (
     return p;
   }, 0);
 
+export const packDrops = (drops: number[]): InventoryItem[] =>
+  drops.reduce<InventoryItem[]>((acc, itemId) => {
+    const item = acc.find((a) => a.id === itemId);
+
+    if (!item) {
+      acc.push({ id: itemId, level: 1, amount: 1 });
+      return acc;
+    }
+
+    item.amount += 1;
+    return acc;
+  }, []);
+
 export const userHasAllDrops = (
   inventory: RoleplayUserSchema['inventory'],
   drops: number[],
 ): boolean => {
-  const packedItems = drops.reduce<{ [id: number]: number }>((acc, item) => {
-    if (typeof acc[item] === 'undefined') acc[item] = 0;
-    acc[item] += 1;
-    return acc;
-  }, {});
+  const packedItems = packDrops(drops);
 
-  return Object.entries(packedItems).every(([id, amount]) => {
-    const item = inventory.find((a) => a.id === Number(id));
-    if (item) return item.amount >= amount;
-    return false;
-  });
+  return packedItems.every((item) =>
+    inventory.some(
+      (itemInInventory) => itemInInventory.id === item.id && itemInInventory.amount >= item.amount,
+    ),
+  );
 };

@@ -9,6 +9,7 @@ import {
   addToInventory,
   getFreeInventorySpace,
   makeCloseCommandButton,
+  packDrops,
   removeFromInventory,
   userHasAllDrops,
 } from '@roleplay/utils/AdventureUtils';
@@ -386,11 +387,7 @@ export default class DowntownCommand extends InteractionCommand {
           : emojis.armor;
 
       const costToUpgrade = toUpgrade.cost * user[fieldToUse].level;
-      const itensToUpgrade = toUpgrade.items.reduce<{ [id: number]: number }>((acc, item) => {
-        if (typeof acc[item] === 'undefined') acc[item] = 0;
-        acc[item] += 1;
-        return acc;
-      }, {});
+      const itemsToUpgrade = packDrops(toUpgrade.items);
 
       embed.setFields([]).setDescription(
         ctx.locale('commands:centro.blacksmith.evolve-description', {
@@ -400,9 +397,12 @@ export default class DowntownCommand extends InteractionCommand {
           bonus: toUpgrade.value,
           bonusEmoji,
           coinEmoji: emojis.coin,
-          items: Object.entries(itensToUpgrade)
-            .map((a) => `${a[1]}x **${ctx.locale(`items:${a[0] as '1'}.name`)}**`)
-            .join(', '),
+          items:
+            itemsToUpgrade.length === 0
+              ? ctx.locale('commands:centro.blacksmith.none')
+              : itemsToUpgrade
+                  .map((a) => `${a.amount}x **${ctx.locale(`items:${a.id as 1}.name`)}**`)
+                  .join(', '),
         }),
       );
 
@@ -447,9 +447,26 @@ export default class DowntownCommand extends InteractionCommand {
         return;
       }
 
-      console.log('UwU');
+      user[fieldToUse].level += 1;
 
-      /* TODO: If user want to upgrade, remove items from inventory and upgrade item levelm
+      removeFromInventory(
+        toUpgrade.items.map((a) => ({ id: a, level: 1 })),
+        user.inventory,
+      );
+
+      await ctx.client.repositories.roleplayRepository.updateUser(ctx.author.id, {
+        $inc: { money: negate(costToUpgrade) },
+        [fieldToUse]: user[fieldToUse],
+        inventory: user.inventory,
+      });
+
+      ctx.makeMessage({
+        components: [],
+        embeds: [],
+        content: ctx.prettyResponse('success', 'commands:centro.blacksmith.success'),
+      });
+
+      /* TODO: 
         Need to finish forge items checking if user has enough money and items
         Need to translate new updates to english
         Need to refactor code to remove drop items level (remove from inventory too to reduce memory usage)
