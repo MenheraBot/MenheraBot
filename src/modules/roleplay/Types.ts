@@ -169,13 +169,13 @@ export type EquipmentTypes = 'weapon' | 'protection' | 'backpack';
 
 export interface EquipmentItem<Equipment extends EquipmentTypes = EquipmentTypes> {
   type: Equipment;
+  availableLocations: number[];
   levels: { [level: number]: ItemLevel };
 }
 
 export interface DropItem {
   type: 'enemy_drop';
   marketValue: number;
-  perLevel: number;
 }
 
 export interface ConsumableItem {

@@ -826,10 +826,18 @@
       "weapon-description": "**{{name}}**\nDano: **{{damage}}**\nNível: **{{level}}** {{max}}",
       "protection-description": "**{{name}}**\nDefesa: **{{armor}}**\nNível: **{{level}}** {{max}}",
       "upgrade": "Melhorar",
+      "fields": {
+        "backpack": "Capacidade",
+        "weapon": "Dano",
+        "protection": "Defesa"
+      },
+      "no-space": "Você está sem espaço em sua mochila para guardar esse item!",
       "poor": "Dinheiro Insuficiente",
       "poor-items": "Ítens Insuficientes",
       "none": "Nenhum :)",
-      "success": "Evolução Concluída com Sucesso!",
+      "no-forgeable": "Não há nenhum ítem para forjar na sua localização atualmente",
+      "forge-item-description": "**{{name}}**\nCusto: **{{cost}}** {{noMoney}}\nÍtens Necessários: {{items}} {{noItems}}\n{{field}}: **{{value}}**",
+      "success": "Melhoria Concluída com Sucesso!",
       "forge-backpack": "Forjar Mochila",
       "upgrade-backpack": "Melhorar Mochila",
       "forge-weapon": "Forjar Arma",
@@ -837,7 +845,7 @@
       "forge-protection": "Forjar Armadura",
       "upgrade-protection": "Melhorar Armadura",
       "max-level": "| Nível Máximo!",
-      "evolve-description": "**Melhorar {{name}}**\n\nCusto de Melhoria: **{{cost}}** {{coinEmoji}}\nBônus da Melhoria: **{{bonus}}** {{bonusEmoji}}\nÍtens Nescessários: **{{items}}**\nNível da Melhoria: **{{level}}**",
+      "evolve-description": "**Melhorar {{name}}**\n\nCusto de Melhoria: **{{cost}}** {{coinEmoji}}\nBônus da Melhoria: **{{bonus}}** {{bonusEmoji}}\nÍtens Necessários: {{items}}\nNível da Melhoria: **{{level}}**",
       "description": "Bem-Vindo ao Ferreiro de Boleham, aqui você pode melhorar seus ítens como Mochila, Arma e Armadura. Selecione abaixo o que desejas fazer"
     },
     "buy": {

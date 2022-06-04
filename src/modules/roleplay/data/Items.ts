@@ -3,6 +3,7 @@ import { ItemsFile } from '@roleplay/Types';
 const Items: { [id: number]: ItemsFile } = {
   100: {
     type: 'backpack',
+    availableLocations: [0],
     levels: {
       1: {
         cost: 0,
@@ -18,6 +19,7 @@ const Items: { [id: number]: ItemsFile } = {
   },
   101: {
     type: 'protection',
+    availableLocations: [0],
     levels: {
       1: {
         cost: 0,
@@ -33,6 +35,7 @@ const Items: { [id: number]: ItemsFile } = {
   },
   102: {
     type: 'weapon',
+    availableLocations: [0],
     levels: {
       1: {
         cost: 0,
@@ -49,32 +52,26 @@ const Items: { [id: number]: ItemsFile } = {
   1: {
     type: 'enemy_drop',
     marketValue: 1,
-    perLevel: 2,
   },
   2: {
     type: 'enemy_drop',
     marketValue: 1,
-    perLevel: 3,
   },
   3: {
     type: 'enemy_drop',
     marketValue: 2,
-    perLevel: 4,
   },
   4: {
     type: 'enemy_drop',
     marketValue: 6,
-    perLevel: 3,
   },
   5: {
     type: 'enemy_drop',
     marketValue: 9,
-    perLevel: 6,
   },
   6: {
     type: 'enemy_drop',
     marketValue: 11,
-    perLevel: 5,
   },
   7: {
     type: 'potion',
@@ -92,6 +89,7 @@ const Items: { [id: number]: ItemsFile } = {
   },
   103: {
     type: 'backpack',
+    availableLocations: [0],
     levels: {
       1: {
         cost: 100,

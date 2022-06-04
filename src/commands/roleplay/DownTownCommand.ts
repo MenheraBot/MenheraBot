@@ -9,10 +9,9 @@ import {
   addToInventory,
   getFreeInventorySpace,
   makeCloseCommandButton,
-  packDrops,
   removeFromInventory,
-  userHasAllDrops,
 } from '@roleplay/utils/AdventureUtils';
+import { getAllForgeableItems, packDrops, userHasAllDrops } from '@roleplay/utils/BlacksmithUtils';
 import { checkAbilityByUnknownId, getItemById } from '@roleplay/utils/DataUtils';
 import { availableToBuyItems } from '@roleplay/utils/ItemsUtil';
 import InteractionCommand from '@structures/command/InteractionCommand';
@@ -409,7 +408,7 @@ export default class DowntownCommand extends InteractionCommand {
       if (costToUpgrade > user.money)
         upgradeButton.setDisabled(true).setLabel(ctx.locale('commands:centro.blacksmith.poor'));
 
-      if (!userHasAllDrops(user.inventory, toUpgrade.items))
+      if (!userHasAllDrops(user.inventory, itemsToUpgrade))
         upgradeButton
           .setDisabled(true)
           .setLabel(ctx.locale('commands:centro.blacksmith.poor-items'));
@@ -466,137 +465,120 @@ export default class DowntownCommand extends InteractionCommand {
         content: ctx.prettyResponse('success', 'commands:centro.blacksmith.success'),
       });
 
-      /* TODO: 
+      return;
+    }
+
+    /* TODO: 
         Need to finish forge items checking if user has enough money and items
         Need to translate new updates to english
         Need to refactor code to remove drop items level (remove from inventory too to reduce memory usage)
-        YES, REMOVE LEVEL FROM ITEM, BUT DONT REMOVE THE TYPING, I WONT USE IT FOR NON LOOT ITEMS
       */
+
+    const availableToForge = getAllForgeableItems(fieldToUse);
+
+    if (availableToForge.length === 0) {
+      embed.setFields([]).setDescription(ctx.locale('commands:centro.blacksmith.no-forgeable'));
+
+      ctx.makeMessage({ embeds: [embed], components: [] });
+      return;
     }
 
-    /* 
-    const [, evolveId] = makeCustomId('');
+    const [menuId, newId] = makeCustomId('SELECT');
+    const itemSelector = new MessageSelectMenu()
+      .setCustomId(menuId)
+      .setMinValues(1)
+      .setDisabled(true)
+      .setMaxValues(1);
 
-    const evolveButton = new MessageButton()
-      .setStyle('SUCCESS')
-      .setLabel(ctx.locale('commands:centro.blacksmith.evolve'));
+    embed.setFields([]).setDescription('');
+    availableToForge.forEach((item) => {
+      const toForge = item.data.levels[1];
+      const itemsToForge = packDrops(toForge.items);
+      const hasMoney = toForge.cost > user.money;
+      const hasItems = userHasAllDrops(user.inventory, itemsToForge);
+      embed.description += ctx.locale('commands:centro.blacksmith.forge-item-description', {
+        field: ctx.locale(`commands:centro.blacksmith.fields.${fieldToUse}`),
+        value: toForge.value,
+        cost: toForge.cost,
+        name: ctx.locale(`items:${item.id as 1}.name`),
+        noMoney: !hasMoney ? `| ${ctx.locale('commands:centro.blacksmith.poor')}` : '',
+        noItems: !hasItems ? `| ${ctx.locale('commands:centro.blacksmith.poor-items')}` : '',
+        items:
+          itemsToForge.length === 0
+            ? ctx.locale('commands:centro.blacksmith.none')
+            : itemsToForge
+                .map((a) => `${a.amount}x **${ctx.locale(`items:${a.id as 1}.name`)}**`)
+                .join(', '),
+      });
 
-    if (resolveCustomId(selected.customId) === 'PROTECTION') {
-      const costToEvolve =
-        userProtection.data.toUpgrade.cost +
-        userProtection.data.toUpgrade.costPerLevel *
-          (user.protection.level === 1 ? 0 : 2 ** (user.protection.level - 1));
-
-      embed.setFields([]).setDescription(
-        ctx.locale('commands:centro.blacksmith.evolve-description', {
-          cost: costToEvolve,
-          name: ctx.locale(`items:${user.protection.id as 1}.name`),
-          level: user.protection.level + 1,
-          bonus: userProtection.data.perLevel,
-          bonusEmoji: emojis.armor,
-          coinEmoji: emojis.coin,
-        }),
-      );
-
-      evolveButton.setCustomId(`${evolveId} | ${costToEvolve}`);
-      if (costToEvolve > user.money)
-        evolveButton.setDisabled(true).setLabel(ctx.locale('commands:centro.blacksmith.poor'));
-    }
-
-    if (resolveCustomId(selected.customId) === 'WEAPON') {
-      const costToEvolve =
-        userWeapon.data.toUpgrade.cost +
-        userWeapon.data.toUpgrade.costPerLevel *
-          (user.weapon.level === 1 ? 0 : 2 ** (user.weapon.level - 1));
-
-      embed.setFields([]).setDescription(
-        ctx.locale('commands:centro.blacksmith.evolve-description', {
-          cost: costToEvolve,
-          name: ctx.locale(`items:${user.weapon.id as 1}.name`),
-          level: user.weapon.level + 1,
-          bonus: userWeapon.data.perLevel,
-          bonusEmoji: emojis.damage,
-          coinEmoji: emojis.coin,
-        }),
-      );
-
-      evolveButton.setCustomId(`${evolveId} | ${costToEvolve}`);
-      if (costToEvolve > user.money)
-        evolveButton.setDisabled(true).setLabel(ctx.locale('commands:centro.blacksmith.poor'));
-    }
-
-    if (resolveCustomId(selected.customId) === 'BACKPACK') {
-      const costToEvolve =
-        userBackpack.data.toUpgrade.cost +
-        userBackpack.data.toUpgrade.costPerLevel *
-          (user.backpack.level === 1 ? 0 : 2 ** (user.backpack.level - 1));
-
-      embed.setFields([]).setDescription(
-        ctx.locale('commands:centro.blacksmith.evolve-description', {
-          cost: costToEvolve,
-          name: ctx.locale(`items:${user.backpack.id as 1}.name`),
-          level: user.backpack.level + 1,
-          bonus: userBackpack.data.perLevel,
-          bonusEmoji: emojis.chest,
-          coinEmoji: emojis.coin,
-        }),
-      );
-
-      evolveButton.setCustomId(`${evolveId} | ${costToEvolve}`);
-      if (costToEvolve > user.money)
-        evolveButton.setDisabled(true).setLabel(ctx.locale('commands:centro.blacksmith.poor'));
-    }
-
-    if (evolveButton.disabled) exitButton.setDisabled(true);
-
-    ctx.makeMessage({
-      components: [
-        actionRow([
-          evolveButton,
-          exitButton.setCustomId(makeCustomId('CLOSE_COMMAND', evolveId)[0]),
-        ]),
-      ],
-      embeds: [embed],
+      if (hasItems && hasMoney)
+        itemSelector.addOptions({
+          label: ctx.locale(`items:${item.id as 1}.name`),
+          value: `${item.id}`,
+        });
     });
 
-    if (evolveButton.disabled) return;
+    if (itemSelector.options.length > 0) itemSelector.setDisabled(false);
 
-    const wannaEvolve = await Util.collectComponentInteractionWithStartingId(
-      ctx.channel,
-      ctx.author.id,
-      evolveId,
-      8_000,
-    );
+    ctx.makeMessage({
+      embeds: [embed],
+      components: [
+        actionRow([itemSelector]),
+        actionRow([exitButton.setCustomId(makeCustomId('CLOSE_COMMAND', newId)[0])]),
+      ],
+    });
 
-    if (!wannaEvolve) {
+    if (itemSelector.disabled) return;
+
+    const selectedForge =
+      await Util.collectComponentInteractionWithStartingId<SelectMenuInteraction>(
+        ctx.channel,
+        ctx.author.id,
+        newId,
+        15_000,
+      );
+
+    if (!selectedForge) {
       ctx.makeMessage({
-        components: [actionRow(disableComponents(ctx.locale('common:timesup'), [evolveButton]))],
+        components: [actionRow(disableComponents(ctx.locale('common:timesup'), [itemSelector]))],
       });
       return;
     }
 
-    if (resolveCustomId(wannaEvolve.customId) === 'CLOSE_COMMAND') {
+    if (resolveCustomId(selectedForge.customId) === 'CLOSE_COMMAND') {
       ctx.deleteReply();
       return;
     }
 
-    const costToEvolve = Number(resolveCustomId(wannaEvolve.customId));
-    if (Number.isNaN(costToEvolve)) return;
+    const toForgeItem = availableToForge.find(
+      (item) => item.id === Number(selectedForge.values[0]),
+    );
 
-    const field = resolveCustomId(selected.customId).toLowerCase() as 'backpack';
+    if (!toForgeItem) {
+      ctx.deleteReply();
+      return;
+    }
 
-    user[field].level += 1;
+    removeFromInventory(
+      toForgeItem.data.levels[1].items.map((a) => ({ id: a, level: 1 })),
+      user.inventory,
+    );
+
+    if (getFreeInventorySpace(user) < 1) {
+      ctx.makeMessage({
+        embeds: [],
+        components: [],
+        content: ctx.prettyResponse('error', 'commands:centro.blacksmith.no-space'),
+      });
+      return;
+    }
+
+    addToInventory([{ id: toForgeItem.id, level: 1 }], user.inventory);
 
     await ctx.client.repositories.roleplayRepository.updateUser(ctx.author.id, {
-      $inc: { money: negate(costToEvolve) },
-      [field]: user[field],
+      $inc: { money: negate(toForgeItem.data.levels[1].cost) },
+      inventory: user.inventory,
     });
-
-    ctx.makeMessage({
-      components: [],
-      embeds: [],
-      content: ctx.prettyResponse('success', 'commands:centro.blacksmith.success'),
-    }); */
   }
 
   static async buyItems(ctx: InteractionCommandContext, user: RoleplayUserSchema): Promise<void> {
@@ -781,9 +763,7 @@ export default class DowntownCommand extends InteractionCommand {
         ctx.locale(`items:${a.id as 1}.name`),
         `${ctx.locale('common:roleplay.level')} **${a.level}**\n${ctx.locale('common:amount')}: **${
           a.amount
-        }**\n${ctx.locale('common:value')}: **${
-          resolvedItem.data.marketValue + resolvedItem.data.perLevel * a.level
-        }** ${emojis.coin}`,
+        }**\n${ctx.locale('common:value')}: **${resolvedItem.data.marketValue}** ${emojis.coin}`,
         true,
       );
 
@@ -793,9 +773,7 @@ export default class DowntownCommand extends InteractionCommand {
           label: `${ctx.locale(`items:${a.id as 1}.name`)} | ${ctx.locale(
             'common:roleplay.level',
           )} ${a.level}`,
-          value: `${a.id} | ${a.level} | ${
-            resolvedItem.data.marketValue + resolvedItem.data.perLevel * a.level
-          } | ${i} | ${j}`,
+          value: `${a.id} | ${a.level} | ${resolvedItem.data.marketValue} | ${i} | ${j}`,
         });
       }
     });
@@ -832,8 +810,7 @@ export default class DowntownCommand extends InteractionCommand {
     if (selectedItems.values.includes('ALL')) {
       const totalMoney = sellableItems.reduce((p, c) => {
         const resolvedItem = getItemById<DropItem>(c.id);
-        const itemValue =
-          (resolvedItem.data.marketValue + resolvedItem.data.perLevel * c.level) * c.amount;
+        const itemValue = resolvedItem.data.marketValue * c.amount;
         removeFromInventory(Array(c.amount).fill({ id: c.id, level: c.level }), user.inventory);
         return p + itemValue;
       }, 0);

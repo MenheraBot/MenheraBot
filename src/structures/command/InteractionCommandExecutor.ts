@@ -143,24 +143,12 @@ const InteractionCommandExecutor = async (
         process.env.BUG_HOOK_TOKEN as string,
       );
 
-      if (interaction.deferred) {
-        interaction.webhook
-          .send({
-            content: t('events:error_embed.title', {
-              cmd: command.config.name,
-            }),
-            ephemeral: true,
-          })
-          .catch(debugError);
-      } else
-        interaction
-          .reply({
-            content: t('events:error_embed.title', {
-              cmd: command.config.name,
-            }),
-            ephemeral: true,
-          })
-          .catch(debugError);
+      ctx.makeMessage({
+        content: t('events:error_embed.title', {
+          cmd: command.config.name,
+        }),
+        ephemeral: true,
+      });
 
       if (err instanceof Error && err.stack) {
         const errorMessage = err.stack.length > 1800 ? `${err.stack.slice(0, 1800)}...` : err.stack;
