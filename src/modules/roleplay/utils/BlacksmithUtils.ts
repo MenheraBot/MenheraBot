@@ -1,6 +1,6 @@
 import { IReturnData } from '@custom_types/Menhera';
 import { EquipmentItem, EquipmentTypes, InventoryItem, RoleplayUserSchema } from '@roleplay/Types';
-import { getItemsByType } from './DataUtils';
+import { getEquipmentsByType } from './DataUtils';
 
 export const packDrops = (drops: number[]): InventoryItem[] =>
   drops.reduce<InventoryItem[]>((acc, itemId) => {
@@ -30,7 +30,7 @@ export const getAllForgeableItems = (
   forgeType: EquipmentTypes,
   locationId = 0,
 ): IReturnData<EquipmentItem>[] => {
-  const items = getItemsByType<EquipmentItem>(forgeType);
+  const items = getEquipmentsByType(forgeType);
 
   return items.filter(
     (item) =>

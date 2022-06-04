@@ -1,10 +1,4 @@
-import {
-  EquipmentItem,
-  ConsumableItem,
-  DropItem,
-  LeveledItem,
-  RoleplayUserSchema,
-} from '@roleplay/Types';
+import { ConsumableItem, DropItem, LeveledItem, RoleplayUserSchema } from '@roleplay/Types';
 import {
   addToInventory,
   getFreeInventorySpace,
@@ -12,7 +6,7 @@ import {
   removeFromInventory,
 } from '@roleplay/utils/AdventureUtils';
 import { getAllForgeableItems, packDrops, userHasAllDrops } from '@roleplay/utils/BlacksmithUtils';
-import { checkAbilityByUnknownId, getItemById } from '@roleplay/utils/DataUtils';
+import { checkAbilityByUnknownId, getEquipmentById, getItemById } from '@roleplay/utils/DataUtils';
 import { availableToBuyItems } from '@roleplay/utils/ItemsUtil';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
@@ -228,9 +222,9 @@ export default class DowntownCommand extends InteractionCommand {
   }
 
   static async blacksmith(ctx: InteractionCommandContext, user: RoleplayUserSchema): Promise<void> {
-    const userBackpack = getItemById<EquipmentItem<'backpack'>>(user.backpack.id);
-    const userWeapon = getItemById<EquipmentItem<'weapon'>>(user.weapon.id);
-    const userProtection = getItemById<EquipmentItem<'protection'>>(user.protection.id);
+    const userBackpack = getEquipmentById<'backpack'>(user.backpack.id);
+    const userWeapon = getEquipmentById<'weapon'>(user.weapon.id);
+    const userProtection = getEquipmentById<'protection'>(user.protection.id);
 
     const isBackpackAtMaxLevel =
       typeof userBackpack.data.levels[user.backpack.level + 1] === 'undefined';

@@ -3,6 +3,8 @@ import {
   AbilitiesFile,
   ClassesFile,
   EnemiesFile,
+  EquipmentItem,
+  EquipmentTypes,
   ItemsFile,
   RacesFile,
   UserAbility,
@@ -10,7 +12,7 @@ import {
 import Abilities from '@roleplay/data/Abilities';
 import Items from '@roleplay/data/Items';
 import { MayNotExists } from '@utils/Util';
-import { Classes, Enemies, Races } from '../data';
+import { Classes, Enemies, Equipments, Races } from '../data';
 
 export const getClasses = (): IReturnData<ClassesFile>[] =>
   Object.entries(Classes).map((c) => ({ id: Number(c[0]), data: c[1] }));
@@ -86,6 +88,21 @@ export const getItemById = <T extends ItemsFile>(itemId: number): IReturnData<T>
 
   return foundItem.map((c) => ({ id: Number(c[0]), data: c[1] }))[0] as unknown as IReturnData<T>;
 };
+
+export const getEquipmentById = <T extends EquipmentTypes>(
+  itemId: number,
+): IReturnData<EquipmentItem<T>> => {
+  const foundItem = Object.entries(Equipments).filter((c) => Number(c[0]) === itemId)[0];
+
+  return { id: itemId, data: foundItem[1] } as unknown as IReturnData<EquipmentItem<T>>;
+};
+
+export const getEquipmentsByType = <T extends EquipmentTypes>(
+  ItemType: EquipmentTypes,
+): IReturnData<EquipmentItem<T>>[] =>
+  Object.entries(Equipments)
+    .filter((a) => a[1].type === ItemType)
+    .map((a) => ({ id: Number(a[0]), data: a[1] })) as unknown as IReturnData<EquipmentItem<T>>[];
 
 export const checkAbilityByUnknownId = (
   abilityId: number,

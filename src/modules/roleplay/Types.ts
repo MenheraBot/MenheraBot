@@ -186,7 +186,7 @@ export interface ConsumableItem {
   perLevel: number;
 }
 
-export type ItemsFile = EquipmentItem | DropItem | ConsumableItem;
+export type ItemsFile = DropItem | ConsumableItem;
 
 export type UserBattleEntity = RoleplayUserSchema & {
   effects: Array<AbilityEffect & { level: number; author: EffectAuthor }>;

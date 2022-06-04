@@ -3,9 +3,9 @@ import {
   DIFFICULT_TO_LEVEL_UP,
   ELEMENT_SINERGY_BONUS_IN_PERCENTAGE,
 } from '@roleplay/Constants';
-import { EquipmentItem, ReadyToBattleEnemy, UserAbility, UserBattleEntity } from '@roleplay/Types';
+import { ReadyToBattleEnemy, UserAbility, UserBattleEntity } from '@roleplay/Types';
 import { ToBLess } from '@custom_types/Menhera';
-import { getAbilityById, getClassById, getItemById, getRaceById } from './DataUtils';
+import { getAbilityById, getClassById, getEquipmentById, getRaceById } from './DataUtils';
 
 export const getEnemyStatusWithEffects = (
   enemy: ReadyToBattleEnemy,
@@ -96,7 +96,7 @@ export const getUserDamage = (
   const userClass = getClassById(user.class);
   const userRace = getRaceById(user.race);
   const userBlesses = makeBlessingStatusUpgrade('damage', user.blesses.damage);
-  const userWeapon = getItemById<EquipmentItem<'weapon'>>(user.weapon.id);
+  const userWeapon = getEquipmentById<'weapon'>(user.weapon.id);
 
   const classDamage =
     userClass.data.baseDamage + userClass.data.attributesPerLevel.baseDamage * user.level;
@@ -121,7 +121,7 @@ export const getUserArmor = (
   const userClass = getClassById(user.class);
   const userRace = getRaceById(user.race);
   const userBlesses = makeBlessingStatusUpgrade('armor', user.blesses.armor);
-  const userProtection = getItemById<EquipmentItem<'protection'>>(user.protection.id);
+  const userProtection = getEquipmentById<'protection'>(user.protection.id);
 
   const classArmor =
     userClass.data.baseArmor + userClass.data.attributesPerLevel.baseArmor * user.level;

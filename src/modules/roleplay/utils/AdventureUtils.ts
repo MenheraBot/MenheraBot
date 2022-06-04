@@ -1,6 +1,5 @@
 import {
   AbilityEffect,
-  EquipmentItem,
   BattleUserTurn,
   EnemyDrops,
   HolyBlessings,
@@ -12,12 +11,11 @@ import {
 } from '@roleplay/Types';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { LEVEL_UP_BLESSES } from '@roleplay/Constants';
-import { IReturnData } from '@custom_types/Menhera';
 import { moreThanAnHour, RandomFromArray } from '@utils/Util';
 import { EmbedFieldData, MessageButton } from 'discord.js-light';
 import moment from 'moment';
 import { TFunction } from 'i18next';
-import { getEnemies, getItemById } from './DataUtils';
+import { getEnemies, getEquipmentById } from './DataUtils';
 import { nextLevelXp } from './Calculations';
 
 export const prepareUserForDungeon = (user: RoleplayUserSchema): UserBattleEntity => {
@@ -102,7 +100,7 @@ export const getDungeonEnemy = (dungeonLevel: number, userLevel: number): ReadyT
 export const isDead = (entity: unknown & { life: number }): boolean => entity.life <= 0;
 
 export const isInventoryFull = (user: RoleplayUserSchema): boolean => {
-  const userBackPack = getItemById<EquipmentItem<'backpack'>>(user.backpack.id);
+  const userBackPack = getEquipmentById<'backpack'>(user.backpack.id);
 
   if (
     user.inventory.reduce((p, c) => p + c.amount, 0) >=
@@ -113,7 +111,7 @@ export const isInventoryFull = (user: RoleplayUserSchema): boolean => {
 };
 
 export const getFreeInventorySpace = (user: RoleplayUserSchema): number => {
-  const userBackPack = getItemById(user.backpack.id) as IReturnData<EquipmentItem<'backpack'>>;
+  const userBackPack = getEquipmentById<'backpack'>(user.backpack.id);
 
   const usedSpace = user.inventory.reduce((p, c) => p + c.amount, 0);
 
