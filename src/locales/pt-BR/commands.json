@@ -836,7 +836,7 @@
       "poor-items": "Ítens Insuficientes",
       "none": "Nenhum :)",
       "no-forgeable": "Não há nenhum ítem para forjar na sua localização atualmente",
-      "forge-item-description": "**{{name}}**\nCusto: **{{cost}}** {{noMoney}}\nÍtens Necessários: {{items}} {{noItems}}\n{{field}}: **{{value}}**",
+      "forge-item-description": "Custo: **{{cost}}** {{noMoney}}\nÍtens Necessários: {{items}} {{noItems}}\n{{field}}: **{{value}}**",
       "success": "Melhoria Concluída com Sucesso!",
       "forge-backpack": "Forjar Mochila",
       "upgrade-backpack": "Melhorar Mochila",

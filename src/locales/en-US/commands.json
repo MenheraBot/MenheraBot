@@ -830,7 +830,7 @@
       "poor-items": "Insufficient Items",
       "none": "None :)",
       "no-forgeable": "There is no item to forge in your current location!",
-      "forge-item-description": "**{{name}}**\nCost: **{{cost}}** {{noMoney}}\nNecessary Items: {{items}} {{noItems}}\n{{field}}: **{{value}}**",
+      "forge-item-description": "Cost: **{{cost}}** {{noMoney}}\nNecessary Items: {{items}} {{noItems}}\n{{field}}: **{{value}}**",
       "success": "Upgrade Completed Successfully!",
       "forge-backpack": "Forge Backpack",
       "upgrade-backpack": "Upgrade Backpack",
@@ -839,7 +839,7 @@
       "forge-protection": "Forge Protection",
       "upgrade-protection": "Upgrade Protection",
       "max-level": "| Nível Máximo",
-      "evolve-description": "**Upgrade {{name}}**\n\nUpgrade Cost: **{{cost}}** {{coinEmoji}}\nUpgrade Bonus: **{{bonus}}** {{bonusEmoji}} \nUpgrade Level: **{{level}}**",
+      "evolve-description": "**Upgrade {{name}}**\n\nUpgrade Cost: **{{cost}}** {{coinEmoji}}\nUpgrade Bonus: **{{bonus}}** {{bonusEmoji}}\nNecessary Items: {{items}}\nUpgrade Level: **{{level}}**",
       "description": "Welcome to Boleham Blacksmith, here you can upgrade your items like Backpack, Weapon and Armor. Select below what you want to do"
     },
     "buy": {

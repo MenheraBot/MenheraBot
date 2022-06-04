@@ -468,12 +468,6 @@ export default class DowntownCommand extends InteractionCommand {
       return;
     }
 
-    /* TODO: 
-        Need to finish forge items checking if user has enough money and items
-        Need to translate new updates to english
-        Need to refactor code to remove drop items level (remove from inventory too to reduce memory usage)
-      */
-
     const availableToForge = getAllForgeableItems(fieldToUse);
 
     if (availableToForge.length === 0) {
@@ -487,29 +481,33 @@ export default class DowntownCommand extends InteractionCommand {
     const itemSelector = new MessageSelectMenu()
       .setCustomId(menuId)
       .setMinValues(1)
-      .setDisabled(true)
       .setMaxValues(1);
 
     embed.setFields([]).setDescription('');
     availableToForge.forEach((item) => {
       const toForge = item.data.levels[1];
       const itemsToForge = packDrops(toForge.items);
-      const hasMoney = toForge.cost > user.money;
+      const hasMoney = user.money >= toForge.cost;
       const hasItems = userHasAllDrops(user.inventory, itemsToForge);
-      embed.description += ctx.locale('commands:centro.blacksmith.forge-item-description', {
-        field: ctx.locale(`commands:centro.blacksmith.fields.${fieldToUse}`),
-        value: toForge.value,
-        cost: toForge.cost,
-        name: ctx.locale(`items:${item.id as 1}.name`),
-        noMoney: !hasMoney ? `| ${ctx.locale('commands:centro.blacksmith.poor')}` : '',
-        noItems: !hasItems ? `| ${ctx.locale('commands:centro.blacksmith.poor-items')}` : '',
-        items:
-          itemsToForge.length === 0
-            ? ctx.locale('commands:centro.blacksmith.none')
-            : itemsToForge
-                .map((a) => `${a.amount}x **${ctx.locale(`items:${a.id as 1}.name`)}**`)
-                .join(', '),
-      });
+      embed.addField(
+        ctx.locale(`items:${item.id as 1}.name`),
+        ctx.locale('commands:centro.blacksmith.forge-item-description', {
+          field: ctx.locale(`commands:centro.blacksmith.fields.${fieldToUse}`),
+          value: toForge.value,
+          cost: toForge.cost,
+          noMoney: !hasMoney ? `| \`${ctx.locale('commands:centro.blacksmith.poor')}\`` : '',
+          noItems: !hasItems
+            ? `\n| \`${ctx.locale('commands:centro.blacksmith.poor-items')}\``
+            : '',
+          items:
+            itemsToForge.length === 0
+              ? ctx.locale('commands:centro.blacksmith.none')
+              : itemsToForge
+                  .map((a) => `\n• ${a.amount}x **${ctx.locale(`items:${a.id as 1}.name`)}**`)
+                  .join(''),
+        }),
+        true,
+      );
 
       if (hasItems && hasMoney)
         itemSelector.addOptions({
@@ -518,7 +516,10 @@ export default class DowntownCommand extends InteractionCommand {
         });
     });
 
-    if (itemSelector.options.length > 0) itemSelector.setDisabled(false);
+    if (itemSelector.options.length === 0) {
+      itemSelector.setDisabled(true).setOptions({ label: 'a', value: 'a' });
+      exitButton.setDisabled(true);
+    }
 
     ctx.makeMessage({
       embeds: [embed],
