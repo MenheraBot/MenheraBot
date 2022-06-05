@@ -9,11 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ### Added
 
-- Sistema de forja de ítens
+- Sistema de forja de itens
 
 ### Changed
 
-- Sistema de melhoria de ítens
+- Sistema de melhoria de itens
+
+### Fixed
+
+- Removido acento na palavra `itens`. Meu português não é dos melhoers.
 
 ### Removed
 
@@ -74,7 +78,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Changed
 
 - O comando `/loja comprar cores` agora usa formulários ao comprar cores personalizadas!
-- **TODOS** comandos que possuíam erro de gramática no nome (`/cacar` ou `user`) agora possuem seus devidos acentos e caracteres especiais! `/caçar`, `/estatísticas` (exceção de ítens para não dificultar)
+- **TODOS** comandos que possuíam erro de gramática no nome (`/cacar` ou `user`) agora possuem seus devidos acentos e caracteres especiais! `/caçar`, `/estatísticas`
 - O comando `/status` foi renomeado para `/estatísticas`
 - O comando `/personalizar info` foi renomeado para `/personalizar sobre_mim`
 - O comando `/config` foi renomeado para `/configurar`
@@ -333,11 +337,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
   - `/ficha` - Registre-se no mundo de Boleham, ou veja a ficha de outro usuário. No registro, você pode escolher entre 10 classes e 6 racas diferentes, cada uma com um bônus diferente.
   - `/igreja` - Reze ao Dragão Ancião Elemental da Luz para receber vitalidade. Lá é onde pessoas ficam descansando para receber seus poderes de volta. Você pode ficar o tempo que quiser, e quanto mais tempo você fica, mais você regenera. Ao parar, você deve esperar 30 minutos para poder rezar novamente. Ao morrer em uma aventura, é para lá que você vai.
   - `/centro mercado comprar` - Compre poções para se rejuvenescer mais rápido!
-  - `/centro mercado vender` - Venda ítens encontrados na Dungeon, receba Moedas Reais em troca.
+  - `/centro mercado vender` - Venda itens encontrados na Dungeon, receba Moedas Reais em troca.
   - `/centro guilda` - (EM BREVE) Escolha uma Quest para fazer e reivindique-as
   - `/centro ferreiro` - Melhore suas ferramentas, como a Mochila, sua Armadura e sua Arma.
   - `/inventario` - Mostra seu inventário ou o de outra pessoa
-  - `/dungeon` - Bem-Vindo à Dungeon, aqui é onde a festa acontece. Uma epquena explicação do fluxo da Dungeon. Você entra no nível um e se depara com um inimigo. Você tem 8 segundos para tomar uma ação, caso contrário, o inimigo te pune. Caso você não tome ações por 3 vezes em uma batalha, você morre (é para evitar aquilo de alguem com muita vida só deixar o bot respondendo à batalha por nada). Ao matar um inimigo, você pode tomar 5 decisões. **Pegar Loots:** Inimigos mortos dropam loots, você pode pegá-los do chão ao final da batalha. Não há um limite mínimo de itens para pegar, e o limite máximo é quanto sua Mochila suporta. Depois de recolher os itens do chão, você pode escolher entre as outras 4 opções. **Usar Poções:** Ao final de cada batalha, junto dos loots você terá a opção de usar poções. Você pode pegar loots, tomar poções e ainda escolher entre as outras 3 opçoes. Pegar Itens e usar Poções são opcionais, e não vao impactar no resto de sua aventura (no quesito de escolha de o que fazer no final da batalha). **Ir para a superfície:** Você pode sair das batalhas e voltar para a superfície em segurança. A Dungeon entrará em cooldown por 1 hora. **Continuar no mesmo Nível:** Caso você seja fraco e acha que não consegue continuar mais baixo, mas não quer sair agora, você pode continuar no mesmo nível e ir para batalha contra outro inimigo deste nível. **Descer um nível:** Vá para um nível mais baixo da Dungeon e encare desafios maiores. Novos inimigos, novos desafios, novos ítens.
+  - `/dungeon` - Bem-Vindo à Dungeon, aqui é onde a festa acontece. Uma epquena explicação do fluxo da Dungeon. Você entra no nível um e se depara com um inimigo. Você tem 8 segundos para tomar uma ação, caso contrário, o inimigo te pune. Caso você não tome ações por 3 vezes em uma batalha, você morre (é para evitar aquilo de alguem com muita vida só deixar o bot respondendo à batalha por nada). Ao matar um inimigo, você pode tomar 5 decisões. **Pegar Loots:** Inimigos mortos dropam loots, você pode pegá-los do chão ao final da batalha. Não há um limite mínimo de itens para pegar, e o limite máximo é quanto sua Mochila suporta. Depois de recolher os itens do chão, você pode escolher entre as outras 4 opções. **Usar Poções:** Ao final de cada batalha, junto dos loots você terá a opção de usar poções. Você pode pegar loots, tomar poções e ainda escolher entre as outras 3 opçoes. Pegar Itens e usar Poções são opcionais, e não vao impactar no resto de sua aventura (no quesito de escolha de o que fazer no final da batalha). **Ir para a superfície:** Você pode sair das batalhas e voltar para a superfície em segurança. A Dungeon entrará em cooldown por 1 hora. **Continuar no mesmo Nível:** Caso você seja fraco e acha que não consegue continuar mais baixo, mas não quer sair agora, você pode continuar no mesmo nível e ir para batalha contra outro inimigo deste nível. **Descer um nível:** Vá para um nível mais baixo da Dungeon e encare desafios maiores. Novos inimigos, novos desafios, novos itens.
 - **Morte** - Caso você morra na Dungeon, você será teletransportado para a Igreja, e ficará em descanso por 4 horas. Ao final desse tempo, você **DEVE** utilizar o comando `/igreja` para poder voltar às suas aventuras
 - **Bênçãos Santíssimas** - Ao subir de nível, você recebe bênçãos santíssimas. Essas bênçãos possuem 3 subdivisões, Vitalidade, Habilidade e Batalha. As bênçãos de Vitalidade servem pra melhorar sua _Vida Máxima_ e sua _Mana Máxima_. As bênçãos de Habilidade servem para Melhorar o nível de suas _Habildiades_ e para _Desbloquear Novas Habilidades_. Ás bênçãos de Batalha servem para melhorar seu _Dano_, _Armadura_ e _Inteligência_.
 

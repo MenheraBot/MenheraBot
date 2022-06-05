@@ -776,7 +776,8 @@
   "inventario": {
     "title": "Inventário de {{user}}",
     "no-items": "**Seu inventário está vazio!**",
-    "use": "Usar Poções",
+    "use-potion": "Usar Poções",
+    "equip-item": "Equipar Itens",
     "use-success": "Você usou suas poções com sucesso!",
     "use-description": "Nível: **{{level}}**\nRegeneração: **{{regeneration}}**"
   },
@@ -833,10 +834,10 @@
       },
       "no-space": "Você está sem espaço em sua mochila para guardar esse item!",
       "poor": "Dinheiro Insuficiente",
-      "poor-items": "Ítens Insuficientes",
+      "poor-items": "Itens Insuficientes",
       "none": "Nenhum :)",
-      "no-forgeable": "Não há nenhum ítem para forjar na sua localização atualmente",
-      "forge-item-description": "Custo: **{{cost}}** {{noMoney}}\nÍtens Necessários: {{items}} {{noItems}}\n{{field}}: **{{value}}**",
+      "no-forgeable": "Não há nenhum item para forjar na sua localização atualmente",
+      "forge-item-description": "Custo: **{{cost}}** {{noMoney}}\nItens Necessários: {{items}} {{noItems}}\n{{field}}: **{{value}}**",
       "success": "Melhoria Concluída com Sucesso!",
       "forge-backpack": "Forjar Mochila",
       "upgrade-backpack": "Melhorar Mochila",
@@ -845,8 +846,8 @@
       "forge-protection": "Forjar Armadura",
       "upgrade-protection": "Melhorar Armadura",
       "max-level": "| Nível Máximo!",
-      "evolve-description": "**Melhorar {{name}}**\n\nCusto de Melhoria: **{{cost}}** {{coinEmoji}}\nBônus da Melhoria: **{{bonus}}** {{bonusEmoji}}\nÍtens Necessários: {{items}}\nNível da Melhoria: **{{level}}**",
-      "description": "Bem-Vindo ao Ferreiro de Boleham, aqui você pode melhorar seus ítens como Mochila, Arma e Armadura. Selecione abaixo o que desejas fazer"
+      "evolve-description": "**Melhorar {{name}}**\n\nCusto de Melhoria: **{{cost}}** {{coinEmoji}}\nBônus da Melhoria: **{{bonus}}** {{bonusEmoji}}\nItens Necessários: {{items}}\nNível da Melhoria: **{{level}}**",
+      "description": "Bem-Vindo ao Ferreiro de Boleham, aqui você pode melhorar seus itens como Mochila, Arma e Armadura. Selecione abaixo o que desejas fazer"
     },
     "buy": {
       "title": "Mercado de Boleham | Comprar",

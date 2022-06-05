@@ -1,7 +1,8 @@
 import { LeveledItem } from '@roleplay/Types';
 import { getItemsByType } from './DataUtils';
 
-export const a = 'a';
+export const isItemEquipment = (itemId: number): boolean =>
+  [100, 101, 102].includes(itemId) || itemId >= 1000;
 
 export const availableToBuyItems = (userLevel: number): Array<LeveledItem> => {
   const potions = getItemsByType('potion');

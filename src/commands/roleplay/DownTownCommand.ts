@@ -647,7 +647,7 @@ export default class DowntownCommand extends InteractionCommand {
 
     ctx.makeMessage({
       components: [
-        actionRow([exitButton.setCustomId(makeCustomId('CLOSE_BUTTON', newId)[0])]),
+        actionRow([exitButton.setCustomId(makeCustomId('CLOSE_COMMAND', newId)[0])]),
         actionRow([selector]),
       ],
     });
@@ -660,7 +660,7 @@ export default class DowntownCommand extends InteractionCommand {
         8000,
       );
 
-    if (!selectedAmount || !selectedAmount.values) {
+    if (!selectedAmount) {
       ctx.makeMessage({
         components: [actionRow(disableComponents(ctx.locale('common:timesup'), [selector]))],
       });

@@ -1,7 +1,7 @@
-import { ConsumableItem, ItemsFile } from '@roleplay/Types';
+import { ConsumableItem, EquipmentItem, ItemsFile } from '@roleplay/Types';
 import { makeCloseCommandButton, removeFromInventory } from '@roleplay/utils/AdventureUtils';
 import { getUserMaxLife, getUserMaxMana } from '@roleplay/utils/Calculations';
-import { getItemById } from '@roleplay/utils/DataUtils';
+import { getEquipmentById, getItemById } from '@roleplay/utils/DataUtils';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { IReturnData } from '@custom_types/Menhera';
@@ -18,6 +18,7 @@ import {
   MessageSelectMenu,
   SelectMenuInteraction,
 } from 'discord.js-light';
+import { isItemEquipment } from '@roleplay/utils/ItemsUtil';
 
 export default class InventoryCommand extends InteractionCommand {
   constructor() {
@@ -55,10 +56,16 @@ export default class InventoryCommand extends InteractionCommand {
       .setTitle(ctx.locale('commands:inventario.title', { user: mentioned.username }))
       .setColor(ctx.data.user.selectedColor);
 
-    const resolvedItems: Array<IReturnData<ItemsFile> & { level: number; amount: number }> = [];
+    const resolvedItems: Array<
+      IReturnData<ItemsFile | EquipmentItem> & { level: number; amount: number }
+    > = [];
 
     const text = user.inventory.map((a) => {
-      resolvedItems.push({ ...getItemById(a.id), level: a.level, amount: a.amount });
+      resolvedItems.push({
+        ...(isItemEquipment(a.id) ? getEquipmentById(a.id) : getItemById(a.id)),
+        level: a.level,
+        amount: a.amount,
+      });
       return `• **${ctx.locale(`items:${a.id as 1}.name`)}** | ${ctx.locale(
         'common:roleplay.level',
       )} - **${a.level}** (${a.amount}) `;
@@ -69,24 +76,32 @@ export default class InventoryCommand extends InteractionCommand {
     );
 
     const [useCustomId, baseId] = makeCustomId('USE');
+    const [equipCustomId] = makeCustomId('EQUIP', baseId);
 
     const usePotion = new MessageButton()
       .setCustomId(useCustomId)
-      .setLabel(ctx.locale('commands:inventario.use'))
+      .setLabel(ctx.locale('commands:inventario.use-potion'))
+      .setStyle('PRIMARY')
+      .setDisabled(true);
+
+    const equipItem = new MessageButton()
+      .setCustomId(equipCustomId)
+      .setLabel(ctx.locale('commands:inventario.equip-item'))
       .setStyle('PRIMARY')
       .setDisabled(true);
 
     if (
       mentioned.id === ctx.author.id &&
       resolvedItems.some((a) => a.data.type === 'potion') &&
-      (user.mana < getUserMaxMana(user) || user.life < getUserMaxLife(user))
+      (user.mana < getUserMaxMana(user) || user.life < getUserMaxLife(user)) &&
+      !user.cooldowns.some((a) => a.reason === 'church' && a.data !== 'COOLDOWN')
     )
       usePotion.setDisabled(false);
 
-    if (user.cooldowns.some((a) => a.reason === 'church' && a.data !== 'COOLDOWN'))
-      usePotion.setDisabled(true);
+    if (mentioned.id === ctx.author.id && resolvedItems.some((a) => isItemEquipment(a.id)))
+      equipItem.setDisabled(false);
 
-    ctx.makeMessage({ embeds: [embed], components: [actionRow([usePotion])] });
+    ctx.makeMessage({ embeds: [embed], components: [actionRow([usePotion, equipItem])] });
 
     if (usePotion.disabled) return;
 
@@ -99,10 +114,14 @@ export default class InventoryCommand extends InteractionCommand {
 
     if (!selected) {
       ctx.makeMessage({
-        components: [actionRow(disableComponents(ctx.locale('common:timesup'), [usePotion]))],
+        components: [
+          actionRow(disableComponents(ctx.locale('common:timesup'), [usePotion, equipItem])),
+        ],
       });
       return;
     }
+
+    // TODO: Diferenciar se é uma poção ou um equip
 
     embed.setDescription('');
 
