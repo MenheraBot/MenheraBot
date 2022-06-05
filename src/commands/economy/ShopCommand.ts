@@ -104,11 +104,6 @@ export default class ShopCommand extends InteractionCommand {
               required: true,
               choices: [
                 {
-                  name: '⭐ | Estrelinhas',
-                  nameLocalizations: { 'en-US': '⭐ | Stars' },
-                  value: 'estrelinhas',
-                },
-                {
                   name: '😈 | Demônios',
                   nameLocalizations: { 'en-US': '😈 | Demons' },
                   value: 'demons',
