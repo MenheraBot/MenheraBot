@@ -357,6 +357,8 @@ export default class InventoryCommand extends InteractionCommand {
 
     const exitButton = makeCloseCommandButton(newBase, ctx.i18n);
 
+    if (selectMenu.options.length === 0) selectMenu.addOptions({ label: 'a', value: 'a' });
+
     ctx.makeMessage({
       embeds: [embed],
       components: [actionRow([selectMenu]), actionRow([exitButton])],
