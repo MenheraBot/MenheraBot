@@ -43,10 +43,10 @@ export default class InventoryCommand extends InteractionCommand {
         },
         {
           name: 'equipar',
-          description: '【ＲＰＧ】🛡️ | Equipe seus equipamentos',
+          description: '【ＲＰＧ】🎒 | Equipe seus equipamentos',
           type: 'SUB_COMMAND',
           nameLocalizations: { 'en-US': 'equip' },
-          descriptionLocalizations: { 'en-US': '【ＲＰＧ】🛡️ | Equip your equipments' },
+          descriptionLocalizations: { 'en-US': '【ＲＰＧ】🎒 | Equip your equipments' },
         },
         {
           name: 'ver',

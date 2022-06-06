@@ -134,7 +134,7 @@ export const emojis = {
   damage: '🗡️',
   level: '⚜️',
   experience: '🔰',
-  chest: '<:Chest:760957557538947133>',
+  chest: '🎒',
   intelligence: '🧠',
   church: '⛪',
   coin: '<:gold:960654694244573204>',
