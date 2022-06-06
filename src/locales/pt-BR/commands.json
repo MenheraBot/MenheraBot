@@ -852,6 +852,7 @@
       "no-forgeable": "Não há nenhum item para forjar na sua localização atualmente",
       "forge-item-description": "Custo: **{{cost}}** {{noMoney}}\nItens Necessários: {{items}} {{noItems}}\n{{field}}: **{{value}}**",
       "success": "Melhoria Concluída com Sucesso!",
+      "forge-success": "Você forjou **{{name}}** com sucesso!",
       "forge-backpack": "Forjar Mochila",
       "upgrade-backpack": "Melhorar Mochila",
       "forge-weapon": "Forjar Arma",

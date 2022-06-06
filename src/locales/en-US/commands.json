@@ -846,6 +846,7 @@
       "no-forgeable": "There is no item to forge in your current location!",
       "forge-item-description": "Cost: **{{cost}}** {{noMoney}}\nNecessary Items: {{items}} {{noItems}}\n{{field}}: **{{value}}**",
       "success": "Upgrade Completed Successfully!",
+      "forge-success": "You've forged **{{name}}** successfully!",
       "forge-backpack": "Forge Backpack",
       "upgrade-backpack": "Upgrade Backpack",
       "forge-weapon": "Forge Weapon",

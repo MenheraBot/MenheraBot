@@ -574,6 +574,14 @@ export default class DowntownCommand extends InteractionCommand {
       $inc: { money: negate(toForgeItem.data.levels[1].cost) },
       inventory: user.inventory,
     });
+
+    ctx.makeMessage({
+      components: [],
+      embeds: [],
+      content: ctx.prettyResponse('success', 'commands:centro.blacksmith.forge-success', {
+        name: ctx.locale(`items:${toForgeItem.id as 1}.name`),
+      }),
+    });
   }
 
   static async buyItems(ctx: InteractionCommandContext, user: RoleplayUserSchema): Promise<void> {
