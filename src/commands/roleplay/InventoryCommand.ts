@@ -131,7 +131,7 @@ export default class InventoryCommand extends InteractionCommand {
 
     const availablePotions = user.inventory.filter((a) => {
       const item = getItemById(a.id);
-      return item && item.data.type === 'potion';
+      return item.data && item.data.type === 'potion';
     });
 
     if (availablePotions.length === 0) {
