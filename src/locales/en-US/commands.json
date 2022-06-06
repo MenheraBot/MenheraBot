@@ -784,7 +784,9 @@
     "use-equipment-description": "Level: **{{level}}**\n{{field}}: **{{value}}**",
     "use-potion-invalid-selection": "You inserted an invalid amount of potions to use!",
     "backpack-full": "\n`You currently own more items than this backpack can hold!`",
-    "equip-success": "You equipped **{{name}}**"
+    "equip-success": "You equipped **{{name}}**",
+    "no-potions": "You don't have any potions to use!",
+    "no-equipments": "You don't have any items to equip!"
   },
   "centro": {
     "library": {

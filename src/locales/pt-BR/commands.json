@@ -790,7 +790,9 @@
     "use-equipment-description": "Nível: **{{level}}**\n{{field}}: **{{value}}**{{backpackFull}}",
     "use-potion-invalid-selection": "Você inseriu uma quantidade inválida de poções para usar!",
     "backpack-full": "\n`Atualmente você possui mais itens que esta mochila suporta!`",
-    "equip-success": "Você equipou **{{name}}**"
+    "equip-success": "Você equipou **{{name}}**",
+    "no-potions": "Você não possui poções para usar!",
+    "no-equipments": "Você não possui itens para equipar!"
   },
   "centro": {
     "library": {
