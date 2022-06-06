@@ -466,7 +466,7 @@
   },
   "sobremim": {
     "args-limit": "Your sobremim cannot be longer than 200 characters",
-    "success": "Your 'About Me' has been successfully changed! Use m!Profile >.<"
+    "success": "Your 'About Me' has been successfully changed! Use `/perfil` >.<"
   },
   "status": {
     "designer": {
@@ -712,7 +712,7 @@
       "not-found": "This user is not registered as an adventurer",
       "title": "{{name}}' Statuses",
       "poor-title": "Blessings Bonus",
-      "description": "{{emojis.heart}} | Race: **{{race}}**\n{{emojis.crown}} | Class: **{{class}}**\n{{emojis.blood}} | Life: **{{life}} / {{maxLife}}**\n{{emojis.mana}} | Mana: **{{mana}} / {{maxMana}}**\n{{emojis.damage}} | Damage: **{{damage}}**\n{{emojis.armor}} | Armor: **{{armor}}**\n{{emojis.intelligence}} | Intelligence: **{{intelligence}}**\n{{emojis.agility}} | Agility: **{{agility}}**\n{{emojis.coin}} | Real Coins: **{{money}}**\n{{emojis.level}} | Level: **{{level}}**\n{{emojis.chest}} | Capacity: **{{capacity}}/{{maxCapacity}}**\n{{emojis.experience}} | Experience: **{{experience}} / {{nextLevelXp}}**",
+      "description": "{{emojis.heart}} | Race: **{{race}}**\n{{emojis.crown}} | Class: **{{class}}**\n{{emojis.blood}} | Life: **{{life}} / {{maxLife}}**\n{{emojis.mana}} | Mana: **{{mana}} / {{maxMana}}**\n{{emojis.damage}} | Damage: **{{damage}}**\n{{emojis.armor}} | Armor: **{{armor}}**\n{{emojis.intelligence}} | Intelligence: **{{intelligence}}**\n{{emojis.agility}} | Agility: **{{agility}}**\n{{emojis.coin}} | Real Coins: **{{money}}**\n{{emojis.chest}} | Capacity: **{{capacity}}/{{maxCapacity}}**\n{{emojis.level}} | Level: **{{level}}**\n{{emojis.experience}} | Experience: **{{experience}} / {{nextLevelXp}}**",
       "vitality-description": "{{emojis.blood}} | Life: **{{maxLife}}** | {{lifeBlesses}}\n{{emojis.mana}} | Mana: **{{maxMana}}** | {{manaBlesses}}\n{{emojis.agility}} | Agility: **{{agility}}** | {{agilityBlesses}}",
       "battle-description": "{{emojis.damage}} | Damage: **{{damage}}** | {{damageBlesses}}\n{{emojis.armor}} | Mana: **{{armor}}** | {{armorBlesses}}\n{{emojis.intelligence}} | Intelligence: **{{intelligence}}** | {{intelligenceBlesses}}",
       "poor-description": "You are currently out of Blessings, but keep your current Blessings status in the meantime\n\n❤️ | **Extra Life:** {{life}} | {{lifePoints}}\n💧 | **Extra Mana:** {{mana}} | {{manaPoints}}\n👢 | **Extra Agility** {{agility}} | {{agilityPoints}}\n⚔️ | **Extra Damage:** {{damage}} | {{damagePoints}}\n🛡️ | **Extra Armor:** {{armor}} | {{armorPoints}}\n🧠 | **Extra Intelligence:** {{intelligence}} | {{intelligencePoints}}",
