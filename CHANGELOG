@@ -10,10 +10,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Added
 
 - Sistema de forja de itens
+- Você pode equipar diferentes armas, mochilas e armaduras em `/inventário`
 
 ### Changed
 
 - Sistema de melhoria de itens
+- Modo de usar poções no `/inventário`
 
 ### Fixed
 

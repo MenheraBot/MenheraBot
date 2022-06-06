@@ -772,8 +772,19 @@
     "no-items": "**Your inventory is empty!**",
     "use-potion": "Use Potions",
     "equip-item": "Equip Items",
-    "use-success": "You used your potions successfully!",
-    "use-description": "Level: **{{level}}**\nRegeneration: **{{regeneration}}**"
+    "fields": {
+      "backpack": "Capacity",
+      "weapon": "Damage",
+      "protection": "Defense"
+    },
+    "use-potion-success": "You used your potions successfully!",
+    "use-potion-modal-title": "Potion Selector",
+    "use-potion-modal-lable": "{{name}} - {{max}}x",
+    "use-potion-description": "Level: **{{level}}**\nRegeneration: **{{regeneration}}**\nAmount: **{{amount}}**",
+    "use-equipment-description": "Level: **{{level}}**\n{{field}}: **{{value}}**",
+    "use-potion-invalid-selection": "You inserted an invalid amount of potions to use!",
+    "backpack-full": "\n`You currently own more items than this backpack can hold!`",
+    "equip-success": "You equipped **{{name}}**"
   },
   "centro": {
     "library": {

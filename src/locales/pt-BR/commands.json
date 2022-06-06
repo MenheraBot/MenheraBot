@@ -778,8 +778,19 @@
     "no-items": "**Seu inventário está vazio!**",
     "use-potion": "Usar Poções",
     "equip-item": "Equipar Itens",
-    "use-success": "Você usou suas poções com sucesso!",
-    "use-description": "Nível: **{{level}}**\nRegeneração: **{{regeneration}}**"
+    "fields": {
+      "backpack": "Capacidade",
+      "weapon": "Dano",
+      "protection": "Defesa"
+    },
+    "use-potion-success": "Você usou suas poções com sucesso!",
+    "use-potion-modal-title": "Seleção de Poções",
+    "use-potion-modal-lable": "{{name}} - {{max}}x",
+    "use-potion-description": "Nível: **{{level}}**\nRegeneração: **{{regeneration}}**\nQuantidade: **{{amount}}**",
+    "use-equipment-description": "Nível: **{{level}}**\n{{field}}: **{{value}}**{{backpackFull}}",
+    "use-potion-invalid-selection": "Você inseriu uma quantidade inválida de poções para usar!",
+    "backpack-full": "\n`Atualmente você possui mais itens que esta mochila suporta!`",
+    "equip-success": "Você equipou **{{name}}**"
   },
   "centro": {
     "library": {
