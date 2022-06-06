@@ -141,7 +141,16 @@ export default class InventoryCommand extends InteractionCommand {
 
     const embed = new MessageEmbed()
       .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true }))
-      .setTitle(ctx.locale('commands:inventario.title', { user: ctx.author.username }))
+      .setTitle(
+        ctx.locale('commands:inventario.title', {
+          user: ctx.author.username,
+          maxCapacity: getEquipmentById(user.backpack.id).data.levels[user.backpack.level].value,
+          capacity:
+            getEquipmentById(user.backpack.id).data.levels[user.backpack.level].value -
+            getFreeInventorySpace(user),
+          emoji: emojis.chest,
+        }),
+      )
       .setColor(ctx.data.user.selectedColor);
 
     const selectMenu = new MessageSelectMenu().setCustomId(`${ctx.interaction.id} | SELECT`);
@@ -321,7 +330,16 @@ export default class InventoryCommand extends InteractionCommand {
 
     const embed = new MessageEmbed()
       .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true }))
-      .setTitle(ctx.locale('commands:inventario.title', { user: ctx.author.username }))
+      .setTitle(
+        ctx.locale('commands:inventario.title', {
+          user: ctx.author.username,
+          maxCapacity: getEquipmentById(user.backpack.id).data.levels[user.backpack.level].value,
+          capacity:
+            getEquipmentById(user.backpack.id).data.levels[user.backpack.level].value -
+            getFreeInventorySpace(user),
+          emoji: emojis.chest,
+        }),
+      )
       .setColor(ctx.data.user.selectedColor);
 
     const selectMenu = new MessageSelectMenu().setCustomId(`${ctx.interaction.id} | SELECT`);
