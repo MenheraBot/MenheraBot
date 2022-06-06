@@ -3,6 +3,7 @@ import {
   makeCloseCommandButton,
   removeFromInventory,
   addToInventory,
+  getFreeInventorySpace,
 } from '@roleplay/utils/AdventureUtils';
 import { getUserMaxLife, getUserMaxMana } from '@roleplay/utils/Calculations';
 import { getEquipmentById, getItemById } from '@roleplay/utils/DataUtils';
@@ -24,6 +25,7 @@ import {
   TextInputComponent,
 } from 'discord.js-light';
 import { isItemEquipment } from '@roleplay/utils/ItemsUtil';
+import { emojis } from '@structures/Constants';
 
 export default class InventoryCommand extends InteractionCommand {
   constructor() {
@@ -65,7 +67,7 @@ export default class InventoryCommand extends InteractionCommand {
           ],
         },
       ],
-      cooldown: 7,
+      cooldown: 5,
       authorDataFields: ['selectedColor'],
     });
   }
@@ -94,7 +96,16 @@ export default class InventoryCommand extends InteractionCommand {
 
     const embed = new MessageEmbed()
       .setThumbnail(mentioned.displayAvatarURL({ dynamic: true }))
-      .setTitle(ctx.locale('commands:inventario.title', { user: mentioned.username }))
+      .setTitle(
+        ctx.locale('commands:inventario.title', {
+          user: mentioned.username,
+          maxCapacity: getEquipmentById(user.backpack.id).data.levels[user.backpack.level].value,
+          capacity:
+            getEquipmentById(user.backpack.id).data.levels[user.backpack.level].value -
+            getFreeInventorySpace(user),
+          emoji: emojis.chest,
+        }),
+      )
       .setColor(ctx.data.user.selectedColor);
 
     const text = user.inventory.map(

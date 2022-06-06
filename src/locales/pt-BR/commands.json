@@ -719,7 +719,7 @@
     "show": {
       "not-found": "Este usuário não está registrado como um aventureiro",
       "title": "Status de {{name}}",
-      "description": "{{emojis.heart}} | Raça: **{{race}}**\n{{emojis.crown}} | Classe: **{{class}}**\n{{emojis.blood}} | Vida: **{{life}} / {{maxLife}}**\n{{emojis.mana}} | Mana: **{{mana}} / {{maxMana}}**\n{{emojis.damage}} | Dano: **{{damage}}**\n{{emojis.armor}} | Armadura: **{{armor}}**\n{{emojis.intelligence}} | Inteligência: **{{intelligence}}**\n{{emojis.agility}} | Agilidade: **{{agility}}**\n{{emojis.coin}} | Moedas Reais: **{{money}}**\n{{emojis.level}} | Nível: **{{level}}**\n{{emojis.experience}} | Experiência: **{{experience}} / {{nextLevelXp}}**",
+      "description": "{{emojis.heart}} | Raça: **{{race}}**\n{{emojis.crown}} | Classe: **{{class}}**\n{{emojis.blood}} | Vida: **{{life}} / {{maxLife}}**\n{{emojis.mana}} | Mana: **{{mana}} / {{maxMana}}**\n{{emojis.damage}} | Dano: **{{damage}}**\n{{emojis.armor}} | Armadura: **{{armor}}**\n{{emojis.intelligence}} | Inteligência: **{{intelligence}}**\n{{emojis.agility}} | Agilidade: **{{agility}}**\n{{emojis.coin}} | Moedas Reais: **{{money}}**\n{{emojis.level}} | Nível: **{{level}}**\n{{emojis.chest}} | Capacidade: **{{capacity}}/{{maxCapacity}}**\n{{emojis.experience}} | Experiência: **{{experience}} / {{nextLevelXp}}**",
       "poor-title": "Bônus de Bênçãos",
       "poor-description": "Você está sem Bênçãos no momento, mas fique com os status atuais de suas bênçãos enquanto isso\n\n❤️ | **Vida Extra:** {{life}} | {{lifePoints}}\n💧 | **Mana Extra:** {{mana}} | {{manaPoints}}\n👢 | **Agilidade Extra:** {{agility}} | {{agilityPoints}}\n⚔️ | **Dano Extra:** {{damage}} | {{damagePoints}}\n🛡️ | **Armadura Extra:** {{armor}} | {{armorPoints}}\n🧠 | **Inteligência Extra:** {{intelligence}} | {{intelligencePoints}}",
       "blessings": "Você possui **{{vitality}}** Bençãos Santíssimas de Vitalidade e **{{battle}}** de Batalha, use os botões abaixo para melhorar seus status. Você não pode ter uma diferença de status abençoados de mais de **{{limit}}** bênçãos",
@@ -774,7 +774,7 @@
     "arregou": "Você pensou melhor, e acabou desistindo de entrar na dungeon"
   },
   "inventario": {
-    "title": "Inventário de {{user}}",
+    "title": "{{emoji}} | Inventário de {{user}} ({{capacity}}/{{maxCapacity}})",
     "no-items": "**Seu inventário está vazio!**",
     "use-potion": "Usar Poções",
     "equip-item": "Equipar Itens",

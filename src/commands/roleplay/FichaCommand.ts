@@ -25,6 +25,7 @@ import {
   getAbilityById,
   getClassById,
   getClasses,
+  getEquipmentById,
   getRaceById,
   getRaces,
   getUserAvailableAbilities,
@@ -41,7 +42,11 @@ import {
   nextLevelXp,
 } from '@roleplay/utils/Calculations';
 import { BLESSES_DIFFERENCE_LIMIT } from '@roleplay/Constants';
-import { makeCloseCommandButton, prepareUserForDungeon } from '@roleplay/utils/AdventureUtils';
+import {
+  getFreeInventorySpace,
+  makeCloseCommandButton,
+  prepareUserForDungeon,
+} from '@roleplay/utils/AdventureUtils';
 import { emojis } from '@structures/Constants';
 
 export default class FichaCommand extends InteractionCommand {
@@ -610,6 +615,10 @@ export default class FichaCommand extends InteractionCommand {
           level: user.level,
           experience: user.experience,
           nextLevelXp: nextLevelXp(user.level),
+          maxCapacity: getEquipmentById(user.backpack.id).data.levels[user.backpack.level].value,
+          capacity:
+            getEquipmentById(user.backpack.id).data.levels[user.backpack.level].value -
+            getFreeInventorySpace(user),
         }),
       )
       .setColor(ctx.data.user.selectedColor);
