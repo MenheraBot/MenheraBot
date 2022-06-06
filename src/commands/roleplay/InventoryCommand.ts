@@ -80,7 +80,7 @@ export default class InventoryCommand extends InteractionCommand {
         return InventoryCommand.seeInventory(ctx);
       case 'poções':
         return InventoryCommand.usePotions(ctx);
-      case 'equipamentos':
+      case 'equipar':
         return InventoryCommand.useEquipments(ctx);
     }
   }
