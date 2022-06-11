@@ -3,7 +3,7 @@ import { BattleUserTurn, UserBattleEntity } from '@roleplay/Types';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { COLORS, emojis, EmojiTypes } from '@structures/Constants';
 import Util, { actionRow, capitalize, makeCustomId, resolveSeparatedStrings } from '@utils/Util';
-import { MessageEmbed, MessageSelectMenu, SelectMenuInteraction, User } from 'discord.js-light';
+import { MessageEmbed, MessageSelectMenu, SelectMenuInteraction } from 'discord.js-light';
 import { getAbilityDamageFromEffects, invertBattleTurn, isDead } from '../utils/AdventureUtils';
 import {
   calculateAttackSuccess,
@@ -21,6 +21,7 @@ import {
   getUserMaxLife,
 } from '../utils/Calculations';
 import { getAbilityById, getClassById } from '../utils/DataUtils';
+import { BattleDiscordUser } from './PlayerVsEntity';
 
 interface PvpUserInfoStructure {
   missedAttacks: number;
@@ -42,8 +43,8 @@ export default class PlayerVsPlayer {
     private ctx: InteractionCommandContext,
     public attacker: UserBattleEntity,
     public defender: UserBattleEntity,
-    public attackerDiscordUser: User,
-    public defenderDiscordUser: User,
+    public attackerDiscordUser: BattleDiscordUser,
+    public defenderDiscordUser: BattleDiscordUser,
     public lastText: string,
   ) {}
 

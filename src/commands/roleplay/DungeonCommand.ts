@@ -1,22 +1,23 @@
-import {
+/* import {
   LAST_DUNGEON_LEVEL,
   MOB_LIMIT_PER_DUNGEON_LEVEL,
   ROLEPLAY_COOLDOWNS,
-} from '@roleplay/Constants';
-import { ConsumableItem, UserBattleEntity } from '@roleplay/Types';
+} from '@roleplay/Constants'; */
+import { UserBattleEntity } from '@roleplay/Types'; /* ConsumableItem, */
 import {
-  addToInventory,
   canGoToDungeon,
   getDungeonEnemy,
-  getEnemyLoot,
-  getFreeInventorySpace,
-  isDead,
-  isInventoryFull,
-  makeCooldown,
-  makeLevelUp,
   prepareUserForDungeon,
-  removeFromInventory,
 } from '@roleplay/utils/AdventureUtils';
+/*   getEnemyLoot,
+addToInventory,
+getFreeInventorySpace,
+isDead,
+isInventoryFull,
+makeCooldown,
+makeLevelUp,
+removeFromInventory, */
+
 import {
   getUserAgility,
   getUserArmor,
@@ -25,31 +26,29 @@ import {
   getUserMaxLife,
   getUserMaxMana,
 } from '@roleplay/utils/Calculations';
-import { getItemById } from '@roleplay/utils/DataUtils';
-import RoleplayBattle from '@roleplay/structures/RoleplayBattle';
+// import { getItemById } from '@roleplay/utils/DataUtils';
+import RoleplayBattle from '@roleplay/structures/PlayerVsEntity';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { COLORS } from '@structures/Constants';
-import Util, {
-  actionRow,
-  makeCustomId,
-  resolveCustomId,
-  resolveSeparatedStrings,
-} from '@utils/Util';
-import {
-  MessageActionRow,
-  MessageButton,
-  MessageEmbed,
+
+// import { COLORS } from '@structures/Constants';
+
+import Util, { actionRow, makeCustomId, resolveCustomId } from '@utils/Util';
+// resolveSeparatedStrings,
+
+import { MessageButton, MessageEmbed } from 'discord.js-light';
+
+/*   MessageActionRow,
   MessageSelectMenu,
-  SelectMenuInteraction,
-} from 'discord.js-light';
-import {
+  SelectMenuInteraction, */
+
+/* import {
   BASE_LIFE_PER_CICLE,
   BASE_MANA_PER_CICLE,
   CICLE_DURATION_IN_MINUTES,
   MAX_USER_LIFE_TO_MULTIPLY,
   MAX_USER_MANA_TO_MULTIPLY,
-} from './ChurchCommand';
+} from './ChurchCommand'; */
 
 export default class DungeonCommand extends InteractionCommand {
   constructor() {
@@ -148,9 +147,17 @@ export default class DungeonCommand extends InteractionCommand {
   ): Promise<void> {
     const enemy = getDungeonEnemy(dungeonLevel, user.level);
 
+    // TODO: Remove hard coded arrays and add party and multiple mobs
     const battleResults = await new RoleplayBattle(
-      user,
-      enemy,
+      [user],
+      [enemy],
+      [
+        {
+          id: ctx.author.id,
+          imageUrl: ctx.author.displayAvatarURL(),
+          username: ctx.author.username,
+        },
+      ],
       ctx,
       ctx.locale('roleplay:battle.find', {
         enemy: ctx.locale(`enemies:${enemy.id as 1}.name`),
@@ -158,6 +165,8 @@ export default class DungeonCommand extends InteractionCommand {
       }),
     ).battleLoop();
 
+    console.log(battleResults, killedMobs);
+    /*
     let userMaxLife = getUserMaxLife(battleResults.user);
     let userMaxMana = getUserMaxMana(battleResults.user);
 
@@ -472,5 +481,6 @@ export default class DungeonCommand extends InteractionCommand {
       }
     };
     selectButton();
+    */
   }
 }

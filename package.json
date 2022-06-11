@@ -18,8 +18,8 @@
     "lint:fix": "eslint --fix .",
     "lint:test": "eslint .",
     "typecheck": "tsc --noEmit",
-    "test": "jest --passWithNoTests --no-cache",
-    "test:debug": "jest --passWithNoTests --runInBand --no-cache"
+    "test": "jest --no-cache",
+    "test:debug": "jest --runInBand --no-cache"
   },
   "keywords": [
     "discord-bot",
@@ -38,7 +38,7 @@
     "discord.js-light": "^4.7.0",
     "dotenv": "^16.0.0",
     "erlpack": "^0.1.4",
-    "i18next": "^21.6.16",
+    "i18next": "^21.8.9",
     "i18next-fs-backend": "^1.1.4",
     "ioredis": "^5.0.4",
     "koa": "^2.13.4",

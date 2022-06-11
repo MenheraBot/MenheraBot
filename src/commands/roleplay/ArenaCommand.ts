@@ -32,6 +32,7 @@ import {
   TextInputComponent,
   User,
 } from 'discord.js-light';
+import { BattleDiscordUser } from '@roleplay/structures/PlayerVsEntity';
 
 const defaultBlessesConfiguration = (): UserBattleConfig => ({
   agility: 0,
@@ -40,6 +41,12 @@ const defaultBlessesConfiguration = (): UserBattleConfig => ({
   intelligence: 0,
   maxLife: 0,
   maxMana: 0,
+});
+
+const discordUserToBattleUser = (usr: User): BattleDiscordUser => ({
+  id: usr.id,
+  username: usr.username,
+  imageUrl: usr.displayAvatarURL({ dynamic: true }),
 });
 
 export default class ArenaCommand extends InteractionCommand {
@@ -404,8 +411,8 @@ export default class ArenaCommand extends InteractionCommand {
     ctx: InteractionCommandContext,
     attacker: RoleplayUserSchema,
     defender: RoleplayUserSchema,
-    attackerDiscordUser: User,
-    defenderDiscordUser: User,
+    attackerDiscordUser: BattleDiscordUser,
+    defenderDiscordUser: BattleDiscordUser,
   ): Promise<void> {
     const battleResults = await new PlayerVsPlayer(
       ctx,
@@ -437,7 +444,7 @@ export default class ArenaCommand extends InteractionCommand {
           loserName: loser.loserDiscordUser.username,
         }),
       )
-      .setThumbnail(winner.winnerDiscordUser.displayAvatarURL({ dynamic: true }));
+      .setThumbnail(winner.winnerDiscordUser.imageUrl);
 
     ctx.makeMessage({ embeds: [embed], content: null, components: [] });
   }
@@ -581,8 +588,8 @@ export default class ArenaCommand extends InteractionCommand {
               ctx,
               ArenaCommand.prepareUserForPvP(author, false, defaultBlessesConfiguration()),
               ArenaCommand.prepareUserForPvP(enemy, false, defaultBlessesConfiguration()),
-              ctx.author,
-              mentioned,
+              discordUserToBattleUser(ctx.author),
+              discordUserToBattleUser(mentioned),
             );
           }
 
@@ -635,8 +642,8 @@ export default class ArenaCommand extends InteractionCommand {
               ctx,
               ArenaCommand.prepareUserForPvP(author, true, authorBlesses),
               ArenaCommand.prepareUserForPvP(enemy, true, enemyBlesses),
-              ctx.author,
-              mentioned,
+              discordUserToBattleUser(ctx.author),
+              discordUserToBattleUser(mentioned),
             );
           }
         }
