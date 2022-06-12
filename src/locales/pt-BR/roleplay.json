@@ -95,6 +95,7 @@
     "no-action": "{{user}} demorou muito para atacar, o inimigo revidou!",
     "enemy-death": "{{user}} matou **{{name}}**!",
     "user-death": "⚰️ | {{user}} foi morto!",
+    "non-resposive-user": "⚡ | {{user}} foi morto pelo Dragão Ancião Elemental após não atacar por 4 vezes!",
     "footer": "Turno Aliado: {{user}}/{{aliveUser}} | Turno Inimigo: {{enemy}}/{{aliveEnemy}}",
     "deffend-text": "🛡️ | **{{enemy}}** ataca {{user}} com **{{attack}}**{{text}}",
     "attack-text": "⚔️ | {{user}} ataca com **{{attack}}**{{text}}",
@@ -105,8 +106,8 @@
     "dodged": ", e **Você desviou do ataque!**",
     "title": "Batalha Contra {{count}} {{name}}",
     "find": "Você encontra um inimigo! **{{enemy}}** em fase **{{level}}** está logo a frente!",
-    "runaway-success": "Você consegue fugir da batalha com sucesso!",
-    "runaway-fail": "Você não consegue fugir da batalha!",
+    "runaway-success": "A fuga foi bem sucedida!",
+    "runaway-fail": "A tentativa de fugir é falha!",
     "options": {
       "hand-attack": "Ataque Básico",
       "runaway": "Fugir",
