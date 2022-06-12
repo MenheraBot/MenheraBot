@@ -1,23 +1,22 @@
-/* import {
+import {
   LAST_DUNGEON_LEVEL,
   MOB_LIMIT_PER_DUNGEON_LEVEL,
   ROLEPLAY_COOLDOWNS,
-} from '@roleplay/Constants'; */
+} from '@roleplay/Constants';
 import { UserBattleEntity } from '@roleplay/Types'; /* ConsumableItem, */
 import {
   canGoToDungeon,
   getDungeonEnemy,
   prepareUserForDungeon,
+  getEnemyLoot,
+  addToInventory,
+  getFreeInventorySpace,
+  isDead,
+  isInventoryFull,
+  makeCooldown,
+  makeLevelUp,
+  removeFromInventory,
 } from '@roleplay/utils/AdventureUtils';
-/*   getEnemyLoot,
-addToInventory,
-getFreeInventorySpace,
-isDead,
-isInventoryFull,
-makeCooldown,
-makeLevelUp,
-removeFromInventory, */
-
 import {
   getUserAgility,
   getUserArmor,
@@ -26,29 +25,35 @@ import {
   getUserMaxLife,
   getUserMaxMana,
 } from '@roleplay/utils/Calculations';
-// import { getItemById } from '@roleplay/utils/DataUtils';
+import { getItemById } from '@roleplay/utils/DataUtils';
 import RoleplayBattle from '@roleplay/structures/PlayerVsEntity';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 
-// import { COLORS } from '@structures/Constants';
+import { COLORS } from '@structures/Constants';
 
-import Util, { actionRow, makeCustomId, resolveCustomId } from '@utils/Util';
-// resolveSeparatedStrings,
+import Util, {
+  actionRow,
+  makeCustomId,
+  resolveSeparatedStrings,
+  resolveCustomId,
+} from '@utils/Util';
 
-import { MessageButton, MessageEmbed } from 'discord.js-light';
-
-/*   MessageActionRow,
+import {
+  MessageButton,
+  MessageActionRow,
   MessageSelectMenu,
-  SelectMenuInteraction, */
+  SelectMenuInteraction,
+  MessageEmbed,
+} from 'discord.js-light';
 
-/* import {
+import {
   BASE_LIFE_PER_CICLE,
   BASE_MANA_PER_CICLE,
   CICLE_DURATION_IN_MINUTES,
   MAX_USER_LIFE_TO_MULTIPLY,
   MAX_USER_MANA_TO_MULTIPLY,
-} from './ChurchCommand'; */
+} from './ChurchCommand';
 
 export default class DungeonCommand extends InteractionCommand {
   constructor() {
@@ -166,7 +171,7 @@ export default class DungeonCommand extends InteractionCommand {
     ).battleLoop();
 
     console.log(battleResults, killedMobs);
-    /*
+
     let userMaxLife = getUserMaxLife(battleResults.user);
     let userMaxMana = getUserMaxMana(battleResults.user);
 
@@ -481,6 +486,5 @@ export default class DungeonCommand extends InteractionCommand {
       }
     };
     selectButton();
-    */
   }
 }

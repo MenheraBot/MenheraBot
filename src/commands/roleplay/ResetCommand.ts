@@ -10,7 +10,6 @@ export default class ResetCommand extends InteractionCommand {
       nameLocalizations: { 'en-US': 'reset' },
       description: '【ＲＰＧ】↪️ | Sistema de Reset do RPG',
       descriptionLocalizations: { 'en-US': '【ＲＰＧ】↪️ | RPG Reset System' },
-      category: 'roleplay',
       options: [
         {
           name: 'bençãos',
@@ -27,6 +26,7 @@ export default class ResetCommand extends InteractionCommand {
           type: 'SUB_COMMAND',
         },
       ],
+      category: 'roleplay',
       cooldown: 7,
     });
   }

@@ -55,7 +55,6 @@ export default class ArenaCommand extends InteractionCommand {
       name: 'arena',
       description: '【ＲＰＧ】🏟️ | Entre na Arena PvP de Boleham',
       descriptionLocalizations: { 'en-US': '【ＲＰＧ】🏟️ | Enter the Boleham PvP Arena' },
-      category: 'roleplay',
       options: [
         {
           name: 'batalhar',
@@ -81,6 +80,7 @@ export default class ArenaCommand extends InteractionCommand {
           type: 'SUB_COMMAND',
         },
       ],
+      category: 'roleplay',
       cooldown: 7,
       authorDataFields: ['selectedColor'],
     });

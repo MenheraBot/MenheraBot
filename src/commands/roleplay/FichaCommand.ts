@@ -58,7 +58,6 @@ export default class FichaCommand extends InteractionCommand {
       descriptionLocalizations: {
         'en-US': '【ＲＰＧ】📜 | Show a character sheet or create your own',
       },
-      category: 'roleplay',
       options: [
         {
           name: 'user',
@@ -68,6 +67,7 @@ export default class FichaCommand extends InteractionCommand {
           required: false,
         },
       ],
+      category: 'roleplay',
       cooldown: 7,
       authorDataFields: ['selectedColor'],
     });

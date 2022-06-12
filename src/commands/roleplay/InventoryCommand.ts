@@ -34,7 +34,6 @@ export default class InventoryCommand extends InteractionCommand {
       nameLocalizations: { 'en-US': 'inventory' },
       description: '【ＲＰＧ】📦 | Tome ações relacionadas ao inventário',
       descriptionLocalizations: { 'en-US': '【ＲＰＧ】📦 | Make actions based on inventory' },
-      category: 'roleplay',
       options: [
         {
           name: 'poções',
@@ -68,6 +67,7 @@ export default class InventoryCommand extends InteractionCommand {
         },
       ],
       cooldown: 5,
+      category: 'roleplay',
       authorDataFields: ['selectedColor'],
     });
   }

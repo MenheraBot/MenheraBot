@@ -35,7 +35,7 @@ export default class DowntownCommand extends InteractionCommand {
       descriptionLocalizations: {
         'en-US': '【ＲＰＧ】🏛️ | Boleham Center, here you can find everything',
       },
-      category: 'roleplay',
+
       options: [
         {
           name: 'biblioteca',
@@ -114,6 +114,7 @@ export default class DowntownCommand extends InteractionCommand {
           ],
         },
       ],
+      category: 'roleplay',
       cooldown: 7,
       authorDataFields: ['selectedColor'],
     });
