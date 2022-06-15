@@ -123,7 +123,10 @@ export default class DowntownCommand extends InteractionCommand {
   async run(ctx: InteractionCommandContext): Promise<void> {
     const user = await ctx.client.repositories.roleplayRepository.findUser(ctx.author.id);
     if (!user) {
-      ctx.makeMessage({ content: ctx.prettyResponse('error', 'common:unregistered') });
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'common:unregistered'),
+        ephemeral: true,
+      });
       return;
     }
 

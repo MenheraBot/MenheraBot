@@ -90,7 +90,10 @@ export default class InventoryCommand extends InteractionCommand {
 
     const user = await ctx.client.repositories.roleplayRepository.findUser(mentioned.id);
     if (!user) {
-      ctx.makeMessage({ content: ctx.prettyResponse('error', 'common:unregistered') });
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'common:unregistered'),
+        ephemeral: true,
+      });
       return;
     }
 
@@ -125,7 +128,10 @@ export default class InventoryCommand extends InteractionCommand {
   static async usePotions(ctx: InteractionCommandContext): Promise<void> {
     const user = await ctx.client.repositories.roleplayRepository.findUser(ctx.author.id);
     if (!user) {
-      ctx.makeMessage({ content: ctx.prettyResponse('error', 'common:unregistered') });
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'common:unregistered'),
+        ephemeral: true,
+      });
       return;
     }
 
@@ -315,7 +321,10 @@ export default class InventoryCommand extends InteractionCommand {
   static async useEquipments(ctx: InteractionCommandContext): Promise<void> {
     const user = await ctx.client.repositories.roleplayRepository.findUser(ctx.author.id);
     if (!user) {
-      ctx.makeMessage({ content: ctx.prettyResponse('error', 'common:unregistered') });
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'common:unregistered'),
+        ephemeral: true,
+      });
       return;
     }
 

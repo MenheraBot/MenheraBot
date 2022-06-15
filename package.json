@@ -30,8 +30,8 @@
   "author": "Luxanna Crownguard (ySnoopyDogy)",
   "dependencies": {
     "@koa/cors": "^3.3.0",
-    "@sentry/node": "^6.19.7",
-    "@sentry/tracing": "^6.19.7",
+    "@sentry/node": "^7.1.1",
+    "@sentry/tracing": "^7.1.1",
     "axios": "^0.27.2",
     "bufferutil": "^4.0.6",
     "discord-hybrid-sharding": "^1.5.3",

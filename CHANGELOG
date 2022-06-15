@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ### Added
 
+- **🎉 SISTEMA DE PARTY! 🎉** Usuários podem criar uma party usando o comando `/grupo criar`. Uma party pode ir ao mesmo tempo para a dungeon para enfrentar múltiplos monstros de uma vez num formato novo de batalha em grupos!.
 - Sistema de forja de itens
 - O comando `/inventario` foi dividido em 3 subcomandos, `/ver`, `/poções` e `/equipamentos`, você pode equipar diferentes armas, mochilas e armaduras em `/equipamentos`, usar suas poções em `/poções` e ver o inventário de jogadores em `/ver`
 - Adicionado a quantidade de itens no inventário no `/ficha` e `/inventário ver`

@@ -4,7 +4,6 @@ import InteractionCommandContext from '@structures/command/InteractionContext';
 import { RoleplayUserSchema } from '@roleplay/Types';
 import {
   ButtonInteraction,
-  // MessageActionRow,
   MessageButton,
   MessageEmbed,
   MessageSelectMenu,
@@ -15,7 +14,6 @@ import {
 } from 'discord.js-light';
 import Util, {
   actionRow,
-  //  capitalize,
   disableComponents,
   makeCustomId,
   negate,

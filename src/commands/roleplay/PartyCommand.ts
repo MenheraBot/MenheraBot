@@ -1,5 +1,7 @@
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
+import { actionRow, resolveCustomId } from '@utils/Util';
+import { MessageButton, MessageComponentInteraction, MessageEmbed } from 'discord.js-light';
 
 export default class PartyCommand extends InteractionCommand {
   constructor() {
@@ -40,6 +42,7 @@ export default class PartyCommand extends InteractionCommand {
         },
       ],
       category: 'roleplay',
+      authorDataFields: ['selectedColor'],
       cooldown: 5,
     });
   }
@@ -54,6 +57,113 @@ export default class PartyCommand extends InteractionCommand {
   }
 
   static async createParty(ctx: InteractionCommandContext): Promise<void> {
-    ctx.makeMessage({ content: 'Temo fazendo ai' });
+    const user = await ctx.client.repositories.roleplayRepository.findUser(ctx.author.id);
+
+    if (!user) {
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'common:unregistered'),
+        ephemeral: true,
+      });
+      return;
+    }
+
+    if (await ctx.client.repositories.roleplayRepository.getUserParty(ctx.author.id)) {
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:party.already_in_party'),
+        ephemeral: true,
+      });
+      return;
+    }
+
+    const userOne = ctx.options.getUser('user_um', true);
+    const userTwo = ctx.options.getUser('user_dois');
+
+    if (await ctx.client.repositories.roleplayRepository.getUserParty(userOne.id)) {
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:party.other_in_party', {
+          user: userOne.username,
+        }),
+        ephemeral: true,
+      });
+      return;
+    }
+
+    if (userTwo && (await ctx.client.repositories.roleplayRepository.getUserParty(userTwo.id))) {
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:party.other_in_party', {
+          user: userTwo.username,
+        }),
+        ephemeral: true,
+      });
+      return;
+    }
+
+    const maxUsers = userTwo ? 3 : 2;
+
+    const embed = new MessageEmbed()
+      .setTitle(ctx.locale('commands:party.create_title'))
+      .setColor(ctx.data.user.selectedColor)
+      .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true }))
+      .setDescription(
+        ctx.locale('commands:party.create_description', { user: ctx.author.username }),
+      )
+      .setFooter({ text: ctx.locale('commands:party.create_footer', { users: 0, maxUsers }) });
+
+    const acceptButton = new MessageButton()
+      .setStyle('PRIMARY')
+      .setCustomId(`${ctx.interaction.id} | ACCEPT`)
+      .setLabel(ctx.locale('common:accept'));
+
+    const negateButton = new MessageButton()
+      .setStyle('DANGER')
+      .setCustomId(`${ctx.interaction.id} | NEGATE`)
+      .setLabel(ctx.locale('common:negate'));
+
+    const availableIds = [ctx.author.id, userOne.id, userTwo ? userTwo.id : null].filter(Boolean);
+
+    ctx.makeMessage({
+      content: availableIds.map((a) => `<@${a}>`).join(', '),
+      embeds: [embed],
+      components: [actionRow([acceptButton, negateButton])],
+    });
+
+    const filter = (int: MessageComponentInteraction) =>
+      int.customId.startsWith(ctx.interaction.id) && availableIds.includes(int.user.id);
+
+    const collector = ctx.channel.createMessageComponentCollector({ time: 15_000, filter });
+
+    const acceptedIds: string[] = [];
+
+    collector.on('end', (_, reason) => {
+      if (reason !== 'time') return;
+      ctx.makeMessage({
+        embeds: [],
+        components: [],
+        content: ctx.prettyResponse('error', 'commands:party.create_timesup'),
+      });
+    });
+
+    collector.on('collect', async (int: MessageComponentInteraction) => {
+      if (resolveCustomId(int.customId) === 'NEGATE') {
+        collector.stop('OWO');
+        ctx.makeMessage({
+          content: ctx.prettyResponse('error', 'commands:party.create_cancelled', {
+            user: int.user.username,
+          }),
+        });
+        return;
+      }
+
+      if (acceptedIds.includes(int.user.id)) return;
+      acceptedIds.push(int.user.id);
+
+      if (acceptedIds.length !== availableIds.length) return;
+
+      collector.stop('nya');
+
+      await ctx.client.repositories.roleplayRepository.createParty(ctx.author.id, acceptedIds);
+
+      ctx.makeMessage({ content: ctx.prettyResponse('success', 'commands:party.create_success') });
+    });
   }
 }

@@ -175,13 +175,17 @@ export default class ArenaCommand extends InteractionCommand {
     const user = await ctx.client.repositories.roleplayRepository.findUser(ctx.author.id);
 
     if (!user) {
-      ctx.makeMessage({ content: ctx.prettyResponse('error', 'common:unregistered') });
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'common:unregistered'),
+        ephemeral: true,
+      });
       return;
     }
 
     const userConfig: UserBattleConfig =
-      (await ctx.client.repositories.roleplayRepository.getConfigurationBattle(ctx.author.id)) ??
-      defaultBlessesConfiguration();
+      (await ctx.client.repositories.roleplayRepository.getUserConfigurationBattle(
+        ctx.author.id,
+      )) ?? defaultBlessesConfiguration();
 
     const maxPointsToUse = ArenaCommand.getBlessesAvailable(defaultBlessesConfiguration());
 
@@ -595,12 +599,14 @@ export default class ArenaCommand extends InteractionCommand {
 
           if (isLeveledBattle) {
             const authorBlesses =
-              await ctx.client.repositories.roleplayRepository.getConfigurationBattle(
+              await ctx.client.repositories.roleplayRepository.getUserConfigurationBattle(
                 ctx.author.id,
               );
 
             const enemyBlesses =
-              await ctx.client.repositories.roleplayRepository.getConfigurationBattle(mentioned.id);
+              await ctx.client.repositories.roleplayRepository.getUserConfigurationBattle(
+                mentioned.id,
+              );
 
             if (!authorBlesses || !enemyBlesses) {
               ctx.makeMessage({

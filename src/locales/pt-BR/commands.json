@@ -754,9 +754,9 @@
       "title": "Preparação pra batalha",
       "footer": "Quer entrar mesmo assim?",
       "stats": "Cheque seus status antes de tudo",
+      "stats-description": "{{emojis.blood}} | Vida: **{{life}} / {{maxLife}}**\n{{emojis.mana}} | Mana: **{{mana}} / {{maxMana}}**\n{{emojis.damage}} | Dano: **{{damage}}**\n{{emojis.armor}} | Armadura: **{{armor}}**\n{{emojis.intelligence}} | Inteligência: **{{intelligence}}**\n{{emojis.agility}} | Agilidade: **{{agility}}**\n{{emojis.chest}} | Capacidade: **{{capacity}}/{{maxCapacity}}**",
       "enter": "Entrar",
-      "no_uncensored": "Arregar",
-      "no": "Fugir"
+      "no": "Arregar"
     },
     "results": {
       "title": "Resultados da Batalha",
@@ -975,5 +975,15 @@
       "3-2": "Você não consegue esconder, todos sabem que você é um misto. Mas tu não se deixa abalar, e claro que conta para tudo e todos que tu ta apenas fazendo um corte do Ronaldinho Gaúcho.",
       "3-3": "O fim dos fins. Você é grato por ter tido essa calvice. Por mais que não confiasse no início, e que tinha medo do que os outros pensariam, você venceu, e chegou até o fim. Parabéns campeão!"
     }
+  },
+  "party": {
+    "already_in_party": "Você já está em um grupo! Saia do grupo atual para entrar em outro.",
+    "other_in_party": "{{user}} já está em um grupo! Peça-o para sair e então entrar em seu",
+    "create_title": "Formação de Grupo",
+    "create_description": "{{user}} quer criar um grupo! Para o grupo se formar, todos os membros devem clicar no botão abaixo.",
+    "create_footer": "Aceitos: {{users}}/{{maxUsers}}",
+    "create_cancelled": "{{user}} negou-se a participar do grupo!",
+    "create_timesup": "Os jogadores não aceitaram o pedido à tempo!",
+    "create_success": "O grupo foi formado! Vocês agora podem ir à dungeon juntos!"
   }
 }

@@ -63,7 +63,7 @@ export default class RoleplayRepository {
       await this.redisClient.setex(`roleplay:${userId}`, 3600, JSON.stringify(updated));
   }
 
-  async getConfigurationBattle(userId: string): Promise<MayNotExists<UserBattleConfig>> {
+  async getUserConfigurationBattle(userId: string): Promise<MayNotExists<UserBattleConfig>> {
     if (this.redisClient) {
       const result = await this.redisClient.get(`battle_config:${userId}`);
       if (result) return JSON.parse(result);
@@ -83,5 +83,30 @@ export default class RoleplayRepository {
       await this.redisClient.set(`battle_config:${userId}`, JSON.stringify(config));
 
     await HttpRequests.updateUserBattleConfig(userId, config);
+  }
+
+  async createParty(ownerId: string, users: string[]): Promise<boolean> {
+    if (!this.redisClient) return false;
+
+    const transaction = this.redisClient.multi();
+
+    for (let i = 0; i < users.length; i++) {
+      const party = { ownerId, users: users.filter((u) => u !== users[i]) };
+      transaction.setex(`party:${users[i]}`, 3600, JSON.stringify(party));
+    }
+
+    const result = await transaction.exec();
+
+    if (!result) return false;
+    if (result.some((r) => r === null)) return false;
+    return true;
+  }
+
+  async getUserParty(userId: string): Promise<MayNotExists<{ ownerId: string; users: string[] }>> {
+    if (!this.redisClient) return null;
+    const res = await this.redisClient.get(`party:${userId}`);
+
+    if (!res) return null;
+    return JSON.parse(res);
   }
 }

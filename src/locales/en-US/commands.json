@@ -748,6 +748,7 @@
       "title": "Preparation for battle",
       "footer": "Do you want to go in anyway?",
       "stats": "Check your status first",
+      "stats-description": "{{emojis.blood}} | Life: **{{life}} / {{maxLife}}**\n{{emojis.mana}} | Mana: **{{mana}} / {{maxMana}}**\n{{emojis.damage}} | Damage: **{{damage}}**\n{{emojis.armor}} | Armor: **{{armor}}**\n{{emojis.intelligence}} | Intelligence: **{{intelligence}}**\n{{emojis.agility}} | Agility: **{{agility}}**\n{{emojis.chest}} | Capacity: **{{capacity}}/{{maxCapacity}}**",
       "enter": "Join",
       "no_uncensored": "Chicken Out",
       "no": "Runaway"
@@ -969,5 +970,15 @@
       "3-2": "You can't hide it, everyone knows you're a mix. But you don't let yourself be shaken, and of course it tells everyone and everything that you're just cutting Ronaldinho Gaúcho.",
       "3-3": "The end of the ends. You are grateful to have had this baldness. As much as you didn't trust it at first, and that you were afraid of what others would think, you won, and made it to the end. Congratulations champion !"
     }
+  },
+  "party": {
+    "already_in_party": "You are already in a party, please leave it before joining another one",
+    "other_in_party": "{{user}} is already in a party! Please ask it to join yours",
+    "create_title": "Party Formation",
+    "create_description": "{{user}} wants to create a party! For the party to form, all members must click the button below.",
+    "create_footer": "Accepted: {{users}}/{{maxUsers}}",
+    "create_cancelled": "{{user}} refused to join the group!",
+    "create_timesup": "The players didn't accept the party in time",
+    "create_success": "The party has been created! You may now go to the dungeon together!"
   }
 }

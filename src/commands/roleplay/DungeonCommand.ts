@@ -25,12 +25,12 @@ import {
   getUserMaxLife,
   getUserMaxMana,
 } from '@roleplay/utils/Calculations';
-import { getItemById } from '@roleplay/utils/DataUtils';
+import { getEquipmentById, getItemById } from '@roleplay/utils/DataUtils';
 import RoleplayBattle from '@roleplay/structures/PlayerVsEntity';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 
-import { COLORS } from '@structures/Constants';
+import { COLORS, emojis } from '@structures/Constants';
 
 import Util, {
   actionRow,
@@ -70,9 +70,14 @@ export default class DungeonCommand extends InteractionCommand {
     const user = await ctx.client.repositories.roleplayRepository.findUser(ctx.author.id);
 
     if (!user) {
-      ctx.makeMessage({ content: ctx.prettyResponse('error', 'common:unregistered') });
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'common:unregistered'),
+        ephemeral: true,
+      });
       return;
     }
+
+    const userParty = await ctx.client.repositories.roleplayRepository.findParty(user.id);
 
     const mayNotGo = canGoToDungeon(user, ctx);
 
@@ -91,23 +96,21 @@ export default class DungeonCommand extends InteractionCommand {
       .setColor('#e3beff')
       .addField(
         ctx.locale('commands:dungeon.preparation.stats'),
-        `${ctx.prettyResponse('blood', 'common:roleplay.life')}: **${user.life} / ${getUserMaxLife(
-          user,
-        )}**\n${ctx.prettyResponse('mana', 'common:roleplay.mana')}: **${
-          user.mana
-        } / ${getUserMaxMana(user)}**\n${ctx.prettyResponse(
-          'armor',
-          'common:roleplay.armor',
-        )}: **${getUserArmor(prepareUserForDungeon(user))}**\n${ctx.prettyResponse(
-          'damage',
-          'common:roleplay.damage',
-        )}: **${getUserDamage(prepareUserForDungeon(user))}**\n${ctx.prettyResponse(
-          'intelligence',
-          'common:roleplay.intelligence',
-        )}: **${getUserIntelligence(prepareUserForDungeon(user))}**\n${ctx.prettyResponse(
-          'agility',
-          'common:roleplay.agility',
-        )}: **${getUserAgility(prepareUserForDungeon(user))}**`,
+        ctx.locale('commands:dungeon.preparation.stats-description', {
+          emojis,
+          life: user.life,
+          maxLife: getUserMaxLife(user),
+          mana: user.mana,
+          maxMana: getUserMaxMana(user),
+          armor: getUserArmor(prepareUserForDungeon(user)),
+          damage: getUserDamage(prepareUserForDungeon(user)),
+          intelligence: getUserIntelligence(prepareUserForDungeon(user)),
+          agility: getUserAgility(prepareUserForDungeon(user)),
+          maxCapacity: getEquipmentById(user.backpack.id).data.levels[user.backpack.level].value,
+          capacity:
+            getEquipmentById(user.backpack.id).data.levels[user.backpack.level].value -
+            getFreeInventorySpace(user),
+        }),
       );
 
     const [acceptCustomId, baseId] = makeCustomId('YES');
