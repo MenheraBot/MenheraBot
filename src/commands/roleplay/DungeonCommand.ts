@@ -77,7 +77,9 @@ export default class DungeonCommand extends InteractionCommand {
       return;
     }
 
-    const userParty = await ctx.client.repositories.roleplayRepository.findParty(user.id);
+    const userParty = await ctx.client.repositories.roleplayRepository.getUserParty(user.id);
+
+    const toBattleUsers;
 
     const mayNotGo = canGoToDungeon(user, ctx);
 
