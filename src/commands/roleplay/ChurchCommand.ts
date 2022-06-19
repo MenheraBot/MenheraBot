@@ -1,5 +1,6 @@
+import { CICLE_DURATION_IN_MINUTES, MINUTES_COOLDOWN_TO_RECHURCH } from '@roleplay/Constants';
 import { makeCloseCommandButton, makeCooldown } from '@roleplay/utils/AdventureUtils';
-import { getUserMaxLife, getUserMaxMana } from '@roleplay/utils/Calculations';
+import { getUserChurchStatus, getUserMaxLife, getUserMaxMana } from '@roleplay/utils/Calculations';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import Util, {
@@ -11,13 +12,6 @@ import Util, {
 } from '@utils/Util';
 import { MessageButton, MessageEmbed } from 'discord.js-light';
 import moment from 'moment';
-
-export const BASE_LIFE_PER_CICLE = 167;
-export const MAX_USER_LIFE_TO_MULTIPLY = 800;
-export const BASE_MANA_PER_CICLE = 100;
-export const MAX_USER_MANA_TO_MULTIPLY = 600;
-export const CICLE_DURATION_IN_MINUTES = 60;
-const MINUTES_COOLDOWN_TO_RECHURCH = 45;
 
 export default class ChurchCommand extends InteractionCommand {
   constructor() {
@@ -85,22 +79,9 @@ export default class ChurchCommand extends InteractionCommand {
       return;
     }
 
-    const userMaxLife = getUserMaxLife(user);
-    const userMaxMana = getUserMaxMana(user);
-    const lifePerCicle =
-      BASE_LIFE_PER_CICLE +
-      Math.floor(userMaxLife / MAX_USER_LIFE_TO_MULTIPLY) * BASE_LIFE_PER_CICLE;
+    const userChurchStatus = getUserChurchStatus(user);
 
-    const manaPerCicle =
-      BASE_MANA_PER_CICLE +
-      Math.floor(userMaxMana / MAX_USER_MANA_TO_MULTIPLY) * BASE_MANA_PER_CICLE;
-
-    const prayToMaxLife = ((userMaxLife - user.life) * CICLE_DURATION_IN_MINUTES) / lifePerCicle;
-    const prayToMaxMana = ((userMaxMana - user.mana) * CICLE_DURATION_IN_MINUTES) / manaPerCicle;
-
-    const prayToMaximize = Math.max(prayToMaxLife, prayToMaxMana);
-
-    if (prayToMaximize < 10) {
+    if (userChurchStatus.prayMinutesToMaxStatus < 10) {
       ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:igreja.healthy') });
       return;
     }
@@ -113,13 +94,15 @@ export default class ChurchCommand extends InteractionCommand {
         ctx.locale('commands:igreja.description', {
           cooldown: CICLE_DURATION_IN_MINUTES,
           subtime: ctx.locale('common:minutes'),
-          life: lifePerCicle,
-          mana: manaPerCicle,
+          life: userChurchStatus.lifePerCicle,
+          mana: userChurchStatus.manaPerCicle,
           rechurch: MINUTES_COOLDOWN_TO_RECHURCH,
           untilCooldown: moment
-            .utc(Math.floor(prayToMaximize * 60000))
-            .format(prayToMaximize >= 60 ? 'HH:mm:ss' : 'mm:ss'),
-          untilSubtime: ctx.locale(prayToMaximize > 60 ? 'common:hours' : 'common:minutes'),
+            .utc(Math.floor(userChurchStatus.prayMinutesToMaxStatus * 60000))
+            .format(userChurchStatus.prayMinutesToMaxStatus >= 60 ? 'HH:mm:ss' : 'mm:ss'),
+          untilSubtime: ctx.locale(
+            userChurchStatus.prayMinutesToMaxStatus > 60 ? 'common:hours' : 'common:minutes',
+          ),
         }),
       );
 
@@ -134,6 +117,9 @@ export default class ChurchCommand extends InteractionCommand {
 
     const GratherThanAnHour = (time: number): boolean => time >= 3600000;
 
+    const userMaxLife = getUserMaxLife(user);
+    const userMaxMana = getUserMaxMana(user);
+
     if (inChurch && inChurch.data !== 'COOLDOWN') {
       const inChurchFor = Date.now() - (inChurch.data as number);
       embed.addField(
@@ -144,11 +130,15 @@ export default class ChurchCommand extends InteractionCommand {
             .format(GratherThanAnHour(inChurchFor) ? 'HH:mm:ss' : 'mm:ss'),
           subtime: ctx.locale(GratherThanAnHour(inChurchFor) ? 'common:hours' : 'common:minutes'),
           life: Math.min(
-            Math.floor((inChurchFor / (CICLE_DURATION_IN_MINUTES * 60000)) * lifePerCicle),
+            Math.floor(
+              (inChurchFor / (CICLE_DURATION_IN_MINUTES * 60000)) * userChurchStatus.lifePerCicle,
+            ),
             userMaxLife,
           ),
           mana: Math.min(
-            Math.floor((inChurchFor / (CICLE_DURATION_IN_MINUTES * 60000)) * manaPerCicle),
+            Math.floor(
+              (inChurchFor / (CICLE_DURATION_IN_MINUTES * 60000)) * userChurchStatus.manaPerCicle,
+            ),
             userMaxMana,
           ),
         }),
@@ -179,9 +169,13 @@ export default class ChurchCommand extends InteractionCommand {
 
     if (inChurch && inChurch.data !== 'COOLDOWN') {
       const inChurchFor = Date.now() - (inChurch.data as number);
-      const life = Math.floor((inChurchFor / (CICLE_DURATION_IN_MINUTES * 60000)) * lifePerCicle);
+      const life = Math.floor(
+        (inChurchFor / (CICLE_DURATION_IN_MINUTES * 60000)) * userChurchStatus.lifePerCicle,
+      );
       const prayedLife = Math.min(life + user.life, userMaxLife);
-      const mana = Math.floor((inChurchFor / (CICLE_DURATION_IN_MINUTES * 60000)) * manaPerCicle);
+      const mana = Math.floor(
+        (inChurchFor / (CICLE_DURATION_IN_MINUTES * 60000)) * userChurchStatus.manaPerCicle,
+      );
       const prayedMana = Math.min(mana + user.mana, userMaxMana);
 
       makeCooldown(user.cooldowns, {

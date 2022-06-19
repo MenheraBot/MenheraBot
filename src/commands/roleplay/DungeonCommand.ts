@@ -3,10 +3,10 @@ import {
   MOB_LIMIT_PER_DUNGEON_LEVEL,
   ROLEPLAY_COOLDOWNS,
 } from '@roleplay/Constants';
-import { UserBattleEntity } from '@roleplay/Types'; /* ConsumableItem, */
+import { RoleplayUserSchema, UserBattleEntity } from '@roleplay/Types';
 import {
-  canGoToDungeon,
-  getDungeonEnemy,
+  canUsersGoToDungeon,
+  getDungeonEnemies,
   prepareUserForDungeon,
   getEnemyLoot,
   addToInventory,
@@ -20,13 +20,14 @@ import {
 import {
   getUserAgility,
   getUserArmor,
+  getUserChurchStatus,
   getUserDamage,
   getUserIntelligence,
   getUserMaxLife,
   getUserMaxMana,
 } from '@roleplay/utils/Calculations';
 import { getEquipmentById, getItemById } from '@roleplay/utils/DataUtils';
-import RoleplayBattle from '@roleplay/structures/PlayerVsEntity';
+import RoleplayBattle, { BattleDiscordUser } from '@roleplay/structures/PlayerVsEntity';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 
@@ -45,15 +46,8 @@ import {
   MessageSelectMenu,
   SelectMenuInteraction,
   MessageEmbed,
+  MessageComponentInteraction,
 } from 'discord.js-light';
-
-import {
-  BASE_LIFE_PER_CICLE,
-  BASE_MANA_PER_CICLE,
-  CICLE_DURATION_IN_MINUTES,
-  MAX_USER_LIFE_TO_MULTIPLY,
-  MAX_USER_MANA_TO_MULTIPLY,
-} from './ChurchCommand';
 
 export default class DungeonCommand extends InteractionCommand {
   constructor() {
@@ -67,9 +61,9 @@ export default class DungeonCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    const user = await ctx.client.repositories.roleplayRepository.findUser(ctx.author.id);
+    const authorUser = await ctx.client.repositories.roleplayRepository.findUser(ctx.author.id);
 
-    if (!user) {
+    if (!authorUser) {
       ctx.makeMessage({
         content: ctx.prettyResponse('error', 'common:unregistered'),
         ephemeral: true,
@@ -77,16 +71,31 @@ export default class DungeonCommand extends InteractionCommand {
       return;
     }
 
-    const userParty = await ctx.client.repositories.roleplayRepository.getUserParty(user.id);
+    const userParty = await ctx.client.repositories.roleplayRepository.getUserParty(authorUser.id);
 
-    const toBattleUsers;
+    const toBattleUsers = userParty
+      ? ((await Promise.all(
+          userParty.users
+            .filter((b) => b !== ctx.author.id)
+            .map((a) => ctx.client.repositories.roleplayRepository.findUser(a)),
+        )) as RoleplayUserSchema[])
+      : [];
 
-    const mayNotGo = canGoToDungeon(user, ctx);
+    toBattleUsers.push(authorUser);
 
-    if (!mayNotGo.canGo) {
+    if (toBattleUsers.some((a) => !a)) {
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:dungeon.preparation.no_party_members'),
+      });
+      return;
+    }
+
+    const canUsersGo = canUsersGoToDungeon(toBattleUsers, ctx);
+
+    if (!canUsersGo.canGo) {
       const embed = new MessageEmbed()
         .setColor('DARK_RED')
-        .setFields(mayNotGo.reason)
+        .setFields(canUsersGo.reason)
         .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true }));
       ctx.makeMessage({ embeds: [embed] });
       return;
@@ -94,29 +103,39 @@ export default class DungeonCommand extends InteractionCommand {
 
     const embed = new MessageEmbed()
       .setTitle(ctx.prettyResponse('hourglass', 'commands:dungeon.preparation.title'))
-      .setFooter({ text: ctx.locale('commands:dungeon.preparation.footer') })
-      .setColor('#e3beff')
-      .addField(
-        ctx.locale('commands:dungeon.preparation.stats'),
-        ctx.locale('commands:dungeon.preparation.stats-description', {
-          emojis,
-          life: user.life,
-          maxLife: getUserMaxLife(user),
-          mana: user.mana,
-          maxMana: getUserMaxMana(user),
-          armor: getUserArmor(prepareUserForDungeon(user)),
-          damage: getUserDamage(prepareUserForDungeon(user)),
-          intelligence: getUserIntelligence(prepareUserForDungeon(user)),
-          agility: getUserAgility(prepareUserForDungeon(user)),
-          maxCapacity: getEquipmentById(user.backpack.id).data.levels[user.backpack.level].value,
-          capacity:
-            getEquipmentById(user.backpack.id).data.levels[user.backpack.level].value -
-            getFreeInventorySpace(user),
+      .setFooter({
+        text: ctx.locale('commands:dungeon.preparation.footer', {
+          users: 0,
+          maxUsers: toBattleUsers.length,
         }),
+      })
+      .setColor('#e3beff')
+      .addFields(
+        toBattleUsers.map((user) => ({
+          name: ctx.locale('commands:dungeon.preparation.stats', {
+            user: ctx.client.users.cache.get(user.id)?.username ?? `ID: ${user.id}`,
+          }),
+          value: ctx.locale('commands:dungeon.preparation.stats-description', {
+            emojis,
+            life: user.life,
+            maxLife: getUserMaxLife(user),
+            mana: user.mana,
+            maxMana: getUserMaxMana(user),
+            armor: getUserArmor(prepareUserForDungeon(user)),
+            damage: getUserDamage(prepareUserForDungeon(user)),
+            intelligence: getUserIntelligence(prepareUserForDungeon(user)),
+            agility: getUserAgility(prepareUserForDungeon(user)),
+            maxCapacity: getEquipmentById(user.backpack.id).data.levels[user.backpack.level].value,
+            capacity:
+              getEquipmentById(user.backpack.id).data.levels[user.backpack.level].value -
+              getFreeInventorySpace(user),
+          }),
+          inline: true,
+        })),
       );
 
-    const [acceptCustomId, baseId] = makeCustomId('YES');
-    const [negateCustomId] = makeCustomId('NO', baseId);
+    const [acceptCustomId, baseId] = makeCustomId('ACCEPT');
+    const [negateCustomId] = makeCustomId('NEGATE', baseId);
 
     const accept = new MessageButton()
       .setCustomId(acceptCustomId)
@@ -128,154 +147,174 @@ export default class DungeonCommand extends InteractionCommand {
       .setStyle('DANGER')
       .setLabel(ctx.locale('commands:dungeon.preparation.no'));
 
-    await ctx.makeMessage({ embeds: [embed], components: [actionRow([accept, negate])] });
+    await ctx.makeMessage({
+      content: toBattleUsers.map((a) => `<@${a.id}>`).join(', '),
+      embeds: [embed],
+      components: [actionRow([accept, negate])],
+    });
 
-    const selected = await Util.collectComponentInteractionWithStartingId(
-      ctx.channel,
-      ctx.author.id,
-      baseId,
-      15_000,
-    );
+    const filter = (int: MessageComponentInteraction) =>
+      int.customId.startsWith(`${baseId}`) && toBattleUsers.some((a) => a.id === int.user.id);
 
-    if (!selected || resolveCustomId(selected.customId) === 'NO') {
+    const collector = ctx.channel.createMessageComponentCollector({ idle: 15_000, filter });
+
+    const acceptedIds: string[] = [];
+
+    collector.on('end', (_, reason) => {
+      if (reason !== 'idle') return;
+
       ctx.makeMessage({
         components: [],
-        embeds: [],
-        content: ctx.prettyResponse('error', 'commands:dungeon.arregou'),
+        content: ctx.prettyResponse('error', 'common:timesup'),
       });
-      return;
-    }
+    });
 
-    return DungeonCommand.DungeonLoop(ctx, prepareUserForDungeon(user), 1, 0);
+    collector.on('collect', async (int: MessageComponentInteraction) => {
+      if (resolveCustomId(int.customId) === 'NEGATE') {
+        collector.stop('OWO');
+        ctx.makeMessage({
+          content: ctx.prettyResponse('error', 'commands:dungeon.arregou', {
+            user: int.user.username,
+          }),
+        });
+        return;
+      }
+
+      if (acceptedIds.includes(int.user.id)) return;
+      acceptedIds.push(int.user.id);
+
+      if (acceptedIds.length !== toBattleUsers.length) return;
+
+      collector.stop('nya');
+      return DungeonCommand.DungeonLoop(
+        ctx,
+        toBattleUsers.map((a) => prepareUserForDungeon(a)),
+        // TODO: Mob lebel system
+        1,
+        0,
+      );
+    });
   }
 
   static async DungeonLoop(
     ctx: InteractionCommandContext,
-    user: UserBattleEntity,
+    users: UserBattleEntity[],
     dungeonLevel: number,
     killedMobs: number,
   ): Promise<void> {
-    const enemy = getDungeonEnemy(dungeonLevel, user.level);
+    // TODO: better way to get enemies
+    const enemies = getDungeonEnemies(dungeonLevel, users[0].level);
+
+    const discordBattleUsers: BattleDiscordUser[] = users.map((a) => {
+      const fromCache = ctx.client.users.cache.get(a.id);
+
+      return {
+        id: a.id,
+        username: fromCache?.username ?? `ID: ${a.id}`,
+        imageUrl:
+          fromCache?.displayAvatarURL({ dynamic: true }) ?? ctx.client.user.displayAvatarURL(),
+      };
+    });
 
     // TODO: Remove hard coded arrays and add party and multiple mobs
     const battleResults = await new RoleplayBattle(
-      [user],
-      [enemy],
-      [
-        {
-          id: ctx.author.id,
-          imageUrl: ctx.author.displayAvatarURL(),
-          username: ctx.author.username,
-        },
-      ],
+      users,
+      enemies,
+      discordBattleUsers,
       ctx,
       ctx.locale('roleplay:battle.find', {
-        enemy: ctx.locale(`enemies:${enemy.id as 1}.name`),
-        level: enemy.level + 1,
+        enemy: ctx.locale(`enemies:${enemies[0].id as 1}.name`),
+        amount: enemies.length,
+        level: enemies[0].level + 1,
       }),
     ).battleLoop();
 
-    console.log(battleResults, killedMobs);
+    const resultEmbed = new MessageEmbed()
+      .setTitle(ctx.prettyResponse('crown', 'commands:dungeon.results.title'))
+      .setColor(COLORS.Purple);
 
-    let userMaxLife = getUserMaxLife(battleResults.user);
-    let userMaxMana = getUserMaxMana(battleResults.user);
+    battleResults.users.forEach((user, i) => {
+      if (isDead(user) && user.didParticipate) {
+        const { prayMinutesToMaxStatus } = getUserChurchStatus(user);
 
-    if (isDead(battleResults.user)) {
-      const lifePerCicle =
-        BASE_LIFE_PER_CICLE +
-        Math.floor(userMaxLife / MAX_USER_LIFE_TO_MULTIPLY) * BASE_LIFE_PER_CICLE;
+        makeCooldown(user.cooldowns, {
+          reason: 'church',
+          until: prayMinutesToMaxStatus * 60000 + Date.now() + ROLEPLAY_COOLDOWNS.deathPunishment,
+          data: 'DEATH',
+        });
+      }
 
-      const manaPerCicle =
-        BASE_MANA_PER_CICLE +
-        Math.floor(userMaxMana / MAX_USER_MANA_TO_MULTIPLY) * BASE_MANA_PER_CICLE;
+      if (battleResults.didRunaway) {
+        makeCooldown(user.cooldowns, {
+          reason: 'dungeon',
+          until: ROLEPLAY_COOLDOWNS.dungeonCooldown + Date.now(),
+        });
 
-      const prayToMaxLife = (userMaxLife * CICLE_DURATION_IN_MINUTES) / lifePerCicle;
-      const prayToMaxMana = (userMaxMana * CICLE_DURATION_IN_MINUTES) / manaPerCicle;
+        if (i === 0) embed.setDescription(ctx.locale('commands:dungeon.results.runaway'));
+      }
 
-      const prayToMaximize = Math.max(prayToMaxLife, prayToMaxMana);
-      ctx.makeMessage({
-        embeds: [],
-        components: [],
-        content: ctx.locale('roleplay:battle.user-death'),
-      });
+      if (user.didParticipate) {
+        user.experience +=
+          battleResults.enemies.filter((a) => isDead(a)).length *
+          battleResults.enemies[0].experience;
 
-      makeCooldown(battleResults.user.cooldowns, {
-        reason: 'church',
-        until: prayToMaximize * 60000 + Date.now() + ROLEPLAY_COOLDOWNS.deathPunishment,
-        data: 'DEATH',
-      });
+        const oldUserLevel = user.level;
 
-      battleResults.user.life = userMaxLife;
-      battleResults.user.mana = userMaxMana;
+        if (oldUserLevel < 22) makeLevelUp(user);
 
-      await ctx.client.repositories.roleplayRepository.postBattle(
-        ctx.author.id,
-        battleResults.user,
+        if (user.level > oldUserLevel) {
+          user.life = getUserMaxLife(user);
+          user.mana = getUserMaxMana(user);
+
+          ctx.send({
+            content: ctx.prettyResponse('level', 'common:roleplay.level-up', {
+              level: user.level,
+            }),
+            ephemeral: true,
+          });
+        }
+      }
+
+      embed.addField(
+        ctx.locale('commands:dungeon.preparation.stats', {
+          user: battleResults.discordUsers[i].username,
+        }),
+        ctx.locale('commands:dungeon.results.stats-description', {
+          emojis,
+          life: user.life,
+          maxLife: getUserMaxLife(user),
+          mana: user.mana,
+          maxMana: getUserMaxMana(user),
+          maxCapacity: getEquipmentById(user.backpack.id).data.levels[user.backpack.level].value,
+          capacity:
+            getEquipmentById(user.backpack.id).data.levels[user.backpack.level].value -
+            getFreeInventorySpace(user),
+          experience: battleResults.didRunaway
+            ? 0
+            : battleResults.enemies.filter((a) => isDead(a)).length *
+              battleResults.enemies[0].experience,
+        }),
       );
-      return;
-    }
 
-    if (battleResults.didRunaway) {
       makeCooldown(user.cooldowns, {
         reason: 'dungeon',
         until: ROLEPLAY_COOLDOWNS.dungeonCooldown + Date.now(),
       });
 
-      await ctx.client.repositories.roleplayRepository.postBattle(
-        ctx.author.id,
-        battleResults.user,
-      );
+      if (user.didParticipate || battleResults.didRunaway)
+        ctx.client.repositories.roleplayRepository.postBattle(user.id, user);
+    });
 
-      ctx.makeMessage({
-        content: ctx.prettyResponse('success', 'commands:dungeon.results.runaway'),
-        components: [],
-        embeds: [],
-      });
-
+    if (battleResults.didRunaway) {
+      ctx.makeMessage({ embeds: [resultEmbed], components: [], content: '' });
       return;
     }
 
-    const lootEarned = getEnemyLoot(enemy.loots);
-
-    battleResults.user.experience += Math.floor(battleResults.enemy.experience);
-
-    const oldUserLevel = battleResults.user.level;
-
-    if (oldUserLevel < 22) makeLevelUp(battleResults.user);
-
-    if (battleResults.user.level > oldUserLevel) {
-      userMaxLife = getUserMaxLife(battleResults.user);
-      userMaxMana = getUserMaxMana(battleResults.user);
-      battleResults.user.life = userMaxLife;
-      battleResults.user.mana = userMaxMana;
-
-      ctx.send({
-        content: ctx.prettyResponse('level', 'common:roleplay.level-up', {
-          level: battleResults.user.level,
-        }),
-        ephemeral: true,
-      });
-    }
-
-    makeCooldown(user.cooldowns, {
-      reason: 'dungeon',
-      until: ROLEPLAY_COOLDOWNS.dungeonCooldown + Date.now(),
-    });
-
-    await ctx.client.repositories.roleplayRepository.postBattle(ctx.author.id, battleResults.user);
-
-    const embed = new MessageEmbed()
-      .setTitle(ctx.prettyResponse('crown', 'commands:dungeon.results.title'))
-      .setColor(COLORS.Purple)
-      .setDescription(
-        ctx.locale('commands:dungeon.results.description', {
-          life: battleResults.user.life,
-          mana: battleResults.user.mana,
-          maxLife: userMaxLife,
-          maxMana: userMaxMana,
-          experience: battleResults.enemy.experience,
-        }),
-      );
+    // TODO: "X mobs mortos! Após esta batalha, aqui estão os status atuais da sua equipe"
+    // TODO: Split itens and potions into one embed, and status into another embed. When a user
+    // click in a button (NEED TO CLICK THE BUTTON TO PICK ITENS OR POTIONS) will display ephemeral embed
+    // to choose what it wants
+    resultEmbed.setDescription(ctx.locale('commands:dungeon.results.finish'));
 
     const [backCustomId, baseId] = makeCustomId('BACK');
     const [continueCustomId] = makeCustomId('CONTINUE', baseId);
@@ -300,6 +339,8 @@ export default class DungeonCommand extends InteractionCommand {
       nextButton.setDisabled(true).setLabel(ctx.locale('common:soon')).setEmoji('🛑');
 
     if (killedMobs + 1 >= MOB_LIMIT_PER_DUNGEON_LEVEL) continueButton.setDisabled(true);
+
+    const lootEarned = getEnemyLoot(enemies[0].loots);
 
     const toSendComponents: MessageActionRow[] = [
       actionRow([nextButton]),

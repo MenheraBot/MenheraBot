@@ -1,9 +1,20 @@
 import {
+  BASE_LIFE_PER_CICLE,
+  BASE_MANA_PER_CICLE,
   BASE_XP,
+  CICLE_DURATION_IN_MINUTES,
   DIFFICULT_TO_LEVEL_UP,
   ELEMENT_SINERGY_BONUS_IN_PERCENTAGE,
+  MAX_USER_LIFE_TO_MULTIPLY,
+  MAX_USER_MANA_TO_MULTIPLY,
 } from '@roleplay/Constants';
-import { ReadyToBattleEnemy, UserAbility, UserBattleEntity } from '@roleplay/Types';
+import {
+  ChurchStatus,
+  ReadyToBattleEnemy,
+  RoleplayUserSchema,
+  UserAbility,
+  UserBattleEntity,
+} from '@roleplay/Types';
 import { ToBLess } from '@custom_types/Menhera';
 import { getAbilityById, getClassById, getEquipmentById, getRaceById } from './DataUtils';
 
@@ -305,4 +316,26 @@ export const getAbilityCost = (ability: UserAbility): number => {
   const resolvedAbility = getAbilityById(ability.id);
 
   return Math.floor(resolvedAbility.data.cost + resolvedAbility.data.costPerLevel * ability.level);
+};
+
+export const getUserChurchStatus = (user: RoleplayUserSchema): ChurchStatus => {
+  const userMaxLife = getUserMaxLife(user);
+  const userMaxMana = getUserMaxMana(user);
+
+  const lifePerCicle =
+    BASE_LIFE_PER_CICLE + Math.floor(userMaxLife / MAX_USER_LIFE_TO_MULTIPLY) * BASE_LIFE_PER_CICLE;
+
+  const manaPerCicle =
+    BASE_MANA_PER_CICLE + Math.floor(userMaxMana / MAX_USER_MANA_TO_MULTIPLY) * BASE_MANA_PER_CICLE;
+
+  const prayToMaxLife = ((userMaxLife - user.life) * CICLE_DURATION_IN_MINUTES) / lifePerCicle;
+  const prayToMaxMana = ((userMaxMana - user.mana) * CICLE_DURATION_IN_MINUTES) / manaPerCicle;
+
+  return {
+    lifePerCicle,
+    manaPerCicle,
+    prayMinutesToMaxLife: prayToMaxLife,
+    prayMinutesToMaxMana: prayToMaxMana,
+    prayMinutesToMaxStatus: Math.max(prayToMaxLife, prayToMaxMana),
+  };
 };

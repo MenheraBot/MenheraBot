@@ -18,11 +18,11 @@ import { TFunction } from 'i18next';
 import { getEnemies, getEquipmentById } from './DataUtils';
 import { nextLevelXp } from './Calculations';
 
-export const prepareUserForDungeon = (user: RoleplayUserSchema): UserBattleEntity => {
-  // @ts-expect-error nyaa
-  user.effects = [];
-  return user as UserBattleEntity;
-};
+export const prepareUserForDungeon = (user: RoleplayUserSchema): UserBattleEntity => ({
+  ...user,
+  didParticipate: true,
+  effects: [],
+});
 
 export const makeCloseCommandButton = (baseId: number, translate: TFunction): MessageButton =>
   new MessageButton()
@@ -30,50 +30,55 @@ export const makeCloseCommandButton = (baseId: number, translate: TFunction): Me
     .setStyle('DANGER')
     .setLabel(translate('common:exit-command'));
 
-export const canGoToDungeon = (
-  user: RoleplayUserSchema,
+export const canUsersGoToDungeon = (
+  users: RoleplayUserSchema[],
   ctx: InteractionCommandContext,
 ): { canGo: boolean; reason: EmbedFieldData[] } => {
   let canGo = true;
   const reason: EmbedFieldData[] = [];
 
-  user.cooldowns.forEach((cd) => {
-    if (cd?.data === 'DEATH') {
-      canGo = false;
-      reason.push({
-        name: ctx.locale('roleplay:cooldowns.death'),
-        value: ctx.locale('roleplay:cooldowns.death-description'),
-      });
-      return;
-    }
-    if (cd.until > Date.now()) {
-      if (cd.reason === 'church' && cd.data === 'COOLDOWN') return;
-      canGo = false;
-      reason.push({
-        name: ctx.locale(
-          `roleplay:cooldowns.${cd?.data === 'DEATH' ? 'death' : (cd.reason as 'death')}`,
-        ),
-        value: ctx.locale(
-          `roleplay:cooldowns.${
-            cd?.data === 'DEATH' ? 'death' : (cd.reason as 'death')
-          }-description`,
-          {
-            time: moment
-              .utc(cd.until - Date.now())
-              .format(moreThanAnHour(cd.until - Date.now()) ? 'HH:mm:ss' : 'mm:ss'),
-            subtime: ctx.locale(
-              `common:${moreThanAnHour(cd.until - Date.now()) ? 'hours' : 'minutes'}`,
-            ),
-          },
-        ),
-      });
-    }
+  users.forEach((user) => {
+    user.cooldowns.forEach((cd) => {
+      if (cd?.data === 'DEATH') {
+        canGo = false;
+        reason.push({
+          name: ctx.locale('roleplay:cooldowns.death'),
+          value: ctx.locale('roleplay:cooldowns.death-description'),
+        });
+        return;
+      }
+      if (cd.until > Date.now()) {
+        if (cd.reason === 'church' && cd.data === 'COOLDOWN') return;
+        canGo = false;
+        reason.push({
+          name: ctx.locale(
+            `roleplay:cooldowns.${cd?.data === 'DEATH' ? 'death' : (cd.reason as 'death')}`,
+          ),
+          value: ctx.locale(
+            `roleplay:cooldowns.${
+              cd?.data === 'DEATH' ? 'death' : (cd.reason as 'death')
+            }-description`,
+            {
+              time: moment
+                .utc(cd.until - Date.now())
+                .format(moreThanAnHour(cd.until - Date.now()) ? 'HH:mm:ss' : 'mm:ss'),
+              subtime: ctx.locale(
+                `common:${moreThanAnHour(cd.until - Date.now()) ? 'hours' : 'minutes'}`,
+              ),
+            },
+          ),
+        });
+      }
+    });
   });
 
   return { canGo, reason };
 };
 
-export const getDungeonEnemy = (dungeonLevel: number, userLevel: number): ReadyToBattleEnemy => {
+export const getDungeonEnemies = (
+  dungeonLevel: number,
+  userLevel: number,
+): ReadyToBattleEnemy[] => {
   const availableEnemies = getEnemies().filter((a) => a.data.dungeonLevels.includes(dungeonLevel));
 
   const enemy = RandomFromArray(availableEnemies);
@@ -94,7 +99,7 @@ export const getDungeonEnemy = (dungeonLevel: number, userLevel: number): ReadyT
     loots: enemy.data.loots,
   };
 
-  return enemyData;
+  return [enemyData];
 };
 
 export const isDead = (entity: unknown & { life: number }): boolean => entity.life <= 0;
@@ -220,3 +225,9 @@ export const getAbilityDamageFromEffects = (
 
     return p;
   }, 0);
+
+export const chunkify = (arr: unknown[], parts: number): unknown[][] => {
+  const result = [];
+  for (let i = parts; i > 0; i--) result.push(arr.splice(0, Math.ceil(arr.length / i)));
+  return result;
+};

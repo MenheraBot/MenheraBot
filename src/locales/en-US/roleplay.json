@@ -104,7 +104,7 @@
     "hit-success": " and deals you **{{damage}}** damage",
     "dodged": ", and **{{user}} dodged**",
     "title": "Battle Against {{count}} {{name}}",
-    "find": "Enemy Found! **{{enemy}}** in phase **{{level}}** is just ahead!",
+    "find": "Enemy Found! {{amount}} **{{enemy}}** in phase **{{level}}** just ahead!",
     "runaway-success": "The run was successful!",
     "runaway-fail": "Escape attempt fails!",
     "options": {

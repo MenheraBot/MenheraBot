@@ -104,7 +104,7 @@
     "hit-fail": ", mas acaba errando!",
     "dodged": ", and **{{user}} desviou!**",
     "title": "Batalha Contra {{count}} {{name}}",
-    "find": "Inimigo a vista! **{{enemy}}** em fase **{{level}}** está logo a frente!",
+    "find": "Inimigo a vista! {{amount}} **{{enemy}}** em fase **{{level}}** logo a frente!",
     "runaway-success": "A fuga foi bem sucedida!",
     "runaway-fail": "A tentativa de fugir é falha!",
     "options": {

@@ -190,8 +190,17 @@ export type ItemsFile = DropItem | ConsumableItem;
 
 export type UserBattleEntity = RoleplayUserSchema & {
   effects: Array<AbilityEffect & { level: number; author: EffectAuthor }>;
+  didParticipate: boolean;
 };
 
 export type UserBattleConfig = Blesses;
 
 export type BattleUserTurn = 'attacker' | 'defender';
+
+export interface ChurchStatus {
+  lifePerCicle: number;
+  manaPerCicle: number;
+  prayMinutesToMaxLife: number;
+  prayMinutesToMaxMana: number;
+  prayMinutesToMaxStatus: number;
+}

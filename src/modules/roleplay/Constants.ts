@@ -20,6 +20,14 @@ export const PVE_USER_RESPONSE_TIME_LIMIT = 20_000;
 
 export const PVP_USER_RESPONSE_TIME_LIMIT = 20_000;
 
+// CHURCH
+export const BASE_LIFE_PER_CICLE = 167;
+export const MAX_USER_LIFE_TO_MULTIPLY = 800;
+export const BASE_MANA_PER_CICLE = 100;
+export const MAX_USER_MANA_TO_MULTIPLY = 600;
+export const CICLE_DURATION_IN_MINUTES = 60;
+export const MINUTES_COOLDOWN_TO_RECHURCH = 45;
+
 export const ROLEPLAY_COOLDOWNS = {
   dungeonCooldown: 3_600_000,
   deathPunishment: 3_600_000,

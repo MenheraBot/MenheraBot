@@ -40,6 +40,13 @@ export default class PartyCommand extends InteractionCommand {
             },
           ],
         },
+        {
+          name: 'desfazer',
+          nameLocalizations: { 'en-US': 'undo' },
+          description: '「🔱」・Desfaça o seu grupo atual',
+          descriptionLocalizations: { 'en-US': '「🔱」・Undo your current party' },
+          type: 'SUB_COMMAND',
+        },
       ],
       category: 'roleplay',
       authorDataFields: ['selectedColor'],
@@ -53,7 +60,14 @@ export default class PartyCommand extends InteractionCommand {
     switch (command) {
       case 'criar':
         return PartyCommand.createParty(ctx);
+      case 'desafzer':
+        return PartyCommand.undoParty(ctx);
     }
+  }
+
+  static async undoParty(ctx: InteractionCommandContext): Promise<void> {
+    // TODO: Implementar
+    console.log(ctx);
   }
 
   static async createParty(ctx: InteractionCommandContext): Promise<void> {

@@ -157,6 +157,16 @@ export default class PlayerVsEntity {
     return false;
   }
 
+  /*
+    TODO: I'm not finished with this yet.
+
+    - [ ] User may choose who wants to attack
+    - [ ] Maybe some multi target attacks
+    - [ ] Support abilities, with multi users to effect
+    - [ ] Abilities cooldown
+    - [ ] Different embeds to show the battle, once to show all users and enemies, one to choose attacks
+  */
+
   private async userAttack(): Promise<boolean> {
     const toAttackUser = this.users[this.userIndex];
     const toDefendEnemy = this.enemies[this.enemyIndex];

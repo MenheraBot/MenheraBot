@@ -746,8 +746,9 @@
     "next": "Go Down to Level {{level}}",
     "preparation": {
       "title": "Preparation for battle",
-      "footer": "Do you want to go in anyway?",
-      "stats": "Check your status first",
+      "footer": "Do you want to go in anyway? {{users}}/{{maxUsers}}",
+      "stats": "{{user}}' Stats",
+      "no_party_members": "Someone in your party doesn't have a register in the Boleham World! Undo this party and try again",
       "stats-description": "{{emojis.blood}} | Life: **{{life}} / {{maxLife}}**\n{{emojis.mana}} | Mana: **{{mana}} / {{maxMana}}**\n{{emojis.damage}} | Damage: **{{damage}}**\n{{emojis.armor}} | Armor: **{{armor}}**\n{{emojis.intelligence}} | Intelligence: **{{intelligence}}**\n{{emojis.agility}} | Agility: **{{agility}}**\n{{emojis.chest}} | Capacity: **{{capacity}}/{{maxCapacity}}**",
       "enter": "Join",
       "no_uncensored": "Chicken Out",
@@ -764,9 +765,9 @@
       "back": "You've returned to the city, get some rest before going on another adventure!",
       "footer": "If you want an item, please do so before going elsewhere.",
       "loots": "Available Items (You have space to get **{{amount}}**)\n{{itemText}}",
-      "description": "**Your Status:**\n❤️ | Life: **{{life}} / {{maxLife}}**\n💧 | Mana: **{{mana}} / {{maxMana}}**\n🔰 | Earned Experience: **{{experience}}**\n\nYou have triumphed in your battle, and now you must go your way, choose what you want to do"
+      "stats-description": "{{emojis.life}} | Life: **{{life}} / {{maxLife}}**\n{{emojis.mana}} | Mana: **{{mana}} / {{maxMana}}**\n{{emojis.experience}} | Earned Experience: **{{experience}}**\n{{emojis.chest}} | Capacity: **{{capacity}}/{{maxCapacity}}**"
     },
-    "arregou": "You thought better of it, and ended up giving up on entering the dungeon"
+    "arregou": "{{user}} thought better of it, and ended up giving up on entering the dungeon"
   },
   "inventario": {
     "title": "{{emoji}} | {{user}}' Inventory ({{capacity}}/{{maxCapacity}})",

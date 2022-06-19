@@ -752,8 +752,9 @@
     "next": "Descer para o Nível {{level}}",
     "preparation": {
       "title": "Preparação pra batalha",
-      "footer": "Quer entrar mesmo assim?",
-      "stats": "Cheque seus status antes de tudo",
+      "footer": "Quer entrar mesmo assim? {{users}}/{{maxUsers}}",
+      "no_party_members": "Alguém de seu grupo não possui uma ficha no Mundo de Boleham! Desfaça este grupo e tente novamente",
+      "stats": "Status de {{user}}",
       "stats-description": "{{emojis.blood}} | Vida: **{{life}} / {{maxLife}}**\n{{emojis.mana}} | Mana: **{{mana}} / {{maxMana}}**\n{{emojis.damage}} | Dano: **{{damage}}**\n{{emojis.armor}} | Armadura: **{{armor}}**\n{{emojis.intelligence}} | Inteligência: **{{intelligence}}**\n{{emojis.agility}} | Agilidade: **{{agility}}**\n{{emojis.chest}} | Capacidade: **{{capacity}}/{{maxCapacity}}**",
       "enter": "Entrar",
       "no": "Arregar"
@@ -767,11 +768,11 @@
       "use-potion": "Selecione as poções que queres usar",
       "back": "Você retornou para a cidade, descanse um pouco antes de ir para outra aventura!",
       "footer": "Caso queira algum item, faça-o antes de ir para outro lugar",
-      "runaway": "Você fugiu da batalha com sucesso",
+      "runaway": "**A fuga foi realizada com sucesso!**",
       "loots": "Itens Disponíveis (Você tem espaço para pegar **{{amount}}**)\n{{itemText}}",
-      "description": "**Seus Status:**\n❤️ | Vida: **{{life}} / {{maxLife}}**\n💧 | Mana: **{{mana}} / {{maxMana}}**\n🔰 | Experiência Ganha: **{{experience}}**\n\nVocê triunfou em sua batalha, e agora deve seguir seu rumo, escolha o que desejas fazer"
+      "stats-description": "{{emojis.life}} | Vida: **{{life}} / {{maxLife}}**\n{{emojis.mana}} | Mana: **{{mana}} / {{maxMana}}**\n{{emojis.experience}} | Experiência Ganha: **{{experience}}**\n{{emojis.chest}} | Capacidade: **{{capacity}}/{{maxCapacity}}**"
     },
-    "arregou": "Você pensou melhor, e acabou desistindo de entrar na dungeon"
+    "arregou": "{{user}} pensou melhor, e acabou desistindo de entrar na dungeon"
   },
   "inventario": {
     "title": "{{emoji}} | Inventário de {{user}} ({{capacity}}/{{maxCapacity}})",
