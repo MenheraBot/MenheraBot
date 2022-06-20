@@ -95,7 +95,7 @@ export const getDungeonEnemies = (
 
   const enemyData: ReadyToBattleEnemy = {
     id: enemy.id,
-    life: 65, // Math.floor(enemy.data.baseLife + enemy.data.statsPerPhase.baseLife * enemyPhase),
+    life: Math.floor(enemy.data.baseLife + enemy.data.statsPerPhase.baseLife * enemyPhase),
     armor: Math.floor(enemy.data.baseArmor + enemy.data.statsPerPhase.baseArmor * enemyPhase),
     damage: Math.floor(enemy.data.baseDamage + enemy.data.statsPerPhase.baseDamage * enemyPhase),
     experience: Math.floor(
@@ -107,6 +107,7 @@ export const getDungeonEnemies = (
     loots: enemy.data.loots,
   };
 
+  // TODO: Better way of gettin lots of enemies
   return [{ ...enemyData }, { ...enemyData }, { ...enemyData }];
 };
 
@@ -177,25 +178,31 @@ export const makeCooldown = (
 };
 
 // TODO: new enemy loot system
-export const getEnemyLoot = (loots: EnemyDrops[]): EnemyDrops['loots'] => {
+export const getEnemiesLoots = (lootsArray: EnemyDrops[][]): EnemyDrops['loots'] => {
+  const toReturn: number[] = [];
+
   const chance = Math.floor(Math.random() * 100);
 
-  let accumulator = loots.reduce((p, c) => p + c.probability, 0);
+  lootsArray.forEach((loots) => {
+    let accumulator = loots.reduce((p, c) => p + c.probability, 0);
 
-  const mapedChanges: { loots: number[]; probabilities: number[] }[] = loots.map((a) => {
-    const toReturn = [accumulator - a.probability, accumulator];
-    accumulator -= a.probability;
-    return { loots: a.loots, probabilities: toReturn };
+    const mapedChanges: { loots: number[]; probabilities: number[] }[] = loots.map((a) => {
+      const returning = [accumulator - a.probability, accumulator];
+      accumulator -= a.probability;
+      return { loots: a.loots, probabilities: returning };
+    });
+
+    // eslint-disable-next-line no-restricted-syntax
+    for (const data of mapedChanges) {
+      const [min, max] = data.probabilities;
+      if (chance >= min && chance <= max) {
+        toReturn.push(...data.loots);
+        return;
+      }
+    }
   });
 
-  // eslint-disable-next-line no-restricted-syntax
-  for (const data of mapedChanges) {
-    const [min, max] = data.probabilities;
-    if (chance >= min && chance <= max) {
-      return data.loots;
-    }
-  }
-  return [];
+  return toReturn;
 };
 
 export const makeLevelUp = (
@@ -234,8 +241,21 @@ export const getAbilityDamageFromEffects = (
     return p;
   }, 0);
 
-export const chunkify = (arr: unknown[], parts: number): unknown[][] => {
+const chunkify = <T>(arr: T[], parts: number): T[][] => {
   const result = [];
   for (let i = parts; i > 0; i--) result.push(arr.splice(0, Math.ceil(arr.length / i)));
   return result;
+};
+
+export const getUsersLoots = (
+  users: UserBattleEntity[],
+  loots: EnemyDrops['loots'],
+): { id: string; loots: EnemyDrops['loots'] }[] => {
+  const canGetLoots = users.filter((u) => u.didParticipate).length;
+
+  const lootsPerUser = chunkify(loots, canGetLoots);
+
+  let acc = 0;
+
+  return users.map((u) => ({ id: u.id, loots: u.didParticipate ? lootsPerUser[acc++] : [] }));
 };

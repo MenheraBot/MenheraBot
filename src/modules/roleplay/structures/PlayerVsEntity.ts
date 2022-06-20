@@ -178,6 +178,15 @@ export default class PlayerVsEntity {
     - [ ] Support abilities, with multi users to effect
     - [ ] Abilities cooldown
     - [x] Different embeds to show the battle, once to show all users and enemies, one to choose attacks
+    - [ ] Heal abilities cannot be used in dead allies, but maybe a resurrect ability (settar didParticipate)
+
+    IN A NEAR FUTURE: 
+    TODO:
+    Mudar o interaction do CTX para uma interaction de algum botão...
+    Caso alguma batalha dure mais de 15 minutos e/ou a mensagem foi apagada, dar um jeito de conseguir a mensagem de volta
+    Talvez executando /dungeon e ver que ta em uma batalha, finaliza a antiga e começa uma nova no estado atual
+    ou então salva as interactions passadas, e caso o /dungeon seja usado por alguem da batalha, cria uma nova mensagem
+    com novo contexto baseado na ultima interaction usada
   */
 
   private async userAttack(): Promise<boolean> {
@@ -371,10 +380,6 @@ export default class PlayerVsEntity {
         const didConnect = didUserHit(userAttackSuccess);
 
         if (didConnect) toDefendEnemy.life -= damageDealt;
-
-        console.log(this.enemies);
-        console.log(toDefendEnemy);
-        console.log(this.enemyIndex);
 
         if (isDead(toDefendEnemy)) {
           this.lastText = this.ctx.locale('roleplay:battle.enemy-death', {
