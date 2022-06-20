@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Fixed
 
 - Removido acento na palavra `itens`. Meu português não é dos melhoers.
+- Resolvido problema no centro comprar itens.
 
 ### Removed
 

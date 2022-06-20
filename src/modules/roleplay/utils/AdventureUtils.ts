@@ -18,11 +18,13 @@ import { TFunction } from 'i18next';
 import { getEnemies, getEquipmentById } from './DataUtils';
 import { nextLevelXp } from './Calculations';
 
-export const prepareUserForDungeon = (user: RoleplayUserSchema): UserBattleEntity => ({
-  ...user,
-  didParticipate: true,
-  effects: [],
-});
+export const prepareUserForDungeon = (user: RoleplayUserSchema): UserBattleEntity => {
+  // @ts-expect-error Os negocio nao sao
+  user.didParticipate = true;
+  // @ts-expect-error Os negocio nao sao
+  user.effects = [];
+  return user as unknown as UserBattleEntity;
+};
 
 export const makeCloseCommandButton = (baseId: number, translate: TFunction): MessageButton =>
   new MessageButton()
@@ -34,25 +36,30 @@ export const canUsersGoToDungeon = (
   users: RoleplayUserSchema[],
   ctx: InteractionCommandContext,
 ): { canGo: boolean; reason: EmbedFieldData[] } => {
-  let canGo = true;
   const reason: EmbedFieldData[] = [];
 
   users.forEach((user) => {
     user.cooldowns.forEach((cd) => {
       if (cd?.data === 'DEATH') {
-        canGo = false;
         reason.push({
-          name: ctx.locale('roleplay:cooldowns.death'),
-          value: ctx.locale('roleplay:cooldowns.death-description'),
+          name: ctx.locale('roleplay:cooldowns.death', {
+            user: ctx.client.users.cache.get(user.id)?.username ?? `ID: ${user.id}`,
+          }),
+          value: ctx.locale('roleplay:cooldowns.death-description', {
+            user: ctx.client.users.cache.get(user.id)?.username ?? `ID: ${user.id}`,
+          }),
         });
         return;
       }
+
       if (cd.until > Date.now()) {
         if (cd.reason === 'church' && cd.data === 'COOLDOWN') return;
-        canGo = false;
         reason.push({
           name: ctx.locale(
             `roleplay:cooldowns.${cd?.data === 'DEATH' ? 'death' : (cd.reason as 'death')}`,
+            {
+              user: ctx.client.users.cache.get(user.id)?.username ?? `ID: ${user.id}`,
+            },
           ),
           value: ctx.locale(
             `roleplay:cooldowns.${
@@ -65,6 +72,7 @@ export const canUsersGoToDungeon = (
               subtime: ctx.locale(
                 `common:${moreThanAnHour(cd.until - Date.now()) ? 'hours' : 'minutes'}`,
               ),
+              user: ctx.client.users.cache.get(user.id)?.username ?? `ID: ${user.id}`,
             },
           ),
         });
@@ -72,7 +80,7 @@ export const canUsersGoToDungeon = (
     });
   });
 
-  return { canGo, reason };
+  return { canGo: reason.length === 0, reason };
 };
 
 export const getDungeonEnemies = (
@@ -87,7 +95,7 @@ export const getDungeonEnemies = (
 
   const enemyData: ReadyToBattleEnemy = {
     id: enemy.id,
-    life: Math.floor(enemy.data.baseLife + enemy.data.statsPerPhase.baseLife * enemyPhase),
+    life: 65, // Math.floor(enemy.data.baseLife + enemy.data.statsPerPhase.baseLife * enemyPhase),
     armor: Math.floor(enemy.data.baseArmor + enemy.data.statsPerPhase.baseArmor * enemyPhase),
     damage: Math.floor(enemy.data.baseDamage + enemy.data.statsPerPhase.baseDamage * enemyPhase),
     experience: Math.floor(
@@ -99,10 +107,10 @@ export const getDungeonEnemies = (
     loots: enemy.data.loots,
   };
 
-  return [enemyData];
+  return [{ ...enemyData }, { ...enemyData }, { ...enemyData }];
 };
 
-export const isDead = (entity: unknown & { life: number }): boolean => entity.life <= 0;
+export const isDead = (entity: { life: number }): boolean => entity.life <= 0;
 
 export const isInventoryFull = (user: RoleplayUserSchema): boolean => {
   const userBackPack = getEquipmentById<'backpack'>(user.backpack.id);

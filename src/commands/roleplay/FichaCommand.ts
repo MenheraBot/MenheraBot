@@ -1,4 +1,3 @@
-/* eslint-disable no-nested-ternary */
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { RoleplayUserSchema } from '@roleplay/Types';

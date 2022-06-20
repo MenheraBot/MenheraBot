@@ -144,6 +144,7 @@ export type EnemiesFile = {
 export interface EffectAuthor {
   totalIntelligence: number;
   elementSinergy: Elements;
+  indexInBattle: number;
 }
 
 export interface ReadyToBattleEnemy {
@@ -156,6 +157,7 @@ export interface ReadyToBattleEnemy {
   level: number;
   effects: Array<AbilityEffect & { level: number; author: EffectAuthor }>;
   loots: EnemyDrops[];
+  entropy?: number;
 }
 
 interface ItemLevel {

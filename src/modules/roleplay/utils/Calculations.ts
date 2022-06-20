@@ -21,19 +21,17 @@ import { getAbilityById, getClassById, getEquipmentById, getRaceById } from './D
 export const getEnemyStatusWithEffects = (
   enemy: ReadyToBattleEnemy,
   wannedStatus: 'agility' | 'armor' | 'damage',
-  user: UserBattleEntity,
 ): number => {
-  const userClass = getClassById(user.class);
   const baseStatus = enemy[wannedStatus];
 
   const effects = enemy.effects.reduce((p, c) => {
     if (!c.effectType.startsWith(wannedStatus)) return p;
     let effectValue =
       c.effectValue +
-      getUserIntelligence(user) * (c.effectValueByIntelligence / 100) +
+      c.author.totalIntelligence * (c.effectValueByIntelligence / 100) +
       c.effectValuePerLevel * c.level;
 
-    if (c.element === userClass.data.elementSinergy)
+    if (c.element === c.author.elementSinergy)
       effectValue += effectValue * (ELEMENT_SINERGY_BONUS_IN_PERCENTAGE / 100);
 
     if (c.effectValueModifier === 'percentage') effectValue = baseStatus * (effectValue / 100);

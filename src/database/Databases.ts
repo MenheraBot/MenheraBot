@@ -149,15 +149,26 @@ export default class Databases {
 
   createRedisConnection(): void {
     try {
-      this.redisClient = new Redis({ db: process.env.NODE_ENV === 'development' ? 1 : 0 });
+      this.redisClient = new Redis({
+        db: process.env.NODE_ENV === 'development' ? 1 : 0,
+        maxRetriesPerRequest: 1,
+        retryStrategy: (times: number) => Math.min(times * 200, 5000),
+      });
 
-      this.redisClient.once('connect', () => {
+      this.redisClient.on('connect', () => {
         console.log('[REDIS] Connected to redis database');
       });
 
       this.redisClient.on('end', () => {
         this.redisClient = null;
         console.log('[REDIS] Redis database has been disconnected');
+      });
+
+      this.redisClient.on('error', (err) => {
+        if (err.message.includes('ECONNREFUSED') && this.redisClient)
+          this.redisClient.disconnect(false);
+
+        console.log(`[REDIS] An error ocurred at Redis: ${err}`);
       });
     } catch (err) {
       console.log(`[REDIS] Error connecting to redis ${err}`);

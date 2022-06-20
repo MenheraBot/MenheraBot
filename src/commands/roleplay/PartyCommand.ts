@@ -92,6 +92,21 @@ export default class PartyCommand extends InteractionCommand {
     const userOne = ctx.options.getUser('user_um', true);
     const userTwo = ctx.options.getUser('user_dois');
 
+    if (userOne.bot || (userTwo && userTwo.bot)) {
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:party.bot_in_party'),
+        ephemeral: true,
+      });
+    }
+
+    if (userOne.id === ctx.author.id || (userTwo && userTwo.id === ctx.author.id)) {
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:party.cannot_invite_self'),
+        ephemeral: true,
+      });
+      return;
+    }
+
     if (await ctx.client.repositories.roleplayRepository.getUserParty(userOne.id)) {
       ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:party.other_in_party', {
@@ -105,6 +120,26 @@ export default class PartyCommand extends InteractionCommand {
     if (userTwo && (await ctx.client.repositories.roleplayRepository.getUserParty(userTwo.id))) {
       ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:party.other_in_party', {
+          user: userTwo.username,
+        }),
+        ephemeral: true,
+      });
+      return;
+    }
+
+    if (!(await ctx.client.repositories.roleplayRepository.findUser(userOne.id))) {
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:party.user_unregistered', {
+          user: userOne.username,
+        }),
+        ephemeral: true,
+      });
+      return;
+    }
+
+    if (userTwo && !(await ctx.client.repositories.roleplayRepository.findUser(userOne.id))) {
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:party.user_unregistered', {
           user: userTwo.username,
         }),
         ephemeral: true,
@@ -158,26 +193,40 @@ export default class PartyCommand extends InteractionCommand {
     });
 
     collector.on('collect', async (int: MessageComponentInteraction) => {
+      int.deferUpdate();
       if (resolveCustomId(int.customId) === 'NEGATE') {
-        collector.stop('OWO');
+        collector.stop();
         ctx.makeMessage({
           content: ctx.prettyResponse('error', 'commands:party.create_cancelled', {
             user: int.user.username,
           }),
+          embeds: [],
+          components: [],
         });
         return;
       }
 
       if (acceptedIds.includes(int.user.id)) return;
+
       acceptedIds.push(int.user.id);
+      embed.setFooter({
+        text: ctx.locale('commands:party.create_footer', { users: acceptedIds.length, maxUsers }),
+      });
 
-      if (acceptedIds.length !== availableIds.length) return;
+      if (acceptedIds.length !== availableIds.length) {
+        ctx.makeMessage({ embeds: [embed] });
+        return;
+      }
 
-      collector.stop('nya');
+      collector.stop();
 
       await ctx.client.repositories.roleplayRepository.createParty(ctx.author.id, acceptedIds);
 
-      ctx.makeMessage({ content: ctx.prettyResponse('success', 'commands:party.create_success') });
+      ctx.makeMessage({
+        content: ctx.prettyResponse('success', 'commands:party.create_success'),
+        embeds: [],
+        components: [],
+      });
     });
   }
 }

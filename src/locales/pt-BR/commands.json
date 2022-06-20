@@ -763,14 +763,16 @@
       "title": "Resultados da Batalha",
       "item-title": "Espólios de Batalha",
       "backpack-full": "Você não tem espaço suficiente para pegar os itens dropados!",
-      "grab": "Selecione os itens que você quer",
+      "pick-loots": "Pegar Itens",
       "get-all-items": "Pegar Todos Itens",
-      "use-potion": "Selecione as poções que queres usar",
+      "no-items": "`Nenhum Item Disponível`",
       "back": "Você retornou para a cidade, descanse um pouco antes de ir para outra aventura!",
-      "footer": "Caso queira algum item, faça-o antes de ir para outro lugar",
+      "footer": "Jogadores Prontos: {{users}}/{{maxUsers}}",
       "runaway": "**A fuga foi realizada com sucesso!**",
+      "available-items": "Espólios de Batalha Disponíveis",
+      "finish": "**Grandiosa Batalha.** {{amount}} {{enemy}} mortos!\nTodos os membros da equipe devem escolher o que quer fazer.",
       "loots": "Itens Disponíveis (Você tem espaço para pegar **{{amount}}**)\n{{itemText}}",
-      "stats-description": "{{emojis.life}} | Vida: **{{life}} / {{maxLife}}**\n{{emojis.mana}} | Mana: **{{mana}} / {{maxMana}}**\n{{emojis.experience}} | Experiência Ganha: **{{experience}}**\n{{emojis.chest}} | Capacidade: **{{capacity}}/{{maxCapacity}}**"
+      "stats-description": "{{emojis.blood}} | Vida: **{{life}} / {{maxLife}}**\n{{emojis.mana}} | Mana: **{{mana}} / {{maxMana}}**\n{{emojis.experience}} | Experiência Ganha: **{{experience}}**\n{{emojis.chest}} | Capacidade: **{{capacity}}/{{maxCapacity}}**"
     },
     "arregou": "{{user}} pensou melhor, e acabou desistindo de entrar na dungeon"
   },
@@ -983,6 +985,9 @@
     "create_title": "Formação de Grupo",
     "create_description": "{{user}} quer criar um grupo! Para o grupo se formar, todos os membros devem clicar no botão abaixo.",
     "create_footer": "Aceitos: {{users}}/{{maxUsers}}",
+    "bot_in_party": "Você não pode formar um grupo com um bot!",
+    "cannot_invite_self": "Você não pode formar um grupo consigo mesmo!",
+    "user_unregistered": "{{user}} ainda não reencarnou no mundo de Boleham! Peça-o para se registrar primeiro e tente novamente!",
     "create_cancelled": "{{user}} negou-se a participar do grupo!",
     "create_timesup": "Os jogadores não aceitaram o pedido à tempo!",
     "create_success": "O grupo foi formado! Vocês agora podem ir à dungeon juntos!"

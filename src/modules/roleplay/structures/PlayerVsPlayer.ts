@@ -376,6 +376,7 @@ export default class PlayerVsPlayer {
                   ...a,
                   level: usedAbility.level,
                   author: {
+                    indexInBattle: 0,
                     totalIntelligence: attackerIntelligence,
                     elementSinergy: getClassById(toAttack.class).data.elementSinergy,
                   },
@@ -386,6 +387,7 @@ export default class PlayerVsPlayer {
               ...a,
               level: usedAbility.level,
               author: {
+                indexInBattle: 0,
                 totalIntelligence: attackerIntelligence,
                 elementSinergy: getClassById(toAttack.class).data.elementSinergy,
               },
@@ -395,6 +397,7 @@ export default class PlayerVsPlayer {
               ...a,
               level: usedAbility.level,
               author: {
+                indexInBattle: 0,
                 totalIntelligence: attackerIntelligence,
                 elementSinergy: getClassById(toAttack.class).data.elementSinergy,
               },

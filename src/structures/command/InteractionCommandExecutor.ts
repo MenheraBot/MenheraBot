@@ -3,7 +3,13 @@ import { languageByLocale } from '@structures/Constants';
 import HttpRequests from '@utils/HTTPrequests';
 import { ICommandUsedData } from '@custom_types/Menhera';
 import { debugError } from '@utils/Util';
-import { CommandInteraction, MessageEmbed, Collection } from 'discord.js-light';
+import {
+  CommandInteraction,
+  MessageEmbed,
+  Collection,
+  LimitedCollection,
+  User,
+} from 'discord.js-light';
 import i18next from 'i18next';
 import MenheraClient from 'MenheraClient';
 import InteractionCommandContext from './InteractionContext';
@@ -134,6 +140,12 @@ const InteractionCommandExecutor = async (
   if (!command.run) return;
 
   if (command.config.category === 'economy') interaction.client.economyUsages.add(ctx.author.id);
+
+  if (command.config.category === 'roleplay')
+    (interaction.client.users.cache as LimitedCollection<string, User>).forceSet(
+      ctx.author.id,
+      ctx.author,
+    );
 
   await command
     .run(ctx)

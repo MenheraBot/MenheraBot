@@ -376,7 +376,6 @@ export default class DowntownCommand extends InteractionCommand {
       }[fieldToUse];
 
       const bonusEmoji =
-        // eslint-disable-next-line no-nested-ternary
         fieldToUse === 'backpack'
           ? emojis.chest
           : fieldToUse === 'weapon'

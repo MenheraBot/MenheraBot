@@ -760,12 +760,16 @@
       "backpack-full": "You don't have enough space to pick up the dropped items!",
       "grab": "Select the items you want",
       "get-all-items": "Grab All Items",
+      "pick-loots": "Pick Loots",
+      "no-items": "`No Items Available`",
       "runaway": "You successfully runaway the battle",
       "use-potion": "Select the potions that you want to use",
+      "available-items": "Available Items",
+      "finish": "**Grand Battle.** {{amount}} {{enemy}} dead!\nAll team members must choose what they want to do.",
       "back": "You've returned to the city, get some rest before going on another adventure!",
-      "footer": "If you want an item, please do so before going elsewhere.",
+      "footer": "Users Ready: {{users}}/{{maxUsers}}",
       "loots": "Available Items (You have space to get **{{amount}}**)\n{{itemText}}",
-      "stats-description": "{{emojis.life}} | Life: **{{life}} / {{maxLife}}**\n{{emojis.mana}} | Mana: **{{mana}} / {{maxMana}}**\n{{emojis.experience}} | Earned Experience: **{{experience}}**\n{{emojis.chest}} | Capacity: **{{capacity}}/{{maxCapacity}}**"
+      "stats-description": "{{emojis.blood}} | Life: **{{life}} / {{maxLife}}**\n{{emojis.mana}} | Mana: **{{mana}} / {{maxMana}}**\n{{emojis.experience}} | Earned Experience: **{{experience}}**\n{{emojis.chest}} | Capacity: **{{capacity}}/{{maxCapacity}}**"
     },
     "arregou": "{{user}} thought better of it, and ended up giving up on entering the dungeon"
   },
@@ -978,6 +982,9 @@
     "create_title": "Party Formation",
     "create_description": "{{user}} wants to create a party! For the party to form, all members must click the button below.",
     "create_footer": "Accepted: {{users}}/{{maxUsers}}",
+    "bot_in_party": "You cannot form a party with a bot!",
+    "cannot_invite_self": "You cannot invite yourself to a party!",
+    "user_unregistered": "{{user}} don't have an RPG account",
     "create_cancelled": "{{user}} refused to join the group!",
     "create_timesup": "The players didn't accept the party in time",
     "create_success": "The party has been created! You may now go to the dungeon together!"

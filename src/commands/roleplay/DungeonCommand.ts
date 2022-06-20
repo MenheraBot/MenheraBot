@@ -1,21 +1,25 @@
 import {
-  LAST_DUNGEON_LEVEL,
-  MOB_LIMIT_PER_DUNGEON_LEVEL,
+  // LAST_DUNGEON_LEVEL,
+  // MOB_LIMIT_PER_DUNGEON_LEVEL,
   ROLEPLAY_COOLDOWNS,
 } from '@roleplay/Constants';
-import { RoleplayUserSchema, UserBattleEntity } from '@roleplay/Types';
+import {
+  InventoryItem,
+  /* LeveledItem */ RoleplayUserSchema,
+  UserBattleEntity,
+} from '@roleplay/Types';
 import {
   canUsersGoToDungeon,
   getDungeonEnemies,
   prepareUserForDungeon,
   getEnemyLoot,
-  addToInventory,
+  // addToInventory,
   getFreeInventorySpace,
   isDead,
   isInventoryFull,
   makeCooldown,
   makeLevelUp,
-  removeFromInventory,
+  // removeFromInventory,
 } from '@roleplay/utils/AdventureUtils';
 import {
   getUserAgility,
@@ -33,18 +37,18 @@ import InteractionCommandContext from '@structures/command/InteractionContext';
 
 import { COLORS, emojis } from '@structures/Constants';
 
-import Util, {
+import {
   actionRow,
   makeCustomId,
-  resolveSeparatedStrings,
+  // resolveSeparatedStrings,
   resolveCustomId,
 } from '@utils/Util';
 
 import {
   MessageButton,
-  MessageActionRow,
+  /* MessageActionRow,
   MessageSelectMenu,
-  SelectMenuInteraction,
+  SelectMenuInteraction, */
   MessageEmbed,
   MessageComponentInteraction,
 } from 'discord.js-light';
@@ -83,12 +87,21 @@ export default class DungeonCommand extends InteractionCommand {
 
     toBattleUsers.push(authorUser);
 
+    console.log(toBattleUsers.map((a) => a.id));
+
     if (toBattleUsers.some((a) => !a)) {
       ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:dungeon.preparation.no_party_members'),
       });
       return;
     }
+
+    if (userParty)
+      toBattleUsers.sort((a, b) =>
+        a.id === userParty.ownerId ? -1 : b.id === userParty.ownerId ? 1 : 0,
+      );
+
+    console.log(toBattleUsers.map((a) => a.id));
 
     const canUsersGo = canUsersGoToDungeon(toBattleUsers, ctx);
 
@@ -165,17 +178,21 @@ export default class DungeonCommand extends InteractionCommand {
 
       ctx.makeMessage({
         components: [],
+        embeds: [],
         content: ctx.prettyResponse('error', 'common:timesup'),
       });
     });
 
     collector.on('collect', async (int: MessageComponentInteraction) => {
+      int.deferUpdate();
       if (resolveCustomId(int.customId) === 'NEGATE') {
-        collector.stop('OWO');
+        collector.stop();
         ctx.makeMessage({
           content: ctx.prettyResponse('error', 'commands:dungeon.arregou', {
             user: int.user.username,
           }),
+          embeds: [],
+          components: [],
         });
         return;
       }
@@ -183,9 +200,21 @@ export default class DungeonCommand extends InteractionCommand {
       if (acceptedIds.includes(int.user.id)) return;
       acceptedIds.push(int.user.id);
 
-      if (acceptedIds.length !== toBattleUsers.length) return;
+      if (acceptedIds.length !== toBattleUsers.length) {
+        ctx.makeMessage({
+          embeds: [
+            embed.setFooter({
+              text: ctx.locale('commands:dungeon.preparation.footer', {
+                users: acceptedIds.length,
+                maxUsers: toBattleUsers.length,
+              }),
+            }),
+          ],
+        });
+        return;
+      }
 
-      collector.stop('nya');
+      collector.stop();
       return DungeonCommand.DungeonLoop(
         ctx,
         toBattleUsers.map((a) => prepareUserForDungeon(a)),
@@ -244,19 +273,16 @@ export default class DungeonCommand extends InteractionCommand {
         });
       }
 
-      if (battleResults.didRunaway) {
+      if (battleResults.didRunaway)
         makeCooldown(user.cooldowns, {
           reason: 'dungeon',
           until: ROLEPLAY_COOLDOWNS.dungeonCooldown + Date.now(),
         });
 
-        if (i === 0) embed.setDescription(ctx.locale('commands:dungeon.results.runaway'));
-      }
+      const deadEnemies = battleResults.enemies.filter((a) => isDead(a)).length;
 
-      if (user.didParticipate) {
-        user.experience +=
-          battleResults.enemies.filter((a) => isDead(a)).length *
-          battleResults.enemies[0].experience;
+      if (user.didParticipate && deadEnemies > 0) {
+        user.experience += deadEnemies * battleResults.enemies[0].experience;
 
         const oldUserLevel = user.level;
 
@@ -275,15 +301,15 @@ export default class DungeonCommand extends InteractionCommand {
         }
       }
 
-      embed.addField(
+      resultEmbed.addField(
         ctx.locale('commands:dungeon.preparation.stats', {
           user: battleResults.discordUsers[i].username,
         }),
         ctx.locale('commands:dungeon.results.stats-description', {
           emojis,
           life: user.life,
-          maxLife: getUserMaxLife(user),
           mana: user.mana,
+          maxLife: getUserMaxLife(user),
           maxMana: getUserMaxMana(user),
           maxCapacity: getEquipmentById(user.backpack.id).data.levels[user.backpack.level].value,
           capacity:
@@ -294,6 +320,7 @@ export default class DungeonCommand extends InteractionCommand {
             : battleResults.enemies.filter((a) => isDead(a)).length *
               battleResults.enemies[0].experience,
         }),
+        true,
       );
 
       makeCooldown(user.cooldowns, {
@@ -306,72 +333,116 @@ export default class DungeonCommand extends InteractionCommand {
     });
 
     if (battleResults.didRunaway) {
-      ctx.makeMessage({ embeds: [resultEmbed], components: [], content: '' });
+      resultEmbed
+        .setDescription(ctx.locale('commands:dungeon.results.runaway'))
+        .setColor(COLORS.Colorless);
+      ctx.makeMessage({ embeds: [resultEmbed], components: [], content: null });
       return;
     }
 
-    // TODO: "X mobs mortos! Após esta batalha, aqui estão os status atuais da sua equipe"
     // TODO: Split itens and potions into one embed, and status into another embed. When a user
     // click in a button (NEED TO CLICK THE BUTTON TO PICK ITENS OR POTIONS) will display ephemeral embed
     // to choose what it wants
-    resultEmbed.setDescription(ctx.locale('commands:dungeon.results.finish'));
-
-    const [backCustomId, baseId] = makeCustomId('BACK');
-    const [continueCustomId] = makeCustomId('CONTINUE', baseId);
-    const [nextCustomId] = makeCustomId('NEXT', baseId);
-
-    const runawayButton = new MessageButton()
-      .setCustomId(backCustomId)
-      .setLabel(ctx.locale('commands:dungeon.back'))
-      .setStyle('PRIMARY');
-
-    const continueButton = new MessageButton()
-      .setCustomId(continueCustomId)
-      .setLabel(ctx.locale('commands:dungeon.continue', { level: dungeonLevel }))
-      .setStyle('PRIMARY');
-
-    const nextButton = new MessageButton()
-      .setCustomId(nextCustomId)
-      .setLabel(ctx.locale('commands:dungeon.next', { level: dungeonLevel + 1 }))
-      .setStyle('PRIMARY');
-
-    if (dungeonLevel === LAST_DUNGEON_LEVEL)
-      nextButton.setDisabled(true).setLabel(ctx.locale('common:soon')).setEmoji('🛑');
-
-    if (killedMobs + 1 >= MOB_LIMIT_PER_DUNGEON_LEVEL) continueButton.setDisabled(true);
-
-    const lootEarned = getEnemyLoot(enemies[0].loots);
-
-    const toSendComponents: MessageActionRow[] = [
-      actionRow([nextButton]),
-      actionRow([continueButton]),
-      actionRow([runawayButton]),
-    ];
-
-    if (battleResults.user.inventory.some((a) => getItemById(a.id).data.type === 'potion')) {
-      const selectPotions = new MessageSelectMenu()
-        .setCustomId(`${baseId} | POTION`)
-        .setMinValues(1)
-        .setPlaceholder(ctx.locale('commands:dungeon.results.use-potion'));
-
-      battleResults.user.inventory.forEach((c) => {
-        const item = getItemById(c.id);
-        if (item.data.type === 'potion') {
-          if (selectPotions.options.length < 25) {
-            for (let i = 0; i < c.amount; i++) {
-              selectPotions.addOptions({
-                label: ctx.locale(`items:${c.id as 1}.name`),
-                value: `${c.id} | ${c.level} | ${i}`,
-              });
-            }
-          }
-        }
+    resultEmbed
+      .setDescription(
+        ctx.locale('commands:dungeon.results.finish', {
+          amount: enemies.length,
+          enemy: ctx.locale(`enemies:${enemies[0].id as 1}.name`),
+        }),
+      )
+      .setFooter({
+        text: ctx.locale('commands:dungeon.results.footer', {
+          users: 0,
+          maxUsers: battleResults.users.length,
+        }),
       });
 
-      selectPotions.setMaxValues(selectPotions.options.length);
-      toSendComponents.push(actionRow([selectPotions]));
-    }
+    const availableLoots = getEnemyLoot(enemies[0].loots);
 
+    const [, baseId] = makeCustomId('');
+
+    const usePotionButton = new MessageButton()
+      .setCustomId(makeCustomId('USE_POTION', baseId)[0])
+      .setLabel(ctx.locale('commands:inventario.use-potion'))
+      .setStyle('PRIMARY')
+      .setDisabled(
+        !battleResults.users.some((user) =>
+          user.inventory.some((a) => getItemById(a.id).data.type === 'potion'),
+        ),
+      );
+
+    const takeItemsButton = new MessageButton()
+      .setCustomId(makeCustomId('PICK_ITEMS', baseId)[0])
+      .setLabel(ctx.locale('commands:dungeon.results.pick-loots'))
+      .setStyle('PRIMARY')
+      .setDisabled(
+        battleResults.users.every((a) => isInventoryFull(a) || availableLoots.length === 0),
+      );
+
+    resultEmbed.addField('\u200b', '\u200b', false);
+
+    resultEmbed.addField(
+      ctx.locale('commands:dungeon.results.available-items'),
+      availableLoots.length === 0
+        ? ctx.locale('commands:dungeon.results.no-items')
+        : availableLoots
+            .reduce<InventoryItem[]>((acc, item) => {
+              const find = acc.find((a) => a.id === item);
+              if (find) {
+                find.amount += 1;
+                return acc;
+              }
+
+              acc.push({
+                id: item,
+                amount: 1,
+                level: 1,
+              });
+              return acc;
+            }, [])
+            .map((a) => `• **${a.amount}x** - ${ctx.locale(`items:${a.id as 1}.name`)}`)
+            .join('\n'),
+    );
+
+    ctx.makeMessage({
+      content: battleResults.users.map((a) => `<@${a.id}>`).join(', '),
+      embeds: [resultEmbed],
+      components: [actionRow([usePotionButton, takeItemsButton])],
+    });
+
+    console.log(battleResults);
+
+    /*
+    
+          =========================================================================
+               const selectPotions = new MessageSelectMenu()
+            .setCustomId(`${baseId} | POTION`)
+            .setMinValues(1)
+            .setPlaceholder(ctx.locale('commands:dungeon.results.use-potion'));
+    
+          battleResults.user.inventory.forEach((c) => {
+            const item = getItemById(c.id);
+            if (item.data.type === 'potion') {
+              if (selectPotions.options.length < 25) {
+                for (let i = 0; i < c.amount; i++) {
+                  selectPotions.addOptions({
+                    label: ctx.locale(`items:${c.id as 1}.name`),
+                    value: `${c.id} | ${c.level} | ${i}`,
+                  });
+                }
+              }
+            }
+          });
+    
+          selectPotions.setMaxValues(selectPotions.options.length);
+          toSendComponents.push(actionRow([selectPotions]));
+          ========================================================================
+    
+        */
+
+    /* ITEMS SYTEMS
+
+          
     if (isInventoryFull(battleResults.user)) {
       embed.addField(
         ctx.prettyResponse('chest', 'commands:dungeon.results.item-title'),
@@ -415,7 +486,38 @@ export default class DungeonCommand extends InteractionCommand {
 
       toSendComponents.push(actionRow([selectItems]));
     }
+    */
 
+    /* ========= ONLY THE OWNER OF THE PARTY MAY SELECT THIS ===================
+    
+     actionRow([runawayButton, continueButton, nextButton]),
+
+    const [backCustomId, baseId] = makeCustomId('BACK');
+    const [continueCustomId] = makeCustomId('CONTINUE', baseId);
+    const [nextCustomId] = makeCustomId('NEXT', baseId);
+
+    const runawayButton = new MessageButton()
+      .setCustomId(backCustomId)
+      .setLabel(ctx.locale('commands:dungeon.back'))
+      .setStyle('PRIMARY');
+
+    const continueButton = new MessageButton()
+      .setCustomId(continueCustomId)
+      .setLabel(ctx.locale('commands:dungeon.continue', { level: dungeonLevel }))
+      .setStyle('PRIMARY');
+
+    const nextButton = new MessageButton()
+      .setCustomId(nextCustomId)
+      .setLabel(ctx.locale('commands:dungeon.next', { level: dungeonLevel + 1 }))
+      .setStyle('PRIMARY');
+
+    if (dungeonLevel === LAST_DUNGEON_LEVEL)
+      nextButton.setDisabled(true).setLabel(ctx.locale('common:soon')).setEmoji('🛑');
+
+    // TODO: change this system to use stamina
+    if (killedMobs + 1 >= MOB_LIMIT_PER_DUNGEON_LEVEL) continueButton.setDisabled(true);
+    */
+    /*
     ctx.makeMessage({
       components: toSendComponents.reverse(),
       embeds: [embed],
@@ -532,5 +634,6 @@ export default class DungeonCommand extends InteractionCommand {
       }
     };
     selectButton();
+    */
   }
 }

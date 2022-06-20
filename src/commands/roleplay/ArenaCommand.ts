@@ -131,6 +131,7 @@ export default class ArenaCommand extends InteractionCommand {
         backpack: user.backpack,
         money: user.money,
         effects: [],
+        didParticipate: true,
       };
     }
 
@@ -168,6 +169,7 @@ export default class ArenaCommand extends InteractionCommand {
       backpack: user.backpack,
       money: user.money,
       effects: [],
+      didParticipate: true,
     };
   }
 

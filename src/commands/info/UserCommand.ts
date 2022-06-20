@@ -1,4 +1,3 @@
-/* eslint-disable no-nested-ternary */
 /* eslint-disable no-unused-expressions */
 import { GuildMember, MessageEmbed } from 'discord.js-light';
 import InteractionCommand from '@structures/command/InteractionCommand';

@@ -40,6 +40,7 @@ module.exports = {
     '@typescript-eslint/no-shadow': ['error'],
     'import/no-named-as-default': 0,
     'import/no-named-as-default-member': 0,
+    'no-nested-ternary': 'off',
   },
   settings: {
     'import/parsers': {
