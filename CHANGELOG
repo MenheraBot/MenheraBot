@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 - Removido acento na palavra `itens`. Meu português não é dos melhores.
 - Resolvido problema no centro comprar itens.
+- Erro visual de `Essa interação falhou` no `/bicho`.
 
 ### Removed
 
