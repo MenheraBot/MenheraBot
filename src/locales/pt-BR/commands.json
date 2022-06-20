@@ -1003,6 +1003,11 @@
     "user_unregistered": "{{user}} ainda não reencarnou no mundo de Boleham! Peça-o para se registrar primeiro e tente novamente!",
     "create_cancelled": "{{user}} negou-se a participar do grupo!",
     "create_timesup": "Os jogadores não aceitaram o pedido à tempo!",
-    "create_success": "O grupo foi formado! Vocês agora podem ir à dungeon juntos!"
+    "create_success": "O grupo foi formado! Vocês agora podem ir à dungeon juntos!",
+    "not-in-party": "Você não está em nenhum grupo atualmente!",
+    "left-party": "Você saiu de seu grupo com {{users}}",
+    "user-not-in-party": "**{{user}}** não está em nenhum grupo atualmente!",
+    "party-of": "Grupo de {{user}}",
+    "party-description": "**Líder do Grupo:** {{owner}}\n**Participantes:** {{users}}\n**Desfaz Em**: {{time}} minutos"
   }
 }

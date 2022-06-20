@@ -5,11 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
-## [Unreleased]
+## [UNRELEASED]
 
 ### Added
 
-- **🎉 SISTEMA DE PARTY! 🎉** Usuários podem criar uma party usando o comando `/grupo criar`. Uma party pode ir ao mesmo tempo para a dungeon para enfrentar múltiplos monstros de uma vez num formato novo de batalha em grupos!.
+- **🎉 SISTEMA DE PARTY! 🎉** - Usuários podem criar uma party de até 3 pessoas usando o comando `/grupo criar`. Uma party pode ir ao mesmo tempo para a dungeon para enfrentar múltiplos monstros de uma vez num formato novo de batalha em grupos!.
+- Parties ficam ativar por uma hora. Para ver sua party atual, use `/grupo ver`. Para sair de sua party, use `/grupo sair`.
 - Sistema de forja de itens
 - O comando `/inventario` foi dividido em 3 subcomandos, `/ver`, `/poções` e `/equipamentos`, você pode equipar diferentes armas, mochilas e armaduras em `/equipamentos`, usar suas poções em `/poções` e ver o inventário de jogadores em `/ver`
 - Adicionado a quantidade de itens no inventário no `/ficha` e `/inventário ver`
@@ -17,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Changed
 
 - Sistema de melhoria de itens
+- **NOVO SISTEMA DE BATALHAS PvE** - Com a chegada do sistema de party, o sistema de batalhas foi aprimorado para receber mais jogadores! Agora existem 2 embeds diferentes em batalha, uma mostrando os status de aliados e inimigos, e outro com as ações a serem tomadas. O sistema de coleta de itens e uso de poções ao final de batalhas também foi atualizado. Boa sorte se aventurando nas profundezas da Dungeon.
 
 ### Fixed
 

@@ -102,11 +102,21 @@ export default class RoleplayRepository {
     return true;
   }
 
-  async getUserParty(userId: string): Promise<MayNotExists<{ ownerId: string; users: string[] }>> {
+  async getUserParty(
+    userId: string,
+  ): Promise<MayNotExists<{ ownerId: string; users: string[]; ttl: number }>> {
     if (!this.redisClient) return null;
     const res = await this.redisClient.get(`party:${userId}`);
 
     if (!res) return null;
-    return JSON.parse(res);
+
+    const ttl = await this.redisClient.ttl(`party:${userId}`);
+
+    return { ...JSON.parse(res), ttl };
+  }
+
+  async deleteUserParty(userId: string): Promise<void> {
+    if (!this.redisClient) return;
+    await this.redisClient.del(`party:${userId}`);
   }
 }

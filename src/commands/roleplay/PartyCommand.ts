@@ -1,6 +1,7 @@
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { actionRow, resolveCustomId } from '@utils/Util';
+import moment from 'moment';
 import { MessageButton, MessageComponentInteraction, MessageEmbed } from 'discord.js-light';
 
 export default class PartyCommand extends InteractionCommand {
@@ -41,11 +42,27 @@ export default class PartyCommand extends InteractionCommand {
           ],
         },
         {
-          name: 'desfazer',
-          nameLocalizations: { 'en-US': 'undo' },
-          description: '「🔱」・Desfaça o seu grupo atual',
-          descriptionLocalizations: { 'en-US': '「🔱」・Undo your current party' },
+          name: 'sair',
+          nameLocalizations: { 'en-US': 'left' },
+          description: '「🔱」・Saida do seu grupo atual',
+          descriptionLocalizations: { 'en-US': '「🔱」・Left your current party' },
           type: 'SUB_COMMAND',
+        },
+        {
+          name: 'ver',
+          nameLocalizations: { 'en-US': 'see' },
+          description: '「🔱」・Veja o grupo de alguém',
+          descriptionLocalizations: { 'en-US': '「🔱」・See someones current party' },
+          type: 'SUB_COMMAND',
+          options: [
+            {
+              name: 'user',
+              type: 'USER',
+              description: 'Usuário que você quer ver o grupo',
+              required: false,
+              descriptionLocalizations: { 'en-US': 'User that you want to see the party' },
+            },
+          ],
         },
       ],
       category: 'roleplay',
@@ -60,14 +77,65 @@ export default class PartyCommand extends InteractionCommand {
     switch (command) {
       case 'criar':
         return PartyCommand.createParty(ctx);
-      case 'desafzer':
-        return PartyCommand.undoParty(ctx);
+      case 'sair':
+        return PartyCommand.leftParty(ctx);
+      case 'ver':
+        return PartyCommand.seeParty(ctx);
     }
   }
 
-  static async undoParty(ctx: InteractionCommandContext): Promise<void> {
-    // TODO: Implementar
-    console.log(ctx);
+  static async seeParty(ctx: InteractionCommandContext): Promise<void> {
+    const user = ctx.options.getUser('user') ?? ctx.author;
+
+    const userParty = await ctx.client.repositories.roleplayRepository.getUserParty(user.id);
+
+    if (!userParty) {
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:party.user-not-in-party', {
+          user: user.username,
+        }),
+      });
+      return;
+    }
+
+    const embed = new MessageEmbed()
+      .setTitle(ctx.prettyResponse('crown', 'commands:party.party-of', { user: user.username }))
+      .setColor(ctx.data.user.selectedColor)
+      .setDescription(
+        ctx.locale('commands:party.party-description', {
+          owner:
+            ctx.client.users.cache.get(userParty.ownerId)?.username ?? `ID: ${userParty.ownerId}`,
+          users: userParty.users
+            .map((u) => ctx.client.users.cache.get(u)?.username ?? `ID: ${u}`)
+            .concat(user.username)
+            .join(', '),
+          time: moment.duration(userParty.ttl, 'seconds').format('mm:ss'),
+        }),
+      )
+      .setThumbnail(user.displayAvatarURL({ dynamic: true }));
+
+    ctx.makeMessage({ embeds: [embed] });
+  }
+
+  static async leftParty(ctx: InteractionCommandContext): Promise<void> {
+    const userParty = await ctx.client.repositories.roleplayRepository.getUserParty(ctx.author.id);
+
+    if (!userParty) {
+      ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:party.not-in-party') });
+      return;
+    }
+
+    ctx.client.repositories.roleplayRepository.deleteUserParty(ctx.author.id);
+
+    userParty.users.forEach((user) =>
+      ctx.client.repositories.roleplayRepository.deleteUserParty(user),
+    );
+
+    ctx.makeMessage({
+      content: ctx.prettyResponse('success', 'commands:party.left-party', {
+        users: userParty.users.map((user) => `<@${user}>`).join(', '),
+      }),
+    });
   }
 
   static async createParty(ctx: InteractionCommandContext): Promise<void> {

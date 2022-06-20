@@ -998,6 +998,11 @@
     "user_unregistered": "{{user}} don't have an RPG account",
     "create_cancelled": "{{user}} refused to join the group!",
     "create_timesup": "The players didn't accept the party in time",
-    "create_success": "The party has been created! You may now go to the dungeon together!"
+    "create_success": "The party has been created! You may now go to the dungeon together!",
+    "not-in-party": "You are not in a party!",
+    "left-party": "You left your party with {{users}}",
+    "user-not-in-party": "**{{user}}** isn't in a party at the moment",
+    "party-of": "{{user}}'s Party",
+    "party-description": "**Party Leader:** {{owner}}\n**Participants:** {{users}}\n**Undo in**: {{time}} minutes"
   }
 }
