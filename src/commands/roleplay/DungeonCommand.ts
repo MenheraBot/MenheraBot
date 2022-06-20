@@ -527,6 +527,8 @@ export default class DungeonCommand extends InteractionCommand {
           return;
         }
 
+        int.deferUpdate();
+
         switch (resolvedId) {
           case 'BACK': {
             collector.stop();
