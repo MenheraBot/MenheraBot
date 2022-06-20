@@ -88,9 +88,9 @@
   },
   "battle": {
     "no-mana": "| Mana Insuficiente!",
-    "your-stats": "{{emoji}} Status de {{name}} {{emoji}}",
+    "your-stats": "{{emoji}} Status de {{name}}",
     "your-stats-info": "❤️ | Vida: **{{life}}**\n💧 | Mana: **{{mana}}**\n⚔️ | Dano: **{{damage}}** | Precisão: **{{chanceToConnect}}%**\n🛡️ | Defesa: **{{armor}}** | Esquiva: **{{chanceToDodge}}%**\n🧠 | Inteligência: **{{intelligence}}**\n👢 | Agilidade: **{{agility}}**",
-    "enemy-stats": "{{emoji}} Status de {{name}} {{emoji}}",
+    "enemy-stats": "{{emoji}} Status de {{name}}",
     "enemy-stats-info": "❤️ | Vida: **{{life}}**\n⚔️ | Dano: **{{damage}}**\n🛡️ | Defesa: **{{armor}}**\n👢 | Agilidade: **{{agility}}**",
     "no-action": "{{user}} demorou muito para atacar, o inimigo revidou!",
     "enemy-death": "{{user}} matou **{{name}}**!",

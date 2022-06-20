@@ -88,9 +88,9 @@
   },
   "battle": {
     "no-mana": "| Insufficient Mana!",
-    "your-stats": "{{emoji}} {{name}}' Status {{emoji}}",
+    "your-stats": "{{emoji}} {{name}}' Status",
     "your-stats-info": "❤️ | Health: **{{life}}**\n💧 | Mana: **{{mana}}**\n⚔️ | Damage: **{{damage}} ** | Accuracy: **{{chanceToConnect}}%**\n🛡️ | Defense: **{{armor}}** | Dodge: **{{chanceToDodge}}%**\n🧠 | Intelligence: * *{{intelligence}}**\n👢 | Agility: **{{agility}}**",
-    "enemy-stats": "{{emoji}} {{name}}'s Status {{emoji}}",
+    "enemy-stats": "{{emoji}} {{name}}'s Status",
     "enemy-stats-info": "❤️ | Health: **{{life}}**\n⚔️ | Damage: **{{damage}}**\n🛡️ | Defense: **{{armor}} **\n👢 | Agility: **{{agility}}**",
     "no-action": "{{user}} took to long to attack, the enemy has taken the initiative",
     "enemy-death": "{{user}} killed **{{name}}**!",

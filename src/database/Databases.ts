@@ -165,8 +165,10 @@ export default class Databases {
       });
 
       this.redisClient.on('error', (err) => {
-        if (err.message.includes('ECONNREFUSED') && this.redisClient)
+        if (err.message.includes('ECONNREFUSED') && this.redisClient) {
           this.redisClient.disconnect(false);
+          this.redisClient = null;
+        }
 
         console.log(`[REDIS] An error ocurred at Redis: ${err}`);
       });

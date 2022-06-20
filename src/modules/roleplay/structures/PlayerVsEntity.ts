@@ -2,9 +2,9 @@
 import { ENEMY_ATTACK_MULTIPLIER_CHANCE, PVE_USER_RESPONSE_TIME_LIMIT } from '@roleplay/Constants';
 import { ReadyToBattleEnemy, UserBattleEntity } from '@roleplay/Types';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { COLORS, emojis } from '@structures/Constants';
+import { COLORS, emojis, EmojiTypes } from '@structures/Constants';
 import { calculateProbability } from '@utils/HuntUtils';
-import Util, { actionRow, makeCustomId, resolveSeparatedStrings } from '@utils/Util';
+import Util, { actionRow, capitalize, makeCustomId, resolveSeparatedStrings } from '@utils/Util';
 import { MessageEmbed, MessageSelectMenu, SelectMenuInteraction } from 'discord.js-light';
 import {
   calculateAttackSuccess,
@@ -56,6 +56,7 @@ export default class PlayerVsEntity {
     return this.users.every((a) => isDead(a)) || this.enemies.every((a) => isDead(a));
   }
 
+  // TODO: FOr some reason, effects are being distributed and consumed for everyone every turn
   public async battleLoop(): Promise<PlayerVsEntity> {
     const willEnemyStart =
       this.enemies[this.enemyIndex].agility > getUserAgility(this.users[this.userIndex]);
@@ -169,6 +170,31 @@ export default class PlayerVsEntity {
     return false;
   }
 
+  private static getEffectsDisplayText(
+    effects: UserBattleEntity['effects'],
+    wanned: 'buff' | 'debuff',
+  ): string {
+    const toUseEffects = effects.reduce<UserBattleEntity['effects']>((p, c) => {
+      if (
+        c.effectType.endsWith(`_${wanned}`) ||
+        c.effectType === (wanned === 'buff' ? 'heal' : 'poison')
+      ) {
+        const found = p.find((a) => a.effectType === c.effectType);
+
+        if (found) {
+          found.durationInTurns = Math.max(c.durationInTurns, found.durationInTurns);
+        } else p.push(c);
+      }
+      return p;
+    }, []);
+
+    if (toUseEffects.length === 0) return '';
+
+    return `${emojis[wanned]} | ${capitalize(wanned)}s: ${toUseEffects
+      .map((a) => `**${a.durationInTurns}**${emojis[a.effectType.split('_')[0] as EmojiTypes]}`)
+      .join('  ')}\n`;
+  }
+
   /*
     TODO: I'm not finished with this yet.
 
@@ -228,7 +254,7 @@ export default class PlayerVsEntity {
           name: this.discordUsers[i].username,
           emoji: isAttacking ? emojis.sword : isDead(user) ? emojis.cross : '',
         }),
-        this.ctx.locale('roleplay:battle.your-stats-info', {
+        `${this.ctx.locale('roleplay:battle.your-stats-info', {
           life: user.life,
           mana: user.mana,
           damage: isAttacking ? userDamage : getUserDamage(user),
@@ -237,7 +263,10 @@ export default class PlayerVsEntity {
           agility: isAttacking ? userAgility : getUserAgility(user),
           chanceToConnect: isAttacking ? (100 - userAttackSuccess).toFixed(2) : '---',
           chanceToDodge: isAttacking ? userDodge.toFixed(2) : '---',
-        }),
+        })}\n${PlayerVsEntity.getEffectsDisplayText(
+          user.effects,
+          'buff',
+        )}${PlayerVsEntity.getEffectsDisplayText(user.effects, 'debuff')}`,
         true,
       );
     });
@@ -251,12 +280,15 @@ export default class PlayerVsEntity {
           name: this.ctx.locale(`enemies:${enemy.id as 1}.name`),
           emoji: isDefending ? emojis.armor : isDead(enemy) ? emojis.cross : '',
         }),
-        this.ctx.locale('roleplay:battle.enemy-stats-info', {
+        `${this.ctx.locale('roleplay:battle.enemy-stats-info', {
           life: enemy.life,
           damage: isDefending ? enemyDamage : getEnemyStatusWithEffects(enemy, 'damage'),
           armor: isDefending ? enemyArmor : getEnemyStatusWithEffects(enemy, 'armor'),
           agility: isDefending ? enemyAgility : getEnemyStatusWithEffects(enemy, 'agility'),
-        }),
+        })}\n${PlayerVsEntity.getEffectsDisplayText(
+          enemy.effects,
+          'buff',
+        )}${PlayerVsEntity.getEffectsDisplayText(enemy.effects, 'debuff')}`,
         true,
       );
     });
