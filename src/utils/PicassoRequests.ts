@@ -33,15 +33,14 @@ export const requestPicassoImage = async <T>(
   data: T,
   ctx: InteractionCommandContext,
 ): Promise<IPicassoReturnData> => {
-  if (ctx.client.picassoWs.isAlive) {
+  if (ctx.client.picassoWs.isAlive)
     return ctx.client.picassoWs.makeRequest({
       id: ctx.interaction.id,
       type: route,
-      data,
+      ...data,
     });
-  }
 
-  const result = await PicassoRequest.get(`/${route}`, { data }).catch(() => null);
+  const result = await PicassoRequest.post(`/${route}`, { data }).catch(() => null);
   if (!result) return { err: true };
-  return { err: false, data: Buffer.from(result.data) };
+  return { err: false, data: Buffer.from(result.data, 'base64') };
 };
