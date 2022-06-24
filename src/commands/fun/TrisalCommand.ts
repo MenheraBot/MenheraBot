@@ -52,11 +52,11 @@ export default class TrisalCommand extends InteractionCommand {
       return;
     }
 
-    const userOneAvatar = ctx.author.displayAvatarURL({ dynamic: false, size: 512, format: 'png' });
-    const userTwoAvatar = marryTwo.displayAvatarURL({ dynamic: false, size: 512, format: 'png' });
+    const userOneAvatar = ctx.author.displayAvatarURL({ dynamic: false, size: 256, format: 'png' });
+    const userTwoAvatar = marryTwo.displayAvatarURL({ dynamic: false, size: 256, format: 'png' });
     const userThreeAvatar = marryThree.displayAvatarURL({
       dynamic: false,
-      size: 512,
+      size: 256,
       format: 'png',
     });
 
