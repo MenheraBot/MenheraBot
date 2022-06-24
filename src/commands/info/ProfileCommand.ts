@@ -130,7 +130,7 @@ export default class ProfileCommand extends InteractionCommand {
 
     const res = await requestPicassoImage(
       PicassoRoutes.Profile,
-      { user: userSendData, usageCommands, i18n: i18nData, type: profileTheme },
+      { user: userSendData, i18n: i18nData, type: profileTheme },
       ctx,
     );
 

@@ -394,15 +394,16 @@ export default class ShopCommand extends InteractionCommand {
                 PicassoRoutes.Profile,
                 {
                   user: ProfilePreview.user,
-                  usageCommands: ProfilePreview.usageCommands,
                   i18n: {
                     aboutme: ctx.locale('commands:perfil.about-me'),
                     mamado: ctx.locale('commands:perfil.mamado'),
                     mamou: ctx.locale('commands:perfil.mamou'),
-                    zero: ctx.locale('commands:perfil.zero'),
-                    um: ctx.locale('commands:perfil.um'),
-                    dois: ctx.locale('commands:perfil.dois'),
-                    tres: ctx.locale('commands:perfil.tres'),
+                    usages: ctx.locale('commands:perfil.commands-usage', {
+                      user: ProfilePreview.user.username,
+                      usedCount: ProfilePreview.usageCommands.cmds.count,
+                      mostUsedCommandName: ProfilePreview.usageCommands.array[0].name,
+                      mostUsedCommandCount: ProfilePreview.usageCommands.array[0].count,
+                    }),
                   },
                   type: selectedItem.data.theme,
                 },
