@@ -837,6 +837,7 @@
         "percentage": "Porcentagem",
         "self": "Si Mesmo",
         "enemy": "Inimigo",
+        "ally": "Aliado",
         "effect-description": "**Tipo:** {{type}}\n**Duação em Turnos:** {{duration}}\n**Valor**: {{value}}\n**Reflexão do Valor:** {{reflection}}\n**Influência da Inteligência:** {{inIntelligence}}%\n**Tipo de Valor**: {{modifier}}\n**Valor por Nível:** {{valuePerLevel}}\n**Elemento:** {{element}}\n**Alvo:** {{target}}",
         "description": "**Nome:** {{name}}\n**Descrição:** {{description}}\n**Custo de Mana:** {{cost}}\n**Custo de Mana por Nível:** {{costPerLevel}}\n**Custo de Desbloqueio:** {{unlockCost}}"
       },

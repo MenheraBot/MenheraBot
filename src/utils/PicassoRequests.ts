@@ -37,11 +37,11 @@ export const requestPicassoImage = async <T>(
     return ctx.client.picassoWs.makeRequest({
       id: ctx.interaction.id,
       type: route,
-      data,
+      ...data,
     });
   }
 
-  const result = await PicassoRequest.get(`/${route}`, { data }).catch(() => null);
+  const result = await PicassoRequest.post(`/${route}`, { data }).catch(() => null);
   if (!result) return { err: true };
   return { err: false, data: Buffer.from(result.data) };
 };

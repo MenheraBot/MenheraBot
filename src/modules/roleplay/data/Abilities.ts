@@ -7,6 +7,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     costPerLevel: 20,
     parentId: 0,
     unlockCost: 0,
+    cooldown: 5,
     effects: [
       {
         target: 'enemy',
@@ -18,6 +19,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValuePerLevel: 80,
         effectValueModifier: 'plain',
         effectValueRefflection: 'plain',
+        targetAmount: 1,
       },
       {
         target: 'self',
@@ -29,6 +31,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValuePerLevel: 0,
         effectValueModifier: 'percentage',
         effectValueRefflection: 'maxLife',
+        targetAmount: 1,
       },
     ],
   },
@@ -38,6 +41,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     costPerLevel: 30,
     parentId: 0,
     unlockCost: 0,
+    cooldown: 3,
     effects: [
       {
         durationInTurns: 3,
@@ -49,6 +53,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'maxLife',
         element: 'NATURE',
         target: 'enemy',
+        targetAmount: 1,
       },
     ],
   },
@@ -58,6 +63,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     costPerLevel: 10,
     parentId: 100,
     unlockCost: 10,
+    cooldown: 2,
     effects: [
       {
         durationInTurns: -1,
@@ -69,6 +75,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'FIRE',
         target: 'enemy',
+        targetAmount: 1,
       },
     ],
   },
@@ -78,6 +85,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     costPerLevel: 10,
     parentId: 101,
     unlockCost: 10,
+    cooldown: 4,
     effects: [
       {
         durationInTurns: -1,
@@ -89,6 +97,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'FIRE',
         target: 'enemy',
+        targetAmount: 1,
       },
       {
         durationInTurns: 3,
@@ -100,6 +109,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'AIR',
         target: 'self',
+        targetAmount: 1,
       },
     ],
   },
@@ -109,6 +119,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     costPerLevel: 5,
     parentId: 100,
     unlockCost: 25,
+    cooldown: 3,
     effects: [
       {
         durationInTurns: 1,
@@ -120,6 +131,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'armor',
         element: 'NEUTRAL',
         target: 'enemy',
+        targetAmount: 1,
       },
       {
         durationInTurns: -1,
@@ -131,6 +143,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'FIRE',
         target: 'enemy',
+        targetAmount: 1,
       },
     ],
   },
@@ -138,6 +151,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'Frenesi (assassino)',
     cost: 80,
     costPerLevel: 10,
+    cooldown: 4,
     effects: [
       {
         durationInTurns: -1,
@@ -149,6 +163,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'FIRE',
         target: 'enemy',
+        targetAmount: 1,
       },
       {
         durationInTurns: 3,
@@ -160,6 +175,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'damage',
         element: 'LIGHT',
         target: 'self',
+        targetAmount: 1,
       },
     ],
     parentId: 103,
@@ -169,6 +185,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'Benção Elemental (Bardo)',
     cost: 50,
     costPerLevel: 5,
+    cooldown: 2,
     effects: [
       {
         durationInTurns: -1,
@@ -180,6 +197,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'WATER',
         target: 'enemy',
+        targetAmount: 3,
       },
       {
         durationInTurns: -1,
@@ -190,7 +208,8 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValuePerLevel: 40,
         effectValueRefflection: 'plain',
         element: 'NATURE',
-        target: 'self',
+        target: 'ally',
+        targetAmount: 3,
       },
     ],
     parentId: 0,
@@ -200,6 +219,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'Canção de Luz (Bardo)',
     cost: 80,
     costPerLevel: 10,
+    cooldown: 1,
     effects: [
       {
         durationInTurns: -1,
@@ -211,6 +231,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'LIGHT',
         target: 'enemy',
+        targetAmount: 3,
       },
     ],
     parentId: 200,
@@ -220,6 +241,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'Rosário (Bardo)',
     cost: 80,
     costPerLevel: 10,
+    cooldown: 4,
     effects: [
       {
         durationInTurns: -1,
@@ -231,6 +253,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'LIGHT',
         target: 'enemy',
+        targetAmount: 3,
       },
       {
         durationInTurns: -1,
@@ -241,7 +264,8 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValuePerLevel: 0,
         effectValueRefflection: 'maxLife',
         element: 'LIGHT',
-        target: 'self',
+        target: 'ally',
+        targetAmount: 3,
       },
     ],
     unlockCost: 25,
@@ -251,6 +275,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'Notas Agudas (Bardo)',
     cost: 80,
     costPerLevel: 10,
+    cooldown: 2,
     effects: [
       {
         durationInTurns: -1,
@@ -262,6 +287,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'WATER',
         target: 'enemy',
+        targetAmount: 1,
       },
       {
         durationInTurns: -1,
@@ -272,7 +298,8 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValuePerLevel: 10,
         effectValueRefflection: 'plain',
         element: 'LIGHT',
-        target: 'self',
+        target: 'ally',
+        targetAmount: 3,
       },
     ],
     parentId: 200,
@@ -282,6 +309,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'Toca Raul! (Mago)',
     cost: 100,
     costPerLevel: 20,
+    cooldown: 5,
     effects: [
       {
         durationInTurns: -1,
@@ -293,6 +321,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'DARK',
         target: 'enemy',
+        targetAmount: 1,
       },
     ],
     parentId: 203,
@@ -302,6 +331,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'Castigo Eterno (Ilusionista)',
     cost: 25,
     costPerLevel: 10,
+    cooldown: 3,
     effects: [
       {
         durationInTurns: 2,
@@ -313,6 +343,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'armor',
         element: 'DARK',
         target: 'enemy',
+        targetAmount: 1,
       },
       {
         durationInTurns: 2,
@@ -324,6 +355,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'DARK',
         target: 'enemy',
+        targetAmount: 1,
       },
     ],
     parentId: 0,
@@ -333,6 +365,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'Dama de Ferro (Ilusionista)',
     cost: 90,
     costPerLevel: 20,
+    cooldown: 1,
     effects: [
       {
         durationInTurns: -1,
@@ -344,6 +377,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'DARK',
         target: 'enemy',
+        targetAmount: 1,
       },
     ],
     parentId: 300,
@@ -353,6 +387,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'Invocar Bahamut (Ilusionista)',
     cost: 130,
     costPerLevel: 30,
+    cooldown: 3,
     effects: [
       {
         durationInTurns: -1,
@@ -364,6 +399,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'DARK',
         target: 'enemy',
+        targetAmount: 3,
       },
     ],
     unlockCost: 25,
@@ -373,6 +409,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'Distorção Mental (Ilusionista)',
     cost: 50,
     costPerLevel: 10,
+    cooldown: 3,
     effects: [
       {
         durationInTurns: -1,
@@ -384,6 +421,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'DARK',
         target: 'enemy',
+        targetAmount: 1,
       },
     ],
     unlockCost: 10,
@@ -393,6 +431,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'Merlyer (Ilusionista)',
     cost: 110,
     costPerLevel: 25,
+    cooldown: 3,
     effects: [
       {
         durationInTurns: -1,
@@ -404,6 +443,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'DARK',
         target: 'enemy',
+        targetAmount: 3,
       },
     ],
     unlockCost: 25,
@@ -413,6 +453,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'Avanço com Escudo (Paladino)',
     cost: 20,
     costPerLevel: 15,
+    cooldown: 3,
     effects: [
       {
         durationInTurns: -1,
@@ -424,6 +465,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'NEUTRAL',
         target: 'enemy',
+        targetAmount: 1,
       },
       {
         durationInTurns: -1,
@@ -435,6 +477,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'LIGHT',
         target: 'self',
+        targetAmount: 1,
       },
       {
         durationInTurns: 3,
@@ -446,6 +489,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'armor',
         element: 'LIGHT',
         target: 'self',
+        targetAmount: 1,
       },
     ],
     parentId: 0,
@@ -455,6 +499,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'Proteção Divina (Paladino)',
     cost: 20,
     costPerLevel: 15,
+    cooldown: 3,
     effects: [
       {
         durationInTurns: -1,
@@ -466,6 +511,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'WATER',
         target: 'enemy',
+        targetAmount: 1,
       },
       {
         durationInTurns: 3,
@@ -476,7 +522,8 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValuePerLevel: 20,
         effectValueRefflection: 'plain',
         element: 'LIGHT',
-        target: 'self',
+        target: 'ally',
+        targetAmount: 1,
       },
     ],
     unlockCost: 10,
@@ -486,6 +533,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'Valkyria dos Céus (Paladino)',
     cost: 45,
     costPerLevel: 20,
+    cooldown: 3,
     effects: [
       {
         durationInTurns: -1,
@@ -497,6 +545,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'FIRE',
         target: 'enemy',
+        targetAmount: 3,
       },
       {
         durationInTurns: -1,
@@ -507,7 +556,8 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValuePerLevel: 60,
         effectValueRefflection: 'plain',
         element: 'LIGHT',
-        target: 'enemy',
+        target: 'self',
+        targetAmount: 1,
       },
     ],
     unlockCost: 25,
@@ -517,6 +567,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'Santíssima Trindade (Paladino)',
     cost: 50,
     costPerLevel: 15,
+    cooldown: 6,
     effects: [
       {
         durationInTurns: 3,
@@ -527,7 +578,8 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValuePerLevel: 10,
         effectValueRefflection: 'plain',
         element: 'LIGHT',
-        target: 'self',
+        target: 'ally',
+        targetAmount: 1,
       },
       {
         durationInTurns: 3,
@@ -538,7 +590,8 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValuePerLevel: 2,
         effectValueRefflection: 'armor',
         element: 'LIGHT',
-        target: 'self',
+        target: 'ally',
+        targetAmount: 1,
       },
       {
         durationInTurns: 3,
@@ -549,7 +602,8 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValuePerLevel: 4,
         effectValueRefflection: 'damage',
         element: 'LIGHT',
-        target: 'self',
+        target: 'ally',
+        targetAmount: 1,
       },
     ],
     unlockCost: 10,
@@ -559,6 +613,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'D.A.E.L. (Paladino) [dragão anciao elemental da luz]',
     cost: 65,
     costPerLevel: 20,
+    cooldown: 2,
     effects: [
       {
         durationInTurns: -1,
@@ -570,6 +625,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'FIRE',
         target: 'enemy',
+        targetAmount: 1,
       },
       {
         durationInTurns: -1,
@@ -581,6 +637,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'LIGHT',
         target: 'self',
+        targetAmount: 1,
       },
     ],
     parentId: 403,
@@ -590,6 +647,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'Festa dos Mortos Vivos (necromante)',
     cost: 20,
     costPerLevel: 15,
+    cooldown: 2,
     effects: [
       {
         durationInTurns: -1,
@@ -601,6 +659,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'FIRE',
         target: 'enemy',
+        targetAmount: 3,
       },
     ],
     parentId: 0,
@@ -610,6 +669,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'Possessão Total (necromante)',
     cost: 40,
     costPerLevel: 15,
+    cooldown: 5,
     effects: [
       {
         durationInTurns: 3,
@@ -621,6 +681,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'armor',
         element: 'DARK',
         target: 'enemy',
+        targetAmount: 1,
       },
       {
         durationInTurns: 3,
@@ -632,6 +693,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'damage',
         element: 'DARK',
         target: 'enemy',
+        targetAmount: 1,
       },
     ],
     parentId: 500,
@@ -641,6 +703,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'Nekros Manteia (necromante)',
     cost: 80,
     costPerLevel: 20,
+    cooldown: 3,
     effects: [
       {
         durationInTurns: -1,
@@ -652,6 +715,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'DARK',
         target: 'enemy',
+        targetAmount: 2,
       },
     ],
     parentId: 501,
@@ -661,6 +725,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'Transfusão Post Mortem',
     cost: 50,
     costPerLevel: 15,
+    cooldown: 4,
     effects: [
       {
         durationInTurns: 3,
@@ -672,6 +737,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'agility',
         element: 'DARK',
         target: 'enemy',
+        targetAmount: 1,
       },
       {
         durationInTurns: 3,
@@ -683,6 +749,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'agility',
         element: 'LIGHT',
         target: 'self',
+        targetAmount: 1,
       },
       {
         durationInTurns: -1,
@@ -694,6 +761,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'DARK',
         target: 'enemy',
+        targetAmount: 1,
       },
     ],
     parentId: 500,
@@ -703,6 +771,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'Surge Luciferum',
     cost: 100,
     costPerLevel: 20,
+    cooldown: 3,
     effects: [
       {
         durationInTurns: -1,
@@ -714,6 +783,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'DARK',
         target: 'enemy',
+        targetAmount: 3,
       },
     ],
     parentId: 503,
@@ -723,6 +793,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'Esfera Prismática (arquimago)',
     cost: 40,
     costPerLevel: 20,
+    cooldown: 2,
     effects: [
       {
         durationInTurns: -1,
@@ -734,6 +805,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'LIGHT',
         target: 'enemy',
+        targetAmount: 3,
       },
     ],
     parentId: 0,
@@ -743,6 +815,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'Lança de Gelo (arquimago)',
     cost: 60,
     costPerLevel: 10,
+    cooldown: 2,
     effects: [
       {
         durationInTurns: -1,
@@ -754,6 +827,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'WATER',
         target: 'enemy',
+        targetAmount: 1,
       },
       {
         durationInTurns: 3,
@@ -765,6 +839,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'agility',
         element: 'WATER',
         target: 'enemy',
+        targetAmount: 1,
       },
     ],
     parentId: 600,
@@ -774,6 +849,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'Electrolyn (arquimago)',
     cost: 80,
     costPerLevel: 20,
+    cooldown: 3,
     effects: [
       {
         durationInTurns: -1,
@@ -785,6 +861,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'AIR',
         target: 'enemy',
+        targetAmount: 1,
       },
     ],
     parentId: 601,
@@ -794,6 +871,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'Cápsula de Mytril (arquimago)',
     cost: 55,
     costPerLevel: 15,
+    cooldown: 2,
     effects: [
       {
         durationInTurns: -1,
@@ -805,6 +883,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'NATURE',
         target: 'enemy',
+        targetAmount: 1,
       },
       {
         durationInTurns: 2,
@@ -816,6 +895,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'LIGHT',
         target: 'self',
+        targetAmount: 1,
       },
     ],
     parentId: 600,
@@ -825,6 +905,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'Linhas Ley de Boleham (arquimago)',
     cost: 120,
     costPerLevel: 20,
+    cooldown: 2,
     effects: [
       {
         durationInTurns: -1,
@@ -836,6 +917,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'NEUTRAL',
         target: 'enemy',
+        targetAmount: 1,
       },
     ],
     parentId: 603,
@@ -845,6 +927,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'Espírito de Guerra (bárbaro)',
     cost: 40,
     costPerLevel: 30,
+    cooldown: 4,
     effects: [
       {
         durationInTurns: 3,
@@ -856,6 +939,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'armor',
         element: 'NATURE',
         target: 'self',
+        targetAmount: 1,
       },
       {
         durationInTurns: 3,
@@ -867,6 +951,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'damage',
         element: 'NATURE',
         target: 'self',
+        targetAmount: 1,
       },
       {
         durationInTurns: 3,
@@ -878,6 +963,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'damage',
         element: 'NATURE',
         target: 'enemy',
+        targetAmount: 1,
       },
     ],
     parentId: 0,
@@ -887,6 +973,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'Fúria do Berserker (barbaro)',
     cost: 60,
     costPerLevel: 10,
+    cooldown: 2,
     effects: [
       {
         durationInTurns: -1,
@@ -898,6 +985,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'FIRE',
         target: 'enemy',
+        targetAmount: 2,
       },
     ],
     parentId: 700,
@@ -907,6 +995,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'Morte Imparável',
     cost: 80,
     costPerLevel: 25,
+    cooldown: 3,
     effects: [
       {
         durationInTurns: -1,
@@ -918,6 +1007,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'NEUTRAL',
         target: 'enemy',
+        targetAmount: 1,
       },
       {
         durationInTurns: -1,
@@ -929,6 +1019,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'maxLife',
         element: 'LIGHT',
         target: 'self',
+        targetAmount: 1,
       },
     ],
     parentId: 701,
@@ -938,6 +1029,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'Graal (barbaro)',
     cost: 40,
     costPerLevel: 10,
+    cooldown: 3,
     effects: [
       {
         durationInTurns: 3,
@@ -949,6 +1041,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'armor',
         element: 'AIR',
         target: 'self',
+        targetAmount: 1,
       },
       {
         durationInTurns: 3,
@@ -960,6 +1053,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'agility',
         element: 'AIR',
         target: 'self',
+        targetAmount: 1,
       },
       {
         durationInTurns: 3,
@@ -971,6 +1065,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'intelligence',
         element: 'AIR',
         target: 'self',
+        targetAmount: 1,
       },
     ],
     parentId: 700,

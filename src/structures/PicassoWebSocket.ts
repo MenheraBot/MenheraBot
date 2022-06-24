@@ -97,14 +97,14 @@ export default class PicassoWebSocket {
       .on('open', () => {
         console.log(`[WEBSOCKET] Client ${this.clusterId} Connected Successfully`);
         this.retries = 0;
-        this.heartbeat();
+        //  this.heartbeat();
       })
       .on('close', (code, reason) => this.onClose(code, reason))
       .on('error', (err) => this.onError(err))
       .on('ping', (data) => this.heartbeat(data));
   }
 
-  public async makeRequest<T>(toSend: PicassoRequestData<T>): Promise<IPicassoReturnData> {
+  public async makeRequest(toSend: PicassoRequestData): Promise<IPicassoReturnData> {
     if (!this.isAlive) return { err: true };
     if (!this.ws) return { err: true };
 

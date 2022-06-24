@@ -25,7 +25,7 @@
   },
   "200": {
     "name": "Bênção Elemental",
-    "description": "Toca uma canção especial, que da dano aos inimigos enquanto cura a si mesmo."
+    "description": "Toca uma canção especial, que da dano aos inimigos enquanto cura seu grupo"
   },
   "201": {
     "name": "Canção de Luz",
@@ -53,7 +53,7 @@
   },
   "302": {
     "name": "Invocar Bahamut",
-    "description": "Invoca os poderes de Bahamut, que ataca seu inimigo sme dó"
+    "description": "Invoca os poderes de Bahamut, que ataca seus inimigos sem dó"
   },
   "303": {
     "name": "Distorção Mental",
@@ -61,7 +61,7 @@
   },
   "304": {
     "name": "Merlyer",
-    "description": "Coloca um Merlyer para brigar com seu inimigo"
+    "description": "Coloca um Merlyer para brigar com seus inimigos"
   },
   "400": {
     "name": "Avanço com Escudo",
@@ -69,7 +69,7 @@
   },
   "401": {
     "name": "Proteção Divina",
-    "description": "Invoca os poderes santissimos, dando dano aos inimigos enquanto melhora sua armadura"
+    "description": "Invoca os poderes santissimos, dando dano aos inimigos e armadura aos aliados"
   },
   "402": {
     "name": "Valkyria dos Céus",
@@ -77,7 +77,7 @@
   },
   "403": {
     "name": "Santíssima Trindade",
-    "description": "Recebe a bênção tripla do Dragão Ancião Elemental da Luz, recebendo um buff de agilidade, armadura e dano"
+    "description": "Recebe a bênção tripla do Dragão Ancião Elemental da Luz, dando um buff de agilidade, armadura e dano"
   },
   "404": {
     "name": "D.A.E.L.",

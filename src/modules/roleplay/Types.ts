@@ -90,7 +90,7 @@ export interface ScalableWithInteligence {
   base: number;
 }
 
-export type BattleTarget = 'self' | 'enemy';
+export type BattleTarget = 'self' | 'enemy' | 'ally';
 
 export type EffectType =
   | 'damage'
@@ -103,6 +103,7 @@ export type EffectValueRefflection = 'plain' | keyof Blesses;
 
 export interface AbilityEffect {
   target: BattleTarget;
+  targetAmount?: number; // REMOVE INTERROGAÇÃO PAPIS
   durationInTurns: number;
   element: Elements;
   effectType: EffectType;
@@ -120,6 +121,7 @@ export interface AbilitiesFile {
   costPerLevel: number;
   unlockCost: number;
   effects: AbilityEffect[];
+  cooldown?: number; // REMOVE INTERROGAÇÃO PAPIS
 }
 
 export interface EnemyDrops {

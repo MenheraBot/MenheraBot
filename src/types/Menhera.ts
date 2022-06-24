@@ -295,10 +295,10 @@ export interface IDatabaseRepositories {
   creditsRepository: CreditsRepository;
 }
 
-export interface PicassoRequestData<T> {
+export interface PicassoRequestData {
   id: string;
   type: string;
-  data: T;
+  [key: string]: unknown;
 }
 
 export interface ITopResult {
