@@ -21,7 +21,6 @@ import {
   ChatInputApplicationCommandData,
   ColorResolvable,
   CommandInteractionOption,
-  User,
 } from 'discord.js-light';
 import CreditsRepository from '@database/repositories/CreditsRepository';
 import RoleplayRepository from '@database/repositories/RoleplayRepository';
@@ -215,24 +214,22 @@ export interface IRESTHuntStats {
 }
 
 export interface IUserDataToProfile {
-  cor: ColorResolvable;
+  color: ColorResolvable;
   avatar: string;
-  votos: number;
-  nota: string;
+  votes: number;
+  info: string;
   tag: string;
-  flagsArray: Array<string>;
-  casado: string | User | null;
-  voteCooldown: number;
   badges: Array<IBadge>;
   hiddingBadges: Array<number>;
   username: string;
-  data: string;
+  marryDate: string;
   mamadas: number;
   mamou: number;
   marry: MayNotExists<{
     username: string;
     tag: string;
   }>;
+  married: boolean;
 }
 
 export interface IContextData {

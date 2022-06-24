@@ -395,14 +395,8 @@
     "mamou": "Mamou",
     "unknow-user": "Usuário não encontrado",
     "mamado": "Mamado",
-    "married-with": "Casado com",
-    "married-in": "Casados em",
     "about-me": "Sobre Mim",
-    "commands": "Comandos",
-    "zero": "usou meus comandos",
-    "um": "vezes. Seu comando mais usado foi",
-    "dois": "usou",
-    "tres": "vezes.",
+    "api-down": "Eh.. o servidor de comandos está offline! Fique com uma frase bacana: 'É um caminho mais curto, mas não tem nada a ver com meu tamanho'",
     "commands-usage": "{{user}} usou meus comandos {{usedCount}} vezes. Seu comando mais usado foi {{mostUsedCommandName}}, usou {{mostUsedCommandCount}} vezes"
   },
   "top": {
