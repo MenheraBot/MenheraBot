@@ -1,5 +1,9 @@
 // Cada entrie do objeto é o id da badge, com as informações dela
 
+import { IBadge, IUserSchema } from '@custom_types/Menhera';
+import { DiscordFlagsToMenheraBadges } from '@structures/Constants';
+import { User } from 'discord.js-light';
+
 /*
   Níveis de raridade:
 
@@ -145,6 +149,41 @@ const Badges = {
     description: 'Badge dada à todos que participaram do Beta da Versão 2 do Rpg da Menhera',
     link: 'https://media.discordapp.net/attachments/793669360857907200/939245622039556166/beta.png',
   },
+  17: {
+    name: 'Aliança',
+    availabeStartAt: '--------',
+    availabeStoptAt: '--------',
+    rarityLevel: 2,
+    description: 'Badge dada aos pombinhos apaixonados! Todos usuários casados possuem uma!',
+    link: 'https://media.discordapp.net/attachments/793669360857907200/990263332340658226/ring.png',
+  },
+  18: {
+    name: 'Ajudante Constante',
+    availabeStartAt: '--------',
+    availabeStoptAt: '--------',
+    rarityLevel: 2,
+    description: 'Esta badge só aparece no seu perfil caso você tenha votado nas ultimas 12 horas',
+    link: 'https://media.discordapp.net/attachments/793669360857907200/939245622039556166/beta.png',
+  },
+};
+
+export const getUserBadges = (user: IUserSchema, member: User): Array<IBadge> => {
+  const userBadges: Array<IBadge> = user.badges;
+
+  member?.flags?.toArray().forEach((name) => {
+    if (DiscordFlagsToMenheraBadges[name])
+      userBadges.push({
+        id: DiscordFlagsToMenheraBadges[name],
+        obtainAt: `${member.createdTimestamp}`,
+      });
+  });
+
+  if (user.married && user.married !== 'false')
+    userBadges.push({ id: 17, obtainAt: `${user.marriedAt ?? member.createdTimestamp}` });
+
+  if (user.voteCooldown > Date.now()) userBadges.push({ id: 18, obtainAt: `${user.voteCooldown}` });
+
+  return userBadges;
 };
 
 export default Badges;

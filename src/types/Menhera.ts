@@ -27,6 +27,7 @@ import RoleplayRepository from '@database/repositories/RoleplayRepository';
 import { MayNotExists } from '@utils/Util';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { LocalizationMap } from 'discord-api-types/v10';
+import Badges from '@data/ProfileBadges';
 
 export interface IClientConfigs {
   interactionsDirectory: string;
@@ -58,8 +59,8 @@ export interface IColor {
   cor: ColorResolvable;
 }
 
-interface IBadge {
-  id: number;
+export interface IBadge {
+  id: keyof typeof Badges;
   obtainAt: string;
 }
 
@@ -219,7 +220,7 @@ export interface IUserDataToProfile {
   votes: number;
   info: string;
   tag: string;
-  badges: Array<IBadge>;
+  badges: Array<number>;
   hiddingBadges: Array<number>;
   username: string;
   marryDate: string;

@@ -5,6 +5,7 @@ import HttpRequests from '@utils/HTTPrequests';
 import { MessageAttachment } from 'discord.js-light';
 import { debugError, toWritableUTF } from '@utils/Util';
 import { VangoghRoutes, requestVangoghImage } from '@utils/VangoghRequests';
+import { getUserBadges } from '@data/ProfileBadges';
 
 export default class ProfileCommand extends InteractionCommand {
   constructor() {
@@ -92,7 +93,7 @@ export default class ProfileCommand extends InteractionCommand {
       votes: user.votes,
       info: user.info,
       tag: toWritableUTF(member.tag),
-      badges: user.badges,
+      badges: getUserBadges(user, member).map((a) => a.id),
       username: toWritableUTF(member.username),
       marryDate: user.marriedDate as string,
       mamadas: user.mamado,

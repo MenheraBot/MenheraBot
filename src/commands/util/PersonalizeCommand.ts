@@ -1,7 +1,7 @@
-import Badges from '@data/ProfileBadges';
+import Badges, { getUserBadges } from '@data/ProfileBadges';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { COLORS, DiscordFlagsToMenheraBadges, emojis, EmojiTypes } from '@structures/Constants';
+import { COLORS, emojis, EmojiTypes } from '@structures/Constants';
 import { AvailableThemeTypes, IReturnData, ThemeFiles } from '@custom_types/Menhera';
 import Util, {
   actionRow,
@@ -112,7 +112,15 @@ export default class PersonalizeCommand extends InteractionCommand {
       ],
       category: 'util',
       cooldown: 7,
-      authorDataFields: ['selectedColor', 'colors', 'info', 'badges', 'hiddingBadges'],
+      authorDataFields: [
+        'selectedColor',
+        'colors',
+        'info',
+        'badges',
+        'hiddingBadges',
+        'voteCooldown',
+        'married',
+      ],
     });
   }
 
@@ -137,20 +145,9 @@ export default class PersonalizeCommand extends InteractionCommand {
       .setFooter({ text: ctx.locale('commands:badges.footer') })
       .setColor(ctx.data.user.selectedColor);
 
-    const flags = ctx.author.flags?.toArray() ?? [];
-
-    flags.forEach((a) => {
-      if (typeof DiscordFlagsToMenheraBadges[a] === 'undefined') return;
-      ctx.data.user.badges.push({
-        id: DiscordFlagsToMenheraBadges[a],
-        obtainAt: `${ctx.author.createdTimestamp}`,
-      });
-    });
-
     const selectMenu = new MessageSelectMenu()
       .setCustomId(`${ctx.interaction.id} | SELECT`)
       .setMinValues(1)
-      .setMaxValues(ctx.data.user.badges.length + 2)
       .addOptions(
         {
           label: ctx.locale('commands:badges.select-all'),
@@ -164,14 +161,14 @@ export default class PersonalizeCommand extends InteractionCommand {
         },
       );
 
-    ctx.data.user.badges.forEach((a) => {
+    getUserBadges(ctx.data.user, ctx.author).forEach((a) => {
       const isSelected = ctx.data.user.hiddingBadges.includes(a.id);
 
       selectMenu.addOptions({
-        label: Badges[a.id as 1].name,
+        label: Badges[a.id].name,
         value: `${a.id}`,
         default: isSelected,
-        emoji: emojis[`badge_${a.id}` as EmojiTypes],
+        emoji: emojis[`badge_${a}` as EmojiTypes],
       });
 
       embed.addField(
@@ -186,13 +183,16 @@ export default class PersonalizeCommand extends InteractionCommand {
       );
     });
 
-    ctx.makeMessage({ embeds: [embed], components: [actionRow([selectMenu])] });
+    ctx.makeMessage({
+      embeds: [embed],
+      components: [actionRow([selectMenu.setMaxValues(selectMenu.options.length)])],
+    });
 
     const didSelect = await Util.collectComponentInteractionWithStartingId<SelectMenuInteraction>(
       ctx.channel,
       ctx.author.id,
       ctx.interaction.id,
-      7500,
+      13_000,
     );
 
     if (!didSelect) {
