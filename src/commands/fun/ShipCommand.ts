@@ -78,8 +78,6 @@ export default class ShipCommand extends InteractionCommand {
     const avatarLinkOne = user1.displayAvatarURL({ format: 'png', size: 256 });
     const avatarLinkTwo = user2.displayAvatarURL({ format: 'png', size: 256 });
 
-    ctx.defer();
-
     const bufferedShipImage = await requestVangoghImage(VangoghRoutes.Ship, {
       linkOne: avatarLinkOne,
       linkTwo: avatarLinkTwo,

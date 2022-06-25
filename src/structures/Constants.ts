@@ -1,4 +1,4 @@
-import { T8BallAnswerTypes } from '@custom_types/Menhera';
+import { IBadge, T8BallAnswerTypes } from '@custom_types/Menhera';
 
 export const shopEconomy = {
   colors: {
@@ -128,6 +128,8 @@ export const emojis = {
   badge_13: '<:badge_13:960661002360336384>',
   badge_15: '<:badge_15:960661000284151858>',
   badge_16: '<:badge_16:960661002570055750>',
+  badge_17: '<:badge_17:990267891079327774>',
+  badge_18: '<:badge_18:990267971731615794>',
   // EMOJIS DO RPG
   blood: '🩸',
   mana: '💧',
@@ -362,7 +364,7 @@ export const TODAYS_YEAR = new Date().getFullYear();
 
 export const HOURLY_ROULETTE_HIGH_VALUE_BET_LIMIT = 5;
 
-export const DiscordFlagsToMenheraBadges: { [badge: string]: number } = {
+export const DiscordFlagsToMenheraBadges: { [badge: string]: IBadge['id'] } = {
   EARLY_VERIFIED_BOT_DEVELOPER: 5,
   HOUSE_BALANCE: 2,
   HOUSE_BRILLIANCE: 3,

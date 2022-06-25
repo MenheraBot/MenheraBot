@@ -31,16 +31,15 @@ export default class PhiloCommand extends InteractionCommand {
 
   async run(ctx: InteractionCommandContext): Promise<void> {
     const text = ctx.options.getString('frase', true);
-    await ctx.defer();
 
     const res = await requestVangoghImage(VangoghRoutes.Philo, { text: toWritableUTF(text) });
 
     if (res.err) {
-      await ctx.defer({ content: `${emojis.error} | ${ctx.locale('common:http-error')}` });
+      await ctx.makeMessage({ content: `${emojis.error} | ${ctx.locale('common:http-error')}` });
       return;
     }
 
-    await ctx.defer({
+    await ctx.makeMessage({
       files: [new MessageAttachment(res.data, 'aristoteles.png')],
     });
   }

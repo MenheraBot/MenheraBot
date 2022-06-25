@@ -30,8 +30,6 @@ export default class GadoCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    await ctx.defer();
-
     const link = ctx.options.getUser('user', true).displayAvatarURL({
       format: 'png',
       size: 512,
@@ -40,13 +38,13 @@ export default class GadoCommand extends InteractionCommand {
     const res = await requestVangoghImage(VangoghRoutes.Gado, { image: link });
 
     if (res.err) {
-      await ctx.defer({
+      await ctx.makeMessage({
         content: `${emojis.error} |  ${ctx.locale('common:http-error')}`,
       });
       return;
     }
 
-    await ctx.defer({
+    await ctx.makeMessage({
       files: [new MessageAttachment(res.data, 'gado.png')],
     });
   }

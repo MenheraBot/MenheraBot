@@ -30,7 +30,6 @@ export default class MacetavaCommand extends InteractionCommand {
       format: 'png',
       size: 512,
     });
-    await ctx.defer();
 
     const res = await requestVangoghImage(VangoghRoutes.Macetava, {
       image: link,
@@ -40,11 +39,11 @@ export default class MacetavaCommand extends InteractionCommand {
     });
 
     if (res.err) {
-      await ctx.defer({ content: `${emojis.error} | ${ctx.locale('common:http-error')}` });
+      await ctx.makeMessage({ content: `${emojis.error} | ${ctx.locale('common:http-error')}` });
       return;
     }
 
-    await ctx.defer({
+    await ctx.makeMessage({
       files: [new MessageAttachment(res.data, 'macetava.png')],
     });
   }

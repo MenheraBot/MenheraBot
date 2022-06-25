@@ -32,7 +32,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ## [4.0.4] - 2022-06-25
 
-## Changed
+### Hotfix
+
+- Resolvido problema que perfis não eram exibidos corretamente.
+
+### Added
+
+- Emojis como o de casamento e o de votar na Menhera agora podem ser ocultados com `/personalizar badges`
+
+### Changed
 
 - Novo sistema de geração de imagens! As respostas de imagens estão mais rápidas! Alguns temas de perfil estão um pouquinho diferente, mas é aceitável!
 

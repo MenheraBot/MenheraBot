@@ -5,7 +5,7 @@ const ProfilePreview = {
     votes: 666,
     info: 'Gostou desse perfil? E que tal comprar? Nem vai ser tao caro, eu confio que tu vai querer, boa sorte UwU',
     tag: 'PreviewMode#6666',
-    badges: [{ id: 6, obtainAt: 0 }],
+    badges: [6],
     hiddingBadges: [],
     username: 'PreviewMode',
     marryDate: '16/02/2004 às 22:23',
