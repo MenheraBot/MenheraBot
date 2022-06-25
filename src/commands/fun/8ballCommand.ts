@@ -31,16 +31,12 @@ export default class EightballCommand extends InteractionCommand {
 
     const randomAnswer = EightBallAnswers[Math.floor(Math.random() * EightBallAnswers.length)];
 
-    const res = await requestVangoghImage(
-      VangoghRoutes.EightBall,
-      {
-        question: ctx.options.getString('pergunta', true),
-        answer: ctx.locale(`commands:8ball.answers.${randomAnswer.id as 1}`),
-        type: randomAnswer.type,
-        username: toWritableUTF(ctx.author.username),
-      },
-      ctx,
-    );
+    const res = await requestVangoghImage(VangoghRoutes.EightBall, {
+      question: ctx.options.getString('pergunta', true),
+      answer: ctx.locale(`commands:8ball.answers.${randomAnswer.id as 1}`),
+      type: randomAnswer.type,
+      username: toWritableUTF(ctx.author.username),
+    });
 
     const embed = new MessageEmbed().setTitle(
       `${emojis.question} | ${ctx.locale('commands:8ball.ask')}`,

@@ -33,7 +33,7 @@ export default class PhiloCommand extends InteractionCommand {
     const text = ctx.options.getString('frase', true);
     await ctx.defer();
 
-    const res = await requestVangoghImage(VangoghRoutes.Philo, { text: toWritableUTF(text) }, ctx);
+    const res = await requestVangoghImage(VangoghRoutes.Philo, { text: toWritableUTF(text) });
 
     if (res.err) {
       await ctx.defer({ content: `${emojis.error} | ${ctx.locale('common:http-error')}` });

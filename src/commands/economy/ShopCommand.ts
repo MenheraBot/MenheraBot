@@ -390,25 +390,21 @@ export default class ShopCommand extends InteractionCommand {
           if (previewMode) {
             if (currentThemeType === 'profile') {
               int.deferReply({ ephemeral: true });
-              const res = await requestVangoghImage(
-                VangoghRoutes.Profile,
-                {
-                  user: ProfilePreview.user,
-                  i18n: {
-                    aboutme: ctx.locale('commands:perfil.about-me'),
-                    mamado: ctx.locale('commands:perfil.mamado'),
-                    mamou: ctx.locale('commands:perfil.mamou'),
-                    usages: ctx.locale('commands:perfil.commands-usage', {
-                      user: ProfilePreview.user.username,
-                      usedCount: ProfilePreview.usageCommands.cmds.count,
-                      mostUsedCommandName: ProfilePreview.usageCommands.array[0].name,
-                      mostUsedCommandCount: ProfilePreview.usageCommands.array[0].count,
-                    }),
-                  },
-                  type: selectedItem.data.theme,
+              const res = await requestVangoghImage(VangoghRoutes.Profile, {
+                user: ProfilePreview.user,
+                i18n: {
+                  aboutme: ctx.locale('commands:perfil.about-me'),
+                  mamado: ctx.locale('commands:perfil.mamado'),
+                  mamou: ctx.locale('commands:perfil.mamou'),
+                  usages: ctx.locale('commands:perfil.commands-usage', {
+                    user: ProfilePreview.user.username,
+                    usedCount: ProfilePreview.usageCommands.cmds.count,
+                    mostUsedCommandName: ProfilePreview.usageCommands.array[0].name,
+                    mostUsedCommandCount: ProfilePreview.usageCommands.array[0].count,
+                  }),
                 },
-                ctx,
-              );
+                type: selectedItem.data.theme,
+              });
 
               if (res.err) {
                 await int
@@ -430,14 +426,10 @@ export default class ShopCommand extends InteractionCommand {
               return;
             }
 
-            const res = await requestVangoghImage(
-              VangoghRoutes.Preview,
-              {
-                theme: selectedItem.data.theme,
-                type: currentThemeType,
-              },
-              ctx,
-            );
+            const res = await requestVangoghImage(VangoghRoutes.Preview, {
+              theme: selectedItem.data.theme,
+              type: currentThemeType,
+            });
 
             int.deferUpdate();
 

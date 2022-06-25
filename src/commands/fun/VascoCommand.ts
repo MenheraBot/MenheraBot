@@ -52,16 +52,12 @@ export default class VascoCommand extends InteractionCommand {
 
     await ctx.defer();
 
-    const res = await requestVangoghImage(
-      VangoghRoutes.Vasco,
-      {
-        user: user.displayAvatarURL({ format: 'png', size: quality === 'normal' ? 256 : 64 }),
-        quality,
-        username: toWritableUTF(user.username),
-        position,
-      },
-      ctx,
-    );
+    const res = await requestVangoghImage(VangoghRoutes.Vasco, {
+      user: user.displayAvatarURL({ format: 'png', size: quality === 'normal' ? 256 : 64 }),
+      quality,
+      username: toWritableUTF(user.username),
+      position,
+    });
 
     if (res.err) {
       await ctx.defer({ content: `${emojis.error} | ${ctx.locale('common:http-error')}` });

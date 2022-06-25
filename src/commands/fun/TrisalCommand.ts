@@ -60,11 +60,11 @@ export default class TrisalCommand extends InteractionCommand {
       format: 'png',
     });
 
-    const res = await requestVangoghImage(
-      VangoghRoutes.Trisal,
-      { userOne: userOneAvatar, userTwo: userTwoAvatar, userThree: userThreeAvatar },
-      ctx,
-    );
+    const res = await requestVangoghImage(VangoghRoutes.Trisal, {
+      userOne: userOneAvatar,
+      userTwo: userTwoAvatar,
+      userThree: userThreeAvatar,
+    });
 
     if (res.err) {
       await ctx.makeMessage({

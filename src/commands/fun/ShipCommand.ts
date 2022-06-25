@@ -80,11 +80,11 @@ export default class ShipCommand extends InteractionCommand {
 
     ctx.defer();
 
-    const bufferedShipImage = await requestVangoghImage(
-      VangoghRoutes.Ship,
-      { linkOne: avatarLinkOne, linkTwo: avatarLinkTwo, shipValue: value },
-      ctx,
-    );
+    const bufferedShipImage = await requestVangoghImage(VangoghRoutes.Ship, {
+      linkOne: avatarLinkOne,
+      linkTwo: avatarLinkTwo,
+      shipValue: value,
+    });
 
     const guild =
       ctx.interaction.guild ?? ctx.client.guilds.forge(ctx.interaction.guildId as string);

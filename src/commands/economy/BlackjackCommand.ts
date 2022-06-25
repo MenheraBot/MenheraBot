@@ -241,24 +241,20 @@ export default class BlackjackCommand extends InteractionCommand {
     tableTheme: AvailableTableThemes,
     backgroundCardTheme: AvailableCardBackgroundThemes,
   ): Promise<IVangoghReturnData> {
-    return requestVangoghImage(
-      VangoghRoutes.Blackjack,
-      {
-        userCards: playerCards,
-        menheraCards: dealerCards,
-        userTotal,
-        menheraTotal,
-        i18n: {
-          yourHand: ctx.locale('commands:blackjack.your-hand'),
-          dealerHand: ctx.locale('commands:blackjack.dealer-hand'),
-        },
-        aposta: bet,
-        cardTheme,
-        tableTheme,
-        backgroundCardTheme,
+    return requestVangoghImage(VangoghRoutes.Blackjack, {
+      userCards: playerCards,
+      menheraCards: dealerCards,
+      userTotal,
+      menheraTotal,
+      i18n: {
+        yourHand: ctx.locale('commands:blackjack.your-hand'),
+        dealerHand: ctx.locale('commands:blackjack.dealer-hand'),
       },
-      ctx,
-    );
+      aposta: bet,
+      cardTheme,
+      tableTheme,
+      backgroundCardTheme,
+    });
   }
 
   static async finishMatch(

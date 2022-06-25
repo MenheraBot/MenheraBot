@@ -32,16 +32,12 @@ export default class MacetavaCommand extends InteractionCommand {
     });
     await ctx.defer();
 
-    const res = await requestVangoghImage(
-      VangoghRoutes.Macetava,
-      {
-        image: link,
-        authorName: toWritableUTF(ctx.author.username),
-        authorDiscriminator: ctx.author.discriminator,
-        authorImage: ctx.author.displayAvatarURL({ format: 'png', size: 128 }),
-      },
-      ctx,
-    );
+    const res = await requestVangoghImage(VangoghRoutes.Macetava, {
+      image: link,
+      authorName: toWritableUTF(ctx.author.username),
+      authorDiscriminator: ctx.author.discriminator,
+      authorImage: ctx.author.displayAvatarURL({ format: 'png', size: 128 }),
+    });
 
     if (res.err) {
       await ctx.defer({ content: `${emojis.error} | ${ctx.locale('common:http-error')}` });

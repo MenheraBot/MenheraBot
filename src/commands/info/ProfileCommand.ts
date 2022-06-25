@@ -128,11 +128,11 @@ export default class ProfileCommand extends InteractionCommand {
 
     const profileTheme = await ctx.client.repositories.themeRepository.getProfileTheme(member.id);
 
-    const res = await requestVangoghImage(
-      VangoghRoutes.Profile,
-      { user: userSendData, i18n: i18nData, type: profileTheme },
-      ctx,
-    );
+    const res = await requestVangoghImage(VangoghRoutes.Profile, {
+      user: userSendData,
+      i18n: i18nData,
+      type: profileTheme,
+    });
 
     if (res.err) {
       await ctx.makeMessage({ content: ctx.prettyResponse('error', 'common:http-error') });
