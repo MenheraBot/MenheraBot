@@ -1,7 +1,7 @@
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageAttachment, MessageEmbed } from 'discord.js-light';
-import { PicassoRoutes, requestPicassoImage } from '@utils/PicassoRequests';
+import { VangoghRoutes, requestVangoghImage } from '@utils/VangoghRequests';
 
 export default class ShipCommand extends InteractionCommand {
   constructor() {
@@ -80,8 +80,8 @@ export default class ShipCommand extends InteractionCommand {
 
     ctx.defer();
 
-    const bufferedShipImage = await requestPicassoImage(
-      PicassoRoutes.Ship,
+    const bufferedShipImage = await requestVangoghImage(
+      VangoghRoutes.Ship,
       { linkOne: avatarLinkOne, linkTwo: avatarLinkTwo, shipValue: value },
       ctx,
     );

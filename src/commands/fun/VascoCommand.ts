@@ -3,7 +3,7 @@ import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageAttachment } from 'discord.js-light';
 import { emojis } from '@structures/Constants';
 import { toWritableUTF } from '@utils/Util';
-import { PicassoRoutes, requestPicassoImage } from '@utils/PicassoRequests';
+import { VangoghRoutes, requestVangoghImage } from '@utils/VangoghRequests';
 
 export default class VascoCommand extends InteractionCommand {
   constructor() {
@@ -52,8 +52,8 @@ export default class VascoCommand extends InteractionCommand {
 
     await ctx.defer();
 
-    const res = await requestPicassoImage(
-      PicassoRoutes.Vasco,
+    const res = await requestVangoghImage(
+      VangoghRoutes.Vasco,
       {
         user: user.displayAvatarURL({ format: 'png', size: quality === 'normal' ? 256 : 64 }),
         quality,

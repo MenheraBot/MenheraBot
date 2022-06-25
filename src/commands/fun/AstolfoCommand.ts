@@ -3,7 +3,7 @@ import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageAttachment } from 'discord.js-light';
 import { emojis } from '@structures/Constants';
 import { toWritableUTF } from '@utils/Util';
-import { PicassoRoutes, requestPicassoImage } from '@utils/PicassoRequests';
+import { VangoghRoutes, requestVangoghImage } from '@utils/VangoghRequests';
 
 export default class AstolfoCommand extends InteractionCommand {
   constructor() {
@@ -32,8 +32,8 @@ export default class AstolfoCommand extends InteractionCommand {
     const text = ctx.options.getString('frase', true);
     await ctx.defer();
 
-    const res = await requestPicassoImage(
-      PicassoRoutes.Astolfo,
+    const res = await requestVangoghImage(
+      VangoghRoutes.Astolfo,
       { text: toWritableUTF(text) },
       ctx,
     );

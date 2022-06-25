@@ -15,7 +15,7 @@ import EventManager from '@structures/EventManager';
 import InteractionCommand from '@structures/command/InteractionCommand';
 
 import LocaleStructure from '@structures/LocaleStructure';
-import PicassoWebSocket from '@structures/PicassoWebSocket';
+import VangoghWebSocket from '@structures/VangoghWebSocket';
 import { debugError } from '@utils/Util';
 import JogoDoBixoManager from '@structures/JogoDoBichoManager';
 import { updateAssets } from '@structures/CdnManager';
@@ -31,7 +31,7 @@ export default class MenheraClient extends Client<true> {
 
   public events: EventManager;
 
-  public picassoWs!: PicassoWebSocket;
+  public vangoghWs!: VangoghWebSocket;
 
   public cooldowns: Collection<string, Collection<string, number>>;
 
@@ -78,14 +78,14 @@ export default class MenheraClient extends Client<true> {
     });
 
     const locales = new LocaleStructure();
-    this.picassoWs = new PicassoWebSocket(this.cluster.id ?? 0);
+    this.vangoghWs = new VangoghWebSocket(this.cluster.id ?? 0);
     this.jogoDoBichoManager = new JogoDoBixoManager(this);
 
     await locales.load();
     await this.database.createConnection();
     this.loadSlashCommands(this.config.interactionsDirectory);
     this.loadEvents(this.config.eventsDirectory);
-    await this.picassoWs.connect().catch(debugError);
+    await this.vangoghWs.connect().catch(debugError);
     await MenheraClient.updateCDNAssets();
 
     return true;

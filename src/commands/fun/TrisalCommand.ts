@@ -8,7 +8,7 @@ import {
 } from 'discord.js-light';
 import { emojis } from '@structures/Constants';
 import Util, { actionRow, debugError, disableComponents } from '@utils/Util';
-import { PicassoRoutes, requestPicassoImage } from '@utils/PicassoRequests';
+import { VangoghRoutes, requestVangoghImage } from '@utils/VangoghRequests';
 
 export default class TrisalCommand extends InteractionCommand {
   constructor() {
@@ -60,8 +60,8 @@ export default class TrisalCommand extends InteractionCommand {
       format: 'png',
     });
 
-    const res = await requestPicassoImage(
-      PicassoRoutes.Trisal,
+    const res = await requestVangoghImage(
+      VangoghRoutes.Trisal,
       { userOne: userOneAvatar, userTwo: userTwoAvatar, userThree: userThreeAvatar },
       ctx,
     );

@@ -2,7 +2,7 @@ import { COLORS, EightBallAnswers, emojis } from '@structures/Constants';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageEmbed, MessageAttachment } from 'discord.js-light';
-import { PicassoRoutes, requestPicassoImage } from '@utils/PicassoRequests';
+import { VangoghRoutes, requestVangoghImage } from '@utils/VangoghRequests';
 import { toWritableUTF } from '@utils/Util';
 
 export default class EightballCommand extends InteractionCommand {
@@ -31,8 +31,8 @@ export default class EightballCommand extends InteractionCommand {
 
     const randomAnswer = EightBallAnswers[Math.floor(Math.random() * EightBallAnswers.length)];
 
-    const res = await requestPicassoImage(
-      PicassoRoutes.EightBall,
+    const res = await requestVangoghImage(
+      VangoghRoutes.EightBall,
       {
         question: ctx.options.getString('pergunta', true),
         answer: ctx.locale(`commands:8ball.answers.${randomAnswer.id as 1}`),

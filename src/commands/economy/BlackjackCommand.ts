@@ -15,11 +15,11 @@ import {
   AvailableTableThemes,
   BlackjackFinishGameReason,
   IBlackjackCards,
-  IPicassoReturnData,
+  IVangoghReturnData,
 } from '@custom_types/Menhera';
 import { BLACKJACK_CARDS, BLACKJACK_PRIZE_MULTIPLIERS } from '@structures/Constants';
 import Util, { resolveCustomId, actionRow, MayNotExists, negate, debugError } from '@utils/Util';
-import { PicassoRoutes, requestPicassoImage } from '@utils/PicassoRequests';
+import { VangoghRoutes, requestVangoghImage } from '@utils/VangoghRequests';
 
 const getBlackjackCards = (cards: Array<number>): Array<IBlackjackCards> =>
   cards.reduce((p: Array<IBlackjackCards>, c: number) => {
@@ -151,7 +151,7 @@ export default class BlackjackCommand extends InteractionCommand {
         null,
       );
 
-    const res = await BlackjackCommand.makePicassoRequest(
+    const res = await BlackjackCommand.makeVangoghRequest(
       ctx,
       bet,
       hideMenheraCard(bjDealerCards),
@@ -230,7 +230,7 @@ export default class BlackjackCommand extends InteractionCommand {
     );
   }
 
-  static async makePicassoRequest(
+  static async makeVangoghRequest(
     ctx: InteractionCommandContext,
     bet: number,
     dealerCards: Array<IBlackjackCards>,
@@ -240,9 +240,9 @@ export default class BlackjackCommand extends InteractionCommand {
     cardTheme: AvailableCardThemes,
     tableTheme: AvailableTableThemes,
     backgroundCardTheme: AvailableCardBackgroundThemes,
-  ): Promise<IPicassoReturnData> {
-    return requestPicassoImage(
-      PicassoRoutes.Blackjack,
+  ): Promise<IVangoghReturnData> {
+    return requestVangoghImage(
+      VangoghRoutes.Blackjack,
       {
         userCards: playerCards,
         menheraCards: dealerCards,
@@ -283,7 +283,7 @@ export default class BlackjackCommand extends InteractionCommand {
     if (didUserWin) ctx.client.repositories.starRepository.add(ctx.author.id, prize);
     else ctx.client.repositories.starRepository.remove(ctx.author.id, prize);
 
-    const image = await BlackjackCommand.makePicassoRequest(
+    const image = await BlackjackCommand.makeVangoghRequest(
       ctx,
       bet,
       dealerCards,
@@ -332,7 +332,7 @@ export default class BlackjackCommand extends InteractionCommand {
 
     const userCards = getBlackjackCards(playerCards);
     const userTotal = BlackjackCommand.checkHandFinalValue(userCards);
-    const res = await BlackjackCommand.makePicassoRequest(
+    const res = await BlackjackCommand.makeVangoghRequest(
       ctx,
       bet,
       hideMenheraCard(menheraCards),
@@ -485,7 +485,7 @@ export default class BlackjackCommand extends InteractionCommand {
     ctx: InteractionCommandContext,
     gameMessage: MayNotExists<Message>,
     embed: MessageEmbed,
-    res: IPicassoReturnData,
+    res: IVangoghReturnData,
     components: MessageActionRow[],
   ): Promise<MayNotExists<Message<boolean>>> {
     const timestamp = Date.now();

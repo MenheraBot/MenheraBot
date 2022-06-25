@@ -1,16 +1,10 @@
-import { IPicassoReturnData, PicassoRequestData } from '@custom_types/Menhera';
+import { IVangoghReturnData, VangoghRequestData } from '@custom_types/Menhera';
 import WebSocket from 'ws';
 
-/*
- *
- * I Know it is a bad practice to keep old code here, but i will implement ping-pong system on it!!!
- *
- */
-
-export default class PicassoWebSocket {
+export default class VangoghWebSocket {
   public isAlive = false;
 
-  // private pingTimeout?: NodeJS.Timeout;
+  private pingTimeout?: NodeJS.Timeout;
 
   private ws: WebSocket | null = null;
 
@@ -24,7 +18,8 @@ export default class PicassoWebSocket {
     try {
       console.log(`[WEBSOCKET] Client ${this.clusterId} is trying to connect`);
       this.ws = new WebSocket(
-        `${process.env.PICASSO_WEBSOCKET}?id=${this.clusterId}&auth=${process.env.API_TOKEN}`,
+        `${process.env.VANGOGH_WEBSOCKET}?id=${this.clusterId}&auth=${process.env.VANGOGH_TOKEN}`,
+        { skipUTF8Validation: true },
       );
       this.prepareListeners();
     } catch (err) {
@@ -44,7 +39,7 @@ export default class PicassoWebSocket {
     }
 
     console.log(`[WEBSOCKET] Error: ${err.message}`);
-    // if (this.pingTimeout) clearTimeout(this.pingTimeout);
+    if (this.pingTimeout) clearTimeout(this.pingTimeout);
 
     setTimeout(
       (Manager) => {
@@ -56,12 +51,11 @@ export default class PicassoWebSocket {
     );
   }
 
-  /*   private heartbeat(data?: Buffer): void {
+  private heartbeat(): void {
     this.ruuningError = false;
     if (typeof this.pingTimeout !== 'undefined') clearTimeout(this.pingTimeout);
 
     this.isAlive = true;
-    if (data) this.ws?.pong(data);
 
     this.pingTimeout = setTimeout(
       (manager) => {
@@ -70,7 +64,7 @@ export default class PicassoWebSocket {
       20000,
       this.ws,
     );
-  } */
+  }
 
   private onClose(code: number, reason: Buffer): void {
     this.isAlive = false;
@@ -81,7 +75,7 @@ export default class PicassoWebSocket {
     );
     if (this.ruuningError) return;
     if (this.ws) this.ws.terminate();
-    //  if (this.pingTimeout) clearTimeout(this.pingTimeout);
+    if (this.pingTimeout) clearTimeout(this.pingTimeout);
 
     setTimeout(
       (Manager) => {
@@ -106,14 +100,14 @@ export default class PicassoWebSocket {
         console.log(`[WEBSOCKET] Client ${this.clusterId} Connected Successfully`);
         this.retries = 0;
         this.isAlive = true;
-        // this.heartbeat();
+        this.heartbeat();
       })
-      .on('close', (code, reason) => this.onClose(code, reason))
-      .on('error', (err) => this.onError(err));
-    // .on('ping', (data) => this.heartbeat(data));
+      .on('close', this.onClose.bind(this))
+      .on('error', this.onError.bind(this))
+      .on('ping', this.heartbeat.bind(this));
   }
 
-  public async makeRequest(toSend: PicassoRequestData): Promise<IPicassoReturnData> {
+  public async makeRequest(toSend: VangoghRequestData): Promise<IVangoghReturnData> {
     if (!this.isAlive) return { err: true };
     if (!this.ws) return { err: true };
 
@@ -134,7 +128,7 @@ export default class PicassoWebSocket {
         return res({ err: true });
       };
 
-      const resolveSuccess = (receivedData: IPicassoReturnData) => {
+      const resolveSuccess = (receivedData: IVangoghReturnData) => {
         clearTimeout(timeout);
         this.ws?.removeListener('message', handler);
         return res(receivedData);

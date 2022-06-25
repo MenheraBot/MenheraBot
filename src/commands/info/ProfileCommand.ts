@@ -4,7 +4,7 @@ import { IUserDataToProfile } from '@custom_types/Menhera';
 import HttpRequests from '@utils/HTTPrequests';
 import { MessageAttachment } from 'discord.js-light';
 import { debugError, toWritableUTF } from '@utils/Util';
-import { PicassoRoutes, requestPicassoImage } from '@utils/PicassoRequests';
+import { VangoghRoutes, requestVangoghImage } from '@utils/VangoghRequests';
 
 export default class ProfileCommand extends InteractionCommand {
   constructor() {
@@ -128,8 +128,8 @@ export default class ProfileCommand extends InteractionCommand {
 
     const profileTheme = await ctx.client.repositories.themeRepository.getProfileTheme(member.id);
 
-    const res = await requestPicassoImage(
-      PicassoRoutes.Profile,
+    const res = await requestVangoghImage(
+      VangoghRoutes.Profile,
       { user: userSendData, i18n: i18nData, type: profileTheme },
       ctx,
     );

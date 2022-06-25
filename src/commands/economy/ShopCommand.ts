@@ -29,7 +29,7 @@ import {
   TextInputComponent,
 } from 'discord.js-light';
 import ProfilePreview from '@utils/ThemePreviewTemplates';
-import { PicassoRoutes, requestPicassoImage } from '@utils/PicassoRequests';
+import { VangoghRoutes, requestVangoghImage } from '@utils/VangoghRequests';
 
 export default class ShopCommand extends InteractionCommand {
   constructor() {
@@ -390,8 +390,8 @@ export default class ShopCommand extends InteractionCommand {
           if (previewMode) {
             if (currentThemeType === 'profile') {
               int.deferReply({ ephemeral: true });
-              const res = await requestPicassoImage(
-                PicassoRoutes.Profile,
+              const res = await requestVangoghImage(
+                VangoghRoutes.Profile,
                 {
                   user: ProfilePreview.user,
                   i18n: {
@@ -430,8 +430,8 @@ export default class ShopCommand extends InteractionCommand {
               return;
             }
 
-            const res = await requestPicassoImage(
-              PicassoRoutes.Preview,
+            const res = await requestVangoghImage(
+              VangoghRoutes.Preview,
               {
                 theme: selectedItem.data.theme,
                 type: currentThemeType,

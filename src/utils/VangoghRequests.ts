@@ -1,9 +1,9 @@
-import { IPicassoReturnData } from '@custom_types/Menhera';
+import { IVangoghReturnData } from '@custom_types/Menhera';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import axios from 'axios';
 
-const PicassoRequest = axios.create({
-  baseURL: `${process.env.API_URL}/picasso`,
+const VangoghRequest = axios.create({
+  baseURL: `${process.env.API_URL}/vangogh`,
   timeout: 5000,
   headers: {
     'Content-Type': 'application/json',
@@ -12,7 +12,7 @@ const PicassoRequest = axios.create({
   },
 });
 
-export enum PicassoRoutes {
+export enum VangoghRoutes {
   Fluffety = 'fluffety',
   Astolfo = 'astolfo',
   Vasco = 'vasco',
@@ -28,19 +28,19 @@ export enum PicassoRoutes {
   BETA = 'beta',
 }
 
-export const requestPicassoImage = async <T>(
-  route: PicassoRoutes,
+export const requestVangoghImage = async <T>(
+  route: VangoghRoutes,
   data: T,
   ctx: InteractionCommandContext,
-): Promise<IPicassoReturnData> => {
-  if (ctx.client.picassoWs.isAlive)
-    return ctx.client.picassoWs.makeRequest({
+): Promise<IVangoghReturnData> => {
+  if (ctx.client.vangoghWs.isAlive)
+    return ctx.client.vangoghWs.makeRequest({
       id: ctx.interaction.id,
       requestType: route,
       ...data,
     });
 
-  const result = await PicassoRequest.post(`/${route}`, data).catch(() => null);
+  const result = await VangoghRequest.post(`/${route}`, data).catch(() => null);
   if (!result) return { err: true };
   return { err: false, data: Buffer.from(result.data, 'base64') };
 };

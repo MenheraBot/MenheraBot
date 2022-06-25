@@ -26,8 +26,8 @@ export default class ShutdownSlashCommand extends InteractionCommand {
     await ctx.client.jogoDoBichoManager.stopGameLoop();
     console.log('[SHTUDOWN] - Estrelinhas do jogo do Bicho Devolvidas!');
     // @ts-expect-error Client é fucker
-    await ctx.client.cluster?.broadcastEval((c: MenheraClient) => c.picassoWs.killConnection());
-    console.log('[SHTUDOWN] - Conexões Websockets Picasso fechados');
+    await ctx.client.cluster?.broadcastEval((c: MenheraClient) => c.vangoghWs.killConnection());
+    console.log('[SHTUDOWN] - Conexões Websockets Vangogh fechados');
 
     console.log('[SHTUDOWN] - Aguardando finalização de comandos');
     await new Promise<void>((resolve) => {

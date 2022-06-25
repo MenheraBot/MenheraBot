@@ -35,16 +35,16 @@ export interface IClientConfigs {
 
 export type T8BallAnswerTypes = 'negative' | 'positive' | 'neutral';
 
-export interface IPicassoErrorReturn {
+export interface IVangoghErrorReturn {
   err: true;
 }
 
-export interface ISuccessPicassoReturn {
+export interface ISuccessVangoghReturn {
   err?: false;
   data: Buffer;
 }
 
-export type IPicassoReturnData = IPicassoErrorReturn | ISuccessPicassoReturn;
+export type IVangoghReturnData = IVangoghErrorReturn | ISuccessVangoghReturn;
 
 export interface IBlackjackCards {
   value: number;
@@ -292,7 +292,7 @@ export interface IDatabaseRepositories {
   creditsRepository: CreditsRepository;
 }
 
-export interface PicassoRequestData {
+export interface VangoghRequestData {
   id: string;
   requestType: string;
   [data: string]: unknown;
