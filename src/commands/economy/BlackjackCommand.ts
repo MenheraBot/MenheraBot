@@ -100,8 +100,6 @@ export default class BlackjackCommand extends InteractionCommand {
       return;
     }
 
-    await ctx.defer();
-
     const matchCards = [...BLACKJACK_CARDS].sort(() => Math.random() - 0.5);
 
     const dealerCards = matchCards.splice(0, 2);

@@ -78,8 +78,6 @@ export default class ProfileCommand extends InteractionCommand {
       return;
     }
 
-    await ctx.defer();
-
     const marry =
       user.married && user.married !== 'false'
         ? await ctx.client.users.fetch(user.married).catch(debugError)

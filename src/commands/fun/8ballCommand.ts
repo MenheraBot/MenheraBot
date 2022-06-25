@@ -27,8 +27,6 @@ export default class EightballCommand extends InteractionCommand {
   }
 
   async run(ctx: InteractionCommandContext): Promise<void> {
-    await ctx.defer();
-
     const randomAnswer = EightBallAnswers[Math.floor(Math.random() * EightBallAnswers.length)];
 
     const res = await requestVangoghImage(VangoghRoutes.EightBall, {
@@ -57,11 +55,14 @@ export default class EightballCommand extends InteractionCommand {
         .setColor(COLORS.Aqua)
         .setFooter({ text: ctx.locale('common:http-error') });
 
-      await ctx.defer({ embeds: [embed] });
+      await ctx.makeMessage({ embeds: [embed] });
       return;
     }
 
     embed.setImage('attachment://8ball.png').setColor(COLORS.Purple);
-    await ctx.defer({ embeds: [embed], files: [new MessageAttachment(res.data, '8ball.png')] });
+    await ctx.makeMessage({
+      embeds: [embed],
+      files: [new MessageAttachment(res.data, '8ball.png')],
+    });
   }
 }

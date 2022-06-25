@@ -292,12 +292,6 @@ export interface IDatabaseRepositories {
   creditsRepository: CreditsRepository;
 }
 
-export interface VangoghRequestData {
-  id: string;
-  requestType: string;
-  [data: string]: unknown;
-}
-
 export interface ITopResult {
   id: string;
   value: number;
