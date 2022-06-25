@@ -121,8 +121,8 @@ export default class ProfileCommand extends InteractionCommand {
         ? ctx.locale('commands:perfil.commands-usage', {
             user: toWritableUTF(member.username),
             usedCount: usageCommands.cmds.count,
-            mostUsedCommandName: usageCommands.array[0].name,
-            mostUsedCommandCount: usageCommands.array[0].count,
+            mostUsedCommandName: usageCommands.array[0]?.name ?? '??',
+            mostUsedCommandCount: usageCommands.array[0]?.count ?? '??',
           })
         : ctx.locale('commands:perfil.api-down'),
     };
