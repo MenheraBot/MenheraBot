@@ -294,7 +294,7 @@ export interface IDatabaseRepositories {
 
 export interface PicassoRequestData {
   id: string;
-  type: string;
+  requestType: string;
   [data: string]: unknown;
 }
 

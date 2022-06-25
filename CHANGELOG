@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [4.0.4] - 2022-06-25
+
+## Changed
+
+- Novo sistema de geração de imagens! As respostas de imagens estão mais rápidas! Alguns temas de perfil estão um pouquinho diferente, mas é aceitável!
+
 ## [4.0.3] - 2022-05-29
 
 ### Hotfix

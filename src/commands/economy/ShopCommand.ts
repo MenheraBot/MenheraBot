@@ -434,7 +434,7 @@ export default class ShopCommand extends InteractionCommand {
               PicassoRoutes.Preview,
               {
                 theme: selectedItem.data.theme,
-                previewType: currentThemeType,
+                type: currentThemeType,
               },
               ctx,
             );
