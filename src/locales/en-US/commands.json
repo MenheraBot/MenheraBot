@@ -387,14 +387,8 @@
     "unknow-user": "user not found",
     "mamado_uncensored": "Suckled",
     "mamado": "Licked",
-    "married-with": "Married with",
-    "married-in": "Married in",
     "about-me": "About Me",
-    "commands": "Commands",
-    "zero": "used my commands",
-    "um": "times. It most used command was",
-    "dois": "used",
-    "tres": "times",
+    "api-down": "Yep, the Commands Server is Down! But dont worry! This text is to say that you incredible.",
     "commands-usage": "{{user}} used my commands {{usedCount}} times. His most used command was {{mostUsedCommandName}}, used {{mostUsedCommandCount}} times"
   },
   "top": {

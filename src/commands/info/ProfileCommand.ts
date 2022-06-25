@@ -4,7 +4,7 @@ import { IUserDataToProfile } from '@custom_types/Menhera';
 import HttpRequests from '@utils/HTTPrequests';
 import { MessageAttachment } from 'discord.js-light';
 import { debugError, toWritableUTF } from '@utils/Util';
-import { PicassoRoutes, requestPicassoImage } from '@utils/PicassoRequests';
+import { VangoghRoutes, requestVangoghImage } from '@utils/VangoghRequests';
 
 export default class ProfileCommand extends InteractionCommand {
   constructor() {
@@ -89,24 +89,23 @@ export default class ProfileCommand extends InteractionCommand {
     const usageCommands = await HttpRequests.getProfileCommands(member.id);
 
     const userSendData: IUserDataToProfile = {
-      cor: user.selectedColor,
+      color: user.selectedColor,
       avatar,
-      votos: user.votes,
-      nota: user.info,
+      votes: user.votes,
+      info: user.info,
       tag: toWritableUTF(member.tag),
-      flagsArray: member.flags?.toArray() ?? [],
-      casado: user.married,
-      voteCooldown: user.voteCooldown as number,
       badges: user.badges,
       username: toWritableUTF(member.username),
-      data: user.marriedDate as string,
+      marryDate: user.marriedDate as string,
       mamadas: user.mamado,
       mamou: user.mamou,
       hiddingBadges: user.hiddingBadges,
       marry: null,
+      married: false,
     };
 
     if (marry) {
+      userSendData.married = true;
       userSendData.marry = {
         username: toWritableUTF(marry.username),
         tag: `${toWritableUTF(marry.username)}#${marry.discriminator}`,
@@ -117,19 +116,23 @@ export default class ProfileCommand extends InteractionCommand {
       aboutme: ctx.locale('commands:perfil.about-me'),
       mamado: ctx.locale('commands:perfil.mamado'),
       mamou: ctx.locale('commands:perfil.mamou'),
-      zero: ctx.locale('commands:perfil.zero'),
-      um: ctx.locale('commands:perfil.um'),
-      dois: ctx.locale('commands:perfil.dois'),
-      tres: ctx.locale('commands:perfil.tres'),
+      usages: usageCommands
+        ? ctx.locale('commands:perfil.commands-usage', {
+            user: toWritableUTF(member.username),
+            usedCount: usageCommands.cmds.count,
+            mostUsedCommandName: usageCommands.array[0].name,
+            mostUsedCommandCount: usageCommands.array[0].count,
+          })
+        : ctx.locale('commands:perfil.api-down'),
     };
 
     const profileTheme = await ctx.client.repositories.themeRepository.getProfileTheme(member.id);
 
-    const res = await requestPicassoImage(
-      PicassoRoutes.Profile,
-      { user: userSendData, usageCommands, i18n: i18nData, type: profileTheme },
-      ctx,
-    );
+    const res = await requestVangoghImage(VangoghRoutes.Profile, {
+      user: userSendData,
+      i18n: i18nData,
+      type: profileTheme,
+    });
 
     if (res.err) {
       await ctx.makeMessage({ content: ctx.prettyResponse('error', 'common:http-error') });

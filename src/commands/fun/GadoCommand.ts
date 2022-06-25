@@ -2,7 +2,7 @@ import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageAttachment } from 'discord.js-light';
 import { emojis } from '@structures/Constants';
-import { PicassoRoutes, requestPicassoImage } from '@utils/PicassoRequests';
+import { VangoghRoutes, requestVangoghImage } from '@utils/VangoghRequests';
 
 export default class GadoCommand extends InteractionCommand {
   constructor() {
@@ -37,7 +37,7 @@ export default class GadoCommand extends InteractionCommand {
       size: 512,
     });
 
-    const res = await requestPicassoImage(PicassoRoutes.Gado, { image: link }, ctx);
+    const res = await requestVangoghImage(VangoghRoutes.Gado, { image: link });
 
     if (res.err) {
       await ctx.defer({

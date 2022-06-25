@@ -3,7 +3,7 @@ import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageAttachment } from 'discord.js-light';
 import { emojis } from '@structures/Constants';
 import { toWritableUTF } from '@utils/Util';
-import { PicassoRoutes, requestPicassoImage } from '@utils/PicassoRequests';
+import { VangoghRoutes, requestVangoghImage } from '@utils/VangoghRequests';
 
 export default class MacetavaCommand extends InteractionCommand {
   constructor() {
@@ -32,16 +32,12 @@ export default class MacetavaCommand extends InteractionCommand {
     });
     await ctx.defer();
 
-    const res = await requestPicassoImage(
-      PicassoRoutes.Macetava,
-      {
-        image: link,
-        authorName: toWritableUTF(ctx.author.username),
-        authorDiscriminator: ctx.author.discriminator,
-        authorImage: ctx.author.displayAvatarURL({ format: 'png', size: 512 }),
-      },
-      ctx,
-    );
+    const res = await requestVangoghImage(VangoghRoutes.Macetava, {
+      image: link,
+      authorName: toWritableUTF(ctx.author.username),
+      authorDiscriminator: ctx.author.discriminator,
+      authorImage: ctx.author.displayAvatarURL({ format: 'png', size: 128 }),
+    });
 
     if (res.err) {
       await ctx.defer({ content: `${emojis.error} | ${ctx.locale('common:http-error')}` });

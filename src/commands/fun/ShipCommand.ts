@@ -1,7 +1,7 @@
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageAttachment, MessageEmbed } from 'discord.js-light';
-import { PicassoRoutes, requestPicassoImage } from '@utils/PicassoRequests';
+import { VangoghRoutes, requestVangoghImage } from '@utils/VangoghRequests';
 
 export default class ShipCommand extends InteractionCommand {
   constructor() {
@@ -78,11 +78,13 @@ export default class ShipCommand extends InteractionCommand {
     const avatarLinkOne = user1.displayAvatarURL({ format: 'png', size: 256 });
     const avatarLinkTwo = user2.displayAvatarURL({ format: 'png', size: 256 });
 
-    const bufferedShipImage = await requestPicassoImage(
-      PicassoRoutes.Ship,
-      { linkOne: avatarLinkOne, linkTwo: avatarLinkTwo, shipValue: value },
-      ctx,
-    );
+    ctx.defer();
+
+    const bufferedShipImage = await requestVangoghImage(VangoghRoutes.Ship, {
+      linkOne: avatarLinkOne,
+      linkTwo: avatarLinkTwo,
+      shipValue: value,
+    });
 
     const guild =
       ctx.interaction.guild ?? ctx.client.guilds.forge(ctx.interaction.guildId as string);

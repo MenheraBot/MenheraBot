@@ -8,7 +8,7 @@ import {
 } from 'discord.js-light';
 import { emojis } from '@structures/Constants';
 import Util, { actionRow, debugError, disableComponents } from '@utils/Util';
-import { PicassoRoutes, requestPicassoImage } from '@utils/PicassoRequests';
+import { VangoghRoutes, requestVangoghImage } from '@utils/VangoghRequests';
 
 export default class TrisalCommand extends InteractionCommand {
   constructor() {
@@ -52,19 +52,19 @@ export default class TrisalCommand extends InteractionCommand {
       return;
     }
 
-    const userOneAvatar = ctx.author.displayAvatarURL({ dynamic: false, size: 512, format: 'png' });
-    const userTwoAvatar = marryTwo.displayAvatarURL({ dynamic: false, size: 512, format: 'png' });
+    const userOneAvatar = ctx.author.displayAvatarURL({ dynamic: false, size: 256, format: 'png' });
+    const userTwoAvatar = marryTwo.displayAvatarURL({ dynamic: false, size: 256, format: 'png' });
     const userThreeAvatar = marryThree.displayAvatarURL({
       dynamic: false,
-      size: 512,
+      size: 256,
       format: 'png',
     });
 
-    const res = await requestPicassoImage(
-      PicassoRoutes.Trisal,
-      { userOne: userOneAvatar, userTwo: userTwoAvatar, userThree: userThreeAvatar },
-      ctx,
-    );
+    const res = await requestVangoghImage(VangoghRoutes.Trisal, {
+      userOne: userOneAvatar,
+      userTwo: userTwoAvatar,
+      userThree: userThreeAvatar,
+    });
 
     if (res.err) {
       await ctx.makeMessage({

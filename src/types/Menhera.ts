@@ -21,7 +21,6 @@ import {
   ChatInputApplicationCommandData,
   ColorResolvable,
   CommandInteractionOption,
-  User,
 } from 'discord.js-light';
 import CreditsRepository from '@database/repositories/CreditsRepository';
 import RoleplayRepository from '@database/repositories/RoleplayRepository';
@@ -36,16 +35,16 @@ export interface IClientConfigs {
 
 export type T8BallAnswerTypes = 'negative' | 'positive' | 'neutral';
 
-export interface IPicassoErrorReturn {
+export interface IVangoghErrorReturn {
   err: true;
 }
 
-export interface ISuccessPicassoReturn {
+export interface ISuccessVangoghReturn {
   err?: false;
   data: Buffer;
 }
 
-export type IPicassoReturnData = IPicassoErrorReturn | ISuccessPicassoReturn;
+export type IVangoghReturnData = IVangoghErrorReturn | ISuccessVangoghReturn;
 
 export interface IBlackjackCards {
   value: number;
@@ -215,24 +214,22 @@ export interface IRESTHuntStats {
 }
 
 export interface IUserDataToProfile {
-  cor: ColorResolvable;
+  color: ColorResolvable;
   avatar: string;
-  votos: number;
-  nota: string;
+  votes: number;
+  info: string;
   tag: string;
-  flagsArray: Array<string>;
-  casado: string | User | null;
-  voteCooldown: number;
   badges: Array<IBadge>;
   hiddingBadges: Array<number>;
   username: string;
-  data: string;
+  marryDate: string;
   mamadas: number;
   mamou: number;
   marry: MayNotExists<{
     username: string;
     tag: string;
   }>;
+  married: boolean;
 }
 
 export interface IContextData {
@@ -293,12 +290,6 @@ export interface IDatabaseRepositories {
   shopRepository: ShopRepository;
   themeRepository: ThemeRepository;
   creditsRepository: CreditsRepository;
-}
-
-export interface PicassoRequestData {
-  id: string;
-  type: string;
-  [key: string]: unknown;
 }
 
 export interface ITopResult {

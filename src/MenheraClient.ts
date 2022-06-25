@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Client, ClientEvents, ClientOptions, Collection } from 'discord.js-light';
 import { Client as ClusterClient } from 'discord-hybrid-sharding';
 
@@ -15,8 +14,6 @@ import EventManager from '@structures/EventManager';
 import InteractionCommand from '@structures/command/InteractionCommand';
 
 import LocaleStructure from '@structures/LocaleStructure';
-import PicassoWebSocket from '@structures/PicassoWebSocket';
-import { debugError } from '@utils/Util';
 import JogoDoBixoManager from '@structures/JogoDoBichoManager';
 import { updateAssets } from '@structures/CdnManager';
 
@@ -30,8 +27,6 @@ export default class MenheraClient extends Client<true> {
   public slashCommands: Collection<string, InteractionCommand>;
 
   public events: EventManager;
-
-  public picassoWs!: PicassoWebSocket;
 
   public cooldowns: Collection<string, Collection<string, number>>;
 
@@ -78,14 +73,12 @@ export default class MenheraClient extends Client<true> {
     });
 
     const locales = new LocaleStructure();
-    this.picassoWs = new PicassoWebSocket(this.cluster.id ?? 0);
     this.jogoDoBichoManager = new JogoDoBixoManager(this);
 
     await locales.load();
     await this.database.createConnection();
     this.loadSlashCommands(this.config.interactionsDirectory);
     this.loadEvents(this.config.eventsDirectory);
-    await this.picassoWs.connect().catch(debugError);
     await MenheraClient.updateCDNAssets();
 
     return true;

@@ -29,7 +29,7 @@ import {
   TextInputComponent,
 } from 'discord.js-light';
 import ProfilePreview from '@utils/ThemePreviewTemplates';
-import { PicassoRoutes, requestPicassoImage } from '@utils/PicassoRequests';
+import { VangoghRoutes, requestVangoghImage } from '@utils/VangoghRequests';
 
 export default class ShopCommand extends InteractionCommand {
   constructor() {
@@ -390,24 +390,21 @@ export default class ShopCommand extends InteractionCommand {
           if (previewMode) {
             if (currentThemeType === 'profile') {
               int.deferReply({ ephemeral: true });
-              const res = await requestPicassoImage(
-                PicassoRoutes.Profile,
-                {
-                  user: ProfilePreview.user,
-                  usageCommands: ProfilePreview.usageCommands,
-                  i18n: {
-                    aboutme: ctx.locale('commands:perfil.about-me'),
-                    mamado: ctx.locale('commands:perfil.mamado'),
-                    mamou: ctx.locale('commands:perfil.mamou'),
-                    zero: ctx.locale('commands:perfil.zero'),
-                    um: ctx.locale('commands:perfil.um'),
-                    dois: ctx.locale('commands:perfil.dois'),
-                    tres: ctx.locale('commands:perfil.tres'),
-                  },
-                  type: selectedItem.data.theme,
+              const res = await requestVangoghImage(VangoghRoutes.Profile, {
+                user: ProfilePreview.user,
+                i18n: {
+                  aboutme: ctx.locale('commands:perfil.about-me'),
+                  mamado: ctx.locale('commands:perfil.mamado'),
+                  mamou: ctx.locale('commands:perfil.mamou'),
+                  usages: ctx.locale('commands:perfil.commands-usage', {
+                    user: ProfilePreview.user.username,
+                    usedCount: ProfilePreview.usageCommands.cmds.count,
+                    mostUsedCommandName: ProfilePreview.usageCommands.array[0].name,
+                    mostUsedCommandCount: ProfilePreview.usageCommands.array[0].count,
+                  }),
                 },
-                ctx,
-              );
+                type: selectedItem.data.theme,
+              });
 
               if (res.err) {
                 await int
@@ -429,14 +426,10 @@ export default class ShopCommand extends InteractionCommand {
               return;
             }
 
-            const res = await requestPicassoImage(
-              PicassoRoutes.Preview,
-              {
-                theme: selectedItem.data.theme,
-                previewType: currentThemeType,
-              },
-              ctx,
-            );
+            const res = await requestVangoghImage(VangoghRoutes.Preview, {
+              theme: selectedItem.data.theme,
+              type: currentThemeType,
+            });
 
             int.deferUpdate();
 
