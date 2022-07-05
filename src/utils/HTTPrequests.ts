@@ -226,9 +226,10 @@ export default class HttpRequests {
     userId: string,
     huntType: string,
     { value, success, tries }: { value: number; success: number; tries: number },
+    userTag: string,
   ): Promise<void> {
     await apiRequest
-      .post('/statistics/hunt', { userId, huntType, value, success, tries })
+      .post('/statistics/hunt', { userId, huntType, value, success, tries, userTag })
       .catch(debugError);
   }
 
