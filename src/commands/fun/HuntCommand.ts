@@ -274,7 +274,7 @@ export default class HuntCommand extends InteractionCommand {
       gods: 'god',
     };
 
-    HttpRequests.postHuntCommand(ctx.author.id, APIHuntTypes[selected], result);
+    HttpRequests.postHuntCommand(ctx.author.id, APIHuntTypes[selected], result, ctx.author.tag);
 
     await ctx.makeMessage({ embeds: [embed] });
 

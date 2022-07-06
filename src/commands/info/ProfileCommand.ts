@@ -79,6 +79,8 @@ export default class ProfileCommand extends InteractionCommand {
       return;
     }
 
+    await ctx.defer();
+
     const marry =
       user.married && user.married !== 'false'
         ? await ctx.client.users.fetch(user.married).catch(debugError)
@@ -119,8 +121,8 @@ export default class ProfileCommand extends InteractionCommand {
         ? ctx.locale('commands:perfil.commands-usage', {
             user: toWritableUTF(member.username),
             usedCount: usageCommands.cmds.count,
-            mostUsedCommandName: usageCommands.array[0].name,
-            mostUsedCommandCount: usageCommands.array[0].count,
+            mostUsedCommandName: usageCommands.array[0]?.name ?? '??',
+            mostUsedCommandCount: usageCommands.array[0]?.count ?? '??',
           })
         : ctx.locale('commands:perfil.api-down'),
     };
