@@ -1,3 +1,4 @@
+import { close as closeSentry } from '@sentry/node';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import MenheraClient from 'MenheraClient';
@@ -46,6 +47,12 @@ export default class ShutdownSlashCommand extends InteractionCommand {
     // @ts-expect-error Client é fucker
     await ctx.client.cluster?.broadcastEval((c: MenheraClient) => c.database.closeConnections());
     console.log('[SHTUDOWN] - Todas conexões fechadas!');
+
+    console.log('[SHTUDOWN] - Fechando cliente do Sentry');
+
+    await closeSentry();
+
+    console.log('[SHTUDOWN] - Cliente sentry fechado');
 
     console.log(
       `[SHTUDOWN] - Menhera está pronta para desligar! Tempo Total: ${Date.now() - startTime}ms`,
