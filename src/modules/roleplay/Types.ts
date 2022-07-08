@@ -103,7 +103,7 @@ export type EffectValueRefflection = 'plain' | keyof Blesses;
 
 export interface AbilityEffect {
   target: BattleTarget;
-  targetAmount?: number; // REMOVE INTERROGAÇÃO PAPIS
+  targetAmount: number;
   durationInTurns: number;
   element: Elements;
   effectType: EffectType;
@@ -121,7 +121,7 @@ export interface AbilitiesFile {
   costPerLevel: number;
   unlockCost: number;
   effects: AbilityEffect[];
-  cooldown?: number; // REMOVE INTERROGAÇÃO PAPIS
+  cooldown: number;
 }
 
 export interface EnemyDrops {

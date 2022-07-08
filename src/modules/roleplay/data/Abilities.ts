@@ -1075,6 +1075,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'Guilhotina Humana',
     cost: 40,
     costPerLevel: 10,
+    cooldown: 2,
     effects: [
       {
         durationInTurns: -1,
@@ -1086,6 +1087,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'FIRE',
         target: 'enemy',
+        targetAmount: 1,
       },
     ],
     parentId: 703,
@@ -1095,6 +1097,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'HeadShot (arqueiro)',
     cost: 40,
     costPerLevel: 10,
+    cooldown: 2,
     effects: [
       {
         durationInTurns: -1,
@@ -1106,6 +1109,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'FIRE',
         target: 'enemy',
+        targetAmount: 1,
       },
     ],
     parentId: 0,
@@ -1115,6 +1119,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'Rajada Metálica (arqueiro)',
     cost: 60,
     costPerLevel: 10,
+    cooldown: 3,
     effects: [
       {
         durationInTurns: 2,
@@ -1126,6 +1131,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'NEUTRAL',
         target: 'enemy',
+        targetAmount: 3,
       },
       {
         durationInTurns: 3,
@@ -1137,6 +1143,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'AIR',
         target: 'self',
+        targetAmount: 1,
       },
     ],
     parentId: 800,
@@ -1146,6 +1153,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'Balestra (arqueiro)',
     cost: 80,
     costPerLevel: 24,
+    cooldown: 4,
     effects: [
       {
         durationInTurns: -1,
@@ -1157,6 +1165,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'FIRE',
         target: 'enemy',
+        targetAmount: 3,
       },
     ],
     parentId: 801,
@@ -1166,6 +1175,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'Flechas Envenenadas (arqueiro)',
     cost: 40,
     costPerLevel: 10,
+    cooldown: 3,
     effects: [
       {
         durationInTurns: 3,
@@ -1177,6 +1187,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'maxLife',
         element: 'NATURE',
         target: 'enemy',
+        targetAmount: 3,
       },
     ],
     parentId: 800,
@@ -1186,6 +1197,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'Esquiva Ágil (arqueiro)',
     cost: 60,
     costPerLevel: 15,
+    cooldown: 3,
     effects: [
       {
         durationInTurns: 3,
@@ -1197,6 +1209,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'agility',
         element: 'AIR',
         target: 'self',
+        targetAmount: 1,
       },
       {
         durationInTurns: 3,
@@ -1208,6 +1221,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'agility',
         element: 'AIR',
         target: 'enemy',
+        targetAmount: 1,
       },
     ],
     parentId: 803,
@@ -1217,6 +1231,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'Contrato Demoníaco (feiticeiro)',
     cost: 40,
     costPerLevel: 15,
+    cooldown: 3,
     effects: [
       {
         durationInTurns: 3,
@@ -1228,6 +1243,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'DARK',
         target: 'self',
+        targetAmount: 1,
       },
       {
         durationInTurns: 3,
@@ -1239,6 +1255,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'damage',
         element: 'DARK',
         target: 'self',
+        targetAmount: 1,
       },
     ],
     parentId: 0,
@@ -1248,6 +1265,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'Fëanor (feiticeiro)',
     cost: 55,
     costPerLevel: 15,
+    cooldown: 2,
     effects: [
       {
         durationInTurns: -1,
@@ -1259,6 +1277,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'DARK',
         target: 'enemy',
+        targetAmount: 3,
       },
     ],
     parentId: 900,
@@ -1268,6 +1287,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'Curva Gravitacional (feiticeiro)',
     cost: 90,
     costPerLevel: 20,
+    cooldown: 3,
     effects: [
       {
         durationInTurns: -1,
@@ -1279,6 +1299,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'DARK',
         target: 'enemy',
+        targetAmount: 3,
       },
     ],
     parentId: 901,
@@ -1288,6 +1309,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'Contrato: Abezethibou (feiticeiro)',
     cost: 50,
     costPerLevel: 20,
+    cooldown: 4,
     effects: [
       {
         durationInTurns: 3,
@@ -1299,6 +1321,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'agility',
         element: 'DARK',
         target: 'self',
+        targetAmount: 1,
       },
       {
         durationInTurns: -1,
@@ -1310,6 +1333,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'DARK',
         target: 'self',
+        targetAmount: 1,
       },
       {
         durationInTurns: -1,
@@ -1321,6 +1345,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'DARK',
         target: 'enemy',
+        targetAmount: 3,
       },
     ],
     parentId: 900,
@@ -1330,6 +1355,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'Astaroth (feiticeiro)',
     cost: 100,
     costPerLevel: 25,
+    cooldown: 4,
     effects: [
       {
         durationInTurns: -1,
@@ -1341,6 +1367,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'DARK',
         target: 'enemy',
+        targetAmount: 3,
       },
     ],
     parentId: 903,
@@ -1350,6 +1377,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'Domar (domador)',
     cost: 40,
     costPerLevel: 10,
+    cooldown: 3,
     effects: [
       {
         durationInTurns: 3,
@@ -1361,6 +1389,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'agility',
         element: 'AIR',
         target: 'self',
+        targetAmount: 1,
       },
       {
         durationInTurns: 3,
@@ -1372,6 +1401,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'FIRE',
         target: 'self',
+        targetAmount: 1,
       },
     ],
     parentId: 0,
@@ -1381,6 +1411,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'Garras Temporais (domador)',
     cost: 60,
     costPerLevel: 20,
+    cooldown: 2,
     effects: [
       {
         durationInTurns: -1,
@@ -1392,6 +1423,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'FIRE',
         target: 'enemy',
+        targetAmount: 3,
       },
     ],
     parentId: 1000,
@@ -1401,6 +1433,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'Domar: Tigre',
     cost: 60,
     costPerLevel: 20,
+    cooldown: 5,
     effects: [
       {
         durationInTurns: 3,
@@ -1412,6 +1445,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'damage',
         element: 'NATURE',
         target: 'self',
+        targetAmount: 1,
       },
       {
         durationInTurns: 3,
@@ -1423,6 +1457,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'agility',
         element: 'AIR',
         target: 'self',
+        targetAmount: 1,
       },
       {
         durationInTurns: 3,
@@ -1434,6 +1469,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'armor',
         element: 'WATER',
         target: 'self',
+        targetAmount: 1,
       },
     ],
     parentId: 1001,
@@ -1443,6 +1479,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'Lança Espectral',
     cost: 40,
     costPerLevel: 15,
+    cooldown: 2,
     effects: [
       {
         durationInTurns: -1,
@@ -1454,6 +1491,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'FIRE',
         target: 'enemy',
+        targetAmount: 1,
       },
       {
         durationInTurns: 3,
@@ -1465,6 +1503,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'NATURE',
         target: 'enemy',
+        targetAmount: 1,
       },
     ],
     parentId: 1000,
@@ -1474,6 +1513,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'Domar: Boitatá',
     cost: 70,
     costPerLevel: 15,
+    cooldown: 5,
     effects: [
       {
         durationInTurns: 3,
@@ -1485,6 +1525,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'damage',
         element: 'FIRE',
         target: 'self',
+        targetAmount: 1,
       },
       {
         durationInTurns: 3,
@@ -1496,6 +1537,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'agility',
         element: 'AIR',
         target: 'self',
+        targetAmount: 1,
       },
       {
         durationInTurns: 3,
@@ -1507,6 +1549,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'armor',
         element: 'LIGHT',
         target: 'self',
+        targetAmount: 1,
       },
       {
         durationInTurns: 3,
@@ -1518,6 +1561,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'intelligence',
         element: 'DARK',
         target: 'self',
+        targetAmount: 1,
       },
     ],
     parentId: 1003,
@@ -1527,6 +1571,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'Punhos Divinos (monge)',
     cost: 30,
     costPerLevel: 10,
+    cooldown: 2,
     effects: [
       {
         durationInTurns: -1,
@@ -1538,6 +1583,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'LIGHT',
         target: 'enemy',
+        targetAmount: 1,
       },
     ],
     parentId: 0,
@@ -1547,6 +1593,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'O Grande Silencio (monge)',
     cost: 40,
     costPerLevel: 10,
+    cooldown: 3,
     effects: [
       {
         durationInTurns: 3,
@@ -1558,6 +1605,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'damage',
         element: 'LIGHT',
         target: 'self',
+        targetAmount: 1,
       },
     ],
     parentId: 1100,
@@ -1567,6 +1615,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'Palma de Buda (monge)',
     cost: 50,
     costPerLevel: 15,
+    cooldown: 3,
     effects: [
       {
         durationInTurns: -1,
@@ -1578,6 +1627,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'LIGHT',
         target: 'enemy',
+        targetAmount: 3,
       },
     ],
     parentId: 1101,
@@ -1587,6 +1637,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'Toque da Morte (monge)',
     cost: 30,
     costPerLevel: 20,
+    cooldown: 3,
     effects: [
       {
         durationInTurns: -1,
@@ -1598,6 +1649,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'LIGHT',
         target: 'enemy',
+        targetAmount: 1,
       },
     ],
     parentId: 1100,
@@ -1607,6 +1659,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'Meditação (monge)',
     cost: 40,
     costPerLevel: 15,
+    cooldown: 5,
     effects: [
       {
         durationInTurns: 3,
@@ -1618,6 +1671,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'LIGHT',
         target: 'self',
+        targetAmount: 1,
       },
       {
         durationInTurns: 3,
@@ -1629,6 +1683,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'intelligence',
         element: 'LIGHT',
         target: 'self',
+        targetAmount: 1,
       },
     ],
     parentId: 1103,
@@ -1638,6 +1693,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'Lança a Lança (lancer)',
     cost: 20,
     costPerLevel: 10,
+    cooldown: 2,
     effects: [
       {
         durationInTurns: -1,
@@ -1649,6 +1705,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'FIRE',
         target: 'enemy',
+        targetAmount: 3,
       },
     ],
     parentId: 0,
@@ -1658,6 +1715,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'Avanço com Lança (lancer)',
     cost: 30,
     costPerLevel: 15,
+    cooldown: 3,
     effects: [
       {
         durationInTurns: 3,
@@ -1669,6 +1727,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'AIR',
         target: 'self',
+        targetAmount: 1,
       },
     ],
     parentId: 1200,
@@ -1678,6 +1737,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'Dança Mortal (lancer)',
     cost: 40,
     costPerLevel: 20,
+    cooldown: 4,
     effects: [
       {
         durationInTurns: -1,
@@ -1689,6 +1749,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'FIRE',
         target: 'enemy',
+        targetAmount: 3,
       },
     ],
     parentId: 1201,
@@ -1698,6 +1759,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'Redemoinho de Vento (lancer)',
     cost: 20,
     costPerLevel: 25,
+    cooldown: 3,
     effects: [
       {
         durationInTurns: 3,
@@ -1709,6 +1771,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'agility',
         element: 'AIR',
         target: 'self',
+        targetAmount: 1,
       },
       {
         durationInTurns: -1,
@@ -1720,6 +1783,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'FIRE',
         target: 'enemy',
+        targetAmount: 3,
       },
     ],
     parentId: 1200,
@@ -1729,6 +1793,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
     DevDesc: 'Cravada no Peito (lancer)',
     cost: 50,
     costPerLevel: 10,
+    cooldown: 3,
     effects: [
       {
         durationInTurns: -1,
@@ -1740,6 +1805,7 @@ const Abilities: { [id: number]: AbilitiesFile } = {
         effectValueRefflection: 'plain',
         element: 'FIRE',
         target: 'enemy',
+        targetAmount: 1,
       },
     ],
     parentId: 1203,

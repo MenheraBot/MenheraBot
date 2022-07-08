@@ -193,7 +193,7 @@
   },
   "1002": {
     "name": "Domar: Tigre",
-    "description": "Doma um tigre para aumetnar drasticamente seus status. Recebendo um buff de dano, agilidade e armadura"
+    "description": "Doma um tigre para aumentar drasticamente seus status. Recebendo um buff de dano, agilidade e armadura"
   },
   "1003": {
     "name": "Lança Espectral",
@@ -217,7 +217,7 @@
   },
   "1103": {
     "name": "Toque da Morte",
-    "description": "Da um pequenino peteleco em seu inimigo, desferindo um dano mortal ao inimigo"
+    "description": "Da um pequenino peteleco em seu inimigo, desferindo um dano mortal"
   },
   "1104": {
     "name": "Meditação",
@@ -225,7 +225,7 @@
   },
   "1200": {
     "name": "Lança a Lança",
-    "description": "Lança sua lança no inimigo, dando daninho"
+    "description": "Lança sua lança penetrante nos inimigos, dando daninho"
   },
   "1201": {
     "name": "Avanço com Lança",
