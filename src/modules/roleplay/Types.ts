@@ -192,8 +192,14 @@ export interface ConsumableItem {
 
 export type ItemsFile = DropItem | ConsumableItem;
 
+interface AbilityCooldown {
+  id: number;
+  cooldown: number;
+}
+
 export type UserBattleEntity = RoleplayUserSchema & {
   effects: Array<AbilityEffect & { level: number; author: EffectAuthor }>;
+  abilitiesCooldowns: AbilityCooldown[];
   didParticipate: boolean;
 };
 

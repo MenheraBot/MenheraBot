@@ -6,6 +6,7 @@ import {
   LeveledItem,
   ReadyToBattleEnemy,
   RoleplayUserSchema,
+  UserAbility,
   UserBattleEntity,
   UserCooldown,
 } from '@roleplay/Types';
@@ -15,14 +16,16 @@ import { moreThanAnHour, RandomFromArray } from '@utils/Util';
 import { EmbedFieldData, MessageButton } from 'discord.js-light';
 import moment from 'moment';
 import { TFunction } from 'i18next';
-import { getEnemies, getEquipmentById } from './DataUtils';
-import { nextLevelXp } from './Calculations';
+import { getAbilityById, getEnemies, getEquipmentById } from './DataUtils';
+import { getAbilityCost, nextLevelXp } from './Calculations';
 
 export const prepareUserForDungeon = (user: RoleplayUserSchema): UserBattleEntity => {
   // @ts-expect-error Os negocio nao sao
   user.didParticipate = true;
   // @ts-expect-error Os negocio nao sao
   user.effects = [];
+  // @ts-expect-error Os negocio nao sao
+  user.abilitiesCooldowns = [];
   return user as unknown as UserBattleEntity;
 };
 
@@ -258,4 +261,26 @@ export const getUsersLoots = (
   let acc = 0;
 
   return users.map((u) => ({ id: u.id, loots: u.didParticipate ? lootsPerUser[acc++] : [] }));
+};
+
+export const canUserUseAbility = (ability: UserAbility, user: UserBattleEntity): boolean => {
+  const hasMana = user.mana >= getAbilityCost(ability);
+
+  const found = user.abilitiesCooldowns.find((a) => a.id === ability.id);
+
+  if (!found) return hasMana;
+
+  return hasMana && found.cooldown <= 0;
+};
+
+export const addAbilityCooldown = (ability: UserAbility, user: UserBattleEntity): void => {
+  const found = user.abilitiesCooldowns.find((a) => a.id === ability.id);
+
+  const parsedAbility = getAbilityById(ability.id);
+
+  if (found) {
+    found.cooldown = parsedAbility.data.cooldown;
+  } else {
+    user.abilitiesCooldowns.push({ id: ability.id, cooldown: parsedAbility.data.cooldown });
+  }
 };

@@ -25,7 +25,12 @@ import {
   getUserMaxLife,
 } from '@roleplay/utils/Calculations';
 import { getAbilityById, getClassById } from '@roleplay/utils/DataUtils';
-import { getAbilityDamageFromEffects, isDead } from '@roleplay/utils/AdventureUtils';
+import {
+  addAbilityCooldown,
+  canUserUseAbility,
+  getAbilityDamageFromEffects,
+  isDead,
+} from '@roleplay/utils/AdventureUtils';
 
 export interface BattleDiscordUser {
   id: string;
@@ -94,6 +99,11 @@ export default class PlayerVsEntity {
 
       a.durationInTurns -= 1;
       if (a.durationInTurns <= 0) attacker.effects.splice(i, 1);
+    });
+
+    attacker.abilitiesCooldowns.forEach((a) => {
+      a.cooldown -= 1;
+      if (a.cooldown <= 0) attacker.abilitiesCooldowns.splice(a.cooldown, 1);
     });
 
     defender.effects.forEach((a, i) => {
@@ -202,7 +212,7 @@ export default class PlayerVsEntity {
       then show the available alternative (if tehre is only one, dont ask))
     - [ ] Maybe some multi target attacks
     - [ ] Support abilities, with multi users to effect
-    - [ ] Abilities cooldown
+    - [x] Abilities cooldown
     - [x] Different embeds to show the battle, once to show all users and enemies, one to choose attacks
     - [ ] Heal abilities cannot be used in dead allies, but maybe a resurrect ability (settar didParticipate)
 
@@ -357,7 +367,7 @@ export default class PlayerVsEntity {
     toAttackUser.abilities.forEach((ability) => {
       const abilityName = this.ctx.locale(`abilities:${ability.id as 100}.name`);
       const abilityCost = getAbilityCost(ability);
-      const canUseAbility = toAttackUser.mana >= abilityCost;
+      const canUseAbility = canUserUseAbility(ability, toAttackUser);
 
       attackEmbed.addField(
         abilityName,
@@ -509,6 +519,8 @@ export default class PlayerVsEntity {
         });
 
         toAttackUser.mana -= getAbilityCost(usedAbility);
+
+        addAbilityCooldown(usedAbility, toAttackUser);
 
         if (isDead(toDefendEnemy)) {
           this.lastText = this.ctx.locale('roleplay:battle.enemy-death', {
