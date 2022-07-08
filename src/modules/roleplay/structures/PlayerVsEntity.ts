@@ -210,11 +210,11 @@ export default class PlayerVsEntity {
 
     - [ ] User may choose who wants to attack (after coosing which attack, check if is buff for alied or enemy, and 
       then show the available alternative (if tehre is only one, dont ask))
-    - [ ] Maybe some multi target attacks
     - [ ] Support abilities, with multi users to effect
+    - [x] Maybe some multi target attacks
+    - [ ] Heal abilities cannot be used in dead allies, but maybe a resurrect ability (settar didParticipate)
     - [x] Abilities cooldown
     - [x] Different embeds to show the battle, once to show all users and enemies, one to choose attacks
-    - [ ] Heal abilities cannot be used in dead allies, but maybe a resurrect ability (settar didParticipate)
 
     IN A NEAR FUTURE: 
     TODO:
@@ -379,6 +379,12 @@ export default class PlayerVsEntity {
           ),
           cost: abilityCost,
           'no-mana': !canUseAbility ? this.ctx.locale('roleplay:battle.no-mana') : '',
+          cooldown: toAttackUser.abilitiesCooldowns.find((a) => a.id === ability.id)
+            ? this.ctx.locale('roleplay:battle.cooldown', {
+                cooldown: toAttackUser.abilitiesCooldowns.find((a) => a.id === ability.id)
+                  ?.cooldown,
+              })
+            : this.ctx.locale('roleplay:battle.no-cooldown'),
         }),
         true,
       );

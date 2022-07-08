@@ -109,6 +109,8 @@
     "runaway-fail": "Escape attempt fails!",
     "users-statuses": "Your Equip Statuses",
     "enemies-statuses": "Enemies Statuses",
+    "no-cooldown": "**Available**",
+    "cooldown": "**{{cooldown}}**T",
     "options": {
       "hand-attack": "Basic Attack",
       "runaway": "Run away",
@@ -116,7 +118,7 @@
       "hand-attack-description": "Strike with your primary weapon",
       "giveup": "Give Up",
       "giveup-description": "Give Up from the battle, giving the win for your opponent",
-      "ability-info": "⚔️ | Damage: **{{damage}}**\n💧 | Cost: **{{cost}}** {{no-mana}}",
+      "ability-info": "⚔️ | Damage: **{{damage}}**\n💧 | Cost: **{{cost}}** {{no-mana}}\n⌛ | Cooldown: {{cooldown}}",
       "attack-info": "⚔️ | Damage: **{{damage}}**\n🎯 | Accuracy: **{{chanceToConnect}}%**",
       "runaway-info": "🐥 | Chance of Escape: **{{chance}}%**",
       "available": "Available Options"

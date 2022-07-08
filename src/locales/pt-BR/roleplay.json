@@ -109,6 +109,8 @@
     "runaway-fail": "A tentativa de fugir é falha!",
     "users-statuses": "Status de Sua Equipe",
     "enemies-statuses": "Status dos Inimigos",
+    "no-cooldown": "**Disponível**",
+    "cooldown": "**{{cooldown}}**T",
     "options": {
       "hand-attack": "Ataque Básico",
       "runaway": "Fugir",
@@ -116,7 +118,7 @@
       "giveup-description": "Desiste desta batalha, dando a vitória para seu inimigo",
       "runaway-description": "Sai correndo na esperança de fugir dessa batalha",
       "hand-attack-description": "Dê um ataque com sua arma primária",
-      "ability-info": "⚔️ | Dano: **{{damage}}**\n💧 | Custo: **{{cost}}** {{no-mana}}",
+      "ability-info": "⚔️ | Dano: **{{damage}}**\n💧 | Custo: **{{cost}}** {{no-mana}}\n⌛ | Recarga: {{cooldown}}",
       "attack-info": "⚔️ | Dano: **{{damage}}**\n🎯 | Precisão: **{{chanceToConnect}}%**",
       "runaway-info": "🐥 | Chance de Fuga: **{{chance}}%**",
       "available": "Opções Disponíveis"
