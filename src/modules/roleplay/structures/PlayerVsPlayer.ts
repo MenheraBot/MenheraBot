@@ -4,7 +4,7 @@ import InteractionCommandContext from '@structures/command/InteractionContext';
 import { COLORS, emojis, EmojiTypes } from '@structures/Constants';
 import Util, { actionRow, capitalize, makeCustomId, resolveSeparatedStrings } from '@utils/Util';
 import { MessageEmbed, MessageSelectMenu, SelectMenuInteraction } from 'discord.js-light';
-import { getAbilityDamageFromEffects, invertBattleTurn, isDead } from '../utils/AdventureUtils';
+import { getAbilityDamageFromEffects, invertBattleTurn, isDead } from '../utils/BattleUtils';
 import {
   calculateAttackSuccess,
   calculateDodge,
