@@ -608,6 +608,8 @@ export default class PlayerVsEntity {
 
         parsedAbility.data.effects.forEach((a) => {
           if (a.target === 'enemy') {
+            console.log('FIRST SEXOOO');
+            console.log(targetEnemies);
             executeEnemiesAbilityEffect(
               a,
               toAttackUser,

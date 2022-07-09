@@ -108,7 +108,11 @@ export const getDungeonEnemies = (
   };
 
   // TODO: Better way of gettin lots of enemies
-  return [{ ...enemyData }, { ...enemyData }, { ...enemyData }];
+  return [
+    { ...enemyData, entropy: 1 },
+    { ...enemyData, entropy: 2 },
+    { ...enemyData, entropy: 1 },
+  ];
 };
 
 export const isInventoryFull = (user: RoleplayUserSchema): boolean => {
