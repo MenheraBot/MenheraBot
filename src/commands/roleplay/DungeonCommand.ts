@@ -16,7 +16,6 @@ import {
   prepareUserForDungeon,
   getEnemiesLoots,
   getFreeInventorySpace,
-  isDead,
   isInventoryFull,
   makeCooldown,
   makeLevelUp,
@@ -24,6 +23,7 @@ import {
   getUsersLoots,
   addToInventory,
 } from '@roleplay/utils/AdventureUtils';
+import { isDead } from '@roleplay/utils/BattleUtils';
 import {
   getUserAgility,
   getUserArmor,

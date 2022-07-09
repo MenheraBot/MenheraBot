@@ -5,11 +5,8 @@ import {
   USER_BATTLE_LEVEL,
 } from '@roleplay/Constants';
 import { RoleplayUserSchema, UserBattleConfig, UserBattleEntity } from '@roleplay/Types';
-import {
-  isDead,
-  makeCloseCommandButton,
-  prepareUserForDungeon,
-} from '@roleplay/utils/AdventureUtils';
+import { makeCloseCommandButton, prepareUserForDungeon } from '@roleplay/utils/AdventureUtils';
+import { isDead } from '@roleplay/utils/BattleUtils';
 import {
   getUserAgility,
   getUserArmor,
