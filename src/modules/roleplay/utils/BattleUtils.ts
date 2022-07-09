@@ -120,10 +120,10 @@ export const executeEnemiesAbilityEffect = (
       const didConnect = didUserHit(userAttackSuccess);
 
       if (didConnect)
-        enemy.life -= calculateEffectiveDamage(
-          abilityDamage,
+        enemy.life = Math.max(
           0,
-          getEnemyStatusWithEffects(enemy, 'armor'),
+          enemy.life -
+            calculateEffectiveDamage(abilityDamage, 0, getEnemyStatusWithEffects(enemy, 'armor')),
         );
     });
     return;

@@ -418,7 +418,7 @@ export default class PlayerVsEntity {
               if (isDead(c)) return p;
               p.push({
                 value: `${i}`,
-                label: `${this.ctx.locale(`enemies:${c.id as 1}.name`)} #${i}`,
+                label: `${this.ctx.locale(`enemies:${c.id as 1}.name`)} #${i + 1}`,
               });
               return p;
             }, []),
@@ -549,7 +549,7 @@ export default class PlayerVsEntity {
                 if (isDead(c)) return p;
                 p.push({
                   value: `${i}`,
-                  label: `${this.ctx.locale(`enemies:${c.id as 1}.name`)} #${i}`,
+                  label: `${this.ctx.locale(`enemies:${c.id as 1}.name`)} #${i + 1}`,
                 });
                 return p;
               }, []),
