@@ -1,12 +1,9 @@
 import {
-  AbilityEffect,
-  BattleUserTurn,
   EnemyDrops,
   HolyBlessings,
   LeveledItem,
   ReadyToBattleEnemy,
   RoleplayUserSchema,
-  UserAbility,
   UserBattleEntity,
   UserCooldown,
 } from '@roleplay/Types';
@@ -16,8 +13,8 @@ import { moreThanAnHour, RandomFromArray } from '@utils/Util';
 import { EmbedFieldData, MessageButton } from 'discord.js-light';
 import moment from 'moment';
 import { TFunction } from 'i18next';
-import { getAbilityById, getEnemies, getEquipmentById } from './DataUtils';
-import { getAbilityCost, nextLevelXp } from './Calculations';
+import { getEnemies, getEquipmentById } from './DataUtils';
+import { nextLevelXp } from './Calculations';
 
 export const prepareUserForDungeon = (user: RoleplayUserSchema): UserBattleEntity => {
   // @ts-expect-error Os negocio nao sao
@@ -113,8 +110,6 @@ export const getDungeonEnemies = (
   // TODO: Better way of gettin lots of enemies
   return [{ ...enemyData }, { ...enemyData }, { ...enemyData }];
 };
-
-export const isDead = (entity: { life: number }): boolean => entity.life <= 0;
 
 export const isInventoryFull = (user: RoleplayUserSchema): boolean => {
   const userBackPack = getEquipmentById<'backpack'>(user.backpack.id);
@@ -222,28 +217,6 @@ export const makeLevelUp = (
   return { level: user.level, holyBlessings: user.holyBlessings };
 };
 
-export const invertBattleTurn = (lastTurn: BattleUserTurn): BattleUserTurn =>
-  lastTurn === 'attacker' ? 'defender' : 'attacker';
-
-export const getAbilityDamageFromEffects = (
-  effects: AbilityEffect[],
-  userIntelligence: number,
-  abilityLevel: number,
-): number =>
-  effects.reduce((p, c) => {
-    if (c.effectType === 'damage') {
-      const abilityDamage = Math.floor(
-        c.effectValue +
-          userIntelligence * (c.effectValueByIntelligence / 100) +
-          c.effectValuePerLevel * abilityLevel,
-      );
-
-      return p + abilityDamage;
-    }
-
-    return p;
-  }, 0);
-
 const chunkify = <T>(arr: T[], parts: number): T[][] => {
   const result = [];
   for (let i = parts; i > 0; i--) result.push(arr.splice(0, Math.ceil(arr.length / i)));
@@ -261,26 +234,4 @@ export const getUsersLoots = (
   let acc = 0;
 
   return users.map((u) => ({ id: u.id, loots: u.didParticipate ? lootsPerUser[acc++] : [] }));
-};
-
-export const canUserUseAbility = (ability: UserAbility, user: UserBattleEntity): boolean => {
-  const hasMana = user.mana >= getAbilityCost(ability);
-
-  const found = user.abilitiesCooldowns.find((a) => a.id === ability.id);
-
-  if (!found) return hasMana;
-
-  return hasMana && found.cooldown <= 0;
-};
-
-export const addAbilityCooldown = (ability: UserAbility, user: UserBattleEntity): void => {
-  const found = user.abilitiesCooldowns.find((a) => a.id === ability.id);
-
-  const parsedAbility = getAbilityById(ability.id);
-
-  if (found) {
-    found.cooldown = parsedAbility.data.cooldown;
-  } else {
-    user.abilitiesCooldowns.push({ id: ability.id, cooldown: parsedAbility.data.cooldown });
-  }
 };

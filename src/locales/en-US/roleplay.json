@@ -111,6 +111,7 @@
     "enemies-statuses": "Enemies Statuses",
     "no-cooldown": "**Available**",
     "cooldown": "**{{cooldown}}**T",
+    "select-target": "Select your Targets",
     "options": {
       "hand-attack": "Basic Attack",
       "runaway": "Run away",

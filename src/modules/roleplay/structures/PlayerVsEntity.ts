@@ -5,7 +5,12 @@ import InteractionCommandContext from '@structures/command/InteractionContext';
 import { COLORS, emojis, EmojiTypes } from '@structures/Constants';
 import { calculateProbability } from '@utils/HuntUtils';
 import Util, { actionRow, capitalize, makeCustomId, resolveSeparatedStrings } from '@utils/Util';
-import { MessageEmbed, MessageSelectMenu, SelectMenuInteraction } from 'discord.js-light';
+import {
+  MessageEmbed,
+  MessageSelectMenu,
+  MessageSelectOptionData,
+  SelectMenuInteraction,
+} from 'discord.js-light';
 import {
   calculateAttackSuccess,
   calculateDodge,
@@ -24,13 +29,15 @@ import {
   getUserIntelligence,
   getUserMaxLife,
 } from '@roleplay/utils/Calculations';
-import { getAbilityById, getClassById } from '@roleplay/utils/DataUtils';
+import { getAbilityById } from '@roleplay/utils/DataUtils';
 import {
   addAbilityCooldown,
   canUserUseAbility,
+  executeAlliesAbilityEffect,
+  executeEnemiesAbilityEffect,
   getAbilityDamageFromEffects,
   isDead,
-} from '@roleplay/utils/AdventureUtils';
+} from '@roleplay/utils/BattleUtils';
 
 export interface BattleDiscordUser {
   id: string;
@@ -205,26 +212,6 @@ export default class PlayerVsEntity {
       .join('  ')}\n`;
   }
 
-  /*
-    TODO: I'm not finished with this yet.
-
-    - [ ] User may choose who wants to attack (after coosing which attack, check if is buff for alied or enemy, and 
-      then show the available alternative (if tehre is only one, dont ask))
-    - [ ] Support abilities, with multi users to effect
-    - [x] Maybe some multi target attacks
-    - [ ] Heal abilities cannot be used in dead allies, but maybe a resurrect ability (settar didParticipate)
-    - [x] Abilities cooldown
-    - [x] Different embeds to show the battle, once to show all users and enemies, one to choose attacks
-
-    IN A NEAR FUTURE: 
-    TODO:
-    Mudar o interaction do CTX para uma interaction de algum botão...
-    Caso alguma batalha dure mais de 15 minutos e/ou a mensagem foi apagada, dar um jeito de conseguir a mensagem de volta
-    Talvez executando /dungeon e ver que ta em uma batalha, finaliza a antiga e começa uma nova no estado atual
-    ou então salva as interactions passadas, e caso o /dungeon seja usado por alguem da batalha, cria uma nova mensagem
-    com novo contexto baseado na ultima interaction usada
-  */
-
   private async userAttack(): Promise<boolean> {
     const toAttackUser = this.users[this.userIndex];
     const toDefendEnemy = this.enemies[this.enemyIndex];
@@ -246,11 +233,10 @@ export default class PlayerVsEntity {
     const userDodge = calculateDodge(userAgility, toDefendEnemy.agility);
     const userPenetration = calculateUserPenetration(toAttackUser);
 
-    const enemyDamage = getEnemyStatusWithEffects(toDefendEnemy, 'damage');
-    const enemyArmor = getEnemyStatusWithEffects(toDefendEnemy, 'armor');
-    const enemyAgility = getEnemyStatusWithEffects(toDefendEnemy, 'agility');
-
-    const userRunaway = calculateRunawaySuccess(userAgility, enemyAgility);
+    const userRunaway = calculateRunawaySuccess(
+      userAgility,
+      getEnemyStatusWithEffects(toDefendEnemy, 'agility'),
+    );
 
     const statusEmbed = new MessageEmbed()
       .setColor(COLORS.Pear)
@@ -283,18 +269,17 @@ export default class PlayerVsEntity {
 
     statusEmbed.addField(this.ctx.locale('roleplay:battle.enemies-statuses'), '\u200b', false);
 
-    this.enemies.forEach((enemy, i) => {
-      const isDefending = i === this.enemyIndex;
+    this.enemies.forEach((enemy) => {
       statusEmbed.addField(
         this.ctx.locale('roleplay:battle.enemy-stats', {
           name: this.ctx.locale(`enemies:${enemy.id as 1}.name`),
-          emoji: isDefending ? emojis.armor : isDead(enemy) ? emojis.cross : '',
+          emoji: isDead(enemy) ? emojis.cross : '',
         }),
         `${this.ctx.locale('roleplay:battle.enemy-stats-info', {
           life: enemy.life,
-          damage: isDefending ? enemyDamage : getEnemyStatusWithEffects(enemy, 'damage'),
-          armor: isDefending ? enemyArmor : getEnemyStatusWithEffects(enemy, 'armor'),
-          agility: isDefending ? enemyAgility : getEnemyStatusWithEffects(enemy, 'agility'),
+          damage: getEnemyStatusWithEffects(enemy, 'damage'),
+          armor: getEnemyStatusWithEffects(enemy, 'armor'),
+          agility: getEnemyStatusWithEffects(enemy, 'agility'),
         })}\n${PlayerVsEntity.getEffectsDisplayText(
           enemy.effects,
           'buff',
@@ -424,7 +409,40 @@ export default class PlayerVsEntity {
 
     switch (resolveSeparatedStrings(selectedOptions.values[0])[0]) {
       case 'HANDATTACK': {
-        const damageDealt = calculateEffectiveDamage(userDamage, userPenetration, enemyArmor);
+        const selectTarget = new MessageSelectMenu()
+          .setCustomId(`${battleId} | TARGET`)
+          .setMinValues(1)
+          .setMaxValues(1)
+          .setOptions(
+            this.enemies.reduce<MessageSelectOptionData[]>((p, c, i) => {
+              if (isDead(c)) return p;
+              p.push({
+                value: `${i}`,
+                label: `${this.ctx.locale(`enemies:${c.id as 1}.name`)} #${i}`,
+              });
+              return p;
+            }, []),
+          )
+          .setPlaceholder(this.ctx.locale('roleplay:battle.select-target'));
+
+        this.ctx.makeMessage({ components: [actionRow([selectTarget])] });
+
+        const selectedTarget =
+          await Util.collectComponentInteractionWithStartingId<SelectMenuInteraction>(
+            this.ctx.channel,
+            toAttackUser.id,
+            battleId,
+            PVE_USER_RESPONSE_TIME_LIMIT,
+          ).then((res) => {
+            if (!res) return this.enemies[this.enemyIndex];
+            return this.enemies[Number(res.values[0])];
+          });
+
+        const damageDealt = calculateEffectiveDamage(
+          userDamage,
+          userPenetration,
+          getEnemyStatusWithEffects(selectedTarget, 'armor'),
+        );
         const didConnect = didUserHit(userAttackSuccess);
 
         if (didConnect) toDefendEnemy.life -= damageDealt;
@@ -469,86 +487,155 @@ export default class PlayerVsEntity {
         const parsedAbility = getAbilityById(usedAbility.id);
 
         const didConnect = didUserHit(userAttackSuccess);
-        let damageDealt = 0;
+        const damageDealt = 0;
 
-        parsedAbility.data.effects.forEach((a) => {
-          if (a.effectType === 'damage') {
-            const abilityDamage = Math.floor(
-              a.effectValue +
-                userIntelligence * (a.effectValueByIntelligence / 100) +
-                a.effectValuePerLevel * usedAbility.level,
-            );
+        const finishAbilityUse = () => {
+          toAttackUser.mana -= getAbilityCost(usedAbility);
 
-            damageDealt = abilityDamage;
+          addAbilityCooldown(usedAbility, toAttackUser);
 
-            if (didConnect)
-              toDefendEnemy.life -= calculateEffectiveDamage(abilityDamage, 0, enemyArmor);
-          }
-
-          if (a.effectType === 'heal' && a.durationInTurns === -1) {
-            toAttackUser.life = Math.min(
-              getUserMaxLife(toAttackUser),
-              toAttackUser.life +
-                calculateHeal(toAttackUser, {
-                  ...a,
-                  level: usedAbility.level,
-                  author: {
-                    indexInBattle: this.userIndex,
-                    totalIntelligence: userIntelligence,
-                    elementSinergy: getClassById(toAttackUser.class).data.elementSinergy,
-                  },
-                }),
-            );
-          }
-
-          if (a.target === 'self' && a.durationInTurns > 0)
-            toAttackUser.effects.push({
-              ...a,
-              level: usedAbility.level,
-              author: {
-                indexInBattle: this.userIndex,
-                totalIntelligence: userIntelligence,
-                elementSinergy: getClassById(toAttackUser.class).data.elementSinergy,
-              },
+          if (isDead(toDefendEnemy)) {
+            this.lastText = this.ctx.locale('roleplay:battle.enemy-death', {
+              user: this.discordUsers[this.userIndex].username,
+              name: this.ctx.locale(`enemies:${toDefendEnemy.id as 1}.name`),
             });
 
-          if (a.target === 'enemy' && a.durationInTurns > 0)
-            toDefendEnemy.effects.push({
-              ...a,
-              level: usedAbility.level,
-              author: {
-                indexInBattle: this.userIndex,
-                totalIntelligence: userIntelligence,
-                elementSinergy: getClassById(toAttackUser.class).data.elementSinergy,
-              },
-            });
-        });
+            return this.didBattleEnd();
+          }
 
-        toAttackUser.mana -= getAbilityCost(usedAbility);
-
-        addAbilityCooldown(usedAbility, toAttackUser);
-
-        if (isDead(toDefendEnemy)) {
-          this.lastText = this.ctx.locale('roleplay:battle.enemy-death', {
+          // TODO: Text for every enemy attacked
+          this.lastText = this.ctx.locale('roleplay:battle.attack-text', {
+            attack: this.ctx.locale(
+              `abilities:${resolveSeparatedStrings(selectedOptions.values[0])[1] as '100'}.name`,
+            ),
             user: this.discordUsers[this.userIndex].username,
-            name: this.ctx.locale(`enemies:${toDefendEnemy.id as 1}.name`),
+            enemy: this.ctx.locale(`enemies:${toDefendEnemy.id as 1}.name`),
+            text: didConnect
+              ? this.ctx.locale('roleplay:battle.hit-success', { damage: damageDealt })
+              : this.ctx.locale('roleplay:battle.hit-fail'),
           });
 
-          return this.didBattleEnd();
+          return false;
+        };
+
+        if (parsedAbility.data.effects.every((e) => e.target === 'self')) {
+          parsedAbility.data.effects.forEach((effect) =>
+            executeAlliesAbilityEffect(effect, toAttackUser, this.userIndex, usedAbility.level, [
+              toAttackUser,
+            ]),
+          );
+
+          return finishAbilityUse();
         }
 
-        this.lastText = this.ctx.locale('roleplay:battle.attack-text', {
-          attack: this.ctx.locale(
-            `abilities:${resolveSeparatedStrings(selectedOptions.values[0])[1] as '100'}.name`,
-          ),
-          user: this.discordUsers[this.userIndex].username,
-          enemy: this.ctx.locale(`enemies:${toDefendEnemy.id as 1}.name`),
-          text: didConnect
-            ? this.ctx.locale('roleplay:battle.hit-success', { damage: damageDealt })
-            : this.ctx.locale('roleplay:battle.hit-fail'),
-        });
+        const targetEnemies: ReadyToBattleEnemy[] = this.enemies.filter((e) => !isDead(e));
+        const targetAllies: UserBattleEntity[] = this.users.filter((e) => !isDead(e));
 
-        return false;
+        const aliveEnemies = targetEnemies.length;
+        const alliveAllies = targetAllies.length;
+
+        if (
+          parsedAbility.data.effects.some(
+            (e) => e.target === 'enemy' && e.targetAmount < aliveEnemies,
+          )
+        ) {
+          const { targetAmount } = parsedAbility.data.effects.find((e) => e.target === 'enemy')!;
+          const selectTarget = new MessageSelectMenu()
+            .setCustomId(`${battleId} | TARGET`)
+            .setMinValues(targetAmount)
+            .setMaxValues(targetAmount)
+            .setOptions(
+              this.enemies.reduce<MessageSelectOptionData[]>((p, c, i) => {
+                if (isDead(c)) return p;
+                p.push({
+                  value: `${i}`,
+                  label: `${this.ctx.locale(`enemies:${c.id as 1}.name`)} #${i}`,
+                });
+                return p;
+              }, []),
+            )
+            .setPlaceholder(this.ctx.locale('roleplay:battle.select-target'));
+
+          this.ctx.makeMessage({ components: [actionRow([selectTarget])] });
+
+          await Util.collectComponentInteractionWithStartingId<SelectMenuInteraction>(
+            this.ctx.channel,
+            toAttackUser.id,
+            battleId,
+            PVE_USER_RESPONSE_TIME_LIMIT,
+          ).then((res) => {
+            targetEnemies.splice(0, targetEnemies.length);
+            if (!res) return targetEnemies.push(this.enemies[this.enemyIndex]);
+            return res.values.forEach((v) => targetEnemies.push(this.enemies[Number(v)]));
+          });
+        }
+
+        if (
+          parsedAbility.data.effects.some(
+            (e) => e.target === 'ally' && e.targetAmount < alliveAllies,
+          )
+        ) {
+          const { targetAmount } = parsedAbility.data.effects.find((e) => e.target === 'ally')!;
+          const selectTarget = new MessageSelectMenu()
+            .setCustomId(`${battleId} | TARGET`)
+            .setMinValues(targetAmount)
+            .setMaxValues(targetAmount)
+            .setOptions(
+              this.users.reduce<MessageSelectOptionData[]>((p, c, i) => {
+                if (isDead(c)) return p;
+                p.push({
+                  value: `${i}`,
+                  label: `${this.discordUsers[i].username}`,
+                });
+                return p;
+              }, []),
+            )
+            .setPlaceholder(this.ctx.locale('roleplay:battle.select-target'));
+
+          this.ctx.makeMessage({ components: [actionRow([selectTarget])] });
+
+          await Util.collectComponentInteractionWithStartingId<SelectMenuInteraction>(
+            this.ctx.channel,
+            toAttackUser.id,
+            battleId,
+            PVE_USER_RESPONSE_TIME_LIMIT,
+          ).then((res) => {
+            targetAllies.splice(0, targetAllies.length);
+            if (!res) return targetAllies.push(toAttackUser);
+            return res.values.forEach((v) => targetAllies.push(this.users[Number(v)]));
+          });
+        }
+
+        parsedAbility.data.effects.forEach((a) => {
+          if (a.target === 'enemy') {
+            executeEnemiesAbilityEffect(
+              a,
+              toAttackUser,
+              this.userIndex,
+              usedAbility.level,
+              targetEnemies,
+              userAttackSuccess,
+            );
+            return;
+          }
+
+          if (a.target === 'self') {
+            executeAlliesAbilityEffect(a, toAttackUser, this.userIndex, usedAbility.level, [
+              toAttackUser,
+            ]);
+            return;
+          }
+
+          if (a.target === 'ally') {
+            executeAlliesAbilityEffect(
+              a,
+              toAttackUser,
+              this.userIndex,
+              usedAbility.level,
+              targetAllies,
+            );
+          }
+        });
       }
     }
 
