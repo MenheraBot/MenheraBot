@@ -28,7 +28,6 @@
   "MANAGE_WEBHOOKS": "Manage WebHooks",
   "MANAGE_EMOJIS": "Manage Emojis",
   "ONLY_DEVS": "This command is exclusive of my owner",
-  "SLASH_COMMAND": "This command is already available in slash!",
   "UNKNOWN_SLASH": "> This command doesn't exist!",
   "USER_MISSING_PERMISSION": "you must have the `{{perm}}` permission in order to execute this command.",
   "CLIENT_MISSING_PERMISSION": "I must have the `{{perm}}` permission in order to execute this command.",
