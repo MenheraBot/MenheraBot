@@ -2,7 +2,7 @@
   "name": "menhera-bot",
   "version": "4.0.4",
   "engines": {
-    "node": "~16.10.0"
+    "node": ">=16.10.0"
   },
   "description": "A Brazilian Discord Bot foccused in Fun and RPG",
   "main": "dist/cluster.js",
@@ -74,10 +74,10 @@
     "eslint-plugin-import": "^2.24.2",
     "eslint-plugin-prettier": "^4.0.0",
     "husky": "^7.0.4",
-    "jest": "^28.1.0",
+    "jest": "27.0.0",
     "lint-staged": "^12.4.1",
     "prettier": "^2.6.2",
-    "ts-jest": "^28.0.3",
+    "ts-jest": "27.0.0",
     "tscpaths": "^0.0.9",
     "tslib": "^2.4.0",
     "typescript": "^4.6.4"

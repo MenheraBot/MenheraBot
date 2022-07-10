@@ -16,7 +16,6 @@
   "morder": {
     "bot": "You bit a robot ... lost 5 teeth in the mouth",
     "self-mention": "Ooo look at the masochist, do it right now, no command needed",
-    "self-mention_censor": "Yoo don't do that with yourself",
     "embed_title": "Bites",
     "embed_description": "{{author}} bit {{mention}}"
   },
@@ -197,9 +196,7 @@
     },
     "dataItems": {
       "title": "🔮 | Magic Items",
-      "description": "**Cost**: {{cost}} :star:\n**About:** {{description}}",
-      "poor": "You don't have enough stars to buy this item!",
-      "success": "You bought **{{item}}** successfully"
+      "description": "**Cost**: {{cost}} :star:\n**About:** {{description}}"
     },
     "colors": {
       "purple": "1 - Dark purple",
@@ -309,11 +306,8 @@
     "drop": "LESSS GOOO {{author}}. You dropped a hunting item! Do you realize how rare this is? For you to be aware, the item you gained, the **{{name}}** has a drop percentage of `{{chance}}%`, Congratulations!",
     "chances": "**{{count}}** ({{percentage}}%)**Amount**: {{count}}\n**Probability**: {{percentage}}",
     "hunt_description": "You went hunting **{{hunt}}** **{{count}}** time with Super Xandão, and you returned home with more **{{value}}** to count",
-    "hunt_description_plural": "You went hunting **{{hunt}}** **{{count}}** times with Super Xandão, and you returned home with more **{{value}}** to count",
     "god_hunted_success": "HOLLY MOLLY!!! YOU BECOME A HERO FRUIT OF A DIVINE FORCE, AS WELL AS XANDÃO, AND GOT ​​HUNTING `{{count}}` GOD IN **{{toRun}}** TRIES! WITH THAT SAID",
-    "god_hunted_success_plural": "HOLLY MOLLY!!! YOU BECOME A HERO FRUIT OF A DIVINE FORCE, AS WELL AS XANDÃO, AND GOT ​​HUNTING `{{count}}` GODS IN **{{toRun}}** TRIES! WITH THAT SAID",
     "god_hunted_fail": "Hunting Gods is an extremely difficult mission, and in **{{count}}** try you have not been successful. But rest assured, hero, you can still do it!",
-    "god_hunted_fail_plural": "Hunting Gods is an extremely difficult mission, and in **{{count}}** tries you have not been successful. But rest assured, hero, you can still do it!",
     "demons": "Demons",
     "giants": "Giants",
     "archangels": "Archangels",
@@ -362,7 +356,6 @@
   },
   "cor": {
     "footer": "Page {{page}}/{{maxPages}}",
-    "description": "Change the color of your profile",
     "usage": "[color]",
     "embed_title": "Your Colors",
     "embed_description": "Choose down bellow the color to change your profile. You got 30 seconds",
@@ -524,7 +517,6 @@
     "no-args": "You're not on any polyamory! Mention people to join in a polyamory >.<",
     "marry-not-found": "a user of your polyamory was not found",
     "banned-user": "This polyamory cannot be made because it is banned from Menhera!",
-    "no-owner": "you need to use the 'suck' command to create an account first >.<",
     "self-mention": "you can't make a couple with yourself",
     "same-mention": "you can't mention the same user 2 times",
     "bot-mention": "you cannot form a polyamory with a bot. In fact this is even weird ... I feel sorry for you for trying to get a bot.",
@@ -710,14 +702,12 @@
       "vitality-description": "{{emojis.blood}} | Life: **{{maxLife}}** | {{lifeBlesses}}\n{{emojis.mana}} | Mana: **{{maxMana}}** | {{manaBlesses}}\n{{emojis.agility}} | Agility: **{{agility}}** | {{agilityBlesses}}",
       "battle-description": "{{emojis.damage}} | Damage: **{{damage}}** | {{damageBlesses}}\n{{emojis.armor}} | Mana: **{{armor}}** | {{armorBlesses}}\n{{emojis.intelligence}} | Intelligence: **{{intelligence}}** | {{intelligenceBlesses}}",
       "poor-description": "You are currently out of Blessings, but keep your current Blessings status in the meantime\n\n❤️ | **Extra Life:** {{life}} | {{lifePoints}}\n💧 | **Extra Mana:** {{mana}} | {{manaPoints}}\n👢 | **Extra Agility** {{agility}} | {{agilityPoints}}\n⚔️ | **Extra Damage:** {{damage}} | {{damagePoints}}\n🛡️ | **Extra Armor:** {{armor}} | {{armorPoints}}\n🧠 | **Extra Intelligence:** {{intelligence}} | {{intelligencePoints}}",
-      "no-blesses": "You don't have Holy Blessings to improve your Status!",
       "blessings": "You have **{{vitality}}** Holy Blessings of Vitality and **{{battle}}** of Battle, use the buttons below to improve your stats. You cannot have a blessed status difference of more than **{{limit}}** blessings",
       "vitality": "Vitality Points",
       "limit-bless": "You cannot have two stats with a point difference greater than **{{limit}}**",
       "battle": "Battle Points",
       "select-amount": "Select the Quantity you want to use",
       "select-type": "Select which status you want to add {{count}} points",
-      "status-success": "Your Status Has Been Blessed!",
       "abilitiesButton": "Skill Tree",
       "statsButton": "Status Tree",
       "abilities": {
