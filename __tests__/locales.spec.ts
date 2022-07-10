@@ -67,7 +67,7 @@ describe('Check if all locales files are ok', () => {
 
     const afterCheck = english.filter((a) => !portuguese.includes(a));
 
-    expect(afterCheck.length).toBe(0);
+    expect(afterCheck).toBe([]);
   });
 });
 
