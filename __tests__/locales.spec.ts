@@ -51,6 +51,7 @@ describe('Check if all locales files are ok', () => {
 
     const dontKnow = (parent: string, child: string | unknown, lang: 'pt' | 'en'): void => {
       if (typeof child === 'string') {
+        if (parent.endsWith('uncensored')) return;
         if (lang === 'pt') portuguese.push(`${parent}`);
         else english.push(`${parent}`);
         return;
@@ -67,7 +68,7 @@ describe('Check if all locales files are ok', () => {
 
     const afterCheck = english.filter((a) => !portuguese.includes(a));
 
-    expect(afterCheck).toBe([]);
+    expect(afterCheck).toStrictEqual([]);
   });
 });
 
