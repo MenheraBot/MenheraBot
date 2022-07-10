@@ -533,7 +533,7 @@ export default class DowntownCommand extends InteractionCommand {
         8000,
       );
 
-    if (!selectedAmount) {
+    if (!selectedAmount || !selectedAmount.values) {
       ctx.makeMessage({
         components: [actionRow(disableComponents(ctx.locale('common:timesup'), [selector]))],
       });
