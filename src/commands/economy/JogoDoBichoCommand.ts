@@ -172,6 +172,7 @@ export default class JogoDoBichoCommand extends InteractionCommand {
       case 'animal':
       case 'sequence':
       case 'corner': {
+        selection.deferUpdate();
         const selectMenu = new MessageSelectMenu()
           .setCustomId(
             `${ctx.interaction.id} | ${
