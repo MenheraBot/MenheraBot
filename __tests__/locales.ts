@@ -5,59 +5,10 @@ import EnAbilities from '../src/locales/en-US/abilities.json';
 import PtPermissions from '../src/locales/pt-BR/permissions.json';
 import EnPermissions from '../src/locales/en-US/permissions.json';
 
-import PtItems from '../src/locales/pt-BR/items.json';
-import UsItems from '../src/locales/en-US/items.json';
-
-import PtEnemies from '../src/locales/pt-BR/enemies.json';
-import UsEnemies from '../src/locales/en-US/enemies.json';
+import PtCommands from '../src/locales/pt-BR/commands.json';
+import EnCommands from '../src/locales/en-US/commands.json';
 
 describe('Check if all locales files are ok', () => {
-  test('see if enemies files are ok', () => {
-    const portuguese = Object.entries(PtEnemies);
-    const english = Object.entries(UsEnemies);
-
-    let allIdsOk = true;
-    let hasNameAndDescPT = true;
-    let hasNameAndDescEN = true;
-
-    portuguese.forEach((a) => {
-      if (!english.some((b) => b[0] === a[0])) allIdsOk = false;
-
-      if (!('name' in a[1])) hasNameAndDescPT = false;
-    });
-
-    english.forEach((a) => {
-      if (!('name' in a[1])) hasNameAndDescEN = false;
-    });
-
-    expect(hasNameAndDescEN).toBe(true);
-    expect(hasNameAndDescPT).toBe(true);
-    expect(allIdsOk).toBe(true);
-  });
-
-  test('see if items files are ok', () => {
-    const portuguese = Object.entries(PtItems);
-    const english = Object.entries(UsItems);
-
-    let allIdsOk = true;
-    let hasNameAndDescPT = true;
-    let hasNameAndDescEN = true;
-
-    portuguese.forEach((a) => {
-      if (!english.some((b) => b[0] === a[0])) allIdsOk = false;
-
-      if (!('name' in a[1])) hasNameAndDescPT = false;
-    });
-
-    english.forEach((a) => {
-      if (!('name' in a[1])) hasNameAndDescEN = false;
-    });
-
-    expect(hasNameAndDescEN).toBe(true);
-    expect(hasNameAndDescPT).toBe(true);
-    expect(allIdsOk).toBe(true);
-  });
-
   test('see if abilities files are ok', () => {
     const portuguese = Object.entries(PtAbilities);
     const english = Object.entries(EnAbilities);
@@ -92,6 +43,31 @@ describe('Check if all locales files are ok', () => {
     } else isEqual = false;
 
     expect(isEqual).toBe(true);
+  });
+
+  test('English commands shoud be equal to Portuguese commands', () => {
+    const portuguese: string[] = [];
+    const english: string[] = [];
+
+    const dontKnow = (parent: string, child: string | unknown, lang: 'pt' | 'en'): void => {
+      if (typeof child === 'string') {
+        if (lang === 'pt') portuguese.push(`${parent}`);
+        else english.push(`${parent}`);
+        return;
+      }
+
+      // @ts-expect-error UwU
+      const entries = Object.entries(child);
+
+      entries.forEach((b) => dontKnow(`${parent}:${b[0]}`, b[1], lang));
+    };
+
+    Object.entries(PtCommands).forEach((a) => dontKnow(a[0], a[1], 'pt'));
+    Object.entries(EnCommands).forEach((a) => dontKnow(a[0], a[1], 'en'));
+
+    const afterCheck = english.filter((a) => !portuguese.includes(a));
+
+    expect(afterCheck.length).toBe(0);
   });
 });
 
