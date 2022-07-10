@@ -5,13 +5,15 @@ export default class RelationshipRepository {
 
   async marry(userOneID: string, userTwoID: string, data: string): Promise<void> {
     const marryTimestamp = Date.now();
-    await this.userRepository.update(userOneID, {
+
+    this.userRepository.update(userOneID, {
       married: userTwoID,
       marriedDate: data,
       marriedAt: marryTimestamp,
       lastCommandAt: marryTimestamp,
     });
-    await this.userRepository.update(userTwoID, {
+
+    this.userRepository.update(userTwoID, {
       married: userOneID,
       marriedDate: data,
       marriedAt: marryTimestamp,
@@ -20,13 +22,14 @@ export default class RelationshipRepository {
   }
 
   async divorce(userOneID: string, userTwoID: string): Promise<void> {
-    await this.userRepository.update(userOneID, {
+    this.userRepository.update(userOneID, {
       married: null,
       marriedDate: null,
       marriedAt: null,
       lastCommandAt: Date.now(),
     });
-    await this.userRepository.update(userTwoID, {
+
+    this.userRepository.update(userTwoID, {
       married: null,
       marriedDate: null,
       marriedAt: null,
@@ -35,15 +38,17 @@ export default class RelationshipRepository {
   }
 
   async trisal(userOneID: string, userTwoID: string, userThreeID: string): Promise<void> {
-    await this.userRepository.update(userOneID, {
+    this.userRepository.update(userOneID, {
       trisal: [userTwoID, userThreeID],
       lastCommandAt: Date.now(),
     });
-    await this.userRepository.update(userTwoID, {
+
+    this.userRepository.update(userTwoID, {
       trisal: [userOneID, userThreeID],
       lastCommandAt: Date.now(),
     });
-    await this.userRepository.update(userThreeID, {
+
+    this.userRepository.update(userThreeID, {
       trisal: [userOneID, userTwoID],
       lastCommandAt: Date.now(),
     });

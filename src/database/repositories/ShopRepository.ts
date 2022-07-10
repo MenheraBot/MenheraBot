@@ -1,5 +1,5 @@
-import { Users } from '@structures/DatabaseCollections';
-import { AvailableThemeTypes, HuntingTypes, IColor } from '@utils/Types';
+import { Users } from '@database/Collections';
+import { AvailableThemeTypes, HuntingTypes, IColor } from '@custom_types/Menhera';
 import { negate } from '@utils/Util';
 import ThemeRepository from './ThemeRepository';
 import CreditsRepository from './CreditsRepository';
@@ -23,7 +23,7 @@ export default class ShopRepository {
       { $inc: { estrelinhas: negate(price) }, lastCommandAt: Date.now() },
     );
 
-    await this.creditsRepository.addParticipation(themeID, (royalty / 100) * price);
+    await this.creditsRepository.addParticipation(themeID, Math.floor((royalty / 100) * price));
 
     switch (themeType) {
       case 'profile':

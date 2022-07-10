@@ -1,14 +1,14 @@
+import { close as closeSentry } from '@sentry/node';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import MenheraClient from 'MenheraClient';
 
-export default class ShutdownSlashInteractionCommand extends InteractionCommand {
+export default class ShutdownSlashCommand extends InteractionCommand {
   constructor() {
     super({
       name: 'shutdown',
       description: '[DEV] Começa o processo de desligamento da Menhera',
       category: 'dev',
-      defaultPermission: false,
       devsOnly: true,
       cooldown: 1,
     });
@@ -26,15 +26,12 @@ export default class ShutdownSlashInteractionCommand extends InteractionCommand 
 
     await ctx.client.jogoDoBichoManager.stopGameLoop();
     console.log('[SHTUDOWN] - Estrelinhas do jogo do Bicho Devolvidas!');
-    // @ts-expect-error Client é fucker
-    await ctx.client.cluster?.broadcastEval((c: MenheraClient) => c.picassoWs.killConnection());
-    console.log('[SHTUDOWN] - Conexões Websockets Picasso fechados');
 
     console.log('[SHTUDOWN] - Aguardando finalização de comandos');
     await new Promise<void>((resolve) => {
       const interval = setInterval(async () => {
         const cooldowns = (await ctx.client.cluster?.fetchClientValues(
-          'commandExecutions.size',
+          'economyUsages.size',
         )) as number[];
 
         if (cooldowns.reduce((p, c) => p + c, 0) === 0) {
@@ -50,6 +47,12 @@ export default class ShutdownSlashInteractionCommand extends InteractionCommand 
     // @ts-expect-error Client é fucker
     await ctx.client.cluster?.broadcastEval((c: MenheraClient) => c.database.closeConnections());
     console.log('[SHTUDOWN] - Todas conexões fechadas!');
+
+    console.log('[SHTUDOWN] - Fechando cliente do Sentry');
+
+    await closeSentry();
+
+    console.log('[SHTUDOWN] - Cliente sentry fechado');
 
     console.log(
       `[SHTUDOWN] - Menhera está pronta para desligar! Tempo Total: ${Date.now() - startTime}ms`,

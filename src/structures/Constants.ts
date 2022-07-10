@@ -1,4 +1,4 @@
-import { T8BallAnswerTypes } from '@utils/Types';
+import { IBadge, T8BallAnswerTypes } from '@custom_types/Menhera';
 
 export const shopEconomy = {
   colors: {
@@ -7,17 +7,17 @@ export const shopEconomy = {
     cian: 50_000,
     green: 60_000,
     pink: 70_000,
-    yellow: 80_000,
-    your_choice: 100_000,
+    yellow: 70_000,
+    your_choice: 85_000,
   },
   hunts: {
     roll: 15_000,
-    demons: 1_200,
-    giants: 1_500,
-    angels: 2_600,
-    archangels: 3_200,
-    demigods: 6_000,
-    gods: 16_000,
+    demons: 900,
+    giants: 1_200,
+    angels: 2_300,
+    archangels: 3_100,
+    demigods: 5_800,
+    gods: 14_000,
   },
 };
 
@@ -96,7 +96,9 @@ export const emojis = {
   yellow_circle: '🟡',
   heart: '❤️',
   lick: '👅',
+  time: '⏲️',
   sword: '⚔️',
+  cross: '✝️',
   gay_flag: '🏳️‍🌈',
   hourglass: '⌛',
   rainbow: '🌈',
@@ -105,6 +107,29 @@ export const emojis = {
   lock: '🔒',
   list: '📜',
   estrelinhas: '⭐',
+  lhama: '🦙',
+  // EMOJIS DE FLUFFETYS
+  pingus: '<:pingus:970443928241340466>',
+  hamsin: '<:hamsin:970443928467828837>',
+  chikys: '<:chikys:970443927402475550>',
+  // EMOJIS DE BADHES
+  badge_1: '<:badge_1:960660998002462730>',
+  badge_2: '<:badge_2:960660997914394654>',
+  badge_3: '<:badge_3:960660998015037460>',
+  badge_4: '<:badge_4:960660998400921600>',
+  badge_5: '<:badge_5:960660998098944020>',
+  badge_6: '<:badge_6:960660998912630784>',
+  badge_7: '<:badge_7:960660999386566747>',
+  badge_8: '<:badge_8:960661002968518656>',
+  badge_9: '<:badge_9:960660998350602310>',
+  badge_10: '<:badge_10:960661746048204810>',
+  badge_11: '<:badge_11:960661745599414282>',
+  badge_12: '<:badge_12:960660998849712178>',
+  badge_13: '<:badge_13:960661002360336384>',
+  badge_15: '<:badge_15:960661000284151858>',
+  badge_16: '<:badge_16:960661002570055750>',
+  badge_17: '<:badge_17:990267891079327774>',
+  badge_18: '<:badge_18:990267971731615794>',
   // EMOJIS DO RPG
   blood: '🩸',
   mana: '💧',
@@ -112,12 +137,16 @@ export const emojis = {
   damage: '🗡️',
   level: '⚜️',
   experience: '🔰',
-  chest: '<:Chest:760957557538947133>',
+  chest: '🎒',
   intelligence: '🧠',
   church: '⛪',
-  coin: '<:gold:878054145796472922>',
+  coin: '<:gold:960654694244573204>',
   blacksmith: '⚒️',
   agility: '👢',
+  buff: '<:buff:964812397888016394>',
+  debuff: '<:debuff:964812397825110026>',
+  poison: '🧪',
+  heal: '💊',
 };
 
 export type EmojiTypes = keyof typeof emojis;
@@ -330,3 +359,20 @@ export const BICHO_BET_MULTIPLIER = {
 export const BLACKJACK_CARDS = Array.from({ length: 52 }, (_, i) => i + 1);
 
 export const CANNOT_BUY_THEMES = [3, 5, 4, 6];
+
+export const TODAYS_YEAR = new Date().getFullYear();
+
+export const HOURLY_ROULETTE_HIGH_VALUE_BET_LIMIT = 5;
+
+export const DiscordFlagsToMenheraBadges: { [badge: string]: IBadge['id'] } = {
+  EARLY_VERIFIED_BOT_DEVELOPER: 5,
+  HOUSE_BALANCE: 2,
+  HOUSE_BRILLIANCE: 3,
+  HOUSE_BRAVERY: 4,
+};
+
+export const BLACKJACK_PRIZE_MULTIPLIERS = {
+  init_blackjack: 1.5,
+  blackjack: 1,
+  base: 1,
+};

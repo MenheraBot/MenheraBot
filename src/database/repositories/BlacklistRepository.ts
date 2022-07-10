@@ -7,7 +7,7 @@ export default class BlacklistRepository {
 
   async ban(userID: string, reason: string): Promise<void> {
     await this.userRepository.update(userID, { ban: true, banReason: reason });
-    await this.addBannedUsers(userID);
+    await this.addBannedUsers([userID]);
   }
 
   async unban(userID: string): Promise<void> {
@@ -15,7 +15,7 @@ export default class BlacklistRepository {
     await this.removeBannedUser(userID);
   }
 
-  async addBannedUsers(user: string[] | string): Promise<void> {
+  async addBannedUsers(user: string[]): Promise<void> {
     if (!this.redisClient) return;
     await this.redisClient.sadd('banned_users', user).catch((e) => debugError(e, true));
   }
@@ -23,6 +23,14 @@ export default class BlacklistRepository {
   async removeBannedUser(user: string): Promise<void> {
     if (!this.redisClient) return;
     await this.redisClient.srem('banned_users', user).catch((e) => debugError(e, true));
+  }
+
+  async getAllBannedUsersId(): Promise<string[]> {
+    const bannedUsers = await this.userRepository.userModal.find({ ban: true }, ['id'], {
+      lean: true,
+    });
+
+    return bannedUsers.map((a) => a.id);
   }
 
   async isUserBanned(user: string): Promise<boolean> {

@@ -1,9 +1,15 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { languageByLocale } from '@structures/Constants';
 import HttpRequests from '@utils/HTTPrequests';
-import { ICommandUsedData } from '@utils/Types';
+import { ICommandUsedData } from '@custom_types/Menhera';
 import { debugError } from '@utils/Util';
-import { CommandInteraction, MessageEmbed, Collection } from 'discord.js-light';
+import {
+  CommandInteraction,
+  MessageEmbed,
+  Collection,
+  LimitedCollection,
+  User,
+} from 'discord.js-light';
 import i18next from 'i18next';
 import MenheraClient from 'MenheraClient';
 import InteractionCommandContext from './InteractionContext';
@@ -48,7 +54,7 @@ const InteractionCommandExecutor = async (
 
   if (
     (command.config.category === 'economy' || command.config.category === 'roleplay') &&
-    interaction.client.commandExecutions.has(interaction.user.id)
+    interaction.client.economyUsages.has(interaction.user.id)
   ) {
     await interaction
       .reply({
@@ -61,28 +67,6 @@ const InteractionCommandExecutor = async (
 
   if (command.config.devsOnly && process.env.OWNER !== interaction.user.id) {
     await interaction.reply({ content: `${t('permissions:ONLY_DEVS')}`, ephemeral: true });
-    return;
-  }
-
-  if (
-    server.blockedChannels?.includes(interaction.channelId) &&
-    !interaction.memberPermissions?.has('MANAGE_CHANNELS')
-  ) {
-    interaction
-      .reply({ content: `🔒 | ${t('events:blocked-channel')}`, ephemeral: true })
-      .catch(debugError);
-    return;
-  }
-
-  if (server.disabledCommands?.includes(command.config.name)) {
-    await interaction
-      .reply({
-        content: `🔒 | ${t('permissions:DISABLED_COMMAND', {
-          cmd: command.config.name,
-        })}`,
-        ephemeral: true,
-      })
-      .catch(debugError);
     return;
   }
 
@@ -106,8 +90,6 @@ const InteractionCommandExecutor = async (
     interaction.client.cooldowns.set(command.config.name, new Collection());
 
   const now = Date.now();
-
-  if (now - interaction.createdTimestamp >= 3000) return;
 
   const timestamps = interaction.client.cooldowns.get(command.config.name) as Collection<
     string,
@@ -140,24 +122,6 @@ const InteractionCommandExecutor = async (
     timestamps.delete(interaction.user.id);
   }, cooldownAmount);
 
-  if (command.config.userPermissions) {
-    const missing = interaction.memberPermissions?.missing(command.config.userPermissions);
-
-    if (missing?.length) {
-      const perm = missing.map((value) => t(`permissions:${value}`)).join(', ');
-
-      await interaction
-        .reply({
-          content: `<:negacao:759603958317711371> | ${t('permissions:USER_MISSING_PERMISSION', {
-            perm,
-          })}`,
-          ephemeral: true,
-        })
-        .catch(debugError);
-      return;
-    }
-  }
-
   const authorData =
     command.config.authorDataFields.length > 0
       ? await interaction.client.repositories.userRepository.findOrCreate(
@@ -175,8 +139,13 @@ const InteractionCommandExecutor = async (
 
   if (!command.run) return;
 
-  if (command.config.category === 'economy' || command.config.category === 'roleplay')
-    interaction.client.commandExecutions.add(ctx.author.id);
+  if (command.config.category === 'economy') interaction.client.economyUsages.add(ctx.author.id);
+
+  if (command.config.category === 'roleplay')
+    (interaction.client.users.cache as LimitedCollection<string, User>).forceSet(
+      ctx.author.id,
+      ctx.author,
+    );
 
   await command
     .run(ctx)
@@ -186,14 +155,12 @@ const InteractionCommandExecutor = async (
         process.env.BUG_HOOK_TOKEN as string,
       );
 
-      if (interaction.deferred) {
-        interaction.webhook
-          .send({ content: t('events:error_embed.title'), ephemeral: true })
-          .catch(debugError);
-      } else
-        interaction
-          .reply({ content: t('events:error_embed.title'), ephemeral: true })
-          .catch(debugError);
+      ctx.makeMessage({
+        content: t('events:error_embed.title', {
+          cmd: command.config.name,
+        }),
+        ephemeral: true,
+      });
 
       if (err instanceof Error && err.stack) {
         const errorMessage = err.stack.length > 1800 ? `${err.stack.slice(0, 1800)}...` : err.stack;
@@ -219,8 +186,8 @@ const InteractionCommandExecutor = async (
       }
     })
     .finally(() => {
-      if (command.config.category === 'economy' || command.config.category === 'roleplay')
-        interaction.client.commandExecutions.delete(ctx.author.id);
+      if (command.config.category === 'economy')
+        interaction.client.economyUsages.delete(ctx.author.id);
     });
 
   if (!interaction.guild || process.env.NODE_ENV === 'development') return;

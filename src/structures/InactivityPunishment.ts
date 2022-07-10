@@ -52,50 +52,19 @@ const InactivityPunishment = async (client: MenheraClient): Promise<void> => {
           ? 10
           : parseFloat(((Date.now() - a.lastCommandAt) / 1_209_600_000).toFixed(1));
 
-      let estrelinhas =
-        Math.floor(a.estrelinhas / 250_000) >= 4
-          ? Math.floor((a.estrelinhas / 4) * weeks)
-          : Math.floor((a.estrelinhas / 8) * weeks);
-      let demons =
-        Math.floor(a.demons / 60) >= 4
-          ? Math.floor((a.demons / 4) * weeks)
-          : Math.floor((a.demons / 8) * weeks);
-      let giants =
-        Math.floor(a.giants / 50) >= 4
-          ? Math.floor((a.giants / 4) * weeks)
-          : Math.floor((a.giants / 8) * weeks);
-      let angels =
-        Math.floor(a.angels / 40) >= 4
-          ? Math.floor((a.angels / 4) * weeks)
-          : Math.floor((a.angels / 8) * weeks);
-      let archangels =
-        Math.floor(a.archangels / 10) >= 4
-          ? Math.floor((a.archangels / 4) * weeks)
-          : Math.floor((a.archangels / 8) * weeks);
-      let demigods =
-        Math.floor(a.demigods / 5) >= 4
-          ? Math.floor((a.demigods / 4) * weeks)
-          : Math.floor((a.demigods / 8) * weeks);
-      let gods =
-        Math.floor(a.gods / 2) >= 4
-          ? Math.floor((a.gods / 4) * weeks)
-          : Math.floor((a.gods / 8) * weeks);
+      const toReduceValue = (source: number, divider: number): number => {
+        const toDivide = source / divider >= 4 ? 4 : 8;
+        const multiplied = Math.floor((source / toDivide) * weeks);
+        return Math.min(multiplied, source) * -1;
+      };
 
-      if (a.estrelinhas < estrelinhas) estrelinhas = a.estrelinhas;
-      if (a.demons < demons) demons = a.demons;
-      if (a.giants < giants) giants = a.giants;
-      if (a.angels < angels) angels = a.angels;
-      if (a.archangels < archangels) archangels = a.archangels;
-      if (a.demigods < demigods) demigods = a.demigods;
-      if (a.gods < gods) gods = a.gods;
-
-      estrelinhas *= -1;
-      demons *= -1;
-      giants *= -1;
-      angels *= -1;
-      archangels *= -1;
-      demigods *= -1;
-      gods *= -1;
+      const estrelinhas = toReduceValue(a.estrelinhas, 250_000);
+      const demons = toReduceValue(a.demons, 50);
+      const giants = toReduceValue(a.giants, 45);
+      const angels = toReduceValue(a.angels, 30);
+      const archangels = toReduceValue(a.archangels, 10);
+      const demigods = toReduceValue(a.demigods, 5);
+      const gods = toReduceValue(a.gods, 2);
 
       return { $inc: { estrelinhas, demons, giants, angels, archangels, demigods, gods } };
     });

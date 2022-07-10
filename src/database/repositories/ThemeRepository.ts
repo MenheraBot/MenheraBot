@@ -1,4 +1,4 @@
-import { Themes } from '@structures/DatabaseCollections';
+import { Themes } from '@database/Collections';
 import {
   AvailableProfilesThemes,
   IUserThemesSchema,
@@ -9,7 +9,7 @@ import {
   ITableTheme,
   AvailableCardBackgroundThemes,
   ICardBackgroudTheme,
-} from '@utils/Types';
+} from '@custom_types/Menhera';
 import { getThemeById, MayNotExists } from '@utils/Util';
 import { Redis } from 'ioredis';
 
@@ -25,6 +25,10 @@ export default class ThemeRepository {
     if (!result) return this.themesModal.create({ id: userId });
 
     return result;
+  }
+
+  async makeNofity(userId: string, notify: boolean): Promise<void> {
+    await this.themesModal.updateOne({ id: userId }, { notifyPurchase: notify });
   }
 
   async addTableTheme(userId: string, tableId: number): Promise<void> {

@@ -14,9 +14,7 @@
     "embed_description": "{{author}} kicked {{mention}}"
   },
   "morder": {
-    "description": "Bite someone :3",
-    "usage": "<@mention>",
-    "bot": "You bit a robot ... -5 teeth in the mouth",
+    "bot": "You bit a robot ... lost 5 teeth in the mouth",
     "self-mention": "Ooo look at the masochist, do it right now, no command needed",
     "self-mention_censor": "Yoo don't do that with yourself",
     "embed_title": "Bites",
@@ -84,14 +82,14 @@
   },
   "mamar": {
     "bot": "{{author}} just got his mouth wet with oil sucking the bot {{mention}}",
-    "self-mention": "Don't try to deceive me, I know you can't suckle yourself! Appoint another person to suck",
-    "self-mention_censor": "Don't try to deceive me, I know you can't lick yourself! Appoint another person to lick",
-    "embed_title": "Suck",
-    "embed_title_censor": "Lick",
-    "user-banned": "You cannot suck this user because he is banned",
-    "user-banned_censor": "You cannot lick this user because he is banned",
-    "embed_description": "{{author}} **suckled** {{mention}}",
-    "embed_description_censor": "{{author}} **licked** {{mention}}"
+    "self-mention_uncensored": "Don't try to deceive me, I know you can't suckle yourself! Appoint another person to suck",
+    "self-mention": "Don't try to deceive me, I know you can't lick yourself! Appoint another person to lick",
+    "embed_title_uncensored": "Suck",
+    "embed_title": "Lick",
+    "user-banned_uncensored": "You cannot suck this user because he is banned",
+    "user-banned": "You cannot lick this user because he is banned",
+    "embed_description_uncensored": "{{author}} **suckled** {{mention}}",
+    "embed_description": "{{author}} **licked** {{mention}}"
   },
   "carinho": {
     "self-mention": "If you want you can cuddle yourself now. Use my command only to cuddle others",
@@ -99,8 +97,6 @@
     "embed_description": "{{author}} just cuddle {{mention}}"
   },
   "cutucar": {
-    "description": "Poke Someone",
-    "usage": "<@mention>",
     "self-mention": "Poking yourself is no fun! Mention who you want to poke",
     "embed_title": "Poke",
     "embed_description": "{{author}} poked {{mention}}"
@@ -112,7 +108,6 @@
     "embed_description": "{{author}} punched {{mention}}"
   },
   "ressuscitar": {
-    "no-mention": "How to resurrect the nothing, which never died?",
     "self-mention": "Wait wut?? If you're dead, how are you typing?",
     "bot": "A robot has been restarted UwU >. <",
     "embed_title": "Resurrect",
@@ -166,20 +161,17 @@
   },
   "coinflip": {
     "bet": "Bet",
-    "timeout": "Time Out",
-    "invalid-value": "this value is not valid",
     "bot": "bots cannot bet e.e",
     "self-mention": "you cannot bet against yourself",
     "no-dbuser": "this user does not have a Menhera's Bank account!",
     "poor": "{{user}} don't have all these stars to bet on!",
     "confirm": "{{author}} challenged you to a heads-up bet worth **{{value}}** ⭐. Heads, {{author}} wins, tails, {{mention}} wins. Do you accept? you got **7** seconds",
-    "cara": "**HEADS**",
+    "cara": "HEADS",
+    "coroa": "TAILS",
     "banned-user": "This user cannot bet because they're banned from Menhera!",
-    "coroa": "**TAILS**",
-    "cara-texto": "{{author}} won {{value}} :star: betting with {{mention}}. I'm sorry {{mention}}, we are not always victorious",
-    "coroa-texto": "{{mention}} won {{value}} :star: betting against {{author}}"
+    "text": ":coin: | **{{choice}}**\n\n{{winner}} won **{{value}}** :star: betting against {{loser}}"
   },
-  "give": {
+  "presentear": {
     "self-mention": "You cannot mention yourself!",
     "banned-user": "This user cannot accept gifts because they're banned from Menhera!",
     "no-dbuser": "This user does not have a Menhera's Bank account!",
@@ -241,7 +233,11 @@
       "yc-confirm": "WOOOOW !!! YOU'VE JUST BOUGHT A COLOR OF YOUR CHOICE !!! \nYour current choice is **#{{color}}** \nYou spent **{{price}}** ⭐ and got **{{stars}}** ⭐ stars",
       "invalid-color": "this color is not a valid color!",
       "no-name": "No name passed ({{numberno-name}})",
-      "buy-text": "Choose down below what color do you want to buy"
+      "buy-text": "Choose down below what color do you want to buy",
+      "title": "Buy your Color",
+      "hex_input": "Input your color in Hexadecimal",
+      "name_placeholder": "A Cute Pink",
+      "name_input": "The name of this color (for your organization)"
     },
     "dataRolls_fields": {
       "title": "Buy Rolls",
@@ -270,7 +266,6 @@
   "8ball": {
     "question": "Your Question",
     "answer": "Answer",
-    "no-args": "you must send a question for me to answer",
     "ask": "Ask Menhera",
     "answers": {
       "0": "It is certain",
@@ -299,11 +294,9 @@
     "author-single": "you are not married to anyone",
     "divorce": "Divorce",
     "cancel": "Cancel",
-    "confirmed": "Do you really wanna divorce from",
     "confirmation": "Do you really want to divorce from",
     "canceled": "I think it’s good that you're still married, but if you thought about breaking up once, maybe you’ll think more often ... If the relationship doesn’t make you feel good, there’s no point in continuing…",
-    "confirmed_start": "just got divorced from",
-    "confirmed_end": "I'm sorry for having finished everything ... But it's okay, all relationships are just experiences, you still have a lot of life ahead of you, and you will still find people who do you as well as you deserve"
+    "confirmed": "{{author}} just got divorced from {{mention}}\nI'm sorry for having finished everything ... But it's okay, all relationships are just experiences, you still have a lot of life ahead of you, and you will still find people who do you as well as you deserve"
   },
   "fodase": {
     "0": "{{author}} said it dont care",
@@ -345,9 +338,7 @@
     "banned-user": "This user cannot be married because it is banned from Menhera!"
   },
   "ship": {
-    "missing-args": "you didn't mention an user",
-    "no-dbuser": "user not found in database",
-    "unknow-user": "user not found",
+    "unknow-user": "User not found",
     "value": "Ship value:",
     "message-start": "Would the two lovebirds make a good couple?",
     "default": "Maybe the bot that is broken, or you will not work at all :(",
@@ -358,16 +349,14 @@
     "perfect": "MY FRIEND, THOSE GUYS ARE MADE TO ANOTHER PRO",
     "banned-user": "You cannot ship this user because it is banned from Menhera!"
   },
-  "xandao": {
-    "only-text": "This command isn't available on threads",
-    "err_message": "In order for me to run this command, ask administrators to grant me `Manage Webhooks` permission"
-  },
-  "avatar": {
-    "description": "Shows someone's avatar",
-    "usage": "[user]",
+  "user": {
+    "banner": {
+      "no-banner": "This user doesn't have a banner",
+      "title": "{{user}}'s Banner",
+      "footer": "What a beautiful banner yay"
+    },
     "title": "{{user}}'s avatar",
     "footer": "What a beautiful image uwuwu",
-    "unknow-user": "user not found",
     "client_title": "my avatar ({{user}})",
     "client_footer": "I'm very beautiful, right?"
   },
@@ -382,66 +371,86 @@
       "description": "You can now see your profile with your new color!"
     },
     "choose": "Choose your color",
-    "min-color": "you need to have at least 2 colors to use this command!"
+    "min-color": "you need to have at least 2 colors to use this command!",
+    "rename": "Rename",
+    "select-to-rename": "Choose A Color to Rename",
+    "modal-title": "Rename the Color",
+    "name-input": "New name for '{{name}}'",
+    "same-name": "A color already has that name!",
+    "rename-success": "You have renamed the color `{{color}}` to **{{name}}**"
   },
   "perfil": {
     "no-dbuser": "this user does not have a profile!",
     "banned": "this user is **banned** from using Menhera \n **Reason:** `{{reason}}`",
-    "mamou": "Suck",
-    "mamou_censor": "Lick",
+    "mamou_uncensored": "Suck",
+    "mamou": "Lick",
     "unknow-user": "user not found",
-    "mamado": "Suckled",
-    "mamad0o_censor": "Licked",
-    "married-with": "Married with",
-    "married-in": "Married in",
+    "mamado_uncensored": "Suckled",
+    "mamado": "Licked",
     "about-me": "About Me",
-    "commands": "Commands",
-    "zero": "used my commands",
-    "um": "times. It most used command was",
-    "dois": "used",
-    "tres": "times",
+    "api-down": "Yep, the Commands Server is Down! But dont worry! This text is to say that you incredible.",
     "commands-usage": "{{user}} used my commands {{usedCount}} times. His most used command was {{mostUsedCommandName}}, used {{mostUsedCommandCount}} times"
   },
   "top": {
-    "mamadoresTitle": "Suckers Leaderboard",
-    "mamadoresTitle_censor": "Lickers Leaderboard",
-    "mamouTitle": "Suckled Leaderboard",
-    "mamouTitle_censor": "Licked Leaderboard",
-    "demonTitle": "Demons Leaderboard",
-    "angelTitle": "Angels Leaderboard",
-    "sdTitle": "Demigods Leaderboard",
-    "godTitle": "Gods Leaderboard",
-    "giantTitle": "Giants Leaderboard",
-    "archangelTitle": "Archangel Leaderboard",
-    "starsTitle": "Stars Leaderboard",
-    "voteTitle": "Upvotes Leaderboard",
+    "economia": {
+      "mamou-title": "Lickers Leaderboard",
+      "mamado-title": "Licked Leaderboard",
+      "demons-title": "Demons Leaderboard",
+      "giants-title": "Giants Leaderboard",
+      "angels-title": "Angels Leaderboard",
+      "archangels-title": "Archangels Leaderboard",
+      "demigods-title": "Demigods Leaderboard",
+      "gods-title": "Gods Leaderboard",
+      "estrelinhas-title": "Estrelinhas Leaderboard",
+      "votes-title": "Upvotes Leaderboard",
+      "mamado": "Licked",
+      "mamou": "Lick",
+      "demons": "Demons",
+      "angels": "Angels",
+      "demigods": "Demigods",
+      "archangels": "Archangels",
+      "giants": "Giants",
+      "votes": "Votes",
+      "gods": "Gods",
+      "estrelinhas": "Estrelinhas"
+    },
+    "estatisticas": {
+      "cacar": {
+        "title": "{{emoji}} | Best Hunters of {{type}} {{page}}º",
+        "demon": "Demons",
+        "giant": "Giants",
+        "angel": "Angels",
+        "archangel": "Archangels",
+        "demigod": "Demigods",
+        "god": "Gods",
+        "description": {
+          "success": "Sorted by **successful hunts**",
+          "tries": "Ordered by who **hunted the most**",
+          "hunted": "Sort by **quantity hunted**",
+          "text": "**Total Hunted:** {{hunted}}\n**Hunt Hunts**: {{tries}}\n**Successful Hunts:** {{success}}"
+        }
+      },
+      "apostas": {
+        "title": "{{emoji}} | Best Bettors of {{type}} {{page}}º",
+        "bicho": "Jogo do Bicho",
+        "blackjack": "Blackjack",
+        "coinflip": "Coniflip",
+        "roulette": "Roulette",
+        "description": {
+          "money": "Sorted by **Estrelinhas Earned**",
+          "wins": "Sorted by **Most Wins**",
+          "text": "Stars Won: **{{earnMoney}}** :star:\nStars Lost: **{{lostMoney}}** :star:\nGames Won: **{{wonGames}}** `({{winPercentage}}%)`\nLost Games: **{{lostGames}}** `({{lostPercentage}}%)`"
+        }
+      }
+    },
     "commands": "Most Used Commands",
     "users": "Users Who Most Used Commands",
-    "suckled": "Suckled",
-    "suck": "Suck",
-    "demons": "Demons",
-    "angels": "Angels",
-    "demigods": "Demigods",
-    "archangels": "Archangels",
-    "giants": "Giants",
-    "votes": "Votes",
-    "gods": "Gods",
-    "stars": "Stars",
     "members": "Members",
     "used": "Used",
     "use": "Used",
     "user": "Most used commands from {{user}}",
     "times": "times",
     "not-user": "this user didn't use any commands"
-  },
-  "blockcanal": {
-    "block": "My commands were **Blocked** on channel {{channel}}! Use `/blockcanal` to unlock them",
-    "unblock": "My commands were **Unblocked** on channel {{channel}}",
-    "invalid-channel": "This command can only be run on text channels!",
-    "blocked-channels": "Blocked Channels List",
-    "zero-value": "No channel blocked!",
-    "sure": "Are you sure you want to delete all channels from the list?",
-    "done": "My commands have been released on all server channels! Yayyy"
   },
   "idioma": {
     "question": "What language do you want me to speak?",
@@ -450,27 +459,21 @@
     "portuguese": "Brazilian Portuguese"
   },
   "sobremim": {
-    "args-limit": "your sobremim cannot be longer than 200 characters",
-    "success": "your 'About Me' has been successfully changed! Use m!Profile >.<"
-  },
-  "ping": {
-    "description": "Shows the ping of the bot and its API",
-    "latency": "Latency:",
-    "api": "API Latency:"
-  },
-  "suporte": {
-    "embed_title": "Click here to enter Menhera's support server"
+    "args-limit": "Your sobremim cannot be longer than 200 characters",
+    "success": "Your 'About Me' has been successfully changed! Use `/perfil` >.<"
   },
   "status": {
     "designer": {
       "no-designer": "This user does't own any designs",
       "title": "{{user}}'s Designs",
+      "notify": "Notify Purchases",
+      "success": "Your purchase notification settings have changed!",
+      "dont-notify": "Do Not Notify Purchases",
+      "notify-footer": "With notify purchases active, every time a user buys a design from you, Menhera will try to send a message in your DM showing this",
       "description": "**Type:** $t(common:theme_types.{{type}}) ($t(common:rarities.{{rarity}}))\n**Royalty:**: {{royalty}}%\n**Profit:** {{profit}} :star:\n**Sold:** {{sold}}\nRegistered at `{{registered}}`"
     },
     "coinflip": {
-      "description": "Show your coinflip game data",
-      "usage": "[user]",
-      "embed-title": "Coinflip stats for {{user}}",
+      "embed-title": "{{user}}'s Coinflip Statistics",
       "no-data": "you never played a coinflip game!",
       "embed-footer": "You are amazing",
       "played": "Matches Played",
@@ -482,25 +485,21 @@
       "loss": "Total Loss",
       "error": "an error occurred while checking this user's statistics"
     },
-    "botinfo": {
-      "title": "🎉 TODAY IS MY BIRTHDAY 🎉",
-      "embed_description": "Hi my name is **{{name}}**, and I'm a Brazilian Bot for Discord with a focus on fun and RPG! I was created in **{{createdAt}}** and joined this server in **{{joinedAt}}**.\n\nA little bit about me: My name is Menhera, I am 16 years old and I LOVE, I mean, I LOOOOVE to use these faces: (>...<). To learn more, go to my [twitter](https://twitter.com/__MenheraBot), my [support server](https://discord.gg/fZMdQbA) and my [WEBSITE](https://menherabot.xyz).",
-      "embed_footer": "was created by",
-      "memory": "Memory",
-      "version": "Version",
-      "extended": "Shards Info"
+    "bicho": {
+      "embed-title": "{{user}}'s Bicho Statistics",
+      "no-data": "This user have never played a Jogo do Bicho game!"
     },
     "roleta": {
-      "embed-title": "{{user}}'s Roulette Status",
+      "embed-title": "{{user}}'s Roulette Statistics",
       "no-data": "This user have never played a roulette game!"
     },
     "blackjack": {
-      "embed-title": "{{user}}'s Blackjack Status",
+      "embed-title": "{{user}}'s Blackjack Statistics",
       "no-data": "This user have never played a blackjack game!"
     },
     "hunt": {
       "no-data": "This user have never hunted",
-      "embed-title": "{{user}}'s Hunt Status",
+      "embed-title": "{{user}}'s Hunt Statistics",
       "display-data": "**Attempts:** {{tries}}\n**Rating:** {{success}}%\n**Total Hunted:** {{hunted}}",
       "demon": "Demons",
       "angel": "Angels",
@@ -510,54 +509,41 @@
       "god": "Gods"
     }
   },
-  "blockcomando": {
-    "no-cmd": "this command does not exist!",
-    "dev-cmd": "you do not have access to this command!",
-    "unblock": "the command `/{{cmd}}` has been re-enabled on this server!",
-    "block": "the command `/{{cmd}}` has been disabled on this server!",
-    "foda": "Are you happy? If you disable this command you will no longer be able to use it, stop"
-  },
   "cooldowns": {
     "title": "⌛ | Your cooldown times",
     "no-cooldown": "You can already do that!",
     "hunt": "Hunt",
     "vote": "Vote for Me",
     "click-to-vote": "Click to Vote",
-    "time": "**{{time}}** {{subtime}}"
+    "time": "**{{time}}** {{subtime}} | **<t:{{unix}}:T>**",
+    "dungeon": "Dungeon",
+    "no-dungeon": "You have not yet reincarnated in Boleham's World. Use `/ficha`!"
   },
   "trisal": {
     "title": "❤️ Polyamory ❤️",
-    "no-args": "You're not on any trisals! Mention people to join in a polyamory >.<",
-    "description": "Form a trisal and see your metadinhas",
-    "usage": "[@mention1 & @mention2]",
-    "marry-not-found": "a user of your trisal was not found",
-    "banned-user": "This trisal cannot be made because it is banned from Menhera!",
+    "no-args": "You're not on any polyamory! Mention people to join in a polyamory >.<",
+    "marry-not-found": "a user of your polyamory was not found",
+    "banned-user": "This polyamory cannot be made because it is banned from Menhera!",
     "no-owner": "you need to use the 'suck' command to create an account first >.<",
-    "embed": {
-      "description": "As much as it is not something serious, these 3 are together: "
-    },
     "self-mention": "you can't make a couple with yourself",
     "same-mention": "you can't mention the same user 2 times",
-    "bot-mention": "you cannot form a trisal with a bot. In fact this is even weird ... I feel sorry for you for trying to get a bot.",
-    "no-db": "one of the members of trisal was not found in the database! The best thing now is to undo this trisal and start another one",
-    "comedor-de-casadas": "UOUOUOU calm there married eater, one of the users you mentioned is already in a trisal",
-    "accept-message": ":heart: | Do you accept to form a trisal? You 3 must react to this message in 14 seconds!",
-    "done": "congratulations, you three formed a beautiful trisal! Use this command again to see your pictures together",
-    "error": "the 3 did not react to the message in time! Try again, maybe with someone who wants to, who knows"
-  },
-  "untrisal": {
-    "error": "you are not in any trisal!",
-    "sure": "are you sure you want to break up with your trisal? You have 15 seconds to confirm",
-    "confirm": "Breakup",
-    "done": "Your trisal is over! There's no way. He finished...."
+    "bot-mention": "you cannot form a polyamory with a bot. In fact this is even weird ... I feel sorry for you for trying to get a bot.",
+    "no-db": "one of the members of polyamory was not found in the database! The best thing now is to undo this polyamory and start another one",
+    "comedor-de-casadas": "UOUOUOU calm there married eater, one of the users you mentioned is already in a polyamory",
+    "accept-message": ":heart: | Do you accept to form a polyamory? You 3 must click the button in 15 seconds!\n{{author}}, {{first}} e {{second}}",
+    "done": "congratulations, you three formed a beautiful polyamory! Use this command again to see your pictures together",
+    "error": "the 3 did not react to the message in time! Try again, maybe with someone who wants to, who knows",
+    "untrisal": {
+      "sure": "are you sure you want to break up with your polyamory? You have 15 seconds to confirm",
+      "done": "Your polyamory is over! There's no way. He finished....",
+      "breakup": "Breakup"
+    }
   },
   "blackjack": {
-    "description": "Bet against Menhera in Blackjack (or 21)",
-    "usage": "<bet>",
+    "title": "BlackJack",
+    "description": "Your Hand: **{{userHand}}** -> `{{userTotal}}`\nMenhera's Hand: **{{dealerCards}}** -> `{{dealerTotal}}`",
     "buy": "Draw",
     "stop": "Stop",
-    "bad-usage": "you didn't place your bet",
-    "invalid-value": "the bet amount must be greater than 1000 and less than 50000",
     "available-options": "Available Options",
     "initial-options": "**[1] Start** - Start the game\n**[2] Surrender** - Surrender from the game (and losses the bet)",
     "options": "**[1] Buy** - Draw one more card\n**[2] Stop** - Stop your bet here",
@@ -567,17 +553,13 @@
     "dealer-hand": "Menhera's Hand",
     "timeout": "you took too long to play. Menhera ran out of patience, you lost everything!",
     "result": "👑 | Results",
-    "blackjack": "You did a BlackJack!!! You received double the prize! **{{value}}** :star:",
-    "explode": "You bust! That's why you lost everything :(",
-    "menhera-bj": "Menhera has a Blackjack. You lost everything, and Menhera won everything hehe",
-    "menhera-21": "Menhera hits 21, you lololololost 👍",
-    "user-21": "You hit 21, my kid! You won **{{value}}** :star:",
-    "menhera-bust": "Menhera bust! The **{{value}}** :star: it's all yours",
-    "draw": "Both bust. Because Menhera is so humble, she returned your bet to your account!",
-    "both-21": "Both hit 21, but Menhera has the upper hand. Unfortunately that's how casinos work. You lost everything.",
-    "equal": "Both you and Menhera hit the same amount. Menhera Wins UwU",
-    "menhera-bigger": "Menhera is closer to 21, she wins!",
-    "user-bigger": "You're closer to 21, you won **{{value}}** :star:"
+    "init_blackjack": "**{{winner}}** started a game with a BlackJack! How lucky!\n**Your {{text}}:** {{prize}} :star:",
+    "blackjack": "**{{winner}}** made a BlackJack! On the fly!\n**Your {{text}}:** {{prize}} :star:",
+    "busted": "**{{loser}}** busted! Better luck next time!\n**Your {{text}}:** {{prize}} :star:",
+    "draw": "The players tied, but unfortunately, by law N°12.158/2021 of the Boleham World, Menhera takes it all hehehe. Yes it's unfair, but that's life!\n**Yours {{text}}:** {{prize}} :star:",
+    "biggest": "**{{winner}}** won for having more points!\n**Your {{text}}:** {{prize}} :star:",
+    "profit": "Profit",
+    "loss": "Loss"
   },
   "itens": {
     "no-user": "This user does't have an inventory",
@@ -597,8 +579,6 @@
     "select-description": "Choose one of the items below to activate it. If there is no available space, you will have to choose one of the active items to replace it"
   },
   "carteira": {
-    "description": "See someone's wallet",
-    "usage": "[user]",
     "no-dbuser": "this user is not in my database",
     "title": "{{user}}'s Wallet",
     "stars": "Stars",
@@ -641,7 +621,7 @@
   "roleta": {
     "poor": "You don't have enough stars to bet!",
     "lose-title": "Lost everything!",
-    "win": "You won **{{profit}}** :star:! Congratulations\n\n**Rated Value:** {{number.value}}\n**Color:** $t(commands:roulette.{{number.color}})\n**Dozen:** $t(commands:roulette.{{number.dozen}})\n\n**Your choice**: $t(commands:roulette.{{operation}})\n**Selection:** {{selection}}",
+    "win": "You won **{{profit}}** ({{taxes}}% of tax) :star:! Congratulations\n\n**Rated Value:** {{number.value}}\n**Color:** $t(commands:roulette.{{number.color}})\n**Dozen:** $t(commands:roulette.{{number.dozen}})\n\n**Your choice**: $t(commands:roulette.{{operation}})\n**Selection:** {{selection}}",
     "description": "Welcome to the game of roulette, here you can win or lose EVERYTHING, choose your bet style below, then specify what you want to bet\n\n**BET TYPES:**",
     "win-title": "Wooo, you won!",
     "lose": "Unfortunately you lost the bet! Gone are **{{bet}}** :star: although\n\n**Amount Drawn:** {{number.value}}\n**Cor:** $t(commands:roulette.{{number.color}})\n**Dozen:** $t(commands:roulette.{{number.dozen}}) \n\n**Your choice:** $t(commands:roulette.{{operation}})\n**Selection:** {{selection}}",
@@ -670,28 +650,28 @@
     "dozens-title": "Bet on Dozens",
     "dozens-value": "Bet on one of three dozen\nBASE PROFIT: **2:1**\nYOUR MAXIMUM PROFIT: **{{profit}}** :star:",
     "split-title": "Bet on Two Numbers",
-    "split-value": "You can bet on adjacent numbers\nBASE PROFIT: **17:1**\nYOUR MAXIMUM PROFIT: **{{profit}}** :star:",
+    "split-value": "You can bet on adjacent numbers\nBASE PROFIT: **5:1**\nYOUR MAXIMUM PROFIT: **{{profit}}** :star:",
     "straight-up-title": "Bet on Number",
-    "straight-up-value": "You can bet on a single number\nBASE PROFIT: **35:1**\nYOUR MAXIMUM PROFIT: **{{profit}}** :star:",
+    "straight-up-value": "You can bet on a single number\nBASE PROFIT: **9:1**\nYOUR MAXIMUM PROFIT: **{{profit}}** :star:",
     "STRAIGHT": "Unique Number",
     "SPLIT": "Double of Numbers",
     "DOZENS": "A Dozen",
     "LOWHIGH": "Higher or Lower Number",
     "ODDEVEN": "Odd or Even",
-    "COLOR": "Black or Red"
+    "COLOR": "Black or Red",
+    "hourly_limit": "You have exceeded your hourly high stakes limit (High stakes are considered, stakes greater than 10.000 stars placed in Double Numbers or Single Number)!"
   },
   "bicho": {
     "sorted-title": "Drawn Numbers",
+    "label": "Type a number between {{min}} and {{max}}",
     "sorted-description": "**Last Draw:** `{{lastDate}}`\nNumbers Drawn:\n1st - `{{first}}`\n2nd - `{{second}}`\n3rd - `{{third}}`\n4th - `{{fourth}}`\n5th - `{{fifth}}`\nBiggest Profit: **{{biggestProfit}}** :star:\n\nNext Draw In `{{nextDate}}`\n* *Accumulated Value:** {{value}} :star:",
     "no-register": "No registry",
     "poor": "You don't have enough stars to bet on! Try another value!",
     "bet-title": "Bet on an Animal",
     "bet-description": "Choose a way of betting! You can bet on an animal, a unit, a dozen, a hundred, a thousand, an animal, a sequence or corner of animals. Choose your category below, and after that, select the bet itself\n\n**MULTIPLIER BY CHOICE:**\n**Unit:** {{unity}}x :star:\n**Tens:* * {{ten}}x :star:\n**Hundred:** {{hundred}}x :star:\n**Thousands:** {{thousand}}x :star:\n**Animal: ** {{animal}}x :star:\n**Sequence:** {{sequence}}x :star:\n**Quina:** {{corner}}x :star:",
     "close": "Bets are off! Wait for the announcement of winners, and bet again",
-    "unity": "Unity",
-    "ten": "Ten",
-    "hundred": "Hundred",
-    "thousand": "Thousand",
+    "number": "Número",
+    "invalid-bet": "You inserted an invalid bet. Please check your selection and try again",
     "sequence": "Sequence",
     "corner": "Conrer",
     "one-animal": "Animal",
@@ -707,6 +687,13 @@
   },
   "ficha": {
     "no-user": "This user is not registered in RPG!",
+    "bless": {
+      "modal-title": "Bless Status",
+      "success": "Your Status has been Blessed!",
+      "invalid-number": "You have entered an invalid number!",
+      "no-points": "You used more points than you should. Your limit is **{{points}}**!",
+      "bless-limit": "One or more of your blessings has exceeded the blessing limit! A blessing cannot be more than **{{limit}}** points different from another blessing!"
+    },
     "register": {
       "title": "Summoning Ritual",
       "confirm-title": "Check Your Information",
@@ -718,16 +705,10 @@
     "show": {
       "not-found": "This user is not registered as an adventurer",
       "title": "{{name}}' Statuses",
-      "life": "lifLife",
-      "class": "Class",
-      "race": "Race",
-      "level": "Level",
-      "experience": "Experience",
-      "armor": "Armor",
-      "dmg": "Damage",
-      "mana": "Mana",
-      "money": "Real Coins",
       "poor-title": "Blessings Bonus",
+      "description": "{{emojis.heart}} | Race: **{{race}}**\n{{emojis.crown}} | Class: **{{class}}**\n{{emojis.blood}} | Life: **{{life}} / {{maxLife}}**\n{{emojis.mana}} | Mana: **{{mana}} / {{maxMana}}**\n{{emojis.damage}} | Damage: **{{damage}}**\n{{emojis.armor}} | Armor: **{{armor}}**\n{{emojis.intelligence}} | Intelligence: **{{intelligence}}**\n{{emojis.agility}} | Agility: **{{agility}}**\n{{emojis.coin}} | Real Coins: **{{money}}**\n{{emojis.chest}} | Capacity: **{{capacity}}/{{maxCapacity}}**\n{{emojis.level}} | Level: **{{level}}**\n{{emojis.experience}} | Experience: **{{experience}} / {{nextLevelXp}}**",
+      "vitality-description": "{{emojis.blood}} | Life: **{{maxLife}}** | {{lifeBlesses}}\n{{emojis.mana}} | Mana: **{{maxMana}}** | {{manaBlesses}}\n{{emojis.agility}} | Agility: **{{agility}}** | {{agilityBlesses}}",
+      "battle-description": "{{emojis.damage}} | Damage: **{{damage}}** | {{damageBlesses}}\n{{emojis.armor}} | Mana: **{{armor}}** | {{armorBlesses}}\n{{emojis.intelligence}} | Intelligence: **{{intelligence}}** | {{intelligenceBlesses}}",
       "poor-description": "You are currently out of Blessings, but keep your current Blessings status in the meantime\n\n❤️ | **Extra Life:** {{life}} | {{lifePoints}}\n💧 | **Extra Mana:** {{mana}} | {{manaPoints}}\n👢 | **Extra Agility** {{agility}} | {{agilityPoints}}\n⚔️ | **Extra Damage:** {{damage}} | {{damagePoints}}\n🛡️ | **Extra Armor:** {{armor}} | {{armorPoints}}\n🧠 | **Extra Intelligence:** {{intelligence}} | {{intelligencePoints}}",
       "no-blesses": "You don't have Holy Blessings to improve your Status!",
       "blessings": "You have **{{vitality}}** Holy Blessings of Vitality and **{{battle}}** of Battle, use the buttons below to improve your stats. You cannot have a blessed status difference of more than **{{limit}}** blessings",
@@ -742,6 +723,7 @@
       "abilities": {
         "upgrade": "Upgrade Skills",
         "unlock": "Unlock Skills",
+        "nextCost": "Next Cost",
         "title": "{{name}}'s Abilities",
         "success": "You have blessed your skill with Success!",
         "no-blesses": "You don't have Holy Blessings to improve your Skills!",
@@ -758,42 +740,132 @@
     "next": "Go Down to Level {{level}}",
     "preparation": {
       "title": "Preparation for battle",
-      "footer": "Do you want to go in anyway?",
-      "stats": "Check your status first",
+      "footer": "Do you want to go in anyway? {{users}}/{{maxUsers}}",
+      "stats": "{{user}}' Stats",
+      "no_party_members": "Someone in your party doesn't have a register in the Boleham World! Undo this party and try again",
+      "stats-description": "{{emojis.blood}} | Life: **{{life}} / {{maxLife}}**\n{{emojis.mana}} | Mana: **{{mana}} / {{maxMana}}**\n{{emojis.damage}} | Damage: **{{damage}}**\n{{emojis.armor}} | Armor: **{{armor}}**\n{{emojis.intelligence}} | Intelligence: **{{intelligence}}**\n{{emojis.agility}} | Agility: **{{agility}}**\n{{emojis.chest}} | Capacity: **{{capacity}}/{{maxCapacity}}**",
       "enter": "Join",
-      "no": "Chicken Out",
-      "no_censored": "Runaway"
+      "no_uncensored": "Chicken Out",
+      "no": "Runaway"
     },
     "results": {
       "title": "Battle Results",
       "item-title": "Battle Spoils",
       "backpack-full": "You don't have enough space to pick up the dropped items!",
       "grab": "Select the items you want",
+      "get-all-items": "Grab All Items",
+      "pick-loots": "Pick Loots",
+      "no-items": "`No Items Available`",
+      "user-dead": "You can't use potions or items when you are dead!",
+      "didnt-participate": "You did not participate in the battle to get access to the loots!",
+      "runaway": "You successfully runaway the battle",
       "use-potion": "Select the potions that you want to use",
+      "available-items": "Available Items",
+      "no-potions": "You don't have any potions to use!",
+      "finish": "Grand Battle! {{amount}}x **{{enemy}}** dead!\nAll team members must choose what they want to do.",
       "back": "You've returned to the city, get some rest before going on another adventure!",
-      "footer": "If you want an item, please do so before going elsewhere.",
+      "footer": "Users Ready: {{users}}/{{maxUsers}}",
+      "already_ready": "You've already selected to be ready! Wait until the rest of the party is ready!",
+      "already_used_potions": "You've already used potions!",
+      "already_picked_items": "You've already picked those items!",
+      "only-owner": "The party leader {{user}} must select an option!",
+      "success_potions": "Used Potions!",
+      "success_items": "Picked Loots!",
+      "everyone-dead": "**EVERYONE IN THE PARTY DIED.** Be careful when entering deep dungeons. Don't rush on your way down! Upgrade your gear and come back in the future!",
+      "error-only-owner": "Only the party leader must select options now!",
       "loots": "Available Items (You have space to get **{{amount}}**)\n{{itemText}}",
-      "description": "**Your Status:**\n❤️ | Life: **{{life}} / {{maxLife}}**\n💧 | Mana: **{{mana}} / {{maxMana}}**\n🔰 | Earned Experience: **{{experience}}**\n\nYou have triumphed in your battle, and now you must go your way, choose what you want to do"
+      "stats-description": "{{emojis.blood}} | Life: **{{life}} / {{maxLife}}**\n{{emojis.mana}} | Mana: **{{mana}} / {{maxMana}}**\n{{emojis.experience}} | Earned Experience: **{{experience}}**\n{{emojis.chest}} | Capacity: **{{capacity}}/{{maxCapacity}}**"
     },
-    "arregou": "You thought better of it, and ended up giving up on entering the dungeon"
+    "arregou": "{{user}} thought better of it, and ended up giving up on entering the dungeon"
   },
   "inventario": {
-    "title": "{{user}}' Inventory",
+    "title": "{{emoji}} | {{user}}' Inventory ({{capacity}}/{{maxCapacity}})",
     "no-items": "**Your inventory is empty!**",
-    "use": "Use Potions",
-    "use-success": "You used your potions successfully!",
-    "use-description": "Level: **{{level}}**\nRegeneration: **{{regeneration}}**"
+    "use-potion": "Use Potions",
+    "equip-item": "Equip Items",
+    "fields": {
+      "backpack": "Capacity",
+      "weapon": "Damage",
+      "protection": "Defense"
+    },
+    "use-potion-success": "You used your potions successfully!",
+    "use-potion-modal-title": "Potion Selector",
+    "use-potion-modal-lable": "{{name}} - {{max}}x",
+    "use-potion-description": "Level: **{{level}}**\nRegeneration: **{{regeneration}}**\nAmount: **{{amount}}**",
+    "use-equipment-description": "Level: **{{level}}**\n{{field}}: **{{value}}**",
+    "use-potion-invalid-selection": "You inserted an invalid amount of potions to use!",
+    "backpack-full": "\n`You currently own more items than this backpack can hold!`",
+    "equip-success": "You equipped **{{name}}**",
+    "no-potions": "You don't have any potions to use!",
+    "no-equipments": "You don't have any items to equip!"
   },
   "centro": {
+    "library": {
+      "title": "📖 | Boleham Library | {{session}}",
+      "abilities": {
+        "title": "Skills",
+        "not-found": "This skill does not exist!",
+        "effects": "**EFFECTS:**",
+        "damage": "Damage",
+        "heal": "Heal",
+        "poison": "Poison",
+        "agility_buff": "Agility Boost",
+        "agility_debuff": "Agility Debuff",
+        "armor_buff": "Armor Boost",
+        "armor_debuff": "Armor Reduction",
+        "damage_buff": "Damage Increase",
+        "damage_debuff": "Damage Reduction",
+        "intelligence_buff": "Intelligence Boost",
+        "intelligence_debuff": "Intelligence Debuff",
+        "plain": "Gross Value",
+        "maxLife": "Maximum Life",
+        "maxMana": "Maximum Mana",
+        "agility": "Agility",
+        "armor": "Armor",
+        "intelligence": "Intelligence",
+        "percentage": "Percentage",
+        "self": "Itself",
+        "enemy": "enemy",
+        "effect-description": "**Type:** {{type}}\n**Duration in Shifts:** {{duration}}\n**Value**: {{value}}\n** Value Reflection:** {{reflection}}\n**Intelligence Influence:** {{inIntelligence}}%\n**Value Type**: {{modifier}}\n**Value per Level: ** {{valuePerLevel}}\n**Element:** {{element}}\n**Target:** {{target}}",
+        "description": "**Name:** {{name}}\n**Description:** {{description}}\n**Mana Cost:** {{cost}}\n**Cost of Mana per Level:** {{costPerLevel}}\n**Unlock Cost:** {{unlockCost}}"
+      },
+      "items": {
+        "not-found": "This item does not exist!",
+        "title": "Items",
+        "name": "Name",
+        "buy-cost": "Market Cost",
+        "sell-cost": "Sell Cost",
+        "type": "Type",
+        "flags": "Flags"
+      }
+    },
     "blacksmith": {
-      "evolve": "Evolve",
-      "poor": "Insufficient Money",
-      "success": "Evolution Completed Successfully!",
-      "evolve-description": "**Upgrade {{name}}**\n\nUpgrade Cost: **{{cost}}** {{coinEmoji}}\nUpgrade Bonus: **{{bonus}}** {{bonusEmoji}} \nUpgrade Level: **{{level}}**",
       "title": "Blacksmith",
       "backpack-description": "**{{name}}**\nCapacity: **{{capacity}}**\nLevel: **{{level}}**",
       "weapon-description": "**{{name}}**\nDamage: **{{damage}}**\nLevel: **{{level}}**",
       "protection-description": "**{{name}}**\nArmor: **{{armor}}**\nLevel: **{{level}}**",
+      "upgrade": "Melhorar",
+      "fields": {
+        "backpack": "Capacity",
+        "weapon": "Damage",
+        "protection": "Defense"
+      },
+      "no-space": "You don't have enough space to keep this item!",
+      "poor": "Insufficient Money",
+      "poor-items": "Insufficient Items",
+      "none": "None :)",
+      "no-forgeable": "There is no item to forge in your current location!",
+      "forge-item-description": "Cost: **{{cost}}** {{noMoney}}\nNecessary Items: {{items}} {{noItems}}\n{{field}}: **{{value}}**",
+      "success": "Upgrade Completed Successfully!",
+      "forge-success": "You've forged **{{name}}** successfully!",
+      "forge-backpack": "Forge Backpack",
+      "upgrade-backpack": "Upgrade Backpack",
+      "forge-weapon": "Forge Weapon",
+      "upgrade-weapon": "Upgrade Weapon",
+      "forge-protection": "Forge Protection",
+      "upgrade-protection": "Upgrade Protection",
+      "max-level": "| Nível Máximo",
+      "evolve-description": "**Upgrade {{name}}**\n\nUpgrade Cost: **{{cost}}** {{coinEmoji}}\nUpgrade Bonus: **{{bonus}}** {{bonusEmoji}}\nNecessary Items: {{items}}\nUpgrade Level: **{{level}}**",
       "description": "Welcome to Boleham Blacksmith, here you can upgrade your items like Backpack, Weapon and Armor. Select below what you want to do"
     },
     "buy": {
@@ -808,6 +880,7 @@
     "sell": {
       "no-items": "You don't have any items to sell!",
       "title": "Boleham's Market | Sell",
+      "sell-all": "Sell All Itens",
       "success": "You sold your items successfully. Total: **{{value}}** Real Coins"
     }
   },
@@ -824,5 +897,106 @@
     "stop": "Stop Praying",
     "back-from-death": "You have just recovered from a death! Welcome back **{{user}}-sama** to the world of Boleham!",
     "praying-description": "You're already praying for **{{cooldown}}** {{subtime}}. In this time he has recovered **{{life}}** ❤️ and **{{mana}}** 💧"
+  },
+  "arena": {
+    "enemy-unregistered": "Your enemy has not yet reincarnated in the world of Boleham! Choose another enemy OR convince him to reincarnate.",
+    "title": "Boleham's Arena",
+    "ready": "I'm Ready!",
+    "leveled-battle": "Fair Battle",
+    "default-battle": "Unlevel Battle",
+    "ready-users": "Ready users: {{ready}} / 2",
+    "same-user": "HAHAHA look at that guy wanting to battle himself, tag someone else there namoral",
+    "user-not-configurated": "{{user}} doesn't have all blessings configured for battle! Use `/arena configure` to set your blessings",
+    "description": "Welcome to the arena **{{author}}** and **{{enemy}}**!\n\nYou will be pitted against each other in a friendly battle! No one will suffer death penalties or At the start of the battle, both will have maximum health and mana, and this value will not change on your adventurer sheet.\n\n**{{author}}** you can select below if the battle will be with your current levels, or if it will be fair to the **battle level**. The battle will only start when you both click READY. You have 20 seconds to decide\n\n**Battle Level:** All players are level **{{level}}** with **ALL** class skills at level **{{abilityLevel}}** Blessings are distributed according to user configuration\n\nLevel of {{author}}: **{{authorLevel}}**\n{{enemy}}Level: **{{enemyLevel}}**",
+    "ask-change-battle-type": "Hey {{author}}, **{{user}}** asked to change battle mode!",
+    "closed-command": "{{author}} has finished the command!",
+    "configurate": {
+      "reset-points": "Reset Points",
+      "success-points": "Your battle settings have been adjusted!",
+      "title": "Friendly Battle Settings",
+      "description": "Prepare for a friendly battle by fixing your status. You have in total **{{vitality}}** vitality blessings and **{{battle}}** battle blessings to use. Remembering that these blessings are only valid for friendly battles at **Battle Level**\n\nChoose below which status you want to change.\n**NOTE:** The number you put will be SET, that is, the amount of blessings you put in a status is what it will stay. Not typing anything makes that status not change, keeping the value before opening the form!"
+    },
+    "results": {
+      "title": "End of Battle",
+      "description": "{{text}}\n\n**Winner:** {{winnerName}}\n**Looser**: {{loserName}}"
+    }
+  },
+  "resetar": {
+    "ficha": {
+      "title": "Delete Account?",
+      "yes": "Yes, reset my character",
+      "success": "Your account has been deleted. You may create a new character when you want to",
+      "negated": "Your account still alive. When you want to delete it, just come here again",
+      "no": "NO!!! I CLICKED ON THE COMMAND JUST TO SEE",
+      "level": "You need to be at least level 5 to reset your character",
+      "description": "**ATTENTION**\n\nBy clicking the button below, you will erase ALL your **RPG data**\nYour Menhera account will still exist, only your data regarding the RPG will be lost\n\nThis will only cause your character to be deleted. You will be able to create another character whenever you want.\n\nStats such as PvP wins will still be linked to your account.\n\nAre you sure you want to do this?"
+    }
+  },
+  "badges": {
+    "title": "Your Badges",
+    "footer": "Select the badges that you want to NOT appears in your profile",
+    "select-all": "Select All",
+    "diselect-all": "Remove All Options",
+    "success": "Your choices has been selected",
+    "badge-info": "_{{description}}_\n**Acquired in**: <t:{{unix}}:d>\n**Badge ID**: {{id}}\n**Rarity:** {{rarity}}"
+  },
+  "menhera": {
+    "estatisticas": {
+      "aniversary-title": "🎉 TODAY IS MY BIRTHDAY 🎉",
+      "embed_description": "Hi my name is **{{name}}**, and I'm a Brazilian Bot for Discord with a focus on fun and RPG! I was created in **{{createdAt}}** and joined this server in **{{joinedAt}}**.\n\nA little bit about me: My name is Menhera, I am 16 years old and I LOVE, I mean, I LOOOOVE to use these faces: (>...<). To learn more, go to my [twitter](https://twitter.com/__MenheraBot), my [support server](https://discord.gg/fZMdQbA) and my [WEBSITE](https://menherabot.xyz).",
+      "embed_footer": "{{menhera}} was created by {{owner}}",
+      "version": "Version",
+      "support": "Support Server",
+      "extended": "Shards Info",
+      "ping": "Response Time: **{{api}}ms**\nWebsocket Latency: **{{ws}}ms**\nShard: **{{shard}}/{{totalShard}}**\nCluster: **{{cluster}}/{{totalCluster}}**"
+    }
+  },
+  "calvo": {
+    "text": "**{{name}}** baldness\n\n> {{user}} has baldness type **{{type}}** and is in the **{{stage}}**\n{{description}}\n\n\"___We are born from baldness, from baldness we will die...___\" - {{author}}, 2018",
+    "type-0": "A",
+    "type-1": "O",
+    "type-2": "M",
+    "type-3": "O+M",
+    "stage-0": "Normal",
+    "stage-1": "Start",
+    "stage-2": "Second Stage",
+    "stage-3": "Final",
+    "know-more": "Know More",
+    "descriptions": {
+      "0-0": "At the beginning of everything, your life will still be problematic in the future, but don't despair, baldness will always reign, and we shouldn't be afraid of it!",
+      "0-1": "Your forehead starts to stand out, they must have called you a mosquito airport, but don't be shaken, what's theirs is kept!",
+      "0-2": "You already look more like a priest of old, you've lost hope of recovering what was once most sacred to you, and all you have to do is hand over the rest of your hair",
+      "0-3": "The end, not even an implant should solve the problem, baldness won, don't fight anymore, now just rest... Rest and enjoy this new life, the life of those who lived, and experienced it!",
+      "1-0": "Você percebe que está começando e sabe que não pode parar, a luta agora vai ser de quanto tempo vai demorar para a calvice te derrotar",
+      "1-1": "Donut! That's what they call you. At that moment you start wearing caps and hats to hide what you feel ashamed of, baldness is starting",
+      "1-2": "You don't use shampoo anymore, the only thing you use is furniture polish to make your beautiful bald spot shine. You've been through a lot, so you don't care what others say",
+      "1-3": "So that's it, the end has come. The baldness beat you, nothing more can be done. But, it wasn't a defeat! It was a victory! For going through the worst kind of baldness possible, and finally reaching the The end!",
+      "2-0": "It's the beginning of a new life. You look in the mirror and realize what you didn't want. You're going bald, and you know it, you just haven't accepted it yet",
+      "2-1": "Two side entries appear on your head, you are relieved that your baldness is the most common of all, and also the most charming.",
+      "2-2": "Your hair looks more like a pre-tsunami tide receding. You don't care what happens to your hair, you are an acceptor, a person who accepts baldness as it is",
+      "2-3": "This is your end, the same as all the other bald ones. You didn't want to get to this point, your baldness was beautiful, and now, it's just one more on the list of those who now, no longer have nothing else",
+      "3-0": "The day has come, the day you realize you're starting to go bald, the only plea you have is not to be the **O** type. Let it be anything but the **O** type. THE",
+      "3-1": "You don't believe in yourself. It couldn't be worse, you realize that your baldness starts as a type O. At least you can hide your top with a hat, and be proud of the charm that type M brings your head",
+      "3-2": "You can't hide it, everyone knows you're a mix. But you don't let yourself be shaken, and of course it tells everyone and everything that you're just cutting Ronaldinho Gaúcho.",
+      "3-3": "The end of the ends. You are grateful to have had this baldness. As much as you didn't trust it at first, and that you were afraid of what others would think, you won, and made it to the end. Congratulations champion !"
+    }
+  },
+  "party": {
+    "already_in_party": "You are already in a party, please leave it before joining another one",
+    "other_in_party": "{{user}} is already in a party! Please ask it to join yours",
+    "create_title": "Party Formation",
+    "create_description": "{{user}} wants to create a party! For the party to form, all members must click the button below.",
+    "create_footer": "Accepted: {{users}}/{{maxUsers}}",
+    "bot_in_party": "You cannot form a party with a bot!",
+    "cannot_invite_self": "You cannot invite yourself to a party!",
+    "user_unregistered": "{{user}} don't have an RPG account",
+    "create_cancelled": "{{user}} refused to join the group!",
+    "create_timesup": "The players didn't accept the party in time",
+    "create_success": "The party has been created! You may now go to the dungeon together!",
+    "not-in-party": "You are not in a party!",
+    "left-party": "You left your party with {{users}}",
+    "user-not-in-party": "**{{user}}** isn't in a party at the moment",
+    "party-of": "{{user}}'s Party",
+    "party-description": "**Party Leader:** {{owner}}\n**Participants:** {{users}}\n**Undo in**: {{time}} minutes"
   }
 }

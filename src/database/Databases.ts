@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import Redis from 'ioredis';
-import { Cmds, Guilds, Users, Themes, Credits, Rpgs } from '@structures/DatabaseCollections';
-import { IDatabaseRepositories } from '@utils/Types';
+import { Cmds, Guilds, Users, Themes, Credits, Rpgs } from '@database/Collections';
+import { IDatabaseRepositories } from '@custom_types/Menhera';
 import CacheRepository from './repositories/CacheRepository';
 import CmdRepository from './repositories/CmdsRepository';
 import StarRepository from './repositories/StarRepository';
@@ -11,7 +11,6 @@ import GuildRepository from './repositories/GuildsRepository';
 import BadgeRepository from './repositories/BadgeRepository';
 import MaintenanceRepository from './repositories/MaintenanceRepository';
 import HuntRepository from './repositories/HuntRepository';
-import RelationshipRepository from './repositories/RelationshipRepository';
 import BlacklistRepository from './repositories/BlacklistRepository';
 import TopRepository from './repositories/TopRepository';
 import GiveRepository from './repositories/GiveRepository';
@@ -20,9 +19,10 @@ import ShopRepository from './repositories/ShopRepository';
 import ThemeRepository from './repositories/ThemeRepository';
 import CreditsRepository from './repositories/CreditsRepository';
 import RoleplayRepository from './repositories/RoleplayRepository';
+import RelationshipRepository from './repositories/RelationshipRepository';
 
 export default class Databases {
-  public redisClient: Redis.Redis | null = null;
+  public redisClient: Redis | null = null;
 
   public readonly Cmds: typeof Cmds;
 
@@ -87,11 +87,6 @@ export default class Databases {
     this.starRepository = new StarRepository(this.Users);
     this.mamarRepository = new MamarRepository(this.userRepository);
     this.guildRepository = new GuildRepository(this.Guilds);
-    this.cacheRepository = new CacheRepository(
-      this.redisClient,
-      this.guildRepository,
-      this.cmdRepository,
-    );
     this.coinflipRepository = new CoinflipRepository(this.starRepository);
     this.badgeRepository = new BadgeRepository(this.userRepository);
     this.maintenanceRepository = new MaintenanceRepository(this.cmdRepository);
@@ -101,6 +96,13 @@ export default class Databases {
     this.topRepository = new TopRepository(this.Users);
     this.giveRepository = new GiveRepository(this.Users);
     this.themeRepository = new ThemeRepository(this.Themes, this.redisClient);
+    this.roleplayRepository = new RoleplayRepository(this.Rpgs, this.redisClient);
+
+    this.cacheRepository = new CacheRepository(
+      this.redisClient,
+      this.guildRepository,
+      this.cmdRepository,
+    );
     this.creditsRepository = new CreditsRepository(
       this.Credits,
       this.redisClient,
@@ -111,7 +113,6 @@ export default class Databases {
       this.themeRepository,
       this.creditsRepository,
     );
-    this.roleplayRepository = new RoleplayRepository(this.Rpgs, this.redisClient);
   }
 
   get repositories(): IDatabaseRepositories {
@@ -148,15 +149,28 @@ export default class Databases {
 
   createRedisConnection(): void {
     try {
-      this.redisClient = new Redis({ db: process.env.NODE_ENV === 'development' ? 1 : 0 });
+      this.redisClient = new Redis({
+        db: process.env.NODE_ENV === 'development' ? 1 : 0,
+        maxRetriesPerRequest: 1,
+        retryStrategy: (times: number) => Math.min(times * 200, 5000),
+      });
 
-      this.redisClient.once('connect', () => {
+      this.redisClient.on('connect', () => {
         console.log('[REDIS] Connected to redis database');
       });
 
       this.redisClient.on('end', () => {
         this.redisClient = null;
         console.log('[REDIS] Redis database has been disconnected');
+      });
+
+      this.redisClient.on('error', (err) => {
+        if (err.message.includes('ECONNREFUSED') && this.redisClient) {
+          this.redisClient.disconnect(false);
+          this.redisClient = null;
+        }
+
+        console.log(`[REDIS] An error ocurred at Redis: ${err}`);
       });
     } catch (err) {
       console.log(`[REDIS] Error connecting to redis ${err}`);

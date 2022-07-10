@@ -1,4 +1,3 @@
-/* eslint-disable no-bitwise */
 import { Context } from 'koa';
 import Router from 'koa-router';
 import MenheraClient from 'MenheraClient';
@@ -17,16 +16,27 @@ const handleRequest = async (ctx: Context, client: MenheraClient) => {
       type: 4,
       data: {
         content: 'Comandos devem ser usados em servidores!\n\nCommands must be used in servers',
-        flags: 1 << 6,
+        flags: 64, // 1 << 6,
       },
     };
     return;
   }
 
-  // @ts-expect-error Actions is private
-  client.actions.InteractionCreate.handle(ctx.request.body);
-
   ctx.respond = false;
+
+  if (!client.shardProcessEnded) {
+    // @ts-expect-error actions is private
+    client.actions.InteractionCreate.handle(ctx.request.body);
+    return;
+  }
+
+  client.cluster.evalOnCluster(
+    // @ts-expect-error Context in this package is weird
+    (c, { body }) => {
+      c.actions.InteractionCreate.handle(body);
+    },
+    { guildId: ctx.request.body.guild_id, context: { body: ctx.request.body } },
+  );
 };
 
 export default (client: MenheraClient): Router => {

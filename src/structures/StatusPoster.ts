@@ -1,6 +1,6 @@
 import HttpRequests from '@utils/HTTPrequests';
 import MenheraClient from 'MenheraClient';
-import { IStatusData, ShardsDataReturn } from '@utils/Types';
+import { IStatusData, ShardsDataReturn } from '@custom_types/Menhera';
 
 export const postBotStatus = (client: MenheraClient): void => {
   setInterval(async () => {
@@ -13,6 +13,7 @@ export const postBotStatus = (client: MenheraClient): void => {
     await HttpRequests.postBotStatus(client.user.id, info, client.options.shardCount ?? 0);
   }, 1800000);
 };
+
 export const postShardStatus = (client: MenheraClient): void => {
   setInterval(async () => {
     if (!client.shardProcessEnded) return;

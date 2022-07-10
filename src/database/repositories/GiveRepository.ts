@@ -1,5 +1,5 @@
-import { Users } from '@structures/DatabaseCollections';
-import { IUserSchema } from '@utils/Types';
+import { Users } from '@database/Collections';
+import { IUserSchema } from '@custom_types/Menhera';
 
 export default class GiveRepository {
   constructor(private userModal: typeof Users) {}

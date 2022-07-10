@@ -1,38 +1,23 @@
-/* eslint-disable camelcase */
 import axios from 'axios';
 
 import {
-  AvailableCardBackgroundThemes,
-  AvailableCardThemes,
-  AvailableProfilesThemes,
-  AvailableTableThemes,
-  AvailableThemeTypes,
-  BichoBetType,
-  IBlackjackCards,
+  BichoTop,
+  BichoWinner,
+  BlackjackTop,
+  CoinflipTop,
+  HuntTop,
+  HuntTypes,
   ICommandsData,
   ICommandUsedData,
   IDisabled,
-  IPicassoReturnData,
   IRESTGameStats,
   IRESTHuntStats,
   IStatusData,
-  IUserDataToProfile,
-  ThemeFiles,
-} from '@utils/Types';
-import { User } from 'discord.js-light';
+  RouletteTop,
+} from '@custom_types/Menhera';
 import type { ActivityType } from 'discord.js-light';
 import { UserBattleConfig } from '@roleplay/Types';
-import { debugError, MayNotExists } from './Util';
-
-const PicassoRequest = axios.create({
-  baseURL: `${process.env.API_URL}/picasso`,
-  timeout: 5000,
-  headers: {
-    'Content-Type': 'application/json',
-    'User-Agent': process.env.MENHERA_AGENT as string,
-    Authorization: process.env.API_TOKEN as string,
-  },
-});
+import { debugError } from './Util';
 
 const topggRequest = axios.create({
   baseURL: `https://top.gg/api`,
@@ -63,21 +48,12 @@ const StatusRequest = axios.create({
 });
 
 export default class HttpRequests {
-  static async getAssetImageUrl(type: string): Promise<string> {
-    try {
-      const data = await apiRequest.get(`/assets/${type}`);
-      return data.data.url;
-    } catch {
-      return 'https://i.imgur.com/HftTDov.png';
-    }
-  }
-
   static async getUserBattleConfig(
     userId: string,
   ): Promise<{ error: false; data: { config: UserBattleConfig } } | { error: true }> {
     const result = await apiRequest.get(`/roleplay/battleconf/?userId=${userId}`).catch(debugError);
 
-    if (!result || result.status !== 200) return { error: true };
+    if (!result || result.status !== 200 || result.data?.error) return { error: true };
 
     return { error: false, data: result.data };
   }
@@ -149,6 +125,18 @@ export default class HttpRequests {
   static async getCoinflipUserStats(id: string): Promise<IRESTGameStats | { error: true }> {
     try {
       const data = await apiRequest.get('/statistics/coinflip', { data: { userId: id } });
+      if (data.status === 400) return { error: true };
+      if (!data.data.error) return data.data;
+    } catch {
+      return { error: true };
+    }
+
+    return { error: true };
+  }
+
+  static async getBichoUserStats(id: string): Promise<IRESTGameStats | { error: true }> {
+    try {
+      const data = await apiRequest.get('/statistics/bicho', { data: { userId: id } });
       if (data.status === 400) return { error: true };
       if (!data.data.error) return data.data;
     } catch {
@@ -234,31 +222,110 @@ export default class HttpRequests {
       .catch(debugError);
   }
 
-  static async postBichoGame(
-    userId: string,
-    value: number,
-    betType: BichoBetType,
-    betSelection: string,
-  ): Promise<MayNotExists<{ gameId: number }>> {
-    return apiRequest
-      .post('/statistics/bicho', { userId, value, betType, betSelection })
-      .catch(debugError)
-      .then((a) => a?.data);
-  }
-
-  static async userWinBicho(gameId: number): Promise<void> {
-    if (!gameId) return;
-    await apiRequest.patch('/statistics/bicho', { gameId });
-  }
-
   static async postHuntCommand(
     userId: string,
     huntType: string,
     { value, success, tries }: { value: number; success: number; tries: number },
+    userTag: string,
   ): Promise<void> {
     await apiRequest
-      .post('/statistics/hunt', { userId, huntType, value, success, tries })
+      .post('/statistics/hunt', { userId, huntType, value, success, tries, userTag })
       .catch(debugError);
+  }
+
+  static async postBichoGame(players: BichoWinner[]): Promise<void> {
+    await apiRequest.post('/statistics/bicho', { players }).catch(debugError);
+  }
+
+  static async getTopBlackjack(
+    skip: number,
+    bannedUsers: string[],
+    type: 'wins' | 'money',
+  ): Promise<BlackjackTop[] | null> {
+    try {
+      const data = await apiRequest.get('/statistics/blackjack/top', {
+        data: { skip, bannedUsers, type },
+      });
+      if (data.status === 400) return null;
+      if (!data.data.error) return data.data;
+    } catch {
+      return null;
+    }
+
+    return null;
+  }
+
+  static async getTopCoinflip(
+    skip: number,
+    bannedUsers: string[],
+    type: 'wins' | 'money',
+  ): Promise<CoinflipTop[] | null> {
+    try {
+      const data = await apiRequest.get('/statistics/coinflip/top', {
+        data: { skip, bannedUsers, type },
+      });
+      if (data.status === 400) return null;
+      if (!data.data.error) return data.data;
+    } catch {
+      return null;
+    }
+
+    return null;
+  }
+
+  static async getTopRoulette(
+    skip: number,
+    bannedUsers: string[],
+    type: 'wins' | 'money',
+  ): Promise<RouletteTop[] | null> {
+    try {
+      const data = await apiRequest.get('/statistics/roulette/top', {
+        data: { skip, bannedUsers, type },
+      });
+      if (data.status === 400) return null;
+      if (!data.data.error) return data.data;
+    } catch {
+      return null;
+    }
+
+    return null;
+  }
+
+  static async getTopBicho(
+    skip: number,
+    bannedUsers: string[],
+    type: 'wins' | 'money',
+  ): Promise<BichoTop[] | null> {
+    try {
+      const data = await apiRequest.get('/statistics/bicho/top', {
+        data: { skip, bannedUsers, type },
+      });
+      if (data.status === 400) return null;
+      if (!data.data.error) return data.data;
+    } catch {
+      return null;
+    }
+
+    return null;
+  }
+
+  static async getTopHunts<HuntType extends HuntTypes>(
+    skip: number,
+    bannedUsers: string[],
+    huntType: HuntTypes,
+    type: 'success' | 'tries' | 'hunted',
+  ): Promise<HuntTop<HuntType>[] | null> {
+    try {
+      const data = await apiRequest.get('/statistics/hunt/top', {
+        data: { skip, bannedUsers, type, huntType },
+      });
+      if (data.status === 400) return null;
+      if (!data.data.error) return data.data;
+    } catch {
+      return null;
+    }
+
+    return null;
   }
 
   static async getHuntUserStats(id: string): Promise<IRESTHuntStats | { error: true }> {
@@ -273,193 +340,11 @@ export default class HttpRequests {
     return { error: true };
   }
 
-  static async astolfoRequest(text: string): Promise<IPicassoReturnData> {
-    try {
-      const data = await PicassoRequest.get('/astolfo', { data: { text } });
-      return { err: false, data: Buffer.from(data.data) };
-    } catch {
-      return { err: true };
-    }
-  }
-
-  static async statusRequest(
-    user: unknown,
-    userAvatarLink: string,
-    i18n: unknown,
-  ): Promise<IPicassoReturnData> {
-    try {
-      const data = await PicassoRequest.get('/status', { data: { user, userAvatarLink, i18n } });
-      return { err: false, data: Buffer.from(data.data) };
-    } catch {
-      return { err: true };
-    }
-  }
-
-  static async vascoRequest(
-    user: string,
-    quality: string,
-    username: string,
-    position: string,
-  ): Promise<IPicassoReturnData> {
-    try {
-      const data = await PicassoRequest.get('/vasco', {
-        data: { user, quality, username, position },
-      });
-      return { err: false, data: Buffer.from(data.data) };
-    } catch {
-      return { err: true };
-    }
-  }
-
-  static async previewRequest(
-    theme: ThemeFiles['theme'],
-    previewType: AvailableThemeTypes,
-  ): Promise<IPicassoReturnData> {
-    try {
-      const data = await PicassoRequest.get('/preview', { data: { theme, previewType } });
-      return { err: false, data: Buffer.from(data.data) };
-    } catch {
-      return { err: true };
-    }
-  }
-
-  static async EightballRequest<T>(sendData: T): Promise<IPicassoReturnData> {
-    try {
-      const data = await PicassoRequest.get('/8ball', { data: sendData });
-      return { err: false, data: Buffer.from(data.data) };
-    } catch {
-      return { err: true };
-    }
-  }
-
-  static async philoRequest(text: string): Promise<IPicassoReturnData> {
-    try {
-      const data = await PicassoRequest.get('/philo', { data: { text } });
-      return { err: false, data: Buffer.from(data.data) };
-    } catch {
-      return { err: true };
-    }
-  }
-
-  static async shipRequest(
-    linkOne: string,
-    linkTwo: string,
-    shipValue: number,
-  ): Promise<IPicassoReturnData> {
-    try {
-      const data = await PicassoRequest.get('/ship', { data: { linkOne, linkTwo, shipValue } });
-      return { err: false, data: Buffer.from(data.data) };
-    } catch {
-      return { err: true };
-    }
-  }
-
-  static async trisalRequest(
-    userOne: string,
-    userTwo: string,
-    userThree: string,
-  ): Promise<IPicassoReturnData> {
-    try {
-      const data = await PicassoRequest.get('/trisal', { data: { userOne, userTwo, userThree } });
-      return { err: false, data: Buffer.from(data.data) };
-    } catch {
-      return { err: true };
-    }
-  }
-
-  static async profileRequest(
-    user: IUserDataToProfile,
-    marry: User | null,
-    usageCommands:
-      | boolean
-      | { cmds: { count: number }; array: Array<{ name: string; count: number }> },
-    i18n: unknown,
-    type: AvailableProfilesThemes,
-  ): Promise<IPicassoReturnData> {
-    try {
-      const data = await PicassoRequest.get('/profile', {
-        data: {
-          user,
-          marry,
-          usageCommands,
-          i18n,
-          type,
-        },
-      });
-      return { err: false, data: Buffer.from(data.data) };
-    } catch {
-      return { err: true };
-    }
-  }
-
-  static async gadoRequest(image: string): Promise<IPicassoReturnData> {
-    try {
-      const data = await PicassoRequest.get('/gado', { data: { image } });
-      return { err: false, data: Buffer.from(data.data) };
-    } catch {
-      return { err: true };
-    }
-  }
-
   static async getUserDeleteUsages(userId: string): Promise<{ count?: number; err: boolean }> {
     try {
       const data = await apiRequest.get('/usages/user/delete', { data: { userId } });
       if (data) return { count: data.data.count, err: false };
       return { err: true };
-    } catch {
-      return { err: true };
-    }
-  }
-
-  static async macetavaRequest(
-    image: string,
-    authorName: string,
-    authorDiscriminator: string,
-    authorImage: string,
-  ): Promise<IPicassoReturnData> {
-    try {
-      const data = await PicassoRequest.get('/macetava', {
-        data: {
-          image,
-          authorName,
-          authorDiscriminator,
-          authorImage,
-        },
-      });
-      return { err: false, data: Buffer.from(data.data) };
-    } catch {
-      return { err: true };
-    }
-  }
-
-  static async blackjackRequest(
-    aposta: number,
-    userCards: Array<IBlackjackCards>,
-    menheraCards: Array<IBlackjackCards>,
-    userTotal: number,
-    menheraTotal: number,
-    isEnd: boolean,
-    i18n: unknown,
-    cardTheme: AvailableCardThemes,
-    tableTheme: AvailableTableThemes,
-    backgroundCardTheme: AvailableCardBackgroundThemes,
-  ): Promise<IPicassoReturnData> {
-    try {
-      if (!isEnd) menheraCards[1].hidden = true;
-      const data = await PicassoRequest.get('/blackjack', {
-        data: {
-          userCards,
-          menheraCards,
-          userTotal,
-          menheraTotal,
-          i18n,
-          aposta,
-          cardTheme,
-          tableTheme,
-          backgroundCardTheme,
-        },
-      });
-      return { err: false, data: Buffer.from(data.data) };
     } catch {
       return { err: true };
     }

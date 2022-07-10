@@ -15,41 +15,12 @@ import {
   IUserThemesSchema,
   ThemeFiles,
   TMagicItemsFile,
-} from '@utils/Types';
+} from '@custom_types/Menhera';
 import * as Sentry from '@sentry/node';
 import ImageThemes from '@data/ImageThemes';
 import i18next from 'i18next';
 
 export default class Util {
-  static capitalize(str: string): string {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  }
-
-  static async collectComponentInteractionWithId<T extends MessageComponentInteraction>(
-    channel: TextBasedChannel,
-    authorID: string,
-    customId: string,
-    time?: number,
-  ): Promise<null | T>;
-
-  static async collectComponentInteractionWithId(
-    channel: TextBasedChannel,
-    authorID: string,
-    customId: string,
-    time = 7000,
-  ): Promise<null | MessageComponentInteraction> {
-    return channel
-      .awaitMessageComponent({
-        filter: (m) => m.user.id === authorID && m.customId === customId,
-        time,
-      })
-      .then((interaction) => {
-        interaction.deferUpdate().catch(() => null);
-        return interaction;
-      })
-      .catch(() => null);
-  }
-
   static async collectComponentInteractionWithCustomFilter<T extends MessageComponentInteraction>(
     channel: TextBasedChannel,
     filter: CollectorFilter<[T]>,
@@ -70,39 +41,12 @@ export default class Util {
       .catch(() => null);
   }
 
-  static async collectComponentInteraction<T extends MessageComponentInteraction>(
-    channel: TextBasedChannel,
-    authorID: string,
-    time?: number,
-  ): Promise<null | T>;
-
-  static async collectComponentInteraction(
-    channel: TextBasedChannel,
-    authorID: string,
-    time = 7000,
-  ): Promise<null | MessageComponentInteraction> {
-    return channel
-      .awaitMessageComponent({
-        filter: (m) => {
-          if (m.user.id !== authorID)
-            m.reply({
-              ephemeral: true,
-              content: i18next.getFixedT(m.locale)('common:not-your-interaction'),
-            }).catch(() => null);
-          else m.deferUpdate().catch(() => null);
-          return m.user.id === authorID;
-        },
-        time,
-      })
-      .then((interaction) => interaction)
-      .catch(() => null);
-  }
-
   static async collectComponentInteractionWithStartingId<T extends MessageComponentInteraction>(
     channel: TextBasedChannel,
     authorID: string,
     customId: string | number,
     time?: number,
+    defer?: boolean,
   ): Promise<null | T>;
 
   static async collectComponentInteractionWithStartingId(
@@ -110,6 +54,7 @@ export default class Util {
     authorID: string,
     customId: string | number,
     time = 7000,
+    defer = true,
   ): Promise<null | MessageComponentInteraction> {
     return channel
       .awaitMessageComponent({
@@ -119,7 +64,7 @@ export default class Util {
               ephemeral: true,
               content: i18next.getFixedT(m.locale)('common:not-your-interaction'),
             }).catch(() => null);
-          else m.deferUpdate().catch(() => null);
+          else if (defer) m.deferUpdate().catch(() => null);
           return m.user.id === authorID && m.customId.startsWith(`${customId}`);
         },
         time,
@@ -149,7 +94,7 @@ export const disableComponents = <T extends MessageButton | MessageSelectMenu>(
   });
 
 export const actionRow = (components: MessageActionRowComponentResolvable[]): MessageActionRow =>
-  new MessageActionRow({ components });
+  new MessageActionRow().setComponents(components);
 
 export const getMagicItemById = <T extends TMagicItemsFile = TMagicItemsFile>(
   id: number,
@@ -236,3 +181,5 @@ export const makeCustomId = (
   const randomNumber = baseId ?? Math.floor(Date.now() + Math.random() * 100);
   return [`${randomNumber} | ${customIdentifier}`, randomNumber];
 };
+
+export const capitalize = (str: string): string => str.charAt(0).toUpperCase() + str.slice(1);

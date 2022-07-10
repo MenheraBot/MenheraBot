@@ -1,5 +1,5 @@
 /* eslint-disable no-shadow */
-import { ICmdSchema, IGuildSchema } from '@utils/Types';
+import { ICmdSchema, IGuildSchema } from '@custom_types/Menhera';
 import { debugError, MayNotExists } from '@utils/Util';
 import { Redis } from 'ioredis';
 import { Document } from 'mongoose';
@@ -59,9 +59,6 @@ export default class CacheRepository {
           3600,
           JSON.stringify({
             lang: guildDataFromMongo.lang,
-            blockedChannels: guildDataFromMongo.blockedChannels,
-            disabledCommands: guildDataFromMongo.disabledCommands,
-            censored: guildDataFromMongo.censored,
           }),
         )
         .catch((e) => debugError(e, true));
@@ -88,7 +85,7 @@ export default class CacheRepository {
     }
   }
 
-  async addDeletedAccount(user: string[] | string): Promise<void> {
+  async addDeletedAccount(user: string[]): Promise<void> {
     if (!this.redisClient) return;
     await this.redisClient.sadd('deleted_accounts', user).catch((e) => debugError(e, true));
   }
@@ -99,5 +96,24 @@ export default class CacheRepository {
       debugError(err, true);
       return [];
     });
+  }
+
+  async getRouletteUsages(userId: string): Promise<number> {
+    if (!this.redisClient) return 0;
+    const res = await this.redisClient.get(`roulette:${userId}`);
+    if (!res) return 0;
+    return Number(res);
+  }
+
+  async incrementRouletteHourlyUsage(userId: string): Promise<void> {
+    if (!this.redisClient) return;
+
+    const expireTime = (60 - new Date().getMinutes()) * 60;
+
+    await this.redisClient
+      .multi()
+      .incr(`roulette:${userId}`)
+      .expire(`roulette:${userId}`, expireTime)
+      .exec();
   }
 }

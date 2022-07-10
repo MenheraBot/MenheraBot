@@ -1,3 +1,4 @@
+/* eslint-disable no-use-before-define */
 import cors from '@koa/cors';
 import Koa, { Middleware } from 'koa';
 import koaBody from 'koa-body';

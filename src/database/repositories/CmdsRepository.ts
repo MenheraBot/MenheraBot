@@ -1,5 +1,5 @@
-import { Cmds } from '@structures/DatabaseCollections';
-import { ICmdSchema } from '@utils/Types';
+import { Cmds } from '@database/Collections';
+import { ICmdSchema } from '@custom_types/Menhera';
 
 export default class CmdRepository {
   constructor(private cmdModal: typeof Cmds) {}

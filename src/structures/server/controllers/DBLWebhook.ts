@@ -27,16 +27,18 @@ const runVote = async (
     embedDescription = `UOOO, tu votou em mim no final de semana, eu te agradeço muuuito por tirar um tempinho do seu final de semana para me ajudar. Vou até dar um prêmio especial pra ti por isso: **${rollQuantity}**🔑, **${starQuantity}**⭐\n\nTu já votou **${user.votes}** vezes em mim? Obrigada luz da Minha Escuridão`;
   }
 
-  if (user.votes % 20 === 0) {
-    rollQuantity *= constants.roll20Multiplier;
-    starQuantity *= constants.star20Multiplier;
-    embedTitle = '🎉 | Prêmio Especial | 🎉';
-    embedDescription = `Yyyayyyyy, você atingiu a meta do prêmio especial de 20 votos! Eu agradeço demais por você se dedicar tanto à me ajudar, você vai ganhar muuuito mais hoje. Obrigada novamente por me ajudar, e não se esqueça que a cada 12 horas você pode me ajudar mais\n\nVocê votou ${user.votes} vezes em mim, e por isso, ganhou o **QUADRUPLO** de prêmios! Toma-te ${starQuantity}⭐, **${rollQuantity}**🔑\n\nVote em mim novamente em 12 horas 🎊`;
-  }
+  if (user.votes !== 0) {
+    if (user.votes % 20 === 0) {
+      rollQuantity *= constants.roll20Multiplier;
+      starQuantity *= constants.star20Multiplier;
+      embedTitle = '🎉 | Prêmio Especial | 🎉';
+      embedDescription = `Yyyayyyyy, você atingiu a meta do prêmio especial de 20 votos! Eu agradeço demais por você se dedicar tanto à me ajudar, você vai ganhar muuuito mais hoje. Obrigada novamente por me ajudar, e não se esqueça que a cada 12 horas você pode me ajudar mais\n\nVocê votou ${user.votes} vezes em mim, e por isso, ganhou o **QUADRUPLO** de prêmios! Toma-te ${starQuantity}⭐, **${rollQuantity}**🔑\n\nVote em mim novamente em 12 horas 🎊`;
+    }
 
-  if (user.votes % 20 === 0 && isWeekend) {
-    embedTitle = '💜 | CARAAAA, TU CONSEGUIU O MÁXIMO DE PRÊMIOS | 💜';
-    embedDescription = `É ISSO! VOCÊ CONSEGUIU! Além de dar um tempinho do seu final de semana para me ajudar, você atingiu a meta de 20 votos! Isso significa o que? Exatamente, MUUUUITOS PRÊMIOS.\nVocê recebeu **${starQuantity}** :star: , **${rollQuantity}** 🔑.\nVocê pode votar a cada 12 horas,  e além de me ajudar, tu ganha prêmios por isso. Obrigada de verdade por tudo amorzinho, com isso, tu já votou ${user.votes} vezes em mim, tu é simplesmente incrível`;
+    if (user.votes % 20 === 0 && isWeekend) {
+      embedTitle = '💜 | CARAAAA, TU CONSEGUIU O MÁXIMO DE PRÊMIOS | 💜';
+      embedDescription = `É ISSO! VOCÊ CONSEGUIU! Além de dar um tempinho do seu final de semana para me ajudar, você atingiu a meta de 20 votos! Isso significa o que? Exatamente, MUUUUITOS PRÊMIOS.\nVocê recebeu **${starQuantity}** :star: , **${rollQuantity}** 🔑.\nVocê pode votar a cada 12 horas,  e além de me ajudar, tu ganha prêmios por isso. Obrigada de verdade por tudo amorzinho, com isso, tu já votou ${user.votes} vezes em mim, tu é simplesmente incrível`;
+    }
   }
 
   const embed = new MessageEmbed()
@@ -55,12 +57,8 @@ const runVote = async (
     voteCooldown: Date.now() + 43200000,
   });
 
-  const sendMessageToUser = async (id: string, embedToSend: MessageEmbed) => {
-    const userInShard = client.users.forge(id);
-    await userInShard.send({ embeds: [embedToSend] }).catch(debugError);
-  };
-
-  sendMessageToUser(userId, embed).catch(debugError);
+  const userInShard = client.users.forge(userId);
+  await userInShard.send({ embeds: [embed] }).catch(debugError);
 };
 
 export default (client: MenheraClient): Router => {

@@ -1,4 +1,17 @@
 // import default language
+/*
+MOVE O COMENTÁRIO PRA TESTAR TYPINGS DO INGLES
+import type commands from '../locales/en-US/commands.json';
+import type common from '../locales/en-US/common.json';
+import type data from '../locales/en-US/data.json';
+import type events from '../locales/en-US/events.json';
+import type permissions from '../locales/en-US/permissions.json';
+import type roleplay from '../locales/en-US/roleplay.json';
+import type enemies from '../locales/en-US/enemies.json';
+import type items from '../locales/en-US/items.json';
+import type abilities from '../locales/en-US/abilities.json';
+*/
+
 import type commands from '../locales/pt-BR/commands.json';
 import type common from '../locales/pt-BR/common.json';
 import type data from '../locales/pt-BR/data.json';

@@ -1,7 +1,6 @@
 import MenheraClient from 'MenheraClient';
 import { getMillisecondsToTheEndOfDay } from '@utils/Util';
 import { postBotStatus, postShardStatus } from '@structures/StatusPoster';
-import DeployDeveloperCommants from '@structures/DeployDeveloperCommants';
 import HttpServer from '@structures/server/server';
 import DBLWebhook from '@structures/server/controllers/DBLWebhook';
 import InactivityPunishment from '@structures/InactivityPunishment';
@@ -12,7 +11,15 @@ let dailyLoopTimeout: NodeJS.Timeout;
 export default class ReadyEvent {
   async run(client: MenheraClient): Promise<void> {
     if (!client.user) return;
-    if (process.env.NODE_ENV === 'development') return;
+    if (client.cluster.id === 0) {
+      HttpServer.getInstance().registerRouter('DBL', DBLWebhook(client));
+      HttpServer.getInstance().registerRouter('INTERACTIONS', PostInteractions(client));
+    }
+
+    if (process.env.NODE_ENV === 'development') {
+      // DeployDeveloperCommants(client);
+      return;
+    }
 
     const isMasterShard = (id: number) => id === client.cluster.count - 1;
 
@@ -23,15 +30,14 @@ export default class ReadyEvent {
 
     const clusterId = client.cluster.id;
 
-    if (isMasterShard(clusterId)) {
-      HttpServer.getInstance().registerRouter('DBL', DBLWebhook(client));
+    //  setInterval(() => updateActivity(clusterId), 1000 * 60 * 10);
 
+    if (isMasterShard(clusterId)) {
       ReadyEvent.dailyLoop(client);
 
       InactivityPunishment(client);
       postShardStatus(client);
       postBotStatus(client);
-      DeployDeveloperCommants(client);
 
       // @ts-expect-error Reload command doesnt exist in client<boolean>
       await client.cluster.broadcastEval((c: MenheraClient) => {
@@ -39,15 +45,12 @@ export default class ReadyEvent {
       });
     }
 
-    if (clusterId === 0)
-      HttpServer.getInstance().registerRouter('INTERACTIONS', PostInteractions(client));
-
     console.log(`[READY] Menhera Client ${client.cluster.id} its ready to receive events!`);
   }
 
   static async dailyLoop(client: MenheraClient): Promise<void> {
     const toLoop = async (c: MenheraClient) => {
-      const allBannedUsers = await c.repositories.userRepository.getAllBannedUsersId();
+      const allBannedUsers = await c.repositories.blacklistRepository.getAllBannedUsersId();
       await c.repositories.blacklistRepository.addBannedUsers(allBannedUsers);
     };
 

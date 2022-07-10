@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Client, ClientEvents, ClientOptions, Collection } from 'discord.js-light';
 import { Client as ClusterClient } from 'discord-hybrid-sharding';
 
@@ -6,7 +5,7 @@ import * as Sentry from '@sentry/node';
 
 import '@sentry/tracing';
 
-import { IClientConfigs, IDatabaseRepositories } from '@utils/Types';
+import { IClientConfigs, IDatabaseRepositories } from '@custom_types/Menhera';
 import FileUtil from '@utils/FileUtil';
 import Event from '@structures/Event';
 import Database from '@database/Databases';
@@ -15,11 +14,10 @@ import EventManager from '@structures/EventManager';
 import InteractionCommand from '@structures/command/InteractionCommand';
 
 import LocaleStructure from '@structures/LocaleStructure';
-import PicassoWebSocket from '@structures/PicassoWebSocket';
-import { debugError } from '@utils/Util';
 import JogoDoBixoManager from '@structures/JogoDoBichoManager';
+import { updateAssets } from '@structures/CdnManager';
 
-export default class MenheraClient extends Client {
+export default class MenheraClient extends Client<true> {
   public cluster!: ClusterClient;
 
   public database: Database;
@@ -30,15 +28,20 @@ export default class MenheraClient extends Client {
 
   public events: EventManager;
 
-  public picassoWs!: PicassoWebSocket;
-
   public cooldowns: Collection<string, Collection<string, number>>;
 
-  public commandExecutions: Set<string>;
+  public economyUsages: Set<string>;
 
   public jogoDoBichoManager!: JogoDoBixoManager;
 
   public shuttingDown: boolean;
+
+  public interactionStatistics = {
+    success: 0,
+    failed: 0,
+    catchedErrors: 0,
+    received: 0,
+  };
 
   constructor(options: ClientOptions, public config: IClientConfigs) {
     super(options);
@@ -46,11 +49,11 @@ export default class MenheraClient extends Client {
       process.env.NODE_ENV === 'development'
         ? (process.env.DEV_DATABASE_URI as string)
         : (process.env.DATABASE_URI as string),
-      process.env.NODE_ENV !== 'development',
+      process.env?.TESTING !== 'true',
     );
     this.slashCommands = new Collection();
     this.cooldowns = new Collection();
-    this.commandExecutions = new Set();
+    this.economyUsages = new Set();
     this.events = new EventManager(this);
     this.config = config;
     this.shardProcessEnded = false;
@@ -70,15 +73,41 @@ export default class MenheraClient extends Client {
     });
 
     const locales = new LocaleStructure();
+    this.jogoDoBichoManager = new JogoDoBixoManager(this);
 
     await locales.load();
     await this.database.createConnection();
-    this.picassoWs = new PicassoWebSocket(this.cluster.id ?? 0);
-    this.jogoDoBichoManager = new JogoDoBixoManager(this);
     this.loadSlashCommands(this.config.interactionsDirectory);
     this.loadEvents(this.config.eventsDirectory);
-    this.picassoWs.connect().catch(debugError);
+    await MenheraClient.updateCDNAssets();
+
     return true;
+  }
+
+  static async updateCDNAssets(): Promise<void> {
+    console.log('[CDN] Updating assets...');
+    const result = await updateAssets();
+    console.log(`[CDN] ${result}`);
+  }
+
+  async getInteractionStatistics(): Promise<this['interactionStatistics']> {
+    return (
+      this.cluster
+        // @ts-expect-error client n é sexual
+        .broadcastEval((c: MenheraClient) => c.interactionStatistics)
+        .then((a: this['interactionStatistics'][]) =>
+          a.reduce(
+            (p, c) => {
+              p.catchedErrors += c.catchedErrors;
+              p.failed += c.failed;
+              p.received += c.received;
+              p.success += c.success;
+              return p;
+            },
+            { catchedErrors: 0, failed: 0, received: 0, success: 0 },
+          ),
+        )
+    );
   }
 
   async reloadCommand(commandName: string): Promise<void | false> {

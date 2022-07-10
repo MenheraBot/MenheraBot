@@ -3,23 +3,23 @@
     "bot": "Ah para né vei, nenhum bot te deixaria com raiva (a não ser que ele esteja full lagado hehe)",
     "no-mention": {
       "embed_title": "Raiva",
-      "embed_description": "{{author}} Está P. da vida",
-      "embed_description_censor": "{{author}} Está com Raiva"
+      "embed_description": "{{author}} Está Com Raiva",
+      "embed_description_uncensored": "{{author}} Está P. da Vida"
     },
     "embed_description": "{{author}} esta puto da cara com {{mention}}, deve ter feito merda né só pode",
-    "embed_description_censor": "{{author}} esta com raiva de {{mention}}, o que será que {{mention}} fez..."
+    "embed_description_uncensored": "{{author}} esta com raiva de {{mention}}, o que será que {{mention}} fez..."
   },
   "bicuda": {
     "bot": "Você chutou um robô, se pa que quebrou a perna. Só se pa... assim...",
-    "self-mention": "Wtf véi isso nem é possível, não tem como se autochutar. Mencione outro usuário por favor",
-    "self-mention_censor": "Mano, isso nem é possível, não tem como se autochutar. Mencione outro usuário por favor",
+    "self-mention_uncensored": "Wtf véi isso nem é possível, não tem como se autochutar. Mencione outro usuário por favor",
+    "self-mention": "Mano, isso nem é possível, não tem como se autochutar. Mencione outro usuário por favor",
     "embed_title": "Bicuda",
     "embed_description": "{{author}} meteu o bicudão em {{mention}}"
   },
   "morder": {
     "bot": "Você mordeu um robô... -5 dentes na boca",
-    "self-mention": "Ala o masoquista, faça isso agora mesmo, não precisa de comando",
-    "self-mention_censor": "IIi alá, se tu quer se morder, faça isso agora mesmo, não precisa de comando",
+    "self-mention_uncensored": "Ala o masoquista, faça isso agora mesmo, não precisa de comando",
+    "self-mention": "IIi alá, se tu quer se morder, faça isso agora mesmo, não precisa de comando",
     "embed_title": "Morder",
     "embed_description": "{{author}} moideu {{mention}}"
   },
@@ -33,8 +33,6 @@
     "embed_description": "{{mention}} fez {{author}} chorar"
   },
   "nojo": {
-    "description": "Eca que nojo",
-    "usage": "<@menção>",
     "bot": "Iiii ala tu tem nojinho de bot ui ui ui",
     "no-mention": {
       "embed_title": "Nojo",
@@ -68,9 +66,7 @@
       "embed_description": "*Robôs não podem ser mortos, mas podem ser desligados...*\n{{author}} desligou o bot {{mention}}"
     },
     "embed_title": "Matar",
-    "embed_title_censor": "Pelos Ares",
-    "embed_description": "{{author}} **M A T O U** {{mention}}",
-    "embed_description_censor": "{{author}} jogou {{mention}} pelos ares"
+    "embed_description": "{{author}} **M A T O U** {{mention}}"
   },
   "beijar": {
     "bot": "Você beijou um robô, e acabou tocando em um fio descascado. Sorte que ele estava com chinelo nos pés. A ligação com a Terra foi cortado, nenhum circuito se fechou. Dessa vez foi safe.",
@@ -88,16 +84,15 @@
     "embed_description": "{{mention}} fez {{author}} cair no chão de tanto rir, namoral {{mention}}, muito bom mesmo!"
   },
   "mamar": {
-    "bot": "{{author}} acabou de sujar a boca de óleo lansando o mamadão no bot {{mention}}",
-    "bot_censor": "{{author}} acabou de sujar a boca de óleo lambendo no bot {{mention}}",
+    "bot_uncensored": "{{author}} acabou de sujar a boca de óleo lansando o mamadão no bot {{mention}}",
+    "bot": "{{author}} acabou de sujar a boca de óleo lambendo no bot {{mention}}",
+    "self-mention_uncensored": "Não tenta me enganar, eu sei que tu não consegue 'LAMBER' mamar a si mesmo! Marque outra pessoa para mamar",
     "self-mention": "Não tenta me enganar, eu sei que tu não consegue mamar a si mesmo! Marque outra pessoa para mamar",
-    "self-mention_censor": "Não tenta me enganar, eu sei que tu não consegue lamber a si mesmo! Marque outra pessoa para lamber",
+    "embed_title_uncensored": "'LAMBER' Mamar",
     "embed_title": "Mamar",
-    "embed_title_censor": "Lambida",
+    "user-banned_uncensored": "Tu não pode 'LAMBER' esse usuário por que ele tá banido!",
     "user-banned": "Tu não pode mamar esse usuário por que ele tá banido!",
-    "user-banned_censor": "Tu não pode lamber esse usuário por que ele tá banido!",
-    "embed_description": "{{author}} lansou o mamadão, o famoso bereguedjonson, a linguada, a mamadela, a lambidinha em {{mention}}",
-    "embed_description_censor": "{{author}} lambeu {{mention}}. Mlem"
+    "embed_description": "{{author}} lansou o mamadão, o famoso bereguedjonson, a linguada, a mamadela, a lambidinha em {{mention}}"
   },
   "carinho": {
     "self-mention": "Olha cara, se tu quiser tu pode fazer carinho em si mesmo agora. Utilize meu comando somente para fazer carinho em outras pessoas",
@@ -111,8 +106,8 @@
   },
   "socar": {
     "bot": "DIGA NÃO A AGRESSÃO À ROBÔS",
-    "self-mention_censor": "VEM DE CHICOTE, ALGEMAS, CORDA DE ALPINISTA. AI QUE EU PERCEBI QUE O CARA É ***! Eu não vou fazer tu se bater, mencione outra pessoa",
-    "self-mention": "VEM DE CHICOTE, ALGEMAS, CORDA DE ALPINISTA. AI QUE EU PERCEBI QUE O CARA É SADOMASOQUISTA! Eu não vou fazer tu se bater, mencione outra pessoa",
+    "self-mention": "VEM DE CHICOTE, ALGEMAS, CORDA DE ALPINISTA. AI QUE EU PERCEBI QUE O CARA É ***! Eu não vou fazer tu se bater, mencione outra pessoa",
+    "self-mention_uncensored": "VEM DE CHICOTE, ALGEMAS, CORDA DE ALPINISTA. AI QUE EU PERCEBI QUE O CARA É SADOMASOQUISTA! Eu não vou fazer tu se bater, mencione outra pessoa",
     "embed_title": "Toma soco leve 🤜",
     "embed_description": "{{author}} meteu o soquinho leve em {{mention}}"
   },
@@ -135,8 +130,8 @@
   "atirar": {
     "self-mention": "Não faça isso, a vida é uma montanha russa, um dia tu ta bem, no outro ta tudo horrível. Mas não se preocupa, isso vai passar, sempre passa. Minha mãe (a Lux) também passou por problemas, mas hoje em dia ta tudo bem, por que sempre vai passar. Caso tu esteja mal, converse com alguém, isso ajuda demais. Caso não tenha ninguém pra conversar, ligue para o CVV (Centro de Valorização à Vida): 188, é grátis, funciona 24/7, e sempre tem alguém a tua disposição. Viva bem neném. Beijos de Luz da Lux, e beijos meus, UwU",
     "embed_title": "Atirar",
-    "embed_description": "{{author}} meteu bala em {{mention}}",
-    "embed_description_censor": "{{author}} deu tirinho em {{mention}}"
+    "embed_description_uncensored": "{{author}} meteu bala em {{mention}}",
+    "embed_description": "{{author}} deu tirinho em {{mention}}"
   },
   "vergonha": {
     "no-mention": {
@@ -171,20 +166,17 @@
   },
   "coinflip": {
     "bet": "Apostar",
-    "timeout": "Tempo Esgotado",
-    "invalid-value": "este valor não é válido",
     "bot": "bots não podem apostar e.e",
     "self-mention": "você não pode apostar contra si mesmo",
     "no-dbuser": "este usuário não possui uma conta no Menhera's Bank!",
     "poor": "{{user}} não possui todas essas estrelinhas para apostar!",
     "confirm": "{{author}} te desafiou para uma aposta de Cara ou Coroa valendo **{{value}}** :star:. Caso caia Cara, {{author}} vence, caso caia coroa, {{mention}} vence.\nVocê aceita? Tens **7** Segundos",
-    "cara": "**CARA**",
-    "coroa": "**COROA**",
+    "cara": "CARA",
+    "coroa": "COROA",
     "banned-user": "Este usuário não pode apostar pois está banido da Menhera!",
-    "cara-texto": "{{author}} ganhou {{value}} :star: apostando com {{mention}}. Sinto muito {{mention}}, nem sempre saimos vitoriosos.",
-    "coroa-texto": "{{mention}} ganhou a aposta valendo {{value}} :star: contra {{author}}"
+    "text": ":coin: | **{{choice}}**\n\n{{winner}} ganhou a aposta valendo **{{value}}** :star: contra {{loser}}"
   },
-  "give": {
+  "presentear": {
     "confirm": "Seguinte {{user}}, {{author}} quer te enviar **{{count}}** {{emoji}}, você aceita?",
     "negated": "{{user}} recusou o presente!",
     "banned-user": "Este usuário não aceita presentes pois está banido da Menhera!",
@@ -249,7 +241,11 @@
       "yc-confirm": "Você gosta de algo mais personalizado, e comprou uma corzinha especial!\nSua cor comprada foi **#{{color}}**\nVocê gastou **{{price}}** ⭐ e ficou com **{{stars}}** ⭐ estrelinhas",
       "invalid-color": "Esta cor não é uma cor válida!",
       "no-name": "Sem nome especificado ({{number}})",
-      "buy-text": "Escolha abaixo qual é a cor que deseja comprar!"
+      "buy-text": "Escolha abaixo qual é a cor que deseja comprar!",
+      "title": "Compre sua Cor",
+      "hex_input": "Digite sua cor em Hexadecimal",
+      "name_placeholder": "Azul Bebê",
+      "name_input": "O nome dessa cor (para sua organização)"
     },
     "dataRolls_fields": {
       "title": "🔑 | Comprar Rolls",
@@ -278,7 +274,6 @@
   "8ball": {
     "question": "Sua Pergunta",
     "answer": "Respota",
-    "no-args": "Você deve enviar uma pergunta para eu responder",
     "ask": "Pergunte à Menhera",
     "answers": {
       "0": "É certo",
@@ -313,16 +308,16 @@
   },
   "fodase": {
     "author": "Autor: {{author}}",
-    "0": "{{author}} disse que fodase",
-    "0_censor": "{{author}} disse que não se importa",
-    "1": "Inteligente, pena que fodase",
-    "1_censor": "Inteligente, pena que ninguém liga",
-    "2": "Ta, e o fodase?",
-    "2_censor": "Bacana, mas e aí?"
+    "0_uncensored": "{{author}} disse que fodase",
+    "0": "{{author}} disse que não se importa",
+    "1_uncensored": "Inteligente, pena que fodase",
+    "1": "Inteligente, pena que ninguém liga",
+    "2_uncensored": "Ta, e o fodase?",
+    "2": "Bacana, mas e aí?"
   },
   "cacar": {
-    "drop": "CARALHOOOO {{author}}, Tu dropou um item de caça! Tu tem noção do quão raro isso é? Pra ti ter noção, o item que tu ganhou, o **{{name}}** tem uma porcentagem de drop de `{{chance}}%`, Parabéns!",
-    "drop_censor": "Uoouu {{author}}, Tu dropou um item de caça! Tu tem noção do quão raro isso é? Pra ti ter noção, o item que tu ganhou, o **{{name}}** tem uma porcentagem de drop de `{{chance}}%`, Parabéns!",
+    "drop_uncensored": "CARALHOOOO {{author}}, Tu dropou um item de caça! Tu tem noção do quão raro isso é? Pra ti ter noção, o item que tu ganhou, o **{{name}}** tem uma porcentagem de drop de `{{chance}}%`, Parabéns!",
+    "drop": "Uoouu {{author}}, Tu dropou um item de caça! Tu tem noção do quão raro isso é? Pra ti ter noção, o item que tu ganhou, o **{{name}}** tem uma porcentagem de drop de `{{chance}}%`, Parabéns!",
     "probabilities": "Suas Probabilidades de Caça",
     "chances": "**{{count}}** ({{percentage}}%)",
     "hunt_description": "Você saiu para caçar **{{hunt}}** **{{count}}** vezes com o Super Xandão, e voltou para casa com mais **{{value}}** pra conta.",
@@ -343,8 +338,8 @@
     "self-mention": "Tu não pode se casar consigo mesmo :(",
     "married": "Tu já está casado!!",
     "no-dbuser": "Mame este usuário para adicioná-lo ao meu banco de dados",
-    "mention-married": "Calma lá comedor de casadas, este usuário já está casado!",
-    "mention-married_censor": "Calma la colega, este usuário já está casado!",
+    "mention-married_uncensored": "Calma lá comedor de casadas, este usuário já está casado!",
+    "mention-married": "Calma la colega, este usuário já está casado!",
     "accepted": "{{toMarry}} aceitou o pedido de casamento de {{author}}. Que os pombinhos aproveitem a noite de núpcias hihi",
     "accepted_censor": "{{toMarry}} aceitou o pedido de casamento de {{author}}. Que os pombinhos aproveitem a vida juntos",
     "negated": "{{toMarry}} negou o pedido de casamento de {{author}}",
@@ -365,14 +360,14 @@
     "perfect": "MEEEU AMIGO, OS CARA SÃO FEITOS UM PRO OUTRO",
     "banned-user": "Você não pode shipar esse usuário pois está banido da Menhera!"
   },
-  "xandao": {
-    "only-text": "Este comando não está disponível em threads",
-    "err_message": "Para que eu possa executar este comando, peça para que os administradores me concedam a permissão `Gerenciar Webhooks`"
-  },
-  "avatar": {
+  "user": {
+    "banner": {
+      "no-banner": "Este usuário não tem nenhum banner!",
+      "title": "Banner de {{user}}",
+      "footer": "Mai que banner lindo vei"
+    },
     "title": "Avatar de {{user}}",
     "footer": "Que imagem linda omodeuso",
-    "unknow-user": "Usuário não encontrado",
     "client_title": "Meu avatar ({{user}})",
     "client_footer": "Eu sou muito linda né vei tem como não"
   },
@@ -386,66 +381,84 @@
       "description": "Você ja pode ver seu perfil com sua nova cor!"
     },
     "choose": "Escolha sua cor",
-    "min-color": "Tu precisa ter no mínimo 2 cores para usar este comando!"
+    "min-color": "Tu precisa ter no mínimo 2 cores para usar este comando!",
+    "rename": "Renomear",
+    "select-to-rename": "Escolha Uma Cor para Renomear",
+    "modal-title": "Renomear Cor",
+    "name-input": "Novo nome para '{{name}}'",
+    "same-name": "Uma cor já possui esse nome!",
+    "rename-success": "Você renomeou a cor `{{color}}` para **{{name}}**"
   },
   "perfil": {
     "no-dbuser": "Este usuário não possui perfil!",
     "banned": "Este usuário está **banido** de usar a Menhera\n**Motivo:** `{{reason}}`",
     "mamou": "Mamou",
-    "mamou_censor": "Lambeu",
     "unknow-user": "Usuário não encontrado",
     "mamado": "Mamado",
-    "mamado_censor": "Lambido",
-    "married-with": "Casado com",
-    "married-in": "Casados em",
     "about-me": "Sobre Mim",
-    "commands": "Comandos",
-    "zero": "usou meus comandos",
-    "um": "vezes. Seu comando mais usado foi",
-    "dois": "usou",
-    "tres": "vezes.",
+    "api-down": "Eh.. o servidor de comandos está offline! Fique com uma frase bacana: 'É um caminho mais curto, mas não tem nada a ver com meu tamanho'",
     "commands-usage": "{{user}} usou meus comandos {{usedCount}} vezes. Seu comando mais usado foi {{mostUsedCommandName}}, usou {{mostUsedCommandCount}} vezes"
   },
   "top": {
-    "mamadoresTitle": "Placar de Mamadores",
-    "mamadoresTitle_censor": "Placar de Lambedores",
-    "mamouTitle": "Placar de Mamados",
-    "mamouTitle_censor": "Placar de Lambidos",
-    "demonTitle": "Placar de Demônios",
-    "angelTitle": "Placar de Anjos",
-    "sdTitle": "Placar de Semideuses",
-    "godTitle": "Placar de Deuses",
-    "giantTitle": "Placar de Gigantes",
-    "archangelTitle": "Placar de Arcanjos",
-    "starsTitle": "Placar de Estrelinhas",
-    "voteTitle": "Placar de Upvotes",
+    "economia": {
+      "mamou-title": "Placar de Mamados",
+      "mamado-title": "Placar de Mamadores",
+      "demons-title": "Placar de Demônios",
+      "giants-title": "Placar de Gigantes",
+      "angels-title": "Placar de Anjos",
+      "archangels-title": "Placar de Arcanjos",
+      "demigods-title": "Placar de Semideuses",
+      "gods-title": "Placar de Deuses",
+      "estrelinhas-title": "Placar de Estrelinhas",
+      "votes-title": "Placar de Upvotes",
+      "estrelinhas": "Estrelinhas",
+      "mamou": "Mamou",
+      "votes": "Votos",
+      "mamado": "Mamado",
+      "demons": "Demônios",
+      "angels": "Anjos",
+      "archangels": "Arcanjos",
+      "giants": "Gigantes",
+      "demigods": "Semideuses",
+      "gods": "Deuses"
+    },
+    "estatisticas": {
+      "cacar": {
+        "title": "{{emoji}} | Melhores Caçadores de {{type}} {{page}}º",
+        "demon": "Demônios",
+        "giant": "Gigantes",
+        "angel": "Anjos",
+        "archangel": "Arcanjos",
+        "demigod": "Semideuses",
+        "god": "Deuses",
+        "description": {
+          "success": "Ordenado por **caças bem-sucedidas**",
+          "tries": "Ordenado por **quem mais caçou**",
+          "hunted": "Ordenado por **quantidade caçadas**",
+          "text": "**Total Caçados:** {{hunted}}\n**Caças Feitas**: {{tries}}\n**Caças Bem-Sucedidas:** {{success}}"
+        }
+      },
+      "apostas": {
+        "title": "{{emoji}} | Melhores Apostadores de {{type}} {{page}}º",
+        "bicho": "Jogo do Bicho",
+        "blackjack": "Blackjack",
+        "coinflip": "Coniflip",
+        "roulette": "Roleta",
+        "description": {
+          "money": "Ordenado por **Estrelinhas Ganhas**",
+          "wins": "Ordenado por **Mais Vitórias**",
+          "text": "Estrelinhas Ganhas: **{{earnMoney}}** :star:\nEstrelinhas Perdidas: **{{lostMoney}}** :star:\nPartidas Vencidas: **{{wonGames}}** `({{winPercentage}}%)`\nPartidas Perdidas: **{{lostGames}}** (`{{lostPercentage}}%`)"
+        }
+      }
+    },
     "commands": "Comandos Mais Usados",
     "users": "Usuários Que Mais Usaram Comandos",
-    "suckled": "Mamado",
-    "suck": "Mamou",
-    "demons": "Demônios",
-    "angels": "Anjos",
-    "archangels": "Arcanjos",
-    "giants": "Gigantes",
-    "demigods": "Semideuses",
-    "gods": "Deuses",
-    "stars": "Estrelinhas",
     "members": "Membros",
     "used": "Usado",
     "use": "Usou",
     "user": "Comandos mais usados de {{user}}",
     "times": "vezes",
-    "votes": "Votos",
     "not-user": "Este usuário não usou nenhum comando meu"
-  },
-  "blockcanal": {
-    "block": "Meus comandos foram **Bloqueados** no canal {{channel}}! Use `/blockcanal` para desbloqueá-los",
-    "unblock": "Meus comandos foram **Liberados** no canal {{channel}}!",
-    "invalid-channel": "Este comando só pode ser executado em canais de texto!",
-    "blocked-channels": "Lista de Canais Bloqueados",
-    "zero-value": "Nenhum canal bloqueado!",
-    "sure": "Você tem certeza que quer deletar todos os canais da lista?",
-    "done": "Meus comandos foram liberados em todos os canais do servidor! Yayyy"
   },
   "idioma": {
     "question": "Qual língua você quer que eu fale?",
@@ -457,55 +470,44 @@
     "args-limit": "Seu sobremim não pode ser maior que 200 caracteres",
     "success": "Seu 'Sobre Mim' foi alterado com sucesso! Você pode ver as mudanças com `/perfil`"
   },
-  "ping": {
-    "description": "Mostra o ping do bot e de sua API",
-    "usage": "",
-    "latency": "Latência:",
-    "api": "Latência da API:"
-  },
-  "suporte": {
-    "embed_title": "Clique aqui para entrar no servidor de suporte da Menhera"
-  },
   "status": {
     "designer": {
       "no-designer": "Este usuário não possui nenhum design em seu nome!",
       "title": "Designs de {{user}}",
+      "notify": "Notificar Compras",
+      "dont-notify": "Não Notificar Compras",
+      "success": "Suas configurações de notificação de compras foram alteradas!",
+      "notify-footer": "Com notificar compras ativo, toda vez que um usuário comprar um design seu, a Menhera tentará enviar uma mensagem em sua DM mostrando isso",
       "description": "**Tipo:** $t(common:theme_types.{{type}}) ($t(common:rarities.{{rarity}}))\n**Royalty:**: {{royalty}}%\n**Lucro:** {{profit}} :star:\n**Vendidos:** {{sold}}\nRegistrado em `{{registered}}`"
     },
     "coinflip": {
-      "embed-title": "Status do coinflip de {{user}}",
+      "embed-title": "Estatísticas do Coinflip de {{user}}",
       "no-data": "Este usuário nunca jogou uma partida de coinflip!",
       "embed-footer": "Tu é tri vei",
       "played": "Partidas Jogadas",
       "wins": "Vitórias",
       "loses": "Derrotas",
-      "earnMoney": "Dinheiro Ganho",
-      "lostMoney": "Dinheiro Perdido",
+      "earnMoney": "Estrelinhas Ganhas",
+      "lostMoney": "Estrelinhas Perdidas",
       "profit": "Lucro Total",
       "loss": "Prejuízo Total",
       "error": "Ocorreu um erro ao checar as estatísticas deste usuário. Provavelmente ele nunca usou o comando"
     },
-    "botinfo": {
-      "title": "🎉 HOJE É MEU ANIVERSÁRIO🎉",
-      "embed_description": "Oi, meu nome é **{{name}}**, e eu sou uma Bot Brasileira para Discord com foco em diversão e RPG! Fui criada em **{{createdAt}}** e entrei nesse servidor **{{joinedAt}}**.\n\nUm pouco sobre mim: Meu nome é Menhera, tenho 16 anos e AMO, mas tipo AMO usar essas carinhas: (>...<). Para saber mais, entre em meu [twitter](https://twitter.com/__MenheraBot), em meu [servidor de suporte](https://discord.gg/fZMdQbA) e em meu [WEBSITE](https://menherabot.xyz/).",
-      "embed_footer": "foi criada por",
-      "memory": "Memória",
-      "version": "Versão",
-      "extended": "Informações dos Shards"
+    "bicho": {
+      "embed-title": "Estatísticas do Jogo do Bicho de {{user}}",
+      "no-data": "Este usuário nunca apostou no jogo do bicho!"
     },
     "roleta": {
-      "embed-title": "Status de roleta de {{user}}",
+      "embed-title": "Estatísticas de Roleta de {{user}}",
       "no-data": "Este usuário nunca jogou uma partida de roleta francesa!"
     },
     "blackjack": {
-      "usage": "[usuário]",
-      "description": "Veja os status de BlackJack de alguém",
-      "embed-title": "Status do blackjack de {{user}}",
+      "embed-title": "Estatísticas do Blackjack de {{user}}",
       "no-data": "Este usuário nunca jogou uma partida de blackjack!"
     },
     "hunt": {
       "no-data": "Este usuário nunca caçou",
-      "embed-title": "Status de caçada de {{user}}",
+      "embed-title": "Estatísticas de Caças de {{user}}",
       "display-data": "**Tentativas:** {{tries}}\n**Aproveitamento:** {{success}}%\n**Total Caçados:** {{hunted}}",
       "demon": "Demônios",
       "angel": "Anjos",
@@ -515,49 +517,40 @@
       "god": "Deuses"
     }
   },
-  "blockcomando": {
-    "no-args": "Tu não citou nenhum comando!",
-    "no-cmd": "Este comando não existe!",
-    "dev-cmd": "Tu não tem acesso à este comando!",
-    "unblock": "O comando `/{{cmd}}` foi reabilitado neste servidor!",
-    "block": "O comando `/{{cmd}}` foi desabilitado neste servidor!",
-    "foda": "Tu é feliz né? Se tu desabilita esse comando n vai poder mais usar ele o cabaço, te liga vei",
-    "foda_censor": "Tu não pode desabilitar o comando que desabilita, engraçadinho"
-  },
   "cooldowns": {
     "title": "⌛ | Seus tempos de Recarga",
     "no-cooldown": "Você já pode fazer isso!",
     "hunt": "Caçar",
     "vote": "Votar em Mim",
     "time": "**{{time}}** {{subtime}} | **<t:{{unix}}:T>**",
-    "click-to-vote": "Clique Para Votar"
+    "click-to-vote": "Clique Para Votar",
+    "dungeon": "Dungeon",
+    "no-dungeon": "Você ainda não reencarnou no Mundo de Boleham. Use `/ficha`!"
   },
   "trisal": {
     "title": "❤️ Trisal ❤️",
     "no-args": "Você não está em nenhum trisal! Mencione pessoas para juntar-se em um poliamor >.<",
     "banned-user": "Este trisal não pode acontecer pois possui usuários banidos da Menhera!",
     "marry-not-found": "um usuário de seu trisal não foi encontrado",
-    "no-owner": "utilize o comando mamar para que eu crie uma conta pra você antes de tudo >.<",
     "self-mention": "Tu não pode fazer um casal consigo memso",
-    "same-mention": "Tu n pode mencionar o mesmo usuário 2 vezes",
+    "same-mention": "Tu não pode mencionar o mesmo usuário 2 vezes tchê",
     "bot-mention": "Tu não pode formar um trisal com um bot. Na verdade isso é até esquisito... Sinto pena de ti por ter tentado ficar com um bot.",
     "no-db": "Um dos integrantes do trisal não foi encontrado no banco de dados! O melhor agora é desfazer este trisal e começar um outro",
-    "comedor-de-casadas": "UOUOUOU calma lá comedor de casadas, um dos usuários que você mencionou ja está em um trisal",
-    "comedor-de-casadas_censor": "UOUOUOU calma lá colega, um dos usuários que você mencionou ja está em um trisal",
-    "accept-message": ":heart: | Vocês aceitam formar um trisal? Os três devem clicar no botão em até 15 segundos",
+    "comedor-de-casadas_uncensored": "UOUOUOU calma lá comedor de casadas, um dos usuários que você mencionou ja está em um trisal",
+    "comedor-de-casadas": "UOUOUOU calma lá colega, um dos usuários que você mencionou ja está em um trisal",
+    "accept-message": ":heart: | Vocês aceitam formar um trisal? Os três devem clicar no botão em até 15 segundos\n{{author}}, {{first}} e {{second}}",
     "done": "Parabéns, vocês três formaram um trisal lindo! Utilize este comando novamente para ver suas fotinhas juntas",
-    "error": "Os 3 não reagiram à mensagem a tempo! Tente novamente, talvez com alguem que queira, quem sabe"
-  },
-  "untrisal": {
-    "error": "Tu não está em nenhum trisal!",
-    "sure": "Tu tem certeza que quer terminar o trisal? Tens 15 segundos para confirmar",
-    "confirm": "Terminar",
-    "done": "O seu trisal acabou! Não tem mais jeito. Acabou...."
+    "error": "Os 3 não reagiram à mensagem a tempo! Tente novamente, talvez com alguem que queira, quem sabe",
+    "untrisal": {
+      "breakup": "Terminar",
+      "sure": "Tu tem certeza que quer terminar o trisal? Tens 15 segundos para confirmar",
+      "done": "O seu trisal acabou! Não tem mais jeito. Acabou...."
+    }
   },
   "blackjack": {
-    "bad-usage": "Tu não fez sua aposta",
-    "invalid-value": "O valor da aposta deve ser maior que 1000 e menor que 50000",
     "available-options": "Opções Disponíveis",
+    "title": "BlackJack",
+    "description": "Sua Mão: **{{userHand}}** -> `{{userTotal}}`\nMão da Menhera: **{{dealerCards}}** -> `{{dealerTotal}}`",
     "initial-options": "**[1] Começar** - Começe o jogo\n **[2] Desistir** - Desista deste jogo (e perca sua aposta)",
     "options": "**[1] Comprar** - Compre mais uma carta\n**[2] Parar** - Pare por aqui sua aposta",
     "footer": "Tu tem 10 segundos",
@@ -565,20 +558,16 @@
     "your-hand": "Sua Mão",
     "dealer-hand": "Mão da Menhera",
     "timeout": "Tu demorou muito para jogar. A Menhera ficou sem paciência, você perdeu tudo!",
-    "result": "👑 | Resultado",
-    "blackjack": "Você fez um Blackjack!!! Você recebeu o dobro do prêmio! **{{value}}** :star:",
+    "result": "Resultado",
+    "init_blackjack": "**{{winner}}** começou um jogo com um BlackJack! Que Sorte!\n**Seu {{text}}:** {{prize}} :star:",
+    "blackjack": "**{{winner}}** fez um BlackJack! Na mosca!\n**Seu {{text}}:** {{prize}} :star:",
+    "busted": "**{{loser}}** estourou! Mais sorte da próxima vez!\n**Seu {{text}}:** {{prize}} :star:",
+    "draw": "Os jogadores empataram, mas infelizmente, pela lei N°12.158/2021 do Mundo de Boleham, a Menhera leva tudo hehehe. Sim é injusto, mas é a vida!\n**Seu {{text}}:** {{prize}} :star:",
+    "biggest": "**{{winner}}** ganhou por possuir mais pontos!\n**Seu {{text}}:** {{prize}} :star:",
+    "profit": "Lucro",
+    "loss": "Prejuízo",
     "buy": "Comprar",
-    "stop": "Parar",
-    "explode": "Você estourou! Por isso, perdeu tudo :(",
-    "menhera-bj": "A Menhera tem um Blackjack. Você perdeu tudo, e a Menhera ganhou tudo hehe",
-    "menhera-21": "A Menhera fez 21. Tu foi de ralo",
-    "user-21": "Tu fez 21 meu guri, só dale só dale! Ganhaste **{{value}}** :star:",
-    "menhera-bust": "A Menhera estourou! Os **{{value}}** :star: é teu",
-    "draw": "Ambos estouraram. Por conta da Menhera ser muito humilde, ela devolveu sua aposta!",
-    "both-21": "Ambos fizeram 21, mas a Menhera tem preferência. Infelizmente é assim que funcionam os cassinos. Você perdeu Tudo",
-    "equal": "Tanto você quanto a menhera fizeram o mesmo valor. Menhera ganha",
-    "menhera-bigger": "A Menhera está mais proxima de 21, ela ganhou!",
-    "user-bigger": "Você está mais próximo de 21, você ganhou **{{value}}** :star:"
+    "stop": "Parar"
   },
   "itens": {
     "no-user": "Este usuário não possui inventário",
@@ -640,7 +629,7 @@
   "roleta": {
     "poor": "Você não tem estrelinhas o suficiente para apostar!",
     "lose-title": "Perdeu Tudo!",
-    "win": "Você ganhou **{{profit}}** :star:! Parabéns\n\n**Valor Sorteado:** {{number.value}}\n**Cor:** $t(commands:roleta.{{number.color}})\n**Dúzia:** $t(commands:roleta.{{number.dozen}})\n\n**Sua escolha**: $t(commands:roleta.{{operation}})\n**Seleção:** {{selection}}",
+    "win": "Você ganhou **{{profit}}** ({{taxes}}% de imposto) :star:! Parabéns\n\n**Valor Sorteado:** {{number.value}}\n**Cor:** $t(commands:roleta.{{number.color}})\n**Dúzia:** $t(commands:roleta.{{number.dozen}})\n\n**Sua escolha**: $t(commands:roleta.{{operation}})\n**Seleção:** {{selection}}",
     "description": "Bem-Vindo ao jogo da roleta, aqui você pode ganhar TUDO ou perder TUDO, escolha abaixo o estilo de sua aposta, em seguida especifique o que quer apostar\n\n**TIPOS DE APOSTA:**",
     "win-title": "Wooo, você venceu!",
     "lose": "Infelizmente você perdeu a aposta! Foram-se **{{bet}}** :star: embora\n\n**Valor Sorteado:** {{number.value}}\n**Cor:** $t(commands:roleta.{{number.color}})\n**Dúzia:** $t(commands:roleta.{{number.dozen}}) \n\n**Sua escolha:** $t(commands:roleta.{{operation}})\n**Seleção:** {{selection}}",
@@ -669,28 +658,28 @@
     "dozens-title": "Aposta em Dúzias",
     "dozens-value": "Aposte em uma das três dúzias\nLUCRO BASE: **2:1**\nSEU LUCRO MÁXIMO: **{{profit}}** :star:",
     "split-title": "Aposta em Dois Números",
-    "split-value": "Você pode apostar em números adjascentes\nLUCRO BASE: **17:1**\nSEU LUCRO MÁXIMO: **{{profit}}** :star:",
+    "split-value": "Você pode apostar em números adjascentes\nLUCRO BASE: **5:1**\nSEU LUCRO MÁXIMO: **{{profit}}** :star:",
     "straight-up-title": "Aposta em um número",
-    "straight-up-value": "Você pode apostar em um único número\nLUCRO BASE: **35:1**\nSEU LUCRO MÁXIMO: **{{profit}}** :star:",
+    "straight-up-value": "Você pode apostar em um único número\nLUCRO BASE: **9:1**\nSEU LUCRO MÁXIMO: **{{profit}}** :star:",
     "STRAIGHT": "Número Único",
     "SPLIT": "Dupla de Números",
     "DOZENS": "Uma Dúzia",
     "LOWHIGH": "Número mais Alto ou Baixo",
     "ODDEVEN": "Par ou Ímpar",
-    "COLOR": "Vermelho ou Preto"
+    "COLOR": "Vermelho ou Preto",
+    "hourly_limit": "Você excedeu seu limite horário de altas apostas (São consideiradas apostas altas, apostas maiores que 10,000 estrelinhas feitas em Dupla de Números ou Número Único)!"
   },
   "bicho": {
     "sorted-title": "Números Sorteados",
     "sorted-description": "**Último Sorteio:** `{{lastDate}}`\nNúmeros Sorteados:\n1º - `{{first}}`\n2º - `{{second}}`\n3º - `{{third}}`\n4º - `{{fourth}}`\n5º - `{{fifth}}`\nMaior Lucro: **{{biggestProfit}}** :star:\n\nPróximo Sorteio Em `{{nextDate}}`\n**Valor Acumulado:** {{value}} :star:",
     "no-register": "Sem Registro",
+    "invalid-bet": "Você inseriu uma aposta inválida! Verifique novamente sua seleção",
+    "label": "Digite um número entre {{min}} e {{max}}",
     "poor": "Tu não tem estrelinhas o suficiente para apostar! Tente outro valor!",
     "bet-title": "Aposte no Bicho",
     "bet-description": "Escolha uma forma de apostas! Você pode apostar em um bicho, uma unidade, uma dezena, uma centena, um milhar, um animal, uma sequência ou quina de animais. Escolha abaixo sua categoria, e após isso, selecione a aposta em si\n\n**MULTIPLICADOR POR ESCOLHAS:**\n**Unidade:** {{unity}}x :star:\n**Dezena:** {{ten}}x :star:\n**Centena:** {{hundred}}x :star:\n**Milhar:** {{thousand}}x :star:\n**Animal:** {{animal}}x :star:\n**Sequência:** {{sequence}}x :star:\n**Quina:** {{corner}}x :star:",
     "close": "As apostas estão fechadas! Aguarde o anúncio de vencedores, e aposte novamente",
-    "unity": "Unidade",
-    "ten": "Dezena",
-    "hundred": "Centena",
-    "thousand": "Milhar",
+    "number": "Número",
     "sequence": "Sequência",
     "corner": "Quina",
     "one-animal": "Animal",
@@ -706,6 +695,13 @@
   },
   "ficha": {
     "no-user": "Este usuário não está registrado no RPG!",
+    "bless": {
+      "modal-title": "Abençoar Status",
+      "success": "Seus Status foram Abençoados!",
+      "invalid-number": "Você digitou um número inválido!",
+      "no-points": "Você utilizou mais pontos do que deveria. Seu limite é **{{points}}**!",
+      "bless-limit": "Uma ou mais de suas bênçãos ultrapassou o limite de bênçãos! Uma bênção não pode possuir mais de **{{limit}}** pontos de diferenca em relação à outra bênção!"
+    },
     "register": {
       "title": "Ritual de Invocação",
       "confirm-title": "Cheque Suas Informações",
@@ -717,27 +713,19 @@
     "show": {
       "not-found": "Este usuário não está registrado como um aventureiro",
       "title": "Status de {{name}}",
-      "life": "Vida",
-      "class": "Classe",
-      "race": "Raça",
-      "level": "Nível",
-      "experience": "Experiência",
-      "armor": "Armadura",
-      "dmg": "Dano",
-      "mana": "Mana",
-      "money": "Moedas Reais",
+      "description": "{{emojis.heart}} | Raça: **{{race}}**\n{{emojis.crown}} | Classe: **{{class}}**\n{{emojis.blood}} | Vida: **{{life}} / {{maxLife}}**\n{{emojis.mana}} | Mana: **{{mana}} / {{maxMana}}**\n{{emojis.damage}} | Dano: **{{damage}}**\n{{emojis.armor}} | Armadura: **{{armor}}**\n{{emojis.intelligence}} | Inteligência: **{{intelligence}}**\n{{emojis.agility}} | Agilidade: **{{agility}}**\n{{emojis.coin}} | Moedas Reais: **{{money}}**\n{{emojis.chest}} | Capacidade: **{{capacity}}/{{maxCapacity}}**\n{{emojis.level}} | Nível: **{{level}}**\n{{emojis.experience}} | Experiência: **{{experience}} / {{nextLevelXp}}**",
       "poor-title": "Bônus de Bênçãos",
       "poor-description": "Você está sem Bênçãos no momento, mas fique com os status atuais de suas bênçãos enquanto isso\n\n❤️ | **Vida Extra:** {{life}} | {{lifePoints}}\n💧 | **Mana Extra:** {{mana}} | {{manaPoints}}\n👢 | **Agilidade Extra:** {{agility}} | {{agilityPoints}}\n⚔️ | **Dano Extra:** {{damage}} | {{damagePoints}}\n🛡️ | **Armadura Extra:** {{armor}} | {{armorPoints}}\n🧠 | **Inteligência Extra:** {{intelligence}} | {{intelligencePoints}}",
-      "no-blesses": "Você não possui Bênçãos Santíssimas para melhorar seus Status!",
       "blessings": "Você possui **{{vitality}}** Bençãos Santíssimas de Vitalidade e **{{battle}}** de Batalha, use os botões abaixo para melhorar seus status. Você não pode ter uma diferença de status abençoados de mais de **{{limit}}** bênçãos",
       "vitality": "Pontos de Vitalidade",
       "limit-bless": "Você não pode ter dois status com uma diferença de pontos maior que **{{limit}}**",
       "battle": "Pontos de Batalha",
       "select-amount": "Selecione a Quantidade que queres usar",
       "select-type": "Selecione qual status você quer adicionar {{count}} pontos",
-      "status-success": "Seus Status foram Abençoados!",
       "abilitiesButton": "Árvore de Habilidades",
       "statsButton": "Árvore de Status",
+      "vitality-description": "{{emojis.blood}} | Vida: **{{maxLife}}** | {{lifeBlesses}}\n{{emojis.mana}} | Mana: **{{maxMana}}** | {{manaBlesses}}\n{{emojis.agility}} | Agilidade: **{{agility}}** | {{agilityBlesses}}",
+      "battle-description": "{{emojis.damage}} | Dano: **{{damage}}** | {{damageBlesses}}\n{{emojis.armor}} | Mana: **{{armor}}** | {{armorBlesses}}\n{{emojis.intelligence}} | Inteligência: **{{intelligence}}** | {{intelligenceBlesses}}",
       "abilities": {
         "upgrade": "Melhorar Habilidades",
         "unlock": "Desbloquear Habilidades",
@@ -758,32 +746,63 @@
     "next": "Descer para o Nível {{level}}",
     "preparation": {
       "title": "Preparação pra batalha",
-      "footer": "Quer entrar mesmo assim?",
-      "stats": "Cheque seus status antes de tudo",
+      "footer": "Quer entrar mesmo assim? {{users}}/{{maxUsers}}",
+      "no_party_members": "Alguém de seu grupo não possui uma ficha no Mundo de Boleham! Desfaça este grupo e tente novamente",
+      "stats": "Status de {{user}}",
+      "stats-description": "{{emojis.blood}} | Vida: **{{life}} / {{maxLife}}**\n{{emojis.mana}} | Mana: **{{mana}} / {{maxMana}}**\n{{emojis.damage}} | Dano: **{{damage}}**\n{{emojis.armor}} | Armadura: **{{armor}}**\n{{emojis.intelligence}} | Inteligência: **{{intelligence}}**\n{{emojis.agility}} | Agilidade: **{{agility}}**\n{{emojis.chest}} | Capacidade: **{{capacity}}/{{maxCapacity}}**",
       "enter": "Entrar",
-      "no": "Arregar",
-      "no_censored": "Fugir"
+      "no": "Arregar"
     },
     "results": {
       "title": "Resultados da Batalha",
       "item-title": "Espólios de Batalha",
       "backpack-full": "Você não tem espaço suficiente para pegar os itens dropados!",
-      "grab": "Selecione os itens que você quer",
+      "pick-loots": "Pegar Itens",
+      "user-dead": "Você não pode usar poções pois você está morto!",
+      "didnt-participate": "Você não participou dessa batalha para ter acesso aos loots!",
       "get-all-items": "Pegar Todos Itens",
-      "use-potion": "Selecione as poções que queres usar",
-      "back": "Você retornou para a cidade, descanse um pouco antes de ir para outra aventura!",
-      "footer": "Caso queira algum item, faça-o antes de ir para outro lugar",
+      "no-items": "`Nenhum Item Disponível`",
+      "grab": "Selecione os itens que tu quiser",
+      "back": "O seu grupo retornou para a cidade! Descanse um pouco antes de ir para outra aventura!",
+      "footer": "Jogadores Prontos: {{users}}/{{maxUsers}}",
+      "runaway": "**A fuga foi realizada com sucesso!**",
+      "no-potions": "Você não possui poções para usar!",
+      "use-potion": "Selecione as poções que tu quer usar",
+      "already_ready": "Tu já marcou como pronto para continuar! Aguarde o resto do grupo para continuar",
+      "already_used_potions": "Tu já usou poções!",
+      "already_picked_items": "Tu já pegou os itens!",
+      "available-items": "Espólios de Batalha Disponíveis",
+      "success_items": "Itens Pegos!",
+      "success_potions": "Poções Usadas!",
+      "only-owner": "O dono do grupo {{user}} deve selecionar",
+      "everyone-dead": "**TODO MUNDO DO GRUPO MORREU.** Cuidado ao entrar em dungeons profundas. Não afobe em sua descida! Melhore seus equipamentos e volte no futuro!",
+      "error-only-owner": "Apenas o dono do grupo pode selecionar itens agora!",
+      "finish": "Grandiosa Batalha! {{amount}}x **{{enemy}}** mortos!\nTodos os membros do grupo devem estar prontos para continuar!",
       "loots": "Itens Disponíveis (Você tem espaço para pegar **{{amount}}**)\n{{itemText}}",
-      "description": "**Seus Status:**\n❤️ | Vida: **{{life}} / {{maxLife}}**\n💧 | Mana: **{{mana}} / {{maxMana}}**\n🔰 | Experiência Ganha: **{{experience}}**\n\nVocê triunfou em sua batalha, e agora deve seguir seu rumo, escolha o que desejas fazer"
+      "stats-description": "{{emojis.blood}} | Vida: **{{life}} / {{maxLife}}**\n{{emojis.mana}} | Mana: **{{mana}} / {{maxMana}}**\n{{emojis.experience}} | Experiência Ganha: **{{experience}}**\n{{emojis.chest}} | Capacidade: **{{capacity}}/{{maxCapacity}}**"
     },
-    "arregou": "Você pensou melhor, e acabou desistindo de entrar na dungeon"
+    "arregou": "{{user}} pensou melhor, e acabou desistindo de entrar na dungeon"
   },
   "inventario": {
-    "title": "Inventário de {{user}}",
+    "title": "{{emoji}} | Inventário de {{user}} ({{capacity}}/{{maxCapacity}})",
     "no-items": "**Seu inventário está vazio!**",
-    "use": "Usar Poções",
-    "use-success": "Você usou suas poções com sucesso!",
-    "use-description": "Nível: **{{level}}**\nRegeneração: **{{regeneration}}**"
+    "use-potion": "Usar Poções",
+    "equip-item": "Equipar Itens",
+    "fields": {
+      "backpack": "Capacidade",
+      "weapon": "Dano",
+      "protection": "Defesa"
+    },
+    "use-potion-success": "Você usou suas poções com sucesso!",
+    "use-potion-modal-title": "Seleção de Poções",
+    "use-potion-modal-lable": "{{name}} - {{max}}x",
+    "use-potion-description": "Nível: **{{level}}**\nRegeneração: **{{regeneration}}**\nQuantidade: **{{amount}}**",
+    "use-equipment-description": "Nível: **{{level}}**\n{{field}}: **{{value}}**{{backpackFull}}",
+    "use-potion-invalid-selection": "Você inseriu uma quantidade inválida de poções para usar!",
+    "backpack-full": "\n`Atualmente você possui mais itens que esta mochila suporta!`",
+    "equip-success": "Você equipou **{{name}}**",
+    "no-potions": "Você não possui poções para usar!",
+    "no-equipments": "Você não possui itens para equipar!"
   },
   "centro": {
     "library": {
@@ -812,6 +831,7 @@
         "percentage": "Porcentagem",
         "self": "Si Mesmo",
         "enemy": "Inimigo",
+        "ally": "Aliado",
         "effect-description": "**Tipo:** {{type}}\n**Duação em Turnos:** {{duration}}\n**Valor**: {{value}}\n**Reflexão do Valor:** {{reflection}}\n**Influência da Inteligência:** {{inIntelligence}}%\n**Tipo de Valor**: {{modifier}}\n**Valor por Nível:** {{valuePerLevel}}\n**Elemento:** {{element}}\n**Alvo:** {{target}}",
         "description": "**Nome:** {{name}}\n**Descrição:** {{description}}\n**Custo de Mana:** {{cost}}\n**Custo de Mana por Nível:** {{costPerLevel}}\n**Custo de Desbloqueio:** {{unlockCost}}"
       },
@@ -827,14 +847,32 @@
     },
     "blacksmith": {
       "title": "Ferreiro",
-      "backpack-description": "**{{name}}**\nCapacidade: **{{capacity}}**\nNível: **{{level}}**",
-      "weapon-description": "**{{name}}**\nDano: **{{damage}}**\nNível: **{{level}}**",
-      "protection-description": "**{{name}}**\nDefesa: **{{armor}}**\nNível: **{{level}}**",
-      "evolve": "Evoluir",
+      "backpack-description": "**{{name}}**\nCapacidade: **{{capacity}}**\nNível: **{{level}}** {{max}}",
+      "weapon-description": "**{{name}}**\nDano: **{{damage}}**\nNível: **{{level}}** {{max}}",
+      "protection-description": "**{{name}}**\nDefesa: **{{armor}}**\nNível: **{{level}}** {{max}}",
+      "upgrade": "Melhorar",
+      "fields": {
+        "backpack": "Capacidade",
+        "weapon": "Dano",
+        "protection": "Defesa"
+      },
+      "no-space": "Você está sem espaço em sua mochila para guardar esse item!",
       "poor": "Dinheiro Insuficiente",
-      "success": "Evolução Concluída com Sucesso!",
-      "evolve-description": "**Melhorar {{name}}**\n\nCusto de Melhoria: **{{cost}}** {{coinEmoji}}\nBônus da Melhoria: **{{bonus}}** {{bonusEmoji}}\nNível da Melhoria: **{{level}}**",
-      "description": "Bem-Vindo ao Ferreiro de Boleham, aqui você pode melhorar seus ítens como Mochila, Arma e Armadura. Selecione abaixo o que desejas fazer"
+      "poor-items": "Itens Insuficientes",
+      "none": "Nenhum :)",
+      "no-forgeable": "Não há nenhum item para forjar na sua localização atualmente",
+      "forge-item-description": "Custo: **{{cost}}** {{noMoney}}\nItens Necessários: {{items}} {{noItems}}\n{{field}}: **{{value}}**",
+      "success": "Melhoria Concluída com Sucesso!",
+      "forge-success": "Você forjou **{{name}}** com sucesso!",
+      "forge-backpack": "Forjar Mochila",
+      "upgrade-backpack": "Melhorar Mochila",
+      "forge-weapon": "Forjar Arma",
+      "upgrade-weapon": "Melhorar Arma",
+      "forge-protection": "Forjar Armadura",
+      "upgrade-protection": "Melhorar Armadura",
+      "max-level": "| Nível Máximo!",
+      "evolve-description": "**Melhorar {{name}}**\n\nCusto de Melhoria: **{{cost}}** {{coinEmoji}}\nBônus da Melhoria: **{{bonus}}** {{bonusEmoji}}\nItens Necessários: {{items}}\nNível da Melhoria: **{{level}}**",
+      "description": "Bem-Vindo ao Ferreiro de Boleham, aqui você pode melhorar seus itens como Mochila, Arma e Armadura. Selecione abaixo o que desejas fazer"
     },
     "buy": {
       "title": "Mercado de Boleham | Comprar",
@@ -882,10 +920,89 @@
       "reset-points": "Resetar Pontos",
       "success-points": "Suas configurações de batalha foram ajustadas!",
       "title": "Configurações de Batalha Amistosa",
-      "description": "**Configurações para Batalhas Amistosas**\n\nPrepare-se para uma batalha amistosa arrumando seu status. Você tem no total **{{vitality}}** bênçãos de vitalidade e **{{battle}}** bênçãos de batalha para usar. Lembrando que estas bênçãos só são validas para batalhas amistosas em **Nível de Batalha**\n\nSelecione abaixo seus pontos"
+      "description": "Prepare-se para uma batalha amistosa arrumando seu status. Você tem no total **{{vitality}}** bênçãos de vitalidade e **{{battle}}** bênçãos de batalha para usar. Lembrando que estas bênçãos só são validas para batalhas amistosas em **Nível de Batalha**\n\nEscolha abaixo qual status você quer alterar.\n**NOTA:** O número que você colocar será SETTADO, ou seja, a quantidade de bênçãos que você colocar em um status é a que vai ficar. Não digitar nada faz com que aquele status não seja alterado, mantendo o valor de antes de abrir o formulário!"
     },
     "results": {
-      "title": "Fim de Batalha"
+      "title": "Fim de Batalha",
+      "description": "{{text}}\n\n**Vencedor:** {{winnerName}}\n**Perdedor**: {{loserName}}"
     }
+  },
+  "resetar": {
+    "ficha": {
+      "title": "Deletar Conta?",
+      "yes": "Sim, resetar minha ficha",
+      "level": "Tu deve ser no mínimo nível 5 antes de querer resetar tua conta!",
+      "success": "Sua conta foi resetada com sucesso! Tu pode criar um novo personagem se preferir",
+      "negated": "Sua conta se mantém viva. Mas quando quiser, so brotar aqui de novo",
+      "no": "NÃO!!! QUERO MANTER",
+      "description": "**ATENÇÃO**\n\nAo clicar no botão abaixo, tu vai apagar TODOS os teus dados **DO RPG**\nSua conta da Menhera existirá ainda, somente seus dados em relação ao RPG serão perdidos\n\nIsso só fará com que o teu personagem seja deletado. Tu vai poder criar outro personagem quando quiser.\n\nEstatísticas como vitórias em PvP continuarão vinculadas a sua conta.\n\nVocê tem certeza que quer fazer isso?"
+    }
+  },
+  "badges": {
+    "title": "Suas Badges",
+    "footer": "Selecione as Badges que você quer que NÃO apareça em seu perfil",
+    "select-all": "Selecionar Todas",
+    "diselect-all": "Remover Todas Seleções",
+    "success": "Suas escolhas foram salvas!",
+    "badge-info": "_{{description}}_\n**Adquirida em**: <t:{{unix}}:d>\n**ID da badge**: {{id}}\n**Raridade:** {{rarity}}"
+  },
+  "menhera": {
+    "estatisticas": {
+      "aniversary-title": "🎉 HOJE É MEU ANIVERSÁRIO🎉",
+      "embed_description": "Oi, meu nome é **{{name}}**, e eu sou uma Bot Brasileira para Discord com foco em diversão e RPG! Fui criada em **{{createdAt}}** e entrei nesse servidor **{{joinedAt}}**.\n\nUm pouco sobre mim: Meu nome é Menhera, tenho 16 anos e AMO, mas tipo AMO usar essas carinhas: (>...<). Para saber mais, entre em meu [twitter](https://twitter.com/__MenheraBot), em meu [servidor de suporte](https://discord.gg/fZMdQbA) e em meu [WEBSITE](https://menherabot.xyz/).",
+      "embed_footer": "{{menhera}} foi criada por {{owner}}",
+      "version": "Versão",
+      "support": "Servidor de Suporte",
+      "extended": "Informações dos Clusters",
+      "ping": "Tempo de Resposta: **{{api}}ms**\nLatência do Websocket: **{{ws}}ms**\nShard: **{{shard}}/{{totalShard}}**\nCluster: **{{cluster}}/{{totalCluster}}**"
+    }
+  },
+  "calvo": {
+    "text": "**Calvice de {{name}}**\n\n> {{user}} possui calvice tipo **{{type}}** e está no estágio **{{stage}}**\n{{description}}\n\n\"___Da calvice nascemos, da calvice morreremos...___\" - {{author}}, 2018",
+    "type-0": "A",
+    "type-1": "O",
+    "type-2": "M",
+    "type-3": "O+M",
+    "stage-0": "Normal",
+    "stage-1": "Início",
+    "stage-2": "Segunda Etapa",
+    "stage-3": "Final",
+    "know-more": "Saiba Mais",
+    "descriptions": {
+      "0-0": "No início de tudo, sua vida ainda será problemática para frente, mas não se desespere, a calvice sempre reinará, e dela não devemos temer!",
+      "0-1": "Sua testa começa a ter destaque, já devem ter te chamado de aeroporto de mosquito, mas não se abale, o que é deles está guardado!",
+      "0-2": "Você já se parece mais com um padre de antigamente, já perdeu as esperanças de recuperar aquilo que já lhe foi mais sagrado, e só lhe resta entregar o resto de seu cabelo",
+      "0-3": "O fim, nem um implante deve resolver o problema, a calvice venceu, não lute mais, agora apenas descanse... Descanse e aproveite essa nova vida, a vida de quem viveu, e experenciou!",
+      "1-0": "Você percebe que está começando e sabe que não pode parar, a luta agora vai ser de quanto tempo vai demorar para a calvice te derrotar",
+      "1-1": "Rosquinha! É isso que eles te chamam. Nesse momento tu começa a usar bonés e chapéus para esconder aquilo que você sente vergonha, a calvice está se iniciando",
+      "1-2": "Tu já não usa mais shampoo, única coisa que tu usa é lustra móveis, para deixar a sua linda careca brilhando. Tu já passou por muita coisa, portanto, não se importa com o que os outros falam",
+      "1-3": "Então é isso, o fim chegou. A calvice lhe venceu, nada mais pode ser feito. Mas, não foi uma derrota! Foi uma vitória! Por passar pelo pior tipo de calvice possível, e finalmente chegar ao fim!",
+      "2-0": "É o inicio de uma nova vida. Tu se olha no espelho e percebe o que você não queria. Tu ta ficando calvo, e sabe disso, só não aceitou ainda",
+      "2-1": "Duas entradas laterais aparecem em sua cabeça, você fica aliviado pela sua calvice ser a mais comum de todas, e também a mais charmosa.",
+      "2-2": "Seu cabelo parece mais uma maré recuando pré-tsunami. Tu não se importa com o que acontece com seu cabelo, tu é um aceitador, uma pessoa que aceita a calvice assim como ela é",
+      "2-3": "Esse é o seu fim, o mesmo que todos os outros calvos. Você não queria chegar até esse ponto, a sua calvice era linda, e agora, é só mais um na lista daqueles que agora, já não possuem mais nada",
+      "3-0": "O dia chegou, o dia em que você percebe que está começando a ficar calvo, a única súplica que tu tem é que não seja o tipo **O**. Que seja qualquer coisa, menos o tipo O",
+      "3-1": "Você não acredita em si mesmo. Não poderia ser pior, você percebe que sua calvice se inicia como um tipo O. Pelo menos tu consegue esconder a parte de cima com um chapéu, e se orgulhar do charme que o tipo M traz a sua cabeça",
+      "3-2": "Você não consegue esconder, todos sabem que você é um misto. Mas tu não se deixa abalar, e claro que conta para tudo e todos que tu ta apenas fazendo um corte do Ronaldinho Gaúcho.",
+      "3-3": "O fim dos fins. Você é grato por ter tido essa calvice. Por mais que não confiasse no início, e que tinha medo do que os outros pensariam, você venceu, e chegou até o fim. Parabéns campeão!"
+    }
+  },
+  "party": {
+    "already_in_party": "Você já está em um grupo! Saia do grupo atual para entrar em outro.",
+    "other_in_party": "{{user}} já está em um grupo! Peça-o para sair e então entrar em seu",
+    "create_title": "Formação de Grupo",
+    "create_description": "{{user}} quer criar um grupo! Para o grupo se formar, todos os membros devem clicar no botão abaixo.",
+    "create_footer": "Aceitos: {{users}}/{{maxUsers}}",
+    "bot_in_party": "Você não pode formar um grupo com um bot!",
+    "cannot_invite_self": "Você não pode formar um grupo consigo mesmo!",
+    "user_unregistered": "{{user}} ainda não reencarnou no mundo de Boleham! Peça-o para se registrar primeiro e tente novamente!",
+    "create_cancelled": "{{user}} negou-se a participar do grupo!",
+    "create_timesup": "Os jogadores não aceitaram o pedido à tempo!",
+    "create_success": "O grupo foi formado! Vocês agora podem ir à dungeon juntos!",
+    "not-in-party": "Você não está em nenhum grupo atualmente!",
+    "left-party": "Você saiu de seu grupo com {{users}}",
+    "user-not-in-party": "**{{user}}** não está em nenhum grupo atualmente!",
+    "party-of": "Grupo de {{user}}",
+    "party-description": "**Líder do Grupo:** {{owner}}\n**Participantes:** {{users}}\n**Desfaz Em**: {{time}} minutos"
   }
 }

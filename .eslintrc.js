@@ -28,6 +28,7 @@ module.exports = {
     'no-plusplus': 'off',
     'max-len': 'off',
     'import/no-unresolved': 0,
+    'no-warning-comments': 'warn',
     'no-underscore-dangle': ['error', { allow: ['_id'] }],
     'import/extensions': [0, 'never', { ts: 'never' }],
     'no-use-before-define': ['error', { variables: false }],
@@ -39,6 +40,7 @@ module.exports = {
     '@typescript-eslint/no-shadow': ['error'],
     'import/no-named-as-default': 0,
     'import/no-named-as-default-member': 0,
+    'no-nested-ternary': 'off',
   },
   settings: {
     'import/parsers': {
