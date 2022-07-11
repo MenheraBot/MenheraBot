@@ -20,6 +20,7 @@ import ThemeRepository from './repositories/ThemeRepository';
 import CreditsRepository from './repositories/CreditsRepository';
 import RoleplayRepository from './repositories/RoleplayRepository';
 import RelationshipRepository from './repositories/RelationshipRepository';
+import PokerRepository from './repositories/PokerRepository';
 
 export default class Databases {
   public redisClient: Redis | null = null;
@@ -72,6 +73,8 @@ export default class Databases {
 
   private readonly creditsRepository: CreditsRepository;
 
+  private readonly pokerRepository: PokerRepository;
+
   constructor(public uri: string, withRedisCache: boolean) {
     this.Cmds = Cmds;
     this.Guilds = Guilds;
@@ -97,6 +100,7 @@ export default class Databases {
     this.giveRepository = new GiveRepository(this.Users);
     this.themeRepository = new ThemeRepository(this.Themes, this.redisClient);
     this.roleplayRepository = new RoleplayRepository(this.Rpgs, this.redisClient);
+    this.pokerRepository = new PokerRepository(this.redisClient);
 
     this.cacheRepository = new CacheRepository(
       this.redisClient,
@@ -135,6 +139,7 @@ export default class Databases {
       themeRepository: this.themeRepository,
       roleplayRepository: this.roleplayRepository,
       creditsRepository: this.creditsRepository,
+      pokerRepository: this.pokerRepository,
     };
   }
 

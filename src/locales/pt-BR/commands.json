@@ -940,6 +940,15 @@
   },
   "poker": {
     "public-not-released": "As partidas públicas ainda estão em desenvolvimento!",
-    "private-not-enough-players": "Para iniciar uma partida privada, é necessário ao menos 2 jogadores!"
+    "private-not-enough-players": "Para iniciar uma partida privada, é necessário ao menos 2 jogadores!",
+    "accept-match": "Entrar na Mesa",
+    "start-match": "Começar Jogo",
+    "cancel-match": "Cancelar Partida",
+    "private-accept-embed": {
+      "title": "{{author}} iniciou uma Mesa de Poker!",
+      "inTable": "Usuários que já estão na mesa ({{users}}/{{maxUsers}})",
+      "description": "Convidados a participar: {{invites}}\n\nEscolha se você deseja entrar na mesa nos botões abaixo!"
+    },
+    "private-users-already-in-match": "Você não pode começar essa partida! Os seguintes usuários já estão em alguma partida de Poker: **{{users}}**"
   }
 }

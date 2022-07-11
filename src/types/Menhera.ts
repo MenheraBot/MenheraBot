@@ -28,6 +28,7 @@ import { MayNotExists } from '@utils/Util';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { LocalizationMap } from 'discord-api-types/v10';
 import Badges from '@data/ProfileBadges';
+import PokerRepository from '@database/repositories/PokerRepository';
 
 export interface IClientConfigs {
   interactionsDirectory: string;
@@ -290,6 +291,7 @@ export interface IDatabaseRepositories {
   coinflipRepository: CoinflipRepository;
   shopRepository: ShopRepository;
   themeRepository: ThemeRepository;
+  pokerRepository: PokerRepository;
   creditsRepository: CreditsRepository;
 }
 

@@ -1,6 +1,8 @@
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
-import { User } from 'discord.js-light';
+import { COLORS } from '@structures/Constants';
+import { actionRow } from '@utils/Util';
+import { MessageButton, MessageEmbed, User } from 'discord.js-light';
 
 export default class PokerCommand extends InteractionCommand {
   constructor() {
@@ -121,6 +123,67 @@ export default class PokerCommand extends InteractionCommand {
       });
       return;
     }
+
+    const canUsersPlay = await Promise.all(
+      toMatchPlayer.map(async (u) => ({
+        user: u,
+        isPlaying: await ctx.client.repositories.pokerRepository.isUserInPokerMatch(u.id),
+      })),
+    );
+
+    if (canUsersPlay.some((u) => u.isPlaying)) {
+      ctx.makeMessage({
+        ephemeral: true,
+        content: ctx.locale('commands:poker.private-users-already-in-match', {
+          users: canUsersPlay
+            .filter((u) => u.isPlaying)
+            .map((u) => u.user.username)
+            .join(', '),
+        }),
+      });
+      return;
+    }
+
+    const enterButton = new MessageButton()
+      .setCustomId(`${ctx.interaction.id} | ENTER`)
+      .setLabel(ctx.locale('commands:poker.accept-match'))
+      .setStyle('SUCCESS');
+
+    const startButton = new MessageButton()
+      .setCustomId(`${ctx.interaction.id} | START`)
+      .setLabel(ctx.locale('commands:poker.start-match'))
+      .setStyle('PRIMARY');
+
+    const cancelButton = new MessageButton()
+      .setCustomId(`${ctx.interaction.id} | CANCEL`)
+      .setLabel(ctx.locale('commands:poker.cancel-match'))
+      .setStyle('DANGER');
+
+    const accepted = [ctx.author.id];
+
+    const embed = new MessageEmbed()
+      .setTitle(ctx.locale('commands:poker.private-accept-embed.title', { author: ctx.author.tag }))
+      .setDescription(
+        ctx.locale('commands:poker.private-accept-embed.description', {
+          invites: toMatchPlayer.map((u) => `**${u.tag}**`).join(', '),
+        }),
+      )
+      .addField(
+        ctx.locale('commands:poker.private-accept-embed.inTable', {
+          users: accepted.length,
+          maxUsers: toMatchPlayer.length,
+        }),
+        accepted.map((a) => `• <@${a}>`).join('\n'),
+      )
+      .setColor(COLORS.Pinkie)
+      .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true }));
+
+    ctx.makeMessage({
+      content: toMatchPlayer.map((u) => u.toString()).join(', '),
+      embeds: [embed],
+      components: [actionRow([enterButton, startButton, cancelButton])],
+    });
+
     console.log('a');
   }
 }

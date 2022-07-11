@@ -934,6 +934,15 @@
   },
   "poker": {
     "public-not-released": "Public matches are not released yet",
-    "private-not-enough-players": "To start a private match, you need at least 2 players"
+    "private-not-enough-players": "To start a private match, you need at least 2 players",
+    "accept-match": "Enter in Table",
+    "start-match": "Start Game",
+    "cancel-match": "Cancel Match",
+    "private-accept-embed": {
+      "title": "{{author}} started a Poker Table!",
+      "inTable": "Users that are already in ({{users}}/{{maxUsers}})",
+      "description": "Invited to Participate: {{invites}}\n\nChoose if you want to join the table using the buttons below!"
+    },
+    "private-users-already-in-match": "You can't start this match! The following users are already in a poker game: **{{users}}**"
   }
 }
