@@ -931,5 +931,9 @@
       "3-2": "You can't hide it, everyone knows you're a mix. But you don't let yourself be shaken, and of course it tells everyone and everything that you're just cutting Ronaldinho Gaúcho.",
       "3-3": "The end of the ends. You are grateful to have had this baldness. As much as you didn't trust it at first, and that you were afraid of what others would think, you won, and made it to the end. Congratulations champion !"
     }
+  },
+  "poker": {
+    "public-not-released": "Public matches are not released yet",
+    "private-not-enough-players": "To start a private match, you need at least 2 players"
   }
 }

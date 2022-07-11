@@ -17,7 +17,7 @@ export default class ReadyEvent {
     }
 
     if (process.env.NODE_ENV === 'development') {
-      // DeployDeveloperCommants(client);
+      // DeployDeveloperCommands(client);
       return;
     }
 

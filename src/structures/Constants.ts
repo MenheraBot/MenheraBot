@@ -1,6 +1,6 @@
 import { IBadge, T8BallAnswerTypes } from '@custom_types/Menhera';
 
-export const shopEconomy = {
+export const shopEconomy = Object.freeze({
   colors: {
     purple: 30_000,
     red: 40_000,
@@ -19,9 +19,9 @@ export const shopEconomy = {
     demigods: 5_800,
     gods: 14_000,
   },
-};
+});
 
-export const defaultHuntingProbabilities = {
+export const defaultHuntingProbabilities = Object.freeze({
   demons: [
     { amount: 0, probability: 25 },
     { amount: 1, probability: 21 },
@@ -58,11 +58,11 @@ export const defaultHuntingProbabilities = {
     { amount: 0, probability: 92 },
     { amount: 1, probability: 8 },
   ],
-};
+});
 
 export const defaultHuntCooldown = 3_600_000;
 
-export const votes = {
+export const votes = Object.freeze({
   rollQuantity: 1,
   maxStarValue: 3_600,
   minStarValue: 1_200,
@@ -70,9 +70,9 @@ export const votes = {
   starWeekendMultiplier: 2,
   roll20Multiplier: 4,
   star20Multiplier: 4,
-};
+});
 
-export const emojis = {
+export const emojis = Object.freeze({
   success: '<:positivo:759603958485614652>',
   error: '<:negacao:759603958317711371>',
   warn: '<:atencao:759603958418767922>',
@@ -146,7 +146,7 @@ export const emojis = {
   debuff: '<:debuff:964812397825110026>',
   poison: '🧪',
   heal: '💊',
-};
+});
 
 export type EmojiTypes = keyof typeof emojis;
 
@@ -317,7 +317,7 @@ export const ROULETTE_NUMBERS: Array<RouletteNumber | { value: 0; color: 'green'
   { value: 36, color: 'red', parity: 'even', size: 'high', dozen: 'third' },
 ];
 
-export const JOGO_DO_BICHO = [
+export const JOGO_DO_BICHO = Object.freeze([
   'avestruz',
   'ágia',
   'burro',
@@ -343,9 +343,9 @@ export const JOGO_DO_BICHO = [
   'urso',
   'veado',
   'vaca',
-];
+]);
 
-export const BICHO_BET_MULTIPLIER = {
+export const BICHO_BET_MULTIPLIER = Object.freeze({
   unity: 2,
   ten: 5,
   hundred: 20,
@@ -353,25 +353,25 @@ export const BICHO_BET_MULTIPLIER = {
   animal: 3,
   sequence: 19,
   corner: 1000,
-};
+});
 
-export const BLACKJACK_CARDS = Array.from({ length: 52 }, (_, i) => i + 1);
+export const BLACKJACK_CARDS = Object.freeze(Array.from({ length: 52 }, (_, i) => i + 1));
 
-export const CANNOT_BUY_THEMES = [3, 5, 4, 6];
+export const CANNOT_BUY_THEMES = Object.freeze([3, 5, 4, 6]);
 
 export const TODAYS_YEAR = new Date().getFullYear();
 
 export const HOURLY_ROULETTE_HIGH_VALUE_BET_LIMIT = 5;
 
-export const DiscordFlagsToMenheraBadges: { [badge: string]: IBadge['id'] } = {
+export const DiscordFlagsToMenheraBadges: { [badge: string]: IBadge['id'] } = Object.freeze({
   EARLY_VERIFIED_BOT_DEVELOPER: 5,
   HOUSE_BALANCE: 2,
   HOUSE_BRILLIANCE: 3,
   HOUSE_BRAVERY: 4,
-};
+});
 
-export const BLACKJACK_PRIZE_MULTIPLIERS = {
+export const BLACKJACK_PRIZE_MULTIPLIERS = Object.freeze({
   init_blackjack: 1.5,
   blackjack: 1,
   base: 1,
-};
+});
