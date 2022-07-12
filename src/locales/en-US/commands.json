@@ -951,6 +951,19 @@
       "inTable": "Users that are already in ({{users}}/{{maxUsers}})",
       "description": "Invited to Participate: {{invites}}\n\nChoose if you want to join the table using the buttons below!"
     },
-    "private-users-already-in-match": "You can't start this match! Some users are already in a poker table"
+    "private-users-already-in-match": "You can't start this match! Some users are already in a poker table",
+    "round-actions": {
+      "PRE-FLOP": "Pre Flop",
+      "FLOP": "Flop",
+      "TURN": "Turn",
+      "RIVER": "River",
+      "SHOWDOWN": "Showdown"
+    },
+    "match": {
+      "main-message": {
+        "embed-title": "Poker Table",
+        "embed-description": "**Round**: $t(poker.round-actions.{{action}})\n**Waiting Player**: {{user}}"
+      }
+    }
   }
 }

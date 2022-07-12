@@ -267,6 +267,7 @@ export const COLORS = {
   Pear: '#74bd63' as const,
   UltraPink: '#ff29ae' as const,
   Battle: '#e3beff' as const,
+  Poker: '#165016' as const,
 };
 
 interface RouletteNumber {

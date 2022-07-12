@@ -4,6 +4,9 @@ import { COLORS } from '@structures/Constants';
 import { actionRow, debugError, disableComponents, resolveCustomId } from '@utils/Util';
 import { MessageButton, MessageComponentInteraction, MessageEmbed, User } from 'discord.js-light';
 import PokerTable from '@poker/PokerTable';
+import PokerInteractionContext from '@poker/PokerInteractionContext';
+import { IUserSchema } from '@custom_types/Menhera';
+import i18next from 'i18next';
 
 export default class PokerCommand extends InteractionCommand {
   constructor() {
@@ -234,14 +237,32 @@ export default class PokerCommand extends InteractionCommand {
         accepted.map((a) => ctx.client.repositories.pokerRepository.addUserToPokerMatch(a)),
       );
 
-      const table = new PokerTable(
-        ctx,
-        toMatchPlayer.filter((a) => accepted.includes(a.id)),
-        userData,
-        acceptedInteractions,
+      const matchPlayersMap = new Map<string, User>();
+      const usersDataMap = new Map<string, IUserSchema>();
+      const acceptedInteractionsMap = new Map<string, PokerInteractionContext>();
+
+      toMatchPlayer
+        .filter((a) => accepted.includes(a.id))
+        .forEach((a) => matchPlayersMap.set(a.id, a));
+
+      userData.forEach((u) => usersDataMap.set(u.id, u));
+
+      acceptedInteractions.forEach((a) =>
+        acceptedInteractionsMap.set(
+          a.user.id,
+          new PokerInteractionContext(a, i18next.getFixedT(a.locale ?? 'pt-BR')),
+        ),
       );
 
-      table.startMatch();
+      const table = new PokerTable(
+        new PokerInteractionContext(ctx.interaction, ctx.i18n),
+        matchPlayersMap,
+        accepted,
+        usersDataMap,
+        acceptedInteractionsMap,
+      );
+
+      table.startRound();
     };
 
     collector.on('end', (_, reason) => {
