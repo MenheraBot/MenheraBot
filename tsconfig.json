@@ -34,7 +34,8 @@
       "@data/*": ["modules/staticData/*"],
       "@roleplay/*": ["modules/roleplay/*"],
       "@custom_types/*": ["types/*"],
-      "@fluffety/*": ["modules/fluffety/*"]
+      "@fluffety/*": ["modules/fluffety/*"],
+      "@poker/*": ["modules/poker/*"]
     }
   },
   "include": ["src"]

@@ -1,8 +1,9 @@
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { COLORS } from '@structures/Constants';
-import { actionRow } from '@utils/Util';
-import { MessageButton, MessageEmbed, User } from 'discord.js-light';
+import { actionRow, debugError, resolveCustomId } from '@utils/Util';
+import { MessageButton, MessageComponentInteraction, MessageEmbed, User } from 'discord.js-light';
+import PokerTable from '@poker/PokerTable';
 
 export default class PokerCommand extends InteractionCommand {
   constructor() {
@@ -125,21 +126,13 @@ export default class PokerCommand extends InteractionCommand {
     }
 
     const canUsersPlay = await Promise.all(
-      toMatchPlayer.map(async (u) => ({
-        user: u,
-        isPlaying: await ctx.client.repositories.pokerRepository.isUserInPokerMatch(u.id),
-      })),
+      toMatchPlayer.map((u) => ctx.client.repositories.pokerRepository.isUserInPokerMatch(u.id)),
     );
 
-    if (canUsersPlay.some((u) => u.isPlaying)) {
+    if (canUsersPlay.includes(true)) {
       ctx.makeMessage({
         ephemeral: true,
-        content: ctx.locale('commands:poker.private-users-already-in-match', {
-          users: canUsersPlay
-            .filter((u) => u.isPlaying)
-            .map((u) => u.user.username)
-            .join(', '),
-        }),
+        content: ctx.locale('commands:poker.private-users-already-in-match'),
       });
       return;
     }
@@ -184,6 +177,109 @@ export default class PokerCommand extends InteractionCommand {
       components: [actionRow([enterButton, startButton, cancelButton])],
     });
 
-    console.log('a');
+    const filter = (int: MessageComponentInteraction) =>
+      int.customId.startsWith(ctx.interaction.id) &&
+      toMatchPlayer.map((a) => a.id).includes(int.user.id);
+
+    const collector = ctx.channel.createMessageComponentCollector({
+      filter,
+      idle: 15_000,
+    });
+
+    const startMatch = async () => {
+      await Promise.all(
+        accepted.map((a) => ctx.client.repositories.pokerRepository.addUserToPokerMatch(a)),
+      );
+
+      const table = new PokerTable(
+        ctx,
+        toMatchPlayer.filter((a) => accepted.includes(a.id)),
+      );
+
+      table.startMatch();
+    };
+
+    collector.on('collect', async (int) => {
+      collector.resetTimer();
+      switch (resolveCustomId(int.customId)) {
+        case 'CANCEL': {
+          if (ctx.author.id !== int.user.id) {
+            int
+              .reply({
+                content: ctx.prettyResponse('error', 'commands:poker.only-owner-cancel'),
+                ephemeral: true,
+              })
+              .catch(debugError);
+            return;
+          }
+
+          collector.stop();
+          ctx.makeMessage({
+            components: [],
+            embeds: [],
+            content: ctx.locale('commands:poker.match-canceled', {
+              reason: ctx.locale('commands:poker.author-canceled', {
+                author: ctx.author.toString(),
+              }),
+            }),
+          });
+          return;
+        }
+        case 'START': {
+          if (ctx.author.id !== int.user.id) {
+            int
+              .reply({
+                content: ctx.prettyResponse('error', 'commands:poker.only-owner-start'),
+                ephemeral: true,
+              })
+              .catch(debugError);
+            return;
+          }
+
+          if (accepted.length < 2) {
+            int
+              .reply({
+                content: ctx.prettyResponse('error', 'commands:poker.private-not-enough-players'),
+                ephemeral: true,
+              })
+              .catch(debugError);
+          }
+
+          collector.stop();
+          startMatch();
+
+          break;
+        }
+        case 'ENTER': {
+          if (accepted.includes(int.user.id)) {
+            int
+              .reply({
+                content: ctx.prettyResponse('error', 'commands:poker.already-accepted'),
+                ephemeral: true,
+              })
+              .catch(debugError);
+            return;
+          }
+
+          accepted.push(int.user.id);
+
+          if (accepted.length !== toMatchPlayer.length) {
+            embed.setFields({
+              name: ctx.locale('commands:poker.private-accept-embed.inTable', {
+                users: accepted.length,
+                maxUsers: toMatchPlayer.length,
+              }),
+              value: accepted.map((a) => `• <@${a}>`).join('\n'),
+            });
+
+            int.deferUpdate().catch(debugError);
+            ctx.makeMessage({ embeds: [embed] });
+            return;
+          }
+
+          startMatch();
+        }
+      }
+    });
   }
 }

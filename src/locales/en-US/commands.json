@@ -936,13 +936,18 @@
     "public-not-released": "Public matches are not released yet",
     "private-not-enough-players": "To start a private match, you need at least 2 players",
     "accept-match": "Enter in Table",
-    "start-match": "Start Game",
+    "start-match": "Start Now",
     "cancel-match": "Cancel Match",
+    "already-accepted": "You have already enter this table! Wait the game to start",
+    "match-canceled": "This poker table has been canceled! {{reason}}",
+    "author-canceled": "{{author}} preferred to cancel the match",
+    "only-owner-cancel": "Only the creator of the command can cancel the match!",
+    "only-owner-start": "Only the creator of the command can start the match before all players are ready!",
     "private-accept-embed": {
       "title": "{{author}} started a Poker Table!",
       "inTable": "Users that are already in ({{users}}/{{maxUsers}})",
       "description": "Invited to Participate: {{invites}}\n\nChoose if you want to join the table using the buttons below!"
     },
-    "private-users-already-in-match": "You can't start this match! The following users are already in a poker game: **{{users}}**"
+    "private-users-already-in-match": "You can't start this match! Some users are already in a poker table"
   }
 }

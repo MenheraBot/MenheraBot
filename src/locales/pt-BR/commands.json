@@ -942,13 +942,18 @@
     "public-not-released": "As partidas públicas ainda estão em desenvolvimento!",
     "private-not-enough-players": "Para iniciar uma partida privada, é necessário ao menos 2 jogadores!",
     "accept-match": "Entrar na Mesa",
-    "start-match": "Começar Jogo",
+    "start-match": "Começar Agora",
     "cancel-match": "Cancelar Partida",
+    "already-accepted": "Você já entrou nessa mesa! Espere a partida começar",
+    "match-canceled": "Esta mesa de poker foi cancelada! {{reason}}",
+    "author-canceled": "{{author}} preferiu cancelar a partida",
+    "only-owner-cancel": "Apenas o criador do comando pode cancelar a partida!",
+    "only-owner-start": "Apenas o criador do comando pode iniciar a partida antecipadamente!",
     "private-accept-embed": {
       "title": "{{author}} iniciou uma Mesa de Poker!",
       "inTable": "Usuários que já estão na mesa ({{users}}/{{maxUsers}})",
       "description": "Convidados a participar: {{invites}}\n\nEscolha se você deseja entrar na mesa nos botões abaixo!"
     },
-    "private-users-already-in-match": "Você não pode começar essa partida! Os seguintes usuários já estão em alguma partida de Poker: **{{users}}**"
+    "private-users-already-in-match": "Você não pode começar essa partida! Alguns usuários já estão em uma mesa de poker!"
   }
 }
