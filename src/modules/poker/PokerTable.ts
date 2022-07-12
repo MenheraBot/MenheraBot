@@ -26,6 +26,8 @@ export default class PokerTable {
   private setupTable(): PokerRoundData {
     const cards = [...BLACKJACK_CARDS].sort(() => Math.random() - 0.5);
 
+    console.log(this.playersData, this.interactions);
+
     const getNextIndex = (afterDealer: number): number => {
       const index = this.tableData.lastDealerIndex + afterDealer;
       return index % this.idsOrder.length;
@@ -60,9 +62,11 @@ export default class PokerTable {
       .setColor(COLORS.Poker)
       .setDescription(
         this.ctx.locale('commands:poker.match.main-message.embed-description', {
-          action: this.roundData.currentPlay,
+          action: this.ctx.locale(`commands:poker.round-actions.${this.roundData.currentPlay}`),
           user: this.players.get(this.roundData.currentPlayer)?.username,
         }),
       );
+
+    this.ctx.makeMessage({ embeds: [mainEmbed] });
   }
 }

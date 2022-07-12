@@ -962,7 +962,7 @@
     "match": {
       "main-message": {
         "embed-title": "Poker Table",
-        "embed-description": "**Round**: $t(poker.round-actions.{{action}})\n**Waiting Player**: {{user}}"
+        "embed-description": "**Round**: {{action}}\n**Waiting Player**: {{user}}"
       }
     }
   }

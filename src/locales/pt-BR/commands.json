@@ -968,7 +968,7 @@
     "match": {
       "main-message": {
         "embed-title": "Mesa de Poker",
-        "embed-description": "**Rodada Atual**: $t(poker.round-actions.{{action}})\n**Aguardando Jogador**: {{user}}"
+        "embed-description": "**Rodada Atual**: {{action}}\n**Aguardando Jogador**: {{user}}"
       }
     }
   }
