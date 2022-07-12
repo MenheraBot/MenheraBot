@@ -934,15 +934,18 @@
   },
   "poker": {
     "public-not-released": "Public matches are not released yet",
+    "open-not-released": "Open matches are not released yet",
     "private-not-enough-players": "To start a private match, you need at least 2 players",
     "accept-match": "Enter in Table",
     "start-match": "Start Now",
     "cancel-match": "Cancel Match",
     "already-accepted": "You have already enter this table! Wait the game to start",
+    "private-users-banned": "This match cannot start! Someone is banned of using Menhera",
     "match-canceled": "This poker table has been canceled! {{reason}}",
     "author-canceled": "{{author}} preferred to cancel the match",
     "only-owner-cancel": "Only the creator of the command can cancel the match!",
     "only-owner-start": "Only the creator of the command can start the match before all players are ready!",
+    "cannot-start-poor": "This poker table could not be started! Someone has less than 100 :star:",
     "private-accept-embed": {
       "title": "{{author}} started a Poker Table!",
       "inTable": "Users that are already in ({{users}}/{{maxUsers}})",

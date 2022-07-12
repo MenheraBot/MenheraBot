@@ -1,7 +1,7 @@
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { COLORS } from '@structures/Constants';
-import { actionRow, debugError, resolveCustomId } from '@utils/Util';
+import { actionRow, debugError, disableComponents, resolveCustomId } from '@utils/Util';
 import { MessageButton, MessageComponentInteraction, MessageEmbed, User } from 'discord.js-light';
 import PokerTable from '@poker/PokerTable';
 
@@ -19,8 +19,8 @@ export default class PokerCommand extends InteractionCommand {
           description: 'Privacidade da partida',
           descriptionLocalizations: { 'en-US': 'Privacy of the match' },
           choices: [
-            { name: 'Pública', nameLocalizations: { 'en-US': 'Public' }, value: 'public' },
             { name: 'Privada', nameLocalizations: { 'en-US': 'Private' }, value: 'private' },
+            { name: 'Pública', nameLocalizations: { 'en-US': 'Public' }, value: 'public' },
             { name: 'Aberta', nameLocalizations: { 'en-US': 'Open' }, value: 'open' },
           ],
           required: true,
@@ -101,8 +101,10 @@ export default class PokerCommand extends InteractionCommand {
       case 'private':
         return PokerCommand.setupPrivateMatch(ctx);
       case 'open':
-        ctx.makeMessage({ content: 'Partida aberta' });
-        break;
+        ctx.makeMessage({
+          ephemeral: true,
+          content: ctx.locale('commands:poker.open-not-released'),
+        });
     }
   }
 
@@ -111,6 +113,7 @@ export default class PokerCommand extends InteractionCommand {
       .reduce<User[]>((p, c) => {
         if (!c.name.startsWith('jogador_')) return p;
         if (p.some((b) => b.id === c.user?.id)) return p;
+        if (c.user?.bot) return p;
         if (c.user?.id === ctx.author.id) return p;
         p.push(c.user as User);
         return p;
@@ -137,6 +140,18 @@ export default class PokerCommand extends InteractionCommand {
       return;
     }
 
+    const isSomeoneBanned = await Promise.all(
+      toMatchPlayer.map((u) => ctx.client.repositories.blacklistRepository.isUserBanned(u.id)),
+    );
+
+    if (isSomeoneBanned.includes(true)) {
+      ctx.makeMessage({
+        ephemeral: true,
+        content: ctx.locale('commands:poker.private-users-banned'),
+      });
+      return;
+    }
+
     const enterButton = new MessageButton()
       .setCustomId(`${ctx.interaction.id} | ENTER`)
       .setLabel(ctx.locale('commands:poker.accept-match'))
@@ -153,6 +168,7 @@ export default class PokerCommand extends InteractionCommand {
       .setStyle('DANGER');
 
     const accepted = [ctx.author.id];
+    const acceptedInteractions: MessageComponentInteraction[] = [];
 
     const embed = new MessageEmbed()
       .setTitle(ctx.locale('commands:poker.private-accept-embed.title', { author: ctx.author.tag }))
@@ -187,6 +203,33 @@ export default class PokerCommand extends InteractionCommand {
     });
 
     const startMatch = async () => {
+      const userData = await Promise.all(
+        accepted.map((a) =>
+          ctx.client.repositories.userRepository.findOrCreate(a, ['selectedColor', 'estrelinhas']),
+        ),
+      );
+
+      if (userData.some((u) => u.estrelinhas < 100)) {
+        ctx.makeMessage({
+          embeds: [],
+          components: [],
+          content: ctx.prettyResponse('error', 'commands:poker.cannot-start-poor'),
+        });
+        return;
+      }
+
+      const ensureThatUsersCanPlay = await Promise.all(
+        toMatchPlayer.map((u) => ctx.client.repositories.pokerRepository.isUserInPokerMatch(u.id)),
+      );
+
+      if (ensureThatUsersCanPlay.includes(true)) {
+        ctx.makeMessage({
+          ephemeral: true,
+          content: ctx.locale('commands:poker.private-users-already-in-match'),
+        });
+        return;
+      }
+
       await Promise.all(
         accepted.map((a) => ctx.client.repositories.pokerRepository.addUserToPokerMatch(a)),
       );
@@ -194,10 +237,28 @@ export default class PokerCommand extends InteractionCommand {
       const table = new PokerTable(
         ctx,
         toMatchPlayer.filter((a) => accepted.includes(a.id)),
+        userData,
+        acceptedInteractions,
       );
 
       table.startMatch();
     };
+
+    collector.on('end', (_, reason) => {
+      if (reason !== 'user') {
+        ctx.makeMessage({
+          components: [
+            actionRow(
+              disableComponents(ctx.locale('common:timesup'), [
+                enterButton,
+                startButton,
+                cancelButton,
+              ]),
+            ),
+          ],
+        });
+      }
+    });
 
     collector.on('collect', async (int) => {
       collector.resetTimer();
@@ -243,9 +304,11 @@ export default class PokerCommand extends InteractionCommand {
                 ephemeral: true,
               })
               .catch(debugError);
+            return;
           }
 
           collector.stop();
+          acceptedInteractions.push(int);
           startMatch();
 
           break;
@@ -262,22 +325,33 @@ export default class PokerCommand extends InteractionCommand {
           }
 
           accepted.push(int.user.id);
+          acceptedInteractions.push(int);
+
+          embed.setFields({
+            name: ctx.locale('commands:poker.private-accept-embed.inTable', {
+              users: accepted.length,
+              maxUsers: toMatchPlayer.length,
+            }),
+            value: accepted.map((a) => `• <@${a}>`).join('\n'),
+          });
+
+          int.deferUpdate().catch(debugError);
 
           if (accepted.length !== toMatchPlayer.length) {
-            embed.setFields({
-              name: ctx.locale('commands:poker.private-accept-embed.inTable', {
-                users: accepted.length,
-                maxUsers: toMatchPlayer.length,
-              }),
-              value: accepted.map((a) => `• <@${a}>`).join('\n'),
-            });
-
-            int.deferUpdate().catch(debugError);
             ctx.makeMessage({ embeds: [embed] });
             return;
           }
 
-          startMatch();
+          ctx.makeMessage({
+            embeds: [embed],
+            components: [
+              actionRow([
+                enterButton.setDisabled(true).setStyle('SECONDARY'),
+                startButton.setStyle('SUCCESS'),
+                cancelButton,
+              ]),
+            ],
+          });
         }
       }
     });
