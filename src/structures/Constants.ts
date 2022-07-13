@@ -146,6 +146,11 @@ export const emojis = Object.freeze({
   debuff: '<:debuff:964812397825110026>',
   poison: '🧪',
   heal: '💊',
+  // EMOJIS DE POKER
+  suit_HEARTS: '♥️',
+  suit_SPADES: '♠️',
+  suit_DIAMONDS: '♦️',
+  suit_CLUBS: '♣️',
 });
 
 export type EmojiTypes = keyof typeof emojis;

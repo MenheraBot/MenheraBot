@@ -17,3 +17,12 @@ export interface PokerTableData {
   lastDealerIndex: number;
   mainInteraction: MessageComponentInteraction | (CommandInteraction & { client: MenheraClient });
 }
+
+export type CARD_SUITE = 'SPADES' | 'HEARTS' | 'DIAMONDS' | 'CLUBS';
+
+export interface PokerCard {
+  id: number;
+  value: number;
+  displayValue: string;
+  suit: CARD_SUITE;
+}

@@ -967,8 +967,12 @@
     "private-users-already-in-match": "Você não pode começar essa partida! Alguns usuários já estão em uma mesa de poker!",
     "match": {
       "main-message": {
+        "request-control": "Reenviar Mensagem de Controle",
         "embed-title": "Mesa de Poker",
-        "embed-description": "**Rodada Atual**: {{action}}\n**Aguardando Jogador**: {{user}}\n**Dealer**: {{dealer}}\n**Small Blind**: {{smallBlind}}\n**Big Blind**: {{bigBlind}}"
+        "embed-description": "**Rodada Atual**: {{action}}\n**Dealer**: {{dealer}}\n**Small Blind**: {{smallBlind}}\n**Big Blind**: {{bigBlind}}\n\n**Jogando Agora**: {{user}}"
+      },
+      "control-message": {
+        "embed-title": "Sua Mão"
       }
     }
   }

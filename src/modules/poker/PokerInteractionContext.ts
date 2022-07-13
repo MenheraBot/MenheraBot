@@ -15,11 +15,21 @@ import { Translation } from '../../types/i18next';
 
 export default class PokerInteractionContext {
   constructor(
-    public interaction:
+    private innerInteraction:
       | (CommandInteraction & { client: MenheraClient })
       | MessageComponentInteraction,
     public i18n: TFunction,
   ) {}
+
+  get interaction():
+    | (CommandInteraction & { client: MenheraClient })
+    | MessageComponentInteraction {
+    return this.innerInteraction;
+  }
+
+  public updateInteraction(interaction: MessageComponentInteraction) {
+    this.innerInteraction = interaction;
+  }
 
   get author(): User {
     return this.interaction.user;

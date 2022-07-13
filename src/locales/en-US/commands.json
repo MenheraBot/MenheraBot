@@ -961,9 +961,13 @@
     },
     "match": {
       "main-message": {
+        "request-control": "Request Another Control Message",
         "embed-title": "Poker Table",
-        "embed-description": "**Round**: {{action}}\n**Waiting Player**: {{user}}\n**Dealer**: {{dealer}}\n**Small Blind**: {{smallBlind}}\n**Big Blind**: {{bigBlind}}"
+        "embed-description": "**Round**: {{action}\n**Dealer**: {{dealer}}\n**Small Blind**: {{smallBlind}}\n**Big Blind**: {{bigBlind}}\n\n**Playing Now**: {{user}}"
       }
+    },
+    "control-message": {
+      "embed-title": "Your Hand"
     }
   }
 }
