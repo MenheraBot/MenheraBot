@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { IUserSchema } from '@custom_types/Menhera';
 import { BLACKJACK_CARDS, COLORS } from '@structures/Constants';
 import { MessageEmbed, User } from 'discord.js-light';
@@ -40,8 +41,8 @@ export default class PokerTable {
     });
 
     const dealerId = this.idsOrder[getNextIndex(1)];
-    const smallBlindId = this.idsOrder[getNextIndex(1)];
-    const bigBlindId = this.idsOrder[getNextIndex(2)];
+    const smallBlindId = this.idsOrder[getNextIndex(2)];
+    const bigBlindId = this.idsOrder.length > 2 ? this.idsOrder[getNextIndex(3)] : null;
 
     this.tableData.lastDealerIndex = getNextIndex(1);
 
@@ -64,9 +65,15 @@ export default class PokerTable {
         this.ctx.locale('commands:poker.match.main-message.embed-description', {
           action: this.ctx.locale(`commands:poker.round-actions.${this.roundData.currentPlay}`),
           user: this.players.get(this.roundData.currentPlayer)?.username,
+          dealer: `<@${this.roundData.dealerId}>`,
+          smallBlind: `<@${this.roundData.smallBlindId}>`,
+          bigBlind: this.roundData.bigBlindId ? `<@${this.roundData.bigBlindId}>` : '-',
         }),
+      )
+      .setThumbnail(
+        this.players.get(this.roundData.currentPlayer)!.displayAvatarURL({ dynamic: true }),
       );
 
-    this.ctx.makeMessage({ embeds: [mainEmbed] });
+    this.ctx.makeMessage({ content: null, embeds: [mainEmbed] });
   }
 }

@@ -330,6 +330,7 @@ export default class PokerCommand extends InteractionCommand {
 
           collector.stop();
           acceptedInteractions.push(int);
+          int.deferUpdate();
           startMatch();
 
           break;

@@ -35,6 +35,9 @@ export default class ReloadSlashCommand extends InteractionCommand {
       return;
     }
 
+    // TODO: Remove when finish poker
+    delete require.cache[require.resolve('../../modules/poker/PokerTable')];
+
     // @ts-expect-error Reload command doesnt exist in client<boolean>
     await ctx.client.cluster?.broadcastEval((c, { a }) => c.reloadCommand(a), {
       context: { a: opcao },

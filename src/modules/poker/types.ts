@@ -6,7 +6,7 @@ export type PokerRoundAction = 'PRE-FLOP' | 'FLOP' | 'TURN' | 'RIVER' | 'SHOWDOW
 export interface PokerRoundData {
   dealerId: string;
   smallBlindId: string;
-  bigBlindId: string;
+  bigBlindId: string | null;
   cards: number[];
   hands: Map<string, number[]>;
   currentPlay: PokerRoundAction;
