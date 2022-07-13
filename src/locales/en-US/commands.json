@@ -967,7 +967,11 @@
       }
     },
     "control-message": {
-      "embed-title": "Your Hand"
+      "embed-title": "Your Hand",
+      "fold-button": "Fold",
+      "check-button": "Check",
+      "call-button": "Call",
+      "allin-button": "All-In"
     }
   }
 }

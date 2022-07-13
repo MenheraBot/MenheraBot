@@ -972,7 +972,11 @@
         "embed-description": "**Rodada Atual**: {{action}}\n**Dealer**: {{dealer}}\n**Small Blind**: {{smallBlind}}\n**Big Blind**: {{bigBlind}}\n\n**Jogando Agora**: {{user}}"
       },
       "control-message": {
-        "embed-title": "Sua Mão"
+        "embed-title": "Sua Mão",
+        "fold-button": "Fold",
+        "check-button": "Check",
+        "call-button": "Call",
+        "allin-button": "All-In"
       }
     }
   }

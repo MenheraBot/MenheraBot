@@ -114,10 +114,33 @@ export default class PokerTable {
           })
           .join(' | '),
       );
-
     const userInteraction = this.interactions.get(requestUser)!;
-
     userInteraction.updateInteraction(interaction);
+
+    const foldButton = new MessageButton()
+      .setCustomId(`${interaction.id} | FOLD`)
+      .setStyle('DANGER')
+      .setLabel(userInteraction.locale('commands:poker.match.control-message.fold-button'));
+
+    const checkButton = new MessageButton()
+      .setCustomId(`${interaction.id} | CHECK`)
+      .setStyle('PRIMARY')
+      .setLabel(userInteraction.locale('commands:poker.match.control-message.check-button'));
+
+    const callButton = new MessageButton()
+      .setCustomId(`${interaction.id} | CALL`)
+      .setStyle('PRIMARY')
+      .setLabel(userInteraction.locale('commands:poker.match.control-message.call-button'));
+
+    const raiseButton = new MessageButton()
+      .setCustomId(`${interaction.id} | ALLIN`)
+      .setStyle('SECONDARY')
+      .setLabel(userInteraction.locale('commands:poker.match.control-message.allin-button'));
+
+    const AllInButton = new MessageButton()
+      .setCustomId(`${interaction.id} | ALLIN`)
+      .setStyle('SECONDARY')
+      .setLabel(userInteraction.locale('commands:poker.match.control-message.allin-button'));
 
     userInteraction.makeMessage({ ephemeral: true, embeds: [embed] });
   }
