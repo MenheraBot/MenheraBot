@@ -501,6 +501,7 @@ export default class BlackjackCommand extends InteractionCommand {
               .send({
                 embeds: [embed],
                 attachments: [],
+                fetchReply: true,
                 files: res.err
                   ? []
                   : [new MessageAttachment(res.data, `blackjack-${timestamp}.png`)],
@@ -510,6 +511,7 @@ export default class BlackjackCommand extends InteractionCommand {
           )
       : ctx.send({
           embeds: [embed],
+          fetchReply: true,
           attachments: [],
           files: res.err ? [] : [new MessageAttachment(res.data, `blackjack-${timestamp}.png`)],
           components,
