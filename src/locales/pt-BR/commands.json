@@ -976,7 +976,9 @@
         "fold-button": "Fold",
         "check-button": "Check",
         "call-button": "Call",
-        "allin-button": "All-In"
+        "raise-button": "Raise",
+        "allin-button": "All-In",
+        "exit-button": "Sair da Mesa"
       }
     }
   }

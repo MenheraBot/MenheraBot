@@ -3,6 +3,7 @@ import { IUserSchema } from '@custom_types/Menhera';
 import { BLACKJACK_CARDS, COLORS, emojis } from '@structures/Constants';
 import { actionRow, resolveCustomId } from '@utils/Util';
 import {
+  Collection,
   InteractionCollector,
   MessageButton,
   MessageComponentInteraction,
@@ -26,7 +27,7 @@ export default class PokerTable {
     private players: Map<string, User>,
     private idsOrder: string[],
     private playersData: Map<string, IUserSchema>,
-    private interactions: Map<string, PokerInteractionContext>,
+    private interactions: Collection<string, PokerInteractionContext>,
   ) {
     this.tableData = {
       lastDealerIndex: -1,
@@ -49,8 +50,6 @@ export default class PokerTable {
 
   private setupTable(): PokerRoundData {
     const cards = [...BLACKJACK_CARDS].sort(() => Math.random() - 0.5);
-
-    console.log(this.playersData, this.interactions);
 
     const getNextIndex = (afterDealer: number): number => {
       const index = this.tableData.lastDealerIndex + afterDealer;
@@ -84,8 +83,9 @@ export default class PokerTable {
     return new InteractionCollector(this.ctx.interaction.client, {
       filter: (interaction) => {
         const didPass =
-          interaction.customId.startsWith(this.ctx.interaction.id) &&
-          this.idsOrder.includes(interaction.user.id);
+          (interaction.customId.startsWith(this.ctx.interaction.id) &&
+            this.idsOrder.includes(interaction.user.id)) ||
+          this.interactions.some((val) => interaction.customId.startsWith(val.interaction.id));
 
         if (!this.idsOrder.includes(interaction.user.id)) {
           interaction
@@ -113,7 +113,9 @@ export default class PokerTable {
             return `${card.displayValue} ${emojis[`suit_${card.suit}`]}`;
           })
           .join(' | '),
-      );
+      )
+      .setColor(this.playersData.get(requestUser)!.selectedColor);
+
     const userInteraction = this.interactions.get(requestUser)!;
     userInteraction.updateInteraction(interaction);
 
@@ -133,16 +135,28 @@ export default class PokerTable {
       .setLabel(userInteraction.locale('commands:poker.match.control-message.call-button'));
 
     const raiseButton = new MessageButton()
+      .setCustomId(`${interaction.id} | RAISE`)
+      .setStyle('SECONDARY')
+      .setLabel(userInteraction.locale('commands:poker.match.control-message.raise-button'));
+
+    const allInButton = new MessageButton()
       .setCustomId(`${interaction.id} | ALLIN`)
       .setStyle('SECONDARY')
       .setLabel(userInteraction.locale('commands:poker.match.control-message.allin-button'));
 
-    const AllInButton = new MessageButton()
-      .setCustomId(`${interaction.id} | ALLIN`)
-      .setStyle('SECONDARY')
-      .setLabel(userInteraction.locale('commands:poker.match.control-message.allin-button'));
+    const exitButton = new MessageButton()
+      .setCustomId(`${interaction.id} | EXIT`)
+      .setStyle('DANGER')
+      .setLabel(userInteraction.locale('commands:poker.match.control-message.exit-button'));
 
-    userInteraction.makeMessage({ ephemeral: true, embeds: [embed] });
+    userInteraction.makeMessage({
+      ephemeral: true,
+      embeds: [embed],
+      components: [
+        actionRow([allInButton, raiseButton, callButton, checkButton, foldButton]),
+        actionRow([exitButton]),
+      ],
+    });
   }
 
   async startRound(): Promise<void> {

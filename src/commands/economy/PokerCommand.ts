@@ -2,7 +2,13 @@ import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { COLORS } from '@structures/Constants';
 import { actionRow, debugError, disableComponents, resolveCustomId } from '@utils/Util';
-import { MessageButton, MessageComponentInteraction, MessageEmbed, User } from 'discord.js-light';
+import {
+  Collection,
+  MessageButton,
+  MessageComponentInteraction,
+  MessageEmbed,
+  User,
+} from 'discord.js-light';
 import PokerTable from '@poker/PokerTable';
 import PokerInteractionContext from '@poker/PokerInteractionContext';
 import { IUserSchema } from '@custom_types/Menhera';
@@ -208,7 +214,11 @@ export default class PokerCommand extends InteractionCommand {
     const startMatch = async () => {
       const userData = await Promise.all(
         accepted.map((a) =>
-          ctx.client.repositories.userRepository.findOrCreate(a, ['selectedColor', 'estrelinhas']),
+          ctx.client.repositories.userRepository.findOrCreate(a, [
+            'selectedColor',
+            'estrelinhas',
+            'id',
+          ]),
         ),
       );
 
@@ -239,7 +249,7 @@ export default class PokerCommand extends InteractionCommand {
 
       const matchPlayersMap = new Map<string, User>();
       const usersDataMap = new Map<string, IUserSchema>();
-      const acceptedInteractionsMap = new Map<string, PokerInteractionContext>();
+      const acceptedInteractionsMap = new Collection<string, PokerInteractionContext>();
 
       toMatchPlayer
         .filter((a) => accepted.includes(a.id))
