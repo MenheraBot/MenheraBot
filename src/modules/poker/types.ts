@@ -4,18 +4,26 @@ import MenheraClient from 'MenheraClient';
 export type PokerRoundAction = 'PRE-FLOP' | 'FLOP' | 'TURN' | 'RIVER' | 'SHOWDOWN';
 
 export type PokerPlayAction = 'FOLD' | 'CHECK' | 'CALL' | 'RAISE' | 'ALL-IN';
+
+export interface PokerPlayerData {
+  hand: number[];
+  bet: number;
+  folded: boolean;
+}
+
 export interface PokerRoundData {
   dealerId: string;
   smallBlindId: string;
   bigBlindId: string | null;
   cards: number[];
-  hands: Map<string, number[]>;
+  players: Map<string, PokerPlayerData>;
   currentPlay: PokerRoundAction;
   currentPlayer: string;
 }
 
 export interface PokerTableData {
   lastDealerIndex: number;
+  blindBet: number;
   mainInteraction: MessageComponentInteraction | (CommandInteraction & { client: MenheraClient });
 }
 

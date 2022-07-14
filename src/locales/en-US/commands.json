@@ -945,7 +945,7 @@
     "author-canceled": "{{author}} preferred to cancel the match",
     "only-owner-cancel": "Only the creator of the command can cancel the match!",
     "only-owner-start": "Only the creator of the command can start the match before all players are ready!",
-    "cannot-start-poor": "This poker table could not be started! Someone has less than 100 :star:",
+    "cannot-start-poor": "This poker table could not be started! Someone has less than {{minBet}} :star:",
     "private-accept-embed": {
       "title": "{{author}} started a Poker Table!",
       "inTable": "Users that are already in ({{users}}/{{maxUsers}})",

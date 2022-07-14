@@ -13,7 +13,7 @@ import {
 import { getFixedT } from 'i18next';
 import PokerInteractionContext from './PokerInteractionContext';
 import { getPokerCard } from './PokerUtils';
-import { PokerPlayAction, PokerRoundData, PokerTableData } from './types';
+import { PokerPlayAction, PokerPlayerData, PokerRoundData, PokerTableData } from './types';
 
 export default class PokerTable {
   private roundData: PokerRoundData;
@@ -32,6 +32,7 @@ export default class PokerTable {
     this.tableData = {
       lastDealerIndex: -1,
       mainInteraction: ctx.interaction,
+      blindBet: 1000,
     };
     this.roundData = this.setupTable();
     this.Collector = this.startCollector();
@@ -72,34 +73,39 @@ export default class PokerTable {
     });
   }
 
+  private getNextIndex(afterDealer: number) {
+    const index = this.tableData.lastDealerIndex + afterDealer;
+    return index % this.idsOrder.length;
+  }
+
   private setupTable(): PokerRoundData {
     const cards = [...BLACKJACK_CARDS].sort(() => Math.random() - 0.5);
 
-    const getNextIndex = (afterDealer: number): number => {
-      const index = this.tableData.lastDealerIndex + afterDealer;
-      return index % this.idsOrder.length;
-    };
+    const dealerId = this.idsOrder[this.getNextIndex(1)];
+    const smallBlindId = this.idsOrder[this.getNextIndex(2)];
+    const bigBlindId = this.idsOrder.length > 2 ? this.idsOrder[this.getNextIndex(3)] : null;
 
-    const userHands = new Map<string, number[]>();
+    const roundPlayersData = new Map<string, PokerPlayerData>();
 
     this.idsOrder.forEach((id) => {
-      userHands.set(id, cards.splice(0, 2));
+      const userHand = cards.splice(0, 2);
+      let userBet = 0;
+      if (id === smallBlindId) userBet = this.tableData.blindBet / 2;
+      if (id === bigBlindId) userBet = this.tableData.blindBet;
+
+      roundPlayersData.set(id, { bet: userBet, hand: userHand, folded: false });
     });
 
-    const dealerId = this.idsOrder[getNextIndex(1)];
-    const smallBlindId = this.idsOrder[getNextIndex(2)];
-    const bigBlindId = this.idsOrder.length > 2 ? this.idsOrder[getNextIndex(3)] : null;
-
-    this.tableData.lastDealerIndex = getNextIndex(1);
+    this.tableData.lastDealerIndex = this.getNextIndex(1);
 
     return {
       dealerId,
       smallBlindId,
       bigBlindId,
       cards,
-      hands: userHands,
+      players: roundPlayersData,
       currentPlay: 'PRE-FLOP',
-      currentPlayer: smallBlindId,
+      currentPlayer: this.idsOrder[this.getNextIndex(3)],
     };
   }
 
@@ -129,9 +135,9 @@ export default class PokerTable {
     const embed = new MessageEmbed()
       .setTitle(this.ctx.locale('commands:poker.match.control-message.embed-title'))
       .setDescription(
-        this.roundData.hands
+        this.roundData.players
           .get(requestUser)!
-          .map((cardId) => {
+          .hand.map((cardId) => {
             const card = getPokerCard(cardId);
 
             return `${card.displayValue} ${emojis[`suit_${card.suit}`]}`;
@@ -225,14 +231,17 @@ export default class PokerTable {
   }
 
   private async changePlayer(): Promise<void> {
-    const { currentPlayer } = this.roundData;
-    const nextPlayer = this.idsOrder[getNextIndex(this.idsOrder.indexOf(currentPlayer) + 1)];
+    let { currentPlayer } = this.roundData;
 
-    this.roundData.currentPlayer = nextPlayer;
+    do {
+      currentPlayer = this.idsOrder[this.getNextIndex(1)];
+    } while (this.roundData.players.get(currentPlayer)!.folded);
+
+    this.roundData.currentPlayer = currentPlayer;
   }
 
   private async executePlay(play: PokerPlayAction): Promise<void> {
     // TODO: HANDLE PLAYS HERE
-    console.llog(this.Collector);
+    console.log(this.Collector);
   }
 }

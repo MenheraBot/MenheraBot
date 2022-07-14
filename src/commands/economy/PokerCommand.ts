@@ -222,11 +222,13 @@ export default class PokerCommand extends InteractionCommand {
         ),
       );
 
-      if (userData.some((u) => u.estrelinhas < 100)) {
+      if (userData.some((u) => u.estrelinhas < 1000)) {
         ctx.makeMessage({
           embeds: [],
           components: [],
-          content: ctx.prettyResponse('error', 'commands:poker.cannot-start-poor'),
+          content: ctx.prettyResponse('error', 'commands:poker.cannot-start-poor', {
+            minBet: 1000,
+          }),
         });
         return;
       }

@@ -950,7 +950,7 @@
     "match-canceled": "Esta mesa de poker foi cancelada! {{reason}}",
     "author-canceled": "{{author}} preferiu cancelar a partida",
     "only-owner-cancel": "Apenas o criador do comando pode cancelar a partida!",
-    "cannot-start-poor": "Esta mesa de poker não pode ser iniciada! Alguém possui menos de 100 :star: estrelinhas",
+    "cannot-start-poor": "Esta mesa de poker não pode ser iniciada! Alguém possui menos de {{minBet}} :star: estrelinhas",
     "only-owner-start": "Apenas o criador do comando pode iniciar a partida antecipadamente!",
     "private-accept-embed": {
       "title": "{{author}} iniciou uma Mesa de Poker!",
