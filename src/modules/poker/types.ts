@@ -3,6 +3,7 @@ import MenheraClient from 'MenheraClient';
 
 export type PokerRoundAction = 'PRE-FLOP' | 'FLOP' | 'TURN' | 'RIVER' | 'SHOWDOWN';
 
+export type PokerPlayAction = 'FOLD' | 'CHECK' | 'CALL' | 'RAISE' | 'ALL-IN';
 export interface PokerRoundData {
   dealerId: string;
   smallBlindId: string;

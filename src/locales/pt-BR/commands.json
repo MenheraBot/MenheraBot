@@ -966,6 +966,7 @@
     },
     "private-users-already-in-match": "Você não pode começar essa partida! Alguns usuários já estão em uma mesa de poker!",
     "match": {
+      "not-turn": "Eii, espere um pouco! Está na hora de {{user}} jogar!",
       "main-message": {
         "request-control": "Reenviar Mensagem de Controle",
         "embed-title": "Mesa de Poker",

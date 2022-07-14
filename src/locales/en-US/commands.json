@@ -960,6 +960,7 @@
       "SHOWDOWN": "Showdown"
     },
     "match": {
+      "not-turn": "Hey, wait a minute! It's {{user}} time to play!",
       "main-message": {
         "request-control": "Request Another Control Message",
         "embed-title": "Poker Table",

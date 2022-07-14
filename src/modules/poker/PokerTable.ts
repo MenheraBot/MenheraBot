@@ -13,7 +13,7 @@ import {
 import { getFixedT } from 'i18next';
 import PokerInteractionContext from './PokerInteractionContext';
 import { getPokerCard } from './PokerUtils';
-import { PokerRoundData, PokerTableData } from './types';
+import { PokerPlayAction, PokerRoundData, PokerTableData } from './types';
 
 export default class PokerTable {
   private roundData: PokerRoundData;
@@ -44,7 +44,31 @@ export default class PokerTable {
 
       if (interactionType === 'CONTROL') {
         this.makeControlMessage(interaction.user.id, interaction);
+        return;
       }
+
+      if (interaction.user.id !== this.roundData.currentPlayer) {
+        interaction
+          .reply({
+            ephemeral: true,
+            content: getFixedT(interaction.locale)('commands:poker.match.not-turn', {
+              user: this.players.get(this.roundData.currentPlayer)?.username,
+            }),
+          })
+          .catch(() => null);
+        return;
+      }
+
+      if (interactionType === 'EXIT') {
+        this.executePlay('FOLD');
+        this.players.delete(interaction.user.id);
+        this.interactions.delete(interaction.user.id);
+        this.idsOrder.splice(this.idsOrder.indexOf(interaction.user.id), 1);
+        this.playersData.delete(interaction.user.id);
+        return;
+      }
+
+      this.executePlay(interactionType as PokerPlayAction);
     });
   }
 
@@ -191,5 +215,24 @@ export default class PokerTable {
       embeds: [mainEmbed],
       components: [actionRow([requestControlMessage])],
     });
+  }
+
+  private async checkGameCanContinue(): Promise<boolean> {
+    if (this.idsOrder.length < 2) return false;
+    return true;
+
+    // TODO: Make this work, checking user money and amonut of users
+  }
+
+  private async changePlayer(): Promise<void> {
+    const { currentPlayer } = this.roundData;
+    const nextPlayer = this.idsOrder[getNextIndex(this.idsOrder.indexOf(currentPlayer) + 1)];
+
+    this.roundData.currentPlayer = nextPlayer;
+  }
+
+  private async executePlay(play: PokerPlayAction): Promise<void> {
+    // TODO: HANDLE PLAYS HERE
+    console.llog(this.Collector);
   }
 }
