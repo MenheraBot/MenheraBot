@@ -966,11 +966,18 @@
     },
     "private-users-already-in-match": "Você não pode começar essa partida! Alguns usuários já estão em uma mesa de poker!",
     "match": {
-      "not-turn": "Eii, espere um pouco! Está na hora de {{user}} jogar!",
+      "replies": {
+        "call-or-raise": "Você precisa fazer uma aposta!",
+        "not-active-bet": "Não há nenhuma aposta ativa! Faça uma ou então dê Check!",
+        "raise-nan": "Tu deu raise com um número inválido!",
+        "raise-too-low": "Tu deu raise com uma aposta menor que a última aposta!",
+        "raise-too-high": "Tu deu raise com uma aposta maior do que o teu stack de fichas!"
+      },
+      "not-turn": "Eii, espere um pouco! Está na hora de **{{user}}** jogar!",
       "main-message": {
-        "request-control": "Reenviar Mensagem de Controle",
+        "request-control": "Ver Cartas",
         "embed-title": "Mesa de Poker",
-        "embed-description": "**Rodada Atual**: {{action}}\n**Dealer**: {{dealer}}\n**Small Blind**: {{smallBlind}}\n**Big Blind**: {{bigBlind}}\n\n**Jogando Agora**: {{user}}"
+        "embed-description": "**Rodada Atual**: {{action}}\n**Dealer**: {{dealer}}\n**Small Blind**: {{smallBlind}}\n**Big Blind**: {{bigBlind}}\n\n**Jogando Agora**: {{user}}\n**Na Mesa**: {{pot}}"
       },
       "control-message": {
         "embed-title": "Sua Mão",
@@ -979,7 +986,9 @@
         "call-button": "Call",
         "raise-button": "Raise",
         "allin-button": "All-In",
-        "exit-button": "Sair da Mesa"
+        "exit-button": "Sair da Mesa",
+        "raise-modal-title": "Fazer Aposta",
+        "raise-modal-label": "Aumente a aposta em no mínimo **{{minBet}}**"
       }
     }
   }

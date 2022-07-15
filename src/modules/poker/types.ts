@@ -17,8 +17,11 @@ export interface PokerRoundData {
   bigBlindId: string | null;
   cards: number[];
   players: Map<string, PokerPlayerData>;
-  currentPlay: PokerRoundAction;
+  currentAction: PokerRoundAction;
   currentPlayer: string;
+  lastPlayer: string;
+  currentBet: number;
+  pot: number;
 }
 
 export interface PokerTableData {

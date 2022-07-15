@@ -35,6 +35,17 @@ export default class PokerCommand extends InteractionCommand {
           required: true,
         },
         {
+          type: 'INTEGER',
+          name: 'pilha',
+          nameLocalizations: { 'en-US': 'stack' },
+          description: 'Quantidade de estrelinhas que jogadores devem ter em sua pilha de fichas',
+          descriptionLocalizations: {
+            'en-US': 'Number of stars players should have in their chip stack',
+          },
+          minValue: 5000,
+          required: true,
+        },
+        {
           type: 'USER',
           name: 'jogador_1',
           nameLocalizations: { 'en-US': 'player_1' },
@@ -211,6 +222,8 @@ export default class PokerCommand extends InteractionCommand {
       idle: 15_000,
     });
 
+    const gameChipStack = ctx.options.getInteger('pilha', true);
+
     const startMatch = async () => {
       const userData = await Promise.all(
         accepted.map((a) =>
@@ -222,12 +235,12 @@ export default class PokerCommand extends InteractionCommand {
         ),
       );
 
-      if (userData.some((u) => u.estrelinhas < 1000)) {
+      if (userData.some((u) => u.estrelinhas < gameChipStack)) {
         ctx.makeMessage({
           embeds: [],
           components: [],
           content: ctx.prettyResponse('error', 'commands:poker.cannot-start-poor', {
-            minBet: 1000,
+            minBet: gameChipStack,
           }),
         });
         return;
@@ -246,18 +259,31 @@ export default class PokerCommand extends InteractionCommand {
       }
 
       await Promise.all(
-        accepted.map((a) => ctx.client.repositories.pokerRepository.addUserToPokerMatch(a)),
+        accepted.map((a) => {
+          ctx.client.repositories.pokerRepository.addUserToPokerMatch(a);
+          ctx.client.repositories.starRepository.remove(a, gameChipStack);
+          return true;
+        }),
       );
 
       const matchPlayersMap = new Map<string, User>();
-      const usersDataMap = new Map<string, IUserSchema>();
+      const usersDataMap = new Map<
+        string,
+        Pick<IUserSchema, 'id' | 'estrelinhas' | 'selectedColor'>
+      >();
       const acceptedInteractionsMap = new Collection<string, PokerInteractionContext>();
 
       toMatchPlayer
         .filter((a) => accepted.includes(a.id))
         .forEach((a) => matchPlayersMap.set(a.id, a));
 
-      userData.forEach((u) => usersDataMap.set(u.id, u));
+      userData.forEach((u) =>
+        usersDataMap.set(u.id, {
+          selectedColor: u.selectedColor,
+          estrelinhas: gameChipStack,
+          id: u.id,
+        }),
+      );
 
       acceptedInteractions.forEach((a) =>
         acceptedInteractionsMap.set(
@@ -266,7 +292,8 @@ export default class PokerCommand extends InteractionCommand {
         ),
       );
 
-      const table = new PokerTable(
+      // eslint-disable-next-line no-new
+      /* const table =  */ new PokerTable(
         new PokerInteractionContext(ctx.interaction, ctx.i18n),
         matchPlayersMap,
         accepted,
@@ -274,7 +301,7 @@ export default class PokerCommand extends InteractionCommand {
         acceptedInteractionsMap,
       );
 
-      table.startRound();
+      // table.startRound();
     };
 
     collector.on('end', (_, reason) => {

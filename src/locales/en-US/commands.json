@@ -945,7 +945,7 @@
     "author-canceled": "{{author}} preferred to cancel the match",
     "only-owner-cancel": "Only the creator of the command can cancel the match!",
     "only-owner-start": "Only the creator of the command can start the match before all players are ready!",
-    "cannot-start-poor": "This poker table could not be started! Someone has less than {{minBet}} :star:",
+    "cannot-start-poor": "This poker table could not be started! Someone has less than **{{minBet}}** :star:",
     "private-accept-embed": {
       "title": "{{author}} started a Poker Table!",
       "inTable": "Users that are already in ({{users}}/{{maxUsers}})",
@@ -960,11 +960,18 @@
       "SHOWDOWN": "Showdown"
     },
     "match": {
-      "not-turn": "Hey, wait a minute! It's {{user}} time to play!",
+      "replies": {
+        "call-or-raise": "You need to make a bet!",
+        "not-active-bet": "There are no active bets! Make one or check!",
+        "raise-nan": "You raised with an invalid number!",
+        "raise-too-low": "You raised with a bet smaller than the last bet!",
+        "raise-too-high": "You raised with a bet bigger than your chip stack!"
+      },
+      "not-turn": "Hey, wait a minute! It's **{{user}}** time to play!",
       "main-message": {
-        "request-control": "Request Another Control Message",
+        "request-control": "Check Hand",
         "embed-title": "Poker Table",
-        "embed-description": "**Round**: {{action}\n**Dealer**: {{dealer}}\n**Small Blind**: {{smallBlind}}\n**Big Blind**: {{bigBlind}}\n\n**Playing Now**: {{user}}"
+        "embed-description": "**Round**: {{action}\n**Dealer**: {{dealer}}\n**Small Blind**: {{smallBlind}}\n**Big Blind**: {{bigBlind}}\n\n**Playing Now**: {{user}}\n**Pot**: {{pot}}"
       }
     },
     "control-message": {
@@ -974,7 +981,9 @@
       "call-button": "Call",
       "raise-button": "Raise",
       "allin-button": "All-In",
-      "exit-button": "Exit Table"
+      "exit-button": "Exit Table",
+      "raise-modal-title": "Raise Bet",
+      "raise-modal-label": "Raise the bet at least {{minBet}}"
     }
   }
 }

@@ -1,6 +1,7 @@
 import {
   CommandInteraction,
   InteractionReplyOptions,
+  Message,
   MessageComponentInteraction,
   MessagePayload,
   ModalSubmitInteraction,
@@ -55,12 +56,11 @@ export default class PokerInteractionContext {
     return `${emojis[emoji] || '🐛'} **|** ${this.locale(text, translateOptions)}`;
   }
 
-  async makeMessage(options: InteractionReplyOptions): Promise<void> {
+  async makeMessage(options: InteractionReplyOptions): Promise<Message | null> {
     if (this.interaction.replied || this.interaction.deferred) {
-      await this.interaction.editReply(options).catch(debugError);
-      return;
+      return this.interaction.editReply(options).catch(debugError) as unknown as Message | null;
     }
-    await this.interaction.reply(options).catch(debugError);
+    return this.interaction.reply(options).catch(debugError) as unknown as Message | null;
   }
 
   async send(options: MessagePayload | InteractionReplyOptions): Promise<void> {

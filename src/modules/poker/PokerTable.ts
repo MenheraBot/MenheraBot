@@ -8,6 +8,8 @@ import {
   MessageButton,
   MessageComponentInteraction,
   MessageEmbed,
+  Modal,
+  TextInputComponent,
   User,
 } from 'discord.js-light';
 import { getFixedT } from 'i18next';
@@ -15,10 +17,17 @@ import PokerInteractionContext from './PokerInteractionContext';
 import { getPokerCard } from './PokerUtils';
 import { PokerPlayAction, PokerPlayerData, PokerRoundData, PokerTableData } from './types';
 
+const getNextPlayerIndex = (ids: string[], current: string) => {
+  const index = ids.indexOf(current) + 1;
+  return index % ids.length;
+};
+
 export default class PokerTable {
   private roundData: PokerRoundData;
 
   private tableData: PokerTableData;
+
+  private needToBet = true;
 
   private Collector: InteractionCollector<MessageComponentInteraction>;
 
@@ -26,7 +35,7 @@ export default class PokerTable {
     private ctx: PokerInteractionContext,
     private players: Map<string, User>,
     private idsOrder: string[],
-    private playersData: Map<string, IUserSchema>,
+    private playersData: Map<string, Pick<IUserSchema, 'estrelinhas' | 'selectedColor' | 'id'>>,
     private interactions: Collection<string, PokerInteractionContext>,
   ) {
     this.tableData = {
@@ -37,6 +46,7 @@ export default class PokerTable {
     this.roundData = this.setupTable();
     this.Collector = this.startCollector();
     this.listenToInteractions();
+    this.makeMainMessage();
   }
 
   private listenToInteractions(): void {
@@ -61,7 +71,7 @@ export default class PokerTable {
       }
 
       if (interactionType === 'EXIT') {
-        this.executePlay('FOLD');
+        this.executePlay('FOLD', interaction);
         this.players.delete(interaction.user.id);
         this.interactions.delete(interaction.user.id);
         this.idsOrder.splice(this.idsOrder.indexOf(interaction.user.id), 1);
@@ -69,21 +79,21 @@ export default class PokerTable {
         return;
       }
 
-      this.executePlay(interactionType as PokerPlayAction);
+      this.executePlay(interactionType as PokerPlayAction, interaction);
     });
-  }
-
-  private getNextIndex(afterDealer: number) {
-    const index = this.tableData.lastDealerIndex + afterDealer;
-    return index % this.idsOrder.length;
   }
 
   private setupTable(): PokerRoundData {
     const cards = [...BLACKJACK_CARDS].sort(() => Math.random() - 0.5);
 
-    const dealerId = this.idsOrder[this.getNextIndex(1)];
-    const smallBlindId = this.idsOrder[this.getNextIndex(2)];
-    const bigBlindId = this.idsOrder.length > 2 ? this.idsOrder[this.getNextIndex(3)] : null;
+    const getNextIndex = (afterDealer: number) => {
+      const index = this.tableData.lastDealerIndex + afterDealer;
+      return index % this.idsOrder.length;
+    };
+
+    const dealerId = this.idsOrder[getNextIndex(1)];
+    const smallBlindId = this.idsOrder[getNextIndex(2)];
+    const bigBlindId = this.idsOrder.length > 2 ? this.idsOrder[getNextIndex(3)] : null;
 
     const roundPlayersData = new Map<string, PokerPlayerData>();
 
@@ -96,7 +106,7 @@ export default class PokerTable {
       roundPlayersData.set(id, { bet: userBet, hand: userHand, folded: false });
     });
 
-    this.tableData.lastDealerIndex = this.getNextIndex(1);
+    this.tableData.lastDealerIndex = getNextIndex(1);
 
     return {
       dealerId,
@@ -104,13 +114,17 @@ export default class PokerTable {
       bigBlindId,
       cards,
       players: roundPlayersData,
-      currentPlay: 'PRE-FLOP',
-      currentPlayer: this.idsOrder[this.getNextIndex(3)],
+      currentAction: 'PRE-FLOP',
+      currentPlayer: this.idsOrder[getNextIndex(3)],
+      lastPlayer: this.idsOrder[getNextIndex(2)],
+      currentBet: 0,
+      pot: this.tableData.blindBet * 1.5,
     };
   }
 
   private startCollector(): InteractionCollector<MessageComponentInteraction> {
     return new InteractionCollector(this.ctx.interaction.client, {
+      interactionType: 'MESSAGE_COMPONENT',
       filter: (interaction) => {
         const didPass =
           (interaction.customId.startsWith(this.ctx.interaction.id) &&
@@ -170,7 +184,7 @@ export default class PokerTable {
       .setLabel(userInteraction.locale('commands:poker.match.control-message.raise-button'));
 
     const allInButton = new MessageButton()
-      .setCustomId(`${interaction.id} | ALLIN`)
+      .setCustomId(`${interaction.id} | ALL-IN`)
       .setStyle('SECONDARY')
       .setLabel(userInteraction.locale('commands:poker.match.control-message.allin-button'));
 
@@ -189,26 +203,25 @@ export default class PokerTable {
     });
   }
 
-  async startRound(): Promise<void> {
+  private async makeMainMessage(): Promise<void> {
     const mainEmbed = new MessageEmbed()
       .setTitle(this.ctx.locale('commands:poker.match.main-message.embed-title'))
       .setColor(COLORS.Poker)
       .setDescription(
         this.ctx.locale('commands:poker.match.main-message.embed-description', {
-          action: this.ctx.locale(`commands:poker.round-actions.${this.roundData.currentPlay}`),
+          action: this.ctx.locale(`commands:poker.round-actions.${this.roundData.currentAction}`),
           user: this.players.get(this.roundData.currentPlayer)?.username,
           dealer: this.players.get(this.roundData.dealerId)?.username,
           smallBlind: this.players.get(this.roundData.smallBlindId)?.username,
           bigBlind: this.roundData.bigBlindId
             ? this.players.get(this.roundData.bigBlindId)?.username
             : '-',
+          pot: this.roundData.pot,
         }),
       )
       .setThumbnail(
         this.players.get(this.roundData.currentPlayer)!.displayAvatarURL({ dynamic: true }),
       );
-
-    // TODO: Add VanGogh Image
 
     const requestControlMessage = new MessageButton()
       .setCustomId(`${this.ctx.interaction.id} | CONTROL`)
@@ -223,25 +236,150 @@ export default class PokerTable {
     });
   }
 
-  private async checkGameCanContinue(): Promise<boolean> {
+  /*  private async checkGameCanContinue(): Promise<boolean> {
     if (this.idsOrder.length < 2) return false;
     return true;
 
     // TODO: Make this work, checking user money and amonut of users
-  }
+  } */
 
   private async changePlayer(): Promise<void> {
     let { currentPlayer } = this.roundData;
 
     do {
-      currentPlayer = this.idsOrder[this.getNextIndex(1)];
+      currentPlayer = this.idsOrder[getNextPlayerIndex(this.idsOrder, currentPlayer)];
     } while (this.roundData.players.get(currentPlayer)!.folded);
 
     this.roundData.currentPlayer = currentPlayer;
+
+    this.makeMainMessage();
   }
 
-  private async executePlay(play: PokerPlayAction): Promise<void> {
-    // TODO: HANDLE PLAYS HERE
-    console.log(this.Collector);
+  private async executePlay(
+    play: PokerPlayAction,
+    interaction: MessageComponentInteraction,
+  ): Promise<void> {
+    switch (play) {
+      case 'FOLD': {
+        if (!interaction.replied) interaction.deferUpdate();
+
+        this.roundData.players.get(this.roundData.currentPlayer)!.folded = true;
+        this.changePlayer();
+        break;
+      }
+      case 'CHECK': {
+        if (this.needToBet) {
+          interaction.reply({
+            content: this.ctx.prettyResponse('error', 'commands:poker.match.replies.call-or-raise'),
+            ephemeral: true,
+          });
+          break;
+        }
+        interaction.deferUpdate();
+        this.changePlayer();
+        break;
+      }
+      case 'CALL': {
+        if (!this.needToBet) {
+          interaction.reply({
+            content: this.ctx.prettyResponse(
+              'error',
+              'commands:poker.match.replies.not-active-bet',
+            ),
+            ephemeral: true,
+          });
+          break;
+        }
+        if (
+          this.roundData.currentBet >
+          this.playersData.get(this.roundData.currentPlayer)!.estrelinhas
+        ) {
+          return this.executePlay('ALL-IN', interaction);
+        }
+        interaction.deferUpdate();
+        this.playersData.get(this.roundData.currentPlayer)!.estrelinhas -=
+          this.roundData.currentBet;
+
+        this.roundData.pot += this.roundData.currentBet;
+        this.changePlayer();
+        break;
+      }
+      case 'ALL-IN': {
+        this.roundData.pot += this.playersData.get(this.roundData.currentPlayer)!.estrelinhas;
+        this.roundData.currentBet = this.playersData.get(this.roundData.currentPlayer)!.estrelinhas;
+        this.playersData.get(this.roundData.currentPlayer)!.estrelinhas = 0;
+        this.needToBet = true;
+        interaction.deferUpdate();
+        this.changePlayer();
+        break;
+      }
+      case 'RAISE': {
+        const modal = new Modal()
+          .setCustomId(`${interaction.id} | MODAL`)
+          .setTitle(this.ctx.locale('commands:poker.match.control-message.raise-modal-title'));
+
+        const input = new TextInputComponent()
+          .setCustomId('RAISE')
+          .setLabel(
+            this.ctx.locale('commands:poker.match.control-message.raise-modal-label', {
+              minBet: this.roundData.currentBet,
+            }),
+          )
+          .setStyle('SHORT')
+          .setRequired(true);
+
+        modal.addComponents({ type: 1, components: [input] });
+
+        interaction.showModal(modal);
+
+        const result = await interaction
+          .awaitModalSubmit({
+            time: 15_000,
+            filter: (int) => int.customId.startsWith(interaction.id),
+          })
+          .catch(() => null);
+
+        if (!result) return this.executePlay('FOLD', interaction);
+
+        const userInput = result.fields.getTextInputValue('RAISE');
+
+        const polishedNumber = parseInt(userInput, 10);
+
+        if (Number.isNaN(polishedNumber)) {
+          result.reply({
+            ephemeral: true,
+            content: this.ctx.prettyResponse('error', 'commands:poker.match.replies.raise-nan'),
+          });
+          return;
+        }
+
+        if (polishedNumber <= this.roundData.currentBet) {
+          result.reply({
+            ephemeral: true,
+            content: this.ctx.prettyResponse('error', 'commands:poker.match.replies.raise-too-low'),
+          });
+          return;
+        }
+
+        if (polishedNumber > this.playersData.get(this.roundData.currentPlayer)!.estrelinhas) {
+          result.reply({
+            ephemeral: true,
+            content: this.ctx.prettyResponse(
+              'error',
+              'commands:poker.match.replies.raise-too-high',
+            ),
+          });
+          return;
+        }
+
+        this.roundData.currentBet = polishedNumber;
+        this.playersData.get(this.roundData.currentPlayer)!.estrelinhas -= polishedNumber;
+        this.roundData.pot += polishedNumber;
+        this.needToBet = true;
+        result.deferUpdate();
+        this.changePlayer();
+        break;
+      }
+    }
   }
 }
