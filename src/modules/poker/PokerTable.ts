@@ -439,7 +439,10 @@ export default class PokerTable {
 
         this.roundData.pot += this.roundData.currentBet;
 
-        if (this.roundData.currentPlayer === this.roundData.lastPlayerToPlay)
+        if (
+          this.roundData.currentPlayer === this.roundData.lastPlayerToPlay &&
+          this.roundData.currentAction !== 'PRE-FLOP'
+        )
           this.needToBet = false;
 
         this.changePlayer();

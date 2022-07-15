@@ -12,7 +12,7 @@ export default class PokerRepository {
 
   async addUserToPokerMatch(userId: string): Promise<void> {
     if (!this.redisClient) return;
-    await this.redisClient.sadd('poker_matchs', userId).catch(debugError);
+    await this.redisClient.sadd('poker_match', userId).catch(debugError);
   }
 
   async removeUserFromPokerMatch(userId: string): Promise<void> {
