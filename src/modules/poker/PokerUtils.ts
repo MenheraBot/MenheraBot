@@ -32,11 +32,16 @@ const getCardDisplay = (cardValue: number): string => {
 
 export const getPokerCard = (cardId: number): PokerCard => {
   const cardValue = cardId - (Math.ceil(cardId / 13) - 1) * 13;
+  const cardSuit = getCardSuit(cardId);
+  const cardDisplay = getCardDisplay(cardValue);
+
+  const cardDisplayToPokerSolver = `${cardDisplay.replace('10', 'T')}${cardSuit[0].toLowerCase()}`;
 
   return {
     id: cardId,
-    suit: getCardSuit(cardId),
+    suit: cardSuit,
     value: cardValue,
-    displayValue: getCardDisplay(cardValue),
+    displayValue: cardDisplay,
+    solverValue: cardDisplayToPokerSolver,
   };
 };

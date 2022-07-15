@@ -966,6 +966,19 @@
     },
     "private-users-already-in-match": "Você não pode começar essa partida! Alguns usuários já estão em uma mesa de poker!",
     "match": {
+      "win-reasons": {
+        "FOLD": "Todos jogadores deram Fold",
+        "STRAIGHT-FLUSH-ROYAL": "**FEZ UM ROYAL FLUSH**",
+        "STRAIGHT-FLUSH": "Fez um Straight Flush",
+        "FOUR-OF-A-KIND": "Fez uma quadra",
+        "FULL-HOUSE": "Fez um Full House",
+        "FLUSH": "Fez um Flush",
+        "STRAIGHT": "Fez uma sequência",
+        "THREE-OF-A-KIND": "Fez uma trinca",
+        "TWO-PAIR": "Fez duas duplas",
+        "PAIR": "Fez uma dupla",
+        "HIGH-CARD": "Tinha a maior carta"
+      },
       "replies": {
         "call-or-raise": "Você precisa fazer uma aposta!",
         "not-active-bet": "Não há nenhuma aposta ativa! Faça uma ou então dê Check!",
@@ -973,7 +986,7 @@
         "raise-too-low": "Tu deu raise com uma aposta menor que a última aposta!",
         "raise-too-high": "Tu deu raise com uma aposta maior do que o teu stack de fichas!",
         "table-close": "Lindo jogo! Esta mesa de poker acabou!!",
-        "round-finish": "Partida Finalizada! Ganhador: **{{winner}}**. Fichas ganhas: **{{chips}}** :star:\nQuerem continuar jogando?"
+        "round-finish": "Partida Finalizada! Ganhador: **{{winner}}** ({{reason}}). Fichas ganhas: **{{chips}}** :star:\nQuerem continuar jogando?"
       },
       "not-turn": "Eii, espere um pouco! Está na hora de **{{user}}** jogar!",
       "main-message": {

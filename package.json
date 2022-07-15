@@ -47,6 +47,7 @@
     "moment": "^2.29.2",
     "moment-duration-format": "^2.3.2",
     "mongoose": "^6.2.8",
+    "pokersolver": "^2.1.4",
     "string-similarity": "^4.0.4",
     "tweetnacl": "^1.0.3",
     "utf-8-validate": "^5.0.9",

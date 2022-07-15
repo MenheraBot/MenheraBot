@@ -960,6 +960,19 @@
       "SHOWDOWN": "Showdown"
     },
     "match": {
+      "win-reasons": {
+        "FOLD": "All players Fold",
+        "STRAIGHT-FLUSH-ROYAL": "**MADE A ROYAL FLUSH**",
+        "STRAIGHT-FLUSH": "Did a Straight Flush",
+        "FOUR-OF-A-KIND": "Did a court",
+        "FULL-HOUSE": "Did a Full House",
+        "FLUSH": "Made a Flush",
+        "STRAIGHT": "Made a sequel",
+        "THREE-OF-A-KIND": "Made a set",
+        "TWO-PAIR": "Made two pairs",
+        "PAIR": "Made a duo",
+        "HIGH-CARD": "Had the highest card"
+      },
       "replies": {
         "call-or-raise": "You need to make a bet!",
         "not-active-bet": "There are no active bets! Make one or check!",

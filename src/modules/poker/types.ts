@@ -7,7 +7,6 @@ export type PokerPlayAction = 'FOLD' | 'CHECK' | 'CALL' | 'RAISE' | 'ALL-IN';
 
 export interface PokerPlayerData {
   hand: number[];
-  bet: number;
   folded: boolean;
 }
 
@@ -40,4 +39,5 @@ export interface PokerCard {
   value: number;
   displayValue: string;
   suit: CARD_SUITE;
+  solverValue: string;
 }

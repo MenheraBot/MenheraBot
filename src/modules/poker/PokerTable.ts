@@ -15,6 +15,7 @@ import {
 } from 'discord.js-light';
 import { getFixedT } from 'i18next';
 import MenheraClient from 'MenheraClient';
+import { Hand } from 'pokersolver';
 import PokerInteractionContext from './PokerInteractionContext';
 import { getPokerCard } from './PokerUtils';
 import { PokerPlayAction, PokerPlayerData, PokerRoundData, PokerTableData } from './types';
@@ -135,11 +136,8 @@ export default class PokerTable {
 
     this.idsOrder.forEach((id) => {
       const userHand = cards.splice(0, 2);
-      let userBet = 0;
-      if (id === smallBlindId) userBet = this.tableData.blindBet / 2;
-      if (id === bigBlindId) userBet = this.tableData.blindBet;
 
-      roundPlayersData.set(id, { bet: userBet, hand: userHand, folded: false });
+      roundPlayersData.set(id, { hand: userHand, folded: false });
     });
 
     this.tableData.lastDealerIndex = getNextIndex(1);
@@ -328,8 +326,11 @@ export default class PokerTable {
     }
   }
 
-  private async finishRound(winner: string): Promise<void> {
-    this.playersData.get(winner)!.estrelinhas += this.roundData.pot;
+  private async finishRound(winners: string[], winReason: string): Promise<void> {
+    const moneyForEach = Math.floor(this.roundData.pot / winners.length);
+    winners.forEach((a) => {
+      this.playersData.get(a)!.estrelinhas += moneyForEach;
+    });
 
     this.tableData.inGame = false;
 
@@ -345,12 +346,45 @@ export default class PokerTable {
 
     this.ctx.makeMessage({
       content: this.ctx.prettyResponse('wink', 'commands:poker.match.replies.round-finish', {
-        winner: this.players.get(winner)?.username,
-        chips: this.roundData.pot,
+        winner: winners.map((winner) => this.players.get(winner)?.username).join(', '),
+        chips: moneyForEach,
+        reason: this.ctx.locale(`commands:poker.match.win-reasons.${winReason as 'FOLD'}`),
       }),
       embeds: [],
       components: [actionRow([continueButton, stopButton])],
     });
+  }
+
+  private async showdown(): Promise<void> {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const usersHands = [...this.roundData.players].reduce<{ hand: any; userId: string }[]>(
+      (p, c) => {
+        const userData = c[1];
+        if (userData.folded) return p;
+
+        const cardsToUse = [
+          ...userData.hand.map((a) => getPokerCard(a).solverValue),
+          ...this.roundData.comunityCards.map((a) => getPokerCard(a).solverValue),
+        ];
+
+        const hand = Hand.solve(cardsToUse);
+
+        p.push({ hand, userId: c[0] });
+        return p;
+      },
+      [],
+    );
+
+    const winners = Hand.winners(usersHands.map((a) => a.hand)).map(
+      (a: { cards: unknown; suits: unknown }) =>
+        usersHands.find((b) => b.hand.cards === a.cards && b.hand.suits === a.suits),
+    );
+
+    const winReason = winners[0].hand.descr.includes('Royal Flush')
+      ? 'STRAIGHT-FLUSH-ROYAL'
+      : winners[0].hand.name.replace(' ', '-').toUpperCase();
+
+    this.finishRound(winners, winReason);
   }
 
   private async changePlayer(): Promise<void> {
@@ -366,6 +400,8 @@ export default class PokerTable {
     )
       await this.changeRoundAction();
 
+    if (this.roundData.currentAction === 'SHOWDOWN') return this.showdown();
+
     do {
       currentPlayer = this.idsOrder[getNextPlayerIndex(this.idsOrder, currentPlayer)];
     } while (this.roundData.players.get(currentPlayer)!.folded);
@@ -375,7 +411,7 @@ export default class PokerTable {
     const foldedPlayers = [...this.roundData.players].filter((a) => a[1].folded);
 
     if (foldedPlayers.length === this.roundData.players.size - 1)
-      return this.finishRound(this.roundData.currentPlayer);
+      return this.finishRound([this.roundData.currentPlayer], 'FOLD');
 
     this.makeMainMessage();
   }
@@ -422,15 +458,6 @@ export default class PokerTable {
           return this.executePlay('ALL-IN', interaction);
         }
         interaction.deferUpdate();
-
-        console.log(
-          this.roundData.smallBlindId,
-          this.roundData.currentPlayer,
-          this.roundData.currentAction,
-          'FLOP',
-          this.roundData.currentBet,
-          this.tableData.blindBet,
-        );
 
         if (
           this.roundData.smallBlindId === this.roundData.currentPlayer &&
