@@ -4,6 +4,7 @@ import { BLACKJACK_CARDS, COLORS, emojis } from '@structures/Constants';
 import { actionRow, resolveCustomId } from '@utils/Util';
 import {
   Collection,
+  CommandInteraction,
   InteractionCollector,
   MessageButton,
   MessageComponentInteraction,
@@ -13,6 +14,7 @@ import {
   User,
 } from 'discord.js-light';
 import { getFixedT } from 'i18next';
+import MenheraClient from 'MenheraClient';
 import PokerInteractionContext from './PokerInteractionContext';
 import { getPokerCard } from './PokerUtils';
 import { PokerPlayAction, PokerPlayerData, PokerRoundData, PokerTableData } from './types';
@@ -39,8 +41,9 @@ export default class PokerTable {
     private interactions: Collection<string, PokerInteractionContext>,
   ) {
     this.tableData = {
+      inGame: true,
       lastDealerIndex: -1,
-      mainInteraction: ctx.interaction,
+      mainInteraction: ctx.interaction as CommandInteraction & { client: MenheraClient },
       blindBet: 1000,
     };
     this.roundData = this.setupTable();
@@ -58,6 +61,19 @@ export default class PokerTable {
         return;
       }
 
+      if (
+        !this.tableData.inGame &&
+        interaction.user.id !== this.tableData.mainInteraction.user.id
+      ) {
+        interaction
+          .reply({
+            ephemeral: true,
+            content: getFixedT(interaction.locale)('common:not-your-interaction'),
+          })
+          .catch(() => null);
+        return;
+      }
+
       if (interaction.user.id !== this.roundData.currentPlayer) {
         interaction
           .reply({
@@ -71,13 +87,33 @@ export default class PokerTable {
       }
 
       if (interactionType === 'EXIT') {
-        this.executePlay('FOLD', interaction);
+        this.tableData.mainInteraction.client.repositories.pokerRepository.removeUserFromPokerMatch(
+          interaction.user.id,
+        );
+        this.tableData.mainInteraction.client.repositories.starRepository.add(
+          interaction.user.id,
+          this.playersData.get(interaction.user.id)!.estrelinhas,
+        );
         this.players.delete(interaction.user.id);
         this.interactions.delete(interaction.user.id);
         this.idsOrder.splice(this.idsOrder.indexOf(interaction.user.id), 1);
         this.playersData.delete(interaction.user.id);
+        this.executePlay('FOLD', interaction);
         return;
       }
+
+      if (interactionType === 'TABLE-NEXT') {
+        this.roundData = this.setupTable();
+        this.makeMainMessage();
+        return;
+      }
+
+      if (interactionType === 'TABLE-STOP') {
+        this.closeTable();
+        return;
+      }
+
+      if (!this.tableData.inGame) return;
 
       this.executePlay(interactionType as PokerPlayAction, interaction);
     });
@@ -113,12 +149,14 @@ export default class PokerTable {
       smallBlindId,
       bigBlindId,
       cards,
+      comunityCards: [],
       players: roundPlayersData,
       currentAction: 'PRE-FLOP',
       currentPlayer: this.idsOrder[getNextIndex(3)],
       lastPlayer: this.idsOrder[getNextIndex(2)],
       currentBet: 0,
-      pot: this.tableData.blindBet * 1.5,
+      pot: this.tableData.blindBet * (bigBlindId ? 1.5 : 0.5),
+      lastPlayerToPlay: this.idsOrder[this.idsOrder.length - 1],
     };
   }
 
@@ -217,6 +255,13 @@ export default class PokerTable {
             ? this.players.get(this.roundData.bigBlindId)?.username
             : '-',
           pot: this.roundData.pot,
+          cards: this.roundData.comunityCards
+            .map((cardId) => {
+              const card = getPokerCard(cardId);
+
+              return `${card.displayValue} ${emojis[`suit_${card.suit}`]}`;
+            })
+            .join(' | '),
         }),
       )
       .setThumbnail(
@@ -236,21 +281,98 @@ export default class PokerTable {
     });
   }
 
-  /*  private async checkGameCanContinue(): Promise<boolean> {
-    if (this.idsOrder.length < 2) return false;
-    return true;
+  private checkGameCanContinue(): boolean {
+    if (this.idsOrder.length < 2) return true;
+    return false;
 
     // TODO: Make this work, checking user money and amonut of users
-  } */
+  }
+
+  private async closeTable(): Promise<void> {
+    this.Collector.stop();
+    this.playersData.forEach((a) => {
+      this.tableData.mainInteraction.client.repositories.starRepository.add(a.id, a.estrelinhas);
+      this.tableData.mainInteraction.client.repositories.pokerRepository.removeUserFromPokerMatch(
+        a.id,
+      );
+    });
+
+    this.ctx.makeMessage({
+      content: this.ctx.prettyResponse('wink', 'commands:poker.match.replies.table-close'),
+      components: [],
+      embeds: [],
+    });
+  }
+
+  private async changeRoundAction(): Promise<void> {
+    switch (this.roundData.currentAction) {
+      case 'PRE-FLOP': {
+        this.roundData.currentAction = 'FLOP';
+        this.roundData.comunityCards = this.roundData.cards.splice(0, 3);
+        break;
+      }
+      case 'FLOP': {
+        this.roundData.currentAction = 'TURN';
+        this.roundData.comunityCards.push(...this.roundData.cards.splice(0, 1));
+        break;
+      }
+      case 'TURN': {
+        this.roundData.currentAction = 'RIVER';
+        this.roundData.comunityCards.push(...this.roundData.cards.splice(0, 1));
+        break;
+      }
+      case 'RIVER': {
+        this.roundData.currentAction = 'SHOWDOWN';
+        break;
+      }
+    }
+  }
+
+  private async finishRound(winner: string): Promise<void> {
+    this.playersData.get(winner)!.estrelinhas += this.roundData.pot;
+
+    this.tableData.inGame = false;
+
+    const continueButton = new MessageButton()
+      .setCustomId(`${this.ctx.interaction.id} | TABLE-NEXT`)
+      .setLabel(this.ctx.locale('commands:poker.match.main-message.next-table'))
+      .setStyle('PRIMARY');
+
+    const stopButton = new MessageButton()
+      .setCustomId(`${this.ctx.interaction.id} | TABLE-STOP`)
+      .setLabel(this.ctx.locale('commands:poker.match.main-message.stop-table'))
+      .setStyle('DANGER');
+
+    this.ctx.makeMessage({
+      content: this.ctx.prettyResponse('wink', 'commands:poker.match.replies.round-finish', {
+        winner: this.players.get(winner)?.username,
+        chips: this.roundData.pot,
+      }),
+      embeds: [],
+      components: [actionRow([continueButton, stopButton])],
+    });
+  }
 
   private async changePlayer(): Promise<void> {
+    const willGameEnd = this.checkGameCanContinue();
+
+    if (willGameEnd) return this.closeTable();
+
     let { currentPlayer } = this.roundData;
+
+    if (currentPlayer === this.roundData.lastPlayerToPlay && !this.needToBet)
+      await this.changeRoundAction();
 
     do {
       currentPlayer = this.idsOrder[getNextPlayerIndex(this.idsOrder, currentPlayer)];
     } while (this.roundData.players.get(currentPlayer)!.folded);
 
     this.roundData.currentPlayer = currentPlayer;
+
+    const foldedPlayers = [...this.roundData.players].filter((a) => a[1].folded);
+
+    if (foldedPlayers.length === this.roundData.players.size - 1)
+      return this.finishRound(this.roundData.currentPlayer);
 
     this.makeMainMessage();
   }
@@ -301,6 +423,8 @@ export default class PokerTable {
           this.roundData.currentBet;
 
         this.roundData.pot += this.roundData.currentBet;
+        if (this.roundData.currentPlayer === this.roundData.lastPlayerToPlay)
+          this.needToBet = false;
         this.changePlayer();
         break;
       }
@@ -372,10 +496,16 @@ export default class PokerTable {
           return;
         }
 
+        if (
+          this.roundData.currentBet === polishedNumber &&
+          this.roundData.currentPlayer === this.roundData.lastPlayerToPlay
+        )
+          this.needToBet = false;
+        else this.needToBet = true;
+
         this.roundData.currentBet = polishedNumber;
         this.playersData.get(this.roundData.currentPlayer)!.estrelinhas -= polishedNumber;
         this.roundData.pot += polishedNumber;
-        this.needToBet = true;
         result.deferUpdate();
         this.changePlayer();
         break;

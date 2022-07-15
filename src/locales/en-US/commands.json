@@ -965,13 +965,17 @@
         "not-active-bet": "There are no active bets! Make one or check!",
         "raise-nan": "You raised with an invalid number!",
         "raise-too-low": "You raised with a bet smaller than the last bet!",
-        "raise-too-high": "You raised with a bet bigger than your chip stack!"
+        "raise-too-high": "You raised with a bet bigger than your chip stack!",
+        "table-close": "What a beautiful game!! This Poker Table has been closed!",
+        "round-finish": "Game over! Winner: **{{winner}}**. Chips won: **{{chips}}** :star:\nDo you want to continue playing?"
       },
       "not-turn": "Hey, wait a minute! It's **{{user}}** time to play!",
       "main-message": {
         "request-control": "Check Hand",
         "embed-title": "Poker Table",
-        "embed-description": "**Round**: {{action}\n**Dealer**: {{dealer}}\n**Small Blind**: {{smallBlind}}\n**Big Blind**: {{bigBlind}}\n\n**Playing Now**: {{user}}\n**Pot**: {{pot}}"
+        "next-table": "Continue Playing",
+        "stop-table": "Stop Playing",
+        "embed-description": "**Round**: {{action}\n**Dealer**: {{dealer}}\n**Small Blind**: {{smallBlind}}\n**Big Blind**: {{bigBlind}}\n\n**Playing Now**: {{user}}\n**Pot**: {{pot}} :star:\n**In Table**: {{cards}}"
       }
     },
     "control-message": {

@@ -1,4 +1,4 @@
-import { CommandInteraction, MessageComponentInteraction } from 'discord.js-light';
+import { CommandInteraction } from 'discord.js-light';
 import MenheraClient from 'MenheraClient';
 
 export type PokerRoundAction = 'PRE-FLOP' | 'FLOP' | 'TURN' | 'RIVER' | 'SHOWDOWN';
@@ -16,10 +16,12 @@ export interface PokerRoundData {
   smallBlindId: string;
   bigBlindId: string | null;
   cards: number[];
+  comunityCards: number[];
   players: Map<string, PokerPlayerData>;
   currentAction: PokerRoundAction;
   currentPlayer: string;
   lastPlayer: string;
+  lastPlayerToPlay: string;
   currentBet: number;
   pot: number;
 }
@@ -27,7 +29,8 @@ export interface PokerRoundData {
 export interface PokerTableData {
   lastDealerIndex: number;
   blindBet: number;
-  mainInteraction: MessageComponentInteraction | (CommandInteraction & { client: MenheraClient });
+  mainInteraction: CommandInteraction & { client: MenheraClient };
+  inGame: boolean;
 }
 
 export type CARD_SUITE = 'SPADES' | 'HEARTS' | 'DIAMONDS' | 'CLUBS';

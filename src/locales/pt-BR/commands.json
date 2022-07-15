@@ -971,13 +971,17 @@
         "not-active-bet": "Não há nenhuma aposta ativa! Faça uma ou então dê Check!",
         "raise-nan": "Tu deu raise com um número inválido!",
         "raise-too-low": "Tu deu raise com uma aposta menor que a última aposta!",
-        "raise-too-high": "Tu deu raise com uma aposta maior do que o teu stack de fichas!"
+        "raise-too-high": "Tu deu raise com uma aposta maior do que o teu stack de fichas!",
+        "table-close": "Lindo jogo! Esta mesa de poker acabou!!",
+        "round-finish": "Partida Finalizada! Ganhador: **{{winner}}**. Fichas ganhas: **{{chips}}** :star:\nQuerem continuar jogando?"
       },
       "not-turn": "Eii, espere um pouco! Está na hora de **{{user}}** jogar!",
       "main-message": {
         "request-control": "Ver Cartas",
         "embed-title": "Mesa de Poker",
-        "embed-description": "**Rodada Atual**: {{action}}\n**Dealer**: {{dealer}}\n**Small Blind**: {{smallBlind}}\n**Big Blind**: {{bigBlind}}\n\n**Jogando Agora**: {{user}}\n**Na Mesa**: {{pot}}"
+        "next-table": "Continuar a Jogar",
+        "stop-table": "Parar de Jogar",
+        "embed-description": "**Rodada Atual**: {{action}}\n**Dealer**: {{dealer}}\n**Small Blind**: {{smallBlind}}\n**Big Blind**: {{bigBlind}}\n\n**Jogando Agora**: {{user}}\n**Pot: {{pot}} :star:**\n**Na Mesa**: {{cards}}"
       },
       "control-message": {
         "embed-title": "Sua Mão",
