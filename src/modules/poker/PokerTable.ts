@@ -360,7 +360,10 @@ export default class PokerTable {
 
     let { currentPlayer } = this.roundData;
 
-    if (currentPlayer === this.roundData.lastPlayerToPlay && !this.needToBet)
+    if (
+      currentPlayer === this.roundData.lastPlayerToPlay &&
+      (this.roundData.currentAction === 'PRE-FLOP' || !this.needToBet)
+    )
       await this.changeRoundAction();
 
     do {
@@ -419,6 +422,15 @@ export default class PokerTable {
           return this.executePlay('ALL-IN', interaction);
         }
         interaction.deferUpdate();
+
+        console.log(
+          this.roundData.smallBlindId,
+          this.roundData.currentPlayer,
+          this.roundData.currentAction,
+          'FLOP',
+          this.roundData.currentBet,
+          this.tableData.blindBet,
+        );
 
         if (
           this.roundData.smallBlindId === this.roundData.currentPlayer &&
