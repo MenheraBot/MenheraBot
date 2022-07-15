@@ -152,11 +152,11 @@ export default class PokerTable {
       comunityCards: [],
       players: roundPlayersData,
       currentAction: 'PRE-FLOP',
-      currentPlayer: this.idsOrder[getNextIndex(3)],
+      currentPlayer: this.idsOrder[getNextIndex(bigBlindId ? 3 : 2)],
       lastPlayer: this.idsOrder[getNextIndex(2)],
-      currentBet: 0,
+      currentBet: this.tableData.blindBet,
       pot: this.tableData.blindBet * (bigBlindId ? 1.5 : 0.5),
-      lastPlayerToPlay: this.idsOrder[this.idsOrder.length - 1],
+      lastPlayerToPlay: dealerId,
     };
   }
 
@@ -419,12 +419,29 @@ export default class PokerTable {
           return this.executePlay('ALL-IN', interaction);
         }
         interaction.deferUpdate();
+
+        if (
+          this.roundData.smallBlindId === this.roundData.currentPlayer &&
+          this.roundData.currentAction === 'FLOP' &&
+          this.roundData.currentBet === this.tableData.blindBet
+        ) {
+          this.playersData.get(this.roundData.currentPlayer)!.estrelinhas -=
+            this.tableData.blindBet * 0.5;
+
+          this.roundData.pot += this.tableData.blindBet * 0.5;
+          this.needToBet = false;
+          this.changePlayer();
+          break;
+        }
+
         this.playersData.get(this.roundData.currentPlayer)!.estrelinhas -=
           this.roundData.currentBet;
 
         this.roundData.pot += this.roundData.currentBet;
+
         if (this.roundData.currentPlayer === this.roundData.lastPlayerToPlay)
           this.needToBet = false;
+
         this.changePlayer();
         break;
       }
