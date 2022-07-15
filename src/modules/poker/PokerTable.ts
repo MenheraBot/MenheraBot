@@ -75,7 +75,7 @@ export default class PokerTable {
         return;
       }
 
-      if (interaction.user.id !== this.roundData.currentPlayer) {
+      if (interaction.user.id !== this.roundData.currentPlayer && this.tableData.inGame) {
         interaction
           .reply({
             ephemeral: true,
@@ -105,11 +105,13 @@ export default class PokerTable {
 
       if (interactionType === 'TABLE-NEXT') {
         this.roundData = this.setupTable();
+        interaction.deferUpdate();
         this.makeMainMessage();
         return;
       }
 
       if (interactionType === 'TABLE-STOP') {
+        interaction.deferUpdate();
         this.closeTable();
         return;
       }
@@ -141,6 +143,8 @@ export default class PokerTable {
     });
 
     this.tableData.lastDealerIndex = getNextIndex(1);
+    this.tableData.inGame = true;
+    this.needToBet = true;
 
     return {
       dealerId,
@@ -384,7 +388,10 @@ export default class PokerTable {
       ? 'STRAIGHT-FLUSH-ROYAL'
       : winners[0].hand.name.replace(' ', '-').toUpperCase();
 
-    this.finishRound(winners, winReason);
+    this.finishRound(
+      winners.map((a: { userId: string }) => a.userId),
+      winReason,
+    );
   }
 
   private async changePlayer(): Promise<void> {

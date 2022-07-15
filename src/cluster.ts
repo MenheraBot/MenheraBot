@@ -26,8 +26,6 @@ ClusterManager.on('clusterCreate', (cluster) => {
   console.warn(`[CLUSTER MANAGER] Launching cluster ${cluster.id}`);
 });
 
-ClusterManager.on('debug', (a) => console.log(a));
-
 ClusterManager.spawn().then(() => {
   console.log('[CLUSTER MANAGER] All clusters have been spawned');
 });
