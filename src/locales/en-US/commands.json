@@ -976,13 +976,14 @@
       "replies": {
         "call-or-raise": "You need to make a bet!",
         "not-active-bet": "There are no active bets! Make one or check!",
+        "cannot-request-control": "You can't check your cards at this moment!",
         "raise-nan": "You raised with an invalid number!",
         "raise-too-low": "You raised with a bet smaller than the last bet!",
         "raise-too-high": "You raised with a bet bigger than your chip stack!",
         "table-close": "What a beautiful game!! This Poker Table has been closed!",
+        "not-turn": "Hey, wait a minute! It's **{{user}}** time to play!",
         "round-finish": "Game over! Winner: **{{winner}}**. Chips won: **{{chips}}** :star:\nDo you want to continue playing?"
       },
-      "not-turn": "Hey, wait a minute! It's **{{user}}** time to play!",
       "main-message": {
         "request-control": "Check Hand",
         "embed-title": "Poker Table",
@@ -1000,7 +1001,8 @@
       "allin-button": "All-In",
       "exit-button": "Exit Table",
       "raise-modal-title": "Raise Bet",
-      "raise-modal-label": "Raise the bet at least {{minBet}}"
+      "raise-modal-label": "Raise the bet at least {{minBet}}",
+      "can-close-ephemeral": "You may close this message now!"
     }
   }
 }

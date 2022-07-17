@@ -1,11 +1,17 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { IUserSchema } from '@custom_types/Menhera';
+import {
+  AvailableCardBackgroundThemes,
+  AvailableCardThemes,
+  IUserSchema,
+} from '@custom_types/Menhera';
 import { BLACKJACK_CARDS, COLORS, emojis } from '@structures/Constants';
-import { actionRow, resolveCustomId } from '@utils/Util';
+import { actionRow, resolveCustomId, toWritableUTF } from '@utils/Util';
+import { requestVangoghImage, VangoghRoutes } from '@utils/VangoghRequests';
 import {
   Collection,
   CommandInteraction,
   InteractionCollector,
+  MessageAttachment,
   MessageButton,
   MessageComponentInteraction,
   MessageEmbed,
@@ -38,7 +44,13 @@ export default class PokerTable {
     private ctx: PokerInteractionContext,
     private players: Map<string, User>,
     private idsOrder: string[],
-    private playersData: Map<string, Pick<IUserSchema, 'estrelinhas' | 'selectedColor' | 'id'>>,
+    private playersData: Map<
+      string,
+      Pick<IUserSchema, 'estrelinhas' | 'selectedColor' | 'id'> & {
+        backgroundTheme: AvailableCardBackgroundThemes;
+        cardTheme: AvailableCardThemes;
+      }
+    >,
     private interactions: Collection<string, PokerInteractionContext>,
   ) {
     this.tableData = {
@@ -79,7 +91,7 @@ export default class PokerTable {
         interaction
           .reply({
             ephemeral: true,
-            content: getFixedT(interaction.locale)('commands:poker.match.not-turn', {
+            content: getFixedT(interaction.locale)('commands:poker.match.replies.not-turn', {
               user: this.players.get(this.roundData.currentPlayer)?.username,
             }),
           })
@@ -185,7 +197,22 @@ export default class PokerTable {
     });
   }
 
-  private makeControlMessage(requestUser: string, interaction: MessageComponentInteraction): void {
+  private async makeControlMessage(
+    requestUser: string,
+    interaction: MessageComponentInteraction,
+  ): Promise<void> {
+    if (!this.tableData.inGame || this.roundData.players.get(requestUser)!.folded) {
+      interaction
+        .reply({
+          ephemeral: true,
+          content: getFixedT(interaction.locale)(
+            'commands:poker.match.replies.cannot-request-control',
+          ),
+        })
+        .catch(() => null);
+      return;
+    }
+
     const embed = new MessageEmbed()
       .setTitle(this.ctx.locale('commands:poker.match.control-message.embed-title'))
       .setDescription(
@@ -233,8 +260,18 @@ export default class PokerTable {
       .setStyle('DANGER')
       .setLabel(userInteraction.locale('commands:poker.match.control-message.exit-button'));
 
+    const image = await requestVangoghImage(VangoghRoutes.POKER_HAND, {
+      cards: this.roundData.players.get(requestUser)!.hand,
+      theme: this.playersData.get(requestUser)!.cardTheme,
+    });
+
+    const timestamp = Date.now();
+    if (!image.err) embed.setImage(`attachment://poker-${timestamp}.png`);
+
     userInteraction.makeMessage({
       ephemeral: true,
+      attachments: [],
+      files: image.err ? [] : [new MessageAttachment(image.data, `poker-${timestamp}.png`)],
       embeds: [embed],
       components: [
         actionRow([allInButton, raiseButton, callButton, checkButton, foldButton]),
@@ -276,9 +313,33 @@ export default class PokerTable {
       .setEmoji('🎮')
       .setLabel(this.ctx.locale('commands:poker.match.main-message.request-control'));
 
+    const usersDataToVangogh = [...this.roundData.players].map((u) => {
+      const [userId, userData] = u;
+
+      return {
+        avatar: this.players.get(userId)?.displayAvatarURL({ size: 256 }),
+        name: toWritableUTF(this.players.get(userId)?.username ?? '???'),
+        fold: userData.folded,
+        chips: this.playersData.get(userId)!.estrelinhas,
+        dealer: userId === this.roundData.dealerId,
+        theme: this.playersData.get(userId)!.backgroundTheme,
+      };
+    });
+
+    const image = await requestVangoghImage(VangoghRoutes.POKER, {
+      cards: this.roundData.comunityCards,
+      pot: this.roundData.pot,
+      users: usersDataToVangogh,
+    });
+
+    const timestamp = Date.now();
+    if (!image.err) mainEmbed.setImage(`attachment://poker-${timestamp}.png`);
+
     this.ctx.makeMessage({
       content: null,
+      attachments: [],
       embeds: [mainEmbed],
+      files: image.err ? [] : [new MessageAttachment(image.data, `poker-${timestamp}.png`)],
       components: [actionRow([requestControlMessage])],
     });
   }
@@ -299,9 +360,24 @@ export default class PokerTable {
       );
     });
 
+    this.interactions.forEach((a) =>
+      a.interaction
+        .editReply({
+          components: [],
+          embeds: [],
+          attachments: [],
+          content: a.prettyResponse(
+            'ok',
+            'commands:poker.match.control-message.can-close-ephemeral',
+          ),
+        })
+        .catch(() => null),
+    );
+
     this.ctx.makeMessage({
       content: this.ctx.prettyResponse('wink', 'commands:poker.match.replies.table-close'),
       components: [],
+      attachments: [],
       embeds: [],
     });
   }
@@ -348,6 +424,20 @@ export default class PokerTable {
       .setLabel(this.ctx.locale('commands:poker.match.main-message.stop-table'))
       .setStyle('DANGER');
 
+    this.interactions.forEach((a) =>
+      a.interaction
+        .editReply({
+          components: [],
+          embeds: [],
+          attachments: [],
+          content: a.prettyResponse(
+            'ok',
+            'commands:poker.match.control-message.can-close-ephemeral',
+          ),
+        })
+        .catch(() => null),
+    );
+
     this.ctx.makeMessage({
       content: this.ctx.prettyResponse('wink', 'commands:poker.match.replies.round-finish', {
         winner: winners.map((winner) => this.players.get(winner)?.username).join(', '),
@@ -355,6 +445,7 @@ export default class PokerTable {
         reason: this.ctx.locale(`commands:poker.match.win-reasons.${winReason as 'FOLD'}`),
       }),
       embeds: [],
+      attachments: [],
       components: [actionRow([continueButton, stopButton])],
     });
   }
@@ -429,7 +520,8 @@ export default class PokerTable {
   ): Promise<void> {
     switch (play) {
       case 'FOLD': {
-        if (!interaction.replied) interaction.deferUpdate();
+        if (!interaction.replied) interaction.update({ components: [] }).catch(() => null);
+        else interaction.editReply({ components: [] }).catch(() => null);
 
         this.roundData.players.get(this.roundData.currentPlayer)!.folded = true;
         this.changePlayer();
@@ -437,25 +529,32 @@ export default class PokerTable {
       }
       case 'CHECK': {
         if (this.needToBet) {
-          interaction.reply({
-            content: this.ctx.prettyResponse('error', 'commands:poker.match.replies.call-or-raise'),
-            ephemeral: true,
-          });
+          interaction
+            .reply({
+              content: this.ctx.prettyResponse(
+                'error',
+                'commands:poker.match.replies.call-or-raise',
+              ),
+              ephemeral: true,
+            })
+            .catch(() => null);
           break;
         }
-        interaction.deferUpdate();
+        interaction.deferUpdate().catch(() => null);
         this.changePlayer();
         break;
       }
       case 'CALL': {
         if (!this.needToBet) {
-          interaction.reply({
-            content: this.ctx.prettyResponse(
-              'error',
-              'commands:poker.match.replies.not-active-bet',
-            ),
-            ephemeral: true,
-          });
+          interaction
+            .reply({
+              content: this.ctx.prettyResponse(
+                'error',
+                'commands:poker.match.replies.not-active-bet',
+              ),
+              ephemeral: true,
+            })
+            .catch(() => null);
           break;
         }
         if (
@@ -464,7 +563,7 @@ export default class PokerTable {
         ) {
           return this.executePlay('ALL-IN', interaction);
         }
-        interaction.deferUpdate();
+        interaction.deferUpdate().catch(() => null);
 
         if (
           this.roundData.smallBlindId === this.roundData.currentPlayer &&
@@ -499,7 +598,7 @@ export default class PokerTable {
         this.roundData.currentBet = this.playersData.get(this.roundData.currentPlayer)!.estrelinhas;
         this.playersData.get(this.roundData.currentPlayer)!.estrelinhas = 0;
         this.needToBet = true;
-        interaction.deferUpdate();
+        interaction.deferUpdate().catch(() => null);
         this.changePlayer();
         break;
       }
@@ -520,7 +619,7 @@ export default class PokerTable {
 
         modal.addComponents({ type: 1, components: [input] });
 
-        interaction.showModal(modal);
+        interaction.showModal(modal).catch(() => null);
 
         const result = await interaction
           .awaitModalSubmit({
@@ -572,7 +671,7 @@ export default class PokerTable {
         this.roundData.currentBet = polishedNumber;
         this.playersData.get(this.roundData.currentPlayer)!.estrelinhas -= polishedNumber;
         this.roundData.pot += polishedNumber;
-        result.deferUpdate();
+        result.deferUpdate().catch(() => null);
         this.changePlayer();
         break;
       }

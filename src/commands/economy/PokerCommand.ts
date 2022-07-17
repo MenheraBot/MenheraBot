@@ -11,7 +11,11 @@ import {
 } from 'discord.js-light';
 import PokerTable from '@poker/PokerTable';
 import PokerInteractionContext from '@poker/PokerInteractionContext';
-import { IUserSchema } from '@custom_types/Menhera';
+import {
+  AvailableCardBackgroundThemes,
+  AvailableCardThemes,
+  IUserSchema,
+} from '@custom_types/Menhera';
 import i18next from 'i18next';
 
 export default class PokerCommand extends InteractionCommand {
@@ -266,10 +270,21 @@ export default class PokerCommand extends InteractionCommand {
         }),
       );
 
+      const backgroundThemes = await Promise.all(
+        accepted.map((a) => ctx.client.repositories.themeRepository.getCardBackgroundTheme(a)),
+      );
+
+      const cardThemes = await Promise.all(
+        accepted.map((a) => ctx.client.repositories.themeRepository.getCardsTheme(a)),
+      );
+
       const matchPlayersMap = new Map<string, User>();
       const usersDataMap = new Map<
         string,
-        Pick<IUserSchema, 'id' | 'estrelinhas' | 'selectedColor'>
+        Pick<IUserSchema, 'id' | 'estrelinhas' | 'selectedColor'> & {
+          backgroundTheme: AvailableCardBackgroundThemes;
+          cardTheme: AvailableCardThemes;
+        }
       >();
       const acceptedInteractionsMap = new Collection<string, PokerInteractionContext>();
 
@@ -277,11 +292,13 @@ export default class PokerCommand extends InteractionCommand {
         .filter((a) => accepted.includes(a.id))
         .forEach((a) => matchPlayersMap.set(a.id, a));
 
-      userData.forEach((u) =>
+      userData.forEach((u, i) =>
         usersDataMap.set(u.id, {
           selectedColor: u.selectedColor,
           estrelinhas: gameChipStack,
           id: u.id,
+          backgroundTheme: backgroundThemes[i],
+          cardTheme: cardThemes[i],
         }),
       );
 

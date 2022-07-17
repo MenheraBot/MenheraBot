@@ -25,6 +25,8 @@ export enum VangoghRoutes {
   Macetava = 'macetava',
   Blackjack = 'blackjack',
   BETA = 'beta',
+  POKER = 'poker',
+  POKER_HAND = 'poker?player=true',
 }
 
 export const requestVangoghImage = async <T>(
