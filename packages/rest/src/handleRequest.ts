@@ -1,4 +1,5 @@
 import { BASE_URL, createRestManager } from 'discordeno';
+import { IpcRequest } from 'types';
 import config from './config';
 
 const { DISCORD_TOKEN, REST_AUTHORIZATION, REST_PORT } = config();
@@ -9,15 +10,8 @@ const rest = createRestManager({
   customUrl: `http://localhost:${REST_PORT}`,
 });
 
-export default async (data: {
-  request: {
-    headers: { get: (arg0: string) => string };
-    json: () => any;
-    method: any;
-    url: string;
-  };
-}) => {
-  if (data.request.headers.get('AUTHORIZATION') !== REST_AUTHORIZATION) {
+export default async (data: IpcRequest) => {
+  if (data.Authorization !== REST_AUTHORIZATION) {
     return {
       status: 401,
       body: {
@@ -26,13 +20,11 @@ export default async (data: {
     };
   }
 
-  const json = (await data.request.json()) as any;
-
   const result = await rest.runMethod(
     rest,
-    data.request.method as any,
-    `${BASE_URL}/v${rest.version}${data.request.url.substring(rest.customUrl.length)}`,
-    json,
+    data.method as any,
+    `${BASE_URL}/v${rest.version}${data.url.substring(rest.customUrl.length)}`,
+    data.body,
   );
 
   if (result) {

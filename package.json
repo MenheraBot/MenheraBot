@@ -6,6 +6,7 @@
   "scripts": {
     "core": "yarn workspace @menhera-bot/core",
     "rest": "yarn workspace @menhera-bot/rest",
+    "gateway": "yarn workspace @menhera-bot/gateway",
     "lint": "yarn workspace @menhera-bot/eslint-config",
     "run:lint": "eslint --fix ."
   },
