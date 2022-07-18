@@ -60,6 +60,8 @@ export default class TrisalCommand extends InteractionCommand {
       format: 'png',
     });
 
+    await ctx.defer();
+
     const res = await requestVangoghImage(VangoghRoutes.Trisal, {
       userOne: userOneAvatar,
       userTwo: userTwoAvatar,

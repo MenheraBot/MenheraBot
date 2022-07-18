@@ -50,6 +50,8 @@ export default class VascoCommand extends InteractionCommand {
 
     const position = ctx.locale(`commands:vasco.positions.${randomPosition as '1'}`);
 
+    await ctx.defer();
+
     const res = await requestVangoghImage(VangoghRoutes.Vasco, {
       user: user.displayAvatarURL({ format: 'png', size: quality === 'normal' ? 256 : 64 }),
       quality,

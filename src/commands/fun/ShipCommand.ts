@@ -65,6 +65,8 @@ export default class ShipCommand extends InteractionCommand {
       return;
     }
 
+    await ctx.defer();
+
     const isUserMarried =
       user1.id === ctx.author.id
         ? ctx.data.user

@@ -31,6 +31,8 @@ export default class AstolfoCommand extends InteractionCommand {
   async run(ctx: InteractionCommandContext): Promise<void> {
     const text = ctx.options.getString('frase', true);
 
+    await ctx.defer();
+
     const res = await requestVangoghImage(VangoghRoutes.Astolfo, { text: toWritableUTF(text) });
 
     if (res.err) {
