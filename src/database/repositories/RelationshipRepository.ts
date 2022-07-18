@@ -38,18 +38,8 @@ export default class RelationshipRepository {
   }
 
   async trisal(userOneID: string, userTwoID: string, userThreeID: string): Promise<void> {
-    this.userRepository.update(userOneID, {
-      trisal: [userTwoID, userThreeID],
-      lastCommandAt: Date.now(),
-    });
-
-    this.userRepository.update(userTwoID, {
-      trisal: [userOneID, userThreeID],
-      lastCommandAt: Date.now(),
-    });
-
-    this.userRepository.update(userThreeID, {
-      trisal: [userOneID, userTwoID],
+    await this.userRepository.multiUpdate([userOneID, userTwoID, userThreeID], {
+      trisal: [userOneID, userTwoID, userThreeID],
       lastCommandAt: Date.now(),
     });
   }
