@@ -247,6 +247,8 @@ export default class ItemsCommand extends InteractionCommand {
 
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       user.inUseItems.find((i) => i.id === Number(replaceItemId))!.id = Number(itemId);
+    } else {
+      user.inUseItems.push({ id: Number(itemId) });
     }
 
     ctx.makeMessage({
