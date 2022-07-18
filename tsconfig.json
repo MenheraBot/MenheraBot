@@ -1,7 +1,5 @@
 {
   "compilerOptions": {
-    "outDir": "dist",
-    "baseUrl": "src",
     "target": "ES2020",
     "module": "CommonJS",
     "lib": ["ESNext"],
@@ -26,16 +24,5 @@
 
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "paths": {
-      "@structures/*": ["structures/*"],
-      "@database/*": ["database/*"],
-      "@utils/*": ["utils/*"],
-      "@interfaces/*": ["interfaces/*"],
-      "@data/*": ["modules/staticData/*"],
-      "@roleplay/*": ["modules/roleplay/*"],
-      "@custom_types/*": ["types/*"],
-      "@fluffety/*": ["modules/fluffety/*"]
-    }
   },
-  "include": ["src"]
 }

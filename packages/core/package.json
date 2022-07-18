@@ -34,7 +34,6 @@
     "bufferutil": "^4.0.6",
     "discord-hybrid-sharding": "^1.5.3",
     "discord.js-light": "^4.7.0",
-    "discordeno": "^13.0.0-rc45",
     "dotenv": "^16.0.0",
     "erlpack": "^0.1.4",
     "i18next": "^21.6.16",
@@ -77,7 +76,6 @@
     "prettier": "^2.6.2",
     "ts-jest": "^27.1.4",
     "tscpaths": "^0.0.9",
-    "tslib": "^2.4.0",
-    "typescript": "^4.6.4"
+    "tslib": "^2.4.0"
   }
 }

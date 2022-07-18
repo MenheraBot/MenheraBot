@@ -5,6 +5,8 @@
   "private": true,
   "scripts": {
     "core": "yarn workspace @menhera-bot/core",
+    "rest": "yarn workspace @menhera-bot/rest",
+    "lint": "yarn workspace @menhera-bot/eslint-config",
     "run:lint": "eslint --fix ."
   },
   "repository": {
@@ -18,13 +20,16 @@
     "url": "https://github.com/MenheraBot/MenheraBot/issues"
   },
   "homepage": "https://github.com/MenheraBot/MenheraBot#readme",
-  "dependencies": {
-    "typescript": "^4.1.2"
+  "devDependencies": {
+    "typescript": "^4.6.4"
   },
   "workspaces": {
     "hoistDependencies": true,
     "packages": [
       "packages/*"
     ]
+  },
+  "dependencies": {
+    "discordeno": "^13.0.0-rc45"
   }
 }
