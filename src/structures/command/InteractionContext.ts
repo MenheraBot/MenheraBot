@@ -110,10 +110,10 @@ export default class InteractionCommandContext {
 
     return this.resolveMessage(
       await this.interaction
-        .reply({ ...options, fetchReply: true })
+        .reply(options)
         .then((a) => {
           this.client.interactionStatistics.success += 1;
-          return a;
+          return a as unknown as Message;
         })
         .catch((e) => {
           this.client.interactionStatistics.catchedErrors += 1;

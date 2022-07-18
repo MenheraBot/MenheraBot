@@ -1,11 +1,5 @@
 /* eslint-disable no-param-reassign */
-import {
-  MessageAttachment,
-  MessageButton,
-  MessageEmbed,
-  Message,
-  MessageActionRow,
-} from 'discord.js-light';
+import { MessageAttachment, MessageButton, MessageEmbed, MessageActionRow } from 'discord.js-light';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import http from '@utils/HTTPrequests';
@@ -18,7 +12,7 @@ import {
   IVangoghReturnData,
 } from '@custom_types/Menhera';
 import { BLACKJACK_CARDS, BLACKJACK_PRIZE_MULTIPLIERS } from '@structures/Constants';
-import Util, { resolveCustomId, actionRow, MayNotExists, negate, debugError } from '@utils/Util';
+import Util, { resolveCustomId, actionRow, negate } from '@utils/Util';
 import { VangoghRoutes, requestVangoghImage } from '@utils/VangoghRequests';
 
 const getBlackjackCards = (cards: Array<number>): Array<IBlackjackCards> =>
@@ -131,7 +125,6 @@ export default class BlackjackCommand extends InteractionCommand {
         'init_blackjack',
         true,
         BLACKJACK_PRIZE_MULTIPLIERS.init_blackjack,
-        null,
       );
 
     if (BlackjackCommand.checkHandFinalValue(bjDealerCards) === 21)
@@ -148,7 +141,6 @@ export default class BlackjackCommand extends InteractionCommand {
         'init_blackjack',
         false,
         BLACKJACK_PRIZE_MULTIPLIERS.init_blackjack,
-        null,
       );
 
     const res = await BlackjackCommand.makeVangoghRequest(
@@ -181,9 +173,7 @@ export default class BlackjackCommand extends InteractionCommand {
       .setStyle('DANGER')
       .setLabel(ctx.locale('commands:blackjack.stop'));
 
-    const gameMessage = await BlackjackCommand.sendGameMessage(ctx, null, embed, res, [
-      actionRow([BuyButton, StopButton]),
-    ]);
+    await BlackjackCommand.sendGameMessage(ctx, embed, res, [actionRow([BuyButton, StopButton])]);
 
     const collected = await Util.collectComponentInteractionWithStartingId(
       ctx.channel,
@@ -214,7 +204,6 @@ export default class BlackjackCommand extends InteractionCommand {
         cardTheme,
         tableTheme,
         backgroundCardTheme,
-        gameMessage,
       );
 
     return BlackjackCommand.startDealerPlay(
@@ -226,7 +215,6 @@ export default class BlackjackCommand extends InteractionCommand {
       cardTheme,
       tableTheme,
       backgroundCardTheme,
-      gameMessage,
     );
   }
 
@@ -270,7 +258,6 @@ export default class BlackjackCommand extends InteractionCommand {
     finishReason: BlackjackFinishGameReason,
     didUserWin: boolean,
     prizeMultiplier: number,
-    gameMessage: MayNotExists<Message<boolean>>,
   ): Promise<void> {
     const winner = didUserWin ? ctx.author.username : ctx.client.user.username;
     const loser = !didUserWin ? ctx.author.username : ctx.client.user.username;
@@ -305,7 +292,7 @@ export default class BlackjackCommand extends InteractionCommand {
       )
       .setFooter({ text: '' });
 
-    BlackjackCommand.sendGameMessage(ctx, gameMessage, embed, image, []);
+    BlackjackCommand.sendGameMessage(ctx, embed, image, []);
     http.postBlackJack(ctx.author.id, didUserWin, prize);
   }
 
@@ -318,7 +305,6 @@ export default class BlackjackCommand extends InteractionCommand {
     cardTheme: AvailableCardThemes,
     tableTheme: AvailableTableThemes,
     backgroundCardTheme: AvailableCardBackgroundThemes,
-    gameMessage: MayNotExists<Message>,
   ): Promise<void> {
     const newCard = matchCards.shift() as number;
     const playerCards = [...usrCards, newCard];
@@ -358,9 +344,7 @@ export default class BlackjackCommand extends InteractionCommand {
       .setStyle('DANGER')
       .setLabel(ctx.locale('commands:blackjack.stop'));
 
-    gameMessage = await BlackjackCommand.sendGameMessage(ctx, gameMessage, embed, res, [
-      actionRow([BuyButton, StopButton]),
-    ]);
+    await BlackjackCommand.sendGameMessage(ctx, embed, res, [actionRow([BuyButton, StopButton])]);
 
     const collected = await Util.collectComponentInteractionWithStartingId(
       ctx.channel,
@@ -402,7 +386,6 @@ export default class BlackjackCommand extends InteractionCommand {
           'busted',
           false,
           0,
-          gameMessage,
         );
 
       return BlackjackCommand.continueFromBuy(
@@ -414,7 +397,6 @@ export default class BlackjackCommand extends InteractionCommand {
         cardTheme,
         tableTheme,
         backgroundCardTheme,
-        gameMessage,
       );
     }
 
@@ -432,7 +414,6 @@ export default class BlackjackCommand extends InteractionCommand {
         'blackjack',
         true,
         BLACKJACK_PRIZE_MULTIPLIERS.blackjack,
-        gameMessage,
       );
 
     if (userTotal > 21)
@@ -449,7 +430,6 @@ export default class BlackjackCommand extends InteractionCommand {
         'busted',
         false,
         BLACKJACK_PRIZE_MULTIPLIERS.base,
-        gameMessage,
       );
 
     return BlackjackCommand.startDealerPlay(
@@ -461,7 +441,6 @@ export default class BlackjackCommand extends InteractionCommand {
       cardTheme,
       tableTheme,
       backgroundCardTheme,
-      gameMessage,
     );
   }
 
@@ -479,43 +458,20 @@ export default class BlackjackCommand extends InteractionCommand {
 
   static async sendGameMessage(
     ctx: InteractionCommandContext,
-    gameMessage: MayNotExists<Message>,
     embed: MessageEmbed,
     res: IVangoghReturnData,
     components: MessageActionRow[],
-  ): Promise<MayNotExists<Message<boolean>>> {
+  ): Promise<void> {
     const timestamp = Date.now();
 
     if (!res.err) embed.setImage(`attachment://blackjack-${timestamp}.png`);
 
-    return gameMessage
-      ? gameMessage
-          .edit({
-            attachments: [],
-            embeds: [embed],
-            files: res.err ? [] : [new MessageAttachment(res.data, `blackjack-${timestamp}.png`)],
-            components,
-          })
-          .catch(() =>
-            ctx
-              .send({
-                embeds: [embed],
-                attachments: [],
-                fetchReply: true,
-                files: res.err
-                  ? []
-                  : [new MessageAttachment(res.data, `blackjack-${timestamp}.png`)],
-                components,
-              })
-              .catch(debugError),
-          )
-      : ctx.send({
-          embeds: [embed],
-          fetchReply: true,
-          attachments: [],
-          files: res.err ? [] : [new MessageAttachment(res.data, `blackjack-${timestamp}.png`)],
-          components,
-        });
+    ctx.makeMessage({
+      embeds: [embed],
+      attachments: [],
+      files: res.err ? [] : [new MessageAttachment(res.data, `blackjack-${timestamp}.png`)],
+      components,
+    });
   }
 
   static async startDealerPlay(
@@ -527,7 +483,6 @@ export default class BlackjackCommand extends InteractionCommand {
     cardTheme: AvailableCardThemes,
     tableTheme: AvailableTableThemes,
     backgroundCardTheme: AvailableCardBackgroundThemes,
-    gameMessage: MayNotExists<Message>,
   ): Promise<void> {
     const userCards = getBlackjackCards(playerCards);
     const userTotal = BlackjackCommand.checkHandFinalValue(userCards);
@@ -555,7 +510,6 @@ export default class BlackjackCommand extends InteractionCommand {
         'blackjack',
         false,
         BLACKJACK_PRIZE_MULTIPLIERS.blackjack,
-        gameMessage,
       );
 
     if (menheraTotal > 21)
@@ -572,7 +526,6 @@ export default class BlackjackCommand extends InteractionCommand {
         'busted',
         true,
         BLACKJACK_PRIZE_MULTIPLIERS.base,
-        gameMessage,
       );
 
     if (userTotal === menheraTotal)
@@ -589,7 +542,6 @@ export default class BlackjackCommand extends InteractionCommand {
         'draw',
         false,
         BLACKJACK_PRIZE_MULTIPLIERS.base,
-        gameMessage,
       );
 
     if (menheraTotal > userTotal)
@@ -606,7 +558,6 @@ export default class BlackjackCommand extends InteractionCommand {
         'biggest',
         false,
         BLACKJACK_PRIZE_MULTIPLIERS.base,
-        gameMessage,
       );
 
     return BlackjackCommand.finishMatch(
@@ -622,7 +573,6 @@ export default class BlackjackCommand extends InteractionCommand {
       'biggest',
       true,
       BLACKJACK_PRIZE_MULTIPLIERS.base,
-      gameMessage,
     );
   }
 }

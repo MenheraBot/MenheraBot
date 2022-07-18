@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Fixed
 
 - Resolvido problema de adicionar mais de um item de caças como ativo.
+- O comando `/blackjack` voltou a editar a mensagem original ao invés de enviar novas.
 
 ## [4.0.4] - 2022-06-25
 
