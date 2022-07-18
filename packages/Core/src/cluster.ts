@@ -17,7 +17,6 @@ const ClusterManager = new Manager(join(__dirname, './index.js'), {
   mode: 'worker',
   keepAlive: {
     interval: 2000,
-    maxClusterRestarts: 5,
     maxMissedHeartbeats: 5,
   },
 });
