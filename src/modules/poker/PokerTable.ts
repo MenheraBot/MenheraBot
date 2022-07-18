@@ -61,6 +61,10 @@ export default class PokerTable {
     this.makeMainMessage();
   }
 
+  private get playersPlaying(): string[] {
+    return this.idsOrder.filter((id) => !this.tableData.quittedPlayers.includes(id));
+  }
+
   private listenToInteractions(): void {
     this.Collector.on('collect', async (interaction) => {
       const interactionType = resolveCustomId(interaction.customId);
@@ -96,6 +100,18 @@ export default class PokerTable {
       }
 
       if (interactionType === 'EXIT') {
+        if (interaction.user.id === this.tableData.mainInteraction.user.id) {
+          interaction
+            .reply({
+              ephemeral: true,
+              content: getFixedT(interaction.locale)(
+                'commands:poker.match.replies.owner-cant-exit-table',
+              ),
+            })
+            .catch(() => null);
+          return;
+        }
+
         this.tableData.mainInteraction.client.repositories.pokerRepository.removeUserFromPokerMatch(
           interaction.user.id,
         );
@@ -131,21 +147,28 @@ export default class PokerTable {
   private setupTable(): PokerRoundData {
     const cards = [...BLACKJACK_CARDS].sort(() => Math.random() - 0.5);
 
-    const getNextIndex = (afterDealer: number) => {
+    const getNextIndex = (afterDealer: number): number => {
       const index = this.tableData.lastDealerIndex + afterDealer;
-      return index % this.idsOrder.length;
+      const toReturn =
+        index % this.idsOrder.filter((a) => !this.tableData.quittedPlayers.includes(a)).length;
+
+      if (toReturn === this.tableData.lastDealerIndex) {
+        return getNextIndex(afterDealer + 1);
+      }
+
+      return toReturn;
     };
 
     const dealerId = this.idsOrder[getNextIndex(1)];
     const smallBlindId = this.idsOrder[getNextIndex(2)];
-    const bigBlindId = this.idsOrder.length > 2 ? this.idsOrder[getNextIndex(3)] : null;
+    const bigBlindId = this.playersPlaying.length > 2 ? this.idsOrder[getNextIndex(3)] : null;
 
     this.playersData.get(smallBlindId)!.estrelinhas -= this.tableData.blindBet * 0.5;
     if (bigBlindId) this.playersData.get(bigBlindId)!.estrelinhas -= this.tableData.blindBet;
 
     const roundPlayersData = new Map<string, PokerPlayerData>();
 
-    this.idsOrder.forEach((id) => {
+    this.playersPlaying.forEach((id) => {
       const userHand = cards.splice(0, 2);
 
       roundPlayersData.set(id, { hand: userHand, folded: false, allIn: false });
@@ -164,7 +187,7 @@ export default class PokerTable {
       players: roundPlayersData,
       currentAction: 'PRE-FLOP',
       currentPlayer: this.idsOrder[getNextIndex(bigBlindId ? 3 : 2)],
-      lastPlayer: this.idsOrder[getNextIndex(2)],
+      lastPlayer: this.playersPlaying[this.playersPlaying.length - 1],
       currentBet: this.tableData.blindBet,
       pot: this.tableData.blindBet * (bigBlindId ? 1.5 : 0.5),
       lastPlayerToPlay: dealerId,
@@ -354,7 +377,7 @@ export default class PokerTable {
   }
 
   private checkGameCanContinue(): boolean {
-    if (this.idsOrder.length < 2) return true;
+    if (this.playersPlaying.length < 2) return true;
     return false;
 
     // TODO: Make this work, checking user money and amonut of users
@@ -439,8 +462,6 @@ export default class PokerTable {
       a.interaction
         .editReply({
           components: [],
-          embeds: [],
-          attachments: [],
           content: a.prettyResponse(
             'ok',
             'commands:poker.match.control-message.can-close-ephemeral',
@@ -458,6 +479,7 @@ export default class PokerTable {
           reason: this.ctx.locale(`commands:poker.match.win-reasons.${winReason as 'FOLD'}`),
         }),
       )
+      .setColor(this.playersData.get(winners[0])!.selectedColor)
       .setImage(`attachment://poker-${this.ctx.interaction.id}.png`);
 
     this.ctx.makeMessage({
@@ -559,6 +581,7 @@ export default class PokerTable {
             .catch(() => null);
           break;
         }
+
         interaction.deferUpdate().catch(() => null);
         this.changePlayer();
         break;
@@ -576,12 +599,13 @@ export default class PokerTable {
             .catch(() => null);
           break;
         }
+
         if (
           this.roundData.currentBet >
           this.playersData.get(this.roundData.currentPlayer)!.estrelinhas
-        ) {
+        )
           return this.executePlay('ALL-IN', interaction);
-        }
+
         interaction.deferUpdate().catch(() => null);
 
         if (

@@ -982,7 +982,8 @@
         "raise-too-high": "You raised with a bet bigger than your chip stack!",
         "table-close": "What a beautiful game!! This Poker Table has been closed!",
         "not-turn": "Hey, wait a minute! It's **{{user}}** time to play!",
-        "quitted": "You can not do that! You have left the table!"
+        "quitted": "You can not do that! You have left the table!",
+        "owner-cant-exit-table": "The owner cannot leave the table! To end the game, wait for the end of the game!"
       },
       "main-message": {
         "request-control": "Check Hand",

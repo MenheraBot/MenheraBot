@@ -988,7 +988,8 @@
         "raise-too-high": "Tu deu raise com uma aposta maior do que o teu stack de fichas!",
         "table-close": "Lindo jogo! Esta mesa de poker acabou!!",
         "not-turn": "Eii, espere um pouco! Está na hora de **{{user}}** jogar!",
-        "quitted": "Você não pode fazer isso! Você saiu da mesa!"
+        "quitted": "Você não pode fazer isso! Você saiu da mesa!",
+        "owner-cant-exit-table": "O criador da partida não pode sair da mesa! Para terminar a partida, espere o fim do jogo!"
       },
       "main-message": {
         "request-control": "Ver Cartas",
