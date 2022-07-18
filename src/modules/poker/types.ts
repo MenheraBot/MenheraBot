@@ -1,3 +1,8 @@
+import {
+  AvailableCardBackgroundThemes,
+  AvailableCardThemes,
+  IUserSchema,
+} from '@custom_types/Menhera';
 import { CommandInteraction } from 'discord.js-light';
 import MenheraClient from 'MenheraClient';
 
@@ -8,6 +13,7 @@ export type PokerPlayAction = 'FOLD' | 'CHECK' | 'CALL' | 'RAISE' | 'ALL-IN';
 export interface PokerPlayerData {
   hand: number[];
   folded: boolean;
+  allIn: boolean;
 }
 
 export interface PokerRoundData {
@@ -30,6 +36,7 @@ export interface PokerTableData {
   blindBet: number;
   mainInteraction: CommandInteraction & { client: MenheraClient };
   inGame: boolean;
+  quittedPlayers: string[];
 }
 
 export type CARD_SUITE = 'SPADES' | 'HEARTS' | 'DIAMONDS' | 'CLUBS';
@@ -41,3 +48,8 @@ export interface PokerCard {
   suit: CARD_SUITE;
   solverValue: string;
 }
+
+export type PokerUserData = Pick<IUserSchema, 'estrelinhas' | 'selectedColor' | 'id'> & {
+  backgroundTheme: AvailableCardBackgroundThemes;
+  cardTheme: AvailableCardThemes;
+};

@@ -982,13 +982,14 @@
         "raise-too-high": "You raised with a bet bigger than your chip stack!",
         "table-close": "What a beautiful game!! This Poker Table has been closed!",
         "not-turn": "Hey, wait a minute! It's **{{user}}** time to play!",
-        "round-finish": "Game over! Winner: **{{winner}}**. Chips won: **{{chips}}** :star:\nDo you want to continue playing?"
+        "quitted": "You can not do that! You have left the table!"
       },
       "main-message": {
         "request-control": "Check Hand",
         "embed-title": "Poker Table",
         "next-table": "Continue Playing",
         "stop-table": "Stop Playing",
+        "round-finished": "Game over! Winner: **{{winner}}**. Chips won: **{{chips}}** :star:\nDo you want to continue playing?",
         "embed-description": "**Round**: {{action}\n**Dealer**: {{dealer}}\n**Small Blind**: {{smallBlind}}\n**Big Blind**: {{bigBlind}}\n\n**Playing Now**: {{user}}\n**Pot**: {{pot}} :star:\n**In Table**: {{cards}}"
       }
     },

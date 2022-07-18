@@ -11,12 +11,8 @@ import {
 } from 'discord.js-light';
 import PokerTable from '@poker/PokerTable';
 import PokerInteractionContext from '@poker/PokerInteractionContext';
-import {
-  AvailableCardBackgroundThemes,
-  AvailableCardThemes,
-  IUserSchema,
-} from '@custom_types/Menhera';
 import i18next from 'i18next';
+import { PokerUserData } from '@poker/types';
 
 export default class PokerCommand extends InteractionCommand {
   constructor() {
@@ -279,13 +275,7 @@ export default class PokerCommand extends InteractionCommand {
       );
 
       const matchPlayersMap = new Map<string, User>();
-      const usersDataMap = new Map<
-        string,
-        Pick<IUserSchema, 'id' | 'estrelinhas' | 'selectedColor'> & {
-          backgroundTheme: AvailableCardBackgroundThemes;
-          cardTheme: AvailableCardThemes;
-        }
-      >();
+      const usersDataMap = new Map<string, PokerUserData>();
       const acceptedInteractionsMap = new Collection<string, PokerInteractionContext>();
 
       toMatchPlayer

@@ -1,9 +1,4 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import {
-  AvailableCardBackgroundThemes,
-  AvailableCardThemes,
-  IUserSchema,
-} from '@custom_types/Menhera';
 import { BLACKJACK_CARDS, COLORS, emojis } from '@structures/Constants';
 import { actionRow, resolveCustomId, toWritableUTF } from '@utils/Util';
 import { requestVangoghImage, VangoghRoutes } from '@utils/VangoghRequests';
@@ -24,7 +19,13 @@ import MenheraClient from 'MenheraClient';
 import { Hand } from 'pokersolver';
 import PokerInteractionContext from './PokerInteractionContext';
 import { getPokerCard } from './PokerUtils';
-import { PokerPlayAction, PokerPlayerData, PokerRoundData, PokerTableData } from './types';
+import {
+  PokerPlayAction,
+  PokerPlayerData,
+  PokerRoundData,
+  PokerTableData,
+  PokerUserData,
+} from './types';
 
 const getNextPlayerIndex = (ids: string[], current: string) => {
   const index = ids.indexOf(current) + 1;
@@ -44,13 +45,7 @@ export default class PokerTable {
     private ctx: PokerInteractionContext,
     private players: Map<string, User>,
     private idsOrder: string[],
-    private playersData: Map<
-      string,
-      Pick<IUserSchema, 'estrelinhas' | 'selectedColor' | 'id'> & {
-        backgroundTheme: AvailableCardBackgroundThemes;
-        cardTheme: AvailableCardThemes;
-      }
-    >,
+    private playersData: Map<string, PokerUserData>,
     private interactions: Collection<string, PokerInteractionContext>,
   ) {
     this.tableData = {
@@ -58,6 +53,7 @@ export default class PokerTable {
       lastDealerIndex: -1,
       mainInteraction: ctx.interaction as CommandInteraction & { client: MenheraClient },
       blindBet: 1000,
+      quittedPlayers: [],
     };
     this.roundData = this.setupTable();
     this.Collector = this.startCollector();
@@ -107,10 +103,8 @@ export default class PokerTable {
           interaction.user.id,
           this.playersData.get(interaction.user.id)!.estrelinhas,
         );
-        this.players.delete(interaction.user.id);
         this.interactions.delete(interaction.user.id);
-        this.idsOrder.splice(this.idsOrder.indexOf(interaction.user.id), 1);
-        this.playersData.delete(interaction.user.id);
+        this.tableData.quittedPlayers.push(interaction.user.id);
         this.executePlay('FOLD', interaction);
         return;
       }
@@ -146,12 +140,15 @@ export default class PokerTable {
     const smallBlindId = this.idsOrder[getNextIndex(2)];
     const bigBlindId = this.idsOrder.length > 2 ? this.idsOrder[getNextIndex(3)] : null;
 
+    this.playersData.get(smallBlindId)!.estrelinhas -= this.tableData.blindBet * 0.5;
+    if (bigBlindId) this.playersData.get(bigBlindId)!.estrelinhas -= this.tableData.blindBet;
+
     const roundPlayersData = new Map<string, PokerPlayerData>();
 
     this.idsOrder.forEach((id) => {
       const userHand = cards.splice(0, 2);
 
-      roundPlayersData.set(id, { hand: userHand, folded: false });
+      roundPlayersData.set(id, { hand: userHand, folded: false, allIn: false });
     });
 
     this.tableData.lastDealerIndex = getNextIndex(1);
@@ -178,16 +175,26 @@ export default class PokerTable {
     return new InteractionCollector(this.ctx.interaction.client, {
       interactionType: 'MESSAGE_COMPONENT',
       filter: (interaction) => {
-        const didPass =
-          (interaction.customId.startsWith(this.ctx.interaction.id) &&
-            this.idsOrder.includes(interaction.user.id)) ||
+        let didPass =
+          interaction.customId.startsWith(this.ctx.interaction.id) ||
           this.interactions.some((val) => interaction.customId.startsWith(val.interaction.id));
 
         if (!this.idsOrder.includes(interaction.user.id)) {
+          didPass = false;
           interaction
             .reply({
               ephemeral: true,
               content: getFixedT(interaction.locale)('common:not-your-interaction'),
+            })
+            .catch(() => null);
+        }
+
+        if (this.tableData.quittedPlayers.includes(interaction.user.id)) {
+          didPass = false;
+          interaction
+            .reply({
+              ephemeral: true,
+              content: getFixedT(interaction.locale)('commands:poker.match.replies.quitted'),
             })
             .catch(() => null);
         }
@@ -265,13 +272,14 @@ export default class PokerTable {
       theme: this.playersData.get(requestUser)!.cardTheme,
     });
 
-    const timestamp = Date.now();
-    if (!image.err) embed.setImage(`attachment://poker-${timestamp}.png`);
+    if (!image.err) embed.setImage(`attachment://poker-${this.ctx.interaction.id}.png`);
 
     userInteraction.makeMessage({
       ephemeral: true,
       attachments: [],
-      files: image.err ? [] : [new MessageAttachment(image.data, `poker-${timestamp}.png`)],
+      files: image.err
+        ? []
+        : [new MessageAttachment(image.data, `poker-${this.ctx.interaction.id}.png`)],
       embeds: [embed],
       components: [
         actionRow([allInButton, raiseButton, callButton, checkButton, foldButton]),
@@ -332,14 +340,15 @@ export default class PokerTable {
       users: usersDataToVangogh,
     });
 
-    const timestamp = Date.now();
-    if (!image.err) mainEmbed.setImage(`attachment://poker-${timestamp}.png`);
+    if (!image.err) mainEmbed.setImage(`attachment://poker-${this.ctx.interaction.id}.png`);
 
     this.ctx.makeMessage({
       content: null,
       attachments: [],
       embeds: [mainEmbed],
-      files: image.err ? [] : [new MessageAttachment(image.data, `poker-${timestamp}.png`)],
+      files: image.err
+        ? []
+        : [new MessageAttachment(image.data, `poker-${this.ctx.interaction.id}.png`)],
       components: [actionRow([requestControlMessage])],
     });
   }
@@ -354,6 +363,8 @@ export default class PokerTable {
   private async closeTable(): Promise<void> {
     this.Collector.stop();
     this.playersData.forEach((a) => {
+      if (this.tableData.quittedPlayers.includes(a.id)) return;
+
       this.tableData.mainInteraction.client.repositories.starRepository.add(a.id, a.estrelinhas);
       this.tableData.mainInteraction.client.repositories.pokerRepository.removeUserFromPokerMatch(
         a.id,
@@ -438,14 +449,19 @@ export default class PokerTable {
         .catch(() => null),
     );
 
+    const embed = new MessageEmbed()
+      .setTitle(this.ctx.locale('commands:poker.match.main-message.embed-title'))
+      .setDescription(
+        this.ctx.locale('commands:poker.match.main-message.round-finished', {
+          winner: winners.map((winner) => this.players.get(winner)?.username).join(', '),
+          chips: moneyForEach,
+          reason: this.ctx.locale(`commands:poker.match.win-reasons.${winReason as 'FOLD'}`),
+        }),
+      )
+      .setImage(`attachment://poker-${this.ctx.interaction.id}.png`);
+
     this.ctx.makeMessage({
-      content: this.ctx.prettyResponse('wink', 'commands:poker.match.replies.round-finish', {
-        winner: winners.map((winner) => this.players.get(winner)?.username).join(', '),
-        chips: moneyForEach,
-        reason: this.ctx.locale(`commands:poker.match.win-reasons.${winReason as 'FOLD'}`),
-      }),
-      embeds: [],
-      attachments: [],
+      embeds: [embed],
       components: [actionRow([continueButton, stopButton])],
     });
   }
@@ -502,7 +518,10 @@ export default class PokerTable {
 
     do {
       currentPlayer = this.idsOrder[getNextPlayerIndex(this.idsOrder, currentPlayer)];
-    } while (this.roundData.players.get(currentPlayer)!.folded);
+    } while (
+      this.roundData.players.get(currentPlayer)!.folded ||
+      this.tableData.quittedPlayers.includes(currentPlayer)
+    );
 
     this.roundData.currentPlayer = currentPlayer;
 
@@ -597,6 +616,7 @@ export default class PokerTable {
         this.roundData.pot += this.playersData.get(this.roundData.currentPlayer)!.estrelinhas;
         this.roundData.currentBet = this.playersData.get(this.roundData.currentPlayer)!.estrelinhas;
         this.playersData.get(this.roundData.currentPlayer)!.estrelinhas = 0;
+        this.roundData.players.get(this.roundData.currentPlayer)!.allIn = true;
         this.needToBet = true;
         interaction.deferUpdate().catch(() => null);
         this.changePlayer();
@@ -650,7 +670,7 @@ export default class PokerTable {
           return;
         }
 
-        if (polishedNumber > this.playersData.get(this.roundData.currentPlayer)!.estrelinhas) {
+        if (polishedNumber >= this.playersData.get(this.roundData.currentPlayer)!.estrelinhas) {
           result.reply({
             ephemeral: true,
             content: this.ctx.prettyResponse(
