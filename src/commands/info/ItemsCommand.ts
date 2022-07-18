@@ -128,9 +128,9 @@ export default class ItemsCommand extends InteractionCommand {
       .setLabel(ctx.locale('commands:itens.reset'))
       .setStyle('DANGER');
 
-    const canUseItems = !(user.inventory.length === 0 || inventoryWithoutUsingItems.length === 0);
+    const cannotUseItems = user.inventory.length === 0 || inventoryWithoutUsingItems.length === 0;
 
-    if (!canUseItems) useItemButton.setDisabled(true);
+    if (cannotUseItems) useItemButton.setDisabled(true);
     if (user.inUseItems.length === 0) resetItemsButton.setDisabled(true);
 
     await ctx.makeMessage({
@@ -138,13 +138,13 @@ export default class ItemsCommand extends InteractionCommand {
       components: [actionRow([useItemButton, resetItemsButton])],
     });
 
-    if (!canUseItems && user.inUseItems.length === 0) return;
+    if (cannotUseItems && user.inUseItems.length === 0) return;
 
     const collected = await Util.collectComponentInteractionWithStartingId<ButtonInteraction>(
       ctx.channel,
       ctx.author.id,
       ctx.interaction.id,
-      7000,
+      10_000,
     );
 
     if (!collected) {
@@ -192,7 +192,7 @@ export default class ItemsCommand extends InteractionCommand {
         ctx.channel,
         ctx.author.id,
         ctx.interaction.id,
-        7000,
+        10_000,
       );
 
     if (!selectedItem) {
@@ -233,7 +233,7 @@ export default class ItemsCommand extends InteractionCommand {
           ctx.channel,
           ctx.author.id,
           ctx.interaction.id,
-          7000,
+          10_000,
         );
 
       if (!choosedReplace) {
@@ -246,7 +246,7 @@ export default class ItemsCommand extends InteractionCommand {
       const [replaceItemId] = resolveSeparatedStrings(choosedReplace.values[0]);
 
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      user.inUseItems.find((a) => a.id === Number(replaceItemId))!.id = Number(itemId);
+      user.inUseItems.find((i) => i.id === Number(replaceItemId))!.id = Number(itemId);
     }
 
     ctx.makeMessage({
@@ -257,10 +257,7 @@ export default class ItemsCommand extends InteractionCommand {
       }),
     });
 
-    user.inUseItems.push({ id: Number(itemId) });
-
     ctx.client.repositories.userRepository.update(ctx.author.id, {
-      inventory: user.inventory,
       inUseItems: user.inUseItems,
     });
   }
