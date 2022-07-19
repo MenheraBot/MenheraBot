@@ -31,6 +31,7 @@
     ]
   },
   "dependencies": {
-    "discordeno": "^13.0.0-rc45"
+    "discordeno": "^13.0.0-rc45",
+    "dotenv": "^16.0.1"
   }
 }

@@ -6,12 +6,19 @@
   },
   "description": "Gateway manager for Menhera",
   "main": "dist/index.js",
-  "scripts": {},
+  "scripts": {
+    "build": "tsc --project tsconfig.json",
+    "dev": "node -r dotenv/config ."
+  },
   "author": "Luxanna Crownguard (ySnoopyDogy)",
   "dependencies": {
+    "axios": "^0.27.2",
     "net-ipc": "^2.0.1"
   },
   "repository": "https://github.com/MenheraBot/MenheraBot",
   "license": "MIT",
-  "readme": "https://github.com/MenheraBot/MenheraBot#readme"
+  "readme": "https://github.com/MenheraBot/MenheraBot#readme",
+  "devDependencies": {
+    "@types/node": "^18.0.6"
+  }
 }

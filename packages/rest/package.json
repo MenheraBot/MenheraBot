@@ -6,7 +6,10 @@
   },
   "description": "Rest manager for Menhera",
   "main": "dist/index.js",
-  "scripts": {},
+  "scripts": {
+    "build": "tsc --project tsconfig.json",
+    "dev": "node -r dotenv/config ."
+  },
   "author": "Luxanna Crownguard (ySnoopyDogy)",
   "dependencies": {
     "net-ipc": "^2.0.1"

@@ -1,5 +1,11 @@
 export default () => {
-  const { DISCORD_TOKEN, REST_AUTHORIZATION } = process.env;
+  const {
+    DISCORD_TOKEN,
+    REST_AUTHORIZATION,
+    EVENT_HANDLER_PORT,
+    EVENT_HANDLER_SECRET_KEY,
+    EVENT_HANDLER_URL,
+  } = process.env;
 
   if (!DISCORD_TOKEN) {
     throw new Error('DISCORD_TOKEN is not defined');
@@ -8,5 +14,24 @@ export default () => {
   if (!REST_AUTHORIZATION) {
     throw new Error('REST_AUTHORIZATION is not defined');
   }
-  return { DISCORD_TOKEN, REST_AUTHORIZATION };
+
+  if (!EVENT_HANDLER_PORT) {
+    throw new Error('EVENT_HANDLER_PORT is not defined');
+  }
+
+  if (!EVENT_HANDLER_SECRET_KEY) {
+    throw new Error('EVENT_HANDLER_SECRET_KEY is not defined');
+  }
+
+  if (!EVENT_HANDLER_URL) {
+    throw new Error('EVENT_HANDLER_URL is not defined');
+  }
+
+  return {
+    DISCORD_TOKEN,
+    REST_AUTHORIZATION,
+    EVENT_HANDLER_PORT,
+    EVENT_HANDLER_SECRET_KEY,
+    EVENT_HANDLER_URL,
+  };
 };
