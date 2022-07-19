@@ -12,8 +12,6 @@
   },
   "author": "Luxanna Crownguard (ySnoopyDogy)",
   "dependencies": {
-    "axios": "^0.27.2",
-    "discordeno": "^13.0.0-rc45",
     "net-ipc": "^2.0.1"
   },
   "repository": "https://github.com/MenheraBot/MenheraBot",

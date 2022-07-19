@@ -7,6 +7,7 @@
     "core": "yarn workspace @menhera-bot/core",
     "rest": "yarn workspace @menhera-bot/rest",
     "gateway": "yarn workspace @menhera-bot/gateway",
+    "events": "yarn workspace @menhera-bot/events",
     "lint": "yarn workspace @menhera-bot/eslint-config",
     "run:lint": "eslint --fix ."
   },
@@ -31,6 +32,7 @@
     ]
   },
   "dependencies": {
+    "discordeno": "^13.0.0-rc45",
     "dotenv": "^16.0.1"
   }
 }

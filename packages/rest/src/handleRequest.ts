@@ -2,12 +2,11 @@ import { BASE_URL, createRestManager } from 'discordeno';
 import { IpcRequest } from 'types';
 import config from './config';
 
-const { DISCORD_TOKEN, REST_AUTHORIZATION, REST_PORT } = config();
+const { DISCORD_TOKEN, REST_AUTHORIZATION } = config();
 
 const rest = createRestManager({
   token: DISCORD_TOKEN,
   secretKey: REST_AUTHORIZATION,
-  customUrl: `http://localhost:${REST_PORT}`,
 });
 
 export default async (data: IpcRequest) => {
@@ -25,16 +24,8 @@ export default async (data: IpcRequest) => {
     data.method,
     `${BASE_URL}/v${rest.version}/${data.url}`,
     data.body,
+    data.options,
   );
 
-  if (result) {
-    return {
-      status: 200,
-      body: result,
-    };
-  }
-
-  return {
-    status: 204,
-  };
+  return result;
 };

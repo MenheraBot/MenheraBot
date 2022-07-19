@@ -1,15 +1,15 @@
 import { createGatewayManager, GatewayManager, GetGatewayBot, Intents } from 'discordeno';
-import axios from 'axios';
 import { parentPort } from 'worker_threads';
 import config from './config';
 
-const { DISCORD_TOKEN, EVENT_HANDLER_PORT, EVENT_HANDLER_URL, EVENT_HANDLER_SECRET_KEY } = config();
+const { DISCORD_TOKEN } = config();
 
 let gateway: GatewayManager;
 const log = { info: console.log, debug: console.log, error: console.error };
 
 const spawnGateway = (shardId: number, options: Partial<GatewayManager>) => {
-  log.info(`Spawning the worker gateway for shard #${shardId}\n`, options);
+  log.info(`Spawning the worker gateway for shard #${shardId}\n`);
+
   gateway = createGatewayManager({
     gatewayConfig: {
       token: DISCORD_TOKEN,
@@ -43,24 +43,9 @@ const spawnGateway = (shardId: number, options: Partial<GatewayManager>) => {
       // DONT SEND THESE EVENTS USELESS TO BOT
       if (['GUILD_LOADED_DD'].includes(data.t)) return;
 
-      // Debug mode only
-      log.debug(`New Event:\n`, data);
-
-      await axios
-        .post(
-          `http://${EVENT_HANDLER_URL}:${EVENT_HANDLER_PORT}`,
-          {
-            shardId,
-            data,
-          },
-          {
-            headers: {
-              Authorization: EVENT_HANDLER_SECRET_KEY,
-              'Content-Type': 'application/json',
-            },
-          },
-        )
-        .catch((err) => log.error('Error Sending Event:\n', err));
+      parentPort?.postMessage(
+        JSON.stringify({ type: 'BROADCAST_EVENT', data: { shardId: shard.id, data } }),
+      );
     },
   });
 
@@ -92,8 +77,6 @@ interface IdentifyPayload {
 
 parentPort?.on('message', (message) => {
   const data = JSON.parse(message) as IdentifyPayload;
-
-  console.log(data);
 
   if (data.type === 'IDENTIFY') {
     gateway = spawnGateway(data.shardId, {

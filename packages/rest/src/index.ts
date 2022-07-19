@@ -27,4 +27,9 @@ server.on('request', async (req: IpcRequest, res) => {
   res(await handleRequest(req));
 });
 
-server.start();
+const panic = (err: Error) => {
+  console.error(err);
+  process.exit(1);
+};
+
+server.start().catch(panic);

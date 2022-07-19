@@ -1,10 +1,10 @@
 {
-  "name": "@menhera-bot/rest",
+  "name": "@menhera-bot/events",
   "version": "1.0.0",
   "engines": {
     "node": "~16.10.0"
   },
-  "description": "Rest manager for Menhera",
+  "description": "Events manager for Menhera",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc --project tsconfig.json",
