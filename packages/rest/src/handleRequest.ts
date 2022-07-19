@@ -19,13 +19,20 @@ export default async (data: IpcRequest) => {
     };
   }
 
-  const result = await rest.runMethod(
-    rest,
-    data.method,
-    `${BASE_URL}/v${rest.version}/${data.url}`,
-    data.body,
-    data.options,
-  );
+  console.log(data.body);
+
+  const result = await rest
+    .runMethod(
+      rest,
+      data.method,
+      `${BASE_URL}/v${rest.version}/${data.url}`,
+      data.body,
+      data.options,
+    )
+    .catch((e) => {
+      console.log(e.message);
+      return { status: 500, body: { error: e.message } };
+    });
 
   return result;
 };

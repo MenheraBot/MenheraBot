@@ -6,10 +6,12 @@ import {
   RestManager,
 } from 'discordeno';
 import { Client } from 'net-ipc';
-import runMethod, { RequestMethod } from './runMethod';
-import config from './config';
+import { setGuildCommands } from './commands';
+import { getEnviroments } from './config';
+import { RequestMethod, runMethod } from './internals/rest/runMethod';
+import { setupEventHandlers } from './events/index';
 
-const { DISCORD_TOKEN, REST_AUTHORIZATION, REST_SOCKET_PATH, EVENT_SOCKET_PATH } = config();
+const { DISCORD_TOKEN, REST_AUTHORIZATION, REST_SOCKET_PATH, EVENT_SOCKET_PATH } = getEnviroments();
 
 const client = new Client({ path: REST_SOCKET_PATH });
 const eventClient = new Client({ path: EVENT_SOCKET_PATH });
@@ -43,13 +45,15 @@ eventClient.connect().catch(panic);
 const bot = createBot({
   token: DISCORD_TOKEN,
   secretKey: REST_AUTHORIZATION,
+  events: {},
   intents: Intents.Guilds,
 });
+
+setupEventHandlers();
 
 bot.rest = createRestManager({
   token: DISCORD_TOKEN,
   secretKey: REST_AUTHORIZATION,
-  debug: console.log,
   runMethod: async (
     rest: RestManager,
     method: RequestMethod,
@@ -73,11 +77,13 @@ eventClient.on('message', async (msg) => {
 
   if (json.data.t && json.data.t !== 'RESUMED') {
     // When a guild or something isn't in cache this will fetch it before doing anything else
-    if (!['READY', 'GUILD_LOADED_DD'].includes(json.data.t))
+    if (!['READY', 'GUILD_LOADED_DD'].includes(json.data.t)) {
       await bot.events.dispatchRequirements(bot, json.data, json.shardId);
+      await setGuildCommands(bot, json.data);
+    }
 
     bot.handlers[json.data.t]?.(bot, json.data, json.shardId);
   }
 });
 
-export default bot;
+export { bot };

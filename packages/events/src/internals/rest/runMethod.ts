@@ -4,7 +4,7 @@ import { Client } from 'net-ipc';
 export type RequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default async function runMethod<T = any>(
+const runMethod = async <T = any>(
   client: Client,
   rest: RestManager,
   method: RequestMethod,
@@ -15,7 +15,7 @@ export default async function runMethod<T = any>(
     bucketId?: string;
     headers?: Record<string, string>;
   },
-): Promise<T> {
+): Promise<T> => {
   rest.debug(
     `[REST - RequestCreate] Method: ${method} | URL: ${route} | Retry Count: ${
       options?.retryCount ?? 0
@@ -34,4 +34,6 @@ export default async function runMethod<T = any>(
   });
 
   return response;
-}
+};
+
+export { runMethod };

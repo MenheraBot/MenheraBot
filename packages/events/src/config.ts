@@ -1,4 +1,4 @@
-export default () => {
+const getEnviroments = () => {
   const { REST_SOCKET_PATH, DISCORD_TOKEN, REST_AUTHORIZATION, EVENT_SOCKET_PATH } = process.env;
 
   if (!REST_SOCKET_PATH) {
@@ -19,3 +19,5 @@ export default () => {
 
   return { REST_SOCKET_PATH, DISCORD_TOKEN, REST_AUTHORIZATION, EVENT_SOCKET_PATH };
 };
+
+export { getEnviroments };
