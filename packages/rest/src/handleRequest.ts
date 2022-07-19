@@ -22,8 +22,8 @@ export default async (data: IpcRequest) => {
 
   const result = await rest.runMethod(
     rest,
-    data.method as any,
-    `${BASE_URL}/v${rest.version}${data.url.substring(rest.customUrl.length)}`,
+    data.method,
+    `${BASE_URL}/v${rest.version}/${data.url}`,
     data.body,
   );
 

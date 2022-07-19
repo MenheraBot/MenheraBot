@@ -1,15 +1,16 @@
+import { createGatewayManager, GatewayManager, GetGatewayBot, Intents } from 'discordeno';
+import axios from 'axios';
+import { parentPort } from 'worker_threads';
 import config from './config';
 
 const { DISCORD_TOKEN, EVENT_HANDLER_PORT, EVENT_HANDLER_URL, EVENT_HANDLER_SECRET_KEY } = config();
-import { createGatewayManager, GatewayManager, GetGatewayBot, Intents } from 'discordeno';
-import axios from 'axios';
+
 let gateway: GatewayManager;
 const log = { info: console.log, debug: console.log, error: console.error };
 
-function spawnGateway(shardId: number, options: Partial<GatewayManager>) {
+const spawnGateway = (shardId: number, options: Partial<GatewayManager>) => {
   log.info(`Spawning the worker gateway for shard #${shardId}\n`, options);
   gateway = createGatewayManager({
-    // LOAD DATA FROM DISCORDS RECOMMENDATIONS OR YOUR OWN CUSTOM ONES HERE
     gatewayConfig: {
       token: DISCORD_TOKEN,
       intents: Intents.Guilds,
@@ -17,7 +18,7 @@ function spawnGateway(shardId: number, options: Partial<GatewayManager>) {
     gatewayBot: options.gatewayBot as GetGatewayBot,
     firstShardId: shardId,
     lastShardId: options.lastShardId ?? shardId,
-    handleDiscordPayload: async function (shard, data) {
+    async handleDiscordPayload(shard, data) {
       // TRIGGER RAW EVENT
       if (!data.t) return;
 
@@ -31,8 +32,7 @@ function spawnGateway(shardId: number, options: Partial<GatewayManager>) {
         log.info(`Shard online`);
 
         if (shardId === gateway.lastShardId) {
-          // @ts-ignore
-          postMessage(
+          parentPort?.postMessage(
             JSON.stringify({
               type: 'ALL_SHARDS_READY',
             }),
@@ -68,7 +68,7 @@ function spawnGateway(shardId: number, options: Partial<GatewayManager>) {
   gateway.spawnShards();
 
   return gateway;
-}
+};
 
 interface IdentifyPayload {
   type: 'IDENTIFY';
@@ -90,17 +90,19 @@ interface IdentifyPayload {
   workerId: number;
 }
 
-// @ts-ignore this should not be erroring
-self.onmessage = async function (message: MessageEvent<string>) {
-  log.debug(`New Message:\n`, message.data);
+parentPort?.on('message', (message) => {
+  const data = JSON.parse(message) as IdentifyPayload;
 
-  const data = JSON.parse(message.data) as IdentifyPayload;
+  console.log(data);
 
   if (data.type === 'IDENTIFY') {
     gateway = spawnGateway(data.shardId, {
       firstShardId: data.shardId,
       lastShardId: data.lastShardId ?? data.shardId,
       spawnShardDelay: 5000,
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore akskadk
+      gatewayBot: data.gatewayBot,
     });
   }
-};
+});

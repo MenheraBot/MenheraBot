@@ -27,6 +27,7 @@ module.exports = {
     'default-case': 'off',
     'no-plusplus': 'off',
     'max-len': 'off',
+    'import/no-extraneous-dependencies': 'off',
     'import/no-unresolved': 0,
     'no-warning-comments': 'warn',
     'no-underscore-dangle': ['error', { allow: ['_id'] }],

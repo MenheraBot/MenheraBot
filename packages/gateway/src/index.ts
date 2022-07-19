@@ -1,60 +1,68 @@
 import { Client } from 'net-ipc';
 import { Collection, createGatewayManager, Intents, routes } from 'discordeno';
 
-import { Worker } from 'cluster';
+import { Worker } from 'worker_threads';
 
 import config from './config';
 import restRequest from './restRequest';
 
-const { DISCORD_TOKEN, REST_AUTHORIZATION } = config();
+const { DISCORD_TOKEN, REST_AUTHORIZATION, REST_SOCKET_PATH } = config();
 
-const client = new Client({ path: '/run/menhera.sock' });
-client.connect().catch(console.error);
+const client = new Client({ path: REST_SOCKET_PATH });
 
-const results = restRequest(client, {
-  Authorization: REST_AUTHORIZATION,
-  body: undefined,
-  method: 'GET',
-  url: routes.GATEWAY_BOT(),
-}).then((res) => ({
-  url: res.url,
-  shards: res.shards,
-  sessionStartLimit: {
-    total: res.session_start_limit.total,
-    remaining: res.session_start_limit.remaining,
-    resetAfter: res.session_start_limit.reset_after,
-    maxConcurrency: res.session_start_limit.max_concurrency,
-  },
-}));
-
-const gateway = createGatewayManager({
-  gatewayBot: results.then((res) => res) as any,
-  gatewayConfig: {
-    token: DISCORD_TOKEN,
-    intents: Intents.Guilds,
-  },
-  // THIS WILL BASICALLY BE YOUR HANDLER FOR YOUR EVENTS.
-  handleDiscordPayload: async (shard, data) => {
-    console.log(shard, data);
-  },
+client.on('close', () => {
+  console.log('[GATEWAY] REST Client closed');
+  process.exit(1);
 });
+
+client.connect().catch(console.error);
 
 const workers = new Collection<number, Worker>();
 
 async function startGateway() {
+  const results = await restRequest(client, {
+    Authorization: REST_AUTHORIZATION,
+    body: undefined,
+    method: 'GET',
+    url: routes.GATEWAY_BOT(),
+  }).then((res) => ({
+    url: res.body.url,
+    shards: res.body.shards,
+    sessionStartLimit: {
+      total: res.body.session_start_limit.total,
+      remaining: res.body.session_start_limit.remaining,
+      resetAfter: res.body.session_start_limit.reset_after,
+      maxConcurrency: res.body.session_start_limit.max_concurrency,
+    },
+  }));
+
+  const gateway = createGatewayManager({
+    gatewayBot: results,
+    gatewayConfig: {
+      token: DISCORD_TOKEN,
+      intents: Intents.Guilds,
+    },
+    // THIS WILL BASICALLY BE YOUR HANDLER FOR YOUR EVENTS.
+    handleDiscordPayload: async (shard, data) => {
+      console.log(shard, data);
+    },
+  });
+
   gateway.prepareBuckets();
 
-  function startWorker(
+  const startWorker = async (
     workerId: number,
-    bucketId: number,
+
     firstShardId: number,
     lastShardId: number,
-  ) {
+    bucketId: number,
+  ) => {
     const worker = workers.get(workerId);
     if (!worker) return;
 
-    // TRIGGER IDENTIFY IN WORKER
-    /*  worker.postMessage(
+    console.log('aaa', bucketId);
+
+    worker.postMessage(
       JSON.stringify({
         type: 'IDENTIFY',
         shardId: firstShardId,
@@ -63,35 +71,40 @@ async function startGateway() {
         sessionStartLimitRemaining: results.sessionStartLimit.remaining,
         sessionStartLimitResetAfter: results.sessionStartLimit.resetAfter,
         maxConcurrency: results.sessionStartLimit.maxConcurrency,
-        lastShardId: lastShardId,
+        lastShardId,
         workerId,
+        gatewayBot: gateway.gatewayBot,
       }),
-    ); */
-  }
+    );
+  };
 
   gateway.buckets.forEach((bucket, bucketId) => {
     for (let i = 0; i < bucket.workers.length; i++) {
       const workerId = bucket.workers[i].id;
-      const worker = new Worker();
+      const worker = new Worker('./dist/worker.js', { env: process.env });
 
       workers.set(workerId, worker);
 
       if (bucket.workers[i + 1]) {
-        /* worker.onmessage = function (message: { data: string }) {
-          const data = JSON.parse(message.data);
+        worker.on('message', (msg) => {
+          const data = JSON.parse(msg.data);
           if (data.type === 'ALL_SHARDS_READY') {
             const queue = bucket.workers[i + 1];
             if (queue) {
-              startWorker(queue.id, bucketId, queue.id, queue.queue[queue.queue.length - 1]);
+              startWorker(queue.id, queue.id, queue.queue[queue.queue.length - 1], bucketId);
             }
           }
-        }; */
+        });
       }
     }
 
     const queue = bucket.workers[0];
-    startWorker(queue.id, bucketId, queue.id, queue.queue[queue.queue.length - 1]);
+    startWorker(queue.id, queue.id, queue.queue[queue.queue.length - 1], bucketId);
   });
 }
 
-startGateway();
+client.on('ready', () => {
+  console.log('[GATEWAY] IPC connected');
+
+  startGateway();
+});

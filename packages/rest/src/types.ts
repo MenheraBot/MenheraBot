@@ -1,6 +1,6 @@
 export interface IpcRequest {
   Authorization: string;
   url: string;
-  body: any;
+  body: unknown;
   method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 }

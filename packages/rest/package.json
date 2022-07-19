@@ -8,10 +8,11 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc --project tsconfig.json",
-    "dev": "node -r dotenv/config ."
+    "dev": "node --no-warnings -r dotenv/config ."
   },
   "author": "Luxanna Crownguard (ySnoopyDogy)",
   "dependencies": {
+    "discordeno": "^13.0.0-rc45",
     "net-ipc": "^2.0.1"
   },
   "repository": "https://github.com/MenheraBot/MenheraBot",
