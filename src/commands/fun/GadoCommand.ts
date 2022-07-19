@@ -35,6 +35,8 @@ export default class GadoCommand extends InteractionCommand {
       size: 512,
     });
 
+    await ctx.defer();
+
     const res = await requestVangoghImage(VangoghRoutes.Gado, { image: link });
 
     if (res.err) {

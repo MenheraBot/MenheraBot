@@ -32,6 +32,8 @@ export default class PhiloCommand extends InteractionCommand {
   async run(ctx: InteractionCommandContext): Promise<void> {
     const text = ctx.options.getString('frase', true);
 
+    await ctx.defer();
+
     const res = await requestVangoghImage(VangoghRoutes.Philo, { text: toWritableUTF(text) });
 
     if (res.err) {

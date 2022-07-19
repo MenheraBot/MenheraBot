@@ -31,6 +31,8 @@ export default class MacetavaCommand extends InteractionCommand {
       size: 512,
     });
 
+    await ctx.defer();
+
     const res = await requestVangoghImage(VangoghRoutes.Macetava, {
       image: link,
       authorName: toWritableUTF(ctx.author.username),

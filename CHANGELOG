@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [4.1.0] - 2022-07-18
+
+### Added
+
+- O comando `/trisal` foi dividido em 4 subcomandos:
+
+  - `/trisal ver` - Veja o trisal de alguém
+  - `/trisal formar` - Forme um trisal com mais 2 amigos
+  - `/trisal terminar` - Termine o seu trisal atual
+  - `/trisal ordem` - Altere a ordem em que as metadinhas aparecem no comando `/trisal ver`
+
+- Comandos que usam manipulação de imagem agora retornam uma respota rápida falando que a Menhera está pensando.
+
 ## [4.0.5] - 2022-07-18
 
 ### Fixed

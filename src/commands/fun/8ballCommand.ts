@@ -29,6 +29,8 @@ export default class EightballCommand extends InteractionCommand {
   async run(ctx: InteractionCommandContext): Promise<void> {
     const randomAnswer = EightBallAnswers[Math.floor(Math.random() * EightBallAnswers.length)];
 
+    await ctx.defer();
+
     const res = await requestVangoghImage(VangoghRoutes.EightBall, {
       question: ctx.options.getString('pergunta', true),
       answer: ctx.locale(`commands:8ball.answers.${randomAnswer.id as 1}`),
