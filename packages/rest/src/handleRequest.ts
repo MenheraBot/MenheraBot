@@ -19,8 +19,6 @@ export default async (data: IpcRequest) => {
     };
   }
 
-  console.log(data.body);
-
   const result = await rest
     .runMethod(
       rest,

@@ -3,6 +3,8 @@ import { Collection, createGatewayManager, Intents, routes } from 'discordeno';
 
 import { Worker } from 'worker_threads';
 
+import os from 'node:os';
+
 import config from './config';
 import restRequest from './restRequest';
 
@@ -47,49 +49,46 @@ async function startGateway() {
     },
   }));
 
+  const workersAmount = os.cpus().length;
+  const totalShards = results.shards;
+
   const gateway = createGatewayManager({
     gatewayBot: results,
     gatewayConfig: {
       token: DISCORD_TOKEN,
       intents: Intents.Guilds,
     },
-    // THIS WILL BASICALLY BE YOUR HANDLER FOR YOUR EVENTS.
-    handleDiscordPayload: async (shard, data) => {
-      console.log('owo there is data here', shard.id, data.t);
-    },
+    totalShards,
+    shardsPerWorker: Math.ceil(totalShards / workersAmount),
+    totalWorkers: workersAmount,
+    handleDiscordPayload: () => null,
   });
 
   gateway.prepareBuckets();
 
-  const startWorker = async (
-    workerId: number,
-
-    firstShardId: number,
-    lastShardId: number,
-    bucketId: number,
-  ) => {
+  const startWorker = async (workerId: number, firstShardId: number, lastShardId: number) => {
     const worker = workers.get(workerId);
     if (!worker) return;
-
-    console.log(bucketId);
 
     worker.postMessage(
       JSON.stringify({
         type: 'IDENTIFY',
-        shardId: firstShardId,
-        shardsRecommended: results.shards,
-        sessionStartLimitTotal: results.sessionStartLimit.total,
-        sessionStartLimitRemaining: results.sessionStartLimit.remaining,
-        sessionStartLimitResetAfter: results.sessionStartLimit.resetAfter,
-        maxConcurrency: results.sessionStartLimit.maxConcurrency,
+        firstShardId,
         lastShardId,
+        totalShards,
         workerId,
-        gatewayBot: gateway.gatewayBot,
+        gatewayBot: {
+          ...gateway.gatewayBot,
+          sessionStartLimit: {
+            ...gateway.gatewayBot.sessionStartLimit,
+            maxConcurrency: 1,
+          },
+        },
       }),
     );
   };
 
-  gateway.buckets.forEach((bucket, bucketId) => {
+  gateway.buckets.forEach((bucket) => {
     for (let i = 0; i < bucket.workers.length; i++) {
       const workerId = bucket.workers[i].id;
       const worker = new Worker('./dist/worker.js', { env: process.env });
@@ -109,7 +108,8 @@ async function startGateway() {
           if (data.type === 'ALL_SHARDS_READY') {
             const queue = bucket.workers[i + 1];
             if (queue) {
-              startWorker(queue.id, queue.id, queue.queue[queue.queue.length - 1], bucketId);
+              console.log(`[GATEWAY] Starting worker ${queue.id}`);
+              startWorker(queue.id, queue.queue[0], queue.queue[queue.queue.length - 1]);
             }
           }
         });
@@ -117,7 +117,8 @@ async function startGateway() {
     }
 
     const queue = bucket.workers[0];
-    startWorker(queue.id, queue.id, queue.queue[queue.queue.length - 1], bucketId);
+    console.log(`[GATEWAY] Starting worker ${queue.id}`);
+    startWorker(queue.id, queue.queue[0], queue.queue[queue.queue.length - 1]);
   });
 }
 
