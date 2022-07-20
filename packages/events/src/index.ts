@@ -4,8 +4,8 @@ import {
   setupInternals,
   setupMenheraClient,
 } from 'structures/MenheraClient';
-import { createIpcConnections } from 'structures/IpcConnections';
-import { MenheraClient } from 'types/menhera';
+import { createIpcConnections } from './structures/IpcConnections';
+import { MenheraClient } from './types/menhera';
 import { getEnviroments } from './config';
 import { setupEventHandlers } from './events/index';
 

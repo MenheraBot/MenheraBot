@@ -1,5 +1,6 @@
 import { DiscordGatewayPayload } from 'discordeno/types';
 import { Client } from 'net-ipc';
+import { logger } from 'utils/logger';
 import { bot } from '../index';
 import { getEnviroments } from '../config';
 
@@ -13,25 +14,25 @@ const createIpcConnections = () => {
   const eventClient = new Client({ path: EVENT_SOCKET_PATH });
 
   eventClient.on('close', () => {
-    console.log('[EVENT] Gateway Client closed');
+    logger.info('[EVENT] Gateway Client closed');
     process.exit(1);
   });
 
   eventClient.on('ready', () => {
-    console.log('[EVENT] Gateway IPC connected');
+    logger.info('[EVENT] Gateway IPC connected');
   });
 
   client.on('close', () => {
-    console.log('[EVENT] REST Client closed');
+    logger.info('[EVENT] REST Client closed');
     process.exit(1);
   });
 
   client.on('ready', () => {
-    console.log('[EVENT] REST IPC connected');
+    logger.info('[EVENT] REST IPC connected');
   });
 
   const panic = (err: Error) => {
-    console.error(err);
+    logger.error(err);
     process.exit(1);
   };
 

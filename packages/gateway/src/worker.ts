@@ -11,6 +11,7 @@ import config from './config';
 const { DISCORD_TOKEN } = config(['DISCORD_TOKEN']);
 
 let gateway: GatewayManager;
+// eslint-disable-next-line no-console
 const log = { info: console.log, debug: console.log, error: console.error };
 
 const spawnGateway = (options: Partial<CreateGatewayManager>) => {

@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { Client, Server } from 'net-ipc';
 import { Collection, createGatewayManager, Intents, routes } from 'discordeno';
 

@@ -19,7 +19,6 @@ module.exports = {
   plugins: ['import', 'prettier'],
   rules: {
     'prettier/prettier': 'error',
-    'no-console': 'off',
     'consistent-return': 'off',
     'class-methods-use-this': ['error', { exceptMethods: ['run'] }],
     'no-param-reassign': ['error', { props: false }],

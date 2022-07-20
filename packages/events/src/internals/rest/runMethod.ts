@@ -1,5 +1,6 @@
 import { RestManager } from 'discordeno';
 import { Client } from 'net-ipc';
+import { logger } from 'utils/logger';
 
 export type RequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 
@@ -24,7 +25,7 @@ const runMethod = async <T = any>(
     options,
   });
 
-  if (response.statusCode >= 400) console.error(`[${response.status}] - ${response.error}`);
+  if (response.statusCode >= 400) logger.error(`[${response.status}] - ${response.error}`);
 
   return response;
 };

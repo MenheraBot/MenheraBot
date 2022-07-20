@@ -2,6 +2,7 @@ import { readdirSync } from 'node:fs';
 import path from 'node:path';
 import i18next from 'i18next';
 import translationBackend from 'i18next-fs-backend';
+import { logger } from 'utils/logger';
 
 const loadLocales = (): void => {
   const namespaces = readdirSync(path.resolve(__dirname, '..', '..', 'locales', 'pt-BR')).map((a) =>
@@ -24,10 +25,10 @@ const loadLocales = (): void => {
       returnEmptyString: false,
     })
     .then(() => {
-      console.log('[LOCALES] Locales loaded!');
+      logger.info('[LOCALES] Locales loaded!');
     })
     .catch((e) => {
-      console.log(`[LOCALES] Locales failed on loading: ${e.message}`);
+      logger.info(`[LOCALES] Locales failed on loading: ${e.message}`);
     });
 };
 

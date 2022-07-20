@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/node';
 import '@sentry/tracing';
-import { getEnviroments } from 'config';
+import { getEnviroments } from '../config';
 
 const initializeSentry = () => {
   const { SENTRY_DNS } = getEnviroments(['SENTRY_DNS']);

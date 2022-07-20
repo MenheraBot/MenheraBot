@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { Server } from 'net-ipc';
 import { IpcRequest } from 'types';
 import handleRequest from './handleRequest';
