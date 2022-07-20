@@ -1,10 +1,10 @@
-import { getEnviroments } from 'config';
 import { Bot, createRestManager } from 'discordeno';
-import { runMethod } from 'internals/rest/runMethod';
 import { Client } from 'net-ipc';
-import { loadLocales } from 'structures/LocalteStructure';
-import { initializeSentry } from 'structures/Sentry';
-import { MenheraClient } from './types/menhera';
+import { runMethod } from '../internals/rest/runMethod';
+import { loadLocales } from './LocalteStructure';
+import { initializeSentry } from './Sentry';
+import { getEnviroments } from '../config';
+import { MenheraClient } from '../types/menhera';
 
 const setupMenheraClient = (client: MenheraClient) => {
   client.commands = new Map();

@@ -1,5 +1,9 @@
 import { createBot, Intents } from 'discordeno';
-import { initializeThirdParties, setupInternals, setupMenheraClient } from 'MenheraClient';
+import {
+  initializeThirdParties,
+  setupInternals,
+  setupMenheraClient,
+} from 'structures/MenheraClient';
 import { createIpcConnections } from 'structures/IpcConnections';
 import { MenheraClient } from 'types/menhera';
 import { getEnviroments } from './config';

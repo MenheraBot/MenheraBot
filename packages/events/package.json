@@ -14,9 +14,14 @@
   "dependencies": {
     "@sentry/node": "^7.7.0",
     "@sentry/tracing": "^7.7.0",
+    "i18next": "^21.8.14",
+    "i18next-fs-backend": "^1.1.4",
     "net-ipc": "^2.0.1"
   },
   "repository": "https://github.com/MenheraBot/MenheraBot",
   "license": "MIT",
-  "readme": "https://github.com/MenheraBot/MenheraBot#readme"
+  "readme": "https://github.com/MenheraBot/MenheraBot#readme",
+  "devDependencies": {
+    "@types/i18next-fs-backend": "^1.1.2"
+  }
 }

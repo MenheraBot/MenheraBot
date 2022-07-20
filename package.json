@@ -21,15 +21,15 @@
   "bugs": {
     "url": "https://github.com/MenheraBot/MenheraBot/issues"
   },
-  "homepage": "https://github.com/MenheraBot/MenheraBot#readme",
-  "devDependencies": {
-    "typescript": "^4.6.4"
-  },
   "workspaces": {
     "hoistDependencies": true,
     "packages": [
       "packages/*"
     ]
+  },
+  "homepage": "https://github.com/MenheraBot/MenheraBot#readme",
+  "devDependencies": {
+    "typescript": "^4.6.4"
   },
   "dependencies": {
     "discordeno": "^13.0.0-rc45",
