@@ -8,7 +8,7 @@ import {
 import { parentPort } from 'worker_threads';
 import config from './config';
 
-const { DISCORD_TOKEN } = config();
+const { DISCORD_TOKEN } = config(['DISCORD_TOKEN']);
 
 let gateway: GatewayManager;
 const log = { info: console.log, debug: console.log, error: console.error };

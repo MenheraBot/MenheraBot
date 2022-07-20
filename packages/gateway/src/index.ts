@@ -8,7 +8,12 @@ import os from 'node:os';
 import config from './config';
 import restRequest from './restRequest';
 
-const { DISCORD_TOKEN, REST_AUTHORIZATION, REST_SOCKET_PATH, EVENT_HANDLER_SOCKET_PATH } = config();
+const { DISCORD_TOKEN, REST_AUTHORIZATION, REST_SOCKET_PATH, EVENT_HANDLER_SOCKET_PATH } = config([
+  'DISCORD_TOKEN',
+  'REST_AUTHORIZATION',
+  'REST_SOCKET_PATH',
+  'EVENT_HANDLER_SOCKET_PATH',
+]);
 
 const client = new Client({ path: REST_SOCKET_PATH });
 const server = new Server({ path: EVENT_HANDLER_SOCKET_PATH });

@@ -1,27 +1,15 @@
-export default () => {
-  const { DISCORD_TOKEN, REST_AUTHORIZATION, EVENT_HANDLER_SOCKET_PATH, REST_SOCKET_PATH } =
-    process.env;
+const getEnviroments = <Key extends string>(variables: Key[]): Record<Key, string> => {
+  const fromEnv = variables.reduce<Record<Key, string>>((envs, key) => {
+    const val = process.env[key] as string | undefined;
 
-  if (!DISCORD_TOKEN) {
-    throw new Error('DISCORD_TOKEN is not defined');
-  }
+    if (!val) throw new Error(`${key} was not found as an environment variable`);
 
-  if (!REST_AUTHORIZATION) {
-    throw new Error('REST_AUTHORIZATION is not defined');
-  }
+    envs[key] = val;
 
-  if (!EVENT_HANDLER_SOCKET_PATH) {
-    throw new Error('EVENT_HANDLER_SOCKET_PATH is not defined');
-  }
+    return envs;
+  }, {} as Record<Key, string>);
 
-  if (!REST_SOCKET_PATH) {
-    throw new Error('SOCKET_PATH is not defined');
-  }
-
-  return {
-    DISCORD_TOKEN,
-    REST_AUTHORIZATION,
-    REST_SOCKET_PATH,
-    EVENT_HANDLER_SOCKET_PATH,
-  };
+  return fromEnv;
 };
+
+export default getEnviroments;

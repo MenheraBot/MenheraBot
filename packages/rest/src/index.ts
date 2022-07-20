@@ -3,7 +3,7 @@ import { IpcRequest } from 'types';
 import handleRequest from './handleRequest';
 import config from './config';
 
-const { SOCKET_PATH } = config();
+const { SOCKET_PATH } = config(['SOCKET_PATH']);
 
 const server = new Server({
   path: SOCKET_PATH,

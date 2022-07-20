@@ -2,7 +2,7 @@ import { BASE_URL, createRestManager } from 'discordeno';
 import { IpcRequest } from 'types';
 import config from './config';
 
-const { DISCORD_TOKEN, REST_AUTHORIZATION } = config();
+const { DISCORD_TOKEN, REST_AUTHORIZATION } = config(['DISCORD_TOKEN', 'REST_AUTHORIZATION']);
 
 const rest = createRestManager({
   token: DISCORD_TOKEN,
