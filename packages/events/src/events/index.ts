@@ -1,4 +1,4 @@
-import { setInteractionCreateEvent } from './handlers/InteractionCreate';
+import { setInteractionCreateEvent } from './handlers/interactionCreate';
 
 const setupEventHandlers = () => {
   setInteractionCreateEvent();

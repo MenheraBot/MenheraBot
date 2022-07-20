@@ -2,15 +2,15 @@ import { Bot, createRestManager } from 'discordeno';
 import { Client } from 'net-ipc';
 import { runMethod } from '../internals/rest/runMethod';
 import { loadLocales } from './LocalteStructure';
-import { initializeSentry } from './Sentry';
-import { getEnviroments } from '../config';
+import { initializeSentry } from './initializeSentry';
+import { getEnviroments } from '../utils/getEnviroments';
 import { MenheraClient } from '../types/menhera';
 
 const setupMenheraClient = (client: MenheraClient) => {
   client.commands = new Map();
 };
 
-const initializeThirdParties = () => {
+const initializeServices = () => {
   loadLocales();
   initializeSentry();
 };
@@ -29,4 +29,4 @@ const setupInternals = (bot: Bot, restIPC: Client) => {
   });
 };
 
-export { setupMenheraClient, initializeThirdParties, setupInternals };
+export { setupMenheraClient, initializeServices, setupInternals };

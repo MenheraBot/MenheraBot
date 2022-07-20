@@ -1,12 +1,8 @@
 import { createBot, Intents } from 'discordeno';
-import {
-  initializeThirdParties,
-  setupInternals,
-  setupMenheraClient,
-} from 'structures/MenheraClient';
-import { createIpcConnections } from './structures/IpcConnections';
+import { initializeServices, setupInternals, setupMenheraClient } from 'structures/MenheraClient';
+import { createIpcConnections } from './structures/ipcConnections';
 import { MenheraClient } from './types/menhera';
-import { getEnviroments } from './config';
+import { getEnviroments } from './utils/getEnviroments';
 import { setupEventHandlers } from './events/index';
 
 const { DISCORD_TOKEN, REST_AUTHORIZATION, DISCORD_APPLICATION_ID } = getEnviroments([
@@ -26,7 +22,7 @@ const bot = createBot({
 const eventClient = createIpcConnections();
 
 setupMenheraClient(bot as MenheraClient);
-initializeThirdParties();
+initializeServices();
 setupEventHandlers();
 setupInternals(bot, eventClient);
 
