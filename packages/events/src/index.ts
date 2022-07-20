@@ -11,7 +11,13 @@ import { getEnviroments } from './config';
 import { RequestMethod, runMethod } from './internals/rest/runMethod';
 import { setupEventHandlers } from './events/index';
 
-const { DISCORD_TOKEN, REST_AUTHORIZATION, REST_SOCKET_PATH, EVENT_SOCKET_PATH } = getEnviroments();
+const {
+  DISCORD_TOKEN,
+  REST_AUTHORIZATION,
+  REST_SOCKET_PATH,
+  EVENT_SOCKET_PATH,
+  DISCORD_APPLICATION_ID,
+} = getEnviroments();
 
 const client = new Client({ path: REST_SOCKET_PATH });
 const eventClient = new Client({ path: EVENT_SOCKET_PATH });
@@ -47,6 +53,8 @@ const bot = createBot({
   secretKey: REST_AUTHORIZATION,
   events: {},
   intents: Intents.Guilds,
+  botId: DISCORD_APPLICATION_ID,
+  applicationId: DISCORD_APPLICATION_ID,
 });
 
 setupEventHandlers();
