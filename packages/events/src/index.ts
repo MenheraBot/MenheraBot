@@ -6,6 +6,8 @@ import {
   RestManager,
 } from 'discordeno';
 import { Client } from 'net-ipc';
+import { setupMenheraClient } from 'MenheraClient';
+import { MenheraClient } from 'types/menhera';
 import { setGuildCommands } from './commands';
 import { getEnviroments } from './config';
 import { RequestMethod, runMethod } from './internals/rest/runMethod';
@@ -56,6 +58,8 @@ const bot = createBot({
   botId: DISCORD_APPLICATION_ID,
   applicationId: DISCORD_APPLICATION_ID,
 });
+
+setupMenheraClient(bot as MenheraClient);
 
 setupEventHandlers();
 
