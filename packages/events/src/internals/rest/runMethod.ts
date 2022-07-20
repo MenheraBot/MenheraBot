@@ -16,15 +16,6 @@ const runMethod = async <T = any>(
     headers?: Record<string, string>;
   },
 ): Promise<T> => {
-  rest.debug(
-    `[REST - RequestCreate] Method: ${method} | URL: ${route} | Retry Count: ${
-      options?.retryCount ?? 0
-    } | Bucket ID: ${options?.bucketId} | Body: ${JSON.stringify(body)}`,
-  );
-
-  const errorStack = new Error('Location:');
-  Error.captureStackTrace(errorStack);
-
   const response = await client.request({
     Authorization: rest.secretKey,
     url: route,
@@ -32,6 +23,8 @@ const runMethod = async <T = any>(
     method,
     options,
   });
+
+  if (response.statusCode >= 400) console.error(`[${response.status}] - ${response.error}`);
 
   return response;
 };

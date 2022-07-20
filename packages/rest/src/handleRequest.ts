@@ -29,7 +29,7 @@ export default async (data: IpcRequest) => {
     )
     .catch((e) => {
       console.log(e.message);
-      return { status: 500, body: { error: e.message } };
+      return e;
     });
 
   return result;

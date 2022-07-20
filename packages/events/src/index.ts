@@ -6,9 +6,8 @@ import {
   RestManager,
 } from 'discordeno';
 import { Client } from 'net-ipc';
-import { setupMenheraClient } from 'MenheraClient';
+import { initializeThirdParties, setupMenheraClient } from 'MenheraClient';
 import { MenheraClient } from 'types/menhera';
-import { setGuildCommands } from './commands';
 import { getEnviroments } from './config';
 import { RequestMethod, runMethod } from './internals/rest/runMethod';
 import { setupEventHandlers } from './events/index';
@@ -53,14 +52,13 @@ eventClient.connect().catch(panic);
 const bot = createBot({
   token: DISCORD_TOKEN,
   secretKey: REST_AUTHORIZATION,
-  events: {},
   intents: Intents.Guilds,
   botId: DISCORD_APPLICATION_ID,
   applicationId: DISCORD_APPLICATION_ID,
 });
 
 setupMenheraClient(bot as MenheraClient);
-
+initializeThirdParties();
 setupEventHandlers();
 
 bot.rest = createRestManager({
@@ -79,23 +77,14 @@ bot.rest = createRestManager({
   ) => runMethod(client, rest, method, route, body, options),
 });
 
-eventClient.on('message', async (msg) => {
+eventClient.on('message', (msg) => {
   const json = JSON.parse(msg) as {
     data: DiscordGatewayPayload;
     shardId: number;
   };
-  // EMITS RAW EVENT
-  bot.events.raw(bot, json.data, json.shardId);
 
-  if (json.data.t && json.data.t !== 'RESUMED') {
-    // When a guild or something isn't in cache this will fetch it before doing anything else
-    if (!['READY', 'GUILD_LOADED_DD'].includes(json.data.t)) {
-      await bot.events.dispatchRequirements(bot, json.data, json.shardId);
-      await setGuildCommands(bot, json.data);
-    }
-
+  if (json.data.t && json.data.t !== 'RESUMED')
     bot.handlers[json.data.t]?.(bot, json.data, json.shardId);
-  }
 });
 
 export { bot };
