@@ -12,6 +12,8 @@
   },
   "author": "Luxanna Crownguard (ySnoopyDogy)",
   "dependencies": {
+    "@sentry/node": "^7.7.0",
+    "@sentry/tracing": "^7.7.0",
     "net-ipc": "^2.0.1"
   },
   "repository": "https://github.com/MenheraBot/MenheraBot",

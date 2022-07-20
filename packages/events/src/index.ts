@@ -5,14 +5,18 @@ import { MenheraClient } from 'types/menhera';
 import { getEnviroments } from './config';
 import { setupEventHandlers } from './events/index';
 
-const { DISCORD_TOKEN, REST_AUTHORIZATION, DISCORD_APPLICATION_ID } = getEnviroments();
+const { DISCORD_TOKEN, REST_AUTHORIZATION, DISCORD_APPLICATION_ID } = getEnviroments([
+  'DISCORD_TOKEN',
+  'REST_AUTHORIZATION',
+  'DISCORD_APPLICATION_ID',
+]);
 
 const bot = createBot({
   token: DISCORD_TOKEN,
   secretKey: REST_AUTHORIZATION,
   intents: Intents.Guilds,
-  botId: DISCORD_APPLICATION_ID,
-  applicationId: DISCORD_APPLICATION_ID,
+  botId: BigInt(DISCORD_APPLICATION_ID),
+  applicationId: BigInt(DISCORD_APPLICATION_ID),
 });
 
 const eventClient = createIpcConnections();

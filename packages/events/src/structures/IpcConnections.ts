@@ -4,7 +4,10 @@ import { bot } from '../index';
 import { getEnviroments } from '../config';
 
 const createIpcConnections = () => {
-  const { REST_SOCKET_PATH, EVENT_SOCKET_PATH } = getEnviroments();
+  const { REST_SOCKET_PATH, EVENT_SOCKET_PATH } = getEnviroments([
+    'REST_SOCKET_PATH',
+    'EVENT_SOCKET_PATH',
+  ]);
 
   const client = new Client({ path: REST_SOCKET_PATH });
   const eventClient = new Client({ path: EVENT_SOCKET_PATH });
