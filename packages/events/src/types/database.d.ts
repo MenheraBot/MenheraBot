@@ -26,7 +26,7 @@ export interface DatabaseUserSchema {
   ban: boolean;
   banReason: string | null;
   selectedColor: ColorResolvable;
-  colors: Array<UserColor>;
+  colors: UserColor[];
   demons: number;
   giants: number;
   angels: number;
@@ -36,13 +36,13 @@ export interface DatabaseUserSchema {
   rolls: number;
   estrelinhas: number;
   votes: number;
-  badges: Array<UserBadge>;
+  badges: UserBadge[];
   hiddingBadges: Array<UserBadge['id']>;
   huntCooldown: number;
   voteCooldown: number;
-  trisal: Array<string>;
-  inventory: Array<HuntMagicItem>;
-  inUseItems: Array<HuntMagicItem>;
+  trisal: string[];
+  inventory: HuntMagicItem[];
+  inUseItems: HuntMagicItem[];
   itemsLimit: number;
   lastCommandAt: number;
   isBot: boolean;
