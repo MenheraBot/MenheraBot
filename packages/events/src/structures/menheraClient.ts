@@ -8,10 +8,13 @@ import { initializeSentry } from './initializeSentry';
 import { getEnviroments } from '../utils/getEnviroments';
 import { MenheraClient } from '../types/menhera';
 import { logger } from '../utils/logger';
+import { loadCommands } from './command/loadCommands';
 
 const setupMenheraClient = (client: MenheraClient): void => {
   logger.debug('Setting up Menhera Client');
   client.commands = new Map();
+
+  loadCommands();
 };
 
 const initializeServices = (): void => {
