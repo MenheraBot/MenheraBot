@@ -1,6 +1,7 @@
 import axios from 'axios';
-import { getEnviroments } from 'config';
-import { logger } from 'utils/logger';
+
+import { logger } from '../utils/logger';
+import { getEnviroments } from '../utils/getEnviroments';
 import { debugError } from '../utils/debugError';
 
 export interface AssetsLimit {

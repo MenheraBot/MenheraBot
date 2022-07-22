@@ -1,21 +1,22 @@
 import { Bot, createRestManager } from 'discordeno';
 import { Client } from 'net-ipc';
+
 import { runMethod } from '../internals/rest/runMethod';
-import { loadLocales } from './LocalteStructure';
+import { loadLocales } from './localteStructure';
 import { initializeSentry } from './initializeSentry';
 import { getEnviroments } from '../utils/getEnviroments';
 import { MenheraClient } from '../types/menhera';
 
-const setupMenheraClient = (client: MenheraClient) => {
+const setupMenheraClient = (client: MenheraClient): void => {
   client.commands = new Map();
 };
 
-const initializeServices = () => {
+const initializeServices = (): void => {
   loadLocales();
   initializeSentry();
 };
 
-const setupInternals = (bot: Bot, restIPC: Client) => {
+const setupInternals = (bot: Bot, restIPC: Client): void => {
   const { DISCORD_TOKEN, REST_AUTHORIZATION } = getEnviroments([
     'DISCORD_TOKEN',
     'REST_AUTHORIZATION',

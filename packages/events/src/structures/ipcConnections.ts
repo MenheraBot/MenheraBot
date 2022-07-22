@@ -1,10 +1,11 @@
 import { DiscordGatewayPayload } from 'discordeno/types';
 import { Client } from 'net-ipc';
-import { logger } from 'utils/logger';
+
+import { logger } from '../utils/logger';
 import { bot } from '../index';
 import { getEnviroments } from '../utils/getEnviroments';
 
-const createIpcConnections = () => {
+const createIpcConnections = (): Client => {
   const { REST_SOCKET_PATH, EVENT_SOCKET_PATH } = getEnviroments([
     'REST_SOCKET_PATH',
     'EVENT_SOCKET_PATH',

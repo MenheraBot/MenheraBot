@@ -1,6 +1,6 @@
 import { setInteractionCreateEvent } from './handlers/interactionCreate';
 
-const setupEventHandlers = () => {
+const setupEventHandlers = (): void => {
   setInteractionCreateEvent();
 };
 

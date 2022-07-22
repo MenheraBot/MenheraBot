@@ -1,5 +1,6 @@
 import { createBot, Intents } from 'discordeno';
-import { initializeServices, setupInternals, setupMenheraClient } from 'structures/MenheraClient';
+
+import { initializeServices, setupInternals, setupMenheraClient } from './structures/menheraClient';
 import { createIpcConnections } from './structures/ipcConnections';
 import { MenheraClient } from './types/menhera';
 import { getEnviroments } from './utils/getEnviroments';
@@ -17,7 +18,7 @@ const bot = createBot({
   intents: Intents.Guilds,
   botId: BigInt(DISCORD_APPLICATION_ID),
   applicationId: BigInt(DISCORD_APPLICATION_ID),
-});
+}) as MenheraClient;
 
 const eventClient = createIpcConnections();
 

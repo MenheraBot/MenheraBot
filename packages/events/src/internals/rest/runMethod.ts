@@ -1,6 +1,7 @@
 import { RestManager } from 'discordeno';
 import { Client } from 'net-ipc';
-import { logger } from 'utils/logger';
+
+import { logger } from '../../utils/logger';
 
 export type RequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 

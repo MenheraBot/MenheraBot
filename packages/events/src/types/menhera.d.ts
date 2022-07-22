@@ -1,6 +1,6 @@
-import { ApplicationCommand, Bot } from 'discordeno/*';
-import { DatabaseUserSchema } from './database';
+import { ApplicationCommand, Bot } from 'discordeno';
 
+import { DatabaseUserSchema } from './database';
 import InteractionContext from '../structures/command/InteractionContext';
 
 export interface ChatInputCommandConfig extends ApplicationCommand {

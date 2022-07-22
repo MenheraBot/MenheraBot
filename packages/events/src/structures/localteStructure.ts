@@ -2,7 +2,8 @@ import { readdirSync } from 'node:fs';
 import path from 'node:path';
 import i18next from 'i18next';
 import translationBackend from 'i18next-fs-backend';
-import { logger } from 'utils/logger';
+
+import { logger } from '../utils/logger';
 
 const loadLocales = (): void => {
   const namespaces = readdirSync(path.resolve(__dirname, '..', '..', 'locales', 'pt-BR')).map((a) =>
