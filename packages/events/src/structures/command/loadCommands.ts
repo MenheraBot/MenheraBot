@@ -1,4 +1,6 @@
-import { ChatInputInteractionCommand } from '../../types/menhera';
+import { resolve } from 'node:path';
+
+import { ChatInputInteractionCommand } from '../../types/commands';
 import { readDirectory } from '../../utils/fileUtils';
 import { bot } from '../../index';
 import { logger } from '../../utils/logger';
@@ -13,7 +15,7 @@ const loadCommands = (): void => {
     // TODO: ensure commands in database
   };
 
-  readDirectory('../../commands', addToMap);
+  readDirectory(resolve('dist/commands'), addToMap);
 };
 
 export { loadCommands };

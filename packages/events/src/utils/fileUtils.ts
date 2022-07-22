@@ -22,11 +22,9 @@ const readDirectory = <T>(
 const readdirRecursive = (directory: string): string[] => {
   return readdirSync(directory).reduce<string[]>((p, file) => {
     const filepath = join(directory, file);
-
     if (statSync(filepath).isDirectory()) return [...p, ...readdirRecursive(filepath)];
 
-    if (extname(filepath) !== 'ts') return p;
-
+    if (extname(filepath) !== '.js') return p;
     return [...p, filepath];
   }, []);
 };

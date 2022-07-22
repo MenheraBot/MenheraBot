@@ -14,7 +14,9 @@ const setupMenheraClient = (client: MenheraClient): void => {
   logger.debug('Setting up Menhera Client');
   client.commands = new Map();
 
+  logger.debug('Loading Commands');
   loadCommands();
+  logger.debug('after Commands');
 };
 
 const initializeServices = (): void => {

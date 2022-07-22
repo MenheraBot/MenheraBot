@@ -12,13 +12,7 @@ export interface ChatInputCommandConfig extends ChatInputApplicationCommandData 
 export interface ChatInputInteractionCommand extends Readonly<ChatInputCommandConfig> {
   path: string;
 
-  readonly execute: (context: InteractionContext) => Promise<void>;
-}
-
-export const enum ApplicationCommandTypes {
-  CHAT_INPUT = 1,
-  USER = 2,
-  MESSAGE = 3,
+  readonly execute: (ctx: InteractionContext) => Promise<void>;
 }
 
 export const enum ApplicationCommandOptionTypes {
