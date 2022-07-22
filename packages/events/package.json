@@ -6,11 +6,15 @@
   },
   "description": "Events manager for Menhera",
   "main": "dist/index.js",
+  "repository": "https://github.com/MenheraBot/MenheraBot",
+  "license": "MIT",
+  "readme": "https://github.com/MenheraBot/MenheraBot#readme",
+  "author": "Luxanna Crownguard (ySnoopyDogy)",
   "scripts": {
-    "build": "tsc --project tsconfig.json",
+    "build": "rm -rf dist && tsc --project tsconfig.json && yarn fix:problems",
+    "fix:problems": "mv dist/src uwu && rm -rf dist && mv uwu dist",
     "dev": "node --no-warnings -r dotenv/config ."
   },
-  "author": "Luxanna Crownguard (ySnoopyDogy)",
   "dependencies": {
     "@sentry/node": "^7.7.0",
     "@sentry/tracing": "^7.7.0",
@@ -19,9 +23,6 @@
     "i18next-fs-backend": "^1.1.4",
     "net-ipc": "^2.0.1"
   },
-  "repository": "https://github.com/MenheraBot/MenheraBot",
-  "license": "MIT",
-  "readme": "https://github.com/MenheraBot/MenheraBot#readme",
   "devDependencies": {
     "@types/i18next-fs-backend": "^1.1.2"
   }
