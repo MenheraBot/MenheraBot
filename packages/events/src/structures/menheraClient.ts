@@ -7,14 +7,21 @@ import { loadLocales } from './localteStructure';
 import { initializeSentry } from './initializeSentry';
 import { getEnviroments } from '../utils/getEnviroments';
 import { MenheraClient } from '../types/menhera';
+import { logger } from '../utils/logger';
 
 const setupMenheraClient = (client: MenheraClient): void => {
+  logger.debug('Setting up Menhera Client');
   client.commands = new Map();
 };
 
 const initializeServices = (): void => {
+  logger.debug('LLoading Locales');
   loadLocales();
+
+  logger.debug('Initializing Sentry');
   initializeSentry();
+
+  logger.debug('Starting Bicho Game');
   startBichoGame();
 };
 
@@ -23,6 +30,8 @@ const setupInternals = (bot: Bot, restIPC: Client): void => {
     'DISCORD_TOKEN',
     'REST_AUTHORIZATION',
   ]);
+
+  logger.debug('Setting up the custom rest manager');
 
   bot.rest = createRestManager({
     token: DISCORD_TOKEN,

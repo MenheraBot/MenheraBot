@@ -11,6 +11,10 @@ const createIpcConnections = (): Client => {
     'EVENT_SOCKET_PATH',
   ]);
 
+  logger.debug(
+    `Creating IPC connections to REST ${REST_SOCKET_PATH} and EVENTS ${EVENT_SOCKET_PATH}`,
+  );
+
   const client = new Client({ path: REST_SOCKET_PATH });
   const eventClient = new Client({ path: EVENT_SOCKET_PATH });
 
