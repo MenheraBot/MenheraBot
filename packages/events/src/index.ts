@@ -22,7 +22,7 @@ const bot = createBot({
 
 const eventClient = createIpcConnections();
 
-setupMenheraClient(bot as MenheraClient);
+setupMenheraClient(bot);
 initializeServices();
 setupEventHandlers();
 setupInternals(bot, eventClient);
