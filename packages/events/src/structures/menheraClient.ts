@@ -1,6 +1,7 @@
 import { Bot, createRestManager } from 'discordeno';
 import { Client } from 'net-ipc';
 
+import { startGame as startBichoGame } from '../modules/bicho/bichoManager';
 import { runMethod } from '../internals/rest/runMethod';
 import { loadLocales } from './localteStructure';
 import { initializeSentry } from './initializeSentry';
@@ -14,6 +15,7 @@ const setupMenheraClient = (client: MenheraClient): void => {
 const initializeServices = (): void => {
   loadLocales();
   initializeSentry();
+  startBichoGame();
 };
 
 const setupInternals = (bot: Bot, restIPC: Client): void => {
