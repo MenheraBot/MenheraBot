@@ -1,9 +1,7 @@
-import { ApplicationCommandOptionTypes, InteractionResponseTypes } from 'discordeno/types';
-import { Interaction } from 'discordeno/transformers';
+import { User } from 'discordeno/transformers';
+import { ApplicationCommandOptionTypes } from 'discordeno/types';
 
-import { logger } from '../../utils/logger';
 import { ChatInputInteractionCommand } from '../../types/commands';
-import { bot } from '../../index';
 
 const AngryCommand: ChatInputInteractionCommand = {
   path: '',
@@ -32,22 +30,17 @@ const AngryCommand: ChatInputInteractionCommand = {
   authorDataFields: [],
   dmPermission: false,
   execute: async (ctx) => {
-    logger.debug(ctx, 'AngryCommand');
+    const user = ctx.getOption<User>('user', 'users', false);
+    const reason = ctx.getOption<string>('motivo', false);
 
-    const startTime = Date.now();
+    if (user?.toggles?.bot) {
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:raiva.bot'),
+      });
+      return;
+    }
 
-    const { id, token } = ctx as Interaction;
-
-    logger.debug(id, token);
-
-    await bot.helpers.sendInteractionResponse(id, token, {
-      type: InteractionResponseTypes.ChannelMessageWithSource,
-      data: { content: 'Pinging...' },
-    });
-
-    bot.helpers.editInteractionResponse(token, {
-      content: `🏓 Pong! (${Date.now() - startTime}ms)`,
-    });
+    console.log(reason);
   },
 };
 
