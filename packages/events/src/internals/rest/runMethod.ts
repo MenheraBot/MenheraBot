@@ -28,7 +28,7 @@ const runMethod = async <T = any>(
     options,
   });
 
-  if (response.statusCode >= 400) logger.error(`[${response.status}] - ${response.error}`);
+  if (response?.statusCode >= 400) logger.error(`[${response.status}] - ${response.error}`);
 
   return response;
 };
