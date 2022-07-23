@@ -1,6 +1,8 @@
-import { ApplicationCommandOptionTypes } from 'discordeno/types';
+import { ApplicationCommandOptionTypes, InteractionResponseTypes } from 'discordeno/types';
+import { Interaction } from 'discordeno/transformers';
 import { logger } from '../../utils/logger';
 import { ChatInputInteractionCommand } from '../../types/commands';
+import { bot } from '../../index';
 
 const AngryCommand: ChatInputInteractionCommand = {
   path: '',
@@ -30,6 +32,19 @@ const AngryCommand: ChatInputInteractionCommand = {
   dmPermission: false,
   execute: async (ctx) => {
     logger.debug(ctx, 'AngryCommand');
+
+    const startTime = Date.now();
+
+    const { id, token } = ctx as Interaction;
+
+    await bot.helpers.sendInteractionResponse(id, token, {
+      type: InteractionResponseTypes.ChannelMessageWithSource,
+      data: { content: 'Pinging...' },
+    });
+
+    bot.helpers.editInteractionResponse(token, {
+      content: `🏓 Pong! (${Date.now() - startTime}ms)`,
+    });
   },
 };
 
