@@ -18,7 +18,7 @@ const runMethod = async <T = any>(
     headers?: Record<string, string>;
   },
 ): Promise<T> => {
-  logger.debug(`Rest Request: Method: ${method} | URL: ${route} | Body: ${JSON.stringify(body)}`);
+  logger.debug(`Rest Request: Method: ${method} | URL: ${route}`);
 
   const response = await client.request({
     Authorization: rest.secretKey,

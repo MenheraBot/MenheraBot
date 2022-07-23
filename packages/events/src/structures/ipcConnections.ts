@@ -44,14 +44,9 @@ const createIpcConnections = (): Client => {
   client.connect().catch(panic);
   eventClient.connect().catch(panic);
 
-  eventClient.on('message', (msg) => {
-    const json = JSON.parse(msg) as {
-      data: DiscordGatewayPayload;
-      shardId: number;
-    };
-
-    if (json.data.t && json.data.t !== 'RESUMED')
-      bot.handlers[json.data.t]?.(bot, json.data, json.shardId);
+  eventClient.on('message', (msg: { data: DiscordGatewayPayload; shardId: number }) => {
+    if (msg.data.t && msg.data.t !== 'RESUMED')
+      bot.handlers[msg.data.t]?.(bot, msg.data, msg.shardId);
   });
 
   return eventClient;

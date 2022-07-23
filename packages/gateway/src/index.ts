@@ -76,22 +76,20 @@ async function startGateway() {
     const worker = workers.get(workerId);
     if (!worker) return;
 
-    worker.postMessage(
-      JSON.stringify({
-        type: 'IDENTIFY',
-        firstShardId,
-        lastShardId,
-        totalShards,
-        workerId,
-        gatewayBot: {
-          ...gateway.gatewayBot,
-          sessionStartLimit: {
-            ...gateway.gatewayBot.sessionStartLimit,
-            maxConcurrency: 1,
-          },
+    worker.postMessage({
+      type: 'IDENTIFY',
+      firstShardId,
+      lastShardId,
+      totalShards,
+      workerId,
+      gatewayBot: {
+        ...gateway.gatewayBot,
+        sessionStartLimit: {
+          ...gateway.gatewayBot.sessionStartLimit,
+          maxConcurrency: 1,
         },
-      }),
-    );
+      },
+    });
   };
 
   gateway.buckets.forEach((bucket) => {
@@ -102,16 +100,14 @@ async function startGateway() {
       workers.set(workerId, worker);
 
       worker.on('message', (msg) => {
-        const data = JSON.parse(msg);
-        if (data.type === 'BROADCAST_EVENT') {
-          server.broadcast(JSON.stringify(data.data));
+        if (msg.type === 'BROADCAST_EVENT') {
+          server.broadcast(msg.data);
         }
       });
 
       if (bucket.workers[i + 1]) {
         worker.on('message', (msg) => {
-          const data = JSON.parse(msg);
-          if (data.type === 'ALL_SHARDS_READY') {
+          if (msg.type === 'ALL_SHARDS_READY') {
             const queue = bucket.workers[i + 1];
             if (queue) {
               console.log(`[GATEWAY] Starting worker ${queue.id}`);

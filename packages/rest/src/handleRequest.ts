@@ -9,7 +9,7 @@ const rest = createRestManager({
   secretKey: REST_AUTHORIZATION,
 });
 
-export default async (data: IpcRequest) => {
+export default async (data: IpcRequest): Promise<unknown> => {
   if (data.Authorization !== REST_AUTHORIZATION) {
     return {
       status: 401,

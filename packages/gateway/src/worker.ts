@@ -36,20 +36,16 @@ const spawnGateway = (options: Partial<CreateGatewayManager>) => {
         log.info(`[WORKER] Shard ${shard.id} is online`);
 
         if (shard.id === gateway.lastShardId) {
-          parentPort?.postMessage(
-            JSON.stringify({
-              type: 'ALL_SHARDS_READY',
-            }),
-          );
+          parentPort?.postMessage({
+            type: 'ALL_SHARDS_READY',
+          });
         }
       }
 
       // DONT SEND THESE EVENTS USELESS TO BOT
       if (['GUILD_LOADED_DD'].includes(data.t)) return;
 
-      parentPort?.postMessage(
-        JSON.stringify({ type: 'BROADCAST_EVENT', data: { shardId: shard.id, data } }),
-      );
+      parentPort?.postMessage({ type: 'BROADCAST_EVENT', data: { shardId: shard.id, data } });
     },
   });
 
@@ -67,16 +63,14 @@ export interface IdentifyPayload {
   totalShards: number;
 }
 
-parentPort?.on('message', (message) => {
-  const data = JSON.parse(message) as IdentifyPayload;
-
-  if (data.type === 'IDENTIFY') {
+parentPort?.on('message', (message: IdentifyPayload) => {
+  if (message.type === 'IDENTIFY') {
     gateway = spawnGateway({
-      firstShardId: data.firstShardId,
-      lastShardId: data.lastShardId ?? data.firstShardId,
+      firstShardId: message.firstShardId,
+      lastShardId: message.lastShardId ?? message.firstShardId,
       spawnShardDelay: 5000,
-      totalShards: data.totalShards,
-      gatewayBot: data.gatewayBot,
+      totalShards: message.totalShards,
+      gatewayBot: message.gatewayBot,
     });
   }
 });

@@ -1,5 +1,6 @@
 import { ApplicationCommandOptionTypes, InteractionResponseTypes } from 'discordeno/types';
 import { Interaction } from 'discordeno/transformers';
+
 import { logger } from '../../utils/logger';
 import { ChatInputInteractionCommand } from '../../types/commands';
 import { bot } from '../../index';
@@ -36,6 +37,8 @@ const AngryCommand: ChatInputInteractionCommand = {
     const startTime = Date.now();
 
     const { id, token } = ctx as Interaction;
+
+    logger.debug(id, token);
 
     await bot.helpers.sendInteractionResponse(id, token, {
       type: InteractionResponseTypes.ChannelMessageWithSource,
