@@ -15,7 +15,7 @@ const createIpcConnections = (): Client => {
     `Creating IPC connections to REST ${REST_SOCKET_PATH} and EVENTS ${EVENT_SOCKET_PATH}`,
   );
 
-  const client = new Client({ path: REST_SOCKET_PATH });
+  const restClient = new Client({ path: REST_SOCKET_PATH });
   const eventClient = new Client({ path: EVENT_SOCKET_PATH });
 
   eventClient.on('close', () => {
@@ -27,12 +27,12 @@ const createIpcConnections = (): Client => {
     logger.info('[EVENT] Gateway IPC connected');
   });
 
-  client.on('close', () => {
+  restClient.on('close', () => {
     logger.info('[EVENT] REST Client closed');
     process.exit(1);
   });
 
-  client.on('ready', () => {
+  restClient.on('ready', () => {
     logger.info('[EVENT] REST IPC connected');
   });
 
@@ -41,7 +41,7 @@ const createIpcConnections = (): Client => {
     process.exit(1);
   };
 
-  client.connect().catch(panic);
+  restClient.connect().catch(panic);
   eventClient.connect().catch(panic);
 
   eventClient.on('message', (msg: { data: DiscordGatewayPayload; shardId: number }) => {
@@ -49,7 +49,7 @@ const createIpcConnections = (): Client => {
       bot.handlers[msg.data.t]?.(bot, msg.data, msg.shardId);
   });
 
-  return eventClient;
+  return restClient;
 };
 
 export { createIpcConnections };

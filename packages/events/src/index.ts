@@ -20,11 +20,11 @@ const bot = createBot({
   applicationId: BigInt(DISCORD_APPLICATION_ID),
 }) as MenheraClient;
 
-const eventClient = createIpcConnections();
+const restClient = createIpcConnections();
 
 setupMenheraClient(bot);
 initializeServices();
 setupEventHandlers();
-setupInternals(bot, eventClient);
+setupInternals(bot, restClient);
 
 export { bot };
