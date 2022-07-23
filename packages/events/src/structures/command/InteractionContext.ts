@@ -17,7 +17,7 @@ export default class {
 
   async makeMessage(options: InteractionApplicationCommandCallbackData): Promise<void> {
     bot.helpers.sendInteractionResponse(this.interaction.id, this.interaction.token, {
-      type: InteractionResponseTypes.DeferredChannelMessageWithSource,
+      type: InteractionResponseTypes.ChannelMessageWithSource,
       data: options,
     });
   }
