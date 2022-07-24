@@ -4,7 +4,9 @@ import {
   ButtonStyles,
   InteractionResponseTypes,
 } from 'discordeno/types';
+import i18next from 'i18next';
 
+import { MessageFlags } from '../../utils/discord/messageUtils';
 import { bot } from '../../index';
 import { collectComponentInteractionWithCustomFilter } from '../../utils/discord/collectorUtils';
 import {
@@ -71,9 +73,25 @@ const SarrarCommand = createCommand({
         type: InteractionResponseTypes.DeferredUpdateMessage,
       });
 
-      if (int.user.toggles.bot) return false;
-      if (int.data?.customId !== `${ctx.interaction.id}`) return false;
-      if (int.user.id === ctx.author.id) return false;
+      const wontPass =
+        int.user.toggles.bot ||
+        int.data?.customId !== `${ctx.interaction.id}` ||
+        int.user.id === ctx.author.id;
+
+      if (wontPass) {
+        bot.helpers.sendInteractionResponse(int.id, int.token, {
+          type: InteractionResponseTypes.ChannelMessageWithSource,
+          data: {
+            content: i18next.getFixedT(int.locale ?? 'pt-BR')('common:not-your-interaction'),
+            flags: MessageFlags.EPHEMERAL,
+          },
+        });
+        return false;
+      }
+
+      bot.helpers.sendInteractionResponse(int.id, int.token, {
+        type: InteractionResponseTypes.DeferredUpdateMessage,
+      });
 
       // TODO: Check if the user is banned with blacklist respository
 
