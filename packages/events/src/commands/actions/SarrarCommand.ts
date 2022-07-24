@@ -1,6 +1,7 @@
 import { Interaction, User } from 'discordeno/transformers';
 import { ApplicationCommandOptionTypes, ButtonStyles } from 'discordeno/types';
 
+import { logger } from '../../utils/logger';
 import { collectComponentInteractionWithCustomFilter } from '../../utils/discord/collectorUtils';
 import {
   createActionRow,
@@ -74,7 +75,7 @@ const SarrarCommand = createCommand({
     const collected = await collectComponentInteractionWithCustomFilter(
       ctx.channelId,
       filter,
-      30_0000,
+      30_000,
     );
 
     if (!collected) {

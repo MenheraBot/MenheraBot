@@ -17,6 +17,7 @@ const collectComponentInteractionWithCustomFilter = async (
         channelId,
         filter,
         time,
+        max: 1,
         interactionType: InteractionTypes.MessageComponent,
       });
 
