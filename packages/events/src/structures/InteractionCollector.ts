@@ -1,13 +1,15 @@
+/* eslint-disable no-underscore-dangle */
 import { Interaction } from 'discordeno/transformers';
 import { InteractionTypes, MessageComponentTypes } from 'discordeno/types';
 import { EventEmitter } from 'node:events';
 
 import { interactionEmitter } from '../index';
 
-type InteractionCollectorOptions = {
+export type InteractionCollectorOptions = {
   filter: (interaction: Interaction) => boolean | Promise<boolean>;
   time?: number;
   idle?: number;
+  max?: number;
   channelId: bigint;
   interactionType?: InteractionTypes;
   componentType?: MessageComponentTypes;
@@ -20,7 +22,9 @@ export default class InteractionCollector extends EventEmitter {
 
   private ended = false;
 
-  private endReason: string | null = null;
+  private total = 0;
+
+  private _endReason: string | null = null;
 
   private collected = new Map<bigint, Interaction>();
 
@@ -33,6 +37,10 @@ export default class InteractionCollector extends EventEmitter {
     const handleCollect = this.handleCollect.bind(this);
 
     interactionEmitter.on('interaction', handleCollect);
+
+    this.once('end', () => {
+      interactionEmitter.removeListener('interaction', handleCollect);
+    });
   }
 
   stop(reason = 'user'): void {
@@ -48,7 +56,7 @@ export default class InteractionCollector extends EventEmitter {
       this.idletimeout = null;
     }
 
-    this.endReason = reason;
+    this._endReason = reason;
     this.ended = true;
 
     this.emit('end', this.collected, reason);
@@ -69,6 +77,11 @@ export default class InteractionCollector extends EventEmitter {
     return interaction.id;
   }
 
+  get endReason(): string | null {
+    if (this.options.max && this.total >= this.options.max) return 'limit';
+    return this._endReason;
+  }
+
   checkEnd(): boolean {
     const reason = this.endReason;
     if (reason) this.stop(reason);
@@ -87,6 +100,8 @@ export default class InteractionCollector extends EventEmitter {
     this.collected.set(collectedId, interaction);
 
     this.emit('collect', interaction);
+
+    this.total++;
 
     if (this.idletimeout) {
       clearTimeout(this.idletimeout);
