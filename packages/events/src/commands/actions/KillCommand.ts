@@ -9,7 +9,7 @@ import { capitalize } from '../../utils/stringUtils';
 import { createCommand } from '../../structures/command/createCommand';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 
-const HugCommand = createCommand({
+const KillCommand = createCommand({
   path: '',
   name: 'matar',
   nameLocalizations: { 'en-US': 'kill' },
@@ -103,4 +103,4 @@ const HugCommand = createCommand({
   },
 });
 
-export default HugCommand;
+export default KillCommand;
