@@ -123,6 +123,7 @@
       "embed_description": "Alguém quer sarrar com {{author}}?",
       "embed_footer": "Quer sarrar comigo? 30 segundos para aceitar a sarrada"
     },
+    "cannot-sarrar-self": "Tu não pode sarrar consigo mesmo!",
     "embed_title": "Sarrar",
     "embed_description": "{{mention}} aceitou o poder, e sarrou com {{author}}",
     "sarrar": "Aceitar a Sarrada"

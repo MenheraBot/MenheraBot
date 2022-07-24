@@ -119,6 +119,7 @@
       "embed_description": "Someone wants to dance with {{author}}?",
       "embed_footer": "Do you want to dance with me? 30 seconds to accept the dance"
     },
+    "cannot-sarrar-self": "You can not dance with yourself!",
     "embed_title": "Dance",
     "embed_description": "{{mention}} danced with {{author}}",
     "sarrar": "Accept Dance"

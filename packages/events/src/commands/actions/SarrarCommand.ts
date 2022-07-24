@@ -69,20 +69,13 @@ const SarrarCommand = createCommand({
     await ctx.makeMessage({ embeds: [embed], components: [createActionRow([button])] });
 
     const filter = async (int: Interaction): Promise<boolean> => {
-      bot.helpers.sendInteractionResponse(int.id, int.token, {
-        type: InteractionResponseTypes.DeferredUpdateMessage,
-      });
+      if (int.data?.customId !== `${ctx.interaction.id}`) return false;
 
-      const wontPass =
-        int.user.toggles.bot ||
-        int.data?.customId !== `${ctx.interaction.id}` ||
-        int.user.id === ctx.author.id;
-
-      if (wontPass) {
+      if (int.user.toggles.bot || int.user.id === ctx.author.id) {
         bot.helpers.sendInteractionResponse(int.id, int.token, {
           type: InteractionResponseTypes.ChannelMessageWithSource,
           data: {
-            content: i18next.getFixedT(int.locale ?? 'pt-BR')('common:not-your-interaction'),
+            content: ctx.locale('commands:sarrar.cannot-sarrar-self'),
             flags: MessageFlags.EPHEMERAL,
           },
         });
