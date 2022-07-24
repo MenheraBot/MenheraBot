@@ -8,26 +8,26 @@ import { createEmbed } from '../../utils/discord/createEmbed';
 import { capitalize } from '../../utils/stringUtils';
 import { createCommand } from '../../structures/command/createCommand';
 
-const AngryCommand = createCommand({
+const CryCommand = createCommand({
   path: '',
-  name: 'raiva',
-  nameLocalizations: { 'en-US': 'angry' },
-  description: '「😡」・Mostre a todos que está com raiva',
-  descriptionLocalizations: { 'en-US': '「😡」・Shows to everyone that you are angry' },
+  name: 'chorar',
+  nameLocalizations: { 'en-US': 'cry' },
+  description: '「😭」・Mostre para os que você está chorando :((',
+  descriptionLocalizations: { 'en-US': "「😭」・Show everyone that you're crying :((" },
   options: [
     {
       name: 'user',
       type: ApplicationCommandOptionTypes.User,
-      description: 'Usuário que te deixou com raiva',
-      descriptionLocalizations: { 'en-US': 'User that made you angry' },
+      description: 'Usuário que te fez chorar',
+      descriptionLocalizations: { 'en-US': 'User that made you cry' },
       required: false,
     },
     {
       name: 'motivo',
       type: ApplicationCommandOptionTypes.User,
       nameLocalizations: { 'en-US': 'reason' },
-      description: 'Por que você está com raiva?',
-      descriptionLocalizations: { 'en-US': 'Why are you angry?' },
+      description: 'Por que você está chorando?',
+      descriptionLocalizations: { 'en-US': 'Why are you crying?' },
       required: false,
     },
   ],
@@ -39,19 +39,19 @@ const AngryCommand = createCommand({
 
     if (user?.toggles?.bot) {
       ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'commands:raiva.bot'),
+        content: ctx.prettyResponse('error', 'commands:chorar.bot'),
       });
       return;
     }
 
     const avatar = getUserAvatar(ctx.author, { enableGif: true });
-    const selectedImage = getAssetLink('angry');
+    const selectedImage = getAssetLink('cry');
 
     if (!user || user.id === ctx.author.id) {
       const embed = createEmbed({
-        title: ctx.locale('commands:raiva.no-mention.embed_title'),
+        title: ctx.locale('commands:chorar.no-mention.embed_title'),
         color: COLORS.ACTIONS,
-        description: ctx.locale('commands:raiva.no-mention.embed_description', {
+        description: ctx.locale('commands:chorar.no-mention.embed_description', {
           author: mentionUser(ctx.author.id),
         }),
         thumbnail: { url: avatar },
@@ -68,8 +68,8 @@ const AngryCommand = createCommand({
     }
 
     const embed = createEmbed({
-      title: ctx.locale('commands:raiva.no-mention.embed_title'),
-      description: ctx.locale('commands:raiva.embed_description', {
+      title: ctx.locale('commands:chorar.no-mention.embed_title'),
+      description: ctx.locale('commands:chorar.embed_description', {
         author: mentionUser(ctx.author.id),
         mention: mentionUser(user.id),
       }),
@@ -87,4 +87,4 @@ const AngryCommand = createCommand({
   },
 });
 
-export default AngryCommand;
+export default CryCommand;

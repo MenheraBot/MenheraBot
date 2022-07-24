@@ -5,11 +5,11 @@ import { MessageFlags } from '../../utils/discord/messageUtils';
 import { TODAYS_YEAR, COLORS } from '../../structures/constants';
 import { getAssetLink } from '../../structures/cdnManager';
 import { getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
-import { ChatInputInteractionCommand } from '../../types/commands';
 import { createEmbed } from '../../utils/discord/createEmbed';
 import { capitalize } from '../../utils/stringUtils';
+import { createCommand } from '../../structures/command/createCommand';
 
-const BiteCommand: ChatInputInteractionCommand = {
+const BiteCommand = createCommand({
   path: '',
   name: 'morder',
   nameLocalizations: { 'en-US': 'bite' },
@@ -24,8 +24,8 @@ const BiteCommand: ChatInputInteractionCommand = {
       required: true,
     },
     {
-      type: ApplicationCommandOptionTypes.String,
       name: 'motivo',
+      type: ApplicationCommandOptionTypes.String,
       nameLocalizations: { 'en-US': 'reason' },
       description: 'Por que tu quer morder?',
       descriptionLocalizations: { 'en-US': 'Why do you wanna bite?' },
@@ -74,6 +74,6 @@ const BiteCommand: ChatInputInteractionCommand = {
 
     await ctx.makeMessage({ embeds: [embed] });
   },
-};
+});
 
 export default BiteCommand;

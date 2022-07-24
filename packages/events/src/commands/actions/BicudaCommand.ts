@@ -1,15 +1,15 @@
 import { User } from 'discordeno/transformers';
 import { ApplicationCommandOptionTypes } from 'discordeno/types';
 
+import { createCommand } from '../../structures/command/createCommand';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import { TODAYS_YEAR, COLORS } from '../../structures/constants';
 import { getAssetLink } from '../../structures/cdnManager';
 import { getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
-import { ChatInputInteractionCommand } from '../../types/commands';
 import { createEmbed } from '../../utils/discord/createEmbed';
 import { capitalize } from '../../utils/stringUtils';
 
-const BicudaCommand: ChatInputInteractionCommand = {
+const BicudaCommand = createCommand({
   path: '',
   name: 'bicuda',
   description: '「🦵」・Da uma bicudassa em alguém',
@@ -25,8 +25,8 @@ const BicudaCommand: ChatInputInteractionCommand = {
     },
     {
       name: 'motivo',
-      nameLocalizations: { 'en-US': 'reason' },
       type: ApplicationCommandOptionTypes.String,
+      nameLocalizations: { 'en-US': 'reason' },
       description: 'Por que você quer chutar?',
       descriptionLocalizations: { 'en-US': 'Why are you angry?' },
       required: false,
@@ -74,6 +74,6 @@ const BicudaCommand: ChatInputInteractionCommand = {
 
     await ctx.makeMessage({ embeds: [embed] });
   },
-};
+});
 
 export default BicudaCommand;
