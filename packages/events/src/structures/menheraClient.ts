@@ -1,7 +1,7 @@
 import { Bot, createRestManager } from 'discordeno';
 import { Client } from 'net-ipc';
 
-import { initializeMongo } from 'database/Databases';
+import { initializeMongo } from '../database/Databases';
 import { startGame as startBichoGame } from '../modules/bicho/bichoManager';
 import { runMethod } from '../internals/rest/runMethod';
 import { loadLocales } from './localteStructure';
