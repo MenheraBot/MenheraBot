@@ -4,7 +4,6 @@ import {
   ButtonStyles,
   InteractionResponseTypes,
 } from 'discordeno/types';
-import i18next from 'i18next';
 
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import { bot } from '../../index';
@@ -75,7 +74,7 @@ const SarrarCommand = createCommand({
         bot.helpers.sendInteractionResponse(int.id, int.token, {
           type: InteractionResponseTypes.ChannelMessageWithSource,
           data: {
-            content: ctx.locale('commands:sarrar.cannot-sarrar-self'),
+            content: ctx.prettyResponse('error', 'commands:sarrar.cannot-sarrar-self'),
             flags: MessageFlags.EPHEMERAL,
           },
         });
