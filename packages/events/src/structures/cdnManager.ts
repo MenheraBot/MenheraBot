@@ -49,7 +49,7 @@ export const getAssetLink = (type: keyof AssetsLimit): string => {
 export const updateAssets = async (): Promise<void> => {
   const { CDN_URL } = getEnviroments(['CDN_URL']);
   const result = await axios.get(CDN_URL).catch(debugError);
-  if (!result) return logger.error('Error when updating assets');
+  if (!result) return logger.error('[CDN] Error when updating assets');
 
   assetsLimit = result.data;
 

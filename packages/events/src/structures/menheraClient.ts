@@ -1,6 +1,7 @@
 import { Bot, createRestManager } from 'discordeno';
 import { Client } from 'net-ipc';
 
+import { initializeMongo } from 'database/Databases';
 import { startGame as startBichoGame } from '../modules/bicho/bichoManager';
 import { runMethod } from '../internals/rest/runMethod';
 import { loadLocales } from './localteStructure';
@@ -15,22 +16,14 @@ const setupMenheraClient = (client: MenheraClient): void => {
   logger.debug('Setting up Menhera Client');
   client.commands = new Map();
 
-  logger.debug('Loading Commands');
   loadCommands();
-  logger.debug('after Commands');
 };
 
 const initializeServices = async (): Promise<void> => {
-  logger.debug('Loading Locales');
+  await initializeMongo();
   await loadLocales();
-
-  logger.debug('Initializing Sentry');
   initializeSentry();
-
-  logger.debug('Starting Bicho Game');
   startBichoGame();
-
-  logger.debug('Updating Assets');
   await updateAssets();
 };
 

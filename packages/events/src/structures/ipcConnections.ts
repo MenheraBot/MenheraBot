@@ -19,21 +19,21 @@ const createIpcConnections = async (): Promise<Client> => {
   const eventClient = new Client({ path: EVENT_SOCKET_PATH });
 
   eventClient.on('close', () => {
-    logger.info('[EVENT] Gateway Client closed');
+    logger.info('[GATEWAY] Gateway Client closed');
     process.exit(1);
   });
 
   eventClient.on('ready', () => {
-    logger.info('[EVENT] Gateway IPC connected');
+    logger.info('[GATEWAY] Gateway IPC connected');
   });
 
   restClient.on('close', () => {
-    logger.info('[EVENT] REST Client closed');
+    logger.info('[REST] REST Client closed');
     process.exit(1);
   });
 
   restClient.on('ready', () => {
-    logger.info('[EVENT] REST IPC connected');
+    logger.info('[REST] REST IPC connected');
   });
 
   eventClient.on('message', (msg: { data: DiscordGatewayPayload; shardId: number }) => {
