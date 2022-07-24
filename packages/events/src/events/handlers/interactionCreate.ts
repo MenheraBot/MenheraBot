@@ -2,10 +2,12 @@ import { InteractionTypes } from 'discordeno/types';
 import i18next from 'i18next';
 import InteractionContext from '../../structures/command/InteractionContext';
 import { logger } from '../../utils/logger';
-import { bot } from '../../index';
+import { bot, interactionEmitter } from '../../index';
 
 const setInteractionCreateEvent = (): void => {
   bot.events.interactionCreate = async (_, interaction) => {
+    interactionEmitter.emit('interaction', interaction);
+
     logger.debug(`[EVENT] InteractionCreate: ${interaction.id}`);
 
     if (interaction.type !== InteractionTypes.ApplicationCommand) return;

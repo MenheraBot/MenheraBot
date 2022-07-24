@@ -1,4 +1,5 @@
 import { createBot, Intents } from 'discordeno';
+import { EventEmitter } from 'node:events';
 
 import { initializeServices, setupInternals, setupMenheraClient } from './structures/menheraClient';
 import { createIpcConnections } from './structures/ipcConnections';
@@ -20,6 +21,8 @@ const bot = createBot({
   applicationId: BigInt(DISCORD_APPLICATION_ID),
 }) as MenheraClient;
 
+const interactionEmitter = new EventEmitter().setMaxListeners(Infinity);
+
 const restClient = createIpcConnections();
 
 setupMenheraClient(bot);
@@ -27,4 +30,4 @@ initializeServices();
 setupEventHandlers();
 setupInternals(bot, restClient);
 
-export { bot };
+export { bot, interactionEmitter };
