@@ -17,6 +17,10 @@ export default class {
     return this.interaction.user;
   }
 
+  get channelId(): bigint {
+    return this.interaction.channelId ?? 0n;
+  }
+
   prettyResponse(emoji: keyof typeof EMOJIS, text: Translation, translateOptions = {}): string {
     return `${EMOJIS[emoji] || '🐛'} **|** ${this.locale(text, translateOptions)}`;
   }

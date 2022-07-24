@@ -1,16 +1,4 @@
-import { Interaction } from 'discordeno/transformers';
-import {
-  ActionRow,
-  ButtonComponent,
-  InteractionResponseTypes,
-  InteractionTypes,
-  MessageComponentTypes,
-} from 'discordeno/types';
-
-import { bot } from '../../index';
-import InteractionCollector, {
-  InteractionCollectorOptions,
-} from '../../structures/InteractionCollector';
+import { ActionRow, ButtonComponent, MessageComponentTypes } from 'discordeno/types';
 
 type PropertyOptional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 
@@ -24,34 +12,20 @@ const createActionRow = (components: ActionRow['components']): ActionRow => ({
   components,
 });
 
-const collectComponentInteractionWithCustomFilter = async (
-  channelId: bigint,
-  filter: InteractionCollectorOptions['filter'],
-  time = 10000,
-): Promise<null | Interaction> => {
-  return (
-    new Promise((resolve, reject) => {
-      const collector = new InteractionCollector({
-        channelId,
-        filter,
-        time,
-        interactionType: InteractionTypes.MessageComponent,
-      });
+const disableComponents = (
+  label: string,
+  components: ActionRow['components'],
+): ActionRow['components'] =>
+  // @ts-expect-error Weird Type
+  components.map((c) => {
+    if (c.type === MessageComponentTypes.Button)
+      return {
+        ...c,
+        label,
+        disabled: true,
+      };
 
-      collector.once('end', (interactions, reason) => {
-        const interaction = [...(interactions as Map<bigint, Interaction>).values()][0];
-        if (interaction) resolve(interaction);
-        else reject(new Error(`InteractionCollector: ${reason}`));
-      });
-    }) as Promise<Interaction>
-  )
-    .then((a) => {
-      bot.helpers.sendInteractionResponse(a.id, a.token, {
-        type: InteractionResponseTypes.DeferredUpdateMessage,
-      });
-      return a;
-    })
-    .catch(() => null);
-};
+    return { ...c, placeholder: label, disabled: true };
+  });
 
-export { createButton, createActionRow, collectComponentInteractionWithCustomFilter };
+export { createButton, createActionRow, disableComponents };
