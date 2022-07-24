@@ -9,6 +9,8 @@ import { bot } from '../../index';
 type CanResolve = 'users' | false;
 
 export default class {
+  public replied = false;
+
   constructor(public interaction: Interaction, private i18n: TFunction) {}
 
   get author(): User {
@@ -20,10 +22,16 @@ export default class {
   }
 
   async makeMessage(options: InteractionApplicationCommandCallbackData): Promise<void> {
+    if (this.replied) {
+      bot.helpers.editInteractionResponse(this.interaction.token, options);
+      return;
+    }
+
     bot.helpers.sendInteractionResponse(this.interaction.id, this.interaction.token, {
       type: InteractionResponseTypes.ChannelMessageWithSource,
       data: options,
     });
+    this.replied = true;
   }
 
   getOption<T>(name: string, toResolve: CanResolve, required: true): T;
