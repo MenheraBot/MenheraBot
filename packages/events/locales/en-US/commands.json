@@ -148,7 +148,8 @@
       "embed_title": "HMMMM SNIFF SNIFF",
       "embed_description": "{{author}} is sniffing"
     },
-    "embed_description": "{{author}} sniffed {{mention}}"
+    "embed_description": "{{author}} sniffed {{mention}}",
+    "embed_title": "Sniff Sniff"
   },
   "pensar": {
     "bot": "Awnnn what a beautiful thing, you are thinking in a bot >.<",
