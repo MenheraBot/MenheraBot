@@ -9,6 +9,7 @@ import { getEnviroments } from '../utils/getEnviroments';
 import { MenheraClient } from '../types/menhera';
 import { logger } from '../utils/logger';
 import { loadCommands } from './command/loadCommands';
+import { updateAssets } from './cdnManager';
 
 const setupMenheraClient = (client: MenheraClient): void => {
   logger.debug('Setting up Menhera Client');
@@ -20,7 +21,7 @@ const setupMenheraClient = (client: MenheraClient): void => {
 };
 
 const initializeServices = (): void => {
-  logger.debug('LLoading Locales');
+  logger.debug('Loading Locales');
   loadLocales();
 
   logger.debug('Initializing Sentry');
@@ -28,6 +29,9 @@ const initializeServices = (): void => {
 
   logger.debug('Starting Bicho Game');
   startBichoGame();
+
+  logger.debug('Updating Assets');
+  updateAssets();
 };
 
 const setupInternals = (bot: Bot, restIPC: Client): void => {

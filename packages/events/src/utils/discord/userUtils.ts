@@ -1,6 +1,7 @@
-import { ImageSize, routes } from 'discordeno/*';
+import { ImageSize, routes } from 'discordeno';
 import { User } from 'discordeno/transformers';
-import { bot } from '../index';
+
+import { bot } from '../../index';
 
 const getUserAvatar = (
   user: User,
@@ -18,4 +19,6 @@ const getUserAvatar = (
   return bot.utils.formatImageURL(routes.USER_DEFAULT_AVATAR(Number(user.discriminator) % 5));
 };
 
-export { getUserAvatar };
+const mentionUser = (userId: bigint): string => `<@${userId}>`;
+
+export { getUserAvatar, mentionUser };

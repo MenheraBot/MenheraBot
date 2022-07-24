@@ -53,5 +53,5 @@ export const updateAssets = async (): Promise<void> => {
 
   assetsLimit = result.data;
 
-  return logger.info('Assets have been updated');
+  return logger.info('[CDN] Assets have been updated');
 };

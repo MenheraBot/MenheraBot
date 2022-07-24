@@ -1,4 +1,4 @@
-export const emojis = {
+export const EMOJIS = {
   success: '<:positivo:759603958485614652>',
   error: '<:negacao:759603958317711371>',
   warn: '<:atencao:759603958418767922>',
@@ -73,3 +73,24 @@ export const emojis = {
   poison: '🧪',
   heal: '💊',
 };
+
+export const COLORS = {
+  Default: 0xa788ff,
+  HuntDefault: 0xdf93fd,
+  HuntDemons: 0xdf1b1b,
+  HuntAngels: 0xefe9e9,
+  HuntDemigods: 0x3cb5f0,
+  HuntGods: 0xb115bf,
+  HuntGiants: 0xfa611f,
+  HuntArchangels: 0xa2f29e,
+  Aqua: 0x03f3ff,
+  Purple: 0x7f28c4,
+  ACTIONS: 0xfa8cc5,
+  Colorless: 0x36393f,
+  Pinkie: 0xeab3fa,
+  Pear: 0x74bd63,
+  UltraPink: 0xff29ae,
+  Battle: 0xe3beff,
+};
+
+export const TODAYS_YEAR = new Date().getFullYear();

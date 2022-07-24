@@ -1,9 +1,12 @@
 import { User } from 'discordeno/transformers';
 import { ApplicationCommandOptionTypes } from 'discordeno/types';
-import { getAssetLink } from 'structures/cdnManager';
-import { getUserAvatar } from 'utils/userUtils';
 
+import { TODAYS_YEAR, COLORS } from '../../structures/constants';
+import { getAssetLink } from '../../structures/cdnManager';
+import { getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
 import { ChatInputInteractionCommand } from '../../types/commands';
+import { createEmbed } from '../../utils/discord/createEmbed';
+import { capitalize } from '../../utils/stringUtils';
 
 const AngryCommand: ChatInputInteractionCommand = {
   path: '',
@@ -45,7 +48,43 @@ const AngryCommand: ChatInputInteractionCommand = {
     const avatar = getUserAvatar(ctx.author, { enableGif: true });
     const selectedImage = getAssetLink('angry');
 
-    console.log(reason);
+    if (!user || user.id === ctx.author.id) {
+      const embed = createEmbed({
+        title: ctx.locale('commands:raiva.no-mention.embed_title'),
+        color: COLORS.ACTIONS,
+        description: ctx.locale('commands:raiva.no-mention.embed_description', {
+          author: mentionUser(ctx.author.id),
+        }),
+        thumbnail: { url: avatar },
+        image: { url: selectedImage },
+      });
+
+      if (reason)
+        embed.description = `${embed.description}\n\n_"${capitalize(
+          reason,
+        )}"_ - ${ctx.author.username.toUpperCase()}, ${TODAYS_YEAR}`;
+
+      await ctx.makeMessage({ embeds: [embed] });
+      return;
+    }
+
+    const embed = createEmbed({
+      title: ctx.locale('commands:raiva.no-mention.embed_title'),
+      description: ctx.locale('commands:raiva.embed_description', {
+        author: mentionUser(ctx.author.id),
+        mention: mentionUser(user.id),
+      }),
+      image: { url: selectedImage },
+      color: COLORS.ACTIONS,
+      thumbnail: { url: avatar },
+    });
+
+    if (reason)
+      embed.description = `${embed.description}\n\n_"${capitalize(
+        reason,
+      )}"_ - ${ctx.author.username.toUpperCase()}, ${TODAYS_YEAR}`;
+
+    await ctx.makeMessage({ embeds: [embed] });
   },
 };
 
