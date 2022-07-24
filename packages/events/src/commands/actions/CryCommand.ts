@@ -68,7 +68,7 @@ const CryCommand = createCommand({
     }
 
     const embed = createEmbed({
-      title: ctx.locale('commands:chorar.no-mention.embed_title'),
+      title: ctx.locale('commands:chorar.embed_title'),
       description: ctx.locale('commands:chorar.embed_description', {
         author: mentionUser(ctx.author.id),
         mention: mentionUser(user.id),

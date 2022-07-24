@@ -61,7 +61,7 @@ const FearCommand = createCommand({
     }
 
     const embed = createEmbed({
-      title: ctx.locale('commands:medo.no-mention.embed_title'),
+      title: ctx.locale('commands:medo.embed_title'),
       description: ctx.locale('commands:medo.embed_description', {
         author: mentionUser(ctx.author.id),
         mention: mentionUser(user.id),

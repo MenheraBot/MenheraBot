@@ -68,7 +68,7 @@ const DisgustedCommand = createCommand({
     }
 
     const embed = createEmbed({
-      title: ctx.locale('commands:nojo.no-mention.embed_title'),
+      title: ctx.locale('commands:nojo.embed_title'),
       description: ctx.locale('commands:nojo.embed_description', {
         author: mentionUser(ctx.author.id),
         mention: mentionUser(user.id),
