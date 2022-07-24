@@ -5,7 +5,7 @@ import { logger } from '../utils/logger';
 import { bot } from '../index';
 import { getEnviroments } from '../utils/getEnviroments';
 
-const createIpcConnections = (): Client => {
+const createIpcConnections = async (): Promise<Client> => {
   const { REST_SOCKET_PATH, EVENT_SOCKET_PATH } = getEnviroments([
     'REST_SOCKET_PATH',
     'EVENT_SOCKET_PATH',
@@ -41,13 +41,13 @@ const createIpcConnections = (): Client => {
     process.exit(1);
   };
 
-  restClient.connect().catch(panic);
-  eventClient.connect().catch(panic);
-
   eventClient.on('message', (msg: { data: DiscordGatewayPayload; shardId: number }) => {
     if (msg.data.t && msg.data.t !== 'RESUMED')
       bot.handlers[msg.data.t]?.(bot, msg.data, msg.shardId);
   });
+
+  await restClient.connect().catch(panic);
+  await eventClient.connect().catch(panic);
 
   return restClient;
 };

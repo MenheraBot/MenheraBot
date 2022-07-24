@@ -9,13 +9,14 @@ import { logger } from '../utils/logger';
 // eslint-disable-next-line no-underscore-dangle
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const loadLocales = (): void => {
+const loadLocales = async (): Promise<void> => {
   const namespaces = readdirSync(path.resolve(__dirname, '..', '..', 'locales', 'pt-BR')).map((a) =>
     a.replace('.json', ''),
   );
 
   const filepath = path.resolve(__dirname, '..', '..', 'locales');
-  i18next
+
+  await i18next
     .use(translationBackend)
     .init({
       ns: namespaces,

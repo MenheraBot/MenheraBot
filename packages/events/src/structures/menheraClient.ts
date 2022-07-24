@@ -20,9 +20,9 @@ const setupMenheraClient = (client: MenheraClient): void => {
   logger.debug('after Commands');
 };
 
-const initializeServices = (): void => {
+const initializeServices = async (): Promise<void> => {
   logger.debug('Loading Locales');
-  loadLocales();
+  await loadLocales();
 
   logger.debug('Initializing Sentry');
   initializeSentry();
@@ -31,7 +31,7 @@ const initializeServices = (): void => {
   startBichoGame();
 
   logger.debug('Updating Assets');
-  updateAssets();
+  await updateAssets();
 };
 
 const setupInternals = (bot: Bot, restIPC: Client): void => {
