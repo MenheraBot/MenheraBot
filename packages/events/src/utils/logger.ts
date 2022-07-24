@@ -11,6 +11,11 @@ const logger = {
   info: (...args: unknown[]): void => {
     console.info(...args);
   },
+
+  panic: (...args: unknown[]): void => {
+    console.error(...args);
+    process.exit(1);
+  },
 };
 
 export { logger };

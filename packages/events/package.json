@@ -22,6 +22,8 @@
     "axios": "^0.27.2",
     "i18next": "^21.8.14",
     "i18next-fs-backend": "^1.1.4",
+    "ioredis": "^5.2.2",
+    "mongoose": "^6.4.6",
     "net-ipc": "^2.0.1"
   },
   "devDependencies": {

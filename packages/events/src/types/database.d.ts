@@ -47,3 +47,35 @@ export interface DatabaseUserSchema {
   lastCommandAt: number;
   isBot: boolean;
 }
+
+export interface DatabaseCreditsSchema {
+  themeId: number;
+  ownerId: string;
+  royalty: number;
+  totalEarned: number;
+  registeredAt: number;
+  timesSold: number;
+}
+
+export interface DatabaseUserThemesSchema {
+  readonly id: string;
+  cardsThemes: Array<IUserBuyableData>;
+  tableThemes: Array<IUserBuyableData>;
+  profileThemes: Array<IUserBuyableData>;
+  cardsBackgroundThemes: Array<IUserBuyableData>;
+  selectedCardTheme: number;
+  selectedTableTheme: number;
+  selectedProfileTheme: number;
+  selectedCardBackgroundTheme: number;
+  notifyPurchase: boolean;
+}
+
+export interface DatabaseGuildSchema {
+  readonly id: string;
+  lang: string;
+}
+export interface DatabaseCommandMaintenanceSchema {
+  readonly _id: string;
+  maintenance: boolean;
+  maintenanceReason: string | null;
+}

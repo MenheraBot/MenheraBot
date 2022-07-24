@@ -36,18 +36,13 @@ const createIpcConnections = async (): Promise<Client> => {
     logger.info('[EVENT] REST IPC connected');
   });
 
-  const panic = (err: Error) => {
-    logger.error(err);
-    process.exit(1);
-  };
-
   eventClient.on('message', (msg: { data: DiscordGatewayPayload; shardId: number }) => {
     if (msg.data.t && msg.data.t !== 'RESUMED')
       bot.handlers[msg.data.t]?.(bot, msg.data, msg.shardId);
   });
 
-  await restClient.connect().catch(panic);
-  await eventClient.connect().catch(panic);
+  await restClient.connect().catch(logger.panic);
+  await eventClient.connect().catch(logger.panic);
 
   return restClient;
 };
