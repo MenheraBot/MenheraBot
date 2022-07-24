@@ -1,7 +1,6 @@
 import { Interaction } from 'discordeno/transformers';
-import { InteractionResponseTypes, InteractionTypes } from 'discordeno/types';
+import { InteractionTypes } from 'discordeno/types';
 
-import { bot } from '../../index';
 import InteractionCollector, {
   InteractionCollectorOptions,
 } from '../../structures/InteractionCollector';
@@ -28,12 +27,7 @@ const collectComponentInteractionWithCustomFilter = async (
       });
     }) as Promise<Interaction>
   )
-    .then((a) => {
-      bot.helpers.sendInteractionResponse(a.id, a.token, {
-        type: InteractionResponseTypes.DeferredUpdateMessage,
-      });
-      return a;
-    })
+    .then((a) => a)
     .catch(() => null);
 };
 

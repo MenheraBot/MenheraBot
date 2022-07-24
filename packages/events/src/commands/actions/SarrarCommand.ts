@@ -1,7 +1,11 @@
 import { Interaction, User } from 'discordeno/transformers';
-import { ApplicationCommandOptionTypes, ButtonStyles } from 'discordeno/types';
+import {
+  ApplicationCommandOptionTypes,
+  ButtonStyles,
+  InteractionResponseTypes,
+} from 'discordeno/types';
 
-import { logger } from '../../utils/logger';
+import { bot } from '../../index';
 import { collectComponentInteractionWithCustomFilter } from '../../utils/discord/collectorUtils';
 import {
   createActionRow,
@@ -63,6 +67,10 @@ const SarrarCommand = createCommand({
     await ctx.makeMessage({ embeds: [embed], components: [createActionRow([button])] });
 
     const filter = async (int: Interaction): Promise<boolean> => {
+      bot.helpers.sendInteractionResponse(int.id, int.token, {
+        type: InteractionResponseTypes.DeferredUpdateMessage,
+      });
+
       if (int.user.toggles.bot) return false;
       if (int.data?.customId !== `${ctx.interaction.id}`) return false;
       if (int.user.id === ctx.author.id) return false;
