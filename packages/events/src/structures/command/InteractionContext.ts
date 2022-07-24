@@ -1,5 +1,5 @@
 import { InteractionApplicationCommandCallbackData, InteractionResponseTypes } from 'discordeno';
-import { Interaction } from 'discordeno/transformers';
+import { Interaction, User } from 'discordeno/transformers';
 import { TFunction } from 'i18next';
 
 import { emojis } from '../constants';
@@ -10,6 +10,10 @@ type CanResolve = 'users' | false;
 
 export default class {
   constructor(public interaction: Interaction, private i18n: TFunction) {}
+
+  get author(): User {
+    return this.interaction.user;
+  }
 
   prettyResponse(emoji: keyof typeof emojis, text: Translation, translateOptions = {}): string {
     return `${emojis[emoji] || '🐛'} **|** ${this.locale(text, translateOptions)}`;

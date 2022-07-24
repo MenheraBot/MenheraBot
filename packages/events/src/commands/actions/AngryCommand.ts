@@ -1,5 +1,7 @@
 import { User } from 'discordeno/transformers';
 import { ApplicationCommandOptionTypes } from 'discordeno/types';
+import { getAssetLink } from 'structures/cdnManager';
+import { getUserAvatar } from 'utils/userUtils';
 
 import { ChatInputInteractionCommand } from '../../types/commands';
 
@@ -39,6 +41,9 @@ const AngryCommand: ChatInputInteractionCommand = {
       });
       return;
     }
+
+    const avatar = getUserAvatar(ctx.author, { enableGif: true });
+    const selectedImage = getAssetLink('angry');
 
     console.log(reason);
   },
