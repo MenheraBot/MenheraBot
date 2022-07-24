@@ -9,7 +9,7 @@ import { capitalize } from '../../utils/stringUtils';
 import { createCommand } from '../../structures/command/createCommand';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 
-const KillCommand = createCommand({
+const KissCommand = createCommand({
   path: '',
   name: 'beijar',
   nameLocalizations: {
@@ -93,4 +93,4 @@ const KillCommand = createCommand({
   },
 });
 
-export default KillCommand;
+export default KissCommand;
