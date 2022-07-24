@@ -1,8 +1,9 @@
 {
   "name": "@menhera-bot/events",
+  "type": "module",
   "version": "1.0.0",
   "engines": {
-    "node": "~16.10.0"
+    "node": ">=18"
   },
   "description": "Events manager for Menhera",
   "main": "dist/index.js",
@@ -13,7 +14,7 @@
   "scripts": {
     "build": "rm -rf dist && tsc --project tsconfig.json && yarn fix:problems",
     "fix:problems": "mv dist/src uwu && rm -rf dist && mv uwu dist",
-    "dev": "node --no-warnings -r dotenv/config ."
+    "dev": "node --es-module-specifier-resolution=node --no-warnings -r dotenv/config ."
   },
   "dependencies": {
     "@sentry/node": "^7.7.0",

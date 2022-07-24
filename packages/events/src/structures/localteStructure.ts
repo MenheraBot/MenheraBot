@@ -2,8 +2,12 @@ import { readdirSync } from 'node:fs';
 import path from 'node:path';
 import i18next from 'i18next';
 import translationBackend from 'i18next-fs-backend';
+import { fileURLToPath } from 'node:url';
 
 import { logger } from '../utils/logger';
+
+// eslint-disable-next-line no-underscore-dangle
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const loadLocales = (): void => {
   const namespaces = readdirSync(path.resolve(__dirname, '..', '..', 'locales', 'pt-BR')).map((a) =>
