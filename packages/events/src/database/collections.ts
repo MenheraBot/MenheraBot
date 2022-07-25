@@ -104,7 +104,7 @@ const rpgSchema = new Schema({
   backpack: { type: Object, default: { id: 100, level: 1 } },
 });
 
-export const Cmds = model<DatabaseCommandMaintenanceSchema>('Cmd', cmdSchema);
+export const Cmds = model<DatabaseCommandMaintenanceSchema>('command', cmdSchema);
 export const Guilds = model<DatabaseGuildSchema>('guild', guildSchema);
 export const Users = model<DatabaseUserSchema>('usersdb', userSchema);
 export const Themes = model<DatabaseUserThemesSchema>('themes', userThemes);

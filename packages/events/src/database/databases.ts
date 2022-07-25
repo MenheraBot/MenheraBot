@@ -4,7 +4,14 @@ import mongoose from 'mongoose';
 import { getEnviroments } from '../utils/getEnviroments';
 import { logger } from '../utils/logger';
 
-let RedisClient: Redis;
+// eslint-disable-next-line import/no-mutable-exports
+const RedisClient = new Redis({
+  db: process.env.NODE_ENV === 'development' ? 1 : 0,
+  lazyConnect: true,
+  maxRetriesPerRequest: 2,
+  connectTimeout: 5_000,
+  commandTimeout: 3_000,
+});
 
 const initializeMongo = async (): Promise<void> => {
   const { MONGO_URI } = getEnviroments(['MONGO_URI']);
@@ -18,17 +25,9 @@ const initializeMongo = async (): Promise<void> => {
 };
 
 const initializeRedis = async (): Promise<void> => {
-  RedisClient = new Redis({
-    db: process.env.NODE_ENV === 'development' ? 1 : 0,
-    lazyConnect: true,
-    maxRetriesPerRequest: 3,
-    connectTimeout: 5_000,
-    commandTimeout: 3_000,
-  });
-
   await RedisClient.ping()
     .then(() => logger.info('[DATABASE] - Redis connected successfully'))
     .catch((e) => logger.panic(`[DATABASE] - Error when connecting to Redis: ${e}`));
 };
 
-export { initializeMongo, initializeRedis };
+export { initializeMongo, initializeRedis, RedisClient };

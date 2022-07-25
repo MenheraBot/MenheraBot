@@ -5,6 +5,7 @@ import {
   InteractionResponseTypes,
 } from 'discordeno/types';
 
+import blacklistRepository from '../../database/repositories/blacklistRepository';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import { bot } from '../../index';
 import { collectComponentInteractionWithCustomFilter } from '../../utils/discord/collectorUtils';
@@ -85,9 +86,9 @@ const SarrarCommand = createCommand({
         type: InteractionResponseTypes.DeferredUpdateMessage,
       });
 
-      // TODO: Check if the user is banned with blacklist respository
+      const banned = await blacklistRepository.isUserBanned(int.user.id);
 
-      return true;
+      return !banned;
     };
 
     const collected = await collectComponentInteractionWithCustomFilter(
