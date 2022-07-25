@@ -2,6 +2,7 @@ import { InteractionApplicationCommandCallbackData, InteractionResponseTypes } f
 import { Interaction, User } from 'discordeno/transformers';
 import { TFunction } from 'i18next';
 
+import { MessageFlags } from 'utils/discord/messageUtils';
 import { EMOJIS } from '../constants';
 import { Translation } from '../../types/i18next';
 import { bot } from '../../index';
@@ -60,10 +61,13 @@ export default class {
     return found?.value as T;
   }
 
-  async defer(): Promise<void> {
+  async defer(ephemeral = false): Promise<void> {
     this.replied = true;
     bot.helpers.sendInteractionResponse(this.interaction.id, this.interaction.token, {
       type: InteractionResponseTypes.DeferredChannelMessageWithSource,
+      data: {
+        flags: ephemeral ? MessageFlags.EPHEMERAL : undefined,
+      },
     });
   }
 
