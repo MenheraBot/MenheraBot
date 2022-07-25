@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+import mongoose from 'mongoose';
 
 import {
   DatabaseCommandMaintenanceSchema,
@@ -8,6 +8,8 @@ import {
   DatabaseUserThemesSchema,
 } from '../types/database';
 import { DatabaseRoleplayUserSchema } from '../modules/roleplay/types';
+
+const { Schema, model } = mongoose;
 
 const cmdSchema = new Schema({
   _id: { type: String },
@@ -104,9 +106,9 @@ const rpgSchema = new Schema({
   backpack: { type: Object, default: { id: 100, level: 1 } },
 });
 
-export const Cmds = model<DatabaseCommandMaintenanceSchema>('command', cmdSchema);
-export const Guilds = model<DatabaseGuildSchema>('guild', guildSchema);
-export const Users = model<DatabaseUserSchema>('usersdb', userSchema);
-export const Themes = model<DatabaseUserThemesSchema>('themes', userThemes);
-export const Credits = model<DatabaseCreditsSchema>('credits', themeCredits);
-export const Rpgs = model<DatabaseRoleplayUserSchema>('roleplay', rpgSchema);
+export const commandsModel = model<DatabaseCommandMaintenanceSchema>('command', cmdSchema);
+export const guildsModel = model<DatabaseGuildSchema>('guild', guildSchema);
+export const usersModel = model<DatabaseUserSchema>('usersdb', userSchema);
+export const userThemesModel = model<DatabaseUserThemesSchema>('themes', userThemes);
+export const themeCreditsModel = model<DatabaseCreditsSchema>('credits', themeCredits);
+export const roleplayUsersModel = model<DatabaseRoleplayUserSchema>('roleplay', rpgSchema);
