@@ -1,15 +1,34 @@
+import Redis from 'ioredis';
 import mongoose from 'mongoose';
 
 import { getEnviroments } from '../utils/getEnviroments';
 import { logger } from '../utils/logger';
 
+let RedisClient: Redis;
+
 const initializeMongo = async (): Promise<void> => {
   const { MONGO_URI } = getEnviroments(['MONGO_URI']);
 
   await mongoose
-    .connect(MONGO_URI)
+    .connect(MONGO_URI, {
+      serverSelectionTimeoutMS: 5_000,
+    })
     .catch((e) => logger.panic(`[DATABASE] - Error when connecting to MongoDB: ${e}`))
     .then(() => logger.info('[DATABASE] - MongoDB connected successfully'));
 };
 
-export { initializeMongo };
+const initializeRedis = async (): Promise<void> => {
+  RedisClient = new Redis({
+    db: process.env.NODE_ENV === 'development' ? 1 : 0,
+    lazyConnect: true,
+    maxRetriesPerRequest: 3,
+    connectTimeout: 5_000,
+    commandTimeout: 3_000,
+  });
+
+  await RedisClient.ping()
+    .then(() => logger.info('[DATABASE] - Redis connected successfully'))
+    .catch((e) => logger.panic(`[DATABASE] - Error when connecting to Redis: ${e}`));
+};
+
+export { initializeMongo, initializeRedis };
