@@ -18,7 +18,7 @@ const VanGoghApi = axios.create({
   },
 });
 
-enum VangoghRoutes {
+export enum VanGoghEndpoints {
   Fluffety = 'fluffety',
   Astolfo = 'astolfo',
   Vasco = 'vasco',
@@ -45,7 +45,7 @@ interface SuccessReturn {
 
 export type VanGoghReturnData = ErrorReturn | SuccessReturn;
 
-const vanGoghRequest = async <T>(route: VangoghRoutes, data: T): Promise<VanGoghReturnData> => {
+const vanGoghRequest = async <T>(route: VanGoghEndpoints, data: T): Promise<VanGoghReturnData> => {
   const result = await VanGoghApi.post(`/${route}`, data).catch(() => null);
   if (!result) return { err: true };
   return { err: false, data: Buffer.from(result.data, 'base64') };

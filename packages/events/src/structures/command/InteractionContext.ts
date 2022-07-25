@@ -38,7 +38,7 @@ export default class {
     this.replied = true;
   }
 
-  getOption<T>(name: string, toResolve: CanResolve, required: true): T;
+  getOption<T>(name: string, shouldResolve: CanResolve, required: true): T;
 
   getOption<T>(name: string, shouldResolve: CanResolve, required?: false): T | undefined;
 
@@ -58,6 +58,13 @@ export default class {
       ) as unknown as T;
 
     return found?.value as T;
+  }
+
+  async defer(): Promise<void> {
+    this.replied = true;
+    bot.helpers.sendInteractionResponse(this.interaction.id, this.interaction.token, {
+      type: InteractionResponseTypes.DeferredChannelMessageWithSource,
+    });
   }
 
   locale(text: Translation, options: Record<string, unknown> = {}): string {
