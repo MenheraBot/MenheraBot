@@ -7,7 +7,7 @@ import { TODAYS_YEAR, COLORS } from '../../structures/constants';
 import { getAssetLink } from '../../structures/cdnManager';
 import { getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
 import { createEmbed } from '../../utils/discord/createEmbed';
-import { capitalize } from '../../utils/stringUtils';
+import { capitalize } from '../../utils/miscUtils';
 
 const ShotCommand = createCommand({
   path: '',
