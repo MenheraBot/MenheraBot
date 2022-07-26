@@ -40,7 +40,7 @@ interface ErrorReturn {
 
 interface SuccessReturn {
   err?: false;
-  data: Buffer;
+  data: Blob;
 }
 
 export type VanGoghReturnData = ErrorReturn | SuccessReturn;
@@ -49,7 +49,7 @@ const vanGoghRequest = async <T>(route: VanGoghEndpoints, data: T): Promise<VanG
   const result = await VanGoghApi.post(`/${route}`, data).catch(() => null);
   if (!result) return { err: true };
 
-  return { err: false, data: Buffer.from(result.data, 'base64') };
+  return { err: false, data: Buffer.from(result.data, 'base64') as unknown as Blob };
 };
 
 export { vanGoghRequest };
