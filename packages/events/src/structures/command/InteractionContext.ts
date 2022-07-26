@@ -28,15 +28,15 @@ export default class {
 
   async makeMessage(options: InteractionApplicationCommandCallbackData): Promise<void> {
     if (this.replied) {
-      bot.helpers.editInteractionResponse(this.interaction.token, options);
+      await bot.helpers.editInteractionResponse(this.interaction.token, options);
       return;
     }
+    this.replied = true;
 
-    bot.helpers.sendInteractionResponse(this.interaction.id, this.interaction.token, {
+    await bot.helpers.sendInteractionResponse(this.interaction.id, this.interaction.token, {
       type: InteractionResponseTypes.ChannelMessageWithSource,
       data: options,
     });
-    this.replied = true;
   }
 
   getOption<T>(name: string, shouldResolve: CanResolve, required: true): T;

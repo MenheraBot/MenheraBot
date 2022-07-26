@@ -1,5 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ApplicationCommandOptionTypes } from 'discordeno/types';
-import { Blob } from 'node:buffer';
 
 import { COLORS, EMOJIS } from '../../structures/constants';
 import { createEmbed } from '../../utils/discord/createEmbed';
@@ -150,7 +150,7 @@ const EightballCommand = createCommand({
       embeds: [embed],
       file: {
         name: 'bolita-oititcho.png',
-        blob: new Blob([res.data], { type: 'image/png' }),
+        blob: res.data as unknown as Blob,
       },
     });
   },

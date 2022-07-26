@@ -1,5 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { BASE_URL, createRestManager } from 'discordeno';
-import { IpcRequest } from 'types';
+import { Blob } from 'node:buffer';
+
+import { IpcRequest } from './types';
 import config from './config';
 
 const { DISCORD_TOKEN, REST_AUTHORIZATION } = config(['DISCORD_TOKEN', 'REST_AUTHORIZATION']);
@@ -18,6 +21,9 @@ export default async (data: IpcRequest): Promise<unknown> => {
       },
     };
   }
+
+  if (data.body && typeof (data.body as any)?.file !== 'undefined')
+    (data.body as any).file.blob = new Blob([Buffer.from((data.body as any).file.blob)]);
 
   const result = await rest
     .runMethod(
