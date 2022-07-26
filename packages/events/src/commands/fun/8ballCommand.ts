@@ -150,7 +150,7 @@ const EightballCommand = createCommand({
       embeds: [embed],
       file: {
         name: 'bolita-oititcho.png',
-        blob: res.data as unknown as Blob,
+        blob: res.data,
       },
     });
   },
