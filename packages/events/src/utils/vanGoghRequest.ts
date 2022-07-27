@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Blob } from 'node:buffer';
 
 import { getEnviroments } from './getEnviroments';
 
@@ -49,7 +50,10 @@ const vanGoghRequest = async <T>(route: VanGoghEndpoints, data: T): Promise<VanG
   const result = await VanGoghApi.post(`/${route}`, data).catch(() => null);
   if (!result) return { err: true };
 
-  return { err: false, data: Buffer.from(result.data, 'base64') as unknown as Blob };
+  return {
+    err: false,
+    data: result.data as unknown as Blob,
+  };
 };
 
 export { vanGoghRequest };

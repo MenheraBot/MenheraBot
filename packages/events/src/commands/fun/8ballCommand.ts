@@ -143,13 +143,13 @@ const EightballCommand = createCommand({
       return;
     }
 
-    embed.image = { url: 'attachment://bolita-oititcho.png' };
+    embed.image = { url: `attachment://bola-oititcho.png` };
     embed.color = COLORS.Purple;
 
     await ctx.makeMessage({
       embeds: [embed],
       file: {
-        name: 'bolita-oititcho.png',
+        name: `bola-oititcho.png`,
         blob: res.data,
       },
     });

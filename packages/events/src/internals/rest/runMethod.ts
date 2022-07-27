@@ -1,4 +1,5 @@
 import { RestManager } from 'discordeno';
+
 import { Client } from 'net-ipc';
 
 import { logger } from '../../utils/logger';

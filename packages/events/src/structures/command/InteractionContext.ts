@@ -1,4 +1,4 @@
-import { InteractionApplicationCommandCallbackData, InteractionResponseTypes } from 'discordeno';
+import { InteractionResponseTypes, InteractionApplicationCommandCallbackData } from 'discordeno';
 import { Interaction, User } from 'discordeno/transformers';
 import { TFunction } from 'i18next';
 

@@ -22,9 +22,12 @@ export default async (data: IpcRequest): Promise<unknown> => {
     };
   }
 
-  if (data.body && typeof (data.body as any)?.file !== 'undefined')
-    (data.body as any).file.blob = new Blob([Buffer.from((data.body as any).file.blob)]);
-
+  if (data.body && typeof (data.body as any)?.file !== 'undefined') {
+    (data.body as any).file.blob = new Blob([Buffer.from((data.body as any).file.blob, 'base64')], {
+      encoding: 'base64',
+      type: 'image/png',
+    });
+  }
   const result = await rest
     .runMethod(
       rest,
