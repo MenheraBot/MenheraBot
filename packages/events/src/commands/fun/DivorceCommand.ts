@@ -1,11 +1,15 @@
 import { ButtonStyles } from 'discordeno/types';
 
+import { mentionUser } from '../../utils/discord/userUtils';
+import relationshipRepostory from '../../database/repositories/relationshipRepostory';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import { createCommand } from '../../structures/command/createCommand';
 import {
   createActionRow,
   createButton,
+  disableComponents,
   generateCustomId,
+  resolveCustomId,
 } from '../../utils/discord/componentUtils';
 import { collectResponseComponentInteraction } from '../../utils/discord/collectorUtils';
 
@@ -48,6 +52,33 @@ const DivorceCommand = createCommand({
       ctx.author.id,
       `${ctx.interaction.id}`,
     );
+
+    if (!collected)
+      return ctx.makeMessage({
+        components: [
+          createActionRow(
+            disableComponents(ctx.locale('common:timesup'), [confirmButton, cancelButton]),
+          ),
+        ],
+      });
+
+    const selectedButton = resolveCustomId(collected.data?.customId as string);
+
+    if (selectedButton === 'CANCEL')
+      return ctx.makeMessage({
+        components: [],
+        content: ctx.prettyResponse('error', 'commands:divorciar.canceled'),
+      });
+
+    ctx.makeMessage({
+      content: ctx.prettyResponse('success', 'commands:divorciar.confirmed', {
+        author: mentionUser(ctx.author.id),
+        mention: mentionUser(ctx.authorData.married),
+      }),
+      components: [],
+    });
+
+    await relationshipRepostory.executeDivorce(ctx.author.id, ctx.authorData.married);
   },
 });
 

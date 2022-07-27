@@ -19,6 +19,12 @@ const generateCustomId = <R = false>(
     : [string, number | bigint];
 };
 
+const resolveCustomId = (customId: string): string =>
+  customId
+    .replace(/^[\s\d]+/, '')
+    .replace('|', '')
+    .trim();
+
 const createButton = (component: PropertyOptional<ButtonComponent, 'type'>): ButtonComponent => ({
   ...component,
   type: MessageComponentTypes.Button,
@@ -45,4 +51,4 @@ const disableComponents = (
     return { ...c, placeholder: label, disabled: true };
   });
 
-export { createButton, createActionRow, disableComponents, generateCustomId };
+export { createButton, createActionRow, disableComponents, generateCustomId, resolveCustomId };

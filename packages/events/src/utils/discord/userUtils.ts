@@ -19,6 +19,6 @@ const getUserAvatar = (
   return bot.utils.formatImageURL(routes.USER_DEFAULT_AVATAR(Number(user.discriminator) % 5));
 };
 
-const mentionUser = (userId: bigint): string => `<@${userId}>`;
+const mentionUser = (userId: bigint | string): string => `<@${userId}>`;
 
 export { getUserAvatar, mentionUser };

@@ -79,3 +79,5 @@ export interface DatabaseCommandMaintenanceSchema {
   maintenance: boolean;
   maintenanceReason: string | null;
 }
+
+export type UserIdType = string | bigint;

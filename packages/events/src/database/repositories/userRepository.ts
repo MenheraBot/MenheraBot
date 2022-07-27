@@ -1,7 +1,7 @@
 import { UpdateQuery } from 'mongoose';
 
 import { usersModel } from '../collections';
-import { DatabaseUserSchema } from '../../types/database';
+import { DatabaseUserSchema, UserIdType } from '../../types/database';
 import { RedisClient } from '../databases';
 
 const parseMongoUserToRedisUser = (user: DatabaseUserSchema): DatabaseUserSchema => ({
@@ -38,14 +38,25 @@ const parseMongoUserToRedisUser = (user: DatabaseUserSchema): DatabaseUserSchema
 });
 
 const updateUser = async (
-  userId: bigint,
+  userId: UserIdType,
   query: UpdateQuery<DatabaseUserSchema>,
 ): Promise<void> => {
   await usersModel.updateOne({ id: userId }, { ...query, lastCommandAt: Date.now() });
+
+  const fromRedis = await RedisClient.get(`user:${userId}`);
+
+  if (fromRedis) {
+    const data = JSON.parse(fromRedis);
+
+    console.log('old', data);
+    console.log('after', { ...data, ...query });
+
+    await RedisClient.setex(`user:${userId}`, 3600, JSON.stringify({ ...data, ...query }));
+  }
 };
 
 const findOrCreate = async (
-  userId: bigint,
+  userId: UserIdType,
   projection: Array<keyof DatabaseUserSchema> = [],
 ): Promise<DatabaseUserSchema> => {
   const fromRedis = await RedisClient.get(`user:${userId}`);
@@ -75,7 +86,7 @@ const findOrCreate = async (
   return fromMongo;
 };
 
-const getBannedUserInfo = async (userId: bigint): Promise<DatabaseUserSchema | null> => {
+const getBannedUserInfo = async (userId: UserIdType): Promise<DatabaseUserSchema | null> => {
   return usersModel.findOne({ id: userId }, ['ban', 'banReason'], { lean: true });
 };
 
