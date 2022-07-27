@@ -15,7 +15,7 @@ import {
 } from '../../utils/discord/componentUtils';
 import { collectResponseComponentInteraction } from '../../utils/discord/collectorUtils';
 
-const DivorceCommand = createCommand({
+const MarryCommand = createCommand({
   path: '',
   name: 'casar',
   nameLocalizations: { 'en-US': 'marry' },
@@ -132,4 +132,4 @@ const DivorceCommand = createCommand({
   },
 });
 
-export default DivorceCommand;
+export default MarryCommand;
