@@ -9,7 +9,7 @@ const generateCustomId = <R = false>(
 ): R extends false ? string : [string, number | bigint] => {
   const randomNumber = baseId ?? Math.floor(Date.now() + Math.random() * 100);
 
-  if (returnBase)
+  if (!returnBase)
     return `${randomNumber} | ${customIdentifier}` as R extends false
       ? string
       : [string, number | bigint];
