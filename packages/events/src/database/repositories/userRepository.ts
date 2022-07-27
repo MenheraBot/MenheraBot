@@ -11,7 +11,7 @@ const parseMongoUserToRedisUser = (user: DatabaseUserSchema): DatabaseUserSchema
   lastCommandAt: user.lastCommandAt,
   archangels: user.archangels,
   badges: user.badges,
-  id: user.id,
+  id: `${user.id}`,
   colors: user.colors,
   demigods: user.demigods,
   demons: user.demons,
@@ -27,25 +27,22 @@ const parseMongoUserToRedisUser = (user: DatabaseUserSchema): DatabaseUserSchema
   itemsLimit: user.itemsLimit,
   mamado: user.mamado,
   mamou: user.mamou,
-  married: user.married,
+  married: user.married ? `${user.married}` : null,
   marriedAt: user.marriedAt,
   marriedDate: user.marriedDate,
   rolls: user.rolls,
   selectedColor: user.selectedColor,
-  trisal: user.trisal,
+  trisal: user.trisal ? user.trisal.map((usr) => `${usr}`) : [],
   voteCooldown: user.voteCooldown,
   votes: user.votes,
 });
 
-const findUser = async (
-  userId: UserIdType,
-  projection: Array<keyof DatabaseUserSchema> = [],
-): Promise<DatabaseUserSchema | null> => {
+const findUser = async (userId: UserIdType): Promise<DatabaseUserSchema | null> => {
   const fromRedis = await RedisClient.get(`user:${userId}`);
 
   if (fromRedis) return JSON.parse(fromRedis);
 
-  const fromMongo = await usersModel.findOne({ id: userId }, projection);
+  const fromMongo = await usersModel.findOne({ id: userId });
 
   if (fromMongo) {
     await RedisClient.setex(
@@ -71,26 +68,22 @@ const updateUser = async (
   if (fromRedis) {
     const data = JSON.parse(fromRedis);
 
-    console.log('old', data);
-    console.log('after', { ...data, ...query });
-
     await RedisClient.setex(
       `user:${userId}`,
       3600,
-      JSON.stringify({ ...data, ...query, lastCommandAt: Date.now() }),
+      JSON.stringify(
+        parseMongoUserToRedisUser({ ...data, ...query, lastCommandAt: Date.now(), id: userId }),
+      ),
     );
   }
 };
 
-const ensureFindUser = async (
-  userId: UserIdType,
-  projection: Array<keyof DatabaseUserSchema> = [],
-): Promise<DatabaseUserSchema> => {
+const ensureFindUser = async (userId: UserIdType): Promise<DatabaseUserSchema> => {
   const fromRedis = await RedisClient.get(`user:${userId}`);
 
   if (fromRedis) return JSON.parse(fromRedis);
 
-  const fromMongo = await usersModel.findOne({ id: userId }, projection);
+  const fromMongo = await usersModel.findOne({ id: userId });
 
   if (!fromMongo) {
     const newUser = await usersModel.create({ id: userId });
