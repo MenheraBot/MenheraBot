@@ -340,8 +340,7 @@
     "banned-user": "This user cannot be married because it is banned from Menhera!"
   },
   "ship": {
-    "unknow-user": "User not found",
-    "value": "Ship value:",
+    "description": "Ship value: **{{value}}%**\n\n{{shipText}}",
     "message-start": "Would the two lovebirds make a good couple?",
     "default": "Maybe the bot that is broken, or you will not work at all :(",
     "low": "Yeah, nothing is impossible right kekw",

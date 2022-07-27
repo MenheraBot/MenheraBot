@@ -5,7 +5,7 @@ import { bot } from '../../index';
 
 const getUserAvatar = (
   user: User,
-  { size = 256, enableGif }: { size?: ImageSize; enableGif?: boolean },
+  { size = 256, enableGif }: { size?: ImageSize; enableGif?: boolean } = {},
 ): string => {
   if (user.avatar) {
     const hash = bot.utils.iconBigintToHash(user.avatar);

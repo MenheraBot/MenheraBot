@@ -12,7 +12,7 @@ import { Translation } from '../../types/i18next';
 import { bot } from '../../index';
 import { DatabaseUserSchema } from '../../types/database';
 
-type CanResolve = 'users' | false;
+type CanResolve = 'users' | 'members' | false;
 
 export default class {
   public replied = false;

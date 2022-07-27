@@ -351,8 +351,7 @@
     "banned-user": "Este usuário não pode se casar pois está banido da Menhera!"
   },
   "ship": {
-    "value": "Valor do ship:",
-    "unknow-user": "Usuário não encontrado",
+    "description": "Valor do ship: **{{value}}%**\n\n{{shipText}}",
     "message-start": "Será que os dois pombinhos dariam um bom casal?",
     "default": "Talvez o bot que seja quebrado, ou vocês não darão certo mesmo :(",
     "low": "É, nada é impossível né k k k",
