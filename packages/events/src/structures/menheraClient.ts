@@ -13,8 +13,13 @@ import { loadCommands } from './command/loadCommands';
 import { updateAssets } from './cdnManager';
 
 const setupMenheraClient = (client: MenheraClient): void => {
+  const { OWNER_ID } = getEnviroments(['OWNER_ID']);
+
   logger.debug('Setting up Menhera Client');
+
   client.commands = new Map();
+
+  client.ownerId = BigInt(OWNER_ID);
 
   loadCommands();
 };
