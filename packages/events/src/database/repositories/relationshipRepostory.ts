@@ -23,4 +23,18 @@ const executeDivorce = async (userId: UserIdType, marryId: UserIdType): Promise<
   });
 };
 
-export default { executeMamar, executeDivorce };
+const executeMarry = async (userId: UserIdType, marryId: UserIdType): Promise<void> => {
+  userRepository.updateUser(userId, {
+    married: marryId,
+    marriedAt: Date.now(),
+    lastCommandAt: Date.now(),
+  });
+
+  userRepository.updateUser(marryId, {
+    married: userId,
+    marriedAt: Date.now(),
+    lastCommandAt: Date.now(),
+  });
+};
+
+export default { executeMamar, executeDivorce, executeMarry };

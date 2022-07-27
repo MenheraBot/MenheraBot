@@ -69,7 +69,7 @@ const setInteractionCreateEvent = (): void => {
 
     const authorData =
       command.authorDataFields.length > 0
-        ? await userRepository.findOrCreate(interaction.user.id, command.authorDataFields)
+        ? await userRepository.ensureFindUser(interaction.user.id, command.authorDataFields)
         : null;
 
     const guildLocale = i18next.getFixedT(interaction.guildLocale ?? 'pt-BR');

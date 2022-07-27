@@ -38,6 +38,7 @@ export default async (data: IpcRequest): Promise<unknown> => {
     )
     .catch((e) => {
       // eslint-disable-next-line no-console
+      console.log(e);
       console.log(e.message);
       return e;
     });

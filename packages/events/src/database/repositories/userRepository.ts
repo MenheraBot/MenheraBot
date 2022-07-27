@@ -37,6 +37,29 @@ const parseMongoUserToRedisUser = (user: DatabaseUserSchema): DatabaseUserSchema
   votes: user.votes,
 });
 
+const findUser = async (
+  userId: UserIdType,
+  projection: Array<keyof DatabaseUserSchema> = [],
+): Promise<DatabaseUserSchema | null> => {
+  const fromRedis = await RedisClient.get(`user:${userId}`);
+
+  if (fromRedis) return JSON.parse(fromRedis);
+
+  const fromMongo = await usersModel.findOne({ id: userId }, projection);
+
+  if (fromMongo) {
+    await RedisClient.setex(
+      `user:${userId}`,
+      3600,
+      JSON.stringify(parseMongoUserToRedisUser(fromMongo)),
+    );
+
+    return fromMongo;
+  }
+
+  return null;
+};
+
 const updateUser = async (
   userId: UserIdType,
   query: UpdateQuery<DatabaseUserSchema>,
@@ -51,11 +74,15 @@ const updateUser = async (
     console.log('old', data);
     console.log('after', { ...data, ...query });
 
-    await RedisClient.setex(`user:${userId}`, 3600, JSON.stringify({ ...data, ...query }));
+    await RedisClient.setex(
+      `user:${userId}`,
+      3600,
+      JSON.stringify({ ...data, ...query, lastCommandAt: Date.now() }),
+    );
   }
 };
 
-const findOrCreate = async (
+const ensureFindUser = async (
   userId: UserIdType,
   projection: Array<keyof DatabaseUserSchema> = [],
 ): Promise<DatabaseUserSchema> => {
@@ -90,4 +117,4 @@ const getBannedUserInfo = async (userId: UserIdType): Promise<DatabaseUserSchema
   return usersModel.findOne({ id: userId }, ['ban', 'banReason'], { lean: true });
 };
 
-export default { updateUser, getBannedUserInfo, findOrCreate };
+export default { updateUser, getBannedUserInfo, ensureFindUser, findUser };

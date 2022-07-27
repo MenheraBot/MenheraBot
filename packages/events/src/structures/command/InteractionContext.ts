@@ -36,6 +36,7 @@ export default class {
       await bot.helpers.editInteractionResponse(this.interaction.token, options);
       return;
     }
+
     this.replied = true;
 
     await bot.helpers.sendInteractionResponse(this.interaction.id, this.interaction.token, {
