@@ -69,7 +69,7 @@ const setInteractionCreateEvent = (): void => {
 
     const authorData =
       command.authorDataFields.length > 0
-        ? await userRepository.ensureFindUser(interaction.user.id, command.authorDataFields)
+        ? await userRepository.ensureFindUser(interaction.user.id)
         : null;
 
     const guildLocale = i18next.getFixedT(interaction.guildLocale ?? 'pt-BR');
@@ -82,6 +82,9 @@ const setInteractionCreateEvent = (): void => {
           cmd: command.name,
         }),
       );
+
+      // eslint-disable-next-line no-param-reassign
+      if (typeof err === 'string') err = new Error(err);
 
       if (err instanceof Error && err.stack) {
         const errorMessage = err.stack.length > 3800 ? `${err.stack.slice(0, 3800)}...` : err.stack;

@@ -42,7 +42,7 @@ const DivorceCommand = createCommand({
 
     ctx.makeMessage({
       content: ctx.prettyResponse('question', 'commands:divorciar.confirmation', {
-        marry: ctx.authorData.married,
+        married: ctx.authorData.married,
       }),
       components: [createActionRow([confirmButton, cancelButton])],
     });

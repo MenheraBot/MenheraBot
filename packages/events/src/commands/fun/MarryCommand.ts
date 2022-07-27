@@ -53,9 +53,7 @@ const DivorceCommand = createCommand({
         flags: MessageFlags.EPHEMERAL,
       });
 
-    const mentionData = await userRepository.findUser(mention.id, ['married', 'ban']);
-
-    console.log(mentionData);
+    const mentionData = await userRepository.findUser(mention.id);
 
     if (!mentionData)
       return ctx.makeMessage({
@@ -75,8 +73,6 @@ const DivorceCommand = createCommand({
         flags: MessageFlags.EPHEMERAL,
       });
 
-    await ctx.defer();
-
     const confirmButton = createButton({
       customId: generateCustomId('CONFIRM', ctx.interaction.id),
       label: ctx.locale('commands:casar.accept'),
@@ -88,8 +84,6 @@ const DivorceCommand = createCommand({
       label: ctx.locale('commands:casar.deny'),
       style: ButtonStyles.Danger,
     });
-
-    ctx.makeMessage({ content: 'aaa' });
 
     await ctx.makeMessage({
       content: ctx.prettyResponse('question', 'commands:casar.first-text', {
@@ -120,13 +114,16 @@ const DivorceCommand = createCommand({
     if (selectedButton === 'CANCEL')
       return ctx.makeMessage({
         components: [],
-        content: ctx.prettyResponse('error', 'commands:casar.negated'),
+        content: ctx.prettyResponse('error', 'commands:casar.negated', {
+          author: mentionUser(ctx.author.id),
+          toMarry: mentionUser(mention.id),
+        }),
       });
 
     ctx.makeMessage({
       content: ctx.prettyResponse('success', 'commands:casar.accepted', {
         author: mentionUser(ctx.author.id),
-        mention: mentionUser(mention.id),
+        toMarry: mentionUser(mention.id),
       }),
       components: [],
     });
