@@ -1,4 +1,8 @@
-import { InteractionResponseTypes, InteractionApplicationCommandCallbackData } from 'discordeno';
+import {
+  InteractionResponseTypes,
+  InteractionApplicationCommandCallbackData,
+  ApplicationCommandOptionTypes,
+} from 'discordeno';
 import { Interaction, User } from 'discordeno/transformers';
 import { TFunction } from 'i18next';
 
@@ -13,11 +17,29 @@ type CanResolve = 'users' | false;
 export default class {
   public replied = false;
 
+  private options: Required<Interaction>['data']['options'];
+
+  public subCommand: string | undefined;
+
+  public subCommandGround: string | undefined;
+
   constructor(
     public interaction: Interaction,
     public authorData: Readonly<DatabaseUserSchema>,
     private i18n: TFunction,
-  ) {}
+  ) {
+    this.options = interaction.data?.options ?? [];
+
+    if (this.options[0]?.type === ApplicationCommandOptionTypes.SubCommandGroup) {
+      this.subCommandGround = this.options[0].name;
+      this.options = this.options[0].options ?? [];
+    }
+
+    if (this.options[0]?.type === ApplicationCommandOptionTypes.SubCommand) {
+      this.subCommand = this.options[0].name;
+      this.options = this.options[0].options ?? [];
+    }
+  }
 
   get author(): User {
     return this.interaction.user;
@@ -45,14 +67,30 @@ export default class {
     });
   }
 
+  getSubCommandGroup(required = false): string {
+    const command = this.subCommandGround;
+
+    if (!command && required)
+      throw new Error(`SubCommandGroup is required in ${this.interaction.data?.name}`);
+
+    return command as string;
+  }
+
+  getSubCommand(required = true): string {
+    const command = this.subCommand;
+
+    if (!command && required)
+      throw new Error(`SubCommand is required in ${this.interaction.data?.name}`);
+
+    return command as string;
+  }
+
   getOption<T>(name: string, shouldResolve: CanResolve, required: true): T;
 
   getOption<T>(name: string, shouldResolve: CanResolve, required?: false): T | undefined;
 
   getOption<T>(name: string, shouldResolve: CanResolve, required?: boolean): T | undefined {
-    const found = this.interaction.data?.options?.find((option) => option.name === name) as
-      | { value: T }
-      | undefined;
+    const found = this.options?.find((option) => option.name === name) as { value: T } | undefined;
 
     if (!found && required)
       throw new Error(`Option ${name} is required in ${this.interaction.data?.name}`);

@@ -91,6 +91,7 @@ export const COLORS = {
   Pear: 0x74bd63,
   UltraPink: 0xff29ae,
   Battle: 0xe3beff,
+  Random: (): number => Math.floor(Math.random() * 0xffffff),
 };
 
 export const TODAYS_YEAR = new Date().getFullYear();
