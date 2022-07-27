@@ -2,6 +2,7 @@
 import { ApplicationCommandOptionTypes, ApplicationCommandTypes } from 'discordeno';
 
 import InteractionContext from '../structures/command/InteractionContext';
+import { DatabaseUserSchema } from './database';
 
 export interface ChatInputCommandConfig extends ChatInputApplicationCommandData {
   devsOnly?: true;
