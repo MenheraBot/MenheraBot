@@ -6,13 +6,18 @@ import { MessageFlags } from '../../utils/discord/messageUtils';
 import { EMOJIS } from '../constants';
 import { Translation } from '../../types/i18next';
 import { bot } from '../../index';
+import { DatabaseUserSchema } from '../../types/database';
 
 type CanResolve = 'users' | false;
 
 export default class {
   public replied = false;
 
-  constructor(public interaction: Interaction, private i18n: TFunction) {}
+  constructor(
+    public interaction: Interaction,
+    public authorData: Readonly<DatabaseUserSchema>,
+    private i18n: TFunction,
+  ) {}
 
   get author(): User {
     return this.interaction.user;
