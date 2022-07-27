@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ApplicationCommandOptionTypes } from 'discordeno/types';
 
 import { toWritableUtf } from '../../utils/miscUtils';
