@@ -1,23 +1,124 @@
-import { InteractionTypes } from 'discordeno/types';
+import { InteractionResponseTypes, InteractionTypes } from 'discordeno/types';
 import i18next from 'i18next';
-import InteractionContext from '../../structures/command/InteractionContext';
+
 import { logger } from '../../utils/logger';
+import { getEnviroments } from '../../utils/getEnviroments';
+import { DatabaseUserSchema } from '../../types/database';
+import { MessageFlags } from '../../utils/discord/messageUtils';
+import blacklistRepository from '../../database/repositories/blacklistRepository';
+import InteractionContext from '../../structures/command/InteractionContext';
 import { bot, interactionEmitter } from '../../index';
+import userRepository from '../../database/repositories/userRepository';
+import commandRepository from '../../database/repositories/commandRepository';
+import { createEmbed } from '../../utils/discord/createEmbed';
+
+const { ERROR_WEBHOOK_ID, ERROR_WEBHOOK_TOKEN } = getEnviroments([
+  'ERROR_WEBHOOK_ID',
+  'ERROR_WEBHOOK_TOKEN',
+]);
 
 const setInteractionCreateEvent = (): void => {
   bot.events.interactionCreate = async (_, interaction) => {
-    interactionEmitter.emit('interaction', interaction);
+    if (interaction.type !== InteractionTypes.ApplicationCommand) {
+      interactionEmitter.emit('interaction', interaction);
+      return;
+    }
 
-    logger.debug(`[EVENT] InteractionCreate: ${interaction.id}`);
+    const errorReply = async (content: string): Promise<void> => {
+      await bot.helpers.sendInteractionResponse(interaction.id, interaction.token, {
+        type: InteractionResponseTypes.ChannelMessageWithSource,
+        data: {
+          content,
+          flags: MessageFlags.EPHEMERAL,
+        },
+      });
+    };
 
-    if (interaction.type !== InteractionTypes.ApplicationCommand) return;
+    const isUserBanned = await blacklistRepository.isUserBanned(interaction.user.id);
 
-    const command = bot.commands.get(interaction.data?.name as string);
+    const T = i18next.getFixedT(interaction.user.locale ?? 'pt-BR');
 
-    if (command)
-      command.execute(
-        new InteractionContext(interaction, i18next.getFixedT(interaction.guildLocale ?? 'pt-BR')),
+    if (isUserBanned) {
+      const bannedInfo = await userRepository.getBannedUserInfo(interaction.user.id);
+
+      return errorReply(
+        `<:negacao:759603958317711371> | ${T('permissions:BANNED_INFO', {
+          banReason: bannedInfo?.banReason,
+        })}`,
       );
+    }
+
+    const commandName = interaction.data?.name as string;
+    const command = bot.commands.get(commandName);
+
+    if (!command) return errorReply(T('permissions:UNKNOWN_SLASH'));
+
+    // TODO: Check command single execution
+
+    if (command.devsOnly && interaction.user.id !== bot.ownerId)
+      return errorReply(T('permissions:ONLY_DEVS'));
+
+    const commandMaintenanceInfo = await commandRepository.getMaintenanceInfo(commandName);
+
+    if (commandMaintenanceInfo?.maintenance && interaction.user.id !== bot.ownerId)
+      return errorReply(
+        `<:negacao:759603958317711371> | ${T('events:maintenance', {
+          reason: commandMaintenanceInfo.maintenanceReason,
+        })}`,
+      );
+
+    const authorData =
+      command.authorDataFields.length > 0
+        ? await userRepository.findOrCreate(interaction.user.id, command.authorDataFields)
+        : null;
+
+    const guildLocale = i18next.getFixedT(interaction.guildLocale ?? 'pt-BR');
+
+    const ctx = new InteractionContext(interaction, authorData as DatabaseUserSchema, guildLocale);
+
+    await command.execute(ctx).catch((err) => {
+      errorReply(
+        T('events:error_embed.title', {
+          cmd: command.name,
+        }),
+      );
+
+      if (err instanceof Error && err.stack) {
+        const errorMessage = err.stack.length > 3800 ? `${err.stack.slice(0, 3800)}...` : err.stack;
+        const embed = createEmbed({
+          color: 0xfd0000,
+          title: `${process.env.NODE_ENV === 'development' ? '[BETA]' : ''} ${T(
+            'events:error_embed.title',
+            {
+              cmd: command.name,
+            },
+          )}`,
+          description: `\`\`\`js\n${errorMessage}\`\`\``,
+          fields: [
+            {
+              name: '<:atencao:759603958418767922> | Quem Usou',
+              value: `UserId: \`${interaction.user.id}\` \nServerId: \`${interaction.guildId}\``,
+            },
+          ],
+          timestamp: Date.now(),
+        });
+
+        bot.helpers.sendWebhook(BigInt(ERROR_WEBHOOK_ID), ERROR_WEBHOOK_TOKEN, { embeds: [embed] });
+      }
+    });
+
+    if (!interaction.guildId || process.env.NODE_ENV !== 'production') return;
+
+    logger.debug('Send Data to API');
+
+    /*  const data: ICommandUsedData = {
+      authorId: interaction.user.id,
+      guildId: interaction.guild.id,
+      commandName: command.config.name,
+      data: Date.now(),
+      args: interaction.options.data,
+      shardId: interaction.client.cluster?.id ?? 0,
+    }; */
   };
 };
 
