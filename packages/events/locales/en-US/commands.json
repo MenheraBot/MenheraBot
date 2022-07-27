@@ -296,7 +296,7 @@
     "author-single": "you are not married to anyone",
     "divorce": "Divorce",
     "cancel": "Cancel",
-    "confirmation": "Do you really want to divorce from",
+    "confirmation": "Do you really want to divorce from <@{{married}}>?",
     "canceled": "I think it’s good that you're still married, but if you thought about breaking up once, maybe you’ll think more often ... If the relationship doesn’t make you feel good, there’s no point in continuing…",
     "confirmed": "{{author}} just got divorced from {{mention}}\nI'm sorry for having finished everything ... But it's okay, all relationships are just experiences, you still have a lot of life ahead of you, and you will still find people who do you as well as you deserve"
   },

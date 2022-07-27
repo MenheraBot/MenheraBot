@@ -304,7 +304,7 @@
     "divorce": "Divorciar",
     "cancel": "Cancelar",
     "author-single": "Você não está casado com ninguém",
-    "confirmation": "Você realmente quer se divorciar de",
+    "confirmation": "Você realmente quer se divorciar de <@{{married}}>?",
     "canceled": "Eu acho bom que ainda estejam casados, mas se tu pensou em terminar uma vez, talvez pense mais vezes... Se o relacionamento não te faz bem, não tem por que continuar...",
     "confirmed": "{{author}} acaba de se divorciar de {{mention}}.\nEu sinto muito por ter acabado tudo... Mas ta tudo bem, todos relacionamentos são apenas experiências, tu ainda tem muita vida pela frente, e ainda vai encontrar pessoas que te fazem tão bem quanto tu merece"
   },

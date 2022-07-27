@@ -2,6 +2,23 @@ import { ActionRow, ButtonComponent, MessageComponentTypes } from 'discordeno/ty
 
 type PropertyOptional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 
+const generateCustomId = <R = false>(
+  customIdentifier: string,
+  baseId?: bigint | number,
+  returnBase?: R,
+): R extends false ? string : [string, number | bigint] => {
+  const randomNumber = baseId ?? Math.floor(Date.now() + Math.random() * 100);
+
+  if (returnBase)
+    return `${randomNumber} | ${customIdentifier}` as R extends false
+      ? string
+      : [string, number | bigint];
+
+  return [`${randomNumber} | ${customIdentifier}`, randomNumber] as R extends false
+    ? string
+    : [string, number | bigint];
+};
+
 const createButton = (component: PropertyOptional<ButtonComponent, 'type'>): ButtonComponent => ({
   ...component,
   type: MessageComponentTypes.Button,
@@ -28,4 +45,4 @@ const disableComponents = (
     return { ...c, placeholder: label, disabled: true };
   });
 
-export { createButton, createActionRow, disableComponents };
+export { createButton, createActionRow, disableComponents, generateCustomId };
