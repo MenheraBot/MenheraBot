@@ -1,9 +1,12 @@
 import { Interaction } from 'discordeno/transformers';
-import { InteractionTypes } from 'discordeno/types';
+import { InteractionResponseTypes, InteractionTypes } from 'discordeno/types';
+import i18next from 'i18next';
 
+import { bot } from '../../index';
 import InteractionCollector, {
   InteractionCollectorOptions,
 } from '../../structures/InteractionCollector';
+import { MessageFlags } from './messageUtils';
 
 const collectComponentInteractionWithCustomFilter = async (
   channelId: bigint,
@@ -36,14 +39,37 @@ const collectResponseComponentInteraction = async (
   userId: bigint,
   customId: string,
   time = 10_000,
+  defer = true,
 ): Promise<null | Interaction> => {
   return (
     new Promise((resolve, reject) => {
       const collector = new InteractionCollector({
         channelId,
-        filter: (interaction) =>
-          interaction.user.id === userId &&
-          (interaction.data?.customId as string).startsWith(customId),
+        filter: (interaction) => {
+          const isWantedButton = (interaction.data?.customId as string).startsWith(customId);
+
+          if (!isWantedButton) return false;
+
+          if (interaction.user.id !== userId) {
+            bot.helpers.sendInteractionResponse(interaction.id, interaction.token, {
+              type: InteractionResponseTypes.ChannelMessageWithSource,
+              data: {
+                content: i18next.getFixedT(interaction.locale ?? 'pt-BR')(
+                  'common:not-your-interaction',
+                ),
+                flags: MessageFlags.EPHEMERAL,
+              },
+            });
+            return false;
+          }
+
+          if (defer)
+            bot.helpers.sendInteractionResponse(interaction.id, interaction.token, {
+              type: InteractionResponseTypes.DeferredUpdateMessage,
+            });
+
+          return true;
+        },
         time,
         max: 1,
         interactionType: InteractionTypes.MessageComponent,
