@@ -78,6 +78,29 @@ const updateUser = async (
   }
 };
 
+const multiUpdateUsers = async (
+  userIds: string[],
+  query: UpdateQuery<DatabaseUserSchema>,
+): Promise<void> => {
+  await usersModel.updateMany({ id: { $in: userIds } }, { ...query, lastCommandAt: Date.now() });
+
+  userIds.forEach(async (id) => {
+    const fromRedis = await RedisClient.get(`user:${id}`);
+
+    if (fromRedis) {
+      const data = JSON.parse(fromRedis);
+
+      await RedisClient.setex(
+        `user:${id}`,
+        3600,
+        JSON.stringify(
+          parseMongoUserToRedisUser({ ...data, ...query, lastCommandAt: Date.now(), id }),
+        ),
+      );
+    }
+  });
+};
+
 const ensureFindUser = async (userId: UserIdType): Promise<DatabaseUserSchema> => {
   const fromRedis = await RedisClient.get(`user:${userId}`);
 
@@ -110,4 +133,4 @@ const getBannedUserInfo = async (userId: UserIdType): Promise<DatabaseUserSchema
   return usersModel.findOne({ id: userId }, ['ban', 'banReason'], { lean: true });
 };
 
-export default { updateUser, getBannedUserInfo, ensureFindUser, findUser };
+export default { updateUser, getBannedUserInfo, ensureFindUser, findUser, multiUpdateUsers };

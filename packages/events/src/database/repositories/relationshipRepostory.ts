@@ -7,6 +7,16 @@ const executeMamar = async (fromUserId: UserIdType, toUserId: UserIdType): Promi
   await usersModel.updateOne({ id: toUserId }, { $inc: { mamado: 1 } }, { upsert: true });
 };
 
+const executeUntrisal = async (
+  firstUser: UserIdType,
+  secondUser: UserIdType,
+  thirdUser: UserIdType,
+): Promise<void> => {
+  await userRepository.multiUpdateUsers([`${firstUser}`, `${secondUser}`, `${thirdUser}`], {
+    trisal: [],
+  });
+};
+
 const executeDivorce = async (userId: UserIdType, marryId: UserIdType): Promise<void> => {
   userRepository.updateUser(userId, {
     married: null,
@@ -37,4 +47,4 @@ const executeMarry = async (userId: UserIdType, marryId: UserIdType): Promise<vo
   });
 };
 
-export default { executeMamar, executeDivorce, executeMarry };
+export default { executeMamar, executeDivorce, executeMarry, executeUntrisal };
