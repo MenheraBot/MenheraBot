@@ -1,10 +1,9 @@
 import { UserIdType } from '../../types/database';
-import { usersModel } from '../collections';
 import userRepository from './userRepository';
 
 const executeMamar = async (fromUserId: UserIdType, toUserId: UserIdType): Promise<void> => {
-  await userRepository.updateUser(fromUserId, { $inc: { mamou: 1 } });
-  await usersModel.updateOne({ id: toUserId }, { $inc: { mamado: 1 } }, { upsert: true });
+  userRepository.updateUserWithSpecialData(fromUserId, { $inc: { mamou: 1 } });
+  userRepository.updateUserWithSpecialData(toUserId, { $inc: { mamado: 1 } });
 };
 
 const executeUntrisal = async (
@@ -14,6 +13,17 @@ const executeUntrisal = async (
 ): Promise<void> => {
   await userRepository.multiUpdateUsers([`${firstUser}`, `${secondUser}`, `${thirdUser}`], {
     trisal: [],
+  });
+};
+
+const executeTrisal = async (
+  firstUser: UserIdType,
+  secondUser: UserIdType,
+  thirdUser: UserIdType,
+): Promise<void> => {
+  await userRepository.multiUpdateUsers([`${firstUser}`, `${secondUser}`, `${thirdUser}`], {
+    trisal: [`${firstUser}`, `${secondUser}`, `${thirdUser}`],
+    lastCommandAt: Date.now(),
   });
 };
 
@@ -35,16 +45,16 @@ const executeDivorce = async (userId: UserIdType, marryId: UserIdType): Promise<
 
 const executeMarry = async (userId: UserIdType, marryId: UserIdType): Promise<void> => {
   userRepository.updateUser(userId, {
-    married: marryId,
+    married: `${marryId}`,
     marriedAt: Date.now(),
     lastCommandAt: Date.now(),
   });
 
   userRepository.updateUser(marryId, {
-    married: userId,
+    married: `${userId}`,
     marriedAt: Date.now(),
     lastCommandAt: Date.now(),
   });
 };
 
-export default { executeMamar, executeDivorce, executeMarry, executeUntrisal };
+export default { executeMamar, executeDivorce, executeTrisal, executeMarry, executeUntrisal };
