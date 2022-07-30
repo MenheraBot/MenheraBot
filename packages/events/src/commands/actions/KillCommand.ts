@@ -4,7 +4,7 @@ import { User } from 'discordeno/transformers';
 import { TODAYS_YEAR, COLORS } from '../../structures/constants';
 import { getAssetLink } from '../../structures/cdnManager';
 import { getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
-import { createEmbed } from '../../utils/discord/createEmbed';
+import { createEmbed } from '../../utils/discord/embedUtils';
 import { capitalize } from '../../utils/miscUtils';
 import { createCommand } from '../../structures/command/createCommand';
 import { MessageFlags } from '../../utils/discord/messageUtils';

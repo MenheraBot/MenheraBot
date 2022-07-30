@@ -19,7 +19,7 @@ import { createCommand } from '../../structures/command/createCommand';
 import { COLORS } from '../../structures/constants';
 import { getAssetLink } from '../../structures/cdnManager';
 import { getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
-import { createEmbed } from '../../utils/discord/createEmbed';
+import { createEmbed } from '../../utils/discord/embedUtils';
 
 const SarrarCommand = createCommand({
   path: '',

@@ -1,7 +1,7 @@
 import { ApplicationCommandOptionTypes } from 'discordeno/types';
 
 import { COLORS, EMOJIS } from '../../structures/constants';
-import { createEmbed } from '../../utils/discord/createEmbed';
+import { createEmbed } from '../../utils/discord/embedUtils';
 import { randomFromArray, toWritableUtf } from '../../utils/miscUtils';
 import { createCommand } from '../../structures/command/createCommand';
 import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';

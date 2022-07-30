@@ -7,7 +7,7 @@ import {
 import { Interaction, User } from 'discordeno/transformers';
 
 import InteractionCollector from '../../structures/InteractionCollector';
-import { createEmbed } from '../../utils/discord/createEmbed';
+import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
 import { getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
 import cacheRepository from '../../database/repositories/cacheRepository';
@@ -298,7 +298,7 @@ const executeDisplayTrisal = async (ctx: InteractionContext) => {
     description: `${mentionUser(marryOne.id)}, ${mentionUser(marryTwo.id)}, ${mentionUser(
       marryThree.id,
     )}`,
-    color: parseInt(ctx.authorData.selectedColor.replace(/^#/, ''), 16),
+    color: hexStringToNumber(ctx.authorData.selectedColor),
     image: { url: 'attachment://trisal-kawaii.png' },
   });
 

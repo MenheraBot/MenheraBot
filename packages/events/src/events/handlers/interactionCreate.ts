@@ -10,7 +10,7 @@ import InteractionContext from '../../structures/command/InteractionContext';
 import { bot, interactionEmitter } from '../../index';
 import userRepository from '../../database/repositories/userRepository';
 import commandRepository from '../../database/repositories/commandRepository';
-import { createEmbed } from '../../utils/discord/createEmbed';
+import { createEmbed } from '../../utils/discord/embedUtils';
 
 const { ERROR_WEBHOOK_ID, ERROR_WEBHOOK_TOKEN } = getEnviroments([
   'ERROR_WEBHOOK_ID',

@@ -6,7 +6,7 @@ import { MessageFlags } from '../../utils/discord/messageUtils';
 import { TODAYS_YEAR, COLORS } from '../../structures/constants';
 import { getAssetLink } from '../../structures/cdnManager';
 import { getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
-import { createEmbed } from '../../utils/discord/createEmbed';
+import { createEmbed } from '../../utils/discord/embedUtils';
 import { capitalize } from '../../utils/miscUtils';
 
 const SlapCommand = createCommand({

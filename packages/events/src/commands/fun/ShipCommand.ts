@@ -7,7 +7,7 @@ import { MessageFlags } from '../../utils/discord/messageUtils';
 import { createCommand } from '../../structures/command/createCommand';
 import blacklistRepository from '../../database/repositories/blacklistRepository';
 import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
-import { createEmbed } from '../../utils/discord/createEmbed';
+import { createEmbed } from '../../utils/discord/embedUtils';
 
 const ShipCommand = createCommand({
   path: '',

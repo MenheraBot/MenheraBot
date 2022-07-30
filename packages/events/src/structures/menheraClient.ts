@@ -1,7 +1,7 @@
 import { Bot, createRestManager } from 'discordeno';
 import { Client } from 'net-ipc';
 
-import { initializeRedis, initializeMongo } from '../database/databases';
+// import { initializeRedis, initializeMongo } from '../database/databases';
 import { startGame as startBichoGame } from '../modules/bicho/bichoManager';
 import { runMethod } from '../internals/rest/runMethod';
 import { loadLocales } from './localteStructure';
@@ -25,8 +25,8 @@ const setupMenheraClient = (client: MenheraClient): void => {
 };
 
 const initializeServices = async (): Promise<void> => {
-  await initializeMongo();
-  await initializeRedis();
+  // await initializeMongo();
+  // await initializeRedis();
   await loadLocales();
   initializeSentry();
   startBichoGame();
