@@ -3,6 +3,7 @@ import { UpdateQuery } from 'mongoose';
 import { usersModel } from '../collections';
 import { DatabaseUserSchema, UserIdType } from '../../types/database';
 import { RedisClient } from '../databases';
+import { debugError } from '../../utils/debugError';
 
 const parseMongoUserToRedisUser = (user: DatabaseUserSchema): DatabaseUserSchema => ({
   angels: user.angels,
@@ -38,18 +39,18 @@ const parseMongoUserToRedisUser = (user: DatabaseUserSchema): DatabaseUserSchema
 });
 
 const findUser = async (userId: UserIdType): Promise<DatabaseUserSchema | null> => {
-  const fromRedis = await RedisClient.get(`user:${userId}`);
+  const fromRedis = await RedisClient.get(`user:${userId}`).catch(debugError);
 
   if (fromRedis) return JSON.parse(fromRedis);
 
-  const fromMongo = await usersModel.findOne({ id: userId });
+  const fromMongo = await usersModel.findOne({ id: userId }).catch(debugError);
 
   if (fromMongo) {
     await RedisClient.setex(
       `user:${userId}`,
       3600,
       JSON.stringify(parseMongoUserToRedisUser(fromMongo)),
-    );
+    ).catch(debugError);
 
     return fromMongo;
   }
@@ -61,9 +62,11 @@ const updateUser = async (
   userId: UserIdType,
   query: Partial<DatabaseUserSchema>,
 ): Promise<void> => {
-  await usersModel.updateOne({ id: userId }, { ...query, lastCommandAt: Date.now() });
+  await usersModel
+    .updateOne({ id: userId }, { ...query, lastCommandAt: Date.now() })
+    .catch(debugError);
 
-  const fromRedis = await RedisClient.get(`user:${userId}`);
+  const fromRedis = await RedisClient.get(`user:${userId}`).catch(debugError);
 
   if (fromRedis) {
     const data = JSON.parse(fromRedis);
@@ -74,7 +77,7 @@ const updateUser = async (
       JSON.stringify(
         parseMongoUserToRedisUser({ ...data, ...query, lastCommandAt: Date.now(), id: userId }),
       ),
-    );
+    ).catch(debugError);
   }
 };
 
@@ -91,7 +94,7 @@ const updateUserWithSpecialData = async (
       `user:${userId}`,
       3600,
       JSON.stringify(parseMongoUserToRedisUser(updatedUser)),
-    );
+    ).catch(debugError);
   }
 };
 
@@ -99,10 +102,12 @@ const multiUpdateUsers = async (
   userIds: string[],
   query: UpdateQuery<DatabaseUserSchema>,
 ): Promise<void> => {
-  await usersModel.updateMany({ id: { $in: userIds } }, { ...query, lastCommandAt: Date.now() });
+  await usersModel
+    .updateMany({ id: { $in: userIds } }, { ...query, lastCommandAt: Date.now() })
+    .catch(debugError);
 
   userIds.forEach(async (id) => {
-    const fromRedis = await RedisClient.get(`user:${id}`);
+    const fromRedis = await RedisClient.get(`user:${id}`).catch(debugError);
 
     if (fromRedis) {
       const data = JSON.parse(fromRedis);
@@ -113,17 +118,17 @@ const multiUpdateUsers = async (
         JSON.stringify(
           parseMongoUserToRedisUser({ ...data, ...query, lastCommandAt: Date.now(), id }),
         ),
-      );
+      ).catch(debugError);
     }
   });
 };
 
 const ensureFindUser = async (userId: UserIdType): Promise<DatabaseUserSchema> => {
-  const fromRedis = await RedisClient.get(`user:${userId}`);
+  const fromRedis = await RedisClient.get(`user:${userId}`).catch(debugError);
 
   if (fromRedis) return JSON.parse(fromRedis);
 
-  const fromMongo = await usersModel.findOne({ id: userId });
+  const fromMongo = await usersModel.findOne({ id: userId }).catch(debugError);
 
   if (!fromMongo) {
     const newUser = await usersModel.create({ id: userId });
@@ -132,7 +137,7 @@ const ensureFindUser = async (userId: UserIdType): Promise<DatabaseUserSchema> =
       `user:${userId}`,
       3600,
       JSON.stringify(parseMongoUserToRedisUser(newUser)),
-    );
+    ).catch(debugError);
 
     return newUser;
   }
@@ -141,13 +146,13 @@ const ensureFindUser = async (userId: UserIdType): Promise<DatabaseUserSchema> =
     `user:${userId}`,
     3600,
     JSON.stringify(parseMongoUserToRedisUser(fromMongo)),
-  );
+  ).catch(debugError);
 
   return fromMongo;
 };
 
 const getBannedUserInfo = async (userId: UserIdType): Promise<DatabaseUserSchema | null> => {
-  return usersModel.findOne({ id: userId }, ['ban', 'banReason'], { lean: true });
+  return usersModel.findOne({ id: userId }, ['ban', 'banReason'], { lean: true }).catch(debugError);
 };
 
 export default {
