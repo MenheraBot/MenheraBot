@@ -24,4 +24,12 @@ const getMaintenanceInfo = async (
   return fromMongo;
 };
 
-export default { getMaintenanceInfo };
+const ensureCommandMaintenanceInfo = async (commandName: string): Promise<void> => {
+  const maintenanceInfo = await getMaintenanceInfo(commandName);
+
+  if (maintenanceInfo) return;
+
+  await commandsModel.create({ _id: commandName });
+};
+
+export default { getMaintenanceInfo, ensureCommandMaintenanceInfo };
