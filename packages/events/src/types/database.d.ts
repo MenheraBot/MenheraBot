@@ -1,3 +1,5 @@
+import { HuntMagicItem } from '../../modules/hunt/hunt';
+
 export type ColorResolvable = `#${string}`;
 
 export interface UserColor {
@@ -9,10 +11,6 @@ export interface UserColor {
 export interface UserBadge {
   id: keyof typeof Object;
   obtainAt: string;
-}
-
-export interface HuntMagicItem {
-  id: number;
 }
 
 export interface DatabaseUserSchema {

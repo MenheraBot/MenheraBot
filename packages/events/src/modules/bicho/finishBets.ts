@@ -1,4 +1,4 @@
-import { BichoBetType, BichoGame, BichoWinner } from './bicho';
+import { BichoBetType, BichoGame, BichoWinner } from './types';
 
 const BICHO_ANIMALS = [
   'avestruz',

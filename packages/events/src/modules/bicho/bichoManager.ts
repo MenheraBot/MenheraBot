@@ -1,5 +1,5 @@
 import { logger } from '../../utils/logger';
-import { BichoGame } from './bicho';
+import { BichoGame } from './types';
 import { makePlayerResults } from './finishBets';
 
 const GAME_DURATION = 1000 * 60 * 60 * 5;

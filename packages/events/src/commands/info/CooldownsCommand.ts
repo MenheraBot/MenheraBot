@@ -33,7 +33,7 @@ const CooldownsCommand = createCommand({
         {
           time: dayjs(cooldown).format(moreThanAnHour(cooldown) ? 'HH:mm:ss' : 'mm:ss'),
           subtime: ctx.locale(moreThanAnHour(cooldown) ? 'common:hours' : 'common:minutes'),
-          unit: Math.floor((cooldown + Date.now()) / 1000),
+          unix: Math.floor((cooldown + Date.now()) / 1000),
         },
       ),
       inline: false,

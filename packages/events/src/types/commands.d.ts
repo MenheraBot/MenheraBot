@@ -4,9 +4,11 @@ import { ApplicationCommandOptionTypes, ApplicationCommandTypes } from 'discorde
 import InteractionContext from '../structures/command/InteractionContext';
 import { DatabaseUserSchema } from './database';
 
+type CommandCategory = 'economy' | 'roleplay' | 'fun' | 'actions' | 'info';
+
 export interface ChatInputCommandConfig extends ChatInputApplicationCommandData {
   devsOnly?: true;
-  category: string;
+  category: CommandCategory;
   authorDataFields: Array<keyof DatabaseUserSchema>;
 }
 

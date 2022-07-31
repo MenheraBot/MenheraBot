@@ -53,6 +53,13 @@ export default class {
     return `${EMOJIS[emoji] || '🐛'} **|** ${this.locale(text, translateOptions)}`;
   }
 
+  async followUp(options: InteractionApplicationCommandCallbackData): Promise<void> {
+    await bot.helpers.sendInteractionResponse(this.interaction.id, this.interaction.token, {
+      type: InteractionResponseTypes.ChannelMessageWithSource,
+      data: options,
+    });
+  }
+
   async makeMessage(options: InteractionApplicationCommandCallbackData): Promise<void> {
     if (this.replied) {
       await bot.helpers.editInteractionResponse(this.interaction.token, options);

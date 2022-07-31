@@ -1,6 +1,7 @@
 import { createBot, Intents } from 'discordeno';
 import { EventEmitter } from 'node:events';
 
+import { logger } from './utils/logger';
 import { initializeServices, setupInternals, setupMenheraClient } from './structures/menheraClient';
 import { createIpcConnections } from './structures/ipcConnections';
 import { MenheraClient } from './types/menhera';
@@ -29,5 +30,6 @@ setupMenheraClient(bot);
 await initializeServices();
 setupEventHandlers();
 setupInternals(bot, restClient);
+logger.info('[READY] Events are being processed!');
 
 export { bot, interactionEmitter };
