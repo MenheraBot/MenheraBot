@@ -86,8 +86,6 @@ const updateUserWithSpecialData = async (
     .findOneAndUpdate({ id: userId }, { ...query, lastCommandAt: Date.now() }, { new: true })
     .catch(() => null);
 
-  console.log(updatedUser);
-
   if (updatedUser) {
     await RedisClient.setex(
       `user:${userId}`,
