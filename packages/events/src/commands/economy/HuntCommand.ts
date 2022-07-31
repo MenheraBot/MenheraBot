@@ -1,15 +1,7 @@
-// import utc from 'dayjs/plugin/utc';
 import dayjs from 'dayjs';
 import { ApplicationCommandOptionTypes, DiscordEmbedField } from 'discordeno/types';
-/* 
-    time: dayjs
-            .extend(utc)
-            .add(cooldown, 'ms')
-            .utc()
-            .format(moreThanAnHour(cooldown) ? 'HH:mm:ss' : 'mm:ss'),
-            */
 
-import { postHuntExecution } from '../../utils/menheraApiRequests';
+import { postHuntExecution } from '../../utils/apiRequests/menheraApiRequests';
 import userRepository from '../../database/repositories/userRepository';
 import huntRepository from '../../database/repositories/huntRepository';
 import { capitalize } from '../../utils/miscUtils';

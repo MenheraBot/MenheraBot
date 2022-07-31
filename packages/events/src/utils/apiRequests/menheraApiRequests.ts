@@ -1,7 +1,8 @@
 import axios from 'axios';
-import { ApiHuntingTypes } from '../modules/hunt/types';
-import { debugError } from './debugError';
-import { getEnviroments } from './getEnviroments';
+import { UsedCommandData } from '../../types/commands';
+import { ApiHuntingTypes } from '../../modules/hunt/types';
+import { debugError } from '../debugError';
+import { getEnviroments } from '../getEnviroments';
 
 const { MENHERA_API_URL, MENHERA_AGENT, MENHERA_API_TOKEN } = getEnviroments([
   'MENHERA_API_URL',
@@ -30,4 +31,8 @@ const postHuntExecution = async (
     .catch(debugError);
 };
 
-export { postHuntExecution };
+const postCommandExecution = async (info: UsedCommandData): Promise<void> => {
+  await makeRequest.post('/usages/commands', info).catch(debugError);
+};
+
+export { postHuntExecution, postCommandExecution };

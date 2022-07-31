@@ -4,7 +4,7 @@ import { ApplicationCommandOptionTypes, ApplicationCommandTypes } from 'discorde
 import InteractionContext from '../structures/command/InteractionContext';
 import { DatabaseUserSchema } from './database';
 
-type CommandCategory = 'economy' | 'roleplay' | 'fun' | 'actions' | 'info';
+type CommandCategory = 'economy' | 'roleplay' | 'fun' | 'actions' | 'info' | 'dev';
 
 export interface ChatInputCommandConfig extends ChatInputApplicationCommandData {
   devsOnly?: true;
@@ -16,6 +16,14 @@ export interface ChatInputInteractionCommand extends Readonly<ChatInputCommandCo
   path: string;
 
   readonly execute: (ctx: InteractionContext) => Promise<void>;
+}
+
+export interface UsedCommandData {
+  authorId: string;
+  guildId: string;
+  commandName: string;
+  data: number;
+  args: unknown[];
 }
 
 export const enum ApplicationCommandOptionTypes {

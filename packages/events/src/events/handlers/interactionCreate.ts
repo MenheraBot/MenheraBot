@@ -1,7 +1,8 @@
 import { InteractionResponseTypes, InteractionTypes } from 'discordeno/types';
 import i18next from 'i18next';
 
-import { logger } from '../../utils/logger';
+import { postCommandExecution } from '../../utils/apiRequests/menheraApiRequests';
+import { UsedCommandData } from '../../types/commands';
 import { getEnviroments } from '../../utils/getEnviroments';
 import { DatabaseUserSchema } from '../../types/database';
 import { MessageFlags } from '../../utils/discord/messageUtils';
@@ -112,16 +113,15 @@ const setInteractionCreateEvent = (): void => {
 
     if (!interaction.guildId || process.env.NODE_ENV !== 'production') return;
 
-    logger.debug('Send Data to API');
-
-    /*  const data: ICommandUsedData = {
-      authorId: interaction.user.id,
-      guildId: interaction.guild.id,
-      commandName: command.config.name,
+    const data: UsedCommandData = {
+      authorId: `${interaction.user.id}`,
+      guildId: `${interaction.guildId}`,
+      commandName: command.name,
       data: Date.now(),
-      args: interaction.options.data,
-      shardId: interaction.client.cluster?.id ?? 0,
-    }; */
+      args: interaction.data?.options ?? [],
+    };
+
+    postCommandExecution(data);
   };
 };
 
