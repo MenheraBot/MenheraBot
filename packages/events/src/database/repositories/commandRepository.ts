@@ -27,6 +27,12 @@ const getMaintenanceInfo = async (
   return fromMongo;
 };
 
+const setMaintenanceInfo = async (
+  commandName: string,
+  maintenance: boolean,
+  reason?: string,
+): Promise<void> => {};
+
 const ensureCommandMaintenanceInfo = async (commandName: string): Promise<void> => {
   const maintenanceInfo = await getMaintenanceInfo(commandName);
 
