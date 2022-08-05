@@ -2,7 +2,7 @@
   "name": "menhera-bot",
   "version": "4.1.0",
   "engines": {
-    "node": "~16.10.0"
+    "node": ">=18.0.0"
   },
   "description": "A Brazilian Discord Bot foccused in Fun and RPG",
   "main": "dist/cluster.js",
