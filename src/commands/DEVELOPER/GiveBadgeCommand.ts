@@ -47,7 +47,7 @@ export default class GiveBadgeSlashCommand extends InteractionCommand {
       return;
     }
 
-    await ctx.client.repositories.badgeRepository.addBadge(userId, badgeId);
+    await ctx.client.repositories.badgeRepository.addBadge(userId, badgeId as 1);
 
     await ctx.makeMessage({
       content: ctx.prettyResponseText('success', 'Badge Adicionada ao usuário'),

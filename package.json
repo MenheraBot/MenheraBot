@@ -45,7 +45,7 @@
     "koa": "^2.13.4",
     "koa-body": "^4.2.0",
     "koa-router": "^10.1.1",
-    "mongoose": "^6.2.8",
+    "mongoose": "6.4.6",
     "string-similarity": "^4.0.4",
     "tweetnacl": "^1.0.3",
     "utf-8-validate": "^5.0.9",
