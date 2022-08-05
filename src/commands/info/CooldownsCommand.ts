@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-expressions */
 import { MessageEmbed, MessageButton, MessageActionRow, EmbedFieldData } from 'discord.js-light';
-import moment from 'moment';
-import 'moment-duration-format';
+import dayjs from 'dayjs';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { actionRow } from '@utils/Util';
@@ -27,7 +26,7 @@ export default class CooldownsCommand extends InteractionCommand {
       value: ctx.locale(
         canDo(cooldown) ? 'commands:cooldowns.no-cooldown' : 'commands:cooldowns.time',
         {
-          time: moment.utc(cooldown).format(moreThanAnHour(cooldown) ? 'HH:mm:ss' : 'mm:ss'),
+          time: dayjs(cooldown).format(moreThanAnHour(cooldown) ? 'HH:mm:ss' : 'mm:ss'),
           subtime: ctx.locale(moreThanAnHour(cooldown) ? 'common:hours' : 'common:minutes'),
           unix: Math.floor((cooldown + Date.now()) / 1000),
         },
