@@ -13,7 +13,13 @@ import {
   SelectMenuInteraction,
   TextInputComponent,
 } from 'discord.js-light';
-import moment from 'moment';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+
+import 'dayjs/locale/en-us';
+import 'dayjs/locale/pt-br';
+
+dayjs.extend(relativeTime);
 
 export default class JogoDoBichoCommand extends InteractionCommand {
   constructor() {
@@ -52,18 +58,16 @@ export default class JogoDoBichoCommand extends InteractionCommand {
       const lastRaffle = await ctx.client.jogoDoBichoManager.lastGameStatus();
       const nextRaffle = await ctx.client.jogoDoBichoManager.currentGameStatus();
 
-      moment.locale(ctx.data.server.lang);
-
       const embed = new MessageEmbed()
         .setColor(ctx.data.user.selectedColor)
         .setTitle(ctx.locale('commands:bicho.sorted-title'))
         .setDescription(
           ctx.locale('commands:bicho.sorted-description', {
             nextDate: nextRaffle?.dueDate
-              ? moment.utc(nextRaffle.dueDate - Date.now()).format('HH:mm:ss')
+              ? dayjs(nextRaffle.dueDate - Date.now()).format('HH:mm:ss')
               : ctx.locale('commands:bicho.no-register'),
             lastDate: lastRaffle?.dueDate
-              ? moment(lastRaffle.dueDate).fromNow()
+              ? dayjs(lastRaffle.dueDate).locale(ctx.data.server.lang.toLowerCase()).fromNow()
               : ctx.locale('commands:bicho.no-register'),
             value:
               nextRaffle?.bets.reduce((p, c) => p + c.bet, 0) ??
