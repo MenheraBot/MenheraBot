@@ -3,9 +3,15 @@ import InteractionCommandContext from '@structures/command/InteractionContext';
 import { Console } from 'node:console';
 import { Transform } from 'node:stream';
 import MenheraClient from 'MenheraClient';
-import moment from 'moment';
 import { MessageButton, MessageEmbed, ShardClientUtil } from 'discord.js-light';
 import Util, { actionRow, disableComponents } from '@utils/Util';
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
+
+import 'dayjs/locale/en-us';
+import 'dayjs/locale/pt-br';
+
+dayjs.extend(localizedFormat);
 
 export default class MenheraCommand extends InteractionCommand {
   constructor() {
@@ -35,8 +41,6 @@ export default class MenheraCommand extends InteractionCommand {
 
   static async MenheraStatistics(ctx: InteractionCommandContext): Promise<void> {
     const owner = await ctx.client.users.fetch(process.env.OWNER as string);
-
-    moment.locale(ctx.data.server.lang.toLowerCase());
 
     if (!ctx.client.shardProcessEnded) {
       ctx.makeMessage({
@@ -90,8 +94,12 @@ export default class MenheraCommand extends InteractionCommand {
       .setDescription(
         ctx.locale('commands:menhera.estatisticas.embed_description', {
           name: ctx.client.user?.username,
-          createdAt: moment.utc(ctx.client.user?.createdAt).format('LLLL'),
-          joinedAt: moment.utc(ctx.interaction?.guild?.me?.joinedAt).format('LLLL'),
+          createdAt: dayjs(ctx.client.user?.createdAt)
+            .locale(ctx.data.server.lang.toLowerCase())
+            .format('LLLL'),
+          joinedAt: dayjs(ctx.interaction?.guild?.me?.joinedAt)
+            .locale(ctx.data.server.lang.toLowerCase())
+            .format('LLLL'),
         }),
       )
       .setFooter({
@@ -112,9 +120,7 @@ export default class MenheraCommand extends InteractionCommand {
         },
         {
           name: '⏳ | Uptime | ⏳',
-          value: `\`\`\`${moment
-            .duration(ctx.client.uptime)
-            .format('D[d], H[h], m[m], s[s]')}\`\`\``,
+          value: `\`\`\`${dayjs(ctx.client.uptime).format('D[d], H[h], m[m], s[s]')}\`\`\``,
           inline: true,
         },
         {
@@ -192,7 +198,7 @@ export default class MenheraCommand extends InteractionCommand {
       ...a,
       Ram: `${Math.round((a.Ram / 1024 / 1024) * 100) / 100}MB`,
       Ping: `${a.Ping}ms`,
-      Uptime: moment.duration(a.Uptime).format('D[d], H[h], m[m], s[s]'),
+      Uptime: dayjs(a.Uptime).format('D[d], H[h], m[m], s[s]'),
     }));
 
     const ts = new Transform({
