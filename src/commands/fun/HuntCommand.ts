@@ -1,6 +1,5 @@
-import 'moment-duration-format';
-import moment from 'moment';
 import { COLORS } from '@structures/Constants';
+import dayjs from 'dayjs';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { ApplicationCommandOptionChoiceData, MessageEmbed } from 'discord.js-light';
@@ -194,7 +193,7 @@ export default class HuntCommand extends InteractionCommand {
     if (!canHunt && !rollsToUse) {
       ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:cacar.cooldown', {
-          time: moment.utc(ctx.data.user.huntCooldown - Date.now()).format('mm:ss'),
+          time: dayjs(ctx.data.user.huntCooldown - Date.now()).format('mm:ss'),
         }),
         ephemeral: true,
       });

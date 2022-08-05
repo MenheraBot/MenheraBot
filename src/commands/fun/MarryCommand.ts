@@ -3,7 +3,6 @@ import InteractionCommandContext from '@structures/command/InteractionContext';
 import { MessageButton, MessageComponentInteraction } from 'discord.js-light';
 import { emojis } from '@structures/Constants';
 import Util from '@utils/Util';
-import moment from 'moment';
 
 export default class MarryCommand extends InteractionCommand {
   constructor() {
@@ -161,14 +160,6 @@ export default class MarryCommand extends InteractionCommand {
       ],
     });
 
-    moment.locale('pt-br');
-
-    const dataFormated = moment(Date.now()).format('l LTS');
-
-    await ctx.client.repositories.relationshipRepository.marry(
-      ctx.author.id,
-      mencionado.id,
-      dataFormated,
-    );
+    await ctx.client.repositories.relationshipRepository.marry(ctx.author.id, mencionado.id);
   }
 }

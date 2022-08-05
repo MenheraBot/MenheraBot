@@ -30,7 +30,7 @@ export default class TopCommand extends InteractionCommand {
       name: 'top',
       description: '「💹」・Veja o top de usuários da Menhera',
       descriptionLocalizations: { 'en-US': "「💹」・See Menhera's top users" },
-      category: 'util',
+      category: 'info',
       options: [
         {
           name: 'caças',

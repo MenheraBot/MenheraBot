@@ -1,7 +1,6 @@
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import HttpRequests from '@utils/HTTPrequests';
-import moment from 'moment';
 import { MessageEmbed, MessageButton, EmbedFieldData } from 'discord.js-light';
 import { COLORS, emojis } from '@structures/Constants';
 import Util, { actionRow, disableComponents, getThemeById } from '@utils/Util';
@@ -251,8 +250,6 @@ export default class StatsCommand extends InteractionCommand {
       return;
     }
 
-    moment.locale(ctx.data.server.lang.toLowerCase());
-
     const embed = new MessageEmbed()
       .setTitle(ctx.locale('commands:status.designer.title', { user: user.tag }))
       .setColor(ctx.data.user.selectedColor)
@@ -264,7 +261,7 @@ export default class StatsCommand extends InteractionCommand {
           const fieldDescription = ctx.locale('commands:status.designer.description', {
             sold: design.timesSold,
             profit: design.totalEarned,
-            registered: moment(design.registeredAt).format('L'),
+            registered: `<t:${design.registeredAt}:d>`,
             royalty: design.royalty,
             type: theme.data.type,
             rarity: theme.data.rarity,

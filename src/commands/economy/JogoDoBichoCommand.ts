@@ -13,7 +13,18 @@ import {
   SelectMenuInteraction,
   TextInputComponent,
 } from 'discord.js-light';
-import moment from 'moment';
+
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+
+import 'dayjs/locale/en';
+import 'dayjs/locale/pt-br';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.extend(relativeTime);
 
 export default class JogoDoBichoCommand extends InteractionCommand {
   constructor() {
@@ -52,18 +63,16 @@ export default class JogoDoBichoCommand extends InteractionCommand {
       const lastRaffle = await ctx.client.jogoDoBichoManager.lastGameStatus();
       const nextRaffle = await ctx.client.jogoDoBichoManager.currentGameStatus();
 
-      moment.locale(ctx.data.server.lang);
-
       const embed = new MessageEmbed()
         .setColor(ctx.data.user.selectedColor)
         .setTitle(ctx.locale('commands:bicho.sorted-title'))
         .setDescription(
           ctx.locale('commands:bicho.sorted-description', {
             nextDate: nextRaffle?.dueDate
-              ? moment.utc(nextRaffle.dueDate - Date.now()).format('HH:mm:ss')
+              ? `<t:${Math.floor(nextRaffle.dueDate / 1000)}:R>`
               : ctx.locale('commands:bicho.no-register'),
             lastDate: lastRaffle?.dueDate
-              ? moment(lastRaffle.dueDate).fromNow()
+              ? `<t:${Math.floor(lastRaffle.dueDate / 1000)}:R>`
               : ctx.locale('commands:bicho.no-register'),
             value:
               nextRaffle?.bets.reduce((p, c) => p + c.bet, 0) ??

@@ -478,7 +478,7 @@
       "dont-notify": "Não Notificar Compras",
       "success": "Suas configurações de notificação de compras foram alteradas!",
       "notify-footer": "Com notificar compras ativo, toda vez que um usuário comprar um design seu, a Menhera tentará enviar uma mensagem em sua DM mostrando isso",
-      "description": "**Tipo:** $t(common:theme_types.{{type}}) ($t(common:rarities.{{rarity}}))\n**Royalty:**: {{royalty}}%\n**Lucro:** {{profit}} :star:\n**Vendidos:** {{sold}}\nRegistrado em `{{registered}}`"
+      "description": "**Tipo:** $t(common:theme_types.{{type}}) ($t(common:rarities.{{rarity}}))\n**Royalty:**: {{royalty}}%\n**Lucro:** {{profit}} :star:\n**Vendidos:** {{sold}}\nRegistrado em {{registered}}"
     },
     "coinflip": {
       "embed-title": "Estatísticas do Coinflip de {{user}}",
@@ -676,7 +676,7 @@
   },
   "bicho": {
     "sorted-title": "Números Sorteados",
-    "sorted-description": "**Último Sorteio:** `{{lastDate}}`\nNúmeros Sorteados:\n1º - `{{first}}`\n2º - `{{second}}`\n3º - `{{third}}`\n4º - `{{fourth}}`\n5º - `{{fifth}}`\nMaior Lucro: **{{biggestProfit}}** :star:\n\nPróximo Sorteio Em `{{nextDate}}`\n**Valor Acumulado:** {{value}} :star:",
+    "sorted-description": "**Último Sorteio:** {{lastDate}}\nNúmeros Sorteados:\n1º - `{{first}}`\n2º - `{{second}}`\n3º - `{{third}}`\n4º - `{{fourth}}`\n5º - `{{fifth}}`\nMaior Lucro: **{{biggestProfit}}** :star:\n\nPróximo Sorteio: {{nextDate}}\n**Valor Acumulado:** {{value}} :star:",
     "no-register": "Sem Registro",
     "invalid-bet": "Você inseriu uma aposta inválida! Verifique novamente sua seleção",
     "label": "Digite um número entre {{min}} e {{max}}",

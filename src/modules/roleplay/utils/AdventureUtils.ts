@@ -15,7 +15,7 @@ import { LEVEL_UP_BLESSES } from '@roleplay/Constants';
 import { IReturnData } from '@custom_types/Menhera';
 import { moreThanAnHour, RandomFromArray } from '@utils/Util';
 import { EmbedFieldData, MessageButton } from 'discord.js-light';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { TFunction } from 'i18next';
 import { getEnemies, getItemById } from './DataUtils';
 import { nextLevelXp } from './Calculations';
@@ -60,9 +60,9 @@ export const canGoToDungeon = (
             cd?.data === 'DEATH' ? 'death' : (cd.reason as 'death')
           }-description`,
           {
-            time: moment
-              .utc(cd.until - Date.now())
-              .format(moreThanAnHour(cd.until - Date.now()) ? 'HH:mm:ss' : 'mm:ss'),
+            time: dayjs(cd.until - Date.now()).format(
+              moreThanAnHour(cd.until - Date.now()) ? 'HH:mm:ss' : 'mm:ss',
+            ),
             subtime: ctx.locale(
               `common:${moreThanAnHour(cd.until - Date.now()) ? 'hours' : 'minutes'}`,
             ),

@@ -470,7 +470,7 @@
       "success": "Your purchase notification settings have changed!",
       "dont-notify": "Do Not Notify Purchases",
       "notify-footer": "With notify purchases active, every time a user buys a design from you, Menhera will try to send a message in your DM showing this",
-      "description": "**Type:** $t(common:theme_types.{{type}}) ($t(common:rarities.{{rarity}}))\n**Royalty:**: {{royalty}}%\n**Profit:** {{profit}} :star:\n**Sold:** {{sold}}\nRegistered at `{{registered}}`"
+      "description": "**Type:** $t(common:theme_types.{{type}}) ($t(common:rarities.{{rarity}}))\n**Royalty:**: {{royalty}}%\n**Profit:** {{profit}} :star:\n**Sold:** {{sold}}\nRegistered at {{registered}}"
     },
     "coinflip": {
       "embed-title": "{{user}}'s Coinflip Statistics",
@@ -669,7 +669,7 @@
   "bicho": {
     "sorted-title": "Drawn Numbers",
     "label": "Type a number between {{min}} and {{max}}",
-    "sorted-description": "**Last Draw:** `{{lastDate}}`\nNumbers Drawn:\n1st - `{{first}}`\n2nd - `{{second}}`\n3rd - `{{third}}`\n4th - `{{fourth}}`\n5th - `{{fifth}}`\nBiggest Profit: **{{biggestProfit}}** :star:\n\nNext Draw In `{{nextDate}}`\n* *Accumulated Value:** {{value}} :star:",
+    "sorted-description": "**Last Draw:** {{lastDate}}\nNumbers Drawn:\n1st - `{{first}}`\n2nd - `{{second}}`\n3rd - `{{third}}`\n4th - `{{fourth}}`\n5th - `{{fifth}}`\nBiggest Profit: **{{biggestProfit}}** :star:\n\nNext Draw: {{nextDate}}\n**Accumulated Value:** {{value}} :star:",
     "no-register": "No registry",
     "poor": "You don't have enough stars to bet on! Try another value!",
     "bet-title": "Bet on an Animal",
