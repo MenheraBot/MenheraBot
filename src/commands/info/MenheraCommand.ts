@@ -7,11 +7,13 @@ import { MessageButton, MessageEmbed, ShardClientUtil } from 'discord.js-light';
 import Util, { actionRow, disableComponents } from '@utils/Util';
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
+import duration from 'dayjs/plugin/duration';
 
 import 'dayjs/locale/en';
 import 'dayjs/locale/pt-br';
 
 dayjs.extend(localizedFormat);
+dayjs.extend(duration);
 
 export default class MenheraCommand extends InteractionCommand {
   constructor() {
@@ -120,7 +122,9 @@ export default class MenheraCommand extends InteractionCommand {
         },
         {
           name: '⏳ | Uptime | ⏳',
-          value: `\`\`\`${dayjs(ctx.client.uptime).format('D[d], H[h], m[m], s[s]')}\`\`\``,
+          value: `\`\`\`${dayjs
+            .duration(ctx.client.uptime)
+            .format('D[d], H[h], m[m], s[s]')}\`\`\``,
           inline: true,
         },
         {
@@ -198,7 +202,7 @@ export default class MenheraCommand extends InteractionCommand {
       ...a,
       Ram: `${Math.round((a.Ram / 1024 / 1024) * 100) / 100}MB`,
       Ping: `${a.Ping}ms`,
-      Uptime: dayjs(a.Uptime).format('D[d], H[h], m[m], s[s]'),
+      Uptime: dayjs.duration(a.Uptime).format('D[d], H[h], m[m], s[s]'),
     }));
 
     const ts = new Transform({
