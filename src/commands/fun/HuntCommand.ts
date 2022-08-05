@@ -1,5 +1,3 @@
-import 'moment-duration-format';
-import moment from 'moment';
 import { COLORS } from '@structures/Constants';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
