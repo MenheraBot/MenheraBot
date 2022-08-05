@@ -10,7 +10,7 @@ import Util, {
   resolveCustomId,
 } from '@utils/Util';
 import { MessageButton, MessageEmbed } from 'discord.js-light';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 export const BASE_LIFE_PER_CICLE = 167;
 export const MAX_USER_LIFE_TO_MULTIPLY = 800;
@@ -44,7 +44,7 @@ export default class ChurchCommand extends InteractionCommand {
     if (inChurch && inChurch.data === 'COOLDOWN' && inChurch.until > Date.now()) {
       ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:igreja.cooldown', {
-          time: moment.utc(inChurch.until - Date.now()).format('mm:ss'),
+          time: dayjs(inChurch.until - Date.now()).format('mm:ss'),
         }),
       });
       return;
@@ -53,9 +53,9 @@ export default class ChurchCommand extends InteractionCommand {
     if (inChurch && inChurch.data === 'DEATH' && inChurch.until > Date.now()) {
       ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:igreja.death', {
-          time: moment
-            .utc(inChurch.until - Date.now())
-            .format(moreThanAnHour(inChurch.until) ? 'HH:mm:ss' : 'mm:ss'),
+          time: dayjs(inChurch.until - Date.now()).format(
+            moreThanAnHour(inChurch.until) ? 'HH:mm:ss' : 'mm:ss',
+          ),
           subtime: ctx.locale(moreThanAnHour(inChurch.until) ? 'common:hours' : 'common:minutes'),
         }),
       });
@@ -113,9 +113,9 @@ export default class ChurchCommand extends InteractionCommand {
           life: lifePerCicle,
           mana: manaPerCicle,
           rechurch: MINUTES_COOLDOWN_TO_RECHURCH,
-          untilCooldown: moment
-            .utc(Math.floor(prayToMaximize * 60000))
-            .format(prayToMaximize >= 60 ? 'HH:mm:ss' : 'mm:ss'),
+          untilCooldown: dayjs(Math.floor(prayToMaximize * 60000)).format(
+            prayToMaximize >= 60 ? 'HH:mm:ss' : 'mm:ss',
+          ),
           untilSubtime: ctx.locale(prayToMaximize > 60 ? 'common:hours' : 'common:minutes'),
         }),
       );
@@ -136,9 +136,9 @@ export default class ChurchCommand extends InteractionCommand {
       embed.addField(
         ctx.prettyResponse('crown', 'commands:igreja.praying'),
         ctx.locale('commands:igreja.praying-description', {
-          cooldown: moment
-            .utc(inChurchFor)
-            .format(GratherThanAnHour(inChurchFor) ? 'HH:mm:ss' : 'mm:ss'),
+          cooldown: dayjs(inChurchFor).format(
+            GratherThanAnHour(inChurchFor) ? 'HH:mm:ss' : 'mm:ss',
+          ),
           subtime: ctx.locale(GratherThanAnHour(inChurchFor) ? 'common:hours' : 'common:minutes'),
           life: Math.min(
             Math.floor((inChurchFor / (CICLE_DURATION_IN_MINUTES * 60000)) * lifePerCicle),
