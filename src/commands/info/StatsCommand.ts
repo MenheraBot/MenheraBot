@@ -9,7 +9,7 @@ import { TFunction } from 'i18next';
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
-import 'dayjs/locale/en-us';
+import 'dayjs/locale/en';
 import 'dayjs/locale/pt-br';
 
 dayjs.extend(localizedFormat);
@@ -269,7 +269,7 @@ export default class StatsCommand extends InteractionCommand {
             sold: design.timesSold,
             profit: design.totalEarned,
             registered: dayjs(design.registeredAt)
-              .locale(ctx.data.server.lang.toLowerCase())
+              .locale(ctx.data.server.lang.startsWith('pt') ? 'pt-br' : 'en')
               .format('L'),
             royalty: design.royalty,
             type: theme.data.type,

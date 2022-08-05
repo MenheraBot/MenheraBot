@@ -13,12 +13,17 @@ import {
   SelectMenuInteraction,
   TextInputComponent,
 } from 'discord.js-light';
+
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
 
-import 'dayjs/locale/en-us';
+import 'dayjs/locale/en';
 import 'dayjs/locale/pt-br';
 
+dayjs.extend(utc);
+dayjs.extend(timezone);
 dayjs.extend(relativeTime);
 
 export default class JogoDoBichoCommand extends InteractionCommand {
@@ -64,10 +69,10 @@ export default class JogoDoBichoCommand extends InteractionCommand {
         .setDescription(
           ctx.locale('commands:bicho.sorted-description', {
             nextDate: nextRaffle?.dueDate
-              ? dayjs(nextRaffle.dueDate - Date.now()).format('HH:mm:ss')
+              ? `<t:${Math.floor(nextRaffle.dueDate / 1000)}:R>`
               : ctx.locale('commands:bicho.no-register'),
             lastDate: lastRaffle?.dueDate
-              ? dayjs(lastRaffle.dueDate).locale(ctx.data.server.lang.toLowerCase()).fromNow()
+              ? `<t:${Math.floor(lastRaffle.dueDate / 1000)}:R>`
               : ctx.locale('commands:bicho.no-register'),
             value:
               nextRaffle?.bets.reduce((p, c) => p + c.bet, 0) ??

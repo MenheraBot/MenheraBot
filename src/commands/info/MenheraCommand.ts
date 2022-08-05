@@ -8,7 +8,7 @@ import Util, { actionRow, disableComponents } from '@utils/Util';
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
-import 'dayjs/locale/en-us';
+import 'dayjs/locale/en';
 import 'dayjs/locale/pt-br';
 
 dayjs.extend(localizedFormat);
@@ -54,7 +54,7 @@ export default class MenheraCommand extends InteractionCommand {
       const { ping, status } = c.ws;
       const { uptime } = c;
       const guilds = c.guilds.cache.size;
-      const memoryUsed = process.memoryUsage().heapUsed;
+      const memoryUsed = process.memoryUsage().rss;
       const clusterId = c.cluster.id;
 
       const conninfo = {
@@ -95,7 +95,7 @@ export default class MenheraCommand extends InteractionCommand {
         ctx.locale('commands:menhera.estatisticas.embed_description', {
           name: ctx.client.user?.username,
           createdAt: dayjs(ctx.client.user?.createdAt)
-            .locale(ctx.data.server.lang.toLowerCase())
+            .locale(ctx.data.server.lang.startsWith('pt') ? 'pt-br' : 'en')
             .format('LLLL'),
           joinedAt: dayjs(ctx.interaction?.guild?.me?.joinedAt)
             .locale(ctx.data.server.lang.toLowerCase())
