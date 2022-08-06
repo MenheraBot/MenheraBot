@@ -56,7 +56,7 @@ export default class MenheraCommand extends InteractionCommand {
       const { ping, status } = c.ws;
       const { uptime } = c;
       const guilds = c.guilds.cache.size;
-      const memoryUsed = process.memoryUsage().rss;
+      const memoryUsed = process.memoryUsage().heapTotal;
       const clusterId = c.cluster.id;
 
       const conninfo = {
@@ -81,14 +81,7 @@ export default class MenheraCommand extends InteractionCommand {
       };
     });
 
-    const totalServersAndmemory = clustersInfo.reduce(
-      (p, c) => {
-        p.guilds += c.Guilds;
-        p.memory += c.Ram;
-        return p;
-      },
-      { guilds: 0, memory: 0 },
-    );
+    const totalServers = clustersInfo.reduce<number>((a, b) => a + b.Guilds, 0);
 
     const embed = new MessageEmbed()
       .setColor('#fa8dd7')
@@ -117,7 +110,7 @@ export default class MenheraCommand extends InteractionCommand {
       .addFields([
         {
           name: '🌐 | Servers | 🌐',
-          value: `\`\`\`${totalServersAndmemory.guilds}\`\`\``,
+          value: `\`\`\`${totalServers}\`\`\``,
           inline: true,
         },
         {
@@ -130,7 +123,7 @@ export default class MenheraCommand extends InteractionCommand {
         {
           name: `📊 | Ram | 📊`,
           value: `\`\`\`${
-            Math.round((totalServersAndmemory.memory / 1024 / 1024) * 100) / 100
+            Math.round((process.memoryUsage().rss / 1024 / 1024) * 100) / 100
           }MB\`\`\``,
           inline: true,
         },
@@ -148,9 +141,9 @@ export default class MenheraCommand extends InteractionCommand {
               ctx.interaction.guildId ?? '',
               ctx.client.options.shardCount ?? 0,
             ),
-            totalShard: ctx.client.options.shardCount ?? 0,
+            totalShard: (ctx.client.options.shardCount ?? 1) - 1,
             cluster: ctx.client.cluster.id,
-            totalCluster: ctx.client.cluster.count,
+            totalCluster: ctx.client.cluster.count - 1,
           }),
           inline: false,
         },

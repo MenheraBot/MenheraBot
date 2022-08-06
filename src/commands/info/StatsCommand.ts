@@ -3,7 +3,7 @@ import InteractionCommandContext from '@structures/command/InteractionContext';
 import HttpRequests from '@utils/HTTPrequests';
 import { MessageEmbed, MessageButton, EmbedFieldData } from 'discord.js-light';
 import { COLORS, emojis } from '@structures/Constants';
-import Util, { actionRow, disableComponents, getThemeById } from '@utils/Util';
+import Util, { actionRow, disableComponents, getThemeById, millisToSeconds } from '@utils/Util';
 import { IRESTGameStats } from '@custom_types/Menhera';
 import { TFunction } from 'i18next';
 
@@ -261,7 +261,7 @@ export default class StatsCommand extends InteractionCommand {
           const fieldDescription = ctx.locale('commands:status.designer.description', {
             sold: design.timesSold,
             profit: design.totalEarned,
-            registered: `<t:${design.registeredAt}:d>`,
+            registered: `<t:${millisToSeconds(design.registeredAt)}:d>`,
             royalty: design.royalty,
             type: theme.data.type,
             rarity: theme.data.rarity,

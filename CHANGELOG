@@ -5,7 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
-## [4.1.1] - 2022-07-18
+## [4.1.2] - 2022-08-06
+
+### Fixed
+
+- Resolvido o problema do top onde os titulos de mamou e mamado estavam invertidos
+- Resolvido o problema das badges de Bot não aparecerem no perfil de bots
+- O `/status designer` não mostra mais que um design foi registrado em 20/04/53899 kekw
+- A memória usada pela Menhera estava incorreta em `/menhera status`
+- O horário de votos em `/cooldowns` mostrava um valor incorreto
+
+## [4.1.1] - 2022-08-05
 
 ### Changed
 
