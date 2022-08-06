@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+
+- Resolvido o problema do top onde os titulos de mamou e mamado estavam invertidos
+- Resolvido o problema das badges de Bot não aparecerem no perfil de bots
+
 ## [4.1.1] - 2022-07-18
 
 ### Changed
