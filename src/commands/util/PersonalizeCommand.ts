@@ -411,8 +411,10 @@ export default class PersonalizeCommand extends InteractionCommand {
       components: componentsToSend,
     });
 
-    const filter = (int: MessageComponentInteraction) =>
-      int.customId.startsWith(ctx.interaction.id) && int.user.id === ctx.author.id;
+    const filter = (int: MessageComponentInteraction) => {
+      if (typeof int?.customId === 'undefined') return false;
+      return int.customId.startsWith(ctx.interaction.id) && int.user.id === ctx.author.id;
+    };
 
     const collector = new InteractionCollector(ctx.client, {
       channel: ctx.channel,
