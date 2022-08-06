@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
-## [Unreleased]
+## [4.1.2] - 2022-08-06
 
 ### Fixed
 
@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - A memória usada pela Menhera estava incorreta em `/menhera status`
 - O horário de votos em `/cooldowns` mostrava um valor incorreto
 
-## [4.1.1] - 2022-07-18
+## [4.1.1] - 2022-08-05
 
 ### Changed
 
