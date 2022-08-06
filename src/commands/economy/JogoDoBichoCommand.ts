@@ -216,6 +216,7 @@ export default class JogoDoBichoCommand extends InteractionCommand {
     const collector = new InteractionCollector(ctx.client, {
       channel: ctx.channel,
       filter,
+      interactionType: 'MESSAGE_COMPONENT',
       idle: selection.values[0].length === 1 ? 25_000 : 20_000,
     });
 
