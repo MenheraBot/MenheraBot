@@ -1,9 +1,12 @@
 /* eslint-disable no-unused-expressions */
 import { MessageEmbed, MessageButton, MessageActionRow, EmbedFieldData } from 'discord.js-light';
 import dayjs from 'dayjs';
+import duration from 'dayjs/plugin/duration';
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { actionRow } from '@utils/Util';
+
+dayjs.extend(duration);
 
 export default class CooldownsCommand extends InteractionCommand {
   constructor() {
@@ -26,7 +29,7 @@ export default class CooldownsCommand extends InteractionCommand {
       value: ctx.locale(
         canDo(cooldown) ? 'commands:cooldowns.no-cooldown' : 'commands:cooldowns.time',
         {
-          time: dayjs(cooldown).format(moreThanAnHour(cooldown) ? 'HH:mm:ss' : 'mm:ss'),
+          time: dayjs.duration(cooldown).format(moreThanAnHour(cooldown) ? 'HH:mm:ss' : 'mm:ss'),
           subtime: ctx.locale(moreThanAnHour(cooldown) ? 'common:hours' : 'common:minutes'),
           unix: Math.floor((cooldown + Date.now()) / 1000),
         },
