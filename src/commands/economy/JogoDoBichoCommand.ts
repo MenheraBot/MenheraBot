@@ -1,7 +1,13 @@
 import InteractionCommand from '@structures/command/InteractionCommand';
 import InteractionCommandContext from '@structures/command/InteractionContext';
 import { BICHO_BET_MULTIPLIER, JOGO_DO_BICHO } from '@structures/Constants';
-import Util, { actionRow, capitalize, disableComponents, resolveCustomId } from '@utils/Util';
+import Util, {
+  actionRow,
+  capitalize,
+  disableComponents,
+  millisToSeconds,
+  resolveCustomId,
+} from '@utils/Util';
 import {
   InteractionCollector,
   MessageActionRow,
@@ -69,10 +75,10 @@ export default class JogoDoBichoCommand extends InteractionCommand {
         .setDescription(
           ctx.locale('commands:bicho.sorted-description', {
             nextDate: nextRaffle?.dueDate
-              ? `<t:${Math.floor(nextRaffle.dueDate / 1000)}:R>`
+              ? `<t:${millisToSeconds(nextRaffle.dueDate)}:R>`
               : ctx.locale('commands:bicho.no-register'),
             lastDate: lastRaffle?.dueDate
-              ? `<t:${Math.floor(lastRaffle.dueDate / 1000)}:R>`
+              ? `<t:${millisToSeconds(lastRaffle.dueDate)}:R>`
               : ctx.locale('commands:bicho.no-register'),
             value:
               nextRaffle?.bets.reduce((p, c) => p + c.bet, 0) ??

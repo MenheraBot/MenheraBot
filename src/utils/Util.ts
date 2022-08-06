@@ -183,3 +183,5 @@ export const makeCustomId = (
 };
 
 export const capitalize = (str: string): string => str.charAt(0).toUpperCase() + str.slice(1);
+
+export const millisToSeconds = (milli: number): number => Math.floor(milli / 1000);

@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 - Resolvido o problema do top onde os titulos de mamou e mamado estavam invertidos
 - Resolvido o problema das badges de Bot não aparecerem no perfil de bots
+- O `/status designer` não mostra mais que um design foi registrado em 20/04/53899 kekw
 
 ## [4.1.1] - 2022-07-18
 
