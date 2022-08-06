@@ -183,6 +183,8 @@ export const getUserBadges = (user: IUserSchema, member: User): Array<IBadge> =>
 
   if (user.voteCooldown > Date.now()) userBadges.push({ id: 18, obtainAt: `${user.voteCooldown}` });
 
+  if (member.bot) userBadges.push({ id: 14, obtainAt: `${member.createdTimestamp}` });
+
   return userBadges;
 };
 
