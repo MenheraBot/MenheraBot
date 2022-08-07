@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { languageByLocale } from '@structures/Constants';
 import HttpRequests from '@utils/HTTPrequests';
 import { ICommandUsedData } from '@custom_types/Menhera';
 import { debugError } from '@utils/Util';
@@ -13,7 +12,12 @@ const InteractionCommandExecutor = async (
 ): Promise<void> => {
   const server = await interaction.client.repositories.cacheRepository.fetchGuild(
     interaction.guildId,
-    interaction.guild?.preferredLocale ?? languageByLocale.brazil,
+    // eslint-disable-next-line no-nested-ternary
+    interaction.locale === 'pt-BR'
+      ? 'pt-BR'
+      : interaction.guildLocale === 'pt-BR'
+      ? 'pt-BR'
+      : 'en-US',
   );
 
   const t = i18next.getFixedT(server.lang ?? interaction.guildLocale);

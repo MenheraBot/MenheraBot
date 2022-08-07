@@ -150,23 +150,6 @@ export const emojis = {
 
 export type EmojiTypes = keyof typeof emojis;
 
-export const languageByLocale = {
-  brazil: 'pt-BR',
-  europe: 'en-US',
-  'eu-central': 'en-US',
-  'eu-west': 'en-US',
-  hongkong: 'en-US',
-  japan: 'en-US',
-  russia: 'en-US',
-  singapore: 'en-US',
-  southafrica: 'en-US',
-  sydney: 'en-US',
-  'us-central': 'en-US',
-  'us-east': 'en-US',
-  'us-south': 'en-US',
-  'us-west': 'en-US',
-};
-
 export const EightBallAnswers: { id: number; type: T8BallAnswerTypes }[] = [
   {
     id: 0,
