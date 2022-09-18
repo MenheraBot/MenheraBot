@@ -149,7 +149,10 @@ export default class Databases {
 
   createRedisConnection(): void {
     try {
-      this.redisClient = new Redis({ db: process.env.NODE_ENV === 'development' ? 1 : 0 });
+      this.redisClient = new Redis({
+        host: process.env.REDIS_URL,
+        db: process.env.NODE_ENV === 'development' ? 1 : 0,
+      });
 
       this.redisClient.once('connect', () => {
         console.log('[REDIS] Connected to redis database');
