@@ -1,5 +1,5 @@
 import { MaintenanceCommandData, UsedCommandData } from 'types/commands';
-import { debugError } from 'utils/debugError';
+import { debugError } from '../debugError';
 import { dataRequest, statusRequest } from './apiRequests';
 
 const postCommandExecution = async (info: UsedCommandData): Promise<void> => {

@@ -1,6 +1,6 @@
-import commandRepository from 'database/repositories/commandRepository';
 import { ApplicationCommandOptionTypes } from 'discordeno/types';
-import { updateCommandMaintenanteStatus } from 'utils/apiRequests/commands';
+import { updateCommandMaintenanteStatus } from '../../utils/apiRequests/commands';
+import commandRepository from '../../database/repositories/commandRepository';
 
 import { bot } from '../../index';
 import { createCommand } from '../../structures/command/createCommand';
