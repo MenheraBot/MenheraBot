@@ -1,49 +1,131 @@
-import { ApplicationCommandOptionTypes } from 'discordeno/types';
-import { inspect } from 'node:util';
+import { ApplicationCommandOptionTypes, CreateSlashApplicationCommand } from 'discordeno/types';
+import { MessageFlags } from '../../utils/discord/messageUtils';
+import { postCommandsInformation } from '../../utils/apiRequests/commands';
+import commandRepository from '../../database/repositories/commandRepository';
 
-import { createEmbed } from '../../utils/discord/embedUtils';
 import { bot } from '../../index';
 import { createCommand } from '../../structures/command/createCommand';
+import { ApiCommandInformation } from '../../types/commands';
 
-const AngryCommand = createCommand({
+const DeployCommand = createCommand({
   path: '',
-  name: 'eval',
-  description: '[DEV] Evaleda de criia',
+  name: 'deploy',
+  description: '[DEV] Faz o deploy dos comandos em Slash',
   options: [
     {
       type: ApplicationCommandOptionTypes.String,
-      name: 'script',
-      description: 'Scriptzinho dos casas',
+      name: 'option',
+      description: 'Tipo, se quer no server ou global',
+      choices: [
+        {
+          name: 'Global',
+          value: 'global',
+        },
+        {
+          name: 'WEBSITE',
+          value: 'site',
+        },
+        {
+          name: 'DEVELOPER',
+          value: 'developer',
+        },
+      ],
       required: true,
+    },
+    {
+      name: 'senha',
+      description: 'senha pra fazer deploy global pra ter certeza que n apertei errado',
+      type: ApplicationCommandOptionTypes.String,
+      required: false,
     },
   ],
   devsOnly: true,
   category: 'dev',
   authorDataFields: [],
   execute: async (ctx) => {
-    try {
-      // eslint-disable-next-line no-eval
-      let evaled = await eval(ctx.getOption('script', false, true));
-      evaled = inspect(evaled, { depth: 1 });
-      evaled = evaled.replace(new RegExp(`${bot.token}`, 'g'), undefined);
+    const selectedOption = ctx.getOption<string>('option', false, true);
 
-      if (evaled.length > 1800) evaled = `${evaled.slice(0, 1800)}...`;
-      await ctx.makeMessage({ content: `\`\`\`js\n ${evaled}\`\`\`` });
+    if (selectedOption === 'site') {
+      const toAPIData = new Map<string, ApiCommandInformation>();
+
+      const disabledCommands = await commandRepository.getAllCommandsInMaintenance();
+
+      await Promise.all(
+        bot.commands.map(async (c) => {
+          if (c.category === 'dev') return;
+          const found = disabledCommands.find((a) => a._id?.toString() === c.name);
+
+          toAPIData.set(c.name, {
+            name: c.name,
+            category: c.category,
+            description: c.description,
+            options: c.options ?? [],
+            descriptionLocalizations: c.descriptionLocalizations,
+            nameLocalizations: c.nameLocalizations,
+            disabled: {
+              isDisabled: found?.maintenance ?? false,
+              reason: found?.maintenanceReason ?? null,
+            },
+          });
+        }),
+      );
+
+      await postCommandsInformation(Array.from(toAPIData.values()));
+      ctx.makeMessage({ content: 'As informaçoes dos comandos foram atualizadas na API' });
       return;
-    } catch (err) {
-      if (err instanceof Error && err.stack) {
-        const errorMessage = err.stack.length > 3800 ? `${err.stack.slice(0, 3800)}...` : err.stack;
+    }
 
-        const embed = createEmbed({
-          title: '<:negacao:759603958317711371> | Erro',
-          color: 0xff0000,
-          description: `\`\`\`js\n${errorMessage}\`\`\``,
+    if (selectedOption === 'global') {
+      if (!ctx.getOption('senha', false) || ctx.getOption('senha', false) !== 'UwU') {
+        ctx.makeMessage({
+          content: 'SENHA ERRADA ANIMAL. CASO QUERIA DAR DEPLOY GLOBAL, A SENHA É "UwU"',
+          flags: MessageFlags.EPHEMERAL,
         });
-
-        await ctx.makeMessage({ embeds: [embed] });
+        return;
       }
+
+      const allCommands = bot.commands.reduce<CreateSlashApplicationCommand[]>((p, c) => {
+        if (c.devsOnly) return p;
+
+        p.push({
+          name: c.name,
+          description: c.description,
+          options: c.options,
+          nameLocalizations: c.nameLocalizations,
+          descriptionLocalizations: c.descriptionLocalizations,
+        });
+        return p;
+      }, []);
+
+      await ctx.makeMessage({ content: 'Iniciando deploy' });
+
+      await bot.helpers.upsertGlobalApplicationCommands(allCommands);
+
+      ctx.makeMessage({
+        content: 'Todos comandos foram settados! Temos até 1 hora para tudo atualizar',
+      });
+      return;
+    }
+
+    if (selectedOption === 'developer') {
+      const allCommands = bot.commands.reduce<CreateSlashApplicationCommand[]>((p, c) => {
+        if (!c.devsOnly) return p;
+        p.push({
+          name: c.name,
+          description: c.description,
+          options: c.options,
+          nameLocalizations: c.nameLocalizations,
+          descriptionLocalizations: c.descriptionLocalizations,
+        });
+        return p;
+      }, []);
+
+      await ctx.makeMessage({ content: 'Iniciando deploy' });
+      await bot.helpers.upsertGuildApplicationCommands(ctx.interaction.guildId ?? '', allCommands);
+
+      ctx.makeMessage({ content: 'Comandos deployados no servidor' });
     }
   },
 });
 
-export default AngryCommand;
+export default DeployCommand;
