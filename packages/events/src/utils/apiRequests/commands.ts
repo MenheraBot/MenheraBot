@@ -1,4 +1,4 @@
-import { MaintenanceCommandData, UsedCommandData } from 'types/commands';
+import { ApiCommandInformation, MaintenanceCommandData, UsedCommandData } from 'types/commands';
 import { debugError } from '../debugError';
 import { dataRequest, statusRequest } from './apiRequests';
 
@@ -17,4 +17,8 @@ const updateCommandMaintenanteStatus = async (
     .catch(debugError);
 };
 
-export { postCommandExecution, updateCommandMaintenanteStatus };
+const postCommandsInformation = async (commands: ApiCommandInformation[]): Promise<void> => {
+  await statusRequest.post('/commands', { data: { commands } }).catch(debugError);
+};
+
+export { postCommandExecution, updateCommandMaintenanteStatus, postCommandsInformation };

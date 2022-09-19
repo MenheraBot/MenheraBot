@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import { ApplicationCommandOptionTypes, DiscordEmbedField } from 'discordeno/types';
 
+import { ApplicationCommandOptionChoice } from 'discordeno/transformers';
 import { postHuntExecution } from '../../utils/apiRequests/statistics';
 import userRepository from '../../database/repositories/userRepository';
 import huntRepository from '../../database/repositories/huntRepository';
@@ -14,7 +15,6 @@ import {
   HuntCooldownBoostItem,
   HuntProbabiltyProps,
 } from '../../modules/hunt/types';
-import { ApplicationCommandOptionChoiceData } from '../../types/commands';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { createCommand } from '../../structures/command/createCommand';
 import {
@@ -26,7 +26,7 @@ import {
 } from '../../modules/hunt/huntUtils';
 
 type ChoiceTypes = DatabaseHuntingTypes | 'probabilities';
-const choices: Array<ApplicationCommandOptionChoiceData & { value: ChoiceTypes }> = [
+const choices: Array<ApplicationCommandOptionChoice & { value: ChoiceTypes }> = [
   {
     name: '😈 | Demônios',
     nameLocalizations: { 'en-US': '😈 | Demons' },

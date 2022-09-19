@@ -1,4 +1,4 @@
-import { Bot, createRestManager } from 'discordeno';
+import { Bot, Collection, createRestManager } from 'discordeno';
 import { Client } from 'net-ipc';
 
 import { initializeRedis, initializeMongo } from '../database/databases';
@@ -17,7 +17,7 @@ const setupMenheraClient = (client: MenheraClient): void => {
 
   logger.debug('Setting up Menhera Client');
 
-  client.commands = new Map();
+  client.commands = new Collection();
 
   client.ownerId = BigInt(OWNER_ID);
 

@@ -56,4 +56,13 @@ const ensureCommandMaintenanceInfo = async (commandName: string): Promise<void> 
   await commandsModel.create({ _id: commandName }).catch(debugError);
 };
 
-export default { getMaintenanceInfo, ensureCommandMaintenanceInfo, setMaintenanceInfo };
+const getAllCommandsInMaintenance = async (): Promise<DatabaseCommandMaintenanceSchema[]> => {
+  return commandsModel.find({ maintentance: true }, null, { lean: true });
+};
+
+export default {
+  getMaintenanceInfo,
+  ensureCommandMaintenanceInfo,
+  setMaintenanceInfo,
+  getAllCommandsInMaintenance,
+};
