@@ -29,6 +29,10 @@ const DeployCommand = createCommand({
           name: 'DEVELOPER',
           value: 'developer',
         },
+        {
+          name: 'Server',
+          value: 'server',
+        },
       ],
       required: true,
     },
@@ -47,28 +51,24 @@ const DeployCommand = createCommand({
 
     if (selectedOption === 'site') {
       const toAPIData = new Map<string, ApiCommandInformation>();
-
       const disabledCommands = await commandRepository.getAllCommandsInMaintenance();
+      bot.commands.forEach((c) => {
+        if (c.category === 'dev') return;
+        const found = disabledCommands.find((a) => a._id?.toString() === c.name);
 
-      await Promise.all(
-        bot.commands.map(async (c) => {
-          if (c.category === 'dev') return;
-          const found = disabledCommands.find((a) => a._id?.toString() === c.name);
-
-          toAPIData.set(c.name, {
-            name: c.name,
-            category: c.category,
-            description: c.description,
-            options: c.options ?? [],
-            descriptionLocalizations: c.descriptionLocalizations,
-            nameLocalizations: c.nameLocalizations,
-            disabled: {
-              isDisabled: found?.maintenance ?? false,
-              reason: found?.maintenanceReason ?? null,
-            },
-          });
-        }),
-      );
+        toAPIData.set(c.name, {
+          name: c.name,
+          category: c.category,
+          description: c.description,
+          options: c.options ?? [],
+          descriptionLocalizations: c.descriptionLocalizations,
+          nameLocalizations: c.nameLocalizations,
+          disabled: {
+            isDisabled: found?.maintenance ?? false,
+            reason: found?.maintenanceReason ?? null,
+          },
+        });
+      });
 
       await postCommandsInformation(Array.from(toAPIData.values()));
       ctx.makeMessage({ content: 'As informaçoes dos comandos foram atualizadas na API' });
@@ -124,7 +124,29 @@ const DeployCommand = createCommand({
       await bot.helpers.upsertGuildApplicationCommands(ctx.interaction.guildId ?? '', allCommands);
 
       ctx.makeMessage({ content: 'Comandos deployados no servidor' });
+      return;
     }
+
+    const allCommands = bot.commands.reduce<CreateSlashApplicationCommand[]>((p, c) => {
+      p.push({
+        name: c.name,
+        description: c.description,
+        options: c.options,
+        nameLocalizations: c.nameLocalizations,
+        descriptionLocalizations: c.descriptionLocalizations,
+      });
+      return p;
+    }, []);
+
+    await ctx.makeMessage({ content: 'Iniciando deploy' });
+    const res = await bot.helpers.upsertGuildApplicationCommands(
+      ctx.interaction.guildId ?? '',
+      allCommands,
+    );
+
+    ctx.makeMessage({
+      content: `No total, ${res?.size} comandos foram adicionados neste servidor!`,
+    });
   },
 });
 
