@@ -1,7 +1,7 @@
-import badgeRepository from 'database/repositories/badgeRepository';
-import userRepository from 'database/repositories/userRepository';
 import { User } from 'discordeno/transformers';
 import { ApplicationCommandOptionTypes } from 'discordeno/types';
+import badgeRepository from '../../database/repositories/badgeRepository';
+import userRepository from '../../database/repositories/userRepository';
 
 import { createCommand } from '../../structures/command/createCommand';
 
