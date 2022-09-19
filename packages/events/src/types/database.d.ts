@@ -7,9 +7,8 @@ export interface UserColor {
   cor: `#${string}`;
 }
 
-// todo badges id
 export interface UserBadge {
-  id: keyof typeof Object;
+  id: number;
   obtainAt: string;
 }
 
