@@ -5,7 +5,7 @@ import { createEmbed } from '../../utils/discord/embedUtils';
 import { bot } from '../../index';
 import { createCommand } from '../../structures/command/createCommand';
 
-const EvalCommand = createCommand({
+const AngryCommand = createCommand({
   path: '',
   name: 'eval',
   description: '[DEV] Evaleda de criia',
@@ -46,4 +46,4 @@ const EvalCommand = createCommand({
   },
 });
 
-export default EvalCommand;
+export default AngryCommand;

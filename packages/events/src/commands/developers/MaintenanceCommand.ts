@@ -5,7 +5,7 @@ import commandRepository from '../../database/repositories/commandRepository';
 import { bot } from '../../index';
 import { createCommand } from '../../structures/command/createCommand';
 
-const BlacklistCommand = createCommand({
+const MaintenanceCommand = createCommand({
   path: '',
   name: 'manutencao',
   description: '[DEV] Manipula o estado de manutenção dos comandos',
@@ -56,4 +56,4 @@ const BlacklistCommand = createCommand({
   },
 });
 
-export default BlacklistCommand;
+export default MaintenanceCommand;
