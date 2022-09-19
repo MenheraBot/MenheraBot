@@ -261,3 +261,8 @@ export interface ApplicationCommandOptionChoiceData {
   nameLocalizations?: LocalizationMap;
   value: string | number;
 }
+
+export interface MaintenanceCommandData {
+  isDisabled: boolean;
+  reason: string | null;
+}

@@ -1,5 +1,6 @@
 import commandRepository from 'database/repositories/commandRepository';
 import { ApplicationCommandOptionTypes } from 'discordeno/types';
+import { updateCommandMaintenanteStatus } from 'utils/apiRequests/commands';
 
 import { bot } from '../../index';
 import { createCommand } from '../../structures/command/createCommand';
@@ -33,6 +34,25 @@ const BlacklistCommand = createCommand({
     const commandMaintenance = await commandRepository.getMaintenanceInfo(cmd.name);
 
     if (!commandMaintenance) return ctx.makeMessage({ content: 'Esse comando não está na db' });
+
+    const reason = ctx.getOption<string>('motivo', false) ?? 'No Given Reason';
+
+    await commandRepository.setMaintenanceInfo(
+      cmd.name,
+      !commandMaintenance.maintenance,
+      commandMaintenance.maintenance ? '' : reason,
+    );
+
+    await updateCommandMaintenanteStatus(cmd.name, {
+      isDisabled: !commandMaintenance.maintenance,
+      reason: commandMaintenance.maintenance ? null : reason,
+    });
+
+    await ctx.makeMessage({
+      content: `Atualiazdo o status de manutenção do comando ${
+        cmd.name
+      }\n\n**Novo Status:** ${!commandMaintenance.maintenance}\n**Motivo:** ${reason}`,
+    });
   },
 });
 

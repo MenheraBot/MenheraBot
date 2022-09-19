@@ -1,7 +1,7 @@
 import { InteractionResponseTypes, InteractionTypes } from 'discordeno/types';
 import i18next from 'i18next';
 
-import { postCommandExecution } from '../../utils/apiRequests/menheraApiRequests';
+import { postCommandExecution } from '../../utils/apiRequests/statistics';
 import { UsedCommandData } from '../../types/commands';
 import { getEnviroments } from '../../utils/getEnviroments';
 import { DatabaseUserSchema } from '../../types/database';

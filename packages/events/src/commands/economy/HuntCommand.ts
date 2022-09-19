@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { ApplicationCommandOptionTypes, DiscordEmbedField } from 'discordeno/types';
 
-import { postHuntExecution } from '../../utils/apiRequests/menheraApiRequests';
+import { postHuntExecution } from '../../utils/apiRequests/statistics';
 import userRepository from '../../database/repositories/userRepository';
 import huntRepository from '../../database/repositories/huntRepository';
 import { capitalize } from '../../utils/miscUtils';
