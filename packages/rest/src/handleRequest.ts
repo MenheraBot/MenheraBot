@@ -28,6 +28,7 @@ export default async (data: IpcRequest): Promise<unknown> => {
       type: 'image/png',
     });
   }
+
   const result = await rest
     .runMethod(
       rest,
@@ -39,7 +40,6 @@ export default async (data: IpcRequest): Promise<unknown> => {
     .catch((e) => {
       // eslint-disable-next-line no-console
       console.log(e);
-      console.log(e.message);
       return e;
     });
 
