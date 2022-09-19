@@ -4,6 +4,8 @@ import mongoose from 'mongoose';
 import { getEnviroments } from '../utils/getEnviroments';
 import { logger } from '../utils/logger';
 
+const { REDIS_ADDRESS } = getEnviroments(['REDIS_ADDRESS']);
+
 // eslint-disable-next-line import/no-mutable-exports
 const RedisClient = new Redis({
   db: process.env.NODE_ENV === 'development' ? 1 : 0,
@@ -11,6 +13,7 @@ const RedisClient = new Redis({
   maxRetriesPerRequest: 2,
   connectTimeout: 5_000,
   commandTimeout: 3_000,
+  host: REDIS_ADDRESS,
 });
 
 const initializeMongo = async (): Promise<void> => {
