@@ -1,6 +1,6 @@
 import {
   InteractionResponseTypes,
-  InteractionApplicationCommandCallbackData,
+  InteractionCallbackData,
   ApplicationCommandOptionTypes,
 } from 'discordeno';
 import { Interaction, User } from 'discordeno/transformers';
@@ -53,16 +53,16 @@ export default class {
     return `${EMOJIS[emoji] || '🐛'} **|** ${this.locale(text, translateOptions)}`;
   }
 
-  async followUp(options: InteractionApplicationCommandCallbackData): Promise<void> {
+  async followUp(options: InteractionCallbackData): Promise<void> {
     await bot.helpers.sendInteractionResponse(this.interaction.id, this.interaction.token, {
       type: InteractionResponseTypes.ChannelMessageWithSource,
       data: options,
     });
   }
 
-  async makeMessage(options: InteractionApplicationCommandCallbackData): Promise<void> {
+  async makeMessage(options: InteractionCallbackData): Promise<void> {
     if (this.replied) {
-      await bot.helpers.editInteractionResponse(this.interaction.token, options);
+      await bot.helpers.editOriginalInteractionResponse(this.interaction.token, options);
       return;
     }
 

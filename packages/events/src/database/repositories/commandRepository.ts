@@ -31,7 +31,22 @@ const setMaintenanceInfo = async (
   commandName: string,
   maintenance: boolean,
   reason?: string,
-): Promise<void> => {};
+): Promise<void> => {
+  await commandsModel
+    .updateOne(
+      { _id: commandName },
+      { maintenance, maintenanceReason: reason ?? 'No Given Reason' },
+    )
+    .catch(debugError);
+
+  await RedisClient.set(
+    `command:${commandName}`,
+    JSON.stringify({
+      maintenance,
+      maintenanceReason: reason ?? 'No Given Reason',
+    }),
+  ).catch(debugError);
+};
 
 const ensureCommandMaintenanceInfo = async (commandName: string): Promise<void> => {
   const maintenanceInfo = await getMaintenanceInfo(commandName);
@@ -41,4 +56,4 @@ const ensureCommandMaintenanceInfo = async (commandName: string): Promise<void> 
   await commandsModel.create({ _id: commandName }).catch(debugError);
 };
 
-export default { getMaintenanceInfo, ensureCommandMaintenanceInfo };
+export default { getMaintenanceInfo, ensureCommandMaintenanceInfo, setMaintenanceInfo };

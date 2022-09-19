@@ -107,7 +107,9 @@ const setInteractionCreateEvent = (): void => {
           timestamp: Date.now(),
         });
 
-        bot.helpers.sendWebhook(BigInt(ERROR_WEBHOOK_ID), ERROR_WEBHOOK_TOKEN, { embeds: [embed] });
+        bot.helpers.sendWebhookMessage(BigInt(ERROR_WEBHOOK_ID), ERROR_WEBHOOK_TOKEN, {
+          embeds: [embed],
+        });
       }
     });
 

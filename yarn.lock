@@ -35,10 +35,10 @@
   resolved "https://registry.yarnpkg.com/@deno/shim-deno-test/-/shim-deno-test-0.3.3.tgz#2dd014a2649507477f904d0172dd88341354086d"
   integrity sha512-Ge0Tnl7zZY0VvEfgsyLhjid8DzI1d0La0dgm+3m0/A8gZXgp5xwlyIyue5e4SCUuVB/3AH/0lun9LcJhhTwmbg==
 
-"@deno/shim-deno@~0.3.0":
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/@deno/shim-deno/-/shim-deno-0.3.1.tgz#1ed55044f5986a9994ea5f46488c5d0c5f3603a4"
-  integrity sha512-Ph5l6JT+8cvxbJWTZqqAJzlfTL1cBPHZOZ6dm0s32yARR4t+/xTujab5hDJTfXqoSe/y1VCp0PJqQyQPHmFmoA==
+"@deno/shim-deno@~0.9.0":
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/@deno/shim-deno/-/shim-deno-0.9.0.tgz#b70d8daee67210c45f316006f4b65144e0a62519"
+  integrity sha512-iP+qdI4Oy/Mw9yv40TqdjNKL+stpKDo8drki2cKisTXgZf+GoIdMhIuODxSypRyv6wxIuHNx7ZiKE3Sl3kAHuw==
   dependencies:
     "@deno/shim-deno-test" "^0.3.2"
     which "^2.0.2"
@@ -597,14 +597,14 @@ dir-glob@^3.0.1:
   dependencies:
     path-type "^4.0.0"
 
-discordeno@^13.0.0-rc45:
-  version "13.0.0-rc45"
-  resolved "https://registry.yarnpkg.com/discordeno/-/discordeno-13.0.0-rc45.tgz#642888b5b847c4391e03da922b9b82d6923dd070"
-  integrity sha512-lY2I1B9XN3CzPDqY2+VHg+Cftm3o4koi2nLzLBpQZfjAJOIs6W9MmNJJye424U3PXC2lYBgw8mYWWArlINF2BA==
+discordeno@^16.0.0:
+  version "16.0.0"
+  resolved "https://registry.yarnpkg.com/discordeno/-/discordeno-16.0.0.tgz#f9f580b62ce38b88887b025d38d4b0051c2d2095"
+  integrity sha512-yPK//WKY1r7IWrdgD6q/Wc2zTbhZM4xecJcsvPEc42uF6ttdKjV+pPFl/lZK0sFC7MtQKHQYI3lTkjfs+mNznA==
   dependencies:
-    "@deno/shim-deno" "~0.3.0"
+    "@deno/shim-deno" "~0.9.0"
     "@deno/shim-timers" "~0.1.0"
-    undici "^4.12.1"
+    undici "^5.8.0"
     ws "^8.4.0"
 
 doctrine@^2.1.0:
@@ -1973,10 +1973,10 @@ unbox-primitive@^1.0.2:
     has-symbols "^1.0.3"
     which-boxed-primitive "^1.0.2"
 
-undici@^4.12.1:
-  version "4.16.0"
-  resolved "https://registry.yarnpkg.com/undici/-/undici-4.16.0.tgz#469bb87b3b918818d3d7843d91a1d08da357d5ff"
-  integrity sha512-tkZSECUYi+/T1i4u+4+lwZmQgLXd4BLGlrc7KZPcLIW7Jpq99+Xpc30ONv7nS6F5UNOxp/HBZSSL9MafUrvJbw==
+undici@^5.8.0:
+  version "5.10.0"
+  resolved "https://registry.yarnpkg.com/undici/-/undici-5.10.0.tgz#dd9391087a90ccfbd007568db458674232ebf014"
+  integrity sha512-c8HsD3IbwmjjbLvoZuRI26TZic+TSEe8FPMLLOkN1AfYRhdjnKBU6yL+IwcSCbdZiX4e5t0lfMDLDCqj4Sq70g==
 
 uri-js@^4.2.2:
   version "4.4.1"

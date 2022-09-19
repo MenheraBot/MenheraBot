@@ -33,10 +33,6 @@ const BlacklistCommand = createCommand({
     const commandMaintenance = await commandRepository.getMaintenanceInfo(cmd.name);
 
     if (!commandMaintenance) return ctx.makeMessage({ content: 'Esse comando não está na db' });
-
-    if(commandMaintenance.maintenance) {
-      await commandRepository.
-    }
   },
 });
 
