@@ -5,15 +5,17 @@ import translationBackend from 'i18next-fs-backend';
 import { fileURLToPath } from 'node:url';
 
 import { logger } from '../utils/logger';
+import { debugError } from '../utils/debugError';
 
 // eslint-disable-next-line no-underscore-dangle
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const loadLocales = async (): Promise<void> => {
-  const namespaces = readdirSync(path.resolve(__dirname, '..', '..', 'locales', 'pt-BR')).map((a) =>
-    a.replace('.json', ''),
-  );
+const availableLanguages = ['pt-BR', 'en-US'];
+const namespaces = readdirSync(path.resolve(__dirname, '..', '..', 'locales', 'pt-BR')).map((a) =>
+  a.replace('.json', ''),
+);
 
+const loadLocales = async (): Promise<void> => {
   const filepath = path.resolve(__dirname, '..', '..', 'locales');
 
   await i18next
@@ -38,4 +40,8 @@ const loadLocales = async (): Promise<void> => {
     });
 };
 
-export { loadLocales };
+const reloadLocales = async (): Promise<void> => {
+  await i18next.reloadResources(availableLanguages, namespaces).catch(debugError);
+};
+
+export { loadLocales, reloadLocales };

@@ -1,15 +1,6 @@
 import { readdirSync, statSync } from 'node:fs';
 import { join, extname, resolve } from 'node:path';
 
-const reloadFile = async <A>(
-  filepath: string,
-  reloadFunction: (file: A, dir: string) => Promise<void>,
-): Promise<void> => {
-  const dir = resolve(filepath);
-  delete require.cache[dir];
-  await reloadFunction((await import(dir)).default, dir);
-};
-
 const readDirectory = <T>(
   path: string,
   loadFunction: (archive: T, archivePath: string) => void,
@@ -29,4 +20,4 @@ const readdirRecursive = (directory: string): string[] => {
   }, []);
 };
 
-export { readDirectory, readdirRecursive, reloadFile };
+export { readDirectory, readdirRecursive };
