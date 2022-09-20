@@ -1,3 +1,4 @@
+import { BigString } from 'discordeno/types';
 import { logger } from '../../utils/logger';
 import { BichoGame } from './types';
 import { makePlayerResults } from './finishBets';
@@ -43,13 +44,13 @@ const finishGame = (): void => {
   });
 };
 
-const canRegisterBet = (userId: string): boolean => {
+const canRegisterBet = (userId: BigString): boolean => {
   if (onGoingGame.dueDate < Date.now()) return false;
   if (onGoingGame.bets.some((plr) => plr.id === userId)) return false;
   return true;
 };
 
-const registerUserBet = (userId: string, betValue: number, optionSelected: string): void => {
+const registerUserBet = (userId: BigString, betValue: number, optionSelected: string): void => {
   onGoingGame.bets.push({ id: userId, bet: betValue, option: optionSelected });
 };
 

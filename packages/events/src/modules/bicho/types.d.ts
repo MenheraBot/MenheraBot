@@ -1,5 +1,7 @@
+import { BigString } from 'discordeno/types';
+
 export interface BetPlayer {
-  id: string;
+  id: BigString;
   bet: number;
   option: string;
 }
@@ -12,7 +14,7 @@ export interface BichoGame {
 }
 
 export interface BichoWinner {
-  id: string;
+  id: BigString;
   profit: number;
   bet: number;
   didWin: boolean;

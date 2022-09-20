@@ -1,4 +1,9 @@
-import { ActionRow, ButtonComponent, MessageComponentTypes } from 'discordeno/types';
+import {
+  ActionRow,
+  ButtonComponent,
+  MessageComponentTypes,
+  SelectMenuComponent,
+} from 'discordeno/types';
 
 type PropertyOptional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 
@@ -30,6 +35,13 @@ const createButton = (component: PropertyOptional<ButtonComponent, 'type'>): But
   type: MessageComponentTypes.Button,
 });
 
+const createSelectMenu = (
+  component: PropertyOptional<SelectMenuComponent, 'type'>,
+): SelectMenuComponent => ({
+  ...component,
+  type: MessageComponentTypes.SelectMenu,
+});
+
 const createActionRow = (components: ActionRow['components']): ActionRow => ({
   type: MessageComponentTypes.ActionRow,
   components,
@@ -51,4 +63,11 @@ const disableComponents = (
     return { ...c, placeholder: label, disabled: true };
   });
 
-export { createButton, createActionRow, disableComponents, generateCustomId, resolveCustomId };
+export {
+  createButton,
+  createActionRow,
+  disableComponents,
+  generateCustomId,
+  resolveCustomId,
+  createSelectMenu,
+};

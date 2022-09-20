@@ -6,4 +6,6 @@ const randomFromArray = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.l
 // eslint-disable-next-line no-control-regex
 const toWritableUtf = (str: string): string => str.replace(/[^\x00-\xFF]/g, '');
 
-export { capitalize, randomFromArray, toWritableUtf };
+const millisToSeconds = (milli: number): number => Math.floor(milli / 1000);
+
+export { capitalize, randomFromArray, toWritableUtf, millisToSeconds };
