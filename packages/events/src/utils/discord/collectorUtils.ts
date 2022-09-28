@@ -34,13 +34,13 @@ const collectComponentInteractionWithCustomFilter = async (
     .catch(() => null);
 };
 
-const collectResponseComponentInteraction = async (
+const collectResponseComponentInteraction = async <InteractionType = Interaction>(
   channelId: bigint,
   userId: bigint,
   customId: string,
   time = 10_000,
   defer = true,
-): Promise<null | Interaction> => {
+): Promise<null | InteractionType> => {
   return (
     new Promise((resolve, reject) => {
       const collector = new InteractionCollector({
@@ -76,11 +76,11 @@ const collectResponseComponentInteraction = async (
       });
 
       collector.once('end', (interactions, reason) => {
-        const interaction = [...(interactions as Map<bigint, Interaction>).values()][0];
+        const interaction = [...(interactions as Map<bigint, InteractionType>).values()][0];
         if (interaction) resolve(interaction);
         else reject(new Error(`InteractionCollector: ${reason}`));
       });
-    }) as Promise<Interaction>
+    }) as Promise<InteractionType>
   )
     .then((a) => a)
     .catch(() => null);

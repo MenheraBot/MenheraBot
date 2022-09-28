@@ -1,6 +1,7 @@
 import {
   ActionRow,
   ButtonComponent,
+  InputTextComponent,
   MessageComponentTypes,
   SelectMenuComponent,
 } from 'discordeno/types';
@@ -42,6 +43,13 @@ const createSelectMenu = (
   type: MessageComponentTypes.SelectMenu,
 });
 
+const createTextInput = (
+  component: PropertyOptional<InputTextComponent, 'type'>,
+): InputTextComponent => ({
+  ...component,
+  type: MessageComponentTypes.InputText,
+});
+
 const createActionRow = (components: ActionRow['components']): ActionRow => ({
   type: MessageComponentTypes.ActionRow,
   components,
@@ -69,5 +77,6 @@ export {
   disableComponents,
   generateCustomId,
   resolveCustomId,
+  createTextInput,
   createSelectMenu,
 };
