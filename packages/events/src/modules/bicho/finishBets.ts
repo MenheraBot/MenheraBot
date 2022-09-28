@@ -105,4 +105,4 @@ const makePlayerResults = (game: BichoGame): BichoWinner[] => {
   }));
 };
 
-export { makePlayerResults, BICHO_BET_MULTIPLIER };
+export { makePlayerResults, BICHO_BET_MULTIPLIER, BICHO_ANIMALS };
