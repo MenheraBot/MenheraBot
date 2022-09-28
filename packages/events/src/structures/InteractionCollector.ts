@@ -5,8 +5,8 @@ import { EventEmitter } from 'node:events';
 
 import { interactionEmitter } from '../index';
 
-export type InteractionCollectorOptions = {
-  filter: (interaction: Interaction) => boolean | Promise<boolean>;
+export type InteractionCollectorOptions<InteractionType = Interaction> = {
+  filter: (interaction: InteractionType) => boolean | Promise<boolean>;
   time?: number;
   idle?: number;
   max?: number;
@@ -15,7 +15,9 @@ export type InteractionCollectorOptions = {
   componentType?: MessageComponentTypes;
 };
 
-export default class InteractionCollector extends EventEmitter {
+export default class InteractionCollector<
+  InteractionType extends Interaction = Interaction,
+> extends EventEmitter {
   private timeout: NodeJS.Timeout | null = null;
 
   private idletimeout: NodeJS.Timeout | null = null;
@@ -26,9 +28,9 @@ export default class InteractionCollector extends EventEmitter {
 
   private _endReason: string | null = null;
 
-  private collected = new Map<bigint, Interaction>();
+  private collected = new Map<bigint, InteractionType>();
 
-  constructor(private options: InteractionCollectorOptions) {
+  constructor(private options: InteractionCollectorOptions<InteractionType>) {
     super();
 
     if (options.time) this.timeout = setTimeout(() => this.stop('time'), options.time).unref();
@@ -62,7 +64,7 @@ export default class InteractionCollector extends EventEmitter {
     this.emit('end', this.collected, reason);
   }
 
-  collect(interaction: Interaction): null | bigint {
+  collect(interaction: InteractionType): null | bigint {
     if (this.options.interactionType && this.options.interactionType !== interaction.type)
       return null;
 
@@ -88,7 +90,7 @@ export default class InteractionCollector extends EventEmitter {
     return Boolean(reason);
   }
 
-  async handleCollect(interaction: Interaction): Promise<void> {
+  async handleCollect(interaction: InteractionType): Promise<void> {
     const collectedId = this.collect(interaction);
 
     if (!collectedId) return;
