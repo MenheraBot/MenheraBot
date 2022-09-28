@@ -9,3 +9,12 @@ export interface IpcRequest {
     headers?: Record<string, string>;
   };
 }
+
+export type ConnectionInfo = {
+  package: string;
+  id: string;
+  internalId: string;
+  connected: boolean;
+  connectedAt: number;
+  disconnectedAt: number;
+};
