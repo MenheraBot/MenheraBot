@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import { Server } from 'net-ipc';
-import { ConnectionInfo, IpcRequest } from 'types';
+import { ConnectionInfo, IpcRequest, MessageTypes } from 'types';
+import { handleIdentify } from 'ipcMessages';
 import handleRequest from './handleRequest';
 import config from './config';
 
@@ -36,25 +37,8 @@ server.on('disconnect', (conn) => {
   console.log(`[IPC] Unidentified client disconnected`);
 });
 
-server.on('message', (info: { id: string; package: string }, connection) => {
-  const isReconnect = connections.find((a) => a.id === info.id && a.package === info.package);
-
-  if (isReconnect) {
-    isReconnect.internalId = connection.id;
-    isReconnect.connectedAt = Date.now();
-    isReconnect.disconnectedAt = -1;
-    isReconnect.connected = true;
-  } else
-    connections.push({
-      id: info.id,
-      connected: true,
-      connectedAt: Date.now(),
-      disconnectedAt: -1,
-      internalId: connection.id,
-      package: info.package,
-    });
-
-  console.log(`[IPC] Connection identified! ${info.package} - ${info.id}`);
+server.on('message', (info: MessageTypes, connection) => {
+  if (info.type === 'IDENTIFY') return handleIdentify(connections, info, connection);
 });
 
 server.on('request', async (req: IpcRequest, res) => {

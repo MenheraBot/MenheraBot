@@ -18,3 +18,17 @@ export type ConnectionInfo = {
   connectedAt: number;
   disconnectedAt: number;
 };
+
+export interface IdentifyMessage {
+  type: 'IDENTIFY';
+  id: string;
+  package: string;
+}
+
+export interface PingMessage {
+  type: 'PING';
+  servicePackage: string;
+  serviceId: string;
+}
+
+export type MessageTypes = IdentifyMessage | PingMessage;
