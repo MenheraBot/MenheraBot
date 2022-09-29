@@ -5,6 +5,7 @@ import {
   TextStyles,
 } from 'discordeno/types';
 
+import starsRepository from '../../database/repositories/starsRepository';
 import { extractFields } from '../../utils/discord/modalUtils';
 import InteractionCollector from '../../structures/InteractionCollector';
 import {
@@ -19,6 +20,7 @@ import {
   canRegisterBet,
   getCurrentGameStatus,
   getLastGameStatus,
+  registerUserBet,
 } from '../../modules/bicho/bichoManager';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { createCommand } from '../../structures/command/createCommand';
@@ -207,12 +209,12 @@ const BichoCommand = createCommand({
       idle: selection.data.values[0].length === 1 ? 25_000 : 20_000,
     });
 
-    /*     const whereToGoAnimals = {
+    const whereToGoAnimals = {
       ONE: 'UNITY',
       SECOND: 'ONE',
       THIRD: 'SECOND',
       CORNER: 'THIRD',
-    }; */
+    };
 
     collector.on('end', (_, reason) => {
       if (reason === 'idle')
@@ -223,12 +225,10 @@ const BichoCommand = createCommand({
         });
     });
 
-    collector.on('collect', async (int: ComponentInteraction) => {
+    collector.on('collect', async (int: SelectMenuInteraction) => {
       await bot.helpers.sendInteractionResponse(int.id, int.token, {
         type: InteractionResponseTypes.DeferredUpdateMessage,
       });
-
-      // const newerComponents: ActionRow[] = [];
 
       switch (resolveCustomId(int.data.customId)) {
         case 'MODAL': {
@@ -243,6 +243,79 @@ const BichoCommand = createCommand({
               components: [],
               content: ctx.prettyResponse('error', 'commands:bicho.invalid-bet'),
             });
+
+          if (polishedNumber < 0 || polishedNumber > 9999)
+            return ctx.makeMessage({
+              embeds: [],
+              components: [],
+              content: ctx.prettyResponse('error', 'commands:bicho.invalid-bet'),
+            });
+
+          ctx.makeMessage({
+            embeds: [],
+            components: [],
+            content: ctx.prettyResponse('success', 'commands:bicho.success'),
+          });
+
+          await starsRepository.removeStars(ctx.author.id, bet);
+          registerUserBet(ctx.author.id, bet, `${polishedNumber}`);
+          break;
+        }
+        case 'UNITY': {
+          collector.stop();
+
+          ctx.makeMessage({
+            embeds: [],
+            components: [],
+            content: ctx.prettyResponse('success', 'commands:bicho.success'),
+          });
+
+          await starsRepository.removeStars(ctx.author.id, bet);
+
+          registerUserBet(ctx.author.id, bet, int.data.values[0]);
+          break;
+        }
+        case 'SEQUENCE': {
+          const newSelectMenu = createSelectMenu({
+            customId: `${ctx.interaction.id} | UNITY`,
+            placeholder: ctx.locale('commands:bicho.animal', {
+              option: ctx.locale('commands:bicho.second'),
+            }),
+            options: [],
+          });
+
+          for (let i = 0; i < 25; i++)
+            newSelectMenu.options.push({
+              label: `${capitalize(BICHO_ANIMALS[i])}`,
+              value: `${int.data.values[0]} | ${BICHO_ANIMALS[i]}`,
+            });
+
+          ctx.makeMessage({ components: [createActionRow([newSelectMenu])] });
+          break;
+        }
+        case 'SECOND':
+        case 'ONE':
+        case 'CORNER':
+        case 'THIRD': {
+          const newSelectMenu = createSelectMenu({
+            customId: `${ctx.interaction.id} | ${
+              whereToGoAnimals[resolveCustomId(int.data.customId) as 'THIRD']
+            }`,
+            placeholder: ctx.locale('commands:bicho.animal', {
+              option: '',
+            }),
+            options: [],
+          });
+
+          for (let i = 0; i < 25; i++) {
+            newSelectMenu.options.push({
+              label: `${capitalize(BICHO_ANIMALS[i])}`,
+              value: `${int.data.values[0]} | ${BICHO_ANIMALS[i]}`,
+            });
+
+            ctx.makeMessage({ components: [createActionRow([newSelectMenu])] });
+            break;
+          }
         }
       }
     });

@@ -15,6 +15,7 @@ const postHuntExecution = async (
 };
 
 const postBichoResults = async (players: BichoWinner[]): Promise<void> => {
+  // TODO: Bicho statistics is not working!! (maybe in API)
   await dataRequest.post('/statistics/bicho', { players }).catch(debugError);
 };
 
