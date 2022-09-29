@@ -54,7 +54,7 @@ export default class {
   }
 
   async followUp(options: InteractionCallbackData): Promise<void> {
-    await bot.helpers.sendInteractionResponse(this.interaction.id, this.interaction.token, {
+    await bot.helpers.sendFollowupMessage(this.interaction.token, {
       type: InteractionResponseTypes.ChannelMessageWithSource,
       data: options,
     });
