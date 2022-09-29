@@ -1,4 +1,5 @@
 import { BigString } from 'discordeno/types';
+import starsRepository from 'database/repositories/starsRepository';
 import { logger } from '../../utils/logger';
 import { BichoGame } from './types';
 import { makePlayerResults } from './finishBets';
@@ -38,7 +39,7 @@ const finishGame = (): void => {
 
   players.forEach((a) => {
     if (a.didWin) {
-      // this.clientInstance.repositories.starRepository.add(a.id, a.profit);
+      starsRepository.addStars(a.id, a.profit);
       if (lastGame && a.profit > lastGame.biggestProfit) lastGame.biggestProfit = a.profit;
     }
   });
@@ -60,16 +61,18 @@ const getCurrentGameStatus = (): BichoGame => onGoingGame;
 const stopGame = async (): Promise<void> => {
   clearInterval(gameLoop);
 
-  const totalBets = [...onGoingGame.bets.keys()].length;
+  let totalBets = [...onGoingGame.bets.keys()].length;
 
   await new Promise<void>((resolve) => {
     if (totalBets <= 0) resolve();
+
     onGoingGame.bets.forEach((user) => {
       logger.debug(user);
-      /*  this.clientInstance.repositories.starRepository.add(a.id, a.bet).then(() => {
+
+      starsRepository.addStars(user.id, user.bet).then(() => {
         totalBets -= 1;
         if (totalBets <= 0) resolve();
-      }); */
+      });
     });
   });
 
