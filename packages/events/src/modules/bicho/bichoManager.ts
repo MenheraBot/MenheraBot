@@ -56,9 +56,6 @@ const registerUserBet = (userId: BigString, betValue: number, optionSelected: st
   onGoingGame.bets.push({ id: userId, bet: betValue, option: optionSelected });
 };
 
-const getLastGameStatus = (): BichoGame => lastGame;
-const getCurrentGameStatus = (): BichoGame => onGoingGame;
-
 const stopGame = async (): Promise<void> => {
   clearInterval(gameLoop);
 
@@ -85,6 +82,9 @@ const startGame = (): void => {
   onGoingGame = createGame();
   gameLoop = setInterval(finishGame, GAME_DURATION);
 };
+
+const getLastGameStatus = (): BichoGame => lastGame;
+const getCurrentGameStatus = (): BichoGame => onGoingGame;
 
 export {
   canRegisterBet,

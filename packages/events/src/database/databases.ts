@@ -33,4 +33,11 @@ const initializeRedis = async (): Promise<void> => {
     .catch((e) => logger.panic(`[DATABASE] - Error when connecting to Redis: ${e}`));
 };
 
-export { initializeMongo, initializeRedis, RedisClient };
+const closeConnections = async (): Promise<void> => {
+  await RedisClient.flushdb();
+  RedisClient.disconnect(false);
+
+  await mongoose.disconnect();
+};
+
+export { initializeMongo, initializeRedis, RedisClient, closeConnections };
