@@ -1,5 +1,5 @@
 import { BigString } from 'discordeno/types';
-import starsRepository from 'database/repositories/starsRepository';
+import starsRepository from '../../database/repositories/starsRepository';
 import { logger } from '../../utils/logger';
 import { BichoGame } from './types';
 import { makePlayerResults } from './finishBets';
