@@ -77,6 +77,10 @@ const setInteractionCreateEvent = (): void => {
 
     const ctx = new InteractionContext(interaction, authorData as DatabaseUserSchema, guildLocale);
 
+    bot.commandsInExecution += 1;
+
+    // Todos comando deve resolver a promise criada aqui, para calcular quais comandos estao em execucao
+
     await command.execute(ctx).catch((err) => {
       errorReply(
         T('events:error_embed.title', {
@@ -112,6 +116,8 @@ const setInteractionCreateEvent = (): void => {
         });
       }
     });
+
+    bot.commandsInExecution -= 1;
 
     if (!interaction.guildId || process.env.NODE_ENV !== 'production') return;
 
