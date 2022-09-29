@@ -101,6 +101,16 @@ async function startGateway() {
       workers.set(workerId, worker);
 
       worker.on('message', (msg) => {
+        // Create events queue to check if events client is up! If not, retry up to the third second of interaction
+        // The events client should send a message in soft restart. If this message is received, store the events in a quee
+        // If its not a soft restart, reply the interaction with an custom error message that tells users that menhera
+        // Is current offline
+
+        // Maybe change from broadcast to request, and waits to the events client to respond the request within 1 second
+        // the events client should check the event creation timestamp, if it is more than 1 second, it should ignore
+        // that event, and wait for another request of the gateway client
+        // The event client should respond to the gateway client with an ok message, so the gateway client dont put the event
+        // in a queue to resend it.
         if (msg.type === 'BROADCAST_EVENT') eventsServer.broadcast(msg.data);
       });
 
