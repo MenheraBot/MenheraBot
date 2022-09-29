@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { Connection } from 'net-ipc';
-import { ConnectionInfo, IdentifyMessage } from 'types';
+import { ConnectionInfo, IdentifyMessage } from './types';
 
 const handleIdentify = (
   connections: ConnectionInfo[],

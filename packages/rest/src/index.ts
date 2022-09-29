@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { Server } from 'net-ipc';
-import { ConnectionInfo, IpcRequest, MessageTypes } from 'types';
-import { handleIdentify } from 'ipcMessages';
+import { ConnectionInfo, IpcRequest, MessageTypes } from './types';
+import { handleIdentify } from './ipcMessages';
 import handleRequest from './handleRequest';
 import config from './config';
 
