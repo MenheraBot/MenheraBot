@@ -21,6 +21,8 @@ const setupMenheraClient = (client: MenheraClient): void => {
 
   client.ownerId = BigInt(OWNER_ID);
 
+  client.shuttingDown = false;
+
   loadCommands();
 };
 
