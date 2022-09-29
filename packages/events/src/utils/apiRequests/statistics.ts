@@ -1,3 +1,4 @@
+import { BichoWinner } from 'modules/bicho/types';
 import { ApiHuntingTypes } from '../../modules/hunt/types';
 import { debugError } from '../debugError';
 import { dataRequest } from './apiRequests';
@@ -13,4 +14,8 @@ const postHuntExecution = async (
     .catch(debugError);
 };
 
-export { postHuntExecution };
+const postBichoResults = async (players: BichoWinner[]): Promise<void> => {
+  await dataRequest.post('/statistics/bicho', { players }).catch(debugError);
+};
+
+export { postHuntExecution, postBichoResults };

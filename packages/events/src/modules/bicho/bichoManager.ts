@@ -1,4 +1,5 @@
 import { BigString } from 'discordeno/types';
+import { postBichoResults } from '../../utils/apiRequests/statistics';
 import starsRepository from '../../database/repositories/starsRepository';
 import { logger } from '../../utils/logger';
 import { BichoGame } from './types';
@@ -35,7 +36,7 @@ const finishGame = (): void => {
 
   const players = makePlayerResults(lastGame);
 
-  // httprequiest.postBichoGame(players)
+  postBichoResults(players);
 
   players.forEach((a) => {
     if (a.didWin) {
