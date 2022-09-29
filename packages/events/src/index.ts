@@ -24,12 +24,13 @@ const bot = createBot({
 
 const interactionEmitter = new EventEmitter().setMaxListeners(Infinity);
 
-const restClient = await createIpcConnections();
-
 setupMenheraClient(bot);
 await initializeServices();
 setupEventHandlers();
+
+const restClient = await createIpcConnections();
 setupInternals(bot, restClient);
+
 logger.info('[READY] Events are being processed!');
 
 export { bot, interactionEmitter };
