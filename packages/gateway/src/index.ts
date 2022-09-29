@@ -126,5 +126,7 @@ async function startGateway() {
 restClient.on('ready', () => {
   console.log('[GATEWAY] REST IPC connected');
 
+  restClient.send({ type: 'IDENTIFY', package: 'GATEWAY', id: '0' });
+
   startGateway();
 });
