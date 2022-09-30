@@ -1,6 +1,8 @@
 import { User } from 'discordeno/transformers';
 import { ApplicationCommandOptionTypes, ButtonStyles } from 'discordeno/types';
 
+import starsRepository from '../../database/repositories/starsRepository';
+import { postCoinflipMatch } from '../../utils/apiRequests/statistics';
 import { randomFromArray } from '../../utils/miscUtils';
 import { collectResponseComponentInteraction } from '../../utils/discord/collectorUtils';
 import userRepository from '../../database/repositories/userRepository';
@@ -124,11 +126,9 @@ const CoinflipCommand = createCommand({
       components: [],
     });
 
-    // TODO: Coinflip
-
-/* 
-    await ctx.client.repositories.coinflipRepository.coinflip(winner.id, loser.id, input);
-    await HttpRequests.postCoinflipGame(winner.id, loser.id, input, Date.now()); */
+    starsRepository.addStars(winner.id, input);
+    starsRepository.removeStars(loser.id, input);
+    postCoinflipMatch(`${winner.id}`, `${loser.id}`, input);
   },
 });
 
