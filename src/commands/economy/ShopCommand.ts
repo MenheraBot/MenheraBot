@@ -898,6 +898,7 @@ export default class ShopCommand extends InteractionCommand {
     )!;
 
     if (ctx.data.user.estrelinhas < chosenColor.price) {
+      selected.deferUpdate();
       ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:loja.buy_colors.poor'),
         components: [],
@@ -906,6 +907,7 @@ export default class ShopCommand extends InteractionCommand {
     }
 
     if (chosenColor.cor.startsWith('#')) {
+      selected.deferUpdate();
       await ctx.client.repositories.shopRepository.buyColor(ctx.author.id, chosenColor.price, {
         nome: chosenColor.nome,
         cor: chosenColor.cor as ColorResolvable,
@@ -917,6 +919,7 @@ export default class ShopCommand extends InteractionCommand {
           price: chosenColor.price,
           stars: ctx.data.user.estrelinhas - chosenColor.price,
         }),
+        components: [],
       });
       return;
     }

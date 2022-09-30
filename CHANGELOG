@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [4.1.4] - 2022-09-30
+
+### Fixed
+
+- Ao comprar uma cor, o select menu não era removido da mensagem de sucesso.
+
 ## [4.1.3] - 2022-08-07
 
 ### Hotfix
