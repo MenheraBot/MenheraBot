@@ -214,6 +214,7 @@ const BichoCommand = createCommand({
       SECOND: 'ONE',
       THIRD: 'SECOND',
       CORNER: 'THIRD',
+      SEQUENCE: 'UNITY',
     };
 
     collector.on('end', (_, reason) => {
@@ -275,24 +276,7 @@ const BichoCommand = createCommand({
           registerUserBet(ctx.author.id, bet, int.data.values[0]);
           break;
         }
-        case 'SEQUENCE': {
-          const newSelectMenu = createSelectMenu({
-            customId: `${ctx.interaction.id} | UNITY`,
-            placeholder: ctx.locale('commands:bicho.animal', {
-              option: ctx.locale('commands:bicho.second'),
-            }),
-            options: [],
-          });
-
-          for (let i = 0; i < 25; i++)
-            newSelectMenu.options.push({
-              label: `${capitalize(BICHO_ANIMALS[i])}`,
-              value: `${int.data.values[0]} | ${BICHO_ANIMALS[i]}`,
-            });
-
-          ctx.makeMessage({ components: [createActionRow([newSelectMenu])] });
-          break;
-        }
+        case 'SEQUENCE':
         case 'SECOND':
         case 'ONE':
         case 'CORNER':
@@ -307,15 +291,14 @@ const BichoCommand = createCommand({
             options: [],
           });
 
-          for (let i = 0; i < 25; i++) {
+          for (let i = 0; i < 25; i++)
             newSelectMenu.options.push({
               label: `${capitalize(BICHO_ANIMALS[i])}`,
               value: `${int.data.values[0]} | ${BICHO_ANIMALS[i]}`,
             });
 
-            ctx.makeMessage({ components: [createActionRow([newSelectMenu])] });
-            break;
-          }
+          ctx.makeMessage({ components: [createActionRow([newSelectMenu])] });
+          break;
         }
       }
     });
