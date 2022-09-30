@@ -1,7 +1,6 @@
 import { BigString } from 'discordeno/types';
 import { postBichoResults } from '../../utils/apiRequests/statistics';
 import starsRepository from '../../database/repositories/starsRepository';
-import { logger } from '../../utils/logger';
 import { BichoGame } from './types';
 import { makePlayerResults } from './finishBets';
 
@@ -65,8 +64,6 @@ const stopGame = async (): Promise<void> => {
     if (totalBets <= 0) resolve();
 
     onGoingGame.bets.forEach((user) => {
-      logger.debug(user);
-
       starsRepository.addStars(user.id, user.bet).then(() => {
         totalBets -= 1;
         if (totalBets <= 0) resolve();
