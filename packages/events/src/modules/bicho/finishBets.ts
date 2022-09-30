@@ -99,7 +99,7 @@ const didUserWin = (game: BichoGame, option: string, bet: BichoBetType): boolean
 const makePlayerResults = (game: BichoGame): BichoWinner[] => {
   return game.bets.map<BichoWinner>((player) => ({
     didWin: didUserWin(game, player.option, betType(player.option)),
-    id: player.id,
+    id: `${player.id}`,
     profit: player.bet * BICHO_BET_MULTIPLIER[betType(player.option)],
     bet: player.bet,
   }));

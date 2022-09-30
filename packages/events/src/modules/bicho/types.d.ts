@@ -14,7 +14,7 @@ export interface BichoGame {
 }
 
 export interface BichoWinner {
-  id: BigString;
+  id: string;
   profit: number;
   bet: number;
   didWin: boolean;
