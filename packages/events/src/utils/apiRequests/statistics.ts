@@ -23,7 +23,22 @@ const postCoinflipMatch = async (
   loserId: string,
   betValue: number,
 ): Promise<void> => {
-  await dataRequest.post('/statistics/coinflip', { winnerId, loserId, betValue, date: Date.now() });
+  await dataRequest
+    .post('/statistics/coinflip', { winnerId, loserId, betValue, date: Date.now() })
+    .catch(debugError);
 };
 
-export { postHuntExecution, postBichoResults, postCoinflipMatch };
+const postRoulleteGame = async (
+  userId: string,
+  betValue: number,
+  betType: string,
+  profit: number,
+  didWin: boolean,
+  selectedValues: string,
+): Promise<void> => {
+  await dataRequest
+    .post('/statistics/roulette', { userId, betValue, profit, didWin, betType, selectedValues })
+    .catch(debugError);
+};
+
+export { postHuntExecution, postBichoResults, postCoinflipMatch, postRoulleteGame };
