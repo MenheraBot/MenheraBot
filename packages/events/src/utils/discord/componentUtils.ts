@@ -31,6 +31,8 @@ const resolveCustomId = (customId: string): string =>
     .replace('|', '')
     .trim();
 
+const resolveSeparatedStrings = (string: string): string[] => string.split(' | ');
+
 const createButton = (component: PropertyOptional<ButtonComponent, 'type'>): ButtonComponent => ({
   ...component,
   type: MessageComponentTypes.Button,
@@ -78,5 +80,6 @@ export {
   generateCustomId,
   resolveCustomId,
   createTextInput,
+  resolveSeparatedStrings,
   createSelectMenu,
 };
