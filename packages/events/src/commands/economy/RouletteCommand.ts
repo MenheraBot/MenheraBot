@@ -270,7 +270,7 @@ const WalletCommand = createCommand({
       int.user.id === ctx.author.id && int.data.customId.startsWith(`${ctx.interaction.id}`);
 
     const collector = new InteractionCollector({
-      channelId: ctx.interaction.id,
+      channelId: ctx.channelId,
       filter,
       idle: 14_000,
     });
