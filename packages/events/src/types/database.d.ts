@@ -1,4 +1,4 @@
-import { HuntMagicItem } from '../../modules/hunt/hunt';
+import { HuntMagicItem } from '../modules/hunt/types';
 
 export type ColorResolvable = `#${string}`;
 
