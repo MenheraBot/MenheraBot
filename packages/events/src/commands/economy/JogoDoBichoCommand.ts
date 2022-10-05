@@ -90,6 +90,7 @@ const BichoCommand = createCommand({
             : ctx.locale('commands:bicho.no-register'),
           biggestProfit: lastRaffle?.biggestProfit ?? 0,
         }),
+        fields: [],
       });
 
       if (currentRaffle?.bets.some((a) => a.id === ctx.author.id))
