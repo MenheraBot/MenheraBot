@@ -597,10 +597,10 @@ dir-glob@^3.0.1:
   dependencies:
     path-type "^4.0.0"
 
-discordeno@^16.0.0:
-  version "16.0.0"
-  resolved "https://registry.yarnpkg.com/discordeno/-/discordeno-16.0.0.tgz#f9f580b62ce38b88887b025d38d4b0051c2d2095"
-  integrity sha512-yPK//WKY1r7IWrdgD6q/Wc2zTbhZM4xecJcsvPEc42uF6ttdKjV+pPFl/lZK0sFC7MtQKHQYI3lTkjfs+mNznA==
+discordeno@^17.0.0:
+  version "17.0.0"
+  resolved "https://registry.yarnpkg.com/discordeno/-/discordeno-17.0.0.tgz#2841e3a3963b717ad025eac63ce0cd8f1249e89c"
+  integrity sha512-3UtSv7KSOsUVH/RWRkiZCQ53AFsNiu8+Rn4SULatNkvEklorPeQh9F5PiHwN+wgnCu3Rf/M06zDyp1RDnmQWdA==
   dependencies:
     "@deno/shim-deno" "~0.9.0"
     "@deno/shim-timers" "~0.1.0"
