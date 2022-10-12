@@ -1,9 +1,20 @@
 import { BigString } from 'discordeno/types';
 
+import { getThemeById } from '../../modules/themes/getThemes';
 import { RedisClient } from '../databases';
 import { DatabaseUserThemesSchema } from '../../types/database';
 import { debugError } from '../../utils/debugError';
 import { userThemesModel } from '../collections';
+import {
+  AvailableCardBackgroundThemes,
+  AvailableCardThemes,
+  AvailableProfilesThemes,
+  AvailableTableThemes,
+  CardBackgroundTheme,
+  CardsTheme,
+  ProfileTheme,
+  TableTheme,
+} from '../../modules/themes/types';
 
 const parseMongoUserToRedisUser = (user: DatabaseUserThemesSchema): DatabaseUserThemesSchema => ({
   id: `${user.id}`,
@@ -86,10 +97,40 @@ const addProfileTheme = async (userId: BigString, profileId: number): Promise<vo
   await addThemeToUserAccount(userId, 'profileThemes', profileId);
 };
 
+const getTableTheme = async (userId: BigString): Promise<AvailableTableThemes> => {
+  const themes = await findEnsuredUserThemes(userId);
+
+  return getThemeById<TableTheme>(themes.selectedTableTheme).data.theme;
+};
+
+const getCardsTheme = async (userId: BigString): Promise<AvailableCardThemes> => {
+  const themes = await findEnsuredUserThemes(userId);
+
+  return getThemeById<CardsTheme>(themes.selectedCardTheme).data.theme;
+};
+
+const getProfileTheme = async (userId: BigString): Promise<AvailableProfilesThemes> => {
+  const themes = await findEnsuredUserThemes(userId);
+
+  return getThemeById<ProfileTheme>(themes.selectedProfileTheme).data.theme;
+};
+
+const getCardBackgroundTheme = async (
+  userId: BigString,
+): Promise<AvailableCardBackgroundThemes> => {
+  const themes = await findEnsuredUserThemes(userId);
+
+  return getThemeById<CardBackgroundTheme>(themes.selectedCardBackgroundTheme).data.theme;
+};
+
 export default {
   findEnsuredUserThemes,
   addTableTheme,
   addCardsTheme,
   addCardBackgroundTheme,
   addProfileTheme,
+  getTableTheme,
+  getCardsTheme,
+  getProfileTheme,
+  getCardBackgroundTheme,
 };
