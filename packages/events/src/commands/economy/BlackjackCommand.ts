@@ -1,9 +1,78 @@
 import { ApplicationCommandOptionTypes } from 'discordeno/types';
-import { getHandValue, numbersToBlackjackCards } from 'modules/blackjack/blackjackMatch';
+import starsRepository from 'database/repositories/starsRepository';
+import { negate } from '../../utils/miscUtils';
+import { bot } from '../../index';
+import {
+  generateBlackjackEmbed,
+  getHandValue,
+  getTableImage,
+  numbersToBlackjackCards,
+} from '../../modules/blackjack/blackjackMatch';
+import { BlackjackCard, BlackjackFinishGameReason } from '../../modules/blackjack/types';
+import {
+  AvailableCardBackgroundThemes,
+  AvailableCardThemes,
+  AvailableTableThemes,
+} from '../../modules/themes/types';
+import InteractionContext from '../../structures/command/InteractionContext';
 import userThemesRepository from '../../database/repositories/userThemesRepository';
 import { shuffleCards } from '../../modules/blackjack';
 
 import { createCommand } from '../../structures/command/createCommand';
+
+const finishMatch = async (
+  ctx: InteractionContext,
+  bet: number,
+  playerCards: BlackjackCard[],
+  dealerCards: BlackjackCard[],
+  playerHandValue: number,
+  dealerHandValue: number,
+  cardTheme: AvailableCardThemes,
+  tableTheme: AvailableTableThemes,
+  backgroundCardTheme: AvailableCardBackgroundThemes,
+  finishReason: BlackjackFinishGameReason,
+  didUserWin: boolean,
+  prizeMultiplier: number,
+): Promise<void> => {
+  const winner = didUserWin ? ctx.author.username : bot.username;
+  const loser = !didUserWin ? ctx.author.username : bot.username;
+  const prize = didUserWin ? Math.floor(bet * prizeMultiplier) : bet;
+
+  if (didUserWin) starsRepository.addStars(ctx.author.id, prize);
+  else starsRepository.removeStars(ctx.author.id, prize);
+
+  const image = await getTableImage(
+    ctx,
+    bet,
+    playerCards,
+    dealerCards,
+    playerHandValue,
+    dealerHandValue,
+    cardTheme,
+    tableTheme,
+    backgroundCardTheme,
+  );
+
+  const embed = generateBlackjackEmbed(
+    ctx,
+    playerCards,
+    dealerCards,
+    playerHandValue,
+    dealerHandValue,
+  );
+
+  embed.fields?.push({
+    name: ctx.prettyResponse(didUserWin ? 'crown' : 'no', 'commands:blackjack.result'),
+    value: ctx.locale(`commands:blackjack.${finishReason}`, {
+      winner,
+      loser,
+      prize: didUserWin ? prize : negate(prize),
+      text: ctx.locale(`commands:blackjack.${didUserWin ? 'profit' : 'loss'}`),
+    }),
+  });
+
+  embed.footer = { text: '' };
+};
 
 const BlackjackCommand = createCommand({
   path: '',
