@@ -8,4 +8,6 @@ const toWritableUtf = (str: string): string => str.replace(/[^\x00-\xFF]/g, '');
 
 const millisToSeconds = (milli: number): number => Math.floor(milli / 1000);
 
-export { capitalize, randomFromArray, toWritableUtf, millisToSeconds };
+const negate = (value: number): number => value * -1;
+
+export { capitalize, randomFromArray, toWritableUtf, millisToSeconds, negate };
