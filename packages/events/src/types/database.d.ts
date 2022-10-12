@@ -1,4 +1,5 @@
 import { HuntMagicItem } from '../modules/hunt/types';
+import { UserBuyableTheme } from '../modules/themes/types';
 
 export type ColorResolvable = `#${string}`;
 
@@ -56,10 +57,10 @@ export interface DatabaseCreditsSchema {
 
 export interface DatabaseUserThemesSchema {
   readonly id: string;
-  cardsThemes: Array<IUserBuyableData>;
-  tableThemes: Array<IUserBuyableData>;
-  profileThemes: Array<IUserBuyableData>;
-  cardsBackgroundThemes: Array<IUserBuyableData>;
+  cardsThemes: Array<UserBuyableTheme>;
+  tableThemes: Array<UserBuyableTheme>;
+  profileThemes: Array<UserBuyableTheme>;
+  cardsBackgroundThemes: Array<UserBuyableTheme>;
   selectedCardTheme: number;
   selectedTableTheme: number;
   selectedProfileTheme: number;
