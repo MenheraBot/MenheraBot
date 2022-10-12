@@ -4,3 +4,10 @@ export interface BlackjackCard {
   id: number;
   hidden?: boolean;
 }
+
+export type BlackjackFinishGameReason =
+  | 'init_blackjack'
+  | 'busted'
+  | 'blackjack'
+  | 'draw'
+  | 'biggest';

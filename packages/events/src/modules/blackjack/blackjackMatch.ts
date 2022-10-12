@@ -1,3 +1,14 @@
+import { Embed } from 'discordeno/transformers';
+import { ActionRow } from 'discordeno/types';
+import { getUserAvatar } from 'utils/discord/userUtils';
+import InteractionContext from '../../structures/command/InteractionContext';
+import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
+import { VanGoghEndpoints, vanGoghRequest, VanGoghReturnData } from '../../utils/vanGoghRequest';
+import {
+  AvailableCardBackgroundThemes,
+  AvailableCardThemes,
+  AvailableTableThemes,
+} from '../themes/types';
 import { BlackjackCard } from './types';
 
 const numbersToBlackjackCards = (cards: Array<number>): Array<BlackjackCard> =>
@@ -23,4 +34,81 @@ const getHandValue = (cards: BlackjackCard[]): number => {
   return total;
 };
 
-export { numbersToBlackjackCards, getHandValue };
+const getTableImage = (
+  ctx: InteractionContext,
+  bet: number,
+  playerCards: BlackjackCard[],
+  dealerCards: BlackjackCard[],
+  playerHandValue: number,
+  dealerHandvalue: number,
+  cardTheme: AvailableCardThemes,
+  tableTheme: AvailableTableThemes,
+  cardBackgroundTheme: AvailableCardBackgroundThemes,
+): Promise<VanGoghReturnData> => {
+  return vanGoghRequest(VanGoghEndpoints.Blackjack, {
+    userCards: playerCards,
+    menheraCards: dealerCards,
+    userTotal: playerHandValue,
+    menheraTotal: dealerHandvalue,
+    i18n: {
+      yourHand: ctx.locale('commands:blackjack.your-hand'),
+      dealerHand: ctx.locale('commands:blackjack.dealer-hand'),
+    },
+    aposta: bet,
+    cardTheme,
+    tableTheme,
+    backgroundCardTheme: cardBackgroundTheme,
+  });
+};
+
+const generateBlackjackEmbed = (
+  ctx: InteractionContext,
+  playerCards: BlackjackCard[],
+  dealerCards: BlackjackCard[],
+  playerHandValue: number,
+  dealerHandValue: number,
+): Embed => {
+  return createEmbed({
+    title: ctx.prettyResponse('estrelinhas', 'commands:blackjack.title'),
+    description: ctx.locale('commands:blackjack.description', {
+      userHand: playerCards.map((a) => a.value).join(', '),
+      userTotal: playerHandValue,
+      dealerCards: dealerCards
+        .filter((a) => !a.hidden)
+        .map((a) => a.value)
+        .join(', '),
+      dealerTotal: dealerHandValue,
+    }),
+    footer: { text: ctx.locale('commands:blackjack.footer') },
+    color: hexStringToNumber(ctx.authorData.selectedColor),
+    thumbnail: { url: getUserAvatar(ctx.author, { enableGif: true }) },
+    fields: [],
+  });
+};
+
+const safeImageReply = (
+  ctx: InteractionContext,
+  embed: Embed,
+  image: VanGoghReturnData,
+  components: ActionRow[],
+): Promise<void> => {
+  const timestamp = Date.now();
+
+  /*
+   const embed = createEmbed({
+    title: ctx.locale('commands:trisal.title'),
+    description: `${mentionUser(marryOne.id)}, ${mentionUser(marryTwo.id)}, ${mentionUser(
+      marryThree.id,
+    )}`,
+    color: hexStringToNumber(ctx.authorData.selectedColor),
+    image: { url: 'attachment://trisal-kawaii.png' },
+  });
+
+  ctx.makeMessage({ embeds: [embed], file: { blob: res.data, name: 'trisal-kawaii.png' } });
+  */
+
+  if(image.err) return ctx.makeMessage({embeds: [embed], })
+   
+};
+
+export { numbersToBlackjackCards, getHandValue, getTableImage, generateBlackjackEmbed };
