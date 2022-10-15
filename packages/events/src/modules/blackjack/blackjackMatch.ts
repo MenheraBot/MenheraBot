@@ -86,7 +86,7 @@ const generateBlackjackEmbed = (
   });
 };
 
-const safeImageReply = (
+const safeImageReply = async (
   ctx: InteractionContext,
   embed: Embed,
   image: VanGoghReturnData,
@@ -94,21 +94,21 @@ const safeImageReply = (
 ): Promise<void> => {
   const timestamp = Date.now();
 
-  /*
-   const embed = createEmbed({
-    title: ctx.locale('commands:trisal.title'),
-    description: `${mentionUser(marryOne.id)}, ${mentionUser(marryTwo.id)}, ${mentionUser(
-      marryThree.id,
-    )}`,
-    color: hexStringToNumber(ctx.authorData.selectedColor),
-    image: { url: 'attachment://trisal-kawaii.png' },
+  if (image.err) return ctx.makeMessage({ embeds: [embed], file: [], components });
+
+  embed.image = { url: `attachment://blackjack-${timestamp}.png` };
+
+  ctx.makeMessage({
+    embeds: [embed],
+    components,
+    file: { blob: image.data, name: `blackjack-${timestamp}.png` },
   });
-
-  ctx.makeMessage({ embeds: [embed], file: { blob: res.data, name: 'trisal-kawaii.png' } });
-  */
-
-  if(image.err) return ctx.makeMessage({embeds: [embed], })
-   
 };
 
-export { numbersToBlackjackCards, getHandValue, getTableImage, generateBlackjackEmbed };
+export {
+  numbersToBlackjackCards,
+  getHandValue,
+  getTableImage,
+  generateBlackjackEmbed,
+  safeImageReply,
+};
