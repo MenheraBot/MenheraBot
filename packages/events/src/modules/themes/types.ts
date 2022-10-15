@@ -61,4 +61,4 @@ export interface TableTheme extends BaseTheme {
   theme: AvailableTableThemes;
 }
 
-export type ThemeFile = IProfileTheme | ICardsTheme | ITableTheme | ICardBackgroudTheme;
+export type ThemeFile = ProfileTheme | CardsTheme | TableTheme | CardBackgroundTheme;
