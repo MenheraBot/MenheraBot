@@ -105,10 +105,17 @@ const safeImageReply = async (
   });
 };
 
+const hideMenheraCard = (cards: BlackjackCard[]): BlackjackCard[] =>
+  cards.map((a, i) => {
+    if (i === 1) a.hidden = true;
+    return a;
+  });
+
 export {
   numbersToBlackjackCards,
   getHandValue,
   getTableImage,
   generateBlackjackEmbed,
   safeImageReply,
+  hideMenheraCard,
 };
