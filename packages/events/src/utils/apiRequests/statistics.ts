@@ -41,4 +41,17 @@ const postRoulleteGame = async (
     .catch(debugError);
 };
 
-export { postHuntExecution, postBichoResults, postCoinflipMatch, postRoulleteGame };
+const postBlackjackGame = async (
+  userId: string,
+  didWin: boolean,
+  betValue: number,
+): Promise<void> => {
+  await dataRequest.post('/statistics/blackjack', { userId, didWin, betValue }).catch(debugError);
+};
+export {
+  postHuntExecution,
+  postBichoResults,
+  postCoinflipMatch,
+  postRoulleteGame,
+  postBlackjackGame,
+};
