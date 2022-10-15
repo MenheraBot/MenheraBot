@@ -137,7 +137,7 @@ const BlackjackCommand = createCommand({
       ctx.channelId,
       ctx.author.id,
       `${ctx.interaction.id}`,
-      15_000,
+      10_000,
     );
 
     if (!collected) {
