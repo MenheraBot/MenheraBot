@@ -1,6 +1,6 @@
 import { Embed } from 'discordeno/transformers';
 import { ActionRow } from 'discordeno/types';
-import { getUserAvatar } from 'utils/discord/userUtils';
+import { getUserAvatar } from '../../utils/discord/userUtils';
 import InteractionContext from '../../structures/command/InteractionContext';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { VanGoghEndpoints, vanGoghRequest, VanGoghReturnData } from '../../utils/vanGoghRequest';

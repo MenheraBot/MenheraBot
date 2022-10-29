@@ -24,6 +24,7 @@ import {
 } from '../themes/types';
 import { BLACKJACK_PRIZE_MULTIPLIERS } from './index';
 import { finishMatch } from './finishMatch';
+import { makeDealerPlay } from './makeDealerPlay';
 
 const continueFromBuy = async (
   ctx: InteractionContext,

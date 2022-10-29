@@ -29,6 +29,8 @@ export interface UserCooldown {
   data?: unknown;
 }
 
+type Blesses = 1; // TODO
+
 export interface DatabaseRoleplayUserSchema {
   id: string;
   class: number;

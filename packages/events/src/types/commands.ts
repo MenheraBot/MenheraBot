@@ -33,10 +33,10 @@ export interface MaintenanceCommandData {
 
 export interface ApiCommandInformation {
   name: string;
-  nameLocalizations?: LocalizationMap;
+  nameLocalizations?: unknown;
   description: string;
-  descriptionLocalizations?: LocalizationMap;
+  descriptionLocalizations?: unknown;
   category: string;
-  options: ApplicationCommandOptionData[];
+  options: unknown[];
   disabled: MaintenanceCommandData;
 }
