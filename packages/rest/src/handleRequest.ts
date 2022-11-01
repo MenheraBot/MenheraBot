@@ -14,10 +14,10 @@ const rest = createRestManager({
 const handleRequest = async (req: RequestTypes): Promise<unknown> => {
   switch (req.type) {
     case 'RUN_METHOD':
-      return runMethod(req.data);
+      return runMethod(req.data, rest);
     case 'SEND_REQUEST':
-      return sendRequest(req.data);
+      return sendRequest(req.data, rest);
   }
 };
 
-export { handleRequest, rest };
+export { handleRequest };

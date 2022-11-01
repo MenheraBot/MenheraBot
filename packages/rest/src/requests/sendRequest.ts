@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Blob } from 'node:buffer';
 
+import { RestManager } from 'discordeno/rest';
 import { SendRequest } from '../types';
-import { rest } from '../handleRequest';
 
 import config from '../config';
 
 const { REST_AUTHORIZATION } = config(['REST_AUTHORIZATION']);
 
-export default async (data: SendRequest): Promise<unknown> => {
+export default async (data: SendRequest, rest: RestManager): Promise<unknown> => {
   if (data.Authorization !== REST_AUTHORIZATION) {
     return {
       status: 401,
