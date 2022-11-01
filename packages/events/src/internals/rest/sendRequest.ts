@@ -7,26 +7,27 @@ import { logger } from '../../utils/logger';
 export type RequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const runMethod = async <T = any>(
+const sendRequest = async <T = any>(
   client: Client,
   rest: RestManager,
   method: RequestMethod,
   route: string,
-  body?: unknown,
-  options?: {
-    retryCount?: number;
-    bucketId?: string;
-    headers?: Record<string, string>;
+  bucketId?: string,
+  retryCount?: number,
+  payload?: {
+    headers: Record<string, string>;
+    body: unknown;
   },
 ): Promise<T> => {
   const response = await client.request({
-    type: 'RUN_METHOD',
+    type: 'SEND_REQUEST',
     data: {
       Authorization: rest.secretKey,
       url: route,
-      body,
       method,
-      options,
+      bucketId,
+      retryCount,
+      payload,
     },
   });
 
@@ -35,4 +36,4 @@ const runMethod = async <T = any>(
   return response;
 };
 
-export { runMethod };
+export { sendRequest };

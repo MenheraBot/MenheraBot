@@ -40,10 +40,13 @@ const workers = new Collection<number, Worker>();
 async function startGateway() {
   const results = await restClient
     .request({
-      Authorization: REST_AUTHORIZATION,
-      body: undefined,
-      method: 'GET',
-      url: routes.GATEWAY_BOT(),
+      type: 'RUN_METHOD',
+      data: {
+        Authorization: REST_AUTHORIZATION,
+        body: undefined,
+        method: 'GET',
+        url: routes.GATEWAY_BOT(),
+      },
     })
     .then((res) => ({
       url: res.url,

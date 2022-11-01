@@ -1,6 +1,7 @@
 import { Bot, Collection, createRestManager } from 'discordeno';
 import { Client } from 'net-ipc';
 
+import { sendRequest } from '../internals/rest/sendRequest';
 import { initializeRedis, initializeMongo } from '../database/databases';
 import { startGame as startBichoGame } from '../modules/bicho/bichoManager';
 import { runMethod } from '../internals/rest/runMethod';
@@ -52,6 +53,16 @@ const setupInternals = (bot: Bot, restIPC: Client): void => {
     secretKey: REST_AUTHORIZATION,
     runMethod: async (rest, method, route, body, options) =>
       runMethod(restIPC, rest, method, route, body, options),
+    sendRequest: async (rest, options) =>
+      sendRequest(
+        restIPC,
+        rest,
+        options.method,
+        options.url,
+        options.bucketId,
+        options.retryCount,
+        options.payload,
+      ),
   });
 };
 

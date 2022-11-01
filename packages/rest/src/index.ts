@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
 import { Server } from 'net-ipc';
-import { ConnectionInfo, IpcRequest, MessageTypes } from './types';
+import { handleRequest } from './handleRequest';
+import { ConnectionInfo, MessageTypes, RequestTypes } from './types';
 import { handleIdentify } from './ipcMessages';
-import handleRequest from './handleRequest';
 import config from './config';
 
 const { SOCKET_PATH } = config(['SOCKET_PATH']);
@@ -41,7 +41,7 @@ server.on('message', (info: MessageTypes, connection) => {
   if (info.type === 'IDENTIFY') return handleIdentify(connections, info, connection);
 });
 
-server.on('request', async (req: IpcRequest, res) => {
+server.on('request', async (req: RequestTypes, res) => {
   res(await handleRequest(req));
 });
 
