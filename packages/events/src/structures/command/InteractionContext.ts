@@ -60,7 +60,7 @@ export default class {
     });
   }
 
-  async makeMessage(options: InteractionCallbackData): Promise<void> {
+  async makeMessage(options: InteractionCallbackData & { attachments?: unknown[] }): Promise<void> {
     if (this.replied) {
       await bot.helpers.editOriginalInteractionResponse(this.interaction.token, options);
       return;

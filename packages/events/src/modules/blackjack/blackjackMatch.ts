@@ -94,7 +94,7 @@ const safeImageReply = async (
 ): Promise<void> => {
   const timestamp = Date.now();
 
-  if (image.err) return ctx.makeMessage({ embeds: [embed], file: [], components });
+  if (image.err) return ctx.makeMessage({ embeds: [embed], attachments: [], components });
 
   embed.image = { url: `attachment://blackjack-${timestamp}.png` };
 

@@ -1,6 +1,7 @@
 import { Bot, Collection, createRestManager } from 'discordeno';
 import { Client } from 'net-ipc';
 
+import { transformInteractionResponseToDiscordInteractionResponse } from '../internals/transformers/reverse/interactionResponse';
 import { sendRequest } from '../internals/rest/sendRequest';
 import { initializeRedis, initializeMongo } from '../database/databases';
 import { startGame as startBichoGame } from '../modules/bicho/bichoManager';
@@ -64,6 +65,9 @@ const setupInternals = (bot: Bot, restIPC: Client): void => {
         options.payload,
       ),
   });
+
+  bot.transformers.reverse.interactionResponse =
+    transformInteractionResponseToDiscordInteractionResponse;
 };
 
 export { setupMenheraClient, initializeServices, setupInternals };

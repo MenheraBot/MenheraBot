@@ -89,7 +89,7 @@ const continueFromBuy = async (
     ctx.makeMessage({
       content: ctx.prettyResponse('error', 'commands:blackjack.timeout'),
       embeds: [],
-      file: [],
+      attachments: [],
       components: [],
     });
 
