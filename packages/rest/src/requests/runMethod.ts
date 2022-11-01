@@ -45,7 +45,5 @@ export default async (data: RunMethod): Promise<unknown> => {
       return e;
     });
 
-  console.log('RUN METHOD', result);
-
   return result;
 };

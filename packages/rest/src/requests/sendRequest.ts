@@ -49,7 +49,5 @@ export default async (data: SendRequest): Promise<unknown> => {
       return e;
     });
 
-  console.log('SEND REQEUEST', result);
-
   return result;
 };
