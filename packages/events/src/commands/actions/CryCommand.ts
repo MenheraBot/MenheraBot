@@ -24,7 +24,7 @@ const CryCommand = createCommand({
     },
     {
       name: 'motivo',
-      type: ApplicationCommandOptionTypes.User,
+      type: ApplicationCommandOptionTypes.String,
       nameLocalizations: { 'en-US': 'reason' },
       description: 'Por que você está chorando?',
       descriptionLocalizations: { 'en-US': 'Why are you crying?' },

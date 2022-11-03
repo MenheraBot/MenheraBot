@@ -24,7 +24,7 @@ const AngryCommand = createCommand({
     },
     {
       name: 'motivo',
-      type: ApplicationCommandOptionTypes.User,
+      type: ApplicationCommandOptionTypes.String,
       nameLocalizations: { 'en-US': 'reason' },
       description: 'Por que você está com raiva?',
       descriptionLocalizations: { 'en-US': 'Why are you angry?' },
