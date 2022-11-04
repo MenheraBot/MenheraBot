@@ -1,4 +1,4 @@
-import { BichoWinner } from 'modules/bicho/types';
+import { BichoWinner } from '../../modules/bicho/types';
 import { ApiHuntingTypes } from '../../modules/hunt/types';
 import { debugError } from '../debugError';
 import { dataRequest } from './apiRequests';

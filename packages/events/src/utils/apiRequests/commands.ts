@@ -1,4 +1,8 @@
-import { ApiCommandInformation, MaintenanceCommandData, UsedCommandData } from 'types/commands';
+import {
+  ApiCommandInformation,
+  MaintenanceCommandData,
+  UsedCommandData,
+} from '../../types/commands';
 import { debugError } from '../debugError';
 import { dataRequest, statusRequest } from './apiRequests';
 

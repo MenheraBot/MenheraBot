@@ -8,7 +8,7 @@
     "gateway": "yarn workspace @menhera-bot/gateway",
     "events": "yarn workspace @menhera-bot/events",
     "lint": "yarn workspace @menhera-bot/eslint-config",
-    "test": "jest",
+    "test": "node --no-warnings --experimental-vm-modules node_modules/jest/bin/jest.js",
     "run:lint": "eslint --fix ."
   },
   "repository": {
