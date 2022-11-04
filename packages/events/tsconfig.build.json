@@ -9,7 +9,12 @@
     "moduleResolution": "Node",
     "esModuleInterop": true
   },
+  "exclude": [
+    "src/**/*.spec.ts",
+    "src/**/*.test.ts",
+    "src/test/*"
+  ],
   "include": [
     "src/**/*"
- ]
+  ]
 }
