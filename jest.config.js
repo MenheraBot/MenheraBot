@@ -6,8 +6,9 @@ module.exports = {
       preset: "ts-jest/presets/default-esm",
       testEnvironment: 'node',
       displayName: '@menherabot/events',
-      setupFiles: ['./packages/events/test/setupTests.ts'],
-      testMatch:['<rootDir>/packages/events/**/?(*.)+(spec|test).ts?(x)'],
+      setupFiles: ['./test/setupTests.ts'],
+      testMatch:['<rootDir>/**/?(*.)+(spec|test).ts?(x)'],
+      rootDir: './packages/events',
       modulePathIgnorePatterns: ["<rootDir>/dist/"],
       transform: {
         '^.+\\.[t]sx?$': [

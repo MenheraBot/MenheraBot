@@ -77,7 +77,7 @@ const stopGame = async (): Promise<void> => {
 
 const startGame = (): void => {
   onGoingGame = createGame();
-  gameLoop = setInterval(finishGame, GAME_DURATION);
+  gameLoop = setInterval(finishGame, GAME_DURATION).unref();
 };
 
 const getLastGameStatus = (): BichoGame => lastGame;

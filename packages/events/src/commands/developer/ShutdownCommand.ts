@@ -38,7 +38,7 @@ const ShutdownCommand = createCommand({
           clearInterval(interval);
           resolve();
         }
-      }, 3000);
+      }, 3000).unref();
     });
 
     registerStep('Todas execuções de comandos finalizadas!');

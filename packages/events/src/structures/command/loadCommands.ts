@@ -13,7 +13,9 @@ const loadCommands = (): void => {
     commandRepository.ensureCommandMaintenanceInfo(command.name);
   };
 
-  readDirectory(resolve('dist/commands'), addToMap);
+  const pathToResolve = process.env.TESTING ? 'packages/events/src' : 'dist';
+
+  readDirectory(resolve(`${pathToResolve}/commands`), addToMap);
 };
 
 export { loadCommands };

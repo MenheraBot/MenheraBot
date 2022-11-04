@@ -1,5 +1,10 @@
 import { jest } from '@jest/globals';
+import { closeConnections } from '../../../database/databases';
 import angryCommand from '../AngryCommand';
+
+afterAll(() => {
+  closeConnections();
+});
 
 describe('AngryCommand tests', () => {
   const context = {
@@ -9,20 +14,15 @@ describe('AngryCommand tests', () => {
   };
 
   beforeEach(() => {
-    context.getOption.mockClear();
+    context.getOption = jest.fn();
     context.makeMessage.mockClear();
   });
 
   it('should return a message saying that cannot mention bots', () => {
-    context.getOption.mockReturnValueOnce({ togles: { bot: true } });
+    context.getOption.mockReturnValueOnce({ toggles: { bot: true } });
 
     // @ts-expect-error Mocking UwU
     angryCommand.execute(context);
-
-    // TESTS DONT WORK!
-
-    // When testing, all nesting imports will try to connect to database and gateway process, make a way of conecting to the database, but
-    // Removing the necessity of making conection to gateway and rest
 
     expect(context.makeMessage.mock.calls[0][0]).toEqual({ content: 'commands:raiva.bot' });
   });
