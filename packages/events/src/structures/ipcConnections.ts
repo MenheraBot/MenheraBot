@@ -43,6 +43,8 @@ const createIpcConnections = async (): Promise<Client> => {
       bot.handlers[msg.data.t]?.(bot, msg.data, msg.shardId);
   });
 
+  if (process.env.TESTING) return restClient;
+
   await restClient.connect().catch(logger.panic);
   await eventClient.connect().catch(logger.panic);
 

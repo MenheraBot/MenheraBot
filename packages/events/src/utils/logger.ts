@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 const logger = {
   debug: (...args: unknown[]): void => {
-    if (process.env.NODE_ENV !== 'production') console.debug(...args);
+    if (process.env.NODE_ENV === 'DEVELOPMENT') console.debug(...args);
   },
 
   error: (...args: unknown[]): void => {
@@ -9,6 +9,7 @@ const logger = {
   },
 
   info: (...args: unknown[]): void => {
+    if (process.env.TESTING) return;
     console.info(...args);
   },
 

@@ -14,7 +14,7 @@
   "scripts": {
     "build": "rm -rf dist && tsc --project tsconfig.build.json && yarn fix:problems",
     "fix:problems": "mv dist/src uwu && rm -rf dist && mv uwu dist",
-    "dev": "node --es-module-specifier-resolution=node --no-warnings -r dotenv/config .",
+    "dev": "DEVELOPMENT=true node --es-module-specifier-resolution=node --no-warnings -r dotenv/config .",
     "test": "tsc --noEmit -p tsconfig.build.json && eslint ."
   },
   "dependencies": {
