@@ -48,7 +48,7 @@ const RegisterCreditCommand = createCommand({
   devsOnly: true,
   category: 'dev',
   authorDataFields: [],
-  execute: async (ctx) => {
+  execute: async (ctx, finishCommand) => {
     const user = ctx.getOption<User>('owner', 'users', true);
     const themeId = ctx.getOption<number>('theme', false, true);
     const royalty = ctx.getOption<number>('royalty', false) ?? 7;
@@ -60,7 +60,8 @@ const RegisterCreditCommand = createCommand({
 
     const alreadyExists = await themeCreditsRepository.findThemeInfo(themeId);
 
-    if (alreadyExists) return ctx.makeMessage({ content: 'Já existe um tema com esse ID!' });
+    if (alreadyExists)
+      return finishCommand(ctx.makeMessage({ content: 'Já existe um tema com esse ID!' }));
 
     await themeCreditsRepository.registerTheme(themeId, user.id, royalty);
     await userThemesRepository[themeType](user.id, themeId);
@@ -80,8 +81,9 @@ const RegisterCreditCommand = createCommand({
 
     const userBadges = await userRepository.ensureFindUser(user.id);
 
-    if (userBadges.badges.some((a) => a.id === 15)) return;
+    if (userBadges.badges.some((a) => a.id === 15)) return finishCommand();
     await badgeRepository.giveBadgeToUser(user.id, 15);
+    finishCommand();
   },
 });
 
