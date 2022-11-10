@@ -32,46 +32,58 @@ const MarryCommand = createCommand({
   ],
   category: 'fun',
   authorDataFields: ['married'],
-  execute: async (ctx) => {
+  execute: async (ctx, finishCommand) => {
     if (ctx.authorData.married)
-      return ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'commands:casar.married'),
-        flags: MessageFlags.EPHEMERAL,
-      });
+      return finishCommand(
+        ctx.makeMessage({
+          content: ctx.prettyResponse('error', 'commands:casar.married'),
+          flags: MessageFlags.EPHEMERAL,
+        }),
+      );
 
     const mention = ctx.getOption<User>('user', 'users', true);
 
     if (mention.toggles.bot)
-      return ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'commands:casar.bot'),
-        flags: MessageFlags.EPHEMERAL,
-      });
+      return finishCommand(
+        ctx.makeMessage({
+          content: ctx.prettyResponse('error', 'commands:casar.bot'),
+          flags: MessageFlags.EPHEMERAL,
+        }),
+      );
 
     if (mention.id === ctx.author.id)
-      return ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'commands:casar.self-mention'),
-        flags: MessageFlags.EPHEMERAL,
-      });
+      return finishCommand(
+        ctx.makeMessage({
+          content: ctx.prettyResponse('error', 'commands:casar.self-mention'),
+          flags: MessageFlags.EPHEMERAL,
+        }),
+      );
 
     const mentionData = await userRepository.findUser(mention.id);
 
     if (!mentionData)
-      return ctx.makeMessage({
-        content: ctx.prettyResponse('warn', 'commands:casar.no-dbuser'),
-        flags: MessageFlags.EPHEMERAL,
-      });
+      return finishCommand(
+        ctx.makeMessage({
+          content: ctx.prettyResponse('warn', 'commands:casar.no-dbuser'),
+          flags: MessageFlags.EPHEMERAL,
+        }),
+      );
 
     if (mentionData.ban)
-      return ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'commands:casar.banned-user'),
-        flags: MessageFlags.EPHEMERAL,
-      });
+      return finishCommand(
+        ctx.makeMessage({
+          content: ctx.prettyResponse('error', 'commands:casar.banned-user'),
+          flags: MessageFlags.EPHEMERAL,
+        }),
+      );
 
     if (mentionData.married)
-      return ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'commands:casar.mention-married'),
-        flags: MessageFlags.EPHEMERAL,
-      });
+      return finishCommand(
+        ctx.makeMessage({
+          content: ctx.prettyResponse('error', 'commands:casar.mention-married'),
+          flags: MessageFlags.EPHEMERAL,
+        }),
+      );
 
     const confirmButton = createButton({
       customId: generateCustomId('CONFIRM', ctx.interaction.id),
@@ -101,24 +113,28 @@ const MarryCommand = createCommand({
     );
 
     if (!collected)
-      return ctx.makeMessage({
-        components: [
-          createActionRow(
-            disableComponents(ctx.locale('common:timesup'), [confirmButton, cancelButton]),
-          ),
-        ],
-      });
+      return finishCommand(
+        ctx.makeMessage({
+          components: [
+            createActionRow(
+              disableComponents(ctx.locale('common:timesup'), [confirmButton, cancelButton]),
+            ),
+          ],
+        }),
+      );
 
     const selectedButton = resolveCustomId(collected.data?.customId as string);
 
     if (selectedButton === 'CANCEL')
-      return ctx.makeMessage({
-        components: [],
-        content: ctx.prettyResponse('error', 'commands:casar.negated', {
-          author: mentionUser(ctx.author.id),
-          toMarry: mentionUser(mention.id),
+      return finishCommand(
+        ctx.makeMessage({
+          components: [],
+          content: ctx.prettyResponse('error', 'commands:casar.negated', {
+            author: mentionUser(ctx.author.id),
+            toMarry: mentionUser(mention.id),
+          }),
         }),
-      });
+      );
 
     ctx.makeMessage({
       content: ctx.prettyResponse('success', 'commands:casar.accepted', {
@@ -129,6 +145,7 @@ const MarryCommand = createCommand({
     });
 
     await relationshipRepostory.executeMarry(ctx.author.id, mention.id);
+    finishCommand();
   },
 });
 
