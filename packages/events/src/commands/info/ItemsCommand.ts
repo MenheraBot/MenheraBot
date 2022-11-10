@@ -35,22 +35,26 @@ const ItemsCommand = createCommand({
     },
   ],
   authorDataFields: ['selectedColor', 'inUseItems', 'inventory', 'id', 'itemsLimit'],
-  execute: async (ctx) => {
+  execute: async (ctx, finishCommand) => {
     const inputUser = ctx.getOption<User>('user', 'users', false) ?? ctx.author;
     const user =
       inputUser.id !== ctx.author.id ? await userRepository.findUser(inputUser.id) : ctx.authorData;
 
     if (!user)
-      return ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'commands:itens.no-user'),
-        flags: MessageFlags.EPHEMERAL,
-      });
+      return finishCommand(
+        ctx.makeMessage({
+          content: ctx.prettyResponse('error', 'commands:itens.no-user'),
+          flags: MessageFlags.EPHEMERAL,
+        }),
+      );
 
     if (user.ban)
-      return ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'commands:itens.banned'),
-        flags: MessageFlags.EPHEMERAL,
-      });
+      return finishCommand(
+        ctx.makeMessage({
+          content: ctx.prettyResponse('error', 'commands:itens.banned'),
+          flags: MessageFlags.EPHEMERAL,
+        }),
+      );
 
     const embed = createEmbed({
       title: ctx.locale('commands:itens.title', { user: inputUser.username }),
@@ -60,7 +64,8 @@ const ItemsCommand = createCommand({
 
     if (user.inventory.length === 0) {
       embed.description = ctx.prettyResponse('error', 'commands:itens.no-item');
-      return ctx.makeMessage({ embeds: [embed] });
+      ctx.makeMessage({ embeds: [embed] });
+      finishCommand();
     }
 
     const inventoryWithoutUsingItems = user.inventory.filter(
@@ -101,7 +106,7 @@ const ItemsCommand = createCommand({
       inline: true,
     });
 
-    if (inputUser.id !== ctx.author.id) return ctx.makeMessage({ embeds: [embed] });
+    if (inputUser.id !== ctx.author.id) return finishCommand(ctx.makeMessage({ embeds: [embed] }));
 
     const useItemButton = createButton({
       customId: generateCustomId('USE', ctx.interaction.id),
@@ -127,7 +132,7 @@ const ItemsCommand = createCommand({
       components: [createActionRow([useItemButton, resetItemsButton])],
     });
 
-    if (cannotUseItems && user.inUseItems.length === 0) return;
+    if (cannotUseItems && user.inUseItems.length === 0) return finishCommand();
 
     const collected = await collectResponseComponentInteraction<ComponentInteraction>(
       ctx.channelId,
@@ -137,24 +142,28 @@ const ItemsCommand = createCommand({
     );
 
     if (!collected)
-      return ctx.makeMessage({
-        components: [
-          createActionRow(
-            disableComponents(ctx.locale('common:timesup'), [useItemButton, resetItemsButton]),
-          ),
-        ],
-      });
+      return finishCommand(
+        ctx.makeMessage({
+          components: [
+            createActionRow(
+              disableComponents(ctx.locale('common:timesup'), [useItemButton, resetItemsButton]),
+            ),
+          ],
+        }),
+      );
 
     if (resolveCustomId(collected.data.customId) === 'RESET') {
       await userRepository.updateUser(ctx.author.id, {
         inUseItems: [],
       });
 
-      return ctx.makeMessage({
+      ctx.makeMessage({
         components: [],
         embeds: [],
         content: ctx.prettyResponse('success', 'commands:itens.reseted'),
       });
+
+      finishCommand();
     }
 
     const availableItems = createSelectMenu({
@@ -183,11 +192,13 @@ const ItemsCommand = createCommand({
     );
 
     if (!selectedItem)
-      return ctx.makeMessage({
-        components: [
-          createActionRow(disableComponents(ctx.locale('common:timesup'), [availableItems])),
-        ],
-      });
+      return finishCommand(
+        ctx.makeMessage({
+          components: [
+            createActionRow(disableComponents(ctx.locale('common:timesup'), [availableItems])),
+          ],
+        }),
+      );
 
     const itemId = selectedItem.data.values[0];
 
@@ -217,11 +228,13 @@ const ItemsCommand = createCommand({
       );
 
       if (!choosedReplace)
-        return ctx.makeMessage({
-          components: [
-            createActionRow(disableComponents(ctx.locale('common:timesup'), [replaceItem])),
-          ],
-        });
+        return finishCommand(
+          ctx.makeMessage({
+            components: [
+              createActionRow(disableComponents(ctx.locale('common:timesup'), [replaceItem])),
+            ],
+          }),
+        );
 
       const [replaceItemId] = resolveSeparatedStrings(choosedReplace.data.values[0]);
 
@@ -238,6 +251,7 @@ const ItemsCommand = createCommand({
     });
 
     userRepository.updateUser(ctx.author.id, { inUseItems: user.inUseItems });
+    finishCommand();
   },
 });
 
