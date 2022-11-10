@@ -25,7 +25,7 @@ const GadoCommand = createCommand({
   ],
   category: 'fun',
   authorDataFields: [],
-  execute: async (ctx) => {
+  execute: async (ctx, finishCommand) => {
     const link = ctx.getOption<User>('user', 'users', true);
 
     await ctx.defer();
@@ -38,7 +38,7 @@ const GadoCommand = createCommand({
       await ctx.makeMessage({
         content: ctx.prettyResponse('error', 'common:http-error'),
       });
-      return;
+      return finishCommand();
     }
 
     await ctx.makeMessage({
@@ -47,6 +47,8 @@ const GadoCommand = createCommand({
         blob: res.data,
       },
     });
+
+    finishCommand();
   },
 });
 
