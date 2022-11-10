@@ -46,44 +46,49 @@ const BlacklistCommand = createCommand({
   devsOnly: true,
   category: 'dev',
   authorDataFields: [],
-  execute: async (ctx) => {
+  execute: async (ctx, finishCommand) => {
     const user = ctx.getOption<User>('user', 'users', true);
 
     switch (ctx.getOption('tipo', false, true)) {
       case 'add': {
         if (!user)
-          return ctx.makeMessage({
-            content: 'user not found',
-          });
+          return finishCommand(
+            ctx.makeMessage({
+              content: 'user not found',
+            }),
+          );
 
         const reason = ctx.getOption<string>('motivo', false);
 
         if (!reason)
-          return ctx.makeMessage({
-            content:
-              'Se for banir um usuário, da um motivo bacana pq se n depois fode pra dar desban',
-          });
+          return finishCommand(
+            ctx.makeMessage({
+              content:
+                'Se for banir um usuário, da um motivo bacana pq se n depois fode pra dar desban',
+            }),
+          );
 
         await blacklistRepository.banUser(user.id, reason);
 
         await ctx.makeMessage({ content: 'Usuário banido de usar a Menhera!' });
-        return;
+        return finishCommand();
       }
       case 'remove': {
         await blacklistRepository.unbanUser(user.id);
 
         await ctx.makeMessage({ content: 'Usuário desbanido' });
-        return;
+        return finishCommand();
       }
       case 'view': {
-        if (!user) return ctx.makeMessage({ content: 'User not found' });
+        if (!user) return finishCommand(ctx.makeMessage({ content: 'User not found' }));
 
         const usr = await userRepository.getBannedUserInfo(user.id);
 
-        if (!usr) return ctx.makeMessage({ content: 'Nenhum user na DB' });
+        if (!usr) return finishCommand(ctx.makeMessage({ content: 'Nenhum user na DB' }));
 
         const msg = `== USER BANNED INFO ==\n\n• User :: ${user.username}#${user.discriminator} - (${user.id})\n• Banned :: ${usr.ban}\n• Reason :: ${usr.banReason}`;
         await ctx.makeMessage({ content: `\`\`\`asciidocmsg\n${msg}\`\`\`` });
+        finishCommand();
       }
     }
   },
