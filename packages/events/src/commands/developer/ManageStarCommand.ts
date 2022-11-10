@@ -35,7 +35,7 @@ const ReloadLocalesCommand = createCommand({
   devsOnly: true,
   category: 'dev',
   authorDataFields: [],
-  execute: async (ctx) => {
+  execute: async (ctx, finishCommand) => {
     const { id } = ctx.getOption<User>('user', 'users', true);
 
     const value = ctx.getOption<number>('value', false, true);
@@ -57,6 +57,8 @@ const ReloadLocalesCommand = createCommand({
     await ctx.makeMessage({
       content: `Estrelinhas de <@${id}> alteradas com sucesso :star:\n**Operação**: ${operation}\n**Valor**: ${value}`,
     });
+
+    finishCommand();
   },
 });
 
