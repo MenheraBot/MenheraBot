@@ -59,7 +59,7 @@ const CalvoCommand = createCommand({
   ],
   category: 'fun',
   authorDataFields: [],
-  execute: async (ctx) => {
+  execute: async (ctx, finishCommand) => {
     const user = ctx.getOption<User>('user', 'users', true);
 
     const baldType = Math.floor(Math.random() * 4);
@@ -82,6 +82,8 @@ const CalvoCommand = createCommand({
       }),
       components: [createActionRow([moreButton])],
     });
+
+    finishCommand();
   },
 });
 
