@@ -20,7 +20,7 @@ const EvalCommand = createCommand({
   devsOnly: true,
   category: 'dev',
   authorDataFields: [],
-  execute: async (ctx) => {
+  execute: async (ctx, finishCommand) => {
     try {
       // eslint-disable-next-line no-eval
       let evaled = await eval(ctx.getOption('script', false, true));
@@ -29,7 +29,7 @@ const EvalCommand = createCommand({
 
       if (evaled.length > 1800) evaled = `${evaled.slice(0, 1800)}...`;
       await ctx.makeMessage({ content: `\`\`\`js\n ${evaled}\`\`\`` });
-      return;
+      return finishCommand();
     } catch (err) {
       if (err instanceof Error && err.stack) {
         const errorMessage = err.stack.length > 3800 ? `${err.stack.slice(0, 3800)}...` : err.stack;
@@ -41,6 +41,7 @@ const EvalCommand = createCommand({
         });
 
         await ctx.makeMessage({ embeds: [embed] });
+        finishCommand();
       }
     }
   },
