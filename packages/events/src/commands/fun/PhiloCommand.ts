@@ -25,7 +25,7 @@ const PhiloCommand = createCommand({
   ],
   category: 'fun',
   authorDataFields: [],
-  execute: async (ctx) => {
+  execute: async (ctx, finishCommand) => {
     const text = ctx.getOption<string>('frase', false, true);
 
     await ctx.defer();
@@ -33,10 +33,12 @@ const PhiloCommand = createCommand({
     const res = await vanGoghRequest(VanGoghEndpoints.Philo, { text: toWritableUtf(text) });
 
     if (res.err)
-      return ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'common:http-error'),
-        flags: MessageFlags.EPHEMERAL,
-      });
+      return finishCommand(
+        ctx.makeMessage({
+          content: ctx.prettyResponse('error', 'common:http-error'),
+          flags: MessageFlags.EPHEMERAL,
+        }),
+      );
 
     ctx.makeMessage({
       file: {
@@ -44,6 +46,8 @@ const PhiloCommand = createCommand({
         name: 'aristoteles.png',
       },
     });
+
+    finishCommand();
   },
 });
 
