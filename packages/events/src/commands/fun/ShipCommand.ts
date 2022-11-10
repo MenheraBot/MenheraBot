@@ -35,7 +35,7 @@ const ShipCommand = createCommand({
   ],
   category: 'fun',
   authorDataFields: ['married'],
-  execute: async (ctx) => {
+  execute: async (ctx, finishCommand) => {
     const firstUser = ctx.getOption<User>('user', 'users', true);
     const secondUser = ctx.getOption<User>('user_dois', 'users', false) ?? ctx.author;
 
@@ -43,10 +43,12 @@ const ShipCommand = createCommand({
       (await blacklistRepository.isUserBanned(firstUser.id)) ||
       (await blacklistRepository.isUserBanned(secondUser.id))
     )
-      return ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'commands:ship.banned-user'),
-        flags: MessageFlags.EPHEMERAL,
-      });
+      return finishCommand(
+        ctx.makeMessage({
+          content: ctx.prettyResponse('error', 'commands:ship.banned-user'),
+          flags: MessageFlags.EPHEMERAL,
+        }),
+      );
 
     await ctx.defer();
 
@@ -132,6 +134,8 @@ const ShipCommand = createCommand({
       embeds: [embed],
       file: shipImage.err ? undefined : { blob: shipImage.data, name: 'ship.png' },
     });
+
+    finishCommand();
   },
 });
 
