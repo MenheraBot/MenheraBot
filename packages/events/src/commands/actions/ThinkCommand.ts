@@ -35,16 +35,16 @@ const ThinkCommand = createCommand({
   ],
   category: 'actions',
   authorDataFields: [],
-  execute: async (ctx) => {
+  execute: async (ctx, finishCommand) => {
     const user = ctx.getOption<User>('user', 'users', false);
     const reason = ctx.getOption<string>('motivo', false);
 
-    if (user && user.toggles.bot) {
-      await ctx.makeMessage({
-        content: ctx.prettyResponse('success', 'commands:pensar.bot'),
-      });
-      return;
-    }
+    if (user && user.toggles.bot)
+      return finishCommand(
+        ctx.makeMessage({
+          content: ctx.prettyResponse('success', 'commands:pensar.bot'),
+        }),
+      );
 
     const avatar = getUserAvatar(ctx.author, { enableGif: true });
     const selectedImage = getAssetLink('think');
@@ -66,7 +66,7 @@ const ThinkCommand = createCommand({
         )}"_ - ${ctx.author.username.toUpperCase()}, ${TODAYS_YEAR}`;
 
       await ctx.makeMessage({ embeds: [embed] });
-      return;
+      return finishCommand();
     }
 
     const embed = createEmbed({
@@ -86,6 +86,7 @@ const ThinkCommand = createCommand({
       )}"_ - ${ctx.author.username.toUpperCase()}, ${TODAYS_YEAR}`;
 
     await ctx.makeMessage({ embeds: [embed] });
+    finishCommand();
   },
 });
 
