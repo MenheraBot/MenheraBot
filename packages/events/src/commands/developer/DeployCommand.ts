@@ -46,7 +46,7 @@ const DeployCommand = createCommand({
   devsOnly: true,
   category: 'dev',
   authorDataFields: [],
-  execute: async (ctx) => {
+  execute: async (ctx, finishCommand) => {
     const selectedOption = ctx.getOption<string>('option', false, true);
 
     if (selectedOption === 'site') {
@@ -72,7 +72,7 @@ const DeployCommand = createCommand({
 
       await postCommandsInformation(Array.from(toAPIData.values()));
       ctx.makeMessage({ content: 'As informaçoes dos comandos foram atualizadas na API' });
-      return;
+      return finishCommand();
     }
 
     if (selectedOption === 'global') {
@@ -81,7 +81,7 @@ const DeployCommand = createCommand({
           content: 'SENHA ERRADA ANIMAL. CASO QUERIA DAR DEPLOY GLOBAL, A SENHA É "UwU"',
           flags: MessageFlags.EPHEMERAL,
         });
-        return;
+        return finishCommand();
       }
 
       const allCommands = bot.commands.reduce<CreateSlashApplicationCommand[]>((p, c) => {
@@ -104,7 +104,7 @@ const DeployCommand = createCommand({
       ctx.makeMessage({
         content: 'Todos comandos foram settados! Temos até 1 hora para tudo atualizar',
       });
-      return;
+      return finishCommand();
     }
 
     if (selectedOption === 'developer') {
@@ -124,7 +124,7 @@ const DeployCommand = createCommand({
       await bot.helpers.upsertGuildApplicationCommands(ctx.interaction.guildId ?? '', allCommands);
 
       ctx.makeMessage({ content: 'Comandos deployados no servidor' });
-      return;
+      return finishCommand();
     }
 
     const allCommands = bot.commands.reduce<CreateSlashApplicationCommand[]>((p, c) => {
@@ -147,6 +147,7 @@ const DeployCommand = createCommand({
     ctx.makeMessage({
       content: `No total, ${res?.size} comandos foram adicionados neste servidor!`,
     });
+    finishCommand();
   },
 });
 
