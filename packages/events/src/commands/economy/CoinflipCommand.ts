@@ -45,6 +45,8 @@ const CoinflipCommand = createCommand({
     const user = ctx.getOption<User>('user', 'users', true);
     const input = ctx.getOption<number>('aposta', false, true);
 
+    // TODO: add mentioned user to economy usages
+
     if (user.toggles.bot)
       return finishCommand(
         ctx.makeMessage({

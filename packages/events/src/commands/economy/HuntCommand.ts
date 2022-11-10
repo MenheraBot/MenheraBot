@@ -64,7 +64,10 @@ const choices: Array<ApplicationCommandOptionChoice & { value: ChoiceTypes }> = 
   },
 ];
 
-const executeDisplayProbabilities = async (ctx: InteractionContext): Promise<void> => {
+const executeDisplayProbabilities = async (
+  ctx: InteractionContext,
+  finishCommand: () => void,
+): Promise<void> => {
   const generateField = (huntType: DatabaseHuntingTypes): DiscordEmbedField => ({
     name: ctx.prettyResponse(huntType, `commands:cacar.${huntType}`),
     value: getUserHuntProbability(ctx.authorData.inUseItems, huntType)
@@ -91,6 +94,7 @@ const executeDisplayProbabilities = async (ctx: InteractionContext): Promise<voi
   });
 
   ctx.makeMessage({ embeds: [embed] });
+  finishCommand();
 };
 
 const HuntCommand = createCommand({
@@ -120,28 +124,33 @@ const HuntCommand = createCommand({
   ],
   category: 'economy',
   authorDataFields: ['rolls', 'huntCooldown', 'inUseItems', 'selectedColor', 'inventory'],
-  execute: async (ctx) => {
+  execute: async (ctx, finishCommand) => {
     const selection = ctx.getOption<DatabaseHuntingTypes>('tipo', false, true);
 
-    if (selection === ('probabilities' as string)) return executeDisplayProbabilities(ctx);
+    if (selection === ('probabilities' as string))
+      return executeDisplayProbabilities(ctx, finishCommand);
 
     const rollsToUse = ctx.getOption<number>('rolls', false);
 
     if (rollsToUse && rollsToUse > ctx.authorData.rolls)
-      return ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'commands:cacar.rolls-poor'),
-        flags: MessageFlags.EPHEMERAL,
-      });
+      return finishCommand(
+        ctx.makeMessage({
+          content: ctx.prettyResponse('error', 'commands:cacar.rolls-poor'),
+          flags: MessageFlags.EPHEMERAL,
+        }),
+      );
 
     const canHunt = ctx.authorData.huntCooldown < Date.now();
 
     if (!canHunt && !rollsToUse)
-      return ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'commands:cacar.cooldown', {
-          time: dayjs(ctx.authorData.huntCooldown - Date.now()).format('mm:ss'),
+      return finishCommand(
+        ctx.makeMessage({
+          content: ctx.prettyResponse('error', 'commands:cacar.cooldown', {
+            time: dayjs(ctx.authorData.huntCooldown - Date.now()).format('mm:ss'),
+          }),
+          flags: MessageFlags.EPHEMERAL,
         }),
-        flags: MessageFlags.EPHEMERAL,
-      });
+      );
 
     const avatar = getUserAvatar(ctx.author, { enableGif: true });
 
@@ -225,7 +234,7 @@ const HuntCommand = createCommand({
       selection,
     );
 
-    if (!droppedItem) return;
+    if (!droppedItem) return finishCommand();
 
     await userRepository.updateUserWithSpecialData(ctx.author.id, {
       $push: { inventory: { id: droppedItem } },
@@ -238,6 +247,8 @@ const HuntCommand = createCommand({
         chance: (getMagicItemById(droppedItem).data as HuntCooldownBoostItem).dropChance,
       }),
     });
+
+    finishCommand();
   },
 });
 
