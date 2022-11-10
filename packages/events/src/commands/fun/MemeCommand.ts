@@ -6,7 +6,7 @@ import { getAssetLink } from '../../structures/cdnManager';
 import { createCommand } from '../../structures/command/createCommand';
 import InteractionContext from '../../structures/command/InteractionContext';
 
-const ExecuteFodase = async (ctx: InteractionContext): Promise<void> => {
+const ExecuteFodase = async (ctx: InteractionContext, finishCommand: () => void): Promise<void> => {
   const randomPhrase = `${Math.floor(Math.random() * 3)}`;
 
   const phrase = ctx.locale(`commands:fodase.${randomPhrase as '1'}`, {
@@ -23,14 +23,16 @@ const ExecuteFodase = async (ctx: InteractionContext): Promise<void> => {
   });
 
   ctx.makeMessage({ embeds: [embed] });
+  finishCommand();
 };
 
-const ExecuteHumor = async (ctx: InteractionContext): Promise<void> => {
+const ExecuteHumor = async (ctx: InteractionContext, finishCommand: () => void): Promise<void> => {
   const selectedImage = getAssetLink('humor');
 
   const embed = createEmbed({ image: { url: selectedImage }, color: COLORS.Random() });
 
   ctx.makeMessage({ embeds: [embed] });
+  finishCommand();
 };
 
 const MemeCommand = createCommand({
@@ -55,11 +57,11 @@ const MemeCommand = createCommand({
   ],
   category: 'fun',
   authorDataFields: [],
-  execute: async (ctx) => {
+  execute: async (ctx, finishCommand) => {
     const command = ctx.getSubCommand();
 
-    if (command === 'fds') return ExecuteFodase(ctx);
-    if (command === 'humor') return ExecuteHumor(ctx);
+    if (command === 'fds') return ExecuteFodase(ctx, finishCommand);
+    if (command === 'humor') return ExecuteHumor(ctx, finishCommand);
   },
 });
 
