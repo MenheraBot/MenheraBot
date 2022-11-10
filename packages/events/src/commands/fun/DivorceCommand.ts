@@ -21,12 +21,14 @@ const DivorceCommand = createCommand({
   descriptionLocalizations: { 'en-US': '「💔」・Divorce from your current spouse' },
   category: 'fun',
   authorDataFields: ['married'],
-  execute: async (ctx) => {
+  execute: async (ctx, finishCommand) => {
     if (!ctx.authorData.married)
-      return ctx.makeMessage({
-        content: ctx.prettyResponse('warn', 'commands:divorciar.author-single'),
-        flags: MessageFlags.EPHEMERAL,
-      });
+      return finishCommand(
+        ctx.makeMessage({
+          content: ctx.prettyResponse('warn', 'commands:divorciar.author-single'),
+          flags: MessageFlags.EPHEMERAL,
+        }),
+      );
 
     const confirmButton = createButton({
       customId: generateCustomId('CONFIRM', ctx.interaction.id),
@@ -54,21 +56,25 @@ const DivorceCommand = createCommand({
     );
 
     if (!collected)
-      return ctx.makeMessage({
-        components: [
-          createActionRow(
-            disableComponents(ctx.locale('common:timesup'), [confirmButton, cancelButton]),
-          ),
-        ],
-      });
+      return finishCommand(
+        ctx.makeMessage({
+          components: [
+            createActionRow(
+              disableComponents(ctx.locale('common:timesup'), [confirmButton, cancelButton]),
+            ),
+          ],
+        }),
+      );
 
     const selectedButton = resolveCustomId(collected.data?.customId as string);
 
     if (selectedButton === 'CANCEL')
-      return ctx.makeMessage({
-        components: [],
-        content: ctx.prettyResponse('error', 'commands:divorciar.canceled'),
-      });
+      return finishCommand(
+        ctx.makeMessage({
+          components: [],
+          content: ctx.prettyResponse('error', 'commands:divorciar.canceled'),
+        }),
+      );
 
     ctx.makeMessage({
       content: ctx.prettyResponse('success', 'commands:divorciar.confirmed', {
@@ -79,6 +85,7 @@ const DivorceCommand = createCommand({
     });
 
     await relationshipRepostory.executeDivorce(ctx.author.id, ctx.authorData.married);
+    finishCommand();
   },
 });
 
