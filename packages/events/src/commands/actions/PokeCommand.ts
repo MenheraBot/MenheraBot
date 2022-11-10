@@ -34,17 +34,17 @@ const PokeCommand = createCommand({
   ],
   category: 'actions',
   authorDataFields: [],
-  execute: async (ctx) => {
+  execute: async (ctx, finishCommand) => {
     const user = ctx.getOption<User>('user', 'users', true);
     const reason = ctx.getOption<string>('motivo', false);
 
-    if (user.id === ctx.author.id) {
-      await ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'commands:cutucar.self-mention'),
-        flags: MessageFlags.EPHEMERAL,
-      });
-      return;
-    }
+    if (user.id === ctx.author.id)
+      return finishCommand(
+        ctx.makeMessage({
+          content: ctx.prettyResponse('error', 'commands:cutucar.self-mention'),
+          flags: MessageFlags.EPHEMERAL,
+        }),
+      );
 
     const avatar = getUserAvatar(ctx.author, { enableGif: true });
     const selectedImage = getAssetLink('poke');
@@ -66,6 +66,7 @@ const PokeCommand = createCommand({
       )}"_ - ${ctx.author.username.toUpperCase()}, ${TODAYS_YEAR}`;
 
     await ctx.makeMessage({ embeds: [embed] });
+    finishCommand();
   },
 });
 
