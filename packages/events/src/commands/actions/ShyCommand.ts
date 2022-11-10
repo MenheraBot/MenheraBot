@@ -33,7 +33,7 @@ const ShyCommand = createCommand({
   ],
   category: 'actions',
   authorDataFields: [],
-  execute: async (ctx) => {
+  execute: async (ctx, finishCommand) => {
     const user = ctx.getOption<User>('user', 'users', false);
     const reason = ctx.getOption<string>('motivo', false);
     const selectedImage = getAssetLink('shy');
@@ -56,7 +56,7 @@ const ShyCommand = createCommand({
         )}"_ - ${ctx.author.username.toUpperCase()}, ${TODAYS_YEAR}`;
 
       await ctx.makeMessage({ embeds: [embed] });
-      return;
+      return finishCommand();
     }
 
     const embed = createEmbed({
@@ -76,6 +76,7 @@ const ShyCommand = createCommand({
       )}"_ - ${ctx.author.username.toUpperCase()}, ${TODAYS_YEAR}`;
 
     await ctx.makeMessage({ embeds: [embed] });
+    finishCommand();
   },
 });
 
