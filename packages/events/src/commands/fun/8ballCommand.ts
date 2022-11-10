@@ -106,7 +106,7 @@ const EightballCommand = createCommand({
   ],
   category: 'fun',
   authorDataFields: [],
-  execute: async (ctx) => {
+  execute: async (ctx, finishCommand) => {
     const randomAnswer = randomFromArray(EighballAnswers) as { id: 0; type: 'positive' };
 
     const question = ctx.getOption<string>('pergunta', false, true);
@@ -139,7 +139,7 @@ const EightballCommand = createCommand({
       embed.footer = { text: ctx.locale('common:http-error') };
 
       await ctx.makeMessage({ embeds: [embed] });
-      return;
+      return finishCommand();
     }
 
     embed.image = { url: `attachment://bola-oititcho.png` };
@@ -152,6 +152,8 @@ const EightballCommand = createCommand({
         blob: res.data,
       },
     });
+
+    finishCommand();
   },
 });
 
