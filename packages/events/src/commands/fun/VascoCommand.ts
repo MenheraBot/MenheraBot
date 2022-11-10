@@ -39,7 +39,7 @@ const VascoCommand = createCommand({
   ],
   category: 'fun',
   authorDataFields: [],
-  execute: async (ctx) => {
+  execute: async (ctx, finishCommand) => {
     const user = ctx.getOption<User>('user', 'users', true);
     const quality = ctx.getOption<string>('qualidade', false) ?? 'normal';
 
@@ -60,7 +60,8 @@ const VascoCommand = createCommand({
       await ctx.makeMessage({
         content: ctx.prettyResponse('error', 'common:http-error'),
       });
-      return;
+
+      return finishCommand();
     }
 
     await ctx.makeMessage({
@@ -69,6 +70,8 @@ const VascoCommand = createCommand({
         blob: res.data,
       },
     });
+
+    finishCommand();
   },
 });
 
