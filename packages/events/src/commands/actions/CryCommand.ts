@@ -33,16 +33,16 @@ const CryCommand = createCommand({
   ],
   category: 'actions',
   authorDataFields: [],
-  execute: async (ctx) => {
+  execute: async (ctx, finishCommand) => {
     const user = ctx.getOption<User>('user', 'users', false);
     const reason = ctx.getOption<string>('motivo', false);
 
-    if (user?.toggles?.bot) {
-      ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'commands:chorar.bot'),
-      });
-      return;
-    }
+    if (user?.toggles?.bot)
+      return finishCommand(
+        ctx.makeMessage({
+          content: ctx.prettyResponse('error', 'commands:chorar.bot'),
+        }),
+      );
 
     const avatar = getUserAvatar(ctx.author, { enableGif: true });
     const selectedImage = getAssetLink('cry');
@@ -63,8 +63,7 @@ const CryCommand = createCommand({
           reason,
         )}"_ - ${ctx.author.username.toUpperCase()}, ${TODAYS_YEAR}`;
 
-      await ctx.makeMessage({ embeds: [embed] });
-      return;
+      return finishCommand(ctx.makeMessage({ embeds: [embed] }));
     }
 
     const embed = createEmbed({
@@ -83,7 +82,7 @@ const CryCommand = createCommand({
         reason,
       )}"_ - ${ctx.author.username.toUpperCase()}, ${TODAYS_YEAR}`;
 
-    await ctx.makeMessage({ embeds: [embed] });
+    return finishCommand(ctx.makeMessage({ embeds: [embed] }));
   },
 });
 
