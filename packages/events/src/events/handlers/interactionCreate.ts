@@ -72,11 +72,12 @@ const setInteractionCreateEvent = (): void => {
         }),
       );
 
-    if (
-      command.category === 'economy' &&
-      (await usagesRepository.isUserInEconomyUsage(interaction.user.id))
-    )
-      return errorReply(T('permissions:IN_COMMAND_EXECUTION'));
+    if (command.category === 'economy') {
+      if (await usagesRepository.isUserInEconomyUsage(interaction.user.id))
+        return errorReply(T('permissions:IN_COMMAND_EXECUTION'));
+
+      await usagesRepository.setUserInEconomyUsages(interaction.user.id);
+    }
 
     const authorData =
       command.authorDataFields.length > 0
@@ -88,10 +89,6 @@ const setInteractionCreateEvent = (): void => {
     const ctx = new InteractionContext(interaction, authorData as DatabaseUserSchema, guildLocale);
 
     bot.commandsInExecution += 1;
-
-    // Todos comando deve resolver a promise criada aqui, para calcular quais comandos estao em execucao
-
-    // await new Promise(res => command.execute(ctx, res))
 
     await new Promise((res) => {
       command.execute(ctx, res).catch((err) => {
@@ -135,6 +132,9 @@ const setInteractionCreateEvent = (): void => {
     });
 
     bot.commandsInExecution -= 1;
+
+    if (command.category === 'economy')
+      await usagesRepository.removeUserFromEconomyUsages(interaction.user.id);
 
     if (!interaction.guildId || process.env.NODE_ENV !== 'production') return;
 
