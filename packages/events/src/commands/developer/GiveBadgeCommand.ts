@@ -27,18 +27,19 @@ const GiveBadgeCommand = createCommand({
   devsOnly: true,
   category: 'dev',
   authorDataFields: [],
-  execute: async (ctx) => {
+  execute: async (ctx, finishCommand) => {
     const { id: userId } = ctx.getOption<User>('user', 'users', true);
     const badgeId = ctx.getOption<number>('badgeid', false, true);
 
     const userData = await userRepository.ensureFindUser(userId);
 
     if (userData.badges.some((a) => a.id === badgeId))
-      return ctx.makeMessage({ content: 'Este usuário já possui esta badge!' });
+      return finishCommand(ctx.makeMessage({ content: 'Este usuário já possui esta badge!' }));
 
     await badgeRepository.giveBadgeToUser(userId, badgeId);
 
     ctx.makeMessage({ content: 'Badge adicionada a conta do user UwU' });
+    finishCommand();
   },
 });
 
