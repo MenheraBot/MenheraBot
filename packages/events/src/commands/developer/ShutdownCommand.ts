@@ -11,7 +11,7 @@ const ShutdownCommand = createCommand({
   devsOnly: true,
   category: 'dev',
   authorDataFields: [],
-  execute: async (ctx) => {
+  execute: async (ctx, finishCommand) => {
     const startTime = Date.now();
     bot.shuttingDown = true;
 
@@ -56,6 +56,7 @@ const ShutdownCommand = createCommand({
     });
 
     logger.info('[SHUTDOWN] - Menhera está pronta para desligar!');
+    finishCommand();
   },
 });
 
