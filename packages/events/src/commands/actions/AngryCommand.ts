@@ -33,7 +33,7 @@ const AngryCommand = createCommand({
   ],
   category: 'actions',
   authorDataFields: [],
-  execute: async (ctx) => {
+  execute: async (ctx, finishCommand) => {
     const user = ctx.getOption<User>('user', 'users', false);
     const reason = ctx.getOption<string>('motivo', false);
 
@@ -41,7 +41,7 @@ const AngryCommand = createCommand({
       ctx.makeMessage({
         content: ctx.prettyResponse('error', 'commands:raiva.bot'),
       });
-      return;
+      return finishCommand();
     }
 
     const avatar = getUserAvatar(ctx.author, { enableGif: true });
@@ -63,8 +63,7 @@ const AngryCommand = createCommand({
           reason,
         )}"_ - ${ctx.author.username.toUpperCase()}, ${TODAYS_YEAR}`;
 
-      await ctx.makeMessage({ embeds: [embed] });
-      return;
+      return finishCommand(ctx.makeMessage({ embeds: [embed] }));
     }
 
     const embed = createEmbed({
@@ -83,7 +82,7 @@ const AngryCommand = createCommand({
         reason,
       )}"_ - ${ctx.author.username.toUpperCase()}, ${TODAYS_YEAR}`;
 
-    await ctx.makeMessage({ embeds: [embed] });
+    finishCommand(ctx.makeMessage({ embeds: [embed] }));
   },
 });
 
