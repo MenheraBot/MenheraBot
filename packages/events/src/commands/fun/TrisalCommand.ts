@@ -25,12 +25,17 @@ import { createCommand } from '../../structures/command/createCommand';
 import userRepository from '../../database/repositories/userRepository';
 import { bot } from '../../index';
 
-const executeFinishTrisal = async (ctx: InteractionContext): Promise<void> => {
+const executeFinishTrisal = async (
+  ctx: InteractionContext,
+  finishCommand: (args?: unknown) => unknown,
+): Promise<unknown> => {
   if (ctx.authorData.trisal.length === 0)
-    return ctx.makeMessage({
-      content: ctx.prettyResponse('error', 'commands:trisal.not-in-trisal'),
-      flags: MessageFlags.EPHEMERAL,
-    });
+    return finishCommand(
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:trisal.not-in-trisal'),
+        flags: MessageFlags.EPHEMERAL,
+      }),
+    );
 
   const filter = (int: Interaction) => {
     const startsCustomId = int.data?.customId?.startsWith(`${ctx.interaction.id}`);
@@ -58,9 +63,13 @@ const executeFinishTrisal = async (ctx: InteractionContext): Promise<void> => {
   );
 
   if (!confirmed)
-    return ctx.makeMessage({
-      components: [createActionRow(disableComponents(ctx.locale('common:timesup'), [sureButton]))],
-    });
+    return finishCommand(
+      ctx.makeMessage({
+        components: [
+          createActionRow(disableComponents(ctx.locale('common:timesup'), [sureButton])),
+        ],
+      }),
+    );
 
   ctx.makeMessage({
     components: [],
@@ -74,38 +83,49 @@ const executeFinishTrisal = async (ctx: InteractionContext): Promise<void> => {
     ctx.authorData.trisal[1],
     hasThirdUser ? ctx.authorData.trisal[2] : ctx.author.id,
   );
+
+  finishCommand();
 };
 
-const executeMakeTrisal = async (ctx: InteractionContext) => {
+const executeMakeTrisal = async (
+  ctx: InteractionContext,
+  finishCommand: (args?: unknown) => unknown,
+) => {
   const firstUser = ctx.getOption<User>('user', 'users', true);
   const secondUser = ctx.getOption<User>('user_dois', 'users', true);
   const thirdUser = ctx.getOption<User>('user', 'users') ?? ctx.author;
 
   if (firstUser.toggles.bot || secondUser.toggles.bot || thirdUser.toggles.bot)
-    return ctx.makeMessage({
-      content: ctx.prettyResponse('error', 'commands:trisal.bot-mention'),
-      flags: MessageFlags.EPHEMERAL,
-    });
+    return finishCommand(
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:trisal.bot-mention'),
+        flags: MessageFlags.EPHEMERAL,
+      }),
+    );
 
   const trisalIds = [firstUser.id, secondUser.id, thirdUser.id];
 
   const withUser = trisalIds.filter((a) => a === ctx.author.id).length;
 
   if (withUser !== 1)
-    return ctx.makeMessage({
-      content: ctx.prettyResponse('error', 'commands:trisal.mention-error'),
-      flags: MessageFlags.EPHEMERAL,
-    });
+    return finishCommand(
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:trisal.mention-error'),
+        flags: MessageFlags.EPHEMERAL,
+      }),
+    );
 
   if (
     firstUser.id === secondUser.id ||
     firstUser.id === thirdUser.id ||
     secondUser.id === thirdUser.id
   )
-    return ctx.makeMessage({
-      content: ctx.prettyResponse('error', 'commands:trisal.same-mention'),
-      flags: MessageFlags.EPHEMERAL,
-    });
+    return finishCommand(
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:trisal.same-mention'),
+        flags: MessageFlags.EPHEMERAL,
+      }),
+    );
 
   const usersWithoutOwner = trisalIds.filter((a) => a !== ctx.author.id);
 
@@ -115,21 +135,27 @@ const executeMakeTrisal = async (ctx: InteractionContext) => {
   ]);
 
   if (!firstUserData || !secondUserData)
-    return ctx.makeMessage({
-      content: ctx.prettyResponse('error', 'commands:trisal.no-db'),
-    });
+    return finishCommand(
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:trisal.no-db'),
+      }),
+    );
 
   if (firstUserData.ban || secondUserData.ban)
-    return ctx.makeMessage({
-      content: ctx.prettyResponse('error', 'commands:trisal.banned-user'),
-      flags: MessageFlags.EPHEMERAL,
-    });
+    return finishCommand(
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:trisal.banned-user'),
+        flags: MessageFlags.EPHEMERAL,
+      }),
+    );
 
   if (firstUserData.trisal.length > 0 || secondUserData.trisal.length > 0)
-    return ctx.makeMessage({
-      content: ctx.prettyResponse('error', 'commands:trisal.comedor-de-casadas'),
-      flags: MessageFlags.EPHEMERAL,
-    });
+    return finishCommand(
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:trisal.comedor-de-casadas'),
+        flags: MessageFlags.EPHEMERAL,
+      }),
+    );
 
   const confirmButton = createButton({
     customId: generateCustomId('CONFIRM', ctx.interaction.id),
@@ -169,12 +195,14 @@ const executeMakeTrisal = async (ctx: InteractionContext) => {
 
   collector.once('end', () => {
     if (acceptedIds.length !== 3)
-      ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'commands:trisal.error'),
-        components: [
-          createActionRow(disableComponents(ctx.locale('common:timesup'), [confirmButton])),
-        ],
-      });
+      return finishCommand(
+        ctx.makeMessage({
+          content: ctx.prettyResponse('error', 'commands:trisal.error'),
+          components: [
+            createActionRow(disableComponents(ctx.locale('common:timesup'), [confirmButton])),
+          ],
+        }),
+      );
   });
 
   collector.on('collect', async (int: Interaction) => {
@@ -199,16 +227,22 @@ const executeMakeTrisal = async (ctx: InteractionContext) => {
       collector.stop();
 
       await relationshipRepostory.executeTrisal(firstUser.id, secondUser.id, thirdUser.id);
+      finishCommand();
     }
   });
 };
 
-const executeOrderTrisal = async (ctx: InteractionContext) => {
+const executeOrderTrisal = async (
+  ctx: InteractionContext,
+  finishCommand: (args?: unknown) => unknown,
+) => {
   if (ctx.authorData.trisal.length === 0)
-    return ctx.makeMessage({
-      content: ctx.prettyResponse('error', 'commands:trisal.not-in-trisal'),
-      flags: MessageFlags.EPHEMERAL,
-    });
+    return finishCommand(
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:trisal.not-in-trisal'),
+        flags: MessageFlags.EPHEMERAL,
+      }),
+    );
 
   const newIdOrder = [
     ctx.getOption<User>('primeiro_usuário', 'users', true).id,
@@ -219,46 +253,58 @@ const executeOrderTrisal = async (ctx: InteractionContext) => {
   if (ctx.authorData.trisal.length === 2) ctx.authorData.trisal.push(`${ctx.author.id}`);
 
   if (newIdOrder.some((a) => !ctx.authorData.trisal.includes(`${a}`)))
-    return ctx.makeMessage({
-      content: ctx.prettyResponse('error', 'commands:trisal.some-user-not-in-trisal'),
-      flags: MessageFlags.EPHEMERAL,
-    });
+    return finishCommand(
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:trisal.some-user-not-in-trisal'),
+        flags: MessageFlags.EPHEMERAL,
+      }),
+    );
 
   if (
     newIdOrder[1] === newIdOrder[2] ||
     newIdOrder[0] === newIdOrder[2] ||
     newIdOrder[0] === newIdOrder[1]
   )
-    return ctx.makeMessage({
-      content: ctx.prettyResponse('error', 'commands:trisal.same-mention'),
-      flags: MessageFlags.EPHEMERAL,
-    });
+    return finishCommand(
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:trisal.same-mention'),
+        flags: MessageFlags.EPHEMERAL,
+      }),
+    );
 
   ctx.makeMessage({ content: ctx.prettyResponse('success', 'commands:trisal.order-done') });
 
   await relationshipRepostory.executeTrisal(newIdOrder[0], newIdOrder[1], newIdOrder[2]);
+  finishCommand();
 };
 
-const executeDisplayTrisal = async (ctx: InteractionContext) => {
+const executeDisplayTrisal = async (
+  ctx: InteractionContext,
+  finishCommand: (...args: unknown[]) => unknown,
+) => {
   const user = ctx.getOption<User>('user', 'users', false) ?? ctx.author;
 
   const userData =
     user.id === ctx.author.id ? ctx.authorData : await userRepository.findUser(user.id);
 
   if (!userData)
-    return ctx.makeMessage({
-      content: ctx.prettyResponse('error', 'commands:trisal.user-not-in-trisal'),
-      flags: MessageFlags.EPHEMERAL,
-    });
+    return finishCommand(
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:trisal.user-not-in-trisal'),
+        flags: MessageFlags.EPHEMERAL,
+      }),
+    );
 
   if (userData.trisal.length === 0)
-    return ctx.makeMessage({
-      content: ctx.prettyResponse(
-        'error',
-        `commands:trisal.${user.id !== ctx.author.id ? 'user-' : ''}not-in-trisal`,
-      ),
-      flags: MessageFlags.EPHEMERAL,
-    });
+    return finishCommand(
+      ctx.makeMessage({
+        content: ctx.prettyResponse(
+          'error',
+          `commands:trisal.${user.id !== ctx.author.id ? 'user-' : ''}not-in-trisal`,
+        ),
+        flags: MessageFlags.EPHEMERAL,
+      }),
+    );
 
   const marryOne = await cacheRepository.getDiscordUser(userData.trisal[0]);
   const marryTwo = await cacheRepository.getDiscordUser(userData.trisal[1]);
@@ -271,10 +317,12 @@ const executeDisplayTrisal = async (ctx: InteractionContext) => {
       : null;
 
   if (!marryOne || !marryTwo || !marryThree)
-    return ctx.makeMessage({
-      content: ctx.prettyResponse('error', 'commands:trisal.marry-not-found'),
-      flags: MessageFlags.EPHEMERAL,
-    });
+    return finishCommand(
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:trisal.marry-not-found'),
+        flags: MessageFlags.EPHEMERAL,
+      }),
+    );
 
   const firstAvatar = getUserAvatar(marryOne);
   const secondAvatar = getUserAvatar(marryTwo);
@@ -289,9 +337,11 @@ const executeDisplayTrisal = async (ctx: InteractionContext) => {
   });
 
   if (res.err)
-    return ctx.makeMessage({
-      content: ctx.prettyResponse('error', 'common:http-error'),
-    });
+    return finishCommand(
+      ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'common:http-error'),
+      }),
+    );
 
   const embed = createEmbed({
     title: ctx.locale('commands:trisal.title'),
@@ -303,6 +353,7 @@ const executeDisplayTrisal = async (ctx: InteractionContext) => {
   });
 
   ctx.makeMessage({ embeds: [embed], file: { blob: res.data, name: 'trisal-kawaii.png' } });
+  finishCommand();
 };
 
 const TrisalCommand = createCommand({
@@ -407,18 +458,18 @@ const TrisalCommand = createCommand({
   ],
   category: 'fun',
   authorDataFields: ['trisal', 'selectedColor'],
-  execute: async (ctx) => {
+  execute: async (ctx, finishCommand) => {
     const command = ctx.getSubCommand();
 
     switch (command) {
       case 'ver':
-        return executeDisplayTrisal(ctx);
+        return executeDisplayTrisal(ctx, finishCommand);
       case 'ordem':
-        return executeOrderTrisal(ctx);
+        return executeOrderTrisal(ctx, finishCommand);
       case 'terminar':
-        return executeFinishTrisal(ctx);
+        return executeFinishTrisal(ctx, finishCommand);
       case 'formar':
-        return executeMakeTrisal(ctx);
+        return executeMakeTrisal(ctx, finishCommand);
     }
   },
 });
