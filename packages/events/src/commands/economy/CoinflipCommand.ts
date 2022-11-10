@@ -41,45 +41,55 @@ const CoinflipCommand = createCommand({
   ],
   category: 'economy',
   authorDataFields: ['estrelinhas'],
-  execute: async (ctx) => {
+  execute: async (ctx, finishCommand) => {
     const user = ctx.getOption<User>('user', 'users', true);
     const input = ctx.getOption<number>('aposta', false, true);
 
     if (user.toggles.bot)
-      return ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'commands:coinflip.bot'),
-        flags: MessageFlags.EPHEMERAL,
-      });
+      return finishCommand(
+        ctx.makeMessage({
+          content: ctx.prettyResponse('error', 'commands:coinflip.bot'),
+          flags: MessageFlags.EPHEMERAL,
+        }),
+      );
 
     if (user.id === ctx.author.id)
-      return ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'commands:coinflip.self-mention'),
-        flags: MessageFlags.EPHEMERAL,
-      });
+      return finishCommand(
+        ctx.makeMessage({
+          content: ctx.prettyResponse('error', 'commands:coinflip.self-mention'),
+          flags: MessageFlags.EPHEMERAL,
+        }),
+      );
 
     if (input > ctx.authorData.estrelinhas)
-      return ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'commands:coinflip.poor', {
-          user: mentionUser(ctx.author.id),
+      return finishCommand(
+        ctx.makeMessage({
+          content: ctx.prettyResponse('error', 'commands:coinflip.poor', {
+            user: mentionUser(ctx.author.id),
+          }),
+          flags: MessageFlags.EPHEMERAL,
         }),
-        flags: MessageFlags.EPHEMERAL,
-      });
+      );
 
     const targetData = await userRepository.ensureFindUser(user.id);
 
     if (targetData.ban)
-      return ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'commands:coinflip.banned-user'),
-        flags: MessageFlags.EPHEMERAL,
-      });
+      return finishCommand(
+        ctx.makeMessage({
+          content: ctx.prettyResponse('error', 'commands:coinflip.banned-user'),
+          flags: MessageFlags.EPHEMERAL,
+        }),
+      );
 
     if (input > targetData.estrelinhas)
-      return ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'commands:coinflip.poor', {
-          user: mentionUser(user.id),
+      return finishCommand(
+        ctx.makeMessage({
+          content: ctx.prettyResponse('error', 'commands:coinflip.poor', {
+            user: mentionUser(user.id),
+          }),
+          flags: MessageFlags.EPHEMERAL,
         }),
-        flags: MessageFlags.EPHEMERAL,
-      });
+      );
 
     const confirmButton = createButton({
       customId: generateCustomId('CONFIRM', ctx.interaction.id),
@@ -104,11 +114,13 @@ const CoinflipCommand = createCommand({
     );
 
     if (!collected)
-      return ctx.makeMessage({
-        components: [
-          createActionRow(disableComponents(ctx.locale('common:timesup'), [confirmButton])),
-        ],
-      });
+      return finishCommand(
+        ctx.makeMessage({
+          components: [
+            createActionRow(disableComponents(ctx.locale('common:timesup'), [confirmButton])),
+          ],
+        }),
+      );
 
     const availableOptions = ['cara', 'coroa'];
     const choice = randomFromArray(availableOptions);
@@ -129,6 +141,7 @@ const CoinflipCommand = createCommand({
     starsRepository.addStars(winner.id, input);
     starsRepository.removeStars(loser.id, input);
     postCoinflipMatch(`${winner.id}`, `${loser.id}`, input);
+    finishCommand();
   },
 });
 
