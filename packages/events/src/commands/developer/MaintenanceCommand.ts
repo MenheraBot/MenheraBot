@@ -26,14 +26,15 @@ const MaintenanceCommand = createCommand({
   devsOnly: true,
   category: 'dev',
   authorDataFields: [],
-  execute: async (ctx) => {
+  execute: async (ctx, finishCommand) => {
     const cmd = bot.commands.get(ctx.getOption('comando', false, true));
 
-    if (!cmd) return ctx.makeMessage({ content: 'Esse comando não existe' });
+    if (!cmd) return finishCommand(ctx.makeMessage({ content: 'Esse comando não existe' }));
 
     const commandMaintenance = await commandRepository.getMaintenanceInfo(cmd.name);
 
-    if (!commandMaintenance) return ctx.makeMessage({ content: 'Esse comando não está na db' });
+    if (!commandMaintenance)
+      return finishCommand(ctx.makeMessage({ content: 'Esse comando não está na db' }));
 
     const reason = ctx.getOption<string>('motivo', false) ?? 'No Given Reason';
 
@@ -53,6 +54,8 @@ const MaintenanceCommand = createCommand({
         cmd.name
       }\n\n**Novo Status:** ${!commandMaintenance.maintenance}\n**Motivo:** ${reason}`,
     });
+
+    finishCommand();
   },
 });
 
