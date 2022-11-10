@@ -25,7 +25,7 @@ const GrumbleCommand = createCommand({
   ],
   category: 'actions',
   authorDataFields: [],
-  execute: async (ctx) => {
+  execute: async (ctx, finishCommand) => {
     const reason = ctx.getOption<string>('motivo', false);
     const avatar = getUserAvatar(ctx.author, { enableGif: true });
 
@@ -47,6 +47,7 @@ const GrumbleCommand = createCommand({
       )}"_ - ${ctx.author.username.toUpperCase()}, ${TODAYS_YEAR}`;
 
     await ctx.makeMessage({ embeds: [embed] });
+    return finishCommand();
   },
 });
 
