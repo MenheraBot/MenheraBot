@@ -63,7 +63,8 @@ const AngryCommand = createCommand({
           reason,
         )}"_ - ${ctx.author.username.toUpperCase()}, ${TODAYS_YEAR}`;
 
-      return finishCommand(ctx.makeMessage({ embeds: [embed] }));
+      ctx.makeMessage({ embeds: [embed] });
+      return finishCommand();
     }
 
     const embed = createEmbed({
@@ -82,7 +83,8 @@ const AngryCommand = createCommand({
         reason,
       )}"_ - ${ctx.author.username.toUpperCase()}, ${TODAYS_YEAR}`;
 
-    finishCommand(ctx.makeMessage({ embeds: [embed] }));
+    ctx.makeMessage({ embeds: [embed] });
+    finishCommand();
   },
 });
 

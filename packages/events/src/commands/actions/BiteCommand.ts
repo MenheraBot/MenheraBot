@@ -72,7 +72,8 @@ const BiteCommand = createCommand({
         reason,
       )}"_ - ${ctx.author.username.toUpperCase()}, ${TODAYS_YEAR}`;
 
-    finishCommand(ctx.makeMessage({ embeds: [embed] }));
+    ctx.makeMessage({ embeds: [embed] });
+    finishCommand();
   },
 });
 
