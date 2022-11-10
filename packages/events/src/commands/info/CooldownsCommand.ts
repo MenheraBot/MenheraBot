@@ -1,7 +1,7 @@
 // import utc from 'dayjs/plugin/utc';
 import dayjs from 'dayjs';
 import { ActionRow, ButtonStyles, DiscordEmbedField } from 'discordeno/types';
-/* 
+/*
     time: dayjs
             .extend(utc)
             .add(cooldown, 'ms')
@@ -22,7 +22,7 @@ const CooldownsCommand = createCommand({
   descriptionLocalizations: { 'en-US': '「⌛」・Shows all your cooldowns' },
   category: 'info',
   authorDataFields: ['huntCooldown', 'voteCooldown', 'selectedColor'],
-  execute: async (ctx) => {
+  execute: async (ctx, finishCommand) => {
     const canDo = (value: number): boolean => value <= 0;
     const moreThanAnHour = (time: number): boolean => time >= 3600000;
 
@@ -75,6 +75,7 @@ const CooldownsCommand = createCommand({
       );
 
     ctx.makeMessage({ embeds: [embed], components });
+    finishCommand();
   },
 });
 
