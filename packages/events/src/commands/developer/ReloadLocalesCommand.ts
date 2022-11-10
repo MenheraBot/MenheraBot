@@ -8,8 +8,9 @@ const ReloadLocalesCommand = createCommand({
   devsOnly: true,
   category: 'dev',
   authorDataFields: [],
-  execute: async () => {
+  execute: async (_, finishCommand) => {
     await reloadLocales();
+    finishCommand();
   },
 });
 
