@@ -1,6 +1,7 @@
 import { InteractionResponseTypes, InteractionTypes } from 'discordeno/types';
 import i18next from 'i18next';
 
+import usagesRepository from '../../database/repositories/usagesRepository';
 import { postCommandExecution } from '../../utils/apiRequests/commands';
 import { UsedCommandData } from '../../types/commands';
 import { getEnviroments } from '../../utils/getEnviroments';
@@ -29,7 +30,7 @@ const setInteractionCreateEvent = (): void => {
       await bot.helpers.sendInteractionResponse(interaction.id, interaction.token, {
         type: InteractionResponseTypes.ChannelMessageWithSource,
         data: {
-          content,
+          content: `<:negacao:759603958317711371> | ${content}`,
           flags: MessageFlags.EPHEMERAL,
         },
       });
@@ -43,9 +44,9 @@ const setInteractionCreateEvent = (): void => {
       const bannedInfo = await userRepository.getBannedUserInfo(interaction.user.id);
 
       return errorReply(
-        `<:negacao:759603958317711371> | ${T('permissions:BANNED_INFO', {
+        T('permissions:BANNED_INFO', {
           banReason: bannedInfo?.banReason,
-        })}`,
+        }),
       );
     }
 
@@ -59,8 +60,6 @@ const setInteractionCreateEvent = (): void => {
 
     if (!command) return errorReply(T('permissions:UNKNOWN_SLASH'));
 
-    // TODO: Check command single execution
-
     if (command.devsOnly && interaction.user.id !== bot.ownerId)
       return errorReply(T('permissions:ONLY_DEVS'));
 
@@ -68,10 +67,16 @@ const setInteractionCreateEvent = (): void => {
 
     if (commandMaintenanceInfo?.maintenance && interaction.user.id !== bot.ownerId)
       return errorReply(
-        `<:negacao:759603958317711371> | ${T('events:maintenance', {
+        T('events:maintenance', {
           reason: commandMaintenanceInfo.maintenanceReason,
-        })}`,
+        }),
       );
+
+    if (
+      command.category === 'economy' &&
+      (await usagesRepository.isUserInEconomyUsage(interaction.user.id))
+    )
+      return errorReply(T('permissions:IN_COMMAND_EXECUTION'));
 
     const authorData =
       command.authorDataFields.length > 0
@@ -86,40 +91,47 @@ const setInteractionCreateEvent = (): void => {
 
     // Todos comando deve resolver a promise criada aqui, para calcular quais comandos estao em execucao
 
-    await command.execute(ctx).catch((err) => {
-      errorReply(
-        T('events:error_embed.title', {
-          cmd: command.name,
-        }),
-      );
+    // await new Promise(res => command.execute(ctx, res))
 
-      // eslint-disable-next-line no-param-reassign
-      if (typeof err === 'string') err = new Error(err);
+    await new Promise((res) => {
+      command.execute(ctx, res).catch((err) => {
+        errorReply(
+          T('events:error_embed.title', {
+            cmd: command.name,
+          }),
+        );
 
-      if (err instanceof Error && err.stack) {
-        const errorMessage = err.stack.length > 3800 ? `${err.stack.slice(0, 3800)}...` : err.stack;
-        const embed = createEmbed({
-          color: 0xfd0000,
-          title: `${process.env.NODE_ENV === 'development' ? '[BETA]' : ''} ${T(
-            'events:error_embed.title',
-            {
-              cmd: command.name,
-            },
-          )}`,
-          description: `\`\`\`js\n${errorMessage}\`\`\``,
-          fields: [
-            {
-              name: '<:atencao:759603958418767922> | Quem Usou',
-              value: `UserId: \`${interaction.user.id}\` \nServerId: \`${interaction.guildId}\``,
-            },
-          ],
-          timestamp: Date.now(),
-        });
+        // eslint-disable-next-line no-param-reassign
+        if (typeof err === 'string') err = new Error(err);
 
-        bot.helpers.sendWebhookMessage(BigInt(ERROR_WEBHOOK_ID), ERROR_WEBHOOK_TOKEN, {
-          embeds: [embed],
-        });
-      }
+        if (err instanceof Error && err.stack) {
+          const errorMessage =
+            err.stack.length > 3800 ? `${err.stack.slice(0, 3800)}...` : err.stack;
+          const embed = createEmbed({
+            color: 0xfd0000,
+            title: `${process.env.NODE_ENV === 'development' ? '[BETA]' : ''} ${T(
+              'events:error_embed.title',
+              {
+                cmd: command.name,
+              },
+            )}`,
+            description: `\`\`\`js\n${errorMessage}\`\`\``,
+            fields: [
+              {
+                name: '<:atencao:759603958418767922> | Quem Usou',
+                value: `UserId: \`${interaction.user.id}\` \nServerId: \`${interaction.guildId}\``,
+              },
+            ],
+            timestamp: Date.now(),
+          });
+
+          bot.helpers.sendWebhookMessage(BigInt(ERROR_WEBHOOK_ID), ERROR_WEBHOOK_TOKEN, {
+            embeds: [embed],
+          });
+        }
+
+        res(null);
+      });
     });
 
     bot.commandsInExecution -= 1;

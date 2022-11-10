@@ -15,7 +15,10 @@ export interface ChatInputCommandConfig extends CreateSlashApplicationCommand {
 export interface ChatInputInteractionCommand extends Readonly<ChatInputCommandConfig> {
   path: string;
 
-  readonly execute: (ctx: InteractionContext) => Promise<void>;
+  readonly execute: (
+    ctx: InteractionContext,
+    finishCommand: (...args: unknown[]) => unknown,
+  ) => Promise<unknown>;
 }
 
 export interface UsedCommandData {
