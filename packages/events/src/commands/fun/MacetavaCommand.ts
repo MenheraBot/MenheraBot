@@ -22,7 +22,7 @@ const MacetavaCommand = createCommand({
   ],
   category: 'fun',
   authorDataFields: [],
-  execute: async (ctx) => {
+  execute: async (ctx, finishCommand) => {
     const link = ctx.getOption<User>('user', 'users', true);
 
     await ctx.defer();
@@ -38,7 +38,7 @@ const MacetavaCommand = createCommand({
       await ctx.makeMessage({
         content: ctx.prettyResponse('error', 'common:http-error'),
       });
-      return;
+      return finishCommand();
     }
 
     await ctx.makeMessage({
@@ -47,6 +47,8 @@ const MacetavaCommand = createCommand({
         blob: res.data,
       },
     });
+
+    finishCommand();
   },
 });
 
