@@ -38,13 +38,10 @@ const SarrarCommand = createCommand({
   ],
   category: 'actions',
   authorDataFields: [],
-  execute: async (ctx) => {
+  execute: async (ctx, finishCommand) => {
     const user = ctx.getOption<User>('user', 'users');
 
-    if (user && user.id !== ctx.author.id) {
-      sarrada(ctx, user);
-      return;
-    }
+    if (user && user.id !== ctx.author.id) return sarrada(ctx, user, finishCommand);
 
     const selectedImage = getAssetLink('sarrar_sozinho');
     const avatar = getUserAvatar(ctx.author, { enableGif: true });
@@ -102,14 +99,15 @@ const SarrarCommand = createCommand({
         embeds: [embed],
         components: [createActionRow(disableComponents(ctx.locale('common:timesup'), [button]))],
       });
+      finishCommand();
       return;
     }
 
-    sarrada(ctx, collected.user);
+    sarrada(ctx, collected.user, finishCommand);
   },
 });
 
-const sarrada = (ctx: InteractionContext, user: User) => {
+const sarrada = (ctx: InteractionContext, user: User, finishCommand: () => void) => {
   const selectedImage = getAssetLink('sarrar');
 
   const avatar = getUserAvatar(ctx.author, { enableGif: true });
@@ -126,6 +124,7 @@ const sarrada = (ctx: InteractionContext, user: User) => {
   });
 
   ctx.makeMessage({ embeds: [embed], components: [] });
+  finishCommand();
 };
 
 export default SarrarCommand;
