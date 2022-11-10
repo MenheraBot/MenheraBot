@@ -36,25 +36,25 @@ const BicudaCommand = createCommand({
   ],
   category: 'actions',
   authorDataFields: [],
-  execute: async (ctx) => {
+  execute: async (ctx, finishCommand) => {
     const user = ctx.getOption<User>('user', 'users', true);
     const reason = ctx.getOption<string>('motivo', false);
 
-    if (user.id === ctx.author.id) {
-      await ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'commands:mamar.self-mention'),
-        flags: MessageFlags.EPHEMERAL,
-      });
-      return;
-    }
+    if (user.id === ctx.author.id)
+      return finishCommand(
+        ctx.makeMessage({
+          content: ctx.prettyResponse('error', 'commands:mamar.self-mention'),
+          flags: MessageFlags.EPHEMERAL,
+        }),
+      );
 
-    if (await blacklistRepository.isUserBanned(user.id)) {
-      await ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'commands:mamar.user-banned'),
-        flags: MessageFlags.EPHEMERAL,
-      });
-      return;
-    }
+    if (await blacklistRepository.isUserBanned(user.id))
+      return finishCommand(
+        ctx.makeMessage({
+          content: ctx.prettyResponse('error', 'commands:mamar.user-banned'),
+          flags: MessageFlags.EPHEMERAL,
+        }),
+      );
 
     const avatar = getUserAvatar(ctx.author, { enableGif: true });
     const selectedImage = getAssetLink('mamar');
@@ -78,6 +78,7 @@ const BicudaCommand = createCommand({
     await ctx.makeMessage({ embeds: [embed] });
 
     await relationshipRepostory.executeMamar(ctx.author.id, user.id);
+    finishCommand();
   },
 });
 
