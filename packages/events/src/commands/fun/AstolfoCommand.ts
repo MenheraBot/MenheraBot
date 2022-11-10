@@ -23,7 +23,7 @@ const AstolfoCommand = createCommand({
   ],
   category: 'fun',
   authorDataFields: [],
-  execute: async (ctx) => {
+  execute: async (ctx, finishCommand) => {
     const text = ctx.getOption<string>('frase', false, true);
 
     await ctx.defer();
@@ -36,7 +36,8 @@ const AstolfoCommand = createCommand({
       await ctx.makeMessage({
         content: ctx.prettyResponse('error', 'common:http-error'),
       });
-      return;
+
+      return finishCommand();
     }
 
     await ctx.makeMessage({
@@ -45,6 +46,8 @@ const AstolfoCommand = createCommand({
         blob: res.data,
       },
     });
+
+    finishCommand();
   },
 });
 
