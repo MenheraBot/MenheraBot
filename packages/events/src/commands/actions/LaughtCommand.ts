@@ -33,7 +33,7 @@ const LaughtCommand = createCommand({
   ],
   category: 'actions',
   authorDataFields: [],
-  execute: async (ctx) => {
+  execute: async (ctx, finishCommand) => {
     const user = ctx.getOption<User>('user', 'users', false);
     const reason = ctx.getOption<string>('motivo', false);
     const selectedImage = getAssetLink('laugh');
@@ -56,6 +56,7 @@ const LaughtCommand = createCommand({
         )}"_ - ${ctx.author.username.toUpperCase()}, ${TODAYS_YEAR}`;
 
       await ctx.makeMessage({ embeds: [embed] });
+      finishCommand();
       return;
     }
 
@@ -76,6 +77,7 @@ const LaughtCommand = createCommand({
       )}"_ - ${ctx.author.username.toUpperCase()}, ${TODAYS_YEAR}`;
 
     await ctx.makeMessage({ embeds: [embed] });
+    finishCommand();
   },
 });
 
