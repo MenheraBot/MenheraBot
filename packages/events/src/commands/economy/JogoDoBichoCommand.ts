@@ -53,7 +53,7 @@ const BichoCommand = createCommand({
   ],
   category: 'economy',
   authorDataFields: ['estrelinhas', 'selectedColor'],
-  execute: async (ctx) => {
+  execute: async (ctx, finishCommand) => {
     const bet = ctx.getOption<number>('aposta', false);
 
     if (!bet) {
@@ -99,19 +99,26 @@ const BichoCommand = createCommand({
           value: ctx.locale('commands:bicho.in-description'),
         });
 
-      return ctx.makeMessage({ embeds: [embed] });
+      ctx.makeMessage({ embeds: [embed] });
+      return finishCommand();
     }
 
     if (bet > ctx.authorData.estrelinhas)
-      return ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:bicho.poor') });
+      return finishCommand(
+        ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:bicho.poor') }),
+      );
 
     const currentRaffle = getCurrentGameStatus();
 
     if (!currentRaffle || currentRaffle.dueDate <= Date.now())
-      return ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:bicho.close') });
+      return finishCommand(
+        ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:bicho.close') }),
+      );
 
     if (!canRegisterBet(ctx.author.id))
-      return ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:bicho.already') });
+      return finishCommand(
+        ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:bicho.already') }),
+      );
 
     const embed = createEmbed({
       title: ctx.locale('commands:bicho.bet-title'),
@@ -140,9 +147,13 @@ const BichoCommand = createCommand({
     );
 
     if (!selection)
-      return ctx.makeMessage({
-        components: [createActionRow(disableComponents(ctx.locale('common:timesup'), [firstMenu]))],
-      });
+      return finishCommand(
+        ctx.makeMessage({
+          components: [
+            createActionRow(disableComponents(ctx.locale('common:timesup'), [firstMenu])),
+          ],
+        }),
+      );
 
     const toSendComponents: ActionRow[] = [];
 
@@ -220,11 +231,13 @@ const BichoCommand = createCommand({
 
     collector.on('end', (_, reason) => {
       if (reason === 'idle')
-        ctx.makeMessage({
-          content: ctx.prettyResponse('error', 'common:timesup'),
-          components: [],
-          embeds: [],
-        });
+        finishCommand(
+          ctx.makeMessage({
+            content: ctx.prettyResponse('error', 'common:timesup'),
+            components: [],
+            embeds: [],
+          }),
+        );
     });
 
     collector.on('collect', async (int: SelectMenuInteraction) => {
@@ -240,18 +253,22 @@ const BichoCommand = createCommand({
           const polishedNumber = parseInt(userInput, 10);
 
           if (Number.isNaN(polishedNumber))
-            return ctx.makeMessage({
-              embeds: [],
-              components: [],
-              content: ctx.prettyResponse('error', 'commands:bicho.invalid-bet'),
-            });
+            return finishCommand(
+              ctx.makeMessage({
+                embeds: [],
+                components: [],
+                content: ctx.prettyResponse('error', 'commands:bicho.invalid-bet'),
+              }),
+            );
 
           if (polishedNumber < 0 || polishedNumber > 9999)
-            return ctx.makeMessage({
-              embeds: [],
-              components: [],
-              content: ctx.prettyResponse('error', 'commands:bicho.invalid-bet'),
-            });
+            return finishCommand(
+              ctx.makeMessage({
+                embeds: [],
+                components: [],
+                content: ctx.prettyResponse('error', 'commands:bicho.invalid-bet'),
+              }),
+            );
 
           ctx.makeMessage({
             embeds: [],
@@ -261,6 +278,7 @@ const BichoCommand = createCommand({
 
           await starsRepository.removeStars(ctx.author.id, bet);
           registerUserBet(ctx.author.id, bet, `${polishedNumber}`);
+          finishCommand();
           break;
         }
         case 'UNITY': {
@@ -275,6 +293,7 @@ const BichoCommand = createCommand({
           await starsRepository.removeStars(ctx.author.id, bet);
 
           registerUserBet(ctx.author.id, bet, int.data.values[0]);
+          finishCommand();
           break;
         }
         case 'SEQUENCE':
