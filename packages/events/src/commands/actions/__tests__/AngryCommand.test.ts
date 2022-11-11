@@ -22,6 +22,8 @@ describe('AngryCommand tests', () => {
     ),
   };
 
+  const noop = () => undefined;
+
   beforeEach(() => {
     context.getOption = jest.fn();
     context.makeMessage.mockClear();
@@ -32,14 +34,14 @@ describe('AngryCommand tests', () => {
     context.getOption.mockReturnValueOnce({ toggles: { bot: true } });
 
     // @ts-expect-error Mocking UwU
-    angryCommand.execute(context);
+    angryCommand.execute(context, noop);
 
     expect(context.makeMessage.mock.calls[0][0]).toEqual({ content: 'commands:raiva.bot' });
   });
 
   it('shoud send an embed talking about the author only', () => {
     // @ts-expect-error Mocking UwU
-    angryCommand.execute(context);
+    angryCommand.execute(context, noop);
 
     expect(context.locale.mock.calls[0][0]).toBe('commands:raiva.no-mention.embed_title');
   });
@@ -48,7 +50,7 @@ describe('AngryCommand tests', () => {
     context.getOption.mockReturnValueOnce(undefined);
     context.getOption.mockReturnValueOnce('motivo tri');
     // @ts-expect-error Mocking UwU
-    angryCommand.execute(context);
+    angryCommand.execute(context, noop);
 
     expect(
       // @ts-expect-error Didnt find a best way of doing it
@@ -60,7 +62,7 @@ describe('AngryCommand tests', () => {
     context.getOption.mockReturnValueOnce({ id: 2 });
 
     // @ts-expect-error Mocking UwU
-    angryCommand.execute(context);
+    angryCommand.execute(context, noop);
 
     expect(
       // @ts-expect-error Didnt find a best way of doing it
@@ -72,7 +74,7 @@ describe('AngryCommand tests', () => {
     context.getOption.mockReturnValueOnce({ id: 2 });
     context.getOption.mockReturnValueOnce('motivo tri');
     // @ts-expect-error Mocking UwU
-    angryCommand.execute(context);
+    angryCommand.execute(context, noop);
 
     expect(
       // @ts-expect-error Didnt find a best way of doing it
