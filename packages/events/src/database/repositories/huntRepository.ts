@@ -14,7 +14,6 @@ const executeHuntEntity = async (
     .updateUserWithSpecialData(userId, {
       $inc: { [huntType]: value, rolls: -rolls },
       huntCooldown: cooldown,
-      lastCommandAt: Date.now(),
     })
     .catch(debugError);
 };

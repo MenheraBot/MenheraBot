@@ -23,7 +23,6 @@ const executeTrisal = async (
 ): Promise<void> => {
   await userRepository.multiUpdateUsers([`${firstUser}`, `${secondUser}`, `${thirdUser}`], {
     trisal: [`${firstUser}`, `${secondUser}`, `${thirdUser}`],
-    lastCommandAt: Date.now(),
   });
 };
 
@@ -32,14 +31,12 @@ const executeDivorce = async (userId: UserIdType, marryId: UserIdType): Promise<
     married: null,
     marriedDate: null,
     marriedAt: null,
-    lastCommandAt: Date.now(),
   });
 
   userRepository.updateUser(marryId, {
     married: null,
     marriedDate: null,
     marriedAt: null,
-    lastCommandAt: Date.now(),
   });
 };
 
@@ -47,13 +44,11 @@ const executeMarry = async (userId: UserIdType, marryId: UserIdType): Promise<vo
   userRepository.updateUser(userId, {
     married: `${marryId}`,
     marriedAt: Date.now(),
-    lastCommandAt: Date.now(),
   });
 
   userRepository.updateUser(marryId, {
     married: `${userId}`,
     marriedAt: Date.now(),
-    lastCommandAt: Date.now(),
   });
 };
 
