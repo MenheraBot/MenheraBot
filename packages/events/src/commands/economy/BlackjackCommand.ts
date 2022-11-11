@@ -43,11 +43,13 @@ const BlackjackCommand = createCommand({
   ],
   category: 'economy',
   authorDataFields: ['selectedColor', 'estrelinhas'],
-  execute: async (ctx) => {
+  execute: async (ctx, finishCommand) => {
     const bet = ctx.getOption<number>('aposta', false, true);
 
     if (ctx.authorData.estrelinhas < bet)
-      return ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:blackjack.poor') });
+      return finishCommand(
+        ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:blackjack.poor') }),
+      );
 
     await ctx.defer();
 
@@ -81,6 +83,7 @@ const BlackjackCommand = createCommand({
         'init_blackjack',
         true,
         BLACKJACK_PRIZE_MULTIPLIERS.init_blackjack,
+        finishCommand,
       );
 
     if (getHandValue(bjPlayerCards) === 21)
@@ -97,6 +100,7 @@ const BlackjackCommand = createCommand({
         'init_blackjack',
         false,
         BLACKJACK_PRIZE_MULTIPLIERS.init_blackjack,
+        finishCommand,
       );
 
     const image = await getTableImage(
@@ -149,7 +153,7 @@ const BlackjackCommand = createCommand({
       });
 
       starsRepository.removeStars(ctx.author.id, bet);
-      return;
+      return finishCommand();
     }
 
     if (resolveCustomId(collected.data.customId) === 'BUY')
@@ -162,6 +166,7 @@ const BlackjackCommand = createCommand({
         cardTheme,
         tableTheme,
         backgroundCardTheme,
+        finishCommand,
       );
 
     return makeDealerPlay(
@@ -173,6 +178,7 @@ const BlackjackCommand = createCommand({
       cardTheme,
       tableTheme,
       backgroundCardTheme,
+      finishCommand,
     );
   },
 });

@@ -35,6 +35,7 @@ const continueFromBuy = async (
   cardTheme: AvailableCardThemes,
   tableTheme: AvailableTableThemes,
   backgroundCardTheme: AvailableCardBackgroundThemes,
+  finishCommand: () => void,
 ): Promise<void> => {
   const newCard = matchCards.shift() as number;
   const playerCards = [...oldPLayerCards, newCard];
@@ -94,6 +95,7 @@ const continueFromBuy = async (
     });
 
     starsRepository.removeStars(ctx.author.id, bet);
+    finishCommand();
     return;
   }
 
@@ -117,6 +119,7 @@ const continueFromBuy = async (
         'busted',
         false,
         0,
+        finishCommand,
       );
 
     return continueFromBuy(
@@ -128,6 +131,7 @@ const continueFromBuy = async (
       cardTheme,
       tableTheme,
       backgroundCardTheme,
+      finishCommand,
     );
   }
 
@@ -145,6 +149,7 @@ const continueFromBuy = async (
       'blackjack',
       true,
       BLACKJACK_PRIZE_MULTIPLIERS.blackjack,
+      finishCommand,
     );
 
   if (playerHandValue > 21)
@@ -161,6 +166,7 @@ const continueFromBuy = async (
       'busted',
       false,
       BLACKJACK_PRIZE_MULTIPLIERS.base,
+      finishCommand,
     );
 
   return makeDealerPlay(
@@ -172,6 +178,7 @@ const continueFromBuy = async (
     cardTheme,
     tableTheme,
     backgroundCardTheme,
+    finishCommand,
   );
 };
 
