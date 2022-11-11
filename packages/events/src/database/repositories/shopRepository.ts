@@ -25,4 +25,11 @@ const executeBuyColor = async (
     $push: { colors: color },
   });
 };
-export default { executeSellHunt, executeBuyColor };
+
+const executeBuyRolls = async (userId: BigString, amount: number, price: number): Promise<void> => {
+  await userRepository.updateUserWithSpecialData(userId, {
+    $inc: { rolls: amount, estrelinhas: negate(price) },
+  });
+};
+
+export default { executeSellHunt, executeBuyColor, executeBuyRolls };

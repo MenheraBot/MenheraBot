@@ -4,6 +4,7 @@ import { createCommand } from '../../structures/command/createCommand';
 
 import { sellHunts } from '../../modules/shop/sellHunts';
 import { buyColor } from '../../modules/shop/buyColor';
+import { buyRolls } from '../../modules/shop/buyRolls';
 
 const ShopCommand = createCommand({
   path: '',
@@ -211,6 +212,8 @@ const ShopCommand = createCommand({
       const subCommand = ctx.getSubCommand();
 
       if (subCommand === 'cores') return buyColor(ctx, finishCommand);
+
+      if (subCommand === 'rolls') return buyRolls(ctx, finishCommand);
     }
   },
 });
