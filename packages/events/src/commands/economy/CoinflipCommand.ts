@@ -1,7 +1,7 @@
 import { User } from 'discordeno/transformers';
 import { ApplicationCommandOptionTypes, ButtonStyles } from 'discordeno/types';
 
-import usagesRepository from 'database/repositories/usagesRepository';
+import usagesRepository from '../../database/repositories/usagesRepository';
 import starsRepository from '../../database/repositories/starsRepository';
 import { postCoinflipMatch } from '../../utils/apiRequests/statistics';
 import { randomFromArray } from '../../utils/miscUtils';
