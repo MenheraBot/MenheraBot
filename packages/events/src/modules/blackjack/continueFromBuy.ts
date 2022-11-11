@@ -41,15 +41,15 @@ const continueFromBuy = async (
   const playerCards = [...oldPLayerCards, newCard];
 
   const bjPlayerCards = numbersToBlackjackCards(playerCards);
-  const bjDdealerCards = numbersToBlackjackCards(dealerCards);
+  const bjDealerCards = numbersToBlackjackCards(dealerCards);
   const playerHandValue = getHandValue(bjPlayerCards);
-  const dealerHandValue = getHandValue([bjDdealerCards[0]]);
+  const dealerHandValue = getHandValue([bjDealerCards[0]]);
 
   const image = await getTableImage(
     ctx,
     bet,
     bjPlayerCards,
-    hideMenheraCard(bjDdealerCards),
+    hideMenheraCard(bjDealerCards),
     playerHandValue,
     dealerHandValue,
     cardTheme,
@@ -60,7 +60,7 @@ const continueFromBuy = async (
   const embed = generateBlackjackEmbed(
     ctx,
     bjPlayerCards,
-    hideMenheraCard(bjDdealerCards),
+    hideMenheraCard(bjDealerCards),
     playerHandValue,
     dealerHandValue,
   );
@@ -110,7 +110,7 @@ const continueFromBuy = async (
         ctx,
         bet,
         expectedNextUserBlackjackCards,
-        hideMenheraCard(bjDdealerCards),
+        hideMenheraCard(bjDealerCards),
         expectedPlayerHandValue,
         dealerHandValue,
         cardTheme,
@@ -119,6 +119,23 @@ const continueFromBuy = async (
         'busted',
         false,
         0,
+        finishCommand,
+      );
+
+    if (expectedPlayerHandValue === 21)
+      return finishMatch(
+        ctx,
+        bet,
+        expectedNextUserBlackjackCards,
+        hideMenheraCard(bjDealerCards),
+        expectedPlayerHandValue,
+        dealerHandValue,
+        cardTheme,
+        tableTheme,
+        backgroundCardTheme,
+        'blackjack',
+        true,
+        BLACKJACK_PRIZE_MULTIPLIERS.blackjack,
         finishCommand,
       );
 
@@ -140,7 +157,7 @@ const continueFromBuy = async (
       ctx,
       bet,
       bjPlayerCards,
-      hideMenheraCard(bjDdealerCards),
+      hideMenheraCard(bjDealerCards),
       playerHandValue,
       dealerHandValue,
       cardTheme,
@@ -157,7 +174,7 @@ const continueFromBuy = async (
       ctx,
       bet,
       bjPlayerCards,
-      hideMenheraCard(bjDdealerCards),
+      hideMenheraCard(bjDealerCards),
       playerHandValue,
       dealerHandValue,
       cardTheme,

@@ -156,7 +156,46 @@ const BlackjackCommand = createCommand({
       return finishCommand();
     }
 
-    if (resolveCustomId(collected.data.customId) === 'BUY')
+    if (resolveCustomId(collected.data.customId) === 'BUY') {
+      const expectedNextCard = matchCards[0];
+      const expectedNextPlayerCards = [...playerCards, expectedNextCard];
+      const expectedNextUserBlackjackCards = numbersToBlackjackCards(expectedNextPlayerCards);
+      const expectedPlayerHandValue = getHandValue(expectedNextUserBlackjackCards);
+
+      if (expectedPlayerHandValue > 21)
+        return finishMatch(
+          ctx,
+          bet,
+          expectedNextUserBlackjackCards,
+          hideMenheraCard(bjDealerCards),
+          expectedPlayerHandValue,
+          dealerHandValue,
+          cardTheme,
+          tableTheme,
+          backgroundCardTheme,
+          'busted',
+          false,
+          0,
+          finishCommand,
+        );
+
+      if (expectedPlayerHandValue === 21)
+        return finishMatch(
+          ctx,
+          bet,
+          expectedNextUserBlackjackCards,
+          hideMenheraCard(bjDealerCards),
+          expectedPlayerHandValue,
+          dealerHandValue,
+          cardTheme,
+          tableTheme,
+          backgroundCardTheme,
+          'blackjack',
+          true,
+          BLACKJACK_PRIZE_MULTIPLIERS.blackjack,
+          finishCommand,
+        );
+
       return continueFromBuy(
         ctx,
         bet,
@@ -168,6 +207,7 @@ const BlackjackCommand = createCommand({
         backgroundCardTheme,
         finishCommand,
       );
+    }
 
     return makeDealerPlay(
       ctx,
