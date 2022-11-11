@@ -1,6 +1,7 @@
 import { User } from 'discordeno/transformers';
 import { ApplicationCommandOptionTypes, ButtonStyles } from 'discordeno/types';
 
+import usagesRepository from 'database/repositories/usagesRepository';
 import starsRepository from '../../database/repositories/starsRepository';
 import { postCoinflipMatch } from '../../utils/apiRequests/statistics';
 import { randomFromArray } from '../../utils/miscUtils';
@@ -45,8 +46,6 @@ const CoinflipCommand = createCommand({
     const user = ctx.getOption<User>('user', 'users', true);
     const input = ctx.getOption<number>('aposta', false, true);
 
-    // TODO: add mentioned user to economy usages
-
     if (user.toggles.bot)
       return finishCommand(
         ctx.makeMessage({
@@ -72,6 +71,15 @@ const CoinflipCommand = createCommand({
           flags: MessageFlags.EPHEMERAL,
         }),
       );
+
+    if (await usagesRepository.isUserInEconomyUsage(user.id)) {
+      await ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'common:economy_usage'),
+        flags: MessageFlags.EPHEMERAL,
+      });
+
+      return finishCommand();
+    }
 
     const targetData = await userRepository.ensureFindUser(user.id);
 
@@ -99,6 +107,8 @@ const CoinflipCommand = createCommand({
       style: ButtonStyles.Success,
     });
 
+    await usagesRepository.setUserInEconomyUsages(user.id);
+
     ctx.makeMessage({
       content: ctx.locale('commands:coinflip.confirm', {
         value: input,
@@ -114,6 +124,8 @@ const CoinflipCommand = createCommand({
       `${ctx.interaction.id}`,
       10_000,
     );
+
+    await usagesRepository.removeUserFromEconomyUsages(user.id);
 
     if (!collected)
       return finishCommand(
