@@ -3,6 +3,7 @@ import { ApplicationCommandOptionTypes } from 'discordeno/types';
 import { createCommand } from '../../structures/command/createCommand';
 
 import { sellHunts } from '../../modules/shop/sellHunts';
+import { buyColor } from '../../modules/shop/buyColor';
 
 const ShopCommand = createCommand({
   path: '',
@@ -205,6 +206,12 @@ const ShopCommand = createCommand({
     const subCommandGroup = ctx.getSubCommandGroup();
 
     if (!subCommandGroup) return sellHunts(ctx, finishCommand);
+
+    if (subCommandGroup === 'comprar') {
+      const subCommand = ctx.getSubCommand();
+
+      if (subCommand === 'cores') return buyColor(ctx, finishCommand);
+    }
   },
 });
 

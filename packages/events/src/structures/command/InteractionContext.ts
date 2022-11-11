@@ -83,11 +83,10 @@ export default class {
     return command as string;
   }
 
-  getSubCommand(required = true): string {
+  getSubCommand(): string {
     const command = this.subCommand;
 
-    if (!command && required)
-      throw new Error(`SubCommand is required in ${this.interaction.data?.name}`);
+    if (!command) throw new Error(`SubCommand is required in ${this.interaction.data?.name}`);
 
     return command as string;
   }

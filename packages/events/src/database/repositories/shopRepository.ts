@@ -1,4 +1,5 @@
 import { BigString } from 'discordeno/types';
+import { UserColor } from 'types/database';
 import { DatabaseHuntingTypes } from '../../modules/hunt/types';
 import { negate } from '../../utils/miscUtils';
 import userRepository from './userRepository';
@@ -14,4 +15,14 @@ const executeSellHunt = async (
   });
 };
 
-export default { executeSellHunt };
+const executeBuyColor = async (
+  userId: BigString,
+  price: number,
+  color: UserColor,
+): Promise<void> => {
+  await userRepository.updateUserWithSpecialData(userId, {
+    $inc: { estrelinhas: negate(price) },
+    $push: { colors: color },
+  });
+};
+export default { executeSellHunt, executeBuyColor };

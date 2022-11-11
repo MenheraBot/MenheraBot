@@ -1,6 +1,7 @@
 import { Interaction } from 'discordeno/transformers';
 import { InteractionResponseTypes, InteractionTypes } from 'discordeno/types';
 import i18next from 'i18next';
+import { ModalInteraction } from '../../types/interaction';
 
 import { bot } from '../../index';
 import InteractionCollector, {
@@ -33,6 +34,41 @@ const collectComponentInteractionWithCustomFilter = async (
     .then((a) => a)
     .catch(() => null);
 };
+
+const collectModalResponse = async (
+  customId: string,
+  time = 10_000,
+  defer = true,
+): Promise<null | ModalInteraction> =>
+  (
+    new Promise((resolve, reject) => {
+      const collector = new InteractionCollector({
+        filter: (interaction) => {
+          const isWantedModal = (interaction.data?.customId as string).startsWith(customId);
+
+          if (!isWantedModal) return false;
+
+          if (defer)
+            bot.helpers.sendInteractionResponse(interaction.id, interaction.token, {
+              type: InteractionResponseTypes.DeferredUpdateMessage,
+            });
+
+          return true;
+        },
+        time,
+        max: 1,
+        interactionType: InteractionTypes.ModalSubmit,
+      });
+
+      collector.once('end', (interactions, reason) => {
+        const interaction = [...(interactions as Map<bigint, ModalInteraction>).values()][0];
+        if (interaction) resolve(interaction);
+        else reject(new Error(`InteractionCollector: ${reason}`));
+      });
+    }) as Promise<ModalInteraction>
+  )
+    .then((a) => a)
+    .catch(() => null);
 
 const collectResponseComponentInteraction = async <InteractionType = Interaction>(
   channelId: bigint,
@@ -86,4 +122,8 @@ const collectResponseComponentInteraction = async <InteractionType = Interaction
     .catch(() => null);
 };
 
-export { collectComponentInteractionWithCustomFilter, collectResponseComponentInteraction };
+export {
+  collectComponentInteractionWithCustomFilter,
+  collectResponseComponentInteraction,
+  collectModalResponse,
+};

@@ -10,7 +10,7 @@ export type InteractionCollectorOptions<InteractionType = Interaction> = {
   time?: number;
   idle?: number;
   max?: number;
-  channelId: bigint;
+  channelId?: bigint;
   interactionType?: InteractionTypes;
   componentType?: MessageComponentTypes;
 };
@@ -74,7 +74,7 @@ export default class InteractionCollector<
     )
       return null;
 
-    if (this.options.channelId !== interaction.channelId) return null;
+    if (this.options.channelId && this.options.channelId !== interaction.channelId) return null;
 
     return interaction.id;
   }
