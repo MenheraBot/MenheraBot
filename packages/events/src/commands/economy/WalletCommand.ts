@@ -33,22 +33,26 @@ const WalletCommand = createCommand({
     'demigods',
     'rolls',
   ],
-  execute: async (ctx) => {
+  execute: async (ctx, finishCommand) => {
     const user = ctx.getOption<User>('user', 'users') ?? ctx.author;
 
     const userData =
       user.id === ctx.author.id ? ctx.authorData : await userRepository.findUser(user.id);
 
     if (!userData)
-      return ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'commands:carteira.no-dbuser'),
-        flags: MessageFlags.EPHEMERAL,
-      });
+      return finishCommand(
+        ctx.makeMessage({
+          content: ctx.prettyResponse('error', 'commands:carteira.no-dbuser'),
+          flags: MessageFlags.EPHEMERAL,
+        }),
+      );
 
     if (userData.ban)
-      return ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'commands:carteira.banned-user'),
-      });
+      return finishCommand(
+        ctx.makeMessage({
+          content: ctx.prettyResponse('error', 'commands:carteira.banned-user'),
+        }),
+      );
 
     const embed = createEmbed({
       title: ctx.locale('commands:carteira.title', {
@@ -100,6 +104,7 @@ const WalletCommand = createCommand({
     });
 
     ctx.makeMessage({ embeds: [embed] });
+    finishCommand();
   },
 });
 
