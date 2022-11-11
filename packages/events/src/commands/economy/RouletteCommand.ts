@@ -53,11 +53,13 @@ const WalletCommand = createCommand({
   ],
   category: 'economy',
   authorDataFields: ['estrelinhas', 'selectedColor'],
-  execute: async (ctx) => {
+  execute: async (ctx, finishCommand) => {
     const bet = ctx.getOption<number>('aposta', false, true);
 
     if (ctx.authorData.estrelinhas < bet)
-      return ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:roleta.poor') });
+      return finishCommand(
+        ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:roleta.poor') }),
+      );
 
     const embed = createEmbed({
       color: hexStringToNumber(ctx.authorData.selectedColor),
@@ -178,7 +180,8 @@ const WalletCommand = createCommand({
 
     if (!selectedButton) {
       embed.footer = { text: ctx.locale('common:timesup') };
-      return ctx.makeMessage({ components: [], embeds: [embed] });
+      ctx.makeMessage({ components: [], embeds: [embed] });
+      return finishCommand();
     }
 
     const operation = resolveCustomId(selectedButton.data.customId);
@@ -316,6 +319,7 @@ const WalletCommand = createCommand({
       );
 
       ctx.makeMessage({ embeds: [finishEmbed], components: [] });
+      finishCommand();
     };
 
     collector.on('collect', (int: SelectMenuInteraction) => {
