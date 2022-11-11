@@ -1,7 +1,7 @@
 import { User } from 'discordeno/transformers';
 import { ApplicationCommandOptionTypes, ButtonStyles } from 'discordeno/types';
-import { collectResponseComponentInteraction } from 'utils/discord/collectorUtils';
-import { ComponentInteraction } from 'types/interaction';
+import { collectResponseComponentInteraction } from '../../utils/discord/collectorUtils';
+import { ComponentInteraction } from '../../types/interaction';
 import {
   createActionRow,
   createButton,
