@@ -273,6 +273,8 @@ const buyThemes = async (ctx: InteractionContext, finishCommand: () => void): Pr
           content: ctx.prettyResponse('success', 'commands:loja.buy_themes.success'),
         });
 
+        finishCommand();
+
         const { notifyPurchase } = await userThemesRepository.findEnsuredUserThemes(
           credits.ownerId,
         );
