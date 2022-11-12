@@ -1,6 +1,6 @@
-import { collectResponseComponentInteraction } from 'utils/discord/collectorUtils';
-import { SelectMenuInteraction } from 'types/interaction';
-import shopRepository from 'database/repositories/shopRepository';
+import { collectResponseComponentInteraction } from '../../utils/discord/collectorUtils';
+import { SelectMenuInteraction } from '../../types/interaction';
+import shopRepository from '../../database/repositories/shopRepository';
 import { HuntMagicItems } from '../hunt/magicItems';
 import { HuntProbablyBoostItem } from '../hunt/types';
 import InteractionContext from '../../structures/command/InteractionContext';

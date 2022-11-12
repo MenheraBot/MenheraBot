@@ -16,7 +16,7 @@ import {
   disableComponents,
   generateCustomId,
 } from '../../utils/discord/componentUtils';
-import { colorPrices } from './prices';
+import { colorPrices } from './constants';
 
 const buyColor = async (
   ctx: InteractionContext,

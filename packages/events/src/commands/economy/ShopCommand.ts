@@ -6,6 +6,7 @@ import { sellHunts } from '../../modules/shop/sellHunts';
 import { buyColor } from '../../modules/shop/buyColor';
 import { buyRolls } from '../../modules/shop/buyRolls';
 import { buyItems } from '../../modules/shop/buyItems';
+import { buyThemes } from '../../modules/shop/buyThemes';
 
 const ShopCommand = createCommand({
   path: '',
@@ -217,6 +218,8 @@ const ShopCommand = createCommand({
       if (subCommand === 'rolls') return buyRolls(ctx, finishCommand);
 
       if (subCommand === 'itens') return buyItems(ctx, finishCommand);
+
+      if (subCommand === 'temas') return buyThemes(ctx, finishCommand);
     }
   },
 });

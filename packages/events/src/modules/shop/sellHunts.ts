@@ -3,7 +3,7 @@ import { EMOJIS } from '../../structures/constants';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import InteractionContext from '../../structures/command/InteractionContext';
 import { DatabaseHuntingTypes } from '../hunt/types';
-import { huntValues } from './prices';
+import { huntValues } from './constants';
 
 const sellHunts = async (
   ctx: InteractionContext,

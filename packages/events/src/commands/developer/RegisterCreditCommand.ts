@@ -58,7 +58,7 @@ const RegisterCreditCommand = createCommand({
       | 'addProfileTheme'
       | 'addTableTheme';
 
-    const alreadyExists = await themeCreditsRepository.findThemeInfo(themeId);
+    const alreadyExists = await themeCreditsRepository.getThemeInfo(themeId);
 
     if (alreadyExists)
       return finishCommand(ctx.makeMessage({ content: 'Já existe um tema com esse ID!' }));

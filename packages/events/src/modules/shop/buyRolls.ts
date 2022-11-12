@@ -1,7 +1,7 @@
 import shopRepository from '../../database/repositories/shopRepository';
 import InteractionContext from '../../structures/command/InteractionContext';
 import { MessageFlags } from '../../utils/discord/messageUtils';
-import { huntValues } from './prices';
+import { huntValues } from './constants';
 
 const buyRolls = async (ctx: InteractionContext, finishCommand: () => void): Promise<void> => {
   const amount = ctx.getOption<number>('quantidade', false, true);
