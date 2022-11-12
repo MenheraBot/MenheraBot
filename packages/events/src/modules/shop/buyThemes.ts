@@ -259,6 +259,16 @@ const buyThemes = async (ctx: InteractionContext, finishCommand: () => void): Pr
 
         const credits = await themeCreditsRepository.getThemeInfo(selectedItem.id);
 
+        if (!credits) {
+          ctx.makeMessage({
+            components: [],
+            embeds: [],
+            content: ctx.prettyResponse('error', 'commands:loja.buy_themes.not-registered'),
+          });
+
+          return finishCommand();
+        }
+
         await shopRepository.executeBuyTheme(
           ctx.author.id,
           selectedItem.id,

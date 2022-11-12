@@ -28,24 +28,25 @@ const getThemesOwnerId = async (
     .then((res) => res.map((a) => ({ themeId: a.themeId, ownerId: a.ownerId })));
 };
 
-const getThemeInfo = async (themeId: number): Promise<DatabaseCreditsSchema> => {
+const getThemeInfo = async (themeId: number): Promise<DatabaseCreditsSchema | null> => {
   const fromRedis = await RedisClient.get(`credits:${themeId}`);
 
   if (fromRedis) return JSON.parse(fromRedis);
 
-  const fromMongo = (await themeCreditsModel.findOne({ themeId })) as DatabaseCreditsSchema;
+  const fromMongo = await themeCreditsModel.findOne({ themeId });
 
-  RedisClient.set(
-    `credits:${themeId}`,
-    JSON.stringify({
-      themeId: fromMongo.themeId,
-      ownerId: fromMongo.ownerId,
-      registeredAt: fromMongo.registeredAt,
-      totalEarned: fromMongo.totalEarned,
-      royalty: fromMongo.royalty,
-      timesSold: fromMongo.timesSold,
-    }),
-  );
+  if (fromMongo)
+    RedisClient.set(
+      `credits:${themeId}`,
+      JSON.stringify({
+        themeId: fromMongo.themeId,
+        ownerId: fromMongo.ownerId,
+        registeredAt: fromMongo.registeredAt,
+        totalEarned: fromMongo.totalEarned,
+        royalty: fromMongo.royalty,
+        timesSold: fromMongo.timesSold,
+      }),
+    );
 
   return fromMongo;
 };

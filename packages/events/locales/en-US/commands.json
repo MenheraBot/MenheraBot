@@ -223,6 +223,7 @@
       "data": "**{{description}}**\n**Price**: {{price}} :star:\n**Rarity**: $t(common:rarities.{{rarity}})\n**Author**: <@{{author}}>",
       "description": "Below are some themes you can buy right away.",
       "owned": "(Owned)",
+      "not-registered": "This theme is not yet available! Please try again later",
       "preview-mode": "Preview Mode",
       "success": "**Purchase successfully made!** You can now enable it on `/personalizar temas`",
       "poor": "You don't have all these stars to buy this!"
