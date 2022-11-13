@@ -155,6 +155,8 @@ const ProfileCommand = createCommand({
         blob: res.data,
       },
     });
+
+    finishCommand();
   },
 });
 
