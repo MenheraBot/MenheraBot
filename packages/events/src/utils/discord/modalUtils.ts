@@ -1,3 +1,4 @@
+import { InputTextComponent } from 'discordeno/types';
 import { ModalInteraction } from '../../types/interaction';
 
 type FieldData = {
@@ -5,9 +6,16 @@ type FieldData = {
   value: string;
 };
 
-const extractFields = (interaction: ModalInteraction): FieldData[] =>
+/* const extractFields = (interaction: ModalInteraction): FieldData[] =>
   interaction.data.components[0].components.reduce<FieldData[]>((p, c) => {
     p.push({ customId: c.customId, value: c.value });
+    return p;
+  }, []); */
+
+const extractFields = (interaction: ModalInteraction): FieldData[] =>
+  interaction.data.components.reduce<FieldData[]>((p, c) => {
+    const fieldData = (c.components as InputTextComponent[])[0];
+    p.push({ customId: fieldData.customId, value: fieldData.value as string });
     return p;
   }, []);
 
