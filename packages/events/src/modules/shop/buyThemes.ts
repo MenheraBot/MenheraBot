@@ -192,25 +192,17 @@ const buyThemes = async (ctx: InteractionContext, finishCommand: () => void): Pr
             });
 
             if (res.err) {
-              await bot.helpers.sendFollowupMessage(int.token, {
-                type: InteractionResponseTypes.ChannelMessageWithSource,
-                data: {
-                  content: ctx.prettyResponse('error', 'common:http-error'),
-                  flags: MessageFlags.EPHEMERAL,
-                },
+              await bot.helpers.editOriginalInteractionResponse(int.token, {
+                content: ctx.prettyResponse('error', 'common:http-error'),
               });
 
               return;
             }
 
-            await bot.helpers.sendFollowupMessage(int.token, {
-              type: InteractionResponseTypes.ChannelMessageWithSource,
-              data: {
-                flags: MessageFlags.EPHEMERAL,
-                file: {
-                  name: 'profile-preview.png',
-                  blob: res.data,
-                },
+            await bot.helpers.editOriginalInteractionResponse(int.token, {
+              file: {
+                name: 'profile-preview.png',
+                blob: res.data,
               },
             });
 
@@ -218,7 +210,10 @@ const buyThemes = async (ctx: InteractionContext, finishCommand: () => void): Pr
           }
 
           await bot.helpers.sendInteractionResponse(int.id, int.token, {
-            type: InteractionResponseTypes.DeferredUpdateMessage,
+            type: InteractionResponseTypes.DeferredChannelMessageWithSource,
+            data: {
+              flags: MessageFlags.EPHEMERAL,
+            },
           });
 
           const res = await vanGoghRequest(VanGoghEndpoints.Preview, {
@@ -234,8 +229,7 @@ const buyThemes = async (ctx: InteractionContext, finishCommand: () => void): Pr
             return;
           }
 
-          await ctx.followUp({
-            flags: MessageFlags.EPHEMERAL,
+          await bot.helpers.editOriginalInteractionResponse(int.token, {
             file: {
               name: 'theme-preview.png',
               blob: res.data,
