@@ -18,9 +18,36 @@ const { DISCORD_TOKEN, REST_AUTHORIZATION, REST_SOCKET_PATH, EVENT_HANDLER_SOCKE
 const restClient = new Client({ path: REST_SOCKET_PATH });
 const eventsServer = new Server({ path: EVENT_HANDLER_SOCKET_PATH });
 
+let reconnectInterval: NodeJS.Timeout;
+let retries = 0;
+let gatewayOn = false;
+
 restClient.on('close', () => {
   console.log('[GATEWAY] REST Client closed');
-  process.exit(1);
+
+  const reconnectLogic = () => {
+    console.log('[GATEWAY] Trying to reconnect to REST Client');
+    restClient
+      .connect()
+      .catch(() => {
+        setTimeout(reconnectLogic, 5000);
+
+        console.log(`[GATEWAY] Fail when reconnecting... ${retries} tries`);
+
+        if (retries >= 3) {
+          console.log(`[GATEWAY] Couldn't reconnect to REST client.`);
+          process.exit(1);
+        }
+
+        retries += 1;
+      })
+      .then(() => {
+        clearTimeout(reconnectInterval);
+        retries = 0;
+      });
+  };
+
+  setTimeout(reconnectLogic, 5000);
 });
 
 eventsServer.on('ready', () => {
@@ -138,8 +165,10 @@ async function startGateway() {
 
 restClient.on('ready', () => {
   console.log('[GATEWAY] REST IPC connected');
-
   restClient.send({ type: 'IDENTIFY', package: 'GATEWAY', id: '0' });
+
+  if (gatewayOn) return;
+  gatewayOn = true;
 
   startGateway();
 });
