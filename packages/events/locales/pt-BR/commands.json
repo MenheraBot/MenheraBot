@@ -905,6 +905,9 @@
     "badge-info": "_{{description}}_\n**Adquirida em**: <t:{{unix}}:d>\n**ID da badge**: {{id}}\n**Raridade:** {{rarity}}"
   },
   "menhera": {
+    "suporte": {
+      "message": "Having a problem, or just want to chat with more people who use my commands? Join my support server: \n\nhttps://discord.gg/fZMdQbA ||SHHHHHhh, don't tell the moderation that I sent this invite, they might ban me for sending invites...| |"
+    },
     "estatisticas": {
       "aniversary-title": "🎉 HOJE É MEU ANIVERSÁRIO🎉",
       "embed_description": "Oi, meu nome é **{{name}}**, e eu sou uma Bot Brasileira para Discord com foco em diversão e RPG! Fui criada em **{{createdAt}}** e entrei nesse servidor **{{joinedAt}}**.\n\nUm pouco sobre mim: Meu nome é Menhera, tenho 16 anos e AMO, mas tipo AMO usar essas carinhas: (>...<). Para saber mais, entre em meu [twitter](https://twitter.com/__MenheraBot), em meu [servidor de suporte](https://discord.gg/fZMdQbA) e em meu [WEBSITE](https://menherabot.xyz/).",
@@ -916,7 +919,7 @@
     }
   },
   "calvo": {
-    "text": "**Calvice de {{name}}**\n\n> {{user}} possui calvice tipo **{{type}}** e está no estágio **{{stage}}**\n{{description}}\n\n\"___Da calvice nascemos, da calvice morreremos...___\" - {{author}}, 2018",
+    "text": "**Calvice de {{name}}**\n\n> {{user}} possui calvice tipo **{{type}}** e está no estágio **{{stage}}**\n{{description}}\n\n\"___Da calvice nascemos, da calvice morreremos...___\" - {{author}}, 2017",
     "type-0": "A",
     "type-1": "O",
     "type-2": "M",

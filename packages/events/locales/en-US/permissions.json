@@ -33,5 +33,5 @@
   "USER_MISSING_PERMISSION": "you must have the `{{perm}}` permission in order to execute this command.",
   "CLIENT_MISSING_PERMISSION": "I must have the `{{perm}}` permission in order to execute this command.",
   "BANNED_INFO": "you are banned from using Menhera!\n\nReason: `{{banReason}}`",
-  "IN_COMMAND_EXECUTION": "You cannot use this command as you are still using another command! Finish running that command and try again\n\n**THINKING IT'S A BUG?** Come to Menhera's support server `/suporte` and ask for help"
+  "IN_COMMAND_EXECUTION": "You cannot use this command as you are still using another command! Finish running that command and try again\n\n**THINKING IT'S A BUG?** Come to Menhera's support server `/menhera support` and ask for help"
 }
