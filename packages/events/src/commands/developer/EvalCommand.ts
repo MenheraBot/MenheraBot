@@ -19,12 +19,12 @@ const EvalCommand = createCommand({
   ],
   devsOnly: true,
   category: 'dev',
-  authorDataFields: [],
+  authorDataFields: ['id'],
   execute: async (ctx, finishCommand) => {
     try {
       // eslint-disable-next-line no-eval
       let evaled = await eval(ctx.getOption('script', false, true));
-      evaled = inspect(evaled, { depth: 1 });
+      evaled = inspect(evaled, { depth: 2 });
       evaled = evaled.replace(new RegExp(`${bot.token}`, 'g'), undefined);
 
       if (evaled.length > 1800) evaled = `${evaled.slice(0, 1800)}...`;
