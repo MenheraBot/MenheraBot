@@ -8,6 +8,7 @@ import { buyRolls } from '../../modules/shop/buyRolls';
 import { buyItems } from '../../modules/shop/buyItems';
 import { buyThemes } from '../../modules/shop/buyThemes';
 import { buyInfo } from '../../modules/shop/buyInfo';
+import { sellInfo } from '../../modules/shop/sellInfo';
 
 const ShopCommand = createCommand({
   path: '',
@@ -227,6 +228,8 @@ const ShopCommand = createCommand({
       const subCommand = ctx.getSubCommand();
 
       if (subCommand === 'comprar') return buyInfo(ctx, finishCommand);
+
+      if (subCommand === 'vender') return sellInfo(ctx, finishCommand);
     }
   },
 });
