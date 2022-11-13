@@ -25,6 +25,8 @@ const createIpcConnections = async (): Promise<Client> => {
 
   eventClient.on('ready', () => {
     logger.info('[GATEWAY] Gateway IPC connected');
+
+    eventClient.send({ type: 'IDENTIFY', version: process.env.VERSION });
   });
 
   restClient.on('close', () => {
