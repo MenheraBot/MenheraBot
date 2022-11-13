@@ -6,12 +6,6 @@ type FieldData = {
   value: string;
 };
 
-/* const extractFields = (interaction: ModalInteraction): FieldData[] =>
-  interaction.data.components[0].components.reduce<FieldData[]>((p, c) => {
-    p.push({ customId: c.customId, value: c.value });
-    return p;
-  }, []); */
-
 const extractFields = (interaction: ModalInteraction): FieldData[] =>
   interaction.data.components.reduce<FieldData[]>((p, c) => {
     const fieldData = (c.components as InputTextComponent[])[0];
