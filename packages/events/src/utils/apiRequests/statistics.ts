@@ -1,3 +1,4 @@
+import { BigString } from 'discordeno/types';
 import { BichoWinner } from '../../modules/bicho/types';
 import { ApiHuntingTypes } from '../../modules/hunt/types';
 import { debugError } from '../debugError';
@@ -48,10 +49,26 @@ const postBlackjackGame = async (
 ): Promise<void> => {
   await dataRequest.post('/statistics/blackjack', { userId, didWin, betValue }).catch(debugError);
 };
+
+const getUserProfileInfo = async (
+  userId: BigString,
+): Promise<false | { cmds: { count: number }; array: Array<{ name: string; count: number }> }> => {
+  const res = await dataRequest
+    .get('/usages/user', { data: { userId: `${userId}` } })
+    .catch(() => null);
+
+  if (!res) return false;
+
+  if (res.status === 200) return res.data;
+
+  return false;
+};
+
 export {
   postHuntExecution,
   postBichoResults,
   postCoinflipMatch,
   postRoulleteGame,
   postBlackjackGame,
+  getUserProfileInfo,
 };
