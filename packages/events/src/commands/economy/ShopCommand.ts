@@ -7,6 +7,7 @@ import { buyColor } from '../../modules/shop/buyColor';
 import { buyRolls } from '../../modules/shop/buyRolls';
 import { buyItems } from '../../modules/shop/buyItems';
 import { buyThemes } from '../../modules/shop/buyThemes';
+import { buyInfo } from '../../modules/shop/buyInfo';
 
 const ShopCommand = createCommand({
   path: '',
@@ -220,6 +221,12 @@ const ShopCommand = createCommand({
       if (subCommand === 'itens') return buyItems(ctx, finishCommand);
 
       if (subCommand === 'temas') return buyThemes(ctx, finishCommand);
+    }
+
+    if (subCommandGroup === 'preços') {
+      const subCommand = ctx.getSubCommand();
+
+      if (subCommand === 'comprar') return buyInfo(ctx, finishCommand);
     }
   },
 });
