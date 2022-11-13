@@ -1,7 +1,7 @@
 import { ApplicationCommandOptionTypes } from 'discordeno/types';
-import InteractionContext from 'structures/command/InteractionContext';
-import { MessageFlags } from 'utils/discord/messageUtils';
 
+import InteractionContext from '../../structures/command/InteractionContext';
+import { MessageFlags } from '../../utils/discord/messageUtils';
 import { createCommand } from '../../structures/command/createCommand';
 
 const executeSupportCommand = async (ctx: InteractionContext, finishCommand: () => void) => {
@@ -20,13 +20,13 @@ const MenheraCommand = createCommand({
   descriptionLocalizations: { 'en-US': '「✨」・Information regarding Menhera' },
   category: 'info',
   options: [
-    {
+    /*     {
       name: 'estatísticas',
       nameLocalizations: { 'en-US': 'statistics' },
       description: '「🤖」・Veja as estatísticas atuais da Menhera',
       descriptionLocalizations: { 'en-US': "「🤖」・See Menhera's current stats" },
       type: ApplicationCommandOptionTypes.SubCommand,
-    },
+    }, */
     {
       name: 'suporte',
       nameLocalizations: { 'en-US': 'support' },
@@ -40,6 +40,8 @@ const MenheraCommand = createCommand({
     const subCommand = ctx.getSubCommand();
 
     if (subCommand === 'suporte') return executeSupportCommand(ctx, finishCommand);
+
+    // if (subCommand === 'estatísticas') return executeStatisticsCommand(ctx, finishCommand);
   },
 });
 
