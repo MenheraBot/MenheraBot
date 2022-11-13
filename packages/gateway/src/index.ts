@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { Client, Server } from 'net-ipc';
+import { Client, Connection, Server } from 'net-ipc';
 import { Collection, createGatewayManager, Intents, routes } from 'discordeno';
 
 import { Worker } from 'worker_threads';
@@ -48,6 +48,26 @@ restClient.on('close', () => {
   };
 
   setTimeout(reconnectLogic, 5000);
+});
+
+type EventClientConnection = {
+  id: string;
+  conn: Connection;
+  version: string;
+};
+
+const eventClientConnections: EventClientConnection[] = [];
+
+eventsServer.on('message', (msg, conn) => {
+  if (msg.type === 'IDENTIFY')
+    eventClientConnections.push({ id: conn.id, conn, version: msg.version });
+});
+
+eventsServer.on('disconnect', (conn) => {
+  eventClientConnections.splice(
+    eventClientConnections.findIndex((c) => c.id === conn.id),
+    1,
+  );
 });
 
 eventsServer.on('ready', () => {
