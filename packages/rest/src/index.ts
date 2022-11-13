@@ -19,10 +19,6 @@ server.on('ready', (add) => {
   console.log(`[SERVER] Server started on ${add}`);
 });
 
-server.on('connect', () => {
-  console.log(`[IPC] New connection! Waiting for identification...`);
-});
-
 server.on('disconnect', (conn) => {
   const identified = connections.find((a) => a.internalId === conn.id);
 

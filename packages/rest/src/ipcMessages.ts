@@ -24,7 +24,7 @@ const handleIdentify = (
       package: info.package,
     });
 
-  console.log(`[IPC] Connection identified! ${info.package} - ${info.id}`);
+  console.log(`[IPC] New connection identified! ${info.package} - ${info.id}`);
 };
 
 export { handleIdentify };
