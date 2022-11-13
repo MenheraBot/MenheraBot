@@ -1,3 +1,4 @@
+import { profileBadges } from '../modules/badges/profileBadges';
 import { HuntMagicItem } from '../modules/hunt/types';
 import { UserBuyableTheme } from '../modules/themes/types';
 
@@ -9,7 +10,7 @@ export interface UserColor {
 }
 
 export interface UserBadge {
-  id: number;
+  id: keyof typeof profileBadges;
   obtainAt: string;
 }
 
