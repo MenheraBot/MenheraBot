@@ -163,7 +163,7 @@ const ItemsCommand = createCommand({
         content: ctx.prettyResponse('success', 'commands:itens.reseted'),
       });
 
-      finishCommand();
+      return finishCommand();
     }
 
     const availableItems = createSelectMenu({
