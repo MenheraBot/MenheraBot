@@ -32,7 +32,7 @@ restClient.on('close', () => {
       .catch(() => {
         setTimeout(reconnectLogic, 5000);
 
-        console.log(`[GATEWAY] Fail when reconnecting... ${retries} tries`);
+        console.log(`[GATEWAY] Fail when reconnecting... ${retries} retries`);
 
         if (retries >= 3) {
           console.log(`[GATEWAY] Couldn't reconnect to REST client.`);
