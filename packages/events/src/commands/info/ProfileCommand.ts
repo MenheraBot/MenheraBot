@@ -67,7 +67,7 @@ const ProfileCommand = createCommand({
 
     const user =
       discordUser.id !== ctx.author.id
-        ? await userRepository.findUser(discordUser.id)
+        ? await userRepository.ensureFindUser(discordUser.id)
         : ctx.authorData;
 
     if (!user) {

@@ -59,7 +59,7 @@ const MarryCommand = createCommand({
         }),
       );
 
-    const mentionData = await userRepository.findUser(mention.id);
+    const mentionData = await userRepository.ensureFindUser(mention.id);
 
     if (!mentionData)
       return finishCommand(

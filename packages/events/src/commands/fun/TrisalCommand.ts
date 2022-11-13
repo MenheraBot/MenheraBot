@@ -130,8 +130,8 @@ const executeMakeTrisal = async (
   const usersWithoutOwner = trisalIds.filter((a) => a !== ctx.author.id);
 
   const [firstUserData, secondUserData] = await Promise.all([
-    userRepository.findUser(usersWithoutOwner[0]),
-    userRepository.findUser(usersWithoutOwner[1]),
+    userRepository.ensureFindUser(usersWithoutOwner[0]),
+    userRepository.ensureFindUser(usersWithoutOwner[1]),
   ]);
 
   if (!firstUserData || !secondUserData)
