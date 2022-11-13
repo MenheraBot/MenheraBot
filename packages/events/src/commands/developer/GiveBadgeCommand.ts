@@ -36,7 +36,7 @@ const GiveBadgeCommand = createCommand({
     if (userData.badges.some((a) => a.id === badgeId))
       return finishCommand(ctx.makeMessage({ content: 'Este usuário já possui esta badge!' }));
 
-    await badgeRepository.giveBadgeToUser(userId, badgeId);
+    await badgeRepository.giveBadgeToUser(userId, badgeId as 1);
 
     ctx.makeMessage({ content: 'Badge adicionada a conta do user UwU' });
     finishCommand();
