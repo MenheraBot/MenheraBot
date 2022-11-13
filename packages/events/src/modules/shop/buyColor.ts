@@ -119,7 +119,7 @@ const buyColor = async (
   }
 
   if (chosenColor.cor.startsWith('#')) {
-    bot.helpers.sendInteractionResponse(ctx.interaction.id, ctx.interaction.token, {
+    bot.helpers.sendInteractionResponse(selected.id, selected.token, {
       type: InteractionResponseTypes.DeferredUpdateMessage,
     });
 
@@ -129,6 +129,7 @@ const buyColor = async (
     });
 
     ctx.makeMessage({
+      components: [],
       content: ctx.prettyResponse('success', 'commands:loja.buy_colors.buy-success', {
         name: chosenColor.nome,
         price: chosenColor.price,
