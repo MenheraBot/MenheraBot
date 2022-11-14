@@ -1,4 +1,5 @@
 import { BigString } from 'discordeno/types';
+import { ApiHuntStats, ApiUserProfileStats } from '../../types/api';
 import { BichoWinner } from '../../modules/bicho/types';
 import { ApiHuntingTypes } from '../../modules/hunt/types';
 import { debugError } from '../debugError';
@@ -50,9 +51,7 @@ const postBlackjackGame = async (
   await dataRequest.post('/statistics/blackjack', { userId, didWin, betValue }).catch(debugError);
 };
 
-const getUserProfileInfo = async (
-  userId: BigString,
-): Promise<false | { cmds: { count: number }; array: Array<{ name: string; count: number }> }> => {
+const getUserProfileInfo = async (userId: BigString): Promise<false | ApiUserProfileStats> => {
   const res = await dataRequest
     .get('/usages/user', { data: { userId: `${userId}` } })
     .catch(() => null);
@@ -64,11 +63,24 @@ const getUserProfileInfo = async (
   return false;
 };
 
+const getUserHuntStats = async (userId: BigString): Promise<ApiHuntStats | { error: true }> => {
+  const res = await dataRequest
+    .get('/statistics/hunt', { data: { userId: `${userId}` } })
+    .catch(() => null);
+
+  if (!res) return { error: true };
+
+  if (!res.data.error) return res.data;
+
+  return { error: true };
+};
+
 export {
   postHuntExecution,
   postBichoResults,
   postCoinflipMatch,
   postRoulleteGame,
   postBlackjackGame,
+  getUserHuntStats,
   getUserProfileInfo,
 };

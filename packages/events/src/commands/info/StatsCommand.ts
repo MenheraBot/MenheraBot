@@ -1,6 +1,8 @@
 import { User } from 'discordeno/transformers';
 import { ApplicationCommandOptionTypes, ButtonStyles, DiscordEmbedField } from 'discordeno/types';
 
+import { getUserHuntStats } from '../../utils/apiRequests/statistics';
+import { EMOJIS } from '../../structures/constants';
 import themeCreditsRepository from '../../database/repositories/themeCreditsRepository';
 import userThemesRepository from '../../database/repositories/userThemesRepository';
 import { getThemeById } from '../../modules/themes/getThemes';
@@ -19,11 +21,101 @@ import { millisToSeconds } from '../../utils/miscUtils';
 
 import { createCommand } from '../../structures/command/createCommand';
 
+const executeHuntStats = async (ctx: InteractionContext, finishCommand: () => void) => {
+  const user = ctx.getOption<User>('user', 'users') ?? ctx.author;
+
+  const huntData = await getUserHuntStats(user.id);
+
+  if (huntData.error) {
+    ctx.makeMessage({
+      content: ctx.prettyResponse('error', 'commands:status.coinflip.error'),
+    });
+
+    return finishCommand();
+  }
+
+  if (!huntData.user_id) {
+    await ctx.makeMessage({
+      content: ctx.prettyResponse('error', 'commands:status.hunt.no-data'),
+      flags: MessageFlags.EPHEMERAL,
+    });
+
+    return finishCommand();
+  }
+
+  const calculateSuccess = (sucesses: number, tries: number): string =>
+    sucesses === 0 ? '0' : ((sucesses / tries) * 100).toFixed(1).replace('.0', '');
+
+  const embed = createEmbed({
+    title: ctx.locale('commands:status.hunt.embed-title', { user: user.username }),
+    color: hexStringToNumber(ctx.authorData.selectedColor),
+    fields: [
+      {
+        name: `${EMOJIS.demons} | ${ctx.locale('commands:status.hunt.demon')}`,
+        value: `${ctx.locale('commands:status.hunt.display-data', {
+          tries: huntData.demon_tries,
+          success: calculateSuccess(huntData.demon_success, huntData.demon_tries),
+          hunted: huntData.demon_hunted,
+        })}`,
+        inline: true,
+      },
+      {
+        name: `${EMOJIS.giants} | ${ctx.locale('commands:status.hunt.giant')}`,
+        value: `${ctx.locale('commands:status.hunt.display-data', {
+          tries: huntData.giant_tries,
+          success: calculateSuccess(huntData.giant_success, huntData.giant_tries),
+          hunted: huntData.giant_hunted,
+        })}`,
+        inline: true,
+      },
+      {
+        name: `${EMOJIS.angels} | ${ctx.locale('commands:status.hunt.angel')}`,
+        value: `${ctx.locale('commands:status.hunt.display-data', {
+          tries: huntData.angel_tries,
+          success: calculateSuccess(huntData.angel_success, huntData.angel_tries),
+          hunted: huntData.angel_hunted,
+        })}`,
+        inline: true,
+      },
+      {
+        name: `${EMOJIS.archangels} | ${ctx.locale('commands:status.hunt.archangel')}`,
+        value: `${ctx.locale('commands:status.hunt.display-data', {
+          tries: huntData.archangel_tries,
+          success: calculateSuccess(huntData.archangel_success, huntData.archangel_tries),
+          hunted: huntData.archangel_hunted,
+        })}`,
+        inline: true,
+      },
+      {
+        name: `${EMOJIS.demigods} | ${ctx.locale('commands:status.hunt.demigod')}`,
+        value: `${ctx.locale('commands:status.hunt.display-data', {
+          tries: huntData.demigod_tries,
+          success: calculateSuccess(huntData.demigod_success, huntData.demigod_tries),
+          hunted: huntData.demigod_hunted,
+        })}`,
+        inline: true,
+      },
+      {
+        name: `${EMOJIS.gods} | ${ctx.locale('commands:status.hunt.god')}`,
+        value: `${ctx.locale('commands:status.hunt.display-data', {
+          tries: huntData.god_tries,
+          success: calculateSuccess(huntData.god_success, huntData.god_tries),
+          hunted: huntData.god_hunted,
+        })}`,
+        inline: true,
+      },
+    ],
+  });
+
+  ctx.makeMessage({ embeds: [embed] });
+  finishCommand();
+};
+
 const executeDesignerStats = async (
   ctx: InteractionContext,
   finishCommand: () => void,
 ): Promise<void> => {
-  const user = ctx.getOption<User>('designer', false) ?? ctx.author;
+  const user = ctx.getOption<User>('designer', 'users') ?? ctx.author;
 
   const userDesigns = await themeCreditsRepository.getDesignerThemes(user.id);
 
@@ -215,6 +307,8 @@ const StatsCommand = createCommand({
     switch (subCommand) {
       case 'designer':
         return executeDesignerStats(ctx, finishCommand);
+      case 'caçar':
+        return executeHuntStats(ctx, finishCommand);
     }
   },
 });
