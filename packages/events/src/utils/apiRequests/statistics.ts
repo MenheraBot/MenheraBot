@@ -1,5 +1,6 @@
 import { BigString } from 'discordeno/types';
 import {
+  ApiGamblingGameCompatible,
   ApiGamblingGameStats,
   ApiHuntStats,
   ApiUserProfileStats,
@@ -80,11 +81,12 @@ const getUserHuntStats = async (userId: BigString): Promise<MayReturnError<ApiHu
   return { error: true };
 };
 
-const getUserCoinflipStats = async (
+const getGamblingGameStats = async (
   userId: BigString,
+  game: ApiGamblingGameCompatible,
 ): Promise<MayReturnError<ApiGamblingGameStats>> => {
   const res = await dataRequest
-    .get('/statistics/coinflip', { data: { userId: `${userId}` } })
+    .get(`/statistics/${game}`, { data: { userId: `${userId}` } })
     .catch(() => null);
 
   if (!res) return { error: true };
@@ -98,9 +100,9 @@ export {
   postHuntExecution,
   postBichoResults,
   postCoinflipMatch,
+  getGamblingGameStats,
   postRoulleteGame,
   postBlackjackGame,
   getUserHuntStats,
-  getUserCoinflipStats,
   getUserProfileInfo,
 };

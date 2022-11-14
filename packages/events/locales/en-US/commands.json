@@ -491,7 +491,7 @@
       "embed-title": "{{user}}'s Bicho Statistics",
       "no-data": "This user have never played a Jogo do Bicho game!"
     },
-    "roleta": {
+    "roulette": {
       "embed-title": "{{user}}'s Roulette Statistics",
       "no-data": "This user have never played a roulette game!"
     },

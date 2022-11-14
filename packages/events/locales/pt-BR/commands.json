@@ -499,7 +499,7 @@
       "embed-title": "Estatísticas do Jogo do Bicho de {{user}}",
       "no-data": "Este usuário nunca apostou no jogo do bicho!"
     },
-    "roleta": {
+    "roulette": {
       "embed-title": "Estatísticas de Roleta de {{user}}",
       "no-data": "Este usuário nunca jogou uma partida de roleta francesa!"
     },

@@ -39,3 +39,5 @@ export interface ApiUserProfileStats {
 }
 
 export type MayReturnError<T> = T | { error: true };
+
+export type ApiGamblingGameCompatible = 'coinflip' | 'blackjack' | 'roulette' | 'bicho';

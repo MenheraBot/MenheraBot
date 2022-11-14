@@ -2,8 +2,8 @@ import { Embed, User } from 'discordeno/transformers';
 import { ApplicationCommandOptionTypes, ButtonStyles, DiscordEmbedField } from 'discordeno/types';
 import { TFunction } from 'i18next';
 
-import { ApiGamblingGameStats } from '../../types/api';
-import { getUserCoinflipStats, getUserHuntStats } from '../../utils/apiRequests/statistics';
+import { ApiGamblingGameCompatible, ApiGamblingGameStats } from '../../types/api';
+import { getGamblingGameStats, getUserHuntStats } from '../../utils/apiRequests/statistics';
 import { COLORS, EMOJIS } from '../../structures/constants';
 import themeCreditsRepository from '../../database/repositories/themeCreditsRepository';
 import userThemesRepository from '../../database/repositories/userThemesRepository';
@@ -49,7 +49,9 @@ const executeHuntStats = async (ctx: InteractionContext, finishCommand: () => vo
     sucesses === 0 ? '0' : ((sucesses / tries) * 100).toFixed(1).replace('.0', '');
 
   const embed = createEmbed({
-    title: ctx.locale('commands:status.hunt.embed-title', { user: user.username }),
+    title: ctx.locale('commands:status.hunt.embed-title', {
+      user: `${user.username}#${user.discriminator}`,
+    }),
     color: hexStringToNumber(ctx.authorData.selectedColor),
     fields: [
       {
@@ -257,10 +259,14 @@ const makeGamblingStatisticsEmbed = (
   return embed;
 };
 
-const executeCoinflipStats = async (ctx: InteractionContext, finishCommand: () => void) => {
+const executeGamblingGameStats = async (
+  ctx: InteractionContext,
+  finishCommand: () => void,
+  game: ApiGamblingGameCompatible,
+) => {
   const user = ctx.getOption<User>('user', 'users') ?? ctx.author;
 
-  const data = await getUserCoinflipStats(user.id);
+  const data = await getGamblingGameStats(user.id, game);
 
   if (data.error) {
     ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:status.coinflip.error') });
@@ -269,7 +275,7 @@ const executeCoinflipStats = async (ctx: InteractionContext, finishCommand: () =
   }
 
   if (!data.playedGames) {
-    ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:status.coinflip.no-data') });
+    ctx.makeMessage({ content: ctx.prettyResponse('error', `commands:status.${game}.no-data`) });
 
     return finishCommand();
   }
@@ -277,11 +283,12 @@ const executeCoinflipStats = async (ctx: InteractionContext, finishCommand: () =
   const embed = makeGamblingStatisticsEmbed(
     data,
     ctx.i18n,
-    'coinflip',
+    game,
     `${user.username}#${user.discriminator}`,
   );
 
   ctx.makeMessage({ embeds: [embed] });
+  finishCommand();
 };
 
 const StatsCommand = createCommand({
@@ -395,8 +402,12 @@ const StatsCommand = createCommand({
         return executeDesignerStats(ctx, finishCommand);
       case 'caçar':
         return executeHuntStats(ctx, finishCommand);
+      case 'roleta':
+        return executeGamblingGameStats(ctx, finishCommand, 'roulette');
       case 'coinflip':
-        return executeCoinflipStats(ctx, finishCommand);
+      case 'blackjack':
+      case 'bicho':
+        return executeGamblingGameStats(ctx, finishCommand, subCommand);
     }
   },
 });
