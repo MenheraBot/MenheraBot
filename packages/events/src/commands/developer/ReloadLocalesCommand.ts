@@ -8,9 +8,11 @@ const ReloadLocalesCommand = createCommand({
   devsOnly: true,
   category: 'dev',
   authorDataFields: [],
-  execute: async (_, finishCommand) => {
+  execute: async (ctx, finishCommand) => {
     await reloadLocales();
     finishCommand();
+
+    ctx.makeMessage({ content: 'de cria' });
   },
 });
 
