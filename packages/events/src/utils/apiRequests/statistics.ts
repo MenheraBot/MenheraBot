@@ -1,5 +1,10 @@
 import { BigString } from 'discordeno/types';
-import { ApiHuntStats, ApiUserProfileStats } from '../../types/api';
+import {
+  ApiGamblingGameStats,
+  ApiHuntStats,
+  ApiUserProfileStats,
+  MayReturnError,
+} from '../../types/api';
 import { BichoWinner } from '../../modules/bicho/types';
 import { ApiHuntingTypes } from '../../modules/hunt/types';
 import { debugError } from '../debugError';
@@ -63,9 +68,23 @@ const getUserProfileInfo = async (userId: BigString): Promise<false | ApiUserPro
   return false;
 };
 
-const getUserHuntStats = async (userId: BigString): Promise<ApiHuntStats | { error: true }> => {
+const getUserHuntStats = async (userId: BigString): Promise<MayReturnError<ApiHuntStats>> => {
   const res = await dataRequest
     .get('/statistics/hunt', { data: { userId: `${userId}` } })
+    .catch(() => null);
+
+  if (!res) return { error: true };
+
+  if (!res.data.error) return res.data;
+
+  return { error: true };
+};
+
+const getUserCoinflipStats = async (
+  userId: BigString,
+): Promise<MayReturnError<ApiGamblingGameStats>> => {
+  const res = await dataRequest
+    .get('/statistics/coinflip', { data: { userId: `${userId}` } })
     .catch(() => null);
 
   if (!res) return { error: true };
@@ -82,5 +101,6 @@ export {
   postRoulleteGame,
   postBlackjackGame,
   getUserHuntStats,
+  getUserCoinflipStats,
   getUserProfileInfo,
 };

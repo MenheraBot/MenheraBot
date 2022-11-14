@@ -22,7 +22,20 @@ export interface ApiHuntStats {
   error?: boolean;
 }
 
+export interface ApiGamblingGameStats {
+  playedGames: number;
+  lostGames: number;
+  winGames: number;
+  winMoney: number;
+  lostMoney: number;
+  winPorcentage: string;
+  lostPorcentage: string;
+  error?: boolean;
+}
+
 export interface ApiUserProfileStats {
   cmds: { count: number };
   array: Array<{ name: string; count: number }>;
 }
+
+export type MayReturnError<T> = T | { error: true };

@@ -26,7 +26,7 @@ export default class {
   constructor(
     public interaction: Interaction,
     public authorData: Readonly<DatabaseUserSchema>,
-    private i18n: TFunction,
+    public i18n: TFunction,
   ) {
     this.options = interaction.data?.options ?? [];
 

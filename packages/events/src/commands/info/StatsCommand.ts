@@ -1,8 +1,10 @@
-import { User } from 'discordeno/transformers';
+import { Embed, User } from 'discordeno/transformers';
 import { ApplicationCommandOptionTypes, ButtonStyles, DiscordEmbedField } from 'discordeno/types';
+import { TFunction } from 'i18next';
 
-import { getUserHuntStats } from '../../utils/apiRequests/statistics';
-import { EMOJIS } from '../../structures/constants';
+import { ApiGamblingGameStats } from '../../types/api';
+import { getUserCoinflipStats, getUserHuntStats } from '../../utils/apiRequests/statistics';
+import { COLORS, EMOJIS } from '../../structures/constants';
 import themeCreditsRepository from '../../database/repositories/themeCreditsRepository';
 import userThemesRepository from '../../database/repositories/userThemesRepository';
 import { getThemeById } from '../../modules/themes/getThemes';
@@ -198,6 +200,90 @@ const executeDesignerStats = async (
   finishCommand();
 };
 
+const makeGamblingStatisticsEmbed = (
+  data: ApiGamblingGameStats,
+  translate: TFunction,
+  type: string,
+  userTag: string,
+): Embed => {
+  const totalMoney = data.winMoney - data.lostGames;
+
+  const embed = createEmbed({
+    title: translate(`commands:status.${type as 'coinflip'}.embed-title`, { user: userTag }),
+    color: COLORS.Pinkie,
+    footer: { text: translate('commands:status.coinflip.embed-footer') },
+    fields: [
+      {
+        name: `🎰 | ${translate('commands:status.coinflip.played')}`,
+        value: `**${data.playedGames}**`,
+        inline: true,
+      },
+      {
+        name: `🏆 | ${translate('commands:status.coinflip.wins')}`,
+        value: `**${data.winGames}** | (${data.winPorcentage}) **%**`,
+        inline: true,
+      },
+      {
+        name: `🦧 | ${translate('commands:status.coinflip.loses')}`,
+        value: `**${data.lostGames}** | (${data.lostPorcentage}) **%**`,
+        inline: true,
+      },
+      {
+        name: `📥 | ${translate('commands:status.coinflip.earnMoney')}`,
+        value: `**${data.winMoney}** :star:`,
+        inline: true,
+      },
+      {
+        name: `📤 | ${translate('commands:status.coinflip.lostMoney')}`,
+        value: `**${data.lostMoney}** :star:`,
+        inline: true,
+      },
+    ],
+  });
+
+  if (totalMoney > 0)
+    embed.fields?.push({
+      name: `${EMOJIS.yes} | ${translate('commands:status.coinflip.profit')}`,
+      value: `**${totalMoney}** :star:`,
+      inline: true,
+    });
+  else
+    embed.fields?.push({
+      name: `${EMOJIS.no} | ${translate('commands:status.coinflip.loss')}`,
+      value: `**${totalMoney}** :star:`,
+      inline: true,
+    });
+
+  return embed;
+};
+
+const executeCoinflipStats = async (ctx: InteractionContext, finishCommand: () => void) => {
+  const user = ctx.getOption<User>('user', 'users') ?? ctx.author;
+
+  const data = await getUserCoinflipStats(user.id);
+
+  if (data.error) {
+    ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:status.coinflip.error') });
+
+    return finishCommand();
+  }
+
+  if (!data.playedGames) {
+    ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:status.coinflip.no-data') });
+
+    return finishCommand();
+  }
+
+  const embed = makeGamblingStatisticsEmbed(
+    data,
+    ctx.i18n,
+    'coinflip',
+    `${user.username}#${user.discriminator}`,
+  );
+
+  ctx.makeMessage({ embeds: [embed] });
+};
+
 const StatsCommand = createCommand({
   path: '',
   name: 'estatísticas',
@@ -309,6 +395,8 @@ const StatsCommand = createCommand({
         return executeDesignerStats(ctx, finishCommand);
       case 'caçar':
         return executeHuntStats(ctx, finishCommand);
+      case 'coinflip':
+        return executeCoinflipStats(ctx, finishCommand);
     }
   },
 });
