@@ -123,6 +123,10 @@ const getCardBackgroundTheme = async (
   return getThemeById<CardBackgroundTheme>(themes.selectedCardBackgroundTheme).data.theme;
 };
 
+const makeNotify = async (userId: BigString, notify: boolean): Promise<void> => {
+  await userThemesModel.updateOne({ id: `${userId}` }, { notifyPurchase: notify });
+};
+
 export default {
   findEnsuredUserThemes,
   addTableTheme,
@@ -133,4 +137,5 @@ export default {
   getCardsTheme,
   getProfileTheme,
   getCardBackgroundTheme,
+  makeNotify,
 };

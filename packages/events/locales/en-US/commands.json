@@ -472,7 +472,7 @@
       "success": "Your purchase notification settings have changed!",
       "dont-notify": "Do Not Notify Purchases",
       "notify-footer": "With notify purchases active, every time a user buys a design from you, Menhera will try to send a message in your DM showing this",
-      "description": "**Type:** $t(common:theme_types.{{type}}) ($t(common:rarities.{{rarity}}))\n**Royalty:**: {{royalty}}%\n**Profit:** {{profit}} :star:\n**Sold:** {{sold}}\nRegistered at `{{registered}}`"
+      "description": "**Type:** $t(common:theme_types.{{type}}) ($t(common:rarities.{{rarity}}))\n**Royalty:**: {{royalty}}%\n**Profit:** {{profit}} :star:\n**Sold:** {{sold}}\nRegistered at {{registered}}"
     },
     "coinflip": {
       "embed-title": "{{user}}'s Coinflip Statistics",

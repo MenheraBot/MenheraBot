@@ -28,6 +28,9 @@ const getThemesOwnerId = async (
     .then((res) => res.map((a) => ({ themeId: a.themeId, ownerId: a.ownerId })));
 };
 
+const getDesignerThemes = async (designerId: BigString): Promise<DatabaseCreditsSchema[]> =>
+  themeCreditsModel.find({ ownerId: `${designerId}` });
+
 const getThemeInfo = async (themeId: number): Promise<DatabaseCreditsSchema | null> => {
   const fromRedis = await RedisClient.get(`credits:${themeId}`);
 
@@ -40,7 +43,7 @@ const getThemeInfo = async (themeId: number): Promise<DatabaseCreditsSchema | nu
       `credits:${themeId}`,
       JSON.stringify({
         themeId: fromMongo.themeId,
-        ownerId: fromMongo.ownerId,
+        ownerId: `${fromMongo.ownerId}`,
         registeredAt: fromMongo.registeredAt,
         totalEarned: fromMongo.totalEarned,
         royalty: fromMongo.royalty,
@@ -62,7 +65,7 @@ const giveOwnerThemeRoyalties = async (themeId: number, value: number): Promise<
     `credits:${themeId}`,
     JSON.stringify({
       themeId: themeData.themeId,
-      ownerId: themeData.ownerId,
+      ownerId: `${themeData.ownerId}`,
       registeredAt: themeData.registeredAt,
       totalEarned: themeData.totalEarned,
       royalty: themeData.royalty,
@@ -78,4 +81,5 @@ export default {
   getThemesOwnerId,
   getThemeInfo,
   giveOwnerThemeRoyalties,
+  getDesignerThemes,
 };
