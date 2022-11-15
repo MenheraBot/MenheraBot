@@ -1,6 +1,7 @@
 import { InteractionResponseTypes, InteractionTypes } from 'discordeno/types';
 import i18next from 'i18next';
 
+import guildRepository from '../../database/repositories/guildRepository';
 import usagesRepository from '../../database/repositories/usagesRepository';
 import { postCommandExecution } from '../../utils/apiRequests/commands';
 import { UsedCommandData } from '../../types/commands';
@@ -84,7 +85,9 @@ const setInteractionCreateEvent = (): void => {
         ? await userRepository.ensureFindUser(interaction.user.id)
         : null;
 
-    const guildLocale = i18next.getFixedT(interaction.guildLocale ?? 'pt-BR');
+    const guildLocale = i18next.getFixedT(
+      await guildRepository.getGuildLanguage(interaction.guildId as bigint),
+    );
 
     const ctx = new InteractionContext(interaction, authorData as DatabaseUserSchema, guildLocale);
 

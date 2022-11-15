@@ -466,7 +466,9 @@
     "question": "Qual língua você quer que eu fale?",
     "select": "Escolha a língua clicando aqui!",
     "english": "Inglês Americano",
-    "portuguese": "Português Brasileiro"
+    "portuguese": "Português Brasileiro",
+    "pt-response": "Perfeito, vou falar português nesse servidor",
+    "en-response": "A you wish, I will speak english on this server"
   },
   "sobremim": {
     "args-limit": "Seu sobremim não pode ser maior que 200 caracteres",

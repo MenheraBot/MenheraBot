@@ -4,7 +4,7 @@ import { CreateSlashApplicationCommand } from 'discordeno';
 import InteractionContext from '../structures/command/InteractionContext';
 import { DatabaseUserSchema } from './database';
 
-type CommandCategory = 'economy' | 'roleplay' | 'fun' | 'actions' | 'info' | 'dev';
+type CommandCategory = 'economy' | 'roleplay' | 'fun' | 'actions' | 'info' | 'dev' | 'util';
 
 export interface ChatInputCommandConfig extends CreateSlashApplicationCommand {
   devsOnly?: true;
