@@ -127,6 +127,70 @@ const makeNotify = async (userId: BigString, notify: boolean): Promise<void> => 
   await userThemesModel.updateOne({ id: `${userId}` }, { notifyPurchase: notify });
 };
 
+const setCardsTheme = async (userId: BigString, themeId: number): Promise<void> => {
+  await userThemesModel.updateOne({ id: `${userId}` }, { selectedCardTheme: themeId });
+
+  const fromRedis = await RedisClient.get(`user_themes:${userId}`);
+
+  if (fromRedis) {
+    const data = JSON.parse(fromRedis);
+
+    await RedisClient.setex(
+      `user_themes:${userId}`,
+      3600,
+      JSON.stringify(parseMongoUserToRedisUser({ ...data, selectedCardTheme: themeId })),
+    );
+  }
+};
+
+const setCardBackgroundTheme = async (userId: BigString, themeId: number): Promise<void> => {
+  await userThemesModel.updateOne({ id: `${userId}` }, { selectedCardBackgroundTheme: themeId });
+
+  const fromRedis = await RedisClient.get(`user_themes:${userId}`);
+
+  if (fromRedis) {
+    const data = JSON.parse(fromRedis);
+
+    await RedisClient.setex(
+      `user_themes:${userId}`,
+      3600,
+      JSON.stringify(parseMongoUserToRedisUser({ ...data, selectedCardBackgroundTheme: themeId })),
+    );
+  }
+};
+
+const setProfileTheme = async (userId: BigString, themeId: number): Promise<void> => {
+  await userThemesModel.updateOne({ id: `${userId}` }, { selectedProfileTheme: themeId });
+
+  const fromRedis = await RedisClient.get(`user_themes:${userId}`);
+
+  if (fromRedis) {
+    const data = JSON.parse(fromRedis);
+
+    await RedisClient.setex(
+      `user_themes:${userId}`,
+      3600,
+      JSON.stringify(parseMongoUserToRedisUser({ ...data, selectedProfileTheme: themeId })),
+    );
+  }
+};
+
+const setTableTheme = async (userId: BigString, themeId: number): Promise<void> => {
+  await userThemesModel.updateOne({ id: `${userId}` }, { selectedTableTheme: themeId });
+
+  const fromRedis = await RedisClient.get(`user_themes:${userId}`);
+
+  if (fromRedis) {
+    const data = JSON.parse(fromRedis);
+
+    await RedisClient.setex(
+      `user_themes:${userId}`,
+      3600,
+      JSON.stringify(parseMongoUserToRedisUser({ ...data, selectedTableTheme: themeId })),
+    );
+  }
+};
+
 export default {
   findEnsuredUserThemes,
   addTableTheme,
@@ -134,8 +198,12 @@ export default {
   addCardBackgroundTheme,
   addProfileTheme,
   getTableTheme,
+  setTableTheme,
   getCardsTheme,
+  setProfileTheme,
   getProfileTheme,
+  setCardBackgroundTheme,
   getCardBackgroundTheme,
+  setCardsTheme,
   makeNotify,
 };

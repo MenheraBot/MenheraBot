@@ -7,6 +7,10 @@ import {
   SelectMenuComponent,
   TextStyles,
 } from 'discordeno/types';
+import { AvailableThemeTypes, ThemeFile } from '../../modules/themes/types';
+import userThemesRepository from '../../database/repositories/userThemesRepository';
+import { getThemeById, getUserActiveThemes } from '../../modules/themes/getThemes';
+import { IdentifiedData } from '../../types/menhera';
 import { getUserAvatar } from '../../utils/discord/userUtils';
 import { getUserBadges } from '../../modules/badges/getUserBadges';
 import { profileBadges } from '../../modules/badges/profileBadges';
@@ -446,6 +450,102 @@ const executeBadgesCommand = async (ctx: InteractionContext, finishCommand: () =
   finishCommand();
 };
 
+const executeThemesCommand = async (ctx: InteractionContext, finishCommand: () => void) => {
+  const themeType = ctx.getOption<AvailableThemeTypes>('tipo', false, true);
+
+  const userThemes = await userThemesRepository.findEnsuredUserThemes(ctx.author.id);
+
+  const embed = createEmbed({
+    color: hexStringToNumber(ctx.authorData.selectedColor),
+    title: ctx.locale(`commands:temas.${themeType}`),
+    fields: [],
+  });
+
+  const selectMenu = createSelectMenu({
+    customId: generateCustomId('SELECT', ctx.interaction.id),
+    minValues: 1,
+    maxValues: 1,
+    options: [],
+  });
+
+  const availableThemes = getUserActiveThemes(userThemes).reduce<Array<IdentifiedData<ThemeFile>>>(
+    (p, c) => {
+      if (c.inUse) return p;
+
+      const theme = getThemeById(c.id);
+
+      if (theme.data.type !== themeType) return p;
+
+      p.push(theme);
+
+      selectMenu.options.push({
+        label: ctx.locale(`data:themes.${c.id as 1}.name`),
+        value: `${c.id}`,
+        description: ctx.locale(`data:themes.${c.id as 1}.description`).substring(0, 100),
+      });
+
+      embed.fields?.push({
+        name: ctx.locale(`data:themes.${c.id as 1}.name`),
+        value: `${ctx.locale(`data:themes.${c.id as 1}.description`)}\n**${ctx.locale(
+          'common:rarity',
+        )}**: ${ctx.locale(`common:rarities.${theme.data.rarity}`)}`,
+        inline: true,
+      });
+
+      return p;
+    },
+    [],
+  );
+
+  if (availableThemes.length === 0) {
+    embed.description = ctx.locale('commands:temas.no-themes');
+    ctx.makeMessage({ embeds: [embed] });
+
+    return finishCommand();
+  }
+
+  ctx.makeMessage({ embeds: [embed], components: [createActionRow([selectMenu])] });
+
+  const collected = await collectResponseComponentInteraction<SelectMenuInteraction>(
+    ctx.channelId,
+    ctx.author.id,
+    `${ctx.interaction.id}`,
+    10_000,
+  );
+
+  if (!collected) {
+    ctx.makeMessage({
+      components: [createActionRow(disableComponents(ctx.locale('common:timesup'), [selectMenu]))],
+    });
+
+    return finishCommand();
+  }
+
+  const themeId = Number(collected.data.values[0]);
+
+  switch (themeType) {
+    case 'cards':
+      userThemesRepository.setCardsTheme(ctx.author.id, themeId);
+      break;
+    case 'card_background':
+      userThemesRepository.setCardBackgroundTheme(ctx.author.id, themeId);
+      break;
+    case 'profile':
+      userThemesRepository.setProfileTheme(ctx.author.id, themeId);
+      break;
+    case 'table':
+      userThemesRepository.setTableTheme(ctx.author.id, themeId);
+      break;
+  }
+
+  ctx.makeMessage({
+    components: [],
+    embeds: [],
+    content: ctx.prettyResponse('success', 'commands:temas.selected'),
+  });
+  finishCommand();
+};
+
 const PersonalizeCommand = createCommand({
   path: '',
   name: 'personalizar',
@@ -548,6 +648,8 @@ const PersonalizeCommand = createCommand({
     if (command === 'sobre_mim') return executeAboutMeCommand(ctx, finishCommand);
 
     if (command === 'cor') return executeColorCommand(ctx, finishCommand);
+
+    if (command === 'temas') return executeThemesCommand(ctx, finishCommand);
 
     if (command === 'badges') return executeBadgesCommand(ctx, finishCommand);
   },
