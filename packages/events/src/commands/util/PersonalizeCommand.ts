@@ -7,9 +7,13 @@ import {
   SelectMenuComponent,
   TextStyles,
 } from 'discordeno/types';
+import { getUserAvatar } from '../../utils/discord/userUtils';
+import { getUserBadges } from '../../modules/badges/getUserBadges';
+import { profileBadges } from '../../modules/badges/profileBadges';
+import { collectResponseComponentInteraction } from '../../utils/discord/collectorUtils';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
-import { COLORS } from '../../structures/constants';
+import { COLORS, EMOJIS } from '../../structures/constants';
 import {
   createActionRow,
   createButton,
@@ -344,6 +348,104 @@ const executeColorCommand = async (ctx: InteractionContext, finishCommand: () =>
   });
 };
 
+const executeBadgesCommand = async (ctx: InteractionContext, finishCommand: () => void) => {
+  const embed = createEmbed({
+    author: { name: ctx.locale('commands:badges.title'), iconUrl: getUserAvatar(ctx.author) },
+    footer: { text: ctx.locale('commands:badges.footer') },
+    color: hexStringToNumber(ctx.authorData.selectedColor),
+    fields: [],
+  });
+
+  const selectMenu = createSelectMenu({
+    customId: generateCustomId('SELECT', ctx.interaction.id),
+    minValues: 1,
+    options: [
+      {
+        label: ctx.locale('commands:badges.select-all'),
+        value: 'ALL',
+        emoji: { name: '⭐' },
+      },
+      {
+        label: ctx.locale('commands:badges.diselect-all'),
+        value: 'NONE',
+        emoji: { name: '⭕' },
+      },
+    ],
+  });
+
+  const extractNameAndIdFromEmoji = (emoji: string) => {
+    const splitted = emoji.split(':');
+
+    return {
+      name: splitted[1],
+      id: BigInt(splitted[2].slice(0, -1)),
+    };
+  };
+
+  getUserBadges(ctx.authorData, ctx.author).forEach((a) => {
+    const isSelected = ctx.authorData.hiddingBadges.includes(a.id);
+
+    selectMenu.options.push({
+      label: profileBadges[a.id as 1].name,
+      value: `${a.id}`,
+      default: isSelected,
+      emoji: extractNameAndIdFromEmoji(EMOJIS[`badge_${a.id}` as 'angels']),
+    });
+
+    embed.fields?.push({
+      name: `${EMOJIS[`badge_${a.id}` as 'angels']} | ${profileBadges[a.id as 1].name}`,
+      value: ctx.locale('commands:badges.badge-info', {
+        unix: Math.floor(Number(a.obtainAt) / 1000),
+        description: profileBadges[a.id as 1].description,
+        rarity: profileBadges[a.id as 1].rarityLevel,
+        id: a.id,
+      }),
+      inline: true,
+    });
+  });
+
+  selectMenu.maxValues = selectMenu.options.length;
+
+  ctx.makeMessage({ embeds: [embed], components: [createActionRow([selectMenu])] });
+
+  const selection = await collectResponseComponentInteraction<SelectMenuInteraction>(
+    ctx.channelId,
+    ctx.author.id,
+    `${ctx.interaction.id}`,
+    13_000,
+  );
+
+  if (!selection) {
+    ctx.makeMessage({
+      components: [createActionRow(disableComponents(ctx.locale('common:timesup'), [selectMenu]))],
+    });
+
+    return finishCommand();
+  }
+
+  let toUpdate: number[] = [];
+
+  selection.data.values.forEach((a) => {
+    if (a.length < 2) toUpdate.push(Number(a));
+  });
+
+  if (selection.data.values.includes('ALL')) toUpdate = ctx.authorData.badges.map((a) => a.id);
+
+  if (selection.data.values.includes('NONE')) toUpdate = [];
+
+  await userRepository.updateUser(ctx.author.id, {
+    hiddingBadges: toUpdate as 1[],
+  });
+
+  ctx.makeMessage({
+    content: ctx.prettyResponse('success', 'commands:badges.success'),
+    components: [],
+    embeds: [],
+  });
+
+  finishCommand();
+};
+
 const PersonalizeCommand = createCommand({
   path: '',
   name: 'personalizar',
@@ -446,6 +548,8 @@ const PersonalizeCommand = createCommand({
     if (command === 'sobre_mim') return executeAboutMeCommand(ctx, finishCommand);
 
     if (command === 'cor') return executeColorCommand(ctx, finishCommand);
+
+    if (command === 'badges') return executeBadgesCommand(ctx, finishCommand);
   },
 });
 
