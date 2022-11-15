@@ -1,5 +1,6 @@
 import { UpdateQuery } from 'mongoose';
 
+import { BigString } from 'discordeno/types';
 import { usersModel } from '../collections';
 import { DatabaseUserSchema, UserIdType } from '../../types/database';
 import { RedisClient } from '../databases';
@@ -151,6 +152,10 @@ const ensureFindUser = async (userId: UserIdType): Promise<DatabaseUserSchema> =
   return fromMongo;
 };
 
+const invalidateUserCache = async (userId: BigString): Promise<void> => {
+  await RedisClient.del(`user:${userId}`);
+};
+
 const getBannedUserInfo = async (userId: UserIdType): Promise<DatabaseUserSchema | null> => {
   return usersModel.findOne({ id: userId }, ['ban', 'banReason'], { lean: true }).catch(debugError);
 };
@@ -158,6 +163,7 @@ const getBannedUserInfo = async (userId: UserIdType): Promise<DatabaseUserSchema
 export default {
   updateUser,
   getBannedUserInfo,
+  invalidateUserCache,
   ensureFindUser,
   updateUserWithSpecialData,
   findUser,
