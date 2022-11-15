@@ -1,3 +1,5 @@
+import { ApiHuntingTypes } from '../modules/hunt/types';
+
 /* eslint-disable camelcase */
 export interface ApiHuntStats {
   user_id: string;
@@ -41,3 +43,31 @@ export interface ApiUserProfileStats {
 export type MayReturnError<T> = T | { error: true };
 
 export type ApiGamblingGameCompatible = 'coinflip' | 'blackjack' | 'roulette' | 'bicho';
+
+export type TopHunters<Hunt extends ApiHuntingTypes> = {
+  user_id: string;
+} & Pick<ApiHuntStats, `${Hunt}_success` | `${Hunt}_hunted` | `${Hunt}_tries`>;
+
+export type RouletteOrBichoTop = {
+  user_id: string;
+  earn_money: number;
+  lost_games: number;
+  lost_money: number;
+  won_games: number;
+};
+
+export interface BlackjackTop {
+  id: string;
+  bj_wins: number;
+  bj_win_money: number;
+  bj_loses: number;
+  bj_lose_money: number;
+}
+
+export interface CoinflipTop {
+  id: string;
+  cf_wins: number;
+  cf_win_money: number;
+  cf_loses: number;
+  cf_lose_money: number;
+}

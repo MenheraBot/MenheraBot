@@ -49,4 +49,21 @@ const incrementRouletteHourlyUsage = async (userId: BigString): Promise<void> =>
     .exec();
 };
 
-export default { getDiscordUser, setDiscordUser, incrementRouletteHourlyUsage, getRouletteUsages };
+const addDeletedAccount = async (users: string[]): Promise<void> => {
+  await RedisClient.sadd('deleted_accounts', users);
+};
+
+const getDeletedAccounts = async (): Promise<string[]> =>
+  RedisClient.smembers('deleted_accounts').catch((err) => {
+    debugError(err);
+    return [];
+  });
+
+export default {
+  getDiscordUser,
+  setDiscordUser,
+  incrementRouletteHourlyUsage,
+  getRouletteUsages,
+  getDeletedAccounts,
+  addDeletedAccount,
+};

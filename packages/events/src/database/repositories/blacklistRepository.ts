@@ -28,4 +28,10 @@ const unbanUser = async (userId: UserIdType): Promise<void> => {
   await userRepository.updateUser(userId, { ban: false });
 };
 
-export default { isUserBanned, banUser, unbanUser };
+const getAllBannedUsersId = async (): Promise<string[]> => {
+  const bannedUsers = await RedisClient.smembers('banned_users');
+
+  return bannedUsers;
+};
+
+export default { isUserBanned, banUser, unbanUser, getAllBannedUsersId };

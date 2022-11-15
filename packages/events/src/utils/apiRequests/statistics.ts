@@ -1,10 +1,15 @@
+/* eslint-disable camelcase */
 import { BigString } from 'discordeno/types';
 import {
   ApiGamblingGameCompatible,
   ApiGamblingGameStats,
   ApiHuntStats,
   ApiUserProfileStats,
+  BlackjackTop,
+  CoinflipTop,
   MayReturnError,
+  RouletteOrBichoTop,
+  TopHunters,
 } from '../../types/api';
 import { BichoWinner } from '../../modules/bicho/types';
 import { ApiHuntingTypes } from '../../modules/hunt/types';
@@ -96,13 +101,71 @@ const getGamblingGameStats = async (
   return { error: true };
 };
 
+const getMostUsedCommands = async (): Promise<false | { name: string; usages: number }[]> => {
+  const res = await dataRequest.get('/usages/top/command').catch(() => null);
+
+  if (!res) return false;
+
+  if (res.status === 200) return res.data;
+
+  return false;
+};
+
+const getUsersThatMostUsedCommands = async (): Promise<false | { id: string; uses: number }[]> => {
+  const res = await dataRequest.get('/usages/top/user').catch(() => null);
+
+  if (!res) return false;
+
+  if (res.status === 200) return res.data;
+
+  return false;
+};
+
+const getTopHunters = async <HuntType extends ApiHuntingTypes>(
+  skip: number,
+  bannedUsers: string[],
+  huntType: ApiHuntingTypes,
+  type: string,
+): Promise<TopHunters<HuntType>[] | null> => {
+  const res = await dataRequest
+    .get('/statistics/hunt/top', { data: { skip, bannedUsers, type, huntType } })
+    .catch(() => null);
+
+  if (!res) return null;
+
+  if (!res.data.error) return res.data;
+
+  return null;
+};
+
+const getTopGamblingUsers = async (
+  skip: number,
+  bannedUsers: string[],
+  type: 'wins' | 'money',
+  game: ApiGamblingGameCompatible,
+): Promise<RouletteOrBichoTop[] | CoinflipTop[] | BlackjackTop[] | null> => {
+  const res = await dataRequest
+    .get(`/statistics/${game}/top`, { data: { skip, bannedUsers, type } })
+    .catch(() => null);
+
+  if (!res) return null;
+
+  if (!res.data.error) return res.data;
+
+  return null;
+};
+
 export {
   postHuntExecution,
   postBichoResults,
   postCoinflipMatch,
+  getMostUsedCommands,
   getGamblingGameStats,
   postRoulleteGame,
   postBlackjackGame,
   getUserHuntStats,
   getUserProfileInfo,
+  getTopGamblingUsers,
+  getTopHunters,
+  getUsersThatMostUsedCommands,
 };

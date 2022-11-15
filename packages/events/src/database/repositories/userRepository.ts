@@ -160,9 +160,26 @@ const getBannedUserInfo = async (userId: UserIdType): Promise<DatabaseUserSchema
   return usersModel.findOne({ id: userId }, ['ban', 'banReason'], { lean: true }).catch(debugError);
 };
 
+const getTopRanking = async (
+  field: keyof DatabaseUserSchema,
+  skip: number,
+  ignoreUsers: string[] = [],
+  limit = 10,
+): Promise<Array<{ id: number; value: number }>> => {
+  const res = await usersModel.find({ ban: false, id: { $nin: ignoreUsers } }, [field, 'id'], {
+    skip,
+    limit,
+    sort: { [field]: -1 },
+    lean: true,
+  });
+
+  return res.map((a) => ({ id: a.id, value: a[field] }));
+};
+
 export default {
   updateUser,
   getBannedUserInfo,
+  getTopRanking,
   invalidateUserCache,
   ensureFindUser,
   updateUserWithSpecialData,
