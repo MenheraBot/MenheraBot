@@ -43,7 +43,7 @@ const spawnGateway = (options: Partial<CreateGatewayManager>) => {
       }
 
       // DONT SEND THESE EVENTS USELESS TO BOT
-      if (['GUILD_LOADED_DD'].includes(data.t)) return;
+      if (['INTERACTION_CREATE'].includes(data.t)) return;
 
       parentPort?.postMessage({ type: 'BROADCAST_EVENT', data: { shardId: shard.id, data } });
     },
