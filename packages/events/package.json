@@ -14,7 +14,7 @@
   "scripts": {
     "build": "rm -rf dist && tsc --project tsconfig.build.json && yarn fix:problems",
     "fix:problems": "mv dist/src uwu && rm -rf dist && mv uwu dist",
-    "start": "VERSION=$npm_package_version NODE_ENV=PRODUCTION node --es-module-specifier-resolution=node --no-warnings -r dotenv/config .",
+    "start": "VERSION=$npm_package_version NODE_ENV=PRODUCTION node --es-module-specifier-resolution=node --no-warnings .",
     "dev": "VERSION=$npm_package_version NODE_ENV=DEVELOPMENT node --es-module-specifier-resolution=node --no-warnings -r dotenv/config .",
     "test": "tsc --noEmit -p tsconfig.build.json && eslint ."
   },

@@ -1,10 +1,14 @@
 FROM node:18-alpine as build
 WORKDIR /app
 COPY . .
-RUN yarn install --frozen-lockfile
+RUN yarn install
 RUN yarn rest build
 RUN yarn gateway build
 RUN yarn events build
+RUN rm -rf node_modules
+RUN mv docker/.yarnclean .yarnclean
+RUN yarn install --production
+RUN yarn autoclean --force
 
 FROM node:18-alpine as rest
 COPY --from=build /app /app
