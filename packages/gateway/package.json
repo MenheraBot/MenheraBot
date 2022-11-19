@@ -8,6 +8,7 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc --project tsconfig.json",
+    "start":  "node -r dotenv/config .",
     "dev": "node -r dotenv/config ."
   },
   "author": "Luxanna Crownguard (ySnoopyDogy)",

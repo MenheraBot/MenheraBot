@@ -8,7 +8,8 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc --project tsconfig.json",
-    "dev": "node --no-warnings -r dotenv/config ."
+    "dev": "node --no-warnings -r dotenv/config .",
+    "start": "node --no-warnings -r dotenv/config ."
   },
   "author": "Luxanna Crownguard (ySnoopyDogy)",
   "dependencies": {

@@ -1,0 +1,46 @@
+version: '3.8'
+services:
+  tmp:
+    image: busybox
+    command: chmod -R 777 /tmp/docker
+    volumes:
+      - /tmp/docker
+  rest:
+    container_name: MenheraRest
+    restart: unless-stopped
+    network_mode: bridge
+    build:
+      context: .
+      target: rest
+    depends_on:
+      - tmp
+    volumes_from:
+      - tmp
+    env_file:
+      - packages/rest/.env
+  gateway:
+    container_name: MenheraGateway
+    restart: unless-stopped
+    network_mode: bridge
+    build:
+      context: .
+      target: gateway
+    depends_on:
+      - rest
+    volumes_from:
+      - tmp
+    env_file:
+      - packages/gateway/.env
+  events:
+    container_name: MenheraEvents
+    restart: unless-stopped
+    network_mode: bridge
+    build:
+      context: .
+      target: events
+    depends_on:
+      - gateway
+    volumes_from:
+      - tmp
+    env_file:
+      - packages/events/.env

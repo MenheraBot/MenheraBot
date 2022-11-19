@@ -9,7 +9,7 @@ import {
   getUserProfileInfo,
   getUsersThatMostUsedCommands,
 } from '../../utils/apiRequests/statistics';
-import { capitalize } from '../../utils/miscUtils'; ca
+import { capitalize } from '../../utils/miscUtils';
 import { ApiHuntingTypes } from '../../modules/hunt/types';
 import blacklistRepository from '../../database/repositories/blacklistRepository';
 import { CoinflipTop, RouletteOrBichoTop } from '../../types/api';
