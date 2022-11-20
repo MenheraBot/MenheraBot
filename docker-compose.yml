@@ -1,6 +1,7 @@
 version: '3.8'
 services:
   tmp:
+    container_name: MenheraMeias
     image: busybox
     command: chmod -R 777 /tmp/docker
     volumes:
@@ -17,7 +18,7 @@ services:
     volumes_from:
       - tmp
     env_file:
-      - packages/rest/.env
+      - packages/rest/.env.production
   gateway:
     container_name: MenheraGateway
     restart: unless-stopped
@@ -30,7 +31,7 @@ services:
     volumes_from:
       - tmp
     env_file:
-      - packages/gateway/.env
+      - packages/gateway/.env.production
   events:
     container_name: MenheraEvents
     restart: unless-stopped
@@ -43,4 +44,4 @@ services:
     volumes_from:
       - tmp
     env_file:
-      - packages/events/.env
+      - packages/events/.env.production
