@@ -133,13 +133,7 @@ async function startGateway() {
       lastShardId,
       totalShards,
       workerId,
-      gatewayBot: {
-        ...gateway.gatewayBot,
-        sessionStartLimit: {
-          ...gateway.gatewayBot.sessionStartLimit,
-          maxConcurrency: 1,
-        },
-      },
+      gatewayBot: gateway.gatewayBot,
     });
   };
 
