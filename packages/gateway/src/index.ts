@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { Client, Connection, Server } from 'net-ipc';
-import { Collection, createGatewayManager, Intents, routes } from 'discordeno';
+import { Collection, createGatewayManager, GatewayManager, Intents, routes } from 'discordeno';
 
 import { Worker } from 'worker_threads';
 
@@ -83,6 +83,39 @@ restClient.connect().catch(panic);
 eventsServer.start().catch(panic);
 
 const workers = new Collection<number, Worker>();
+let gatewayManager: GatewayManager;
+
+const createWorker = (workerId: number) => {
+  const workerData = {
+    intents: Intents.Guilds,
+    token: DISCORD_TOKEN,
+    totalShards: gatewayManager.manager.totalShards,
+    workerId,
+  };
+
+  const worker = new Worker('./dist/worker.js', { env: process.env, workerData });
+
+  worker.on('message', async (data) => {
+    switch (data.type) {
+      case 'REQUEST_IDENTIFY': {
+        await gatewayManager.manager.requestIdentify(data.shardId);
+
+        const allowIdentify = {
+          type: 'ALLOW_IDENTIFY',
+          shardId: data.shardId,
+        };
+
+        worker.postMessage(allowIdentify);
+        break;
+      }
+      case 'BROADCAST_EVENT':
+        eventsServer.broadcast(data.data);
+        break;
+    }
+  });
+
+  return worker;
+};
 
 async function startGateway() {
   const results = await restClient
@@ -109,7 +142,7 @@ async function startGateway() {
   const workersAmount = os.cpus().length;
   const totalShards = results.shards;
 
-  const gateway = createGatewayManager({
+  gatewayManager = createGatewayManager({
     gatewayBot: results,
     gatewayConfig: {
       token: DISCORD_TOKEN,
@@ -119,62 +152,24 @@ async function startGateway() {
     shardsPerWorker: Math.ceil(totalShards / workersAmount),
     totalWorkers: workersAmount,
     handleDiscordPayload: () => null,
-  });
+    tellWorkerToIdentify: async (_, workerId, shardId) => {
+      let worker = workers.get(workerId);
 
-  gateway.prepareBuckets();
-
-  const startWorker = async (workerId: number, firstShardId: number, lastShardId: number) => {
-    const worker = workers.get(workerId);
-    if (!worker) return;
-
-    worker.postMessage({
-      type: 'IDENTIFY',
-      firstShardId,
-      lastShardId,
-      totalShards,
-      workerId,
-      gatewayBot: gateway.gatewayBot,
-    });
-  };
-
-  gateway.buckets.forEach((bucket) => {
-    for (let i = 0; i < bucket.workers.length; i++) {
-      const workerId = bucket.workers[i].id;
-      const worker = new Worker('./dist/worker.js', { env: process.env });
-
-      workers.set(workerId, worker);
-
-      worker.on('message', (msg) => {
-        // Create events queue to check if events client is up! If not, retry up to the third second of interaction
-        // The events client should send a message in soft restart. If this message is received, store the events in a quee
-        // If its not a soft restart, reply the interaction with an custom error message that tells users that menhera
-        // Is current offline
-
-        // Maybe change from broadcast to request, and waits to the events client to respond the request within 1 second
-        // the events client should check the event creation timestamp, if it is more than 1 second, it should ignore
-        // that event, and wait for another request of the gateway client
-        // The event client should respond to the gateway client with an ok message, so the gateway client dont put the event
-        // in a queue to resend it.
-        if (msg.type === 'BROADCAST_EVENT') eventsServer.broadcast(msg.data);
-      });
-
-      if (bucket.workers[i + 1]) {
-        worker.on('message', (msg) => {
-          if (msg.type === 'ALL_SHARDS_READY') {
-            const queue = bucket.workers[i + 1];
-            if (queue) {
-              console.log(`[GATEWAY] Starting worker ${queue.id}`);
-              startWorker(queue.id, queue.queue[0], queue.queue[queue.queue.length - 1]);
-            }
-          }
-        });
+      if (!worker) {
+        worker = createWorker(workerId);
+        workers.set(workerId, worker);
       }
-    }
 
-    const queue = bucket.workers[0];
-    console.log(`[GATEWAY] Starting worker ${queue.id}`);
-    startWorker(queue.id, queue.queue[0], queue.queue[queue.queue.length - 1]);
+      const identify = {
+        type: 'IDENTIFY_SHARD',
+        shardId,
+      };
+
+      worker.postMessage(identify);
+    },
   });
+
+  gatewayManager.spawnShards();
 }
 
 restClient.on('ready', () => {

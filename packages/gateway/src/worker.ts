@@ -1,76 +1,70 @@
-import {
-  CreateGatewayManager,
-  createGatewayManager,
-  GatewayManager,
-  GetGatewayBot,
-  Intents,
-} from 'discordeno';
-import { parentPort } from 'worker_threads';
-import config from './config';
+import { createShardManager, DiscordUnavailableGuild } from 'discordeno';
+import { parentPort, workerData } from 'worker_threads';
 
-const { DISCORD_TOKEN } = config(['DISCORD_TOKEN']);
-
-let gateway: GatewayManager;
+const script = workerData;
 // eslint-disable-next-line no-console
 const log = { info: console.log, debug: console.log, error: console.error };
 
-const spawnGateway = (options: Partial<CreateGatewayManager>) => {
-  log.info(
-    `[GATEWAY] Spawning the worker gateway for Shards ${options.firstShardId} - ${options.lastShardId}`,
-  );
+if (!parentPort) throw new Error('Ué, worker não tem uma parent port');
 
-  gateway = createGatewayManager({
-    gatewayConfig: {
-      token: DISCORD_TOKEN,
-      intents: Intents.Guilds,
-    },
-    totalShards: options.totalShards,
-    gatewayBot: options.gatewayBot as GetGatewayBot,
-    firstShardId: options.firstShardId,
-    lastShardId: options.lastShardId,
-    async handleDiscordPayload(shard, data) {
-      if (!data.t) return;
+const identifyPromises = new Map<number, () => void>();
 
-      // IF FINAL SHARD BECAME READY TRIGGER NEXT WORKER
-      if (data.t === 'READY') {
-        log.info(`[WORKER] Shard ${shard.id} is online`);
+let guildsIn = 0;
 
-        if (shard.id === gateway.lastShardId) {
-          parentPort?.postMessage({
-            type: 'ALL_SHARDS_READY',
-          });
-        }
-      }
+const manager = createShardManager({
+  gatewayConfig: {
+    intents: script.intents,
+    token: script.token,
+  },
+  shardIds: [],
+  totalShards: script.totalShards,
+  handleMessage: async (shard, message) => {
+    if (message.t === 'READY') log.info(`[WORKER] Shard ${shard.id} is online`);
 
-      // DONT SEND THESE EVENTS USELESS TO BOT
-      if (!['INTERACTION_CREATE'].includes(data.t)) return;
+    if (message.t === 'GUILD_DELETE') {
+      const guild = message.d as DiscordUnavailableGuild;
+      if (guild.unavailable) return;
 
-      parentPort?.postMessage({ type: 'BROADCAST_EVENT', data: { shardId: shard.id, data } });
-    },
-  });
+      guildsIn -= 1;
+    }
 
-  // START THE GATEWAY
-  gateway.spawnShards();
+    if (message.t === 'GUILD_CREATE') guildsIn += 1;
 
-  return gateway;
-};
-
-export interface IdentifyPayload {
-  type: 'IDENTIFY';
-  firstShardId: number;
-  lastShardId: number;
-  gatewayBot: GetGatewayBot;
-  totalShards: number;
-}
-
-parentPort?.on('message', (message: IdentifyPayload) => {
-  if (message.type === 'IDENTIFY') {
-    gateway = spawnGateway({
-      firstShardId: message.firstShardId,
-      lastShardId: message.lastShardId ?? message.firstShardId,
-      spawnShardDelay: 5000,
-      totalShards: message.totalShards,
-      gatewayBot: message.gatewayBot,
+    parentPort?.postMessage({
+      type: 'BROADCAST_EVENT',
+      data: { shardId: shard.id, data: message },
     });
+  },
+  requestIdentify: async (shardId) => {
+    return new Promise((res) => {
+      identifyPromises.set(shardId, res);
+
+      const identifyRequest = {
+        type: 'REQUEST_IDENTIFY',
+        shardId,
+      };
+
+      parentPort?.postMessage(identifyRequest);
+    });
+  },
+});
+
+parentPort?.on('message', async (message) => {
+  switch (message.type) {
+    case 'IDENTIFY_SHARD': {
+      log.debug(`Identifying shard ${message.shardId}`);
+      await manager.identify(message.shardId);
+
+      break;
+    }
+    case 'ALLOW_IDENTIFY': {
+      identifyPromises.get(message.shardId)?.();
+      identifyPromises.delete(message.shardId);
+
+      break;
+    }
+    case 'GET_GUILD_COUNT': {
+      parentPort?.postMessage({ type: 'GUILD_COUNT', data: guildsIn });
+    }
   }
 });
