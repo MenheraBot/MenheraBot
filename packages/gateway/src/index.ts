@@ -47,7 +47,7 @@ restClient.on('close', () => {
     restClient
       .connect()
       .catch(() => {
-        setTimeout(reconnectLogic, 5000);
+        setTimeout(reconnectLogic, 1000);
 
         console.log(`[GATEWAY] Fail when reconnecting... ${retries} retries`);
 
@@ -64,7 +64,7 @@ restClient.on('close', () => {
       });
   };
 
-  setTimeout(reconnectLogic, 1500);
+  setTimeout(reconnectLogic, 2000);
 });
 
 eventsServer.on('message', (msg, conn) => {
