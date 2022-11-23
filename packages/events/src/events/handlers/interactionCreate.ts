@@ -14,11 +14,14 @@ import { bot, interactionEmitter } from '../../index';
 import userRepository from '../../database/repositories/userRepository';
 import commandRepository from '../../database/repositories/commandRepository';
 import { createEmbed } from '../../utils/discord/embedUtils';
+import { logger } from '../../utils/logger';
 
 const { ERROR_WEBHOOK_ID, ERROR_WEBHOOK_TOKEN } = getEnviroments([
   'ERROR_WEBHOOK_ID',
   'ERROR_WEBHOOK_TOKEN',
 ]);
+
+const testTimeouts = new Map<bigint, NodeJS.Timeout>();
 
 const setInteractionCreateEvent = (): void => {
   bot.events.interactionCreate = async (_, interaction) => {
@@ -93,6 +96,14 @@ const setInteractionCreateEvent = (): void => {
 
     bot.commandsInExecution += 1;
 
+    testTimeouts.set(
+      interaction.id,
+      setTimeout(() => {
+        logger.debug(`Provavel leak de execução no comando ${command.name}.`);
+        testTimeouts.delete(interaction.id);
+      }, 120_000),
+    );
+
     await new Promise((res) => {
       command.execute(ctx, res).catch((err) => {
         errorReply(
@@ -135,6 +146,9 @@ const setInteractionCreateEvent = (): void => {
     });
 
     bot.commandsInExecution -= 1;
+
+    clearTimeout(testTimeouts.get(interaction.id));
+    testTimeouts.delete(interaction.id);
 
     if (command.category === 'economy')
       await usagesRepository.removeUserFromEconomyUsages(interaction.user.id);
