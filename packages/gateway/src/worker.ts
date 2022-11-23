@@ -23,17 +23,16 @@ const manager = createShardManager({
 
     if (message.t === 'GUILD_DELETE') {
       const guild = message.d as DiscordUnavailableGuild;
-      if (guild?.unavailable) return;
-
-      guildsIn -= 1;
+      if (!guild.unavailable) guildsIn -= 1;
     }
 
     if (message.t === 'GUILD_CREATE') guildsIn += 1;
 
-    parentPort?.postMessage({
-      type: 'BROADCAST_EVENT',
-      data: { shardId: shard.id, data: message },
-    });
+    if (['GUILD_CREATE', 'GUILD_DELETE', 'INTERACTION_CREATE'].includes(message.t ?? ''))
+      parentPort?.postMessage({
+        type: 'BROADCAST_EVENT',
+        data: { shardId: shard.id, data: message },
+      });
   },
   requestIdentify: async (shardId) => {
     return new Promise((res) => {
