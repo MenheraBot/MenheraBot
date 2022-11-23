@@ -8,6 +8,12 @@ import os from 'node:os';
 
 import config from './config';
 
+type EventClientConnection = {
+  id: string;
+  conn: Connection;
+  version: string;
+};
+
 const { DISCORD_TOKEN, REST_AUTHORIZATION, REST_SOCKET_PATH, EVENT_HANDLER_SOCKET_PATH } = config([
   'DISCORD_TOKEN',
   'REST_AUTHORIZATION',
@@ -22,6 +28,17 @@ let reconnectInterval: NodeJS.Timeout;
 let retries = 0;
 let gatewayOn = false;
 
+const eventClientConnections: EventClientConnection[] = [];
+
+let gatewayManager: GatewayManager;
+const workers = new Collection<number, Worker>();
+const nonces = new Map<number, (data: unknown) => void>();
+
+const panic = (err: Error) => {
+  console.error(err);
+  process.exit(1);
+};
+
 restClient.on('close', () => {
   console.log('[GATEWAY] REST Client closed');
 
@@ -34,7 +51,7 @@ restClient.on('close', () => {
 
         console.log(`[GATEWAY] Fail when reconnecting... ${retries} retries`);
 
-        if (retries >= 3) {
+        if (retries >= 5) {
           console.log(`[GATEWAY] Couldn't reconnect to REST client.`);
           process.exit(1);
         }
@@ -47,20 +64,37 @@ restClient.on('close', () => {
       });
   };
 
-  setTimeout(reconnectLogic, 5000);
+  setTimeout(reconnectLogic, 1500);
 });
-
-type EventClientConnection = {
-  id: string;
-  conn: Connection;
-  version: string;
-};
-
-const eventClientConnections: EventClientConnection[] = [];
 
 eventsServer.on('message', (msg, conn) => {
   if (msg.type === 'IDENTIFY')
     eventClientConnections.push({ id: conn.id, conn, version: msg.version });
+});
+
+eventsServer.on('request', async (req, res) => {
+  if (req.type === 'GUILD_COUNT') {
+    const infos = await Promise.all(
+      workers.map(async (worker) => {
+        const nonce = Date.now();
+
+        return new Promise((resolve) => {
+          worker.postMessage({ type: 'GET_GUILD_COUNT', nonce });
+
+          nonces.set(nonce, resolve);
+        });
+      }),
+    ).then((guilds) =>
+      guilds.reduce(
+        (acc, cur) =>
+          // @ts-expect-error testes ne manas
+          acc + cur.guilds,
+        0,
+      ),
+    );
+
+    return res(infos);
+  }
 });
 
 eventsServer.on('disconnect', (conn) => {
@@ -74,16 +108,8 @@ eventsServer.on('ready', () => {
   console.log('[GATEWAY] Event Handler Server started');
 });
 
-const panic = (err: Error) => {
-  console.error(err);
-  process.exit(1);
-};
-
 restClient.connect().catch(panic);
 eventsServer.start().catch(panic);
-
-const workers = new Collection<number, Worker>();
-let gatewayManager: GatewayManager;
 
 const createWorker = (workerId: number) => {
   const workerData = {
@@ -110,6 +136,9 @@ const createWorker = (workerId: number) => {
       }
       case 'BROADCAST_EVENT':
         eventsServer.broadcast(data.data);
+        break;
+      case 'NONCE_REPLY':
+        nonces.get(data.nonce)?.(data.data);
         break;
     }
   });
@@ -172,7 +201,7 @@ async function startGateway() {
   gatewayManager.spawnShards();
 }
 
-restClient.on('ready', () => {
+restClient.on('ready', async () => {
   console.log('[GATEWAY] REST IPC connected');
   restClient.send({ type: 'IDENTIFY', package: 'GATEWAY', id: '0' });
 

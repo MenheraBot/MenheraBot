@@ -23,7 +23,7 @@ const manager = createShardManager({
 
     if (message.t === 'GUILD_DELETE') {
       const guild = message.d as DiscordUnavailableGuild;
-      if (guild.unavailable) return;
+      if (guild?.unavailable) return;
 
       guildsIn -= 1;
     }
@@ -64,7 +64,11 @@ parentPort?.on('message', async (message) => {
       break;
     }
     case 'GET_GUILD_COUNT': {
-      parentPort?.postMessage({ type: 'GUILD_COUNT', data: guildsIn });
+      parentPort?.postMessage({
+        type: 'NONCE_REPLY',
+        nonce: message.nonce,
+        data: { guilds: guildsIn },
+      });
     }
   }
 });
