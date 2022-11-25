@@ -25,4 +25,9 @@ const getGuildLanguage = async (guildId: BigString): Promise<string> => {
   return 'pt-BR';
 };
 
-export default { updateGuildLanguage, getGuildLanguage };
+const deleteGuild = async (guildId: BigString): Promise<void> => {
+  await RedisClient.del(`language:${guildId}`);
+  await guildsModel.deleteOne({ id: guildId });
+};
+
+export default { updateGuildLanguage, getGuildLanguage, deleteGuild };
