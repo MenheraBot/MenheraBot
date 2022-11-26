@@ -27,9 +27,6 @@ const ShutdownCommand = createCommand({
       toSendMessage += `[${duration}ms] - ${message}\n`;
     };
 
-    await stopGame();
-    registerStep('Estrelinhas do jogo do bicho devolvidas!');
-
     await new Promise<void>((resolve) => {
       if (bot.commandsInExecution <= 1) return resolve();
 
@@ -42,6 +39,9 @@ const ShutdownCommand = createCommand({
     });
 
     registerStep('Todas execuções de comandos finalizadas!');
+
+    await stopGame();
+    registerStep('Estrelinhas do jogo do bicho devolvidas!');
 
     await closeConnections();
 
