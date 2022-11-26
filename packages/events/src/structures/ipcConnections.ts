@@ -1,6 +1,7 @@
 import { DiscordGatewayPayload } from 'discordeno/types';
 import { Client } from 'net-ipc';
 
+import { closeConnections } from '../database/databases';
 import { logger } from '../utils/logger';
 import { bot } from '../index';
 import { getEnviroments } from '../utils/getEnviroments';
@@ -41,8 +42,41 @@ const createIpcConnections = async (): Promise<Client> => {
   });
 
   eventClient.on('message', (msg: { data: DiscordGatewayPayload; shardId: number }) => {
-    if (msg.data.t && msg.data.t !== 'RESUMED')
-      bot.handlers[msg.data.t]?.(bot, msg.data, msg.shardId);
+    if (!msg.data.t) return;
+
+    if (msg.data.t !== 'RESUMED') bot.handlers[msg.data.t]?.(bot, msg.data, msg.shardId);
+  });
+
+  eventClient.on('request', async (msg, ack) => {
+    switch (msg.type) {
+      case 'YOU_ARE_THE_MASTER': {
+        ack(process.pid);
+        // @ts-expect-error Ready should not be called with this
+        bot.events.ready();
+        break;
+      }
+      case 'REQUEST_TO_SHUTDOWN': {
+        logger.info('Gateway asked for a shutdown of this instance');
+        bot.shuttingDown = true;
+
+        await new Promise<void>((resolve) => {
+          if (bot.commandsInExecution <= 0) return resolve();
+
+          const interval = setInterval(() => {
+            if (bot.commandsInExecution <= 0) {
+              clearInterval(interval);
+              resolve();
+            }
+          }, 3000).unref();
+        });
+
+        await closeConnections();
+        await restClient.close('REQUESTED_SHUTDOWN');
+        await ack(process.pid);
+        await eventClient.close('REQUESTED_SHUTDOWN');
+        process.exit(0);
+      }
+    }
   });
 
   if (process.env.TESTING) return restClient;
