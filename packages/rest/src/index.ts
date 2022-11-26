@@ -19,7 +19,19 @@ server.on('ready', (add) => {
   console.log(`[SERVER] Server started on ${add}`);
 });
 
-server.on('disconnect', (conn) => {
+server.on('disconnect', (conn, reason) => {
+  if (reason === 'REQUESTED_SHUTDOWN') {
+    const identified = connections.find((a) => a.internalId === conn.id);
+
+    if (!identified) return;
+
+    console.log(`[IPC] Client ${identified.package} - ${identified.id} has been shut down`);
+
+    const connIndex = connections.findIndex((c) => c.internalId === conn.id);
+    if (connIndex > -1) connections.splice(connIndex, 1);
+    return;
+  }
+
   const identified = connections.find((a) => a.internalId === conn.id);
 
   if (identified) {

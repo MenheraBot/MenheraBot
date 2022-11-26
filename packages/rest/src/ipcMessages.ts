@@ -10,19 +10,27 @@ const handleIdentify = (
   const isReconnect = connections.find((a) => a.id === info.id && a.package === info.package);
 
   if (isReconnect) {
+    console.log(
+      `[IPC] Connection with ${info.package} - ${info.id} restored! ${
+        Date.now() - isReconnect.disconnectedAt
+      }ms downtime`,
+    );
+
     isReconnect.internalId = connection.id;
     isReconnect.connectedAt = Date.now();
     isReconnect.disconnectedAt = -1;
     isReconnect.connected = true;
-  } else
-    connections.push({
-      id: info.id,
-      connected: true,
-      connectedAt: Date.now(),
-      disconnectedAt: -1,
-      internalId: connection.id,
-      package: info.package,
-    });
+    return;
+  }
+
+  connections.push({
+    id: info.id,
+    connected: true,
+    connectedAt: Date.now(),
+    disconnectedAt: -1,
+    internalId: connection.id,
+    package: info.package,
+  });
 
   console.log(`[IPC] New connection identified! ${info.package} - ${info.id}`);
 };
