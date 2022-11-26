@@ -44,6 +44,11 @@ const setInteractionCreateEvent = (): void => {
 
     const T = i18next.getFixedT(interaction.user.locale ?? 'pt-BR');
 
+    if (bot.shuttingDown)
+      return errorReply(
+        'A Menhera está em processo de desligamento! Comandos estão desativados!\n\nMenhera is in the process of shutting down! Commands are disabled!',
+      );
+
     if (isUserBanned) {
       const bannedInfo = await userRepository.getBannedUserInfo(interaction.user.id);
 
@@ -53,11 +58,6 @@ const setInteractionCreateEvent = (): void => {
         }),
       );
     }
-
-    if (bot.shuttingDown)
-      return errorReply(
-        'A Menhera está em processo de desligamento! Comandos estão desativados!\n\nMenhera is in the process of shutting down! Commands are disabled!',
-      );
 
     const commandName = interaction.data?.name as string;
     const command = bot.commands.get(commandName);
