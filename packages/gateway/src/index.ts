@@ -68,8 +68,14 @@ restClient.on('close', () => {
 });
 
 eventsServer.on('message', (msg, conn) => {
-  if (msg.type === 'IDENTIFY')
+  if (msg.type === 'IDENTIFY') {
     eventClientConnections.push({ id: conn.id, conn, version: msg.version });
+
+    if (eventClientConnections.length === 1) conn.request({ type: 'YOU_ARE_THE_MASTER' });
+
+    if (eventClientConnections.length > 1)
+      eventsServer.connections[0].request({ type: 'REQUEST_TO_SHUTDOWN' });
+  }
 });
 
 eventsServer.on('request', async (req, res) => {
@@ -206,6 +212,7 @@ restClient.on('ready', async () => {
   restClient.send({ type: 'IDENTIFY', package: 'GATEWAY', id: '0' });
 
   if (gatewayOn) return;
+
   gatewayOn = true;
 
   startGateway();
