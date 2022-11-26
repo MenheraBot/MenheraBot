@@ -34,9 +34,7 @@ const initializeRedis = async (): Promise<void> => {
 };
 
 const closeConnections = async (): Promise<void> => {
-  await RedisClient.flushdb();
-  RedisClient.disconnect(false);
-
+  await RedisClient.quit();
   await mongoose.disconnect();
 };
 
