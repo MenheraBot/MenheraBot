@@ -37,7 +37,7 @@ const createIpcConnections = async (): Promise<Client> => {
   restClient.on('ready', () => {
     logger.info('[REST] REST IPC connected');
 
-    restClient.send({ type: 'IDENTIFY', package: 'EVENTS', id: '0' });
+    restClient.send({ type: 'IDENTIFY', package: 'EVENTS', id: process.pid });
   });
 
   eventClient.on('message', (msg: { data: DiscordGatewayPayload; shardId: number }) => {
