@@ -1,3 +1,4 @@
+import { usersModel } from '../collections';
 import { debugError } from '../../utils/debugError';
 import { UserIdType } from '../../types/database';
 import { RedisClient } from '../databases';
@@ -28,10 +29,28 @@ const unbanUser = async (userId: UserIdType): Promise<void> => {
   await userRepository.updateUser(userId, { ban: false });
 };
 
+const flushBannedUsers = async (): Promise<void> => {
+  await RedisClient.del('banned_users');
+};
+
 const getAllBannedUsersId = async (): Promise<string[]> => {
   const bannedUsers = await RedisClient.smembers('banned_users');
 
   return bannedUsers;
 };
 
-export default { isUserBanned, banUser, unbanUser, getAllBannedUsersId };
+const getAllBannedUsersIdFromMongo = async (): Promise<string[]> => {
+  const bannedUsers = await usersModel.find({ ban: true }, ['id'], { lean: true });
+
+  return bannedUsers.map((a) => a.id);
+};
+
+export default {
+  isUserBanned,
+  banUser,
+  unbanUser,
+  getAllBannedUsersIdFromMongo,
+  getAllBannedUsersId,
+  addBannedUsers,
+  flushBannedUsers,
+};
