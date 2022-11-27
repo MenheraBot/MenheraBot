@@ -1,6 +1,5 @@
 import { logger } from '../../utils/logger';
 import { closeConnections } from '../../database/databases';
-import { stopGame } from '../../modules/bicho/bichoManager';
 import { bot } from '../../index';
 import { createCommand } from '../../structures/command/createCommand';
 
@@ -39,9 +38,6 @@ const ShutdownCommand = createCommand({
     });
 
     registerStep('Todas execuções de comandos finalizadas!');
-
-    await stopGame();
-    registerStep('Estrelinhas do jogo do bicho devolvidas!');
 
     await closeConnections();
 

@@ -7,8 +7,6 @@ import { makePlayerResults } from './finishBets';
 
 const GAME_DURATION = 1000 * 60 * 60 * 6;
 
-let gameLoop: NodeJS.Timeout;
-
 const generateResults = (): number[] => {
   const results = [];
 
@@ -69,26 +67,6 @@ const registerUserBet = async (
   await bichoRepository.addUserBet(userId, betValue, optionSelected);
 };
 
-const stopGame = async (): Promise<void> => {
-  clearTimeout(gameLoop);
-
-  const bets = await bichoRepository.getAllUserBets();
-  let totalBets = bets.length;
-
-  await new Promise<void>((resolve) => {
-    if (totalBets <= 0) resolve();
-
-    bets.forEach((user) => {
-      starsRepository.addStars(user.id, user.bet).then(() => {
-        totalBets -= 1;
-        if (totalBets <= 0) resolve();
-      });
-    });
-  });
-
-  bichoRepository.resetAllCurrentBichoStats();
-};
-
 const startGameLoop = async (): Promise<void> => {
   let hasDueDate = await bichoRepository.getCurrentGameDueDate();
 
@@ -100,7 +78,7 @@ const startGameLoop = async (): Promise<void> => {
     bichoRepository.setCurrentGameDueDate(hasDueDate);
   }
 
-  gameLoop = setTimeout(finishGame, hasDueDate - Date.now()).unref();
+  setTimeout(finishGame, hasDueDate - Date.now()).unref();
 };
 
 const getLastGameStatus = async (): Promise<BichoGameInfo | null> =>
@@ -122,6 +100,5 @@ export {
   getLastGameStatus,
   getCurrentGameStatus,
   didUserAlreadyBet,
-  stopGame,
   startGameLoop,
 };
