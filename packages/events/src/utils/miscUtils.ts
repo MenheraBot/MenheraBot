@@ -10,4 +10,22 @@ const millisToSeconds = (milli: number): number => Math.floor(milli / 1000);
 
 const negate = (value: number): number => value * -1;
 
-export { capitalize, randomFromArray, toWritableUtf, millisToSeconds, negate };
+const getMillisecondsToTheEndOfDay = (): number => {
+  const date = new Date();
+  const passedMilli =
+    date.getHours() * 3600000 +
+    date.getMinutes() * 60000 +
+    date.getSeconds() * 1000 +
+    date.getMilliseconds();
+
+  return 86400000 - passedMilli;
+};
+
+export {
+  capitalize,
+  randomFromArray,
+  toWritableUtf,
+  millisToSeconds,
+  negate,
+  getMillisecondsToTheEndOfDay,
+};
