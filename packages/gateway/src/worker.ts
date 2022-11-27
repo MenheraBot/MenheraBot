@@ -51,9 +51,7 @@ const manager = createShardManager({
 parentPort?.on('message', async (message) => {
   switch (message.type) {
     case 'IDENTIFY_SHARD': {
-      log.debug(`Identifying shard ${message.shardId}`);
       await manager.identify(message.shardId);
-
       break;
     }
     case 'ALLOW_IDENTIFY': {
