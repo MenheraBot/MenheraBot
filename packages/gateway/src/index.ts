@@ -1,6 +1,15 @@
 /* eslint-disable no-console */
 import { Client, Connection, Server } from 'net-ipc';
-import { Collection, createGatewayManager, GatewayManager, Intents, routes } from 'discordeno';
+import {
+  Collection,
+  createGatewayManager,
+  DISCORDENO_VERSION,
+  DiscordGatewayPayload,
+  DiscordInteraction,
+  GatewayManager,
+  Intents,
+  routes,
+} from 'discordeno';
 
 import { Worker } from 'worker_threads';
 
@@ -11,6 +20,7 @@ import config from './config';
 type EventClientConnection = {
   id: string;
   conn: Connection;
+  isMaster: boolean;
   version: string;
 };
 
@@ -63,9 +73,17 @@ restClient.on('close', () => {
 
 eventsServer.on('message', (msg, conn) => {
   if (msg.type === 'IDENTIFY') {
-    eventClientConnections.push({ id: conn.id, conn, version: msg.version });
+    eventClientConnections.push({
+      id: conn.id,
+      conn,
+      version: msg.version,
+      isMaster: false,
+    });
 
-    if (eventClientConnections.length === 1) conn.request({ type: 'YOU_ARE_THE_MASTER' });
+    if (eventClientConnections.length === 1) {
+      conn.request({ type: 'YOU_ARE_THE_MASTER' });
+      eventClientConnections[0].isMaster = true;
+    }
 
     if (eventClientConnections.length > 1)
       eventsServer.connections[0].request({ type: 'REQUEST_TO_SHUTDOWN' });
@@ -100,10 +118,17 @@ eventsServer.on('request', async (req, res) => {
 });
 
 eventsServer.on('disconnect', (conn) => {
+  const eventClient = eventClientConnections.find((a) => a.id === conn.id);
+
   eventClientConnections.splice(
     eventClientConnections.findIndex((c) => c.id === conn.id),
     1,
   );
+
+  if (eventClient?.isMaster) {
+    eventClientConnections[0].conn.request({ type: 'YOU_ARE_THE_MASTER' });
+    eventClientConnections[0].isMaster = true;
+  }
 });
 
 eventsServer.on('ready', () => {
@@ -137,9 +162,42 @@ const createWorker = (workerId: number) => {
         worker.postMessage(allowIdentify);
         break;
       }
-      case 'BROADCAST_EVENT':
-        eventsServer.broadcast(data.data);
+      case 'BROADCAST_EVENT': {
+        const { shardId, data: payload } = data.data as {
+          shardId: number;
+          data: DiscordGatewayPayload;
+        };
+
+        if (eventClientConnections.length === 0) {
+          if (payload.t === 'INTERACTION_CREATE')
+            restClient.request({
+              type: 'SEND_REQUEST',
+              data: {
+                Authorization: REST_AUTHORIZATION,
+                url: `/interactions/${(payload.d as DiscordInteraction).id}/${
+                  (payload.d as DiscordInteraction).token
+                }/callback`,
+                method: 'POST',
+                payload: {
+                  headers: {
+                    'user-agent': `DiscordBot (https://github.com/discordeno/discordeno, v${DISCORDENO_VERSION})`,
+                    authorization: '',
+                    'Content-Type': 'application/json',
+                  },
+                  body: '{"type":4,"data":{"flags": 64,"content":"A Menhera está reiniciando! Espere um pouco. \\n Menhera is rebooting! Wait one moment.","allowed_mentions":{"parse":[]}}}',
+                  method: 'POST',
+                },
+              },
+            });
+          return;
+        }
+
+        const clientIndex = shardId % eventClientConnections.length;
+        const toSendClient = eventClientConnections[clientIndex];
+
+        toSendClient.conn.send(data.data);
         break;
+      }
       case 'NONCE_REPLY':
         nonces.get(data.nonce)?.(data.data);
         break;
