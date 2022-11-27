@@ -65,6 +65,7 @@ const registerUserBet = async (
   optionSelected: string,
 ): Promise<void> => {
   await bichoRepository.addUserBet(userId, betValue, optionSelected);
+  await bichoRepository.incrementBetAmount(betValue);
 };
 
 const startGameLoop = async (): Promise<void> => {
