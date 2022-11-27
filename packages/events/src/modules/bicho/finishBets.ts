@@ -1,4 +1,4 @@
-import { BichoBetType, BichoGame, BichoWinner } from './types';
+import { BetPlayer, BichoBetType, BichoWinner } from './types';
 
 const BICHO_ANIMALS = [
   'avestruz',
@@ -54,18 +54,18 @@ const betType = (option: string): BichoBetType => {
   return 'animal';
 };
 
-const didUserWin = (game: BichoGame, option: string, bet: BichoBetType): boolean => {
+const didUserWin = (results: number[][], option: string, bet: BichoBetType): boolean => {
   switch (bet) {
     case 'unity':
-      return game.results.some((a) => `${a[3]}` === option);
+      return results.some((a) => `${a[3]}` === option);
     case 'ten':
-      return game.results.some((a) => `${a[2]}${a[3]}` === option);
+      return results.some((a) => `${a[2]}${a[3]}` === option);
     case 'hundred':
-      return game.results.some((a) => `${a[1]}${a[2]}${a[3]}` === option);
+      return results.some((a) => `${a[1]}${a[2]}${a[3]}` === option);
     case 'thousand':
-      return game.results.some((a) => `${a[0]}${a[1]}${a[2]}${a[3]}` === option);
+      return results.some((a) => `${a[0]}${a[1]}${a[2]}${a[3]}` === option);
     case 'animal': {
-      const animals = game.results.map((a) => {
+      const animals = results.map((a) => {
         const ten = Number(`${a[2]}${a[3]}`);
         return BICHO_ANIMALS[Math.floor(ten / 4)];
       });
@@ -73,7 +73,7 @@ const didUserWin = (game: BichoGame, option: string, bet: BichoBetType): boolean
     }
 
     case 'corner': {
-      const animals = game.results.map((a) => {
+      const animals = results.map((a) => {
         const ten = Number(`${a[2]}${a[3]}`);
         return BICHO_ANIMALS[Math.floor(ten / 4)];
       });
@@ -81,9 +81,7 @@ const didUserWin = (game: BichoGame, option: string, bet: BichoBetType): boolean
       return animals.every((a) => userChoices.includes(a));
     }
     case 'sequence': {
-      const animals = game.results.map(
-        (a) => BICHO_ANIMALS[Math.floor(Number(`${a[2]}${a[3]}`) / 4)],
-      );
+      const animals = results.map((a) => BICHO_ANIMALS[Math.floor(Number(`${a[2]}${a[3]}`) / 4)]);
       const user = option.split(' | ');
       const hasTwoAnimals = animals.every((a) => user.includes(a));
       if (!hasTwoAnimals) return false;
@@ -96,9 +94,9 @@ const didUserWin = (game: BichoGame, option: string, bet: BichoBetType): boolean
   }
 };
 
-const makePlayerResults = (game: BichoGame): BichoWinner[] => {
-  return game.bets.map<BichoWinner>((player) => ({
-    didWin: didUserWin(game, player.option, betType(player.option)),
+const makePlayerResults = (bets: BetPlayer[], gameResults: number[][]): BichoWinner[] => {
+  return bets.map<BichoWinner>((player) => ({
+    didWin: didUserWin(gameResults, player.option, betType(player.option)),
     id: `${player.id}`,
     profit: player.bet * BICHO_BET_MULTIPLIER[betType(player.option)],
     bet: player.bet,

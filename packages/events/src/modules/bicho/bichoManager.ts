@@ -1,24 +1,15 @@
 import { BigString } from 'discordeno/types';
+import bichoRepository from '../../database/repositories/bichoRepository';
 import { postBichoResults } from '../../utils/apiRequests/statistics';
 import starsRepository from '../../database/repositories/starsRepository';
-import { BichoGame } from './types';
+import { BichoGameInfo } from './types';
 import { makePlayerResults } from './finishBets';
 
 const GAME_DURATION = 1000 * 60 * 60 * 5;
 
 let gameLoop: NodeJS.Timer;
 
-const createGame = (): BichoGame => ({
-  dueDate: Date.now() + GAME_DURATION,
-  bets: [],
-  results: [],
-  biggestProfit: 0,
-});
-
-let onGoingGame: BichoGame;
-let lastGame: BichoGame;
-
-const getResults = (): number[] => {
+const generateResults = (): number[] => {
   const results = [];
 
   for (let i = 0; i < 4; i++) results.push(Math.floor(Math.random() * 10));
@@ -26,44 +17,67 @@ const getResults = (): number[] => {
   return results;
 };
 
-const finishGame = (): void => {
-  const results = [getResults(), getResults(), getResults(), getResults(), getResults()];
-  onGoingGame.results = results;
+const finishGame = async (): Promise<void> => {
+  const results = [
+    generateResults(),
+    generateResults(),
+    generateResults(),
+    generateResults(),
+    generateResults(),
+  ];
 
-  lastGame = onGoingGame;
-  onGoingGame = createGame();
+  const playerBets = await bichoRepository.getAllUserBets();
 
-  const players = makePlayerResults(lastGame);
+  const players = makePlayerResults(playerBets, results);
 
   postBichoResults(players);
+
+  let biggestProfit = 0;
 
   players.forEach((a) => {
     if (a.didWin) {
       starsRepository.addStars(a.id, a.profit);
-      if (lastGame && a.profit > lastGame.biggestProfit) lastGame.biggestProfit = a.profit;
+      if (a.profit > biggestProfit) biggestProfit = a.profit;
     }
   });
+
+  await bichoRepository.setLastGameInfo(Date.now(), results, biggestProfit);
+  await bichoRepository.resetAllCurrentBichoStats();
 };
 
-const canRegisterBet = (userId: BigString): boolean => {
-  if (onGoingGame.dueDate < Date.now()) return false;
-  if (onGoingGame.bets.some((plr) => plr.id === userId)) return false;
+const didUserAlreadyBet = async (userId: BigString): Promise<boolean> =>
+  bichoRepository.didUserAlreadyBet(userId);
+
+const canRegisterBet = async (userId: BigString): Promise<boolean> => {
+  const [dueDate, haveBet] = await Promise.all([
+    bichoRepository.getCurrentGameDueDate(),
+    didUserAlreadyBet(userId),
+  ]);
+
+  if (dueDate < Date.now()) return false;
+  if (haveBet) return false;
+
   return true;
 };
 
-const registerUserBet = (userId: BigString, betValue: number, optionSelected: string): void => {
-  onGoingGame.bets.push({ id: userId, bet: betValue, option: optionSelected });
+const registerUserBet = async (
+  userId: BigString,
+  betValue: number,
+  optionSelected: string,
+): Promise<void> => {
+  await bichoRepository.addUserBet(userId, betValue, optionSelected);
 };
 
 const stopGame = async (): Promise<void> => {
   clearInterval(gameLoop);
 
-  let totalBets = [...onGoingGame.bets.keys()].length;
+  const bets = await bichoRepository.getAllUserBets();
+  let totalBets = bets.length;
 
   await new Promise<void>((resolve) => {
     if (totalBets <= 0) resolve();
 
-    onGoingGame.bets.forEach((user) => {
+    bets.forEach((user) => {
       starsRepository.addStars(user.id, user.bet).then(() => {
         totalBets -= 1;
         if (totalBets <= 0) resolve();
@@ -71,17 +85,31 @@ const stopGame = async (): Promise<void> => {
     });
   });
 
-  onGoingGame = createGame();
-  onGoingGame.dueDate = 0;
+  bichoRepository.resetAllCurrentBichoStats();
 };
 
-const startGame = (): void => {
-  onGoingGame = createGame();
-  gameLoop = setInterval(finishGame, GAME_DURATION).unref();
+const startGameLoop = async (): Promise<void> => {
+  let hasDueDate = await bichoRepository.getCurrentGameDueDate();
+
+  if (hasDueDate < Date.now()) {
+    hasDueDate = Date.now() + GAME_DURATION;
+    bichoRepository.setCurrentGameDueDate(hasDueDate);
+  }
+
+  gameLoop = setInterval(finishGame, hasDueDate - Date.now()).unref();
 };
 
-const getLastGameStatus = (): BichoGame => lastGame;
-const getCurrentGameStatus = (): BichoGame => onGoingGame;
+const getLastGameStatus = async (): Promise<BichoGameInfo | null> =>
+  bichoRepository.getLastGameInfo();
+
+const getCurrentGameStatus = async (): Promise<{ dueDate: number; betsOn: number }> => {
+  const [dueDate, betsOn] = await Promise.all([
+    bichoRepository.getCurrentGameDueDate(),
+    bichoRepository.getCurrentBichoBetAmount(),
+  ]);
+
+  return { dueDate, betsOn };
+};
 
 export {
   canRegisterBet,
@@ -89,6 +117,7 @@ export {
   registerUserBet,
   getLastGameStatus,
   getCurrentGameStatus,
+  didUserAlreadyBet,
   stopGame,
-  startGame,
+  startGameLoop,
 };

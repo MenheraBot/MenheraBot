@@ -18,6 +18,7 @@ import { BICHO_ANIMALS, BICHO_BET_MULTIPLIER } from '../../modules/bicho/finishB
 import { capitalize, millisToSeconds } from '../../utils/miscUtils';
 import {
   canRegisterBet,
+  didUserAlreadyBet,
   getCurrentGameStatus,
   getLastGameStatus,
   registerUserBet,
@@ -57,8 +58,8 @@ const BichoCommand = createCommand({
     const bet = ctx.getOption<number>('aposta', false);
 
     if (!bet) {
-      const lastRaffle = getLastGameStatus();
-      const currentRaffle = getCurrentGameStatus();
+      const lastRaffle = await getLastGameStatus();
+      const currentRaffle = await getCurrentGameStatus();
 
       const embed = createEmbed({
         color: hexStringToNumber(ctx.authorData.selectedColor),
@@ -70,9 +71,7 @@ const BichoCommand = createCommand({
           lastDate: lastRaffle?.dueDate
             ? `<t:${millisToSeconds(lastRaffle.dueDate)}:R>`
             : ctx.locale('commands:bicho.no-register'),
-          value:
-            currentRaffle?.bets.reduce((p, c) => p + c.bet, 0) ??
-            ctx.locale('commands:bicho.no-register'),
+          value: currentRaffle.betsOn ?? ctx.locale('commands:bicho.no-register'),
           first: lastRaffle
             ? lastRaffle.results[0].join(', ')
             : ctx.locale('commands:bicho.no-register'),
@@ -93,7 +92,7 @@ const BichoCommand = createCommand({
         fields: [],
       });
 
-      if (currentRaffle?.bets.some((a) => a.id === ctx.author.id))
+      if (await didUserAlreadyBet(ctx.author.id))
         embed.fields?.push({
           name: ctx.locale('commands:bicho.in'),
           value: ctx.locale('commands:bicho.in-description'),
@@ -108,7 +107,7 @@ const BichoCommand = createCommand({
         ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:bicho.poor') }),
       );
 
-    const currentRaffle = getCurrentGameStatus();
+    const currentRaffle = await getCurrentGameStatus();
 
     if (!currentRaffle || currentRaffle.dueDate <= Date.now())
       return finishCommand(

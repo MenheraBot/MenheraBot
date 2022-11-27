@@ -6,10 +6,9 @@ export interface BetPlayer {
   option: string;
 }
 
-export interface BichoGame {
+export interface BichoGameInfo {
   dueDate: number;
   results: number[][];
-  bets: BetPlayer[];
   biggestProfit: number;
 }
 
