@@ -24,7 +24,6 @@ const { DISCORD_TOKEN, REST_AUTHORIZATION, REST_SOCKET_PATH, EVENT_HANDLER_SOCKE
 const restClient = new Client({ path: REST_SOCKET_PATH });
 const eventsServer = new Server({ path: EVENT_HANDLER_SOCKET_PATH });
 
-let reconnectInterval: NodeJS.Timeout;
 let retries = 0;
 let gatewayOn = false;
 let shardingEnded = false;
@@ -44,25 +43,19 @@ restClient.on('close', () => {
   console.log('[GATEWAY] REST Client closed');
 
   const reconnectLogic = () => {
-    console.log('[GATEWAY] Trying to reconnect to REST Client');
-    restClient
-      .connect()
-      .catch(() => {
-        setTimeout(reconnectLogic, 1000);
+    console.log('[GATEWAY] Trying to reconnect to REST server');
+    restClient.connect().catch(() => {
+      setTimeout(reconnectLogic, 1000);
 
-        console.log(`[GATEWAY] Fail when reconnecting... ${retries} retries`);
+      console.log(`[GATEWAY] Fail when reconnecting... ${retries} retries`);
 
-        if (retries >= 5) {
-          console.log(`[GATEWAY] Couldn't reconnect to REST client.`);
-          process.exit(1);
-        }
+      if (retries >= 5) {
+        console.log(`[GATEWAY] Couldn't reconnect to REST server.`);
+        process.exit(1);
+      }
 
-        retries += 1;
-      })
-      .then(() => {
-        clearTimeout(reconnectInterval);
-        retries = 0;
-      });
+      retries += 1;
+    });
   };
 
   setTimeout(reconnectLogic, 2000);
@@ -96,7 +89,7 @@ eventsServer.on('request', async (req, res) => {
     ).then((guilds) =>
       guilds.reduce(
         (acc, cur) =>
-          // @ts-expect-error testes ne manas
+          // @ts-expect-error it will work
           acc + cur.guilds,
         0,
       ),
@@ -115,6 +108,7 @@ eventsServer.on('disconnect', (conn) => {
 
 eventsServer.on('ready', () => {
   console.log('[GATEWAY] Event Handler Server started');
+  retries = 0;
 });
 
 restClient.connect().catch(panic);
