@@ -93,6 +93,9 @@ const startGameLoop = async (): Promise<void> => {
   let hasDueDate = await bichoRepository.getCurrentGameDueDate();
 
   if (hasDueDate < Date.now()) {
+    const pendingAwards = await bichoRepository.getCurrentGameBetsMade();
+
+    if (pendingAwards > 0) return finishGame();
     hasDueDate = Date.now() + GAME_DURATION;
     bichoRepository.setCurrentGameDueDate(hasDueDate);
   }
