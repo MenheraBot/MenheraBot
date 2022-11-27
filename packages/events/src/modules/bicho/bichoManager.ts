@@ -5,9 +5,9 @@ import starsRepository from '../../database/repositories/starsRepository';
 import { BichoGameInfo } from './types';
 import { makePlayerResults } from './finishBets';
 
-const GAME_DURATION = 1000 * 60 * 60 * 5;
+const GAME_DURATION = 1000 * 60 * 60 * 6;
 
-let gameLoop: NodeJS.Timer;
+let gameLoop: NodeJS.Timeout;
 
 const generateResults = (): number[] => {
   const results = [];
@@ -43,6 +43,7 @@ const finishGame = async (): Promise<void> => {
 
   await bichoRepository.setLastGameInfo(Date.now(), results, biggestProfit);
   await bichoRepository.resetAllCurrentBichoStats();
+  await startGameLoop();
 };
 
 const didUserAlreadyBet = async (userId: BigString): Promise<boolean> =>
@@ -69,7 +70,7 @@ const registerUserBet = async (
 };
 
 const stopGame = async (): Promise<void> => {
-  clearInterval(gameLoop);
+  clearTimeout(gameLoop);
 
   const bets = await bichoRepository.getAllUserBets();
   let totalBets = bets.length;
@@ -96,7 +97,7 @@ const startGameLoop = async (): Promise<void> => {
     bichoRepository.setCurrentGameDueDate(hasDueDate);
   }
 
-  gameLoop = setInterval(finishGame, hasDueDate - Date.now()).unref();
+  gameLoop = setTimeout(finishGame, hasDueDate - Date.now()).unref();
 };
 
 const getLastGameStatus = async (): Promise<BichoGameInfo | null> =>

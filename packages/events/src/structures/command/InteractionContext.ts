@@ -6,6 +6,7 @@ import {
 import { Interaction, User } from 'discordeno/transformers';
 import { TFunction } from 'i18next';
 
+import { debugError } from '../../utils/debugError';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import { EMOJIS } from '../constants';
 import { Translation } from '../../types/i18next';
@@ -54,24 +55,30 @@ export default class {
   }
 
   async followUp(options: InteractionCallbackData): Promise<void> {
-    await bot.helpers.sendFollowupMessage(this.interaction.token, {
-      type: InteractionResponseTypes.ChannelMessageWithSource,
-      data: options,
-    });
+    await bot.helpers
+      .sendFollowupMessage(this.interaction.token, {
+        type: InteractionResponseTypes.ChannelMessageWithSource,
+        data: options,
+      })
+      .catch(debugError);
   }
 
   async makeMessage(options: InteractionCallbackData & { attachments?: unknown[] }): Promise<void> {
     if (this.replied) {
-      await bot.helpers.editOriginalInteractionResponse(this.interaction.token, options);
+      await bot.helpers
+        .editOriginalInteractionResponse(this.interaction.token, options)
+        .catch(debugError);
       return;
     }
 
     this.replied = true;
 
-    await bot.helpers.sendInteractionResponse(this.interaction.id, this.interaction.token, {
-      type: InteractionResponseTypes.ChannelMessageWithSource,
-      data: options,
-    });
+    await bot.helpers
+      .sendInteractionResponse(this.interaction.id, this.interaction.token, {
+        type: InteractionResponseTypes.ChannelMessageWithSource,
+        data: options,
+      })
+      .catch(debugError);
   }
 
   getSubCommandGroup(required = false): string {
@@ -113,12 +120,14 @@ export default class {
 
   async defer(ephemeral = false): Promise<void> {
     this.replied = true;
-    bot.helpers.sendInteractionResponse(this.interaction.id, this.interaction.token, {
-      type: InteractionResponseTypes.DeferredChannelMessageWithSource,
-      data: {
-        flags: ephemeral ? MessageFlags.EPHEMERAL : undefined,
-      },
-    });
+    bot.helpers
+      .sendInteractionResponse(this.interaction.id, this.interaction.token, {
+        type: InteractionResponseTypes.DeferredChannelMessageWithSource,
+        data: {
+          flags: ephemeral ? MessageFlags.EPHEMERAL : undefined,
+        },
+      })
+      .catch(debugError);
   }
 
   locale(text: Translation, options: Record<string, unknown> = {}): string {

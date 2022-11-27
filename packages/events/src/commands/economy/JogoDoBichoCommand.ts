@@ -65,9 +65,10 @@ const BichoCommand = createCommand({
         color: hexStringToNumber(ctx.authorData.selectedColor),
         title: ctx.locale('commands:bicho.sorted-title'),
         description: ctx.locale('commands:bicho.sorted-description', {
-          nextDate: currentRaffle?.dueDate
-            ? `<t:${millisToSeconds(currentRaffle.dueDate)}:R>`
-            : ctx.locale('commands:bicho.no-register'),
+          nextDate:
+            currentRaffle.dueDate > 0
+              ? `<t:${millisToSeconds(currentRaffle.dueDate)}:R>`
+              : ctx.locale('commands:bicho.no-register'),
           lastDate: lastRaffle?.dueDate
             ? `<t:${millisToSeconds(lastRaffle.dueDate)}:R>`
             : ctx.locale('commands:bicho.no-register'),
