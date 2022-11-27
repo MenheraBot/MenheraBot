@@ -4,7 +4,6 @@ import { Client } from 'net-ipc';
 import { transformInteractionResponseToDiscordInteractionResponse } from '../internals/transformers/reverse/interactionResponse';
 import { sendRequest } from '../internals/rest/sendRequest';
 import { initializeRedis, initializeMongo } from '../database/databases';
-import { startGame as startBichoGame } from '../modules/bicho/bichoManager';
 import { runMethod } from '../internals/rest/runMethod';
 import { loadLocales } from './localteStructure';
 import { initializeSentry } from './initializeSentry';
@@ -37,7 +36,6 @@ const initializeServices = async (): Promise<void> => {
   await initializeRedis();
   await loadLocales();
   initializeSentry();
-  startBichoGame();
   await updateAssets();
 };
 
