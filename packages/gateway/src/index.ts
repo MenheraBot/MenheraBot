@@ -27,6 +27,7 @@ const eventsServer = new Server({ path: EVENT_HANDLER_SOCKET_PATH });
 let reconnectInterval: NodeJS.Timeout;
 let retries = 0;
 let gatewayOn = false;
+let shardingEnded = false;
 
 const eventClientConnections: EventClientConnection[] = [];
 
@@ -80,6 +81,8 @@ eventsServer.on('message', (msg, conn) => {
 
 eventsServer.on('request', async (req, res) => {
   if (req.type === 'GUILD_COUNT') {
+    if (!shardingEnded) return res(null);
+
     const infos = await Promise.all(
       workers.map(async (worker) => {
         const nonce = Date.now();
@@ -99,7 +102,7 @@ eventsServer.on('request', async (req, res) => {
       ),
     );
 
-    return res(infos);
+    return res({ guilds: infos, shards: gatewayManager.manager.totalShards });
   }
 });
 
@@ -146,6 +149,9 @@ const createWorker = (workerId: number) => {
       case 'NONCE_REPLY':
         nonces.get(data.nonce)?.(data.data);
         break;
+      case 'SHARDING_ENDED':
+        shardingEnded = true;
+        break;
     }
   });
 
@@ -177,6 +183,10 @@ async function startGateway() {
   const workersAmount = os.cpus().length;
   const totalShards = results.shards;
 
+  console.log(
+    `[GATEWAY] - Starting sessions. ${totalShards} shards in ${workersAmount} workers with ${results.sessionStartLimit.maxConcurrency} concurrency`,
+  );
+
   gatewayManager = createGatewayManager({
     gatewayBot: results,
     gatewayConfig: {
@@ -191,6 +201,7 @@ async function startGateway() {
       let worker = workers.get(workerId);
 
       if (!worker) {
+        console.log(`[GATEWAY] - Spawning worker ${workerId}`);
         worker = createWorker(workerId);
         workers.set(workerId, worker);
       }

@@ -19,7 +19,10 @@ const manager = createShardManager({
   shardIds: [],
   totalShards: script.totalShards,
   handleMessage: async (shard, message) => {
-    if (message.t === 'READY') log.info(`[WORKER] Shard ${shard.id} is online`);
+    if (message.t === 'READY') {
+      log.info(`[WORKER] Shard ${shard.id} is online`);
+      if (shard.id === manager.totalShards - 1) parentPort?.postMessage({ type: 'SHARDING_ENDED' });
+    }
 
     if (message.t === 'GUILD_DELETE') {
       const guild = message.d as DiscordUnavailableGuild;
