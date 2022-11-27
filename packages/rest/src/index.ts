@@ -20,12 +20,16 @@ server.on('ready', (add) => {
 });
 
 server.on('disconnect', (conn, reason) => {
-  if (reason === 'REQUESTED_SHUTDOWN') {
+  if (!reason || reason === 'REQUESTED_SHUTDOWN') {
     const identified = connections.find((a) => a.internalId === conn.id);
 
     if (!identified) return;
 
-    console.log(`[IPC] Client ${identified.package} - ${identified.id} has been shut down`);
+    console.log(
+      `[IPC] Client ${identified.package} - ${identified.id} ${
+        reason ? 'has been shut down' : 'was brutally disconnected!'
+      }`,
+    );
 
     const connIndex = connections.findIndex((c) => c.internalId === conn.id);
     if (connIndex > -1) connections.splice(connIndex, 1);
