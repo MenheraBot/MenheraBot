@@ -73,9 +73,9 @@ const createIpcConnections = async (): Promise<Client> => {
         });
 
         await closeConnections();
-        await restClient.close('REQUESTED_SHUTDOWN');
         await ack(process.pid);
         await eventsClient.close('REQUESTED_SHUTDOWN');
+        await restClient.close('REQUESTED_SHUTDOWN');
         process.exit(0);
       }
     }

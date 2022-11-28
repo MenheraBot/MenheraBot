@@ -3,6 +3,7 @@ import { Client, Connection, Server } from 'net-ipc';
 import {
   Collection,
   createGatewayManager,
+  delay,
   DISCORDENO_VERSION,
   DiscordGatewayPayload,
   DiscordInteraction,
@@ -38,6 +39,10 @@ let retries = 0;
 let gatewayOn = false;
 let shardingEnded = false;
 
+let currentVersion: string;
+let swappingVersions = false;
+let waitingForSwap: EventClientConnection[] = [];
+
 const eventClientConnections: EventClientConnection[] = [];
 
 let gatewayManager: GatewayManager;
@@ -71,22 +76,67 @@ restClient.on('close', () => {
   setTimeout(reconnectLogic, 2000);
 });
 
-eventsServer.on('message', (msg, conn) => {
+eventsServer.on('message', async (msg, conn) => {
   if (msg.type === 'IDENTIFY') {
+    if (!currentVersion) currentVersion = msg.version;
+
+    console.log(currentVersion);
+
+    if (currentVersion === msg.version) {
+      console.log('New client with same version');
+      eventClientConnections.push({
+        id: conn.id,
+        conn,
+        version: msg.version,
+        isMaster: false,
+      });
+
+      if (eventClientConnections.length === 1) {
+        conn.request({ type: 'YOU_ARE_THE_MASTER' });
+        eventClientConnections[0].isMaster = true;
+      }
+
+      return;
+    }
+
+    if (swappingVersions) {
+      console.log('New client waiting for finish of version swap');
+      waitingForSwap.push({ id: conn.id, conn, version: msg.version, isMaster: false });
+      return;
+    }
+
+    console.log(
+      `New client with new Version! Starting swapping versions ${currentVersion} -> ${msg.version}`,
+    );
+    swappingVersions = true;
+
+    await Promise.all(
+      eventClientConnections.map((a) => a.conn.request({ type: 'REQUEST_TO_SHUTDOWN' })),
+    );
+
+    console.log(`Finish shutting down all older event intances`);
+
+    await delay(1000);
+
+    swappingVersions = false;
+    currentVersion = msg.version;
+
     eventClientConnections.push({
       id: conn.id,
       conn,
       version: msg.version,
-      isMaster: false,
+      isMaster: true,
     });
 
-    if (eventClientConnections.length === 1) {
-      conn.request({ type: 'YOU_ARE_THE_MASTER' });
-      eventClientConnections[0].isMaster = true;
-    }
+    await conn.request({ type: 'YOU_ARE_THE_MASTER' }).catch(() => null);
 
-    if (eventClientConnections.length > 1)
-      eventsServer.connections[0].request({ type: 'REQUEST_TO_SHUTDOWN' });
+    waitingForSwap.forEach((c) => eventClientConnections.push(c));
+
+    console.log(
+      `Swapping version is finished! There was ${waitingForSwap.length} event instances waiting for the swap`,
+    );
+
+    waitingForSwap = [];
   }
 });
 
@@ -124,6 +174,10 @@ eventsServer.on('disconnect', (conn) => {
     eventClientConnections.findIndex((c) => c.id === conn.id),
     1,
   );
+
+  if (swappingVersions) return;
+
+  if (eventClientConnections.length === 0) return;
 
   if (eventClient?.isMaster) {
     eventClientConnections[0].conn.request({ type: 'YOU_ARE_THE_MASTER' });
