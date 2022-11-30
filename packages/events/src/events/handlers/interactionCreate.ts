@@ -1,6 +1,7 @@
 import { InteractionResponseTypes, InteractionTypes } from 'discordeno/types';
 import i18next from 'i18next';
 
+import { autocompleteInteraction } from '../../structures/command/autocompleteInteraction';
 import guildRepository from '../../database/repositories/guildRepository';
 import usagesRepository from '../../database/repositories/usagesRepository';
 import { postCommandExecution } from '../../utils/apiRequests/commands';
@@ -25,10 +26,18 @@ const testTimeouts = new Map<bigint, NodeJS.Timeout>();
 
 const setInteractionCreateEvent = (): void => {
   bot.events.interactionCreate = async (_, interaction) => {
-    if (interaction.type !== InteractionTypes.ApplicationCommand) {
+    if (
+      interaction.type === InteractionTypes.MessageComponent ||
+      interaction.type === InteractionTypes.ModalSubmit
+    ) {
       interactionEmitter.emit('interaction', interaction);
       return;
     }
+
+    if (interaction.type === InteractionTypes.Ping) return;
+
+    if (interaction.type === InteractionTypes.ApplicationCommandAutocomplete)
+      return autocompleteInteraction(interaction);
 
     const errorReply = async (content: string): Promise<void> => {
       await bot.helpers.sendInteractionResponse(interaction.id, interaction.token, {

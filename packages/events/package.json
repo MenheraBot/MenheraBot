@@ -27,9 +27,11 @@
     "i18next-fs-backend": "^1.1.4",
     "ioredis": "^5.2.2",
     "mongoose": "^6.4.6",
-    "net-ipc": "^2.0.1"
+    "net-ipc": "^2.0.1",
+    "string-similarity": "^4.0.4"
   },
   "devDependencies": {
-    "@types/i18next-fs-backend": "^1.1.2"
+    "@types/i18next-fs-backend": "^1.1.2",
+    "@types/string-similarity": "^4.0.0"
   }
 }

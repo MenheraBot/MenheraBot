@@ -12,8 +12,9 @@ import { EMOJIS } from '../constants';
 import { Translation } from '../../types/i18next';
 import { bot } from '../../index';
 import { DatabaseUserSchema } from '../../types/database';
+import { getOptionFromInteraction } from './getCommandOption';
 
-type CanResolve = 'users' | 'members' | false;
+export type CanResolve = 'users' | 'members' | false;
 
 export default class {
   public replied = false;
@@ -103,19 +104,7 @@ export default class {
   getOption<T>(name: string, shouldResolve: CanResolve, required?: false): T | undefined;
 
   getOption<T>(name: string, shouldResolve: CanResolve, required?: boolean): T | undefined {
-    const found = this.options?.find((option) => option.name === name) as { value: T } | undefined;
-
-    if (!found && required)
-      throw new Error(`Option ${name} is required in ${this.interaction.data?.name}`);
-
-    if (!found) return undefined;
-
-    if (shouldResolve)
-      return this.interaction.data?.resolved?.[shouldResolve]?.get(
-        BigInt(found?.value as unknown as string),
-      ) as unknown as T;
-
-    return found?.value as T;
+    return getOptionFromInteraction<T>(this.interaction, name, shouldResolve, required);
   }
 
   async defer(ephemeral = false): Promise<void> {
