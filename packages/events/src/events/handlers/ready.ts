@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { createHttpServer, registerAllRouters } from '../../structures/server/httpServer';
 import { getEnviroments } from '../../utils/getEnviroments';
 import blacklistRepository from '../../database/repositories/blacklistRepository';
 import { startGameLoop } from '../../modules/bicho/bichoManager';
@@ -54,6 +55,9 @@ const setReadyEvent = (): void => {
 
     inactivityPunishment();
     setInterval(postBotStatus, 1800000);
+
+    createHttpServer();
+    registerAllRouters();
   };
 };
 
