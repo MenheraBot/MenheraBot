@@ -1,4 +1,4 @@
-import { Bot, Collection, createRestManager } from 'discordeno';
+import { Bot, Collection, createRestManager, handleInteractionCreate } from 'discordeno';
 import { Client } from 'net-ipc';
 
 import { transformInteractionResponseToDiscordInteractionResponse } from '../internals/transformers/reverse/interactionResponse';
@@ -66,6 +66,8 @@ const setupInternals = (bot: Bot, restIPC: Client): void => {
 
   bot.transformers.reverse.interactionResponse =
     transformInteractionResponseToDiscordInteractionResponse;
+
+  bot.handlers.INTERACTION_CREATE = handleInteractionCreate;
 };
 
 export { setupMenheraClient, initializeServices, setupInternals };
