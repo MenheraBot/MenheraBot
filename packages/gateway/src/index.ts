@@ -223,7 +223,8 @@ const createWorker = (workerId: number) => {
         };
 
         if (eventClientConnections.length === 0) {
-          if (payload.t === 'INTERACTION_CREATE')
+          // @ts-expect-error Payload.d is never because of ready event
+          if (payload.t === 'INTERACTION_CREATE' && [2, 3, 5].includes(payload.d.type)) {
             restClient.request({
               type: 'SEND_REQUEST',
               data: {
@@ -243,6 +244,8 @@ const createWorker = (workerId: number) => {
                 },
               },
             });
+          }
+
           return;
         }
 
