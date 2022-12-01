@@ -1,3 +1,5 @@
+import { DiscordInteraction } from 'discordeno/types';
+import { bot } from 'index';
 import { Context } from 'koa';
 import Router from 'koa-router';
 import { verifyDiscordRequests } from '../middlewares/verifyDiscordRequests';
@@ -8,7 +10,13 @@ const handleRequest = async (ctx: Context): Promise<void> => {
     ctx.body = { type: 1 };
     return;
   }
-  console.log(ctx);
+
+  ctx.respond = false;
+
+  bot.events.interactionCreate(
+    bot,
+    bot.transformers.interaction(bot, ctx.body as DiscordInteraction),
+  );
 };
 
 const createPostInteractionRouter = (): Router => {

@@ -3,7 +3,7 @@ import { Context, Next } from 'koa';
 import { getEnviroments } from '../../../utils/getEnviroments';
 
 const verifyDiscordRequests = (ctx: Context, next: Next): Promise<unknown> => {
-  const { PUBLIC_KEY } = getEnviroments(['PUBLIC_KEY']);
+  const { DISCORD_PUBLIC_KEY } = getEnviroments(['DISCORD_PUBLIC_KEY']);
 
   const signature = ctx.request.get('X-Signature-Ed25519');
   const timestamp = ctx.request.get('X-Signature-Timestamp');
@@ -13,7 +13,7 @@ const verifyDiscordRequests = (ctx: Context, next: Next): Promise<unknown> => {
 
   const { isValid } = verifySignature({
     body: rawBody,
-    publicKey: PUBLIC_KEY,
+    publicKey: DISCORD_PUBLIC_KEY,
     signature,
     timestamp,
   });
