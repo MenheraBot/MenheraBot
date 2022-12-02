@@ -38,6 +38,7 @@ const restClient = new Client({ path: REST_SOCKET_PATH });
 const eventsServer = new Server({ path: EVENT_HANDLER_SOCKET_PATH });
 
 let retries = 0;
+let readyShards = 0;
 let gatewayOn = false;
 let shardingEnded = false;
 
@@ -173,7 +174,6 @@ eventsServer.on('request', async (req, res) => {
 
     const infos = await Promise.all(
       workers.map(async (worker) => {
-        console.log('worker');
         const nonce = nanoid();
 
         return new Promise((resolve) => {
@@ -285,9 +285,12 @@ const createWorker = (workerId: number) => {
       case 'NONCE_REPLY':
         nonces.get(data.nonce)?.(data.data);
         break;
-      case 'SHARDING_ENDED':
-        shardingEnded = true;
-        console.log('[SHARDING] - All shards ready!');
+      case 'SHARD_READY':
+        readyShards += 1;
+        if (readyShards === gatewayManager.manager.totalShards) {
+          shardingEnded = true;
+          console.log('[SHARDING] - All shards ready!');
+        }
         break;
     }
   });

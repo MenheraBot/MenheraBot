@@ -38,7 +38,7 @@ const manager = createShardManager({
   handleMessage: async (shard, message) => {
     if (message.t === 'READY') {
       log.info(`[WORKER] Shard ${shard.id} is online`);
-      if (shard.id === manager.totalShards - 1) parentPort?.postMessage({ type: 'SHARDING_ENDED' });
+      parentPort?.postMessage({ type: 'SHARD_READY' });
     }
 
     if (message.t === 'GUILD_DELETE') {
