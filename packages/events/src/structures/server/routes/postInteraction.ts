@@ -1,7 +1,7 @@
 import { DiscordInteraction } from 'discordeno/types';
-import { bot } from 'index';
 import { Context } from 'koa';
 import Router from 'koa-router';
+import { bot } from '../../../index';
 import { verifyDiscordRequests } from '../middlewares/verifyDiscordRequests';
 
 const handleRequest = async (ctx: Context): Promise<void> => {
