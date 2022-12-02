@@ -12,6 +12,8 @@ import {
   routes,
 } from 'discordeno';
 
+import { nanoid } from 'nanoid';
+
 import { Worker } from 'worker_threads';
 
 import os from 'node:os';
@@ -47,7 +49,7 @@ const eventClientConnections: EventClientConnection[] = [];
 
 let gatewayManager: GatewayManager;
 const workers = new Collection<number, Worker>();
-const nonces = new Map<number, (data: unknown) => void>();
+const nonces = new Map<string, (data: unknown) => void>();
 
 const panic = (err: Error) => {
   console.error(err);
@@ -146,7 +148,7 @@ eventsServer.on('request', async (req, res) => {
 
     const infos = await Promise.all(
       workers.map(async (worker) => {
-        const nonce = Date.now();
+        const nonce = nanoid();
 
         return new Promise((resolve) => {
           worker.postMessage({ type: 'GET_GUILD_COUNT', nonce });
@@ -171,7 +173,8 @@ eventsServer.on('request', async (req, res) => {
 
     const infos = await Promise.all(
       workers.map(async (worker) => {
-        const nonce = Date.now();
+        console.log('worker');
+        const nonce = nanoid();
 
         return new Promise((resolve) => {
           worker.postMessage({ type: 'GET_SHARDS_INFO', nonce });
@@ -284,6 +287,7 @@ const createWorker = (workerId: number) => {
         break;
       case 'SHARDING_ENDED':
         shardingEnded = true;
+        console.log('[SHARDING] - All shards ready!');
         break;
     }
   });

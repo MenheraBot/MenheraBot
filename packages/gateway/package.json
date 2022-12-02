@@ -13,6 +13,7 @@
   },
   "author": "Luxanna Crownguard (ySnoopyDogy)",
   "dependencies": {
+    "nanoid": "^4.0.0",
     "net-ipc": "^2.0.1"
   },
   "repository": "https://github.com/MenheraBot/MenheraBot",
