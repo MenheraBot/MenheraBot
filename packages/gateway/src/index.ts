@@ -179,6 +179,12 @@ eventsServer.on('request', async (req, res) => {
           nonces.set(nonce, resolve);
         });
       }),
+    ).then((results) =>
+      results.reduce((acc, cur) => {
+        // @ts-expect-error uai
+        acc.push(...cur);
+        return acc;
+      }, []),
     );
 
     return res(infos);
