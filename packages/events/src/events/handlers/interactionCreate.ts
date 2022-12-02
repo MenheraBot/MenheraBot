@@ -165,7 +165,12 @@ const setInteractionCreateEvent = (): void => {
     if (command.category === 'economy')
       await usagesRepository.removeUserFromEconomyUsages(interaction.user.id);
 
-    if (!interaction.guildId || process.env.NODE_ENV !== 'production') return;
+    // TODO: Remove this after all tests
+    console.log(
+      `[${new Date().toISOString().substring(11, 19)}] ${command.name} - ${interaction.user.id} `,
+    );
+
+    if (!interaction.guildId || process.env.NODE_ENV !== 'PRODUCTION') return;
 
     const data: UsedCommandData = {
       authorId: `${interaction.user.id}`,
