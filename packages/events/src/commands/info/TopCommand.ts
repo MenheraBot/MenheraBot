@@ -458,7 +458,7 @@ const TopCommand = createCommand({
             },
             {
               name: '🧚‍♂️ | Arcanjos',
-              nameLocalizations: { 'en-US': '🧚‍♂️ | Atchangels' },
+              nameLocalizations: { 'en-US': '🧚‍♂️ | Archangels' },
               value: 'archangels',
             },
             {

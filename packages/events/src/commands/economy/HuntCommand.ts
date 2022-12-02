@@ -44,7 +44,7 @@ const choices: Array<ApplicationCommandOptionChoice & { value: ChoiceTypes }> = 
   },
   {
     name: '🧚‍♂️ | Arcanjos',
-    nameLocalizations: { 'en-US': '🧚‍♂️ | Atchangels' },
+    nameLocalizations: { 'en-US': '🧚‍♂️ | Archangels' },
     value: 'archangels',
   },
   {
