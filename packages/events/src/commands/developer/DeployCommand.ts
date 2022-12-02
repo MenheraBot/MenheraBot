@@ -93,6 +93,7 @@ const DeployCommand = createCommand({
           options: c.options,
           nameLocalizations: c.nameLocalizations,
           descriptionLocalizations: c.descriptionLocalizations,
+          dmPermission: false,
         });
         return p;
       }, []);
