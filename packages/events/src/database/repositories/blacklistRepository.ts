@@ -18,6 +18,8 @@ const banUser = async (userId: UserIdType, reason: string): Promise<void> => {
 };
 
 const addBannedUsers = async (users: UserIdType[]): Promise<void> => {
+  if (users.length === 0) return;
+
   await RedisClient.sadd(
     'banned_users',
     users.map((id) => `${id}`),
