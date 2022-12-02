@@ -19,8 +19,6 @@ export type CanResolve = 'users' | 'members' | false;
 export default class {
   public replied = false;
 
-  private options: Required<Interaction>['data']['options'];
-
   public subCommand: string | undefined;
 
   public subCommandGround: string | undefined;
@@ -30,16 +28,15 @@ export default class {
     public authorData: Readonly<DatabaseUserSchema>,
     public i18n: TFunction,
   ) {
-    this.options = interaction.data?.options ?? [];
+    let options = interaction.data?.options ?? [];
 
-    if (this.options[0]?.type === ApplicationCommandOptionTypes.SubCommandGroup) {
-      this.subCommandGround = this.options[0].name;
-      this.options = this.options[0].options ?? [];
+    if (options[0]?.type === ApplicationCommandOptionTypes.SubCommandGroup) {
+      this.subCommandGround = options[0].name;
+      options = options[0].options ?? [];
     }
 
-    if (this.options[0]?.type === ApplicationCommandOptionTypes.SubCommand) {
-      this.subCommand = this.options[0].name;
-      this.options = this.options[0].options ?? [];
+    if (options[0]?.type === ApplicationCommandOptionTypes.SubCommand) {
+      this.subCommand = options[0].name;
     }
   }
 

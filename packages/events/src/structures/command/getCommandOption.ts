@@ -1,4 +1,5 @@
 import { Interaction } from 'discordeno/transformers';
+import { ApplicationCommandOptionTypes } from 'discordeno/types';
 import { CanResolve } from './InteractionContext';
 
 function getOptionFromInteraction<T>(
@@ -28,7 +29,14 @@ function getOptionFromInteraction<T>(
   shouldResolve: CanResolve,
   required?: boolean,
 ): T | undefined {
-  const options = interaction.data?.options ?? [];
+  let options = interaction.data?.options ?? [];
+
+  if (options[0]?.type === ApplicationCommandOptionTypes.SubCommandGroup)
+    options = options[0].options ?? [];
+
+  if (options[0]?.type === ApplicationCommandOptionTypes.SubCommand)
+    options = options[0].options ?? [];
+
   const found = options.find((option) => option.name === name) as { value: T } | undefined;
 
   if (!found && required)
