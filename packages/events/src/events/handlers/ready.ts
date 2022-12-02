@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { postShardStatuses } from '../../utils/apiRequests/commands';
 import { createHttpServer, registerAllRouters } from '../../structures/server/httpServer';
 import { getEnviroments } from '../../utils/getEnviroments';
 import blacklistRepository from '../../database/repositories/blacklistRepository';
@@ -43,6 +44,33 @@ const postBotStatus = async (): Promise<void> => {
   );
 };
 
+const postShardStatus = async (): Promise<void> => {
+  const shardsInfo = await getEventsClient().request({ type: 'SHARDS_INFO' });
+
+  const toSendData = shardsInfo.map(
+    (shard: {
+      workerId: number;
+      guilds: number;
+      shardId: number;
+      uptime: number;
+      ping: number;
+    }) => {
+      return {
+        clusterId: shard.workerId,
+        guilds: shard.guilds,
+        id: shard.shardId,
+        uptime: shard.uptime,
+        ping: shard.ping,
+        lastPingAt: Date.now(),
+        unavailable: 0,
+        connected: shard.uptime,
+      };
+    },
+  );
+
+  await postShardStatuses(toSendData);
+};
+
 const setReadyEvent = (): void => {
   bot.events.ready = async () => {
     logger.info(`[MASTER] I was set as the events master instance. Initializing master services`);
@@ -55,6 +83,7 @@ const setReadyEvent = (): void => {
 
     inactivityPunishment();
     setInterval(postBotStatus, 1800000);
+    setInterval(postShardStatus, 60_000);
 
     createHttpServer();
     registerAllRouters();

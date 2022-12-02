@@ -25,4 +25,13 @@ const postCommandsInformation = async (commands: ApiCommandInformation[]): Promi
   await statusRequest.post('/commands', { data: { commands } }).catch(debugError);
 };
 
-export { postCommandExecution, updateCommandMaintenanteStatus, postCommandsInformation };
+const postShardStatuses = async (shards: unknown[]): Promise<void> => {
+  await statusRequest.put('/shards', { data: shards }).catch(debugError);
+};
+
+export {
+  postCommandExecution,
+  updateCommandMaintenanteStatus,
+  postCommandsInformation,
+  postShardStatuses,
+};
