@@ -83,10 +83,7 @@ eventsServer.on('message', async (msg, conn) => {
   if (msg.type === 'IDENTIFY') {
     if (!currentVersion) currentVersion = msg.version;
 
-    console.log(currentVersion);
-
     if (currentVersion === msg.version) {
-      console.log('New client with same version');
       eventClientConnections.push({
         id: conn.id,
         conn,
@@ -103,21 +100,15 @@ eventsServer.on('message', async (msg, conn) => {
     }
 
     if (swappingVersions) {
-      console.log('New client waiting for finish of version swap');
       waitingForSwap.push({ id: conn.id, conn, version: msg.version, isMaster: false });
       return;
     }
 
-    console.log(
-      `New client with new Version! Starting swapping versions ${currentVersion} -> ${msg.version}`,
-    );
     swappingVersions = true;
 
     await Promise.all(
       eventClientConnections.map((a) => a.conn.request({ type: 'REQUEST_TO_SHUTDOWN' })),
     );
-
-    console.log(`Finish shutting down all older event intances`);
 
     await delay(1000);
 
@@ -134,10 +125,6 @@ eventsServer.on('message', async (msg, conn) => {
     await conn.request({ type: 'YOU_ARE_THE_MASTER' }).catch(() => null);
 
     waitingForSwap.forEach((c) => eventClientConnections.push(c));
-
-    console.log(
-      `Swapping version is finished! There was ${waitingForSwap.length} event instances waiting for the swap`,
-    );
 
     waitingForSwap = [];
   }

@@ -45,13 +45,15 @@ const manager = createShardManager({
       const guild = message.d as DiscordUnavailableGuild;
       if (!guild.unavailable) {
         guildsIn -= 1;
-        guildsPerShards.set(shard.id, guildsPerShards.get(shard.id) ?? 1 - 1);
+        const oldValue = guildsPerShards.get(shard.id) ?? 0;
+        guildsPerShards.set(shard.id, oldValue - 1);
       }
     }
 
     if (message.t === 'GUILD_CREATE') {
       guildsIn += 1;
-      guildsPerShards.set(shard.id, guildsPerShards.get(shard.id) ?? 0 + 1);
+      const oldValue = guildsPerShards.get(shard.id) ?? 0;
+      guildsPerShards.set(shard.id, oldValue + 1);
     }
 
     if (['GUILD_DELETE', 'INTERACTION_CREATE'].includes(message.t ?? ''))
