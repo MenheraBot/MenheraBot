@@ -47,6 +47,8 @@ const postBotStatus = async (): Promise<void> => {
 const postShardStatus = async (): Promise<void> => {
   const shardsInfo = await getEventsClient().request({ type: 'SHARDS_INFO' });
 
+  if (!shardsInfo) return;
+
   const toSendData = shardsInfo.map(
     (shard: {
       workerId: number;
@@ -64,6 +66,8 @@ const postShardStatus = async (): Promise<void> => {
         lastPingAt: Date.now(),
         unavailable: 0,
         connected: shard.uptime,
+        members: 0,
+        memoryUsed: 0,
       };
     },
   );
