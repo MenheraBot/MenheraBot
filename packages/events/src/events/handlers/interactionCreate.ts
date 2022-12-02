@@ -74,7 +74,14 @@ const setInteractionCreateEvent = (): void => {
     // TODO: Remove this after all tests
     // if (!command) return errorReply(T('permissions:UNKNOWN_SLASH'));
 
-    if (!command) return errorReply(T('permissions:RPG_MAINTENANCE'));
+    if (!command) {
+      console.log(
+        `[${new Date().toISOString().substring(11, 19)}] INEXISTENTE ${commandName} - ${
+          interaction.user.id
+        } | ${interaction.guildId}`,
+      );
+      return errorReply(T('permissions:RPG_MAINTENANCE'));
+    }
 
     if (command.devsOnly && interaction.user.id !== bot.ownerId)
       return errorReply(T('permissions:ONLY_DEVS'));
