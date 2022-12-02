@@ -1,4 +1,4 @@
-import { createShardManager, DiscordUnavailableGuild } from 'discordeno';
+import { ActivityTypes, createShardManager, DiscordUnavailableGuild, Shard } from 'discordeno';
 import { parentPort, workerData } from 'worker_threads';
 
 const script = workerData;
@@ -10,6 +10,9 @@ if (!parentPort) throw new Error('Ué, worker não tem uma parent port');
 const identifyPromises = new Map<number, () => void>();
 
 let guildsIn = 0;
+const guildsPerShards = new Map<number, number>();
+
+const statedAt = Date.now();
 
 const manager = createShardManager({
   gatewayConfig: {
@@ -17,6 +20,20 @@ const manager = createShardManager({
     token: script.token,
   },
   shardIds: [],
+  createShardOptions: {
+    makePresence: async (shardId) => {
+      return {
+        activities: [
+          {
+            name: `❤️ Atualizada e Preparada! | Shard ${shardId} `,
+            type: ActivityTypes.Game,
+            createdAt: Date.now(),
+          },
+        ],
+        status: 'online',
+      };
+    },
+  },
   totalShards: script.totalShards,
   handleMessage: async (shard, message) => {
     if (message.t === 'READY') {
@@ -26,12 +43,18 @@ const manager = createShardManager({
 
     if (message.t === 'GUILD_DELETE') {
       const guild = message.d as DiscordUnavailableGuild;
-      if (!guild.unavailable) guildsIn -= 1;
+      if (!guild.unavailable) {
+        guildsIn -= 1;
+        guildsPerShards.set(shard.id, guildsPerShards.get(shard.id) ?? 1 - 1);
+      }
     }
 
-    if (message.t === 'GUILD_CREATE') guildsIn += 1;
+    if (message.t === 'GUILD_CREATE') {
+      guildsIn += 1;
+      guildsPerShards.set(shard.id, guildsPerShards.get(shard.id) ?? 0 + 1);
+    }
 
-    if (['GUILD_CREATE', 'GUILD_DELETE', 'INTERACTION_CREATE'].includes(message.t ?? ''))
+    if (['GUILD_DELETE', 'INTERACTION_CREATE'].includes(message.t ?? ''))
       parentPort?.postMessage({
         type: 'BROADCAST_EVENT',
         data: { shardId: shard.id, data: message },
@@ -51,6 +74,16 @@ const manager = createShardManager({
   },
 });
 
+const buildShardInfo = (shard: Shard) => {
+  return {
+    workerId: script.workerId,
+    shardId: shard.id,
+    ping: shard.heart.rtt ?? -1,
+    guilds: guildsPerShards.get(shard.id) ?? 0,
+    uptime: Date.now() - statedAt,
+  };
+};
+
 parentPort?.on('message', async (message) => {
   switch (message.type) {
     case 'IDENTIFY_SHARD': {
@@ -69,6 +102,17 @@ parentPort?.on('message', async (message) => {
         nonce: message.nonce,
         data: { guilds: guildsIn },
       });
+      break;
+    }
+    case 'GET_SHARDS_INFO': {
+      const infos = manager.shards.map(buildShardInfo);
+
+      parentPort?.postMessage({
+        type: 'NONCE_REPLY',
+        nonce: message.nonce,
+        data: infos,
+      });
+      break;
     }
   }
 });

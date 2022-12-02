@@ -165,6 +165,24 @@ eventsServer.on('request', async (req, res) => {
 
     return res({ guilds: infos, shards: gatewayManager.manager.totalShards });
   }
+
+  if (req.type === 'SHARDS_INFO') {
+    if (!shardingEnded) return res(null);
+
+    const infos = await Promise.all(
+      workers.map(async (worker) => {
+        const nonce = Date.now();
+
+        return new Promise((resolve) => {
+          worker.postMessage({ type: 'GET_SHARDS_INFO', nonce });
+
+          nonces.set(nonce, resolve);
+        });
+      }),
+    );
+
+    return res(infos);
+  }
 });
 
 eventsServer.on('disconnect', (conn) => {
