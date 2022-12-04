@@ -1,0 +1,16 @@
+.github
+node_modules
+.editorconfig
+.env*
+.eslintrc.js
+.gitattributes
+.gitignore
+.prettierrc
+.prettierignore
+CHANGELOG
+jest.config.js
+LICENSE
+*.sock
+*.md
+dist
+

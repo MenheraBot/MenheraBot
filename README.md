@@ -1,7 +1,5 @@
 <img width="150" height="150" align="left" style="float: left; margin: 0 10px 0 0;" alt="MenheraBot" src="https://i.imgur.com/jjgBki0.png">
 
-[![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/U6U32QC5D)
-
 # Menhera Bot
 
 [![](https://top.gg/api/widget/owner/708014856711962654.svg)](https://top.gg/bot/708014856711962654)
@@ -9,60 +7,48 @@
 [![](https://top.gg/api/widget/upvotes/708014856711962654.svg)](https://top.gg/bot/708014856711962654/vote)
 [![Deploy](https://github.com/MenheraBot/MenheraBot/actions/workflows/deploy.yml/badge.svg?branch=master)](https://github.com/MenheraBot/MenheraBot/actions/workflows/deploy.yml)
 
-> Menhera is animating more than 35000 servers with her functionalities
+> Menhera is animating more than 40k servers with her functionalities
 
-MenheraBot is an open source Discord bot made in TypeScript with [Discord.js-light](https://www.npmjs.com/package/discord.js-light) by [Luxanna](https://github.com/ySnoopyDogy)
+MenheraBot is an open source Discord bot made in TypeScript with [Discordeno](https://discordeno.mod.land/) with foccus in Fun.
 Feel free to add a star ⭐ to the repository to promote the project!
 
-## 🚸 | Contributing
+## 👨‍💻 | Contributing
 
-Pull requests are always welcome. You can make PRs and Issues. When creating pr's, the branch of the pr needs to be `canary`.
+Pull requests are always welcome. If you have any ideia, want to implement a new feature, fix some bug, or even improve the code itself, you can do it openning a pull request to the `feat/development` branch. You may check the next session about running the project.
 
-## 📁 | Folder Structure
+## 🔥 | Running
 
-The folder structure may be a little confusing, so here is a little schema of how the files are separated here
+This monorepo is divided in 3 main packages. The REST takes care of making contact with Discord's API, with this, we can avoid rate limits before making the request to the API. The Gateway makes the bridge between the events process and the Discord gateway with shards. Last but not least, is the Events pacakge, which takes care of processing every interaction made by users. To run the bot, just follow the steps:
+
+1. 🧹 Clone the repository
 
 ```bash
-📦src
- ┣ 📂commands # here are every slash command of Menhera. Each folder here is a category. Subcommands are inside of it main command
- ┃ ┣ 📂DEVELOPER # Only available for the owner
- ┃ ┣ 📂actions # Commands where a user take and action, like hug or kiss
- ┃ ┣ 📂economy # Every command involving the usage of Estrelinhas (Menhera's currency system)
- ┃ ┣ 📂fluffety # Every command that interacts with Fluffetys
- ┃ ┣ 📂fun # Just some random commands to users have fun
- ┃ ┣ 📂info # Commands that shows some informations about various things
- ┃ ┣ 📂roleplay # Every command that interacts with the World of Boleham. The Roleplay Gaming system.
- ┃ ┗ 📂util # TBH, any command that dont enter in other categories
- ┃
- ┣ 📂database # Files that manage the Databases connection
- ┃ ┣ 📂repositories # Every repository of repository pattern to talk with the database
- ┃ ┣ 📜Collections.ts # MongoDB collections
- ┃ ┗ 📜Databases.ts # Main class that connect to the databases
- ┃
- ┣ 📂events # Discord gateway events
- ┃
- ┣ 📂locales # Localization files to translate commands
- ┃
- ┣ 📂modules # Modules is why i call the systems of Menhera that has a big structure
- ┃ ┣ 📂fluffety # A funny system to have a little buddy to care on Discord
- ┃ ┣ 📂roleplay # The Roleplay System
- ┃ ┃ ┣ 📂data # The static data of the RPG
- ┃ ┃ ┣ 📂structures # Just some classes that handle things to the RPG
- ┃ ┃ ┣ 📂utils # Some utils
- ┃ ┃
- ┃ ┗ 📂staticData # Static Data is the static info of Menhera's Economy System or user personalization
- ┃
- ┣ 📂structures # Classes that makes Menhera works
- ┃ ┣ 📂command # Base classes that envolves the commands creation
- ┃ ┃ ┣ 📂autocomplete # Discord Autocomplete interactions
- ┃ ┃
- ┃ ┣ 📂server # HTTP server to talk to the outside world
- ┃
- ┣ 📂types # Typings
- ┃
- ┣ 📂utils # Small (or they was suposed to be) files to make little things
- ┃
- ┣ 📜MenheraClient.ts # The folder who makes everything works
+git clone https://github.com/MenheraBot/MenheraBot.git
+```
+
+2. 💻 Populate the env files. 
+> Every package has a .env.example file with every entry needed. Just create a .env file with all the entries.
+
+3. 🔥 Install deps and build all the packages
+
+```bash
+yarn install && yarn rest build && yarn gateway build && yarn events build
+```
+
+4. 🏃‍♂️ Running all services
+
+> Open 3 terminals and execute each command in a different one. YOU NEED TO START THE PROCESS IN ORDER REST -> GATEWAY -> EVENTS
+
+```bash
+yarn rest dev
+yarn gateway dev
+yarn events dev:nomicroservices
+```
+
+5. 🐦 Running tests
+
+```bash
+yarn test
 ```
 
 ## 🎇 | Features
@@ -70,13 +56,6 @@ The folder structure may be a little confusing, so here is a little schema of ho
 ### 🌐 | Multi-language
 
 Menhera can be used in brazilian portuguese or english
-
-### 🕹 | Roleplay Gaming (RPG)
-
-- Menhera owns a parallel world, the _Boleham's World_. You can reincarnate in this world as a class among 12 different classes, with more than 4 unique abilities each, and a race among 8 unique races with specific bonuses.
-- **Battle System:** A differentiator of my RPG is its turn-based battle system, where the user participates in the battle from the beginning to the end, deciding which skill should be used at that moment to end your enemy
-
-<img style="border-radius: 40px;" width="360" src="https://i.imgur.com/BWxcHdR.png" alt="Sistema de Batalha"></img>
 
 ### 💰 | Economy
 
@@ -88,7 +67,7 @@ Menhera can be used in brazilian portuguese or english
 
 ### ✨ | Fun
 
-- Another very large category, it has several image manipulation commands to make fun of your friends, such as Macetava, Gado, Vasco (with the right to low quality), wedding system, the special _Poliamory System_ among many others
+- Another very large category, it has several image manipulation commands to make fun of your friends, such as Macetava, 8ball, Gado, Vasco (with the right to low quality), wedding system, the special _Poliamory System_ among many others
 
 ## 🙋‍♀️ | Support
 
@@ -102,6 +81,15 @@ You can enter Menhera's [support server](https://discord.gg/fZMdQbA) to help fur
 - [Github](https://github.com/ySnoopyDogy/MenheraBot)
 - [Top.GG](https://top.gg/bot/708014856711962654)
 - [Official Site](https://menherabot.xyz)
+
+## 📧 | Contact
+
+Discord: **Luxanna#5757**
+
+Twitter: **[@Luxanna_Dev](https://twitter.com/Luxanna_Dev)**
+
+Email: **luxanna@menherabot.xyz**
+
 
 ## 📜 | Source
 
