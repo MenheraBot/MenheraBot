@@ -4,7 +4,7 @@
   "engines": {
     "node": ">=18"
   },
-  "description": "Gateway manager for Menhera",
+  "description": "Menhera's bridge to Discord's Gateway. With this, Menhera can restart the Events package without losing the shards sessions.",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc --project tsconfig.json",

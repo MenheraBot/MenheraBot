@@ -5,6 +5,8 @@ import { getEnviroments } from '../utils/getEnviroments';
 const initializeSentry = (): void => {
   const { SENTRY_DNS } = getEnviroments(['SENTRY_DNS']);
 
+  if (process.env.NOMICROSERVICES) return;
+
   Sentry.init({
     dsn: SENTRY_DNS,
     environment: process.env.NODE_ENV ?? 'Unknown',

@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [5.0.0] - 2022-12-04
+
+### Changed
+
+- A Menhera trocou de library! Agora, ela está usando Discordeno (antes era discord.js-light). Para os usuários isso não deve apresentar nenhuma mudança, mas para a Menhera em si, sim! Literalmente TODA a Menhera foi reescrita do zero! Foram mais de 380 commits em 6 meses. Tudo isso para que agora seja possível atualizar ela sem precisar reiniciar tudo. Assim, atualizações não devem demorar mais de 5 segundos para entrar em vigor.
+- O comando `/caçar` está na categoria de economia, antes era em diversão.
+- O Jogo do Bicho agora faz um sorteio a cada 6 horas.
+
+### Added
+
+- Adicionado um comando para entrar no servidor de suporte! `/menhera suporte`.
+- Agora, os perfis de usuários são cacheados. O que significa que comandos que usam seu perfil, como o `/perfil` ou `/carteira` estão muito mais rápidos!
+- Agora só é possível usar um comando de economia por vez! Isso é preciso para que não haja formas de ficar com estrelinhas negativas ao usar dois comandos ao mesmo tempo.
+
+### Removed
+
+- O comando `/user` junto de seus subcomandos foram removidos!
+- Todos os comandos de RPG foram removidos! Eu sei que tinha um pessoal que estava jogando, mas eu sinto que o RPG estava estagnado, e com a demora de atualizações ele ficou sem graça. Prometo voltar (novamente, pela 3 ou 4 vez) com uma nova versão do RPG, mais divertida e dinamica, mas agora quero focar mais nos comandos mais usados. Comandos removidos: `/arena` e seus subcomandos, `/igreja`, `/centro` e seus subcomandos, `/dungeon`, `/ficha`, `/inventário`, `/resetar` e seus subcomandos.
+
 ## [4.1.4] - 2022-09-30
 
 ### Fixed

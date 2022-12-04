@@ -85,6 +85,8 @@ const setReadyEvent = (): void => {
     const allBannedUsers = await blacklistRepository.getAllBannedUsersIdFromMongo();
     await blacklistRepository.addBannedUsers(allBannedUsers);
 
+    if (process.env.NOMICROSERVICES) return;
+
     inactivityPunishment();
     setInterval(postBotStatus, 1800000);
     setInterval(postShardStatus, 60_000);
