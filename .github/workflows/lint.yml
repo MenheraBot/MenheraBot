@@ -10,7 +10,6 @@ on:
     branches:
       - master
       - development/**
-      - canary
 
 jobs:
   build:
@@ -32,17 +31,13 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.npm
-          key: ${{ runner.os }}-node-v2-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-node-v2-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-node-v2-
 
       - name: Install dependencies
-        run: npm install --legacy-peer-deps
-      - name: Run tests
-        run: npm test
+        run: yarn install
       - name: Run Linter
-        run: npm run lint:test
+        run: yarn run:lint
       - name: Typecheck
-        run: npm run typecheck
-      - name: Run Build
-        run: cp .env.example .env && npm run build
+        run: yarn rest typecheck && yarn gateway typecheck && yarn events typecheck

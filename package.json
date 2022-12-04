@@ -9,7 +9,7 @@
     "events": "yarn workspace @menhera-bot/events",
     "lint": "yarn workspace @menhera-bot/eslint-config",
     "test": "TESTING=true node --no-warnings --experimental-vm-modules node_modules/jest/bin/jest.js",
-    "run:lint": "eslint --fix ."
+    "run:lint": "eslint ."
   },
   "repository": {
     "type": "git",

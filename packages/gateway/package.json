@@ -8,6 +8,7 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc --project tsconfig.json",
+    "typecheck": " tsc --project tsconfig.json --noEmit",
     "start": "node .",
     "dev": "node -r dotenv/config ."
   },
