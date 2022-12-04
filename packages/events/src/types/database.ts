@@ -15,6 +15,7 @@ export interface UserBadge {
 }
 
 export interface DatabaseUserSchema {
+  readonly _id: string;
   readonly id: string;
   mamado: number;
   mamou: number;

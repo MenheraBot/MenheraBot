@@ -7,13 +7,14 @@ import { RedisClient } from '../databases';
 import { debugError } from '../../utils/debugError';
 
 const parseMongoUserToRedisUser = (user: DatabaseUserSchema): DatabaseUserSchema => ({
+  _id: `${user._id}`,
+  id: `${user.id}`,
   angels: user.angels,
   ban: user.ban,
   banReason: user.banReason,
   lastCommandAt: user.lastCommandAt,
   archangels: user.archangels,
   badges: user.badges,
-  id: `${user.id}`,
   colors: user.colors,
   demigods: user.demigods,
   demons: user.demons,
