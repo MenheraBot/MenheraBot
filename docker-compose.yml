@@ -36,6 +36,8 @@ services:
     container_name: MenheraEvents
     restart: unless-stopped
     network_mode: bridge
+     ports:
+        - "127.0.0.1:8000:8000"
     build:
       context: .
       target: events
