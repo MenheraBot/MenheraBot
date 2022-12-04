@@ -5,11 +5,55 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
-## [Unreleased]
+## [4.1.4] - 2022-09-30
+
+### Fixed
+
+- Ao comprar uma cor, o select menu não era removido da mensagem de sucesso.
+
+## [4.1.3] - 2022-08-07
+
+### Hotfix
+
+- Os tempos da igreja estavam bugados, assim como todos os oturos comandos que usam tempo.
+
+### Fixed
+
+- Servidores que adicionassem a Menhera e não tivessem Comunidade ativado, configuraria automaticamente a Menhera a falar em ingles
+
+## [4.1.2] - 2022-08-06
+
+### Fixed
+
+- Resolvido o problema do top onde os titulos de mamou e mamado estavam invertidos
+- Resolvido o problema das badges de Bot não aparecerem no perfil de bots
+- O `/status designer` não mostra mais que um design foi registrado em 20/04/53899 kekw
+- A memória usada pela Menhera estava incorreta em `/menhera status`
+- O horário de votos em `/cooldowns` mostrava um valor incorreto
+
+## [4.1.1] - 2022-08-05
 
 ### Changed
 
-- Changed from Djs to Discordeno
+- A forma que a Menhera mostra tempos foi alterada em alguns comandos. São eles: `/bicho`, `/menhera info`,`/estatísticas designer`
+
+### Fixed
+
+- O comando `/top` foi movido para a categoria `info`. Ele estava na `util` faz alguns aninhos, e por isso, funções como ver como usar o comando no website não funcionavam.
+- O comando `/menhera info` mostra o uso de memória ram correto.
+
+## [4.1.0] - 2022-07-18
+
+### Added
+
+- O comando `/trisal` foi dividido em 4 subcomandos:
+
+  - `/trisal ver` - Veja o trisal de alguém
+  - `/trisal formar` - Forme um trisal com mais 2 amigos
+  - `/trisal terminar` - Termine o seu trisal atual
+  - `/trisal ordem` - Altere a ordem em que as metadinhas aparecem no comando `/trisal ver`
+
+- Comandos que usam manipulação de imagem agora retornam uma respota rápida falando que a Menhera está pensando.
 
 ## [4.0.5] - 2022-07-18
 

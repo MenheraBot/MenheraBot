@@ -9,7 +9,7 @@
 [![](https://top.gg/api/widget/upvotes/708014856711962654.svg)](https://top.gg/bot/708014856711962654/vote)
 [![Deploy](https://github.com/MenheraBot/MenheraBot/actions/workflows/deploy.yml/badge.svg?branch=master)](https://github.com/MenheraBot/MenheraBot/actions/workflows/deploy.yml)
 
-> Menhera is animating more than 25000 servers with her functionalities
+> Menhera is animating more than 35000 servers with her functionalities
 
 MenheraBot is an open source Discord bot made in TypeScript with [Discord.js-light](https://www.npmjs.com/package/discord.js-light) by [Luxanna](https://github.com/ySnoopyDogy)
 Feel free to add a star ⭐ to the repository to promote the project!
@@ -88,7 +88,7 @@ Menhera can be used in brazilian portuguese or english
 
 ### ✨ | Fun
 
-- Another very large category, it has several image manipulation commands to make fun of your friends, such as Macetava, Gado, Vasco (with the right to low quality), wedding system, the special _Trisal System_ among many others
+- Another very large category, it has several image manipulation commands to make fun of your friends, such as Macetava, Gado, Vasco (with the right to low quality), wedding system, the special _Poliamory System_ among many others
 
 ## 🙋‍♀️ | Support
 

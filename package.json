@@ -1,6 +1,6 @@
 {
   "name": "menhera-bot",
-  "version": "1.0.0",
+  "version": "5.0.0",
   "description": "A Brazilian Discord Bot foccused in Fun and RPG",
   "private": true,
   "scripts": {
