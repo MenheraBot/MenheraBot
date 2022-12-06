@@ -158,15 +158,6 @@ const profileBadges = {
     description: 'Esta badge só aparece no seu perfil caso você tenha votado nas ultimas 12 horas',
     link: 'https://media.discordapp.net/attachments/793669360857907200/939245622039556166/beta.png',
   },
-  19: {
-    name: 'Um ano com a Menhera',
-    availabeStartAt: '07/05/2021',
-    availabeStoptAt: '--------',
-    rarityLevel: 2,
-    description:
-      'Se você tem essa badge em seu perfil, parabéns! Você usa a Menhera a mais de um ano!',
-    link: 'https://media.discordapp.net/attachments/793669360857907200/1049110780546650272/oneyear.png',
-  },
 };
 
 export { profileBadges };
