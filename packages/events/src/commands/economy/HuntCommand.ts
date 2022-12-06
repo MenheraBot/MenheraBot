@@ -194,7 +194,7 @@ const HuntCommand = createCommand({
           ? ctx.locale('commands:cacar.god_hunted_success', {
               count: result.value,
               hunt: ctx.locale(`commands:cacar.gods`),
-              timesToHunt,
+              toRun: timesToHunt,
             })
           : ctx.locale('commands:cacar.god_hunted_fail', {
               count: timesToHunt,
