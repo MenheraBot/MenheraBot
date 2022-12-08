@@ -3,12 +3,12 @@ import '@sentry/tracing';
 import { getEnviroments } from '../utils/getEnviroments';
 
 const initializeSentry = (): void => {
-  const { SENTRY_DNS } = getEnviroments(['SENTRY_DNS']);
+  const { SENTRY_DSN } = getEnviroments(['SENTRY_DSN']);
 
   if (process.env.NOMICROSERVICES) return;
 
   Sentry.init({
-    dsn: SENTRY_DNS,
+    dsn: SENTRY_DSN,
     environment: process.env.NODE_ENV ?? 'Unknown',
     serverName: 'Menhera Event Manager',
     tracesSampleRate: 1.0,

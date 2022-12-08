@@ -12,12 +12,14 @@ import {
   routes,
 } from 'discordeno';
 
+import * as Sentry from '@sentry/node';
+import '@sentry/tracing';
+
 import { nanoid } from 'nanoid';
 
 import { Worker } from 'worker_threads';
 
 import os from 'node:os';
-
 import config from './config';
 
 type EventClientConnection = {
@@ -27,12 +29,27 @@ type EventClientConnection = {
   version: string;
 };
 
-const { DISCORD_TOKEN, REST_AUTHORIZATION, REST_SOCKET_PATH, EVENT_HANDLER_SOCKET_PATH } = config([
+const {
+  DISCORD_TOKEN,
+  REST_AUTHORIZATION,
+  REST_SOCKET_PATH,
+  EVENT_HANDLER_SOCKET_PATH,
+  SENTRY_DSN,
+} = config([
   'DISCORD_TOKEN',
   'REST_AUTHORIZATION',
   'REST_SOCKET_PATH',
   'EVENT_HANDLER_SOCKET_PATH',
+  'SENTRY_DSN',
 ]);
+
+if (!process.env.NOMICROSERVICES)
+  Sentry.init({
+    dsn: SENTRY_DSN,
+    tracesSampleRate: 1.0,
+    environment: process.env.NODE_ENV ?? 'Unknown',
+    serverName: 'Menhera Gateway Manager',
+  });
 
 const restClient = new Client({ path: REST_SOCKET_PATH });
 const eventsServer = new Server({ path: EVENT_HANDLER_SOCKET_PATH });
@@ -54,6 +71,7 @@ const nonces = new Map<string, (data: unknown) => void>();
 
 const panic = (err: Error) => {
   console.error(err);
+  Sentry.captureException(err);
   process.exit(1);
 };
 
@@ -108,7 +126,7 @@ eventsServer.on('message', async (msg, conn) => {
 
     await Promise.all(
       eventClientConnections.map((a) => a.conn.request({ type: 'REQUEST_TO_SHUTDOWN' })),
-    );
+    ).catch((e) => Sentry.captureException(e));
 
     await delay(1000);
 
@@ -239,25 +257,27 @@ const createWorker = (workerId: number) => {
         if (eventClientConnections.length === 0) {
           // @ts-expect-error Payload.d is never because of ready event
           if (payload.t === 'INTERACTION_CREATE' && [2, 3, 5].includes(payload.d.type)) {
-            restClient.request({
-              type: 'SEND_REQUEST',
-              data: {
-                Authorization: REST_AUTHORIZATION,
-                url: `/interactions/${(payload.d as DiscordInteraction).id}/${
-                  (payload.d as DiscordInteraction).token
-                }/callback`,
-                method: 'POST',
-                payload: {
-                  headers: {
-                    'user-agent': `DiscordBot (https://github.com/discordeno/discordeno, v${DISCORDENO_VERSION})`,
-                    authorization: '',
-                    'Content-Type': 'application/json',
-                  },
-                  body: '{"type":4,"data":{"flags": 64,"content":"A Menhera está reiniciando! Espere um pouco. \\n Menhera is rebooting! Wait one moment.","allowed_mentions":{"parse":[]}}}',
+            restClient
+              .request({
+                type: 'SEND_REQUEST',
+                data: {
+                  Authorization: REST_AUTHORIZATION,
+                  url: `/interactions/${(payload.d as DiscordInteraction).id}/${
+                    (payload.d as DiscordInteraction).token
+                  }/callback`,
                   method: 'POST',
+                  payload: {
+                    headers: {
+                      'user-agent': `DiscordBot (https://github.com/discordeno/discordeno, v${DISCORDENO_VERSION})`,
+                      authorization: '',
+                      'Content-Type': 'application/json',
+                    },
+                    body: '{"type":4,"data":{"flags": 64,"content":"A Menhera está reiniciando! Espere um pouco. \\n Menhera is rebooting! Wait one moment.","allowed_mentions":{"parse":[]}}}',
+                    method: 'POST',
+                  },
                 },
-              },
-            });
+              })
+              .catch(() => null);
           }
 
           return;

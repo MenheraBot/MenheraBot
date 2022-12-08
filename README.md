@@ -41,7 +41,7 @@ yarn install && yarn rest build && yarn gateway build && yarn events build
 
 ```bash
 yarn rest dev
-yarn gateway dev
+yarn gateway dev:nomicroservices
 yarn events dev:nomicroservices
 ```
 
