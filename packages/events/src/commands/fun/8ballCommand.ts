@@ -87,6 +87,26 @@ const EighballAnswers = [
     id: 19,
     type: 'neutral',
   },
+  {
+    id: 20,
+    type: 'positive',
+  },
+  {
+    id: 21,
+    type: 'neutral',
+  },
+  {
+    id: 22,
+    type: 'negative',
+  },
+  {
+    id: 23,
+    type: 'negative',
+  },
+  {
+    id: 24,
+    type: 'positive',
+  },
 ];
 
 const EightballCommand = createCommand({
