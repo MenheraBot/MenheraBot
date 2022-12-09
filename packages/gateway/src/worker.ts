@@ -21,6 +21,17 @@ const manager = createShardManager({
   },
   shardIds: [],
   createShardOptions: {
+    events: {
+      disconnected: (shard) => {
+        log.info(`Shard ${shard.id} disconnected`);
+      },
+      connecting(shard) {
+        log.info(`Shard ${shard.id} is connecting`);
+      },
+      resuming(shard) {
+        log.info(`Resuming shard ${shard.id}`);
+      },
+    },
     makePresence: async (shardId) => {
       return {
         activities: [
