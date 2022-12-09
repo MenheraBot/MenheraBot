@@ -4,9 +4,10 @@ import {
   ApplicationCommandOptionTypes,
 } from 'discordeno';
 import { Interaction, User } from 'discordeno/transformers';
+import * as Sentry from '@sentry/node';
 import { TFunction } from 'i18next';
 
-import { debugError } from '../../utils/debugError';
+import { logger } from '../../utils/logger';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import { EMOJIS } from '../constants';
 import { Translation } from '../../types/i18next';
@@ -58,14 +59,14 @@ export default class {
         type: InteractionResponseTypes.ChannelMessageWithSource,
         data: options,
       })
-      .catch(debugError);
+      .catch(this.captureException);
   }
 
   async makeMessage(options: InteractionCallbackData & { attachments?: unknown[] }): Promise<void> {
     if (this.replied) {
       await bot.helpers
         .editOriginalInteractionResponse(this.interaction.token, options)
-        .catch(debugError);
+        .catch(this.captureException);
       return;
     }
 
@@ -76,7 +77,7 @@ export default class {
         type: InteractionResponseTypes.ChannelMessageWithSource,
         data: options,
       })
-      .catch(debugError);
+      .catch(this.captureException);
   }
 
   getSubCommandGroup(required = false): string {
@@ -113,10 +114,26 @@ export default class {
           flags: ephemeral ? MessageFlags.EPHEMERAL : undefined,
         },
       })
-      .catch(debugError);
+      .catch(this.captureException);
   }
 
   locale(text: Translation, options: Record<string, unknown> = {}): string {
     return this.i18n(text, options);
+  }
+
+  captureException(error: Error): null {
+    if (process.env.NODE_ENV === 'DEVELOPMENT') logger.error(error.message);
+
+    Sentry.withScope((scope) => {
+      scope.setContext('command', {
+        name: this.interaction.data?.name,
+        subCommand: this.subCommand,
+        subCommandGroup: this.subCommandGround,
+      });
+
+      Sentry.captureException(error);
+    });
+
+    return null;
   }
 }

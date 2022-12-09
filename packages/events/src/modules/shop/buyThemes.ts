@@ -8,7 +8,6 @@ import { AvailableThemeTypes } from '../themes/types';
 import InteractionContext from '../../structures/command/InteractionContext';
 import InteractionCollector from '../../structures/InteractionCollector';
 import { ComponentInteraction, SelectMenuInteraction } from '../../types/interaction';
-import { debugError } from '../../utils/debugError';
 import {
   createActionRow,
   createButton,
@@ -284,7 +283,9 @@ const buyThemes = async (ctx: InteractionContext, finishCommand: () => void): Pr
         );
 
         if (notifyPurchase) {
-          const userDM = await bot.helpers.getDmChannel(credits.ownerId).catch(debugError);
+          const userDM = await bot.helpers
+            .getDmChannel(credits.ownerId)
+            .catch(ctx.captureException);
 
           if (userDM)
             bot.helpers.sendMessage(userDM.id, {

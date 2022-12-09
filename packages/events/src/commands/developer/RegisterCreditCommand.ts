@@ -7,7 +7,6 @@ import userThemesRepository from '../../database/repositories/userThemesReposito
 import themeCreditsRepository from '../../database/repositories/themeCreditsRepository';
 import { createCommand } from '../../structures/command/createCommand';
 import { bot } from '../../index';
-import { debugError } from '../../utils/debugError';
 
 const RegisterCreditCommand = createCommand({
   path: '',
@@ -70,7 +69,7 @@ const RegisterCreditCommand = createCommand({
       content: `Tema \`${themeId}\` registrado com sucesso! Dono: <@${user.id}> (${user.id})\nEle já recebeu o tema, basta dar a recompensa em estrelinhas`,
     });
 
-    const userDM = await bot.helpers.getDmChannel(user.id).catch(debugError);
+    const userDM = await bot.helpers.getDmChannel(user.id).catch(ctx.captureException);
 
     if (userDM)
       bot.helpers.sendMessage(userDM.id, {
