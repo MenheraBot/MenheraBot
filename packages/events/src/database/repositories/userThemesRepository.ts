@@ -123,6 +123,19 @@ const getCardBackgroundTheme = async (
   return getThemeById<CardBackgroundTheme>(themes.selectedCardBackgroundTheme).data.theme;
 };
 
+const getThemesForBlackjack = async (
+  userId: BigString,
+): Promise<[AvailableTableThemes, AvailableCardThemes, AvailableCardBackgroundThemes]> => {
+  const themes = await findEnsuredUserThemes(userId);
+
+  const tableTheme = getThemeById<TableTheme>(themes.selectedTableTheme).data.theme;
+  const cardTheme = getThemeById<CardsTheme>(themes.selectedCardTheme).data.theme;
+  const backgroundCardTheme = getThemeById<CardBackgroundTheme>(themes.selectedCardBackgroundTheme)
+    .data.theme;
+
+  return [tableTheme, cardTheme, backgroundCardTheme];
+};
+
 const makeNotify = async (userId: BigString, notify: boolean): Promise<void> => {
   await userThemesModel.updateOne({ id: `${userId}` }, { notifyPurchase: notify });
 };
@@ -204,6 +217,7 @@ export default {
   getProfileTheme,
   setCardBackgroundTheme,
   getCardBackgroundTheme,
+  getThemesForBlackjack,
   setCardsTheme,
   makeNotify,
 };

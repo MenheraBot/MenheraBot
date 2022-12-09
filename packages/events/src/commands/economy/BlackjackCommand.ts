@@ -58,11 +58,8 @@ const BlackjackCommand = createCommand({
     const playerCards = matchCards.splice(0, 2);
     const dealerCards = matchCards.splice(0, 2);
 
-    const [tableTheme, cardTheme, backgroundCardTheme] = await Promise.all([
-      userThemesRepository.getTableTheme(ctx.author.id),
-      userThemesRepository.getCardsTheme(ctx.author.id),
-      userThemesRepository.getCardBackgroundTheme(ctx.author.id),
-    ]);
+    const [tableTheme, cardTheme, backgroundCardTheme] =
+      await userThemesRepository.getThemesForBlackjack(ctx.author.id);
 
     const bjPlayerCards = numbersToBlackjackCards(playerCards);
     const bjDealerCards = numbersToBlackjackCards(dealerCards);
