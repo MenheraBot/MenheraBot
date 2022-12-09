@@ -163,6 +163,13 @@ const Themes: { [id: number]: ThemeFile } & Object = {
     theme: 'atemporal',
     type: 'table',
   },
+  24: {
+    isBuyable: true,
+    price: 250_000,
+    rarity: 'rare',
+    type: 'profile',
+    theme: 'gatito',
+  },
 };
 
 export default Themes;

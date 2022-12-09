@@ -25,7 +25,8 @@ export type AvailableProfilesThemes =
   | 'warrior'
   | 'fortification'
   | 'without_soul'
-  | 'id03';
+  | 'id03'
+  | 'gatito';
 
 export type AvailableThemeTypes = 'profile' | 'cards' | 'card_background' | 'table';
 
