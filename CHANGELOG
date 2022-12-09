@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [5.0.3] - 2022-12-09
+
+### Added
+
+- Novo tema de perfil! **Gatito**. Criado pela formidável Iris Yoshida#1326 (644644373035745302). Ayako para os íntimos. Ele ta uma graçinha >,..,<
+
+### Changed
+
+- O limite de caracteres do sobre mim foi reduzido de 200 para 120.
+
 ## [5.0.2] - 2022-12-09
 
 ### Added
