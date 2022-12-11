@@ -29,19 +29,21 @@ const postBotStatus = async (): Promise<void> => {
 
   if (!info) return;
 
-  await axios.post(
-    `https://top.gg/api/bots/${DISCORD_APPLICATION_ID}/stats`,
-    {
-      server_count: info.guilds,
-      shard_count: info.shards,
-    },
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: DBL_TOKEN,
+  await axios
+    .post(
+      `https://top.gg/api/bots/${DISCORD_APPLICATION_ID}/stats`,
+      {
+        server_count: info.guilds,
+        shard_count: info.shards,
       },
-    },
-  );
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: DBL_TOKEN,
+        },
+      },
+    )
+    .catch(() => null);
 };
 
 const postShardStatus = async (): Promise<void> => {
