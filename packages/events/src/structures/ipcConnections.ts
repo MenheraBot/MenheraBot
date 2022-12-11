@@ -7,6 +7,7 @@ import { bot } from '../index';
 import { getEnviroments } from '../utils/getEnviroments';
 
 let eventsClient: Client;
+let retries = 0;
 
 const createIpcConnections = async (): Promise<Client> => {
   const { REST_SOCKET_PATH, EVENT_SOCKET_PATH } = getEnviroments([
@@ -22,8 +23,25 @@ const createIpcConnections = async (): Promise<Client> => {
   eventsClient = new Client({ path: EVENT_SOCKET_PATH });
 
   eventsClient.on('close', () => {
-    logger.info('[GATEWAY] Gateway Client closed');
-    process.exit(1);
+    logger.info('[GATEWAY] Gateway client closed');
+
+    const reconnectLogic = () => {
+      logger.info('[GATEWAY] Trying to reconnect to gateway server');
+      eventsClient.connect().catch(() => {
+        setTimeout(reconnectLogic, 1000);
+
+        logger.info(`[GATEWAY] Fail when reconnecting... ${retries} retries`);
+
+        if (retries >= 5) {
+          logger.info(`[GATEWAY] Couldn't reconnect to gateway server.`);
+          process.exit(1);
+        }
+
+        retries += 1;
+      });
+    };
+
+    setTimeout(reconnectLogic, 2000);
   });
 
   eventsClient.on('ready', () => {
