@@ -2,7 +2,8 @@ import { DiscordInteraction } from 'discordeno/types';
 import { Context } from 'koa';
 import Router from 'koa-router';
 import { bot } from '../../../index';
-import { verifyDiscordRequests } from '../middlewares/verifyDiscordRequests';
+import tweetNaClVerifyDiscordRequests from '../middlewares/tweetNaClVerifyDiscordRequests';
+// import { verifyDiscordRequests } from '../middlewares/verifyDiscordRequests';
 
 const handleRequest = async (ctx: Context): Promise<void> => {
   if (ctx.request.body.type === 1) {
@@ -21,7 +22,7 @@ const handleRequest = async (ctx: Context): Promise<void> => {
 
 const createPostInteractionRouter = (): Router => {
   const router = new Router();
-  router.post('/interactions', verifyDiscordRequests, (ctx) => handleRequest(ctx));
+  router.post('/interactions', tweetNaClVerifyDiscordRequests, (ctx) => handleRequest(ctx));
   return router;
 };
 
