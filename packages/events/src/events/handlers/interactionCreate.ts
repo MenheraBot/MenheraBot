@@ -49,14 +49,14 @@ const setInteractionCreateEvent = (): void => {
       });
     };
 
-    const isUserBanned = await blacklistRepository.isUserBanned(interaction.user.id);
-
-    const T = i18next.getFixedT(interaction.user.locale ?? 'pt-BR');
-
     if (bot.shuttingDown)
       return errorReply(
         'A Menhera está em processo de desligamento! Comandos estão desativados!\n\nMenhera is in the process of shutting down! Commands are disabled!',
       );
+
+    const isUserBanned = await blacklistRepository.isUserBanned(interaction.user.id);
+
+    const T = i18next.getFixedT(interaction.user.locale ?? 'pt-BR');
 
     if (isUserBanned) {
       const bannedInfo = await userRepository.getBannedUserInfo(interaction.user.id);
@@ -108,7 +108,7 @@ const setInteractionCreateEvent = (): void => {
     testTimeouts.set(
       interaction.id,
       setTimeout(() => {
-        logger.debug(`Provavel leak de execução no comando ${command.name}.`);
+        logger.info(`Provavel leak de execução no comando ${command.name}.`);
         testTimeouts.delete(interaction.id);
       }, 120_000),
     );
