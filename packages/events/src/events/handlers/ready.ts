@@ -15,7 +15,9 @@ const postBotStatus = async (): Promise<void> => {
     'DBL_TOKEN',
   ]);
 
-  const info = (await getEventsClient().request({ type: 'GUILD_COUNT' })).catch(() => null) as {
+  const info = (await getEventsClient()
+    .request({ type: 'GUILD_COUNT' })
+    .catch(() => null)) as {
     guilds: number;
     shards: number;
   } | null;
