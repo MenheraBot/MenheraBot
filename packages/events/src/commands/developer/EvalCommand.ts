@@ -1,9 +1,13 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { ApplicationCommandOptionTypes } from 'discordeno/types';
 import { inspect } from 'node:util';
 
+import userRepository from '../../database/repositories/userRepository';
 import { createEmbed } from '../../utils/discord/embedUtils';
 import { bot } from '../../index';
 import { createCommand } from '../../structures/command/createCommand';
+
+const nein = (...args: unknown[]) => undefined;
 
 const EvalCommand = createCommand({
   path: '',
@@ -21,6 +25,10 @@ const EvalCommand = createCommand({
   category: 'dev',
   authorDataFields: ['id'],
   execute: async (ctx, finishCommand) => {
+    const repos = { userRepository };
+
+    nein(repos);
+
     try {
       // eslint-disable-next-line no-eval
       let evaled = await eval(ctx.getOption('script', false, true));
