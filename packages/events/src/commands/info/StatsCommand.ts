@@ -147,7 +147,6 @@ const executeDesignerStats = async (
         registered: `<t:${millisToSeconds(design.registeredAt)}:d>`,
         royalty: design.royalty,
         type: theme.data.type,
-        rarity: theme.data.rarity,
       });
 
       fields.push({ name: fieldName, value: fieldDescription, inline: true });

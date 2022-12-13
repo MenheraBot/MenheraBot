@@ -35,12 +35,8 @@ export interface UserBuyableTheme {
   aquiredAt: number;
 }
 
-export type ThemeRarity = 'common' | 'rare' | 'epic' | 'legendary' | 'mythical' | 'divine';
-
 export interface BaseTheme {
   price: number;
-  rarity: ThemeRarity;
-  isBuyable: boolean;
 }
 
 export interface CardBackgroundTheme extends BaseTheme {

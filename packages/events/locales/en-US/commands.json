@@ -220,7 +220,7 @@
     },
     "buy_themes": {
       "title": "🎊 | Buy Themes",
-      "data": "**{{description}}**\n**Price**: {{price}} :star:\n**Rarity**: $t(common:rarities.{{rarity}})\n**Author**: <@{{author}}>",
+      "data": "**{{description}}**\n**Price**: {{price}} :star:\n**Author**: <@{{author}}>",
       "description": "Below are some themes you can buy right away.",
       "owned": "(Owned)",
       "not-registered": "This theme is not yet available! Please try again later",
@@ -483,7 +483,7 @@
       "success": "Your purchase notification settings have changed!",
       "dont-notify": "Do Not Notify Purchases",
       "notify-footer": "With notify purchases active, every time a user buys a design from you, Menhera will try to send a message in your DM showing this",
-      "description": "**Type:** $t(common:theme_types.{{type}}) ($t(common:rarities.{{rarity}}))\n**Royalty:**: {{royalty}}%\n**Profit:** {{profit}} :star:\n**Sold:** {{sold}}\nRegistered at {{registered}}"
+      "description": "**Type:** $t(common:theme_types.{{type}})\n**Royalty:**: {{royalty}}%\n**Profit:** {{profit}} :star:\n**Sold:** {{sold}}\nRegistered at {{registered}}"
     },
     "coinflip": {
       "embed-title": "{{user}}'s Coinflip Statistics",

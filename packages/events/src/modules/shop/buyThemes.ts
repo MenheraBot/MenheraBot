@@ -114,7 +114,6 @@ const buyThemes = async (ctx: InteractionContext, finishCommand: () => void): Pr
         value: ctx.locale('commands:loja.buy_themes.data', {
           description: ctx.locale(`data:themes.${theme.id as 1}.description`),
           price: theme.data.price,
-          rarity: theme.data.rarity,
           author: credits.find((b) => b.themeId === theme.id)?.ownerId,
         }),
         inline: true,

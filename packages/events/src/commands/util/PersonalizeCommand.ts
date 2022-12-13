@@ -486,9 +486,7 @@ const executeThemesCommand = async (ctx: InteractionContext, finishCommand: () =
 
       embed.fields?.push({
         name: ctx.locale(`data:themes.${c.id as 1}.name`),
-        value: `${ctx.locale(`data:themes.${c.id as 1}.description`)}\n**${ctx.locale(
-          'common:rarity',
-        )}**: ${ctx.locale(`common:rarities.${theme.data.rarity}`)}`,
+        value: ctx.locale(`data:themes.${c.id as 1}.description`),
         inline: true,
       });
 
