@@ -18,7 +18,7 @@ const colorPrices = {
   your_choice: 85_000,
 };
 
-const unbuyableThemes = [3, 4, 5, 6];
+const unbuyableThemes = [3, 4, 5, 6, 25, 26, 27];
 
 const previewProfileData = {
   user: {

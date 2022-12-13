@@ -122,6 +122,31 @@ const Themes: { [id: number]: ThemeFile } & Object = {
     type: 'profile',
     theme: 'gatito',
   },
+  25: {
+    price: 0,
+    type: 'eb_background',
+    theme: 'default',
+  },
+  26: {
+    price: 0,
+    type: 'eb_text_box',
+    theme: 'default',
+  },
+  27: {
+    price: 0,
+    type: 'eb_menhera',
+    theme: 'default',
+  },
+  28: {
+    price: 50_000,
+    type: 'eb_text_box',
+    theme: 'xp',
+  },
+  29: {
+    price: 75_000,
+    type: 'eb_background',
+    theme: 'xp',
+  },
 };
 
 export default Themes;
