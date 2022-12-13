@@ -162,6 +162,9 @@ const EightballCommand = createCommand({
       answer: ctx.locale(`commands:8ball.answers.${randomAnswer.id}`),
       type: randomAnswer.type,
       username: toWritableUtf(ctx.author.username),
+      backgroundTheme: 'default',
+      menheraTheme: 'default',
+      textBoxTheme: 'default',
     });
 
     const embed = createEmbed({
