@@ -169,6 +169,7 @@ const EightballCommand = createCommand({
 
     const embed = createEmbed({
       title: `${EMOJIS.question} | ${ctx.locale('commands:8ball.ask')}`,
+      footer: { text: ctx.locale('commands:8ball.themes') },
     });
 
     if (res.err) {

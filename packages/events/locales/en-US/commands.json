@@ -269,6 +269,7 @@
   "8ball": {
     "question": "Your Question",
     "answer": "Answer",
+    "themes": "Did you know that 8ball has themes now? /shop buy themes",
     "ask": "Ask Menhera",
     "answers": {
       "0": "It is certain",
