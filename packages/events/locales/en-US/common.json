@@ -39,7 +39,10 @@
     "profile": "Profile",
     "cards": "Cards",
     "table": "Table",
-    "card_background": "Card Background"
+    "card_background": "Card Background",
+    "eb_background": "8ball Background",
+    "eb_text_box": "8ball Text Box",
+    "eb_menhera": "8ball Menhera"
   },
   "roleplay": {
     "life": "Life",

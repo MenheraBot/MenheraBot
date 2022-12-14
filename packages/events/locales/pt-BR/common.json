@@ -37,7 +37,10 @@
     "profile": "Perfil",
     "cards": "Cartas",
     "table": "Mesa",
-    "card_background": "Fundo da Carta"
+    "card_background": "Fundo da Carta",
+    "eb_background": "Fundo do 8ball",
+    "eb_text_box": "Caixa de Perguntas do 8ball",
+    "eb_menhera": "Menhera do 8ball"
   },
   "roleplay": {
     "life": "Vida",
