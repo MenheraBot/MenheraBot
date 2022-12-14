@@ -633,6 +633,9 @@
     "cards": "Card Styles",
     "table": "Card Table Styles",
     "card_background": "Card Background Styles",
+    "eb_menhera": "8ball Menhera",
+    "eb_background": "8ball Backgrounds",
+    "eb_text_box": "8ball Question Box",
     "no-themes": "You don't have any such themes to change!",
     "selected": "Your theme was successfully changed!",
     "choose": "Choose down bellow your new theme!"

@@ -643,6 +643,9 @@
     "cards": "Estilos de Carta",
     "table": "Estilos de Mesa de Cartas",
     "card_background": "Estilos de Fundo de Carta",
+    "eb_menhera": "Menhera's do 8ball",
+    "eb_background": "Fundos do 8ball",
+    "eb_text_box": "Caixa de Perguntas do 8ball",
     "no-themes": "Você não tem nenhum tema deste tipo para alterar!",
     "selected": "Seu tema foi alterado com sucesso!",
     "choose": "Escolha abaixo o seu novo Tema!"
