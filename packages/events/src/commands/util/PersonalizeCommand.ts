@@ -534,6 +534,15 @@ const executeThemesCommand = async (ctx: InteractionContext, finishCommand: () =
     case 'table':
       userThemesRepository.setTableTheme(ctx.author.id, themeId);
       break;
+    case 'eb_background':
+      userThemesRepository.setEbBackgroundTheme(ctx.author.id, themeId);
+      break;
+    case 'eb_text_box':
+      userThemesRepository.setEbTextBoxTheme(ctx.author.id, themeId);
+      break;
+    case 'eb_menhera':
+      userThemesRepository.setEbMenheraTheme(ctx.author.id, themeId);
+      break;
   }
 
   ctx.makeMessage({
@@ -616,6 +625,21 @@ const PersonalizeCommand = createCommand({
               name: '🎴 | Fundo de Carta',
               nameLocalizations: { 'en-US': '🎴 | Card Background' },
               value: 'card_background',
+            },
+            {
+              name: '🏞️ | Fundo do 8ball',
+              nameLocalizations: { 'en-US': '🏞️ | 8ball Background' },
+              value: 'eb_background',
+            },
+            {
+              name: '❓ | Caixa de Pergunta do 8ball',
+              nameLocalizations: { 'en-US': '❓ | 8ball Question Box' },
+              value: 'eb_text_box',
+            },
+            {
+              name: '🤖 | Menhera do 8ball',
+              nameLocalizations: { 'en-US': '🤖 | 8ball Menhera' },
+              value: 'eb_menhera',
             },
           ],
         },
