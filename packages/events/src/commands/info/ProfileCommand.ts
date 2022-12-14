@@ -1,5 +1,6 @@
 import { ApplicationCommandOptionTypes } from 'discordeno/types';
 import { User } from 'discordeno/transformers';
+import dayjs from 'dayjs';
 
 import userRepository from '../../database/repositories/userRepository';
 import { MessageFlags } from '../../utils/discord/messageUtils';
@@ -134,6 +135,9 @@ const ProfileCommand = createCommand({
         username: toWritableUtf(marryData.username),
         tag: `${toWritableUtf(marryData.username)}#${marryData.discriminator}`,
       };
+
+      if (user.marriedAt && user.marriedAt > 0)
+        userData.marryDate = dayjs(user.marriedAt).format('DD/MM/YYYY');
     }
 
     const profileTheme = await userThemesRepository.getProfileTheme(discordUser.id);
