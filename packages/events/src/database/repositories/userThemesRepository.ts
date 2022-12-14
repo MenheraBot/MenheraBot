@@ -95,14 +95,37 @@ const findEnsuredUserThemes = async (userId: BigString): Promise<DatabaseUserThe
 const getThemesForBlackjack = async (
   userId: BigString,
 ): Promise<[AvailableTableThemes, AvailableCardThemes, AvailableCardBackgroundThemes]> => {
-  const themes = await findEnsuredUserThemes(userId);
+  const userThemes = await findEnsuredUserThemes(userId);
 
-  const tableTheme = getThemeById<TableTheme>(themes.selectedTableTheme).data.theme;
-  const cardTheme = getThemeById<CardsTheme>(themes.selectedCardTheme).data.theme;
-  const backgroundCardTheme = getThemeById<CardBackgroundTheme>(themes.selectedCardBackgroundTheme)
-    .data.theme;
+  const tableTheme = getThemeById<TableTheme>(userThemes.selectedTableTheme).data.theme;
+  const cardTheme = getThemeById<CardsTheme>(userThemes.selectedCardTheme).data.theme;
+  const backgroundCardTheme = getThemeById<CardBackgroundTheme>(
+    userThemes.selectedCardBackgroundTheme,
+  ).data.theme;
 
   return [tableTheme, cardTheme, backgroundCardTheme];
+};
+
+const getThemesForEightBall = async (
+  userId: BigString,
+): Promise<
+  [
+    AvailableEightBallBackgroundThemeTypes,
+    AvailableEightBallTextBoxThemeTypes,
+    AvailableEightBallMennheraThemeTypes,
+  ]
+> => {
+  const userThemes = await findEnsuredUserThemes(userId);
+
+  const backgroundTheme = getThemeById<EightBallBackgroundTheme>(
+    userThemes.selectedEbBackgroundTheme,
+  ).data.theme;
+  const textBoxTheme = getThemeById<EightBallTextBoxTheme>(userThemes.selectedEbTextBoxTheme).data
+    .theme;
+  const menheraTheme = getThemeById<EightBallMenheraTheme>(userThemes.selectedEbMenheraTheme).data
+    .theme;
+
+  return [backgroundTheme, textBoxTheme, menheraTheme];
 };
 
 const makeNotify = async (userId: BigString, notify: boolean): Promise<void> => {
@@ -244,6 +267,7 @@ const setEbMenheraTheme = async (userId: BigString, themeId: number): Promise<vo
 export default {
   findEnsuredUserThemes,
   getThemesForBlackjack,
+  getThemesForEightBall,
   makeNotify,
   addTableTheme,
   addCardsTheme,
