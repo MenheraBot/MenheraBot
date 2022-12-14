@@ -36,7 +36,7 @@ const parseMongoUserToRedisUser = (user: DatabaseUserThemesSchema): DatabaseUser
   selectedTableTheme: user.selectedTableTheme,
   selectedProfileTheme: user.selectedProfileTheme,
   selectedCardBackgroundTheme: user.selectedCardBackgroundTheme,
-  selectedEbBackgroundTheme: user.selectedEbMenheraTheme,
+  selectedEbBackgroundTheme: user.selectedEbBackgroundTheme,
   selectedEbTextBoxTheme: user.selectedEbTextBoxTheme,
   selectedEbMenheraTheme: user.selectedEbMenheraTheme,
   notifyPurchase: user.notifyPurchase,
