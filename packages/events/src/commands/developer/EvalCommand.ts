@@ -7,7 +7,7 @@ import { createEmbed } from '../../utils/discord/embedUtils';
 import { bot } from '../../index';
 import { createCommand } from '../../structures/command/createCommand';
 
-const nein = (...args: unknown[]) => undefined;
+const noop = (...args: unknown[]) => undefined;
 
 const EvalCommand = createCommand({
   path: '',
@@ -27,7 +27,7 @@ const EvalCommand = createCommand({
   execute: async (ctx, finishCommand) => {
     const repos = { userRepository };
 
-    nein(repos);
+    noop(repos);
 
     try {
       // eslint-disable-next-line no-eval
