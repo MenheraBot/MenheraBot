@@ -22,10 +22,16 @@ const parseMongoUserToRedisUser = (user: DatabaseUserThemesSchema): DatabaseUser
   tableThemes: user.tableThemes,
   profileThemes: user.profileThemes,
   cardsBackgroundThemes: user.cardsBackgroundThemes,
+  ebBackgroundThemes: user.ebBackgroundThemes,
+  ebTextBoxThemes: user.ebTextBoxThemes,
+  ebMenheraThemes: user.ebMenheraThemes,
   selectedCardTheme: user.selectedCardTheme,
   selectedTableTheme: user.selectedTableTheme,
   selectedProfileTheme: user.selectedProfileTheme,
   selectedCardBackgroundTheme: user.selectedCardBackgroundTheme,
+  selectedEbBackgroundTheme: user.selectedEbMenheraTheme,
+  selectedEbTextBoxTheme: user.selectedEbTextBoxTheme,
+  selectedEbMenheraTheme: user.selectedEbMenheraTheme,
   notifyPurchase: user.notifyPurchase,
 });
 

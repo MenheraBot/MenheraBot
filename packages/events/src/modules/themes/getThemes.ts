@@ -27,6 +27,9 @@ const getUserActiveThemes = (
   pushToAllItems(userData.cardsThemes, userData.selectedCardTheme);
   pushToAllItems(userData.profileThemes, userData.selectedProfileTheme);
   pushToAllItems(userData.tableThemes, userData.selectedTableTheme);
+  pushToAllItems(userData.ebBackgroundThemes, userData.selectedEbBackgroundTheme);
+  pushToAllItems(userData.ebTextBoxThemes, userData.selectedEbTextBoxTheme);
+  pushToAllItems(userData.ebMenheraThemes, userData.selectedEbMenheraTheme);
 
   return allThemes;
 };
