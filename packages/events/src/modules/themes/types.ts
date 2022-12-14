@@ -37,11 +37,11 @@ export type AvailableThemeTypes =
   | 'eb_text_box'
   | 'eb_menhera';
 
-export type EightBallAvailableBackgroundThemeTypes = 'default' | 'xp';
+export type AvailableEightBallBackgroundThemeTypes = 'default' | 'xp';
 
-export type EightBallAvailableTextBoxThemeTypes = 'default' | 'xp';
+export type AvailableEightBallTextBoxThemeTypes = 'default' | 'xp';
 
-export type EightBallAvailableMennheraThemeTypes = 'default';
+export type AvailableEightBallMennheraThemeTypes = 'default';
 
 export interface UserBuyableTheme {
   id: number;
@@ -74,17 +74,17 @@ export interface TableTheme extends BaseTheme {
 
 export interface EightBallBackgroundTheme extends BaseTheme {
   type: 'eb_background';
-  theme: EightBallAvailableBackgroundThemeTypes;
+  theme: AvailableEightBallBackgroundThemeTypes;
 }
 
 export interface EightBallTextBoxTheme extends BaseTheme {
   type: 'eb_text_box';
-  theme: EightBallAvailableTextBoxThemeTypes;
+  theme: AvailableEightBallTextBoxThemeTypes;
 }
 
 export interface EightBallMenheraTheme extends BaseTheme {
   type: 'eb_menhera';
-  theme: EightBallAvailableMennheraThemeTypes;
+  theme: AvailableEightBallMennheraThemeTypes;
 }
 
 export type ThemeFile =
