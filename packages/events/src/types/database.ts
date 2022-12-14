@@ -59,14 +59,20 @@ export interface DatabaseCreditsSchema {
 
 export interface DatabaseUserThemesSchema {
   readonly id: string;
-  cardsThemes: Array<UserBuyableTheme>;
-  tableThemes: Array<UserBuyableTheme>;
-  profileThemes: Array<UserBuyableTheme>;
-  cardsBackgroundThemes: Array<UserBuyableTheme>;
+  cardsThemes: UserBuyableTheme[];
+  tableThemes: UserBuyableTheme[];
+  profileThemes: UserBuyableTheme[];
+  cardsBackgroundThemes: UserBuyableTheme[];
+  ebBackgroundThemes: UserBuyableTheme[];
+  ebTextBoxThemes: UserBuyableTheme[];
+  ebMenheraThemes: UserBuyableTheme[];
   selectedCardTheme: number;
   selectedTableTheme: number;
   selectedProfileTheme: number;
   selectedCardBackgroundTheme: number;
+  selectedEbBackgroundTheme: number;
+  selectedEbTextBoxTheme: number;
+  selectedEbMenheraTheme: number;
   notifyPurchase: boolean;
 }
 

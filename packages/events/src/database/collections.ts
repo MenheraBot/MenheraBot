@@ -28,10 +28,16 @@ const userThemes = new Schema({
   tableThemes: { type: Array, default: [{ id: 5, aquiredAt: 0 }] },
   profileThemes: { type: Array, default: [{ id: 3, aquiredAt: 0 }] },
   cardsBackgroundThemes: { type: Array, default: [{ id: 6, aquiredAt: 0 }] },
+  ebBackgroundThemes: { type: Array, default: [{ id: 25, aquiredAt: 0 }] },
+  ebTextBoxThemes: { type: Array, default: [{ id: 26, aquiredAt: 0 }] },
+  ebMenheraThemes: { type: Array, default: [{ id: 27, aquiredAt: 0 }] },
   selectedCardTheme: { type: Number, default: 4 },
   selectedProfileTheme: { type: Number, default: 3 },
   selectedTableTheme: { type: Number, default: 5 },
   selectedCardBackgroundTheme: { type: Number, default: 6 },
+  selectedEbBackgroundTheme: { type: Number, default: 25 },
+  selectedEbTextBoxTheme: { type: Number, default: 26 },
+  selectedEbMenheraTheme: { type: Number, default: 27 },
   notifyPurchase: { type: Boolean, default: true },
 });
 

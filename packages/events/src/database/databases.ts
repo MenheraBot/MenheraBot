@@ -6,7 +6,6 @@ import { logger } from '../utils/logger';
 
 const { REDIS_ADDRESS } = getEnviroments(['REDIS_ADDRESS']);
 
-// eslint-disable-next-line import/no-mutable-exports
 const RedisClient = new Redis({
   db: process.env.NODE_ENV === 'development' ? 1 : 0,
   lazyConnect: true,
