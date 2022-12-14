@@ -145,6 +145,26 @@
     "24": {
       "name": "Gatito",
       "description": "Não há nada melhor do que gatinhos!"
-    }
+    },
+    "25": {
+      "name": "Menhera's room",
+      "description": "A pink room for a cute girl"
+    },
+    "26": {
+      "name": "Valentine's Day",
+      "description": "Love is in the air!"
+     },
+    "27": {
+      "name": "Simply Menhera",
+      "description": "Yeah, that's me."
+      } ,
+    "28": {
+      "name": "Windows XP",
+      "description": "A famous Windows XP warning window"
+     },
+    "29": {
+      "name": "Windows XP",
+      "description": "No wallpaper is more famous than this one"
+     }
   }
 }
