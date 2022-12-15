@@ -45,8 +45,8 @@ const executeHuntStats = async (ctx: InteractionContext, finishCommand: () => vo
     return finishCommand();
   }
 
-  const calculateSuccess = (sucesses: number, tries: number): string =>
-    sucesses === 0 ? '0' : ((sucesses / tries) * 100).toFixed(1).replace('.0', '');
+  const calculateSuccess = (successes: number, tries: number): string =>
+    successes === 0 ? '0' : ((successes / tries) * 100).toFixed(1).replace('.0', '');
 
   const embed = createEmbed({
     title: ctx.locale('commands:status.hunt.embed-title', {
@@ -207,7 +207,7 @@ const makeGamblingStatisticsEmbed = (
   type: string,
   userTag: string,
 ): Embed => {
-  const totalMoney = data.winMoney - data.lostGames;
+  const totalMoney = data.winMoney - data.lostMoney;
 
   const embed = createEmbed({
     title: translate(`commands:status.${type as 'coinflip'}.embed-title`, { user: userTag }),
