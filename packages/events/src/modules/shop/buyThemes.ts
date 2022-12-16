@@ -90,8 +90,8 @@ const buyThemes = async (ctx: InteractionContext, finishCommand: () => void): Pr
   const userThemesIds = getUserActiveThemes(userThemes);
 
   const components = [
-    createActionRow([profileButton, cardsButton, backgroundButton, tableButton]),
-    createActionRow([ebBackgroundButton, ebTextBoxButton, ebMenheraButton, previewButton]),
+    createActionRow([profileButton, cardsButton, backgroundButton, tableButton, previewButton]),
+    createActionRow([ebBackgroundButton, ebTextBoxButton, ebMenheraButton]),
   ];
 
   let previewMode = false;
@@ -387,7 +387,7 @@ const buyThemes = async (ctx: InteractionContext, finishCommand: () => void): Pr
           type: InteractionResponseTypes.DeferredUpdateMessage,
         });
         previewMode = !previewMode;
-        (components[1].components[3] as ButtonComponent).style = previewMode
+        (components[0].components[4] as ButtonComponent).style = previewMode
           ? ButtonStyles.Danger
           : ButtonStyles.Success;
 

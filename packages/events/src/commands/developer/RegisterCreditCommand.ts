@@ -34,6 +34,9 @@ const RegisterCreditCommand = createCommand({
         { name: 'cards', value: 'addCardsTheme' },
         { name: 'profile', value: 'addProfileTheme' },
         { name: 'table', value: 'addTableTheme' },
+        { name: 'eb_background', value: 'addEbBackgroundTheme' },
+        { name: 'eb_text_box', value: 'addEbTextBoxTheme' },
+        { name: 'eb_menhera', value: 'addEbMenheraTheme' },
       ],
       required: true,
     },
@@ -51,11 +54,7 @@ const RegisterCreditCommand = createCommand({
     const user = ctx.getOption<User>('owner', 'users', true);
     const themeId = ctx.getOption<number>('theme', false, true);
     const royalty = ctx.getOption<number>('royalty', false) ?? 7;
-    const themeType = ctx.getOption<string>('type', false, true) as
-      | 'addCardBackgroundTheme'
-      | 'addCardsTheme'
-      | 'addProfileTheme'
-      | 'addTableTheme';
+    const themeType = ctx.getOption<string>('type', false, true) as 'addCardBackgroundTheme';
 
     const alreadyExists = await themeCreditsRepository.getThemeInfo(themeId);
 

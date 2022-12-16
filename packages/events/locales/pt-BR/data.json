@@ -147,24 +147,24 @@
       "description": "Não há nada melhor do que gatinhos!"
     },
     "25": {
-      "name": "Menhera's room",
-      "description": "A pink room for a cute girl"
+      "name": "Quarto da Menhera",
+      "description": "Um quartinho rosa para uma guria fofa"
     },
     "26": {
-      "name": "Valentine's Day",
-      "description": "Love is in the air!"
+      "name": "Dia dos Namorados",
+      "description": "O amor está no ar!"
      },
     "27": {
-      "name": "Simply Menhera",
-      "description": "Yeah, that's me."
+      "name": "Simplesmente Menhera",
+      "description": "É, sou eu"
       } ,
     "28": {
       "name": "Windows XP",
-      "description": "A famous Windows XP warning window"
+      "description": "A famosa telinha de aviso do Windows XP"
      },
     "29": {
       "name": "Windows XP",
-      "description": "No wallpaper is more famous than this one"
+      "description": "Nenhum wallpaper é mais famoso que esse."
      }
   }
 }
