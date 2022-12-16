@@ -16,7 +16,7 @@ import {
   numbersToBlackjackCards,
   safeImageReply,
 } from './blackjackMatch';
-import InteractionContext from '../../structures/command/InteractionContext';
+import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
 import {
   AvailableCardBackgroundThemes,
   AvailableCardThemes,
@@ -27,7 +27,7 @@ import { finishMatch } from './finishMatch';
 import { makeDealerPlay } from './makeDealerPlay';
 
 const continueFromBuy = async (
-  ctx: InteractionContext,
+  ctx: ChatInputInteractionContext,
   bet: number,
   oldPLayerCards: number[],
   dealerCards: number[],

@@ -1,12 +1,15 @@
 import { HuntMagicItems } from '../hunt/magicItems';
 import { HuntProbablyBoostItem } from '../hunt/types';
-import InteractionContext from '../../structures/command/InteractionContext';
+import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
 import { COLORS } from '../../structures/constants';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { getUserAvatar } from '../../utils/discord/userUtils';
 import { colorPrices, huntValues } from './constants';
 
-const buyInfo = async (ctx: InteractionContext, finishCommand: () => void): Promise<void> => {
+const buyInfo = async (
+  ctx: ChatInputInteractionContext,
+  finishCommand: () => void,
+): Promise<void> => {
   const type = ctx.getOption('tipo', false, true);
 
   if (type === 'colors') {

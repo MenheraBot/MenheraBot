@@ -3,13 +3,13 @@ import {
   AvailableCardThemes,
   AvailableTableThemes,
 } from '../themes/types';
-import InteractionContext from '../../structures/command/InteractionContext';
+import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
 import { BLACKJACK_PRIZE_MULTIPLIERS } from './index';
 import { getHandValue, numbersToBlackjackCards } from './blackjackMatch';
 import { finishMatch } from './finishMatch';
 
 const makeDealerPlay = async (
-  ctx: InteractionContext,
+  ctx: ChatInputInteractionContext,
   bet: number,
   playerCards: number[],
   dealerCards: number[],

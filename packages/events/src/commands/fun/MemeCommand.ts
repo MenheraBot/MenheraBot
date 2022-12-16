@@ -4,9 +4,12 @@ import { COLORS } from '../../structures/constants';
 import { createEmbed } from '../../utils/discord/embedUtils';
 import { getAssetLink } from '../../structures/cdnManager';
 import { createCommand } from '../../structures/command/createCommand';
-import InteractionContext from '../../structures/command/InteractionContext';
+import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
 
-const ExecuteFodase = async (ctx: InteractionContext, finishCommand: () => void): Promise<void> => {
+const ExecuteFodase = async (
+  ctx: ChatInputInteractionContext,
+  finishCommand: () => void,
+): Promise<void> => {
   const randomPhrase = `${Math.floor(Math.random() * 3)}`;
 
   const phrase = ctx.locale(`commands:fodase.${randomPhrase as '1'}`, {
@@ -26,7 +29,10 @@ const ExecuteFodase = async (ctx: InteractionContext, finishCommand: () => void)
   finishCommand();
 };
 
-const ExecuteHumor = async (ctx: InteractionContext, finishCommand: () => void): Promise<void> => {
+const ExecuteHumor = async (
+  ctx: ChatInputInteractionContext,
+  finishCommand: () => void,
+): Promise<void> => {
   const selectedImage = getAssetLink('humor');
 
   const embed = createEmbed({ image: { url: selectedImage }, color: COLORS.Random() });

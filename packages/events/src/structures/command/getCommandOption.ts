@@ -1,6 +1,6 @@
 import { Interaction } from 'discordeno/transformers';
 import { ApplicationCommandOptionTypes } from 'discordeno/types';
-import { CanResolve } from './InteractionContext';
+import { CanResolve } from './ChatInputInteractionContext';
 
 function getOptionFromInteraction<T>(
   interaction: Interaction,

@@ -29,9 +29,10 @@
   "MANAGE_EMOJIS": "Manage Emojis",
   "ONLY_DEVS": "This command is exclusive of my owner",
   "SLASH_COMMAND": "This command is already available in slash!",
-  "UNKNOWN_SLASH": "> This command doesn't exist!",
+  "UNKNOWN_SLASH": "> This command doesn't exist anymore!",
   "USER_MISSING_PERMISSION": "you must have the `{{perm}}` permission in order to execute this command.",
   "CLIENT_MISSING_PERMISSION": "I must have the `{{perm}}` permission in order to execute this command.",
   "BANNED_INFO": "you are banned from using Menhera!\n\nReason: `{{banReason}}`", 
+  "COMPONENT_OUTDATED": "This component is from an old update! Use the command again to enjoy the updates",
   "IN_COMMAND_EXECUTION": "You cannot use this command as you are still using another command! Finish running that command and try again\n\n**THINKING IT'S A BUG?** Come to Menhera's support server {{command}} and ask for help"
 }

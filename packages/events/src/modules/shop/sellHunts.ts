@@ -1,12 +1,12 @@
 import shopRepository from '../../database/repositories/shopRepository';
 import { EMOJIS } from '../../structures/constants';
 import { MessageFlags } from '../../utils/discord/messageUtils';
-import InteractionContext from '../../structures/command/InteractionContext';
+import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
 import { DatabaseHuntingTypes } from '../hunt/types';
 import { huntValues } from './constants';
 
 const sellHunts = async (
-  ctx: InteractionContext,
+  ctx: ChatInputInteractionContext,
   finishCommand: (args?: unknown) => void,
 ): Promise<void> => {
   const huntType = ctx.getOption<DatabaseHuntingTypes>('tipo', false, true);

@@ -14,7 +14,7 @@ import { ApiHuntingTypes } from '../../modules/hunt/types';
 import blacklistRepository from '../../database/repositories/blacklistRepository';
 import { CoinflipTop, RouletteOrBichoTop } from '../../types/api';
 import userRepository from '../../database/repositories/userRepository';
-import InteractionContext from '../../structures/command/InteractionContext';
+import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
 import { COLORS, EMOJIS } from '../../structures/constants';
 import { DatabaseUserSchema } from '../../types/database';
 import { createEmbed } from '../../utils/discord/embedUtils';
@@ -48,7 +48,7 @@ const topEmojis: { [key: string]: string } = {
 };
 
 const executeUserDataRelatedRanking = async (
-  ctx: InteractionContext,
+  ctx: ChatInputInteractionContext,
   label: keyof DatabaseUserSchema,
   emoji: string,
   embedTitle: string,
@@ -93,7 +93,7 @@ const executeUserDataRelatedRanking = async (
 };
 
 const executeMostUsedCommands = async (
-  ctx: InteractionContext,
+  ctx: ChatInputInteractionContext,
   finishCommand: () => void,
 ): Promise<void> => {
   const res = await getMostUsedCommands();
@@ -124,7 +124,7 @@ const executeMostUsedCommands = async (
 };
 
 const executeMostUsersThatUsedCommands = async (
-  ctx: InteractionContext,
+  ctx: ChatInputInteractionContext,
   finishCommand: () => void,
 ): Promise<void> => {
   const res = await getUsersThatMostUsedCommands();
@@ -165,7 +165,7 @@ const executeMostUsersThatUsedCommands = async (
 };
 
 const executeMostUsedCommandsFromUser = async (
-  ctx: InteractionContext,
+  ctx: ChatInputInteractionContext,
   finishCommand: () => void,
 ): Promise<void> => {
   const user = ctx.getOption<User>('user', 'users') ?? ctx.author;
@@ -207,7 +207,7 @@ const executeMostUsedCommandsFromUser = async (
 };
 
 const executeHuntStatistics = async (
-  ctx: InteractionContext,
+  ctx: ChatInputInteractionContext,
   finishCommand: () => void,
 ): Promise<void> => {
   const huntType = ctx.getOption<ApiHuntingTypes>('caça', false, true);
@@ -267,7 +267,10 @@ const executeHuntStatistics = async (
   finishCommand();
 };
 
-const topUserResponseBasedBets = async (ctx: InteractionContext, finishCommand: () => void) => {
+const topUserResponseBasedBets = async (
+  ctx: ChatInputInteractionContext,
+  finishCommand: () => void,
+) => {
   const gameMode = ctx.getOption<'bicho' | 'roulette'>('jogo', false, true);
   const topMode = ctx.getOption<'money'>('ordenar', false, true);
   const page = ctx.getOption<number>('página', false) ?? 0;
@@ -340,7 +343,10 @@ const topUserResponseBasedBets = async (ctx: InteractionContext, finishCommand: 
   finishCommand();
 };
 
-const topAccountResponseBets = async (ctx: InteractionContext, finishCommand: () => void) => {
+const topAccountResponseBets = async (
+  ctx: ChatInputInteractionContext,
+  finishCommand: () => void,
+) => {
   const gameMode = ctx.getOption<'blackjack' | 'coinflip'>('jogo', false, true);
   const topMode = ctx.getOption<'money'>('ordenar', false, true);
   const page = ctx.getOption<number>('página', false) ?? 0;

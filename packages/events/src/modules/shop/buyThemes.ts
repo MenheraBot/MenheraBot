@@ -7,7 +7,7 @@ import userThemesRepository from '../../database/repositories/userThemesReposito
 import { bot } from '../../index';
 import { getThemeById, getThemesByType, getUserActiveThemes } from '../themes/getThemes';
 import { AvailableThemeTypes } from '../themes/types';
-import InteractionContext from '../../structures/command/InteractionContext';
+import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
 import InteractionCollector from '../../structures/InteractionCollector';
 import { ComponentInteraction, SelectMenuInteraction } from '../../types/interaction';
 import {
@@ -23,7 +23,10 @@ import { MessageFlags } from '../../utils/discord/messageUtils';
 import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
 import { previewProfileData, unbuyableThemes } from './constants';
 
-const buyThemes = async (ctx: InteractionContext, finishCommand: () => void): Promise<void> => {
+const buyThemes = async (
+  ctx: ChatInputInteractionContext,
+  finishCommand: () => void,
+): Promise<void> => {
   const embed = createEmbed({
     title: ctx.locale('commands:loja.buy_themes.title'),
     description: ctx.locale('commands:loja.buy_themes.description'),

@@ -7,7 +7,7 @@ import {
   collectModalResponse,
   collectResponseComponentInteraction,
 } from '../../utils/discord/collectorUtils';
-import InteractionContext from '../../structures/command/InteractionContext';
+import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
 import { EMOJIS } from '../../structures/constants';
 import {
   createActionRow,
@@ -19,7 +19,7 @@ import {
 import { colorPrices } from './constants';
 
 const buyColor = async (
-  ctx: InteractionContext,
+  ctx: ChatInputInteractionContext,
   finishCommand: (args?: unknown) => void,
 ): Promise<void> => {
   const availableColors = [

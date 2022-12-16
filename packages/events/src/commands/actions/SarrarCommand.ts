@@ -14,12 +14,32 @@ import {
   createButton,
   disableComponents,
 } from '../../utils/discord/componentUtils';
-import InteractionContext from '../../structures/command/InteractionContext';
+import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
 import { createCommand } from '../../structures/command/createCommand';
 import { COLORS } from '../../structures/constants';
 import { getAssetLink } from '../../structures/cdnManager';
 import { getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
 import { createEmbed } from '../../utils/discord/embedUtils';
+
+const sarrada = (ctx: ChatInputInteractionContext, user: User, finishCommand: () => void): void => {
+  const selectedImage = getAssetLink('sarrar');
+
+  const avatar = getUserAvatar(ctx.author, { enableGif: true });
+
+  const embed = createEmbed({
+    title: ctx.locale('commands:sarrar.embed_title'),
+    description: ctx.locale('commands:sarrar.embed_description', {
+      author: mentionUser(ctx.author.id),
+      mention: mentionUser(user.id),
+    }),
+    image: { url: selectedImage },
+    color: COLORS.ACTIONS,
+    thumbnail: { url: avatar },
+  });
+
+  ctx.makeMessage({ embeds: [embed], components: [] });
+  finishCommand();
+};
 
 const SarrarCommand = createCommand({
   path: '',
@@ -58,7 +78,7 @@ const SarrarCommand = createCommand({
     });
 
     const button = createButton({
-      customId: `${ctx.interaction.id}`,
+      customId: `0|ANY|${ctx.author.id}`,
       label: ctx.locale('commands:sarrar.sarrar'),
       style: ButtonStyles.Primary,
     });
@@ -105,26 +125,7 @@ const SarrarCommand = createCommand({
 
     sarrada(ctx, collected.user, finishCommand);
   },
+  commandRelatedExecutions: [],
 });
-
-const sarrada = (ctx: InteractionContext, user: User, finishCommand: () => void) => {
-  const selectedImage = getAssetLink('sarrar');
-
-  const avatar = getUserAvatar(ctx.author, { enableGif: true });
-
-  const embed = createEmbed({
-    title: ctx.locale('commands:sarrar.embed_title'),
-    description: ctx.locale('commands:sarrar.embed_description', {
-      author: mentionUser(ctx.author.id),
-      mention: mentionUser(user.id),
-    }),
-    image: { url: selectedImage },
-    color: COLORS.ACTIONS,
-    thumbnail: { url: avatar },
-  });
-
-  ctx.makeMessage({ embeds: [embed], components: [] });
-  finishCommand();
-};
 
 export default SarrarCommand;

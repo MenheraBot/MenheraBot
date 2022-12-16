@@ -1,7 +1,7 @@
 import { Embed } from 'discordeno/transformers';
 import { ActionRow } from 'discordeno/types';
 import { getUserAvatar } from '../../utils/discord/userUtils';
-import InteractionContext from '../../structures/command/InteractionContext';
+import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { VanGoghEndpoints, vanGoghRequest, VanGoghReturnData } from '../../utils/vanGoghRequest';
 import {
@@ -35,7 +35,7 @@ const getHandValue = (cards: BlackjackCard[]): number => {
 };
 
 const getTableImage = (
-  ctx: InteractionContext,
+  ctx: ChatInputInteractionContext,
   bet: number,
   playerCards: BlackjackCard[],
   dealerCards: BlackjackCard[],
@@ -62,7 +62,7 @@ const getTableImage = (
 };
 
 const generateBlackjackEmbed = (
-  ctx: InteractionContext,
+  ctx: ChatInputInteractionContext,
   playerCards: BlackjackCard[],
   dealerCards: BlackjackCard[],
   playerHandValue: number,
@@ -87,7 +87,7 @@ const generateBlackjackEmbed = (
 };
 
 const safeImageReply = async (
-  ctx: InteractionContext,
+  ctx: ChatInputInteractionContext,
   embed: Embed,
   image: VanGoghReturnData,
   components: ActionRow[],

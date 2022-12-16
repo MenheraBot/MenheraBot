@@ -1,6 +1,7 @@
 import { InteractionResponseTypes, InteractionTypes } from 'discordeno/types';
 import i18next from 'i18next';
 
+import { componentExecutor } from '../../structures/command/componentExecutor';
 import { autocompleteInteraction } from '../../structures/command/autocompleteInteraction';
 import guildRepository from '../../database/repositories/guildRepository';
 import usagesRepository from '../../database/repositories/usagesRepository';
@@ -10,7 +11,7 @@ import { getEnviroments } from '../../utils/getEnviroments';
 import { DatabaseUserSchema } from '../../types/database';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import blacklistRepository from '../../database/repositories/blacklistRepository';
-import InteractionContext from '../../structures/command/InteractionContext';
+import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
 import { bot, interactionEmitter } from '../../index';
 import userRepository from '../../database/repositories/userRepository';
 import commandRepository from '../../database/repositories/commandRepository';
@@ -30,6 +31,8 @@ const setInteractionCreateEvent = (): void => {
       interaction.type === InteractionTypes.MessageComponent ||
       interaction.type === InteractionTypes.ModalSubmit
     ) {
+      componentExecutor(interaction);
+
       interactionEmitter.emit('interaction', interaction);
       return;
     }
@@ -107,7 +110,11 @@ const setInteractionCreateEvent = (): void => {
       await guildRepository.getGuildLanguage(interaction.guildId as bigint),
     );
 
-    const ctx = new InteractionContext(interaction, authorData as DatabaseUserSchema, guildLocale);
+    const ctx = new ChatInputInteractionContext(
+      interaction,
+      authorData as DatabaseUserSchema,
+      guildLocale,
+    );
 
     bot.commandsInExecution += 1;
 
@@ -135,7 +142,7 @@ const setInteractionCreateEvent = (): void => {
             err.stack.length > 3800 ? `${err.stack.slice(0, 3800)}...` : err.stack;
           const embed = createEmbed({
             color: 0xfd0000,
-            title: `${process.env.NODE_ENV === 'development' ? '[BETA]' : ''} ${T(
+            title: `${process.env.NODE_ENV === 'DEVELOPMENT' ? '[BETA]' : ''} ${T(
               'events:error_embed.title',
               {
                 cmd: command.name,
@@ -168,8 +175,7 @@ const setInteractionCreateEvent = (): void => {
     if (command.category === 'economy')
       await usagesRepository.removeUserFromEconomyUsages(interaction.user.id);
 
-    // TODO: Remove this after all tests
-    console.log(
+    logger.info(
       `[${new Date().toISOString().substring(11, 19)}] ${command.name} - ${interaction.user.id} `,
     );
 

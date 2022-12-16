@@ -20,13 +20,13 @@ import {
 import { collectComponentInteractionWithCustomFilter } from '../../utils/discord/collectorUtils';
 import relationshipRepostory from '../../database/repositories/relationshipRepostory';
 import { MessageFlags } from '../../utils/discord/messageUtils';
-import InteractionContext from '../../structures/command/InteractionContext';
+import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
 import { createCommand } from '../../structures/command/createCommand';
 import userRepository from '../../database/repositories/userRepository';
 import { bot } from '../../index';
 
 const executeFinishTrisal = async (
-  ctx: InteractionContext,
+  ctx: ChatInputInteractionContext,
   finishCommand: (args?: unknown) => unknown,
 ): Promise<unknown> => {
   if (ctx.authorData.trisal.length === 0)
@@ -88,7 +88,7 @@ const executeFinishTrisal = async (
 };
 
 const executeMakeTrisal = async (
-  ctx: InteractionContext,
+  ctx: ChatInputInteractionContext,
   finishCommand: (args?: unknown) => unknown,
 ) => {
   const firstUser = ctx.getOption<User>('user', 'users', true);
@@ -233,7 +233,7 @@ const executeMakeTrisal = async (
 };
 
 const executeOrderTrisal = async (
-  ctx: InteractionContext,
+  ctx: ChatInputInteractionContext,
   finishCommand: (args?: unknown) => unknown,
 ) => {
   if (ctx.authorData.trisal.length === 0)
@@ -279,7 +279,7 @@ const executeOrderTrisal = async (
 };
 
 const executeDisplayTrisal = async (
-  ctx: InteractionContext,
+  ctx: ChatInputInteractionContext,
   finishCommand: (...args: unknown[]) => unknown,
 ) => {
   const user = ctx.getOption<User>('user', 'users', false) ?? ctx.author;

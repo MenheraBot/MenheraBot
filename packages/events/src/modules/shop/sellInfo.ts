@@ -1,7 +1,7 @@
-import InteractionContext from '../../structures/command/InteractionContext';
+import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
 import { huntValues } from './constants';
 
-const sellInfo = async (ctx: InteractionContext, finishCommand: () => void): Promise<void> => {
+const sellInfo = async (ctx: ChatInputInteractionContext, finishCommand: () => void): Promise<void> => {
   const type = ctx.getOption('tipo', false, true);
 
   if (type === 'hunts') {

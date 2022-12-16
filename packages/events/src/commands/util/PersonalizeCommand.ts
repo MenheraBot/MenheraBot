@@ -36,12 +36,15 @@ import InteractionCollector from '../../structures/InteractionCollector';
 import { bot } from '../../index';
 import { usersModel } from '../../database/collections';
 import userRepository from '../../database/repositories/userRepository';
-import InteractionContext from '../../structures/command/InteractionContext';
+import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
 import { toWritableUtf } from '../../utils/miscUtils';
 import { createCommand } from '../../structures/command/createCommand';
 import commandRepository from '../../database/repositories/commandRepository';
 
-const executeAboutMeCommand = async (ctx: InteractionContext, finishCommand: () => void) => {
+const executeAboutMeCommand = async (
+  ctx: ChatInputInteractionContext,
+  finishCommand: () => void,
+) => {
   const info = ctx.getOption<string>('frase', false, true);
 
   await userRepository.updateUser(ctx.author.id, { info: toWritableUtf(info) });
@@ -56,7 +59,7 @@ const executeAboutMeCommand = async (ctx: InteractionContext, finishCommand: () 
   finishCommand();
 };
 
-const executeColorCommand = async (ctx: InteractionContext, finishCommand: () => void) => {
+const executeColorCommand = async (ctx: ChatInputInteractionContext, finishCommand: () => void) => {
   if (ctx.authorData.colors.length < 2) {
     ctx.makeMessage({
       content: ctx.prettyResponse('error', 'commands:cor.min-color'),
@@ -359,7 +362,10 @@ const executeColorCommand = async (ctx: InteractionContext, finishCommand: () =>
   });
 };
 
-const executeBadgesCommand = async (ctx: InteractionContext, finishCommand: () => void) => {
+const executeBadgesCommand = async (
+  ctx: ChatInputInteractionContext,
+  finishCommand: () => void,
+) => {
   const embed = createEmbed({
     author: { name: ctx.locale('commands:badges.title'), iconUrl: getUserAvatar(ctx.author) },
     footer: { text: ctx.locale('commands:badges.footer') },
@@ -457,7 +463,10 @@ const executeBadgesCommand = async (ctx: InteractionContext, finishCommand: () =
   finishCommand();
 };
 
-const executeThemesCommand = async (ctx: InteractionContext, finishCommand: () => void) => {
+const executeThemesCommand = async (
+  ctx: ChatInputInteractionContext,
+  finishCommand: () => void,
+) => {
   const themeType = ctx.getOption<AvailableThemeTypes>('tipo', false, true);
 
   const userThemes = await userThemesRepository.findEnsuredUserThemes(ctx.author.id);

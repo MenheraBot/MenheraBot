@@ -4,7 +4,7 @@ import { SelectMenuInteraction } from '../../types/interaction';
 import shopRepository from '../../database/repositories/shopRepository';
 import { HuntMagicItems } from '../hunt/magicItems';
 import { HuntProbablyBoostItem } from '../hunt/types';
-import InteractionContext from '../../structures/command/InteractionContext';
+import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
 import { COLORS, EMOJIS } from '../../structures/constants';
 import {
   createActionRow,
@@ -15,7 +15,10 @@ import {
 import { createEmbed } from '../../utils/discord/embedUtils';
 import { getUserAvatar } from '../../utils/discord/userUtils';
 
-const buyItems = async (ctx: InteractionContext, finishCommand: () => void): Promise<void> => {
+const buyItems = async (
+  ctx: ChatInputInteractionContext,
+  finishCommand: () => void,
+): Promise<void> => {
   const embed = createEmbed({
     title: ctx.locale('commands:loja.buy_item.title'),
     color: COLORS.Pinkie,

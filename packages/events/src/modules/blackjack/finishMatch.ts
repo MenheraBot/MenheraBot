@@ -5,14 +5,14 @@ import {
   AvailableCardThemes,
   AvailableTableThemes,
 } from '../themes/types';
-import InteractionContext from '../../structures/command/InteractionContext';
+import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
 import { postBlackjackGame } from '../../utils/apiRequests/statistics';
 import { negate } from '../../utils/miscUtils';
 import { generateBlackjackEmbed, getTableImage, safeImageReply } from './blackjackMatch';
 import { BlackjackCard, BlackjackFinishGameReason } from './types';
 
 const finishMatch = async (
-  ctx: InteractionContext,
+  ctx: ChatInputInteractionContext,
   bet: number,
   playerCards: BlackjackCard[],
   dealerCards: BlackjackCard[],

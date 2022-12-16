@@ -8,7 +8,7 @@ import { COLORS, EMOJIS } from '../../structures/constants';
 import themeCreditsRepository from '../../database/repositories/themeCreditsRepository';
 import userThemesRepository from '../../database/repositories/userThemesRepository';
 import { getThemeById } from '../../modules/themes/getThemes';
-import InteractionContext from '../../structures/command/InteractionContext';
+import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
 import { collectResponseComponentInteraction } from '../../utils/discord/collectorUtils';
 import {
   createActionRow,
@@ -23,7 +23,7 @@ import { millisToSeconds } from '../../utils/miscUtils';
 
 import { createCommand } from '../../structures/command/createCommand';
 
-const executeHuntStats = async (ctx: InteractionContext, finishCommand: () => void) => {
+const executeHuntStats = async (ctx: ChatInputInteractionContext, finishCommand: () => void) => {
   const user = ctx.getOption<User>('user', 'users') ?? ctx.author;
 
   const huntData = await getUserHuntStats(user.id);
@@ -116,7 +116,7 @@ const executeHuntStats = async (ctx: InteractionContext, finishCommand: () => vo
 };
 
 const executeDesignerStats = async (
-  ctx: InteractionContext,
+  ctx: ChatInputInteractionContext,
   finishCommand: () => void,
 ): Promise<void> => {
   const user = ctx.getOption<User>('designer', 'users') ?? ctx.author;
@@ -259,7 +259,7 @@ const makeGamblingStatisticsEmbed = (
 };
 
 const executeGamblingGameStats = async (
-  ctx: InteractionContext,
+  ctx: ChatInputInteractionContext,
   finishCommand: () => void,
   game: ApiGamblingGameCompatible,
 ) => {
