@@ -74,6 +74,18 @@ const executeBuyTheme = async (
     case 'table':
       await userThemesRepository.addTableTheme(userId, themeId);
       break;
+
+    case 'eb_background':
+      await userThemesRepository.addEbBackgroundTheme(userId, themeId);
+      break;
+
+    case 'eb_text_box':
+      await userThemesRepository.addEbTextBoxTheme(userId, themeId);
+      break;
+
+    case 'eb_menhera':
+      await userThemesRepository.addEbMenheraTheme(userId, themeId);
+      break;
   }
 };
 

@@ -63,6 +63,23 @@ const buyThemes = async (ctx: InteractionContext, finishCommand: () => void): Pr
     label: ctx.locale('common:theme_types.table'),
   });
 
+  const ebBackgroundButton = createButton({
+    customId: generateCustomId('EB_BACKGROUND', ctx.interaction.id),
+    style: ButtonStyles.Primary,
+    label: ctx.locale('common:theme_types.eb_background'),
+  });
+  const ebTextBoxButton = createButton({
+    customId: generateCustomId('EB_TEXT_BOX', ctx.interaction.id),
+    style: ButtonStyles.Primary,
+    label: ctx.locale('common:theme_types.eb_text_box'),
+  });
+
+  const ebMenheraButton = createButton({
+    customId: generateCustomId('EB_MENHERA', ctx.interaction.id),
+    style: ButtonStyles.Primary,
+    label: ctx.locale('common:theme_types.eb_menhera'),
+  });
+
   const previewButton = createButton({
     customId: generateCustomId('PREVIEW', ctx.interaction.id),
     style: ButtonStyles.Success,
@@ -73,26 +90,37 @@ const buyThemes = async (ctx: InteractionContext, finishCommand: () => void): Pr
   const userThemesIds = getUserActiveThemes(userThemes);
 
   const components = [
-    createActionRow([profileButton, cardsButton, backgroundButton, tableButton, previewButton]),
+    createActionRow([profileButton, cardsButton, backgroundButton, tableButton]),
+    createActionRow([ebBackgroundButton, ebTextBoxButton, ebMenheraButton, previewButton]),
   ];
 
   let previewMode = false;
   let currentThemeType: AvailableThemeTypes;
 
-  const changeThemeType = async (themeIndex: 0 | 1 | 2 | 3) => {
+  const changeThemeType = async (themeIndex: 0 | 1 | 2 | 3 | 4 | 5 | 6) => {
     const themeByIndex = {
       0: 'profile',
       1: 'cards',
       2: 'card_background',
       3: 'table',
+      4: 'eb_background',
+      5: 'eb_text_box',
+      6: 'eb_menhera',
     } as const;
 
     currentThemeType = themeByIndex[themeIndex];
 
-    (components[0].components as ButtonComponent[]).map((a, i) => {
-      a.disabled = i === themeIndex;
-      return a;
-    });
+    if (themeIndex > 3) {
+      (components[1].components as ButtonComponent[]).map((a, i) => {
+        a.disabled = i === 4 - themeIndex;
+        return a;
+      });
+    } else {
+      (components[0].components as ButtonComponent[]).map((a, i) => {
+        a.disabled = i === themeIndex;
+        return a;
+      });
+    }
 
     embed.fields = [];
     selector.options = [];
@@ -129,8 +157,8 @@ const buyThemes = async (ctx: InteractionContext, finishCommand: () => void): Pr
         });
     }
 
-    if (selector.options.length > 0) components[1] = createActionRow([selector]);
-    else if (typeof components[1] !== 'undefined') components.pop();
+    if (selector.options.length > 0) components[2] = createActionRow([selector]);
+    else if (typeof components[2] !== 'undefined') components.pop();
 
     ctx.makeMessage({ embeds: [embed], components });
   };
@@ -336,20 +364,41 @@ const buyThemes = async (ctx: InteractionContext, finishCommand: () => void): Pr
         });
         changeThemeType(3);
         break;
+      case 'EB_BACKGROUND':
+        bot.helpers.sendInteractionResponse(int.id, int.token, {
+          type: InteractionResponseTypes.DeferredUpdateMessage,
+        });
+        changeThemeType(4);
+        break;
+      case 'EB_TEXT_BOX':
+        bot.helpers.sendInteractionResponse(int.id, int.token, {
+          type: InteractionResponseTypes.DeferredUpdateMessage,
+        });
+        changeThemeType(5);
+        break;
+      case 'EB_MENHERA':
+        bot.helpers.sendInteractionResponse(int.id, int.token, {
+          type: InteractionResponseTypes.DeferredUpdateMessage,
+        });
+        changeThemeType(6);
+        break;
       case 'PREVIEW': {
         bot.helpers.sendInteractionResponse(int.id, int.token, {
           type: InteractionResponseTypes.DeferredUpdateMessage,
         });
         previewMode = !previewMode;
-        (components[0].components[4] as ButtonComponent).style = previewMode
+        (components[1].components[3] as ButtonComponent).style = previewMode
           ? ButtonStyles.Danger
           : ButtonStyles.Success;
 
-        const indexByTheme: { [key: string]: 0 | 1 | 2 | 3 } = {
+        const indexByTheme: { [key: string]: 0 | 1 | 2 | 3 | 4 | 5 | 6 } = {
           profile: 0,
           cards: 1,
           card_background: 2,
           table: 3,
+          eb_background: 4,
+          eb_text_box: 5,
+          eb_menhera: 6,
         };
         changeThemeType(indexByTheme[currentThemeType]);
         break;

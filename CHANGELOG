@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- Comandos que mencionam outros comandos agora usam as menções de comandos do Discord! Clique em uma menção para usar o comando!
+
+### Fixed
+
+- O comando `/itens` não edita mais a mensagem caso você não tenha nenhum item.
+- As estatísticas de apostas não mostravam o prejuízo ou lucro certo.
+
 ## [5.0.4] - 2022-12-13
 
 ### Added
