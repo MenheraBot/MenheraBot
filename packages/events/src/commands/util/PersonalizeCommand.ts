@@ -39,13 +39,20 @@ import userRepository from '../../database/repositories/userRepository';
 import InteractionContext from '../../structures/command/InteractionContext';
 import { toWritableUtf } from '../../utils/miscUtils';
 import { createCommand } from '../../structures/command/createCommand';
+import commandRepository from '../../database/repositories/commandRepository';
 
 const executeAboutMeCommand = async (ctx: InteractionContext, finishCommand: () => void) => {
   const info = ctx.getOption<string>('frase', false, true);
 
   await userRepository.updateUser(ctx.author.id, { info: toWritableUtf(info) });
 
-  ctx.makeMessage({ content: ctx.prettyResponse('success', 'commands:sobremim.success') });
+  const commandInfo = await commandRepository.getCommandInfo('perfil');
+
+  ctx.makeMessage({
+    content: ctx.prettyResponse('success', 'commands:sobremim.success', {
+      command: `</perfil:${commandInfo?.discordId}>`,
+    }),
+  });
   finishCommand();
 };
 

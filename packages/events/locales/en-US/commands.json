@@ -474,7 +474,7 @@
   },
   "sobremim": {
     "args-limit": "Your sobremim cannot be longer than 200 characters",
-    "success": "Your 'About Me' has been successfully changed! Use m!Profile >.<"
+    "success": "Your 'About Me' has been successfully changed! Use {{command}} >.<"
   },
   "status": {
     "designer": {

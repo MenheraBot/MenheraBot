@@ -484,7 +484,7 @@
   },
   "sobremim": {
     "args-limit": "Seu sobremim não pode ser maior que 200 caracteres",
-    "success": "Seu 'Sobre Mim' foi alterado com sucesso! Você pode ver as mudanças com `/perfil`"
+    "success": "Seu 'Sobre Mim' foi alterado com sucesso! Você pode ver as mudanças com {{command}}"
   },
   "status": {
     "designer": {
