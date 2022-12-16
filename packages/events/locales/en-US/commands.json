@@ -225,7 +225,7 @@
       "owned": "(Owned)",
       "not-registered": "This theme is not yet available! Please try again later",
       "preview-mode": "Preview Mode",
-      "success": "**Purchase successfully made!** You can now enable it on `/personalizar temas`",
+      "success": "**Purchase successfully made!** You can now enable it on {{command}}",
       "poor": "You don't have all these stars to buy this!"
     },
     "buy_colors": {

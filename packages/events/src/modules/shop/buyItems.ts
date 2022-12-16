@@ -1,4 +1,4 @@
-import commandRepository from 'database/repositories/commandRepository';
+import commandRepository from '../../database/repositories/commandRepository';
 import { collectResponseComponentInteraction } from '../../utils/discord/collectorUtils';
 import { SelectMenuInteraction } from '../../types/interaction';
 import shopRepository from '../../database/repositories/shopRepository';

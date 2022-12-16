@@ -233,7 +233,7 @@
       "owned": "(Possui)",
       "not-registered": "Esse tema ainda não está disponível! Tente novamente mais tarde",
       "preview-mode": "Alternar Modo Preview",
-      "success": "**Compra efetuada com sucesso!** Você já pode habilitá-la no `/personalizar temas`",
+      "success": "**Compra efetuada com sucesso!** Você já pode habilitá-la no {{command}}",
       "data": "**{{description}}**\n**Preço**: {{price}} :star:\n**Autor**: <@{{author}}>"
     },
     "buy_colors": {

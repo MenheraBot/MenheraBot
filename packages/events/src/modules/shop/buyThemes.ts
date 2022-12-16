@@ -1,4 +1,6 @@
 import { ButtonComponent, ButtonStyles, InteractionResponseTypes } from 'discordeno/types';
+import commandRepository from '../../database/repositories/commandRepository';
+import { debugError } from '../../utils/debugError';
 import shopRepository from '../../database/repositories/shopRepository';
 import themeCreditsRepository from '../../database/repositories/themeCreditsRepository';
 import userThemesRepository from '../../database/repositories/userThemesRepository';
@@ -269,10 +271,14 @@ const buyThemes = async (ctx: InteractionContext, finishCommand: () => void): Pr
           credits.royalty,
         );
 
+        const commandInfo = await commandRepository.getCommandInfo('personalizar');
+
         ctx.makeMessage({
           components: [],
           embeds: [],
-          content: ctx.prettyResponse('success', 'commands:loja.buy_themes.success'),
+          content: ctx.prettyResponse('success', 'commands:loja.buy_themes.success', {
+            command: `</personalizar temas:${commandInfo?.discordId}>`,
+          }),
         });
 
         finishCommand();
@@ -287,19 +293,21 @@ const buyThemes = async (ctx: InteractionContext, finishCommand: () => void): Pr
             .catch(ctx.captureException);
 
           if (userDM)
-            bot.helpers.sendMessage(userDM.id, {
-              content: `:sparkles: **UM TEMA SEU FOI COMPRADO!** :sparkles:\n\n**Comprador:** ${
-                ctx.author.username
-              } (${ctx.author.id})\n**Tema Comprado:** ${ctx.locale(
-                `data:themes.${selectedItem.id as 1}.name`,
-              )}\n**Seu Lucro:** ${Math.floor(
-                (credits.royalty / 100) * selectedItem.data.price,
-              )} :star:\n**Este tema foi comprado:** ${
-                credits.timesSold + 1
-              } vezes\n**Você já ganhou:** ${Math.floor(
-                credits.totalEarned + (credits.royalty / 100) * selectedItem.data.price,
-              )} :star: somente com ele\n\n\`Você pode desativar esta notificação de compra de temas no comando '/status designer'\``,
-            });
+            bot.helpers
+              .sendMessage(userDM.id, {
+                content: `:sparkles: **UM TEMA SEU FOI COMPRADO!** :sparkles:\n\n**Comprador:** ${
+                  ctx.author.username
+                } (${ctx.author.id})\n**Tema Comprado:** ${ctx.locale(
+                  `data:themes.${selectedItem.id as 1}.name`,
+                )}\n**Seu Lucro:** ${Math.floor(
+                  (credits.royalty / 100) * selectedItem.data.price,
+                )} :star:\n**Este tema foi comprado:** ${
+                  credits.timesSold + 1
+                } vezes\n**Você já ganhou:** ${Math.floor(
+                  credits.totalEarned + (credits.royalty / 100) * selectedItem.data.price,
+                )} :star: somente com ele\n\n\`Você pode desativar esta notificação de compra de temas no comando '/status designer'\``,
+              })
+              .catch(debugError);
         }
 
         break;
