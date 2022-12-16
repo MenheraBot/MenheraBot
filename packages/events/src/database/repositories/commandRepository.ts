@@ -32,7 +32,9 @@ const bulkUpdateCommandsIds = async (
   const bulkUpdate = commandsModel.collection.initializeUnorderedBulkOp();
 
   commands.forEach((command) => {
-    bulkUpdate.find({ _id: command.commandName }).updateOne({ discordId: command.commandId });
+    bulkUpdate
+      .find({ _id: command.commandName })
+      .updateOne({ $set: { discordId: command.commandId } });
     RedisClient.del(`command:${command.commandName}`);
   });
 
