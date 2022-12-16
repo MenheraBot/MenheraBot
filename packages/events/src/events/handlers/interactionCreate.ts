@@ -76,7 +76,7 @@ const setInteractionCreateEvent = (): void => {
     if (command.devsOnly && interaction.user.id !== bot.ownerId)
       return errorReply(T('permissions:ONLY_DEVS'));
 
-    const commandMaintenanceInfo = await commandRepository.getMaintenanceInfo(commandName);
+    const commandMaintenanceInfo = await commandRepository.getCommandInfo(commandName);
 
     if (commandMaintenanceInfo?.maintenance && interaction.user.id !== bot.ownerId)
       return errorReply(

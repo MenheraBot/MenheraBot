@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 import {
-  DatabaseCommandMaintenanceSchema,
+  DatabaseCommandSchema,
   DatabaseCreditsSchema,
   DatabaseGuildSchema,
   DatabaseUserSchema,
@@ -15,6 +15,7 @@ const cmdSchema = new Schema({
   _id: { type: String },
   maintenance: { type: Boolean, default: false },
   maintenanceReason: { type: String, default: '' },
+  discordId: { type: String, default: '0' },
 });
 
 const guildSchema = new Schema({
@@ -112,7 +113,7 @@ const rpgSchema = new Schema({
   backpack: { type: Object, default: { id: 100, level: 1 } },
 });
 
-export const commandsModel = model<DatabaseCommandMaintenanceSchema>('command', cmdSchema);
+export const commandsModel = model<DatabaseCommandSchema>('command', cmdSchema);
 export const guildsModel = model<DatabaseGuildSchema>('guild', guildSchema);
 export const usersModel = model<DatabaseUserSchema>('usersdb', userSchema);
 export const userThemesModel = model<DatabaseUserThemesSchema>('themes', userThemes);

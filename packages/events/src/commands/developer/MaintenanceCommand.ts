@@ -31,7 +31,7 @@ const MaintenanceCommand = createCommand({
 
     if (!cmd) return finishCommand(ctx.makeMessage({ content: 'Esse comando não existe' }));
 
-    const commandMaintenance = await commandRepository.getMaintenanceInfo(cmd.name);
+    const commandMaintenance = await commandRepository.getCommandInfo(cmd.name);
 
     if (!commandMaintenance)
       return finishCommand(ctx.makeMessage({ content: 'Esse comando não está na db' }));
@@ -50,7 +50,7 @@ const MaintenanceCommand = createCommand({
     });
 
     await ctx.makeMessage({
-      content: `Atualiazdo o status de manutenção do comando ${
+      content: `Atualizando o status de manutenção do comando ${
         cmd.name
       }\n\n**Novo Status:** ${!commandMaintenance.maintenance}\n**Motivo:** ${reason}`,
     });

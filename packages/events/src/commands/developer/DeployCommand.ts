@@ -100,11 +100,19 @@ const DeployCommand = createCommand({
 
       await ctx.makeMessage({ content: 'Iniciando deploy' });
 
-      await bot.helpers.upsertGlobalApplicationCommands(allCommands);
+      const updatedCommands = await bot.helpers.upsertGlobalApplicationCommands(allCommands);
+
+      await commandRepository.bulkUpdateCommandsIds(
+        updatedCommands.map((a) => ({
+          commandName: a.name,
+          commandId: `${a.id}`,
+        })),
+      );
 
       ctx.makeMessage({
         content: 'Todos comandos foram settados! Temos até 1 hora para tudo atualizar',
       });
+
       return finishCommand();
     }
 

@@ -1,11 +1,9 @@
 import { RedisClient } from '../databases';
-import { DatabaseCommandMaintenanceSchema } from '../../types/database';
+import { DatabaseCommandSchema } from '../../types/database';
 import { commandsModel } from '../collections';
 import { debugError } from '../../utils/debugError';
 
-const getMaintenanceInfo = async (
-  commandName: string,
-): Promise<DatabaseCommandMaintenanceSchema | null> => {
+const getCommandInfo = async (commandName: string): Promise<DatabaseCommandSchema | null> => {
   const fromRedis = await RedisClient.get(`command:${commandName}`).catch(debugError);
 
   if (fromRedis) return JSON.parse(fromRedis);
@@ -19,12 +17,38 @@ const getMaintenanceInfo = async (
   await RedisClient.set(
     `command:${commandName}`,
     JSON.stringify({
+      discordId: fromMongo.discordId,
       maintenance: fromMongo.maintenance,
       maintenanceReason: fromMongo.maintenanceReason,
     }),
   ).catch(debugError);
 
   return fromMongo;
+};
+
+const bulkUpdateCommandsIds = async (
+  commands: { commandName: string; commandId: string }[],
+): Promise<void> => {
+  const bulkUpdate = commandsModel.collection.initializeUnorderedBulkOp();
+
+  commands.forEach((command) => {
+    bulkUpdate.find({ _id: command.commandName }).updateOne({ discordId: command.commandId });
+    RedisClient.del(`command:${command.commandName}`);
+  });
+
+  await bulkUpdate.execute();
+};
+
+const ensureCommandInfo = async (commandName: string): Promise<void> => {
+  const commandInfo = await getCommandInfo(commandName);
+
+  if (commandInfo) return;
+
+  await commandsModel.create({ _id: commandName }).catch(debugError);
+};
+
+const getAllCommandsInMaintenance = async (): Promise<DatabaseCommandSchema[]> => {
+  return commandsModel.find({ maintentance: true }, null, { lean: true });
 };
 
 const setMaintenanceInfo = async (
@@ -35,34 +59,19 @@ const setMaintenanceInfo = async (
   await commandsModel
     .updateOne(
       { _id: commandName },
-      { maintenance, maintenanceReason: reason ?? 'No Given Reason' },
+      {
+        maintenance,
+        maintenanceReason: reason ?? 'Sem Razão Informada',
+      },
     )
     .catch(debugError);
 
-  await RedisClient.set(
-    `command:${commandName}`,
-    JSON.stringify({
-      maintenance,
-      maintenanceReason: reason ?? 'No Given Reason',
-    }),
-  ).catch(debugError);
+  await RedisClient.del(`command:${commandName}`).catch(debugError);
 };
-
-const ensureCommandMaintenanceInfo = async (commandName: string): Promise<void> => {
-  const maintenanceInfo = await getMaintenanceInfo(commandName);
-
-  if (maintenanceInfo) return;
-
-  await commandsModel.create({ _id: commandName }).catch(debugError);
-};
-
-const getAllCommandsInMaintenance = async (): Promise<DatabaseCommandMaintenanceSchema[]> => {
-  return commandsModel.find({ maintentance: true }, null, { lean: true });
-};
-
 export default {
-  getMaintenanceInfo,
-  ensureCommandMaintenanceInfo,
+  getCommandInfo,
   setMaintenanceInfo,
+  ensureCommandInfo,
+  bulkUpdateCommandsIds,
   getAllCommandsInMaintenance,
 };

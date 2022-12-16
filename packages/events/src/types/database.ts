@@ -80,10 +80,11 @@ export interface DatabaseGuildSchema {
   readonly id: string;
   lang: string;
 }
-export interface DatabaseCommandMaintenanceSchema {
+export interface DatabaseCommandSchema {
   readonly _id: string;
   maintenance: boolean;
   maintenanceReason: string | null;
+  discordId: string;
 }
 
 export type UserIdType = string | bigint;

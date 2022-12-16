@@ -10,7 +10,7 @@ const loadCommands = (): void => {
     command.path = filePath;
 
     bot.commands.set(command.name, command);
-    commandRepository.ensureCommandMaintenanceInfo(command.name);
+    commandRepository.ensureCommandInfo(command.name);
   };
 
   const pathToResolve = process.env.TESTING ? 'packages/events/src' : 'dist';
