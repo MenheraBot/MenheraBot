@@ -86,12 +86,14 @@ const setInteractionCreateEvent = (): void => {
       );
 
     if (command.category === 'economy') {
-      if (await usagesRepository.isUserInEconomyUsage(interaction.user.id))
+      if (await usagesRepository.isUserInEconomyUsage(interaction.user.id)) {
+        const supportCommandInfo = await commandRepository.getCommandInfo('menhera');
         return errorReply(
           T('permissions:IN_COMMAND_EXECUTION', {
-            command: `</${command.name}:${commandInfo?.discordId}>`,
+            command: `</menhera suporte:${supportCommandInfo?.discordId}>`,
           }),
         );
+      }
 
       await usagesRepository.setUserInEconomyUsages(interaction.user.id);
     }
