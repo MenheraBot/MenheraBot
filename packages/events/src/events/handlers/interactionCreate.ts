@@ -76,18 +76,22 @@ const setInteractionCreateEvent = (): void => {
     if (command.devsOnly && interaction.user.id !== bot.ownerId)
       return errorReply(T('permissions:ONLY_DEVS'));
 
-    const commandMaintenanceInfo = await commandRepository.getCommandInfo(commandName);
+    const commandInfo = await commandRepository.getCommandInfo(commandName);
 
-    if (commandMaintenanceInfo?.maintenance && interaction.user.id !== bot.ownerId)
+    if (commandInfo?.maintenance && interaction.user.id !== bot.ownerId)
       return errorReply(
         T('events:maintenance', {
-          reason: commandMaintenanceInfo.maintenanceReason,
+          reason: commandInfo.maintenanceReason,
         }),
       );
 
     if (command.category === 'economy') {
       if (await usagesRepository.isUserInEconomyUsage(interaction.user.id))
-        return errorReply(T('permissions:IN_COMMAND_EXECUTION'));
+        return errorReply(
+          T('permissions:IN_COMMAND_EXECUTION', {
+            command: `</${command.name}:${commandInfo?.discordId}>`,
+          }),
+        );
 
       await usagesRepository.setUserInEconomyUsages(interaction.user.id);
     }
