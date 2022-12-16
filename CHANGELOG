@@ -5,10 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
-## [Unreleased]
+## [5.0.5] - 2022-12-16
 
 ### Added
 
+- **TEMAS PARA O `/8ball`**. Agora é possível alterar a aparência do 8ball! Use `/loja temas comprar` para ver o preview, e quem sabe ja comprar de cara. Atualmente há temas para o fundo e a caixa de Mensagem. Logo logo adicionarei mais temas, junto de temas novos para a Menhera que aparece no comando. Dica de cria: os novos temas são baratinhos, e ficam perfeitos se combinarem os dois juntos.
 - Comandos que mencionam outros comandos agora usam as menções de comandos do Discord! Clique em uma menção para usar o comando!
 
 ### Fixed
