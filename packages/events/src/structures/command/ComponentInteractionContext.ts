@@ -11,6 +11,8 @@ import { bot } from '../../index';
 export type CanResolve = 'users' | 'members' | false;
 
 export default class {
+  private replied = false;
+
   constructor(public interaction: Interaction, public i18n: TFunction) {}
 
   get author(): User {
@@ -19,6 +21,10 @@ export default class {
 
   get channelId(): bigint {
     return this.interaction.channelId ?? 0n;
+  }
+
+  get sentData(): string[] {
+    return (this.interaction.data?.customId ?? '').split('|').slice(3);
   }
 
   prettyResponse(emoji: keyof typeof EMOJIS, text: Translation, translateOptions = {}): string {
@@ -34,12 +40,51 @@ export default class {
       .catch(this.captureException.bind(this));
   }
 
-  async makeMessage(options: InteractionCallbackData & { attachments?: unknown[] }): Promise<void> {
+  async ack(): Promise<void> {
+    if (this.replied) return;
+
+    this.replied = true;
+
     await bot.helpers
       .sendInteractionResponse(this.interaction.id, this.interaction.token, {
-        type: InteractionResponseTypes.UpdateMessage,
-        data: options,
+        type: InteractionResponseTypes.DeferredUpdateMessage,
       })
+      .catch(this.captureException.bind(this));
+  }
+
+  async respondInteraction(
+    options: InteractionCallbackData & { attachments?: unknown[] },
+  ): Promise<void> {
+    if (!this.replied) {
+      await bot.helpers
+        .sendInteractionResponse(this.interaction.id, this.interaction.token, {
+          type: InteractionResponseTypes.ChannelMessageWithSource,
+          data: options,
+        })
+        .catch(this.captureException.bind(this));
+      this.replied = true;
+      return;
+    }
+
+    await bot.helpers
+      .editOriginalInteractionResponse(this.interaction.token, options)
+      .catch(this.captureException.bind(this));
+  }
+
+  async makeMessage(options: InteractionCallbackData & { attachments?: unknown[] }): Promise<void> {
+    if (!this.replied) {
+      await bot.helpers
+        .sendInteractionResponse(this.interaction.id, this.interaction.token, {
+          type: InteractionResponseTypes.UpdateMessage,
+          data: options,
+        })
+        .catch(this.captureException.bind(this));
+      this.replied = true;
+      return;
+    }
+
+    await bot.helpers
+      .editOriginalInteractionResponse(this.interaction.token, options)
       .catch(this.captureException.bind(this));
   }
 

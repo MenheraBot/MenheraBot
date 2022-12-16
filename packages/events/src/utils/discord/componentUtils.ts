@@ -1,5 +1,6 @@
 import {
   ActionRow,
+  BigString,
   ButtonComponent,
   InputTextComponent,
   MessageComponentTypes,
@@ -7,6 +8,13 @@ import {
 } from 'discordeno/types';
 
 type PropertyOptional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
+
+const createCustomId = (
+  executorIndex: number,
+  target: BigString,
+  commandId: BigString,
+  ...data: unknown[]
+): string => `${executorIndex}|${target}|${commandId}|${data.join('|')}`;
 
 const generateCustomId = <R = false>(
   customIdentifier: string,
@@ -75,6 +83,7 @@ const disableComponents = (
 
 export {
   createButton,
+  createCustomId,
   createActionRow,
   disableComponents,
   generateCustomId,

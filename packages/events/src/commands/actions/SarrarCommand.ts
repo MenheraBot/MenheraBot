@@ -1,27 +1,26 @@
-import { Interaction, User } from 'discordeno/transformers';
-import {
-  ApplicationCommandOptionTypes,
-  ButtonStyles,
-  InteractionResponseTypes,
-} from 'discordeno/types';
+import { User } from 'discordeno/transformers';
+import { ApplicationCommandOptionTypes, ButtonStyles } from 'discordeno/types';
 
-import blacklistRepository from '../../database/repositories/blacklistRepository';
 import { MessageFlags } from '../../utils/discord/messageUtils';
-import { bot } from '../../index';
-import { collectComponentInteractionWithCustomFilter } from '../../utils/discord/collectorUtils';
-import {
-  createActionRow,
-  createButton,
-  disableComponents,
-} from '../../utils/discord/componentUtils';
-import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
+import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
 import { createCommand } from '../../structures/command/createCommand';
 import { COLORS } from '../../structures/constants';
 import { getAssetLink } from '../../structures/cdnManager';
 import { getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
 import { createEmbed } from '../../utils/discord/embedUtils';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 
-const sarrada = (ctx: ChatInputInteractionContext, user: User, finishCommand: () => void): void => {
+const sarrada = async (ctx: ComponentInteractionContext): Promise<void> => {
+  const [userId] = ctx.sentData;
+
+  if (ctx.interaction.user.toggles.bot || userId === `${ctx.author.id}`) {
+    await ctx.respondInteraction({
+      content: ctx.prettyResponse('error', 'commands:sarrar.cannot-sarrar-self'),
+      flags: MessageFlags.EPHEMERAL,
+    });
+    return;
+  }
+
   const selectedImage = getAssetLink('sarrar');
 
   const avatar = getUserAvatar(ctx.author, { enableGif: true });
@@ -29,16 +28,15 @@ const sarrada = (ctx: ChatInputInteractionContext, user: User, finishCommand: ()
   const embed = createEmbed({
     title: ctx.locale('commands:sarrar.embed_title'),
     description: ctx.locale('commands:sarrar.embed_description', {
-      author: mentionUser(ctx.author.id),
-      mention: mentionUser(user.id),
+      author: mentionUser(userId),
+      mention: mentionUser(ctx.author.id),
     }),
     image: { url: selectedImage },
     color: COLORS.ACTIONS,
     thumbnail: { url: avatar },
   });
 
-  ctx.makeMessage({ embeds: [embed], components: [] });
-  finishCommand();
+  await ctx.makeMessage({ embeds: [embed], components: [] });
 };
 
 const SarrarCommand = createCommand({
@@ -61,7 +59,25 @@ const SarrarCommand = createCommand({
   execute: async (ctx, finishCommand) => {
     const user = ctx.getOption<User>('user', 'users');
 
-    if (user && user.id !== ctx.author.id) return sarrada(ctx, user, finishCommand);
+    if (user && user.id !== ctx.author.id) {
+      const selectedImage = getAssetLink('sarrar');
+
+      const avatar = getUserAvatar(ctx.author, { enableGif: true });
+
+      const embed = createEmbed({
+        title: ctx.locale('commands:sarrar.embed_title'),
+        description: ctx.locale('commands:sarrar.embed_description', {
+          author: mentionUser(ctx.author.id),
+          mention: mentionUser(user.id),
+        }),
+        image: { url: selectedImage },
+        color: COLORS.ACTIONS,
+        thumbnail: { url: avatar },
+      });
+
+      ctx.makeMessage({ embeds: [embed], components: [] });
+      return finishCommand();
+    }
 
     const selectedImage = getAssetLink('sarrar_sozinho');
     const avatar = getUserAvatar(ctx.author, { enableGif: true });
@@ -78,54 +94,15 @@ const SarrarCommand = createCommand({
     });
 
     const button = createButton({
-      customId: `0|ANY|${ctx.author.id}`,
+      customId: createCustomId(0, 'N', ctx.interaction.data?.id as bigint, `${ctx.author.id}`),
       label: ctx.locale('commands:sarrar.sarrar'),
       style: ButtonStyles.Primary,
     });
 
     await ctx.makeMessage({ embeds: [embed], components: [createActionRow([button])] });
-
-    const filter = async (int: Interaction): Promise<boolean> => {
-      if (int.data?.customId !== `${ctx.interaction.id}`) return false;
-
-      if (int.user.toggles.bot || int.user.id === ctx.author.id) {
-        bot.helpers.sendInteractionResponse(int.id, int.token, {
-          type: InteractionResponseTypes.ChannelMessageWithSource,
-          data: {
-            content: ctx.prettyResponse('error', 'commands:sarrar.cannot-sarrar-self'),
-            flags: MessageFlags.EPHEMERAL,
-          },
-        });
-        return false;
-      }
-
-      bot.helpers.sendInteractionResponse(int.id, int.token, {
-        type: InteractionResponseTypes.DeferredUpdateMessage,
-      });
-
-      const banned = await blacklistRepository.isUserBanned(int.user.id);
-
-      return !banned;
-    };
-
-    const collected = await collectComponentInteractionWithCustomFilter(
-      ctx.channelId,
-      filter,
-      30_000,
-    );
-
-    if (!collected) {
-      ctx.makeMessage({
-        embeds: [embed],
-        components: [createActionRow(disableComponents(ctx.locale('common:timesup'), [button]))],
-      });
-      finishCommand();
-      return;
-    }
-
-    sarrada(ctx, collected.user, finishCommand);
+    finishCommand();
   },
-  commandRelatedExecutions: [],
+  commandRelatedExecutions: [sarrada],
 });
 
 export default SarrarCommand;
