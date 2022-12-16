@@ -21,9 +21,16 @@ const manager = createShardManager({
   },
   shardIds: [],
   createShardOptions: {
+    stopHeartbeating: (shard) => {
+      clearInterval(shard.heart.intervalId);
+      shard.heart.intervalId = undefined;
+      clearTimeout(shard.heart.timeoutId);
+      shard.heart.timeoutId = undefined;
+    },
     events: {
       disconnected: (shard) => {
         log.info(`Shard ${shard.id} disconnected`);
+        log.info(shard.heart);
       },
       connecting(shard) {
         log.info(`Shard ${shard.id} is connecting`);
