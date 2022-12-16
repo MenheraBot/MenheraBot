@@ -205,7 +205,7 @@
       "description": "Selectione abaixo qual item você deseja comprar",
       "hasAll": "Você já possui todos os itens mágicos disponíveis",
       "poor": "Você não possui estrelas suficientes para comprar este item!",
-      "success": "Você comprou **{{item}}** com sucesso! Só dale nas caças agora. Use /itens para usar o item"
+      "success": "Você comprou **{{item}}** com sucesso! Só dale nas caças agora. Use {{command}} para usar o item"
     },
     "dataItems": {
       "title": "🔮 | Itens Mágicos",

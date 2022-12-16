@@ -1,3 +1,4 @@
+import commandRepository from 'database/repositories/commandRepository';
 import { collectResponseComponentInteraction } from '../../utils/discord/collectorUtils';
 import { SelectMenuInteraction } from '../../types/interaction';
 import shopRepository from '../../database/repositories/shopRepository';
@@ -81,11 +82,14 @@ const buyItems = async (ctx: InteractionContext, finishCommand: () => void): Pro
     (HuntMagicItems[selectedItem] as HuntProbablyBoostItem).cost,
   );
 
+  const commandInfo = await commandRepository.getCommandInfo('itens');
+
   ctx.makeMessage({
     embeds: [],
     components: [],
     content: ctx.prettyResponse('success', 'commands:loja.buy_item.success', {
       item: ctx.locale(`data:magic-items.${selectedItem as 1}.name`),
+      command: `</itens:${commandInfo?.discordId}>`,
     }),
   });
 

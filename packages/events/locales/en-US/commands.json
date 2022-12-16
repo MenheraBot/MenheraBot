@@ -193,7 +193,7 @@
     "buy_item": {
       "title": "🔮 | Magic Items",
       "poor": "You don't have enough estrelinhas to buy this item",
-      "success": "You have successfully purchased **{{item}}**! Just give it to the hunts now. Use /itens to use the item",
+      "success": "You have successfully purchased **{{item}}**! Just give it to the hunts now. Use {{command}} to use the item",
       "description": "Select down below the item that you want to buy",
       "hasAll": "You already have all magic items available"
     },

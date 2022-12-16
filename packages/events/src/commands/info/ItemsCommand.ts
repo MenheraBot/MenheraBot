@@ -66,6 +66,7 @@ const ItemsCommand = createCommand({
       embed.description = ctx.prettyResponse('error', 'commands:itens.no-item');
       ctx.makeMessage({ embeds: [embed] });
       finishCommand();
+      return;
     }
 
     const inventoryWithoutUsingItems = user.inventory.filter(
