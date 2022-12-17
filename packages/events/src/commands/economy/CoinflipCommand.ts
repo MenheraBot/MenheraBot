@@ -1,21 +1,66 @@
 import { User } from 'discordeno/transformers';
 import { ApplicationCommandOptionTypes, ButtonStyles } from 'discordeno/types';
 
-import usagesRepository from '../../database/repositories/usagesRepository';
+import ComponentInteractionContext from 'structures/command/ComponentInteractionContext';
 import starsRepository from '../../database/repositories/starsRepository';
 import { postCoinflipMatch } from '../../utils/apiRequests/statistics';
 import { randomFromArray } from '../../utils/miscUtils';
-import { collectResponseComponentInteraction } from '../../utils/discord/collectorUtils';
 import userRepository from '../../database/repositories/userRepository';
-import {
-  createActionRow,
-  createButton,
-  disableComponents,
-  generateCustomId,
-} from '../../utils/discord/componentUtils';
+import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
 import { mentionUser } from '../../utils/discord/userUtils';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import { createCommand } from '../../structures/command/createCommand';
+
+const confirmCoinflip = async (ctx: ComponentInteractionContext): Promise<void> => {
+  const [authorId, input] = ctx.sentData;
+
+  const [userData, authorData] = await Promise.all([
+    userRepository.ensureFindUser(ctx.user.id),
+    userRepository.ensureFindUser(authorId),
+  ]);
+
+  const inputAsNumber = Number(input);
+
+  if (inputAsNumber > userData.estrelinhas) {
+    ctx.makeMessage({
+      content: ctx.prettyResponse('error', 'commands:coinflip.poor', {
+        user: mentionUser(ctx.user.id),
+      }),
+      components: [],
+    });
+    return;
+  }
+
+  if (inputAsNumber > authorData.estrelinhas) {
+    ctx.makeMessage({
+      content: ctx.prettyResponse('error', 'commands:coinflip.poor', {
+        user: mentionUser(authorId),
+      }),
+      components: [],
+    });
+    return;
+  }
+
+  const availableOptions = ['cara', 'coroa'];
+  const choice = randomFromArray(availableOptions);
+
+  const winner = choice === 'cara' ? authorId : ctx.user.id;
+  const loser = choice === 'coroa' ? authorId : ctx.user.id;
+
+  await ctx.makeMessage({
+    content: ctx.locale('commands:coinflip.text', {
+      choice: ctx.locale(`commands:coinflip.${choice as 'cara'}`),
+      value: input,
+      winner: mentionUser(winner),
+      loser: mentionUser(loser),
+    }),
+    components: [],
+  });
+
+  starsRepository.addStars(winner, inputAsNumber);
+  starsRepository.removeStars(loser, inputAsNumber);
+  postCoinflipMatch(`${winner}`, `${loser}`, inputAsNumber);
+};
 
 const CoinflipCommand = createCommand({
   path: '',
@@ -42,6 +87,7 @@ const CoinflipCommand = createCommand({
   ],
   category: 'economy',
   authorDataFields: ['estrelinhas'],
+  commandRelatedExecutions: [confirmCoinflip],
   execute: async (ctx, finishCommand) => {
     const user = ctx.getOption<User>('user', 'users', true);
     const input = ctx.getOption<number>('aposta', false, true);
@@ -72,15 +118,6 @@ const CoinflipCommand = createCommand({
         }),
       );
 
-    if (await usagesRepository.isUserInEconomyUsage(user.id)) {
-      await ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'common:economy_usage'),
-        flags: MessageFlags.EPHEMERAL,
-      });
-
-      return finishCommand();
-    }
-
     const targetData = await userRepository.ensureFindUser(user.id);
 
     if (targetData.ban)
@@ -102,12 +139,10 @@ const CoinflipCommand = createCommand({
       );
 
     const confirmButton = createButton({
-      customId: generateCustomId('CONFIRM', ctx.interaction.id),
+      customId: createCustomId(0, user.id, ctx.commandId, ctx.author.id, input),
       label: ctx.locale('commands:coinflip.bet'),
       style: ButtonStyles.Success,
     });
-
-    await usagesRepository.setUserInEconomyUsages(user.id);
 
     ctx.makeMessage({
       content: ctx.locale('commands:coinflip.confirm', {
@@ -118,43 +153,6 @@ const CoinflipCommand = createCommand({
       components: [createActionRow([confirmButton])],
     });
 
-    const collected = await collectResponseComponentInteraction(
-      ctx.channelId,
-      user.id,
-      `${ctx.interaction.id}`,
-      10_000,
-    );
-
-    await usagesRepository.removeUserFromEconomyUsages(user.id);
-
-    if (!collected)
-      return finishCommand(
-        ctx.makeMessage({
-          components: [
-            createActionRow(disableComponents(ctx.locale('common:timesup'), [confirmButton])),
-          ],
-        }),
-      );
-
-    const availableOptions = ['cara', 'coroa'];
-    const choice = randomFromArray(availableOptions);
-
-    const winner = choice === 'cara' ? ctx.author : user;
-    const loser = choice === 'coroa' ? ctx.author : user;
-
-    await ctx.makeMessage({
-      content: ctx.locale('commands:coinflip.text', {
-        choice: ctx.locale(`commands:coinflip.${choice as 'cara'}`),
-        value: input,
-        winner: mentionUser(winner.id),
-        loser: mentionUser(loser.id),
-      }),
-      components: [],
-    });
-
-    starsRepository.addStars(winner.id, input);
-    starsRepository.removeStars(loser.id, input);
-    postCoinflipMatch(`${winner.id}`, `${loser.id}`, input);
     finishCommand();
   },
 });
