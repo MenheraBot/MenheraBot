@@ -77,8 +77,6 @@ const collectBlackjackButton = async (ctx: ComponentInteractionContext): Promise
   const expectedNextUserBlackjackCards = numbersToBlackjackCards(expectedNextPlayerCards);
   const expectedPlayerHandValue = getHandValue(expectedNextUserBlackjackCards);
 
-  const finishCommand = () => undefined;
-
   if (expectedPlayerHandValue > 21)
     return finishMatch(
       ctx,
@@ -93,7 +91,6 @@ const collectBlackjackButton = async (ctx: ComponentInteractionContext): Promise
       'busted',
       false,
       0,
-      finishCommand,
       embedColor,
     );
 
@@ -111,7 +108,6 @@ const collectBlackjackButton = async (ctx: ComponentInteractionContext): Promise
       'blackjack',
       true,
       BLACKJACK_PRIZE_MULTIPLIERS.blackjack,
-      finishCommand,
       embedColor,
     );
 
@@ -181,6 +177,8 @@ const BlackjackCommand = createCommand({
     const playerHandValue = getHandValue(bjPlayerCards);
     const dealerHandValue = getHandValue([bjDealerCards[0]]);
 
+    finishCommand();
+
     if (playerHandValue === 21)
       return finishMatch(
         ctx,
@@ -195,7 +193,6 @@ const BlackjackCommand = createCommand({
         'init_blackjack',
         true,
         BLACKJACK_PRIZE_MULTIPLIERS.init_blackjack,
-        finishCommand,
         ctx.authorData.selectedColor,
       );
 
@@ -215,7 +212,6 @@ const BlackjackCommand = createCommand({
         'init_blackjack',
         false,
         BLACKJACK_PRIZE_MULTIPLIERS.init_blackjack,
-        finishCommand,
         ctx.authorData.selectedColor,
       );
 
