@@ -1,5 +1,6 @@
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
+import userRepository from '../../database/repositories/userRepository';
 import commandRepository from '../../database/repositories/commandRepository';
-import { collectResponseComponentInteraction } from '../../utils/discord/collectorUtils';
 import { SelectMenuInteraction } from '../../types/interaction';
 import shopRepository from '../../database/repositories/shopRepository';
 import { HuntMagicItems } from '../hunt/magicItems';
@@ -8,12 +9,46 @@ import ChatInputInteractionContext from '../../structures/command/ChatInputInter
 import { COLORS, EMOJIS } from '../../structures/constants';
 import {
   createActionRow,
+  createCustomId,
   createSelectMenu,
-  disableComponents,
-  generateCustomId,
 } from '../../utils/discord/componentUtils';
 import { createEmbed } from '../../utils/discord/embedUtils';
 import { getUserAvatar } from '../../utils/discord/userUtils';
+
+const executeSelectItem = async (
+  ctx: ComponentInteractionContext<SelectMenuInteraction>,
+): Promise<void> => {
+  const selectedItem = Number(ctx.interaction.data.values[0]);
+
+  const authorData = await userRepository.ensureFindUser(ctx.user.id);
+
+  if ((HuntMagicItems[selectedItem] as HuntProbablyBoostItem).cost > authorData.estrelinhas) {
+    ctx.makeMessage({
+      components: [],
+      embeds: [],
+      content: ctx.prettyResponse('error', 'commands:loja.buy_item.poor'),
+    });
+
+    return;
+  }
+
+  await shopRepository.executeBuyItem(
+    ctx.user.id,
+    selectedItem,
+    (HuntMagicItems[selectedItem] as HuntProbablyBoostItem).cost,
+  );
+
+  const commandInfo = await commandRepository.getCommandInfo('itens');
+
+  ctx.makeMessage({
+    embeds: [],
+    components: [],
+    content: ctx.prettyResponse('success', 'commands:loja.buy_item.success', {
+      item: ctx.locale(`data:magic-items.${selectedItem as 1}.name`),
+      command: `</itens:${commandInfo?.discordId}>`,
+    }),
+  });
+};
 
 const buyItems = async (
   ctx: ChatInputInteractionContext,
@@ -27,7 +62,7 @@ const buyItems = async (
   });
 
   const selectMenu = createSelectMenu({
-    customId: generateCustomId('BUY', ctx.interaction.id),
+    customId: createCustomId(1, ctx.author.id, ctx.commandId, 'BUY'),
     minValues: 1,
     maxValues: 1,
     options: [],
@@ -51,52 +86,7 @@ const buyItems = async (
   }
 
   ctx.makeMessage({ embeds: [embed], components: [createActionRow([selectMenu])] });
-
-  const choice = await collectResponseComponentInteraction<SelectMenuInteraction>(
-    ctx.channelId,
-    ctx.author.id,
-    `${ctx.interaction.id}`,
-    10_000,
-  );
-
-  if (!choice) {
-    ctx.makeMessage({
-      components: [createActionRow(disableComponents(ctx.locale('common:timesup'), [selectMenu]))],
-    });
-
-    return finishCommand();
-  }
-
-  const selectedItem = Number(choice.data.values[0]);
-
-  if ((HuntMagicItems[selectedItem] as HuntProbablyBoostItem).cost > ctx.authorData.estrelinhas) {
-    ctx.makeMessage({
-      components: [],
-      embeds: [],
-      content: ctx.prettyResponse('error', 'commands:loja.buy_item.poor'),
-    });
-
-    return finishCommand();
-  }
-
-  await shopRepository.executeBuyItem(
-    ctx.author.id,
-    selectedItem,
-    (HuntMagicItems[selectedItem] as HuntProbablyBoostItem).cost,
-  );
-
-  const commandInfo = await commandRepository.getCommandInfo('itens');
-
-  ctx.makeMessage({
-    embeds: [],
-    components: [],
-    content: ctx.prettyResponse('success', 'commands:loja.buy_item.success', {
-      item: ctx.locale(`data:magic-items.${selectedItem as 1}.name`),
-      command: `</itens:${commandInfo?.discordId}>`,
-    }),
-  });
-
   finishCommand();
 };
 
-export { buyItems };
+export { buyItems, executeSelectItem };
