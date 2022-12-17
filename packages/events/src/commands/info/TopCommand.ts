@@ -742,7 +742,7 @@ const TopCommand = createCommand({
       ],
     },
   ],
-  authorDataFields: ['selectedColor', 'inUseItems', 'inventory', 'id', 'itemsLimit'],
+  authorDataFields: ['selectedColor', 'inUseItems', 'inventory', 'id'],
   execute: async (ctx, finishCommand) => {
     const command = ctx.getSubCommand();
 

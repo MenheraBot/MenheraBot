@@ -21,7 +21,10 @@ export interface ChatInputInteractionCommand extends Readonly<ChatInputCommandCo
     finishCommand: (...args: unknown[]) => unknown,
   ) => Promise<unknown>;
 
-  readonly commandRelatedExecutions?: ((ctx: ComponentInteractionContext) => Promise<unknown>)[];
+  readonly commandRelatedExecutions?: ((
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ctx: ComponentInteractionContext<any>,
+  ) => Promise<unknown>)[];
 }
 
 export interface UsedCommandData {

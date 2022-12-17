@@ -1,8 +1,9 @@
 import { InteractionResponseTypes, InteractionCallbackData } from 'discordeno';
-import { Interaction, User } from 'discordeno/transformers';
+import { User } from 'discordeno/transformers';
 import * as Sentry from '@sentry/node';
 import { TFunction } from 'i18next';
 
+import { ComponentInteraction } from '../../types/interaction';
 import { logger } from '../../utils/logger';
 import { EMOJIS } from '../constants';
 import { Translation } from '../../types/i18next';
@@ -10,10 +11,10 @@ import { bot } from '../../index';
 
 export type CanResolve = 'users' | 'members' | false;
 
-export default class {
+export default class<InteractionType extends ComponentInteraction = ComponentInteraction> {
   private replied = false;
 
-  constructor(public interaction: Interaction, public i18n: TFunction) {}
+  constructor(public interaction: InteractionType, public i18n: TFunction) {}
 
   get user(): User {
     return this.interaction.user;
@@ -23,8 +24,12 @@ export default class {
     return this.interaction.channelId ?? 0n;
   }
 
+  get commandId(): bigint {
+    return BigInt(this.interaction.data.customId.split('|')[2]);
+  }
+
   get sentData(): string[] {
-    return (this.interaction.data?.customId ?? '').split('|').slice(3);
+    return this.interaction.data.customId.split('|').slice(3);
   }
 
   prettyResponse(emoji: keyof typeof EMOJIS, text: Translation, translateOptions = {}): string {

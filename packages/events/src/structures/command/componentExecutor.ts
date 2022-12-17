@@ -11,6 +11,7 @@ import guildRepository from '../../database/repositories/guildRepository';
 import ComponentInteractionContext from './ComponentInteractionContext';
 import { createEmbed } from '../../utils/discord/embedUtils';
 import { getEnviroments } from '../../utils/getEnviroments';
+import { ComponentInteraction } from '../../types/interaction';
 
 const { ERROR_WEBHOOK_ID, ERROR_WEBHOOK_TOKEN } = getEnviroments([
   'ERROR_WEBHOOK_ID',
@@ -105,7 +106,7 @@ const componentExecutor = async (interaction: Interaction): Promise<void> => {
     await guildRepository.getGuildLanguage(interaction.guildId as bigint),
   );
 
-  const ctx = new ComponentInteractionContext(interaction, guildLocale);
+  const ctx = new ComponentInteractionContext(interaction as ComponentInteraction, guildLocale);
 
   await new Promise((res) => {
     execute(ctx).catch((err) => {

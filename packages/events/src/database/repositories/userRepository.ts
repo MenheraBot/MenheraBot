@@ -27,7 +27,6 @@ const parseMongoUserToRedisUser = (user: DatabaseUserSchema): DatabaseUserSchema
   inUseItems: user.inUseItems,
   inventory: user.inventory,
   isBot: user.isBot,
-  itemsLimit: user.itemsLimit,
   mamado: user.mamado,
   mamou: user.mamou,
   married: user.married ? `${user.married}` : null,
