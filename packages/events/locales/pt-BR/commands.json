@@ -350,6 +350,7 @@
   },
   "casar": {
     "bot": "Tu não pode se casar com bots",
+    "someone-married": "Algum de vocês dois já está casado!", 
     "self-mention": "Tu não pode se casar consigo mesmo :(",
     "married": "Tu já está casado!!",
     "no-dbuser": "Mame este usuário para adicioná-lo ao meu banco de dados",

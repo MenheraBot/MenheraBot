@@ -15,7 +15,7 @@ export default class {
 
   constructor(public interaction: Interaction, public i18n: TFunction) {}
 
-  get author(): User {
+  get user(): User {
     return this.interaction.user;
   }
 

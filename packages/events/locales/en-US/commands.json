@@ -339,6 +339,7 @@
   },
   "casar": {
     "bot": "you can't marry bots",
+    "someone-married": "Are either of you already married!",
     "self-mention": "you can't marry yourself :(",
     "married": "you are already married !!",
     "no-dbuser": "suck this user to add him to my database",

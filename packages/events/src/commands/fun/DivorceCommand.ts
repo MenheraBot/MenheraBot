@@ -9,7 +9,7 @@ import { createActionRow, createButton, createCustomId } from '../../utils/disco
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 
 const executeDivorce = async (ctx: ComponentInteractionContext): Promise<void> => {
-  const authorData = await userRepository.ensureFindUser(ctx.author.id);
+  const authorData = await userRepository.ensureFindUser(ctx.user.id);
   if (!authorData.married)
     return ctx.makeMessage({
       content: ctx.prettyResponse('warn', 'commands:divorciar.author-single'),
@@ -18,13 +18,13 @@ const executeDivorce = async (ctx: ComponentInteractionContext): Promise<void> =
 
   ctx.makeMessage({
     content: ctx.prettyResponse('success', 'commands:divorciar.confirmed', {
-      author: mentionUser(ctx.author.id),
+      author: mentionUser(ctx.user.id),
       mention: mentionUser(authorData.married),
     }),
     components: [],
   });
 
-  await relationshipRepostory.executeDivorce(ctx.author.id, authorData.married);
+  await relationshipRepostory.executeDivorce(ctx.user.id, authorData.married);
 };
 
 const DivorceCommand = createCommand({

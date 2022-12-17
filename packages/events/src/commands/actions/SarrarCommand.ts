@@ -13,7 +13,7 @@ import ComponentInteractionContext from '../../structures/command/ComponentInter
 const sarrada = async (ctx: ComponentInteractionContext): Promise<void> => {
   const [userId] = ctx.sentData;
 
-  if (ctx.interaction.user.toggles.bot || userId === `${ctx.author.id}`) {
+  if (ctx.interaction.user.toggles.bot || userId === `${ctx.user.id}`) {
     await ctx.respondInteraction({
       content: ctx.prettyResponse('error', 'commands:sarrar.cannot-sarrar-self'),
       flags: MessageFlags.EPHEMERAL,
@@ -23,13 +23,13 @@ const sarrada = async (ctx: ComponentInteractionContext): Promise<void> => {
 
   const selectedImage = getAssetLink('sarrar');
 
-  const avatar = getUserAvatar(ctx.author, { enableGif: true });
+  const avatar = getUserAvatar(ctx.user, { enableGif: true });
 
   const embed = createEmbed({
     title: ctx.locale('commands:sarrar.embed_title'),
     description: ctx.locale('commands:sarrar.embed_description', {
       author: mentionUser(userId),
-      mention: mentionUser(ctx.author.id),
+      mention: mentionUser(ctx.user.id),
     }),
     image: { url: selectedImage },
     color: COLORS.ACTIONS,
