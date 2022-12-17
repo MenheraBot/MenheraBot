@@ -1,7 +1,8 @@
 import { Interaction } from 'discordeno/transformers';
-import { InteractionResponseTypes } from 'discordeno/types';
+import { AllowedMentionsTypes, InteractionResponseTypes } from 'discordeno/types';
 import i18next from 'i18next';
 
+import { mentionUser } from '../../utils/discord/userUtils';
 import commandRepository from '../../database/repositories/commandRepository';
 import userRepository from '../../database/repositories/userRepository';
 import blacklistRepository from '../../database/repositories/blacklistRepository';
@@ -55,6 +56,7 @@ const componentExecutor = async (interaction: Interaction): Promise<void> => {
         data: {
           content: `<:negacao:759603958317711371> | ${content}`,
           flags: MessageFlags.EPHEMERAL,
+          allowedMentions: { parse: [AllowedMentionsTypes.UserMentions] },
         },
       })
       .catch(() => null);
@@ -96,7 +98,9 @@ const componentExecutor = async (interaction: Interaction): Promise<void> => {
   const [executorIndex, interactionTarget, commandId] = interaction.data.customId.split('|');
 
   if (interactionTarget.length > 1 && interactionTarget !== `${interaction.user.id}`)
-    return errorReply(T('common:not-your-interaction'));
+    return errorReply(
+      T('permissions:NOT_INTERACTION_OWNER', { owner: mentionUser(interactionTarget) }),
+    );
 
   const execute = command.commandRelatedExecutions[Number(executorIndex)];
 

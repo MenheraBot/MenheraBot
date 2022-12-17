@@ -573,10 +573,12 @@
   "blackjack": {
     "available-options": "Opções Disponíveis",
     "title": "BlackJack",
+    "shuffling": "Entregando as Cartas",
+    "lost-game-data": "Vish {{author}}, eu acabei perdendo as cartas no meio da bagunça do meu quarto... Eu te devolvi as {{value}} :star: que tu tinha apostado nesse jogo... Prometo que vou tentar não perder mais nada <3",
     "description": "Sua Mão: **{{userHand}}** -> `{{userTotal}}`\nMão da Menhera: **{{dealerCards}}** -> `{{dealerTotal}}`",
     "initial-options": "**[1] Começar** - Começe o jogo\n **[2] Desistir** - Desista deste jogo (e perca sua aposta)",
     "options": "**[1] Comprar** - Compre mais uma carta\n**[2] Parar** - Pare por aqui sua aposta",
-    "footer": "Tu tem 10 segundos",
+    "footer": "Suas estrelinhas já foram reduzidas! Para receber algo de volta, venca a partida",
     "poor": "Tu não possui todas essas estrelinhas para apostar!",
     "your-hand": "Sua Mão",
     "dealer-hand": "Mão da Menhera",

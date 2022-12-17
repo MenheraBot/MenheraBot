@@ -82,13 +82,13 @@ export default class<InteractionType extends ComponentInteraction = ComponentInt
 
   async makeMessage(options: InteractionCallbackData & { attachments?: unknown[] }): Promise<void> {
     if (!this.replied) {
+      this.replied = true;
       await bot.helpers
         .sendInteractionResponse(this.interaction.id, this.interaction.token, {
           type: InteractionResponseTypes.UpdateMessage,
           data: options,
         })
         .catch(this.captureException.bind(this));
-      this.replied = true;
       return;
     }
 

@@ -10,6 +10,7 @@ import {
   AvailableTableThemes,
 } from '../themes/types';
 import { BlackjackCard } from './types';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 
 const numbersToBlackjackCards = (cards: Array<number>): Array<BlackjackCard> =>
   cards.reduce((p: Array<BlackjackCard>, c: number) => {
@@ -35,7 +36,7 @@ const getHandValue = (cards: BlackjackCard[]): number => {
 };
 
 const getTableImage = (
-  ctx: ChatInputInteractionContext,
+  ctx: ChatInputInteractionContext | ComponentInteractionContext,
   bet: number,
   playerCards: BlackjackCard[],
   dealerCards: BlackjackCard[],
@@ -62,11 +63,12 @@ const getTableImage = (
 };
 
 const generateBlackjackEmbed = (
-  ctx: ChatInputInteractionContext,
+  ctx: ChatInputInteractionContext | ComponentInteractionContext,
   playerCards: BlackjackCard[],
   dealerCards: BlackjackCard[],
   playerHandValue: number,
   dealerHandValue: number,
+  embedColor: string,
 ): Embed => {
   return createEmbed({
     title: ctx.prettyResponse('estrelinhas', 'commands:blackjack.title'),
@@ -80,14 +82,14 @@ const generateBlackjackEmbed = (
       dealerTotal: dealerHandValue,
     }),
     footer: { text: ctx.locale('commands:blackjack.footer') },
-    color: hexStringToNumber(ctx.authorData.selectedColor),
-    thumbnail: { url: getUserAvatar(ctx.author, { enableGif: true }) },
+    color: hexStringToNumber(embedColor),
+    thumbnail: { url: getUserAvatar(ctx.interaction.user, { enableGif: true }) },
     fields: [],
   });
 };
 
 const safeImageReply = async (
-  ctx: ChatInputInteractionContext,
+  ctx: ChatInputInteractionContext | ComponentInteractionContext,
   embed: Embed,
   image: VanGoghReturnData,
   components: ActionRow[],

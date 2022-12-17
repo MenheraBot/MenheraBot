@@ -15,7 +15,7 @@ import { getUserAvatar } from '../../utils/discord/userUtils';
 import { getUserBadges } from '../../modules/badges/getUserBadges';
 import { profileBadges } from '../../modules/badges/profileBadges';
 import { collectResponseComponentInteraction } from '../../utils/discord/collectorUtils';
-import { MessageFlags } from '../../utils/discord/messageUtils';
+import { extractNameAndIdFromEmoji, MessageFlags } from '../../utils/discord/messageUtils';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { COLORS, EMOJIS } from '../../structures/constants';
 import {
@@ -389,15 +389,6 @@ const executeBadgesCommand = async (
       },
     ],
   });
-
-  const extractNameAndIdFromEmoji = (emoji: string) => {
-    const splitted = emoji.split(':');
-
-    return {
-      name: splitted[1],
-      id: BigInt(splitted[2].slice(0, -1)),
-    };
-  };
 
   getUserBadges(ctx.authorData, ctx.author).forEach((a) => {
     const isSelected = ctx.authorData.hiddingBadges.includes(a.id);
