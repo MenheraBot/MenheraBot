@@ -45,6 +45,10 @@ export default class {
     return this.interaction.user;
   }
 
+  get commandId(): bigint {
+    return this.interaction.data?.id ?? 0n;
+  }
+
   get channelId(): bigint {
     return this.interaction.channelId ?? 0n;
   }
