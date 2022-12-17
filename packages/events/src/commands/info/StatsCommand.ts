@@ -2,7 +2,7 @@ import { Embed, User } from 'discordeno/transformers';
 import { ApplicationCommandOptionTypes, ButtonStyles, DiscordEmbedField } from 'discordeno/types';
 import { TFunction } from 'i18next';
 
-import ComponentInteractionContext from 'structures/command/ComponentInteractionContext';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import { ApiGamblingGameCompatible, ApiGamblingGameStats } from '../../types/api';
 import { getGamblingGameStats, getUserHuntStats } from '../../utils/apiRequests/statistics';
 import { COLORS, EMOJIS } from '../../structures/constants';
