@@ -11,9 +11,9 @@ import { createEmbed } from '../../utils/discord/embedUtils';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 
 const sarrada = async (ctx: ComponentInteractionContext): Promise<void> => {
-  const [userId] = ctx.sentData;
+  const { commandAuthor } = ctx;
 
-  if (ctx.interaction.user.toggles.bot || userId === `${ctx.user.id}`) {
+  if (ctx.interaction.user.toggles.bot || commandAuthor.id === ctx.user.id) {
     await ctx.respondInteraction({
       content: ctx.prettyResponse('error', 'commands:sarrar.cannot-sarrar-self'),
       flags: MessageFlags.EPHEMERAL,
@@ -28,7 +28,7 @@ const sarrada = async (ctx: ComponentInteractionContext): Promise<void> => {
   const embed = createEmbed({
     title: ctx.locale('commands:sarrar.embed_title'),
     description: ctx.locale('commands:sarrar.embed_description', {
-      author: mentionUser(userId),
+      author: mentionUser(commandAuthor?.id ?? 0n),
       mention: mentionUser(ctx.user.id),
     }),
     image: { url: selectedImage },
@@ -94,7 +94,7 @@ const SarrarCommand = createCommand({
     });
 
     const button = createButton({
-      customId: createCustomId(0, 'N', ctx.interaction.data?.id as bigint, `${ctx.author.id}`),
+      customId: createCustomId(0, 'N', ctx.commandId),
       label: ctx.locale('commands:sarrar.sarrar'),
       style: ButtonStyles.Primary,
     });

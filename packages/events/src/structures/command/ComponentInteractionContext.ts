@@ -20,6 +20,10 @@ export default class<InteractionType extends ComponentInteraction = ComponentInt
     return this.interaction.user;
   }
 
+  get commandAuthor(): User {
+    return this.interaction.message?.interaction?.user as User;
+  }
+
   get channelId(): bigint {
     return this.interaction.channelId ?? 0n;
   }

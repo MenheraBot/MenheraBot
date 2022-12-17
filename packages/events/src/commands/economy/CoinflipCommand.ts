@@ -1,7 +1,7 @@
 import { User } from 'discordeno/transformers';
 import { ApplicationCommandOptionTypes, ButtonStyles } from 'discordeno/types';
 
-import ComponentInteractionContext from 'structures/command/ComponentInteractionContext';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import starsRepository from '../../database/repositories/starsRepository';
 import { postCoinflipMatch } from '../../utils/apiRequests/statistics';
 import { randomFromArray } from '../../utils/miscUtils';
@@ -12,11 +12,11 @@ import { MessageFlags } from '../../utils/discord/messageUtils';
 import { createCommand } from '../../structures/command/createCommand';
 
 const confirmCoinflip = async (ctx: ComponentInteractionContext): Promise<void> => {
-  const [authorId, input] = ctx.sentData;
+  const [input] = ctx.sentData;
 
   const [userData, authorData] = await Promise.all([
     userRepository.ensureFindUser(ctx.user.id),
-    userRepository.ensureFindUser(authorId),
+    userRepository.ensureFindUser(ctx.commandAuthor.id),
   ]);
 
   const inputAsNumber = Number(input);
@@ -34,7 +34,7 @@ const confirmCoinflip = async (ctx: ComponentInteractionContext): Promise<void> 
   if (inputAsNumber > authorData.estrelinhas) {
     ctx.makeMessage({
       content: ctx.prettyResponse('error', 'commands:coinflip.poor', {
-        user: mentionUser(authorId),
+        user: mentionUser(ctx.commandAuthor.id),
       }),
       components: [],
     });
@@ -44,8 +44,8 @@ const confirmCoinflip = async (ctx: ComponentInteractionContext): Promise<void> 
   const availableOptions = ['cara', 'coroa'];
   const choice = randomFromArray(availableOptions);
 
-  const winner = choice === 'cara' ? authorId : ctx.user.id;
-  const loser = choice === 'coroa' ? authorId : ctx.user.id;
+  const winner = choice === 'cara' ? ctx.commandAuthor.id : ctx.user.id;
+  const loser = choice === 'coroa' ? ctx.commandAuthor.id : ctx.user.id;
 
   await ctx.makeMessage({
     content: ctx.locale('commands:coinflip.text', {
@@ -139,7 +139,7 @@ const CoinflipCommand = createCommand({
       );
 
     const confirmButton = createButton({
-      customId: createCustomId(0, user.id, ctx.commandId, ctx.author.id, input),
+      customId: createCustomId(0, user.id, ctx.commandId, input),
       label: ctx.locale('commands:coinflip.bet'),
       style: ButtonStyles.Success,
     });

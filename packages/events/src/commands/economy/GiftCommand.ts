@@ -50,7 +50,7 @@ const choices = [
 ];
 
 const executeGiftConfirmation = async (ctx: ComponentInteractionContext): Promise<void> => {
-  const [selectedButton, amount, selectedOption, authorId] = ctx.sentData;
+  const [selectedButton, amount, selectedOption] = ctx.sentData;
 
   if (selectedButton === 'NEGATE') {
     ctx.makeMessage({
@@ -60,13 +60,13 @@ const executeGiftConfirmation = async (ctx: ComponentInteractionContext): Promis
     return;
   }
 
-  const authorData = await userRepository.ensureFindUser(authorId);
+  const authorData = await userRepository.ensureFindUser(ctx.commandAuthor.id);
 
   if (Number(amount) > authorData[selectedOption as 'estrelinhas'])
     return ctx.makeMessage({
       content: ctx.prettyResponse('error', 'commands:presentear.user-poor', {
         field: ctx.locale(`common:${selectedOption as 'estrelinhas'}`),
-        user: mentionUser(authorId),
+        user: mentionUser(ctx.commandAuthor.id),
       }),
       components: [],
     });
@@ -82,7 +82,7 @@ const executeGiftConfirmation = async (ctx: ComponentInteractionContext): Promis
 
   await giveRepository.executeGive(
     selectedOption as 'estrelinhas',
-    authorId,
+    ctx.commandAuthor.id,
     ctx.user.id,
     Number(amount),
   );
@@ -168,15 +168,7 @@ const GiftCommand = createCommand({
       );
 
     const confirmButton = createButton({
-      customId: createCustomId(
-        0,
-        toSendUser.id,
-        ctx.commandId,
-        'ACCEPT',
-        amount,
-        selectedOption,
-        ctx.author.id,
-      ),
+      customId: createCustomId(0, toSendUser.id, ctx.commandId, 'ACCEPT', amount, selectedOption),
       style: ButtonStyles.Success,
       label: ctx.locale('common:accept'),
     });

@@ -10,20 +10,20 @@ import { createCommand } from '../../structures/command/createCommand';
 import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
 
 const executeMarry = async (ctx: ComponentInteractionContext): Promise<void> => {
-  const [selectedButton, commandAuthor] = ctx.sentData;
+  const [selectedButton] = ctx.sentData;
 
   if (selectedButton === 'CANCEL')
     return ctx.makeMessage({
       components: [],
       content: ctx.prettyResponse('error', 'commands:casar.negated', {
-        author: mentionUser(commandAuthor),
+        author: mentionUser(ctx.commandAuthor.id),
         toMarry: mentionUser(ctx.user.id),
       }),
     });
 
   const [userData, commandAuthorData] = await Promise.all([
     userRepository.ensureFindUser(ctx.user.id),
-    userRepository.ensureFindUser(commandAuthor),
+    userRepository.ensureFindUser(ctx.commandAuthor.id),
   ]);
 
   if (userData.married || commandAuthorData.married)
@@ -34,13 +34,13 @@ const executeMarry = async (ctx: ComponentInteractionContext): Promise<void> => 
 
   ctx.makeMessage({
     content: ctx.prettyResponse('success', 'commands:casar.accepted', {
-      author: mentionUser(commandAuthor),
+      author: mentionUser(ctx.commandAuthor.id),
       toMarry: mentionUser(ctx.user.id),
     }),
     components: [],
   });
 
-  await relationshipRepostory.executeMarry(commandAuthor, ctx.user.id);
+  await relationshipRepostory.executeMarry(ctx.commandAuthor.id, ctx.user.id);
 };
 
 const MarryCommand = createCommand({
@@ -115,13 +115,13 @@ const MarryCommand = createCommand({
       );
 
     const confirmButton = createButton({
-      customId: createCustomId(0, mention.id, ctx.commandId, 'CONFIRM', ctx.author.id),
+      customId: createCustomId(0, mention.id, ctx.commandId, 'CONFIRM'),
       label: ctx.locale('commands:casar.accept'),
       style: ButtonStyles.Success,
     });
 
     const cancelButton = createButton({
-      customId: createCustomId(0, mention.id, ctx.commandId, 'CANCEL', ctx.author.id),
+      customId: createCustomId(0, mention.id, ctx.commandId, 'CANCEL'),
       label: ctx.locale('commands:casar.deny'),
       style: ButtonStyles.Danger,
     });
