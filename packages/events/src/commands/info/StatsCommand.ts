@@ -2,6 +2,7 @@ import { Embed, User } from 'discordeno/transformers';
 import { ApplicationCommandOptionTypes, ButtonStyles, DiscordEmbedField } from 'discordeno/types';
 import { TFunction } from 'i18next';
 
+import ComponentInteractionContext from 'structures/command/ComponentInteractionContext';
 import { ApiGamblingGameCompatible, ApiGamblingGameStats } from '../../types/api';
 import { getGamblingGameStats, getUserHuntStats } from '../../utils/apiRequests/statistics';
 import { COLORS, EMOJIS } from '../../structures/constants';
@@ -9,13 +10,7 @@ import themeCreditsRepository from '../../database/repositories/themeCreditsRepo
 import userThemesRepository from '../../database/repositories/userThemesRepository';
 import { getThemeById } from '../../modules/themes/getThemes';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
-import { collectResponseComponentInteraction } from '../../utils/discord/collectorUtils';
-import {
-  createActionRow,
-  createButton,
-  disableComponents,
-  generateCustomId,
-} from '../../utils/discord/componentUtils';
+import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import { getUserAvatar } from '../../utils/discord/userUtils';
@@ -115,6 +110,18 @@ const executeHuntStats = async (ctx: ChatInputInteractionContext, finishCommand:
   finishCommand();
 };
 
+const executeNotifyDesignerButton = async (ctx: ComponentInteractionContext): Promise<void> => {
+  const [notifyPurchase] = ctx.sentData;
+
+  await userThemesRepository.makeNotify(ctx.user.id, notifyPurchase === 'true');
+
+  ctx.makeMessage({
+    components: [],
+    embeds: [],
+    content: ctx.prettyResponse('success', 'commands:status.designer.success'),
+  });
+};
+
 const executeDesignerStats = async (
   ctx: ChatInputInteractionContext,
   finishCommand: () => void,
@@ -165,40 +172,13 @@ const executeDesignerStats = async (
   embed.footer = { text: ctx.locale('commands:status.designer.notify-footer') };
 
   const notifyButton = createButton({
-    customId: generateCustomId('NOTIFY', ctx.interaction.id),
+    customId: createCustomId(0, ctx.author.id, ctx.commandId, !notifyPurchase),
     emoji: { name: 'notify', id: 759607330597502976n },
     style: notifyPurchase ? ButtonStyles.Primary : ButtonStyles.Secondary,
     label: ctx.locale(`commands:status.designer.${notifyPurchase ? 'notify' : 'dont-notify'}`),
   });
 
   ctx.makeMessage({ embeds: [embed], components: [createActionRow([notifyButton])] });
-
-  const selected = await collectResponseComponentInteraction(
-    ctx.channelId,
-    ctx.author.id,
-    `${ctx.interaction.id}`,
-    7_500,
-  );
-
-  if (!selected) {
-    ctx.makeMessage({
-      components: [
-        createActionRow(disableComponents(ctx.locale('common:timesup'), [notifyButton])),
-      ],
-    });
-
-    return finishCommand();
-  }
-
-  await userThemesRepository.makeNotify(ctx.author.id, !notifyPurchase);
-
-  ctx.makeMessage({
-    components: [],
-    embeds: [],
-    content: ctx.prettyResponse('success', 'commands:status.designer.success'),
-  });
-
-  finishCommand();
 };
 
 const makeGamblingStatisticsEmbed = (
@@ -393,6 +373,7 @@ const StatsCommand = createCommand({
   ],
   category: 'info',
   authorDataFields: ['selectedColor'],
+  commandRelatedExecutions: [executeNotifyDesignerButton],
   execute: async (ctx, finishCommand) => {
     const subCommand = ctx.getSubCommand();
 
