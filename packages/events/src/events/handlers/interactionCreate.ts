@@ -4,7 +4,6 @@ import i18next from 'i18next';
 import { componentExecutor } from '../../structures/command/componentExecutor';
 import { autocompleteInteraction } from '../../structures/command/autocompleteInteraction';
 import guildRepository from '../../database/repositories/guildRepository';
-import usagesRepository from '../../database/repositories/usagesRepository';
 import { postCommandExecution } from '../../utils/apiRequests/commands';
 import { UsedCommandData } from '../../types/commands';
 import { getEnviroments } from '../../utils/getEnviroments';
@@ -88,19 +87,6 @@ const setInteractionCreateEvent = (): void => {
         }),
       );
 
-    if (command.category === 'economy') {
-      if (await usagesRepository.isUserInEconomyUsage(interaction.user.id)) {
-        const supportCommandInfo = await commandRepository.getCommandInfo('menhera');
-        return errorReply(
-          T('permissions:IN_COMMAND_EXECUTION', {
-            command: `</menhera suporte:${supportCommandInfo?.discordId}>`,
-          }),
-        );
-      }
-
-      await usagesRepository.setUserInEconomyUsages(interaction.user.id);
-    }
-
     const authorData =
       command.authorDataFields.length > 0
         ? await userRepository.ensureFindUser(interaction.user.id)
@@ -171,9 +157,6 @@ const setInteractionCreateEvent = (): void => {
 
     clearTimeout(testTimeouts.get(interaction.id));
     testTimeouts.delete(interaction.id);
-
-    if (command.category === 'economy')
-      await usagesRepository.removeUserFromEconomyUsages(interaction.user.id);
 
     logger.info(
       `[${new Date().toISOString().substring(11, 19)}] ${command.name} - ${interaction.user.id} `,

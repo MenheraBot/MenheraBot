@@ -6,7 +6,7 @@ import { sellHunts } from '../../modules/shop/sellHunts';
 import { buyColor, executeBuyColorSelectComponent } from '../../modules/shop/buyColor';
 import { buyRolls } from '../../modules/shop/buyRolls';
 import { buyItems, executeSelectItem } from '../../modules/shop/buyItems';
-import { buyThemes } from '../../modules/shop/buyThemes';
+import { buyThemes, executeClickButton } from '../../modules/shop/buyThemes';
 import { buyInfo } from '../../modules/shop/buyInfo';
 import { sellInfo } from '../../modules/shop/sellInfo';
 
@@ -207,7 +207,7 @@ const ShopCommand = createCommand({
     'selectedColor',
     'badges',
   ],
-  commandRelatedExecutions: [executeBuyColorSelectComponent, executeSelectItem],
+  commandRelatedExecutions: [executeBuyColorSelectComponent, executeSelectItem, executeClickButton],
   execute: async (ctx, finishCommand) => {
     const subCommandGroup = ctx.getSubCommandGroup();
 
