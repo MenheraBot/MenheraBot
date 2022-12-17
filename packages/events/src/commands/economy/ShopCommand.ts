@@ -3,7 +3,7 @@ import { ApplicationCommandOptionTypes } from 'discordeno/types';
 import { createCommand } from '../../structures/command/createCommand';
 
 import { sellHunts } from '../../modules/shop/sellHunts';
-import { buyColor } from '../../modules/shop/buyColor';
+import { buyColor, executeBuyColorSelectComponent } from '../../modules/shop/buyColor';
 import { buyRolls } from '../../modules/shop/buyRolls';
 import { buyItems } from '../../modules/shop/buyItems';
 import { buyThemes } from '../../modules/shop/buyThemes';
@@ -207,6 +207,7 @@ const ShopCommand = createCommand({
     'selectedColor',
     'badges',
   ],
+  commandRelatedExecutions: [executeBuyColorSelectComponent],
   execute: async (ctx, finishCommand) => {
     const subCommandGroup = ctx.getSubCommandGroup();
 

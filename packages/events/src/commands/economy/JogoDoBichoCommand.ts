@@ -1,8 +1,4 @@
-import {
-  ApplicationCommandOptionTypes,
-  InteractionResponseTypes,
-  TextStyles,
-} from 'discordeno/types';
+import { ApplicationCommandOptionTypes, TextStyles } from 'discordeno/types';
 
 import userRepository from '../../database/repositories/userRepository';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
@@ -26,7 +22,6 @@ import {
   createSelectMenu,
   createTextInput,
 } from '../../utils/discord/componentUtils';
-import { bot } from '../../index';
 
 const finishUserBet = async (
   ctx: ComponentInteractionContext<SelectMenuInteraction>,
@@ -38,6 +33,9 @@ const finishUserBet = async (
     CORNER: 'THIRD',
     SEQUENCE: 'UNITY',
   };
+
+  if (!canRegisterBet(ctx.user.id))
+    return ctx.makeMessage({ content: ctx.prettyResponse('error', 'commands:bicho.already') });
 
   await ctx.ack();
 
@@ -151,16 +149,11 @@ const executeBetType = async (
         }),
       });
 
-      bot.helpers
-        .sendInteractionResponse(ctx.interaction.id, ctx.interaction.token, {
-          type: InteractionResponseTypes.Modal,
-          data: {
-            title: ctx.locale('commands:bicho.bet-title'),
-            customId: createCustomId(1, ctx.user.id, ctx.commandId, 'MODAL', bet),
-            components: [createActionRow([betInput])],
-          },
-        })
-        .catch(() => null);
+      await ctx.respondWithModal({
+        title: ctx.locale('commands:bicho.bet-title'),
+        customId: createCustomId(1, ctx.user.id, ctx.commandId, 'MODAL', bet),
+        components: [createActionRow([betInput])],
+      });
 
       break;
     }

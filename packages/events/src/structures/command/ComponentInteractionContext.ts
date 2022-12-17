@@ -49,6 +49,19 @@ export default class<InteractionType extends ComponentInteraction = ComponentInt
       .catch(this.captureException.bind(this));
   }
 
+  async respondWithModal(options: InteractionCallbackData): Promise<void> {
+    if (this.replied) return;
+
+    this.replied = true;
+
+    await bot.helpers
+      .sendInteractionResponse(this.interaction.id, this.interaction.token, {
+        type: InteractionResponseTypes.Modal,
+        data: options,
+      })
+      .catch(this.captureException.bind(this));
+  }
+
   async ack(): Promise<void> {
     if (this.replied) return;
 

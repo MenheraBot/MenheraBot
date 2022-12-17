@@ -31,8 +31,6 @@ const makeDealerPlay = async (
     dealerHandValue = getHandValue(bjDealerCards);
   }
 
-  const finishCommand = () => undefined;
-
   if (dealerHandValue === 21)
     return finishMatch(
       ctx,
@@ -47,7 +45,6 @@ const makeDealerPlay = async (
       'blackjack',
       false,
       BLACKJACK_PRIZE_MULTIPLIERS.blackjack,
-      finishCommand,
       embedColor,
     );
 
@@ -65,7 +62,6 @@ const makeDealerPlay = async (
       'busted',
       true,
       BLACKJACK_PRIZE_MULTIPLIERS.base,
-      finishCommand,
       embedColor,
     );
 
@@ -83,7 +79,6 @@ const makeDealerPlay = async (
       'draw',
       false,
       BLACKJACK_PRIZE_MULTIPLIERS.base,
-      finishCommand,
       embedColor,
     );
 
@@ -101,7 +96,6 @@ const makeDealerPlay = async (
       'biggest',
       false,
       BLACKJACK_PRIZE_MULTIPLIERS.base,
-      finishCommand,
       embedColor,
     );
 
@@ -119,7 +113,6 @@ const makeDealerPlay = async (
       'biggest',
       true,
       BLACKJACK_PRIZE_MULTIPLIERS.base,
-      finishCommand,
       embedColor,
     );
 };
