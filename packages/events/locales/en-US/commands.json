@@ -180,7 +180,7 @@
     "invalid-value": "The value to be given must be greater than 0",
     "confirm": "Hey {{user}}, {{author}} wants to send you **{{count}}** {{emoji}}, do you accept?",
     "negated": "{{user}} refused the gift!",
-    "poor": "You ",
+    "poor": "You don't have that many {{field}}",
     "user-poor": "{{user}} don't have that many {{field}}",
     "transfered": "You transferred **{{value}}** {{emoji}} to {{user}}",
     "stars": "stars",

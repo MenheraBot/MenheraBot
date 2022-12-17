@@ -185,7 +185,7 @@
     "self-mention": "Você não pode mencionar a si mesmo!",
     "no-dbuser": "Este usuário não possui uma conta no Menhera's Bank!",
     "invalid-value": "O valor a ser dado deve ser maior que 0",
-    "poor": "Você ",
+    "poor": "Você não possui tantos {{field}} assim!",
     "user-poor": "{{user}} não possui tantos {{field}} assim!",
     "transfered": "Você transferiu **{{value}}** {{emoji}} para {{user}}",
     "stars": "estrelinhas",
