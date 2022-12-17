@@ -1,19 +1,14 @@
 import {
-  ActionRow,
   ApplicationCommandOptionTypes,
   InteractionResponseTypes,
   TextStyles,
 } from 'discordeno/types';
 
+import userRepository from '../../database/repositories/userRepository';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import starsRepository from '../../database/repositories/starsRepository';
 import { extractFields } from '../../utils/discord/modalUtils';
-import InteractionCollector from '../../structures/InteractionCollector';
-import {
-  ComponentInteraction,
-  ModalInteraction,
-  SelectMenuInteraction,
-} from '../../types/interaction';
-import { collectResponseComponentInteraction } from '../../utils/discord/collectorUtils';
+import { ModalInteraction, SelectMenuInteraction } from '../../types/interaction';
 import { BICHO_ANIMALS, BICHO_BET_MULTIPLIER } from '../../modules/bicho/finishBets';
 import { capitalize, millisToSeconds } from '../../utils/miscUtils';
 import {
@@ -27,12 +22,178 @@ import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { createCommand } from '../../structures/command/createCommand';
 import {
   createActionRow,
+  createCustomId,
   createSelectMenu,
   createTextInput,
-  disableComponents,
-  resolveCustomId,
 } from '../../utils/discord/componentUtils';
 import { bot } from '../../index';
+
+const finishUserBet = async (
+  ctx: ComponentInteractionContext<SelectMenuInteraction>,
+): Promise<void> => {
+  const whereToGoAnimals = {
+    ONE: 'UNITY',
+    SECOND: 'ONE',
+    THIRD: 'SECOND',
+    CORNER: 'THIRD',
+    SEQUENCE: 'UNITY',
+  };
+
+  await ctx.ack();
+
+  const [selectedBet, bet] = ctx.sentData;
+
+  switch (selectedBet) {
+    case 'MODAL': {
+      const userInput = extractFields(ctx.interaction as ModalInteraction)[0].value;
+      const polishedNumber = parseInt(userInput, 10);
+
+      if (Number.isNaN(polishedNumber))
+        return ctx.makeMessage({
+          embeds: [],
+          components: [],
+          content: ctx.prettyResponse('error', 'commands:bicho.invalid-bet'),
+        });
+
+      if (polishedNumber < 0 || polishedNumber > 9999)
+        return ctx.makeMessage({
+          embeds: [],
+          components: [],
+          content: ctx.prettyResponse('error', 'commands:bicho.invalid-bet'),
+        });
+
+      ctx.makeMessage({
+        embeds: [],
+        components: [],
+        content: ctx.prettyResponse('success', 'commands:bicho.success'),
+      });
+
+      const userData = await userRepository.ensureFindUser(ctx.user.id);
+
+      if (Number(bet) > userData.estrelinhas)
+        return ctx.makeMessage({
+          content: ctx.prettyResponse('error', 'commands:bicho.poor'),
+          components: [],
+        });
+
+      await starsRepository.removeStars(ctx.user.id, Number(bet));
+      registerUserBet(ctx.user.id, Number(bet), `${polishedNumber}`);
+      break;
+    }
+    case 'UNITY': {
+      ctx.makeMessage({
+        embeds: [],
+        components: [],
+        content: ctx.prettyResponse('success', 'commands:bicho.success'),
+      });
+
+      const userData = await userRepository.ensureFindUser(ctx.user.id);
+
+      if (Number(bet) > userData.estrelinhas)
+        return ctx.makeMessage({
+          content: ctx.prettyResponse('error', 'commands:bicho.poor'),
+          components: [],
+        });
+
+      await starsRepository.removeStars(ctx.user.id, Number(bet));
+
+      registerUserBet(ctx.user.id, Number(bet), ctx.interaction.data.values[0]);
+      break;
+    }
+    case 'SEQUENCE':
+    case 'SECOND':
+    case 'ONE':
+    case 'CORNER':
+    case 'THIRD': {
+      const newSelectMenu = createSelectMenu({
+        customId: createCustomId(
+          1,
+          ctx.user.id,
+          ctx.commandId,
+          whereToGoAnimals[selectedBet as 'THIRD'],
+          bet,
+        ),
+
+        placeholder: ctx.locale('commands:bicho.animal', {
+          option: '',
+        }),
+        options: [],
+      });
+
+      for (let i = 0; i < 25; i++)
+        newSelectMenu.options.push({
+          label: `${capitalize(BICHO_ANIMALS[i])}`,
+          value: `${ctx.interaction.data.values[0]} | ${BICHO_ANIMALS[i]}`,
+        });
+
+      ctx.makeMessage({ components: [createActionRow([newSelectMenu])] });
+      break;
+    }
+  }
+};
+
+const executeBetType = async (
+  ctx: ComponentInteractionContext<SelectMenuInteraction>,
+): Promise<void> => {
+  const [bet] = ctx.sentData;
+
+  switch (ctx.interaction.data.values[0]) {
+    case 'number': {
+      const betInput = createTextInput({
+        customId: 'BET',
+        minLength: 1,
+        maxLength: 4,
+        required: true,
+        style: TextStyles.Short,
+        label: ctx.locale('commands:bicho.label', {
+          min: 0,
+          max: 9999,
+        }),
+      });
+
+      bot.helpers
+        .sendInteractionResponse(ctx.interaction.id, ctx.interaction.token, {
+          type: InteractionResponseTypes.Modal,
+          data: {
+            title: ctx.locale('commands:bicho.bet-title'),
+            customId: createCustomId(1, ctx.user.id, ctx.commandId, 'MODAL', bet),
+            components: [createActionRow([betInput])],
+          },
+        })
+        .catch(() => null);
+
+      break;
+    }
+    case 'animal':
+    case 'sequence':
+    case 'corner': {
+      const selectMenu = createSelectMenu({
+        customId: createCustomId(
+          1,
+          ctx.user.id,
+          ctx.commandId,
+          ctx.interaction.data.values[0] !== 'animal'
+            ? ctx.interaction.data.values[0].toUpperCase()
+            : 'UNITY',
+          bet,
+        ),
+        placeholder: ctx.locale('commands:bicho.animal', {
+          option: ctx.locale('commands:bicho.first'),
+        }),
+        options: [],
+      });
+
+      for (let i = 0; i < 25; i++)
+        selectMenu.options.push({
+          label: `${capitalize(BICHO_ANIMALS[i])}`,
+          value: `${BICHO_ANIMALS[i]}`,
+        });
+
+      ctx.makeMessage({ components: [createActionRow([selectMenu])] });
+      break;
+    }
+  }
+};
 
 const BichoCommand = createCommand({
   path: '',
@@ -54,6 +215,7 @@ const BichoCommand = createCommand({
   ],
   category: 'economy',
   authorDataFields: ['estrelinhas', 'selectedColor'],
+  commandRelatedExecutions: [executeBetType, finishUserBet],
   execute: async (ctx, finishCommand) => {
     const bet = ctx.getOption<number>('aposta', false);
 
@@ -127,7 +289,7 @@ const BichoCommand = createCommand({
     });
 
     const firstMenu = createSelectMenu({
-      customId: `${ctx.interaction.id} | SELECT`,
+      customId: createCustomId(0, ctx.author.id, ctx.commandId, bet),
       options: [
         { label: ctx.locale('commands:bicho.number'), value: 'number' },
         { label: ctx.locale('commands:bicho.one-animal'), value: 'animal' },
@@ -137,191 +299,7 @@ const BichoCommand = createCommand({
     });
 
     ctx.makeMessage({ embeds: [embed], components: [createActionRow([firstMenu])] });
-
-    const selection = await collectResponseComponentInteraction<SelectMenuInteraction>(
-      ctx.channelId,
-      ctx.author.id,
-      `${ctx.interaction.id}`,
-      15_000,
-      false,
-    );
-
-    if (!selection)
-      return finishCommand(
-        ctx.makeMessage({
-          components: [
-            createActionRow(disableComponents(ctx.locale('common:timesup'), [firstMenu])),
-          ],
-        }),
-      );
-
-    const toSendComponents: ActionRow[] = [];
-
-    switch (selection.data.values[0]) {
-      case 'number': {
-        const betInput = createTextInput({
-          customId: 'BET',
-          minLength: 1,
-          maxLength: 4,
-          required: true,
-          style: TextStyles.Short,
-          label: ctx.locale('commands:bicho.label', {
-            min: 0,
-            max: 9999,
-          }),
-        });
-
-        bot.helpers.sendInteractionResponse(selection.id, selection.token, {
-          type: InteractionResponseTypes.Modal,
-          data: {
-            title: ctx.locale('commands:bicho.bet-title'),
-            customId: `${ctx.interaction.id} | MODAL`,
-            components: [createActionRow([betInput])],
-          },
-        });
-
-        break;
-      }
-      case 'animal':
-      case 'sequence':
-      case 'corner': {
-        bot.helpers.sendInteractionResponse(selection.id, selection.token, {
-          type: InteractionResponseTypes.DeferredUpdateMessage,
-        });
-
-        const selectMenu = createSelectMenu({
-          customId: `${ctx.interaction.id} | ${
-            selection.data.values[0] !== 'animal' ? selection.data.values[0].toUpperCase() : 'UNITY'
-          }`,
-          placeholder: ctx.locale('commands:bicho.animal', {
-            option: ctx.locale('commands:bicho.first'),
-          }),
-          options: [],
-        });
-
-        for (let i = 0; i < 25; i++)
-          selectMenu.options.push({
-            label: `${capitalize(BICHO_ANIMALS[i])}`,
-            value: `${BICHO_ANIMALS[i]}`,
-          });
-
-        toSendComponents.push(createActionRow([selectMenu]));
-        break;
-      }
-    }
-
-    ctx.makeMessage({ components: toSendComponents });
-
-    const filter = (int: ComponentInteraction) =>
-      int.user.id === ctx.author.id && int.data.customId.startsWith(`${ctx.interaction.id}`);
-
-    const collector = new InteractionCollector<ComponentInteraction>({
-      channelId: ctx.channelId,
-      filter,
-      idle: selection.data.values[0].length === 1 ? 25_000 : 20_000,
-    });
-
-    const whereToGoAnimals = {
-      ONE: 'UNITY',
-      SECOND: 'ONE',
-      THIRD: 'SECOND',
-      CORNER: 'THIRD',
-      SEQUENCE: 'UNITY',
-    };
-
-    collector.on('end', (_, reason) => {
-      if (reason === 'idle')
-        finishCommand(
-          ctx.makeMessage({
-            content: ctx.prettyResponse('error', 'common:timesup'),
-            components: [],
-            embeds: [],
-          }),
-        );
-    });
-
-    collector.on('collect', async (int: SelectMenuInteraction) => {
-      await bot.helpers.sendInteractionResponse(int.id, int.token, {
-        type: InteractionResponseTypes.DeferredUpdateMessage,
-      });
-
-      switch (resolveCustomId(int.data.customId)) {
-        case 'MODAL': {
-          collector.stop();
-
-          const userInput = extractFields(int as ModalInteraction)[0].value;
-          const polishedNumber = parseInt(userInput, 10);
-
-          if (Number.isNaN(polishedNumber))
-            return finishCommand(
-              ctx.makeMessage({
-                embeds: [],
-                components: [],
-                content: ctx.prettyResponse('error', 'commands:bicho.invalid-bet'),
-              }),
-            );
-
-          if (polishedNumber < 0 || polishedNumber > 9999)
-            return finishCommand(
-              ctx.makeMessage({
-                embeds: [],
-                components: [],
-                content: ctx.prettyResponse('error', 'commands:bicho.invalid-bet'),
-              }),
-            );
-
-          ctx.makeMessage({
-            embeds: [],
-            components: [],
-            content: ctx.prettyResponse('success', 'commands:bicho.success'),
-          });
-
-          await starsRepository.removeStars(ctx.author.id, bet);
-          registerUserBet(ctx.author.id, bet, `${polishedNumber}`);
-          finishCommand();
-          break;
-        }
-        case 'UNITY': {
-          collector.stop();
-
-          ctx.makeMessage({
-            embeds: [],
-            components: [],
-            content: ctx.prettyResponse('success', 'commands:bicho.success'),
-          });
-
-          await starsRepository.removeStars(ctx.author.id, bet);
-
-          registerUserBet(ctx.author.id, bet, int.data.values[0]);
-          finishCommand();
-          break;
-        }
-        case 'SEQUENCE':
-        case 'SECOND':
-        case 'ONE':
-        case 'CORNER':
-        case 'THIRD': {
-          const newSelectMenu = createSelectMenu({
-            customId: `${ctx.interaction.id} | ${
-              whereToGoAnimals[resolveCustomId(int.data.customId) as 'THIRD']
-            }`,
-            placeholder: ctx.locale('commands:bicho.animal', {
-              option: '',
-            }),
-            options: [],
-          });
-
-          for (let i = 0; i < 25; i++)
-            newSelectMenu.options.push({
-              label: `${capitalize(BICHO_ANIMALS[i])}`,
-              value: `${int.data.values[0]} | ${BICHO_ANIMALS[i]}`,
-            });
-
-          ctx.makeMessage({ components: [createActionRow([newSelectMenu])] });
-          break;
-        }
-      }
-    });
+    finishCommand();
   },
 });
 
