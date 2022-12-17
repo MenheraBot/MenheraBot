@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 - Adeus botões com `Tempo Esgotado`. Agora, componentes não possuem mais limite de tempo para clicar! Isso significa que você não vai precisar ficar usando o `/trisal` toda hora por que o lerdo não clicava a tempo, e também não vai mais ter problemas de comandos de economia bugando no meio do blackjack! Agora você pode usar tudo ao mesmo tempo, e ainda demorar para clicar nos botões! >,...,<
 
+### Changed
+
+- O valor mínimo para apostar no BlackJack foi reduzido para 1 estrelinha!
+
 ### Fixed 
 
 - Menções de usuários no comando `/presentear` 

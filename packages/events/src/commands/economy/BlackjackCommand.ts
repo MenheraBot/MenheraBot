@@ -4,6 +4,7 @@ import starsRepository from '../../database/repositories/starsRepository';
 import {
   createActionRow,
   createButton,
+  createCustomId,
   generateCustomId,
   resolveCustomId,
 } from '../../utils/discord/componentUtils';
@@ -37,7 +38,7 @@ const BlackjackCommand = createCommand({
       descriptionLocalizations: { 'en-US': 'Bet ammount' },
       type: ApplicationCommandOptionTypes.Integer,
       required: true,
-      minValue: 1000,
+      minValue: 1,
       maxValue: 50000,
     },
   ],
@@ -100,6 +101,8 @@ const BlackjackCommand = createCommand({
         finishCommand,
       );
 
+    await starsRepository.removeStars(ctx.author.id, bet);
+
     const image = await getTableImage(
       ctx,
       bet,
@@ -120,38 +123,22 @@ const BlackjackCommand = createCommand({
       dealerHandValue,
     );
 
+    // Salvar as informaçoes da partida como cartas e tudo mais no redis, colocar a key como blackjack:userID:interactionId
+    // O interactionId deve ser o id da interacao do comando, assim o usuario consegue abrir varios jogos ao mesmo tempo, e responder a todos eles.
+
     const buyButton = createButton({
-      customId: generateCustomId('BUY', ctx.interaction.id),
+      customId: createCustomId(0, ctx.author.id, ctx.commandId, 'BUY', bet),
       style: ButtonStyles.Primary,
       label: ctx.locale('commands:blackjack.buy'),
     });
 
     const stopButton = createButton({
-      customId: generateCustomId('STOP', ctx.interaction.id),
+      customId: createCustomId(0, ctx.author.id, ctx.commandId, 'STOP', bet),
       style: ButtonStyles.Danger,
       label: ctx.locale('commands:blackjack.stop'),
     });
 
     await safeImageReply(ctx, embed, image, [createActionRow([buyButton, stopButton])]);
-
-    const collected = await collectResponseComponentInteraction<ComponentInteraction>(
-      ctx.channelId,
-      ctx.author.id,
-      `${ctx.interaction.id}`,
-      10_000,
-    );
-
-    if (!collected) {
-      ctx.makeMessage({
-        content: ctx.prettyResponse('error', 'commands:blackjack.timeout'),
-        embeds: [],
-        attachments: [],
-        components: [],
-      });
-
-      starsRepository.removeStars(ctx.author.id, bet);
-      return finishCommand();
-    }
 
     if (resolveCustomId(collected.data.customId) === 'BUY') {
       const expectedNextCard = matchCards[0];
