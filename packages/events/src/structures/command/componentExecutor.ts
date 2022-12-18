@@ -19,33 +19,11 @@ const { ERROR_WEBHOOK_ID, ERROR_WEBHOOK_TOKEN } = getEnviroments([
   'ERROR_WEBHOOK_TOKEN',
 ]);
 
-/*
-                    Sistema pra droppar os collectors
-    CustomID: as interactions falam de qual mensagem/comando foram executadas, pegar isso pra referencia
-    
-    separador = |
-
-    primeira coisa = (index do array de execuçoes de componentes)
-    segunda coisa = ID do target ou caractere pra saber que n precisa (N)
-    terceira coisa = ID/Timestamp do comando usado
-    o resto = data pro comando ser executado
-
-    EXEMPLO DE CUSTOM ID:
-    1|435228312214962204|1053395573715243068|1293|EB_BACKGROUND|TRUE
-
-    */
-
 const componentExecutor = async (interaction: Interaction): Promise<void> => {
   const receivedCommandName = interaction.message?.interaction?.name;
 
   if (!receivedCommandName) return;
   if (!interaction.data?.customId) return;
-
-  // Adicionar um ByPass checks no redis pra nao fazer todas essas verificacoes pra comandos recentes,
-  // exemplo do /loja comprar temas, que sao muitos clicks no comando. Salvar a ID da interação do comando
-  // interaction.message.interaction.id no redis, e ir adicionando setex de 10 segundos num set de bypass
-  // Pra reduzir caracteres, talvez ao inves de colocar o id do comando inteiro, colocar só o timestamp dele
-  // Pegando do snowflake. Fazer tudo isso no novo generate custom ID
 
   const [commandName] = receivedCommandName.split(' ');
 
@@ -106,6 +84,28 @@ const componentExecutor = async (interaction: Interaction): Promise<void> => {
 
   if (!execute) return errorReply(T('permissions:UNKNOWN_SLASH'));
 
+  if (commandInfo?.discordId && commandInfo.discordId !== `${commandId}`) {
+    await bot.helpers
+      .sendInteractionResponse(interaction.id, interaction.token, {
+        type: InteractionResponseTypes.UpdateMessage,
+        data: {
+          components: [],
+        },
+      })
+      .catch(() => null);
+
+    await bot.helpers
+      .sendFollowupMessage(interaction.token, {
+        type: InteractionResponseTypes.ChannelMessageWithSource,
+        data: {
+          content: `<:negacao:759603958317711371> | ${T('permissions:COMPONENT_OUTDATED')}`,
+          flags: MessageFlags.EPHEMERAL,
+        },
+      })
+      .catch(() => null);
+    return;
+  }
+
   const guildLocale = i18next.getFixedT(
     await guildRepository.getGuildLanguage(interaction.guildId as bigint),
   );
@@ -152,33 +152,6 @@ const componentExecutor = async (interaction: Interaction): Promise<void> => {
 
     res(undefined);
   });
-
-  /* 
-  
-  Colocar o ID dos comandos no custom id das mensagens para saber se o comando é válido
-  const commandVersion = interaction.message?.interaction?.id ?? 0n;
-
-  if (commandInfo?.discordId && commandInfo.discordId !== `${commandVersion}`) {
-    await bot.helpers
-      .sendInteractionResponse(interaction.id, interaction.token, {
-        type: InteractionResponseTypes.UpdateMessage,
-        data: {
-          components: [],
-        },
-      })
-      .catch(() => null);
-
-    await bot.helpers
-      .sendFollowupMessage(interaction.token, {
-        type: InteractionResponseTypes.ChannelMessageWithSource,
-        data: {
-          content: `<:negacao:759603958317711371> | ${T('permissions:COMPONENT_OUTDATED')}`,
-          flags: MessageFlags.EPHEMERAL,
-        },
-      })
-      .catch(() => null);
-  }
- */
 };
 
 export { componentExecutor };
