@@ -16,29 +16,6 @@ const createCustomId = (
   ...data: unknown[]
 ): string => `${executorIndex}|${target}|${commandId}|${data.join('|')}`;
 
-const generateCustomId = <R = false>(
-  customIdentifier: string,
-  baseId?: bigint | number,
-  returnBase?: R,
-): R extends false ? string : [string, number | bigint] => {
-  const randomNumber = baseId ?? Math.floor(Date.now() + Math.random() * 100);
-
-  if (!returnBase)
-    return `${randomNumber} | ${customIdentifier}` as R extends false
-      ? string
-      : [string, number | bigint];
-
-  return [`${randomNumber} | ${customIdentifier}`, randomNumber] as R extends false
-    ? string
-    : [string, number | bigint];
-};
-
-const resolveCustomId = (customId: string): string =>
-  customId
-    .replace(/^[\s\d]+/, '')
-    .replace('|', '')
-    .trim();
-
 const resolveSeparatedStrings = (string: string): string[] => string.split(' | ');
 
 const createButton = (component: PropertyOptional<ButtonComponent, 'type'>): ButtonComponent => ({
@@ -65,30 +42,11 @@ const createActionRow = (components: ActionRow['components']): ActionRow => ({
   components,
 });
 
-const disableComponents = (
-  label: string,
-  components: ActionRow['components'],
-): ActionRow['components'] =>
-  // @ts-expect-error Weird Type
-  components.map((c) => {
-    if (c.type === MessageComponentTypes.Button)
-      return {
-        ...c,
-        label,
-        disabled: true,
-      };
-
-    return { ...c, placeholder: label, disabled: true };
-  });
-
 export {
   createButton,
   createCustomId,
   createActionRow,
-  disableComponents,
-  generateCustomId,
-  resolveCustomId,
   createTextInput,
-  resolveSeparatedStrings,
   createSelectMenu,
+  resolveSeparatedStrings,
 };

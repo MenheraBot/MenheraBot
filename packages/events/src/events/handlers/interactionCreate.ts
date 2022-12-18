@@ -11,7 +11,7 @@ import { DatabaseUserSchema } from '../../types/database';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import blacklistRepository from '../../database/repositories/blacklistRepository';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
-import { bot, interactionEmitter } from '../../index';
+import { bot } from '../../index';
 import userRepository from '../../database/repositories/userRepository';
 import commandRepository from '../../database/repositories/commandRepository';
 import { createEmbed } from '../../utils/discord/embedUtils';
@@ -31,8 +31,6 @@ const setInteractionCreateEvent = (): void => {
       interaction.type === InteractionTypes.ModalSubmit
     ) {
       componentExecutor(interaction);
-
-      interactionEmitter.emit('interaction', interaction);
       return;
     }
 
