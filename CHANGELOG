@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 - Resolvido o comando `/personalizar badges` não esconder as badges do Discord.
 - Menções de usuários no comando `/presentear` 
 - Resolvido problema da Menhera não vencer o blackjack caso inicie com um Blackjack na mão.
+- Resolvido o problema do comando `/personalizar badges` não funcionar em perfis que tivessem uma badge repetida (apenas eu tinha lol).
 
 ## [5.0.5] - 2022-12-16
 

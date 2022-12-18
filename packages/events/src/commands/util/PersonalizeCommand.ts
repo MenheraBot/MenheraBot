@@ -8,7 +8,7 @@ import {
   TextStyles,
 } from 'discordeno/types';
 import { Embed } from 'discordeno/transformers';
-import ComponentInteractionContext from 'structures/command/ComponentInteractionContext';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import { AvailableThemeTypes, ThemeFile } from '../../modules/themes/types';
 import userThemesRepository from '../../database/repositories/userThemesRepository';
 import { getThemeById, getUserActiveThemes } from '../../modules/themes/getThemes';
@@ -16,7 +16,6 @@ import { IdentifiedData } from '../../types/menhera';
 import { getUserAvatar } from '../../utils/discord/userUtils';
 import { getUserBadges } from '../../modules/badges/getUserBadges';
 import { profileBadges } from '../../modules/badges/profileBadges';
-import { collectResponseComponentInteraction } from '../../utils/discord/collectorUtils';
 import { extractNameAndIdFromEmoji, MessageFlags } from '../../utils/discord/messageUtils';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { COLORS, EMOJIS } from '../../structures/constants';
@@ -436,12 +435,13 @@ const executeBadgesCommand = async (
   userBadges.forEach((a, i) => {
     const isSelected = ctx.authorData.hiddingBadges.includes(a.id);
 
-    selectMenu.options.push({
-      label: profileBadges[a.id as 1].name,
-      value: `${a.id}`,
-      default: isSelected,
-      emoji: extractNameAndIdFromEmoji(EMOJIS[`badge_${a.id}` as 'angels']),
-    });
+    if (!selectMenu.options.some((b) => b.value === `${a.id}`))
+      selectMenu.options.push({
+        label: profileBadges[a.id as 1].name,
+        value: `${a.id}`,
+        default: isSelected,
+        emoji: extractNameAndIdFromEmoji(EMOJIS[`badge_${a.id}` as 'angels']),
+      });
 
     toSendEmbeds[i < 6 ? 0 : 1].fields?.push({
       name: `${EMOJIS[`badge_${a.id}` as 'angels']} | ${profileBadges[a.id as 1].name}`,
@@ -462,6 +462,42 @@ const executeBadgesCommand = async (
   finishCommand();
 };
 
+const selectedThemeToUse = async (ctx: ComponentInteractionContext<SelectMenuInteraction>) => {
+  const themeId = Number(ctx.interaction.data.values[0]);
+
+  const [themeType] = ctx.sentData;
+
+  switch (themeType) {
+    case 'cards':
+      userThemesRepository.setCardsTheme(ctx.user.id, themeId);
+      break;
+    case 'card_background':
+      userThemesRepository.setCardBackgroundTheme(ctx.user.id, themeId);
+      break;
+    case 'profile':
+      userThemesRepository.setProfileTheme(ctx.user.id, themeId);
+      break;
+    case 'table':
+      userThemesRepository.setTableTheme(ctx.user.id, themeId);
+      break;
+    case 'eb_background':
+      userThemesRepository.setEbBackgroundTheme(ctx.user.id, themeId);
+      break;
+    case 'eb_text_box':
+      userThemesRepository.setEbTextBoxTheme(ctx.user.id, themeId);
+      break;
+    case 'eb_menhera':
+      userThemesRepository.setEbMenheraTheme(ctx.user.id, themeId);
+      break;
+  }
+
+  ctx.makeMessage({
+    components: [],
+    embeds: [],
+    content: ctx.prettyResponse('success', 'commands:temas.selected'),
+  });
+};
+
 const executeThemesCommand = async (
   ctx: ChatInputInteractionContext,
   finishCommand: () => void,
@@ -477,7 +513,7 @@ const executeThemesCommand = async (
   });
 
   const selectMenu = createSelectMenu({
-    customId: generateCustomId('SELECT', ctx.interaction.id),
+    customId: createCustomId(1, ctx.author.id, ctx.commandId, 'SELECT', themeType),
     minValues: 1,
     maxValues: 1,
     options: [],
@@ -518,53 +554,6 @@ const executeThemesCommand = async (
   }
 
   ctx.makeMessage({ embeds: [embed], components: [createActionRow([selectMenu])] });
-
-  const collected = await collectResponseComponentInteraction<SelectMenuInteraction>(
-    ctx.channelId,
-    ctx.author.id,
-    `${ctx.interaction.id}`,
-    10_000,
-  );
-
-  if (!collected) {
-    ctx.makeMessage({
-      components: [createActionRow(disableComponents(ctx.locale('common:timesup'), [selectMenu]))],
-    });
-
-    return finishCommand();
-  }
-
-  const themeId = Number(collected.data.values[0]);
-
-  switch (themeType) {
-    case 'cards':
-      userThemesRepository.setCardsTheme(ctx.author.id, themeId);
-      break;
-    case 'card_background':
-      userThemesRepository.setCardBackgroundTheme(ctx.author.id, themeId);
-      break;
-    case 'profile':
-      userThemesRepository.setProfileTheme(ctx.author.id, themeId);
-      break;
-    case 'table':
-      userThemesRepository.setTableTheme(ctx.author.id, themeId);
-      break;
-    case 'eb_background':
-      userThemesRepository.setEbBackgroundTheme(ctx.author.id, themeId);
-      break;
-    case 'eb_text_box':
-      userThemesRepository.setEbTextBoxTheme(ctx.author.id, themeId);
-      break;
-    case 'eb_menhera':
-      userThemesRepository.setEbMenheraTheme(ctx.author.id, themeId);
-      break;
-  }
-
-  ctx.makeMessage({
-    components: [],
-    embeds: [],
-    content: ctx.prettyResponse('success', 'commands:temas.selected'),
-  });
   finishCommand();
 };
 
@@ -679,7 +668,7 @@ const PersonalizeCommand = createCommand({
     'voteCooldown',
     'married',
   ],
-  commandRelatedExecutions: [executeBadgesSelected],
+  commandRelatedExecutions: [executeBadgesSelected, selectedThemeToUse],
   execute: async (ctx, finishCommand) => {
     const command = ctx.getSubCommand();
 
