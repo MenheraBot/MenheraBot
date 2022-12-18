@@ -1,13 +1,13 @@
 import {
+  ActionRow,
   ApplicationCommandOptionTypes,
-  ButtonComponent,
   ButtonStyles,
   InputTextComponent,
-  InteractionResponseTypes,
-  SelectMenuComponent,
   TextStyles,
 } from 'discordeno/types';
 import { Embed } from 'discordeno/transformers';
+
+import { UserColor } from '../../types/database';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import { AvailableThemeTypes, ThemeFile } from '../../modules/themes/types';
 import userThemesRepository from '../../database/repositories/userThemesRepository';
@@ -25,17 +25,8 @@ import {
   createCustomId,
   createSelectMenu,
   createTextInput,
-  disableComponents,
-  generateCustomId,
-  resolveCustomId,
 } from '../../utils/discord/componentUtils';
-import {
-  ComponentInteraction,
-  ModalInteraction,
-  SelectMenuInteraction,
-} from '../../types/interaction';
-import InteractionCollector from '../../structures/InteractionCollector';
-import { bot } from '../../index';
+import { ModalInteraction, SelectMenuInteraction } from '../../types/interaction';
 import { usersModel } from '../../database/collections';
 import userRepository from '../../database/repositories/userRepository';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
@@ -61,6 +52,262 @@ const executeAboutMeCommand = async (
   finishCommand();
 };
 
+const createColorComponents = (
+  ctx: ComponentInteractionContext | ChatInputInteractionContext,
+  userColors: UserColor[],
+  currentPage: number,
+  toRename: boolean,
+): [Embed, ActionRow[]] => {
+  const embed = createEmbed({
+    title: toRename
+      ? ctx.prettyResponse('question', 'commands:cor.select-to-rename')
+      : ctx.prettyResponse('gay_flag', 'commands:cor.embed_title'),
+    color: COLORS.Purple,
+    description: ctx.locale('commands:cor.embed_description'),
+    fields: [],
+  });
+
+  const selector = createSelectMenu({
+    customId: createCustomId(
+      2,
+      ctx.interaction.user.id,
+      ctx.commandId,
+      'SELECT',
+      currentPage,
+      toRename,
+    ),
+    minValues: 1,
+    maxValues: 1,
+    placeholder: `${EMOJIS.rainbow} ${ctx.locale('commands:cor.choose')}`,
+    options: [],
+  });
+
+  for (let i = 9 * currentPage; selector.options.length < 9; i++) {
+    if (i > userColors.length || typeof userColors[i] === 'undefined') break;
+    embed.fields?.push({
+      name: userColors[i].nome,
+      value: userColors[i].cor,
+      inline: true,
+    });
+
+    selector.options.push({
+      label: userColors[i].nome.replaceAll('*', ''),
+      value: `${userColors[i].cor}`,
+      description: `${userColors[i].cor}`,
+      emoji: { name: getEmojiFromColorName(userColors[i].nome.replace(/\D/g, '')) },
+    });
+  }
+
+  const pages = Math.floor(userColors.length / 10) + 1;
+
+  const componentsToSend = [createActionRow([selector])];
+
+  if (pages > 1) {
+    const nextPageButton = createButton({
+      customId: createCustomId(
+        2,
+        ctx.interaction.user.id,
+        ctx.commandId,
+        'NEXT',
+        currentPage,
+        toRename,
+      ),
+      label: ctx.locale('common:next'),
+      disabled: currentPage + 1 === pages,
+      style: ButtonStyles.Primary,
+    });
+
+    const backPageButton = createButton({
+      customId: createCustomId(
+        2,
+        ctx.interaction.user.id,
+        ctx.commandId,
+        'BACK',
+        currentPage,
+        toRename,
+      ),
+      label: ctx.locale('common:back'),
+      style: ButtonStyles.Primary,
+      disabled: currentPage === 0,
+    });
+
+    embed.footer = {
+      text: ctx.locale('commands:cor.footer', { page: currentPage + 1, maxPages: pages }),
+    };
+
+    componentsToSend.push(createActionRow([backPageButton, nextPageButton]));
+  }
+
+  const renameButton = createButton({
+    customId: createCustomId(
+      2,
+      ctx.interaction.user.id,
+      ctx.commandId,
+      'RENAME',
+      currentPage,
+      toRename,
+    ),
+    style: toRename ? ButtonStyles.Success : ButtonStyles.Secondary,
+    label: ctx.locale('commands:cor.rename'),
+  });
+
+  componentsToSend.push(createActionRow([renameButton]));
+
+  return [embed, componentsToSend];
+};
+
+const executeColorComponents = async (
+  ctx: ComponentInteractionContext<SelectMenuInteraction>,
+): Promise<void> => {
+  const [type, sentCurrentPage, sentToRename] = ctx.sentData;
+
+  const currentPage = Number(sentCurrentPage);
+  const toRename = sentToRename === 'true';
+
+  const authorData = await userRepository.ensureFindUser(ctx.user.id);
+
+  const pages = Math.floor(authorData.colors.length / 9) + 1;
+
+  const changePage = (toSum: number, rename: boolean) => {
+    const selectedPage = currentPage + toSum;
+
+    const [embed, componentsToSend] = createColorComponents(
+      ctx,
+      authorData.colors,
+      selectedPage,
+      rename,
+    );
+
+    embed.footer = {
+      text: ctx.locale('commands:cor.footer', { page: selectedPage + 1, maxPages: pages }),
+    };
+
+    ctx.makeMessage({ embeds: [embed], components: componentsToSend });
+  };
+
+  switch (type) {
+    case 'MODAL': {
+      const component = (ctx.interaction as ModalInteraction).data.components[0]
+        .components[0] as InputTextComponent;
+      const newName = component.value as string;
+      const oldColor = component.customId;
+
+      const userColor = authorData.colors.find((c) => c.cor === oldColor);
+
+      if (!userColor) {
+        return ctx.respondInteraction({
+          content: ctx.prettyResponse('error', 'commands:cor.nonexistent'),
+          flags: MessageFlags.EPHEMERAL,
+        });
+      }
+
+      if (authorData.colors.some((a) => a.nome === newName)) {
+        ctx.respondInteraction({
+          content: ctx.prettyResponse('error', 'commands:cor.same-name'),
+          flags: MessageFlags.EPHEMERAL,
+        });
+
+        break;
+      }
+
+      userColor.nome = newName;
+
+      await usersModel.updateOne(
+        {
+          id: ctx.user.id,
+          'colors.cor': oldColor,
+        },
+        {
+          $set: {
+            'colors.$.nome': newName,
+          },
+        },
+      );
+
+      await userRepository.invalidateUserCache(ctx.user.id);
+
+      await ctx.respondInteraction({
+        content: ctx.prettyResponse('success', 'commands:cor.rename-success', {
+          color: oldColor,
+          name: newName,
+        }),
+        flags: MessageFlags.EPHEMERAL,
+      });
+
+      break;
+    }
+    case 'RENAME': {
+      changePage(0, !toRename);
+      break;
+    }
+    case 'SELECT': {
+      const selected = ctx.interaction.data.values[0];
+
+      if (toRename) {
+        const nameInput = createTextInput({
+          customId: selected,
+          label: ctx.locale('commands:cor.name-input', {
+            name: authorData.colors.find((a) => a.cor === selected)?.nome,
+          }),
+          minLength: 2,
+          maxLength: 20,
+          style: TextStyles.Short,
+          placeholder: ctx.locale('commands:loja.buy_colors.name_placeholder'),
+        });
+
+        ctx.respondWithModal({
+          title: ctx.locale('commands:cor.modal-title'),
+          customId: createCustomId(2, ctx.user.id, ctx.commandId, 'MODAL', currentPage, toRename),
+          components: [createActionRow([nameInput])],
+        });
+
+        break;
+      }
+
+      const dataChooseEmbed = createEmbed({
+        title: ctx.locale('commands:cor.dataChoose.title'),
+        description: ctx.locale('commands:cor.dataChoose.description'),
+        color: hexStringToNumber(selected),
+        thumbnail: {
+          url: 'https://i.imgur.com/t94XkgG.png',
+        },
+      });
+
+      await userRepository.updateUser(ctx.user.id, {
+        selectedColor: selected as `#${string}`,
+      });
+
+      ctx.makeMessage({ embeds: [dataChooseEmbed], components: [] });
+      break;
+    }
+    case 'NEXT': {
+      changePage(1, toRename);
+      break;
+    }
+    case 'BACK': {
+      changePage(-1, toRename);
+      break;
+    }
+  }
+};
+
+const getEmojiFromColorName = (color: string): string => {
+  const colors: { [key: string]: string } = {
+    '0': '🇧🇷',
+    '1': '💜',
+    '2': '🔴',
+    '3': '🔵',
+    '4': '🟢',
+    '5': '💗',
+    '6': '🟡',
+    '7': '⚫',
+    '8': '🟤',
+    '9': '⚪',
+  };
+
+  return colors[color] ?? '🌈';
+};
+
 const executeColorCommand = async (ctx: ChatInputInteractionContext, finishCommand: () => void) => {
   if (ctx.authorData.colors.length < 2) {
     ctx.makeMessage({
@@ -71,297 +318,14 @@ const executeColorCommand = async (ctx: ChatInputInteractionContext, finishComma
     return finishCommand();
   }
 
-  const embed = createEmbed({
-    title: ctx.prettyResponse('gay_flag', 'commands:cor.embed_title'),
-    color: COLORS.Purple,
-    description: ctx.locale('commands:cor.embed_description'),
-    fields: [],
+  const [embed, componentsToSend] = createColorComponents(ctx, ctx.authorData.colors, 0, false);
+
+  ctx.makeMessage({
+    embeds: [embed],
+    components: componentsToSend,
   });
 
-  const selector = createSelectMenu({
-    customId: generateCustomId('SELECT', ctx.interaction.id),
-    minValues: 1,
-    maxValues: 1,
-    placeholder: ctx.prettyResponse('rainbow', 'commands:cor.choose'),
-    options: [],
-  });
-
-  const getEmojiFromColorName = (color: string): string => {
-    const colors: { [key: string]: string } = {
-      '0': '🇧🇷',
-      '1': '💜',
-      '2': '🔴',
-      '3': '🔵',
-      '4': '🟢',
-      '5': '💗',
-      '6': '🟡',
-      '7': '⚫',
-      '8': '🟤',
-      '9': '⚪',
-    };
-
-    return colors[color] ?? '🌈';
-  };
-
-  const pages = Math.floor(ctx.authorData.colors.length / 9) + 1;
-
-  for (let i = 0; i < ctx.authorData.colors.length && i < 9; i++) {
-    embed.fields?.push({
-      name: ctx.authorData.colors[i].nome,
-      value: ctx.authorData.colors[i].cor,
-      inline: true,
-    });
-
-    selector.options.push({
-      label: ctx.authorData.colors[i].nome.replaceAll('*', ''),
-      value: `${ctx.authorData.colors[i].cor}`,
-      description: `${ctx.authorData.colors[i].cor}`,
-      emoji: { name: getEmojiFromColorName(ctx.authorData.colors[i].nome.replace(/\D/g, '')) },
-    });
-  }
-
-  const renameButton = createButton({
-    customId: generateCustomId('RENAME', ctx.interaction.id),
-    style: ButtonStyles.Secondary,
-    label: ctx.locale('commands:cor.rename'),
-  });
-
-  const componentsToSend = [createActionRow([selector])];
-
-  if (pages > 1) {
-    const nextPageButton = createButton({
-      customId: generateCustomId('NEXT', ctx.interaction.id),
-      label: ctx.locale('common:next'),
-      style: ButtonStyles.Primary,
-    });
-
-    const backPageButton = createButton({
-      customId: generateCustomId('BACK', ctx.interaction.id),
-      label: ctx.locale('common:back'),
-      style: ButtonStyles.Primary,
-      disabled: true,
-    });
-
-    componentsToSend.push(createActionRow([backPageButton, nextPageButton]));
-
-    embed.footer = { text: ctx.locale('commands:cor.footer', { page: 1, maxPages: pages }) };
-  }
-
-  componentsToSend.push(createActionRow([renameButton]));
-
-  ctx.makeMessage({ embeds: [embed], components: componentsToSend });
-
-  const filter = (int: ComponentInteraction) => {
-    if (typeof int.data.customId === 'undefined') return false;
-    return int.data.customId.startsWith(`${ctx.interaction.id}`) && int.user.id === ctx.author.id;
-  };
-
-  const collector = new InteractionCollector({
-    filter,
-    idle: 20_000,
-    channelId: ctx.channelId,
-  });
-
-  collector.on('end', (_, reason) => {
-    if (reason !== 'selected') {
-      ctx.makeMessage({
-        components: [
-          createActionRow(disableComponents(ctx.locale('common:timesup'), [renameButton])),
-        ],
-      });
-
-      return finishCommand();
-    }
-  });
-
-  let selectedPage = 0;
-  let toRename = false;
-
-  collector.on('collect', async (int: ComponentInteraction) => {
-    const type = resolveCustomId(int.data.customId);
-
-    const changePage = (toSum: number, justUpdateEmbed = false) => {
-      selectedPage += toSum;
-
-      const currentMenu = componentsToSend[0].components[0] as SelectMenuComponent;
-
-      currentMenu.options = [];
-      embed.fields = [];
-
-      for (let i = 9 * selectedPage; currentMenu.options.length < 9; i++) {
-        if (i > ctx.authorData.colors.length || typeof ctx.authorData.colors[i] === 'undefined')
-          break;
-
-        embed.fields.push({
-          name: ctx.authorData.colors[i].nome,
-          value: ctx.authorData.colors[i].cor,
-          inline: true,
-        });
-
-        currentMenu.options.push({
-          label: ctx.authorData.colors[i].nome.replaceAll('*', ''),
-          value: `${ctx.authorData.colors[i].cor}`,
-          description: `${ctx.authorData.colors[i].cor}`,
-          emoji: { name: getEmojiFromColorName(ctx.authorData.colors[i].nome.replace(/\D/g, '')) },
-        });
-      }
-
-      embed.footer = {
-        text: ctx.locale('commands:cor.footer', { page: selectedPage + 1, maxPages: pages }),
-      };
-
-      if (!justUpdateEmbed) {
-        if (selectedPage > 0)
-          (componentsToSend[1].components[0] as ButtonComponent).disabled = false;
-        else (componentsToSend[1].components[0] as ButtonComponent).disabled = true;
-
-        if (selectedPage + 1 === pages)
-          (componentsToSend[1].components[1] as ButtonComponent).disabled = true;
-        else (componentsToSend[1].components[1] as ButtonComponent).disabled = false;
-      }
-    };
-
-    switch (type) {
-      case 'MODAL': {
-        const component = (int as ModalInteraction).data.components[0]
-          .components[0] as InputTextComponent;
-        const newName = component.value as string;
-        const oldColor = component.customId;
-
-        const userColor = ctx.authorData.colors.find((c) => c.cor === oldColor);
-        if (!userColor) break;
-
-        if (ctx.authorData.colors.some((a) => a.nome === newName)) {
-          bot.helpers.sendInteractionResponse(int.id, int.token, {
-            type: InteractionResponseTypes.ChannelMessageWithSource,
-            data: {
-              content: ctx.prettyResponse('error', 'commands:cor.same-name'),
-              flags: MessageFlags.EPHEMERAL,
-            },
-          });
-          break;
-        }
-
-        userColor.nome = newName;
-
-        await usersModel.updateOne(
-          {
-            id: ctx.author.id,
-            'colors.cor': oldColor,
-          },
-          {
-            $set: {
-              'colors.$.nome': newName,
-            },
-          },
-        );
-
-        await userRepository.invalidateUserCache(ctx.author.id);
-
-        bot.helpers.sendInteractionResponse(int.id, int.token, {
-          type: InteractionResponseTypes.ChannelMessageWithSource,
-          data: {
-            content: ctx.prettyResponse('error', 'commands:cor.rename-success', {
-              color: oldColor,
-              name: newName,
-            }),
-          },
-        });
-
-        changePage(0, true);
-
-        ctx.makeMessage({ embeds: [embed], components: componentsToSend });
-
-        break;
-      }
-      case 'RENAME': {
-        bot.helpers.sendInteractionResponse(int.id, int.token, {
-          type: InteractionResponseTypes.DeferredUpdateMessage,
-        });
-
-        toRename = !toRename;
-
-        (componentsToSend[componentsToSend.length - 1].components[0] as ButtonComponent).style =
-          toRename ? ButtonStyles.Success : ButtonStyles.Secondary;
-
-        embed.title = toRename
-          ? ctx.prettyResponse('question', 'commands:cor.select-to-rename')
-          : ctx.prettyResponse('gay_flag', 'commands:cor.embed_title');
-
-        ctx.makeMessage({ embeds: [embed], components: componentsToSend });
-        break;
-      }
-      case 'SELECT': {
-        const selected = (int as SelectMenuInteraction).data.values[0];
-
-        if (toRename) {
-          const nameInput = createTextInput({
-            customId: selected,
-            label: ctx.locale('commands:cor.name-input', {
-              name: ctx.authorData.colors.find((a) => a.cor === selected)?.nome,
-            }),
-            minLength: 2,
-            maxLength: 20,
-            style: TextStyles.Short,
-            placeholder: ctx.locale('commands:loja.buy_colors.name_placeholder'),
-          });
-
-          bot.helpers.sendInteractionResponse(int.id, int.token, {
-            type: InteractionResponseTypes.Modal,
-            data: {
-              title: ctx.locale('commands:cor.modal-title'),
-              customId: generateCustomId('MODAL', ctx.interaction.id),
-              components: [createActionRow([nameInput])],
-            },
-          });
-
-          break;
-        }
-
-        bot.helpers.sendInteractionResponse(int.id, int.token, {
-          type: InteractionResponseTypes.DeferredUpdateMessage,
-        });
-
-        const dataChooseEmbed = createEmbed({
-          title: ctx.locale('commands:cor.dataChoose.title'),
-          description: ctx.locale('commands:cor.dataChoose.description'),
-          color: hexStringToNumber(selected),
-          thumbnail: {
-            url: 'https://i.imgur.com/t94XkgG.png',
-          },
-        });
-
-        await userRepository.updateUser(ctx.author.id, {
-          selectedColor: selected as `#${string}`,
-        });
-
-        ctx.makeMessage({ embeds: [dataChooseEmbed], components: [] });
-        collector.stop('selected');
-        finishCommand();
-        break;
-      }
-      case 'NEXT': {
-        bot.helpers.sendInteractionResponse(int.id, int.token, {
-          type: InteractionResponseTypes.DeferredUpdateMessage,
-        });
-
-        changePage(1);
-
-        ctx.makeMessage({ embeds: [embed], components: componentsToSend });
-        break;
-      }
-      case 'BACK': {
-        bot.helpers.sendInteractionResponse(int.id, int.token, {
-          type: InteractionResponseTypes.DeferredUpdateMessage,
-        });
-
-        changePage(-1);
-
-        ctx.makeMessage({ embeds: [embed], components: componentsToSend });
-        break;
-      }
-    }
-  });
+  finishCommand();
 };
 
 const executeBadgesSelected = async (
@@ -668,7 +632,7 @@ const PersonalizeCommand = createCommand({
     'voteCooldown',
     'married',
   ],
-  commandRelatedExecutions: [executeBadgesSelected, selectedThemeToUse],
+  commandRelatedExecutions: [executeBadgesSelected, selectedThemeToUse, executeColorComponents],
   execute: async (ctx, finishCommand) => {
     const command = ctx.getSubCommand();
 

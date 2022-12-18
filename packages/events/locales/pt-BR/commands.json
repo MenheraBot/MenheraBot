@@ -121,7 +121,7 @@
     "no-mention": {
       "embed_title": "Sarra Comigo?",
       "embed_description": "Alguém quer sarrar com {{author}}?",
-      "embed_footer": "Quer sarrar comigo? 30 segundos para aceitar a sarrada"
+      "embed_footer": "Quer sarrar comigo?"
     },
     "cannot-sarrar-self": "Tu não pode sarrar consigo mesmo!",
     "embed_title": "Sarrar",
@@ -172,7 +172,7 @@
     "self-mention": "você não pode apostar contra si mesmo",
     "no-dbuser": "este usuário não possui uma conta no Menhera's Bank!",
     "poor": "{{user}} não possui todas essas estrelinhas para apostar!",
-    "confirm": "{{author}} te desafiou para uma aposta de Cara ou Coroa valendo **{{value}}** :star:. Caso caia Cara, {{author}} vence, caso caia coroa, {{mention}} vence.\nVocê aceita? Tens **7** Segundos",
+    "confirm": "{{author}} te desafiou para uma aposta de Cara ou Coroa valendo **{{value}}** :star:. Caso caia Cara, {{author}} vence, caso caia coroa, {{mention}} vence.\nVocê aceita?",
     "cara": "CARA",
     "coroa": "COROA",
     "banned-user": "Este usuário não pode apostar pois está banido da Menhera!",
@@ -390,8 +390,9 @@
   "cor": {
     "footer": "Página {{page}}/{{maxPages}}",
     "usage": "[cor]",
+    "nonexistent": "Ué... aparentemente você não tem essa cor... que brisa vei",
     "embed_title": "Suas Cores",
-    "embed_description": "Escolha abaixo qual a cor que quer usar! Tu tem 30 segundos",
+    "embed_description": "Escolha abaixo qual a cor que quer usar!",
     "dataChoose": {
       "title": "Sua cor foi alterada com sucesso",
       "description": "Você ja pode ver seu perfil com sua nova cor!"
@@ -561,12 +562,12 @@
     "comedor-de-casadas": "UOUOUOU calma lá colega, um dos usuários que você mencionou ja está em um trisal",
     "not-in-trisal": "Nhoo meu neném, tu não tá em nenhum trisal :(",
     "user-not-in-trisal": "Este isolado não está em nenhum trisal! Que tal se tu formar um com ele heeheh",
-    "accept-message": ":heart: | Vocês aceitam formar um trisal? Os três devem clicar no botão em até 15 segundos\n{{first}}, {{second}} e {{third}}",
+    "accept-message": ":heart: | Vocês aceitam formar um trisal? Os três devem clicar no botão\n{{first}}, {{second}} e {{third}}",
     "done": "Parabéns, vocês três formaram um trisal lindo! Utilize este comando novamente para ver suas fotinhas juntas",
     "error": "Os 3 não reagiram à mensagem a tempo! Tente novamente, talvez com alguem que queira, quem sabe",
     "untrisal": {
       "breakup": "Terminar",
-      "sure": "Tu tem certeza que quer terminar o trisal? Tens 15 segundos para confirmar",
+      "sure": "Tu tem certeza que quer terminar o trisal?",
       "done": "O seu trisal acabou! Não tem mais jeito. Acabou...."
     }
   },
@@ -892,7 +893,7 @@
     "ready-users": "Usuários prontos: {{ready}} / 2",
     "same-user": "KKKK cara podre querendo batalhar contra si mesmo, marca outra pessoa ai namoral",
     "user-not-configurated": "{{user}} não possui todas as bênçãos configuradas para batalha! Use `/arena configurar` para settar suas bênçãos",
-    "description": "Bem-Vindos à arena **{{author}}** e **{{enemy}}**!\n\nVocês serão colocados de frente em uma batalha amistosa! Ninguém irá sofrer penalidades de morte ou mesmo de status. No início da batalha, ambos terão o máximo de vida e mana, e este valor não será alterado em sua ficha de aventureiro.\n\n**{{author}}** pode selecionar abaixo se a batalha será com os níveis atuais de vocês, ou se ela será justa ao **nível de batalha**. A batalha só iniciará quando ambos clicarem em PRONTO. Vocês tem 20 segundos para se decidir\n\n**Nivel de Batalha:** Todos jogadores estão nível **{{level}}** com **TODAS** habilidades da classe no nível **{{abilityLevel}}**. As bênçãos são distribuidas de acordo com a configuração do usuário\n\nNível de {{author}}: **{{authorLevel}}**\nNível de {{enemy}}: **{{enemyLevel}}**",
+    "description": "Bem-Vindos à arena **{{author}}** e **{{enemy}}**!\n\nVocês serão colocados de frente em uma batalha amistosa! Ninguém irá sofrer penalidades de morte ou mesmo de status. No início da batalha, ambos terão o máximo de vida e mana, e este valor não será alterado em sua ficha de aventureiro.\n\n**{{author}}** pode selecionar abaixo se a batalha será com os níveis atuais de vocês, ou se ela será justa ao **nível de batalha**. A batalha só iniciará quando ambos clicarem em PRONTO.\n\n**Nivel de Batalha:** Todos jogadores estão nível **{{level}}** com **TODAS** habilidades da classe no nível **{{abilityLevel}}**. As bênçãos são distribuidas de acordo com a configuração do usuário\n\nNível de {{author}}: **{{authorLevel}}**\nNível de {{enemy}}: **{{enemyLevel}}**",
     "ask-change-battle-type": "Ei {{author}}, **{{user}}** pediu para trocar o modo da batalha!",
     "closed-command": "{{author}} finalizou o comando!",
     "configurate": {

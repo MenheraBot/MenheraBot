@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 ### Changed
 
 - O valor mínimo para apostar no BlackJack foi reduzido para 1 estrelinha!
+- O preço de todas cores foi reduzido! Veja em `/loja preços comprar tipo:cores`
 
 ### Fixed 
 

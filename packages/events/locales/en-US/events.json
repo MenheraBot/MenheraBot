@@ -1,6 +1,5 @@
 {
-  "cooldown": "Wait **{{time}}** seconds before using the command `{{cmd}}`! Please >...<",
-  "maintenance": "**MAINTENANCE**\n This command is currently in maintenance!\n\n**Reason:** {{reason}}",
+ "maintenance": "**MAINTENANCE**\n This command is currently in maintenance!\n\n**Reason:** {{reason}}",
   "blocked-channel": "my commands are blocked in this channel",
   "error_embed": {
     "title": "<:menhera_cry:744041825140211732> | There was an error while trying to execute the {{cmd}} command",

@@ -10,12 +10,12 @@ const huntValues = {
 
 const colorPrices = {
   purple: 30_000,
-  red: 40_000,
-  cian: 50_000,
-  green: 60_000,
-  pink: 70_000,
-  yellow: 70_000,
-  your_choice: 85_000,
+  red: 30_000,
+  cian: 30_000,
+  green: 30_000,
+  pink: 30_000,
+  yellow: 30_000,
+  your_choice: 50_000,
 };
 
 const unbuyableThemes = [3, 4, 5, 6, 25, 26, 27];
