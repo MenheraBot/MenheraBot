@@ -7,6 +7,8 @@ import {
   SelectMenuComponent,
   TextStyles,
 } from 'discordeno/types';
+import { Embed } from 'discordeno/transformers';
+import ComponentInteractionContext from 'structures/command/ComponentInteractionContext';
 import { AvailableThemeTypes, ThemeFile } from '../../modules/themes/types';
 import userThemesRepository from '../../database/repositories/userThemesRepository';
 import { getThemeById, getUserActiveThemes } from '../../modules/themes/getThemes';
@@ -21,6 +23,7 @@ import { COLORS, EMOJIS } from '../../structures/constants';
 import {
   createActionRow,
   createButton,
+  createCustomId,
   createSelectMenu,
   createTextInput,
   disableComponents,
@@ -362,19 +365,52 @@ const executeColorCommand = async (ctx: ChatInputInteractionContext, finishComma
   });
 };
 
+const executeBadgesSelected = async (
+  ctx: ComponentInteractionContext<SelectMenuInteraction>,
+): Promise<void> => {
+  let toUpdate: number[] = [];
+
+  ctx.interaction.data.values.forEach((a) => {
+    if (a.length < 2) toUpdate.push(Number(a));
+  });
+
+  if (
+    ctx.interaction.data.values.includes('ALL') &&
+    !ctx.interaction.data.values.includes('NONE')
+  ) {
+    const authorData = await userRepository.ensureFindUser(ctx.user.id);
+    const userBadges = getUserBadges(authorData, ctx.user);
+    toUpdate = userBadges.map((a) => a.id);
+  }
+
+  if (ctx.interaction.data.values.includes('NONE')) toUpdate = [];
+
+  await userRepository.updateUser(ctx.user.id, {
+    hiddingBadges: toUpdate as 1[],
+  });
+
+  ctx.makeMessage({
+    content: ctx.prettyResponse('success', 'commands:badges.success'),
+    components: [],
+    embeds: [],
+  });
+};
+
 const executeBadgesCommand = async (
   ctx: ChatInputInteractionContext,
   finishCommand: () => void,
 ) => {
-  const embed = createEmbed({
-    author: { name: ctx.locale('commands:badges.title'), iconUrl: getUserAvatar(ctx.author) },
-    footer: { text: ctx.locale('commands:badges.footer') },
-    color: hexStringToNumber(ctx.authorData.selectedColor),
-    fields: [],
-  });
+  const toSendEmbeds: Embed[] = [
+    createEmbed({
+      author: { name: ctx.locale('commands:badges.title'), iconUrl: getUserAvatar(ctx.author) },
+      footer: { text: ctx.locale('commands:badges.footer') },
+      color: hexStringToNumber(ctx.authorData.selectedColor),
+      fields: [],
+    }),
+  ];
 
   const selectMenu = createSelectMenu({
-    customId: generateCustomId('SELECT', ctx.interaction.id),
+    customId: createCustomId(0, ctx.author.id, ctx.commandId, 'SELECT'),
     minValues: 1,
     options: [
       {
@@ -390,7 +426,14 @@ const executeBadgesCommand = async (
     ],
   });
 
-  getUserBadges(ctx.authorData, ctx.author).forEach((a) => {
+  const userBadges = getUserBadges(ctx.authorData, ctx.author);
+
+  if (userBadges.length > 6)
+    toSendEmbeds.push(
+      createEmbed({ color: hexStringToNumber(ctx.authorData.selectedColor), fields: [] }),
+    );
+
+  userBadges.forEach((a, i) => {
     const isSelected = ctx.authorData.hiddingBadges.includes(a.id);
 
     selectMenu.options.push({
@@ -400,7 +443,7 @@ const executeBadgesCommand = async (
       emoji: extractNameAndIdFromEmoji(EMOJIS[`badge_${a.id}` as 'angels']),
     });
 
-    embed.fields?.push({
+    toSendEmbeds[i < 6 ? 0 : 1].fields?.push({
       name: `${EMOJIS[`badge_${a.id}` as 'angels']} | ${profileBadges[a.id as 1].name}`,
       value: ctx.locale('commands:badges.badge-info', {
         unix: Math.floor(Number(a.obtainAt) / 1000),
@@ -414,42 +457,7 @@ const executeBadgesCommand = async (
 
   selectMenu.maxValues = selectMenu.options.length;
 
-  ctx.makeMessage({ embeds: [embed], components: [createActionRow([selectMenu])] });
-
-  const selection = await collectResponseComponentInteraction<SelectMenuInteraction>(
-    ctx.channelId,
-    ctx.author.id,
-    `${ctx.interaction.id}`,
-    13_000,
-  );
-
-  if (!selection) {
-    ctx.makeMessage({
-      components: [createActionRow(disableComponents(ctx.locale('common:timesup'), [selectMenu]))],
-    });
-
-    return finishCommand();
-  }
-
-  let toUpdate: number[] = [];
-
-  selection.data.values.forEach((a) => {
-    if (a.length < 2) toUpdate.push(Number(a));
-  });
-
-  if (selection.data.values.includes('ALL')) toUpdate = ctx.authorData.badges.map((a) => a.id);
-
-  if (selection.data.values.includes('NONE')) toUpdate = [];
-
-  await userRepository.updateUser(ctx.author.id, {
-    hiddingBadges: toUpdate as 1[],
-  });
-
-  ctx.makeMessage({
-    content: ctx.prettyResponse('success', 'commands:badges.success'),
-    components: [],
-    embeds: [],
-  });
+  ctx.makeMessage({ embeds: toSendEmbeds, components: [createActionRow([selectMenu])] });
 
   finishCommand();
 };
@@ -671,6 +679,7 @@ const PersonalizeCommand = createCommand({
     'voteCooldown',
     'married',
   ],
+  commandRelatedExecutions: [executeBadgesSelected],
   execute: async (ctx, finishCommand) => {
     const command = ctx.getSubCommand();
 

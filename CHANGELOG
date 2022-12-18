@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/
 
 ### Fixed 
 
+- Resolvido o comando `/personalizar badges` não esconder as badges do Discord.
 - Menções de usuários no comando `/presentear` 
 - Resolvido problema da Menhera não vencer o blackjack caso inicie com um Blackjack na mão.
 
