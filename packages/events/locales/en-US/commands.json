@@ -552,7 +552,8 @@
     "comedor-de-casadas": "UOUOUOU calm there married eater, one of the users you mentioned is already in a polyamory",
     "not-in-trisal": "Nhoo my sweetheart, you are not in any polyamory :-(",
     "user-not-in-trisal": "This isolated is not in a polyamory!",
-    "accept-message": ":heart: | Do you accept to form a polyamory? You 3 must click the button\n{{first}}, {{second}} and {{third}},",
+    "accept-button": "I, {{name}}, accept!",
+    "accept-message": ":heart: | Do you accept to form a polyamory? {{first}} and {{second}} must accept!",
     "done": "Congratulations, you three formed a beautiful polyamory! Use this command again to see your pictures together",
     "error": "The 3 did not react to the message in time! Try again, maybe with someone who wants to, who knows",
     "untrisal": {

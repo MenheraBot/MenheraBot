@@ -1,29 +1,16 @@
-import {
-  ApplicationCommandOptionTypes,
-  ButtonStyles,
-  InteractionResponseTypes,
-  MessageComponentTypes,
-} from 'discordeno/types';
-import { Interaction, User } from 'discordeno/transformers';
+import { ApplicationCommandOptionTypes, ButtonStyles } from 'discordeno/types';
+import { User } from 'discordeno/transformers';
 
-import InteractionCollector from '../../structures/InteractionCollector';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
 import { getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
 import cacheRepository from '../../database/repositories/cacheRepository';
-import {
-  createButton,
-  createActionRow,
-  disableComponents,
-  generateCustomId,
-  createCustomId,
-} from '../../utils/discord/componentUtils';
+import { createButton, createActionRow, createCustomId } from '../../utils/discord/componentUtils';
 import relationshipRepostory from '../../database/repositories/relationshipRepostory';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
 import { createCommand } from '../../structures/command/createCommand';
 import userRepository from '../../database/repositories/userRepository';
-import { bot } from '../../index';
 import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 
 const executeFinishTrisalConfirmation = async (ctx: ComponentInteractionContext): Promise<void> => {
@@ -74,13 +61,69 @@ const executeFinishTrisal = async (
   finishCommand();
 };
 
+const acceptingTrisal = async (ctx: ComponentInteractionContext): Promise<void> => {
+  const [firstUserId, secondUserId, secondUserName] = ctx.sentData;
+  const thirdUserId = ctx.commandAuthor.id;
+
+  if (`${ctx.user.id}` === secondUserId) {
+    const [firstUserData, secondUserData, thirdUserData] = await Promise.all([
+      userRepository.ensureFindUser(firstUserId),
+      userRepository.ensureFindUser(secondUserId),
+      userRepository.ensureFindUser(thirdUserId),
+    ]);
+
+    if (
+      firstUserData.trisal.length > 0 ||
+      secondUserData.trisal.length > 0 ||
+      thirdUserData.trisal.length > 0
+    )
+      return ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:trisal.comedor-de-casadas'),
+        components: [],
+      });
+
+    ctx.makeMessage({
+      content: ctx.prettyResponse('success', 'commands:trisal.done'),
+      components: [
+        createActionRow([
+          createButton({
+            label: '',
+            style: ButtonStyles.Success,
+            customId: 'DONE',
+            emoji: { name: '💍' },
+            disabled: true,
+          }),
+        ]),
+      ],
+    });
+
+    await relationshipRepostory.executeTrisal(firstUserId, secondUserId, thirdUserId);
+    return;
+  }
+
+  const confirmButton = createButton({
+    customId: createCustomId(1, secondUserId, ctx.commandId, firstUserId, secondUserId),
+    label: ctx.locale('commands:trisal.accept-button', { name: secondUserName }),
+    style: ButtonStyles.Success,
+  });
+
+  ctx.makeMessage({
+    content: ctx.locale('commands:trisal.accept-message', {
+      first: mentionUser(firstUserId),
+      second: mentionUser(secondUserId),
+    }),
+    allowedMentions: { users: [BigInt(secondUserId)] },
+    components: [createActionRow([confirmButton])],
+  });
+};
+
 const executeMakeTrisal = async (
   ctx: ChatInputInteractionContext,
   finishCommand: (args?: unknown) => unknown,
 ) => {
   const firstUser = ctx.getOption<User>('user', 'users', true);
   const secondUser = ctx.getOption<User>('user_dois', 'users', true);
-  const thirdUser = ctx.getOption<User>('user', 'users') ?? ctx.author;
+  const thirdUser = ctx.author;
 
   if (firstUser.toggles.bot || secondUser.toggles.bot || thirdUser.toggles.bot)
     return finishCommand(
@@ -145,8 +188,15 @@ const executeMakeTrisal = async (
     );
 
   const confirmButton = createButton({
-    customId: generateCustomId('CONFIRM', ctx.interaction.id),
-    label: ctx.locale('common:accept'),
+    customId: createCustomId(
+      1,
+      firstUser.id,
+      ctx.commandId,
+      firstUser.id,
+      secondUser.id,
+      secondUser.username,
+    ),
+    label: ctx.locale('commands:trisal.accept-button', { name: firstUser.username }),
     style: ButtonStyles.Success,
   });
 
@@ -154,71 +204,12 @@ const executeMakeTrisal = async (
     content: ctx.locale('commands:trisal.accept-message', {
       first: mentionUser(firstUser.id),
       second: mentionUser(secondUser.id),
-      third: mentionUser(thirdUser.id),
     }),
+    allowedMentions: { users: [firstUser.id] },
     components: [createActionRow([confirmButton])],
   });
 
-  // PLEASE REMOVE THIS COLLECTOR IN THE FUTURE!!!!!!!!
-
-  const filter = (int: Interaction) => {
-    const startsCustomId = int.data?.customId?.startsWith(`${ctx.interaction.id}`);
-
-    if (!startsCustomId) return false;
-
-    bot.helpers.sendInteractionResponse(int.id, int.token, {
-      type: InteractionResponseTypes.DeferredUpdateMessage,
-    });
-
-    return trisalIds.includes(int.user.id);
-  };
-
-  const collector = new InteractionCollector({
-    filter,
-    channelId: ctx.channelId,
-    idle: 15_000,
-    componentType: MessageComponentTypes.Button,
-  });
-
-  const acceptedIds: bigint[] = [];
-
-  collector.once('end', () => {
-    if (acceptedIds.length !== 3)
-      return finishCommand(
-        ctx.makeMessage({
-          content: ctx.prettyResponse('error', 'commands:trisal.error'),
-          components: [
-            createActionRow(disableComponents(ctx.locale('common:timesup'), [confirmButton])),
-          ],
-        }),
-      );
-  });
-
-  collector.on('collect', async (int: Interaction) => {
-    if (!acceptedIds.includes(int.user.id)) acceptedIds.push(int.user.id);
-
-    if (acceptedIds.length === 3) {
-      ctx.makeMessage({
-        content: ctx.prettyResponse('success', 'commands:trisal.done'),
-        components: [
-          createActionRow([
-            createButton({
-              label: '',
-              style: ButtonStyles.Success,
-              customId: 'DONE',
-              emoji: { name: '💍' },
-              disabled: true,
-            }),
-          ]),
-        ],
-      });
-
-      collector.stop();
-
-      await relationshipRepostory.executeTrisal(firstUser.id, secondUser.id, thirdUser.id);
-      finishCommand();
-    }
-  });
+  finishCommand();
 };
 
 const executeOrderTrisal = async (
@@ -437,7 +428,7 @@ const TrisalCommand = createCommand({
   ],
   category: 'fun',
   authorDataFields: ['trisal', 'selectedColor'],
-  commandRelatedExecutions: [executeFinishTrisalConfirmation],
+  commandRelatedExecutions: [executeFinishTrisalConfirmation, acceptingTrisal],
   execute: async (ctx, finishCommand) => {
     const command = ctx.getSubCommand();
 

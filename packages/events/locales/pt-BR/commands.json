@@ -562,7 +562,8 @@
     "comedor-de-casadas": "UOUOUOU calma lá colega, um dos usuários que você mencionou ja está em um trisal",
     "not-in-trisal": "Nhoo meu neném, tu não tá em nenhum trisal :(",
     "user-not-in-trisal": "Este isolado não está em nenhum trisal! Que tal se tu formar um com ele heeheh",
-    "accept-message": ":heart: | Vocês aceitam formar um trisal? Os três devem clicar no botão\n{{first}}, {{second}} e {{third}}",
+    "accept-message": ":heart: | Vocês aceitam formar um trisal? {{first}} e {{second}} devem aceitar o relacionamento, clicando em ordem.",
+    "accept-button": "Eu, {{name}}, aceito!",
     "done": "Parabéns, vocês três formaram um trisal lindo! Utilize este comando novamente para ver suas fotinhas juntas",
     "error": "Os 3 não reagiram à mensagem a tempo! Tente novamente, talvez com alguem que queira, quem sabe",
     "untrisal": {
