@@ -477,7 +477,7 @@ const executeThemesCommand = async (
   });
 
   const selectMenu = createSelectMenu({
-    customId: createCustomId(1, ctx.author.id, ctx.commandId, 'SELECT', themeType),
+    customId: createCustomId(1, ctx.author.id, ctx.commandId, themeType),
     minValues: 1,
     maxValues: 1,
     options: [],
