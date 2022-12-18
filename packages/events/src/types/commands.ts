@@ -1,7 +1,8 @@
 /* eslint-disable no-use-before-define */
 import { CreateSlashApplicationCommand } from 'discordeno';
 
-import InteractionContext from '../structures/command/InteractionContext';
+import ComponentInteractionContext from '../structures/command/ComponentInteractionContext';
+import ChatInputInteractionContext from '../structures/command/ChatInputInteractionContext';
 import { DatabaseUserSchema } from './database';
 
 type CommandCategory = 'economy' | 'roleplay' | 'fun' | 'actions' | 'info' | 'dev' | 'util';
@@ -16,9 +17,14 @@ export interface ChatInputInteractionCommand extends Readonly<ChatInputCommandCo
   path: string;
 
   readonly execute: (
-    ctx: InteractionContext,
+    ctx: ChatInputInteractionContext,
     finishCommand: (...args: unknown[]) => unknown,
   ) => Promise<unknown>;
+
+  readonly commandRelatedExecutions?: ((
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ctx: ComponentInteractionContext<any>,
+  ) => Promise<unknown>)[];
 }
 
 export interface UsedCommandData {

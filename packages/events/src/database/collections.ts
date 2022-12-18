@@ -70,7 +70,6 @@ const userSchema = new Schema({
   trisal: { type: Array, default: [] },
   inventory: { type: Array, default: [] },
   inUseItems: { type: Array, default: [] },
-  itemsLimit: { type: Number, default: 1 },
   lastCommandAt: { type: Number, default: 0 },
   isBot: { type: Boolean, default: false },
 });

@@ -1,22 +1,119 @@
 import { User } from 'discordeno/transformers';
-import { ApplicationCommandOptionTypes, ButtonStyles, SelectMenuComponent } from 'discordeno/types';
+import { ApplicationCommandOptionTypes, ButtonStyles } from 'discordeno/types';
 
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import {
   createActionRow,
   createButton,
+  createCustomId,
   createSelectMenu,
-  disableComponents,
-  generateCustomId,
-  resolveCustomId,
-  resolveSeparatedStrings,
 } from '../../utils/discord/componentUtils';
-import { collectResponseComponentInteraction } from '../../utils/discord/collectorUtils';
-import { ComponentInteraction, SelectMenuInteraction } from '../../types/interaction';
+import { SelectMenuInteraction } from '../../types/interaction';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import userRepository from '../../database/repositories/userRepository';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 
 import { createCommand } from '../../structures/command/createCommand';
+
+const selectedToUseExecutor = async (
+  ctx: ComponentInteractionContext<SelectMenuInteraction>,
+): Promise<void> => {
+  const itemId = ctx.interaction.data.values[0];
+
+  ctx.makeMessage({
+    components: [],
+    embeds: [],
+    content: ctx.prettyResponse('success', 'commands:itens.equipped', {
+      name: ctx.locale(`data:magic-items.${itemId as '1'}.name`),
+    }),
+  });
+
+  userRepository.updateUser(ctx.user.id, { inUseItems: [{ id: Number(itemId) }] });
+};
+
+const buttonClickExecutor = async (ctx: ComponentInteractionContext): Promise<void> => {
+  const authorData = await userRepository.ensureFindUser(ctx.user.id);
+
+  const [buttonClicked] = ctx.sentData;
+
+  if (buttonClicked === 'RESET') {
+    await userRepository.updateUser(ctx.user.id, {
+      inUseItems: [],
+    });
+
+    ctx.makeMessage({
+      components: [],
+      embeds: [],
+      content: ctx.prettyResponse('success', 'commands:itens.reseted'),
+    });
+
+    return;
+  }
+
+  const availableItems = createSelectMenu({
+    customId: createCustomId(1, ctx.user.id, ctx.commandId, 'SELECT'),
+    placeholder: ctx.locale('commands:itens.select'),
+    options: [],
+  });
+
+  const inventoryWithoutUsingItems = authorData.inventory.filter(
+    (a) => !authorData.inUseItems.some((b) => b.id === a.id),
+  );
+
+  inventoryWithoutUsingItems.forEach((item) => {
+    availableItems.options.push({
+      label: ctx.locale(`data:magic-items.${item.id as 1}.name`),
+      description: ctx.locale(`data:magic-items.${item.id as 1}.description`).substring(0, 100),
+      value: `${item.id}`,
+    });
+  });
+
+  const embed = createEmbed({
+    title: ctx.locale('commands:itens.title', { user: ctx.user.username }),
+    color: hexStringToNumber(authorData.selectedColor),
+    description: ctx.locale('commands:itens.choose-item'),
+    footer: { text: ctx.locale('commands:itens.use-footer') },
+    fields: [
+      {
+        name: ctx.locale('commands:itens.items'),
+        value:
+          inventoryWithoutUsingItems.length > 0
+            ? inventoryWithoutUsingItems.reduce(
+                (p, c) =>
+                  `${p}**${ctx.locale('common:name')}:** ${ctx.locale(
+                    `data:magic-items.${c.id as 1}.name`,
+                  )}\n**${ctx.locale('common:description')}**: ${ctx.locale(
+                    `data:magic-items.${c.id as 1}.description`,
+                  )}\n\n`,
+                '',
+              )
+            : ctx.locale('commands:itens.no-item'),
+        inline: true,
+      },
+      {
+        name: ctx.locale('commands:itens.active'),
+        value:
+          authorData.inUseItems.length > 0
+            ? authorData.inUseItems.reduce(
+                (p, c) =>
+                  `${p}**${ctx.locale('common:name')}:** ${ctx.locale(
+                    `data:magic-items.${c.id as 1}.name`,
+                  )}\n**${ctx.locale('common:description')}**: ${ctx.locale(
+                    `data:magic-items.${c.id as 1}.description`,
+                  )}\n\n`,
+                '',
+              )
+            : ctx.locale('commands:itens.no-item'),
+        inline: true,
+      },
+    ],
+  });
+
+  ctx.makeMessage({
+    embeds: [embed],
+    components: [createActionRow([availableItems])],
+  });
+};
 
 const ItemsCommand = createCommand({
   path: '',
@@ -34,7 +131,8 @@ const ItemsCommand = createCommand({
       required: false,
     },
   ],
-  authorDataFields: ['selectedColor', 'inUseItems', 'inventory', 'id', 'itemsLimit'],
+  authorDataFields: ['selectedColor', 'inUseItems', 'inventory', 'id'],
+  commandRelatedExecutions: [buttonClickExecutor, selectedToUseExecutor],
   execute: async (ctx, finishCommand) => {
     const inputUser = ctx.getOption<User>('user', 'users', false) ?? ctx.author;
     const user =
@@ -110,13 +208,13 @@ const ItemsCommand = createCommand({
     if (inputUser.id !== ctx.author.id) return finishCommand(ctx.makeMessage({ embeds: [embed] }));
 
     const useItemButton = createButton({
-      customId: generateCustomId('USE', ctx.interaction.id),
+      customId: createCustomId(0, ctx.author.id, ctx.commandId, 'USE'),
       label: ctx.locale('commands:itens.use'),
       style: ButtonStyles.Primary,
     });
 
     const resetItemsButton = createButton({
-      customId: generateCustomId('RESET', ctx.interaction.id),
+      customId: createCustomId(0, ctx.author.id, ctx.commandId, 'RESET'),
       label: ctx.locale('commands:itens.reset'),
       style: ButtonStyles.Danger,
     });
@@ -133,125 +231,6 @@ const ItemsCommand = createCommand({
       components: [createActionRow([useItemButton, resetItemsButton])],
     });
 
-    if (cannotUseItems && user.inUseItems.length === 0) return finishCommand();
-
-    const collected = await collectResponseComponentInteraction<ComponentInteraction>(
-      ctx.channelId,
-      ctx.author.id,
-      `${ctx.interaction.id}`,
-      10_000,
-    );
-
-    if (!collected)
-      return finishCommand(
-        ctx.makeMessage({
-          components: [
-            createActionRow(
-              disableComponents(ctx.locale('common:timesup'), [useItemButton, resetItemsButton]),
-            ),
-          ],
-        }),
-      );
-
-    if (resolveCustomId(collected.data.customId) === 'RESET') {
-      await userRepository.updateUser(ctx.author.id, {
-        inUseItems: [],
-      });
-
-      ctx.makeMessage({
-        components: [],
-        embeds: [],
-        content: ctx.prettyResponse('success', 'commands:itens.reseted'),
-      });
-
-      return finishCommand();
-    }
-
-    const availableItems = createSelectMenu({
-      customId: generateCustomId('SELECT', ctx.interaction.id),
-      placeholder: ctx.locale('commands:itens.select'),
-      options: [],
-    });
-
-    inventoryWithoutUsingItems.forEach((item) => {
-      availableItems.options.push({
-        label: ctx.locale(`data:magic-items.${item.id as 1}.name`),
-        description: ctx.locale(`data:magic-items.${item.id as 1}.description`).substring(0, 100),
-        value: `${item.id}`,
-      });
-    });
-
-    embed.description = ctx.locale('commands:itens.choose-item');
-
-    ctx.makeMessage({ embeds: [embed], components: [createActionRow([availableItems])] });
-
-    const selectedItem = await collectResponseComponentInteraction<SelectMenuInteraction>(
-      ctx.channelId,
-      ctx.author.id,
-      `${ctx.interaction.id}`,
-      10_000,
-    );
-
-    if (!selectedItem)
-      return finishCommand(
-        ctx.makeMessage({
-          components: [
-            createActionRow(disableComponents(ctx.locale('common:timesup'), [availableItems])),
-          ],
-        }),
-      );
-
-    const itemId = selectedItem.data.values[0];
-
-    if (user.inUseItems.length >= user.itemsLimit) {
-      const replaceItem = createSelectMenu({
-        customId: generateCustomId('TOGGLE', ctx.interaction.id),
-        placeholder: ctx.locale('commands:itens.select'),
-        options: user.inUseItems.reduce<SelectMenuComponent['options']>((p, c, i) => {
-          p.push({
-            label: ctx.locale(`data:magic-items.${c.id as 1}.name`),
-            description: ctx.locale(`data:magic-items.${c.id as 1}.description`).substring(0, 100),
-            value: `${c.id} | ${i}`,
-          });
-          return p;
-        }, []),
-      });
-
-      embed.description = ctx.locale('commands:itens.choose-toggle');
-
-      ctx.makeMessage({ components: [createActionRow([replaceItem])], embeds: [embed] });
-
-      const choosedReplace = await collectResponseComponentInteraction<SelectMenuInteraction>(
-        ctx.channelId,
-        ctx.author.id,
-        `${ctx.interaction.id}`,
-        10_000,
-      );
-
-      if (!choosedReplace)
-        return finishCommand(
-          ctx.makeMessage({
-            components: [
-              createActionRow(disableComponents(ctx.locale('common:timesup'), [replaceItem])),
-            ],
-          }),
-        );
-
-      const [replaceItemId] = resolveSeparatedStrings(choosedReplace.data.values[0]);
-
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      user.inUseItems.find((i) => i.id === Number(replaceItemId))!.id = Number(itemId);
-    } else user.inUseItems.push({ id: Number(itemId) });
-
-    ctx.makeMessage({
-      components: [],
-      embeds: [],
-      content: ctx.prettyResponse('success', 'commands:itens.equipped', {
-        name: ctx.locale(`data:magic-items.${itemId as '1'}.name`),
-      }),
-    });
-
-    userRepository.updateUser(ctx.author.id, { inUseItems: user.inUseItems });
     finishCommand();
   },
 });

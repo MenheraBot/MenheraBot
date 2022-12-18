@@ -1,3 +1,4 @@
+import blackjackRepository from '../../database/repositories/blackjackRepository';
 import starsRepository from '../../database/repositories/starsRepository';
 import { bot } from '../../index';
 import {
@@ -5,14 +6,15 @@ import {
   AvailableCardThemes,
   AvailableTableThemes,
 } from '../themes/types';
-import InteractionContext from '../../structures/command/InteractionContext';
+import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
 import { postBlackjackGame } from '../../utils/apiRequests/statistics';
 import { negate } from '../../utils/miscUtils';
 import { generateBlackjackEmbed, getTableImage, safeImageReply } from './blackjackMatch';
 import { BlackjackCard, BlackjackFinishGameReason } from './types';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 
 const finishMatch = async (
-  ctx: InteractionContext,
+  ctx: ChatInputInteractionContext | ComponentInteractionContext,
   bet: number,
   playerCards: BlackjackCard[],
   dealerCards: BlackjackCard[],
@@ -24,14 +26,13 @@ const finishMatch = async (
   finishReason: BlackjackFinishGameReason,
   didUserWin: boolean,
   prizeMultiplier: number,
-  finishCommand: () => void,
+  embedColor: string,
 ): Promise<void> => {
-  const winner = didUserWin ? ctx.author.username : bot.username;
-  const loser = !didUserWin ? ctx.author.username : bot.username;
+  const winner = didUserWin ? ctx.interaction.user.username : bot.username;
+  const loser = !didUserWin ? ctx.interaction.user.username : bot.username;
   const prize = didUserWin ? Math.floor(bet * prizeMultiplier) : bet;
 
-  if (didUserWin) starsRepository.addStars(ctx.author.id, prize);
-  else starsRepository.removeStars(ctx.author.id, prize);
+  if (didUserWin) starsRepository.addStars(ctx.interaction.user.id, prize);
 
   const image = await getTableImage(
     ctx,
@@ -51,6 +52,7 @@ const finishMatch = async (
     dealerCards,
     playerHandValue,
     dealerHandValue,
+    embedColor,
   );
 
   embed.fields?.push({
@@ -66,8 +68,8 @@ const finishMatch = async (
   embed.footer = { text: '' };
 
   await safeImageReply(ctx, embed, image, []);
-  await postBlackjackGame(`${ctx.author.id}`, didUserWin, prize);
-  finishCommand();
+  await postBlackjackGame(`${ctx.interaction.user.id}`, didUserWin, prize);
+  await blackjackRepository.invalidateBlackjackState(ctx.interaction.user.id, ctx.commandId);
 };
 
 export { finishMatch };

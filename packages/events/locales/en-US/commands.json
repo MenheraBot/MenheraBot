@@ -117,7 +117,7 @@
     "no-mention": {
       "embed_title": "Dance with me?",
       "embed_description": "Someone wants to dance with {{author}}?",
-      "embed_footer": "Do you want to dance with me? 30 seconds to accept the dance"
+      "embed_footer": "Do you want to dance with me?"
     },
     "cannot-sarrar-self": "You can not dance with yourself!",
     "embed_title": "Dance",
@@ -167,7 +167,7 @@
     "self-mention": "you cannot bet against yourself",
     "no-dbuser": "this user does not have a Menhera's Bank account!",
     "poor": "{{user}} don't have all these stars to bet on!",
-    "confirm": "{{author}} challenged you to a heads-up bet worth **{{value}}** ⭐. Heads, {{author}} wins, tails, {{mention}} wins. Do you accept? you got **7** seconds",
+    "confirm": "{{author}} challenged you to a heads-up bet worth **{{value}}** ⭐. Heads, {{author}} wins, tails, {{mention}} wins. Do you accept?",
     "cara": "HEADS",
     "coroa": "TAILS",
     "banned-user": "This user cannot bet because they're banned from Menhera!",
@@ -181,6 +181,7 @@
     "confirm": "Hey {{user}}, {{author}} wants to send you **{{count}}** {{emoji}}, do you accept?",
     "negated": "{{user}} refused the gift!",
     "poor": "You don't have that many {{field}}",
+    "user-poor": "{{user}} don't have that many {{field}}",
     "transfered": "You transferred **{{value}}** {{emoji}} to {{user}}",
     "stars": "stars",
     "demons": "demons",
@@ -339,6 +340,7 @@
   },
   "casar": {
     "bot": "you can't marry bots",
+    "someone-married": "Are either of you already married!",
     "self-mention": "you can't marry yourself :(",
     "married": "you are already married !!",
     "no-dbuser": "suck this user to add him to my database",
@@ -375,9 +377,10 @@
   "cor": {
     "footer": "Page {{page}}/{{maxPages}}",
     "description": "Change the color of your profile",
+    "nonexistent": "Wait what!??? Apparently you don't have this color. What's turns",
     "usage": "[color]",
     "embed_title": "Your Colors",
-    "embed_description": "Choose down bellow the color to change your profile. You got 30 seconds",
+    "embed_description": "Choose down bellow the color to change your profile",
     "dataChoose": {
       "title": "Your color has been successfully changed",
       "description": "You can now see your profile with your new color!"
@@ -549,24 +552,27 @@
     "comedor-de-casadas": "UOUOUOU calm there married eater, one of the users you mentioned is already in a polyamory",
     "not-in-trisal": "Nhoo my sweetheart, you are not in any polyamory :-(",
     "user-not-in-trisal": "This isolated is not in a polyamory!",
-    "accept-message": ":heart: | Do you accept to form a polyamory? You 3 must click the button in 15 seconds!\n{{first}}, {{second}} and {{third}},",
+    "accept-button": "I, {{name}}, accept!",
+    "accept-message": ":heart: | Do you accept to form a polyamory? {{first}} and {{second}} must accept!",
     "done": "Congratulations, you three formed a beautiful polyamory! Use this command again to see your pictures together",
     "error": "The 3 did not react to the message in time! Try again, maybe with someone who wants to, who knows",
     "untrisal": {
-      "sure": "Are you sure you want to break up with your polyamory? You have 15 seconds to confirm",
+      "sure": "Are you sure you want to break up with your polyamory?",
       "done": "Your polyamory is over! There's no way. He finished....",
       "breakup": "Breakup"
     }
   },
   "blackjack": {
     "title": "BlackJack",
+    "lost-game-data": "Oh no {{author}}, I ended up losing the cards in the middle of the mess in my room... I gave you back the {{value}} :star: that you had bet in this game... I promise I'll try not to miss anything <3",
     "description": "Your Hand: **{{userHand}}** -> `{{userTotal}}`\nMenhera's Hand: **{{dealerCards}}** -> `{{dealerTotal}}`",
     "buy": "Draw",
     "stop": "Stop",
+    "shuffling": "Handing Over the Cards",
     "available-options": "Available Options",
     "initial-options": "**[1] Start** - Start the game\n**[2] Surrender** - Surrender from the game (and losses the bet)",
     "options": "**[1] Buy** - Draw one more card\n**[2] Stop** - Stop your bet here",
-    "footer": "You got 10 seconds",
+    "footer": "Your little stars have already been reduced! To get something back, win the match",
     "poor": "you don't have all these stars to bet on!",
     "your-hand": "Your Hand",
     "dealer-hand": "Menhera's Hand",
@@ -880,7 +886,7 @@
     "ready-users": "Ready users: {{ready}} / 2",
     "same-user": "HAHAHA look at that guy wanting to battle himself, tag someone else there namoral",
     "user-not-configurated": "{{user}} doesn't have all blessings configured for battle! Use `/arena configure` to set your blessings",
-    "description": "Welcome to the arena **{{author}}** and **{{enemy}}**!\n\nYou will be pitted against each other in a friendly battle! No one will suffer death penalties or At the start of the battle, both will have maximum health and mana, and this value will not change on your adventurer sheet.\n\n**{{author}}** you can select below if the battle will be with your current levels, or if it will be fair to the **battle level**. The battle will only start when you both click READY. You have 20 seconds to decide\n\n**Battle Level:** All players are level **{{level}}** with **ALL** class skills at level **{{abilityLevel}}** Blessings are distributed according to user configuration\n\nLevel of {{author}}: **{{authorLevel}}**\n{{enemy}}Level: **{{enemyLevel}}**",
+    "description": "Welcome to the arena **{{author}}** and **{{enemy}}**!\n\nYou will be pitted against each other in a friendly battle! No one will suffer death penalties or At the start of the battle, both will have maximum health and mana, and this value will not change on your adventurer sheet.\n\n**{{author}}** you can select below if the battle will be with your current levels, or if it will be fair to the **battle level**. The battle will only start when you both click READY.\n\n**Battle Level:** All players are level **{{level}}** with **ALL** class skills at level **{{abilityLevel}}** Blessings are distributed according to user configuration\n\nLevel of {{author}}: **{{authorLevel}}**\n{{enemy}}Level: **{{enemyLevel}}**",
     "ask-change-battle-type": "Hey {{author}}, **{{user}}** asked to change battle mode!",
     "closed-command": "{{author}} has finished the command!",
     "configurate": {

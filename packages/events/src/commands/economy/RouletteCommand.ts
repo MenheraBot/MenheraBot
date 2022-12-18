@@ -1,24 +1,17 @@
-import {
-  ActionRow,
-  ApplicationCommandOptionTypes,
-  ButtonStyles,
-  InteractionResponseTypes,
-} from 'discordeno/types';
+import { ActionRow, ApplicationCommandOptionTypes, ButtonStyles } from 'discordeno/types';
 
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
+import userRepository from '../../database/repositories/userRepository';
 import { getProfitTaxes, getTaxedProfit } from '../../modules/roulette/getTaxedProfit';
 import starsRepository from '../../database/repositories/starsRepository';
 import { postRoulleteGame } from '../../utils/apiRequests/statistics';
-import { bot } from '../../index';
 import cacheRepository from '../../database/repositories/cacheRepository';
-import InteractionCollector from '../../structures/InteractionCollector';
-import { ComponentInteraction, SelectMenuInteraction } from '../../types/interaction';
-import { collectResponseComponentInteraction } from '../../utils/discord/collectorUtils';
+import { SelectMenuInteraction } from '../../types/interaction';
 import {
   createActionRow,
   createButton,
+  createCustomId,
   createSelectMenu,
-  generateCustomId,
-  resolveCustomId,
   resolveSeparatedStrings,
 } from '../../utils/discord/componentUtils';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
@@ -31,7 +24,258 @@ import {
 
 import { createCommand } from '../../structures/command/createCommand';
 
-const WalletCommand = createCommand({
+const finishRouletteBet = async (
+  ctx: ComponentInteractionContext<SelectMenuInteraction>,
+): Promise<void> => {
+  const [resolvedId, stringBet, operation] = ctx.sentData;
+
+  const bet = Number(stringBet);
+
+  const randomValue = randomFromArray(ROULETTE_NUMBERS);
+
+  const finishMatch = async (profit: number, selection: string, didWin: boolean) => {
+    const authorData = await userRepository.ensureFindUser(ctx.user.id);
+
+    if (bet > authorData.estrelinhas)
+      return ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:roleta.poor'),
+        components: [],
+        embeds: [],
+      });
+
+    const isHighValueBet = (operation === 'STRAIGHT' || operation === 'SPLIT') && bet >= 10_000;
+    if (isHighValueBet) cacheRepository.incrementRouletteHourlyUsage(ctx.user.id);
+
+    const profitAfterTaxes = getTaxedProfit(profit);
+
+    const winOrLose = didWin ? 'win' : 'lose';
+
+    const finishEmbed = createEmbed({
+      color: hexStringToNumber(authorData.selectedColor),
+      title: ctx.locale(`commands:roleta.${winOrLose}-title`),
+      description: ctx.locale(`commands:roleta.${winOrLose}`, {
+        bet,
+        profit: profitAfterTaxes,
+        taxes: getProfitTaxes(profit),
+        number: randomValue,
+        operation,
+        selection:
+          operation === 'STRAIGHT' || operation === 'SPLIT'
+            ? selection
+            : ctx.locale(`commands:roleta.${selection as 'first'}`),
+      }),
+    });
+
+    if (didWin) starsRepository.addStars(ctx.user.id, profitAfterTaxes);
+    else starsRepository.removeStars(ctx.user.id, bet);
+
+    postRoulleteGame(
+      `${ctx.user.id}`,
+      bet,
+      operation,
+      didWin ? profitAfterTaxes : profit,
+      didWin,
+      selection,
+    );
+
+    ctx.makeMessage({ embeds: [finishEmbed], components: [] });
+  };
+
+  if (operation === 'SPLIT' && resolvedId !== 'BET') {
+    const numberSelected = Number(ctx.interaction.data.values[0]);
+
+    const menu = createSelectMenu({
+      customId: createCustomId(1, ctx.user.id, ctx.commandId, 'BET', bet, operation),
+      placeholder: ctx.locale('commands:roleta.select-bord'),
+      options: [],
+    });
+
+    if (numberSelected < 36 && numberSelected !== 0)
+      menu.options.push({
+        label: `${ctx.locale('commands:roleta.number')} ${numberSelected + 1}`,
+        value: `${numberSelected} | ${numberSelected + 1}`,
+      });
+
+    if (numberSelected < 34 && numberSelected !== 0)
+      menu.options.push({
+        label: `${ctx.locale('commands:roleta.number')} ${numberSelected + 3}`,
+        value: `${numberSelected} | ${numberSelected + 3}`,
+      });
+
+    if (numberSelected > 2)
+      menu.options.push({
+        label: `${ctx.locale('commands:roleta.number')} ${numberSelected - 3}`,
+        value: `${numberSelected} | ${numberSelected - 3}`,
+      });
+
+    if (numberSelected > 0)
+      menu.options.push({
+        label: `${ctx.locale('commands:roleta.number')} ${numberSelected - 1}`,
+        value: `${numberSelected} | ${numberSelected - 1}`,
+      });
+
+    if (numberSelected === 0)
+      menu.options.push(
+        {
+          label: `${ctx.locale('commands:roleta.number')} ${numberSelected + 1}`,
+          value: `${numberSelected} | ${numberSelected + 1}`,
+        },
+        {
+          label: `${ctx.locale('commands:roleta.number')} ${numberSelected + 2}`,
+          value: `${numberSelected} | ${numberSelected + 2}`,
+        },
+        {
+          label: `${ctx.locale('commands:roleta.number')} ${numberSelected + 3}`,
+          value: `${numberSelected} | ${numberSelected + 3}`,
+        },
+      );
+
+    ctx.makeMessage({ components: [createActionRow([menu])] });
+    return;
+  }
+
+  switch (operation) {
+    case 'STRAIGHT':
+      return finishMatch(
+        bet * WIN_MULTIPLIERS.STRAIGHT,
+        ctx.interaction.data.values[0],
+        Number(ctx.interaction.data.values[0]) === randomValue.value,
+      );
+
+    case 'SPLIT':
+      return finishMatch(
+        bet * WIN_MULTIPLIERS.SPLIT,
+        ctx.interaction.data.values[0],
+        resolveSeparatedStrings(ctx.interaction.data.values[0]).includes(`${randomValue.value}`),
+      );
+
+    case 'DOZENS':
+      return finishMatch(
+        bet * WIN_MULTIPLIERS.DOZENS,
+        ctx.interaction.data.values[0],
+        ctx.interaction.data.values[0] === randomValue.dozen,
+      );
+
+    case 'ODDEVEN':
+      return finishMatch(
+        bet * WIN_MULTIPLIERS.ODDEVEN,
+        ctx.interaction.data.values[0],
+        ctx.interaction.data.values[0] === randomValue.parity,
+      );
+
+    case 'COLOR':
+      return finishMatch(
+        bet * WIN_MULTIPLIERS.COLOR,
+        ctx.interaction.data.values[0],
+        ctx.interaction.data.values[0] === randomValue.color,
+      );
+
+    case 'LOWHIGH':
+      return finishMatch(
+        bet * WIN_MULTIPLIERS.LOWHIGH,
+        ctx.interaction.data.values[0],
+        ctx.interaction.data.values[0] === randomValue.size,
+      );
+  }
+};
+
+const executeAskForBetsButton = async (ctx: ComponentInteractionContext): Promise<void> => {
+  const [operation, bet] = ctx.sentData;
+
+  const toSendComponents: ActionRow[] = [];
+
+  switch (operation) {
+    case 'STRAIGHT':
+    case 'SPLIT': {
+      const firstCustomId = createCustomId(
+        1,
+        ctx.user.id,
+        ctx.commandId,
+        operation === 'STRAIGHT' ? 'BET 1' : 'FIRST',
+        bet,
+        operation,
+      );
+
+      const secondCustomId = createCustomId(
+        1,
+        ctx.user.id,
+        ctx.commandId,
+        operation === 'STRAIGHT' ? 'BET 2' : 'SECOND',
+        bet,
+        operation,
+      );
+
+      const placeholder = ctx.locale(
+        `commands:roleta.${operation === 'STRAIGHT' ? 'make-bet' : 'main-number'}`,
+      );
+
+      const firstSelectMenu = createSelectMenu({
+        customId: firstCustomId,
+        placeholder,
+        options: [],
+      });
+
+      const secondSelectMenu = createSelectMenu({
+        customId: secondCustomId,
+        placeholder,
+        options: [],
+      });
+
+      for (let i = 0; i <= 36; i++)
+        (i <= 18 ? firstSelectMenu : secondSelectMenu).options.push({
+          label: `${ctx.locale('commands:roleta.number')} ${i}`,
+          value: `${i}`,
+        });
+
+      toSendComponents.push(
+        createActionRow([firstSelectMenu]),
+        createActionRow([secondSelectMenu]),
+      );
+      break;
+    }
+    case 'LOWHIGH':
+    case 'COLOR':
+    case 'ODDEVEN': {
+      const firstLabel =
+        // eslint-disable-next-line no-nested-ternary
+        operation === 'COLOR' ? 'red' : operation === 'ODDEVEN' ? 'odd' : 'low';
+
+      const secondLabel =
+        // eslint-disable-next-line no-nested-ternary
+        operation === 'COLOR' ? 'black' : operation === 'ODDEVEN' ? 'even' : 'high';
+
+      const selectMenu = createSelectMenu({
+        customId: createCustomId(1, ctx.user.id, ctx.commandId, 'BET', bet, operation),
+        placeholder: ctx.locale('commands:roleta.make-bet'),
+        options: [
+          { label: ctx.locale(`commands:roleta.${firstLabel}`), value: firstLabel },
+          { label: ctx.locale(`commands:roleta.${secondLabel}`), value: secondLabel },
+        ],
+      });
+
+      toSendComponents.push(createActionRow([selectMenu]));
+      break;
+    }
+    case 'DOZENS': {
+      const selectMenu = createSelectMenu({
+        customId: createCustomId(1, ctx.user.id, ctx.commandId, 'BET', bet, operation),
+        placeholder: ctx.locale('commands:roleta.make-bet'),
+        options: [
+          { label: ctx.locale('commands:roleta.first'), value: 'first' },
+          { label: ctx.locale('commands:roleta.second'), value: 'second' },
+          { label: ctx.locale('commands:roleta.third'), value: 'third' },
+        ],
+      });
+
+      toSendComponents.push(createActionRow([selectMenu]));
+      break;
+    }
+  }
+
+  ctx.makeMessage({ components: toSendComponents });
+};
+
+const RouletteCommand = createCommand({
   path: '',
   name: 'roleta',
   nameLocalizations: { 'en-US': 'roulette' },
@@ -53,6 +297,7 @@ const WalletCommand = createCommand({
   ],
   category: 'economy',
   authorDataFields: ['estrelinhas', 'selectedColor'],
+  commandRelatedExecutions: [executeAskForBetsButton, finishRouletteBet],
   execute: async (ctx, finishCommand) => {
     const bet = ctx.getOption<number>('aposta', false, true);
 
@@ -118,37 +363,37 @@ const WalletCommand = createCommand({
     });
 
     const straightButton = createButton({
-      customId: `${ctx.interaction.id} | STRAIGHT`,
+      customId: createCustomId(0, ctx.author.id, ctx.commandId, 'STRAIGHT', bet),
       style: ButtonStyles.Primary,
       label: ctx.locale('commands:roleta.straight-up-title'),
     });
 
     const splitButton = createButton({
-      customId: `${ctx.interaction.id} | SPLIT`,
+      customId: createCustomId(0, ctx.author.id, ctx.commandId, 'SPLIT', bet),
       style: ButtonStyles.Primary,
       label: ctx.locale('commands:roleta.split-title'),
     });
 
     const dozensButton = createButton({
-      customId: `${ctx.interaction.id} | DOZENS`,
+      customId: createCustomId(0, ctx.author.id, ctx.commandId, 'DOZENS', bet),
       style: ButtonStyles.Primary,
       label: ctx.locale('commands:roleta.dozens-title'),
     });
 
     const colorButton = createButton({
-      customId: `${ctx.interaction.id} | COLOR`,
+      customId: createCustomId(0, ctx.author.id, ctx.commandId, 'COLOR', bet),
       style: ButtonStyles.Primary,
       label: ctx.locale('commands:roleta.color-title'),
     });
 
     const oddevenButton = createButton({
-      customId: `${ctx.interaction.id} | ODDEVEN`,
+      customId: createCustomId(0, ctx.author.id, ctx.commandId, 'ODDEVEN', bet),
       style: ButtonStyles.Primary,
       label: ctx.locale('commands:roleta.oddeven-title'),
     });
 
     const lowhighButton = createButton({
-      customId: `${ctx.interaction.id} | LOWHIGH`,
+      customId: createCustomId(0, ctx.author.id, ctx.commandId, 'LOWHIGH', bet),
       style: ButtonStyles.Primary,
       label: ctx.locale('commands:roleta.lowhigh-title'),
     });
@@ -171,262 +416,8 @@ const WalletCommand = createCommand({
       ],
     });
 
-    const selectedButton = await collectResponseComponentInteraction<ComponentInteraction>(
-      ctx.channelId,
-      ctx.author.id,
-      `${ctx.interaction.id}`,
-      14_000,
-    );
-
-    if (!selectedButton) {
-      embed.footer = { text: ctx.locale('common:timesup') };
-      ctx.makeMessage({ components: [], embeds: [embed] });
-      return finishCommand();
-    }
-
-    const operation = resolveCustomId(selectedButton.data.customId);
-    const toSendComponents: ActionRow[] = [];
-
-    switch (operation) {
-      case 'STRAIGHT':
-      case 'SPLIT': {
-        const firstCustomId = generateCustomId(
-          operation === 'STRAIGHT' ? 'BET 1' : 'FIRST',
-          ctx.interaction.id,
-        );
-
-        const secondCustomId = generateCustomId(
-          operation === 'STRAIGHT' ? 'BET 2' : 'SECOND',
-          ctx.interaction.id,
-        );
-
-        const placeholder = ctx.locale(
-          `commands:roleta.${operation === 'STRAIGHT' ? 'make-bet' : 'main-number'}`,
-        );
-
-        const firstSelectMenu = createSelectMenu({
-          customId: generateCustomId(firstCustomId, ctx.interaction.id),
-          placeholder,
-          options: [],
-        });
-
-        const secondSelectMenu = createSelectMenu({
-          customId: generateCustomId(secondCustomId, ctx.interaction.id),
-          placeholder,
-          options: [],
-        });
-
-        for (let i = 0; i <= 36; i++)
-          (i <= 18 ? firstSelectMenu : secondSelectMenu).options.push({
-            label: `${ctx.locale('commands:roleta.number')} ${i}`,
-            value: `${i}`,
-          });
-
-        toSendComponents.push(
-          createActionRow([firstSelectMenu]),
-          createActionRow([secondSelectMenu]),
-        );
-        break;
-      }
-      case 'LOWHIGH':
-      case 'COLOR':
-      case 'ODDEVEN': {
-        const firstLabel =
-          // eslint-disable-next-line no-nested-ternary
-          operation === 'COLOR' ? 'red' : operation === 'ODDEVEN' ? 'odd' : 'low';
-
-        const secondLabel =
-          // eslint-disable-next-line no-nested-ternary
-          operation === 'COLOR' ? 'black' : operation === 'ODDEVEN' ? 'even' : 'high';
-
-        const selectMenu = createSelectMenu({
-          customId: generateCustomId('BET', ctx.interaction.id),
-          placeholder: ctx.locale('commands:roleta.make-bet'),
-          options: [
-            { label: ctx.locale(`commands:roleta.${firstLabel}`), value: firstLabel },
-            { label: ctx.locale(`commands:roleta.${secondLabel}`), value: secondLabel },
-          ],
-        });
-
-        toSendComponents.push(createActionRow([selectMenu]));
-        break;
-      }
-      case 'DOZENS': {
-        const selectMenu = createSelectMenu({
-          customId: generateCustomId('BET', ctx.interaction.id),
-          placeholder: ctx.locale('commands:roleta.make-bet'),
-          options: [
-            { label: ctx.locale('commands:roleta.first'), value: 'first' },
-            { label: ctx.locale('commands:roleta.second'), value: 'second' },
-            { label: ctx.locale('commands:roleta.third'), value: 'third' },
-          ],
-        });
-
-        toSendComponents.push(createActionRow([selectMenu]));
-        break;
-      }
-    }
-
-    ctx.makeMessage({ components: toSendComponents });
-
-    const filter = (int: ComponentInteraction) =>
-      int.user.id === ctx.author.id && int.data.customId.startsWith(`${ctx.interaction.id}`);
-
-    const collector = new InteractionCollector({
-      channelId: ctx.channelId,
-      filter,
-      idle: 14_000,
-    });
-
-    const randomValue = randomFromArray(ROULETTE_NUMBERS);
-
-    const finishMatch = (profit: number, selection: string, didWin: boolean) => {
-      collector.stop();
-
-      const isHighValueBet = (operation === 'STRAIGHT' || operation === 'SPLIT') && bet >= 10_000;
-      if (isHighValueBet) cacheRepository.incrementRouletteHourlyUsage(ctx.author.id);
-
-      const profitAfterTaxes = getTaxedProfit(profit);
-
-      const winOrLose = didWin ? 'win' : 'lose';
-
-      const finishEmbed = createEmbed({
-        color: hexStringToNumber(ctx.authorData.selectedColor),
-        title: ctx.locale(`commands:roleta.${winOrLose}-title`),
-        description: ctx.locale(`commands:roleta.${winOrLose}`, {
-          bet,
-          profit: profitAfterTaxes,
-          taxes: getProfitTaxes(profit),
-          number: randomValue,
-          operation,
-          selection:
-            operation === 'STRAIGHT' || operation === 'SPLIT'
-              ? selection
-              : ctx.locale(`commands:roleta.${selection as 'first'}`),
-        }),
-      });
-
-      if (didWin) starsRepository.addStars(ctx.author.id, profitAfterTaxes);
-      else starsRepository.removeStars(ctx.author.id, bet);
-
-      postRoulleteGame(
-        `${ctx.author.id}`,
-        bet,
-        operation,
-        didWin ? profitAfterTaxes : profit,
-        didWin,
-        selection,
-      );
-
-      ctx.makeMessage({ embeds: [finishEmbed], components: [] });
-      finishCommand();
-    };
-
-    collector.on('collect', (int: SelectMenuInteraction) => {
-      bot.helpers.sendInteractionResponse(int.id, int.token, {
-        type: InteractionResponseTypes.DeferredUpdateMessage,
-      });
-
-      const resolvedId = resolveCustomId(int.data.customId);
-
-      if (operation === 'SPLIT' && resolvedId !== 'BET') {
-        const numberSelected = Number(int.data.values[0]);
-
-        const menu = createSelectMenu({
-          customId: generateCustomId('BET', ctx.interaction.id),
-          placeholder: ctx.locale('commands:roleta.select-bord'),
-          options: [],
-        });
-
-        if (numberSelected < 36 && numberSelected !== 0)
-          menu.options.push({
-            label: `${ctx.locale('commands:roleta.number')} ${numberSelected + 1}`,
-            value: `${numberSelected} | ${numberSelected + 1}`,
-          });
-
-        if (numberSelected < 34 && numberSelected !== 0)
-          menu.options.push({
-            label: `${ctx.locale('commands:roleta.number')} ${numberSelected + 3}`,
-            value: `${numberSelected} | ${numberSelected + 3}`,
-          });
-
-        if (numberSelected > 2)
-          menu.options.push({
-            label: `${ctx.locale('commands:roleta.number')} ${numberSelected - 3}`,
-            value: `${numberSelected} | ${numberSelected - 3}`,
-          });
-
-        if (numberSelected > 0)
-          menu.options.push({
-            label: `${ctx.locale('commands:roleta.number')} ${numberSelected - 1}`,
-            value: `${numberSelected} | ${numberSelected - 1}`,
-          });
-
-        if (numberSelected === 0)
-          menu.options.push(
-            {
-              label: `${ctx.locale('commands:roleta.number')} ${numberSelected + 1}`,
-              value: `${numberSelected} | ${numberSelected + 1}`,
-            },
-            {
-              label: `${ctx.locale('commands:roleta.number')} ${numberSelected + 2}`,
-              value: `${numberSelected} | ${numberSelected + 2}`,
-            },
-            {
-              label: `${ctx.locale('commands:roleta.number')} ${numberSelected + 3}`,
-              value: `${numberSelected} | ${numberSelected + 3}`,
-            },
-          );
-
-        ctx.makeMessage({ components: [createActionRow([menu])] });
-        return;
-      }
-
-      switch (operation) {
-        case 'STRAIGHT':
-          return finishMatch(
-            bet * WIN_MULTIPLIERS.STRAIGHT,
-            int.data.values[0],
-            Number(int.data.values[0]) === randomValue.value,
-          );
-
-        case 'SPLIT':
-          return finishMatch(
-            bet * WIN_MULTIPLIERS.SPLIT,
-            int.data.values[0],
-            resolveSeparatedStrings(int.data.values[0]).includes(`${randomValue.value}`),
-          );
-
-        case 'DOZENS':
-          return finishMatch(
-            bet * WIN_MULTIPLIERS.DOZENS,
-            int.data.values[0],
-            int.data.values[0] === randomValue.dozen,
-          );
-
-        case 'ODDEVEN':
-          return finishMatch(
-            bet * WIN_MULTIPLIERS.ODDEVEN,
-            int.data.values[0],
-            int.data.values[0] === randomValue.parity,
-          );
-
-        case 'COLOR':
-          return finishMatch(
-            bet * WIN_MULTIPLIERS.COLOR,
-            int.data.values[0],
-            int.data.values[0] === randomValue.color,
-          );
-
-        case 'LOWHIGH':
-          return finishMatch(
-            bet * WIN_MULTIPLIERS.LOWHIGH,
-            int.data.values[0],
-            int.data.values[0] === randomValue.size,
-          );
-      }
-    });
+    finishCommand();
   },
 });
 
-export default WalletCommand;
+export default RouletteCommand;

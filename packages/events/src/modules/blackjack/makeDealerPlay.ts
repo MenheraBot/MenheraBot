@@ -1,23 +1,23 @@
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import {
   AvailableCardBackgroundThemes,
   AvailableCardThemes,
   AvailableTableThemes,
 } from '../themes/types';
-import InteractionContext from '../../structures/command/InteractionContext';
 import { BLACKJACK_PRIZE_MULTIPLIERS } from './index';
 import { getHandValue, numbersToBlackjackCards } from './blackjackMatch';
 import { finishMatch } from './finishMatch';
 
 const makeDealerPlay = async (
-  ctx: InteractionContext,
+  ctx: ComponentInteractionContext,
   bet: number,
   playerCards: number[],
   dealerCards: number[],
   matchCards: number[],
   cardTheme: AvailableCardThemes,
   tableTheme: AvailableTableThemes,
-  backgroundCardTheme: AvailableCardBackgroundThemes,
-  finishCommand: () => void,
+  cardBackgroundTheme: AvailableCardBackgroundThemes,
+  embedColor: string,
 ): Promise<void> => {
   const bjPlayerCards = numbersToBlackjackCards(playerCards);
   const playerHandValue = getHandValue(bjPlayerCards);
@@ -41,11 +41,11 @@ const makeDealerPlay = async (
       dealerHandValue,
       cardTheme,
       tableTheme,
-      backgroundCardTheme,
+      cardBackgroundTheme,
       'blackjack',
       false,
       BLACKJACK_PRIZE_MULTIPLIERS.blackjack,
-      finishCommand,
+      embedColor,
     );
 
   if (dealerHandValue > 21)
@@ -58,11 +58,11 @@ const makeDealerPlay = async (
       dealerHandValue,
       cardTheme,
       tableTheme,
-      backgroundCardTheme,
+      cardBackgroundTheme,
       'busted',
       true,
       BLACKJACK_PRIZE_MULTIPLIERS.base,
-      finishCommand,
+      embedColor,
     );
 
   if (dealerHandValue === playerHandValue)
@@ -75,11 +75,11 @@ const makeDealerPlay = async (
       dealerHandValue,
       cardTheme,
       tableTheme,
-      backgroundCardTheme,
+      cardBackgroundTheme,
       'draw',
       false,
       BLACKJACK_PRIZE_MULTIPLIERS.base,
-      finishCommand,
+      embedColor,
     );
 
   if (dealerHandValue > playerHandValue)
@@ -92,11 +92,11 @@ const makeDealerPlay = async (
       dealerHandValue,
       cardTheme,
       tableTheme,
-      backgroundCardTheme,
+      cardBackgroundTheme,
       'biggest',
       false,
       BLACKJACK_PRIZE_MULTIPLIERS.base,
-      finishCommand,
+      embedColor,
     );
 
   if (dealerHandValue === 21)
@@ -109,11 +109,11 @@ const makeDealerPlay = async (
       dealerHandValue,
       cardTheme,
       tableTheme,
-      backgroundCardTheme,
+      cardBackgroundTheme,
       'biggest',
       true,
       BLACKJACK_PRIZE_MULTIPLIERS.base,
-      finishCommand,
+      embedColor,
     );
 };
 

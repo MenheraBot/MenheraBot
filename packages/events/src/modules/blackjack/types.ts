@@ -1,3 +1,9 @@
+import {
+  AvailableCardBackgroundThemes,
+  AvailableCardThemes,
+  AvailableTableThemes,
+} from '../themes/types';
+
 export interface BlackjackCard {
   value: number;
   isAce: boolean;
@@ -11,3 +17,13 @@ export type BlackjackFinishGameReason =
   | 'blackjack'
   | 'draw'
   | 'biggest';
+
+export type StoredBlackjackState = {
+  bet: number;
+  playerCards: number[];
+  dealerCards: number[];
+  matchCards: number[];
+  cardTheme: AvailableCardThemes;
+  tableTheme: AvailableTableThemes;
+  cardBackgroundTheme: AvailableCardBackgroundThemes;
+};

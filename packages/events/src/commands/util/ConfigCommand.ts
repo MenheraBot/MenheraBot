@@ -1,15 +1,30 @@
 import { ToggleBitfieldBigint } from 'discordeno/transformers';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
 import guildRepository from '../../database/repositories/guildRepository';
 import { EMOJIS } from '../../structures/constants';
 import { SelectMenuInteraction } from '../../types/interaction';
-import { collectResponseComponentInteraction } from '../../utils/discord/collectorUtils';
 import {
   createActionRow,
+  createCustomId,
   createSelectMenu,
-  disableComponents,
-  generateCustomId,
 } from '../../utils/discord/componentUtils';
 import { createCommand } from '../../structures/command/createCommand';
+
+const changeLanguage = async (
+  ctx: ComponentInteractionContext<SelectMenuInteraction>,
+): Promise<void> => {
+  const lang = ctx.interaction.data.values[0];
+
+  await guildRepository.updateGuildLanguage(ctx.interaction.guildId as bigint, lang);
+
+  ctx.makeMessage({
+    components: [],
+    content: ctx.prettyResponse(
+      'success',
+      `commands:idioma.${lang.split('-')[0] as 'pt'}-response`,
+    ),
+  });
+};
 
 const LanguageCommand = createCommand({
   path: '',
@@ -22,6 +37,7 @@ const LanguageCommand = createCommand({
   category: 'util',
   options: [],
   authorDataFields: [],
+  commandRelatedExecutions: [changeLanguage],
   execute: async (ctx, finishCommand) => {
     if (
       !new ToggleBitfieldBigint(ctx.interaction.member?.permissions as bigint).contains(
@@ -39,7 +55,7 @@ const LanguageCommand = createCommand({
     }
 
     const selector = createSelectMenu({
-      customId: generateCustomId('LANGUAGE', ctx.interaction.id),
+      customId: createCustomId(0, ctx.author.id, ctx.commandId, 'LANGUAGE'),
       minValues: 1,
       maxValues: 1,
       placeholder: ctx.locale('commands:idioma.select'),
@@ -62,33 +78,6 @@ const LanguageCommand = createCommand({
     ctx.makeMessage({
       content: ctx.prettyResponse('question', 'commands:idioma.question'),
       components: [createActionRow([selector])],
-    });
-
-    const collected = await collectResponseComponentInteraction<SelectMenuInteraction>(
-      ctx.channelId,
-      ctx.author.id,
-      `${ctx.interaction.id}`,
-      10_000,
-    );
-
-    if (!collected) {
-      ctx.makeMessage({
-        components: [createActionRow(disableComponents(ctx.locale('common:timesup'), [selector]))],
-      });
-
-      return finishCommand();
-    }
-
-    const lang = collected.data.values[0];
-
-    await guildRepository.updateGuildLanguage(ctx.interaction.guildId as bigint, lang);
-
-    ctx.makeMessage({
-      components: [],
-      content: ctx.prettyResponse(
-        'success',
-        `commands:idioma.${lang.split('-')[0] as 'pt'}-response`,
-      ),
     });
 
     finishCommand();

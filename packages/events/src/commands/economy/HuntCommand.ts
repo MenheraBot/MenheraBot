@@ -9,7 +9,7 @@ import { capitalize } from '../../utils/miscUtils';
 import { getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
 import { COLORS } from '../../structures/constants';
 import { MessageFlags } from '../../utils/discord/messageUtils';
-import InteractionContext from '../../structures/command/InteractionContext';
+import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
 import {
   DatabaseHuntingTypes,
   HuntCooldownBoostItem,
@@ -65,7 +65,7 @@ const choices: Array<ApplicationCommandOptionChoice & { value: ChoiceTypes }> = 
 ];
 
 const executeDisplayProbabilities = async (
-  ctx: InteractionContext,
+  ctx: ChatInputInteractionContext,
   finishCommand: () => void,
 ): Promise<void> => {
   const generateField = (huntType: DatabaseHuntingTypes): DiscordEmbedField => ({

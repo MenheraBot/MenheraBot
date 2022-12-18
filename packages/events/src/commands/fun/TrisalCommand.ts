@@ -1,32 +1,42 @@
-import {
-  ApplicationCommandOptionTypes,
-  ButtonStyles,
-  InteractionResponseTypes,
-  MessageComponentTypes,
-} from 'discordeno/types';
-import { Interaction, User } from 'discordeno/transformers';
+import { ApplicationCommandOptionTypes, ButtonStyles } from 'discordeno/types';
+import { User } from 'discordeno/transformers';
 
-import InteractionCollector from '../../structures/InteractionCollector';
 import { createEmbed, hexStringToNumber } from '../../utils/discord/embedUtils';
 import { VanGoghEndpoints, vanGoghRequest } from '../../utils/vanGoghRequest';
 import { getUserAvatar, mentionUser } from '../../utils/discord/userUtils';
 import cacheRepository from '../../database/repositories/cacheRepository';
-import {
-  createButton,
-  createActionRow,
-  disableComponents,
-  generateCustomId,
-} from '../../utils/discord/componentUtils';
-import { collectComponentInteractionWithCustomFilter } from '../../utils/discord/collectorUtils';
+import { createButton, createActionRow, createCustomId } from '../../utils/discord/componentUtils';
 import relationshipRepostory from '../../database/repositories/relationshipRepostory';
 import { MessageFlags } from '../../utils/discord/messageUtils';
-import InteractionContext from '../../structures/command/InteractionContext';
+import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
 import { createCommand } from '../../structures/command/createCommand';
 import userRepository from '../../database/repositories/userRepository';
-import { bot } from '../../index';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
+
+const executeFinishTrisalConfirmation = async (ctx: ComponentInteractionContext): Promise<void> => {
+  const authorData = await userRepository.ensureFindUser(ctx.user.id);
+
+  if (authorData.trisal.length === 0)
+    return ctx.makeMessage({
+      content: ctx.prettyResponse('error', 'commands:trisal.not-in-trisal'),
+    });
+
+  ctx.makeMessage({
+    components: [],
+    content: ctx.prettyResponse('success', 'commands:trisal.untrisal.done'),
+  });
+
+  const hasThirdUser = authorData.trisal.length === 3;
+
+  await relationshipRepostory.executeUntrisal(
+    authorData.trisal[0],
+    authorData.trisal[1],
+    hasThirdUser ? authorData.trisal[2] : ctx.user.id,
+  );
+};
 
 const executeFinishTrisal = async (
-  ctx: InteractionContext,
+  ctx: ChatInputInteractionContext,
   finishCommand: (args?: unknown) => unknown,
 ): Promise<unknown> => {
   if (ctx.authorData.trisal.length === 0)
@@ -37,17 +47,9 @@ const executeFinishTrisal = async (
       }),
     );
 
-  const filter = (int: Interaction) => {
-    const startsCustomId = int.data?.customId?.startsWith(`${ctx.interaction.id}`);
-
-    if (!startsCustomId) return false;
-
-    return [...ctx.authorData.trisal, `${ctx.author.id}`].includes(`${int.user.id}`);
-  };
-
   const sureButton = createButton({
     style: ButtonStyles.Danger,
-    customId: `${ctx.interaction.id}`,
+    customId: createCustomId(0, ctx.author.id, ctx.commandId),
     label: ctx.locale('commands:trisal.untrisal.breakup'),
   });
 
@@ -56,44 +58,72 @@ const executeFinishTrisal = async (
     components: [createActionRow([sureButton])],
   });
 
-  const confirmed = await collectComponentInteractionWithCustomFilter(
-    ctx.channelId,
-    filter,
-    15_000,
-  );
-
-  if (!confirmed)
-    return finishCommand(
-      ctx.makeMessage({
-        components: [
-          createActionRow(disableComponents(ctx.locale('common:timesup'), [sureButton])),
-        ],
-      }),
-    );
-
-  ctx.makeMessage({
-    components: [],
-    content: ctx.prettyResponse('success', 'commands:trisal.untrisal.done'),
-  });
-
-  const hasThirdUser = ctx.authorData.trisal.length === 3;
-
-  await relationshipRepostory.executeUntrisal(
-    ctx.authorData.trisal[0],
-    ctx.authorData.trisal[1],
-    hasThirdUser ? ctx.authorData.trisal[2] : ctx.author.id,
-  );
-
   finishCommand();
 };
 
+const acceptingTrisal = async (ctx: ComponentInteractionContext): Promise<void> => {
+  const [firstUserId, secondUserId, secondUserName] = ctx.sentData;
+  const thirdUserId = ctx.commandAuthor.id;
+
+  if (`${ctx.user.id}` === secondUserId) {
+    const [firstUserData, secondUserData, thirdUserData] = await Promise.all([
+      userRepository.ensureFindUser(firstUserId),
+      userRepository.ensureFindUser(secondUserId),
+      userRepository.ensureFindUser(thirdUserId),
+    ]);
+
+    if (
+      firstUserData.trisal.length > 0 ||
+      secondUserData.trisal.length > 0 ||
+      thirdUserData.trisal.length > 0
+    )
+      return ctx.makeMessage({
+        content: ctx.prettyResponse('error', 'commands:trisal.comedor-de-casadas'),
+        components: [],
+      });
+
+    ctx.makeMessage({
+      content: ctx.prettyResponse('success', 'commands:trisal.done'),
+      components: [
+        createActionRow([
+          createButton({
+            label: '',
+            style: ButtonStyles.Success,
+            customId: 'DONE',
+            emoji: { name: '💍' },
+            disabled: true,
+          }),
+        ]),
+      ],
+    });
+
+    await relationshipRepostory.executeTrisal(firstUserId, secondUserId, thirdUserId);
+    return;
+  }
+
+  const confirmButton = createButton({
+    customId: createCustomId(1, secondUserId, ctx.commandId, firstUserId, secondUserId),
+    label: ctx.locale('commands:trisal.accept-button', { name: secondUserName }),
+    style: ButtonStyles.Success,
+  });
+
+  ctx.makeMessage({
+    content: ctx.locale('commands:trisal.accept-message', {
+      first: mentionUser(firstUserId),
+      second: mentionUser(secondUserId),
+    }),
+    allowedMentions: { users: [BigInt(secondUserId)] },
+    components: [createActionRow([confirmButton])],
+  });
+};
+
 const executeMakeTrisal = async (
-  ctx: InteractionContext,
+  ctx: ChatInputInteractionContext,
   finishCommand: (args?: unknown) => unknown,
 ) => {
   const firstUser = ctx.getOption<User>('user', 'users', true);
   const secondUser = ctx.getOption<User>('user_dois', 'users', true);
-  const thirdUser = ctx.getOption<User>('user', 'users') ?? ctx.author;
+  const thirdUser = ctx.author;
 
   if (firstUser.toggles.bot || secondUser.toggles.bot || thirdUser.toggles.bot)
     return finishCommand(
@@ -158,8 +188,15 @@ const executeMakeTrisal = async (
     );
 
   const confirmButton = createButton({
-    customId: generateCustomId('CONFIRM', ctx.interaction.id),
-    label: ctx.locale('common:accept'),
+    customId: createCustomId(
+      1,
+      firstUser.id,
+      ctx.commandId,
+      firstUser.id,
+      secondUser.id,
+      secondUser.username,
+    ),
+    label: ctx.locale('commands:trisal.accept-button', { name: firstUser.username }),
     style: ButtonStyles.Success,
   });
 
@@ -167,73 +204,16 @@ const executeMakeTrisal = async (
     content: ctx.locale('commands:trisal.accept-message', {
       first: mentionUser(firstUser.id),
       second: mentionUser(secondUser.id),
-      third: mentionUser(thirdUser.id),
     }),
+    allowedMentions: { users: [firstUser.id] },
     components: [createActionRow([confirmButton])],
   });
 
-  const filter = (int: Interaction) => {
-    const startsCustomId = int.data?.customId?.startsWith(`${ctx.interaction.id}`);
-
-    if (!startsCustomId) return false;
-
-    bot.helpers.sendInteractionResponse(int.id, int.token, {
-      type: InteractionResponseTypes.DeferredUpdateMessage,
-    });
-
-    return trisalIds.includes(int.user.id);
-  };
-
-  const collector = new InteractionCollector({
-    filter,
-    channelId: ctx.channelId,
-    time: 15_000,
-    componentType: MessageComponentTypes.Button,
-  });
-
-  const acceptedIds: bigint[] = [];
-
-  collector.once('end', () => {
-    if (acceptedIds.length !== 3)
-      return finishCommand(
-        ctx.makeMessage({
-          content: ctx.prettyResponse('error', 'commands:trisal.error'),
-          components: [
-            createActionRow(disableComponents(ctx.locale('common:timesup'), [confirmButton])),
-          ],
-        }),
-      );
-  });
-
-  collector.on('collect', async (int: Interaction) => {
-    if (!acceptedIds.includes(int.user.id)) acceptedIds.push(int.user.id);
-
-    if (acceptedIds.length === 3) {
-      ctx.makeMessage({
-        content: ctx.prettyResponse('success', 'commands:trisal.done'),
-        components: [
-          createActionRow([
-            createButton({
-              label: '',
-              style: ButtonStyles.Success,
-              customId: 'DONE',
-              emoji: { name: '💍' },
-              disabled: true,
-            }),
-          ]),
-        ],
-      });
-
-      collector.stop();
-
-      await relationshipRepostory.executeTrisal(firstUser.id, secondUser.id, thirdUser.id);
-      finishCommand();
-    }
-  });
+  finishCommand();
 };
 
 const executeOrderTrisal = async (
-  ctx: InteractionContext,
+  ctx: ChatInputInteractionContext,
   finishCommand: (args?: unknown) => unknown,
 ) => {
   if (ctx.authorData.trisal.length === 0)
@@ -279,7 +259,7 @@ const executeOrderTrisal = async (
 };
 
 const executeDisplayTrisal = async (
-  ctx: InteractionContext,
+  ctx: ChatInputInteractionContext,
   finishCommand: (...args: unknown[]) => unknown,
 ) => {
   const user = ctx.getOption<User>('user', 'users', false) ?? ctx.author;
@@ -328,7 +308,7 @@ const executeDisplayTrisal = async (
   const secondAvatar = getUserAvatar(marryTwo);
   const thirdAvatar = getUserAvatar(marryThree);
 
-  ctx.defer();
+  await ctx.defer();
 
   const res = await vanGoghRequest(VanGoghEndpoints.Trisal, {
     userOne: firstAvatar,
@@ -408,16 +388,6 @@ const TrisalCommand = createCommand({
           descriptionLocalizations: { 'en-US': 'Second user of the polyamory' },
           required: true,
         },
-        {
-          name: 'user_tres',
-          nameLocalizations: { 'en-US': 'third_user' },
-          type: ApplicationCommandOptionTypes.User,
-          description: 'Caso queira formar um trisal bem ordenado, coloque aqui o terceiro usuário',
-          descriptionLocalizations: {
-            'en-US': 'If you want an order polyamory, write the third user',
-          },
-          required: false,
-        },
       ],
     },
     {
@@ -458,6 +428,7 @@ const TrisalCommand = createCommand({
   ],
   category: 'fun',
   authorDataFields: ['trisal', 'selectedColor'],
+  commandRelatedExecutions: [executeFinishTrisalConfirmation, acceptingTrisal],
   execute: async (ctx, finishCommand) => {
     const command = ctx.getSubCommand();
 

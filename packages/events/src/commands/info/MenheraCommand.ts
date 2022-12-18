@@ -1,10 +1,13 @@
 import { ApplicationCommandOptionTypes } from 'discordeno/types';
 
-import InteractionContext from '../../structures/command/InteractionContext';
+import ChatInputInteractionContext from '../../structures/command/ChatInputInteractionContext';
 import { MessageFlags } from '../../utils/discord/messageUtils';
 import { createCommand } from '../../structures/command/createCommand';
 
-const executeSupportCommand = async (ctx: InteractionContext, finishCommand: () => void) => {
+const executeSupportCommand = async (
+  ctx: ChatInputInteractionContext,
+  finishCommand: () => void,
+) => {
   ctx.makeMessage({
     content: ctx.prettyResponse('wink', 'commands:menhera.suporte.message'),
     flags: MessageFlags.EPHEMERAL,

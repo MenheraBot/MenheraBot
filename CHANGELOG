@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/pt-BR/spec/v2.0.0.html).
 
+## [5.1.0] - 2022-12-18
+
+### Changed
+
+- O valor mínimo para apostar no BlackJack foi reduzido para 1 estrelinha!
+- O preço de todas cores foi reduzido! Veja em `/loja preços comprar tipo:cores`
+
+### Fixed 
+
+- Resolvido o comando `/personalizar badges` não esconder as badges do Discord.
+- Menções de usuários no comando `/presentear` 
+- Resolvido problema da Menhera não vencer o blackjack caso inicie com um Blackjack na mão.
+- Resolvido o problema do comando `/personalizar badges` não funcionar em perfis que tivessem uma badge repetida (apenas eu tinha lol).
+
+### Removed
+
+- Adeus botões com `Tempo Esgotado`. Agora, componentes não possuem mais limite de tempo para clicar! Isso significa que você não vai precisar ficar usando o `/trisal` toda hora por que o lerdo não clicava a tempo, e também não vai mais ter problemas de comandos de economia bugando no meio do blackjack! Agora você pode usar tudo ao mesmo tempo, e ainda demorar para clicar nos botões! >,...,<
+
 ## [5.0.5] - 2022-12-16
 
 ### Added

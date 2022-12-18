@@ -43,7 +43,6 @@ export interface DatabaseUserSchema {
   trisal: string[];
   inventory: HuntMagicItem[];
   inUseItems: HuntMagicItem[];
-  itemsLimit: number;
   lastCommandAt: number;
   isBot: boolean;
 }

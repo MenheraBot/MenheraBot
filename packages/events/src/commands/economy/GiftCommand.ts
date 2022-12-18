@@ -1,17 +1,10 @@
 import { User } from 'discordeno/transformers';
 import { ApplicationCommandOptionTypes, ButtonStyles } from 'discordeno/types';
-import { collectResponseComponentInteraction } from '../../utils/discord/collectorUtils';
-import { ComponentInteraction } from '../../types/interaction';
-import {
-  createActionRow,
-  createButton,
-  disableComponents,
-  generateCustomId,
-  resolveCustomId,
-} from '../../utils/discord/componentUtils';
+import ComponentInteractionContext from '../../structures/command/ComponentInteractionContext';
+import userRepository from '../../database/repositories/userRepository';
+import { createActionRow, createButton, createCustomId } from '../../utils/discord/componentUtils';
 import giveRepository from '../../database/repositories/giveRepository';
 import { mentionUser } from '../../utils/discord/userUtils';
-import usagesRepository from '../../database/repositories/usagesRepository';
 import { DatabaseHuntingTypes } from '../../modules/hunt/types';
 import blacklistRepository from '../../database/repositories/blacklistRepository';
 import { createCommand } from '../../structures/command/createCommand';
@@ -56,6 +49,45 @@ const choices = [
   },
 ];
 
+const executeGiftConfirmation = async (ctx: ComponentInteractionContext): Promise<void> => {
+  const [selectedButton, amount, selectedOption] = ctx.sentData;
+
+  if (selectedButton === 'NEGATE') {
+    ctx.makeMessage({
+      content: ctx.locale('commands:presentear.negated', { user: mentionUser(ctx.user.id) }),
+      components: [],
+    });
+    return;
+  }
+
+  const authorData = await userRepository.ensureFindUser(ctx.commandAuthor.id);
+
+  if (Number(amount) > authorData[selectedOption as 'estrelinhas'])
+    return ctx.makeMessage({
+      content: ctx.prettyResponse('error', 'commands:presentear.user-poor', {
+        field: ctx.locale(`common:${selectedOption as 'estrelinhas'}`),
+        user: mentionUser(ctx.commandAuthor.id),
+      }),
+      components: [],
+    });
+
+  ctx.makeMessage({
+    content: ctx.prettyResponse('success', 'commands:presentear.transfered', {
+      value: amount,
+      emoji: EMOJIS[selectedOption as 'estrelinhas'],
+      user: mentionUser(ctx.user.id),
+    }),
+    components: [],
+  });
+
+  await giveRepository.executeGive(
+    selectedOption as 'estrelinhas',
+    ctx.commandAuthor.id,
+    ctx.user.id,
+    Number(amount),
+  );
+};
+
 const GiftCommand = createCommand({
   path: '',
   name: 'presentear',
@@ -91,6 +123,7 @@ const GiftCommand = createCommand({
   ],
   category: 'economy',
   authorDataFields: ['estrelinhas', 'demons', 'giants', 'angels', 'archangels', 'gods', 'demigods'],
+  commandRelatedExecutions: [executeGiftConfirmation],
   execute: async (ctx, finishCommand) => {
     const toSendUser = ctx.getOption<User>('user', 'users', true);
     const selectedOption = ctx.getOption<DatabaseHuntingTypes | 'estrelinhas'>('tipo', false, true);
@@ -126,14 +159,6 @@ const GiftCommand = createCommand({
       return finishCommand();
     }
 
-    if (await usagesRepository.isUserInEconomyUsage(toSendUser.id))
-      return finishCommand(
-        ctx.makeMessage({
-          content: ctx.prettyResponse('error', 'common:economy_usage'),
-          flags: MessageFlags.EPHEMERAL,
-        }),
-      );
-
     if (await blacklistRepository.isUserBanned(toSendUser.id))
       return finishCommand(
         ctx.makeMessage({
@@ -143,72 +168,27 @@ const GiftCommand = createCommand({
       );
 
     const confirmButton = createButton({
-      customId: generateCustomId('ACCEPT', ctx.interaction.id),
+      customId: createCustomId(0, toSendUser.id, ctx.commandId, 'ACCEPT', amount, selectedOption),
       style: ButtonStyles.Success,
       label: ctx.locale('common:accept'),
     });
 
     const negateButton = createButton({
-      customId: generateCustomId('NEGATE', ctx.interaction.id),
+      customId: createCustomId(0, toSendUser.id, ctx.commandId, 'NEGATE'),
       style: ButtonStyles.Danger,
       label: ctx.locale('common:negate'),
     });
 
-    await usagesRepository.setUserInEconomyUsages(toSendUser.id);
-
     await ctx.makeMessage({
       content: ctx.prettyResponse('question', 'commands:presentear.confirm', {
         user: mentionUser(toSendUser.id),
-        author: ctx.author.id,
+        author: mentionUser(ctx.author.id),
         count: amount,
         emoji: EMOJIS[selectedOption],
       }),
       components: [createActionRow([confirmButton, negateButton])],
     });
 
-    const selectedButton = await collectResponseComponentInteraction<ComponentInteraction>(
-      ctx.channelId,
-      toSendUser.id,
-      `${ctx.interaction.id}`,
-      15_000,
-    );
-
-    await usagesRepository.removeUserFromEconomyUsages(toSendUser.id);
-
-    if (!selectedButton) {
-      ctx.makeMessage({
-        components: [
-          createActionRow(
-            disableComponents(ctx.locale('common:timesup'), [confirmButton, negateButton]),
-          ),
-        ],
-      });
-
-      return finishCommand();
-    }
-
-    if (resolveCustomId(selectedButton.data.customId) === 'NEGATE') {
-      negateButton.disabled = true;
-      confirmButton.disabled = true;
-      confirmButton.style = ButtonStyles.Secondary;
-
-      ctx.makeMessage({
-        content: ctx.locale('commands:presentear.negated', { user: mentionUser(toSendUser.id) }),
-        components: [createActionRow([confirmButton, negateButton])],
-      });
-
-      return finishCommand();
-    }
-
-    ctx.makeMessage({
-      content: ctx.prettyResponse('success', 'commands:presentear.transfered', {
-        value: amount,
-        emoji: EMOJIS[selectedOption],
-        user: mentionUser(toSendUser.id),
-      }),
-    });
-
-    await giveRepository.executeGive(selectedOption, ctx.author.id, toSendUser.id, amount);
     return finishCommand();
   },
 });

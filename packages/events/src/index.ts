@@ -1,5 +1,4 @@
 import { createBot, Intents } from 'discordeno';
-import { EventEmitter } from 'node:events';
 
 import { logger } from './utils/logger';
 import { initializeServices, setupInternals, setupMenheraClient } from './structures/menheraClient';
@@ -22,8 +21,6 @@ const bot = createBot({
   applicationId: BigInt(DISCORD_APPLICATION_ID),
 }) as MenheraClient;
 
-const interactionEmitter = new EventEmitter().setMaxListeners(Infinity);
-
 setupMenheraClient(bot);
 await initializeServices();
 setupEventHandlers();
@@ -33,4 +30,4 @@ setupInternals(bot, restClient);
 
 logger.info('[READY] Events are being processed!');
 
-export { bot, interactionEmitter };
+export { bot };
