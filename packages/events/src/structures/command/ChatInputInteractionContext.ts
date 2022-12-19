@@ -111,7 +111,7 @@ export default class {
 
   async defer(ephemeral = false): Promise<void> {
     this.replied = true;
-    bot.helpers
+    await bot.helpers
       .sendInteractionResponse(this.interaction.id, this.interaction.token, {
         type: InteractionResponseTypes.DeferredChannelMessageWithSource,
         data: {
