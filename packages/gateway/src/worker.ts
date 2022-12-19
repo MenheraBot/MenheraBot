@@ -1,4 +1,12 @@
-import { ActivityTypes, createShardManager, DiscordUnavailableGuild, Shard } from 'discordeno';
+import {
+  ActivityTypes,
+  createShardManager,
+  DiscordUnavailableGuild,
+  GatewayOpcodes,
+  Shard,
+  ShardSocketCloseCodes,
+  ShardState,
+} from 'discordeno';
 import { parentPort, workerData } from 'worker_threads';
 
 const script = workerData;
@@ -27,17 +35,77 @@ const manager = createShardManager({
       clearTimeout(shard.heart.timeoutId);
       shard.heart.timeoutId = undefined;
     },
-    events: {
-      disconnected: (shard) => {
-        log.info(`Shard ${shard.id} disconnected`);
-        log.info(shard.heart);
-      },
-      connecting(shard) {
-        log.info(`Shard ${shard.id} is connecting`);
-      },
-      resuming(shard) {
-        log.info(`Resuming shard ${shard.id}`);
-      },
+    startHeartbeating: (shard, interval) => {
+      shard.heart.interval = interval;
+
+      // Only set the shard's state to `Unidentified`
+      // if heartbeating has not been started due to an identify or resume action.
+      if ([ShardState.Disconnected, ShardState.Offline].includes(shard.state)) {
+        shard.state = ShardState.Unidentified;
+      }
+
+      // The first heartbeat needs to be send with a random delay between `0` and `interval`
+      // Using a `setTimeout(_, jitter)` here to accomplish that.
+      // `Math.random()` can be `0` so we use `0.5` if this happens
+      // Reference: https://discord.com/developers/docs/topics/gateway#heartbeating
+      const jitter = Math.ceil(shard.heart.interval * (Math.random() || 0.5));
+
+      // @ts-expect-error Type error here lol
+      shard.heart.timeoutId = setTimeout(() => {
+        // Using a direct socket.send call here because heartbeat requests are reserved by us.
+        try {
+          shard.socket?.send(
+            JSON.stringify({
+              op: GatewayOpcodes.Heartbeat,
+              d: shard.previousSequenceNumber,
+            }),
+          );
+        } catch {
+          log.info('[ERRROR] Hit the gateway reconnect error UwU');
+        }
+
+        shard.heart.lastBeat = Date.now();
+        shard.heart.acknowledged = false;
+
+        // After the random heartbeat jitter we can start a normal interval.
+        // @ts-expect-error Type error here lol
+        shard.heart.intervalId = setInterval(async () => {
+          // gateway.debug("GW DEBUG", `Running setInterval in heartbeat file. Shard: ${shardId}`);
+
+          // gateway.debug("GW HEARTBEATING", { shardId, shard: currentShard });
+
+          // The Shard did not receive a heartbeat ACK from Discord in time,
+          // therefore we have to assume that the connection has failed or got "zombied".
+          // The Shard needs to start a re-identify action accordingly.
+          // Reference: https://discord.com/developers/docs/topics/gateway#heartbeating-example-gateway-heartbeat-ack
+          if (!shard.heart.acknowledged) {
+            shard.close(
+              ShardSocketCloseCodes.ZombiedConnection,
+              'Zombied connection, did not receive an heartbeat ACK in time.',
+            );
+
+            return shard.identify();
+          }
+
+          shard.heart.acknowledged = false;
+
+          // Using a direct socket.send call here because heartbeat requests are reserved by us.
+          try {
+            shard.socket?.send(
+              JSON.stringify({
+                op: GatewayOpcodes.Heartbeat,
+                d: shard.previousSequenceNumber,
+              }),
+            );
+          } catch {
+            log.info('[ERRROR] Hit the gateway reconnect error UwU');
+          }
+
+          shard.heart.lastBeat = Date.now();
+
+          shard.events.heartbeat?.(shard);
+        }, shard.heart.interval);
+      }, jitter);
     },
     makePresence: async (shardId) => {
       return {
