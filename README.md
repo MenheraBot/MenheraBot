@@ -14,7 +14,7 @@ Feel free to add a star ⭐ to the repository to promote the project!
 
 ## 👨‍💻 | Contributing
 
-Pull requests are always welcome. If you have any ideia, want to implement a new feature, fix some bug, or even improve the code itself, you can do it openning a pull request to the `feat/development` branch. You may check the next session about running the project.
+Pull requests are always welcome. If you have any ideia, want to implement a new feature, fix some bug, or even improve the code itself, you can do it openning a pull request to the `feat/development` branch. Check the next session about running the project.
 
 ## 🔥 | Running
 
@@ -32,7 +32,7 @@ git clone https://github.com/MenheraBot/MenheraBot.git
 3. 🔥 Install deps and build all the packages
 
 ```bash
-yarn install && yarn rest build && yarn gateway build && yarn events build
+yarn install && yarn build:all
 ```
 
 4. 🏃‍♂️ Running all services

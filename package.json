@@ -9,6 +9,7 @@
     "events": "yarn workspace @menhera-bot/events",
     "lint": "yarn workspace @menhera-bot/eslint-config",
     "test": "TESTING=true node --no-warnings --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "build:all": "concurrently \"yarn rest build\" \"yarn gateway build\" \"yarn events build\"",
     "run:lint": "eslint ."
   },
   "repository": {
@@ -30,6 +31,7 @@
   "homepage": "https://github.com/MenheraBot/MenheraBot#readme",
   "devDependencies": {
     "@types/jest": "^29.2.1",
+    "concurrently": "^7.6.0",
     "dotenv": "^16.0.3",
     "jest": "^29.2.2",
     "ts-jest": "^29.0.3",
