@@ -1,5 +1,6 @@
 import { ToggleBitfield, User } from 'discordeno/transformers';
 import { UserFlags } from 'discordeno/types';
+import mongoose from 'mongoose';
 
 import { DatabaseUserSchema, UserBadge } from '../../types/database';
 
@@ -9,6 +10,7 @@ const menheraBitBadgesAccepted = [
   UserFlags.HouseBravery,
   UserFlags.HouseBrilliance,
 ];
+
 const discordBitFlagsToMenheraBadges = {
   131072: 5,
   256: 2,
@@ -16,8 +18,15 @@ const discordBitFlagsToMenheraBadges = {
   64: 4,
 };
 
+const oneYearInMillis = 31_536_000_000;
+
 const getUserBadges = (user: DatabaseUserSchema, discordUser: User): UserBadge[] => {
   const userBadges = user.badges;
+
+  const creationTime = new mongoose.Types.ObjectId(`${user._id}`).getTimestamp().getTime();
+
+  if (Date.now() - creationTime > oneYearInMillis)
+    userBadges.push({ id: 19, obtainAt: `${creationTime + oneYearInMillis}` });
 
   const userFlagsBitfield = new ToggleBitfield(discordUser.publicFlags);
 
