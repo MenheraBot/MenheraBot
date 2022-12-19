@@ -334,7 +334,7 @@ const executeBadgesSelected = async (
   let toUpdate: number[] = [];
 
   ctx.interaction.data.values.forEach((a) => {
-    if (a.length < 2) toUpdate.push(Number(a));
+    if (a.length <= 2) toUpdate.push(Number(a));
   });
 
   if (
