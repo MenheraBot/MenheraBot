@@ -59,6 +59,7 @@ export const EMOJIS = {
   badge_16: '<:badge_16:960661002570055750>',
   badge_17: '<:badge_17:990267891079327774>',
   badge_18: '<:badge_18:990267971731615794>',
+  badge_19: '<:badge_19:1049144870469648485>',
   // EMOJIS DO RPG
   blood: '🩸',
   mana: '💧',
