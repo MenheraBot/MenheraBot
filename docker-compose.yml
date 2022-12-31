@@ -42,7 +42,8 @@ services:
       context: .
       target: events
     depends_on:
-      - gateway
+      # - gateway
+      - rest
     volumes_from:
       - tmp
     env_file:
