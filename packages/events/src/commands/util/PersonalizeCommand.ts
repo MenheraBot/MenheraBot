@@ -309,6 +309,9 @@ const getEmojiFromColorName = (color: string): string => {
 };
 
 const executeColorCommand = async (ctx: ChatInputInteractionContext, finishCommand: () => void) => {
+  const haspadrao = ctx.authorData.colors.some((pc) => pc.cor === `#a788ff`);
+  if (!haspadrao) ctx.authorData.colors.push({ nome: '0 - Padrão', cor: '#a788ff' });
+
   if (ctx.authorData.colors.length < 2) {
     ctx.makeMessage({
       content: ctx.prettyResponse('error', 'commands:cor.min-color'),
