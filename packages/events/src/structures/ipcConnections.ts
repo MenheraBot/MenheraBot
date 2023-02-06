@@ -1,10 +1,13 @@
 import { Client } from 'net-ipc';
+import { DiscordGatewayPayload } from 'discordeno/types';
 
 import { logger } from '../utils/logger';
 import { getEnviroments } from '../utils/getEnviroments';
+import { bot } from '..';
+import { closeConnections } from '../database/databases';
 
-// let eventsClient: Client;
-// let retries = 0;
+let eventsClient: Client;
+let retries = 0;
 
 const createIpcConnections = async (): Promise<Client> => {
   const { REST_SOCKET_PATH, EVENT_SOCKET_PATH } = getEnviroments([
@@ -17,9 +20,9 @@ const createIpcConnections = async (): Promise<Client> => {
   );
 
   const restClient = new Client({ path: REST_SOCKET_PATH });
-  // eventsClient = new Client({ path: EVENT_SOCKET_PATH });
+  eventsClient = new Client({ path: EVENT_SOCKET_PATH });
 
-  /* eventsClient.on('close', () => {
+  eventsClient.on('close', () => {
     logger.info('[GATEWAY] Gateway client closed');
 
     const reconnectLogic = () => {
@@ -48,7 +51,6 @@ const createIpcConnections = async (): Promise<Client> => {
     eventsClient.send({ type: 'IDENTIFY', version: process.env.VERSION });
   });
 
-  */
   restClient.on('close', () => {
     logger.info('[REST] REST Client closed');
     process.exit(1);
@@ -59,8 +61,6 @@ const createIpcConnections = async (): Promise<Client> => {
 
     restClient.send({ type: 'IDENTIFY', package: 'EVENTS', id: process.pid });
   });
-
-  /*
 
   eventsClient.on('message', (msg: { data: DiscordGatewayPayload; shardId: number }) => {
     if (!msg.data.t) return;
@@ -100,16 +100,14 @@ const createIpcConnections = async (): Promise<Client> => {
     }
   });
 
-  */
-
   if (process.env.TESTING) return restClient;
 
   await restClient.connect().catch(logger.panic);
-  // await eventsClient.connect().catch(logger.panic);
+  await eventsClient.connect().catch(logger.panic);
 
   return restClient;
 };
 
-// const getEventsClient = (): Client => eventsClient;
+const getEventsClient = (): Client => eventsClient;
 
-export { createIpcConnections };
+export { createIpcConnections, getEventsClient };

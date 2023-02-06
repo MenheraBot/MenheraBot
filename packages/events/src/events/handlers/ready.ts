@@ -1,10 +1,14 @@
+import axios from 'axios';
 import { createHttpServer, registerAllRouters } from '../../structures/server/httpServer';
 import blacklistRepository from '../../database/repositories/blacklistRepository';
 import { startGameLoop } from '../../modules/bicho/bichoManager';
 import { logger } from '../../utils/logger';
 import { bot } from '../../index';
 import { inactivityPunishment } from '../../structures/inactivityPunishment';
-/* 
+import { postShardStatuses } from '../../utils/apiRequests/commands';
+import { getEnviroments } from '../../utils/getEnviroments';
+import { getEventsClient } from '../../structures/ipcConnections';
+
 const postBotStatus = async (): Promise<void> => {
   const { DISCORD_APPLICATION_ID, DBL_TOKEN } = getEnviroments([
     'DISCORD_APPLICATION_ID',
@@ -76,7 +80,6 @@ const postShardStatus = async (): Promise<void> => {
 
   await postShardStatuses(toSendData);
 };
- */
 
 const setReadyEvent = (): void => {
   bot.events.ready = async () => {
@@ -95,8 +98,8 @@ const setReadyEvent = (): void => {
     if (process.env.NOMICROSERVICES) return;
 
     inactivityPunishment();
-    // setInterval(postBotStatus, 1800000);
-    // setInterval(postShardStatus, 60_000);
+    setInterval(postBotStatus, 1800000);
+    setInterval(postShardStatus, 60_000);
 
     createHttpServer();
     registerAllRouters();
