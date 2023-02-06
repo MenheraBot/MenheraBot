@@ -50,18 +50,12 @@ const getUserHuntCooldown = (
 const calculateProbability = (probabilities: HuntProbabiltyProps[]): number => {
   const chance = Math.floor(Math.random() * 100);
 
-  let accumulator = probabilities.reduce((p, c) => p + c.probability, 0);
-
-  const mapedChanges: { amount: number; probabilities: number[] }[] = probabilities.map((a) => {
-    const toReturn = [accumulator - a.probability, accumulator];
-    accumulator -= a.probability;
-    return { amount: a.amount, probabilities: toReturn };
-  });
+  let accumulator = 100;
 
   // eslint-disable-next-line no-restricted-syntax
-  for (const data of mapedChanges) {
-    const [min, max] = data.probabilities;
-    if (chance >= min && chance <= max) {
+  for (const data of probabilities) {
+    accumulator -= data.probability;
+    if (chance >= accumulator) {
       return data.amount;
     }
   }
