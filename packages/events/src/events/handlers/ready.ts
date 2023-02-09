@@ -8,9 +8,11 @@ import { postShardStatuses } from '../../utils/apiRequests/commands';
 import { getEventsClient } from '../../structures/ipcConnections';
 
 const postShardStatus = async (): Promise<void> => {
-  const shardsInfo = await getEventsClient()
-    .request({ type: 'SHARDS_INFO' })
-    .catch(() => null);
+  const eventsClient = getEventsClient();
+
+  if (!eventsClient) return;
+
+  const shardsInfo = await eventsClient.request({ type: 'SHARDS_INFO' }).catch(() => null);
 
   if (!shardsInfo) return;
 

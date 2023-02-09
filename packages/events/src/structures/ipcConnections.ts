@@ -8,6 +8,7 @@ import { closeConnections } from '../database/databases';
 
 let eventsClient: Client;
 let retries = 0;
+let hasEventClient = false;
 
 const createIpcConnections = async (): Promise<Client> => {
   const { REST_SOCKET_PATH, EVENT_SOCKET_PATH } = getEnviroments([
@@ -24,17 +25,18 @@ const createIpcConnections = async (): Promise<Client> => {
 
   eventsClient.on('close', () => {
     logger.info('[GATEWAY] Gateway client closed');
+    hasEventClient = false;
 
     const reconnectLogic = () => {
       logger.info('[GATEWAY] Trying to reconnect to gateway server');
       eventsClient.connect().catch(() => {
-        setTimeout(reconnectLogic, 1000);
+        setTimeout(reconnectLogic, 10_000 * (retries + 1));
 
-        logger.info(`[GATEWAY] Fail when reconnecting... ${retries} retries`);
+        logger.info(`[GATEWAY] Fail when reconnecting... ${retries + 1} retries`);
 
         if (retries >= 5) {
           logger.info(`[GATEWAY] Couldn't reconnect to gateway server.`);
-          process.exit(1);
+          return;
         }
 
         retries += 1;
@@ -47,6 +49,7 @@ const createIpcConnections = async (): Promise<Client> => {
   eventsClient.on('ready', () => {
     logger.info('[GATEWAY] Gateway IPC connected');
     retries = 0;
+    hasEventClient = true;
 
     eventsClient.send({ type: 'IDENTIFY', version: process.env.VERSION });
   });
@@ -103,11 +106,19 @@ const createIpcConnections = async (): Promise<Client> => {
   if (process.env.TESTING) return restClient;
 
   await restClient.connect().catch(logger.panic);
-  await eventsClient.connect().catch(logger.panic);
+  await eventsClient.connect().catch(() => {
+    logger.info('[GATEWAY] - Running without connecting to the gateway');
+    logger.debug('Forcing master instance since we got no gateway');
+    // @ts-expect-error Not this call
+    bot.events.ready();
+  });
 
   return restClient;
 };
 
-const getEventsClient = (): Client => eventsClient;
+const getEventsClient = (): Client | undefined => {
+  if (!hasEventClient) return;
+  return eventsClient;
+};
 
 export { createIpcConnections, getEventsClient };
