@@ -42,29 +42,6 @@
     "eb_text_box": "Caixa de Perguntas do 8ball",
     "eb_menhera": "Menhera do 8ball"
   },
-  "roleplay": {
-    "life": "Vida",
-    "mana": "Mana",
-    "damage": "Dano",
-    "intelligence": "Inteligência",
-    "armor": "Defesa",
-    "level": "Nível",
-    "agility": "Agilidade",
-    "level-up": "Whoooaaa, você evoluiu para o nível **{{level}}**. Niceee, cheque seus status para ver novidades...",
-    "blesses": "Bençãos",
-    "backpack": "Mochila",
-    "weapon": "Arma",
-    "protection": "Armadura",
-    "elements": {
-      "FIRE": "Fogo",
-      "WATER": "Água",
-      "NATURE": "Natureza",
-      "AIR": "Ar",
-      "LIGHT": "Luz",
-      "DARK": "Escuridão",
-      "NEUTRAL": "Neutro"
-    }
-  },
   "exit-command": "Finalizar Comando",
   "not-your-interaction": "Esta interação não é para você! Somente utilize componentes que são feitos para ti.",
   "unregistered": "Tu ainda não reencarnou no Mundo de Boleham! Registre-se primeiro e tente novamente!",

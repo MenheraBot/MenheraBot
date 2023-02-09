@@ -7,7 +7,6 @@ import {
   DatabaseUserSchema,
   DatabaseUserThemesSchema,
 } from '../types/database';
-import { DatabaseRoleplayUserSchema } from '../modules/roleplay/types';
 
 const { Schema, model } = mongoose;
 
@@ -83,38 +82,8 @@ const themeCredits = new Schema({
   registeredAt: { type: Number, default: Date.now },
 });
 
-const rpgSchema = new Schema({
-  id: { type: String },
-  class: { type: Number },
-  race: { type: Number },
-  life: { type: Number },
-  mana: { type: Number },
-  level: { type: Number },
-  experience: { type: Number, default: 0 },
-  abilities: { type: Array, default: [] },
-  holyBlessings: { type: Object, default: { ability: 0, vitality: 0, battle: 0 } },
-  blesses: {
-    type: Object,
-    default: {
-      maxLife: 0,
-      maxMana: 0,
-      agility: 0,
-      armor: 0,
-      damage: 0,
-      intelligence: 0,
-    },
-  },
-  inventory: { type: Array, default: [] },
-  money: { type: Number, default: 0 },
-  cooldowns: { type: Array, default: [] },
-  weapon: { type: Object, default: { id: 102, level: 1 } },
-  protection: { type: Object, default: { id: 101, level: 1 } },
-  backpack: { type: Object, default: { id: 100, level: 1 } },
-});
-
 export const commandsModel = model<DatabaseCommandSchema>('command', cmdSchema);
 export const guildsModel = model<DatabaseGuildSchema>('guild', guildSchema);
 export const usersModel = model<DatabaseUserSchema>('usersdb', userSchema);
 export const userThemesModel = model<DatabaseUserThemesSchema>('themes', userThemes);
 export const themeCreditsModel = model<DatabaseCreditsSchema>('credits', themeCredits);
-export const roleplayUsersModel = model<DatabaseRoleplayUserSchema>('roleplay', rpgSchema);

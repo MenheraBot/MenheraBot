@@ -4,10 +4,6 @@ import type common from '../../locales/pt-BR/common.json';
 import type data from '../../locales/pt-BR/data.json';
 import type events from '../../locales/pt-BR/events.json';
 import type permissions from '../../locales/pt-BR/permissions.json';
-import type roleplay from '../../locales/pt-BR/roleplay.json';
-import type enemies from '../../locales/pt-BR/enemies.json';
-import type items from '../../locales/pt-BR/items.json';
-import type abilities from '../../locales/pt-BR/abilities.json';
 
 export type Resources = {
   commands: typeof commands;
@@ -15,10 +11,6 @@ export type Resources = {
   data: typeof data;
   events: typeof events;
   permissions: typeof permissions;
-  roleplay: typeof roleplay;
-  enemies: typeof enemies;
-  items: typeof items;
-  abilities: typeof abilities;
 };
 
 type TokenTranslation<Namespaces, R extends boolean = false> = Extract<

@@ -60,23 +60,6 @@ export const EMOJIS = {
   badge_17: '<:badge_17:990267891079327774>',
   badge_18: '<:badge_18:990267971731615794>',
   badge_19: '<:badge_19:1049144870469648485>',
-  // EMOJIS DO RPG
-  blood: '🩸',
-  mana: '💧',
-  armor: '🛡️',
-  damage: '🗡️',
-  level: '⚜️',
-  experience: '🔰',
-  chest: '<:Chest:760957557538947133>',
-  intelligence: '🧠',
-  church: '⛪',
-  coin: '<:gold:960654694244573204>',
-  blacksmith: '⚒️',
-  agility: '👢',
-  buff: '<:buff:964812397888016394>',
-  debuff: '<:debuff:964812397825110026>',
-  poison: '🧪',
-  heal: '💊',
 };
 
 export const COLORS = {

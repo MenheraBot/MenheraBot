@@ -44,29 +44,6 @@
     "eb_text_box": "8ball Text Box",
     "eb_menhera": "8ball Menhera"
   },
-  "roleplay": {
-    "life": "Life",
-    "mana": "mana",
-    "damage": "Damage",
-    "intelligence": "Intelligence",
-    "armor": "Defense",
-    "level": "Level",
-    "agility": "Agility",
-    "level-up": "Whoooaaa, ​​you've leveled up to **{{level}}**. Niceee, check your status for updates...",
-    "blesses": "Blessings",
-    "backpack": "Backpack",
-    "weapon": "Weapon",
-    "protection": "Armor",
-    "elements": {
-      "FIRE": "Fire",
-      "WATER": "Water",
-      "NATURE": "Nature",
-      "AIR": "Air",
-      "LIGHT": "Light",
-      "DARK": "Darkness",
-      "NEUTRAL": "Neutral"
-    }
-  },
   "not-your-interaction": "This interaction is not for you! Just use components made just for you.",
   "exit-command": "Finish Command",
   "form-timesup": "You didn't submit the form on time!",
