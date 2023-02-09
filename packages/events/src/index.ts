@@ -1,8 +1,8 @@
-import { createBot, Intents } from 'discordeno';
+import { createBot } from 'discordeno';
 
 import { logger } from './utils/logger';
 import { initializeServices, setupInternals, setupMenheraClient } from './structures/menheraClient';
-import { createIpcConnections } from './structures/ipcConnections';
+import { createIpcConnection } from './structures/ipcConnection';
 import { MenheraClient } from './types/menhera';
 import { getEnviroments } from './utils/getEnviroments';
 import { setupEventHandlers } from './events/index';
@@ -16,7 +16,6 @@ const { DISCORD_TOKEN, REST_AUTHORIZATION, DISCORD_APPLICATION_ID } = getEnvirom
 const bot = createBot({
   token: DISCORD_TOKEN,
   secretKey: REST_AUTHORIZATION,
-  intents: Intents.Guilds,
   botId: BigInt(DISCORD_APPLICATION_ID),
   applicationId: BigInt(DISCORD_APPLICATION_ID),
 }) as MenheraClient;
@@ -25,9 +24,13 @@ setupMenheraClient(bot);
 await initializeServices();
 setupEventHandlers();
 
-const restClient = await createIpcConnections();
+const restClient = await createIpcConnection();
 setupInternals(bot, restClient);
 
 logger.info('[READY] Events are being processed!');
+
+// TODO(ySnoopyDogy): The rest process should say who is the master
+// @ts-expect-error Start the events as the main
+bot.events.ready();
 
 export { bot };
