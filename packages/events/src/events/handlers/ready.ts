@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { createHttpServer, registerAllRouters } from '../../structures/server/httpServer';
 import blacklistRepository from '../../database/repositories/blacklistRepository';
 import { startGameLoop } from '../../modules/bicho/bichoManager';
@@ -6,47 +5,7 @@ import { logger } from '../../utils/logger';
 import { bot } from '../../index';
 import { inactivityPunishment } from '../../structures/inactivityPunishment';
 import { postShardStatuses } from '../../utils/apiRequests/commands';
-import { getEnviroments } from '../../utils/getEnviroments';
 import { getEventsClient } from '../../structures/ipcConnections';
-
-const postBotStatus = async (): Promise<void> => {
-  const { DISCORD_APPLICATION_ID, DBL_TOKEN } = getEnviroments([
-    'DISCORD_APPLICATION_ID',
-    'DBL_TOKEN',
-  ]);
-
-  const info = (await getEventsClient()
-    .request({ type: 'GUILD_COUNT' })
-    .catch(() => null)) as {
-    guilds: number;
-    shards: number;
-  } | null;
-
-  if (process.env.NODE_ENV !== 'PRODUCTION')
-    return logger.debug(
-      `[TOP.GG] Posting bot status: ${
-        info ? `${info.guilds} guilds, ${info.shards} shards` : 'sharding not ended yet'
-      } `,
-    );
-
-  if (!info) return;
-
-  await axios
-    .post(
-      `https://top.gg/api/bots/${DISCORD_APPLICATION_ID}/stats`,
-      {
-        server_count: info.guilds,
-        shard_count: info.shards,
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: DBL_TOKEN,
-        },
-      },
-    )
-    .catch(() => null);
-};
 
 const postShardStatus = async (): Promise<void> => {
   const shardsInfo = await getEventsClient()
@@ -95,10 +54,9 @@ const setReadyEvent = (): void => {
     const allBannedUsers = await blacklistRepository.getAllBannedUsersIdFromMongo();
     await blacklistRepository.addBannedUsers(allBannedUsers);
 
-    if (process.env.NOMICROSERVICES) return;
+    if (process.env.NOMICRERVICES) return;
 
     inactivityPunishment();
-    setInterval(postBotStatus, 1800000);
     setInterval(postShardStatus, 60_000);
 
     createHttpServer();

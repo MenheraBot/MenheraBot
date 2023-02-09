@@ -30,7 +30,4 @@ setupInternals(bot, restClient);
 
 logger.info('[READY] Events are being processed!');
 
-// @ts-expect-error nhaww
-bot.events.ready();
-
 export { bot };
