@@ -40,4 +40,4 @@ jobs:
       - name: Run Linter
         run: yarn run:lint
       - name: Typecheck
-        run: yarn rest typecheck && yarn gateway typecheck && yarn events typecheck
+        run: yarn rest typecheck && yarn events typecheck

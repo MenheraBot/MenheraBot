@@ -43,8 +43,6 @@ const ShutdownCommand = createCommand({
 
     registerStep('Conexões com os bancos de dados fechadas!');
 
-    // Maybe send messages to REST and GATEWAY process to warn the downtime
-
     ctx.followUp({
       content: `${toSendMessage}\n\nA Menhera está pronta para desligar! Tempo total: ${
         Date.now() - startTime
