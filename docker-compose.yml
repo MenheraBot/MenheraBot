@@ -19,19 +19,6 @@ services:
       - tmp
     env_file:
       - packages/rest/.env.production
-  gateway:
-    container_name: MenheraGateway
-    restart: unless-stopped
-    network_mode: bridge
-    build:
-      context: .
-      target: gateway
-    depends_on:
-      - rest
-    volumes_from:
-      - tmp
-    env_file:
-      - packages/gateway/.env.production
   events:
     container_name: MenheraEvents
     restart: unless-stopped
@@ -42,7 +29,6 @@ services:
       context: .
       target: events
     depends_on:
-      - gateway
       - rest
     volumes_from:
       - tmp
