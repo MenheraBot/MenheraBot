@@ -149,31 +149,6 @@ eventsServer.on('message', async (msg, conn) => {
 });
 
 eventsServer.on('request', async (req, res) => {
-  if (req.type === 'GUILD_COUNT') {
-    if (!shardingEnded) return res(null);
-
-    const infos = await Promise.all(
-      workers.map(async (worker) => {
-        const nonce = nanoid();
-
-        return new Promise((resolve) => {
-          worker.postMessage({ type: 'GET_GUILD_COUNT', nonce });
-
-          nonces.set(nonce, resolve);
-        });
-      }),
-    ).then((guilds) =>
-      guilds.reduce(
-        (acc, cur) =>
-          // @ts-expect-error it will work
-          acc + cur.guilds,
-        0,
-      ),
-    );
-
-    return res({ guilds: infos, shards: gatewayManager.manager.totalShards });
-  }
-
   if (req.type === 'SHARDS_INFO') {
     if (!shardingEnded) return res(null);
 
