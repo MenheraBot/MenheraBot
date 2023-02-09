@@ -1,4 +1,4 @@
-import { createBot } from 'discordeno';
+import { createBot, startBot } from 'discordeno';
 
 import { logger } from './utils/logger';
 import { initializeServices, setupInternals, setupMenheraClient } from './structures/menheraClient';
@@ -29,8 +29,15 @@ setupInternals(bot, restClient);
 
 logger.info('[READY] Events are being processed!');
 
-// TODO(ySnoopyDogy): The rest process should say who is the master
-// @ts-expect-error Start the events as the main
-bot.events.ready();
+if (process.env.NODE_ENV === 'PRODUCTION') {
+  // TODO(ySnoopyDogy): The rest process should say who is the master
+  // @ts-expect-error Start the events as the main
+  bot.events.ready();
+}
+
+if (process.env.NODE_ENV === 'DEVELOPMENT') {
+  logger.debug('Starting local gateway to receive events');
+  startBot(bot);
+}
 
 export { bot };
