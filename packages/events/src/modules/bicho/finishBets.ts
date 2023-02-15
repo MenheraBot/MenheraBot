@@ -81,7 +81,10 @@ const didUserWin = (results: number[][], option: string, bet: BichoBetType): boo
     case 'corner':
       return hasTwoAnimals(animals, option.split(' | '));
     case 'sequence':
-      return hasTwoAnimals(animals, option.split(' | ')) && hasSequence(animals, option.split(' | '));
+      return (
+        hasTwoAnimals(animals, option.split(' | ')) &&
+        hasSequence(animals, option.split(' | '))
+      );
   }
 };
 
