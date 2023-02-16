@@ -79,7 +79,7 @@ const didUserWin = (results: number[][], option: string, bet: BichoBetType): boo
     case 'animal':
       return animals.some((a) => a === option);
     case 'corner':
-      return hasTwoAnimals(animals, option.split(' | '));
+      return animals.every((a) => userChoices.includes(a));
     case 'sequence':
       return (
         hasTwoAnimals(animals, option.split(' | ')) &&
