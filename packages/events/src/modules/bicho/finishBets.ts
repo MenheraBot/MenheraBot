@@ -2,7 +2,7 @@ import { BetPlayer, BichoBetType, BichoWinner } from './types';
 
 const BICHO_ANIMALS = [
   'avestruz',
-  'ágia',
+  'águia',
   'burro',
   'borboleta',
   'cachorro',
@@ -83,7 +83,7 @@ const didUserWin = (results: number[][], option: string, bet: BichoBetType): boo
     case 'sequence': {
       const animals = results.map((a) => BICHO_ANIMALS[Math.floor(Number(`${a[2]}${a[3]}`) / 4)]);
       const user = option.split(' | ');
-      const hasTwoAnimals = animals.every((a) => user.includes(a));
+      const hasTwoAnimals = user.every((a) => animals.includes(a));
       if (!hasTwoAnimals) return false;
 
       const firstIndex = animals.indexOf(user[0]);
@@ -103,4 +103,4 @@ const makePlayerResults = (bets: BetPlayer[], gameResults: number[][]): BichoWin
   }));
 };
 
-export { makePlayerResults, BICHO_BET_MULTIPLIER, BICHO_ANIMALS };
+export { makePlayerResults, BICHO_BET_MULTIPLIER, BICHO_ANIMALS, didUserWin };
