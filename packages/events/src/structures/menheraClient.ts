@@ -34,9 +34,12 @@ const setupMenheraClient = (client: MenheraClient): void => {
 };
 
 const initializeServices = async (): Promise<void> => {
+  await loadLocales();
+
+  if (process.env.TESTING) return;
+
   await initializeMongo();
   await initializeRedis();
-  await loadLocales();
   initializeSentry();
   await updateAssets();
 };

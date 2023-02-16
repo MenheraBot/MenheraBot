@@ -18,8 +18,7 @@
     "typecheck": " tsc --project tsconfig.json --noEmit",
     "start": "VERSION=$npm_package_version NODE_ENV=PRODUCTION node --es-module-specifier-resolution=node --no-warnings .",
     "dev": "VERSION=$npm_package_version NODE_ENV=DEVELOPMENT node --es-module-specifier-resolution=node --no-warnings -r dotenv/config .",
-    "dev:nomicroservices": "VERSION=$npm_package_version NODE_ENV=DEVELOPMENT NOMICROSERVICES=true node --es-module-specifier-resolution=node --no-warnings -r dotenv/config .",
-    "test": "tsc --noEmit -p tsconfig.build.json && eslint ."
+    "dev:nomicroservices": "VERSION=$npm_package_version NODE_ENV=DEVELOPMENT NOMICROSERVICES=true node --es-module-specifier-resolution=node --no-warnings -r dotenv/config ."
   },
   "dependencies": {
     "@sentry/node": "^7.7.0",
