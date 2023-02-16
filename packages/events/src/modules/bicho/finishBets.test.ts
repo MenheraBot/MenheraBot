@@ -1,3 +1,4 @@
+/* eslint-disable no-continue */
 import { BICHO_ANIMALS, didUserWin } from './finishBets';
 import { BichoBetType } from './types';
 
@@ -15,17 +16,35 @@ describe('Bicho didUserWin function', () => {
     didUserWin(mockedResults, option, bet);
 
   test('check all possibilities of winning by numbers', () => {
-    const totalResults = [];
+    let truthyResults = 0;
 
     for (let i = 0; i < 10000; i++) {
-      if (i < 10) totalResults.push(testWin(`${i}`, 'unity'));
-      if (i < 100) totalResults.push(testWin(`${i}`, 'ten'));
-      if (i < 1000) totalResults.push(testWin(`${i}`, 'hundred'));
-      if (i < 10000) totalResults.push(testWin(`${i}`, 'thousand'));
+      if (i < 10) {
+        const result = testWin(`${i}`, 'unity');
+        if (result) truthyResults += 1;
+        continue;
+      }
+
+      if (i < 100) {
+        const result = testWin(`${i}`, 'ten');
+        if (result) truthyResults += 1;
+        continue;
+      }
+
+      if (i < 1000) {
+        const result = testWin(`${i}`, 'hundred');
+        if (result) truthyResults += 1;
+        continue;
+      }
+
+      if (i < 10000) {
+        const result = testWin(`${i}`, 'thousand');
+        if (result) truthyResults += 1;
+      }
     }
 
     // To that results, 17 is the correct answer
-    expect(totalResults.filter((a) => a === true).length).toBe(17);
+    expect(truthyResults).toBe(17);
   });
 
   test('check if the animal selection is ok', () => {
