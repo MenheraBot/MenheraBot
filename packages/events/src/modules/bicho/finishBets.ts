@@ -66,6 +66,7 @@ const hasSequence = (animals: string[], user: string[]): boolean => {
 
 const didUserWin = (results: number[][], option: string, bet: BichoBetType): boolean => {
   const animals = results.map(mapResultToAnimal);
+  const userChoices = option.split(' | ');
 
   switch (bet) {
     case 'unity':
