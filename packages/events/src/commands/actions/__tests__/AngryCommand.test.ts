@@ -1,11 +1,6 @@
 import { jest } from '@jest/globals';
 import i18next from 'i18next';
-import { closeConnections } from '../../../database/databases';
 import angryCommand from '../AngryCommand';
-
-afterAll(() => {
-  closeConnections();
-});
 
 describe('AngryCommand tests', () => {
   const context = {

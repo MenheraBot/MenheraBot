@@ -1,4 +1,4 @@
-name: Linter
+name: Test
 
 on:
   pull_request:
@@ -10,34 +10,34 @@ on:
     branches:
       - master
       - development/**
-
+      - feat/**
 jobs:
-  build:
+  run-tests:
     runs-on: ubuntu-latest
     strategy:
+      max-parallel: 24
       matrix:
         node-version: [18.4.x]
 
     steps:
       - uses: actions/checkout@v2
-
       - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
-          # cache: npm
 
-      - name: Restore build from cache
-        uses: actions/cache@v2
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-v2-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-node-v2-
+      
+      - name: Install needed dependencies
+        run: yarn install --frozen-lockfile
 
-      - name: Install dependencies
-        run: yarn install
-      - name: Run Linter
+      - name: Run eslint 
         run: yarn run:lint
-      - name: Typecheck
-        run: yarn rest typecheck && yarn events typecheck
+
+      - name: Execute typecheck in REST package
+        run: yarn rest typecheck
+
+      - name: Execute typecheck in EVENTS package
+        run: yarn events typecheck
+
+      - name: Execute jest in all packages
+        run: yarn test
