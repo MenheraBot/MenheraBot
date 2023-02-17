@@ -54,9 +54,11 @@ const betType = (option: string): BichoBetType => {
   return 'animal';
 };
 
-const mapResultToAnimal = (result: number[]): string => BICHO_ANIMALS[Math.floor(Number(`${result[2]}${result[3]}`) / 4)];
+const mapResultToAnimal = (result: number[]): string =>
+  BICHO_ANIMALS[Math.floor(Number(`${result[2]}${result[3]}`) / 4)];
 
-const hasTwoAnimals = (animals: string[], user: string[]): boolean => user.every((a) => animals.includes(a));
+const hasTwoAnimals = (animals: string[], user: string[]): boolean =>
+  user.every((a) => animals.includes(a));
 
 const hasSequence = (animals: string[], user: string[]): boolean => {
   const firstIndex = animals.indexOf(user[0]);
@@ -83,8 +85,7 @@ const didUserWin = (results: number[][], option: string, bet: BichoBetType): boo
       return animals.every((a) => userChoices.includes(a));
     case 'sequence':
       return (
-        hasTwoAnimals(animals, option.split(' | ')) &&
-        hasSequence(animals, option.split(' | '))
+        hasTwoAnimals(animals, option.split(' | ')) && hasSequence(animals, option.split(' | '))
       );
   }
 };
