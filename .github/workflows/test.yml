@@ -2,11 +2,18 @@ name: Test
 
 on:
   pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
   push:
-
+    branches:
+      - master
+      - development/**
+      - feat/**
 jobs:
   run-tests:
-    runs-on: ${{matrix.os}}
+    runs-on: ubuntu-latest
     strategy:
       max-parallel: 24
       matrix:
