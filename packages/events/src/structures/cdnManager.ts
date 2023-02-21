@@ -1,14 +1,14 @@
+/* eslint-disable camelcase */
 import axios from 'axios';
 
 import { logger } from '../utils/logger';
 import { getEnviroments } from '../utils/getEnviroments';
 import { debugError } from '../utils/debugError';
 
-export interface AssetsLimit {
+interface AssetsLimit {
   angry: number;
   bicuda: number;
   bite: number;
-  cheek: number;
   cry: number;
   disgusted: number;
   fear: number;
@@ -17,7 +17,10 @@ export interface AssetsLimit {
   hug: number;
   humor: number;
   kill: number;
-  kiss: number;
+  kiss_mouth: number;
+  kiss_cheek: number;
+  kiss_forehead: number;
+  kiss_hand: number;
   laugh: number;
   mamar: number;
   pat: number;
@@ -25,7 +28,6 @@ export interface AssetsLimit {
   punch: number;
   resurrect: number;
   sarrar: number;
-  // eslint-disable-next-line camelcase
   sarrar_sozinho: number;
   shot: number;
   shy: number;

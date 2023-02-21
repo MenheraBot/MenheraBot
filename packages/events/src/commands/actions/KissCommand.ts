@@ -33,8 +33,10 @@ const KissCommand = createCommand({
       descriptionLocalizations: { 'en-US': 'Place you want to kiss' },
       required: true,
       choices: [
-        { name: '👄 | Boca', value: 'kiss', nameLocalizations: { 'en-US': '👄 | Mouth' } },
-        { name: '🌸 | Bochecha', value: 'cheek', nameLocalizations: { 'en-US': '🌸 | Cheek' } },
+        { name: '👄 | Boca', value: 'mouth', nameLocalizations: { 'en-US': '👄 | Mouth' } },
+        { name: '😊 | Bochecha', value: 'cheek', nameLocalizations: { 'en-US': '😊 | Cheek' } },
+        { name: '🌸 | Testa', value: 'forehead', nameLocalizations: { 'en-US': '🌸 | Forehead' } },
+        { name: '✋ | Mão', value: 'hand', nameLocalizations: { 'en-US': '✋ | Hand' } },
       ],
     },
     {
@@ -68,8 +70,8 @@ const KissCommand = createCommand({
       );
 
     const avatar = getUserAvatar(ctx.author, { enableGif: true });
-    const local = ctx.getOption<string>('local', false, true) as 'kiss';
-    const selectedImage = getAssetLink(local);
+    const local = ctx.getOption<string>('local', false, true) as 'mouth';
+    const selectedImage = getAssetLink(`kiss_${local}`);
 
     const embed = createEmbed({
       title: ctx.locale('commands:beijar.embed_title'),
