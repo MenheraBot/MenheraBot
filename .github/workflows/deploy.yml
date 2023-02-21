@@ -1,0 +1,39 @@
+name: Build and publish Menhera images
+
+on:
+  push:
+    branches:
+      - production
+
+jobs:
+  build-and-publish-images:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build rest image
+        run: docker build . --file Dockerfile --tag rest --target rest --label "runnumber=${GITHUB_RUN_ID}"
+
+      - name: Build events image
+        run: docker build . --file Dockerfile --tag events --target events --label "runnumber=${GITHUB_RUN_ID}"
+
+      - name: log in to registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
+
+      - name: Push both images
+        run: |
+          images=("rest" "events")
+          for imgName in ${images[@]}
+          do
+          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$imgName
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+          [ "$VERSION" == "production" ] && VERSION=latest
+          docker tag $imgName $IMAGE_ID:$VERSION
+          docker push $IMAGE_ID:$VERSION
+          done
