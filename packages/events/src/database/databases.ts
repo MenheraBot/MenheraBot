@@ -12,7 +12,8 @@ const RedisClient = new Redis({
   maxRetriesPerRequest: 2,
   connectTimeout: 5_000,
   commandTimeout: 3_000,
-  path: REDIS_PATH,
+  path: process.env.NODE_ENV === 'PRODUCTION' ? REDIS_PATH : undefined,
+  host: process.env.NODE_ENV === 'PRODUCTION' ? undefined : process.env.REDIS_URL,
 });
 
 const initializeMongo = async (): Promise<void> => {
