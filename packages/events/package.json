@@ -33,6 +33,7 @@
     "koa-router": "^12.0.0",
     "mongoose": "^6.4.6",
     "net-ipc": "^2.0.1",
+    "prom-client": "^14.1.1",
     "string-similarity": "^4.0.4"
   },
   "devDependencies": {

@@ -12,6 +12,7 @@ import { MenheraClient } from '../types/menhera';
 import { logger } from '../utils/logger';
 import { loadCommands } from './command/loadCommands';
 import { updateAssets } from './cdnManager';
+import { initializePrometheus } from './initializePrometheus';
 
 const setupMenheraClient = (client: MenheraClient): void => {
   const { OWNER_ID } = getEnviroments(['OWNER_ID']);
@@ -42,6 +43,7 @@ const initializeServices = async (): Promise<void> => {
   await initializeRedis();
   initializeSentry();
   await updateAssets();
+  initializePrometheus();
 };
 
 const setupInternals = (bot: Bot, restIPC: Client): void => {

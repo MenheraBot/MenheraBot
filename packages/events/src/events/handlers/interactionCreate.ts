@@ -16,6 +16,7 @@ import userRepository from '../../database/repositories/userRepository';
 import commandRepository from '../../database/repositories/commandRepository';
 import { createEmbed } from '../../utils/discord/embedUtils';
 import { logger } from '../../utils/logger';
+import { getCommandsCounter } from '../../structures/initializePrometheus';
 
 const { ERROR_WEBHOOK_ID, ERROR_WEBHOOK_TOKEN } = getEnviroments([
   'ERROR_WEBHOOK_ID',
@@ -109,6 +110,10 @@ const setInteractionCreateEvent = (): void => {
         testTimeouts.delete(interaction.id);
       }, 120_000),
     );
+
+    getCommandsCounter().inc({
+      command: commandName,
+    });
 
     await new Promise((res) => {
       command.execute(ctx, res).catch((err) => {
