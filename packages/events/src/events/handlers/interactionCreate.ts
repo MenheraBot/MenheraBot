@@ -160,7 +160,7 @@ const setInteractionCreateEvent = (): void => {
       `[${new Date().toISOString().substring(11, 19)}] ${command.name} - ${interaction.user.id} `,
     );
 
-    if (!interaction.guildId || process.env.NODE_ENV !== 'PRODUCTION') return;
+    if (!interaction.guildId || process.env.NODE_ENV !== 'production') return;
 
     const data: UsedCommandData = {
       authorId: `${interaction.user.id}`,
