@@ -13,7 +13,7 @@ const loadCommands = (): void => {
     commandRepository.ensureCommandInfo(command.name);
   };
 
-  const pathToResolve = process.env.TESTING ? 'packages/events/src' : 'dist';
+  const pathToResolve = process.env.NODE_ENV === 'test' ? 'packages/events/src' : 'dist';
 
   readDirectory(resolve(`${pathToResolve}/commands`), addToMap);
 };

@@ -21,7 +21,7 @@ const createIpcConnection = async (): Promise<Client> => {
     restClient.send({ type: 'IDENTIFY', package: 'EVENTS', id: process.pid });
   });
 
-  if (process.env.TESTING) return restClient;
+  if (process.env.NODE_ENV === 'test') return restClient;
 
   await restClient.connect().catch(logger.panic);
 
