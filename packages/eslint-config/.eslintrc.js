@@ -16,7 +16,7 @@ module.exports = {
     ecmaVersion: 12,
   },
   parser: '@typescript-eslint/parser',
-  plugins: ['import', 'prettier'],
+  plugins: ['import', 'prettier', 'unused-imports'],
   rules: {
     'prettier/prettier': 'error',
     'consistent-return': 'off',
@@ -41,6 +41,11 @@ module.exports = {
     '@typescript-eslint/no-shadow': ['error'],
     'import/no-named-as-default': 0,
     'import/no-named-as-default-member': 0,
+    'unused-imports/no-unused-imports': 'error',
+    'unused-imports/no-unused-vars': [
+			'warn',
+			{ 'vars': 'all', 'varsIgnorePattern': '^_', 'args': 'after-used', 'argsIgnorePattern': '^_' }
+		]
   },
   settings: {
     'import/parsers': {
